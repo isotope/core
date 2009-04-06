@@ -1,0 +1,1 @@
+<span class="price override"><?php echo $this->price; ?></span>
