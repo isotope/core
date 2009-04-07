@@ -141,6 +141,9 @@ class ProductCatalog extends Backend
 		$storeTable = $this->arrForm['storeTable'];
 		
 		$this->strCurrentStoreTable = $storeTable;
+		
+		// Import labels
+		$GLOBALS['TL_LANG'][$storeTable] = &$GLOBALS['TL_LANG']['tl_product_data'];
 
 		// setup global array first
 		$GLOBALS['TL_DCA'][$storeTable] = array

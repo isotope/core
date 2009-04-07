@@ -804,6 +804,9 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	{
 		foreach($arrModuleIds as $module)
 		{
+			// Must be initialized!
+			$arrRates = array();
+			
 			//Load configuration data for the shipping method.
 			$objShippingModuleData = $this->Database->prepare("SELECT s.name, sr.* FROM tl_shipping_modules s INNER JOIN tl_shipping_rates sr ON s.id=sr.pid WHERE s.id=?")
 										  ->execute($module);
