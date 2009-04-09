@@ -56,6 +56,7 @@ class IsotopePOS extends Backend
 	
 	public function getPOSInterface(DataContainer $objDc)
 	{	
+	
 		/*
 		$ch = curl_init();
 
@@ -85,7 +86,7 @@ class IsotopePOS extends Backend
 		//$objDc->id = $this->Input->get('id');
 		$this->intOrderId = $objDc->id;
 		
-		setlocale(LC_MONETARY, $GLOBALS['TL_LANG']['MSC']['isotopeLocale'][$GLOBALS['TL_LANG']['MSC']['defaultCurrency']]);		
+		//setlocale(LC_MONETARY, $GLOBALS['TL_LANG']['MSC']['isotopeLocale'][$GLOBALS['TL_LANG']['MSC']['defaultCurrency']]);		
 		
 		$objOrderInfo = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE id=?")
 										   ->limit(1)
@@ -110,185 +111,186 @@ class IsotopePOS extends Backend
 		$strBillingAddress = $this->loadAddress($arrOrderInfo['billing_address_id'], $arrOrderInfo['id'], true);
 		$strShippingAddress = $this->loadAddress($arrOrderInfo['shipping_address_id'], $arrOrderInfo['id']);
 
-		$strProductList = $this->getProducts($arrOrderInfo['source_cart_id']);
-			
-			
-			$objPaymentModuleData = $this->Database->prepare("SELECT name, authorizeConfiguration FROM tl_module WHERE id=?")
-												   ->limit(1)
-												   ->execute(34);
-			if($objPaymentModuleData->numRows < 1)
-			{
-				return '<i>' . $GLOBALS['TL_LANG']['MSC']['noPaymentModules'] . '</i>';
-			}
-			
-			//Get the authorize.net configuration data			
-			$objAIMConfig = $this->Database->prepare("SELECT * FROM tl_authorize WHERE id=?")
-															->limit(1)
-															->execute($objPaymentModuleData->authorizeConfiguration);
-			if($objAIMConfig->numRows < 1)
-			{
-				return '<i>' . $GLOBALS['TL_LANG']['MSC']['noPaymentModules'] . '</i>';
-			}
-			
-			//$arrParams[$module] = $objPaymentModuleConfiguration->fetchAllAssoc();			
+		$arrProductList = $this->getProducts($arrOrderInfo['source_cart_id']);
 		
-			//Code specific to Authorize.net!
-			$objTemplate = new BackendTemplate('mod_pos_terminal');
-										
-			if($objAIMConfig->numRows > 0)
-			{
-				
-				$delimResponse = ($objAIMConfig->delimResponse==1 ? "TRUE" : "FALSE");
-				$delimChar = $objAIMConfig->delimChar;
-				$loginID = $objAIMConfig->loginID;
-				$transKey = $objAIMConfig->transKey;
-				$transType = $objAIMConfig->transType;
-				$status = ($objAIMConfig->status=="test" ? "TRUE" : "FALSE");
-				//var_dump($status);
-			}
+		$strProductList = $this->generateProductList($arrProductList);
+			
+		$objPaymentModuleData = $this->Database->prepare("SELECT name, authorizeConfiguration FROM tl_module WHERE id=?")
+											   ->limit(1)
+											   ->execute(34);
+		if($objPaymentModuleData->numRows < 1)
+		{
+			return '<i>' . $GLOBALS['TL_LANG']['MSC']['noPaymentModules'] . '</i>';
+		}
+		
+		//Get the authorize.net configuration data			
+		$objAIMConfig = $this->Database->prepare("SELECT * FROM tl_authorize WHERE id=?")
+														->limit(1)
+														->execute($objPaymentModuleData->authorizeConfiguration);
+		if($objAIMConfig->numRows < 1)
+		{
+			return '<i>' . $GLOBALS['TL_LANG']['MSC']['noPaymentModules'] . '</i>';
+		}
+		
+		//$arrParams[$module] = $objPaymentModuleConfiguration->fetchAllAssoc();			
 	
-			if ($this->Input->post('FORM_SUBMIT') == 'mod_pos_terminal')
-			{
-				
-				$authnet_values = array(
-					"x_login"							=> $loginID,
-					"x_version"							=> $GLOBALS['TL_LANG']['MSC']['gatewayVersion'],
-					"x_test_request"					=> $status,
-					"x_delim_char"						=> ",",
-					"x_delim_data"						=> $delimResponse,
-					"x_url"								=> "FALSE",
-					"x_type"							=> $transType,
-					"x_method"							=> "CC",
-					"x_tran_key"						=> $transKey,
-					"x_relay_response"					=> "FALSE",
-					"x_card_num"						=> $arrOrderInfo['cc_num'],
-					"x_exp_date"						=> $arrOrderInfo['cc_exp'],
-					"x_cardholder_authentication_value"	=> $arrOrderInfo['cc_cvv'],
-					"x_description"						=> "Order Number " . $objDc->id,
-					"x_amount"							=> number_format($this->fltOrderTotal, 2),
-					"x_first_name"						=> $this->arrBillingInfo['firstname'],
-					"x_last_name"						=> $this->arrBillingInfo['lastname'],
-					"x_address"							=> $this->arrBillingInfo['street'],
-					"x_city"							=> $this->arrBillingInfo['city'],
-					"x_state"							=> $this->arrBillingInfo['state'],
-					"x_zip"								=> $this->arrBillingInfo['postal'],
-					"x_company"							=> $this->arrBillingInfo['company'],
-					//"x_email_customer"				=> "TRUE",
-					//"x_email"							=> $this->arrBillingInfo['email']
-				);
-				
-				//$arrPaymentInfo = array('cc_num' => $this->Input->post('x_card_num'), 'cc_exp' => $this->Input->post('x_exp_date'), 'cc_cvv' => $this->Input->post('x_cardholder_authentication_value'));
-				
-				/*if($this->writeOrder($arrPaymentInfo))
-				{		
-					$objNextPage = $this->Database->prepare("SELECT id, alias FROM tl_page WHERE id=?")
-											  ->limit(1)
-											  ->execute($this->orderCompleteJumpTo);
-	
-					if ($objNextPage->numRows)
-					{
-						$postToURL = $this->generateFrontendUrl($objNextPage->fetchAssoc());
-					}else{
-						$postToURL = ampersand($this->Environment->request, ENCODE_AMPERSANDS);
-					}			
-					
-					$this->redirect($postToURL);
-				}*/
-				
-				foreach( $authnet_values as $key => $value ) $fields .= "$key=" . urlencode( $value ) . "&";
+		//Code specific to Authorize.net!
+		$objTemplate = new BackendTemplate('mod_pos_terminal');
+									
+		if($objAIMConfig->numRows > 0)
+		{
+			
+			$delimResponse = ($objAIMConfig->delimResponse==1 ? "TRUE" : "FALSE");
+			$delimChar = $objAIMConfig->delimChar;
+			$loginID = $objAIMConfig->loginID;
+			$transKey = $objAIMConfig->transKey;
+			$transType = $objAIMConfig->transType;
+			$status = ($objAIMConfig->status=="test" ? "TRUE" : "FALSE");
+			//var_dump($status);
+		}
 
-				$ch = curl_init(); 
+		if ($this->Input->post('FORM_SUBMIT') == 'mod_pos_terminal')
+		{
+			
+			$authnet_values = array(
+				"x_login"							=> $loginID,
+				"x_version"							=> $GLOBALS['TL_LANG']['MSC']['gatewayVersion'],
+				"x_test_request"					=> $status,
+				"x_delim_char"						=> ",",
+				"x_delim_data"						=> $delimResponse,
+				"x_url"								=> "FALSE",
+				"x_type"							=> $transType,
+				"x_method"							=> "CC",
+				"x_tran_key"						=> $transKey,
+				"x_relay_response"					=> "FALSE",
+				"x_card_num"						=> $arrOrderInfo['cc_num'],
+				"x_exp_date"						=> $arrOrderInfo['cc_exp'],
+				"x_cardholder_authentication_value"	=> $arrOrderInfo['cc_cvv'],
+				"x_description"						=> "Order Number " . $objDc->id,
+				"x_amount"							=> number_format($this->fltOrderTotal, 2),
+				"x_first_name"						=> $this->arrBillingInfo['firstname'],
+				"x_last_name"						=> $this->arrBillingInfo['lastname'],
+				"x_address"							=> $this->arrBillingInfo['street'],
+				"x_city"							=> $this->arrBillingInfo['city'],
+				"x_state"							=> $this->arrBillingInfo['state'],
+				"x_zip"								=> $this->arrBillingInfo['postal'],
+				"x_company"							=> $this->arrBillingInfo['company'],
+				//"x_email_customer"				=> "TRUE",
+				//"x_email"							=> $this->arrBillingInfo['email']
+			);
+			
+			//$arrPaymentInfo = array('cc_num' => $this->Input->post('x_card_num'), 'cc_exp' => $this->Input->post('x_exp_date'), 'cc_cvv' => $this->Input->post('x_cardholder_authentication_value'));
+			
+			/*if($this->writeOrder($arrPaymentInfo))
+			{		
+				$objNextPage = $this->Database->prepare("SELECT id, alias FROM tl_page WHERE id=?")
+										  ->limit(1)
+										  ->execute($this->orderCompleteJumpTo);
 
-				###  Uncomment the line ABOVE for test accounts or BELOW for live merchant accounts
-				### $ch = curl_init("https://secure.authorize.net/gateway/transact.dll"); 
-				
-				curl_setopt($ch, CURLOPT_URL, $GLOBALS['TL_LANG']['MSC']['authNetUrlTest']); 
-				curl_setopt($ch, CURLOPT_HEADER, 0); // set to 0 to eliminate header info from response
-				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // Returns response data instead of TRUE(1)
-				curl_setopt($ch, CURLOPT_POSTFIELDS, rtrim( $fields, "& " )); // use HTTP POST to send form data
-
-				#curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); // uncomment this line if you get no gateway response. ###
-				$resp = curl_exec($ch); //execute post and get results
-				curl_close ($ch);
-				
-								
-				$arrResponses = $this->handleResponse($resp);
-
-				foreach(array_keys($arrResponses) as $key)
+				if ($objNextPage->numRows)
 				{
-					$arrReponseLabels[strtolower(standardize($key))] = $key;
-				}
+					$postToURL = $this->generateFrontendUrl($objNextPage->fetchAssoc());
+				}else{
+					$postToURL = ampersand($this->Environment->request, ENCODE_AMPERSANDS);
+				}			
+				
+				$this->redirect($postToURL);
+			}*/
+			
+			foreach( $authnet_values as $key => $value ) $fields .= "$key=" . urlencode( $value ) . "&";
+
+			$ch = curl_init(); 
+
+			###  Uncomment the line ABOVE for test accounts or BELOW for live merchant accounts
+			### $ch = curl_init("https://secure.authorize.net/gateway/transact.dll"); 
+			
+			curl_setopt($ch, CURLOPT_URL, $GLOBALS['TL_LANG']['MSC']['authNetUrlLive']); 
+			curl_setopt($ch, CURLOPT_HEADER, 0); // set to 0 to eliminate header info from response
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // Returns response data instead of TRUE(1)
+			curl_setopt($ch, CURLOPT_POSTFIELDS, rtrim( $fields, "& " )); // use HTTP POST to send form data
+
+			#curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); // uncomment this line if you get no gateway response. ###
+			$resp = curl_exec($ch); //execute post and get results
+			curl_close ($ch);
+			
 							
-				$objTemplate->fields = $this->generateResponseString($arrResponses, $arrReponseLabels);
-				
-				$objTemplate->headline = $this->generateModuleHeadline($arrResponses['transaction-status']) . ' - ' . $this->strReason;
-				
-				$objTemplate->isConfirmation = true;
-				
-				//$objTemplate->showPrintLink = true;
-			}else{
-				$objTemplate->x_version = $GLOBALS['TL_LANG']['MSC']['gatewayVersion'];
-				$objTemplate->x_delim_data = $delimResponse;
-				$objTemplate->x_delim_char = $delimChar;
-				$objTemplate->x_relay_response = "false";	//Must be false for AIM processing.
-				$objTemplate->x_login = $loginID;
-				$objTemplate->x_tran_key = $transKey;
-				$objTemplate->x_method = "CC";
-				$objTemplate->x_type = $transType;
-				$objTemplate->x_test_request = $status;
-				
-				$objTemplate->x_first_name = $this->arrBillingInfo['firstname'];
-				$objTemplate->x_last_name = $this->arrBillingInfo['lastname'];
-				$objTemplate->x_company = $this->arrBillingInfo['company'];
-				$objTemplate->x_address = $this->arrBillingInfo['street'];
-				$objTemplate->x_city = $this->arrBillingInfo['city'];
-				$objTemplate->x_state = $this->arrBillingInfo['state'];
-				$objTemplate->x_zip = $this->arrBillingInfo['postal'];
-				//$objTemplate->x_phone = $this->arrBillingInfo['phone'];
-				//$objTemplate->x_fax = $this->arrBillingInfo['fax'];
-				//$objTemplate->x_email = $this->arrSession['FORM_DATA']['billing_information_email'];
-				//$objTemplate->x_email_customer = "TRUE";
-				$objTemplate->x_amount = number_format($this->fltOrderTotal, 2);
-				$objTemplate->subtotal = number_format($this->fltOrderSubtotal, 2);
-				$objTemplate->shippingTotal = number_format($this->fltOrderShippingTotal, 2);
-				$objTemplate->taxTotal = number_format($this->fltOrderTaxTotal, 2);
-				$objTemplate->x_card_num = $arrOrderInfo['cc_num'];
-				$objTemplate->x_exp_date = $arrOrderInfo['cc_exp'];
-				$objTemplate->x_cardholder_authentication_value = $arrOrderInfo['cc_cvv'];
+			$arrResponses = $this->handleResponse($resp);
+
+			foreach(array_keys($arrResponses) as $key)
+			{
+				$arrReponseLabels[strtolower(standardize($key))] = $key;
+			}
+						
+			$objTemplate->fields = $this->generateResponseString($arrResponses, $arrReponseLabels);
 			
-			}	
+			$objTemplate->headline = $this->generateModuleHeadline($arrResponses['transaction-status']) . ' - ' . $this->strReason;
 			
+			$objTemplate->isConfirmation = true;
+			
+			//$objTemplate->showPrintLink = true;
+		}else{
+			$objTemplate->x_version = $GLOBALS['TL_LANG']['MSC']['gatewayVersion'];
+			$objTemplate->x_delim_data = $delimResponse;
+			$objTemplate->x_delim_char = $delimChar;
+			$objTemplate->x_relay_response = "false";	//Must be false for AIM processing.
+			$objTemplate->x_login = $loginID;
+			$objTemplate->x_tran_key = $transKey;
+			$objTemplate->x_method = "CC";
+			$objTemplate->x_type = $transType;
+			$objTemplate->x_test_request = $status;
+			
+			$objTemplate->x_first_name = $this->arrBillingInfo['firstname'];
+			$objTemplate->x_last_name = $this->arrBillingInfo['lastname'];
+			$objTemplate->x_company = $this->arrBillingInfo['company'];
+			$objTemplate->x_address = $this->arrBillingInfo['street'];
+			$objTemplate->x_city = $this->arrBillingInfo['city'];
+			$objTemplate->x_state = $this->arrBillingInfo['state'];
+			$objTemplate->x_zip = $this->arrBillingInfo['postal'];
+			//$objTemplate->x_phone = $this->arrBillingInfo['phone'];
+			//$objTemplate->x_fax = $this->arrBillingInfo['fax'];
+			//$objTemplate->x_email = $this->arrSession['FORM_DATA']['billing_information_email'];
+			//$objTemplate->x_email_customer = "TRUE";
+			$objTemplate->x_amount = number_format($this->fltOrderTotal, 2);
+			$objTemplate->subtotal = number_format($this->fltOrderSubtotal, 2);
+			$objTemplate->shippingTotal = number_format($this->fltOrderShippingTotal, 2);
+			$objTemplate->taxTotal = number_format($this->fltOrderTaxTotal, 2);
+			$objTemplate->x_card_num = $arrOrderInfo['cc_num'];
+			$objTemplate->x_exp_date = $arrOrderInfo['cc_exp'];
+			$objTemplate->x_cardholder_authentication_value = $arrOrderInfo['cc_cvv'];
 		
-			$action = ampersand($this->Environment->request, ENCODE_AMPERSANDS);
-			
-			//$this->Template->x_cust_id;
-			
-			$objTemplate->formId = 'mod_pos_terminal';
+		}	
 		
-			$objTemplate->slabel = specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']);
-			$return = '<input type="hidden" name="FORM_SUBMIT" value="' . $objTemplate->formId . '" />';
-			$return .= '<div id="tl_buttons"><h1>' . $objTemplate->headline . '</h1>
+	
+		$action = ampersand($this->Environment->request, ENCODE_AMPERSANDS);
+		
+		//$this->Template->x_cust_id;
+		
+		$objTemplate->formId = 'mod_pos_terminal';
+	
+		$objTemplate->slabel = specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']);
+		$return = '<input type="hidden" name="FORM_SUBMIT" value="' . $objTemplate->formId . '" />';
+		$return .= '<div id="tl_buttons"><h1>' . $objTemplate->headline . '</h1>
 
 <a href="'.$this->getReferer(ENCODE_AMPERSANDS).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
 </div>
 ';
-			$return .= '<div class="block" style="padding:20px;"><div><h2>Order #' . $arrOrderInfo['id'] . '</h2>' . $objUserName->firstname . ' ' . $objUserName->lastname . '<br />Status: <strong>' . $GLOBALS['TL_LANG']['tl_iso_orders']['order_status_labels'][$arrOrderInfo['status']] . '</strong><br />Shipping Method: ' . $GLOBALS['TL_LANG']['tl_iso_orders']['shipping_method_labels'][$arrOrderInfo['shipping_method']]  . '<br />Order Total: ' . money_format('%n', $this->fltOrderTotal) . '</div><br /><div style="display: inline;"><div style="width: 50%; float: left"><h2>Billing Address:</h2>' . $strBillingAddress . '</div><div style="width: 50%; float: left"><h2>Shipping Address:</h2>' . $strShippingAddress . '</div></div><div style="clear: both;"></div><h2>Cart Contents:</h2><div style="border: solid 1px #cccccc; margin: 10px; padding: 10px;">' . $strProductList . '</div></div></div>';
-			if(strlen($objTemplate->fields) && $arrResponses['transaction-status']=='Approved')
-			{
-				$this->cleanCreditCardData($arrOrderInfo['cc_num'], $objDc->id);
-				//$return .= $objTemplate->fields;
-			}elseif($arrOrderInfo['status']=='pending'){
-				//$return .= $objTemplate->fields;
-				$return .= '<div class="tl_formbody_submit"><div class="tl_submit_container">';
-				$return .= '<input type="submit" class="submit" value="' . $objTemplate->slabel . '" /></div></td>';
-				$return .= '</div></div>';
-			}
-						
-			$objTemplate->orderReview = $return;
-			$objTemplate->action = $action;
-			$objTemplate->rowLast = 'row_' . (count($this->editable) + 1) . ((($i % 2) == 0) ? ' odd' : ' even');
-						
-			return $objTemplate->parse();
+		$return .= '<div class="block" style="padding:20px;"><div><h2>Order #' . $arrOrderInfo['id'] . '</h2>' . $objUserName->firstname . ' ' . $objUserName->lastname . '<br />Status: <strong>' . $GLOBALS['TL_LANG']['tl_iso_orders']['order_status_labels'][$arrOrderInfo['status']] . '</strong><br />Shipping Method: ' . $GLOBALS['TL_LANG']['tl_iso_orders']['shipping_method_labels'][$arrOrderInfo['shipping_method']]  . '<br />Order Total: ' . money_format('$%n', $this->fltOrderTotal) . '</div><br /><div style="display: inline;"><div style="width: 50%; float: left"><h2>Billing Address:</h2>' . $strBillingAddress . '</div><div style="width: 50%; float: left"><h2>Shipping Address:</h2>' . $strShippingAddress . '</div></div><div style="clear: both;"></div><h2>Cart Contents:</h2><div style="border: solid 1px #cccccc; margin: 10px; padding: 10px;">' . $strProductList . '</div></div></div>';
+		if(strlen($objTemplate->fields) && $arrResponses['transaction-status']=='Approved')
+		{
+			$this->cleanCreditCardData($arrOrderInfo['cc_num'], $objDc->id);
+			//$return .= $objTemplate->fields;
+		}elseif($arrOrderInfo['status']=='pending'){
+			//$return .= $objTemplate->fields;
+			$return .= '<div class="tl_formbody_submit"><div class="tl_submit_container">';
+			$return .= '<input type="submit" class="submit" value="' . $objTemplate->slabel . '" /></div></td>';
+			$return .= '</div></div>';
+		}
+					
+		$objTemplate->orderReview = $return;
+		$objTemplate->action = $action;
+		$objTemplate->rowLast = 'row_' . (count($this->editable) + 1) . ((($i % 2) == 0) ? ' odd' : ' even');
+					
+		return $objTemplate->parse();
 	
 	}
 	
@@ -333,11 +335,14 @@ class IsotopePOS extends Backend
 		$strBillingAddress = $this->loadAddress($arrOrderInfo['billing_address_id'], $arrOrderInfo['id'], true);
 		$strShippingAddress = $this->loadAddress($arrOrderInfo['shipping_address_id'], $arrOrderInfo['id']);
 
-		$strProductList = $this->getProducts($arrOrderInfo['source_cart_id']);
+		$strPaymentInfo = $this->generatePaymentInfoString($arrOrderInfo, $this->arrBillingInfo);
+		$strShippingInfo = $this->generateShippingInfoString($arrOrderInfo['shipping_rate_id']);
+		
+		$arrProductData = $this->getProducts($arrOrderInfo['source_cart_id']);
 				
 		$objTemplate = new BackendTemplate('iso_invoice');
-
-		$objTemplate->invoiceTitle = $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'];		
+		
+		$objTemplate->invoiceTitle = $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] . ' #' . $this->intOrderId . '-' . date('mjY', $arrOrderInfo['tstamp']);		
 		$objTemplate->orderBillingAddressHeader = $GLOBALS['TL_LANG']['MSC']['iso_billing_address_header'];
 		$objTemplate->orderBillingAddressString = $strBillingAddress;
 		$objTemplate->orderShippingAddressHeader = $GLOBALS['TL_LANG']['MSC']['iso_shipping_address_header'];
@@ -347,10 +352,10 @@ class IsotopePOS extends Backend
 		$objTemplate->shippingInfoHeader = $GLOBALS['TL_LANG']['MSC']['iso_shipping_info_header'];
 		$objTemplate->shippingInfoString = $strShippingInfo;
 		$objTemplate->orderTrackingInfoString = $strOrderTrackingInfo;
-		$objTemplate->productNameHeader = $arrAttributeNames['product_name'];
-		$objTemplate->productSkuHeader = $arrAttributeNames['product_sku'];
-		$objTemplate->productPriceHeader = $arrAttributeNames['product_price'];
-		$objTemplate->productQuantityHeader = $arrAttributeNames['product_quantity'];
+		$objTemplate->productNameHeader = $GLOBALS['TL_LANG']['MSC']['iso_product_name_header'];
+		$objTemplate->productSkuHeader = $GLOBALS['TL_LANG']['MSC']['iso_product_sku_header'];
+		$objTemplate->productPriceHeader = $GLOBALS['TL_LANG']['MSC']['iso_product_price_header'];
+		$objTemplate->productQuantityHeader = $GLOBALS['TL_LANG']['MSC']['iso_product_quantity_header'];
 		$objTemplate->productTaxHeader = $GLOBALS['TL_LANG']['MSC']['iso_tax_header'];	
 		$objTemplate->productSubtotalHeader = $GLOBALS['TL_LANG']['MSC']['iso_subtotal_header'];
 		$objTemplate->products = $arrProductData;	//name, sku, price, quantity, tax, subtotal, options = array('name', 'value')
@@ -358,13 +363,16 @@ class IsotopePOS extends Backend
 		$objTemplate->orderTaxHeader = $GLOBALS['TL_LANG']['MSC']['iso_tax_header'];
 		$objTemplate->orderShippingHeader = $GLOBALS['TL_LANG']['MSC']['iso_order_shipping_header'];
 		$objTemplate->orderGrandTotalHeader = $GLOBALS['TL_LANG']['MSC']['iso_order_grand_total_header'];
-		$objTemplate->orderFooterString = '';
+		$objTemplate->orderSubtotal = money_format('$%n', (float)$arrOrderInfo['order_subtotal']); 
+		$objTemplate->orderTaxTotal = money_format('$%n', (float)$arrOrderInfo['order_tax']); 
+		$objTemplate->orderShippingTotal = money_format('$%n', (float)$arrOrderInfo['order_shipping_cost']); 
+		$objTemplate->orderGrandTotal = money_format('$%n', $this->fltOrderTotal);
 		
-				
+		$objTemplate->orderFooterString = '';	
 		$strInvoiceTitle = $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] . '_' . $objDc->id . '_' . time();
 		
 		//$strArticle = html_entity_decode($strArticle, ENT_QUOTES, $GLOBALS['TL_CONFIG']['characterSet']);
-
+		
 		// Replace relative links
 		$arrLinks = array();
 		
@@ -372,24 +380,31 @@ class IsotopePOS extends Backend
 		$strArticle = preg_replace('/<form.*<\/form>/Us', '', $strArticle);
 		$strArticle = preg_replace('/\?pdf=[0-9]*/i', '', $strArticle);
 
-		// Use DOMPDF plugin
-		if ($GLOBALS['TL_CONFIG']['useDompdf'])
+		$arrChunks = array();
+		$strArticle .= $objTemplate->parse();
+		
+		
+		//echo $strArticle;
+		//exit;
+		/*
+		if(1==1)
 		{
 			// Add head section
 			$strHtml = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">' . "\n";
 			$strHtml .= '<html xmlns="http://www.w3.org/1999/xhtml">' . "\n";
 			$strHtml .= '<head>' . "\n";
-			$strHtml .= '<title>' . $objInvoice->title . '</title>' . "\n";
+			$strHtml .= '<title>' . $strInvoiceTitle . '</title>' . "\n";
 			$strHtml .= '<meta http-equiv="Content-Type" content="text/html; charset=' . $GLOBALS['TL_CONFIG']['characterSet'] . '" />' . "\n";
 			$strHtml .= '<base href="' . $this->Environment->base . '" />' . "\n";
 
 			$objStylesheet = $this->Database->execute("SELECT * FROM tl_style_sheet");
 
+			
 			// Add stylesheets
 			while ($objStylesheet->next())
 			{
 				$arrMedia = deserialize($objStylesheet->media, true);
-
+				
 				if (in_array('print', $arrMedia) || in_array('all', $arrMedia))
 				{
 					$strHtml .= '<link rel="stylesheet" type="text/css" href="' . $objStylesheet->name . '.css" />' . "\n";
@@ -397,7 +412,7 @@ class IsotopePOS extends Backend
 			}
 
 			// Convert the Euro symbol
-			$strArticle = str_replace('Û', '&#0128;', $strArticle);
+			$strArticle = str_replace('€', '&#0128;', $strArticle);
 
 			// Make sure there is no background
 			$strHtml .= '<style type="text/css">' . "\n";
@@ -405,7 +420,7 @@ class IsotopePOS extends Backend
 			$strHtml .= '</style>' . "\n";
 			$strHtml .= '</head>' . "\n";
 			$strHtml .= '<body>' . "\n";
-			$strHtml .= $objTemplate->parse(). "\n";
+			$strHtml .= $strArticle . "\n";
 			$strHtml .= '</body>' . "\n";
 			$strHtml .= '</html>';
 
@@ -415,80 +430,74 @@ class IsotopePOS extends Backend
 
 			$dompdf->set_paper('a4');
 			$dompdf->set_base_path(TL_ROOT);
-			$dompdf->load_html($strHtml);
+			$dompdf->load_html($strArticle);
 			$dompdf->render();
 
 			$dompdf->stream(standardize(ampersand($strInvoiceTitle, false)) . '.pdf');
-		}
 
-		// Use TCPDF plugin
-		else
-		{
-			$arrChunks = array();
-			$strArticle .= $objTemplate->parse();
+		}else{*/
 			preg_match_all('/<pre.*<\/pre>/Us', $strArticle, $arrChunks);
-
+	
 			// Replace linebreaks within PRE tags
 			foreach ($arrChunks[0] as $strChunk)
 			{
 				$strArticle = str_replace($strChunk, str_replace("\n", '<br />', $strChunk), $strArticle);
 			}
-
+	
 			// Remove linebreaks and tabs
 			$strArticle = str_replace(array("\n", "\t"), '', $strArticle);
 			$strArticle = preg_replace('/<span style="text-decoration: ?underline;?">(.*)<\/span>/Us', '<u>$1</u>', $strArticle);
-
+	
 			// TCPDF configuration
 			$l['a_meta_dir'] = 'ltr';
 			$l['a_meta_charset'] = $GLOBALS['TL_CONFIG']['characterSet'];
 			$l['a_meta_language'] = $GLOBALS['TL_LANGUAGE'];
 			$l['w_page'] = "page";
-
+	
 			// Include library
 			require_once(TL_ROOT . '/system/config/tcpdf.php');
 			require_once(TL_ROOT . '/plugins/tcpdf/tcpdf.php'); 
-
+	
 			// Create new PDF document
 			$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true); 
-
+	
 			// Set document information
 			$pdf->SetCreator(PDF_CREATOR);
 			$pdf->SetAuthor(PDF_AUTHOR);
 			$pdf->SetTitle($objInvoice->title);
 			$pdf->SetSubject($objInvoice->title);
 			$pdf->SetKeywords($objInvoice->keywords);
-
+	
 			// Remove default header/footer
 			$pdf->setPrintHeader(false);
 			$pdf->setPrintFooter(false);
-
+	
 			// Set margins
 			$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-
+	
 			// Set auto page breaks
 			$pdf->SetAutoPageBreak(true, PDF_MARGIN_BOTTOM);
-
+	
 			// Set image scale factor
 			$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO); 
-
+	
 			// Set some language-dependent strings
 			$pdf->setLanguageArray($l); 
-
+	
 			// Initialize document and add a page
 			$pdf->AliasNbPages();
 			$pdf->AddPage();
-
+	
 			// Set font
 			$pdf->SetFont(PDF_FONT_NAME_MAIN, "", PDF_FONT_SIZE_MAIN);
-
+	
 			// Write the HTML content
 			$pdf->writeHTML($strArticle);
-
+	
 			// Close and output PDF document
 			$pdf->lastPage();
 			$pdf->Output(standardize(ampersand($strInvoiceTitle, false)) . '.pdf', 'D');
-		}
-
+		//}
 		// Stop script execution
 		ob_end_clean();
 		exit;	
@@ -534,7 +543,7 @@ class IsotopePOS extends Backend
 			
 			$strProductList = implode(',', $arrProductIds);
 									
-			$objProductExtendedData = $this->Database->prepare("SELECT id, product_name, product_price FROM " . $storeTable . " WHERE id IN(" . $strProductList . ")")
+			$objProductExtendedData = $this->Database->prepare("SELECT id, product_name, product_sku, product_price FROM " . $storeTable . " WHERE id IN(" . $strProductList . ")")
 													 ->execute();
 									
 			if($objProductExtendedData->numRows < 1)
@@ -546,17 +555,36 @@ class IsotopePOS extends Backend
 			
 			foreach($arrProductExtendedData as $row)
 			{
+				$fltProductTax = ((int)$arrProductLists[$storeTable][$row['id']]['quantity'] * (float)$row['product_price']) * 0.05;
+					
+				$fltSubtotal = ((int)$arrProductLists[$storeTable][$row['id']]['quantity'] * (float)$row['product_price']) + round($fltProductTax, 2);
+				//	echo $fltSubtotal;
 				
-								
-				$fltProductTotal = (int)$arrProductLists[$storeTable][$row['id']]['quantity'] * (float)$row['product_price'];	
-			
-				$fltProductPrice = (float)$row['product_price'];
-			
-			
-				$strProductData .= $row['product_name'] . ' - ' . money_format('%n', $fltProductPrice) . ' x ' . $arrProductLists[$storeTable][$row['id']]['quantity'] . ' = ' . money_format('%n', $fltProductTotal) . '<br />';
+				$arrAllProducts[] = array
+				(
+					'name'			=> $row['product_name'],
+					'sku'			=> $row['product_sku'],
+					'price'			=> number_format((float)$row['product_price'], 2),
+					'quantity'		=> $arrProductLists[$storeTable][$row['id']]['quantity'],
+					'tax'			=> number_format($fltProductTax, 2),
+					'subtotal'		=> number_format($fltSubtotal, 2)
+					
+				); 	
 			}	
 		}
 		
+		return $arrAllProducts;
+	}
+	
+	protected function generateProductList($arrProducts)
+	{
+		
+		foreach($arrProducts as $row)
+		{			
+			$strProductData .= $row['name'] . ' - ' . money_format('$%n', (float)$row['price']) . ' x ' . $row['quantity'] . ' = ' . money_format('$%n', ((float)$row['price'] * $row['quantity'])) . '<br />';
+		
+		}
+	
 		return $strProductData;
 	}
 	
@@ -586,7 +614,32 @@ class IsotopePOS extends Backend
 
 		return $strAddress;
 	}
-
+	
+	protected function generatePaymentInfoString($arrOrderInfo, $arrBillingInfo)
+	{
+		$strPaymentInfo = $GLOBALS['TL_LANG']['MSC']['iso_invoice_card_name_title'] . ': ' . $arrBillingInfo['firstname'] . '&nbsp;' . $arrBillingInfo['lastname'] . '<br />';
+		$strPaymentInfo .= $GLOBALS['TL_LANG']['tl_iso_orders']['cc_type'][0] . ': ' . $GLOBALS['TL_LANG']['tl_iso_orders']['credit_cart_types'][$arrOrderInfo['cc_type']] . '<br />';
+		$strPaymentInfo .= $GLOBALS['TL_LANG']['tl_iso_orders']['cc_number'][0] . ': XXXX-XXXX-XXXX-' . substr($arrOrderInfo['cc_num'], 12, 4) . '<br />';
+		$strPaymentInfo .= $GLOBALS['TL_LANG']['tl_iso_orders']['cc_exp'][0] . ': ' . $arrOrderInfo['cc_exp'];
+	
+		return $strPaymentInfo;
+	}
+	
+	protected function generateShippingInfoString($intShippingRateId)
+	{
+		$objShippingMethod = $this->Database->prepare("SELECT s.name, sr.description FROM tl_shipping_modules s INNER JOIN tl_shipping_rates sr ON s.id=sr.pid  WHERE sr.id=?")
+											->limit(1)
+											->execute($intShippingRateId);
+		
+		if($objShippingMethod->numRows < 1)
+		{
+			return sprintf($GLOBALS['TL_LANG']['ERR']['noShippingMethodAvailable'], $intShippingRateId);
+		}						
+	
+		$strShippingInfo = $objShippingMethod->name . ' ' . $objShippingMethod->description;
+		
+		return $strShippingInfo;
+	}
 
 	protected function getPid($intId, $strTable)
 	{
