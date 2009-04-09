@@ -75,6 +75,8 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	protected $intBillingAddressId;
 	
 	protected $intShippingAddressId;	
+	
+	protected $intShippingRateId;
 
 	/**
 	 * Display a wildcard in the back end
@@ -177,6 +179,15 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			//echo $intBillingAddressId;
 			$this->intBillingAddressId = $intBillingAddressId;
 		}
+		
+		//FOR LATER WHEN AN OPTION LIST IS SELECTED.
+		/*$intShippingMethod = ($this->Input->post('shipping_methods') ? $this->Input->post('shipping_methods') : $_SESSION['FORM_DATA']['shipping_methods']);
+		
+		if()
+		{
+			$this->intShippingRateId = $intShippingMethod;
+		}
+		*/
 		
 		$intShippingAddressId = ($this->Input->post('shipping_address') ? $this->Input->post('shipping_address') : $_SESSION['FORM_DATA']['shipping_address']);
 
@@ -452,7 +463,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			'source_cart_id'		=> $this->intCartId,
 			'billing_address_id'	=> $this->intBillingAddressId,
 			'shipping_address_id'	=> $this->intShippingAddressId,
-			'shipping_method'		=> 'ups_ground',
+			'shipping_rate_id'		=> $this->intShippingRateId,
 			'status'				=> 'pending'
 		);
 				
@@ -462,8 +473,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 		foreach($arrPaymentInfo as $k=>$v)
 		{
-			$arrSet[$k] = $v;
-		
+			$arrSet[$k] = $v;		
 		}
 		
 					
@@ -646,6 +656,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 					"x_tran_key"			=> $transKey,
 					"x_relay_response"		=> "FALSE",
 					"x_card_num"			=> $this->Input->post('x_card_num'),
+					"x_card_type"			=> $this->Input->post('x_card_type'),
 					"x_exp_date"			=> $this->Input->post('x_exp_date'),
 					"x_cardholder_authentication_value"	=> $this->Input->post('x_cardholder_authentication_value'),
 					"x_description"			=> "Test Transaction",
@@ -662,7 +673,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				);
 				
 							
-				$arrPaymentInfo = array('order_tax' => $this->fltOrderTaxTotal, 'cc_num' => $this->Input->post('x_card_num'), 'cc_exp' => $this->Input->post('x_exp_date'), 'cc_cvv' => $this->Input->post('x_cardholder_authentication_value'), 'order_comments' => $this->Input->post('order_comments'), 'billing_address_id'=>$this->intBillingAddressId, 'shipping_address_id'=>$this->intShippingAddressId, 'gift_message' => $this->Input->post('gift_message'), 'gift_wrap' => $this->Input->post('gift_wrap'));
+				$arrPaymentInfo = array('order_tax' => $this->fltOrderTaxTotal, 'cc_num' => $this->Input->post('x_card_num'), 'cc_type' => $this->Input->post('x_card_type'), 'cc_exp' => $this->Input->post('x_exp_date'), 'cc_cvv' => $this->Input->post('x_cardholder_authentication_value'), 'order_comments' => $this->Input->post('order_comments'), 'billing_address_id'=>$this->intBillingAddressId, 'shipping_address_id'=>$this->intShippingAddressId, 'gift_message' => $this->Input->post('gift_message'), 'gift_wrap' => $this->Input->post('gift_wrap'));
 												
 				if($this->writeOrder($arrPaymentInfo))
 				{	
@@ -804,9 +815,6 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	{
 		foreach($arrModuleIds as $module)
 		{
-			// Must be initialized!
-			$arrRates = array();
-			
 			//Load configuration data for the shipping method.
 			$objShippingModuleData = $this->Database->prepare("SELECT s.name, sr.* FROM tl_shipping_modules s INNER JOIN tl_shipping_rates sr ON s.id=sr.pid WHERE s.id=?")
 										  ->execute($module);
@@ -831,6 +839,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			
 			$arrShippingModules[] = array
 			(
+				'id'			=> $arrShippingModuleData['id'],
 				'rate_name'		=> $arrShippingModuleData[0]['name'] . ' ' . $arrShippingModuleData[0]['description'],
 				'rates'			=> $arrRates
 			);
@@ -856,11 +865,13 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 					{
 						
 						$fltShippingCost = (float)$rate['rates'][$i][1];
+						$this->intShippingRateId = $rate['id'];	//Only assign here until a choice can be made!!!!!
 						
 						$arrShippingMethods[] = array
 						(
-							'title' => $rate['rate_name'],
-							'cost'	=> money_format('%n', $fltShippingCost)			
+							'shipping_rate_id'		=> $rate['id'],
+							'title' 				=> $rate['rate_name'],
+							'cost'					=> money_format('%n', $fltShippingCost)			
 						);
 						break;
 
@@ -942,12 +953,14 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				'class_name'	=> $rate['class_name']	//we need to output this to template for customers.
 			);
 		}
-			
+		
+		$arrBillingAddress = $this->getSelectedBillingAddress($this->intBillingAddressId); //Tax calculated based on billing address.
+		
 		//the calculation logic for tax rates will need to be something we can set in the backend eventually.  This is specific to Kolbo right now
 		//as tax class 3 = luxury tax.
 		foreach($arrProductData as $product)
 		{
-			
+						
 			$blnCalculate = false; 
 			
 			if($product['tax_class']!=0)
@@ -955,26 +968,26 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				//only check what we need to.  There may be a better logic gate to express this but I haven't figured out what it is yet. ;)
 				if(strlen($rate['postalcode']))
 				{
-					if($this->User->postal==$rate['postal_code'] && $this->User->state==$rate['region_id'] && $this->User->country==$rate['country_id'])
+					if($arrBillingAddress['postal']==$rate['postal_code'] && $arrBillingAddress['state']==$rate['region_id'] && $arrBillingAddress['country']==$rate['country_id'])
 					{
 						$blnCalculate = true;
 					}
 				}
 				elseif(strlen($rate['region_id']))
 				{
-					if($this->User->state==$rate['region_id'] && $this->User->country==$rate['country_id'])
+					if($arrBillingAddress['state']==$rate['region_id'] && $arrBillingAddress['country']==$rate['country_id'])
 					{
 						$blnCalculate = true;
 					}
 				}
 				elseif(strlen($rate['country_id']))
 				{
-					if($this->User->country==$rate['country_id'])
+					if($arrBillingAddress['country']==$rate['country_id'])
 					{
 						$blnCalculate = true;
 					}	
 				}		
-			
+				
 				if($blnCalculate)
 				{
 					//This needs to be database-driven.  We know what these tax values are right now and later it must not assume anything obviously.
@@ -1009,7 +1022,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		}
 		
 		$this->fltOrderTaxTotal = number_format($fltSalesTax, 2);
-		
+	
 		$arrTaxInfo[] = array
 		(
 			'class'			=> 'Sales Tax',
