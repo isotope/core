@@ -191,7 +191,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 		$intShippingAddressId = ($this->Input->post('shipping_address') ? $this->Input->post('shipping_address') : $_SESSION['FORM_DATA']['shipping_address']);
 
-		if($intShippingAddressId > 0)
+		if((integer)$intShippingAddressId > 0)
 		{
 			//echo $intBillingAddressId;
 			$this->intShippingAddressId = $intShippingAddressId;
@@ -833,7 +833,8 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				$arrRates[] = array
 				(
 					(float)$tier['upper_limit'],
-					(float)$tier['rate']
+					(float)$tier['rate'],
+					$tier['id']
 				);
 			}
 			
@@ -856,20 +857,22 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		{
 
 			$i = 0;
+		
 			
 			foreach($rate['rates'] as $rateTier)
 			{
 				if(!$blnRateIsSet)
 				{	
-					if((float)$this->fltOrderSubtotal < (float)$rateTier[0])
+					
+					
+					if((float)$this->fltOrderSubtotal < (float)$rate['rates'][$i][0])
 					{
-						
 						$fltShippingCost = (float)$rate['rates'][$i][1];
-						$this->intShippingRateId = $rate['id'];	//Only assign here until a choice can be made!!!!!
+						$this->intShippingRateId = $rate['rates'][$i][2];	//Only assign here until a choice can be made!!!!!
 						
 						$arrShippingMethods[] = array
 						(
-							'shipping_rate_id'		=> $rate['id'],
+							'shipping_rate_id'		=> $rate['rates'][$i][2],
 							'title' 				=> $rate['rate_name'],
 							'cost'					=> money_format('%n', $fltShippingCost)			
 						);
