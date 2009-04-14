@@ -38,6 +38,14 @@ $GLOBALS['TL_DCA']['tl_member']['list']['operations']['address_book'] = array
 	);
 	
 
+$GLOBALS['TL_DCA']['tl_member']['fields']['firstname']['eval']['mandatory'] = true;
+$GLOBALS['TL_DCA']['tl_member']['fields']['lastname']['eval']['mandatory'] = true;
+$GLOBALS['TL_DCA']['tl_member']['fields']['street']['eval']['mandatory'] = true;
+$GLOBALS['TL_DCA']['tl_member']['fields']['postal']['eval']['mandatory'] = true;
+$GLOBALS['TL_DCA']['tl_member']['fields']['city']['eval']['mandatory'] = true;
+$GLOBALS['TL_DCA']['tl_member']['fields']['state']['eval']['mandatory'] = true;
+
+
 
 class tl_member_isotope_extended extends Backend
 {
