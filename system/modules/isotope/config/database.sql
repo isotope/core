@@ -101,6 +101,7 @@ CREATE TABLE `tl_product_attributes` (
   `tstamp` int(10) unsigned NOT NULL default '0',
   `attr_type_id` int(10) unsigned NOT NULL default '0',
   `name` varchar(255) NOT NULL default '',
+  `description` varchar(255) NOT NULL default '',
   `type` varchar(64) NOT NULL,
   `option_list` text,
   `show_files` tinyint(1) NOT NULL default '0',

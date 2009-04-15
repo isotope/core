@@ -468,7 +468,7 @@ class ProductCatalog extends Backend
 			$GLOBALS['TL_DCA'][$storeTable]['fields'][$key] =
 				array
 				(
-					'label'           => array($field['name'], $field['name'] . ' ['.$field['type'].']'),
+					'label'           => array($field['name'], $field['description']),
 					'inputType'				=> $inputType,
 					'search'          => !$filter,
 					'filter'         	=> $filter,

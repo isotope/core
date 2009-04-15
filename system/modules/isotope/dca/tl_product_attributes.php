@@ -115,20 +115,20 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
     'palettes' => array
     (
         '__selector__'				=> array('type','use_alternate_source'),
-		'default'					=> 'name,type',
-		'text'                     	=> 'name,type,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_searchable,is_order_by_enabled,is_listing_field;rgxp;load_callback;save_callback',
-		'shorttext'               	=> 'name,type,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_searchable,is_order_by_enabled,is_listing_field;rgxp;load_callback;save_callback',
-		'integer'					=> 'name,type,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_searchable,is_order_by_enabled,is_used_for_price_rules,is_listing_field;load_callback;save_callback',
-		'decimal'					=> 'name,type,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_searchable,is_order_by_enabled,is_used_for_price_rules,is_listing_field;load_callback;save_callback',
-		'longtext'					=> 'name,type,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_searchable,is_order_by_enabled,use_rich_text_editor,is_listing_field;load_callback;save_callback',
-		'datetime'					=> 'name,type,is_visible_on_front;is_hidden_on_backend;is_required,is_searchable,is_order_by_enabled,is_listing_field;load_callback;save_callback',
-		'select'					=> 'name,type,option_list,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_searchable,is_multiple_select,is_order_by_enabled,is_listing_field;use_alternate_source;load_callback;save_callback',
-		'boolean'					=> 'name,type,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_searchable,is_multiple_select,is_order_by_enabled,is_listing_field;load_callback;save_callback',
-		'options'					=> 'name,type,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_searchable,is_multiple_select,is_order_by_enabled,is_listing_field;load_callback;save_callback',
-		'fileattach'				=> 'name,type,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_searchable,is_listing_field;load_callback;save_callback',
-		'filetree'					=> 'name,type,show_files;is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_searchable,is_listing_field;load_callback;save_callback',
-		'media'						=> 'name,type,show_files;is_visible_on_front;is_hidden_on_backend;is_required,is_listing_field;load_callback;save_callback',
-		'checkbox'					=> 'name,type,option_list,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_order_by_enabled,is_listing_field;use_alternate_source;load_callback;save_callback'
+		'default'					=> 'name,description,type',
+		'text'                     	=> 'name,description,type,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_searchable,is_order_by_enabled,is_listing_field;rgxp;load_callback;save_callback',
+		'shorttext'               	=> 'name,description,type,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_searchable,is_order_by_enabled,is_listing_field;rgxp;load_callback;save_callback',
+		'integer'					=> 'name,description,type,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_searchable,is_order_by_enabled,is_used_for_price_rules,is_listing_field;load_callback;save_callback',
+		'decimal'					=> 'name,description,type,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_searchable,is_order_by_enabled,is_used_for_price_rules,is_listing_field;load_callback;save_callback',
+		'longtext'					=> 'name,description,type,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_searchable,is_order_by_enabled,use_rich_text_editor,is_listing_field;load_callback;save_callback',
+		'datetime'					=> 'name,description,type,is_visible_on_front;is_hidden_on_backend;is_required,is_searchable,is_order_by_enabled,is_listing_field;load_callback;save_callback',
+		'select'					=> 'name,description,type,option_list,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_searchable,is_multiple_select,is_order_by_enabled,is_listing_field;use_alternate_source;load_callback;save_callback',
+		'boolean'					=> 'name,description,type,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_searchable,is_multiple_select,is_order_by_enabled,is_listing_field;load_callback;save_callback',
+		'options'					=> 'name,description,type,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_searchable,is_multiple_select,is_order_by_enabled,is_listing_field;load_callback;save_callback',
+		'fileattach'				=> 'name,description,type,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_searchable,is_listing_field;load_callback;save_callback',
+		'filetree'					=> 'name,description,type,show_files;is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_searchable,is_listing_field;load_callback;save_callback',
+		'media'						=> 'name,description,type,show_files;is_visible_on_front;is_hidden_on_backend;is_required,is_listing_field;load_callback;save_callback',
+		'checkbox'					=> 'name,description,type,option_list,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_order_by_enabled,is_listing_field;use_alternate_source;load_callback;save_callback'
     ),
 
     // Subpalettes
@@ -150,6 +150,13 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 			(
 				array('tl_product_attributes','standardizeAndChangeColumnType')
 			)
+		),
+		'description' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['description'],
+			'exclude'                 => true,
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>255),
 		),
 		'type' => array
 		(
