@@ -60,4 +60,6 @@ $GLOBALS['TL_LANG']['tl_module']['iso_shipping_modules'] = array('Shipping Metho
 $GLOBALS['TL_LANG']['tl_module']['addressBookTemplate'] = array('Address Book Listing Template','Select a listing template.');
 
 $GLOBALS['TL_LANG']['tl_module']['orderCompleteJumpTo'] = array('Completed order jump to page','Select a page the customer will be referred to after their order is complete.');
-?>
+
+$GLOBALS['TL_LANG']['tl_module']['iso_jump_first'] = array('Redirect to first product', 'Check here if users are redirected to the first product of the list.');
+
