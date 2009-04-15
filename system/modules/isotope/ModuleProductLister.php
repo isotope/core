@@ -402,6 +402,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 					$arrProductData[$i] = array
 					(
 						'product_name'			=> $product['product_name'],
+						'product_alias'			=> $product['product_alias'],
 						'product_link'			=> $this->generateProductLink($product['product_alias'], $product, $this->arrJumpToValues['product_reader'], $aggregateSet['id']),
 						'price_string'			=> ($product['use_product_price_override']==1 ? $this->generatePriceStringOverride($this->strPriceOverrideTemplate, $product['product_price_override']) : $this->generatePriceString($product['product_price'], $this->strCurrency, $this->strPriceTemplate)),
 						'thumbnail'				=> $this->getThumbnailImage($product['id'], $product['product_alias'], $product['product_images'], $strMissingImagePlaceholder, $this->strFileBasePath),
