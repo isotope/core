@@ -19,19 +19,21 @@
  * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Leo Feyer 2005
- * @author     Leo Feyer <leo@typolight.org>
- * @package    Backend
- * @license    LGPL
- * @filesource
+ * @copyright  Winans Creative / Fred Bliss 2009
+ * @author     Fred Bliss <fred@winanscreative.com>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
 /**
- * Table tl_content
+ * Palettes
  */
 $GLOBALS['TL_DCA']['tl_content']['palettes']['attributeLinkRepeater'] = 'type,headline;iso_attribute_set,iso_filters;url,target;guests,protected;align,space,cssID';
 
+
+/**
+ * Fields
+ */
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_attribute_set'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_content']['iso_attribute_set'],
@@ -50,8 +52,21 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['iso_filters'] = array
 	'options_callback'		  => array('PageFilters','getFilters')
 );
 
+
+/**
+ * PageFilters class.
+ * 
+ * @extends Backend
+ */
 class PageFilters extends Backend
 {
+	/**
+	 * getFilters function.
+	 * 
+	 * @access public
+	 * @param object DataContainer $dc
+	 * @return array
+	 */
 	public function getFilters(DataContainer $dc)
 	{
 		$objAttributeSet = $this->Database->prepare("SELECT iso_attribute_set FROM tl_content WHERE id=?")
@@ -83,6 +98,13 @@ class PageFilters extends Backend
 		return $arrFilterList;
 	}
 
+
+	/**
+	 * getAttributeSets function.
+	 * 
+	 * @access public
+	 * @return array
+	 */
 	public function getAttributeSets()
 	{
 		$objAttributeSets = $this->Database->prepare("SELECT id, name FROM tl_product_attribute_sets")
@@ -106,4 +128,3 @@ class PageFilters extends Backend
 	}
 }
 
-?>

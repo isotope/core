@@ -19,16 +19,14 @@
  * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Leo Feyer 2005
- * @author     Leo Feyer <leo@typolight.org>
- * @package    Backend
- * @license    LGPL
- * @filesource
+ * @copyright  Winans Creative / Fred Bliss 2009
+ * @author     Fred Bliss <fred@winanscreative.com>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
 /**
- * File management
+ * Table tl_media
  */
 $GLOBALS['TL_DCA']['tl_media'] = array
 (
@@ -133,18 +131,17 @@ $GLOBALS['TL_DCA']['tl_media'] = array
 
 
 /**
- * Class tl_media
- *
- * Provide miscellaneous methods that are used by the data configuration array.
- * @copyright  Leo Feyer 2005
- * @author     Leo Feyer <leo@typolight.org>
- * @package    Controller
+ * tl_media class.
+ * 
+ * @extends Backend
  */
 class tl_media extends Backend
 {
-
 	/**
-	 * Import the back end user object
+	 * Import the back end user object.
+	 *
+	 * @access public
+	 * @return void
 	 */
 	public function __construct()
 	{
@@ -154,11 +151,13 @@ class tl_media extends Backend
 
 
 	/**
-	 * Check permissions to edit the file system
+	 * Check permissions to edit the file system.
+	 * 
+	 * @access public
+	 * @return void
 	 */
 	public function checkPermission()
 	{
-		
 		if ($this->User->isAdmin)
 		{
 			return;
@@ -276,13 +275,15 @@ class tl_media extends Backend
 
 
 	/**
-	 * Return the edit file button
-	 * @param array
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
+	 * Return the edit file button.
+	 * 
+	 * @access public
+	 * @param array $row
+	 * @param string $href
+	 * @param string $label
+	 * @param string $title
+	 * @param string $icon
+	 * @param string $attributes
 	 * @return string
 	 */
 	public function editFile($row, $href, $label, $title, $icon, $attributes)
@@ -292,13 +293,15 @@ class tl_media extends Backend
 
 
 	/**
-	 * Return the copy file button
-	 * @param array
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
+	 * Return the copy file button.
+	 * 
+	 * @access public
+	 * @param array $row
+	 * @param string $href
+	 * @param string $label
+	 * @param string $title
+	 * @param string $icon
+	 * @param string $attributes
 	 * @return string
 	 */
 	public function copyFile($row, $href, $label, $title, $icon, $attributes)
@@ -308,13 +311,15 @@ class tl_media extends Backend
 
 
 	/**
-	 * Return the cut file button
-	 * @param array
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
+	 * Return the cut file button.
+	 * 
+	 * @access public
+	 * @param array $row
+	 * @param string $href
+	 * @param string $label
+	 * @param string $title
+	 * @param string $icon
+	 * @param string $attributes
 	 * @return string
 	 */
 	public function cutFile($row, $href, $label, $title, $icon, $attributes)
@@ -324,13 +329,15 @@ class tl_media extends Backend
 
 
 	/**
-	 * Return the delete file button
-	 * @param array
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
+	 * Return the delete file button.
+	 * 
+	 * @access public
+	 * @param array $row
+	 * @param string $href
+	 * @param string $label
+	 * @param string $title
+	 * @param string $icon
+	 * @param string $attributes
 	 * @return string
 	 */
 	public function deleteFile($row, $href, $label, $title, $icon, $attributes)
@@ -345,13 +352,15 @@ class tl_media extends Backend
 
 
 	/**
-	 * Return the edit file source button
-	 * @param array
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
+	 * Return the edit file source button.
+	 * 
+	 * @access public
+	 * @param array $row
+	 * @param string $href
+	 * @param string $label
+	 * @param string $title
+	 * @param string $icon
+	 * @param string $attributes
 	 * @return string
 	 */
 	public function editSource($row, $href, $label, $title, $icon, $attributes)
@@ -379,13 +388,15 @@ class tl_media extends Backend
 
 
 	/**
-	 * Return the edit file source button
-	 * @param array
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
+	 * Return the edit file source button.
+	 * 
+	 * @access public
+	 * @param array $row
+	 * @param string $href
+	 * @param string $label
+	 * @param string $title
+	 * @param string $icon
+	 * @param string $attributes
 	 * @return string
 	 */
 	public function protectFolder($row, $href, $label, $title, $icon, $attributes)
@@ -410,11 +421,14 @@ class tl_media extends Backend
 		return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
 	}
 	
+	
 	/**
-	 * Generate an image tag and return it as HTML string
-	 * @param string
-	 * @param string
-	 * @param string
+	 * Generate an image tag and return it as HTML string.
+	 * 
+	 * @access protected
+	 * @param string $src
+	 * @param string $alt. (default: '')
+	 * @param string $attributes. (default: '')
 	 * @return string
 	 */
 	protected function generateImage($src, $alt='', $attributes='')
@@ -435,4 +449,3 @@ class tl_media extends Backend
 	}
 }
 
-?>

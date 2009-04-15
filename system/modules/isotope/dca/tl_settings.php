@@ -19,17 +19,50 @@
  * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Leo Feyer 2005
- * @author     Leo Feyer <leo@typolight.org>
- * @package    Backend
- * @license    LGPL
- * @filesource
+ * @copyright  Winans Creative / Fred Bliss 2009
+ * @author     Fred Bliss <fred@winanscreative.com>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
+
+/**
+ * Palettes
+ */
+$GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] .= ';isotope_base_path'; 
+
+
+/**
+ * Fields
+ */
+$GLOBALS['TL_DCA']['tl_settings']['fields']['isotope_base_path'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['isotope_base_path'],
+	'default'				  => 'product_assets',
+	'inputType'               => 'text',
+	'eval'					  => array('rgxp'=>'extnd'),
+	'save_callback'			  => array
+	(
+		array('FileLock','lockField')
+	)
+);
+
+
+/**
+ * FileLock class.
+ * 
+ * @extends Backend
+ */
 class FileLock extends Backend
 {
 	
-
+	/**
+	 * lockField function.
+	 * 
+	 * @access public
+	 * @param mixed $varValue
+	 * @param object DataContainer $dc
+	 * @return mixed
+	 */
 	public function lockField($varValue, DataContainer $dc)
 	{				
 		if(!is_dir(TL_ROOT . '/' . 'isotope'))
@@ -98,29 +131,11 @@ class FileLock extends Backend
 			*/
 			
 			return $strFolderName;
-		}else{
+		}
+		else
+		{
 			return $varValue;		
 		}
-		
-		
 	}
-
 }
-/**
- * System configuration
- */
-$GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] .= ';isotope_base_path'; 
 
-$GLOBALS['TL_DCA']['tl_settings']['fields']['isotope_base_path'] = array
-(
-	'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['isotope_base_path'],
-	'default'				  => 'product_assets',
-	'inputType'               => 'text',
-	'eval'					  => array('rgxp'=>'extnd'),
-	'save_callback'			  => array
-	(
-		array('FileLock','lockField')
-	)
-);
-
-?>

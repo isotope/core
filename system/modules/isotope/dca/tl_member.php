@@ -19,25 +19,33 @@
  * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Leo Feyer 2005
- * @author     Leo Feyer <leo@typolight.org>
- * @package    Language
- * @license    LGPL
- * @filesource
+ * @copyright  Winans Creative / Fred Bliss 2009
+ * @author     Fred Bliss <fred@winanscreative.com>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
-$GLOBALS['TL_DCA']['tl_member']['config']['ctable'] = array('tl_address_book');
+/**
+ * Configuration
+ */
+$GLOBALS['TL_DCA']['tl_member']['config']['ctable'][] = 'tl_address_book';
 $GLOBALS['TL_DCA']['tl_member']['config']['onsubmit_callback'][] = array('tl_member_isotope_extended','copyInitialAddress');
+	
 		
+/**
+ * Operations
+ */
 $GLOBALS['TL_DCA']['tl_member']['list']['operations']['address_book'] = array
-	(
-		'label'               => &$GLOBALS['TL_LANG']['tl_member']['address_book'],
-		'href'                => 'table=tl_address_book',
-		'icon'                => 'system/modules/isotope/html/addrBook.jpg'
-	);
+(
+	'label'               => &$GLOBALS['TL_LANG']['tl_member']['address_book'],
+	'href'                => 'table=tl_address_book',
+	'icon'                => 'system/modules/isotope/html/addrBook.jpg'
+);
 	
 
+/**
+ * Field settings
+ */
 $GLOBALS['TL_DCA']['tl_member']['fields']['firstname']['eval']['mandatory'] = true;
 $GLOBALS['TL_DCA']['tl_member']['fields']['lastname']['eval']['mandatory'] = true;
 $GLOBALS['TL_DCA']['tl_member']['fields']['street']['eval']['mandatory'] = true;
@@ -46,14 +54,22 @@ $GLOBALS['TL_DCA']['tl_member']['fields']['city']['eval']['mandatory'] = true;
 $GLOBALS['TL_DCA']['tl_member']['fields']['state']['eval']['mandatory'] = true;
 
 
-
+/**
+ * tl_member_isotope_extended class.
+ * 
+ * @extends Backend
+ */
 class tl_member_isotope_extended extends Backend
 {
-	
-		
+	/**
+	 * copyInitialAddress function.
+	 * 
+	 * @access public
+	 * @param object DataContainer $dc
+	 * @return void
+	 */
 	public function copyInitialAddress(DataContainer $dc)
 	{
-		
 		$objAddressInfo = $this->Database->prepare("SELECT COUNT(*) as count FROM tl_address_book WHERE pid=?")
 										 ->execute($dc->id);
 										 
@@ -87,13 +103,10 @@ class tl_member_isotope_extended extends Backend
 			
 			);
 
-			
 			$this->Database->prepare('INSERT INTO tl_address_book %s')
 						   ->set($arrSet)
 						   ->execute();
-			
 		}
 	}
 
 }
-?>

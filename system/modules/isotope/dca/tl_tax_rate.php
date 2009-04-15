@@ -21,9 +21,7 @@
  * PHP version 5
  * @copyright  Winans Creative / Fred Bliss 2009
  * @author     Fred Bliss <fred@winanscreative.com>
- * @package    Backend
- * @license    LGPL
- * @filesource
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
@@ -164,9 +162,14 @@ $GLOBALS['TL_DCA']['tl_tax_rate'] = array
  */
 class tl_tax_rate extends Backend
 {
-	
-	
-	
+
+	/**
+	 * getRegions function.
+	 * 
+	 * @access public
+	 * @param object DataContainer $dc
+	 * @return string
+	 */
 	public function getRegions(DataContainer $dc)
 	{
 		$objCountryId = $this->Database->prepare("SELECT country_id FROM tl_tax_rate WHERE id=?")
@@ -187,12 +190,16 @@ class tl_tax_rate extends Backend
 		return '';
 	}
 	
+	/**
+	 * getRowLabel function.
+	 * 
+	 * @access public
+	 * @param array $arrRow
+	 * @return string
+	 */
 	public function getRowLabel($arrRow)
 	{
 		return $GLOBALS['TL_LANG']['CNT'][$arrRow['country_id']] . (strlen($arrRow['region_id']) > 0 ? ', ' . $arrRow['region_id'] : NULL) . (strlen($arrRow['code']) > 0 ? ', ' . $arrRow['code'] : NULL) . ' - %' . $arrRow['rate'];
-	
 	}
-
 }
 
-?>

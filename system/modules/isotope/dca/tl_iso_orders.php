@@ -21,9 +21,7 @@
  * PHP version 5
  * @copyright  Winans Creative / Fred Bliss 2009
  * @author     Fred Bliss <fred@winanscreative.com>
- * @package    Backend
- * @license    LGPL
- * @filesource
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
@@ -114,13 +112,6 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 		'default'                     => 'order_subtotal,order_tax,order_shipping_cost;shipping_method,status;billing_address_id,shipping_address_id;gift_message,gift_wrap;order_comments',
 	),
 
-	// Subpalettes
-	'subpalettes' => array
-	(
-	
-	),
-
-
 	// Fields
 	'fields' => array
 	(
@@ -208,16 +199,20 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 
 
 /**
- * Class tl_iso_orders
- *
- * Provide miscellaneous methods that are used by the data configuration array.
- * @copyright  Leo Feyer 2005
- * @author     Leo Feyer <leo@typolight.org>
- * @package    Controller
+ * tl_iso_orders class.
+ * 
+ * @extends Backend
  */
 class tl_iso_orders extends Backend
 {
-
+	/**
+	 * getOrderLabel function.
+	 * 
+	 * @access public
+	 * @param array $row
+	 * @param string $label
+	 * @return string
+	 */
 	public function getOrderLabel($row, $label)
 	{
 		//get user name to tack onto order label
@@ -242,6 +237,14 @@ class tl_iso_orders extends Backend
 	
 	}
 	
+	
+	/**
+	 * getProducts function.
+	 * 
+	 * @access protected
+	 * @param integer $intSourceCartId
+	 * @return string
+	 */
 	protected function getProducts($intSourceCartId)
 	{
 		$arrProductListsByTable = array();
@@ -308,6 +311,17 @@ class tl_iso_orders extends Backend
 		return $strProductData;
 	}
 	
+	
+	/**
+	 * loadAddress function.
+	 * 
+	 * @todo Return value "no address specified" must be possible to translate
+	 *
+	 * @access protected
+	 * @param mixed $varValue
+	 * @param integer $intId
+	 * @return string
+	 */
 	protected function loadAddress($varValue, $intId)
 	{
 		$intPid = $this->getPid($intId, 'tl_iso_orders');
@@ -330,13 +344,20 @@ class tl_iso_orders extends Backend
 	}
 
 
+	/**
+	 * getPid function.
+	 * 
+	 * @access protected
+	 * @param integer $intId
+	 * @param string $strTable
+	 * @return integer
+	 */
 	protected function getPid($intId, $strTable)
 	{
-		if(!$this->Database->fieldExists('pid',$strTable))
+		if(!$this->Database->fieldExists('pid', $strTable))
 		{
 			return 0;
 		}
-		
 		
 		$objPid = $this->Database->prepare("SELECT pid FROM " . $strTable . " WHERE id=?")
 								 ->limit(1)
@@ -348,9 +369,5 @@ class tl_iso_orders extends Backend
 		}
 		
 		return $objPid->pid;
-		
 	}
-
 }
-
-?>

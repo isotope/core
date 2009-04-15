@@ -19,11 +19,9 @@
  * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Winans Creative/Fred Bliss 2009 
- * @author     Fred Bliss 
- * @package    Isotope 
- * @license    Commercial 
- * @filesource
+ * @copyright  Winans Creative / Fred Bliss 2009
+ * @author     Fred Bliss <fred@winanscreative.com>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
@@ -104,14 +102,7 @@ $GLOBALS['TL_DCA']['tl_shipping_rates'] = array
 	// Palettes
 	'palettes' => array
 	(
-		//'__selector__'                => array(''),
 		'default'                     => 'description;rate;upper_limit;dest_country,dest_region,dest_zip'
-	),
-
-	// Subpalettes
-	'subpalettes' => array
-	(
-		''                            => ''
 	),
 
 	// Fields
@@ -162,11 +153,20 @@ $GLOBALS['TL_DCA']['tl_shipping_rates'] = array
 	)
 );
 
+
+/**
+ * tl_shipping_rates class.
+ * 
+ * @extends Backend
+ */
 class tl_shipping_rates extends Backend
 {
 
 	/**
-	 * Import the back end user object
+	 * Import the back end user object.
+	 * 
+	 * @access public
+	 * @return void
 	 */
 	public function __construct()
 	{
@@ -174,9 +174,12 @@ class tl_shipping_rates extends Backend
 		$this->import('BackendUser', 'User');
 	}
 
+
 	/**
-	 * Add the type of input field
-	 * @param array
+	 * Add the type of input field.
+	 * 
+	 * @access public
+	 * @param array $arrRow
 	 * @return string
 	 */
 	public function listrates($arrRow)
@@ -187,9 +190,5 @@ class tl_shipping_rates extends Backend
 <div class="limit_height' . (!$GLOBALS['TL_CONFIG']['doNotCollapse'] ? ' h52' : '') . ' block">
 '. $arrRow['rate'] .' for '. $arrRow['upper_limit'] . ' based on ' . $arrRow['dest_country'] .', '. $arrRow['dest_region'] . ', ' . $arrRow['dest_zip'] . '</div>' . "\n";
 	}
-
-
 }
 
-
-?>

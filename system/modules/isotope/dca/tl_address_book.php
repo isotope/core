@@ -21,9 +21,7 @@
  * PHP version 5
  * @copyright  Winans Creative / Fred Bliss 2009
  * @author     Fred Bliss <fred@winanscreative.com>
- * @package    Backend
- * @license    LGPL
- * @filesource
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
@@ -105,13 +103,6 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 	(
 		'default'                     => 'firstname,lastname;email;street,postal,city,state,country;phone;isDefaultBilling,isDefaultShipping',
 	),
-
-	// Subpalettes
-	'subpalettes' => array
-	(
-	
-	),
-
 
 	// Fields
 	'fields' => array
@@ -241,20 +232,19 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 
 
 /**
- * Class tl_address_book
- *
- * Provide miscellaneous methods that are used by the data configuration array.
- * @copyright  Leo Feyer 2005
- * @author     Leo Feyer <leo@typolight.org>
- * @package    Controller
+ * tl_address_book class.
+ * 
+ * @extends Backend
  */
 class tl_address_book extends Backend
 {
 
 	/**
-	 * Add an image to each record
-	 * @param array
-	 * @param string
+	 * Add an image to each record.
+	 * 
+	 * @access public
+	 * @param array $row
+	 * @param string $label
 	 * @return string
 	 */
 	public function addIcon($row, $label)
@@ -270,12 +260,13 @@ class tl_address_book extends Backend
 	}
 	
 	
-	/*
-		'onsave_callback'			  => array
-		(
-			array('tl_address_book','copyInitialAddress')
-		)
-	*/	
+	/**
+	 * copyInitialAddress function.
+	 * 
+	 * @access public
+	 * @param object DataContainer $dc
+	 * @return void
+	 */
 	public function copyInitialAddress(DataContainer $dc)
 	{
 	
@@ -316,11 +307,7 @@ class tl_address_book extends Backend
 			$this->Database->prepare('INSERT INTO tl_address_book %s')
 						   ->set($arrSet)
 						   ->execute();
-			
 		}
 	}
-
-
 }
 
-?>

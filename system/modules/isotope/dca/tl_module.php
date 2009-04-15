@@ -2,361 +2,46 @@
 
 /**
  * TYPOlight webCMS
+ * Copyright (C) 2005 Leo Feyer
  *
- * The TYPOlight webCMS is an accessible web content management system that 
- * specializes in accessibility and generates W3C-compliant HTML code. It 
- * provides a wide range of functionality to develop professional websites 
- * including a built-in search engine, form generator, file and user manager, 
- * CSS engine, multi-language support and many more. For more information and 
- * additional TYPOlight applications like the TYPOlight MVC Framework please 
- * visit the project website http://www.typolight.org.
- *
- * This file modifies the data container array of table tl_module.
+ * This program is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation, either
+ * version 2.1 of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program. If not, please visit the Free
+ * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
  * @copyright  Winans Creative / Fred Bliss 2009
- * @author     Fred Bliss
- * @package    Isotope 
- * @license    GPL 
- * @filesource
- * @filesource
+ * @author     Fred Bliss <fred@winanscreative.com>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
-class ListingModule extends Backend
-{
-	public function getFilters()
-	{
-		
-		
-		$objFilters = $this->Database->prepare("SELECT id, name, (SELECT name FROM tl_product_attribute_sets WHERE tl_product_attribute_sets.id=tl_product_attributes.pid) AS attribute_set_name FROM tl_product_attributes WHERE is_filterable=?")
-									 ->execute(1);
-									 
-		if($objFilters->numRows < 1)
-		{
-			return $GLOBALS['TL_LANG']['MSC']['noResult'];
-		}
-		
-		$arrFilters = $objFilters->fetchAllAssoc();
-		
-		foreach($arrFilters as $filter)
-		{
-			
-			$strCurrFilter = $filter['attribute_set_name'];
-			
-			$arrOptionGroups[$strCurrFilter][$filter['id']] = $filter['name'];
-		
-		}
-		
-		return $arrOptionGroups;
-	
-	}
-	
-	public function getStoreConfigurations()
-	{
-		
-		
-		$objStoreConfigurations = $this->Database->prepare("SELECT id, store_configuration_name FROM tl_store")->execute();
-									 
-		if($objStoreConfigurations->numRows < 1)
-		{
-			return $GLOBALS['TL_LANG']['MSC']['noResult'];
-		}
-		
-		$arrStoreConfigurations = $objStoreConfigurations->fetchAllAssoc();
-		
-		foreach($arrStoreConfigurations as $store)
-		{
-			
-			$arrOptions[$store['id']] = $store['store_configuration_name'];
-		
-		}
-		
-		return $arrOptions;
-	
-	}
-	
-	public function refineFilterData($varValue, DataContainer $dc)
-	{
-		$arrValues = deserialize($varValue);
-		
-		//Get attribute basic data
-		foreach($arrValues as $value)
-		{
-			$objAttributeData = $this->Database->prepare("SELECT field_name, (SELECT storeTable FROM tl_product_attribute_sets WHERE tl_product_attribute_sets.id=tl_product_attributes.pid) AS store_table FROM tl_product_attributes WHERE id=?")
-										   		->limit(1)
-										   		->execute($value);
-		
-			if($objAttributeData->numRows < 1)
-			{
-				return '';	
-			}
-		
-			$objAttributeData->first();
-		
-			$strAttributeFieldName = $objAttributeData->field_name;
-			$strStoreTable = $objAttributeData->store_table;
-					
-			$arrFilterValues = $this->getFilterValues($value);
-						
-			$objOptionValuesInUse = $this->Database->prepare("SELECT DISTINCT " . $strAttributeFieldName . " FROM " . $strStoreTable)
-									 		   ->execute();
-								
-			if($objOptionValuesInUse->numRows < 1)
-			{
-				return '';
-			} 
-		
-			$arrOptionValuesInUse = $objOptionValuesInUse->fetchEach($strAttributeFieldName);
+ 
+ 
+/**
+ * Palettes
+ */
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductLister']			= 'name,type,headline;columns;store_id;new_products_time_window;listing_filters;iso_list_layout;guests,protected;align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductReader']			= 'name,type,headline;store_id;iso_reader_layout;guests,protected;align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoShoppingCart']			= 'name,type,headline;store_id,iso_cart_layout;guests,protected;align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoAddressBook']			= 'name,type,headline;store_id,addressBookTemplate;isoEditable;align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryManager']	= 'name,type,headline;store_id,iso_registry_layout;guests,protected;align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistrySearch']	= 'name,type,headline;jumpTo;guests,protected;align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryResults']	= 'name,type,headline;jumpTo;iso_registry_results;perPage;guests,protected;align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryReader']	= 'name,type,headline;store_id,iso_registry_reader;guests,protected;align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoCheckout']				= 'name,type,headline;store_id,orderCompleteJumpTo;iso_payment_modules;iso_shipping_modules;iso_checkout_layout;guests,protected;align,space,cssID';
 
-			$i = 0;
 
-			$intCurrSorting = 128;
-			
-						
-			foreach($arrFilterValues as $listValue)
-			{
-				
-				if(!in_array($listValue['value'], $arrOptionValuesInUse))
-				{
-					unset($arrFilterValues[$i]);
-				}else{		
-					$arrPages = $this->getAssociatedPagesByListValue($listValue, $strStoreTable, $strAttributeFieldName);
-						
-					$arrSet[] = array
-					(
-						'id'			=> "''",
-						'pid'			=> $value,
-						'sorting' 		=> $intCurrSorting,
-						'tstamp'		=> time(),
-						'value'			=> "'" . mysql_escape_string($listValue['value']) . "'",
-						'label'			=> "'" . mysql_escape_string($listValue['label']) . "'",
-						'pages'			=> "'" . serialize($arrPages) . "'"		
-					);
-				}
-				
-				$i++;
-				$intCurrSorting+=128;
-			
-			}
-			
-					
-			//Reset the current attribute's list cache, if any
-			$this->Database->prepare("DELETE FROM tl_list_cache WHERE pid=?")->execute($value);
-		
-			//Break apart the standard SET array into multiple row insert sql statement	
-			foreach($arrSet as $currSet)
-			{
-				$arrInsertRows[] = implode(",", $currSet);
-			}
-			
-			$strInsertRows = join("),(", $arrInsertRows);
-			
-			$strInsertRows = "(" . $strInsertRows . ")";
-			
-			//Add the list values to the list cache.
-			//echo $strInsertRows;
-			
-			$this->Database->prepare("INSERT INTO tl_list_cache (id, pid, sorting, tstamp, value, label, pages) VALUES " . $strInsertRows)->execute();
-			
-		}
-
-		return $varValue;
-	}
-	
-	private function getAssociatedPagesByListValue($intListValue, $strStoreTable, $strAttributeFieldName)
-	{
-		$objPages = $this->Database->prepare("SELECT pages FROM " . $strStoreTable . " WHERE " . $strAttributeFieldName . "=?")
-								   ->execute($intListValue);
-								   
-		if($objPages->numRows < 1)
-		{
-			return array();
-		}
-	
-		$arrRawSerializedPages = $objPages->fetchEach('pages');
-				
-		$arrRawPagesCurr = array();
-		$arrRawPages = array();
-				
-		foreach($arrRawSerializedPages as $pageCollection)
-		{
-			$arrRawPagesCurr = deserialize($pageCollection);
-			
-			foreach($arrRawPagesCurr as $pageVal)
-			{
-				$arrRawPages[] = $pageVal;
-			}
-			
-			$arrRawPagesCurr = array();
-			
-		}
-		
-				
-		$arrPages = array_unique($arrRawPages);
-			
-		return $arrPages;
-	}
-	
-	private function getFilterValues($intAttributeID)
-	{
-		$objAttributeData = $this->Database->prepare("SELECT name, option_list, use_alternate_source, list_source_table, list_source_field, field_name FROM tl_product_attributes WHERE id=? AND is_filterable='1' AND (type='select' OR type='checkbox')")
-									  ->limit(1)
-									  ->execute($intAttributeID);
-		
-		if($objAttributeData->numRows < 1)
-		{
-			return '';
-		}
-		
-		if($objAttributeData->use_alternate_source==1)
-		{
-			$objLinkData = $this->Database->prepare("SELECT id, " . $objAttributeData->list_source_field . " FROM " . $objAttributeData->list_source_table)
-										  ->execute();
-						
-			if($objLinkData->numRows < 1)
-			{
-				return array();
-			}
-			
-			$arrLinkValues = $objLinkData->fetchAllAssoc();
-			
-			$filter_name = $objAttributeData->list_source_field;
-						
-			foreach($arrLinkValues as $value)
-			{
-				$arrValues[] = array
-				(
-					'value'		=> $value[$objAttributeData->id],
-					'label'		=> $value[$objAttributeData->list_source_field]
-				);
-			
-			}
-			
-		}else{
-		
-			
-			$arrLinkValues = deserialize($objAttributeData->option_list);
-			
-			$filter_name = $objAttributeData->field_name;
-			
-			foreach($arrLinkValues as $value)
-			{
-				$arrValues[] = array
-				(
-					'value'		=> $value['value'],
-					'label'		=> $value['label']
-				);
-			
-			}
-		}
-		
-		return $arrValues;
-
-	}
-	
-	
-	/**
-	 * Return all editable fields of table tl_member
-	 * @return array
-	 */
-	public function getEditableCheckoutProperties()
-	{
-		$return = array();
-
-		$this->loadDataContainer('tl_address_book');
-		$this->loadLanguageFile('tl_address_book');
-
-		foreach ($GLOBALS['TL_DCA']['tl_address_book']['fields'] as $k=>$v)
-		{
-			if ($v['eval']['isoEditable'])
-			{
-				$return[$k] = $GLOBALS['TL_DCA']['tl_address_book']['fields'][$k]['label'][0];
-			}
-		}
-		
-
-		return $return;
-	}
-	
-	/**
-	 *
-	 *
-	 */
-	public function getPaymentModules()
-	{
-		$return = array();
-		
-		//return '<i>' .  $GLOBALS['TL_LANG']['MSC']['noPaymentModules'] . '</i>';
-		
-		//$objPaymentModules = $this->Database->prepare("SELECT * FROM tl_payment_modules WHERE enabled=?")
-		//									->execute(1);
-		
-		$objPaymentModules = $this->Database->prepare("SELECT * FROM tl_module WHERE type=?")
-											->execute('authorize');
-		
-		
-		if($objPaymentModules->numRows < 1)
-		{
-			return '<i>' .  $GLOBALS['TL_LANG']['MSC']['noPaymentModules'] . '</i>';
-		}	
-		
-		$arrPaymentModules = $objPaymentModules->fetchAllAssoc();
-		
-		foreach($arrPaymentModules as $module)
-		{
-			$return[$module['id']] = $module['name'];
-		}
-		
-		return $return;
-	}
-	
-	/**
-	 *
-	 *
-	 */
-	public function getShippingModules()
-	{
-		$return = array();
-		
-		
-		$objShippingModules = $this->Database->prepare("SELECT * FROM tl_shipping_modules WHERE enabled=?")
-											->execute('1');
-		
-		if($objShippingModules->numRows < 1)
-		{
-			return '<i>' .  $GLOBALS['TL_LANG']['MSC']['noShippingModules'] . '</i>';
-		}	
-		
-		$arrShippingModules = $objShippingModules->fetchAllAssoc();
-				
-		foreach($arrShippingModules as $module)
-		{
-			
-			$return[$module['id']] = $module['name'];
-		}	
-	
-		return $return;
-	}
-
-}
-
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductLister'] = 'name,type,headline;columns;store_id;new_products_time_window;listing_filters;iso_list_layout;guests,protected;align,space,cssID';
-
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductReader']  = 'name,type,headline;store_id;iso_reader_layout;guests,protected;align,space,cssID';
-
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoShoppingCart'] = 'name,type,headline;store_id,iso_cart_layout;guests,protected;align,space,cssID';
-
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoAddressBook'] = 'name,type,headline;store_id,addressBookTemplate;isoEditable;align,space,cssID';
-
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryManager'] = 'name,type,headline;store_id,iso_registry_layout;guests,protected;align,space,cssID';
-
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistrySearch'] = 'name,type,headline;jumpTo;guests,protected;align,space,cssID';
-
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryResults'] = 'name,type,headline;jumpTo;iso_registry_results;perPage;guests,protected;align,space,cssID';
-
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryReader'] = 'name,type,headline;store_id,iso_registry_reader;guests,protected;align,space,cssID';
-
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoCheckout'] = 'name,type,headline;store_id,orderCompleteJumpTo;iso_payment_modules;iso_shipping_modules;iso_checkout_layout;guests,protected;align,space,cssID';
-
+/**
+ * Fields
+ */
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_list_layout'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_list_layout'],
@@ -490,4 +175,383 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['orderCompleteJumpTo'] = array
 	'explanation'             => 'jumpTo',
 	'eval'                    => array('fieldType'=>'radio', 'helpwizard'=>true)
 );
-?>
+
+ 
+/**
+ * ListingModule class.
+ * 
+ * @extends Backend
+ */
+class ListingModule extends Backend
+{
+	/**
+	 * getFilters function.
+	 * 
+	 * @todo Returns an error string but should be an array
+	 *
+	 * @access public
+	 * @return array
+	 */
+	public function getFilters()
+	{
+		
+		
+		$objFilters = $this->Database->prepare("SELECT id, name, (SELECT name FROM tl_product_attribute_sets WHERE tl_product_attribute_sets.id=tl_product_attributes.pid) AS attribute_set_name FROM tl_product_attributes WHERE is_filterable=?")
+									 ->execute(1);
+									 
+		if($objFilters->numRows < 1)
+		{
+			return $GLOBALS['TL_LANG']['MSC']['noResult'];
+		}
+		
+		$arrFilters = $objFilters->fetchAllAssoc();
+		
+		foreach($arrFilters as $filter)
+		{
+			
+			$strCurrFilter = $filter['attribute_set_name'];
+			
+			$arrOptionGroups[$strCurrFilter][$filter['id']] = $filter['name'];
+		
+		}
+		
+		return $arrOptionGroups;
+	}
+	
+	
+	/**
+	 * getStoreConfigurations function.
+	 * 
+	 * @todo Returns an error string but should be an array
+	 *
+	 * @access public
+	 * @return array
+	 */
+	public function getStoreConfigurations()
+	{
+		
+		
+		$objStoreConfigurations = $this->Database->prepare("SELECT id, store_configuration_name FROM tl_store")->execute();
+									 
+		if($objStoreConfigurations->numRows < 1)
+		{
+			return $GLOBALS['TL_LANG']['MSC']['noResult'];
+		}
+		
+		$arrStoreConfigurations = $objStoreConfigurations->fetchAllAssoc();
+		
+		foreach($arrStoreConfigurations as $store)
+		{
+			
+			$arrOptions[$store['id']] = $store['store_configuration_name'];
+		
+		}
+		
+		return $arrOptions;
+	
+	}
+	
+	
+	/**
+	 * refineFilterData function.
+	 * 
+	 * @access public
+	 * @param mixed $varValue
+	 * @param object DataContainer $dc
+	 * @return string
+	 */
+	public function refineFilterData($varValue, DataContainer $dc)
+	{
+		$arrValues = deserialize($varValue);
+		
+		//Get attribute basic data
+		foreach($arrValues as $value)
+		{
+			$objAttributeData = $this->Database->prepare("SELECT field_name, (SELECT storeTable FROM tl_product_attribute_sets WHERE tl_product_attribute_sets.id=tl_product_attributes.pid) AS store_table FROM tl_product_attributes WHERE id=?")
+										   		->limit(1)
+										   		->execute($value);
+		
+			if($objAttributeData->numRows < 1)
+			{
+				return '';	
+			}
+		
+			$objAttributeData->first();
+		
+			$strAttributeFieldName = $objAttributeData->field_name;
+			$strStoreTable = $objAttributeData->store_table;
+					
+			$arrFilterValues = $this->getFilterValues($value);
+						
+			$objOptionValuesInUse = $this->Database->prepare("SELECT DISTINCT " . $strAttributeFieldName . " FROM " . $strStoreTable)
+									 		   ->execute();
+								
+			if($objOptionValuesInUse->numRows < 1)
+			{
+				return '';
+			} 
+		
+			$arrOptionValuesInUse = $objOptionValuesInUse->fetchEach($strAttributeFieldName);
+
+			$i = 0;
+
+			$intCurrSorting = 128;
+			
+						
+			foreach($arrFilterValues as $listValue)
+			{
+				
+				if(!in_array($listValue['value'], $arrOptionValuesInUse))
+				{
+					unset($arrFilterValues[$i]);
+				}else{		
+					$arrPages = $this->getAssociatedPagesByListValue($listValue, $strStoreTable, $strAttributeFieldName);
+						
+					$arrSet[] = array
+					(
+						'id'			=> "''",
+						'pid'			=> $value,
+						'sorting' 		=> $intCurrSorting,
+						'tstamp'		=> time(),
+						'value'			=> "'" . mysql_escape_string($listValue['value']) . "'",
+						'label'			=> "'" . mysql_escape_string($listValue['label']) . "'",
+						'pages'			=> "'" . serialize($arrPages) . "'"		
+					);
+				}
+				
+				$i++;
+				$intCurrSorting+=128;
+			
+			}
+			
+					
+			//Reset the current attribute's list cache, if any
+			$this->Database->prepare("DELETE FROM tl_list_cache WHERE pid=?")->execute($value);
+		
+			//Break apart the standard SET array into multiple row insert sql statement	
+			foreach($arrSet as $currSet)
+			{
+				$arrInsertRows[] = implode(",", $currSet);
+			}
+			
+			$strInsertRows = join("),(", $arrInsertRows);
+			
+			$strInsertRows = "(" . $strInsertRows . ")";
+			
+			//Add the list values to the list cache.
+			//echo $strInsertRows;
+			
+			$this->Database->prepare("INSERT INTO tl_list_cache (id, pid, sorting, tstamp, value, label, pages) VALUES " . $strInsertRows)->execute();
+			
+		}
+
+		return $varValue;
+	}
+	
+	
+	/**
+	 * getAssociatedPagesByListValue function.
+	 * 
+	 * @access private
+	 * @param integer $intListValue
+	 * @param string $strStoreTable
+	 * @param string $strAttributeFieldName
+	 * @return array
+	 */
+	private function getAssociatedPagesByListValue($intListValue, $strStoreTable, $strAttributeFieldName)
+	{
+		$objPages = $this->Database->prepare("SELECT pages FROM " . $strStoreTable . " WHERE " . $strAttributeFieldName . "=?")
+								   ->execute($intListValue);
+								   
+		if($objPages->numRows < 1)
+		{
+			return array();
+		}
+	
+		$arrRawSerializedPages = $objPages->fetchEach('pages');
+				
+		$arrRawPagesCurr = array();
+		$arrRawPages = array();
+				
+		foreach($arrRawSerializedPages as $pageCollection)
+		{
+			$arrRawPagesCurr = deserialize($pageCollection);
+			
+			foreach($arrRawPagesCurr as $pageVal)
+			{
+				$arrRawPages[] = $pageVal;
+			}
+			
+			$arrRawPagesCurr = array();
+		}
+		
+				
+		$arrPages = array_unique($arrRawPages);
+			
+		return $arrPages;
+	}
+	
+	
+	/**
+	 * getFilterValues function.
+	 * 
+	 * @todo Returns an error string but should be an array
+	 *
+	 * @access private
+	 * @param integer $intAttributeID
+	 * @return array
+	 */
+	private function getFilterValues($intAttributeID)
+	{
+		$objAttributeData = $this->Database->prepare("SELECT name, option_list, use_alternate_source, list_source_table, list_source_field, field_name FROM tl_product_attributes WHERE id=? AND is_filterable='1' AND (type='select' OR type='checkbox')")
+									  ->limit(1)
+									  ->execute($intAttributeID);
+		
+		if($objAttributeData->numRows < 1)
+		{
+			return '';
+		}
+		
+		if($objAttributeData->use_alternate_source==1)
+		{
+			$objLinkData = $this->Database->prepare("SELECT id, " . $objAttributeData->list_source_field . " FROM " . $objAttributeData->list_source_table)
+										  ->execute();
+						
+			if($objLinkData->numRows < 1)
+			{
+				return array();
+			}
+			
+			$arrLinkValues = $objLinkData->fetchAllAssoc();
+			
+			$filter_name = $objAttributeData->list_source_field;
+						
+			foreach($arrLinkValues as $value)
+			{
+				$arrValues[] = array
+				(
+					'value'		=> $value[$objAttributeData->id],
+					'label'		=> $value[$objAttributeData->list_source_field]
+				);
+			
+			}
+		}
+		else
+		{
+			$arrLinkValues = deserialize($objAttributeData->option_list);
+			
+			$filter_name = $objAttributeData->field_name;
+			
+			foreach($arrLinkValues as $value)
+			{
+				$arrValues[] = array
+				(
+					'value'		=> $value['value'],
+					'label'		=> $value['label']
+				);
+			
+			}
+		}
+		
+		return $arrValues;
+	}
+	
+	
+	/**
+	 * getEditableCheckoutProperties function.
+	 * 
+	 * Return all editable fields of table tl_address_book
+	 *
+	 * @access public
+	 * @return array
+	 */
+	public function getEditableCheckoutProperties()
+	{
+		$return = array();
+
+		$this->loadDataContainer('tl_address_book');
+		$this->loadLanguageFile('tl_address_book');
+
+		foreach ($GLOBALS['TL_DCA']['tl_address_book']['fields'] as $k=>$v)
+		{
+			if ($v['eval']['isoEditable'])
+			{
+				$return[$k] = $GLOBALS['TL_DCA']['tl_address_book']['fields'][$k]['label'][0];
+			}
+		}
+		
+
+		return $return;
+	}
+	
+	
+	/**
+	 * getPaymentModules function.
+	 * 
+	 * @todo Returns an error string but should be an array
+	 *
+	 * @access public
+	 * @return array
+	 */
+	public function getPaymentModules()
+	{
+		$return = array();
+		
+		//return '<i>' .  $GLOBALS['TL_LANG']['MSC']['noPaymentModules'] . '</i>';
+		
+		//$objPaymentModules = $this->Database->prepare("SELECT * FROM tl_payment_modules WHERE enabled=?")
+		//									->execute(1);
+		
+		$objPaymentModules = $this->Database->prepare("SELECT * FROM tl_module WHERE type=?")
+											->execute('authorize');
+		
+		
+		if($objPaymentModules->numRows < 1)
+		{
+			return '<i>' .  $GLOBALS['TL_LANG']['MSC']['noPaymentModules'] . '</i>';
+		}	
+		
+		$arrPaymentModules = $objPaymentModules->fetchAllAssoc();
+		
+		foreach($arrPaymentModules as $module)
+		{
+			$return[$module['id']] = $module['name'];
+		}
+		
+		return $return;
+	}
+	
+	
+	/**
+	 * getShippingModules function.
+	 * 
+	 * @todo Returns an error string but should be an array
+	 *
+	 * @access public
+	 * @return array
+	 */
+	public function getShippingModules()
+	{
+		$return = array();
+		
+		
+		$objShippingModules = $this->Database->prepare("SELECT * FROM tl_shipping_modules WHERE enabled=?")
+											->execute('1');
+		
+		if($objShippingModules->numRows < 1)
+		{
+			return '<i>' .  $GLOBALS['TL_LANG']['MSC']['noShippingModules'] . '</i>';
+		}	
+		
+		$arrShippingModules = $objShippingModules->fetchAllAssoc();
+				
+		foreach($arrShippingModules as $module)
+		{
+			
+			$return[$module['id']] = $module['name'];
+		}	
+	
+		return $return;
+	}
+
+}

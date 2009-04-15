@@ -19,19 +19,21 @@
  * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Leo Feyer 2005
- * @author     Leo Feyer <leo@typolight.org>
- * @package    Backend
- * @license    LGPL
- * @filesource
+ * @copyright  Winans Creative / Fred Bliss 2009
+ * @author     Fred Bliss <fred@winanscreative.com>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
 /**
- * Table tl_page
+ * Palettes
  */
 $GLOBALS['TL_DCA']['tl_page']['palettes']['regular'] .= ';show_child_category_products';
-	
+
+
+/**
+ * Fields
+ */
 $GLOBALS['TL_DCA']['tl_page']['fields']['show_child_category_products'] = array
 (
 	'label'                   => $GLOBALS['TL_LANG']['tl_page']['show_child_category_products'],
@@ -57,13 +59,27 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['iso_filters'] = array
 	'options_callback'		  => array('Filters','getFilters')
 );
 
+
+/**
+ * Filters class.
+ * 
+ * @extends Backend
+ */
 class Filters extends Backend
 {
+	
+	/**
+	 * getFilters function.
+	 * 
+	 * @access public
+	 * @param object DataContainer $dc
+	 * @return array
+	 */
 	public function getFilters(DataContainer $dc)
 	{
 		if(!$this->Input->get('id'))
 		{
-			return;
+			return array();
 		}
 		
 		$objAttributeSet = $this->Database->prepare("SELECT iso_attribute_set FROM tl_page WHERE id=?")
@@ -72,7 +88,7 @@ class Filters extends Backend
 				
 		if($objAttributeSet->numRows < 1)
 		{
-			return;
+			return array();
 		}
 		
 		$intAttributeSet = $objAttributeSet->iso_attribute_set;
@@ -95,6 +111,13 @@ class Filters extends Backend
 		return $arrFilterList;
 	}
 
+
+	/**
+	 * getAttributeSets function.
+	 * 
+	 * @access public
+	 * @return array
+	 */
 	public function getAttributeSets()
 	{
 		$objAttributeSets = $this->Database->prepare("SELECT id, name FROM tl_product_attribute_sets")
@@ -107,8 +130,6 @@ class Filters extends Backend
 	
 		$arrSets = $objAttributeSets->fetchAllAssoc();
 		
-		//var_dump($arrSets);
-		
 		foreach($arrSets as $set)
 		{
 			$arrAttributeSets[$set['id']] = $set['name'];		
@@ -117,4 +138,3 @@ class Filters extends Backend
 		return $arrAttributeSets;
 	}
 }
-?>

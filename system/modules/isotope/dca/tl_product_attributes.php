@@ -2,23 +2,26 @@
 
 /**
  * TYPOlight webCMS
+ * Copyright (C) 2005 Leo Feyer
  *
- * The TYPOlight webCMS is an accessible web content management system that 
- * specializes in accessibility and generates W3C-compliant HTML code. It 
- * provides a wide range of functionality to develop professional websites 
- * including a built-in search engine, form generator, file and user manager, 
- * CSS engine, multi-language support and many more. For more information and 
- * additional TYPOlight applications like the TYPOlight MVC Framework please 
- * visit the project website http://www.typolight.org.
- *
- * This is the data container array for table tl_product_attributes.
+ * This program is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation, either
+ * version 2.1 of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program. If not, please visit the Free
+ * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Martin Komara 2007 
- * @author     Martin Komara 
- * @package    CatalogModule 
- * @license    GPL 
- * @filesource
+ * @copyright  Winans Creative / Fred Bliss 2009
+ * @author     Fred Bliss <fred@winanscreative.com>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
@@ -333,16 +336,26 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 	)
 );
 
+
+/**
+ * tl_product_attributes class.
+ * 
+ * @extends Backend
+ */
 class tl_product_attributes extends Backend
 {
+
 	/**
-	 * Returns all allowed page types as array
-	 * @param object
-	 * @return string
+	 * Returns all allowed page types as array.
+	 * 
+	 * @todo returns string in case of error, should return array
+	 *
+	 * @access public
+	 * @param object DataContainer $dc
+	 * @return array
 	 */
 	public function getAttributeTypes(DataContainer $dc)
 	{
-		
 		$arrOptions = array();
 
 		$objAttributeTypes = $this->Database->execute("SELECT type FROM tl_product_attribute_types");
@@ -363,6 +376,13 @@ class tl_product_attributes extends Backend
 	}
 	
 
+	/**
+	 * loadAttributes function.
+	 * 
+	 * @access public
+	 * @param object DataContainer $dc
+	 * @return void
+	 */
 	public function loadAttributes(DataContainer $dc)
 	{
 		$this->import('ProductCatalog');
@@ -389,11 +409,16 @@ class tl_product_attributes extends Backend
 	}
 	
 
-
+	/**
+	 * renderAttribute function.
+	 * 
+	 * @access public
+	 * @param array $arrRow
+	 * @return string
+	 */
 	public function renderAttribute($arrRow)
 	{
 		$this->import('ProductCatalog');
-		
 		
 		$strTemplateKey = strtolower($this->ProductCatalog->mysqlStandardize($arrRow['name']));
 				
@@ -402,43 +427,58 @@ class tl_product_attributes extends Backend
 		return sprintf($strTemplate, $arrRow['name'], $GLOBALS['TL_LANG']['tl_product_attributes'][$arrRow['type']], $GLOBALS['TL_LANG']['tl_product_attributes']['required_val'][$arrRow['is_required']], $strTemplateKey);
 	}
 
-
-
-	/*public function getTables()
-	{
-			return $this->Database->listTables();
-	}*/
 	
+	/**
+	 * getTableKeys function.
+	 * 
+	 * @access public
+	 * @param object DataContainer $dc
+	 * @return void
+	 */
 	public function getTableKeys(DataContainer $dc)
 	{
-			$objTable = $this->Database->prepare("SELECT itemTable FROM tl_product_attributes WHERE id=?")
-					->limit(1)
-					->execute($dc->id);
-			 
-			if ($objTable->numRows > 0 && $this->Database->tableExists($objTable->itemTable))
-			{
-					$fields = $this->Database->listFields($objTable->itemTable);
-					return array_map(create_function('$x', 'return $x["name"];'), 
-							array_filter($fields, create_function('$x', 'return array_key_exists("index", $x) && $x["type"] == "int";')));
-			}
+		$objTable = $this->Database->prepare("SELECT itemTable FROM tl_product_attributes WHERE id=?")
+								   ->limit(1)
+								   ->execute($dc->id);
+		 
+		if ($objTable->numRows > 0 && $this->Database->tableExists($objTable->itemTable))
+		{
+			$fields = $this->Database->listFields($objTable->itemTable);
+			
+			return array_map(create_function('$x', 'return $x["name"];'), array_filter($fields, create_function('$x', 'return array_key_exists("index", $x) && $x["type"] == "int";')));
+		}
 	}
 	
  
- 	
+ 	/**
+	 * getTableFields function.
+	 * 
+	 * @access public
+	 * @param object DataContainer $dc
+	 * @return void
+	 */
 	public function getTableFields(DataContainer $dc)
 	{
-			$objTable = $this->Database->prepare("SELECT itemTable FROM tl_product_attributes WHERE id=?")
-					->limit(1)
-					->execute($dc->id);
-			 
-			if ($objTable->numRows > 0 && $this->Database->tableExists($objTable->itemTable))
-			{
-					$fields = $this->Database->listFields($objTable->itemTable);
-					return array_map(create_function('$x', 'return $x["name"];'), $fields);
-			}
+		$objTable = $this->Database->prepare("SELECT itemTable FROM tl_product_attributes WHERE id=?")
+								   ->limit(1)
+								   ->execute($dc->id);
+		 
+		if ($objTable->numRows > 0 && $this->Database->tableExists($objTable->itemTable))
+		{
+			$fields = $this->Database->listFields($objTable->itemTable);
+			
+			return array_map(create_function('$x', 'return $x["name"];'), $fields);
+		}
 	}
 
 
+	/**
+	 * getItems function.
+	 * 
+	 * @access public
+	 * @param object DataContainer $dc
+	 * @return array
+	 */
 	public function getItems(DataContainer $dc)
 	{
 		$objField = $this->Database->prepare("SELECT * FROM tl_product_attributes WHERE id=?")
@@ -471,6 +511,14 @@ class tl_product_attributes extends Backend
 		}
 	}
 	
+	
+	/**
+	 * getSelectors function.
+	 * 
+	 * @access public
+	 * @param object DataContainer $dc
+	 * @return array
+	 */
 	public function getSelectors(DataContainer $dc)
 	{
 		$objField = $this->Database->prepare("SELECT pid FROM tl_product_attributes WHERE id=?")
@@ -497,6 +545,14 @@ class tl_product_attributes extends Backend
 	}
 
 
+	/**
+	 * checkAliasDuplicate function.
+	 * 
+	 * @access public
+	 * @param mixed $varValue
+	 * @param object DataContainer $dc
+	 * @return mixed
+	 */
 	public function checkAliasDuplicate($varValue, DataContainer $dc)
 	{
 		$arrAlias = $this->getAliasFields($dc);
@@ -504,9 +560,18 @@ class tl_product_attributes extends Backend
 		{
 			throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['aliasDuplicate'],join(', ', array_keys($arrAlias))));
 		}
+		
 		return $varValue;
 	}
 
+
+	/**
+	 * getAliasFields function.
+	 * 
+	 * @access public
+	 * @param object DataContainer $dc
+	 * @return array
+	 */
 	public function getAliasFields(DataContainer $dc)
 	{
 		$objField = $this->Database->prepare("SELECT pid FROM tl_product_attributes WHERE id=?")
@@ -515,7 +580,7 @@ class tl_product_attributes extends Backend
 			
 		if (!$objField->numRows)
 		{
-				return array();
+			return array();
 		}
 		
 		$pid = $objField->pid;
@@ -532,6 +597,14 @@ class tl_product_attributes extends Backend
 		return $result;
 	}
 
+
+	/**
+	 * getTitleFields function.
+	 * 
+	 * @access public
+	 * @param object DataContainer $dc
+	 * @return array
+	 */
 	public function getTitleFields(DataContainer $dc)
 	{
 		$objField = $this->Database->prepare("SELECT pid FROM tl_product_attributes WHERE id=?")
@@ -540,7 +613,7 @@ class tl_product_attributes extends Backend
 			
 		if (!$objField->numRows)
 		{
-				return array();
+			return array();
 		}
 		
 		$pid = $objField->pid;
@@ -557,6 +630,15 @@ class tl_product_attributes extends Backend
 		return $result;
 	}
 	
+	
+	/**
+	 * onLoadItems function.
+	 * 
+	 * @access public
+	 * @param mixed $varValue
+	 * @param object DataContainer $dc
+	 * @return mixed
+	 */
 	public function onLoadItems($varValue, DataContainer $dc)
 	{
 		$objField = $this->Database->prepare("SELECT * FROM tl_product_attributes WHERE id=?")
@@ -572,9 +654,12 @@ class tl_product_attributes extends Backend
 		return $varValue;
 	}
 	
+
 	/**
-	 * Add the type of content element
-	 * @param array
+	 * Add the type of content element.
+	 * 
+	 * @access public
+	 * @param array $arrRow
 	 * @return string
 	 */
 	public function listAttribute($arrRow)
@@ -586,10 +671,13 @@ class tl_product_attributes extends Backend
 			</div>' . "\n";
 	}
 	
+
 	/**
-	 * Get the data type name based on the datatype key
-	 * @param array
-	 * @param string
+	 * Get the data type name based on the datatype key.
+	 * 
+	 * @access public
+	 * @param array $row
+	 * @param string $label
 	 * @return string
 	 */
 	public function getDataTypeName($row, $label)
@@ -601,19 +689,27 @@ class tl_product_attributes extends Backend
 	
 	
 	/**
-	 * Set the correct input type for use in providing the backend interface
-	 * @param array
-	 * @return string
+	 * Set the correct input type for use in providing the backend interface.
+	 * 
+	 * @todo This function does nothing. We might want to remove it.
+	 * @access public
+	 * @param mixed $varValue
+	 * @param object DataContainer $dc
+	 * @return mixed
 	 */
 	public function setInputType($varValue, DataContainer $dc)
 	{
-		
 		return $varValue;
 	}
 	
+	
 	/**
+	 * standardizeAndRenameColumn function.
 	 * 
-	 *
+	 * @access public
+	 * @param mixed $varValue
+	 * @param object DataContainer $dc
+	 * @return mixed
 	 */
 	public function standardizeAndRenameColumn($varValue, DataContainer $dc)
 	{
@@ -626,9 +722,14 @@ class tl_product_attributes extends Backend
 		return $varValue;
 	}
 	
+	
 	/**
+	 * standardizeAndChangeColumnType function.
 	 * 
-	 *
+	 * @access public
+	 * @param mixed $varValue
+	 * @param object DataContainer $dc
+	 * @return mixed
 	 */
 	public function standardizeAndChangeColumnType($varValue, DataContainer $dc)
 	{
@@ -641,6 +742,14 @@ class tl_product_attributes extends Backend
 		return $varValue;
 	}
 	
+	
+	/**
+	 * checkFieldLock function.
+	 * 
+	 * @access public
+	 * @param object DataContainer $dc
+	 * @return void
+	 */
 	public function checkFieldLock(DataContainer $dc)
 	{
 		$objDeleteLock = $this->Database->prepare("SELECT delete_locked FROM tl_product_attributes WHERE id=?")
@@ -657,9 +766,15 @@ class tl_product_attributes extends Backend
 			$_SESSION['TL_ERROR'][] = $GLOBALS['TL_LANG']['ERR']['deleteLocked'];
 			$this->reload();
 		}
-	
 	}
 	
+	
+	/**
+	 * getTables function.
+	 * 
+	 * @access public
+	 * @return array
+	 */
 	public function getTables()
     {
 		$arrReturn = array();
@@ -682,11 +797,19 @@ class tl_product_attributes extends Backend
 		return $arrReturn;
     }
 	
+	
+	/**
+	 * getFields function.
+	 * 
+	 * @access public
+	 * @param object DataContainer $dc
+	 * @return array
+	 */
 	public function getFields(DataContainer $dc)
     {
         $objTable = $this->Database->prepare("SELECT list_source_table FROM tl_product_attributes WHERE id=?")
-									->limit(1)
-									->execute($dc->id);
+								   ->limit(1)
+								   ->execute($dc->id);
          
         if ($objTable->numRows > 0 && $this->Database->tableExists($objTable->list_source_table))
         {
@@ -694,11 +817,6 @@ class tl_product_attributes extends Backend
 			
             return array_map(create_function('$x', 'return $x["name"];'), $fields);
         }
-		
-		
-    }
-	
-		
+    }	
 }
 
-?>

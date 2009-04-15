@@ -2,30 +2,32 @@
 
 /**
  * TYPOlight webCMS
+ * Copyright (C) 2005 Leo Feyer
  *
- * The TYPOlight webCMS is an accessible web content management system that 
- * specializes in accessibility and generates W3C-compliant HTML code. It 
- * provides a wide range of functionality to develop professional websites 
- * including a built-in search engine, form generator, file and user manager, 
- * CSS engine, multi-language support and many more. For more information and 
- * additional TYPOlight applications like the TYPOlight MVC Framework please 
- * visit the project website http://www.typolight.org.
- *
- * This is the data container array for table tl_product_attribute_sets.
+ * This program is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation, either
+ * version 2.1 of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program. If not, please visit the Free
+ * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
  * @copyright  Winans Creative / Fred Bliss 2009
- * @author     Fred Bliss
- * @package    Isotope 
- * @license    GPL 
- * @filesource
+ * @author     Fred Bliss <fred@winanscreative.com>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
 /**
  * Table tl_product_attribute_sets 
  */
-			
 $GLOBALS['TL_DCA']['tl_product_attribute_sets'] = array
 (
 
@@ -166,8 +168,6 @@ $GLOBALS['TL_DCA']['tl_product_attribute_sets'] = array
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
 		),
-	
-	// added by thyon
 		'addImage' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attribute_sets']['addImage'],
@@ -189,7 +189,6 @@ $GLOBALS['TL_DCA']['tl_product_attribute_sets'] = array
 			'inputType'               => 'text',
 			'eval'                    => array('multiple'=>true, 'size'=>2, 'rgxp'=>'digit', 'nospace'=>true)
 		),
-
 		'format' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attribute_sets']['format'],
@@ -198,21 +197,27 @@ $GLOBALS['TL_DCA']['tl_product_attribute_sets'] = array
 			'inputType'               => 'textarea',
 			'eval'                    => array('allowHtml'=>true)
 		),
-
 	)
 );
 
+
+/**
+ * tl_product_attribute_sets class.
+ * 
+ * @extends Backend
+ */
 class tl_product_attribute_sets extends Backend
 {
 
 	/**
-	 * Check permissions to edit table tl_product_attribute_sets
+	 * Check permissions to edit table tl_product_attribute_sets.
+	 * 
+	 * @access public
+	 * @return void
 	 */
 	public function checkPermission()
 	{
-		
 		$this->import('BackendUser', 'User');
-
 
 		if ($this->User->isAdmin)
 		{
@@ -265,33 +270,44 @@ class tl_product_attribute_sets extends Backend
 	}
 
 
-
-  public function getRowLabel($row, $label, $dc)
-  {
+	/**
+	 * getRowLabel function.
+	 * 
+	 * @access public
+	 * @param array $row
+	 * @param string $label
+	 * @param object $dc
+	 * @return string
+	 */
+	public function getRowLabel($row, $label, $dc)
+	{
 		// add image
 		$image = '';
 		if ($row['addImage'])
 		{
 			$size = deserialize($row['size']);
 			$image = '<div class="image" style="padding-top:3px"><img src="'.$this->getImage($row['singleSRC'], $size[0], $size[1]).'" alt="'.htmlspecialchars($label).'" /></div> ';
- 		}
-  
+		}
+		
 		// count items
-		$objCount = $this->Database->prepare("SELECT count(*) AS itemCount FROM ".$row['storeTable'])
-					->execute();
+		$objCount = $this->Database->prepare("SELECT count(*) AS itemCount FROM ".$row['storeTable'])->execute();
+		
 		$itemCount =  sprintf($GLOBALS['TL_LANG']['tl_product_attribute_sets']['itemFormat'], $objCount->itemCount, ($objCount->itemCount == 1) ? sprintf($GLOBALS['TL_LANG']['tl_product_attribute_sets']['itemSingle']) : sprintf($GLOBALS['TL_LANG']['tl_product_attribute_sets']['itemPlural']));
-		  
-  	return '<span class="name">'.$label. $itemCount . '</span>'.$image;
-  }
+		
+		return '<span class="name">'.$label. $itemCount . '</span>'.$image;
+	}
+
 
 	/**
-	 * Return the copy archive button
-	 * @param array
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
+	 * Return the copy archive button.
+	 * 
+	 * @access public
+	 * @param array $row
+	 * @param string $href
+	 * @param string $label
+	 * @param string $title
+	 * @param string $icon
+	 * @param string $attributes
 	 * @return string
 	 */
 	public function copyBtn($row, $href, $label, $title, $icon, $attributes)
@@ -306,13 +322,15 @@ class tl_product_attribute_sets extends Backend
 
 
 	/**
-	 * Return the delete archive button
-	 * @param array
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
+	 * Return the delete archive button.
+	 * 
+	 * @access public
+	 * @param array $row
+	 * @param string $href
+	 * @param string $label
+	 * @param string $title
+	 * @param string $icon
+	 * @param string $attributes
 	 * @return string
 	 */
 	public function deleteBtn($row, $href, $label, $title, $icon, $attributes)
@@ -325,11 +343,37 @@ class tl_product_attribute_sets extends Backend
 		return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
 	}
 	
+	
+	/**
+	 * editItem function.
+	 * 
+	 * @access public
+	 * @param array $row
+	 * @param string $href
+	 * @param string $label
+	 * @param string $title
+	 * @param string $icon
+	 * @param string $attributes
+	 * @return string
+	 */
 	public function editItem($row, $href, $label, $title, $icon, $attributes)
 	{
 		return '<a href="'.$this->addToUrl('table=tl_catalog_items&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a>  ';
 	}
 
+
+	/**
+	 * fieldsButton function.
+	 * 
+	 * @access public
+	 * @param array $row
+	 * @param string $href
+	 * @param string $label
+	 * @param string $title
+	 * @param string $icon
+	 * @param string $attributes
+	 * @return string
+	 */
 	public function fieldsButton($row, $href, $label, $title, $icon, $attributes)
 	{
 		$this->import('BackendUser', 'User');
@@ -343,6 +387,13 @@ class tl_product_attribute_sets extends Backend
 	} 
    
 
+	/**
+	 * getAliasFields function.
+	 * 
+	 * @access public
+	 * @param object DataContainer $dc
+	 * @return array
+	 */
 	public function getAliasFields(DataContainer $dc)
 	{
 		$objField = $this->Database->prepare("SELECT pid FROM tl_product_attributes WHERE id=?")
@@ -368,6 +419,14 @@ class tl_product_attribute_sets extends Backend
 		return $result;
 	}
 
+
+	/**
+	 * getTitleFields function.
+	 * 
+	 * @access public
+	 * @param object DataContainer $dc
+	 * @return array
+	 */
 	public function getTitleFields(DataContainer $dc)
 	{
 		$objField = $this->Database->prepare("SELECT pid FROM tl_product_attributes WHERE id=?")
@@ -376,13 +435,11 @@ class tl_product_attribute_sets extends Backend
 			
 		if (!$objField->numRows)
 		{
-				return array();
+			return array();
 		}
-		
-		$pid = $objField->pid;
 
 		$objFields = $this->Database->prepare("SELECT name, colName FROM tl_product_attributes WHERE pid=? AND id!=? AND type=? AND titleField=?")
-				->execute($pid, $dc->id, 'text', 1);
+									->execute($objField->pid, $dc->id, 'text', 1);
 		 
 		$result = array();
 		
@@ -396,8 +453,11 @@ class tl_product_attribute_sets extends Backend
 	
 	
 	/**
-	 * Standardize a parameter (strip special characters and convert spaces to underscores)
-	 * @param mixed
+	 * Standardize a parameter (strip special characters and convert spaces to underscores).
+	 * 
+	 * @access public
+	 * @param mixed $varValue
+	 * @param object DataContainer $dc
 	 * @return mixed
 	 */
 	public function standardize_mysql_storeTable($varValue, DataContainer $dc)
@@ -431,9 +491,4 @@ class tl_product_attribute_sets extends Backend
 		
 		return $varValue;
 	}
-
-
-
 }
-
-?>

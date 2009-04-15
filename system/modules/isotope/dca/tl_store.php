@@ -19,11 +19,9 @@
  * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Winans Creative/Fred Bliss 2008 
- * @author     Fred Bliss 
- * @package    IsotopeBase 
- * @license    Commercial 
- * @filesource
+ * @copyright  Winans Creative / Fred Bliss 2009
+ * @author     Fred Bliss <fred@winanscreative.com>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
@@ -97,15 +95,8 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 	// Palettes
 	'palettes' => array
 	(
-		#'__selector__'                => array(''),
 		'default'                     => 'store_configuration_name;cookie_duration;root_asset_import_path;enabled_modules;checkout_login_module;productReaderJumpTo,cartJumpTo,checkoutJumpTo;missing_image_placeholder;gallery_thumbnail_image_width,gallery_thumbnail_image_height;thumbnail_image_width,thumbnail_image_height;medium_image_width,medium_image_height;large_image_width,large_image_height'
 	),
-
-	// Subpalettes
-	/*'subpalettes' => array
-	(
-		''                            => ''
-	),*/
 
 	// Fields
 	'fields' => array
@@ -238,10 +229,19 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 	)
 );
 
+
+/**
+ * tl_store class.
+ * 
+ * @extends Backend
+ */
 class tl_store extends Backend
 {
+
 	/**
-	 * Return all editable fields of table tl_member
+	 * Return all editable fields of table tl_member.
+	 * 
+	 * @access public
 	 * @return array
 	 */
 	public function getIsotopeFEModuleList()
@@ -256,6 +256,13 @@ class tl_store extends Backend
 		return $return;
 	}
 	
+	
+	/**
+	 * getLoginModuleList function.
+	 * 
+	 * @access public
+	 * @return array
+	 */
 	public function getLoginModuleList()
 	{
 		$return = array();
@@ -283,7 +290,5 @@ class tl_store extends Backend
 
 		return $return;
 	}
-
-
 }
-?>
+

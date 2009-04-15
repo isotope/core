@@ -21,9 +21,7 @@
  * PHP version 5
  * @copyright  Winans Creative / Fred Bliss 2009
  * @author     Fred Bliss <fred@winanscreative.com>
- * @package    Backend
- * @license    LGPL
- * @filesource
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
@@ -104,7 +102,6 @@ $GLOBALS['TL_DCA']['tl_tax_class'] = array
 		'default'                     => 'name',
 	),
 
-
 	// Fields
 	'fields' => array
 	(
@@ -122,19 +119,3 @@ $GLOBALS['TL_DCA']['tl_tax_class'] = array
 	)
 );
 
-
-/**
- * Class tl_tax_class
- *
- * Provide miscellaneous methods that are used by the data configuration array.
- * @copyright  Leo Feyer 2005
- * @author     Leo Feyer <leo@typolight.org>
- * @package    Controller
- */
-class tl_tax_class extends Backend
-{
-
-
-}
-
-?>
