@@ -31,10 +31,6 @@ CREATE TABLE `tl_module` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
-
-
--- Added by Winans Creative for Isotope Extensions
-
 -- --------------------------------------------------------
 
 -- 
@@ -70,6 +66,8 @@ CREATE TABLE `tl_product_attribute_types` (
 -- (11, 0, 150, 1218221789, 'shorttext', 'varchar', 'text', '', '');
 
 
+-- --------------------------------------------------------
+
 -- 
 -- Table `tl_product_attribute_sets`
 -- 
@@ -82,23 +80,18 @@ CREATE TABLE `tl_product_attribute_sets` (
   `store_id` int(10) unsigned NOT NULL default '0',
   `noTable` char(1) NOT NULL default '',
   `dca` text NULL,
-
--- added by thyon
   `format` text NULL,
   `addImage` char(1) NOT NULL default '',
   `singleSRC` varchar(255) NOT NULL default '',
   `size` varchar(255) NOT NULL default '',
-
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-
 
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tl_product_attributes`
+-- Table `tl_product_attributes`
 --
 
 CREATE TABLE `tl_product_attributes` (
@@ -141,8 +134,6 @@ CREATE TABLE `tl_product_attributes` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
-
-
 -- --------------------------------------------------------
 
 -- 
@@ -176,12 +167,10 @@ CREATE TABLE `tl_store` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
-
-
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tl_cap_aggregate`
+-- Table `tl_cap_aggregate`
 --
 
 CREATE TABLE `tl_cap_aggregate` (
@@ -201,7 +190,7 @@ CREATE TABLE `tl_cap_aggregate` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tl_pfc_aggregate`
+-- Table `tl_pfc_aggregate`
 --
 
 CREATE TABLE `tl_pfc_aggregate` (
@@ -223,16 +212,17 @@ CREATE TABLE `tl_pfc_aggregate` (
 -- 
 -- Table `tl_page`
 -- 
--- added by fred bliss
 
 CREATE TABLE `tl_page` (
   `show_child_category_products` char(1) NOT NULL default '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+
+-- --------------------------------------------------------
+
 -- 
 -- Table `tl_content`
 -- 
--- added by fred bliss
 
 CREATE TABLE `tl_content` (
   `iso_attribute_set` int(10) unsigned NOT NULL default '0',
@@ -261,12 +251,13 @@ CREATE TABLE `tl_cart` (
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `tl_cart_items`
---
 -- pid = cart id.
+--
 
 CREATE TABLE `tl_cart_items` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -282,10 +273,11 @@ CREATE TABLE `tl_cart_items` (
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tl_cart_types`
+-- Table `tl_cart_types`
 --
 
 CREATE TABLE `tl_cart_types` (
@@ -374,6 +366,7 @@ CREATE TABLE `tl_shipping_rates` (
 -- 
 -- Table `tl_registry`
 -- pid == cartID
+--
 
 CREATE TABLE `tl_registry` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -392,6 +385,7 @@ CREATE TABLE `tl_registry` (
 -- 
 -- Table `tl_registry`
 -- pid == member ID
+--
 
 CREATE TABLE `tl_iso_orders` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -418,6 +412,12 @@ CREATE TABLE `tl_iso_orders` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
+-- --------------------------------------------------------
+
+-- 
+-- Table `tl_tax_class`
+--
+
 CREATE TABLE `tl_tax_class` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
@@ -426,6 +426,13 @@ CREATE TABLE `tl_tax_class` (
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Table `tl_tax_rate`
+--
 
 CREATE TABLE `tl_tax_rate` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -440,3 +447,4 @@ CREATE TABLE `tl_tax_rate` (
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
