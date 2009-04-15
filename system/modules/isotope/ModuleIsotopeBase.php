@@ -532,15 +532,19 @@ abstract class ModuleIsotopeBase extends Module
 		$strUrl = ampersand($this->Environment->request, ENCODE_AMPERSANDS);
 
 		// Get target page
-		$objPage = $this->Database->prepare("SELECT id, alias FROM tl_page WHERE id=?")
+		$objJump = $this->Database->prepare("SELECT id, alias FROM tl_page WHERE id=?")
 								  ->limit(1)
 								  ->execute($intJumpTo);
 		
 		
-		if ($objPage->numRows > 0)
+		if ($objJump->numRows > 0)
 		{
-				$strUrl = ampersand($this->generateFrontendUrl($objPage->fetchAssoc(), '/asetid/' . $intAttributeSetId . '/product/' . $arrProduct['product_alias']));
-			
+			$strUrl = ampersand($this->generateFrontendUrl($objJump->fetchAssoc(), '/asetid/' . $intAttributeSetId . '/product/' . $arrProduct['product_alias']));
+		}
+		else
+		{
+			global $objPage;
+			$strUrl = ampersand($this->generateFrontendUrl(array('id'=>$objPage->id, 'alias'=>$objPage->alias), '/asetid/' . $intAttributeSetId . '/product/' . $arrProduct['product_alias']));
 		}
 
 		self::$arrCache[$strCacheKey] = $strUrl;
