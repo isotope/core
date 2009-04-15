@@ -829,7 +829,7 @@ class ProductCatalog extends Backend
 			/*if (in_array($objFields->type, $this->arrTypes))	// A good way to double check that you have the attribute types you need for each attribute.
 			{*/
 			
-				$this->arrFields[strtolower($this->mysqlStandardize($objFields->name))] = $objFields->row();
+				$this->arrFields[$objFields->field_name] = $objFields->row();
 			/*}*/
 		}
 
