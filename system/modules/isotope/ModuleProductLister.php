@@ -330,7 +330,10 @@ class ModuleProductLister extends ModuleIsotopeBase
 			}	
 			
 			//Build one or more filter=value pairs for SQL querying
-			$filter_list = join(" AND ", $arrFilterSQL);
+			if (is_array($arrFilterSQL) && count($arrFilterSQL))
+			{
+				$filter_list = join(" AND ", $arrFilterSQL);
+			}
 												
 			$product_list = join(",", $arrProductList);
 							
