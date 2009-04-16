@@ -51,15 +51,73 @@ abstract class Payment extends Frontend
 	
 	
 	/**
+	 * Initialize the object
+	 *
+	 * @access public
+	 * @param array $arrRow
+	 */
+	public function __construct($arrRow)
+	{
+		parent::__construct();
+
+		$this->arrData = $arrRow;
+	}
+	
+	
+	/**
+	 * Set an object property
+	 *
+	 * @access public
+	 * @param string
+	 * @param mixed
+	 */
+	public function __set($strKey, $varValue)
+	{
+		$this->arrData[$strKey] = $varValue;
+	}
+
+
+	/**
+	 * Return an object property
+	 *
+	 * @access public
+	 * @param string
+	 * @return mixed
+	 */
+	public function __get($strKey)
+	{
+		return $this->arrData[$strKey];
+	}
+	
+	
+	/**
 	 * Return a list of buttons for the table row in backend
 	 * 
 	 * @access public
-	 * @param array $arrRow
 	 * @return string
 	 */
-	public function moduleOperations($arrRow)
+	public function moduleOperations()
 	{
 		return '';
 	}
+	
+	
+	/**
+	 * Return a list of payment options this module provides.
+	 * 
+	 * @access public
+	 * @return array
+	 */
+	abstract public function getPaymentOptions();
+	
+	
+	/**
+	 * Process checkout payment.
+	 * 
+	 * @abstract
+	 * @access public
+	 * @return void
+	 */
+	abstract public function processPayment();
 }
 

@@ -32,4 +32,45 @@
  */
 class PaymentPaypal extends Payment
 {
+	
+	/**
+	 * Return a list of payment options this module provides.
+	 * 
+	 * @access public
+	 * @return array
+	 */
+	public function getPaymentOptions()
+	{
+		$arrOptions = array();
+		
+		$arrCc = deserialize($this->creditcards);
+		
+		if (is_array($arrCc) && count($arrCc))
+		{
+			foreach( $arrCc as $cc )
+			{
+				$arrOptions[$cc] = strlen($GLOBALS['TL_LANG']['ISO'][$cc]) ? $GLOBALS['TL_LANG']['ISO'][$cc] : $cc;
+			}
+		}
+		
+		if ($this->allow_paypal)
+		{
+			$arrOptions['paypal'] = strlen($GLOBALS['TL_LANG']['ISO']['paypal']) ? $GLOBALS['TL_LANG']['ISO']['paypal'] : 'paypal';
+		}
+		
+		return $arrOptions;
+	}
+	
+	
+	/**
+	 * processPayment function.
+	 * 
+	 * @access public
+	 * @return void
+	 */
+	public function processPayment()
+	{
+		// Reload page every 5 seconds and check if payment was successful
+		$GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="5,http://...">';
+	}
 }

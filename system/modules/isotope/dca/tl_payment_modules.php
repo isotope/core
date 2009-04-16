@@ -239,14 +239,12 @@ class tl_payment_modules extends Backend
 			
 		try 
 		{
-			$this->import($strClass);
+			$objModule = new $strClass($arrRow);
+			return $objModule->moduleOperations();
 		}
-		catch (Exception $e)
-		{ 
-			return '';
-		}
+		catch (Exception $e) {}
 		
-		return $this->$strClass->moduleOperations($arrRow);
+		return '';
 	}
 	
 	
