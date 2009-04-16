@@ -195,4 +195,8 @@ $GLOBALS['TL_LANG']['MSC']['DATAMANAGER_PREUPDATE_FUNCTION']['convertToPrice'] =
 $GLOBALS['TL_LANG']['MSC']['DATAMANAGER_PREUPDATE_FUNCTION']['convertToWeight'] = array('Convert to Weight','Attempt to make this field a weight (decimal value) in the foram X.XX%s');
 
 
+
+$GLOBALS['TL_LANG']['ISO']['productSingle']		= '1 Product';
+$GLOBALS['TL_LANG']['ISO']['productMultiple']	= '%s Products';
+
 ?>
