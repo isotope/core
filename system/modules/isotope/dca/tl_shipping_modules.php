@@ -26,7 +26,7 @@
 
 
 /**
- * Table tl_shipping 
+ * Table tl_shipping_modules
  */
 $GLOBALS['TL_DCA']['tl_shipping_modules'] = array
 (

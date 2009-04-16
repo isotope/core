@@ -327,7 +327,51 @@ CREATE TABLE `tl_address_book` (
 -- --------------------------------------------------------
 
 -- 
--- Table `tl_shipping`
+-- Table `tl_payment_modules`
+-- 
+
+CREATE TABLE `tl_payment_modules` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `tstamp` int(10) unsigned NOT NULL default '0',
+  `name` varchar(255) NOT NULL default '',
+  `type` varchar(64) NOT NULL default '',
+  `url` varchar(255) NOT NULL default '',
+  `verbosity` varchar(255) NOT NULL default '',
+  `payment_action` varchar(255) NOT NULL default '',
+  `tender` varchar(255) NOT NULL default '',
+  `fraud_status` varchar(255) NOT NULL default '',
+  `new_status` varchar(255) NOT NULL default '',
+  `creditcards` varchar(255) NOT NULL default '',
+  `cc_verification` varchar(255) NOT NULL default '',
+  `partner` varchar(255) NOT NULL default '',
+  `merchant` varchar(255) NOT NULL default '',
+  `user` varchar(255) NOT NULL default '',
+  `password` varchar(255) NOT NULL default '',
+  `debug` char(1) NOT NULL default '',
+  `enabled` char(1) NOT NULL default '',
+  PRIMARY KEY  (`id`),
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Table `tl_payment_options`
+-- 
+
+CREATE TABLE `tl_payment_options` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `pid` int(10) unsigned NOT NULL default '0',
+  `tstamp` int(10) unsigned NOT NULL default '0',
+  `enabled` char(1) NOT NULL,
+  PRIMARY KEY  (`id`),
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Table `tl_shipping_modules`
 -- 
 
 CREATE TABLE `tl_shipping_modules` (

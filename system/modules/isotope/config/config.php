@@ -120,6 +120,13 @@ $GLOBALS['FE_MOD']['eCommerce'] = array
 	'isoAddressBook'			=> 'ModuleAddressBook'
 );
 
+
+/**
+ * Payment modules
+ */
+$GLOBALS['ISO_PAY']['payflow'] 	= 'PaymentPayflow';
+
+
 /**
  * Handle Collections
  */
