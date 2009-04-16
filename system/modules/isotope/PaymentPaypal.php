@@ -26,10 +26,10 @@
  
  
 /**
- * Handle Payflow payments
+ * Handle Paypal payments
  * 
  * @extends Payment
  */
-class PaymentPayflow extends Payment
+class PaymentPaypal extends Payment
 {
 }

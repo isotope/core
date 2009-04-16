@@ -199,4 +199,4 @@ $GLOBALS['TL_LANG']['MSC']['DATAMANAGER_PREUPDATE_FUNCTION']['convertToWeight'] 
 $GLOBALS['TL_LANG']['ISO']['productSingle']		= '1 Product';
 $GLOBALS['TL_LANG']['ISO']['productMultiple']	= '%s Products';
 
-$GLOBALS['TL_LANG']['PAY']['payflow'] = array('PayflowPro');
+$GLOBALS['TL_LANG']['PAY']['paypal'] = array('PayPal');

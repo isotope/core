@@ -54,8 +54,8 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 		),
 		'label' => array
 		(
-			'fields'                  => array('name'),
-			'format'                  => '%s'
+			'fields'                  => array('name', 'type'),
+			'format'                  => '%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>'
 		),
 		'global_operations' => array
 		(
@@ -105,8 +105,8 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 	'palettes' => array
 	(
 		'__selector__'                => array('type'),
-		'default'                     => 'name,type;enabled',
-		'payflow'                     => 'name,type;url,verbosity,payment_action,tender,fraud_status,new_status;creditcards,cc_verification;partner,merchant,user,password;debug,enabled',
+		'default'                     => 'name,type,headline;countries,minimum_total,maximum_total;enabled',
+		'paypal'                      => 'name,type,headline;countries,minimum_total,maximum_total,creditcards,accept_paypal;user,password,signature;debug,enabled',
 	),
 
 	// Fields
@@ -127,59 +127,40 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 			'exclude'                 => true,
 			'filter'                  => true,
 			'inputType'               => 'select',
+			'default'				  => 'paypal',
 			'options_callback'        => array('tl_payment_modules', 'getModules'),
 			'reference'               => &$GLOBALS['TL_LANG']['PAY'],
-			'eval'                    => array('helpwizard'=>true, 'submitOnChange'=>true, 'tl_class'=>'w50')
+			'eval'                    => array('helpwizard'=>true, 'submitOnChange'=>true)
 		),
-		'url' => array
+		'headline' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['url'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['headline'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'rgxp'=>'url')
+			'eval'                    => array('maxlength'=>255),
 		),
-		'verbosity' => array
+		'countries' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['verbosity'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['countries'],
+			'exclude'                 => true,
+			'inputType'               => 'select',
+			'default'                 => array_keys($this->getCountries()),
+			'options'                 => $this->getCountries(),
+			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'size'=>8),
+		),
+		'minimum_total' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['minimum_total'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>255)
+			'eval'                    => array('maxlength'=>255, 'rgxp'=>'digit'),
 		),
-		'payment_action' => array
+		'maximum_total' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['payment_action'],
-			'exclude'                 => true,
-			'inputType'               => 'select',
-			'options'                 => array('authorize'),
-			'reference'				  => &$GLOBALS['TL_LANG']['ISO'],
-			'eval'                    => array('mandatory'=>true),
-		),
-		'tender' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['tender'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['maximum_total'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
-		),
-		'fraud_status' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['fraud_status'],
-			'exclude'                 => true,
-			'inputType'               => 'select',
-			'default'                 => 'onhold',
-			'options'                 => array('new', 'processing', 'onhold', 'complete'),
-			'reference'				  => &$GLOBALS['TL_LANG']['ISO'],
-			'eval'                    => array('mandatory'=>true),
-		),
-		'new_status' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['new_status'],
-			'exclude'                 => true,
-			'inputType'               => 'select',
-			'default'                 => 'processing',
-			'options'                 => array('new', 'processing', 'onhold', 'complete'),
-			'reference'				  => &$GLOBALS['TL_LANG']['ISO'],
-			'eval'                    => array('mandatory'=>true),
+			'eval'                    => array('maxlength'=>255, 'rgxp'=>'digit'),
 		),
 		'creditcards' => array
 		(
@@ -190,25 +171,11 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 			'reference'				  => &$GLOBALS['TL_LANG']['ISO'],
 			'eval'                    => array('mandatory'=>true, 'multiple'=>true),
 		),
-		'cc_verification' => array
+		'accept_paypal' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['cc_verification'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['accept_paypal'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
-		),
-		'partner' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['partner'],
-			'exclude'                 => true,
-			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
-		),
-		'merchant' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['merchant'],
-			'exclude'                 => true,
-			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
 		),
 		'user' => array
 		(
@@ -220,6 +187,13 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 		'password' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['password'],
+			'exclude'                 => true,
+			'inputType'               => 'text',
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
+		),
+		'signature' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['signature'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
@@ -259,8 +233,18 @@ class tl_payment_modules extends Backend
 	public function moduleOperations($arrRow)
 	{
 		$strClass = $GLOBALS['ISO_PAY'][$arrRow['type']];
-		
-		$this->import($strClass);
+
+		if (!strlen($strClass))
+			return '';
+			
+		try 
+		{
+			$this->import($strClass);
+		}
+		catch (Exception $e)
+		{ 
+			return '';
+		}
 		
 		return $this->$strClass->moduleOperations($arrRow);
 	}

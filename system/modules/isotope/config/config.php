@@ -49,6 +49,11 @@ array_insert($GLOBALS['BE_MOD']['store'], 0, array
 			'tables'				=> array('tl_shipping_modules', 'tl_shipping_rates'),
 			'icon'					=> 'system/modules/isotope/html/icon-shipping.gif',
 	),
+	'payment' => array
+	(
+		'tables'					=> array('tl_payment_modules', 'tl_payment_options'),
+		'icon'						=> 'system/modules/isotope/html/pm_icon.gif',
+	),
 	'taxes' => array
 	(
 		'tables'					=> array('tl_tax_class','tl_tax_rate'),
@@ -65,13 +70,8 @@ array_insert($GLOBALS['BE_MOD']['store'], 0, array
 		'tables'					=> array('tl_store'),
 		'icon'						=> 'system/modules/isotope/html/iso_icon.gif',
 	),
-	
+
 	/*
-	'payment_modules' => array
-	(
-		'tables'					=> array('tl_payment_modules'),
-		'icon'						=> 'system/modules/isotope/html/pm_icon.gif',
-	),
 	'shipping_modules' => array
 	(
 		'tables'					=> array('tl_shipping_modules'),
@@ -124,7 +124,7 @@ $GLOBALS['FE_MOD']['eCommerce'] = array
 /**
  * Payment modules
  */
-$GLOBALS['ISO_PAY']['payflow'] 	= 'PaymentPayflow';
+$GLOBALS['ISO_PAY']['paypal'] 	= 'PaymentPaypal';
 
 
 /**

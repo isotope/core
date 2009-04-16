@@ -493,39 +493,22 @@ class ListingModule extends Backend
 	
 	
 	/**
-	 * getPaymentModules function.
-	 * 
-	 * @todo Returns an error string but should be an array
+	 * Returns a list of enabled payment modules.
 	 *
 	 * @access public
 	 * @return array
 	 */
 	public function getPaymentModules()
 	{
-		$return = array();
+		$arrPaymentModules = array();
+		$objPaymentModules = $this->Database->execute("SELECT * FROM tl_payment_modules WHERE enabled='1'");
 		
-		//return '<i>' .  $GLOBALS['TL_LANG']['MSC']['noPaymentModules'] . '</i>';
-		
-		//$objPaymentModules = $this->Database->prepare("SELECT * FROM tl_payment_modules WHERE enabled=?")
-		//									->execute(1);
-		
-		$objPaymentModules = $this->Database->prepare("SELECT * FROM tl_module WHERE type=?")
-											->execute('authorize');
-		
-		
-		if($objPaymentModules->numRows < 1)
+		while( $objPaymentModules->next() )
 		{
-			return '<i>' .  $GLOBALS['TL_LANG']['MSC']['noPaymentModules'] . '</i>';
-		}	
-		
-		$arrPaymentModules = $objPaymentModules->fetchAllAssoc();
-		
-		foreach($arrPaymentModules as $module)
-		{
-			$return[$module['id']] = $module['name'];
+			$arrPaymentModules[$objPaymentModules->id] = $objPaymentModules->name;
 		}
 		
-		return $return;
+		return $arrPaymentModules;
 	}
 	
 	
