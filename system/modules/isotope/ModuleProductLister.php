@@ -391,7 +391,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 			
 			$arrProducts = $objProductCollection->fetchAllAssoc();
 			
-			if ($this->iso_jump_first && !(strlen($this->Input->get('asetid') || strlen($this->Input->get('aset_id'))) && count($arrProducts)))
+			if ($this->iso_jump_first && !strlen($this->Input->get('asetid')) && !strlen($this->Input->get('aset_id')) && count($arrProducts))
 			{
 				$this->redirect($this->generateProductLink($arrProducts[0]['product_alias'], $arrProducts[0], $this->arrJumpToValues['product_reader'], $aggregateSet['id']));
 			}
