@@ -35,7 +35,7 @@ array_insert($GLOBALS['BE_MOD']['store'], 0, array
 	'products_and_attributes' => array
 	(
 		'tables'					=> array('tl_product_attribute_sets','tl_product_attributes','tl_product_data'),
-		'icon'						=> 'system/modules/isotope/html/pa_icon.gif',
+		'icon'						=> 'system/modules/isotope/html/icon_pa.gif',
 	),
 	'orders' => array
 	(
@@ -62,13 +62,13 @@ array_insert($GLOBALS['BE_MOD']['store'], 0, array
 	'isotopeMedia' => array
 	(
 		'tables'					=> array('tl_media'),
-//		'icon'						=> 'html/icon_mm.gif',
+		'icon'						=> 'html/icon_mm.gif',
 //		'stylesheet'				=> 'html/stylesheet.css',
 	),
 	'store_configuration' => array
 	(
 		'tables'					=> array('tl_store'),
-		'icon'						=> 'system/modules/isotope/html/iso_icon.gif',
+		'icon'						=> 'system/modules/isotope/html/icon_iso.gif',
 	),
 
 	/*
