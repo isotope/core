@@ -12,7 +12,7 @@
 <input type="hidden" name="x_delim_data" value="<?php echo $this->x_delim_data; ?>" />
 <input type="hidden" name="x_delim_char" value="<?php echo $this->x_delim_char; ?>" />
 <input type="hidden" name="x_test_request" value="<?php echo $this->x_test_request; ?>" />
-<input type="hidden" name="x_amt" value="<?php echo $this->x_amt; ?>" />
+<input type="hidden" name="x_amount" value="<?php echo $this->x_amount; ?>" />
 <!-- End Required Fields -->
 <!-- Additional Information -->
 <input type="hidden" name="x_first_name" value="<?php echo $this->x_first_name; ?>" />
@@ -28,7 +28,7 @@
 <input type="hidden" name="x_email_customer" value="<?php echo $this->x_email_customer; ?>" />
 <input type="hidden" name="x_card_num" value="<?php echo $this->x_card_num; ?>" />
 <input type="hidden" name="x_exp_date" value="<?php echo $this->x_exp_date; ?>" />
-<input type="hidden" name="x_cardholder_authentication_value" value="<?php echo $this->x_cardholder_authentication_value; ?>" />
+<input type="hidden" name="x_card_code" value="<?php echo $this->x_card_code; ?>" />
 <!-- End Additional Information -->
 
 <?php echo $this->orderReview; ?>
