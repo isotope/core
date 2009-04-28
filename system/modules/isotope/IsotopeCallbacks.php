@@ -40,11 +40,11 @@ class IsotopeCallbacks extends Backend
 
 	public function copyAddressBookEntry($intId, $arrData)
 	{
-		
+		/*
 		if(strlen($arrData['street'])<1 || strlen($arrData['city'])<1 || strlen($arrData['state'])<1 || strlen($arrData['postal']))
 		{
 			return '';
-		}	
+		}*/	
 							  
 		//copy the address as it exists from the tl_member table.
 		$arrSet = array
@@ -74,7 +74,16 @@ class IsotopeCallbacks extends Backend
 	
 	public function autoActivateNewMember($intId, $arrData)
 	{
+		$strExistingCookie = $this->Input->cookie('ISOTOPE_TEMP_CART');
 		
+		$this->Database->prepare("UPDATE tl_cart SET pid=? WHERE session=?")
+					   ->execute($intId, $strExistingCookie);
+		
+		
+		//Delete the temp cookie by setting expires to one hour ago.
+		setcookie('ISOTOPE_TEMP_CART', $strExistingCookie, (time() - 3600),  $GLOBALS['TL_CONFIG']['websitePath']);
+
+					   
 		//Auto-activate the user.
 		$this->Database->prepare("UPDATE tl_member SET disable=0 WHERE id=?")->execute($intId);
 		
