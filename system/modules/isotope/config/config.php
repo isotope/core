@@ -62,7 +62,7 @@ array_insert($GLOBALS['BE_MOD']['store'], 0, array
 	'isotopeMedia' => array
 	(
 		'tables'					=> array('tl_media'),
-		'icon'						=> 'html/icon_mm.gif',
+		'icon'						=> 'system/modules/isotope/html/icon_mm.gif',
 //		'stylesheet'				=> 'html/stylesheet.css',
 	),
 	'store_configuration' => array
