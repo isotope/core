@@ -1180,9 +1180,11 @@ abstract class ModuleIsotopeBase extends Module
 				$this->strCartHash = sha1(session_id().$this->strIp.$this->store_id.$this->strCartCookie);
 				
 				setcookie($this->strCartCookie, $this->strCartHash, (time() + ($intCookieDuration * 86400)),  $GLOBALS['TL_CONFIG']['websitePath']);
-				
+							
+				return $this->strCartHash;
 				//$strReturnURL = ltrim($session['referer']['current'], '/');
 				//Have to set the cookie with a reload.
+				// 
 				//$this->reload();
 				
 			}else{

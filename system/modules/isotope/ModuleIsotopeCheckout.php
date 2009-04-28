@@ -116,8 +116,6 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		$this->import('FrontendUser','User');
 		
 		$this->strUserId = $this->User->id;
-		
-		//echo $this->strUserId;
 				
 		if(!$this->strUserId || !FE_USER_LOGGED_IN)
 		{
@@ -125,8 +123,6 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		}
 		
 		$this->intCartId = $this->userCartExists($this->strUserId);
-		
-		//echo $this->intCartId;
 		
 		if(!$this->intCartId)
 		{
@@ -200,6 +196,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			//echo $intBillingAddressId;
 			$this->intShippingAddressId = $intShippingAddressId;
 		}
+		
 
 		foreach($GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEPS'] as $step)
 		{
@@ -240,7 +237,6 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 						'headline' 		=> $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE'][$step],
 						'prompt' 		=> $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT'][$step],
 						'fields' 		=> $this->generateAddressWidget($this->strUserId, $step, 'billing_address'),
-//$this->getCurrentStepWidgets($step, $this->store_id, 'tl_address_book'),
 						'useFieldset' 	=> true
 					);
 										
@@ -257,7 +253,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 						'editEnabled' 	=> true,
 						'headline' 		=> $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE'][$step],
 						'prompt' 		=> $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT'][$step],
-						'fields' 		=> $this->generateAddressWidget($this->strUserId, $step, 'shipping_address'),	//$this->getCurrentStepWidgets($step, $this->store_id, 'tl_address_book'),
+						'fields' 		=> $this->generateAddressWidget($this->strUserId, $step, 'shipping_address'),
 						'useFieldset' 	=> true
 					);
 					break;
@@ -646,8 +642,13 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 						
 			if ($this->Input->post('FORM_SUBMIT') == 'iso_mod_checkout')
 			{
-				$arrBillingAddress = $this->getSelectedBillingAddress($this->intBillingAddressId);
-			
+				
+				$arrBillingAddress = $this->getSelectedAddress($this->intBillingAddressId, 'billing_information');
+				$arrShippingAddress = $this->getSelectedAddress($this->intShippingAddressId, 'shipping_information');
+				
+				$strBillingAddress = $this->getAddressString($arrBillingAddress);
+				$strShippingAddress = $this->getAddressString($arrShippingAddress);
+				
 				$authnet_values = array(
 					"x_login"				=> $loginID,
 					"x_version"				=> $GLOBALS['TL_LANG']['MSC']['gatewayVersion'],
@@ -677,7 +678,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				);
 				
 							
-				$arrPaymentInfo = array('order_tax' => $this->fltOrderTaxTotal, 'cc_num' => $this->Input->post('x_card_num'), 'cc_type' => $this->Input->post('x_card_type'), 'cc_exp' => $this->Input->post('x_exp_date'), 'cc_cvv' => $this->Input->post('x_cardholder_authentication_value'), 'order_comments' => $this->Input->post('order_comments'), 'billing_address_id'=>$this->intBillingAddressId, 'shipping_address_id'=>$this->intShippingAddressId, 'gift_message' => $this->Input->post('gift_message'), 'gift_wrap' => $this->Input->post('gift_wrap'));
+				$arrPaymentInfo = array('order_tax' => $this->fltOrderTaxTotal, 'cc_num' => $this->Input->post('x_card_num'), 'cc_type' => $this->Input->post('x_card_type'), 'cc_exp' => $this->Input->post('x_exp_date'), 'cc_cvv' => $this->Input->post('x_cardholder_authentication_value'), 'order_comments' => $this->Input->post('order_comments'), 'billing_address_id'=>$this->intBillingAddressId, 'shipping_address_id'=>$this->intShippingAddressId, 'gift_message' => $this->Input->post('gift_message'), 'gift_wrap' => $this->Input->post('gift_wrap'), 'billing_address'=>$strBillingAddress,'shipping_address'=>$strShippingAddress);
 												
 				if($this->writeOrder($arrPaymentInfo))
 				{	
@@ -736,9 +737,10 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				$objTemplate->showPrintLink = true;*/
 				
 			}else{
+						
+				$arrBillingAddress = $this->getSelectedAddress($this->intBillingAddressId);
 				
-				$arrBillingAddress = $this->getSelectedBillingAddress($this->intBillingAddressId);
-			
+				
 				$objTemplate->x_version = $GLOBALS['TL_LANG']['MSC']['gatewayVersion'];
 				$objTemplate->x_delim_data = $delimResponse;
 				$objTemplate->x_delim_char = $delimChar;
@@ -794,20 +796,46 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		return $arrPaymentModules;
 	}
 	
-	protected function getSelectedBillingAddress($intAddressId = 0)
+	protected function getSelectedAddress($intAddressId = 0, $strStep = '')
 	{
-		$objBillingAddress = $this->Database->prepare("SELECT * FROM tl_address_book WHERE id=?")
-											->limit(1)
-											->execute($intAddressId);
-	
-		if($objBillingAddress->numRows < 1)
+		if($intAddressId==99)
 		{
-			return $GLOBALS['TL_LANG']['MSC']['ERR']['specifyBillingAddress'];
-		}
+			$arrAddress['firstname'] = $this->Input->post($strStep . '_firstname');
+			$arrAddress['lastname'] = $this->Input->post($strStep . '_lastname');
+			$arrAddress['street'] = $this->Input->post($strStep. '_street');
+			$arrAddress['street_2'] = $this->Input->post($strStep. '_street_2');
+			$arrAddress['street_3'] = $this->Input->post($strStep. '_street_3');
+			$arrAddress['city'] = $this->Input->post($strStep. '_city');
+			$arrAddress['state'] = $this->Input->post($strStep. '_state');
+			$arrAddress['postal'] = $this->Input->post($strStep. '_postal');
+			$arrAddress['country'] = $this->Input->post($strStep. '_country');
+		}else{
+			$objAddress = $this->Database->prepare("SELECT * FROM tl_address_book WHERE id=?")
+												->limit(1)
+												->execute($intAddressId);
 		
-		$arrBillingAddress = $objBillingAddress->fetchAssoc();
+			if($objAddress->numRows < 1)
+			{
+				return $GLOBALS['TL_LANG']['MSC']['ERR']['specifyBillingAddress'];
+			}
+			
+			$arrAddress = $objAddress->fetchAssoc();
+		}
+				
+		return $arrAddress;
+	}
 	
-		return $arrBillingAddress;
+	protected function getAddressString($arrAddress)
+	{
+		$strAddress = $arrAddress['firstname'] . ' ' . $arrAddress['lastname'] . "\n";
+		$strAddress .= $arrAddress['street'] . "\n";
+		$strAddress .= (strlen($arrAddress['street_2']) > 0 ? $arrAddress['street_2'] . "\n" : '');
+		$strAddress .= (strlen($arrAddress['street_3']) > 0 ? $arrAddress['street_3'] . "\n" : '');
+		$strAddress .= $arrAddress['city'] . "\n";
+		$strAddress .= $arrAddress['state'] . "\n";
+		$strAddress .= $arrAddress['country'];
+	
+		return $strAddress;
 	}
 	
 	/**
@@ -935,8 +963,17 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	
 		//Get the tax rates for the given class.
 		$arrTaxClassRecords = array_unique($arrTaxClasses);
-				
-		$strTaxRates = join(',', $arrTaxClassRecords);
+		
+		if(sizeof($arrTaxClassRecords))
+		{		
+			$strTaxRates = join(',', $arrTaxClassRecords);
+		}
+		
+		if(strlen(trim($strTaxRates)) < 1)
+		{
+			return array();
+		}
+		
 		
 		$objTaxRates = $this->Database->prepare("SELECT r.pid, r.country_id, r.region_id, r.postcode, r.rate, (SELECT name FROM tl_tax_class c WHERE c.id=r.pid) AS class_name FROM tl_tax_rate r WHERE r.pid IN(" . $strTaxRates . ")")
 									  ->execute();
@@ -961,7 +998,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			);
 		}
 		
-		$arrBillingAddress = $this->getSelectedBillingAddress($this->intBillingAddressId); //Tax calculated based on billing address.
+		$arrBillingAddress = $this->getSelectedAddress($this->intBillingAddressId); //Tax calculated based on billing address.
 		
 		//the calculation logic for tax rates will need to be something we can set in the backend eventually.  This is specific to Kolbo right now
 		//as tax class 3 = luxury tax.
@@ -982,7 +1019,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				}
 				elseif(strlen($rate['region_id']))
 				{
-					if($arrBillingAddress['state']==$rate['region_id'] && $arrBillingAddress['country']==$rate['country_id'])
+					if($arrBillingAddress['state']==$rate['region_id'])
 					{
 						$blnCalculate = true;
 					}
@@ -1007,7 +1044,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 								//$arrTaxInfo['code'] = $
 							break;
 							
-						case '3':	//Luxury tax.  5% of the difference over $175.00  this trumps standard sales tax.
+						case '2':	//Luxury tax.  5% of the difference over $175.00  this trumps standard sales tax.
 							if((float)$product['product_price'] >= 175)
 							{
 								$fltTaxableAmount = (float)$product['product_price'] - 175;
@@ -1020,7 +1057,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 													
 							break;
 							
-						case '2':	//because tax class 2 is exempt in Kolbo.
+						case '3':	//because tax class 2 is exempt in Kolbo.
 						default:
 							break;			
 					}
@@ -1223,6 +1260,18 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			}
 		}
 		
+		
+		$arrOptions[] = array
+		(
+			'value'	=> 99,
+			'label' => 'Create a New Address',
+			'onClickEvent' => 'showhide(\'' . $strCurrentStep . '_new\'); ischecked(this.id, \'' . $strCurrentStep . '_new\'); '
+		);
+		
+		/*
+		send registry items to registry owner.
+		*/
+		
 		$intDefaultValue = 0;
 		
 		switch($strCurrentStep)
@@ -1241,7 +1290,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 	
 		
-		$strClass = $GLOBALS['TL_FFL']['radio'];
+		$strClass = $GLOBALS['TL_FFL']['radioExtended'];
 											
 		// Continue if the class is not defined
 		if (!$this->classFileExists($strClass))
@@ -1249,14 +1298,16 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			return false;	
 		}
 	
-		$arrData['inputType'] = 'radio';
+		$arrData['inputType'] = 'radioExtended';
 		
 		//echo $intDefaultValue;
+		
+		//Uses the extended Radio Button to allow onClickEvent
 		
 		$objWidget = new $strClass($this->prepareForWidget($arrData, $field, $intDefaultValue));
 		
 		$objWidget->options = $arrOptions;
-		
+				
 		$objWidget->storeValues = true;
 		
 		$this->arrSession['FORM_DATA'][$field] = $objWidget->value;
@@ -1273,6 +1324,11 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		$varSave = is_array($varValue) ? serialize($varValue) : $varValue;
 		
 		$objTemplate->fields = $objWidget->parse();
+		
+		$objTemplate->fields .= '<div id="' . $strCurrentStep . '_new" style="visibility:hidden;">';
+		$objTemplate->fields .= '<span><h3>Enter a New Address</h3>' . $this->getCurrentStepWidgets($strCurrentStep, $this->store_id, 'tl_address_book') . '</span>';
+		$objTemplate->fields .= '</div>';
+		
 		//$objTemplate->formId = $strCurrentStep;
 		//$objTemplate->formSubmit = $strCurrentStep;
 		//$objTemplate->method = 'post';
@@ -1298,7 +1354,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 
 		$GLOBALS['TL_LANGUAGE'] = $objPage->language;
 			
-		$objTemplate = new FrontendTemplate('form');
+		$objTemplate = new FrontendTemplate('fields_insert');
 						
 		if($blnLoadDataContainer)
 		{
@@ -1322,7 +1378,12 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			
 			$strGroup = $arrData['eval']['feGroup'];
 			$strClass = $GLOBALS['TL_FFL'][$arrData['inputType']];
-											
+						
+			if($arrData['inputType']=='text')
+			{
+				$strClass = $GLOBALS['TL_FFL']['textExtended'];
+			}					
+			
 			// Continue if the class is not defined
 			if (!$this->classFileExists($strClass) || !$arrData['eval']['isoEditable'] || !sizeof($arrData['eval']['isoCheckoutGroups']))
 			{
@@ -1414,6 +1475,11 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			if ($objWidget instanceof uploadable)
 			{
 				$hasUpload = true;
+			}
+
+			if($strClass == $GLOBALS['TL_FFL']['textExtended'])
+			{
+				$objWidget->onClickEvent = 'document.frmCheckout.ctrl_'. $strCurrentStep . '_' . $field . '.focus();';
 			}
 
 			$temp = $objWidget->parse();
