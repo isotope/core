@@ -117,7 +117,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 		$this->strUserId = $this->User->id;
 		
-		echo $this->strUserId;
+		//echo $this->strUserId;
 				
 		if(!$this->strUserId || !FE_USER_LOGGED_IN)
 		{
@@ -126,7 +126,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 		$this->intCartId = $this->userCartExists($this->strUserId);
 		
-		echo $this->intCartId;
+		//echo $this->intCartId;
 		
 		if(!$this->intCartId)
 		{
