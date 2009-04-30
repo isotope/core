@@ -76,16 +76,29 @@ class IsotopeCallbacks extends Backend
 	{
 		$strExistingCookie = $this->Input->cookie('ISOTOPE_TEMP_CART');
 		
-		$this->Database->prepare("UPDATE tl_cart SET pid=? WHERE session=?")
-					   ->execute($intId, $strExistingCookie);
+		if(strlen($strExistingCookie))
+		{	
+			$this->Database->prepare("UPDATE tl_cart SET pid=? WHERE session=?")
+						   ->execute($intId, $strExistingCookie);
+					
+			
+		}
 		
-		
-		//Delete the temp cookie by setting expires to one hour ago.
-		setcookie('ISOTOPE_TEMP_CART', $strExistingCookie, (time() - 3600),  $GLOBALS['TL_CONFIG']['websitePath']);
-
 					   
 		//Auto-activate the user.
 		$this->Database->prepare("UPDATE tl_member SET disable=0 WHERE id=?")->execute($intId);
+		
+		
+	}
+	
+	public function memberLogin(Database_Result $objUser)
+	{
+		///Step 1 will be to merge the temp cart into the user cart, then we can get rid of the temp cookie.
+	
+		$strExistingCookie = $this->Input->cookie('ISOTOPE_TEMP_CART');
+		
+		setcookie('ISOTOPE_TEMP_CART', $strExistingCookie, time() - 3600, $GLOBALS['TL_CONFIG']['websitePath']);
+	
 		
 	}
 }
