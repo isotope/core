@@ -93,6 +93,8 @@ $GLOBALS['TL_HOOKS']['saveProduct'][]				= array('MediaManagement','generateMedi
 $GLOBALS['TL_HOOKS']['getMappingAttributes'][]		= array('ProductCatalog','generateMappingAttributeList');
 $GLOBALS['TL_HOOKS']['mappingAttributesCallback'][]	= array('products_attribute_set' => array('ProductCatalog','batchUpdateCAPAggregate'));
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][]			= array('IsotopeFrontend', 'replaceIsotopeTags');
+$GLOBALS['TL_HOOKS']['postLogin'][] = array('IsotopeCallbacks','memberLogin');
+
 //$GLOBALS['TL_HOOKS']['getMappingAttributes'][]	= array('getProductMapping' => array('ProductCatalog','generateMappingAttributeList'));
 
 
