@@ -196,6 +196,8 @@ $GLOBALS['DATAMANAGER_PREUPDATE_FUNCTION'][$GLOBALS['TL_LANG']['MSC']['isotope_f
 
 //$GLOBALS['ISO_ACTIVE_CUSTOM_PRODUCT_BUTTONS'][] = array('add_to_gift_registry');
 
+$GLOBALS['TL_PERMISSIONS'][] = 'mediamounts';
+
 
 
 

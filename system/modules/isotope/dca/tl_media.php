@@ -163,8 +163,8 @@ class tl_media extends Backend
 			return;
 		}
 
-		// Set filemounts
-		$GLOBALS['TL_DCA']['tl_media']['list']['sorting']['root'] = $this->User->filemounts;
+		// Set mediamounts
+		$GLOBALS['TL_DCA']['tl_media']['list']['sorting']['root'] = $this->User->mediamounts;
 
 		// Disable upload button if uploads are not allowed
 		if (!is_array($this->User->fop) || !in_array('f1', $this->User->fop))

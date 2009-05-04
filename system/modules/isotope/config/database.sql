@@ -490,3 +490,25 @@ CREATE TABLE `tl_tax_rate` (
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+
+-- --------------------------------------------------------
+
+-- 
+-- Table `tl_user`
+--
+
+CREATE TABLE `tl_user` (
+ `mediamounts` blob NULL,
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Table `tl_user_group`
+--
+
+CREATE TABLE `tl_user_group` (
+ `mediamounts` blob NULL,
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
