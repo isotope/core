@@ -1051,7 +1051,7 @@ class ProductCatalog extends Backend
 		
 		//$thumbnail = $GLOBALS['TL_CONFIG']['isotope_upload_path'] . '/' . $GLOBALS['TL_CONFIG']['isotope_base_path'] . '/' . substr($row['product_alias'], 0, 1) . '/' . $row['product_alias'] . '/images/' . $GLOBALS['TL_LANG']['MSC']['gallery_thumbnail_images_folder'] . '/' . $arrImages[0];
 		
-		$output = '<div style="margin-top:5px!important;margin-bottom:0px!important;" class="cte_type ' . $key . '"><div><span><img src="' . $thumbnail . '" alt="' . $row['product_name'] . '" align="left" style="padding-right: 8px;" /><strong>' . $row['product_name'] . '</strong></span><div><span style="color:#b3b3b3;"><strong>$' . $row['product_price'] . '</strong></span></div><br /><br /><div><em>Categories: ' . $this->getCategoryList(deserialize($row['pages'])) . '</em></div></div></div> ';
+		$output = '<div style="margin-top:5px!important;margin-bottom:0px!important;" class="cte_type ' . $key . '"><div><span><img src="' . $thumbnail . '" alt="' . $row['product_name'] . '" align="left" style="padding-right: 8px;" /><strong>' . $row['product_name'] . '</strong></span><div><span style="color:#b3b3b3;"><strong>$' . $row['product_price'] . '</strong></span></div><br /><br /><div><em>' . $GLOBALS['TL_LANG']['tl_product_data']['pages'][0] . ': ' . $this->getCategoryList(deserialize($row['pages'])) . '</em></div></div></div> ';
 		
 		$fields = array();
 		
