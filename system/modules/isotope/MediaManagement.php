@@ -225,7 +225,7 @@ class MediaManagement extends Backend
 		//$arrImages[] = $varValue;
 		$arrImages = $this->getMediaFilenames($arrProductPaths['file_source_path'], 'images', 'source');
 				
-		$arrImageSizeTypes[] = 'all';
+		$arrImageSizeTypes = array('all');
 		
 		//Also set option true or false to override with first avail. image!
 		
@@ -246,7 +246,6 @@ class MediaManagement extends Backend
 	 */
 	public function processImages($arrImages, $arrImageSizeConstraints, $arrProductPaths, $arrImageSizeTypes, $blnForceRescale = false, $blnSourceFallback = false, $blnOrdinalFallback = false)
 	{	
-		
 		if($arrImageSizeTypes[0] == 'all')
 		{
 			//reset the array and use all size types.  Move size types to language file.
@@ -266,7 +265,7 @@ class MediaManagement extends Backend
 		}
 							
 		$arrKeys = array_values($arrImageTypes);
-							
+
 		foreach($arrImages as $image)
 		{
 									
@@ -984,7 +983,7 @@ class MediaManagement extends Backend
 	
 		if(!array_key_exists($strAssetType, $GLOBALS['TL_LANG']['MSC']['validMediaFileTypes']))
 		{
-			return '';
+			return array();
 		}
 		
 		$arrFiles = array();

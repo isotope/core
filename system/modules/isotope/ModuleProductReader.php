@@ -256,7 +256,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 							
 							$arrLiveFiles = $this->MediaManagement->getMediaFilenames($arrProductPaths['file_destination_path'], $GLOBALS['TL_LANG']['MSC']['imagesFolder'], 'destination');
 						
-						
+							$arrNeededImages = array();
 							if($blnForceRescale || (count($arrSourceFiles) > count($arrLiveFiles)))
 							{
 								//Find Different and thumbnail those new files.
@@ -266,12 +266,14 @@ class ModuleProductReader extends ModuleIsotopeBase
 									if($blnForceRescale)
 									{
 										$arrNeededImages = $arrSourceFiles;
-									}else{
+									}
+									else
+									{
 										$arrNeededImages = array_diff($arrSourceFiles, $arrLiveFiles);
 									}
-									
-								}else{
-																		
+								}
+								else
+								{
 									//Check for a file or folder by that name in the main import folder as specified in store config.
 									$arrAssetKeys = array($product['product_alias'], $product['product_sku']);
 								
@@ -285,17 +287,15 @@ class ModuleProductReader extends ModuleIsotopeBase
 							}
 								
 								
-								$arrImageSizeConstraints = $this->MediaManagement->getImageSizeConstraints($this->strCurrentStoreTable, (is_numeric($this->Input->get('product')) ? $this->Input->get('product') : 0), $this->Input->get('product'));
+							$arrImageSizeConstraints = $this->MediaManagement->getImageSizeConstraints($this->strCurrentStoreTable, (is_numeric($this->Input->get('product')) ? $this->Input->get('product') : 0), $this->Input->get('product'));
 								
-								
-								
-							$this->MediaManagement->processImages($arrNeededImages, $arrImageSizeConstraints, $arrProductPaths, 'all', $blnForceRescale);
+							if (count($arrNeededImages))
+								$this->MediaManagement->processImages($arrNeededImages, $arrImageSizeConstraints, $arrProductPaths, array('all'), $blnForceRescale);
 								
 																				
 							if(is_dir($arrProductPaths['file_destination_path']))
 							{	
-								
-								$arrImages = $this->getProductImages($arrProductPaths['file_destination_path'], $arrProductPaths['relative_destination_path'], $product, $GLOBALS['TL_LANG']['MSC']['imagesFolder'], $product['product_images']);
+								$arrImages = $this->getProductImages($arrProductPaths['file_destination_path'], $arrProductPaths['relative_destination_path'], $product, $GLOBALS['TL_LANG']['MSC']['imagesFolder'], $product['product_images'], $product['product_alias']);
 								
 								if(count($arrImages))
 								{	

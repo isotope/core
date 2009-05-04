@@ -908,7 +908,7 @@ abstract class ModuleIsotopeBase extends Module
 	 * @param object
 	 * @return string
 	 */
-	protected function generateTeaser($varValue, $intLength)
+	protected function generateTeaser($varValue, $intLength=0)
 	{
 		if($intLength == 0 || empty($intLength))
 		{
