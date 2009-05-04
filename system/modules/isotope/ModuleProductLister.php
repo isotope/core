@@ -275,7 +275,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 					
 					if($field['is_listing_field']==1)
 					{
-						if(!in_array($field['field_name'], $arrFilterFields))
+						if(!is_array($arrFilterFields) || !in_array($field['field_name'], $arrFilterFields))
 						{
 							$arrListingFields[] = $field['field_name'];
 											
@@ -336,8 +336,12 @@ class ModuleProductLister extends ModuleIsotopeBase
 			}
 												
 			$product_list = join(",", $arrProductList);
-							
-			$field_list = join(",", $arrListingFields);			
+			
+			$field_list = '';
+			if (is_array($arrListingFields) && count($arrListingFields))
+			{
+				$field_list = ',' . join(",", $arrListingFields);
+			}
 
 			if(strlen($filter_list))
 			{
@@ -350,7 +354,9 @@ class ModuleProductLister extends ModuleIsotopeBase
 				
 				$strFilterList .= " AND date_added>=" . ($arrDate[0] - ((int)$this->new_products_time_window * 86400));
 				$strBaseClause = "product_visibility=?";
-			}else{
+			}
+			else
+			{
 				$strBaseClause = "id IN(" . $product_list . ") AND product_visibility=?";
 			}	
 			
@@ -376,7 +382,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 			//echo "SELECT DISTINCT id, tstamp, use_product_price_override, " . strtolower($field_list) . " FROM " . $this->strCurrentStoreTable . " WHERE " . $strBaseClause . $strFilterList . $strClauses;
 					
 			//Get the current collection of products based on the tl_cap_aggregate table data
-			$objProductCollection = $this->Database->prepare("SELECT id, tstamp, use_product_price_override, " . strtolower($field_list) . " FROM " . $this->strCurrentStoreTable . " WHERE " . $strBaseClause . $strFilterList . $strClauses)		
+			$objProductCollection = $this->Database->prepare("SELECT id, tstamp, use_product_price_override " . strtolower($field_list) . " FROM " . $this->strCurrentStoreTable . " WHERE " . $strBaseClause . $strFilterList . $strClauses)		
 													->limit($per_page, ($page - 1) * $per_page)				
 													->execute(1);
 			
