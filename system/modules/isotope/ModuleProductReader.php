@@ -232,7 +232,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 					switch($k)
 					{
 						case "product_name":													
-							$objPage->title = $v . ' - ' . strip_tags($this->generateTeaser($product['product_description'], 100));
+							$objPage->title = $v;
 							$this->Template->productName = $v;
 							break;
 						case "product_description":
