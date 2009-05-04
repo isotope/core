@@ -27,7 +27,10 @@
  */
 if (!is_array($GLOBALS['BE_MOD']['store']))
 {
-	$GLOBALS['BE_MOD']['store'] = array();
+	array_insert($GLOBALS['BE_MOD'], 1, array
+	(
+		'store' => array(),
+	));
 }
  
 array_insert($GLOBALS['BE_MOD']['store'], 0, array
