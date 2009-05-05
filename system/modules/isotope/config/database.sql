@@ -43,11 +43,11 @@ CREATE TABLE `tl_product_attribute_types` (
   `pid` int(10) unsigned NOT NULL default '0',
   `sorting` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
-  `type` varchar(255) NOT NULL,
+  `type` varchar(255) NOT NULL default '',
   `attr_datatype` varchar(255) NOT NULL default '',
-  `inputType` varchar(64) NOT NULL,
-  `eval` text NOT NULL,
-  `name` varchar(255) NOT NULL,
+  `inputType` varchar(64) NOT NULL default '',
+  `eval` text NULL,
+  `name` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -103,11 +103,11 @@ CREATE TABLE `tl_product_attributes` (
   `attr_type_id` int(10) unsigned NOT NULL default '0',
   `name` varchar(255) NOT NULL default '',
   `description` varchar(255) NOT NULL default '',
-  `type` varchar(64) NOT NULL,
-  `option_list` text,
+  `type` varchar(64) NOT NULL default '',
+  `option_list` text NULL,
   `show_files` tinyint(1) NOT NULL default '0',
   `attr_use_mode` enum('fixed','dynamic') default 'fixed',
-  `attr_default_value` varchar(255) NOT NULL,
+  `attr_default_value` varchar(255) NOT NULL default '',
   `is_customer_defined` tinyint(1) NOT NULL default '0',
   `is_visible_on_front` tinyint(1) NOT NULL default '0',
   `is_hidden_on_backend` tinyint(1) NOT NULL default '0',
@@ -117,16 +117,16 @@ CREATE TABLE `tl_product_attributes` (
   `is_order_by_enabled` tinyint(1) NOT NULL default '0',
   `is_used_for_price_rules` tinyint(1) NOT NULL default '0',
   `is_multiple_select` tinyint(1) NOT NULL default '0',
-  `invisible` char(1) NOT NULL,
-  `inputType` varchar(64) NOT NULL,
-  `use_rich_text_editor` char(1) NOT NULL,
+  `invisible` char(1) NOT NULL default '',
+  `inputType` varchar(64) NOT NULL default '',
+  `use_rich_text_editor` char(1) NOT NULL default '',
   `attr_datatype` varchar(64) NOT NULL default '',
   `is_user_defined` tinyint(1) NOT NULL default '0',
   `is_listing_field` char(1) NOT NULL default '0',
   `use_alternate_source` char(1) NOT NULL default '0',
   `list_source_table` varchar(255) NOT NULL default '',
   `list_source_field` varchar(255) NOT NULL default '',
-  `delete_locked` char(1) NOT NULL,
+  `delete_locked` char(1) NOT NULL default '',
   `rgxp` varchar(255) NOT NULL default '',
   `load_callback` text NULL,
   `save_callback` text NULL,
@@ -161,7 +161,7 @@ CREATE TABLE `tl_store` (
   `gallery_thumbnail_image_width` int(10) unsigned NOT NULL default '0',
   `gallery_thumbnail_image_height` int(10) unsigned NOT NULL default '0', 
   `cookie_duration` int(10) unsigned NOT NULL default '0',
-  `enabled_modules` blob,
+  `enabled_modules` blob NULL,
   `root_asset_import_path` varchar(255) NOT NULL default '',
   `checkout_login_module` int(10) unsigned NOT NULL default '0',
    PRIMARY KEY  (`id`),
@@ -181,9 +181,9 @@ CREATE TABLE `tl_cap_aggregate` (
   `sorting` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
   `storeTable` varchar(64) NOT NULL default '',
-  `product_ids` text,
+  `product_ids` text NULL,
   `attribute_set_id` int(10) NOT NULL default '0',
-  `store_id` int 
+  `store_id` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -201,7 +201,7 @@ CREATE TABLE `tl_pfc_aggregate` (
   `attribute_id` int(10) unsigned NOT NULL default '0',
   `sorting` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
-  `value_collection` text,
+  `value_collection` text NULL,
   `attribute_set_id` int(10) NOT NULL default '0',
   `store_id` int(10) NOT NULL default '0',
   PRIMARY KEY  (`id`),
@@ -321,7 +321,7 @@ CREATE TABLE `tl_address_book` (
   `isDefaultBilling` char(1) NOT NULL default '',
   `email` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`id`),
-  KEY `pid`  (`pid`)
+  KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
@@ -361,7 +361,7 @@ CREATE TABLE `tl_payment_options` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
-  `enabled` char(1) NOT NULL,
+  `enabled` char(1) NOT NULL default '',
   PRIMARY KEY  (`id`),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -377,7 +377,7 @@ CREATE TABLE `tl_shipping_modules` (
   `tstamp` int(10) unsigned NOT NULL default '0',
   `name` varchar(255) NOT NULL default '',
   `comparison` varchar(64) NOT NULL default '',
-  `enabled` char(1) NOT NULL,
+  `enabled` char(1) NOT NULL default '',
   PRIMARY KEY  (`id`),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -436,9 +436,9 @@ CREATE TABLE `tl_iso_orders` (
   `sorting` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
   `store_id` int(10) unsigned NOT NULL default '0',
-  `order_subtotal` double default NULL,
-  `order_tax` double default NULL,
-  `order_shipping_cost` double default NULL,
+  `order_subtotal` double NULL default NULL,
+  `order_tax` double NULL default NULL,
+  `order_shipping_cost` double NULL default NULL,
   `source_cart_id` int(10) unsigned NOT NULL default '0',
   `shipping_address` text NULL,
   `billing_address` text NULL,
@@ -447,9 +447,9 @@ CREATE TABLE `tl_iso_orders` (
   `cc_num` varchar(64) NOT NULL default '',
   `cc_exp` varchar(16) NOT NULL default '',
   `cc_cvv` int(10) unsigned NOT NULL default '0',   
-  `order_comments` text default NULL, 
-  `gift_message` text default NULL,
-  `gift_wrap` char(1) NOT NULL,
+  `order_comments` text NULL, 
+  `gift_message` text NULL,
+  `gift_wrap` char(1) NOT NULL default '',
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -486,7 +486,7 @@ CREATE TABLE `tl_tax_rate` (
   `region_id` varchar(255) NOT NULL default '',
   `postcode` varchar(255) NOT NULL default '',
   `code` varchar(255) NOT NULL default '',
-  `rate` double default '0.00',
+  `rate` double NULL default NULL,
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
