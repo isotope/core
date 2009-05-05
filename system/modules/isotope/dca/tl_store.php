@@ -95,7 +95,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => 'store_configuration_name;cookie_duration;root_asset_import_path;enabled_modules;checkout_login_module;productReaderJumpTo,cartJumpTo,checkoutJumpTo;missing_image_placeholder;gallery_thumbnail_image_width,gallery_thumbnail_image_height;thumbnail_image_width,thumbnail_image_height;medium_image_width,medium_image_height;large_image_width,large_image_height'
+		'default'                     => 'store_configuration_name;currency,currencySymbol;cookie_duration;root_asset_import_path;enabled_modules;checkout_login_module;productReaderJumpTo,cartJumpTo,checkoutJumpTo;missing_image_placeholder;gallery_thumbnail_image_width,gallery_thumbnail_image_height;thumbnail_image_width,thumbnail_image_height;medium_image_width,medium_image_height;large_image_width,large_image_height'
 	),
 
 	// Fields
@@ -225,6 +225,20 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('rgxp'=>'digit', 'maxlength'=>10)
+		),
+		'currency' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['currency'],
+			'exclude'                 => true,
+			'inputType'               => 'select',
+			'options'				  => &$GLOBALS['TL_LANG']['CUR'],
+			'eval'                    => array('includeBlankOption'=>true, 'mandatory'=>true),
+		),
+		'currencySymbol' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['currencySymbol'],
+			'exclude'                 => true,
+			'inputType'               => 'checkbox',
 		)
 	)
 );

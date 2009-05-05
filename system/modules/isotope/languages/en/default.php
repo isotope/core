@@ -200,3 +200,15 @@ $GLOBALS['TL_LANG']['ISO']['productSingle']		= '1 Product';
 $GLOBALS['TL_LANG']['ISO']['productMultiple']	= '%s Products';
 
 $GLOBALS['TL_LANG']['PAY']['paypal'] = array('PayPal');
+
+
+
+
+/**
+ * Currencies
+ */
+$GLOBALS['TL_LANG']['CUR']['usd'] = 'USD - US Dollar';
+$GLOBALS['TL_LANG']['CUR']['eur'] = 'EUR - Euro';
+$GLOBALS['TL_LANG']['CUR']['chf'] = 'CHF - Swiss Franc';
+
+
