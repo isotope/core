@@ -28,6 +28,7 @@ CREATE TABLE `tl_module` (
   `store_id` int(10) unsigned NOT NULL default '0',
   `orderCompleteJumpTo` int(10) unsigned NOT NULL default '0',
   `addressBookTemplate` varchar(64) NOT NULL default '',
+  `iso_jump_first` char(1) NOT NULL default '',
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
