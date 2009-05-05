@@ -207,8 +207,8 @@ $GLOBALS['TL_LANG']['PAY']['paypal'] = array('PayPal');
 /**
  * Currencies
  */
-$GLOBALS['TL_LANG']['CUR']['usd'] = 'USD - US Dollar';
-$GLOBALS['TL_LANG']['CUR']['eur'] = 'EUR - Euro';
-$GLOBALS['TL_LANG']['CUR']['chf'] = 'CHF - Swiss Franc';
+$GLOBALS['TL_LANG']['CUR']['USD'] = 'USD - US Dollar';
+$GLOBALS['TL_LANG']['CUR']['EUR'] = 'EUR - Euro';
+$GLOBALS['TL_LANG']['CUR']['CHF'] = 'CHF - Swiss Franc';
 
 

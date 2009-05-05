@@ -49,7 +49,7 @@ $GLOBALS['TL_LANG']['tl_store']['medium_image_height']				= array('Medium Standa
 $GLOBALS['TL_LANG']['tl_store']['large_image_width']				= array('Large Standard Width', 'In pixels.');
 $GLOBALS['TL_LANG']['tl_store']['large_image_height']				= array('Large Standard Height', 'In pixels.');
 $GLOBALS['TL_LANG']['tl_store']['currency']							= array('Currency', 'Please select a currency for this store.');
-$GLOBALS['TL_LANG']['tl_store']['currencySymbol']					= array('Use currency icon', 'Use a currency icon ($, €) if available.');
+$GLOBALS['TL_LANG']['tl_store']['currencySymbol']					= array('Use currency symbol', 'Use a currency symbol ($, €) if available.');
 
 $GLOBALS['TL_LANG']['tl_store']['gallery_thumbnail_image_width']	= array('Gallery Thumbnail Standard Width', 'In pixels.');
 $GLOBALS['TL_LANG']['tl_store']['gallery_thumbnail_image_height']	= array('Gallery Thumbnail Standard Height', 'In pixels.');
