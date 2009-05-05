@@ -166,6 +166,7 @@ CREATE TABLE `tl_store` (
   `checkout_login_module` int(10) unsigned NOT NULL default '0',
   `currency` varchar(3) NOT NULL default '',
   `currencySymbol` char(1) NOT NULL default '',
+  `currencyFormat` varchar(20) NOT NULL default '',
    PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

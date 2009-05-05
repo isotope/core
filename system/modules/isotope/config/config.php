@@ -203,6 +203,11 @@ $GLOBALS['TL_PERMISSIONS'][] = 'mediamounts';
 
 
 
+$GLOBALS['ISO_NUM']["10000.00"]		= array(2, '.', "");
+$GLOBALS['ISO_NUM']["10,000.00"]	= array(2, '.', ",");
+$GLOBALS['ISO_NUM']["10.000,00"]	= array(2, ',', ".");
+$GLOBALS['ISO_NUM']["10'000.00"]	= array(2, '.', "'");
+
 
 
 /**
