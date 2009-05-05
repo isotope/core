@@ -55,7 +55,7 @@ array_insert($GLOBALS['BE_MOD']['store'], 0, array
 	'payment' => array
 	(
 		'tables'					=> array('tl_payment_modules', 'tl_payment_options'),
-		'icon'						=> 'system/modules/isotope/html/pm_icon.gif',
+		'icon'						=> 'system/modules/isotope/html/icon-payment.png',
 	),
 	'taxes' => array
 	(
