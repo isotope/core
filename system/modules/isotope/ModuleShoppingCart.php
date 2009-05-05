@@ -477,7 +477,9 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 				$strMethod = 'insert';
 			}
 		
-		}else{
+		}
+		else
+		{
 			//will this ever happen? it shouldn't.
 
 			//$this->intCartId = $this->createNewCart($strUserId);
@@ -501,7 +503,7 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 					'product_id'			=> $intProductId,
 					'attribute_set_id'		=> $intAttributeSetId,
 					'quantity_requested'	=> $intQuantity,
-					'source_cart_id'		=> $intSourceCartId//,
+//					'source_cart_id'		=> $intSourceCartId//,
 					//'product_options'		=> serialize($arrProductOptions)
 				);
 								
@@ -511,8 +513,10 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 				
 			case 'update':
 				
-				$this->Database->prepare("UPDATE tl_cart_items SET quantity_requested=(quantity_requested+" . $intQuantity . ")" . $strAdditionalFields . " WHERE product_id=? AND source_cart_id=? AND attribute_set_id=? AND pid=?")
-							   ->execute($intProductId, $intSourceCartId, $intAttributeSetId, $this->intCartId);
+//				$this->Database->prepare("UPDATE tl_cart_items SET quantity_requested=(quantity_requested+" . $intQuantity . ")" . $strAdditionalFields . " WHERE product_id=? AND source_cart_id=? AND attribute_set_id=? AND pid=?")
+//							   ->execute($intProductId, $intSourceCartId, $intAttributeSetId, $this->intCartId);
+				$this->Database->prepare("UPDATE tl_cart_items SET quantity_requested=(quantity_requested+" . $intQuantity . ")" . $strAdditionalFields . " WHERE product_id=? AND attribute_set_id=? AND pid=?")
+							   ->execute($intProductId, $intAttributeSetId, $this->intCartId);
 				break;
 			default:
 				break;
@@ -555,17 +559,23 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 		//Prepare & execute the query.
 		if($intQuantity==0)
 		{
-			$strQuery = "DELETE FROM tl_cart_items WHERE product_id=? AND attribute_set_id=? AND pid=? AND source_cart_id=?";
+//			$strQuery = "DELETE FROM tl_cart_items WHERE product_id=? AND attribute_set_id=? AND pid=? AND source_cart_id=?";
+			$strQuery = "DELETE FROM tl_cart_items WHERE product_id=? AND attribute_set_id=? AND pid=?";
 
-		}else{
+		}
+		else
+		{
 			if($blnOverwriteQty)
 			{
 				$strClause = $intQuantity;
-			}else{
+			}
+			else
+			{
 				$strClause = "(quantity_requested+" . $intQuantity . ")";
 			}
 			
-			$strQuery = "UPDATE tl_cart_items SET quantity_requested=$strClause WHERE product_id=? AND attribute_set_id=? AND pid=? AND source_cart_id=?";			
+//			$strQuery = "UPDATE tl_cart_items SET quantity_requested=$strClause WHERE product_id=? AND attribute_set_id=? AND pid=? AND source_cart_id=?";			
+			$strQuery = "UPDATE tl_cart_items SET quantity_requested=$strClause WHERE product_id=? AND attribute_set_id=? AND pid=?";			
 			
 		}
 				
@@ -584,7 +594,8 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 		//$session['isotope']['cart_data'][] = array(<product keys and values>);
 		
 		//query for the product id for the given cart, product and attribute set.
-		$objProductExistsInCart = $this->Database->prepare("SELECT COUNT(*) as count FROM tl_cart_items WHERE product_id=? AND pid=? AND attribute_set_id=? AND source_cart_id=?")
+//		$objProductExistsInCart = $this->Database->prepare("SELECT COUNT(*) as count FROM tl_cart_items WHERE product_id=? AND pid=? AND attribute_set_id=? AND source_cart_id=?")
+		$objProductExistsInCart = $this->Database->prepare("SELECT COUNT(*) as count FROM tl_cart_items WHERE product_id=? AND pid=? AND attribute_set_id=?")
 												 ->limit(1)
 												 ->execute($intProductId, $intCartId, $intAttributeSetId, $intSourceCartId);
 	
@@ -602,10 +613,6 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 		return true;
 		
 	}
-	
-
-	
-	
 }
 
 ?>
