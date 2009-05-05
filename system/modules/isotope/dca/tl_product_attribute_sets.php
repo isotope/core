@@ -223,7 +223,7 @@ class tl_product_attribute_sets extends Backend
 		{
 			return;
 		}
-
+/*
 		// Set root IDs
 		if (!is_array($this->User->catalogs) || count($this->User->catalogs) < 1)
 		{
@@ -233,7 +233,7 @@ class tl_product_attribute_sets extends Backend
 		{
 			$root = $this->User->catalogs;
 		}
-
+*/
 		$GLOBALS['TL_DCA']['tl_product_attribute_sets']['config']['closed'] = true;
 		$GLOBALS['TL_DCA']['tl_product_attribute_sets']['list']['sorting']['root'] = $root;
 
