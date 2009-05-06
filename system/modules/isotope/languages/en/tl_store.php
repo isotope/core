@@ -19,19 +19,15 @@
  * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Winans Creative/Fred Bliss 2008 
- * @author     Fred Bliss 
- * @package    IsotopeBase 
- * @license    Commercial 
- * @filesource
+ * @copyright  Winans Creative / Fred Bliss 2009
+ * @author     Fred Bliss <fred@winanscreative.com>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
 /**
  * Fields
  */
-//$GLOBALS['TL_LANG']['tl_store'][''] = array('', '');
-
 $GLOBALS['TL_LANG']['tl_store']['store_configuration_name']			= array('Store Configuration Name', '');
 $GLOBALS['TL_LANG']['tl_store']['cookie_duration']					= array('Duration (in days) of Shopping Cart Information', 'Items and their related information will be retrievable for this many days for non-registered members.  A value of 0 means after the session, the items are removed. For registered members cart data is always remembered.');
 $GLOBALS['TL_LANG']['tl_store']['checkout_login_module']			= array('Checkout Login Module','Select a login module to insert into the checkout module.');
@@ -50,14 +46,18 @@ $GLOBALS['TL_LANG']['tl_store']['large_image_width']				= array('Large Standard 
 $GLOBALS['TL_LANG']['tl_store']['large_image_height']				= array('Large Standard Height', 'In pixels.');
 $GLOBALS['TL_LANG']['tl_store']['currency']							= array('Currency', 'Please select a currency for this store.');
 $GLOBALS['TL_LANG']['tl_store']['currencySymbol']					= array('Use currency symbol', 'Use a currency symbol ($, €) if available.');
+$GLOBALS['TL_LANG']['tl_store']['currencyPosition']					= array('Position of currency code/symbol', 'Select if you want to show currency on the left or right side of the price.');
 $GLOBALS['TL_LANG']['tl_store']['currencyFormat']					= array('Currency formatting', 'Choose a formatting for prices.');
 
 $GLOBALS['TL_LANG']['tl_store']['gallery_thumbnail_image_width']	= array('Gallery Thumbnail Standard Width', 'In pixels.');
 $GLOBALS['TL_LANG']['tl_store']['gallery_thumbnail_image_height']	= array('Gallery Thumbnail Standard Height', 'In pixels.');
 
+
 /**
  * Reference
  */
+$GLOBALS['TL_LANG']['tl_store']['left']								= 'To the left of price';
+$GLOBALS['TL_LANG']['tl_store']['right']							= 'To the right of price';
 
 
 /**
@@ -69,4 +69,3 @@ $GLOBALS['TL_LANG']['tl_store']['copy']   = array('Copy Store', 'Copy Store ID %
 $GLOBALS['TL_LANG']['tl_store']['delete'] = array('Delete Store', 'Delete Store ID %s.  This will not delete related assets but rather the initial store configuration.');
 $GLOBALS['TL_LANG']['tl_store']['show']   = array('Show Store Details', 'Show details for store ID %s.');
 
-?>

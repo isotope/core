@@ -19,19 +19,15 @@
  * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Winans Creative/Fred Bliss 2008 
- * @author     Fred Bliss 
- * @package    IsotopeBase 
- * @license    Commercial 
- * @filesource
+ * @copyright  Winans Creative / Fred Bliss 2009
+ * @author     Andreas Schempp <andreas@schempp.ch>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
-
+ 
 
 /**
  * Fields
  */
-//$GLOBALS['TL_LANG']['tl_store'][''] = array('', '');
-
 $GLOBALS['TL_LANG']['tl_store']['store_configuration_name']			= array('Name der Shop-Konfiguration', '');
 $GLOBALS['TL_LANG']['tl_store']['cookie_duration']					= array('Vorhaltetage der Warenkorb-Informationen', 'Artikel und deren Informationen werden für nicht registrierte Besucher diese Anzahl Tage gespeichert. Ein Wert 0 bedeutet nach dem verlassen der Seite geht der Warenkorb verloren. Der Warenkorb wird für registrierte Mitglieder immer gespeichert.');
 $GLOBALS['TL_LANG']['tl_store']['checkout_login_module']			= array('Login-Modul für Checkout','Wählen Sie das Login-Modul welches in der Kasse angezeigt wird.');
@@ -50,13 +46,18 @@ $GLOBALS['TL_LANG']['tl_store']['large_image_width']				= array('Breite für gro
 $GLOBALS['TL_LANG']['tl_store']['large_image_height']				= array('Höhe für grosses Bild', 'In Pixel.');
 $GLOBALS['TL_LANG']['tl_store']['currency']							= array('Währung', 'Wählen Sie eine Währung für diesen Shop.');
 $GLOBALS['TL_LANG']['tl_store']['currencySymbol']					= array('Währungssymbol verwenden', 'Das Währungssymbol verwenden ($, €) falls möglich.');
+$GLOBALS['TL_LANG']['tl_store']['currencyPosition']					= array('Position der Währungsbezeichung/-symbol', 'Wählen Sie ob die Währung links oder rechts des Preises angezeigt werden soll.');
+$GLOBALS['TL_LANG']['tl_store']['currencyFormat']					= array('Währungsformat', 'Wählen Sie eine Formatierung für Preise.');
 
 $GLOBALS['TL_LANG']['tl_store']['gallery_thumbnail_image_width']	= array('Breite für Galerie-Vorschaubild', 'In Pixel.');
 $GLOBALS['TL_LANG']['tl_store']['gallery_thumbnail_image_height']	= array('Höhe für Galerie-Vorschaubild', 'In Pixel.');
 
+
 /**
  * Reference
  */
+$GLOBALS['TL_LANG']['tl_store']['left']								= 'Links des Preises';
+$GLOBALS['TL_LANG']['tl_store']['right']							= 'Rechts des Preises';
 
 
 /**
@@ -68,4 +69,3 @@ $GLOBALS['TL_LANG']['tl_store']['copy']   = array('Konfiguration duplizieren', '
 $GLOBALS['TL_LANG']['tl_store']['delete'] = array('Konfiguration löschen', 'Shop-Konfiguration ID %s löschen.  Dies löscht nicht die zugeordneten Dateien sondern lediglich die Grundkonfiguration.');
 $GLOBALS['TL_LANG']['tl_store']['show']   = array('Konfigurationsdetails anzeigen', 'Details für Shop-Konfiguration ID %s anzeigen.');
 
-?>
