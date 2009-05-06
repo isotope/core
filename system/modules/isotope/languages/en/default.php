@@ -212,3 +212,9 @@ $GLOBALS['TL_LANG']['CUR']['EUR'] = 'EUR - Euro';
 $GLOBALS['TL_LANG']['CUR']['CHF'] = 'CHF - Swiss Franc';
 
 
+/**
+ * Currency symbols
+ */
+$GLOBALS['TL_LANG']['CUR_SYMBOL']['USD'] = '$';
+$GLOBALS['TL_LANG']['CUR_SYMBOL']['EUR'] = 'Û';
+
