@@ -40,6 +40,7 @@ $GLOBALS['TL_LANG']['MSC']['labelSortBy'] = 'Sortieren nach';
 $GLOBALS['TL_LANG']['MSC']['deleteImage'] = 'Entfernen';
 $GLOBALS['TL_LANG']['MSC']['noItemsInCart'] = 'Ihr Warenkorb ist leer.';
 $GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'] = '%s aus dem Warenkorb entfernen';
+$GLOBALS['TL_LANG']['MSC']['noCategoriesAssociated'] = 'Dieses Produkt ist keiner Kategorie zugeordnet.';
 
 //Checkout language entries 
 $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['billing_information'] = 'Bitte geben Sie Ihre Adresse ein.';

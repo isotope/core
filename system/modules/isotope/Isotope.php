@@ -63,9 +63,9 @@ class Isotope extends Controller
 	}
 
 
-	public function formatPrice($fltPrice, $arrStore)
+	public function formatPrice($fltPrice, $arrStoreConfig)
 	{
-		$arrFormat = $GLOBALS['ISO_NUM'][$arrStore['currencyFormat']];
+		$arrFormat = $GLOBALS['ISO_NUM'][$arrStoreConfig['currencyFormat']];
 		
 		if (!is_array($arrFormat) || !count($arrFormat) == 3)
 			return $fltPrice;
@@ -73,23 +73,57 @@ class Isotope extends Controller
 		return number_format($fltPrice, $arrFormat[0], $arrFormat[1], $arrFormat[2]);
 	}
 	
-	public function formatPriceWithCurrency($fltPrice, $arrStore)
+	public function formatPriceWithCurrency($fltPrice, $arrStoreConfig, $blnHtml=false)
 	{
-		$strPrice = $this->formatPrice($fltPrice, $arrStore);
+		$strPrice = $this->formatPrice($fltPrice, $arrStoreConfig);
 		
-		$strCurrency = $arrStore['currency'];
+		$strCurrency = $arrStoreConfig['currency'];
 		
-		if ($arrStore['currencySymbol'] && strlen($GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency]))
+		if ($arrStoreConfig['currencySymbol'] && strlen($GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency]))
 		{
-			$strCurrency = $GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency];
+			$strCurrency = ($blnHtml ? '<span class="currency">' : '') . $GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency] . ($blnHtml ? '</span>' : '');
+		}
+		else
+		{
+			$strCurrency = ($arrStoreConfig['currencyPosition'] == 'right' ? ' ' : '') . ($blnHtml ? '<span class="currency">' : '') . $strCurrency . ($blnHtml ? '</span>' : '') . ($arrStoreConfig['currencyPosition'] == 'left' ? ' ' : '');
 		}
 		
-		if ($arrStore['currencyPosition'] == 'right')
+		if ($arrStoreConfig['currencyPosition'] == 'right')
 		{
-			return $strPrice . ' ' . $strCurrency;
+			return $strPrice . $strCurrency;
 		}
 		
-		return $strCurrency . ' ' . $strPrice;
+		return $strCurrency . $strPrice;
+	}
+	
+	
+	/**
+	 * getStoreConfigById function.
+	 * 
+	 * @todo cache results!
+	 * @access public
+	 * @param int $intStoreId
+	 * @return array
+	 */
+	public function getStoreConfigById($intStoreId)
+	{
+		$this->import('Database');
+		
+		if(!$intStoreId)
+		{
+			return array();
+		}
+		
+		$objStoreConfig = $this->Database->prepare("SELECT * FROM tl_store WHERE id=?")
+										 ->limit(1)
+										 ->execute($intStoreId);
+		
+		if(!$objStoreConfig->numRows)
+		{
+			return array();
+		}
+		
+		return $objStoreConfig->fetchAssoc();
 	}
 }
 

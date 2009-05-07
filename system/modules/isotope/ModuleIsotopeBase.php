@@ -107,7 +107,9 @@ abstract class ModuleIsotopeBase extends Module
 	
 	public function generate()
 	{
-				
+		$this->import('Isotope');
+		
+		
 		//Check and set currency 	
 		if($this->Input->post('currency'))
 		{
@@ -610,6 +612,7 @@ abstract class ModuleIsotopeBase extends Module
 	/**
 	 * Generate a price string based on an product price, a template, and any pricing rules that apply.
 	 *
+	 * @todo this method has been replaced with "generatePrice"
 	 * @param integer
 	 * @return string (formatted html)
 	 *
@@ -630,6 +633,7 @@ abstract class ModuleIsotopeBase extends Module
 	/**
 	 * Generate a price string based on an product price, a template, and any pricing rules that apply.
 	 *
+	 * @todo this method has been replaced with "generatePrice"
 	 * @param integer
 	 * @return string (formatted html)
 	 *
@@ -649,6 +653,17 @@ abstract class ModuleIsotopeBase extends Module
 		
 	}
 	
+	
+	protected function generatePrice($fltPrice, $arrStoreConfig, $blnOverride=false)
+	{
+		$objTemplate = new FrontendTemplate(($blnOverride ? 'stpl_price_override' : 'stpl_price'));
+		
+		$objTemplate->price = $this->Isotope->formatPriceWithCurrency($fltPrice, $arrStoreConfig, true);
+		
+		return $objTemplate->parse();
+	}
+	
+	
 	/**
 	 * Get the final price including related price rules
 	 *
@@ -661,7 +676,7 @@ abstract class ModuleIsotopeBase extends Module
 		
 		if($objProductPrice->numRows < 1)
 		{
-			return  '';
+			return '';
 		}
 		
 		return $objProductPrice->product_price;
