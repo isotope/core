@@ -22,6 +22,7 @@ CREATE TABLE `tl_module` (
   `iso_checkout_layout` varchar(64) NOT NULL default '',
   `iso_payment_modules` text NULL,
   `iso_shipping_modules` text NULL,
+  `iso_guest_checkout` char(1) NOT NULL default '',
   `new_products_time_window` int(10) unsigned NOT NULL default '0',
   `listing_filters` text NULL,
   `columns` int(10) unsigned NOT NULL default '0',

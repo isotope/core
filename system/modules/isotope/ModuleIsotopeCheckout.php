@@ -115,7 +115,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 		$this->import('FrontendUser','User');
 		
-		$this->strUserId = $this->User->id;
+		$this->strUserId = $this->getCustomerId(); //$this->User->id;
 				
 		if(!$this->strUserId || !FE_USER_LOGGED_IN)
 		{
