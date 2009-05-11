@@ -43,7 +43,7 @@ abstract class ModuleIsotopeBase extends Module
 	 * URL cache array
 	 * @var array
 	 */
-	private static $arrCache = array();
+	private static $arrUrlCache = array();
 	
 	
 	/**
@@ -233,9 +233,9 @@ abstract class ModuleIsotopeBase extends Module
 
 
 		// Load URL from cache
-		if (array_key_exists($strCacheKey, self::$arrCache))
+		if (array_key_exists($strCacheKey, self::$arrUrlCache))
 		{			
-			return self::$arrCache[$strCacheKey];
+			return self::$arrUrlCache[$strCacheKey];
 		}
 		
 		
@@ -250,9 +250,9 @@ abstract class ModuleIsotopeBase extends Module
 				$strUrl = ampersand($this->generateFrontendUrl($objPage->fetchAssoc(), '/' . $strParams));			
 		}
 				
-		self::$arrCache[$strCacheKey] = $strUrl;
+		self::$arrUrlCache[$strCacheKey] = $strUrl;
 
-		return self::$arrCache[$strCacheKey];
+		return self::$arrUrlCache[$strCacheKey];
 
 		/*
 		switch($strLinkType)
@@ -526,9 +526,9 @@ abstract class ModuleIsotopeBase extends Module
 		$strCacheKey = $strProductIdKey . '_' . $arrProduct[$strProductIdKey] . '_' . $intAttributeSetId . '_' . $arrProduct['tstamp'];
 
 		// Load URL from cache
-		if (array_key_exists($strCacheKey, self::$arrCache))
+		if (array_key_exists($strCacheKey, self::$arrUrlCache))
 		{
-			return self::$arrCache[$strCacheKey];
+			return self::$arrUrlCache[$strCacheKey];
 		}
 
 		$strUrl = ampersand($this->Environment->request, ENCODE_AMPERSANDS);
@@ -549,9 +549,9 @@ abstract class ModuleIsotopeBase extends Module
 			$strUrl = ampersand($this->generateFrontendUrl(array('id'=>$objPage->id, 'alias'=>$objPage->alias), '/asetid/' . $intAttributeSetId . '/product/' . $arrProduct['product_alias']));
 		}
 
-		self::$arrCache[$strCacheKey] = $strUrl;
+		self::$arrUrlCache[$strCacheKey] = $strUrl;
 			
-		return self::$arrCache[$strCacheKey];
+		return self::$arrUrlCache[$strCacheKey];
 	}
 
 	
