@@ -36,9 +36,8 @@ class ProductCatalog extends Backend
 
 	private function alterTable($storeTable, $prevStoreTable)
 	{
-		$this->Database->execute(sprintf($this->alterTableStatement, $prevstoreTable, $storeTable));
+		$this->Database->execute(sprintf("ALTER TABLE `%s` RENAME TO `%s`", $prevStoreTable, $storeTable));
 	}
-
 
 	private function dropTable($storeTable)
 	{
@@ -103,10 +102,8 @@ class ProductCatalog extends Backend
 			`add_video_file` char(1) NOT NULL default '0',
 			PRIMARY KEY  (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-	protected $alterTableStatement = "ALTER TABLE `%s` RENAME TO `%s`";
+		
 	protected $dropTableStatement = "DROP TABLE `%s`";
-	
-	protected $renameTableStatement = "ALTER TABLE `%s` RENAME TO `%s`";
 
 	protected $strCurrentStoreTable;
 
@@ -752,16 +749,16 @@ class ProductCatalog extends Backend
 		return $arrOptions;
 	}
 	
-	public function renameTable($varValue, DataContainer $dc, $strStorageConfigTable)
+	public function renameTable($varValue, DataContainer $dc)
 	{		
 		if (!preg_match('/^[a-z_][a-z\d_]*$/iu', $varValue))
 		{
 			throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['invalidStoreTable'], $varValue));
 		}
 		
-		$objType = $this->Database->prepare("SELECT storeTable, noTable FROM " . $strStorageConfigTable . " WHERE id=?")
-				->limit(1)
-				->execute($dc->id);
+		$objType = $this->Database->prepare("SELECT storeTable, noTable FROM tl_product_attribute_sets WHERE id=?")
+								  ->limit(1)
+								  ->execute($dc->id);
 				
 		if ($objType->numRows == 0)
 		{
@@ -772,35 +769,24 @@ class ProductCatalog extends Backend
 		{
 			if (!$this->Database->tableExists($varValue))
 			{
-					$strException = sprintf($GLOBALS['TL_LANG']['ERR']['tableDoesNotExist'], $varValue);
-					
-					throw new Exception(strException);
+					throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['tableDoesNotExist'], $varValue));
 			}
+			
 			return $varValue;
 		}
 		
-		$oldStoreTable = $objType->storeTable;
-				
-		if (strlen($oldStoreTable))
-		{
-			$statement = sprintf($this->renameTableStatement, $oldStoreTable, $varValue);
-		}
-		else
-		{
-			$statement = sprintf($this->createTableStatement, $varValue);
-		}
-		
-		$needToCheckIfExists = (!strlen($oldStoreTable) || $oldStoreTable != $varValue);
-		
-		if ($needToCheckIfExists && $this->Database->tableExists($varValue))
+		if ((!strlen($objType->storeTable) || $objType->storeTable != $varValue) && $this->Database->tableExists($varValue))
 		{
 			throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['tableExists'], $varValue)); 
 		}
-		
-		
-		$this->Database->execute($statement);
-
-		//$this->checkCatalogFields($dc->id, $varValue);
+		elseif (strlen($objType->storeTable))
+		{
+			$statement = $this->alterTable($varValue, $objType->storeTable);
+		}
+		else
+		{
+			$statement = $this->createTable($varValue);
+		}
 		
 		return $varValue;
 	}
@@ -841,48 +827,47 @@ class ProductCatalog extends Backend
 	
 	public function renameColumn($varValue, DataContainer $dc)
 	{
+		$varValue = strtolower($this->mysqlStandardize($varValue));
+		
 		if (!preg_match('/^[a-z_][a-z\d_]*$/i', $varValue))
 		{
-				throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['invalidColumnName'], $varValue));
+			throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['invalidColumnName'], $varValue));
 		}
 		if (in_array($varValue, $this->systemColumns))
 		{
-				throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['systemColumn'], $varValue));
+			throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['systemColumn'], $varValue));
 		}
 		
 		$objField = $this->Database->prepare("SELECT f.storeTable, ff.pid, ff.id, ff.type, ff.name FROM tl_product_attribute_sets f, tl_product_attributes ff WHERE f.id=ff.pid AND ff.id=?")
-				->limit(1)
-				->execute($dc->id);
-				
-		$storeTable = $objField->storeTable;
-		$field_nameEx = strtolower($this->mysqlStandardize($objField->name));
-		$fieldType = $objField->type ? $objField->type : 'text';
-		
+								   ->limit(1)
+								   ->execute($dc->id);
 			
 		// check duplicate form_field name
-		$objItems = $this->Database->prepare("SELECT COUNT(*) as itemCount FROM tl_product_attributes WHERE pid=? AND id<>? AND name=?")
-				->limit(1)
-				->execute($objField->pid, $dc->id, $varValue);
+		$objItems = $this->Database->prepare("SELECT id FROM tl_product_attributes WHERE pid=? AND id<>? AND name=?")
+								   ->execute($objField->pid, $objField->id, $varValue);
 		
-		if ($objItems->itemCount > 0)
+		if ($objItems->numRows)
 		{
-				throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['columnExists'], $varValue)); 
+			throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['columnExists'], $varValue));
 		}
 		
-		if ($this->Database->fieldExists($field_nameEx, $storeTable))
+
+		$fieldType = $objField->type ? $objField->type : 'text';
+		
+		if ($this->Database->fieldExists($objField->name, $objField->storeTable))
 		{
-				$statement = sprintf($this->renameColumnStatement, $storeTable, $field_nameEx, $varValue, $this->sqlDef[$fieldType]);
+			$statement = sprintf($this->renameColumnStatement, $objField->storeTable, $objField->name, $varValue, $this->sqlDef[$fieldType]);
 		}
 		else
 		{
-				$statement = sprintf($this->createColumnStatement, $storeTable, $varValue, $this->sqlDef[$fieldType]);
+			$statement = sprintf($this->createColumnStatement, $objField->storeTable, $varValue, $this->sqlDef[$fieldType]);
 		}
 				
 		$this->Database->execute($statement);
 		
 		//Create the field name for quick reference in code.
-		$this->Database->prepare("UPDATE tl_product_attributes SET field_name='" . $varValue . "' WHERE id=?")
-					   ->execute($dc->id);
+//		$this->Database->prepare("UPDATE tl_product_attributes SET field_name='" . $varValue . "' WHERE id=?")
+//					   ->execute($dc->id);
 		
 		return $varValue;
 	}
@@ -893,11 +878,11 @@ class ProductCatalog extends Backend
 	{
 		if (!preg_match('/^[a-z_][a-z\d_]*$/i', $varValue))
 		{
-				throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['invalidColumnName'], $varValue));
+			throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['invalidColumnName'], $varValue));
 		}
 		if (in_array($varValue, $this->systemColumns))
 		{
-				throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['systemColumn'], $varValue));
+			throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['systemColumn'], $varValue));
 		}
 		
 		$statement = sprintf($this->createColumnStatement, $storeTable, $varValue, $this->sqlDef[$fieldType]);
@@ -1322,7 +1307,7 @@ class ProductCatalog extends Backend
 			
 		if ($objField->numRows < 1)
 		{
-				return array();
+			return array();
 		}
 		
 		$id = $objField->id;

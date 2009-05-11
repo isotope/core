@@ -25,5 +25,6 @@
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_product_attributes']['name'] = array('Name', 'Geben Sie einen Namen für dieses Artikelmerkmal ein.');
+$GLOBALS['TL_LANG']['tl_product_attributes']['field_name'] = array('Interner Name', 'Der interne Feldname muss eindeutig für diesen Artikeltyp sein. Gewisse Felder (z.B. product_name) sind zwingend und können nicht geändert werden.');
 $GLOBALS['TL_LANG']['tl_product_attributes']['type'] = array('Typ', '');
 

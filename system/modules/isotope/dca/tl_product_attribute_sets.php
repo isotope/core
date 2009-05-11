@@ -118,7 +118,7 @@ $GLOBALS['TL_DCA']['tl_product_attribute_sets'] = array
 	'palettes' => array
 	(
 		'__selector__'            => array('addImage'),
-		'default'                 => 'name,store_id;addImage;format',
+		'default'                 => 'name,store_id,storeTable,noTable;addImage;format',
 	),
 
 	// Subpalettes
@@ -139,7 +139,7 @@ $GLOBALS['TL_DCA']['tl_product_attribute_sets'] = array
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>61),
 			'save_callback'			  => array
 			(
-				array('tl_product_attribute_sets','standardize_mysql_storeTable')
+//				array('tl_product_attribute_sets','standardize_mysql_storeTable')
 			)
 		),
         'store_id' => array
@@ -150,18 +150,17 @@ $GLOBALS['TL_DCA']['tl_product_attribute_sets'] = array
 			'foreignKey'			  => 'tl_store.store_configuration_name',
 			'eval'					  => array('includeBlankOption'=>true,'mandatory'=>true)		
 		),
-		/*'storeTable' => array
+		'storeTable' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attribute_sets']['storeTable'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>64, 'doNotCopy'=>true),
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>64, 'doNotCopy'=>true, 'spaceToUnderscore'=>true, 'unique'=>true),
 			'save_callback'           => array
 			(
 				array('ProductCatalog', 'renameTable')
 			)
-		),*/
-        
+		),
 		'noTable' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attribute_sets']['noTable'],
@@ -460,6 +459,7 @@ class tl_product_attribute_sets extends Backend
 	 * @param object DataContainer $dc
 	 * @return mixed
 	 */
+/*
 	public function standardize_mysql_storeTable($varValue, DataContainer $dc)
 	{
 		$storeTable = utf8_romanize($varValue);
@@ -491,4 +491,5 @@ class tl_product_attribute_sets extends Backend
 		
 		return $varValue;
 	}
+*/
 }

@@ -39,7 +39,8 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 		'enableVersioning'            => true,
 		'onload_callback'             => array
 		(
-			array('tl_product_attributes', 'loadAttributes')
+			array('tl_product_attributes', 'loadAttributes'),
+			array('tl_product_attributes', 'checkPermission'),
 		),
 		'ondelete_callback'			  => array
 		(
@@ -115,20 +116,20 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
     'palettes' => array
     (
         '__selector__'				=> array('type','use_alternate_source'),
-		'default'					=> 'name,description,type',
-		'text'                     	=> 'name,description,type,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_searchable,is_order_by_enabled,is_listing_field;rgxp;load_callback;save_callback',
-		'shorttext'               	=> 'name,description,type,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_searchable,is_order_by_enabled,is_listing_field;rgxp;load_callback;save_callback',
-		'integer'					=> 'name,description,type,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_searchable,is_order_by_enabled,is_used_for_price_rules,is_listing_field;load_callback;save_callback',
-		'decimal'					=> 'name,description,type,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_searchable,is_order_by_enabled,is_used_for_price_rules,is_listing_field;load_callback;save_callback',
-		'longtext'					=> 'name,description,type,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_searchable,is_order_by_enabled,use_rich_text_editor,is_listing_field;load_callback;save_callback',
-		'datetime'					=> 'name,description,type,is_visible_on_front;is_hidden_on_backend;is_required,is_searchable,is_order_by_enabled,is_listing_field;load_callback;save_callback',
-		'select'					=> 'name,description,type,option_list,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_searchable,is_multiple_select,is_order_by_enabled,is_listing_field;use_alternate_source;load_callback;save_callback',
-		'boolean'					=> 'name,description,type,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_searchable,is_multiple_select,is_order_by_enabled,is_listing_field;load_callback;save_callback',
-		'options'					=> 'name,description,type,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_searchable,is_multiple_select,is_order_by_enabled,is_listing_field;load_callback;save_callback',
-		'fileattach'				=> 'name,description,type,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_searchable,is_listing_field;load_callback;save_callback',
-		'filetree'					=> 'name,description,type,show_files;is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_searchable,is_listing_field;load_callback;save_callback',
-		'media'						=> 'name,description,type,show_files;is_visible_on_front;is_hidden_on_backend;is_required,is_listing_field;load_callback;save_callback',
-		'checkbox'					=> 'name,description,type,option_list,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_order_by_enabled,is_listing_field;use_alternate_source;load_callback;save_callback'
+		'default'					=> 'name,description,type,field_name',
+		'text'                     	=> 'name,description,type,field_name,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_searchable,is_order_by_enabled,is_listing_field;rgxp;load_callback;save_callback',
+		'shorttext'               	=> 'name,description,type,field_name,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_searchable,is_order_by_enabled,is_listing_field;rgxp;load_callback;save_callback',
+		'integer'					=> 'name,description,type,field_name,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_searchable,is_order_by_enabled,is_used_for_price_rules,is_listing_field;load_callback;save_callback',
+		'decimal'					=> 'name,description,type,field_name,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_searchable,is_order_by_enabled,is_used_for_price_rules,is_listing_field;load_callback;save_callback',
+		'longtext'					=> 'name,description,type,field_name,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_searchable,is_order_by_enabled,use_rich_text_editor,is_listing_field;load_callback;save_callback',
+		'datetime'					=> 'name,description,type,field_name,is_visible_on_front;is_hidden_on_backend;is_required,is_searchable,is_order_by_enabled,is_listing_field;load_callback;save_callback',
+		'select'					=> 'name,description,type,field_name,option_list,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_searchable,is_multiple_select,is_order_by_enabled,is_listing_field;use_alternate_source;load_callback;save_callback',
+		'boolean'					=> 'name,description,type,field_name,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_searchable,is_multiple_select,is_order_by_enabled,is_listing_field;load_callback;save_callback',
+		'options'					=> 'name,description,type,field_name,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_searchable,is_multiple_select,is_order_by_enabled,is_listing_field;load_callback;save_callback',
+		'fileattach'				=> 'name,description,type,field_name,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_searchable,is_listing_field;load_callback;save_callback',
+		'filetree'					=> 'name,description,type,field_name,show_files;is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_searchable,is_listing_field;load_callback;save_callback',
+		'media'						=> 'name,description,type,field_name,show_files;is_visible_on_front;is_hidden_on_backend;is_required,is_listing_field;load_callback;save_callback',
+		'checkbox'					=> 'name,description,type,field_name,option_list,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_order_by_enabled,is_listing_field;use_alternate_source;load_callback;save_callback'
     ),
 
     // Subpalettes
@@ -143,25 +144,22 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 		'name' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['name'],
-			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
 			'save_callback'			  => array
 			(
-				array('tl_product_attributes','standardizeAndChangeColumnType')
+//				array('tl_product_attributes','standardizeAndChangeColumnType')
 			)
 		),
 		'description' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['description'],
-			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255),
 		),
 		'type' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['type'],
-			'exclude'                 => true,
 			'inputType'               => 'select',
 			'eval'                    => array('mandatory'=>true,'includeBlankOption'=>true,'submitOnChange'=>true),
 			'options_callback'		  => array('tl_product_attributes','getAttributeTypes')/*,
@@ -169,6 +167,16 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 			(
 				array('tl_product_attributes','standardizeAndChangeColumnType')
 			)*/
+		),
+		'field_name' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['field_name'],
+			'inputType'               => 'text',
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
+			'save_callback'			  => array
+			(
+				array('ProductCatalog','renameColumn'),
+			)
 		),
 		'option_list' => array
 		(
@@ -412,6 +420,45 @@ class tl_product_attributes extends Backend
 		if (!strlen($act) && $dc->table == 'tl_product_attributes' && $dc->id)
 		{
 			$this->ProductCatalog->regenerateDca($dc->id);
+			
+			// Load default attributes if empty
+			$objAttributeSet = $this->Database->prepare("SELECT * FROM tl_product_attribute_sets WHERE id=?")->limit(1)->execute($dc->id);
+			
+			if ($objAttributeSet->numRows)
+			{
+				$objAttributes = $this->Database->prepare("SELECT * FROM tl_product_attributes WHERE pid=?")->execute($objAttributeSet->id);
+				if (!$objAttributes->numRows)
+				{
+					$this->ProductCatalog->insertDefaultAttributes($dc, $objAttributeSet->storeTable);
+				}
+			}
+		}
+	}
+	
+	
+	public function checkPermission($dc)
+	{
+		if ($this->Input->get('act') == 'edit')
+		{
+			$objAttribute = $this->Database->prepare("SELECT * FROM tl_product_attributes WHERE id=?")->limit(1)->execute($dc->id);
+			
+			if ($objAttribute->numRows)
+			{
+				$blnMandatory = false;
+				
+				foreach( $GLOBALS['ISO_ATTR'] as $attr )
+				{
+					if ($attr['field_name'] == $objAttribute->field_name)
+					{
+						$blnMandatory = true;
+					}
+				}
+				
+				if ($blnMandatory)
+				{
+					$GLOBALS['TL_DCA']['tl_product_attributes']['fields']['field_name']['eval']['style'] = 'background-color: #fee;" readonly="readonly';
+				}
+			}
 		}
 	}
 	
@@ -427,7 +474,7 @@ class tl_product_attributes extends Backend
 	{
 		$this->import('ProductCatalog');
 		
-		$strTemplateKey = strtolower($this->ProductCatalog->mysqlStandardize($arrRow['name']));
+		$strTemplateKey = $arrRow['field_name'];
 				
 		$strTemplate = "%s (%s, <strong>%s</strong>)" . ($arrRow['is_visible_on_front']==1 ? "<br />" . $GLOBALS['TL_LANG']['tl_product_attributes']['template_key'] . "<strong>%s</strong>" : "") . "<br />" . ($arrRow['is_visible_on_front'] ? $GLOBALS['TL_LANG']['tl_product_attributes']['template_visibility_title'] . "<strong>" . $GLOBALS['TL_LANG']['tl_product_attributes']['product_reader_enabled'] . ($arrRow['is_listing_field']==1 ? ", " . $GLOBALS['TL_LANG']['tl_product_attributes']['product_listing_enabled'] : "") . "</strong>" : "");
 		
@@ -718,6 +765,7 @@ class tl_product_attributes extends Backend
 	 * @param object DataContainer $dc
 	 * @return mixed
 	 */
+/*
 	public function standardizeAndRenameColumn($varValue, DataContainer $dc)
 	{
 		$this->import('ProductCatalog');
@@ -728,6 +776,7 @@ class tl_product_attributes extends Backend
 		
 		return $varValue;
 	}
+*/
 	
 	
 	/**
@@ -738,6 +787,7 @@ class tl_product_attributes extends Backend
 	 * @param object DataContainer $dc
 	 * @return mixed
 	 */
+/*
 	public function standardizeAndChangeColumnType($varValue, DataContainer $dc)
 	{
 		$this->import('ProductCatalog');	
@@ -748,6 +798,7 @@ class tl_product_attributes extends Backend
 		
 		return $varValue;
 	}
+*/
 	
 	
 	/**

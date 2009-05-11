@@ -26,6 +26,7 @@
  */
 $GLOBALS['TL_LANG']['tl_product_attributes']['name'] = array('Attribute Name', '');
 $GLOBALS['TL_LANG']['tl_product_attributes']['description'] = array('Attribute Description', '');
+$GLOBALS['TL_LANG']['tl_product_attributes']['field_name'] = array('Internal name', 'Internal field name must be unique to this attribute set. Some field labels are mandatory (product_name etc.) and cannot be edited.');
 $GLOBALS['TL_LANG']['tl_product_attributes']['type'] = array('Attribute Type', '');
 $GLOBALS['TL_LANG']['tl_product_attributes']['option_list'] = array('Options', 'Please enter one or more options. Use the buttons to add, move or delete an option. If you are working without JavaScript assistance, you should save your changes before you modify the order!');
 $GLOBALS['TL_LANG']['tl_product_attributes']['show_files'] = array('Show Files','If checked, users will be able to select individual files, if false, they may only select folders.');
