@@ -2,23 +2,26 @@
 
 /**
  * TYPOlight webCMS
+ * Copyright (C) 2005 Leo Feyer
  *
- * The TYPOlight webCMS is an accessible web content management system that 
- * specializes in accessibility and generates W3C-compliant HTML code. It 
- * provides a wide range of functionality to develop professional websites 
- * including a built-in search engine, form generator, file and user manager, 
- * CSS engine, multi-language support and many more. For more information and 
- * additional TYPOlight applications like the TYPOlight MVC Framework please 
- * visit the project website http://www.typolight.org.
- *
- * Default language file (en).
+ * This program is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation, either
+ * version 2.1 of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program. If not, please visit the Free
+ * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Martin Komara 2007 
- * @author     Martin Komara 
- * @package    Language 
- * @license    GPL 
- * @filesource
+ * @copyright  Winans Creative / Fred Bliss 2009
+ * @author     Andreas Schempp <andreas@schempp.ch>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
@@ -65,3 +68,21 @@ $GLOBALS['TL_LANG']['ISO']['productMultiple']	= '%s Produkte';
 $GLOBALS['TL_LANG']['CUR']['USD'] = 'USD - US Dollar';
 $GLOBALS['TL_LANG']['CUR']['EUR'] = 'EUR - Euro';
 $GLOBALS['TL_LANG']['CUR']['CHF'] = 'CHF - Schweizer Franken';
+
+
+/** 
+ * Default attributes
+ */
+$GLOBALS['TL_LANG']['ISO_ATTR']['product_name']					= array('Name', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['product_sku']					= array('Artikelnummer', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['product_weight']				= array('Gewicht', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['product_quantity']				= array('Anzahl', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['product_alias']				= array('Alias', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['product_visibility']			= array('Sichtbarkeit', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['product_teaser']				= array('Teaser', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['product_description']			= array('Beschreibung', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['product_price']				= array('Preis', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['product_price_override']		= array('Ersatzpreis', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['use_product_price_override']	= array('Ersatzpreis verwenden', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['product_media']				= array('Medien', '');
+

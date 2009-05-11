@@ -1002,11 +1002,22 @@ class ProductCatalog extends Backend
 					case 'pid':
 						$arrSet[$k] = $dc->id;
 						break;
+						
 					case 'tstamp':
 						$arrSet[$k] = time();
 						break;
+						
 					case 'sorting':
 						$arrSet[$k] = $intSorting;
+						break;
+						
+					case 'name':
+						$arrSet[$k] = strlen($GLOBALS['TL_LANG']['ISO_ATTR'][$arrSet['field_name']][0]) ? $GLOBALS['TL_LANG']['ISO_ATTR'][$arrSet['field_name']][0] : $v;
+						break;
+						
+					case 'description':
+						$arrSet[$k] = strlen($GLOBALS['TL_LANG']['ISO_ATTR'][$arrSet['field_name']][1]) ? $GLOBALS['TL_LANG']['ISO_ATTR'][$arrSet['field_name']][1] : $v;
+						break;
 				}
 			}	
 			

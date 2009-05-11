@@ -176,10 +176,6 @@ $GLOBALS['TL_LANG']['MSC']['z_to_a'] = 'Z to A';
 
 $GLOBALS['TL_LANG']['MSC']['teaserLength'] = 300;
 
-$GLOBALS['TL_LANG']['MSC']['CURRENCY']['USD'] = '$';
-$GLOBALS['TL_LANG']['MSC']['defaultCurrency'] = 'USD';
-$GLOBALS['TL_LANG']['MSC']['isotopeLocale']['USD'] = 'en_US';
-
 $GLOBALS['TL_LANG']['MSC']['validMediaFileTypes']['images'] = array('bmp','gif','jpeg','jpg','jpe','png','tiff','tif');
 $GLOBALS['TL_LANG']['MSC']['validMediaFileTypes']['audio'] = array('mpga','mp2','mp3','wav','aif','aiff','aifc','ram','rm','rpm','ra');
 $GLOBALS['TL_LANG']['MSC']['validMediaFileTypes']['video'] = array('mpeg','mpg','mpe','qt','mov','avi','movie','rv');
@@ -217,4 +213,21 @@ $GLOBALS['TL_LANG']['CUR']['CHF'] = 'CHF - Swiss Franc';
  */
 $GLOBALS['TL_LANG']['CUR_SYMBOL']['USD'] = '$';
 $GLOBALS['TL_LANG']['CUR_SYMBOL']['EUR'] = 'Û';
+
+
+/** 
+ * Default attributes
+ */
+$GLOBALS['TL_LANG']['ISO_ATTR']['product_name']					= array('Product Name', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['product_sku']					= array('Product SKU', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['product_weight']				= array('Product Weight', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['product_quantity']				= array('Product Quantity', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['product_alias']				= array('Product Alias', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['product_visibility']			= array('Product Visibility', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['product_teaser']				= array('Product Teaser', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['product_description']			= array('Product Description', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['product_price']				= array('Product Price', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['product_price_override']		= array('Product Price Override', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['use_product_price_override']	= array('Use Product Price Override', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['product_media']				= array('Product Media', '');
 
