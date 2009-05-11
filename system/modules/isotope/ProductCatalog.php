@@ -838,7 +838,7 @@ class ProductCatalog extends Backend
 			throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['systemColumn'], $varValue));
 		}
 		
-		$objField = $this->Database->prepare("SELECT f.storeTable, ff.pid, ff.id, ff.type, ff.name FROM tl_product_attribute_sets f, tl_product_attributes ff WHERE f.id=ff.pid AND ff.id=?")
+		$objField = $this->Database->prepare("SELECT f.storeTable, ff.pid, ff.id, ff.type, ff.field_name FROM tl_product_attribute_sets f, tl_product_attributes ff WHERE f.id=ff.pid AND ff.id=?")
 								   ->limit(1)
 								   ->execute($dc->id);
 			
@@ -854,16 +854,20 @@ class ProductCatalog extends Backend
 
 		$fieldType = $objField->type ? $objField->type : 'text';
 		
-		if ($this->Database->fieldExists($objField->name, $objField->storeTable))
+		if ($this->Database->fieldExists($objField->field_name, $objField->storeTable))
 		{
-			$statement = sprintf($this->renameColumnStatement, $objField->storeTable, $objField->name, $varValue, $this->sqlDef[$fieldType]);
+			if ($objField->field_name != $varValue)
+			{
+				$statement = sprintf($this->renameColumnStatement, $objField->storeTable, $objField->field_name, $varValue, $this->sqlDef[$fieldType]);
+			}
 		}
 		else
 		{
 			$statement = sprintf($this->createColumnStatement, $objField->storeTable, $varValue, $this->sqlDef[$fieldType]);
 		}
-				
-		$this->Database->execute($statement);
+		
+		if (strlen($statement))
+			$this->Database->execute($statement);
 		
 		//Create the field name for quick reference in code.
 //		$this->Database->prepare("UPDATE tl_product_attributes SET field_name='" . $varValue . "' WHERE id=?")
