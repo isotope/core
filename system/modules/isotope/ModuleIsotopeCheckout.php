@@ -116,11 +116,6 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		$this->import('FrontendUser','User');
 		
 		$this->strUserId = $this->getCustomerId(); //$this->User->id;
-				
-		if(!$this->strUserId || !FE_USER_LOGGED_IN)
-		{
-			$this->blnShowLoginOptions = true;
-		}
 		
 		$this->intCartId = $this->userCartExists($this->strUserId);
 		
@@ -128,16 +123,18 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		{
 			//redirect away from checkout.
 			$this->redirect($this->Environment->base);
-			
-		}	
+		}
+		
+		if(!$this->strUserId || !FE_USER_LOGGED_IN)
+		{
+			$this->blnShowLoginOptions = true;
+		}
 		
 		$this->arrSession = $this->Session->getData();
 		
 		$this->arrJumpToValues = $this->getStoreJumpToValues($this->store_id);	//Deafult keys are "product_reader", "shopping_cart", and "checkout"
 		
 		return parent::generate();
-			
-		
 	}
 	
 	
@@ -282,6 +279,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				
 				
 				case 'payment_method':
+					continue;
 					if(!FE_USER_LOGGED_IN)
 					{
 						break;
@@ -1240,14 +1238,18 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				if(strlen($address['street_2'])<1)
 				{
 					unset($address['street_2']);
-				}else{
+				}
+				else
+				{
 					$address['street'] .= '<br />' . $address['street_2'];
 				}
 				
 				if(strlen($address['street_3'])<1)
 				{
 					unset($address['street_3']);
-				}else{
+				}
+				else
+				{
 					$address['street'] .= '<br />' . $address['street_3'];
 				}
 				

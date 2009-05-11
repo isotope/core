@@ -36,7 +36,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryManager']	= 'name,ty
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistrySearch']	= 'name,type,headline;jumpTo;guests,protected;align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryResults']	= 'name,type,headline;jumpTo;iso_registry_results;perPage;guests,protected;align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryReader']	= 'name,type,headline;store_id,iso_registry_reader;guests,protected;align,space,cssID';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoCheckout']				= 'name,type,headline;store_id,orderCompleteJumpTo,iso_guest_checkout;iso_payment_modules;iso_shipping_modules;iso_checkout_layout;guests,protected;align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoCheckout']				= 'name,type,headline;store_id,orderCompleteJumpTo,iso_checkout_method;iso_payment_modules;iso_shipping_modules;iso_checkout_layout;guests,protected;align,space,cssID';
 
 
 /**
@@ -58,11 +58,15 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_jump_first'] = array
 	'inputType'               => 'checkbox',
 );
 
-$GLOBALS['TL_DCA']['tl_module']['fields']['iso_guest_checkout'] = array
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_checkout_method'] = array
 (
-	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_guest_checkout'],
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_checkout_method'],
 	'exclude'                 => true,
-	'inputType'               => 'checkbox',
+	'inputType'               => 'radio',
+	'default'				  => 'login',
+	'options'				  => array('login', 'guest', 'both'),
+	'reference'				  => &$GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref'],
+	'eval'					  => array('mandatory'=>true),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_reader_layout'] = array
