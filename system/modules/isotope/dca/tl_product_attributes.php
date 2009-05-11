@@ -82,13 +82,13 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 				'label'               => &$GLOBALS['TL_LANG']['tl_product_attributes']['edit'],
 				'href'                => 'act=edit',
 				'icon'                => 'edit.gif'
-			),
+			),/*
 			'copy' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_product_attributes']['copy'],
 				'href'                => 'act=copy',
 				'icon'                => 'copy.gif'
-			),
+			),*/
 			'cut' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_product_attributes']['cut'],
