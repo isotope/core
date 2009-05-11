@@ -24,7 +24,7 @@
 /**
  * Backend Modules
  */
-$GLOBALS['TL_LANG']['MOD']['store']						= array('Isotope eCommerce', '');
+$GLOBALS['TL_LANG']['MOD']['store']						= 'Isotope eCommerce';
 $GLOBALS['TL_LANG']['MOD']['isotopeMedia']				= array('Isotope File Manager', 'This module allows you to upload new files to the server or to manage existing files and folders for the Isotope file system.');
 $GLOBALS['TL_LANG']['MOD']['orders']					= array('Isotope Orders', '');
 $GLOBALS['TL_LANG']['MOD']['shipping']					= array('Shipping Methods','');
