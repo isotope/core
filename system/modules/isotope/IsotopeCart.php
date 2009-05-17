@@ -64,6 +64,12 @@ class IsotopeCart extends Model
 	 */
 	protected $arrCache = array();
 	
+	/**
+	 * Cache all products for speed improvements
+	 * @var array
+	 */
+	protected $arrProducts = array();
+	
 	
 	/**
 	 * Prevent cloning of the object (Singleton)
@@ -251,34 +257,19 @@ class IsotopeCart extends Model
 	/**
 	 * Fetch products from database.
 	 * 
-	 * @todo data should be cached for speed increase
-	 * @todo make sure $objCartData sql works correctly
 	 * @access public
 	 * @return array
 	 */
 	public function getProducts()
 	{
-		$objCartData = $this->Database->prepare("SELECT tl_cart_items.*, tl_product_attribute_sets.storeTable FROM tl_cart_items LEFT OUTER JOIN tl_product_attribute_sets ON tl_cart_items.attribute_set_id=tl_product_attribute_sets.id WHERE tl_cart_items.pid=?")->execute($this->id);
-										  
-/*
-		if ($objCartData->numRows)
+		if (!$this->arrProducts)
 		{
-			$arrTableInfo = $this->Isotope->getStoreTables($objCartData->fetchEach('attribute_set_id'));
+			$objCartData = $this->Database->prepare("SELECT tl_cart_items.*, tl_product_attribute_sets.storeTable FROM tl_cart_items LEFT OUTER JOIN tl_product_attribute_sets ON tl_cart_items.attribute_set_id=tl_product_attribute_sets.id WHERE tl_cart_items.pid=?")->execute($this->id);
 			
-			$objCartData->reset();
-			
-			while( $objCartData->next() )
-			{
-				$arrData = $objCartData->row();
-				
-				$arrData['storeTable'] = $arrTableInfo[$objCartData->attribute_set_id];
-				
-				$arrCartData[] = $arrData;
-			}
+			$this->arrProducts = $objCartData->fetchAllAssoc();
 		}
-*/
-				
-		return $objCartData->fetchAllAssoc();
+		
+		return $this->arrProducts;
 	}
 	
 
