@@ -95,7 +95,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 			$this->iso_list_layout = 'iso_list_productlisting';
 		}
 
-		$this->arrJumpToValues = $this->getStoreJumpToValues($this->store_id);	//Deafult keys are "product_reader", "shopping_cart", and "checkout"
+//		$this->arrJumpToValues = $this->getStoreJumpToValues($this->store_id);	//Deafult keys are "product_reader", "shopping_cart", and "checkout"
 
 		$this->strTemplate = $this->iso_list_layout;
 		return parent::generate();
@@ -399,7 +399,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 			
 			if ($this->iso_jump_first && !strlen($this->Input->get('asetid')) && !strlen($this->Input->get('aset_id')) && count($arrProducts))
 			{
-				$this->redirect($this->generateProductLink($arrProducts[0]['product_alias'], $arrProducts[0], $this->arrJumpToValues['product_reader'], $aggregateSet['id']));
+				$this->redirect($this->generateProductLink($arrProducts[0]['product_alias'], $arrProducts[0], $this->Store->productReaderJumpTo, $aggregateSet['id']));
 			}
 			
 			$i=0;
@@ -412,8 +412,8 @@ class ModuleProductLister extends ModuleIsotopeBase
 					(
 						'product_name'			=> $product['product_name'],
 						'product_alias'			=> $product['product_alias'],
-						'product_link'			=> $this->generateProductLink($product['product_alias'], $product, $this->arrJumpToValues['product_reader'], $aggregateSet['id']),
-						'price_string'			=> ($product['use_product_price_override']==1 ? $this->generatePriceStringOverride($this->strPriceOverrideTemplate, $product['product_price_override']) : $this->generatePriceString($product['product_price'], $this->strCurrency, $this->strPriceTemplate)),
+						'product_link'			=> $this->generateProductLink($product['product_alias'], $product, $this->Store->productReaderJumpTo, $aggregateSet['id']),
+						'price_string'			=> ($product['use_product_price_override']==1 ? $this->generatePrice($product['product_price_override'], $this->strPriceOverrideTemplate) : $this->generatePrice($product['product_price'], $this->strPriceTemplate)),
 						'thumbnail'				=> $this->getThumbnailImage($product['id'], $product['product_alias'], $product['product_images'], $strMissingImagePlaceholder, $this->strFileBasePath),
 						'product_id'			=> $product['id'],
 						'aset_id'				=> $aggregateSet['id']
@@ -918,9 +918,11 @@ class ModuleProductLister extends ModuleIsotopeBase
 	}
 	
 	/* NOTE - THIS FUNCTION IS DUPED IN SEVERAL PLACES (CART, REGISTRY)*/
-	
+	// FIXME
 	protected function userRegistryExists($strUserId)
 	{
+		return false;
+		
 		$strClause = $this->determineUserIdType($strUserId);
 						
 		$objUserCart = $this->Database->prepare("SELECT id FROM tl_cart WHERE cart_type_id=? AND " . $strClause)

@@ -70,31 +70,15 @@
 			switch( $arrTag[1] )
 			{
 				case 'cart_count';
-					$strUserId = $this->getCustomerId();
-					$intCartId = $this->userCartExists($strUserId);
-					if ($intCartId == 0)
-						return '';
-					
-					$arrProducts = $this->getCartProductsByCartId($intCartId, $strUserId);
-					
-					if (count($arrProducts) == 0)
-						return '';
-					
-					return count($arrProducts);
+					return $this->Cart->items;
 					break;
 					
 				case 'cart_count_products';
-					$strUserId = $this->getCustomerId();
-					$intCartId = $this->userCartExists($strUserId);
-					if ($intCartId == 0)
+					$intCount = $this->Cart->items;
+					if (!$intCount)
 						return '';
 					
-					$arrProducts = $this->getCartProductsByCartId($intCartId, $strUserId);
-					
-					if (count($arrProducts) == 0)
-						return '';
-					
-					return count($arrProducts) == 1 ? ('('.$GLOBALS['TL_LANG']['ISO']['productSingle'].')') : sprintf(('('.$GLOBALS['TL_LANG']['ISO']['productMultiple'].')'), count($arrProducts));
+					return $intCount == 1 ? ('('.$GLOBALS['TL_LANG']['ISO']['productSingle'].')') : sprintf(('('.$GLOBALS['TL_LANG']['ISO']['productMultiple'].')'), $intCount);
 					break;
 			}
 		}

@@ -68,7 +68,6 @@ class ProductCatalog extends Backend
 	);
 	
 	protected $arrForm = array();
-	protected $arrStore = array();
 	protected $arrFields = array();
 	protected $arrTypes = array('text','password','textarea','select','radio','checkbox','upload', 'hidden');
 	protected $arrList = array ('tstamp','pages','new_import','add_audio_file','add_video_file');	//Basic required fields
@@ -802,7 +801,8 @@ class ProductCatalog extends Backend
 			$this->arrForm = $objForm->fetchAssoc();
 			$this->initializeFields($formId);
 
-			$this->arrStore = $this->Database->prepare("SELECT * FROM tl_store WHERE id=?")->limit(1)->execute($this->arrForm['store_id'])->fetchAssoc();
+
+			$_SESSION['isotope']['store_id'] = $this->arrForm['store_id']
 		}
 
 	}
@@ -1062,7 +1062,7 @@ class ProductCatalog extends Backend
 		
 		//$thumbnail = $GLOBALS['TL_CONFIG']['isotope_upload_path'] . '/' . $GLOBALS['TL_CONFIG']['isotope_base_path'] . '/' . substr($row['product_alias'], 0, 1) . '/' . $row['product_alias'] . '/images/' . $GLOBALS['TL_LANG']['MSC']['gallery_thumbnail_images_folder'] . '/' . $arrImages[0];
 		
-		$output = '<div style="margin-top:5px!important;margin-bottom:0px!important;" class="cte_type ' . $key . '"><div><span><img src="' . $thumbnail . '" alt="' . $row['product_name'] . '" align="left" style="padding-right: 8px;" /><strong>' . $row['product_name'] . '</strong></span><div><span style="color:#b3b3b3;"><strong>' . $this->Isotope->formatPriceWithCurrency($row['product_price'], $this->arrStore) . '</strong></span></div><br /><br /><div><em>' . $GLOBALS['TL_LANG']['tl_product_data']['pages'][0] . ': ' . $this->getCategoryList(deserialize($row['pages'])) . '</em></div></div></div> ';
+		$output = '<div style="margin-top:5px!important;margin-bottom:0px!important;" class="cte_type ' . $key . '"><div><span><img src="' . $thumbnail . '" alt="' . $row['product_name'] . '" align="left" style="padding-right: 8px;" /><strong>' . $row['product_name'] . '</strong></span><div><span style="color:#b3b3b3;"><strong>' . $this->Isotope->formatPriceWithCurrency($row['product_price']) . '</strong></span></div><br /><br /><div><em>' . $GLOBALS['TL_LANG']['tl_product_data']['pages'][0] . ': ' . $this->getCategoryList(deserialize($row['pages'])) . '</em></div></div></div> ';
 		
 		$fields = array();
 		

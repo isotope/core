@@ -58,7 +58,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	
 	//protected $intCartId;
 	
-	protected $arrStoreSettings = array();
+//	protected $arrStoreSettings = array();
 	
 	protected $arrSession = array();
 	
@@ -66,7 +66,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	
 	protected $fltOrderTotal = 0.00;
 	
-	protected $fltOrderSubtotal = 0.00;
+//	protected $fltOrderSubtotal = 0.00;
 	
 	protected $fltOrderShippingTotal = 0.00;
 	
@@ -89,18 +89,21 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		{
 			$objTemplate = new BackendTemplate('be_wildcard');
 			$objTemplate->wildcard = '### ISOTOPE CHECKOUT ###';
+			$objTemplate->title = $this->headline;
+			$objTemplate->id = $this->id;
+			$objTemplate->link = $this->name;
+			$objTemplate->href = 'typolight/main.php?do=modules&amp;act=edit&amp;id=' . $this->id;
 
 			return $objTemplate->parse();
 		}
 
-		// Fallback template
-		if (!strlen($this->iso_checkout_layout))
+		// Set template
+		if (strlen($this->iso_checkout_layout))
 		{
-			$this->iso_checkout_layout = 'iso_mod_checkout_default';
+			$this->strTemplate = $this->iso_checkout_layout;
 		}
-
-		//$this->strTemplate = $this->iso_checkout_layout;
 		
+/*
 		if($this->store_id < 1)
 		{
 			return '<i>' . $GLOBALS['TL_LANG']['ERR']['noStoreIdFound'] . '</i>';		
@@ -124,15 +127,16 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			//redirect away from checkout.
 			$this->redirect($this->Environment->base);
 		}
+*/
 		
-		if(!$this->strUserId || !FE_USER_LOGGED_IN)
+		if(($this->iso_checkout_method == 'login' && !FE_USER_LOGGED_IN) || ($this->iso_checkout_method == 'both' && !FE_USER_LOGGED_IN && !$_SESSION['isotope']['isGuest']))
 		{
 			$this->blnShowLoginOptions = true;
 		}
 		
 		$this->arrSession = $this->Session->getData();
 		
-		$this->arrJumpToValues = $this->getStoreJumpToValues($this->store_id);	//Deafult keys are "product_reader", "shopping_cart", and "checkout"
+/* 		$this->arrJumpToValues = $this->getStoreJumpToValues($this->store_id);	//Deafult keys are "product_reader", "shopping_cart", and "checkout" */
 		
 		return parent::generate();
 	}
@@ -143,7 +147,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	 */
 	protected function compile()
 	{	
-		//$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEPS'] = array('login','shipping_information','billing_information','shipping_method','billing_method','order_review');
+		//$GLOBALS['ISO_CONFIG']['CHECKOUT_STEPS'] = array('login','shipping_information','billing_information','shipping_method','billing_method','order_review');
 
 		//global $objPage;
 		
@@ -158,7 +162,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		// Set template
 		//if (strlen($this->memberTpl))
 		//{
-		$this->Template = new FrontendTemplate($this->strTemplate);
+//		$this->Template = new FrontendTemplate($this->strTemplate);
 		//}
 		
 		$action = ampersand($this->Environment->request, ENCODE_AMPERSANDS);
@@ -195,15 +199,10 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		}
 		
 
-		foreach($GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEPS'] as $step)
+		foreach($GLOBALS['ISO_CONFIG']['CHECKOUT_STEPS'] as $step)
 		{
-			if(!$this->blnShowLoginOptions && $step=='login')
-			{
-				continue;
-			}
-
 			// needed here for shipping calculations.					
-			$this->fltOrderSubtotal = $this->calculateOrderSubtotal($this->intCartId, $this->strUserId);
+//			$this->fltOrderSubtotal = $this->Cart->subtotal;
 
 			//Specific actions for the given step
 			//Each step gets resources from some table somewhere.  It may be the address book, it may be the payment method's payment fields
@@ -212,6 +211,9 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			{
 			
 				case 'login':
+					if (!$this->blnShowLoginOptions)
+						break;
+						
 					$arrSteps[] = array
 					(
 						'editEnabled' 	=> false,
@@ -223,10 +225,8 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 					break;
 				
 				case 'billing_information':
-					if(!FE_USER_LOGGED_IN)
-					{
+					if($this->blnShowLoginOptions)
 						break;
-					}
 					
 					$arrSteps[] = array
 					(
@@ -240,10 +240,8 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 					break;
 				
 				case 'shipping_information':
-					if(!FE_USER_LOGGED_IN)
-					{
+					if($this->blnShowLoginOptions)
 						break;
-					}
 
 					$arrSteps[] = array
 					(
@@ -256,10 +254,8 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 					break;
 				
 				case 'shipping_method':
-					if(!FE_USER_LOGGED_IN)
-					{
+					if($this->blnShowLoginOptions)
 						break;
-					}
 					
 					//blnLoadDataContainer is set to "false" because we do not gather our widget from those fields. Instead we statically define
 					//the fields for now that are used.
@@ -280,10 +276,8 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				
 				case 'payment_method':
 					continue;
-					if(!FE_USER_LOGGED_IN)
-					{
+					if($this->blnShowLoginOptions)
 						break;
-					}
 					
 					//blnLoadDataContainer is set to "false" because we do not gather our widget from those fields. Instead we statically define
 					//the fields for now that are used.
@@ -301,10 +295,9 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 					break;
 				
 				case 'order_review':
-					//if(!FE_USER_LOGGED_IN)
-					//{
+//					if($this->blnShowLoginOptions)
 						break;
-					//}
+
 					//$session = $this->arrSession->getData('ISO_CHECKOUT');	
 					
 					$arrSteps[] = array
@@ -348,6 +341,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		return $objTemplate->parse();	
 	}
 	
+	/*
 	protected function getBillingInformationInterface()
 	{
 		$objTemplate = new FrontendTemplate($this->strStepTemplateBaseName . 'billing_information');
@@ -360,7 +354,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 		return $objTemplate->parse();
 	}
-	/*
+	*//*
 	
 	private function getAddressOptions($intUserId)
 	{
@@ -452,13 +446,13 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		$arrSet = array
 		(
 			
-			'pid'					=> $this->strUserId,
+			'pid'					=> (FE_USER_LOGGED_IN ? $this->User->id : 0),
 			'tstamp'				=> time(),
-			'store_id'				=> $this->intStoreId,
-			'order_subtotal'		=> $this->fltOrderSubtotal,
+			'store_id'				=> $this->Store->id,
+			'source_cart_id'		=> $this->Cart->id,
+			'order_subtotal'		=> $this->Cart->subtotal,
 			'order_tax' 			=> $this->fltOrderTaxTotal,
 			'order_shipping_cost'	=> $this->fltOrderShippingTotal,
-			'source_cart_id'		=> $this->intCartId,
 			'billing_address_id'	=> $this->intBillingAddressId,
 			'shipping_address_id'	=> $this->intShippingAddressId,
 			'shipping_rate_id'		=> $this->intShippingRateId,
@@ -626,14 +620,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			}
 			
 			//Get tax info
-			$arrAggregateSetData = $this->getCartProductsByCartId($this->intCartId, $this->strUserId);
-		
-			if(!sizeof($arrAggregateSetData))
-			{
-				$arrAggregateSetData = array();
-			}
-			
-			$arrProductData = $this->getProductData($arrAggregateSetData, array('product_price','tax_class'), 'product_price');
+			$arrProductData = $this->Isotope->getProductData($this->Cart->getProducts(), array('product_price','tax_class'), 'product_price');
 
 			$arrTaxInfo = $this->calculateTax($arrProductData);	
 			
@@ -766,9 +753,9 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				//$objTemplate->x_email = $this->arrSession['FORM_DATA']['billing_information_email'];
 				//$objTemplate->x_email_customer = "TRUE";
 				$objTemplate->x_amount = $this->fltOrderTotal;
-				$objTemplate->amountString = $this->generatePriceString(number_format($this->fltOrderTotal, 2), $this->strCurrency);
-				$objTemplate->subtotal = $this->generatePriceString(number_format($this->fltOrderSubtotal, 2), $this->strCurrency);
-				$objTemplate->shippingTotal = $this->generatePriceString(number_format($this->fltOrderShippingTotal, 2), $this->strCurrency);
+				$objTemplate->amountString = $this->generatePrice($this->fltOrderTotal);
+				$objTemplate->subtotal = $this->generatePrice($this->Cart->subtotal);
+				$objTemplate->shippingTotal = $this->generatePrice($this->fltOrderShippingTotal);
 				
 				
 				$objTemplate->x_card_num = $this->arrSession['x_card_num'];
@@ -895,7 +882,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				{	
 					
 					
-					if((float)$this->fltOrderSubtotal < (float)$rate['rates'][$i][0])
+					if((float)$this->Cart->subtotal < (float)$rate['rates'][$i][0])
 					{
 						$fltShippingCost = (float)$rate['rates'][$i][1];
 						$this->intShippingRateId = $rate['rates'][$i][2];	//Only assign here until a choice can be made!!!!!
@@ -926,25 +913,27 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 	}
 	
+/*
 	protected function calculateOrderSubtotal($intCartId, $strUserId)
 	{
 		//Grab needed product data
-		$arrAggregateSetData = $this->getCartProductsByCartId($intCartId, $strUserId);
+		$arrAggregateSetData = $this->Cart->getProducts();
 			
 		if(!sizeof($arrAggregateSetData))
 		{
 			$arrAggregateSetData = array();
 		}
 		
-		$arrProductData = $this->getProductData($arrAggregateSetData, array('product_price'), 'product_price');
+		$arrProductData = $this->Isotope->getProductData($arrAggregateSetData, array('product_price'), 'product_price');
 				
 		return $this->getOrderTotal($arrProductData);
 	
 	}
+*/
 	
 	protected function calculateOrderTotal()
 	{	
-		return $this->fltOrderSubtotal + $this->fltOrderShippingTotal + $this->fltOrderTaxTotal;
+		return $this->Cart->subtotal + $this->fltOrderShippingTotal + $this->fltOrderTaxTotal;
 	}
 	
 	/**
@@ -1068,7 +1057,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		$arrTaxInfo[] = array
 		(
 			'class'			=> 'Sales Tax',
-			'total'			=> $this->generatePriceString(number_format($fltSalesTax, 2), $this->strCurrency)
+			'total'			=> $this->generatePrice($fltSalesTax)
 		);
 		
 		return $arrTaxInfo;

@@ -50,7 +50,7 @@ abstract class ModuleIsotopeBase extends Module
 	 * Shopping Cart Cookie
 	 * @var string
 	 */
-	protected $strCartCookie = 'ISOTOPE_TEMP_CART';
+//	protected $strCartCookie = 'ISOTOPE_TEMP_CART';
 	
 	/**
 	 * 
@@ -61,55 +61,62 @@ abstract class ModuleIsotopeBase extends Module
 	protected $strPriceTemplate = 'stpl_price';
 	
 	/**
-	 * current attribute set storage table
-	 * @var string
-	 */
-	protected $strCurrentStoreTable;
-
-	
-	/**
 	 * Price String Override Template
 	 * @var string
 	 */
 	protected $strPriceOverrideTemplate = 'stpl_price_override';
 	
 	/**
+	 * current attribute set storage table
+	 * @var string
+	 */
+	protected $strCurrentStoreTable;
+	
+	/**
 	 * IP Address
 	 * @var string
 	 */
-	protected $strIp = '';
+//	protected $strIp = '';
 	
 	/**
 	 * Hash value of cookie
 	 * @var string
 	 */
-	protected $strCartHash = '';
+//	protected $strCartHash = '';
 	
-	/**
-	 */
-	protected $intStoreId;
+//	protected $intStoreId;
 	
-	protected $intCartId;
+//	protected $intCartId;
 	
-	protected $strUserId;
+//	protected $strUserId;
 
 	/**
 	 * Jump to page id for the product reader.  Standard keys are 'product_reader', 'shopping_cart', and 'checkout'.
 	 * @var array
 	 */
-	protected $arrJumpToValues = array();
+//	protected $arrJumpToValues = array();
 	
 	/**
 	 
 	 */
-	protected $strCurrency;
-	
-	
-	public function generate()
+//	protected $strCurrency;
+
+
+	public function __construct(Database_Result $objModule, $strColumn='main')
 	{
+		parent::__construct($objModule, $strColumn);
+		
+		$_SESSION['isotope']['store_id'] = $this->store_id;
+		
 		$this->import('Isotope');
-		
-		
+		$this->import('IsotopeStore', 'Store');
+		$this->import('IsotopeCart', 'Cart');
+	}
+	
+	
+//	public function generate()
+//	{
+/*
 		//Check and set currency 	
 		if($this->Input->post('currency'))
 		{
@@ -121,24 +128,27 @@ abstract class ModuleIsotopeBase extends Module
 		}else{
 			setlocale(LC_MONETARY, $GLOBALS['TL_LANG']['MSC']['isotopeLocale'][$GLOBALS['TL_LANG']['MSC']['defaultCurrency']]);		
 		}
+*/
 	
 		
+/*
 		if(empty($session['isotope']['currency']))
 		{
 			$this->strCurrency = 'USD';
 		}else{
 			$this->strCurrency = $session['isotope']['currency'];
 		}
+*/
 		
-		$this->strIp = $this->Environment->ip;
-		$this->intStoreId = (isset($session['isotope']['store_id']) ? $session['isotope']['store_id'] : 1);
+//		$this->strIp = $this->Environment->ip;
+//		$this->intStoreId = (isset($session['isotope']['store_id']) ? $session['isotope']['store_id'] : 1);
 		
-		$session['isotope']['store_id'] = $this->intStoreId;
+//		$session['isotope']['store_id'] = $this->intStoreId;
 			
-		$this->Session->setData($session);			
+//		$this->Session->setData($session);			
 						
-		return parent::generate();	
-	}
+//		return parent::generate();	
+//	}
 	
 	
 	/**
@@ -296,7 +306,7 @@ abstract class ModuleIsotopeBase extends Module
 	 * @param array
 	 * @param array
 	 * @return array
-	 */
+	 *//*
 	protected function getProductData($arrAggregateSetData, $arrFieldNames, $strOrderByField)
 	{					
 		$strFieldList = join(',', $arrFieldNames);
@@ -373,13 +383,13 @@ abstract class ModuleIsotopeBase extends Module
 		$session['isotope']['cart_data'] = $arrTotalProductsInCart;
 		
 		
-		$session['isotope']['cart_id'] = $this->userCartExists($this->strUserId);
+//		$session['isotope']['cart_id'] = $this->userCartExists($this->strUserId);
 		
 		
 		$this->Session->setData($session);
 				
 		return $arrTotalProductsInCart;
-	}
+	}*/
 	
 	
 	/**
@@ -612,11 +622,10 @@ abstract class ModuleIsotopeBase extends Module
 	/**
 	 * Generate a price string based on an product price, a template, and any pricing rules that apply.
 	 *
-	 * @todo this method has been replaced with "generatePrice"
 	 * @param integer
 	 * @return string (formatted html)
 	 *
-	 */
+	 *//*
 	protected function generatePriceString($intProductPrice, $currentCurrency, $strPriceTemplate = 'stpl_price')
 	{
 			
@@ -628,16 +637,15 @@ abstract class ModuleIsotopeBase extends Module
 						
 		return $objPriceTemplate->parse();
 		
-	}
+	}*/
 	
 	/**
 	 * Generate a price string based on an product price, a template, and any pricing rules that apply.
 	 *
-	 * @todo this method has been replaced with "generatePrice"
 	 * @param integer
 	 * @return string (formatted html)
 	 *
-	 */
+	 *//*
 	protected function generatePriceStringOverride($strPriceOverrideTemplate, $varValue)
 	{
 			
@@ -645,20 +653,19 @@ abstract class ModuleIsotopeBase extends Module
 				
 		$objPriceTemplate->price = $varValue;
 		
-		/* Other features */
 		
 		//$objPriceTemplate->priceNote = $this->getPriceNote($intProductId); - Additional note to appear below the price itself, perhaps indicating what price includes?
 				
 		return $objPriceTemplate->parse();
 		
-	}
+	}*/
 	
 	
-	protected function generatePrice($fltPrice, $arrStoreConfig, $blnOverride=false)
+	protected function generatePrice($fltPrice, $strTemplate='stpl_price')
 	{
-		$objTemplate = new FrontendTemplate(($blnOverride ? 'stpl_price_override' : 'stpl_price'));
+		$objTemplate = new FrontendTemplate($strTemplate);
 		
-		$objTemplate->price = $this->Isotope->formatPriceWithCurrency($fltPrice, $arrStoreConfig, true);
+		$objTemplate->price = $this->Isotope->formatPriceWithCurrency($fltPrice, true);
 		
 		return $objTemplate->parse();
 	}
@@ -731,6 +738,7 @@ abstract class ModuleIsotopeBase extends Module
 	
 	}
 	
+
 	protected function getOrderTotal($arrProductData)
 	{
 		foreach($arrProductData as $data)
@@ -749,7 +757,9 @@ abstract class ModuleIsotopeBase extends Module
 		return (float)$floatSubTotalPrice + (float)$taxPriceAdjustment;	
 	
 	}
-	
+
+	/*
+
 	protected function getCartProductsByCartId($intCartId, $strUserId)
 	{
 		//do not query by cart id as it won't ever be stored past session, we only need the session value from the cookie to pull the right cart for the job.
@@ -787,7 +797,9 @@ abstract class ModuleIsotopeBase extends Module
 	
 	}
 	
+*/
 	
+/*
 	protected function getStoreTables($arrAsetIds)
 	{
 		$strAsetIds = join(',', $arrAsetIds);
@@ -812,9 +824,10 @@ abstract class ModuleIsotopeBase extends Module
 		return $arrTableInfo;
 		
 	}
+*/
 	
 	
-	
+/*	
 	protected function getStoreJumpToValues($intStoreSettingsId, $arrAdditionalKeys = '')
 	{
 		if(!is_array($arrAdditionalKeys))	//Additional jumpTo fields that may come later.
@@ -864,8 +877,8 @@ abstract class ModuleIsotopeBase extends Module
 		}
 		
 		return $arrJumpToValues;
-	}
-	
+	}*/
+	/*
 	public function getCurrentStoreConfigById($intStoreId)
 	{
 		if(!$intStoreId)
@@ -884,7 +897,7 @@ abstract class ModuleIsotopeBase extends Module
 		
 		return $objStoreConfig->fetchAssoc();
 	}
-	
+	*/
 	protected function getRootAssetImportPath($intStoreSettingsId)
 	{
 		$objPath = $this->Database->prepare("SELECT root_asset_import_path FROM tl_store WHERE id=?")
@@ -1178,7 +1191,7 @@ abstract class ModuleIsotopeBase extends Module
 	 * Get the customer's id whic is either a user Id or a session Id.
 	 * 
 	 * @return string
-	 */
+	 *//*
 	protected function getCustomerId()
 	{		
 	
@@ -1209,9 +1222,10 @@ abstract class ModuleIsotopeBase extends Module
 	 		return $this->User->id;
 		}
 		
-	}
+	}*/
 	
 	
+/*
 	protected function userCartExists($strUserId)
 	{
 		$strClause = $this->determineUserIdType($strUserId);
@@ -1229,6 +1243,7 @@ abstract class ModuleIsotopeBase extends Module
 		return $objUserCart->id;
 	
 	}
+*/
 
 	
 	protected function getCookieTimeWindow($intStoreId)
@@ -1249,7 +1264,7 @@ abstract class ModuleIsotopeBase extends Module
 	 * User to determine by which method we will search for the user (user Id or session)
 	 * @param string
 	 * @return string
-	 */
+	 *//*
 	protected function determineUserIdType($strUserId)
 	{
 		
@@ -1260,13 +1275,13 @@ abstract class ModuleIsotopeBase extends Module
 			return "session='" . $strUserId . "'";
 		}
 	
-	}
+	}*/
 	
 	/**
 	 * User to determine by which method we will search for the user (user Id or session)
 	 * @param string
 	 * @return string
-	 */
+	 *//*
 	protected function determineUserIdTypeSerialized($strUserId)
 	{
 		if(FE_USER_LOGGED_IN)
@@ -1276,7 +1291,7 @@ abstract class ModuleIsotopeBase extends Module
 			return "session='" . $strUserId . "'";
 		}
 	
-	}
+	}*/
 	
 	/*
 	 * Not necessary

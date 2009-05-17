@@ -86,7 +86,7 @@ class ModuleGiftRegistry extends ModuleIsotopeBase
 		
 		$this->intCartId = $this->userRegistryExists($this->strUserId);
 		
-		$this->arrJumpToValues = $this->getStoreJumpToValues($this->store_id);	//Deafult keys are "product_reader", "shopping_cart", and "checkout"
+//		$this->arrJumpToValues = $this->getStoreJumpToValues($this->store_id);	//Deafult keys are "product_reader", "shopping_cart", and "checkout"
 	
 		if(!$this->intCartId)
 		{
@@ -260,9 +260,9 @@ class ModuleGiftRegistry extends ModuleIsotopeBase
 		$this->Template->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
 		$this->Template->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
 		$this->Template->taxLabel = sprintf($GLOBALS['TL_LANG']['MSC']['taxLabel'], 'Sales');
-		$this->Template->taxTotal = $this->generatePriceString($taxPriceAdjustment, $this->strCurrency);
-		$this->Template->subTotalPrice = $this->generatePriceString($floatSubTotalPrice, $this->strCurrency, 'stpl_total_price');
-		$this->Template->grandTotalPrice = $this->generatePriceString($floatGrandTotalPrice, $this->strCurrency, 'stpl_total_price');
+		$this->Template->taxTotal = $this->generatePrice($taxPriceAdjustment);
+		$this->Template->subTotalPrice = $this->generatePrice($floatSubTotalPrice, 'stpl_total_price');
+		$this->Template->grandTotalPrice = $this->generatePrice($floatGrandTotalPrice, 'stpl_total_price');
 		$this->Template->noItemsInRegistry = $GLOBALS['TL_LANG']['MSC']['registry']['noItemsInRegistry'];
 		$this->Template->registryTitle = $arrRegData['name'];
 		$this->Template->registryDate = $arrRegData['date'];
@@ -353,9 +353,9 @@ class ModuleGiftRegistry extends ModuleIsotopeBase
 				'product_id'		=> $row['product_id'],
 				'image'				=> $GLOBALS['TL_CONFIG']['isotope_upload_path'] . '/' . $GLOBALS['TL_CONFIG']['isotope_base_path'] . '/' . substr($row['product_alias'], 0, 1) . '/' . $row['product_alias'] . '/' . $GLOBALS['TL_LANG']['MSC']['imagesFolder'] . '/' . $GLOBALS['TL_LANG']['MSC']['thumbnail_images_folder'] . '/' . $row['product_images'],
 				'name'				=> $row['product_name'],
-				'link'				=> $this->generateProductLink($row['product_alias'], $row, $this->arrJumpToValues['product_reader'], $row['attribute_set_id'], 'product_id'),
-				'price'				=> $this->generatePriceString($row['product_price'], $this->strCurrency, $this->strPriceTemplate),
-				'total_price'		=> $this->generatePriceString($intTotalPrice, $this->strCurrency, 'stpl_total_price'),
+				'link'				=> $this->generateProductLink($row['product_alias'], $row, $this->Store->productReaderJumpTo, $row['attribute_set_id'], 'product_id'),
+				'price'				=> $this->generatePrice($row['product_price'], $this->strPriceTemplate),
+				'total_price'		=> $this->generatePrice($intTotalPrice, 'stpl_total_price'),
 				'quantity'			=> $row['quantity_requested'],
 				'remove_link'		=> $this->generateActionLinkString('remove_from_registry', $row['product_id'], array('attribute_set_id'=>$row['attribute_set_id'],'quantity'=>0), $objPage->id),
 				'remove_link_title' => sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $row['product_name'])

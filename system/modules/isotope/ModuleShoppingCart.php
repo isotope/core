@@ -67,22 +67,24 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 		{
 			$objTemplate = new BackendTemplate('be_wildcard');
 			$objTemplate->wildcard = '### ISOTOPE SHOPPING CART ###';
+			$objTemplate->title = $this->headline;
+			$objTemplate->id = $this->id;
+			$objTemplate->link = $this->name;
+			$objTemplate->href = 'typolight/main.php?do=modules&amp;act=edit&amp;id=' . $this->id;
 
 			return $objTemplate->parse();
 		}
 
 		// Fallback template
-		if (!strlen($this->iso_cart_layout))
+		if (strlen($this->iso_cart_layout))
 		{
-			$this->iso_cart_layout = 'iso_cart_full';
+			$this->strTemplate = $this->iso_cart_layout;
 		}
-
-		$this->strTemplate = $this->iso_cart_layout;
 
 		//BUG TO BE FIXED: A session id combined with a cart type is our Cart ID.  Actual record ID field for now is not necessary unless pulling products.
 		//Every time you revisit the page after closign window it is determining that we haven't been here in teh last 30 days but we have.  I need to
 		//Correct the code that is not finding the cookie value and using it to grab the cart with its ID.  
-		
+/*		
 		// Get initial values set up
 		$this->strUserId = $this->getCustomerId();
 		$this->intCartId = $this->userCartExists($this->strUserId);
@@ -102,23 +104,16 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 		}
 		
 				
-
-		
 		$this->arrJumpToValues = $this->getStoreJumpToValues($this->store_id);	//Deafult keys are "product_reader", "shopping_cart", and "checkout"
 	
+
 		if(!$this->intCartId)
 		{
-			
 			$this->intCartId = $this->createNewCart($this->strUserId);
-			
-			return parent::generate();
-			
-		}else{
-			return parent::generate();
 		}
+*/
 		
-		
-		
+		return parent::generate();
 	}
 	
 	
@@ -127,7 +122,6 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 	 */
 	protected function compile()
 	{		
-				
 		global $objPage;
 
 		// Call isotope_shopping_cart_onload_callback (e.g. to check permissions)
@@ -145,20 +139,19 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 	
 		$strAction = $this->Input->get('action');		
 		
+/*
 		if($this->Input->get('source_cart_id'))
 		{
 			$intSourceCartId = $this->Input->get('source_cart_id');
 		}else{
 			$intSourceCartId = 0;
 		}
+*/
 		
 		switch($strAction)
 		{
 			case 'add_to_cart':
 				$intAttributeSetId = $this->getAttributeSetId($this->Input->get('aset_id'));
-				
-				
-				
 				$this->addToCart($this->Input->get('id'), $intAttributeSetId, $this->Input->get('quantity_requested'), $intSourceCartId);
 				$this->blnRecallProductData = true;
 				break;
@@ -176,7 +169,7 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 				$this->blnRecallProductData = true;
 				break;
 			default:
-				// Call isotope_shopping_cart_custom_action (e.g. to check permissions)
+				// Call isotope_shopping_cart_custom_action
 				if (is_array($GLOBALS['TL_HOOKS']['isotope_shopping_cart_custom_action']))
 				{
 					foreach ($GLOBALS['TL_HOOKS']['isotope_shopping_cart_custom_action'] as $callback)
@@ -197,15 +190,8 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 		$session = $this->Session->getData();
 		
 		if(!array_key_exists('cart_data', $session['isotope']) || !sizeof($session['isotope']['cart_data']) < 1 || $this->blnRecallProductData)
-		{
-			$arrAggregateSetData = $this->getCartProducts();
-			
-			if(!sizeof($arrAggregateSetData))
-			{
-				$arrAggregateSetData = array();
-			}
-				
-			$arrProductData = $this->getProductData($arrAggregateSetData, array('product_alias','product_name','product_price', 'product_images'), 'product_name');
+		{		
+			$arrProductData = $this->Isotope->getProductData($this->Cart->getProducts(), array('product_alias','product_name','product_price', 'product_images'), 'product_name');
 			
 			
 			foreach($arrProductData as $data)
@@ -274,15 +260,15 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 			
 		}
 		
-		$this->Template->cartJumpTo = $this->getPageData($this->arrJumpToValues['shopping_cart']);
-		$this->Template->checkoutJumpTo = $this->getPageData($this->arrJumpToValues['checkout']);
+		$this->Template->cartJumpTo = $this->getPageData($this->Store->cartJumpTo);
+		$this->Template->checkoutJumpTo = $this->getPageData($this->Store->checkoutJumpTo);
 		$this->Template->products = $arrFormattedProductData;
 		$this->Template->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
 		$this->Template->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
 		$this->Template->taxLabel = sprintf($GLOBALS['TL_LANG']['MSC']['taxLabel'], 'Sales');
-		$this->Template->taxTotal = $this->generatePriceString($taxPriceAdjustment, $this->strCurrency);
-		$this->Template->subTotalPrice = $this->generatePriceString($floatSubTotalPrice, $this->strCurrency, 'stpl_total_price');
-		$this->Template->grandTotalPrice = $this->generatePriceString($floatGrandTotalPrice, $this->strCurrency, 'stpl_total_price');
+		$this->Template->taxTotal = $this->generatePrice($taxPriceAdjustment);
+		$this->Template->subTotalPrice = $this->generatePrice($floatSubTotalPrice, 'stpl_total_price');
+		$this->Template->grandTotalPrice = $this->generatePrice($floatGrandTotalPrice, 'stpl_total_price');
 		$this->Template->noItemsInCart = $GLOBALS['TL_LANG']['MSC']['noItemsInCart'];
 		
 		//$product['name']
@@ -308,9 +294,9 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 				'product_id'		=> $row['product_id'],
 				'image'				=> $GLOBALS['TL_CONFIG']['isotope_upload_path'] . '/' . $GLOBALS['TL_CONFIG']['isotope_base_path'] . '/' . substr($row['product_alias'], 0, 1) . '/' . $row['product_alias'] . '/' . $GLOBALS['TL_LANG']['MSC']['imagesFolder'] . '/' . $GLOBALS['TL_LANG']['MSC']['thumbnail_images_folder'] . '/' . $row['product_images'],
 				'name'				=> $row['product_name'],
-				'link'				=> $this->generateProductLink($row['product_alias'], $row, $this->arrJumpToValues['product_reader'], $row['attribute_set_id'], 'product_id'),
-				'price'				=> $this->generatePriceString($row['product_price'], $this->strCurrency, $this->strPriceTemplate),
-				'total_price'		=> $this->generatePriceString($intTotalPrice, $this->strCurrency, 'stpl_total_price'),
+				'link'				=> $this->generateProductLink($row['product_alias'], $row, $this->Store->productReaderJumpTo, $row['attribute_set_id'], 'product_id'),
+				'price'				=> $this->generatePrice($row['product_price'], $this->strPriceTemplate),
+				'total_price'		=> $this->generatePrice($intTotalPrice, 'stpl_total_price'),
 				'quantity'			=> $row['quantity_requested'],
 				'remove_link'		=> $this->generateActionLinkString('remove_from_cart', $row['product_id'], array('attribute_set_id'=>$row['attribute_set_id'],'quantity'=>0, 'source_cart_id'=>$row['source_cart_id']), $objPage->id),
 				'remove_link_title' => sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $row['product_name'])
@@ -327,13 +313,80 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 	
 	
 	
+	/**
+	 * Add one or more units of a given product to the cart
+	 * @param integer
+	 * @param integer
+	 * @param array
+	 * @return boolean
+	 */
+	protected function addToCart($intProductId, $intAttributeSetId, $intQuantity, $intSourceCartId = 0)
+	{
+		if($this->Cart->containsProduct($intProductId, $intAttributeSetId))
+		{
+			$this->Database->prepare("UPDATE tl_cart_items SET quantity_requested=(quantity_requested+" . $intQuantity . ")" . $strAdditionalFields . " WHERE product_id=? AND attribute_set_id=? AND pid=?")
+						   ->execute($intProductId, $intAttributeSetId, $this->Cart->id);
+		}
+		else
+		{
+			//$objTask = $this->Database->prepare("INSERT INTO tl_task %s")->set($arrSet)->execute();
+			//$pid = $objTask->insertId;
+			$time = time();
+		
+			// Insert task
+			$arrSet = array
+			(
+				'pid'					=> $this->Cart->id,
+				'tstamp' 				=> $time,
+				'product_id'			=> $intProductId,
+				'attribute_set_id'		=> $intAttributeSetId,
+				'quantity_requested'	=> $intQuantity,
+//					'source_cart_id'		=> $intSourceCartId//,
+				//'product_options'		=> serialize($arrProductOptions)
+			);
+			
+			$this->Database->prepare("INSERT INTO tl_cart_items %s")->set($arrSet)->execute();
+		}
+	}
 	
+	
+	
+/*
+	protected function productExistsInCart($intCartId, $intProductId, $intAttributeSetId, $intSourceCartId = 0)
+	{
+		//check session if not then we know we need to add it!
+		$session = $this->Session->getData();
+		
+		//first check the session to save a db call to the cart.  It should always be in here. - future.
+		//$session['isotope']['cart_data'][] = array(<product keys and values>);
+		
+		//query for the product id for the given cart, product and attribute set.
+//		$objProductExistsInCart = $this->Database->prepare("SELECT COUNT(*) as count FROM tl_cart_items WHERE product_id=? AND pid=? AND attribute_set_id=? AND source_cart_id=?")
+		$objProductExistsInCart = $this->Database->prepare("SELECT id FROM tl_cart_items WHERE product_id=? AND pid=? AND attribute_set_id=?")
+												 ->limit(1)
+												 ->execute($intProductId, $intCartId, $intAttributeSetId);
+	
+		if($objProductExistsInCart->numRows < 1)
+		{
+			return false;
+		}
+		
+		if($objProductExistsInCart->count < 1)
+		{
+			return false;
+		}
+		
+		
+		return true;
+		
+	}
+*/
 	
 	
 	/**
 	 * Get basic cart data including the corresponding aggregate set IDs for the products in the cart currently. (if any for the customer's cart)
 	 * 
-	 */
+	 *//*
 	protected function getCartProducts()
 	{		
 		//$session = $this->Session->getData();
@@ -342,19 +395,19 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 				
 		$strFieldClause = $this->determineUserIdType($this->strUserId);
 				
-		/*if(!array_key_exists('cart_id', $session['isotope']))
-		{
-			//if the cart Id doesn't exist in the session array, get it from the db based on user information cookie hash or actual user id.
-			$this->intCartId = $this->userCartExists($this->strUserId);
-			
-		}else{
-			$this->intCartId = $session['isotope']['cart_id'];
-		}*/		
+//		if(!array_key_exists('cart_id', $session['isotope']))
+//		{
+//			//if the cart Id doesn't exist in the session array, get it from the db based on user information cookie hash or actual user id.
+//			$this->intCartId = $this->userCartExists($this->strUserId);
+//			
+//		}else{
+//			$this->intCartId = $session['isotope']['cart_id'];
+//		}	
 		
 		
 		//do not query by cart id as it won't ever be stored past session, we only need the session value from the cookie to pull the right cart for the job.
 		$objCartData = $this->Database->prepare("SELECT ci.* FROM tl_cart c INNER JOIN tl_cart_items ci ON c.id=ci.pid WHERE ci.pid=? AND c.cart_type_id=? AND c." . $strFieldClause)
-										  ->execute($this->intCartId, 1);
+										  ->execute($this->Cart->id, 1);
 										  
 		if($objCartData->numRows < 1)
 		{
@@ -387,8 +440,9 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 		
 	}
 	
-	
+*/
 		
+/*
 	protected function userCartExists($strUserId, $blnDetermineUserID=true)
 	{
 		if($blnDetermineUserID)
@@ -413,117 +467,9 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 		return $objUserCart->id;
 	
 	}
+*/
 	
-
-	protected function getTempCartProducts($strExistingCookie)
-	{
-		
-		
-		if(is_null($this->sessCartId))
-		{
-			return array();
-		}
-		$objCartData = $this->Database->prepare("SELECT ci.* FROM tl_cart c INNER JOIN tl_cart_items ci ON c.id=ci.pid WHERE ci.pid=? AND c.cart_type_id=? AND c.session=?")
-										  ->execute($this->sessCartId, 1, $strExistingCookie);
-										  
-		if($objCartData->numRows < 1)
-		{
-			return array();
-		}
-		
-		return $objCartData->fetchAllAssoc();
-	}
-
-	protected function mergeCartData($arrProductData)
-	{
-		foreach($arrProductData as $product)
-		{
-			$this->addToCart($product['product_id'], $product['attribute_set_id'], $product['quantity_requested']);
-		}
-		$this->cleanTempCart($arrProductData);
-		
-	}
-	
-	
-	protected function cleanTempCart($arrProductData)
-	
-	{
-		foreach($arrProductData as $product)
-		{
-			$this->Database->prepare("DELETE FROM tl_cart_items WHERE id=?")
-				->execute($product['id']);
-		}
-	}
-	
-	/**
-	 * Add one or more units of a given product to the cart
-	 * @param integer
-	 * @param integer
-	 * @param array
-	 * @return boolean
-	 */
-	protected function addToCart($intProductId, $intAttributeSetId, $intQuantity, $intSourceCartId = 0)
-	{
-				
-		//Step 1: If the user has an existing cart by session Id or user Id then retrieve the cart Id
-		//$this->intCartId = $this->userCartExists($this->strUserId);
-		
-		if($this->intCartId!==false)
-		{
-			if($this->productExistsInCart($this->intCartId, $intProductId, $intAttributeSetId))
-			{
-				$strMethod = 'update';
-			}else{
-				$strMethod = 'insert';
-			}
-		
-		}
-		else
-		{
-			//will this ever happen? it shouldn't.
-
-			//$this->intCartId = $this->createNewCart($strUserId);
-			$strMethod = 'insert';
-		}
-		
-		
-		//Step 2: Insert or update if the product exists.
-		switch($strMethod)
-		{
-			case 'insert':
-				//$objTask = $this->Database->prepare("INSERT INTO tl_task %s")->set($arrSet)->execute();
-				//$pid = $objTask->insertId;
-				$time = time();
-			
-				// Insert task
-				$arrSet = array
-				(
-					'pid'					=> $this->intCartId,
-					'tstamp' 				=> $time,
-					'product_id'			=> $intProductId,
-					'attribute_set_id'		=> $intAttributeSetId,
-					'quantity_requested'	=> $intQuantity,
-//					'source_cart_id'		=> $intSourceCartId//,
-					//'product_options'		=> serialize($arrProductOptions)
-				);
-								
-				$objCartItem = $this->Database->prepare("INSERT INTO tl_cart_items %s")->set($arrSet)->execute();
-				
-				break;
-				
-			case 'update':
-				
-//				$this->Database->prepare("UPDATE tl_cart_items SET quantity_requested=(quantity_requested+" . $intQuantity . ")" . $strAdditionalFields . " WHERE product_id=? AND source_cart_id=? AND attribute_set_id=? AND pid=?")
-//							   ->execute($intProductId, $intSourceCartId, $intAttributeSetId, $this->intCartId);
-				$this->Database->prepare("UPDATE tl_cart_items SET quantity_requested=(quantity_requested+" . $intQuantity . ")" . $strAdditionalFields . " WHERE product_id=? AND attribute_set_id=? AND pid=?")
-							   ->execute($intProductId, $intAttributeSetId, $this->intCartId);
-				break;
-			default:
-				break;
-		}
-				
-	}
-	
+/*
 	protected function createNewCart($strUserId)
 	{
 		$time = time();
@@ -536,7 +482,7 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 			'session'					=> (!FE_USER_LOGGED_IN ? $strUserId : ''),
 			'last_visit'				=> $time,
 			//'source_cart_id'			=> $intSourceCartId,
-			'store_id'					=> $this->store_id	
+			'store_id'					=> $this->store_id
 		);
 		
 		
@@ -544,6 +490,7 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 		
 		return $objCart->insertId;
 	}
+*/
 	
 	/**
 	 * Remove one or more units of a given product from the cart
@@ -580,38 +527,9 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 		}
 				
 		$this->Database->prepare($strQuery)
-					   ->execute($intProductId, $intAttributeSetId, $this->intCartId, $intSourceCartId);
+					   ->execute($intProductId, $intAttributeSetId, $this->Cart->id, $intSourceCartId);
 	
 		$this->blnRecallProductData = true;
-	}
-	
-	protected function productExistsInCart($intCartId, $intProductId, $intAttributeSetId, $intSourceCartId = 0)
-	{
-		//check session if not then we know we need to add it!
-		$session = $this->Session->getData();
-		
-		//first check the session to save a db call to the cart.  It should always be in here. - future.
-		//$session['isotope']['cart_data'][] = array(<product keys and values>);
-		
-		//query for the product id for the given cart, product and attribute set.
-//		$objProductExistsInCart = $this->Database->prepare("SELECT COUNT(*) as count FROM tl_cart_items WHERE product_id=? AND pid=? AND attribute_set_id=? AND source_cart_id=?")
-		$objProductExistsInCart = $this->Database->prepare("SELECT COUNT(*) as count FROM tl_cart_items WHERE product_id=? AND pid=? AND attribute_set_id=?")
-												 ->limit(1)
-												 ->execute($intProductId, $intCartId, $intAttributeSetId, $intSourceCartId);
-	
-		if($objProductExistsInCart->numRows < 1)
-		{
-			return false;
-		}
-		
-		if($objProductExistsInCart->count < 1)
-		{
-			return false;
-		}
-		
-		
-		return true;
-		
 	}
 }
 

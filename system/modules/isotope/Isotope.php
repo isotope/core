@@ -36,21 +36,27 @@ class Isotope extends Controller
 	
 	
 	/**
-	 * Prevent direct instantiation (Singleton)
-	 */
-	protected function __construct() {}
-	
-	
-	/**
 	 * Prevent cloning of the object (Singleton)
 	 */
 	final private function __clone() {}
 	
 	
 	/**
+	 * Prevent direct instantiation (Singleton)
+	 */
+	protected function __construct()
+	{
+		parent::__construct();
+		
+		$this->import('Database');
+		$this->import('IsotopeStore', 'Store');
+	}
+	
+	
+	/**
 	 * Instantiate a database driver object and return it (Factory)
+	 *
 	 * @return object
-	 * @throws Exception
 	 */
 	public static function getInstance()
 	{
@@ -63,9 +69,16 @@ class Isotope extends Controller
 	}
 
 
-	public function formatPrice($fltPrice, $arrStoreConfig)
+	/**
+	 * Format given price according to store settings.
+	 * 
+	 * @access public
+	 * @param float $fltPrice
+	 * @return float
+	 */
+	public function formatPrice($fltPrice)
 	{
-		$arrFormat = $GLOBALS['ISO_NUM'][$arrStoreConfig['currencyFormat']];
+		$arrFormat = $GLOBALS['ISO_NUM'][$this->Store->currencyFormat];
 		
 		if (!is_array($arrFormat) || !count($arrFormat) == 3)
 			return $fltPrice;
@@ -73,22 +86,31 @@ class Isotope extends Controller
 		return number_format($fltPrice, $arrFormat[0], $arrFormat[1], $arrFormat[2]);
 	}
 	
-	public function formatPriceWithCurrency($fltPrice, $arrStoreConfig, $blnHtml=false)
+	
+	/**
+	 * Format given price according to store settings, including currency representation.
+	 * 
+	 * @access public
+	 * @param float $fltPrice
+	 * @param bool $blnHtml. (default: false)
+	 * @return string
+	 */
+	public function formatPriceWithCurrency($fltPrice, $blnHtml=false)
 	{
-		$strPrice = $this->formatPrice($fltPrice, $arrStoreConfig);
+		$strPrice = $this->formatPrice($fltPrice);
 		
-		$strCurrency = $arrStoreConfig['currency'];
+		$strCurrency = $this->Store->currency;
 		
-		if ($arrStoreConfig['currencySymbol'] && strlen($GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency]))
+		if ($this->Store->currencySymbol && strlen($GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency]))
 		{
 			$strCurrency = ($blnHtml ? '<span class="currency">' : '') . $GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency] . ($blnHtml ? '</span>' : '');
 		}
 		else
 		{
-			$strCurrency = ($arrStoreConfig['currencyPosition'] == 'right' ? ' ' : '') . ($blnHtml ? '<span class="currency">' : '') . $strCurrency . ($blnHtml ? '</span>' : '') . ($arrStoreConfig['currencyPosition'] == 'left' ? ' ' : '');
+			$strCurrency = ($this->Store->currencyPosition == 'right' ? ' ' : '') . ($blnHtml ? '<span class="currency">' : '') . $strCurrency . ($blnHtml ? '</span>' : '') . ($this->Store->currencyPosition == 'left' ? ' ' : '');
 		}
 		
-		if ($arrStoreConfig['currencyPosition'] == 'right')
+		if ($this->Store->currencyPosition == 'right')
 		{
 			return $strPrice . $strCurrency;
 		}
@@ -98,32 +120,127 @@ class Isotope extends Controller
 	
 	
 	/**
-	 * getStoreConfigById function.
+	 * Auto-Login new user and copy address to address book.
 	 * 
-	 * @todo cache results!
+	 * @todo allow user to choose auto-activation (in store config?)
 	 * @access public
-	 * @param int $intStoreId
-	 * @return array
+	 * @param int $intId
+	 * @param array $arrData
+	 * @return void
 	 */
-	public function getStoreConfigById($intStoreId)
+	public function createNewUser($intId, $arrData)
 	{
-		$this->import('Database');
+		$arrSet = array
+		(
+			'pid'				=> $intId,
+			'tstamp'			=> $arrData['tstamp'],
+			'firstname'			=> $arrData['firstname'],
+			'lastname'			=> $arrData['lastname'],
+			'company'			=> $arrData['company'],
+			'street'			=> $arrData['street'],
+			'postal'			=> $arrData['postal'],
+			'city'				=> $arrData['city'],
+			'state'				=> $arrData['state'],
+			'country'			=> $arrData['country'],
+			'phone'				=> $arrData['phone'],
+			'isDefaultBilling'	=> '1',
+			'isDefaultShipping' => '1',
 		
-		if(!$intStoreId)
+		);
+	
+		
+		$this->Database->prepare('INSERT INTO tl_address_book %s')
+					   ->set($arrSet)
+					   ->execute();
+					   
+		$this->Database->prepare("UPDATE tl_member SET disable=0 WHERE id=?")->execute($intId);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	public function getProductData($arrAggregateSetData, $arrFieldNames, $strOrderByField)
+	{					
+		$strFieldList = join(',', $arrFieldNames);
+		$arrProductsAndTables = array();
+
+		foreach($arrAggregateSetData as $data)
 		{
-			return array();
+			$arrProductsAndTables[$data['storeTable']][] = array($data['product_id'], $data['quantity_requested']); //Allows us to cycle thru the correct table and product ids collections.
+			
+			//The productID list for this storetable, used to build the IN clause for the product gathering.
+			$arrProductIds[$data['storeTable']][] = $data['product_id'];
+			
+			//This is used to gather extra fields for a given product by store table.
+			$arrProductExtraFields[$data['storeTable']][$data['product_id']]['attribute_set_id'] = $data['attribute_set_id'];
+			
+			$arrProductExtraFields[$data['storeTable']][$data['product_id']]['source_cart_id'] = $data['source_cart_id'];
+			
+			//Aggregate full product quantity all into one product line item for now.
+			if($arrProductExtraFields[$data['storeTable']][$data['product_id']]['quantity_requested']<1)
+			{
+				$arrProductExtraFields[$data['storeTable']][$data['product_id']]['quantity_requested'] = $data['quantity_requested'];
+			}else{
+				$arrProductExtraFields[$data['storeTable']][$data['product_id']]['quantity_requested'] += $data['quantity_requested'];
+			}
+		}
+						
+		$arrTotalProductsInCart = array();
+					
+		foreach($arrProductsAndTables as $k=>$v)
+		{
+							
+			$strCurrentProductList = join(',', $arrProductIds[$k]);
+						
+			$objProducts = $this->Database->prepare("SELECT id, " . $strFieldList . " FROM " . $k . " WHERE id IN(" . $strCurrentProductList . ") ORDER BY " . $strOrderByField . " ASC")
+										  ->execute();
+			
+			if($objProducts->numRows < 1)
+			{
+				return array();
+			}
+			
+			$arrProductsInCart = $objProducts->fetchAllAssoc();
+						
+			foreach($arrProductsInCart as $product)
+			{
+				$arrProducts[$product['id']]['product_id'] = $product['id'];
+				
+				foreach($arrFieldNames as $field)
+				{
+					
+					$arrProducts[$product['id']][$field] = $product[$field];		
+				}
+				
+				$arrProducts[$product['id']]['attribute_set_id'] = $arrProductExtraFields[$k][$product['id']]['attribute_set_id'];
+				$arrProducts[$product['id']]['source_cart_id'] = $arrProductExtraFields[$k][$product['id']]['source_cart_id'];
+				$arrProducts[$product['id']]['quantity_requested'] = $arrProductExtraFields[$k][$product['id']]['quantity_requested'];
+			}
+	
+								
+			$arrTotalProductsInCart = array_merge($arrTotalProductsInCart, $arrProducts);
 		}
 		
-		$objStoreConfig = $this->Database->prepare("SELECT * FROM tl_store WHERE id=?")
-										 ->limit(1)
-										 ->execute($intStoreId);
+		//Retrieve current session data, only if a new product has been added or else the cart updated in some way, and reassign the cart product data
+		$session = $this->Session->getData();
 		
-		if(!$objStoreConfig->numRows)
-		{
-			return array();
-		}
+		//clean old cart data
+		unset($session['isotope']['cart_data']);
 		
-		return $objStoreConfig->fetchAssoc();
+		//set new cart data
+		$session['isotope']['cart_data'] = $arrTotalProductsInCart;
+		
+		
+//		$session['isotope']['cart_id'] = $this->userCartExists($this->strUserId);
+		
+		
+		$this->Session->setData($session);
+				
+		return $arrTotalProductsInCart;
 	}
 }
 

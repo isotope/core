@@ -2,23 +2,26 @@
 
 /**
  * TYPOlight webCMS
+ * Copyright (C) 2005 Leo Feyer
  *
- * The TYPOlight webCMS is an accessible web content management system that 
- * specializes in accessibility and generates W3C-compliant HTML code. It 
- * provides a wide range of functionality to develop professional websites 
- * including a built-in search engine, form generator, file and user manager, 
- * CSS engine, multi-language support and many more. For more information and 
- * additional TYPOlight applications like the TYPOlight MVC Framework please 
- * visit the project website http://www.typolight.org.
- *
- * This is the isotope configuration file.
+ * This program is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation, either
+ * version 2.1 of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program. If not, please visit the Free
+ * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
  * @copyright  Winans Creative / Fred Bliss 2009
- * @author     Fred Bliss
- * @package    Isotope 
- * @license    GPL 
- * @filesource
+ * @author     Fred Bliss <fred@winanscreative.com>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
@@ -90,13 +93,14 @@ $GLOBALS['BE_MOD']['accounts']['member']['tables'][] = 'tl_address_book';
 /**
  * Hooks
  */
-$GLOBALS['TL_HOOKS']['createNewUser'][]				= array('IsotopeCallbacks','copyAddressBookEntry');
-$GLOBALS['TL_HOOKS']['createNewUser'][]				= array('IsotopeCallbacks','autoActivateNewMember');
+//$GLOBALS['TL_HOOKS']['createNewUser'][]				= array('IsotopeCallbacks','copyAddressBookEntry');
+//$GLOBALS['TL_HOOKS']['createNewUser'][]				= array('IsotopeCallbacks','autoActivateNewMember');
+$GLOBALS['TL_HOOKS']['createNewUser'][]				= array('Isotope','createNewUser');
 $GLOBALS['TL_HOOKS']['saveProduct'][]				= array('MediaManagement','generateMediaPlayerRSSPlaylist');
 $GLOBALS['TL_HOOKS']['getMappingAttributes'][]		= array('ProductCatalog','generateMappingAttributeList');
 $GLOBALS['TL_HOOKS']['mappingAttributesCallback'][]	= array('products_attribute_set' => array('ProductCatalog','batchUpdateCAPAggregate'));
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][]			= array('IsotopeFrontend', 'replaceIsotopeTags');
-$GLOBALS['TL_HOOKS']['postLogin'][] = array('IsotopeCallbacks','memberLogin');
+//$GLOBALS['TL_HOOKS']['postLogin'][] = array('IsotopeCallbacks','memberLogin');
 
 //$GLOBALS['TL_HOOKS']['getMappingAttributes'][]	= array('getProductMapping' => array('ProductCatalog','generateMappingAttributeList'));
 
@@ -168,6 +172,7 @@ $GLOBALS['FE_MOD']['isoLister']['TPL_COLL']['generic_listing'] = array(
 
 /**
  * Used in store configuration to enable/disable certain store-wide features
+ * @todo what do we need that for?
  */
 $GLOBALS['ISOTOPE_FE_MODULES'][] = 'isoShoppingCart';
 $GLOBALS['ISOTOPE_FE_MODULES'][] = 'isoCheckout';
@@ -207,6 +212,9 @@ $GLOBALS['ISO_NUM']["10000.00"]		= array(2, '.', "");
 $GLOBALS['ISO_NUM']["10,000.00"]	= array(2, '.', ",");
 $GLOBALS['ISO_NUM']["10.000,00"]	= array(2, ',', ".");
 $GLOBALS['ISO_NUM']["10'000.00"]	= array(2, '.', "'");
+
+
+$GLOBALS['ISO_CONFIG']['CHECKOUT_STEPS'] = array('login','shipping_information','billing_information','shipping_method','payment_method','order_review');
 
 
 
