@@ -111,7 +111,8 @@ class IsotopeCart extends Model
 					break;
 					
 				case 'subtotal':
-					$this->arrCache[$strKey] = $this->calculateTotal($this->Isotope->getProductData($this->Cart->getProducts(), array('product_price'), 'product_price'));
+					$this->import('Isotope');
+					$this->arrCache[$strKey] = $this->calculateTotal($this->Isotope->getProductData($this->getProducts(), array('product_price'), 'product_price'));
 					break;
 			}
 		}
@@ -127,9 +128,9 @@ class IsotopeCart extends Model
 	 */
 	public function __construct()
 	{
-		parent::__construct();
-		
 		$this->import('IsotopeStore', 'Store');
+		
+		parent::__construct();
 		
 		$this->strHash = $this->Input->cookie($this->strCookie);
 		
