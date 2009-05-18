@@ -802,7 +802,7 @@ class ProductCatalog extends Backend
 			$this->initializeFields($formId);
 
 
-			$_SESSION['isotope']['store_id'] = $this->arrForm['store_id']
+			$_SESSION['isotope']['store_id'] = $this->arrForm['store_id'];
 		}
 
 	}
