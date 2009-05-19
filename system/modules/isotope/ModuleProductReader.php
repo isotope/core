@@ -278,7 +278,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 									$arrAssetKeys = array($product['product_alias'], $product['product_sku']);
 								
 									//Get the default import folder from config
-									$strFilePath = $this->MediaManagement->getRootAssetImportPath($this->intStoreId);
+									$strFilePath = $this->MediaManagement->getRootAssetImportPathByStoreId($this->intStoreId);
 								
 									$arrNeededImages = $this->MediaManagement->getRelatedProductAssetFilenamesByType($arrAssetKeys, $strFilePath, 'image');
 								}
