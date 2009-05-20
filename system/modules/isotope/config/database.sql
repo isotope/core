@@ -431,7 +431,7 @@ CREATE TABLE `tl_registry` (
 -- --------------------------------------------------------
 
 -- 
--- Table `tl_registry`
+-- Table `tl_iso_orders`
 -- pid == member ID
 --
 
@@ -445,16 +445,36 @@ CREATE TABLE `tl_iso_orders` (
   `order_tax` double NULL default NULL,
   `order_shipping_cost` double NULL default NULL,
   `source_cart_id` int(10) unsigned NOT NULL default '0',
+  `billing_firstname` varchar(255) NOT NULL default '',
+  `billing_lastname` varchar(255) NOT NULL default '',
+  `billing_street` varchar(255) NOT NULL default '',
+  `billing_street_2` varchar(255) NOT NULL default '',
+  `billing_street_3` varchar(255) NOT NULL default '',
+  `billing_postal` varchar(32) NOT NULL default '',
+  `billing_city` varchar(255) NOT NULL default '',
+  `billing_state` varchar(64) NOT NULL default '',
+  `billing_country` varchar(32) NOT NULL default '',
+  `shipping_firstname` varchar(255) NOT NULL default '',
+  `shipping_lastname` varchar(255) NOT NULL default '',
+  `shipping_street` varchar(255) NOT NULL default '',
+  `shipping_street_2` varchar(255) NOT NULL default '',
+  `shipping_street_3` varchar(255) NOT NULL default '',
+  `shipping_postal` varchar(32) NOT NULL default '',
+  `shipping_city` varchar(255) NOT NULL default '',
+  `shipping_state` varchar(64) NOT NULL default '',
+  `shipping_country` varchar(32) NOT NULL default '',
   `shipping_address` text NULL,
   `billing_address` text NULL,
-  `shipping_method` varchar(64) NOT NULL default '',
+  `shipping_rate_id` varchar(64) NOT NULL default '',
   `status` varchar(32) NOT NULL default '',
   `cc_num` varchar(64) NOT NULL default '',
   `cc_exp` varchar(16) NOT NULL default '',
-  `cc_cvv` int(10) unsigned NOT NULL default '0',   
+  `cc_cvv` int(10) unsigned NOT NULL default '0',
+  `cc_type` varchar(64) NOT NULL default '',
   `order_comments` text NULL, 
   `gift_message` text NULL,
   `gift_wrap` char(1) NOT NULL default '',
+  `payment_completed` char(1) NOT NULL default '',
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

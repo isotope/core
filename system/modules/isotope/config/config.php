@@ -214,7 +214,7 @@ $GLOBALS['ISO_NUM']["10.000,00"]	= array(2, ',', ".");
 $GLOBALS['ISO_NUM']["10'000.00"]	= array(2, '.', "'");
 
 
-$GLOBALS['ISO_CONFIG']['CHECKOUT_STEPS'] = array('login','shipping_information','billing_information','shipping_method','payment_method','order_review');
+$GLOBALS['ISO_CONFIG']['CHECKOUT_STEPS'] = array('login','billing_information','shipping_information','shipping_method','payment_method','order_review');
 
 
 
