@@ -2,11 +2,10 @@
 	<?php if($this->noPaymentMethod): ?>
 		<span><?php echo $this->noPaymentMethod; ?></span>
 	<?php else: ?>
+	<ul>
 		<?php foreach($this->paymentMethods as $method): ?>
-			<h2><?php echo $method['title']; ?>: </h2>
-			<div>
-				<?php echo $method['paymentFields']; ?>
-			</div>	
+			<li><?php echo $method; ?></li>
 		<?php endforeach; ?>
+	</ul>
 	<?php endif; ?>
 </div>

@@ -39,24 +39,11 @@ class PaymentPaypal extends Payment
 	 * @access public
 	 * @return array
 	 */
-	public function getPaymentOptions()
+	public function getPaymentOptions($arrData)
 	{
 		$arrOptions = array();
-		
-		$arrCc = deserialize($this->creditcards);
-		
-		if (is_array($arrCc) && count($arrCc))
-		{
-			foreach( $arrCc as $cc )
-			{
-				$arrOptions[$cc] = strlen($GLOBALS['TL_LANG']['ISO'][$cc]) ? $GLOBALS['TL_LANG']['ISO'][$cc] : $cc;
-			}
-		}
-		
-		if ($this->allow_paypal)
-		{
-			$arrOptions['paypal'] = strlen($GLOBALS['TL_LANG']['ISO']['paypal']) ? $GLOBALS['TL_LANG']['ISO']['paypal'] : 'paypal';
-		}
+				
+		$arrOptions[] = array('value'=>'paypal', 'label'=>$this->label);
 		
 		return $arrOptions;
 	}
@@ -71,6 +58,7 @@ class PaymentPaypal extends Payment
 	public function processPayment()
 	{
 		// Reload page every 5 seconds and check if payment was successful
-		$GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="5,http://...">';
+//		$GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="5,http://...">';
 	}
 }
+

@@ -105,8 +105,8 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 	'palettes' => array
 	(
 		'__selector__'                => array('type'),
-		'default'                     => 'name,type,headline;countries,minimum_total,maximum_total;enabled',
-		'paypal'                      => 'name,type,headline;countries,minimum_total,maximum_total,creditcards,accept_paypal;user,password,signature;debug,enabled',
+		'default'                     => 'name,type',
+		'paypal'                      => 'name,type,label;countries,minimum_total,maximum_total;paypal_account,paypal_business;debug,enabled',
 	),
 
 	// Fields
@@ -132,9 +132,9 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 			'reference'               => &$GLOBALS['TL_LANG']['PAY'],
 			'eval'                    => array('helpwizard'=>true, 'submitOnChange'=>true)
 		),
-		'headline' => array
+		'label' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['headline'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['label'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255),
@@ -162,41 +162,19 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255, 'rgxp'=>'digit'),
 		),
-		'creditcards' => array
+		'paypal_account' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['creditcards'],
-			'exclude'                 => true,
-			'inputType'               => 'checkbox',
-			'options'                 => array('mastercard', 'visa', 'amex', 'discover', 'other'),
-			'reference'				  => &$GLOBALS['TL_LANG']['ISO'],
-			'eval'                    => array('mandatory'=>true, 'multiple'=>true),
-		),
-		'accept_paypal' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['accept_paypal'],
-			'exclude'                 => true,
-			'inputType'               => 'checkbox',
-		),
-		'user' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['user'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['paypal_account'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
+			'eval'                    => array('maxlength'=>255, 'rgxp'=>'email'),
 		),
-		'password' => array
+		'paypal_business' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['password'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['paypal_business'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
-		),
-		'signature' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['signature'],
-			'exclude'                 => true,
-			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
+			'eval'                    => array('maxlength'=>255),
 		),
 		'debug' => array
 		(

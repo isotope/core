@@ -103,12 +103,12 @@ abstract class Payment extends Frontend
 	
 	
 	/**
-	 * Return a list of payment options this module provides.
+	 * Return a list of payment options this module provides. Used in frontend.
 	 * 
 	 * @access public
 	 * @return array
 	 */
-	abstract public function getPaymentOptions();
+	abstract public function getPaymentOptions($arrData);
 	
 	
 	/**
