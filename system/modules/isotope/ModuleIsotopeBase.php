@@ -111,6 +111,9 @@ abstract class ModuleIsotopeBase extends Module
 		$this->import('Isotope');
 		$this->import('IsotopeStore', 'Store');
 		$this->import('IsotopeCart', 'Cart');
+		
+		// Load isotope javascript class
+		$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/html/isotope.js';
 	}
 	
 	
