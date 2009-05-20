@@ -189,7 +189,7 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 		
 		$session = $this->Session->getData();
 
-		if(!is_array($session) || !array_key_exists('cart_data', $session['isotope']) || !sizeof($session['isotope']['cart_data']) < 1 || $this->blnRecallProductData)
+		if(!is_array($session) ||Ê!is_array($session['isotope']) || !array_key_exists('cart_data', $session['isotope']) || !sizeof($session['isotope']['cart_data']) < 1 || $this->blnRecallProductData)
 		{		
 			$arrProductData = $this->Isotope->getProductData($this->Cart->getProducts(), array('product_alias','product_name','product_price', 'product_images'), 'product_name');
 			
