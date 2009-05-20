@@ -50,16 +50,34 @@ $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['billing_information'] = '
 $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['shipping_method'] = 'Wählen Sie eine Versandart.';
 $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['payment_method'] = 'Wählen Sie eine Zahlungsart.';
 
-$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE']['billing_information'] = 'Rechnungsinformationen';
-$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE']['shipping_method'] = 'Versandinformationen';
+$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE']['billing_information'] = 'Rechnungsadresse';
+$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE']['shipping_information'] = 'Versandadresse';
+$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE']['shipping_method'] = 'Versandmethode';
 $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE']['payment_method'] = 'Zahlungsart';
 
 $GLOBALS['TL_LANG']['MSC']['confirmOrder'] = 'Bestellen';
+
+$GLOBALS['TL_LANG']['MSC']['subTotalLabel'] = 'Subtotal: ';
+$GLOBALS['TL_LANG']['MSC']['grandTotalLabel'] = 'Total: ';
+$GLOBALS['TL_LANG']['MSC']['taxLabel'] = 'MwSt: ';
 
 
 
 $GLOBALS['TL_LANG']['ISO']['productSingle']		= '1 Produkt';
 $GLOBALS['TL_LANG']['ISO']['productMultiple']	= '%s Produkte';
+
+
+//Checkout language entries 
+$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['shipping_information'] = 'Wählen Sie die Versandadresse.';
+
+
+//Address Book language entries
+$GLOBALS['TL_LANG']['addressBookLabel'] = 'Adressen';
+$GLOBALS['TL_LANG']['editAddressLabel'] = 'Bearbeiten';
+$GLOBALS['TL_LANG']['deleteAddressLabel'] = 'Löschen';
+$GLOBALS['TL_LANG']['createNewAddressLabel'] = 'Adresse erfassen';
+$GLOBALS['TL_LANG']['useBillingAddress'] = 'Rechnungsadresse verwenden';
+$GLOBALS['TL_LANG']['differentShippingAddress'] = 'Abweichende Lieferadresse';
 
 
 /**

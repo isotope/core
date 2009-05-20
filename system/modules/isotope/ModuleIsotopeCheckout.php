@@ -1408,7 +1408,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 					$arrOptions[] = array
 					(
 						'value'	=> 0,
-						'label' => 'Create a New Address',
+						'label' => &$GLOBALS['TL_LANG']['createNewAddressLabel'],
 					);
 				}
 				break;
@@ -1419,13 +1419,13 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				$arrOptions[] = array
 				(
 					'value'	=> -1,
-					'label' => 'Use billing address',
+					'label' => &$GLOBALS['TL_LANG']['useBillingAddress'],
 				);
 				
 				$arrOptions[] = array
 				(
 					'value'	=> 0,
-					'label' => 'Different shipping address',
+					'label' => &$GLOBALS['TL_LANG']['differentShippingAddress'],
 				);
 
 				break;
@@ -1461,7 +1461,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		}
 		
 		$objTemplate->fields .= '<div id="' . $strCurrentStep . '_new"' . ((!FE_USER_LOGGED_IN && $strCurrentStep == 'billing_information') ? '' : ' style="display:none">');
-		$objTemplate->fields .= '<span><h3>Enter a New Address</h3>' . $this->getCurrentStepWidgets($strCurrentStep, 'tl_address_book', $field) . '</span>';
+		$objTemplate->fields .= '<span><h3>' . $GLOBALS['TL_LANG']['createNewAddressLabel'] . '</h3>' . $this->getCurrentStepWidgets($strCurrentStep, 'tl_address_book', $field) . '</span>';
 		$objTemplate->fields .= '</div>';
 		
 		//$objTemplate->formId = $strCurrentStep;
