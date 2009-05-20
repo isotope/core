@@ -42,6 +42,7 @@
  	{
 		$this->import('Input');
 		$this->import('Database');
+		$this->import('IsotopeCart', 'Cart');
  	}
  	
  	
