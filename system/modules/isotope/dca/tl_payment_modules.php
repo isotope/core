@@ -138,7 +138,7 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['label'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>255),
+			'eval'                    => array('maxlength'=>255, 'mandatory'=>true),
 		),
 		'countries' => array
 		(
