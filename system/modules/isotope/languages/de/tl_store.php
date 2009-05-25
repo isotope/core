@@ -49,6 +49,9 @@ $GLOBALS['TL_LANG']['tl_store']['currencySymbol']					= array('Währungssymbol v
 $GLOBALS['TL_LANG']['tl_store']['currencyPosition']					= array('Position der Währungsbezeichung/-symbol', 'Wählen Sie ob die Währung links oder rechts des Preises angezeigt werden soll.');
 $GLOBALS['TL_LANG']['tl_store']['currencyFormat']					= array('Währungsformat', 'Wählen Sie eine Formatierung für Preise.');
 
+$GLOBALS['TL_LANG']['tl_store']['countries']						= array('Länder', 'Wählen Sie die Länder welche bei der Bestellung zur Verfügung stehen.');
+$GLOBALS['TL_LANG']['tl_store']['address_fields']					= array('Adressfelder', 'Wählen Sie die Felder welche bei einer neue Adresse ausgefüllt werden können.');
+
 $GLOBALS['TL_LANG']['tl_store']['gallery_thumbnail_image_width']	= array('Breite für Galerie-Vorschaubild', 'In Pixel.');
 $GLOBALS['TL_LANG']['tl_store']['gallery_thumbnail_image_height']	= array('Höhe für Galerie-Vorschaubild', 'In Pixel.');
 

@@ -49,6 +49,9 @@ $GLOBALS['TL_LANG']['tl_store']['currencySymbol']					= array('Use currency symb
 $GLOBALS['TL_LANG']['tl_store']['currencyPosition']					= array('Position of currency code/symbol', 'Select if you want to show currency on the left or right side of the price.');
 $GLOBALS['TL_LANG']['tl_store']['currencyFormat']					= array('Currency formatting', 'Choose a formatting for prices.');
 
+$GLOBALS['TL_LANG']['tl_store']['countries']						= array('Countries', 'Select the countries you want to allow for checkout.');
+$GLOBALS['TL_LANG']['tl_store']['address_fields']					= array('Address fields', 'Select the fields for a new address when checking out.');
+
 $GLOBALS['TL_LANG']['tl_store']['gallery_thumbnail_image_width']	= array('Gallery Thumbnail Standard Width', 'In pixels.');
 $GLOBALS['TL_LANG']['tl_store']['gallery_thumbnail_image_height']	= array('Gallery Thumbnail Standard Height', 'In pixels.');
 

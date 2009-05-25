@@ -169,6 +169,8 @@ CREATE TABLE `tl_store` (
   `currencySymbol` char(1) NOT NULL default '',
   `currencyPosition` varchar(5) NOT NULL default '',
   `currencyFormat` varchar(20) NOT NULL default '',
+  `countries` blob NULL,
+  `address_fields` blob NULL,
    PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -343,7 +345,7 @@ CREATE TABLE `tl_payment_modules` (
   `type` varchar(64) NOT NULL default '',
   `label` varchar(255) NOT NULL default '',
   `countries` blob NULL,
-  `shipping_methods` blob NULL,
+  `shipping_modules` blob NULL,
   `minimum_total` varchar(255) NOT NULL default '',
   `maximum_total` varchar(255) NOT NULL default '',
   `paypal_account` varchar(255) NOT NULL default '',
