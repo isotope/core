@@ -106,7 +106,8 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 	(
 		'__selector__'                => array('type'),
 		'default'                     => 'name,type',
-		'paypal'                      => 'name,type,label;countries,minimum_total,maximum_total;paypal_account,paypal_business;debug,enabled',
+		'cash'						  => 'name,type,label;countries,shipping_modules,minimum_total,maximum_total;enabled',
+		'paypal'                      => 'name,type,label;countries,shipping_modules,minimum_total,maximum_total;paypal_account,paypal_business;debug,enabled',
 	),
 
 	// Fields
@@ -146,6 +147,14 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 			'inputType'               => 'select',
 			'default'                 => array_keys($this->getCountries()),
 			'options'                 => $this->getCountries(),
+			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'size'=>8),
+		),
+		'shipping_modules' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['shipping_modules'],
+			'exclude'                 => true,
+			'inputType'               => 'select',
+			'options_callback'        => array('tl_payment_modules', 'getShippingModules'),
 			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'size'=>8),
 		),
 		'minimum_total' => array
@@ -241,6 +250,40 @@ class tl_payment_modules extends Backend
 			foreach( $GLOBALS['ISO_PAY'] as $module => $class )
 			{
 				$arrModules[$module] = (strlen($GLOBALS['TL_LANG']['PAY'][$module][0]) ? $GLOBALS['TL_LANG']['PAY'][$module][0] : $module);
+			}
+		}
+		
+		return $arrModules;
+	}
+	
+	
+	/**
+	 * Get all available shipping modules.
+	 * 
+	 * @access public
+	 * @param object $dc
+	 * @return array
+	 */
+	public function getShippingModules($dc)
+	{
+		$arrModules = array();
+		
+		$objShippings = $this->Database->execute("SELECT * FROM tl_shipping_modules ORDER BY name");
+		
+		while( $objShippings->next() )
+		{
+//			$objOptions = $this->Database->prepare("SELECT * FROM tl_shipping_options WHERE pid=?")->execute($objShippings->id);
+			
+			if ($objOptions->numRows)
+			{
+				while( $objOptions->next() )
+				{
+					$arrModules[$objShippings->name][$objShippings->id.'_'.$objOptions->id] = $objOptions->name;
+				}
+			}
+			else
+			{
+				$arrModules[$objShippings->id] = $objShippings->name;
 			}
 		}
 		
