@@ -15,7 +15,12 @@
 		</li>
 		<?php endforeach; ?>
 	</ol>
-	<div style="float: right;"><input type="submit" name="submit" value="<?php echo $this->slabel; ?>" /></div>
+	<?php if ($this->showPrevious || $this->showNext): ?>
+	<div class="submit_container">
+		<?php if ($this->showPrevious): ?><input type="submit" class="submit previous" name="previousStep" value="<?php echo $this->previousLabel; ?>" /><?php endif; if ($this->showNext): ?>
+		<input type="submit" class="submit next" name="nextStep" value="<?php echo $this->nextLabel; ?>" /><?php endif; ?>
+	</div>
+	<?php endif; ?>
 	</form>
 	
 </div>

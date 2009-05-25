@@ -143,7 +143,7 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>255, 'insertTag'=>true, 'feEditable'=>true, 'feViewable'=>true, 'feGroup'=>'address', 'isoEditable'=>true, 'isoCheckoutGroups'=>array('billing_information','shipping_information'))
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'insertTag'=>true, 'feEditable'=>true, 'feViewable'=>true, 'feGroup'=>'address', 'isoEditable'=>true, 'isoCheckoutGroups'=>array('billing_information','shipping_information'))
 		),
 		'street_2' => array
 		(
@@ -167,7 +167,7 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>32, 'insertTag'=>true, 'feEditable'=>true, 'feViewable'=>true, 'feGroup'=>'address', 'isoEditable'=>true, 'isoCheckoutGroups'=>array('billing_information','shipping_information'))
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>32, 'insertTag'=>true, 'feEditable'=>true, 'feViewable'=>true, 'feGroup'=>'address', 'isoEditable'=>true, 'isoCheckoutGroups'=>array('billing_information','shipping_information'))
 		),
 		'city' => array
 		(
@@ -177,7 +177,7 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 			'search'                  => true,
 			'sorting'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>255, 'insertTag'=>true, 'feEditable'=>true, 'feViewable'=>true, 'feGroup'=>'address', 'isoEditable'=>true, 'isoCheckoutGroups'=>array('billing_information','shipping_information'))
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'insertTag'=>true, 'feEditable'=>true, 'feViewable'=>true, 'feGroup'=>'address', 'isoEditable'=>true, 'isoCheckoutGroups'=>array('billing_information','shipping_information'))
 		),
 		'state' => array
 		(
@@ -195,7 +195,7 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 			'sorting'                 => true,
 			'inputType'               => 'select',
 			'options'                 => $this->getCountries(),
-			'eval'                    => array('includeBlankOption'=>true, 'feEditable'=>true, 'feViewable'=>true, 'feGroup'=>'address', 'isoEditable'=>true, 'isoCheckoutGroups'=>array('billing_information','shipping_information'))
+			'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'feEditable'=>true, 'feViewable'=>true, 'feGroup'=>'address', 'isoEditable'=>true, 'isoCheckoutGroups'=>array('billing_information','shipping_information'))
 		),
 		'phone' => array
 		(
@@ -203,7 +203,7 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>64, 'rgxp'=>'phone', 'insertTag'=>true, 'feEditable'=>true, 'feViewable'=>true, 'feGroup'=>'contact', 'isoCheckoutGroups'=>array('billing_information','shipping_information'))
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>64, 'rgxp'=>'phone', 'insertTag'=>true, 'feEditable'=>true, 'feViewable'=>true, 'feGroup'=>'contact', 'isoEditable'=>true, 'isoCheckoutGroups'=>array('billing_information'))
 		),
 		'isDefaultBilling' => array
 		(
@@ -225,7 +225,7 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'rgxp'=>'email', 'insertTag'=>true, 'feEditable'=>true, 'feViewable'=>true, 'feGroup'=>'contact', 'isoCheckoutGroups'=>array('billing_information','shipping_information'))
+			'eval'                    => array('mandatory'=>true, 'mandatory'=>true, 'maxlength'=>255, 'rgxp'=>'email', 'insertTag'=>true, 'feEditable'=>true, 'feViewable'=>true, 'feGroup'=>'contact', 'isoEditable'=>true, 'isoCheckoutGroups'=>array('billing_information'))
 		)
 	)
 );

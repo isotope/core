@@ -66,6 +66,9 @@ $GLOBALS['TL_LANG']['MSC']['subTotalLabel'] = 'Subtotal: ';
 $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'] = 'Total: ';
 $GLOBALS['TL_LANG']['MSC']['taxLabel'] = 'MwSt: ';
 
+$GLOBALS['TL_LANG']['MSC']['noPaymentModules'] = 'Zur Zeit sind keine Zahlungsoptionen verfügbar.';
+$GLOBALS['TL_LANG']['MSC']['noShippingModules'] = 'Zur Zeit sind keine Versandoptionen verfügbar.';
+
 
 
 $GLOBALS['TL_LANG']['ISO']['productSingle']		= '1 Produkt';
