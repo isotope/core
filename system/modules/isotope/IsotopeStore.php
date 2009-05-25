@@ -78,7 +78,7 @@ class IsotopeStore extends Model
 				break;
 			
 			default:
-				return parent::__get($strKey);
+				return deserialize(parent::__get($strKey));
 				break;
 		}
 	}
