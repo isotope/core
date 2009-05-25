@@ -133,7 +133,8 @@ $GLOBALS['FE_MOD']['eCommerce'] = array
 /**
  * Payment modules
  */
-$GLOBALS['ISO_PAY']['paypal'] 	= 'PaymentPaypal';
+$GLOBALS['ISO_PAY']['cash']	 	= 'PaymentCash';
+$GLOBALS['ISO_PAY']['paypal']	= 'PaymentPaypal';
 
 
 /**
@@ -214,7 +215,7 @@ $GLOBALS['ISO_NUM']["10.000,00"]	= array(2, ',', ".");
 $GLOBALS['ISO_NUM']["10'000.00"]	= array(2, '.', "'");
 
 
-$GLOBALS['ISO_CONFIG']['CHECKOUT_STEPS'] = array('login','billing_information','shipping_information','shipping_method','payment_method','order_review');
+$GLOBALS['ISO_CONFIG']['CHECKOUT_STEPS'] = array('login','billing_information','shipping_information','shipping_method','payment_method','order_review', 'order_complete');
 
 
 

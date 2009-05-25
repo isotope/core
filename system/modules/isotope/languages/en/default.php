@@ -73,6 +73,10 @@ $GLOBALS['TL_LANG']['MSC']['productDescriptionLabel'] = 'Description';
 $GLOBALS['TL_LANG']['MSC']['productDetailLabel'] = 'Product Detail';
 $GLOBALS['TL_LANG']['MSC']['productMediaLabel'] = 'Audio and Video';
 
+$GLOBALS['TL_LANG']['MSC']['previousStep']	= 'Back';
+$GLOBALS['TL_LANG']['MSC']['nextStep']		= 'Continue';
+$GLOBALS['TL_LANG']['MSC']['confirmOrder']	= 'Order';
+
 $GLOBALS['TL_LANG']['MSC']['defaultAssetsBasePath'] = 'product_assets';	
 $GLOBALS['TL_LANG']['MSC']['assetsImportBasePath'] = 'assets_for_import';
 $GLOBALS['TL_LANG']['MSC']['audioFolder'] = 'audio';
@@ -195,7 +199,8 @@ $GLOBALS['TL_LANG']['MSC']['DATAMANAGER_PREUPDATE_FUNCTION']['convertToWeight'] 
 $GLOBALS['TL_LANG']['ISO']['productSingle']		= '1 Product';
 $GLOBALS['TL_LANG']['ISO']['productMultiple']	= '%s Products';
 
-$GLOBALS['TL_LANG']['PAY']['paypal'] = array('PayPal Standard');
+$GLOBALS['TL_LANG']['PAY']['cash']				= array('Cash');
+$GLOBALS['TL_LANG']['PAY']['paypal']			= array('PayPal Standard');
 
 
 

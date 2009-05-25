@@ -49,13 +49,18 @@ $GLOBALS['TL_LANG']['MSC']['noCategoriesAssociated'] = 'Dieses Produkt ist keine
 $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['billing_information'] = 'Bitte geben Sie Ihre Adresse ein.';
 $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['shipping_method'] = 'Wählen Sie eine Versandart.';
 $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['payment_method'] = 'Wählen Sie eine Zahlungsart.';
+$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['order_review'] = 'Überprüfen Sie Ihre Bestellung.';
 
 $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE']['billing_information'] = 'Rechnungsadresse';
 $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE']['shipping_information'] = 'Versandadresse';
 $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE']['shipping_method'] = 'Versandmethode';
 $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE']['payment_method'] = 'Zahlungsart';
+$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE']['order_review'] = 'Bestellübersicht';
+$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE']['order_complete'] = 'Bestellung erfolgreich!';
 
-$GLOBALS['TL_LANG']['MSC']['confirmOrder'] = 'Bestellen';
+$GLOBALS['TL_LANG']['MSC']['previousStep']	= 'Zurück';
+$GLOBALS['TL_LANG']['MSC']['nextStep']		= 'Weiter';
+$GLOBALS['TL_LANG']['MSC']['confirmOrder']	= 'Bestellen';
 
 $GLOBALS['TL_LANG']['MSC']['subTotalLabel'] = 'Subtotal: ';
 $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'] = 'Total: ';
@@ -65,6 +70,9 @@ $GLOBALS['TL_LANG']['MSC']['taxLabel'] = 'MwSt: ';
 
 $GLOBALS['TL_LANG']['ISO']['productSingle']		= '1 Produkt';
 $GLOBALS['TL_LANG']['ISO']['productMultiple']	= '%s Produkte';
+
+$GLOBALS['TL_LANG']['PAY']['cash']				= array('Barzahlung');
+$GLOBALS['TL_LANG']['PAY']['paypal']			= array('PayPal Standard');
 
 
 //Checkout language entries 
