@@ -381,7 +381,12 @@ CREATE TABLE `tl_shipping_modules` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `tstamp` int(10) unsigned NOT NULL default '0',
   `name` varchar(255) NOT NULL default '',
-  `comparison` varchar(64) NOT NULL default '',
+  `type` varchar(64) NOT NULL default '',
+  `label` varchar(255) NOT NULL default '',
+  `countries` blob NULL,
+  `minimum_total` int(10) NOT NULL default '0',
+  `maximum_total` int(10) NOT NULL default '0',
+  `price` int(10) NOT NULL default '0',
   `enabled` char(1) NOT NULL default '',
   PRIMARY KEY  (`id`),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -390,22 +395,21 @@ CREATE TABLE `tl_shipping_modules` (
 -- --------------------------------------------------------
 
 -- 
--- Table `tl_shipping_rates`
+-- Table `tl_shipping_options`
 -- 
 
-CREATE TABLE `tl_shipping_rates` (
+CREATE TABLE `tl_shipping_options` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
-  `sorting` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
-  `description` varchar(255) NOT NULL default '',
+  `name` varchar(255) NOT NULL default '',
   `upper_limit` double NULL default NULL,
   `rate` double NULL default NULL,
   `dest_zip` varchar(32) NOT NULL default '',
   `dest_country` varchar(64) NOT NULL default '',
   `dest_region` varchar(64) NOT NULL default '',
+  `enabled` char(1) NOT NULL default '',
   PRIMARY KEY  (`id`),
-  KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 

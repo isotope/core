@@ -199,6 +199,16 @@ $GLOBALS['TL_LANG']['MSC']['DATAMANAGER_PREUPDATE_FUNCTION']['convertToWeight'] 
 $GLOBALS['TL_LANG']['ISO']['productSingle']		= '1 Product';
 $GLOBALS['TL_LANG']['ISO']['productMultiple']	= '%s Products';
 
+
+/**
+ * Shipping modules
+ */
+$GLOBALS['TL_LANG']['SHIP']['collection']		= array('Collection');
+
+
+/**
+ * Payment modules
+ */
 $GLOBALS['TL_LANG']['PAY']['cash']				= array('Cash');
 $GLOBALS['TL_LANG']['PAY']['paypal']			= array('PayPal Standard');
 

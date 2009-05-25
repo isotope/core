@@ -19,11 +19,9 @@
  * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Winans Creative/Fred Bliss 2009 
- * @author     Fred Bliss 
- * @package    Isotope 
- * @license    Commercial 
- * @filesource
+ * @copyright  Winans Creative / Fred Bliss 2009
+ * @author     Fred Bliss <fred@winanscreative.com>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
@@ -78,7 +76,7 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 			'copy' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_payment_modules']['copy'],
-				'href'                => 'act=paste&amp;mode=copy',
+				'href'                => 'act=copy',
 				'icon'                => 'copy.gif'
 			),
 			'delete' => array
@@ -128,7 +126,7 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 			'exclude'                 => true,
 			'filter'                  => true,
 			'inputType'               => 'select',
-			'default'				  => 'paypal',
+			'default'				  => 'cash',
 			'options_callback'        => array('tl_payment_modules', 'getModules'),
 			'reference'               => &$GLOBALS['TL_LANG']['PAY'],
 			'eval'                    => array('helpwizard'=>true, 'submitOnChange'=>true)
@@ -221,7 +219,7 @@ class tl_payment_modules extends Backend
 	{
 		$strClass = $GLOBALS['ISO_PAY'][$arrRow['type']];
 
-		if (!strlen($strClass))
+		if (!strlen($strClass) || !$this->classFileExists($strClass))
 			return '';
 			
 		try 
@@ -272,7 +270,7 @@ class tl_payment_modules extends Backend
 		
 		while( $objShippings->next() )
 		{
-//			$objOptions = $this->Database->prepare("SELECT * FROM tl_shipping_options WHERE pid=?")->execute($objShippings->id);
+			$objOptions = $this->Database->prepare("SELECT * FROM tl_shipping_options WHERE pid=?")->execute($objShippings->id);
 			
 			if ($objOptions->numRows)
 			{

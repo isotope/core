@@ -131,10 +131,16 @@ $GLOBALS['FE_MOD']['eCommerce'] = array
 
 
 /**
+ * Shipping modules
+ */
+$GLOBALS['ISO_SHIP']['collection']	 = 'ShippingCollection';
+
+
+/**
  * Payment modules
  */
-$GLOBALS['ISO_PAY']['cash']	 	= 'PaymentCash';
-$GLOBALS['ISO_PAY']['paypal']	= 'PaymentPaypal';
+$GLOBALS['ISO_PAY']['cash']	 		= 'PaymentCash';
+$GLOBALS['ISO_PAY']['paypal']		= 'PaymentPaypal';
 
 
 /**

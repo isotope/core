@@ -35,7 +35,7 @@ $GLOBALS['TL_DCA']['tl_shipping_modules'] = array
 	'config' => array
 	(
 		'dataContainer'               => 'Table',
-		'ctable'                      => array('tl_shipping_rates'),
+		'ctable'                      => array('tl_shipping_options'),
 		'switchToEdit'                => true,
 		'enableVersioning'            => true
 	),
@@ -52,8 +52,8 @@ $GLOBALS['TL_DCA']['tl_shipping_modules'] = array
 		),
 		'label' => array
 		(
-			'fields'                  => array('name'),
-			'format'                  => '%s'
+			'fields'                  => array('name', 'type'),
+			'format'                  => '%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>'
 		),
 		'global_operations' => array
 		(
@@ -70,13 +70,13 @@ $GLOBALS['TL_DCA']['tl_shipping_modules'] = array
 			'edit' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_shipping_modules']['edit'],
-				'href'                => 'table=tl_shipping_rates',
+				'href'                => 'act=edit',
 				'icon'                => 'edit.gif'
 			),
 			'copy' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_shipping_modules']['copy'],
-				'href'                => 'act=paste&amp;mode=copy',
+				'href'                => 'act=copy',
 				'icon'                => 'copy.gif'
 			),
 			'delete' => array
@@ -91,20 +91,19 @@ $GLOBALS['TL_DCA']['tl_shipping_modules'] = array
 				'label'               => &$GLOBALS['TL_LANG']['tl_shipping_modules']['show'],
 				'href'                => 'act=show',
 				'icon'                => 'show.gif'
-			)/*,
-			'shipping_rates' => array
+			),
+			'buttons' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_shipping_modules']['shipping_rates'],
-				'href'                => 'table=tl_shipping_rates', 
-				'icon'                => 'show.gif'
-			)*/
+				'button_callback'     => array('tl_shipping_modules', 'moduleOperations'),
+			)
 		)
 	),
 
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => 'name;comparison;enabled'
+		'default'                     => 'type,name,label;countries,minimum_total,maximum_total;enabled',
+		'collection'                  => 'type,name,label;countries,minimum_total,maximum_total;enabled',
 	),
 
 	// Fields
@@ -118,14 +117,47 @@ $GLOBALS['TL_DCA']['tl_shipping_modules'] = array
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255)
 		),
-		'comparison' => array
+		'type' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_modules']['comparison'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_modules']['type'],
+			'default'                 => 'cc',
 			'exclude'                 => true,
-			'search'                  => true,
+			'filter'                  => true,
 			'inputType'               => 'select',
-			'options'                 => array('Price vs. Destination', 'Weight vs. Destination'),
-			'eval'                    => array('mandatory'=>true)
+			'default'				  => 'collection',
+			'options_callback'        => array('tl_shipping_modules', 'getModules'),
+			'reference'               => &$GLOBALS['TL_LANG']['SHIP'],
+			'eval'                    => array('helpwizard'=>true, 'submitOnChange'=>true)
+		),
+		'label' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_modules']['label'],
+			'exclude'                 => true,
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>255, 'mandatory'=>true),
+		),
+		'countries' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_modules']['countries'],
+			'exclude'                 => true,
+			'inputType'               => 'select',
+			'default'                 => array_keys($this->getCountries()),
+			'options'                 => $this->getCountries(),
+			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'size'=>8),
+		),
+		'minimum_total' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_modules']['minimum_total'],
+			'exclude'                 => true,
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>255, 'rgxp'=>'digit'),
+		),
+		'maximum_total' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_modules']['maximum_total'],
+			'exclude'                 => true,
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>255, 'rgxp'=>'digit'),
 		),
 		'enabled' => array
 		(
@@ -136,4 +168,62 @@ $GLOBALS['TL_DCA']['tl_shipping_modules'] = array
 		)
 	)
 );
+
+
+
+/**
+ * tl_shipping_modules class.
+ * 
+ * @extends Backend
+ */
+class tl_shipping_modules extends Backend
+{
+
+	/**
+	 * Return a string of more buttons for the current shipping module.
+	 * 
+	 * @todo Collect additional buttons from shipping modules.
+	 * @access public
+	 * @param array $arrRow
+	 * @return string
+	 */
+	public function moduleOperations($arrRow)
+	{
+		$strClass = $GLOBALS['ISO_SHIP'][$arrRow['type']];
+
+		if (!strlen($strClass) || !$this->classFileExists($strClass))
+			return '';
+			
+		try 
+		{
+			$objModule = new $strClass($arrRow);
+			return $objModule->moduleOperations();
+		}
+		catch (Exception $e) {}
+		
+		return '';
+	}
+	
+	
+	/**
+	 * Get a list of all shipping modules available.
+	 * 
+	 * @access public
+	 * @return array
+	 */
+	public function getModules()
+	{
+		$arrModules = array();
+		
+		if (is_array($GLOBALS['ISO_SHIP']) && count($GLOBALS['ISO_SHIP']))
+		{
+			foreach( $GLOBALS['ISO_SHIP'] as $module => $class )
+			{
+				$arrModules[$module] = (strlen($GLOBALS['TL_LANG']['SHIP'][$module][0]) ? $GLOBALS['TL_LANG']['SHIP'][$module][0] : $module);
+			}
+		}
+		
+		return $arrModules;
+	}
+}
 

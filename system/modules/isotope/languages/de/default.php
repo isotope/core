@@ -71,6 +71,16 @@ $GLOBALS['TL_LANG']['MSC']['taxLabel'] = 'MwSt: ';
 $GLOBALS['TL_LANG']['ISO']['productSingle']		= '1 Produkt';
 $GLOBALS['TL_LANG']['ISO']['productMultiple']	= '%s Produkte';
 
+
+/**
+ * Shipping modules
+ */
+$GLOBALS['TL_LANG']['SHIP']['collection']		= array('Abholung');
+
+
+/**
+ * Payment modules
+ */
 $GLOBALS['TL_LANG']['PAY']['cash']				= array('Barzahlung');
 $GLOBALS['TL_LANG']['PAY']['paypal']			= array('PayPal Standard');
 
