@@ -204,6 +204,7 @@ $GLOBALS['TL_LANG']['ISO']['productMultiple']	= '%s Products';
  * Shipping modules
  */
 $GLOBALS['TL_LANG']['SHIP']['collection']		= array('Collection');
+$GLOBALS['TL_LANG']['SHIP']['flat']				= array('Flat-price shipping');
 
 
 /**

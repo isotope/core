@@ -19,11 +19,9 @@
  * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Winans Creative/Fred Bliss 2009 
- * @author     Fred Bliss 
- * @package    Isotope 
- * @license    Commercial 
- * @filesource
+ * @copyright  Winans Creative / Fred Bliss 2009
+ * @author     Andreas Schempp <andreas@schempp.ch>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
@@ -31,7 +29,11 @@
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_shipping_modules']['name']				= array('Name der Versandart', '');
-$GLOBALS['TL_LANG']['tl_shipping_modules']['comparison']		= array('Vergleichsmethode', 'Wählen Sie eine Methode wie Versandkosten berechnet werden.');
+$GLOBALS['TL_LANG']['tl_shipping_modules']['price']				= array('Preis', '');
+$GLOBALS['TL_LANG']['tl_shipping_modules']['flatCalculation']	= array('Berechnung Pauschalpreis', '');
+$GLOBALS['TL_LANG']['tl_shipping_modules']['countries']			= array('Länder', 'Wählen Sie die Länder für welche diese Versandoption zur Verfügung steht.');
+$GLOBALS['TL_LANG']['tl_shipping_modules']['minimum_total']		= array('Minimaler Bestellwert', 'Wenn dieser Wert unterschritten wird, steht diese Versandoption nicht zur Verfügung.');
+$GLOBALS['TL_LANG']['tl_shipping_modules']['maximum_total']		= array('Maximaler Bestellwert', 'Wenn dieser Wert überschritten wird, steht diese Versandoption nicht zur Verfügung.');
 $GLOBALS['TL_LANG']['tl_shipping_modules']['enabled']			= array('Aktiv', 'Wählen Sie ob dieses Modul für den Shop verfügbar ist.');
 
 
@@ -45,4 +47,12 @@ $GLOBALS['TL_LANG']['tl_shipping_modules']['delete'] 			= array('Versandart lös
 $GLOBALS['TL_LANG']['tl_shipping_modules']['show']   			= array('Versandart-Details', 'Details der Versandart ID %s anzeigen');
 $GLOBALS['TL_LANG']['tl_shipping_modules']['shipping_rates']	= array('Regeln bearbeiten', 'Versandraten bearbeiten');
 $GLOBALS['TL_LANG']['tl_shipping_modules']['tstamp'] 			= array('Änderungsdatum', '');
+
+
+/**
+ * References
+ */
+$GLOBALS['TL_LANG']['tl_shipping_modules']['flat']				= 'Pauschal';
+$GLOBALS['TL_LANG']['tl_shipping_modules']['perProduct']		= 'Pro Produkt';
+$GLOBALS['TL_LANG']['tl_shipping_modules']['perItem']			= 'Pro Stück';
 

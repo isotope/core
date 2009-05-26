@@ -30,75 +30,7 @@
  * 
  * @extends Frontend
  */
-abstract class Shipping extends Frontend
+class ShippingCollection extends Shipping
 {
-
-	/**
-	 * Template
-	 *
-	 * @access protected
-	 * @var string
-	 */
-	protected $strTemplate;
-
-	/**
-	 * Current record
-	 *
-	 * @access protected
-	 * @var array
-	 */
-	protected $arrData = array();
-	
-	
-	/**
-	 * Initialize the object
-	 *
-	 * @access public
-	 * @param array $arrRow
-	 */
-	public function __construct($arrRow)
-	{
-		parent::__construct();
-
-		$this->arrData = $arrRow;
-	}
-	
-	
-	/**
-	 * Set an object property
-	 *
-	 * @access public
-	 * @param string
-	 * @param mixed
-	 */
-	public function __set($strKey, $varValue)
-	{
-		$this->arrData[$strKey] = $varValue;
-	}
-
-
-	/**
-	 * Return an object property
-	 *
-	 * @access public
-	 * @param string
-	 * @return mixed
-	 */
-	public function __get($strKey)
-	{
-		return $this->arrData[$strKey];
-	}
-	
-	
-	/**
-	 * Return a list of buttons for the table row in backend
-	 * 
-	 * @access public
-	 * @return string
-	 */
-	public function moduleOperations()
-	{
-		return '';
-	}
 }
 

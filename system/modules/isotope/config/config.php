@@ -134,6 +134,7 @@ $GLOBALS['FE_MOD']['eCommerce'] = array
  * Shipping modules
  */
 $GLOBALS['ISO_SHIP']['collection']	 = 'ShippingCollection';
+$GLOBALS['ISO_SHIP']['flat']		 = 'ShippingFlat';
 
 
 /**

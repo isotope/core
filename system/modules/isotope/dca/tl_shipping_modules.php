@@ -102,8 +102,10 @@ $GLOBALS['TL_DCA']['tl_shipping_modules'] = array
 	// Palettes
 	'palettes' => array
 	(
+		'__selector__'                => array('type'),
 		'default'                     => 'type,name,label;countries,minimum_total,maximum_total;enabled',
-		'collection'                  => 'type,name,label;countries,minimum_total,maximum_total;enabled',
+		'collection'                  => 'type,name,label;price;countries,minimum_total,maximum_total;enabled',
+		'flat'                        => 'type,name,label;price,flatCalculation;countries,minimum_total,maximum_total;enabled',
 	),
 
 	// Fields
@@ -158,6 +160,21 @@ $GLOBALS['TL_DCA']['tl_shipping_modules'] = array
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255, 'rgxp'=>'digit'),
+		),
+		'price' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_modules']['price'],
+			'exclude'                 => true,
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>10, 'rgxp'=>'digit'),
+		),
+		'flatCalculation' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_modules']['flatCalculation'],
+			'exclude'                 => true,
+			'inputType'               => 'select',
+			'options'                 => array('flat', 'perProduct', 'perItem'),
+			'reference'               => &$GLOBALS['TL_LANG']['tl_shipping_modules'],
 		),
 		'enabled' => array
 		(

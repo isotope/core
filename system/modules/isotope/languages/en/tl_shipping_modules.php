@@ -19,20 +19,22 @@
  * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Winans Creative/Fred Bliss 2009 
- * @author     Fred Bliss 
- * @package    Isotope 
- * @license    Commercial 
- * @filesource
+ * @copyright  Winans Creative / Fred Bliss 2009
+ * @author     Fred Bliss <fred@winanscreative.com>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_shipping_modules']['name'] = array('Shipping Method Name', '');
-$GLOBALS['TL_LANG']['tl_shipping_modules']['comparison'] = array('Shipping Comparison Method', 'Select a method by which the shipping will be calculated.');
-$GLOBALS['TL_LANG']['tl_shipping_modules']['enabled'] = array('Enabled', 'Is the module available for use in the store?');
+$GLOBALS['TL_LANG']['tl_shipping_modules']['name']				= array('Shipping Method Name', '');
+$GLOBALS['TL_LANG']['tl_shipping_modules']['price']				= array('Price', '');
+$GLOBALS['TL_LANG']['tl_shipping_modules']['flatCalculation']	= array('Flat calculation', '');
+$GLOBALS['TL_LANG']['tl_shipping_modules']['countries']			= array('Countries', 'Select the countries this shipping method applies to.');
+$GLOBALS['TL_LANG']['tl_shipping_modules']['minimum_total']		= array('Minimum total', '');
+$GLOBALS['TL_LANG']['tl_shipping_modules']['maximum_total']		= array('Maximum total', '');
+$GLOBALS['TL_LANG']['tl_shipping_modules']['enabled']			= array('Enabled', 'Is the module available for use in the store?');
 
 
 /**
@@ -53,5 +55,10 @@ $GLOBALS['TL_LANG']['tl_shipping_modules']['shipping_rates']   = array('Edit Rul
 $GLOBALS['TL_LANG']['tl_shipping_modules']['tstamp'] = array('Date Modified', '');
 
 
+/**
+ * References
+ */
+$GLOBALS['TL_LANG']['tl_shipping_modules']['flat']				= 'Flat';
+$GLOBALS['TL_LANG']['tl_shipping_modules']['perProduct']		= 'Per Product';
+$GLOBALS['TL_LANG']['tl_shipping_modules']['perItem']			= 'Per Item';
 
-?>
