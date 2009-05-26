@@ -45,6 +45,15 @@ class ShippingFlat extends Shipping
 		switch( $strKey )
 		{
 			case 'price':
+				$this->import('IsotopeCart', 'Cart');
+				switch( $this->flatCalculation )
+				{
+					case 'perProduct':
+						return ($this->price * $this->Cart->products);
+						
+					case 'perItem':
+						return ($this->arrData['price'] * $this->Cart->items);
+				}
 				break;
 		}
 		

@@ -109,32 +109,6 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			$this->strTemplate = $this->iso_checkout_layout;
 		}
 		
-/*
-		if($this->store_id < 1)
-		{
-			return '<i>' . $GLOBALS['TL_LANG']['ERR']['noStoreIdFound'] . '</i>';		
-		}
-		
-		$this->arrStoreSettings = $this->getCurrentStoreConfigById($this->store_id);
-		
-		if(!sizeof($this->arrStoreSettings))
-		{
-			return '<i>' . $GLOBALS['TL_LANG']['ERR']['noStoreIdFound'] . '</i>';
-		}
-		
-		$this->import('FrontendUser','User');
-		
-		$this->strUserId = $this->getCustomerId(); //$this->User->id;
-		
-		$this->intCartId = $this->userCartExists($this->strUserId);
-		
-		if(!$this->intCartId)
-		{
-			//redirect away from checkout.
-			$this->redirect($this->Environment->base);
-		}
-*/
-		
 		
 		if(($this->iso_checkout_method == 'login' && !FE_USER_LOGGED_IN) || ($this->iso_checkout_method == 'both' && !FE_USER_LOGGED_IN && !$_SESSION['isotope']['isGuest']))
 		{
@@ -467,8 +441,20 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	
 	protected function getShippingModulesInterface($arrModuleIds)
 	{
-		$arrShippingModules = $this->getShippingServicesAndTiers($arrModuleIds);
-		$arrShippingMethods = $this->calculateShippingCost($arrShippingModules);
+		$arrData = $this->Input->post('shipping');
+		
+		$arrData = is_array($arrData) ? $arrData : $_SESSION['FORM_DATA']['shipping'];
+		
+		if (!strlen($arrData['module']))
+		{
+			$this->doNotSubmit = true;
+		}
+		else
+		{
+			$_SESSION['FORM_DATA']['shipping'] = $arrData;
+		}
+		
+		$arrShippingMethods = $this->getShippingModules($arrModuleIds, $arrData);
 				
 		if(!count($arrShippingMethods))
 		{
@@ -488,7 +474,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 		$arrData = is_array($arrData) ? $arrData : $_SESSION['FORM_DATA']['payment'];
 		
-		if (!strlen($arrData['method']))
+		if (!strlen($arrData['module']))
 		{
 			$this->doNotSubmit = true;
 		}
@@ -650,32 +636,59 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		return true;
 	}
 	
-		
 	
-	protected function getPaymentModules($arrModuleIds, $arrData)
+	protected function getShippingModules($arrModuleIds, $arrData)
 	{
-		if (!is_array($arrModuleIds))
+		if (!is_array($arrModuleIds) || !count($arrModuleIds))
 			return array();
 			
-		$arrOptions = array();
+		$arrModules = array();
+		$objModules = $this->Database->execute("SELECT * FROM tl_shipping_modules WHERE id IN (" . implode(',', $arrModuleIds) . ") AND enabled='1'");
 		
-		foreach($arrModuleIds as $module)
+		while( $objModules->next() )
 		{
-			$objModule = $this->Database->prepare("SELECT * FROM tl_payment_modules WHERE id=?")->limit(1)->execute($module);
-												   
-			if($objModule->numRows < 1)
-			{
-				continue;
-			}
+			$strClass = $GLOBALS['ISO_SHIP'][$objModules->type];
 			
-			$strClass = $GLOBALS['ISO_PAY'][$objModule->type];
-			
-			if (!$this->classFileExists($strClass))
+			if (!strlen($strClass) || !$this->classFileExists($strClass))
 			{
 				continue;	
 			}
 			
-			$objModule = new $strClass($objModule->row());
+			$objModule = new $strClass($objModules->row());
+			
+			if (!$objModule->available)
+				continue;
+			
+			$arrModules[] = sprintf('<input id="ctrl_shipping_module_%s" type="radio" name="shipping[module]" value="%s"%s /> <label for="ctrl_shipping_module_%s">%s: %s</label>',
+									 $objModule->id,
+									 $objModule->id,
+									 ($arrData['module'] == $objModule->id ? ' checked="checked"' : ''),
+									 $objModule->id,
+ 									 $objModule->label,
+ 									 $this->Isotope->formatPriceWithCurrency($objModule->price));
+		}
+				
+		return $arrModules;
+	}
+	
+	protected function getPaymentModules($arrModuleIds, $arrData)
+	{
+		if (!is_array($arrModuleIds) || !count($arrModuleIds))
+			return array();
+			
+		$arrOptions = array();
+		$objModules = $this->Database->execute("SELECT * FROM tl_payment_modules WHERE id IN (" . implode(',', $arrModuleIds) . ") AND enabled='1'");
+		
+		while( $objModules->next() )
+		{
+			$strClass = $GLOBALS['ISO_PAY'][$objModules->type];
+			
+			if (!strlen($strClass) || !$this->classFileExists($strClass))
+			{
+				continue;	
+			}
+			
+			$objModule = new $strClass($objModules->row());
 			
 			$arrOptions = array_merge($arrOptions, $objModule->getPaymentOptions($arrData));
 			
@@ -884,10 +897,10 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 		foreach( $arrOptions as $arrOption )
 		{
-			$arrModules[] = sprintf('<input id="ctrl_payment_method_%s" type="radio" name="payment[method]" value="%s"%s /> <label for="ctrl_payment_method_%s">%s</label>%s',
+			$arrModules[] = sprintf('<input id="ctrl_payment_module_%s" type="radio" name="payment[module]" value="%s"%s /> <label for="ctrl_payment_module_%s">%s</label>%s',
 									 $arrOption['value'],
 									 $arrOption['value'],
-									 ($arrData['method'] == $arrOption['value'] ? ' checked="checked"' : ''),
+									 ($arrData['module'] == $arrOption['value'] ? ' checked="checked"' : ''),
 									 $arrOption['value'],
  									 $arrOption['label'],
  									 $arrOption['fields']);
@@ -960,20 +973,12 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	 * @param array
 	 * @return array
 	 */
+/*
 	protected function getShippingServicesAndTiers($arrModuleIds)
 	{
 		if (!is_array($arrModuleIds) || !count($arrModuleIds))
 			return array();
-			
-		$arrModules = array();
-		$objModules = $this->Database->execute("SELECT * FROM tl_shipping_modules WHERE id IN (" . implode(',', $arrModuleIds) . ") AND enabled='1'");
-		
-		while( $objModules->next() )
-		{
-			
-		}
-		
-/*
+
 		foreach($arrModuleIds as $module)
 		{
 			//Load configuration data for the shipping method.
@@ -1007,10 +1012,11 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			);
 		}
 			
-*/
 		return $arrModules;
 	}
 	
+*/
+/*
 	
 	protected function calculateShippingCost($arrShippingModules)
 	{
@@ -1054,6 +1060,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		return $arrShippingMethods;
 		
 	}
+*/
 	
 /*
 	protected function calculateOrderSubtotal($intCartId, $strUserId)

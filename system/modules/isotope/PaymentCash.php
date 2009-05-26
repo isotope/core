@@ -43,7 +43,7 @@ class PaymentCash extends Payment
 	{
 		$arrOptions = array();
 				
-		$arrOptions[] = array('value'=>'paypal', 'label'=>$this->label);
+		$arrOptions[] = array('value'=>'cash', 'label'=>$this->label);
 		
 		return $arrOptions;
 	}
