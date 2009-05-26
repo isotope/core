@@ -112,6 +112,11 @@ abstract class ModuleIsotopeBase extends Module
 		$this->import('IsotopeStore', 'Store');
 		$this->import('IsotopeCart', 'Cart');
 		
+		if (FE_USER_LOGGED_IN)
+		{
+			$this->import('FrontendUser', 'User');
+		}
+		
 		// Load isotope javascript class
 		$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/html/isotope.js';
 	}
@@ -703,24 +708,6 @@ abstract class ModuleIsotopeBase extends Module
 	{
 		return array();
 	
-	}
-
-	protected function getMissingImagePlaceholder($intStoreSettingsId)
-	{
-		$objMissingImage = $this->Database->prepare("SELECT missing_image_placeholder FROM tl_store WHERE id=?")
-										  ->limit(1)
-										  ->execute($intStoreSettingsId);
-		
-		if($objMissingImage->numRows < 1)
-		{
-			return '';
-		}
-		
-		$strFilePath = $objMissingImage->missing_image_placeholder;
-	
-	
-		return $strFilePath;
-		
 	}
 	
 	protected function getProductReaderJumpTo($intStoreSettingsId)

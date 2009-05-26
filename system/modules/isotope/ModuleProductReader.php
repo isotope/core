@@ -168,7 +168,6 @@ class ModuleProductReader extends ModuleIsotopeBase
 			{
 				$isError = true;
 				$errKey[] = 'invalidProductInformation';			
-				
 			}
 			
 			
@@ -184,12 +183,14 @@ class ModuleProductReader extends ModuleIsotopeBase
 			if($objCurrentStoreConfiguration->numRows < 1)
 			{
 				$this->intStoreId = 1;
-			}else{
+			}
+			else
+			{
 				$this->intStoreId = $objCurrentStoreConfiguration->store_id;
 			}
 			
 			
-			$strMissingImagePlaceholder = $this->getMissingImagePlaceholder($this->intStoreId);
+			$strMissingImagePlaceholder = $this->Store->missing_image_placeholder;
 						
 			$objProductData = $this->Database->prepare("SELECT * FROM " . $this->strCurrentStoreTable . " WHERE id=? OR product_alias=?")
 									 ->limit(1)
@@ -200,8 +201,9 @@ class ModuleProductReader extends ModuleIsotopeBase
 				$isError = true;
 				$errKey[] = 'invalidProductInformation';
 			}			
-								 
-		}else{
+		}
+		else
+		{
 			$isError = true;
 			$errKey[] = 'invalidProductInformation';
 		}
@@ -214,8 +216,9 @@ class ModuleProductReader extends ModuleIsotopeBase
 			}
 			
 			$this->Template->errorMessages = $arrErrorMessages;
-			
-		}else{
+		}
+		else
+		{
 			
 			$arrProductData =  $objProductData->fetchAllAssoc();
 				
@@ -228,21 +231,24 @@ class ModuleProductReader extends ModuleIsotopeBase
 				//For attributes that need pre-processing before renderering out to template.
 				foreach($product as $k=>$v)
 				{
-			
 					switch($k)
 					{
 						case "product_name":													
 							$objPage->title = $v;
 							$this->Template->productName = $v;
 							break;
+							
 						case "product_description":
 							$objPage->description = strip_tags($this->generateTeaser($v));
 							break;
+							
 						case "use_product_price_override":
 							if($v==1)
 							{
 								$product['price_string'] = $this->generatePrice($product['product_price_override'], $this->strPriceOverrideTemplate);
-							}else{
+							}
+							else
+							{
 								$product['price_string'] = $this->generatePrice($product['product_price']);
 							}							
 							break;							
@@ -255,12 +261,12 @@ class ModuleProductReader extends ModuleIsotopeBase
 							$arrSourceFiles = $this->MediaManagement->getMediaFilenames($arrProductPaths['file_source_path'], $GLOBALS['TL_LANG']['MSC']['imagesFolder'], 'source');
 							
 							$arrLiveFiles = $this->MediaManagement->getMediaFilenames($arrProductPaths['file_destination_path'], $GLOBALS['TL_LANG']['MSC']['imagesFolder'], 'destination');
-						
+													
 							$arrNeededImages = array();
 							if($blnForceRescale || (count($arrSourceFiles) > count($arrLiveFiles)))
 							{
 								//Find Different and thumbnail those new files.
-								if(sizeof($arrSourceFiles) && sizeof($arrLiveFiles))
+								if(sizeof($arrSourceFiles))
 								{
 									//Figure out if any new images need to be thumbnailed.
 									if($blnForceRescale)
@@ -276,21 +282,18 @@ class ModuleProductReader extends ModuleIsotopeBase
 								{
 									//Check for a file or folder by that name in the main import folder as specified in store config.
 									$arrAssetKeys = array($product['product_alias'], $product['product_sku']);
-								
-									//Get the default import folder from config
-									$strFilePath = $this->MediaManagement->getRootAssetImportPathByStoreId($this->intStoreId);
-								
-									$arrNeededImages = $this->MediaManagement->getRelatedProductAssetFilenamesByType($arrAssetKeys, $strFilePath, 'image');
+									
+									$arrNeededImages = $this->MediaManagement->getRelatedProductAssetFilenamesByType($arrAssetKeys, $this->Store->root_asset_import_path, 'images');
 								}
-								
-							
 							}
 								
 								
 							$arrImageSizeConstraints = $this->MediaManagement->getImageSizeConstraints($this->strCurrentStoreTable, (is_numeric($this->Input->get('product')) ? $this->Input->get('product') : 0), $this->Input->get('product'));
 								
 							if (count($arrNeededImages))
+							{
 								$this->MediaManagement->processImages($arrNeededImages, $arrImageSizeConstraints, $arrProductPaths, array('all'), $blnForceRescale);
+							}
 								
 																				
 							if(is_dir($arrProductPaths['file_destination_path']))
@@ -333,7 +336,9 @@ class ModuleProductReader extends ModuleIsotopeBase
 									
 									
 								}
-							}else{
+							}
+							else
+							{
 								$this->arrMainImage['file_path'] = $strMissingImagePlaceholder;
 								$this->arrMainImage['height'] = NULL;
 								$this->arrMainImage['width'] = NULL;
@@ -344,23 +349,23 @@ class ModuleProductReader extends ModuleIsotopeBase
 							
 							break;
 							
-							case 'audio_source':
-							case 'video_source':
-								if(strlen($k > 0))
+						case 'audio_source':
+						case 'video_source':
+							if(strlen($k > 0))
+							{
+								$objAudioPlayerTemplate = new FrontendTemplate($this->strInternalMediaPlayerTemplate);
+								//var_dump($objAudioPlayerTemplate);
+								if(!file_exists($absoluteAssetsFolderPath . '/' . 'mrss.xml'))
 								{
-									$objAudioPlayerTemplate = new FrontendTemplate($this->strInternalMediaPlayerTemplate);
-									//var_dump($objAudioPlayerTemplate);
-									if(!file_exists($absoluteAssetsFolderPath . '/' . 'mrss.xml'))
-									{
-										break;
-									}
-									
-									$objAudioPlayerTemplate->playSoundMessage = $GLOBALS['TL_LANG']['MSC']['playSoundMessage'];
-									
-									$objAudioPlayerTemplate->productBasePath = $this->Environment->base . $relativeAssetsPath . '/';
-															
-									$this->Template->embeddedMedia = $objAudioPlayerTemplate->parse();
-								}	
+									break;
+								}
+								
+								$objAudioPlayerTemplate->playSoundMessage = $GLOBALS['TL_LANG']['MSC']['playSoundMessage'];
+								
+								$objAudioPlayerTemplate->productBasePath = $this->Environment->base . $relativeAssetsPath . '/';
+														
+								$this->Template->embeddedMedia = $objAudioPlayerTemplate->parse();
+							}	
 							break;
 							
 						default:
@@ -590,7 +595,6 @@ class ModuleProductReader extends ModuleIsotopeBase
 		$blnHasAssignedMainImage = false;
 		if(is_dir($strAbsoluteAssetFolderPath))
 		{
-			
 			if ($dh = opendir($strAbsoluteAssetFolderPath . '/' . $strAssetType . '/' . $GLOBALS['TL_LANG']['MSC']['medium_images_folder'])) 
 			{
 
@@ -608,7 +612,9 @@ class ModuleProductReader extends ModuleIsotopeBase
 							{
 								$hasLargeImage = true;
 								$largeImageLink = $strRelativeAssetPath . '/' . $strAssetType . '/' . $GLOBALS['TL_LANG']['MSC']['large_images_folder'] . '/' . $file; 
-							}else{
+							}
+							else
+							{
 								$hasLargeImage = false;
 								$largeImageLink = false;
 							}
@@ -630,12 +636,16 @@ class ModuleProductReader extends ModuleIsotopeBase
 							);
 							$i++;
 							
-						}else{ 
+						}
+						else
+						{ 
 							if(file_exists($strAbsoluteAssetFolderPath . '/' . $strAssetType . '/' . $GLOBALS['TL_LANG']['MSC']['large_images_folder'] . '/' . $file))
 							{
 								$hasLargeImage = true;
 								$largeImageLink = $strRelativeAssetPath . '/' . $strAssetType . '/' . $GLOBALS['TL_LANG']['MSC']['large_images_folder'] . '/' . $file; 
-							}else{
+							}
+							else
+							{
 								$hasLargeImage = false;
 								$largeImageLink = false;
 							}
@@ -661,31 +671,32 @@ class ModuleProductReader extends ModuleIsotopeBase
 				//If we can't find an associated main image for the product, then we're going to grab the first one we find and do the work for our template.
 				if(!$blnHasAssignedMainImage)
 				{
-					
 					$file = $this->MediaManagement->getFirstOrdinalImage($this->strMainImageBasePath, $strProductAlias);
 					
-					if(!file_exists($strAbsoluteAssetFolderPath . '/' . $strAssetType . '/' . $GLOBALS['TL_LANG']['MSC']['medium_images_folder'] . '/' . $file) || strlen($file) < 1)
+					if(!strlen($file) || !file_exists(TL_ROOT . '/' . $strRelativeAssetPath . '/' . $strAssetType . '/' . $GLOBALS['TL_LANG']['MSC']['medium_images_folder'] . '/' . $file))
 					{
-						
-						$file = $this->getMissingImagePlaceholder($this->intStoreId);
+						$file = $this->Store->missing_image_placeholder;
 						$strFinalFilePath = $file;
-						
-					}else{
+					}
+					else
+					{
 						$strFinalFilePath = $strRelativeAssetPath . '/' . $strAssetType . '/' . $GLOBALS['TL_LANG']['MSC']['medium_images_folder'] . '/' . $file;
 					}
 					
 					$extension = explode('.', $file);
 					
-					if(file_exists($strAbsoluteAssetFolderPath . '/' . $strAssetType . '/' . $GLOBALS['TL_LANG']['MSC']['large_images_folder'] . '/' . $file))
+					if(file_exists(TL_ROOT . '/' . $strRelativeAssetPath . '/' . $strAssetType . '/' . $GLOBALS['TL_LANG']['MSC']['large_images_folder'] . '/' . $file))
 					{
 						$hasLargeImage = true;
 						$largeImageLink = $strRelativeAssetPath . '/' . $strAssetType . '/' . $GLOBALS['TL_LANG']['MSC']['large_images_folder'] . '/' . $file; 
-					}else{
+					}
+					else
+					{
 						$hasLargeImage = false;
 						$largeImageLink = false;
 					}
 							
-					$arrImageSize = getimagesize($strAbsoluteAssetFolderPath . '/' . $strAssetType . '/' . $GLOBALS['TL_LANG']['MSC']['medium_images_folder'] . '/' . $currentImageAssetFolder . '/' . $file);
+					$arrImageSize = getimagesize(TL_ROOT . '/' . $strFinalFilePath);
 					
 						
 					$arrImages[$extension[0]] = array

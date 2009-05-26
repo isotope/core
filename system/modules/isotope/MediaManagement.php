@@ -53,14 +53,14 @@ class MediaManagement extends Backend
 	 */
 	protected $strCurrentProductBasePath;
 		
-	/**
-	 * Import the back end user object
-	 */
+	
 	public function __construct()
 	{
 		parent::__construct();
 		$this->import('Files');
 	}
+	
+	
 	/** 
 	 * Create the media storage base folder structure
 	 * NOTE: $GLOBALS['TL_CONFIG']['isotope_root'] is not used, which is document root.  Is is $GLOBALS['TL_CONFIG']['isotope_root'] now.
@@ -111,7 +111,6 @@ class MediaManagement extends Backend
 	{	
 		if($dc->field!='product_alias' && $strMode!="import")
 		{
-			
 			return $varValue;
 		}
 					
@@ -199,7 +198,6 @@ class MediaManagement extends Backend
 	 */
 	public function thumbnailImages($varValue, DataContainer $dc)
 	{		
-
 		$objProduct = $this->Database->prepare("SELECT product_alias, product_sku FROM " . $dc->table . " WHERE id=?")
 									 ->limit(1)
 									 ->execute($dc->id);
@@ -207,7 +205,9 @@ class MediaManagement extends Backend
 		if($objProduct->numRows < 1)
 		{
 			return $varValue;
-		}else{
+		}
+		else
+		{
 			$strAlias = $objProduct->product_alias;
 			$strSKU = $objProduct->product_sku;
 		}
@@ -255,7 +255,9 @@ class MediaManagement extends Backend
 			$arrImageTypes[1] = 'medium' . '_images';
 			$arrImageTypes[2] = 'thumbnail' . '_images';
 			$arrImageTypes[3] = 'gallery_thumbnail' . '_images';
-		}else{
+		}
+		else
+		{
 			$arrImageTypes = array();
 			
 			foreach($arrImageSizeTypes as $sizeType)
@@ -268,7 +270,6 @@ class MediaManagement extends Backend
 
 		foreach($arrImages as $image)
 		{
-									
 			//loop through each image type key
 			foreach($arrKeys as $key)
 			{			
@@ -286,7 +287,9 @@ class MediaManagement extends Backend
 					//look in the import holding tank instead	
 					$oldRelativeFilePath = $arrProductPaths['root_asset_import_path'] . '/' . $image;
 					$isAlternateRootPath = true;
-				}else{
+				}
+				else
+				{
 					$oldRelativeFilePath = $arrProductPaths['relative_source_path'] . '/' . $GLOBALS['TL_LANG']['MSC']['imagesFolder'] . '/' . $image;
 				}
 				
@@ -309,7 +312,6 @@ class MediaManagement extends Backend
 				//Copy the file to the destination directory (original unresized version)	
 				if(!file_exists($newFullFilePath) || $blnForceRescale)
 				{
-						
 					$this->Files->copy($oldRelativeFilePath, $newRelativeFilePath);
 					$this->Files->chmod($newRelativeFilePath, 0777);
 				}
@@ -318,17 +320,15 @@ class MediaManagement extends Backend
 				if(!$isAlternateRootPath)
 				{
 					$arrImageSize = @getimagesize($arrProductPaths['file_source_path'] . '/' . $GLOBALS['TL_LANG']['MSC']['imagesFolder'] . '/' . $image);
-					
-				}else{
-					
+				}
+				else
+				{
 					$arrImageSize = @getimagesize(TL_ROOT . '/' . $arrProductPaths['root_asset_import_path'] . '/' . $image);
-					
 				}
 				
 											
 				foreach($arrConstraints as $limit)
 				{
-					
 					//If both limits exceed the dimensions of the file in question, then we don't need to do any resizes.
 					if($limit['width'] > $arrImageSize[0] && $limit['height'] > $arrImageSize[1])
 					{		
@@ -346,7 +346,9 @@ class MediaManagement extends Backend
 						//Resize
 						$this->resizeProductImage($newRelativeFilePath, $newImgW, $newImgH);
 			
-					}else{
+					}
+					else
+					{
 					
 						$aspectRatio = $limit['height']/$arrImageSize[1];
 						$newImgH = $limit['height'];
@@ -354,9 +356,7 @@ class MediaManagement extends Backend
 						
 						//Resize
 						$this->resizeProductImage($newRelativeFilePath, $newImgW, $newImgH);
-					
-												
-			
+						
 					}//resize conditional block
 					
 				} //arrConstraints loop
@@ -407,6 +407,7 @@ class MediaManagement extends Backend
 	
 	}
 	
+/*
 	public function getRootAssetImportPathByStoreId($intStoreId)
 	{
 		$objStore = $this->Database->prepare("SELECT root_asset_import_path FROM tl_store WHERE id=?")
@@ -421,6 +422,7 @@ class MediaManagement extends Backend
 		return $objStore->root_asset_import_path;
 	
 	}
+*/
 	
 	public function getFilesByName($strProductImages, $strRelativePath)
 	{
@@ -980,7 +982,6 @@ class MediaManagement extends Backend
 	 */
 	public function getRelatedProductAssetFilenamesByType($arrAssetKeys, $strFilePath, $strAssetType)
 	{
-	
 		if(!array_key_exists($strAssetType, $GLOBALS['TL_LANG']['MSC']['validMediaFileTypes']))
 		{
 			return array();
@@ -991,26 +992,36 @@ class MediaManagement extends Backend
 		//Using glob because we're pretty confident people won't abuse the whole too many images for a product issue. ;D
 		foreach($arrAssetKeys as $key)
 		{
-			if ($dh = opendir(TL_ROOT . '/' . $strFilePath . '/' . $key))
+			if (is_dir(TL_ROOT . '/' . $strFilePath . '/' . substr($key, 0, 1) . '/' . $key))
 			{
 				//Grab all files in this directory.
 				foreach($GLOBALS['TL_LANG']['MSC']['validMediaFileTypes'][$strAssetType] as $fileType)
 				{
-					$arrFiles = array_merge($arrFiles, glob(TL_ROOT . '/' . $strFilePath . '/' . $key . '/' . '*.' . $fileType));					
+					$arrGlob = glob(TL_ROOT . '/' . $strFilePath . '/' . substr($key, 0, 1) . '/' . $key . '/' . '*.' . $fileType);
+					
+					if (is_array($arrGlob))
+					{
+						$arrFiles = array_merge($arrFiles, $arrGlob);
+					}
 				}
-			}else{
+			}
+			else
+			{
 				foreach($GLOBALS['TL_LANG']['MSC']['validMediaFileTypes'][$strAssetType] as $fileType)
 				{
-					$arrFilesToSearch = glob(TL_ROOT . '/' . $strFilePath . '/' . $key . "*." . $fileType); //filenames are key plus the * wildcard
+					$arrGlob = glob(TL_ROOT . '/' . $strFilePath . '/' . substr($key, 0, 1) . '/' . $key . "*." . $fileType); //filenames are key plus the * wildcard
 			
-					foreach($arrFilesToSearch as $fileName)
+					if (is_array($arrGlob))
 					{
-						//search for the file names such as myfile_1.jpg, myfile-2.jpg, etc.
-						if(preg_match("/(" . $key . "( )).*?(\\d+)(." . $fileType . ")/is", $fileName))
+						foreach($arrGlob as $fileName)
 						{
-							//Grab files that have the asset key value in the filename
-							$arrFiles[] = $fileName;
-						}					
+							//search for the file names such as myfile_1.jpg, myfile-2.jpg, etc.
+							if(preg_match("/(" . $key . "( )).*?(\\d+)(." . $fileType . ")/is", $fileName))
+							{
+								//Grab files that have the asset key value in the filename
+								$arrFiles[] = $fileName;
+							}					
+						}
 					}
 				}
 			}		
@@ -1021,4 +1032,3 @@ class MediaManagement extends Backend
 	
 }
 
-?>

@@ -130,16 +130,16 @@ class ModuleProductLister extends ModuleIsotopeBase
 			if($objChildPages->numRows < 1)
 			{
 				$strPageList = $objPage->id;
-			}else{
+			}
+			else
+			{
 				$arrChildPages = $objChildPages->fetchEach('id');
 								
 				$strPageList = $objPage->id . "," . implode(",", $arrChildPages);
-				
 			}
-			
-			
-			
-		}else{
+		}
+		else
+		{
 			$strPageList = $objPage->id;
 		}
 		
@@ -178,14 +178,6 @@ class ModuleProductLister extends ModuleIsotopeBase
 		//Get the CAP aggregate sets 		
 		$objAggregateSets = $this->Database->prepare("SELECT * FROM tl_cap_aggregate" . $strClauses)
 										  ->execute();
-						
-		if($objAggregateSets->numRows < 1)
-		{
-			
-			$arrMessages['noProducts'] = $GLOBALS['TL_LANG']['MSC']['noProducts'];
-				
-			$this->Template->noProducts = true;
-		}
 		
 		$strClauses = '';
 				
@@ -225,23 +217,17 @@ class ModuleProductLister extends ModuleIsotopeBase
 		$arrEnabledFilters = deserialize($this->listing_filters);
 		
 		
-			
-		if(!$this->Template->noProducts)
-		{			
-			$arrAggregateSets = $objAggregateSets->fetchAllAssoc();
-								
-			$objCurrentStoreConfiguration = $this->Database->prepare("SELECT store_id FROM tl_product_attribute_sets WHERE id=?")
-															   ->limit(1)
-															   ->execute($arrAggregateSets[0]['attribute_set_id']);
+		if(!$objAggregateSets->numRows)
+		{
+			$arrMessages['noProducts'] = $GLOBALS['TL_LANG']['MSC']['noProducts'];
 				
-			if($objCurrentStoreConfiguration->numRows < 1)
-			{
-				$this->intStoreId = 1;
-			}else{
-				$this->intStoreId = $objCurrentStoreConfiguration->store_id;
-			}
+			$this->Template->noProducts = true;
+		}
+		else
+		{			
+//			$arrAggregateSets = $objAggregateSets->fetchAllAssoc();
 						
-			$strMissingImagePlaceholder = $this->getMissingImagePlaceholder($this->intStoreId);
+			$strMissingImagePlaceholder = $this->Store->missing_image_placeholder;
 				
 			$i = 0;
 			
@@ -250,14 +236,14 @@ class ModuleProductLister extends ModuleIsotopeBase
 			$arrFilters = array();
 
 												
-			foreach($arrAggregateSets as $aggregateSet)
+			while( $objAggregateSets->next() )
 			{	
 									
-				$this->strCurrentStoreTable = $aggregateSet['storeTable'];
+				$this->strCurrentStoreTable = $objAggregateSets->storeTable;
 				
 				//Get the fields for the current attribute set for listing only.
 				$objListingFields = $this->Database->prepare("SELECT id, name, field_name, type, is_filterable, is_listing_field FROM tl_product_attributes WHERE pid=?")
-												   ->execute($aggregateSet['attribute_set_id']);
+												   ->execute($objAggregateSets->attribute_set_id);
 				
 				
 				if($objListingFields->numRows < 1)
@@ -272,7 +258,6 @@ class ModuleProductLister extends ModuleIsotopeBase
 							
 				foreach($arrFields as $field)
 				{
-					
 					if($field['is_listing_field']==1)
 					{
 						if(!is_array($arrFilterFields) || !in_array($field['field_name'], $arrFilterFields))
@@ -319,7 +304,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 					}
 				}
 								
-				$arrProductList = array_merge($arrProductList, deserialize($aggregateSet['product_ids']));
+				$arrProductList = array_merge($arrProductList, deserialize($objAggregateSets->product_ids));
 				
 				if(!count($arrProductList))
 				{
@@ -376,13 +361,15 @@ class ModuleProductLister extends ModuleIsotopeBase
 			{
 			
 				$intTotalRows += 0;
-			}else{
+			}
+			else
+			{
 				$intTotalRows += $objTotal->count;
 			}
 			//echo "SELECT DISTINCT id, tstamp, use_product_price_override, " . strtolower($field_list) . " FROM " . $this->strCurrentStoreTable . " WHERE " . $strBaseClause . $strFilterList . $strClauses;
 					
 			//Get the current collection of products based on the tl_cap_aggregate table data
-			$objProductCollection = $this->Database->prepare("SELECT id, tstamp, use_product_price_override " . strtolower($field_list) . " FROM " . $this->strCurrentStoreTable . " WHERE " . $strBaseClause . $strFilterList . $strClauses)		
+			$objProductCollection = $this->Database->prepare("SELECT id, tstamp, use_product_price_override, product_images " . strtolower($field_list) . " FROM " . $this->strCurrentStoreTable . " WHERE " . $strBaseClause . $strFilterList . $strClauses)		
 													->limit($per_page, ($page - 1) * $per_page)				
 													->execute(1);
 			
@@ -399,59 +386,56 @@ class ModuleProductLister extends ModuleIsotopeBase
 			
 			if ($this->iso_jump_first && !strlen($this->Input->get('asetid')) && !strlen($this->Input->get('aset_id')) && count($arrProducts))
 			{
-				$this->redirect($this->generateProductLink($arrProducts[0]['product_alias'], $arrProducts[0], $this->Store->productReaderJumpTo, $aggregateSet['id']));
+				$this->redirect($this->generateProductLink($arrProducts[0]['product_alias'], $arrProducts[0], $this->Store->productReaderJumpTo, $objAggregateSets->id));
 			}
 			
 			$i=0;
 																	
 			foreach($arrProducts as $product)
 			{
-									
-					
-					$arrProductData[$i] = array
-					(
-						'product_name'			=> $product['product_name'],
-						'product_alias'			=> $product['product_alias'],
-						'product_link'			=> $this->generateProductLink($product['product_alias'], $product, $this->Store->productReaderJumpTo, $aggregateSet['id']),
-						'price_string'			=> ($product['use_product_price_override']==1 ? $this->generatePrice($product['product_price_override'], $this->strPriceOverrideTemplate) : $this->generatePrice($product['product_price'], $this->strPriceTemplate)),
-						'thumbnail'				=> $this->getThumbnailImage($product['id'], $product['product_alias'], $product['product_images'], $strMissingImagePlaceholder, $this->strFileBasePath),
-						'product_id'			=> $product['id'],
-						'aset_id'				=> $aggregateSet['id']
-					);
-					
-					
-					$arrProductIDsAndAsetIDs[] = array
-					(
-						'id' => $product['id'], 
-						'aset_id' => $aggregateSet['id'], 
-						'product_name' => $product['product_name']
-					);
-					
-					
-					$arrAdditionalFieldList = explode(',', $field_list);
-					
-					//Assign for template usage.
-					foreach($arrAdditionalFieldList as $field)
-					{
-						switch($field)
-						{	//Skip these fields. Not sure why anymore except duplicates.
-							case 'product_name':
-							case 'product_alias':
-							case 'product_thumbnail_image':
-								continue;
-								break;
-							default:
-								$arrAdditionalFields[$field] = $product[$field];
-								break;
-						}
+				$arrProductData[$i] = array
+				(
+					'product_name'			=> $product['product_name'],
+					'product_alias'			=> $product['product_alias'],
+					'product_link'			=> $this->generateProductLink($product['product_alias'], $product, $this->Store->productReaderJumpTo, $objAggregateSets->id),
+					'price_string'			=> ($product['use_product_price_override']==1 ? $this->generatePrice($product['product_price_override'], $this->strPriceOverrideTemplate) : $this->generatePrice($product['product_price'], $this->strPriceTemplate)),
+					'thumbnail'				=> $this->getThumbnailImage($product['id'], $product['product_alias'], $product['product_images'], $strMissingImagePlaceholder, $this->strFileBasePath),
+					'product_id'			=> $product['id'],
+					'aset_id'				=> $objAggregateSets->id,
+				);
+				
+				
+				$arrProductIDsAndAsetIDs[] = array
+				(
+					'id' => $product['id'], 
+					'aset_id' => $objAggregateSets->id, 
+					'product_name' => $product['product_name']
+				);
+				
+				
+				$arrAdditionalFieldList = explode(',', $field_list);
+				
+				//Assign for template usage.
+				foreach($arrAdditionalFieldList as $field)
+				{
+					switch($field)
+					{	//Skip these fields. Not sure why anymore except duplicates.
+						case 'product_name':
+						case 'product_alias':
+						case 'product_thumbnail_image':
+							continue;
+							break;
+						default:
+							$arrAdditionalFields[$field] = $product[$field];
+							break;
 					}
-					
-					$arrProductData[$i] = array_merge($arrProductData[$i], $arrAdditionalFields);
-					
-					$i++;
-	
-			}			
-	
+				}
+				
+				$arrProductData[$i] = array_merge($arrProductData[$i], $arrAdditionalFields);
+				
+				$i++;
+			}
+
 			$this->Template->products = $arrProductData;
 		}
 				
@@ -479,8 +463,6 @@ class ModuleProductLister extends ModuleIsotopeBase
 		//Check if they are logged in
 		if (FE_USER_LOGGED_IN)
 		{
-			$this->import('FrontendUser', 'User');
-			
 			$registryData = $this->userRegistryExists($this->User->id);
 			
 			//Check if they have a registry
@@ -622,7 +604,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 		$this->Template->buttonTypes = $arrButtonTypes;
 		$this->Template->buttons = $arrButtons;
 		
-		$this->Template->orderOptions = $this->getOrderByOptions($aggregateSet['attribute_set_id']);
+		$this->Template->orderOptions = $this->getOrderByOptions($objAggregateSets->attribute_set_id);
 		$this->Template->additionalFilters = '';
 				
 		$objPagination = new Pagination($intTotalRows, $per_page);
@@ -682,25 +664,32 @@ class ModuleProductLister extends ModuleIsotopeBase
 				{	
 					
 					return $strMissingImagePlaceholder;
-				}else{
+				}
+				else
+				{
 					return $strImagePath;
 				}
 				
-			}else{
+			}
+			else
+			{
 				return $strMissingImagePlaceholder;
 			}
-		}else{
+		}
+		else
+		{
 			return $strImagePath;
 		}
 	}
 	
 	private function getInitialImages($strFallbackPath, $strBaseImageDestinationPath, $strProductImage, $strProductAlias, $intProductID)
 	{
-	
 		if(!file_exists(TL_ROOT . '/' . $strFallbackPath . '/' . $strProductImage))
 		{	
 			return false;
-		}else{
+		}
+		else
+		{
 			
 			$this->import('Files');
 			$this->import('MediaManagement');

@@ -70,7 +70,7 @@ class ProductCatalog extends Backend
 	protected $arrForm = array();
 	protected $arrFields = array();
 	protected $arrTypes = array('text','password','textarea','select','radio','checkbox','upload', 'hidden');
-	protected $arrList = array ('tstamp','pages','new_import','add_audio_file','add_video_file');	//Basic required fields
+	protected $arrList = array ('tstamp','pages','new_import'/*,'add_audio_file','add_video_file'*/);	//Basic required fields
 	protected $arrDefault = array ('id', 'tstamp');
 	protected $arrCountMax = array();
 	protected $arrCountFree = array();
@@ -577,21 +577,27 @@ class ProductCatalog extends Backend
 				if(strlen($objIsNewImport->product_sku) < 1)
 				{
 					$strSKU = $this->generateSKU('', $dc, $dc->id);
-				}else{
+				}
+				else
+				{
 					$strSKU = $objIsNewImport->product_sku;
 				}
 				
 				if(strlen($objIsNewImport->product_alias) < 1)
 				{
 					$strAlias = $this->generateAlias('', $dc, $dc->id);
-				}else{
+				}
+				else
+				{
 					$strAlias = $objIsNewImport->product_alias;
 				}
 				
 				if(strlen($objIsNewImport->product_teaser) < 1)
 				{
 					$strTeaser = $this->generateTeaser($objIsNewImport->product_description, $dc, $dc->id, 'import');
-				}else{
+				}
+				else
+				{
 					$strTeaser = $objIsNewImport->product_teaser;
 				}
 				
@@ -1308,7 +1314,9 @@ class ProductCatalog extends Backend
 		if($id!=0)
 		{
 			$intID = $id;
-		}else{
+		}
+		else
+		{
 			$intID = $dc->id;
 		}
 		
