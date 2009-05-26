@@ -19,11 +19,9 @@
  * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Winans Creative/Fred Bliss 2008 
- * @author     Fred Bliss 
- * @package    IsotopeBase 
- * @license    Commercial 
- * @filesource
+ * @copyright  Winans Creative / Fred Bliss 2009
+ * @author     Fred Bliss <fred@winanscreative.com>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
@@ -32,7 +30,6 @@
  *
  * @copyright  Winans Creative/Fred Bliss 2008 
  * @author     Fred Bliss 
- * @package    Controller
  */
 class ModuleProductLister extends ModuleIsotopeBase
 {
@@ -108,7 +105,6 @@ class ModuleProductLister extends ModuleIsotopeBase
 	protected function compile()
 	{
 		global $objPage;
-	
 		
 			
 		$this->strFileBasePath = $GLOBALS['TL_CONFIG']['isotope_root'];
@@ -225,8 +221,6 @@ class ModuleProductLister extends ModuleIsotopeBase
 		}
 		else
 		{			
-//			$arrAggregateSets = $objAggregateSets->fetchAllAssoc();
-						
 			$strMissingImagePlaceholder = $this->Store->missing_image_placeholder;
 				
 			$i = 0;

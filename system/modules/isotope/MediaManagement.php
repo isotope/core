@@ -802,7 +802,7 @@ class MediaManagement extends Backend
 	public function getCurrentProductPaths($varValue)
 	{	
 						
-		$char = substr($varValue, 0, 1);		
+		$char = strtolower(substr($varValue, 0, 1));
 		
 		$arrPaths = array
 		(			
@@ -955,7 +955,7 @@ class MediaManagement extends Backend
 	 */
 	public function getFirstOrdinalImage($strBasePath, $strProductAlias)
 	{
-		$strFilePath = $GLOBALS['TL_CONFIG']['isotope_root'] . '/' . sprintf($strBasePath, substr($strProductAlias, 0, 1), $strProductAlias);
+		$strFilePath = $GLOBALS['TL_CONFIG']['isotope_root'] . '/' . sprintf($strBasePath, strtolower(substr($strProductAlias, 0, 1)), $strProductAlias);
 	
 		if ($dh = opendir($strFilePath)) 
 		{
@@ -992,12 +992,12 @@ class MediaManagement extends Backend
 		//Using glob because we're pretty confident people won't abuse the whole too many images for a product issue. ;D
 		foreach($arrAssetKeys as $key)
 		{
-			if (is_dir(TL_ROOT . '/' . $strFilePath . '/' . substr($key, 0, 1) . '/' . $key))
+			if (is_dir(TL_ROOT . '/' . $strFilePath . '/' . strtolower(substr($key, 0, 1)) . '/' . $key))
 			{
 				//Grab all files in this directory.
 				foreach($GLOBALS['TL_LANG']['MSC']['validMediaFileTypes'][$strAssetType] as $fileType)
 				{
-					$arrGlob = glob(TL_ROOT . '/' . $strFilePath . '/' . substr($key, 0, 1) . '/' . $key . '/' . '*.' . $fileType);
+					$arrGlob = glob(TL_ROOT . '/' . $strFilePath . '/' . strtolower(substr($key, 0, 1)) . '/' . $key . '/' . '*.' . $fileType);
 					
 					if (is_array($arrGlob))
 					{
@@ -1009,7 +1009,7 @@ class MediaManagement extends Backend
 			{
 				foreach($GLOBALS['TL_LANG']['MSC']['validMediaFileTypes'][$strAssetType] as $fileType)
 				{
-					$arrGlob = glob(TL_ROOT . '/' . $strFilePath . '/' . substr($key, 0, 1) . '/' . $key . "*." . $fileType); //filenames are key plus the * wildcard
+					$arrGlob = glob(TL_ROOT . '/' . $strFilePath . '/' . strtolower(substr($key, 0, 1)) . '/' . $key . "*." . $fileType); //filenames are key plus the * wildcard
 			
 					if (is_array($arrGlob))
 					{
