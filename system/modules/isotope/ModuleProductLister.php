@@ -321,7 +321,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 								
 				$arrProductList = array_merge($arrProductList, deserialize($aggregateSet['product_ids']));
 				
-				if(sizeof($arrProductList) < 1)
+				if(!count($arrProductList))
 				{
 					 continue;
 				}
@@ -335,7 +335,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 				$filter_list = join(" AND ", $arrFilterSQL);
 			}
 												
-			$product_list = join(",", $arrProductList);
+			$product_list = (is_array($arrProductList) && count($arrProductList)) ? join(",", $arrProductList) : '0';
 			
 			$field_list = '';
 			if (is_array($arrListingFields) && count($arrListingFields))
