@@ -122,8 +122,9 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 	 */
 	protected function compile()
 	{		
-		global $objPage;
+//		global $objPage;
 
+/*
 		// Call isotope_shopping_cart_onload_callback (e.g. to check permissions)
 		if (is_array($GLOBALS['TL_HOOKS']['isotope_shopping_cart_onload']))
 		{
@@ -136,6 +137,7 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 				}
 			}
 		}
+*/
 	
 		$strAction = $this->Input->get('action');		
 		
@@ -241,30 +243,23 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 		{
 			$arrFormattedProductData = array();
 			$floatSubTotalPrice = 0;
-		}else{
+		}
+		else
+		{
 			$arrFormattedProductData = $this->formatProductData($arrProductData);
 			
 			$floatSubTotalPrice = $this->getOrderTotal($arrProductData);
 			
 		}
-		
-		
-		if(!sizeof($arrProductData))
-		{
-			$arrFormattedProductData = array();
-			$floatGrandTotalPrice = 0;
-		}else{
-			$arrFormattedProductData = $this->formatProductData($arrProductData);
-			
-			$floatGrandTotalPrice = $this->getOrderTotal($arrProductData);
-			
-		}
+
 		
 		$this->Template->cartJumpTo = $this->getPageData($this->Store->cartJumpTo);
 		$this->Template->checkoutJumpTo = $this->getPageData($this->Store->checkoutJumpTo);
 		$this->Template->products = $arrFormattedProductData;
 		$this->Template->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
 		$this->Template->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
+		$this->Template->taxLabel = $GLOBALS['TL_LANG']['MSC']['shippingLabel'];
+		$this->Template->taxTotal = $this->generatePrice($taxPriceAdjustment);
 		$this->Template->taxLabel = sprintf($GLOBALS['TL_LANG']['MSC']['taxLabel'], 'Sales');
 		$this->Template->taxTotal = $this->generatePrice($taxPriceAdjustment);
 		$this->Template->subTotalPrice = $this->generatePrice($floatSubTotalPrice, 'stpl_total_price');
@@ -276,38 +271,6 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 		//$product['quantity_requested']
 		//$product['price']
 		
-	}
-	
-		
-	protected function formatProductData($arrProductData)
-	{
-		global $objPage;
-		
-		
-		
- 		foreach($arrProductData as $row)
-		{
-			
-			$intTotalPrice = $row['product_price'] * $row['quantity_requested'];
-			$arrFormattedProductData[] = array
-			(
-				'product_id'		=> $row['product_id'],
-				'image'				=> $GLOBALS['TL_CONFIG']['isotope_upload_path'] . '/' . $GLOBALS['TL_CONFIG']['isotope_base_path'] . '/' . substr($row['product_alias'], 0, 1) . '/' . $row['product_alias'] . '/' . $GLOBALS['TL_LANG']['MSC']['imagesFolder'] . '/' . $GLOBALS['TL_LANG']['MSC']['thumbnail_images_folder'] . '/' . $row['product_images'],
-				'name'				=> $row['product_name'],
-				'link'				=> $this->generateProductLink($row['product_alias'], $row, $this->Store->productReaderJumpTo, $row['attribute_set_id'], 'product_id'),
-				'price'				=> $this->generatePrice($row['product_price'], $this->strPriceTemplate),
-				'total_price'		=> $this->generatePrice($intTotalPrice, 'stpl_total_price'),
-				'quantity'			=> $row['quantity_requested'],
-				'remove_link'		=> $this->generateActionLinkString('remove_from_cart', $row['product_id'], array('attribute_set_id'=>$row['attribute_set_id'],'quantity'=>0, 'source_cart_id'=>$row['source_cart_id']), $objPage->id),
-				'remove_link_title' => sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $row['product_name'])
-			
-			);
-
-		}
-		
-		
-		return $arrFormattedProductData;
-	
 	}
 	
 	

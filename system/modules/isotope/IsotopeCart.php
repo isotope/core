@@ -116,9 +116,13 @@ class IsotopeCart extends Model
 					$this->arrCache[$strKey] = $this->Database->prepare("SELECT COUNT(*) AS items FROM tl_cart_items LEFT OUTER JOIN tl_cart ON tl_cart_items.pid=tl_cart.id WHERE tl_cart_items.pid=? AND tl_cart.cart_type_id=?")->execute($this->id, $this->intType)->items;
 					break;
 					
-				case 'subtotal':
+				case 'subTotal':
 					$this->import('Isotope');
 					$this->arrCache[$strKey] = $this->calculateTotal($this->Isotope->getProductData($this->getProducts(), array('product_price'), 'product_price'));
+					break;
+					
+				case 'grandTotal':
+					return $this->__get('subTotal');
 					break;
 			}
 		}

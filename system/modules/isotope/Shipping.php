@@ -91,7 +91,7 @@ abstract class Shipping extends Frontend
 		switch( $strKey )
 		{
 			case 'available':
-				if (($this->minimum_total > 0 && $this->minimum_total > $this->Cart->subtotal) || ($this->minimum_total > 0 && $this->maximum_total < $this->Cart->subtotal))
+				if (($this->minimum_total > 0 && $this->minimum_total > $this->Cart->subTotal) || ($this->minimum_total > 0 && $this->maximum_total < $this->Cart->subTotal))
 					return false;
 					
 				return true;

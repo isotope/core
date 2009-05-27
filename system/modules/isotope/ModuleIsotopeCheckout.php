@@ -60,7 +60,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	
 //	protected $arrSession = array();
 	
-	protected $strOrderStatus;
+//	protected $strOrderStatus;
 	
 	protected $fltOrderTotal = 0.00;
 	
@@ -308,8 +308,8 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 						'editEnabled' 	=> false,
 						'headline' 		=> $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE'][$this->strCurrentStep],
 						'prompt' 		=> $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT'][$this->strCurrentStep],
-						'useFieldset' 	=> true
-						//'fields' 	=> $this->getCurrentStepWidgets($step, 'tl_address_book')
+						'useFieldset' 	=> true,
+						'fields'		=> $this->getOrderReviewInterface(),
 					);
 					
 					$this->Template->nextLabel = specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']);
@@ -326,8 +326,41 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 					break;
 					
 				case 'order_complete':
-					// FIXME: write to database;
-					$this->jumpToOrReload($this->orderCompleteJumpTo);
+				
+					// Hide buttons
+					$this->Template->showNext = false;
+					$this->Template->showPrevious = false;					
+					
+					$objShipping = $this->Database->prepare("SELECT * FROM tl_shipping_modules WHERE id=?")->limit(1)->execute($_SESSION['FORM_DATA']['shipping']['module']);
+					$strClass = $GLOBALS['ISO_SHIP'][$objShipping->type];
+					$objShipping = new $strClass($objShipping->row());
+					
+					$objPayment = $this->Database->prepare("SELECT * FROM tl_payment_modules WHERE id=?")->limit(1)->execute($_SESSION['FORM_DATA']['payment']['module']);
+					$strClass = $GLOBALS['ISO_PAY'][$objPayment->type];
+					$objPayment = new $strClass($objPayment->row());
+					
+					if ($objPayment->processPayment())
+					{
+						$this->writeOrder($objPayment, $objShipping);
+					
+						$this->jumpToOrReload($this->orderCompleteJumpTo);
+					}
+					else
+					{
+						$arrSteps[] = array
+						(
+							'editEnabled' 	=> false,
+							'headline' 		=> $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE'][$this->strCurrentStep],
+							'prompt' 		=> $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT'][$this->strCurrentStep],
+							'useFieldset' 	=> true,
+							'fields'		=> 'Zahlung wird bearbeitet...',
+						);
+					}
+					
+					break;
+					
+				case 'order_failed';
+					die('Bestellung fehlgeschlagen');
 					break;
 			}
 		}
@@ -501,40 +534,34 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	/**
 	 * @todo Guest cannot be found in tl_user, emailCustomer() will fail
 	 */
-	protected function writeOrder($arrPaymentInfo)
+	protected function writeOrder($objPayment, $objShipping)
 	{
-		$session = $this->Session->getData();
-		
 		$arrSet = array
 		(
-			
+			'billing_address'		=> $this->getAddressString($this->getSelectedAddress('billing')),
+			'shipping_address'		=> $this->getAddressString($this->getSelectedAddress('shipping')),
 			'pid'					=> (FE_USER_LOGGED_IN ? $this->User->id : 0),
 			'tstamp'				=> time(),
 			'store_id'				=> $this->Store->id,
 			'source_cart_id'		=> $this->Cart->id,
-			'order_subtotal'		=> $this->Cart->subtotal + ($this->Input->post('gift_wrap') ? 10 : 0),		// FIXME
-			'order_tax' 			=> $this->fltOrderTaxTotal,
-			'order_shipping_cost'	=> $this->fltOrderShippingTotal,
-			'billing_address_id'	=> $this->intBillingAddressId,
-			'shipping_address_id'	=> $this->intShippingAddressId,
-			'shipping_rate_id'		=> $this->intShippingRateId,
-			'status'				=> 'pending'
+			'subTotal'				=> $this->Isotope->formatPriceWithCurrency($this->Cart->subTotal),		// + ($this->Input->post('gift_wrap') ? 10 : 0),		// FIXME
+			'taxTotal'	 			=> $this->Isotope->formatPriceWithCurrency($this->Cart->taxTotal),
+			'shippingTotal'			=> $this->Isotope->formatPriceWithCurrency($objShipping->price),
+			'grandTotal'			=> $this->Isotope->formatPriceWithCurrency($this->Cart->grandTotal),
+			'shipping_method'		=> $objShipping->label,
+			'status'				=> $objPayment->new_order_status,
 		);
-				
-		$objUser = $this->Database->prepare("SELECT * FROM tl_member WHERE id=?")
-								  ->limit(1)
-								  ->execute($this->User->id);
-		
-		foreach($arrPaymentInfo as $k=>$v)
-		{
-			$arrSet[$k] = $v;		
-		}
-		
 					
 		$objInsert = $this->Database->prepare("INSERT INTO tl_iso_orders %s")
 					   		->set($arrSet)
 					   		->execute();
+					   		
+					   		
+		$this->Cart->delete();
+		unset($_SESSION['FORM_DATA']);
+		unset($_SESSION['isotope']);
 		
+/*
 		$arrData[] = array
 		(
 			'label'	=> 'Order Id: ',
@@ -559,24 +586,11 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			'value' => '',
 		);
 		
-		/*$arrData[] = array
-		(
-			'label' => '',
-			'value' => '',
-		);
-		
-		$arrData[] = array
-		(
-			'label' => '',
-			'value' => '',
-		);*/
-		
 		$this->sendAdminNotification($objInsert->insertId, $arrData);
 		
 		$this->emailCustomer($objUser->email, $objUser->firstname);			   
 		
-		return true;
-	
+*/
 	}
 	
 	
@@ -691,7 +705,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			if (!$objModule->available)
 				continue;
 			
-			$arrModules[] = sprintf('<input id="ctrl_payments_module_%s" type="radio" name="payments[module]" value="%s"%s /> <label for="ctrl_payments_module_%s">%s: %s</label>',
+			$arrModules[] = sprintf('<input id="ctrl_payment_module_%s" type="radio" name="payment[module]" value="%s"%s /> <label for="ctrl_payment_module_%s">%s: %s</label>',
 									 $objModule->id,
 									 $objModule->id,
 									 ($arrData['module'] == $objModule->id ? ' checked="checked"' : ''),
@@ -874,7 +888,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				//$objTemplate->x_email_customer = "TRUE";
 				$objTemplate->x_amount = $this->fltOrderTotal + ($this->Input->post('gift_wrap')==1 ? 10 : 0);
 				$objTemplate->amountString = $this->generatePrice($this->fltOrderTotal);
-				$objTemplate->subtotal = $this->generatePrice($this->Cart->subtotal);
+				$objTemplate->subtotal = $this->generatePrice($this->Cart->subTotal);
 				$objTemplate->shippingTotal = $this->generatePrice($this->fltOrderShippingTotal);
 				
 				
@@ -903,6 +917,38 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	}
 	
 	
+	protected function getOrderReviewInterface()
+	{
+		$objTemplate = new FrontendTemplate('iso_checkout_order_review');
+		
+		$objPayment = $this->Database->prepare("SELECT * FROM tl_payment_modules WHERE id=?")->limit(1)->execute($_SESSION['FORM_DATA']['payment']['module']);
+		$strClass = $GLOBALS['ISO_PAY'][$objPayment->type];
+		$objPayment = new $strClass($objPayment->row());
+		
+		$strForm = $objPayment->checkoutForm();
+		
+		if ($strForm !== false)
+		{
+			$this->Template->showNext = false;
+			$this->Template->checkoutForm = $strForm;
+		}
+					
+		
+		$arrProductData = $this->Isotope->getProductData($this->Cart->getProducts(), array('product_alias','product_name','product_price', 'product_images'), 'product_name');
+		
+		$objTemplate->products = $this->formatProductData($arrProductData);
+		
+		$objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
+		$objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
+		$objTemplate->taxLabel = sprintf($GLOBALS['TL_LANG']['MSC']['taxLabel'], 'Sales');
+		$objTemplate->taxTotal = $this->generatePrice($taxPriceAdjustment);
+		$objTemplate->subTotalPrice = $this->generatePrice($this->getOrderTotal($arrProductData), 'stpl_total_price');
+		$objTemplate->grandTotalPrice = $this->generatePrice($floatGrandTotalPrice, 'stpl_total_price');
+		
+		return $objTemplate->parse();
+	}
+	
+	
 /*
 	protected function getPaymentFields($strResourceTable, $arrFields)
 	{
@@ -916,19 +962,31 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	}
 */
 	
-	protected function getSelectedAddress($intAddressId = 0, $strStep = '')
+	protected function getSelectedAddress($strStep = 'billing')
 	{
-		if($intAddressId==0)
+		$intAddressId = $_SESSION['FORM_DATA'][$strStep.'_address'];
+		
+		// Take billing address
+		if ($intAddressId == -1)
 		{
-			$arrAddress['firstname'] = $this->Input->post($strStep . '_firstname');
-			$arrAddress['lastname'] = $this->Input->post($strStep . '_lastname');
-			$arrAddress['street'] = $this->Input->post($strStep. '_street');
-			$arrAddress['street_2'] = $this->Input->post($strStep. '_street_2');
-			$arrAddress['street_3'] = $this->Input->post($strStep. '_street_3');
-			$arrAddress['city'] = $this->Input->post($strStep. '_city');
-			$arrAddress['state'] = $this->Input->post($strStep. '_state');
-			$arrAddress['postal'] = $this->Input->post($strStep. '_postal');
-			$arrAddress['country'] = $this->Input->post($strStep. '_country');
+			$intAddressId = $_SESSION['FORM_DATA']['billing_address'];
+			$strStep = 'billing';
+		}
+		
+		if ($intAddressId == 0)
+		{
+			$arrAddress = array
+			(
+				'firstname'		=> $_SESSION['FORM_DATA'][$strStep . '_information_firstname'],
+				'lastname'		=> $_SESSION['FORM_DATA'][$strStep . '_information_lastname'],
+				'street'		=> $_SESSION['FORM_DATA'][$strStep . '_information_street'],
+				'street_2'		=> $_SESSION['FORM_DATA'][$strStep . '_information_street_2'],
+				'street_3'		=> $_SESSION['FORM_DATA'][$strStep . '_information_street_3'],
+				'city'			=> $_SESSION['FORM_DATA'][$strStep . '_information_city'],
+				'state'			=> $_SESSION['FORM_DATA'][$strStep . '_information_state'],
+				'postal'		=> $_SESSION['FORM_DATA'][$strStep . '_information_postal'],
+				'country'		=> $_SESSION['FORM_DATA'][$strStep . '_information_country'],
+			);
 		}
 		else
 		{
@@ -1023,7 +1081,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			{
 				if(!$blnRateIsSet)
 				{	
-					if((float)$this->Cart->subtotal < (float)$rate['rates'][$i][0])
+					if((float)$this->Cart->subTotal < (float)$rate['rates'][$i][0])
 					{
 						$fltShippingCost = (float)$rate['rates'][$i][1];
 						$this->intShippingRateId = $rate['rates'][$i][2];	//Only assign here until a choice can be made!!!!!
@@ -1077,7 +1135,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	 */
 	protected function calculateOrderTotal()
 	{	
-		return $this->Cart->subtotal + $fltGiftWrap + $this->fltOrderShippingTotal + $this->fltOrderTaxTotal;
+		return $this->Cart->subTotal + $fltGiftWrap + $this->fltOrderShippingTotal + $this->fltOrderTaxTotal;
 	}
 	
 	/**
@@ -1085,6 +1143,8 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	 */
 	protected function calculateTax($arrProductData)
 	{
+		// FIXME
+		return 0;
 		$this->import('FrontendUser','User');
 				
 		foreach($arrProductData as $row)
@@ -1219,8 +1279,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	}
 	
 	
-	/**
-	 */
+/*
 	protected function calculateLuxuryTax($arrProductData)
 	{
 		foreach($arrProductData as $product)
@@ -1230,6 +1289,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 		return $fltLuxuryTaxTotal;
 	}
+*/
 	
 	/** return a widget object from another table
 	*/
@@ -1668,16 +1728,20 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		return $objTemplate->parse();	
 	}
 	
+/*
 	protected function getSelections($strResourceTable)
 	{
 		//$objSelections = $this->Database->prepare("SELECT options FROM " . $strResourceTable )
 	
 	}
 	
+*/
+/*
 	protected function generateRequiredFieldData()
 	{
 		return $GLOBALS['TEMP_DCA'][$this->strCurrentStep]['fields'];
 	}
+*/
 	
 	//*** AUTHORIZE.NET Processing code - move to authorize class module and call that as the standard approach for handling and rendering out data?
 	

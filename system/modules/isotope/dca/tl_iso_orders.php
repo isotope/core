@@ -50,8 +50,8 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 		),
 		'label' => array
 		(
-			'fields'                  => array(),
-			'format'                  => '',
+			'fields'                  => array('grandTotal'),
+			'label'	                  => '%s',
 			'label_callback'          => array('tl_iso_orders', 'getOrderLabel')
 		),
 		'global_operations' => array
@@ -215,25 +215,12 @@ class tl_iso_orders extends Backend
 	 */
 	public function getOrderLabel($row, $label)
 	{
-		//get user name to tack onto order label
-		setlocale(LC_MONETARY, $GLOBALS['TL_LANG']['MSC']['isotopeLocale'][$GLOBALS['TL_LANG']['MSC']['defaultCurrency']]);		
+//		$strBillingAddress = $this->loadAddress($row['billing_address_id'], $row['id']);
+//		$strShippingAddress = $this->loadAddress($row['shipping_address_id'], $row['id']);
 
-		$objUserName = $this->Database->prepare("SELECT firstname, lastname FROM tl_address_book WHERE id=?")
-									  ->limit(1)
-									  ->execute($row['billing_address_id']);
-		if($objUserName->numRows < 1)
-		{
-			return '<no user name specified>';		
-		}	
-		
-		$fltOrderTotal = (float)$row['order_subtotal'] + (float)$row['order_tax'] + (float)$row['order_shipping_cost'];
-		
-		$strBillingAddress = $this->loadAddress($row['billing_address_id'], $row['id']);
-		$strShippingAddress = $this->loadAddress($row['shipping_address_id'], $row['id']);
+//		$strProductList = $this->getProducts($row['source_cart_id']);
 
-		$strProductList = $this->getProducts($row['source_cart_id']);
-
-		return '<div class="limit_height' . (!$GLOBALS['TL_CONFIG']['doNotCollapse'] ? ' h110' : '') . ' block"><div><h2>Order #' . $row['id'] . '</h2>' . $objUserName->firstname . ' ' . $objUserName->lastname . '<br />Status: <strong>' . $GLOBALS['TL_LANG']['tl_iso_orders']['order_status_labels'][$row['status']] . '</strong><br />Shipping Method: ' . $GLOBALS['TL_LANG']['tl_iso_orders']['shipping_method_labels'][$row['shipping_method']]  . '<br />Order Total: ' . money_format('%n', $fltOrderTotal) . '</div><br /><div style="display: inline;"><div style="width: 50%; float: left"><h2>Billing Address:</h2>' . $strBillingAddress . '</div><div style="width: 50%; float: left"><h2>Shipping Address:</h2>' . $strShippingAddress . '</div></div><div style="clear: both;"></div><h2>Cart Contents:</h2><div style="border: solid 1px #cccccc; margin: 10px; padding: 10px;">' . $strProductList . '</div><div style="clear: both;"></div><h2>Gift Wrap:</h2><div style="padding: 15px;">' . ($row['gift_wrap'] ? 'yes' : 'no') . '</div><div style="clear: both;"></div><h2>Gift Message:</h2><div style="padding: 15px;">' . $row['gift_message'] . '</div><div style="clear: both;"></div><h2>Order Comments:</h2><div style="padding: 15px;">' . $row['order_comments'] . '</div></div></div>';
+		return '<div class="limit_height' . (!$GLOBALS['TL_CONFIG']['doNotCollapse'] ? ' h110' : '') . ' block"><div><h2>Order #' . $row['id'] . '</h2>' . 'Guest' . '<br />Status: <strong>' . $GLOBALS['TL_LANG']['tl_iso_orders']['order_status_labels'][$row['status']] . '</strong><br />Shipping Method: ' . $row['shipping_method']  . '<br />Order Total: ' . $row['grandTotal'] . '</div><br /><div style="display: inline;"><div style="width: 50%; float: left"><h2>Billing Address:</h2>' . $strBillingAddress . '</div><div style="width: 50%; float: left"><h2>Shipping Address:</h2>' . $strShippingAddress . '</div></div><div style="clear: both;"></div><h2>Cart Contents:</h2><div style="border: solid 1px #cccccc; margin: 10px; padding: 10px;">' . $strProductList . '</div><div style="clear: both;"></div><h2>Gift Wrap:</h2><div style="padding: 15px;">' . ($row['gift_wrap'] ? 'yes' : 'no') . '</div><div style="clear: both;"></div><h2>Gift Message:</h2><div style="padding: 15px;">' . $row['gift_message'] . '</div><div style="clear: both;"></div><h2>Order Comments:</h2><div style="padding: 15px;">' . $row['order_comments'] . '</div></div></div>';
 	
 	}
 	

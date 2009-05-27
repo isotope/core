@@ -728,6 +728,38 @@ abstract class ModuleIsotopeBase extends Module
 	
 	}
 	
+	
+	protected function formatProductData($arrProductData)
+	{
+		global $objPage;
+		
+		
+		
+ 		foreach($arrProductData as $row)
+		{
+			
+			$intTotalPrice = $row['product_price'] * $row['quantity_requested'];
+			$arrFormattedProductData[] = array
+			(
+				'product_id'		=> $row['product_id'],
+				'image'				=> $GLOBALS['TL_CONFIG']['isotope_upload_path'] . '/' . $GLOBALS['TL_CONFIG']['isotope_base_path'] . '/' . substr($row['product_alias'], 0, 1) . '/' . $row['product_alias'] . '/' . $GLOBALS['TL_LANG']['MSC']['imagesFolder'] . '/' . $GLOBALS['TL_LANG']['MSC']['thumbnail_images_folder'] . '/' . $row['product_images'],
+				'name'				=> $row['product_name'],
+				'link'				=> $this->generateProductLink($row['product_alias'], $row, $this->Store->productReaderJumpTo, $row['attribute_set_id'], 'product_id'),
+				'price'				=> $this->generatePrice($row['product_price'], $this->strPriceTemplate),
+				'total_price'		=> $this->generatePrice($intTotalPrice, 'stpl_total_price'),
+				'quantity'			=> $row['quantity_requested'],
+				'remove_link'		=> $this->generateActionLinkString('remove_from_cart', $row['product_id'], array('attribute_set_id'=>$row['attribute_set_id'],'quantity'=>0, 'source_cart_id'=>$row['source_cart_id']), $objPage->id),
+				'remove_link_title' => sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $row['product_name'])
+			
+			);
+
+		}
+		
+		
+		return $arrFormattedProductData;
+	
+	}
+	
 
 	protected function getOrderTotal($arrProductData)
 	{

@@ -91,7 +91,7 @@ abstract class Payment extends Frontend
 		switch( $strKey )
 		{
 			case 'available':
-				if (($this->minimum_total > 0 && $this->minimum_total > $this->Cart->subtotal) || ($this->minimum_total > 0 && $this->maximum_total < $this->Cart->subtotal))
+				if (($this->minimum_total > 0 && $this->minimum_total > $this->Cart->subTotal) || ($this->minimum_total > 0 && $this->maximum_total < $this->Cart->subTotal))
 					return false;
 					
 				$arrAllowed = deserialize($this->shipping_modules);
@@ -100,6 +100,9 @@ abstract class Payment extends Frontend
 					
 				return true;
 				break;
+				
+			case 'new_order_status':
+				return 'pending';
 		}
 		
 		return $this->arrData[$strKey];
@@ -126,5 +129,17 @@ abstract class Payment extends Frontend
 	 * @return void
 	 */
 	abstract public function processPayment();
+	
+	
+	/**
+	 * Return a html form for checkout or false..
+	 * 
+	 * @access public
+	 * @return mixed
+	 */
+	public function checkoutForm()
+	{
+		return false;
+	}
 }
 

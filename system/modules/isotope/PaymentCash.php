@@ -34,6 +34,25 @@ class PaymentCash extends Payment
 {
 
 	/**
+	 * Return an object property
+	 *
+	 * @access public
+	 * @param string
+	 * @return mixed
+	 */
+	public function __get($strKey)
+	{
+		switch( $strKey )
+		{
+			case 'new_order_status':
+				return 'complete';
+		}
+		
+		return parent::__get($strKey);
+	}
+	
+	
+	/**
 	 * processPayment function.
 	 * 
 	 * @access public
@@ -41,8 +60,7 @@ class PaymentCash extends Payment
 	 */
 	public function processPayment()
 	{
-		// Reload page every 5 seconds and check if payment was successful
-//		$GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="5,http://...">';
+		return true;
 	}
 }
 

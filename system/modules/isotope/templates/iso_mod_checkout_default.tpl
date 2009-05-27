@@ -23,4 +23,6 @@
 	<?php endif; ?>
 	</form>
 	
+	<?php if (strlen($this->checkoutForm)): ?><div class="checkout_form"><?php echo $this->checkoutForm; ?></div><?php endif; ?>
+	
 </div>
