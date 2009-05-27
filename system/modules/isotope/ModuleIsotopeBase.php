@@ -106,19 +106,22 @@ abstract class ModuleIsotopeBase extends Module
 	{
 		parent::__construct($objModule, $strColumn);
 		
-		$_SESSION['isotope']['store_id'] = $this->store_id;
-		
-		$this->import('Isotope');
-		$this->import('IsotopeStore', 'Store');
-		$this->import('IsotopeCart', 'Cart');
-		
-		if (FE_USER_LOGGED_IN)
+		if (TL_MODE == 'FE')
 		{
-			$this->import('FrontendUser', 'User');
+			$_SESSION['isotope']['store_id'] = $this->store_id;
+			
+			$this->import('Isotope');
+			$this->import('IsotopeStore', 'Store');
+			$this->import('IsotopeCart', 'Cart');
+			
+			if (FE_USER_LOGGED_IN)
+			{
+				$this->import('FrontendUser', 'User');
+			}
+			
+			// Load isotope javascript class
+			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/html/isotope.js';
 		}
-		
-		// Load isotope javascript class
-		$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/html/isotope.js';
 	}
 	
 	
