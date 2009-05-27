@@ -166,8 +166,8 @@ class ProductOptionWizard extends Widget
 		$return .= '<table cellspacing="0" cellpadding="0" class="tl_ProductOptionWizard" id="ctrl_'.$this->strId.'" summary="Field wizard">
   <thead>
     <tr>
-      <th>'.$GLOBALS['TL_LANG'][$this->strTable]['opValue'].'</th>
-      <th>'.$GLOBALS['TL_LANG'][$this->strTable]['opLabel'].'</th>
+      <th>'.$GLOBALS['TL_LANG'][$this->strTable]['opAttribute'].'</th>
+      <th>'.$GLOBALS['TL_LANG'][$this->strTable]['opValueSets'].'</th>
       <th></th>
       <th></th>
     </tr>
@@ -202,5 +202,6 @@ class ProductOptionWizard extends Widget
   </table>';
 	}
 }
+
 
 ?>

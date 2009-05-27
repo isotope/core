@@ -42,6 +42,8 @@ $GLOBALS['TL_LANG']['tl_product_data']['add_video_file'] = array('Add Video File
 $GLOBALS['TL_LANG']['tl_product_data']['internal'] = array('Internal file', 'Select a media file existing on the web server (flash or mp3 file).');
 $GLOBALS['TL_LANG']['tl_product_data']['external'] = array('External file', 'Specify a video from an external source (such as Youtube).');
 
+$GLOBALS['TL_LANG']['tl_product_data']['opAttribute'] = 'Product Attribute';
+$GLOBALS['TL_LANG']['tl_product_data']['opValueSets'] = 'Option Values';
 
 /**
  * Buttons
