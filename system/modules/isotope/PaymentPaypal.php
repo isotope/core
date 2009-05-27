@@ -32,23 +32,7 @@
  */
 class PaymentPaypal extends Payment
 {
-	
-	/**
-	 * Return a list of payment options this module provides.
-	 * 
-	 * @access public
-	 * @return array
-	 */
-	public function getPaymentOptions($arrData)
-	{
-		$arrOptions = array();
-				
-		$arrOptions[] = array('value'=>'paypal', 'label'=>$this->label);
-		
-		return $arrOptions;
-	}
-	
-	
+
 	/**
 	 * processPayment function.
 	 * 

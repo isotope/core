@@ -19,11 +19,9 @@
  * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Winans Creative/Fred Bliss 2009 
- * @author     Fred Bliss 
- * @package    IsotopeBase 
- * @license    Commercial 
- * @filesource
+ * @copyright  Winans Creative / Fred Bliss 2009
+ * @author     Fred Bliss <fred@winanscreative.com>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
@@ -676,7 +674,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		if (!is_array($arrModuleIds) || !count($arrModuleIds))
 			return array();
 			
-		$arrOptions = array();
+		$arrModules = array();
 		$objModules = $this->Database->execute("SELECT * FROM tl_payment_modules WHERE id IN (" . implode(',', $arrModuleIds) . ") AND enabled='1'");
 		
 		while( $objModules->next() )
@@ -690,7 +688,16 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			
 			$objModule = new $strClass($objModules->row());
 			
-			$arrOptions = array_merge($arrOptions, $objModule->getPaymentOptions($arrData));
+			if (!$objModule->available)
+				continue;
+			
+			$arrModules[] = sprintf('<input id="ctrl_payments_module_%s" type="radio" name="payments[module]" value="%s"%s /> <label for="ctrl_payments_module_%s">%s: %s</label>',
+									 $objModule->id,
+									 $objModule->id,
+									 ($arrData['module'] == $objModule->id ? ' checked="checked"' : ''),
+									 $objModule->id,
+ 									 $objModule->label,
+ 									 $this->Isotope->formatPriceWithCurrency($objModule->price));
 			
 /*
 			//Get the authorize.net configuration data			
@@ -891,21 +898,6 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			);
 */
 		}
-		
-		$arrModules = array();
-		
-		
-		foreach( $arrOptions as $arrOption )
-		{
-			$arrModules[] = sprintf('<input id="ctrl_payment_module_%s" type="radio" name="payment[module]" value="%s"%s /> <label for="ctrl_payment_module_%s">%s</label>%s',
-									 $arrOption['value'],
-									 $arrOption['value'],
-									 ($arrData['module'] == $arrOption['value'] ? ' checked="checked"' : ''),
-									 $arrOption['value'],
- 									 $arrOption['label'],
- 									 $arrOption['fields']);
-		}
-		
 				
 		return $arrModules;
 	}

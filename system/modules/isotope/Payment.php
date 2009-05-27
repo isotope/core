@@ -59,6 +59,8 @@ abstract class Payment extends Frontend
 	public function __construct($arrRow)
 	{
 		parent::__construct();
+		
+		$this->import('IsotopeCart', 'Cart');
 
 		$this->arrData = $arrRow;
 	}
@@ -86,6 +88,20 @@ abstract class Payment extends Frontend
 	 */
 	public function __get($strKey)
 	{
+		switch( $strKey )
+		{
+			case 'available':
+				if (($this->minimum_total > 0 && $this->minimum_total > $this->Cart->subtotal) || ($this->minimum_total > 0 && $this->maximum_total < $this->Cart->subtotal))
+					return false;
+					
+				$arrAllowed = deserialize($this->shipping_modules);
+				if (is_array($arrAllowed) && count($arrAllowed) && !in_array($_SESSION['FORM_DATA']['shipping']['module'], $arrAllowed))
+					return false;
+					
+				return true;
+				break;
+		}
+		
 		return $this->arrData[$strKey];
 	}
 	
@@ -100,15 +116,6 @@ abstract class Payment extends Frontend
 	{
 		return '';
 	}
-	
-	
-	/**
-	 * Return a list of payment options this module provides. Used in frontend.
-	 * 
-	 * @access public
-	 * @return array
-	 */
-	abstract public function getPaymentOptions($arrData);
 	
 	
 	/**
