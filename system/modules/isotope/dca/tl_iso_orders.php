@@ -35,7 +35,8 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 	'config' => array
 	(
 		'dataContainer'               => 'Table',
-		'enableVersioning'            => true
+		'enableVersioning'            => false,
+		'closed'					  => true,
 	),
 
 	// List
@@ -44,7 +45,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 		'sorting' => array
 		(
 			'mode'                    => 2,
-			'fields'                  => array('id, tstamp'),
+			'fields'                  => array('tstamp DESC'),
 			'flag'                    => 1,
 			'panelLayout'             => 'filter;sort,search,limit'
 		),
@@ -54,43 +55,27 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 			'label'	                  => '%s',
 			'label_callback'          => array('tl_iso_orders', 'getOrderLabel')
 		),
-		'global_operations' => array
-		(
-			'all' => array
-			(
-				'label'               => &$GLOBALS['TL_LANG']['MSC']['all'],
-				'href'                => 'act=select',
-				'class'               => 'header_edit_all',
-				'attributes'          => 'onclick="Backend.getScrollOffset();"'
-			)
-		),
 		'operations' => array
-		(
+		(/*
 			'edit' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_iso_orders']['edit'],
 				'href'                => 'act=edit',
 				'icon'                => 'edit.gif'
-			),
-			'copy' => array
-			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_iso_orders']['copy'],
-				'href'                => 'act=copy',
-				'icon'                => 'copy.gif'
-			)/*,
+			),*/
 			'delete' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_iso_orders']['delete'],
 				'href'                => 'act=delete',
 				'icon'                => 'delete.gif',
 				'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
-			)*/,
+			),
 			'show' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_iso_orders']['show'],
 				'href'                => 'act=show',
 				'icon'                => 'show.gif'
-			),
+			),/*
 			'authorize_process_payment'	=> array
 			(
 				'label'				  => &$GLOBALS['TL_LANG']['tl_iso_orders']['authorize_process_payment'],
@@ -102,7 +87,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 				'label'				  => &$GLOBALS['TL_LANG']['tl_iso_orders']['print_order'],
 				'href'				  => 'key=print_order',
 				'icon'				  => 'system/modules/isotope/html/printer.png'			
-			)
+			)*/
 		)
 	),
 
@@ -115,7 +100,13 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 	// Fields
 	'fields' => array
 	(
-		
+		'tstamp' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_news']['tstamp'],
+			'flag'                    => 8,
+			'inputType'               => 'text',
+			'eval'                    => array('rgxp'=>'date'),
+		),/*
 		'order_subtotal' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['order_subtotal'],
@@ -193,7 +184,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['gift_wrap'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox'
-		)
+		)*/
 	)
 );
 
@@ -218,9 +209,53 @@ class tl_iso_orders extends Backend
 //		$strBillingAddress = $this->loadAddress($row['billing_address_id'], $row['id']);
 //		$strShippingAddress = $this->loadAddress($row['shipping_address_id'], $row['id']);
 
-//		$strProductList = $this->getProducts($row['source_cart_id']);
+		$strProductList = $this->getProducts($row['source_cart_id']);
 
-		return '<div class="limit_height' . (!$GLOBALS['TL_CONFIG']['doNotCollapse'] ? ' h110' : '') . ' block"><div><h2>Order #' . $row['id'] . '</h2>' . 'Guest' . '<br />Status: <strong>' . $GLOBALS['TL_LANG']['tl_iso_orders']['order_status_labels'][$row['status']] . '</strong><br />Shipping Method: ' . $row['shipping_method']  . '<br />Order Total: ' . $row['grandTotal'] . '</div><br /><div style="display: inline;"><div style="width: 50%; float: left"><h2>Billing Address:</h2>' . $strBillingAddress . '</div><div style="width: 50%; float: left"><h2>Shipping Address:</h2>' . $strShippingAddress . '</div></div><div style="clear: both;"></div><h2>Cart Contents:</h2><div style="border: solid 1px #cccccc; margin: 10px; padding: 10px;">' . $strProductList . '</div><div style="clear: both;"></div><h2>Gift Wrap:</h2><div style="padding: 15px;">' . ($row['gift_wrap'] ? 'yes' : 'no') . '</div><div style="clear: both;"></div><h2>Gift Message:</h2><div style="padding: 15px;">' . $row['gift_message'] . '</div><div style="clear: both;"></div><h2>Order Comments:</h2><div style="padding: 15px;">' . $row['order_comments'] . '</div></div></div>';
+		return '
+<div class="limit_height' . (!$GLOBALS['TL_CONFIG']['doNotCollapse'] ? ' h110' : '') . ' block">
+  <div>
+    <h2>Bestellung #' . $row['id'] . '</h2><!--
+    ' . 'von Gast-Benutzer' . '<br />
+    Status: <strong>' . $GLOBALS['TL_LANG']['tl_iso_orders']['order_status_labels'][$row['status']] . '</strong><br />-->
+    Versandart: ' . $row['shipping_method']  . '<br />
+    Subtotal: ' . $row['subTotal'] . '<br />
+    Davon MwSt.: ' . $row['taxTotal'] . '<br />
+    Versandkosten: ' . $row['shippingTotal'] . '<br />
+    Total: ' . $row['grandTotal'] . '
+  </div>
+  <br />
+  <div style="display: inline;">
+    <div style="width: 50%; float: left">
+      <h2>Rechnungsadresse:</h2>
+      ' . nl2br($row['billing_address']) . '
+    </div>
+    <div style="width: 50%; float: left">
+      <h2>Versandadresse:</h2>
+      ' . nl2br($row['shipping_address']) . '
+    </div>
+  </div>
+  <div style="clear: both;"></div>
+  <h2>Artikel:</h2>
+  <div style="border: solid 1px #cccccc; margin: 10px; padding: 10px;">
+    ' . $strProductList . '
+  </div>
+  <div style="clear: both;"></div><!--
+  <h2>Gift Wrap:</h2>
+  <div style="padding: 15px;">
+    ' . ($row['gift_wrap'] ? 'Ja' : 'Nein') . '
+  </div>
+  <div style="clear: both;"></div>
+  <h2>Gift Message:</h2>
+  <div style="padding: 15px;">
+    ' . $row['gift_message'] . '
+  </div>
+  <div style="clear: both;"></div>
+  <h2>Order Comments:</h2>
+  <div style="padding: 15px;">
+    ' . $row['order_comments'] . '
+  </div>-->
+  </div>
+</div>';
 	
 	}
 	

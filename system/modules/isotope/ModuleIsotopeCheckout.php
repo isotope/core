@@ -258,6 +258,9 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				case 'shipping_method':
 					if($this->blnShowLoginOptions)
 						break;
+						
+					// FIXME: hack so user must select a valid payment method
+					unset($_SESSION['FORM_DATA']['payment']);
 					
 					//blnLoadDataContainer is set to "false" because we do not gather our widget from those fields. Instead we statically define
 					//the fields for now that are used.
@@ -331,17 +334,9 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 					$this->Template->showNext = false;
 					$this->Template->showPrevious = false;					
 					
-					$objShipping = $this->Database->prepare("SELECT * FROM tl_shipping_modules WHERE id=?")->limit(1)->execute($_SESSION['FORM_DATA']['shipping']['module']);
-					$strClass = $GLOBALS['ISO_SHIP'][$objShipping->type];
-					$objShipping = new $strClass($objShipping->row());
-					
-					$objPayment = $this->Database->prepare("SELECT * FROM tl_payment_modules WHERE id=?")->limit(1)->execute($_SESSION['FORM_DATA']['payment']['module']);
-					$strClass = $GLOBALS['ISO_PAY'][$objPayment->type];
-					$objPayment = new $strClass($objPayment->row());
-					
-					if ($objPayment->processPayment())
+					if ($this->Cart->Payment->processPayment())
 					{
-						$this->writeOrder($objPayment, $objShipping);
+						$this->writeOrder();
 					
 						$this->jumpToOrReload($this->orderCompleteJumpTo);
 					}
@@ -534,7 +529,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	/**
 	 * @todo Guest cannot be found in tl_user, emailCustomer() will fail
 	 */
-	protected function writeOrder($objPayment, $objShipping)
+	protected function writeOrder()
 	{
 		$arrSet = array
 		(
@@ -546,10 +541,10 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			'source_cart_id'		=> $this->Cart->id,
 			'subTotal'				=> $this->Isotope->formatPriceWithCurrency($this->Cart->subTotal),		// + ($this->Input->post('gift_wrap') ? 10 : 0),		// FIXME
 			'taxTotal'	 			=> $this->Isotope->formatPriceWithCurrency($this->Cart->taxTotal),
-			'shippingTotal'			=> $this->Isotope->formatPriceWithCurrency($objShipping->price),
+			'shippingTotal'			=> $this->Isotope->formatPriceWithCurrency($this->Cart->Shipping->price),
 			'grandTotal'			=> $this->Isotope->formatPriceWithCurrency($this->Cart->grandTotal),
-			'shipping_method'		=> $objShipping->label,
-			'status'				=> $objPayment->new_order_status,
+			'shipping_method'		=> $this->Cart->Shipping->label,
+			'status'				=> $this->Cart->Payment->new_order_status,
 		);
 					
 		$objInsert = $this->Database->prepare("INSERT INTO tl_iso_orders %s")
@@ -921,11 +916,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	{
 		$objTemplate = new FrontendTemplate('iso_checkout_order_review');
 		
-		$objPayment = $this->Database->prepare("SELECT * FROM tl_payment_modules WHERE id=?")->limit(1)->execute($_SESSION['FORM_DATA']['payment']['module']);
-		$strClass = $GLOBALS['ISO_PAY'][$objPayment->type];
-		$objPayment = new $strClass($objPayment->row());
-		
-		$strForm = $objPayment->checkoutForm();
+		$strForm = $this->Cart->hasPayment ? $this->Cart->Payment->checkoutForm() : '';
 		
 		if ($strForm !== false)
 		{
@@ -941,9 +932,12 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		$objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
 		$objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
 		$objTemplate->taxLabel = sprintf($GLOBALS['TL_LANG']['MSC']['taxLabel'], 'Sales');
-		$objTemplate->taxTotal = $this->generatePrice($taxPriceAdjustment);
-		$objTemplate->subTotalPrice = $this->generatePrice($this->getOrderTotal($arrProductData), 'stpl_total_price');
-		$objTemplate->grandTotalPrice = $this->generatePrice($floatGrandTotalPrice, 'stpl_total_price');
+		$objTemplate->shippingLabel = $GLOBALS['TL_LANG']['MSC']['shippingLabel'];
+		
+		$objTemplate->subTotalPrice = $this->generatePrice($this->Cart->subTotal);
+		$objTemplate->shippingTotal = $this->generatePrice($this->Cart->Shipping->price);
+		$objTemplate->taxTotal = $this->generatePrice($this->Cart->taxTotal);
+		$objTemplate->grandTotalPrice = $this->generatePrice($this->Cart->grandTotal, 'stpl_total_price');
 		
 		return $objTemplate->parse();
 	}
@@ -1007,14 +1001,24 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	
 	protected function getAddressString($arrAddress)
 	{
+	
 		$strAddress = $arrAddress['firstname'] . ' ' . $arrAddress['lastname'] . "\n";
 		$strAddress .= $arrAddress['street'] . "\n";
 		$strAddress .= (strlen($arrAddress['street_2']) > 0 ? $arrAddress['street_2'] . "\n" : '');
 		$strAddress .= (strlen($arrAddress['street_3']) > 0 ? $arrAddress['street_3'] . "\n" : '');
 		$strAddress .= $arrAddress['city'] . "\n";
-		$strAddress .= $arrAddress['state'] . "\n";
-		$strAddress .= $arrAddress['country'];
+		$strAddress .= (strlen($arrAddress['state']) > 0 ? $arrAddress['state'] . "\n" : '');
+		$strAddress .= $GLOBALS['TL_LANG']['CNT'][$arrAddress['country']];
 	
+	/*
+		foreach( $this->Store->address_fields as $strField )
+		{
+			if (!isset($GLOBALS['TL_DCA'][$strResourceTable]['fields'][$strField]))
+				continue;
+				
+			$arrStepFields[$strField] = $GLOBALS['TL_DCA'][$strResourceTable]['fields'][$strField];
+		}
+	*/
 		return $strAddress;
 	}
 	

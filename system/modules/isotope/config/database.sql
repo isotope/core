@@ -441,25 +441,30 @@ CREATE TABLE `tl_registry` (
 --
 
 CREATE TABLE `tl_iso_orders` (
+
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
+  
   `sorting` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
   `store_id` int(10) unsigned NOT NULL default '0',
-  `subTotal` double NULL default NULL,
-  `taxTotal` double NULL default NULL,
-  `shippingTotal` double NULL default NULL,
-  `grandTotal` double NULL default NULL,
   `source_cart_id` int(10) unsigned NOT NULL default '0',
   
   `status` varchar(32) NOT NULL default '',
   `shipping_address` text NULL,
   `billing_address` text NULL,
   
+  `subTotal` varchar(20) NOT NULL default '',
+  `taxTotal` varchar(20) NOT NULL default '',
+  `shippingTotal` varchar(20) NOT NULL default '',
+  `grandTotal` varchar(20) NOT NULL default '',
+  
   `shipping_method` varchar(64) NOT NULL default '',
+  
   `order_comments` text NULL, 
   `gift_message` text NULL,
   `gift_wrap` char(1) NOT NULL default '',
+  
   `completed` char(1) NOT NULL default '',
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)

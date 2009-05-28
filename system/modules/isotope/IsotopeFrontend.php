@@ -70,12 +70,24 @@
 		{
 			switch( $arrTag[1] )
 			{
-				case 'cart_count';
+				case 'cart_items';
 					return $this->Cart->items;
 					break;
 					
-				case 'cart_count_products';
+				case 'cart_products';
+					return $this->Cart->products;
+					break;
+					
+				case 'cart_items_label';
 					$intCount = $this->Cart->items;
+					if (!$intCount)
+						return '';
+					
+					return $intCount == 1 ? ('('.$GLOBALS['TL_LANG']['ISO']['productSingle'].')') : sprintf(('('.$GLOBALS['TL_LANG']['ISO']['productMultiple'].')'), $intCount);
+					break;
+					
+				case 'cart_products_label';
+					$intCount = $this->Cart->products;
 					if (!$intCount)
 						return '';
 					

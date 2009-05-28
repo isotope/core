@@ -70,6 +70,18 @@ class IsotopeCart extends Model
 	 */
 	protected $arrProducts = array();
 	
+	/**
+	 * Shipping object if shipping module is set in session
+	 * @var object
+	 */
+	public $Shipping;
+	
+	/**
+	 * Payment object if payment module is set in session
+	 * @var object
+	 */
+	public $Payment;
+	
 	
 	/**
 	 * Prevent cloning of the object (Singleton)
@@ -113,6 +125,10 @@ class IsotopeCart extends Model
 			switch( $strKey )
 			{
 				case 'items':
+					$this->arrCache[$strKey] = $this->Database->prepare("SELECT SUM(quantity_requested) AS items FROM tl_cart_items LEFT OUTER JOIN tl_cart ON tl_cart_items.pid=tl_cart.id WHERE tl_cart_items.pid=? AND tl_cart.cart_type_id=?")->execute($this->id, $this->intType)->items;
+					break;
+					
+				case 'products':
 					$this->arrCache[$strKey] = $this->Database->prepare("SELECT COUNT(*) AS items FROM tl_cart_items LEFT OUTER JOIN tl_cart ON tl_cart_items.pid=tl_cart.id WHERE tl_cart_items.pid=? AND tl_cart.cart_type_id=?")->execute($this->id, $this->intType)->items;
 					break;
 					
@@ -121,8 +137,21 @@ class IsotopeCart extends Model
 					$this->arrCache[$strKey] = $this->calculateTotal($this->Isotope->getProductData($this->getProducts(), array('product_price'), 'product_price'));
 					break;
 					
+				case 'taxTotal':
+					// FIXME: currently rounds to 0.05 (swiss francs)
+					return (round(($this->subTotal / 100 * 7.6)*20)/20);
+					break;
+					
 				case 'grandTotal':
-					return $this->__get('subTotal');
+					return ($this->subTotal + ($this->hasShipping ? $this->Shipping->price : 0));
+					break;
+					
+				case 'hasShipping':
+					return is_object($this->Shipping) ? true : false;
+					break;
+					
+				case 'hasPayment':
+					return is_object($this->Payment) ? true : false;
 					break;
 			}
 		}
@@ -215,6 +244,29 @@ class IsotopeCart extends Model
 			
 			// Delete cart
 			$this->Database->prepare("DELETE FROM tl_cart WHERE session=?")->execute($this->strHash);
+ 		}
+ 		
+ 		// Load shipping object
+ 		if ($_SESSION['FORM_DATA']['shipping']['module'])
+ 		{
+ 			$objShipping = $this->Database->prepare("SELECT * FROM tl_shipping_modules WHERE id=?")->limit(1)->execute($_SESSION['FORM_DATA']['shipping']['module']);
+ 			if ($objShipping->numRows)
+ 			{
+ 				$strClass = $GLOBALS['ISO_SHIP'][$objShipping->type];
+ 				$this->Shipping = new $strClass($objShipping->row());
+ 			}
+ 		}
+ 		
+ 		
+ 		// Load payment object
+ 		if ($_SESSION['FORM_DATA']['payment']['module'])
+ 		{
+ 			$objPayment = $this->Database->prepare("SELECT * FROM tl_payment_modules WHERE id=?")->limit(1)->execute($_SESSION['FORM_DATA']['payment']['module']);
+ 			if ($objPayment->numRows)
+ 			{
+ 				$strClass = $GLOBALS['ISO_PAY'][$objPayment->type];
+ 				$this->Payment = new $strClass($objPayment->row());
+ 			}
  		}
 	}
 	

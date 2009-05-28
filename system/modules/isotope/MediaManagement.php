@@ -325,7 +325,6 @@ class MediaManagement extends Backend
 				{
 					$arrImageSize = @getimagesize(TL_ROOT . '/' . $arrProductPaths['root_asset_import_path'] . '/' . $image);
 				}
-				
 											
 				foreach($arrConstraints as $limit)
 				{
@@ -518,7 +517,6 @@ class MediaManagement extends Backend
 	 */
 	public function getProductImage($image, $width, $height, $target=null, $isResizingCommand=false)
 	{
-		
 		if (!strlen($image))
 		{
 			return null;

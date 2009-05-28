@@ -226,19 +226,19 @@ class Isotope extends Controller
 		}
 		
 		//Retrieve current session data, only if a new product has been added or else the cart updated in some way, and reassign the cart product data
-		$session = $this->Session->getData();
+//		$session = $this->Session->getData();
 		
 		//clean old cart data
-		unset($session['isotope']['cart_data']);
+//		unset($session['isotope']['cart_data']);
 		
 		//set new cart data
-		$session['isotope']['cart_data'] = $arrTotalProductsInCart;
+//		$session['isotope']['cart_data'] = $arrTotalProductsInCart;
 		
 		
 //		$session['isotope']['cart_id'] = $this->userCartExists($this->strUserId);
 		
 		
-		$this->Session->setData($session);
+//		$this->Session->setData($session);
 				
 		return $arrTotalProductsInCart;
 	}

@@ -261,9 +261,9 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 		$this->Template->taxLabel = $GLOBALS['TL_LANG']['MSC']['shippingLabel'];
 		$this->Template->taxTotal = $this->generatePrice($taxPriceAdjustment);
 		$this->Template->taxLabel = sprintf($GLOBALS['TL_LANG']['MSC']['taxLabel'], 'Sales');
-		$this->Template->taxTotal = $this->generatePrice($taxPriceAdjustment);
-		$this->Template->subTotalPrice = $this->generatePrice($floatSubTotalPrice, 'stpl_total_price');
-		$this->Template->grandTotalPrice = $this->generatePrice($floatGrandTotalPrice, 'stpl_total_price');
+		$this->Template->taxTotal = $this->generatePrice($this->Cart->taxTotal);
+		$this->Template->subTotalPrice = $this->generatePrice($this->Cart->subTotal, 'stpl_total_price');
+		$this->Template->grandTotalPrice = $this->generatePrice($this->Cart->subTotal, 'stpl_total_price');		// FIXME
 		$this->Template->noItemsInCart = $GLOBALS['TL_LANG']['MSC']['noItemsInCart'];
 		
 		//$product['name']

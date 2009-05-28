@@ -45,7 +45,7 @@ class PaymentCash extends Payment
 		switch( $strKey )
 		{
 			case 'new_order_status':
-				return 'complete';
+				return 'pending';
 		}
 		
 		return parent::__get($strKey);

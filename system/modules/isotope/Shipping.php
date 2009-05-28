@@ -59,8 +59,6 @@ abstract class Shipping extends Frontend
 	public function __construct($arrRow)
 	{
 		parent::__construct();
-		
-		$this->import('IsotopeCart', 'Cart');
 
 		$this->arrData = $arrRow;
 	}
@@ -88,6 +86,8 @@ abstract class Shipping extends Frontend
 	 */
 	public function __get($strKey)
 	{
+		$this->import('IsotopeCart', 'Cart');
+		
 		switch( $strKey )
 		{
 			case 'available':
