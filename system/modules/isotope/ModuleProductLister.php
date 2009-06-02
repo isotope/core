@@ -164,7 +164,6 @@ class ModuleProductLister extends ModuleIsotopeBase
 		{
 			$strClauses = " pid IN(" . $strPageList . ")";
 		}
-	
 
 		if(strlen($strClauses))
 		{
@@ -298,7 +297,16 @@ class ModuleProductLister extends ModuleIsotopeBase
 					}
 				}
 								
-				$arrProductList = array_merge($arrProductList, deserialize($objAggregateSets->product_ids));
+				$arrProducts = deserialize($objAggregateSets->product_ids);
+				if (is_array($arrProducts) && count($arrProducts))
+				{
+					$arrProductList = array_merge($arrProductList, $arrProducts);
+				}
+				
+				if( $objAggregateSets->product_id > 0 )
+				{
+					$arrProductList[] = $objAggregateSets->product_id;
+				}
 				
 				if(!count($arrProductList))
 				{
@@ -306,7 +314,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 				}
 				 		
 			
-			}	
+			}
 			
 			//Build one or more filter=value pairs for SQL querying
 			if (is_array($arrFilterSQL) && count($arrFilterSQL))

@@ -1343,7 +1343,40 @@ class ProductCatalog extends Backend
 			$arrAllPageInfo = $objAllPages->fetchAllAssoc();
 		}
 				
-		$this->updateCAPAggregate($arrNewPageList, $arrAllPageInfo, $dc, $this->strCurrentStoreTable, $id, $storeID, $intID);
+//		$this->updateCAPAggregate($arrNewPageList, $arrAllPageInfo, $dc, $this->strCurrentStoreTable, $id, $storeID, $intID);
+		
+		
+		
+		
+		// New way of storing cap_aggregate. One product per row!!
+		$this->Database->prepare("DELETE FROM tl_cap_aggregate WHERE product_id=? AND storeTable=?")->execute($intID, $this->strCurrentStoreTable);
+		
+		if (is_array($arrNewPageList) && count($arrNewPageList))
+		{
+			$time = time();
+			$arrQuery = array();
+			$arrValues = array();
+			
+			foreach( $arrNewPageList as $intPage )
+			{
+				$arrQuery[] = '(?, ?, ?, ?, ?, ?, ?)';
+				
+				$arrValues[] = $intPage;
+				$arrValues[] = '0';
+				$arrValues[] = $time;
+				$arrValues[] = $this->strCurrentStoreTable;
+				$arrValues[] = $intID;
+				$arrValues[] = $id;
+				$arrValues[] = $storeID;
+			}
+			
+			if (count($arrQuery))
+			{
+				$this->Database->prepare("INSERT INTO tl_cap_aggregate (pid, sorting, tstamp, storeTable, product_id, attribute_set_id, store_id) VALUES ".implode(', ', $arrQuery))->execute($arrValues);
+			}
+		}
+		
+		
 	
 		return $varValue;
 	}
@@ -2196,6 +2229,59 @@ class ProductCatalog extends Backend
 		$this->Database->prepare("UPDATE tl_product_attributes SET option_list=?, use_alternate_source=0 WHERE id=?")->execute(serialize($arrCollection), $dc->id);
 	
 		return $varValue;
+	}
+	
+	
+	
+	/**
+	 * Re-generate tl_cap_aggregate from pages field.
+	 * 
+	 * @access public
+	 * @return void
+	 */
+	public function repairCAP($dc)
+	{
+		$objAttributeSet = $this->Database->prepare("SELECT * FROM tl_product_attribute_sets WHERE id=?")->limit(1)->execute($dc->id);
+		
+		if ($objAttributeSet->numRows)
+		{
+			// Delete all
+			$this->Database->prepare("DELETE FROM tl_cap_aggregate WHERE storeTable=?")->execute($objAttributeSet->storeTable);
+			
+			$objProducts = $this->Database->execute("SELECT id,pages FROM " . $objAttributeSet->storeTable);
+		
+			$time = time();
+			$arrQuery = array();
+			$arrValues = array();
+			
+			while( $objProducts->next() )
+			{
+				$arrPages = deserialize($objProducts->pages);
+				
+				if (is_array($arrPages) && count($arrPages))
+				{
+					foreach( $arrPages as $intPage )
+					{
+						$arrQuery[] = '(?, ?, ?, ?, ?, ?, ?)';
+						
+						$arrValues[] = $intPage;
+						$arrValues[] = '0';
+						$arrValues[] = $time;
+						$arrValues[] = $objAttributeSet->storeTable;
+						$arrValues[] = $objProducts->id;
+						$arrValues[] = $objAttributeSet->id;
+						$arrValues[] = $objAttributeSet->store_id;
+					}
+				}
+			}
+			
+			if (count($arrQuery))
+			{
+				$this->Database->prepare("INSERT INTO tl_cap_aggregate (pid, sorting, tstamp, storeTable, product_id, attribute_set_id, store_id) VALUES ".implode(', ', $arrQuery))->execute($arrValues);
+			}
+		}
+		
+		$this->redirect(str_replace('key=repairCAP', '', $this->Environment->request));
 	}
 	
 }

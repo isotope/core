@@ -42,6 +42,7 @@ array_insert($GLOBALS['BE_MOD']['store'], 0, array
 	(
 		'tables'					=> array('tl_product_attribute_sets','tl_product_attributes','tl_product_data'),
 		'icon'						=> 'system/modules/isotope/html/icon_pa.gif',
+		'repairCAP'					=> array('ProductCatalog', 'repairCAP'),
 	),
 	'orders' => array
 	(

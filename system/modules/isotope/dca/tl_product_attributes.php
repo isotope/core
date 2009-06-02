@@ -67,6 +67,13 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 		),
 		'global_operations' => array
 		(
+			'repairCAP' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['MSC']['repairCAP'],
+				'href'                => 'key=repairCAP',
+				'class'               => 'header_repair_cap',
+				'attributes'          => 'onclick="Backend.getScrollOffset();"'
+			),
 			'all' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['MSC']['all'],
