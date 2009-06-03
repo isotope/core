@@ -126,6 +126,8 @@ class ProductOptionWizard extends Widget
 		$arrButtons = array('copy', 'up', 'down', 'delete');
 		$strCommand = 'cmd_' . $this->strField;
 
+		$arrAttributes = $this->getAttributes($this->strTable);
+		
 		// Change the order
 		if ($this->Input->get($strCommand) && is_numeric($this->Input->get('cid')) && $this->Input->get('id') == $this->currentRecord)
 		{
@@ -177,10 +179,33 @@ class ProductOptionWizard extends Widget
 		// Add fields
 		for ($i=0; $i<count($this->varValue); $i++)
 		{
+			$strCurrOptionName = $this->strId.'['.$i.'][value]';
+			
+			$varCurrOptionValue = $this->Input->post($strCurrOptionName);
+			
 			$return .= '
     <tr>
-      <td><input type="text" name="'.$this->strId.'['.$i.'][value]" id="'.$this->strId.'_value_'.$i.'" class="tl_text_2" value="'.specialchars($this->varValue[$i]['value']).'" /></td>
-      <td><input type="text" name="'.$this->strId.'['.$i.'][label]" id="'.$this->strId.'_label_'.$i.'" class="tl_text_2" value="'.specialchars($this->varValue[$i]['label']).'" /></td>
+      <td><select name="'.$this->strId.'['.$i.'][value]" id="'.$this->strId.'_attribute_'.$i.'" class="tl_select_2" value="'.$this->varValue[$i]['value'].'">';
+      foreach($arrAttributes as $attribute)
+      {
+      	$return .= '<option value="' . $attribute['value'] . '"' . ($varCurrOptionValue==$this->varValue[$i]['value'] ? ' selected' : '') . '>' . $this->varValue[$i]['label'] . '</option>';
+      }
+      
+      $return .= '</select>
+      </td>
+      <td>
+      &nbsp;
+      </td>';
+      
+      /*
+      foreach($arrCurrentAttributeValues as $value)
+      {
+      	'<input type="checkbox" name="'.$this->strId.'['.$i.'][label]" id="'.$this->strId.'_label_'.$i.'" class="tl_text_2" value="'.specialchars($this->varValue[$i]['label']).'" />';
+      }
+      
+      $return .= '</td>';
+      */
+      $return .= '
       <td><input type="checkbox" name="'.$this->strId.'['.$i.'][default]" id="'.$this->strId.'_default_'.$i.'" class="fw_checkbox" value="1"'.($this->varValue[$i]['default'] ? ' checked="checked"' : '').' /> <label for="'.$this->strId.'_default_'.$i.'">'.$GLOBALS['TL_LANG'][$this->strTable]['opDefault'].'</label></td>
       <td><input type="checkbox" name="'.$this->strId.'['.$i.'][group]" id="'.$this->strId.'_group_'.$i.'" class="fw_checkbox" value="1"'.($this->varValue[$i]['group'] ? ' checked="checked"' : '').' /> <label for="'.$this->strId.'_group_'.$i.'">'.$GLOBALS['TL_LANG'][$this->strTable]['opGroup'].'</label></td>';
 			
@@ -200,6 +225,43 @@ class ProductOptionWizard extends Widget
 		return $return.'
   </tbody>
   </table>';
+	}
+	
+	
+	protected function getAttributes($strTable)
+	{
+		//Get attributes that are is_customer_defined 
+		$objOptionAttributes = $this->Database->prepare("SELECT id, field_name FROM tl_product_attributes WHERE is_customer_defined=?")
+											  ->execute(1);
+		
+		if($objOptionAttributes->numRows < 1)
+		{
+			return array();			
+		}
+		
+		$arrAttributes = $objOptionAttributes->fetchAllAssoc();
+								
+		return $arrAttributes;
+	}
+	
+	/**
+	 * Generate a checkbox and return it as string	- REFERENCE ONLY
+	 * @param array
+	 * @param integer
+	 * @param string
+	 * @return string
+	 */
+	protected function generateCheckbox($arrOption, $i, $strButtons)
+	{
+		return sprintf('<span><input type="checkbox" name="%s" id="opt_%s" class="tl_checkbox" value="%s"%s%s onfocus="Backend.getScrollOffset();" /> %s <label for="opt_%s">%s</label></span>',
+						$this->strName . ($this->multiple ? '[]' : ''),
+						$this->strId.'_'.$i,
+						($this->multiple ? specialchars($arrOption['value']) : 1),
+						((is_array($this->varValue) && in_array($arrOption['value'] , $this->varValue) || $this->varValue == $arrOption['value']) ? ' checked="checked"' : ''),
+						$this->getAttributes(),
+						$strButtons,
+						$this->strId.'_'.$i,
+						$arrOption['label']);
 	}
 }
 
