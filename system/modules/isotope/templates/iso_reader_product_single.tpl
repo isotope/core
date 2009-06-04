@@ -22,7 +22,7 @@
 		}
 	});
 </script>
-<h1><?php echo $this->productName; ?></h1>
+<?php if (strlen($this->productName)): ?><h1><?php echo $this->productName; ?></h1><?php endif; ?>
 <div class="mod_productReader">
   <div class="productInfoWrap">
     <?php if($this->hasErrors): ?>

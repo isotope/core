@@ -169,37 +169,38 @@ class ModuleProductReader extends ModuleIsotopeBase
 				$isError = true;
 				$errKey[] = 'invalidProductInformation';			
 			}
-			
-			
-			$this->strCurrentStoreTable = $objCAPRecord->storeTable;
-			
-			
-			$objCurrentStoreConfiguration = $this->Database->prepare("SELECT store_id FROM tl_product_attribute_sets WHERE id=?")
-														   ->limit(1)
-														   ->execute($objCAPRecord->attribute_set_id);
-			
-			$this->intAttributeSetId = $objCAPRecord->attribute_set_id;
-			
-			if($objCurrentStoreConfiguration->numRows < 1)
-			{
-				$this->intStoreId = 1;
-			}
 			else
 			{
-				$this->intStoreId = $objCurrentStoreConfiguration->store_id;
-			}
-			
-			
-			$strMissingImagePlaceholder = $this->Store->missing_image_placeholder;
-						
-			$objProductData = $this->Database->prepare("SELECT * FROM " . $this->strCurrentStoreTable . " WHERE id=? OR product_alias=?")
-									 ->limit(1)
-									 ->execute((is_numeric($this->Input->get('product')) ? $this->Input->get('product') : 0), $this->Input->get('product'));
-
-			if($objProductData->numRows < 1)
-			{
-				$isError = true;
-				$errKey[] = 'invalidProductInformation';
+				$this->strCurrentStoreTable = $objCAPRecord->storeTable;
+				
+				
+				$objCurrentStoreConfiguration = $this->Database->prepare("SELECT store_id FROM tl_product_attribute_sets WHERE id=?")
+															   ->limit(1)
+															   ->execute($objCAPRecord->attribute_set_id);
+				
+				$this->intAttributeSetId = $objCAPRecord->attribute_set_id;
+				
+				if($objCurrentStoreConfiguration->numRows < 1)
+				{
+					$this->intStoreId = 1;
+				}
+				else
+				{
+					$this->intStoreId = $objCurrentStoreConfiguration->store_id;
+				}
+				
+				
+				$strMissingImagePlaceholder = $this->Store->missing_image_placeholder;
+							
+				$objProductData = $this->Database->prepare("SELECT * FROM " . $this->strCurrentStoreTable . " WHERE id=? OR product_alias=?")
+										 ->limit(1)
+										 ->execute((is_numeric($this->Input->get('product')) ? $this->Input->get('product') : 0), $this->Input->get('product'));
+	
+				if($objProductData->numRows < 1)
+				{
+					$isError = true;
+					$errKey[] = 'invalidProductInformation';
+				}
 			}			
 		}
 		else
@@ -215,6 +216,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 				$arrErrorMessages[$error] = $GLOBALS['TL_LANG']['MSC'][$error];
 			}
 			
+			$this->Template->hasErrors = true;
 			$this->Template->errorMessages = $arrErrorMessages;
 		}
 		else
