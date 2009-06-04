@@ -99,6 +99,7 @@ class ProductCatalog extends Backend
   			`video_url` text NULL,
 			`add_audio_file` char(1) NOT NULL default '0',
 			`add_video_file` char(1) NOT NULL default '0',
+			`option_wizard` char(1) NOT NULL default '0',
 			PRIMARY KEY  (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		
@@ -351,6 +352,12 @@ class ProductCatalog extends Backend
 			'search'                  => true,
 			'inputType'               => 'text',
 			'eval'                    => array('decodeEntities'=>true, 'maxlength'=>255)
+		);
+		
+		$GLOBALS['TL_DCA'][$storeTable]['fields']['option_wizard'] = array
+		(
+			'label'					  => &$GLOBALS['TL_LANG']['tl_product_data']['option_wizard'],
+			'inputType'				  => 'productOptionWizard'		
 		);
 		
 		// add DCA for form fields
@@ -2283,6 +2290,9 @@ class ProductCatalog extends Backend
 		
 		$this->redirect(str_replace('key=repairCAP', '', $this->Environment->request));
 	}
+	
+	
+
 	
 }
 

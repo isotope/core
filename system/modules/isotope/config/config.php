@@ -104,6 +104,8 @@ $GLOBALS['TL_HOOKS']['replaceInsertTags'][]			= array('IsotopeFrontend', 'replac
 //$GLOBALS['TL_HOOKS']['postLogin'][] = array('IsotopeCallbacks','memberLogin');
 
 //$GLOBALS['TL_HOOKS']['getMappingAttributes'][]	= array('getProductMapping' => array('ProductCatalog','generateMappingAttributeList'));
+$GLOBALS['TL_HOOKS']['executePreActions'][] = array('ProductOptionWizard', 'executePreActions');
+
 
 
 
@@ -111,7 +113,7 @@ $GLOBALS['TL_HOOKS']['replaceInsertTags'][]			= array('IsotopeFrontend', 'replac
  * Backend widgets
  */
 $GLOBALS['BE_FFL']['mediaManager'] = 'MediaManager';
-
+$GLOBALS['BE_FFL']['productOptionWizard'] = 'ProductOptionWizard';
 
 /**
  * Frontend modules
@@ -531,5 +533,6 @@ $GLOBALS['ISO_ATTR'] = array
 //		'save_callback'				=> 'MediaManagement.thumbnailImages',
 		'show_files'				=> 0
 	),
+	
 );
 

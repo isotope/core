@@ -128,6 +128,8 @@ class ProductOptionWizard extends Widget
 
 		$arrAttributes = $this->getAttributes($this->strTable);
 		
+	//	$arrOptionValues = $this->getAllOptionValues($this->Input->get());
+				
 		// Change the order
 		if ($this->Input->get($strCommand) && is_numeric($this->Input->get('cid')) && $this->Input->get('id') == $this->currentRecord)
 		{
@@ -185,7 +187,7 @@ class ProductOptionWizard extends Widget
 			
 			$return .= '
     <tr>
-      <td><select name="'.$this->strId.'['.$i.'][value]" id="'.$this->strId.'_attribute_'.$i.'" class="tl_select_2" value="'.$this->varValue[$i]['value'].'">';
+      <td><select name="'.$this->strId.'['.$i.'][value]" id="'.$this->strId.'_attribute_'.$i.'" class="tl_select_2" onchange="" value="'.$this->varValue[$i]['value'].'">';
       foreach($arrAttributes as $attribute)
       {
       	$return .= '<option value="' . $attribute['value'] . '"' . ($varCurrOptionValue==$this->varValue[$i]['value'] ? ' selected' : '') . '>' . $this->varValue[$i]['label'] . '</option>';
@@ -262,6 +264,30 @@ class ProductOptionWizard extends Widget
 						$strButtons,
 						$this->strId.'_'.$i,
 						$arrOption['label']);
+	}
+	
+	/**
+	 * @param string
+	 * @return void
+	 */
+	public function executePreActions($strAction)
+	{
+	    if ($strAction == 'addPOAttribute')
+	    {
+	    	$intAttributeId = $this->Input->get('attribute_id');
+	    	
+	    	$objAttributeValues = $this->Database->prepare("SELECT options FROM tl_product_attributes WHERE id=?")
+	       										->execute($intAttributeId);
+	       
+	        if($objAttributeValues->numRows < 1)
+	        {
+	        	return array();	        
+	        }
+	        
+	        $arrOptions = deserialize($objAttributeValues->options);
+	        
+	        return $arrOptions;
+	    }
 	}
 }
 

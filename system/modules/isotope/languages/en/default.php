@@ -67,7 +67,7 @@ $GLOBALS['TL_LANG']['MSC']['labelPagerSectionTitle'] = 'Page:';
 $GLOBALS['TL_LANG']['MSC']['labelOrderBy'] = 'Order By:';
 $GLOBALS['TL_LANG']['MSC']['noProducts'] = 'There are no products available in this category.';
 $GLOBALS['TL_LANG']['MSC']['noAssociatedCategories'] = 'There are no categories current associated with this product.';
-$GLOBALS['TL_LANG']['MSC']['invalidProductInformation'] = 'We\'re sorry, the product information you have requested is not showing up in our store. For further assistance please contact us.';
+$GLOBALS['TL_LANG']['MSC']['invalidProductInformation'] = 'WeÅ_'re sorry, the product information you have requested is not showing up in our store. For further assistance please contact us.';
 $GLOBALS['TL_LANG']['MSC']['productDescriptionLabel'] = 'Description';
 
 $GLOBALS['TL_LANG']['MSC']['productDetailLabel'] = 'Product Detail';
@@ -172,7 +172,7 @@ $GLOBALS['TL_LANG']['MSC']['flv'] = 'video/x-flv';
 
 $GLOBALS['TL_LANG']['MSC']['altTextFormat'] = '%s - %s';
 
-$GLOBALS['TL_LANG']['MSC']['thumbnailImageClickEvent'] = 'class="highslide" onclick="return hs.expand(this, { slideshowGroup: \'productImages\' })"';
+$GLOBALS['TL_LANG']['MSC']['thumbnailImageClickEvent'] = 'class="highslide" onclick="return hs.expand(this, { slideshowGroup: Å_'productImagesÅ_' })"';
 
 $GLOBALS['TL_LANG']['MSC']['low_to_high'] = 'low to high';
 $GLOBALS['TL_LANG']['MSC']['high_to_low'] = 'high to low';
