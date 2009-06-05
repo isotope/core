@@ -156,8 +156,8 @@ $GLOBALS['TL_LANG']['MSC']['iso_order_grand_total_header'] = 'Grand Total';
 $GLOBALS['TL_LANG']['MSC']['store_title'] = 'Kolbo Fine Judaica';
 
 //Admin order notfication language entries
-$GLOBALS['TL_LANG']['MSC']['subject_new_order_admin_notify'] = 'Order Number %s has been placed on %s';
-$GLOBALS['TL_LANG']['MSC']['message_new_order_admin_notify'] = "An new order (ID %s) has been placed! \n\n Order Details: \n\n %s";
+$GLOBALS['TL_LANG']['MSC']['subject_new_order_admin_notify'] = 'New order has been placed on %s';
+$GLOBALS['TL_LANG']['MSC']['message_new_order_admin_notify'] = "An new order (ID %s) has been placed! \n\nOrder Details: \n\n %s";
 
 //Customer order notification language entries
 $GLOBALS['TL_LANG']['MSC']['subject_new_order_customer_thank_you'] = 'Thank you for your order at %s!';
@@ -229,7 +229,7 @@ $GLOBALS['TL_LANG']['CUR']['CHF'] = 'CHF - Swiss Franc';
  * Currency symbols
  */
 $GLOBALS['TL_LANG']['CUR_SYMBOL']['USD'] = '$';
-$GLOBALS['TL_LANG']['CUR_SYMBOL']['EUR'] = 'Û';
+$GLOBALS['TL_LANG']['CUR_SYMBOL']['EUR'] = 'ï¾›';
 
 
 /** 
