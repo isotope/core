@@ -937,6 +937,9 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		$objTemplate->taxTotal = $this->generatePrice($this->Cart->taxTotalWithShipping);
 		$objTemplate->grandTotalPrice = $this->generatePrice($this->Cart->grandTotal, 'stpl_total_price');
 		
+		$objTemplate->billingAddress = $this->getAddressString($this->getSelectedAddress('billing'));
+		$objTemplate->shippingAddress = $this->getAddressString($this->getSelectedAddress('shipping'));
+		
 		return $objTemplate->parse();
 	}
 	
@@ -969,6 +972,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		{
 			$arrAddress = array
 			(
+				'company'		=> $_SESSION['FORM_DATA'][$strStep . '_information_company'],
 				'firstname'		=> $_SESSION['FORM_DATA'][$strStep . '_information_firstname'],
 				'lastname'		=> $_SESSION['FORM_DATA'][$strStep . '_information_lastname'],
 				'street'		=> $_SESSION['FORM_DATA'][$strStep . '_information_street'],

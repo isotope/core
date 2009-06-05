@@ -37,4 +37,13 @@
 
 	</div>
 	
+	<div class="billing_address">
+		<h2>Rechnungsadresse</h2>
+		<?php echo nl2br($this->billingAddress); ?>
+	</div>
+	<div class="shipping_address">
+		<h2>Lieferadresse</h2>
+		<?php echo nl2br($this->shippingAddress); ?>
+	</div>
+	
 </div>
