@@ -1012,6 +1012,8 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	 */
 	protected function getAddressString($arrAddress)
 	{
+		$arrCountries = $this->getCountries();
+		
 		$strAddress  = (strlen($arrAddress['company']) > 0 ? $arrAddress['company'] . "\n" : '');
 		$strAddress .= $arrAddress['firstname'] . ' ' . $arrAddress['lastname'] . "\n";
 		$strAddress .= $arrAddress['street'] . "\n";
@@ -1019,7 +1021,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		$strAddress .= (strlen($arrAddress['street_3']) > 0 ? $arrAddress['street_3'] . "\n" : '');
 		$strAddress .= $arrAddress['postal'] . ' ' . $arrAddress['city'] . "\n";
 		$strAddress .= (strlen($arrAddress['state']) > 0 ? $arrAddress['state'] . "\n" : '');
-		$strAddress .= $GLOBALS['TL_LANG']['CNT'][$arrAddress['country']] . "\n";
+		$strAddress .= $arrCountries[$arrAddress['country']] . "\n";
 	
 	/*
 		foreach( $this->Store->address_fields as $strField )
