@@ -936,7 +936,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 		$objTemplate->subTotalPrice = $this->generatePrice($this->Cart->subTotal);
 		$objTemplate->shippingTotal = $this->generatePrice($this->Cart->Shipping->price);
-		$objTemplate->taxTotal = $this->generatePrice($this->Cart->taxTotal);
+		$objTemplate->taxTotal = $this->generatePrice($this->Cart->taxTotalWithShipping);
 		$objTemplate->grandTotalPrice = $this->generatePrice($this->Cart->grandTotal, 'stpl_total_price');
 		
 		return $objTemplate->parse();

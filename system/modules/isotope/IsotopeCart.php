@@ -139,7 +139,12 @@ class IsotopeCart extends Model
 					
 				case 'taxTotal':
 					// FIXME: currently rounds to 0.05 (swiss francs)
-					return (round(($this->subTotal / 100 * 7.6)*20)/20);
+					return (round(($this->subTotal / 107.6 * 7.6)*20)/20);
+					break;
+					
+				case 'taxTotalWithShipping':
+					// FIXME: currently rounds to 0.05 (swiss francs)
+					return (round((($this->subTotal + ($this->hasShipping ? $this->Shipping->price : 0)) / 107.6 * 7.6)*20)/20);
 					break;
 					
 				case 'grandTotal':
