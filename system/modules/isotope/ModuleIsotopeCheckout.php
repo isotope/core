@@ -62,13 +62,13 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	
 //	protected $strOrderStatus;
 	
-	protected $fltOrderTotal = 0.00;
+//	protected $fltOrderTotal = 0.00;
 	
 //	protected $fltOrderSubtotal = 0.00;
 	
-	protected $fltOrderShippingTotal = 0.00;
+//	protected $fltOrderShippingTotal = 0.00;
 	
-	protected $fltOrderTaxTotal = 0.00;
+//	protected $fltOrderTaxTotal = 0.00;
 	
 	protected $intBillingAddressId = 0;
 	
@@ -550,42 +550,42 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		$objInsert = $this->Database->prepare("INSERT INTO tl_iso_orders %s")
 					   		->set($arrSet)
 					   		->execute();
-					   		
-					   		
-		$this->Cart->delete();
-		unset($_SESSION['FORM_DATA']);
-		unset($_SESSION['isotope']);
 		
-/*
+
 		$arrData[] = array
 		(
-			'label'	=> 'Order Id: ',
+			'label'	=> 'Bestell-ID: ',
 			'value'	=> $objInsert->insertId,
 		);
 		
 		$arrData[] = array
 		(
-			'label' => 'Order Total: ',
-			'value' => $this->fltOrdertotal,
+			'label' => 'Bestellbetrag: ',
+			'value' => $this->Cart->grandTotal,
 		);
 		
 		$arrData[] = array
 		(
-			'label' => 'User Id: ',
-			'value' => $this->User->id,
+			'label' => 'Kunde: ',
+			'value' => (FE_USER_LOGGED_IN ? $this->User->id : 'Gast'),
 		);
 		
+/*
 		$arrData[] = array
 		(
 			'label' => 'Order Comments',
 			'value' => '',
 		);
+*/
 		
 		$this->sendAdminNotification($objInsert->insertId, $arrData);
 		
-		$this->emailCustomer($objUser->email, $objUser->firstname);			   
+//		$this->emailCustomer($objUser->email, $objUser->firstname);			   
+
+		$this->Cart->delete();
+		unset($_SESSION['FORM_DATA']);
+		unset($_SESSION['isotope']);
 		
-*/
 	}
 	
 	
@@ -623,16 +623,14 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		$objEmail = new Email();
 
 		$objEmail->from = $GLOBALS['TL_ADMIN_EMAIL'];
-		$objEmail->subject = sprintf($GLOBALS['TL_LANG']['MSC']['subject_new_order_admin_notify'], $intOrderId, $this->Environment->host); 
+		$objEmail->subject = sprintf($GLOBALS['TL_LANG']['MSC']['subject_new_order_admin_notify'], $this->Environment->host); 
 
 		$strData = "\n\n";
 
 		// Add order details
 		foreach ($arrData as $row)
 		{
-						
-			$strData .= $row['label'] . $row['value'] . "\n";						
-
+			$strData .= $row['label'] . $row['value'] . "\n";
 		}
 
 		$objEmail->text = sprintf($GLOBALS['TL_LANG']['MSC']['message_new_order_admin_notify'], $intOrderId, $strData . "\n") . "\n";
@@ -999,16 +997,25 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		return $arrAddress;
 	}
 	
+	
+	/**
+	 * Generate an address string for order (overview and order table)
+	 * 
+	 * @todo should use and sort by the selected fields in store configuration
+	 * @access protected
+	 * @param array $arrAddress
+	 * @return string
+	 */
 	protected function getAddressString($arrAddress)
 	{
-	
-		$strAddress = $arrAddress['firstname'] . ' ' . $arrAddress['lastname'] . "\n";
+		$strAddress  = (strlen($arrAddress['company']) > 0 ? $arrAddress['company'] . "\n" : '');
+		$strAddress .= $arrAddress['firstname'] . ' ' . $arrAddress['lastname'] . "\n";
 		$strAddress .= $arrAddress['street'] . "\n";
 		$strAddress .= (strlen($arrAddress['street_2']) > 0 ? $arrAddress['street_2'] . "\n" : '');
 		$strAddress .= (strlen($arrAddress['street_3']) > 0 ? $arrAddress['street_3'] . "\n" : '');
-		$strAddress .= $arrAddress['city'] . "\n";
+		$strAddress .= $arrAddress['postal'] . ' ' . $arrAddress['city'] . "\n";
 		$strAddress .= (strlen($arrAddress['state']) > 0 ? $arrAddress['state'] . "\n" : '');
-		$strAddress .= $GLOBALS['TL_LANG']['CNT'][$arrAddress['country']];
+		$strAddress .= $GLOBALS['TL_LANG']['CNT'][$arrAddress['country']] . "\n";
 	
 	/*
 		foreach( $this->Store->address_fields as $strField )
@@ -1137,14 +1144,17 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	/**
 	 * @todo: where is $fltGiftWrap coming from?
 	 */
+/*
 	protected function calculateOrderTotal()
 	{	
 		return $this->Cart->subTotal + $fltGiftWrap + $this->fltOrderShippingTotal + $this->fltOrderTaxTotal;
 	}
 	
+*/
 	/**
 	 * For now this assumes all items are taxable.
 	 */
+/*
 	protected function calculateTax($arrProductData)
 	{
 		// FIXME
@@ -1226,14 +1236,13 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 							$blnCalculate = true;
 						}
 					}
-				/*	elseif(strlen($rate['country_id']))
-					{
-						if($address['country']==$rate['country_id'])
-						{
-							$blnCalculate = true;
-						}	
-					}		
-				*/			
+//					elseif(strlen($rate['country_id']))
+//					{
+//						if($address['country']==$rate['country_id'])
+//						{
+//							$blnCalculate = true;
+//						}	
+//					}		
 					
 					if($blnCalculate && !$blnAlreadyCalculatedTax)
 					{
@@ -1281,6 +1290,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 		return $arrTaxInfo;
 	}
+*/
 	
 	
 /*
