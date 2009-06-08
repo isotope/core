@@ -519,7 +519,7 @@ class ListingModule extends Backend
 	public function getPaymentModules()
 	{
 		$arrPaymentModules = array();
-		$objPaymentModules = $this->Database->execute("SELECT * FROM tl_payment_modules WHERE enabled='1'");
+		$objPaymentModules = $this->Database->execute("SELECT * FROM tl_payment_modules");
 		
 		while( $objPaymentModules->next() )
 		{
