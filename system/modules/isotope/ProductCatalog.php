@@ -1318,6 +1318,7 @@ class ProductCatalog extends Backend
 		//not utlizing the DataContainer.  We should separate these functions with an intermediary function so that this logic
 		//which is repeated across various other functions can be fed just an integer value instead of the more specific
 		//DataContainer and its corresponding values.			
+/*
 		if($id!=0)
 		{
 			$intID = $id;
@@ -1349,6 +1350,7 @@ class ProductCatalog extends Backend
 		{
 			$arrAllPageInfo = $objAllPages->fetchAllAssoc();
 		}
+*/
 				
 //		$this->updateCAPAggregate($arrNewPageList, $arrAllPageInfo, $dc, $this->strCurrentStoreTable, $id, $storeID, $intID);
 		
@@ -1356,6 +1358,7 @@ class ProductCatalog extends Backend
 		
 		
 		// New way of storing cap_aggregate. One product per row!!
+		$arrNewPageList = deserialize($varValue);
 		$this->Database->prepare("DELETE FROM tl_cap_aggregate WHERE product_id=? AND storeTable=?")->execute($intID, $this->strCurrentStoreTable);
 		
 		if (is_array($arrNewPageList) && count($arrNewPageList))
@@ -1388,12 +1391,14 @@ class ProductCatalog extends Backend
 		return $varValue;
 	}
 	
+/*
 		
 	public function batchUpdateCAPAggregate()
 	{
 	
 	}
 	
+*/
 	/**
 	 * updateCAPAggregate - Update our aggregate reference table which is used to build collections of products out of multiple attribute sets. This logic maintains the records by page of associated products and storeTables.
 	 *
@@ -1402,6 +1407,7 @@ class ProductCatalog extends Backend
 	 * @param string
 	 *
 	 */
+/*
 	private function updateCAPAggregate($arrPageList, $arrAllPageInfo, DataContainer $dc, $storeTable, $attributeSetID, $storeID, $id=0)
 	{
 		//For import needs, this is an override of the current record ID because when importing we're
@@ -1541,6 +1547,7 @@ class ProductCatalog extends Backend
 				
 		return;
 	}
+*/
 	
 	
 	/**

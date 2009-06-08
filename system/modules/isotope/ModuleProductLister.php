@@ -297,11 +297,13 @@ class ModuleProductLister extends ModuleIsotopeBase
 					}
 				}
 								
+/*
 				$arrProducts = deserialize($objAggregateSets->product_ids);
 				if (is_array($arrProducts) && count($arrProducts))
 				{
 					$arrProductList = array_merge($arrProductList, $arrProducts);
 				}
+*/
 				
 				if( $objAggregateSets->product_id > 0 )
 				{

@@ -99,7 +99,7 @@ $GLOBALS['BE_MOD']['accounts']['member']['tables'][] = 'tl_address_book';
 $GLOBALS['TL_HOOKS']['createNewUser'][]				= array('Isotope','createNewUser');
 //$GLOBALS['TL_HOOKS']['saveProduct'][]				= array('MediaManagement','generateMediaPlayerRSSPlaylist');
 $GLOBALS['TL_HOOKS']['getMappingAttributes'][]		= array('ProductCatalog','generateMappingAttributeList');
-$GLOBALS['TL_HOOKS']['mappingAttributesCallback'][]	= array('products_attribute_set' => array('ProductCatalog','batchUpdateCAPAggregate'));
+//$GLOBALS['TL_HOOKS']['mappingAttributesCallback'][]	= array('products_attribute_set' => array('ProductCatalog','batchUpdateCAPAggregate'));
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][]			= array('IsotopeFrontend', 'replaceIsotopeTags');
 //$GLOBALS['TL_HOOKS']['postLogin'][] = array('IsotopeCallbacks','memberLogin');
 

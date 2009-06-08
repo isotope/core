@@ -190,7 +190,6 @@ CREATE TABLE `tl_cap_aggregate` (
   `tstamp` int(10) unsigned NOT NULL default '0',
   `storeTable` varchar(64) NOT NULL default '',
   `product_id` int(10) unsigned NOT NULL default '0',
-  `product_ids` text NULL,
   `attribute_set_id` int(10) NOT NULL default '0',
   `store_id` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
