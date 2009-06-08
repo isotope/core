@@ -1651,9 +1651,10 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				$arrCountries = array_combine(array_values($this->Store->countries), array_keys($this->Store->countries));
 				
 				$arrData['options'] = array_intersect_key($arrData['options'], $arrCountries);
+				$arrData['default'] = $this->Store->country;
 			}
 
-			$objWidget = new $strClass($this->prepareForWidget($arrData, $this->strCurrentStep . '_' . $field, (strlen($_SESSION['FORM_DATA'][$this->strCurrentStep . '_' . $field]) ? $_SESSION['FORM_DATA'][$this->strCurrentStep . '_' . $field] : $this->User->$field)));
+			$objWidget = new $strClass($this->prepareForWidget($arrData, $this->strCurrentStep . '_' . $field, (strlen($_SESSION['FORM_DATA'][$this->strCurrentStep . '_' . $field]) ? $_SESSION['FORM_DATA'][$this->strCurrentStep . '_' . $field] : (strlen($this->User->$field) ? $this->User->$field : $arrData['default']))));
 			
 			$objWidget->storeValues = true;
 			$objWidget->rowClass = 'row_'.$i . (($i == 0) ? ' row_first' : '') . ((($i % 2) == 0) ? ' even' : ' odd');

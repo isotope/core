@@ -166,6 +166,8 @@ CREATE TABLE `tl_store` (
   `enabled_modules` blob NULL,
   `root_asset_import_path` varchar(255) NOT NULL default '',
   `checkout_login_module` int(10) unsigned NOT NULL default '0',
+  
+  `country` varchar(2) NOT NULL default '',
   `currency` varchar(3) NOT NULL default '',
   `currencySymbol` char(1) NOT NULL default '',
   `currencyPosition` varchar(5) NOT NULL default '',
