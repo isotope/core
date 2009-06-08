@@ -605,7 +605,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		$objEmail->from = $GLOBALS['TL_ADMIN_EMAIL'];
 		$objEmail->subject = sprintf($GLOBALS['TL_LANG']['MSC']['subject_new_order_customer_thank_you'], $GLOBALS['TL_LANG']['MSC']['store_title']);
 		$objEmail->text = $strData;
-		$objEmail->sendTo($strEmail);
+		$objEmail->sendTo($arrAddress['email']);
 		
 		return true;
 	}
@@ -681,7 +681,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			return array();
 			
 		$arrModules = array();
-		$objModules = $this->Database->execute("SELECT * FROM tl_payment_modules WHERE id IN (" . implode(',', $arrModuleIds) . ") AND enabled='1'");
+		$objModules = $this->Database->execute("SELECT * FROM tl_payment_modules WHERE id IN (" . implode(',', $arrModuleIds) . ")");
 		
 		while( $objModules->next() )
 		{

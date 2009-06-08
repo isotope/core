@@ -95,7 +95,10 @@ abstract class Payment extends Frontend
 					return false;
 					
 				$arrAllowed = deserialize($this->shipping_modules);
-				if (is_array($arrAllowed) && count($arrAllowed) && !in_array($_SESSION['FORM_DATA']['shipping']['module'], $arrAllowed))
+				if (!is_array($arrAllowed) || !count($arrAllowed) || !in_array($_SESSION['FORM_DATA']['shipping']['module'], $arrAllowed))
+					return false;
+					
+				if (!$this->enabled && !BE_USER_LOGGED_IN)
 					return false;
 					
 				return true;
@@ -132,7 +135,7 @@ abstract class Payment extends Frontend
 	
 	
 	/**
-	 * Return a html form for checkout or false..
+	 * Return a html form for checkout or false.
 	 * 
 	 * @access public
 	 * @return mixed
