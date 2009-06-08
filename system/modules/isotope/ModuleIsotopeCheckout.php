@@ -304,7 +304,10 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 //					if($this->blnShowLoginOptions)
 //						break;
 
-					//$session = $this->arrSession->getData('ISO_CHECKOUT');	
+					//$session = $this->arrSession->getData('ISO_CHECKOUT');
+					
+					// Write order to database but don't drop the cart
+					$this->writeOrder(false);	
 					
 					$arrSteps[] = array
 					(
@@ -316,16 +319,6 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 					);
 					
 					$this->Template->nextLabel = specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']);
-					
-					//Take destination zip code, calc tax based on that and shipping based on order total and destination zip
-					//$this->calculateTax();
-					//$this->calculateShippingTotal();
-					//
-					//$objOrder->tax ...
-					//$objOrder->shipping_cost ...
-					//$objOrder->subtotal ...
-					//$objOrder->total ...
-					//= $total cost to be posted to payment gateway
 					break;
 					
 				case 'order_complete':
@@ -336,7 +329,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 					
 					if ($this->Cart->Payment->processPayment())
 					{
-						$this->writeOrder();
+						$this->writeOrder(true);
 					
 						$this->jumpToOrReload($this->orderCompleteJumpTo);
 					}
@@ -529,7 +522,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	/**
 	 * @todo Guest cannot be found in tl_user, emailCustomer() will fail
 	 */
-	protected function writeOrder()
+	protected function writeOrder($blnCheckout=false)
 	{
 		$arrSet = array
 		(
@@ -538,6 +531,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			'pid'					=> (FE_USER_LOGGED_IN ? $this->User->id : 0),
 			'tstamp'				=> time(),
 			'store_id'				=> $this->Store->id,
+			'cart_id'				=> $this->Cart->id,
 			'source_cart_id'		=> $this->Cart->id,
 			'subTotal'				=> $this->Isotope->formatPriceWithCurrency($this->Cart->subTotal),		// + ($this->Input->post('gift_wrap') ? 10 : 0),		// FIXME
 			'taxTotal'	 			=> $this->Isotope->formatPriceWithCurrency($this->Cart->taxTotal),
@@ -546,46 +540,67 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			'shipping_method'		=> $this->Cart->Shipping->label,
 			'status'				=> $this->Cart->Payment->new_order_status,
 		);
-					
-		$objInsert = $this->Database->prepare("INSERT INTO tl_iso_orders %s")
-					   		->set($arrSet)
-					   		->execute();
+		
+		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->execute($this->Cart->id);
+		
+		if (!$objOrder->numRows)
+		{
+			$objOrder = $this->Database->prepare("INSERT INTO tl_iso_orders %s")
+									   ->set($arrSet)
+									   ->execute();
+									   
+			$orderId = $objOrder->insertId;
+		}
+		else
+		{
+			$this->Database->prepare("UPDATE tl_iso_orders SET %s WHERE id=?")
+						   ->set($arrSet)
+						   ->execute($objOrder->id);
+						   
+			$orderId = $objOrder->id;
+		}
+		
+		$this->Database->prepare("UPDATE tl_iso_orders SET order_id=? WHERE id=?")->execute(($this->Store->orderPrefix . $orderId), $orderId);
 		
 
-		$arrData[] = array
-		(
-			'label'	=> 'Bestell-ID: ',
-			'value'	=> $objInsert->insertId,
-		);
+		if ($blnCheckout)
+		{
+			$arrData[] = array
+			(
+				'label'	=> 'Bestell-ID: ',
+				'value'	=> ($this->Store->orderPrefix . $orderId),
+			);
+			
+			$arrData[] = array
+			(
+				'label' => 'Bestellbetrag: ',
+				'value' => $this->Cart->grandTotal,
+			);
+			
+			$arrData[] = array
+			(
+				'label' => 'Kunde: ',
+				'value' => (FE_USER_LOGGED_IN ? $this->User->id : 'Gast'),
+			);
+			
+	/*
+			$arrData[] = array
+			(
+				'label' => 'Order Comments',
+				'value' => '',
+			);
+	*/
 		
-		$arrData[] = array
-		(
-			'label' => 'Bestellbetrag: ',
-			'value' => $this->Cart->grandTotal,
-		);
+//			$this->sendAdminNotification($objInsert->insertId, $arrData);
 		
-		$arrData[] = array
-		(
-			'label' => 'Kunde: ',
-			'value' => (FE_USER_LOGGED_IN ? $this->User->id : 'Gast'),
-		);
-		
-/*
-		$arrData[] = array
-		(
-			'label' => 'Order Comments',
-			'value' => '',
-		);
-*/
-		
-		$this->sendAdminNotification($objInsert->insertId, $arrData);
-		
-//		$this->emailCustomer($this->getSelectedAddress('billing'), $arrData);
+//			$this->emailCustomer($this->getSelectedAddress('billing'), $arrData);
 
-		$this->Cart->delete();
-		unset($_SESSION['FORM_DATA']);
-		unset($_SESSION['isotope']);
+			$this->Cart->delete();
+			unset($_SESSION['FORM_DATA']);
+			unset($_SESSION['isotope']);
+		}
 		
+		return ($this->Store->orderPrefix . $orderId);
 	}
 	
 	

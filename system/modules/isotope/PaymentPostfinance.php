@@ -58,6 +58,8 @@ class PaymentPostfinance extends Payment
 		$this->import('IsotopeStore', 'Store');
 		$this->import('IsotopeCart', 'Cart');
 		
+		$objOrder = $this->Database->prepare("SELECT order_id FROM tl_iso_orders WHERE cart_id=?")->execute($this->Cart->id);
+		
 		$strAction = 'https://e-payment.postfinance.ch/ncol/prod/orderstandard.asp';
 		
 		if ($this->debug)
@@ -70,7 +72,7 @@ class PaymentPostfinance extends Payment
 id=form1 name=form1>
 <!-- general parameters: see chapter 5.2 -->
 <input type="hidden" name="PSPID" value="' . $this->postfinance_pspid . '">
-<input type="hidden" name="orderID" value="">
+<input type="hidden" name="orderID" value="' . $objOrder->order_id . '">
 <input type="hidden" name="amount" value="' . ($this->Cart->grandTotal * 100) . '">
 <input type="hidden" name="currency" value="' . $this->Store->currency . '">
 <input type="hidden" name="language" value="' . $GLOBALS['TL_LANGUAGE'] . '">

@@ -95,7 +95,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => 'store_configuration_name;country;currency,currencySymbol,currencyPosition,currencyFormat;cookie_duration;root_asset_import_path;enabled_modules;countries,address_fields,checkout_login_module;productReaderJumpTo,cartJumpTo,checkoutJumpTo;missing_image_placeholder;gallery_thumbnail_image_width,gallery_thumbnail_image_height;thumbnail_image_width,thumbnail_image_height;medium_image_width,medium_image_height;large_image_width,large_image_height'
+		'default'                     => 'store_configuration_name;country,orderPrefix;currency,currencySymbol,currencyPosition,currencyFormat;cookie_duration;root_asset_import_path;enabled_modules;countries,address_fields,checkout_login_module;productReaderJumpTo,cartJumpTo,checkoutJumpTo;missing_image_placeholder;gallery_thumbnail_image_width,gallery_thumbnail_image_height;thumbnail_image_width,thumbnail_image_height;medium_image_width,medium_image_height;large_image_width,large_image_height'
 	),
 
 	// Fields
@@ -283,6 +283,13 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'inputType'               => 'checkboxWizard',
 			'options_callback'		  => array('tl_store', 'getAddressFields'),
 			'eval'                    => array('mandatory'=>true, 'multiple'=>true),
+		),
+		'orderPrefix' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['orderPrefix'],
+			'exclude'                 => true,
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>4),
 		),
 	)
 );

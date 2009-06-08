@@ -174,7 +174,8 @@ CREATE TABLE `tl_store` (
   `currencyFormat` varchar(20) NOT NULL default '',
   `countries` blob NULL,
   `address_fields` blob NULL,
-   PRIMARY KEY  (`id`),
+  `orderPrefix` varchar(4) NOT NULL default '',
+  PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -445,13 +446,15 @@ CREATE TABLE `tl_registry` (
 --
 
 CREATE TABLE `tl_iso_orders` (
-
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
-  
   `sorting` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
+  
+  `order_id` varchar(14) NOT NULL default '',
+  
   `store_id` int(10) unsigned NOT NULL default '0',
+  `cart_id` int(10) unsigned NOT NULL default '0',
   `source_cart_id` int(10) unsigned NOT NULL default '0',
   
   `status` varchar(32) NOT NULL default '',
