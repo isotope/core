@@ -981,8 +981,13 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				'state'			=> $_SESSION['FORM_DATA'][$strStep . '_information_state'],
 				'postal'		=> $_SESSION['FORM_DATA'][$strStep . '_information_postal'],
 				'country'		=> $_SESSION['FORM_DATA'][$strStep . '_information_country'],
-				'email'			=> (strlen($_SESSION['FORM_DATA'][$strStep . '_information_email']) ? $_SESSION['FORM_DATA'][$strStep . '_information_email'] : $this->User->email),
 			);
+			
+			if ($strStep == 'billing')
+			{
+				$arrAddress['email'] = (strlen($_SESSION['FORM_DATA'][$strStep . '_information_email']) ? $_SESSION['FORM_DATA'][$strStep . '_information_email'] : $this->User->email);
+				$arrAddress['phone'] = (strlen($_SESSION['FORM_DATA'][$strStep . '_information_phone']) ? $_SESSION['FORM_DATA'][$strStep . '_information_phone'] : $this->User->phone);
+			}
 		}
 		else
 		{
@@ -997,6 +1002,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			
 			$arrAddress = $objAddress->fetchAssoc();
 			$arrAddress['email'] = $this->User->email;
+			$arrAddress['phone'] = $this->User->phone;
 		}
 				
 		return $arrAddress;
@@ -1022,7 +1028,9 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		$strAddress .= (strlen($arrAddress['street_3']) > 0 ? $arrAddress['street_3'] . "\n" : '');
 		$strAddress .= $arrAddress['postal'] . ' ' . $arrAddress['city'] . "\n";
 		$strAddress .= (strlen($arrAddress['state']) > 0 ? $arrAddress['state'] . "\n" : '');
-		$strAddress .= $arrCountries[$arrAddress['country']] . "\n";
+		$strAddress .= $arrCountries[$arrAddress['country']] . "\n\n";
+		$strAddress .= (strlen($arrAddress['email']) > 0 ? $arrAddress['email'] . "\n" : '');
+		$strAddress .= (strlen($arrAddress['phone']) > 0 ? $arrAddress['phone'] . "\n" : '');
 	
 	/*
 		foreach( $this->Store->address_fields as $strField )
