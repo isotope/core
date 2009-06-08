@@ -738,7 +738,6 @@ abstract class ModuleIsotopeBase extends Module
 		
  		foreach($arrProductData as $row)
 		{
-			print_r($row);
 			$intTotalPrice = $row['product_price'] * $row['quantity_requested'];
 			$arrFormattedProductData[] = array
 			(
