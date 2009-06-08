@@ -310,6 +310,12 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 			
 			$this->Database->prepare("INSERT INTO tl_cart_items %s")->set($arrSet)->execute();
 		}
+		
+		if ($this->iso_forward_cart)
+		{
+			$this->import('IsotopeStore', 'Store');
+			$this->jumpToOrReload($this->Store->cartJumpTo);
+		}
 	}
 	
 	

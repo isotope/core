@@ -30,7 +30,7 @@
  */
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductLister']			= 'name,type,headline;columns,iso_jump_first;store_id;new_products_time_window;listing_filters;iso_list_layout;guests,protected;align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductReader']			= 'name,type,headline;store_id;iso_reader_layout;guests,protected;align,space,cssID';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoShoppingCart']			= 'name,type,headline;store_id,iso_cart_layout;guests,protected;align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoShoppingCart']			= 'name,type,headline;store_id,iso_cart_layout,iso_forward_cart;guests,protected;align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoAddressBook']			= 'name,type,headline;store_id,addressBookTemplate;isoEditable;align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryManager']	= 'name,type,headline;store_id,iso_registry_layout;guests,protected;align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistrySearch']	= 'name,type,headline;jumpTo;guests,protected;align,space,cssID';
@@ -192,6 +192,13 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['orderCompleteJumpTo'] = array
 	'inputType'               => 'pageTree',
 	'explanation'             => 'jumpTo',
 	'eval'                    => array('fieldType'=>'radio', 'helpwizard'=>true)
+);
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_forward_cart'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_forward_cart'],
+	'exclude'                 => true,
+	'inputType'               => 'checkbox',
 );
 
  

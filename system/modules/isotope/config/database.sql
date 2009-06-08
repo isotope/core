@@ -30,6 +30,7 @@ CREATE TABLE `tl_module` (
   `orderCompleteJumpTo` int(10) unsigned NOT NULL default '0',
   `addressBookTemplate` varchar(64) NOT NULL default '',
   `iso_jump_first` char(1) NOT NULL default '',
+  `iso_forward_cart` char(1) NOT NULL default '',
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 

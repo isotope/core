@@ -65,6 +65,8 @@ $GLOBALS['TL_LANG']['tl_module']['orderCompleteJumpTo'] = array('Completed order
 
 $GLOBALS['TL_LANG']['tl_module']['iso_jump_first'] = array('Redirect to first product', 'Check here if users are redirected to the first product of the list.');
 
+$GLOBALS['TL_LANG']['tl_module']['iso_forward_cart'] = array('Forward to cart', 'Forward to cart page when adding a product.');
+
 
 /**
  * References
