@@ -736,16 +736,14 @@ abstract class ModuleIsotopeBase extends Module
 	{
 		global $objPage;
 		
-		
-		
  		foreach($arrProductData as $row)
 		{
-			
+			print_r($row);
 			$intTotalPrice = $row['product_price'] * $row['quantity_requested'];
 			$arrFormattedProductData[] = array
 			(
 				'product_id'		=> $row['product_id'],
-				'image'				=> $GLOBALS['TL_CONFIG']['isotope_upload_path'] . '/' . $GLOBALS['TL_CONFIG']['isotope_base_path'] . '/' . substr($row['product_alias'], 0, 1) . '/' . $row['product_alias'] . '/' . $GLOBALS['TL_LANG']['MSC']['imagesFolder'] . '/' . $GLOBALS['TL_LANG']['MSC']['thumbnail_images_folder'] . '/' . $row['product_images'],
+				'image'				=> $GLOBALS['TL_CONFIG']['isotope_upload_path'] . '/' . $GLOBALS['TL_CONFIG']['isotope_base_path'] . '/' . substr($row['product_alias'], 0, 1) . '/' . $row['product_alias'] . '/' . $GLOBALS['TL_LANG']['MSC']['imagesFolder'] . '/' . $GLOBALS['TL_LANG']['MSC']['gallery_thumbnail_images_folder'] . '/' . $row['product_media'],
 				'name'				=> $row['product_name'],
 				'link'				=> $this->generateProductLink($row['product_alias'], $row, $this->Store->productReaderJumpTo, $row['attribute_set_id'], 'product_id'),
 				'price'				=> $this->generatePrice($row['product_price'], $this->strPriceTemplate),
@@ -755,14 +753,12 @@ abstract class ModuleIsotopeBase extends Module
 				'remove_link_title' => sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $row['product_name'])
 			
 			);
-
 		}
 		
-		
 		return $arrFormattedProductData;
-	
 	}
 	
+/*
 
 	protected function getOrderTotal($arrProductData)
 	{
@@ -782,6 +778,7 @@ abstract class ModuleIsotopeBase extends Module
 		return (float)$floatSubTotalPrice + (float)$taxPriceAdjustment;	
 	
 	}
+*/
 
 	/*
 

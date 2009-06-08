@@ -333,6 +333,32 @@ class IsotopeCart extends Model
 		return $this->arrProducts;
 	}
 	
+	
+	public function getProductsAsHTML()
+	{
+		$this->import('Isotope');
+		
+		$arrProducts = $this->Isotope->getProductData($this->getProducts(), array('product_alias','product_name','product_price'), 'product_name');
+		
+		if (!count($arrProducts))
+			return '';
+		
+		$strBuffer  = "<table>\n";
+		$strBuffer .= "<tr><td>Name</td><td>Anzahl</td><td>Preis</td><td>Betrag</td></tr>\n";
+		
+		foreach( $arrProducts as $product )
+		{
+			$strBuffer .= '<tr>';
+			$strBuffer .= '<td>' . $product['product_name'] . ':</td>';
+			$strBuffer .= '<td>' . $product['quantity_requested'] . ' x </td>';
+			$strBuffer .= '<td>' . $this->Isotope->formatPriceWithCurrency($product['product_price']) . '</td>';
+			$strBuffer .= '<td>' . $this->Isotope->formatPriceWithCurrency($product['quantity_requested'] * $product['product_price']) . '</td>';
+			$strBuffer .= "</tr>\n";
+		}
+		
+		return $strBuffer . '</table>';
+	}
+	
 
 	/**
 	 * Calculate total price for products.

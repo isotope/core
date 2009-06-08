@@ -580,7 +580,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 		$this->sendAdminNotification($objInsert->insertId, $arrData);
 		
-//		$this->emailCustomer($objUser->email, $objUser->firstname);			   
+//		$this->emailCustomer($this->getSelectedAddress('billing'), $arrData);
 
 		$this->Cart->delete();
 		unset($_SESSION['FORM_DATA']);
@@ -596,9 +596,8 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	 * @param string
 	 * @return null
 	 */
-	protected function emailCustomer($strEmail, $strCustomerName)
+	protected function emailCustomer($arrAddress, $arrData)
 	{
-
 		$objEmail = new Email();
 		
 		$strData = sprintf($GLOBALS['TL_LANG']['MSC']['message_new_order_customer_thank_you'], $strCustomerName, $GLOBALS['TL_ADMIN_EMAIL']);
@@ -982,6 +981,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				'state'			=> $_SESSION['FORM_DATA'][$strStep . '_information_state'],
 				'postal'		=> $_SESSION['FORM_DATA'][$strStep . '_information_postal'],
 				'country'		=> $_SESSION['FORM_DATA'][$strStep . '_information_country'],
+				'email'			=> (strlen($_SESSION['FORM_DATA'][$strStep . '_information_email']) ? $_SESSION['FORM_DATA'][$strStep . '_information_email'] : $this->User->email),
 			);
 		}
 		else
@@ -996,6 +996,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			}
 			
 			$arrAddress = $objAddress->fetchAssoc();
+			$arrAddress['email'] = $this->User->email;
 		}
 				
 		return $arrAddress;

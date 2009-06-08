@@ -19,21 +19,12 @@
  * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Winans Creative/Fred Bliss 2008 
- * @author     Fred Bliss 
- * @package    IsotopeBase 
- * @license    Commercial 
- * @filesource
+ * @copyright  Winans Creative / Fred Bliss 2009
+ * @author     Fred Bliss <fred@winanscreative.com>, Andreas Schempp <andreas@schempp.ch>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
-/**
- * Class ModuleShoppingCart
- *
- * @copyright  Winans Creative/Fred Bliss 2008 
- * @author     Fred Bliss 
- * @package    Controller
- */
 class ModuleShoppingCart extends ModuleIsotopeBase
 {
 
@@ -157,19 +148,21 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 				$this->addToCart($this->Input->get('id'), $intAttributeSetId, $this->Input->get('quantity_requested'), $intSourceCartId);
 				$this->blnRecallProductData = true;
 				break;
+				
 			case 'update_cart':
 				$intAttributeSetId = $this->getAttributeSetId($this->Input->get('aset_id'));
-
 				$this->updateCart($this->Input->get('id'), $intAttributeSetId, $this->Input->get('quantity_requested'), $intSourceCartId);
 				$this->blnRecallProductData = true;
 				break;
+				
 			case 'remove_from_cart':
 				//$intAttributeSetId = $this->getAttributeSetId($this->Input->get('aset_id'));
-
 				//a new quantity of zero indicates to remove 
 				$this->updateCart($this->Input->get('id'), $this->Input->get('attribute_set_id'), 0, $intSourceCartId);
 				$this->blnRecallProductData = true;
 				break;
+/*
+				
 			default:
 				// Call isotope_shopping_cart_custom_action
 				if (is_array($GLOBALS['TL_HOOKS']['isotope_shopping_cart_custom_action']))
@@ -183,6 +176,7 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 						}
 					}
 				}
+*/
 		}				
 						
 		//Hit the database for the product data for cart  This is what will happen if the user is viewing the cart directly instead of via an action
@@ -193,7 +187,7 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 
 		if(!is_array($session) || !is_array($session['isotope']) || !array_key_exists('cart_data', $session['isotope']) || !sizeof($session['isotope']['cart_data']) < 1 || $this->blnRecallProductData)
 		{		
-			$arrProductData = $this->Isotope->getProductData($this->Cart->getProducts(), array('product_alias','product_name','product_price', 'product_images'), 'product_name');
+			$arrProductData = $this->Isotope->getProductData($this->Cart->getProducts(), array('product_alias','product_name','product_price', 'product_images', 'product_media'), 'product_name');
 			
 			
 			foreach($arrProductData as $data)
@@ -227,6 +221,7 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 			$this->redirect(ampersand($this->Environment->base . ltrim($strReturnUrl, '/')));
 		
 		}
+		
 		//we can take from session here because getProductData will update the session anyway, so at this point session always has the latest data.
 		//$arrProductData = $session['isotope']['cart_data'];
 		
@@ -242,14 +237,10 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 		if(!sizeof($arrProductData))
 		{
 			$arrFormattedProductData = array();
-			$floatSubTotalPrice = 0;
 		}
 		else
 		{
 			$arrFormattedProductData = $this->formatProductData($arrProductData);
-			
-			$floatSubTotalPrice = $this->getOrderTotal($arrProductData);
-			
 		}
 
 		
@@ -502,4 +493,3 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 	}
 }
 
-?>
