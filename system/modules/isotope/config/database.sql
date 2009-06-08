@@ -352,6 +352,7 @@ CREATE TABLE `tl_payment_modules` (
   `maximum_total` varchar(255) NOT NULL default '',
   `paypal_account` varchar(255) NOT NULL default '',
   `paypal_business` varchar(255) NOT NULL default '',
+  `postfinance_pspid` varchar(255) NOT NULL default '',
   `debug` char(1) NOT NULL default '',
   `enabled` char(1) NOT NULL default '',
   PRIMARY KEY  (`id`),

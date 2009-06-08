@@ -213,6 +213,7 @@ $GLOBALS['TL_LANG']['SHIP']['flat']				= array('Flat-price shipping');
  */
 $GLOBALS['TL_LANG']['PAY']['cash']				= array('Cash');
 $GLOBALS['TL_LANG']['PAY']['paypal']			= array('PayPal Standard');
+$GLOBALS['TL_LANG']['PAY']['postfinance']		= array('Postfinance (swiss post)');
 
 
 

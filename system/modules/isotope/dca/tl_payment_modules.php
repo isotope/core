@@ -106,6 +106,7 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 		'default'                     => 'name,type',
 		'cash'						  => 'name,type,label;countries,shipping_modules,minimum_total,maximum_total;enabled',
 		'paypal'                      => 'name,type,label;countries,shipping_modules,minimum_total,maximum_total;paypal_account,paypal_business;debug,enabled',
+		'postfinance'                 => 'name,type,label;countries,shipping_modules,minimum_total,maximum_total;postfinance_pspid;debug,enabled',
 	),
 
 	// Fields
@@ -179,6 +180,13 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 		'paypal_business' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['paypal_business'],
+			'exclude'                 => true,
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>255),
+		),
+		'postfinance_pspid' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['postfinance_pspid'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255),

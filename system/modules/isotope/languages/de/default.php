@@ -89,6 +89,8 @@ $GLOBALS['TL_LANG']['SHIP']['flat']				= array('Pauschalversand');
  */
 $GLOBALS['TL_LANG']['PAY']['cash']				= array('Barzahlung');
 $GLOBALS['TL_LANG']['PAY']['paypal']			= array('PayPal Standard');
+$GLOBALS['TL_LANG']['PAY']['postfinance']		= array('Postfinance (Schweizerische Post)');
+
 
 
 //Checkout language entries 
