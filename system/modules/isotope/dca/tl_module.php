@@ -28,7 +28,7 @@
 /**
  * Palettes
  */
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductLister']			= 'name,type,headline;columns,iso_jump_first;store_id;new_products_time_window;listing_filters;iso_list_layout;guests,protected;align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductLister']			= 'name,type,headline;perPage,columns,iso_jump_first;store_id;new_products_time_window;listing_filters;iso_list_layout;guests,protected;align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductReader']			= 'name,type,headline;store_id;iso_reader_layout;guests,protected;align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoShoppingCart']			= 'name,type,headline;store_id,iso_cart_layout,iso_forward_cart;guests,protected;align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoAddressBook']			= 'name,type,headline;store_id,addressBookTemplate;isoEditable;align,space,cssID';

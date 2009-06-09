@@ -195,14 +195,15 @@ class ModuleProductLister extends ModuleIsotopeBase
 		}
 			
 		
-		$per_page = ($this->Input->get('per_page') ? $this->Input->get('per_page') : ((((int)$this->columns < 1) ? 3 : $this->columns) * 4));
+		$per_page = ($this->Input->get('per_page') ? $this->Input->get('per_page') : $this->perPage);
 		
+		// FIXME: will always be int...
 		if(!is_int((int)$per_page))
 		{
-			$per_page = ((((int)$this->columns < 1) ? 3 : $this->columns) * 4);
-						
+			$per_page = $this->perPage;
 		}
 		
+		// FIXME: Template does not expect a 0-value
 		$this->Template->per_page = $per_page;
 		
 		$rows_left = 0;
@@ -373,9 +374,14 @@ class ModuleProductLister extends ModuleIsotopeBase
 			//echo "SELECT DISTINCT id, tstamp, use_product_price_override, " . strtolower($field_list) . " FROM " . $this->strCurrentStoreTable . " WHERE " . $strBaseClause . $strFilterList . $strClauses;
 					
 			//Get the current collection of products based on the tl_cap_aggregate table data
-			$objProductCollection = $this->Database->prepare("SELECT id, tstamp, use_product_price_override, product_images " . strtolower($field_list) . " FROM " . $this->strCurrentStoreTable . " WHERE " . $strBaseClause . $strFilterList . $strClauses)		
-													->limit($per_page, ($page - 1) * $per_page)				
-													->execute(1);
+			$objProductCollection = $this->Database->prepare("SELECT id, tstamp, use_product_price_override, product_images " . strtolower($field_list) . " FROM " . $this->strCurrentStoreTable . " WHERE " . $strBaseClause . $strFilterList . $strClauses);
+			
+			if ($per_page > 0)
+			{
+				$objProductCollection->limit($per_page, ($page - 1) * $per_page);
+			}
+			
+			$objProductCollection = $objProductCollection->execute(1);
 			
 			
 
