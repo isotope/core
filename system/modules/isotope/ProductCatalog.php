@@ -1318,7 +1318,7 @@ class ProductCatalog extends Backend
 		//not utlizing the DataContainer.  We should separate these functions with an intermediary function so that this logic
 		//which is repeated across various other functions can be fed just an integer value instead of the more specific
 		//DataContainer and its corresponding values.			
-/*
+
 		if($id!=0)
 		{
 			$intID = $id;
@@ -1329,8 +1329,8 @@ class ProductCatalog extends Backend
 		}
 		
 		
-		$arrNewPageList = deserialize($varValue);
-		$arrAllPageInfo = array();
+//		$arrNewPageList = deserialize($varValue);
+//		$arrAllPageInfo = array();
 						
 		$objField = $this->Database->prepare("SELECT id, store_id FROM tl_product_attribute_sets WHERE storeTable=?")
 				->limit(1)
@@ -1344,6 +1344,7 @@ class ProductCatalog extends Backend
 		$id = $objField->id;
 		$storeID = $objField->store_id;
 		
+/*
 		$objAllPages = $this->Database->prepare("SELECT pid, product_ids FROM tl_cap_aggregate WHERE attribute_set_id=?")->execute($id);
 		
 		if($objAllPages->numRows > 0)
@@ -1351,6 +1352,7 @@ class ProductCatalog extends Backend
 			$arrAllPageInfo = $objAllPages->fetchAllAssoc();
 		}
 */
+
 				
 //		$this->updateCAPAggregate($arrNewPageList, $arrAllPageInfo, $dc, $this->strCurrentStoreTable, $id, $storeID, $intID);
 		
