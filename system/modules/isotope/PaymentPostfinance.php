@@ -114,7 +114,7 @@ id=form1 name=form1>
 <!-- post payment parameters: see chapter 8.3 -->
 <input type="hidden" name="PARAMVAR" value="">
 <!-- post payment redirection: see chapter 8.2 -->
-<input type="hidden" name="accepturl" value="">
+<input type="hidden" name="accepturl" value="' . $this->Environment->base . $this->addToUrl('step=order_complete') . '">
 <input type="hidden" name="declineurl" value="">
 <input type="hidden" name="exceptionurl" value="">
 <input type="hidden" name="cancelurl" value="">

@@ -538,7 +538,8 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			'shippingTotal'			=> $this->Isotope->formatPriceWithCurrency($this->Cart->Shipping->price),
 			'grandTotal'			=> $this->Isotope->formatPriceWithCurrency($this->Cart->grandTotal),
 			'shipping_method'		=> $this->Cart->Shipping->label,
-			'status'				=> $this->Cart->Payment->new_order_status,
+			'payment_method'		=> $this->Cart->Payment->label,
+			'status'				=> ($blnCheckout ? $this->Cart->Payment->new_order_status : 'open'),
 		);
 		
 		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->execute($this->Cart->id);
@@ -553,7 +554,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		}
 		else
 		{
-			$this->Database->prepare("UPDATE tl_iso_orders SET %s WHERE id=?")
+			$this->Database->prepare("UPDATE tl_iso_orders %s WHERE id=?")
 						   ->set($arrSet)
 						   ->execute($objOrder->id);
 						   
@@ -591,7 +592,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			);
 	*/
 		
-//			$this->sendAdminNotification($objInsert->insertId, $arrData);
+			$this->sendAdminNotification($objInsert->insertId, $arrData);
 		
 //			$this->emailCustomer($this->getSelectedAddress('billing'), $arrData);
 

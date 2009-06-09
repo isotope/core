@@ -466,7 +466,8 @@ CREATE TABLE `tl_iso_orders` (
   `shippingTotal` varchar(20) NOT NULL default '',
   `grandTotal` varchar(20) NOT NULL default '',
   
-  `shipping_method` varchar(64) NOT NULL default '',
+  `payment_method` varchar(255) NOT NULL default '',
+  `shipping_method` varchar(255) NOT NULL default '',
   
   `order_comments` text NULL, 
   `gift_message` text NULL,

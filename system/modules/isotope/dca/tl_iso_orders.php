@@ -217,6 +217,7 @@ class tl_iso_orders extends Backend
     <h2>Bestellung #' . $row['id'] . '</h2><!--
     ' . 'von Gast-Benutzer' . '<br />
     Status: <strong>' . $GLOBALS['TL_LANG']['tl_iso_orders']['order_status_labels'][$row['status']] . '</strong><br />-->
+    Zahlungsart: ' . $row['payment_method']  . '<br />
     Versandart: ' . $row['shipping_method']  . '<br />
     Subtotal: ' . $row['subTotal'] . '<br />
     Davon MwSt.: ' . $row['taxTotal'] . '<br />
