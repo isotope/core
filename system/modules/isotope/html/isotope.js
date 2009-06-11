@@ -30,7 +30,7 @@ var Isotope =
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
  
-var AjaxRequestProductsOptionWizard =
+var ProductsOptionWizard =
 {
 		/**
 	 * Table wizard
@@ -59,7 +59,7 @@ var AjaxRequestProductsOptionWizard =
 			index++;
 		}
 
-		AjaxRequestProductsOptionWizard.getScrollOffset();
+		ProductsOptionWizard.getScrollOffset();
 
 		switch (command)
 		{
@@ -173,7 +173,7 @@ var AjaxRequestProductsOptionWizard =
 			}
 		}
 
-		AjaxRequestProductsOptionWizard.tableWizardResize();
+		ProductsOptionWizard.tableWizardResize();
 	},
 	
 	getOptionValues: function(el, id, name)
@@ -201,7 +201,7 @@ var AjaxRequestProductsOptionWizard =
 		{
 			url: window.location.href,
 			data: 'isAjax=1&action=addPOAttributeValues&aid=' + item_value + '&parent=' + name + '&r=' + xcoord + '&c=' + ycoord,
-			onStateChange: AjaxRequestProductsOptionWizard.displayBox('Loading data ...'),			
+			onStateChange: ProductsOptionWizard.displayBox('Loading data ...'),			
 			onComplete: function(txt, xml)
 			{
 									
@@ -220,7 +220,7 @@ var AjaxRequestProductsOptionWizard =
 				div.injectAfter(el);
 										
 				
-				AjaxRequestProductsOptionWizard.hideBox();
+				ProductsOptionWizard.hideBox();
    			}
 		}).send();
 
