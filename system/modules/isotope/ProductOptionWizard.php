@@ -21,7 +21,7 @@
  * PHP version 5
  * @copyright  Fred Bliss / Winans Creative 2009
  * @author     Fred Bliss <fred@winanscreative.com>
- * @package    AjaxRequestProductsOptionWizard
+ * @package    ProductsOptionWizard
  * @license    LGPL
  * @filesource
  */
@@ -231,7 +231,7 @@ class ProductOptionWizard extends Widget
 			// Add column buttons
 			foreach ($arrColButtons as $button)
 			{
-				$return .= '<a href="'.$this->addToUrl('&amp;'.$strCommand.'='.$button.'&amp;cid='.$i.'&amp;id='.$this->currentRecord).'" title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable][$button][0]).'" onclick="AjaxRequestProductsOptionWizard.tableWizard(this, \''.$button.'\', \'ctrl_'.$this->strId.'\',\''.$this->strId.'\'); return false;">'.$this->generateImage(substr($button, 1).'.gif', $GLOBALS['TL_LANG'][$this->strTable][$button][0], 'class="tl_tablewizard_img"').'</a> ';
+				$return .= '<a href="'.$this->addToUrl('&amp;'.$strCommand.'='.$button.'&amp;cid='.$i.'&amp;id='.$this->currentRecord).'" title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable][$button][0]).'" onclick="ProductsOptionWizard.tableWizard(this, \''.$button.'\', \'ctrl_'.$this->strId.'\',\''.$this->strId.'\'); return false;">'.$this->generateImage(substr($button, 1).'.gif', $GLOBALS['TL_LANG'][$this->strTable][$button][0], 'class="tl_tablewizard_img"').'</a> ';
 			}
 
 			$return .= '</td>';
@@ -251,7 +251,7 @@ class ProductOptionWizard extends Widget
 			for ($j=0; $j<count($this->varValue[$i][$j]); $j++)
 			{
 				$return .= '<td class="tcontainer">
-				<select id="ctrl_' . $this->strId.'" name="' . $this->strId.'['.$i.']['.$j.']" class="tl_select"'.$this->getAttributes().' onchange="AjaxRequestProductsOptionWizard.getOptionValues(this,\'ctrl_'.$this->strId.'\',\''.$this->strId.'\');">';
+				<select id="ctrl_' . $this->strId.'" name="' . $this->strId.'['.$i.']['.$j.']" class="tl_select"'.$this->getAttributes().' onchange="ProductsOptionWizard.getOptionValues(this,\'ctrl_'.$this->strId.'\',\''.$this->strId.'\');">';
 								
 					//return the attribute dropdown lists
 					foreach($arrOptionAttributes as $k=>$v)
@@ -285,7 +285,7 @@ class ProductOptionWizard extends Widget
 			// Add row buttons
 			foreach ($arrRowButtons as $button)
 			{
-				$return .= '<a href="'.$this->addToUrl('&amp;'.$strCommand.'='.$button.'&amp;cid='.$i.'&amp;id='.$this->currentRecord).'" title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable][$button][0]).'" onclick="AjaxRequestProductsOptionWizard.tableWizard(this, \''.$button.'\', \'ctrl_'.$this->strId.'\'); return false;">'.$this->generateImage(substr($button, 1).'.gif', $GLOBALS['TL_LANG'][$this->strTable][$button][0], 'class="tl_tablewizard_img"').'</a> ';
+				$return .= '<a href="'.$this->addToUrl('&amp;'.$strCommand.'='.$button.'&amp;cid='.$i.'&amp;id='.$this->currentRecord).'" title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable][$button][0]).'" onclick="ProductsOptionWizard.tableWizard(this, \''.$button.'\', \'ctrl_'.$this->strId.'\'); return false;">'.$this->generateImage(substr($button, 1).'.gif', $GLOBALS['TL_LANG'][$this->strTable][$button][0], 'class="tl_tablewizard_img"').'</a> ';
 			}
 
 			$return .= '</td>
@@ -302,7 +302,7 @@ class ProductOptionWizard extends Widget
 			$return .= '
   <script type="text/javascript">
   <!--//--><![CDATA[//><!--
-  AjaxRequestProductsOptionWizard.tableWizardResize();
+  ProductsOptionWizard.tableWizardResize();
   //--><!]]>
   </script>';
 		}
@@ -447,7 +447,7 @@ class ProductOptionWizard extends Widget
 	 */
 	protected function generateCheckbox($arrOption, $i, $strButtons)
 	{
-		return sprintf('<span><input type="checkbox" name="%s" id="opt_%s" class="tl_checkbox" value="%s"%s%s onfocus="AjaxRequestProductsOptionWizard.getScrollOffset();" /> %s <label for="opt_%s">%s</label></span>',
+		return sprintf('<span><input type="checkbox" name="%s" id="opt_%s" class="tl_checkbox" value="%s"%s%s onfocus="AjaxRequest.getScrollOffset();" /> %s <label for="opt_%s">%s</label></span>',
 						$this->strName . ($this->multiple ? '[]' : ''),
 						$this->strId.'_'.$i,
 						($this->multiple ? specialchars($arrOption['value']) : 1),
