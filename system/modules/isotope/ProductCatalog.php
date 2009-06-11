@@ -99,7 +99,7 @@ class ProductCatalog extends Backend
   			`video_url` text NULL,
 			`add_audio_file` char(1) NOT NULL default '0',
 			`add_video_file` char(1) NOT NULL default '0',
-			`option_wizard` char(1) NOT NULL default '0',
+			`option_collection` text NULL,
 			PRIMARY KEY  (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		
@@ -252,7 +252,7 @@ class ProductCatalog extends Backend
 		
 		// add palettes
 		$GLOBALS['TL_DCA'][$storeTable]['palettes']['__selector__'] = array('add_audio_file','add_video_file');
-		$GLOBALS['TL_DCA'][$storeTable]['palettes']['default'] = join(',',$GLOBALS['TL_DCA'][$storeTable]['list']['label']['fields']);
+		$GLOBALS['TL_DCA'][$storeTable]['palettes']['default'] = join(',',$GLOBALS['TL_DCA'][$storeTable]['list']['label']['fields']) . ';option_collection';
 		$GLOBALS['TL_DCA'][$storeTable]['subpalettes']['add_audio_file'] = 'audio_source,audio_jumpTo,audio_url';
 		$GLOBALS['TL_DCA'][$storeTable]['subpalettes']['add_video_file'] = 'video_source,video_jumpTo,video_url';
 		
@@ -354,10 +354,14 @@ class ProductCatalog extends Backend
 			'eval'                    => array('decodeEntities'=>true, 'maxlength'=>255)
 		);
 		
-		$GLOBALS['TL_DCA'][$storeTable]['fields']['option_wizard'] = array
+		$GLOBALS['TL_DCA'][$storeTable]['fields']['option_collection'] = array
 		(
-			'label'					  => &$GLOBALS['TL_LANG']['tl_product_data']['option_wizard'],
-			'inputType'				  => 'productOptionWizard'		
+			'label'					  => &$GLOBALS['TL_LANG']['tl_product_data']['option_collection'],
+			'inputType'				  => 'productOptionWizard',
+			'save_callback'			  => array
+			(
+				array('ProductCatalog','saveProductOptions')
+			)
 		);
 		
 		// add DCA for form fields
@@ -549,6 +553,16 @@ class ProductCatalog extends Backend
 		
 		
 	}
+	
+	public function saveProductOptions($varValue, DataContainer $dc)
+	{
+
+		$arrValues = deserialize($varValue);
+		
+		echo $this->Input->post($dc->field . '_values');
+		exit;
+	}
+	
 	
 	public function saveProduct(DataContainer $dc)
 	{

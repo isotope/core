@@ -21,7 +21,7 @@
  * PHP version 5
  * @copyright  Fred Bliss / Winans Creative 2009
  * @author     Fred Bliss <fred@winanscreative.com>
- * @package    Backend
+ * @package    AjaxRequestProductsOptionWizard
  * @license    LGPL
  * @filesource
  */
@@ -50,7 +50,13 @@ class ProductOptionWizard extends Widget
 	 */
 	protected $strTemplate = 'be_widget';
 
-
+	/**
+	 * Attribute Value Options
+	 * @var array
+	 */
+	protected $arrAttributeOptions = array();
+	
+	
 	/**
 	 * Add specific attributes
 	 * @param string
@@ -72,6 +78,10 @@ class ProductOptionWizard extends Widget
 				$this->arrAttributes[$strKey] = ($varValue > 0) ? $varValue : '';
 				break;
 
+			case 'options':
+				$this->arrCurrValueOptions = deserialize($varValue);
+				break;
+				
 			default:
 				parent::__set($strKey, $varValue);
 				break;
@@ -88,7 +98,7 @@ class ProductOptionWizard extends Widget
 		$options = deserialize($this->getPost($this->strName));
 
 		// Check labels only (values can be empty)
-		if (is_array($options))
+		/*if (is_array($options))
 		{
 			foreach ($options as $key=>$option)
 			{
@@ -100,7 +110,7 @@ class ProductOptionWizard extends Widget
 					$this->mandatory = false;
 				}
 			}
-		}
+		}*/
 
 		$varInput = $this->validator($options);
 
@@ -123,13 +133,25 @@ class ProductOptionWizard extends Widget
 	 */
 	public function generate()
 	{
+		
+		$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/html/isotope.js';
+
+		$this->import('Database');
+			
 		$arrButtons = array('copy', 'up', 'down', 'delete');
 		$strCommand = 'cmd_' . $this->strField;
-
-		$arrAttributes = $this->getAttributes($this->strTable);
 		
-	//	$arrOptionValues = $this->getAllOptionValues($this->Input->get());
+		$this->strTable = $this->Input->get('table');
+		
+		$arrOptionAttributes = $this->getOptionAttributes();
+		
+		$arrOptionValues = $this->getAllOptionValues($arrOptionAttributes);
 				
+		$arrColButtons = array('ccopy', 'cmovel', 'cmover', 'cdelete');
+		$arrRowButtons = array('rcopy', 'rup', 'rdown', 'rdelete');
+
+		$strCommand = 'cmd_' . $this->strField;
+
 		// Change the order
 		if ($this->Input->get($strCommand) && is_numeric($this->Input->get('cid')) && $this->Input->get('id') == $this->currentRecord)
 		{
@@ -137,19 +159,47 @@ class ProductOptionWizard extends Widget
 
 			switch ($this->Input->get($strCommand))
 			{
-				case 'copy':
-					array_insert($this->varValue, $this->Input->get('cid'), array($this->varValue[$this->Input->get('cid')]));
+					case 'ccopy':
+					for ($i=0; $i<count($this->varValue); $i++)
+					{
+						$this->varValue[$i] = array_duplicate($this->varValue[$i], $this->Input->get('cid'));
+					}
 					break;
 
-				case 'up':
+				case 'cmovel':
+					for ($i=0; $i<count($this->varValue); $i++)
+					{
+						$this->varValue[$i] = array_move_up($this->varValue[$i], $this->Input->get('cid'));
+					}
+					break;
+
+				case 'cmover':
+					for ($i=0; $i<count($this->varValue); $i++)
+					{
+						$this->varValue[$i] = array_move_down($this->varValue[$i], $this->Input->get('cid'));
+					}
+					break;
+
+				case 'cdelete':
+					for ($i=0; $i<count($this->varValue); $i++)
+					{
+						$this->varValue[$i] = array_delete($this->varValue[$i], $this->Input->get('cid'));
+					}
+					break;
+
+				case 'rcopy':
+					$this->varValue = array_duplicate($this->varValue, $this->Input->get('cid'));
+					break;
+
+				case 'rup':
 					$this->varValue = array_move_up($this->varValue, $this->Input->get('cid'));
 					break;
 
-				case 'down':
+				case 'rdown':
 					$this->varValue = array_move_down($this->varValue, $this->Input->get('cid'));
 					break;
 
-				case 'delete':
+				case 'rdelete':
 					$this->varValue = array_delete($this->varValue, $this->Input->get('cid'));
 					break;
 			}
@@ -167,84 +217,226 @@ class ProductOptionWizard extends Widget
 		}
 
 		// Begin table
-		$return .= '<table cellspacing="0" cellpadding="0" class="tl_ProductOptionWizard" id="ctrl_'.$this->strId.'" summary="Field wizard">
-  <thead>
-    <tr>
-      <th>'.$GLOBALS['TL_LANG'][$this->strTable]['opAttribute'].'</th>
-      <th>'.$GLOBALS['TL_LANG'][$this->strTable]['opValueSets'].'</th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>';
+		$return .= '<div id="tl_tablewizard">
+  <table cellspacing="0" cellpadding="0" class="tl_tablewizard" id="ctrl_'.$this->strId.'" summary="Table wizard">
+  <tbody>
+    <tr>';
 
-		// Add fields
+		// Add column buttons
+		for ($i=0; $i<count($this->varValue[0]); $i++)
+		{
+			$return .= '
+      <td style="text-align:center; white-space:nowrap;">';
+
+			// Add column buttons
+			foreach ($arrColButtons as $button)
+			{
+				$return .= '<a href="'.$this->addToUrl('&amp;'.$strCommand.'='.$button.'&amp;cid='.$i.'&amp;id='.$this->currentRecord).'" title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable][$button][0]).'" onclick="AjaxRequestProductsOptionWizard.tableWizard(this, \''.$button.'\', \'ctrl_'.$this->strId.'\',\''.$this->strId.'\'); return false;">'.$this->generateImage(substr($button, 1).'.gif', $GLOBALS['TL_LANG'][$this->strTable][$button][0], 'class="tl_tablewizard_img"').'</a> ';
+			}
+
+			$return .= '</td>';
+		}
+
+		$return .= '
+      <td></td>
+    </tr>';
+
+		// Add rows
 		for ($i=0; $i<count($this->varValue); $i++)
 		{
-			$strCurrOptionName = $this->strId.'['.$i.'][value]';
-			
-			$varCurrOptionValue = $this->Input->post($strCurrOptionName);
-			
 			$return .= '
-    <tr>
-      <td><select name="'.$this->strId.'['.$i.'][value]" id="'.$this->strId.'_attribute_'.$i.'" class="tl_select_2" onchange="" value="'.$this->varValue[$i]['value'].'">';
-      foreach($arrAttributes as $attribute)
-      {
-      	$return .= '<option value="' . $attribute['value'] . '"' . ($varCurrOptionValue==$this->varValue[$i]['value'] ? ' selected' : '') . '>' . $this->varValue[$i]['label'] . '</option>';
-      }
-      
-      $return .= '</select>
-      </td>
-      <td>
-      &nbsp;
-      </td>';
-      
-      /*
-      foreach($arrCurrentAttributeValues as $value)
-      {
-      	'<input type="checkbox" name="'.$this->strId.'['.$i.'][label]" id="'.$this->strId.'_label_'.$i.'" class="tl_text_2" value="'.specialchars($this->varValue[$i]['label']).'" />';
-      }
-      
-      $return .= '</td>';
-      */
-      $return .= '
-      <td><input type="checkbox" name="'.$this->strId.'['.$i.'][default]" id="'.$this->strId.'_default_'.$i.'" class="fw_checkbox" value="1"'.($this->varValue[$i]['default'] ? ' checked="checked"' : '').' /> <label for="'.$this->strId.'_default_'.$i.'">'.$GLOBALS['TL_LANG'][$this->strTable]['opDefault'].'</label></td>
-      <td><input type="checkbox" name="'.$this->strId.'['.$i.'][group]" id="'.$this->strId.'_group_'.$i.'" class="fw_checkbox" value="1"'.($this->varValue[$i]['group'] ? ' checked="checked"' : '').' /> <label for="'.$this->strId.'_group_'.$i.'">'.$GLOBALS['TL_LANG'][$this->strTable]['opGroup'].'</label></td>';
-			
-			// Add row buttons
-			$return .= '
-      <td style="white-space:nowrap; padding-left:3px;">';
+    <tr>';
 
-			foreach ($arrButtons as $button)
+			// Add cells
+			for ($j=0; $j<count($this->varValue[$i][$j]); $j++)
 			{
-				$return .= '<a href="'.$this->addToUrl('&amp;'.$strCommand.'='.$button.'&amp;cid='.$i.'&amp;id='.$this->currentRecord).'" title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable][$button][0]).'" onclick="Backend.optionsWizard(this, \''.$button.'\', \'ctrl_'.$this->strId.'\'); return false;">'.$this->generateImage($button.'.gif', $GLOBALS['TL_LANG'][$this->strTable][$button][0]).'</a> ';
+				$return .= '<td class="tcontainer">
+				<select id="ctrl_' . $this->strId.'" name="' . $this->strId.'['.$i.']['.$j.']" class="tl_select"'.$this->getAttributes().' onchange="AjaxRequestProductsOptionWizard.getOptionValues(this,\'ctrl_'.$this->strId.'\',\''.$this->strId.'\');">';
+								
+					//return the attribute dropdown lists
+					foreach($arrOptionAttributes as $k=>$v)
+					{
+						$return .= '<option value="' . $k . '"' . ($v==$this->varValue[$i]['value'] ? ' selected' : '') . '>' . $v . '</option>';
+	  				}
+	  			$return .= '</select><br />';	
+
+				//$return .= '<select name="' . $this->strId.'['.$i.']['.$j.'][values]" class="tl_select"'.$this->getAttributes().'>';
+
+					//return the attribute value dropdown lists
+					/*foreach($this->arrAttributeOptions[$this->strId] as $attribute)
+					{
+						$return .= '<option value="' . $attribute['value'] . '"' . ($varCurrOptionValue==$this->varValue[$i]['value'] ? ' selected' : '') . '>' . $attribute['label'] . '</option>';
+	  				}*/
+	  				
+			
+				
+				//$return .= '</select>';
+				
+				/*	
+				$return .= '
+      <td class="tcontainer"><textarea name="'.$this->strId.'['.$i.']['.$j.']" class="tl_textarea" rows="'.$this->intRows.'" cols="'.$this->intCols.'"'.$this->getAttributes().'>'.specialchars($this->varValue[$i][$j]).'</textarea></td>';
+				*/
+				
+			}
+
+			$return .= '
+      <td style="white-space:nowrap;">';
+
+			// Add row buttons
+			foreach ($arrRowButtons as $button)
+			{
+				$return .= '<a href="'.$this->addToUrl('&amp;'.$strCommand.'='.$button.'&amp;cid='.$i.'&amp;id='.$this->currentRecord).'" title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable][$button][0]).'" onclick="AjaxRequestProductsOptionWizard.tableWizard(this, \''.$button.'\', \'ctrl_'.$this->strId.'\'); return false;">'.$this->generateImage(substr($button, 1).'.gif', $GLOBALS['TL_LANG'][$this->strTable][$button][0], 'class="tl_tablewizard_img"').'</a> ';
 			}
 
 			$return .= '</td>
     </tr>';
 		}
 
-		return $return.'
+		$return .= '
   </tbody>
-  </table>';
+  </table>
+  </div>';
+
+		if (!$this->Session->get('disable_cell_resizer'))
+		{
+			$return .= '
+  <script type="text/javascript">
+  <!--//--><![CDATA[//><!--
+  AjaxRequestProductsOptionWizard.tableWizardResize();
+  //--><!]]>
+  </script>';
+		}
+
+		return $return;
 	}
 	
-	
-	protected function getAttributes($strTable)
+	/**
+	 * Retrieve option attributes
+	 * @param array
+	 * @return array
+	 */
+	protected function getOptionAttributes()
 	{
+		$arrOptionAttributes = array();
+		
 		//Get attributes that are is_customer_defined 
-		$objOptionAttributes = $this->Database->prepare("SELECT id, field_name FROM tl_product_attributes WHERE is_customer_defined=?")
+		$objOptionAttributes = $this->Database->prepare("SELECT id AS value, name AS label FROM tl_product_attributes WHERE is_customer_defined=?")
 											  ->execute(1);
+	
 		
 		if($objOptionAttributes->numRows < 1)
 		{
-			return array();			
+			return;			
 		}
 		
+		$arrOptionAttributes['-'] = $GLOBALS['TL_LANG']['MSC']['selectItemPrompt'];
+		
 		$arrAttributes = $objOptionAttributes->fetchAllAssoc();
-								
-		return $arrAttributes;
+		
+		foreach($arrAttributes as $attribute)
+		{
+			$arrOptionAttributes[$attribute['value']] = $attribute['label'];
+		}
+		
+		return $arrOptionAttributes;
 	}
+	
+	/**
+	 * Retrieve option values for the product options wizard
+	 * @param array
+	 * @return array
+	 */
+	protected function getAllOptionValues($arrOptionAttributes)
+	{
+		foreach($arrOptionAttributes as $attribute)
+		{
+			$objAttributeValues = $this->Database->prepare("SELECT option_list FROM tl_product_attributes WHERE id=?")
+												 ->limit(1)
+												 ->execute($attribute['value']);
+			
+			if($objAttributeValues->numRows < 1)
+			{
+				return array();
+			}
+			
+			$arrAttributeValues = deserialize($objAttributeValues->option_list);
+		
+		}
+		
+		$arrOptionValues['-'] = $GLOBALS['TL_LANG']['MSC']['selectItemPrompt'];
+		
+				
+		foreach($arrValues as $option)
+		{
+			$arrOptionValues[$option['value']] = $option['label'];
+		}
+		
+		return $arrOptionValues;
+	
+	}
+	
+		
+	/**
+	 * @param string
+	 * @return void
+	 */
+	public function executePostActions($strAction, DataContainer $dc)
+	{
+		
+	    if ($strAction == 'addPOAttributeValues')
+	    {
+	    	$this->import('Database');
+	    	
+	    	$intId = $this->Input->post('aid');
+	    	$intX = (integer)$this->Input->post('r');
+	    	$intY = (integer)$this->Input->post('c');
+	    	$strParentField = $this->Input->post('parent');
+	    	
+	    	$objAttributeValues = $this->Database->prepare("SELECT field_name, option_list FROM tl_product_attributes WHERE id=?")
+	       										 ->limit(1)
+	       										 ->execute($intId);
+	       
+	        if($objAttributeValues->numRows < 1)
+	        {
+	        	    
+	        }else{
+	        	
+	        	$this->arrAttributeOptions = deserialize($objAttributeValues->option_list);
+	       	}
+
+	    	echo $this->generateAjax($dc, $strParentField, $intX, $intY, $this->arrAttributeOptions); 
+	    	exit; break;
+	    }
+	    
+	    //return $this->arrAttributeOptions;
+	}
+	
+	protected function generateAjax($objDc, $strId, $intX, $intY, $arrOptions)
+	{
+		foreach($arrOptions as $option)
+		{
+			$arrFinalOptions[$option['value']] = $option['label'];
+		}
+			
+		$strControlId = $strId . '_values[' . $intX . '][' . $intY . ']';
+				
+		$arrData['strTable'] = $dc->table;
+		$arrData['id'] = $strControlId;
+		$arrData['name'] = $strControlId;
+		$arrData['options'] = $arrFinalOptions;
+		
+		
+		$objWidget = new $GLOBALS['BE_FFL']['select']($this->prepareForWidget($arrData, $strControlId));
+					
+		return $objWidget->generate();
+	}
+	
+	public function saveValues($varValue, DataContainer $dc)
+	{
+		
+	
+	}
+	
 	
 	/**
 	 * Generate a checkbox and return it as string	- REFERENCE ONLY
@@ -255,7 +447,7 @@ class ProductOptionWizard extends Widget
 	 */
 	protected function generateCheckbox($arrOption, $i, $strButtons)
 	{
-		return sprintf('<span><input type="checkbox" name="%s" id="opt_%s" class="tl_checkbox" value="%s"%s%s onfocus="Backend.getScrollOffset();" /> %s <label for="opt_%s">%s</label></span>',
+		return sprintf('<span><input type="checkbox" name="%s" id="opt_%s" class="tl_checkbox" value="%s"%s%s onfocus="AjaxRequestProductsOptionWizard.getScrollOffset();" /> %s <label for="opt_%s">%s</label></span>',
 						$this->strName . ($this->multiple ? '[]' : ''),
 						$this->strId.'_'.$i,
 						($this->multiple ? specialchars($arrOption['value']) : 1),
@@ -265,30 +457,7 @@ class ProductOptionWizard extends Widget
 						$this->strId.'_'.$i,
 						$arrOption['label']);
 	}
-	
-	/**
-	 * @param string
-	 * @return void
-	 */
-	public function executePreActions($strAction)
-	{
-	    if ($strAction == 'addPOAttribute')
-	    {
-	    	$intAttributeId = $this->Input->get('attribute_id');
-	    	
-	    	$objAttributeValues = $this->Database->prepare("SELECT options FROM tl_product_attributes WHERE id=?")
-	       										->execute($intAttributeId);
-	       
-	        if($objAttributeValues->numRows < 1)
-	        {
-	        	return array();	        
-	        }
-	        
-	        $arrOptions = deserialize($objAttributeValues->options);
-	        
-	        return $arrOptions;
-	    }
-	}
+
 }
 
 
