@@ -405,7 +405,7 @@ class ProductOptionWizard extends Widget
 	       	}
 
 	    	echo $this->generateAjax($dc, $strParentField, $intX, $intY, $this->arrAttributeOptions); 
-	    	exit; break;
+	    	
 	    }
 	    
 	    //return $this->arrAttributeOptions;
