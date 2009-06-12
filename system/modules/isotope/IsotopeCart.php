@@ -334,7 +334,7 @@ class IsotopeCart extends Model
 	}
 	
 	
-	public function getProductsAsHTML()
+	public function getProductsAsHtml()
 	{
 		$this->import('Isotope');
 		
@@ -349,7 +349,7 @@ class IsotopeCart extends Model
 		foreach( $arrProducts as $product )
 		{
 			$strBuffer .= '<tr>';
-			$strBuffer .= '<td>' . $product['product_name'] . ':</td>';
+			$strBuffer .= '<td>' . $product['product_name'] . '</td>';
 			$strBuffer .= '<td>' . $product['quantity_requested'] . ' x </td>';
 			$strBuffer .= '<td>' . $this->Isotope->formatPriceWithCurrency($product['product_price']) . '</td>';
 			$strBuffer .= '<td>' . $this->Isotope->formatPriceWithCurrency($product['quantity_requested'] * $product['product_price']) . '</td>';
@@ -357,6 +357,29 @@ class IsotopeCart extends Model
 		}
 		
 		return $strBuffer . '</table>';
+	}
+	
+	
+	public function getProductsAsString()
+	{
+		$this->import('Isotope');
+		
+		$arrProducts = $this->Isotope->getProductData($this->getProducts(), array('product_alias','product_name','product_price'), 'product_name');
+		
+		if (!count($arrProducts))
+			return 'Keine Produkte';
+		
+//		$strBuffer = "Name    Anzahl</td><td>Preis</td><td>Betrag</td></tr>\n";
+		
+		foreach( $arrProducts as $product )
+		{
+			$strBuffer .= $product['product_name'] . ': ';
+			$strBuffer .= $product['quantity_requested'] . ' x ';
+			$strBuffer .= $this->Isotope->formatPriceWithCurrency($product['product_price']) . ' = ';
+			$strBuffer .= $this->Isotope->formatPriceWithCurrency($product['quantity_requested'] * $product['product_price']);
+		}
+		
+		return $strBuffer;
 	}
 	
 

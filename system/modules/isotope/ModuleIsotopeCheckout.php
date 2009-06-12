@@ -571,13 +571,18 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				'orderId'		=> ($this->Store->orderPrefix . $orderId),
 				'grandTotal'	=> $this->Cart->grandTotal,
 				'cart_text'		=> $this->Cart->getProductsAsString(),
+				'cart_html'		=> $this->Cart->getProductsAsHtml(),
 			);
+			
+			$arrBillingAddress = $this->getSelectedAddress('billing');
+			foreach( $arrBillingAddress as $k => $v )
+			{
+				$arrData['billing_'.$k] = $v;
+			}
 		
-//			$this->sendAdminNotification($objInsert->insertId, $arrData);
-			$this->emailCustomer($this->getSelectedAddress('billing'));
-
 			$this->log('New order ID ' . $orderId . ' has been placed', 'ModuleIsotopeCheckout writeOrder()', TL_ACCESS);
 			$this->Isotope->sendMail($this->iso_mail_admin, $GLOBALS['TL_ADMIN_EMAIL'], $GLOBALS['TL_LANGUAGE'], $arrData);
+			$this->Isotope->sendMail($this->iso_mail_customer, $arrBillingAddress['email'], $GLOBALS['TL_LANGUAGE'], $arrData);
 
 			$this->Cart->delete();
 			unset($_SESSION['FORM_DATA']);
@@ -595,6 +600,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	 * @param string
 	 * @return null
 	 */
+/*
 	protected function emailCustomer($arrAddress)
 	{
 		$objEmail = new Email();
@@ -608,6 +614,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 		return true;
 	}
+*/
 	
 	
 	/**
@@ -615,6 +622,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	 * @param integer
 	 * @param array
 	 */
+/*
 	protected function sendAdminNotification($intOrderId, $arrData)
 	{
 		$objEmail = new Email();
@@ -637,6 +645,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 		return true;
 	}
+*/
 	
 	
 	protected function getShippingModules($arrModuleIds, $arrData)

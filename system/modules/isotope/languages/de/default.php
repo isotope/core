@@ -106,15 +106,6 @@ $GLOBALS['TL_LANG']['useBillingAddress'] = 'Rechnungsadresse verwenden';
 $GLOBALS['TL_LANG']['differentShippingAddress'] = 'Abweichende Lieferadresse';
 
 
-//Admin order notfication language entries
-$GLOBALS['TL_LANG']['MSC']['subject_new_order_admin_notify'] = 'Neue Bestellung auf %s';
-$GLOBALS['TL_LANG']['MSC']['message_new_order_admin_notify'] = "Eine neue Bestellung (ID %s) wurde platziert! \n\nBestelldetails: \n\n %s";
-
-//Customer order notification language entries
-$GLOBALS['TL_LANG']['MSC']['subject_new_order_customer_thank_you'] = 'Ihre Bestellung auf %s!';
-//$GLOBALS['TL_LANG']['MSC']['message_new_order_customer_thank_you'] = "Dear %s, \n\n Thank you for your order!  You will receive a notification once final shipping charges have been assessed with your updated order total.  If you have any questions please email us at %s";
-
-
 /**
  * Currencies
  */
