@@ -33,6 +33,7 @@ $GLOBALS['TL_LANG']['tl_iso_mail']['senderName']	= array('Absendername', 'Geben 
 $GLOBALS['TL_LANG']['tl_iso_mail']['sender']		= array('Absenderadresse', 'Geben Sie die E-Mail Adresse des Absenders ein. Der Empfänger wird bei Antworten an diese Adresse senden.');
 $GLOBALS['TL_LANG']['tl_iso_mail']['cc']			= array('Kopie senden an', 'Geben Sie gültige E-Mail Adressen ein, welche eine Kopie der Nachricht erhalten sollen. Der Empfänger kann diese Adressen sehen!');
 $GLOBALS['TL_LANG']['tl_iso_mail']['bcc']			= array('Blinkkopie senden an', 'Geben Sie gültige E-Mail Adressen ein, welche eine Kopie der Nachricht erhalten sollen. Der Empfänger kann diese Adressen nicht sehen!');
+$GLOBALS['TL_LANG']['tl_iso_mail']['template']		= array('E-Mail-Template', 'Hier können Sie das E-Mail-Template für HTML-Inhalte auswählen.');
 
 
 /**
@@ -50,4 +51,5 @@ $GLOBALS['TL_LANG']['tl_iso_mail']['show']			= array('Vorlagendetails', 'Details
  */
 $GLOBALS['TL_LANG']['tl_iso_mail']['name_legend']		= 'Name';
 $GLOBALS['TL_LANG']['tl_iso_mail']['address_legend']	= 'Adresse';
+$GLOBALS['TL_LANG']['tl_iso_mail']['expert_legend']		= 'Experten-Einstellungen';
 

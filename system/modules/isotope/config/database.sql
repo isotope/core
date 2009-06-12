@@ -554,8 +554,7 @@ CREATE TABLE `tl_iso_mail` (
   `sender` varchar(255) NOT NULL default '',
   `cc` varchar(255) NOT NULL default '',
   `bcc` varchar(255) NOT NULL default '',
-  `subject` varchar(255) NOT NULL default '',
-  `message` text NULL,
+  `template` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`id`),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -574,7 +573,7 @@ CREATE TABLE `tl_iso_mail_content` (
   `fallback` varchar(1) NOT NULL default '',
   `subject` varchar(255) NOT NULL default '',
   `text` text NULL,
-  `useHtml` varchar(1) NOT NULL default '',
+  `textOnly` varchar(1) NOT NULL default '',
   `html` text NULL,
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`),
