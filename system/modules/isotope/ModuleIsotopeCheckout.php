@@ -568,10 +568,16 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		{
 			$arrData = array
 			(
-				'orderId'		=> ($this->Store->orderPrefix . $orderId),
-				'grandTotal'	=> $this->Cart->grandTotal,
-				'cart_text'		=> $this->Cart->getProductsAsString(),
-				'cart_html'		=> $this->Cart->getProductsAsHtml(),
+				'orderId'					=> ($this->Store->orderPrefix . $orderId),
+				'items'						=> $this->Cart->items,
+				'products'					=> $this->Cart->products,
+				'subTotal'					=> $this->Cart->subTotal,
+				'taxTotal'					=> $this->Cart->taxTotal,
+				'taxTotalWithShipping'		=> $this->Cart->taxTotalWithShipping,
+				'shippingPrice'				=> $this->Cart->Shipping->price,
+				'grandTotal'				=> $this->Cart->grandTotal,
+				'cart_text'					=> $this->Cart->getProductsAsString(),
+				'cart_html'					=> $this->Cart->getProductsAsHtml(),
 			);
 			
 			$arrBillingAddress = $this->getSelectedAddress('billing');
