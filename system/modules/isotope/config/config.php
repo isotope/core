@@ -72,6 +72,11 @@ array_insert($GLOBALS['BE_MOD']['store'], 0, array
 		'icon'						=> 'system/modules/isotope/html/icon_mm.gif',
 //		'stylesheet'				=> 'html/stylesheet.css',
 	),
+	'iso_mail' => array
+	(
+		'tables'					=> array('tl_iso_mail', 'tl_iso_mail_content'),
+		'icon'						=> 'system/modules/isotope/html/icon_mail.png',
+	),
 	'store_configuration' => array
 	(
 		'tables'					=> array('tl_store'),

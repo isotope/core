@@ -537,3 +537,41 @@ CREATE TABLE `tl_user_group` (
  `mediamounts` blob NULL,
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+
+-- --------------------------------------------------------
+
+-- 
+-- Table `tl_iso_mail`
+-- 
+
+CREATE TABLE `tl_iso_mail` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `tstamp` int(10) unsigned NOT NULL default '0',
+  `name` varchar(255) NOT NULL default '',
+  `sender` varchar(255) NOT NULL default '',
+  `cc` varchar(255) NOT NULL default '',
+  `bcc` varchar(255) NOT NULL default '',
+  `subject` varchar(255) NOT NULL default '',
+  `message` text NULL,
+  PRIMARY KEY  (`id`),
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Table `tl_iso_mail_content`
+-- 
+
+CREATE TABLE `tl_iso_mail_content` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `pid` int(10) unsigned NOT NULL default '0',
+  `tstamp` int(10) unsigned NOT NULL default '0',
+  `language` varchar(255) NOT NULL default '',
+  `fallback` varchar(255) NOT NULL default '',
+  `subject` varchar(255) NOT NULL default '',
+  `message` text NULL,
+  PRIMARY KEY  (`id`),
+  KEY `pid` (`pid`),
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
