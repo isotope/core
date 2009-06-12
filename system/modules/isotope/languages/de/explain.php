@@ -39,7 +39,9 @@ $GLOBALS['TL_LANG']['XPL']['isoMailTokens'] = array
 	array('##billing_address##', 'Rechnungsadresse als Text'),
 	array('##shipping_address##', 'Versandadresse als Text'),
 	array('##shipping_method##', 'Bezeichnung der Versandmethode (wie im Backend eingegeben)'),
+	array('##shipping_note##<br />##shipping_note_text##', 'Hinweismeldung der gewählten Versandmethode (auch als Nur-Text abrufbar).'),
 	array('##payment_method##', 'Bezeichnung der Zahlungsmethode (wie im Backend eingegeben)'),
+	array('##payment_note##<br />##payment_note_text##', 'Hinweismeldung der gewählten Zahlungsart (auch als Nur-Text abrufbar).'),
 	array('##billing_firstname##<br />##billing_lastname##<br />...', 'Einzelne Felder der Rechnungsadresse.'),
 	array('##shipping_firstname##<br />##shipping_lastname##<br />...', 'Einzelne Felder der Versandadresse.'),
 );

@@ -104,9 +104,9 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 	(
 		'__selector__'                => array('type'),
 		'default'                     => 'name,type',
-		'cash'						  => 'name,type,label;countries,shipping_modules,minimum_total,maximum_total;enabled',
-		'paypal'                      => 'name,type,label;countries,shipping_modules,minimum_total,maximum_total;paypal_account,paypal_business;debug,enabled',
-		'postfinance'                 => 'name,type,label;countries,shipping_modules,minimum_total,maximum_total;postfinance_pspid;debug,enabled',
+		'cash'						  => 'name,type,label,note;countries,shipping_modules,minimum_total,maximum_total;enabled',
+		'paypal'                      => 'name,type,label,note;countries,shipping_modules,minimum_total,maximum_total;paypal_account,paypal_business;debug,enabled',
+		'postfinance'                 => 'name,type,label,note;countries,shipping_modules,minimum_total,maximum_total;postfinance_pspid;debug,enabled',
 	),
 
 	// Fields
@@ -138,6 +138,13 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255, 'mandatory'=>true),
+		),
+		'note' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['note'],
+			'exclude'                 => true,
+			'inputType'               => 'textarea',
+			'eval'                    => array('rte'=>'tinyMCE'),
 		),
 		'countries' => array
 		(

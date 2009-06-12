@@ -543,7 +543,11 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			'shippingTotal'			=> $this->Isotope->formatPriceWithCurrency($this->Cart->Shipping->price),
 			'grandTotal'			=> $this->Isotope->formatPriceWithCurrency($this->Cart->grandTotal),
 			'shipping_method'		=> $this->Cart->Shipping->label,
+			'shipping_note'			=> $this->Cart->Shipping->note,
+			'shipping_note_text'	=> strip_tags($this->Cart->Shipping->note),
 			'payment_method'		=> $this->Cart->Payment->label,
+			'payment_note'			=> $this->Cart->Payment->note,
+			'payment_note_text'		=> strip_tags($this->Cart->Payment->note),
 			'status'				=> ($blnCheckout ? $this->Cart->Payment->new_order_status : 'open'),
 		);
 		

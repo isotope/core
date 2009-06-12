@@ -103,9 +103,9 @@ $GLOBALS['TL_DCA']['tl_shipping_modules'] = array
 	'palettes' => array
 	(
 		'__selector__'                => array('type'),
-		'default'                     => 'type,name,label;countries,minimum_total,maximum_total;enabled',
-		'collection'                  => 'type,name,label;price;countries,minimum_total,maximum_total;enabled',
-		'flat'                        => 'type,name,label;price,flatCalculation;countries,minimum_total,maximum_total;enabled',
+		'default'                     => 'type,name,label,note;countries,minimum_total,maximum_total;enabled',
+		'collection'                  => 'type,name,label,note;price;countries,minimum_total,maximum_total;enabled',
+		'flat'                        => 'type,name,label,note;price,flatCalculation;countries,minimum_total,maximum_total;enabled',
 	),
 
 	// Fields
@@ -137,6 +137,13 @@ $GLOBALS['TL_DCA']['tl_shipping_modules'] = array
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255, 'mandatory'=>true),
+		),
+		'note' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_modules']['note'],
+			'exclude'                 => true,
+			'inputType'               => 'textarea',
+			'eval'                    => array('rte'=>'tinyMCE'),
 		),
 		'countries' => array
 		(
