@@ -19,7 +19,7 @@
  * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Andreas Schempp 2009
+ * @copyright  Winans Creative / Fred Bliss 2009
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
@@ -36,7 +36,7 @@ $GLOBALS['TL_DCA']['tl_iso_mail_content'] = array
 	(
 		'dataContainer'               => 'Table',
 		'ptable'                      => 'tl_iso_mail',
-		'enableVersioning'            => true
+		'enableVersioning'            => true,
 	),
 
 	// List
@@ -55,7 +55,6 @@ $GLOBALS['TL_DCA']['tl_iso_mail_content'] = array
 		(
 			'fields'                  => array('subject', 'language'),
 			'format'                  => '%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>',
-//			'label_callback'          => array('', 'addIcon')
 		),
 		'global_operations' => array
 		(
@@ -100,14 +99,7 @@ $GLOBALS['TL_DCA']['tl_iso_mail_content'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'__selector__'                => array('useHtml'),
-		'default'                     => '{settings_legend},language,fallback;{content_legend},subject,text,useHtml',
-	),
-	
-	// Subpalettes
-	'subpalettes' => array
-	(
-		'useHtml'                     => 'html',
+		'default'                     => '{settings_legend},language,fallback;{content_legend},subject,html,text,textOnly',
 	),
 
 	// Fields
@@ -142,9 +134,9 @@ $GLOBALS['TL_DCA']['tl_iso_mail_content'] = array
 			'inputType'               => 'textarea',
 			'eval'                    => array('mandatory'=>true, 'decodeEntities'=>true),
 		),
-		'useHtml' => array
+		'textOnly' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_mail_content']['useHtml'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_mail_content']['textOnly'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
 			'eval'                    => array('submitOnChange'=>true),
@@ -174,6 +166,8 @@ class tl_iso_mail_content extends Backend
 		return '
 <div class="cte_type published"><strong>' . $arrRow['subject'] . '</strong> - ' . $arrLanguages[$arrRow['language']] . ($arrRow['fallback'] ? (' ' . $GLOBALS['TL_LANG']['tl_iso_mail_content']['fallback'][0]) : '') . '</div>
 <div class="limit_height' . (!$GLOBALS['TL_CONFIG']['doNotCollapse'] ? ' h64' : '') . ' block">
+' . $arrRow['html'] . '
+<hr />
 ' . nl2br($arrRow['text']) . '
 </div>' . "\n";
 	}

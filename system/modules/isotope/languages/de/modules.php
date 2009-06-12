@@ -32,6 +32,7 @@ $GLOBALS['TL_LANG']['MOD']['payment']					= array('Zahlungsarten','');
 $GLOBALS['TL_LANG']['MOD']['taxes']						= array('Steuern', '');
 $GLOBALS['TL_LANG']['MOD']['products_and_attributes']	= array('Artikelverwaltung','');
 $GLOBALS['TL_LANG']['MOD']['store_configuration']		= array('Konfigurationen','');
+$GLOBALS['TL_LANG']['MOD']['iso_mail']					= array('E-Mail Vorlagen','');
 
 
 /**

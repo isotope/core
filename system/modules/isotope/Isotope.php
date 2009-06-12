@@ -260,7 +260,7 @@ class Isotope extends Controller
 		$objEmail->subject = $this->parseSimpleTokens($objMail->subject, $arrData);
 		$objEmail->text = $this->parseSimpleTokens($objMail->text, $arrData);
 		
-		if ($objMail->useHtml && strlen($objMail->html))
+		if (!$objMail->textOnly && strlen($objMail->html))
 		{
 			$objEmail->html = $this->parseSimpleTokens($objMail->html, $arrData);
 		}
