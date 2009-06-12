@@ -141,10 +141,21 @@ $GLOBALS['TL_DCA']['tl_iso_mail_content'] = array
 
 class tl_iso_mail_content extends Backend
 {
+	protected $arrLanguages;
 	
-	public function listRows($row)
+	public function listRows($arrRow)
 	{
-		return $row['subject'];
+		if (!is_array($this->arrLanguages))
+		{
+			$arrLanguages = $this->getLanguages();
+		}
+		
+		
+		return '
+<div class="cte_type published"><strong>' . $arrRow['subject'] . '</strong> - ' . $arrLanguages[$arrRow['language']] . ($arrRow['fallback'] ? (' ' . $GLOBALS['TL_LANG']['tl_iso_mail_content']['fallback'][0]) : '') . '</div>
+<div class="limit_height' . (!$GLOBALS['TL_CONFIG']['doNotCollapse'] ? ' h64' : '') . ' block">
+' . $arrRow['message'] . '
+</div>' . "\n";
 	}
 }
 

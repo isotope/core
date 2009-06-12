@@ -31,6 +31,8 @@ CREATE TABLE `tl_module` (
   `addressBookTemplate` varchar(64) NOT NULL default '',
   `iso_jump_first` char(1) NOT NULL default '',
   `iso_forward_cart` char(1) NOT NULL default '',
+  `iso_mail_customer` int(10) unsigned NOT NULL default '0',
+  `iso_mail_admin` int(10) unsigned NOT NULL default '0',
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
