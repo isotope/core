@@ -566,35 +566,18 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 
 		if ($blnCheckout)
 		{
-			$arrData[] = array
+			$arrData = array
 			(
-				'label'	=> 'Bestell-ID: ',
-				'value'	=> ($this->Store->orderPrefix . $orderId),
+				'orderId'		=> ($this->Store->orderPrefix . $orderId),
+				'grandTotal'	=> $this->Cart->grandTotal,
+				'cart_text'		=> $this->Cart->getProductsAsString(),
 			);
-			
-			$arrData[] = array
-			(
-				'label' => 'Bestellbetrag: ',
-				'value' => $this->Cart->grandTotal,
-			);
-			
-			$arrData[] = array
-			(
-				'label' => 'Kunde: ',
-				'value' => (FE_USER_LOGGED_IN ? $this->User->id : 'Gast'),
-			);
-			
-	/*
-			$arrData[] = array
-			(
-				'label' => 'Order Comments',
-				'value' => '',
-			);
-	*/
 		
-			$this->sendAdminNotification($objInsert->insertId, $arrData);
-		
-//			$this->emailCustomer($this->getSelectedAddress('billing'), $arrData);
+//			$this->sendAdminNotification($objInsert->insertId, $arrData);
+			$this->emailCustomer($this->getSelectedAddress('billing'));
+
+			$this->log('New order ID ' . $orderId . ' has been placed', 'ModuleIsotopeCheckout writeOrder()', TL_ACCESS);
+			$this->Isotope->sendMail($this->iso_mail_admin, $GLOBALS['TL_ADMIN_EMAIL'], $GLOBALS['TL_LANGUAGE'], $arrData);
 
 			$this->Cart->delete();
 			unset($_SESSION['FORM_DATA']);
@@ -612,11 +595,11 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	 * @param string
 	 * @return null
 	 */
-	protected function emailCustomer($arrAddress, $arrData)
+	protected function emailCustomer($arrAddress)
 	{
 		$objEmail = new Email();
 		
-		$strData = sprintf($GLOBALS['TL_LANG']['MSC']['message_new_order_customer_thank_you'], $strCustomerName, $GLOBALS['TL_ADMIN_EMAIL']);
+		$strData = sprintf($GLOBALS['TL_LANG']['MSC']['message_new_order_customer_thank_you'], ($arrAddress['firstname'] . ' ' . $arrAddress['lastname']), $this->Cart->getProductsAsString(), $GLOBALS['TL_ADMIN_EMAIL']);
 				
 		$objEmail->from = $GLOBALS['TL_ADMIN_EMAIL'];
 		$objEmail->subject = sprintf($GLOBALS['TL_LANG']['MSC']['subject_new_order_customer_thank_you'], $GLOBALS['TL_LANG']['MSC']['store_title']);
@@ -634,7 +617,6 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	 */
 	protected function sendAdminNotification($intOrderId, $arrData)
 	{
-	
 		$objEmail = new Email();
 
 		$objEmail->from = $GLOBALS['TL_ADMIN_EMAIL'];

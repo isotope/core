@@ -48,7 +48,7 @@ $GLOBALS['TL_DCA']['tl_iso_mail_content'] = array
 			'fields'                  => array('language'),
 			'flag'                    => 1,
 			'panelLayout'             => 'filter;search,limit',
-			'headerFields'            => array('name', 'sender'),
+			'headerFields'            => array('name', 'senderName', 'sender'),
 			'child_record_callback'   => array('tl_iso_mail_content', 'listRows'),
 		),
 		'label' => array
@@ -100,7 +100,14 @@ $GLOBALS['TL_DCA']['tl_iso_mail_content'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{settings_legend},language,fallback;{content_legend},subject,message',
+		'__selector__'                => array('useHtml'),
+		'default'                     => '{settings_legend},language,fallback;{content_legend},subject,text,useHtml',
+	),
+	
+	// Subpalettes
+	'subpalettes' => array
+	(
+		'useHtml'                     => 'html',
 	),
 
 	// Fields
@@ -128,12 +135,26 @@ $GLOBALS['TL_DCA']['tl_iso_mail_content'] = array
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'long'),
 		),
-		'message' => array
+		'text' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_mail_content']['message'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_mail_content']['text'],
 			'exclude'                 => true,
 			'inputType'               => 'textarea',
-			'eval'                    => array('mandatory'=>true),
+			'eval'                    => array('mandatory'=>true, 'decodeEntities'=>true),
+		),
+		'useHtml' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_mail_content']['useHtml'],
+			'exclude'                 => true,
+			'inputType'               => 'checkbox',
+			'eval'                    => array('submitOnChange'=>true),
+		),
+		'html' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_mail_content']['html'],
+			'exclude'                 => true,
+			'inputType'               => 'textarea',
+			'eval'                    => array('mandatory'=>true, 'rte'=>'tinyMCE'),
 		),
 	)
 );
@@ -150,11 +171,10 @@ class tl_iso_mail_content extends Backend
 			$arrLanguages = $this->getLanguages();
 		}
 		
-		
 		return '
 <div class="cte_type published"><strong>' . $arrRow['subject'] . '</strong> - ' . $arrLanguages[$arrRow['language']] . ($arrRow['fallback'] ? (' ' . $GLOBALS['TL_LANG']['tl_iso_mail_content']['fallback'][0]) : '') . '</div>
 <div class="limit_height' . (!$GLOBALS['TL_CONFIG']['doNotCollapse'] ? ' h64' : '') . ' block">
-' . $arrRow['message'] . '
+' . nl2br($arrRow['text']) . '
 </div>' . "\n";
 	}
 }

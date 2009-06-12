@@ -242,5 +242,40 @@ class Isotope extends Controller
 				
 		return $arrTotalProductsInCart;
 	}
+	
+	
+	public function sendMail($intId, $strRecipient, $strLanguage, $arrData)
+	{
+		$objMail = $this->Database->prepare("SELECT * FROM tl_iso_mail m LEFT OUTER JOIN tl_iso_mail_content c ON m.id=c.pid WHERE m.id=? AND (c.language=? OR fallback='1') ORDER BY fallback DESC")->limit(1)->execute($intId, $strLanguage);
+		
+		if (!$objMail->numRows)
+		{
+			$this->log(sprintf('E-mail template ID %s for language %s not found', $intId, $strLanguage), 'Isotope sendMail()', TL_ERROR);
+			return;
+		}
+		
+		$objEmail = new Email();
+		$objEmail->from = $objMail->sender;
+		$objEmail->fromName = $objMail->senderName;
+		$objEmail->subject = $this->parseSimpleTokens($objMail->subject, $arrData);
+		$objEmail->text = $this->parseSimpleTokens($objMail->text, $arrData);
+		
+		if ($objMail->useHtml && strlen($objMail->html))
+		{
+			$objEmail->html = $this->parseSimpleTokens($objMail->html, $arrData);
+		}
+		
+		if (strlen($objMail->cc))
+		{
+			$objEmail->sendCc($objMail->cc);
+		}
+		
+		if (strlen($objMail->bcc))
+		{
+			$objEmail->sendBcc($objMail->bcc);
+		}
+		
+		$objEmail->sendTo($strRecipient);
+	}
 }
 

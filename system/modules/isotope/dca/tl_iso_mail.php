@@ -98,7 +98,7 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{name_legend},name;{address_legend},sender,cc,bcc',
+		'default'                     => '{name_legend},name;{address_legend},senderName,sender,cc,bcc',
 	),
 
 	// Fields
@@ -111,12 +111,19 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'long'),
 		),
+		'senderName' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_mail']['senderName'],
+			'exclude'                 => true,
+			'inputType'               => 'text',
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
+		),
 		'sender' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_mail']['sender'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'rgxp'=>'email', 'tl_class'=>'long'),
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'rgxp'=>'email', 'tl_class'=>'w50'),
 		),
 		'cc' => array
 		(
