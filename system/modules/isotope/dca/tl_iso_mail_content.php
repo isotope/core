@@ -132,7 +132,8 @@ $GLOBALS['TL_DCA']['tl_iso_mail_content'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_mail_content']['text'],
 			'exclude'                 => true,
 			'inputType'               => 'textarea',
-			'eval'                    => array('mandatory'=>true, 'decodeEntities'=>true),
+			'eval'                    => array('mandatory'=>true, 'decodeEntities'=>true, 'helpwizard'=>true),
+			'explanation'             => 'isoMailTokens',
 		),
 		'textOnly' => array
 		(
@@ -146,7 +147,8 @@ $GLOBALS['TL_DCA']['tl_iso_mail_content'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_mail_content']['html'],
 			'exclude'                 => true,
 			'inputType'               => 'textarea',
-			'eval'                    => array('mandatory'=>true, 'rte'=>'tinyMCE'),
+			'eval'                    => array('mandatory'=>true, 'rte'=>'tinyMCE', 'helpwizard'=>true),
+			'explanation'             => 'isoMailTokens',
 		),
 	)
 );

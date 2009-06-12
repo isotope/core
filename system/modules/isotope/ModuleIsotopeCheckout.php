@@ -524,17 +524,22 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	 */
 	protected function writeOrder($blnCheckout=false)
 	{
+		$arrBillingAddress = $this->getSelectedAddress('billing');
+		$strBillingAddress = $this->getAddressString($arrBillingAddress);
+		$arrShippingAddress = $this->getSelectedAddress('shipping');
+		$strShippingAddress = $this->getAddressString($arrShippingAddress);		
+		
 		$arrSet = array
 		(
-			'billing_address'		=> $this->getAddressString($this->getSelectedAddress('billing')),
-			'shipping_address'		=> $this->getAddressString($this->getSelectedAddress('shipping')),
+			'billing_address'		=> $strBillingAddress,
+			'shipping_address'		=> $strShippingAddress,
 			'pid'					=> (FE_USER_LOGGED_IN ? $this->User->id : 0),
 			'tstamp'				=> time(),
 			'store_id'				=> $this->Store->id,
 			'cart_id'				=> $this->Cart->id,
 			'source_cart_id'		=> $this->Cart->id,
 			'subTotal'				=> $this->Isotope->formatPriceWithCurrency($this->Cart->subTotal),		// + ($this->Input->post('gift_wrap') ? 10 : 0),		// FIXME
-			'taxTotal'	 			=> $this->Isotope->formatPriceWithCurrency($this->Cart->taxTotal),
+			'taxTotal'	 			=> $this->Isotope->formatPriceWithCurrency($this->Cart->taxTotalWithShipping),
 			'shippingTotal'			=> $this->Isotope->formatPriceWithCurrency($this->Cart->Shipping->price),
 			'grandTotal'			=> $this->Isotope->formatPriceWithCurrency($this->Cart->grandTotal),
 			'shipping_method'		=> $this->Cart->Shipping->label,
@@ -571,16 +576,19 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				'orderId'					=> ($this->Store->orderPrefix . $orderId),
 				'items'						=> $this->Cart->items,
 				'products'					=> $this->Cart->products,
-				'subTotal'					=> $this->Cart->subTotal,
-				'taxTotal'					=> $this->Cart->taxTotal,
-				'taxTotalWithShipping'		=> $this->Cart->taxTotalWithShipping,
-				'shippingPrice'				=> $this->Cart->Shipping->price,
-				'grandTotal'				=> $this->Cart->grandTotal,
+				'subTotal'					=> $this->Isotope->formatPriceWithCurrency($this->Cart->subTotal),
+				'taxTotal'					=> $this->Isotope->formatPriceWithCurrency($this->Cart->taxTotal),
+				'taxTotalWithShipping'		=> $this->Isotope->formatPriceWithCurrency($this->Cart->taxTotalWithShipping),
+				'shippingPrice'				=> $this->Isotope->formatPriceWithCurrency($this->Cart->Shipping->price),
+				'grandTotal'				=> $this->Isotope->formatPriceWithCurrency($this->Cart->grandTotal),
 				'cart_text'					=> $this->Cart->getProductsAsString(),
 				'cart_html'					=> $this->Cart->getProductsAsHtml(),
+				'billing_address'			=> $strBillingAddress,
+				'shipping_address'			=> $strShippingAddress,
+				'shipping_method'			=> $this->Cart->Shipping->label,
+				'payment_method'			=> $this->Cart->Payment->label,
 			);
 			
-			$arrBillingAddress = $this->getSelectedAddress('billing');
 			foreach( $arrBillingAddress as $k => $v )
 			{
 				$arrData['billing_'.$k] = $v;
