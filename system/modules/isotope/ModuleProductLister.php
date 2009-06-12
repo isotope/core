@@ -193,6 +193,10 @@ class ModuleProductLister extends ModuleIsotopeBase
 			$arrOrderBy = explode('-', $this->Input->get('order_by'));
 			$strClauses .= " ORDER BY " . htmlspecialchars_decode($arrOrderBy[0]) . ' ' . $arrOrderBy[1];
 		}
+		else
+		{
+			$strClauses .= " ORDER BY sorting";
+		}
 			
 		
 		$per_page = ($this->Input->get('per_page') ? $this->Input->get('per_page') : $this->perPage);

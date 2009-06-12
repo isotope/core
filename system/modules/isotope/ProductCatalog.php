@@ -88,6 +88,7 @@ class ProductCatalog extends Backend
 		CREATE TABLE `%s` (
 			`id` int(10) unsigned NOT NULL auto_increment,
 		    `pid` int(10) unsigned NOT NULL default '0',
+		    `sorting` int(10) unsigned NOT NULL default '0',
 			`tstamp` int(10) unsigned NOT NULL default '0',
 			`pages` text NULL,
 			`new_import` char(1) NOT NULL default '0',
@@ -172,10 +173,13 @@ class ProductCatalog extends Backend
 			(
 				'sorting' => array
 				(
-					'mode'                    => 1,
-					'fields'                  => array('product_name'),
+					'mode'                    => 4,
+					'fields'                  => array('sorting'),
 					'flag'                    => 1,
 					'panelLayout'             => 'sort,filter;search,limit',
+					'headerFields'            => array('name'),
+					'child_record_callback'   => array('ProductCatalog','getRowLabel'),
+//					'paste_button_callback'   => array('ProductCatalog', 'pastButton'),
 				),
 				'label' => array
 				(
@@ -209,6 +213,14 @@ class ProductCatalog extends Backend
 						'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['edit'],
 						'href'                => 'act=edit',
 						'icon'                => 'edit.gif'
+					),
+					
+					'cut' => array
+					(
+						'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['cut'],
+						'href'                => 'act=paste&amp;mode=cut',
+						'icon'                => 'cut.gif',
+						'attributes'          => 'onclick="Backend.getScrollOffset();"'
 					),
 		
 					'delete' => array
@@ -2314,7 +2326,10 @@ class ProductCatalog extends Backend
 		$this->redirect(str_replace('key=repairCAP', '', $this->Environment->request));
 	}
 	
-	
+	public function pasteButton()
+	{
+		echo 'test';
+	}
 
 	
 }
