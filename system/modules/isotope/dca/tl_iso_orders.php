@@ -63,6 +63,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 				'href'                => 'act=edit',
 				'icon'                => 'edit.gif'
 			),*/
+/*
 			'delete' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_iso_orders']['delete'],
@@ -70,6 +71,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 				'icon'                => 'delete.gif',
 				'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
 			),
+*/
 			'show' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_iso_orders']['show'],
