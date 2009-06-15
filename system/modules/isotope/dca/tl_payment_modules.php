@@ -104,9 +104,9 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 	(
 		'__selector__'                => array('type'),
 		'default'                     => 'name,type',
-		'cash'						  => 'name,type,label,note;countries,shipping_modules,minimum_total,maximum_total;enabled',
-		'paypal'                      => 'name,type,label,note;countries,shipping_modules,minimum_total,maximum_total;paypal_account,paypal_business;debug,enabled',
-		'postfinance'                 => 'name,type,label,note;countries,shipping_modules,minimum_total,maximum_total;postfinance_pspid;debug,enabled',
+		'cash'						  => 'name,type,label,note;countries,shipping_modules,minimum_total,maximum_total,new_order_status;enabled',
+		'paypal'                      => 'name,type,label,note;countries,shipping_modules,minimum_total,maximum_total,new_order_status;paypal_account,paypal_business;debug,enabled',
+		'postfinance'                 => 'name,type,label,note;countries,shipping_modules,minimum_total,maximum_total,new_order_status;postfinance_pspid,postfinance_secret;debug,enabled',
 	),
 
 	// Fields
@@ -168,6 +168,7 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['minimum_total'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
+			'default'                 => 0,
 			'eval'                    => array('maxlength'=>255, 'rgxp'=>'digit'),
 		),
 		'maximum_total' => array
@@ -175,25 +176,43 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['maximum_total'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
+			'default'                 => 0,
 			'eval'                    => array('maxlength'=>255, 'rgxp'=>'digit'),
+		),
+		'new_order_status' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['new_order_status'],
+			'exclude'                 => true,
+			'inputType'               => 'select',
+			'default'                 => 'pending',
+			'options_callback'        => array('tl_payment_modules', 'getOrderStatus'),
+			'reference'               => &$GLOBALS['TL_LANG']['MSC']['order_status_labels'],
+			'eval'                    => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50'),
 		),
 		'paypal_account' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['paypal_account'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>255, 'rgxp'=>'email'),
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'rgxp'=>'email'),
 		),
 		'paypal_business' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['paypal_business'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>255),
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
 		),
 		'postfinance_pspid' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['postfinance_pspid'],
+			'exclude'                 => true,
+			'inputType'               => 'text',
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
+		),
+		'postfinance_secret' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['postfinance_secret'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255),
@@ -241,6 +260,26 @@ class tl_payment_modules extends Backend
 		{
 			$objModule = new $strClass($arrRow);
 			return $objModule->moduleOperations();
+		}
+		catch (Exception $e) {}
+		
+		return '';
+	}
+	
+	
+	public function getOrderStatus($dc)
+	{
+		$objModule = $this->Database->prepare("SELECT * FROM tl_payment_modules WHERE id=?")->limit(1)->execute($dc->id);
+		
+		$strClass = $GLOBALS['ISO_PAY'][$objModule->type];
+
+		if (!strlen($strClass) || !$this->classFileExists($strClass))
+			return '';
+			
+		try 
+		{
+			$objModule = new $strClass($arrRow);
+			return $objModule->statusOptions();
 		}
 		catch (Exception $e) {}
 		

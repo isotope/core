@@ -32,23 +32,16 @@
  */
 class PaymentCash extends Payment
 {
-
+	
 	/**
-	 * Return an object property
-	 *
+	 * Return a list of status options.
+	 * 
 	 * @access public
-	 * @param string
-	 * @return mixed
+	 * @return array
 	 */
-	public function __get($strKey)
+	public function statusOptions($objModule)
 	{
-		switch( $strKey )
-		{
-			case 'new_order_status':
-				return 'pending';
-		}
-		
-		return parent::__get($strKey);
+		return array('pending', 'processing', 'shipped', 'complete', 'on_hold');
 	}
 	
 	

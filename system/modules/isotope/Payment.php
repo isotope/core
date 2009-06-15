@@ -103,9 +103,6 @@ abstract class Payment extends Frontend
 					
 				return true;
 				break;
-				
-			case 'new_order_status':
-				return 'pending';
 		}
 		
 		return $this->arrData[$strKey];
@@ -121,6 +118,25 @@ abstract class Payment extends Frontend
 	public function moduleOperations()
 	{
 		return '';
+	}
+	
+	
+	/**
+	 * Return a list of status options.
+	 *
+	 * Allowed return values are:
+	 * - pending
+	 * - processing
+	 * - shipped
+	 * - complete
+	 * - on_hold
+	 * 
+	 * @access public
+	 * @return array
+	 */
+	public function statusOptions($objModule)
+	{
+		return array('pending', 'processing');
 	}
 	
 	
