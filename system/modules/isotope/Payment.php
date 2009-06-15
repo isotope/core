@@ -141,13 +141,26 @@ abstract class Payment extends Frontend
 	
 	
 	/**
-	 * Process checkout payment.
+	 * Process checkout payment. Must be implemented in each payment module.
+	 * 
+	 * @abstract
+	 * @access public
+	 * @return bool
+	 */
+	abstract public function processPayment();
+	
+	
+	/**
+	 * Process post-sale requests. Does nothing by default.
+	 *
+	 * This function can be called from the postsale.php file when the payment server is requestion/posting a status change.
+	 * You can see an implementation example in PaymentPostfinance.php
 	 * 
 	 * @abstract
 	 * @access public
 	 * @return void
 	 */
-	abstract public function processPayment();
+	public function processPostSale() {}
 	
 	
 	/**

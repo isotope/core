@@ -49,6 +49,7 @@ class Isotope extends Controller
 		parent::__construct();
 		
 		$this->import('Database');
+		$this->import('FrontendUser', 'User');
 		$this->import('IsotopeStore', 'Store');
 	}
 	
@@ -244,6 +245,73 @@ class Isotope extends Controller
 	}
 	
 	
+	public function getAddress($strStep = 'billing')
+	{
+		if ($_SESSION['FORM_DATA'][$strStep.'_address'] && !isset($_SESSION['FORM_DATA']['billing_address']))
+			return false;
+			
+		$intAddressId = $_SESSION['FORM_DATA'][$strStep.'_address'];
+		
+		// Take billing address
+		if ($intAddressId == -1)
+		{
+			$intAddressId = $_SESSION['FORM_DATA']['billing_address'];
+			$strStep = 'billing';
+		}
+		
+		if ($intAddressId == 0)
+		{
+			$arrAddress = array
+			(
+				'company'		=> $_SESSION['FORM_DATA'][$strStep . '_information_company'],
+				'firstname'		=> $_SESSION['FORM_DATA'][$strStep . '_information_firstname'],
+				'lastname'		=> $_SESSION['FORM_DATA'][$strStep . '_information_lastname'],
+				'street'		=> $_SESSION['FORM_DATA'][$strStep . '_information_street'],
+				'street_2'		=> $_SESSION['FORM_DATA'][$strStep . '_information_street_2'],
+				'street_3'		=> $_SESSION['FORM_DATA'][$strStep . '_information_street_3'],
+				'city'			=> $_SESSION['FORM_DATA'][$strStep . '_information_city'],
+				'state'			=> $_SESSION['FORM_DATA'][$strStep . '_information_state'],
+				'postal'		=> $_SESSION['FORM_DATA'][$strStep . '_information_postal'],
+				'country'		=> $_SESSION['FORM_DATA'][$strStep . '_information_country'],
+			);
+			
+			if ($strStep == 'billing')
+			{
+				$arrAddress['email'] = (strlen($_SESSION['FORM_DATA'][$strStep . '_information_email']) ? $_SESSION['FORM_DATA'][$strStep . '_information_email'] : $this->User->email);
+				$arrAddress['phone'] = (strlen($_SESSION['FORM_DATA'][$strStep . '_information_phone']) ? $_SESSION['FORM_DATA'][$strStep . '_information_phone'] : $this->User->phone);
+			}
+		}
+		else
+		{
+			$objAddress = $this->Database->prepare("SELECT * FROM tl_address_book WHERE id=?")
+												->limit(1)
+												->execute($intAddressId);
+		
+			if($objAddress->numRows < 1)
+			{
+				return $GLOBALS['TL_LANG']['MSC']['ERR']['specifyBillingAddress'];
+			}
+			
+			$arrAddress = $objAddress->fetchAssoc();
+			$arrAddress['email'] = $this->User->email;
+			$arrAddress['phone'] = $this->User->phone;
+		}
+				
+		return $arrAddress;
+	}
+
+	
+	
+	/**
+	 * Send an email using the isotope e-mail templates.
+	 * 
+	 * @access public
+	 * @param int $intId
+	 * @param string $strRecipient
+	 * @param string $strLanguage
+	 * @param array $arrData
+	 * @return void
+	 */
 	public function sendMail($intId, $strRecipient, $strLanguage, $arrData)
 	{
 		$objMail = $this->Database->prepare("SELECT * FROM tl_iso_mail m LEFT OUTER JOIN tl_iso_mail_content c ON m.id=c.pid WHERE m.id=? AND (c.language=? OR fallback='1') ORDER BY fallback DESC")->limit(1)->execute($intId, $strLanguage);

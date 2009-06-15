@@ -34,7 +34,7 @@ class PaymentPostfinance extends Payment
 {
 
 	/**
-	 * processPayment function.
+	 * Process payment on confirmation page.
 	 * 
 	 * @access public
 	 * @return void
@@ -48,17 +48,31 @@ class PaymentPostfinance extends Payment
 	
 	
 	/**
-	 * Return the PayPal form.
+	 * Process post-sale requestion from the Postfinance payment server.
+	 * 
+	 * @access public
+	 * @return void
+	 */
+	public function processPostSale()
+	{
+		$this->log('Post-sale request from Postfinance: '.print_r($_GET, true).print_r($_POST, true), 'PaymentPostfinance postProcessPayment()', TL_ACCESS);
+	}
+	
+	
+	/**
+	 * Return the payment form.
 	 * 
 	 * @access public
 	 * @return string
 	 */
 	public function checkoutForm()
 	{
+		$this->import('Isotope');
 		$this->import('IsotopeStore', 'Store');
 		$this->import('IsotopeCart', 'Cart');
 		
 		$objOrder = $this->Database->prepare("SELECT order_id FROM tl_iso_orders WHERE cart_id=?")->execute($this->Cart->id);
+		$arrAddress = $this->Isotope->getAddress('billing');
 		
 		$strAction = 'https://e-payment.postfinance.ch/ncol/prod/orderstandard.asp';
 		
@@ -68,65 +82,27 @@ class PaymentPostfinance extends Payment
 		}
 		
 		return '
-<form method="post" action="' . $strAction . '"
-id=form1 name=form1>
-<!-- general parameters: see chapter 5.2 -->
+<form method="post" action="' . $strAction . '">
 <input type="hidden" name="PSPID" value="' . $this->postfinance_pspid . '">
 <input type="hidden" name="orderID" value="' . $objOrder->order_id . '">
 <input type="hidden" name="amount" value="' . ($this->Cart->grandTotal * 100) . '">
 <input type="hidden" name="currency" value="' . $this->Store->currency . '">
-<input type="hidden" name="language" value="' . $GLOBALS['TL_LANGUAGE'] . '">
+<input type="hidden" name="language" value="' . $GLOBALS['TL_LANGUAGE'] . '_' . strtoupper($GLOBALS['TL_LANGUAGE']) . '">
 <!-- optional customer details, highly recommended for fraud prevention: see chapter 5.2 -->
-<input type="hidden" name="CN" value="">
-<input type="hidden" name="EMAIL" value="">
-<input type="hidden" name="ownerZIP" value="">
-<input type="hidden" name="owneraddress" value="">
-<input type="hidden" name="ownercty" value="">
-<input type="hidden" name="ownertown" value="">
-<input type="hidden" name="ownertelno" value="">
-<input type="hidden" name="COM" value="">
-<!-- check before the payment: see chapter 6.2 -->
-<input type="hidden" name="SHASign" value="">
-<!-- layout information: see chapter 7.1 -->
-<input type="hidden" name="TITLE" value="">
-<input type="hidden" name="BGCOLOR" value="">
-<input type="hidden" name="TXTCOLOR" value="">
-<input type="hidden" name="TBLBGCOLOR" value="">
-<input type="hidden" name="TBLTXTCOLOR" value="">
-<input type="hidden" name="BUTTONBGCOLOR" value="">
-<input type="hidden" name="BUTTONTXTCOLOR" value="">
-<input type="hidden" name="LOGO" value="">
-<input type="hidden" name="FONTTYPE" value="">
-<!-- dynamic template page: see chapter 7.2 -->
-<input type="hidden" name="TP" value="">
-<!-- payment methods/page specifics: see chapter 9.1 -->
-<input type="hidden" name="PM" value="">
-<input type="hidden" name="BRAND" value="">
-<input type="hidden" name="WIN3DS" value="">
-<input type="hidden" name="PM list type" value="">
-<input type="hidden" name="PMListType" value="">
-<!-- link to your website: see chapter 8.1 -->
-<input type="hidden" name="homeurl" value="">
-<input type="hidden" name="catalogurl" value="">
-<!-- post payment parameters: see chapter 8.2 -->
-<input type="hidden" name="COMPLUS" value="">
-<input type="hidden" name="PARAMPLUS" value="">
-<!-- post payment parameters: see chapter 8.3 -->
-<input type="hidden" name="PARAMVAR" value="">
+<input type="hidden" name="EMAIL" value="' . $arrAddress['email'] . '">
+<input type="hidden" name="ownerZIP" value="' . $arrAddress['postal'] . '">
+<input type="hidden" name="owneraddress" value="' . $arrAddress['street'] . '">
+<input type="hidden" name="ownercty" value="' . $arrAddress['country'] . '">
+<input type="hidden" name="ownertown" value="' . $arrAddress['city'] . '">
+<input type="hidden" name="ownertelno" value="' . $arrAddress['phone'] . '">
+<input type="hidden" name="SHASign" value="' . sha1($objOrder->order_id . ($this->Cart->grandTotal * 100) . $this->Store->currency . $this->postfinance_pspid . $this->postfinance_secret) . '">
 <!-- post payment redirection: see chapter 8.2 -->
 <input type="hidden" name="accepturl" value="' . $this->Environment->base . $this->addToUrl('step=order_complete') . '">
 <input type="hidden" name="declineurl" value="">
 <input type="hidden" name="exceptionurl" value="">
 <input type="hidden" name="cancelurl" value="">
-<!-- optional operation field: see chapter 9.2 -->
-<input type="hidden" name="operation" value="">
-<!-- optional extra login field: see chapter 9.3 -->
-<input type="hidden" name="USERID" value="">
-<!-- Alias details: see Alias Management documentation -->
-<input type="hidden" name="Alias" value="">
-<input type="hidden" name="AliasUsage" value="">
-<input type="hidden" name="AliasOperation" value="">
-<input type="submit" value="Bezahlen" id=submit2 name=submit2>
+<input type="hidden" name="paramplus" value="do=pay&id=' . $this->id . '">
+<input type="submit" value="Bezahlen">
 </form>
 ';
 	}
