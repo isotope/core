@@ -143,7 +143,7 @@ $GLOBALS['TL_DCA']['tl_shipping_modules'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_modules']['note'],
 			'exclude'                 => true,
 			'inputType'               => 'textarea',
-			'eval'                    => array('rte'=>'tinyMCE'),
+			'eval'                    => array('rte'=>'tinyMCE', 'decodeEntities'=>true),
 		),
 		'countries' => array
 		(
