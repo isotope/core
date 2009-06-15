@@ -163,6 +163,15 @@ $GLOBALS['TL_LANG']['MSC']['message_new_order_admin_notify'] = "An new order (ID
 $GLOBALS['TL_LANG']['MSC']['subject_new_order_customer_thank_you'] = 'Thank you for your order at %s!';
 $GLOBALS['TL_LANG']['MSC']['message_new_order_customer_thank_you'] = "Dear %s, \n\n Thank you for your order!  You will receive a notification once final shipping charges have been assessed with your updated order total.  If you have any questions please email us at %s";
 
+
+// Order status options
+$GLOBALS['TL_LANG']['MSC']['order_status_labels']['pending']	= 'Pending';
+$GLOBALS['TL_LANG']['MSC']['order_status_labels']['processing']	= 'Processing';
+$GLOBALS['TL_LANG']['MSC']['order_status_labels']['shipped']	= 'Shipped';
+$GLOBALS['TL_LANG']['MSC']['order_status_labels']['complete']	= 'Complete';
+$GLOBALS['TL_LANG']['MSC']['order_status_labels']['on_hold']	= 'On Hold';
+
+
 //$GLOBALS['TL_LANG']['MSC'][''] = '';
 
 

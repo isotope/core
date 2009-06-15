@@ -92,6 +92,12 @@ $GLOBALS['TL_LANG']['PAY']['paypal']			= array('PayPal Standard');
 $GLOBALS['TL_LANG']['PAY']['postfinance']		= array('Postfinance (Schweizerische Post)');
 
 
+// Order Status
+$GLOBALS['TL_LANG']['MSC']['order_status_labels']['pending']		= 'Offen';
+$GLOBALS['TL_LANG']['MSC']['order_status_labels']['processing']		= 'In Verarbeitung';
+$GLOBALS['TL_LANG']['MSC']['order_status_labels']['shipped']		= 'Versendet';
+$GLOBALS['TL_LANG']['MSC']['order_status_labels']['complete']		= 'Erledigt';
+$GLOBALS['TL_LANG']['MSC']['order_status_labels']['on_hold']		= 'Wartend';
 
 //Checkout language entries 
 $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['shipping_information'] = 'Wählen Sie die Versandadresse.';

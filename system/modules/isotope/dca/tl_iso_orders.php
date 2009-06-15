@@ -159,7 +159,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 			'inputType'               => 'select',
 			'options'				  => array('pending','processing','shipped','complete','on_hold'),
 			'eval'                    => array(),
-			'reference'				  => &$GLOBALS['TL_LANG']['tl_iso_orders']['order_status_labels']
+			'reference'				  => &$GLOBALS['TL_LANG']['MSC']['order_status_labels']
 		),
 		'order_comments' => array
 		(
@@ -218,7 +218,7 @@ class tl_iso_orders extends Backend
   <div>
     <h2>Bestellung #' . $row['id'] . '</h2><!--
     ' . 'von Gast-Benutzer' . '<br />
-    Status: <strong>' . $GLOBALS['TL_LANG']['tl_iso_orders']['order_status_labels'][$row['status']] . '</strong><br />-->
+    Status: <strong>' . $GLOBALS['TL_LANG']['MSC']['order_status_labels'][$row['status']] . '</strong><br />-->
     Zahlungsart: ' . $row['payment_method']  . '<br />
     Versandart: ' . $row['shipping_method']  . '<br />
     Subtotal: ' . $row['subTotal'] . '<br />

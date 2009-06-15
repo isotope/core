@@ -40,12 +40,6 @@ $GLOBALS['TL_LANG']['tl_iso_orders']['gift_wrap'] = array('Gift Wrap','');
  */
 $GLOBALS['TL_LANG']['tl_iso_orders']['shipping_method_labels']['ups_ground'] = 'UPS Ground';
 
-$GLOBALS['TL_LANG']['tl_iso_orders']['order_status_labels']['pending'] = 'Pending';
-$GLOBALS['TL_LANG']['tl_iso_orders']['order_status_labels']['processing'] = 'Processing';
-$GLOBALS['TL_LANG']['tl_iso_orders']['order_status_labels']['shipped'] = 'Shipped';
-$GLOBALS['TL_LANG']['tl_iso_orders']['order_status_labels']['complete'] = 'Complete';
-$GLOBALS['TL_LANG']['tl_iso_orders']['order_status_labels']['on_hold'] = 'On Hold';
-
 /**
  * Additional Operations
  */

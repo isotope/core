@@ -37,15 +37,6 @@ $GLOBALS['TL_LANG']['tl_iso_orders']['gift_message']		= array('Geschenknachricht
 $GLOBALS['TL_LANG']['tl_iso_orders']['gift_wrap']			= array('Geschenkverpackung','');
 
 
-/**
- * Reference
- */
-$GLOBALS['TL_LANG']['tl_iso_orders']['order_status_labels']['pending']		= 'Offen';
-$GLOBALS['TL_LANG']['tl_iso_orders']['order_status_labels']['processing']	= 'In Verarbeitung';
-$GLOBALS['TL_LANG']['tl_iso_orders']['order_status_labels']['shipped']		= 'Versendet';
-$GLOBALS['TL_LANG']['tl_iso_orders']['order_status_labels']['complete']		= 'Erledigt';
-$GLOBALS['TL_LANG']['tl_iso_orders']['order_status_labels']['on_hold']		= 'Wartend';
-
 
 /**
  * Additional Operations
