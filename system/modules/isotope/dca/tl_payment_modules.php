@@ -274,7 +274,7 @@ class tl_payment_modules extends Backend
 		$strClass = $GLOBALS['ISO_PAY'][$objModule->type];
 
 		if (!strlen($strClass) || !$this->classFileExists($strClass))
-			return '';
+			return array();
 			
 		try 
 		{
@@ -283,7 +283,7 @@ class tl_payment_modules extends Backend
 		}
 		catch (Exception $e) {}
 		
-		return '';
+		return array();
 	}
 	
 	
