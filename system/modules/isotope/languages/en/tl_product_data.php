@@ -32,7 +32,7 @@ $GLOBALS['TL_LANG']['tl_product_data']['audio_url'] = array('Specify External Fi
 $GLOBALS['TL_LANG']['tl_product_data']['video_source'] = array('Video File Source', 'Link to an internal or external media source instead of the default page.');
 $GLOBALS['TL_LANG']['tl_product_data']['video_jumpTo'] = array('Select Internal File', 'Please select the page to which visitors will be redirected.');
 $GLOBALS['TL_LANG']['tl_product_data']['video_url'] = array('Specify External File','Paste a media link here (for example, a Youtube video URL)');
-$GLOBALS['TL_LANG']['tl_product_data']['option_wizard'] = array('Product Option Wizard','Create extra product option combinations.');
+$GLOBALS['TL_LANG']['tl_product_data']['option_collection'] = array('Product Option Wizard','Create extra product option combinations.');
 $GLOBALS['TL_LANG']['tl_product_data']['add_audio_file'] = array('Add Audio File','Add an audio file to this product');
 $GLOBALS['TL_LANG']['tl_product_data']['add_video_file'] = array('Add Video File','Add a video file to this product');
 
