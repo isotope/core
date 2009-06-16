@@ -365,7 +365,7 @@ class ProductCatalog extends Backend
 			'inputType'               => 'text',
 			'eval'                    => array('decodeEntities'=>true, 'maxlength'=>255)
 		);
-		
+	/*	
 		$GLOBALS['TL_DCA'][$storeTable]['fields']['option_collection'] = array
 		(
 			'label'					  => &$GLOBALS['TL_LANG']['tl_product_data']['option_collection'],
@@ -378,7 +378,7 @@ class ProductCatalog extends Backend
 			(
 				array('ProductCatalog','saveProductOptions')
 			)
-		);
+		);*/
 		
 		// add DCA for form fields
 		foreach ($this->arrFields as $key=>$field) 
