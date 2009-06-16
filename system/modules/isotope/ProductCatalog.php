@@ -1247,8 +1247,9 @@ class ProductCatalog extends Backend
 	 * @param object $dc
 	 * @return string
 	 */
-	public function getRowLabel($row, $label, $dc)
+	public function getRowLabel($row, $label = '', $dc)
 	{
+		
 		$this->initializeAttributeSet($dc->id);
 		$this->import('Isotope');
 
