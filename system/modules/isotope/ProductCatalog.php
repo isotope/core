@@ -264,7 +264,7 @@ class ProductCatalog extends Backend
 		
 		// add palettes
 		$GLOBALS['TL_DCA'][$storeTable]['palettes']['__selector__'] = array('add_audio_file','add_video_file');
-		$GLOBALS['TL_DCA'][$storeTable]['palettes']['default'] = join(',',$GLOBALS['TL_DCA'][$storeTable]['list']['label']['fields']) . ';option_collection';
+		$GLOBALS['TL_DCA'][$storeTable]['palettes']['default'] = join(',',$GLOBALS['TL_DCA'][$storeTable]['list']['label']['fields']); // . ';option_collection';
 		$GLOBALS['TL_DCA'][$storeTable]['subpalettes']['add_audio_file'] = 'audio_source,audio_jumpTo,audio_url';
 		$GLOBALS['TL_DCA'][$storeTable]['subpalettes']['add_video_file'] = 'video_source,video_jumpTo,video_url';
 		
