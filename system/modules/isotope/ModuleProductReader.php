@@ -300,43 +300,44 @@ class ModuleProductReader extends ModuleIsotopeBase
 																				
 							if(is_dir($arrProductPaths['file_destination_path']))
 							{	
-								$arrImages = $this->getProductImages($arrProductPaths['file_destination_path'], $arrProductPaths['relative_destination_path'], $product, $GLOBALS['TL_LANG']['MSC']['imagesFolder'], $product['product_images'], $product['product_alias']);
+								$arrImages = $this->getProductImages($arrProductPaths['file_destination_path'], $arrProductPaths['relative_destination_path'], $product, $GLOBALS['TL_LANG']['MSC']['imagesFolder'], $product['product_media'], $product['product_alias']);
 								
 								if(count($arrImages))
 								{	
 									foreach($arrImages as $imageRecord)
 									{
 										if($imageRecord['is_main_image'])
-										{															
-											$this->Template->mainImage = $imageRecord;
-										}else{
+										{
+											$this->arrMainImage = $imageRecord;
+											$this->Template->mainImage = $this->arrMainImage;
+											$useLegacyMainImage = false;
+										}
+										else
+										{
 											if($useLegacyMainImage)
 											{
-												$this->Template->mainImage = $arrImages[0];
+												$this->Template->mainImage = array_shift($arrImages);
 											}
+											
 											$this->Template->hasExtraImages = true;
 											$arrOtherImages[] = $imageRecord;
 										}
-										
-										
 									}
 									
 
 									if(count($arrOtherImages))
 									{
 										$this->Template->extraProductImages = $arrOtherImages;
-									
 									}
 									
-								}else{
-									
+								}
+								else
+								{
 									$this->arrMainImage['file_path'] = $strMissingImagePlaceholder;
 									$this->arrMainImage['height'] = NULL;
 									$this->arrMainImage['width'] = NULL;
 									
 									$this->Template->mainImage = $this->arrMainImage;
-									
-									
 								}
 							}
 							else
