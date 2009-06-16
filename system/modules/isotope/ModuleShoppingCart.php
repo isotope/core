@@ -189,16 +189,9 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 		{		
 			$arrProductData = $this->Isotope->getProductData($this->Cart->getProducts(), array('product_alias','product_name','product_price', 'product_images', 'product_media'), 'product_name');
 			
-			
 			foreach($arrProductData as $k => $data)
 			{
 				$arrProductIds[$data['product_id']] = $data['attribute_set_id'];
-				
-				if (!strlen($arrProductData[$k]['product_media']))
-				{
-					$this->import('MediaManagement');
-					$arrProductData[$k]['product_media'] = $this->MediaManagement->getFirstOrdinalImage('product_assets/%s/%s/images/gallery_thumbnail_images', $data['product_alias']);
-				}
 			}
 		}	
 	

@@ -2,29 +2,32 @@
 
 <div class="productWrapper">
 
+<table cellspacing="0" cellpadding="0" summary="Cart products">
+	<tbody>
 <?php foreach($this->products as $product): ?>
 		<!-- BEGIN PRODUCT-->
-        <div class="product">
-   			<div class="col productImg"><img src="<?php echo $product['image'] ?>" alt="<?php echo $product['name']; ?>" border="0" class="thumbnail" /></div>
-       		<div class="col productInfo">
+        <tr class="product">
+   			<td class="col productImg"><img src="<?php echo $product['image'] ?>" alt="<?php echo $product['name']; ?>" border="0" class="thumbnail" /></td>
+       		<td class="col productInfo">
        				<h3 class="productName"><?php echo $product['name']; ?></h3>
        				<!--<div class="optionswrapper">
        					<?php foreach($this->cart_options as $option): ?>
 							<div class="option"><span class="optionname">OPTION:</span> PRODUCT OPTION</div>
 						<?php endforeach; ?>
        				</div>-->
-       		</div>
-       		<div class="col productQty">
-       			<span class="price"><?php echo $product['price']; ?></span> x <?php echo $product['quantity']; ?>
-       		</div>
-        	<div class="col productTotals">                 
+       		</td>
+       		<td class="col productQty">
+       			<span class="price"><?php echo $product['price']; ?></span>
+       		</td>
+			<td class="col"> x <?php echo $product['quantity']; ?></td>
+        	<td class="col productTotals">                 
                    <div class="total"><span class="total"><?php echo $product['total_price']; ?></span></div>
-            </div>       
-            <div class="clearBoth"></div>
-		</div>
+            </td>       
+		</tr>
         <!-- END PRODUCT-->
-        <div class="divider"></div>   
 	<?php endforeach; ?>
+	</tbody>
+</table>
     <div class="horizontalLine"></div>
     <div class="clearBoth"></div>
     <div class="finalPrices">
@@ -37,6 +40,8 @@
 
 	</div>
 	
+	<div class="clearBoth"></div>
+	
 	<div class="billing_address">
 		<h2>Rechnungsadresse</h2>
 		<?php echo nl2br($this->billingAddress); ?>
@@ -45,5 +50,9 @@
 		<h2>Lieferadresse</h2>
 		<?php echo nl2br($this->shippingAddress); ?>
 	</div>
+	
+	<div class="clearBoth"></div>
+	<div class="shipping_method"><strong>Versandart:</strong> <?php echo $this->shippingMethod; ?></div>
+	<div class="payment_method"><strong>Zahlungsart:</strong> <?php echo $this->paymentMethod; ?></div>
 	
 </div>

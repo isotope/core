@@ -213,8 +213,13 @@ class Isotope extends Controller
 				
 				foreach($arrFieldNames as $field)
 				{
+					if (($field == 'product_images' || $field == 'product_media') && !strlen($product[$field]))
+					{
+						$this->import('MediaManagement');
+						$product[$field] = $this->MediaManagement->getFirstOrdinalImage('product_assets/%s/%s/images/gallery_thumbnail_images', $product['product_alias']);
+					}
 					
-					$arrProducts[$product['id']][$field] = $product[$field];		
+					$arrProducts[$product['id']][$field] = $product[$field];
 				}
 				
 				$arrProducts[$product['id']]['attribute_set_id'] = $arrProductExtraFields[$k][$product['id']]['attribute_set_id'];

@@ -949,7 +949,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		}
 					
 		
-		$arrProductData = $this->Isotope->getProductData($this->Cart->getProducts(), array('product_alias','product_name','product_price', 'product_images'), 'product_name');
+		$arrProductData = $this->Isotope->getProductData($this->Cart->getProducts(), array('product_alias','product_name','product_price', 'product_media'), 'product_name');
 		
 		$objTemplate->products = $this->formatProductData($arrProductData);
 		
@@ -965,6 +965,9 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 		$objTemplate->billingAddress = $this->getAddressString($this->getSelectedAddress('billing'));
 		$objTemplate->shippingAddress = $this->getAddressString($this->getSelectedAddress('shipping'));
+		
+		$objTemplate->shippingMethod = $this->Cart->Shipping->label;
+		$objTemplate->paymentMethod = $this->Cart->Payment->label;
 		
 		return $objTemplate->parse();
 	}
