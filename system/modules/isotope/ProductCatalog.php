@@ -370,6 +370,10 @@ class ProductCatalog extends Backend
 		(
 			'label'					  => &$GLOBALS['TL_LANG']['tl_product_data']['option_collection'],
 			'inputType'				  => 'productOptionWizard',
+			'load_callback'			  => array
+			(
+				array('ProductCatalog','loadProductOptions')
+			),
 			'save_callback'			  => array
 			(
 				array('ProductCatalog','saveProductOptions')
@@ -568,11 +572,168 @@ class ProductCatalog extends Backend
 	
 	public function saveProductOptions($varValue, DataContainer $dc)
 	{
-
-		$arrValues = deserialize($varValue);
+		//** Data structure example **//
+		/*
+			array(2) {
+			  [0]=>			/// ROWS
+			  array(2) {	
+			    [0]=>
+			    string(2) "17"	//the select at 0, 0
+			    [1]=>
+			    string(2) "18"  //the select at 0, 1
+			  }
+			  [1]=>
+			  array(2) {
+			    [0]=>
+			    string(2) "17"	//the select at 1, 0
+			    [1]=>
+			    string(2) "18"  //the select at 1, 1
+			  }
+			}
+			
+			array(2) {
+			  [0]=>
+			  array(2) {
+			    [0]=>
+			    string(3) "red" 	//the value at 0, 0
+			    [1]=>
+			    string(5) "small"	//the value at 0, 1
+			  }
+			  [1]=>
+			  array(2) {
+			    [0]=>
+			    string(3) "red"		//the value at 1, 0
+			    [1]=>
+			    string(6) "medium"  //the value at 1, 1
+			  }
+			}
 		
-		echo $this->Input->post($dc->field . '_values');
-		exit;
+			and we will transform this into the following structure...
+			
+			array(2) { 			// Number of total rows
+				
+				[0] =>
+				array(2) {
+					[0] => array(2)
+					{
+						'attribute'		=> string(2) "17",
+						'value'			=> string(3) "red"
+					},
+					[1] => array(2)
+					{
+						'attribute'		=> string(2) "18",
+						'value'			=> string(5) "small"					
+					}
+				},
+				[1] =>
+				array(2) {
+					[0] => array(2)
+					{
+						'attribute'		=> string(2) "17",
+						'value'			=> string(3) "red"
+					},
+					[1] => array(2)
+					{
+						'attribute'		=> string(2) "18",
+						'value'			=> string(6) "medium"					
+					}
+				
+				}
+			
+			}
+		
+		*/
+		$arrAttributes = deserialize($varValue);	//because the first thing that happens is this, on save.	
+		$arrValues = $this->Input->post($dc->field . '_values'); 
+	
+		$arrCompositeValues = array();
+	
+		for($x=0; $x<sizeof($arrAttributes); $x++)
+		{
+			
+			for($y=0; $y<sizeof($arrValues); $y++)
+			{	
+				
+					
+					$arrAttributeValuePairs[] = array
+					(
+						'x'				=> $x,
+						'y'				=> $y,
+						'attribute'		=> $arrAttributes[$x][$y],
+						'value'			=> $arrValues[$x][$y]					
+					);						
+					
+			}		
+		
+		}
+		
+		return serialize($arrAttributeValuePairs);
+		
+	}
+	
+	public function loadProductOptions($varValue, DataContainer $dc)
+	{
+		$arrAttributeValuePairs = deserialize($varValue);
+		
+		$arrAttributes = array();
+		$arrValues = array();
+		
+		if(sizeof($arrAttributeValuePairs)<1)
+		{
+			return;
+		}
+		
+		foreach($arrAttributeValuePairs as $row)
+		{
+			
+				$x = (integer)$row['x'];
+				$y = (integer)$row['y'];
+				
+				$arrAttributes[$x][$y] = $row['attribute'];
+				
+				$arrValues[$x][$y] = $row['value'];
+				
+				/*
+				$varValue[$valuePair['x']] = array
+				(
+					$valuePair['x']			=>	$valuePair[$valuePair['x']][$valuePair['attribute']],
+					$valuePair['x']+1		=>	$valuePair[$valuePair['x']+1][$valuePair['attribute']]
+				);
+				
+				$arrValues[$row['x']] = array
+				(
+					$row['x']		=>	$valuePair[$row['x']]['value'],
+					$row['x']+1		=>  $valuePair[$row['x']+1]['value']
+				);*/
+		
+		}	
+			$_SESSION['FORM_DATA'][$dc->field . '_values'] = $arrValues;
+			//$_SESSION['FORM_DATA'][$dc->field] = $arrAttributes;
+			
+			//serialize($_SESSION['FORM_DATA'][$dc->field.'_values']);
+			//
+			//$varValue = $arrAttributes;
+			return $arrAttributes;
+			
+			/*array(2) {
+			  [0]=>			/// ROWS
+			  array(2) {	
+			    [0]=>
+			    string(2) "17"	//the select at 0, 0
+			    [1]=>
+			    string(2) "18"  //the select at 0, 1
+			  }
+			  [1]=>
+			  array(2) {
+			    [0]=>
+			    string(2) "17"	//the select at 1, 0
+			    [1]=>
+			    string(2) "18"  //the select at 1, 1
+			  }
+			}*/
+			
+	
+	
 	}
 	
 	

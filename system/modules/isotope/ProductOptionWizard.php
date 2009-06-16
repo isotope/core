@@ -138,7 +138,7 @@ class ProductOptionWizard extends Widget
 
 		$this->import('Database');
 			
-		$arrButtons = array('copy', 'up', 'down', 'delete');
+		$arrButtons = array('copy', 'delete');
 		$strCommand = 'cmd_' . $this->strField;
 		
 		$this->strTable = $this->Input->get('table');
@@ -147,8 +147,8 @@ class ProductOptionWizard extends Widget
 		
 		$arrOptionValues = $this->getAllOptionValues($arrOptionAttributes);
 				
-		$arrColButtons = array('ccopy', 'cmovel', 'cmover', 'cdelete');
-		$arrRowButtons = array('rcopy', 'rup', 'rdown', 'rdelete');
+		$arrColButtons = array('ccopy', 'cdelete');
+		$arrRowButtons = array('rcopy', 'rdelete');
 
 		$strCommand = 'cmd_' . $this->strField;
 
@@ -165,7 +165,7 @@ class ProductOptionWizard extends Widget
 						$this->varValue[$i] = array_duplicate($this->varValue[$i], $this->Input->get('cid'));
 					}
 					break;
-
+				
 				case 'cmovel':
 					for ($i=0; $i<count($this->varValue); $i++)
 					{
@@ -204,10 +204,14 @@ class ProductOptionWizard extends Widget
 					break;
 			}
 
-			$this->Database->prepare("UPDATE " . $this->strTable . " SET " . $this->strField . "=? WHERE id=?")
-						   ->execute(serialize($this->varValue), $this->currentRecord);
-
-			$this->redirect(preg_replace('/&(amp;)?cid=[^&]*/i', '', preg_replace('/&(amp;)?' . preg_quote($strCommand, '/') . '=[^&]*/i', '', $this->Environment->request)));
+			if(!is_null($this->varValue))
+			{
+				
+				$this->Database->prepare("UPDATE " . $this->strTable . " SET " . $this->strField . "=? WHERE id=?")
+							   ->execute(serialize($this->varValue), $this->currentRecord);
+						
+				$this->redirect(preg_replace('/&(amp;)?cid=[^&]*/i', '', preg_replace('/&(amp;)?' . preg_quote($strCommand, '/') . '=[^&]*/i', '', $this->Environment->request)));
+			}
 		}
 
 		// Make sure there is at least an empty array
@@ -246,37 +250,55 @@ class ProductOptionWizard extends Widget
 		{
 			$return .= '
     <tr>';
-
+			
 			// Add cells
-			for ($j=0; $j<count($this->varValue[$i][$j]); $j++)
+			for ($j=0; $j<count($this->varValue[$j]); $j++)
 			{
-				$return .= '<td class="tcontainer">
-				<select id="ctrl_' . $this->strId.'" name="' . $this->strId.'['.$i.']['.$j.']" class="tl_select"'.$this->getAttributes().' onchange="ProductsOptionWizard.getOptionValues(this,\'ctrl_'.$this->strId.'\',\''.$this->strId.'\');">';
+				
+				//for($k=0; $k<count($this->varValue[$j][$k]); $k++)
+				//{
+					$return .= '<td class="tcontainer">
+					<select id="ctrl_' . $this->strId.'" name="' . $this->strId.'['.$i.']['.$j.']" class="tl_select"'.$this->getAttributes().' onchange="ProductsOptionWizard.getOptionValues(this,\'ctrl_'.$this->strId.'\',\''.$this->strId.'\');">';
+							
 								
 					//return the attribute dropdown lists
 					foreach($arrOptionAttributes as $k=>$v)
 					{
-						$return .= '<option value="' . $k . '"' . ($v==$this->varValue[$i]['value'] ? ' selected' : '') . '>' . $v . '</option>';
+						$return .= '<option value="' . $k . '"' . ($k==$this->varValue[$i][$j] ? ' selected' : '') . '>' . $v . '</option>';
 	  				}
-	  			$return .= '</select><br />';	
-
-				//$return .= '<select name="' . $this->strId.'['.$i.']['.$j.'][values]" class="tl_select"'.$this->getAttributes().'>';
-
-					//return the attribute value dropdown lists
-					/*foreach($this->arrAttributeOptions[$this->strId] as $attribute)
-					{
-						$return .= '<option value="' . $attribute['value'] . '"' . ($varCurrOptionValue==$this->varValue[$i]['value'] ? ' selected' : '') . '>' . $attribute['label'] . '</option>';
-	  				}*/
-	  				
+	  			
+		  			$return .= '</select><br />';	
+	
+					$strValuesKey = $this->strId.'_values';
 			
-				
-				//$return .= '</select>';
-				
-				/*	
-				$return .= '
-      <td class="tcontainer"><textarea name="'.$this->strId.'['.$i.']['.$j.']" class="tl_textarea" rows="'.$this->intRows.'" cols="'.$this->intCols.'"'.$this->getAttributes().'>'.specialchars($this->varValue[$i][$j]).'</textarea></td>';
-				*/
-				
+					if(sizeof($_SESSION['FORM_DATA'][$strValuesKey])>0)
+					{
+						
+						$return .= '<div id="value_div['.$i.']['.$j.']">';
+						
+						$return .= '<select name="' . $this->strId.'_values['.$i.']['.$j.']" class="tl_select"'.$this->getAttributes().'>';
+		
+							//return the attribute value dropdown lists
+							//foreach($arrOptionValues as $kk=>$vv)
+							//{
+								foreach($arrOptionValues[$this->varValue[$i][$j]] as $kk=>$vv)
+								{
+									
+									$return .= '<option value="' . $vv['value'] . '"' . ($vv['value']==$_SESSION['FORM_DATA'][$strValuesKey][$i][$j] ? ' selected' : '') . '>' . $vv['label'] . '</option>';
+			  					}
+			  				//}
+			  				
+					
+						
+						$return .= '</select>';
+						$return .= '</div>';
+					
+						/*	
+						$return .= '
+		      <td class="tcontainer"><textarea name="'.$this->strId.'['.$i.']['.$j.']" class="tl_textarea" rows="'.$this->intRows.'" cols="'.$this->intCols.'"'.$this->getAttributes().'>'.specialchars($this->varValue[$i][$j]).'</textarea></td>';
+						*/
+					}
+				//}				
 			}
 
 			$return .= '
@@ -317,6 +339,8 @@ class ProductOptionWizard extends Widget
 	 */
 	protected function getOptionAttributes()
 	{
+		$this->import('Database');
+		
 		$arrOptionAttributes = array();
 		
 		//Get attributes that are is_customer_defined 
@@ -337,7 +361,7 @@ class ProductOptionWizard extends Widget
 		{
 			$arrOptionAttributes[$attribute['value']] = $attribute['label'];
 		}
-		
+				
 		return $arrOptionAttributes;
 	}
 	
@@ -348,11 +372,18 @@ class ProductOptionWizard extends Widget
 	 */
 	protected function getAllOptionValues($arrOptionAttributes)
 	{
-		foreach($arrOptionAttributes as $attribute)
+		
+		
+		foreach(array_keys($arrOptionAttributes) as $key)
 		{
+			if($key=="-")
+			{
+				continue;
+			}
+			
 			$objAttributeValues = $this->Database->prepare("SELECT option_list FROM tl_product_attributes WHERE id=?")
 												 ->limit(1)
-												 ->execute($attribute['value']);
+												 ->execute($key);
 			
 			if($objAttributeValues->numRows < 1)
 			{
@@ -361,16 +392,19 @@ class ProductOptionWizard extends Widget
 			
 			$arrAttributeValues = deserialize($objAttributeValues->option_list);
 		
+			$arrOptionValues[$key][] = array('-' => $GLOBALS['TL_LANG']['MSC']['selectItemPrompt']);
+
+			foreach($arrAttributeValues as $option)
+			{
+				$arrOptionValues[$key][] = array
+				(
+					'value'		=> $option['value'],
+					'label'		=> $option['label']
+				);
+			}
+
 		}
-		
-		$arrOptionValues['-'] = $GLOBALS['TL_LANG']['MSC']['selectItemPrompt'];
-		
 				
-		foreach($arrValues as $option)
-		{
-			$arrOptionValues[$option['value']] = $option['label'];
-		}
-		
 		return $arrOptionValues;
 	
 	}
@@ -402,33 +436,70 @@ class ProductOptionWizard extends Widget
 	        }else{
 	        	
 	        	$this->arrAttributeOptions = deserialize($objAttributeValues->option_list);
+	       		unset($this->arrAttributeOptions[$intId]);	//remove the selected (current value from the list of attributes that can be used.
 	       	}
-
-	    	echo $this->generateAjax($dc, $strParentField, $intX, $intY, $this->arrAttributeOptions); 
+			
+			foreach($this->arrAttributeOptions as $option)	//This selection of values (option_list values) are stored as value/label combos
+			{
+				$arrFinalOptions[$option['value']] = $option['label'];
+			}
+			
+	    	echo $this->generateAjax($dc, $strParentField, $intX, $intY, $arrFinalOptions); 
 	    	
+	    }
+	    
+	    if ($strAction == 'addAttributeList')
+	    {
+	    	$intId = $this->Input->post('aid');
+	    	$intX = (integer)$this->Input->post('r');
+	    	$intY = (integer)$this->Input->post('c');
+	    	$strParentField = $this->Input->post('parent');
+	    	
+	    	$arrAttributes = $this->getOptionAttributes();
+	    	
+	    	if($intId!='-')
+	    	{
+	    		unset($arrAttributes[$intId]);	//remove the selected (current value from the list of attributes that can be used.
+	    	}
+	    	
+	    	echo $this->generateAjax($dc, $strParentField, $intX, $intY, $arrAttributes, 'attributes');
 	    }
 	    
 	    //return $this->arrAttributeOptions;
 	}
 	
-	protected function generateAjax($objDc, $strId, $intX, $intY, $arrOptions)
+	protected function generateAjax($objDc, $strId, $intX, $intY, $arrOptions, $strControlType = 'values')
 	{
-		foreach($arrOptions as $option)
-		{
-			$arrFinalOptions[$option['value']] = $option['label'];
-		}
-			
-		$strControlId = $strId . '_values[' . $intX . '][' . $intY . ']';
+	
+		$arrOptions;
 				
-		$arrData['strTable'] = $dc->table;
-		$arrData['id'] = $strControlId;
-		$arrData['name'] = $strControlId;
-		$arrData['options'] = $arrFinalOptions;
+		switch($strControlType)
+		{
+			case 'values':
+				$strControlId = $strId . '_values[' . $intX . '][' . $intY . ']';
+				$strOnChangeEvent = '';
+				break;
+			case 'attributes':
+				$strControlId = $strId;
+				$strOnChangeEvent = 'onchange="ProductsOptionWizard.getOptionValues(this,\'ctrl_'.$strId.'\',\''.$strId.'\');"';
+				break;
+			default:
+				break;		
+		}
 		
+				
+				
+		$return = '<select id="ctrl_'. $strControlId.'" name="' . $strControlId.'" class="tl_select"'.$this->getAttributes().$strOnChangeEvent.'>';
+								
+		//return the attribute dropdown lists
+		foreach($arrOptions as $k=>$v)
+		{
+			$return .= '<option value="' . $k . '">' . $v . '</option>';
+		}
+
+		$return .= '</select>';
 		
-		$objWidget = new $GLOBALS['BE_FFL']['select']($this->prepareForWidget($arrData, $strControlId));
-					
-		return $objWidget->generate();
+		return $return;
 	}
 	
 	public function saveValues($varValue, DataContainer $dc)

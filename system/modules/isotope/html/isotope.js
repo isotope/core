@@ -69,20 +69,41 @@ var ProductsOptionWizard =
 
 				for (var i=0; i<childs.length; i++)
 				{
-					var next = childs[i].clone(true).injectInside(tr);
+					var next = childs[i].clone(true, true).injectInside(tr);	//inject cell and contents
+					//var selected = childs[i].getFirst().value;
 					next.getFirst().value = childs[i].getFirst().value;
-					next.getFirst().id = childs[i].getFirst().value;
+					next.getFirst().value = '-';
+					
+					/*
+					if(current.options[current.selectedIndex].value!='-')
+					{
+						current.remove(current.selectedIndex);
+					}*/
+					
+					//var next.getFirst()
+					var current = next.getChildren()[index];
+											
+					var haystack = current.id;
+					
+					//current.name = current.id.replace(/\[[0-9]+\][[0-9]+\]/ig, '[' + (i-1) + '][' + j + ']');
+					
+					//var next2 = current.getFirst();
+					
+					//next2.name = next2.name.replace(/\[[0-9]+\][[0-9]+\]/ig, '[' + (i-1) + '][' + j + ']');
+
+					
+					if(haystack.indexOf('value') !== -1)
+					{
+						//destroy the existing value div so we can create a new one.
+						current.destroy();						
+					}
+				
+					//var next2 = current.getFirst(); -- how to refer to the next child element, the select box
+																												
+					
 				}
 
 				tr.injectAfter(parentTr);
-				break;
-
-			case 'rup':
-				parentTr.getPrevious().getPrevious() ? parentTr.injectBefore(parentTr.getPrevious()) : parentTr.injectInside(tbody);
-				break;
-
-			case 'rdown':
-				parentTr.getNext() ? parentTr.injectAfter(parentTr.getNext()) : parentTr.injectBefore(tbody.getFirst().getNext());
 				break;
 
 			case 'rdelete':
@@ -93,47 +114,28 @@ var ProductsOptionWizard =
 				for (var i=0; i<rows.length; i++)
 				{
 					var current = rows[i].getChildren()[index];
-					var next = current.clone(true).injectAfter(current);
+					var next = current.clone(true, true).injectAfter(current);
+										
 					next.getFirst().value = current.getFirst().value;
 					
-					next.getFirst().setAttribute('id',current.getFirst().id);
-				}
-				break;
-
-			case 'cmovel':
-				if (index > 0)
-				{
-					for (var i=0; i<rows.length; i++)
+					var current = next.getChildren()[index];
+														
+					if(current.type== 'select-one' && current.id)
 					{
-						var current = rows[i].getChildren()[index];
-						current.injectBefore(current.getPrevious());
-					}
-				}
-				else
-				{
-					for (var i=0; i<rows.length; i++)
-					{
-						var current = rows[i].getChildren()[index];
-						current.injectBefore(rows[i].getLast());
-					}
-				}
-				break;
-
-			case 'cmover':
-				if (index < (cols.length - 2))
-				{
-					for (var i=0; i<rows.length; i++)
-					{
-						var current = rows[i].getChildren()[index];
-						current.injectAfter(current.getNext());
-					}
-				}
-				else
-				{
-					for (var i=0; i<rows.length; i++)
-					{
-						var current = rows[i].getChildren()[index];
-						current.injectBefore(rows[i].getFirst());
+						if(current.options[current.selectedIndex].value!='-')
+						{
+							current.remove(current.selectedIndex);
+						}
+						
+						next = current.getNext();
+						
+						var haystack = next.id;
+						
+						if(haystack.indexOf('value') !== -1)
+						{
+							next.destroy();						
+						}
+						
 					}
 				}
 				break;
@@ -141,7 +143,27 @@ var ProductsOptionWizard =
 			case 'cdelete':
 				if (cols.length > 2)
 				{
-					for (var i=0; i<rows.length; i++)
+					/*for (var i=0; i<rows.length; i++)
+					{
+						var current = rows[i].getChildren()[index];
+						var next = current.clone(true, true).injectAfter(current);
+										
+						next.getFirst().value = current.getFirst().value;
+					
+						var current = next.getChildren()[index];
+														
+						if(current.type== 'select-one' && current.id)
+						{
+							if(current.options[current.selectedIndex].value!='-')
+							{
+								current.add(current.selectedIndex);
+							}
+						}
+						
+						next = current.getNext();
+					}*/
+					
+					for(var i=0; i<rows.length; i++)
 					{
 						rows[i].getChildren()[index].destroy();
 					}
@@ -150,7 +172,7 @@ var ProductsOptionWizard =
 		}
 
 		rows = tbody.getChildren();
-		
+	
 		for (var i=0; i<rows.length; i++)
 		{
 			var childs = rows[i].getChildren();
@@ -161,14 +183,15 @@ var ProductsOptionWizard =
 						
 				if (first && first.type == 'select-one')
 				{
+									
 					first.name = first.name.replace(/\[[0-9]+\][[0-9]+\]/ig, '[' + (i-1) + '][' + j + ']');
-										
 				}
 				
+				/*
 				if (first && first.id == 'value_div')
 				{
 					first.name = first.name.replace(/\[[0-9]+\][[0-9]+\]/ig, '[' + (i-1) + '][' + j + ']');				
-				}
+				}*/
 				
 			}
 		}
@@ -205,15 +228,15 @@ var ProductsOptionWizard =
 			onComplete: function(txt, xml)
 			{
 									
-				var currDiv = $('value_div');
+				var currDiv= $('value_div[' + xcoord + '][' + ycoord + ']');
 				
 				if($defined(currDiv))
 				{
 					currDiv.destroy();
 				}
-					
+									
 				div = new Element('div');
-				div.setProperty('id','value_div');
+				div.setProperty('id','value_div[' + xcoord + '][' + ycoord + ']');
 				div.setProperty('name',id + '_values[' + xcoord + '][' + ycoord + ']');
 				div.set('html',txt);
 				

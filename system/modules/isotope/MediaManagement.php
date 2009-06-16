@@ -449,10 +449,10 @@ class MediaManagement extends Backend
 	
 	}	
 	
-	public function getImageSizeConstraints($strTable, $intID, $strAlias)
+	public function getImageSizeConstraints($strTable, $intID)
 	{
 	
-		$intPID = $this->getPID($strTable, $intID, $strAlias);
+		$intPID = $this->getPID($strTable, $intID);
 		
 		if($intPID!=0)
 		{
