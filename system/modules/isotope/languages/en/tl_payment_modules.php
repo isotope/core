@@ -46,7 +46,15 @@ $GLOBALS['TL_LANG']['tl_payment_modules']['delimResponse']	= array('Delimited-da
 $GLOBALS['TL_LANG']['tl_payment_modules']['delimChar']	= array('Delimiter (Character)', 'A character used to separate fields in the response data.');
 $GLOBALS['TL_LANG']['tl_payment_modules']['productModule']	= array('Product Module', 'The module from which data originates and is used to post the transaction with.');
 $GLOBALS['TL_LANG']['tl_payment_modules']['checkoutFields']	= array('Checkout Fields', 'The fields read for review on the confirm page.');
-
+/*
+$GLOBALS['TL_LANG']['tl_payment_modules']['authorize_login']	= array('','');
+$GLOBALS['TL_LANG']['tl_payment_modules']['authorize_is_test']	= array('','');
+$GLOBALS['TL_LANG']['tl_payment_modules']['authorize_delimiter']	= array('','');
+$GLOBALS['TL_LANG']['tl_payment_modules']['authorize_delimit_data']	= array('','');
+$GLOBALS['TL_LANG']['tl_payment_modules']['authorize_trans_type']	= array('','');
+$GLOBALS['TL_LANG']['tl_payment_modules']['authorize_relay_response']	= array('','');
+$GLOBALS['TL_LANG']['tl_payment_modules']['authorize_email_customer']	= array('','');
+*/
 
 /**
  * References

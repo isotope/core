@@ -107,6 +107,7 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 		'cash'						  => 'name,type,label,note;countries,shipping_modules,minimum_total,maximum_total,new_order_status;enabled',
 		'paypal'                      => 'name,type,label,note;countries,shipping_modules,minimum_total,maximum_total,new_order_status;paypal_account,paypal_business;debug,enabled',
 		'postfinance'                 => 'name,type,label,note;countries,shipping_modules,minimum_total,maximum_total,new_order_status,postsale_mail;postfinance_pspid,postfinance_secret,postfinance_method;debug,enabled',
+		'authorizedotnet'			  => 'authorize_login,authorize_is_test,authorize_delimiter,authorize_delimit_data,authorize_trans_type,authorize_relay_response,authorize_email_customer'
 	),
 
 	// Fields
@@ -248,7 +249,6 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 		),
 	)
 );
-
 
 /**
  * tl_payment_modules class.
