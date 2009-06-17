@@ -356,6 +356,7 @@ CREATE TABLE `tl_payment_modules` (
   `minimum_total` varchar(255) NOT NULL default '',
   `maximum_total` varchar(255) NOT NULL default '',
   `new_order_status` varchar(255) NOT NULL default '',
+  `postsale_mail` int(10) unsigned NOT NULL default '0',
   `paypal_account` varchar(255) NOT NULL default '',
   `paypal_business` varchar(255) NOT NULL default '',
   `postfinance_pspid` varchar(255) NOT NULL default '',

@@ -106,7 +106,7 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 		'default'                     => 'name,type',
 		'cash'						  => 'name,type,label,note;countries,shipping_modules,minimum_total,maximum_total,new_order_status;enabled',
 		'paypal'                      => 'name,type,label,note;countries,shipping_modules,minimum_total,maximum_total,new_order_status;paypal_account,paypal_business;debug,enabled',
-		'postfinance'                 => 'name,type,label,note;countries,shipping_modules,minimum_total,maximum_total,new_order_status;postfinance_pspid,postfinance_secret,postfinance_method;debug,enabled',
+		'postfinance'                 => 'name,type,label,note;countries,shipping_modules,minimum_total,maximum_total,new_order_status,postsale_mail;postfinance_pspid,postfinance_secret,postfinance_method;debug,enabled',
 	),
 
 	// Fields
@@ -169,7 +169,7 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'default'                 => 0,
-			'eval'                    => array('maxlength'=>255, 'rgxp'=>'digit'),
+			'eval'                    => array('maxlength'=>255, 'rgxp'=>'digit', 'tl_class'=>'w50'),
 		),
 		'maximum_total' => array
 		(
@@ -177,7 +177,7 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'default'                 => 0,
-			'eval'                    => array('maxlength'=>255, 'rgxp'=>'digit'),
+			'eval'                    => array('maxlength'=>255, 'rgxp'=>'digit', 'tl_class'=>'w50'),
 		),
 		'new_order_status' => array
 		(
@@ -188,6 +188,14 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 			'options_callback'        => array('tl_payment_modules', 'getOrderStatus'),
 			'reference'               => &$GLOBALS['TL_LANG']['MSC']['order_status_labels'],
 			'eval'                    => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50'),
+		),
+		'postsale_mail' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_module']['postsale_mail'],
+			'exclude'                 => true,
+			'inputType'               => 'select',
+			'foreignKey'              => 'tl_iso_mail.name',
+			'eval'					  => array('includeBlankOption'=>true),
 		),
 		'paypal_account' => array
 		(
