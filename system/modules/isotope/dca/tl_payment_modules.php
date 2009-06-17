@@ -106,7 +106,7 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 		'default'                     => 'name,type',
 		'cash'						  => 'name,type,label,note;countries,shipping_modules,minimum_total,maximum_total,new_order_status;enabled',
 		'paypal'                      => 'name,type,label,note;countries,shipping_modules,minimum_total,maximum_total,new_order_status;paypal_account,paypal_business;debug,enabled',
-		'postfinance'                 => 'name,type,label,note;countries,shipping_modules,minimum_total,maximum_total,new_order_status;postfinance_pspid,postfinance_secret;debug,enabled',
+		'postfinance'                 => 'name,type,label,note;countries,shipping_modules,minimum_total,maximum_total,new_order_status;postfinance_pspid,postfinance_secret,postfinance_method;debug,enabled',
 	),
 
 	// Fields
@@ -216,6 +216,15 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255),
+		),
+		'postfinance_method' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['postfinance_method'],
+			'exclude'                 => true,
+			'inputType'               => 'select',
+			'default'                 => 'POST',
+			'options'                 => array('POST', 'GET'),
+			'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
 		),
 		'debug' => array
 		(

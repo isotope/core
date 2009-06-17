@@ -360,6 +360,7 @@ CREATE TABLE `tl_payment_modules` (
   `paypal_business` varchar(255) NOT NULL default '',
   `postfinance_pspid` varchar(255) NOT NULL default '',
   `postfinance_secret` varchar(255) NOT NULL default '',
+  `postfinance_method` varchar(4) NOT NULL default '',
   `debug` char(1) NOT NULL default '',
   `enabled` char(1) NOT NULL default '',
   PRIMARY KEY  (`id`),
