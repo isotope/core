@@ -85,11 +85,11 @@ class PaymentAuthorizeDotNet extends Payment
 <form method="post" action="' . $this->Environment->request . '">
 <input type="hidden" name="x_login" value="' . $this->authorize_login . '">
 <input type="hidden" name="x_version" value="' . $GLOBALS['TL_LANG']['MSC']['gatewayVersion'] . '">
-<input type="hidden" name="x_test_request" value="' . $this->authorize_status . '">
-<input type="hidden" name="x_delim_char" value="' . $this->authorize_delim . '">
-<input type="hidden" name="x_delim_data" value="' . $this->authorize_delim_data . '">
-<input type="hidden" name="x_url" value="' . $strAction . '">
-<input type="hidden" name="x_type" value="' . $this->authorize_trans_kype . '">
+<input type="hidden" name="x_test_request" value="' . $this->authorize_is_test . '">
+<input type="hidden" name="x_delim_char" value="' . $this->authorize_delimiter . '">
+<input type="hidden" name="x_delim_data" value="' . $this->authorize_delimit_data . '">
+<input type="hidden" name="x_url" value="' . $strCurlUrl . '">
+<input type="hidden" name="x_type" value="' . $this->authorize_trans_type . '">
 <input type="hidden" name="x_method" value="' . $this->authorize_method . '">
 <input type="hidden" name="x_tran_key" value="' . $this->authorize_trans_key . '">
 <input type="hidden" name="x_relay_response" value="' . $this->authorize_relay_response . '">
@@ -111,6 +111,7 @@ class PaymentAuthorizeDotNet extends Payment
 </form>
 ';
 /*
+
 <input type="hidden" name="PSPID" value="' . $this->postfinance_pspid . '">
 <input type="hidden" name="orderID" value="' . $objOrder->order_id . '">
 <input type="hidden" name="amount" value="' . ($this->Cart->grandTotal * 100) . '">
