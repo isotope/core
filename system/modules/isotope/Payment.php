@@ -122,12 +122,11 @@ abstract class Payment extends Frontend
 	
 	
 	/**
-	 * Return a list of status options.
+	 * Return a list of order status options.
 	 *
 	 * Allowed return values are:
 	 * - pending
 	 * - processing
-	 * - paid
 	 * - shipped
 	 * - complete
 	 * - on_hold
