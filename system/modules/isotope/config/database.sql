@@ -364,7 +364,6 @@ CREATE TABLE `tl_payment_modules` (
   `postfinance_secret` varchar(255) NOT NULL default '',
   `postfinance_method` varchar(4) NOT NULL default '',
   `authorize_login` varchar(255) NOT NULL default '',
-  `authorize_is_test` char(1) NOT NULL default '',
   `authorize_delimiter` varchar(4) NOT NULL default '',
   `authorize_delimit_data` char(1) NOT NULL default '',
   `authorize_trans_type` varchar(32) NOT NULL default '',
