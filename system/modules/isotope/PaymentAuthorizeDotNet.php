@@ -79,13 +79,14 @@ class PaymentAuthorizeDotNet extends Payment
 		if ($this->debug)
 		{
 			$strCurlUrl = 'https://test.authorize.net/gateway/transact.dll';
+			$strTestValue = "true";
 		}
 		
 		return '
 <form method="post" action="' . $this->Environment->request . '">
 <input type="hidden" name="x_login" value="' . $this->authorize_login . '">
 <input type="hidden" name="x_version" value="' . $GLOBALS['TL_LANG']['MSC']['gatewayVersion'] . '">
-<input type="hidden" name="x_test_request" value="' . $this->authorize_is_test . '">
+<input type="hidden" name="x_test_request" value="' . $strTestValue . '">
 <input type="hidden" name="x_delim_char" value="' . $this->authorize_delimiter . '">
 <input type="hidden" name="x_delim_data" value="' . $this->authorize_delimit_data . '">
 <input type="hidden" name="x_url" value="' . $strCurlUrl . '">
