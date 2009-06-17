@@ -104,7 +104,7 @@ $GLOBALS['TL_LANG']['MSC']['selectItemPrompt'] = "(select)";
 
 $GLOBALS['TL_LANG']['MSC']['noPaymentModules'] = 'No payment options are currently available';
 $GLOBALS['TL_LANG']['MSC']['noShippingModules'] = 'No shipping options are currently available.';
-
+$GLOBALS['TL_LANG']['MSC']['testTransaction'] = 'This is a test transaction - do not attempt to process.';
 //Checkout language entries 
 $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['login'] = 'First time user? Create an account now.&nbsp;';
 $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['shipping_information'] = 'Enter your shipping information or select an existing address.';
@@ -153,7 +153,7 @@ $GLOBALS['TL_LANG']['MSC']['iso_subtotal_header'] = 'Subtotal';
 $GLOBALS['TL_LANG']['MSC']['iso_order_shipping_header'] = 'Shipping & Handling';
 $GLOBALS['TL_LANG']['MSC']['iso_order_grand_total_header'] = 'Grand Total';
 
-$GLOBALS['TL_LANG']['MSC']['store_title'] = 'Kolbo Fine Judaica';
+$GLOBALS['TL_LANG']['MSC']['store_title'] = '';
 
 //Admin order notfication language entries
 $GLOBALS['TL_LANG']['MSC']['subject_new_order_admin_notify'] = 'New order has been placed on %s';
@@ -231,7 +231,7 @@ $GLOBALS['TL_LANG']['SHIP']['flat']				= array('Flat-price shipping');
 $GLOBALS['TL_LANG']['PAY']['cash']				= array('Cash');
 $GLOBALS['TL_LANG']['PAY']['paypal']			= array('PayPal Standard');
 $GLOBALS['TL_LANG']['PAY']['postfinance']		= array('Postfinance (swiss post)');
-
+$GLOBALS['TL_LANG']['PAY']['authorizedotnet']  = array('Authorize.net');
 
 
 
