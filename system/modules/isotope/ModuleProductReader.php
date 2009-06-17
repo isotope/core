@@ -154,6 +154,9 @@ class ModuleProductReader extends ModuleIsotopeBase
 				- key
 				- value
 		*/
+		
+		// FIXME
+		$blnForceRescale = true;
 	
 		$time = time();
 
@@ -290,10 +293,10 @@ class ModuleProductReader extends ModuleIsotopeBase
 							}
 								
 								
-							$arrImageSizeConstraints = $this->MediaManagement->getImageSizeConstraints($this->strCurrentStoreTable, (is_numeric($this->Input->get('product')) ? $this->Input->get('product') : 0), $this->Input->get('product'));
-								
 							if (count($arrNeededImages))
 							{
+								$arrImageSizeConstraints = $this->MediaManagement->getImageSizeConstraints($this->strCurrentStoreTable, (is_numeric($this->Input->get('product')) ? $this->Input->get('product') : 0), $this->Input->get('product'));
+								
 								$this->MediaManagement->processImages($arrNeededImages, $arrImageSizeConstraints, $arrProductPaths, array('all'), $blnForceRescale);
 							}
 								
@@ -301,6 +304,8 @@ class ModuleProductReader extends ModuleIsotopeBase
 							if(is_dir($arrProductPaths['file_destination_path']))
 							{	
 								$arrImages = $this->getProductImages($arrProductPaths['file_destination_path'], $arrProductPaths['relative_destination_path'], $product, $GLOBALS['TL_LANG']['MSC']['imagesFolder'], $product['product_media'], $product['product_alias']);
+								
+								sort($arrImages);
 								
 								if(count($arrImages))
 								{	
