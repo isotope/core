@@ -103,24 +103,16 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 	'palettes' => array
 	(
 		'__selector__'                => array('type'),
-		'default'                     => 'name,type',
-		'cash'						  => 'name,type,label,note;countries,shipping_modules,minimum_total,maximum_total,new_order_status;enabled',
-		'paypal'                      => 'name,type,label,note;countries,shipping_modules,minimum_total,maximum_total,new_order_status;paypal_account,paypal_business;debug,enabled',
-		'postfinance'                 => 'name,type,label,note;countries,shipping_modules,minimum_total,maximum_total,new_order_status,postsale_mail;postfinance_pspid,postfinance_secret,postfinance_method;debug,enabled',
-		'authorizedotnet'			  => 'authorize_login,authorize_is_test,authorize_delimiter,authorize_delimit_data,authorize_trans_type,authorize_relay_response,authorize_email_customer'
+		'default'                     => '{type_legend},type,name',
+		'cash'						  => '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules;{enabled_legend},enabled',
+		'paypal'                      => '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,postsale_mail,minimum_total,maximum_total,countries,shipping_modules;{paypal_legend},paypal_account,paypal_business;{enabled_legend},debug,enabled',
+		'postfinance'                 => '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,postsale_mail,minimum_total,maximum_total,countries,shipping_modules;{postfinance_legend},postfinance_pspid,postfinance_secret,postfinance_method;{enabled_legend},debug,enabled',
+		'authorizedotnet'			  => '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules;{authorize_legend},authorize_login,authorize_is_test,authorize_delimiter,authorize_delimit_data,authorize_trans_type,authorize_relay_response,authorize_email_customer;{enabled_legend},debug,enabled',
 	),
 
 	// Fields
 	'fields' => array
 	(
-		'name' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['name'],
-			'exclude'                 => true,
-			'search'                  => true,
-			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255)
-		),
 		'type' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['type'],
@@ -133,12 +125,20 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 			'reference'               => &$GLOBALS['TL_LANG']['PAY'],
 			'eval'                    => array('helpwizard'=>true, 'submitOnChange'=>true)
 		),
+		'name' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['name'],
+			'exclude'                 => true,
+			'search'                  => true,
+			'inputType'               => 'text',
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50')
+		),
 		'label' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['label'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>255, 'mandatory'=>true),
+			'eval'                    => array('maxlength'=>255, 'mandatory'=>true, 'tl_class'=>'w50'),
 		),
 		'note' => array
 		(
@@ -146,39 +146,6 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 			'exclude'                 => true,
 			'inputType'               => 'textarea',
 			'eval'                    => array('rte'=>'tinyMCE'),
-		),
-		'countries' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['countries'],
-			'exclude'                 => true,
-			'inputType'               => 'select',
-			'default'                 => array_keys($this->getCountries()),
-			'options'                 => $this->getCountries(),
-			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'size'=>8),
-		),
-		'shipping_modules' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['shipping_modules'],
-			'exclude'                 => true,
-			'inputType'               => 'select',
-			'options_callback'        => array('tl_payment_modules', 'getShippingModules'),
-			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'size'=>8),
-		),
-		'minimum_total' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['minimum_total'],
-			'exclude'                 => true,
-			'inputType'               => 'text',
-			'default'                 => 0,
-			'eval'                    => array('maxlength'=>255, 'rgxp'=>'digit', 'tl_class'=>'w50'),
-		),
-		'maximum_total' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['maximum_total'],
-			'exclude'                 => true,
-			'inputType'               => 'text',
-			'default'                 => 0,
-			'eval'                    => array('maxlength'=>255, 'rgxp'=>'digit', 'tl_class'=>'w50'),
 		),
 		'new_order_status' => array
 		(
@@ -192,25 +159,58 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 		),
 		'postsale_mail' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_module']['postsale_mail'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['postsale_mail'],
 			'exclude'                 => true,
 			'inputType'               => 'select',
 			'foreignKey'              => 'tl_iso_mail.name',
-			'eval'					  => array('includeBlankOption'=>true),
+			'eval'					  => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
+		),
+		'minimum_total' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['minimum_total'],
+			'exclude'                 => true,
+			'inputType'               => 'text',
+			'default'                 => 0,
+			'eval'                    => array('maxlength'=>255, 'rgxp'=>'digit', 'tl_class'=>'clr w50'),
+		),
+		'maximum_total' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['maximum_total'],
+			'exclude'                 => true,
+			'inputType'               => 'text',
+			'default'                 => 0,
+			'eval'                    => array('maxlength'=>255, 'rgxp'=>'digit', 'tl_class'=>'w50'),
+		),
+		'countries' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['countries'],
+			'exclude'                 => true,
+			'inputType'               => 'select',
+			'default'                 => array_keys($this->getCountries()),
+			'options'                 => $this->getCountries(),
+			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'size'=>8, 'tl_class'=>'clr'),
+		),
+		'shipping_modules' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['shipping_modules'],
+			'exclude'                 => true,
+			'inputType'               => 'select',
+			'options_callback'        => array('tl_payment_modules', 'getShippingModules'),
+			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'size'=>8, 'tl_class'=>'clr'),
 		),
 		'paypal_account' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['paypal_account'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'rgxp'=>'email'),
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'rgxp'=>'email', 'tl_class'=>'w50'),
 		),
 		'paypal_business' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['paypal_business'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
 		),
 		'postfinance_pspid' => array
 		(
@@ -224,7 +224,7 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['postfinance_secret'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>255),
+			'eval'                    => array('maxlength'=>255, 'tl_class'=>'w50'),
 		),
 		'postfinance_method' => array
 		(
@@ -233,7 +233,7 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 			'inputType'               => 'select',
 			'default'                 => 'POST',
 			'options'                 => array('POST', 'GET'),
-			'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
+			'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50', 'tl_class'=>'w50'),
 		),
 		'debug' => array
 		(
