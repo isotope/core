@@ -110,6 +110,7 @@ $GLOBALS['TL_DCA']['tl_iso_mail_content'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_mail_content']['language'],
 			'exclude'                 => true,
 			'inputType'               => 'select',
+			'default'                 => $GLOBALS['TL_LANGUAGE'],
 			'options'                 => $this->getLanguages(),
 			'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
 		),
