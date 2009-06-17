@@ -127,6 +127,7 @@ abstract class Payment extends Frontend
 	 * Allowed return values are:
 	 * - pending
 	 * - processing
+	 * - paid
 	 * - shipped
 	 * - complete
 	 * - on_hold

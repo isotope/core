@@ -167,6 +167,7 @@ $GLOBALS['TL_LANG']['MSC']['message_new_order_customer_thank_you'] = "Dear %s, \
 // Order status options
 $GLOBALS['TL_LANG']['MSC']['order_status_labels']['pending']	= 'Pending';
 $GLOBALS['TL_LANG']['MSC']['order_status_labels']['processing']	= 'Processing';
+$GLOBALS['TL_LANG']['MSC']['order_status_labels']['paid']		= 'Paid';
 $GLOBALS['TL_LANG']['MSC']['order_status_labels']['shipped']	= 'Shipped';
 $GLOBALS['TL_LANG']['MSC']['order_status_labels']['complete']	= 'Complete';
 $GLOBALS['TL_LANG']['MSC']['order_status_labels']['on_hold']	= 'On Hold';

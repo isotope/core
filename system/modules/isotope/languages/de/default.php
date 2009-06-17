@@ -95,6 +95,7 @@ $GLOBALS['TL_LANG']['PAY']['postfinance']		= array('Postfinance (Schweizerische 
 // Order Status
 $GLOBALS['TL_LANG']['MSC']['order_status_labels']['pending']		= 'Offen';
 $GLOBALS['TL_LANG']['MSC']['order_status_labels']['processing']		= 'In Verarbeitung';
+$GLOBALS['TL_LANG']['MSC']['order_status_labels']['paid']			= 'Bezahlt';
 $GLOBALS['TL_LANG']['MSC']['order_status_labels']['shipped']		= 'Versendet';
 $GLOBALS['TL_LANG']['MSC']['order_status_labels']['complete']		= 'Erledigt';
 $GLOBALS['TL_LANG']['MSC']['order_status_labels']['on_hold']		= 'Wartend';
