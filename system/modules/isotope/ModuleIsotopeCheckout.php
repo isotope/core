@@ -299,6 +299,20 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 					);
 					
 					break;
+					
+				case 'order_conditions':
+					if (!$this->iso_order_conditions)
+						$this->redirectToNextStep();
+						
+					$arrSteps[] = array
+					(
+						'editEnabled' 	=> true,
+						'headline' 		=> $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE'][$this->strCurrentStep],
+						'prompt' 		=> $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT'][$this->strCurrentStep],
+						'useFieldset' 	=> true,
+						'fields' 		=> $this->getOrderConditionsInterface(),
+					);
+					break;
 				
 				case 'order_review':
 //					if($this->blnShowLoginOptions)
@@ -936,6 +950,31 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		return $arrModules;
 	}
 	
+	
+	protected function getOrderConditionsInterface()
+	{
+		$strBuffer = $this->getArticle($this->iso_order_conditions, false, true);
+		
+		$objConditions = new FormCheckBox(array('id'=>'iso_conditions', 'name'=>'iso_conditions', 'options'=>array(array('value'=>'1', 'label'=>$GLOBALS['TL_LANG']['MSC']['order_conditions'])), 'tableless'=>true));
+		
+		// Validate input
+		if ($this->Input->post('FORM_SUBMIT') == $this->strFormId)
+		{
+			$objConditions->validate();
+			
+			if (!strlen($objConditions->value))
+			{
+				$objConditions->addError($GLOBALS['TL_LANG']['ERR']['order_conditions']);
+			}
+			
+			if ($objConditions->hasErrors())
+			{
+				$this->doNotSubmit = true;
+			}
+		}
+		
+		return $strBuffer . '<div class="order_conditions">' . $objConditions->parse() . '</div>';
+	}
 	
 	protected function getOrderReviewInterface()
 	{

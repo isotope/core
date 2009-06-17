@@ -31,10 +31,17 @@
  */
 $GLOBALS['TL_LANG']['CTE']['attributeLinkRepeater']   = array('Artikelmerkmal-Filter Auflistung', 'Dieses Element generiert eine Sammlung von Links eines Artikelmerkmal-Filters.');
 
- 
+
+/**
+ * Errors
+ */
+$GLOBALS['TL_LANG']['ERR']['order_conditions'] = 'Sie müssen die AGB akzeptieren um fortzufahren';
+
+
 /**
  * Miscellaneous
  */
+$GLOBALS['TL_LANG']['MSC']['order_conditions'] = 'AGB akzeptieren';
  
 $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'] = 'Bestellen';
 $GLOBALS['TL_LANG']['MSC']['buttonActionString']['add_to_cart'] = '%s bestellen';
@@ -51,11 +58,13 @@ $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['billing_information'] = '
 $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['shipping_method'] = 'Wählen Sie eine Versandart.';
 $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['payment_method'] = 'Wählen Sie eine Zahlungsart.';
 $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['order_review'] = 'Überprüfen Sie Ihre Bestellung.';
+$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['order_complete'] = 'Bestellung erfolgreich!';
 
 $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE']['billing_information'] = 'Rechnungsadresse';
 $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE']['shipping_information'] = 'Versandadresse';
 $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE']['shipping_method'] = 'Versandmethode';
 $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE']['payment_method'] = 'Zahlungsart';
+$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE']['order_conditions'] = 'AGB akzeptieren';
 $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE']['order_review'] = 'Bestellübersicht';
 $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE']['order_complete'] = 'Bestellung erfolgreich!';
 

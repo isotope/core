@@ -36,7 +36,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryManager']	= 'name,ty
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistrySearch']	= 'name,type,headline;jumpTo;guests,protected;align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryResults']	= 'name,type,headline;jumpTo;iso_registry_results;perPage;guests,protected;align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryReader']	= 'name,type,headline;store_id,iso_registry_reader;guests,protected;align,space,cssID';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoCheckout']				= 'name,type,headline;store_id,orderCompleteJumpTo,iso_checkout_method;iso_payment_modules;iso_shipping_modules;iso_checkout_layout,iso_mail_customer,iso_mail_admin;guests,protected;align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoCheckout']				= 'name,type,headline;store_id,orderCompleteJumpTo,iso_order_conditions,iso_checkout_method;iso_payment_modules;iso_shipping_modules;iso_checkout_layout,iso_mail_customer,iso_mail_admin;guests,protected;align,space,cssID';
 
 
 /**
@@ -155,7 +155,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['listing_filters'] = array
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
 	'eval'					  => array('multiple'=>true),
-	'options_callback'		  => array('ListingModule','getFilters')
+	'options_callback'		  => array('tl_module_isotope','getFilters')
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['store_id'] = array
@@ -164,7 +164,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['store_id'] = array
 	'exclude'                 => true,
 	'inputType'               => 'select',
 	'eval'					  => array('includeBlankOption'=>true,'mandatory'=>true),
-	'options_callback'		  => array('ListingModule','getStoreConfigurations')
+	'options_callback'		  => array('tl_module_isotope','getStoreConfigurations')
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_payment_modules'] = array
@@ -173,7 +173,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_payment_modules'] = array
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
 	'eval'					  => array('multiple'=>true),
-	'options_callback'		  => array('ListingModule','getPaymentModules')
+	'options_callback'		  => array('tl_module_isotope','getPaymentModules')
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_shipping_modules'] = array
@@ -182,7 +182,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_shipping_modules'] = array
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
 	'eval'					  => array('multiple'=>true),
-	'options_callback'		  => array('ListingModule','getShippingModules')
+	'options_callback'		  => array('tl_module_isotope','getShippingModules')
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['orderCompleteJumpTo'] = array
@@ -219,13 +219,22 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_mail_admin'] = array
 	'eval'					  => array('includeBlankOption'=>true, 'mandatory'=>true),
 );
 
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_order_conditions'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions'],
+	'exclude'                 => true,
+	'inputType'               => 'select',
+	'options_callback'        => array('tl_module_isotope', 'getArticleAlias'),
+	'eval'                    => array('includeBlankOption'=>true)
+);
+
  
 /**
- * ListingModule class.
+ * tl_module_isotope class.
  * 
  * @extends Backend
  */
-class ListingModule extends Backend
+class tl_module_isotope extends Backend
 {
 	/**
 	 * getFilters function.
@@ -578,6 +587,27 @@ class ListingModule extends Backend
 		}	
 	
 		return $return;
+	}
+	
+	
+	/**
+	 * Get all articles and return them as array
+	 * @param object
+	 * @return array
+	 */
+	public function getArticleAlias(DataContainer $dc)
+	{
+		$arrAlias = array();
+		$this->loadLanguageFile('tl_article');
+
+		$objAlias = $this->Database->execute("SELECT id, title, inColumn, (SELECT title FROM tl_page WHERE tl_page.id=tl_article.pid) AS parent FROM tl_article ORDER BY parent, sorting");
+
+		while ($objAlias->next())
+		{
+			$arrAlias[$objAlias->parent][$objAlias->id] = $objAlias->id . ' - ' . $objAlias->title . ' (' . (strlen($GLOBALS['TL_LANG']['tl_article'][$objAlias->inColumn]) ? $GLOBALS['TL_LANG']['tl_article'][$objAlias->inColumn] : $objAlias->inColumn) . ')';
+		}
+
+		return $arrAlias;
 	}
 
 }
