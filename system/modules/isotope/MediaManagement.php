@@ -329,9 +329,19 @@ class MediaManagement extends Backend
 				foreach($arrConstraints as $limit)
 				{
 					//If both limits exceed the dimensions of the file in question, then we don't need to do any resizes.
+/*
 					if($limit['width'] > $arrImageSize[0] && $limit['height'] > $arrImageSize[1])
 					{		
 						continue;
+					}
+*/
+					if ($limit['width'] > $arrImageSize[0])
+					{
+						$limit['width'] = $arrImageSize[0];
+					}
+					if ($limit['height'] > $arrImageSize[1])
+					{
+						$limit['height'] = $arrImageSize[1];
 					}
 							
 					// IF WIDTH > HEIGHT					
