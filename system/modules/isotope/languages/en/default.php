@@ -170,6 +170,7 @@ $GLOBALS['TL_LANG']['MSC']['order_status_labels']['processing']	= 'Processing';
 $GLOBALS['TL_LANG']['MSC']['order_status_labels']['shipped']	= 'Shipped';
 $GLOBALS['TL_LANG']['MSC']['order_status_labels']['complete']	= 'Complete';
 $GLOBALS['TL_LANG']['MSC']['order_status_labels']['on_hold']	= 'On Hold';
+$GLOBALS['TL_LANG']['MSC']['order_status_labels']['cancelled']	= 'Cancelled';
 
 
 //$GLOBALS['TL_LANG']['MSC'][''] = '';

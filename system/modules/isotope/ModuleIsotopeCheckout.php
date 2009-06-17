@@ -544,7 +544,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			'grandTotal'			=> $this->Isotope->formatPriceWithCurrency($this->Cart->grandTotal),
 			'shipping_method'		=> $this->Cart->Shipping->label,
 			'payment_method'		=> $this->Cart->Payment->label,
-			'status'				=> ($blnCheckout ? $this->Cart->Payment->new_order_status : 'open'),
+			'status'				=> ($blnCheckout ? $this->Cart->Payment->new_order_status : ''),
 			'language'				=> $GLOBALS['TL_LANGUAGE'],
 		);
 		

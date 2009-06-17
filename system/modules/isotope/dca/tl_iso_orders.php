@@ -37,6 +37,10 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 		'dataContainer'               => 'Table',
 		'enableVersioning'            => false,
 		'closed'					  => true,
+		'onload_callback' => array
+		(
+			array('tl_iso_orders', 'hideReviewRecords'),
+		),
 	),
 
 	// List
@@ -394,5 +398,27 @@ class tl_iso_orders extends Backend
 		}
 		
 		return $objPid->pid;
+	}
+	
+	
+	/**
+	 * Review order page stores temporary information in this table to know it when user is redirected to a payment provider. We do not show this data in backend.
+	 * 
+	 * @access public
+	 * @param object $dc
+	 * @return void
+	 */
+	public function hideReviewRecords()
+	{
+		$objOrders = $this->Database->execute("SELECT * FROM tl_iso_orders WHERE status!=''");
+		
+		if (!$objOrders->numRows)
+		{
+			$GLOBALS['TL_DCA']['tl_iso_orders']['list']['sorting']['root'] = array(0);
+		}
+		else
+		{
+			$GLOBALS['TL_DCA']['tl_iso_orders']['list']['sorting']['root'] = $objOrders->fetchEach('id');
+		}
 	}
 }

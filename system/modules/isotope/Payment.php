@@ -130,6 +130,7 @@ abstract class Payment extends Frontend
 	 * - shipped
 	 * - complete
 	 * - on_hold
+	 * - cancelled
 	 * 
 	 * @access public
 	 * @return array
