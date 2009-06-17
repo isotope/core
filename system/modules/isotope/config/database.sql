@@ -481,6 +481,9 @@ CREATE TABLE `tl_iso_orders` (
   `gift_wrap` char(1) NOT NULL default '',
   
   `completed` char(1) NOT NULL default '',
+  
+  `payment_data` blob NULL,
+  `shipping_data` blob NULL,
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
