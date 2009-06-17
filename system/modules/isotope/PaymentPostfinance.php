@@ -55,7 +55,83 @@ class PaymentPostfinance extends Payment
 	 */
 	public function processPostSale()
 	{
-		$this->log('Post-sale request from Postfinance: '.print_r($_GET, true).print_r($_POST, true), 'PaymentPostfinance postProcessPayment()', TL_ACCESS);
+		if ($this->debug) $this->log('Post-sale request from Postfinance: '.print_r($_POST, true), 'PaymentPostfinance postProcessPayment()', TL_ACCESS);
+		
+		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_order WHERE order_id=?")->limit(1)->execute($this->getRequestData('orderID'));
+		
+		if (!$objOrder->numRows)
+		{
+			$this->log('Order ID "' . $this->getRequestData('orderID') . '" not found', 'PaymentPostfinance postProcessPayment()', TL_ERROR);
+			return;
+		}
+		elseif ($this->getRequestData('NCERROR') > 0)
+		{
+			$this->log('Order ID "' . $this->getRequestData('orderID') . '" has NCERROR ' . $this->getRequestData('NCERROR'), 'PaymentPostfinance postProcessPayment()', TL_ERROR);
+			return;
+		}
+		
+		// Set the current system to the language when the user placed the order.
+		// This will result in correct e-mails and payment description.
+		$GLOBALS['TL_LANGUAGE'] = $objOrder->language;
+		$this->loadLanguageFile('default');
+		
+		// Load / initialize data
+		$arrSet[] = array();
+		if (!is_array($arrSet['payment_data'] = deserialize($objOrder->payment_data))) $arrSet['payment_data'] = array();
+		
+		// Store request data in order for future references
+		$arrSet['payment_data']['POSTSALE'][] = $this->postfinance_method == 'GET' ? $_GET : $_POST;
+		
+		switch( $this->getRequestData('STATUS') )
+		{
+			// cancelled by customer
+			case 1:
+			case 6:
+			case 7:
+				$arrSet['payment_data']['status'] = 'cancelled';
+				break;
+				
+			// acquirer declines the authorization more than the maximum permissible number of times
+			case 2:
+			case 93:
+				$arrSet['payment_data']['status'] = 'failed';
+				break;
+			
+			// Authorized
+			case 51:
+			case 52:
+			case 59:
+			case 9:
+				$arrSet['payment_data']['status'] = 'processing';
+				break;
+			
+			// Accepted
+			case 5:
+				$arrSet['payment_data']['status'] = 'paid';
+				break;
+				
+			// Uncertain result
+			case 0:
+			case 52:
+			case 92:
+				$arrSet['payment_data']['status'] = 'on_hold';
+				break;
+				
+			// Pending
+			case 4:
+			default:
+				$arrSet['payment_data']['status'] = 'pending';
+				break;
+		}
+		
+		$this->Database->prepare("UPDATE tl_iso_orders %s WHERE id=?")->set($arrSet)->execute($objOrder->id);
+		
+		
+		$objEmail = new Email();
+		$objEmail->from = $GLOBALS['TL_ADMIN_EMAIL'];
+		$objEmail->subject = 'Postfinance Post-Sale';
+		$objEmail->text = print_r($arrSet, true);
+		$objEmail->sendTo('andreas@schempp.ch');
 	}
 	
 	
@@ -81,29 +157,46 @@ class PaymentPostfinance extends Payment
 			$strAction = 'https://e-payment.postfinance.ch/ncol/test/orderstandard.asp';
 		}
 		
+		$arrData = array
+		(
+			'PSPID'			=> $this->postfinance_pspid,
+			'currency'		=> $this->Store->currency,
+			'SHASign'		=> sha1($objOrder->order_id . ($this->Cart->grandTotal * 100) . $this->Store->currency . $this->postfinance_pspid . $this->postfinance_secret),
+		);
+		
+		$this->Database->prepare("UPDATE tl_iso_orders SET payment_data=? WHERE id=?")->execute(serialize($arrData), $objOrder->id);
+		
 		return '
 <form method="post" action="' . $strAction . '">
 <input type="hidden" name="PSPID" value="' . $this->postfinance_pspid . '">
 <input type="hidden" name="orderID" value="' . $objOrder->order_id . '">
 <input type="hidden" name="amount" value="' . ($this->Cart->grandTotal * 100) . '">
-<input type="hidden" name="currency" value="' . $this->Store->currency . '">
+<input type="hidden" name="currency" value="' . $arrData['currency'] . '">
 <input type="hidden" name="language" value="' . $GLOBALS['TL_LANGUAGE'] . '_' . strtoupper($GLOBALS['TL_LANGUAGE']) . '">
-<!-- optional customer details, highly recommended for fraud prevention: see chapter 5.2 -->
 <input type="hidden" name="EMAIL" value="' . $arrAddress['email'] . '">
 <input type="hidden" name="ownerZIP" value="' . $arrAddress['postal'] . '">
 <input type="hidden" name="owneraddress" value="' . $arrAddress['street'] . '">
 <input type="hidden" name="ownercty" value="' . $arrAddress['country'] . '">
 <input type="hidden" name="ownertown" value="' . $arrAddress['city'] . '">
 <input type="hidden" name="ownertelno" value="' . $arrAddress['phone'] . '">
-<input type="hidden" name="SHASign" value="' . sha1($objOrder->order_id . ($this->Cart->grandTotal * 100) . $this->Store->currency . $this->postfinance_pspid . $this->postfinance_secret) . '">
+<input type="hidden" name="SHASign" value="' . $arrData['SHASign'] . '">
 <!-- post payment redirection: see chapter 8.2 -->
 <input type="hidden" name="accepturl" value="' . $this->Environment->base . $this->addToUrl('step=order_complete') . '">
 <input type="hidden" name="declineurl" value="">
 <input type="hidden" name="exceptionurl" value="">
 <input type="hidden" name="cancelurl" value="">
-<input type="hidden" name="paramplus" value="do=pay&id=' . $this->id . '">
+<input type="hidden" name="paramplus" value="mod=pay&id=' . $this->id . '">
 <input type="submit" value="Bezahlen">
 </form>
 ';
+	}
+	
+	
+	private function getRequestData($strKey)
+	{
+		if ($this->postfinance_method == 'GET')
+			return $this->Input->get($strKey);
+			
+		return $this->Input->post($strKey);
 	}
 }
