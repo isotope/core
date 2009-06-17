@@ -545,6 +545,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			'shipping_method'		=> $this->Cart->Shipping->label,
 			'payment_method'		=> $this->Cart->Payment->label,
 			'status'				=> ($blnCheckout ? $this->Cart->Payment->new_order_status : 'open'),
+			'language'				=> $GLOBALS['TL_LANGUAGE'],
 		);
 		
 		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->execute($this->Cart->id);

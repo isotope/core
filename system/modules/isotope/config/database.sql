@@ -463,7 +463,7 @@ CREATE TABLE `tl_iso_orders` (
   `store_id` int(10) unsigned NOT NULL default '0',
   `cart_id` int(10) unsigned NOT NULL default '0',
   `source_cart_id` int(10) unsigned NOT NULL default '0',
-  
+  `language` varchar(2) NOT NULL default '',
   `status` varchar(32) NOT NULL default '',
   `shipping_address` text NULL,
   `billing_address` text NULL,
