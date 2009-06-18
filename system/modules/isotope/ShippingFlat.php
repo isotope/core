@@ -49,15 +49,51 @@ class ShippingFlat extends Shipping
 				switch( $this->flatCalculation )
 				{
 					case 'perProduct':
-						return ($this->price * $this->Cart->products);
+						return (($this->arrData['price'] * $this->Cart->products) + $this->calculateSurcharge());
 						
 					case 'perItem':
-						return ($this->arrData['price'] * $this->Cart->items);
+						return (($this->arrData['price'] * $this->Cart->items) + $this->calculateSurcharge());
+						
+					default:
+						return ($this->arrData['price'] + $this->calculateSurcharge());
 				}
 				break;
 		}
 		
 		return parent::__get($strKey);
+	}
+	
+	
+	protected function calculateSurcharge()
+	{
+		if (!strlen($this->surcharge_field))
+			return 0;
+			
+		$intSurcharge = 0;
+		$arrProducts = $this->Cart->getProducts();
+		
+		foreach( $arrProducts as $product )
+		{
+			// Exclude this product if table does not have this field
+			if ($this->Database->fieldExists($this->surcharge_field, $product['storeTable']))
+			{
+				$strSurcharge = $this->Database->prepare("SELECT * FROM " . $product['storeTable'] . " WHERE id=?")
+											   ->limit(1)
+											   ->execute($product['product_id'])
+											   ->{$this->surcharge_field};
+											   
+				if ($this->flatCalculation == 'perItem')
+				{
+					$intSurcharge += ($product['quantity_requested'] * intval($strSurcharge));
+				}
+				else
+				{
+					$intSurcharge += intval($strSurcharge);
+				}
+			}
+		}
+		
+		return $intSurcharge;
 	}
 }
 

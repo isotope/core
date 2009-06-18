@@ -408,6 +408,7 @@ CREATE TABLE `tl_shipping_modules` (
   `minimum_total` int(10) NOT NULL default '0',
   `maximum_total` int(10) NOT NULL default '0',
   `price` float NOT NULL default '0',
+  `surcharge_field` varchar(255) NOT NULL default '',
   `flatCalculation` varchar(10) NOT NULL default '',
   `enabled` char(1) NOT NULL default '',
   PRIMARY KEY  (`id`),
