@@ -285,7 +285,8 @@ CREATE TABLE `tl_cart_items` (
   `attribute_set_id` int(10) unsigned NOT NULL default '0',
   `quantity_requested` int(10) unsigned NOT NULL default '0',
   `quantity_sold` int(10) unsigned NOT NULL default '0',
-  `product_attribute_collection` blob NULL,
+  `product_attribute_collection` text NULL,
+  `product_options` text NULL,
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

@@ -130,35 +130,43 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 		}
 */
 	
-		$strAction = $this->Input->get('action');		
+		$strAction = $this->getRequestData('action');		
 		
 /*
-		if($this->Input->get('source_cart_id'))
+		if($this->getRequestData('source_cart_id'))
 		{
-			$intSourceCartId = $this->Input->get('source_cart_id');
+			$intSourceCartId = $this->getRequestData('source_cart_id');
 		}else{
 			$intSourceCartId = 0;
 		}
 */
+		if($strAction=='add_to_cart' || $strAction=='update_cart')
+		{
+			$intAttributeSetId = $this->getAttributeSetId($this->getRequestData('aset_id'));
+		
+			//FIXME: Add widget validation in here and then collect data.
+			$arrOptionWidgets = explode(',', $this->getRequestData('option_fields'));
+				
+			$this->validateOptionValues($arrOptionWidgets, $intAttributeSetId, $this->getRequestData('FORM_SUBMIT'));
+			
+		}
 		
 		switch($strAction)
 		{
 			case 'add_to_cart':
-				$intAttributeSetId = $this->getAttributeSetId($this->Input->get('aset_id'));
-				$this->addToCart($this->Input->get('id'), $intAttributeSetId, $this->Input->get('quantity_requested'), $intSourceCartId);
+				$this->addToCart($this->getRequestData('id'), $intAttributeSetId, $this->getRequestData('quantity_requested'), $intSourceCartId, $this->arrProductOptionsData);
 				$this->blnRecallProductData = true;
 				break;
 				
 			case 'update_cart':
-				$intAttributeSetId = $this->getAttributeSetId($this->Input->get('aset_id'));
-				$this->updateCart($this->Input->get('id'), $intAttributeSetId, $this->Input->get('quantity_requested'), $intSourceCartId);
+				$this->updateCart($this->getRequestData('id'), $intAttributeSetId, $this->getRequestData('quantity_requested'), $intSourceCartId, $this->arrProductOptionsData);
 				$this->blnRecallProductData = true;
 				break;
 				
 			case 'remove_from_cart':
-				//$intAttributeSetId = $this->getAttributeSetId($this->Input->get('aset_id'));
+				//$intAttributeSetId = $this->getAttributeSetId($this->getRequestData('aset_id'));
 				//a new quantity of zero indicates to remove 
-				$this->updateCart($this->Input->get('id'), $this->Input->get('attribute_set_id'), 0, $intSourceCartId);
+				$this->updateCart($this->getRequestData('id'), $this->getRequestData('attribute_set_id'), 0, $intSourceCartId);
 				$this->blnRecallProductData = true;
 				break;
 /*
@@ -195,19 +203,19 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 			}
 		}	
 	
-		if($this->Input->post('form_action')=='cart_update')
+		if($this->getRequestData('form_action')=='cart_update')
 		{
 					
 			foreach($arrProductIds as $k=>$v)
 			{
-				$this->updateCart($k, $v, $this->Input->post('product_qty_' . $k), $intSourceCartId, true);
+				$this->updateCart($k, $v, $this->getRequestData('product_qty_' . $k), $intSourceCartId, $this->arrProductOptionsData, true);
 					
 			}
 			
-			$this->reload();
+			//$this->reload();
 		}
 		//actions need reload to show updated product info (until ajax comes along)
-		
+		/*
 		if(strlen($strAction))
 		{
 			//referer current breaks if the back button is pressed.  Instead lets take the base of the url (index 0) and tack on .html.  Check with and without rewrites though!!
@@ -219,7 +227,7 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 					
 			$this->redirect(ampersand($this->Environment->base . ltrim($strReturnUrl, '/')));
 		
-		}
+		}*/
 		
 		//we can take from session here because getProductData will update the session anyway, so at this point session always has the latest data.
 		//$arrProductData = $session['isotope']['cart_data'];
@@ -273,7 +281,7 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 	 * @param array
 	 * @return boolean
 	 */
-	protected function addToCart($intProductId, $intAttributeSetId, $intQuantity, $intSourceCartId = 0)
+	protected function addToCart($intProductId, $intAttributeSetId, $intQuantity, $intSourceCartId = 0, $arrProductOptionsData = array())
 	{
 		if($this->Cart->containsProduct($intProductId, $intAttributeSetId))
 		{
@@ -295,7 +303,7 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 				'attribute_set_id'		=> $intAttributeSetId,
 				'quantity_requested'	=> $intQuantity,
 //					'source_cart_id'		=> $intSourceCartId//,
-				//'product_options'		=> serialize($arrProductOptions)
+				'product_options'		=> serialize($arrProductOptionsData)
 			);
 			
 			$this->Database->prepare("INSERT INTO tl_cart_items %s")->set($arrSet)->execute();
@@ -458,7 +466,7 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 	 * @param array
 	 * @return boolean
 	 */
-	protected function updateCart($intProductId, $intAttributeSetId, $intQuantity, $intSourceCartId = 0, $blnOverwriteQty = false)
+	protected function updateCart($intProductId, $intAttributeSetId, $intQuantity, $intSourceCartId = 0, $arrProductOptionsData = array(), $blnOverwriteQty = false)
 	{
 		//Get visitor's cart
 		
@@ -481,7 +489,7 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 			}
 			
 //			$strQuery = "UPDATE tl_cart_items SET quantity_requested=$strClause WHERE product_id=? AND attribute_set_id=? AND pid=? AND source_cart_id=?";			
-			$strQuery = "UPDATE tl_cart_items SET quantity_requested=$strClause WHERE product_id=? AND attribute_set_id=? AND pid=?";			
+			$strQuery = "UPDATE tl_cart_items SET quantity_requested=$strClause, product_options=" . serialize($arrProductOptionsData) . " WHERE product_id=? AND attribute_set_id=? AND pid=?";			
 			
 		}
 				

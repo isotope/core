@@ -73,6 +73,25 @@ abstract class ModuleIsotopeBase extends Module
 	protected $strCurrentStoreTable;
 	
 	/**
+	 * product options array
+	 * @var array
+	 */
+	protected $arrProductOptionsData = array();
+	
+	/**
+	 * for widgets, helps determine the encoding type for a form
+	 * @var boolean
+	 */
+	protected $hasUpload = false;
+	
+	/**
+	 * for widgets, don't submit if certain validation(s) fail
+	 * @var boolean;
+	 */
+	protected $doNotSubmit = false;
+	
+	
+	/**
 	 * IP Address
 	 * @var string
 	 */
@@ -757,7 +776,7 @@ abstract class ModuleIsotopeBase extends Module
 		return $arrFormattedProductData;
 	}
 	
-/*
+	/*
 
 	protected function getOrderTotal($arrProductData)
 	{
@@ -777,7 +796,7 @@ abstract class ModuleIsotopeBase extends Module
 		return (float)$floatSubTotalPrice + (float)$taxPriceAdjustment;	
 	
 	}
-*/
+	*/
 
 	/*
 
@@ -1391,7 +1410,219 @@ abstract class ModuleIsotopeBase extends Module
 		return $arrListData;
 	}*/
 
+	/**
+	 * determine the form's action method.
+	 * @access protected
+	 * @param string $strKey
+	 * @return string
+	 */
+	protected function getRequestData($strKey)
+	{
+		return strlen($this->Input->post($strKey)) ? $this->Input->post($strKey) : $this->Input->get($strKey);
+	}
 	
+	/** 
+	 * Return a widget object based on a product attribute's properties
+	 * @access public
+	 * @param string $strField
+	 * @param array $arrData
+	 * @param boolean $blnUseTable
+	 * @return string
+	 */
+	public function generateProductOptionWidget($strField, $arrData = array(), $strFormId, $blnUseTable = false)
+	{
+				
+		/*if(sizeof($arrData)< 1)
+		{
+			$this->loadLanguageFile($strResourceTable);
+			$this->loadDataContainer($strResourceTable);
+			$arrData = &$GLOBALS['TL_DCA'][$strResourceTable]['fields'][$strField];
+			
+		}*/
+		
+		
+			$strClass = $GLOBALS['TL_FFL'][$arrData['inputType']];
+											
+			// Continue if the class is not defined
+			if (!$this->classFileExists($strClass))// || !$arrData['eval']['isoEditable'])
+			{
+				
+				return false;	
+			}
+		
+	
+			$objWidget = new $strClass($this->prepareForWidget($arrData, $strField));
+			
+			$objWidget->storeValues = true;
+			
+			$_SESSION['FORM_DATA'][$strField] = $objWidget->value;
+				
+			// Validate input
+			if ($this->Input->post('FORM_SUBMIT') == $strFormId)
+			{
+				
+				$objWidget->validate();
+				$varValue = $objWidget->value;
+			
+				// Convert date formats into timestamps
+				if (strlen($varValue) && in_array($arrData['eval']['rgxp'], array('date', 'time', 'datim')))
+				{
+					$objDate = new Date($varValue, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
+					$varValue = $objDate->tstamp;
+				}
+	
+				if ($objWidget->hasErrors())
+				{
+					$this->doNotSubmit = true;
+				}
+	
+				// Store current value
+				elseif ($objWidget->submitInput())
+				{
+					
+					//Store this options value to the productOptionsData array which is then serialized and stored for the given product that is being added to the cart.
+					$this->arrProductOptionsData[$strField] = $varValue;
+				}
+			}
+			
+			if ($objWidget instanceof uploadable)
+			{
+				$this->hasUpload = true;
+			}
+					
+			$_SESSION['FORM_DATA'][$strField] = $varValue;
+			
+			//$varSave = is_array($varValue) ? serialize($varValue) : $varValue;
+					
+			$temp .= $objWidget->generate() . '<br />';
+			/*
+			if($blnUseTable)
+			{
+				return '<tr class="' .  $objWidget->rowClass . '">
+		    <td class="col_0 col_first">' . $objWidget->generateLabel() . ($objWidget->mandatory ? '<span class="mandatory">*</span>' : '') . '</td>
+		    <td class="col_1 col_last">' . $objWidget->generateWithError() . '</td>
+		  </tr>';
+			}
+			else
+			{*/
+			//}
+	
+		
+		return $temp;
+	}
+	
+	/**
+	 * Get the maximum file size that is allowed for file uploads
+	 * @return string
+	 */
+	protected function getMaxFileSize()
+	{
+		return $GLOBALS['TL_CONFIG']['maxFileSize'];
+		//$this->Template->maxFileSize = $GLOBALS['TL_CONFIG']['maxFileSize'];
+
+		/*$objMaxSize = $this->Database->prepare("SELECT MAX(maxlength) AS maxlength FROM tl_form_field WHERE pid=? AND type=? AND maxlength>?")
+									 ->execute($this->id, 'upload', 0);
+
+		if ($objMaxSize->maxlength > 0)
+		{
+			$this->Template->maxFileSize = $objMaxSize->maxlength;
+		}*/
+	}
+	
+	/**
+	 * Validate product option widgets
+	 * @param array $arrOptions
+	 * @return void
+	 */
+	protected function validateOptionValues($arrOptions, $intAttributeSetId, $currFormId)
+	{
+		if(sizeof($arrOptions) < 1)
+		{
+			return;
+		}
+		
+		foreach($arrOptions as $option)
+		{
+			$arrAttributeData = $this->getProductAttributeData($option, $intAttributeSetId);
+															
+			switch($arrAttributeData['type'])
+			{
+				case 'select':
+					//check for a related label to go with the value.
+					/*$arrOptions = deserialize($arrAttributeData['option_list']);
+					$varValues = deserialize($v);
+					
+					foreach($arrOptions as $option)
+					{
+						if(is_array($varValues))
+						{
+							if(in_array($option['value'], $varValues))
+							{
+								$arrLabels[] = $option['label'];
+							}
+						}else{	
+							
+							if((int)$option['value']==(int)$v)
+							{
+								$arrLabels[] = $option['label'];
+							}
+						}
+					
+					}
+					
+														
+					$product[$k] = join(',', $arrLabels); */
+					break;
+					
+				case 'text':
+					if($arrAttributeData['is_customer_defined'])
+					{
+						$arrOptionFields[] = $option;
+						
+						$arrData = array
+						(
+							'label'			=> $arrAttributeData['name'],
+							'inputType'		=> 'textCollection',
+							'eval'			=> array('collectionsize'=>$arrAttributeData['text_collection_rows'], 'prompt'=>$arrAttributeData['name'], 'maxlength'=>255)
+						
+						);
+					
+						//generate a widget	to accept data & add to product options array
+						
+						$this->generateProductOptionWidget($option, $arrData, $currFormId);
+						
+						
+					}
+					break;
+					
+				default:
+					break;
+			}
+		}	
+	
+	}
+	
+	/**
+	 * Get attribute data and do something with it based on the properties of the attribute.
+	 *
+	 * @param string
+	 * @param integer
+	 * @return array
+	 *
+	 */
+	protected function getProductAttributeData($strFieldName, $intPid)
+	{		
+		$objAttributeData = $this->Database->prepare("SELECT * FROM tl_product_attributes WHERE field_name=? AND pid=?")
+										   ->limit(1)
+										   ->execute($strFieldName, $intPid);
+
+		if($objAttributeData->numRows < 1)
+		{
+			return array();
+		}
+		
+		return $objAttributeData->fetchAssoc();
+	}
 }
 
 ?>

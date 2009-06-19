@@ -46,71 +46,94 @@
       <!-- <p class="caption"><?php //echo $product['product_name']; ?></p>-->
     </div>
     <div class="column2">
-      <h2 class="productName"><?php echo $this->productDetailLabel; ?></h2>
-      <div class="pricing">
-        <p class="productPrice"><?php echo $product['price_string']; ?></p>
-        <p class="sku"><?php echo $product['product_sku']; ?></p>
-        <div class="clearBoth"></div>
-      </div>
-      <?php if(strlen($this->embeddedMedia) > 0): ?>
-      <div class="media"><?php echo $this->embeddedMedia; ?></div>
-      <?php endif; ?>
-      <div class="options">
-      	<!--<?php //foreach($this->productOptions as $option): ?>
-        
-        <?php //endforeach; ?>-->
-        <?php if($this->hasOptions): ?>
-        <div class="optionSelect">
-          <select class="optionsSelect">
-            <option>Choose Your Options</option>
-          </select>
-        </div>
-        <?php endif; ?>
-        <?php if($this->useQuantity): ?>
-        <div class="quantity">
-          <input name="qty" type="text" size="3" />
-          Qty </div>
-        <?php endif; ?>
-      </div>
-      <div class="productButtons">
-          <?php foreach($this->buttonTypes as $buttonType): ?>
-        		<div style="float: left; padding-right: 5px;"><?php echo $this->buttons[$buttonType][$this->productId]; ?></div>
-          <?php endforeach; ?>
-          <?php if ($this->useReg): ?>
-          	<div class="registryLink">
-          		<a href="/registry-manager/action/add_to_registry/aset_id/<?php echo $product['aset_id'] ?>/quantity_requested/1/id/<?php echo $product['product_id'] ?>.html">Add to Registry</a>
-          	</div>
-          <?php endif; ?>                             
-	  </div>
-      <?php if($this->hasMessages): ?>
-      <div class="messages">
-      	<?php foreach($this->messages as $message): ?>
-        	<p class="message"><?php echo $message; ?></p>
-        <?php endforeach; ?>
-      </div>
-      <?php endif; ?>
-	  <?php if($this->hasExtraImages): ?>
-      <div class="productGallery">
-      <div class="highslide-gallery">
-        <div class="subImages">
-        <?php foreach($this->extraProductImages as $image): ?>
-        	<?php if($image['has_large_image']): ?>
-            	<noscript>
-                <a href="<?php echo $image['large_image_link']; ?>" title="<?php echo $product['product_name']; ?>" target="_blank"><img src="<?php echo $image['file_path']; ?>" width="<?php echo $image['width']; ?>" height="<?php echo $image['height']; ?>" alt="<?php echo $image['alt']; ?>" class="productImg" /></a>
-                </noscript>
-                <a href="<?php echo $image['large_image_link']; ?>" <?php echo $image['on_thumbnail_click_event']; ?> title="<?php echo $product['product_name']; ?>"><img src="<?php echo $image['file_path']; ?>" width="<?php echo $image['width']; ?>" height="<?php echo $image['height']; ?>" alt="<?php echo $image['alt']; ?>" class="productImg" /></a>
-            <?php else: ?>
-            	<img src="<?php echo $image['file_path']; ?>" width="<?php echo $image['width']; ?>" height="<?php echo $image['height']; ?>" alt="<?php echo $image['alt']; ?>" class="productImg" />
-            <?php endif; ?>
-        <?php endforeach; ?>
-        </div>
-        </div>
-        <?php endif; ?>
-      <div class="additionalInformation">
-      
-      </div>
-      	<div class="clearBoth"></div>
-      </div>
+      <form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>" method="<?php echo $this->method; ?>" enctype="<?php echo $this->enctype; ?>"<?php echo $this->attributes; ?>>
+		<div class="formbody">
+		<?php if ($this->method != 'get'): ?>
+		<input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formId; ?>" />
+		<input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $this->maxFileSize; ?>" />
+		<input type="hidden" name="action" value="add_to_cart" />
+		<input type="hidden" name="id" value="<?php echo $product['id']; ?>" />
+		<input type="hidden" name="aset_id" value="<?php echo $product['aset_id']; ?>" />
+		<input type="hidden" name="quantity_requested" value="1" />
+		<input type="hidden" name="option_fields" value="<?php echo $this->optionFields; ?>" />
+		<?php endif; ?>
+		<?php echo $this->hidden; ?>
+		<h2 class="productName"><?php echo $this->productDetailLabel; ?></h2>
+	      <div class="pricing">
+	        <p class="productPrice"><?php echo $product['price_string']; ?></p>
+	        <p class="sku"><?php echo $product['product_sku']; ?></p>
+	        <div class="clearBoth"></div>
+	      </div>
+	      <?php if(strlen($this->embeddedMedia) > 0): ?>
+	      <div class="media"><?php echo $this->embeddedMedia; ?></div>
+	      <?php endif; ?>
+	      <div class="options">
+	      <?php if($this->hasOptions): ?>
+	      <h3 class="productOptions"><?php echo $this->productOptionsLabel; ?></h3>
+	      <?php if (!$this->tableless): ?>
+			<table cellspacing="0" cellpadding="0" summary="Form fields">
+				<?php foreach($product['options'] as $option): ?>
+		        	<?php echo $option['html']; ?>
+		        <?php endforeach; ?>
+			</table>
+		  <?php else: ?>
+		  	<ul id="optionList" class="optionList">
+			<?php foreach($product['options'] as $option): ?>
+	        	<li id="option_<?php echo $option['name']; ?>" class="option">
+	        		<h4><?php echo $option['description']; ?></h4>
+	        		<?php echo $option['html']; ?>
+	        	</li>
+	        <?php endforeach; ?>
+		  	</ul>
+		  <?php endif; ?>
+		  </div>
+		  <?php endif; ?>  
+	        <?php if($this->useQuantity): ?>
+	        <div class="quantity">
+	          <input name="qty" type="text" size="3" />
+	          Qty </div>
+	        <?php endif; ?>
+	      </div>
+	      <div class="productButtons">
+	          <?php foreach($this->buttonTypes as $buttonType): ?>
+	        		<div style="float: left; padding-right: 5px;"><input type="image" src="system/modules/isotope/html/add_to_cart.gif" name="submit" value="Add to Cart" /><?php //echo $this->buttons[$buttonType][$this->productId]; ?></div>
+	          <?php endforeach; ?>
+	          <?php if ($this->useReg): ?>
+	          	<div class="registryLink">
+	          		<a href="/registry-manager/action/add_to_registry/aset_id/<?php echo $product['aset_id'] ?>/quantity_requested/1/id/<?php echo $product['product_id'] ?>.html">Add to Registry</a>
+	          	</div>
+	          <?php endif; ?>                             
+		  </div>
+	      <?php if($this->hasMessages): ?>
+	      <div class="messages">
+	      	<?php foreach($this->messages as $message): ?>
+	        	<p class="message"><?php echo $message; ?></p>
+	        <?php endforeach; ?>
+	      </div>
+	      <?php endif; ?>
+		  <?php if($this->hasExtraImages): ?>
+	      <div class="productGallery">
+	      <div class="highslide-gallery">
+	        <div class="subImages">
+	        <?php foreach($this->extraProductImages as $image): ?>
+	        	<?php if($image['has_large_image']): ?>
+	            	<noscript>
+	                <a href="<?php echo $image['large_image_link']; ?>" title="<?php echo $product['product_name']; ?>" target="_blank"><img src="<?php echo $image['file_path']; ?>" width="<?php echo $image['width']; ?>" height="<?php echo $image['height']; ?>" alt="<?php echo $image['alt']; ?>" class="productImg" /></a>
+	                </noscript>
+	                <a href="<?php echo $image['large_image_link']; ?>" <?php echo $image['on_thumbnail_click_event']; ?> title="<?php echo $product['product_name']; ?>"><img src="<?php echo $image['file_path']; ?>" width="<?php echo $image['width']; ?>" height="<?php echo $image['height']; ?>" alt="<?php echo $image['alt']; ?>" class="productImg" /></a>
+	            <?php else: ?>
+	            	<img src="<?php echo $image['file_path']; ?>" width="<?php echo $image['width']; ?>" height="<?php echo $image['height']; ?>" alt="<?php echo $image['alt']; ?>" class="productImg" />
+	            <?php endif; ?>
+	        <?php endforeach; ?>
+	        </div>
+	        </div>
+	        <?php endif; ?>
+	      <div class="additionalInformation">
+	      
+	      </div>
+	      	<div class="clearBoth"></div>
+	      </div>
+		</form>
     </div>
     <div class="column3">
     	<h4 class="descriptionHeader"><?php echo $this->productDescriptionLabel; ?></h4>
@@ -122,3 +145,11 @@
    	<?php endif; ?>
   </div>
 </div>
+<?php if ($this->hasError): ?>
+
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+window.scrollTo(null, ($('<?php echo $this->formId; ?>').getElement('div.error').getPosition().y - 20));
+//--><!]]>
+</script>
+<?php endif; ?>

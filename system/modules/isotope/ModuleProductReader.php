@@ -74,12 +74,20 @@ class ModuleProductReader extends ModuleIsotopeBase
 	protected $hasExtraImages = false;
 	
 	/**
+	 * Does the product have options?
+	 * @var boolean
+	 */
+	protected $hasOptions = false;
+	
+	/**
 	 * Product Id	-  Using this limits us to showing a single product on the reader
 	 * @var integer
 	 */
 	protected $intProductId;
 	
 	protected $intAttributeSetId;
+	
+	protected $currFormId = 'iso_product_reader';
 	
 	/**
 	 * Main Image
@@ -123,7 +131,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 		}*/
 		
 		$this->strTemplate = $this->iso_reader_layout;
-		
+
 		return parent::generate();
 	}
 
@@ -378,9 +386,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 							
 						default:
 							$arrAttributeData = $this->getProductAttributeData($k, $this->intAttributeSetId);
-							
-							//var_dump($arrAttributeData);
-							
+														
 							switch($arrAttributeData['type'])
 							{
 								case 'select':
@@ -410,6 +416,31 @@ class ModuleProductReader extends ModuleIsotopeBase
 									$product[$k] = join(',', $arrLabels); 
 									break;
 									
+								case 'text':
+									if($arrAttributeData['is_customer_defined'])
+									{
+										$arrOptionFields[] = $k;
+										
+										$arrData = array
+										(
+											'label'			=> $arrAttributeData['name'],
+											'inputType'		=> 'textCollection',
+											'eval'			=> array('collectionsize'=>$arrAttributeData['text_collection_rows'], 'prompt'=>$arrAttributeData['name'], 'maxlength'=>255)
+										
+										);
+										
+										//generate a widget	to accept data & add to product options array
+										
+										$product['options'][] = array
+										(
+											'name'			=> $k,
+											'description'	=> $arrAttributeData['description'],									
+											'html'			=> $this->generateProductOptionWidget($k, $arrData, $this->currFormId)
+										);
+										
+									}
+									break;
+									
 								default:
 									break;
 							}
@@ -431,6 +462,11 @@ class ModuleProductReader extends ModuleIsotopeBase
 						'product_alias' => $product['product_alias']
 					);		
 				
+				if(sizeof($product['options'])>0)
+				{
+					$this->hasOptions = true;
+				}
+				$product['aset_id'] = $this->Input->get('asetid');
 				
 				$arrProducts[] = $product;	
 		
@@ -545,19 +581,29 @@ class ModuleProductReader extends ModuleIsotopeBase
 				$arrBaseButtonData = array_merge($arrBaseButtonData, $arrCustomBaseButtonData);
 			}*/
 			
+			$this->Template->action = ampersand($this->Environment->request, true);
+			$this->Template->formId = $this->currFormId;
+			$this->Template->method = 'post';
+			$this->Template->enctype = $this->hasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
+			$this->Template->attributes = '';
+			$this->Template->maxFileSize = $this->getMaxFileSize();
+			$this->Template->hidden = '';
+			$this->Template->tableless = true; //FIXME: make dynamic
 							
 			$arrButtons = $this->generateButtons($arrButtonData, $objPage->id);
 			$this->Template->productId = $this->intProductId;			
 			$this->Template->buttonTypes = $arrButtonTypes;
 			$this->Template->buttons = $arrButtons;
+			$this->Template->optionFields = join(',', $arrOptionFields);
 			
 			//END BUTTON CODE//
 			//------------------------------------------------------------------------------------//
-								
+			
+			$this->Template->hasOptions = $this->hasOptions;					
 			$this->Template->productDescriptionLabel = $GLOBALS['TL_LANG']['MSC']['productDescriptionLabel'];
 			$this->Template->productDetailLabel = $GLOBALS['TL_LANG']['MSC']['productDetailLabel'];	
 			$this->Template->productMediaLabel = $GLOBALS['TL_LANG']['MSC']['productMediaLabel'];
-			
+			$this->Template->productOptionsLabel = $GLOBALS['TL_LANG']['MSC']['productOptionsLabel'];
 			$this->Template->messages = $this->getProductMessages($product['id']);	
 			$this->Template->productCollection = $arrProducts;
 			
@@ -571,19 +617,6 @@ class ModuleProductReader extends ModuleIsotopeBase
 			
 	}
 	
-	private function getProductAttributeData($strFieldName, $intPid)
-	{		
-		$objAttributeData = $this->Database->prepare("SELECT id, type, option_list FROM tl_product_attributes WHERE field_name=? AND pid=?")
-										   ->limit(1)
-										   ->execute($strFieldName, $intPid);
-
-		if($objAttributeData->numRows < 1)
-		{
-			return array();
-		}
-		
-		return $objAttributeData->fetchAssoc();
-	}
 	
 	/**
 	 * Grabs a main image as well as any extra images and any related information and functionality pertaining to display of images on the front end.

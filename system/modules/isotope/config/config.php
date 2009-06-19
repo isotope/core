@@ -137,6 +137,10 @@ $GLOBALS['FE_MOD']['eCommerce'] = array
 	'isoAddressBook'			=> 'ModuleAddressBook'
 );
 
+/** 
+ * Frontend Form Fields
+ */
+$GLOBALS['TL_FFL']['textCollection'] = 'FormTextCollectionField';
 
 /**
  * Shipping modules

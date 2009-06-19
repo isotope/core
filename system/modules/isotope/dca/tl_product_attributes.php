@@ -122,7 +122,7 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
     // Palettes
     'palettes' => array
     (
-        '__selector__'				=> array('type','use_alternate_source'),
+        '__selector__'				=> array('type','use_alternate_source','is_customer_defined'),
 		'default'					=> 'name,description,type,field_name',
 		'text'                     	=> 'name,description,type,field_name,is_visible_on_front;is_hidden_on_backend;is_customer_defined;is_required,is_filterable,is_searchable,is_order_by_enabled,is_listing_field;rgxp;load_callback;save_callback',
 		'shorttext'               	=> 'name,description,type,field_name,is_visible_on_front;is_hidden_on_backend;is_customer_defined;is_required,is_filterable,is_searchable,is_order_by_enabled,is_listing_field;rgxp;load_callback;save_callback',
@@ -142,7 +142,8 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
     // Subpalettes
     'subpalettes' => array
     (
-       'use_alternate_source'		=> 'list_source_table,list_source_field'
+       'use_alternate_source'		=> 'list_source_table,list_source_field',
+    	'is_customer_defined'		=> 'text_collection_rows'
     ),
 
     // Fields
@@ -219,12 +220,20 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 				array('tl_product_attributes','validateInput')
 			)
 		),
+		'text_collection_rows' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['text_collection_rows'],
+			'exclude'                 => true,
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>255, 'rgxp'=>'digit')	
+		),
 		'is_customer_defined' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['is_customer_defined'],
 			'exclude'                 => true,
 			'default'				  => 0,
-			'inputType'               => 'checkbox'
+			'inputType'               => 'checkbox',
+			'eval'					  => array('submitOnChange'=>true)
 		),
 		'is_visible_on_front' => array
 		(
@@ -296,7 +305,8 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 			'default'				  => 0,
 			'inputType'				  => 'checkbox',
 			'eval'					  => array('multiple'=>true)
-		)*/,
+		)*/
+		,
 		'is_listing_field' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['is_listing_field'],
