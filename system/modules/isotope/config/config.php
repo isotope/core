@@ -155,7 +155,7 @@ $GLOBALS['ISO_SHIP']['flat']		 = 'ShippingFlat';
 $GLOBALS['ISO_PAY']['cash']	 		= 'PaymentCash';
 $GLOBALS['ISO_PAY']['paypal']		= 'PaymentPaypal';
 $GLOBALS['ISO_PAY']['postfinance']	= 'PaymentPostfinance';
-$GLOBALS['ISO_PAY']['authorizedotnet'] = 'PaymentAuthorizeDotNet';
+//$GLOBALS['ISO_PAY']['authorizedotnet'] = 'PaymentAuthorizeDotNet';
 
 
 /**
