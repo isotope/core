@@ -71,7 +71,7 @@ class ModuleAddressBook extends Module
 		$this->isoEditable = deserialize($this->isoEditable);
 
 		// Return if there are not editable fields or if there is no logged in user
-		if (!FE_USER_LOGGED_ID)//!is_array($this->isoEditable) || count($this->isoEditable) < 1 || !FE_USER_LOGGED_IN)
+		if (!FE_USER_LOGGED_IN)//!is_array($this->isoEditable) || count($this->isoEditable) < 1 || !FE_USER_LOGGED_IN)
 		{
 			return '';
 		}
