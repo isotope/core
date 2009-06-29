@@ -195,7 +195,11 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 
 		if(!is_array($session) || !is_array($session['isotope']) || !array_key_exists('cart_data', $session['isotope']) || !sizeof($session['isotope']['cart_data']) < 1 || $this->blnRecallProductData)
 		{		
-			$arrProductData = $this->Isotope->getProductData($this->Cart->getProducts(), array('product_alias','product_name','product_price', 'product_images', 'product_media'), 'product_name');
+			//what fields to display out in cart.
+			
+			$arrDisplayFields = array('product_alias','product_name','product_price', 'product_images', 'product_media');
+						
+			$arrProductData = $this->Isotope->getProductData($this->Cart->getProducts(), $arrDisplayFields, 'product_name');
 			
 			foreach($arrProductData as $k => $data)
 			{

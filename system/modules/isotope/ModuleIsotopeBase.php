@@ -754,9 +754,9 @@ abstract class ModuleIsotopeBase extends Module
 	protected function formatProductData($arrProductData)
 	{
 		global $objPage;
-		
+	
  		foreach($arrProductData as $row)
-		{
+		{			
 			$intTotalPrice = $row['product_price'] * $row['quantity_requested'];
 			$arrFormattedProductData[] = array
 			(
@@ -767,6 +767,7 @@ abstract class ModuleIsotopeBase extends Module
 				'price'				=> $this->generatePrice($row['product_price'], $this->strPriceTemplate),
 				'total_price'		=> $this->generatePrice($intTotalPrice, 'stpl_total_price'),
 				'quantity'			=> $row['quantity_requested'],
+				'option_values'		=> $this->getOptionValues($row),
 				'remove_link'		=> $this->generateActionLinkString('remove_from_cart', $row['product_id'], array('attribute_set_id'=>$row['attribute_set_id'],'quantity'=>0, 'source_cart_id'=>$row['source_cart_id']), $objPage->id),
 				'remove_link_title' => sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $row['product_name'])
 			
@@ -774,6 +775,11 @@ abstract class ModuleIsotopeBase extends Module
 		}
 		
 		return $arrFormattedProductData;
+	}
+	
+	protected function getOptionValues()
+	{
+		
 	}
 	
 	/*
@@ -1442,7 +1448,7 @@ abstract class ModuleIsotopeBase extends Module
 		
 		
 			$strClass = $GLOBALS['TL_FFL'][$arrData['inputType']];
-											
+										
 			// Continue if the class is not defined
 			if (!$this->classFileExists($strClass))// || !$arrData['eval']['isoEditable'])
 			{
@@ -1544,62 +1550,85 @@ abstract class ModuleIsotopeBase extends Module
 		foreach($arrOptions as $option)
 		{
 			$arrAttributeData = $this->getProductAttributeData($option, $intAttributeSetId);
-															
-			switch($arrAttributeData['type'])
+			
+			if($arrAttributeData['is_customer_defined'])
 			{
-				case 'select':
-					//check for a related label to go with the value.
-					/*$arrOptions = deserialize($arrAttributeData['option_list']);
-					$varValues = deserialize($v);
-					
-					foreach($arrOptions as $option)
-					{
-						if(is_array($varValues))
-						{
-							if(in_array($option['value'], $varValues))
-							{
-								$arrLabels[] = $option['label'];
-							}
-						}else{	
-							
-							if((int)$option['value']==(int)$v)
-							{
-								$arrLabels[] = $option['label'];
-							}
-						}
-					
-					}
-					
-														
-					$product[$k] = join(',', $arrLabels); */
-					break;
-					
-				case 'text':
-					if($arrAttributeData['is_customer_defined'])
-					{
-						$arrOptionFields[] = $option;
+				$arrOptionFields[] = $k;
 						
-						$arrData = array
-						(
-							'label'			=> $arrAttributeData['name'],
-							'inputType'		=> 'textCollection',
-							'eval'			=> array('collectionsize'=>$arrAttributeData['text_collection_rows'], 'prompt'=>$arrAttributeData['name'], 'maxlength'=>255)
-						
-						);
-					
-						//generate a widget	to accept data & add to product options array
-						
-						$this->generateProductOptionWidget($option, $arrData, $currFormId);
-						
-						
-					}
-					break;
-					
-				default:
-					break;
+				$arrData = $this->getDCATemplate($arrAttributeData);	//Grab the skeleton DCA info for widget generation
+																
+				$this->generateProductOptionWidget($option, $arrData, $currFormId);
+
 			}
+															
 		}	
 	
+	}
+	
+	protected function getDCATemplate($arrAttributeData)
+	{
+		$arrData['label'] 	= $arrAttributeData['name'];
+		$arrData['prompt'] 	= $arrAttributeData['name'];
+		
+		switch($arrAttributeData['type'])
+		{
+			case 'text':
+				$arrData['inputType'] = 'textCollection';
+				$arrData['eval']['collectionsize'] = $arrAttributeData['text_collection_rows'];
+				$arrData['eval']['prompt'] = $arrAttributeData['name'];
+				$arrData['eval']['maxlength'] = 255;
+				
+				break;
+			case 'select':
+				break;
+			case 'checkbox':
+				break;
+			case 'options':
+				$arrOptions = $this->getOptionList($arrAttributeData);
+				
+				$arrData['inputType'] 	= 'radio';
+				$arrData['default'] 	= '';
+				$arrData['options']     = array_keys($arrOptions);
+				$arrData['reference']   = $arrOptions;
+	
+				break;
+			default:
+				break;		
+		
+		}
+		
+		return $arrData;
+	
+	}
+	
+	protected function getOptionList($arrAttributeData)
+	{
+		if($arrAttributeData['use_alternate_source']==1)
+		{
+			if(strlen($arrAttributeData['list_source_table']) > 0 && strlen($arrAttributeData['list_source_field']) > 0)
+			{
+				$strForeignKey = $arrAttributeData['list_source_table'] . '.' . $arrAttributeData['list_source_field'];
+			
+			}
+		}else{
+		
+			$arrValues = array();
+			$arrOptionsList = deserialize($arrAttributeData['option_list']);
+			
+			
+			foreach ($arrOptionsList as $arrOptions)
+			{
+				/*if ($arrOptions['default'])
+				{
+					$arrValues[] = $arrOptions['value'];
+				}*/
+				
+				$arrValues[$arrOptions['value']] = $arrOptions['label'];
+			}											
+			
+		}
+
+		return $arrValues;
 	}
 	
 	/**

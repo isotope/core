@@ -421,7 +421,8 @@ class ProductCatalog extends Backend
 					break;
 					
 				case 'options':
-					$inputType = 'checkbox';
+					$inputType = 'radio';
+					$eval['multiple'] = false;
 					if($field['use_alternate_source']==1)
 					{
 						if(strlen($field['list_source_table']) > 0 && strlen($field['list_source_field']) > 0)
@@ -450,9 +451,32 @@ class ProductCatalog extends Backend
 					
 				case 'checkbox':
 					$inputType = 'checkbox';
-					//$eval['multiple'] = true;
+					$eval['multiple'] = true;
+					if($field['use_alternate_source']==1)
+					{
+						if(strlen($field['list_source_table']) > 0 && strlen($field['list_source_field']) > 0)
+						{
+							$strForeignKey = $field['list_source_table'] . '.' . $field['list_source_field'];
+						
+						}
+					}else{
+					
+						$arrValues = array();
+						$arrOptionsList = deserialize($field['option_list']);
+						
+						
+						foreach ($arrOptionsList as $arrOptions)
+						{
+							/*if ($arrOptions['default'])
+							{
+								$arrValues[] = $arrOptions['value'];
+							}*/
+							
+							$arrValues[$arrOptions['value']] = $arrOptions['label'];
+						}											
+						
+					}
 					break;
-				
 				case 'select':
 					$inputType = 'select';
 					

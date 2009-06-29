@@ -386,65 +386,59 @@ class ModuleProductReader extends ModuleIsotopeBase
 							
 						default:
 							$arrAttributeData = $this->getProductAttributeData($k, $this->intAttributeSetId);
-														
-							switch($arrAttributeData['type'])
-							{
-								case 'select':
-									//check for a related label to go with the value.
-									$arrOptions = deserialize($arrAttributeData['option_list']);
-									$varValues = deserialize($v);
-									
-									foreach($arrOptions as $option)
-									{
-										if(is_array($varValues))
-										{
-											if(in_array($option['value'], $varValues))
-											{
-												$arrLabels[] = $option['label'];
-											}
-										}else{	
-											
-											if((int)$option['value']==(int)$v)
-											{
-												$arrLabels[] = $option['label'];
-											}
-										}
-									
-									}
-									
-																		
-									$product[$k] = join(',', $arrLabels); 
-									break;
-									
-								case 'text':
-									if($arrAttributeData['is_customer_defined'])
-									{
-										$arrOptionFields[] = $k;
-										
-										$arrData = array
-										(
-											'label'			=> $arrAttributeData['name'],
-											'inputType'		=> 'textCollection',
-											'eval'			=> array('collectionsize'=>$arrAttributeData['text_collection_rows'], 'prompt'=>$arrAttributeData['name'], 'maxlength'=>255)
-										
-										);
-										
-										//generate a widget	to accept data & add to product options array
-										
-										$product['options'][] = array
-										(
-											'name'			=> $k,
-											'description'	=> $arrAttributeData['description'],									
-											'html'			=> $this->generateProductOptionWidget($k, $arrData, $this->currFormId)
-										);
-										
-									}
-									break;
-									
-								default:
-									break;
-							}
 							
+							if($arrAttributeData['is_customer_defined'])
+							{
+								$arrOptionFields[] = $k;
+										
+								$arrData = $this->getDCATemplate($arrAttributeData);	//Grab the skeleton DCA info for widget generation
+																
+								$product['options'][] = array
+								(
+									'name'			=> $k,
+									'description'	=> $arrAttributeData['description'],									
+									'html'			=> $this->generateProductOptionWidget($k, $arrData, $this->currFormId)
+								);
+							
+							}else{
+																					
+								switch($arrAttributeData['type'])
+								{
+									case 'select':
+									case 'radio':
+									case 'checkbox':
+										//check for a related label to go with the value.
+										$arrOptions = deserialize($arrAttributeData['option_list']);
+										$varValues = deserialize($v);
+										
+										foreach($arrOptions as $option)
+										{
+											if(is_array($varValues))
+											{
+												if(in_array($option['value'], $varValues))
+												{
+													$arrLabels[] = $option['label'];
+												}
+											}else{	
+												
+												if((int)$option['value']==(int)$v)
+												{
+													$arrLabels[] = $option['label'];
+												}
+											}
+										
+										}
+										
+																			
+										$product[$k] = join(',', $arrLabels); 
+										break;
+																											
+									default:
+										//just direct render
+										$product[$k] = $v;
+										break;
+								}
+							}							
 							break;
 					}
 					
@@ -759,6 +753,8 @@ class ModuleProductReader extends ModuleIsotopeBase
 	
 		return $arrImages;	
 	}
+	
+
 	
 	
 	//SWITCH TO CATCH-ALL 'getAsset' function to handle any file asset for a given product?  In: path data, asset type, product data.  Out: file path, asset specific attributes.

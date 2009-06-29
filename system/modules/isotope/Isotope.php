@@ -188,6 +188,12 @@ class Isotope extends Controller
 			}else{
 				$arrProductExtraFields[$data['storeTable']][$data['product_id']]['quantity_requested'] += $data['quantity_requested'];
 			}
+			
+			if(strlen($data['product_options']))
+			{
+				
+				$arrProductExtraFields[$data['storeTable']][$data['product_id']]['product_options'] = deserialize($data['product_options']);
+			}
 		}
 						
 		$arrTotalProductsInCart = array();
@@ -225,6 +231,7 @@ class Isotope extends Controller
 				$arrProducts[$product['id']]['attribute_set_id'] = $arrProductExtraFields[$k][$product['id']]['attribute_set_id'];
 				$arrProducts[$product['id']]['source_cart_id'] = $arrProductExtraFields[$k][$product['id']]['source_cart_id'];
 				$arrProducts[$product['id']]['quantity_requested'] = $arrProductExtraFields[$k][$product['id']]['quantity_requested'];
+				$arrProducts[$product['id']]['product_options'] = $arrProductExtraFields[$k][$product['id']]['product_options'];
 			}
 	
 								
