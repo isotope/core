@@ -176,6 +176,7 @@ class Isotope extends Controller
 			//The productID list for this storetable, used to build the IN clause for the product gathering.
 			$arrProductIds[$data['storeTable']][] = $data['product_id'];
 			
+			$arrProductExtraFields[$data['storeTable']][$data['product_id']]['cart_item_id'] = $data['id'];
 			//This is used to gather extra fields for a given product by store table.
 			$arrProductExtraFields[$data['storeTable']][$data['product_id']]['attribute_set_id'] = $data['attribute_set_id'];
 			
@@ -190,8 +191,7 @@ class Isotope extends Controller
 			}
 			
 			if(strlen($data['product_options']))
-			{
-				
+			{	
 				$arrProductExtraFields[$data['storeTable']][$data['product_id']]['product_options'] = deserialize($data['product_options']);
 			}
 		}
@@ -219,7 +219,7 @@ class Isotope extends Controller
 				
 				foreach($arrFieldNames as $field)
 				{
-					if (($field == 'product_images' || $field == 'product_media') && !strlen($product[$field]))
+					if (($field == 'main_image' || $field == 'main_image') && !strlen($product[$field]))
 					{
 						$this->import('MediaManagement');
 						$product[$field] = $this->MediaManagement->getFirstOrdinalImage('product_assets/%s/%s/images/gallery_thumbnail_images', $product['product_alias']);
@@ -232,6 +232,7 @@ class Isotope extends Controller
 				$arrProducts[$product['id']]['source_cart_id'] = $arrProductExtraFields[$k][$product['id']]['source_cart_id'];
 				$arrProducts[$product['id']]['quantity_requested'] = $arrProductExtraFields[$k][$product['id']]['quantity_requested'];
 				$arrProducts[$product['id']]['product_options'] = $arrProductExtraFields[$k][$product['id']]['product_options'];
+				$arrProducts[$product['id']]['cart_item_id'] = $arrProductExtraFields[$k][$product['id']]['cart_item_id'];
 			}
 	
 								

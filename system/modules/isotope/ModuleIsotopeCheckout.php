@@ -989,7 +989,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		}
 					
 		
-		$arrProductData = $this->Isotope->getProductData($this->Cart->getProducts(), array('product_alias','product_name','product_price', 'product_media'), 'product_name');
+		$arrProductData = $this->Isotope->getProductData($this->Cart->getProducts(), array('product_alias','product_name','product_price', 'main_image'), 'product_name');
 		
 		$objTemplate->products = $this->formatProductData($arrProductData);
 		

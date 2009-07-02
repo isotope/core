@@ -311,7 +311,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 																				
 							if(is_dir($arrProductPaths['file_destination_path']))
 							{	
-								$arrImages = $this->getProductImages($arrProductPaths['file_destination_path'], $arrProductPaths['relative_destination_path'], $product, $GLOBALS['TL_LANG']['MSC']['imagesFolder'], $product['product_media'], $product['product_alias']);
+								$arrImages = $this->getProductImages($arrProductPaths['file_destination_path'], $arrProductPaths['relative_destination_path'], $product, $GLOBALS['TL_LANG']['MSC']['imagesFolder'], $product['main_image'], $product['product_alias']);
 								
 								sort($arrImages);
 								

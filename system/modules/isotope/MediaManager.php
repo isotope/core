@@ -121,7 +121,7 @@ class MediaManager extends Widget
 		$this->import('BackendUser','User');
 						
 		//Get the to the images from the current product's directory
-		$objCurrentProductImagePath = $this->Database->prepare("SELECT product_alias, product_images, old_images_list FROM " . $this->strTable . " WHERE id=?")
+		$objCurrentProductImagePath = $this->Database->prepare("SELECT product_alias, main_image, old_images_list FROM " . $this->strTable . " WHERE id=?")
 													 ->limit(1)
 													 ->execute($this->Input->get('id'));
 		
@@ -142,7 +142,7 @@ class MediaManager extends Widget
 
 		$arrOriginalProductImages = explode(',', $objCurrentProductImagePath->old_images_list);
 		$strOriginalProductImage = $arrOriginalProductImages[0];
-		$arrProductImages = explode(',', $objCurrentProductImagePath->product_images);
+		$arrProductImages = explode(',', $objCurrentProductImagePath->main_image);
 		$strProductImage = $arrProductImages[0];
 		
 		//compare size of original list and if larger then grab any images not in the directory
@@ -341,7 +341,7 @@ class MediaManager extends Widget
 				}
 			}*/
 			
-			//Copy from holding tank based on list provided in product_images, if any.
+			//Copy from holding tank based on list provided in main_image, if any.
 			if(is_dir($fallbackDir))
 			{
 				foreach($arrOriginalProductImages as $image)

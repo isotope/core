@@ -777,7 +777,7 @@ class MediaManagement extends Backend
 					'type'				=> $mediaType,
 					'duration'			=> 33,
 					'is_audio'			=> $isAudio/*,
-					'thumbnail_image'	=> $this->Environment->base . $arrProductData['product_images']*/
+					'thumbnail_image'	=> $this->Environment->base . $arrProductData['main_image']*/
 				);
 			}
 				

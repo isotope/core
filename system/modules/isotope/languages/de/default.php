@@ -151,5 +151,5 @@ $GLOBALS['TL_LANG']['ISO_ATTR']['product_description']			= array('Beschreibung',
 $GLOBALS['TL_LANG']['ISO_ATTR']['product_price']				= array('Preis', '');
 $GLOBALS['TL_LANG']['ISO_ATTR']['product_price_override']		= array('Ersatzpreis', '');
 $GLOBALS['TL_LANG']['ISO_ATTR']['use_product_price_override']	= array('Ersatzpreis verwenden', '');
-$GLOBALS['TL_LANG']['ISO_ATTR']['product_media']				= array('Medien', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['main_image']				= array('Medien', '');
 

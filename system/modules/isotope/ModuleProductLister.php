@@ -378,7 +378,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 			//echo "SELECT DISTINCT id, tstamp, use_product_price_override, " . strtolower($field_list) . " FROM " . $this->strCurrentStoreTable . " WHERE " . $strBaseClause . $strFilterList . $strClauses;
 					
 			//Get the current collection of products based on the tl_cap_aggregate table data
-			$objProductCollection = $this->Database->prepare("SELECT id, tstamp, use_product_price_override, product_images " . strtolower($field_list) . " FROM " . $this->strCurrentStoreTable . " WHERE " . $strBaseClause . $strFilterList . $strClauses);
+			$objProductCollection = $this->Database->prepare("SELECT id, tstamp, use_product_price_override, main_image " . strtolower($field_list) . " FROM " . $this->strCurrentStoreTable . " WHERE " . $strBaseClause . $strFilterList . $strClauses);
 			
 			if ($per_page > 0)
 			{
@@ -413,7 +413,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 					'product_alias'			=> $product['product_alias'],
 					'product_link'			=> $this->generateProductLink($product['product_alias'], $product, $this->Store->productReaderJumpTo, $objAggregateSets->id),
 					'price_string'			=> ($product['use_product_price_override']==1 ? $this->generatePrice($product['product_price_override'], $this->strPriceOverrideTemplate) : $this->generatePrice($product['product_price'], $this->strPriceTemplate)),
-					'thumbnail'				=> $this->getThumbnailImage($product['id'], $product['product_alias'], $product['product_images'], $strMissingImagePlaceholder, $this->strFileBasePath),
+					'thumbnail'				=> $this->getThumbnailImage($product['id'], $product['product_alias'], $product['main_image'], $strMissingImagePlaceholder, $this->strFileBasePath),
 					'product_id'			=> $product['id'],
 					'aset_id'				=> $objAggregateSets->id,
 				);

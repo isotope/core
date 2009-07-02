@@ -264,5 +264,5 @@ $GLOBALS['TL_LANG']['ISO_ATTR']['product_description']			= array('Product Descri
 $GLOBALS['TL_LANG']['ISO_ATTR']['product_price']				= array('Product Price', '');
 $GLOBALS['TL_LANG']['ISO_ATTR']['product_price_override']		= array('Product Price Override', '');
 $GLOBALS['TL_LANG']['ISO_ATTR']['use_product_price_override']	= array('Use Product Price Override', '');
-$GLOBALS['TL_LANG']['ISO_ATTR']['product_media']				= array('Product Media', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['main_image']				= array('Product Media', '');
 

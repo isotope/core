@@ -56,6 +56,9 @@ class PaymentAuthorizeDotNet extends Payment
 	public function processPostSale()
 	{
 		//$this->log('Post-sale request from Postfinance: '.print_r($_GET, true).print_r($_POST, true), 'PaymentPostfinance postProcessPayment()', TL_ACCESS);
+		
+		//for Authorize.net - this would be where to handle logging response information from the server.
+		
 	}
 	
 	
@@ -74,6 +77,7 @@ class PaymentAuthorizeDotNet extends Payment
 		$objOrder = $this->Database->prepare("SELECT order_id FROM tl_iso_orders WHERE cart_id=?")->execute($this->Cart->id);
 		$arrAddress = $this->Isotope->getAddress('billing');
 		
+		$strTestValue = "false";
 		$strCurlUrl = 'https://secure.authorize.net/gateway/transact.dll';
 		
 		if ($this->debug)

@@ -779,9 +779,8 @@ class ProductCatalog extends Backend
 		
 		$this->import('MediaManagement');
 		
-		$objIsNewImport = $this->Database->prepare("SELECT id, pages, product_name, product_sku, product_alias, product_description, product_teaser, product_images FROM " . $dc->table . " WHERE new_import=1 AND id=?")
-										 ->limit(1)
-										 ->execute($dc->id);
+		$objIsNewImport = $this->Database->prepare("SELECT id, pages, product_name, product_sku, product_alias, product_description, product_teaser, main_image FROM " . $dc->table . " WHERE new_import=? AND id=?")
+										 ->execute(1, $dc->id);
 		
 		
 		
@@ -789,9 +788,11 @@ class ProductCatalog extends Backend
 		{		
 			//$arrNewImports = $objIsNewImport->fetchAllAssoc();
 			
-			/*foreach($arrNewImports as $record)
+			while($objIsNewImport->next())
 			{
-			*/
+			
+				
+				
 				if(strlen($objIsNewImport->product_sku) < 1)
 				{
 					$strSKU = $this->generateSKU('', $dc, $dc->id);
@@ -819,22 +820,22 @@ class ProductCatalog extends Backend
 					$strTeaser = $objIsNewImport->product_teaser;
 				}
 				
-				//$strSerializedValues = $this->prepareCategories($record['pages'], $dc, $record['id']);
+				$strSerializedValues = $this->prepareCategories($objIsNewImport->pages, $dc, $objIsNewImport->id);
 	
-				//$this->MediaManagement->thumbnailImportedImages($objIsNewImport->product_images, $dc, $dc->id, $strAlias);
+				//$this->MediaManagement->thumbnailImportedImages($objIsNewImport->main_image, $dc, $dc->id, $strAlias);
 				
-				//$this->MediaManagement->thumbnailCurrentImageForListing($objIsNewImport->product_images, $dc);
+				//$this->MediaManagement->thumbnailCurrentImageForListing($objIsNewImport->main_image, $dc);
 								
-				$this->Database->prepare("UPDATE " . $dc->table . " SET product_sku=?, product_alias=?, product_teaser=?, pages=?, new_import=0 WHERE id=?")
-							   ->execute($strSKU, $strAlias, $strTeaser, $objIsNewImport->pages, $dc->id);
+				$this->Database->prepare("UPDATE " . $dc->table . " SET product_sku=?, product_alias=?, product_teaser=?, pages=?, product_visibility=1, new_import=0 WHERE id=?")
+							   ->execute($strSKU, $strAlias, $strTeaser, $strSerializedValues, $dc->id);
 				
 								
-				$this->executeCAPAggregation($objIsNewImport->pages, $dc, $dc->id);
+				$this->executeCAPAggregation($strSerializedValues, $dc, $dc->id);
 				
 				//Not yet..
 				//$this->executePFCAggregation($objIsNewImport->pages, $dc, $dc->id);
-			/*}
-			
+			}
+			/*
 			if(count($arrNewImports) < 30)
 			{
 			
@@ -888,12 +889,20 @@ class ProductCatalog extends Backend
 	
 	protected function prepareCategories($varValue, DataContainer $dc)
 	{
+		if(is_null($varValue) || strlen(trim($varValue)) < 1)
+		{
+			return '';
+		}
 		//Potentially the delimiter could be different.  May want to try and figure it out autommatically.
 		if(!is_array(deserialize($varValue)))
 		{
 			if(strpos($varValue, ','))
 			{
 				$arrPages = explode(',', $varValue);
+				if(sizeof($arrPages) < 1 || strlen($arrPages[0])<1)
+				{
+					return '';
+				}
 			}else{
 				$arrPages[] = $varValue;	//singular value
 			}
@@ -1281,9 +1290,9 @@ class ProductCatalog extends Backend
 		
 		$key = $row['product_visibility'] ? 'published' : 'unpublished';
 		
-		$arrImages = explode(',', $row['product_images']);
+		$arrImages = explode(',', $row['main_image']);
 		
-		$thumbnail = strlen($row['product_images']) > 0 ? $GLOBALS['TL_CONFIG']['isotope_upload_path'] . '/' . $GLOBALS['TL_CONFIG']['isotope_base_path'] . '/' . substr($row['product_alias'], 0, 1) . '/' . $row['product_alias'] . '/images/' . $GLOBALS['TL_LANG']['MSC']['gallery_thumbnail_images_folder'] . '/' . $arrImages[0] : ' width="50" height="50';
+		$thumbnail = strlen($row['main_image']) > 0 ? $GLOBALS['TL_CONFIG']['isotope_upload_path'] . '/' . $GLOBALS['TL_CONFIG']['isotope_base_path'] . '/' . substr($row['product_alias'], 0, 1) . '/' . $row['product_alias'] . '/images/' . $GLOBALS['TL_LANG']['MSC']['gallery_thumbnail_images_folder'] . '/' . $arrImages[0] : ' width="50" height="50';
 		
 		//$thumbnail = $GLOBALS['TL_CONFIG']['isotope_upload_path'] . '/' . $GLOBALS['TL_CONFIG']['isotope_base_path'] . '/' . substr($row['product_alias'], 0, 1) . '/' . $row['product_alias'] . '/images/' . $GLOBALS['TL_LANG']['MSC']['gallery_thumbnail_images_folder'] . '/' . $arrImages[0];
 		

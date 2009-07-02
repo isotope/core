@@ -36,7 +36,7 @@ $GLOBALS['TL_DCA']['tl_product_attribute_sets'] = array
 	(
 		'dataContainer'               => 'Table',
 		'ctable'                      => array('tl_product_attributes'),
-		'notEditable'				  => true,
+		'notEditable'				  => false,
 		'switchToEdit'                => true,
 		'enableVersioning'            => true,
 		'onload_callback'             => array

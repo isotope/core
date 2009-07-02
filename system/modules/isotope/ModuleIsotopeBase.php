@@ -761,13 +761,13 @@ abstract class ModuleIsotopeBase extends Module
 			$arrFormattedProductData[] = array
 			(
 				'product_id'		=> $row['product_id'],
-				'image'				=> $GLOBALS['TL_CONFIG']['isotope_upload_path'] . '/' . $GLOBALS['TL_CONFIG']['isotope_base_path'] . '/' . substr($row['product_alias'], 0, 1) . '/' . $row['product_alias'] . '/' . $GLOBALS['TL_LANG']['MSC']['imagesFolder'] . '/' . $GLOBALS['TL_LANG']['MSC']['gallery_thumbnail_images_folder'] . '/' . $row['product_media'],
+				'image'				=> $GLOBALS['TL_CONFIG']['isotope_upload_path'] . '/' . $GLOBALS['TL_CONFIG']['isotope_base_path'] . '/' . substr($row['product_alias'], 0, 1) . '/' . $row['product_alias'] . '/' . $GLOBALS['TL_LANG']['MSC']['imagesFolder'] . '/' . $GLOBALS['TL_LANG']['MSC']['gallery_thumbnail_images_folder'] . '/' . $row['main_image'],
 				'name'				=> $row['product_name'],
 				'link'				=> $this->generateProductLink($row['product_alias'], $row, $this->Store->productReaderJumpTo, $row['attribute_set_id'], 'product_id'),
 				'price'				=> $this->generatePrice($row['product_price'], $this->strPriceTemplate),
 				'total_price'		=> $this->generatePrice($intTotalPrice, 'stpl_total_price'),
 				'quantity'			=> $row['quantity_requested'],
-				'option_values'		=> $this->getOptionValues($row),
+				'option_values'		=> $row['product_options'],
 				'remove_link'		=> $this->generateActionLinkString('remove_from_cart', $row['product_id'], array('attribute_set_id'=>$row['attribute_set_id'],'quantity'=>0, 'source_cart_id'=>$row['source_cart_id']), $objPage->id),
 				'remove_link_title' => sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $row['product_name'])
 			
@@ -777,10 +777,6 @@ abstract class ModuleIsotopeBase extends Module
 		return $arrFormattedProductData;
 	}
 	
-	protected function getOptionValues()
-	{
-		
-	}
 	
 	/*
 
@@ -1485,9 +1481,9 @@ abstract class ModuleIsotopeBase extends Module
 				// Store current value
 				elseif ($objWidget->submitInput())
 				{
-					
 					//Store this options value to the productOptionsData array which is then serialized and stored for the given product that is being added to the cart.
-					$this->arrProductOptionsData[$strField] = $varValue;
+										
+					$this->arrProductOptionsData[] = $this->getProductOptionValues($strField, $arrData['inputType'], $varValue); 					
 				}
 			}
 			
@@ -1512,9 +1508,60 @@ abstract class ModuleIsotopeBase extends Module
 			else
 			{*/
 			//}
-	
 		
 		return $temp;
+	}
+	
+	private function getProductOptionValues($strField, $inputType, $varValue)
+	{	
+		$arrAttributeData = $this->getProductAttributeData($strField, 1); //1 will eventually be irrelevant but for now just going with it...
+		
+		switch($inputType)
+		{
+			case 'radio':
+			case 'checkbox':
+			case 'select':
+				//get the actual labels, not the key reference values.
+				$arrOptions = $this->getOptionList($arrAttributeData);
+				
+				if(is_array($varValue))
+				{
+					foreach($varValue as $value)
+					{
+						$varOptionValues[] = $arrOptions[$value];
+					}	
+				}
+				else
+				{
+					$varOptionValues[] = $arrOptions[$varValue];
+				}
+				
+				break;
+			default:
+				//these values are not by reference - they were directly entered.  
+				if(is_array($varValue))
+				{
+					foreach($varValue as $value)
+					{
+						$varOptionValues[] = $value;
+					}
+				}
+				else
+				{
+					$varOptionValues[] = $varValue;
+				}
+				
+				break;
+		
+		}		
+		
+		$arrValues = array
+		(
+			'name'		=> $arrAttributeData['name'],
+			'values'	=> $varOptionValues			
+		);
+		
+		return $arrValues;
 	}
 	
 	/**
