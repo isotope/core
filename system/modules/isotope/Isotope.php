@@ -219,7 +219,7 @@ class Isotope extends Controller
 				
 				foreach($arrFieldNames as $field)
 				{
-					if (($field == 'main_image' || $field == 'main_image') && !strlen($product[$field]))
+					if (($field == 'main_image') && !strlen($product[$field]))
 					{
 						$this->import('MediaManagement');
 						$product[$field] = $this->MediaManagement->getFirstOrdinalImage('product_assets/%s/%s/images/gallery_thumbnail_images', $product['product_alias']);

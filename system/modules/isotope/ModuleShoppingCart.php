@@ -199,7 +199,7 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 		{		
 			//what fields to display out in cart.
 			
-			$arrDisplayFields = array('product_alias','product_name','product_price', 'main_image', 'main_image');
+			$arrDisplayFields = array('product_alias','product_name','product_price', 'main_image');
 						
 			$arrProductData = $this->Isotope->getProductData($this->Cart->getProducts(), $arrDisplayFields, 'product_name');
 			
