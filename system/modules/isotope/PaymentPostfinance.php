@@ -82,43 +82,43 @@ class PaymentPostfinance extends Payment
 		// Store request data in order for future references
 		$arrSet['payment_data']['POSTSALE'][] = $this->postfinance_method == 'GET' ? $_GET : $_POST;
 		
+		
+		$arrData = $objOrder->row();
+		$arrData['old_payment_status'] = $GLOBALS['TL_LANG']['MSC']['payment_status_labels'][$arrSet['payment_data']['status']];
+		
+		
 		switch( $this->getRequestData('STATUS') )
 		{
-			// cancelled by customer
-			case 1:
+			case 1:			// cancelled by customer
 			case 6:
 			case 7:
 				$arrSet['payment_data']['status'] = 'cancelled';
+				$arrSet['status'] = 'cancelled';
 				break;
 				
-			// acquirer declines the authorization more than the maximum permissible number of times
-			case 2:
+			case 2:			// acquirer declines the authorization more than the maximum permissible number of times
 			case 93:
 				$arrSet['payment_data']['status'] = 'failed';
 				break;
 			
-			// Authorized
 			case 51:
 			case 52:
 			case 59:
-			case 9:
+			case 9:			// Authorized
 				$arrSet['payment_data']['status'] = 'processing';
 				break;
 			
-			// Accepted
-			case 5:
+			case 5:			// Accepted
 				$arrSet['payment_data']['status'] = 'paid';
 				break;
 				
-			// Uncertain result
-			case 0:
+			case 0:			// Uncertain result
 			case 52:
 			case 92:
 				$arrSet['payment_data']['status'] = 'on_hold';
 				break;
 				
-			// Pending
-			case 4:
+			case 4:			// Pending
 			default:
 				$arrSet['payment_data']['status'] = 'pending';
 				break;
@@ -126,12 +126,15 @@ class PaymentPostfinance extends Payment
 		
 		$this->Database->prepare("UPDATE tl_iso_orders %s WHERE id=?")->set($arrSet)->execute($objOrder->id);
 		
+		$arrData['new_payment_status'] = $GLOBALS['TL_LANG']['MSC']['payment_status_labels'][$arrSet['payment_data']['status']];
 		
-		$objEmail = new Email();
-		$objEmail->from = $GLOBALS['TL_ADMIN_EMAIL'];
-		$objEmail->subject = 'Postfinance Post-Sale';
-		$objEmail->text = print_r($arrSet, true);
-		$objEmail->sendTo('andreas@schempp.ch');
+		if ($this->postsale_mail)
+		{
+			$_SESSION['isotope']['store_id'] = $objOrder->store_id;
+			$this->Import('Isotope');
+			
+			$this->Isotope->sendMail($this->postsale_mail, $GLOBALS['TL_ADMIN_EMAIL'], $GLOBALS['TL_LANGUAGE'], $arrData);
+		}
 	}
 	
 	
@@ -182,9 +185,9 @@ class PaymentPostfinance extends Payment
 <input type="hidden" name="SHASign" value="' . $arrData['SHASign'] . '">
 <!-- post payment redirection: see chapter 8.2 -->
 <input type="hidden" name="accepturl" value="' . $this->Environment->base . $this->addToUrl('step=order_complete') . '">
-<input type="hidden" name="declineurl" value="">
-<input type="hidden" name="exceptionurl" value="">
-<input type="hidden" name="cancelurl" value="">
+<input type="hidden" name="declineurl" value="' . $this->Environment->base . $this->addToUrl('step=order_failed') . '">
+<input type="hidden" name="exceptionurl" value="' . $this->Environment->base . $this->addToUrl('step=order_failed') . '">
+<input type="hidden" name="cancelurl" value="' . $this->Environment->base . $this->addToUrl('step=order_failed') . '">
 <input type="hidden" name="paramplus" value="mod=pay&id=' . $this->id . '">
 <input type="submit" value="Bezahlen">
 </form>

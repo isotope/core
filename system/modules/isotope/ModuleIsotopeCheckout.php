@@ -362,7 +362,21 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 					break;
 					
 				case 'order_failed';
-					die('Bestellung fehlgeschlagen');
+					
+					// Hide buttons
+					$this->Template->showNext = false;
+					$this->Template->showPrevious = false;
+					
+					$this->Database->prepare("UPDATE tl_iso_orders SET status='cancelled' WHERE cart_id=?")->execute($this->Cart->id);
+					
+					$arrSteps[] = array
+					(
+						'editEnabled' 	=> false,
+						'headline' 		=> $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE'][$this->strCurrentStep],
+						'prompt' 		=> $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT'][$this->strCurrentStep],
+						'useFieldset' 	=> true,
+						'fields'		=> 'Bestellung abgebrochen',
+					);
 					break;
 			}
 		}
@@ -562,7 +576,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			'language'				=> $GLOBALS['TL_LANGUAGE'],
 		);
 		
-		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->execute($this->Cart->id);
+		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=? AND status!='cancelled'")->limit(1)->execute($this->Cart->id);
 		
 		if (!$objOrder->numRows)
 		{
@@ -588,7 +602,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		{
 			$arrData = array
 			(
-				'orderId'					=> ($this->Store->orderPrefix . $orderId),
+				'order_id'					=> ($this->Store->orderPrefix . $orderId),
 				'items'						=> $this->Cart->items,
 				'products'					=> $this->Cart->products,
 				'subTotal'					=> $this->Isotope->formatPriceWithCurrency($this->Cart->subTotal),
