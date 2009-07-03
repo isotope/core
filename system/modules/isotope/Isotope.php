@@ -331,7 +331,7 @@ class Isotope extends Controller
 		
 		if (!$objMail->numRows)
 		{
-			$this->log(sprintf('E-mail template ID %s for language %s not found', $intId, $strLanguage), 'Isotope sendMail()', TL_ERROR);
+			$this->log(sprintf('E-mail template ID %s for language %s not found', $intId, strtoupper($strLanguage)), 'Isotope sendMail()', TL_ERROR);
 			return;
 		}
 		
