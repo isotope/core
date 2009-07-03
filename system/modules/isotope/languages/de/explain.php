@@ -26,7 +26,7 @@
  
 $GLOBALS['TL_LANG']['XPL']['isoMailTokens'] = array
 (
-	array('##orderId##', 'Eindeutige Nummer dieser Bestellung'),
+	array('##order_id##', 'Eindeutige Nummer dieser Bestellung'),
 	array('##items##', 'Anzahl Artikel im Warenkorb'),
 	array('##products##', 'Anzahl Produkte im Warenkorb'),
 	array('##subTotal##', 'Subtotal der Bestellung'),
