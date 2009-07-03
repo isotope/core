@@ -84,11 +84,11 @@ class ShippingFlat extends Shipping
 											   
 				if ($this->flatCalculation == 'perItem')
 				{
-					$intSurcharge += ($product['quantity_requested'] * intval($strSurcharge));
+					$intSurcharge += ($product['quantity_requested'] * floatval($strSurcharge));
 				}
 				else
 				{
-					$intSurcharge += intval($strSurcharge);
+					$intSurcharge += floatval($strSurcharge);
 				}
 			}
 		}
