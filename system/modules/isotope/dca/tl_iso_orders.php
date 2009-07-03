@@ -60,13 +60,13 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 			'label_callback'          => array('tl_iso_orders', 'getOrderLabel')
 		),
 		'operations' => array
-		(/*
+		(
 			'edit' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_iso_orders']['edit'],
 				'href'                => 'act=edit',
 				'icon'                => 'edit.gif'
-			),*/
+			),
 /*
 			'delete' => array
 			(
@@ -100,7 +100,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => 'order_subtotal,order_tax,order_shipping_cost;shipping_method,status;billing_address_id,shipping_address_id;gift_message,gift_wrap;order_comments',
+		'default'                     => 'status',
 	),
 
 	// Fields
@@ -153,18 +153,16 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 			'options'				  => array('ups_ground'),
 			'eval'                    => array('includeBlankOption'=>true),
 			'reference'				  => &$GLOBALS['TL_LANG']['tl_iso_orders']['shipping_method_labels']
-		),
+		),*/
 		'status' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['status'],
-			'exclude'                 => true,
-			'search'                  => true,
+			'filter'                  => true,
 			'sorting'                 => true,
 			'inputType'               => 'select',
-			'options'				  => array('pending','processing','shipped','complete','on_hold'),
-			'eval'                    => array(),
-			'reference'				  => &$GLOBALS['TL_LANG']['MSC']['order_status_labels']
-		),
+			'options'				  => array('pending','processing','shipped','complete','on_hold', 'cancelled'),
+			'reference'				  => &$GLOBALS['TL_LANG']['MSC']['order_status_labels'],
+		),/*
 		'order_comments' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['order_comments'],
@@ -220,9 +218,9 @@ class tl_iso_orders extends Backend
 		return '
 <div class="limit_height' . (!$GLOBALS['TL_CONFIG']['doNotCollapse'] ? ' h110' : '') . ' block">
   <div>
-    <h2>Bestellung #' . $row['id'] . '</h2><!--
-    ' . 'von Gast-Benutzer' . '<br />
-    Status: <strong>' . $GLOBALS['TL_LANG']['MSC']['order_status_labels'][$row['status']] . '</strong><br />-->
+    <h2>Bestellung ' . $row['order_id'] . ' (#' . $row['id'] . ')</h2><!--
+    ' . 'von Gast-Benutzer' . '<br /> -->
+    Status: <strong>' . $GLOBALS['TL_LANG']['MSC']['order_status_labels'][$row['status']] . '</strong><br />
     Zahlungsart: ' . $row['payment_method']  . '<br />
     Versandart: ' . $row['shipping_method']  . '<br />
     Subtotal: ' . $row['subTotal'] . '<br />
