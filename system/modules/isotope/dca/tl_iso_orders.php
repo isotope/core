@@ -51,7 +51,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 			'mode'                    => 2,
 			'fields'                  => array('tstamp DESC'),
 			'flag'                    => 1,
-			'panelLayout'             => 'filter;sort,search,limit'
+			'panelLayout'             => 'filter,search,limit'
 		),
 		'label' => array
 		(
@@ -158,7 +158,6 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['status'],
 			'filter'                  => true,
-			'sorting'                 => true,
 			'inputType'               => 'select',
 			'options'				  => array('pending','processing','shipped','complete','on_hold', 'cancelled'),
 			'reference'				  => &$GLOBALS['TL_LANG']['MSC']['order_status_labels'],
