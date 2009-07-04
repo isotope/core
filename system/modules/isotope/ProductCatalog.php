@@ -1280,10 +1280,10 @@ class ProductCatalog extends Backend
 	 * @param object $dc
 	 * @return string
 	 */
-	public function getRowLabel($row, $label = '', $dc)
+	public function getRowLabel($row, $label = '')
 	{
 		
-		$this->initializeAttributeSet($dc->id);
+		$this->initializeAttributeSet($row['id']);
 		$this->import('Isotope');
 
 		//$output = '<div><span><img src="' . $row['product_thumbnail_image'] . '" width="100" alt="' . $row['product_name'] . '" align="left" style="padding-right: 8px;" /><strong>' . $row['product_name'] . '</strong></span><div><span style="color:#b3b3b3;"><strong>$' . $row['product_price'] . '</strong></span></div><br /><br /><div><em>Categories: ' . $this->getCategoryList(deserialize($row['pages'])) . '</em></div></div> ';
