@@ -55,7 +55,7 @@ class PaymentAuthorizeDotNet extends Payment
 	 */
 	public function processPostSale()
 	{
-		//$this->log('Post-sale request from Postfinance: '.print_r($_GET, true).print_r($_POST, true), 'PaymentPostfinance postProcessPayment()', TL_ACCESS);
+		$this->log('Post-sale request from Authorize.net: '.print_r($_GET, true).print_r($_POST, true), 'PaymentAuthorizeDotNet postProcessPayment()', TL_ACCESS);
 		
 		//for Authorize.net - this would be where to handle logging response information from the server.
 		
@@ -86,6 +86,14 @@ class PaymentAuthorizeDotNet extends Payment
 			$strTestValue = "true";
 		}
 		
+		$arrData = array
+		(
+			'currency'		=> $this->Store->currency,
+			//'SHASign'		=> sha1($objOrder->order_id . ($this->Cart->grandTotal * 100) . $this->Store->currency . $this->postfinance_pspid . $this->postfinance_secret),
+		);
+		
+		$this->Database->prepare("UPDATE tl_iso_orders SET payment_data=? WHERE id=?")->execute(serialize($arrData), $objOrder->id);
+		
 		return '
 <form method="post" action="' . $this->Environment->request . '">
 <input type="hidden" name="x_login" value="' . $this->authorize_login . '">
@@ -112,9 +120,9 @@ class PaymentAuthorizeDotNet extends Payment
 <input type="hidden" name="x_zip" value="' . $arrAddress['postal'] . '">
 <input type="hidden" name="x_company" value="' . $arrAddress['company'] . '">
 <input type="hidden" name="x_email_customer"' . $this->authorize_email_customer . '">
-<input type="hidden" name="x_email"' . $arrAddress['email'] . '">
-</form>
-';
+<input type="hidden" name="x_email"' . $arrAddress['email'] . '">'
+. $this->checkoutForm($this->id) . 
+'</form>';
 /*
 
 <input type="hidden" name="PSPID" value="' . $this->postfinance_pspid . '">
@@ -141,3 +149,5 @@ class PaymentAuthorizeDotNet extends Payment
 ';*/
 	}
 }
+
+?>

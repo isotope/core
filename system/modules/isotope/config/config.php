@@ -155,8 +155,12 @@ $GLOBALS['ISO_SHIP']['flat']		 = 'ShippingFlat';
 $GLOBALS['ISO_PAY']['cash']	 		= 'PaymentCash';
 $GLOBALS['ISO_PAY']['paypal']		= 'PaymentPaypal';
 $GLOBALS['ISO_PAY']['postfinance']	= 'PaymentPostfinance';
-//$GLOBALS['ISO_PAY']['authorizedotnet'] = 'PaymentAuthorizeDotNet';
+$GLOBALS['ISO_PAY']['authorizedotnet'] = 'PaymentAuthorizeDotNet';
 
+$GLOBALS['ISO_PAY']['cc_types']['visa'] = 'Visa';
+$GLOBALS['ISO_PAY']['cc_types']['mastercard'] = 'Mastercard';
+$GLOBALS['ISO_PAY']['cc_types']['amex'] = 'American Express';
+$GLOBALS['ISO_PAY']['cc_types']['discover'] = 'Discover';
 
 /**
  * Handle Collections

@@ -1,21 +1,26 @@
 <div class="<?php echo $this->class; ?> block"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
 
+<?php if($this->allowGuestCheckout): ?>
 <div class="ce_text leftBox block">
-
-<p><a href="<?php echo $this->create_account_link; ?>"><?php echo $this->create_account_link_label; ?>Create Account</a></p>
-
+	<div class="ce_text block">
+    	Prefer to check out as a guest?<br />
+    	<a href="<?php echo $this->guestCheckoutUrl; ?>" class="hyperlink_txt" title="Checkout as a guest">Click Here</a>.
+    </div>
 </div>
+<?php endif; ?>
 
 <div class="rightBox">
-
 <?php echo $this->loginModule; ?>
-
 <div class="ce_hyperlink recoverPassword block">
-
 <?php echo $this->forgotPassword; ?>
-Forgot Your Password? <a href="recover-password.html" class="hyperlink_txt" title="Recover it here.">Recover it here.</a> 
+Forgot Your Password?<br /><a href="recover-password.html" class="hyperlink_txt" title="Recover it here.">Recover it here.</a> 
+<?php //echo $this->forgotPasswordModule; ?>
 </div>
-
+<div class="ce_hyperlink register block">
+<p>Not a member?<br /><a href="{{link_url::checkout-register}}" title="{{link_title::checkout-register}}">Register here.</a>
+</p>
 </div>
+</div>
+<div class="clearBoth"></div>
 </div>
 

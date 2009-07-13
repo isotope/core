@@ -156,13 +156,20 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 		switch($strAction)
 		{
 			case 'add_to_cart':
-				$this->addToCart($this->getRequestData('id'), $intAttributeSetId, $this->getRequestData('quantity_requested'), $intSourceCartId, $this->arrProductOptionsData);
-				$this->blnRecallProductData = true;
+				if(!$this->doNotSubmit)
+				{
+					$this->addToCart($this->getRequestData('id'), $intAttributeSetId, $this->getRequestData('quantity_requested'), $intSourceCartId, $this->arrProductOptionsData);
+					$this->blnRecallProductData = true;
+				}
 				break;
 				
 			case 'update_cart':
-				$this->updateCart($this->getRequestData('id'), $intAttributeSetId, $this->getRequestData('quantity_requested'), $intSourceCartId, $this->arrProductOptionsData);
-				$this->blnRecallProductData = true;
+				if(!$this->doNotSubmit)
+				{
+					$this->updateCart($this->getRequestData('id'), $intAttributeSetId, $this->getRequestData('quantity_requested'), $intSourceCartId, $this->arrProductOptionsData);
+					$this->blnRecallProductData = true;
+				}
+
 				break;
 				
 			case 'remove_from_cart':

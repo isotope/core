@@ -202,9 +202,14 @@ class ModuleProductLister extends ModuleIsotopeBase
 		$per_page = ($this->Input->get('per_page') ? $this->Input->get('per_page') : $this->perPage);
 		
 		// FIXME: will always be int...
-		if(!is_int((int)$per_page))
+		if(!is_int((int)$per_page) || (int)$per_page==0)
 		{
-			$per_page = $this->perPage;
+			if($per_page==0)
+			{
+				$per_page = $this->columns * 4;	//POTENTIAL FIXME: Number of rows?
+			}else{
+				$per_page = $this->perPage;
+			}
 		}
 		
 		// FIXME: Template does not expect a 0-value
@@ -382,6 +387,8 @@ class ModuleProductLister extends ModuleIsotopeBase
 			
 			if ($per_page > 0)
 			{
+				
+				
 				$objProductCollection->limit($per_page, ($page - 1) * $per_page);
 			}
 			
@@ -668,7 +675,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 				$this->import('MediaManagement');
 				
 				$strFallbackPath = $this->MediaManagement->getRootAssetImportPath($this->strCurrentStoreTable, $intProductID);
-								
+							
 				//THIS IS RETURNING:product_assets/a/alias/images/
 				$strBaseImageDestinationPath = sprintf($this->strCurrentImagesBasePath, substr($strProductAlias, 0, 1), $strProductAlias);		
 			
@@ -700,6 +707,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 	{
 		if(!file_exists(TL_ROOT . '/' . $strFallbackPath . '/' . $strProductImage))
 		{	
+			
 			return false;
 		}
 		else

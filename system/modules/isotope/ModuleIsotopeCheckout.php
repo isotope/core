@@ -107,10 +107,20 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			$this->strTemplate = $this->iso_checkout_layout;
 		}
 		
-		
+		/*
 		if(($this->iso_checkout_method == 'login' && !FE_USER_LOGGED_IN) || ($this->iso_checkout_method == 'both' && !FE_USER_LOGGED_IN && !$_SESSION['isotope']['isGuest']))
 		{
 			$this->blnShowLoginOptions = true;
+		}*/
+		
+		if(($this->iso_checkout_method == 'login' && !FE_USER_LOGGED_IN) || ($this->iso_checkout_method == 'both' && !FE_USER_LOGGED_IN))
+		{
+			$this->blnShowLoginOptions = true;
+		}
+		
+		if($this->Input->get('step')!='login' && $this->iso_checkout_method == 'both')
+		{
+			$this->blnShowLoginOptions = false;	
 		}
 		
 //		$this->arrSession = $this->Session->getData();
@@ -213,6 +223,8 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				case 'login':
 					if (!$this->blnShowLoginOptions)
 						$this->redirectToNextStep();
+					
+					$this->Template->showPrevious = false;
 						
 					$arrSteps[] = array
 					(
@@ -429,8 +441,12 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	protected function getLoginInterface()
 	{		
 		$objTemplate = new FrontendTemplate($this->strStepTemplateBaseName . 'login');
+		$objTemplate->loginModule = '{{insert_module::' . $this->Store->checkout_login_module . '}}';
+		$objTemplate->allowGuestCheckout = $this->iso_checkout_method!='login' ? true : false;
 		
-		$objTemplate->loginModule = '{{insert_module::' . $this->arrStoreSettings['checkout_login_module'] . '}}';
+		$objTemplate->guestCheckoutUrl = $this->addToUrl('step=billing_information');
+
+		//$objTemplate->loginModule = '{{insert_module::' . $this->arrStoreSettings['checkout_login_module'] . '}}';
 				
 		return $objTemplate->parse();	
 	}
@@ -753,14 +769,14 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			if (!$objModule->available)
 				continue;
 			
-			$arrModules[] = sprintf('<input id="ctrl_payment_module_%s" type="radio" name="payment[module]" value="%s"%s /> <label for="ctrl_payment_module_%s">%s: %s</label>',
+			$arrModules[] = sprintf('<input id="ctrl_payment_module_%s" type="radio" name="payment[module]" onclick="Isotope.toggleAddressFields(this,%s)" value="%s"%s /> <label for="ctrl_payment_module_%s">%s: %s</label>',
 									 $objModule->id,
+									 'payment_module_fields_' . $objModule->id,
 									 $objModule->id,
 									 ($arrData['module'] == $objModule->id ? ' checked="checked"' : ''),
 									 $objModule->id,
  									 $objModule->label,
- 									 $this->Isotope->formatPriceWithCurrency($objModule->price));
-			
+ 									 $this->Isotope->formatPriceWithCurrency($objModule->price));			
 /*
 			//Get the authorize.net configuration data			
 			$objAIMConfig = $this->Database->prepare("SELECT * FROM tl_authorize WHERE id=?")

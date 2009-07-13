@@ -107,7 +107,7 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 		'cash'						  => '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules;{enabled_legend},enabled',
 		'paypal'                      => '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,postsale_mail,minimum_total,maximum_total,countries,shipping_modules;{paypal_legend},paypal_account,paypal_business;{enabled_legend},debug,enabled',
 		'postfinance'                 => '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,postsale_mail,minimum_total,maximum_total,countries,shipping_modules;{postfinance_legend},postfinance_pspid,postfinance_secret,postfinance_method;{enabled_legend},debug,enabled',
-		'authorizedotnet'			  => '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules;{authorize_legend},authorize_login,authorize_is_test,authorize_delimiter,authorize_delimit_data,authorize_trans_type,authorize_relay_response,authorize_email_customer;{enabled_legend},debug,enabled',
+		'authorizedotnet'			  => '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,allowed_cc_types,minimum_total,maximum_total,countries,shipping_modules;{authorize_legend},authorize_login,authorize_is_test,authorize_delimiter,authorize_delimit_data,authorize_trans_type,authorize_relay_response,authorize_email_customer;{enabled_legend},debug,enabled',
 	),
 
 	// Fields
@@ -157,6 +157,16 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 			'reference'               => &$GLOBALS['TL_LANG']['MSC']['order_status_labels'],
 			'eval'                    => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50'),
 		),
+		'allowed_cc_types' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['allowed_cc_types'],
+			'exclude'                 => true,
+			'filter'                  => true,
+			'inputType'               => 'checkbox',
+			'options'        		  => array_keys($GLOBALS['ISO_PAY']['cc_types']),
+			'eval'					  => array('multiple'=>true, 'tl_class'=>'w50'),
+			'reference'               => &$GLOBALS['ISO_PAY']['cc_types']
+		),
 		'postsale_mail' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['postsale_mail'],
@@ -171,7 +181,7 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'default'                 => 0,
-			'eval'                    => array('maxlength'=>255, 'rgxp'=>'digit', 'tl_class'=>'clr w50'),
+			'eval'                    => array('maxlength'=>255, 'rgxp'=>'digit', 'tl_class'=>'w50'),
 		),
 		'maximum_total' => array
 		(
@@ -179,7 +189,7 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'default'                 => 0,
-			'eval'                    => array('maxlength'=>255, 'rgxp'=>'digit', 'tl_class'=>'w50'),
+			'eval'                    => array('maxlength'=>255, 'rgxp'=>'digit', 'tl_class'=>'clr w50'),
 		),
 		'countries' => array
 		(

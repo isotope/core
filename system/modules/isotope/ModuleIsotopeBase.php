@@ -1457,7 +1457,8 @@ abstract class ModuleIsotopeBase extends Module
 			
 			$objWidget->storeValues = true;
 			
-			$_SESSION['FORM_DATA'][$strField] = $objWidget->value;
+			sizeof($arrData['options']) ? $objWidget->options = $arrData['options'] : $objWidget->options = NULL;
+			//$_SESSION['FORM_DATA'][$strField] = $objWidget->value;
 				
 			// Validate input
 			if ($this->Input->post('FORM_SUBMIT') == $strFormId)
@@ -1465,7 +1466,8 @@ abstract class ModuleIsotopeBase extends Module
 				
 				$objWidget->validate();
 				$varValue = $objWidget->value;
-			
+				$objWidget->value = NULL;
+				
 				// Convert date formats into timestamps
 				if (strlen($varValue) && in_array($arrData['eval']['rgxp'], array('date', 'time', 'datim')))
 				{
@@ -1476,14 +1478,15 @@ abstract class ModuleIsotopeBase extends Module
 				if ($objWidget->hasErrors())
 				{
 					$this->doNotSubmit = true;
+					$_SESSION['FORM_DATA'][$strField] = $varValue;
 				}
 	
 				// Store current value
-				elseif ($objWidget->submitInput())
+				elseif ($objWidget->submitInput() && !$this->doNotSubmit)
 				{
 					//Store this options value to the productOptionsData array which is then serialized and stored for the given product that is being added to the cart.
 										
-					$this->arrProductOptionsData[] = $this->getProductOptionValues($strField, $arrData['inputType'], $varValue); 					
+					$this->arrProductOptionsData[] = $this->getProductOptionValues($strField, $arrData['inputType'], $varValue, $intAttributeSetId); 					
 				}
 			}
 			
@@ -1492,11 +1495,11 @@ abstract class ModuleIsotopeBase extends Module
 				$this->hasUpload = true;
 			}
 					
-			$_SESSION['FORM_DATA'][$strField] = $varValue;
+			//$_SESSION['FORM_DATA'][$strField] = $varValue;
 			
 			//$varSave = is_array($varValue) ? serialize($varValue) : $varValue;
 					
-			$temp .= $objWidget->generate() . '<br />';
+			$temp .= $objWidget->parse() . '<br />';
 			/*
 			if($blnUseTable)
 			{
@@ -1512,30 +1515,46 @@ abstract class ModuleIsotopeBase extends Module
 		return $temp;
 	}
 	
-	private function getProductOptionValues($strField, $inputType, $varValue)
+	private function getProductOptionValues($strField, $inputType, $varValue, $intAttributeSetId)
 	{	
-		$arrAttributeData = $this->getProductAttributeData($strField, 1); //1 will eventually be irrelevant but for now just going with it...
+		
+		$arrAttributeData = $this->getProductAttributeData($strField, $intAttributeSetId); //1 will eventually be irrelevant but for now just going with it...
 		
 		switch($inputType)
 		{
 			case 'radio':
 			case 'checkbox':
 			case 'select':
+				
 				//get the actual labels, not the key reference values.
 				$arrOptions = $this->getOptionList($arrAttributeData);
 				
 				if(is_array($varValue))
 				{
+					
 					foreach($varValue as $value)
 					{
-						$varOptionValues[] = $arrOptions[$value];
+						foreach($arrOptions as $option)
+						{
+							if($option['value']==$value)
+							{
+								$varOptionValues[] = $option['label'];
+								break;
+							}
+						}
 					}	
 				}
 				else
 				{
-					$varOptionValues[] = $arrOptions[$varValue];
-				}
-				
+					foreach($arrOptions as $option)
+					{
+						if($option['value']==$varValue)
+						{
+							$varOptionValues[] = $option['label'];
+							break;
+						}
+					}
+				}				
 				break;
 			default:
 				//these values are not by reference - they were directly entered.  
@@ -1614,9 +1633,10 @@ abstract class ModuleIsotopeBase extends Module
 	
 	protected function getDCATemplate($arrAttributeData)
 	{
-		$arrData['label'] 	= $arrAttributeData['name'];
+		$arrData['label'] 	= $arrAttributeData['description'];
 		$arrData['prompt'] 	= $arrAttributeData['name'];
-		
+		$arrData['eval']['mandatory'] = $arrAttributeData['is_required'] ? true : false;
+
 		switch($arrAttributeData['type'])
 		{
 			case 'text':
@@ -1624,19 +1644,29 @@ abstract class ModuleIsotopeBase extends Module
 				$arrData['eval']['collectionsize'] = $arrAttributeData['text_collection_rows'];
 				$arrData['eval']['prompt'] = $arrAttributeData['name'];
 				$arrData['eval']['maxlength'] = 255;
-				
 				break;
-			case 'select':
-				break;
-			case 'checkbox':
-				break;
-			case 'options':
-				$arrOptions = $this->getOptionList($arrAttributeData);
-				
-				$arrData['inputType'] 	= 'radio';
+			/*case 'select':
+				$arrGroups = $this->getSelectList($arrAttributeData);
+				$arrData['inputType'] 	= 'select';
 				$arrData['default'] 	= '';
-				$arrData['options']     = array_keys($arrOptions);
-				$arrData['reference']   = $arrOptions;
+				$arrData['options']     = $arrAttributeData['option_list'];
+				//$arrData['reference']   = $arrGroups['label'];
+				var_dump($arrData['options']);
+				break;				*/
+			
+			case 'options':
+			case 'select':
+			case 'checkbox':
+				$arrAttributeData['type']=='options' ? $strType = 'radio' : $strType = $arrAttributeData['type'];
+				
+				$arrOptions = $this->getOptionList($arrAttributeData);
+					
+				$arrData['inputType'] 	= $strType;
+				$arrData['default'] 	= '';
+				$arrData['options']     = $arrOptions;
+				
+				if($arrAttributeData['type']=='checkbox') $arrData['eval']['prompt'] = $arrAttributeData['name'];
+				//$arrData['reference']   = $arrOptions;
 	
 				break;
 			default:
@@ -1647,11 +1677,13 @@ abstract class ModuleIsotopeBase extends Module
 		return $arrData;
 	
 	}
+
 	
 	protected function getOptionList($arrAttributeData)
 	{
 		if($arrAttributeData['use_alternate_source']==1)
 		{
+			
 			if(strlen($arrAttributeData['list_source_table']) > 0 && strlen($arrAttributeData['list_source_field']) > 0)
 			{
 				$strForeignKey = $arrAttributeData['list_source_table'] . '.' . $arrAttributeData['list_source_field'];
@@ -1659,22 +1691,9 @@ abstract class ModuleIsotopeBase extends Module
 			}
 		}else{
 		
-			$arrValues = array();
-			$arrOptionsList = deserialize($arrAttributeData['option_list']);
-			
-			
-			foreach ($arrOptionsList as $arrOptions)
-			{
-				/*if ($arrOptions['default'])
-				{
-					$arrValues[] = $arrOptions['value'];
-				}*/
-				
-				$arrValues[$arrOptions['value']] = $arrOptions['label'];
-			}											
-			
+			$arrValues = deserialize($arrAttributeData['option_list']);
 		}
-
+		
 		return $arrValues;
 	}
 	
@@ -1688,12 +1707,14 @@ abstract class ModuleIsotopeBase extends Module
 	 */
 	protected function getProductAttributeData($strFieldName, $intPid)
 	{		
+		
 		$objAttributeData = $this->Database->prepare("SELECT * FROM tl_product_attributes WHERE field_name=? AND pid=?")
 										   ->limit(1)
 										   ->execute($strFieldName, $intPid);
 
 		if($objAttributeData->numRows < 1)
 		{
+			
 			return array();
 		}
 		

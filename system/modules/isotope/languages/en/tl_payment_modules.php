@@ -31,7 +31,7 @@
 $GLOBALS['TL_LANG']['tl_payment_modules']['name'] = array('Payment Method Name', '');
 $GLOBALS['TL_LANG']['tl_payment_modules']['type'] = array('Type of Payment Gateway', 'Select a particular payment gateway (e.g. Authorize.net)');
 $GLOBALS['TL_LANG']['tl_payment_modules'][''] = array('', '');
-
+$GLOBALS['TL_LANG']['tl_payment_modules']['allowed_cc_types'] = array('Allowed Credit Card Types', 'Select which credit cards the payment module accepts.');
 $GLOBALS['TL_LANG']['tl_payment_modules']['enabled'] = array('Enabled', 'Is the module available for use in the store?');
 
 $GLOBALS['TL_LANG']['tl_payment_modules']['title'] 		= array('Title', 'Title of the current configuration');
