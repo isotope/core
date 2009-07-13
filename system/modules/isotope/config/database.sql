@@ -356,6 +356,7 @@ CREATE TABLE `tl_payment_modules` (
   `note` text NULL,  
   `countries` blob NULL,
   `shipping_modules` blob NULL,
+  `allowed_cc_types` text NULL,  
   `minimum_total` varchar(255) NOT NULL default '',
   `maximum_total` varchar(255) NOT NULL default '',
   `new_order_status` varchar(255) NOT NULL default '',
