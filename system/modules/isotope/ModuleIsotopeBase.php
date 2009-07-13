@@ -1431,7 +1431,7 @@ abstract class ModuleIsotopeBase extends Module
 	 * @param boolean $blnUseTable
 	 * @return string
 	 */
-	public function generateProductOptionWidget($strField, $arrData = array(), $strFormId, $blnUseTable = false)
+	public function generateProductOptionWidget($strField, $arrData = array(), $strFormId, $intAttributeSetId, $blnUseTable = false)
 	{
 				
 		/*if(sizeof($arrData)< 1)
@@ -1623,7 +1623,7 @@ abstract class ModuleIsotopeBase extends Module
 						
 				$arrData = $this->getDCATemplate($arrAttributeData);	//Grab the skeleton DCA info for widget generation
 																
-				$this->generateProductOptionWidget($option, $arrData, $currFormId);
+				$this->generateProductOptionWidget($option, $arrData, $currFormId, $intAttributeSetId);
 
 			}
 															
@@ -1690,10 +1690,9 @@ abstract class ModuleIsotopeBase extends Module
 			
 			}
 		}else{
-		
 			$arrValues = deserialize($arrAttributeData['option_list']);
 		}
-		
+	
 		return $arrValues;
 	}
 	
