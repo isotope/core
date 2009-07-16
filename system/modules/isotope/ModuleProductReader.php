@@ -429,8 +429,11 @@ class ModuleProductReader extends ModuleIsotopeBase
 										
 										}
 										
-																			
-										$product[$k] = join(',', $arrLabels); 
+										if($arrLabels)
+										{									
+											$product[$k] = join(',', $arrLabels); 
+										}
+										
 										break;
 																											
 									default:
@@ -588,7 +591,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 			$this->Template->productId = $this->intProductId;			
 			$this->Template->buttonTypes = $arrButtonTypes;
 			$this->Template->buttons = $arrButtons;
-			$this->Template->optionFields = join(',', $arrOptionFields);
+			$this->Template->optionFields = $arrOptionFields ? join(',', $arrOptionFields) : NULL;
 			
 			//END BUTTON CODE//
 			//------------------------------------------------------------------------------------//

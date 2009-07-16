@@ -107,7 +107,7 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 		'cash'						  => '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules;{enabled_legend},enabled',
 		'paypal'                      => '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,postsale_mail,minimum_total,maximum_total,countries,shipping_modules;{paypal_legend},paypal_account,paypal_business;{enabled_legend},debug,enabled',
 		'postfinance'                 => '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,postsale_mail,minimum_total,maximum_total,countries,shipping_modules;{postfinance_legend},postfinance_pspid,postfinance_secret,postfinance_method;{enabled_legend},debug,enabled',
-		'authorizedotnet'			  => '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,allowed_cc_types,minimum_total,maximum_total,countries,shipping_modules;{authorize_legend},authorize_login,authorize_is_test,authorize_delimiter,authorize_delimit_data,authorize_trans_type,authorize_relay_response,authorize_email_customer;{enabled_legend},debug,enabled',
+		'authorizedotnet'			  => '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,allowed_cc_types,minimum_total,maximum_total,countries,shipping_modules;{authorize_legend},authorize_login,authorize_trans_key,authorize_trans_type,authorize_delimiter;{enabled_legend},debug,enabled',
 	),
 
 	// Fields
@@ -245,6 +245,37 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 			'options'                 => array('POST', 'GET'),
 			'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50', 'tl_class'=>'w50'),
 		),
+		'authorize_login' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['authorize_login'],
+			'exclude'                 => true,
+			'inputType'               => 'text',
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>255)
+		),
+		'authorize_trans_key' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['authorize_trans_key'],
+			'exclude'                 => true,
+			'inputType'               => 'text',
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>255)
+		),
+		'authorize_trans_type' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['authorize_trans_type'],
+			'exclude'                 => true,
+			'default'				  => 'AUTH_CAPTURE',
+			'inputType'               => 'select',
+			'options'				  => array('AUTH_CAPTURE', 'AUTH_ONLY'),
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
+			'reference'				  => array('AUTH_CAPTURE'=>'Authorize and Capture', 'AUTH_ONLY'=>'Authorize Only')
+		),
+		'authorize_delimiter' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['authorize_delimiter'],
+			'exclude'                 => true,
+			'inputType'               => 'text',
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>1)
+		),
 		'debug' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['debug'],
@@ -256,9 +287,10 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['enabled'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
-		),
+		)
 	)
 );
+  
 
 /**
  * tl_payment_modules class.

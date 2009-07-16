@@ -407,18 +407,18 @@ class ModuleProductLister extends ModuleIsotopeBase
 			
 			if ($this->iso_jump_first && !strlen($this->Input->get('asetid')) && !strlen($this->Input->get('aset_id')) && count($arrProducts))
 			{
-				$this->redirect($this->generateProductLink($arrProducts[0]['product_alias'], $arrProducts[0], $this->Store->productReaderJumpTo, $objAggregateSets->id));
+				$this->redirect($this->generateProductLink($arrProducts[0]['product_alias'], $arrProducts[0], $this->Store->productReaderJumpTo, $objAggregateSets->attribute_set_id));
 			}
 			
 			$i=0;
-																	
+														
 			foreach($arrProducts as $product)
 			{
 				$arrProductData[$i] = array
 				(
 					'product_name'			=> $product['product_name'],
 					'product_alias'			=> $product['product_alias'],
-					'product_link'			=> $this->generateProductLink($product['product_alias'], $product, $this->Store->productReaderJumpTo, $objAggregateSets->id),
+					'product_link'			=> $this->generateProductLink($product['product_alias'], $product, $this->Store->productReaderJumpTo, $objAggregateSets->attribute_set_id),
 					'price_string'			=> ($product['use_product_price_override']==1 ? $this->generatePrice($product['product_price_override'], $this->strPriceOverrideTemplate) : $this->generatePrice($product['product_price'], $this->strPriceTemplate)),
 					'thumbnail'				=> $this->getThumbnailImage($product['id'], $product['product_alias'], $product['main_image'], $strMissingImagePlaceholder, $this->strFileBasePath),
 					'product_id'			=> $product['id'],

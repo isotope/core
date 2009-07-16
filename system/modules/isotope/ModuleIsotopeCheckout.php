@@ -292,7 +292,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				
 				
 				case 'payment_method':
-//						continue;
+//						
 					if($this->blnShowLoginOptions)
 						break;
 						
@@ -343,8 +343,11 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 						'useFieldset' 	=> true,
 						'fields'		=> $this->getOrderReviewInterface(),
 					);
-					
+					$arrSteps2 = array_values($GLOBALS['ISO_CONFIG']['CHECKOUT_STEPS']);
+					$strKey = array_search($this->strCurrentStep, $arrSteps2);
+					$this->Template->action = $this->addToUrl('step='.$arrSteps2[($strKey+1)]);
 					$this->Template->nextLabel = specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']);
+					$this->Template->showNext = true;
 					break;
 					
 				case 'order_complete':
@@ -356,19 +359,34 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 					if ($this->Cart->Payment->processPayment())
 					{
 						$this->writeOrder(true);
-					
-						$this->jumpToOrReload($this->orderCompleteJumpTo);
-					}
-					else
-					{
+						
 						$arrSteps[] = array
 						(
 							'editEnabled' 	=> false,
 							'headline' 		=> $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE'][$this->strCurrentStep],
 							'prompt' 		=> $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT'][$this->strCurrentStep],
 							'useFieldset' 	=> true,
-							'fields'		=> 'Zahlung wird bearbeitet...',
+							'fields'		=> 'Order Complete!',
 						);
+					}
+					else
+					{
+						$this->writeOrder(false);
+						
+						$this->redirect($this->addToUrl('step=order_failed&response='. $this->Cart->Payment->response .'&reason='. $this->Cart->Payment->reason));
+						
+						/*	$arrSteps[] = array
+							(
+								'editEnabled' 	=> false,
+								'headline' 		=> $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE'][$this->strCurrentStep],
+								'prompt' 		=> $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT'][$this->strCurrentStep],
+								'useFieldset' 	=> true,
+								'fields'		=> $this->getOrderReviewInterface(),
+							);
+							
+							$this->Template->nextLabel = specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']);
+							$this->Template->showNext = true;*/
+													
 					}
 					
 					break;
@@ -376,10 +394,10 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				case 'order_failed';
 					
 					// Hide buttons
-					$this->Template->showNext = false;
+					$this->Template->showNext = true;
 					$this->Template->showPrevious = false;
 					
-					$this->Database->prepare("UPDATE tl_iso_orders SET status='cancelled' WHERE cart_id=?")->execute($this->Cart->id);
+					$this->Database->prepare("UPDATE tl_iso_orders SET status='failed' WHERE cart_id=?")->execute($this->Cart->id);
 					
 					$arrSteps[] = array
 					(
@@ -387,8 +405,9 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 						'headline' 		=> $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE'][$this->strCurrentStep],
 						'prompt' 		=> $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT'][$this->strCurrentStep],
 						'useFieldset' 	=> true,
-						'fields'		=> 'Bestellung abgebrochen',
+						'fields'		=> $this->getOrderReviewInterface(),
 					);
+					
 					break;
 			}
 		}
@@ -405,7 +424,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		{
 			$this->redirectToNextStep();
 		}
-				
+			
 		$this->Template->checkoutSteps = $arrSteps;
 	}
 	
@@ -777,204 +796,6 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 									 $objModule->id,
  									 $objModule->label,
  									 $this->Isotope->formatPriceWithCurrency($objModule->price));			
-/*
-			//Get the authorize.net configuration data			
-			$objAIMConfig = $this->Database->prepare("SELECT * FROM tl_authorize WHERE id=?")
-															->limit(1)
-															->execute($objPaymentModuleData->authorizeConfiguration);
-			if($objAIMConfig->numRows < 1)
-			{
-				return '<i>' . $GLOBALS['TL_LANG']['MSC']['noPaymentModules'] . '</i>';
-			}
-		
-			
-			//$arrParams[$module] = $objPaymentModuleConfiguration->fetchAllAssoc();			
-		
-			//Code specific to Authorize.net!
-			$objTemplate = new FrontendTemplate('mod_aim_checkout');
-							
-			if($objAIMConfig->numRows > 0)
-			{
-				
-				$delimResponse = ($objAIMConfig->delimResponse==1 ? "TRUE" : "FALSE");
-				$delimChar = $objAIMConfig->delimChar;
-				$loginID = $objAIMConfig->loginID;
-				$transKey = $objAIMConfig->transKey;
-				$transType = $objAIMConfig->transType;
-				$status = ($objAIMConfig->status=="test" ? "TRUE" : "FALSE");
-				
-				//var_dump($status);
-			}
-			
-			//Get tax info
-			$arrProductData = $this->Isotope->getProductData($this->Cart->getProducts(), array('product_price','tax_class'), 'product_price');
-
-			$arrTaxInfo = $this->calculateTax($arrProductData, $this->strCurrentStep);	
-			
-			
-			$arrFields = array('cc_num','cc_exp','cc_cvv','cc_type');
-
-			$arrPaymentFields = $this->getPaymentFields('tl_iso_orders',$arrFields);
-			
-			//var_dump($arrPaymentFields);
-			$objTemplate->fields = $arrPaymentFields;
-			
-						
-			if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && !$this->doNotSubmit)
-			{
-				
-				$arrBillingAddress = $this->getSelectedAddress($this->intBillingAddressId, 'billing_information');
-				$arrShippingAddress = $this->getSelectedAddress($this->intShippingAddressId, 'shipping_information');
-				
-				$strBillingAddress = $this->getAddressString($arrBillingAddress);
-				$strShippingAddress = $this->getAddressString($arrShippingAddress);
-				
-				$authnet_values = array(
-					"x_login"				=> $loginID,
-					"x_version"				=> $GLOBALS['TL_LANG']['MSC']['gatewayVersion'],
-					"x_test_request"		=> $status,
-					"x_delim_char"			=> ",",
-					"x_delim_data"			=> $delimResponse,
-					"x_url"					=> "FALSE",
-					"x_type"				=> $transType,
-					"x_method"				=> "CC",
-					"x_tran_key"			=> $transKey,
-					"x_relay_response"		=> "FALSE",
-					"x_card_num"			=> $this->Input->post('cc_num'),
-					"x_card_type"			=> $this->Input->post('cc_type'),
-					"x_exp_date"			=> $this->Input->post('cc_exp'),
-					"x_card_code"			=> $this->Input->post('cc_cvv'),
-					"x_description"			=> "Test Transaction",
-					"x_amount"				=> number_format($this->fltOrderTotal, 2),
-					"x_first_name"			=> $arrBillingAddress['firstname'],
-					"x_last_name"			=> $arrBillingAddress['lastname'],
-					"x_address"				=> $arrBillingAddress['address'],
-					"x_city"				=> $arrBillingAddress['city'],
-					"x_state"				=> $arrBillingAddress['state'],
-					"x_zip"					=> $arrBillingAddress['postal'],
-					"x_company"				=> $arrBillingAddress['company'],
-					"x_email_customer"		=> "TRUE",
-					"x_email"				=> $arrBillingAddress['email']
-				);
-				
-							
-				$arrPaymentInfo = array('order_tax' => $this->fltOrderTaxTotal, 'cc_num' => $this->Input->post('cc_num'), 'cc_type' => $this->Input->post('cc_type'), 'cc_exp' => $this->Input->post('cc_exp'), 'cc_cvv' => $this->Input->post('cc_cvv'), 'order_comments' => $this->Input->post('order_comments'), 'billing_firstname'=>$arrBillingAddress['firstname'], 'billing_lastname'=>$arrBillingAddress['lastname'], 'billing_street'=>$arrBillingAddress['street'],'billing_street_2'=>$arrBillingAddress['street_2'],'billing_street_3'=>$arrBillingAddress['street_3'],'billing_city'=>$arrBillingAddress['city'],'billing_state'=>$arrBillingAddress['state'],'billing_postal'=>$arrBillingAddress['postal'],'billing_country'=>$arrBillingAddress['country'], 'shipping_firstname'=>$arrShippingAddress['firstname'], 'shipping_lastname'=>$arrShippingAddress['lastname'], 'shipping_street'=>$arrShippingAddress['street'],'shipping_street_2'=>$arrShippingAddress['street_2'],'shipping_street_3'=>$arrShippingAddress['street_3'],'shipping_city'=>$arrShippingAddress['city'],'shipping_state'=>$arrShippingAddress['state'],'shipping_postal'=>$arrShippingAddress['postal'],'shipping_country'=>$arrShippingAddress['country']); //billing_address_id'=>$this->intBillingAddressId, 'shipping_address_id'=>$this->intShippingAddressId, 'gift_message' => $this->Input->post('gift_message'), 'gift_wrap' => $this->Input->post('gift_wrap'), 'billing_address'=>$strBillingAddress,'shipping_address'=>$strShippingAddress);
-												
-				if($this->writeOrder($arrPaymentInfo) && !$this->doNotSubmit)
-				{	
-					//Update quantities for gift registry items if applicable.
-					foreach($arrProductData as $product)
-					{
-						if($product['source_cart_id']!=0)
-						{	
-							$this->Database->prepare("UPDATE tl_cart_items SET quantity_sold=" . $product['quantity_requested'] . " WHERE pid=? AND product_id=?")
-								 	   	   ->execute($product['source_cart_id'], $product['product_id']);
-							
-						}
-						
-					}
-					
-						
-					$objNextPage = $this->Database->prepare("SELECT id, alias FROM tl_page WHERE id=?")
-											  ->limit(1)
-											  ->execute($this->orderCompleteJumpTo);
-	
-					if ($objNextPage->numRows)
-					{
-						$postToURL = $this->generateFrontendUrl($objNextPage->fetchAssoc());
-					}else{
-						$postToURL = ampersand($this->Environment->request, ENCODE_AMPERSANDS);
-					}			
-					
-					$this->redirect($postToURL);
-				}
-				
-				// foreach( $authnet_values as $key => $value ) $fields .= "$key=" . urlencode( $value ) . "&";
-				// 
-				// $ch = curl_init($GLOBALS['TL_LANG']['MSC']['authNetUrlTest']); 
-				// ###  Uncomment the line ABOVE for test accounts or BELOW for live merchant accounts
-				// ### $ch = curl_init("https://secure.authorize.net/gateway/transact.dll"); 
-				// curl_setopt($ch, CURLOPT_HEADER, 0); // set to 0 to eliminate header info from response
-				// curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // Returns response data instead of TRUE(1)
-				// curl_setopt($ch, CURLOPT_POSTFIELDS, rtrim( $fields, "& " )); // use HTTP POST to send form data
-				// ### curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); // uncomment this line if you get no gateway response. ###
-				// $resp = curl_exec($ch); //execute post and get results
-				// curl_close ($ch);
-				// 
-				// $arrResponses = $this->handleResponse($resp);
-				// 
-				// foreach(array_keys($arrResponses) as $key)
-				// {
-				// 	$arrReponseLabels[strtolower(standardize($key))] = $key;
-				// }
-				// 			
-				// $objTemplate->fields = $this->generateResponseString($arrResponses, $arrReponseLabels);
-				// 
-				// $objTemplate->headline = $this->generateModuleHeadline($arrResponses['transaction-status']);
-				// 
-				// $objTemplate->isConfirmation = true;
-				// 
-				// $objTemplate->showPrintLink = true;
-				
-			}
-			else
-			{
-						
-				$arrBillingAddress = $this->getSelectedAddress($this->intBillingAddressId);
-				
-				$arrFields = array('cc_num','cc_exp','cc_cvv','cc_type');
-				
-				$objTemplate->x_version = $GLOBALS['TL_LANG']['MSC']['gatewayVersion'];
-				$objTemplate->x_delim_data = $delimResponse;
-				$objTemplate->x_delim_char = $delimChar;
-				$objTemplate->x_relay_response = "false";	//Must be false for AIM processing.
-				$objTemplate->x_login = $loginID;
-				$objTemplate->x_tran_key = $transKey;
-				$objTemplate->x_method = "CC";
-				$objTemplate->x_type = $transType;
-				$objTemplate->x_test_request = $status;
-				
-				$objTemplate->x_first_name = $arrBillingAddress['firstname'];
-				$objTemplate->x_last_name = $arrBillingAddress['lastname'];
-				$objTemplate->x_company = $arrBillingAddress['company'];
-				$objTemplate->x_address = $arrBillingAddress['street'];
-				$objTemplate->x_city = $arrBillingAddress['city'];
-				$objTemplate->x_state = $arrBillingAddress['state'];
-				$objTemplate->x_zip = $arrBillingAddress['postal'];
-				$objTemplate->x_phone = $arrBillingAddress['phone'];
-				$objTemplate->x_fax = $arrBillingAddress['fax'];
-								
-				$this->fltOrderTotal = $this->calculateOrderTotal();
-				
-				$objTemplate->taxTotals = $arrTaxInfo;
-				
-				//$objTemplate->x_email = $this->arrSession['FORM_DATA']['billing_information_email'];
-				//$objTemplate->x_email_customer = "TRUE";
-				$objTemplate->x_amount = $this->fltOrderTotal + ($this->Input->post('gift_wrap')==1 ? 10 : 0);
-				$objTemplate->amountString = $this->generatePrice($this->fltOrderTotal);
-				$objTemplate->subtotal = $this->generatePrice($this->Cart->subTotal);
-				$objTemplate->shippingTotal = $this->generatePrice($this->fltOrderShippingTotal);
-				
-				
-				$objTemplate->x_card_num = $this->arrSession['cc_num'];
-				$objTemplate->x_exp_date = $this->arrSession['cc_exp'];
-				$objTemplate->x_card_code = $this->arrSession['cc_cvv'];
-				$objTemplate->order_comments = $this->generateWidget('tl_iso_orders','order_comments');
-				$objTemplate->gift_message = $this->generateWidget('tl_iso_orders','gift_message');
-				$objTemplate->gift_wrap = $this->generateWidget('tl_iso_orders','gift_wrap');
-			}	
-			
-			//$this->Template->x_cust_id;
-			
-			//$objTemplate->formId = 'tl_aim_checkout';
-			//$objTemplate->action = $action;
-			
-			$arrPaymentModules[] = array
-			(
-				'title'				=> $objPaymentModuleData->name,
-				'paymentFields'		=> $objTemplate->parse()
-			);
-*/
 		}
 				
 		return $arrModules;
@@ -1011,11 +832,10 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		$objTemplate = new FrontendTemplate('iso_checkout_order_review');
 		
 		$strForm = $this->Cart->hasPayment ? $this->Cart->Payment->checkoutForm() : '';
-		
+
 		if ($strForm !== false)
 		{
 			$this->Template->showNext = false;
-			$this->Template->checkoutForm = $strForm;
 		}
 					
 		
@@ -1030,7 +850,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 		$objTemplate->subTotalPrice = $this->generatePrice($this->Cart->subTotal);
 		$objTemplate->shippingTotal = $this->generatePrice($this->Cart->Shipping->price);
-		$objTemplate->taxTotal = $this->generatePrice($this->Cart->taxTotalWithShipping);
+		$objTemplate->taxTotal = $this->generatePrice($this->Cart->taxTotal);
 		$objTemplate->grandTotalPrice = $this->generatePrice($this->Cart->grandTotal, 'stpl_total_price');
 		
 		$objTemplate->billingAddress = $this->getAddressString($this->getSelectedAddress('billing'));
@@ -1038,7 +858,15 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 		$objTemplate->shippingMethod = $this->Cart->Shipping->label;
 		$objTemplate->paymentMethod = $this->Cart->Payment->label;
+		$objTemplate->checkoutForm = $strForm;
 		
+		if($this->Input->get('response')=='failed')
+		{
+			
+			$objTemplate->transactionFailure = true;
+			$objTemplate->reason = $this->Input->get('reason');
+		}
+
 		return $objTemplate->parse();
 	}
 	

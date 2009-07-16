@@ -103,6 +103,7 @@ abstract class Payment extends Frontend
 					
 				return true;
 				break;
+			
 		}
 		
 		return $this->arrData[$strKey];
@@ -139,7 +140,7 @@ abstract class Payment extends Frontend
 	{
 		return array('pending', 'processing');
 	}
-	
+
 	
 	/**
 	 * Process checkout payment. Must be implemented in each payment module.

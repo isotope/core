@@ -563,6 +563,7 @@ abstract class ModuleIsotopeBase extends Module
 	 */
 	protected function generateProductUrl($arrProduct, $intJumpTo, $intAttributeSetId, $strProductIdKey = 'id', $blnAddArchive=false)
 	{
+		global $objPage;
 		$strCacheKey = $strProductIdKey . '_' . $arrProduct[$strProductIdKey] . '_' . $intAttributeSetId . '_' . $arrProduct['tstamp'];
 
 		// Load URL from cache
@@ -577,16 +578,26 @@ abstract class ModuleIsotopeBase extends Module
 		$objJump = $this->Database->prepare("SELECT id, alias FROM tl_page WHERE id=?")
 								  ->limit(1)
 								  ->execute($intJumpTo);
+	
+		$objAsetId = $this->Database->prepare("SELECT id FROM tl_cap_aggregate WHERE product_id=? AND attribute_set_id=?")
+									->limit(1)
+									->execute($arrProduct['id'], $intAttributeSetId);
+				
+		if($objAsetId->numRows < 1)
+		{
+			$intAsetId = 0;
+		}
 		
-		
+		$intAsetId = $objAsetId->id;
+
 		if ($objJump->numRows > 0)
 		{
-			$strUrl = ampersand($this->generateFrontendUrl($objJump->fetchAssoc(), '/asetid/' . $intAttributeSetId . '/product/' . $arrProduct['product_alias']));
+			$strUrl = ampersand($this->generateFrontendUrl($objJump->fetchAssoc(), '/asetid/' . $intAsetId . '/product/' . $arrProduct['product_alias']));
 		}
 		else
 		{
-			global $objPage;
-			$strUrl = ampersand($this->generateFrontendUrl(array('id'=>$objPage->id, 'alias'=>$objPage->alias), '/asetid/' . $intAttributeSetId . '/product/' . $arrProduct['product_alias']));
+			
+			$strUrl = ampersand($this->generateFrontendUrl(array('id'=>$objPage->id, 'alias'=>$objPage->alias), '/asetid/' . $intAsetId . '/product/' . $arrProduct['product_alias']));
 		}
 
 		self::$arrUrlCache[$strCacheKey] = $strUrl;
@@ -605,6 +616,7 @@ abstract class ModuleIsotopeBase extends Module
 	 */
 	protected function generateProductLink($strLink, $arrProduct, $intJumpTo, $intAttributeSetId, $strProductIdKey = 'id', $blnAddArchive=false)
 	{
+
 		// Internal link
 		return 	$this->generateProductUrl($arrProduct, $intJumpTo, $intAttributeSetId, $strProductIdKey, $blnAddArchive);
 	}
