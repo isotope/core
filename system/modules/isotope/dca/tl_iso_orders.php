@@ -100,19 +100,31 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => 'status',
+		'default'                     => 'status,details',
 	),
 
 	// Fields
 	'fields' => array
 	(
+		'status' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['status'],
+			'filter'                  => true,
+			'inputType'               => 'select',
+			'options'				  => array('pending','processing','shipped','complete','on_hold', 'cancelled'),
+			'reference'				  => &$GLOBALS['TL_LANG']['MSC']['order_status_labels'],
+		),
+		'details' => array
+		(
+			'input_field_callback'	  => array('tl_iso_orders', 'showDetails'),
+		),/*
 		'tstamp' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_news']['tstamp'],
 			'flag'                    => 8,
 			'inputType'               => 'text',
 			'eval'                    => array('rgxp'=>'date'),
-		),/*
+		),
 		'order_subtotal' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['order_subtotal'],
@@ -153,15 +165,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 			'options'				  => array('ups_ground'),
 			'eval'                    => array('includeBlankOption'=>true),
 			'reference'				  => &$GLOBALS['TL_LANG']['tl_iso_orders']['shipping_method_labels']
-		),*/
-		'status' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['status'],
-			'filter'                  => true,
-			'inputType'               => 'select',
-			'options'				  => array('pending','processing','shipped','complete','on_hold', 'cancelled'),
-			'reference'				  => &$GLOBALS['TL_LANG']['MSC']['order_status_labels'],
-		),/*
+		),
 		'order_comments' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['order_comments'],
@@ -199,6 +203,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
  */
 class tl_iso_orders extends Backend
 {
+
 	/**
 	 * getOrderLabel function.
 	 * 
@@ -209,13 +214,33 @@ class tl_iso_orders extends Backend
 	 */
 	public function getOrderLabel($row, $label)
 	{
-//		$strBillingAddress = $this->loadAddress($row['billing_address_id'], $row['id']);
-//		$strShippingAddress = $this->loadAddress($row['shipping_address_id'], $row['id']);
-
+		return '
+<div class="limit_height' . (!$GLOBALS['TL_CONFIG']['doNotCollapse'] ? ' h110' : '') . ' block">
+	' . $this->getOrderDescription($row) . '
+</div>  </div>';
+	}
+	
+	
+	public function showDetails($dc, $xlabel)
+	{
+		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE id=?")->limit(1)->execute($dc->id);
+		
+		if (!$objOrders->numRows)
+		{
+			$GLOBALS['TL_HOOKS']['outputBackendTemplate'][] = array('tl_iso_orders', 'injectPrintCSS');
+			
+			return $this->getOrderDescription($objOrder->row());
+		}
+			
+		return '';
+	}
+	
+	
+	protected function getOrderDescription($row)
+	{
 		$strProductList = $this->getProducts($row['source_cart_id']);
 
 		return '
-<div class="limit_height' . (!$GLOBALS['TL_CONFIG']['doNotCollapse'] ? ' h110' : '') . ' block">
   <div>
     <h2>Bestellung ' . $row['order_id'] . ' (#' . $row['id'] . ')</h2><!--
     ' . 'von Gast-Benutzer' . '<br /> -->
@@ -257,10 +282,7 @@ class tl_iso_orders extends Backend
   <h2>Order Comments:</h2>
   <div style="padding: 15px;">
     ' . $row['order_comments'] . '
-  </div>-->
-  </div>
-</div>';
-	
+  </div>-->';
 	}
 	
 	
@@ -417,5 +439,11 @@ class tl_iso_orders extends Backend
 		{
 			$GLOBALS['TL_DCA']['tl_iso_orders']['list']['sorting']['root'] = $objOrders->fetchEach('id');
 		}
+	}
+	
+	
+	public function injectPrintCSS($strBuffer)
+	{
+		return str_replace('</head>', '<link rel="stylesheet" type="text/css" href="system/modules/isotope/html/print.css" media="print" />' . "\n</head>", $strBuffer);
 	}
 }
