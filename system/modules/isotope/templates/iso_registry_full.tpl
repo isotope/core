@@ -16,9 +16,9 @@
 <?php foreach($this->products as $product): ?>
 		<!-- BEGIN PRODUCT-->
         <div class="product">
-   			<div class="col productImg"><a href="<?php echo $product['link']; ?>" title="<?php echo $product['product_name']; ?>"><img src="<?php echo $product['image'] ?>" alt="<?php echo $product['name']; ?>" border="0" class="thumbnail" /></a></div>
+   			<div class="col productImg"><a href="<?php echo $product['link']; ?>" title="<?php echo $product['name']; ?>"><img src="<?php echo $product['image'] ?>" alt="<?php echo $product['name']; ?>" border="0" class="thumbnail" /></a></div>
        		<div class="col productInfo">
-       				<h3 class="productName"><a href="<?php echo $product['link']; ?>" title="<?php echo $product['product_name']; ?>"><?php echo $product['name']; ?></a></h3>
+       				<h3 class="productName"><a href="<?php echo $product['link']; ?>" title="<?php echo $product['name']; ?>"><?php echo $product['name']; ?></a></h3>
        				<div class="optionswrapper">
        					
        				</div>

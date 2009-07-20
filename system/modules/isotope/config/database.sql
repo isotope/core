@@ -34,6 +34,7 @@ CREATE TABLE `tl_module` (
   `iso_mail_customer` int(10) unsigned NOT NULL default '0',
   `iso_mail_admin` int(10) unsigned NOT NULL default '0',
   `iso_order_conditions` int(10) unsigned NOT NULL default '0',
+  `featured_products` char(1) NOT NULL default '',
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
@@ -372,6 +373,7 @@ CREATE TABLE `tl_payment_modules` (
   `authorize_trans_type` varchar(32) NOT NULL default '',
   `authorize_relay_response` char(1) NOT NULL default '',
   `authorize_email_customer` char(1) NOT NULL default '',
+  `groups` blob NULL,
   `debug` char(1) NOT NULL default '',
   `enabled` char(1) NOT NULL default '',
   PRIMARY KEY  (`id`),
@@ -407,6 +409,7 @@ CREATE TABLE `tl_shipping_modules` (
   `label` varchar(255) NOT NULL default '',
   `note` text NULL,  
   `countries` blob NULL,
+  `groups` blob NULL,
   `minimum_total` int(10) NOT NULL default '0',
   `maximum_total` int(10) NOT NULL default '0',
   `price` float NOT NULL default '0',
@@ -430,6 +433,7 @@ CREATE TABLE `tl_shipping_options` (
   `name` varchar(255) NOT NULL default '',
   `upper_limit` double NULL default NULL,
   `rate` double NULL default NULL,
+  `groups` blob NULL,
   `dest_zip` varchar(32) NOT NULL default '',
   `dest_country` varchar(64) NOT NULL default '',
   `dest_region` varchar(64) NOT NULL default '',

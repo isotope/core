@@ -118,7 +118,7 @@ class FormTextCollectionField extends Widget
 				$return .= "<br />";
 			}
 
-			$return .= '<label for="' . $this->strName . '">' . $this->prompt . ' ' . $y . ':</label> ' . sprintf('<input type="text" name="%s[' . $i . ']" id="ctrl_%s" class="text%s" value="%s"%s />',
+			$return .= sprintf('<input type="text" name="%s[' . $i . ']" id="ctrl_%s" class="text%s" value="%s"%s />',
 							$this->strName,
 							$this->strId,
 							(strlen($this->strClass) ? ' ' . $this->strClass : ''),

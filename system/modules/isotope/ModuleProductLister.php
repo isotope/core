@@ -78,7 +78,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 	{
 		if (TL_MODE == 'BE')
 		{
-			$this->Template = new Template('be_wildcard');
+			$this->Template = new FrontendTemplate('be_wildcard');
 			$this->Template->wildcard = '### ISOTOPE PRODUCT LISTING ###';
 
 			return $this->Template->parse();
@@ -160,7 +160,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 		
 		$this->Template->ignore_page_id = $this->Input->get('ignore_page_id');
 		
-		if($this->Input->get('ignore_page_id')!=1 && $this->new_products_time_window < 1)
+		if($this->Input->get('ignore_page_id')!=1 && $this->new_products_time_window < 1 && $this->featured_products < 1)
 		{
 			$strClauses = " pid IN(" . $strPageList . ")";
 		}
@@ -345,18 +345,24 @@ class ModuleProductLister extends ModuleIsotopeBase
 			if(strlen($filter_list))
 			{
 				$strFilterList = " AND " . $filter_list;
-			}			
+			}		
 					
 			if($this->new_products_time_window > 0)
 			{
 				$arrDate = getdate();
 				
 				$strFilterList .= " AND date_added>=" . ($arrDate[0] - ((int)$this->new_products_time_window * 86400));
-				$strBaseClause = "product_visibility=?";
+				$strBaseClause = "visibility=?";
+			}
+			elseif($this->featured_products==1)
+			{
+				$strFilterList .= " AND featured_product=1";
+				$strClauses = " ORDER BY RAND()";
+				$strBaseClause = "visibility=?";
 			}
 			else
 			{
-				$strBaseClause = "id IN(" . $product_list . ") AND product_visibility=?";
+				$strBaseClause = "id IN(" . $product_list . ") AND visibility=?";
 			}	
 			
 			/*
@@ -380,10 +386,13 @@ class ModuleProductLister extends ModuleIsotopeBase
 			{
 				$intTotalRows += $objTotal->count;
 			}
-			//echo "SELECT DISTINCT id, tstamp, use_product_price_override, " . strtolower($field_list) . " FROM " . $this->strCurrentStoreTable . " WHERE " . $strBaseClause . $strFilterList . $strClauses;
+			//echo "SELECT DISTINCT id, tstamp, use_price_override, " . strtolower($field_list) . " FROM " . $this->strCurrentStoreTable . " WHERE " . $strBaseClause . $strFilterList . $strClauses;
 					
 			//Get the current collection of products based on the tl_cap_aggregate table data
-			$objProductCollection = $this->Database->prepare("SELECT id, tstamp, use_product_price_override, main_image " . strtolower($field_list) . " FROM " . $this->strCurrentStoreTable . " WHERE " . $strBaseClause . $strFilterList . $strClauses);
+			$objProductCollection = $this->Database->prepare("SELECT id, tstamp, use_price_override, main_image " . strtolower($field_list) . " FROM " . $this->strCurrentStoreTable . " WHERE " . $strBaseClause . $strFilterList . $strClauses);
+			
+			
+			
 			
 			if ($per_page > 0)
 			{
@@ -407,7 +416,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 			
 			if ($this->iso_jump_first && !strlen($this->Input->get('asetid')) && !strlen($this->Input->get('aset_id')) && count($arrProducts))
 			{
-				$this->redirect($this->generateProductLink($arrProducts[0]['product_alias'], $arrProducts[0], $this->Store->productReaderJumpTo, $objAggregateSets->attribute_set_id));
+				$this->redirect($this->generateProductLink($arrProducts[0]['alias'], $arrProducts[0], $this->Store->productReaderJumpTo, $objAggregateSets->attribute_set_id));
 			}
 			
 			$i=0;
@@ -416,13 +425,13 @@ class ModuleProductLister extends ModuleIsotopeBase
 			{
 				$arrProductData[$i] = array
 				(
-					'product_name'			=> $product['product_name'],
-					'product_alias'			=> $product['product_alias'],
-					'product_link'			=> $this->generateProductLink($product['product_alias'], $product, $this->Store->productReaderJumpTo, $objAggregateSets->attribute_set_id),
-					'price_string'			=> ($product['use_product_price_override']==1 ? $this->generatePrice($product['product_price_override'], $this->strPriceOverrideTemplate) : $this->generatePrice($product['product_price'], $this->strPriceTemplate)),
-					'thumbnail'				=> $this->getThumbnailImage($product['id'], $product['product_alias'], $product['main_image'], $strMissingImagePlaceholder, $this->strFileBasePath),
-					'product_id'			=> $product['id'],
-					'aset_id'				=> $objAggregateSets->id,
+					'name'			=> $product['name'],
+					'alias'			=> $product['alias'],
+					'link'			=> $this->generateProductLink($product['alias'], $product, $this->Store->productReaderJumpTo, $objAggregateSets->attribute_set_id),
+					'price_string'			=> ($product['use_price_override']==1 ? $this->generatePrice($product['price_override'], $this->strPriceOverrideTemplate) : $this->generatePrice($product['price'], $this->strPriceTemplate)),
+					'thumbnail'				=> $this->getThumbnailImage($product['id'], $product['alias'], $product['main_image'], $strMissingImagePlaceholder, $this->strFileBasePath),
+					'id'			=> $product['id'],
+					'aset_id'		=> $objAggregateSets->id,
 				);
 				
 				
@@ -430,7 +439,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 				(
 					'id' => $product['id'], 
 					'aset_id' => $objAggregateSets->id, 
-					'product_name' => $product['product_name']
+					'name' => $product['name']
 				);
 				
 				
@@ -441,9 +450,9 @@ class ModuleProductLister extends ModuleIsotopeBase
 				{
 					switch($field)
 					{	//Skip these fields. Not sure why anymore except duplicates.
-						case 'product_name':
-						case 'product_alias':
-						case 'product_thumbnail_image':
+						case 'name':
+						case 'alias':
+						case 'thumbnail_image':
 							continue;
 							break;
 						default:
@@ -527,8 +536,8 @@ class ModuleProductLister extends ModuleIsotopeBase
 				(
 					'aset_id'				=> $row['aset_id'],
 					'quantity_requested'	=> 1,	
-					'product_name'			=> $row['product_name'],
-					'exclude'				=> array('product_name','exclude')
+					'name'			=> $row['name'],
+					'exclude'				=> array('name','exclude')
 				);
 			}
 		}
@@ -569,8 +578,8 @@ class ModuleProductLister extends ModuleIsotopeBase
 					(
 						'aset_id'				=> $row['aset_id'],
 						'quantity_requested'	=> 1,
-						'product_name'			=> $row['product_name'],
-						'exclude'				=> array('product_name','exclude')
+						'name'			=> $row['name'],
+						'exclude'				=> array('name','exclude')
 					);
 				}
 				

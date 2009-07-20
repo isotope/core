@@ -1,44 +1,8 @@
 <!-- indexer::stop -->
-<div class="grid <?php echo $this->class; ?><?php echo $this->cssID; ?>"<?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
+<div class="grid featured <?php echo $this->class; ?><?php echo $this->cssID; ?>"<?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
   <!--<div class="listingHeadline"><h1><?php echo $this->headline; ?></h1></div>-->
   <!-- START HEADER-->
   <div class="listingHeader">
-    <!-- START FILTER-->
-    <div class="filterWrap">
-        <form action="<?php echo $this->action; ?>" method="get">
-        <div class="formbody">
-        <input type="hidden" name="ignore_page_id" value="<?php echo $this->ignore_page_id; ?>" />
-        <input type="hidden" name="pas_id" value="<?php echo $this->pas_id; ?>" />
-      	<?php foreach($this->filters as $filter): ?>
-      		<label for="<?php echo $filter['name']; ?>"><?php echo $filter['label']; ?></label>
-      		<select name="<?php echo $filter['name']; ?>" class="select" onchange="form.submit();">
-      			<?php foreach($filter['options'] as $option): ?>
-      				<option value="<?php echo $option['value']; ?>"<?php if($filter['current_value']==$option['value']): ?> selected="selected"<?php endif; ?>><?php echo $option['label']; ?></option>
-      			<?php endforeach; ?>
-      		</select>
-      	<?php endforeach; ?> 
-      	<label for="order_by"><?php echo $this->labelOrderBy; ?></label>
-        <select name="order_by" class="select" onchange="form.submit();">
-        	<option value=""<?php if($this->order_by==$option['value']): ?> selected="selected"<?php endif; ?>>(select)</option>
-            <?php foreach($this->orderOptions as $option): ?>
-                <option value="<?php echo $option['value']; ?>"<?php if($this->order_by==$option['value']): ?> selected="selected"<?php endif; ?>><?php echo $option['label']; ?></option>
-            <?php endforeach; ?>
-        </select>
-        
-        
-        <label for="per_page"><?php echo $this->labelPerPage; ?></label>
-        <select name="per_page" class="select" onchange="form.submit();">
-          <?php foreach($this->perPageOptions as $option): ?>
-          	<option value="<?php echo $option; ?>"<?php if ($this->per_page == $option): ?> selected="selected"<?php endif; ?>><?php echo $option; ?></option>
-          <?php endforeach; ?>
-          <!--<option value="250"<?php if ($this->per_page == 250): ?> selected="selected"<?php endif; ?>>250</option>
-          <option value="500"<?php if ($this->per_page == 500): ?> selected="selected"<?php endif; ?>>500</option>-->
-        </select>
-        </div>
-        </form>
-    </div>
-    <!-- END FILTER-->
-    <div class="clearBoth"></div>
     <!-- START PAGER-->
     <div class="pagerWrap">
       <!--<div class="pagerText"><?php echo $this->labelPagerSectionTitle; ?></div>-->
@@ -65,7 +29,7 @@
                   <h3 class="productName"><a href="<?php echo $product['link']; ?>" title="<?php echo $product['name']; ?>"><?php echo $product['name']; ?></a></h3>
                    <p class="productPrice"><?php echo $product['price_string']; ?></p>
                   <?php if($product['teaser']): ?>
-                 <!--<p class="productTeaser"><a href="<?php echo $product['link']; ?>" title="<?php echo $product['name']; ?>"><?php echo $product['teaser']; ?></a></p>-->
+                 <p class="productTeaser"><a href="<?php echo $product['link']; ?>" title="<?php echo $product['name']; ?>"><?php echo $product['teaser']; ?></a></p>
                   <?php endif; ?>
                   
                 </div>

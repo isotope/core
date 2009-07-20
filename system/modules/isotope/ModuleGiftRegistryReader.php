@@ -93,11 +93,11 @@ class ModuleGiftRegistryReader extends ModuleIsotopeBase
 		}
 			
 		
-		$arrProductData = $this->getRegistryProductData($arrAggregateSetData, array('product_alias','product_name','product_price', 'main_image','available_online'), 'product_name');
+		$arrProductData = $this->getRegistryProductData($arrAggregateSetData, array('alias','name','price', 'main_image','available_online'), 'name');
 		
 		foreach($arrProductData as $data)
 		{
-			$arrProductIds[$data['product_id']] = $data['attribute_set_id'];
+			$arrProductIds[$data['id']] = $data['attribute_set_id'];
 		}
 			
 		
@@ -133,20 +133,20 @@ class ModuleGiftRegistryReader extends ModuleIsotopeBase
 		
  		foreach($arrProductData as $row)
 		{
-			$intTotalPrice = $row['product_price'] * $row['quantity_requested'];
+			$intTotalPrice = $row['price'] * $row['quantity_requested'];
 						
 			$arrFormattedProductData[] = array
 			(
-				'product_id'		=> $row['product_id'],
-				'image'				=> $GLOBALS['TL_CONFIG']['isotope_upload_path'] . '/' . $GLOBALS['TL_CONFIG']['isotope_base_path'] . '/' . substr($row['product_alias'], 0, 1) . '/' . $row['product_alias'] . '/' . $GLOBALS['TL_LANG']['MSC']['imagesFolder'] . '/' . $GLOBALS['TL_LANG']['MSC']['thumbnail_images_folder'] . '/' . $row['main_image'],
-				'name'				=> $row['product_name'],
-				'link'				=> $this->generateProductLink($row['product_alias'], $row, $this->Store->productReaderJumpTo, $row['attribute_set_id'], 'product_id'),
-				'price'				=> $this->generatePrice($row['product_price'], $this->strPriceTemplate),
+				'id'		=> $row['id'],
+				'image'				=> $GLOBALS['TL_CONFIG']['isotope_upload_path'] . '/' . $GLOBALS['TL_CONFIG']['isotope_base_path'] . '/' . substr($row['alias'], 0, 1) . '/' . $row['alias'] . '/' . $GLOBALS['TL_LANG']['MSC']['imagesFolder'] . '/' . $GLOBALS['TL_LANG']['MSC']['thumbnail_images_folder'] . '/' . $row['main_image'],
+				'name'				=> $row['name'],
+				'link'				=> $this->generateProductLink($row['alias'], $row, $this->Store->productReaderJumpTo, $row['attribute_set_id'], 'id'),
+				'price'				=> $this->generatePrice($row['price'], $this->strPriceTemplate),
 				'total_price'		=> $this->generatePrice($intTotalPrice, 'stpl_total_price'),
 				'quantity'			=> $row['quantity_requested'],
 				'quantity_remaining'=> $row['quantity_requested'] - $row['quantity_sold'],
 				'source_cart_id'	=> $this->intCartId,
-				'add_link'			=> ($row['available_online']=='1' ? '<a href="' . $this->generateActionLinkString('add_to_cart', $row['product_id'], array('aset_id'=>$row['attribute_set_id'],'quantity_requested'=>1, 'source_cart_id'=>$this->intCartId), $this->Store->cartJumpTo) . '">' . $this->generateImage('system/modules/isotope/html/addToCart.gif') . '</a>' : $GLOBALS['TL_LANG']['MSC']['notAvailableOnline']),
+				'add_link'			=> ($row['available_online']=='1' ? '<a href="' . $this->generateActionLinkString('add_to_cart', $row['id'], array('aset_id'=>$row['attribute_set_id'],'quantity_requested'=>1, 'source_cart_id'=>$this->intCartId), $this->Store->cartJumpTo) . '">' . $this->generateImage('system/modules/isotope/html/addToCart.gif') . '</a>' : $GLOBALS['TL_LANG']['MSC']['notAvailableOnline']),
 				'add_link_title' 	=> "Add To Cart"
 			
 			);
@@ -215,15 +215,15 @@ class ModuleGiftRegistryReader extends ModuleIsotopeBase
 		
 		foreach($arrAggregateSetData as $data)
 		{			
-			$arrProductsAndTables[$data['storeTable']][] = array($data['product_id'], $data['quantity_requested']); //Allows us to cycle thru the correct table and product ids collections.
+			$arrProductsAndTables[$data['storeTable']][] = array($data['id'], $data['quantity_requested']); //Allows us to cycle thru the correct table and product ids collections.
 			
 			//The productID list for this storetable, used to build the IN clause for the product gathering.
-			$arrProductIds[$data['storeTable']][] = $data['product_id'];
+			$arrProductIds[$data['storeTable']][] = $data['id'];
 			
 			//This is used to gather extra fields for a given product by store table.
-			$arrProductExtraFields[$data['storeTable']][$data['product_id']]['attribute_set_id'] = $data['attribute_set_id'];
-			$arrProductExtraFields[$data['storeTable']][$data['product_id']]['quantity_requested'] = $data['quantity_requested'];			
-			$arrProductExtraFields[$data['storeTable']][$data['product_id']]['quantity_sold'] = $data['quantity_sold'];
+			$arrProductExtraFields[$data['storeTable']][$data['id']]['attribute_set_id'] = $data['attribute_set_id'];
+			$arrProductExtraFields[$data['storeTable']][$data['id']]['quantity_requested'] = $data['quantity_requested'];			
+			$arrProductExtraFields[$data['storeTable']][$data['id']]['quantity_sold'] = $data['quantity_sold'];
 		}
 		
 		if(!sizeof($arrProductsAndTables))
@@ -250,7 +250,7 @@ class ModuleGiftRegistryReader extends ModuleIsotopeBase
 						
 			foreach($arrProductsInCart as $product)
 			{
-				$arrProducts[$product['id']]['product_id'] = $product['id'];
+				$arrProducts[$product['id']]['id'] = $product['id'];
 				
 				foreach($arrFieldNames as $field)
 				{

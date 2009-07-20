@@ -751,16 +751,32 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			
 			$objModule = new $strClass($objModules->row());
 			
+			switch($objModule->type)
+			{
+				case 'flat':
+					$fltShippingCost = $objModule->price;
+					break;
+				case 'collection':
+					$fltShippingCost = $objModule->calculateShippingRate($objModules->id, $this->Cart->subTotal);
+					break;
+				default:
+					break;	//TODO insert hook for different methods of calculation.
+					
+			}
+			
 			if (!$objModule->available)
 				continue;
 			
-			$arrModules[] = sprintf('<input id="ctrl_shipping_module_%s" type="radio" name="shipping[module]" value="%s"%s /> <label for="ctrl_shipping_module_%s">%s: %s</label>',
+			
+			
+			$arrModules[] = sprintf('<input id="ctrl_shipping_module_%s" type="radio" name="shipping[module]" value="%s"%s /> <label for="ctrl_shipping_module_%s">%s: %s</label>%s',
 									 $objModule->id,
 									 $objModule->id,
 									 ($arrData['module'] == $objModule->id ? ' checked="checked"' : ''),
 									 $objModule->id,
  									 $objModule->label,
- 									 $this->Isotope->formatPriceWithCurrency($objModule->price));
+ 									 $this->Isotope->formatPriceWithCurrency($fltShippingCost), 
+ 									 $objModule->getShippingOptions($objModule->id));
 		}
 				
 		return $arrModules;
@@ -787,15 +803,14 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			
 			if (!$objModule->available)
 				continue;
-			
-			$arrModules[] = sprintf('<input id="ctrl_payment_module_%s" type="radio" name="payment[module]" onclick="Isotope.toggleAddressFields(this,%s)" value="%s"%s /> <label for="ctrl_payment_module_%s">%s: %s</label>',
+						
+			$arrModules[] = sprintf('<input id="ctrl_payment_module_%s" type="radio" name="payment[module]" onclick="Isotope.toggleAddressFields(this,%s)" value="%s"%s /> <label for="ctrl_payment_module_%s">%s</label>',
 									 $objModule->id,
 									 'payment_module_fields_' . $objModule->id,
 									 $objModule->id,
 									 ($arrData['module'] == $objModule->id ? ' checked="checked"' : ''),
 									 $objModule->id,
- 									 $objModule->label,
- 									 $this->Isotope->formatPriceWithCurrency($objModule->price));			
+ 									 $objModule->label);			
 		}
 				
 		return $arrModules;
@@ -839,7 +854,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		}
 					
 		
-		$arrProductData = $this->Isotope->getProductData($this->Cart->getProducts(), array('product_alias','product_name','product_price', 'main_image'), 'product_name');
+		$arrProductData = $this->Isotope->getProductData($this->Cart->getProducts(), array('alias','name','price', 'main_image'), 'name');
 		
 		$objTemplate->products = $this->formatProductData($arrProductData);
 		
@@ -986,7 +1001,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		foreach($arrModuleIds as $module)
 		{
 			//Load configuration data for the shipping method.
-			$objShippingModuleData = $this->Database->prepare("SELECT s.name, sr.* FROM tl_shipping_modules s INNER JOIN tl_shipping_rates sr ON s.id=sr.pid WHERE s.id=?")
+			$objShippingModuleData = $this->Database->prepare("SELECT s.name, sr.* FROM tl_shipping_modules s INNER JOIN tl_shipping_options sr ON s.id=sr.pid WHERE s.id=?")
 										  ->execute($module);
 										  
 			if(!$objShippingModuleData->numRows)
@@ -1077,7 +1092,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			$arrAggregateSetData = array();
 		}
 		
-		$arrProductData = $this->Isotope->getProductData($arrAggregateSetData, array('product_price'), 'product_price');
+		$arrProductData = $this->Isotope->getProductData($arrAggregateSetData, array('price'), 'price');
 				
 		return $this->getOrderTotal($arrProductData);
 	
@@ -1194,19 +1209,19 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 						{
 							case '1':
 									//if(strlen($rate['region_id']) > 0 && $this->User->state==$rate['region_id'])
-									$fltSalesTax += (float)$product['product_price'] * $arrRates[$product['tax_class']]['rate'] / 100;
+									$fltSalesTax += (float)$product['price'] * $arrRates[$product['tax_class']]['rate'] / 100;
 									
 									//$arrTaxInfo['code'] = $
 								break;
 								
 							case '2':	//Luxury tax.  5% of the difference over $175.00  this trumps standard sales tax.
-								if((float)$product['product_price'] >= 175)
+								if((float)$product['price'] >= 175)
 								{
-									$fltTaxableAmount = (float)$product['product_price'] - 175;
+									$fltTaxableAmount = (float)$product['price'] - 175;
 									$fltSalesTax += $fltTaxableAmount * $arrRates[$product['tax_class']]['rate'] / 100;
 								}else{
 									//fallback if the price is below to standard sales tax.
-									$fltTaxableAmount = (float)$product['product_price'] - 175;
+									$fltTaxableAmount = (float)$product['price'] - 175;
 									$fltSalesTax += $fltTaxableAmount * $arrRates[$product['tax_class']]['rate'] / 100;
 								}
 														

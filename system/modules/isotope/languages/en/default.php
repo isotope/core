@@ -82,7 +82,7 @@ $GLOBALS['TL_LANG']['MSC']['previousStep']	= 'Back';
 $GLOBALS['TL_LANG']['MSC']['nextStep']		= 'Continue';
 $GLOBALS['TL_LANG']['MSC']['confirmOrder']	= 'Order';
 
-$GLOBALS['TL_LANG']['MSC']['defaultAssetsBasePath'] = 'product_assets';	
+$GLOBALS['TL_LANG']['MSC']['defaultAssetsBasePath'] = 'assets';	
 $GLOBALS['TL_LANG']['MSC']['assetsImportBasePath'] = 'assets_for_import';
 $GLOBALS['TL_LANG']['MSC']['audioFolder'] = 'audio';
 $GLOBALS['TL_LANG']['MSC']['imagesFolder'] = 'images';
@@ -112,7 +112,7 @@ $GLOBALS['TL_LANG']['MSC']['noShippingModules'] = 'No shipping options are curre
 //Checkout language entries 
 $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['login'] = 'First time user? Create an account now.&nbsp;';
 $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['shipping_information'] = 'Enter your shipping information or select an existing address.';
-$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['billing_information'] = 'Enter your billing information or select an existing address.';
+$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['billing_information'] = (FE_USER_LOGGED_IN) ? 'Enter your billing information or select an existing address.' : 'Enter your billing information';
 $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['shipping_method'] = 'Select a shipping method.';
 $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['payment_method'] = 'Enter your payment information.';
 $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['order_review'] = 'Review and confirm your order details.';
@@ -149,6 +149,7 @@ $GLOBALS['TL_LANG']['differentShippingAddress'] = 'Different shipping address';
 
 //Invoice language Entries
 $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] = 'Invoice';
+$GLOBALS['TL_LANG']['MSC']['iso_order_status'] = 'Status';
 $GLOBALS['TL_LANG']['MSC']['iso_billing_address_header'] = 'Billing Address';
 $GLOBALS['TL_LANG']['MSC']['iso_shipping_address_header'] = 'Shipping Address';
 $GLOBALS['TL_LANG']['MSC']['iso_payment_info_header'] = 'Payment Information';
@@ -157,6 +158,7 @@ $GLOBALS['TL_LANG']['MSC']['iso_tax_header'] = 'Tax';
 $GLOBALS['TL_LANG']['MSC']['iso_subtotal_header'] = 'Subtotal';
 $GLOBALS['TL_LANG']['MSC']['iso_order_shipping_header'] = 'Shipping & Handling';
 $GLOBALS['TL_LANG']['MSC']['iso_order_grand_total_header'] = 'Grand Total';
+$GLOBALS['TL_LANG']['MSC']['iso_order_items'] = 'Items';
 
 $GLOBALS['TL_LANG']['MSC']['store_title'] = '';
 
@@ -258,16 +260,16 @@ $GLOBALS['TL_LANG']['CUR_SYMBOL']['EUR'] = 'ﾛ';
 /** 
  * Default attributes
  */
-$GLOBALS['TL_LANG']['ISO_ATTR']['product_name']					= array('Product Name', '');
-$GLOBALS['TL_LANG']['ISO_ATTR']['product_sku']					= array('Product SKU', '');
-$GLOBALS['TL_LANG']['ISO_ATTR']['product_weight']				= array('Product Weight', '');
-$GLOBALS['TL_LANG']['ISO_ATTR']['product_quantity']				= array('Product Quantity', '');
-$GLOBALS['TL_LANG']['ISO_ATTR']['product_alias']				= array('Product Alias', '');
-$GLOBALS['TL_LANG']['ISO_ATTR']['product_visibility']			= array('Product Visibility', '');
-$GLOBALS['TL_LANG']['ISO_ATTR']['product_teaser']				= array('Product Teaser', '');
-$GLOBALS['TL_LANG']['ISO_ATTR']['product_description']			= array('Product Description', '');
-$GLOBALS['TL_LANG']['ISO_ATTR']['product_price']				= array('Product Price', '');
-$GLOBALS['TL_LANG']['ISO_ATTR']['product_price_override']		= array('Product Price Override', '');
-$GLOBALS['TL_LANG']['ISO_ATTR']['use_product_price_override']	= array('Use Product Price Override', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['name']					= array('Product Name', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['sku']					= array('Product SKU', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['weight']				= array('Product Weight', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['quantity']				= array('Product Quantity', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['alias']				= array('Product Alias', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['visibility']			= array('Product Visibility', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['teaser']				= array('Product Teaser', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['description']			= array('Product Description', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['price']				= array('Product Price', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['price_override']		= array('Product Price Override', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['use_price_override']	= array('Use Product Price Override', '');
 $GLOBALS['TL_LANG']['ISO_ATTR']['main_image']				= array('Product Media', '');
 

@@ -37,13 +37,13 @@
       <div class="mainImage">
       	<?php if($this->mainImage['has_large_image']): ?>
             <noscript>
-            	<a href="<?php echo $this->mainImage['large_image_link']; ?>" title="<?php echo $product['product_name']; ?>" target="_blank"><img src="<?php echo $this->mainImage['file_path']; ?>" width="<?php echo $this->mainImage['width']; ?>" height="<?php echo $this->mainImage['height']; ?>" alt="<?php echo $this->mainImage['alt']; ?>" class="productImg" /></a>
+            	<a href="<?php echo $this->mainImage['large_image_link']; ?>" title="<?php echo $product['name']; ?>" target="_blank"><img src="<?php echo $this->mainImage['file_path']; ?>" width="<?php echo $this->mainImage['width']; ?>" height="<?php echo $this->mainImage['height']; ?>" alt="<?php echo $this->mainImage['alt']; ?>" class="productImg" /></a>
             </noscript>
-            <a href="<?php echo $this->mainImage['large_image_link']; ?>" <?php echo $this->mainImage['on_thumbnail_click_event']; ?> title="<?php echo $product['product_name']; ?>"><img src="<?php echo $this->mainImage['file_path']; ?>" width="<?php echo $this->mainImage['width']; ?>" height="<?php echo $this->mainImage['height']; ?>" alt="<?php echo $this->mainImage['alt']; ?>" class="productImg" /></a>
+            <a href="<?php echo $this->mainImage['large_image_link']; ?>" <?php echo $this->mainImage['on_thumbnail_click_event']; ?> title="<?php echo $product['name']; ?>"><img src="<?php echo $this->mainImage['file_path']; ?>" width="<?php echo $this->mainImage['width']; ?>" height="<?php echo $this->mainImage['height']; ?>" alt="<?php echo $this->mainImage['alt']; ?>" class="productImg" /></a>
         <?php else: ?>
             <img src="<?php echo $this->mainImage['file_path']; ?>" width="<?php echo $this->mainImage['width']; ?>" height="<?php echo $this->mainImage['height']; ?>"  alt="<?php echo $this->mainImage['alt']; ?>" class="productImg" />
         <?php endif; ?></div>
-      <!-- <p class="caption"><?php //echo $product['product_name']; ?></p>-->
+      <!-- <p class="caption"><?php //echo $product['name']; ?></p>-->
     </div>
     <div class="column2">
       <form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>" method="<?php echo $this->method; ?>" enctype="<?php echo $this->enctype; ?>"<?php echo $this->attributes; ?>>
@@ -61,7 +61,7 @@
 		<h2 class="productName"><?php echo $this->productDetailLabel; ?></h2>
 	      <div class="pricing">
 	        <p class="productPrice"><?php echo $product['price_string']; ?></p>
-	        <p class="sku"><?php echo $product['product_sku']; ?></p>
+	        <p class="sku"><?php echo $product['sku']; ?></p>
 	        <div class="clearBoth"></div>
 	      </div>
 	      <?php if(strlen($this->embeddedMedia) > 0): ?>
@@ -100,7 +100,7 @@
 	          <?php endforeach; ?>
 	          <?php if ($this->useReg): ?>
 	          	<div class="registryLink">
-	          		<a href="/registry-manager/action/add_to_registry/aset_id/<?php echo $product['aset_id'] ?>/quantity_requested/1/id/<?php echo $product['product_id'] ?>.html">Add to Registry</a>
+	          		<a href="/registry-manager/action/add_to_registry/aset_id/<?php echo $product['aset_id'] ?>/quantity_requested/1/id/<?php echo $product['id'] ?>.html">Add to Registry</a>
 	          	</div>
 	          <?php endif; ?>                             
 		  </div>
@@ -118,9 +118,9 @@
 	        <?php foreach($this->extraProductImages as $image): ?>
 	        	<?php if($image['has_large_image']): ?>
 	            	<noscript>
-	                <a href="<?php echo $image['large_image_link']; ?>" title="<?php echo $product['product_name']; ?>" target="_blank"><img src="<?php echo $image['file_path']; ?>" width="<?php echo $image['width']; ?>" height="<?php echo $image['height']; ?>" alt="<?php echo $image['alt']; ?>" class="productImg" /></a>
+	                <a href="<?php echo $image['large_image_link']; ?>" title="<?php echo $product['name']; ?>" target="_blank"><img src="<?php echo $image['file_path']; ?>" width="<?php echo $image['width']; ?>" height="<?php echo $image['height']; ?>" alt="<?php echo $image['alt']; ?>" class="productImg" /></a>
 	                </noscript>
-	                <a href="<?php echo $image['large_image_link']; ?>" <?php echo $image['on_thumbnail_click_event']; ?> title="<?php echo $product['product_name']; ?>"><img src="<?php echo $image['file_path']; ?>" width="<?php echo $image['width']; ?>" height="<?php echo $image['height']; ?>" alt="<?php echo $image['alt']; ?>" class="productImg" /></a>
+	                <a href="<?php echo $image['large_image_link']; ?>" <?php echo $image['on_thumbnail_click_event']; ?> title="<?php echo $product['name']; ?>"><img src="<?php echo $image['file_path']; ?>" width="<?php echo $image['width']; ?>" height="<?php echo $image['height']; ?>" alt="<?php echo $image['alt']; ?>" class="productImg" /></a>
 	            <?php else: ?>
 	            	<img src="<?php echo $image['file_path']; ?>" width="<?php echo $image['width']; ?>" height="<?php echo $image['height']; ?>" alt="<?php echo $image['alt']; ?>" class="productImg" />
 	            <?php endif; ?>
@@ -138,7 +138,7 @@
     <div class="column3">
     	<h4 class="descriptionHeader"><?php echo $this->productDescriptionLabel; ?></h4>
         <div class="description">
-        	<p><?php echo $product['product_description']; ?></p>
+        	<p><?php echo $product['description']; ?></p>
         </div>
     </div>
     <?php endforeach; ?>

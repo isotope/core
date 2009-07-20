@@ -353,9 +353,9 @@ class IsotopePOS extends Backend
 		$objTemplate->shippingInfoString = $strShippingInfo;
 		$objTemplate->orderTrackingInfoString = $strOrderTrackingInfo;
 		$objTemplate->productNameHeader = $GLOBALS['TL_LANG']['MSC']['iso_product_name_header'];
-		$objTemplate->productSkuHeader = $GLOBALS['TL_LANG']['MSC']['iso_product_sku_header'];
-		$objTemplate->productPriceHeader = $GLOBALS['TL_LANG']['MSC']['iso_product_price_header'];
-		$objTemplate->productQuantityHeader = $GLOBALS['TL_LANG']['MSC']['iso_product_quantity_header'];
+		$objTemplate->productSkuHeader = $GLOBALS['TL_LANG']['MSC']['iso_sku_header'];
+		$objTemplate->productPriceHeader = $GLOBALS['TL_LANG']['MSC']['iso_price_header'];
+		$objTemplate->productQuantityHeader = $GLOBALS['TL_LANG']['MSC']['iso_quantity_header'];
 		$objTemplate->productTaxHeader = $GLOBALS['TL_LANG']['MSC']['iso_tax_header'];	
 		$objTemplate->productSubtotalHeader = $GLOBALS['TL_LANG']['MSC']['iso_subtotal_header'];
 		$objTemplate->products = $arrProductData;	//name, sku, price, quantity, tax, subtotal, options = array('name', 'value')
@@ -543,7 +543,7 @@ class IsotopePOS extends Backend
 			
 			$strProductList = implode(',', $arrProductIds);
 									
-			$objProductExtendedData = $this->Database->prepare("SELECT id, product_name, product_sku, product_price FROM " . $storeTable . " WHERE id IN(" . $strProductList . ")")
+			$objProductExtendedData = $this->Database->prepare("SELECT id, name, sku, price FROM " . $storeTable . " WHERE id IN(" . $strProductList . ")")
 													 ->execute();
 									
 			if($objProductExtendedData->numRows < 1)
@@ -555,16 +555,16 @@ class IsotopePOS extends Backend
 			
 			foreach($arrProductExtendedData as $row)
 			{
-				$fltProductTax = ((int)$arrProductLists[$storeTable][$row['id']]['quantity'] * (float)$row['product_price']) * 0.05;
+				$fltProductTax = ((int)$arrProductLists[$storeTable][$row['id']]['quantity'] * (float)$row['price']) * 0.05;
 					
-				$fltSubtotal = ((int)$arrProductLists[$storeTable][$row['id']]['quantity'] * (float)$row['product_price']) + round($fltProductTax, 2);
+				$fltSubtotal = ((int)$arrProductLists[$storeTable][$row['id']]['quantity'] * (float)$row['price']) + round($fltProductTax, 2);
 				//	echo $fltSubtotal;
 				
 				$arrAllProducts[] = array
 				(
-					'name'			=> $row['product_name'],
-					'sku'			=> $row['product_sku'],
-					'price'			=> number_format((float)$row['product_price'], 2),
+					'name'			=> $row['name'],
+					'sku'			=> $row['sku'],
+					'price'			=> number_format((float)$row['price'], 2),
 					'quantity'		=> $arrProductLists[$storeTable][$row['id']]['quantity'],
 					'tax'			=> number_format($fltProductTax, 2),
 					'subtotal'		=> number_format($fltSubtotal, 2)
@@ -627,7 +627,7 @@ class IsotopePOS extends Backend
 	
 	protected function generateShippingInfoString($intShippingRateId)
 	{
-		$objShippingMethod = $this->Database->prepare("SELECT s.name, sr.description FROM tl_shipping_modules s INNER JOIN tl_shipping_rates sr ON s.id=sr.pid  WHERE sr.id=?")
+		$objShippingMethod = $this->Database->prepare("SELECT s.name, sr.description FROM tl_shipping_modules s INNER JOIN tl_shipping_options sr ON s.id=sr.pid  WHERE sr.id=?")
 											->limit(1)
 											->execute($intShippingRateId);
 		

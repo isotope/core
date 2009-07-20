@@ -94,13 +94,13 @@ class MediaManagement extends Backend
 	
 	/**
 	 * Check for and create required product asset folders.  These folders are organized as such
-	 * isotope/product_assets/<alphanumeric classifier>/<product_alias>/audio
-	 * isotope/product_assets/<alphanumeric classifier>/<product_alias>/images
-	 * 		isotope/product_assets/<alphanumeric classifier>/<product_alias>/gallery_thumbnail_images/
-	 * 		isotope/product_assets/<alphanumeric classifier>/<product_alias>/thumbnail_images/
-	 * 		isotope/product_assets/<alphanumeric classifier>/<product_alias>/medium_images/
-	 * 		isotope/product_assets/<alphanumeric classifier>/<product_alias>/large_images/
-	 * isotope/product_assets/<alphanumeric classifier>/<product_alias>/video
+	 * isotope/product_assets/<alphanumeric classifier>/<alias>/audio
+	 * isotope/product_assets/<alphanumeric classifier>/<alias>/images
+	 * 		isotope/product_assets/<alphanumeric classifier>/<alias>/gallery_thumbnail_images/
+	 * 		isotope/product_assets/<alphanumeric classifier>/<alias>/thumbnail_images/
+	 * 		isotope/product_assets/<alphanumeric classifier>/<alias>/medium_images/
+	 * 		isotope/product_assets/<alphanumeric classifier>/<alias>/large_images/
+	 * isotope/product_assets/<alphanumeric classifier>/<alias>/video
 	 *
 	 * @param variant
 	 * @param object
@@ -109,7 +109,7 @@ class MediaManagement extends Backend
 	 
 	public function createProductAssetFolders($varValue, DataContainer $dc, $strMode="")
 	{	
-		if($dc->field!='product_alias' && $strMode!="import")
+		if($dc->field!='alias' && $strMode!="import")
 		{
 			return $varValue;
 		}
@@ -198,7 +198,7 @@ class MediaManagement extends Backend
 	 */
 	public function thumbnailImages($varValue, DataContainer $dc)
 	{		
-		$objProduct = $this->Database->prepare("SELECT product_alias, product_sku FROM " . $dc->table . " WHERE id=?")
+		$objProduct = $this->Database->prepare("SELECT alias, sku FROM " . $dc->table . " WHERE id=?")
 									 ->limit(1)
 									 ->execute($dc->id);
 		
@@ -208,8 +208,8 @@ class MediaManagement extends Backend
 		}
 		else
 		{
-			$strAlias = $objProduct->product_alias;
-			$strSKU = $objProduct->product_sku;
+			$strAlias = $objProduct->alias;
+			$strSKU = $objProduct->sku;
 		}
 
 		$arrProductPaths = $this->getCurrentProductPaths($strAlias);		
@@ -730,7 +730,7 @@ class MediaManagement extends Backend
 		
 		$objTemplate = new FrontendTemplate($GLOBALS['ISO_PLUGINS']['jwMediaPlayer']['mediaRSSPlaylist']);
 	
-		$objProductData = $this->Database->prepare("SELECT product_name, product_alias, product_teaser, product_thumbnail_image, audio_jumpTo, audio_url, video_jumpTo, video_url FROM " . $dc->table . " WHERE id=?")
+		$objProductData = $this->Database->prepare("SELECT name, alias, teaser, product_thumbnail_image, audio_jumpTo, audio_url, video_jumpTo, video_url FROM " . $dc->table . " WHERE id=?")
 										 ->limit(1)
 										 ->execute($dc->id);
 				
@@ -742,7 +742,7 @@ class MediaManagement extends Backend
 		
 		$arrProductData = $objProductData->fetchAssoc();
 		
-		$arrProductPaths = $this->getCurrentProductPaths($arrProductData['product_alias']);
+		$arrProductPaths = $this->getCurrentProductPaths($arrProductData['alias']);
 
 		$arrMediaFields = array('audio_jumpTo','audio_url','video_jumpTo','video_url');
 		
@@ -771,8 +771,8 @@ class MediaManagement extends Backend
 								
 				$arrFiles[] = array
 				(
-					'title' 			=> $arrProductData['product_name'],
-					'description' 		=> sprintf($GLOBALS['TL_LANG']['MSC']['playlistDescriptionTemplate'], $arrProductData['product_name'], $arrProductData['product_teaser']),
+					'title' 			=> $arrProductData['name'],
+					'description' 		=> sprintf($GLOBALS['TL_LANG']['MSC']['playlistDescriptionTemplate'], $arrProductData['name'], $arrProductData['teaser']),
 					'path'				=> $this->Environment->base . $strFieldData,
 					'type'				=> $mediaType,
 					'duration'			=> 33,
@@ -784,7 +784,7 @@ class MediaManagement extends Backend
 		}
 			
 		
-		$objTemplate->playlistTitle = $arrProductData['product_name'];
+		$objTemplate->playlistTitle = $arrProductData['name'];
 		$objTemplate->baseURL = $this->Environment->base;
 		$objTemplate->files = $arrFiles;
 
@@ -942,7 +942,7 @@ class MediaManagement extends Backend
 	 */
 	private function getPID($strTableName, $intID, $strAlias = '')
 	{
-		$objPID = $this->Database->prepare("SELECT pid FROM " . $strTableName . " WHERE id=? OR product_alias=?")
+		$objPID = $this->Database->prepare("SELECT pid FROM " . $strTableName . " WHERE id=? OR alias=?")
 								 ->limit(1)
 								 ->execute($intID, $strAlias);
 			

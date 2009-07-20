@@ -110,7 +110,7 @@ abstract class ModuleIsotopeBase extends Module
 //	protected $strUserId;
 
 	/**
-	 * Jump to page id for the product reader.  Standard keys are 'product_reader', 'shopping_cart', and 'checkout'.
+	 * Jump to page id for the product reader.  Standard keys are 'reader', 'shopping_cart', and 'checkout'.
 	 * @var array
 	 */
 //	protected $arrJumpToValues = array();
@@ -216,7 +216,7 @@ abstract class ModuleIsotopeBase extends Module
 								
 						//Get the current product Id's params & process
 						$objTemplate->buttonId = $buttonProperties['button_id'] . $productId;
-						$objTemplate->actionTitle = sprintf($buttonProperties['action_string'], $buttonProperties['params'][$productId]['product_name']);
+						$objTemplate->actionTitle = sprintf($buttonProperties['action_string'], $buttonProperties['params'][$productId]['name']);
 						$objTemplate->actionLink = $this->generateActionLinkString($buttonProperties['button_type'], $productId, $buttonProperties['params'][$productId], $pageId);
 						$arrButtonHTML[$buttonProperties['button_type']][$productId] = $objTemplate->parse();
 						
@@ -343,22 +343,22 @@ abstract class ModuleIsotopeBase extends Module
 
 		foreach($arrAggregateSetData as $data)
 		{
-			$arrProductsAndTables[$data['storeTable']][] = array($data['product_id'], $data['quantity_requested']); //Allows us to cycle thru the correct table and product ids collections.
+			$arrProductsAndTables[$data['storeTable']][] = array($data['id'], $data['quantity_requested']); //Allows us to cycle thru the correct table and product ids collections.
 			
 			//The productID list for this storetable, used to build the IN clause for the product gathering.
-			$arrProductIds[$data['storeTable']][] = $data['product_id'];
+			$arrProductIds[$data['storeTable']][] = $data['id'];
 			
 			//This is used to gather extra fields for a given product by store table.
-			$arrProductExtraFields[$data['storeTable']][$data['product_id']]['attribute_set_id'] = $data['attribute_set_id'];
+			$arrProductExtraFields[$data['storeTable']][$data['id']]['attribute_set_id'] = $data['attribute_set_id'];
 			
-			$arrProductExtraFields[$data['storeTable']][$data['product_id']]['source_cart_id'] = $data['source_cart_id'];
+			$arrProductExtraFields[$data['storeTable']][$data['id']]['source_cart_id'] = $data['source_cart_id'];
 			
 			//Aggregate full product quantity all into one product line item for now.
-			if($arrProductExtraFields[$data['storeTable']][$data['product_id']]['quantity_requested']<1)
+			if($arrProductExtraFields[$data['storeTable']][$data['id']]['quantity_requested']<1)
 			{
-				$arrProductExtraFields[$data['storeTable']][$data['product_id']]['quantity_requested'] = $data['quantity_requested'];
+				$arrProductExtraFields[$data['storeTable']][$data['id']]['quantity_requested'] = $data['quantity_requested'];
 			}else{
-				$arrProductExtraFields[$data['storeTable']][$data['product_id']]['quantity_requested'] += $data['quantity_requested'];
+				$arrProductExtraFields[$data['storeTable']][$data['id']]['quantity_requested'] += $data['quantity_requested'];
 			}
 		}
 		
@@ -386,7 +386,7 @@ abstract class ModuleIsotopeBase extends Module
 						
 			foreach($arrProductsInCart as $product)
 			{
-				$arrProducts[$product['id']]['product_id'] = $product['id'];
+				$arrProducts[$product['id']]['id'] = $product['id'];
 				
 				foreach($arrFieldNames as $field)
 				{
@@ -457,7 +457,7 @@ abstract class ModuleIsotopeBase extends Module
 		{
 			$strProductKeys = join(',', $arrAsetIds[$objCAPRecord->id]);
 								
-			$objProductData = $this->Database->prepare("SELECT " . $strFieldList . " FROM " . $objCAPRecord->storeTable . " WHERE product_visibility=1 AND id IN (" . $strProductKeys . ")")
+			$objProductData = $this->Database->prepare("SELECT " . $strFieldList . " FROM " . $objCAPRecord->storeTable . " WHERE visibility=1 AND id IN (" . $strProductKeys . ")")
 											->execute();
 							
 			if($objProductData->numRows > 0)
@@ -587,17 +587,17 @@ abstract class ModuleIsotopeBase extends Module
 		{
 			$intAsetId = 0;
 		}
-		
+	
 		$intAsetId = $objAsetId->id;
 
 		if ($objJump->numRows > 0)
 		{
-			$strUrl = ampersand($this->generateFrontendUrl($objJump->fetchAssoc(), '/asetid/' . $intAsetId . '/product/' . $arrProduct['product_alias']));
+			$strUrl = ampersand($this->generateFrontendUrl($objJump->fetchAssoc(), '/asetid/' . $intAsetId . '/product/' . $arrProduct['alias']));
 		}
 		else
 		{
 			
-			$strUrl = ampersand($this->generateFrontendUrl(array('id'=>$objPage->id, 'alias'=>$objPage->alias), '/asetid/' . $intAsetId . '/product/' . $arrProduct['product_alias']));
+			$strUrl = ampersand($this->generateFrontendUrl(array('id'=>$objPage->id, 'alias'=>$objPage->alias), '/asetid/' . $intAsetId . '/product/' . $arrProduct['alias']));
 		}
 
 		self::$arrUrlCache[$strCacheKey] = $strUrl;
@@ -719,7 +719,7 @@ abstract class ModuleIsotopeBase extends Module
 	 */
 	protected function getFinalPrice($intProductId, $strStoreTable)
 	{
-		$objProductPrice = $this->Database->prepare("SELECT product_price FROM " . $strStoreTable . " WHERE id=?")
+		$objProductPrice = $this->Database->prepare("SELECT price FROM " . $strStoreTable . " WHERE id=?")
 										  ->limit(1)
 										  ->execute($intProductId);
 		
@@ -728,7 +728,7 @@ abstract class ModuleIsotopeBase extends Module
 			return '';
 		}
 		
-		return $objProductPrice->product_price;
+		return $objProductPrice->price;
 	}
 	
 	/**
@@ -768,20 +768,22 @@ abstract class ModuleIsotopeBase extends Module
 		global $objPage;
 	
  		foreach($arrProductData as $row)
-		{			
-			$intTotalPrice = $row['product_price'] * $row['quantity_requested'];
+		{	
+		
+			$intTotalPrice = $row['price'] * $row['quantity_requested'];
 			$arrFormattedProductData[] = array
 			(
-				'product_id'		=> $row['product_id'],
-				'image'				=> $GLOBALS['TL_CONFIG']['isotope_upload_path'] . '/' . $GLOBALS['TL_CONFIG']['isotope_base_path'] . '/' . substr($row['product_alias'], 0, 1) . '/' . $row['product_alias'] . '/' . $GLOBALS['TL_LANG']['MSC']['imagesFolder'] . '/' . $GLOBALS['TL_LANG']['MSC']['gallery_thumbnail_images_folder'] . '/' . $row['main_image'],
-				'name'				=> $row['product_name'],
-				'link'				=> $this->generateProductLink($row['product_alias'], $row, $this->Store->productReaderJumpTo, $row['attribute_set_id'], 'product_id'),
-				'price'				=> $this->generatePrice($row['product_price'], $this->strPriceTemplate),
+				'id'				=> $row['id'],
+				'image'				=> $GLOBALS['TL_CONFIG']['isotope_upload_path'] . '/' . $GLOBALS['TL_CONFIG']['isotope_base_path'] . '/' . substr($row['alias'], 0, 1) . '/' . $row['alias'] . '/' . $GLOBALS['TL_LANG']['MSC']['imagesFolder'] . '/' . $GLOBALS['TL_LANG']['MSC']['gallery_thumbnail_images_folder'] . '/' . $row['main_image'],
+				'name'				=> $row['name'],
+				'link'				=> $this->generateProductLink($row['alias'], $row, $this->Store->productReaderJumpTo, $row['attribute_set_id'], 'id'),
+				'price'				=> $this->generatePrice($row['price'], $this->strPriceTemplate),
 				'total_price'		=> $this->generatePrice($intTotalPrice, 'stpl_total_price'),
 				'quantity'			=> $row['quantity_requested'],
 				'option_values'		=> $row['product_options'],
-				'remove_link'		=> $this->generateActionLinkString('remove_from_cart', $row['product_id'], array('attribute_set_id'=>$row['attribute_set_id'],'quantity'=>0, 'source_cart_id'=>$row['source_cart_id']), $objPage->id),
-				'remove_link_title' => sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $row['product_name'])
+				'cart_item_id'		=> $row['cart_item_id'],
+				'remove_link'		=> $this->generateActionLinkString('remove_from_cart', $row['id'], array('attribute_set_id'=>$row['attribute_set_id'],'quantity'=>0, 'source_cart_id'=>$row['source_cart_id']), $objPage->id),
+				'remove_link_title' => sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $row['name'])
 			
 			);
 		}
@@ -796,7 +798,7 @@ abstract class ModuleIsotopeBase extends Module
 	{
 		foreach($arrProductData as $data)
 		{
-			$arrPrices[] = (float)$data['product_price'];
+			$arrPrices[] = (float)$data['price'];
 			$arrQuantities[] = (int)$data['quantity_requested'];
 		}
 			
@@ -917,7 +919,7 @@ abstract class ModuleIsotopeBase extends Module
 			return '';
 		}
 		
-		$arrJumpToValues['product_reader'] = $objJumpTo->productReaderJumpTo;
+		$arrJumpToValues['reader'] = $objJumpTo->productReaderJumpTo;
 		$arrJumpToValues['shopping_cart'] = $objJumpTo->cartJumpTo;
 		$arrJumpToValues['checkout'] = $objJumpTo->checkoutJumpTo;
 		
@@ -1227,9 +1229,9 @@ abstract class ModuleIsotopeBase extends Module
 			
 		}
 		
-		usort($arrListData, array("ModuleIsotopeBase", "sortArrayAsc"));
+		usort($arrListData, array($this, "sortArrayAsc"));
 		
-				
+	
 		return $arrListData;
 	
 	
@@ -1237,7 +1239,7 @@ abstract class ModuleIsotopeBase extends Module
 	
 	protected function sortArrayAsc($a, $b)
 	{
-			return strcasecmp($a['label'], $b['label']);
+		return strcasecmp($a['label'], $b['label']);
 	}
 	
 	

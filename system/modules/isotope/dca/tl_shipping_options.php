@@ -1,0 +1,202 @@
+<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+
+/**
+ * TYPOlight webCMS
+ * Copyright (C) 2005 Leo Feyer
+ *
+ * This program is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation, either
+ * version 2.1 of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program. If not, please visit the Free
+ * Software Foundation website at http://www.gnu.org/licenses/.
+ *
+ * PHP version 5
+ * @copyright  Winans Creative / Fred Bliss 2009
+ * @author     Fred Bliss <fred@winanscreative.com>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
+ */
+
+
+/**
+ * Table tl_shipping_options
+ */
+$GLOBALS['TL_DCA']['tl_shipping_options'] = array
+(
+
+	// Config
+	'config' => array
+	(
+		'dataContainer'               => 'Table',
+		'ptable'					  => 'tl_shipping_modules',
+		'enableVersioning'            => true
+	),
+
+	// List
+	'list' => array
+	(
+		'sorting' => array
+		(
+			'mode'                    => 4,
+			'fields'                  => array('description'),
+			'panelLayout'             => 'sort,filter;search,limit',
+			'headerFields'            => array('name', 'tstamp'),
+			'child_record_callback'   => array('tl_shipping_options', 'listrates')
+		),
+		'global_operations' => array
+		(
+			'all' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['MSC']['all'],
+				'href'                => 'act=select',
+				'class'               => 'header_edit_all',
+				'attributes'          => 'onclick="Backend.getScrollOffset();"'
+			)
+		),
+		'operations' => array
+		(
+			'edit' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_shipping_options']['edit'],
+				'href'                => 'act=edit',
+				'icon'                => 'edit.gif'
+			),
+			'copy' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_shipping_options']['copy'],
+				'href'                => 'act=paste&amp;mode=copy',
+				'icon'                => 'copy.gif',
+				'attributes'          => 'onclick="Backend.getScrollOffset();"'
+
+			),
+			'cut' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_shipping_options']['cut'],
+				'href'                => 'act=paste&amp;mode=cut',
+				'icon'                => 'cut.gif',
+				'attributes'          => 'onclick="Backend.getScrollOffset();"'
+			),
+			'delete' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_shipping_options']['delete'],
+				'href'                => 'act=delete',
+				'icon'                => 'delete.gif',
+				'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
+			),
+			'show' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_shipping_options']['show'],
+				'href'                => 'act=show',
+				'icon'                => 'show.gif'
+			)
+		)
+	),
+
+	// Palettes
+	'palettes' => array
+	(
+		'default'                     => 'name;rate;upper_limit;groups;dest_country,dest_region,dest_zip'
+	),
+
+	// Fields
+	'fields' => array
+	(
+		'name' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['name'],
+			'exclude'                 => true,
+			'inputType'               => 'text',
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>255)
+		),
+		'upper_limit' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['upper_limit'],
+			'exclude'                 => true,
+			'inputType'               => 'text',
+			'eval'                    => array('mandatory'=>true, 'rgxp'=>digit)
+		),
+		'groups' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['groups'],
+			'exclude'                 => true,
+			'inputType'               => 'checkbox',
+			'foreignKey'              => 'tl_member_group.name',
+			'eval'                    => array('multiple'=>true)
+		),
+		'rate' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['rate'],
+			'exclude'                 => true,
+			'inputType'               => 'text',
+			'eval'                    => array('mandatory'=>true, 'rgxp'=>digit)
+		),
+		'dest_zip' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['dest_zip'],
+			'exclude'                 => true,
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>64)
+		),
+		'dest_country' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['dest_country'],
+			'exclude'                 => true,
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>64)
+		),
+		'dest_region' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['dest_region'],
+			'exclude'                 => true,
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>64)
+		),
+	)
+);
+
+
+/**
+ * tl_shipping_options class.
+ * 
+ * @extends Backend
+ */
+class tl_shipping_options extends Backend
+{
+
+	/**
+	 * Import the back end user object.
+	 * 
+	 * @access public
+	 * @return void
+	 */
+	public function __construct()
+	{
+		parent::__construct();
+		$this->import('BackendUser', 'User');
+	}
+
+
+	/**
+	 * Add the type of input field.
+	 * 
+	 * @access public
+	 * @param array $arrRow
+	 * @return string
+	 */
+	public function listrates($arrRow)
+	{
+		
+		return '
+<div class="cte_type ' . $key . '"><strong>' . $arrRow['description'] . '</strong></div>
+<div class="limit_height' . (!$GLOBALS['TL_CONFIG']['doNotCollapse'] ? ' h52' : '') . ' block">
+'. $arrRow['rate'] .' for '. $arrRow['upper_limit'] . ' based on ' . $arrRow['dest_country'] .', '. $arrRow['dest_region'] . ', ' . $arrRow['dest_zip'] . '</div>' . "\n";
+	}
+}
+

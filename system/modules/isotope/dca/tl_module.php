@@ -28,7 +28,7 @@
 /**
  * Palettes
  */
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductLister']			= 'name,type,headline;perPage,columns,iso_jump_first;store_id;new_products_time_window;listing_filters;iso_list_layout;guests,protected;align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductLister']			= '{title_legend},name,type,headline;{display_legend},perPage,columns,iso_jump_first;{config_legend},store_id,new_products_time_window,listing_filters;{featured_legend:hide},featured_products;{template_legend:hide},iso_list_layout;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductReader']			= 'name,type,headline;store_id;iso_reader_layout;guests,protected;align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoShoppingCart']			= 'name,type,headline;store_id,iso_cart_layout,iso_forward_cart;guests,protected;align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoAddressBook']			= 'name,type,headline;store_id,addressBookTemplate;isoEditable;align,space,cssID';
@@ -137,7 +137,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['new_products_time_window'] = array
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['new_products_time_window'],
 	'exclude'                 => true,
 	'inputType'               => 'text',
-	'eval'                    => array('rgxp'=>'digit', 'mandatory'=>false, 'maxlength'=>255)
+	'eval'                    => array('rgxp'=>'digit', 'mandatory'=>false, 'maxlength'=>255,'tl_class'=>'w50')
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['columns'] = array
@@ -148,6 +148,15 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['columns'] = array
 	'inputType'               => 'text',
 	'eval'                    => array('rgxp'=>'digit', 'mandatory'=>false, 'maxlength'=>255)
 );
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['featured_products'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['featured_products'],
+	'exclude'                 => true,
+	'inputType'               => 'checkbox',
+	'eval'					  => array('multiple'=>false, 'tl_class'=>'w50')
+);
+
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['listing_filters'] = array
 (
@@ -163,7 +172,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['store_id'] = array
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['store_id'],
 	'exclude'                 => true,
 	'inputType'               => 'select',
-	'eval'					  => array('includeBlankOption'=>true,'mandatory'=>true),
+	'eval'					  => array('includeBlankOption'=>true,'mandatory'=>true, 'tl_class'=>'w50'),
 	'options_callback'		  => array('tl_module_isotope','getStoreConfigurations')
 );
 

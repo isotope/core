@@ -215,14 +215,14 @@ class Isotope extends Controller
 						
 			foreach($arrProductsInCart as $product)
 			{
-				$arrProducts[$product['id']]['product_id'] = $product['id'];
+				$arrProducts[$product['id']]['id'] = $product['id'];
 				
 				foreach($arrFieldNames as $field)
 				{
 					if (($field == 'main_image') && !strlen($product[$field]))
 					{
 						$this->import('MediaManagement');
-						$product[$field] = $this->MediaManagement->getFirstOrdinalImage('product_assets/%s/%s/images/gallery_thumbnail_images', $product['product_alias']);
+						$product[$field] = $this->MediaManagement->getFirstOrdinalImage('assets/%s/%s/images/gallery_thumbnail_images', $product['alias']);
 					}
 					
 					$arrProducts[$product['id']][$field] = $product[$field];

@@ -67,6 +67,8 @@ $GLOBALS['TL_LANG']['tl_module']['iso_jump_first'] = array('Redirect to first pr
 
 $GLOBALS['TL_LANG']['tl_module']['iso_forward_cart'] = array('Forward to cart', 'Forward to cart page when adding a product.');
 
+$GLOBALS['TL_LANG']['tl_module']['featured_products'] = array('Display only featured products?', 'Display featured products only.');
+
 
 /**
  * References
@@ -77,4 +79,10 @@ $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref'] = array
 	'guest'		=> 'Guest checkout only',
 	'both'		=> 'Both allowed',
 );
+
+/**
+ * Legends
+ */
+$GLOBALS['TL_LANG']['tl_module']['featured_legend']  = 'Featured Product Settings';
+$GLOBALS['TL_LANG']['tl_module']['display_legend']    = 'Display settings';
 

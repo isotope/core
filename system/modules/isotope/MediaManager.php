@@ -121,7 +121,7 @@ class MediaManager extends Widget
 		$this->import('BackendUser','User');
 						
 		//Get the to the images from the current product's directory
-		$objCurrentProductImagePath = $this->Database->prepare("SELECT product_alias, main_image, old_images_list FROM " . $this->strTable . " WHERE id=?")
+		$objCurrentProductImagePath = $this->Database->prepare("SELECT alias, main_image, old_images_list FROM " . $this->strTable . " WHERE id=?")
 													 ->limit(1)
 													 ->execute($this->Input->get('id'));
 		
@@ -130,7 +130,7 @@ class MediaManager extends Widget
 			//return $GLOBALS['TL_LANG']['MSC']['noImagesAssociatedWithProduct'];
 			$blnShowImageManager = false;
 		}else{
-			$strProductPath = $objCurrentProductImagePath->product_alias;
+			$strProductPath = $objCurrentProductImagePath->alias;
 			if(strlen($strProductPath) > 0)
 			{
 				$renameTempDir = true;

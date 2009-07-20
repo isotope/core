@@ -206,9 +206,9 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 		{		
 			//what fields to display out in cart.
 			
-			$arrDisplayFields = array('product_alias','product_name','product_price', 'main_image');
+			$arrDisplayFields = array('alias','name','price', 'main_image');
 						
-			$arrProductData = $this->Isotope->getProductData($this->Cart->getProducts(), $arrDisplayFields, 'product_name');
+			$arrProductData = $this->Isotope->getProductData($this->Cart->getProducts(), $arrDisplayFields, 'name');
 			
 			foreach($arrProductData as $k => $data)
 			{
@@ -221,10 +221,17 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 					
 			foreach($arrProductIds as $k=>$v)
 			{
+				
 				$this->updateCart($k, $v, $this->getRequestData('product_qty_' . $k), $intSourceCartId, $this->arrProductOptionsData, true);
 					
 			}
 			
+			$arrProductData = $this->Isotope->getProductData($this->Cart->getProducts(), $arrDisplayFields, 'name');
+			
+			foreach($arrProductData as $k => $data)
+			{
+				$arrProductIds[$data['cart_item_id']] = $data['attribute_set_id'];
+			}
 			//$this->reload();
 		}
 		//actions need reload to show updated product info (until ajax comes along)
@@ -541,6 +548,8 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 					   ->execute($intCartItemId, $intAttributeSetId, $this->Cart->id, $intSourceCartId);
 	
 		$this->blnRecallProductData = true;
+		
+		return;
 	}
 }
 

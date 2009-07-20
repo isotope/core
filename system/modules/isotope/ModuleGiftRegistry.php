@@ -178,11 +178,11 @@ class ModuleGiftRegistry extends ModuleIsotopeBase
 				$arrAggregateSetData = array();
 			}
 				
-			$arrProductData = $this->getProductData($arrAggregateSetData, array('product_alias','product_name','product_price', 'main_image'), 'product_name');
+			$arrProductData = $this->getProductData($arrAggregateSetData, array('alias','name','price', 'main_image'), 'name');
 			
 			foreach($arrProductData as $data)
 			{
-				$arrProductIds[$data['product_id']] = $data['attribute_set_id'];
+				$arrProductIds[$data['id']] = $data['attribute_set_id'];
 			}
 			
 			
@@ -197,7 +197,7 @@ class ModuleGiftRegistry extends ModuleIsotopeBase
 					
 			foreach($arrProductIds as $k=>$v)
 			{
-				$this->updateRegistry($k, $v, $this->Input->post('product_qty_' . $k), true);
+				$this->updateRegistry($k, $v, $this->Input->post('qty_' . $k), true);
 					
 			}
 			
@@ -238,7 +238,7 @@ class ModuleGiftRegistry extends ModuleIsotopeBase
 			$arrFormattedProductData = $this->formatProductData($arrProductData);
 			foreach($arrProductData as $data)
 			{
-				$arrPrices[] = (float)$data['product_price'];
+				$arrPrices[] = (float)$data['price'];
 				$arrQuantities[] = (int)$data['quantity_requested'];
 			}
 			
@@ -346,19 +346,19 @@ class ModuleGiftRegistry extends ModuleIsotopeBase
 		
  		foreach($arrProductData as $row)
 		{
-			$intTotalPrice = $row['product_price'] * $row['quantity_requested'];
+			$intTotalPrice = $row['price'] * $row['quantity_requested'];
 														
 			$arrFormattedProductData[] = array
 			(
-				'product_id'		=> $row['product_id'],
-				'image'				=> $GLOBALS['TL_CONFIG']['isotope_upload_path'] . '/' . $GLOBALS['TL_CONFIG']['isotope_base_path'] . '/' . substr($row['product_alias'], 0, 1) . '/' . $row['product_alias'] . '/' . $GLOBALS['TL_LANG']['MSC']['imagesFolder'] . '/' . $GLOBALS['TL_LANG']['MSC']['thumbnail_images_folder'] . '/' . $row['main_image'],
-				'name'				=> $row['product_name'],
-				'link'				=> $this->generateProductLink($row['product_alias'], $row, $this->Store->productReaderJumpTo, $row['attribute_set_id'], 'product_id'),
-				'price'				=> $this->generatePrice($row['product_price'], $this->strPriceTemplate),
+				'id'		=> $row['id'],
+				'image'				=> $GLOBALS['TL_CONFIG']['isotope_upload_path'] . '/' . $GLOBALS['TL_CONFIG']['isotope_base_path'] . '/' . substr($row['alias'], 0, 1) . '/' . $row['alias'] . '/' . $GLOBALS['TL_LANG']['MSC']['imagesFolder'] . '/' . $GLOBALS['TL_LANG']['MSC']['thumbnail_images_folder'] . '/' . $row['main_image'],
+				'name'				=> $row['name'],
+				'link'				=> $this->generateProductLink($row['alias'], $row, $this->Store->productReaderJumpTo, $row['attribute_set_id'], 'id'),
+				'price'				=> $this->generatePrice($row['price'], $this->strPriceTemplate),
 				'total_price'		=> $this->generatePrice($intTotalPrice, 'stpl_total_price'),
 				'quantity'			=> $row['quantity_requested'],
-				'remove_link'		=> $this->generateActionLinkString('remove_from_registry', $row['product_id'], array('attribute_set_id'=>$row['attribute_set_id'],'quantity'=>0), $objPage->id),
-				'remove_link_title' => sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $row['product_name'])
+				'remove_link'		=> $this->generateActionLinkString('remove_from_registry', $row['id'], array('attribute_set_id'=>$row['attribute_set_id'],'quantity'=>0), $objPage->id),
+				'remove_link_title' => sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $row['name'])
 			
 			);
 
@@ -387,14 +387,14 @@ class ModuleGiftRegistry extends ModuleIsotopeBase
 		
 		foreach($arrAggregateSetData as $data)
 		{
-			$arrProductsAndTables[$data['storeTable']][] = array($data['product_id'], $data['quantity_requested']); //Allows us to cycle thru the correct table and product ids collections.
+			$arrProductsAndTables[$data['storeTable']][] = array($data['id'], $data['quantity_requested']); //Allows us to cycle thru the correct table and product ids collections.
 			
 			//The productID list for this storetable, used to build the IN clause for the product gathering.
-			$arrProductIds[$data['storeTable']][] = $data['product_id'];
+			$arrProductIds[$data['storeTable']][] = $data['id'];
 			
 			//This is used to gather extra fields for a given product by store table.
-			$arrProductExtraFields[$data['storeTable']][$data['product_id']]['attribute_set_id'] = $data['attribute_set_id'];
-			$arrProductExtraFields[$data['storeTable']][$data['product_id']]['quantity_requested'] = $data['quantity_requested'];
+			$arrProductExtraFields[$data['storeTable']][$data['id']]['attribute_set_id'] = $data['attribute_set_id'];
+			$arrProductExtraFields[$data['storeTable']][$data['id']]['quantity_requested'] = $data['quantity_requested'];
 			
 		}
 		
@@ -422,7 +422,7 @@ class ModuleGiftRegistry extends ModuleIsotopeBase
 						
 			foreach($arrProductsInCart as $product)
 			{
-				$arrProducts[$product['id']]['product_id'] = $product['id'];
+				$arrProducts[$product['id']]['id'] = $product['id'];
 				
 				foreach($arrFieldNames as $field)
 				{
@@ -607,7 +607,7 @@ class ModuleGiftRegistry extends ModuleIsotopeBase
 					'product_id'			=> $intProductId,
 					'attribute_set_id'		=> $intAttributeSetId,
 					'quantity_requested'	=> $intQuantity//,
-					//'product_options'		=> serialize($arrProductOptions)
+					//'options'		=> serialize($arrProductOptions)
 				);
 								
 				$objCartItem = $this->Database->prepare("INSERT INTO tl_cart_items %s")->set($arrSet)->execute();

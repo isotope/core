@@ -53,7 +53,7 @@ array_insert($GLOBALS['BE_MOD']['store'], 0, array
 	),
 	'shipping' => array
 	(
-			'tables'				=> array('tl_shipping_modules', 'tl_shipping_rates'),
+			'tables'				=> array('tl_shipping_modules', 'tl_shipping_options'),
 			'icon'					=> 'system/modules/isotope/html/icon-shipping.gif',
 	),
 	'payment' => array
@@ -165,7 +165,7 @@ $GLOBALS['ISO_PAY']['cc_types']['discover'] = 'Discover';
 /**
  * Handle Collections
  */
-/*$GLOBALS['FE_MOD']['isoLister']['TPL_COLL']['product_listing'] = array(
+/*$GLOBALS['FE_MOD']['isoLister']['TPL_COLL']['listing'] = array(
 	'sortByOptions'			 => array
 	(
 		'url'				 => '',
@@ -174,9 +174,9 @@ $GLOBALS['ISO_PAY']['cc_types']['discover'] = 'Discover';
 	'products'				 => array
 	(
 		'thumbnail_image'	 => '',
-		'product_name'		 => '',
-		'product_link'		 => '',
-		'product_teaser'	 => '',
+		'name'		 => '',
+		'link'		 => '',
+		'teaser'	 => '',
 		'price_string'		 => '',
 	),
 	'buttons'			 	 => array
@@ -258,7 +258,7 @@ $GLOBALS['ISO_ATTR'] = array
 		'tstamp'					=> time(),
 		'sorting'					=> $intSorting,
 		'type'						=> 'text',
-		'field_name'				=> 'product_name',
+		'field_name'				=> 'name',
 		'name'						=> 'Product Name',
 		'description'				=> '',
 		'attr_use_mode'				=> 'fixed',
@@ -282,7 +282,7 @@ $GLOBALS['ISO_ATTR'] = array
 		'tstamp'					=> time(),
 		'sorting'					=> $intSorting,
 		'type'						=> 'text',
-		'field_name'				=> 'product_sku',
+		'field_name'				=> 'sku',
 		'name'						=> 'Product SKU',
 		'description'				=> '',
 		'attr_use_mode'				=> 'fixed',
@@ -306,7 +306,7 @@ $GLOBALS['ISO_ATTR'] = array
 		'tstamp'					=> time(),
 		'sorting'					=> $intSorting,
 		'type'						=> 'decimal',
-		'field_name'				=> 'product_weight',
+		'field_name'				=> 'weight',
 		'name'						=> 'Product Weight',
 		'description'				=> '',
 		'attr_use_mode'				=> 'fixed',
@@ -330,7 +330,7 @@ $GLOBALS['ISO_ATTR'] = array
 		'tstamp'					=> time(),
 		'sorting'					=> $intSorting,
 		'type'						=> 'integer',
-		'field_name'				=> 'product_quantity',
+		'field_name'				=> 'quantity',
 		'name'						=> 'Product Quantity',
 		'description'				=> '',
 		'attr_use_mode'				=> 'fixed',
@@ -354,7 +354,7 @@ $GLOBALS['ISO_ATTR'] = array
 		'tstamp'					=> time(),
 		'sorting'					=> $intSorting,
 		'type'						=> 'shorttext',
-		'field_name'				=> 'product_alias',
+		'field_name'				=> 'alias',
 		'name'						=> 'Product Alias',
 		'description'				=> '',
 		'attr_use_mode'				=> 'fixed',
@@ -381,7 +381,7 @@ $GLOBALS['ISO_ATTR'] = array
 		'tstamp'					=> time(),
 		'sorting'					=> $intSorting,
 		'type'						=> 'checkbox',
-		'field_name'				=> 'product_visibility',
+		'field_name'				=> 'visibility',
 		'name'						=> 'Product Visibility',
 		'description'				=> '',
 		'attr_use_mode'				=> 'fixed',
@@ -406,7 +406,7 @@ $GLOBALS['ISO_ATTR'] = array
 		'tstamp'					=> time(),
 		'sorting'					=> $intSorting,
 		'type'						=> 'longtext',
-		'field_name'				=> 'product_teaser',
+		'field_name'				=> 'teaser',
 		'name'						=> 'Product Teaser',
 		'description'				=> '',
 		'attr_use_mode'				=> 'fixed',
@@ -431,7 +431,7 @@ $GLOBALS['ISO_ATTR'] = array
 		'tstamp'					=> time(),
 		'sorting'					=> $intSorting,
 		'type'						=> 'longtext',
-		'field_name'				=> 'product_description',
+		'field_name'				=> 'description',
 		'name'						=> 'Product Description',
 		'description'				=> '',
 		'attr_use_mode'				=> 'fixed',
@@ -456,7 +456,7 @@ $GLOBALS['ISO_ATTR'] = array
 		'tstamp'					=> time(),
 		'sorting'					=> $intSorting,
 		'type'						=> 'decimal',
-		'field_name'				=> 'product_price',
+		'field_name'				=> 'price',
 		'name'						=> 'Product Price',
 		'description'				=> '',
 		'attr_use_mode'				=> 'fixed',
@@ -480,7 +480,7 @@ $GLOBALS['ISO_ATTR'] = array
 		'tstamp'					=> time(),
 		'sorting'					=> $intSorting,
 		'type'						=> 'text',
-		'field_name'				=> 'product_price_override',
+		'field_name'				=> 'price_override',
 		'name'						=> 'Product Price Override',
 		'description'				=> '',
 		'attr_use_mode'				=> 'fixed',
@@ -505,7 +505,7 @@ $GLOBALS['ISO_ATTR'] = array
 		'tstamp'					=> time(),
 		'sorting'					=> $intSorting,
 		'type'						=> 'checkbox',
-		'field_name'				=> 'use_product_price_override',
+		'field_name'				=> 'use_price_override',
 		'name'						=> 'Use Product Price Override',
 		'description'				=> '',
 		'attr_use_mode'				=> 'fixed',
@@ -547,6 +547,54 @@ $GLOBALS['ISO_ATTR'] = array
 		'delete_locked'				=> 1,
 //		'save_callback'				=> 'MediaManagement.thumbnailImages',
 		'show_files'				=> 0
+	),
+	
+	// Tax Class		
+	array
+	( 
+		'pid'						=> $dc->id, 
+		'tstamp'					=> time(),
+		'sorting'					=> $intSorting,
+		'type'						=> 'decimal',
+		'field_name'				=> 'tax_class',
+		'name'						=> 'Tax Class',
+		'description'				=> '',
+		'attr_use_mode'				=> 'fixed',
+		'is_customer_defined'		=> 0,
+		'is_visible_on_front'		=> 0,
+		'is_required'				=> 0,
+		'is_filterable'				=> 0,
+		'is_searchable'				=> 0,
+		'is_used_for_price_rules'	=> 1,
+		'is_multiple_select'		=> 0,
+		'use_rich_text_editor'		=> 0,
+		'is_user_defined'			=> 0,
+		'is_listing_field'			=> 0,
+		'delete_locked'				=> 1
+	),
+	
+	// Featured Item		
+	array
+	( 
+		'pid'						=> $dc->id, 
+		'tstamp'					=> time(),
+		'sorting'					=> $intSorting,
+		'type'						=> 'checkbox',
+		'field_name'				=> 'featured_product',
+		'name'						=> 'Is a Featured Product?',
+		'description'				=> '',
+		'attr_use_mode'				=> 'fixed',
+		'is_customer_defined'		=> 0,
+		'is_visible_on_front'		=> 0,
+		'is_required'				=> 0,
+		'is_filterable'				=> 0,
+		'is_searchable'				=> 0,
+		'is_used_for_price_rules'	=> 0,
+		'is_multiple_select'		=> 0,
+		'use_rich_text_editor'		=> 0,
+		'is_user_defined'			=> 0,
+		'is_listing_field'			=> 0,
+		'delete_locked'				=> 1
 	),
 	
 );

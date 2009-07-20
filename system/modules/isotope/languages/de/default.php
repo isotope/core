@@ -100,6 +100,18 @@ $GLOBALS['TL_LANG']['PAY']['cash']				= array('Barzahlung');
 $GLOBALS['TL_LANG']['PAY']['paypal']			= array('PayPal Standard');
 $GLOBALS['TL_LANG']['PAY']['postfinance']		= array('Postfinance (Schweizerische Post)');
 
+//Invoice language Entries
+$GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] = 'Bestellung';
+$GLOBALS['TL_LANG']['MSC']['iso_order_status'] = 'Status';
+$GLOBALS['TL_LANG']['MSC']['iso_billing_address_header'] = 'Rechnungsadresse';
+$GLOBALS['TL_LANG']['MSC']['iso_shipping_address_header'] = 'Versandadresse';
+$GLOBALS['TL_LANG']['MSC']['iso_payment_info_header'] = 'Zahlungsart';
+$GLOBALS['TL_LANG']['MSC']['iso_shipping_info_header'] = 'Versandart';
+$GLOBALS['TL_LANG']['MSC']['iso_tax_header'] = 'Davon MwSt.';	
+$GLOBALS['TL_LANG']['MSC']['iso_subtotal_header'] = 'Subtotal';
+$GLOBALS['TL_LANG']['MSC']['iso_order_shipping_header'] = 'Versandkosten';
+$GLOBALS['TL_LANG']['MSC']['iso_order_grand_total_header'] = 'Total';
+$GLOBALS['TL_LANG']['MSC']['iso_order_items_header'] = 'Artikel';
 
 // Order Status
 $GLOBALS['TL_LANG']['MSC']['order_status_labels']['pending']		= 'Offen';

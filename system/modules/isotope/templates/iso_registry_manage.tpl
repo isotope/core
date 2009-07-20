@@ -30,10 +30,10 @@
         <?php endif; ?>
        	<!--END IF USER IS LOGGED IN-->
         	
-   			<div class="col productImg"><a href="<?php echo $product['link']; ?>" title="<?php echo $product['product_name']; ?>"><img src="<?php echo $product['image'] ?>" alt="<?php echo $product['name']; ?>" border="0" class="thumbnail" /></a></div>
+   			<div class="col productImg"><a href="<?php echo $product['link']; ?>" title="<?php echo $product['name']; ?>"><img src="<?php echo $product['image'] ?>" alt="<?php echo $product['name']; ?>" border="0" class="thumbnail" /></a></div>
        		
        		<div class="col productInfo">
-       				<h3 class="productName"><a href="<?php echo $product['link']; ?>" title="<?php echo $product['product_name']; ?>"><?php echo $product['name']; ?></a></h3>
+       				<h3 class="productName"><a href="<?php echo $product['link']; ?>" title="<?php echo $product['name']; ?>"><?php echo $product['name']; ?></a></h3>
        				<!--<div class="optionswrapper">
        					<?php //foreach($this->cart_options as $option): ?>
 							<div class="option"><span class="optionname">OPTION:</span> PRODUCT OPTION</div>
@@ -47,7 +47,7 @@
        			
        			<p class="qtyRequested">Quantity Requested: 
        			
-       				<input name="product_qty_<?php echo $product['product_id']; ?>" type="text" size="3" value="<?php echo $product['quantity']; ?>" />
+       				<input name="product_qty_<?php echo $product['id']; ?>" type="text" size="3" value="<?php echo $product['quantity']; ?>" />
        				       			
        		</div>
        		    

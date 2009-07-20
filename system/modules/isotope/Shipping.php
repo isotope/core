@@ -96,6 +96,7 @@ abstract class Shipping extends Frontend
 					
 				return true;
 				break;
+	
 		}
 		
 		return $this->arrData[$strKey];
@@ -125,5 +126,26 @@ abstract class Shipping extends Frontend
 	 * @return void
 	 */
 	public function processPostSale() {}
+	
+	/**
+	 * 
+	 * This function is used to calculate shipping rates based on values specific to the current order.  For example, order total.
+	 *
+	 * @abstract
+	 * @access public
+	 * @return void
+	 */
+	public function calculateShippingRate() {}
+	
+	
+	/**
+	 *
+	 * This function is used to gather any addition shipping options that might be available specific to the current customer or order.  For example, expedited shipping based on 		 * customer location.
+	 * 
+	 * @abstract
+	 * @access public
+	 * @return void
+	 */
+	public function getShippingOptions() {}
 }
 

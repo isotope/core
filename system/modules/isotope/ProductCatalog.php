@@ -451,7 +451,7 @@ class ProductCatalog extends Backend
 					
 				case 'checkbox':
 					$inputType = 'checkbox';
-					$eval['multiple'] = true;
+					$eval['multiple'] = false;
 					if($field['use_alternate_source']==1)
 					{
 						if(strlen($field['list_source_table']) > 0 && strlen($field['list_source_field']) > 0)
@@ -574,6 +574,7 @@ class ProductCatalog extends Backend
 								
 				if(is_array($arrCallbackSet))
 				{
+					$arrCallbacks = array(); // reset the callback array
 					foreach($arrCallbackSet as $callback)
 					{
 						$arrCallbacks[] = explode(".", $callback);
@@ -586,7 +587,7 @@ class ProductCatalog extends Backend
 						explode(".", $field['save_callback'])
 					);
 				}
-				
+					
 			}
 			
 		}
@@ -763,6 +764,7 @@ class ProductCatalog extends Backend
 	
 	public function saveProduct(DataContainer $dc)
 	{
+		
 		/*if(!$this->Input->get('begin'))
 		{
 			$intBegin = 0;
@@ -779,7 +781,7 @@ class ProductCatalog extends Backend
 		
 		$this->import('MediaManagement');
 		
-		$objIsNewImport = $this->Database->prepare("SELECT id, pages, product_name, product_sku, product_alias, product_description, product_teaser, main_image FROM " . $dc->table . " WHERE new_import=? AND id=?")
+		$objIsNewImport = $this->Database->prepare("SELECT id, pages, name, sku, alias, description, teaser, main_image FROM " . $dc->table . " WHERE new_import=? AND id=?")
 										 ->execute(1, $dc->id);
 		
 		
@@ -793,31 +795,31 @@ class ProductCatalog extends Backend
 			
 				
 				
-				if(strlen($objIsNewImport->product_sku) < 1)
+				if(strlen($objIsNewImport->sku) < 1)
 				{
 					$strSKU = $this->generateSKU('', $dc, $dc->id);
 				}
 				else
 				{
-					$strSKU = $objIsNewImport->product_sku;
+					$strSKU = $objIsNewImport->sku;
 				}
 				
-				if(strlen($objIsNewImport->product_alias) < 1)
+				if(strlen($objIsNewImport->alias) < 1)
 				{
 					$strAlias = $this->generateAlias('', $dc, $dc->id);
 				}
 				else
 				{
-					$strAlias = $objIsNewImport->product_alias;
+					$strAlias = $objIsNewImport->alias;
 				}
 				
-				if(strlen($objIsNewImport->product_teaser) < 1)
+				if(strlen($objIsNewImport->teaser) < 1)
 				{
-					$strTeaser = $this->generateTeaser($objIsNewImport->product_description, $dc, $dc->id, 'import');
+					$strTeaser = $this->generateTeaser($objIsNewImport->description, $dc, $dc->id, 'import');
 				}
 				else
 				{
-					$strTeaser = $objIsNewImport->product_teaser;
+					$strTeaser = $objIsNewImport->teaser;
 				}
 				
 				$strSerializedValues = $this->prepareCategories($objIsNewImport->pages, $dc, $objIsNewImport->id);
@@ -826,7 +828,7 @@ class ProductCatalog extends Backend
 				
 				//$this->MediaManagement->thumbnailCurrentImageForListing($objIsNewImport->main_image, $dc);
 								
-				$this->Database->prepare("UPDATE " . $dc->table . " SET product_sku=?, product_alias=?, product_teaser=?, pages=?, product_visibility=1, new_import=0 WHERE id=?")
+				$this->Database->prepare("UPDATE " . $dc->table . " SET sku=?, alias=?, teaser=?, pages=?, visibility=1, new_import=0 WHERE id=?")
 							   ->execute($strSKU, $strAlias, $strTeaser, $strSerializedValues, $dc->id);
 				
 								
@@ -1286,17 +1288,17 @@ class ProductCatalog extends Backend
 		$this->initializeAttributeSet($row['id']);
 		$this->import('Isotope');
 
-		//$output = '<div><span><img src="' . $row['product_thumbnail_image'] . '" width="100" alt="' . $row['product_name'] . '" align="left" style="padding-right: 8px;" /><strong>' . $row['product_name'] . '</strong></span><div><span style="color:#b3b3b3;"><strong>$' . $row['product_price'] . '</strong></span></div><br /><br /><div><em>Categories: ' . $this->getCategoryList(deserialize($row['pages'])) . '</em></div></div> ';
+		//$output = '<div><span><img src="' . $row['thumbnail_image'] . '" width="100" alt="' . $row['name'] . '" align="left" style="padding-right: 8px;" /><strong>' . $row['name'] . '</strong></span><div><span style="color:#b3b3b3;"><strong>$' . $row['price'] . '</strong></span></div><br /><br /><div><em>Categories: ' . $this->getCategoryList(deserialize($row['pages'])) . '</em></div></div> ';
 		
-		$key = $row['product_visibility'] ? 'published' : 'unpublished';
+		$key = $row['visibility'] ? 'published' : 'unpublished';
 		
 		$arrImages = explode(',', $row['main_image']);
 		
-		$thumbnail = strlen($row['main_image']) > 0 ? $GLOBALS['TL_CONFIG']['isotope_upload_path'] . '/' . $GLOBALS['TL_CONFIG']['isotope_base_path'] . '/' . substr($row['product_alias'], 0, 1) . '/' . $row['product_alias'] . '/images/' . $GLOBALS['TL_LANG']['MSC']['gallery_thumbnail_images_folder'] . '/' . $arrImages[0] : ' width="50" height="50';
+		$thumbnail = strlen($row['main_image']) > 0 ? $GLOBALS['TL_CONFIG']['isotope_upload_path'] . '/' . $GLOBALS['TL_CONFIG']['isotope_base_path'] . '/' . substr($row['alias'], 0, 1) . '/' . $row['alias'] . '/images/' . $GLOBALS['TL_LANG']['MSC']['gallery_thumbnail_images_folder'] . '/' . $arrImages[0] : ' width="50" height="50';
 		
-		//$thumbnail = $GLOBALS['TL_CONFIG']['isotope_upload_path'] . '/' . $GLOBALS['TL_CONFIG']['isotope_base_path'] . '/' . substr($row['product_alias'], 0, 1) . '/' . $row['product_alias'] . '/images/' . $GLOBALS['TL_LANG']['MSC']['gallery_thumbnail_images_folder'] . '/' . $arrImages[0];
+		//$thumbnail = $GLOBALS['TL_CONFIG']['isotope_upload_path'] . '/' . $GLOBALS['TL_CONFIG']['isotope_base_path'] . '/' . substr($row['alias'], 0, 1) . '/' . $row['alias'] . '/images/' . $GLOBALS['TL_LANG']['MSC']['gallery_thumbnail_images_folder'] . '/' . $arrImages[0];
 		
-		$output = '<div style="margin-top:5px!important;margin-bottom:0px!important;" class="cte_type ' . $key . '"><div><span><img src="' . $thumbnail . '" alt="' . $row['product_name'] . '" align="left" style="padding-right: 8px;" /><strong>' . $row['product_name'] . '</strong></span><div><span style="color:#b3b3b3;"><strong>' . $this->Isotope->formatPriceWithCurrency($row['product_price']) . '</strong></span></div><br /><br /><div><em>' . $GLOBALS['TL_LANG']['tl_product_data']['pages'][0] . ': ' . $this->getCategoryList(deserialize($row['pages'])) . '</em></div></div></div> ';
+		$output = '<div style="margin-top:5px!important;margin-bottom:0px!important;" class="cte_type ' . $key . '"><div><span><img src="' . $thumbnail . '" alt="' . $row['name'] . '" align="left" style="padding-right: 8px;" /><strong>' . $row['name'] . '</strong></span><div><span style="color:#b3b3b3;"><strong>' . $this->Isotope->formatPriceWithCurrency($row['price']) . '</strong></span></div><br /><br /><div><em>' . $GLOBALS['TL_LANG']['tl_product_data']['pages'][0] . ': ' . $this->getCategoryList(deserialize($row['pages'])) . '</em></div></div></div> ';
 		
 		$fields = array();
 		
@@ -1328,15 +1330,15 @@ class ProductCatalog extends Backend
 		// Generate alias if there is none
 		if (!strlen($varValue))
 		{
-			$objProductName = $this->Database->prepare("SELECT product_name FROM " . $this->strCurrentStoreTable . " WHERE id=?")
+			$objProductName = $this->Database->prepare("SELECT name FROM " . $this->strCurrentStoreTable . " WHERE id=?")
 									   ->limit(1)
 									   ->execute($intID);
 
 			$autoAlias = true;
-			$varValue = standardize($objProductName->product_name);
+			$varValue = standardize($objProductName->name);
 		}
 
-		$objAlias = $this->Database->prepare("SELECT id FROM " . $this->strCurrentStoreTable . " WHERE id=? OR product_alias=?")
+		$objAlias = $this->Database->prepare("SELECT id FROM " . $this->strCurrentStoreTable . " WHERE id=? OR alias=?")
 								   ->execute($intID, $varValue);
 
 		// Check whether the page alias exists
@@ -1377,7 +1379,7 @@ class ProductCatalog extends Backend
 		// Generate alias if there is none
 		if (!strlen($varValue))
 		{
-			$objProductName = $this->Database->prepare("SELECT id, new_import, product_name, product_sku FROM " . $this->strCurrentStoreTable . " WHERE id=?")
+			$objProductName = $this->Database->prepare("SELECT id, new_import, name, sku FROM " . $this->strCurrentStoreTable . " WHERE id=?")
 									   ->limit(1)
 									   ->execute($intID);
 
@@ -1385,14 +1387,14 @@ class ProductCatalog extends Backend
 			
 			if($objProductName->new_import!=1)
 			{
-				if(!strlen($objProductName->product_sku))
+				if(!strlen($objProductName->sku))
 				{
 					$varValue = standardize($objProductName->product_name);
 				}
 			}
 		}
 
-		$objAlias = $this->Database->prepare("SELECT id FROM " . $this->strCurrentStoreTable . " WHERE id=? OR product_sku=?")
+		$objAlias = $this->Database->prepare("SELECT id FROM " . $this->strCurrentStoreTable . " WHERE id=? OR sku=?")
 								   ->execute($intID, $varValue);
 
 		// Check whether the page alias exists
@@ -1462,15 +1464,15 @@ class ProductCatalog extends Backend
 		
 		$string = substr($string, 0, $char); 	
 							
-		$objCurrentTeaser = $this->Database->prepare("SELECT product_teaser FROM " . $this->strCurrentStoreTable . " WHERE id=?")
+		$objCurrentTeaser = $this->Database->prepare("SELECT teaser FROM " . $this->strCurrentStoreTable . " WHERE id=?")
 										   ->limit(1)
 										   ->execute($intID);
 		
 		if($objCurrentTeaser->numRows > 0)
 		{
-			if(strlen($objCurrentTeaser->product_teaser) < 1)
+			if(strlen($objCurrentTeaser->teaser) < 1)
 			{
-				$this->Database->prepare("UPDATE " . $this->strCurrentStoreTable . " SET product_teaser=? WHERE id=?")
+				$this->Database->prepare("UPDATE " . $this->strCurrentStoreTable . " SET teaser=? WHERE id=?")
 								->execute($string, $intID);
 			}
 		}
@@ -1539,6 +1541,7 @@ class ProductCatalog extends Backend
 		//not utlizing the DataContainer.  We should separate these functions with an intermediary function so that this logic
 		//which is repeated across various other functions can be fed just an integer value instead of the more specific
 		//DataContainer and its corresponding values.			
+
 
 		if($id!=0)
 		{
@@ -1660,7 +1663,7 @@ class ProductCatalog extends Backend
 				$arrProduct[] = $intID;
 				
 				$arrSet = array(
-					'product_ids'			=> serialize($arrProduct),
+					'ids'			=> serialize($arrProduct),
 					'pid'					=> $intPageNum,
 					'storeTable'			=> $storeTable,
 					'attribute_set_id' 		=> $attributeSetID,
@@ -1686,7 +1689,7 @@ class ProductCatalog extends Backend
 			$arrExistingProducts = array();
 			
 			//Get the product ID collection of the current existing page
-			$arrExistingProducts = deserialize($page['product_ids']);
+			$arrExistingProducts = deserialize($page['ids']);
 			
 			//If the current existing page id does not exist in the list of pages collected from the form submit, then 
 			//remove the product id from the page in question.			
@@ -1724,7 +1727,7 @@ class ProductCatalog extends Backend
 			
 			$arrExistingPages[] = $page['pid'];
 			// Since these are serialized, we have to deserialize them before we can do any work on the record.
-			$arrExistingProducts = deserialize($page['product_ids']);
+			$arrExistingProducts = deserialize($page['ids']);
 								
 			foreach($arrPageList as $pageToBeUpdated)
 			{
@@ -1757,7 +1760,7 @@ class ProductCatalog extends Backend
 				$arrProduct[] = $intID;
 				
 				$arrSet = array(
-					'product_ids'			=> serialize($arrProduct),
+					'ids'			=> serialize($arrProduct),
 					'pid'					=> $intPageNum,
 					'storeTable'			=> $storeTable,
 					'attribute_set_id' 		=> $attributeSetID,
@@ -1783,8 +1786,7 @@ class ProductCatalog extends Backend
 	public function executePFCAggregation($varValue, DataContainer $dc, $id=0)
 	{		
 		
-				
-		if(is_null($varValue) || $varValue == 0)
+		if(is_null($varValue) || (is_int($varValue) && $varValue == 0))
 		{
 			return $varValue;
 		}
@@ -1798,6 +1800,7 @@ class ProductCatalog extends Backend
 		}else{
 			$intID = $dc->id;
 		}
+		
 		
 		//Send the pages selected into an array
 		//$arrNewPageList = deserialize($varValue);
@@ -1825,12 +1828,13 @@ class ProductCatalog extends Backend
 		
 		if($objAttributeID->numRows < 1)
 		{
+
 			return $varValue;
 		}
 		
 		$attributeID = $objAttributeID->id;
 		
-	
+		
 		//Gather all records pertaining to the current attribute set in the aggregate table
 		$objAllPageInfo = $this->Database->prepare("SELECT pid, value_collection FROM tl_pfc_aggregate WHERE attribute_set_id=? AND attribute_id=?")->execute($attributeSetID, $attributeID);
 		
@@ -1850,6 +1854,11 @@ class ProductCatalog extends Backend
 		}
 		
 		$arrNewPageList = deserialize($objRecordValues->pages);
+		
+		if(is_string($arrNewPageList))
+		{
+			$arrNewPageList = array();
+		}
 				
 		$this->updatePFCAggregate($arrNewPageList, $arrAllPageInfo, $dc, $this->strCurrentStoreTable, $attributeSetID, $attributeID, $storeID, $varValue);
 	
@@ -1870,11 +1879,12 @@ class ProductCatalog extends Backend
 	{		
 		
 		if(sizeof($arrPageList) < 1)
-		{		
+		{
+			
 			$arrPageList[] = 0;
 		}
 		
-		if(empty($varCurrValue) || $varCurrValue==0)
+		if(empty($varCurrValue) || is_int($varCurrValue) && $varCurrValue==0)
 		{
 			
 			return;
@@ -1882,13 +1892,11 @@ class ProductCatalog extends Backend
 		
 		$arrCurrValues[] = $varCurrValue;
 		
-		
-		
 				//Check Existing records first to avoid duplicate entries
 		$objPFCInfo = $this->Database->prepare("SELECT id, pid, attribute_id, value_collection FROM tl_pfc_aggregate WHERE pid IN (" . join(",", $arrPageList) . ") AND attribute_set_id=? AND attribute_id=? AND store_id=?")
 									->execute($attributeSetID, $attributeID, $storeID);
 		
-
+		
 		if($objPFCInfo->numRows < 1)
 		{
 			
@@ -1905,7 +1913,6 @@ class ProductCatalog extends Backend
 					'store_id'				=> $storeID
 				);
 				
-				
 				$this->Database->prepare("INSERT INTO tl_pfc_aggregate %s")->set($arrSet)->execute();
 			}
 			
@@ -1913,9 +1920,17 @@ class ProductCatalog extends Backend
 						
 		}
 		
+		
 		$arrPFCInfo = $objPFCInfo->fetchAllAssoc();	//Existing records are stored in an array
 		
 		$arrProducts = array();
+		
+		$arrPIDs = array();
+		
+		foreach($arrPFCInfo as $row)
+		{
+			$arrPIDs[] = $row['pid'];
+		}
 		
 		
 		// For each existing page that DID in the past have this product ID associated with it, but NOW the submitted list does not include that page id, remove it
@@ -1932,7 +1947,7 @@ class ProductCatalog extends Backend
 			
 			//If the product id exists in the product list for this page, which is not part of the product page list now...  Remove from the product_ids collection and update.
 						
-			if(!in_array($page['pid'], $arrPFCInfo['pid']))
+			if(!in_array($page['pid'], $arrPIDs))
 			{
 				if(in_array($varCurrValue, $arrExistingValues))		//Does this need to be more strict - that is, bound to a particular pid when comparing?
 				{
@@ -2000,38 +2015,37 @@ class ProductCatalog extends Backend
 			}else{
 				return;
 			}
-
-		}
-		
-		//For each page record already in the table, we grab the product id list and modify it to include this product ID if it isn't existing in the product ID collection.
-		
-		foreach($arrPFCInfo as $page)
-		{
-			//Each page record we start with a fresh products array to update the record.
-			$arrExistingValues = array();
 			
-			$arrExistingPages[] = $page['pid'];
-			// Since these are serialized, we have to deserialize them before we can do any work on the record.
-			$arrExistingValues = deserialize($page['value_collection']);
-								
-			foreach($arrPageList as $pageToBeUpdated)
+			//For each page record already in the table, we grab the product id list and modify it to include this product ID if it isn't existing in the product ID collection.
+			
+			foreach($arrPFCInfo as $page)
 			{
-				if((int)$pageToBeUpdated==$page['pid'])	//If this page 
+				//Each page record we start with a fresh products array to update the record.
+				$arrExistingValues = array();
+				
+				$arrExistingPages[] = $page['pid'];
+				// Since these are serialized, we have to deserialize them before we can do any work on the record.
+				$arrExistingValues = deserialize($page['value_collection']);
+									
+				foreach($arrPageList as $pageToBeUpdated)
 				{
-					//If the product ID doesn't not already have an association to the current page, then add it to the list of product IDs for that page.
-					if(!in_array($varCurrValue, $arrExistingValues))
+					if((int)$pageToBeUpdated==$page['pid'])	//If this page 
 					{
-						$arrExistingValues[] = $varCurrValue;	//add the product id in.
-					}
-				}				
-								
-				// Update existing association
-				$this->Database->prepare("UPDATE tl_pfc_aggregate SET value_collection=? WHERE pid=? AND attribute_set_id=? AND attribute_id=? AND store_id=?")
-							   ->execute(serialize($arrExistingValues), $page['pid'], $attributeSetID, $attributeID, $storeID);
-			}			
+						//If the product ID doesn't not already have an association to the current page, then add it to the list of product IDs for that page.
+						if(!in_array($varCurrValue, $arrExistingValues))
+						{
+							$arrExistingValues[] = $varCurrValue;	//add the product id in.
+						}
+					}				
+									
+					// Update existing association
+					$this->Database->prepare("UPDATE tl_pfc_aggregate SET value_collection=? WHERE pid=? AND attribute_set_id=? AND attribute_id=? AND store_id=?")
+								   ->execute(serialize($arrExistingValues), $page['pid'], $attributeSetID, $attributeID, $storeID);
+				}			
+			}
+		
+		
 		}
-		
-		
 		//New Pages to add that aren't in the current collection
 		
 		foreach($arrPageList as $intPageNum)

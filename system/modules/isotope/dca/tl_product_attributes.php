@@ -493,7 +493,7 @@ class tl_product_attributes extends Backend
 		
 		$strTemplateKey = $arrRow['field_name'];
 				
-		$strTemplate = "%s (%s, <strong>%s</strong>)" . ($arrRow['is_visible_on_front']==1 ? "<br />" . $GLOBALS['TL_LANG']['tl_product_attributes']['template_key'] . "<strong>%s</strong>" : "") . "<br />" . ($arrRow['is_visible_on_front'] ? $GLOBALS['TL_LANG']['tl_product_attributes']['template_visibility_title'] . "<strong>" . $GLOBALS['TL_LANG']['tl_product_attributes']['product_reader_enabled'] . ($arrRow['is_listing_field']==1 ? ", " . $GLOBALS['TL_LANG']['tl_product_attributes']['product_listing_enabled'] : "") . "</strong>" : "");
+		$strTemplate = "%s (%s, <strong>%s</strong>)" . ($arrRow['is_visible_on_front']==1 ? "<br />" . $GLOBALS['TL_LANG']['tl_product_attributes']['template_key'] . "<strong>%s</strong>" : "") . "<br />" . ($arrRow['is_visible_on_front'] ? $GLOBALS['TL_LANG']['tl_product_attributes']['template_visibility_title'] . "<strong>" . $GLOBALS['TL_LANG']['tl_product_attributes']['reader_enabled'] . ($arrRow['is_listing_field']==1 ? ", " . $GLOBALS['TL_LANG']['tl_product_attributes']['listing_enabled'] : "") . "</strong>" : "");
 		
 		return sprintf($strTemplate, $arrRow['name'], $GLOBALS['TL_LANG']['tl_product_attributes'][$arrRow['type']], $GLOBALS['TL_LANG']['tl_product_attributes']['required_val'][$arrRow['is_required']], $strTemplateKey);
 	}

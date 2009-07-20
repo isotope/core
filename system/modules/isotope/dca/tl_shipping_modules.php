@@ -103,9 +103,9 @@ $GLOBALS['TL_DCA']['tl_shipping_modules'] = array
 	'palettes' => array
 	(
 		'__selector__'                => array('type'),
-		'default'                     => 'type,name,label,note;countries,minimum_total,maximum_total;enabled',
-		'collection'                  => 'type,name,label,note;price;countries,minimum_total,maximum_total;enabled',
-		'flat'                        => 'type,name,label,note;price,flatCalculation,surcharge_field;countries,minimum_total,maximum_total;enabled',
+		'default'                     => 'type,name,label,note;countries,minimum_total,maximum_total;groups;enabled',
+		'collection'                  => 'type,name,label,note;price;countries,minimum_total,maximum_total;groups;enabled',
+		'flat'                        => 'type,name,label,note;price,flatCalculation,surcharge_field;countries,minimum_total,maximum_total;groups;enabled',
 	),
 
 	// Fields
@@ -190,6 +190,14 @@ $GLOBALS['TL_DCA']['tl_shipping_modules'] = array
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255),
 		),
+		'groups' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_modules']['groups'],
+			'exclude'                 => true,
+			'inputType'               => 'checkbox',
+			'foreignKey'              => 'tl_member_group.name',
+			'eval'                    => array('multiple'=>true)
+		),
 		'enabled' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_modules']['enabled'],
@@ -228,7 +236,7 @@ class tl_shipping_modules extends Backend
 		try 
 		{
 			$objModule = new $strClass($arrRow);
-			return $objModule->moduleOperations();
+			return $objModule->moduleOperations($arrRow['id']);
 		}
 		catch (Exception $e) {}
 		

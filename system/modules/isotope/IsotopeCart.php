@@ -134,17 +134,17 @@ class IsotopeCart extends Model
 					
 				case 'subTotal':
 					
-					$this->arrCache[$strKey] = $this->calculateTotal($this->Isotope->getProductData($this->getProducts(), array('product_price'), 'product_price'));
+					$this->arrCache[$strKey] = $this->calculateTotal($this->Isotope->getProductData($this->getProducts(), array('price'), 'price'));
 					break;
 					
 				case 'taxTotal':
 					// FIXME: currently rounds to 0.05 (swiss francs)
-					$this->arrCache[$strKey] = (float)$this->calculateTax($this->Isotope->getProductData($this->getProducts(), array('product_price', 'tax_class'), 'product_price'));
+					$this->arrCache[$strKey] = (float)$this->calculateTax($this->Isotope->getProductData($this->getProducts(), array('price', 'tax_class'), 'price'));
 					break;
 					
 				case 'taxTotalWithShipping':
 					// FIXME: currently rounds to 0.05 (swiss francs)
-					return number_format((float)$this->calculateTax($this->Isotope->getProductData($this->getProducts(), array('product_price', 'tax_class'), 'product_price')) + ($this->hasShipping ? $this->Shipping->price : 0), 2);
+					return number_format((float)$this->calculateTax($this->Isotope->getProductData($this->getProducts(), array('price', 'tax_class'), 'price')) + ($this->hasShipping ? $this->Shipping->price : 0), 2);
 					break;
 					
 				case 'grandTotal':
@@ -355,7 +355,7 @@ class IsotopeCart extends Model
 	{
 		$this->import('Isotope');
 		
-		$arrProducts = $this->Isotope->getProductData($this->getProducts(), array('product_alias','product_name','product_price'), 'product_name');
+		$arrProducts = $this->Isotope->getProductData($this->getProducts(), array('alias','name','price'), 'name');
 		
 		if (!count($arrProducts))
 			return '';
@@ -366,10 +366,10 @@ class IsotopeCart extends Model
 		foreach( $arrProducts as $product )
 		{
 			$strBuffer .= '<tr>';
-			$strBuffer .= '<td>' . $product['product_name'] . '</td>';
+			$strBuffer .= '<td>' . $product['name'] . '</td>';
 			$strBuffer .= '<td>' . $product['quantity_requested'] . ' x </td>';
-			$strBuffer .= '<td>' . $this->Isotope->formatPriceWithCurrency($product['product_price']) . '</td>';
-			$strBuffer .= '<td>' . $this->Isotope->formatPriceWithCurrency($product['quantity_requested'] * $product['product_price']) . '</td>';
+			$strBuffer .= '<td>' . $this->Isotope->formatPriceWithCurrency($product['price']) . '</td>';
+			$strBuffer .= '<td>' . $this->Isotope->formatPriceWithCurrency($product['quantity_requested'] * $product['price']) . '</td>';
 			$strBuffer .= "</tr>\n";
 		}
 		
@@ -381,7 +381,7 @@ class IsotopeCart extends Model
 	{
 		$this->import('Isotope');
 		
-		$arrProducts = $this->Isotope->getProductData($this->getProducts(), array('product_alias','product_name','product_price'), 'product_name');
+		$arrProducts = $this->Isotope->getProductData($this->getProducts(), array('alias','name','price'), 'name');
 		
 		if (!count($arrProducts))
 			return 'Keine Produkte';
@@ -390,10 +390,10 @@ class IsotopeCart extends Model
 		
 		foreach( $arrProducts as $product )
 		{
-			$strBuffer .= $product['product_name'] . ': ';
+			$strBuffer .= $product['name'] . ': ';
 			$strBuffer .= $product['quantity_requested'] . ' x ';
-			$strBuffer .= $this->Isotope->formatPriceWithCurrency($product['product_price']) . ' = ';
-			$strBuffer .= $this->Isotope->formatPriceWithCurrency($product['quantity_requested'] * $product['product_price']);
+			$strBuffer .= $this->Isotope->formatPriceWithCurrency($product['price']) . ' = ';
+			$strBuffer .= $this->Isotope->formatPriceWithCurrency($product['quantity_requested'] * $product['price']);
 		}
 		
 		return $strBuffer;
@@ -413,7 +413,7 @@ class IsotopeCart extends Model
 		
 		foreach($arrProductData as $data)
 		{
-			$fltTotal += ((float)$data['product_price'] * (int)$data['quantity_requested']);
+			$fltTotal += ((float)$data['price'] * (int)$data['quantity_requested']);
 		}
 		
 		$taxPriceAdjustment = 0; // $this->getTax($floatSubTotalPrice, $arrTaxRules, 'MULTIPLY');
@@ -433,148 +433,151 @@ class IsotopeCart extends Model
 	{
 		$this->import('FrontendUser','User');
 		$this->import('Isotope');
-				
-		foreach($arrProductData as $row)
-		{
-			$arrTaxClasses[] = $row['tax_class'];	
-		}
-	
-		//Get the tax rates for the given class.
-		$arrTaxClassRecords = array_unique($arrTaxClasses);
 		
-		if(sizeof($arrTaxClassRecords))
-		{		
-			$strTaxRates = join(',', $arrTaxClassRecords);
-		}
+		if($arrProductData)
+		{	
+			foreach($arrProductData as $row)
+			{
+				$arrTaxClasses[] = $row['tax_class'];	
+			}
 		
-		if(strlen(trim($strTaxRates)) < 1)
-		{
-			return array();
-		}
-		
-		
-		$objTaxRates = $this->Database->prepare("SELECT r.pid, r.country_id, r.region_id, r.postcode, r.rate, (SELECT name FROM tl_tax_class c WHERE c.id=r.pid) AS class_name FROM tl_tax_rate r WHERE r.pid IN(" . $strTaxRates . ")")
-									  ->execute();
-		
-		if($objTaxRates->numRows < 1)
-		{
-			return 0.00;
-		}
-		
-		$arrTaxRates = $objTaxRates->fetchAllAssoc();
-		
-		foreach($arrTaxRates as $rate)
-		{
-			//eventually this will also contain the formula or calc rule for the given tax rate.
-			$arrRates[$rate['pid']] = array
-			(
-				'rate'			=> $rate['rate'],
-				'country_id'	=> $rate['country_id'],
-				'region_id'		=> $rate['region_id'],
-				'postal_code'	=> $rate['postcode'],
-				'class_name'	=> $rate['class_name']	//we need to output this to template for customers.
-			);
-		}
-		
-		
-		
-		$arrBillingAddress = $this->Isotope->getAddress('billing'); //Tax calculated based on billing address.
-		$arrShippingAddress = $this->Isotope->getAddress('shipping');
-		
-		$arrAddresses[] = $arrBillingAddress;
-		$arrAddresses[] = $arrShippingAddress;
-		
-		//the calculation logic for tax rates will need to be something we can set in the backend eventually.  This is specific to Kolbo right now
-		//as tax class 3 = luxury tax.
-		foreach($arrProductData as $product)
-		{
-			$blnAlreadyCalculatedTax = false;
-			$blnCalculate = false; 
+			//Get the tax rates for the given class.
+			$arrTaxClassRecords = array_unique($arrTaxClasses);
 			
-					
-			foreach($arrAddresses as $address)
+			if(sizeof($arrTaxClassRecords))
 			{		
-				if(is_null($address['country']) || strlen($address['country']) < 1)
-				{
-					$address['country'] = 'us';	//Default
-				}
+				$strTaxRates = join(',', $arrTaxClassRecords);
+			}
+			
+			if(strlen(trim($strTaxRates)) < 1)
+			{
+				return array();
+			}
+			
+			
+			$objTaxRates = $this->Database->prepare("SELECT r.pid, r.country_id, r.region_id, r.postcode, r.rate, (SELECT name FROM tl_tax_class c WHERE c.id=r.pid) AS class_name FROM tl_tax_rate r WHERE r.pid IN(" . $strTaxRates . ")")
+										  ->execute();
+			
+			if($objTaxRates->numRows < 1)
+			{
+				return 0.00;
+			}
+			
+			$arrTaxRates = $objTaxRates->fetchAllAssoc();
+			
+			foreach($arrTaxRates as $rate)
+			{
+				//eventually this will also contain the formula or calc rule for the given tax rate.
+				$arrRates[$rate['pid']] = array
+				(
+					'rate'			=> $rate['rate'],
+					'country_id'	=> $rate['country_id'],
+					'region_id'		=> $rate['region_id'],
+					'postal_code'	=> $rate['postcode'],
+					'class_name'	=> $rate['class_name']	//we need to output this to template for customers.
+				);
+			}
+			
+			
+			
+			$arrBillingAddress = $this->Isotope->getAddress('billing'); //Tax calculated based on billing address.
+			$arrShippingAddress = $this->Isotope->getAddress('shipping');
+			
+			$arrAddresses[] = $arrBillingAddress;
+			$arrAddresses[] = $arrShippingAddress;
+			
+			//the calculation logic for tax rates will need to be something we can set in the backend eventually.  This is specific to Kolbo right now
+			//as tax class 3 = luxury tax.
+			foreach($arrProductData as $product)
+			{
+				$blnAlreadyCalculatedTax = false;
+				$blnCalculate = false; 
 				
-				if($product['tax_class']!=0)
-				{
-				
-					//only check what we need to.  There may be a better logic gate to express this but I haven't figured out what it is yet. ;)
-					if(strlen($arrRates[$product['tax_class']]['postalcode']))
+						
+				foreach($arrAddresses as $address)
+				{		
+					if(is_null($address['country']) || strlen($address['country']) < 1)
 					{
-						if($address['postal']==$arrRates[$product['tax_class']]['postal_code'] && $address['state']==$arrRates[$product['tax_class']]['region_id'] && $address['country']==$arrRates[$product['tax_class']]['country_id'])
+						$address['country'] = 'us';	//Default
+					}
+					
+					if($product['tax_class']!=0)
+					{
+					
+						//only check what we need to.  There may be a better logic gate to express this but I haven't figured out what it is yet. ;)
+						if(strlen($arrRates[$product['tax_class']]['postalcode']))
+						{
+							if($address['postal']==$arrRates[$product['tax_class']]['postal_code'] && $address['state']==$arrRates[$product['tax_class']]['region_id'] && $address['country']==$arrRates[$product['tax_class']]['country_id'])
+							{
+								
+								$blnCalculate = true;
+							}
+						}
+						elseif(strlen($arrRates[$product['tax_class']]['region_id']) && strlen($arrRates[$product['tax_class']]['country_id']))
 						{
 							
-							$blnCalculate = true;
-						}
-					}
-					elseif(strlen($arrRates[$product['tax_class']]['region_id']) && strlen($arrRates[$product['tax_class']]['country_id']))
-					{
-						
-						
-						if($address['state']==$arrRates[$product['tax_class']]['region_id'] && $address['country']==$arrRates[$product['tax_class']]['country_id'])
-						{
-								
-							$blnCalculate = true;
-						}
-					}
-					/*elseif(strlen($rate['country_id']))
-					{
-						if($address['country']==$rate['country_id'])
-						{
-							$blnCalculate = true;
-						}	
-					}*/		
-					
-			
-				
-					if($blnCalculate && !$blnAlreadyCalculatedTax)
-					{
-						//This needs to be database-driven.  We know what these tax values are right now and later it must not assume anything obviously.
-						switch($product['tax_class'])
-						{
-							case '1':
-									//if(strlen($rate['region_id']) > 0 && $this->User->state==$rate['region_id'])
-									$fltSalesTax += (((float)$product['product_price'] * $arrRates[$product['tax_class']]['rate'] / 100) * $product['quantity_requested']);
+							
+							if($address['state']==$arrRates[$product['tax_class']]['region_id'] && $address['country']==$arrRates[$product['tax_class']]['country_id'])
+							{
 									
-									//$arrTaxInfo['code'] = $
-								break;
-								
-							/*case '2':	//Luxury tax.  5% of the difference over $175.00  this trumps standard sales tax.
-								if((float)$product['product_price'] >= 175)
-								{
-									$fltTaxableAmount = (float)$product['product_price'] - 175;
-									$fltSalesTax += (($fltTaxableAmount * $arrRates[$product['tax_class']]['rate'] / 100) * $product['quantity_requested']);
-								}else{
-									//fallback if the price is below to standard sales tax.
-									$fltTaxableAmount = (float)$product['product_price'] - 175;
-									$fltSalesTax += (($fltTaxableAmount * $arrRates[$product['tax_class']]['rate'] / 100) * $product['quantity_requested']);
-								}
-														
-								break;
-								
-							case '3':	//because tax class 2 is exempt in Kolbo.*/
-							default:
-								break;			
+								$blnCalculate = true;
+							}
 						}
+						/*elseif(strlen($rate['country_id']))
+						{
+							if($address['country']==$rate['country_id'])
+							{
+								$blnCalculate = true;
+							}	
+						}*/		
 						
-						$blnAlreadyCalculatedTax = true;
-					}
-				} //end if($product['tax_class'])
-			} //end foreach($arrAddresses)
+				
+					
+						if($blnCalculate && !$blnAlreadyCalculatedTax)
+						{
+							//This needs to be database-driven.  We know what these tax values are right now and later it must not assume anything obviously.
+							switch($product['tax_class'])
+							{
+								case '1':
+										//if(strlen($rate['region_id']) > 0 && $this->User->state==$rate['region_id'])
+										$fltSalesTax += (((float)$product['price'] * $arrRates[$product['tax_class']]['rate'] / 100) * $product['quantity_requested']);
+										
+										//$arrTaxInfo['code'] = $
+									break;
+									
+								/*case '2':	//Luxury tax.  5% of the difference over $175.00  this trumps standard sales tax.
+									if((float)$product['price'] >= 175)
+									{
+										$fltTaxableAmount = (float)$product['price'] - 175;
+										$fltSalesTax += (($fltTaxableAmount * $arrRates[$product['tax_class']]['rate'] / 100) * $product['quantity_requested']);
+									}else{
+										//fallback if the price is below to standard sales tax.
+										$fltTaxableAmount = (float)$product['price'] - 175;
+										$fltSalesTax += (($fltTaxableAmount * $arrRates[$product['tax_class']]['rate'] / 100) * $product['quantity_requested']);
+									}
+															
+									break;
+									
+								case '3':	//because tax class 2 is exempt in Kolbo.*/
+								default:
+									break;			
+							}
+							
+							$blnAlreadyCalculatedTax = true;
+						}
+					} //end if($product['tax_class'])
+				} //end foreach($arrAddresses)
+			}
+			
+			return $fltSalesTax;
+			/*$this->arrTaxInfo[] = array
+			(
+				'class'			=> 'Sales Tax',
+				'total'			=> number_format($fltSalesTax, 2)
+			);
+			
+			return $arrTaxInfo;*/
 		}
-		
-		return $fltSalesTax;
-		/*$this->arrTaxInfo[] = array
-		(
-			'class'			=> 'Sales Tax',
-			'total'			=> number_format($fltSalesTax, 2)
-		);
-		
-		return $arrTaxInfo;*/
 	}
 	
 	/**

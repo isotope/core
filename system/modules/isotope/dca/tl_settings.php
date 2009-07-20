@@ -37,7 +37,7 @@ $GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] .= ';isotope_base_path'
 $GLOBALS['TL_DCA']['tl_settings']['fields']['isotope_base_path'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['isotope_base_path'],
-	'default'				  => 'product_assets',
+	'default'				  => 'assets',
 	'inputType'               => 'text',
 	'eval'					  => array('rgxp'=>'extnd'),
 	'save_callback'			  => array

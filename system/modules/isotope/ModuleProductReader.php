@@ -203,7 +203,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 				
 				$strMissingImagePlaceholder = $this->Store->missing_image_placeholder;
 							
-				$objProductData = $this->Database->prepare("SELECT * FROM " . $this->strCurrentStoreTable . " WHERE id=? OR product_alias=?")
+				$objProductData = $this->Database->prepare("SELECT * FROM " . $this->strCurrentStoreTable . " WHERE id=? OR alias=?")
 										 ->limit(1)
 										 ->execute((is_numeric($this->Input->get('product')) ? $this->Input->get('product') : 0), $this->Input->get('product'));
 	
@@ -246,27 +246,27 @@ class ModuleProductReader extends ModuleIsotopeBase
 				{
 					switch($k)
 					{
-						case "product_name":													
+						case "name":													
 							$objPage->title = $v;
 							$this->Template->productName = $v;
 							break;
 							
-						case "product_description":
+						case "description":
 							$objPage->description = strip_tags($this->generateTeaser($v));
 							break;
 							
-						case "use_product_price_override":
+						case "use_price_override":
 							if($v==1)
 							{
-								$product['price_string'] = $this->generatePrice($product['product_price_override'], $this->strPriceOverrideTemplate);
+								$product['price_string'] = $this->generatePrice($product['price_override'], $this->strPriceOverrideTemplate);
 							}
 							else
 							{
-								$product['price_string'] = $this->generatePrice($product['product_price']);
+								$product['price_string'] = $this->generatePrice($product['price']);
 							}							
 							break;							
 				
-						case "product_alias":
+						case "alias":
 							$this->strMainImageBasePath = sprintf($GLOBALS['TL_CONFIG']['isotope_base_path'] . '/%s/%s/' . $GLOBALS['TL_LANG']['MSC']['imagesFolder'] . '/' . $GLOBALS['TL_LANG']['MSC']['medium_images_folder'], substr($v, 0, 1), $v);
 																	
 							$arrProductPaths = $this->MediaManagement->getCurrentProductPaths($v);
@@ -294,7 +294,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 								else
 								{
 									//Check for a file or folder by that name in the main import folder as specified in store config.
-									$arrAssetKeys = array($product['product_alias'], $product['product_sku']);
+									$arrAssetKeys = array($product['alias'], $product['sku']);
 									
 									$arrNeededImages = $this->MediaManagement->getRelatedProductAssetFilenamesByType($arrAssetKeys, $this->Store->root_asset_import_path, 'images');
 								}
@@ -311,7 +311,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 																				
 							if(is_dir($arrProductPaths['file_destination_path']))
 							{	
-								$arrImages = $this->getProductImages($arrProductPaths['file_destination_path'], $arrProductPaths['relative_destination_path'], $product, $GLOBALS['TL_LANG']['MSC']['imagesFolder'], $product['main_image'], $product['product_alias']);
+								$arrImages = $this->getProductImages($arrProductPaths['file_destination_path'], $arrProductPaths['relative_destination_path'], $product, $GLOBALS['TL_LANG']['MSC']['imagesFolder'], $product['main_image'], $product['alias']);
 								
 								sort($arrImages);
 								
@@ -455,8 +455,8 @@ class ModuleProductReader extends ModuleIsotopeBase
 					(
 						'id' => $product['id'], 
 						'aset_id' => $this->Input->get('asetid'), 
-						'product_name' => $product['product_name'],
-						'product_alias' => $product['product_alias']
+						'name' => $product['name'],
+						'alias' => $product['alias']
 					);		
 				
 				if(sizeof($product['options'])>0)
@@ -484,8 +484,8 @@ class ModuleProductReader extends ModuleIsotopeBase
 					(
 						'aset_id'				=> $row['aset_id'],
 						'quantity_requested'	=> 1,	
-						'product_name'			=> $row['product_name'],
-						'exclude'				=> array('product_name','exclude')
+						'name'			=> $row['name'],
+						'exclude'				=> array('name','exclude')
 					);
 				}
 			}
@@ -526,8 +526,8 @@ class ModuleProductReader extends ModuleIsotopeBase
 						(
 							'aset_id'				=> $row['aset_id'],
 							'quantity_requested'	=> 1,
-							'product_name'			=> $row['product_name'],
-							'exclude'				=> array('product_name','exclude')
+							'name'			=> $row['name'],
+							'exclude'				=> array('name','exclude')
 						);
 					}
 					
@@ -666,7 +666,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 								'file_path' 			=> $strRelativeAssetPath . '/' . $strAssetType . '/' . $GLOBALS['TL_LANG']['MSC']['medium_images_folder'] . '/' . $file,
 								'width'					=> $arrImageSize[0],
 								'height'				=> $arrImageSize[1],
-								'alt'					=> strip_tags(sprintf($GLOBALS['TL_LANG']['MSC']['altTextFormat'], $arrProductData['product_name'], $arrProductData['product_teaser'])),
+								'alt'					=> strip_tags(sprintf($GLOBALS['TL_LANG']['MSC']['altTextFormat'], $arrProductData['name'], $arrProductData['teaser'])),
 								'has_large_image'		=> $hasLargeImage,
 								'large_image_link'		=> $largeImageLink,
 								'on_thumbnail_click_event' => $GLOBALS['TL_LANG']['MSC']['thumbnailImageClickEvent'],
@@ -695,7 +695,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 								'file_path'				=> $strRelativeAssetPath . '/' . $strAssetType . '/' . $GLOBALS['TL_LANG']['MSC']['gallery_thumbnail_images_folder'] . '/' . $file,
 								'width'					=> $arrImageSize[0],
 								'height'				=> $arrImageSize[1],
-								'alt' 					=> strip_tags(sprintf($GLOBALS['TL_LANG']['MSC']['altTextFormat'], $arrProductData['product_name'], $arrProductData['product_teaser'])),
+								'alt' 					=> strip_tags(sprintf($GLOBALS['TL_LANG']['MSC']['altTextFormat'], $arrProductData['name'], $arrProductData['teaser'])),
 								'has_large_image' 		=> $hasLargeImage,
 								'large_image_link'		=> $largeImageLink,
 								'on_thumbnail_click_event' => $GLOBALS['TL_LANG']['MSC']['thumbnailImageClickEvent']
@@ -742,7 +742,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 						'file_path' 			=> $strFinalFilePath,
 						'width'					=> $arrImageSize[0],
 						'height'				=> $arrImageSize[1],
-						'alt'					=> strip_tags(sprintf($GLOBALS['TL_LANG']['MSC']['altTextFormat'], $arrProductData['product_name'], $arrProductData['product_teaser'])),
+						'alt'					=> strip_tags(sprintf($GLOBALS['TL_LANG']['MSC']['altTextFormat'], $arrProductData['name'], $arrProductData['teaser'])),
 						'has_large_image'		=> $hasLargeImage,
 						'large_image_link'		=> $largeImageLink,
 						'on_thumbnail_click_event' => $GLOBALS['TL_LANG']['MSC']['thumbnailImageClickEvent'],
@@ -810,7 +810,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 								'file_path' 			=> $strRelativeAssetPath . '/' . $strAssetType . '/' . $GLOBALS['TL_LANG']['MSC']['medium_images_folder'] . '/' . $file,
 								'width'					=> $arrImageSize[0],
 								'height'				=> $arrImageSize[1],
-								'alt'					=> strip_tags(sprintf($GLOBALS['TL_LANG']['MSC']['altTextFormat'], $arrProductData['product_name'], $arrProductData['product_teaser'])),
+								'alt'					=> strip_tags(sprintf($GLOBALS['TL_LANG']['MSC']['altTextFormat'], $arrProductData['name'], $arrProductData['teaser'])),
 								'has_large_image'		=> $hasLargeImage,
 								'large_image_link'		=> $largeImageLink,
 								'on_thumbnail_click_event' => $GLOBALS['TL_LANG']['MSC']['thumbnailImageClickEvent'],
@@ -834,7 +834,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 								'file_path'				=> $strRelativeAssetPath . '/' . $strAssetType . '/' . $GLOBALS['TL_LANG']['MSC']['gallery_thumbnail_images_folder'] . '/' . $file,
 								'width'					=> $arrImageSize[0],
 								'height'				=> $arrImageSize[1],
-								'alt' 					=> strip_tags(sprintf($GLOBALS['TL_LANG']['MSC']['altTextFormat'], $arrProductData['product_name'], $arrProductData['product_teaser'])),
+								'alt' 					=> strip_tags(sprintf($GLOBALS['TL_LANG']['MSC']['altTextFormat'], $arrProductData['name'], $arrProductData['teaser'])),
 								'has_large_image' 		=> $hasLargeImage,
 								'large_image_link'		=> $largeImageLink,
 								'on_thumbnail_click_event' => $GLOBALS['TL_LANG']['MSC']['thumbnailImageClickEvent']

@@ -11,10 +11,10 @@
 <?php foreach($this->products as $product): ?>
 		<!-- BEGIN PRODUCT-->
         <div class="product">
-        	<div class="col removeButton"><a href="<?php echo $product['remove_link']; ?>" title="<?php echo $product['remove_link_title']; ?>">x</a> Remove</div>
-   			<div class="col productImg"><a href="<?php echo $product['link']; ?>" title="<?php echo $product['product_name']; ?>"><img src="<?php echo $product['image'] ?>" alt="<?php echo $product['name']; ?>" border="0" class="thumbnail" /></a></div>
+        	<div class="col removeButton"><a href="<?php echo $product['remove_link']; ?>" title="<?php echo $product['remove_link_title']; ?>"><img src="system/modules/isotope/html/trash.gif" alt="<?php echo $product['remove_link_title']; ?>" border="0" /></a> Remove</div>
+   			<div class="col productImg"><a href="<?php echo $product['link']; ?>" title="<?php echo $product['name']; ?>"><img src="<?php echo $product['image'] ?>" alt="<?php echo $product['name']; ?>" border="0" class="thumbnail" /></a></div>
        		<div class="col productInfo">
-       				<h3 class="productName"><a href="<?php echo $product['link']; ?>" title="<?php echo $product['product_name']; ?>"><?php echo $product['name']; ?></a></h3>
+       				<h3 class="productName"><a href="<?php echo $product['link']; ?>" title="<?php echo $product['name']; ?>"><?php echo $product['name']; ?></a></h3>
        				<div class="optionswrapper">
        					<?php if(sizeof($product['option_values'])>0): ?>
        					<ul class="productOptions">
@@ -48,7 +48,7 @@
 
 	</div>
 	<div class="cartButtons">
-		<div class="update"><a class="button_small" href="javascript:document.cart_full.submit();" onclick="javascript:document.cart_full.submit();"><img src="system/modules/isotope/html/button_update.gif" alt="Update Cart" border="0" /></a></div>
+		<div class="update"><input type="image" src="system/modules/isotope/html/button_update.gif" value="Update Cart" /></div>
 		<div class="checkout"><a class="button_large" href="<?php echo $this->checkoutJumpTo; ?>"><img src="system/modules/isotope/html/button_checkoutLg.gif" alt="Proceed to Checkout" border="0" /></a></div>
 	</div>
 	

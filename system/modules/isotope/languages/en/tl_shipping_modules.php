@@ -34,6 +34,7 @@ $GLOBALS['TL_LANG']['tl_shipping_modules']['flatCalculation']	= array('Flat calc
 $GLOBALS['TL_LANG']['tl_shipping_modules']['countries']			= array('Countries', 'Select the countries this shipping method applies to.');
 $GLOBALS['TL_LANG']['tl_shipping_modules']['minimum_total']		= array('Minimum total', '');
 $GLOBALS['TL_LANG']['tl_shipping_modules']['maximum_total']		= array('Maximum total', '');
+$GLOBALS['TL_LANG']['tl_shipping_modules']['groups']			= array('Member Groups','Restrict this shipping option to certain member groups.');
 $GLOBALS['TL_LANG']['tl_shipping_modules']['enabled']			= array('Enabled', 'Is the module available for use in the store?');
 
 

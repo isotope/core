@@ -79,7 +79,7 @@ class ShippingFlat extends Shipping
 			{
 				$strSurcharge = $this->Database->prepare("SELECT * FROM " . $product['storeTable'] . " WHERE id=?")
 											   ->limit(1)
-											   ->execute($product['product_id'])
+											   ->execute($product['id'])
 											   ->{$this->surcharge_field};
 											   
 				if ($this->flatCalculation == 'perItem')
