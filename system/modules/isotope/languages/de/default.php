@@ -103,6 +103,7 @@ $GLOBALS['TL_LANG']['PAY']['postfinance']		= array('Postfinance (Schweizerische 
 //Invoice language Entries
 $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] = 'Bestellung';
 $GLOBALS['TL_LANG']['MSC']['iso_order_status'] = 'Status';
+$GLOBALS['TL_LANG']['MSC']['iso_order_date'] = 'Bestelldatum';
 $GLOBALS['TL_LANG']['MSC']['iso_billing_address_header'] = 'Rechnungsadresse';
 $GLOBALS['TL_LANG']['MSC']['iso_shipping_address_header'] = 'Versandadresse';
 $GLOBALS['TL_LANG']['MSC']['iso_payment_info_header'] = 'Zahlungsart';

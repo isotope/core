@@ -150,6 +150,7 @@ $GLOBALS['TL_LANG']['differentShippingAddress'] = 'Different shipping address';
 //Invoice language Entries
 $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] = 'Invoice';
 $GLOBALS['TL_LANG']['MSC']['iso_order_status'] = 'Status';
+$GLOBALS['TL_LANG']['MSC']['iso_order_date'] = 'Order date';
 $GLOBALS['TL_LANG']['MSC']['iso_billing_address_header'] = 'Billing Address';
 $GLOBALS['TL_LANG']['MSC']['iso_shipping_address_header'] = 'Shipping Address';
 $GLOBALS['TL_LANG']['MSC']['iso_payment_info_header'] = 'Payment Information';

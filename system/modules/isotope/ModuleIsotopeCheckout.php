@@ -594,10 +594,9 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 		$arrSet = array
 		(
-			'billing_address'		=> $strBillingAddress,
-			'shipping_address'		=> $strShippingAddress,
 			'pid'					=> (FE_USER_LOGGED_IN ? $this->User->id : 0),
 			'tstamp'				=> time(),
+			'date'					=> time(),
 			'store_id'				=> $this->Store->id,
 			'cart_id'				=> $this->Cart->id,
 			'source_cart_id'		=> $this->Cart->id,
@@ -609,6 +608,8 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			'payment_method'		=> $this->Cart->Payment->label,
 			'status'				=> ($blnCheckout ? $this->Cart->Payment->new_order_status : ''),
 			'language'				=> $GLOBALS['TL_LANGUAGE'],
+			'billing_address'		=> $strBillingAddress,
+			'shipping_address'		=> $strShippingAddress,
 		);
 		
 		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=? AND status!='cancelled'")->limit(1)->execute($this->Cart->id);

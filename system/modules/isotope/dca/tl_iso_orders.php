@@ -245,6 +245,7 @@ class tl_iso_orders extends Backend
 		    <h2>' . $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] .': ' . $row['order_id'] . ' (#' . $row['id'] . ')</h2><!--
 		    ' . 'von Gast-Benutzer' . '<br /> -->
 		    ' . $GLOBALS['TL_LANG']['MSC']['iso_order_status'] . ': <strong>' . $GLOBALS['TL_LANG']['MSC']['order_status_labels'][$row['status']] . '</strong><br />
+		    ' . $GLOBALS['TL_LANG']['MSC']['iso_order_date'] . ': ' . $this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $row['date']) . '<br />
 		    ' . $GLOBALS['TL_LANG']['MSC']['iso_payment_info_header'] . ': ' . $row['payment_method']  . '<br />
 		    ' . $GLOBALS['TL_LANG']['MSC']['iso_shipping_info_header'] . ': ' . $row['shipping_method']  . '<br />
 		    ' . $GLOBALS['TL_LANG']['MSC']['iso_subtotal_header'] . ': ' . $row['subTotal'] . '<br />

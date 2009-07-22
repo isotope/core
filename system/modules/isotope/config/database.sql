@@ -473,7 +473,7 @@ CREATE TABLE `tl_iso_orders` (
   `pid` int(10) unsigned NOT NULL default '0',
   `sorting` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
-  
+  `date` int(10) unsigned NOT NULL default '0',  
   `order_id` varchar(14) NOT NULL default '',
   
   `store_id` int(10) unsigned NOT NULL default '0',
