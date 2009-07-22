@@ -29,7 +29,7 @@
                   <h3 class="productName"><a href="<?php echo $product['link']; ?>" title="<?php echo $product['name']; ?>"><?php echo $product['name']; ?></a></h3>
                    <p class="productPrice"><?php echo $product['price_string']; ?></p>
                   <?php if($product['teaser']): ?>
-                 <p class="productTeaser"><a href="<?php echo $product['link']; ?>" title="<?php echo $product['name']; ?>"><?php echo $product['teaser']; ?></a></p>
+                 <!--<p class="productTeaser"><a href="<?php echo $product['link']; ?>" title="<?php echo $product['name']; ?>"><?php echo $product['teaser']; ?></a></p>-->
                   <?php endif; ?>
                   
                 </div>

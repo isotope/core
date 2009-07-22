@@ -45,7 +45,7 @@ $GLOBALS['TL_DCA']['tl_shipping_options'] = array
 		'sorting' => array
 		(
 			'mode'                    => 4,
-			'fields'                  => array('description'),
+			'fields'                  => array('name'),
 			'panelLayout'             => 'sort,filter;search,limit',
 			'headerFields'            => array('name', 'tstamp'),
 			'child_record_callback'   => array('tl_shipping_options', 'listrates')
@@ -102,7 +102,17 @@ $GLOBALS['TL_DCA']['tl_shipping_options'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => 'name;rate;upper_limit;groups;dest_country,dest_region,dest_zip'
+		'__selector__'				  => array('option_type','override'),
+		'default'                     => 'name;option_type;',
+		'ot_tier'					  => 'name;option_type;rate;limit_type,limit_value;groups;dest_countries,dest_regions,dest_postalcodes',
+		'surcharge'					  => 'name;option_type;mandatory;rate;groups;dest_countries,dest_regions,dest_postalcodes'
+		
+	),
+	
+	'subpalettes' => array
+	(
+		'override'					  => 'override_rule'
+	
 	),
 
 	// Fields
@@ -115,12 +125,47 @@ $GLOBALS['TL_DCA']['tl_shipping_options'] = array
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255)
 		),
-		'upper_limit' => array
+		'option_type' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['upper_limit'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['option_type'],
+			'default'                 => 'ot_tier',
+			'exclude'                 => true,
+			'filter'                  => true,
+			'inputType'               => 'select',
+			'options'				  => array_keys($GLOBALS['TL_LANG']['tl_shipping_options']['types']),
+			'reference'               => &$GLOBALS['TL_LANG']['tl_shipping_options']['types'],
+			'eval'                    => array('helpwizard'=>true, 'submitOnChange'=>true)
+		),
+		'limit_type' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['limit_type'],
+			'exclude'                 => true,
+			'inputType'               => 'select',
+			'options'				  => array_keys($GLOBALS['TL_LANG']['tl_shipping_options']['limit']),
+			'eval'                    => array('mandatory'=>true,'includeBlankOption'=>true),
+			'reference'				  => $GLOBALS['TL_LANG']['tl_shipping_options']['limit']
+		),
+		'limit_value' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['limit_value'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'rgxp'=>digit)
+			'eval'                    => array('rgxp'=>digit)
+		),
+		'override' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['override'],
+			'exclude'                 => true,
+			'inputType'               => 'checkbox',
+			'eval'					  => array('submitOnChange'=>true)
+		),
+		'override_rule' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['override_rule'],
+			'exclude'                 => true,
+			'inputType'               => 'select',
+			//'eval'                    => array('multiple'=>true, 'size'=>8),
+			'options_callback'		  => array('tl_shipping_options','getExistingRules')
 		),
 		'groups' => array
 		(
@@ -137,27 +182,34 @@ $GLOBALS['TL_DCA']['tl_shipping_options'] = array
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'rgxp'=>digit)
 		),
-		'dest_zip' => array
+		'mandatory' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['dest_zip'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['mandatory'],
 			'exclude'                 => true,
-			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>64)
+			'inputType'               => 'checkbox'
 		),
-		'dest_country' => array
+		'dest_postalcodes' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['dest_country'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['dest_postalcodes'],
 			'exclude'                 => true,
-			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>64)
+			'inputType'               => 'textarea'
 		),
-		'dest_region' => array
+		'dest_countries' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['dest_region'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['dest_countries'],
 			'exclude'                 => true,
-			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>64)
+			'inputType'               => 'select',
+			'eval'                    => array('multiple'=>true, 'size'=>8),
+			'options_callback'		  => array('tl_shipping_options','getAllowedCountries')
 		),
+		'dest_regions' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['dest_regions'],
+			'exclude'                 => true,
+			'inputType'               => 'select',
+			'eval'                    => array('multiple'=>true, 'size'=>8),
+			'options_callback'		  => array('tl_shipping_options','getAllowedRegions')
+		)
 	)
 );
 
@@ -181,8 +233,92 @@ class tl_shipping_options extends Backend
 		parent::__construct();
 		$this->import('BackendUser', 'User');
 	}
+	
+	public function getExistingRules(DataContainer $dc)
+	{
+		$objPid = $this->Database->prepare("SELECT pid FROM tl_shipping_options WHERE id=?")
+								 ->limit(1)
+								 ->execute($dc->id);
+		if($objPid->numRows < 1)
+		{
+			return array();
+		}
+		
+		$intPid = $objPid->pid;	
+								 
+		$objRules = $this->Database->prepare("SELECT id, name FROM tl_shipping_options WHERE pid=?")
+								   ->execute($intPid);
+	
+		if($objRules->numRows < 1)
+		{
+			return array();
+		}
+		
+		while($objRules->next())
+		{
+			$arrRules[$objRules->id] = $objRules->name;
+		}
+		
+		return $arrRules;
+	}
+	
+	public function getAllowedCountries(DataContainer $dc)
+	{
+				
+		$objPid = $this->Database->prepare("SELECT pid FROM tl_shipping_options WHERE id=?")
+								 ->limit(1)
+								 ->execute($dc->id);
+		
+		if($objPid->numRows < 1)
+		{
+			return array();
+		}
+		
+		$intPid = $objPid->pid;
+		
+		$objModuleAllowedCountries = $this->Database->prepare("SELECT countries FROM tl_shipping_modules WHERE id=?")
+													->limit(1)
+													->execute($intPid);
+		
+		if($objModuleAllowedCountries->numRows < 1)
+		{
+			return array();
+		}
+		
+		$arrCountries = $objModuleAllowedCountries->fetchEach('countries');
 
+		if(sizeof($arrCountries)<1)
+		{
+			return $this->getCountries();
+		}
+		
+		$arrCountryKeys = deserialize($arrCountries[0]);
+		
+		$arrCountryLabels = $this->getCountries();
+		
+		foreach($arrCountryKeys as $country)
+		{
+			$arrCountryData[$country] = $arrCountryLabels[$country];
+		}
+		
+		return $arrCountryData;
+	
+	}
+	
 
+	/** 
+	 * Get allowed regions for a given country
+	 *
+	 * @access public
+	 * @return array
+	 */
+	public function getAllowedRegions()
+	{
+		return array();
+	}
+
+		
+	
 	/**
 	 * Add the type of input field.
 	 * 
@@ -194,9 +330,9 @@ class tl_shipping_options extends Backend
 	{
 		
 		return '
-<div class="cte_type ' . $key . '"><strong>' . $arrRow['description'] . '</strong></div>
+<div class="cte_type ' . $key . '"><strong>' . $arrRow['name'] . '</strong></div>
 <div class="limit_height' . (!$GLOBALS['TL_CONFIG']['doNotCollapse'] ? ' h52' : '') . ' block">
-'. $arrRow['rate'] .' for '. $arrRow['upper_limit'] . ' based on ' . $arrRow['dest_country'] .', '. $arrRow['dest_region'] . ', ' . $arrRow['dest_zip'] . '</div>' . "\n";
+'. $GLOBALS['TL_LANG']['tl_shipping_options']['option_type'][0] . ': ' . $GLOBALS['TL_LANG']['tl_shipping_options']['types'][$arrRow['option_type']] . '<br /><br />' . $arrRow['rate'] .' for '. $arrRow['upper_limit'] . ' based on ' . $arrRow['dest_country'] .', '. $arrRow['dest_region'] . ', ' . $arrRow['dest_zip'] . '</div>' . "\n";
 	}
 }
 

@@ -770,7 +770,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			
 			
 			
-			$arrModules[] = sprintf('<input id="ctrl_shipping_module_%s" type="radio" name="shipping[module]" value="%s"%s /> <label for="ctrl_shipping_module_%s">%s: %s</label>%s',
+			$arrModules[] = sprintf('<input id="ctrl_shipping_module_%s" type="radio" name="shipping[module]" value="%s"%s /> <label for="ctrl_shipping_module_%s">%s: %s</label><br /><br />%s',
 									 $objModule->id,
 									 $objModule->id,
 									 ($arrData['module'] == $objModule->id ? ' checked="checked"' : ''),
@@ -778,6 +778,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
  									 $objModule->label,
  									 $this->Isotope->formatPriceWithCurrency($fltShippingCost), 
  									 $objModule->getShippingOptions($objModule->id));
+ 			
 		}
 				
 		return $arrModules;
@@ -863,7 +864,6 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		$objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
 		$objTemplate->taxLabel = sprintf($GLOBALS['TL_LANG']['MSC']['taxLabel'], 'Sales');
 		$objTemplate->shippingLabel = $GLOBALS['TL_LANG']['MSC']['shippingLabel'];
-		
 		$objTemplate->subTotalPrice = $this->generatePrice($this->Cart->subTotal);
 		$objTemplate->shippingTotal = $this->generatePrice($this->Cart->Shipping->price);
 		$objTemplate->taxTotal = $this->generatePrice($this->Cart->taxTotal);

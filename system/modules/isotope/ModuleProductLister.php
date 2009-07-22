@@ -357,7 +357,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 			elseif($this->featured_products==1)
 			{
 				$strFilterList .= " AND featured_product=1";
-				$strClauses = " ORDER BY RAND()";
+				$strClauses = " ORDER BY RAND() LIMIT " . $per_page;
 				$strBaseClause = "visibility=?";
 			}
 			else
@@ -394,7 +394,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 			
 			
 			
-			if ($per_page > 0)
+			if ($per_page > 0 && $this->featured_products!=1)
 			{
 				
 				
@@ -636,10 +636,12 @@ class ModuleProductLister extends ModuleIsotopeBase
 		
 		$this->Template->orderOptions = $this->getOrderByOptions($objAggregateSets->attribute_set_id);
 		$this->Template->additionalFilters = '';
-				
-		$objPagination = new Pagination($intTotalRows, $per_page);
-		$this->Template->pagination = $objPagination->generate("\n  ");
-
+		
+		if($this->featured_products!=1)
+		{		
+			$objPagination = new Pagination($intTotalRows, $per_page);
+			$this->Template->pagination = $objPagination->generate("\n  ");
+		}
 		//$this->Template->sortByOptions = '';		
 		
 		/*$this->Template->buttons = $this->ProductButtons->getButtons();

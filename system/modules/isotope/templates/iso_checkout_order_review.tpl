@@ -1,12 +1,12 @@
 <div class="iso_checkout_order_review">
 	<div class="productWrapper">
 	
-		<table cellspacing="0" cellpadding="0" summary="Cart products">
+		<table class="productTable" cellspacing="0" cellpadding="0" summary="Cart products">
 			<tbody>
 		<?php foreach($this->products as $product): ?>
 				<!-- BEGIN PRODUCT-->
 		        <tr class="product">
-		   			<td class="col productImg"><img src="<?php echo $product['thumbnail'] ?>" alt="<?php echo $product['name']; ?>" border="0" class="thumbnail" /></td>
+		   			<!--<td class="col productImg"><img src="<?php echo $product['main_image'] ?>" alt="<?php echo $product['name']; ?>" border="0" class="thumbnail" /></td>-->
 		       		<td class="col productInfo">
 		       				<h3 class="productName"><?php echo $product['name']; ?></h3>
 		       				<!--<div class="optionswrapper">
@@ -18,7 +18,7 @@
 		       		<td class="col productQty">
 		       			<span class="price"><?php echo $product['price']; ?></span>
 		       		</td>
-					<td class="col"> x <?php echo $product['quantity']; ?></td>
+					<td class="col qtyModifier"> x <?php echo $product['quantity']; ?></td>
 		        	<td class="col productTotals">                 
 		                   <div class="total"><span class="total"><?php echo $product['total_price']; ?></span></div>
 		            </td>       
