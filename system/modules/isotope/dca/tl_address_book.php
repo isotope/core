@@ -203,7 +203,7 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>64, 'rgxp'=>'phone', 'insertTag'=>true, 'feEditable'=>true, 'feViewable'=>true, 'feGroup'=>'contact', 'isoEditable'=>true, 'isoCheckoutGroups'=>array('billing_information'))
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>64, 'insertTag'=>true, 'feEditable'=>true, 'feViewable'=>true, 'feGroup'=>'contact', 'isoEditable'=>true, 'isoCheckoutGroups'=>array('billing_information'))
 		),
 		'isDefaultBilling' => array
 		(

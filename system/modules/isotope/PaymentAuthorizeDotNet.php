@@ -91,13 +91,14 @@ class PaymentAuthorizeDotNet extends Payment
 			$arrReponseLabels[strtolower(standardize($key))] = $key;
 		}
 	
-		
+		//FIXME?? - This just doesn't seem like a good way to handle this info...
+		$_SESSION['FORM_DATA']['cc_num'] = $this->getRequestData('cc_num');
+		$_SESSION['FORM_DATA']['cc_exp'] = $this->getRequestData('cc_exp');
 		
 		switch($arrResponses['transaction-status'])
 		{
 			case 'Approved':
 				$this->response = 'successful';
-			
 				$this->redirect($this->addToUrl('step=order_complete'));
 				break;
 			case 'Error':

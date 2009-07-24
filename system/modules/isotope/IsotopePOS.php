@@ -319,7 +319,8 @@ class IsotopePOS extends Backend
 		
 		
 		$arrOrderInfo = $objOrderInfo->fetchAssoc();
-							
+		
+		/*
 		$objUserName = $this->Database->prepare("SELECT firstname, lastname FROM tl_address_book WHERE id=?")
 									  ->limit(1)
 									  ->execute($arrOrderInfo['billing_address_id']);
@@ -328,12 +329,12 @@ class IsotopePOS extends Backend
 		{
 			return '<no user name specified>';		
 		}	
-		
+		*/
 		
 		$this->fltOrderTotal = (float)$arrOrderInfo['order_subtotal'] + (float)$arrOrderInfo['order_tax'] + (float)$arrOrderInfo['order_shipping_cost'];
 		
-		$strBillingAddress = $this->loadAddress($arrOrderInfo['billing_address_id'], $arrOrderInfo['id'], true);
-		$strShippingAddress = $this->loadAddress($arrOrderInfo['shipping_address_id'], $arrOrderInfo['id']);
+		$strBillingAddress = nl2br($arrOrderInfo['billing_address']); //$this->createAddressString($arrOrderInfo, 'billing');
+		$strShippingAddress = nl2br($arrOrderInfo['shipping_address']); //$this->createAddressString($arrOrderInfo, 'shipping');
 
 		$strPaymentInfo = $this->generatePaymentInfoString($arrOrderInfo, $this->arrBillingInfo);
 		$strShippingInfo = $this->generateShippingInfoString($arrOrderInfo['shipping_rate_id']);
@@ -501,6 +502,28 @@ class IsotopePOS extends Backend
 		// Stop script execution
 		ob_end_clean();
 		exit;	
+	}
+
+	protected function createAddressString($arrOrderInfo, $strAddressType)
+	{
+		$strAddress = $arrOrderInfo[$strAddressType . '_information_firstname'];
+		$strAddress .= ' ' . $arrOrderInfo[$strAddressType . '_information_lastname'];
+		$strAddress = '<br />' . $arrOrderInfo[$strStep . '_information_company'];
+
+		$strStreetAddress = $arrOrderInfo[$strAddressType . '_information_street'];
+		$strStreetAddress .= $arrOrderInfo[$strAddressType . '_information_street_2'] ? '<br /> ' . $arrOrderInfo[$strAddressType . '_information_street_2'] : '';
+		$strStreetAddress .= $arrOrderInfo[$strAddressType . '_information_street_3'] ? '<br /> ' . $arrOrderInfo[$strAddressType . '_information_street_3'] : '';				
+		
+		$strAddress = '<br />' . $strStreetAddress;
+
+		$strAddress = '<br />' . $arrOrderInfo[$strAddressType . '_information_city'];
+		
+		$strAddress = $arrOrderInfo[$strAddressType . '_information_state'] ? '<br /> ' . $arrOrderInfo[$strAddressType . '_information_state'] : '';
+		
+		$strAddress = '<br />' . $arrOrderInfo[$strAddressType . '_information_postal'];
+		$strAddress = '<br />' . $arrOrderInfo[$strAddressType . '_information_country'];
+	
+		return $strAddress;
 	}
 
 	protected function getProducts($intSourceCartId)

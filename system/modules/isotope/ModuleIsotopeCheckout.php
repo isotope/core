@@ -592,6 +592,9 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		$arrShippingAddress = $this->getSelectedAddress('shipping');
 		$strShippingAddress = $this->getAddressString($arrShippingAddress);		
 		
+		//TODO?  Consider CC_TYPE and CC_CVV?
+		//exit;
+		
 		$arrSet = array
 		(
 			'pid'					=> (FE_USER_LOGGED_IN ? $this->User->id : 0),
@@ -600,7 +603,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			'store_id'				=> $this->Store->id,
 			'cart_id'				=> $this->Cart->id,
 			'source_cart_id'		=> $this->Cart->id,
-			'subTotal'				=> $this->Isotope->formatPriceWithCurrency($this->Cart->subTotal),		// + ($this->Input->post('gift_wrap') ? 10 : 0),		// FIXME
+			'subTotal'				=> $this->Isotope->formatPriceWithCurrency($this->Cart->subTotal),		// + ($this->Input->post('gift_wrap') ? 10 : 0),		
 			'taxTotal'	 			=> $this->Isotope->formatPriceWithCurrency($this->Cart->taxTotalWithShipping),
 			'shippingTotal'			=> $this->Isotope->formatPriceWithCurrency($this->Cart->Shipping->price),
 			'grandTotal'			=> $this->Isotope->formatPriceWithCurrency($this->Cart->grandTotal),
@@ -611,6 +614,13 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			'billing_address'		=> $strBillingAddress,
 			'shipping_address'		=> $strShippingAddress,
 		);
+		
+		//FIXME?  Sort of strange way to have to handle credit card data...
+		if($_SESSION['FORM_DATA']['cc_num'] && $_SESSION['FORM_DATA']['cc_exp'])
+		{
+			$arrSet['cc_num'] = $_SESSION['FORM_DATA']['cc_num'];
+			$arrSet['cc_exp'] = $_SESSION['FORM_DATA']['cc_exp'];
+		}
 		
 		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=? AND status!='cancelled'")->limit(1)->execute($this->Cart->id);
 		

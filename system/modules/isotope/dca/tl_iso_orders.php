@@ -87,13 +87,13 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
         'label'         => &$GLOBALS['TL_LANG']['tl_iso_orders']['authorize_process_payment'],
         'href'          => 'key=authorize_process_payment',
         'icon'          => 'system/modules/isotope/html/money.png'      
-      ),
+      ),*/
       'print_order' => array
       (
         'label'         => &$GLOBALS['TL_LANG']['tl_iso_orders']['print_order'],
         'href'          => 'key=print_order',
         'icon'          => 'system/modules/isotope/html/printer.png'      
-      )*/
+      )
     )
   ),
 

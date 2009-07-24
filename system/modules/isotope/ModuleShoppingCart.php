@@ -130,7 +130,7 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 		}
 */
 	
-		$strAction = $this->getRequestData('action');		
+		$strAction = $this->getRequestData('action');	//Specific to get query strings for now. 	
 		
 /*
 		if($this->getRequestData('source_cart_id'))
@@ -216,7 +216,7 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 			}
 		}	
 	
-		if($this->getRequestData('form_action')=='cart_update')
+		if($this->getRequestData('form_action')=='update_cart')
 		{
 					
 			foreach($arrProductIds as $k=>$v)
@@ -232,15 +232,19 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 			{
 				$arrProductIds[$data['cart_item_id']] = $data['attribute_set_id'];
 			}
-			//$this->reload();
+
+			$strReturnUrl = $_SESSION['FE_DATA']['referer']['current']; //$arrUrlBits[0] . '.html';		
+
+			$this->redirect(ampersand($this->Environment->base . ltrim($strReturnUrl, '/')));
+
 		}
 		
 		//actions need reload to show updated product info (until ajax comes along)
 		
-		if(strlen($strAction) && $strAction='remove_from_cart')
+		if(strlen($strAction))
 		{
+		
 			//referer current breaks if the back button is pressed.  Instead lets take the base of the url (index 0) and tack on .html.  Check with and without rewrites though!!
-			
 			
 			//$arrUrlBits = explode('/', $this->Environment->request);
 			
@@ -305,9 +309,10 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 	protected function addToCart($intProductId, $intAttributeSetId, $intQuantity, $intSourceCartId = 0, $arrProductOptionsData = array())
 	{	
 		$fltProductBasePrice = $this->getRequestData('price') ? $this->getRequestData('price') : $this->Isotope->getProductPrice($intProductId, $this->storeTable);
-		/*
-		$fltProductPrice = $this->Isotope->applyRules($fltProductBasePrice, $intProductId, $this->storeTable);
-		*/	
+		
+		//$fltProductPrice = $this->Isotope->applyRules($fltProductBasePrice, $intProductId, $this->storeTable);
+		$fltProductPrice = $fltProductBasePrice;
+			
 		if(sizeof($arrProductOptionsData))
 		{
 			// we can't assume this product is the same as another, so we add an item.
