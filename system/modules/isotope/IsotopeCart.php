@@ -173,6 +173,7 @@ class IsotopeCart extends Model
 	public function __construct()
 	{
 		$this->import('IsotopeStore', 'Store');
+		$this->import('Isotope');
 		
 		parent::__construct();
 		
@@ -243,10 +244,7 @@ class IsotopeCart extends Model
 							if(sizeof(deserialize($objExistingMemberCartData->product_options))<1 && sizeof(deserialize($objCartData->product_options))<1)
 							{
 								$this->Database->prepare("UPDATE tl_cart_items SET quantity_requested=(quantity_requested+" . $objCartData->quantity_requested . ") WHERE product_id=? AND attribute_set_id=? AND pid=?")
-											   ->execute($objCartData->product_id, $objCartData->attribute_set_id, $this->id);
-							
-								
-							
+											   ->execute($objCartData->product_id, $objCartData->attribute_set_id, $this->id);							
 							}else{
 								$this->Database->prepare("UPDATE tl_cart_items SET pid=? WHERE id=?")->execute($this->id, $objCartData->id);
 							}				   
@@ -259,6 +257,15 @@ class IsotopeCart extends Model
 						}
 					}
 				}
+				
+				/*
+				$this->import('Isotope');
+								
+				$storeTable = $this->Isotope->getStoreTableByAttributeSetId($objCartData->attribute_set_id);
+				
+				$fltNewProductPrice = $this->Isotope->applyRules($objCartData->price, $objCartData->product_id, $storeTable);
+				
+				$this->Database->prepare("UPDATE tl_cart_items SET price=? WHERE id=?")->execute($fltNewProductPrice, $objCartData->id);*/
 			}
 			
 			// Delete cookie
@@ -355,7 +362,7 @@ class IsotopeCart extends Model
 	{
 		$this->import('Isotope');
 		
-		$arrProducts = $this->Isotope->getProductData($this->getProducts(), array('alias','name','price'), 'name');
+		$arrProducts = $this->Isotope->getProductData($this->getProducts(), array('alias','name'), 'name');
 		
 		if (!count($arrProducts))
 			return '';
@@ -381,7 +388,7 @@ class IsotopeCart extends Model
 	{
 		$this->import('Isotope');
 		
-		$arrProducts = $this->Isotope->getProductData($this->getProducts(), array('alias','name','price'), 'name');
+		$arrProducts = $this->Isotope->getProductData($this->getProducts(), array('alias','name'), 'name');
 		
 		if (!count($arrProducts))
 			return 'Keine Produkte';

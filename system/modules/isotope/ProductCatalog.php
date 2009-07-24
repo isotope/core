@@ -1352,7 +1352,7 @@ class ProductCatalog extends Backend
 			$varValue .= '.' . $intID;
 		}
 
-		return $varValue;
+		return strtolower($varValue);
 	}
 	
 	/**

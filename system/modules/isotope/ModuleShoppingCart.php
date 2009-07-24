@@ -143,7 +143,7 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 		if($strAction=='add_to_cart' || $strAction=='update_cart')
 		{
 			$intAttributeSetId = $this->getAttributeSetId($this->getRequestData('aset_id'));
-		
+			$this->storeTable = $this->Isotope->getStoreTableByAggregateSetId($this->getRequestData('aset_id'));
 			
 			$arrOptionWidgets = explode(',', $this->getRequestData('option_fields'));
 			
@@ -234,9 +234,10 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 			}
 			//$this->reload();
 		}
+		
 		//actions need reload to show updated product info (until ajax comes along)
-		/*
-		if(strlen($strAction))
+		
+		if(strlen($strAction) && $strAction='remove_from_cart')
 		{
 			//referer current breaks if the back button is pressed.  Instead lets take the base of the url (index 0) and tack on .html.  Check with and without rewrites though!!
 			
@@ -247,7 +248,7 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 					
 			$this->redirect(ampersand($this->Environment->base . ltrim($strReturnUrl, '/')));
 		
-		}*/
+		}
 		
 		//we can take from session here because getProductData will update the session anyway, so at this point session always has the latest data.
 		//$arrProductData = $session['isotope']['cart_data'];
@@ -303,6 +304,10 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 	 */
 	protected function addToCart($intProductId, $intAttributeSetId, $intQuantity, $intSourceCartId = 0, $arrProductOptionsData = array())
 	{	
+		$fltProductBasePrice = $this->getRequestData('price') ? $this->getRequestData('price') : $this->Isotope->getProductPrice($intProductId, $this->storeTable);
+		/*
+		$fltProductPrice = $this->Isotope->applyRules($fltProductBasePrice, $intProductId, $this->storeTable);
+		*/	
 		if(sizeof($arrProductOptionsData))
 		{
 			// we can't assume this product is the same as another, so we add an item.
@@ -318,6 +323,7 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 				'product_id'			=> $intProductId,
 				'attribute_set_id'		=> $intAttributeSetId,
 				'quantity_requested'	=> $intQuantity,
+				'price'					=> $fltProductPrice,
 				//'source_cart_id'		=> $intSourceCartId//,
 				'product_options'		=> serialize($arrProductOptionsData)
 			);
@@ -348,6 +354,7 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 					'product_id'			=> $intProductId,
 					'attribute_set_id'		=> $intAttributeSetId,
 					'quantity_requested'	=> $intQuantity,
+					'price'					=> $fltProductPrice,
 					//'source_cart_id'		=> $intSourceCartId//,
 					'product_options'		=> serialize($arrProductOptionsData)
 				);

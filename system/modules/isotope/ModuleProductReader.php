@@ -257,11 +257,12 @@ class ModuleProductReader extends ModuleIsotopeBase
 							
 						case "use_price_override":
 							if($v==1)
-							{
-								$product['price_string'] = $this->generatePrice($product['price_override'], $this->strPriceOverrideTemplate);
+							{						
+								$product['price_string'] = $this->generatePriceStringOverride($this->strPriceOverrideTemplate, $product['price_override']);
 							}
 							else
 							{
+							
 								$product['price_string'] = $this->generatePrice($product['price']);
 							}							
 							break;							

@@ -199,8 +199,8 @@ $GLOBALS['TL_LANG']['MSC']['altTextFormat'] = '%s - %s';
 
 $GLOBALS['TL_LANG']['MSC']['thumbnailImageClickEvent'] = 'class="highslide" onclick="return hs.expand(this, { slideshowGroup: ' . "'productImages'" . ' })"';
 
-$GLOBALS['TL_LANG']['MSC']['low_to_high'] = 'low to high';
-$GLOBALS['TL_LANG']['MSC']['high_to_low'] = 'high to low';
+$GLOBALS['TL_LANG']['MSC']['low_to_high'] = 'lo to hi';
+$GLOBALS['TL_LANG']['MSC']['high_to_low'] = 'hi to lo';
 $GLOBALS['TL_LANG']['MSC']['a_to_z'] = 'A to Z';
 $GLOBALS['TL_LANG']['MSC']['z_to_a'] = 'Z to A';
 

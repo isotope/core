@@ -182,6 +182,8 @@ class Isotope extends Controller
 			
 			$arrProductExtraFields[$data['storeTable']][$data['product_id']]['source_cart_id'] = $data['source_cart_id'];
 			
+			$arrProductExtraFields[$data['storeTable']][$data['product_id']]['price'] = $data['price'];
+			
 			//Aggregate full product quantity all into one product line item for now.
 			if($arrProductExtraFields[$data['storeTable']][$data['product_id']]['quantity_requested']<1)
 			{
@@ -233,6 +235,7 @@ class Isotope extends Controller
 				$arrProducts[$product['id']]['quantity_requested'] = $arrProductExtraFields[$k][$product['id']]['quantity_requested'];
 				$arrProducts[$product['id']]['product_options'] = $arrProductExtraFields[$k][$product['id']]['product_options'];
 				$arrProducts[$product['id']]['cart_item_id'] = $arrProductExtraFields[$k][$product['id']]['cart_item_id'];
+				$arrProducts[$product['id']]['price'] = $arrProductExtraFields[$k][$product['id']]['price'];
 			}
 	
 								
@@ -257,6 +260,20 @@ class Isotope extends Controller
 		return $arrTotalProductsInCart;
 	}
 	
+	public function getProductPrice($intProductId, $strTable)
+	{
+		$objPrice = $this->Database->prepare("SELECT price FROM " . $strTable . " WHERE id=?")
+										->limit(1)
+										->execute($intProductId);
+		
+		if($objPrice->numRows < 1)
+		{
+			return false;
+		}
+		
+		return $objPrice->price;
+	
+	}
 	
 	public function getAddress($strStep = 'billing')
 	{
@@ -371,6 +388,65 @@ class Isotope extends Controller
 		}
 		
 		$objEmail->sendTo($strRecipient);
+	}
+	
+	public function applyRules($fltProductBasePrice, $intProductId, $storeTable)
+	{
+		/*
+		if($this->Database->fieldExists('is_sale_item',$storeTable))
+		{
+				
+			$objIsSaleItem = $this->Database->prepare("SELECT is_sale_item FROM " . $storeTable . " WHERE id=?")
+											->limit(1)
+											->execute($intProductId);
+											
+			if($objIsSaleItem->numRows < 1)
+			{
+				$isSaleItem = false;
+			}
+			
+			$isSaleItem = $objIsSaleItem->is_sale_item=='1' ? true : false;
+		}else{
+			$isSaleItem = false;
+		}
+						
+		if(in_array(2, $this->User->groups) && !$isSaleItem)	//this is where rules will later be loaded
+		{
+			$fltAdjustedPrice = $fltProductBasePrice - ($fltProductBasePrice * .1);
+		}else{
+			$fltAdjustedPrice = $fltProductBasePrice;
+		}
+		
+		return $fltAdjustedPrice;*/
+		
+		return $fltProductBasePrice;
+	
+	}
+	
+	public function getStoreTableByAggregateSetId($intAsetId)
+	{
+		$objAggregateSetId = $this->Database->prepare("SELECT storeTable FROM tl_cap_aggregate WHERE id=?")
+											->limit(1)
+											->execute($intAsetId);
+		if($objAggregateSetId->numRows < 1)
+		{
+			return false;
+		}	
+		
+		return $objAggregateSetId->storeTable;
+	}
+	
+	public function getStoreTableByAttributeSetId($intAttributeSetId)
+	{
+		$objAttributeSetId = $this->Database->prepare("SELECT storeTable FROM tl_product_attribute_sets WHERE id=?")
+											->limit(1)
+											->execute($intAttributeSetId);
+		if($objAttributeSetId->numRows < 1)
+		{
+			return false;
+		}	
+		
+		return $objAttributeSetId->storeTable;
 	}
 }
 

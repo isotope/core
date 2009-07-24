@@ -692,19 +692,20 @@ class MediaManagement extends Backend
 		{
 			$objFile->extension = 'png';
 		}
+		
+		$this->Files->chmod($strCacheName, 0777);
 
 		// Create new image
 		switch ($objFile->extension)
 		{
 			case 'gif':
+			
+				
 				imagegif($strNewImage, TL_ROOT . '/' . $strCacheName);
 				break;
 
 			case 'jpg':
 			case 'jpeg':
-	
-				$this->Files->chmod($strCacheName, 0777);
-				
 								
 				imagejpeg($strNewImage, TL_ROOT. '/' . $strCacheName, (!$GLOBALS['TL_CONFIG']['jpgQuality'] ? 90 : $GLOBALS['TL_CONFIG']['jpgQuality']));
 				break;
@@ -808,15 +809,15 @@ class MediaManagement extends Backend
 	 */
 	public function getCurrentProductPaths($varValue)
 	{	
-						
-		$char = strtolower(substr($varValue, 0, 1));
+		$strPathName = strtolower($varValue);				
+		$char = strtolower(substr($strPathName, 0, 1));
 		
 		$arrPaths = array
 		(			
-			'file_source_path' => $GLOBALS['TL_CONFIG']['isotope_root'] . '/' . $GLOBALS['TL_LANG']['MSC']['assetsImportBasePath'] . '/' . $char . '/' . $varValue,
-			'relative_source_path' => $GLOBALS['TL_CONFIG']['isotope_upload_path'] . '/' . $GLOBALS['TL_LANG']['MSC']['assetsImportBasePath'] . '/' . $char . '/' . $varValue,
-			'file_destination_path' => $GLOBALS['TL_CONFIG']['isotope_root'] . '/' . $GLOBALS['TL_CONFIG']['isotope_base_path'] . '/' . $char . '/' . $varValue,
-			'relative_destination_path' => $GLOBALS['TL_CONFIG']['isotope_upload_path'] . '/' . $GLOBALS['TL_CONFIG']['isotope_base_path'] . '/' . $char . '/' . $varValue
+			'file_source_path' => $GLOBALS['TL_CONFIG']['isotope_root'] . '/' . $GLOBALS['TL_LANG']['MSC']['assetsImportBasePath'] . '/' . $char . '/' . $strPathName,
+			'relative_source_path' => $GLOBALS['TL_CONFIG']['isotope_upload_path'] . '/' . $GLOBALS['TL_LANG']['MSC']['assetsImportBasePath'] . '/' . $char . '/' . $strPathName,
+			'file_destination_path' => $GLOBALS['TL_CONFIG']['isotope_root'] . '/' . $GLOBALS['TL_CONFIG']['isotope_base_path'] . '/' . $char . '/' . $strPathName,
+			'relative_destination_path' => $GLOBALS['TL_CONFIG']['isotope_upload_path'] . '/' . $GLOBALS['TL_CONFIG']['isotope_base_path'] . '/' . $char . '/' . $strPathName
 		);
 
 		return $arrPaths;

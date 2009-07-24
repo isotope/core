@@ -1,21 +1,29 @@
 <!-- indexer::stop -->
 <div class="grid <?php echo $this->class; ?><?php echo $this->cssID; ?>"<?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
-  <!--<div class="listingHeadline"><h1><?php echo $this->headline; ?></h1></div>-->
+  <div class="listingHeadline"><h1><?php echo $this->headline; ?></h1></div>
   <!-- START HEADER-->
   <div class="listingHeader">
     <!-- START FILTER-->
     <div class="filterWrap">
-        <form action="<?php echo $this->action; ?>" method="get">
+        <form action="<?php echo $this->action; ?>" method="get" name="frmFilters">
         <div class="formbody">
         <input type="hidden" name="ignore_page_id" value="<?php echo $this->ignore_page_id; ?>" />
         <input type="hidden" name="pas_id" value="<?php echo $this->pas_id; ?>" />
       	<?php foreach($this->filters as $filter): ?>
       		<label for="<?php echo $filter['name']; ?>"><?php echo $filter['label']; ?></label>
-      		<select name="<?php echo $filter['name']; ?>" class="select" onchange="form.submit();">
-      			<?php foreach($filter['options'] as $option): ?>
-      				<option value="<?php echo $option['value']; ?>"<?php if($filter['current_value']==$option['value']): ?> selected="selected"<?php endif; ?>><?php echo $option['label']; ?></option>
-      			<?php endforeach; ?>
-      		</select>
+      		<?php switch($filter['type'])  
+      			  { 
+      			  	case 'text': ?>
+      					<input type="text" name="<?php echo $filter['name']; ?>" class="text" value="<?php echo $filter['current_value']; ?>" /> <input type="submit" name="post_this_form" value="search" />
+      		<?php 		break; ?>
+      		<?php   default: ?>
+			      		<select name="<?php echo $filter['name']; ?>" class="select" onchange="form.submit();">
+			      			<?php foreach($filter['options'] as $option): ?>
+			      				<option value="<?php echo $option['value']; ?>"<?php if($filter['current_value']==$option['value']): ?> selected="selected"<?php endif; ?>><?php echo $option['label']; ?></option>
+			      			<?php endforeach; ?>
+			      		</select>
+      		<?php 		break; ?>
+      		<?php } ?>
       	<?php endforeach; ?> 
       	<label for="order_by"><?php echo $this->labelOrderBy; ?></label>
         <select name="order_by" class="select" onchange="form.submit();">
@@ -64,12 +72,13 @@
                 <div class="col1 productInfo"><a href="<?php echo $product['link']; ?>" title="<?php echo $product['name']; ?>"><img src="<?php echo $product['thumbnail'] ?>" alt="<?php echo $product['name']; ?>" border="0" class="productThumb" /></a>
                   <h3 class="productName"><a href="<?php echo $product['link']; ?>" title="<?php echo $product['name']; ?>"><?php echo $product['name']; ?></a></h3>
                    <p class="productPrice"><?php echo $product['price_string']; ?></p>
-                  <?php if($product['teaser']): ?>
-                 <!--<p class="productTeaser"><a href="<?php echo $product['link']; ?>" title="<?php echo $product['name']; ?>"><?php echo $product['teaser']; ?></a></p>-->
+                  <?php if($this->showTeaser && $product['teaser']): ?>
+                 <p class="productTeaser"><a href="<?php echo $product['link']; ?>" title="<?php echo $product['name']; ?>"><?php echo $product['teaser']; ?></a></p> 
                   <?php endif; ?>
                   
                 </div>
                 <div class="col2 productButtons">
+                  <a href="<?php echo $product['link']; ?>" title="<?php echo $product['name']; ?>">View Details</a>
                   <?php foreach($this->buttonTypes as $buttonType): ?>
                 		<div style="float: left; padding-right: 5px;"><?php echo $this->buttons[$buttonType][$product['id']]; ?></div>
                   <?php endforeach; ?>

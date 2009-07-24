@@ -687,20 +687,20 @@ abstract class ModuleIsotopeBase extends Module
 	 * @param integer
 	 * @return string (formatted html)
 	 *
-	 *//*
+	 */
 	protected function generatePriceStringOverride($strPriceOverrideTemplate, $varValue)
 	{
 			
-		$objPriceTemplate = new FrontendTemplate($strPriceOverrideTemplate);
+		$objTemplate = new FrontendTemplate($strPriceOverrideTemplate);
 				
-		$objPriceTemplate->price = $varValue;
+		$objTemplate->price = $varValue;
 		
 		
 		//$objPriceTemplate->priceNote = $this->getPriceNote($intProductId); - Additional note to appear below the price itself, perhaps indicating what price includes?
 				
-		return $objPriceTemplate->parse();
+		return $objTemplate->parse();
 		
-	}*/
+	}
 	
 	
 	protected function generatePrice($fltPrice, $strTemplate='stpl_price')
@@ -985,6 +985,11 @@ abstract class ModuleIsotopeBase extends Module
 		
 		return $objAttributeSetId->attribute_set_id;
 	}
+	
+	
+	
+
+
 	/**
 	 * Generate a Teaser text that terminates at the end of the closest sentence to the teaser length value.
 	 *

@@ -113,18 +113,29 @@ class FormTextCollectionField extends Widget
 		for($i=0; $i < $this->collectionsize; $i++)
 		{
 			$y = $i + 1;
-			if($this->collectionsize > 1 && $i!=0)
+			if($this->collectionsize > 1)
 			{
-				$return .= "<br />";
-			}
-
-			$return .= sprintf('<input type="text" name="%s[' . $i . ']" id="ctrl_%s" class="text%s" value="%s"%s />',
-							$this->strName,
-							$this->strId,
-							(strlen($this->strClass) ? ' ' . $this->strClass : ''),
-							specialchars($this->varValue),
-							$this->getAttributes()) . $this->addSubmit();
+						
+				if($i!=0)
+				{
+					$return .= "<br />";
+				}
 			
+			
+				$return .= sprintf('<input type="text" name="%s[' . $i . ']" id="ctrl_%s" class="text%s" value="%s"%s />',
+								$this->strName,
+								$this->strId,
+								(strlen($this->strClass) ? ' ' . $this->strClass : ''),
+								specialchars($this->varValue),
+								$this->getAttributes()) . $this->addSubmit();
+			}else{
+				$return .= sprintf('<input type="text" name="%s" id="ctrl_%s" class="text%s" value="%s"%s />',
+								$this->strName,
+								$this->strId,
+								(strlen($this->strClass) ? ' ' . $this->strClass : ''),
+								specialchars($this->varValue),
+								$this->getAttributes()) . $this->addSubmit();
+			}
 		}
 		
 		return $return;

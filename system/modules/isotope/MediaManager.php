@@ -199,11 +199,10 @@ class MediaManager extends Widget
 		}
 		
 		//Set the upload path to be specific to the current product id under the assets import/images/ path e.g. assets_for_import/images/1/
-		$path = $strProductFullPath;
-		$basicPath = $strProductBasicPath;
-		$tmpPath = $strProductFullPath . '/' . 'tmp';
-		
-				
+		$path = strtolower($strProductFullPath);
+		$basicPath = strtolower($strProductBasicPath);
+		$tmpPath = strtolower($strProductFullPath) . '/' . 'tmp';
+								
 		if(!is_dir($GLOBALS['TL_CONFIG']['isotope_root'] . '/' . $path))
 		{
 			new Folder($GLOBALS['TL_CONFIG']['isotope_upload_path'] . '/' . $path);
@@ -234,6 +233,7 @@ class MediaManager extends Widget
 		$existingPath = $this->MediaManagement->getCurrentProductPaths($strProductPath);
 		$existingAssetsPath = $existingPath['file_destination_path'] . '/images/large_images';
 		$this->arrExistingImages = $this->getExistingFiles($existingAssetsPath, 'images');
+		
 		
 		//Scan the assets_for_import directory for all images.
 		$this->arrImages = $this->getFiles($path, 'images');
@@ -280,7 +280,7 @@ class MediaManager extends Widget
 			$blnCopyFromDefaultAssetImportPath = true;
 			
 		}
-
+		
 					
 		if($blnShowImageManager)
 		{
@@ -670,6 +670,7 @@ class MediaManager extends Widget
 	 */
 	public function getExistingFiles($strPath, $strMediaType)
 	{
+		
 		$dir = $strPath;
 		
 		$arrMediaTypes = array_keys($GLOBALS['TL_LANG']['MSC']['validMediaFileTypes']);
@@ -682,13 +683,16 @@ class MediaManager extends Widget
 		
 		if(is_dir($dir))		
 		{
+		
 			if ($dh = opendir($dir . '/')) {
 				while ($file = readdir($dh))
 				{
+				
 					$fileExt = explode('.', $file);
 					
 					if(in_array($fileExt[1], $GLOBALS['TL_LANG']['MSC']['validMediaFileTypes'][$strMediaType]))
 					{
+						
 						$arrImages[] = $file;					
 					}
 				}
