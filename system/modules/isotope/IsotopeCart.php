@@ -226,7 +226,7 @@ class IsotopeCart extends Model
 			while( $objCartData->next() )
 			{
 				
-				$objExistingMemberCartData = $this->Database->prepare("SELECT *, COUNT(*) as count FROM tl_cart_items WHERE product_id=? AND pid=? AND attribute_set_id=?")
+				$objExistingMemberCartData = $this->Database->prepare("SELECT * FROM tl_cart_items WHERE product_id=? AND pid=? AND attribute_set_id=?")
 											->limit(1)
 											->execute($objCartData->product_id, $this->id, $objCartData->attribute_set_id);
 									
@@ -239,7 +239,7 @@ class IsotopeCart extends Model
 					while( $objExistingMemberCartData->next() )
 					{
 						// Only sum quantity if two products with same ids have no product options.
-						if($objExistingMemberCartData->count > 0)
+						if($objExistingMemberCartData->numRows > 0)
 						{
 							if(sizeof(deserialize($objExistingMemberCartData->product_options))<1 && sizeof(deserialize($objCartData->product_options))<1)
 							{
@@ -350,8 +350,9 @@ class IsotopeCart extends Model
 		if (!$this->arrProducts)
 		{
 			$objCartData = $this->Database->prepare("SELECT tl_cart_items.*, tl_product_attribute_sets.storeTable FROM tl_cart_items LEFT OUTER JOIN tl_product_attribute_sets ON tl_cart_items.attribute_set_id=tl_product_attribute_sets.id WHERE tl_cart_items.pid=?")->execute($this->id);
-			
+						
 			$this->arrProducts = $objCartData->fetchAllAssoc();
+	
 		}
 		
 		return $this->arrProducts;
@@ -367,8 +368,8 @@ class IsotopeCart extends Model
 		if (!count($arrProducts))
 			return '';
 		
-		$strBuffer  = "<table>\n";
-		$strBuffer .= "<tr><td>Name</td><td>Anzahl</td><td>Preis</td><td>Betrag</td></tr>\n";
+		$strBuffer  = "<table class='products'>\n";
+		$strBuffer .= "<tr><td class='name'>" . $GLOBALS['TL_LANG']['MSC']['iso_order_items'] ."</td><td class='quantity'>" . $GLOBALS['TL_LANG']['MSC']['iso_quantity_header'] ."</td><td class='price'>". $GLOBALS['TL_LANG']['MSC']['iso_price_header']  ."</td><td class='subtotal'>". $GLOBALS['TL_LANG']['MSC']['iso_subtotal_header'] ."</td></tr>\n";
 		
 		foreach( $arrProducts as $product )
 		{
@@ -445,12 +446,13 @@ class IsotopeCart extends Model
 		{	
 			foreach($arrProductData as $row)
 			{
-				$arrTaxClasses[] = $row['tax_class'];	
+				if(strlen($row['tax_class']))
+					$arrTaxClasses[] = $row['tax_class'];	
 			}
 		
 			//Get the tax rates for the given class.
 			$arrTaxClassRecords = array_unique($arrTaxClasses);
-			
+		
 			if(sizeof($arrTaxClassRecords))
 			{		
 				$strTaxRates = join(',', $arrTaxClassRecords);
@@ -602,6 +604,36 @@ class IsotopeCart extends Model
 							   ->limit(1)
 							   ->execute($this->id, $intProductId, $intAttributeSetId)
 							   ->numRows ? true : false);
+	}
+	
+	/**
+	 * Check if a product has any options associated with it.
+	 * 
+	 * @todo use cache data
+	 * @access public
+	 * @param int $intProductId
+	 * @param int $intAttributeSetId
+	 * @return bool
+	 */
+	public function hasOptions($intProductId, $intAttributeSetId)
+	{
+		$objProductOptions = $this->Database->prepare("SELECT product_options FROM tl_cart_items WHERE pid=? AND product_id=? AND attribute_set_id=?")
+							   ->limit(1)
+							   ->execute($this->id, $intProductId, $intAttributeSetId);
+		
+		$arrOptions = deserialize($objProductOptions->product_options);
+		
+		//echo $intProductId . '<br /><br />';
+		
+		//var_dump($arrOptions);
+		
+		if(is_array($arrOptions) && strlen(implode('',$arrOptions)))
+		{	
+			return true;
+		}
+		
+		return false;
+					
 	}
 }
 

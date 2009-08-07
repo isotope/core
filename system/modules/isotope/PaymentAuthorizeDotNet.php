@@ -41,75 +41,96 @@ class PaymentAuthorizeDotNet extends Payment
 	 */
 	public function processPayment()
 	{
-		//for Authorize.net - this would be where to handle logging response information from the server.
-		$authnet_values = array
-		(
-			"x_login"							=> $this->authorize_login,
-			"x_version"							=> $this->getRequestData('x_version'),
-			"x_test_request"					=> $this->debug,
-			"x_delim_char"						=> $this->authorize_delimiter,
-			"x_delim_data"						=> "TRUE",
-			"x_url"								=> "FALSE",
-			"x_test_request"					=> $this->getRequestData('x_test_request'),
-			"x_type"							=> $this->authorize_trans_type,
-			"x_method"							=> "CC",
-			"x_tran_key"						=> $this->authorize_trans_key,
-			"x_card_num"						=> $this->getRequestData('cc_num'),
-			"x_exp_date"						=> $this->getRequestData('cc_exp'),
-			"x_description"						=> "Order Number " . $objDc->id,
-			"x_amount"							=> $this->Cart->grandTotal,
-			"x_first_name"						=> $this->getRequestData('x_first_name'),
-			"x_last_name"						=> $this->getRequestData('x_last_name'),
-			"x_address"							=> $this->getRequestData('x_address'),
-			"x_city"							=> $this->getRequestData('x_city'),
-			"x_state"							=> $this->getRequestData('x_state'),
-			"x_zip"								=> $this->getRequestData('x_zip'),
-			"x_company"							=> $this->getRequestData('x_company'),
-			"x_email_customer"					=> "FALSE"
-		);
-
-		foreach( $authnet_values as $key => $value ) $fields .= "$key=" . urlencode( $value ) . "&";
-		$ch = curl_init(); 
-
-		###  Uncomment the line ABOVE for test accounts or BELOW for live merchant accounts
-		### $ch = curl_init("https://secure.authorize.net/gateway/transact.dll"); 
-		
-		curl_setopt($ch, CURLOPT_URL, sprintf('https://%s.authorize.net/gateway/transact.dll', $this->getRequestData('x_url'))); 
-		curl_setopt($ch, CURLOPT_HEADER, 0); // set to 0 to eliminate header info from response
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // Returns response data instead of TRUE(1)
-		curl_setopt($ch, CURLOPT_POSTFIELDS, rtrim( $fields, "& " )); // use HTTP POST to send form data
-
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); // uncomment this line if you get no gateway response. ###
-		$resp = curl_exec($ch); //execute post and get results
-		curl_close ($ch);
-		
-						
-		$arrResponses = $this->handleResponse($resp);
-
-		foreach(array_keys($arrResponses) as $key)
+		if(!$this->authorize_bypass_live_collection)
 		{
-			$arrReponseLabels[strtolower(standardize($key))] = $key;
-		}
+			//for Authorize.net - this would be where to handle logging response information from the server.
+			$authnet_values = array
+			(
+				"x_login"							=> $this->authorize_login,
+				"x_version"							=> $this->getRequestData('x_version'),
+				"x_test_request"					=> $this->debug,
+				"x_delim_char"						=> $this->authorize_delimiter,
+				"x_delim_data"						=> "TRUE",
+				"x_url"								=> "FALSE",
+				"x_test_request"					=> $this->getRequestData('x_test_request'),
+				"x_type"							=> $this->authorize_trans_type,
+				"x_method"							=> "CC",
+				"x_tran_key"						=> $this->authorize_trans_key,
+				"x_card_num"						=> $this->getRequestData('cc_num'),
+				"x_exp_date"						=> $this->getRequestData('cc_exp'),
+				"x_description"						=> "Order Number " . $objDc->id,
+				"x_amount"							=> $this->Cart->grandTotal,
+				"x_first_name"						=> $this->getRequestData('x_first_name'),
+				"x_last_name"						=> $this->getRequestData('x_last_name'),
+				"x_address"							=> $this->getRequestData('x_address'),
+				"x_city"							=> $this->getRequestData('x_city'),
+				"x_state"							=> $this->getRequestData('x_state'),
+				"x_zip"								=> $this->getRequestData('x_zip'),
+				"x_company"							=> $this->getRequestData('x_company'),
+				"x_email_customer"					=> "FALSE"
+			);
 	
-		//FIXME?? - This just doesn't seem like a good way to handle this info...
-		$_SESSION['FORM_DATA']['cc_num'] = $this->getRequestData('cc_num');
-		$_SESSION['FORM_DATA']['cc_exp'] = $this->getRequestData('cc_exp');
+			foreach( $authnet_values as $key => $value ) $fields .= "$key=" . urlencode( $value ) . "&";
+			$ch = curl_init(); 
+	
+			###  Uncomment the line ABOVE for test accounts or BELOW for live merchant accounts
+			### $ch = curl_init("https://secure.authorize.net/gateway/transact.dll"); 
+			
+			curl_setopt($ch, CURLOPT_URL, sprintf('https://%s.authorize.net/gateway/transact.dll', $this->getRequestData('x_url'))); 
+			curl_setopt($ch, CURLOPT_HEADER, 0); // set to 0 to eliminate header info from response
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // Returns response data instead of TRUE(1)
+			curl_setopt($ch, CURLOPT_POSTFIELDS, rtrim( $fields, "& " )); // use HTTP POST to send form data
+	
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); // uncomment this line if you get no gateway response. ###
+			$resp = curl_exec($ch); //execute post and get results
+			curl_close ($ch);
+			
+							
+			$arrResponses = $this->handleResponse($resp);
+	
+			foreach(array_keys($arrResponses) as $key)
+			{
+				$arrReponseLabels[strtolower(standardize($key))] = $key;
+			}
 		
-		switch($arrResponses['transaction-status'])
-		{
-			case 'Approved':
-				$this->response = 'successful';
-				$this->redirect($this->addToUrl('step=order_complete'));
-				break;
-			case 'Error':
-			case 'Declined':
-				$this->response = 'failed';
-				$this->reason = $arrResponses['reason'];
-				
-				return false;
-				break;
+		
+			//FIXME?? - This just doesn't seem like a good way to handle this info...
+			$_SESSION['FORM_DATA']['cc_num'] = $this->getRequestData('cc_num');
+			$_SESSION['FORM_DATA']['cc_exp'] = $this->getRequestData('cc_exp');
+		
+			switch($arrResponses['transaction-status'])
+			{
+				case 'Approved':
+					$this->response = 'successful';
+					
+					return true;
+					//$this->redirect($this->addToUrl('step=order_complete'));
+					break;
+				case 'Error':
+				case 'Declined':
+					$this->response = 'failed';
+					$this->reason = $arrResponses['reason'];
+					
+					return false;
+					break;
+				default:
+					$this->response = 'failed';
+					$this->reason = $arrResponses['reason'];
+					
+					return false;
+					break;
+			}
+		
+		}else{
+	
+			//FIXME?? - This just doesn't seem like a good way to handle this info...
+			$_SESSION['FORM_DATA']['cc_num'] = $this->getRequestData('cc_num');
+			$_SESSION['FORM_DATA']['cc_exp'] = $this->getRequestData('cc_exp');
+
+			//Bypass actual live curl hit, just approve for later processing.
+			$this->response = 'successful';
+			
 		}
-		
 		
 		return true;
 		

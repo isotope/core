@@ -578,7 +578,8 @@ abstract class ModuleIsotopeBase extends Module
 		$objJump = $this->Database->prepare("SELECT id, alias FROM tl_page WHERE id=?")
 								  ->limit(1)
 								  ->execute($intJumpTo);
-	
+			
+		
 		$objAsetId = $this->Database->prepare("SELECT id FROM tl_cap_aggregate WHERE product_id=? AND attribute_set_id=?")
 									->limit(1)
 									->execute($arrProduct['id'], $intAttributeSetId);
@@ -589,7 +590,7 @@ abstract class ModuleIsotopeBase extends Module
 		}
 	
 		$intAsetId = $objAsetId->id;
-
+	
 		if ($objJump->numRows > 0)
 		{
 			$strUrl = ampersand($this->generateFrontendUrl($objJump->fetchAssoc(), '/asetid/' . $intAsetId . '/product/' . $arrProduct['alias']));
@@ -766,14 +767,17 @@ abstract class ModuleIsotopeBase extends Module
 	protected function formatProductData($arrProductData)
 	{
 		global $objPage;
-	
+		
  		foreach($arrProductData as $row)
 		{	
 		
 			$intTotalPrice = $row['price'] * $row['quantity_requested'];
+			
+			$row['id'] = $row['product_id'];	//needed to ensure all product links work for now.
+		
 			$arrFormattedProductData[] = array
 			(
-				'id'				=> $row['id'],
+				'id'				=> $row['product_id'],
 				'image'				=> $GLOBALS['TL_CONFIG']['isotope_upload_path'] . '/' . $GLOBALS['TL_CONFIG']['isotope_base_path'] . '/' . substr($row['alias'], 0, 1) . '/' . $row['alias'] . '/' . $GLOBALS['TL_LANG']['MSC']['imagesFolder'] . '/' . $GLOBALS['TL_LANG']['MSC']['gallery_thumbnail_images_folder'] . '/' . $row['main_image'],
 				'name'				=> $row['name'],
 				'link'				=> $this->generateProductLink($row['alias'], $row, $this->Store->productReaderJumpTo, $row['attribute_set_id'], 'id'),
@@ -782,7 +786,7 @@ abstract class ModuleIsotopeBase extends Module
 				'quantity'			=> $row['quantity_requested'],
 				'option_values'		=> $row['product_options'],
 				'cart_item_id'		=> $row['cart_item_id'],
-				'remove_link'		=> $this->generateActionLinkString('remove_from_cart', $row['id'], array('attribute_set_id'=>$row['attribute_set_id'],'quantity'=>0, 'source_cart_id'=>$row['source_cart_id']), $objPage->id),
+				'remove_link'		=> $this->generateActionLinkString('remove_from_cart', $row['cart_item_id'], array('attribute_set_id'=>$row['attribute_set_id'],'quantity'=>0, 'source_cart_id'=>$row['source_cart_id']), $objPage->id),
 				'remove_link_title' => sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $row['name'])
 			
 			);

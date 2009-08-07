@@ -33,7 +33,7 @@
 <table class="wrapper" cellpadding="0" cellspacing="10" border="0">
 
 <tr>
-	<td colspan="2">LOGO</td>
+	<td colspan="2">http://cdss.winanscreative.com/tl_files/cdss/images/globalLayout/headerLogo.gif</td>
 </tr>
 
 <tr>

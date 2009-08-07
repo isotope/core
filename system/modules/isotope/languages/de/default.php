@@ -90,6 +90,7 @@ $GLOBALS['TL_LANG']['ISO']['productMultiple']	= '%s Produkte';
  * Shipping modules
  */
 $GLOBALS['TL_LANG']['SHIP']['collection']		= array('Abholung');
+$GLOBALS['TL_LANG']['SHIP']['order_total']		= array('Order Total-based');
 $GLOBALS['TL_LANG']['SHIP']['flat']				= array('Pauschalversand');
 
 

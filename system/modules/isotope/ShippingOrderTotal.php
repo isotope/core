@@ -30,7 +30,7 @@
  * 
  * @extends Frontend
  */
-class ShippingCollection extends Shipping
+class ShippingOrderTotal extends Shipping
 {
 	protected $shipping_options = array();
 	
@@ -63,9 +63,16 @@ class ShippingCollection extends Shipping
 								return ($this->arrData['price'] + $this->calculateSurcharge());
 						}
 						break;*/
-					case 'collection':
-						return 0;
-						//return $this->calculateShippingRate($this->id, $this->Cart->subTotal);
+					case 'order_total':
+						$fltEligibleSubTotal = $this->getAdjustedSubTotal($this->Cart->subTotal);
+				
+						if($fltEligibleSubTotal==0)
+						{
+							return 0.00;
+						}
+		
+
+						return $this->calculateShippingRate($this->id, $fltEligibleSubTotal);
 						break;
 				}
 				break;
@@ -112,7 +119,7 @@ class ShippingCollection extends Shipping
 	{
 		$this->import('FrontendUser','User');
 		$this->import('Isotope');
-		
+			
 		$arrUserGroups = deserialize($this->User->groups);
 		
 		$arrShippingAddress = $this->Isotope->getAddress('shipping'); //Tax calculated based on billing address.
@@ -203,13 +210,13 @@ class ShippingCollection extends Shipping
 							switch($v)
 							{
 								case 'lower':
-									if($fltLimit!=0 && ((float)$this->Cart->subTotal > (float)$fltLimit))
+									if($fltLimit!=0 && ((float)$fltCartSubTotal > (float)$fltLimit))
 									{	
 										$arrEligibleRates[] = $rate['rate_info']['rate'];						
 									}
 									break;
 								case 'upper':						
-									if($fltLimit!=0 && ((float)$fltLimit) >= (float)$this->Cart->subTotal)
+									if($fltLimit!=0 && ((float)$fltLimit) >= (float)$fltCartSubTotal)
 									{
 										$arrEligibleRates[] = $rate['rate_info']['rate'];
 									}
@@ -260,14 +267,14 @@ class ShippingCollection extends Shipping
 									{
 										case 'lower':
 											
-											if($fltLimit!=0 && ((float)$this->Cart->subTotal >= (float)$fltLimit))
+											if($fltLimit!=0 && ((float)$fltCartSubTotal >= (float)$fltLimit))
 											{	
 												$arrEligibleRates[] = $rate['rate_info']['rate'];
 											}
 											break;
 										case 'upper':
 																							
-											if($fltLimit!=0 && ((float)$fltLimit >= (float)$this->Cart->subTotal))
+											if($fltLimit!=0 && ((float)$fltLimit >= (float)$fltCartSubTotal))
 											{
 												$arrEligibleRates[] = $rate['rate_info']['rate'];
 											}
@@ -372,18 +379,48 @@ class ShippingCollection extends Shipping
 		 		
  		$fltTotalSurcharges = array_sum($arrSurcharges);
 		
-		$strOptionName = $this->Input->post('shipping_options');
-		
-		if($this->Input->post($strOptionName))
+		if($this->Input->post('shipping_options'))
 		{
-			$_SESSION['FORM_DATA']['shipping_options'][$strOptionName] = (float)$this->Input->post($strOptionName);
-		}			
+			$_SESSION['FORM_DATA']['shipping_option_name'] = $this->Input->post('shipping_options');
+		}
+			
+		if($this->Input->post($_SESSION['FORM_DATA']['shipping_option_name']))
+		{
+			//$_SESSION['FORM_DATA']['shipping_options'][$_SESSION['FORM_DATA']['shipping_option_name']] = 0;
+			
+			$_SESSION['FORM_DATA']['shipping_options'][$_SESSION['FORM_DATA']['shipping_option_name']] = (float)$this->Input->post($_SESSION['FORM_DATA']['shipping_option_name']);
+					
 		
-		$fltShippingTotal = $fltBaseRate + $fltTotalSurcharges + array_sum($_SESSION['FORM_DATA']['shipping_options']);
+			$arrShippingOptionValues = array($_SESSION['FORM_DATA']['shipping_options'][$_SESSION['FORM_DATA']['shipping_option_name']]);
+			
+			$fltShippingOptions = array_sum($arrShippingOptionValues);
+		}else{
+			$fltShippingOptions = $_SESSION['FORM_DATA']['shipping_options'][$_SESSION['FORM_DATA']['shipping_option_name']];
+		}
+		
+		$fltShippingTotal = $fltBaseRate + $fltTotalSurcharges + $fltShippingOptions;
 		
 		return $fltShippingTotal;
+		
 	}
 
+	public function getAdjustedSubTotal($fltSubtotal)
+	{
+		$this->import('Isotope');
+		
+		$arrProductData = $this->Isotope->getProductData($this->Cart->getProducts(), array('price','shipping_exempt'), 'price');
+		
+		foreach($arrProductData as $product)
+		{
+			if($product['shipping_exempt'])
+			{
+				$fltSubtotal -= $product['price'];
+			}
+		
+		}
+		
+		return $fltSubtotal;
+	}
 		
 	/*
 	,

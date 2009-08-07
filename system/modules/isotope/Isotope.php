@@ -164,83 +164,50 @@ class Isotope extends Controller
 	
 	
 	
-	public function getProductData($arrAggregateSetData, $arrFieldNames, $strOrderByField)
-	{					
+	public function getProductData($arrCartItemsData, $arrFieldNames, $strOrderByField)
+	{		
 		$strFieldList = join(',', $arrFieldNames);
-		$arrProductsAndTables = array();
-
-		foreach($arrAggregateSetData as $data)
+			
+		foreach($arrCartItemsData as $configRow)
 		{
-			$arrProductsAndTables[$data['storeTable']][] = array($data['product_id'], $data['quantity_requested']); //Allows us to cycle thru the correct table and product ids collections.
-			
-			//The productID list for this storetable, used to build the IN clause for the product gathering.
-			$arrProductIds[$data['storeTable']][] = $data['product_id'];
-			
-			$arrProductExtraFields[$data['storeTable']][$data['product_id']]['cart_item_id'] = $data['id'];
-			//This is used to gather extra fields for a given product by store table.
-			$arrProductExtraFields[$data['storeTable']][$data['product_id']]['attribute_set_id'] = $data['attribute_set_id'];
-			
-			$arrProductExtraFields[$data['storeTable']][$data['product_id']]['source_cart_id'] = $data['source_cart_id'];
-			
-			$arrProductExtraFields[$data['storeTable']][$data['product_id']]['price'] = $data['price'];
-			
-			//Aggregate full product quantity all into one product line item for now.
-			if($arrProductExtraFields[$data['storeTable']][$data['product_id']]['quantity_requested']<1)
-			{
-				$arrProductExtraFields[$data['storeTable']][$data['product_id']]['quantity_requested'] = $data['quantity_requested'];
-			}else{
-				$arrProductExtraFields[$data['storeTable']][$data['product_id']]['quantity_requested'] += $data['quantity_requested'];
-			}
-			
-			if(strlen($data['product_options']))
-			{	
-				$arrProductExtraFields[$data['storeTable']][$data['product_id']]['product_options'] = deserialize($data['product_options']);
-			}
-		}
 						
-		$arrTotalProductsInCart = array();
-					
-		foreach($arrProductsAndTables as $k=>$v)
-		{
-							
-			$strCurrentProductList = join(',', $arrProductIds[$k]);
-						
-			$objProducts = $this->Database->prepare("SELECT id, " . $strFieldList . " FROM " . $k . " WHERE id IN(" . $strCurrentProductList . ") ORDER BY " . $strOrderByField . " ASC")
-										  ->execute();
+			$objProductData = $this->Database->prepare("SELECT id, " . $strFieldList . " FROM " . $configRow['storeTable'] . " WHERE id=?")
+										  ->limit(1)
+										  ->execute($configRow['product_id']);
 			
-			if($objProducts->numRows < 1)
+			if($objProductData->numRows < 1)
 			{
 				return array();
 			}
 			
-			$arrProductsInCart = $objProducts->fetchAllAssoc();
+			$arrProductsInCart = $objProductData->fetchAllAssoc();
 						
 			foreach($arrProductsInCart as $product)
 			{
-				$arrProducts[$product['id']]['id'] = $product['id'];
+												
+				$arrProducts[$configRow['id']]['product_id'] = $configRow['product_id'];	//product_id
 				
+				//get anything else that might be wanted according to the field list.
 				foreach($arrFieldNames as $field)
 				{
 					if (($field == 'main_image') && !strlen($product[$field]))
 					{
 						$this->import('MediaManagement');
-						$product[$field] = $this->MediaManagement->getFirstOrdinalImage('assets/%s/%s/images/gallery_thumbnail_images', $product['alias']);
+						$product[$field] = $this->MediaManagement->getFirstOrdinalImage($GLOBALS['TL_CONFIG']['isotope_base_path'] . '/%s/%s/images/gallery_thumbnail_images', $product['alias']);
 					}
 					
-					$arrProducts[$product['id']][$field] = $product[$field];
+					$arrProducts[$configRow['id']][$field] = $product[$field];
 				}
-				
-				$arrProducts[$product['id']]['attribute_set_id'] = $arrProductExtraFields[$k][$product['id']]['attribute_set_id'];
-				$arrProducts[$product['id']]['source_cart_id'] = $arrProductExtraFields[$k][$product['id']]['source_cart_id'];
-				$arrProducts[$product['id']]['quantity_requested'] = $arrProductExtraFields[$k][$product['id']]['quantity_requested'];
-				$arrProducts[$product['id']]['product_options'] = $arrProductExtraFields[$k][$product['id']]['product_options'];
-				$arrProducts[$product['id']]['cart_item_id'] = $arrProductExtraFields[$k][$product['id']]['cart_item_id'];
-				$arrProducts[$product['id']]['price'] = $arrProductExtraFields[$k][$product['id']]['price'];
+			
+				$arrProducts[$configRow['id']]['cart_item_id'] = $configRow['id'];
+				$arrProducts[$configRow['id']]['attribute_set_id'] = $configRow['attribute_set_id'];
+				$arrProducts[$configRow['id']]['source_cart_id'] = $configRow['pid'];
+				$arrProducts[$configRow['id']]['quantity_requested'] = $configRow['quantity_requested'];
+				$arrProducts[$configRow['id']]['product_options'] = deserialize($configRow['product_options']);
+				$arrProducts[$configRow['id']]['price'] = $configRow['price'];
 			}
-	
-								
-			$arrTotalProductsInCart = array_merge($arrTotalProductsInCart, $arrProducts);
 		}
+			
 		
 		//Retrieve current session data, only if a new product has been added or else the cart updated in some way, and reassign the cart product data
 //		$session = $this->Session->getData();
@@ -256,8 +223,8 @@ class Isotope extends Controller
 		
 		
 //		$this->Session->setData($session);
-				
-		return $arrTotalProductsInCart;
+			
+		return $arrProducts;
 	}
 	
 	public function getProductPrice($intProductId, $strTable)
@@ -356,7 +323,24 @@ class Isotope extends Controller
 		$objEmail->from = $objMail->sender;
 		$objEmail->fromName = $objMail->senderName;
 		$objEmail->subject = $this->parseSimpleTokens($objMail->subject, $arrData);
-		$objEmail->text = $this->parseSimpleTokens($objMail->text, $arrData);
+		
+		// Replace insert tags
+		$text = $this->parseSimpleTokens($objMail->text, $arrData);
+		
+		$objEmail->text = $this->replaceInsertTags($text);
+		
+		$css = '';
+
+		// Add style sheet newsletter.css
+		if (!$objNewsletter->sendText && file_exists(TL_ROOT . '/newsletter.css'))
+		{
+			$buffer = file_get_contents(TL_ROOT . '/newsletter.css');
+			$buffer = preg_replace('@/\*\*.*\*/@Us', '', $buffer);
+
+			$css  = '<style type="text/css">' . "\n";
+			$css .= trim($buffer) . "\n";
+			$css .= '</style>' . "\n";
+		}
 		
 		if (!$objMail->textOnly && strlen($objMail->html))
 		{
@@ -367,12 +351,15 @@ class Isotope extends Controller
 				$objTemplate = new FrontendTemplate((strlen($objMail->template) ? $objMail->template : 'mail_default'));
 	
 				$objTemplate->title = $objMail->subject;
-				$objTemplate->body = $this->parseSimpleTokens($objMail->html, $arrData);
+				$html = $this->replaceInsertTags($objMail->html);
+				$objTemplate->body = $this->parseSimpleTokens($html, $arrData);
 				$objTemplate->charset = $GLOBALS['TL_CONFIG']['characterSet'];
 				$objTemplate->css = $css;
 	
 				// Parse template
-				$objEmail->html = $objTemplate->parse();
+				$objParsedTemplate = $objTemplate->parse();
+				// Replace insert tags in the template itself
+				$objEmail->html = $this->replaceInsertTags($objParsedTemplate);
 				$objEmail->imageDir = TL_ROOT . '/';
 			}
 		}

@@ -45,12 +45,17 @@ $GLOBALS['TL_LANG']['tl_module']['iso_checkout_layout'] = array('Checkout Templa
 $GLOBALS['TL_LANG']['tl_module']['iso_payment_modules'] = array('Payment Methods','Select one or more payment methods for this checkout module.');
 $GLOBALS['TL_LANG']['tl_module']['iso_shipping_modules'] = array('Shipping Methods','Select one or more shipping methods for this checkout module.');
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method'] = array('Checkout method','Choose your checkout method.');
+$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions'] = array('Order Conditions Article','Choose an article that is used to display your order terms and conditions (optional).');
 $GLOBALS['TL_LANG']['tl_module']['addressBookTemplate'] = array('Address Book Listing Template','Select a listing template.');
 $GLOBALS['TL_LANG']['tl_module']['orderCompleteJumpTo'] = array('Completed order jump to page','Select a page the customer will be referred to after their order is complete.');
 $GLOBALS['TL_LANG']['tl_module']['iso_jump_first'] = array('Redirect to first product', 'Check here if users are redirected to the first product of the list.');
 $GLOBALS['TL_LANG']['tl_module']['iso_forward_cart'] = array('Forward to cart', 'Forward to cart page when adding a product.');
 $GLOBALS['TL_LANG']['tl_module']['featured_products'] = array('Display only featured products?', 'Display featured products only.');
 $GLOBALS['TL_LANG']['tl_module']['iso_show_teaser'] = array('Show Teaser','Should the teaser be shown in the listing?');
+$GLOBALS['TL_LANG']['tl_module']['iso_mail_customer'] = array('Customer Notification Email','Select the Iotope Email used to send to customers when they place an order');
+$GLOBALS['TL_LANG']['tl_module']['iso_mail_admin'] = array('Sales Admin Notification Email','Select the Iotope Email used to send to a sales admin when a customers places an order');
+$GLOBALS['TL_LANG']['tl_module']['iso_sales_email'] = array('Sales Admin Email Address','Enter an email address other than the default System Admin for store notifications to be sent to.');
+
 
 /**
  * References

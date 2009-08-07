@@ -119,7 +119,7 @@ $GLOBALS['TL_DCA']['tl_product_attribute_sets'] = array
 	'palettes' => array
 	(
 		'__selector__'            => array('addImage'),
-		'default'                 => 'name,store_id,storeTable,noTable;addImage;format',
+		'default'                 => 'name,store_id,storeTable,noTable;iso_reader_layout,iso_list_layout;addImage;format',
 	),
 
 	// Subpalettes
@@ -197,6 +197,24 @@ $GLOBALS['TL_DCA']['tl_product_attribute_sets'] = array
 			'inputType'               => 'textarea',
 			'eval'                    => array('allowHtml'=>true)
 		),
+		'iso_reader_layout' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attribute_sets']['iso_reader_layout'],
+			'default'                 => 'iso_reader_product_single',
+			'exclude'                 => true,
+			'inputType'               => 'select',
+			'options'                 => $this->getTemplateGroup('iso_reader_'),
+			'eval'					  => array('includeBlankOption'=>true)
+		),
+		'iso_list_layout' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attribute_sets']['iso_list_layout'],
+			'default'                 => 'iso_list_productlist',
+			'exclude'                 => true,
+			'inputType'               => 'select',
+			'options'                 => $this->getTemplateGroup('iso_list_'),
+			'eval'					  => array('includeBlankOption'=>true)
+		)
 	)
 );
 

@@ -87,13 +87,17 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
         'label'         => &$GLOBALS['TL_LANG']['tl_iso_orders']['authorize_process_payment'],
         'href'          => 'key=authorize_process_payment',
         'icon'          => 'system/modules/isotope/html/money.png'      
-      ),*/
+      ),
       'print_order' => array
       (
         'label'         => &$GLOBALS['TL_LANG']['tl_iso_orders']['print_order'],
         'href'          => 'key=print_order',
         'icon'          => 'system/modules/isotope/html/printer.png'      
-      )
+      ),*/
+	  'buttons' => array
+	  (
+		'button_callback'     => array('tl_iso_orders', 'moduleOperations'),
+	  )
     )
   ),
 
@@ -204,6 +208,37 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 class tl_iso_orders extends Backend
 {
 
+	/**
+	 * Return a string of more buttons for the orders module.
+	 * 
+	 * @todo Collect additional buttons from shipping modules.
+	 * @access public
+	 * @param array $arrRow
+	 * @return string
+	 */
+	public function moduleOperations($arrRow)
+	{
+		foreach($GLOBALS['ISO_ORDERS']['operations'] as $operation)
+		{
+			$strClass = $operation;
+	
+			if (!strlen($strClass) || !$this->classFileExists($strClass))
+				return '';
+				
+			try 
+			{
+				$objModule = new $strClass($arrRow);
+				$strButtons .= $objModule->moduleOperations($arrRow['id']);
+			}
+			catch (Exception $e) {}
+			
+			
+		}
+		
+		return $strButtons;
+	}
+	
+	
   /**
    * getOrderLabel function.
    * 
@@ -238,7 +273,7 @@ class tl_iso_orders extends Backend
   
   protected function getOrderDescription($row)
   {
-    $strProductList = $this->getProducts($row['source_cart_id']);
+    $strProductList = $this->getProducts($row['cart_id']);
 
     return '
 		  <div>

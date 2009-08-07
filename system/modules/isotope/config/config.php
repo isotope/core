@@ -145,7 +145,7 @@ $GLOBALS['TL_FFL']['textCollection'] = 'FormTextCollectionField';
 /**
  * Shipping modules
  */
-$GLOBALS['ISO_SHIP']['collection']	 = 'ShippingCollection';
+$GLOBALS['ISO_SHIP']['order_total']	 = 'ShippingOrderTotal';
 $GLOBALS['ISO_SHIP']['flat']		 = 'ShippingFlat';
 
 /**
@@ -160,6 +160,11 @@ $GLOBALS['ISO_PAY']['cc_types']['visa'] = 'Visa';
 $GLOBALS['ISO_PAY']['cc_types']['mastercard'] = 'Mastercard';
 $GLOBALS['ISO_PAY']['cc_types']['amex'] = 'American Express';
 $GLOBALS['ISO_PAY']['cc_types']['discover'] = 'Discover';
+
+/** 
+ * Order module additional operations
+ */
+$GLOBALS['ISO_ORDERS']['operations'][] = 'IsotopePOS';
 
 /**
  * Handle Collections
@@ -572,6 +577,54 @@ $GLOBALS['ISO_ATTR'] = array
 		'delete_locked'				=> 1
 	),
 	
+	// Shipping Class		
+	array
+	( 
+		'pid'						=> $dc->id, 
+		'tstamp'					=> time(),
+		'sorting'					=> $intSorting,
+		'type'						=> 'decimal',
+		'field_name'				=> 'shipping_class',
+		'name'						=> 'Shipping Class',
+		'description'				=> 'Left blank, the default shipping option will be applied.',
+		'attr_use_mode'				=> 'fixed',
+		'is_customer_defined'		=> 0,
+		'is_visible_on_front'		=> 0,
+		'is_required'				=> 0,
+		'is_filterable'				=> 0,
+		'is_searchable'				=> 0,
+		'is_used_for_price_rules'	=> 1,
+		'is_multiple_select'		=> 0,
+		'use_rich_text_editor'		=> 0,
+		'is_user_defined'			=> 0,
+		'is_listing_field'			=> 0,
+		'delete_locked'				=> 1
+	),
+	
+	// Featured Item		
+	array
+	( 
+		'pid'						=> $dc->id, 
+		'tstamp'					=> time(),
+		'sorting'					=> $intSorting,
+		'type'						=> 'checkbox',
+		'field_name'				=> 'shipping_exempt',
+		'name'						=> 'Exempt from shipping',
+		'description'				=> 'Check if item is not a shipped item (downloadable products, for example)',
+		'attr_use_mode'				=> 'fixed',
+		'is_customer_defined'		=> 0,
+		'is_visible_on_front'		=> 0,
+		'is_required'				=> 0,
+		'is_filterable'				=> 0,
+		'is_searchable'				=> 0,
+		'is_used_for_price_rules'	=> 0,
+		'is_multiple_select'		=> 0,
+		'use_rich_text_editor'		=> 0,
+		'is_user_defined'			=> 0,
+		'is_listing_field'			=> 0,
+		'delete_locked'				=> 1
+	),
+	
 	// Featured Item		
 	array
 	( 
@@ -580,7 +633,7 @@ $GLOBALS['ISO_ATTR'] = array
 		'sorting'					=> $intSorting,
 		'type'						=> 'checkbox',
 		'field_name'				=> 'featured_product',
-		'name'						=> 'Is a Featured Product?',
+		'name'						=> 'Is a featured product?',
 		'description'				=> '',
 		'attr_use_mode'				=> 'fixed',
 		'is_customer_defined'		=> 0,

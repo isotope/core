@@ -34,6 +34,7 @@ CREATE TABLE `tl_module` (
   `iso_forward_cart` char(1) NOT NULL default '',
   `iso_mail_customer` int(10) unsigned NOT NULL default '0',
   `iso_mail_admin` int(10) unsigned NOT NULL default '0',
+  `iso_sales_email` varchar(255) NOT NULL default '',
   `iso_order_conditions` int(10) unsigned NOT NULL default '0',
   `featured_products` char(1) NOT NULL default '',
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -92,6 +93,8 @@ CREATE TABLE `tl_product_attribute_sets` (
   `addImage` char(1) NOT NULL default '',
   `singleSRC` varchar(255) NOT NULL default '',
   `size` varchar(255) NOT NULL default '',
+  `iso_reader_layout` varchar(255) NOT NULL default '',
+  `iso_list_layout` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -375,6 +378,7 @@ CREATE TABLE `tl_payment_modules` (
   `authorize_trans_type` varchar(32) NOT NULL default '',
   `authorize_relay_response` char(1) NOT NULL default '',
   `authorize_email_customer` char(1) NOT NULL default '',
+  `authorize_bypass_live_collection` char(1) NOT NULL default '',
   `groups` blob NULL,
   `debug` char(1) NOT NULL default '',
   `enabled` char(1) NOT NULL default '',
@@ -433,9 +437,11 @@ CREATE TABLE `tl_shipping_options` (
   `pid` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
   `name` varchar(255) NOT NULL default '',
+  `description` text NULL,
   `option_type` varchar(255) NOT NULL default '',
   `override` char(1) NOT NULL default '',
   `override_rule` int(10) unsigned NOT NULL default '0',
+  `override_message` varchar(255) NOT NULL default '',
   `limit_type` varchar(255) NOT NULL default '',
   `limit_value` double NULL default NULL,
   `rate` double NULL default NULL,
@@ -498,6 +504,13 @@ CREATE TABLE `tl_iso_orders` (
   
   `payment_method` varchar(255) NOT NULL default '',
   `shipping_method` varchar(255) NOT NULL default '',
+  
+  `cc_num` varchar(64) NOT NULL default '',
+  `cc_type` varchar(32) NOT NULL default '',
+  `cc_exp` varchar(16) NOT NULL default '',
+  `cc_cvv` varchar(8) NOT NULL default '',
+  `authnet_response` varchar(255) NOT NULL default '',
+  `authnet_reason` text NULL,
   
   `order_comments` text NULL, 
   `gift_message` text NULL,

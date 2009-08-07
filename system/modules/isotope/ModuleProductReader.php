@@ -141,6 +141,14 @@ class ModuleProductReader extends ModuleIsotopeBase
 	 */
 	protected function compile()
 	{
+		// For Continue Shopping button. This should be tripped every time people hit the product reader
+		if($this->getReferer(ENCODE_AMPERSANDS) != ampersand($this->Environment->request, true))
+		{
+			$_SESSION['referringPage'] = $this->getReferer(ENCODE_AMPERSANDS);
+		}
+		$this->Template->referrer = $_SESSION['referringPage'];
+		
+	
 		global $objPage;
 					
 		$useLegacyMainImage = true;
@@ -398,7 +406,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 								(
 									'name'			=> $k,
 									'description'	=> $arrAttributeData['description'],									
-									'html'			=> $this->generateProductOptionWidget($k, $arrData, $this->currFormId)
+									'html'			=> $this->generateProductOptionWidget($k, $arrData, $this->currFormId, $this->intAttributeSetId)
 								);
 							
 							}else{
@@ -411,35 +419,43 @@ class ModuleProductReader extends ModuleIsotopeBase
 										//check for a related label to go with the value.
 										$arrOptions = deserialize($arrAttributeData['option_list']);
 										$varValues = deserialize($v);
+										$arrLabels = array();
 										
-										foreach($arrOptions as $option)
+										if($arrAttributeData['is_visible_on_front'])
 										{
-											if(is_array($varValues))
+																				
+											foreach($arrOptions as $option)
 											{
-												if(in_array($option['value'], $varValues))
+												if(is_array($varValues))
 												{
-													$arrLabels[] = $option['label'];
+													if(in_array($option['value'], $varValues))
+													{
+														$arrLabels[] = $option['label'];
+													}
+												}else{	
+													
+													if($option['value']===$v)
+													{
+														$arrLabels[] = $option['label'];
+													}
 												}
-											}else{	
-												
-												if((int)$option['value']==(int)$v)
-												{
-													$arrLabels[] = $option['label'];
-												}
+											
 											}
-										
+											
+											if($arrLabels)
+											{									
+												$product[$k] = join(',', $arrLabels); 
+											}
+											
 										}
-										
-										if($arrLabels)
-										{									
-											$product[$k] = join(',', $arrLabels); 
-										}
-										
 										break;
-																											
+																																				
 									default:
-										//just direct render
-										$product[$k] = $v;
+										if($arrAttributeData['is_visible_on_front'])
+										{
+											//just direct render
+											$product[$k] = $v;
+										}
 										break;
 								}
 							}							

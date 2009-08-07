@@ -127,6 +127,7 @@
 	        <?php endforeach; ?>
 	        </div>
 	        </div>
+	        </div>
 	        <?php endif; ?>
 	      <div class="additionalInformation">
 	      
@@ -143,6 +144,9 @@
     </div>
     <?php endforeach; ?>
    	<?php endif; ?>
+   	<div class="continue">
+   		<a href="<?php echo $this->referrer; ?>" title="Continue Shopping">Continue Shopping</a>
+   	</div>
   </div>
 </div>
 <?php if ($this->hasError): ?>

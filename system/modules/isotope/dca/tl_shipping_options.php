@@ -102,17 +102,16 @@ $GLOBALS['TL_DCA']['tl_shipping_options'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'__selector__'				  => array('option_type','override'),
-		'default'                     => 'name;option_type;',
-		'ot_tier'					  => 'name;option_type;rate;limit_type,limit_value;groups;dest_countries,dest_regions,dest_postalcodes',
-		'surcharge'					  => 'name;option_type;mandatory;rate;groups;dest_countries,dest_regions,dest_postalcodes'
+		'__selector__'				  => array('option_type'),
+		'default'                     => 'name,description;option_type;',
+		'ot_tier'					  => 'name,description;option_type;rate;limit_type,limit_value;groups;dest_countries,dest_regions,dest_postalcodes',
+		'surcharge'					  => 'name,description;option_type;mandatory;rate;groups;dest_countries,dest_regions,dest_postalcodes'
 		
 	),
 	
 	'subpalettes' => array
 	(
-		'override'					  => 'override_rule'
-	
+		'override'					  => 'override_message'	
 	),
 
 	// Fields
@@ -124,6 +123,13 @@ $GLOBALS['TL_DCA']['tl_shipping_options'] = array
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255)
+		),
+		'description' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['description'],
+			'exclude'                 => true,
+			'inputType'               => 'textarea',
+			'eval'                    => array('maxlength'=>255)
 		),
 		'option_type' => array
 		(
@@ -166,6 +172,13 @@ $GLOBALS['TL_DCA']['tl_shipping_options'] = array
 			'inputType'               => 'select',
 			//'eval'                    => array('multiple'=>true, 'size'=>8),
 			'options_callback'		  => array('tl_shipping_options','getExistingRules')
+		),
+		'override_message' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['override_message'],
+			'exclude'                 => true,
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>255)
 		),
 		'groups' => array
 		(

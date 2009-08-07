@@ -104,7 +104,7 @@ $GLOBALS['TL_DCA']['tl_shipping_modules'] = array
 	(
 		'__selector__'                => array('type'),
 		'default'                     => 'type,name,label,note;countries,minimum_total,maximum_total;groups;enabled',
-		'collection'                  => 'type,name,label,note;price;countries,minimum_total,maximum_total;groups;enabled',
+		'order_total'                  => 'type,name,label,note;price;countries,minimum_total,maximum_total;groups;enabled',
 		'flat'                        => 'type,name,label,note;price,flatCalculation,surcharge_field;countries,minimum_total,maximum_total;groups;enabled',
 	),
 
@@ -126,7 +126,7 @@ $GLOBALS['TL_DCA']['tl_shipping_modules'] = array
 			'exclude'                 => true,
 			'filter'                  => true,
 			'inputType'               => 'select',
-			'default'				  => 'collection',
+			'default'				  => 'order_total',
 			'options_callback'        => array('tl_shipping_modules', 'getModules'),
 			'reference'               => &$GLOBALS['TL_LANG']['SHIP'],
 			'eval'                    => array('helpwizard'=>true, 'submitOnChange'=>true)

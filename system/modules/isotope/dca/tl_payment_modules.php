@@ -107,7 +107,7 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 		'cash'						  => '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules;{enabled_legend},enabled',
 		'paypal'                      => '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,postsale_mail,minimum_total,maximum_total,countries,shipping_modules;{paypal_legend},paypal_account,paypal_business;{enabled_legend},debug,enabled',
 		'postfinance'                 => '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,postsale_mail,minimum_total,maximum_total,countries,shipping_modules;{postfinance_legend},postfinance_pspid,postfinance_secret,postfinance_method;{enabled_legend},debug,enabled',
-		'authorizedotnet'			  => '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,allowed_cc_types,minimum_total,maximum_total,countries,shipping_modules;{authorize_legend},authorize_login,authorize_trans_key,authorize_trans_type,authorize_delimiter;{enabled_legend},debug,enabled',
+		'authorizedotnet'			  => '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,allowed_cc_types,minimum_total,maximum_total,countries,shipping_modules;{authorize_legend},authorize_login,authorize_trans_key,authorize_trans_type,authorize_delimiter,authorize_bypass_live_collection;{enabled_legend},debug,enabled',
 	),
 
 	// Fields
@@ -275,6 +275,12 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>1)
+		),		
+		'authorize_bypass_live_collection' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['authorize_bypass_live_collection'],
+			'exclude'                 => true,
+			'inputType'               => 'checkbox',
 		),
 		'debug' => array
 		(

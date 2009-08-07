@@ -11,7 +11,6 @@
 			<div class="clearBoth"></div>
 		</div>
 		<?php endforeach; ?>
-	</ol>
 	<?php if ($this->showPrevious || $this->showNext): ?>
 	<div class="step_container">
 		<?php if ($this->showPrevious): ?><input type="submit" class="submit previous" name="previousStep" value="<?php echo $this->previousLabel; ?>" /><?php endif; if ($this->showNext): ?>

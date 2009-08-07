@@ -347,6 +347,8 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 					$strKey = array_search($this->strCurrentStep, $arrSteps2);
 					$this->Template->action = $this->addToUrl('step='.$arrSteps2[($strKey+1)]);
 					$this->Template->nextLabel = specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']);
+					
+					$this->Template->showPrevious = false;
 					$this->Template->showNext = true;
 					break;
 					
@@ -358,6 +360,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 					
 					if ($this->Cart->Payment->processPayment())
 					{
+					
 						$this->writeOrder(true);
 						
 						$arrSteps[] = array
@@ -373,7 +376,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 					{
 						$this->writeOrder(false);
 						
-						$this->redirect($this->addToUrl('step=order_failed&response='. $this->Cart->Payment->response .'&reason='. $this->Cart->Payment->reason));
+						$this->redirect($this->addToUrl('step=order_failed&amp;response='. $this->Cart->Payment->response .'&amp;reason='. $this->Cart->Payment->reason));
 						
 						/*	$arrSteps[] = array
 							(
@@ -394,8 +397,8 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				case 'order_failed';
 					
 					// Hide buttons
-					$this->Template->showNext = true;
-					$this->Template->showPrevious = false;
+					/*$this->Template->showNext = true;
+					$this->Template->showPrevious = false;*/
 					
 					$this->Database->prepare("UPDATE tl_iso_orders SET status='failed' WHERE cart_id=?")->execute($this->Cart->id);
 					
@@ -420,8 +423,9 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		}
 		
 		// Valid input data, redirect to next step
-		elseif ($this->Input->post('FORM_SUBMIT') == $this->strFormId && !$this->doNotSubmit)
+		elseif ($this->Input->post('FORM_SUBMIT') == $this->strFormId && !$this->doNotSubmit && $this->getRequestData('step')!='order_complete')
 		{
+				
 			$this->redirectToNextStep();
 		}
 			
@@ -595,6 +599,12 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		//TODO?  Consider CC_TYPE and CC_CVV?
 		//exit;
 		
+		$arrTotals = array($this->Cart->subTotal, $this->Cart->taxTotalWithShipping, $this->Cart->Shipping->price, $this->Cart->grandTotal);
+		
+		$arrPaymentData['address'] 	= $arrBillingAddress;
+		$arrPaymentData['totals'] 	= $arrTotals;	
+		$arrPaymentData['currency'] = $this->Store->currency;
+		
 		$arrSet = array
 		(
 			'pid'					=> (FE_USER_LOGGED_IN ? $this->User->id : 0),
@@ -602,7 +612,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			'date'					=> time(),
 			'store_id'				=> $this->Store->id,
 			'cart_id'				=> $this->Cart->id,
-			'source_cart_id'		=> $this->Cart->id,
+			//'source_cart_id'		=> $this->Cart->id,
 			'subTotal'				=> $this->Isotope->formatPriceWithCurrency($this->Cart->subTotal),		// + ($this->Input->post('gift_wrap') ? 10 : 0),		
 			'taxTotal'	 			=> $this->Isotope->formatPriceWithCurrency($this->Cart->taxTotalWithShipping),
 			'shippingTotal'			=> $this->Isotope->formatPriceWithCurrency($this->Cart->Shipping->price),
@@ -613,6 +623,8 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			'language'				=> $GLOBALS['TL_LANGUAGE'],
 			'billing_address'		=> $strBillingAddress,
 			'shipping_address'		=> $strShippingAddress,
+			'payment_data'			=> serialize($arrPaymentData),
+			'shipping_data'			=> serialize($arrShippingAddress)
 		);
 		
 		//FIXME?  Sort of strange way to have to handle credit card data...
@@ -676,7 +688,8 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			}
 		
 			$this->log('New order ID ' . $orderId . ' has been placed', 'ModuleIsotopeCheckout writeOrder()', TL_ACCESS);
-			$this->Isotope->sendMail($this->iso_mail_admin, $GLOBALS['TL_ADMIN_EMAIL'], $GLOBALS['TL_LANGUAGE'], $arrData);
+			$salesEmail = $this->iso_sales_email ? $this->iso_sales_email : $GLOBALS['TL_ADMIN_EMAIL'];
+			$this->Isotope->sendMail($this->iso_mail_admin, $salesEmail, $GLOBALS['TL_LANGUAGE'], $arrData);
 			$this->Isotope->sendMail($this->iso_mail_customer, $arrBillingAddress['email'], $GLOBALS['TL_LANGUAGE'], $arrData);
 
 			$this->Cart->delete();
@@ -709,8 +722,8 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 		return true;
 	}
-*/
-	
+
+ */	
 	
 	/**
 	 * Send an admin notification e-mail
@@ -734,14 +747,15 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		}
 
 		$objEmail->text = sprintf($GLOBALS['TL_LANG']['MSC']['message_new_order_admin_notify'], $intOrderId, $strData . "\n") . "\n";
-		$objEmail->sendTo($GLOBALS['TL_ADMIN_EMAIL']);
+		$salesEmail = $this->iso_sales_email ? $this->iso_sales_email : $GLOBALS['TL_ADMIN_EMAIL'];
+		$objEmail->sendTo($salesEmail);
 
 		$this->log('New order ID ' . $intOrderId . ' has been placed', 'ModuleIsotopeCheckout sendAdminNotification()', TL_ACCESS);
 		
 		return true;
 	}
-*/
-	
+
+ */	
 	
 	protected function getShippingModules($arrModuleIds, $arrData)
 	{
@@ -767,27 +781,52 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				case 'flat':
 					$fltShippingCost = $objModule->price;
 					break;
-				case 'collection':
-					$fltShippingCost = $objModule->calculateShippingRate($objModules->id, $this->Cart->subTotal);
+				case 'order_total':
+					//$arrProducts = $this->Cart->getProducts();
+				
+					$fltEligibleSubTotal = $objModule->getAdjustedSubTotal($this->Cart->subTotal);
+				
+					if($fltEligibleSubTotal>0)
+					{
+						$fltShippingCost = $objModule->calculateShippingRate($objModule->id, $fltEligibleSubTotal);
+					}else{
+						
+						$blnNoShippingApplicable = true;
+					}
 					break;
 				default:
 					break;	//TODO insert hook for different methods of calculation.
 					
 			}
 			
+			
 			if (!$objModule->available)
 				continue;
 			
 			
-			
-			$arrModules[] = sprintf('<input id="ctrl_shipping_module_%s" type="radio" name="shipping[module]" value="%s"%s /> <label for="ctrl_shipping_module_%s">%s: %s</label><br /><br />%s',
-									 $objModule->id,
-									 $objModule->id,
-									 ($arrData['module'] == $objModule->id ? ' checked="checked"' : ''),
-									 $objModule->id,
- 									 $objModule->label,
- 									 $this->Isotope->formatPriceWithCurrency($fltShippingCost), 
- 									 $objModule->getShippingOptions($objModule->id));
+			if($blnNoShippingApplicable)
+			{
+				$arrModules[] = sprintf('<input id="ctrl_shipping_module_%s" type="radio" name="shipping[module]" value="%s"%s /> <label for="ctrl_shipping_module_%s">%s: %s</label>',
+										$objModule->id,
+										$objModule->id,
+										' checked="checked"',
+										$objModule->id,
+										'Shipping Exempt',
+										$GLOBALS['TL_LANG']['MSC']['noItemsEligibleForShipping']
+									   );			
+			}
+			else
+			{
+				$arrModules[] = sprintf('<input id="ctrl_shipping_module_%s" type="radio" name="shipping[module]" value="%s"%s /> <label for="ctrl_shipping_module_%s">%s: %s</label>%s%s',
+										 $objModule->id,
+										 $objModule->id,
+										 (($arrData['module'] == $objModule->id || $objModules->numRows==1) ? ' checked="checked"' : ''),
+										 $objModule->id,
+	 									 $objModule->label,
+	 									 $this->Isotope->formatPriceWithCurrency($fltShippingCost), 
+	 									 ($objModule->note ? '<div class="clearBoth"></div><br /><div class="shippingNote"><strong>Note:</strong><br />' . $objModule->note . '</div>' : null),
+	 									 '<div class="clearBoth"></div><br /><div class="shippingOptions"><strong>Options:</strong><br />' . $objModule->getShippingOptions($objModule->id) . '</div>');
+			}
  			
 		}
 				

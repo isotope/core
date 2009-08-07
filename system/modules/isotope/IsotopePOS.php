@@ -54,6 +54,22 @@ class IsotopePOS extends Backend
 	
 	protected $strReason;
 	
+	public function moduleOperations($intId)
+	{
+		
+		$this->import('BackendUser', 'User');
+	
+		if ($this->User->isAdmin)
+		{
+			$strOperations = '&nbsp;<a href="'.$this->Environment->request.'&amp;key=authorize_process_payment&amp;id=' . $intId . '" title="'.specialchars($GLOBALS['TL_LANG']['tl_iso_orders']['authorize_process_payment'][0]).'"'.$attributes.'><img src="system/modules/isotope/html/money.png" border="0" alt="' . specialchars($GLOBALS['TL_LANG']['tl_iso_orders']['authorize_process_payment'][0]) . '" /></a>';
+		} 
+			
+		$strOperations .= '&nbsp;<a href="'.$this->Environment->request.'&amp;key=print_order&amp;id=' . $intId . '" title="'.specialchars($GLOBALS['TL_LANG']['tl_iso_orders']['print_order'][0]).'"'.$attributes.'><img src="system/modules/isotope/html/printer.png" border="0" alt="'.specialchars($GLOBALS['TL_LANG']['tl_iso_orders']['print_order'][0]).'" /></a>';
+		
+		return $strOperations;
+
+	}
+	
 	public function getPOSInterface(DataContainer $objDc)
 	{	
 	
@@ -106,12 +122,12 @@ class IsotopePOS extends Backend
 		}	
 		
 		
-		$this->fltOrderTotal = (float)$arrOrderInfo['order_subtotal'] + (float)$arrOrderInfo['order_tax'] + (float)$arrOrderInfo['order_shipping_cost'];
+		$this->fltOrderTotal = (float)$arrOrderInfo['subTotal'] + (float)$arrOrderInfo['orderTax'] + (float)$arrOrderInfo['shippingTotal'];
 		
 		$strBillingAddress = $this->loadAddress($arrOrderInfo['billing_address_id'], $arrOrderInfo['id'], true);
 		$strShippingAddress = $this->loadAddress($arrOrderInfo['shipping_address_id'], $arrOrderInfo['id']);
 
-		$arrProductList = $this->getProducts($arrOrderInfo['source_cart_id']);
+		$arrProductList = $this->getProducts($arrOrderInfo['cart_id']);
 		
 		$strProductList = $this->generateProductList($arrProductList);
 			
@@ -331,16 +347,19 @@ class IsotopePOS extends Backend
 		}	
 		*/
 		
-		$this->fltOrderTotal = (float)$arrOrderInfo['order_subtotal'] + (float)$arrOrderInfo['order_tax'] + (float)$arrOrderInfo['order_shipping_cost'];
+		
+		//Store ID MUST be set prior to importing the Isotope or IsotopeStore libraries!
+				
+		//$this->fltOrderTotal = (float)$arrOrderInfo['subTotal'] + (float)$arrOrderInfo['taxTotal'] + (float)$arrOrderInfo['shippingTotal'];
 		
 		$strBillingAddress = nl2br($arrOrderInfo['billing_address']); //$this->createAddressString($arrOrderInfo, 'billing');
 		$strShippingAddress = nl2br($arrOrderInfo['shipping_address']); //$this->createAddressString($arrOrderInfo, 'shipping');
 
-		$strPaymentInfo = $this->generatePaymentInfoString($arrOrderInfo, $this->arrBillingInfo);
-		$strShippingInfo = $this->generateShippingInfoString($arrOrderInfo['shipping_rate_id']);
+		$strPaymentInfo = $this->generatePaymentInfoString($arrOrderInfo);
+		//$strShippingInfo = $this->generateShippingInfoString($arrOrderInfo['shipping_rate_id']);
 		
-		$arrProductData = $this->getProducts($arrOrderInfo['source_cart_id']);
-				
+		$arrProductData = $this->getProducts($arrOrderInfo['cart_id']);
+		
 		$objTemplate = new BackendTemplate('iso_invoice');
 		
 		$objTemplate->invoiceTitle = $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] . ' #' . $this->intOrderId . '-' . date('mjY', $arrOrderInfo['tstamp']);		
@@ -351,7 +370,7 @@ class IsotopePOS extends Backend
 		$objTemplate->paymentInfoHeader = $GLOBALS['TL_LANG']['MSC']['iso_payment_info_header'];
 		$objTemplate->paymentInfoString = $strPaymentInfo;
 		$objTemplate->shippingInfoHeader = $GLOBALS['TL_LANG']['MSC']['iso_shipping_info_header'];
-		$objTemplate->shippingInfoString = $strShippingInfo;
+		$objTemplate->shippingInfoString = $arrOrderInfo['shipping_method']; //$strShippingInfo;
 		$objTemplate->orderTrackingInfoString = $strOrderTrackingInfo;
 		$objTemplate->productNameHeader = $GLOBALS['TL_LANG']['MSC']['iso_product_name_header'];
 		$objTemplate->productSkuHeader = $GLOBALS['TL_LANG']['MSC']['iso_sku_header'];
@@ -364,11 +383,10 @@ class IsotopePOS extends Backend
 		$objTemplate->orderTaxHeader = $GLOBALS['TL_LANG']['MSC']['iso_tax_header'];
 		$objTemplate->orderShippingHeader = $GLOBALS['TL_LANG']['MSC']['iso_order_shipping_header'];
 		$objTemplate->orderGrandTotalHeader = $GLOBALS['TL_LANG']['MSC']['iso_order_grand_total_header'];
-		$objTemplate->orderSubtotal = money_format('$%n', (float)$arrOrderInfo['order_subtotal']); 
-		$objTemplate->orderTaxTotal = money_format('$%n', (float)$arrOrderInfo['order_tax']); 
-		$objTemplate->orderShippingTotal = money_format('$%n', (float)$arrOrderInfo['order_shipping_cost']); 
-		$objTemplate->orderGrandTotal = money_format('$%n', $this->fltOrderTotal);
-		
+		$objTemplate->orderSubtotal = $arrOrderInfo['subTotal']; 
+		$objTemplate->orderTaxTotal = $arrOrderInfo['taxTotal']; 
+		$objTemplate->orderShippingTotal = $arrOrderInfo['shippingTotal']; 
+		$objTemplate->orderGrandTotal = $arrOrderInfo['grandTotal'];
 		$objTemplate->orderFooterString = '';	
 		$strInvoiceTitle = $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] . '_' . $objDc->id . '_' . time();
 		
@@ -384,9 +402,9 @@ class IsotopePOS extends Backend
 		$arrChunks = array();
 		$strArticle .= $objTemplate->parse();
 		
-		
 		//echo $strArticle;
 		//exit;
+		
 		/*
 		if(1==1)
 		{
@@ -444,7 +462,7 @@ class IsotopePOS extends Backend
 			{
 				$strArticle = str_replace($strChunk, str_replace("\n", '<br />', $strChunk), $strArticle);
 			}
-	
+				
 			// Remove linebreaks and tabs
 			$strArticle = str_replace(array("\n", "\t"), '', $strArticle);
 			$strArticle = preg_replace('/<span style="text-decoration: ?underline;?">(.*)<\/span>/Us', '<u>$1</u>', $strArticle);
@@ -493,7 +511,7 @@ class IsotopePOS extends Backend
 			$pdf->SetFont(PDF_FONT_NAME_MAIN, "", PDF_FONT_SIZE_MAIN);
 	
 			// Write the HTML content
-			$pdf->writeHTML($strArticle);
+			$pdf->writeHTML($strArticle, true, 0, true, 0);
 	
 			// Close and output PDF document
 			$pdf->lastPage();
@@ -638,11 +656,13 @@ class IsotopePOS extends Backend
 		return $strAddress;
 	}
 	
-	protected function generatePaymentInfoString($arrOrderInfo, $arrBillingInfo)
+	protected function generatePaymentInfoString($arrOrderInfo)
 	{
-		$strPaymentInfo = $GLOBALS['TL_LANG']['MSC']['iso_invoice_card_name_title'] . ': ' . $arrBillingInfo['firstname'] . '&nbsp;' . $arrBillingInfo['lastname'] . '<br />';
-		$strPaymentInfo .= $GLOBALS['TL_LANG']['tl_iso_orders']['cc_type'][0] . ': ' . $GLOBALS['TL_LANG']['tl_iso_orders']['credit_cart_types'][$arrOrderInfo['cc_type']] . '<br />';
-		$strPaymentInfo .= $GLOBALS['TL_LANG']['tl_iso_orders']['cc_number'][0] . ': XXXX-XXXX-XXXX-' . substr($arrOrderInfo['cc_num'], 12, 4) . '<br />';
+		$arrBillingInfoLines = split("\n",$arrOrderInfo['billing_address']);
+		
+		$strPaymentInfo = $GLOBALS['TL_LANG']['MSC']['iso_card_name_title'] . ': ' . $arrBillingInfoLines[0] . '<br />';
+		$strPaymentInfo .= in_array($arrOrderInfo['cc_type'], $GLOBALS['TL_LANG']['tl_iso_orders']['credit_card_types']) ? $GLOBALS['TL_LANG']['tl_iso_orders']['cc_type'][0] . ': ' . $GLOBALS['TL_LANG']['tl_iso_orders']['credit_card_types'][$arrOrderInfo['cc_type']] . '<br />' : NULL;
+		$strPaymentInfo .= $GLOBALS['TL_LANG']['tl_iso_orders']['cc_num'][0] . ': XXXX-XXXX-XXXX-' . substr($arrOrderInfo['cc_num'], 12, 4) . '<br />';
 		$strPaymentInfo .= $GLOBALS['TL_LANG']['tl_iso_orders']['cc_exp'][0] . ': ' . $arrOrderInfo['cc_exp'];
 	
 		return $strPaymentInfo;

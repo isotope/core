@@ -160,6 +160,12 @@ $GLOBALS['TL_LANG']['MSC']['iso_subtotal_header'] = 'Subtotal';
 $GLOBALS['TL_LANG']['MSC']['iso_order_shipping_header'] = 'Shipping & Handling';
 $GLOBALS['TL_LANG']['MSC']['iso_order_grand_total_header'] = 'Grand Total';
 $GLOBALS['TL_LANG']['MSC']['iso_order_items'] = 'Items';
+$GLOBALS['TL_LANG']['MSC']['iso_quantity_header'] = 'Quantity';
+$GLOBALS['TL_LANG']['MSC']['iso_price_header'] = 'Price';
+$GLOBALS['TL_LANG']['MSC']['iso_sku_header'] = 'SKU';
+$GLOBALS['TL_LANG']['MSC']['iso_product_name_header'] = 'Product Name';
+$GLOBALS['TL_LANG']['MSC']['iso_card_name_title'] = 'Name on Credit Card';
+
 
 $GLOBALS['TL_LANG']['MSC']['store_title'] = '';
 
@@ -186,6 +192,9 @@ $GLOBALS['TL_LANG']['MSC']['payment_status_labels']['processing']	= 'Processing'
 $GLOBALS['TL_LANG']['MSC']['payment_status_labels']['paid']			= 'Paid';
 $GLOBALS['TL_LANG']['MSC']['payment_status_labels']['failed']		= 'Failed';
 $GLOBALS['TL_LANG']['MSC']['payment_status_labels']['cancelled']	= 'Cancelled';
+
+//Shipping language entries
+$GLOBALS['TL_LANG']['MSC']['noItemsEligibleForShipping'] = 'This order consists solely of items that are not shipped.';
 
 
 //$GLOBALS['TL_LANG']['MSC'][''] = '';
@@ -230,6 +239,7 @@ $GLOBALS['TL_LANG']['ISO']['productMultiple']	= '%s Products';
  * Shipping modules
  */
 $GLOBALS['TL_LANG']['SHIP']['collection']		= array('Collection');
+$GLOBALS['TL_LANG']['SHIP']['order_total']		= array('Order total-based shipping');
 $GLOBALS['TL_LANG']['SHIP']['flat']				= array('Flat-price shipping');
 
 
@@ -261,16 +271,16 @@ $GLOBALS['TL_LANG']['CUR_SYMBOL']['EUR'] = 'ﾛ';
 /** 
  * Default attributes
  */
-$GLOBALS['TL_LANG']['ISO_ATTR']['name']					= array('Product Name', '');
-$GLOBALS['TL_LANG']['ISO_ATTR']['sku']					= array('Product SKU', '');
-$GLOBALS['TL_LANG']['ISO_ATTR']['weight']				= array('Product Weight', '');
-$GLOBALS['TL_LANG']['ISO_ATTR']['quantity']				= array('Product Quantity', '');
-$GLOBALS['TL_LANG']['ISO_ATTR']['alias']				= array('Product Alias', '');
-$GLOBALS['TL_LANG']['ISO_ATTR']['visibility']			= array('Product Visibility', '');
-$GLOBALS['TL_LANG']['ISO_ATTR']['teaser']				= array('Product Teaser', '');
-$GLOBALS['TL_LANG']['ISO_ATTR']['description']			= array('Product Description', '');
-$GLOBALS['TL_LANG']['ISO_ATTR']['price']				= array('Product Price', '');
-$GLOBALS['TL_LANG']['ISO_ATTR']['price_override']		= array('Product Price Override', '');
-$GLOBALS['TL_LANG']['ISO_ATTR']['use_price_override']	= array('Use Product Price Override', '');
-$GLOBALS['TL_LANG']['ISO_ATTR']['main_image']				= array('Product Media', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['name']					= array('Name', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['sku']					= array('SKU', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['weight']				= array('Weight', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['quantity']				= array('Quantity', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['alias']				= array('Alias', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['visibility']			= array('Visibility', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['teaser']				= array('Teaser', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['description']			= array('Description', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['price']				= array('Price', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['price_override']		= array('Price Override', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['use_price_override']	= array('Use Price Override', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['main_image']				= array('Media', '');
 

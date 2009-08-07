@@ -95,7 +95,20 @@ abstract class Payment extends Frontend
 					return false;
 					
 				$arrAllowed = deserialize($this->shipping_modules);
-				if (!is_array($arrAllowed) || !count($arrAllowed) || !in_array($_SESSION['FORM_DATA']['shipping']['module'], $arrAllowed))
+				
+				foreach($arrAllowed as $allowed)
+				{
+					
+					if(substr($allowed, '_'))
+					{
+						$arrModuleId = split('_', $allowed);
+						$arrModuleIds[] = $arrModuleId[0];
+					}else{
+						$arrModuleIds[] = $allowed;
+					}
+				}
+				
+				if (!is_array($arrAllowed) || !count($arrAllowed) || !in_array($_SESSION['FORM_DATA']['shipping']['module'], $arrModuleIds))
 					return false;
 					
 				if (!$this->enabled && !BE_USER_LOGGED_IN)

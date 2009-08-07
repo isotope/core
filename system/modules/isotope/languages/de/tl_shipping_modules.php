@@ -30,6 +30,8 @@
  */
 $GLOBALS['TL_LANG']['tl_shipping_modules']['name']				= array('Name der Versandart', '');
 $GLOBALS['TL_LANG']['tl_shipping_modules']['price']				= array('Preis', '');
+$GLOBALS['TL_LANG']['tl_shipping_modules']['note']				= array('Shipping Method Notes', 'These will be displayed on the front end in association with this shipping option.');
+$GLOBALS['TL_LANG']['tl_shipping_modules']['label']				= array('Label', 'This is displayed on the front end in association with the shipping option.');
 $GLOBALS['TL_LANG']['tl_shipping_modules']['flatCalculation']	= array('Berechnung Pauschalpreis', '');
 $GLOBALS['TL_LANG']['tl_shipping_modules']['countries']			= array('Länder', 'Wählen Sie die Länder für welche diese Versandoption zur Verfügung steht.');
 $GLOBALS['TL_LANG']['tl_shipping_modules']['minimum_total']		= array('Minimaler Bestellwert', 'Wenn dieser Wert unterschritten wird, steht diese Versandoption nicht zur Verfügung.');

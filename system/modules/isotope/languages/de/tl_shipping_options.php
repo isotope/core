@@ -31,6 +31,7 @@
 /**
  * Fields
  */
+$GLOBALS['TL_LANG']['tl_shipping_options']['name'] 				= array('Name', 'A brief description of the rate. Used on frontend output.');
 $GLOBALS['TL_LANG']['tl_shipping_options']['description']		= array('Beschreibung', 'Eine Kurzbeschreibung der Versandkosten-Regel. Wird im Frontend angezeigt.');
 $GLOBALS['TL_LANG']['tl_shipping_options']['rate']				= array('Kosten', 'Der Preis in der aktiven Währung.');
 $GLOBALS['TL_LANG']['tl_shipping_options']['limit_type']		= array('Limit Type','Lower Limit will only apply to numbers exceeding the value specified., Upper limit will only apply to numbers that do not exceed the value specified.');
@@ -41,6 +42,7 @@ $GLOBALS['TL_LANG']['tl_shipping_options']['dest_region']		= array('Ziel Region'
 $GLOBALS['TL_LANG']['tl_shipping_options']['option_type']		= array('Type of shipping option','This determines extra shipping module functionality.');
 $GLOBALS['TL_LANG']['tl_shipping_options']['override']			= array('Override Other Price Rules','Should this rule override base price rules?');
 $GLOBALS['TL_LANG']['tl_shipping_options']['override_rule']		= array('Overrided Rule','Select a rule to be overwritten.');
+$GLOBALS['TL_LANG']['tl_shipping_options']['override_message']   = array('Override Message','Communicate a special message in conjunction with this shipping rate.');
 $GLOBALS['TL_LANG']['tl_shipping_options']['mandatory']			= array('Required','Is this option mandatory?  If so it will automatically tack on the surcharge value if specific regional/country-based conditions are met.');
 
 /**

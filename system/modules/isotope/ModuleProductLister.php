@@ -221,9 +221,12 @@ class ModuleProductLister extends ModuleIsotopeBase
 		$rows_left = 0;
 		
 		$arrProductData = array();
-		
+	
 		$arrEnabledFilters = deserialize($this->listing_filters);
-		
+		if(!is_array($arrEnabledFilters))
+		{
+			$arrEnabledFilters = array();
+		}	
 		
 		if(!$objAggregateSets->numRows)
 		{
@@ -450,7 +453,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 			
 			
 			$arrProducts = $objProductCollection->fetchAllAssoc();
-			
+		
 			if ($this->iso_jump_first && !strlen($this->Input->get('asetid')) && !strlen($this->Input->get('aset_id')) && count($arrProducts))
 			{
 				$this->redirect($this->generateProductLink($arrProducts[0]['alias'], $arrProducts[0], $this->Store->productReaderJumpTo, $objAggregateSets->attribute_set_id));

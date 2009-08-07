@@ -49,7 +49,6 @@ abstract class Shipping extends Frontend
 	 */
 	protected $arrData = array();
 	
-	
 	/**
 	 * Initialize the object
 	 *
@@ -92,6 +91,13 @@ abstract class Shipping extends Frontend
 		{
 			case 'available':
 				if (($this->minimum_total > 0 && $this->minimum_total > $this->Cart->subTotal) || ($this->minimum_total > 0 && $this->maximum_total < $this->Cart->subTotal))
+					return false;
+									
+				$arrCountries = deserialize($this->countries);
+				
+				$strCountry = (!isset($_SESSION['FORM_DATA']['shipping_information_country']) ? $_SESSION['FORM_DATA']['billing_information_country'] : ($_SESSION['FORM_DATA']['shipping_address'][0] ? $_SESSION['FORM_DATA']['billing_information_country'] : $_SESSION['FORM_DATA']['shipping_information_country']));
+									
+				if(sizeof($arrCountries)>0 && !in_array(strtolower($strCountry), $arrCountries))
 					return false;
 					
 				return true;
@@ -137,7 +143,7 @@ abstract class Shipping extends Frontend
 	 */
 	public function calculateShippingRate() {}
 	
-	
+
 	/**
 	 *
 	 * This function is used to gather any addition shipping options that might be available specific to the current customer or order.  For example, expedited shipping based on 		 * customer location.

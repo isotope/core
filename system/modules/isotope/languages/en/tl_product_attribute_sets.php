@@ -35,6 +35,9 @@ $GLOBALS['TL_LANG']['tl_product_attribute_sets']['size']        = array('Image w
 
 $GLOBALS['TL_LANG']['tl_product_attribute_sets']['format'] = array('Format title string', 'Enter the format string to use as entry title (optional).<br />Examples: <em>{{image_field::w=100&h=80}} {{title_field}}</em>: <em>{{checkbox_field::src=all.gif}} {{checkbox_field}}</em>');
 
+$GLOBALS['TL_LANG']['tl_product_attribute_sets']['iso_list_layout']      = array('Product List Template Override', 'Please choose a list layout. If left blank, the default as chosen in the module definition record will be used. You can add custom list layouts to folder <em>templates</em>. List template files start with <em>iso_list_</em> and require file extension <em>.tpl</em>.');
+$GLOBALS['TL_LANG']['tl_product_attribute_sets']['iso_reader_layout']  = array('Product Reader Template Override', 'Please choose a reader template. If left blank, the default as chosen in the module definition record will be used. You can add custom reader templates to folder <em>templates</em>. Reader template files start with <em>iso_reader_</em> and require file extension <em>.tpl</em>.');
+
 /**
  * Reference
  */

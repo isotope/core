@@ -6,7 +6,7 @@
 <div class="productWrapper">
 
 <form action="<?php echo $this->cartJumpTo; ?>" method="post" name="cart_full">
-<input type="hidden" name="form_action" value="update_cart"  />
+<input type="hidden" name="action" value="cart_quantity_update"  />
 
 <?php foreach($this->products as $product): ?>
 		<!-- BEGIN PRODUCT-->

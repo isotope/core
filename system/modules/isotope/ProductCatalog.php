@@ -1884,7 +1884,7 @@ class ProductCatalog extends Backend
 			$arrPageList[] = 0;
 		}
 		
-		if(empty($varCurrValue) || is_int($varCurrValue) && $varCurrValue==0)
+		if(empty($varCurrValue) || (is_int($varCurrValue) && $varCurrValue==0))
 		{
 			
 			return;
@@ -1927,7 +1927,7 @@ class ProductCatalog extends Backend
 		
 		$arrPIDs = array();
 		
-		foreach($arrPFCInfo as $row)
+		foreach($arrPFCInfo as $row)	//PIDs that already exist in the tl_pfc_aggregate table
 		{
 			$arrPIDs[] = $row['pid'];
 		}
@@ -1947,8 +1947,11 @@ class ProductCatalog extends Backend
 			
 			//If the product id exists in the product list for this page, which is not part of the product page list now...  Remove from the product_ids collection and update.
 						
-			if(!in_array($page['pid'], $arrPIDs))
-			{
+			//if(!in_array($page['pid'], $arrPIDs))		//$arrPIDs is from $objPFCInfo - which represents existing PIDs
+			//{
+					
+				/** TO DO - REWRITE & HANDLE MULITPLE FILTER VALUES IF ATTRIBUTE DOES MULTIPLE **/
+					
 				if(in_array($varCurrValue, $arrExistingValues))		//Does this need to be more strict - that is, bound to a particular pid when comparing?
 				{
 					/*echo 'artist: ' . $varCurrValue . '<br /><br />';
@@ -1957,12 +1960,12 @@ class ProductCatalog extends Backend
 					echo $key;
 					exit;	*/			
 					
-					$key = array_search($varCurrValue, $arrExistingValues);
+					$key = array_search($varCurrValue, $arrExistingValues); //get the corresponding key.
 										
 					//If we find that the product id submitted does, in fact exist in the existing product collection for this page, then we remove it.
 					//if(!empty($key))
 					//{	
-//						echo 'yes ::: page: ' . $page['pid'];
+					//	echo 'yes ::: page: ' . $page['pid'];
 						
 						//Do any other products in this category share the filter value?  If not then we can safely remove it
 						$objProductsAssociatedWithFilterValue = $this->Database->prepare("SELECT id, pages FROM " . $storeTable . " WHERE " . $dc->field . "=?")->execute($varCurrValue);
@@ -1971,50 +1974,53 @@ class ProductCatalog extends Backend
 						if($objProductsAssociatedWithFilterValue->numRows < 1)	//if there are no occurrences of this filter value in any product, then ok.
 						{
 							unset($arrExistingValues[$key]);
-						}
+						}else{
 						
-						$arrOtherProductsPages = $objProductsAssociatedWithFilterValue->fetchEach('pages');
-
-						$blnPreserveFilterValue = false;		//reset every row.  if we end up false at the end we need to unset.
-						
-						foreach($arrOtherProductsPages as $pageRow)
-						{	
-							foreach($arrPageList as $currPage)
-							{				
-								if(in_array($currPage, $pageRow))
-								{
-									//echo $currPage . ' ::: ' . var_dump($pageRow);
-									//exit;
-									
-									$blnPreserveFilterValue = true;
-									break;
+							$arrOtherProductsPages = $objProductsAssociatedWithFilterValue->fetchEach('pages');	
+														
+							$blnPreserveFilterValue = false;		//reset every row.  if we end up false at the end we need to unset.
+							
+							foreach($arrOtherProductsPages as $pageRow)
+							{	
+								$rowInfo = deserialize($pageRow);
+								
+								foreach($arrPageList as $currPage)
+								{				
+									if(in_array($currPage, $rowInfo))
+									{
+										//echo $currPage . ' ::: ' . var_dump($rowInfo);
+										//exit;
+										
+										$blnPreserveFilterValue = true;
+										break;
+									}
+								
 								}
-							
 							}
-						}
-						
-						if(!$blnPreserveFilterValue) //if this filter value is used by any other product in any of the categories associated
-						{	
-							//echo 'yes we are unsetting it';		//with the given product, then we cannot remove the filter value from the record.
-							//exit;
 							
-							//unset($arrExistingValues[$key]);
-						}
-						
+							if(!$blnPreserveFilterValue) //if this filter value is used by any other product in any of the categories associated
+							{	
+								//echo 'yes we are unsetting it';		//with the given product, then we cannot remove the filter value from the record.
+								//exit;
+								
+								unset($arrExistingValues[$key]);
+							}
+						}						
 						
 						//var_dump($arrExistingProducts);
 						//echo "<br /><br />";
-						
+						if(is_array($arrExistingValues) && sizeof($arrExistingValues)>0)
+						{
 						//var_dump($arrExistingProducts);
 						$this->Database->prepare("UPDATE tl_pfc_aggregate SET value_collection=? WHERE pid=? AND attribute_set_id=? AND attribute_id=? AND store_id=?")
 									   ->execute(serialize($arrExistingValues), $page['pid'], $attributeSetID, $attributeID, $storeID);
-						
+						}
 					//}
 				}
 				
-			}else{
-				return;
-			}
+			//}else{
+			//	return;
+			//}
 			
 			//For each page record already in the table, we grab the product id list and modify it to include this product ID if it isn't existing in the product ID collection.
 			

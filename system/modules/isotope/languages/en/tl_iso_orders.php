@@ -35,6 +35,10 @@ $GLOBALS['TL_LANG']['tl_iso_orders']['billing_address_id'] = array('Billing Addr
 $GLOBALS['TL_LANG']['tl_iso_orders']['order_comments'] = array('Comments','');
 $GLOBALS['TL_LANG']['tl_iso_orders']['gift_message'] = array('Gift Message','');
 $GLOBALS['TL_LANG']['tl_iso_orders']['gift_wrap'] = array('Gift Wrap','');
+$GLOBALS['TL_LANG']['tl_iso_orders']['cc_num'] = array('Card Number','The credit card number');
+$GLOBALS['TL_LANG']['tl_iso_orders']['cc_cvv'] = array('CCV Number','3 or 4-digit Credit Card Verification Number');
+$GLOBALS['TL_LANG']['tl_iso_orders']['cc_type'] = array('Card Type','The type of credit card.');
+$GLOBALS['TL_LANG']['tl_iso_orders']['cc_exp'] = array('Expiration','The expiration date of the credit card');
 /**
  * Reference
  */

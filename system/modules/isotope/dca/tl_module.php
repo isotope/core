@@ -36,7 +36,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryManager']	= 'name,ty
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistrySearch']	= 'name,type,headline;jumpTo;guests,protected;align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryResults']	= 'name,type,headline;jumpTo;iso_registry_results;perPage;guests,protected;align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryReader']	= 'name,type,headline;store_id,iso_registry_reader;guests,protected;align,space,cssID';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoCheckout']				= 'name,type,headline;store_id,orderCompleteJumpTo,iso_order_conditions,iso_checkout_method;iso_payment_modules;iso_shipping_modules;iso_checkout_layout,iso_mail_customer,iso_mail_admin;guests,protected;align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoCheckout']				= '{title_legend},name,type,headline;{config_legend},store_id,iso_checkout_method,iso_payment_modules,iso_shipping_modules,iso_order_conditions,orderCompleteJumpTo;{template_legend},iso_checkout_layout,iso_mail_customer,iso_mail_admin,iso_sales_email;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 
 
 /**
@@ -172,7 +172,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['store_id'] = array
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['store_id'],
 	'exclude'                 => true,
 	'inputType'               => 'select',
-	'eval'					  => array('includeBlankOption'=>true,'mandatory'=>true, 'tl_class'=>'w50'),
+	'eval'					  => array('includeBlankOption'=>true,'mandatory'=>true),
 	'options_callback'		  => array('tl_module_isotope','getStoreConfigurations')
 );
 
@@ -207,7 +207,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_forward_cart'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_forward_cart'],
 	'exclude'                 => true,
-	'inputType'               => 'checkbox',
+	'inputType'               => 'checkbox'
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_mail_customer'] = array
@@ -216,7 +216,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_mail_customer'] = array
 	'exclude'                 => true,
 	'inputType'               => 'select',
 	'foreignKey'              => 'tl_iso_mail.name',
-	'eval'					  => array('includeBlankOption'=>true, 'mandatory'=>true),
+	'eval'					  => array('includeBlankOption'=>true, 'mandatory'=>true)
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_mail_admin'] = array
@@ -225,8 +225,17 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_mail_admin'] = array
 	'exclude'                 => true,
 	'inputType'               => 'select',
 	'foreignKey'              => 'tl_iso_mail.name',
-	'eval'					  => array('includeBlankOption'=>true, 'mandatory'=>true),
+	'eval'					  => array('includeBlankOption'=>true, 'mandatory'=>true)
 );
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_sales_email'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_sales_email'],
+	'exclude'                 => true,
+	'inputType'               => 'text',
+	'eval'                    => array('maxlength'=>255, 'rgxp'=>'email', 'tl_class'=>'w50')
+);
+
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_order_conditions'] = array
 (
