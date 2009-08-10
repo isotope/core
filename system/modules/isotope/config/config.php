@@ -25,7 +25,7 @@
  */
 
 // Rules workaround
-$GLOBALS['ISO_RULES']['excludeAttributeSets'] = array(6, 3);
+$GLOBALS['ISO_RULES']['excludeAttributeSets'] = array(); //array(6, 3);
 
 /**
  * Backend modules
