@@ -149,6 +149,7 @@ class IsotopePOS extends Backend
 			$transKey = $objAIMConfig->authorize_trans_key;
 			$transType = $objAIMConfig->authorize_trans_type;
 			$status = ($objAIMConfig->debug ? "TRUE" : "FALSE");
+			$strMode = ($objAIMConfig->debug ? "test" : "secure");
 			//var_dump($status);
 		}
 
@@ -207,7 +208,7 @@ class IsotopePOS extends Backend
 			###  Uncomment the line ABOVE for test accounts or BELOW for live merchant accounts
 			### $ch = curl_init("https://secure.authorize.net/gateway/transact.dll"); 
 			
-			curl_setopt($ch, CURLOPT_URL, 'https://test.authorize.net/gateway/transact.dll'); 
+			curl_setopt($ch, CURLOPT_URL, sprintf('https://%s.authorize.net/gateway/transact.dll', $strMode)); 
 			curl_setopt($ch, CURLOPT_HEADER, 0); // set to 0 to eliminate header info from response
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // Returns response data instead of TRUE(1)
 			curl_setopt($ch, CURLOPT_POSTFIELDS, rtrim( $fields, "& " )); // use HTTP POST to send form data
