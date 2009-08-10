@@ -9,6 +9,7 @@
         <div class="formbody">
         <input type="hidden" name="ignore_page_id" value="<?php echo $this->ignore_page_id; ?>" />
         <input type="hidden" name="pas_id" value="<?php echo $this->pas_id; ?>" />
+      	<?php if(sizeof($this->filters)): ?>
       	<?php foreach($this->filters as $filter): ?>
       		<label for="<?php echo $filter['name']; ?>"><?php echo $filter['label']; ?></label>
       		<?php switch($filter['type'])  
@@ -25,6 +26,7 @@
       		<?php 		break; ?>
       		<?php } ?>
       	<?php endforeach; ?> 
+      	<?php endif; ?>
       	<label for="order_by"><?php echo $this->labelOrderBy; ?></label>
         <select name="order_by" class="select" onchange="form.submit();">
         	<option value=""<?php if($this->order_by==$option['value']): ?> selected="selected"<?php endif; ?>>(select)</option>

@@ -263,14 +263,14 @@ class IsotopeCart extends Model
 					}
 				}
 				
-				/*
+				
 				$this->import('Isotope');
 								
 				$storeTable = $this->Isotope->getStoreTableByAttributeSetId($objCartData->attribute_set_id);
 				
 				$fltNewProductPrice = $this->Isotope->applyRules($objCartData->price, $objCartData->product_id, $storeTable);
 				
-				$this->Database->prepare("UPDATE tl_cart_items SET price=? WHERE id=?")->execute($fltNewProductPrice, $objCartData->id);*/
+				$this->Database->prepare("UPDATE tl_cart_items SET price=? WHERE id=?")->execute($fltNewProductPrice, $objCartData->id);
 			}
 			
 			// Delete cookie
@@ -424,12 +424,20 @@ class IsotopeCart extends Model
 	{
 		$fltTotal = 0;
 		
-		foreach($arrProductData as $data)
+		if(is_array($arrProductData) && sizeof($arrProductData))
 		{
-			$fltTotal += ((float)$data['price'] * (int)$data['quantity_requested']);
+			
+			foreach($arrProductData as $data)
+			{
+				$fltTotal += ((float)$data['price'] * (int)$data['quantity_requested']);
+			}
+			
+			$taxPriceAdjustment = 0; // $this->getTax($floatSubTotalPrice, $arrTaxRules, 'MULTIPLY');
 		}
-		
-		$taxPriceAdjustment = 0; // $this->getTax($floatSubTotalPrice, $arrTaxRules, 'MULTIPLY');
+		else
+		{
+			return 0.00;
+		}		
 		
 		return (float)$fltTotal + (float)$taxPriceAdjustment;
 	}
@@ -454,10 +462,16 @@ class IsotopeCart extends Model
 				if(strlen($row['tax_class']))
 					$arrTaxClasses[] = $row['tax_class'];	
 			}
-		
-			//Get the tax rates for the given class.
-			$arrTaxClassRecords = array_unique($arrTaxClasses);
-		
+			
+			if(is_array($arrTaxClassRecords))
+			{
+				//Get the tax rates for the given class.
+				$arrTaxClassRecords = array_unique($arrTaxClasses);
+			}else{
+				return array();
+			}
+			
+					
 			if(sizeof($arrTaxClassRecords))
 			{		
 				$strTaxRates = join(',', $arrTaxClassRecords);

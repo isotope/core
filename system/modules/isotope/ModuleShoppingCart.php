@@ -206,10 +206,12 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 			$arrDisplayFields = array('alias','name','price', 'main_image');
 						
 			$arrProductData = $this->Isotope->getProductData($this->Cart->getProducts(), $arrDisplayFields, 'name');
-			
-			foreach($arrProductData as $k => $data)
+			if(is_array($arrProductData) && sizeof($arrProductData))
 			{
-				$arrProductIds[$data['cart_item_id']] = $data['attribute_set_id'];
+				foreach($arrProductData as $k => $data)
+				{
+					$arrProductIds[$data['cart_item_id']] = $data['attribute_set_id'];
+				}
 			}
 		}	
 	
