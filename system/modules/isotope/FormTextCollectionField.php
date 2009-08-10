@@ -122,14 +122,14 @@ class FormTextCollectionField extends Widget
 				}
 			
 			
-				$return .= sprintf('<input type="text" name="%s[' . $i . ']" id="ctrl_%s" class="text%s" value="%s"%s />',
+				$return .= sprintf('<input type="text" name="%s[' . $i . ']" id="ctrl_%s" class="text%s_'.$i.'" value="%s"%s />',
 								$this->strName,
 								$this->strId,
 								(strlen($this->strClass) ? ' ' . $this->strClass : ''),
 								specialchars($this->varValue),
 								$this->getAttributes()) . $this->addSubmit();
 			}else{
-				$return .= sprintf('<input type="text" name="%s" id="ctrl_%s" class="text%s" value="%s"%s />',
+				$return .= sprintf('<input type="text" name="%s" id="ctrl_%s" class="text%s_'.$i.'" value="%s"%s />',
 								$this->strName,
 								$this->strId,
 								(strlen($this->strClass) ? ' ' . $this->strClass : ''),

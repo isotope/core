@@ -104,7 +104,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
   // Palettes
   'palettes' => array
   (
-    'default'                     => 'status,details',
+    'default'                     => 'status;shippingTotal;details',
   ),
 
   // Fields
@@ -117,6 +117,24 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
       'inputType'               => 'select',
       'options'         => array('pending','processing','shipped','complete','on_hold', 'cancelled'),
       'reference'         => &$GLOBALS['TL_LANG']['MSC']['order_status_labels'],
+    ),
+    'shippingTotal' => array
+    (
+      'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['shippingTotal'],
+      'exclude'                 => true,
+      'search'                  => true,
+      'sorting'                 => true,
+      'flag'                    => 1,
+      'inputType'               => 'text',
+      'eval'                    => array('maxlength'=>255),
+      'load_callback'			=> array
+      (
+      	array('tl_iso_orders','loadShippingTotal')
+      ),
+      'save_callback'			=> array
+      (
+      	array('tl_iso_orders','saveShippingTotal')
+      )
     ),
     'details' => array
     (
@@ -254,7 +272,7 @@ class tl_iso_orders extends Backend
   ' . $this->getOrderDescription($row) . '
 </div>  </div>';
   }
-  
+    
   
   public function showDetails($dc, $xlabel)
   {
@@ -270,11 +288,74 @@ class tl_iso_orders extends Backend
     return '';
   }
   
+  public function loadShippingTotal($varValue, DataContainer $dc)
+  {
+  	
+	  	$arrPaymentData = $this->getPaymentData($dc->id);
+		
+		return $arrPaymentData['totals']['shippingTotal'];
+  }
+  
+  public function saveShippingTotal($varValue, DataContainer $dc)
+  {
+			
+  		$arrPaymentData = $this->getPaymentData($dc->id);	
+  	
+  		$arrPaymentData['totals']['shippingTotal'] = $varValue;
+  			  	
+  		$this->recalculateOrderTotal($arrPaymentData, $dc->id);
+  
+  		return $varValue;
+  }  
+  
+  protected function getPaymentData($intOrderId)
+  {
+  	  		//get existing total data
+  		$objPaymentData = $this->Database->prepare("SELECT payment_data FROM tl_iso_orders WHERE id=?")
+	  									 ->limit(1)
+	  									 ->execute($intOrderId);
+	  				  			
+		$arrPaymentData = deserialize($objPaymentData->payment_data);
+
+  		return $arrPaymentData;
+  }
+  
+  protected function recalculateOrderTotal($arrPaymentData, $intOrderId)
+  {
+  		$objStoreId = $this->Database->prepare("SELECT store_id FROM tl_iso_orders WHERE id=?")
+  									 ->limit(1)
+  									 ->execute($intOrderId);
+  									 
+  		$_SESSION['isotope']['store_id'] = $objStoreId->store_id;
+  										
+		$this->import('Isotope');
+		
+		$fltGrandTotal = $arrPaymentData['totals']['subTotal'] + $arrPaymentData['totals']['taxTotal'] + $arrPaymentData['totals']['shippingTotal'];
+		
+		$arrPaymentData['totals']['grandTotal'] = $fltGrandTotal;
+				
+  		$arrSet = array
+		(
+			'subTotal'				=> $this->Isotope->formatPriceWithCurrency($arrPaymentData['totals']['subTotal']),
+			'taxTotal'	 			=> $this->Isotope->formatPriceWithCurrency($arrPaymentData['totals']['taxTotal']),
+			'shippingTotal'			=> $this->Isotope->formatPriceWithCurrency($arrPaymentData['totals']['shippingTotal']),
+			'grandTotal'			=> $this->Isotope->formatPriceWithCurrency($fltGrandTotal),
+			'payment_data'			=> serialize($arrPaymentData)
+		);
+		
+		$this->Database->prepare("UPDATE tl_iso_orders %s WHERE id=?")
+					   ->set($arrSet)
+					   ->execute($intOrderId);
+		
+		return true;  
+  }
   
   protected function getOrderDescription($row)
   {
     $strProductList = $this->getProducts($row['cart_id']);
-
+	
+	
+	
     return '
 		  <div>
 		    <h2>' . $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] .': ' . $row['order_id'] . ' (#' . $row['id'] . ')</h2><!--
@@ -337,7 +418,7 @@ class tl_iso_orders extends Backend
     $arrProductListsByTable = array();
     $arrProductData = array();
     
-    $objProductData = $this->Database->prepare("SELECT ci.product_id, ci.quantity_requested, p.storeTable FROM tl_cart_items ci, tl_product_attribute_sets p WHERE p.id = ci.attribute_set_id AND ci.pid =?")
+    $objProductData = $this->Database->prepare("SELECT ci.product_id, ci.quantity_requested, ci.price, p.storeTable FROM tl_cart_items ci, tl_product_attribute_sets p WHERE p.id = ci.attribute_set_id AND ci.pid=?")
                      ->execute($intSourceCartId);
     
     if($objProductData->numRows < 1)
@@ -354,7 +435,8 @@ class tl_iso_orders extends Backend
       (
           'table'       => $productData['storeTable'],
           'id'        => $productData['product_id'], 
-          'quantity'      => $productData['quantity_requested']
+          'quantity'      => $productData['quantity_requested'],
+		  'price'		=> $productData['price']
       );
     }
 
@@ -372,7 +454,7 @@ class tl_iso_orders extends Backend
       
       $strProductList = implode(',', $arrProductIds);
                   
-      $objProductExtendedData = $this->Database->prepare("SELECT id, name, price FROM " . $storeTable . " WHERE id IN(" . $strProductList . ")")
+      $objProductExtendedData = $this->Database->prepare("SELECT id, name FROM " . $storeTable . " WHERE id IN(" . $strProductList . ")")
                            ->execute();
                   
       if($objProductExtendedData->numRows < 1)
@@ -386,9 +468,9 @@ class tl_iso_orders extends Backend
       {
         
                 
-        $fltProductTotal = (int)$arrProductLists[$storeTable][$row['id']]['quantity'] * (float)$row['price']; 
+        $fltProductTotal = (int)$arrProductLists[$storeTable][$row['id']]['quantity'] * (float)$arrProductLists[$storeTable][$row['id']]['price']; 
       
-        $fltProductPrice = (float)$row['price'];
+        $fltProductPrice = (float)$arrProductLists[$storeTable][$row['id']]['price'];
       
       
         $strProductData .= $row['name'] . ' - ' . money_format('%n', $fltProductPrice) . ' x ' . $arrProductLists[$storeTable][$row['id']]['quantity'] . ' = ' . money_format('%n', $fltProductTotal) . '<br />';

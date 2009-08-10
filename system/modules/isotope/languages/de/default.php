@@ -76,6 +76,7 @@ $GLOBALS['TL_LANG']['MSC']['subTotalLabel'] = 'Subtotal: ';
 $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'] = 'Total: ';
 $GLOBALS['TL_LANG']['MSC']['shippingLabel'] = 'Versandkosten: ';
 $GLOBALS['TL_LANG']['MSC']['taxLabel'] = 'Enthaltene MwSt: ';
+$GLOBALS['TL_LANG']['MSC']['shippingOptionsLabel'] = 'Selected Shipping Options: ';
 
 $GLOBALS['TL_LANG']['MSC']['noPaymentModules'] = 'Zur Zeit sind keine Zahlungsoptionen verfügbar.';
 $GLOBALS['TL_LANG']['MSC']['noShippingModules'] = 'Zur Zeit sind keine Versandoptionen verfügbar.';
@@ -90,7 +91,6 @@ $GLOBALS['TL_LANG']['ISO']['productMultiple']	= '%s Produkte';
  * Shipping modules
  */
 $GLOBALS['TL_LANG']['SHIP']['collection']		= array('Abholung');
-$GLOBALS['TL_LANG']['SHIP']['order_total']		= array('Order Total-based');
 $GLOBALS['TL_LANG']['SHIP']['flat']				= array('Pauschalversand');
 
 

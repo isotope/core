@@ -24,6 +24,8 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
+// Rules workaround
+$GLOBALS['ISO_RULES']['excludeAttributeSets'] = array(6, 3);
 
 /**
  * Backend modules

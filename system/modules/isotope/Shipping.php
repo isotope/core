@@ -96,7 +96,7 @@ abstract class Shipping extends Frontend
 				$arrCountries = deserialize($this->countries);
 				
 				$strCountry = (!isset($_SESSION['FORM_DATA']['shipping_information_country']) ? $_SESSION['FORM_DATA']['billing_information_country'] : ($_SESSION['FORM_DATA']['shipping_address'][0] ? $_SESSION['FORM_DATA']['billing_information_country'] : $_SESSION['FORM_DATA']['shipping_information_country']));
-									
+						
 				if(sizeof($arrCountries)>0 && !in_array(strtolower($strCountry), $arrCountries))
 					return false;
 					

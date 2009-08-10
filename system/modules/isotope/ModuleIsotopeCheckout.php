@@ -599,7 +599,13 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		//TODO?  Consider CC_TYPE and CC_CVV?
 		//exit;
 		
-		$arrTotals = array($this->Cart->subTotal, $this->Cart->taxTotalWithShipping, $this->Cart->Shipping->price, $this->Cart->grandTotal);
+		$arrTotals = array
+		(
+			'subTotal'			=> $this->Cart->subTotal, 
+			'taxTotal'			=> $this->Cart->taxTotal, 
+			'shippingTotal'		=> $this->Cart->shippingTotal,
+			'grandTotal'		=> $this->Cart->grandTotal
+		);
 		
 		$arrPaymentData['address'] 	= $arrBillingAddress;
 		$arrPaymentData['totals'] 	= $arrTotals;	
@@ -614,8 +620,8 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			'cart_id'				=> $this->Cart->id,
 			//'source_cart_id'		=> $this->Cart->id,
 			'subTotal'				=> $this->Isotope->formatPriceWithCurrency($this->Cart->subTotal),		// + ($this->Input->post('gift_wrap') ? 10 : 0),		
-			'taxTotal'	 			=> $this->Isotope->formatPriceWithCurrency($this->Cart->taxTotalWithShipping),
-			'shippingTotal'			=> $this->Isotope->formatPriceWithCurrency($this->Cart->Shipping->price),
+			'taxTotal'	 			=> $this->Isotope->formatPriceWithCurrency($this->Cart->taxTotal),
+			'shippingTotal'			=> $this->Isotope->formatPriceWithCurrency($this->Cart->shippingTotal),
 			'grandTotal'			=> $this->Isotope->formatPriceWithCurrency($this->Cart->grandTotal),
 			'shipping_method'		=> $this->Cart->Shipping->label,
 			'payment_method'		=> $this->Cart->Payment->label,
@@ -655,7 +661,8 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 		$this->Database->prepare("UPDATE tl_iso_orders SET order_id=? WHERE id=?")->execute(($this->Store->orderPrefix . $orderId), $orderId);
 		
-
+		$fltShippingTotal = (float)$this->Cart->Shipping->price + (float)$this->Cart->Shipping->optionsPrice;
+		
 		if ($blnCheckout)
 		{
 			$arrData = array
@@ -666,7 +673,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				'subTotal'					=> $this->Isotope->formatPriceWithCurrency($this->Cart->subTotal),
 				'taxTotal'					=> $this->Isotope->formatPriceWithCurrency($this->Cart->taxTotal),
 				'taxTotalWithShipping'		=> $this->Isotope->formatPriceWithCurrency($this->Cart->taxTotalWithShipping),
-				'shippingPrice'				=> $this->Isotope->formatPriceWithCurrency($this->Cart->Shipping->price),
+				'shippingPrice'				=> $this->Isotope->formatPriceWithCurrency($fltShippingTotal),
 				'grandTotal'				=> $this->Isotope->formatPriceWithCurrency($this->Cart->grandTotal),
 				'cart_text'					=> $this->Cart->getProductsAsString(),
 				'cart_html'					=> $this->Cart->getProductsAsHtml(),
@@ -914,10 +921,14 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		$objTemplate->taxLabel = sprintf($GLOBALS['TL_LANG']['MSC']['taxLabel'], 'Sales');
 		$objTemplate->shippingLabel = $GLOBALS['TL_LANG']['MSC']['shippingLabel'];
 		$objTemplate->subTotalPrice = $this->generatePrice($this->Cart->subTotal);
-		$objTemplate->shippingTotal = $this->generatePrice($this->Cart->Shipping->price);
 		$objTemplate->taxTotal = $this->generatePrice($this->Cart->taxTotal);
 		$objTemplate->grandTotalPrice = $this->generatePrice($this->Cart->grandTotal, 'stpl_total_price');
-		
+		$fltShippingCost = $this->Cart->Shipping->price + $this->Cart->Shipping->optionsPrice;
+		$objTemplate->shippingTotal = $this->generatePrice($fltShippingCost);
+		//$objTemplate->shippingOptions = $this->generatePrice($this->Cart->Shipping->optionsPrice);
+		$objTemplate->shippingOptionsListLabel = $GLOBALS['TL_LANG']['MSC']['shippingOptionsLabel'];
+		$objTemplate->shippingOptionsList = $this->Cart->Shipping->optionsList;
+
 		$objTemplate->billingAddress = $this->getAddressString($this->getSelectedAddress('billing'));
 		$objTemplate->shippingAddress = $this->getAddressString($this->getSelectedAddress('shipping'));
 		
@@ -952,16 +963,17 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	protected function getSelectedAddress($strStep = 'billing')
 	{
 		$intAddressId = $_SESSION['FORM_DATA'][$strStep.'_address'];
-		
+
 		// Take billing address
 		if ($intAddressId == -1)
-		{
+		{			
 			$intAddressId = $_SESSION['FORM_DATA']['billing_address'];
 			$strStep = 'billing';
 		}
 		
+		//gather from form
 		if ($intAddressId == 0)
-		{
+		{	
 			$arrAddress = array
 			(
 				'company'		=> $_SESSION['FORM_DATA'][$strStep . '_information_company'],
@@ -975,7 +987,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				'postal'		=> $_SESSION['FORM_DATA'][$strStep . '_information_postal'],
 				'country'		=> $_SESSION['FORM_DATA'][$strStep . '_information_country'],
 			);
-			
+						
 			if ($strStep == 'billing')
 			{
 				$arrAddress['email'] = (strlen($_SESSION['FORM_DATA'][$strStep . '_information_email']) ? $_SESSION['FORM_DATA'][$strStep . '_information_email'] : $this->User->email);

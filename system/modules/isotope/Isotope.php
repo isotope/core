@@ -243,12 +243,18 @@ class Isotope extends Controller
 	}
 	
 	public function getAddress($strStep = 'billing')
-	{
+	{	
+		//TODO - clean up all getAddress stuff...	
+		if($strStep=='shipping' && !FE_USER_LOGGED_IN && $_SESSION['FORM_DATA']['shipping_address']==-1)
+		{
+			$strStep = 'billing';
+		}
+				
 		if ($_SESSION['FORM_DATA'][$strStep.'_address'] && !isset($_SESSION['FORM_DATA']['billing_address']))
 			return false;
 			
 		$intAddressId = $_SESSION['FORM_DATA'][$strStep.'_address'];
-		
+	
 		// Take billing address
 		if ($intAddressId == -1)
 		{
@@ -379,34 +385,30 @@ class Isotope extends Controller
 	
 	public function applyRules($fltProductBasePrice, $intProductId, $storeTable)
 	{
-		/*
-		if($this->Database->fieldExists('is_sale_item',$storeTable))
-		{
+		
 				
-			$objIsSaleItem = $this->Database->prepare("SELECT is_sale_item FROM " . $storeTable . " WHERE id=?")
-											->limit(1)
-											->execute($intProductId);
-											
-			if($objIsSaleItem->numRows < 1)
-			{
-				$isSaleItem = false;
-			}
-			
-			$isSaleItem = $objIsSaleItem->is_sale_item=='1' ? true : false;
-		}else{
-			$isSaleItem = false;
+		$objData = $this->Database->prepare("SELECT pid FROM " . $storeTable . " WHERE id=?")
+										->limit(1)
+										->execute($intProductId);
+										
+		if($objData->numRows < 1)
+		{
+			$isExcluded = false;
 		}
+		
+		$isExcluded = in_array($objData->pid, $GLOBALS['ISO_RULES']['excludeAttributeSets']);
+		
 						
-		if(in_array(2, $this->User->groups) && !$isSaleItem)	//this is where rules will later be loaded
+		if(in_array(2, $this->User->groups) && !$isExcluded)	//this is where rules will later be loaded
 		{
 			$fltAdjustedPrice = $fltProductBasePrice - ($fltProductBasePrice * .1);
 		}else{
 			$fltAdjustedPrice = $fltProductBasePrice;
 		}
 		
-		return $fltAdjustedPrice;*/
+		return $fltAdjustedPrice;
 		
-		return $fltProductBasePrice;
+		//return $fltProductBasePrice;
 	
 	}
 	

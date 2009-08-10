@@ -72,7 +72,7 @@ class IsotopePOS extends Backend
 	
 	public function getPOSInterface(DataContainer $objDc)
 	{	
-	
+		
 		/*
 		$ch = curl_init();
 
@@ -112,37 +112,24 @@ class IsotopePOS extends Backend
 		
 		$arrOrderInfo = $objOrderInfo->fetchAssoc();
 							
-		$objUserName = $this->Database->prepare("SELECT firstname, lastname FROM tl_address_book WHERE id=?")
-									  ->limit(1)
-									  ->execute($arrOrderInfo['billing_address_id']);
+		$arrPaymentInfo = deserialize($arrOrderInfo['payment_data']);
+	
+		$arrShippingInfo = deserialize($arrOrderInfo['shipping_data']);
+		
 				
-		if($objUserName->numRows < 1)
-		{
-			return '<no user name specified>';		
-		}	
+		$this->fltOrderTotal = $arrPaymentInfo['totals']['grandTotal'];
 		
-		
-		$this->fltOrderTotal = (float)$arrOrderInfo['subTotal'] + (float)$arrOrderInfo['orderTax'] + (float)$arrOrderInfo['shippingTotal'];
-		
-		$strBillingAddress = $this->loadAddress($arrOrderInfo['billing_address_id'], $arrOrderInfo['id'], true);
-		$strShippingAddress = $this->loadAddress($arrOrderInfo['shipping_address_id'], $arrOrderInfo['id']);
+		$strBillingAddress = nl2br($arrOrderInfo['billing_address']);
+		$strShippingAddress = nl2br($arrOrderInfo['shipping_address']);
 
 		$arrProductList = $this->getProducts($arrOrderInfo['cart_id']);
 		
-		$strProductList = $this->generateProductList($arrProductList);
+		//$strProductList = $this->generateProductList($arrProductList);
 			
-		$objPaymentModuleData = $this->Database->prepare("SELECT name, authorizeConfiguration FROM tl_module WHERE id=?")
-											   ->limit(1)
-											   ->execute(34);
-		if($objPaymentModuleData->numRows < 1)
-		{
-			return '<i>' . $GLOBALS['TL_LANG']['MSC']['noPaymentModules'] . '</i>';
-		}
 		
 		//Get the authorize.net configuration data			
-		$objAIMConfig = $this->Database->prepare("SELECT * FROM tl_authorize WHERE id=?")
-														->limit(1)
-														->execute($objPaymentModuleData->authorizeConfiguration);
+		$objAIMConfig = $this->Database->prepare("SELECT * FROM tl_payment_modules WHERE type=?")
+														->execute('authorizedotnet');
 		if($objAIMConfig->numRows < 1)
 		{
 			return '<i>' . $GLOBALS['TL_LANG']['MSC']['noPaymentModules'] . '</i>';
@@ -156,12 +143,12 @@ class IsotopePOS extends Backend
 		if($objAIMConfig->numRows > 0)
 		{
 			
-			$delimResponse = ($objAIMConfig->delimResponse==1 ? "TRUE" : "FALSE");
-			$delimChar = $objAIMConfig->delimChar;
-			$loginID = $objAIMConfig->loginID;
-			$transKey = $objAIMConfig->transKey;
-			$transType = $objAIMConfig->transType;
-			$status = ($objAIMConfig->status=="test" ? "TRUE" : "FALSE");
+			$delimResponse = "TRUE";
+			$delimChar = $objAIMConfig->authorize_delimiter;
+			$loginID = $objAIMConfig->authorize_login;
+			$transKey = $objAIMConfig->authorize_trans_key;
+			$transType = $objAIMConfig->authorize_trans_type;
+			$status = ($objAIMConfig->debug ? "TRUE" : "FALSE");
 			//var_dump($status);
 		}
 
@@ -170,7 +157,7 @@ class IsotopePOS extends Backend
 			
 			$authnet_values = array(
 				"x_login"							=> $loginID,
-				"x_version"							=> $GLOBALS['TL_LANG']['MSC']['gatewayVersion'],
+				"x_version"							=> '3.1',
 				"x_test_request"					=> $status,
 				"x_delim_char"						=> ",",
 				"x_delim_data"						=> $delimResponse,
@@ -184,13 +171,13 @@ class IsotopePOS extends Backend
 				"x_cardholder_authentication_value"	=> $arrOrderInfo['cc_cvv'],
 				"x_description"						=> "Order Number " . $objDc->id,
 				"x_amount"							=> number_format($this->fltOrderTotal, 2),
-				"x_first_name"						=> $this->arrBillingInfo['firstname'],
-				"x_last_name"						=> $this->arrBillingInfo['lastname'],
-				"x_address"							=> $this->arrBillingInfo['street'],
-				"x_city"							=> $this->arrBillingInfo['city'],
-				"x_state"							=> $this->arrBillingInfo['state'],
-				"x_zip"								=> $this->arrBillingInfo['postal'],
-				"x_company"							=> $this->arrBillingInfo['company'],
+				"x_first_name"						=> $arrPaymentInfo['address']['firstname'],
+				"x_last_name"						=> $arrPaymentInfo['address']['lastname'],
+				"x_address"							=> $arrPaymentInfo['address']['street'],
+				"x_city"							=> $arrPaymentInfo['address']['city'],
+				"x_state"							=> $arrPaymentInfo['address']['state'],
+				"x_zip"								=> $arrPaymentInfo['address']['postal'],
+				"x_company"							=> $arrPaymentInfo['address']['company'],
 				//"x_email_customer"				=> "TRUE",
 				//"x_email"							=> $this->arrBillingInfo['email']
 			);
@@ -220,7 +207,7 @@ class IsotopePOS extends Backend
 			###  Uncomment the line ABOVE for test accounts or BELOW for live merchant accounts
 			### $ch = curl_init("https://secure.authorize.net/gateway/transact.dll"); 
 			
-			curl_setopt($ch, CURLOPT_URL, $GLOBALS['TL_LANG']['MSC']['authNetUrlLive']); 
+			curl_setopt($ch, CURLOPT_URL, 'https://test.authorize.net/gateway/transact.dll'); 
 			curl_setopt($ch, CURLOPT_HEADER, 0); // set to 0 to eliminate header info from response
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // Returns response data instead of TRUE(1)
 			curl_setopt($ch, CURLOPT_POSTFIELDS, rtrim( $fields, "& " )); // use HTTP POST to send form data
@@ -245,7 +232,7 @@ class IsotopePOS extends Backend
 			
 			//$objTemplate->showPrintLink = true;
 		}else{
-			$objTemplate->x_version = $GLOBALS['TL_LANG']['MSC']['gatewayVersion'];
+			$objTemplate->x_version = '3.1';
 			$objTemplate->x_delim_data = $delimResponse;
 			$objTemplate->x_delim_char = $delimChar;
 			$objTemplate->x_relay_response = "false";	//Must be false for AIM processing.
@@ -255,13 +242,13 @@ class IsotopePOS extends Backend
 			$objTemplate->x_type = $transType;
 			$objTemplate->x_test_request = $status;
 			
-			$objTemplate->x_first_name = $this->arrBillingInfo['firstname'];
-			$objTemplate->x_last_name = $this->arrBillingInfo['lastname'];
-			$objTemplate->x_company = $this->arrBillingInfo['company'];
-			$objTemplate->x_address = $this->arrBillingInfo['street'];
-			$objTemplate->x_city = $this->arrBillingInfo['city'];
-			$objTemplate->x_state = $this->arrBillingInfo['state'];
-			$objTemplate->x_zip = $this->arrBillingInfo['postal'];
+			$objTemplate->x_first_name = $arrPaymentInfo['address']['firstname'];
+			$objTemplate->x_last_name = $arrPaymentInfo['address']['lastname'];
+			$objTemplate->x_company = $arrPaymentInfo['address']['company'];
+			$objTemplate->x_address = $arrPaymentInfo['address']['street'];
+			$objTemplate->x_city = $arrPaymentInfo['address']['city'];
+			$objTemplate->x_state = $arrPaymentInfo['address']['state'];
+			$objTemplate->x_zip = $arrPaymentInfo['address']['postal'];
 			//$objTemplate->x_phone = $this->arrBillingInfo['phone'];
 			//$objTemplate->x_fax = $this->arrBillingInfo['fax'];
 			//$objTemplate->x_email = $this->arrSession['FORM_DATA']['billing_information_email'];
@@ -388,6 +375,7 @@ class IsotopePOS extends Backend
 		$objTemplate->orderShippingTotal = $arrOrderInfo['shippingTotal']; 
 		$objTemplate->orderGrandTotal = $arrOrderInfo['grandTotal'];
 		$objTemplate->orderFooterString = '';	
+		$objTemplate->logoImage = $this->Environment->base . 'tl_files/cdss/images/globalLayout/headerLogo.gif';
 		$strInvoiceTitle = $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] . '_' . $objDc->id . '_' . time();
 		
 		//$strArticle = html_entity_decode($strArticle, ENT_QUOTES, $GLOBALS['TL_CONFIG']['characterSet']);
@@ -549,7 +537,7 @@ class IsotopePOS extends Backend
 		$arrProductListsByTable = array();
 		$arrProductData = array();
 		
-		$objProductData = $this->Database->prepare("SELECT ci.product_id, ci.quantity_requested, p.storeTable FROM tl_cart_items ci, tl_product_attribute_sets p WHERE p.id = ci.attribute_set_id AND ci.pid =?")
+		$objProductData = $this->Database->prepare("SELECT ci.product_id, ci.quantity_requested, ci.price, p.storeTable FROM tl_cart_items ci, tl_product_attribute_sets p WHERE p.id = ci.attribute_set_id AND ci.pid =?")
 										 ->execute($intSourceCartId);
 		
 		if($objProductData->numRows < 1)
@@ -566,7 +554,8 @@ class IsotopePOS extends Backend
 			(
 					'table'				=> $productData['storeTable'],
 					'id'				=> $productData['product_id'], 
-					'quantity'			=> $productData['quantity_requested']
+					'quantity'			=> $productData['quantity_requested'],
+					'price'				=> $productData['price']
 			);
 		}
 
@@ -584,7 +573,7 @@ class IsotopePOS extends Backend
 			
 			$strProductList = implode(',', $arrProductIds);
 									
-			$objProductExtendedData = $this->Database->prepare("SELECT id, name, sku, price FROM " . $storeTable . " WHERE id IN(" . $strProductList . ")")
+			$objProductExtendedData = $this->Database->prepare("SELECT id, name, sku FROM " . $storeTable . " WHERE id IN(" . $strProductList . ")")
 													 ->execute();
 									
 			if($objProductExtendedData->numRows < 1)
@@ -596,18 +585,18 @@ class IsotopePOS extends Backend
 			
 			foreach($arrProductExtendedData as $row)
 			{
-				$fltProductTax = ((int)$arrProductLists[$storeTable][$row['id']]['quantity'] * (float)$row['price']) * 0.05;
+				//$fltProductTax = ((int)$arrProductLists[$storeTable][$row['id']]['quantity'] * (float)$arrProductLists[$storeTable][$row['id']]['price']) * 0.05;
 					
-				$fltSubtotal = ((int)$arrProductLists[$storeTable][$row['id']]['quantity'] * (float)$row['price']) + round($fltProductTax, 2);
+				$fltSubtotal = ((int)$arrProductLists[$storeTable][$row['id']]['quantity'] * (float)$arrProductLists[$storeTable][$row['id']]['price']) + round($fltProductTax, 2);
 				//	echo $fltSubtotal;
 				
 				$arrAllProducts[] = array
 				(
 					'name'			=> $row['name'],
 					'sku'			=> $row['sku'],
-					'price'			=> number_format((float)$row['price'], 2),
+					'price'			=> number_format((float)$arrProductLists[$storeTable][$row['id']]['price'], 2),
 					'quantity'		=> $arrProductLists[$storeTable][$row['id']]['quantity'],
-					'tax'			=> number_format($fltProductTax, 2),
+					//'tax'			=> number_format($fltProductTax, 2),
 					'subtotal'		=> number_format($fltSubtotal, 2)
 					
 				); 	
@@ -622,7 +611,7 @@ class IsotopePOS extends Backend
 		
 		foreach($arrProducts as $row)
 		{			
-			$strProductData .= $row['name'] . ' - ' . money_format('$%n', (float)$row['price']) . ' x ' . $row['quantity'] . ' = ' . money_format('$%n', ((float)$row['price'] * $row['quantity'])) . '<br />';
+			$strProductData .= $row['name'] . ' - ' . money_format('$%n', (float)$arrProductLists[$storeTable][$row['id']]['price']) . ' x ' . $row['quantity'] . ' = ' . money_format('$%n', ((float)$arrProductLists[$storeTable][$row['id']]['price'] * $row['quantity'])) . '<br />';
 		
 		}
 	

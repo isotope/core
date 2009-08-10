@@ -146,9 +146,14 @@ class IsotopeCart extends Model
 					// FIXME: currently rounds to 0.05 (swiss francs)
 					return number_format((float)$this->calculateTax($this->Isotope->getProductData($this->getProducts(), array('price', 'tax_class'), 'price')) + ($this->hasShipping ? $this->Shipping->price : 0), 2);
 					break;
+				
+				case 'shippingTotal':
+					return $this->hasShipping ? number_format((float)$this->Shipping->price, 2) : 0.00;
+					break;
 					
 				case 'grandTotal':
-					return ($this->subTotal + $this->taxTotalWithShipping);
+					//return ($this->subTotal + $this->taxTotalWithShipping);
+					return ($this->subTotal + $this->taxTotal + $this->shippingTotal);
 					break;
 					
 				case 'hasShipping':

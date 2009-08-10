@@ -1,7 +1,7 @@
 <div id="invoice" style="margin:18px; padding:0px; font-size: 62.5%; font-family: Arial, Helvetica, sans-serif; width:800px; border:solid 1px #000000; padding-left25px; padding-right:25px;">
 	<table id="header" cellpadding="5" cellspacing="0" border="0" width="100%">
 		<tr>
-		<td id="logo"><img src="/tl_files/cdss/images/globalLayout/headerLogo.gif" /></td>
+		<td id="logo"><img src="<?php echo $this->logoImage; ?>" /></td>
 		<td style="text-align:right;"><p style="font-size:14px; margin-top:0px; margin-bottom:10px; padding:0px;"><?php echo $this->invoiceTitle; ?></p></td>
 		</tr><tr>
 		<td id="basic_info">
@@ -70,24 +70,24 @@
 	
 		<table id="summary" cellpadding="5" cellspacing="0" border="0" width="1500">			
 			<tr>
-				<td width="300">&nbsp;</td>
+				<td width="275">&nbsp;</td>
 				<td width="150" align="left" style="white-space:nowrap;"><?php echo $this->orderSubtotalHeader; ?></td>
 				<td width="50" align="left" style="white-space:nowrap;"><?php echo $this->orderSubtotal; ?></td>
 			</tr>
 			<tr>
-				<td width="300">&nbsp;</td>
+				<td width="275">&nbsp;</td>
 				<td width="150" align="left" style="white-space:nowrap;"><?php echo $this->orderTaxHeader; ?></td>
 				<td width="50" align="left" style="white-space:nowrap;"><?php echo $this->orderTaxTotal; ?></td>
 			</tr>
 			<tr>
-				<td width="300">&nbsp;</td>
+				<td width="275">&nbsp;</td>
 				<td width="150" align="left" style="white-space:nowrap;"><?php echo $this->orderShippingHeader; ?></td>
 				<td width="50" align="left" style="white-space:nowrap;"><?php echo $this->orderShippingTotal; ?></td>
 			</tr>
 			<tr>
-				<td width="300">&nbsp;</td>
+				<td width="275">&nbsp;</td>
 				<td width="150" align="left" style="white-space:nowrap;"><h2><?php echo $this->orderGrandTotalHeader; ?></h2></td>
-				<td width="50" align="left" style="white-space:nowrap;"><h2><?php echo $this->orderGrandTotal; ?></h2></td>
+				<td width="75" align="left" style="white-space:nowrap;"><h2><?php echo $this->orderGrandTotal; ?></h2></td>
 			</tr>
 
 		</table>

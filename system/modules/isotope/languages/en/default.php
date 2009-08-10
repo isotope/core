@@ -104,6 +104,7 @@ $GLOBALS['TL_LANG']['MSC']['subTotalLabel'] = 'Order Subtotal: ';
 $GLOBALS['TL_LANG']['MSC']['shippingLabel'] = 'Shipping: ';
 $GLOBALS['TL_LANG']['MSC']['taxLabel'] = '%s Tax: ';
 $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'] = 'Order Total: ';
+$GLOBALS['TL_LANG']['MSC']['shippingOptionsLabel'] = 'Selected Shipping Options: ';
 
 $GLOBALS['TL_LANG']['MSC']['selectItemPrompt'] = "(select)";
 

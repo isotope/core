@@ -27,7 +27,7 @@
  */
 $GLOBALS['TL_LANG']['tl_iso_orders']['order_subtotal'] = array('Subtotal','');
 $GLOBALS['TL_LANG']['tl_iso_orders']['order_tax'] = array('Tax Cost','');
-$GLOBALS['TL_LANG']['tl_iso_orders']['order_shipping_cost'] = array('Shipping Cost','');
+$GLOBALS['TL_LANG']['tl_iso_orders']['shippingTotal'] = array('Shipping Cost','');
 $GLOBALS['TL_LANG']['tl_iso_orders']['shipping_method'] = array('Shipping Method','');
 $GLOBALS['TL_LANG']['tl_iso_orders']['status'] = array('Order Status','');
 $GLOBALS['TL_LANG']['tl_iso_orders']['shipping_address_id'] = array('Shipping Address','');

@@ -33,7 +33,7 @@
 class ShippingOrderTotal extends Shipping
 {
 	protected $shipping_options = array();
-	
+
 	/**
 	 * Return an object property
 	 *
@@ -66,20 +66,58 @@ class ShippingOrderTotal extends Shipping
 					case 'order_total':
 						$fltEligibleSubTotal = $this->getAdjustedSubTotal($this->Cart->subTotal);
 				
-						if($fltEligibleSubTotal==0)
+						if($fltEligibleSubTotal<=0)
 						{
 							return 0.00;
 						}
-		
-
+						
 						return $this->calculateShippingRate($this->id, $fltEligibleSubTotal);
 						break;
 				}
 				break;
-					
+			
+			case 'optionsPrice':
+	
+				$arrOptionNames = split(',', $_SESSION['FORM_DATA']['shipping_options']);
+	
+				foreach($arrOptionNames as $option)
+				{		
+					$fltShippingOptionsTotal += $_SESSION['FORM_DATA'][$option];
+		 		}
+				
+				return $fltShippingOptionsTotal;
+				break;
+				
+			case 'optionsList':
+			
+				$arrOptionNames = split(',', $_SESSION['FORM_DATA']['shipping_options']);
+				
+				foreach($arrOptionNames as $option)
+				{	
+					$arrShippingOptionsList[] = $this->getRateLabel($option);
+				}
+				
+				return implode(',', $arrShippingOptionsList);
+				break;				
 		}
 		
 		return parent::__get($strKey);
+	}
+	
+	protected function getRateLabel($strOptionName)
+	{
+		$arrOptionInfo = split('_', $strOptionName);
+	
+		$objRateLabel = $this->Database->prepare("SELECT name FROM tl_shipping_options WHERE pid=? AND id=?")
+									   ->limit(1)
+									   ->execute($arrOptionInfo[2], $arrOptionInfo[3]);
+		
+		if($objRateLabel->numRows < 1)
+		{
+			return false;
+		}
+		
+		return $objRateLabel->name;
 	}
 	
 	
@@ -121,7 +159,7 @@ class ShippingOrderTotal extends Shipping
 		$this->import('Isotope');
 			
 		$arrUserGroups = deserialize($this->User->groups);
-		
+	
 		$arrShippingAddress = $this->Isotope->getAddress('shipping'); //Tax calculated based on billing address.
 				
 		$objRates = $this->Database->prepare("SELECT * FROM tl_shipping_options WHERE pid=?")
@@ -304,9 +342,10 @@ class ShippingOrderTotal extends Shipping
 			{	
 				$arrCountries = $this->getShippingModuleCountries($rate['rate_info']['pid']);
 			}
-			
+		
 			if((is_array($arrCountries) && in_array($arrShippingAddress['country'], $arrCountries)) || !is_array($arrCountries))
 			{
+
 				//determine value ranges
 				foreach($rate['rate_info'] as $k=>$v)
 				{
@@ -378,27 +417,15 @@ class ShippingOrderTotal extends Shipping
 		}
 		 		
  		$fltTotalSurcharges = array_sum($arrSurcharges);
+							
+		$fltShippingTotal = $fltBaseRate + $fltTotalSurcharges;
 		
 		if($this->Input->post('shipping_options'))
 		{
-			$_SESSION['FORM_DATA']['shipping_option_name'] = $this->Input->post('shipping_options');
+			$_SESSION['FORM_DATA']['shipping_options'] = $this->Input->post('shipping_options');
+			$strOptionName = $_SESSION['FORM_DATA']['shipping_options'];
+			$_SESSION['FORM_DATA'][$strOptionName] = $this->Input->post($strOptionName);
 		}
-			
-		if($this->Input->post($_SESSION['FORM_DATA']['shipping_option_name']))
-		{
-			//$_SESSION['FORM_DATA']['shipping_options'][$_SESSION['FORM_DATA']['shipping_option_name']] = 0;
-			
-			$_SESSION['FORM_DATA']['shipping_options'][$_SESSION['FORM_DATA']['shipping_option_name']] = (float)$this->Input->post($_SESSION['FORM_DATA']['shipping_option_name']);
-					
-		
-			$arrShippingOptionValues = array($_SESSION['FORM_DATA']['shipping_options'][$_SESSION['FORM_DATA']['shipping_option_name']]);
-			
-			$fltShippingOptions = array_sum($arrShippingOptionValues);
-		}else{
-			$fltShippingOptions = $_SESSION['FORM_DATA']['shipping_options'][$_SESSION['FORM_DATA']['shipping_option_name']];
-		}
-		
-		$fltShippingTotal = $fltBaseRate + $fltTotalSurcharges + $fltShippingOptions;
 		
 		return $fltShippingTotal;
 		
@@ -435,17 +462,17 @@ class ShippingOrderTotal extends Shipping
 	public function getShippingOptions($intModuleId)
 	{
 		$strOptions = is_array($this->shipping_options) && sizeof($this->shipping_options)>0 ? join(',', $this->shipping_options) : 0;
-		
-		$objShippingModule = $this->Database->prepare("SELECT sm.*, so.* FROM tl_shipping_modules sm INNER JOIN tl_shipping_options so ON so.pid=sm.id WHERE sm.id=? && so.id IN(" . $strOptions . ") AND so.mandatory!='1'")
+				
+		$objShippingModule = $this->Database->prepare("SELECT sm.*, so.* FROM tl_shipping_modules sm INNER JOIN tl_shipping_options so ON so.pid=sm.id WHERE sm.id=? AND so.id IN(" . $strOptions . ") AND so.mandatory!='1'")
 											->execute($intModuleId);
 		
 		if($objShippingModule->numRows < 1)
 		{
-			
-			return '';
+			return false;
 		}
 		
 		$arrShippingOptions = $objShippingModule->fetchAllAssoc();
+		
 		
 		//option naming convention - 'shipping_option_' . $rate['rate_info']['pid'] . '_' . $rate['rate_info']['id']
 		foreach($arrShippingOptions as $option)

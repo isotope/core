@@ -32,7 +32,10 @@
 	    <div class="finalPrices">
 	    	<div class="subTotal"><span class="label"><?php echo $this->subTotalLabel; ?></span> <?php echo $this->subTotalPrice; ?></div>
 			<div class="shipping"><span class="label"><?php echo $this->shippingLabel; ?></span> <?php echo $this->shippingTotal; ?></div>
-	    	<div class="tax"><span class="label"><?php echo $this->taxLabel; ?></span> <?php echo $this->taxTotal; ?></div>
+            <!--<?php if(strlen($this->shippingOptionsList)): ?>
+            <div class="shipping"><span class="label"><?php echo $this->shippingOptionsListLabel; ?></span><br /><?php echo $this->shippingOptionsList; ?></div>
+	    	<?php endif; ?>-->
+            <div class="tax"><span class="label"><?php echo $this->taxLabel; ?></span> <?php echo $this->taxTotal; ?></div>
 	    	<div class="grandTotal"><span class="label"><?php echo $this->grandTotalLabel; ?></span> <?php echo $this->grandTotalPrice; ?></div>
 	    	<div class="clearBoth"></div>
 	    </div>
