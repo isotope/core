@@ -962,6 +962,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	
 	protected function getSelectedAddress($strStep = 'billing')
 	{
+
 		$intAddressId = $_SESSION['FORM_DATA'][$strStep.'_address'];
 
 		// Take billing address
@@ -1006,8 +1007,22 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			}
 			
 			$arrAddress = $objAddress->fetchAssoc();
-			$arrAddress['email'] = $this->User->email;
-			$arrAddress['phone'] = $this->User->phone;
+			
+			$arrAddress['email'] = (strlen($arrAddress['email']) ? $arrAddress['email'] : $this->User->email);
+			$arrAddress['phone'] = (strlen($arrAddress['phone']) ? $arrAddress['phone'] : $this->User->phone);
+			
+			$_SESSION['FORM_DATA'][$strStep . '_information_company'] = $arrAddress['company'];
+			$_SESSION['FORM_DATA'][$strStep . '_information_firstname'] = $arrAddress['firstname'];
+			$_SESSION['FORM_DATA'][$strStep . '_information_lastname'] = $arrAddress['lastname'];
+			$_SESSION['FORM_DATA'][$strStep . '_information_street'] = $arrAddress['street'];
+			$_SESSION['FORM_DATA'][$strStep . '_information_street_2'] = $arrAddress['street_2'];
+			$_SESSION['FORM_DATA'][$strStep . '_information_street_3'] = $arrAddress['street_3'];
+			$_SESSION['FORM_DATA'][$strStep . '_information_city'] = $arrAddress['city'];
+			$_SESSION['FORM_DATA'][$strStep . '_information_state'] = $arrAddress['state'];
+			$_SESSION['FORM_DATA'][$strStep . '_information_postal'] = $arrAddress['postal'];
+			$_SESSION['FORM_DATA'][$strStep . '_information_country'] = $arrAddress['country'];			
+			$_SESSION['FORM_DATA'][$strStep . '_information_email'] = $arrAddress['email'];
+			$_SESSION['FORM_DATA'][$strStep . '_information_phone'] = $arrAddress['phone'];
 		}
 				
 		return $arrAddress;

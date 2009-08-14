@@ -305,6 +305,38 @@ class Isotope extends Controller
 
 	
 	
+	protected function loadAddressById($intAddressId, $strStep)
+    {
+        $objAddress = $this->Database->prepare("SELECT * FROM tl_address_book WHERE id=?")
+									->limit(1)
+									->execute($intAddressId);
+	
+		if($objAddress->numRows < 1)
+		{
+			return $GLOBALS['TL_LANG']['MSC']['ERR']['specifyBillingAddress'];
+		}
+		
+		$arrAddress = $objAddress->fetchAssoc();
+		
+		$strEmail = (strlen($arrAddress['email']) ? $arrAddress['email'] : $this->User->email);
+		$strPhone = (strlen($arrAddress['phone']) ? $arrAddress['phone'] : $this->User->phone);
+		
+		$_SESSION['FORM_DATA'][$strStep . '_information_company'] = $arrAddress['company'];
+		$_SESSION['FORM_DATA'][$strStep . '_information_firstname'] = $arrAddress['firstname'];
+		$_SESSION['FORM_DATA'][$strStep . '_information_lastname'] = $arrAddress['lastname'];
+		$_SESSION['FORM_DATA'][$strStep . '_information_street'] = $arrAddress['street'];
+		$_SESSION['FORM_DATA'][$strStep . '_information_street_2'] = $arrAddress['street_2'];
+		$_SESSION['FORM_DATA'][$strStep . '_information_street_3'] = $arrAddress['street_3'];
+		$_SESSION['FORM_DATA'][$strStep . '_information_city'] = $arrAddress['city'];
+		$_SESSION['FORM_DATA'][$strStep . '_information_state'] = $arrAddress['state'];
+		$_SESSION['FORM_DATA'][$strStep . '_information_postal'] = $arrAddress['postal'];
+		$_SESSION['FORM_DATA'][$strStep . '_information_country'] = $arrAddress['country'];			
+		$_SESSION['FORM_DATA'][$strStep . '_information_email'] = $strEmail;
+		$_SESSION['FORM_DATA'][$strStep . '_information_phone'] = $strPhone;
+
+        return true;
+   }
+	
 	/**
 	 * Send an email using the isotope e-mail templates.
 	 * 

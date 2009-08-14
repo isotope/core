@@ -95,8 +95,16 @@ abstract class Shipping extends Frontend
 									
 				$arrCountries = deserialize($this->countries);
 				
-				$strCountry = (!isset($_SESSION['FORM_DATA']['shipping_information_country']) ? $_SESSION['FORM_DATA']['billing_information_country'] : ($_SESSION['FORM_DATA']['shipping_address'][0] ? $_SESSION['FORM_DATA']['billing_information_country'] : $_SESSION['FORM_DATA']['shipping_information_country']));
-						
+				if(isset($_SESSION['FORM_DATA']['shipping_address']))
+			    {
+			           //TODO - fix to load addres in a consistent manner.
+					$this->loadSelectedAddressById($_SESSION['FORM_DATA']['shipping_address'], 'shipping');
+			        $strCountry = $_SESSION['FORM_DATA']['shipping_information_country'];
+			    }else{
+				
+					$strCountry = (!isset($_SESSION['FORM_DATA']['shipping_information_country']) ? $_SESSION['FORM_DATA']['billing_information_country'] : ($_SESSION['FORM_DATA']['shipping_address'][0] ? $_SESSION['FORM_DATA']['billing_information_country'] : $_SESSION['FORM_DATA']['shipping_information_country']));
+				}	
+					
 				if(sizeof($arrCountries)>0 && !in_array(strtolower($strCountry), $arrCountries))
 					return false;
 					

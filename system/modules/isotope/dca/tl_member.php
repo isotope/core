@@ -31,7 +31,9 @@
 $GLOBALS['TL_DCA']['tl_member']['config']['ctable'][] = 'tl_address_book';
 $GLOBALS['TL_DCA']['tl_member']['config']['onsubmit_callback'][] = array('tl_member_isotope_extended','copyInitialAddress');
 	
-		
+$GLOBALS['TL_DCA']['tl_member']['fields']['country']['eval']['mandatory'] = true;		
+$GLOBALS['TL_DCA']['tl_member']['fields']['phone']['eval']['rgxp'] = null;
+
 /**
  * Operations
  */
@@ -41,7 +43,7 @@ $GLOBALS['TL_DCA']['tl_member']['list']['operations']['address_book'] = array
 	'href'                => 'table=tl_address_book',
 	'icon'                => 'system/modules/isotope/html/addrBook.jpg'
 );
-	
+
 
 /**
  * Field settings

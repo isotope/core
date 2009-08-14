@@ -7,26 +7,29 @@
     <div class="filterWrap">
         <form action="<?php echo $this->action; ?>" method="get" name="frmFilters">
         <div class="formbody">
-        <input type="hidden" name="ignore_page_id" value="<?php echo $this->ignore_page_id; ?>" />
-        <input type="hidden" name="pas_id" value="<?php echo $this->pas_id; ?>" />
+        <!-- <input type="hidden" name="ignore_page_id" value="<?php echo $this->ignore_page_id; ?>" /> -->
+        <!-- <input type="hidden" name="pas_id" value="<?php echo $this->pas_id; ?>" /> -->
+        <div class="searchfields">       
+       &nbsp;<label for="<?php echo $this->searchFilterText['name']; ?>"><?php echo $this->searchFilterText['label']; ?></label><input type="<?php echo $this->searchFilterText['type']; ?>" name="<?php echo $this->searchFilterText['name']; ?>" class="text" value="<?php echo $this->searchFilterText['current_value']; ?>" />&nbsp;<input type="submit" name="submit" value="Submit" />
+       </div>
+        <div class="filters">
       	<?php if(sizeof($this->filters)): ?>
       	<?php foreach($this->filters as $filter): ?>
       		<label for="<?php echo $filter['name']; ?>"><?php echo $filter['label']; ?></label>
-      		<?php switch($filter['type'])  
-      			  { 
-      			  	case 'text': ?>
-      					<input type="text" name="<?php echo $filter['name']; ?>" class="text" value="<?php echo $filter['current_value']; ?>" /> <input type="submit" name="post_this_form" value="search" />
-      		<?php 		break; ?>
-      		<?php   default: ?>
+      		<?php //switch($filter['type'])  
+      			  //{ ?>
+      		<?php   //default: ?>
 			      		<select name="<?php echo $filter['name']; ?>" class="select" onchange="form.submit();">
 			      			<?php foreach($filter['options'] as $option): ?>
 			      				<option value="<?php echo $option['value']; ?>"<?php if($filter['current_value']==$option['value']): ?> selected="selected"<?php endif; ?>><?php echo $option['label']; ?></option>
 			      			<?php endforeach; ?>
 			      		</select>
-      		<?php 		break; ?>
-      		<?php } ?>
+      		<?php 	//	break; ?>
+      		<?php //} ?>
       	<?php endforeach; ?> 
       	<?php endif; ?>
+      	</div>
+      	<div class="orderby">
       	<label for="order_by"><?php echo $this->labelOrderBy; ?></label>
         <select name="order_by" class="select" onchange="form.submit();">
         	<option value=""<?php if($this->order_by==$option['value']): ?> selected="selected"<?php endif; ?>>(select)</option>
@@ -34,8 +37,8 @@
                 <option value="<?php echo $option['value']; ?>"<?php if($this->order_by==$option['value']): ?> selected="selected"<?php endif; ?>><?php echo $option['label']; ?></option>
             <?php endforeach; ?>
         </select>
-        
-        
+        </div>
+        <div class="perpage">
         <label for="per_page"><?php echo $this->labelPerPage; ?></label>
         <select name="per_page" class="select" onchange="form.submit();">
           <?php foreach($this->perPageOptions as $option): ?>
@@ -44,6 +47,7 @@
           <!--<option value="250"<?php if ($this->per_page == 250): ?> selected="selected"<?php endif; ?>>250</option>
           <option value="500"<?php if ($this->per_page == 500): ?> selected="selected"<?php endif; ?>>500</option>-->
         </select>
+        </div>
         </div>
         </form>
     </div>

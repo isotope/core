@@ -22,8 +22,8 @@
 		}
 	});
 </script>
-<?php if (strlen($this->productName)): ?><h1><?php echo $this->productName; ?></h1><?php endif; ?>
 <div class="mod_productReader">
+<?php if (strlen($this->productName)): ?><h1><?php echo $this->productName; ?></h1><?php endif; ?>
   <div class="productInfoWrap">
     <?php if($this->hasErrors): ?>
     <div class="errorMessages">
@@ -86,6 +86,7 @@
 	        <?php endforeach; ?>
 		  	</ul>
 		  <?php endif; ?>
+		  <div class="clearBoth"></div>
 		  </div>
 		  <?php endif; ?>  
 	        <?php if($this->useQuantity): ?>
@@ -96,7 +97,7 @@
 	      </div>
 	      <div class="productButtons">
 	          <?php foreach($this->buttonTypes as $buttonType): ?>
-	        		<div style="float: left; padding-right: 5px;"><input type="image" src="system/modules/isotope/html/add_to_cart.gif" name="submit" value="Add to Cart" /><?php //echo $this->buttons[$buttonType][$this->productId]; ?></div>
+	        		<div style="float: left; padding-right: 5px;"><input type="submit" class="submit button addCart" name="submit" value="Add to Cart" /><?php //echo $this->buttons[$buttonType][$this->productId]; ?></div>
 	          <?php endforeach; ?>
 	          <?php if ($this->useReg): ?>
 	          	<div class="registryLink">
@@ -136,10 +137,14 @@
 	      </div>
 		</form>
     </div>
-    <div class="column3">
-    	<h4 class="descriptionHeader"><?php echo $this->productDescriptionLabel; ?></h4>
+    <div id="tabs" class="column3">
+    	<h4 class="infoheader"><?php echo $this->productDescriptionLabel; ?></h4>
         <div class="description">
         	<p><?php echo $product['description']; ?></p>
+        </div>
+        <h4 class="infoheader">Test tab</h4>
+        <div class="description">
+        	<p>test description</p>
         </div>
     </div>
     <?php endforeach; ?>

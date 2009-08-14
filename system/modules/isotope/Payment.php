@@ -108,6 +108,15 @@ abstract class Payment extends Frontend
 					}
 				}
 				
+				/*
+				if(isset($_SESSION['FORM_DATA']['billing_address']))
+			    {
+			           //TODO - fix to load addres in a consistent manner.
+					$this->loadSelectedAddressById($_SESSION['FORM_DATA']['billing_address'], 'billing');
+			    	$strCountry = $_SESSION['FORM_DATA']['billing_information_country'];
+			    }
+				*/
+				
 				if (!is_array($arrAllowed) || !count($arrAllowed) || !in_array($_SESSION['FORM_DATA']['shipping']['module'], $arrModuleIds))
 					return false;
 					

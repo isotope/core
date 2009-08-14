@@ -1,7 +1,9 @@
 <!-- indexer::stop -->
-<div class="iso_cart_mini">
+<div class="iso_cart_mini block <?php echo $this->class; ?>"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>">
 
-<h2 class="title"><a href="<?php echo $this->cartJumpTo; ?>">Your Cart</a></h2>
+<?php if($this->headline): ?>
+<<?php echo $this->hl; ?>><a href="<?php echo $this->cartJumpTo; ?>" title="<?php echo $this->headline; ?>"><?php echo $this->headline; ?></a></<?php echo $this->hl; ?>>
+<?php endif; ?>
 
 <div class="productWrapper">
 <?php if(!sizeof($this->products)): ?>
@@ -9,7 +11,7 @@
 <?php else: ?>
 <?php foreach($this->products as $product): ?>
 	<div class="product">
-		<div class="removeButton"><a href="<?php echo $product['remove_link']; ?>" title="<?php echo $product['remove_link_title']; ?>">x</a></div>
+		<div class="removeButton"><a href="<?php echo $product['remove_link']; ?>" title="<?php echo $product['remove_link_title']; ?>">Remove</a></div>
         <div class="productName"><?php echo $product['name']; ?></div>
 		<div class="info">
         	<?php if(sizeof($product['options'])): ?>
@@ -24,13 +26,9 @@
 	<div class="clearBoth"></div>
 	</div>
 <?php endforeach; ?>
-    <div class="horizontalLine"></div>
-    <div class="clearBoth"></div>
-    <div class="subTotal"><span class="label"><?php echo $this->subTotalLabel; ?></span> <?php echo $this->subTotalPrice; ?></div>
-	<div class="clearBoth"></div>
-	
-	<p class="checkout"><a href="<?php echo $this->checkoutJumpTo; ?>"><img src="system/modules/isotope/html/button_checkoutSm.gif" alt="Proceed to Checkout" border="0" /></a></p>
-	
+    <div class="subtotal"><span class="label"><?php echo $this->subTotalLabel; ?></span> <?php echo $this->subTotalPrice; ?></div>	
+	<div class="checkout"><a class="button dark" href="<?php echo $this->checkoutJumpTo; ?>">Proceed to Checkout</a></div>
+<div class="clearBoth"></div>	
 <?php endif; ?>
 </div>
 

@@ -34,6 +34,7 @@
                   
                 </div>
                 <div class="col2 productButtons">
+                	<a href="<?php echo $product['link']; ?>" title="<?php echo $product['name']; ?>">View Details</a>
                   <?php foreach($this->buttonTypes as $buttonType): ?>
                 		<div style="float: left; padding-right: 5px;"><?php echo $this->buttons[$buttonType][$product['id']]; ?></div>
                   <?php endforeach; ?>

@@ -144,27 +144,22 @@ class ModuleProductLister extends ModuleIsotopeBase
 		}
 		
 				
-		if($this->Input->get('title'))
+		if($this->getRequestData('title'))
 		{
-			$objPage->title = $this->Input->get('title');
-			$this->Template->title = $this->Input->get('title');
+			$objPage->title = $this->getRequestData('title');
+			$this->Template->title = $this->getRequestData('title');
 			$this->headline = $objPage->title;
 		}
 		
-		if($this->Input->get('pas_id'))
+		if($this->getRequestData('pas_id'))
 		{
-			$strClauses = " attribute_set_id='" . $this->Input->get('pas_id') . "'";
-			$this->Template->pas_id = $this->Input->get('pas_id');
+			$strClauses = " attribute_set_id='" . $this->getRequestData('pas_id') . "'";
+			$this->Template->pas_id = $this->getRequestData('pas_id');
 		}
+				
+		$this->Template->ignore_page_id = $this->getRequestData('ignore_page_id');
 		
-		if($this->Input->get('author'))
-		{
-			$this->Template->manufacturer = $this->Input->get('author');
-		}
-		
-		$this->Template->ignore_page_id = $this->Input->get('ignore_page_id');
-		
-		if($this->Input->get('ignore_page_id')!=1 && $this->new_products_time_window < 1 && $this->featured_products < 1)
+		if($this->getRequestData('ignore_page_id')!=1 && $this->new_products_time_window < 1 && $this->featured_products < 1)
 		{
 			$strClauses = " pid IN(" . $strPageList . ")";
 		}
@@ -181,7 +176,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 				
 		$intTotalRows = 0;
 		
-		$page = $this->Input->get('page') ? $this->Input->get('page') : 1;
+		$page = $this->getRequestData('page') ? $this->getRequestData('page') : 1;
 		
 		if(!is_int((int)$page))
 		{
@@ -189,11 +184,11 @@ class ModuleProductLister extends ModuleIsotopeBase
 		}
 		
 		// Order by
-		if ($this->Input->get('order_by'))
+		if ($this->getRequestData('order_by'))
 		{			
-			$this->Template->order_by = $this->Input->get('order_by');
+			$this->Template->order_by = $this->getRequestData('order_by');
 			
-			$arrOrderBy = explode('-', $this->Input->get('order_by'));
+			$arrOrderBy = explode('-', $this->getRequestData('order_by'));
 			$strClauses .= " ORDER BY " . htmlspecialchars_decode($arrOrderBy[0]) . ' ' . $arrOrderBy[1];
 		}
 		else
@@ -202,7 +197,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 		}
 			
 		
-		$per_page = ($this->Input->get('per_page') ? $this->Input->get('per_page') : $this->perPage);
+		$per_page = ($this->getRequestData('per_page') ? $this->getRequestData('per_page') : $this->perPage);
 		
 		// FIXME: will always be int...
 		if(!is_int((int)$per_page) || (int)$per_page==0)
@@ -226,7 +221,8 @@ class ModuleProductLister extends ModuleIsotopeBase
 		if(!is_array($arrEnabledFilters))
 		{
 			$arrEnabledFilters = array();
-		}	
+		}
+		
 		
 		if(!$objAggregateSets->numRows)
 		{
@@ -253,7 +249,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 				$intAttributeSetId = ($objAggregateSets->attribute_set_id ? $objAggregateSets->attribute_set_id : 0);
 				
 				//Get the fields for the current attribute set for listing only.
-				$objListingFields = $this->Database->prepare("SELECT id, name, field_name, type, is_filterable, is_listing_field FROM tl_product_attributes WHERE pid=?")
+				$objListingFields = $this->Database->prepare("SELECT id, name, field_name, type, is_filterable, is_searchable, is_listing_field FROM tl_product_attributes WHERE pid=?")
 												   ->execute($intAttributeSetId);
 				
 				
@@ -266,22 +262,24 @@ class ModuleProductLister extends ModuleIsotopeBase
 				$arrFields = $objListingFields->fetchAllAssoc();
 									
 				$arrListingFields = array();								
+				
+				$arrSearchFilterOptions = array();
 							
 				foreach($arrFields as $field)
 				{
 					if($field['is_listing_field']==1)
 					{
+						
 						if(!is_array($arrFilterFields) || !in_array($field['field_name'], $arrFilterFields))
 						{
 							$arrListingFields[] = $field['field_name'];
 											
 							if($field['is_filterable']==1)
 							{
+								
 								if(sizeof($arrEnabledFilters) && in_array($field['id'], $arrEnabledFilters))
-								{
-									$arrFilterFields[] = $field['field_name'];
-																
-									$varFilterValue = ($this->Input->get($field['field_name']) ? $this->Input->get($field['field_name']) : NULL);
+								{														
+									$varFilterValue = ($this->getRequestData($field['field_name']) ? $this->getRequestData($field['field_name']) : NULL);
 									
 									//TEMPORARY WORKAROUND FOR KOLBO - ADD LABEL OVERRIDE FIELD TO ATTRIBUTE MODEL
 									if($field['field_name']=="author")
@@ -291,21 +289,13 @@ class ModuleProductLister extends ModuleIsotopeBase
 										$strFieldLabel = $field['name'];
 									}
 									//END TEMPORARY WORKAROUND
-									
+						
 									switch($field['type'])
 									{
-										case 'shorttext':
-										case 'text':
-										case 'longtext':
-											$arrFilters[] = array
-											(
-												'name'				=> $field['field_name'],
-												'type'				=> 'text',
-												'label'				=> $strFieldLabel,
-												'current_value'		=> $varFilterValue
-											);
-											break;
-										default:
+										
+										case 'select':
+										case 'checkbox':
+										case 'radio':
 											//Build filters
 											$arrFilters[] = array
 											(
@@ -319,9 +309,8 @@ class ModuleProductLister extends ModuleIsotopeBase
 									
 									}
 									
-									
 									//Build SQL filter string
-									if($varFilterValue)
+									/*if($varFilterValue)
 									{
 								
 										switch($field['type'])
@@ -341,14 +330,45 @@ class ModuleProductLister extends ModuleIsotopeBase
 										}
 										
 										
-									}
+									}*/
 									
 								}
-							}
+							}							
+							
 						}//end if(!in_array($field['field_name'], $arrFilterFields))
+						
+						//get searchable fields.  TODO - set which fields can be searched in product listing module def.
+						if($field['is_searchable'])
+						{
+							
+						
+								switch($field['type'])
+								{
+									case 'shortext':
+									case 'text':
+									case 'longtext':
+										$arrSearchFilterFields[$field['field_name']] = $field['name'];
+										//Build SQL filter string
+										break;
+									default:
+										break;	
+								}
+						}
+
 					}
 				}
-								
+				
+				//Get the data for the search text box.								
+				$arrProductSearchText = array
+				(
+					'name'				=> 'product_search_text',
+					'type'				=> 'text',
+					'label'				=> $GLOBALS['TL_LANG']['MSC']['searchTextBoxLabel'],
+					'current_value'		=> $this->getRequestData('product_search_text')
+				
+				);
+				
+
 /*
 				$arrProducts = deserialize($objAggregateSets->product_ids);
 				if (is_array($arrProducts) && count($arrProducts))
@@ -370,14 +390,35 @@ class ModuleProductLister extends ModuleIsotopeBase
 			
 			}
 			
-			//Build one or more filter=value pairs for SQL querying
-			if (is_array($arrFilterSQL) && count($arrFilterSQL))
+			//Text fields are handled differently than auto filter fields because they are consolidated into a single SELECT
+			//box so that one (or more) fields can be searched for certain terms.
+
+				
+
+			if(is_array($arrSearchFilterFields) && sizeof($arrSearchFilterFields))
 			{
-				$filter_list = join(" AND ", $arrFilterSQL);
+				
+					foreach($arrSearchFilterFields as $filter=>$name)
+					{
+				
+						$strFilterValue = $this->getRequestData('product_search_text');
+						
+						if(strlen($strFilterValue))
+						{
+							$arrFilterSQL[] = $filter . " LIKE ?";
+							$arrFilterValues[] = "%" . $strFilterValue . "%";
+							
+						}
+					}
+				
+					
+				//Build one or more filter=value pairs for SQL querying
+				if (is_array($arrFilterSQL) && count($arrFilterSQL))
+				{
+					$filter_list = "(" . join(" OR ", $arrFilterSQL) . ")";
+				}
 			}
-			
-		
-												
+								
 			$product_list = (is_array($arrProductList) && count($arrProductList)) ? join(",", $arrProductList) : '0';
 			
 			$field_list = '';
@@ -409,14 +450,6 @@ class ModuleProductLister extends ModuleIsotopeBase
 				$strBaseClause = "id IN(" . $product_list . ") AND visibility=1";
 			}	
 			
-			/*
-			$arrListingFilters = deserialize($this->listing_filters);
-			
-			if(sizeof($arrListingFilters) > 0)
-			{
-				$arrFilters = $this->getFilterData($arrListingFilters);			
-			}
-			*/
 				
 			$objTotal = $this->Database->prepare("SELECT COUNT(*) as count FROM " . $this->strCurrentStoreTable . " WHERE " . $strBaseClause . $strFilterList . $strClauses)
 									  ->execute($arrFilterValues);
@@ -454,7 +487,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 			
 			$arrProducts = $objProductCollection->fetchAllAssoc();
 		
-			if ($this->iso_jump_first && !strlen($this->Input->get('asetid')) && !strlen($this->Input->get('aset_id')) && count($arrProducts))
+			if ($this->iso_jump_first && !strlen($this->getRequestData('asetid')) && !strlen($this->getRequestData('aset_id')) && count($arrProducts))
 			{
 				$this->redirect($this->generateProductLink($arrProducts[0]['alias'], $arrProducts[0], $this->Store->productReaderJumpTo, $objAggregateSets->attribute_set_id));
 			}
@@ -524,9 +557,9 @@ class ModuleProductLister extends ModuleIsotopeBase
 		$this->Template->action = ampersand($this->Environment->request, ENCODE_AMPERSAND);
 
 			
-		if($this->Input->get($strFilterName))
+		if($this->getRequestData($strFilterName))
 		{
-			$this->Template->$strFilterName = $this->Input->get($strFilterName);
+			$this->Template->$strFilterName = $this->getRequestData($strFilterName);
 		}
 		
 		// GIFT REGISTRY BUTTON
@@ -554,8 +587,11 @@ class ModuleProductLister extends ModuleIsotopeBase
 		$this->Template->perPageOptions = $this->getPerPageOptions($this->columns);
 				
 		$this->Template->filters = $arrFilters;
-
 		
+		$this->Template->searchFilterFields = $arrProductSearchTextFields;
+		$this->Template->searchFilterText = $arrProductSearchText;
+
+						
 		/*
 		if(sizeof($arrManufacturerData) > 0)
 		{

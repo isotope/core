@@ -1,4 +1,4 @@
-<div class="<?php echo $this->class; ?> block"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
+<div class="iso_checkout_login block"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
 
 <?php if($this->allowGuestCheckout): ?>
 <div class="ce_text leftBox block">
@@ -17,10 +17,8 @@ Forgot Your Password?<br /><a href="recover-password.html" class="hyperlink_txt"
 <?php //echo $this->forgotPasswordModule; ?>
 </div>
 <div class="ce_hyperlink register block">
-<p>Not a member?<br /><a href="{{link_url::checkout-register}}" title="{{link_title::checkout-register}}">Register here.</a>
-</p>
+Not a customer?<br /><a href="{{link_url::checkout-register}}" title="{{link_title::checkout-register}}">Register here.</a>
 </div>
 </div>
 <div class="clearBoth"></div>
 </div>
-
