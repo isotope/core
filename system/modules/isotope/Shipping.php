@@ -86,7 +86,7 @@ abstract class Shipping extends Frontend
 	public function __get($strKey)
 	{
 		$this->import('IsotopeCart', 'Cart');
-		
+		$this->import('Isotope');
 		switch( $strKey )
 		{
 			case 'available':
@@ -95,10 +95,10 @@ abstract class Shipping extends Frontend
 									
 				$arrCountries = deserialize($this->countries);
 				
-				if(isset($_SESSION['FORM_DATA']['shipping_address']))
+				if(isset($_SESSION['FORM_DATA']['shipping_address']) && $_SESSION['FORM_DATA']['shipping_address']!=-1)
 			    {
-			           //TODO - fix to load addres in a consistent manner.
-					$this->loadSelectedAddressById($_SESSION['FORM_DATA']['shipping_address'], 'shipping');
+		           //TODO - fix to load addres in a consistent manner.
+					$this->Isotope->loadAddressById($_SESSION['FORM_DATA']['shipping_address'], 'shipping');
 			        $strCountry = $_SESSION['FORM_DATA']['shipping_information_country'];
 			    }else{
 				

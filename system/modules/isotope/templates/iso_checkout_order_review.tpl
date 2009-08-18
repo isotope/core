@@ -6,14 +6,18 @@
 		<?php foreach($this->products as $product): ?>
 				<!-- BEGIN PRODUCT-->
 		        <tr class="product">
-		   			<!--<td class="col productImg"><img src="<?php echo $product['main_image'] ?>" alt="<?php echo $product['name']; ?>" border="0" class="thumbnail" /></td>-->
+		   			<td class="col productImg"><a href="<?php echo $product['link']; ?>" title="<?php echo $product['name']; ?>"><img src="<?php echo $product['image'] ?>" alt="<?php echo $product['name']; ?>" border="0" class="thumbnail" /></a></td>
 		       		<td class="col productInfo">
 		       				<h3 class="productName"><?php echo $product['name']; ?></h3>
-		       				<!--<div class="optionswrapper">
-		       					<?php foreach($this->cart_options as $option): ?>
-									<div class="option"><span class="optionname">OPTION:</span> PRODUCT OPTION</div>
-								<?php endforeach; ?>
-		       				</div>-->
+		       				<div class="optionswrapper">
+		       					<?php if(sizeof($product['option_values'])>0): ?>
+			       					<ul class="productOptions">
+			       					<?php foreach($product['option_values'] as $option): ?>
+			       						<li><strong><?php echo $option['name']; ?>:</strong> <?php echo join(', ', $option['values']); ?></li>
+									<?php endforeach; ?>
+									</ul>
+						<?php endif; ?>
+		       				</div>
 		       		</td>
 		       		<td class="col productQty">
 		       			<span class="price"><?php echo $product['price']; ?></span>
@@ -27,8 +31,6 @@
 			<?php endforeach; ?>
 			</tbody>
 		</table>
-	    <div class="horizontalLine"></div>
-	    <div class="clearBoth"></div>
 	    <div class="finalPrices">
 	    	<div class="subTotal"><span class="label"><?php echo $this->subTotalLabel; ?></span> <?php echo $this->subTotalPrice; ?></div>
 			<div class="shipping"><span class="label"><?php echo $this->shippingLabel; ?></span> <?php echo $this->shippingTotal; ?></div>
@@ -53,6 +55,7 @@
 	<div class="clearBoth"></div>
 	<div class="shipping_method"><strong>Shipping Method:</strong> <?php echo $this->shippingMethod; ?></div>
 	<div class="payment_method"><strong>Payment Method:</strong> <?php echo $this->paymentMethod; ?></div>
+	<div class="clearBoth"></div>
 	<?php if($this->transactionFailure): ?>
 	<div class="payment_response error">
 	<h2>We're sorry, there seems to be a problem...</h2><?php echo 'Reason: ' . $this->reason; ?>

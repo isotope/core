@@ -175,7 +175,6 @@ CREATE TABLE `tl_store` (
   `enabled_modules` blob NULL,
   `root_asset_import_path` varchar(255) NOT NULL default '',
   `checkout_login_module` int(10) unsigned NOT NULL default '0',
-  
   `country` varchar(2) NOT NULL default '',
   `currency` varchar(3) NOT NULL default '',
   `currencySymbol` char(1) NOT NULL default '',
@@ -184,6 +183,7 @@ CREATE TABLE `tl_store` (
   `countries` blob NULL,
   `address_fields` blob NULL,
   `orderPrefix` varchar(4) NOT NULL default '',
+  `invoiceLogo` text NULL,
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

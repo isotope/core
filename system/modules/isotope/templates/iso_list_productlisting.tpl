@@ -10,7 +10,7 @@
         <!-- <input type="hidden" name="ignore_page_id" value="<?php echo $this->ignore_page_id; ?>" /> -->
         <!-- <input type="hidden" name="pas_id" value="<?php echo $this->pas_id; ?>" /> -->
         <div class="searchfields">       
-       &nbsp;<label for="<?php echo $this->searchFilterText['name']; ?>"><?php echo $this->searchFilterText['label']; ?></label><input type="<?php echo $this->searchFilterText['type']; ?>" name="<?php echo $this->searchFilterText['name']; ?>" class="text" value="<?php echo $this->searchFilterText['current_value']; ?>" />&nbsp;<input type="submit" name="submit" value="Submit" />
+       <label for="<?php echo $this->searchFilterText['name']; ?>"><?php echo $this->searchFilterText['label']; ?></label><input type="<?php echo $this->searchFilterText['type']; ?>" name="<?php echo $this->searchFilterText['name']; ?>" class="text" value="<?php echo $this->searchFilterText['current_value']; ?>" />&nbsp;<input type="submit" name="submit" value="Submit" />
        </div>
         <div class="filters">
       	<?php if(sizeof($this->filters)): ?>

@@ -1,9 +1,12 @@
 <div id="invoice" style="margin:18px; padding:0px; font-size: 62.5%; font-family: Arial, Helvetica, sans-serif; width:800px; border:solid 1px #000000; padding-left25px; padding-right:25px;">
 	<table id="header" cellpadding="5" cellspacing="0" border="0" width="100%">
+		<?php if($this->logoImage): ?>
 		<tr>
 		<td id="logo"><img src="<?php echo $this->logoImage; ?>" /></td>
 		<td style="text-align:right;"><p style="font-size:14px; margin-top:0px; margin-bottom:10px; padding:0px;"><?php echo $this->invoiceTitle; ?></p></td>
-		</tr><tr>
+		</tr>
+		<?php endif; ?>
+		<tr>
 		<td id="basic_info">
 			<p><?php echo $this->customerNameString; ?> - <?php echo $this->customerEmailString; ?></p>
 			<?php echo $this->customerPhoneString; ?>
@@ -50,12 +53,7 @@
 				<?php echo $product['name']; ?>
 				<?php if(sizeof($product['options'])): ?>
 					<p><strong><?php echo $this->optionsHeader; ?></strong></p>
-					<?php foreach($product['options'] as $option): ?>
-								<p><strong><?php echo $option['name']; ?></strong></p>
-								<ul>
-									<li><?php echo $option['value']; ?></li>
-								</ul>
-					<?php endforeach; ?>
+					<?php echo $product['options']; ?>
 				<?php endif; ?>		
 			</td>
 			<td align="left" width="50"><?php echo $product['price']; ?></td>

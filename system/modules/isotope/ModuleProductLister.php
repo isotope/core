@@ -422,6 +422,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 			$product_list = (is_array($arrProductList) && count($arrProductList)) ? join(",", $arrProductList) : '0';
 			
 			$field_list = '';
+			
 			if (is_array($arrListingFields) && count($arrListingFields))
 			{
 				$field_list = ',' . join(",", $arrListingFields);

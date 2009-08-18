@@ -264,7 +264,31 @@ class IsotopePOS extends Backend
 		
 		}	
 		
+		$strProductList = '<table border="0" cellpadding="5" cellspacing="0">';
+		
+		foreach($arrProductList as $product)
+		{
+			$strProductList .= '<tr>
+			<td align="left" width="50">' . $product['sku'] . '</td>
+			<td align="left" width="250">
+				' . $product['name'];
+			
+			if(sizeof($product['options']))
+			{
+				$strProductList .= '<p><strong>' . $GLOBALS['TL_LANG']['MSC']['productOptions'] . '</strong></p>';
+				$strProductList .= $product['options'];
+			}	
+			
+			$strProductList .= '</td>
+			<td align="left" width="50">' . $product['price'] . '</td>
+			<td align="left" width="50">' . $product['quantity'] . '</td>
+			<td align="left" width="50">' . $product['tax']. '</td>
+			<td align="left" width="50">' . $product['subtotal'] . '</td>
+			</tr>';
+		}
 	
+		$strProductList .= '</table>';
+		
 		$action = ampersand($this->Environment->request, ENCODE_AMPERSANDS);
 		
 		//$this->Template->x_cust_id;
@@ -278,7 +302,8 @@ class IsotopePOS extends Backend
 <a href="'.$this->getReferer(ENCODE_AMPERSANDS).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
 </div>
 ';
-		$return .= '<div class="block" style="padding:20px;"><div><h2>Order #' . $arrOrderInfo['id'] . '</h2>' . $objUserName->firstname . ' ' . $objUserName->lastname . '<br />Status: <strong>' . $GLOBALS['TL_LANG']['MSC']['order_status_labels'][$arrOrderInfo['status']] . '</strong><br />Shipping Method: ' . $GLOBALS['TL_LANG']['tl_iso_orders']['shipping_method_labels'][$arrOrderInfo['shipping_method']]  . '<br />Order Total: ' . money_format('$%n', $this->fltOrderTotal) . '</div><br /><div style="display: inline;"><div style="width: 50%; float: left"><h2>Billing Address:</h2>' . $strBillingAddress . '</div><div style="width: 50%; float: left"><h2>Shipping Address:</h2>' . $strShippingAddress . '</div></div><div style="clear: both;"></div><h2>Cart Contents:</h2><div style="border: solid 1px #cccccc; margin: 10px; padding: 10px;">' . $strProductList . '</div></div></div>';
+		$return .= '<div class="block" style="padding:20px;"><div><h2>Order #' . $arrOrderInfo['id'] . '</h2>' . $objUserName->firstname . ' ' . $objUserName->lastname . '<br />Status: <strong>' . $GLOBALS['TL_LANG']['MSC']['order_status_labels'][$arrOrderInfo['status']] . '</strong><br />Shipping Method: ' . $GLOBALS['TL_LANG']['tl_iso_orders']['shipping_method_labels'][$arrOrderInfo['shipping_method']]  . '<br />Order Total: ' . money_format('$%n', $this->fltOrderTotal) . '</div><br /><div style="display: inline;"><div style="width: 50%; float: left"><h2>Billing Address:</h2>' . $strBillingAddress . '</div><div style="width: 50%; float: left"><h2>Shipping Address:</h2>' . $strShippingAddress . '</div></div><div style="clear: both;"></div><br /><br /><div style="clear: both;"></div>'; 
+		//<h2>Cart Contents:</h2><div style="border: solid 1px #cccccc; margin: 10px; padding: 10px;">' . $strProductList . '</div></div></div>';
 		if(strlen($objTemplate->fields) && $arrResponses['transaction-status']=='Approved')
 		{
 			$this->cleanCreditCardData($arrOrderInfo['cc_num'], $objDc->id);
@@ -293,7 +318,7 @@ class IsotopePOS extends Backend
 		$objTemplate->orderReview = $return;
 		$objTemplate->action = $action;
 		$objTemplate->rowLast = 'row_' . (count($this->editable) + 1) . ((($i % 2) == 0) ? ' odd' : ' even');
-					
+						
 		return $objTemplate->parse();
 	
 	}
@@ -334,7 +359,16 @@ class IsotopePOS extends Backend
 			return '<no user name specified>';		
 		}	
 		*/
+		$objInvoiceLogo = $this->Database->prepare("SELECT invoiceLogo FROM tl_store WHERE id=?")
+										 ->limit(1)
+										 ->execute($arrOrderInfo['store_id']);
 		
+		if($objInvoiceLogo->numRows < 1)
+		{
+			$strInvoiceLogo = null;
+		}else{
+			$strInvoiceLogo = $objInvoiceLogo->invoiceLogo;
+		}
 		
 		//Store ID MUST be set prior to importing the Isotope or IsotopeStore libraries!
 				
@@ -376,7 +410,7 @@ class IsotopePOS extends Backend
 		$objTemplate->orderShippingTotal = $arrOrderInfo['shippingTotal']; 
 		$objTemplate->orderGrandTotal = $arrOrderInfo['grandTotal'];
 		$objTemplate->orderFooterString = '';	
-		$objTemplate->logoImage = $this->Environment->base . 'tl_files/cdss/images/globalLayout/headerLogo.gif';
+		$objTemplate->logoImage = strlen($strInvoiceLogo) ? $this->Environment->base . $strInvoiceLogo : false;
 		$strInvoiceTitle = $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] . '_' . $objDc->id . '_' . time();
 		
 		//$strArticle = html_entity_decode($strArticle, ENT_QUOTES, $GLOBALS['TL_CONFIG']['characterSet']);
@@ -538,7 +572,7 @@ class IsotopePOS extends Backend
 		$arrProductListsByTable = array();
 		$arrProductData = array();
 		
-		$objProductData = $this->Database->prepare("SELECT ci.product_id, ci.quantity_requested, ci.price, p.storeTable FROM tl_cart_items ci, tl_product_attribute_sets p WHERE p.id = ci.attribute_set_id AND ci.pid =?")
+		$objProductData = $this->Database->prepare("SELECT ci.product_id, ci.quantity_requested, ci.price, ci.product_options, p.storeTable FROM tl_cart_items ci, tl_product_attribute_sets p WHERE p.id = ci.attribute_set_id AND ci.pid =?")
 										 ->execute($intSourceCartId);
 		
 		if($objProductData->numRows < 1)
@@ -556,7 +590,8 @@ class IsotopePOS extends Backend
 					'table'				=> $productData['storeTable'],
 					'id'				=> $productData['product_id'], 
 					'quantity'			=> $productData['quantity_requested'],
-					'price'				=> $productData['price']
+					'price'				=> $productData['price'],
+					'options'			=> deserialize($productData['product_options'])
 			);
 		}
 
@@ -591,6 +626,9 @@ class IsotopePOS extends Backend
 				$fltSubtotal = ((int)$arrProductLists[$storeTable][$row['id']]['quantity'] * (float)$arrProductLists[$storeTable][$row['id']]['price']) + round($fltProductTax, 2);
 				//	echo $fltSubtotal;
 				
+				$arrOptionsData = deserialize($arrProductLists[$storeTable][$row['id']]['options']);
+		
+				
 				$arrAllProducts[] = array
 				(
 					'name'			=> $row['name'],
@@ -598,7 +636,8 @@ class IsotopePOS extends Backend
 					'price'			=> number_format((float)$arrProductLists[$storeTable][$row['id']]['price'], 2),
 					'quantity'		=> $arrProductLists[$storeTable][$row['id']]['quantity'],
 					//'tax'			=> number_format($fltProductTax, 2),
-					'subtotal'		=> number_format($fltSubtotal, 2)
+					'subtotal'		=> number_format($fltSubtotal, 2),
+					'options'		=> $this->getOptionsHTML($arrOptionsData)
 					
 				); 	
 			}	
@@ -613,10 +652,54 @@ class IsotopePOS extends Backend
 		foreach($arrProducts as $row)
 		{			
 			$strProductData .= $row['name'] . ' - ' . money_format('$%n', (float)$arrProductLists[$storeTable][$row['id']]['price']) . ' x ' . $row['quantity'] . ' = ' . money_format('$%n', ((float)$arrProductLists[$storeTable][$row['id']]['price'] * $row['quantity'])) . '<br />';
-		
+			
+			$arrOptions = deserialize($row['options']);
+        	
+        	if(sizeof($arrOptions))
+        	{
+		        $strProductData .= '<p><strong>' . $GLOBALS['TL_LANG']['MSC']['productOptionsLabel'] . '</strong></p>';
+
+        		foreach($arrOptions as $option)
+        		{
+	        		$arrValues = deserialize($option['values']);
+	        		
+				    $strProductData .= '<ul>';
+				   	$strProductData .= '	<li>' . $option['name'] . ': ';
+				    $strProductData .= implode(', ', $arrValues);
+					$strProductData .= '    </li>';     						
+					$strProductData .= '</ul>'; 
+				}
+			}
 		}
 	
 		return $strProductData;
+	}
+	
+	protected function getOptionsHTML($arrOptionsData)
+	{
+        $strProductData .= '<p><strong>' . $GLOBALS['TL_LANG']['MSC']['productOptionsLabel'] . '</strong></p>';
+	
+		foreach($arrOptionsData as $option)
+		{
+			//$arrOptions = deserialize($row['options']);
+        	
+        	//if(sizeof($arrOptions))
+        	//{
+        		//foreach($arrOptions as $option)
+        		//{
+	        		$arrValues = $option['values'];
+	        		
+				    $strProductData .= '<ul>';
+				   	$strProductData .= '	<li>' . $option['name'] . ': ';
+				    $strProductData .= implode(', ', $arrValues);
+					$strProductData .= '    </li>';     						
+					$strProductData .= '</ul>'; 
+				//}
+			//}
+		}
+		
+		return $strProductData;
+		
 	}
 	
 	protected function loadAddress($varValue, $intId, $blnSaveAsBillingInfo = false)
@@ -647,11 +730,12 @@ class IsotopePOS extends Backend
 	}
 	
 	protected function generatePaymentInfoString($arrOrderInfo)
-	{
+	{		
 		$arrBillingInfoLines = split("\n",$arrOrderInfo['billing_address']);
-		
+			
 		$strPaymentInfo = $GLOBALS['TL_LANG']['MSC']['iso_card_name_title'] . ': ' . $arrBillingInfoLines[0] . '<br />';
-		$strPaymentInfo .= in_array($arrOrderInfo['cc_type'], $GLOBALS['TL_LANG']['tl_iso_orders']['credit_card_types']) ? $GLOBALS['TL_LANG']['tl_iso_orders']['cc_type'][0] . ': ' . $GLOBALS['TL_LANG']['tl_iso_orders']['credit_card_types'][$arrOrderInfo['cc_type']] . '<br />' : NULL;
+		//$strPaymentInfo .= in_array($arrOrderInfo['cc_type'], $GLOBALS['TL_LANG']['tl_iso_orders']['credit_card_types']) ? $GLOBALS['TL_LANG']['tl_iso_orders']['cc_type'][0] . ': ' . $GLOBALS['TL_LANG']['tl_iso_orders']['credit_card_types'][$arrOrderInfo['cc_type']] . '<br />' : NULL;
+		$strPaymentInfo .= strlen($arrOrderInfo['cc_type']) ? $GLOBALS['ISO_PAY']['cc_types'][$arrOrderInfo['cc_type']] : NULL;
 		$strPaymentInfo .= $GLOBALS['TL_LANG']['tl_iso_orders']['cc_num'][0] . ': XXXX-XXXX-XXXX-' . substr($arrOrderInfo['cc_num'], 12, 4) . '<br />';
 		$strPaymentInfo .= $GLOBALS['TL_LANG']['tl_iso_orders']['cc_exp'][0] . ': ' . $arrOrderInfo['cc_exp'];
 	
@@ -673,6 +757,8 @@ class IsotopePOS extends Backend
 		
 		return $strShippingInfo;
 	}
+	
+	
 
 	protected function getPid($intId, $strTable)
 	{

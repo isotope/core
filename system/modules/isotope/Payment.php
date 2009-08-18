@@ -158,7 +158,7 @@ abstract class Payment extends Frontend
 	 * @access public
 	 * @return array
 	 */
-	public function statusOptions($objModule)
+	public function statusOptions()
 	{
 		return array('pending', 'processing');
 	}

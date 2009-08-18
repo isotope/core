@@ -126,6 +126,7 @@ class PaymentAuthorizeDotNet extends Payment
 			//FIXME?? - This just doesn't seem like a good way to handle this info...
 			$_SESSION['FORM_DATA']['cc_num'] = $this->getRequestData('cc_num');
 			$_SESSION['FORM_DATA']['cc_exp'] = $this->getRequestData('cc_exp');
+			$_SESSION['FORM_DATA']['cc_type'] = $this->getRequestData('cc_type');
 
 			//Bypass actual live curl hit, just approve for later processing.
 			$this->response = 'successful';
@@ -219,14 +220,16 @@ class PaymentAuthorizeDotNet extends Payment
 		<input type="hidden" name="x_company" value="' . $arrAddress['company'] . '">
 		<input type="hidden" name="x_email_customer" value="FALSE">
 		<input type="hidden" name="x_email"' . $arrAddress['email'] . '">
-		<label for="cc_num">Credit Card Number:</label> <input type="text" name="cc_num" id="ctrl_cc_num" /><br />
-		<label for="cc_type">Credit Card Type:</label> <select name="cc_type" id="ctrl_cc_type"><option value="" selected>-</option>';
+		<table cellpadding="0" cellspacing="0" border="0">
+		<tbody>
+		<tr><td><label for="cc_num">Credit Card Number:</label></td><td><input type="text" name="cc_num" id="ctrl_cc_num" /></td></tr>
+		<tr><td><label for="cc_type">Credit Card Type:</label></td><td><select name="cc_type" id="ctrl_cc_type"><option value="" selected>-</option>';
 		foreach($arrCCTypes as $type)
 		{
 			$strReturn .= '<option value="' . $type . '">' . $GLOBALS['ISO_PAY']['cc_types'][$type] . '</option>';
 		}
-		$strReturn .= '</select><br />
-		<label for="cc_exp">Credit Card Expiration (mm/yy):</label> <input type="text" name="cc_exp" id="ctrl_cc_exp" />';
+		$strReturn .= '</select></td></tr>
+		<tr><td><label for="cc_exp">Credit Card Expiration (mm/yy):</label></td><td><input type="text" name="cc_exp" id="ctrl_cc_exp" /></td></tr></tbody></table>';
 		
 		return $strReturn;
 

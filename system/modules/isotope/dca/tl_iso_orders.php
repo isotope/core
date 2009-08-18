@@ -418,7 +418,7 @@ class tl_iso_orders extends Backend
     $arrProductListsByTable = array();
     $arrProductData = array();
     
-    $objProductData = $this->Database->prepare("SELECT ci.product_id, ci.quantity_requested, ci.price, p.storeTable FROM tl_cart_items ci, tl_product_attribute_sets p WHERE p.id = ci.attribute_set_id AND ci.pid=?")
+    $objProductData = $this->Database->prepare("SELECT ci.product_id, ci.quantity_requested, ci.price, ci.product_options, p.storeTable FROM tl_cart_items ci, tl_product_attribute_sets p WHERE p.id = ci.attribute_set_id AND ci.pid=?")
                      ->execute($intSourceCartId);
     
     if($objProductData->numRows < 1)
@@ -431,12 +431,14 @@ class tl_iso_orders extends Backend
     
     foreach($arrProductData as $productData)
     {
+    	
       $arrProductLists[$productData['storeTable']][$productData['product_id']] = array
       (
           'table'       => $productData['storeTable'],
           'id'        => $productData['product_id'], 
           'quantity'      => $productData['quantity_requested'],
-		  'price'		=> $productData['price']
+		  'price'		=> $productData['price'],
+		  'options'		=> deserialize($productData['product_options'])
       );
     }
 
@@ -474,6 +476,25 @@ class tl_iso_orders extends Backend
       
       
         $strProductData .= $row['name'] . ' - ' . money_format('%n', $fltProductPrice) . ' x ' . $arrProductLists[$storeTable][$row['id']]['quantity'] . ' = ' . money_format('%n', $fltProductTotal) . '<br />';
+        
+        
+        
+        if(sizeof($arrProductLists[$storeTable][$row['id']]['options']))
+        {
+          	$strProductData .= '<p><strong>' . $GLOBALS['TL_LANG']['MSC']['productOptionsLabel'] . '</strong></p>';
+
+        	foreach($arrProductLists[$storeTable][$row['id']]['options'] as $rowData)
+        	{       
+        		$arrValues = deserialize($rowData['values']);
+        				
+		        $strProductData .= '<ul>';
+		   		$strProductData .= '	<li>' . $rowData['name'] . ': ';
+		        $strProductData .= implode(', ', $arrValues);
+			    $strProductData .= '    </li>';     						
+				$strProductData .= '</ul>'; 
+        	}
+        
+        }
       } 
     }
     

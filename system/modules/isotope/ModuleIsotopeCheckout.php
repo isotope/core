@@ -607,6 +607,11 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			'grandTotal'		=> $this->Cart->grandTotal
 		);
 		
+		$arrShippingData['shipping_method_id'] = $this->Cart->Shipping->id;
+		$arrShippingData['shipping_address'] = $arrShippingAddress;
+		//$arrShippingData['shipping_options'] = $this->getSelectedShippingOptions(); //TODO - build and store this information.
+		
+		$arrPaymentData['payment_method_id'] = $this->Cart->Payment->id;
 		$arrPaymentData['address'] 	= $arrBillingAddress;
 		$arrPaymentData['totals'] 	= $arrTotals;	
 		$arrPaymentData['currency'] = $this->Store->currency;
@@ -630,14 +635,17 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			'billing_address'		=> $strBillingAddress,
 			'shipping_address'		=> $strShippingAddress,
 			'payment_data'			=> serialize($arrPaymentData),
-			'shipping_data'			=> serialize($arrShippingAddress)
+			'shipping_data'			=> serialize($arrShippingData)
 		);
 		
 		//FIXME?  Sort of strange way to have to handle credit card data...
 		if($_SESSION['FORM_DATA']['cc_num'] && $_SESSION['FORM_DATA']['cc_exp'])
-		{
-			$arrSet['cc_num'] = $_SESSION['FORM_DATA']['cc_num'];
-			$arrSet['cc_exp'] = $_SESSION['FORM_DATA']['cc_exp'];
+		{			
+			$arrSet['cc_num'] 	= $_SESSION['FORM_DATA']['cc_num'];
+			$arrSet['cc_exp'] 	= $_SESSION['FORM_DATA']['cc_exp'];
+			$arrSet['cc_type'] = isset($_SESSION['FORM_DATA']['cc_type']) ? $_SESSION['FORM_DATA']['cc_type'] : "";
+			$arrSet['cc_cvv'] = isset($_SESSION['FORM_DATA']['cc_cvv']) ? $_SESSION['FORM_DATA']['cc_cvv'] : "";
+
 		}
 		
 		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=? AND status!='cancelled'")->limit(1)->execute($this->Cart->id);
@@ -832,7 +840,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	 									 $objModule->label,
 	 									 $this->Isotope->formatPriceWithCurrency($fltShippingCost), 
 	 									 ($objModule->note ? '<div class="clearBoth"></div><br /><div class="shippingNote"><strong>Note:</strong><br />' . $objModule->note . '</div>' : null),
-	 									 '<div class="clearBoth"></div><br /><div class="shippingOptions"><strong>Options:</strong><br />' . $objModule->getShippingOptions($objModule->id) . '</div>');
+	 									 ($objModule->getShippingOptions($objModule->id) ? '<div class="clearBoth"></div><br /><div class="shippingOptions"><strong>Options:</strong><br />' . $objModule->getShippingOptions($objModule->id) . '</div>' : null));
 			}
  			
 		}
@@ -858,7 +866,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			}
 			
 			$objModule = new $strClass($objModules->row());
-			
+						
 			if (!$objModule->available)
 				continue;
 						
@@ -866,7 +874,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 									 $objModule->id,
 									 'payment_module_fields_' . $objModule->id,
 									 $objModule->id,
-									 ($arrData['module'] == $objModule->id ? ' checked="checked"' : ''),
+									 (($arrData['module'] == $objModule->id || $objModules->numRows==1) ? ' checked="checked"' : ''),
 									 $objModule->id,
  									 $objModule->label);			
 		}

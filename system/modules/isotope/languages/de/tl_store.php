@@ -54,7 +54,7 @@ $GLOBALS['TL_LANG']['tl_store']['address_fields']					= array('Adressfelder', 'W
 
 $GLOBALS['TL_LANG']['tl_store']['gallery_thumbnail_image_width']	= array('Breite für Galerie-Vorschaubild', 'In Pixel.');
 $GLOBALS['TL_LANG']['tl_store']['gallery_thumbnail_image_height']	= array('Höhe für Galerie-Vorschaubild', 'In Pixel.');
-
+$GLOBALS['TL_LANG']['tl_store']['invoiceLogo'] = array('Invoice Logo','Select a logo to show up on the invoices for this store.');
 
 /**
  * Reference

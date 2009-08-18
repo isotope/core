@@ -61,7 +61,8 @@ $GLOBALS['TL_LANG']['MSC']['REGIONS']['us'] = array('AK','AL','AR','AS','AZ','CA
 /**
  * Miscellaneous
  */
- 
+$GLOBALS['TL_LANG']['MSC']['searchTextBoxLabel'] = 'Search Term: ';
+$GLOBALS['TL_LANG']['MSC']['searchFieldsLabel'] = 'Search Fields: ';
 $GLOBALS['TL_LANG']['MSC']['order_conditions'] = 'I agree to the terms & conditions';
  
 $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'] = 'Add To Cart';
@@ -74,9 +75,9 @@ $GLOBALS['TL_LANG']['MSC']['noAssociatedCategories'] = 'There are no categories 
 $GLOBALS['TL_LANG']['MSC']['invalidProductInformation'] = "We're sorry, the product information you have requested is not showing up in our store. For further assistance please contact us.";
 $GLOBALS['TL_LANG']['MSC']['productDescriptionLabel'] = 'Description';
 
-$GLOBALS['TL_LANG']['MSC']['productDetailLabel'] = 'Product Detail';
+$GLOBALS['TL_LANG']['MSC']['productDetailLabel'] = 'Details';
 $GLOBALS['TL_LANG']['MSC']['productMediaLabel'] = 'Audio and Video';
-$GLOBALS['TL_LANG']['MSC']['productOptionsLabel'] = 'Product Options';
+$GLOBALS['TL_LANG']['MSC']['productOptionsLabel'] = 'Options';
 
 $GLOBALS['TL_LANG']['MSC']['previousStep']	= 'Back';
 $GLOBALS['TL_LANG']['MSC']['nextStep']		= 'Continue';
@@ -111,7 +112,7 @@ $GLOBALS['TL_LANG']['MSC']['selectItemPrompt'] = "(select)";
 $GLOBALS['TL_LANG']['MSC']['noPaymentModules'] = 'No payment options are currently available';
 $GLOBALS['TL_LANG']['MSC']['noShippingModules'] = 'No shipping options are currently available.';
 //Checkout language entries 
-$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['login'] = 'First time user? Create an account now.&nbsp;';
+$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['login'] = 'Please select a checkout method.';
 $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['shipping_information'] = 'Enter your shipping information or select an existing address.';
 $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['billing_information'] = (FE_USER_LOGGED_IN) ? 'Enter your billing information or select an existing address.' : 'Enter your billing information';
 $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['shipping_method'] = 'Select a shipping method.';

@@ -39,7 +39,7 @@ class PaymentCash extends Payment
 	 * @access public
 	 * @return array
 	 */
-	public function statusOptions($objModule)
+	public function statusOptions()
 	{
 		return array('pending', 'processing', 'shipped', 'complete', 'on_hold');
 	}

@@ -305,7 +305,7 @@ class Isotope extends Controller
 
 	
 	
-	protected function loadAddressById($intAddressId, $strStep)
+	public function loadAddressById($intAddressId, $strStep)
     {
         $objAddress = $this->Database->prepare("SELECT * FROM tl_address_book WHERE id=?")
 									->limit(1)
