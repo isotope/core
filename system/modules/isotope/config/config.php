@@ -561,7 +561,7 @@ $GLOBALS['ISO_ATTR'] = array
 		'pid'						=> $dc->id, 
 		'tstamp'					=> time(),
 		'sorting'					=> $intSorting,
-		'type'						=> 'decimal',
+		'type'						=> 'select',
 		'field_name'				=> 'tax_class',
 		'name'						=> 'Tax Class',
 		'description'				=> '',
@@ -576,6 +576,9 @@ $GLOBALS['ISO_ATTR'] = array
 		'use_rich_text_editor'		=> 0,
 		'is_user_defined'			=> 0,
 		'is_listing_field'			=> 0,
+		'use_alternate_source'		=> 1,
+		'list_source_table'			=> 'tl_tax_class',
+		'list_source_field'			=> 'name',
 		'delete_locked'				=> 1
 	),
 	
