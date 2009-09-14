@@ -479,8 +479,8 @@ class ProductCatalog extends Backend
 					break;
 					
 				case 'select':
-					//$inputType = 'select';
-					$inputType = 'productOptionsWizard';
+					$inputType = 'select';
+					//$inputType = 'productOptionsWizard';
 					
 					if($field['use_alternate_source']==1)
 					{
