@@ -29,7 +29,7 @@
  * Palettes
  */
 $GLOBALS['TL_DCA']['tl_page']['palettes']['regular'] .= ';show_child_category_products';
-
+$GLOBALS['TL_DCA']['tl_page']['palettes']['root'] .= ';{isotope_legend},isotopeStoreConfig';
 
 /**
  * Fields
@@ -57,6 +57,15 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['iso_filters'] = array
 	'inputType'               => 'select',
 	'eval'                    => array('includeBlankOption'=>true),
 	'options_callback'		  => array('Filters','getFilters')
+);
+
+$GLOBALS['TL_DCA']['tl_page']['fields']['isotopeStoreConfig'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_page']['isotopeStoreConfig'],
+	'exclude'                 => true,
+	'inputType'               => 'select',
+	'foreignKey'			  => 'tl_store.store_configuration_name',
+	'eval'                    => array('includeBlankOption'=>true)
 );
 
 

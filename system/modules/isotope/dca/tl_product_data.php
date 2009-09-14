@@ -34,12 +34,11 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 	'config' => array
 	(
 		'dataContainer'               => 'DynamicTable',
-		'ptable'				 	  => 'tl_product_attribute_sets',
 		'switchToEdit'                => false,
 		'enableVersioning'            => false,
 		'oncreate_callback'			  => array
 		(
-			array('ProductCatalog', 'initializeDCA'),
+			array('ProductCatalog', 'loadProductCatalogDCA'),
 		),
 	),
 );

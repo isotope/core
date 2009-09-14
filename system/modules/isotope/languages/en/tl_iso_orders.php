@@ -58,5 +58,11 @@ $GLOBALS['TL_LANG']['tl_iso_orders']['edit']   = array('Edit Order', 'Edit order
 $GLOBALS['TL_LANG']['tl_iso_orders']['copy']   = array('Copy Order', 'Copy order ID %s');
 $GLOBALS['TL_LANG']['tl_iso_orders']['delete'] = array('Delete Order', 'Delete order ID %s');
 $GLOBALS['TL_LANG']['tl_iso_orders']['show']   = array('Order Details', 'Show details of order ID %s');
+$GLOBALS['TL_LANG']['tl_iso_orders']['edit_order'] = array('Edit Order', 'Edit order items, add or remove products.');
+/** 
+ * Legends
+ */
+$GLOBALS['TL_LANG']['tl_iso_orders']['general_legend'] = 'General Order Information';
+$GLOBALS['TL_LANG']['tl_iso_orders']['details_legend'] = 'Order Details';
 
 ?>

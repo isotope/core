@@ -35,7 +35,6 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 	'config' => array
 	(
 		'dataContainer'               => 'Table',
-		'ptable'                      => 'tl_product_attribute_sets',
 		'enableVersioning'            => true,
 		'onload_callback'             => array
 		(
@@ -53,12 +52,10 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 	(
 		'sorting' => array
 		(
-			'mode'                    => 4,
-			'fields'                  => array('sorting'),
-			'panelLayout'             => 'filter,limit', 
-			'headerFields'            => array('name', 'storeTable', 'tstamp'), 
-			'flag'                    => 1,
-			'child_record_callback'   => array('tl_product_attributes', 'renderAttribute') 
+			'mode'                    => 1,
+			'fields'                  => array('name'),
+			'flag'					  => 1,
+			'panelLayout'             => 'sort,filter,search,limit'
 		),
 		'label' => array
 		(
@@ -67,13 +64,13 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 		),
 		'global_operations' => array
 		(
-			'repairCAP' => array
+			/*'repairCAP' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['MSC']['repairCAP'],
 				'href'                => 'key=repairCAP',
 				'class'               => 'header_repair_cap',
 				'attributes'          => 'onclick="Backend.getScrollOffset();"'
-			),
+			),*/
 			'all' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['MSC']['all'],
@@ -103,13 +100,20 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 				'icon'                => 'cut.gif',
 				'attributes'          => 'onclick="Backend.getScrollOffset();"'
 			),
-			'delete' => array
+			/*'delete' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_product_attributes']['delete'],
 				'href'                => 'act=delete',
 				'icon'                => 'delete.gif',
 				'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
-			),
+			)
+			'toggle' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_product_attributes']['toggle'],
+				'icon'                => 'visible.gif',
+				'attributes'          => 'onclick="Backend.getScrollOffset(); return AjaxRequest.toggleVisibility(this, %s, \'product_attributes\');"',
+				'button_callback'     => array('tl_product_attributes', 'toggleIcon')
+			),*/
 			'show' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_product_attributes']['show'],
@@ -123,20 +127,22 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
     'palettes' => array
     (
         '__selector__'				=> array('type','use_alternate_source','is_customer_defined'),
-		'default'					=> 'name,description,type,field_name',
-		'text'                     	=> 'name,description,type,field_name,is_visible_on_front;is_hidden_on_backend;is_customer_defined;is_required,is_searchable,is_order_by_enabled,is_listing_field;rgxp;load_callback;save_callback',
-		'shorttext'               	=> 'name,description,type,field_name,is_visible_on_front;is_hidden_on_backend;is_customer_defined;is_required,is_searchable,is_order_by_enabled,is_listing_field;rgxp;load_callback;save_callback',
-		'integer'					=> 'name,description,type,field_name,is_visible_on_front;is_hidden_on_backend;is_customer_defined;is_required,is_filterable,is_order_by_enabled,is_used_for_price_rules,is_listing_field;load_callback;save_callback',
-		'decimal'					=> 'name,description,type,field_name,is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_order_by_enabled,is_used_for_price_rules,is_listing_field;load_callback;save_callback',
-		'longtext'					=> 'name,description,type,field_name,is_visible_on_front;is_hidden_on_backend;is_required,is_searchable,is_order_by_enabled,use_rich_text_editor,is_listing_field;load_callback;save_callback',
-		'datetime'					=> 'name,description,type,field_name,is_visible_on_front;is_hidden_on_backend;is_required,is_order_by_enabled,is_listing_field;load_callback;save_callback',
-		'select'					=> 'name,description,type,field_name,option_list,is_visible_on_front;is_hidden_on_backend;is_customer_defined;is_required,is_filterable,is_multiple_select,is_order_by_enabled,is_listing_field;use_alternate_source;load_callback;save_callback',
-		'boolean'					=> 'name,description,type,field_name,is_visible_on_front;is_hidden_on_backend;is_customer_defined;is_required,is_filterable,is_multiple_select,is_order_by_enabled,is_listing_field;load_callback;save_callback',
-		'options'					=> 'name,description,type,field_name,option_list,is_visible_on_front;is_hidden_on_backend;is_customer_defined;is_required,is_filterable,is_multiple_select,is_order_by_enabled,is_listing_field;load_callback;save_callback',
-		'fileattach'				=> 'name,description,type,field_name,is_visible_on_front;is_hidden_on_backend;is_customer_defined;is_required,is_filterable,is_listing_field;load_callback;save_callback',
-		'filetree'					=> 'name,description,type,field_name,show_files;is_visible_on_front;is_hidden_on_backend;is_required,is_filterable,is_listing_field;load_callback;save_callback',
-		'media'						=> 'name,description,type,field_name,show_files;is_visible_on_front;is_hidden_on_backend;is_required,is_listing_field;load_callback;save_callback',
-		'checkbox'					=> 'name,description,type,field_name,option_list,is_visible_on_front;is_hidden_on_backend;is_customer_defined;is_required,is_filterable,is_order_by_enabled,is_listing_field;use_alternate_source;load_callback;save_callback'
+		'default'					=> '{general_legend},name,description,field_name;{type_legend},type,fieldGroup;',
+		'text'                     	=> '{general_legend},name,description,field_name;{type_legend},type,fieldGroup;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{use_mode_legend},is_customer_defined;{validation_legend},is_required;{search_filters_legend},is_searchable,is_order_by_enabled;rgxp;{developer_tools_legend:hide},load_callback,save_callback',
+		'shorttext'               	=> '{general_legend},name,description,field_name;{type_legend},type,fieldGroup;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{use_mode_legend},is_customer_defined;{validation_legend},is_required;{search_filters_legend},is_searchable,is_order_by_enabled;rgxp;{developer_tools_legend:hide},load_callback,save_callback',
+		'integer'					=> '{general_legend},name,description,field_name;{type_legend},type,fieldGroup;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{use_mode_legend},is_customer_defined;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled,is_used_for_price_rules,{developer_tools_legend:hide},load_callback,save_callback',
+		'decimal'					=> '{general_legend},name,description,field_name;{type_legend},type,fieldGroup;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;is_customer_defined;is_required,is_filterable,is_order_by_enabled,is_used_for_price_rules,is_listing_field;{developer_tools_legend:hide},load_callback,save_callback',
+		'longtext'					=> '{general_legend},name,description,field_name,use_rich_text_editor;{type_legend},type,fieldGroup;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{use_mode_legend},is_customer_defined;{validation_legend},is_required;{search_filters_legend},is_searchable,is_order_by_enabled;rgxp;{developer_tools_legend:hide},load_callback,save_callback',
+		'datetime'					=> '{general_legend},name,description,field_name;{type_legend},type,fieldGroup;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{validation_legend},is_required;{search_filters_legend},is_order_by_enabled;{developer_tools_legend:hide},load_callback,save_callback',
+		'select'					=> '{general_legend},name,description,field_name;{type_legend},type,fieldGroup;{options_legend},option_list,use_alternate_source;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{use_mode_legend},is_customer_defined,is_multiple_select;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled;{developer_tools_legend:hide},load_callback,save_callback',
+		'boolean'					=> '{general_legend},name,description,field_name;{type_legend},type,fieldGroup;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{use_mode_legend},is_customer_defined,is_multiple_select;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled;{developer_tools_legend:hide},load_callback,save_callback',
+		'options'					=> '{general_legend},name,description,field_name;{type_legend},type,fieldGroup;{options_legend},option_list,{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{use_mode_legend},is_customer_defined,is_multiple_select;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled;{developer_tools_legend:hide},load_callback,save_callback',
+		'fileattach'				=> '{general_legend},name,description,field_name;{type_legend},type,fieldGroup;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{use_mode_legend},is_customer_defined;{validation_legend},is_required;{developer_tools_legend:hide},load_callback,save_callback',
+		'filetree'					=> '{general_legend},name,description,field_name;{type_legend},type,fieldGroup;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{use_mode_legend},is_customer_defined,is_multiple_select,show_files;{validation_legend},is_required,{search_filters_legend},is_filterable;{developer_tools_legend:hide},load_callback,save_callback',
+		'media'						=> '{general_legend},name,description,field_name;{type_legend},type,fieldGroup;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{use_mode_legend},show_files;{validation_legend},is_required;{developer_tools_legend:hide},load_callback,save_callback',
+		'checkbox'					=> '{general_legend},name,description,field_name;{type_legend},type,fieldGroup;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{use_mode_legend},is_customer_defined;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled;{developer_tools_legend:hide},load_callback,save_callback'
+
+
     ),
 
     // Subpalettes
@@ -154,10 +160,6 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['name'],
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
-			'save_callback'			  => array
-			(
-//				array('tl_product_attributes','standardizeAndChangeColumnType')
-			)
 		),
 		'description' => array
 		(
@@ -170,11 +172,14 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['type'],
 			'inputType'               => 'select',
 			'eval'                    => array('mandatory'=>true,'includeBlankOption'=>true,'submitOnChange'=>true),
-			'options_callback'		  => array('tl_product_attributes','getAttributeTypes')/*,
-			'save_callback'			  => array
-			(
-				array('tl_product_attributes','standardizeAndChangeColumnType')
-			)*/
+			'options_callback'		  => array('tl_product_attributes','getAttributeTypes')
+		),
+		'fieldGroup' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['fieldGroup'],
+			'inputType'               => 'select',
+			'eval'                    => array('mandatory'=>true,'includeBlankOption'=>false),
+			'options_callback'		  => array('tl_product_attributes','getFieldGroups')
 		),
 		'field_name' => array
 		(
@@ -297,16 +302,7 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 			'exclude'				  => true,
 			'default'				  => 0,
 			'inputType'				  => 'checkbox'
-		)/*,
-		'storeTable' => array
-		(
-			'label'					  => &$GLOBALS['TL_LANG']['tl_product_attributes']['storeTable'],
-			'exclude'				  => true,
-			'default'				  => 0,
-			'inputType'				  => 'checkbox',
-			'eval'					  => array('multiple'=>true)
-		)*/
-		,
+		),
 		'is_listing_field' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['is_listing_field'],
@@ -364,6 +360,13 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255)
+		),
+		'disabled' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['disabled'],
+			'exclude'                 => true,
+			'default'				  => 0,
+			'inputType'               => 'checkbox'
 		)
 	)
 );
@@ -376,6 +379,53 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
  */
 class tl_product_attributes extends Backend
 {
+
+	/**
+	 * Return the "toggle visibility" button
+	 * @param array
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @return string
+	 */
+	public function toggleIcon($row, $href, $label, $title, $icon, $attributes)
+	{		
+		if (strlen($this->Input->get('tid')))
+		{
+			$this->Database->prepare("UPDATE tl_product_attributes SET disabled='" . (strlen($this->Input->get('state')) ? '' : '1') . "' WHERE id=?")
+						   ->execute($this->Input->get('tid'));
+
+			$this->redirect($this->getReferer());
+		}
+
+		$href .= '&amp;tid='.$row['id'].'&amp;state='.(strlen($row['disabled']) ? null : '1');
+
+		if ($row['disabled'])
+		{
+			$icon = 'invisible.gif';
+		}		
+
+		return '<a href="'.$this->addToUrl($href).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
+	}
+
+	public function getFieldGroups()
+	{
+		$this->loadLanguageFile('tl_product_data');
+		
+		foreach($GLOBALS['TL_LANG']['tl_product_data'] as $k=>$v)
+		{
+			if(preg_match('(_legend)', $k))
+			{
+				$arrGroups[$k] = $v;			
+			}
+		
+		}
+		
+		return $arrGroups;
+	
+	}
 
 	/**
 	 * Returns all allowed page types as array.
@@ -418,39 +468,11 @@ class tl_product_attributes extends Backend
 	public function loadAttributes(DataContainer $dc)
 	{
 		$this->import('ProductCatalog');
-
-		$act = $this->Input->get('act');
-		switch ($act)
-		{
-			case 'delete':
-				$this->ProductCatalog->deleteColumn(array($dc->id));
-				break;
-				
-			case "deleteAll":
-				$session = $this->Session->getData();
-				$this->ProductCatalog->deleteColumn($session['CURRENT']['IDS']);
-				break;
-
-			default:;
-		}
-
-		if (!strlen($act) && $dc->table == 'tl_product_attributes' && $dc->id)
-		{
-			$this->ProductCatalog->regenerateDca($dc->id);
+		
+		$this->ProductCatalog->loadProductCatalogDCA('tl_product_data');
 			
-			// Load default attributes if empty
-			$objAttributeSet = $this->Database->prepare("SELECT * FROM tl_product_attribute_sets WHERE id=?")->limit(1)->execute($dc->id);
-			
-			if ($objAttributeSet->numRows)
-			{
-				$objAttributes = $this->Database->prepare("SELECT * FROM tl_product_attributes WHERE pid=?")->execute($objAttributeSet->id);
-				if (!$objAttributes->numRows)
-				{
-					$this->ProductCatalog->insertDefaultAttributes($dc, $objAttributeSet->storeTable);
-				}
-			}
-		}
 	}
+	
 	
 	
 	public function checkPermission($dc)
@@ -591,20 +613,9 @@ class tl_product_attributes extends Backend
 	 * @return array
 	 */
 	public function getSelectors(DataContainer $dc)
-	{
-		$objField = $this->Database->prepare("SELECT pid FROM tl_product_attributes WHERE id=?")
-				->limit(1)
-				->execute($dc->id);
-				
-		if (!$objField->numRows)
-		{
-			return array();
-		}
-		
-		$pid = $objField->pid;
-		
-		$objFields = $this->Database->prepare("SELECT name, colName FROM tl_product_attributes WHERE pid=? AND id != ? AND type=?")
-				->execute($pid, $dc->id, 'checkbox');
+	{		
+		$objFields = $this->Database->prepare("SELECT name, colName FROM tl_product_attributes WHERE id!=? AND type=?")
+				->execute($dc->id, 'checkbox');
 		 
 		$result = array();
 		while ($objFields->next())
@@ -678,19 +689,8 @@ class tl_product_attributes extends Backend
 	 */
 	public function getTitleFields(DataContainer $dc)
 	{
-		$objField = $this->Database->prepare("SELECT pid FROM tl_product_attributes WHERE id=?")
-				->limit(1)
-				->execute($dc->id);
-			
-		if (!$objField->numRows)
-		{
-			return array();
-		}
-		
-		$pid = $objField->pid;
-
-		$objFields = $this->Database->prepare("SELECT name, colName FROM tl_product_attributes WHERE pid=? AND id!=? AND type=? AND titleField=?")
-				->execute($pid, $dc->id, 'text', 1);
+		$objFields = $this->Database->prepare("SELECT name, colName FROM tl_product_attributes WHERE id!=? AND type=? AND titleField=?")
+				->execute($dc->id, 'text', 1);
 		 
 		$result = array();
 		while ($objFields->next())
@@ -772,51 +772,7 @@ class tl_product_attributes extends Backend
 	{
 		return $varValue;
 	}
-	
-	
-	/**
-	 * standardizeAndRenameColumn function.
-	 * 
-	 * @access public
-	 * @param mixed $varValue
-	 * @param object DataContainer $dc
-	 * @return mixed
-	 */
-/*
-	public function standardizeAndRenameColumn($varValue, DataContainer $dc)
-	{
-		$this->import('ProductCatalog');
-			
-		$fieldName = $this->ProductCatalog->mysqlStandardize($varValue);
-							   
-		$this->ProductCatalog->renameColumn(strtolower($fieldName), $dc);
 		
-		return $varValue;
-	}
-*/
-	
-	
-	/**
-	 * standardizeAndChangeColumnType function.
-	 * 
-	 * @access public
-	 * @param mixed $varValue
-	 * @param object DataContainer $dc
-	 * @return mixed
-	 */
-/*
-	public function standardizeAndChangeColumnType($varValue, DataContainer $dc)
-	{
-		$this->import('ProductCatalog');	
-	
-		$fieldName = $this->ProductCatalog->mysqlStandardize($varValue);
-			
-		$this->ProductCatalog->renameColumn(strtolower($fieldName), $dc);
-		
-		return $varValue;
-	}
-*/
-	
 	
 	/**
 	 * checkFieldLock function.

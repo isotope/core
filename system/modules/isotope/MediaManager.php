@@ -121,7 +121,7 @@ class MediaManager extends Widget
 		$this->import('BackendUser','User');
 						
 		//Get the to the images from the current product's directory
-		$objCurrentProductImagePath = $this->Database->prepare("SELECT alias, main_image, old_images_list FROM " . $this->strTable . " WHERE id=?")
+		$objCurrentProductImagePath = $this->Database->prepare("SELECT alias, main_image, old_images_list FROM tl_product_data WHERE id=?")
 													 ->limit(1)
 													 ->execute($this->Input->get('id'));
 		

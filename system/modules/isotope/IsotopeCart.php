@@ -177,8 +177,9 @@ class IsotopeCart extends Model
 	 */
 	public function __construct()
 	{
-		$this->import('IsotopeStore', 'Store');
 		$this->import('Isotope');
+
+		$this->import('IsotopeStore', 'Store');
 		
 		parent::__construct();
 		
@@ -231,9 +232,9 @@ class IsotopeCart extends Model
 			while( $objCartData->next() )
 			{
 				
-				$objExistingMemberCartData = $this->Database->prepare("SELECT * FROM tl_cart_items WHERE product_id=? AND pid=? AND attribute_set_id=?")
+				$objExistingMemberCartData = $this->Database->prepare("SELECT * FROM tl_cart_items WHERE product_id=? AND pid=?")
 											->limit(1)
-											->execute($objCartData->product_id, $this->id, $objCartData->attribute_set_id);
+											->execute($objCartData->product_id, $this->id);
 									
 				//Nothing existing in member's cart, just add items to it.		 
 				if($objExistingMemberCartData->numRows < 1)
@@ -248,8 +249,8 @@ class IsotopeCart extends Model
 						{
 							if(sizeof(deserialize($objExistingMemberCartData->product_options))<1 && sizeof(deserialize($objCartData->product_options))<1)
 							{
-								$this->Database->prepare("UPDATE tl_cart_items SET quantity_requested=(quantity_requested+" . $objCartData->quantity_requested . ") WHERE product_id=? AND attribute_set_id=? AND pid=?")
-											   ->execute($objCartData->product_id, $objCartData->attribute_set_id, $this->id);							
+								$this->Database->prepare("UPDATE tl_cart_items SET quantity_requested=(quantity_requested+" . $objCartData->quantity_requested . ") WHERE product_id=? AND pid=?")
+											   ->execute($objCartData->product_id, $this->id);							
 							}else{
 								$this->Database->prepare("UPDATE tl_cart_items SET pid=? WHERE id=?")->execute($this->id, $objCartData->id);
 							}				   
@@ -266,9 +267,7 @@ class IsotopeCart extends Model
 				
 				$this->import('Isotope');
 								
-				$storeTable = $this->Isotope->getStoreTableByAttributeSetId($objCartData->attribute_set_id);
-				
-				$fltNewProductPrice = $this->Isotope->applyRules($objCartData->price, $objCartData->product_id, $storeTable);
+				$fltNewProductPrice = $this->Isotope->applyRules($objCartData->price, $objCartData->product_id);
 				
 				$this->Database->prepare("UPDATE tl_cart_items SET price=? WHERE id=?")->execute($fltNewProductPrice, $objCartData->id);
 			}
@@ -300,6 +299,8 @@ class IsotopeCart extends Model
  			{
  				$strClass = $GLOBALS['ISO_PAY'][$objPayment->type];
  				$this->Payment = new $strClass($objPayment->row());
+ 			}else{
+ 				$this->Payment = null;
  			}
  		}
 	}
@@ -354,12 +355,12 @@ class IsotopeCart extends Model
 	{
 		if (!$this->arrProducts)
 		{
-			$objCartData = $this->Database->prepare("SELECT tl_cart_items.*, tl_product_attribute_sets.storeTable FROM tl_cart_items LEFT OUTER JOIN tl_product_attribute_sets ON tl_cart_items.attribute_set_id=tl_product_attribute_sets.id WHERE tl_cart_items.pid=?")->execute($this->id);
+			$objCartData = $this->Database->prepare("SELECT * FROM tl_cart_items WHERE tl_cart_items.pid=?")->execute($this->id);
 						
 			$this->arrProducts = $objCartData->fetchAllAssoc();
 	
 		}
-		
+
 		return $this->arrProducts;
 	}
 	
@@ -614,14 +615,13 @@ class IsotopeCart extends Model
 	 * @todo use cache data
 	 * @access public
 	 * @param int $intProductId
-	 * @param int $intAttributeSetId
 	 * @return bool
 	 */
-	public function containsProduct($intProductId, $intAttributeSetId)
+	public function containsProduct($intProductId)
 	{
-		return ($this->Database->prepare("SELECT * FROM tl_cart_items WHERE pid=? AND product_id=? AND attribute_set_id=?")
+		return ($this->Database->prepare("SELECT * FROM tl_cart_items WHERE pid=? AND product_id=?")
 							   ->limit(1)
-							   ->execute($this->id, $intProductId, $intAttributeSetId)
+							   ->execute($this->id, $intProductId)
 							   ->numRows ? true : false);
 	}
 	
@@ -631,14 +631,13 @@ class IsotopeCart extends Model
 	 * @todo use cache data
 	 * @access public
 	 * @param int $intProductId
-	 * @param int $intAttributeSetId
 	 * @return bool
 	 */
-	public function hasOptions($intProductId, $intAttributeSetId)
+	public function hasOptions($intProductId)
 	{
-		$objProductOptions = $this->Database->prepare("SELECT product_options FROM tl_cart_items WHERE pid=? AND product_id=? AND attribute_set_id=?")
+		$objProductOptions = $this->Database->prepare("SELECT product_options FROM tl_cart_items WHERE pid=? AND product_id=?")
 							   ->limit(1)
-							   ->execute($this->id, $intProductId, $intAttributeSetId);
+							   ->execute($this->id, $intProductId);
 		
 		$arrOptions = deserialize($objProductOptions->product_options);
 		

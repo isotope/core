@@ -36,8 +36,9 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
   (
     'dataContainer'               => 'Table',
     'enableVersioning'            => false,
-    'closed'            => true,
-    'onload_callback' => array
+    'ctable'					  => array('tl_iso_order_items'),
+    'closed'            		  => true,
+    'onload_callback' 			  => array
     (
       array('tl_iso_orders', 'hideReviewRecords'),
     ),
@@ -81,20 +82,14 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
         'label'               => &$GLOBALS['TL_LANG']['tl_iso_orders']['show'],
         'href'                => 'act=show',
         'icon'                => 'show.gif'
-      ),/*
-      'authorize_process_payment' => array
-      (
-        'label'         => &$GLOBALS['TL_LANG']['tl_iso_orders']['authorize_process_payment'],
-        'href'          => 'key=authorize_process_payment',
-        'icon'          => 'system/modules/isotope/html/money.png'      
       ),
-      'print_order' => array
+      'edit_order' => array
       (
-        'label'         => &$GLOBALS['TL_LANG']['tl_iso_orders']['print_order'],
-        'href'          => 'key=print_order',
-        'icon'          => 'system/modules/isotope/html/printer.png'      
-      ),*/
-	  'buttons' => array
+        'label'         => &$GLOBALS['TL_LANG']['tl_iso_orders']['edit_order'],
+        'href'          => 'table=tl_iso_order_items',
+        'icon'          => 'system/modules/isotope/html/edit_order.png'      
+      ),
+      'buttons' => array
 	  (
 		'button_callback'     => array('tl_iso_orders', 'moduleOperations'),
 	  )
@@ -104,7 +99,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
   // Palettes
   'palettes' => array
   (
-    'default'                     => 'status;shippingTotal;details',
+    'default'                     => '{general_legend},status,shippingTotal;{details_legend},details',
   ),
 
   // Fields
@@ -127,6 +122,25 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
       'flag'                    => 1,
       'inputType'               => 'text',
       'eval'                    => array('maxlength'=>255),
+      'save_callback'			=> array
+      (
+      	array('tl_iso_orders','saveShippingTotal')
+      )
+    ),
+    'details' => array
+    (
+      'input_field_callback'    => array('tl_iso_orders', 'showDetails'),
+    )
+    /*,
+    'shippingTotal' => array
+    (
+      'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['shippingTotal'],
+      'exclude'                 => true,
+      'search'                  => true,
+      'sorting'                 => true,
+      'flag'                    => 1,
+      'inputType'               => 'text',
+      'eval'                    => array('maxlength'=>255),
       'load_callback'			=> array
       (
       	array('tl_iso_orders','loadShippingTotal')
@@ -136,10 +150,6 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
       	array('tl_iso_orders','saveShippingTotal')
       )
     ),
-    'details' => array
-    (
-      'input_field_callback'    => array('tl_iso_orders', 'showDetails'),
-    ),/*
     'tstamp' => array
     (
       'label'                   => &$GLOBALS['TL_LANG']['tl_news']['tstamp'],
@@ -147,9 +157,9 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
       'inputType'               => 'text',
       'eval'                    => array('rgxp'=>'date'),
     ),
-    'order_subtotal' => array
+    'subTotal' => array
     (
-      'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['order_subtotal'],
+      'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['subTotal'],
       'exclude'                 => true,
       'search'                  => true,
       'sorting'                 => true,
@@ -157,19 +167,9 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
       'inputType'               => 'text',
       'eval'                    => array('maxlength'=>255)
     ),
-    'order_tax' => array
+    'taxTotal' => array
     (
-      'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['order_tax'],
-      'exclude'                 => true,
-      'search'                  => true,
-      'sorting'                 => true,
-      'flag'                    => 1,
-      'inputType'               => 'text',
-      'eval'                    => array('maxlength'=>255)
-    ),
-    'order_shipping_cost' => array
-    (
-      'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['order_shipping_cost'],
+      'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['taxTotal'],
       'exclude'                 => true,
       'search'                  => true,
       'sorting'                 => true,
@@ -225,7 +225,13 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
  */
 class tl_iso_orders extends Backend
 {
-
+	public function __construct()
+	{
+		parent::__construct();
+		
+		$this->import('Isotope');
+	
+	}
 	/**
 	 * Return a string of more buttons for the orders module.
 	 * 
@@ -288,73 +294,39 @@ class tl_iso_orders extends Backend
     return '';
   }
   
-  public function loadShippingTotal($varValue, DataContainer $dc)
-  {
-  	
-	  	$arrPaymentData = $this->getPaymentData($dc->id);
-		
-		return $arrPaymentData['totals']['shippingTotal'];
-  }
-  
+  /** 
+   * Adjust the grand total to reflect the new shipping total.
+   *
+   * @param variant $varValue
+   * @param object $dc
+   * @return $varValue
+   */
   public function saveShippingTotal($varValue, DataContainer $dc)
   {
-			
-  		$arrPaymentData = $this->getPaymentData($dc->id);	
-  	
-  		$arrPaymentData['totals']['shippingTotal'] = $varValue;
-  			  	
-  		$this->recalculateOrderTotal($arrPaymentData, $dc->id);
-  
-  		return $varValue;
+		$objTotals = $this->Database->prepare("SELECT subTotal, taxTotal FROM tl_iso_orders WHERE id=?")
+									->limit(1)
+									->execute($dc->id);
+		
+		if($objTotals->numRows < 1)
+		{
+			//$this->log(sprintf('The order record %s was not found.  Check for database corruption.', $dc->id), TL_ERROR);
+			return $varValue;
+		}
+		
+		$fltGrandTotal = (float)$varValue + $objTotals->subTotal + $objTotals->taxTotal;
+		
+		$this->Database->prepare("UPDATE tl_iso_orders SET grandTotal=?")
+					   ->execute($fltGrandTotal);
+		
+		return $varValue;
   }  
   
-  protected function getPaymentData($intOrderId)
-  {
-  	  		//get existing total data
-  		$objPaymentData = $this->Database->prepare("SELECT payment_data FROM tl_iso_orders WHERE id=?")
-	  									 ->limit(1)
-	  									 ->execute($intOrderId);
-	  				  			
-		$arrPaymentData = deserialize($objPaymentData->payment_data);
-
-  		return $arrPaymentData;
-  }
-  
-  protected function recalculateOrderTotal($arrPaymentData, $intOrderId)
-  {
-  		$objStoreId = $this->Database->prepare("SELECT store_id FROM tl_iso_orders WHERE id=?")
-  									 ->limit(1)
-  									 ->execute($intOrderId);
-  									 
-  		$_SESSION['isotope']['store_id'] = $objStoreId->store_id;
-  										
-		$this->import('Isotope');
-		
-		$fltGrandTotal = $arrPaymentData['totals']['subTotal'] + $arrPaymentData['totals']['taxTotal'] + $arrPaymentData['totals']['shippingTotal'];
-		
-		$arrPaymentData['totals']['grandTotal'] = $fltGrandTotal;
-				
-  		$arrSet = array
-		(
-			'subTotal'				=> $this->Isotope->formatPriceWithCurrency($arrPaymentData['totals']['subTotal']),
-			'taxTotal'	 			=> $this->Isotope->formatPriceWithCurrency($arrPaymentData['totals']['taxTotal']),
-			'shippingTotal'			=> $this->Isotope->formatPriceWithCurrency($arrPaymentData['totals']['shippingTotal']),
-			'grandTotal'			=> $this->Isotope->formatPriceWithCurrency($fltGrandTotal),
-			'payment_data'			=> serialize($arrPaymentData)
-		);
-		
-		$this->Database->prepare("UPDATE tl_iso_orders %s WHERE id=?")
-					   ->set($arrSet)
-					   ->execute($intOrderId);
-		
-		return true;  
-  }
-  
+    
   protected function getOrderDescription($row)
   {
     $strProductList = $this->getProducts($row['cart_id']);
 	
-	
+	$this->Isotope->overrideStore($row['store_id']);	//Which store it was ordered from is important, not what the default backend store is.
 	
     return '
 		  <div>
@@ -364,10 +336,10 @@ class tl_iso_orders extends Backend
 		    ' . $GLOBALS['TL_LANG']['MSC']['iso_order_date'] . ': ' . $this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $row['date']) . '<br />
 		    ' . $GLOBALS['TL_LANG']['MSC']['iso_payment_info_header'] . ': ' . $row['payment_method']  . '<br />
 		    ' . $GLOBALS['TL_LANG']['MSC']['iso_shipping_info_header'] . ': ' . $row['shipping_method']  . '<br />
-		    ' . $GLOBALS['TL_LANG']['MSC']['iso_subtotal_header'] . ': ' . $row['subTotal'] . '<br />
-		    ' . $GLOBALS['TL_LANG']['MSC']['iso_tax_header'] . ': ' . $row['taxTotal'] . '<br />
-		    ' . $GLOBALS['TL_LANG']['MSC']['iso_order_shipping_header'] . ': ' . $row['shippingTotal'] . '<br />
-		    ' . $GLOBALS['TL_LANG']['MSC']['iso_order_grand_total_header'] . ': ' . $row['grandTotal'] . '
+		    ' . $GLOBALS['TL_LANG']['MSC']['iso_subtotal_header'] . ': ' . $this->Isotope->formatPriceWithCurrency($row['subTotal']) . '<br />
+		    ' . $GLOBALS['TL_LANG']['MSC']['iso_tax_header'] . ': ' . $this->Isotope->formatPriceWithCurrency($row['taxTotal']) . '<br />
+		    ' . $GLOBALS['TL_LANG']['MSC']['iso_order_shipping_header'] . ': ' . $this->Isotope->formatPriceWithCurrency($row['shippingTotal']) . '<br />
+		    ' . $GLOBALS['TL_LANG']['MSC']['iso_order_grand_total_header'] . ': ' . $this->Isotope->formatPriceWithCurrency($row['grandTotal']) . '
 		  </div>
 		  <br />
 		  <div style="display: inline;">
@@ -402,10 +374,11 @@ class tl_iso_orders extends Backend
 		  </div>-->
 		  </div>';
 
+	$this->Isotope->setStore(true);	//SET IT BACK!!!!
   
   }
   
-  
+ 	
   /**
    * getProducts function.
    * 
@@ -418,7 +391,7 @@ class tl_iso_orders extends Backend
     $arrProductListsByTable = array();
     $arrProductData = array();
     
-    $objProductData = $this->Database->prepare("SELECT ci.product_id, ci.quantity_requested, ci.price, ci.product_options, p.storeTable FROM tl_cart_items ci, tl_product_attribute_sets p WHERE p.id = ci.attribute_set_id AND ci.pid=?")
+    $objProductData = $this->Database->prepare("SELECT * FROM tl_cart_items WHERE pid=?")
                      ->execute($intSourceCartId);
     
     if($objProductData->numRows < 1)
@@ -427,63 +400,46 @@ class tl_iso_orders extends Backend
     }
     
     $arrProductData = $objProductData->fetchAllAssoc();
-    
+   
     
     foreach($arrProductData as $productData)
     {
     	
-      $arrProductLists[$productData['storeTable']][$productData['product_id']] = array
+      $arrProductLists[] = array
       (
-          'table'       => $productData['storeTable'],
           'id'        => $productData['product_id'], 
           'quantity'      => $productData['quantity_requested'],
 		  'price'		=> $productData['price'],
 		  'options'		=> deserialize($productData['product_options'])
       );
     }
-
       
-    foreach(array_keys($arrProductLists) as $storeTable)
+    foreach($arrProductLists as $productList)
     {         
-      
+
       $fltProductTotal = 0.00;
       
-      //Build list of product ids to work with
-      foreach($arrProductLists[$storeTable] as $row)
-      {
-        $arrProductIds[] = $row['id'];
-      }
-      
-      $strProductList = implode(',', $arrProductIds);
                   
-      $objProductExtendedData = $this->Database->prepare("SELECT id, name FROM " . $storeTable . " WHERE id IN(" . $strProductList . ")")
-                           ->execute();
+      $objProductExtendedData = $this->Database->prepare("SELECT name FROM tl_product_data WHERE id=?")
+					      					   ->limit(1)
+					                           ->execute($productList['id']);
                   
       if($objProductExtendedData->numRows < 1)
       {
         continue;
       }   
+           
+      $fltProductTotal = (int)$productList['quantity'] * (float)$productList['price'];      
       
-      $arrProductExtendedData = $objProductExtendedData->fetchAllAssoc();
-      
-      foreach($arrProductExtendedData as $row)
-      {
-        
-                
-        $fltProductTotal = (int)$arrProductLists[$storeTable][$row['id']]['quantity'] * (float)$arrProductLists[$storeTable][$row['id']]['price']; 
-      
-        $fltProductPrice = (float)$arrProductLists[$storeTable][$row['id']]['price'];
-      
-      
-        $strProductData .= $row['name'] . ' - ' . money_format('%n', $fltProductPrice) . ' x ' . $arrProductLists[$storeTable][$row['id']]['quantity'] . ' = ' . money_format('%n', $fltProductTotal) . '<br />';
+      $strProductData .= $objProductExtendedData->name . ' - ' . $this->Isotope->formatPriceWithCurrency($productList['price']) . ' x ' . $productList['quantity'] . ' = ' . $this->Isotope->formatPriceWithCurrency($fltProductTotal) . '<br />';
         
         
         
-        if(sizeof($arrProductLists[$storeTable][$row['id']]['options']))
+        if(sizeof($productList['options']))
         {
           	$strProductData .= '<p><strong>' . $GLOBALS['TL_LANG']['MSC']['productOptionsLabel'] . '</strong></p>';
 
-        	foreach($arrProductLists[$storeTable][$row['id']]['options'] as $rowData)
+        	foreach($productList['options'] as $rowData)
         	{       
         		$arrValues = deserialize($rowData['values']);
         				
@@ -495,12 +451,12 @@ class tl_iso_orders extends Backend
         	}
         
         }
-      } 
+ 
     }
     
     return $strProductData;
   }
-  
+    
   
   /**
    * loadAddress function.

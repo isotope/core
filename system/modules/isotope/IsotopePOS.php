@@ -54,6 +54,14 @@ class IsotopePOS extends Backend
 	
 	protected $strReason;
 	
+	public function __construct()
+	{
+		parent::__construct();
+		
+		$this->import('Isotope');
+	
+	}
+	
 	public function moduleOperations($intId)
 	{
 		
@@ -124,8 +132,6 @@ class IsotopePOS extends Backend
 
 		$arrProductList = $this->getProducts($arrOrderInfo['cart_id']);
 		
-		//$strProductList = $this->generateProductList($arrProductList);
-			
 		
 		//Get the authorize.net configuration data			
 		$objAIMConfig = $this->Database->prepare("SELECT * FROM tl_payment_modules WHERE type=?")
@@ -216,7 +222,6 @@ class IsotopePOS extends Backend
 			#curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); // uncomment this line if you get no gateway response. ###
 			$resp = curl_exec($ch); //execute post and get results
 			curl_close ($ch);
-			
 							
 			$arrResponses = $this->handleResponse($resp);
 
@@ -280,10 +285,10 @@ class IsotopePOS extends Backend
 			}	
 			
 			$strProductList .= '</td>
-			<td align="left" width="50">' . $product['price'] . '</td>
+			<td align="left" width="50">' . $this->Isotope->formatPriceWithCurrency($product['price']) . '</td>
 			<td align="left" width="50">' . $product['quantity'] . '</td>
-			<td align="left" width="50">' . $product['tax']. '</td>
-			<td align="left" width="50">' . $product['subtotal'] . '</td>
+			<td align="left" width="50">' . $this->Isotope->formatPriceWithCurrency($product['tax']) . '</td>
+			<td align="left" width="50">' . $this->Isotope->formatPriceWithCurrency($product['subtotal']) . '</td>
 			</tr>';
 		}
 	
@@ -302,7 +307,7 @@ class IsotopePOS extends Backend
 <a href="'.$this->getReferer(ENCODE_AMPERSANDS).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
 </div>
 ';
-		$return .= '<div class="block" style="padding:20px;"><div><h2>Order #' . $arrOrderInfo['id'] . '</h2>' . $objUserName->firstname . ' ' . $objUserName->lastname . '<br />Status: <strong>' . $GLOBALS['TL_LANG']['MSC']['order_status_labels'][$arrOrderInfo['status']] . '</strong><br />Shipping Method: ' . $GLOBALS['TL_LANG']['tl_iso_orders']['shipping_method_labels'][$arrOrderInfo['shipping_method']]  . '<br />Order Total: ' . money_format('$%n', $this->fltOrderTotal) . '</div><br /><div style="display: inline;"><div style="width: 50%; float: left"><h2>Billing Address:</h2>' . $strBillingAddress . '</div><div style="width: 50%; float: left"><h2>Shipping Address:</h2>' . $strShippingAddress . '</div></div><div style="clear: both;"></div><br /><br /><div style="clear: both;"></div>'; 
+		$return .= '<div class="block" style="padding:20px;"><div><h2>Order #' . $arrOrderInfo['id'] . '</h2>' . $objUserName->firstname . ' ' . $objUserName->lastname . '<br />Status: <strong>' . $GLOBALS['TL_LANG']['MSC']['order_status_labels'][$arrOrderInfo['status']] . '</strong><br />Shipping Method: ' . $GLOBALS['TL_LANG']['tl_iso_orders']['shipping_method_labels'][$arrOrderInfo['shipping_method']]  . '<br />Order Total: ' . $this->Isotope->formatPriceWithCurrency($this->fltOrderTotal) . '</div><br /><div style="display: inline;"><div style="width: 50%; float: left"><h2>Billing Address:</h2>' . $strBillingAddress . '</div><div style="width: 50%; float: left"><h2>Shipping Address:</h2>' . $strShippingAddress . '</div></div><div style="clear: both;"></div><br /><br /><div style="clear: both;"></div>'; 
 		//<h2>Cart Contents:</h2><div style="border: solid 1px #cccccc; margin: 10px; padding: 10px;">' . $strProductList . '</div></div></div>';
 		if(strlen($objTemplate->fields) && $arrResponses['transaction-status']=='Approved')
 		{
@@ -336,6 +341,7 @@ class IsotopePOS extends Backend
 	
 	public function printInvoice(DataContainer $objDc)
 	{
+		
 		//$objDc->id = $this->Input->get('id');
 		$this->intOrderId = $objDc->id;
 		
@@ -349,16 +355,10 @@ class IsotopePOS extends Backend
 		
 		$arrOrderInfo = $objOrderInfo->fetchAssoc();
 		
-		/*
-		$objUserName = $this->Database->prepare("SELECT firstname, lastname FROM tl_address_book WHERE id=?")
-									  ->limit(1)
-									  ->execute($arrOrderInfo['billing_address_id']);
-				
-		if($objUserName->numRows < 1)
-		{
-			return '<no user name specified>';		
-		}	
-		*/
+		
+		$this->Isotope->overrideStore($arrOrderInfo['store_id']);
+
+		
 		$objInvoiceLogo = $this->Database->prepare("SELECT invoiceLogo FROM tl_store WHERE id=?")
 										 ->limit(1)
 										 ->execute($arrOrderInfo['store_id']);
@@ -380,7 +380,7 @@ class IsotopePOS extends Backend
 		$strPaymentInfo = $this->generatePaymentInfoString($arrOrderInfo);
 		//$strShippingInfo = $this->generateShippingInfoString($arrOrderInfo['shipping_rate_id']);
 		
-		$arrProductData = $this->getProducts($arrOrderInfo['cart_id']);
+		$arrProductData = $this->getProducts($arrOrderInfo['cart_id'], $arrOrderInfo['store_id']);
 		
 		$objTemplate = new BackendTemplate('iso_invoice');
 		
@@ -405,10 +405,10 @@ class IsotopePOS extends Backend
 		$objTemplate->orderTaxHeader = $GLOBALS['TL_LANG']['MSC']['iso_tax_header'];
 		$objTemplate->orderShippingHeader = $GLOBALS['TL_LANG']['MSC']['iso_order_shipping_header'];
 		$objTemplate->orderGrandTotalHeader = $GLOBALS['TL_LANG']['MSC']['iso_order_grand_total_header'];
-		$objTemplate->orderSubtotal = $arrOrderInfo['subTotal']; 
-		$objTemplate->orderTaxTotal = $arrOrderInfo['taxTotal']; 
-		$objTemplate->orderShippingTotal = $arrOrderInfo['shippingTotal']; 
-		$objTemplate->orderGrandTotal = $arrOrderInfo['grandTotal'];
+		$objTemplate->orderSubtotal = $this->Isotope->formatPriceWithCurrency($arrOrderInfo['subTotal']); 
+		$objTemplate->orderTaxTotal = $this->Isotope->formatPriceWithCurrency($arrOrderInfo['taxTotal']); 
+		$objTemplate->orderShippingTotal = $this->Isotope->formatPriceWithCurrency($arrOrderInfo['shippingTotal']); 
+		$objTemplate->orderGrandTotal = $this->Isotope->formatPriceWithCurrency($arrOrderInfo['grandTotal']);
 		$objTemplate->orderFooterString = '';	
 		$objTemplate->logoImage = strlen($strInvoiceLogo) ? $this->Environment->base . $strInvoiceLogo : false;
 		$strInvoiceTitle = $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] . '_' . $objDc->id . '_' . time();
@@ -425,122 +425,70 @@ class IsotopePOS extends Backend
 		$arrChunks = array();
 		$strArticle .= $objTemplate->parse();
 		
-		//echo $strArticle;
-		//exit;
-		
-		/*
-		if(1==1)
+		preg_match_all('/<pre.*<\/pre>/Us', $strArticle, $arrChunks);
+
+		// Replace linebreaks within PRE tags
+		foreach ($arrChunks[0] as $strChunk)
 		{
-			// Add head section
-			$strHtml = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">' . "\n";
-			$strHtml .= '<html xmlns="http://www.w3.org/1999/xhtml">' . "\n";
-			$strHtml .= '<head>' . "\n";
-			$strHtml .= '<title>' . $strInvoiceTitle . '</title>' . "\n";
-			$strHtml .= '<meta http-equiv="Content-Type" content="text/html; charset=' . $GLOBALS['TL_CONFIG']['characterSet'] . '" />' . "\n";
-			$strHtml .= '<base href="' . $this->Environment->base . '" />' . "\n";
-
-			$objStylesheet = $this->Database->execute("SELECT * FROM tl_style_sheet");
-
+			$strArticle = str_replace($strChunk, str_replace("\n", '<br />', $strChunk), $strArticle);
+		}
 			
-			// Add stylesheets
-			while ($objStylesheet->next())
-			{
-				$arrMedia = deserialize($objStylesheet->media, true);
-				
-				if (in_array('print', $arrMedia) || in_array('all', $arrMedia))
-				{
-					$strHtml .= '<link rel="stylesheet" type="text/css" href="' . $objStylesheet->name . '.css" />' . "\n";
-				}
-			}
+		// Remove linebreaks and tabs
+		$strArticle = str_replace(array("\n", "\t"), '', $strArticle);
+		$strArticle = preg_replace('/<span style="text-decoration: ?underline;?">(.*)<\/span>/Us', '<u>$1</u>', $strArticle);
 
-			// Convert the Euro symbol
-			$strArticle = str_replace('€', '&#0128;', $strArticle);
+		// TCPDF configuration
+		$l['a_meta_dir'] = 'ltr';
+		$l['a_meta_charset'] = $GLOBALS['TL_CONFIG']['characterSet'];
+		$l['a_meta_language'] = $GLOBALS['TL_LANGUAGE'];
+		$l['w_page'] = "page";
 
-			// Make sure there is no background
-			$strHtml .= '<style type="text/css">' . "\n";
-			$strHtml .= 'body { background:none; background-color:#ffffff; }' . "\n";
-			$strHtml .= '</style>' . "\n";
-			$strHtml .= '</head>' . "\n";
-			$strHtml .= '<body>' . "\n";
-			$strHtml .= $strArticle . "\n";
-			$strHtml .= '</body>' . "\n";
-			$strHtml .= '</html>';
+		// Include library
+		require_once(TL_ROOT . '/system/config/tcpdf.php');
+		require_once(TL_ROOT . '/plugins/tcpdf/tcpdf.php'); 
 
-			// Generate DOMPDF object
-			require_once(TL_ROOT . '/plugins/dompdf/dompdf_config.inc.php');
-			$dompdf = new DOMPDF();
+		// Create new PDF document
+		$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true); 
 
-			$dompdf->set_paper('a4');
-			$dompdf->set_base_path(TL_ROOT);
-			$dompdf->load_html($strArticle);
-			$dompdf->render();
+		// Set document information
+		$pdf->SetCreator(PDF_CREATOR);
+		$pdf->SetAuthor(PDF_AUTHOR);
+		$pdf->SetTitle($objInvoice->title);
+		$pdf->SetSubject($objInvoice->title);
+		$pdf->SetKeywords($objInvoice->keywords);
 
-			$dompdf->stream(standardize(ampersand($strInvoiceTitle, false)) . '.pdf');
+		// Remove default header/footer
+		$pdf->setPrintHeader(false);
+		$pdf->setPrintFooter(false);
 
-		}else{*/
-			preg_match_all('/<pre.*<\/pre>/Us', $strArticle, $arrChunks);
-	
-			// Replace linebreaks within PRE tags
-			foreach ($arrChunks[0] as $strChunk)
-			{
-				$strArticle = str_replace($strChunk, str_replace("\n", '<br />', $strChunk), $strArticle);
-			}
-				
-			// Remove linebreaks and tabs
-			$strArticle = str_replace(array("\n", "\t"), '', $strArticle);
-			$strArticle = preg_replace('/<span style="text-decoration: ?underline;?">(.*)<\/span>/Us', '<u>$1</u>', $strArticle);
-	
-			// TCPDF configuration
-			$l['a_meta_dir'] = 'ltr';
-			$l['a_meta_charset'] = $GLOBALS['TL_CONFIG']['characterSet'];
-			$l['a_meta_language'] = $GLOBALS['TL_LANGUAGE'];
-			$l['w_page'] = "page";
-	
-			// Include library
-			require_once(TL_ROOT . '/system/config/tcpdf.php');
-			require_once(TL_ROOT . '/plugins/tcpdf/tcpdf.php'); 
-	
-			// Create new PDF document
-			$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true); 
-	
-			// Set document information
-			$pdf->SetCreator(PDF_CREATOR);
-			$pdf->SetAuthor(PDF_AUTHOR);
-			$pdf->SetTitle($objInvoice->title);
-			$pdf->SetSubject($objInvoice->title);
-			$pdf->SetKeywords($objInvoice->keywords);
-	
-			// Remove default header/footer
-			$pdf->setPrintHeader(false);
-			$pdf->setPrintFooter(false);
-	
-			// Set margins
-			$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-	
-			// Set auto page breaks
-			$pdf->SetAutoPageBreak(true, PDF_MARGIN_BOTTOM);
-	
-			// Set image scale factor
-			$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO); 
-	
-			// Set some language-dependent strings
-			$pdf->setLanguageArray($l); 
-	
-			// Initialize document and add a page
-			$pdf->AliasNbPages();
-			$pdf->AddPage();
-	
-			// Set font
-			$pdf->SetFont(PDF_FONT_NAME_MAIN, "", PDF_FONT_SIZE_MAIN);
-	
-			// Write the HTML content
-			$pdf->writeHTML($strArticle, true, 0, true, 0);
-	
-			// Close and output PDF document
-			$pdf->lastPage();
-			$pdf->Output(standardize(ampersand($strInvoiceTitle, false)) . '.pdf', 'D');
-		//}
-		// Stop script execution
+		// Set margins
+		$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+
+		// Set auto page breaks
+		$pdf->SetAutoPageBreak(true, PDF_MARGIN_BOTTOM);
+
+		// Set image scale factor
+		$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO); 
+
+		// Set some language-dependent strings
+		$pdf->setLanguageArray($l); 
+
+		// Initialize document and add a page
+		$pdf->AliasNbPages();
+		$pdf->AddPage();
+
+		// Set font
+		$pdf->SetFont(PDF_FONT_NAME_MAIN, "", PDF_FONT_SIZE_MAIN);
+
+		// Write the HTML content
+		$pdf->writeHTML($strArticle, true, 0, true, 0);
+
+		// Close and output PDF document
+		$pdf->lastPage();
+		$pdf->Output(standardize(ampersand($strInvoiceTitle, false)) . '.pdf', 'D');
+		
+		$this->Isotope->setStore(true); 	//Set store back to default.
+		
 		ob_end_clean();
 		exit;	
 	}
@@ -567,113 +515,89 @@ class IsotopePOS extends Backend
 		return $strAddress;
 	}
 
-	protected function getProducts($intSourceCartId)
-	{
-		$arrProductListsByTable = array();
-		$arrProductData = array();
-		
-		$objProductData = $this->Database->prepare("SELECT ci.product_id, ci.quantity_requested, ci.price, ci.product_options, p.storeTable FROM tl_cart_items ci, tl_product_attribute_sets p WHERE p.id = ci.attribute_set_id AND ci.pid =?")
-										 ->execute($intSourceCartId);
-		
-		if($objProductData->numRows < 1)
-		{
-			return '';
-		}
-		
-		$arrProductData = $objProductData->fetchAllAssoc();
-		
-		
-		foreach($arrProductData as $productData)
-		{
-			$arrProductLists[$productData['storeTable']][$productData['product_id']] = array
-			(
-					'table'				=> $productData['storeTable'],
-					'id'				=> $productData['product_id'], 
-					'quantity'			=> $productData['quantity_requested'],
-					'price'				=> $productData['price'],
-					'options'			=> deserialize($productData['product_options'])
-			);
-		}
+	  /**
+   * getProducts function.
+   * 
+   * @access protected
+   * @param integer $intSourceCartId
+   * @return string
+   */
+  protected function getProducts($intSourceCartId, $store_id = null)
+  {
+  	if($store_id)
+  	{
+		$this->Isotope->overrideStore($store_id);	//Which store it was ordered from is important, not what the default backend store is.
+	}
+	
+    $arrProductData = array();
+    
+    $objProductData = $this->Database->prepare("SELECT * FROM tl_cart_items WHERE pid=?")
+                     ->execute($intSourceCartId);
+    
+    if($objProductData->numRows < 1)
+    {
+      return '';
+    }
+    
+    $arrProductData = $objProductData->fetchAllAssoc();
+   
+    
+    foreach($arrProductData as $productData)
+    {
+    	
+      $arrProductLists[] = array
+      (
 
-			
-		foreach(array_keys($arrProductLists) as $storeTable)
-		{					
-			
-			$fltProductTotal = 0.00;
-			
-			//Build list of product ids to work with
-			foreach($arrProductLists[$storeTable] as $row)
-			{
-				$arrProductIds[] = $row['id'];
-			}
-			
-			$strProductList = implode(',', $arrProductIds);
-									
-			$objProductExtendedData = $this->Database->prepare("SELECT id, name, sku FROM " . $storeTable . " WHERE id IN(" . $strProductList . ")")
-													 ->execute();
-									
-			if($objProductExtendedData->numRows < 1)
-			{
-				continue;
-			}		
-			
-			$arrProductExtendedData = $objProductExtendedData->fetchAllAssoc();
-			
-			foreach($arrProductExtendedData as $row)
-			{
-				//$fltProductTax = ((int)$arrProductLists[$storeTable][$row['id']]['quantity'] * (float)$arrProductLists[$storeTable][$row['id']]['price']) * 0.05;
-					
-				$fltSubtotal = ((int)$arrProductLists[$storeTable][$row['id']]['quantity'] * (float)$arrProductLists[$storeTable][$row['id']]['price']) + round($fltProductTax, 2);
-				//	echo $fltSubtotal;
-				
-				$arrOptionsData = deserialize($arrProductLists[$storeTable][$row['id']]['options']);
-		
-				
-				$arrAllProducts[] = array
+          'id'        => $productData['product_id'], 
+          'quantity'      => $productData['quantity_requested'],
+		  'price'		=> $productData['price'],
+		  'options'		=> deserialize($productData['product_options'])
+      );
+    }
+      
+    foreach($arrProductLists as $productList)
+    {         
+
+      $fltProductTotal = 0.00;
+      
+                  
+      $objProductExtendedData = $this->Database->prepare("SELECT name, sku FROM tl_product_data WHERE id=?")
+					      					   ->limit(1)
+					                           ->execute($productList['id']);
+                  
+      if($objProductExtendedData->numRows < 1)
+      {
+        continue;
+      }   
+           
+      $fltProductTotal = (int)$productList['quantity'] * (float)$productList['price']; 
+      
+      $fltProductPrice = (float)$productList['price'];
+      
+      $strProductData .= $objProductExtendedData->name . ' - ' . $this->Isotope->formatPriceWithCurrency($fltProductPrice) . ' x ' . $productList['quantity'] . ' = ' . $this->Isotope->formatPriceWithCurrency($fltProductTotal) . '<br />';
+        
+        
+        
+        $arrAllProducts[] = array
 				(
-					'name'			=> $row['name'],
-					'sku'			=> $row['sku'],
-					'price'			=> number_format((float)$arrProductLists[$storeTable][$row['id']]['price'], 2),
-					'quantity'		=> $arrProductLists[$storeTable][$row['id']]['quantity'],
+					'name'			=> $objProductExtendedData->name,
+					'sku'			=> $objProductExtendedData->sku,
+					'price'			=> $this->Isotope->formatPriceWithCurrency($fltProductPrice),
+					'quantity'		=> (int)$productList['quantity'],
 					//'tax'			=> number_format($fltProductTax, 2),
-					'subtotal'		=> number_format($fltSubtotal, 2),
-					'options'		=> $this->getOptionsHTML($arrOptionsData)
+					'subtotal'		=> $this->Isotope->formatPriceWithCurrency($fltProductTotal),
+					'options'		=> $this->getOptionsHTML($productList['options'])
 					
 				); 	
-			}	
-		}
-		
-		return $arrAllProducts;
-	}
-	
-	protected function generateProductList($arrProducts)
-	{
-		
-		foreach($arrProducts as $row)
-		{			
-			$strProductData .= $row['name'] . ' - ' . money_format('$%n', (float)$arrProductLists[$storeTable][$row['id']]['price']) . ' x ' . $row['quantity'] . ' = ' . money_format('$%n', ((float)$arrProductLists[$storeTable][$row['id']]['price'] * $row['quantity'])) . '<br />';
-			
-			$arrOptions = deserialize($row['options']);
-        	
-        	if(sizeof($arrOptions))
-        	{
-		        $strProductData .= '<p><strong>' . $GLOBALS['TL_LANG']['MSC']['productOptionsLabel'] . '</strong></p>';
+ 
+    }
+    
+    $this->Isotope->setStore(true);	//Revert back to default store.
+    	
+    return $arrAllProducts;
+  }
 
-        		foreach($arrOptions as $option)
-        		{
-	        		$arrValues = deserialize($option['values']);
-	        		
-				    $strProductData .= '<ul>';
-				   	$strProductData .= '	<li>' . $option['name'] . ': ';
-				    $strProductData .= implode(', ', $arrValues);
-					$strProductData .= '    </li>';     						
-					$strProductData .= '</ul>'; 
-				}
-			}
-		}
 	
-		return $strProductData;
-	}
 	
 	protected function getOptionsHTML($arrOptionsData)
 	{

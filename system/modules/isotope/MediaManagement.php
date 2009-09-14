@@ -48,6 +48,10 @@ class MediaManagement extends Backend
 	 */
 	protected $strIsotopeRoot;
 	
+	protected $intStoreId;
+	
+	protected $strRootAssetImportPath;
+	
 	/**
 	 *
 	 */
@@ -57,7 +61,19 @@ class MediaManagement extends Backend
 	public function __construct()
 	{
 		parent::__construct();
+				
 		$this->import('Files');
+		$this->import('Isotope');
+				
+		$blnForceDefault = (TL_MODE=='BE' ? true : false);
+				
+		$this->intStoreId = $_SESSION['isotope']['store_id'];
+			
+		$this->strRootAssetImportPath = $this->getRootAssetImportPath($this->intStoreId);
+	
+		$this->import('IsotopeStore','Store');
+		
+		
 	}
 	
 	
@@ -198,7 +214,7 @@ class MediaManagement extends Backend
 	 */
 	public function thumbnailImages($varValue, DataContainer $dc)
 	{		
-		$objProduct = $this->Database->prepare("SELECT alias, sku FROM " . $dc->table . " WHERE id=?")
+		$objProduct = $this->Database->prepare("SELECT alias, sku FROM tl_product_data WHERE id=?")
 									 ->limit(1)
 									 ->execute($dc->id);
 		
@@ -214,13 +230,12 @@ class MediaManagement extends Backend
 
 		$arrProductPaths = $this->getCurrentProductPaths($strAlias);		
 		
-		$strRootAssetsImportPath = $this->getRootAssetImportPath($dc->table, $dc->id);
 		
-		$arrProductPaths['root_asset_import_path'] = $strRootAssetsImportPath;
+		$arrProductPaths['root_asset_import_path'] = $this->strRootAssetImportPath;
 						
 		//$arrImageSize = @getimagesize($arrProductPaths['file_source_path'] . '/' . $GLOBALS['TL_LANG']['MSC']['imagesFolder'] . '/' . $varValue);
 		
-		$arrImageSizeConstraints = $this->getImageSizeConstraints($dc->table, $dc->id);
+		$arrImageSizeConstraints = $this->getImageSizeConstraints($dc->id);
 			
 		//$arrImages[] = $varValue;
 		$arrImages = $this->getMediaFilenames($arrProductPaths['file_source_path'], 'images', 'source');
@@ -383,55 +398,22 @@ class MediaManagement extends Backend
 	 * @param string
 	 * @return string
 	 */
-	public function getRootAssetImportPath($strTable, $intID, $strAlias = '')
+	public function getRootAssetImportPath($intStoreId)
 	{
 	
-		$intPID = $this->getPID($strTable, $intID, $strAlias);
-		
-		if($intPID!=0)
-		{
-			$objStoreSettingsID = $this->Database->prepare("SELECT store_id FROM tl_product_attribute_sets WHERE id=?")
-												 ->limit(1)
-												 ->execute($intPID);
-			
-			if($objStoreSettingsID->numRows < 1)
-			{
-				return '';
-			}
-				
-			$objStoreSettings = $this->Database->prepare("SELECT root_asset_import_path FROM tl_store WHERE id=?")
-											   ->limit(1)
-											   ->execute($objStoreSettingsID->store_id);
+		$objStoreSettings = $this->Database->prepare("SELECT root_asset_import_path FROM tl_store WHERE id=?")
+		  					     ->limit(1)
+								 ->execute($intStoreId);
 											
-			if($objStoreSettings->numRows < 1)
-			{
-				return '';
-			}
-			
-			return $objStoreSettings->root_asset_import_path;
-		}
-		
-		return '';
-		
-	
-	}
-	
-/*
-	public function getRootAssetImportPathByStoreId($intStoreId)
-	{
-		$objStore = $this->Database->prepare("SELECT root_asset_import_path FROM tl_store WHERE id=?")
-								   ->limit(1)
-								   ->execute($intStoreId);
-		
-		if($objStore->numRows < 1)
+		if($objStoreSettings->numRows < 1)
 		{
-			return false;
+			return '';
 		}
 		
-		return $objStore->root_asset_import_path;
+		return $objStoreSettings->root_asset_import_path;
 	
 	}
-*/
+	
 	
 	public function getFilesByName($strProductImages, $strRelativePath)
 	{
@@ -461,22 +443,11 @@ class MediaManagement extends Backend
 	
 	public function getImageSizeConstraints($strTable, $intID, $strAlias='')
 	{
-		$intPID = $this->getPID($strTable, $intID, $strAlias);
 		
-		if($intPID!=0)
-		{
-			$objStoreSettingsID = $this->Database->prepare("SELECT store_id FROM tl_product_attribute_sets WHERE id=?")
-												 ->limit(1)
-												 ->execute($intPID);
-			
-			if($objStoreSettingsID->numRows < 1)
-			{
-				return array();
-			}
-			
+						
 			$objStoreSettings = $this->Database->prepare("SELECT gallery_thumbnail_image_width, gallery_thumbnail_image_height, thumbnail_image_width,thumbnail_image_height,medium_image_width,medium_image_height,large_image_width,large_image_height FROM tl_store WHERE id=?")
 											   ->limit(1)
-											   ->execute($objStoreSettingsID->store_id);
+											   ->execute($this->intStoreId);
 			if($objStoreSettings->numRows < 1)
 			{
 				return array();
@@ -495,7 +466,7 @@ class MediaManagement extends Backend
 			);
 			
 			return $arrConstraints;
-		}
+
 		
 		return array();
 	}
@@ -828,57 +799,65 @@ class MediaManagement extends Backend
 	public function getMediaFilenames($strAbsoluteFilePath, $strMediaType, $strSourcePoint)
 	{
 		
-		switch($strSourcePoint)
+		if(is_dir($strAbsoluteFilePath))
 		{
-			case 'source':
-				if(count(scan($strAbsoluteFilePath . '/' . $strMediaType . '/')))
-				{
-					if ($dh = opendir($strAbsoluteFilePath . '/' . $strMediaType . '/')) 
+		
+			switch($strSourcePoint)
+			{
+				case 'source':
+					if(count(scan($strAbsoluteFilePath . '/' . $strMediaType . '/')))
 					{
-						while ($file = readdir($dh))
+						if ($dh = opendir($strAbsoluteFilePath . '/' . $strMediaType . '/')) 
 						{
-							$fileExt = explode('.', $file);
-					
-							if(in_array($fileExt[1], $GLOBALS['TL_LANG']['MSC']['validMediaFileTypes'][$strMediaType]))
+							while ($file = readdir($dh))
 							{
-								$arrImages[] = $file;					
+								$fileExt = explode('.', $file);
+						
+								if(in_array($fileExt[1], $GLOBALS['TL_LANG']['MSC']['validMediaFileTypes'][$strMediaType]))
+								{
+									$arrImages[] = $file;					
+								}
 							}
 						}
-					}
-		
-				}else{
-					$arrImages = array();
-				}
-				break;
 			
-			case 'destination':
-			
-				if(count(scan($strAbsoluteFilePath . '/' . $strMediaType . '/' . $GLOBALS['TL_LANG']['MSC']['medium_images_folder'] . '/')))
-				{
-					if ($dh = opendir($strAbsoluteFilePath . '/' . $strMediaType . '/' . $GLOBALS['TL_LANG']['MSC']['medium_images_folder'] . '/')) 
-					{
-						while ($file = readdir($dh))
-						{
-							$fileExt = explode('.', $file);
-					
-							if(in_array($fileExt[1], $GLOBALS['TL_LANG']['MSC']['validMediaFileTypes'][$strMediaType]))
-							{
-								$arrImages[] = $file;					
-							}
-						}
+					}else{
+						$arrImages = array();
 					}
-		
-				}else{
-					$arrImages = array();
-				}
+					break;
 				
-				break;
+				case 'destination':
+				
+					if(count(scan($strAbsoluteFilePath . '/' . $strMediaType . '/' . $GLOBALS['TL_LANG']['MSC']['medium_images_folder'] . '/')))
+					{
+						if ($dh = opendir($strAbsoluteFilePath . '/' . $strMediaType . '/' . $GLOBALS['TL_LANG']['MSC']['medium_images_folder'] . '/')) 
+						{
+							while ($file = readdir($dh))
+							{
+								$fileExt = explode('.', $file);
+						
+								if(in_array($fileExt[1], $GLOBALS['TL_LANG']['MSC']['validMediaFileTypes'][$strMediaType]))
+								{
+									$arrImages[] = $file;					
+								}
+							}
+						}
 			
-			default:
-				break;
+					}else{
+						$arrImages = array();
+					}
+					
+					break;
+				
+				default:
+					break;
+			}
+		
+			return $arrImages;
 		}
-	
-		return $arrImages;
+		else
+		{
+			return array();
+		}
 	}
 	
 	/***** DEPRECATED *****
@@ -935,27 +914,6 @@ class MediaManagement extends Backend
 	}	
 	
 	
-	/**
-	 * Get the PID of a given record 
-	 * @param string
-	 * @param integer
-	 * @return integer;
-	 */
-	private function getPID($strTableName, $intID, $strAlias = '')
-	{
-		$objPID = $this->Database->prepare("SELECT pid FROM " . $strTableName . " WHERE id=? OR alias=?")
-								 ->limit(1)
-								 ->execute($intID, $strAlias);
-			
-		if($objPID->numRows < 1)
-		{
-			return 0;
-		}
-		
-		return $objPID->pid;
-	
-	}
-
 	/**
 	 * Fallback to first image (by ordinals) in the directory, if there is one.
 	 * @param string

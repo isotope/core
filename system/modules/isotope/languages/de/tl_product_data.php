@@ -46,3 +46,16 @@ $GLOBALS['TL_LANG']['tl_product_data']['delete'] = array('Artikel löschen', 'Ar
 $GLOBALS['TL_LANG']['tl_product_data']['show']   = array('Artikeldetails', 'Details des Artikel ID %s anzeigen');
 $GLOBALS['TL_LANG']['tl_product_data']['editheader'] = array('Artikelmerkmale bearbeiten', 'Artikelmerkmale bearbeiten');
 
+/** 
+ * Legends
+ */
+$GLOBALS['TL_LANG']['tl_product_data']['general_legend'] = "General Settings";
+$GLOBALS['TL_LANG']['tl_product_data']['pricing_legend'] = "Pricing Settings";
+$GLOBALS['TL_LANG']['tl_product_data']['inventory_legend'] = 'Inventory Settings';
+$GLOBALS['TL_LANG']['tl_product_data']['shipping_legend'] = 'Shipping Settings';
+$GLOBALS['TL_LANG']['tl_product_data']['tax_legend'] = 'Tax Settings';
+$GLOBALS['TL_LANG']['tl_product_data']['options_legend'] = 'Product Options Settings';
+$GLOBALS['TL_LANG']['tl_product_data']['tax_legend'] = 'Tax Settings';
+$GLOBALS['TL_LANG']['tl_product_data']['availability_legend'] = 'Availability Settings';
+$GLOBALS['TL_LANG']['tl_product_data']['media_legend'] = 'Media Management';
+

@@ -29,21 +29,19 @@
  */
 class ProductCatalog extends Backend
 {
-	private function createTable($storeTable)
-	{
-		$this->Database->execute(sprintf($this->createTableStatement, $storeTable));
+	//set the store.
+	public function __construct()
+	{	
+		parent::__construct();
+		
+		$this->import('Isotope');				
+		$this->import('IsotopeStore', 'Store');		
 	}
-
-	private function alterTable($storeTable, $prevStoreTable)
+	
+	private function createTable()
 	{
-		$this->Database->execute(sprintf("ALTER TABLE `%s` RENAME TO `%s`", $prevStoreTable, $storeTable));
+		$this->Database->execute(sprintf($this->createTableStatement, 'tl_product_data'));
 	}
-
-	private function dropTable($storeTable)
-	{
-		$this->Database->execute(sprintf($this->dropTableStatement, $storeTable));
-	}
-
 
 	protected $sqlDef = array
 	(
@@ -53,46 +51,43 @@ class ProductCatalog extends Backend
 		'text'          => "varchar(255) NOT NULL default ''",
 		'longtext'      => "text NULL",
 		'datetime'		=>	"int(10) unsigned NOT NULL default '0'",
-//		'date'          => "varchar(10) NOT NULL default ''",
 		'select'        => "int(10) NOT NULL default 0",
-		//'tags'          => "text NULL",
 		'checkbox'      => "char(1) NOT NULL default ''",
 		'options'		=> "text NULL",
-		//'url'           => "varchar(255) NOT NULL default ''",
 		'file'          => "text NULL",
 		'media'			=> "varchar(255) NOT NULL default '0'",
-		//added by thyon
-		//'alias'       => "varchar(64) NOT NULL default ''",
-		//added by andreas.schempp
-		//'taxonomy'		=> "text NULL",
 	);
 	
 	protected $arrForm = array();
 	protected $arrFields = array();
 	protected $arrTypes = array('text','password','textarea','select','radio','checkbox','upload', 'hidden');
 	protected $arrList = array ('tstamp','pages','new_import'/*,'add_audio_file','add_video_file'*/);	//Basic required fields
-	protected $arrDefault = array ('id', 'tstamp');
+	protected $arrDefault = array ('id', 'tstamp','pages','type','new_import');
+	protected $basePaletteAttributes = '{general_legend},type,pages,';
 	protected $arrCountMax = array();
 	protected $arrCountFree = array();
 	protected $arrData = array();
 
 	protected $systemColumns = array('id', 'pid', 'sorting', 'tstamp');
 	
-	protected $renameColumnStatement = "ALTER TABLE %s CHANGE COLUMN %s %s %s";
+	protected $renameColumnStatement = "ALTER TABLE tl_product_data CHANGE COLUMN %s %s %s";
 	
-	protected $createColumnStatement = "ALTER TABLE %s ADD %s %s";
+	protected $createColumnStatement = "ALTER TABLE tl_product_data ADD %s %s";
 	
-	protected $dropColumnStatement = "ALTER TABLE %s DROP COLUMN %s";
+	protected $dropColumnStatement = "ALTER TABLE tl_product_data DROP COLUMN %s";
 
-	protected $createTableStatement = "
-		CREATE TABLE `%s` (
+	protected $createTableStatement = "CREATE TABLE `%s` (
 			`id` int(10) unsigned NOT NULL auto_increment,
 		    `pid` int(10) unsigned NOT NULL default '0',
 		    `sorting` int(10) unsigned NOT NULL default '0',
 			`tstamp` int(10) unsigned NOT NULL default '0',
 			`pages` text NULL,
-			`new_import` char(1) NOT NULL default '0',
-		    `audio_source` varchar(32) NOT NULL default '',
+			`type` varchar(255) NOT NULL default '',
+			`new_import` char(1) NOT NULL default '',
+			PRIMARY KEY  (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+	
+	/*		    `audio_source` varchar(32) NOT NULL default '',
   			`audio_jumpTo` text NULL,
   			`audio_url` varchar(255) NOT NULL default '',
 			`video_source` varchar(32) NOT NULL default '',
@@ -101,59 +96,71 @@ class ProductCatalog extends Backend
 			`add_audio_file` char(1) NOT NULL default '0',
 			`add_video_file` char(1) NOT NULL default '0',
 			`option_collection` text NULL,
-			PRIMARY KEY  (`id`)
-		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
+	*/
 		
-	protected $dropTableStatement = "DROP TABLE `%s`";
-
-	protected $strCurrentStoreTable;
-
 	protected $arrPreExistingRecordInfo;
 
-	public function initializeDCA($strTable)
-	{
-		
-		$this->import('Database');
-		$this->import('Input');
-
-		$objTable = $this->Database->prepare("SELECT storeTable FROM tl_product_attribute_sets where id=?")
-				->limit(1)
-				->execute(CURRENT_ID); // you can use $this->Input->get('id') as well I guess.
-					
-		// load dca and/or languages
-		$this->loadProductCatalogDCA(CURRENT_ID);
-
-		return $objTable->storeTable;
-	}
 	
 	/**
 	 * ProductCatalog HOOKS: loadProductCatalogDCA, ValidateFormField, ProcessFormData 
 	 */	
 	
-	public function loadProductCatalogDCA($formid)
-	{
+	public function loadProductCatalogDCA($strTable)
+	{		
+		if(!$this->Database->tableExists('tl_product_data'))
+		{
+			$this->createTable();
+		}	
+		//Check for any missing standard attributes and build a list which can then be added into the table tl_product_data.		
+		foreach($GLOBALS['ISO_ATTR'] as $arrSet)
+		{
 		
-		$this->initializeAttributeSet($formid);
-		
-		//var_dump($this->arrFields);
+			if(!$this->Database->fieldExists($arrSet['field_name'], 'tl_product_data'))
+			{
+				$arrDefaultColumns[$arrSet['type']] = $arrSet['field_name'];
+			}
+								
+			$objAttributeExists = $this->Database->prepare("SELECT COUNT(*) AS count FROM tl_product_attributes WHERE field_name=?")
+													   ->limit(1)
+													   ->execute($arrSet['field_name']);
+			if($objAttributeExists->count < 1)
+			{
+				$arrAttributesToInsert[] = $arrSet;
+			}
+			
+		}
+			
+		if(sizeof($arrDefaultColumns))
+		{
 
-		$storeTable = $this->arrForm['storeTable'];
+			foreach($arrDefaultColumns as $k=>$v)
+			{
+				$this->addDefaultAttribute($v, $k);
+			}
+		}
 		
-		$this->strCurrentStoreTable = $storeTable;
+		if(sizeof($arrAttributesToInsert))
+		{		
+			$sorting = $this->getNextSortValue('tl_product_attributes');
+			
+			foreach($arrAttributesToInsert as $row)
+			{			
+				$this->insertAttributeRecord($row, $sorting);
+			
+				$sorting+=128;
+			}
+		}		
 		
-		// Import labels
-		$GLOBALS['TL_LANG'][$storeTable] = &$GLOBALS['TL_LANG']['tl_product_data'];
-
+		$this->initializeFields();	//Get field data from tl_product_attributes.  Stored in this->arrFields.
+		
 		// setup global array first
-		$GLOBALS['TL_DCA'][$storeTable] = array
+		$GLOBALS['TL_DCA']['tl_product_data'] = array
 		(
 		
 			// Config
 			'config' => array
 			(
 				'dataContainer'               => 'Table',
-				'ptable'                      => 'tl_product_attribute_sets',
-		//		'notEditable'                 => true,
 				'enableVersioning'            => false,
 				'doNotCopyRecords'            => true,
 				'doNotDeleteRecords'          => false,
@@ -173,12 +180,12 @@ class ProductCatalog extends Backend
 			(
 				'sorting' => array
 				(
-					'mode'                    => 4,
+					'mode'                    => 1,
 					'fields'                  => array('sorting'),
 					'flag'                    => 1,
 					'panelLayout'             => 'sort,filter;search,limit',
-					'headerFields'            => array('name'),
-					'child_record_callback'   => array('ProductCatalog','getRowLabel'),
+					//'headerFields'            => array('name'),
+					//'child_record_callback'   => array('ProductCatalog','getRowLabel'),
 //					'paste_button_callback'   => array('ProductCatalog', 'pastButton'),
 				),
 				'label' => array
@@ -244,7 +251,7 @@ class ProductCatalog extends Backend
 		
 		
 		);
-			
+		
 		foreach($this->arrFields as $field)
 		{
 			foreach($field as $k=>$v)
@@ -254,22 +261,43 @@ class ProductCatalog extends Backend
 					$arrFieldCollection[] = $field['field_name'];				
 				}
 			}
-		}
-		
-		$GLOBALS['TL_DCA'][$storeTable]['list']['label']['fields'] = array_merge($this->arrList, count($arrFieldCollection) ? $arrFieldCollection : array());
-		$GLOBALS['TL_DCA'][$storeTable]['list']['label']['format'] = '<span style="color:#b3b3b3; padding-right:3px;">[%s]</span>'
-					. (count($this->arrFields) ? join(', ', array_fill(0,count($this->arrFields),'%s')) : '');
-		$GLOBALS['TL_DCA'][$storeTable]['list']['label']['label_callback'] = array('ProductCatalog','getRowLabel');
+		}			
+				
+		$GLOBALS['TL_DCA']['tl_product_data']['list']['label']['fields'] = array_merge($this->arrList, count($arrFieldCollection) ? $arrFieldCollection : array());
+		$GLOBALS['TL_DCA']['tl_product_data']['list']['label']['format'] = '<span style="color:#b3b3b3; padding-right:3px;">[%s]</span>' . (count($this->arrFields) ? join(', ', array_fill(0,count($this->arrFields),'%s')) : '');
+		$GLOBALS['TL_DCA']['tl_product_data']['list']['label']['label_callback'] = array('ProductCatalog','getRowLabel');
 
-		
 		// add palettes
-		$GLOBALS['TL_DCA'][$storeTable]['palettes']['__selector__'] = array('add_audio_file','add_video_file');
-		$GLOBALS['TL_DCA'][$storeTable]['palettes']['default'] = join(',',$GLOBALS['TL_DCA'][$storeTable]['list']['label']['fields']); // . ';option_collection';
-		$GLOBALS['TL_DCA'][$storeTable]['subpalettes']['add_audio_file'] = 'audio_source,audio_jumpTo,audio_url';
-		$GLOBALS['TL_DCA'][$storeTable]['subpalettes']['add_video_file'] = 'video_source,video_jumpTo,video_url';
 		
-		// first add common DCA: tstamp, ip
-		$GLOBALS['TL_DCA'][$storeTable]['fields']['tstamp'] =
+		//TODO: Make selectors dynamic
+		//$GLOBALS['TL_DCA']['tl_product_data']['palettes']['__selector__'] = array('add_audio_file','add_video_file');
+		$GLOBALS['TL_DCA']['tl_product_data']['palettes']['__selector__'] = array('type');
+		
+		//$arrAdditionalSelectors = $this->getSelectors();
+		
+		//$GLOBALS['TL_DCA']['tl_product_data']['palettes']['__selector__'] = array_merge($GLOBALS['TL_DCA']['tl_product_data']['palettes']['__selector__'], $arrAdditionalSelectors);
+		
+		//TODO: Make palettes dynamic - start with the basic fields and add additionals for the default palette, while loading the palettes as defined by
+		// each product type from tl_product_types.
+					
+		$arrProductTypePalettes = $this->getProductTypePalettes();
+
+		$GLOBALS['TL_DCA']['tl_product_data']['palettes'] = array_merge($GLOBALS['TL_DCA']['tl_product_data']['palettes'],$arrProductTypePalettes); 
+		//$GLOBALS['TL_DCA']['tl_product_data']['subpalettes']['add_audio_file'] = 'audio_source,audio_jumpTo,audio_url';
+		//$GLOBALS['TL_DCA']['tl_product_data']['subpalettes']['add_video_file'] = 'video_source,video_jumpTo,video_url';
+		//$GLOBALS['TL_DCA']['tl_product_data']['subpalettes'] = $this->getSubpalettes();
+		
+		// first add common DCA fields
+		$GLOBALS['TL_DCA']['tl_product_data']['fields']['type'] = 
+		array
+		(
+			'label'					  =>  &$GLOBALS['TL_LANG']['tl_product_data']['type'],
+			'inputType'				  => 'select',
+			'eval'					  => array('mandatory'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true),
+			'options_callback'		  => array('ProductCatalog','getProductTypes')
+		);
+		
+		$GLOBALS['TL_DCA']['tl_product_data']['fields']['tstamp'] =
 		array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['tstamp'],
@@ -279,7 +307,7 @@ class ProductCatalog extends Backend
 			'eval'                    => array('rgxp'=>'datim') 
 		);	
 			
-		$GLOBALS['TL_DCA'][$storeTable]['fields']['pages'] =
+		$GLOBALS['TL_DCA']['tl_product_data']['fields']['pages'] =
 		array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['pages'],
@@ -292,12 +320,12 @@ class ProductCatalog extends Backend
 			'reference'			      => $this->getPageLabels(),
 			'save_callback'			  => array
 			(
-				array('ProductCatalog','executeCAPAggregation')
+				array('ProductCatalog','saveProductToCategories')
 			)
 			//'explanation'             => 'pageCategories'
 		);	
-		
-		$GLOBALS['TL_DCA'][$storeTable]['fields']['add_audio_file'] = array
+		/*
+		$GLOBALS['TL_DCA']['tl_product_data']['fields']['add_audio_file'] = array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['add_audio_file'],
 			'default'				  => 'internal',
@@ -306,7 +334,7 @@ class ProductCatalog extends Backend
 			'eval'                    => array('submitOnChange'=>true)
 		);
 		
-		$GLOBALS['TL_DCA'][$storeTable]['fields']['add_video_file'] = array
+		$GLOBALS['TL_DCA']['tl_product_data']['fields']['add_video_file'] = array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['add_video_file'],
 			'default'				  => 'internal',
@@ -315,7 +343,7 @@ class ProductCatalog extends Backend
 			'eval'                    => array('submitOnChange'=>true)
 		);
 	
-		$GLOBALS['TL_DCA'][$storeTable]['fields']['audio_source'] = array
+		$GLOBALS['TL_DCA']['tl_product_data']['fields']['audio_source'] = array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['audio_source'],
 			'default'                 => 'internal',
@@ -326,14 +354,14 @@ class ProductCatalog extends Backend
 			'eval'                    => array('helpwizard'=>true)
 		);
 				
-		$GLOBALS['TL_DCA'][$storeTable]['fields']['audio_jumpTo'] = array
+		$GLOBALS['TL_DCA']['tl_product_data']['fields']['audio_jumpTo'] = array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['audio_jumpTo'],
 			'inputType'               => 'fileTree',
 			'eval'                    => array('fieldType'=>'radio', 'files'=>true, 'helpwizard'=>true)
 		);
 		
-		$GLOBALS['TL_DCA'][$storeTable]['fields']['audio_url'] = array
+		$GLOBALS['TL_DCA']['tl_product_data']['fields']['audio_url'] = array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['audio_url'],
 			'search'                  => true,
@@ -341,7 +369,7 @@ class ProductCatalog extends Backend
 			'eval'                    => array('decodeEntities'=>true, 'maxlength'=>255)
 		);
 		
-		$GLOBALS['TL_DCA'][$storeTable]['fields']['video_source'] = array
+		$GLOBALS['TL_DCA']['tl_product_data']['fields']['video_source'] = array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['video_source'],
 			'default'                 => 'internal',
@@ -351,22 +379,22 @@ class ProductCatalog extends Backend
 			'reference'               => &$GLOBALS['TL_LANG']['tl_product_data'],
 			'eval'                    => array('helpwizard'=>true)
 		);		
-		$GLOBALS['TL_DCA'][$storeTable]['fields']['video_jumpTo'] = array
+		$GLOBALS['TL_DCA']['tl_product_data']['fields']['video_jumpTo'] = array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['video_jumpTo'],
 			'inputType'               => 'fileTree',
 			'eval'                    => array('fieldType'=>'radio', 'files'=>true, 'helpwizard'=>true)
 		);
 		
-		$GLOBALS['TL_DCA'][$storeTable]['fields']['video_url'] = array
+		$GLOBALS['TL_DCA']['tl_product_data']['fields']['video_url'] = array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['video_url'],
 			'search'                  => true,
 			'inputType'               => 'text',
 			'eval'                    => array('decodeEntities'=>true, 'maxlength'=>255)
 		);
-	/*	
-		$GLOBALS['TL_DCA'][$storeTable]['fields']['option_collection'] = array
+
+		$GLOBALS['TL_DCA']['tl_product_data']['fields']['option_collection'] = array
 		(
 			'label'					  => &$GLOBALS['TL_LANG']['tl_product_data']['option_collection'],
 			'inputType'				  => 'productOptionWizard',
@@ -383,6 +411,7 @@ class ProductCatalog extends Backend
 		// add DCA for form fields
 		foreach ($this->arrFields as $key=>$field) 
 		{
+			
 			$eval = array();
 			//if ($field['mandatory']) $eval['mandatory'] = 'true';
 			if ($field['is_required']) $eval['mandatory'] = 'true';
@@ -449,36 +478,9 @@ class ProductCatalog extends Backend
 					}
 					break;
 					
-				case 'checkbox':
-					$inputType = 'checkbox';
-					$eval['multiple'] = false;
-					if($field['use_alternate_source']==1)
-					{
-						if(strlen($field['list_source_table']) > 0 && strlen($field['list_source_field']) > 0)
-						{
-							$strForeignKey = $field['list_source_table'] . '.' . $field['list_source_field'];
-						
-						}
-					}else{
-					
-						$arrValues = array();
-						$arrOptionsList = deserialize($field['option_list']);
-						
-						
-						foreach ($arrOptionsList as $arrOptions)
-						{
-							/*if ($arrOptions['default'])
-							{
-								$arrValues[] = $arrOptions['value'];
-							}*/
-							
-							$arrValues[$arrOptions['value']] = $arrOptions['label'];
-						}											
-						
-					}
-					break;
 				case 'select':
-					$inputType = 'select';
+					//$inputType = 'select';
+					$inputType = 'productOptionsWizard';
 					
 					if($field['use_alternate_source']==1)
 					{
@@ -492,18 +494,22 @@ class ProductCatalog extends Backend
 						$arrValues = array();
 						$arrOptionsList = deserialize($field['option_list']);
 						
-						
-						foreach ($arrOptionsList as $arrOptions)
-						{
-							/*if ($arrOptions['default'])
+						if(sizeof($arrOptionList))
+						{												
+							foreach ($arrOptionsList as $arrOptions)
 							{
-								$arrValues[] = $arrOptions['value'];
-							}*/
-							
-							$arrValues[$arrOptions['value']] = $arrOptions['label'];
-						}											
-						
+								/*if ($arrOptions['default'])
+								{
+									$arrValues[] = $arrOptions['value'];
+								}*/
+								
+								$arrValues[$arrOptions['value']] = $arrOptions['label'];
+							}											
+						}
 					}	
+					
+					//optional?
+					$eval['includeBlankOption'] = true;
 					break;
 					
 				default:
@@ -513,38 +519,46 @@ class ProductCatalog extends Backend
 			
 			$filter = ($this->arrForm['useFilter'] && $this->arrForm['filterField'] == $key);
 
-			$GLOBALS['TL_DCA'][$storeTable]['fields'][$key] =
+			$GLOBALS['TL_DCA']['tl_product_data']['fields'][$key] =
 				array
 				(
 					'label'           => array($field['name'], $field['description']),
 					'inputType'				=> $inputType,
 					'search'          => !$filter,
 					'filter'         	=> $filter,
-					'eval'            => $eval
+					'eval'            => $eval,
+					'load_callback'		=> array
+					(
+						array('ProductCatalog','loadField')
+					),
+					'save_callback'		=> array
+					(
+						array('ProductCatalog','saveField')
+					)
 				);
-							
+			
 			if (strlen($field['options'])) 
 			{
 				$options = deserialize($field['options']);
 				foreach ($options as $option) {
 					$optionList[$option['value']] = $option['label'];
 				}
-				$GLOBALS['TL_DCA'][$storeTable]['fields'][$key]['options'] = array_keys($optionList);
-				$GLOBALS['TL_DCA'][$storeTable]['fields'][$key]['reference'] = $optionList;
+				$GLOBALS['TL_DCA']['tl_product_data']['fields'][$key]['options'] = array_keys($optionList);
+				$GLOBALS['TL_DCA']['tl_product_data']['fields'][$key]['reference'] = $optionList;
 				unset($optionList);
 
 			}
 			
 			if(strlen($strForeignKey) && $field['type'] == 'select')
 			{
-				$GLOBALS['TL_DCA'][$storeTable]['fields'][$key]['foreignKey'] = $strForeignKey;
+				$GLOBALS['TL_DCA']['tl_product_data']['fields'][$key]['foreignKey'] = $strForeignKey;
 				$strForeignKey = "";
 			}
 			
 			if(is_array($arrValues) && $field['type'] == 'select')
 			{
-				$GLOBALS['TL_DCA'][$storeTable]['fields'][$key]['eval']['includeBlankOption'] = true;
-				$GLOBALS['TL_DCA'][$storeTable]['fields'][$key]['options'] = $arrValues;
+				$GLOBALS['TL_DCA']['tl_product_data']['fields'][$key]['eval']['includeBlankOption'] = true;
+				$GLOBALS['TL_DCA']['tl_product_data']['fields'][$key]['options'] = $arrValues;
 			}
 			
 			if (!empty($field['load_callback']))
@@ -559,10 +573,10 @@ class ProductCatalog extends Backend
 						$arrCallbacks[] = explode(".", $callback);
 					}
 																		
-					$GLOBALS['TL_DCA'][$storeTable]['fields'][$key]['load_callback'] = $arrCallbacks;
+					$GLOBALS['TL_DCA']['tl_product_data']['fields'][$key]['load_callback'] = $arrCallbacks;
 					
 				}else{
-					$GLOBALS['TL_DCA'][$storeTable]['fields'][$key]['load_callback'] = array(
+					$GLOBALS['TL_DCA']['tl_product_data']['fields'][$key]['load_callback'] = array(
 						explode(".", $field['load_callback'])
 					);
 				}
@@ -580,10 +594,10 @@ class ProductCatalog extends Backend
 						$arrCallbacks[] = explode(".", $callback);
 					}
 																		
-					$GLOBALS['TL_DCA'][$storeTable]['fields'][$key]['save_callback'] = $arrCallbacks;
+					$GLOBALS['TL_DCA']['tl_product_data']['fields'][$key]['save_callback'] = $arrCallbacks;
 					
 				}else{
-					$GLOBALS['TL_DCA'][$storeTable]['fields'][$key]['save_callback'] = array(
+					$GLOBALS['TL_DCA']['tl_product_data']['fields'][$key]['save_callback'] = array(
 						explode(".", $field['save_callback'])
 					);
 				}
@@ -592,6 +606,7 @@ class ProductCatalog extends Backend
 			
 		}
 		
+		return $strTable;
 		
 	}
 	
@@ -761,6 +776,58 @@ class ProductCatalog extends Backend
 	
 	}
 	
+	public function loadField($varValue, DataContainer $dc)
+	{
+		
+		// HOOK: loadField callback
+		if (array_key_exists('loadField', $GLOBALS['TL_HOOKS']) && is_array($GLOBALS['TL_HOOKS']['loadField']))
+		{
+			foreach ($GLOBALS['TL_HOOKS']['loadField'] as $callback)
+			{
+				$this->import($callback[0]);
+				$this->$callback[0]->$callback[1]($varValue, $dc);
+			}
+		}
+
+		
+		return $varValue;
+	}
+	
+	public function saveField($varValue, DataContainer $dc)
+	{
+	
+		$objAttribute = $this->Database->prepare("SELECT * FROM tl_product_attributes WHERE field_name=?")
+									   ->limit(1)
+									   ->execute($dc->field);
+		
+		if($objAttribute->numRows < 1)
+		{
+			throw new Exception('Not a valid record id!');
+		}
+		
+		if($objAttribute->is_filterable)
+				$this->saveFilterValuesToCategories($varValue, $dc);
+		
+		//if($objAttribute->is_order_by_enabled)
+				
+		//if($objAttribute->is_searchable)
+		
+		//if($objAttribute->is_used_for_price_rules)
+		
+			
+		// HOOK: loadField callback
+		if (array_key_exists('saveField', $GLOBALS['TL_HOOKS']) && is_array($GLOBALS['TL_HOOKS']['saveField']))
+		{
+			foreach ($GLOBALS['TL_HOOKS']['saveField'] as $callback)
+			{
+				$this->import($callback[0]);
+				$varValue = $this->$callback[0]->$callback[1]($varValue, $dc);
+			}
+		}
+		
+		return $varValue;
+		
+	}
 	
 	public function saveProduct(DataContainer $dc)
 	{
@@ -781,7 +848,7 @@ class ProductCatalog extends Backend
 		
 		$this->import('MediaManagement');
 		
-		$objIsNewImport = $this->Database->prepare("SELECT id, pages, name, sku, alias, description, teaser, main_image FROM " . $dc->table . " WHERE new_import=? AND id=?")
+		$objIsNewImport = $this->Database->prepare("SELECT id, pages, name, sku, alias, description, teaser, main_image FROM tl_product_data WHERE new_import=? AND id=?")
 										 ->execute(1, $dc->id);
 		
 		
@@ -828,14 +895,14 @@ class ProductCatalog extends Backend
 				
 				//$this->MediaManagement->thumbnailCurrentImageForListing($objIsNewImport->main_image, $dc);
 								
-				$this->Database->prepare("UPDATE " . $dc->table . " SET sku=?, alias=?, teaser=?, pages=?, visibility=1, new_import=0 WHERE id=?")
+				$this->Database->prepare("UPDATE tl_product_data SET sku=?, alias=?, teaser=?, pages=?, visibility=1, new_import=0 WHERE id=?")
 							   ->execute($strSKU, $strAlias, $strTeaser, $strSerializedValues, $dc->id);
 				
 								
-				$this->executeCAPAggregation($strSerializedValues, $dc, $dc->id);
+				$this->saveProductToCategories($strSerializedValues, $dc, $dc->id);
 				
 				//Not yet..
-				//$this->executePFCAggregation($objIsNewImport->pages, $dc, $dc->id);
+				//$this->saveFilterValuesToCategories($objIsNewImport->pages, $dc, $dc->id);
 			}
 			/*
 			if(count($arrNewImports) < 30)
@@ -861,11 +928,121 @@ class ProductCatalog extends Backend
 			foreach ($GLOBALS['TL_HOOKS']['saveProduct'] as $callback)
 			{
 				$this->import($callback[0]);
-				$this->$callback[0]->$callback[1]($dc, $storeTable);
+				$this->$callback[0]->$callback[1]($dc, 'tl_product_data');
 			}
 		}
 		
 			
+	}
+	
+	protected function getProductTypePalettes()
+	{
+		$objProductTypes = $this->Database->prepare("SELECT name, alias, attributes FROM tl_product_types")
+									  ->execute();
+		
+		if($objProductTypes->numRows < 1)
+		{
+			return array();
+		}
+			
+		
+		$objAttributes = $this->Database->prepare("SELECT id, is_hidden_on_backend FROM tl_product_attributes")->execute();
+		
+		if($objAttributes->numRows < 1)
+		{
+			throw new Exception('No product attributes found!');		//TODO - language specific error message.
+		}
+				
+		$arrAttributes = $objAttributes->fetchAllAssoc();
+			
+		foreach($arrAttributes as $attribute)
+		{
+			$arrHiddenAttributes[$attribute['id']] = $attribute['is_hidden_on_backend'];
+		
+		}		
+		
+		$arrPalettes['default'] = $this->basePaletteAttributes;
+		
+		while($objProductTypes->next())
+		{
+			$arrEnabledAttributes = deserialize($objProductTypes->attributes);	
+					
+			foreach($arrEnabledAttributes as $attribute)
+			{
+				$intIndex = (integer)$attribute;
+				
+				if($arrHiddenAttributes[$intIndex]=='1')
+				{		
+					continue;	
+				}
+				
+				$arrFieldCollection[] = $intIndex;
+			}
+									
+			$strAttributes = $this->buildPaletteString($arrFieldCollection);
+			
+			$arrPalettes[$objProductTypes->alias] = $strAttributes;
+			
+		}
+				
+		return $arrPalettes;
+	}
+	
+	protected function getSelectors()
+	{
+		return array();
+	
+	}
+	
+	
+	private function buildPaletteString($arrAttributes)
+	{
+		$strFields = join(',', $arrAttributes);
+	
+		$objFieldGroups = $this->Database->prepare("SELECT field_name, fieldGroup FROM tl_product_attributes WHERE id IN(" . $strFields . ") ORDER BY sorting")
+										 ->execute();
+		
+		if($objFieldGroups->numRows < 1)
+		{
+			throw new Exception('No fields returned.');
+		}
+		
+		//Create an array grouped by field group
+		while($objFieldGroups->next())
+		{
+			$arrFieldsAndGroups[$objFieldGroups->fieldGroup][] = $objFieldGroups->field_name;
+		}
+			
+			//var_dump($arrFieldsAndGroups['media_legend']);
+		//This is necessary because otherwise, attributes that do not fall in sequential order in terms of cardinality then get placed out of order in the
+		//palette string.  This allows us to not have to worry about that but ensuring groups are in the correct order.
+		foreach($GLOBALS['ISO_MSC']['tl_product_data']['groups_ordering'] as $group)
+		{
+			$arrOrderedFieldGroups[$group] = $arrFieldsAndGroups[$group];
+		}
+	
+	
+		$strPalette = $this->basePaletteAttributes;
+		
+		//Build
+		foreach($arrOrderedFieldGroups as $k=>$v)
+		{
+			if($k!='general_legend')
+			{
+				$strPalette .= '{' . $k . '},';
+			}else{
+				$strPalette .= ',';
+			}
+			
+			if(is_null($v))
+			{
+				continue;
+			}
+			
+			$strPalette .= join(',', $v) . ';';
+		}
+
+		return $strPalette;
 	}
 	
 	protected function getPageLabels()
@@ -926,142 +1103,62 @@ class ProductCatalog extends Backend
 		//DataContainer and its corresponding values.
 		if($id!=0)
 		{
-			$intID = $id;
+			$intId = $id;
 		}else{
-			$intID = $dc->id;
+			$intId = $dc->id;
 		}
 		
 		
-		$this->Database->prepare("UPDATE " . $dc->table . " SET new_import=? WHERE id=? and new_import=1")
-								->execute(0, $intID);
+		$this->Database->prepare("UPDATE tl_product_data SET new_import=? WHERE id=? and new_import=1")
+								->execute(0, $intId);
 	}
+	
 	
 	public function generateMappingAttributeList()
 	{
 		$arrOptions = array();
 		$arrAttributes = array();
 		
-		$objAttributeSets = $this->Database->prepare("SELECT id, name, storeTable FROM tl_product_attribute_sets")
-										   ->execute();
-		
-		if($objAttributeSets->numRows < 1)
-		{
-			return array();
-		}
-
-		$arrAttributeSetData = $objAttributeSets->fetchAllAssoc();
-		
-		foreach($arrAttributeSetData as $set)
-		{
-				$objAttributes = $this->Database->prepare("SELECT name FROM tl_product_attributes WHERE pid=?")
-												->execute($set['id']);
+		$objAttributes = $this->Database->prepare("SELECT field_name FROM tl_product_attributes WHERE pid=?")
+										->execute($set['id']);
 								
-				if($objAttributes->numRows < 1)
-				{
-					return false;
-				}
-				
-				$arrAttributes = $objAttributes->fetchAllAssoc();
-				
-				//var_dump($arrAttributes);
-				foreach($arrAttributes as $attribute)
-				{						
-					$arrOptions[$set['name']][] = array
-					(
-						'value' => strtolower($this->mysqlStandardize($attribute['name'])),
-						'label' => $attribute['name']
-					);
-				}
-								
-				
+		if($objAttributes->numRows < 1)
+		{
+			return false;
 		}
-		
-		
-		
-		//var_dump($arrOptions);
 				
+		$arrAttributes = $objAttributes->fetchAllAssoc();
+			
+		foreach($arrAttributes as $attribute)
+		{						
+			$arrOptions[] = array
+			(
+				'value' => $attribute['field_name'],
+				'label' => $attribute['name']
+			);
+		}
+					
 		return $arrOptions;
 	}
 	
-	public function renameTable($varValue, DataContainer $dc)
-	{		
-		if (!preg_match('/^[a-z_][a-z\d_]*$/iu', $varValue))
-		{
-			throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['invalidStoreTable'], $varValue));
-		}
-		
-		$objType = $this->Database->prepare("SELECT storeTable, noTable FROM tl_product_attribute_sets WHERE id=?")
-								  ->limit(1)
-								  ->execute($dc->id);
-				
-		if ($objType->numRows == 0)
-		{
-			return $varValue;
-		}
-			
-		if ($objType->noTable)
-		{
-			if (!$this->Database->tableExists($varValue))
-			{
-					throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['tableDoesNotExist'], $varValue));
-			}
-			
-			return $varValue;
-		}
-		
-		if ((!strlen($objType->storeTable) || $objType->storeTable != $varValue) && $this->Database->tableExists($varValue))
-		{
-			throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['tableExists'], $varValue)); 
-		}
-		elseif (strlen($objType->storeTable))
-		{
-			$statement = $this->alterTable($varValue, $objType->storeTable);
-		}
-		else
-		{
-			$statement = $this->createTable($varValue);
-		}
-		
-		return $varValue;
-	}
 	
-	private function initializeAttributeSet($formId) 
+	private function initializeFields() 
 	{
-		$objForm = $this->Database->prepare("SELECT * FROM tl_product_attribute_sets WHERE id=?")
-											->limit(1)
-											->execute($formId);
-		
-		if ($objForm->numRows)
-		{
-			$this->arrForm = $objForm->fetchAssoc();
-			$this->initializeFields($formId);
-
-
-			$_SESSION['isotope']['store_id'] = $this->arrForm['store_id'];
-		}
-
-	}
-	
-	private function initializeFields($formId) 
-	{
-		$objFields = $this->Database->prepare("SELECT * FROM tl_product_attributes WHERE pid=? ORDER BY sorting ASC")
-							->execute($formId);
+		$objFields = $this->Database->prepare("SELECT * FROM tl_product_attributes ORDER BY sorting ASC")
+									->execute();
 		
 		while ($objFields->next())
 		{
-			/*if (in_array($objFields->type, $this->arrTypes))	// A good way to double check that you have the attribute types you need for each attribute.
-			{*/
-			
-				$this->arrFields[$objFields->field_name] = $objFields->row();
-			/*}*/
+			$this->arrFields[$objFields->field_name] = $objFields->row();
 		}
-
+		
 	}
 	
 		
 	
 	public function renameColumn($varValue, DataContainer $dc)
 	{
+		
 		$varValue = strtolower($this->mysqlStandardize($varValue));
 		
 		if (!preg_match('/^[a-z_][a-z\d_]*$/i', $varValue))
@@ -1073,7 +1170,8 @@ class ProductCatalog extends Backend
 			throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['systemColumn'], $varValue));
 		}
 		
-		$objField = $this->Database->prepare("SELECT f.storeTable, ff.pid, ff.id, ff.type, ff.field_name FROM tl_product_attribute_sets f, tl_product_attributes ff WHERE f.id=ff.pid AND ff.id=?")
+		//Get pertinent field data.
+		$objField = $this->Database->prepare("SELECT id, type, field_name FROM tl_product_attributes WHERE id=?")
 								   ->limit(1)
 								   ->execute($dc->id);
 			
@@ -1088,17 +1186,18 @@ class ProductCatalog extends Backend
 		
 
 		$fieldType = $objField->type ? $objField->type : 'text';
+		$fieldName = $objField->field_name;
 		
-		if ($this->Database->fieldExists($objField->field_name, $objField->storeTable))
+		if ($this->Database->fieldExists($fieldName, 'tl_product_data'))
 		{
 			if ($objField->field_name != $varValue)
 			{
-				$statement = sprintf($this->renameColumnStatement, $objField->storeTable, $objField->field_name, $varValue, $this->sqlDef[$fieldType]);
+				$statement = sprintf($this->renameColumnStatement, $fieldName, $varValue, $this->sqlDef[$fieldType]);
 			}
 		}
 		else
 		{
-			$statement = sprintf($this->createColumnStatement, $objField->storeTable, $varValue, $this->sqlDef[$fieldType]);
+			$statement = sprintf($this->createColumnStatement, $varValue, $this->sqlDef[$fieldType]);
 		}
 		
 		if (strlen($statement))
@@ -1112,19 +1211,28 @@ class ProductCatalog extends Backend
 	}
 	
 	
-	
-	public function addDefaultAttribute($varValue, DataContainer $dc, $storeTable, $fieldType)
+	/** 
+	 * Add a default attribute to the tl_product_data table from a source other than normal editing operations, for example, the ISO_ATTR global array
+	 *
+	 * @access public
+	 * @param variant $varValue
+	 * @param object $dc
+	 * @param string $fieldType
+	 * @return $varValue;
+	 */
+	public function addDefaultAttribute($varValue, $fieldType)
 	{
 		if (!preg_match('/^[a-z_][a-z\d_]*$/i', $varValue))
 		{
 			throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['invalidColumnName'], $varValue));
 		}
+		
 		if (in_array($varValue, $this->systemColumns))
 		{
 			throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['systemColumn'], $varValue));
 		}
 		
-		$statement = sprintf($this->createColumnStatement, $storeTable, $varValue, $this->sqlDef[$fieldType]);
+		$statement = sprintf($this->createColumnStatement, $varValue, $this->sqlDef[$fieldType]);
 		
 				
 		$this->Database->execute($statement);
@@ -1132,149 +1240,102 @@ class ProductCatalog extends Backend
 		return $varValue;
 	}
 	
+	/** 
+	 * Insert a new attribute record from a source other than normal table operations (for example, from default attributes defined in ISO_ATTR global array
+	 *
+	 * @access public
+	 * @param array $arrSet
+	 * @param integer $intSorting
+	 * @return void;
+	 */
+	public function insertAttributeRecord($arrSet, $intSorting = 0)
+	{
+		$arrSet['sorting'] = $intSorting;
+		
+		$this->Database->prepare("INSERT INTO tl_product_attributes %s")->set($arrSet)->execute();		
 	
+		return;
+	}
+	
+	/**
+	 * Returns all allowed product types as array.
+	 * 
+	 * @todo returns string in case of error, should return array
+	 *
+	 * @access public
+	 * @param object DataContainer $dc
+	 * @return array
+	 */
+	public function getProductTypes(DataContainer $dc)
+	{
+		$arrOptions = array();
+
+		$objProductTypes = $this->Database->execute("SELECT name, alias FROM tl_product_types");
+		
+		if($objProductTypes->numRows < 1)
+		{
+			return array();
+		}								
+
+		while($objProductTypes->next())
+		{
+			$arrOptions[$objProductTypes->alias] = $objProductTypes->name;
+		}
+
+		return $arrOptions;
+	}
+
+	
+	/** 
+	 * Get the next sorting value if it exists for a given table.
+	 * 
+	 * @access public
+	 * @param string $strTable
+	 * @return integer;
+	 */
+	public function getNextSortValue($strTable)
+	{
+		if($this->Database->fieldExists('sorting', $strTable))
+		{
+			$objSorting = $this->Database->prepare("SELECT MAX(sorting) as maxSort FROM " . $strTable)
+										 ->execute();
+			
+			return $objSorting->maxSort + 128;
+		}
+		
+		return 0;
+	}
+
+
 	public function changeColumn($varValue, DataContainer $dc)
 	{
 		
-		$objField = $this->Database->prepare("SELECT f.storeTable, ff.id, ff.type, ff.name FROM tl_product_attribute_sets f, tl_product_attributes ff WHERE f.id=ff.pid AND ff.id=?")
+		$objField = $this->Database->prepare("SELECT id, type, name FROM tl_product_attributes WHERE id=?")
 				->limit(1)
 				->execute($dc->id);
 						
-		if ($objField->numRows == 0 || !strlen($objField->storeTable))
+		if ($objField->numRows == 0)
 		{
 				return $varValue;
 		}
-		
-		$storeTable = $objField->storeTable;
-		$field_name = $objField->name;
+	
+		$fieldName = $objField->name;
 		$fieldType = $objField->type;
 		
 		if ($varValue != $fieldType)
 		{
 			if ($varValue != $fieldType)
 			{
-				$this->dropColumn($storeTable, $field_name);
-				$this->Database->execute(sprintf($this->createColumnStatement, $storeTable, $field_name, $this->sqlDefColumn[$varValue]));
+				$this->Database->execute(sprintf($this->createColumnStatement, $fieldName, $this->sqlDefColumn[$varValue]));
 			}
-			else if ($this->Database->fieldExists($field_name, $storeTable))
-			{
-				$this->dropColumn($storeTable, $field_name);	
-			}
-			
 		}
 		
 		return $varValue;
 	}
-	
-	
-	public function loadProductAttributes(DataContainer $dc)
-	{
-		if (!$this->checkProductCatalog()) 
-		{
-			return;
-		}
-		
-		$act = $this->Input->get('act');
-		switch ($act) 
-		{
-			case 'deleteAll':
-			case 'delete': 
-	
-				if ($act == 'delete')
-				{
-					$ids = array($dc->id);
-				}
-				else
-				{
-					$session = $this->Session->getData();
-					$ids = $session['CURRENT']['IDS'];
-				}
-				$this->deleteColumn($ids);
-				break;
-				
-			default:;
-		}
-	}
-	
-	public function deleteColumn($ids)
-	{
-			$objType = $this->Database->prepare("SELECT f.field_name, t.storeTable, t.noTable FROM tl_product_attributes f INNER JOIN tl_product_attribute_sets t ON f.pid = t.id WHERE f.id IN (?)")
-					->execute(implode(',', $ids));
-							
-			while ($objType->next())
-			{
-					$field_name = $objType->field_name;
-					$storeTable = $objType->storeTable;
-					$noTable = $objType->noTable;
-					
-					if ($noTable)
-					{
-							continue;
-					}
-							
-					if ($this->Database->fieldExists($field_name, $storeTable))
-					{
-							$this->dropColumn($storeTable, $field_name);
-					}
-			}
-	}
-	
-	public function dropColumn($storeTable, $field_name)
-	{
-			$this->Database->execute(sprintf($this->dropColumnStatement, $storeTable, $field_name));
-	}
-	
-	public function insertDefaultAttributes(DataContainer $dc, $storeTable)
-	{
-		$intSorting = 128;
-	
-		foreach($GLOBALS['ISO_ATTR'] as $arrSet)
-		{
-			foreach($arrSet as $k=>$v)
-			{
-				switch($k)
-				{
-					case 'pid':
-						$arrSet[$k] = $dc->id;
-						break;
-						
-					case 'tstamp':
-						$arrSet[$k] = time();
-						break;
-						
-					case 'sorting':
-						$arrSet[$k] = $intSorting;
-						break;
-						
-					case 'name':
-						$arrSet[$k] = strlen($GLOBALS['TL_LANG']['ISO_ATTR'][$arrSet['field_name']][0]) ? $GLOBALS['TL_LANG']['ISO_ATTR'][$arrSet['field_name']][0] : $v;
-						break;
-						
-					case 'description':
-						$arrSet[$k] = strlen($GLOBALS['TL_LANG']['ISO_ATTR'][$arrSet['field_name']][1]) ? $GLOBALS['TL_LANG']['ISO_ATTR'][$arrSet['field_name']][1] : $v;
-						break;
-				}
-			}	
-			
-			
-			$this->Database->prepare("INSERT INTO tl_product_attributes %s")->set($arrSet)->execute();
-		
-			$fieldName = $this->mysqlStandardize($arrSet['name']);
-				
-			$this->addDefaultAttribute(strtolower($fieldName), $dc, $storeTable, $arrSet['type']);
-			
-			$intSorting += 128;
-		}	
-					
-		return $storeTable;
-	
-	}
-	
+
 	
 	/**
 	 * Row label.
-	 * 
-	 * @todo initializeAttributeSet() is called for each row and continuously fetches the same database results.
 	 *
 	 * @access public
 	 * @param array $row
@@ -1285,9 +1346,8 @@ class ProductCatalog extends Backend
 	public function getRowLabel($row, $label = '')
 	{
 		
-		$this->initializeAttributeSet($row['id']);
-		$this->import('Isotope');
-
+		$this->initializeFields();
+		
 		//$output = '<div><span><img src="' . $row['thumbnail_image'] . '" width="100" alt="' . $row['name'] . '" align="left" style="padding-right: 8px;" /><strong>' . $row['name'] . '</strong></span><div><span style="color:#b3b3b3;"><strong>$' . $row['price'] . '</strong></span></div><br /><br /><div><em>Categories: ' . $this->getCategoryList(deserialize($row['pages'])) . '</em></div></div> ';
 		
 		$key = $row['visibility'] ? 'published' : 'unpublished';
@@ -1319,9 +1379,9 @@ class ProductCatalog extends Backend
 		//DataContainer and its corresponding values.
 		if($id!=0)
 		{
-			$intID = $id;
+			$intId = $id;
 		}else{
-			$intID = $dc->id;
+			$intId = $dc->id;
 		}
 		
 		
@@ -1330,16 +1390,16 @@ class ProductCatalog extends Backend
 		// Generate alias if there is none
 		if (!strlen($varValue))
 		{
-			$objProductName = $this->Database->prepare("SELECT name FROM " . $this->strCurrentStoreTable . " WHERE id=?")
+			$objProductName = $this->Database->prepare("SELECT name FROM tl_product_data WHERE id=?")
 									   ->limit(1)
-									   ->execute($intID);
+									   ->execute($intId);
 
 			$autoAlias = true;
 			$varValue = standardize($objProductName->name);
 		}
 
-		$objAlias = $this->Database->prepare("SELECT id FROM " . $this->strCurrentStoreTable . " WHERE id=? OR alias=?")
-								   ->execute($intID, $varValue);
+		$objAlias = $this->Database->prepare("SELECT id FROM tl_product_data WHERE id=? OR alias=?")
+								   ->execute($intId, $varValue);
 
 		// Check whether the page alias exists
 		if ($objAlias->numRows > 1)
@@ -1349,7 +1409,7 @@ class ProductCatalog extends Backend
 				throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['aliasExists'], $varValue));
 			}
 
-			$varValue .= '.' . $intID;
+			$varValue .= '.' . $intId;
 		}
 
 		return strtolower($varValue);
@@ -1369,9 +1429,9 @@ class ProductCatalog extends Backend
 		//DataContainer and its corresponding values.
 		if($id!=0)
 		{
-			$intID = $id;
+			$intId = $id;
 		}else{
-			$intID = $dc->id;
+			$intId = $dc->id;
 		}
 		
 		$autoAlias = true;
@@ -1379,9 +1439,9 @@ class ProductCatalog extends Backend
 		// Generate alias if there is none
 		if (!strlen($varValue))
 		{
-			$objProductName = $this->Database->prepare("SELECT id, new_import, name, sku FROM " . $this->strCurrentStoreTable . " WHERE id=?")
+			$objProductName = $this->Database->prepare("SELECT id, new_import, name, sku FROM tl_product_data WHERE id=?")
 									   ->limit(1)
-									   ->execute($intID);
+									   ->execute($intId);
 
 			$autoAlias = true;
 			
@@ -1394,8 +1454,8 @@ class ProductCatalog extends Backend
 			}
 		}
 
-		$objAlias = $this->Database->prepare("SELECT id FROM " . $this->strCurrentStoreTable . " WHERE id=? OR sku=?")
-								   ->execute($intID, $varValue);
+		$objAlias = $this->Database->prepare("SELECT id FROM tl_product_data WHERE id=? OR sku=?")
+								   ->execute($intId, $varValue);
 
 		// Check whether the page alias exists
 		if ($objAlias->numRows > 1)
@@ -1405,7 +1465,7 @@ class ProductCatalog extends Backend
 				throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['aliasExists'], $varValue));
 			}
 
-			$varValue .= '_' . $intID;
+			$varValue .= '_' . $intId;
 		}
 
 		return $varValue;
@@ -1425,9 +1485,9 @@ class ProductCatalog extends Backend
 		//DataContainer and its corresponding values.
 		if($id!=0)
 		{
-			$intID = $id;
+			$intId = $id;
 		}else{
-			$intID = $dc->id;
+			$intId = $dc->id;
 		}
 		
 		$string = substr($varValue, 0, $GLOBALS['TL_LANG']['MSC']['teaserLength']);
@@ -1464,16 +1524,16 @@ class ProductCatalog extends Backend
 		
 		$string = substr($string, 0, $char); 	
 							
-		$objCurrentTeaser = $this->Database->prepare("SELECT teaser FROM " . $this->strCurrentStoreTable . " WHERE id=?")
+		$objCurrentTeaser = $this->Database->prepare("SELECT teaser FROM tl_product_data WHERE id=?")
 										   ->limit(1)
-										   ->execute($intID);
+										   ->execute($intId);
 		
 		if($objCurrentTeaser->numRows > 0)
 		{
 			if(strlen($objCurrentTeaser->teaser) < 1)
 			{
-				$this->Database->prepare("UPDATE " . $this->strCurrentStoreTable . " SET teaser=? WHERE id=?")
-								->execute($string, $intID);
+				$this->Database->prepare("UPDATE tl_product_data SET teaser=? WHERE id=?")
+								->execute($string, $intId);
 			}
 		}
 		
@@ -1535,7 +1595,7 @@ class ProductCatalog extends Backend
 	 * @param object
 	 * @return string
 	 */
-	public function executeCAPAggregation($varValue, DataContainer $dc, $id=0)
+	public function saveProductToCategories($varValue, DataContainer $dc, $id=0)
 	{	
 		//For import needs, this is an override of the current record ID because when importing we're
 		//not utlizing the DataContainer.  We should separate these functions with an intermediary function so that this logic
@@ -1545,47 +1605,18 @@ class ProductCatalog extends Backend
 
 		if($id!=0)
 		{
-			$intID = $id;
+			$intId = $id;
 		}
 		else
 		{
-			$intID = $dc->id;
+			$intId = $dc->id;
 		}
 		
-		
-//		$arrNewPageList = deserialize($varValue);
-//		$arrAllPageInfo = array();
-						
-		$objField = $this->Database->prepare("SELECT id, store_id FROM tl_product_attribute_sets WHERE storeTable=?")
-				->limit(1)
-				->execute($this->strCurrentStoreTable);
-			
-		if ($objField->numRows < 1)
-		{
-			return array();
-		}
-		
-		$id = $objField->id;
-		$storeID = $objField->store_id;
-		
-/*
-		$objAllPages = $this->Database->prepare("SELECT pid, product_ids FROM tl_cap_aggregate WHERE attribute_set_id=?")->execute($id);
-		
-		if($objAllPages->numRows > 0)
-		{
-			$arrAllPageInfo = $objAllPages->fetchAllAssoc();
-		}
-*/
-
-				
-//		$this->updateCAPAggregate($arrNewPageList, $arrAllPageInfo, $dc, $this->strCurrentStoreTable, $id, $storeID, $intID);
-		
-		
-		
-		
-		// New way of storing cap_aggregate. One product per row!!
+		// New way of storing cap_aggregate. One product per row!! .  This nukes all and redoes them each time the product is saved.  Much more simple.
 		$arrNewPageList = deserialize($varValue);
-		$this->Database->prepare("DELETE FROM tl_cap_aggregate WHERE product_id=? AND storeTable=?")->execute($intID, $this->strCurrentStoreTable);
+		
+		
+		$this->Database->prepare("DELETE FROM tl_product_to_category WHERE product_id=?")->execute($intId);
 		
 		if (is_array($arrNewPageList) && count($arrNewPageList))
 		{
@@ -1593,22 +1624,22 @@ class ProductCatalog extends Backend
 			$arrQuery = array();
 			$arrValues = array();
 			
+			$intSorting = $this->getNextSortValue('tl_product_to_category');
+			
 			foreach( $arrNewPageList as $intPage )
 			{
-				$arrQuery[] = '(?, ?, ?, ?, ?, ?, ?)';
+				$arrQuery[] = '(?, ?, ?, ?)';
 				
 				$arrValues[] = $intPage;
-				$arrValues[] = '0';
+				$arrValues[] = $intSorting;
 				$arrValues[] = $time;
-				$arrValues[] = $this->strCurrentStoreTable;
-				$arrValues[] = $intID;
-				$arrValues[] = $id;
-				$arrValues[] = $storeID;
+				$arrValues[] = $intId;
+				$intSorting+=128;
 			}
 			
 			if (count($arrQuery))
-			{
-				$this->Database->prepare("INSERT INTO tl_cap_aggregate (pid, sorting, tstamp, storeTable, product_id, attribute_set_id, store_id) VALUES ".implode(', ', $arrQuery))->execute($arrValues);
+			{					   
+				$this->Database->prepare("INSERT INTO tl_product_to_category (pid, sorting, tstamp, product_id) VALUES ".implode(', ', $arrQuery))->execute($arrValues);
 			}
 		}
 		
@@ -1617,163 +1648,7 @@ class ProductCatalog extends Backend
 		return $varValue;
 	}
 	
-/*
-		
-	public function batchUpdateCAPAggregate()
-	{
-	
-	}
-	
-*/
-	/**
-	 * updateCAPAggregate - Update our aggregate reference table which is used to build collections of products out of multiple attribute sets. This logic maintains the records by page of associated products and storeTables.
-	 *
-	 * @param variant
-	 * @param object
-	 * @param string
-	 *
-	 */
-/*
-	private function updateCAPAggregate($arrPageList, $arrAllPageInfo, DataContainer $dc, $storeTable, $attributeSetID, $storeID, $id=0)
-	{
-		//For import needs, this is an override of the current record ID because when importing we're
-		//not utlizing the DataContainer.  We should separate these functions with an intermediary function so that this logic
-		//which is repeated across various other functions can be fed just an integer value instead of the more specific
-		//DataContainer and its corresponding values.
-		if($id!=0)
-		{
-			$intID = $id;
-		}else{
-			$intID = $dc->id;
-		}
-		
-		
-		$objCAPInfo = $this->Database->prepare("SELECT id, pid, product_ids FROM tl_cap_aggregate WHERE attribute_set_id=? AND pid IN (" . join(",", $arrPageList) . ")")
-										->execute($attributeSetID);
-		//var_dump($arrAllPageInfo);
-		
-		if($objCAPInfo->numRows < 1)
-		{
-			// Insert into table the association
-			foreach($arrPageList as $intPageNum)
-			{				
-				$arrSet = array();
-				$arrProduct = array();
-				
-				$arrProduct[] = $intID;
-				
-				$arrSet = array(
-					'ids'			=> serialize($arrProduct),
-					'pid'					=> $intPageNum,
-					'storeTable'			=> $storeTable,
-					'attribute_set_id' 		=> $attributeSetID,
-					'store_id'				=> $storeID
-				);
-				
-				$this->Database->prepare("INSERT INTO tl_cap_aggregate %s")->set($arrSet)->execute();
-			}
-			
-			return;
-						
-		}
-		
-		$arrCAPInfo = $objCAPInfo->fetchAllAssoc();
-		
-		//var_dump($arrCAPInfo);
-		
-		$arrProducts = array();
-					
-		// For each existing page that DID in the past have this product ID associated with it, but NOW the submitted list does not include that page id, remove it
-		foreach($arrAllPageInfo as $page)
-		{
-			$arrExistingProducts = array();
-			
-			//Get the product ID collection of the current existing page
-			$arrExistingProducts = deserialize($page['ids']);
-			
-			//If the current existing page id does not exist in the list of pages collected from the form submit, then 
-			//remove the product id from the page in question.			
-							//If the product id exists in the product list for this page, which is not part of the product page list now...  Remove from the product_ids collection and update.
-			if(!in_array($page['pid'], $arrCAPInfo))
-			{
-				if(in_array($intID, $arrExistingProducts))
-				{
-					
-					$key = array_search($intID, $arrExistingProducts);
-									
-					//If we find that the product id submitted does, in fact exist in the existing product collection for this page, then we remove it.
-					//if(!empty($key))
-					//{	
-						unset($arrExistingProducts[$key]);
-					//
-						//var_dump($arrExistingProducts);
-						//echo "<br /><br />";
-						
-						//var_dump($arrExistingProducts);
-						$this->Database->prepare("UPDATE tl_cap_aggregate SET product_ids=? WHERE pid=? AND attribute_set_id=?")
-									   ->execute(serialize($arrExistingProducts), $page['pid'], $attributeSetID);
-						
-					//}
-				}
-			}
 
-		}
-		//For each page record already in the table, we grab the product id list and modify it to include this product ID if it doesn't existing in the product ID collection.
-		
-		foreach($arrCAPInfo as $page)
-		{
-			//Each page record we start with a fresh products array to update the record.
-			$arrExistingProducts = array();
-			
-			$arrExistingPages[] = $page['pid'];
-			// Since these are serialized, we have to deserialize them before we can do any work on the record.
-			$arrExistingProducts = deserialize($page['ids']);
-								
-			foreach($arrPageList as $pageToBeUpdated)
-			{
-				if((int)$pageToBeUpdated==$page['pid'])	//If this page 
-				{
-					//If the product ID doesn't not already have an association to the current page, then add it to the list of product IDs for that page.
-					if(!in_array($intID, $arrExistingProducts))
-					{
-						$arrExistingProducts[] = $intID;	//add the product id in.
-					}
-				}				
-								
-				// Update existing association
-				$this->Database->prepare("UPDATE tl_cap_aggregate SET product_ids=? WHERE pid=? AND attribute_set_id=?")
-							   ->execute(serialize($arrExistingProducts), $page['pid'], $attributeSetID);
-			}			
-		}
-		
-		
-		//New Pages to add that aren't in the current collection
-		
-		foreach($arrPageList as $intPageNum)
-		{	
-			if(!in_array((int)$intPageNum, $arrExistingPages))
-			{
-				
-				$arrSet = array();
-				$arrProduct = array();
-				
-				$arrProduct[] = $intID;
-				
-				$arrSet = array(
-					'ids'			=> serialize($arrProduct),
-					'pid'					=> $intPageNum,
-					'storeTable'			=> $storeTable,
-					'attribute_set_id' 		=> $attributeSetID,
-					'store_id'				=> $storeID
-				);
-				
-				$this->Database->prepare("INSERT INTO tl_cap_aggregate %s")->set($arrSet)->execute();
-			}
-		}			
-				
-		return;
-	}
-*/
 	
 	
 	/**
@@ -1783,7 +1658,7 @@ class ProductCatalog extends Backend
 	 * @param object
 	 * @return string
 	 */
-	public function executePFCAggregation($varValue, DataContainer $dc, $id=0)
+	public function saveFilterValuesToCategories($varValue, DataContainer $dc, $id=0)
 	{		
 		
 		if(is_null($varValue) || (is_int($varValue) && $varValue == 0))
@@ -1796,35 +1671,16 @@ class ProductCatalog extends Backend
 		//DataContainer and its corresponding values.	
 		if($id!=0)
 		{
-			$intID = $id;
+			$intId = $id;
 		}else{
-			$intID = $dc->id;
+			$intId = $dc->id;
 		}
-		
-		
-		//Send the pages selected into an array
-		//$arrNewPageList = deserialize($varValue);
-		$arrAllPageInfo = array();
+
 						
-		//Get the current attribute set
-		$objAttributeSetID = $this->Database->prepare("SELECT id, store_id FROM tl_product_attribute_sets WHERE storeTable=?")
-											->limit(1)
-											->execute($this->strCurrentStoreTable);
-			
-		if ($objAttributeSetID->numRows < 1)
-		{
-			return $varValue;
-		}
-		
-		
-		//Attribute set ID, currently used to narrow down return records from the aggregate table to those based on attribute set.  This 
-		//will change when attributes become global!
-		$attributeSetID = $objAttributeSetID->id;
-		$storeID = $objAttributeSetID->store_id;
-		
-		$objAttributeID = $this->Database->prepare("SELECT id FROM tl_product_attributes WHERE pid=? AND field_name=?")
+		//Get the current attribute set		
+		$objAttributeID = $this->Database->prepare("SELECT id FROM tl_product_attributes WHERE field_name=?")
 										 ->limit(1)
-										 ->execute($attributeSetID, $dc->field);
+										 ->execute($dc->field);
 		
 		if($objAttributeID->numRows < 1)
 		{
@@ -1836,7 +1692,7 @@ class ProductCatalog extends Backend
 		
 		
 		//Gather all records pertaining to the current attribute set in the aggregate table
-		$objAllPageInfo = $this->Database->prepare("SELECT pid, value_collection FROM tl_pfc_aggregate WHERE attribute_set_id=? AND attribute_id=?")->execute($attributeSetID, $attributeID);
+		$objAllPageInfo = $this->Database->prepare("SELECT pid, value_collection FROM tl_filter_values_to_categories WHERE attribute_id=?")->execute($attributeID);
 		
 		if($objAllPageInfo->numRows > 0)
 		{
@@ -1845,7 +1701,7 @@ class ProductCatalog extends Backend
 		}
 			
 		//Get the value submitted for this particular attribute
-		$objRecordValues = $this->Database->prepare("SELECT pages, " . $dc->field . " FROM " . $this->strCurrentStoreTable . " WHERE id=?")
+		$objRecordValues = $this->Database->prepare("SELECT pages, " . $dc->field . " FROM tl_product_data WHERE id=?")
 													->limit(1)
 													->execute($dc->id);
 		if($objRecordValues->numRows < 1)
@@ -1860,7 +1716,7 @@ class ProductCatalog extends Backend
 			$arrNewPageList = array();
 		}
 				
-		$this->updatePFCAggregate($arrNewPageList, $arrAllPageInfo, $dc, $this->strCurrentStoreTable, $attributeSetID, $attributeID, $storeID, $varValue);
+		$this->updateFilterValuesToCategories($arrNewPageList, $arrAllPageInfo, $dc, $attributeID, $varValue);
 	
 		return $varValue;
 	}
@@ -1875,7 +1731,7 @@ class ProductCatalog extends Backend
 	 * @param string
 	 *
 	 */
-	private function updatePFCAggregate($arrPageList, $arrAllPageInfo, DataContainer $dc, $storeTable, $attributeSetID, $attributeID, $storeID, $varCurrValue)
+	private function updateFilterValuesToCategories($arrPageList, $arrAllPageInfo, DataContainer $dc, $attributeID, $varCurrValue)
 	{		
 		
 		if(sizeof($arrPageList) < 1)
@@ -1892,9 +1748,9 @@ class ProductCatalog extends Backend
 		
 		$arrCurrValues[] = $varCurrValue;
 		
-				//Check Existing records first to avoid duplicate entries
-		$objPFCInfo = $this->Database->prepare("SELECT id, pid, attribute_id, value_collection FROM tl_pfc_aggregate WHERE pid IN (" . join(",", $arrPageList) . ") AND attribute_set_id=? AND attribute_id=? AND store_id=?")
-									->execute($attributeSetID, $attributeID, $storeID);
+		//Check Existing records first to avoid duplicate entries
+		$objPFCInfo = $this->Database->prepare("SELECT id, pid, attribute_id, value_collection FROM tl_filter_values_to_categories WHERE pid IN (" . join(",", $arrPageList) . ") AND attribute_id=?")
+									->execute($attributeID);
 		
 		
 		if($objPFCInfo->numRows < 1)
@@ -1909,11 +1765,9 @@ class ProductCatalog extends Backend
 					'pid'					=> $intPageNum,
 					'attribute_id'			=> $attributeID,
 					'value_collection'		=> $arrCurrValues,
-					'attribute_set_id'		=> $attributeSetID,
-					'store_id'				=> $storeID
 				);
 				
-				$this->Database->prepare("INSERT INTO tl_pfc_aggregate %s")->set($arrSet)->execute();
+				$this->Database->prepare("INSERT INTO tl_filter_values_to_categories %s")->set($arrSet)->execute();
 			}
 			
 			return;
@@ -1927,7 +1781,7 @@ class ProductCatalog extends Backend
 		
 		$arrPIDs = array();
 		
-		foreach($arrPFCInfo as $row)	//PIDs that already exist in the tl_pfc_aggregate table
+		foreach($arrPFCInfo as $row)	//PIDs that already exist in the tl_filter_values_to_categories table
 		{
 			$arrPIDs[] = $row['pid'];
 		}
@@ -1947,28 +1801,17 @@ class ProductCatalog extends Backend
 			
 			//If the product id exists in the product list for this page, which is not part of the product page list now...  Remove from the product_ids collection and update.
 						
-			//if(!in_array($page['pid'], $arrPIDs))		//$arrPIDs is from $objPFCInfo - which represents existing PIDs
-			//{
-					
 				/** TO DO - REWRITE & HANDLE MULITPLE FILTER VALUES IF ATTRIBUTE DOES MULTIPLE **/
 					
 				if(in_array($varCurrValue, $arrExistingValues))		//Does this need to be more strict - that is, bound to a particular pid when comparing?
 				{
-					/*echo 'artist: ' . $varCurrValue . '<br /><br />';
-					var_dump($arrExistingValues);
-					exit;
-					echo $key;
-					exit;	*/			
-					
+									
 					$key = array_search($varCurrValue, $arrExistingValues); //get the corresponding key.
 										
 					//If we find that the product id submitted does, in fact exist in the existing product collection for this page, then we remove it.
-					//if(!empty($key))
-					//{	
-					//	echo 'yes ::: page: ' . $page['pid'];
-						
+				
 						//Do any other products in this category share the filter value?  If not then we can safely remove it
-						$objProductsAssociatedWithFilterValue = $this->Database->prepare("SELECT id, pages FROM " . $storeTable . " WHERE " . $dc->field . "=?")->execute($varCurrValue);
+						$objProductsAssociatedWithFilterValue = $this->Database->prepare("SELECT id, pages FROM tl_product_data WHERE " . $dc->field . "=?")->execute($varCurrValue);
 						
 												
 						if($objProductsAssociatedWithFilterValue->numRows < 1)	//if there are no occurrences of this filter value in any product, then ok.
@@ -1988,9 +1831,7 @@ class ProductCatalog extends Backend
 								{				
 									if(in_array($currPage, $rowInfo))
 									{
-										//echo $currPage . ' ::: ' . var_dump($rowInfo);
-										//exit;
-										
+								
 										$blnPreserveFilterValue = true;
 										break;
 									}
@@ -2000,27 +1841,20 @@ class ProductCatalog extends Backend
 							
 							if(!$blnPreserveFilterValue) //if this filter value is used by any other product in any of the categories associated
 							{	
-								//echo 'yes we are unsetting it';		//with the given product, then we cannot remove the filter value from the record.
-								//exit;
-								
+								//with the given product, then we cannot remove the filter value from the record.							
 								unset($arrExistingValues[$key]);
 							}
 						}						
 						
-						//var_dump($arrExistingProducts);
-						//echo "<br /><br />";
 						if(is_array($arrExistingValues) && sizeof($arrExistingValues)>0)
 						{
-						//var_dump($arrExistingProducts);
-						$this->Database->prepare("UPDATE tl_pfc_aggregate SET value_collection=? WHERE pid=? AND attribute_set_id=? AND attribute_id=? AND store_id=?")
-									   ->execute(serialize($arrExistingValues), $page['pid'], $attributeSetID, $attributeID, $storeID);
+	
+							 $this->Database->prepare("UPDATE tl_filter_values_to_categories SET value_collection=? WHERE pid=? AND attribute_id=?")
+									   		->execute(serialize($arrExistingValues), $page['pid'], $attributeID);
 						}
-					//}
+
 				}
-				
-			//}else{
-			//	return;
-			//}
+
 			
 			//For each page record already in the table, we grab the product id list and modify it to include this product ID if it isn't existing in the product ID collection.
 			
@@ -2045,8 +1879,8 @@ class ProductCatalog extends Backend
 					}				
 									
 					// Update existing association
-					$this->Database->prepare("UPDATE tl_pfc_aggregate SET value_collection=? WHERE pid=? AND attribute_set_id=? AND attribute_id=? AND store_id=?")
-								   ->execute(serialize($arrExistingValues), $page['pid'], $attributeSetID, $attributeID, $storeID);
+					$this->Database->prepare("UPDATE tl_filter_values_to_categories SET value_collection=? WHERE pid=? AND attribute_id=?")
+								   ->execute(serialize($arrExistingValues), $page['pid'], $attributeID);
 				}			
 			}
 		
@@ -2067,33 +1901,28 @@ class ProductCatalog extends Backend
 				$arrSet = array(
 					'value_collection'		=> serialize($arrValues),
 					'pid'					=> $intPageNum,
-					'attribute_id'			=> $attributeID,
-					'attribute_set_id' 		=> $attributeSetID,
-					'store_id'				=> $storeID
+					'attribute_id'			=> $attributeID
 				);
 				
-				$this->Database->prepare("INSERT INTO tl_pfc_aggregate %s")->set($arrSet)->execute();
+				$this->Database->prepare("INSERT INTO tl_filter_values_to_categories %s")->set($arrSet)->execute();
 			}
 		}			
 				
 		return;
 	}
 	
+	
 	public function getDefaultDca()
 	{
 		$this->loadLanguageFile('tl_product_data');
+		
 		return array
 		(
 			'config' => array 
 			(
 				'dataContainer'               => 'Table',
-				'ptable'                      => 'tl_product_attribute_sets',
 				'switchToEdit'                => true, 
-				'enableVersioning'            => false/*,
-				'onload_callback'							=> array 
-					(
-						array('ProductCatalog', 'checkPermission')
-					)*/,
+				'enableVersioning'            => false
 			),
 			
 			'list' => array
@@ -2163,200 +1992,21 @@ class ProductCatalog extends Backend
 			
 			'fields' => array
 			(
+			
 			)
 		);
 	}
-	
-	public function regenerateDca($typeId)
-	{
-			$objFields = $this->Database->prepare("SELECT * FROM tl_product_attributes WHERE pid=? ORDER BY sorting")
-						->execute($typeId);
-
-			$this->fieldDef['date']['eval'] = array('datepicker' => $this->getDatePickerString());
-			
-			$dca = $this->getDefaultDca();        
-			$fields = array();
-			$titleFields = array();
-			$sortingFields = array();
-			$groupingFields = array();
-			$selectors = array();
-			
-			// load DCA, as we're calling it now in ProductCatalog, not tl_product_attributes
-			$this->loadDataContainer('tl_product_attributes');
-
-			while ($objFields->next())
-			{
-					$field_name = $objFields->field_name;
-					$colType = $objFields->type;
-					$visibleOptions = trimsplit('[,;]', $GLOBALS['TL_DCA']['tl_product_attributes']['palettes'][$colType]);
-					
-					$field = $this->fieldDef[$colType];
-					$fields[] = $field_name;
-          			
-          			//$separators[] = (($objFields->insertBreak) ? ';' : ',');
-					
-					$dca['fields'][$field_name] = @array_merge_recursive
-					(
-							array
-							(
-									'label'     => array ($objFields->name, ''), //$objFields->description),
-									'eval'      => array 
-									(
-											'mandatory'         => $objFields->is_required && in_array('is_required', $visibleOptions) ? true : false,
-											//'unique'            => $objFields->uniqueItem && in_array('uniqueItem', $visibleOptions) ? true : false,
-											'catalog'           => array
-											(
-													'type'          => $colType,
-											)
-									),
-									//'default'   => $objFields->defValue,
-									'filter'    => $objFields->is_filterable && in_array('is_filterable', $visibleOptions) ? true : false,
-									'search'    => $objFields->is_searchable && in_array('is_searchable', $visibleOptions) ? true : false,
-									//'sorting'   => $objFields->groupingMode && in_array('groupingMode', $visibleOptions) ? true : false,
-							),
-							$field
-					);
-					
-					
-					$configFunction = $colType . "Config";
-					if (method_exists($this, $configFunction))
-					{
-							$this->$configFunction($dca['fields'][$field_name], $objFields);
-					}
-					
-					if ($objFields->name && in_array('name', $visibleOptions))
-					{
-							$titleFields[] = $field_name;
-					}
-					
-					if ($objFields->is_order_by_enabled && in_array('is_order_by_enabled', $visibleOptions))
-					{
-							$sortingFields[] = $field_name;
-					}
-					
-					/*
-					if ($objFields->groupingMode && in_array('groupingMode', $visibleOptions))
-					{
-							$groupingFields[] = $field_name;
-							$dca['fields'][$field_name]['flag'] = $objFields->groupingMode;
-					}*/
-					
-					/*
-					if ($objFields->parentCheckbox)
-					{
-							if (isset($selectors[$objFields->parentCheckbox]))
-							{
-									$selectors[$objFields->parentCheckbox][] = $field_name;
-							}
-							else
-							{
-									$selectors[$objFields->parentCheckbox] = array($field_name);
-							}
-					}*/
-			}
-			
-			// build palettes and subpalettes
-			$selectors = array_intersect_key($selectors, array_flip($fields));
-			$fieldsInSubpalette = array();
-			foreach ($selectors as $selector => $subpaletteFields)
-			{
-					$dca['fields'][$selector]['eval']['submitOnChange'] = true;
-					$dca['subpalettes'][$selector] = implode(',', $subpaletteFields);
-					$fieldsInSubpalette = array_merge($fieldsInSubpalette, $subpaletteFields);
-			}
-			$dca['palettes']['__selector__'] = array_keys($selectors);
-
-			// added insertbreak behaviour by thyon
-			$strPalette = '';
-			$palettes = array_diff($fields, $fieldsInSubpalette);
-			foreach ($palettes as $id=>$field) 
-			{
-				$strPalette .= (($id > 0) ? $separators[$id] : '').$field;	
-			}
-			$dca['palettes']['default'] = $strPalette;
-						
-			// set title fields
-			$titleFields = count($titleFields) ? $titleFields : array('id');
-			$titleFormat = implode(', ', array_fill(0, count($titleFields), '%s'));
-			$dca['list']['label'] = array
-			(
-					'fields' => $titleFields, 
-					'format' => $titleFormat,
-					'label_callback' => array('ProductCatalog', 'renderField'),
-			);
-			
-			// set sorting fields
-			if (count($sortingFields))
-			{
-					$dca['list']['sorting']['fields'] = $sortingFields;
-			}
-			
-			if (count($groupingFields))
-			{
-					$dca['list']['sorting']['mode'] = 2;
-					unset($dca['list']['operations']['cut']);
-			}
-			
-			$this->Database->prepare("UPDATE tl_product_attribute_sets SET dca=? WHERE id=?")
-					->execute(serialize($dca), $typeId);
-	}
-	
-	
-	/**
- 	* Row Label
- 	*/	    
-	public function renderField($row)
-	{
-	
-		if (!$row['pid'])
-		{
-			return 'ID:'.$row['id'];
-		}
-
-		if (isset($this->storeTables[$row['pid']]) && isset($this->strFormat[$row['pid']]))
-		{
-			$storeTable = $this->storeTables[$row['pid']];
-			$strFormat = $this->strFormat[$row['pid']];
-		}
-		else
-		{
-			$objType = $this->Database->prepare("SELECT storeTable, format FROM tl_product_attribute_sets WHERE id=?")
-					->limit(1)
-					->execute($row['pid']);
-			
-			$storeTable = $objType->storeTable;
-			$strFormat = $objType->format;
-			$this->storeTables[$row['pid']] = $storeTable;
-			$this->strFormat[$row['pid']] = $strFormat;
-		}
 		
-		$fields = $GLOBALS['TL_DCA'][$storeTable]['list']['label']['fields'];
-
-		$values = array();
-		foreach($fields as $field)
-		{
-			$values[$field] = $this->formatTitle($row[$field], $GLOBALS['TL_DCA'][$storeTable]['fields'][$field]);
-		}
-
-		if (!strlen($strFormat))
-		{
-			return implode(', ', $values);
-		}
-		else
-		{
-			return $this->generateTitle($strFormat, $values, $storeTable);
-		}
-	}
 	
-	private function generateTitle($strFormat, $values, $storeTable)
+	private function generateTitle($strFormat, $values)
 	{
-		$fields = $GLOBALS['TL_DCA'][$storeTable]['list']['label']['fields'];
+		$fields = $GLOBALS['TL_DCA']['tl_product_data']['list']['label']['fields'];
 		preg_match_all('/{{([^}]+)}}/', $strFormat, $matches);
 		//$strFormat = '';
 		foreach ($matches[1] as $match)
 		{
 			$params = split('::', $match);
-			$fieldConf = $GLOBALS['TL_DCA'][$storeTable]['fields'][$params[0]];
+			$fieldConf = $GLOBALS['TL_DCA']['tl_product_data']['fields'][$params[0]];
 			if ($fieldConf)
 			{	
 				$replace = $values[$params[0]];
@@ -2491,62 +2141,49 @@ class ProductCatalog extends Backend
 	
 	
 	/**
-	 * Re-generate tl_cap_aggregate from pages field.
+	 * Re-generate tl_product_to_category from pages field.
 	 * 
 	 * @access public
 	 * @return void
 	 */
 	public function repairCAP($dc)
 	{
-		$objAttributeSet = $this->Database->prepare("SELECT * FROM tl_product_attribute_sets WHERE id=?")->limit(1)->execute($dc->id);
+		// Delete all
+		$this->Database->prepare("TRUNCATE tl_product_to_category")->execute();	//Truncate to reset index value.
 		
-		if ($objAttributeSet->numRows)
+		$objProducts = $this->Database->execute("SELECT id,pages FROM " . $objAttributeSet->storeTable);
+	
+		$time = time();
+		$arrQuery = array();
+		$arrValues = array();
+		
+		while( $objProducts->next() )
 		{
-			// Delete all
-			$this->Database->prepare("DELETE FROM tl_cap_aggregate WHERE storeTable=?")->execute($objAttributeSet->storeTable);
+			$arrPages = deserialize($objProducts->pages);
 			
-			$objProducts = $this->Database->execute("SELECT id,pages FROM " . $objAttributeSet->storeTable);
-		
-			$time = time();
-			$arrQuery = array();
-			$arrValues = array();
-			
-			while( $objProducts->next() )
+			if (is_array($arrPages) && count($arrPages))
 			{
-				$arrPages = deserialize($objProducts->pages);
-				
-				if (is_array($arrPages) && count($arrPages))
+				foreach( $arrPages as $intPage )
 				{
-					foreach( $arrPages as $intPage )
-					{
-						$arrQuery[] = '(?, ?, ?, ?, ?, ?, ?)';
-						
-						$arrValues[] = $intPage;
-						$arrValues[] = '0';
-						$arrValues[] = $time;
-						$arrValues[] = $objAttributeSet->storeTable;
-						$arrValues[] = $objProducts->id;
-						$arrValues[] = $objAttributeSet->id;
-						$arrValues[] = $objAttributeSet->store_id;
-					}
+					$arrQuery[] = '(?, ?, ?, ?, ?, ?, ?)';
+					
+					$arrValues[] = $intPage;
+					$arrValues[] = '0';
+					$arrValues[] = $time;
+					$arrValues[] = $objProducts->id;
 				}
-			}
-			
-			if (count($arrQuery))
-			{
-				$this->Database->prepare("INSERT INTO tl_cap_aggregate (pid, sorting, tstamp, storeTable, product_id, attribute_set_id, store_id) VALUES ".implode(', ', $arrQuery))->execute($arrValues);
 			}
 		}
 		
+		if (count($arrQuery))
+		{
+			$this->Database->prepare("INSERT INTO tl_product_to_category (pid, sorting, tstamp, product_id) VALUES ".implode(', ', $arrQuery))->execute($arrValues);
+		}
+
+		
 		$this->redirect(str_replace('key=repairCAP', '', $this->Environment->request));
 	}
-	
-	public function pasteButton()
-	{
-		echo 'test';
-	}
-
-	
+		
 }
 
 

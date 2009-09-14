@@ -96,7 +96,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 	'palettes' => array
 	(
 		//'default'                     => 'store_configuration_name;country,orderPrefix;currency,currencySymbol,currencyPosition,currencyFormat;cookie_duration;root_asset_import_path;enabled_modules;countries,address_fields,checkout_login_module;productReaderJumpTo,cartJumpTo,checkoutJumpTo;missing_image_placeholder;gallery_thumbnail_image_width,gallery_thumbnail_image_height;thumbnail_image_width,thumbnail_image_height;medium_image_width,medium_image_height;large_image_width,large_image_height'
-		'default'                     => 'store_configuration_name;country;currency,currencySymbol,currencyPosition,currencyFormat;cookie_duration;root_asset_import_path;enabled_modules;countries,address_fields,checkout_login_module;productReaderJumpTo,cartJumpTo,checkoutJumpTo;missing_image_placeholder,invoiceLogo;gallery_thumbnail_image_width,gallery_thumbnail_image_height;thumbnail_image_width,thumbnail_image_height;medium_image_width,medium_image_height;large_image_width,large_image_height'
+		'default'                     => 'store_configuration_name;isDefaultStore;country;defaultPriceField,currency,currencySymbol,currencyPosition,currencyFormat;cookie_duration;root_asset_import_path;enabled_modules;countries,address_fields,checkout_login_module;productReaderJumpTo,cartJumpTo,checkoutJumpTo;missing_image_placeholder,invoiceLogo;gallery_thumbnail_image_width,gallery_thumbnail_image_height;thumbnail_image_width,thumbnail_image_height;medium_image_width,medium_image_height;large_image_width,large_image_height'
 	),
 
 	// Fields
@@ -108,6 +108,12 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('rgxp'=>'alnum', 'mandatory'=>true, 'maxlength'=>255)
+		),
+		'isDefaultStore' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['isDefaultStore'],
+			'exclude'                 => true,
+			'inputType'               => 'checkbox',
 		),
 		'cookie_duration' => array
 		(
@@ -225,16 +231,14 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('rgxp'=>'digit', 'mandatory'=>true, 'maxlength'=>10)
-		)
-		,
+		),
 		'large_image_height' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['large_image_height'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('rgxp'=>'digit', 'maxlength'=>10)
-		),
-		
+		),		
 		'country' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['country'],
@@ -243,6 +247,14 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'default'				  => $this->User->country,
 			'options'				  => $this->getCountries(),
 			'eval'                    => array('includeBlankOption'=>true, 'mandatory'=>true),
+		),
+		'defaultPriceField' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['defaultPriceField'],
+			'exclude'                 => true,
+			'inputType'               => 'select',
+			'eval'                    => array('mandatory'=>true),
+			'options_callback'		  => array('tl_store','getPriceFields')
 		),
 		'currency' => array
 		(
@@ -310,6 +322,27 @@ $GLOBALS['TL_DCA']['tl_store'] = array
  */
 class tl_store extends Backend
 {
+
+	/**
+	 * Return all fields that are price fields.
+	 */
+	public function getPriceFields()
+	{
+		$objPricingFields = $this->Database->execute("SELECT field_name, name FROM tl_product_attributes WHERE fieldGroup='pricing_legend' AND (type='integer' OR type='decimal')");
+		
+		if($objPricingFields->numRows < 1)
+		{
+			return array();			
+		}
+		
+		while($objPricingFields->next())
+		{
+			$arrPricingData[$objPricingFields->field_name] = $objPricingFields->name;
+		}
+		
+		return $arrPricingData;
+		
+	}
 
 	/**
 	 * Return all editable fields of table tl_member.

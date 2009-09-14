@@ -27,7 +27,6 @@
  *
  */
 $GLOBALS['TL_LANG']['CTE']['attributeLinkRepeater']   = array('Attribute Filter Lister', 'This element generates a collection of hyperlinks from a selected product attribute filter.');
-
  
 /**
  * Errors
@@ -47,6 +46,9 @@ $GLOBALS['TL_LANG']['ERR']['missingButtonTemplate'] = 'You must specify a templa
 $GLOBALS['TL_LANG']['ERR']['noStoreIdFound'] = 'No store id was found associated with this module!';
 
 $GLOBALS['TL_LANG']['ERR']['order_conditions'] = 'You must accept the terms & conditions to continue';
+$GLOBALS['TL_LANG']['ERR']['noStoreConfigurationSet'] = 'Please create a store configuration';
+
+$GLOBALS['TL_LANG']['ERR']['productNameMissing'] = '<no product name found>';
 
 //Checkout Errors
 $GLOBALS['TL_LANG']['MSC']['ERR']['specifyBillingAddress'] = 'A billing address was not fuond.  Please specify a billing address.';
@@ -274,6 +276,7 @@ $GLOBALS['TL_LANG']['CUR_SYMBOL']['EUR'] = 'ﾛ';
  * Default attributes
  */
 $GLOBALS['TL_LANG']['ISO_ATTR']['name']					= array('Name', '');
+$GLOBALS['TL_LANG']['ISO_ATTR']['type']					= array('Type', '');
 $GLOBALS['TL_LANG']['ISO_ATTR']['sku']					= array('SKU', '');
 $GLOBALS['TL_LANG']['ISO_ATTR']['weight']				= array('Weight', '');
 $GLOBALS['TL_LANG']['ISO_ATTR']['quantity']				= array('Quantity', '');

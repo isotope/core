@@ -50,6 +50,10 @@ class Isotope extends Controller
 		
 		$this->import('Database');
 		$this->import('FrontendUser', 'User');
+		
+		$blnForceDefault = (TL_MODE=='BE' ? true : false);
+		$this->setStore($blnForceDefault);
+		
 		$this->import('IsotopeStore', 'Store');
 	}
 	
@@ -69,6 +73,116 @@ class Isotope extends Controller
 		return self::$objInstance;
 	}
 
+	
+	/**
+	 * Set the default store
+	 *
+	 * @access public
+	 * @return void
+	 */
+	public function setStore($blnForceDefault = false)
+	{
+		global $objPage;
+	
+		if($blnForceDefault)
+		{
+			$_SESSION['isotope']['store_id'] = $this->getDefaultStore();
+		}else{	
+		
+			if(!isset($_SESSION['isotope']['store_id']))
+			{
+				if($objPage->isotopeStoreConfig)
+				{
+					//Assign
+					$_SESSION['isotope']['store_id'] = $objPage->isotopeStoreConfig;
+				}else{
+					
+					if($objPage->pid<1)
+					{
+						$_SESSION['isotope']['store_id'] = $this->getDefaultStore();
+					}else{
+						//Find (recursive look at parents
+						$_SESSION['isotope']['store_id'] = $this->getStoreConfigFromParent($objPage->id);
+					}
+				}
+			}
+		}
+			
+		return;
+	}
+	
+	/** 
+	 * Get a default store - either one indicated as default in records or else the first record available.
+	 *
+	 * return integer (store id)
+	 */
+	public function getDefaultStore()
+	{
+	
+		$objDefaultStore = $this->Database->prepare("SELECT id, isDefaultStore FROM tl_store")
+											  ->execute(1);
+											  			
+		if($objDefaultStore->numRows < 1)
+		{
+			throw new Exception($GLOBALS['TL_LANG']['ERR']['noStoreConfigurationSet']);
+		}
+		
+		while($objDefaultStore->next())
+		{
+			if($objDefaultStore->isDefaultStore)
+			{
+				return $objDefaultStore->id;
+			}
+		}
+		
+		$objDefaultStore->first();	//grab the first store in the list if none are set as default
+		
+		return $objDefaultStore->id;
+		
+	}
+	
+	/** 
+	 * Manual override of the store
+	 * 
+	 * @param integer $intStoreId;
+	 * @return void
+	 */
+	public function overrideStore($intStoreId)
+    {
+	 	$_SESSION['isotope']['store_id'] = $intStoreId;
+	  		
+	  	return;
+	}
+
+	/** 
+	 * Recursively look for a store set in a give page.  Continue looking at parent pages until one is found or else
+	 * revert to default store otherwise specified.
+	 *
+	 * @param integer $intPageId
+	 * @return integer (store id)
+	 */
+	private function getStoreConfigFromParent($intPageId)
+	{
+	
+		$objStoreConfiguration = $this->Database->prepare("SELECT pid, isotopeStoreConfig FROM tl_page WHERE id=?")
+												->execute($intPageId);
+												
+		if($objStoreConfig->numRows < 1)
+		{
+			return $this->getDefaultStore();
+		}
+		
+		if($objStoreConfiguration->isotopeStoreConfig)
+		{
+			return $objStoreConfiguration->isotopeStoreConfig;
+		}
+		elseif($objStoreConfiguration->pid<1)
+		{
+			return $this->getDefaultStore();
+		}else{
+			return $this->getStoreConfigFromParent($objStoreConfiguration->pid);
+		}
+	}
 
 	/**
 	 * Format given price according to store settings.
@@ -77,9 +191,14 @@ class Isotope extends Controller
 	 * @param float $fltPrice
 	 * @return float
 	 */
-	public function formatPrice($fltPrice)
+	public function formatPrice($fltPrice, $strCurrencyCode)
 	{
-		$arrFormat = $GLOBALS['ISO_NUM'][$this->Store->currencyFormat];
+		if(!$strCurrencyCode)
+		{
+			throw new Exception($GLOBALS['TL_LANG']['ERR']['missingCurrencyCode']);
+		}
+		
+		$arrFormat = $GLOBALS['ISO_NUM'][$strCurrencyCode];
 		
 		if (!is_array($arrFormat) || !count($arrFormat) == 3)
 			return $fltPrice;
@@ -93,14 +212,15 @@ class Isotope extends Controller
 	 * 
 	 * @access public
 	 * @param float $fltPrice
+	 * @param string $strCurrencyCode (default: null)
 	 * @param bool $blnHtml. (default: false)
 	 * @return string
 	 */
-	public function formatPriceWithCurrency($fltPrice, $blnHtml=false)
+	public function formatPriceWithCurrency($fltPrice, $strCurrencyCode = null, $blnHtml=false)
 	{
-		$strPrice = $this->formatPrice($fltPrice);
+		$strCurrency = (strlen($strCurrencyCode) ? $strCurrencyCode : $this->Store->currency);
 		
-		$strCurrency = $this->Store->currency;
+		$strPrice = $this->formatPrice($fltPrice, $strCurrency);
 		
 		if ($this->Store->currencySymbol && strlen($GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency]))
 		{
@@ -167,17 +287,18 @@ class Isotope extends Controller
 	public function getProductData($arrCartItemsData, $arrFieldNames, $strOrderByField)
 	{		
 		$strFieldList = join(',', $arrFieldNames);
-			
+		
 		foreach($arrCartItemsData as $configRow)
 		{
-						
-			$objProductData = $this->Database->prepare("SELECT id, " . $strFieldList . " FROM " . $configRow['storeTable'] . " WHERE id=?")
+							
+			$objProductData = $this->Database->prepare("SELECT id, " . $strFieldList . " FROM tl_product_data WHERE id=?")
 										  ->limit(1)
 										  ->execute($configRow['product_id']);
-			
+					
 			if($objProductData->numRows < 1)
 			{
-				return array();
+				//DON'T return as it will ignore any valid product ids.  this will allow us to gracefully move on.
+				continue;
 			}
 			
 			$arrProductsInCart = $objProductData->fetchAllAssoc();
@@ -200,7 +321,6 @@ class Isotope extends Controller
 				}
 			
 				$arrProducts[$configRow['id']]['cart_item_id'] = $configRow['id'];
-				$arrProducts[$configRow['id']]['attribute_set_id'] = $configRow['attribute_set_id'];
 				$arrProducts[$configRow['id']]['source_cart_id'] = $configRow['pid'];
 				$arrProducts[$configRow['id']]['quantity_requested'] = $configRow['quantity_requested'];
 				$arrProducts[$configRow['id']]['product_options'] = deserialize($configRow['product_options']);
@@ -227,9 +347,9 @@ class Isotope extends Controller
 		return $arrProducts;
 	}
 	
-	public function getProductPrice($intProductId, $strTable)
+	public function getProductPrice($intProductId)
 	{
-		$objPrice = $this->Database->prepare("SELECT price FROM " . $strTable . " WHERE id=?")
+		$objPrice = $this->Database->prepare("SELECT price FROM tl_product_data WHERE id=?")
 										->limit(1)
 										->execute($intProductId);
 		
@@ -415,11 +535,11 @@ class Isotope extends Controller
 		$objEmail->sendTo($strRecipient);
 	}
 	
-	public function applyRules($fltProductBasePrice, $intProductId, $storeTable)
+	public function applyRules($fltProductBasePrice, $intProductId)
 	{
 		
 				
-		$objData = $this->Database->prepare("SELECT pid FROM " . $storeTable . " WHERE id=?")
+		$objData = $this->Database->prepare("SELECT pid FROM tl_product_data WHERE id=?")
 										->limit(1)
 										->execute($intProductId);
 										
@@ -444,30 +564,24 @@ class Isotope extends Controller
 	
 	}
 	
-	public function getStoreTableByAggregateSetId($intAsetId)
+	/** 
+	 * Get the next sorting value if it exists for a given table.
+	 * 
+	 * @access public
+	 * @param string $strTable
+	 * @return integer;
+	 */
+	public function getNextSortValue($strTable)
 	{
-		$objAggregateSetId = $this->Database->prepare("SELECT storeTable FROM tl_cap_aggregate WHERE id=?")
-											->limit(1)
-											->execute($intAsetId);
-		if($objAggregateSetId->numRows < 1)
+		if($this->Database->fieldExists('sorting', $strTable))
 		{
-			return false;
-		}	
+			$objSorting = $this->Database->prepare("SELECT MAX(sorting) as maxSort FROM " . $strTable)
+										 ->execute();
+			
+			return $objSorting->maxSort + 128;
+		}
 		
-		return $objAggregateSetId->storeTable;
-	}
-	
-	public function getStoreTableByAttributeSetId($intAttributeSetId)
-	{
-		$objAttributeSetId = $this->Database->prepare("SELECT storeTable FROM tl_product_attribute_sets WHERE id=?")
-											->limit(1)
-											->execute($intAttributeSetId);
-		if($objAttributeSetId->numRows < 1)
-		{
-			return false;
-		}	
-		
-		return $objAttributeSetId->storeTable;
+		return 0;
 	}
 }
 

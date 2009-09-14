@@ -26,6 +26,8 @@
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_product_data']['pages'] = array('Categories','Select a category (page-based categories take advantage of TYPOlight pages features such as navigation automation, protection, templates, and full integration with content elements.');
+$GLOBALS['TL_LANG']['tl_product_data']['type'] = array('Product Type','Product types are defined in the Product Type Manager.');
+/*
 $GLOBALS['TL_LANG']['tl_product_data']['audio_source'] = array('Audio File Source', 'Link to an internal or external media source instead of the default page.');
 $GLOBALS['TL_LANG']['tl_product_data']['audio_jumpTo'] = array('Select Internal File', 'Please select the page to which visitors will be redirected.');
 $GLOBALS['TL_LANG']['tl_product_data']['audio_url'] = array('Specify External File','Paste a media link here (for example, a Youtube video URL)');
@@ -35,6 +37,7 @@ $GLOBALS['TL_LANG']['tl_product_data']['video_url'] = array('Specify External Fi
 $GLOBALS['TL_LANG']['tl_product_data']['option_collection'] = array('Product Option Wizard','Create extra product option combinations.');
 $GLOBALS['TL_LANG']['tl_product_data']['add_audio_file'] = array('Add Audio File','Add an audio file to this product');
 $GLOBALS['TL_LANG']['tl_product_data']['add_video_file'] = array('Add Video File','Add a video file to this product');
+*/
 
 /**
  * Reference
@@ -55,6 +58,19 @@ $GLOBALS['TL_LANG']['tl_product_data']['cut']   = array('Move product', 'Move pr
 $GLOBALS['TL_LANG']['tl_product_data']['delete'] = array('Delete product', 'Delete product ID %s');
 $GLOBALS['TL_LANG']['tl_product_data']['show']   = array('product details', 'Show details of product ID %s');
 $GLOBALS['TL_LANG']['tl_product_data']['editheader'] = array('Edit product type', 'Edit the product type');
+
+/** 
+ * Legends
+ */
+$GLOBALS['TL_LANG']['tl_product_data']['general_legend'] = "General Settings";
+$GLOBALS['TL_LANG']['tl_product_data']['pricing_legend'] = "Pricing Settings";
+$GLOBALS['TL_LANG']['tl_product_data']['inventory_legend'] = 'Inventory Settings';
+$GLOBALS['TL_LANG']['tl_product_data']['shipping_legend'] = 'Shipping Settings';
+$GLOBALS['TL_LANG']['tl_product_data']['tax_legend'] = 'Tax Settings';
+$GLOBALS['TL_LANG']['tl_product_data']['options_legend'] = 'Product Options Settings';
+$GLOBALS['TL_LANG']['tl_product_data']['tax_legend'] = 'Tax Settings';
+$GLOBALS['TL_LANG']['tl_product_data']['availability_legend'] = 'Availability Settings';
+$GLOBALS['TL_LANG']['tl_product_data']['media_legend'] = 'Media Management';
 
 
 ?>

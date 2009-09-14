@@ -1,6 +1,8 @@
 <!-- indexer::stop -->
-<div class="grid featured <?php echo $this->class; ?><?php echo $this->cssID; ?>"<?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
-  <!--<div class="listingHeadline"><h1><?php echo $this->headline; ?></h1></div>-->
+<div class="<?php echo $this->class; ?> <?php echo $this->listformat; ?> featured"<?php echo $this->cssID; ?>"<?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
+  <?php if ($this->headline): ?>
+	<<?php echo $this->hl; ?> class="listingTitle"><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
+  <?php endif; ?>
   <!-- START HEADER-->
   <div class="listingHeader">
     <!-- START PAGER-->
@@ -24,12 +26,12 @@
       <?php foreach($this->products as $product): ?>
    
             <!-- BEGIN PRODUCT-->
-            <div class="productWrapper">
-                <div class="col1 productInfo"><a href="<?php echo $product['link']; ?>" title="<?php echo $product['name']; ?>"><img src="<?php echo $product['thumbnail'] ?>" alt="<?php echo $product['name']; ?>" border="0" class="productThumb" /></a>
+            <div class="productWrapper <?php echo $product['class']; ?>">
+                <div class="col1 productInfo"><a class="img" href="<?php echo $product['link']; ?>" title="<?php echo $product['name']; ?>"><img src="<?php echo $product['thumbnail'] ?>" alt="<?php echo $product['name']; ?>" border="0" class="productThumb" /></a>
                   <h3 class="productName"><a href="<?php echo $product['link']; ?>" title="<?php echo $product['name']; ?>"><?php echo $product['name']; ?></a></h3>
                    <p class="productPrice"><?php echo $product['price_string']; ?></p>
-                  <?php if($product['teaser']): ?>
-                 <!--<p class="productTeaser"><a href="<?php echo $product['link']; ?>" title="<?php echo $product['name']; ?>"><?php echo $product['teaser']; ?></a></p>-->
+                  <?php if($this->showTeaser && $product['teaser']): ?>
+                 <p class="productTeaser"><a href="<?php echo $product['link']; ?>" title="<?php echo $product['name']; ?>"><?php echo $product['teaser']; ?></a></p> 
                   <?php endif; ?>
                   
                 </div>

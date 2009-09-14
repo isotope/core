@@ -32,6 +32,10 @@ $GLOBALS['TL_LANG']['MOD']['payment']					= array('Payment Methods','');
 $GLOBALS['TL_LANG']['MOD']['taxes']						= array('Taxes','Set up tax classes and rates.');
 $GLOBALS['TL_LANG']['MOD']['store_configuration']		= array('Store Configuration','');
 $GLOBALS['TL_LANG']['MOD']['products_and_attributes']	= array('Products and Attributes','');
+$GLOBALS['TL_LANG']['MOD']['attribute_manager']			= array('Attribute Manager','');
+$GLOBALS['TL_LANG']['MOD']['product_type_manager']			= array('Product Type Manager','');
+$GLOBALS['TL_LANG']['MOD']['product_manager']			= array('Product Management','');
+
 $GLOBALS['TL_LANG']['MOD']['iso_mail']					= array('E-Mail Manager','');
 
 /**														

@@ -184,7 +184,10 @@ abstract class Payment extends Frontend
 	 * @access public
 	 * @return void
 	 */
-	public function processPostSale() {}
+	public function processPostSale() 
+	{
+		return false;
+	}
 	
 	
 	/**

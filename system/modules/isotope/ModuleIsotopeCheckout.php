@@ -556,6 +556,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	
 	protected function getPaymentModulesInterface($arrModuleIds)
 	{
+				
 		$arrData = $this->Input->post('payment');
 		
 		$arrData = is_array($arrData) ? $arrData : $_SESSION['FORM_DATA']['payment'];
@@ -599,7 +600,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		//TODO?  Consider CC_TYPE and CC_CVV?
 		//exit;
 		
-		$arrTotals = array
+		/*$arrTotals = array
 		(
 			'subTotal'			=> $this->Cart->subTotal, 
 			'taxTotal'			=> $this->Cart->taxTotal, 
@@ -607,15 +608,18 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			'grandTotal'		=> $this->Cart->grandTotal
 		);
 		
-		$arrShippingData['shipping_method_id'] = $this->Cart->Shipping->id;
-		$arrShippingData['shipping_address'] = $arrShippingAddress;
 		//$arrShippingData['shipping_options'] = $this->getSelectedShippingOptions(); //TODO - build and store this information.
 		
 		$arrPaymentData['payment_method_id'] = $this->Cart->Payment->id;
+		*/
 		$arrPaymentData['address'] 	= $arrBillingAddress;
+		/*
 		$arrPaymentData['totals'] 	= $arrTotals;	
-		$arrPaymentData['currency'] = $this->Store->currency;
-		
+		$arrPaymentData['currency'] = $this->Store->currency;*/
+
+		$arrShippingData['shipping_method_id'] = $this->Cart->Shipping->id;
+		$arrShippingData['shipping_address'] = $arrShippingAddress;
+	
 		$arrSet = array
 		(
 			'pid'					=> (FE_USER_LOGGED_IN ? $this->User->id : 0),
@@ -624,10 +628,10 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			'store_id'				=> $this->Store->id,
 			'cart_id'				=> $this->Cart->id,
 			//'source_cart_id'		=> $this->Cart->id,
-			'subTotal'				=> $this->Isotope->formatPriceWithCurrency($this->Cart->subTotal),		// + ($this->Input->post('gift_wrap') ? 10 : 0),		
-			'taxTotal'	 			=> $this->Isotope->formatPriceWithCurrency($this->Cart->taxTotal),
-			'shippingTotal'			=> $this->Isotope->formatPriceWithCurrency($this->Cart->shippingTotal),
-			'grandTotal'			=> $this->Isotope->formatPriceWithCurrency($this->Cart->grandTotal),
+			'subTotal'				=> $this->Cart->subTotal,		// + ($this->Input->post('gift_wrap') ? 10 : 0),		
+			'taxTotal'	 			=> $this->Cart->taxTotal,
+			'shippingTotal'			=> $this->Cart->shippingTotal,
+			'grandTotal'			=> $this->Cart->grandTotal,
 			'shipping_method'		=> $this->Cart->Shipping->label,
 			'payment_method'		=> $this->Cart->Payment->label,
 			'status'				=> ($blnCheckout ? $this->Cart->Payment->new_order_status : ''),
@@ -635,7 +639,8 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			'billing_address'		=> $strBillingAddress,
 			'shipping_address'		=> $strShippingAddress,
 			'payment_data'			=> serialize($arrPaymentData),
-			'shipping_data'			=> serialize($arrShippingData)
+			'shipping_data'			=> serialize($arrShippingData),
+			'currency'				=> $this->Store->currency
 		);
 		
 		//FIXME?  Sort of strange way to have to handle credit card data...
@@ -669,6 +674,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 		$this->Database->prepare("UPDATE tl_iso_orders SET order_id=? WHERE id=?")->execute(($this->Store->orderPrefix . $orderId), $orderId);
 		
+							
 		$fltShippingTotal = (float)$this->Cart->Shipping->price + (float)$this->Cart->Shipping->optionsPrice;
 		
 		if ($blnCheckout)
@@ -706,7 +712,9 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			$salesEmail = $this->iso_sales_email ? $this->iso_sales_email : $GLOBALS['TL_ADMIN_EMAIL'];
 			$this->Isotope->sendMail($this->iso_mail_admin, $salesEmail, $GLOBALS['TL_LANGUAGE'], $arrData);
 			$this->Isotope->sendMail($this->iso_mail_customer, $arrBillingAddress['email'], $GLOBALS['TL_LANGUAGE'], $arrData);
-
+			
+			$this->copyCartItems($this->Cart->id, $orderId);
+			
 			$this->Cart->delete();
 			unset($_SESSION['FORM_DATA']);
 			unset($_SESSION['isotope']);
@@ -715,6 +723,57 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		return ($this->Store->orderPrefix . $orderId);
 	}
 	
+	/** 
+	 * Copy items from the cart and place in the order items reference table.
+	 *
+	 * @param integer $intCartId
+	 * @param integer $intOrderId
+	 * @return void
+	 */
+	protected function copyCartItems($intCartId, $intOrderId)
+	{
+		$arrQuery = array();
+		$arrValues = array();
+		
+		$intSorting = $this->Isotope->getNextSortValue('tl_iso_order_items');
+		
+		$objProducts = $this->Database->prepare("SELECT * FROM tl_cart_items WHERE pid=?")
+									  ->execute($intCartId);
+
+		
+		$arrProductIds = $objProducts->fetchEach('product_id');
+		
+		$strProductIds = join(',', $arrProductIds);
+
+		$objProductNames = $this->Database->prepare("SELECT id, name FROM tl_product_data WHERE id IN(" . $strProductIds . ")")
+										  ->execute();
+		
+		$arrProductNames = $objProductNames->fetchAllAssoc();
+								  
+		foreach($arrProductNames as $product)
+		{
+			$arrProductNames[$product['id']] = $product['name'];
+		}
+		
+		$arrProducts = $objProducts->fetchAllAssoc();
+		
+		foreach($arrProducts as $product)
+		{
+			$arrQuery[] = '(?, ?, ?, ?, ?, ?, ?, ?)';
+			
+			$arrValues[] = $intOrderId;
+			$arrValues[] = $intSorting+128;
+			$arrValues[] = time();
+			$arrValues[] = $product['id'];
+			$arrValues[] = (array_key_exists($product['product_id'], $arrProductNames) ? $arrProductNames[$product['product_id']] : $GLOBALS['TL_LANG']['ERR']['productNameMissing']);
+			$arrValues[] = $product['quantity_requested'];
+			$arrValues[] = $product['price'];
+			$arrValues[] = $product['product_options'];
+		}		
+				
+		$this->Database->prepare("INSERT INTO tl_iso_order_items (pid, sorting, tstamp, product_id, product_name, quantity_sold, price, product_options) VALUES".implode(', ', $arrQuery))->execute($arrValues);
+
+	}
 	
 	/**
 	 * send an email confirmation to customers

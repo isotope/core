@@ -36,7 +36,7 @@ $GLOBALS['TL_LANG']['tl_store']['enabled_modules']					= array('Enabled Isotope 
 $GLOBALS['TL_LANG']['tl_module']['productReaderJumpTo']				= array('Product Reader Jump to page', 'This setting defines to which page a user will be redirected when clicking a product for more info.');
 $GLOBALS['TL_LANG']['tl_module']['cartJumpTo']						= array('Shopping Cart Jump to page', 'This setting defines to which page a user will be redirected when requesting a full shopping cart view.');
 $GLOBALS['TL_LANG']['tl_module']['checkoutJumpTo']					= array('Checkout Jump to page', 'This setting defines to which page a user will be redirected when completing their transaction.');
-																	
+$GLOBALS['TL_LANG']['tl_store']['defaultPriceField']				= array('Default Price Field','Select a field that is the default price field for this store.');																	
 $GLOBALS['TL_LANG']['tl_store']['missing_image_placeholder']		= array('Missing Image Placeholder', 'This image will be used if an image file cannot be found or none are associated with a product.');
 $GLOBALS['TL_LANG']['tl_store']['thumbnail_image_width']			= array('Thumbnail Standard Width', 'In pixels.');
 $GLOBALS['TL_LANG']['tl_store']['thumbnail_image_height']			= array('Thumbnail Standard Height', 'In pixels.');
@@ -55,6 +55,7 @@ $GLOBALS['TL_LANG']['tl_store']['address_fields']					= array('Address fields', 
 $GLOBALS['TL_LANG']['tl_store']['gallery_thumbnail_image_width']	= array('Gallery Thumbnail Standard Width', 'In pixels.');
 $GLOBALS['TL_LANG']['tl_store']['gallery_thumbnail_image_height']	= array('Gallery Thumbnail Standard Height', 'In pixels.');
 $GLOBALS['TL_LANG']['tl_store']['invoiceLogo'] = array('Invoice Logo','Select a logo to show up on the invoices for this store.');
+$GLOBALS['TL_LANG']['tl_store']['isDefaultStore'] = array('Set as default store','Set this as the default store for back-end currency formatting and other locale-specific information.');
 
 /**
  * Reference

@@ -30,7 +30,10 @@ $GLOBALS['TL_LANG']['MOD']['orders']					= array('Bestellungen', '');
 $GLOBALS['TL_LANG']['MOD']['shipping']					= array('Versandarten','');
 $GLOBALS['TL_LANG']['MOD']['payment']					= array('Zahlungsarten','');
 $GLOBALS['TL_LANG']['MOD']['taxes']						= array('Steuern', '');
-$GLOBALS['TL_LANG']['MOD']['products_and_attributes']	= array('Artikelverwaltung','');
+$GLOBALS['TL_LANG']['MOD']['products_and_attributes']	= array('Products and Attributes','');
+$GLOBALS['TL_LANG']['MOD']['attribute_manager']			= array('Attribute Manager','');
+$GLOBALS['TL_LANG']['MOD']['product_type_manager']			= array('Product Type Manager','');
+$GLOBALS['TL_LANG']['MOD']['product_manager']			= array('Product Management','');
 $GLOBALS['TL_LANG']['MOD']['store_configuration']		= array('Konfigurationen','');
 $GLOBALS['TL_LANG']['MOD']['iso_mail']					= array('E-Mail Vorlagen','');
 

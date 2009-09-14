@@ -28,15 +28,15 @@
 /**
  * Palettes
  */
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductLister']			= '{title_legend},name,type,headline;{display_legend},perPage,columns,iso_jump_first;{config_legend},store_id,iso_show_teaser;new_products_time_window,listing_filters;{featured_legend:hide},featured_products;{template_legend:hide},iso_list_layout;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductReader']			= 'name,type,headline;store_id;iso_reader_layout;guests,protected;align,space,cssID';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoShoppingCart']			= 'name,type,headline;store_id,iso_cart_layout,iso_forward_cart;guests,protected;align,space,cssID';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoAddressBook']			= 'name,type,headline;store_id,addressBookTemplate;isoEditable;align,space,cssID';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryManager']	= 'name,type,headline;store_id,iso_registry_layout;guests,protected;align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductLister']			= '{title_legend},name,type,headline;{display_legend},perPage,columns,iso_list_format,iso_show_teaser;{config_legend},iso_jump_first,new_products_time_window,featured_products,listing_filters;{template_legend:hide},iso_list_layout;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductReader']			= 'name,type,headline;iso_reader_layout;guests,protected;align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoShoppingCart']			= 'name,type,headline;iso_cart_layout,iso_forward_cart;guests,protected;align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoAddressBook']			= 'name,type,headline;addressBookTemplate;isoEditable;align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryManager']	= 'name,type,headline;iso_registry_layout;guests,protected;align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistrySearch']	= 'name,type,headline;jumpTo;guests,protected;align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryResults']	= 'name,type,headline;jumpTo;iso_registry_results;perPage;guests,protected;align,space,cssID';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryReader']	= 'name,type,headline;store_id,iso_registry_reader;guests,protected;align,space,cssID';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoCheckout']				= '{title_legend},name,type,headline;{config_legend},store_id,iso_checkout_method,iso_payment_modules,iso_shipping_modules,iso_order_conditions,orderCompleteJumpTo;{template_legend},iso_checkout_layout,iso_mail_customer,iso_mail_admin,iso_sales_email;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryReader']	= 'name,type,headline;iso_registry_reader;guests,protected;align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoCheckout']				= '{title_legend},name,type,headline;{config_legend},iso_checkout_method,iso_payment_modules,iso_shipping_modules,iso_order_conditions,orderCompleteJumpTo;{template_legend},iso_checkout_layout,iso_mail_customer,iso_mail_admin,iso_sales_email;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 
 
 /**
@@ -56,6 +56,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_jump_first'] = array
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_jump_first'],
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
+	'eval'					  => array('tl_class'=>'w50 m12')
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_checkout_method'] = array
@@ -146,7 +147,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['columns'] = array
 	'default'				  => 3,
 	'exclude'                 => true,
 	'inputType'               => 'text',
-	'eval'                    => array('rgxp'=>'digit', 'mandatory'=>false, 'maxlength'=>255)
+	'eval'                    => array('rgxp'=>'digit', 'mandatory'=>false, 'maxlength'=>255,'tl_class'=>'w50')
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['featured_products'] = array
@@ -154,7 +155,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['featured_products'] = array
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['featured_products'],
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
-	'eval'					  => array('multiple'=>false, 'tl_class'=>'w50')
+	'eval'					  => array('multiple'=>false, 'tl_class'=>'w50 m12')
 );
 
 
@@ -163,18 +164,20 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['listing_filters'] = array
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['listing_filters'],
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
-	'eval'					  => array('multiple'=>true),
+	'eval'					  => array('multiple'=>true,'tl_class'=>'m12 clr'),
 	'options_callback'		  => array('tl_module_isotope','getFilters')
 );
 
+/*
 $GLOBALS['TL_DCA']['tl_module']['fields']['store_id'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['store_id'],
 	'exclude'                 => true,
 	'inputType'               => 'select',
-	'eval'					  => array('includeBlankOption'=>true,'mandatory'=>true),
+	'eval'					  => array('includeBlankOption'=>true,'mandatory'=>true, 'tl_class'=>'w50'),
 	'options_callback'		  => array('tl_module_isotope','getStoreConfigurations')
 );
+*/
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_payment_modules'] = array
 (
@@ -251,6 +254,16 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_show_teaser'] = array
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_show_teaser'],
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
+	'eval'					  => array('tl_class'=>'w50 m12')
+);
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_list_format'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_list_format'],
+	'exclude'                 => true,
+	'inputType'               => 'select',
+	'options'        		  => array('grid', 'list'),
+	'eval'					  => array('tl_class'=>'w50')
 );
 
  
@@ -273,7 +286,7 @@ class tl_module_isotope extends Backend
 	{
 		
 		
-		$objFilters = $this->Database->prepare("SELECT id, name, (SELECT name FROM tl_product_attribute_sets WHERE tl_product_attribute_sets.id=tl_product_attributes.pid) AS attribute_set_name FROM tl_product_attributes WHERE is_filterable=?")
+		$objFilters = $this->Database->prepare("SELECT id, name FROM tl_product_attributes WHERE is_filterable=?")
 									 ->execute(1);
 									 
 		if($objFilters->numRows < 1)
@@ -285,10 +298,8 @@ class tl_module_isotope extends Backend
 		
 		foreach($arrFilters as $filter)
 		{
-			
-			$strCurrFilter = $filter['attribute_set_name'];
-			
-			$arrOptionGroups[$strCurrFilter][$filter['id']] = $filter['name'];
+						
+			$arrOptionGroups[$filter['id']] = $filter['name'];
 		
 		}
 		
@@ -344,7 +355,7 @@ class tl_module_isotope extends Backend
 		//Get attribute basic data
 		foreach($arrValues as $value)
 		{
-			$objAttributeData = $this->Database->prepare("SELECT field_name, (SELECT storeTable FROM tl_product_attribute_sets WHERE tl_product_attribute_sets.id=tl_product_attributes.pid) AS store_table FROM tl_product_attributes WHERE id=?")
+			$objAttributeData = $this->Database->prepare("SELECT field_name FROM tl_product_attributes WHERE id=?")
 										   		->limit(1)
 										   		->execute($value);
 		
@@ -356,11 +367,10 @@ class tl_module_isotope extends Backend
 			$objAttributeData->first();
 		
 			$strAttributeFieldName = $objAttributeData->field_name;
-			$strStoreTable = $objAttributeData->store_table;
 					
 			$arrFilterValues = $this->getFilterValues($value);
 						
-			$objOptionValuesInUse = $this->Database->prepare("SELECT DISTINCT " . $strAttributeFieldName . " FROM " . $strStoreTable)
+			$objOptionValuesInUse = $this->Database->prepare("SELECT DISTINCT " . $strAttributeFieldName . " FROM tl_product_data")
 									 		   ->execute();
 								
 			if($objOptionValuesInUse->numRows < 1)
@@ -382,7 +392,7 @@ class tl_module_isotope extends Backend
 				{
 					unset($arrFilterValues[$i]);
 				}else{		
-					$arrPages = $this->getAssociatedPagesByListValue($listValue, $strStoreTable, $strAttributeFieldName);
+					$arrPages = $this->getAssociatedPagesByListValue($listValue, $strAttributeFieldName);
 						
 					$arrSet[] = array
 					(
@@ -435,9 +445,9 @@ class tl_module_isotope extends Backend
 	 * @param string $strAttributeFieldName
 	 * @return array
 	 */
-	private function getAssociatedPagesByListValue($intListValue, $strStoreTable, $strAttributeFieldName)
+	private function getAssociatedPagesByListValue($intListValue, $strAttributeFieldName)
 	{
-		$objPages = $this->Database->prepare("SELECT pages FROM " . $strStoreTable . " WHERE " . $strAttributeFieldName . "=?")
+		$objPages = $this->Database->prepare("SELECT pages FROM tl_product_data WHERE " . $strAttributeFieldName . "=?")
 								   ->execute($intListValue);
 								   
 		if($objPages->numRows < 1)

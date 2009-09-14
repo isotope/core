@@ -85,8 +85,6 @@ class ModuleProductReader extends ModuleIsotopeBase
 	 */
 	protected $intProductId;
 	
-	protected $intAttributeSetId;
-	
 	protected $currFormId = 'iso_product_reader';
 	
 	/**
@@ -176,53 +174,13 @@ class ModuleProductReader extends ModuleIsotopeBase
 	
 		$time = time();
 
-		if(is_numeric($this->Input->get('asetid')))
-		{
-			//Get the source table for this CAP record
-			$objCAPRecord = $this->Database->prepare("SELECT storeTable, attribute_set_id FROM tl_cap_aggregate WHERE id=?")
-										   ->limit(1)
-										   ->execute($this->Input->get('asetid'));
-										   
-			if($objCAPRecord->numRows < 1)
-			{
-				$isError = true;
-				$errKey[] = 'invalidProductInformation';			
-			}
-			else
-			{
-				$this->strCurrentStoreTable = $objCAPRecord->storeTable;
-				
-				
-				$objCurrentStoreConfiguration = $this->Database->prepare("SELECT store_id FROM tl_product_attribute_sets WHERE id=?")
-															   ->limit(1)
-															   ->execute($objCAPRecord->attribute_set_id);
-				
-				$this->intAttributeSetId = $objCAPRecord->attribute_set_id;
-				
-				if($objCurrentStoreConfiguration->numRows < 1)
-				{
-					$this->intStoreId = 1;
-				}
-				else
-				{
-					$this->intStoreId = $objCurrentStoreConfiguration->store_id;
-				}
-				
-				
-				$strMissingImagePlaceholder = $this->Store->missing_image_placeholder;
+		$strMissingImagePlaceholder = $this->Store->missing_image_placeholder;
 							
-				$objProductData = $this->Database->prepare("SELECT * FROM " . $this->strCurrentStoreTable . " WHERE id=? OR alias=?")
-										 ->limit(1)
-										 ->execute((is_numeric($this->Input->get('product')) ? $this->Input->get('product') : 0), $this->Input->get('product'));
+		$objProductData = $this->Database->prepare("SELECT * FROM tl_product_data WHERE id=? OR alias=?")
+								 ->limit(1)
+								 ->execute((is_numeric($this->Input->get('product')) ? $this->Input->get('product') : 0), $this->Input->get('product'));
 	
-				if($objProductData->numRows < 1)
-				{
-					$isError = true;
-					$errKey[] = 'invalidProductInformation';
-				}
-			}			
-		}
-		else
+		if($objProductData->numRows < 1)
 		{
 			$isError = true;
 			$errKey[] = 'invalidProductInformation';
@@ -394,7 +352,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 							break;
 							
 						default:
-							$arrAttributeData = $this->getProductAttributeData($k, $this->intAttributeSetId);
+							$arrAttributeData = $this->getProductAttributeData($k);
 							
 							if($arrAttributeData['is_customer_defined'])
 							{
@@ -406,7 +364,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 								(
 									'name'			=> $k,
 									'description'	=> $arrAttributeData['description'],									
-									'html'			=> $this->generateProductOptionWidget($k, $arrData, $this->currFormId, $this->intAttributeSetId)
+									'html'			=> $this->generateProductOptionWidget($k, $arrData, $this->currFormId)
 								);
 							
 							}else{

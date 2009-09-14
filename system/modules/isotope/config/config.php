@@ -40,15 +40,25 @@ if (!is_array($GLOBALS['BE_MOD']['store']))
  
 array_insert($GLOBALS['BE_MOD']['store'], 0, array
 (
-	'products_and_attributes' => array
+	'product_manager' => array
 	(
-		'tables'					=> array('tl_product_attribute_sets','tl_product_attributes','tl_product_data'),
+		'tables'					=> array('tl_product_data'),
+		'icon'						=> 'system/modules/isotope/html/icon_pm.gif'
+	),
+	'product_type_manager' => array
+	(
+		'tables'					=> array('tl_product_types'),
+		'icon'						=> 'system/modules/isotope/html/cog_edit.png'
+	),
+	'attribute_manager' => array
+	(
+		'tables'					=> array('tl_product_attributes'),
 		'icon'						=> 'system/modules/isotope/html/icon_pa.gif',
-		'repairCAP'					=> array('ProductCatalog', 'repairCAP'),
+		'repairCAP'					=> array('ProductCatalog','repairCAP')
 	),
 	'orders' => array
 	(
-		'tables'					=> array('tl_iso_orders'),
+		'tables'					=> array('tl_iso_orders','tl_iso_order_items'),
 		'authorize_process_payment'	=> array('IsotopePOS', 'getPOSInterface'),
 		'print_order'				=> array('IsotopePOS','printInvoice'),
 		'icon'						=> 'system/modules/isotope/html/icon-orders.gif',
@@ -96,8 +106,6 @@ array_insert($GLOBALS['BE_MOD']['store'], 0, array
 
 $GLOBALS['BE_MOD']['accounts']['member']['tables'][] = 'tl_address_book';
 
-
-
 /**
  * Hooks
  */
@@ -113,6 +121,7 @@ $GLOBALS['TL_HOOKS']['replaceInsertTags'][]			= array('IsotopeFrontend', 'replac
 //$GLOBALS['TL_HOOKS']['getMappingAttributes'][]	= array('getProductMapping' => array('ProductCatalog','generateMappingAttributeList'));
 $GLOBALS['TL_HOOKS']['executePostActions'][] = array('ProductOptionWizard', 'executePostActions');
 
+//$GLOBALS['TL_HOOKS']['executePostActions'][] = array('AutoComplete', 'executePostActions');
 
 
 
@@ -120,7 +129,7 @@ $GLOBALS['TL_HOOKS']['executePostActions'][] = array('ProductOptionWizard', 'exe
  * Backend widgets
  */
 $GLOBALS['BE_FFL']['mediaManager'] = 'MediaManager';
-$GLOBALS['BE_FFL']['productOptionWizard'] = 'ProductOptionWizard';
+$GLOBALS['BE_FFL']['productOptionsWizard'] = 'ProductOptionsWizard';
 
 /**
  * Frontend modules
@@ -167,6 +176,14 @@ $GLOBALS['ISO_PAY']['cc_types']['discover'] = 'Discover';
  * Order module additional operations
  */
 $GLOBALS['ISO_ORDERS']['operations'][] = 'IsotopePOS';
+
+
+/** 
+ * Miscellaneous Isotope-specific settings
+ */
+$GLOBALS['ISO_MSC']['tl_product_data']['groups_ordering'] = array
+('general_legend','pricing_legend','inventory_legend','shipping_legend','tax_legend','options_legend','tax_legend','availability_legend','media_legend');
+
 
 /**
  * Handle Collections
@@ -260,7 +277,7 @@ $GLOBALS['ISO_ATTR'] = array
 	//Product Name
 	array
 	(
-		'pid'						=> $dc->id, 
+		'pid'						=> 0,
 		'tstamp'					=> time(),
 		'sorting'					=> $intSorting,
 		'type'						=> 'text',
@@ -284,7 +301,7 @@ $GLOBALS['ISO_ATTR'] = array
 	//Product SKU			
 	array
 	( 
-		'pid'						=> $dc->id, 
+		'pid'						=> 0,
 		'tstamp'					=> time(),
 		'sorting'					=> $intSorting,
 		'type'						=> 'text',
@@ -308,7 +325,7 @@ $GLOBALS['ISO_ATTR'] = array
 	// Product Weight
 	array
 	(  
-		'pid'						=> $dc->id,  
+		'pid'						=> 0, 
 		'tstamp'					=> time(),
 		'sorting'					=> $intSorting,
 		'type'						=> 'decimal',
@@ -332,7 +349,7 @@ $GLOBALS['ISO_ATTR'] = array
 	//Quantity in stock	
 	array
 	( 
-		'pid'						=> $dc->id, 
+		'pid'						=> 0,
 		'tstamp'					=> time(),
 		'sorting'					=> $intSorting,
 		'type'						=> 'integer',
@@ -356,7 +373,7 @@ $GLOBALS['ISO_ATTR'] = array
 	// Product Alias	
 	array
 	( 
-		'pid' => $dc->id, 
+		'pid' 						=> 0, 
 		'tstamp'					=> time(),
 		'sorting'					=> $intSorting,
 		'type'						=> 'shorttext',
@@ -366,7 +383,7 @@ $GLOBALS['ISO_ATTR'] = array
 		'attr_use_mode'				=> 'fixed',
 		'is_customer_defined'		=> 0,
 		'is_visible_on_front'		=> 1,
-		'is_required'				=> 1,
+		'is_required'				=> 0,
 		'is_filterable'				=> 0,
 		'is_searchable'				=> 1,
 		'is_used_for_price_rules'	=> 0,
@@ -383,7 +400,7 @@ $GLOBALS['ISO_ATTR'] = array
 	array
 	( 
 		
-		'pid'						=> $dc->id, 
+		'pid'						=> 0,
 		'tstamp'					=> time(),
 		'sorting'					=> $intSorting,
 		'type'						=> 'checkbox',
@@ -408,7 +425,7 @@ $GLOBALS['ISO_ATTR'] = array
 	array
 	( 
 		
-		'pid'						=> $dc->id, 
+		'pid'						=> 0,
 		'tstamp'					=> time(),
 		'sorting'					=> $intSorting,
 		'type'						=> 'longtext',
@@ -433,7 +450,7 @@ $GLOBALS['ISO_ATTR'] = array
 	array
 	( 
 		
-		'pid'						=> $dc->id, 
+		'pid'						=> 0,
 		'tstamp'					=> time(),
 		'sorting'					=> $intSorting,
 		'type'						=> 'longtext',
@@ -458,7 +475,7 @@ $GLOBALS['ISO_ATTR'] = array
 	// Product Price		
 	array
 	( 
-		'pid'						=> $dc->id, 
+		'pid'						=> 0,
 		'tstamp'					=> time(),
 		'sorting'					=> $intSorting,
 		'type'						=> 'decimal',
@@ -482,7 +499,7 @@ $GLOBALS['ISO_ATTR'] = array
 	//Product Price Override
 	array
 	( 
-		'pid'						=> $dc->id, 
+		'pid'						=> 0,
 		'tstamp'					=> time(),
 		'sorting'					=> $intSorting,
 		'type'						=> 'text',
@@ -507,7 +524,7 @@ $GLOBALS['ISO_ATTR'] = array
 	array
 	( 
 		
-		'pid'						=> $dc->id, 
+		'pid'						=> 0,
 		'tstamp'					=> time(),
 		'sorting'					=> $intSorting,
 		'type'						=> 'checkbox',
@@ -531,7 +548,7 @@ $GLOBALS['ISO_ATTR'] = array
 	// Product Media
 	array
 	( 
-		'pid'						=> $dc->id, 
+		'pid'						=> 0,
 		'tstamp'					=> time(),
 		'sorting'					=> $intSorting,
 		'type'						=> 'media',
@@ -558,7 +575,7 @@ $GLOBALS['ISO_ATTR'] = array
 	// Tax Class		
 	array
 	( 
-		'pid'						=> $dc->id, 
+		'pid'						=> 0,
 		'tstamp'					=> time(),
 		'sorting'					=> $intSorting,
 		'type'						=> 'select',
@@ -585,7 +602,7 @@ $GLOBALS['ISO_ATTR'] = array
 	// Shipping Class		
 	array
 	( 
-		'pid'						=> $dc->id, 
+		'pid'						=> 0,
 		'tstamp'					=> time(),
 		'sorting'					=> $intSorting,
 		'type'						=> 'decimal',
@@ -609,7 +626,7 @@ $GLOBALS['ISO_ATTR'] = array
 	// Featured Item		
 	array
 	( 
-		'pid'						=> $dc->id, 
+		'pid'						=> 0,
 		'tstamp'					=> time(),
 		'sorting'					=> $intSorting,
 		'type'						=> 'checkbox',
@@ -633,7 +650,7 @@ $GLOBALS['ISO_ATTR'] = array
 	// Featured Item		
 	array
 	( 
-		'pid'						=> $dc->id, 
+		'pid'						=> 0,
 		'tstamp'					=> time(),
 		'sorting'					=> $intSorting,
 		'type'						=> 'checkbox',
