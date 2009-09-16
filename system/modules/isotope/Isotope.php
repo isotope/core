@@ -51,11 +51,17 @@ class Isotope extends Controller
 		$this->import('Database');
 		$this->import('FrontendUser', 'User');
 		
+		
+		
 		$blnForceDefault = (TL_MODE=='BE' ? true : false);
+		
 		$this->setStore($blnForceDefault);
+		
+		
 		
 		$this->import('IsotopeStore', 'Store');
 	}
+	
 	
 	
 	/**
@@ -118,7 +124,6 @@ class Isotope extends Controller
 	 */
 	public function getDefaultStore()
 	{
-	
 		$objDefaultStore = $this->Database->prepare("SELECT id, isDefaultStore FROM tl_store")
 											  ->execute(1);
 											  			
@@ -133,7 +138,7 @@ class Isotope extends Controller
 			{
 				return $objDefaultStore->id;
 			}
-		}
+		}	
 		
 		$objDefaultStore->first();	//grab the first store in the list if none are set as default
 		
@@ -582,6 +587,6 @@ class Isotope extends Controller
 		}
 		
 		return 0;
-	}
+	}		
 }
 

@@ -111,6 +111,8 @@ class ProductCatalog extends Backend
 		{
 			$this->createTable();
 		}	
+		
+		
 		//Check for any missing standard attributes and build a list which can then be added into the table tl_product_data.		
 		foreach($GLOBALS['ISO_ATTR'] as $arrSet)
 		{
@@ -150,7 +152,6 @@ class ProductCatalog extends Backend
 				$sorting+=128;
 			}
 		}		
-		
 		$this->initializeFields();	//Get field data from tl_product_attributes.  Stored in this->arrFields.
 		
 		// setup global array first
@@ -1153,7 +1154,6 @@ class ProductCatalog extends Backend
 		}
 		
 	}
-	
 		
 	
 	public function renameColumn($varValue, DataContainer $dc)

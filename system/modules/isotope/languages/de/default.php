@@ -50,6 +50,7 @@ $GLOBALS['TL_LANG']['ERR']['noStoreIdFound'] = 'No store id was found associated
 $GLOBALS['TL_LANG']['ERR']['order_conditions'] = 'Sie müssen die AGB akzeptieren um fortzufahren';
 $GLOBALS['TL_LANG']['ERR']['noStoreConfigurationSet'] = 'Please create a store configuration';
 $GLOBALS['TL_LANG']['ERR']['productNameMissing'] = '<no product name found>';
+$GLOBALS['TL_LANG']['ERR']['noSubProducts'] = 'no sub-products found';
 
 /**
  * Miscellaneous

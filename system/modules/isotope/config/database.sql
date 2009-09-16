@@ -57,7 +57,7 @@ CREATE TABLE `tl_product_data` (
 
 
 -- 
--- Table `tl_product_attribute_types
+-- Table `tl_product_types
 --
 
 CREATE TABLE `tl_product_types` (
@@ -72,6 +72,29 @@ CREATE TABLE `tl_product_types` (
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+-- Added by Winans Creative for Isotope Extensions
+
+-- --------------------------------------------------------
+
+-- 
+-- Table `tl_product_attribute_types
+--
+
+CREATE TABLE `tl_product_attribute_types` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `pid` int(10) unsigned NOT NULL default '0',
+  `sorting` int(10) unsigned NOT NULL default '0',
+  `tstamp` int(10) unsigned NOT NULL default '0',
+  `type` varchar(255) NOT NULL,
+  `attr_datatype` varchar(255) NOT NULL default '',
+  `inputType` varchar(64) NOT NULL,
+  `eval` text NOT NULL,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY  (`id`),
+  KEY `pid` (`pid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 
 -- INSERT INTO `tl_product_attribute_types` (`id`, `pid`, `sorting`, `tstamp`, `type`, `attr_datatype`, `inputType`, `eval`, `name`) VALUES

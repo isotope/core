@@ -28,7 +28,7 @@
 /**
  * Palettes
  */
-$GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] .= ';isotope_base_path'; 
+//$GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] .= ';{isotope_settings},isotope_base_path'; 
 
 
 /**

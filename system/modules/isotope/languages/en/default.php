@@ -49,6 +49,7 @@ $GLOBALS['TL_LANG']['ERR']['order_conditions'] = 'You must accept the terms & co
 $GLOBALS['TL_LANG']['ERR']['noStoreConfigurationSet'] = 'Please create a store configuration';
 
 $GLOBALS['TL_LANG']['ERR']['productNameMissing'] = '<no product name found>';
+$GLOBALS['TL_LANG']['ERR']['noSubProducts'] = 'no sub-products found';
 
 //Checkout Errors
 $GLOBALS['TL_LANG']['MSC']['ERR']['specifyBillingAddress'] = 'A billing address was not fuond.  Please specify a billing address.';

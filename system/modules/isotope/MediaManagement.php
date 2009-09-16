@@ -84,6 +84,21 @@ class MediaManagement extends Backend
 	 */
 	public function createMediaDirectoryStructure(DataContainer $dc)
 	{
+		/*if(!is_dir(TL_ROOT . '/' . 'isotope'))
+		{
+			$this->createIsotopeRootPath();
+		}*/
+		
+		if(!is_dir(TL_ROOT . '/' . 'isotope' . '/' . $GLOBALS['TL_LANG']['MSC']['assetsImportBasePath']))
+		{
+			$this->createIsotopeUploadPath();
+		}
+		
+		
+		if(!is_dir(TL_ROOT . '/' . 'isotope' . '/' . 'product_assets'))
+		{
+			$this->createProductAssetsBasePath();
+		}
 		
 		$this->strBasePath = $GLOBALS['TL_CONFIG']['isotope_upload_path'] . '/' . $GLOBALS['TL_CONFIG']['isotope_base_path'];
 						
@@ -108,6 +123,56 @@ class MediaManagement extends Backend
 	}
 	
 	
+	/*protected function createIsotopeRootPath()
+	{
+		
+			
+		if(!isset($GLOBALS['TL_CONFIG']['isotope_root']))
+		{
+			$this->Config->add("\$GLOBALS['TL_CONFIG']['isotope_root']", TL_ROOT . '/isotope');
+		}
+				
+		new Folder('isotope');
+		
+		return;		
+	}*/
+
+	protected function createProductAssetsBasePath()
+	{
+		if(!isset($GLOBALS['TL_CONFIG']['isotope_root']))
+		{
+			$this->Config->add("\$GLOBALS['TL_CONFIG']['isotope_root']", TL_ROOT . '/isotope');
+		}
+		
+		//Default to standard folder name			
+		$strFolderName = 'product_assets';
+			
+		//Default assets base path - all subfolders are directly related to products.				
+		if(!is_dir($GLOBALS['TL_CONFIG']['isotope_root'] . '/' . $strFolderName))
+		{
+			new Folder('isotope' . '/' . $strFolderName);
+		}
+		
+		return;
+	}	
+	
+	protected function createIsotopeUploadPath()
+	{
+		//The Default Import Folder for Isotope
+		if(!is_dir($GLOBALS['TL_CONFIG']['isotope_root'] . '/' . $GLOBALS['TL_LANG']['MSC']['assetsImportBasePath']))
+		{
+			new Folder('isotope' . '/' . $GLOBALS['TL_LANG']['MSC']['assetsImportBasePath']);
+		}	
+			
+		if(!isset($GLOBALS['TL_CONFIG']['isotope_upload_path']))
+		{
+			$this->Config->add("\$GLOBALS['TL_CONFIG']['isotope_upload_path']", 'isotope');
+		}
+
+		return;
+	}
+	
+	
 	/**
 	 * Check for and create required product asset folders.  These folders are organized as such
 	 * isotope/product_assets/<alphanumeric classifier>/<alias>/audio
@@ -125,6 +190,7 @@ class MediaManagement extends Backend
 	 
 	public function createProductAssetFolders($varValue, DataContainer $dc, $strMode="")
 	{	
+		
 		if($dc->field!='alias' && $strMode!="import")
 		{
 			return $varValue;
