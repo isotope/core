@@ -84,6 +84,7 @@ class ProductCatalog extends Backend
 			`pages` text NULL,
 			`type` varchar(255) NOT NULL default '',
 			`new_import` char(1) NOT NULL default '',
+  			`old_images_list` text NULL,
 			PRIMARY KEY  (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 	
