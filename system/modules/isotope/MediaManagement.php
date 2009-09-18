@@ -84,10 +84,10 @@ class MediaManagement extends Backend
 	 */
 	public function createMediaDirectoryStructure(DataContainer $dc)
 	{
-		/*if(!is_dir(TL_ROOT . '/' . 'isotope'))
+		if(!is_dir(TL_ROOT . '/' . 'isotope'))
 		{
 			$this->createIsotopeRootPath();
-		}*/
+		}
 		
 		if(!is_dir(TL_ROOT . '/' . 'isotope' . '/' . $GLOBALS['TL_LANG']['MSC']['assetsImportBasePath']))
 		{

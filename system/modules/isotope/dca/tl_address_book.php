@@ -47,10 +47,11 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 	(
 		'sorting' => array
 		(
-			'mode'                    => 2,
-			'fields'                  => array('lastname'),
+			'mode'                    => 4,
+			'headerFields'			  => array('firstname','lastname'),
 			'flag'                    => 1,
-			'panelLayout'             => 'filter;sort,search,limit'
+			'panelLayout'             => 'filter;sort,search,limit',
+			'child_record_callback'   => array('tl_address_book','renderLabel')
 		),
 		'label' => array
 		(
@@ -259,6 +260,7 @@ class tl_address_book extends Backend
 		return sprintf('<div class="list_icon" style="background-image:url(\'system/themes/%s/images/%s.gif\');">%s</div>', $this->getTheme(), $image, $label);
 	}
 	
+	public function
 	
 	/**
 	 * copyInitialAddress function.

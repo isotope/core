@@ -63,7 +63,7 @@ class ProductCatalog extends Backend
 	protected $arrTypes = array('text','password','textarea','select','radio','checkbox','upload', 'hidden');
 	protected $arrList = array ('tstamp','pages','new_import'/*,'add_audio_file','add_video_file'*/);	//Basic required fields
 	protected $arrDefault = array ('id', 'tstamp','pages','type','new_import');
-	protected $basePaletteAttributes = '{general_legend},type,pages,';
+	protected $basePaletteAttributes = '{general_legend},type,';
 	protected $arrCountMax = array();
 	protected $arrCountFree = array();
 	protected $arrData = array();
@@ -318,7 +318,7 @@ class ProductCatalog extends Backend
 			'filter'				  => true,
 			'sorting'				  => true,
 			'flag'                    => 1,
-			'eval'                    => array('mandatory'=>true,'fieldType'=>'checkbox', 'multiple'=>true, 'helpwizard'=>true),
+			'eval'                    => array('mandatory'=>false,'fieldType'=>'checkbox', 'multiple'=>true, 'helpwizard'=>true),
 			'reference'			      => $this->getPageLabels(),
 			'save_callback'			  => array
 			(
@@ -1009,13 +1009,24 @@ class ProductCatalog extends Backend
 			throw new Exception('No fields returned.');
 		}
 		
+		$arrFieldsAndGroups = array();
+		
 		//Create an array grouped by field group
 		while($objFieldGroups->next())
-		{
-			$arrFieldsAndGroups[$objFieldGroups->fieldGroup][] = $objFieldGroups->field_name;
+		{		
+			if(!is_array($arrFieldsAndGroups[$objFieldGroups->fieldGroup]))
+			{
+				$arrFieldsAndGroups[$objFieldGroups->fieldGroup] = array();
+			}	
+			
+			if($objFieldGroups->fieldGroup == 'general_legend' && !in_array('pages', $arrFieldsAndGroups[$objFieldGroups->fieldGroup]))
+			{
+				$arrFieldsAndGroups[$objFieldGroups->fieldGroup][] = 'pages';	//necessary to squeak a required attribute into the prod. type palette.
+			}
+			
+			$arrFieldsAndGroups[$objFieldGroups->fieldGroup][] = $objFieldGroups->field_name;			
 		}
 			
-			//var_dump($arrFieldsAndGroups['media_legend']);
 		//This is necessary because otherwise, attributes that do not fall in sequential order in terms of cardinality then get placed out of order in the
 		//palette string.  This allows us to not have to worry about that but ensuring groups are in the correct order.
 		foreach($GLOBALS['ISO_MSC']['tl_product_data']['groups_ordering'] as $group)
@@ -1491,28 +1502,18 @@ class ProductCatalog extends Backend
 			$intId = $dc->id;
 		}
 		
+		//the initial teaser chunk
 		$string = substr($varValue, 0, $GLOBALS['TL_LANG']['MSC']['teaserLength']);
-							
-		if(!strpos($string, "."))
-		{
-			//Get the position of the first period after the first X number of characters
-			$intFirstPeriod = strpos($varValue, ".", $intLength);
-			
-			$intFirstPeriod++;
-			
-			$string = substr($varValue, 0, $intFirstPeriod);
-		}
 		
-		if(strlen($string) < 1)
-		{
-			return '';
-		}
+		$strFinal = strip_tags($string);					
+		
+		$string = preg_replace('/\[nbsp\]/', '', $strFinal);
 			
-		$char = strtolower(strlen($string));
+		/*$char = strtolower(strlen($strFinal));
 								
 		while ($char > 0)
 		{
-			if ($string{$char} == ".")
+			if ($strFinal{$char} == ".")
 			{
 				break;
 			}else{
@@ -1522,8 +1523,8 @@ class ProductCatalog extends Backend
 		}
 		
 		$char++;
-		
-		$string = substr($string, 0, $char); 	
+				
+		$string = substr($strFinal, 0, $char); 	*/
 							
 		$objCurrentTeaser = $this->Database->prepare("SELECT teaser FROM tl_product_data WHERE id=?")
 										   ->limit(1)
