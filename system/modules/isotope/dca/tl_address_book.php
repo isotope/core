@@ -260,8 +260,6 @@ class tl_address_book extends Backend
 		return sprintf('<div class="list_icon" style="background-image:url(\'system/themes/%s/images/%s.gif\');">%s</div>', $this->getTheme(), $image, $label);
 	}
 	
-	public function
-	
 	/**
 	 * copyInitialAddress function.
 	 * 

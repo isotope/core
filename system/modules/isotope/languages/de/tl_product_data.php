@@ -26,13 +26,23 @@
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_product_data']['pages'] = array('Kategorien','Wählen Sie eine Kategorie (Seite) für dieses Produkt.');
-
+$GLOBALS['TL_LANG']['tl_product_data']['type'] = array('Product Type','Product types are defined in the Product Type Manager.');
+$GLOBALS['TL_LANG']['tl_product_data']['option_set_source'] = array('Option Set Source','Use an existing option set or create a new one');
+$GLOBALS['TL_LANG']['tl_product_data']['option_sets'] = array('Option Sets','Select an existing Option Set');
+$GLOBALS['TL_LANG']['tl_product_data']['option_set_title'] = array('Option Set Title','Name your new option set. The combination of values for each attribute will be stored and used to produce a new collection of empty subproducts.');
+$GLOBALS['TL_LANG']['tl_product_data']['variants_wizard'] = array('Product Variants','Configure product variants');
 
 /**
  * Reference
  */
 $GLOBALS['TL_LANG']['tl_product_data']['internal'] = array('Interne Datei', 'Wählen Sie eine vorhandene Mediadatei auf dem Webserver aus (Flash oder MP3).');
 $GLOBALS['TL_LANG']['tl_product_data']['external'] = array('Externe Datei', 'Geben Sie den Video einer externen Quelle (wie YouTube) an.');
+
+$GLOBALS['TL_LANG']['tl_product_data']['values']			= 'Option Values';
+$GLOBALS['TL_LANG']['tl_product_data']['sku']				= 'SKU';
+$GLOBALS['TL_LANG']['tl_product_data']['price_change']	= 'Price Change';
+$GLOBALS['TL_LANG']['tl_product_data']['weight_change']	= 'Weight Change';
+$GLOBALS['TL_LANG']['tl_product_data']['quantity']		= 'Quantity';
 
 
 /**

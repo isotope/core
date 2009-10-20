@@ -51,7 +51,6 @@ $GLOBALS['TL_LANG']['ERR']['order_conditions'] = 'Sie müssen die AGB akzeptiere
 $GLOBALS['TL_LANG']['ERR']['noStoreConfigurationSet'] = 'Please create a store configuration';
 $GLOBALS['TL_LANG']['ERR']['productNameMissing'] = '<no product name found>';
 $GLOBALS['TL_LANG']['ERR']['noSubProducts'] = 'no sub-products found';
-
 /**
  * Miscellaneous
  */
@@ -91,6 +90,7 @@ $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'] = 'Total: ';
 $GLOBALS['TL_LANG']['MSC']['shippingLabel'] = 'Versandkosten: ';
 $GLOBALS['TL_LANG']['MSC']['taxLabel'] = 'Enthaltene MwSt: ';
 $GLOBALS['TL_LANG']['MSC']['shippingOptionsLabel'] = 'Selected Shipping Options: ';
+$GLOBALS['TL_LANG']['MSC']['actualPrice'] = 'Actual Price';
 
 $GLOBALS['TL_LANG']['MSC']['noPaymentModules'] = 'Zur Zeit sind keine Zahlungsoptionen verfügbar.';
 $GLOBALS['TL_LANG']['MSC']['noShippingModules'] = 'Zur Zeit sind keine Versandoptionen verfügbar.';
@@ -100,6 +100,7 @@ $GLOBALS['TL_LANG']['MSC']['noShippingModules'] = 'Zur Zeit sind keine Versandop
 $GLOBALS['TL_LANG']['ISO']['productSingle']		= '1 Produkt';
 $GLOBALS['TL_LANG']['ISO']['productMultiple']	= '%s Produkte';
 
+$GLOBALS['TL_LANG']['MSC']['optionSetTitle'] = 'Option Set Name';
 
 /**
  * Shipping modules

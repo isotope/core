@@ -54,6 +54,27 @@ CREATE TABLE `tl_product_data` (
   `type` varchar(255) NOT NULL default '',
   `new_import` char(1) NOT NULL default '',
   `old_images_list` text NULL,
+  `option_set_source` varchar(64) NOT NULL default '',
+  `option_sets` int(10) unsigned NOT NULL default '0',
+  `option_set_title` varchar(255) NOT NULL default '',
+  `variants_wizard` text NULL,
+  PRIMARY KEY  (`id`),
+  KEY `pid` (`pid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Table `tl_product_option_sets` pid is product type id.
+--
+CREATE TABLE `tl_product_option_sets` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `pid` int(10) unsigned NOT NULL default '0',
+  `sorting` int(10) unsigned NOT NULL default '0',
+  `tstamp` int(10) unsigned NOT NULL default '0',
+  `title` varchar(255) NOT NULL default '',
+  `attribute_collection` text NULL,
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

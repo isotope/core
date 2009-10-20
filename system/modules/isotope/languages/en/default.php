@@ -51,6 +51,7 @@ $GLOBALS['TL_LANG']['ERR']['noStoreConfigurationSet'] = 'Please create a store c
 $GLOBALS['TL_LANG']['ERR']['productNameMissing'] = '<no product name found>';
 $GLOBALS['TL_LANG']['ERR']['noSubProducts'] = 'no sub-products found';
 
+
 //Checkout Errors
 $GLOBALS['TL_LANG']['MSC']['ERR']['specifyBillingAddress'] = 'A billing address was not fuond.  Please specify a billing address.';
 
@@ -109,9 +110,10 @@ $GLOBALS['TL_LANG']['MSC']['shippingLabel'] = 'Shipping: ';
 $GLOBALS['TL_LANG']['MSC']['taxLabel'] = '%s Tax: ';
 $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'] = 'Order Total: ';
 $GLOBALS['TL_LANG']['MSC']['shippingOptionsLabel'] = 'Selected Shipping Options: ';
-
+$GLOBALS['TL_LANG']['MSC']['noVariants'] = 'No product variants found.';
+$GLOBALS['TL_LANG']['MSC']['generateSubproducts'] = 'Generate Subproducts';
 $GLOBALS['TL_LANG']['MSC']['selectItemPrompt'] = "(select)";
-
+$GLOBALS['TL_LANG']['MSC']['actualPrice'] = 'Actual Price';
 $GLOBALS['TL_LANG']['MSC']['noPaymentModules'] = 'No payment options are currently available';
 $GLOBALS['TL_LANG']['MSC']['noShippingModules'] = 'No shipping options are currently available.';
 //Checkout language entries 

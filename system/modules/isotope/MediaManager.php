@@ -634,7 +634,7 @@ class MediaManager extends Widget
 	 */
 	public function getFiles($strPath, $strMediaType)
 	{
-		$dir = $GLOBALS['TL_CONFIG']['isotope_root'] . '/' . $strPath;
+		$dir = TL_ROOT . '/isotope/' . $strPath;
 		
 		$arrMediaTypes = array_keys($GLOBALS['TL_LANG']['MSC']['validMediaFileTypes']);
 		

@@ -27,6 +27,24 @@
  */
 $GLOBALS['TL_LANG']['tl_product_data']['pages'] = array('Categories','Select a category (page-based categories take advantage of TYPOlight pages features such as navigation automation, protection, templates, and full integration with content elements.');
 $GLOBALS['TL_LANG']['tl_product_data']['type'] = array('Product Type','Product types are defined in the Product Type Manager.');
+$GLOBALS['TL_LANG']['tl_product_data']['option_set_source'] = array('Option Set Source','Use an existing option set or create a new one');
+$GLOBALS['TL_LANG']['tl_product_data']['option_sets'] = array('Option Sets','Select an existing Option Set');
+$GLOBALS['TL_LANG']['tl_product_data']['option_set_title'] = array('Option Set Title','Name your new option set. The combination of values for each attribute will be stored and used to produce a new collection of empty subproducts.');
+$GLOBALS['TL_LANG']['tl_product_data']['variants_wizard'] = array('Product Variants','Configure product variants');
+
+
+/*
+$GLOBALS['TL_LANG']['tl_product_data']['optionSetTitle'] = array('New Option Set','Create a new option set');
+$GLOBALS['TL_LANG']['tl_product_data']['optionSetSelect'] = array('Option Set','Select an existing option set');
+$GLOBALS['TL_LANG']['tl_product_data']['useOrCreateOptionSet'] = array('Option Set Mode','');
+*/
+$GLOBALS['TL_LANG']['tl_product_data']['enabled'] = 'Enabled';
+$GLOBALS['TL_LANG']['tl_product_data']['values']			= 'Option Values';
+$GLOBALS['TL_LANG']['tl_product_data']['sku']				= 'SKU';
+$GLOBALS['TL_LANG']['tl_product_data']['price']	= 'Price Change';
+$GLOBALS['TL_LANG']['tl_product_data']['weight']	= 'Weight Change';
+$GLOBALS['TL_LANG']['tl_product_data']['quantity']		= 'Quantity';
+
 /*
 $GLOBALS['TL_LANG']['tl_product_data']['audio_source'] = array('Audio File Source', 'Link to an internal or external media source instead of the default page.');
 $GLOBALS['TL_LANG']['tl_product_data']['audio_jumpTo'] = array('Select Internal File', 'Please select the page to which visitors will be redirected.');
@@ -47,6 +65,9 @@ $GLOBALS['TL_LANG']['tl_product_data']['external'] = array('External file', 'Spe
 
 $GLOBALS['TL_LANG']['tl_product_data']['opAttribute'] = 'Product Attribute';
 $GLOBALS['TL_LANG']['tl_product_data']['opValueSets'] = 'Option Values';
+
+$GLOBALS['TL_LANG']['tl_product_data']['existing_option_set'] = 'Select an existing product option set';
+$GLOBALS['TL_LANG']['tl_product_data']['new_option_set'] = 'Create a new product option set';
 
 /**
  * Buttons

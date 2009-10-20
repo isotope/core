@@ -129,7 +129,9 @@ $GLOBALS['TL_HOOKS']['executePostActions'][] = array('ProductOptionWizard', 'exe
  * Backend widgets
  */
 $GLOBALS['BE_FFL']['mediaManager'] = 'MediaManager';
-$GLOBALS['BE_FFL']['productOptionsWizard'] = 'ProductOptionsWizard';
+$GLOBALS['BE_FFL']['variantsWizard'] = 'VariantsWizard';
+
+//$GLOBALS['BE_FFL']['productOptionsWizard'] = 'ProductOptionsWizard';
 
 /**
  * Frontend modules
@@ -363,7 +365,7 @@ $GLOBALS['ISO_ATTR'] = array
 		'attr_use_mode'				=> 'fixed',
 		'is_customer_defined'		=> 0,
 		'is_visible_on_front'		=> 1,
-		'is_required'				=> 1,
+		'is_required'				=> 0,
 		'is_filterable'				=> 0,
 		'is_searchable'				=> 1,
 		'is_used_for_price_rules'	=> 0,

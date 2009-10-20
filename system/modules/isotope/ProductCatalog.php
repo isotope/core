@@ -63,11 +63,13 @@ class ProductCatalog extends Backend
 	protected $arrTypes = array('text','password','textarea','select','radio','checkbox','upload', 'hidden');
 	protected $arrList = array ('tstamp','pages','new_import'/*,'add_audio_file','add_video_file'*/);	//Basic required fields
 	protected $arrDefault = array ('id', 'tstamp','pages','type','new_import');
-	protected $basePaletteAttributes = '{general_legend},type,';
+	protected $basePaletteAttributes = '{general_legend},type';
 	protected $arrCountMax = array();
 	protected $arrCountFree = array();
 	protected $arrData = array();
-
+	protected $arrSubPalettes = array();
+	protected $arrSelectors = array();
+	
 	protected $systemColumns = array('id', 'pid', 'sorting', 'tstamp');
 	
 	protected $renameColumnStatement = "ALTER TABLE tl_product_data CHANGE COLUMN %s %s %s";
@@ -275,10 +277,6 @@ class ProductCatalog extends Backend
 		//$GLOBALS['TL_DCA']['tl_product_data']['palettes']['__selector__'] = array('add_audio_file','add_video_file');
 		$GLOBALS['TL_DCA']['tl_product_data']['palettes']['__selector__'] = array('type');
 		
-		//$arrAdditionalSelectors = $this->getSelectors();
-		
-		//$GLOBALS['TL_DCA']['tl_product_data']['palettes']['__selector__'] = array_merge($GLOBALS['TL_DCA']['tl_product_data']['palettes']['__selector__'], $arrAdditionalSelectors);
-		
 		//TODO: Make palettes dynamic - start with the basic fields and add additionals for the default palette, while loading the palettes as defined by
 		// each product type from tl_product_types.
 					
@@ -287,8 +285,15 @@ class ProductCatalog extends Backend
 		$GLOBALS['TL_DCA']['tl_product_data']['palettes'] = array_merge($GLOBALS['TL_DCA']['tl_product_data']['palettes'],$arrProductTypePalettes); 
 		//$GLOBALS['TL_DCA']['tl_product_data']['subpalettes']['add_audio_file'] = 'audio_source,audio_jumpTo,audio_url';
 		//$GLOBALS['TL_DCA']['tl_product_data']['subpalettes']['add_video_file'] = 'video_source,video_jumpTo,video_url';
-		//$GLOBALS['TL_DCA']['tl_product_data']['subpalettes'] = $this->getSubpalettes();
 		
+		$arrAdditionalSelectors = $this->arrSelectors;
+		
+		$GLOBALS['TL_DCA']['tl_product_data']['palettes']['__selector__'] = array_merge($GLOBALS['TL_DCA']['tl_product_data']['palettes']['__selector__'], $arrAdditionalSelectors);
+		
+		$GLOBALS['TL_DCA']['tl_product_data']['subpalettes'] = $this->arrSubPalettes;
+
+		//var_dump($GLOBALS['TL_DCA']['tl_product_data']['palettes']);
+
 		// first add common DCA fields
 		$GLOBALS['TL_DCA']['tl_product_data']['fields']['type'] = 
 		array
@@ -325,7 +330,50 @@ class ProductCatalog extends Backend
 				array('ProductCatalog','saveProductToCategories')
 			)
 			//'explanation'             => 'pageCategories'
-		);	
+		);
+		
+		/*$GLOBALS['TL_DCA']['tl_product_data']['fields']['create_variations'] = array
+		(
+			'label'					  => &$GLOBALS['TL_LANG']['tl_product_data']['create_variations'],
+			'inputType'				  => 'checkbox',
+			'eval'					  => array('submitOnChange'=>true)		
+		);*/
+		
+		$GLOBALS['TL_DCA']['tl_product_data']['fields']['option_set_source'] = array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['option_set_source'],
+			'default'                 => 'new_option_set',
+			'inputType'               => 'radio',
+			//'options'                 => array('existing_option_set', 'new_option_set'),
+			'reference'               => &$GLOBALS['TL_LANG']['tl_product_data'],
+			'eval'                    => array('submitOnChange'=>true),	//, 'helpwizard'=>true)
+			'options_callback'		  => array('ProductCatalog','getOptionSets')
+		);
+			
+		$GLOBALS['TL_DCA']['tl_product_data']['fields']['option_sets'] = array
+		(
+			'label'					  =>  &$GLOBALS['TL_LANG']['tl_product_data']['option_sets'],
+			'inputType'				  => 'select',
+			'eval'					  => array('includeBlankOption'=>true, 'submitOnChange'=>true),
+			'options_callback'		  => array('ProductCatalog','getProductOptionSets')
+		);
+		
+		$GLOBALS['TL_DCA']['tl_product_data']['fields']['option_set_title'] = array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['option_set_title'],
+			'search'                  => true,
+			'inputType'               => 'text',
+			'eval'                    => array('rgxp'=>'extnd', 'maxlength'=>255)
+		);
+			
+		$GLOBALS['TL_DCA']['tl_product_data']['fields']['variants_wizard'] = array
+		(
+			'label'					  => &$GLOBALS['TL_LANG']['tl_product_data']['variants_wizard'],
+			'inputType' 			  => 'variantsWizard',
+			'eval'					  => array('mandatory'=>false, 'enableDelete'=>false, 'helpwizard'=>false),
+			'explanation'			  => 'variantsWizard'
+		);
+		
 		/*
 		$GLOBALS['TL_DCA']['tl_product_data']['fields']['add_audio_file'] = array
 		(
@@ -607,13 +655,83 @@ class ProductCatalog extends Backend
 			}
 			
 		}
-		
+
 		return $strTable;
 		
 	}
 	
-	public function saveProductOptions($varValue, DataContainer $dc)
+	protected function getProductType($intProductId)
 	{
+		$objProductType = $this->Database->prepare("SELECT type FROM tl_product_data WHERE id=?")
+										 ->limit(1)
+										 ->execute($intProductId);
+		
+		if($objProductType->numRows < 1)
+		{
+			throw new Exception('no product type returned for this product!');	//TODO: Add to language array
+		}
+		
+		return $objProductType->type;
+		
+	}
+
+	
+	protected function getProductOptionSets()
+	{
+		$intPid = $this->getProductType($this->Input->get('id'));
+	
+		$objSets = $this->Database->prepare("SELECT id, title FROM tl_product_option_sets WHERE pid=?")
+								  ->execute($intPid);
+		
+		if($objSets->numRows < 1)
+		{
+			return array();	
+		}
+		
+		$arrSets = $objSets->fetchAllAssoc();
+				
+		foreach($arrSets as $row)
+		{
+			$arrReturn[$row['id']] = $row['title'];
+		}
+		
+		return $arrReturn;
+	
+	}
+	
+	public function loadProductOptions($varValue, DataContainer $dc)
+	{
+		$strOptionSetValue = $this->Input->post('option_set_mode');
+						
+		switch($strOptionSetValue)
+		{
+			case 'new_option_set':
+				$strOptionSetName = $this->Input->post('option_set_name');
+				$arrValues = $this->Input->post('values');
+				if(!sizeof($arrValues))
+				{
+					return $varValue;
+				}else{
+					foreach($arrValues as $key=>$attribute)
+					{
+						$arrAttributes[$key] = explode(',', trim($attribute));
+					}
+					
+					
+				}
+				break;
+			case 'existing_option_set':
+				$strOptionSetId = $this->Input->post('option_sets');
+				
+				$arrSubProducts = $this->loadSubproducts($strOptionSetId);
+				
+				break;		
+		}
+			
+		
+
+		//$
+				
 		//** Data structure example **//
 		/*
 			array(2) {
@@ -684,7 +802,7 @@ class ProductCatalog extends Backend
 			
 			}
 		
-		*/
+		
 		$arrAttributes = deserialize($varValue);	//because the first thing that happens is this, on save.	
 		$arrValues = $this->Input->post($dc->field . '_values'); 
 	
@@ -709,11 +827,11 @@ class ProductCatalog extends Backend
 		
 		}
 		
-		return serialize($arrAttributeValuePairs);
+		return serialize($arrAttributeValuePairs);*/
 		
 	}
 	
-	public function loadProductOptions($varValue, DataContainer $dc)
+	/*public function loadProductOptions($varValue, DataContainer $dc)
 	{
 		$arrAttributeValuePairs = deserialize($varValue);
 		
@@ -733,7 +851,7 @@ class ProductCatalog extends Backend
 				
 				$arrAttributes[$x][$y] = $row['attribute'];
 				
-				$arrValues[$x][$y] = $row['value'];
+				$arrValues[$x][$y] = $row['value'];*/
 				
 				/*
 				$varValue[$valuePair['x']] = array
@@ -748,14 +866,14 @@ class ProductCatalog extends Backend
 					$row['x']+1		=>  $valuePair[$row['x']+1]['value']
 				);*/
 		
-		}	
-			$_SESSION['FORM_DATA'][$dc->field . '_values'] = $arrValues;
+		//}	
+			//$_SESSION['FORM_DATA'][$dc->field . '_values'] = $arrValues;
 			//$_SESSION['FORM_DATA'][$dc->field] = $arrAttributes;
 			
 			//serialize($_SESSION['FORM_DATA'][$dc->field.'_values']);
 			//
 			//$varValue = $arrAttributes;
-			return $arrAttributes;
+			//return $arrAttributes;
 			
 			/*array(2) {
 			  [0]=>			/// ROWS
@@ -776,7 +894,7 @@ class ProductCatalog extends Backend
 			
 	
 	
-	}
+	//}
 	
 	public function loadField($varValue, DataContainer $dc)
 	{
@@ -948,7 +1066,7 @@ class ProductCatalog extends Backend
 		}
 			
 		
-		$objAttributes = $this->Database->prepare("SELECT id, is_hidden_on_backend FROM tl_product_attributes")->execute();
+		$objAttributes = $this->Database->prepare("SELECT id, is_hidden_on_backend, is_customer_defined FROM tl_product_attributes")->execute();
 		
 		if($objAttributes->numRows < 1)
 		{
@@ -959,7 +1077,7 @@ class ProductCatalog extends Backend
 			
 		foreach($arrAttributes as $attribute)
 		{
-			$arrHiddenAttributes[$attribute['id']] = $attribute['is_hidden_on_backend'];
+			$arrHiddenAttributes[$attribute['id']] = ($attribute['is_hidden_on_backend'] ? $attribute['is_hidden_on_backend'] : $attribute['is_customer_defined']);
 		
 		}		
 		
@@ -983,9 +1101,12 @@ class ProductCatalog extends Backend
 									
 			$strAttributes = $this->buildPaletteString($arrFieldCollection);
 			
-			$arrPalettes[$objProductTypes->alias] = $strAttributes;
+			$arrPalettes[$objProductTypes->alias] = $strAttributes;					
 			
+			$arrPalettes[$objProductTypes->alias . '_existing_option_set'] = $this->buildPaletteString($arrFieldCollection, 'options_legend', array('option_sets','variants_wizard'));
+			$arrPalettes[$objProductTypes->alias . '_new_option_set'] = $this->buildPaletteString($arrFieldCollection, 'options_legend', array('option_set_title','variants_wizard'));
 		}
+			
 				
 		return $arrPalettes;
 	}
@@ -997,7 +1118,7 @@ class ProductCatalog extends Backend
 	}
 	
 	
-	private function buildPaletteString($arrAttributes)
+	private function buildPaletteString($arrAttributes, $strAppendToLegend = '', $arrExtraFields = array())
 	{
 		$strFields = join(',', $arrAttributes);
 	
@@ -1024,8 +1145,45 @@ class ProductCatalog extends Backend
 				$arrFieldsAndGroups[$objFieldGroups->fieldGroup][] = 'pages';	//necessary to squeak a required attribute into the prod. type palette.
 			}
 			
+			if($objFieldGroups->fieldGroup == 'options_legend' && !in_array('option_set_source', $arrFieldsAndGroups[$objFieldGroups->fieldGroup]))
+			{
+				$arrFieldsAndGroups[$objFieldGroups->fieldGroup][] = 'option_set_source';
+			}
+
+			if($objFieldGroups->fieldGroup == $strAppendToLegend && sizeof($arrExtraFields))
+			{
+				foreach($arrExtraFields as $field)
+				{
+					$arrFieldsAndGroups[$objFieldGroups->fieldGroup][] = $field;
+				}
+			}
+
+			//To do - detemine if product can support variants.  This would be determined by any customer defined attributes being a part of the given palette or not.
+			/*if($objFieldGroups->fieldGroup == 'options_legend' && !in_array('options_set_source', $arrFieldsAndGroups[$objFieldGroups->fieldGroup]))
+			{
+				if(!in_array('option_set_source', $this->arrSelectors))
+				{
+					$this->arrSelectors[] = 'option_set_source';
+				}
+								
+				if(!in_array('option_set_source', $arrFieldsAndGroups[$objFieldGroups->fieldGroup]))
+				{
+					$arrFieldsAndGroups[$objFieldGroups->fieldGroup][] = 'option_set_source';
+				}
+				
+			}*/
+						
 			$arrFieldsAndGroups[$objFieldGroups->fieldGroup][] = $objFieldGroups->field_name;			
 		}
+
+		
+		if(!in_array('option_set_source', $this->arrSelectors))
+		{
+			$this->arrSelectors[] = 'option_set_source';
+		}
+						
+				
+		
 			
 		//This is necessary because otherwise, attributes that do not fall in sequential order in terms of cardinality then get placed out of order in the
 		//palette string.  This allows us to not have to worry about that but ensuring groups are in the correct order.
@@ -1056,6 +1214,34 @@ class ProductCatalog extends Backend
 		}
 
 		return $strPalette;
+	}
+	
+	public function getOptionSets()
+	{
+		//step 1: get the current product type
+		
+		
+		//step 2: drop in the options relevant to the current palette type.  These options must change values because of the extra palettes generated for the radio widget
+		$strCurrentPaletteType = $this->getCurrentPalette($this->Input->get('id'));
+		
+		$arrChoices[$strCurrentPaletteType . '_existing_option_set'] = &$GLOBALS['TL_LANG']['tl_product_data']['existing_option_set'];
+		$arrChoices[$strCurrentPaletteType . '_new_option_set'] = &$GLOBALS['TL_LANG']['tl_product_data']['new_option_set'];		
+		
+		return $arrChoices;
+	}
+	
+	public function getCurrentPalette($intId)
+	{
+		$objCurrentPalette = $this->Database->prepare("SELECT type FROM tl_product_data WHERE id=?")
+											->limit(1)
+											->execute($intId);
+		
+		if($objCurrentPalette->numRows < 1)
+		{
+			return '';
+		}
+		
+		return $objCurrentPalette->type;
 	}
 	
 	protected function getPageLabels()
