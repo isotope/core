@@ -143,7 +143,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'exclude'                 => true,
 			'inputType'               => 'radio',
 			'options_callback'        => array('tl_store', 'getLoginModuleList'),
-			'eval'                    => array('mandatory'=>true,'moduleTypes'=>array('login'))
+			'eval'                    => array('moduleTypes'=>array('login'))
 		),
 		'productReaderJumpTo' => array
 		(
