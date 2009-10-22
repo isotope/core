@@ -24,6 +24,12 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
+
+// Default settings, can be overwritten in localconfig.php
+$GLOBALS['TL_CONFIG']['isotope_root'] = TL_ROOT . '/isotope';
+$GLOBALS['TL_CONFIG']['isotope_upload_path'] = 'isotope';
+
+
 // Rules workaround
 $GLOBALS['ISO_RULES']['excludeAttributeSets'] = array(); //array(6, 3);
 
