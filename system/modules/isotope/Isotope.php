@@ -129,7 +129,15 @@ class Isotope extends Controller
 											  			
 		if($objDefaultStore->numRows < 1)
 		{
-			throw new Exception($GLOBALS['TL_LANG']['ERR']['noStoreConfigurationSet']);
+			if (TL_MODE == 'BE')
+			{
+				$this->log($GLOBALS['TL_LANG']['ERR']['noStoreConfigurationSet'], 'Isotope getDefaultStore', TL_ERROR);
+				$this->redirect('typolight/main.php?act=error');
+			}
+			else
+			{
+				throw new Exception($GLOBALS['TL_LANG']['ERR']['noStoreConfigurationSet']);
+			}
 		}
 		
 		while($objDefaultStore->next())
