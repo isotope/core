@@ -371,8 +371,7 @@ class tl_iso_orders extends Backend
 		  <h2>Order Comments:</h2>
 		  <div style="padding: 15px;">
 		    ' . $row['order_comments'] . '
-		  </div>-->
-		  </div>';
+		  </div>-->';
 
 	$this->Isotope->setStore(true);	//SET IT BACK!!!!
   
