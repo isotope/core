@@ -52,7 +52,9 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 		'label' => array
 		(
 			'fields'                  => array('name', 'type'),
-			'format'                  => '%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>'
+			'format'                  => '%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>',
+			'label_callback'		  => array('tl_payment_modules', 'addIcon'),
+
 		),
 		'global_operations' => array
 		(
@@ -404,6 +406,25 @@ class tl_payment_modules extends Backend
 		}
 		
 		return $arrModules;
+	}
+	
+	
+	/**
+	 * Add an image to each record
+	 * @param array
+	 * @param string
+	 * @return string
+	 */
+	public function addIcon($row, $label)
+	{
+		$image = 'published';
+
+		if (!$row['enabled'])
+		{
+			$image = 'un'.$image;
+		}
+
+		return sprintf('<div class="list_icon" style="background-image:url(\'system/themes/%s/images/%s.gif\');">%s</div>', $this->getTheme(), $image, $label);
 	}
 }
 
