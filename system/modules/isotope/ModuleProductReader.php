@@ -354,18 +354,24 @@ class ModuleProductReader extends ModuleIsotopeBase
 						default:
 							$arrAttributeData = $this->getProductAttributeData($k);
 							
+							$blnIsMergedOptionSet = true;
+							
 							if($arrAttributeData['is_customer_defined'])
 							{
 								$arrOptionFields[] = $k;
-										
-								$arrData = $this->getDCATemplate($arrAttributeData);	//Grab the skeleton DCA info for widget generation
-																
-								$product['options'][] = array
-								(
-									'name'			=> $k,
-									'description'	=> $arrAttributeData['description'],									
-									'html'			=> $this->generateProductOptionWidget($k, $arrData, $this->currFormId)
-								);
+																							
+								
+								if(!$blnIsMergedOptionSet)
+								{
+									$arrData = $this->getDCATemplate($arrAttributeData);	//Grab the skeleton DCA info for widget generation
+
+									$product['options'][] = array
+									(
+										'name'			=> $k,
+										'description'	=> $arrAttributeData['description'],									
+										'html'			=> $this->generateProductOptionWidget($k, $arrData, $this->currFormId)
+									);										
+								}
 							
 							}else{
 																					
@@ -424,6 +430,28 @@ class ModuleProductReader extends ModuleIsotopeBase
 									
 				}
 				
+				
+				if($blnIsMergedOptionSet)
+				{
+					//Create a special widget that combins all option value combos that are enabled.
+					$arrData = array
+					(
+						'name'			=> 'subproducts',
+						'description'	=> &$GLOBALS['TL_LANG']['tl_product_data']['product_options'],
+						'inputType'		=> 'select',					
+						'options'		=> $this->getSubproductOptionValues($product['id'], $arrOptionFields),
+						'eval'			=> array()
+					);
+					
+					//$arrData = $this->getDCATemplate($arrAttributeData);	//Grab the skeleton DCA info for widget generation
+
+					$product['options'][] = array
+					(
+						'name'			=> $k,
+						'description'	=> $arrAttributeData['description'],									
+						'html'			=> $this->generateProductOptionWidget('product_variants', $arrData, $this->currFormId)
+					);	
+				}
 				$this->intProductId = $product['id'];
 				
 				$arrProductIDsAndAsetIDs[] = array

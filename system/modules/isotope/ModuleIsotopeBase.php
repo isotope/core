@@ -884,7 +884,7 @@ abstract class ModuleIsotopeBase extends Module
 				{
 					//Store this options value to the productOptionsData array which is then serialized and stored for the given product that is being added to the cart.
 										
-					$this->arrProductOptionsData[] = $this->getProductOptionValues($strField, $arrData['inputType'], $varValue); 					
+					//$this->arrProductOptionsData[] = $this->getProductOptionValues($strField, $arrData['inputType'], $varValue); 					
 				}
 			}
 			
@@ -1046,7 +1046,10 @@ abstract class ModuleIsotopeBase extends Module
 			case 'checkbox':
 				$arrAttributeData['type']=='options' ? $strType = 'radio' : $strType = $arrAttributeData['type'];
 				
-				$arrOptions = $this->getOptionList($arrAttributeData);
+				//$arrOptions = $this->getOptionList($arrAttributeData);	//TODO - needs to be replaced to load option values from enabled subproducts.
+				
+				//START HERE - either grab from products themselves or else from variant_data serialized values... this would be quicker, but reliable?
+				$arrOptions = $this->getSubproductOptionValues($arrAttributeData['name']);
 					
 				$arrData['inputType'] 	= $strType;
 				$arrData['default'] 	= '';
@@ -1065,6 +1068,40 @@ abstract class ModuleIsotopeBase extends Module
 	
 	}
 
+	protected function getSubproductOptionValues($intPid, $arrOptionList)
+	{
+		$strOptionValues = join(',', $arrOptionList);
+		
+		$objData = $this->Database->prepare("SELECT id, " . $strOptionValues . ", price FROM tl_product_data WHERE pid=?")
+								  ->execute($intPid);
+		
+		if($objData->numRows < 1)
+		{
+			return false;
+		}
+		
+		$arrOptionValues = $objData->fetchAllAssoc();
+				
+		foreach($arrOptionValues as $option)
+		{
+			$arrValues = array();
+			
+			foreach($arrOptionList as $optionName)
+			{
+				$arrValues[] = $option[$optionName];
+			}
+			
+			$strOptionValue = join(',', $arrValues) . ' - ' . $this->Isotope->formatPriceWithCurrency($option['price']);
+			
+			$arrOptions[] = array
+			(
+				'value'	=>		$option['id'],
+				'label' => 		$strOptionValue
+			);
+		}
+		
+		return $arrOptions;
+	}
 	
 	protected function getOptionList($arrAttributeData)
 	{

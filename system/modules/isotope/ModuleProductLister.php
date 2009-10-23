@@ -407,7 +407,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 			}
 			else
 			{
-				$strBaseClause = "id IN(" . $product_list . ") AND visibility=1";
+				$strBaseClause = "id IN(" . $product_list . ") AND visibility=1 AND pid=0";
 			}	
 			
 			$objTotal = $this->Database->prepare("SELECT COUNT(*) as count FROM tl_product_data WHERE " . $strBaseClause . $strFilterList . $strClauses)

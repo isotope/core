@@ -135,12 +135,19 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 
 		if($strAction=='add_to_cart' || $strAction=='update_cart')
 		{			
-			$arrOptionWidgets = explode(',', $this->getRequestData('option_fields'));
+			//$arrOptionWidgets = explode(',', $this->getRequestData('option_fields'));
 			
-			if(sizeof($arrOptionWidgets))
+			/*if(sizeof($arrOptionWidgets))
 			{	
 				$this->validateOptionValues($arrOptionWidgets, $this->getRequestData('FORM_SUBMIT'));
-			}	
+			}*/
+			
+			if($this->Input->post('product_variants'))
+			{
+				$intVariantId = $this->Input->post('product_variants');
+			}else{
+				$intVariantId = 0;
+			}
 		}
 		
 		switch($strAction)
@@ -148,7 +155,13 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 			case 'add_to_cart':
 				if(!$this->doNotSubmit)
 				{
-					$this->addToCart($this->getRequestData('id'), (int)$this->getRequestData('quantity_requested'), $intSourceCartId, $this->arrProductOptionsData);
+					if($intVariantId!=0)
+					{
+						$intId = $intVariantId;
+					}else{
+						$intId = $this->getRequestData('id');
+					}
+					$this->addToCart($intId, (int)$this->getRequestData('quantity_requested'), $intSourceCartId, $this->arrProductOptionsData);
 					$this->blnRecallProductData = true;
 				}
 				break;
