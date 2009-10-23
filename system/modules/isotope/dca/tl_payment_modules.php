@@ -36,8 +36,7 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 	(
 		'dataContainer'               => 'Table',
 		'ctable'                      => array('tl_payment_options'),
-		'switchToEdit'                => true,
-		'enableVersioning'            => true
+		'enableVersioning'            => true,
 	),
 
 	// List
@@ -189,7 +188,7 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'default'                 => 0,
-			'eval'                    => array('maxlength'=>255, 'rgxp'=>'digit', 'tl_class'=>'clr w50'),
+			'eval'                    => array('maxlength'=>255, 'rgxp'=>'digit', 'tl_class'=>'w50'),
 		),
 		'countries' => array
 		(

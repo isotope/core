@@ -253,10 +253,10 @@ $GLOBALS['TL_LANG']['SHIP']['flat']				= array('Flat-price shipping');
 /**
  * Payment modules
  */
-$GLOBALS['TL_LANG']['PAY']['cash']				= array('Cash');
-$GLOBALS['TL_LANG']['PAY']['paypal']			= array('PayPal Standard');
-$GLOBALS['TL_LANG']['PAY']['postfinance']		= array('Postfinance (swiss post)');
-$GLOBALS['TL_LANG']['PAY']['authorizedotnet']  = array('Authorize.net');
+$GLOBALS['TL_LANG']['PAY']['cash']				= array('Cash', 'Use this for all offline processed payment.');
+$GLOBALS['TL_LANG']['PAY']['paypal']			= array('PayPal Standard', 'This PayPal module does currently not support IPN (Instant Payment Notifications).');
+$GLOBALS['TL_LANG']['PAY']['postfinance']		= array('Postfinance', 'Payment gateway for the swiss post payment system that supports various card types. The store will be instantly notified about successfull transactions.');
+$GLOBALS['TL_LANG']['PAY']['authorizedotnet']	= array('Authorize.net', 'An Authorize.net payment gateway.');
 
 
 
