@@ -1,4 +1,4 @@
-<?php
+<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
 
 /**
  * TYPOlight webCMS
@@ -19,21 +19,18 @@
  * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Leo Feyer 2005
- * @author     Leo Feyer <leo@typolight.org>
- * @package    System
- * @license    LGPL
- * @filesource
+ * @copyright  Winans Creative 2009
+ * @author     Fred Bliss <fred@winanscreative.com>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
-
+ 
 
 /**
  * Class DC_MediaUpload
  *
  * Provide methods to modify the Isotope file system.  Restricted to handling just the basics for now, specific folder to send uploads to.
- * @copyright  Winans Creative / Fred Bliss 2009 (Based upon DC_MediaUpload by Leo Feyer)
+ * @copyright  Winans Creative 2009 (Based upon DC_MediaUpload by Leo Feyer)
  * @author     Fred Bliss <fred@winanscreative.com>
- * @package    Controller
  */
 class DC_MediaUpload extends DataContainer implements listable, editable
 {
@@ -1532,4 +1529,3 @@ window.addEvent(\'domready\', function()
 	}
 }
 
-?>

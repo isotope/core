@@ -19,7 +19,7 @@
  * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Winans Creative / Fred Bliss 2009
+ * @copyright  Winans Creative 2009
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
@@ -29,3 +29,4 @@
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_user']['mediamounts'] = array('Isotope Mediamounts', 'Here you can grant access to one or more folders of Isotope E-Commerce (subfolders will be included automatically).');
+

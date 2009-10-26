@@ -19,11 +19,9 @@
  * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Winans Creative/Fred Bliss 2009 
- * @author     Fred Bliss 
- * @package    Isotope 
- * @license    Commercial 
- * @filesource
+ * @copyright  Winans Creative 2009
+ * @author     Fred Bliss <fred@winanscreative.com>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
@@ -39,13 +37,6 @@ $GLOBALS['TL_LANG']['tl_shipping_rates']['dest_country'] = array('Destination Co
 $GLOBALS['TL_LANG']['tl_shipping_rates']['dest_region'] = array('Destination Region', 'Region (county) used in the shipping destination for this rate.');
 
 
-
-
-/**
- * Reference
- */
-
-
 /**
  * Buttons
  */
@@ -55,4 +46,3 @@ $GLOBALS['TL_LANG']['tl_shipping_rates']['copy']   = array('Copy Shipping Rate',
 $GLOBALS['TL_LANG']['tl_shipping_rates']['delete'] = array('Delete Shipping Rate', 'Delete Shipping Rate ID %s');
 $GLOBALS['TL_LANG']['tl_shipping_rates']['show']   = array('Shipping Rate Details', 'Show details of Shipping Rate ID %s');
 
-?>

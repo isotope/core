@@ -2,23 +2,26 @@
 
 /**
  * TYPOlight webCMS
+ * Copyright (C) 2005 Leo Feyer
  *
- * The TYPOlight webCMS is an accessible web content management system that 
- * specializes in accessibility and generates W3C-compliant HTML code. It 
- * provides a wide range of functionality to develop professional websites 
- * including a built-in search engine, form generator, file and user manager, 
- * CSS engine, multi-language support and many more. For more information and 
- * additional TYPOlight applications like the TYPOlight MVC Framework please 
- * visit the project website http://www.typolight.org.
- *
- * Language file for table tl_product_fields (en).
+ * This program is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation, either
+ * version 2.1 of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program. If not, please visit the Free
+ * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Winans Creative / Fred Bliss 2008
- * @author     Fred Bliss 
- * @package    Isotope
- * @license    GPL 
- * @filesource
+ * @copyright  Winans Creative 2009
+ * @author     Fred Bliss <fred@winanscreative.com>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
@@ -57,6 +60,7 @@ $GLOBALS['TL_LANG']['tl_product_data']['add_audio_file'] = array('Add Audio File
 $GLOBALS['TL_LANG']['tl_product_data']['add_video_file'] = array('Add Video File','Add a video file to this product');
 */
 
+
 /**
  * Reference
  */
@@ -69,6 +73,7 @@ $GLOBALS['TL_LANG']['tl_product_data']['opValueSets'] = 'Option Values';
 $GLOBALS['TL_LANG']['tl_product_data']['existing_option_set'] = 'Select an existing product option set';
 $GLOBALS['TL_LANG']['tl_product_data']['new_option_set'] = 'Create a new product option set';
 
+
 /**
  * Buttons
  */
@@ -79,6 +84,7 @@ $GLOBALS['TL_LANG']['tl_product_data']['cut']   = array('Move product', 'Move pr
 $GLOBALS['TL_LANG']['tl_product_data']['delete'] = array('Delete product', 'Delete product ID %s');
 $GLOBALS['TL_LANG']['tl_product_data']['show']   = array('product details', 'Show details of product ID %s');
 $GLOBALS['TL_LANG']['tl_product_data']['editheader'] = array('Edit product type', 'Edit the product type');
+
 
 /** 
  * Legends
@@ -93,5 +99,3 @@ $GLOBALS['TL_LANG']['tl_product_data']['tax_legend'] = 'Tax Settings';
 $GLOBALS['TL_LANG']['tl_product_data']['availability_legend'] = 'Availability Settings';
 $GLOBALS['TL_LANG']['tl_product_data']['media_legend'] = 'Media Management';
 
-
-?>

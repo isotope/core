@@ -19,21 +19,12 @@
  * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Winans Creative/Fred Bliss 2008 
- * @author     Fred Bliss 
- * @package    IsotopeBase 
- * @license    Commercial 
- * @filesource
+ * @copyright  Winans Creative 2009
+ * @author     Fred Bliss <fred@winanscreative.com>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
-/**
- * Class ModuleGiftRegistryResults
- *
- * @copyright  Winans Creative/Fred Bliss 2008 
- * @author     Fred Bliss 
- * @package    Controller
- */
 class ModuleGiftRegistryResults extends Module
 {
 
@@ -244,4 +235,3 @@ class ModuleGiftRegistryResults extends Module
 	}
 }
 
-?>

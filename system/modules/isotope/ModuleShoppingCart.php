@@ -19,8 +19,9 @@
  * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Winans Creative / Fred Bliss 2009
- * @author     Fred Bliss <fred@winanscreative.com>, Andreas Schempp <andreas@schempp.ch>
+ * @copyright  Winans Creative 2009
+ * @author     Fred Bliss <fred@winanscreative.com>
+ * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 

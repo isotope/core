@@ -19,11 +19,9 @@
  * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Winans Creative/Fred Bliss 2009 
- * @author     Fred Bliss 
- * @package    Isotope 
- * @license    Commercial 
- * @filesource
+ * @copyright  Winans Creative 2009
+ * @author     Fred Bliss <fred@winanscreative.com>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
@@ -45,6 +43,7 @@ $GLOBALS['TL_LANG']['tl_shipping_options']['override']			= array('Override Other
 $GLOBALS['TL_LANG']['tl_shipping_options']['override_message']   = array('Override Message','Communicate a special message in conjunction with this shipping rate.');
 $GLOBALS['TL_LANG']['tl_shipping_options']['mandatory']			= array('Required','Is this option mandatory?  If so it will automatically tack on the surcharge value if specific regional/country-based conditions are met.');
 
+
 /**
  * Reference
  */
@@ -52,6 +51,7 @@ $GLOBALS['TL_LANG']['tl_shipping_options']['types']['ot_tier'] 		= 'Order Total-
 $GLOBALS['TL_LANG']['tl_shipping_options']['types']['surcharge'] 	= 'Surcharge';
 $GLOBALS['TL_LANG']['tl_shipping_options']['limit']['lower'] 		= 'Lower Limit';
 $GLOBALS['TL_LANG']['tl_shipping_options']['limit']['upper'] 		= 'Upper Limit';
+
 
 /**
  * Buttons
@@ -62,4 +62,3 @@ $GLOBALS['TL_LANG']['tl_shipping_options']['copy']   = array('Copy Shipping Rate
 $GLOBALS['TL_LANG']['tl_shipping_options']['delete'] = array('Delete Shipping Rate', 'Delete Shipping Rate ID %s');
 $GLOBALS['TL_LANG']['tl_shipping_options']['show']   = array('Shipping Rate Details', 'Show details of Shipping Rate ID %s');
 
-?>

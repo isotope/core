@@ -19,11 +19,9 @@
  * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Winans Creative/Fred Bliss 2009 
- * @author     Fred Bliss 
- * @package    Isotope 
- * @license    Commercial 
- * @filesource
+ * @copyright  Winans Creative 2009
+ * @author     Fred Bliss <fred@winanscreative.com>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
@@ -31,11 +29,7 @@
  * Class IsotopePOS
  *
  * Point-of-sale related resources class
- * @copyright  Winans Creative/Fred Bliss 2009 
- * @author     Fred Bliss 
- * @package    Controller
  */
-
 class IsotopePOS extends Backend
 {
 	
@@ -916,5 +910,3 @@ class IsotopePOS extends Backend
 
 }
 
-
-?>

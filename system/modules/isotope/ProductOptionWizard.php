@@ -19,11 +19,9 @@
  * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Fred Bliss / Winans Creative 2009
+ * @copyright  Winans Creative 2009
  * @author     Fred Bliss <fred@winanscreative.com>
- * @package    ProductsOptionWizard
- * @license    LGPL
- * @filesource
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
@@ -31,9 +29,6 @@
  * Class ProductOptionWizard
  *
  * Provide methods to handle product options.  Based upon the TYPOlight option wizard by Leo Feyer
- * @copyright  Fred Bliss / Winans Creative 2009
- * @author     Fred Bliss <fred@winanscreative.com>
- * @package    Controller
  */
 class ProductOptionWizard extends Widget
 {
@@ -532,4 +527,3 @@ class ProductOptionWizard extends Widget
 }
 
 
-?>

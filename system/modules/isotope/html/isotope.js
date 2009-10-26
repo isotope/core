@@ -1,5 +1,5 @@
 /**
- * @copyright  Winans Creative / Fred Bliss 2009
+ * @copyright  Winans Creative 2009
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
@@ -25,7 +25,7 @@ var Isotope =
  * Class AjaxRequestIsotope
  *
  * Provide methods to handle ajax-related tasks for Isotope back end widgets.
- * @copyright  Fred Bliss / Winans Creative 2009
+ * @copyright  Winans Creative 2009
  * @author     Fred Bliss <fred@winanscreative.com>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
@@ -347,7 +347,5 @@ var ProductsOptionWizard =
 	{
 		document.cookie = "BE_PAGE_OFFSET=" + window.getScrollTop() + "; path=/";
 	}
-
-	
 }
 

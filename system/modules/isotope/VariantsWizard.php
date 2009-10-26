@@ -2,7 +2,7 @@
 
 /**
  * TYPOlight webCMS
- * Copyright (C) 2005-2009 Leo Feyer
+ * Copyright (C) 2005 Leo Feyer
  *
  * This program is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,11 +19,9 @@
  * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Fred Bliss/Winans Creative 2009
+ * @copyright  Winans Creative 2009
  * @author     Fred Bliss <fred@winanscreative.com>
- * @package    Backend
- * @license    LGPL
- * @filesource
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
@@ -31,9 +29,6 @@
  * Class VariantsWizard
  *
  * Provide methods to handle modules of a page layout.
- * @copyright  Fred Bliss/Winans Creative 2009
- * @author     Fred Bliss <fred@winanscreative.com>
- * @package    Controller
  */
 class VariantsWizard extends Widget
 {
@@ -769,4 +764,3 @@ class VariantsWizard extends Widget
 	}
 }
 
-?>

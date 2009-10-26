@@ -19,11 +19,9 @@
  * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Leo Feyer 2005
- * @author     Leo Feyer <leo@typolight.org>
- * @package    Frontend
- * @license    LGPL
- * @filesource
+ * @copyright  Winans Creative 2009
+ * @author     Fred Bliss <fred@winanscreative.com>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
@@ -31,9 +29,8 @@
  * Class ContentAttributeLinkRepeater
  *
  * Front end content element "link repeater".
- * @copyright  Fred Bliss 2008/Winans Creative
+ * @copyright  Winans Creative 2009
  * @author     Fred Bliss <fred@winanscreative.com>
- * @package    Controller
  */
 class ContentAttributeLinkRepeater extends ContentElement
 {
@@ -124,4 +121,3 @@ class ContentAttributeLinkRepeater extends ContentElement
 	}
 }
 
-?>

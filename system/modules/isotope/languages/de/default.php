@@ -19,7 +19,7 @@
  * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Winans Creative / Fred Bliss 2009
+ * @copyright  Winans Creative 2009
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
@@ -51,6 +51,8 @@ $GLOBALS['TL_LANG']['ERR']['order_conditions'] = 'Sie müssen die AGB akzeptiere
 $GLOBALS['TL_LANG']['ERR']['noStoreConfigurationSet'] = 'Please create a store configuration';
 $GLOBALS['TL_LANG']['ERR']['productNameMissing'] = '<no product name found>';
 $GLOBALS['TL_LANG']['ERR']['noSubProducts'] = 'no sub-products found';
+
+
 /**
  * Miscellaneous
  */

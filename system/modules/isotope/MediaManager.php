@@ -19,11 +19,9 @@
  * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Leo Feyer 2005
- * @author     Leo Feyer <leo@typolight.org>
- * @package    Backend
- * @license    LGPL
- * @filesource
+ * @copyright  Winans Creative 2009
+ * @author     Fred Bliss <fred@winanscreative.com>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
@@ -31,9 +29,6 @@
  * Class MediaManager
  *
  * Provide methods to handle radio button tables while setting a custom path for image source.
- * @copyright  Winans Creative / Fred Bliss 2009
- * @author     Fred Bliss <fred@winanscreative.com>
- * @package    Controller
  */
 class MediaManager extends Widget
 {
@@ -770,4 +765,3 @@ class MediaManager extends Widget
 
 }
 
-?>

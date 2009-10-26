@@ -2,24 +2,28 @@
 
 /**
  * TYPOlight webCMS
+ * Copyright (C) 2005 Leo Feyer
  *
- * The TYPOlight webCMS is an accessible web content management system that 
- * specializes in accessibility and generates W3C-compliant HTML code. It 
- * provides a wide range of functionality to develop professional websites 
- * including a built-in search engine, form generator, file and user manager, 
- * CSS engine, multi-language support and many more. For more information and 
- * additional TYPOlight applications like the TYPOlight MVC Framework please 
- * visit the project website http://www.typolight.org.
- *
- * Language file for table tl_product__product_attributes (en).
+ * This program is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation, either
+ * version 2.1 of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program. If not, please visit the Free
+ * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Martin Komara 2007 
- * @author     Martin Komara 
- * @package    CatalogModule 
- * @license    GPL 
- * @filesource
+ * @copyright  Winans Creative 2009
+ * @author     Fred Bliss <fred@winanscreative.com>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
+
 
 /**
  * Fields
@@ -86,10 +90,7 @@ $GLOBALS['TL_LANG']['tl_product_attributes']['rgxpOptions']['alnum'] = 'Numbers 
 $GLOBALS['TL_LANG']['tl_product_attributes']['rgxpOptions']['extnd'] = 'All standard characters except: #&()/>=<';
 $GLOBALS['TL_LANG']['tl_product_attributes']['rgxpOptions']['email'] = 'Valid email address';
 $GLOBALS['TL_LANG']['tl_product_attributes']['rgxpOptions']['url'] = 'Valid html link';
-#$GLOBALS['TL_LANG']['tl_product_attributes']['rgxpOptions'][''] = '';
-#$GLOBALS['TL_LANG']['tl_product_attributes']['rgxpOptions'][''] = '';
-#$GLOBALS['TL_LANG']['tl_product_attributes']['rgxpOptions'][''] = '';
-#$GLOBALS['TL_LANG']['tl_product_attributes']['rgxpOptions'][''] = '';
+
 
 /**
  * Buttons
@@ -113,6 +114,3 @@ $GLOBALS['TL_LANG']['tl_product_attributes']['search_filters_legend'] = 'Search 
 $GLOBALS['TL_LANG']['tl_product_attributes']['validation_legend'] = 'Validation Settings';
 $GLOBALS['TL_LANG']['tl_product_attributes']['developer_tools_legend'] = 'Developer Tools';
 
-//$GLOBALS['TL_LANG']['tl_product_attributes']['_legend'] = '';
-//$GLOBALS['TL_LANG']['tl_product_attributes']['_legend'] = '';
-?>

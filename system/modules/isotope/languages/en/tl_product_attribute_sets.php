@@ -2,23 +2,26 @@
 
 /**
  * TYPOlight webCMS
+ * Copyright (C) 2005 Leo Feyer
  *
- * The TYPOlight webCMS is an accessible web content management system that 
- * specializes in accessibility and generates W3C-compliant HTML code. It 
- * provides a wide range of functionality to develop professional websites 
- * including a built-in search engine, form generator, file and user manager, 
- * CSS engine, multi-language support and many more. For more information and 
- * additional TYPOlight applications like the TYPOlight MVC Framework please 
- * visit the project website http://www.typolight.org.
- *
- * Language file for table tl_product_attribute_sets (en).
+ * This program is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation, either
+ * version 2.1 of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program. If not, please visit the Free
+ * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Martin Komara 2007 
- * @author     Martin Komara 
- * @package    product attribute setModule 
- * @license    GPL 
- * @filesource
+ * @copyright  Winans Creative 2009
+ * @author     Fred Bliss <fred@winanscreative.com>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
@@ -38,11 +41,6 @@ $GLOBALS['TL_LANG']['tl_product_attribute_sets']['format'] = array('Format title
 $GLOBALS['TL_LANG']['tl_product_attribute_sets']['iso_list_layout']      = array('Product List Template Override', 'Please choose a list layout. If left blank, the default as chosen in the module definition record will be used. You can add custom list layouts to folder <em>templates</em>. List template files start with <em>iso_list_</em> and require file extension <em>.tpl</em>.');
 $GLOBALS['TL_LANG']['tl_product_attribute_sets']['iso_reader_layout']  = array('Product Reader Template Override', 'Please choose a reader template. If left blank, the default as chosen in the module definition record will be used. You can add custom reader templates to folder <em>templates</em>. Reader template files start with <em>iso_reader_</em> and require file extension <em>.tpl</em>.');
 
-/**
- * Reference
- */
-//$GLOBALS['TL_LANG']['tl_product_attribute_sets'][''] = '';
-
 
 /**
  * Buttons
@@ -56,6 +54,7 @@ $GLOBALS['TL_LANG']['tl_product_attribute_sets']['editheader'] = array('Edit pro
 $GLOBALS['TL_LANG']['tl_product_attribute_sets']['attributes'] = array('Define Product Attributes', 'Define product attributes for attribute set ID %s');
 $GLOBALS['TL_LANG']['tl_product_attribute_sets']['regenerateDca'] = array('Regenerate DCA', 'Regenerate DCA for all product attribute sets');
 
+
 /**
  * Misc.
  */
@@ -67,4 +66,3 @@ $GLOBALS['TL_LANG']['tl_product_attribute_sets']['itemPlural'] = 'items';
 $GLOBALS['TL_LANG']['tl_product_attribute_sets']['regenerateDcaExplanation'] = 'TYPOlight\'s data container array (DCA) tells TYPOlight how to render back end forms. In order to provide convenient way to edit your product attribute set items in back end, product attribute set module creates DCA for you automatically. However sometimes DCA and your product attribute set may get out of sync, for example after you install new product attribute set version. In this case use the Regenerate DCA button below to synchronize your product attribute sets with TYPOlight.';
 $GLOBALS['TL_LANG']['tl_product_attribute_sets']['regenerateDcaSuccess'] = 'TYPOlight\'s data container array has been regenerated successfully.';
 
-?>

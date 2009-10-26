@@ -19,22 +19,11 @@
  * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Winans Creative/Fred Bliss 2008 
- * @author     Fred Bliss 
- * @package    IsotopeBase 
- * @license    Commercial 
- * @filesource
+ * @copyright  Winans Creative 2009
+ * @author     Fred Bliss <fred@winanscreative.com>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
-
-/**
- * Class IsotopeBase 
- *
- * Parent class for Isotope Modules
- * @copyright  Winans Creative/Fred Bliss 2008 
- * @author     Fred Bliss 
- * @package    Controller
- */
 
 abstract class ModuleIsotopeBase extends Module
 {
@@ -1145,4 +1134,3 @@ abstract class ModuleIsotopeBase extends Module
 	}
 }
 
-?>

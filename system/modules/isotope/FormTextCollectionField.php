@@ -19,11 +19,9 @@
  * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Fred Bliss 2009
+ * @copyright  Winans Creative 2009
  * @author     Fred Bliss <fred@winanscreative.com>
- * @package    Frontend
- * @license    LGPL
- * @filesource
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
@@ -31,9 +29,6 @@
  * Class FormTextCollectionField
  *
  * Form field "text collection".
- * @copyright  Fred Bliss 2009
- * @author     Fred Bliss <fred@winanscreative.com>
- * @package    Controller
  */
 class FormTextCollectionField extends Widget
 {
@@ -142,4 +137,3 @@ class FormTextCollectionField extends Widget
 	}
 }
 
-?>

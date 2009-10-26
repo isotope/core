@@ -19,7 +19,7 @@
  * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Winans Creative / Fred Bliss 2009
+ * @copyright  Winans Creative 2009
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
@@ -42,3 +42,4 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['mediamounts'] = array
 	'inputType'               => 'fileTree',
 	'eval'                    => array('fieldType'=>'checkbox', 'path'=>$GLOBALS['TL_CONFIG']['isotope_upload_path']),
 );
+

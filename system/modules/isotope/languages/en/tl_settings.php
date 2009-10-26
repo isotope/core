@@ -19,11 +19,9 @@
  * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Leo Feyer 2005
- * @author     Leo Feyer <leo@typolight.org>
- * @package    Language
- * @license    LGPL
- * @filesource
+ * @copyright  Winans Creative 2009
+ * @author     Fred Bliss <fred@winanscreative.com>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
@@ -32,4 +30,3 @@
  */
 $GLOBALS['TL_LANG']['tl_settings']['isotope_base_path']       = array('Isotope Product Data Base Folder Name', 'Specify where media such as images, audio and video will be stored. the default root path is "product_assets" (isotope/product_assets)');
 
-?>

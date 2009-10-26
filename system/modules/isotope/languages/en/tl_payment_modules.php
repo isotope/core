@@ -20,7 +20,8 @@
  *
  * PHP version 5
  * @copyright  Winans Creative 2009
- * @author     Fred Bliss <fred@winanscreative.com>, Andreas Schempp <andreas@schempp.ch>
+ * @author     Fred Bliss <fred@winanscreative.com>
+ * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  * @todo       clean up the messy language file
  */
@@ -116,7 +117,3 @@ $GLOBALS['TL_LANG']['tl_payment_modules']['copy']   = array('Copy payment method
 $GLOBALS['TL_LANG']['tl_payment_modules']['delete'] = array('Delete payment method', 'Delete payment method ID %s');
 $GLOBALS['TL_LANG']['tl_payment_modules']['show']   = array('Payment Method Details', 'Show details of payment method ID %s');
 
-
-
-
-?>

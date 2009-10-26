@@ -19,7 +19,7 @@
  * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Winans Creative / Fred Bliss 2009
+ * @copyright  Winans Creative 2009
  * @author     Fred Bliss <fred@winanscreative.com>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
@@ -39,12 +39,6 @@ $GLOBALS['TL_LANG']['tl_shipping_modules']['maximum_total']		= array('Maximum to
 $GLOBALS['TL_LANG']['tl_shipping_modules']['groups']			= array('Member Groups','Restrict this shipping option to certain member groups.');
 $GLOBALS['TL_LANG']['tl_shipping_modules']['enabled']			= array('Enabled', 'Is the module available for use in the store?');
 
-
-/**
- * Reference
-
-$GLOBALS['TL_LANG']['tl_shipping_modules'][''] = '';
- */
 
 /**
  * Buttons

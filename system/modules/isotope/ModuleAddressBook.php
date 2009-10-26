@@ -19,11 +19,9 @@
  * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Fred Bliss / Winans Creative 2009
+ * @copyright  Winans Creative 2009
  * @author     Fred Bliss <fred@winanscreative.com>
- * @package    Frontend
- * @license    LGPL
- * @filesource
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
@@ -31,9 +29,6 @@
  * Class ModuleAddressBook
  *
  * Based on the Front end module "personal data" by Leo Feyer
- * @copyright  Fred Bliss / Winans Creative 2009
- * @author     Fred Bliss <fred@winanscreative.com>
- * @package    Controller
  */
 class ModuleAddressBook extends Module
 {
@@ -494,4 +489,3 @@ class ModuleAddressBook extends Module
 	}
 }
 
-?>

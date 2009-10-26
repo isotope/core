@@ -19,10 +19,11 @@
  * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Winans Creative / Fred Bliss 2009
+ * @copyright  Winans Creative 2009
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
+ 
  
 $GLOBALS['TL_LANG']['XPL']['isoMailTokens'] = array
 (
@@ -51,3 +52,4 @@ $GLOBALS['TL_LANG']['XPL']['variantsWizard'] = array
 	array('Indicating Price and Weight','You may specify either numeric changes from the product base price or else whole values.<br /><br /><h2>Whole Values</h2>To overwrite the base price, simply type in the new price (e.g. 15.50).<br /><br /><h2>Changes In Value</h2>To indicate a value change, use the plus (+) or minus(-) signs <strong>before</strong> the change value (e.g. 5/+5 or -7.5.<br /><br /><h2>Change in unit</h2>To make a change value a percentage, simply indicate the percentile <strong>after</strong> the number (e.g. 5% or +5% will calculate a 5% price increase for the given subproduct over the base price.)')
 
 );
+
