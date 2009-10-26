@@ -33,15 +33,13 @@ $GLOBALS['TL_CONFIG']['isotope_upload_path'] = 'isotope';
 // Rules workaround
 $GLOBALS['ISO_RULES']['excludeAttributeSets'] = array(); //array(6, 3);
 
+
 /**
  * Backend modules
  */
 if (!is_array($GLOBALS['BE_MOD']['store']))
 {
-	array_insert($GLOBALS['BE_MOD'], 1, array
-	(
-		'store' => array(),
-	));
+	array_insert($GLOBALS['BE_MOD'], 1, array('store' => array()));
 }
  
 array_insert($GLOBALS['BE_MOD']['store'], 0, array
@@ -100,17 +98,10 @@ array_insert($GLOBALS['BE_MOD']['store'], 0, array
 		'tables'					=> array('tl_store'),
 		'icon'						=> 'system/modules/isotope/html/icon_iso.gif',
 	),
-
-	/*
-	'shipping_modules' => array
-	(
-		'tables'					=> array('tl_shipping_modules'),
-		'icon'						=> 'system/modules/isotope/html/sm_icon.gif',
-	),
-	*/
 ));
 
 $GLOBALS['BE_MOD']['accounts']['member']['tables'][] = 'tl_address_book';
+
 
 /**
  * Hooks
@@ -142,7 +133,7 @@ $GLOBALS['BE_FFL']['variantsWizard'] = 'VariantsWizard';
 /**
  * Frontend modules
  */
-$GLOBALS['FE_MOD']['eCommerce'] = array
+$GLOBALS['FE_MOD']['isotope'] = array
 (
 	'isoFilterModule'			=> 'ModuleFilters',
 	'isoProductLister'			=> 'ModuleProductLister',
@@ -153,13 +144,16 @@ $GLOBALS['FE_MOD']['eCommerce'] = array
 	'isoGiftRegistrySearch'		=> 'ModuleGiftRegistrySearch',
 	'isoGiftRegistryResults'	=> 'ModuleGiftRegistryResults',
 	'isoGiftRegistryReader'		=> 'ModuleGiftRegistryReader',
-	'isoAddressBook'			=> 'ModuleAddressBook'
+	'isoAddressBook'			=> 'ModuleAddressBook',
+	'isoOrderHistory'			=> 'ModuleOrderHistory',
 );
+
 
 /** 
  * Frontend Form Fields
  */
 $GLOBALS['TL_FFL']['textCollection'] = 'FormTextCollectionField';
+
 
 /**
  * Shipping modules
@@ -167,18 +161,19 @@ $GLOBALS['TL_FFL']['textCollection'] = 'FormTextCollectionField';
 $GLOBALS['ISO_SHIP']['order_total']	 = 'ShippingOrderTotal';
 $GLOBALS['ISO_SHIP']['flat']		 = 'ShippingFlat';
 
+
 /**
  * Payment modules
  */
-$GLOBALS['ISO_PAY']['cash']	 		= 'PaymentCash';
-$GLOBALS['ISO_PAY']['paypal']		= 'PaymentPaypal';
-$GLOBALS['ISO_PAY']['postfinance']	= 'PaymentPostfinance';
-$GLOBALS['ISO_PAY']['authorizedotnet'] = 'PaymentAuthorizeDotNet';
+$GLOBALS['ISO_PAY']['cash']						= 'PaymentCash';
+$GLOBALS['ISO_PAY']['paypal']					= 'PaymentPaypal';
+$GLOBALS['ISO_PAY']['postfinance']				= 'PaymentPostfinance';
+$GLOBALS['ISO_PAY']['authorizedotnet']			= 'PaymentAuthorizeDotNet';
+$GLOBALS['ISO_PAY']['cc_types']['visa']			= 'Visa';
+$GLOBALS['ISO_PAY']['cc_types']['mastercard']	= 'Mastercard';
+$GLOBALS['ISO_PAY']['cc_types']['amex']			= 'American Express';
+$GLOBALS['ISO_PAY']['cc_types']['discover']		= 'Discover';
 
-$GLOBALS['ISO_PAY']['cc_types']['visa'] = 'Visa';
-$GLOBALS['ISO_PAY']['cc_types']['mastercard'] = 'Mastercard';
-$GLOBALS['ISO_PAY']['cc_types']['amex'] = 'American Express';
-$GLOBALS['ISO_PAY']['cc_types']['discover'] = 'Discover';
 
 /** 
  * Order module additional operations
@@ -279,7 +274,6 @@ $GLOBALS['ISO_CONFIG']['CHECKOUT_STEPS'] = array('login','billing_information','
  * These fields are default fields required to get the store and default templates working
  * We must improve behavious because currently we cannot rename a field (eg. to german) or it would break!
  */
-
 $GLOBALS['ISO_ATTR'] = array
 (
 	//Product Name
@@ -694,6 +688,5 @@ $GLOBALS['ISO_ATTR'] = array
 		'is_listing_field'			=> 0,
 		'delete_locked'				=> 1
 	),
-	
 );
 

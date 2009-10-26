@@ -561,6 +561,7 @@ CREATE TABLE `tl_iso_orders` (
   `tstamp` int(10) unsigned NOT NULL default '0',
   `date` int(10) unsigned NOT NULL default '0',  
   `order_id` varchar(14) NOT NULL default '',
+  `uniqid` varchar(27) NOT NULL default '',
   
   `store_id` int(10) unsigned NOT NULL default '0',
   `cart_id` int(10) unsigned NOT NULL default '0',

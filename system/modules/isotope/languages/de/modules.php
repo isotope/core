@@ -34,10 +34,9 @@ $GLOBALS['TL_LANG']['MOD']['orders']					= array('Bestellungen', '');
 $GLOBALS['TL_LANG']['MOD']['shipping']					= array('Versandarten','');
 $GLOBALS['TL_LANG']['MOD']['payment']					= array('Zahlungsarten','');
 $GLOBALS['TL_LANG']['MOD']['taxes']						= array('Steuern', '');
-$GLOBALS['TL_LANG']['MOD']['products_and_attributes']	= array('Products and Attributes','');
-$GLOBALS['TL_LANG']['MOD']['attribute_manager']			= array('Attribute Manager','');
-$GLOBALS['TL_LANG']['MOD']['product_type_manager']			= array('Product Type Manager','');
-$GLOBALS['TL_LANG']['MOD']['product_manager']			= array('Product Management','');
+$GLOBALS['TL_LANG']['MOD']['attribute_manager']			= array('Attribute','');
+$GLOBALS['TL_LANG']['MOD']['product_type_manager']		= array('Produkttypen','');
+$GLOBALS['TL_LANG']['MOD']['product_manager']			= array('Produkte','');
 $GLOBALS['TL_LANG']['MOD']['store_configuration']		= array('Konfigurationen','');
 $GLOBALS['TL_LANG']['MOD']['iso_mail']					= array('E-Mail Vorlagen','');
 
@@ -45,11 +44,12 @@ $GLOBALS['TL_LANG']['MOD']['iso_mail']					= array('E-Mail Vorlagen','');
 /**
  * Front end modules
  */ 
-$GLOBALS['TL_LANG']['FMD']['eCommerce']					= 'Isotope eCommerce';
+$GLOBALS['TL_LANG']['FMD']['isotope']					= 'Isotope eCommerce';
 $GLOBALS['TL_LANG']['FMD']['isoFilterModule']			= array('Isotope Filter-Modul', 'Erstellt individuelle Filter für Isotope wie einen Kategorienbaum oder Produktattribut-Filter.');
 $GLOBALS['TL_LANG']['FMD']['isoProductLister']			= array('Isotope Produktliste', 'Allgemeines Listen-Modul. Zeigt Produkte oder Werte von Attributen an. Kann mit anderen Modulen (z.B. Filter-Modul) kombiniert werden um die Funktionen zu erweitern.');
 $GLOBALS['TL_LANG']['FMD']['isoProductReader']			= array('Isotope Produktleser', 'Mit diesem Modul zeigen Sie Produktdetails an.');
 $GLOBALS['TL_LANG']['FMD']['isoShoppingCart']			= array('Isotope Warenkorb', 'Ein vollwertiges Warenkorb-Modul. Klein- oder Grossanzeige kann durch Wahl des Templates eingestellt werden.');
 $GLOBALS['TL_LANG']['FMD']['isoCheckout']				= array('Isotope Kasse', 'Erlaubt Kunden eine Bestellung auszuführen.');
 $GLOBALS['TL_LANG']['FMD']['isoAddressBook']			= array('Isotope Addressbuch','Erlaubt Kunden deren Adressbuch zu bearbeiten.');
+$GLOBALS['TL_LANG']['FMD']['isoOrderHistory']			= array('Vergangene Bestellungen', 'Kunden können mit diesem Modul ihre vergangenen Bestellungen sehen und z.B. Download-Artikel herunterladen.');
 

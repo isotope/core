@@ -28,24 +28,23 @@
 /**
  * Backend Modules
  */
-$GLOBALS['TL_LANG']['MOD']['store']						= 'Isotope eCommerce';
-$GLOBALS['TL_LANG']['MOD']['isotopeMedia']				= array('Isotope File Manager', 'This module allows you to upload new files to the server or to manage existing files and folders for the Isotope file system.');
-$GLOBALS['TL_LANG']['MOD']['orders']					= array('Isotope Orders', '');
+$GLOBALS['TL_LANG']['MOD']['store']						= 'Isotope Online-Shop';
+$GLOBALS['TL_LANG']['MOD']['isotopeMedia']				= array('File Manager', 'This module allows you to upload new files to the server or to manage existing files and folders for the Isotope file system.');
+$GLOBALS['TL_LANG']['MOD']['orders']					= array('Orders', '');
 $GLOBALS['TL_LANG']['MOD']['shipping']					= array('Shipping Methods','');
 $GLOBALS['TL_LANG']['MOD']['payment']					= array('Payment Methods','');
 $GLOBALS['TL_LANG']['MOD']['taxes']						= array('Taxes','Set up tax classes and rates.');
-$GLOBALS['TL_LANG']['MOD']['store_configuration']		= array('Store Configuration','');
-$GLOBALS['TL_LANG']['MOD']['products_and_attributes']	= array('Products and Attributes','');
 $GLOBALS['TL_LANG']['MOD']['attribute_manager']			= array('Attribute Manager','');
-$GLOBALS['TL_LANG']['MOD']['product_type_manager']			= array('Product Type Manager','');
+$GLOBALS['TL_LANG']['MOD']['product_type_manager']		= array('Product Type Manager','');
 $GLOBALS['TL_LANG']['MOD']['product_manager']			= array('Product Management','');
-
 $GLOBALS['TL_LANG']['MOD']['iso_mail']					= array('E-Mail Manager','');
+$GLOBALS['TL_LANG']['MOD']['store_configuration']		= array('Store Configuration','');
 
 
 /**														
  * Front end modules									
- */ 													
+ */
+$GLOBALS['TL_LANG']['FMD']['isotope']					= 'Isotope Online-Shop';
 $GLOBALS['TL_LANG']['FMD']['isoFilterModule']			= array('Isotope Filter Module', 'Define individual filters for Isotope such as category trees and product attribute filters.');
 $GLOBALS['TL_LANG']['FMD']['isoProductLister']			= array('Isotope Product Lister', 'General Listing module.  Can be used to list products or values of attributes. May be combined with other modules (i.e. the Filter Module) to provide further drill-down capabilities.');
 $GLOBALS['TL_LANG']['FMD']['isoProductReader']			= array('Isotope Product Reader', 'Product reader module.  This is used to display product details.');
@@ -57,4 +56,5 @@ $GLOBALS['TL_LANG']['FMD']['isoGiftRegistryResults']	= array('Isotope Gift Regis
 $GLOBALS['TL_LANG']['FMD']['isoGiftRegistryReader']		= array('Isotope Gift Registry Reader', 'Allow store customers to view existing Gift Registries');
 $GLOBALS['TL_LANG']['FMD']['isoGiftRegistry']			= array('Isotope Gift Registry','Allow customers to set up, manage or shop from already created Gift Registries.');
 $GLOBALS['TL_LANG']['FMD']['isoAddressBook']			= array('Isotope Address Book','Allow customers to manage their address book.');
+$GLOBALS['TL_LANG']['FMD']['isoOrderHistory']			= array('Order History', '');
 

@@ -619,6 +619,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			'pid'					=> (FE_USER_LOGGED_IN ? $this->User->id : 0),
 			'tstamp'				=> time(),
 			'date'					=> time(),
+			'uniqid'				=> uniqid($this->Store->orderPrefix, true),
 			'store_id'				=> $this->Store->id,
 			'cart_id'				=> $this->Cart->id,
 			//'source_cart_id'		=> $this->Cart->id,
