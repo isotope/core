@@ -178,7 +178,6 @@ abstract class Payment extends Frontend
 	 * This function can be called from the postsale.php file when the payment server is requestion/posting a status change.
 	 * You can see an implementation example in PaymentPostfinance.php
 	 * 
-	 * @abstract
 	 * @access public
 	 * @return void
 	 */

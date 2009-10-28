@@ -83,7 +83,7 @@ class PostSale extends Frontend
 		if (!$objModule->numRows)
 			return;
 			
-		$strClass = $GLOBALS['ISO_PAY'][$objModule->type];
+		$strClass = $GLOBALS['ISO_'.strtoupper($strMod)][$objModule->type];
 		if (!strlen($strClass) || !$this->classFileExists($strClass))
 			return;
 		
