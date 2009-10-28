@@ -61,12 +61,12 @@ class PaymentPostfinance extends Payment
 		
 		if (!$objOrder->numRows)
 		{
-			$this->log('Order ID "' . $this->getRequestData('orderID') . '" not found', 'PaymentPostfinance postProcessPayment()', TL_ERROR);
+			$this->log('Order ID "' . $this->getRequestData('orderID') . '" not found', 'PaymentPostfinance processPostSale()', TL_ERROR);
 			return;
 		}
 		elseif ($this->getRequestData('NCERROR') > 0)
 		{
-			$this->log('Order ID "' . $this->getRequestData('orderID') . '" has NCERROR ' . $this->getRequestData('NCERROR'), 'PaymentPostfinance postProcessPayment()', TL_ERROR);
+			$this->log('Order ID "' . $this->getRequestData('orderID') . '" has NCERROR ' . $this->getRequestData('NCERROR'), 'PaymentPostfinance processPostSale()', TL_ERROR);
 			return;
 		}
 		

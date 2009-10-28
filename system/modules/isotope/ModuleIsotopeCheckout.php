@@ -972,7 +972,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 
 		if ($strForm !== false)
 		{
-			$this->Template->showNext = false;
+			$this->Template->showForm = false;
 		}
 					
 		

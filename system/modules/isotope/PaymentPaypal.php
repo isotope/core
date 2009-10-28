@@ -32,29 +32,6 @@
  */
 class PaymentPaypal extends Payment
 {
-	
-	/**
-	 * Return an object property
-	 *
-	 * @access public
-	 * @param string
-	 * @return mixed
-	 */
-	public function __get($strKey)
-	{
-		$this->import('IsotopeCart', 'Cart');
-		
-		switch( $strKey )
-		{
-			case 'checkoutForm':
-				return true;
-				break;
-			
-		}
-		
-		return parent::__get($strKey);
-	}
-
 
 	/**
 	 * processPayment function.
@@ -71,6 +48,102 @@ class PaymentPaypal extends Payment
 	
 	
 	/**
+	 * Process PayPal Instant Payment Notifications (IPN)
+	 *
+	 * @access public
+	 * @return void
+	 */
+	public function processPostSale() 
+	{
+/*
+		$this->log('PayPal IPN: ' . print_r($_POST, true), 'PaymentPaypal processPostSale()', TL_GENERAL);
+		header('HTTP/1.1 200 OK');
+		exit;
+*/
+		
+		$arrData = array();
+		foreach( $_POST as $k => $v )
+		{
+			$arrData[] = $k . '=' . $v;
+		}
+		
+		$objRequest = new Request();
+		$objRequest->send('https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr?cmd=_notify-validate', implode('&', $arrData), 'post');
+		
+		if ($objRequest->response == 'VERIFIED' && $this->Input->post('receiver_email') == $this->paypal_account)
+		{
+			$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_order WHERE order_id=?")->limit(1)->execute($this->Input->post('invoice'));
+		
+			if (!$objOrder->numRows)
+			{
+				$this->log('Order ID "' . $this->Input->post('invoice') . '" not found', 'PaymentPaypal processPostSale()', TL_ERROR);
+				return;
+			}
+			
+			// Set the current system to the language when the user placed the order.
+			// This will result in correct e-mails and payment description.
+			$GLOBALS['TL_LANGUAGE'] = $objOrder->language;
+			$this->loadLanguageFile('default');
+			
+			// Load / initialize data
+			$arrSet[] = array();
+			if (!is_array($arrSet['payment_data'] = deserialize($objOrder->payment_data))) $arrSet['payment_data'] = array();
+			
+			// Store request data in order for future references
+			$arrSet['payment_data']['POSTSALE'][] = $_POST;
+			
+			
+			$arrData = $objOrder->row();
+			$arrData['old_payment_status'] = $GLOBALS['TL_LANG']['MSC']['payment_status_labels'][$arrSet['payment_data']['status']];
+			
+			$arrSet['payment_data']['status'] = $this->Input->post('payment_status');
+			
+			// array('pending','processing','shipped','complete','on_hold', 'cancelled'),
+			switch( $this->Input->post('payment_status') )
+			{
+				case 'Completed':
+					break;
+					
+				case 'Canceled_Reversal':
+				case 'Denied':
+				case 'Expired':
+				case 'Failed':
+				case 'Voided':
+					$arrSet['status'] = 'cancelled';
+					break;
+					
+				case 'In-Progress':
+				case 'Partially_Refunded':
+				case 'Pending':
+				case 'Processed':
+				case 'Refunded':
+				case 'Reversed':
+					break;
+			}
+			
+			$this->Database->prepare("UPDATE tl_iso_orders %s WHERE id=?")->set($arrSet)->execute($objOrder->id);
+			
+			$arrData['new_payment_status'] = $GLOBALS['TL_LANG']['MSC']['payment_status_labels'][$arrSet['payment_data']['status']];
+			
+			if ($this->postsale_mail)
+			{
+				$_SESSION['isotope']['store_id'] = $objOrder->store_id;
+				$this->Import('Isotope');
+				
+				$this->Isotope->sendMail($this->postsale_mail, $GLOBALS['TL_ADMIN_EMAIL'], $GLOBALS['TL_LANGUAGE'], $arrData);
+			}
+		}
+		else
+		{
+			$this->log('PayPal IPN: data rejected (' . $objRequest->response . ') ' . print_r($_POST, true), 'PaymentPaypal processPostSale()', TL_GENERAL);
+		}
+		
+		header('HTTP/1.1 200 OK');
+		exit;
+	}
+	
+	
+	/**
 	 * Return the PayPal form.
 	 * 
 	 * @access public
@@ -78,22 +151,28 @@ class PaymentPaypal extends Payment
 	 */
 	public function checkoutForm()
 	{
+		$this->import('Isotope');
 		$this->import('IsotopeStore', 'Store');
 		$this->import('IsotopeCart', 'Cart');
 		
+		$objOrder = $this->Database->prepare("SELECT order_id FROM tl_iso_orders WHERE cart_id=?")->execute($this->Cart->id);
+		
 		return '
-<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<form action="https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr" method="post">
 <input type="hidden" name="cmd" value="_xclick">
 <input type="hidden" name="business" value="' . $this->paypal_account . '">
 <input type="hidden" name="lc" value="' . strtoupper($GLOBALS['TL_LANGUAGE']) . '">
 <input type="hidden" name="item_name" value="' . $this->paypal_business . '"/>
 <input type="hidden" name="amount" value="' . $this->Cart->grandTotal . '"/>
-<input type="hidden" name="no_note" value="1">
 <input type="hidden" name="no_shipping" value="1">
-<input type="hidden" name="rm" value="1">
+<input type="hidden" name="no_note" value="1">
+<input type="hidden" name="currency_code" value="' . $this->Store->currency . '">
+<input type="hidden" name="button_subtype" value="services">
 <input type="hidden" name="return" value="' . $this->Environment->url . '/' . $this->addToUrl('step=order_complete') . '">
 <input type="hidden" name="cancel_return" value="' . $this->Environment->url . '/' . $this->addToUrl('step=order_failed') . '">
-<input type="hidden" name="currency_code" value="' . $this->Store->currency . '">
+<input type="hidden" name="rm" value="0">
+<input type="hidden" name="invoice" value="' . $objOrder->order_id . '">
+<input type="hidden" name="notify_url" value="' . $this->Environment->base . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id . '">
 <input type="hidden" name="bn" value="PP-BuyNowBF:btn_paynowCC_LG.gif:NonHosted">
 <input type="image" src="https://www.paypal.com/de_DE/CH/i/btn/btn_paynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
 <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
