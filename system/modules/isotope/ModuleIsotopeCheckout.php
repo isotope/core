@@ -163,6 +163,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			$this->Template->nextLabel = specialchars($GLOBALS['TL_LANG']['MSC']['nextStep']);
 			$this->Template->showPrevious = true;
 			$this->Template->showNext = true;
+			$this->Template->showForm = true;
 		}
 
 		$intBillingAddressId = ($this->Input->post('billing_address') ? $this->Input->post('billing_address') : $_SESSION['FORM_DATA']['billing_address']);
@@ -344,6 +345,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 					
 					$this->Template->showPrevious = false;
 					$this->Template->showNext = true;
+					$this->Template->showForm = $this->Cart->Payment->checkoutForm ? false : true;
 					break;
 					
 				case 'order_complete':

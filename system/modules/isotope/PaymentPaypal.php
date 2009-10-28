@@ -32,6 +32,29 @@
  */
 class PaymentPaypal extends Payment
 {
+	
+	/**
+	 * Return an object property
+	 *
+	 * @access public
+	 * @param string
+	 * @return mixed
+	 */
+	public function __get($strKey)
+	{
+		$this->import('IsotopeCart', 'Cart');
+		
+		switch( $strKey )
+		{
+			case 'checkoutForm':
+				return true;
+				break;
+			
+		}
+		
+		return parent::__get($strKey);
+	}
+
 
 	/**
 	 * processPayment function.
