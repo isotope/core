@@ -146,6 +146,7 @@ $GLOBALS['FE_MOD']['isotope'] = array
 	'isoGiftRegistryReader'		=> 'ModuleGiftRegistryReader',
 	'isoAddressBook'			=> 'ModuleAddressBook',
 	'isoOrderHistory'			=> 'ModuleOrderHistory',
+	'isoOrderDetails'			=> 'ModuleOrderDetails',
 );
 
 

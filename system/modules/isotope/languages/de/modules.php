@@ -51,5 +51,6 @@ $GLOBALS['TL_LANG']['FMD']['isoProductReader']			= array('Isotope Produktleser',
 $GLOBALS['TL_LANG']['FMD']['isoShoppingCart']			= array('Isotope Warenkorb', 'Ein vollwertiges Warenkorb-Modul. Klein- oder Grossanzeige kann durch Wahl des Templates eingestellt werden.');
 $GLOBALS['TL_LANG']['FMD']['isoCheckout']				= array('Isotope Kasse', 'Erlaubt Kunden eine Bestellung auszuführen.');
 $GLOBALS['TL_LANG']['FMD']['isoAddressBook']			= array('Isotope Addressbuch','Erlaubt Kunden deren Adressbuch zu bearbeiten.');
-$GLOBALS['TL_LANG']['FMD']['isoOrderHistory']			= array('Vergangene Bestellungen', 'Kunden können mit diesem Modul ihre vergangenen Bestellungen sehen und z.B. Download-Artikel herunterladen.');
+$GLOBALS['TL_LANG']['FMD']['isoOrderHistory']			= array('Vergangene Bestellungen', 'Zeigt eine Liste der bisherigen Bestellungen an.');
+$GLOBALS['TL_LANG']['FMD']['isoOrderDetails']			= array('Bestellungsdetails', 'Kunden können mit diesem Modul ihre vergangenen Bestellungen sehen und z.B. Download-Artikel herunterladen.');
 
