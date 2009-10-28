@@ -1038,7 +1038,7 @@ abstract class ModuleIsotopeBase extends Module
 				//$arrOptions = $this->getOptionList($arrAttributeData);	//TODO - needs to be replaced to load option values from enabled subproducts.
 				
 				//START HERE - either grab from products themselves or else from variant_data serialized values... this would be quicker, but reliable?
-				$arrOptions = $this->getSubproductOptionValues($arrAttributeData['name']);
+				$arrOptions = $this->getSubproductOptionValues($arrAttributeData['name'], array());
 					
 				$arrData['inputType'] 	= $strType;
 				$arrData['default'] 	= '';
@@ -1059,6 +1059,9 @@ abstract class ModuleIsotopeBase extends Module
 
 	protected function getSubproductOptionValues($intPid, $arrOptionList)
 	{
+		if (!is_array($arrOptionList) || !count($arrOptionList))
+			return array();
+			
 		$strOptionValues = join(',', $arrOptionList);
 		
 		$objData = $this->Database->prepare("SELECT id, " . $strOptionValues . ", price FROM tl_product_data WHERE pid=?")
