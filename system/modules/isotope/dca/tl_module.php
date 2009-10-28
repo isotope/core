@@ -28,16 +28,16 @@
 /**
  * Palettes
  */
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductLister']			= '{title_legend},name,type,headline;{display_legend},perPage,columns,iso_list_format,iso_show_teaser;{config_legend},iso_jump_first,new_products_time_window,featured_products,listing_filters;{template_legend:hide},iso_list_layout;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductReader']			= 'name,type,headline;iso_reader_layout;guests,protected;align,space,cssID';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoShoppingCart']			= 'name,type,headline;iso_cart_layout,iso_forward_cart;guests,protected;align,space,cssID';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoAddressBook']			= 'name,type,headline;addressBookTemplate;isoEditable;align,space,cssID';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryManager']	= 'name,type,headline;iso_registry_layout;guests,protected;align,space,cssID';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistrySearch']	= 'name,type,headline;jumpTo;guests,protected;align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductLister']			= '{title_legend},name,headline,type;{display_legend},perPage,columns,iso_list_format,iso_show_teaser;{config_legend},iso_jump_first,new_products_time_window,featured_products,listing_filters;{template_legend:hide},iso_list_layout;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductReader']			= 'name,headline,type;iso_reader_layout;guests,protected;align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoShoppingCart']			= 'name,headline,type;iso_cart_layout,iso_forward_cart;guests,protected;align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoAddressBook']			= 'name,headline,type;addressBookTemplate;isoEditable;align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryManager']	= 'name,headline,type;iso_registry_layout;guests,protected;align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistrySearch']	= 'name,headline,type;jumpTo;guests,protected;align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryResults']	= 'name,type,headline;jumpTo;iso_registry_results;perPage;guests,protected;align,space,cssID';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryReader']	= 'name,type,headline;iso_registry_reader;guests,protected;align,space,cssID';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoCheckout']				= '{title_legend},name,type,headline;{config_legend},iso_checkout_method,iso_payment_modules,iso_shipping_modules,iso_order_conditions,orderCompleteJumpTo;{template_legend},iso_checkout_layout,iso_mail_customer,iso_mail_admin,iso_sales_email;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoOrderHistory']			= '{title_legend},name,type,headline;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryReader']	= 'name,headline,type;iso_registry_reader;guests,protected;align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoCheckout']				= '{title_legend},name,headline,type;{config_legend},iso_checkout_method,iso_payment_modules,iso_shipping_modules,iso_order_conditions,orderCompleteJumpTo;{template_legend},iso_checkout_layout,iso_mail_customer,iso_mail_admin,iso_sales_email;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoOrderHistory']			= '{title_legend},name,headline,type;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 
 
 /**
