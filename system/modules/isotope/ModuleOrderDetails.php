@@ -51,7 +51,17 @@ class ModuleOrderDetails extends ModuleIsotopeBase
 	
 	protected function compile()
 	{
+		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE uniqid=?")->limit(1)->execute($this->Input->get('uid'));
 		
+		if (!$objOrder->numRows)
+		{
+			$this->Template = new FrontendTemplate('mod_message');
+			$this->Template->type = 'error';
+			$this->Template->message = $GLOBALS['TL_LANG']['ERR']['orderNotFound'];
+			return;
+		}
+		
+		$this->Template->setData($objOrder->row());
 	}
 }
 
