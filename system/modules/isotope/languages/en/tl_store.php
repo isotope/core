@@ -36,7 +36,8 @@ $GLOBALS['TL_LANG']['tl_store']['enabled_modules']					= array('Enabled Isotope 
 $GLOBALS['TL_LANG']['tl_module']['productReaderJumpTo']				= array('Product Reader Jump to page', 'This setting defines to which page a user will be redirected when clicking a product for more info.');
 $GLOBALS['TL_LANG']['tl_module']['cartJumpTo']						= array('Shopping Cart Jump to page', 'This setting defines to which page a user will be redirected when requesting a full shopping cart view.');
 $GLOBALS['TL_LANG']['tl_module']['checkoutJumpTo']					= array('Checkout Jump to page', 'This setting defines to which page a user will be redirected when completing their transaction.');
-$GLOBALS['TL_LANG']['tl_store']['defaultPriceField']				= array('Default Price Field','Select a field that is the default price field for this store.');																	
+$GLOBALS['TL_LANG']['tl_store']['defaultPriceField']				= array('Default Price Field','Select a field that is the default price field for this store.');
+$GLOBALS['TL_LANG']['tl_store']['priceMultiplier']					= array('Price multiplier', 'Defaults should be 1. You can use this to convert betreen multiple currencies.');
 $GLOBALS['TL_LANG']['tl_store']['missing_image_placeholder']		= array('Missing Image Placeholder', 'This image will be used if an image file cannot be found or none are associated with a product.');
 $GLOBALS['TL_LANG']['tl_store']['thumbnail_image_width']			= array('Thumbnail Standard Width', 'In pixels.');
 $GLOBALS['TL_LANG']['tl_store']['thumbnail_image_height']			= array('Thumbnail Standard Height', 'In pixels.');
@@ -57,6 +58,7 @@ $GLOBALS['TL_LANG']['tl_store']['gallery_thumbnail_image_height']	= array('Galle
 $GLOBALS['TL_LANG']['tl_store']['invoiceLogo'] = array('Invoice Logo','Select a logo to show up on the invoices for this store.');
 $GLOBALS['TL_LANG']['tl_store']['isDefaultStore'] = array('Set as default store','Set this as the default store for back-end currency formatting and other locale-specific information.');
 
+
 /**
  * Reference
  */
@@ -72,4 +74,18 @@ $GLOBALS['TL_LANG']['tl_store']['edit']   = array('Edit Store', 'Edit Store ID %
 $GLOBALS['TL_LANG']['tl_store']['copy']   = array('Copy Store', 'Copy Store ID %s.');
 $GLOBALS['TL_LANG']['tl_store']['delete'] = array('Delete Store', 'Delete Store ID %s.  This will not delete related assets but rather the initial store configuration.');
 $GLOBALS['TL_LANG']['tl_store']['show']   = array('Show Store Details', 'Show details for store ID %s.');
+
+
+/**
+ * Legends
+ */
+$GLOBALS['TL_LANG']['tl_store']['name_legend']			= 'Name';
+$GLOBALS['TL_LANG']['tl_store']['config_legend']		= 'Configuration';
+$GLOBALS['TL_LANG']['tl_store']['module_legend']	    = 'Modules';
+$GLOBALS['TL_LANG']['tl_store']['price_legend']			= 'Pricing';
+$GLOBALS['TL_LANG']['tl_store']['currency_legend']	    = 'Currency formatting';
+$GLOBALS['TL_LANG']['tl_store']['address_legend']	    = 'Billing and shipping address';
+$GLOBALS['TL_LANG']['tl_store']['redirect_legend']	    = 'Target pages';
+$GLOBALS['TL_LANG']['tl_store']['invoice_legend']	    = 'Invoice';
+$GLOBALS['TL_LANG']['tl_store']['images_legend']	    = 'Images';
 

@@ -232,6 +232,7 @@ CREATE TABLE `tl_store` (
   `checkout_login_module` int(10) unsigned NOT NULL default '0',
   `country` varchar(2) NOT NULL default '',
   `defaultPriceField` varchar(64) NOT NULL default '',
+  `priceMultiplier` varchar(10) NOT NULL default '',
   `currency` varchar(3) NOT NULL default '',
   `currencySymbol` char(1) NOT NULL default '',
   `currencyPosition` varchar(5) NOT NULL default '',
