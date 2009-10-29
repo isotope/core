@@ -37,7 +37,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistrySearch']	= 'name,hea
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryResults']	= 'name,type,headline;jumpTo;iso_registry_results;perPage;guests,protected;align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryReader']	= 'name,headline,type;iso_registry_reader;guests,protected;align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoCheckout']				= '{title_legend},name,headline,type;{config_legend},iso_checkout_method,iso_payment_modules,iso_shipping_modules,iso_order_conditions,orderCompleteJumpTo;{template_legend},iso_checkout_layout,iso_mail_customer,iso_mail_admin,iso_sales_email;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoOrderHistory']			= '{title_legend},name,headline,type;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoOrderHistory']			= '{title_legend},name,headline,type;{config_legend},store_id;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoOrderDetails']			= '{title_legend},name,headline,type;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 
 
@@ -170,16 +170,14 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['listing_filters'] = array
 	'options_callback'		  => array('tl_module_isotope','getFilters')
 );
 
-/*
 $GLOBALS['TL_DCA']['tl_module']['fields']['store_id'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['store_id'],
 	'exclude'                 => true,
 	'inputType'               => 'select',
-	'eval'					  => array('includeBlankOption'=>true,'mandatory'=>true, 'tl_class'=>'w50'),
-	'options_callback'		  => array('tl_module_isotope','getStoreConfigurations')
+	'foreignKey'			  => 'tl_store.store_configuration_name',
+	'eval'					  => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50'),
 );
-*/
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_payment_modules'] = array
 (
@@ -306,39 +304,6 @@ class tl_module_isotope extends Backend
 		}
 		
 		return $arrOptionGroups;
-	}
-	
-	
-	/**
-	 * getStoreConfigurations function.
-	 * 
-	 * @todo Returns an error string but should be an array
-	 *
-	 * @access public
-	 * @return array
-	 */
-	public function getStoreConfigurations()
-	{
-		
-		
-		$objStoreConfigurations = $this->Database->prepare("SELECT id, store_configuration_name FROM tl_store")->execute();
-									 
-		if($objStoreConfigurations->numRows < 1)
-		{
-			return $GLOBALS['TL_LANG']['MSC']['noResult'];
-		}
-		
-		$arrStoreConfigurations = $objStoreConfigurations->fetchAllAssoc();
-		
-		foreach($arrStoreConfigurations as $store)
-		{
-			
-			$arrOptions[$store['id']] = $store['store_configuration_name'];
-		
-		}
-		
-		return $arrOptions;
-	
 	}
 	
 	

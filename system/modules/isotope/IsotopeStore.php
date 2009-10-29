@@ -90,17 +90,16 @@ class IsotopeStore extends Model
 	 * @access public
 	 * @return void
 	 */
-	public function __construct()
+	public function __construct($storeId = false)
 	{
 		parent::__construct();
 		
-		if (!$this->findBy('id', $_SESSION['isotope']['store_id']))
+		if (!$this->findBy('id', ($storeId ? $storeId : $_SESSION['isotope']['store_id'])))
 		{
 			throw new Exception('No store configuration available');
 		}
 	
-		FE_USER_LOGGED_IN ? $_SESSION['isotope']['isGuest'] = false : $_SESSION['isotope']['isGuest'] = true;
-
+		$_SESSION['isotope']['isGuest'] = FE_USER_LOGGED_IN ? false : true;
 	}
 }
 

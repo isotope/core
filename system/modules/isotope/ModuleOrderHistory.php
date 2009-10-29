@@ -28,6 +28,7 @@
 
 class ModuleOrderHistory extends ModuleIsotopeBase
 {
+
 	protected $strTemplate = 'mod_orderhistory';
 	
 	
@@ -46,13 +47,45 @@ class ModuleOrderHistory extends ModuleIsotopeBase
 			return $objTemplate->parse();
 		}
 		
+		if (!FE_USER_LOGGED_IN)
+			return '';
+		
+		$this->import('FrontendUser', 'User');
+		
 		return parent::generate();
 	}
 	
 	
 	protected function compile()
 	{
+		$objOrders = $this->Database->prepare("SELECT *, COUNT(SELECT COUNT(*) FROM tl_iso_order_items WHERE pid=tl_iso_orders.id) AS items FROM tl_iso_orders WHERE pid=? AND store_id=?")->execute($this->User->id, $this->store_id);
 		
+		// No orders found, just display an "empty" message
+		if (!$objOrder->numRows)
+		{
+			$this->Template = new FrontendTemplate('mod_message');
+			$this->Template->type = 'empty';
+			$this->Template->message = $GLOBALS['TL_LANG']['MSC']['emptyOrderHistory'];
+			return;
+		}
+		
+		$this->import('Isotope');
+		$this->Isotope->overrideStore($this->store_id);
+		
+		$arrOrders = array();
+		while( $objOrders->next() )
+		{
+			$arrOrders[] = array
+			(
+				'raw'			=> $objOrders->row(),
+				'date'			=> $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $objOrders->date),
+				'time'			=> $this->parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $objOrders->date),
+				'datime'		=> $this->parseDate($GLOBALS['TL_CONFIG']['datimeFormat'], $objOrders->date),
+				'grandTotal'	=> $this->Isotope->formatPriceWithCurrency($objOrders->grandTotal),
+			);
+		}
+		
+		$this->Template->orders = $arrOrders;
 	}
 }
 

@@ -178,8 +178,6 @@ class IsotopeCart extends Model
 	public function __construct()
 	{
 		$this->import('Isotope');
-
-		$this->import('IsotopeStore', 'Store');
 		
 		parent::__construct();
 		
@@ -191,9 +189,9 @@ class IsotopeCart extends Model
 		{	
 			if(!strlen($this->strHash))	
 			{	
-				$this->strHash = sha1(session_id() . (!$GLOBALS['TL_CONFIG']['disableIpCheck'] ? $this->Environment->ip : '') . $this->Store->id . $this->strCookie);
+				$this->strHash = sha1(session_id() . (!$GLOBALS['TL_CONFIG']['disableIpCheck'] ? $this->Environment->ip : '') . $this->Isotope->Store->id . $this->strCookie);
 				
-				$this->setCookie($this->strCookie, $this->strHash, $this->Store->cookie_timeout,  $GLOBALS['TL_CONFIG']['websitePath']);
+				$this->setCookie($this->strCookie, $this->strHash, $this->Isotope->Store->cookie_timeout,  $GLOBALS['TL_CONFIG']['websitePath']);
 			}
 
 			$this->findBy('session', $this->strHash);
@@ -215,7 +213,7 @@ class IsotopeCart extends Model
 				'tstamp'		=> time(),
 				'last_visit'	=> time(),
 				'cart_type_id'	=> $this->intType,
-				'store_id'		=> $this->Store->id,
+				'store_id'		=> $this->Isotope->Store->id,
 			));
 			
 			if (!$this->findBy('id', $this->save(true)))

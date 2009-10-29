@@ -36,6 +36,18 @@ class Isotope extends Controller
 	
 	
 	/**
+	 * ID of the default store
+	 */
+	protected $intDefaultStore;
+	
+	
+	public $Store;
+	public $Cart;
+	public $Payment;
+	public $Shipping;
+	
+	
+	/**
 	 * Prevent cloning of the object (Singleton)
 	 */
 	final private function __clone() {}
@@ -56,8 +68,6 @@ class Isotope extends Controller
 		$blnForceDefault = (TL_MODE=='BE' ? true : false);
 		
 		$this->setStore($blnForceDefault);
-		
-		
 		
 		$this->import('IsotopeStore', 'Store');
 	}
@@ -86,43 +96,62 @@ class Isotope extends Controller
 	 * @access public
 	 * @return void
 	 */
-	public function setStore($blnForceDefault = false)
+	public function resetStore($blnForceDefault = false)
 	{
 		global $objPage;
 	
 		if($blnForceDefault)
 		{
-			$_SESSION['isotope']['store_id'] = $this->getDefaultStore();
-		}else{	
-		
+			$this->intDefaultStore = $this->getDefaultStore();
+		}
+		else
+		{	
 			if(!isset($_SESSION['isotope']['store_id']))
 			{
 				if($objPage->isotopeStoreConfig)
 				{
 					//Assign
-					$_SESSION['isotope']['store_id'] = $objPage->isotopeStoreConfig;
-				}else{
-					
+					$this->intDefaultStore = $objPage->isotopeStoreConfig;
+				}
+				else
+				{
 					if($objPage->pid<1)
 					{
-						$_SESSION['isotope']['store_id'] = $this->getDefaultStore();
-					}else{
-						//Find (recursive look at parents
-						$_SESSION['isotope']['store_id'] = $this->getStoreConfigFromParent($objPage->id);
+						$this->intDefaultStore = $this->getDefaultStore();
+					}
+					else
+					{
+						//Find (recursive look at parents)
+						$this->intDefaultStore = $this->getStoreConfigFromParent($objPage->id);
 					}
 				}
 			}
 		}
 			
-		return;
+		$_SESSION['isotope']['store_id'] = $this->intDefaultStore;
 	}
+	
+	
+	/** 
+	 * Manual override of the store
+	 * 
+	 * @param integer $intStoreId;
+	 * @return void
+	 */
+	public function overrideStore($intStoreId)
+    {
+    	$this->Store = new IsotopeStore($intStoreId);
+    	
+	 	$_SESSION['isotope']['store_id'] = $intStoreId;
+	}
+	
 	
 	/** 
 	 * Get a default store - either one indicated as default in records or else the first record available.
 	 *
 	 * return integer (store id)
 	 */
-	public function getDefaultStore()
+	protected function getDefaultStore()
 	{
 		$objDefaultStore = $this->Database->prepare("SELECT id, isDefaultStore FROM tl_store")
 											  ->execute(1);
@@ -153,22 +182,10 @@ class Isotope extends Controller
 		return $objDefaultStore->id;
 		
 	}
-	
-	/** 
-	 * Manual override of the store
-	 * 
-	 * @param integer $intStoreId;
-	 * @return void
-	 */
-	public function overrideStore($intStoreId)
-    {
-	 	$_SESSION['isotope']['store_id'] = $intStoreId;
-	  		
-	  	return;
-	}
+
 
 	/** 
-	 * Recursively look for a store set in a give page.  Continue looking at parent pages until one is found or else
+	 * Recursively look for a store set in a give page. Continue looking at parent pages until one is found or else
 	 * revert to default store otherwise specified.
 	 *
 	 * @param integer $intPageId
@@ -192,10 +209,13 @@ class Isotope extends Controller
 		elseif($objStoreConfiguration->pid<1)
 		{
 			return $this->getDefaultStore();
-		}else{
+		}
+		else
+		{
 			return $this->getStoreConfigFromParent($objStoreConfiguration->pid);
 		}
 	}
+	
 
 	/**
 	 * Format given price according to store settings.
@@ -468,7 +488,8 @@ class Isotope extends Controller
 		$_SESSION['FORM_DATA'][$strStep . '_information_phone'] = $strPhone;
 
         return true;
-   }
+	}
+	
 	
 	/**
 	 * Send an email using the isotope e-mail templates.
@@ -548,10 +569,9 @@ class Isotope extends Controller
 		$objEmail->sendTo($strRecipient);
 	}
 	
+	
 	public function applyRules($fltProductBasePrice, $intProductId)
 	{
-		
-				
 		$objData = $this->Database->prepare("SELECT pid FROM tl_product_data WHERE id=?")
 										->limit(1)
 										->execute($intProductId);
@@ -576,6 +596,7 @@ class Isotope extends Controller
 		//return $fltProductBasePrice;
 	
 	}
+	
 	
 	/** 
 	 * Get the next sorting value if it exists for a given table.

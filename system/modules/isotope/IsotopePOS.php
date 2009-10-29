@@ -481,7 +481,7 @@ class IsotopePOS extends Backend
 		$pdf->lastPage();
 		$pdf->Output(standardize(ampersand($strInvoiceTitle, false)) . '.pdf', 'D');
 		
-		$this->Isotope->setStore(true); 	//Set store back to default.
+		$this->Isotope->resetStore(true); 	//Set store back to default.
 		
 		ob_end_clean();
 		exit;	
