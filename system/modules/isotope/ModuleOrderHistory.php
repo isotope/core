@@ -64,7 +64,7 @@ class ModuleOrderHistory extends ModuleIsotopeBase
 		{
 			$this->Template = new FrontendTemplate('mod_message');
 			$this->Template->type = 'empty';
-			$this->Template->message = $GLOBALS['TL_LANG']['MSC']['emptyOrderHistory'];
+			$this->Template->message = $GLOBALS['TL_LANG']['ERR']['emptyOrderHistory'];
 			return;
 		}
 		
