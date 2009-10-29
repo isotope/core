@@ -30,110 +30,95 @@
  */
 $GLOBALS['TL_DCA']['tl_iso_order_items'] = array
 (
+	
+	// Config
+	'config' => array
+	(
+		'dataContainer'               => 'Table',
+		'enableVersioning'            => false,
+		'ptable'					  => 'tl_iso_orders'
+	),
+	
+	// List
+	'list' => array
+	(
+		'sorting' => array
+		(
+			'mode'                    => 4,
+			'fields'                  => array('tstamp DESC'),
+			'flag'                    => 1,
+			'headerFields'				=> array('tstamp','billing_address'),
+			'panelLayout'             => 'filter',
+			'child_record_callback'		=> array('tl_iso_order_items','generateRow')
+		),
+		'label' => array
+		(
+			'fields'                  => array('grandTotal'),
+			'label'                   => '%s',
+			'label_callback'          => array('tl_iso_order_items', 'getOrderLabel')
+		),
+		'operations' => array
+		(
+			'edit' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_order_items']['edit'],
+				'href'                => 'act=edit',
+				'icon'                => 'edit.gif'
+			),
+			'delete' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_order_items']['delete'],
+				'href'                => 'act=delete',
+				'icon'                => 'delete.gif',
+				'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
+			),
+			'show' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_order_items']['show'],
+				'href'                => 'act=show',
+				'icon'                => 'show.gif'
+			),
+		)
+	),
 
-  // Config
-  'config' => array
-  (
-    'dataContainer'               => 'Table',
-    'enableVersioning'            => false,
-    'ptable'					  => 'tl_iso_orders'
-  ),
+	// Palettes
+	'palettes' => array
+	(
+		'default'						=> '{general_legend},product_name,price,product_options;{status_legend},status',
+	),
 
-  // List
-  'list' => array
-  (
-    'sorting' => array
-    (
-      'mode'                    => 4,
-      'fields'                  => array('tstamp DESC'),
-      'flag'                    => 1,
-      'headerFields'			=> array('tstamp','billing_address'),
-      'panelLayout'             => 'filter',
-      'child_record_callback'	=> array('tl_iso_order_items','generateRow')
-    ),
-    'label' => array
-    (
-      'fields'                  => array('grandTotal'),
-      'label'                   => '%s',
-      'label_callback'          => array('tl_iso_order_items', 'getOrderLabel')
-    ),
-    'operations' => array
-    (
-      'edit' => array
-      (
-        'label'               => &$GLOBALS['TL_LANG']['tl_iso_order_items']['edit'],
-        'href'                => 'act=edit',
-        'icon'                => 'edit.gif'
-      ),
-      'delete' => array
-      (
-        'label'               => &$GLOBALS['TL_LANG']['tl_iso_order_items']['delete'],
-        'href'                => 'act=delete',
-        'icon'                => 'delete.gif',
-        'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
-      ),
-      'show' => array
-      (
-        'label'               => &$GLOBALS['TL_LANG']['tl_iso_order_items']['show'],
-        'href'                => 'act=show',
-        'icon'                => 'show.gif'
-   	  )/*,
-   	  'buttons' => array
-	  (
-		'button_callback'     => array('tl_iso_order_items', 'moduleOperations'),
-	  )*/
-    )
-  ),
-
-  // Palettes
-  'palettes' => array
-  (
-    'default'                     => '{general_legend},product_name,price,product_options;{status_legend},status',
-    
-  ),
-
-  // Fields
-  'fields' => array
-  (
+	// Fields
+	'fields' => array
+	(
 		'product_name' => array
 		(
 			'input_field_callback'		=> array('tl_iso_order_items','displayValue')
-			/*'label'                   => &$GLOBALS['TL_LANG']['tl_iso_order_items']['product_name'],
-			'exclude'                 => true,
-			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'locked'=>true, 'maxlength'=>255, 'tl_class'=>'w50')*/
 		),
 	  	'status' => array
 	    (
-	      'label'                   => &$GLOBALS['TL_LANG']['tl_iso_order_items']['status'],
-	      'filter'                  => true,
-	      'inputType'               => 'select',
-	      'options'         		=> array('backordered','on_hold'),
-	      'eval'					=> array('includeBlankOption'=>true),
-	      'reference'         		=> &$GLOBALS['TL_LANG']['tl_iso_order_items'],
+			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_order_items']['status'],
+			'filter'					=> true,
+			'inputType'					=> 'select',
+			'options'					=> array('backordered','on_hold'),
+			'eval'						=> array('includeBlankOption'=>true),
+			'reference'					=> &$GLOBALS['TL_LANG']['tl_iso_order_items'],
 	    ),
-  )
+	),
 );
 
 
-/** 
- *
- */
- 
 class tl_iso_order_items extends Backend
 {
 	public function __construct()
 	{
 		parent::__construct();
 		
-		$this->import('Isotope');	
-	
+		$this->import('Isotope');
 	}
 	
 	public function displayValue($dc, $xlabel)
 	{
 	    $objProductName = $this->Database->prepare("SELECT product_name FROM tl_iso_order_items WHERE id=?")->limit(1)->execute($dc->id);
-
 
 		return '<h1>' . $objProductName->product_name . '</h1>';
 	}
@@ -142,9 +127,7 @@ class tl_iso_order_items extends Backend
 	{
 		$this->import('Isotope');
 		
-		
-		
-		//var_dump($arrRow);
+
 		$strReturn = ($arrRow['status'] ? '<h2>' . $GLOBALS['TL_LANG']['tl_iso_order_items'][$arrRow['status']] . '</h2>' : '') . '<h1>' . $arrRow['product_name'] . ' - ' . $this->Isotope->formatPriceWithCurrency($arrRow['price']) . '</h1>' . (strlen($arrRow['product_options']) ? $this->getProductOptionsHTML(unserialize($arrRow['product_options'])) : '');
 		
 		return $strReturn;
@@ -173,7 +156,6 @@ class tl_iso_order_items extends Backend
         }
 		
 		return $strProductData;
-		
 	}
 }
 

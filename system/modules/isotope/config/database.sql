@@ -351,29 +351,6 @@ CREATE TABLE `tl_cart_items` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tl_iso_order_items`
--- pid = cart id.
---
-
-CREATE TABLE `tl_iso_order_items` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `pid` int(10) unsigned NOT NULL default '0',
-  `sorting` int(10) unsigned NOT NULL default '0',
-  `tstamp` int(10) unsigned NOT NULL default '0',
-  `product_name` varchar(255) NOT NULL default '',
-  `product_id` int(10) unsigned NOT NULL default '0',
-  `quantity_sold` int(10) unsigned NOT NULL default '0',
-  `price` double NULL default NULL,
-  `product_options` text NULL,
-  `status` varchar(255) NOT NULL default '',
-  PRIMARY KEY  (`id`),
-  KEY `pid` (`pid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-
--- --------------------------------------------------------
-
---
 -- Table `tl_cart_types`
 --
 
@@ -592,6 +569,29 @@ CREATE TABLE `tl_iso_orders` (
   `payment_description` text NULL,
   `shipping_description` text NULL,
   `currency` varchar(4) NOT NULL default '',
+  PRIMARY KEY  (`id`),
+  KEY `pid` (`pid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tl_iso_order_items`
+--
+
+CREATE TABLE `tl_iso_order_items` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `pid` int(10) unsigned NOT NULL default '0',
+  `sorting` int(10) unsigned NOT NULL default '0',
+  `tstamp` int(10) unsigned NOT NULL default '0',
+  `product_name` varchar(255) NOT NULL default '',
+  `product_id` int(10) unsigned NOT NULL default '0',
+  `quantity_sold` int(10) unsigned NOT NULL default '0',
+  `price` double NULL default NULL,
+  `product_options` text NULL,
+  `status` varchar(255) NOT NULL default '',
+  `downloads_remaining` varchar(10) NOT NULL default '',
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
