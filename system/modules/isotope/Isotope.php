@@ -67,7 +67,7 @@ class Isotope extends Controller
 		
 		$blnForceDefault = (TL_MODE=='BE' ? true : false);
 		
-		$this->setStore($blnForceDefault);
+		$this->resetStore($blnForceDefault);
 		
 		$this->import('IsotopeStore', 'Store');
 	}
