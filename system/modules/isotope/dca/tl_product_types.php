@@ -110,7 +110,7 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                 => '{name_legend},name,alias,description;{attributes_legend},attributes',
+		'default'                 => '{name_legend},name,alias,description;{attributes_legend},attributes;{download_legend:hide},downloads',
 	),
 
 	// Subpalettes
@@ -156,7 +156,14 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 			'inputType'				  => 'checkbox',
 			'foreignKey'			  => 'tl_product_attributes.name',
 			'eval'					  => array('multiple'=>true,'mandatory'=>true)		
-		)
+		),
+		'downloads' => array
+		(
+			'label'					  => &$GLOBALS['TL_LANG']['tl_product_types']['downloads'],
+			'exclude'				  => true,
+			'inputType'				  => 'checkbox',
+			'eval'					  => array(),
+		),
 	)
 );
 

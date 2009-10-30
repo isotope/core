@@ -21,6 +21,7 @@
  * PHP version 5
  * @copyright  Winans Creative 2009
  * @author     Fred Bliss <fred@winanscreative.com>
+ * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
@@ -28,25 +29,27 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_product_types']['name'] = array('Product Type Name', '');
-$GLOBALS['TL_LANG']['tl_product_types']['alias'] = array('Product Type Key', 'This is used internally by TYPOlight for product editing functionality. It can also be used by developers if there is a need to query or perform logic on specific product types.');
-$GLOBALS['TL_LANG']['tl_product_types']['description'] = array('Product Type Description', '');
-$GLOBALS['TL_LANG']['tl_product_types']['attributes'] = array('Product Attributes', 'Select the collection of attributes that should be included for this product type.');
+$GLOBALS['TL_LANG']['tl_product_types']['name']			= array('Product Type Name', '');
+$GLOBALS['TL_LANG']['tl_product_types']['alias']		= array('Product Type Key', 'This is used internally by TYPOlight for product editing functionality. It can also be used by developers if there is a need to query or perform logic on specific product types.');
+$GLOBALS['TL_LANG']['tl_product_types']['description']	= array('Product Type Description', '');
+$GLOBALS['TL_LANG']['tl_product_types']['attributes']	= array('Product Attributes', 'Select the collection of attributes that should be included for this product type.');
+$GLOBALS['TL_LANG']['tl_product_types']['downloads']	= array('Enable downloads', 'Check here if this product type has downloads.');
 
 
 /**
  * Buttons
  */
-$GLOBALS['TL_LANG']['tl_product_types']['new']    = array('New product type', 'Create new product type.');
-$GLOBALS['TL_LANG']['tl_product_types']['edit']   = array('Edit product type', 'Edit product type ID %s');
-$GLOBALS['TL_LANG']['tl_product_types']['copy']   = array('Copy product type definiton', 'Copy definition of product type ID %s');
-$GLOBALS['TL_LANG']['tl_product_types']['delete'] = array('Delete product type', 'Delete product type ID %s');
-$GLOBALS['TL_LANG']['tl_product_types']['show']   = array('product type details', 'Show details of product type ID %s');
+$GLOBALS['TL_LANG']['tl_product_types']['new']    				= array('New product type', 'Create new product type.');
+$GLOBALS['TL_LANG']['tl_product_types']['edit']   				= array('Edit product type', 'Edit product type ID %s');
+$GLOBALS['TL_LANG']['tl_product_types']['copy']   				= array('Copy product type definiton', 'Copy definition of product type ID %s');
+$GLOBALS['TL_LANG']['tl_product_types']['delete'] 				= array('Delete product type', 'Delete product type ID %s');
+$GLOBALS['TL_LANG']['tl_product_types']['show']   				= array('product type details', 'Show details of product type ID %s');
 
 
 /**
  * Legends
  */
-$GLOBALS['TL_LANG']['tl_product_types']['name_legend'] = 'Product Type Name & Description';
-$GLOBALS['TL_LANG']['tl_product_types']['attributes_legend'] = 'Product Type Attributes';
+$GLOBALS['TL_LANG']['tl_product_types']['name_legend']			= 'Product Type Name & Description';
+$GLOBALS['TL_LANG']['tl_product_types']['attributes_legend']	= 'Product Type Attributes';
+$GLOBALS['TL_LANG']['tl_product_types']['download_legend']		= 'Downloads';
 

@@ -37,7 +37,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		'switchToEdit'                => false,
 		'enableVersioning'            => false,
 		'doNotCopyRecords'            => true,
-		'doNotDeleteRecords'          => false,
+		'ctables'					  => array('tl_product_downloads'),
 		'oncreate_callback'			  => array
 		(
 			array('ProductCatalog', 'loadProductCatalogDCA'),
@@ -93,6 +93,13 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 				'href'                => 'act=edit',
 				'icon'                => 'edit.gif'
 			),
+			'downloads' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['downloads'],
+				'href'                => 'table=tl_product_downloads',
+				'icon'                => 'system/modules/isotope/html/attach.png',
+				'button_callback'	  => array('tl_product_data', 'downloadsButton'),
+			),
 			'cut' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['cut'],
@@ -116,4 +123,28 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		),
 	),
 );
+
+
+class tl_product_data extends Backend
+{
+
+	/**
+	 * Show/hide the downloads button
+	 * @param array
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @return string
+	 */
+	public function downloadsButton($row, $href, $label, $title, $icon, $attributes)
+	{
+		$objType = $this->Database->prepare("SELECT * FROM tl_product_types WHERE alias=?")
+								  ->limit(1)
+								  ->execute($row['type']);
+
+		return ($objType->downloads) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : '';
+	}
+}
 
