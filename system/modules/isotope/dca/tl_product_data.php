@@ -36,9 +36,83 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		'dataContainer'               => 'DynamicTable',
 		'switchToEdit'                => false,
 		'enableVersioning'            => false,
+		'doNotCopyRecords'            => true,
+		'doNotDeleteRecords'          => false,
 		'oncreate_callback'			  => array
 		(
 			array('ProductCatalog', 'loadProductCatalogDCA'),
+		),
+		'onload_callback'			  => array
+		(
+			array('MediaManagement', 'createMediaDirectoryStructure')
+		),
+		'onsubmit_callback'			  => array
+		(
+			array('ProductCatalog', 'saveProduct')
+		),
+	),
+	
+	// List
+	'list' => array
+	(
+		'sorting' => array
+		(
+			'mode'                    => 1,
+			'fields'                  => array('sorting'),
+			'flag'                    => 1,
+			'panelLayout'             => 'sort,filter;search,limit',
+		),
+		'label' => array
+		(
+			'fields'                  => array('product_name'),
+			'format'                  => '%s',
+		),
+		'global_operations' => array
+		(
+			
+			/*'export' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['export'],
+				'href'                => 'act=export',
+				'class'               => 'header_css_import', // for css icon
+				'attributes'          => 'onclick="Backend.getScrollOffset();"'
+			),*/
+			'all' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['MSC']['all'],
+				'href'                => 'act=select',
+				'class'               => 'header_edit_all',
+				'attributes'          => 'onclick="Backend.getScrollOffset();"'
+			),
+		),
+		'operations' => array
+		(
+			'edit' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['edit'],
+				'href'                => 'act=edit',
+				'icon'                => 'edit.gif'
+			),
+			'cut' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['cut'],
+				'href'                => 'act=paste&amp;mode=cut',
+				'icon'                => 'cut.gif',
+				'attributes'          => 'onclick="Backend.getScrollOffset();"'
+			),
+			'delete' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['delete'],
+				'href'                => 'act=delete',
+				'icon'                => 'delete.gif',
+				'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
+			),
+			'show' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['show'],
+				'href'                => 'act=show',
+				'icon'                => 'show.gif'
+			),
 		),
 	),
 );
