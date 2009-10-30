@@ -95,8 +95,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 	// Palettes
 	'palettes' => array
 	(
-		//'default'                     => 'store_configuration_name;country,orderPrefix;currency,currencySymbol,currencyPosition,currencyFormat;cookie_duration;root_asset_import_path;enabled_modules;countries,address_fields,checkout_login_module;productReaderJumpTo,cartJumpTo,checkoutJumpTo;missing_image_placeholder;gallery_thumbnail_image_width,gallery_thumbnail_image_height;thumbnail_image_width,thumbnail_image_height;medium_image_width,medium_image_height;large_image_width,large_image_height'
-		'default'                     => '{name_legend},store_configuration_name;{config_legend},cookie_duration,isDefaultStore;{module_legend},enabled_modules,checkout_login_module;{price_legend},defaultPriceField,priceMultiplier;{currency_legend},currency,currencySymbol,currencyPosition,currencyFormat;{address_legend},country,countries,address_fields;{redirect_legend},productReaderJumpTo,cartJumpTo,checkoutJumpTo;{invoice_legend},invoiceLogo;{images_legend},root_asset_import_path,missing_image_placeholder,gallery_thumbnail_image_width,gallery_thumbnail_image_height,thumbnail_image_width,thumbnail_image_height,medium_image_width,medium_image_height,large_image_width,large_image_height'
+		'default'                     => '{name_legend},store_configuration_name;{config_legend},cookie_duration,isDefaultStore;{module_legend},checkout_login_module;{price_legend},defaultPriceField,priceMultiplier;{currency_legend},currency,currencySymbol,currencyPosition,currencyFormat;{address_legend},country,countries,address_fields;{redirect_legend},productReaderJumpTo,cartJumpTo,checkoutJumpTo;{invoice_legend},invoiceLogo;{images_legend},root_asset_import_path,missing_image_placeholder,gallery_thumbnail_image_width,gallery_thumbnail_image_height,thumbnail_image_width,thumbnail_image_height,medium_image_width,medium_image_height,large_image_width,large_image_height'
 	),
 
 	// Fields
@@ -129,14 +128,6 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'exclude'                 => true,
 			'inputType'               => 'fileTree',
 			'eval'                    => array('fieldType'=>'radio', 'mandatory'=>false)
-		),
-		'enabled_modules' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['enabled_modules'],
-			'exclude'                 => true,
-			'inputType'               => 'checkbox',
-			'options_callback'        => array('tl_store', 'getIsotopeFEModuleList'),
-			'eval'                    => array('multiple'=>true)
 		),
 		'checkout_login_module' => array
 		(
@@ -353,24 +344,6 @@ class tl_store extends Backend
 		
 		return $arrPricingData;
 		
-	}
-
-	/**
-	 * Return all editable fields of table tl_member.
-	 * 
-	 * @access public
-	 * @return array
-	 */
-	public function getIsotopeFEModuleList()
-	{
-		$return = array();
-
-		foreach ($GLOBALS['ISOTOPE_FE_MODULES'] as $moduleKey)
-		{
-			$return[$moduleKey] = $GLOBALS['TL_LANG']['FMD'][$moduleKey][0];
-		}
-
-		return $return;
 	}
 	
 	

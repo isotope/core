@@ -227,7 +227,6 @@ CREATE TABLE `tl_store` (
   `gallery_thumbnail_image_width` int(10) unsigned NOT NULL default '0',
   `gallery_thumbnail_image_height` int(10) unsigned NOT NULL default '0', 
   `cookie_duration` int(10) unsigned NOT NULL default '0',
-  `enabled_modules` blob NULL,
   `root_asset_import_path` varchar(255) NOT NULL default '',
   `checkout_login_module` int(10) unsigned NOT NULL default '0',
   `country` varchar(2) NOT NULL default '',
