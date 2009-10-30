@@ -48,14 +48,16 @@ $GLOBALS['TL_LANG']['tl_store']['currency']							= array('Currency', 'Please se
 $GLOBALS['TL_LANG']['tl_store']['currencySymbol']					= array('Use currency symbol', 'Use a currency symbol ($, €) if available.');
 $GLOBALS['TL_LANG']['tl_store']['currencyPosition']					= array('Position of currency code/symbol', 'Select if you want to show currency on the left or right side of the price.');
 $GLOBALS['TL_LANG']['tl_store']['currencyFormat']					= array('Currency formatting', 'Choose a formatting for prices.');
+$GLOBALS['TL_LANG']['tl_store']['currencyRoundPrecision']			= array('Rounding precision', 'How much decimal precicion to have. Only applies if price multiplier is not 1. See PHP manual for round().');
+$GLOBALS['TL_LANG']['tl_store']['currencyRoundMode']				= array('Rounding mode', 'Round half up or down. See PHP manual for round().');
+$GLOBALS['TL_LANG']['tl_store']['currencyRoundIncrement']			= array('Rounding increment', 'Some currencies (eg. swiss francs) do not support 0.01 precicion.');
 $GLOBALS['TL_LANG']['tl_store']['country']							= array('Default Country','What is the default country for this store configuration?');
 $GLOBALS['TL_LANG']['tl_store']['countries']						= array('Countries', 'Select the countries you want to allow for checkout.');
 $GLOBALS['TL_LANG']['tl_store']['address_fields']					= array('Address fields', 'Select the fields for a new address when checking out.');
-
 $GLOBALS['TL_LANG']['tl_store']['gallery_thumbnail_image_width']	= array('Gallery Thumbnail Standard Width', 'In pixels.');
 $GLOBALS['TL_LANG']['tl_store']['gallery_thumbnail_image_height']	= array('Gallery Thumbnail Standard Height', 'In pixels.');
-$GLOBALS['TL_LANG']['tl_store']['invoiceLogo'] = array('Invoice Logo','Select a logo to show up on the invoices for this store.');
-$GLOBALS['TL_LANG']['tl_store']['isDefaultStore'] = array('Set as default store','Set this as the default store for back-end currency formatting and other locale-specific information.');
+$GLOBALS['TL_LANG']['tl_store']['invoiceLogo']						= array('Invoice Logo','Select a logo to show up on the invoices for this store.');
+$GLOBALS['TL_LANG']['tl_store']['isDefaultStore']					= array('Set as default store','Set this as the default store for back-end currency formatting and other locale-specific information.');
 
 
 /**
@@ -63,28 +65,31 @@ $GLOBALS['TL_LANG']['tl_store']['isDefaultStore'] = array('Set as default store'
  */
 $GLOBALS['TL_LANG']['tl_store']['left']								= 'To the left of price';
 $GLOBALS['TL_LANG']['tl_store']['right']							= 'To the right of price';
+$GLOBALS['TL_LANG']['tl_store'][PHP_ROUND_HALF_UP]					= 'round up';
+$GLOBALS['TL_LANG']['tl_store'][PHP_ROUND_HALF_DOWN]				= 'round down';
+$GLOBALS['TL_LANG']['tl_store'][PHP_ROUND_HALF_EVEN]				= 'round even';
+$GLOBALS['TL_LANG']['tl_store'][PHP_ROUND_HALF_ODD]					= 'round odd';
 
 
 /**
  * Buttons
  */
-$GLOBALS['TL_LANG']['tl_store']['new']    = array('New Store', 'Create a New Store.');
-$GLOBALS['TL_LANG']['tl_store']['edit']   = array('Edit Store', 'Edit Store ID %s.');
-$GLOBALS['TL_LANG']['tl_store']['copy']   = array('Copy Store', 'Copy Store ID %s.');
-$GLOBALS['TL_LANG']['tl_store']['delete'] = array('Delete Store', 'Delete Store ID %s.  This will not delete related assets but rather the initial store configuration.');
-$GLOBALS['TL_LANG']['tl_store']['show']   = array('Show Store Details', 'Show details for store ID %s.');
+$GLOBALS['TL_LANG']['tl_store']['new']    							= array('New Store', 'Create a New Store.');
+$GLOBALS['TL_LANG']['tl_store']['edit']   							= array('Edit Store', 'Edit Store ID %s.');
+$GLOBALS['TL_LANG']['tl_store']['copy']   							= array('Copy Store', 'Copy Store ID %s.');
+$GLOBALS['TL_LANG']['tl_store']['delete'] 							= array('Delete Store', 'Delete Store ID %s.  This will not delete related assets but rather the initial store configuration.');
+$GLOBALS['TL_LANG']['tl_store']['show']   							= array('Show Store Details', 'Show details for store ID %s.');
 
 
 /**
  * Legends
  */
-$GLOBALS['TL_LANG']['tl_store']['name_legend']			= 'Name';
-$GLOBALS['TL_LANG']['tl_store']['config_legend']		= 'Configuration';
-$GLOBALS['TL_LANG']['tl_store']['module_legend']	    = 'Modules';
-$GLOBALS['TL_LANG']['tl_store']['price_legend']			= 'Pricing';
-$GLOBALS['TL_LANG']['tl_store']['currency_legend']	    = 'Currency formatting';
-$GLOBALS['TL_LANG']['tl_store']['address_legend']	    = 'Billing and shipping address';
-$GLOBALS['TL_LANG']['tl_store']['redirect_legend']	    = 'Target pages';
-$GLOBALS['TL_LANG']['tl_store']['invoice_legend']	    = 'Invoice';
-$GLOBALS['TL_LANG']['tl_store']['images_legend']	    = 'Images';
+$GLOBALS['TL_LANG']['tl_store']['name_legend']						= 'Name';
+$GLOBALS['TL_LANG']['tl_store']['config_legend']					= 'Configuration';
+$GLOBALS['TL_LANG']['tl_store']['module_legend']	    			= 'Modules';
+$GLOBALS['TL_LANG']['tl_store']['currency_legend']	    			= 'Pricing & Currency formatting';
+$GLOBALS['TL_LANG']['tl_store']['address_legend']	    			= 'Billing and shipping address';
+$GLOBALS['TL_LANG']['tl_store']['redirect_legend']	    			= 'Target pages';
+$GLOBALS['TL_LANG']['tl_store']['invoice_legend']	    			= 'Invoice';
+$GLOBALS['TL_LANG']['tl_store']['images_legend']	    			= 'Images';
 

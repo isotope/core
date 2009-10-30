@@ -236,6 +236,9 @@ CREATE TABLE `tl_store` (
   `currencySymbol` char(1) NOT NULL default '',
   `currencyPosition` varchar(5) NOT NULL default '',
   `currencyFormat` varchar(20) NOT NULL default '',
+  `currencyRoundPrecision` int(1) unsigned NOT NULL default '2',
+  `currencyRoundMode` varchar(32) NOT NULL default '',
+  `currencyRoundIncrement` varchar(4) NOT NULL default '',
   `countries` blob NULL,
   `address_fields` blob NULL,
   `orderPrefix` varchar(4) NOT NULL default '',
@@ -592,7 +595,6 @@ CREATE TABLE `tl_iso_order_items` (
   `price` double NULL default NULL,
   `product_options` text NULL,
   `status` varchar(255) NOT NULL default '',
-  `downloads_remaining` varchar(10) NOT NULL default '',
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

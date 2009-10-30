@@ -95,7 +95,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{name_legend},store_configuration_name;{config_legend},cookie_duration,isDefaultStore;{module_legend},checkout_login_module;{price_legend},defaultPriceField,priceMultiplier;{currency_legend},currency,currencySymbol,currencyPosition,currencyFormat;{address_legend},country,countries,address_fields;{redirect_legend},productReaderJumpTo,cartJumpTo,checkoutJumpTo;{invoice_legend},invoiceLogo;{images_legend},root_asset_import_path,missing_image_placeholder,gallery_thumbnail_image_width,gallery_thumbnail_image_height,thumbnail_image_width,thumbnail_image_height,medium_image_width,medium_image_height,large_image_width,large_image_height'
+		'default'                     => '{name_legend},store_configuration_name;{config_legend},cookie_duration,isDefaultStore;{module_legend},checkout_login_module;{currency_legend},defaultPriceField,priceMultiplier,currency,currencySymbol,currencyPosition,currencyRoundPrecision,currencyRoundMode,currencyFormat,currencyRoundIncrement;{address_legend},country,countries,address_fields;{redirect_legend},productReaderJumpTo,cartJumpTo,checkoutJumpTo;{invoice_legend},invoiceLogo;{images_legend},root_asset_import_path,missing_image_placeholder,gallery_thumbnail_image_width,gallery_thumbnail_image_height,thumbnail_image_width,thumbnail_image_height,medium_image_width,medium_image_height,large_image_width,large_image_height'
 	),
 
 	// Fields
@@ -269,7 +269,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['currencySymbol'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
-			'eval'						=> array('tl_class'=>'w50 m12'),
+			'eval'					  => array('tl_class'=>'w50 m12'),
 		),
 		'currencyPosition' => array
 		(
@@ -279,7 +279,24 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'default'				  => 'left',
 			'options'				  => array('left', 'right'),
 			'reference'				  => &$GLOBALS['TL_LANG']['tl_store'],
-			'eval'						=> array('tl_class'=>'w50 m12'),
+			'eval'					  => array('tl_class'=>'clr'),
+		),
+		'currencyRoundPrecision' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['currencyRoundPrecision'],
+			'exclude'                 => true,
+			'default'				  => '2',
+			'inputType'               => 'text',
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>1, 'rgpx'=>'digits', 'tl_class'=>'w50'),
+		),
+		'currencyRoundMode' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['currencyRoundMode'],
+			'exclude'                 => true,
+			'inputType'               => 'select',
+			'options'				  => array(PHP_ROUND_HALF_UP, PHP_ROUND_HALF_DOWN, PHP_ROUND_HALF_EVEN, PHP_ROUND_HALF_ODD),
+			'reference'				  => &$GLOBALS['TL_LANG']['tl_store'],
+			'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
 		),
 		'currencyFormat' => array
 		(
@@ -288,6 +305,14 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'inputType'               => 'select',
 			'options'				  => array_keys($GLOBALS['ISO_NUM']),
 			'eval'                    => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50'),
+		),
+		'currencyRoundIncrement' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['currencyRoundIncrement'],
+			'exclude'                 => true,
+			'inputType'               => 'select',
+			'options'				  => array('0.01', '0.05'),
+			'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
 		),
 		'countries' => array
 		(
