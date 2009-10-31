@@ -31,7 +31,7 @@
 $GLOBALS['TL_LANG']['tl_product_downloads']['singleSRC']			= array('Attachement', 'Select the file you want to sell.');
 $GLOBALS['TL_LANG']['tl_product_downloads']['title']				= array('Title', 'Enter a title for this download.');
 $GLOBALS['TL_LANG']['tl_product_downloads']['description']			= array('Description', 'A description for this file.');
-$GLOBALS['TL_LANG']['tl_product_downloads']['downloads_allowed']	= array('Downloads allowed', 'The number of times thisfile can be downloaded per order (multiplied by the quantity sold). Enter 0 for unlimited downloads.');
+$GLOBALS['TL_LANG']['tl_product_downloads']['downloads_allowed']	= array('Downloads allowed', 'The number of times this file can be downloaded per order (multiplied by the quantity sold). Enter 0 for unlimited downloads.');
 
 
 /**
