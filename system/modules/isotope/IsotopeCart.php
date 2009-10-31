@@ -133,7 +133,6 @@ class IsotopeCart extends Model
 					break;
 					
 				case 'subTotal':
-					
 					$this->arrCache[$strKey] = $this->calculateTotal($this->Isotope->getProductData($this->getProducts(), array('price'), 'price'));
 					break;
 					
