@@ -131,7 +131,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	 * Generate module
 	 */
 	protected function compile()
-	{	
+	{
 		//$GLOBALS['ISO_CONFIG']['CHECKOUT_STEPS'] = array('login','shipping_information','billing_information','shipping_method','billing_method','order_review');
 
 		//global $objPage;
@@ -345,7 +345,6 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 					
 					$this->Template->showPrevious = false;
 					$this->Template->showNext = true;
-					$this->Template->showForm = $this->Cart->Payment->checkoutForm ? false : true;
 					break;
 					
 				case 'order_complete':
@@ -460,7 +459,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	protected function getLoginInterface()
 	{		
 		$objTemplate = new FrontendTemplate($this->strStepTemplateBaseName . 'login');
-		$objTemplate->loginModule = '{{insert_module::' . $this->Store->checkout_login_module . '}}';
+		$objTemplate->loginModule = '{{insert_module::' . $this->Isotope->Store->checkout_login_module . '}}';
 		$objTemplate->allowGuestCheckout = $this->iso_checkout_method!='login' ? true : false;
 		
 		$objTemplate->guestCheckoutUrl = $this->addToUrl('step=billing_information');
@@ -611,7 +610,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		$arrPaymentData['address'] 	= $arrBillingAddress;
 		/*
 		$arrPaymentData['totals'] 	= $arrTotals;	
-		$arrPaymentData['currency'] = $this->Store->currency;*/
+		$arrPaymentData['currency'] = $this->Isotope->Store->currency;*/
 
 		$arrShippingData['shipping_method_id'] = $this->Cart->Shipping->id;
 		$arrShippingData['shipping_address'] = $arrShippingAddress;
@@ -621,8 +620,8 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			'pid'					=> (FE_USER_LOGGED_IN ? $this->User->id : 0),
 			'tstamp'				=> time(),
 			'date'					=> time(),
-			'uniqid'				=> uniqid($this->Store->orderPrefix, true),
-			'store_id'				=> $this->Store->id,
+			'uniqid'				=> uniqid($this->Isotope->Store->orderPrefix, true),
+			'store_id'				=> $this->Isotope->Store->id,
 			'cart_id'				=> $this->Cart->id,
 			//'source_cart_id'		=> $this->Cart->id,
 			'subTotal'				=> $this->Cart->subTotal,		// + ($this->Input->post('gift_wrap') ? 10 : 0),		
@@ -637,7 +636,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			'shipping_address'		=> $strShippingAddress,
 			'payment_data'			=> serialize($arrPaymentData),
 			'shipping_data'			=> serialize($arrShippingData),
-			'currency'				=> $this->Store->currency
+			'currency'				=> $this->Isotope->Store->currency
 		);
 		
 		//FIXME?  Sort of strange way to have to handle credit card data...
@@ -669,7 +668,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			$orderId = $objOrder->id;
 		}
 		
-		$this->Database->prepare("UPDATE tl_iso_orders SET order_id=? WHERE id=?")->execute(($this->Store->orderPrefix . $orderId), $orderId);
+		$this->Database->prepare("UPDATE tl_iso_orders SET order_id=? WHERE id=?")->execute(($this->Isotope->Store->orderPrefix . $orderId), $orderId);
 		
 							
 		$fltShippingTotal = (float)$this->Cart->Shipping->price + (float)$this->Cart->Shipping->optionsPrice;
@@ -678,7 +677,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		{
 			$arrData = array
 			(
-				'order_id'					=> ($this->Store->orderPrefix . $orderId),
+				'order_id'					=> ($this->Isotope->Store->orderPrefix . $orderId),
 				'items'						=> $this->Cart->items,
 				'products'					=> $this->Cart->products,
 				'subTotal'					=> $this->Isotope->formatPriceWithCurrency($this->Cart->subTotal),
@@ -717,7 +716,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			unset($_SESSION['isotope']);
 		}
 		
-		return ($this->Store->orderPrefix . $orderId);
+		return ($this->Isotope->Store->orderPrefix . $orderId);
 	}
 	
 	/** 
@@ -1117,7 +1116,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		$strAddress .= (strlen($arrAddress['phone']) > 0 ? $arrAddress['phone'] . "\n" : '');
 	
 	/*
-		foreach( $this->Store->address_fields as $strField )
+		foreach( $this->Isotope->Store->address_fields as $strField )
 		{
 			if (!isset($GLOBALS['TL_DCA'][$strResourceTable]['fields'][$strField]))
 				continue;
@@ -1699,7 +1698,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			
 			$arrStepFields = array();
 			
-			foreach( $this->Store->address_fields as $strField )
+			foreach( $this->Isotope->Store->address_fields as $strField )
 			{
 				if (!isset($GLOBALS['TL_DCA'][$strResourceTable]['fields'][$strField]))
 					continue;
@@ -1732,10 +1731,10 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			// Special field "country"
 			if ($field == 'country')
 			{
-				$arrCountries = array_combine(array_values($this->Store->countries), array_keys($this->Store->countries));
+				$arrCountries = array_combine(array_values($this->Isotope->Store->countries), array_keys($this->Isotope->Store->countries));
 				
 				$arrData['options'] = array_intersect_key($arrData['options'], $arrCountries);
-				$arrData['default'] = $this->Store->country;
+				$arrData['default'] = $this->Isotope->Store->country;
 			}
 
 			$objWidget = new $strClass($this->prepareForWidget($arrData, $this->strCurrentStep . '_' . $field, (strlen($_SESSION['FORM_DATA'][$this->strCurrentStep . '_' . $field]) ? $_SESSION['FORM_DATA'][$this->strCurrentStep . '_' . $field] : (strlen($this->User->$field) ? $this->User->$field : $arrData['default']))));

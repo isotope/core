@@ -53,8 +53,8 @@ $GLOBALS['TL_DCA']['tl_product_downloads'] = array
 		),
 		'label' => array
 		(
-			'fields'					=> array('title'),
-			'format'					=> '%s',
+			'fields'					=> array('title', 'singleSRC'),
+			'format'					=> '%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>',
 		),
 		'global_operations' => array
 		(
@@ -148,7 +148,7 @@ class tl_product_downloads extends Backend
 	 */
 	public function listRows($row)
 	{
-		return $row['title'];
+		return sprintf('<div style="margin-top: -15px; margin-bottom: -5px">%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span></div>', $row['title'], $row['singleSRC']);
 	}
 }
 

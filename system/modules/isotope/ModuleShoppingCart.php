@@ -249,8 +249,8 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 			$arrFormattedProductData = $this->formatProductData($arrProductData);
 		}
 				
-		$this->Template->cartJumpTo = $this->getPageData($this->Store->cartJumpTo);
-		$this->Template->checkoutJumpTo = $this->getPageData($this->Store->checkoutJumpTo);
+		$this->Template->cartJumpTo = $this->getPageData($this->Isotope->Store->cartJumpTo);
+		$this->Template->checkoutJumpTo = $this->getPageData($this->Isotope->Store->checkoutJumpTo);
 		$this->Template->products = $arrFormattedProductData;
 		$this->Template->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
 		$this->Template->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
