@@ -67,8 +67,6 @@ class IsotopeStore extends Model
 	{
 		parent::__construct();
 		
-		var_dump($storeId);
-		
 		if (!$this->findBy('id', (strlen($storeId) ? $storeId : $_SESSION['isotope']['store_id'])))
 		{
 			throw new Exception('No store configuration available');
