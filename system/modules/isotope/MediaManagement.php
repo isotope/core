@@ -65,9 +65,7 @@ class MediaManagement extends Backend
 			
 		$this->strRootAssetImportPath = $this->getRootAssetImportPath($this->intStoreId);
 	
-		$this->import('IsotopeStore','Store');
-		
-		
+		$this->import('Isotope');
 	}
 	
 	

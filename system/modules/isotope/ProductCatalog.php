@@ -37,8 +37,7 @@ class ProductCatalog extends Backend
 	{	
 		parent::__construct();
 		
-		$this->import('Isotope');				
-		$this->import('IsotopeStore', 'Store');		
+		$this->import('Isotope');
 	}
 	
 	private function createTable()

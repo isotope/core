@@ -74,9 +74,6 @@ abstract class ModuleIsotopeBase extends Module
 		if (TL_MODE == 'FE')
 		{	
 			$this->import('Isotope');
-			
-			$this->import('IsotopeStore', 'Store');
-			
 			$this->import('IsotopeCart', 'Cart');
 			
 			if (FE_USER_LOGGED_IN)
@@ -498,7 +495,7 @@ abstract class ModuleIsotopeBase extends Module
 				'id'				=> $row['product_id'],
 				'image'				=> $GLOBALS['TL_CONFIG']['isotope_upload_path'] . '/' . $GLOBALS['TL_CONFIG']['isotope_base_path'] . '/' . substr($row['alias'], 0, 1) . '/' . $row['alias'] . '/' . $GLOBALS['TL_LANG']['MSC']['imagesFolder'] . '/' . $GLOBALS['TL_LANG']['MSC']['gallery_thumbnail_images_folder'] . '/' . $row['main_image'],
 				'name'				=> $row['name'],
-				'link'				=> $this->generateProductLink($row['alias'], $row, $this->Store->productReaderJumpTo, 'id'),
+				'link'				=> $this->generateProductLink($row['alias'], $row, $this->Isotope->Store->productReaderJumpTo, 'id'),
 				'price'				=> $this->generatePrice($row['price'], $this->strPriceTemplate),
 				'total_price'		=> $this->generatePrice($intTotalPrice, 'stpl_total_price'),
 				'quantity'			=> $row['quantity_requested'],

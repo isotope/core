@@ -147,7 +147,6 @@ class PaymentPostfinance extends Payment
 	public function checkoutForm()
 	{
 		$this->import('Isotope');
-		$this->import('IsotopeStore', 'Store');
 		$this->import('IsotopeCart', 'Cart');
 		
 		$objOrder = $this->Database->prepare("SELECT order_id FROM tl_iso_orders WHERE cart_id=?")->execute($this->Cart->id);
@@ -163,8 +162,8 @@ class PaymentPostfinance extends Payment
 		$arrData = array
 		(
 			'PSPID'			=> $this->postfinance_pspid,
-			'currency'		=> $this->Store->currency,
-			'SHASign'		=> sha1($objOrder->order_id . ($this->Cart->grandTotal * 100) . $this->Store->currency . $this->postfinance_pspid . $this->postfinance_secret),
+			'currency'		=> $this->Isotope->Store->currency,
+			'SHASign'		=> sha1($objOrder->order_id . ($this->Cart->grandTotal * 100) . $this->Isotope->Store->currency . $this->postfinance_pspid . $this->postfinance_secret),
 		);
 		
 		$this->Database->prepare("UPDATE tl_iso_orders SET payment_data=? WHERE id=?")->execute(serialize($arrData), $objOrder->id);

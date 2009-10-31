@@ -29,37 +29,10 @@ class IsotopeStore extends Model
 {
 	
 	/**
-	 * Current object instance (Singleton)
-	 * @var object
-	 */
-	protected static $objInstance;
-	
-	/**
 	 * Name of the current table
 	 * @var string
 	 */
 	protected $strTable = 'tl_store';
-	
-	
-	/**
-	 * Prevent cloning of the object (Singleton)
-	 */
-	final private function __clone() {}
-	
-	
-	/**
-	 * Return the current object instance (Singleton)
-	 * @return object
-	 */
-	public static function getInstance()
-	{
-		if (!is_object(self::$objInstance))
-		{
-			self::$objInstance = new IsotopeStore();
-		}
-
-		return self::$objInstance;
-	}
 	
 	
 	/**
@@ -90,11 +63,13 @@ class IsotopeStore extends Model
 	 * @access public
 	 * @return void
 	 */
-	public function __construct($storeId = false)
+	public function __construct($storeId = '')
 	{
 		parent::__construct();
 		
-		if (!$this->findBy('id', ($storeId ? $storeId : $_SESSION['isotope']['store_id'])))
+		var_dump($storeId);
+		
+		if (!$this->findBy('id', (strlen($storeId) ? $storeId : $_SESSION['isotope']['store_id'])))
 		{
 			throw new Exception('No store configuration available');
 		}

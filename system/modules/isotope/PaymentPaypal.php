@@ -152,7 +152,6 @@ class PaymentPaypal extends Payment
 	public function checkoutForm()
 	{
 		$this->import('Isotope');
-		$this->import('IsotopeStore', 'Store');
 		$this->import('IsotopeCart', 'Cart');
 		
 		$objOrder = $this->Database->prepare("SELECT order_id FROM tl_iso_orders WHERE cart_id=?")->execute($this->Cart->id);
@@ -166,7 +165,7 @@ class PaymentPaypal extends Payment
 <input type="hidden" name="amount" value="' . $this->Cart->grandTotal . '"/>
 <input type="hidden" name="no_shipping" value="1">
 <input type="hidden" name="no_note" value="1">
-<input type="hidden" name="currency_code" value="' . $this->Store->currency . '">
+<input type="hidden" name="currency_code" value="' . $this->Isotope->Store->currency . '">
 <input type="hidden" name="button_subtype" value="services">
 <input type="hidden" name="return" value="' . $this->Environment->url . '/' . $this->addToUrl('step=order_complete') . '">
 <input type="hidden" name="cancel_return" value="' . $this->Environment->url . '/' . $this->addToUrl('step=order_failed') . '">

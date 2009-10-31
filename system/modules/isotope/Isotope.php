@@ -68,8 +68,6 @@ class Isotope extends Controller
 		$blnForceDefault = (TL_MODE=='BE' ? true : false);
 		
 		$this->resetStore($blnForceDefault);
-		
-		$this->import('IsotopeStore', 'Store');
 	}
 	
 	
@@ -106,29 +104,28 @@ class Isotope extends Controller
 		}
 		else
 		{	
-			if(!isset($_SESSION['isotope']['store_id']))
+			if($objPage->isotopeStoreConfig)
 			{
-				if($objPage->isotopeStoreConfig)
+				//Assign
+				$this->intDefaultStore = $objPage->isotopeStoreConfig;
+			}
+			else
+			{
+				if($objPage->pid<1)
 				{
-					//Assign
-					$this->intDefaultStore = $objPage->isotopeStoreConfig;
+					$this->intDefaultStore = $this->getDefaultStore();
 				}
 				else
 				{
-					if($objPage->pid<1)
-					{
-						$this->intDefaultStore = $this->getDefaultStore();
-					}
-					else
-					{
-						//Find (recursive look at parents)
-						$this->intDefaultStore = $this->getStoreConfigFromParent($objPage->id);
-					}
+					//Find (recursive look at parents)
+					$this->intDefaultStore = $this->getStoreConfigFromParent($objPage->id);
 				}
 			}
 		}
 			
 		$_SESSION['isotope']['store_id'] = $this->intDefaultStore;
+		
+		$this->Store = new IsotopeStore($this->intDefaultStore);
 	}
 	
 	

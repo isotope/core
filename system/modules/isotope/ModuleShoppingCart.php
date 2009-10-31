@@ -352,8 +352,8 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 		
 		if ($this->iso_forward_cart)
 		{
-			$this->import('IsotopeStore', 'Store');
-			$this->jumpToOrReload($this->Store->cartJumpTo);
+			$this->import('Isotope');
+			$this->jumpToOrReload($this->Isotope->Store->cartJumpTo);
 		}
 	}
 	

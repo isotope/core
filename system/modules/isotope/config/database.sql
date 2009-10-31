@@ -601,7 +601,7 @@ CREATE TABLE `tl_iso_orders` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tl_iso_order_items`
+-- Table `tl_iso_order_items`
 --
 
 CREATE TABLE `tl_iso_order_items` (
@@ -615,6 +615,23 @@ CREATE TABLE `tl_iso_order_items` (
   `price` double NULL default NULL,
   `product_options` text NULL,
   `status` varchar(255) NOT NULL default '',
+  PRIMARY KEY  (`id`),
+  KEY `pid` (`pid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+-- --------------------------------------------------------
+
+--
+-- Table `tl_iso_order_downloads`
+--
+
+CREATE TABLE `tl_iso_order_downloads` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `pid` int(10) unsigned NOT NULL default '0',
+  `tstamp` int(10) unsigned NOT NULL default '0',
+  `download_id` int(10) unsigned NOT NULL default '0',
+  `downloads_remaining` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
