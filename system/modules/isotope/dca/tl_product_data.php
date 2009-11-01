@@ -70,14 +70,13 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		),
 		'global_operations' => array
 		(
-			
-			/*'export' => array
+			'archived' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['export'],
-				'href'                => 'act=export',
-				'class'               => 'header_css_import', // for css icon
-				'attributes'          => 'onclick="Backend.getScrollOffset();"'
-			),*/
+				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['archived'],
+				'href'                => 'key=archived',
+				'attributes'          => 'onclick="Backend.getScrollOffset();"',
+				'button_callback'     => array('tl_product_data', 'archivedButton'),
+			),
 			'all' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['MSC']['all'],
@@ -131,13 +130,6 @@ class tl_product_data extends Backend
 
 	/**
 	 * Show/hide the downloads button
-	 * @param array
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @return string
 	 */
 	public function downloadsButton($row, $href, $label, $title, $icon, $attributes)
 	{
@@ -149,14 +141,26 @@ class tl_product_data extends Backend
 	}
 	
 	
+	public function archivedButton($href, $label, $title, $attributes, $table)
+	{
+		$this->import('BackendUser', 'User');
+		
+		return ($this->User->isAdmin) ? '&nbsp;&nbsp;::&nbsp;&nbsp;<a href="'.$this->addToUrl($href).'" class="header_archived_products" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ' : '';
+	}
+	
+	
 	/**
 	 * Archive products if it has been ordered
 	 */
 	public function deleteOrArchiveProduct($dc)
 	{
-		$objOrders = $this->Database->prepare("SELECT COUNT(*) AS total FROM tl_iso_order_items WHERE product_id=?")->execute($dc->id);
+		$objProduct = $this->Database->prepare("SELECT archived FROM tl_iso_order_items o LEFT OUTER JOIN tl_product_data p ON p.id=o.product_id WHERE p.id=?")->limit(1)->execute($dc->id);
 		
-		if ($objOrders->total > 0)
+		if ($objProduct->archived)
+		{
+			$this->Database->prepare("UPDATE tl_product_data SET archived='' WHERE id=?")->execute($dc->id);
+		}
+		elseif ($objProduct->numRows)
 		{
 			$this->Database->prepare("UPDATE tl_product_data SET archived=1 WHERE id=?")->execute($dc->id);
 		}
@@ -174,7 +178,7 @@ class tl_product_data extends Backend
 	 */
 	public function filterArchived($dc)
 	{
-		if (!strlen($this->Input->get('act')))
+		if (!strlen($this->Input->get('act')) && $this->Input->get('key') != 'archived')
 		{
 			$arrProducts = $this->Database->execute("SELECT id FROM tl_product_data WHERE archived=''")->fetchEach('id');
 			

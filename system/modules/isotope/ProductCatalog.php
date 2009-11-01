@@ -1450,7 +1450,7 @@ class ProductCatalog extends Backend
 		
 		//$output = '<div><span><img src="' . $row['thumbnail_image'] . '" width="100" alt="' . $row['name'] . '" align="left" style="padding-right: 8px;" /><strong>' . $row['name'] . '</strong></span><div><span style="color:#b3b3b3;"><strong>$' . $row['price'] . '</strong></span></div><br /><br /><div><em>Categories: ' . $this->getCategoryList(deserialize($row['pages'])) . '</em></div></div> ';
 		
-		$key = $row['visibility'] ? 'published' : 'unpublished';
+		$key = $row['archived'] ? '' : ($row['visibility'] ? 'published' : 'unpublished');
 		
 		$arrImages = explode(',', $row['main_image']);
 		

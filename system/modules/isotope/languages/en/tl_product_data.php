@@ -77,13 +77,14 @@ $GLOBALS['TL_LANG']['tl_product_data']['new_option_set'] = 'Create a new product
 /**
  * Buttons
  */
-$GLOBALS['TL_LANG']['tl_product_data']['new']    = array('New product', 'Create new product.');
-$GLOBALS['TL_LANG']['tl_product_data']['edit']   = array('Edit product', 'Edit product ID %s');
-$GLOBALS['TL_LANG']['tl_product_data']['copy']   = array('Copy product', 'Copy product ID %s');
-$GLOBALS['TL_LANG']['tl_product_data']['cut']   = array('Move product', 'Move product ID %s');
-$GLOBALS['TL_LANG']['tl_product_data']['delete'] = array('Delete product', 'Delete product ID %s');
-$GLOBALS['TL_LANG']['tl_product_data']['show']   = array('product details', 'Show details of product ID %s');
-$GLOBALS['TL_LANG']['tl_product_data']['editheader'] = array('Edit product type', 'Edit the product type');
+$GLOBALS['TL_LANG']['tl_product_data']['new']			= array('New product', 'Create new product.');
+$GLOBALS['TL_LANG']['tl_product_data']['edit']			= array('Edit product', 'Edit product ID %s');
+$GLOBALS['TL_LANG']['tl_product_data']['downloads']		= array('Downloads', 'Edit downloads for product ID %s');
+$GLOBALS['TL_LANG']['tl_product_data']['copy']			= array('Copy product', 'Copy product ID %s');
+$GLOBALS['TL_LANG']['tl_product_data']['cut']			= array('Move product', 'Move product ID %s');
+$GLOBALS['TL_LANG']['tl_product_data']['delete']		= array('Delete product', 'Delete product ID %s');
+$GLOBALS['TL_LANG']['tl_product_data']['show']			= array('product details', 'Show details of product ID %s');
+$GLOBALS['TL_LANG']['tl_product_data']['archived']		= array('Show archive', 'Unhide archived products');
 
 
 /** 
