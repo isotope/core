@@ -741,33 +741,22 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 		$strProductIds = join(',', $arrProductIds);
 
-		$objProductNames = $this->Database->prepare("SELECT id, name FROM tl_product_data WHERE id IN(" . $strProductIds . ")")
-										  ->execute();
-		
-		$arrProductNames = $objProductNames->fetchAllAssoc();
-								  
-		foreach($arrProductNames as $product)
-		{
-			$arrProductNames[$product['id']] = $product['name'];
-		}
-		
 		$arrProducts = $objProducts->fetchAllAssoc();
 		
 		foreach($arrProducts as $product)
 		{
-			$arrQuery[] = '(?, ?, ?, ?, ?, ?, ?, ?)';
+			$arrQuery[] = '(?, ?, ?, ?, ?, ?, ?)';
 			
 			$arrValues[] = $intOrderId;
 			$arrValues[] = $intSorting+128;
 			$arrValues[] = time();
 			$arrValues[] = $product['id'];
-			$arrValues[] = (array_key_exists($product['product_id'], $arrProductNames) ? $arrProductNames[$product['product_id']] : $GLOBALS['TL_LANG']['ERR']['productNameMissing']);
 			$arrValues[] = $product['quantity_requested'];
 			$arrValues[] = $product['price'];
 			$arrValues[] = $product['product_options'];
 		}		
 				
-		$this->Database->prepare("INSERT INTO tl_iso_order_items (pid, sorting, tstamp, product_id, product_name, quantity_sold, price, product_options) VALUES".implode(', ', $arrQuery))->execute($arrValues);
+		$this->Database->prepare("INSERT INTO tl_iso_order_items (pid, sorting, tstamp, product_id, quantity_sold, price, product_options) VALUES".implode(', ', $arrQuery))->execute($arrValues);
 
 	}
 	

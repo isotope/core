@@ -44,6 +44,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		),
 		'onload_callback'			  => array
 		(
+			array('tl_product_data', 'filterArchived'),
 			array('MediaManagement', 'createMediaDirectoryStructure')
 		),
 		'onsubmit_callback'			  => array
@@ -110,7 +111,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			'delete' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['delete'],
-				'href'                => 'act=delete',
+				'href'                => 'key=delete',
 				'icon'                => 'delete.gif',
 				'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
 			),
@@ -145,6 +146,45 @@ class tl_product_data extends Backend
 								  ->execute($row['type']);
 
 		return ($objType->downloads) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : '';
+	}
+	
+	
+	/**
+	 * Archive products if it has been ordered
+	 */
+	public function deleteOrArchiveProduct($dc)
+	{
+		$objOrders = $this->Database->prepare("SELECT COUNT(*) AS total FROM tl_iso_order_items WHERE product_id=?")->execute($dc->id);
+		
+		if ($objOrders->total > 0)
+		{
+			$this->Database->prepare("UPDATE tl_product_data SET archived=1 WHERE id=?")->execute($dc->id);
+		}
+		else
+		{
+			$this->redirect(str_replace('key=delete', 'act=delete', $this->Environment->request));
+		}
+		
+		$this->redirect('typolight/main.php?do=product_manager');
+	}
+	
+	
+	/**
+	 * Only list non-archived prodcts
+	 */
+	public function filterArchived($dc)
+	{
+		if (!strlen($this->Input->get('act')))
+		{
+			$arrProducts = $this->Database->execute("SELECT id FROM tl_product_data WHERE archived=''")->fetchEach('id');
+			
+			if (!is_array($arrProducts) || !count($arrProducts))
+			{
+				$arrProducts = array(0);
+			}
+			
+			$GLOBALS['TL_DCA']['tl_product_data']['list']['sorting']['root'] = $arrProducts;
+		}
 	}
 }
 
