@@ -220,7 +220,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 		}
 		else
 		{			
-			$strMissingImagePlaceholder = $this->Store->missing_image_placeholder;
+			$strMissingImagePlaceholder = $this->Isotope->Store->missing_image_placeholder;
 				
 			$i = 0;
 			
@@ -441,7 +441,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 		
 			if ($this->iso_jump_first && count($arrProducts))
 			{
-				$this->redirect($this->generateProductLink($arrProducts[0]['alias'], $arrProducts[0], $this->Store->productReaderJumpTo));
+				$this->redirect($this->generateProductLink($arrProducts[0]['alias'], $arrProducts[0], $this->Isotope->Store->productReaderJumpTo));
 			}
 			
 			$i=0;
@@ -466,7 +466,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 				(
 					'name'			=> $product['name'],
 					'alias'			=> $product['alias'],
-					'link'			=> $this->generateProductLink($product['alias'], $product, $this->Store->productReaderJumpTo),
+					'link'			=> $this->generateProductLink($product['alias'], $product, $this->Isotope->Store->productReaderJumpTo),
 					'price_string'			=> ($product['use_price_override']==1 ? $this->generatePriceStringOverride($this->strPriceOverrideTemplate,$product['price_override']) : $this->generatePrice($product['price'], $this->strPriceTemplate)),
 					'thumbnail'				=> $this->getThumbnailImage($product['id'], $product['alias'], $product['main_image'], $strMissingImagePlaceholder, $this->strFileBasePath),
 					'id'			=> $product['id'],
