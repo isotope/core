@@ -25,50 +25,6 @@
  */
  
  
- 
-$_POST = Array
-(
-	'test_ipn' => 1,
-	'payment_type' => 'instant',
-	'payment_date' => '04:57:38 Nov. 02, 2009 PST',
-	'payment_status' => 'Completed',
-	'address_status' => 'confirmed',
-	'payer_status' => 'unverified',
-	'first_name' => 'John',
-	'last_name' => 'Smith',
-	'payer_email' => 'buyer@paypalsandbox.com',
-	'payer_id' => 'TESTBUYERID01',
-	'address_name' => 'John Smith',
-	'address_country' => 'United States',
-	'address_country_code' => 'US',
-	'address_zip' => '95131',
-	'address_state' => 'CA',
-	'address_city' => 'San Jose',
-	'address_street' => '123, any street',
-	'receiver_email' => 'info@iserv.ch',
-	'receiver_id' => 'TESTSELLERID1',
-	'residence_country' => 'US',
-	'item_name1' => 'something',
-	'item_number1' => 'AK-1234',
-	'quantity1' => '1',
-	'tax' => '2.02',
-	'mc_currency' => 'USD',
-	'mc_fee' => '0.44',
-	'mc_gross_1' => '9.34',
-	'mc_handling' => '2.06',
-	'mc_handling1' => '1.67',
-	'mc_shipping' => '3.02',
-	'mc_shipping1' => '1.02',
-	'txn_type' => 'cart',
-	'txn_id' => '381121257',
-	'notify_version' => '2.4',
-	'custom' => 'xyz123',
-	'invoice' => '4',
-	'charset' => 'windows-1252',
-	'verify_sign' => 'AjwFMJyD73RJI4g212S5GEDE3DWQAP.psGy.fNTeMFVaNTjwzeltLLR4'
-);
-
- 
 /**
  * Handle Paypal payments
  * 
