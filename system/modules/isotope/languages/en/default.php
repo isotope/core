@@ -56,6 +56,7 @@ $GLOBALS['TL_LANG']['ERR']['productNameMissing'] = '<no product name found>';
 $GLOBALS['TL_LANG']['ERR']['noSubProducts'] = 'no sub-products found';
 $GLOBALS['TL_LANG']['ERR']['emptyOrderHistory']			= 'You have not yet placed any orders.';
 $GLOBALS['TL_LANG']['ERR']['orderNotFound']				= 'The requested order was not found.';
+$GLOBALS['TL_LANG']['ERR']['missingCurrencyFormat']		= 'Currency formatting not found';
 
 
 //Checkout Errors

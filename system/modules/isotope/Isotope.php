@@ -221,14 +221,14 @@ class Isotope extends Controller
 	 * @param float $fltPrice
 	 * @return float
 	 */
-	public function formatPrice($fltPrice, $strCurrencyCode)
+	public function formatPrice($fltPrice, $strFormatCode)
 	{
-		if(!$strCurrencyCode)
+		if(!$strFormatCode)
 		{
-			throw new Exception($GLOBALS['TL_LANG']['ERR']['missingCurrencyCode']);
+			throw new Exception($GLOBALS['TL_LANG']['ERR']['missingCurrencyFormat']);
 		}
 		
-		$arrFormat = $GLOBALS['ISO_NUM'][$strCurrencyCode];
+		$arrFormat = $GLOBALS['ISO_NUM'][$strFormatCode];
 		
 		if (!is_array($arrFormat) || !count($arrFormat) == 3)
 			return $fltPrice;
@@ -250,7 +250,7 @@ class Isotope extends Controller
 	{
 		$strCurrency = (strlen($strCurrencyCode) ? $strCurrencyCode : $this->Store->currency);
 		
-		$strPrice = $this->formatPrice($fltPrice, $strCurrency);
+		$strPrice = $this->formatPrice($fltPrice, $this->Store->currencyFormat);
 		
 		if ($this->Store->currencySymbol && strlen($GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency]))
 		{
