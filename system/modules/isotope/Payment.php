@@ -84,11 +84,12 @@ abstract class Payment extends Frontend
 	 */
 	public function __get($strKey)
 	{
-		$this->import('IsotopeCart', 'Cart');
-		
 		switch( $strKey )
 		{
 			case 'available':
+				
+				$this->import('IsotopeCart', 'Cart');
+				
 				if (($this->minimum_total > 0 && $this->minimum_total > $this->Cart->subTotal) || ($this->minimum_total > 0 && $this->maximum_total < $this->Cart->subTotal))
 					return false;
 					
@@ -124,9 +125,9 @@ abstract class Payment extends Frontend
 				return true;
 				break;
 			
+			default:
+				return $this->arrData[$strKey];
 		}
-		
-		return $this->arrData[$strKey];
 	}
 	
 	
