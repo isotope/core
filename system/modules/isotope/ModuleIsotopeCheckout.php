@@ -721,6 +721,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	
 	/** 
 	 * Copy items from the cart and place in the order items reference table.
+	 * Also stores product downloads.
 	 *
 	 * @param integer $intCartId
 	 * @param integer $intOrderId
@@ -728,36 +729,40 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	 */
 	protected function copyCartItems($intCartId, $intOrderId)
 	{
-		$arrQuery = array();
-		$arrValues = array();
-		
 		$intSorting = $this->Isotope->getNextSortValue('tl_iso_order_items');
 		
-		$objProducts = $this->Database->prepare("SELECT * FROM tl_cart_items WHERE pid=?")
-									  ->execute($intCartId);
-
+		$objCartItems = $this->Database->prepare("SELECT * FROM tl_cart_items WHERE pid=?")->execute($intCartId);
 		
-		$arrProductIds = $objProducts->fetchEach('product_id');
-		
-		$strProductIds = join(',', $arrProductIds);
-
-		$arrProducts = $objProducts->fetchAllAssoc();
-		
-		foreach($arrProducts as $product)
+		while( $objCartItems->next() )
 		{
-			$arrQuery[] = '(?, ?, ?, ?, ?, ?, ?)';
+			$arrSet = array
+			(
+				'pid'				=> $intOrderId,
+				'sorting'			=> $intSorting+128,
+				'tstamp'			=> time(),
+				'product_id'		=> $objCartItems->product_id,
+				'quantity_sold'		=> $objCartItems->quantity_requested,
+				'price'				=> $objCartItems->price,
+				'product_options'	=> $objCartItems->product_options,
+			);
 			
-			$arrValues[] = $intOrderId;
-			$arrValues[] = $intSorting+128;
-			$arrValues[] = time();
-			$arrValues[] = $product['id'];
-			$arrValues[] = $product['quantity_requested'];
-			$arrValues[] = $product['price'];
-			$arrValues[] = $product['product_options'];
-		}		
+			$itemId = $this->Database->prepare("INSERT INTO tl_iso_order_items %s")->set($arrSet)->execute()->insertId;
+			
+			$objDownloads = $this->Database->prepare("SELECT * FROM tl_product_downloads WHERE pid=?")->execute($objCartItems->product_id);
+			
+			while( $objDownloads->next() )
+			{
+				$arrSet = array
+				(
+					'pid'					=> $itemId,
+					'tstamp'				=> time(),
+					'download_id'			=> $objDownloads->id,
+					'downloads_remaining'	=> ($objDownloads->downloads_allowed > 0 ? $objDownloads->downloads_allowed : ''),
+				);
 				
-		$this->Database->prepare("INSERT INTO tl_iso_order_items (pid, sorting, tstamp, product_id, quantity_sold, price, product_options) VALUES".implode(', ', $arrQuery))->execute($arrValues);
-
+				$this->Database->prepare("INSERT INTO tl_iso_order_downloads %s")->set($arrSet)->execute();
+			}
+		}
 	}
 	
 	/**

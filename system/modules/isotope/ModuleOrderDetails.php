@@ -52,6 +52,10 @@ class ModuleOrderDetails extends ModuleIsotopeBase
 	
 	protected function compile()
 	{
+//		print_r($this->Database->execute("SELECT * FROM tl_iso_orders")->fetchAllAssoc());
+
+		global $objPage;
+		
 		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE uniqid=?")->limit(1)->execute($this->Input->get('uid'));
 		
 		if (!$objOrder->numRows)
@@ -65,12 +69,17 @@ class ModuleOrderDetails extends ModuleIsotopeBase
 		$this->import('Isotope');
 		$this->Isotope->overrideStore($objOrder->store_id);
 		
+		// Article reader
+		$arrPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->limit(1)->execute($this->jumpTo)->fetchAssoc();
+		
+		$arrAllDownloads = array();
 		$arrItems = array();
-		$objItems = $this->Database->prepare("SELECT p.*, o.*, t.downloads AS downloads_allowed, (SELECT COUNT(*) FROM tl_iso_order_downloads d WHERE d.pid=o.id) AS has_downloads FROM tl_iso_order_items o LEFT OUTER JOIN tl_product_data p ON o.product_id=p.id LEFT OUTER JOIN tl_product_types t ON p.type=t.id WHERE o.pid=?")->execute($objOrder->id);
+		$objItems = $this->Database->prepare("SELECT p.*, o.*, t.downloads AS downloads_allowed, (SELECT COUNT(*) FROM tl_iso_order_downloads d WHERE d.pid=o.id) AS has_downloads FROM tl_iso_order_items o LEFT OUTER JOIN tl_product_data p ON o.product_id=p.id LEFT OUTER JOIN tl_product_types t ON p.type=t.alias WHERE o.pid=?")->execute($objOrder->id);
+		
 		
 		while( $objItems->next() )
 		{
-			if ($objItems->downloads_allowed && $objItems->has_downlaods > 0)
+			if ($objItems->downloads_allowed/* && $objItems->has_downlaods > 0*/)
 			{
 				$arrDownloads = array();
 				$objDownloads = $this->Database->prepare("SELECT p.*, o.* FROM tl_iso_order_downloads o LEFT OUTER JOIN tl_product_downloads p ON o.download_id=p.id WHERE o.pid=?")->execute($objItems->id);
@@ -78,13 +87,27 @@ class ModuleOrderDetails extends ModuleIsotopeBase
 				while( $objDownloads->next() )
 				{
 					// Send file to the browser
-					if (strlen($this->Input->get('file')) && $this->Input->get('file') == $objDownloads->download_id && ($objDownloads->downloads_allowed == 0 || $objDownloads->downloads_remaining > 0))
+					if (strlen($this->Input->get('file')) && $this->Input->get('file') == $objDownloads->id && ($objDownloads->downloads_allowed == 0 || $objDownloads->downloads_remaining > 0))
 					{
-						$this->Database->prepare("UPDATE tl_iso_order_downloads SET downloads_remaining=? WHERE id=?")->execute(($objDownloads->downloads_remaining-1), $objDownloads->id);
+						if ($objDownloads->downloads_remaining > 0)
+						{
+							$this->Database->prepare("UPDATE tl_iso_order_downloads SET downloads_remaining=? WHERE id=?")->execute(($objDownloads->downloads_remaining-1), $objDownloads->id);
+						}
+						
 						$this->sendFileToBrowser($objDownloads->singleSRC);
 					}
 					
-					$arrDownloads[] = $objDownloads->row();
+					$arrDownload = array
+					(
+						'raw'			=> $objDownloads->row(),
+						'title'			=> $objDownloads->title,
+						'href'			=> ($this->generateFrontendUrl($objPage->row()) . '?uid=' . $this->Input->get('uid') . '&amp;file=' . $objDownloads->id),
+						'remaining'		=> ($objDownloads->downloads_allowed > 0 ? sprintf('<br />%s Downloads verbleibend', intval($objDownloads->downloads_remaining)) : ''),
+						'downloadable'	=> (($objDownloads->downloads_allowed == 0 || $objDownloads->downloads_remaining > 0) ? true : false),
+					);
+					
+					$arrDownloads[] = $arrDownload;
+					$arrAllDownloads[] = $arrDownload;
 				}
 			}
 			
@@ -97,13 +120,17 @@ class ModuleOrderDetails extends ModuleIsotopeBase
 				'quantity'		=> $objItems->quantity_sold,
 				'price'			=> $this->Isotope->formatPriceWithCurrency($objItems->price),
 				'total'			=> $this->Isotope->formatPriceWithCurrency(($objItems->price * $objItems->quantity_sold)),
+				'href'			=> ($this->jumpTo ? $this->generateFrontendUrl($arrPage, '/product/'.$objItems->alias) : ''),
 			);
 		}
 		
 		$this->Template->setData($objOrder->row());
 		$this->Template->items = $arrItems;
+		$this->Template->downloads = $arrAllDownloads;
 		$this->Template->raw = $objOrder->row();
 		$this->Template->date = $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $objOrder->date);
+		$this->Template->time = $this->parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $objOrder->date);
+		$this->Template->datim = $this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $objOrder->date);
 		$this->Template->subTotal = $this->Isotope->formatPriceWithCurrency($objOrder->subTotal);
 		$this->Template->taxTotal = $this->Isotope->formatPriceWithCurrency($objOrder->taxTotal);
 		$this->Template->shippingTotal = $this->Isotope->formatPriceWithCurrency($objOrder->shippingTotal);
