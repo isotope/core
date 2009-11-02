@@ -122,8 +122,6 @@ class Isotope extends Controller
 				}
 			}
 		}
-			
-		$_SESSION['isotope']['store_id'] = $this->intDefaultStore;
 		
 		$this->Store = new IsotopeStore($this->intDefaultStore);
 	}
@@ -138,8 +136,6 @@ class Isotope extends Controller
 	public function overrideStore($intStoreId)
     {
     	$this->Store = new IsotopeStore($intStoreId);
-    	
-	 	$_SESSION['isotope']['store_id'] = $intStoreId;
 	}
 	
 	

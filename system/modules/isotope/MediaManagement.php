@@ -42,8 +42,6 @@ class MediaManagement extends Backend
 	 */
 	protected $strIsotopeRoot;
 	
-	protected $intStoreId;
-	
 	protected $strRootAssetImportPath;
 	
 	/**
@@ -61,9 +59,7 @@ class MediaManagement extends Backend
 				
 		$blnForceDefault = (TL_MODE=='BE' ? true : false);
 				
-		$this->intStoreId = $_SESSION['isotope']['store_id'];
-			
-		$this->strRootAssetImportPath = $this->getRootAssetImportPath($this->intStoreId);
+		$this->strRootAssetImportPath = $this->getRootAssetImportPath($this->Isotope->Store->id);
 	
 		$this->import('Isotope');
 	}
@@ -505,7 +501,7 @@ class MediaManagement extends Backend
 						
 			$objStoreSettings = $this->Database->prepare("SELECT gallery_thumbnail_image_width, gallery_thumbnail_image_height, thumbnail_image_width,thumbnail_image_height,medium_image_width,medium_image_height,large_image_width,large_image_height FROM tl_store WHERE id=?")
 											   ->limit(1)
-											   ->execute($this->intStoreId);
+											   ->execute($this->Isotope->Store->id);
 			if($objStoreSettings->numRows < 1)
 			{
 				return array();

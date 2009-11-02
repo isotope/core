@@ -130,9 +130,8 @@ class PaymentPostfinance extends Payment
 		
 		if ($this->postsale_mail)
 		{
-			$_SESSION['isotope']['store_id'] = $objOrder->store_id;
 			$this->Import('Isotope');
-			
+			$this->Isotope->overrideStore($objOrder->store_id);
 			$this->Isotope->sendMail($this->postsale_mail, $GLOBALS['TL_ADMIN_EMAIL'], $GLOBALS['TL_LANGUAGE'], $arrData);
 		}
 	}
