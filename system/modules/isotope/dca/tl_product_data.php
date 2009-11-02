@@ -44,7 +44,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		),
 		'onload_callback'			  => array
 		(
-			array('tl_product_data', 'filterArchived'),
+			array('tl_product_data', 'checkPermission'),
 			array('MediaManagement', 'createMediaDirectoryStructure')
 		),
 		'onsubmit_callback'			  => array
@@ -176,18 +176,38 @@ class tl_product_data extends Backend
 	/**
 	 * Only list non-archived prodcts
 	 */
-	public function filterArchived($dc)
+	public function checkPermission($dc)
 	{
-		if (!strlen($this->Input->get('act')) && $this->Input->get('key') != 'archived')
+		$this->import('BackendUser', 'User');
+		
+		$arrTypes = array();
+		$objTypes = $this->Database->execute("SELECT * FROM tl_product_types");
+		
+		while( $objTypes->next() )
 		{
-			$arrProducts = $this->Database->execute("SELECT id FROM tl_product_data WHERE archived=''")->fetchEach('id');
-			
-			if (!is_array($arrProducts) || !count($arrProducts))
+			if ($objTypes->protected && !$this->User->isAdmin)
 			{
-				$arrProducts = array(0);
+				$arrGroups = deserialize($objTypes->groups, true);
+				
+				if (!is_array($this->User->groups) || !count(array_intersect($arrGroups, $this->User->groups)))
+					continue;
 			}
 			
-			$GLOBALS['TL_DCA']['tl_product_data']['list']['sorting']['root'] = $arrProducts;
+			$arrTypes[] = $objTypes->alias;
+		}
+		
+		$arrProducts = $this->Database->execute("SELECT id FROM tl_product_data WHERE type IN ('" . implode("','", $arrTypes) . "')" . ($this->Input->get('key') == 'archived' ? '' : " AND archived=''"))->fetchEach('id');
+		
+		if (!is_array($arrProducts) || !count($arrProducts))
+		{
+			$arrProducts = array(0);
+		}
+		
+		$GLOBALS['TL_DCA']['tl_product_data']['list']['sorting']['root'] = $arrProducts;
+		
+		if (strlen($this->Input->get('id')) && !in_array($this->Input->get('id'), $arrProducts))
+		{
+			$this->redirect('typolight/main.php?act=error');
 		}
 	}
 }

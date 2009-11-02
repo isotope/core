@@ -110,13 +110,14 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                 => '{name_legend},name,alias,description;{attributes_legend},attributes;{download_legend:hide},downloads',
+		'__selector__'				  => array('protected'),
+		'default'					  => '{name_legend},name,alias,description;{attributes_legend},attributes;{download_legend:hide},downloads;{protected_legend},protected',
 	),
 
 	// Subpalettes
 	'subpalettes' => array
 	(
-		//'addImage'                 => 'singleSRC,size',
+		'protected'					  => 'groups',
 	),
 
 
@@ -163,6 +164,22 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 			'exclude'				  => true,
 			'inputType'				  => 'checkbox',
 			'eval'					  => array(),
+		),
+		'protected' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_product_types']['protected'],
+			'exclude'                 => true,
+			'filter'                  => true,
+			'inputType'               => 'checkbox',
+			'eval'                    => array('submitOnChange'=>true)
+		),
+		'groups' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_product_types']['groups'],
+			'exclude'                 => true,
+			'inputType'               => 'checkbox',
+			'foreignKey'              => 'tl_user_group.name',
+			'eval'                    => array('multiple'=>true)
 		),
 	)
 );

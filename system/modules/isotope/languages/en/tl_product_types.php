@@ -34,6 +34,8 @@ $GLOBALS['TL_LANG']['tl_product_types']['alias']		= array('Product Type Key', 'T
 $GLOBALS['TL_LANG']['tl_product_types']['description']	= array('Product Type Description', '');
 $GLOBALS['TL_LANG']['tl_product_types']['attributes']	= array('Product Attributes', 'Select the collection of attributes that should be included for this product type.');
 $GLOBALS['TL_LANG']['tl_product_types']['downloads']	= array('Enable downloads', 'Check here if this product type has downloads.');
+$GLOBALS['TL_LANG']['tl_product_types']['protected']	= array('Assign access rights', 'Access rights determine what back end users can see this products.');
+$GLOBALS['TL_LANG']['tl_product_types']['groups']		= array('Backend groups', 'Select the groups that can see products of this type.');
 
 
 /**

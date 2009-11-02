@@ -118,6 +118,8 @@ CREATE TABLE `tl_product_types` (
   `description` text NULL,
   `attributes` blob NULL,
   `downloads` char(1) NOT NULL default '',
+  `protected` char(1) NOT NULL default '',
+  `groups` blob NULL,
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
