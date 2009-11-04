@@ -36,7 +36,11 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 	(
 		'dataContainer'               => 'Table',
 		'switchToEdit'				  => true,
-		'enableVersioning'            => true
+		'enableVersioning'            => true,
+		'onload_callback' => array
+		(
+			array('tl_store', 'checkPermission'),
+		),
 	),
 
 	// List
@@ -349,6 +353,29 @@ $GLOBALS['TL_DCA']['tl_store'] = array
  */
 class tl_store extends Backend
 {
+
+	public function checkPermission($dc)
+	{
+		$this->import('BackendUser', 'User');
+		
+		if ($this->User->isAdmin)
+			return;
+			
+		$arrStores = $this->User->iso_stores;
+		
+		if (!is_array($arrStores) || !count($arrStores))
+		{
+			$arrStores = array(0);
+		}
+		
+		$GLOBALS['TL_DCA']['tl_store']['list']['sorting']['root'] = $arrStores;
+		
+		if (strlen($this->Input->get('id')) && !in_array($this->Input->get('id'), $arrStores))
+		{
+			$this->redirect('typolight/main.php?act=error');
+		}
+	}
+	
 
 	/**
 	 * Return all fields that are price fields.

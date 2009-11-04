@@ -664,7 +664,7 @@ class VariantsWizard extends Widget
 	protected function getProductTypeData($intId)
 	{
 		
-		$objProductTypeData = $this->Database->prepare("SELECT pt.id, pt.alias, pt.attributes FROM tl_product_types pt, tl_product_data pd WHERE pt.alias=pd.type AND pd.id=?")
+		$objProductTypeData = $this->Database->prepare("SELECT pt.id, pt.attributes FROM tl_product_types pt, tl_product_data pd WHERE pt.alias=pd.type AND pd.id=?")
 											 ->limit(1)
 											 ->execute($intId);
 		

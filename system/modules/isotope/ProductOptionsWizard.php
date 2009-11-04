@@ -132,7 +132,7 @@ class ProductOptionsWizard extends Widget
 		
 		$this->import('Database');
 		
-		$objProductTypePid = $this->Database->prepare("SELECT pt.id AS ptId FROM tl_product_data pd, tl_product_types pt WHERE pt.alias=pd.type AND pd.id=?")
+		$objProductTypePid = $this->Database->prepare("SELECT pt.id AS ptId FROM tl_product_data pd, tl_product_types pt WHERE pt.id=pd.type AND pd.id=?")
 											->limit(1)
 											->execute($this->Input->get('id'));
 		
@@ -368,7 +368,7 @@ class ProductOptionsWizard extends Widget
 	protected function getEditableAttributes($strProductType)
 	{
 		//Get attribute collection for given product type.
-		$objEligibleAttributes = $this->Database->prepare("SELECT attributes FROM tl_product_types WHERE alias=?")
+		$objEligibleAttributes = $this->Database->prepare("SELECT attributes FROM tl_product_types WHERE id=?")
 												->limit(1)
 												->execute($strProductType);
 		

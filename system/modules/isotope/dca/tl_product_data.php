@@ -133,7 +133,7 @@ class tl_product_data extends Backend
 	 */
 	public function downloadsButton($row, $href, $label, $title, $icon, $attributes)
 	{
-		$objType = $this->Database->prepare("SELECT * FROM tl_product_types WHERE alias=?")
+		$objType = $this->Database->prepare("SELECT * FROM tl_product_types WHERE id=?")
 								  ->limit(1)
 								  ->execute($row['type']);
 
@@ -180,23 +180,9 @@ class tl_product_data extends Backend
 	{
 		$this->import('BackendUser', 'User');
 		
-		$arrTypes = array();
-		$objTypes = $this->Database->execute("SELECT * FROM tl_product_types");
+		$arrTypes = is_array($this->User->iso_product_types) ? $this->User->iso_product_types : array(0);
 		
-		while( $objTypes->next() )
-		{
-			if ($objTypes->protected && !$this->User->isAdmin)
-			{
-				$arrGroups = deserialize($objTypes->groups, true);
-				
-				if (!is_array($this->User->groups) || !count(array_intersect($arrGroups, $this->User->groups)))
-					continue;
-			}
-			
-			$arrTypes[] = $objTypes->alias;
-		}
-		
-		$arrProducts = $this->Database->execute("SELECT id FROM tl_product_data WHERE type IN ('" . implode("','", $arrTypes) . "')" . ($this->Input->get('key') == 'archived' ? '' : " AND archived=''"))->fetchEach('id');
+		$arrProducts = $this->Database->execute("SELECT id FROM tl_product_data WHERE " . ($this->User->isAdmin ? '1=1' : "type IN ('','" . implode("','", $arrTypes) . "')") . ($this->Input->get('key') == 'archived' ? '' : " AND archived=''"))->fetchEach('id');
 		
 		if (!is_array($arrProducts) || !count($arrProducts))
 		{

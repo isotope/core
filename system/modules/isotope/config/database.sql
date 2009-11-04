@@ -114,12 +114,9 @@ CREATE TABLE `tl_product_types` (
   `sorting` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
   `name` varchar(255) NOT NULL default '',
-  `alias` varchar(255) NOT NULL default '',
   `description` text NULL,
   `attributes` blob NULL,
   `downloads` char(1) NOT NULL default '',
-  `protected` char(1) NOT NULL default '',
-  `groups` blob NULL,
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -684,7 +681,8 @@ CREATE TABLE `tl_tax_rate` (
 --
 
 CREATE TABLE `tl_user` (
- `mediamounts` blob NULL,
+ `iso_product_types` blob NULL,
+ `iso_stores` blob NULL,
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
@@ -695,7 +693,8 @@ CREATE TABLE `tl_user` (
 --
 
 CREATE TABLE `tl_user_group` (
- `mediamounts` blob NULL,
+ `iso_product_types` blob NULL,
+ `iso_stores` blob NULL,
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 

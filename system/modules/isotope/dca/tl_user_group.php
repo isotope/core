@@ -28,17 +28,27 @@
 /**
  * Palettes
  */
-$GLOBALS['TL_DCA']['tl_user_group']['palettes']['default'] = preg_replace('@([,|;]filemounts)([,|;])@', '$1,mediamounts$2', $GLOBALS['TL_DCA']['tl_user_group']['palettes']['default']);
+$GLOBALS['TL_DCA']['tl_user_group']['palettes']['default'] = str_replace('{alexf_legend}', '{isotope_legend},iso_product_types,iso_stores;{alexf_legend}', $GLOBALS['TL_DCA']['tl_user_group']['palettes']['default']);
 
 
 /**
  * Fields
  */
-$GLOBALS['TL_DCA']['tl_user_group']['fields']['mediamounts'] = array
+$GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_product_types'] = array
 (
-	'label'                   => &$GLOBALS['TL_LANG']['tl_user']['mediamounts'],
+	'label'                   => &$GLOBALS['TL_LANG']['tl_user']['iso_product_types'],
 	'exclude'                 => true,
-	'inputType'               => 'fileTree',
-	'eval'                    => array('fieldType'=>'checkbox', 'path'=>$GLOBALS['TL_CONFIG']['isotope_upload_path']),
+	'inputType'               => 'checkbox',
+	'foreignKey'			  => 'tl_product_types.name',
+	'eval'                    => array('multiple'=>true),
+);
+
+$GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_stores'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_user']['iso_stores'],
+	'exclude'                 => true,
+	'inputType'               => 'checkbox',
+	'foreignKey'			  => 'tl_store.store_configuration_name',
+	'eval'                    => array('multiple'=>true),
 );
 

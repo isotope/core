@@ -111,7 +111,7 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 	'palettes' => array
 	(
 		'__selector__'				  => array('protected'),
-		'default'					  => '{name_legend},name,alias,description;{attributes_legend},attributes;{download_legend:hide},downloads;{protected_legend},protected',
+		'default'					  => '{name_legend},name,description;{attributes_legend},attributes;{download_legend:hide},downloads',
 	),
 
 	// Subpalettes
@@ -130,17 +130,6 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>61)
-		),
-		'alias'  => array
-		(
-			'label'					  => &$GLOBALS['TL_LANG']['tl_product_types']['alias'],
-			'exclude'				  => true,
-			'inputType'				  => 'text',
-			'eval'					  => array('maxlength'=>255),
-			'save_callback'			  => array
-			(
-				array('tl_product_types','generateAlias')
-			)
 		),
 		'description' => array
 		(
@@ -164,22 +153,6 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 			'exclude'				  => true,
 			'inputType'				  => 'checkbox',
 			'eval'					  => array(),
-		),
-		'protected' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_types']['protected'],
-			'exclude'                 => true,
-			'filter'                  => true,
-			'inputType'               => 'checkbox',
-			'eval'                    => array('submitOnChange'=>true)
-		),
-		'groups' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_types']['groups'],
-			'exclude'                 => true,
-			'inputType'               => 'checkbox',
-			'foreignKey'              => 'tl_user_group.name',
-			'eval'                    => array('multiple'=>true)
 		),
 	)
 );
@@ -207,19 +180,15 @@ class tl_product_types extends Backend
 		{
 			return;
 		}
-/*
+
 		// Set root IDs
-		if (!is_array($this->User->catalogs) || count($this->User->catalogs) < 1)
+		if (!is_array($this->User->iso_product_types) || count($this->User->iso_product_types) < 1)
 		{
-			$root = array(0);
+			$this->User->iso_product_types = array(0);
 		}
-		else
-		{
-			$root = $this->User->catalogs;
-		}
-*/
+
 		$GLOBALS['TL_DCA']['tl_product_types']['config']['closed'] = true;
-		$GLOBALS['TL_DCA']['tl_product_types']['list']['sorting']['root'] = $root;
+		$GLOBALS['TL_DCA']['tl_product_types']['list']['sorting']['root'] = $this->User->iso_product_types;
 
 		// Check current action
 		switch ($this->Input->get('act'))
@@ -230,23 +199,23 @@ class tl_product_types extends Backend
 
 			case 'edit':
 			case 'show':
-				if (!in_array($this->Input->get('id'), $root))
+				if (!in_array($this->Input->get('id'), $this->User->iso_product_types))
 				{
-					$this->log('Not enough permissions to '.$this->Input->get('act').' catalog type ID "'.$this->Input->get('id').'"', 'tl_product_types checkPermission', 5);
+					$this->log('Not enough permissions to '.$this->Input->get('act').' product type ID "'.$this->Input->get('id').'"', 'tl_product_types checkPermission', 5);
 					$this->redirect('typolight/main.php?act=error');
 				}
 				break;
 
 			case 'editAll':
 				$session = $this->Session->getData();
-				$session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $root);
+				$session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $this->User->iso_product_types);
 				$this->Session->setData($session);
 				break;
 
 			default:
 				if (strlen($this->Input->get('act')))
 				{
-					$this->log('Not enough permissions to '.$this->Input->get('act').' catalog types', 'tl_product_types checkPermission', 5);
+					$this->log('Not enough permissions to '.$this->Input->get('act').' product types', 'tl_product_types checkPermission', 5);
 					$this->redirect('typolight/main.php?act=error');
 				}
 				break;

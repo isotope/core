@@ -181,10 +181,10 @@ class ProductCatalog extends Backend
 		
 		//TODO: Make palettes dynamic - start with the basic fields and add additionals for the default palette, while loading the palettes as defined by
 		// each product type from tl_product_types.
-					
+		
 		$arrProductTypePalettes = $this->getProductTypePalettes();
 
-		$GLOBALS['TL_DCA']['tl_product_data']['palettes'] = array_merge($GLOBALS['TL_DCA']['tl_product_data']['palettes'],$arrProductTypePalettes); 
+		$GLOBALS['TL_DCA']['tl_product_data']['palettes'] = $GLOBALS['TL_DCA']['tl_product_data']['palettes'] + $arrProductTypePalettes;
 		//$GLOBALS['TL_DCA']['tl_product_data']['subpalettes']['add_audio_file'] = 'audio_source,audio_jumpTo,audio_url';
 		//$GLOBALS['TL_DCA']['tl_product_data']['subpalettes']['add_video_file'] = 'video_source,video_jumpTo,video_url';
 		
@@ -193,8 +193,6 @@ class ProductCatalog extends Backend
 		$GLOBALS['TL_DCA']['tl_product_data']['palettes']['__selector__'] = array_merge($GLOBALS['TL_DCA']['tl_product_data']['palettes']['__selector__'], $arrAdditionalSelectors);
 		
 		$GLOBALS['TL_DCA']['tl_product_data']['subpalettes'] = $this->arrSubPalettes;
-
-		//var_dump($GLOBALS['TL_DCA']['tl_product_data']['palettes']);
 
 		// first add common DCA fields
 		$GLOBALS['TL_DCA']['tl_product_data']['fields']['type'] = 
@@ -959,7 +957,7 @@ class ProductCatalog extends Backend
 	
 	protected function getProductTypePalettes()
 	{
-		$objProductTypes = $this->Database->prepare("SELECT name, alias, attributes FROM tl_product_types")
+		$objProductTypes = $this->Database->prepare("SELECT id, name, attributes FROM tl_product_types")
 									  ->execute();
 		
 		if($objProductTypes->numRows < 1)
@@ -1003,13 +1001,12 @@ class ProductCatalog extends Backend
 									
 			$strAttributes = $this->buildPaletteString($arrFieldCollection);
 			
-			$arrPalettes[$objProductTypes->alias] = $strAttributes;					
+			$arrPalettes[$objProductTypes->id] = $strAttributes;					
 			
-			$arrPalettes[$objProductTypes->alias . '_existing_option_set'] = $this->buildPaletteString($arrFieldCollection, 'options_legend', array('option_sets','variants_wizard'));
-			$arrPalettes[$objProductTypes->alias . '_new_option_set'] = $this->buildPaletteString($arrFieldCollection, 'options_legend', array('option_set_title','variants_wizard'));
+			$arrPalettes[$objProductTypes->id . '_existing_option_set'] = $this->buildPaletteString($arrFieldCollection, 'options_legend', array('option_sets','variants_wizard'));
+			$arrPalettes[$objProductTypes->id . '_new_option_set'] = $this->buildPaletteString($arrFieldCollection, 'options_legend', array('option_set_title','variants_wizard'));
 		}
-			
-				
+		
 		return $arrPalettes;
 	}
 	
@@ -1357,10 +1354,9 @@ class ProductCatalog extends Backend
 		return;
 	}
 	
+	
 	/**
 	 * Returns all allowed product types as array.
-	 * 
-	 * @todo returns string in case of error, should return array
 	 *
 	 * @access public
 	 * @param object DataContainer $dc
@@ -1368,18 +1364,26 @@ class ProductCatalog extends Backend
 	 */
 	public function getProductTypes(DataContainer $dc)
 	{
+		$this->import('BackendUser', 'User');
+		
+		$arrTypes = $this->User->iso_product_types;
+		if (!is_array($arrTypes) || !count($arrTypes))
+		{
+			$arrTypes = array(0);
+		}
+		
 		$arrOptions = array();
 
-		$objProductTypes = $this->Database->execute("SELECT name, alias FROM tl_product_types");
+		$objProductTypes = $this->Database->execute("SELECT id,name FROM tl_product_types" . ($this->User->isAdmin ? '' : (" WHERE id IN (".implode(',', $arrTypes).")")));
 		
 		if($objProductTypes->numRows < 1)
 		{
 			return array();
-		}								
+		}
 
 		while($objProductTypes->next())
 		{
-			$arrOptions[$objProductTypes->alias] = $objProductTypes->name;
+			$arrOptions[$objProductTypes->id] = $objProductTypes->name;
 		}
 
 		return $arrOptions;

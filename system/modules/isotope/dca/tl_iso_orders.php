@@ -30,191 +30,191 @@
  */
 $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 (
-
-  // Config
-  'config' => array
-  (
-    'dataContainer'               => 'Table',
-    'enableVersioning'            => false,
-    'ctable'					  => array('tl_iso_order_items'),
-    'closed'            		  => true,
-    'onload_callback' 			  => array
-    (
-      array('tl_iso_orders', 'hideReviewRecords'),
-    ),
-  ),
-
-  // List
-  'list' => array
-  (
-    'sorting' => array
-    (
-      'mode'                    => 2,
-      'fields'                  => array('tstamp DESC'),
-      'flag'                    => 1,
-      'panelLayout'             => 'filter,search,limit'
-    ),
-    'label' => array
-    (
-      'fields'                  => array('grandTotal'),
-      'label'                   => '%s',
-      'label_callback'          => array('tl_iso_orders', 'getOrderLabel')
-    ),
-    'operations' => array
-    (
-      'edit' => array
-      (
-        'label'               => &$GLOBALS['TL_LANG']['tl_iso_orders']['edit'],
-        'href'                => 'act=edit',
-        'icon'                => 'edit.gif'
-      ),
-/*
-      'delete' => array
-      (
-        'label'               => &$GLOBALS['TL_LANG']['tl_iso_orders']['delete'],
-        'href'                => 'act=delete',
-        'icon'                => 'delete.gif',
-        'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
-      ),
-*/
-      'show' => array
-      (
-        'label'               => &$GLOBALS['TL_LANG']['tl_iso_orders']['show'],
-        'href'                => 'act=show',
-        'icon'                => 'show.gif'
-      ),
-      'edit_order' => array
-      (
-        'label'         => &$GLOBALS['TL_LANG']['tl_iso_orders']['edit_order'],
-        'href'          => 'table=tl_iso_order_items',
-        'icon'          => 'system/modules/isotope/html/edit_order.png'      
-      ),
-      'buttons' => array
-	  (
-		'button_callback'     => array('tl_iso_orders', 'moduleOperations'),
-	  )
-    )
-  ),
-
-  // Palettes
-  'palettes' => array
-  (
-    'default'                     => '{general_legend},status,shippingTotal;{details_legend},details',
-  ),
-
-  // Fields
-  'fields' => array
-  (
-    'status' => array
-    (
-      'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['status'],
-      'filter'                  => true,
-      'inputType'               => 'select',
-      'options'         => array('pending','processing','shipped','complete','on_hold', 'cancelled'),
-      'reference'         => &$GLOBALS['TL_LANG']['MSC']['order_status_labels'],
-    ),
-    'shippingTotal' => array
-    (
-      'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['shippingTotal'],
-      'exclude'                 => true,
-      'search'                  => true,
-      'sorting'                 => true,
-      'flag'                    => 1,
-      'inputType'               => 'text',
-      'eval'                    => array('maxlength'=>255),
-      'save_callback'			=> array
-      (
-      	array('tl_iso_orders','saveShippingTotal')
-      )
-    ),
-    'details' => array
-    (
-      'input_field_callback'    => array('tl_iso_orders', 'showDetails'),
-    )
-    /*,
-    'shippingTotal' => array
-    (
-      'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['shippingTotal'],
-      'exclude'                 => true,
-      'search'                  => true,
-      'sorting'                 => true,
-      'flag'                    => 1,
-      'inputType'               => 'text',
-      'eval'                    => array('maxlength'=>255),
-      'load_callback'			=> array
-      (
-      	array('tl_iso_orders','loadShippingTotal')
-      ),
-      'save_callback'			=> array
-      (
-      	array('tl_iso_orders','saveShippingTotal')
-      )
-    ),
-    'tstamp' => array
-    (
-      'label'                   => &$GLOBALS['TL_LANG']['tl_news']['tstamp'],
-      'flag'                    => 8,
-      'inputType'               => 'text',
-      'eval'                    => array('rgxp'=>'date'),
-    ),
-    'subTotal' => array
-    (
-      'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['subTotal'],
-      'exclude'                 => true,
-      'search'                  => true,
-      'sorting'                 => true,
-      'flag'                    => 1,
-      'inputType'               => 'text',
-      'eval'                    => array('maxlength'=>255)
-    ),
-    'taxTotal' => array
-    (
-      'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['taxTotal'],
-      'exclude'                 => true,
-      'search'                  => true,
-      'sorting'                 => true,
-      'flag'                    => 1,
-      'inputType'               => 'text',
-      'eval'                    => array('maxlength'=>255)
-    ),
-    'shipping_method' => array
-    (
-      'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['shipping_method'],
-      'exclude'                 => true,
-      'search'                  => true,
-      'sorting'                 => true,
-      'inputType'               => 'select',
-      'options'         => array('ups_ground'),
-      'eval'                    => array('includeBlankOption'=>true),
-      'reference'         => &$GLOBALS['TL_LANG']['tl_iso_orders']['shipping_method_labels']
-    ),
-    'order_comments' => array
-    (
-      'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['order_comments'],
-      'exclude'                 => true,
-      'search'                  => true,
-      'sorting'                 => true,
-      'flag'                    => 1,
-      'inputType'               => 'textarea',
-      'eval'            => array('isoEditable'=>true, 'isoCheckoutGroups'=>array('payment_method'))
-    ),
-    'gift_message' => array
-    (
-      'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['gift_message'],
-      'exclude'                 => true,
-      'search'                  => true,
-      'sorting'                 => true,
-      'flag'                    => 1,
-      'inputType'               => 'textarea',
-      'eval'            => array('isoEditable'=>true, 'isoCheckoutGroups'=>array('payment_method'))
-    ),
-    'gift_wrap' => array
-    (
-      'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['gift_wrap'],
-      'exclude'                 => true,
-      'inputType'               => 'checkbox'
-    )*/
-  )
+	
+	// Config
+	'config' => array
+	(
+		'dataContainer'               => 'Table',
+		'enableVersioning'            => false,
+		'ctable'					  => array('tl_iso_order_items'),
+		'closed'            		  => true,
+		'onload_callback' 			  => array
+		(
+			array('tl_iso_orders', 'checkPermission'),
+		),
+	),
+	
+	// List
+	'list' => array
+	(
+		'sorting' => array
+		(
+			'mode'                    => 2,
+			'fields'                  => array('tstamp DESC'),
+			'flag'                    => 1,
+			'panelLayout'             => 'filter,search,limit'
+		),
+		'label' => array
+		(
+			'fields'                  => array('grandTotal'),
+			'label'                   => '%s',
+			'label_callback'          => array('tl_iso_orders', 'getOrderLabel')
+		),
+		'operations' => array
+		(
+			'edit' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_orders']['edit'],
+				'href'                => 'act=edit',
+				'icon'                => 'edit.gif'
+			),
+			/*
+			'delete' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_orders']['delete'],
+				'href'                => 'act=delete',
+				'icon'                => 'delete.gif',
+				'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
+			),
+			*/
+			'show' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_orders']['show'],
+				'href'                => 'act=show',
+				'icon'                => 'show.gif'
+			),
+			'edit_order' => array
+			(
+				'label'         => &$GLOBALS['TL_LANG']['tl_iso_orders']['edit_order'],
+				'href'          => 'table=tl_iso_order_items',
+				'icon'          => 'system/modules/isotope/html/edit_order.png'      
+			),
+			'buttons' => array
+			(
+				'button_callback'     => array('tl_iso_orders', 'moduleOperations'),
+			)
+		)
+	),
+	
+	// Palettes
+	'palettes' => array
+	(
+		'default'                     => '{general_legend},status,shippingTotal;{details_legend},details',
+	),
+	
+	// Fields
+	'fields' => array
+	(
+		'status' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['status'],
+			'filter'                  => true,
+			'inputType'               => 'select',
+			'options'         => array('pending','processing','shipped','complete','on_hold', 'cancelled'),
+			'reference'         => &$GLOBALS['TL_LANG']['MSC']['order_status_labels'],
+		),
+		'shippingTotal' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['shippingTotal'],
+			'exclude'                 => true,
+			'search'                  => true,
+			'sorting'                 => true,
+			'flag'                    => 1,
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>255),
+			'save_callback'			=> array
+			(
+				array('tl_iso_orders','saveShippingTotal')
+			)
+		),
+		'details' => array
+		(
+			'input_field_callback'    => array('tl_iso_orders', 'showDetails'),
+		)
+		/*,
+		'shippingTotal' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['shippingTotal'],
+			'exclude'                 => true,
+			'search'                  => true,
+			'sorting'                 => true,
+			'flag'                    => 1,
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>255),
+			'load_callback'			=> array
+			(
+				array('tl_iso_orders','loadShippingTotal')
+			),
+			'save_callback'			=> array
+			(
+				array('tl_iso_orders','saveShippingTotal')
+			)
+		),
+		'tstamp' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_news']['tstamp'],
+			'flag'                    => 8,
+			'inputType'               => 'text',
+			'eval'                    => array('rgxp'=>'date'),
+		),
+		'subTotal' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['subTotal'],
+			'exclude'                 => true,
+			'search'                  => true,
+			'sorting'                 => true,
+			'flag'                    => 1,
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>255)
+		),
+		'taxTotal' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['taxTotal'],
+			'exclude'                 => true,
+			'search'                  => true,
+			'sorting'                 => true,
+			'flag'                    => 1,
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>255)
+		),
+		'shipping_method' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['shipping_method'],
+			'exclude'                 => true,
+			'search'                  => true,
+			'sorting'                 => true,
+			'inputType'               => 'select',
+			'options'         => array('ups_ground'),
+			'eval'                    => array('includeBlankOption'=>true),
+			'reference'         => &$GLOBALS['TL_LANG']['tl_iso_orders']['shipping_method_labels']
+		),
+		'order_comments' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['order_comments'],
+			'exclude'                 => true,
+			'search'                  => true,
+			'sorting'                 => true,
+			'flag'                    => 1,
+			'inputType'               => 'textarea',
+			'eval'            => array('isoEditable'=>true, 'isoCheckoutGroups'=>array('payment_method'))
+		),
+		'gift_message' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['gift_message'],
+			'exclude'                 => true,
+			'search'                  => true,
+			'sorting'                 => true,
+			'flag'                    => 1,
+			'inputType'               => 'textarea',
+			'eval'            => array('isoEditable'=>true, 'isoCheckoutGroups'=>array('payment_method'))
+		),
+		'gift_wrap' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['gift_wrap'],
+			'exclude'                 => true,
+			'inputType'               => 'checkbox'
+		)*/
+	)
 );
 
 
@@ -456,92 +456,99 @@ class tl_iso_orders extends Backend
     return $strProductData;
   }
     
-  
-  /**
-   * loadAddress function.
-   * 
-   * @todo Return value "no address specified" must be possible to translate
-   *
-   * @access protected
-   * @param mixed $varValue
-   * @param integer $intId
-   * @return string
-   */
-  protected function loadAddress($varValue, $intId)
-  {
-    $intPid = $this->getPid($intId, 'tl_iso_orders');
-  
-    $objAddress = $this->Database->prepare("SELECT * FROM tl_address_book WHERE id=? and pid=?")
-                   ->limit(1)
-                   ->execute($varValue, $intPid);
-    
-    if($objAddress->numRows < 1)
-    {
-      return 'no address specified';
-    }
-    
-    $strAddress = $objAddress->firstname . ' ' . $objAddress->lastname . "<br />";
-    $strAddress .= $objAddress->street . "<br />";
-    $strAddress .= $objAddress->city . ', ' . $objAddress->state . '  ' . $objAddress->postal . "<br />";
-    $strAddress .= $objAddress->country;
 
-    return $strAddress;
-  }
+	/**
+	* loadAddress function.
+	* 
+	* @todo Return value "no address specified" must be possible to translate
+	*
+	* @access protected
+	* @param mixed $varValue
+	* @param integer $intId
+	* @return string
+	*/
+	protected function loadAddress($varValue, $intId)
+	{
+		$intPid = $this->getPid($intId, 'tl_iso_orders');
+		
+		$objAddress = $this->Database->prepare("SELECT * FROM tl_address_book WHERE id=? and pid=?")
+									 ->limit(1)
+									 ->execute($varValue, $intPid);
+		
+		if($objAddress->numRows < 1)
+		{
+			return 'no address specified';
+		}
+		
+		$strAddress = $objAddress->firstname . ' ' . $objAddress->lastname . "<br />";
+		$strAddress .= $objAddress->street . "<br />";
+		$strAddress .= $objAddress->city . ', ' . $objAddress->state . '  ' . $objAddress->postal . "<br />";
+		$strAddress .= $objAddress->country;
+		
+		return $strAddress;
+	}
 
 
-  /**
-   * getPid function.
-   * 
-   * @access protected
-   * @param integer $intId
-   * @param string $strTable
-   * @return integer
-   */
-  protected function getPid($intId, $strTable)
-  {
-    if(!$this->Database->fieldExists('pid', $strTable))
-    {
-      return 0;
-    }
-    
-    $objPid = $this->Database->prepare("SELECT pid FROM " . $strTable . " WHERE id=?")
-                 ->limit(1)
-                 ->execute($intId);
-    
-    if($objPid->numRows < 1)
-    {
-      return 0;
-    }
-    
-    return $objPid->pid;
-  }
-  
-  
-  /**
-   * Review order page stores temporary information in this table to know it when user is redirected to a payment provider. We do not show this data in backend.
-   * 
-   * @access public
-   * @param object $dc
-   * @return void
-   */
-  public function hideReviewRecords()
-  {
-    $objOrders = $this->Database->execute("SELECT * FROM tl_iso_orders WHERE status!=''");
-    
-    if (!$objOrders->numRows)
-    {
-      $GLOBALS['TL_DCA']['tl_iso_orders']['list']['sorting']['root'] = array(0);
-    }
-    else
-    {
-      $GLOBALS['TL_DCA']['tl_iso_orders']['list']['sorting']['root'] = $objOrders->fetchEach('id');
-    }
-  }
-  
-  
-  public function injectPrintCSS($strBuffer)
-  {
-    return str_replace('</head>', '<link rel="stylesheet" type="text/css" href="system/modules/isotope/html/print.css" media="print" />' . "\n</head>", $strBuffer);
-  }
+	/**
+	* getPid function.
+	* 
+	* @access protected
+	* @param integer $intId
+	* @param string $strTable
+	* @return integer
+	*/
+	protected function getPid($intId, $strTable)
+	{
+		if(!$this->Database->fieldExists('pid', $strTable))
+		{
+			return 0;
+		}
+	
+		$objPid = $this->Database->prepare("SELECT pid FROM " . $strTable . " WHERE id=?")
+								 ->limit(1)
+								 ->execute($intId);
+	
+		if($objPid->numRows < 1)
+		{
+			return 0;
+		}
+	
+		return $objPid->pid;
+	}
+
+
+	/**
+	* Review order page stores temporary information in this table to know it when user is redirected to a payment provider. We do not show this data in backend.
+	* 
+	* @access public
+	* @param object $dc
+	* @return void
+	*/
+	public function checkPermission()
+	{
+		$this->import('BackendUser', 'User');
+		
+		$arrStores = $this->User->iso_stores;
+		
+		if (!is_array($arrStores) || !count($arrStores))
+			$arrStores = array(0);
+		
+		$objOrders = $this->Database->execute("SELECT * FROM tl_iso_orders WHERE status!=''" . ($this->User->isAdmin ? '' : " AND store_id IN (".implode(',', $arrStores).")"));
+		
+		if (!$objOrders->numRows)
+		{
+			$GLOBALS['TL_DCA']['tl_iso_orders']['list']['sorting']['root'] = array(0);
+		}
+		else
+		{
+			$GLOBALS['TL_DCA']['tl_iso_orders']['list']['sorting']['root'] = $objOrders->fetchEach('id');
+		}
+	}
+
+
+	public function injectPrintCSS($strBuffer)
+	{
+		return str_replace('</head>', '<link rel="stylesheet" type="text/css" href="system/modules/isotope/html/print.css" media="print" />' . "\n</head>", $strBuffer);
+	}
 }
 

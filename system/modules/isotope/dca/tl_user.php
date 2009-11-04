@@ -28,18 +28,28 @@
 /**
  * Palettes
  */
-$GLOBALS['TL_DCA']['tl_user']['palettes']['extend'] = preg_replace('@([,|;]filemounts)([,|;])@', '$1,mediamounts$2', $GLOBALS['TL_DCA']['tl_user']['palettes']['extend']);
-$GLOBALS['TL_DCA']['tl_user']['palettes']['custom'] = preg_replace('@([,|;]filemounts)([,|;])@', '$1,mediamounts$2', $GLOBALS['TL_DCA']['tl_user']['palettes']['custom']);
+$GLOBALS['TL_DCA']['tl_user']['palettes']['extend'] = str_replace('{account_legend}', '{isotope_legend},iso_product_types,iso_stores;{account_legend}', $GLOBALS['TL_DCA']['tl_user']['palettes']['extend']);
+$GLOBALS['TL_DCA']['tl_user']['palettes']['custom'] = str_replace('{account_legend}', '{isotope_legend},iso_product_types,iso_stores;{account_legend}', $GLOBALS['TL_DCA']['tl_user']['palettes']['custom']);
 
 
 /**
  * Fields
  */
-$GLOBALS['TL_DCA']['tl_user']['fields']['mediamounts'] = array
+$GLOBALS['TL_DCA']['tl_user']['fields']['iso_product_types'] = array
 (
-	'label'                   => &$GLOBALS['TL_LANG']['tl_user']['mediamounts'],
+	'label'                   => &$GLOBALS['TL_LANG']['tl_user']['iso_product_types'],
 	'exclude'                 => true,
-	'inputType'               => 'fileTree',
-	'eval'                    => array('fieldType'=>'checkbox', 'path'=>$GLOBALS['TL_CONFIG']['isotope_upload_path']),
+	'inputType'               => 'checkbox',
+	'foreignKey'			  => 'tl_product_types.name',
+	'eval'                    => array('multiple'=>true),
+);
+
+$GLOBALS['TL_DCA']['tl_user']['fields']['iso_stores'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_user']['iso_stores'],
+	'exclude'                 => true,
+	'inputType'               => 'checkbox',
+	'foreignKey'			  => 'tl_store.store_configuration_name',
+	'eval'                    => array('multiple'=>true),
 );
 
