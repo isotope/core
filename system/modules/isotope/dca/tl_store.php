@@ -99,7 +99,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{name_legend},store_configuration_name,label;{config_legend},cookie_duration,isDefaultStore;{module_legend},checkout_login_module;{currency_legend},currency,currencySymbol,currencyPosition,currencyRoundPrecision,currencyRoundMode,currencyFormat,currencyRoundIncrement,defaultPriceField,priceCalculateFactor,priceCalculateMode;{address_legend},country,countries,address_fields;{redirect_legend},productReaderJumpTo,cartJumpTo,checkoutJumpTo;{invoice_legend},invoiceLogo;{images_legend},root_asset_import_path,missing_image_placeholder,gallery_thumbnail_image_width,gallery_thumbnail_image_height,thumbnail_image_width,thumbnail_image_height,medium_image_width,medium_image_height,large_image_width,large_image_height'
+		'default'                     => '{name_legend},store_configuration_name,label;{config_legend},cookie_duration,isDefaultStore;{module_legend},checkout_login_module;{price_legend},priceField,priceOverrideField,priceCalculateFactor,priceCalculateMode,priceRoundPrecision,priceRoundIncrement;{currency_legend},currency,currencySymbol,currencyFormat,currencyPosition;{address_legend},country,countries,address_fields;{redirect_legend},productReaderJumpTo,cartJumpTo,checkoutJumpTo;{invoice_legend},invoiceLogo;{images_legend},root_asset_import_path,missing_image_placeholder,gallery_thumbnail_image_width,gallery_thumbnail_image_height,thumbnail_image_width,thumbnail_image_height,medium_image_width,medium_image_height,large_image_width,large_image_height'
 	),
 
 	// Fields
@@ -251,9 +251,17 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'options'				  => $this->getCountries(),
 			'eval'                    => array('includeBlankOption'=>true, 'mandatory'=>true),
 		),
-		'defaultPriceField' => array
+		'priceField' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['defaultPriceField'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['priceField'],
+			'exclude'                 => true,
+			'inputType'               => 'select',
+			'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
+			'options_callback'		  => array('tl_store', 'getPriceFields'),
+		),
+		'priceOverrideField' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['priceOverrideField'],
 			'exclude'                 => true,
 			'inputType'               => 'select',
 			'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
@@ -275,6 +283,22 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'inputType'               => 'radio',
 			'options'				  => array('mul', 'div'),
 			'reference'				  => &$GLOBALS['TL_LANG']['tl_store'],
+			'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
+		),
+		'priceRoundPrecision' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['priceRoundPrecision'],
+			'exclude'                 => true,
+			'default'				  => '2',
+			'inputType'               => 'text',
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>1, 'rgpx'=>'digits', 'tl_class'=>'w50'),
+		),
+		'priceRoundIncrement' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['priceRoundIncrement'],
+			'exclude'                 => true,
+			'inputType'               => 'select',
+			'options'				  => array('0.01', '0.05'),
 			'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
 		),
 		'currency' => array
@@ -300,15 +324,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'default'				  => 'left',
 			'options'				  => array('left', 'right'),
 			'reference'				  => &$GLOBALS['TL_LANG']['tl_store'],
-			'eval'					  => array('tl_class'=>'clr'),
-		),
-		'currencyRoundPrecision' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['currencyRoundPrecision'],
-			'exclude'                 => true,
-			'default'				  => '2',
-			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>1, 'rgpx'=>'digits', 'tl_class'=>'w50'),
+			'eval'					  => array('tl_class'=>'w50'),
 		),
 		'currencyFormat' => array
 		(
@@ -317,14 +333,6 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'inputType'               => 'select',
 			'options'				  => array_keys($GLOBALS['ISO_NUM']),
 			'eval'                    => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50'),
-		),
-		'currencyRoundIncrement' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['currencyRoundIncrement'],
-			'exclude'                 => true,
-			'inputType'               => 'select',
-			'options'				  => array('0.01', '0.05'),
-			'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
 		),
 		'countries' => array
 		(

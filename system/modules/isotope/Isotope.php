@@ -216,17 +216,12 @@ class Isotope extends Controller
 		}
 	}
 	
-
+	
 	/**
-	 * Format given price according to store settings.
-	 * 
-	 * @access public
-	 * @param float $fltPrice
-	 * @return float
+	 * Calculate price in foreign currencies.
 	 */
-	public function formatPrice($fltPrice)
+	public function calculatePrice($fltPrice)
 	{
-		// Calculate price in foreign currencies.
 		if ($this->Store->priceMultiplier != 1)
 		{
 			switch ($this->Store->priceCalculateMode)
@@ -240,20 +235,27 @@ class Isotope extends Controller
 					break;
 			}
 			
-			if ($this->Store->currencyRoundIncrement == '0.05')
+			if ($this->Store->priceRoundIncrement == '0.05')
 			{
-				$fltPrice = $fltPrice * 20;
+				$fltPrice = round($fltPrice * 20)/20;
 			}
 			
-			$fltPrice = round($fltPrice, $this->Store->currencyRoundPrecision);
-			
-			if ($this->Store->currencyRoundIncrement == '0.05')
-			{
-				$fltPrice = $fltPrice / 20;
-			}
+			$fltPrice = round($fltPrice, $this->Store->priceRoundPrecision);
 		}
 		
-		
+		return $fltPrice;
+	}
+	
+
+	/**
+	 * Format given price according to store settings.
+	 * 
+	 * @access public
+	 * @param float $fltPrice
+	 * @return float
+	 */
+	public function formatPrice($fltPrice)
+	{
 		$arrFormat = $GLOBALS['ISO_NUM'][$this->Store->currencyFormat];
 		
 		if (!is_array($arrFormat) || !count($arrFormat) == 3)
@@ -341,7 +343,7 @@ class Isotope extends Controller
 	
 	
 	public function getProductData($arrCartItemsData, $arrFieldNames, $strOrderByField)
-	{		
+	{
 		$strFieldList = join(',', $arrFieldNames);
 		
 		foreach($arrCartItemsData as $configRow)
@@ -358,7 +360,7 @@ class Isotope extends Controller
 			}
 			
 			$arrProductsInCart = $objProductData->fetchAllAssoc();
-						
+			
 			foreach($arrProductsInCart as $product)
 			{
 												
@@ -380,7 +382,7 @@ class Isotope extends Controller
 				$arrProducts[$configRow['id']]['source_cart_id'] = $configRow['pid'];
 				$arrProducts[$configRow['id']]['quantity_requested'] = $configRow['quantity_requested'];
 				$arrProducts[$configRow['id']]['product_options'] = deserialize($configRow['product_options']);
-				$arrProducts[$configRow['id']]['price'] = $configRow['price'];
+				$arrProducts[$configRow['id']]['price'] = $this->calculatePrice($configRow['price']);
 			}
 		}
 			

@@ -35,7 +35,8 @@ $GLOBALS['TL_LANG']['tl_store']['root_asset_import_path']			= array('Import-Pfad
 $GLOBALS['TL_LANG']['tl_module']['productReaderJumpTo']				= array('Weiterleitungs-Seite für Produkteleser', 'Wählen Sie die Seite zu der beim klicken auf ein Produkt für Details weitergeleitet werden soll.');
 $GLOBALS['TL_LANG']['tl_module']['cartJumpTo']						= array('Weiterleitungs-Seite für Warenkorb', 'Wählen Sie die Seite auf der sich der Warenkorb befindet.');
 $GLOBALS['TL_LANG']['tl_module']['checkoutJumpTo']					= array('Weiterleitungs-Seite für Kasse', 'Wählen Sie die Seite auf der sich die Kasse befindet.');
-$GLOBALS['TL_LANG']['tl_store']['defaultPriceField']				= array('Default Price Field','Select a field that is the default price field for this store.');																	
+$GLOBALS['TL_LANG']['tl_store']['priceField']						= array('Price Field', 'Select a field that is the price field for this store.');
+$GLOBALS['TL_LANG']['tl_store']['priceOverrideField']				= array('Override Price Field', 'Select a field that is the override price field for this store.');
 																	
 $GLOBALS['TL_LANG']['tl_store']['missing_image_placeholder']		= array('Platzhalter-Bild für Produkte', 'Dieses Bild wird verwendet wenn für ein Produkt kein Bild vorhanden ist.');
 $GLOBALS['TL_LANG']['tl_store']['thumbnail_image_width']			= array('Breite für Vorschaubild', 'In Pixel.');

@@ -49,18 +49,18 @@ class ShippingCollection extends Shipping
 						switch( $this->flatCalculation )
 						{
 							case 'perProduct':
-								return (($this->arrData['price'] * $this->Cart->products) + $this->calculateSurcharge());
+								return $this->Isotope->calculatePrice(($this->arrData['price'] * $this->Cart->products) + $this->calculateSurcharge());
 								
 							case 'perItem':
-								return (($this->arrData['price'] * $this->Cart->items) + $this->calculateSurcharge());
+								return $this->Isotope->calculatePrice(($this->arrData['price'] * $this->Cart->items) + $this->calculateSurcharge());
 								
 							default:
-								return ($this->arrData['price'] + $this->calculateSurcharge());
+								return $this->Isotope->calculatePrice($this->arrData['price'] + $this->calculateSurcharge());
 						}
 						break;*/
 					case 'collection':
 						return 0;
-						//return $this->calculateShippingRate($this->id, $this->Cart->subTotal);
+						//return $this->Isotope->calculatePrice($this->calculateShippingRate($this->id, $this->Cart->subTotal));
 						break;
 				}
 				break;

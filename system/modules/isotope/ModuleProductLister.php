@@ -467,7 +467,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 					'name'			=> $product['name'],
 					'alias'			=> $product['alias'],
 					'link'			=> $this->generateProductLink($product['alias'], $product, $this->Isotope->Store->productReaderJumpTo),
-					'price_string'			=> ($product['use_price_override']==1 ? $this->generatePriceStringOverride($this->strPriceOverrideTemplate,$product['price_override']) : $this->generatePrice($product['price'], $this->strPriceTemplate)),
+					'price_string'			=> ($product['use_price_override']==1 ? $this->generatePriceStringOverride($this->strPriceOverrideTemplate,$this->Isotope->calculatePrice($product[$this->Isotope->Store->priceOverrideField])) : $this->generatePrice($this->Isotope->calculatePrice($product[$this->Isotope->Store->priceField]), $this->strPriceTemplate)),
 					'thumbnail'				=> $this->getThumbnailImage($product['id'], $product['alias'], $product['main_image'], $strMissingImagePlaceholder, $this->strFileBasePath),
 					'id'			=> $product['id'],
 					'class'         => $classStr,

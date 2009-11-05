@@ -87,6 +87,7 @@ abstract class Shipping extends Frontend
 	{
 		$this->import('IsotopeCart', 'Cart');
 		$this->import('Isotope');
+		
 		switch( $strKey )
 		{
 			case 'available':
@@ -109,6 +110,10 @@ abstract class Shipping extends Frontend
 					return false;
 					
 				return true;
+				break;
+				
+			case 'price':
+				return $this->Isotope->calculatePrice($this->arrData['price']);
 				break;
 	
 		}

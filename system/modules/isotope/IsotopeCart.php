@@ -133,21 +133,21 @@ class IsotopeCart extends Model
 					break;
 					
 				case 'subTotal':
-					$this->arrCache[$strKey] = $this->calculateTotal($this->Isotope->getProductData($this->getProducts(), array('price'), 'price'));
+					$this->arrCache[$strKey] = $this->calculateTotal($this->Isotope->getProductData($this->getProducts(), array($this->Isotope->Store->priceField), $this->Isotope->Store->priceField));
 					break;
 					
 				case 'taxTotal':
 					// FIXME: currently rounds to 0.05 (swiss francs)
-					$this->arrCache[$strKey] = (float)$this->calculateTax($this->Isotope->getProductData($this->getProducts(), array('price', 'tax_class'), 'price'));
+					$this->arrCache[$strKey] = (float)$this->calculateTax($this->Isotope->getProductData($this->getProducts(), array($this->Isotope->Store->priceField, 'tax_class'), $this->Isotope->Store->priceField));
 					break;
 					
 				case 'taxTotalWithShipping':
 					// FIXME: currently rounds to 0.05 (swiss francs)
-					return number_format((float)$this->calculateTax($this->Isotope->getProductData($this->getProducts(), array('price', 'tax_class'), 'price')) + ($this->hasShipping ? $this->Shipping->price : 0), 2);
+					return (float)$this->calculateTax($this->Isotope->getProductData($this->getProducts(), array($this->Isotope->Store->priceField, 'tax_class'), $this->Isotope->Store->priceField)) + $this->shippingTotal;
 					break;
 				
 				case 'shippingTotal':
-					return $this->hasShipping ? number_format((float)$this->Shipping->price, 2) : 0.00;
+					return $this->hasShipping ? (float)$this->Shipping->price : 0.00;
 					break;
 					
 				case 'grandTotal':
@@ -379,8 +379,8 @@ class IsotopeCart extends Model
 			$strBuffer .= '<tr>';
 			$strBuffer .= '<td>' . $product['name'] . '</td>';
 			$strBuffer .= '<td>' . $product['quantity_requested'] . ' x </td>';
-			$strBuffer .= '<td>' . $this->Isotope->formatPriceWithCurrency($product['price']) . '</td>';
-			$strBuffer .= '<td>' . $this->Isotope->formatPriceWithCurrency($product['quantity_requested'] * $product['price']) . '</td>';
+			$strBuffer .= '<td>' . $this->Isotope->formatPriceWithCurrency($product[$this->Isotope->Store->priceField]) . '</td>';
+			$strBuffer .= '<td>' . $this->Isotope->formatPriceWithCurrency($product['quantity_requested'] * $product[$this->Isotope->Store->priceField]) . '</td>';
 			$strBuffer .= "</tr>\n";
 		}
 		
@@ -403,8 +403,8 @@ class IsotopeCart extends Model
 		{
 			$strBuffer .= $product['name'] . ': ';
 			$strBuffer .= $product['quantity_requested'] . ' x ';
-			$strBuffer .= $this->Isotope->formatPriceWithCurrency($product['price']) . ' = ';
-			$strBuffer .= $this->Isotope->formatPriceWithCurrency($product['quantity_requested'] * $product['price']);
+			$strBuffer .= $this->Isotope->formatPriceWithCurrency($product[$this->Isotope->Store->priceField]) . ' = ';
+			$strBuffer .= $this->Isotope->formatPriceWithCurrency($product['quantity_requested'] * $product[$this->Isotope->Store->priceField]);
 		}
 		
 		return $strBuffer;
@@ -427,7 +427,7 @@ class IsotopeCart extends Model
 			
 			foreach($arrProductData as $data)
 			{
-				$fltTotal += ((float)$data['price'] * (int)$data['quantity_requested']);
+				$fltTotal += ((float)$data[$this->Isotope->Store->priceField] * (int)$data['quantity_requested']);
 			}
 			
 			$taxPriceAdjustment = 0; // $this->getTax($floatSubTotalPrice, $arrTaxRules, 'MULTIPLY');
@@ -435,7 +435,7 @@ class IsotopeCart extends Model
 		else
 		{
 			return 0.00;
-		}		
+		}
 		
 		return (float)$fltTotal + (float)$taxPriceAdjustment;
 	}
@@ -451,7 +451,6 @@ class IsotopeCart extends Model
 	protected function calculateTax($arrProductData)
 	{
 		$this->import('FrontendUser','User');
-		$this->import('Isotope');
 		
 		if($arrProductData)
 		{	
@@ -566,19 +565,19 @@ class IsotopeCart extends Model
 							{
 								case '1':
 										//if(strlen($rate['region_id']) > 0 && $this->User->state==$rate['region_id'])
-										$fltSalesTax += (((float)$product['price'] * $arrRates[$product['tax_class']]['rate'] / 100) * $product['quantity_requested']);
+										$fltSalesTax += (((float)$product[$this->Isotope->Store->priceField] * $arrRates[$product['tax_class']]['rate'] / 100) * $product['quantity_requested']);
 										
 										//$arrTaxInfo['code'] = $
 									break;
 									
 								/*case '2':	//Luxury tax.  5% of the difference over $175.00  this trumps standard sales tax.
-									if((float)$product['price'] >= 175)
+									if((float)$product[$this->Isotope->Store->priceField] >= 175)
 									{
-										$fltTaxableAmount = (float)$product['price'] - 175;
+										$fltTaxableAmount = (float)$product[$this->Isotope->Store->priceField] - 175;
 										$fltSalesTax += (($fltTaxableAmount * $arrRates[$product['tax_class']]['rate'] / 100) * $product['quantity_requested']);
 									}else{
 										//fallback if the price is below to standard sales tax.
-										$fltTaxableAmount = (float)$product['price'] - 175;
+										$fltTaxableAmount = (float)$product[$this->Isotope->Store->priceField] - 175;
 										$fltSalesTax += (($fltTaxableAmount * $arrRates[$product['tax_class']]['rate'] / 100) * $product['quantity_requested']);
 									}
 															
