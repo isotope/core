@@ -67,7 +67,14 @@ class Isotope extends Controller
 		
 		$blnForceDefault = (TL_MODE=='BE' ? true : false);
 		
-		$this->resetStore($blnForceDefault);
+		if (strlen($_SESSION['isotope']['store_id']))
+		{
+			$this->overrideStore($_SESSION['isotope']['store_id']);
+		}
+		else
+		{
+			$this->resetStore($blnForceDefault);
+		}
 	}
 	
 	
@@ -217,14 +224,37 @@ class Isotope extends Controller
 	 * @param float $fltPrice
 	 * @return float
 	 */
-	public function formatPrice($fltPrice, $strFormatCode)
+	public function formatPrice($fltPrice)
 	{
-		if(!$strFormatCode)
+		// Calculate price in foreign currencies.
+		if ($this->Store->priceMultiplier != 1)
 		{
-			throw new Exception($GLOBALS['TL_LANG']['ERR']['missingCurrencyFormat']);
+			switch ($this->Store->priceCalculateMode)
+			{
+				case 'mul':
+					$fltPrice = $fltPrice * $this->Store->priceCalculateFactor;
+					break;
+					
+				case 'div':
+					$fltPrice = $fltPrice / $this->Store->priceCalculateFactor;
+					break;
+			}
+			
+			if ($this->Store->currencyRoundIncrement == '0.05')
+			{
+				$fltPrice = $fltPrice * 20;
+			}
+			
+			$fltPrice = round($fltPrice, $this->Store->currencyRoundPrecision);
+			
+			if ($this->Store->currencyRoundIncrement == '0.05')
+			{
+				$fltPrice = $fltPrice / 20;
+			}
 		}
 		
-		$arrFormat = $GLOBALS['ISO_NUM'][$strFormatCode];
+		
+		$arrFormat = $GLOBALS['ISO_NUM'][$this->Store->currencyFormat];
 		
 		if (!is_array($arrFormat) || !count($arrFormat) == 3)
 			return $fltPrice;
@@ -246,7 +276,7 @@ class Isotope extends Controller
 	{
 		$strCurrency = (strlen($strCurrencyCode) ? $strCurrencyCode : $this->Store->currency);
 		
-		$strPrice = $this->formatPrice($fltPrice, $this->Store->currencyFormat);
+		$strPrice = $this->formatPrice($fltPrice);
 		
 		if ($this->Store->currencySymbol && strlen($GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency]))
 		{

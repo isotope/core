@@ -99,7 +99,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{name_legend},store_configuration_name;{config_legend},cookie_duration,isDefaultStore;{module_legend},checkout_login_module;{currency_legend},defaultPriceField,priceMultiplier,currency,currencySymbol,currencyPosition,currencyRoundPrecision,currencyRoundMode,currencyFormat,currencyRoundIncrement;{address_legend},country,countries,address_fields;{redirect_legend},productReaderJumpTo,cartJumpTo,checkoutJumpTo;{invoice_legend},invoiceLogo;{images_legend},root_asset_import_path,missing_image_placeholder,gallery_thumbnail_image_width,gallery_thumbnail_image_height,thumbnail_image_width,thumbnail_image_height,medium_image_width,medium_image_height,large_image_width,large_image_height'
+		'default'                     => '{name_legend},store_configuration_name,label;{config_legend},cookie_duration,isDefaultStore;{module_legend},checkout_login_module;{currency_legend},currency,currencySymbol,currencyPosition,currencyRoundPrecision,currencyRoundMode,currencyFormat,currencyRoundIncrement,defaultPriceField,priceCalculateFactor,priceCalculateMode;{address_legend},country,countries,address_fields;{redirect_legend},productReaderJumpTo,cartJumpTo,checkoutJumpTo;{invoice_legend},invoiceLogo;{images_legend},root_asset_import_path,missing_image_placeholder,gallery_thumbnail_image_width,gallery_thumbnail_image_height,thumbnail_image_width,thumbnail_image_height,medium_image_width,medium_image_height,large_image_width,large_image_height'
 	),
 
 	// Fields
@@ -110,7 +110,14 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['store_configuration_name'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('rgxp'=>'alnum', 'mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'long'),
+			'eval'                    => array('rgxp'=>'alnum', 'mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
+		),
+		'label' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['label'],
+			'exclude'                 => true,
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>255, 'tl_class'=>'w50'),
 		),
 		'cookie_duration' => array
 		(
@@ -252,13 +259,23 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
 			'options_callback'		  => array('tl_store', 'getPriceFields'),
 		),
-		'priceMultiplier' => array
+		'priceCalculateFactor' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['priceMultiplier'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['priceCalculateFactor'],
 			'exclude'                 => true,
 			'default'				  => 1,
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>10, 'rgxp'=>'digits', 'tl_class'=>'w50'),
+		),
+		'priceCalculateMode' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['priceCalculateMode'],
+			'exclude'                 => true,
+			'default'				  => 'mul',
+			'inputType'               => 'radio',
+			'options'				  => array('mul', 'div'),
+			'reference'				  => &$GLOBALS['TL_LANG']['tl_store'],
+			'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
 		),
 		'currency' => array
 		(
@@ -292,15 +309,6 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'default'				  => '2',
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>1, 'rgpx'=>'digits', 'tl_class'=>'w50'),
-		),
-		'currencyRoundMode' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['currencyRoundMode'],
-			'exclude'                 => true,
-			'inputType'               => 'select',
-			'options'				  => array(PHP_ROUND_HALF_UP, PHP_ROUND_HALF_DOWN, PHP_ROUND_HALF_EVEN, PHP_ROUND_HALF_ODD),
-			'reference'				  => &$GLOBALS['TL_LANG']['tl_store'],
-			'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
 		),
 		'currencyFormat' => array
 		(

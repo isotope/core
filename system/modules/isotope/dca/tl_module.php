@@ -39,6 +39,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryReader']	= 'name,hea
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoCheckout']				= '{title_legend},name,headline,type;{config_legend},iso_checkout_method,iso_payment_modules,iso_shipping_modules,iso_order_conditions,orderCompleteJumpTo;{template_legend},iso_checkout_layout,iso_mail_customer,iso_mail_admin,iso_sales_email;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoOrderHistory']			= '{title_legend},name,headline,type;{config_legend},store_ids;{redirect_legend},jumpTo;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoOrderDetails']			= '{title_legend},name,headline,type;{redirect_legend},jumpTo;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoStoreSwitcher']			= '{title_legend},name,headline,type;{config_legend},store_ids;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 
 
 /**
@@ -183,7 +184,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['store_ids'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['store_ids'],
 	'exclude'                 => true,
-	'inputType'               => 'checkbox',
+	'inputType'               => 'checkboxWizard',
 	'foreignKey'			  => 'tl_store.store_configuration_name',
 	'eval'					  => array('multiple'=>true, 'mandatory'=>true, 'tl_class'=>'clr'),
 );

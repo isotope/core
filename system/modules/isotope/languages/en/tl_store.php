@@ -29,14 +29,13 @@
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_store']['store_configuration_name']			= array('Store Configuration Name', '');
+$GLOBALS['TL_LANG']['tl_store']['label']							= array('Label', 'The label is used in frontend, e.g. for store switcher.');
 $GLOBALS['TL_LANG']['tl_store']['cookie_duration']					= array('Duration (in days) of Shopping Cart Information', 'Items and their related information will be retrievable for this many days for non-registered members.  A value of 0 means after the session, the items are removed. For registered members cart data is always remembered.');
 $GLOBALS['TL_LANG']['tl_store']['checkout_login_module']			= array('Checkout Login Module','Select a login module to insert into the checkout module.');
 $GLOBALS['TL_LANG']['tl_store']['root_asset_import_path']			= array('Root Asset Import Path','A single directory which contains all "to-be-imported" images and media associated with a given record.  Isotope will look for a corresponding file in this folder instead of in the product\'s standard source folder.');
 $GLOBALS['TL_LANG']['tl_module']['productReaderJumpTo']				= array('Product Reader Jump to page', 'This setting defines to which page a user will be redirected when clicking a product for more info.');
 $GLOBALS['TL_LANG']['tl_module']['cartJumpTo']						= array('Shopping Cart Jump to page', 'This setting defines to which page a user will be redirected when requesting a full shopping cart view.');
 $GLOBALS['TL_LANG']['tl_module']['checkoutJumpTo']					= array('Checkout Jump to page', 'This setting defines to which page a user will be redirected when completing their transaction.');
-$GLOBALS['TL_LANG']['tl_store']['defaultPriceField']				= array('Default Price Field','Select a field that is the default price field for this store.');
-$GLOBALS['TL_LANG']['tl_store']['priceMultiplier']					= array('Price multiplier', 'Defaults should be 1. You can use this to convert between multiple currencies.');
 $GLOBALS['TL_LANG']['tl_store']['missing_image_placeholder']		= array('Missing Image Placeholder', 'This image will be used if an image file cannot be found or none are associated with a product.');
 $GLOBALS['TL_LANG']['tl_store']['thumbnail_image_width']			= array('Thumbnail Standard Width', 'In pixels.');
 $GLOBALS['TL_LANG']['tl_store']['thumbnail_image_height']			= array('Thumbnail Standard Height', 'In pixels.');
@@ -44,12 +43,14 @@ $GLOBALS['TL_LANG']['tl_store']['medium_image_width']				= array('Medium Standar
 $GLOBALS['TL_LANG']['tl_store']['medium_image_height']				= array('Medium Standard Height', 'In pixels.');
 $GLOBALS['TL_LANG']['tl_store']['large_image_width']				= array('Large Standard Width', 'In pixels.');
 $GLOBALS['TL_LANG']['tl_store']['large_image_height']				= array('Large Standard Height', 'In pixels.');
+$GLOBALS['TL_LANG']['tl_store']['defaultPriceField']				= array('Default Price Field','Select a field that is the default price field for this store.');
+$GLOBALS['TL_LANG']['tl_store']['priceCalculateFactor']				= array('Price factor', 'Defaults should be 1. You can use this to convert between multiple currencies.');
+$GLOBALS['TL_LANG']['tl_store']['priceCalculateMode']				= array('Calculation mode', 'Divide or multiply using this factor.');
 $GLOBALS['TL_LANG']['tl_store']['currency']							= array('Currency', 'Please select a currency for this store.');
 $GLOBALS['TL_LANG']['tl_store']['currencySymbol']					= array('Use currency symbol', 'Use a currency symbol ($, €) if available.');
 $GLOBALS['TL_LANG']['tl_store']['currencyPosition']					= array('Position of currency code/symbol', 'Select if you want to show currency on the left or right side of the price.');
 $GLOBALS['TL_LANG']['tl_store']['currencyFormat']					= array('Currency formatting', 'Choose a formatting for prices.');
 $GLOBALS['TL_LANG']['tl_store']['currencyRoundPrecision']			= array('Rounding precision', 'How much decimal precicion to have. Only applies if price multiplier is not 1. See PHP manual for round().');
-$GLOBALS['TL_LANG']['tl_store']['currencyRoundMode']				= array('Rounding mode', 'Round half up or down. See PHP manual for round().');
 $GLOBALS['TL_LANG']['tl_store']['currencyRoundIncrement']			= array('Rounding increment', 'Some currencies (eg. swiss francs) do not support 0.01 precicion.');
 $GLOBALS['TL_LANG']['tl_store']['country']							= array('Default Country','What is the default country for this store configuration?');
 $GLOBALS['TL_LANG']['tl_store']['countries']						= array('Countries', 'Select the countries you want to allow for checkout.');
@@ -65,10 +66,8 @@ $GLOBALS['TL_LANG']['tl_store']['isDefaultStore']					= array('Set as default st
  */
 $GLOBALS['TL_LANG']['tl_store']['left']								= 'To the left of price';
 $GLOBALS['TL_LANG']['tl_store']['right']							= 'To the right of price';
-$GLOBALS['TL_LANG']['tl_store'][PHP_ROUND_HALF_UP]					= 'round up';
-$GLOBALS['TL_LANG']['tl_store'][PHP_ROUND_HALF_DOWN]				= 'round down';
-$GLOBALS['TL_LANG']['tl_store'][PHP_ROUND_HALF_EVEN]				= 'round even';
-$GLOBALS['TL_LANG']['tl_store'][PHP_ROUND_HALF_ODD]					= 'round odd';
+$GLOBALS['TL_LANG']['tl_store']['div']								= 'Divide';
+$GLOBALS['TL_LANG']['tl_store']['mul']								= 'Multiply';
 
 
 /**

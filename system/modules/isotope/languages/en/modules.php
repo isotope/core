@@ -59,4 +59,5 @@ $GLOBALS['TL_LANG']['FMD']['isoGiftRegistry']			= array('Isotope Gift Registry',
 $GLOBALS['TL_LANG']['FMD']['isoAddressBook']			= array('Isotope Address Book','Allow customers to manage their address book.');
 $GLOBALS['TL_LANG']['FMD']['isoOrderHistory']			= array('Order History', '');
 $GLOBALS['TL_LANG']['FMD']['isoOrderDetails']			= array('Order Details', '');
+$GLOBALS['TL_LANG']['FMD']['isoStoreSwitcher']			= array('Store Switcher', 'Switch between store configuration to change currency and other settings.');
 
