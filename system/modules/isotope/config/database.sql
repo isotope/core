@@ -404,7 +404,6 @@ CREATE TABLE `tl_address_book` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
-  `sorting` int(10) unsigned NOT NULL default '0',
   `firstname` varchar(255) NOT NULL default '',
   `lastname` varchar(255) NOT NULL default '',
   `street` varchar(255) NOT NULL default '',
@@ -416,9 +415,9 @@ CREATE TABLE `tl_address_book` (
   `company` varchar(255) NOT NULL default '',
   `country` varchar(32) NOT NULL default '',
   `phone` varchar(64) NOT NULL default '',
+  `email` varchar(255) NOT NULL default '',
   `isDefaultShipping` char(1) NOT NULL default '',
   `isDefaultBilling` char(1) NOT NULL default '',
-  `email` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

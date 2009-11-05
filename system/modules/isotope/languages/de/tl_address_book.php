@@ -28,14 +28,35 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_address_book']['firstname']   = array('Vorname', 'Please enter the first name.');
-$GLOBALS['TL_LANG']['tl_address_book']['lastname']    = array('Nachname', 'Please enter the last name.');
-$GLOBALS['TL_LANG']['tl_address_book']['company']     = array('Firma', 'You can enter a company name here.');
-$GLOBALS['TL_LANG']['tl_address_book']['street']      = array('Strasse', 'Please enter the street name and the street number.');
-$GLOBALS['TL_LANG']['tl_address_book']['postal']      = array('Postleitzahl', 'Please enter the postal code.');
-$GLOBALS['TL_LANG']['tl_address_book']['city']        = array('Stadt', 'Plase enter the name of the city.');
-$GLOBALS['TL_LANG']['tl_address_book']['state']       = array('Staat', 'Plase enter the name of the state.');
-$GLOBALS['TL_LANG']['tl_address_book']['country']     = array('Land', 'Please select a country.');
-$GLOBALS['TL_LANG']['tl_address_book']['phone']       = array('Telefonnummer', 'Please enter the phone number.');
-$GLOBALS['TL_LANG']['tl_address_book']['email']       = array('E-Mail Addresse', 'Please enter a valid e-mail address.');
+$GLOBALS['TL_LANG']['tl_address_book']['firstname']   = array('Vorname', 'Bitte geben Sie den Vornamen ein.');
+$GLOBALS['TL_LANG']['tl_address_book']['lastname']    = array('Nachname', 'Bitte geben Sie den Nachnamen ein.');
+$GLOBALS['TL_LANG']['tl_address_book']['company']     = array('Firma', 'Hier können Sie einen Firmennamen eingeben.');
+$GLOBALS['TL_LANG']['tl_address_book']['street']      = array('Straße', 'Bitte geben Sie den Straßennamen und die Hausnummer ein.');
+$GLOBALS['TL_LANG']['tl_address_book']['postal']      = array('Postleitzahl', 'Bitte geben Sie die Postleitzahl ein.');
+$GLOBALS['TL_LANG']['tl_address_book']['city']        = array('Stadt', 'Bitte geben Sie den Namen der Stadt ein.');
+$GLOBALS['TL_LANG']['tl_address_book']['state']       = array('Staat', 'Bitte geben Sie den Namen des Staates ein.');
+$GLOBALS['TL_LANG']['tl_address_book']['country']     = array('Land', 'Bitte wählen Sie ein Land.');
+$GLOBALS['TL_LANG']['tl_address_book']['phone']       = array('Telefonnummer', 'Bitte geben Sie die Telefonnummer ein.');
+$GLOBALS['TL_LANG']['tl_address_book']['email']       = array('E-Mail-Adresse', 'Bitte geben Sie eine gültige E-Mail-Adresse ein.');
+$GLOBALS['TL_LANG']['tl_address_book']['isDefaultBilling']	= array('Standard Rechnungsadresse', 'Klicken Sie hier wenn dies die Standard-Rechnungsadresse ist.');
+$GLOBALS['TL_LANG']['tl_address_book']['isDefaultShipping']	= array('Standard Versandadresse', 'Klicken Sie hier wenn dies die Standard-Versandadresse ist.');
+
+
+/**
+ * Legends
+ */
+$GLOBALS['TL_LANG']['tl_address_book']['personal_legend'] = 'Personendaten';
+$GLOBALS['TL_LANG']['tl_address_book']['address_legend']  = 'Adressdaten';
+$GLOBALS['TL_LANG']['tl_address_book']['contact_legend']  = 'Kontaktdaten';
+$GLOBALS['TL_LANG']['tl_address_book']['default_legend']  = 'Standard-Adressen';
+
+
+/**
+ * Buttons
+ */
+$GLOBALS['TL_LANG']['tl_address_book']['new']    = array('Neue Adresse', 'Eine neue Adresse anlegen');
+$GLOBALS['TL_LANG']['tl_address_book']['show']   = array('Adressdetails', 'Details der Adresse ID %s anzeigen');
+$GLOBALS['TL_LANG']['tl_address_book']['edit']   = array('Adresse bearbeiten', 'Adresse ID %s bearbeiten');
+$GLOBALS['TL_LANG']['tl_address_book']['copy']   = array('Adresse duplizieren', 'Adresse ID %s duplizieren');
+$GLOBALS['TL_LANG']['tl_address_book']['delete'] = array('Adresse löschen', 'Adresse ID %s löschen');
 
