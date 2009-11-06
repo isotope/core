@@ -104,6 +104,22 @@ class ModuleProductLister extends ModuleIsotopeBase
 	{
 		global $objPage;
 		
+		//Determine category scope
+		switch($this->iso_category_scope)
+		{
+			case 'global':
+				$blnIgnrorePageId = true;
+				//NOTE: not necessary to set $blnGetChildren to true because we're not filtering by page ID at all.
+				break;
+			case 'parent_and_children':
+				$blnGetChildren = true;
+				break;
+			case 'current_category':
+				$blnIgnorePageId = false;
+				$blnGetChildren = false;
+				break;		
+		}
+
 			
 		$this->strFileBasePath = $GLOBALS['TL_CONFIG']['isotope_root'];
 		
@@ -116,7 +132,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 		
 		$arrMessages = array();
 					
-		if($objPage->show_child_category_products==1)
+		if($blnGetChildren)
 		{
 			$objChildPages = $this->Database->prepare("SELECT id FROM tl_page WHERE pid=?")
 											->execute($objPage->id);
@@ -145,9 +161,9 @@ class ModuleProductLister extends ModuleIsotopeBase
 			$this->headline = $objPage->title;
 		}
 		
+				
 		
-		
-		if($this->new_products_time_window < 1 && $this->featured_products < 1 && !$this->Input->get('ignore_page_id'))
+		if($this->new_products_time_window < 1 && $this->featured_products < 1 && !$blnIgnorePageId)
 		{
 			$strClauses = " pid IN(" . $strPageList . ")";
 		}

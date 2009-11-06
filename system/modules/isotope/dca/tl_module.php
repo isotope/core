@@ -28,7 +28,7 @@
 /**
  * Palettes
  */
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductLister']			= '{title_legend},name,headline,type;{display_legend},perPage,columns,iso_list_format,iso_show_teaser;{config_legend},iso_jump_first,new_products_time_window,featured_products,listing_filters;{template_legend:hide},iso_list_layout;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductLister']			= '{title_legend},name,headline,type;{display_legend},perPage,columns,iso_list_format,iso_show_teaser;{config_legend},iso_category_scope,iso_jump_first,new_products_time_window,featured_products,listing_filters;{template_legend:hide},iso_list_layout;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductReader']			= 'name,headline,type;iso_reader_layout;guests,protected;align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoShoppingCart']			= 'name,headline,type;iso_cart_layout,iso_forward_cart;guests,protected;align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoAddressBook']			= 'name,headline,type;addressBookTemplate;isoEditable;align,space,cssID';
@@ -276,7 +276,17 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_list_format'] = array
 	'eval'					  => array('tl_class'=>'w50')
 );
 
- 
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_category_scope'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_category_scope'],
+	'exclude'                 => true,
+	'inputType'               => 'radio',
+	'default'				  => 'parent_and_children',
+	'options'				  => array('global', 'parent_and_children', 'current_category'),
+	'reference'				  => &$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref'],
+	'eval'					  => array('mandatory'=>true),
+);
+
 /**
  * tl_module_isotope class.
  * 
