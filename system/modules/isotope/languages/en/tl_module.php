@@ -54,7 +54,7 @@ $GLOBALS['TL_LANG']['tl_module']['iso_mail_customer']			= array('Customer Notifi
 $GLOBALS['TL_LANG']['tl_module']['iso_mail_admin']				= array('Sales Admin Notification Email','Select the Iotope Email used to send to a sales admin when a customers places an order');
 $GLOBALS['TL_LANG']['tl_module']['iso_sales_email']				= array('Sales Admin Email Address','Enter an email address other than the default System Admin for store notifications to be sent to.');
 $GLOBALS['TL_LANG']['tl_module']['iso_list_format']				= array('Listing Format','Please choose whether the products will be listed in grid or list format.');
-$GLOBALS['TL_LANG']['tl_module']['iso_page_scope']				= array('Page Scope','Specify the scope of a product lister.');
+$GLOBALS['TL_LANG']['tl_module']['iso_category_scope']				= array('Page Scope','Specify the scope of a product lister.');
 
 /**
  * References
