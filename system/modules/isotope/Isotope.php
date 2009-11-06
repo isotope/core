@@ -372,13 +372,14 @@ class Isotope extends Controller
 					switch($field)
 					{
 						case 'main_image':
-						 	if(!strlen($product[$field])
+						 	if(!strlen($product[$field]))
 						 	{
 								//Get first product image if none is specified as main image.
 								$this->import('MediaManagement');
 								$product[$field] = $this->MediaManagement->getFirstOrdinalImage($GLOBALS['TL_CONFIG']['isotope_base_path'] . '/%s/%s/images/gallery_thumbnail_images', $product['alias']);
-								break;
+								
 							}
+							break;
 					}
 					//Gotta NOT do this to all fields, just for name and main image, and then run the code above in case main image is blank.
 					if($product['pid']!=0)
@@ -386,7 +387,7 @@ class Isotope extends Controller
 						$arrParentProductData = $this->getParentProductData($product['pid']);				
 						
 						$arrProducts[$configRow['id']]['name'] = $arrParentProductData['name'];
-						$arrProducts[$configRow]'id']]['main_image'] = $arrParentProductData['main_image'];
+						$arrProducts[$configRow['id']]['main_image'] = $arrParentProductData['main_image'];
 					}
 					else
 					{
