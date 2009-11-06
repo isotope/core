@@ -146,7 +146,8 @@ class ModuleProductLister extends ModuleIsotopeBase
 		}
 		
 		
-		if($this->new_products_time_window < 1 && $this->featured_products < 1)
+		
+		if($this->new_products_time_window < 1 && $this->featured_products < 1 && !$this->Input->get('ignore_page_id'))
 		{
 			$strClauses = " pid IN(" . $strPageList . ")";
 		}
@@ -838,7 +839,10 @@ class ModuleProductLister extends ModuleIsotopeBase
 			
 				return array('ASC' => $GLOBALS['TL_LANG']['MSC']['a_to_z'], 'DESC' => $GLOBALS['TL_LANG']['MSC']['z_to_a']);
 				break;
-			
+			case 'datetime':
+				
+				return array('ASC' => $GLOBALS['TL_LANG']['MSC']['old_to_new'], 'DESC' => $GLOBALS['TL_LANG']['MSC']['new_to_old']);
+				break;
 			default:
 				return;
 				break;

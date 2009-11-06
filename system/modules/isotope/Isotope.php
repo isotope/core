@@ -349,7 +349,7 @@ class Isotope extends Controller
 		foreach($arrCartItemsData as $configRow)
 		{
 							
-			$objProductData = $this->Database->prepare("SELECT id, " . $strFieldList . " FROM tl_product_data WHERE id=?")
+			$objProductData = $this->Database->prepare("SELECT id,  " . $strFieldList . " FROM tl_product_data WHERE id=?")
 										  ->limit(1)
 										  ->execute($configRow['product_id']);
 					
@@ -369,15 +369,34 @@ class Isotope extends Controller
 				//get anything else that might be wanted according to the field list.
 				foreach($arrFieldNames as $field)
 				{
-					if (($field == 'main_image') && !strlen($product[$field]))
+					switch($field)
 					{
-						$this->import('MediaManagement');
-						$product[$field] = $this->MediaManagement->getFirstOrdinalImage($GLOBALS['TL_CONFIG']['isotope_base_path'] . '/%s/%s/images/gallery_thumbnail_images', $product['alias']);
+						case 'main_image':
+						 	if(!strlen($product[$field])
+						 	{
+								//Get first product image if none is specified as main image.
+								$this->import('MediaManagement');
+								$product[$field] = $this->MediaManagement->getFirstOrdinalImage($GLOBALS['TL_CONFIG']['isotope_base_path'] . '/%s/%s/images/gallery_thumbnail_images', $product['alias']);
+								break;
+							}
 					}
-					
-					$arrProducts[$configRow['id']][$field] = $product[$field];
+					//Gotta NOT do this to all fields, just for name and main image, and then run the code above in case main image is blank.
+					if($product['pid']!=0)
+					{
+						$arrParentProductData = $this->getParentProductData($product['pid']);				
+						
+						$arrProducts[$configRow['id']]['name'] = $arrParentProductData['name'];
+						$arrProducts[$configRow]'id']]['main_image'] = $arrParentProductData['main_image'];
+					}
+					else
+					{
+				
+						$arrProducts[$configRow['id']][$field] = $product[$field];
+					}
 				}
-			
+				
+				
+				
 				$arrProducts[$configRow['id']]['cart_item_id'] = $configRow['id'];
 				$arrProducts[$configRow['id']]['source_cart_id'] = $configRow['pid'];
 				$arrProducts[$configRow['id']]['quantity_requested'] = $configRow['quantity_requested'];

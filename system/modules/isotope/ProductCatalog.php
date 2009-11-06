@@ -419,7 +419,7 @@ class ProductCatalog extends Backend
 						{
 							/*if ($arrOptions['default'])
 							{
-								$arrValues[] = $arrOptions['value'];
+								//grab as selected value
 							}*/
 							
 							$arrValues[$arrOptions['value']] = $arrOptions['label'];
@@ -446,14 +446,14 @@ class ProductCatalog extends Backend
 						
 						if(sizeof($arrOptionList))
 						{												
-							foreach ($arrOptionsList as $arrOptions)
+							foreach ($arrOptionsList as $option)
 							{
 								/*if ($arrOptions['default'])
 								{
-									$arrValues[] = $arrOptions['value'];
+									grab as selected value;
 								}*/
 								
-								$arrValues[$arrOptions['value']] = $arrOptions['label'];
+								$arrValues[$option['value']] = $option['label'];
 							}											
 						}
 					}	
@@ -495,7 +495,7 @@ class ProductCatalog extends Backend
 				}
 				$GLOBALS['TL_DCA']['tl_product_data']['fields'][$key]['options'] = array_keys($optionList);
 				$GLOBALS['TL_DCA']['tl_product_data']['fields'][$key]['reference'] = $optionList;
-				unset($optionList);
+				//unset($optionList);
 
 			}
 			
@@ -508,7 +508,7 @@ class ProductCatalog extends Backend
 			if(is_array($arrValues) && $field['type'] == 'select')
 			{
 				$GLOBALS['TL_DCA']['tl_product_data']['fields'][$key]['eval']['includeBlankOption'] = true;
-				$GLOBALS['TL_DCA']['tl_product_data']['fields'][$key]['options'] = $arrValues;
+				//$GLOBALS['TL_DCA']['tl_product_data']['fields'][$key]['options'] = $arrValues;
 			}
 			
 			if (!empty($field['load_callback']))

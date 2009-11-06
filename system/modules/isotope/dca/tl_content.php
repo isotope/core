@@ -28,20 +28,12 @@
 /**
  * Palettes
  */
-$GLOBALS['TL_DCA']['tl_content']['palettes']['attributeLinkRepeater'] = 'type,headline;iso_attribute_set,iso_filters;url,target;guests,protected;align,space,cssID';
+$GLOBALS['TL_DCA']['tl_content']['palettes']['attributeLinkRepeater'] = 'type,headline;iso_filters;url,target;guests,protected;align,space,cssID';
 
 
 /**
  * Fields
  */
-$GLOBALS['TL_DCA']['tl_content']['fields']['iso_attribute_set'] = array
-(
-	'label'                   => &$GLOBALS['TL_LANG']['tl_content']['iso_attribute_set'],
-	'exclude'                 => true,
-	'inputType'               => 'select',
-	'eval'                    => array('includeBlankOption'=>true,'submitOnChange'=>true),
-	'options_callback'		  => array('PageFilters','getAttributeSets')
-);
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_filters'] = array
 (
@@ -99,32 +91,5 @@ class PageFilters extends Backend
 	}
 
 
-	/**
-	 * getAttributeSets function.
-	 * 
-	 * @access public
-	 * @return array
-	 */
-	public function getAttributeSets()
-	{
-		$objAttributeSets = $this->Database->prepare("SELECT id, name FROM tl_product_attribute_sets")
-										   ->execute();
-			
-		if($objAttributeSets->numRows < 1)
-		{
-			return array();
-		}
-	
-		$arrSets = $objAttributeSets->fetchAllAssoc();
-		
-		//var_dump($arrSets);
-		
-		foreach($arrSets as $set)
-		{
-			$arrAttributeSets[$set['id']] = $set['name'];		
-		}
-			
-		return $arrAttributeSets;
-	}
 }
 
