@@ -284,7 +284,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_category_scope'] = array
 	'default'				  => 'parent_and_children',
 	'options'				  => array('global', 'parent_and_children', 'current_category'),
 	'reference'				  => &$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref'],
-	'eval'					  => array('mandatory'=>true),
 );
 
 /**
