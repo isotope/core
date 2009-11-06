@@ -25,7 +25,7 @@
 					<td class="col qtyModifier"> x <?php echo $product['quantity']; ?></td>
 		        	<td class="col productTotals">                 
 		                   <div class="total"><span class="total"><?php echo $product['total_price']; ?></span></div>
-		            </td>       
+		            </td>
 				</tr>
 		        <!-- END PRODUCT-->
 			<?php endforeach; ?>
@@ -45,13 +45,15 @@
 	</div>
 	<div class="clearBoth"></div>
 	<div class="billing_address">
-		<h2>Billing Address</h2>
+		<h2>Billing<?php echo strlen($this->shippingAddress) ? '' : ' & Shipping'; ?> Address</h2>
 		<?php echo nl2br($this->billingAddress); ?>
 	</div>
+<?php if (strlen($this->shippingAddress)): ?>
 	<div class="shipping_address">
 		<h2>Shipping Address</h2>
 		<?php echo nl2br($this->shippingAddress); ?>
 	</div>
+<?php endif; ?>
 	<div class="clearBoth"></div>
 	<div class="shipping_method"><strong>Shipping Method:</strong> <?php echo $this->shippingMethod; ?></div>
 	<div class="payment_method"><strong>Payment Method:</strong> <?php echo $this->paymentMethod; ?></div>

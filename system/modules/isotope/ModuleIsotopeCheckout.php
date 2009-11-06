@@ -1024,9 +1024,12 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 
 		// Take billing address
 		if ($intAddressId == -1)
-		{			
+		{
+			return array();
+/*
 			$intAddressId = $_SESSION['FORM_DATA']['billing_address'];
 			$strStep = 'billing';
+*/
 		}
 		
 		//gather from form
@@ -1096,6 +1099,11 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	 */
 	protected function getAddressString($arrAddress)
 	{
+		if (!is_array($arrAddress) || !count($arrAddress))
+		{
+			return '';
+		}
+		
 		$arrCountries = $this->getCountries();
 		
 		$strAddress  = (strlen($arrAddress['company']) > 0 ? $arrAddress['company'] . "\n" : '');

@@ -96,14 +96,35 @@ abstract class Shipping extends Frontend
 									
 				$arrCountries = deserialize($this->countries);
 				
-				if(isset($_SESSION['FORM_DATA']['shipping_address']) && $_SESSION['FORM_DATA']['shipping_address']!=-1)
+				
+				// Use billing address
+				if ($_SESSION['FORM_DATA']['shipping_address'] == -1)
+				{
+					if ($_SESSION['FORM_DATA']['billing_address'] > 0)
+					{
+						//TODO - fix to load address in a consistent manner.
+						$this->Isotope->loadAddressById($_SESSION['FORM_DATA']['billing_address'], 'billing');
+				        $strCountry = $_SESSION['FORM_DATA']['billing_information_country'];
+					}
+					else
+					{
+						$strCountry = $_SESSION['FORM_DATA']['billing_information_country'];
+					}
+				}
+				
+				// Selected a shipping address
+				elseif($_SESSION['FORM_DATA']['shipping_address'] > 0)
 			    {
-		           //TODO - fix to load addres in a consistent manner.
+					//TODO - fix to load address in a consistent manner.
 					$this->Isotope->loadAddressById($_SESSION['FORM_DATA']['shipping_address'], 'shipping');
 			        $strCountry = $_SESSION['FORM_DATA']['shipping_information_country'];
-			    }else{
-				
-					$strCountry = (!isset($_SESSION['FORM_DATA']['shipping_information_country']) ? $_SESSION['FORM_DATA']['billing_information_country'] : ($_SESSION['FORM_DATA']['shipping_address'][0] ? $_SESSION['FORM_DATA']['billing_information_country'] : $_SESSION['FORM_DATA']['shipping_information_country']));
+			    }
+			    
+			    // New custom shipping address
+			    else
+			    {
+					$strCountry = $_SESSION['FORM_DATA']['shipping_information_country'];
+//					$strCountry = (!isset($_SESSION['FORM_DATA']['shipping_information_country']) ? $_SESSION['FORM_DATA']['billing_information_country'] : ($_SESSION['FORM_DATA']['shipping_address'][0] ? $_SESSION['FORM_DATA']['billing_information_country'] : $_SESSION['FORM_DATA']['shipping_information_country']));
 				}	
 					
 				if(sizeof($arrCountries)>0 && !in_array(strtolower($strCountry), $arrCountries))
