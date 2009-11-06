@@ -28,36 +28,14 @@
 /**
  * Palettes
  */
-$GLOBALS['TL_DCA']['tl_page']['palettes']['regular'] .= ';show_child_category_products';
 $GLOBALS['TL_DCA']['tl_page']['palettes']['root'] .= ';{isotope_legend},isotopeStoreConfig';
+$GLOBALS['TL_DCA']['tl_page']['palettes']['default'] .= ';{isotope_legend},isotopeStoreConfig';
+$GLOBALS['TL_DCA']['tl_page']['palettes']['regular'] .= ';{isotope_legend},isotopeStoreConfig';
 
 /**
  * Fields
  */
-$GLOBALS['TL_DCA']['tl_page']['fields']['show_child_category_products'] = array
-(
-	'label'                   => $GLOBALS['TL_LANG']['tl_page']['show_child_category_products'],
-	'exclude'                 => true,
-	'inputType'               => 'checkbox'
-);
 
-$GLOBALS['TL_DCA']['tl_page']['fields']['iso_attribute_set'] = array
-(
-	'label'                   => &$GLOBALS['TL_LANG']['tl_page']['iso_attribute_set'],
-	'exclude'                 => true,
-	'inputType'               => 'select',
-	'eval'                    => array('includeBlankOption'=>true,'submitOnChange'=>true),
-	'options_callback'		  => array('Filters','getAttributeSets')
-);
-
-$GLOBALS['TL_DCA']['tl_page']['fields']['iso_filters'] = array
-(
-	'label'                   => &$GLOBALS['TL_LANG']['tl_page']['iso_filters'],
-	'exclude'                 => true,
-	'inputType'               => 'select',
-	'eval'                    => array('includeBlankOption'=>true),
-	'options_callback'		  => array('Filters','getFilters')
-);
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['isotopeStoreConfig'] = array
 (
@@ -69,82 +47,5 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['isotopeStoreConfig'] = array
 );
 
 
-/**
- * Filters class.
- * 
- * @extends Backend
- */
-class Filters extends Backend
-{
-	
-	/**
-	 * getFilters function.
-	 * 
-	 * @access public
-	 * @param object DataContainer $dc
-	 * @return array
-	 */
-	public function getFilters(DataContainer $dc)
-	{
-		if(!$this->Input->get('id'))
-		{
-			return array();
-		}
-		
-		$objAttributeSet = $this->Database->prepare("SELECT iso_attribute_set FROM tl_page WHERE id=?")
-										  ->limit(1)
-										  ->execute($this->Input->get('id'));
-				
-		if($objAttributeSet->numRows < 1)
-		{
-			return array();
-		}
-		
-		$intAttributeSet = $objAttributeSet->iso_attribute_set;
-		
-		$objFilters = $this->Database->prepare("SELECT name FROM tl_product_attributes WHERE is_filterable=? AND pid=?")
-									 ->execute(1, (int)$intAttributeSet);
-		
-		if($objFilters->numRows < 1)
-		{
-			return array();
-		}
-		
-		$arrFilters = $objFilters->fetchAllAssoc();
-		
-		foreach($arrFilters as $filter)
-		{
-			$arrFilterList[$filter['name']] = $filter['name'];
-		}	
-		
-		return $arrFilterList;
-	}
 
-
-	/**
-	 * getAttributeSets function.
-	 * 
-	 * @access public
-	 * @return array
-	 */
-	public function getAttributeSets()
-	{
-		$objAttributeSets = $this->Database->prepare("SELECT id, name FROM tl_product_attribute_sets")
-										   ->execute();
-			
-		if($objAttributeSets->numRows < 1)
-		{
-			return array();
-		}
-	
-		$arrSets = $objAttributeSets->fetchAllAssoc();
-		
-		foreach($arrSets as $set)
-		{
-			$arrAttributeSets[$set['id']] = $set['name'];		
-		}
-			
-		return $arrAttributeSets;
-	}
-}
 

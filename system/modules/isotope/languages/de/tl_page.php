@@ -28,7 +28,6 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_page']['show_child_category_products']	= array('Artikel der Unterkategorien (Unterseiten) anzeigen','Wenn diese Seite als Produktkategorie dient, sollen auch Artikel der untergeordneten Seiten angezeigt werden?');
 $GLOBALS['TL_LANG']['tl_page']['iso_attribute_set']				= array('Artikelmerkmal-Sammlung','Wählen Sie eine Artikelmerkmal-Sammlung um einen Filter für diese Seite zu wählen.');
 $GLOBALS['TL_LANG']['tl_page']['iso_filters']					= array('Auflistungs-Filter','Wählen Sie einen Artikelmerkmal-Filter.');
 
