@@ -11,7 +11,7 @@ INSERT INTO `tl_product_attribute_types` (`pid`, `sorting`, `tstamp`, `type`, `a
 -- 
 -- Table `tl_store` - Installs default store config
 --
-INSERT INTO `tl_store` (`sorting`, `tstamp`, `store_configuration_name`, `productReaderJumpTo`, `cartJumpTo`, `checkoutJumpTo`, `missing_image_placeholder`, `thumbnail_image_width`, `thumbnail_image_height`, `medium_image_width`, `medium_image_height`, `large_image_width`, `large_image_height`, `gallery_thumbnail_image_width`, `gallery_thumbnail_image_height`, `cookie_duration`, `enabled_modules`, `root_asset_import_path`, `checkout_login_module`, `currency`, `currencySymbol`, `currencyPosition`, `currencyFormat`, `countries`, `address_fields`, `country`, `orderPrefix`, `invoiceLogo`, `defaultPriceField`, `isDefaultStore`) VALUES (0, 1252093742, 'Default', 0, 0, 0, '', 100, 100, 200, 250, 1000, 1000, 50, 50, 30, null, '', 0, 'USD', '1', 'left', '10,000.00', null, null, 'us', '', '', 'price', '1');
+INSERT INTO `tl_store` (`sorting`, `tstamp`, `store_configuration_name`, `productReaderJumpTo`, `cartJumpTo`, `checkoutJumpTo`, `missing_image_placeholder`, `thumbnail_image_width`, `thumbnail_image_height`, `medium_image_width`, `medium_image_height`, `large_image_width`, `large_image_height`, `gallery_thumbnail_image_width`, `gallery_thumbnail_image_height`, `cookie_duration`, `root_asset_import_path`, `checkout_login_module`, `currency`, `currencySymbol`, `currencyPosition`, `currencyFormat`, `countries`, `address_fields`, `country`, `orderPrefix`, `invoiceLogo`, `defaultPriceField`, `isDefaultStore`) VALUES (0, 1252093742, 'Default', 0, 0, 0, '', 100, 100, 200, 250, 1000, 1000, 50, 50, 30, '', 0, 'USD', '1', 'left', '10,000.00', null, null, 'us', '', '', 'price', '1');
 
 
 --
