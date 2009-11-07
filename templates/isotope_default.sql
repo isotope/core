@@ -11,14 +11,14 @@ INSERT INTO `tl_product_attribute_types` (`pid`, `sorting`, `tstamp`, `type`, `a
 -- 
 -- Table `tl_store` - Installs default store config
 --
-INSERT INTO `tl_store` (`sorting`, `tstamp`, `store_configuration_name`, `productReaderJumpTo`, `cartJumpTo`, `checkoutJumpTo`, `missing_image_placeholder`, `thumbnail_image_width`, `thumbnail_image_height`, `medium_image_width`, `medium_image_height`, `large_image_width`, `large_image_height`, `gallery_thumbnail_image_width`, `gallery_thumbnail_image_height`, `cookie_duration`, `root_asset_import_path`, `checkout_login_module`, `currency`, `currencySymbol`, `currencyPosition`, `currencyFormat`, `countries`, `address_fields`, `country`, `orderPrefix`, `invoiceLogo`, `defaultPriceField`, `isDefaultStore`) VALUES (0, 1252093742, 'Default', 0, 0, 0, '', 100, 100, 200, 250, 1000, 1000, 50, 50, 30, '', 0, 'USD', '1', 'left', '10,000.00', null, null, 'us', '', '', 'price', '1');
+INSERT INTO `tl_store` (`sorting`, `tstamp`, `store_configuration_name`, `productReaderJumpTo`, `cartJumpTo`, `checkoutJumpTo`, `missing_image_placeholder`, `thumbnail_image_width`, `thumbnail_image_height`, `medium_image_width`, `medium_image_height`, `large_image_width`, `large_image_height`, `gallery_thumbnail_image_width`, `gallery_thumbnail_image_height`, `cookie_duration`, `root_asset_import_path`, `checkout_login_module`, `currency`, `currencySymbol`, `currencyPosition`, `currencyFormat`, `countries`, `address_fields`, `country`, `orderPrefix`, `invoiceLogo`, `priceField`, `isDefaultStore`) VALUES (0, 1252093742, 'Default', 0, 0, 0, '', 100, 100, 200, 250, 1000, 1000, 50, 50, 30, '', 0, 'USD', '1', 'left', '10,000.00', null, null, 'us', '', '', 'price', '1');
 
 
 --
 -- Table `tl_product_types` - Installs default Basic Product Type
 --
 
-INSERT INTO `tl_product_types` (`pid`, `sorting`, `tstamp`, `name`, `alias`, `description`, `attributes`) VALUES (0, 0, 1252961303, 'Basic Product', 'basic-product', 'Basic Default Data', 0x613a31363a7b693a303b733a323a223135223b693a313b733a323a223136223b693a323b733a313a2235223b693a333b733a313a2238223b693a343b733a323a223132223b693a353b733a313a2231223b693a363b733a313a2239223b693a373b733a323a223130223b693a383b733a313a2234223b693a393b733a313a2232223b693a31303b733a313a2237223b693a31313b733a313a2236223b693a31323b733a313a2233223b693a31333b733a323a223134223b693a31343b733a323a223133223b693a31353b733a323a223131223b7d);
+INSERT INTO `tl_product_types` (`pid`, `sorting`, `tstamp`, `name`, `description`, `attributes`) VALUES (0, 0, 1252961303, 'Basic Product', 'Basic Default Data', 0x613a31363a7b693a303b733a323a223135223b693a313b733a323a223136223b693a323b733a313a2235223b693a333b733a313a2238223b693a343b733a323a223132223b693a353b733a313a2231223b693a363b733a313a2239223b693a373b733a323a223130223b693a383b733a313a2234223b693a393b733a313a2232223b693a31303b733a313a2237223b693a31313b733a313a2236223b693a31323b733a313a2233223b693a31333b733a323a223134223b693a31343b733a323a223133223b693a31353b733a323a223131223b7d);
 
 
 --
