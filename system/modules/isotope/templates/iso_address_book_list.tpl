@@ -17,8 +17,8 @@
 <?php foreach ($this->addresses as $address): ?>
   <tr class="<?php echo $class; ?>">
     <td class="body"><?php echo $address['text']; ?></td>
-    <td class="body" align="center"><a href="<?php echo $address['edit_url']; ?>" title="<?php echo $this->editAddressLabel; ?>"><img src="<?php echo $this->isotopeBase; ?>/images/edit.png" border="0" width="16" height="16" alt="<?php echo $this->editAddressLabel; ?>" /></a></td>
-    <td class="body" align="center"><a href="<?php echo $address['delete_url']; ?>" title="<?php echo $this->deleteAddressLabel; ?>"><img src="<?php echo $this->isotopeBase; ?>/images/delete.png" border="0" width="16" height="16" alt="<?php echo $this->deleteAddressLabel; ?>" /></a></td>
+    <td class="body" align="center"><a href="<?php echo $address['edit_url']; ?>" title="<?php echo $this->editAddressLabel; ?>"><img src="system/modules/isotope/html/edit.png" border="0" width="16" height="16" alt="<?php echo $this->editAddressLabel; ?>" /></a></td>
+    <td class="body" align="center"><a href="<?php echo $address['delete_url']; ?>" title="<?php echo $this->deleteAddressLabel; ?>"><img src="system/modules/isotope/html/delete.png" border="0" width="16" height="16" alt="<?php echo $this->deleteAddressLabel; ?>" /></a></td>
   </tr>
 <?php endforeach; ?>
 <?php else: ?>
@@ -28,7 +28,7 @@
 <?php endif; ?>
   <tr>
     <td colspan="2" class="body" align="center"><ul style="list-style-type:none;"><li style="height: 16px; padding-left: 20px;
-background-image: url(<?php echo $this->isotopeBase; ?>/images/add.png);background-repeat: no-repeat;background-position: 0em -0.1em;"><a href="<?php echo $this->addNewAddress; ?>" title="<?php echo $this->addNewAddressLabel; ?>"><?php echo $this->addNewAddressLabel; ?></a></li></ul></td>
+background-image: url(system/modules/isotope/html/add.png);background-repeat: no-repeat;background-position: 0em -0.1em;"><a href="<?php echo $this->addNewAddress; ?>" title="<?php echo $this->addNewAddressLabel; ?>"><?php echo $this->addNewAddressLabel; ?></a></li></ul></td>
   </tr>
 </tbody>
 </table>
