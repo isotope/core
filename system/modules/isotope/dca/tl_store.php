@@ -35,7 +35,6 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 	'config' => array
 	(
 		'dataContainer'               => 'Table',
-		'switchToEdit'				  => true,
 		'enableVersioning'            => true,
 		'onload_callback' => array
 		(
