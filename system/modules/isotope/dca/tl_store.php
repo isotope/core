@@ -264,7 +264,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'exclude'                 => true,
 			'inputType'               => 'select',
 			'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
-			'options_callback'		  => array('tl_store', 'getPriceFields'),
+			'options_callback'		  => array('tl_store', 'getPriceOverrideFields'),
 		),
 		'priceCalculateFactor' => array
 		(
@@ -398,6 +398,27 @@ class tl_store extends Backend
 	public function getPriceFields()
 	{
 		$objPricingFields = $this->Database->execute("SELECT field_name, name FROM tl_product_attributes WHERE fieldGroup='pricing_legend' AND (type='integer' OR type='decimal')");
+		
+		if($objPricingFields->numRows < 1)
+		{
+			return array();			
+		}
+		
+		while($objPricingFields->next())
+		{
+			$arrPricingData[$objPricingFields->field_name] = $objPricingFields->name;
+		}
+		
+		return $arrPricingData;
+		
+	}
+	
+	/**
+	 * Return all fields that are price fields.
+	 */
+	public function getPriceOverrideFields()
+	{
+		$objPricingFields = $this->Database->execute("SELECT field_name, name FROM tl_product_attributes WHERE fieldGroup='pricing_legend' AND type='text'");
 		
 		if($objPricingFields->numRows < 1)
 		{

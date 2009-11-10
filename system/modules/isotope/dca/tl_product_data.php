@@ -41,12 +41,12 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		'oncreate_callback'			  => array
 		(
 			array('ProductCatalog', 'loadProductCatalogDCA'),
-		),
+		)/*,
 		'onload_callback'			  => array
 		(
 			array('tl_product_data', 'checkPermission'),
 			array('MediaManagement', 'createMediaDirectoryStructure')
-		),
+		)*/,
 		'onsubmit_callback'			  => array
 		(
 			array('ProductCatalog', 'saveProduct')
