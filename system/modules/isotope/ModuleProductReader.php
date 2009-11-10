@@ -165,7 +165,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 	
 		$time = time();
 
-		$strMissingImagePlaceholder = $this->Store->missing_image_placeholder;
+		$strMissingImagePlaceholder = $this->Isotope->Store->missing_image_placeholder;
 							
 		$objProductData = $this->Database->prepare("SELECT * FROM tl_product_data WHERE id=? OR alias=?")
 								 ->limit(1)
@@ -254,7 +254,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 									//Check for a file or folder by that name in the main import folder as specified in store config.
 									$arrAssetKeys = array($product['alias'], $product['sku']);
 									
-									$arrNeededImages = $this->MediaManagement->getRelatedProductAssetFilenamesByType($arrAssetKeys, $this->Store->root_asset_import_path, 'images');
+									$arrNeededImages = $this->MediaManagement->getRelatedProductAssetFilenamesByType($arrAssetKeys, $this->Isotope->Store->root_asset_import_path, 'images');
 								}
 							}
 								
@@ -440,7 +440,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 					(
 						'name'			=> $k,
 						'description'	=> $arrAttributeData['description'],									
-						'html'			=> $this->generateProductOptionWidget('product_variants', $arrData, $this->currFormId)
+						'html'			=> $this->generateProductOptionWidget('product_variants', $arrData, $this->currFormId, $arrOptionFields)
 					);	
 				}
 				$this->intProductId = $product['id'];
@@ -456,7 +456,10 @@ class ModuleProductReader extends ModuleIsotopeBase
 				if(sizeof($product['options'])>0)
 				{
 					$this->hasOptions = true;
+				}else{
+					$this->hasOptions = false;
 				}
+				
 				$product['aset_id'] = $this->Input->get('asetid');
 				
 				$arrProducts[] = $product;	
@@ -625,6 +628,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 		//The limitation for now is that this only handles the main image.  For additional images other conditions must be met (which need to be coded as of
 		//2/9/2009 - find folder (sku named), find files (sku named)
 		$blnHasAssignedMainImage = false;
+		
 		if(is_dir($strAbsoluteAssetFolderPath))
 		{
 			if ($dh = opendir($strAbsoluteAssetFolderPath . '/' . $strAssetType . '/' . $GLOBALS['TL_LANG']['MSC']['medium_images_folder'])) 
@@ -707,7 +711,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 					
 					if(!strlen($file) || !file_exists(TL_ROOT . '/' . $strRelativeAssetPath . '/' . $strAssetType . '/' . $GLOBALS['TL_LANG']['MSC']['medium_images_folder'] . '/' . $file))
 					{
-						$file = $this->Store->missing_image_placeholder;
+						$file = $this->Isotope->Store->missing_image_placeholder;
 						$strFinalFilePath = $file;
 					}
 					else

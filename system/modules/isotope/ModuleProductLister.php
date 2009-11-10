@@ -46,6 +46,8 @@ class ModuleProductLister extends ModuleIsotopeBase
 	 */
 	protected $strButtonTemplate = 'form_submit_ajax';
 	
+	protected $strPriceOverrideTemplate = 'stpl_price_override';
+	
 	/**
 	 * Base File Path for checking file existence and basic file ops.
 	 * @var string
@@ -64,6 +66,17 @@ class ModuleProductLister extends ModuleIsotopeBase
 	 */
 	protected $arrHandleCollection = array();
 	
+	/**
+	 * 
+	 */
+	protected $blnGetChildren = false;
+       
+    /**
+     *
+     *
+     */ 
+    protected $blnIgnorePageId = false;
+        
 	/**
 	 * Display a wildcard in the back end
 	 * @return string
@@ -104,19 +117,22 @@ class ModuleProductLister extends ModuleIsotopeBase
 	{
 		global $objPage;
 		
+		$blnIgnorePageId = false;
+		$blnGetChildren = false;
+		
 		//Determine category scope
 		switch($this->iso_category_scope)
 		{
 			case 'global':
-				$blnIgnrorePageId = true;
+				$this->blnIgnorePageId = true;
 				//NOTE: not necessary to set $blnGetChildren to true because we're not filtering by page ID at all.
 				break;
 			case 'parent_and_children':
-				$blnGetChildren = true;
+				$this->blnGetChildren = true;
 				break;
 			case 'current_category':
-				$blnIgnorePageId = false;
-				$blnGetChildren = false;
+				$this->blnIgnorePageId = false;
+				$this->blnGetChildren = false;
 				break;		
 		}
 
@@ -132,7 +148,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 		
 		$arrMessages = array();
 					
-		if($blnGetChildren)
+		if($this->blnGetChildren)
 		{
 			$objChildPages = $this->Database->prepare("SELECT id FROM tl_page WHERE pid=?")
 											->execute($objPage->id);
@@ -163,7 +179,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 		
 				
 		
-		if($this->new_products_time_window < 1 && $this->featured_products < 1 && !$blnIgnorePageId)
+		if($this->new_products_time_window < 1 && $this->featured_products < 1 && !$this->blnIgnorePageId)
 		{
 			$strClauses = " pid IN(" . $strPageList . ")";
 		}
@@ -295,7 +311,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 											'type'				=> 'select',
 											'label'				=> $strFieldLabel,
 											'current_value'		=> $varFilterValue,
-											'options'			=> $this->getListingFilterData($field['id'], true)
+											'options'			=> $this->getListingFilterData($field['id'])
 										);
 										
 										break;
@@ -408,12 +424,21 @@ class ModuleProductLister extends ModuleIsotopeBase
 				$arrDate = getdate();
 				
 				$strFilterList .= " AND date_added>=" . ($arrDate[0] - ((int)$this->new_products_time_window * 86400));
+				if(!$this->getRequestData('order_by'))
+				{
+					$strClauses = " ORDER BY date_added DESC";
+				}
+				
 				$strBaseClause = "visibility=1";
 			}
 			elseif($this->featured_products==1)
 			{
 				$strFilterList .= " AND featured_product=1";
-				$strClauses = " ORDER BY RAND() LIMIT " . $per_page;
+				if(!$this->getRequestData('order_by'))
+				{
+					$strClauses = " ORDER BY RAND() LIMIT " . $per_page;
+				}
+				
 				$strBaseClause = "visibility=1";
 			}
 			else
@@ -458,6 +483,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 		
 			if ($this->iso_jump_first && count($arrProducts))
 			{
+				
 				$this->redirect($this->generateProductLink($arrProducts[0]['alias'], $arrProducts[0], $this->Isotope->Store->productReaderJumpTo));
 			}
 			
@@ -484,7 +510,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 					'name'			=> $product['name'],
 					'alias'			=> $product['alias'],
 					'link'			=> $this->generateProductLink($product['alias'], $product, $this->Isotope->Store->productReaderJumpTo),
-					'price_string'			=> ($product['use_price_override']==1 ? $this->generatePriceStringOverride($this->strPriceOverrideTemplate,$this->Isotope->calculatePrice($product[$this->Isotope->Store->priceOverrideField])) : $this->generatePrice($this->Isotope->calculatePrice($product[$this->Isotope->Store->priceField]), $this->strPriceTemplate)),
+					'price_string'			=> ($product['use_price_override']==1 ? $this->generatePriceStringOverride($this->strPriceOverrideTemplate,$product[$this->Isotope->Store->priceOverrideField]) : $this->generatePrice($this->Isotope->calculatePrice($product[$this->Isotope->Store->priceField]), $this->strPriceTemplate)),
 					'thumbnail'				=> $this->getThumbnailImage($product['id'], $product['alias'], $product['main_image'], $strMissingImagePlaceholder, $this->strFileBasePath),
 					'id'			=> $product['id'],
 					'class'         => $classStr,
@@ -708,7 +734,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 	 *  @param boolean
 	 *  @return array
 	 */
-	private function getListingFilterData($intAttributeId, $blnUseCache = true)
+	private function getListingFilterData($intAttributeId, $arrClauses = array(), $blnUseCache = true)
 	{	
 		global $objPage;
 		
@@ -718,35 +744,40 @@ class ModuleProductLister extends ModuleIsotopeBase
 		$arrAssociatedPages = array();
 		$arrRefinedValues = array();
 				
-		if($objPage->show_child_category_products)
-		{
-			$arrAssociatedPages = $this->getChildPages($intPageId);
-						
+		$strClauses = '';		
+
+        if(!$this->blnGetChildren && !$this->blnIgnorePageId)
+		{                    
+			$strClauses = " AND pid IN ($intPageId)";
+		}
+        elseif($this->blnGetChildren)
+        {
+		    $arrAssociatedPages = $this->getChildPages($intPageId);
 			if(sizeof($arrAssociatedPages))
 			{	
 				foreach($arrAssociatedPages as $pageCollection)
 				{
-					
+						
 					foreach($pageCollection as $page)
 					{
 						$arrPages[] = $page;
 					}					
 				}
-								
+									
 			}
 			
-			$arrPages[] = $intPageId;
+			$arrPages[] = $intPageId; //add the current page as well.
+
+			$strPageList = join(",", $arrPages);
 			
-		}else{
-			$arrPages[] = $intPageId;
-		}			
-		
-				
-		$strPageList = join(",", $arrPages);
+			$strClauses = " AND pid IN (" . $strPageList . ")";	
+                                                
+		}		
+	
 										
-		$objListingFilterData = $this->Database->prepare("SELECT value_collection FROM tl_filter_values_to_categories WHERE attribute_id=? AND pid IN (" . $strPageList . ")")
+		$objListingFilterData = $this->Database->prepare("SELECT value_collection FROM tl_filter_values_to_categories WHERE attribute_id=?" . $strClauses)
 												   ->execute($intAttributeId);
-				
+			
 		if($objListingFilterData->numRows < 1)
 		{
 			return array();

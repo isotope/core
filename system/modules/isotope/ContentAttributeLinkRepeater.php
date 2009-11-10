@@ -108,7 +108,7 @@ class ContentAttributeLinkRepeater extends ContentElement
 								
 			$arrLinks[] = array
 			(
-				'url'		=>	$this->url . '?' . $filter_name . '=' . $link['value'] . '&ignore_page_id=1&pas_id=' . $this->iso_attribute_set . '&title=' . $link['title'], //$this->addToURL(),
+				'url'		=>	$this->url . '?' . $filter_name . '=' . $link['value'], //$this->addToURL(),
 				'link'		=>	$link['title'],
 				'title'		=> 	$link['title']
 			);

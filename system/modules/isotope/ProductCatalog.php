@@ -374,6 +374,10 @@ class ProductCatalog extends Backend
 			{
 				case 'integer':
 				case 'decimal':
+					$inputType = 'text';
+					$eval['rgxp'] = 'date';
+					$eval['datepicker'] = $this->getDatePickerString();
+					break;
 				case 'datetime':
 					$inputType = 'text';
 					break;
@@ -487,15 +491,12 @@ class ProductCatalog extends Backend
 					)
 				);
 			
-			if (strlen($field['options'])) 
+			if (strlen($field['options_list'])) 
 			{
-				$options = deserialize($field['options']);
-				foreach ($options as $option) {
-					$optionList[$option['value']] = $option['label'];
-				}
-				$GLOBALS['TL_DCA']['tl_product_data']['fields'][$key]['options'] = array_keys($optionList);
-				$GLOBALS['TL_DCA']['tl_product_data']['fields'][$key]['reference'] = $optionList;
-				//unset($optionList);
+				
+				$GLOBALS['TL_DCA']['tl_product_data']['fields'][$key]['options'] = array_keys($arrValues);
+				$GLOBALS['TL_DCA']['tl_product_data']['fields'][$key]['reference'] = $arrValues;
+
 
 			}
 			
@@ -504,12 +505,7 @@ class ProductCatalog extends Backend
 				$GLOBALS['TL_DCA']['tl_product_data']['fields'][$key]['foreignKey'] = $strForeignKey;
 				$strForeignKey = "";
 			}
-			
-			if(is_array($arrValues) && $field['type'] == 'select')
-			{
-				$GLOBALS['TL_DCA']['tl_product_data']['fields'][$key]['eval']['includeBlankOption'] = true;
-				//$GLOBALS['TL_DCA']['tl_product_data']['fields'][$key]['options'] = $arrValues;
-			}
+						
 			
 			if (!empty($field['load_callback']))
 			{
@@ -555,7 +551,6 @@ class ProductCatalog extends Backend
 			}
 			
 		}
-
 		return $strTable;
 		
 	}
