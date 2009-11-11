@@ -54,7 +54,6 @@
 		<input type="hidden" name="action" value="add_to_cart" />
 		<input type="hidden" name="id" value="<?php echo $product['id']; ?>" />
 		<input type="hidden" name="aset_id" value="<?php echo $product['aset_id']; ?>" />
-		<input type="hidden" name="quantity_requested" value="1" />
 		<input type="hidden" name="option_fields" value="<?php echo $this->optionFields; ?>" />
 		<?php endif; ?>
 		<?php echo $this->hidden; ?>
@@ -88,12 +87,17 @@
 		  <?php endif; ?>
 		  <div class="clearBoth"></div>
 		  </div>
-		  <?php endif; ?>  
+		  <?php endif; ?>	        
 	        <?php if($this->useQuantity): ?>
 	        <div class="quantity">
-	          <input name="qty" type="text" size="3" />
-	          <?php echo $this->qtyLabel; ?></div>
+	          <label for="quantity_requested"><?php echo $this->qtyLabel; ?></label>
+	          <input name="quantity_requested" type="text" size="3" value="1" onblur="if (this.value=='') { this.value='1'; }" onfocus="if (this.value=='1') { this.value=''; this.select(); }" />
+	          <span class="labelModifier"><?php echo $this->qtyLabelModifier; ?></span>
+	          </div>
+	        <?php else: ?>
+	          <input type="hidden" name="quantity_requested" value="1" />
 	        <?php endif; ?>
+
 	      <div class="productButtons">
 	          <?php foreach($this->buttonTypes as $buttonType): ?>
 	        		<div style="float: left; padding-right: 5px;"><input type="submit" class="submit button addCart" name="submit" value="Add to Cart" /><?php //echo $this->buttons[$buttonType][$this->productId]; ?></div>
@@ -141,16 +145,12 @@
         <div class="description">
         	<p><?php echo $product['description']; ?></p>
         </div>
-        <h4 class="infoheader">Test tab</h4>
-        <div class="description">
-        	<p>test description</p>
-        </div>
+        <div class="continue">
+   			<a href="<?php echo $this->referrer; ?>" title="Continue Shopping">Continue Shopping</a>
+   		</div>
     </div>
     <?php endforeach; ?>
    	<?php endif; ?>
-   	<div class="continue">
-   		<a href="<?php echo $this->referrer; ?>" title="Continue Shopping">Continue Shopping</a>
-   	</div>
   </div>
 </div>
 <?php if ($this->hasError): ?>
