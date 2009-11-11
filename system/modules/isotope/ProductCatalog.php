@@ -116,6 +116,15 @@ class ProductCatalog extends Backend
 			$this->createTable();
 		}	
 		
+		$objAttributeTypes = $this->Database->execute("SELECT type FROM tl_product_attribute_types");
+		
+		if($objAttributeTypes->numRows < 1)
+		{
+			$this->Database->execute("INSERT INTO `tl_product_attribute_types` (`id`, `pid`, `sorting`, `tstamp`, `type`, `attr_datatype`, `inputType`, `eval`, `name`) VALUES
+(1, 0, 128, 1218221789, 'text', 'varchar', 'text', '', ''),(2, 0, 256, 1218221789, 'integer', 'int', 'text', '', ''),(3, 0, 384, 1218221789, 'decimal', 'decimal', 'text', '', ''),(4, 0, 512, 1218221789, 'longtext', 'text', 'textarea', '', ''),(5, 0, 640, 1218221789, 'datetime', 'datetime', 'text', '', ''),(6, 0, 768, 1218221789, 'select', 'options', 'select', '', ''),(7, 0, 896, 1218221789, 'checkbox', 'options', 'checkbox', '', ''),(8, 0, 1024, 1218221789, 'options', 'options', 'radio', '', ''),(9, 0, 1152, 1218221789, 'file', 'varchar', 'fileTree', '', ''),(10, 0, 1280, 1218221789, 'media', 'varchar', 'imageManager', '', ''),(11, 0, 150, 1218221789, 'shorttext', 'varchar', 'text', '', '')");	
+
+		}
+		
 		
 		//Check for any missing standard attributes and build a list which can then be added into the table tl_product_data.		
 		foreach($GLOBALS['ISO_ATTR'] as $arrSet)
@@ -200,6 +209,7 @@ class ProductCatalog extends Backend
 		(
 			'label'					  =>  &$GLOBALS['TL_LANG']['tl_product_data']['type'],
 			'inputType'				  => 'select',
+			'filter'				  => true,
 			'eval'					  => array('mandatory'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true),
 			'options_callback'		  => array('ProductCatalog','getProductTypes')
 		);

@@ -441,11 +441,7 @@ class tl_product_attributes extends Backend
 		$arrOptions = array();
 
 		$objAttributeTypes = $this->Database->execute("SELECT type FROM tl_product_attribute_types");
-		
-		if($objAttributeTypes->numRows < 1)
-		{
-			return '';
-		}			
+				
 		
 		$arrAttributeTypes = $objAttributeTypes->fetchAllAssoc();								
 
