@@ -57,7 +57,7 @@ class ProductCatalog extends Backend
 		'checkbox'      => "char(1) NOT NULL default ''",
 		'options'		=> "text NULL",
 		'file'          => "text NULL",
-		'media'			=> "varchar(255) NOT NULL default '0'",
+		'media'			=> "blob NULL",
 	);
 	
 	protected $arrForm = array();
@@ -375,11 +375,12 @@ class ProductCatalog extends Backend
 				case 'integer':
 				case 'decimal':
 					$inputType = 'text';
-					$eval['rgxp'] = 'date';
-					$eval['datepicker'] = $this->getDatePickerString();
 					break;
+					
 				case 'datetime':
 					$inputType = 'text';
+					$eval['rgxp'] = 'date';
+					$eval['datepicker'] = $this->getDatePickerString();
 					break;
 					
 				case 'shorttext':
