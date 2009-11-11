@@ -64,6 +64,7 @@ $GLOBALS['TL_LANG']['tl_product_attributes']['template_visibility_title'] = 'Ava
 
 $GLOBALS['TL_LANG']['tl_product_attributes']['listing_enabled'] = 'Product Lister Template';
 $GLOBALS['TL_LANG']['tl_product_attributes']['reader_enabled'] = 'Product Reader Template';
+$GLOBALS['TL_LANG']['tl_product_attributes']['add_to_product_variants'] = array('Add to product variants wizard','If selected, this attribute will be added to the product variants wizard for use as a product variant option.');
 
 
 

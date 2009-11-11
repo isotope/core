@@ -149,7 +149,7 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
     'subpalettes' => array
     (
        'use_alternate_source'		=> 'list_source_table,list_source_field',
-    	'is_customer_defined'		=> 'text_collection_rows'
+    	'is_customer_defined'		=> 'add_to_product_variants,text_collection_rows'
     ),
 
     // Fields
@@ -203,7 +203,14 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 			'exclude'                 => true,
 			'default'				  => 0,
 			'inputType'               => 'checkbox'
-		)/*,
+		),
+		'add_to_product_variants' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['add_to_product_variants'],
+			'exclude'                 => true,
+			'inputType'               => 'checkbox'
+		)
+		/*,
 		'attr_use_mode' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['attr_use_mode'],	//Is customer defined will determine what to do - whether to show just 
@@ -236,7 +243,6 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['is_customer_defined'],
 			'exclude'                 => true,
-			'default'				  => 0,
 			'inputType'               => 'checkbox',
 			'eval'					  => array('submitOnChange'=>true)
 		),
@@ -244,14 +250,12 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['is_visible_on_front'],
 			'exclude'                 => true,
-			'default'				  => 0,
 			'inputType'               => 'checkbox'
 		),
 		'is_hidden_on_backend' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['is_hidden_on_backend'],
 			'exclude'                 => true,
-			'default'				  => 0,
 			'inputType'               => 'checkbox'
 		),
 		'is_required' => array
@@ -265,56 +269,48 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['is_filterable'],
 			'exclude'                 => true,
-			'default'				  => 0,
 			'inputType'               => 'checkbox'
 		),
 		'is_searchable' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['is_searchable'],
 			'exclude'                 => true,
-			'default'				  => 0,
 			'inputType'               => 'checkbox'
 		),
 		'is_order_by_enabled' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['is_order_by_enabled'],
 			'exclude'                 => true,
-			'default'				  => 0,
 			'inputType'               => 'checkbox'
 		),
 		'is_used_for_price_rules' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['is_used_for_price_rules'],
 			'exclude'                 => true,
-			'default'				  => 0,
 			'inputType'               => 'checkbox'
 		),
 		'is_multiple_select' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['is_multiple_select'],
 			'exclude'                 => true,
-			'default'				  => 0,
 			'inputType'               => 'checkbox'
 		),
 		'use_rich_text_editor' => array
 		(
 			'label'					  => &$GLOBALS['TL_LANG']['tl_product_attributes']['use_rich_text_editor'],
 			'exclude'				  => true,
-			'default'				  => 0,
 			'inputType'				  => 'checkbox'
 		),
 		'is_listing_field' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['is_listing_field'],
 			'exclude'                 => true,
-			'default'				  => 0,
 			'inputType'               => 'checkbox'
 		),
 		'use_alternate_source' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['use_alternate_source'],
 			'exclude'                 => true,
-			'default'				  => 0,
 			'inputType'               => 'checkbox',
 			'eval'					  => array('submitOnChange'=>true)
 		),
@@ -365,7 +361,6 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['disabled'],
 			'exclude'                 => true,
-			'default'				  => 0,
 			'inputType'               => 'checkbox'
 		)
 	)

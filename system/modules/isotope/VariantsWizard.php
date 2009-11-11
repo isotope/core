@@ -683,7 +683,7 @@ class VariantsWizard extends Widget
 	{
 		$strProductAttributes = join(',', $arrAttributes);
 		
-		$objOptionAttributes = $this->Database->prepare("SELECT id, name, field_name, is_customer_defined FROM tl_product_attributes WHERE id IN(" . $strProductAttributes . ")")
+		$objOptionAttributes = $this->Database->prepare("SELECT id, name, field_name, is_customer_defined FROM tl_product_attributes WHERE add_to_product_variants='1' AND id IN(" . $strProductAttributes . ")")
 											  ->execute();
 			
 			

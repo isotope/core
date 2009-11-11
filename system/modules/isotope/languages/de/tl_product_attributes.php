@@ -33,6 +33,7 @@ $GLOBALS['TL_LANG']['tl_product_attributes']['fieldGroup'] = array('Field Group'
 $GLOBALS['TL_LANG']['tl_product_attributes']['field_name'] = array('Interner Name', 'Der interne Feldname muss eindeutig für diesen Artikeltyp sein. Gewisse Felder (z.B. product_name) sind zwingend und können nicht geändert werden.');
 $GLOBALS['TL_LANG']['tl_product_attributes']['type'] = array('Typ', '');
 $GLOBALS['TL_LANG']['tl_product_attributes']['disabled'] = array('Global Disable','Disabled this attribute completely.');
+$GLOBALS['TL_LANG']['tl_product_attributes']['add_to_product_variants'] = array('Add to product variants wizard','If selected, this attribute will be added to the product variants wizard for use as a product variant option.');
 
 
 

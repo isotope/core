@@ -145,19 +145,6 @@ CREATE TABLE `tl_product_attribute_types` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 
--- INSERT INTO `tl_product_attribute_types` (`id`, `pid`, `sorting`, `tstamp`, `type`, `attr_datatype`, `inputType`, `eval`, `name`) VALUES
--- (1, 0, 128, 1218221789, 'text', 'varchar', 'text', '', ''),
--- (2, 0, 256, 1218221789, 'integer', 'int', 'text', '', ''),
--- (3, 0, 384, 1218221789, 'decimal', 'decimal', 'text', '', ''),
--- (4, 0, 512, 1218221789, 'longtext', 'text', 'textarea', '', ''),
--- (5, 0, 640, 1218221789, 'datetime', 'datetime', 'text', '', ''),
--- (6, 0, 768, 1218221789, 'select', 'options', 'select', '', ''),
--- (7, 0, 896, 1218221789, 'checkbox', 'options', 'checkbox', '', ''),
--- (8, 0, 1024, 1218221789, 'options', 'options', 'radio', '', ''),
--- (9, 0, 1152, 1218221789, 'file', 'varchar', 'fileTree', '', ''),
--- (10, 0, 1280, 1218221789, 'media', 'varchar', 'imageManager', '', ''),
--- (11, 0, 150, 1218221789, 'shorttext', 'varchar', 'text', '', '');
-
 
 -- --------------------------------------------------------
 
@@ -188,6 +175,7 @@ CREATE TABLE `tl_product_attributes` (
   `is_order_by_enabled` char(1) NOT NULL default '',
   `is_used_for_price_rules` char(1) NOT NULL default '',
   `is_multiple_select` char(1) NOT NULL default '',
+  `add_to_product_variants` char(1) NOT NULL default '',
   `invisible` char(1) NOT NULL default '',
   `inputType` varchar(64) NOT NULL default '',
   `use_rich_text_editor` char(1) NOT NULL default '',
