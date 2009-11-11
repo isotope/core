@@ -1064,7 +1064,7 @@ class ProductCatalog extends Backend
 			}
 
 			//To do - detemine if product can support variants.  This would be determined by any customer defined attributes being a part of the given palette or not.
-			/*if($objFieldGroups->fieldGroup == 'options_legend' && !in_array('options_set_source', $arrFieldsAndGroups[$objFieldGroups->fieldGroup]))
+			if($objFieldGroups->fieldGroup == 'options_legend' && !in_array('options_set_source', $arrFieldsAndGroups[$objFieldGroups->fieldGroup]))
 			{
 				if(!in_array('option_set_source', $this->arrSelectors))
 				{
@@ -1076,7 +1076,7 @@ class ProductCatalog extends Backend
 					$arrFieldsAndGroups[$objFieldGroups->fieldGroup][] = 'option_set_source';
 				}
 				
-			}*/
+			}
 						
 			$arrFieldsAndGroups[$objFieldGroups->fieldGroup][] = $objFieldGroups->field_name;			
 		}
