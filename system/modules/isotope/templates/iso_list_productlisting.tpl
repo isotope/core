@@ -10,7 +10,7 @@
         <form action="<?php echo $this->action; ?>" method="get" name="frmFilters">
         <div class="formbody">
         <div class="searchfields">       
-       <label for="<?php echo $this->searchFilterText['name']; ?>"><?php echo $this->searchFilterText['label']; ?></label><input type="<?php echo $this->searchFilterText['type']; ?>" name="<?php echo $this->searchFilterText['name']; ?>" class="text" value="<?php echo $this->searchFilterText['current_value']; ?>" />&nbsp;<input type="submit" name="submit" value="Submit" />
+       <label for="<?php echo $this->searchFilterText['name']; ?>"><?php echo $this->searchFilterText['label']; ?></label><input type="<?php echo $this->searchFilterText['type']; ?>" name="<?php echo $this->searchFilterText['name']; ?>" class="text" value="<?php echo $this->searchFilterText['current_value']; ?>" />&nbsp;<input type="submit" name="submitButton" value="Submit" />
        </div>
         <div class="filters">
       	<?php if(sizeof($this->filters)): ?>
