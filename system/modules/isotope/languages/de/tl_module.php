@@ -70,6 +70,7 @@ $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['current_category']		
 /**
  * Legends
  */
-$GLOBALS['TL_LANG']['tl_module']['featured_legend']  = 'Featured Product Settings';
+$GLOBALS['TL_LANG']['tl_module']['featured_legend']  = 'Featured product settings';
 $GLOBALS['TL_LANG']['tl_module']['display_legend']    = 'Display settings';
+$GLOBALS['TL_LANG']['tl_module']['config_legend']    = 'Configuration settings';
 
