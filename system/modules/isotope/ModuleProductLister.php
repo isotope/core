@@ -584,7 +584,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 			}
 		}
 		
-		$this->Template->buttons = array();
+		$this->Template->buttonTypes = array();
 		$this->Template->headline = ($this->headline ? $this->headline : $objPage->title);
 		$this->Template->listformat = ($this->iso_list_format ? $this->iso_list_format : 'grid');									   
 		$this->Template->messages = $arrMessages;

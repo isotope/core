@@ -198,11 +198,13 @@ class ModuleProductReader extends ModuleIsotopeBase
 			*/			
 			foreach($arrProductData as $product)
 			{
+				
 				//For attributes that need pre-processing before renderering out to template.
 				foreach($product as $k=>$v)
 				{
 					switch($k)
 					{
+						
 						case "name":													
 							$objPage->title = $v;
 							$this->Template->productName = $v;
@@ -349,8 +351,11 @@ class ModuleProductReader extends ModuleIsotopeBase
 							
 							if($arrAttributeData['is_customer_defined'])
 							{
-								$arrOptionFields[] = $k;
-																							
+								//does it have a value?
+								if($product[$k])
+								{
+									$arrOptionFields[] = $k;
+								}															
 								
 								if(!$blnIsMergedOptionSet)
 								{
@@ -420,10 +425,10 @@ class ModuleProductReader extends ModuleIsotopeBase
 					
 									
 				}
-				
-				
-				if($blnIsMergedOptionSet)
+						
+				if($blnIsMergedOptionSet && sizeof($arrOptionFields))
 				{
+					
 					//Create a special widget that combins all option value combos that are enabled.
 					$arrData = array
 					(
@@ -443,6 +448,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 						'html'			=> $this->generateProductOptionWidget('product_variants', $arrData, $this->currFormId, $arrOptionFields)
 					);	
 				}
+				
 				$this->intProductId = $product['id'];
 				
 				$arrProductIDsAndAsetIDs[] = array

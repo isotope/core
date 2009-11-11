@@ -66,9 +66,9 @@
 	      </div>
 	      <?php if(strlen($this->embeddedMedia) > 0): ?>
 	      <div class="media"><?php echo $this->embeddedMedia; ?></div>
-	      <?php endif; ?>
-	      <div class="options">
+	      <?php endif; ?>	      
 	      <?php if($this->hasOptions): ?>
+	      <div class="options">
 	      <h3 class="productOptions"><?php echo $this->productOptionsLabel; ?></h3>
 	      <?php if (!$this->tableless): ?>
 			<table cellspacing="0" cellpadding="0" summary="Form fields">
@@ -94,7 +94,6 @@
 	          <input name="qty" type="text" size="3" />
 	          Qty </div>
 	        <?php endif; ?>
-	      </div>
 	      <div class="productButtons">
 	          <?php foreach($this->buttonTypes as $buttonType): ?>
 	        		<div style="float: left; padding-right: 5px;"><input type="submit" class="submit button addCart" name="submit" value="Add to Cart" /><?php //echo $this->buttons[$buttonType][$this->productId]; ?></div>
