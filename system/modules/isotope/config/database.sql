@@ -40,6 +40,7 @@ CREATE TABLE `tl_module` (
   `featured_products` char(1) NOT NULL default '',
   `iso_list_format` varchar(64) NOT NULL default '',
   `iso_category_scope` varchar(64) NOT NULL default '',
+  `iso_use_quantity` char(1) NOT NULL default '',
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 

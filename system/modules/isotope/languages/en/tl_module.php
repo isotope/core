@@ -55,6 +55,7 @@ $GLOBALS['TL_LANG']['tl_module']['iso_mail_admin']				= array('Sales Admin Notif
 $GLOBALS['TL_LANG']['tl_module']['iso_sales_email']				= array('Sales Admin Email Address','Enter an email address other than the default System Admin for store notifications to be sent to.');
 $GLOBALS['TL_LANG']['tl_module']['iso_list_format']				= array('Listing Format','Please choose whether the products will be listed in grid or list format.');
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope']				= array('Category Scope','Specify the scope of a product lister.');
+$GLOBALS['TL_LANG']['tl_module']['iso_use_quantity'] 			= array('Enable quantity','Allow users to specify 1 or more of a product to be purchased.');
 
 /**
  * References
