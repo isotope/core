@@ -92,7 +92,7 @@
 	        <?php if($this->useQuantity): ?>
 	        <div class="quantity">
 	          <input name="qty" type="text" size="3" />
-	          Qty </div>
+	          <?php echo $this->qtyLabel; ?></div>
 	        <?php endif; ?>
 	      <div class="productButtons">
 	          <?php foreach($this->buttonTypes as $buttonType): ?>

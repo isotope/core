@@ -56,6 +56,7 @@ $GLOBALS['TL_LANG']['ERR']['noSubProducts'] = 'no sub-products found';
 /**
  * Miscellaneous
  */
+$GLOBALS['TL_LANG']['MSC']['quantity'] = 'Quantity';
 $GLOBALS['TL_LANG']['MSC']['order_conditions'] = 'AGB akzeptieren';
  
 $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'] = 'Bestellen';
