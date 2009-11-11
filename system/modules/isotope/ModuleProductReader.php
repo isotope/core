@@ -593,6 +593,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 			$arrButtons = $this->generateButtons($arrButtonData, $objPage->id);
 			$this->Template->useQuantity = $this->iso_use_quantity;
 			$this->Template->qtyLabel = $GLOBALS['TL_LANG']['MSC']['quantity'];
+			$this->Template->qtyLabelModifier = ''; //TODO: build to utilize the given products' format string.
 			$this->Template->productId = $this->intProductId;			
 			$this->Template->buttonTypes = $arrButtonTypes;
 			$this->Template->buttons = $arrButtons;
