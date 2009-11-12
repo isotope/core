@@ -70,7 +70,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_use_quantity'] = array
 	'eval'					  => array('tl_class'=>'w50')
 );
 
-
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_checkout_method'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_checkout_method'],
@@ -85,7 +84,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_checkout_method'] = array
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_reader_layout'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_reader_layout'],
-	'default'                 => 'iso_reader_product_single',
+	'default'                 => 'iso_reader_default',
 	'exclude'                 => true,
 	'inputType'               => 'select',
 	'options'                 => $this->getTemplateGroup('iso_reader_')
