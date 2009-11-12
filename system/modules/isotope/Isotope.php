@@ -222,6 +222,10 @@ class Isotope extends Controller
 	 */
 	public function calculatePrice($fltPrice)
 	{
+		// If price or override price is a string
+		if (!is_numeric($fltPrice))
+			return $fltPrice;
+			
 		if ($this->Store->priceMultiplier != 1)
 		{
 			switch ($this->Store->priceCalculateMode)
@@ -256,6 +260,10 @@ class Isotope extends Controller
 	 */
 	public function formatPrice($fltPrice)
 	{
+		// If price or override price is a string
+		if (!is_numeric($fltPrice))
+			return $fltPrice;
+			
 		$arrFormat = $GLOBALS['ISO_NUM'][$this->Store->currencyFormat];
 		
 		if (!is_array($arrFormat) || !count($arrFormat) == 3)
@@ -276,6 +284,10 @@ class Isotope extends Controller
 	 */
 	public function formatPriceWithCurrency($fltPrice, $strCurrencyCode = null, $blnHtml=false)
 	{
+		// If price or override price is a string
+		if (!is_numeric($fltPrice))
+			return $fltPrice;
+			
 		$strCurrency = (strlen($strCurrencyCode) ? $strCurrencyCode : $this->Store->currency);
 		
 		$strPrice = $this->formatPrice($fltPrice);
