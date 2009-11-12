@@ -74,6 +74,8 @@ $GLOBALS['TL_LANG']['MSC']['REGIONS']['us'] = array('AK','AL','AR','AS','AZ','CA
 /**
  * Miscellaneous
  */
+$GLOBALS['TL_LANG']['MSC']['mmNoImagesUploaded'] = 'No images uploaded.';
+$GLOBALS['TL_LANG']['MSC']['mmUploadImage'] = 'Upload new image';
 $GLOBALS['TL_LANG']['MSC']['quantity'] = 'Quantity';
 $GLOBALS['TL_LANG']['MSC']['searchTextBoxLabel'] = 'Search Term: ';
 $GLOBALS['TL_LANG']['MSC']['searchFieldsLabel'] = 'Search Fields: ';

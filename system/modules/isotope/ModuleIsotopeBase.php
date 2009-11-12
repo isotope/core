@@ -21,6 +21,7 @@
  * PHP version 5
  * @copyright  Winans Creative 2009
  * @author     Fred Bliss <fred@winanscreative.com>
+ * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
@@ -485,15 +486,16 @@ abstract class ModuleIsotopeBase extends Module
 		
  		foreach($arrProductData as $row)
 		{	
-		
 			$intTotalPrice = $row['price'] * $row['quantity_requested'];
 			
 			$row['id'] = $row['product_id'];	//needed to ensure all product links work for now.
+			
+			$arrImages = deserialize($row['main_image']);
 		
 			$arrFormattedProductData[] = array
 			(
 				'id'				=> $row['product_id'],
-				'image'				=> $GLOBALS['TL_CONFIG']['isotope_upload_path'] . '/' . $GLOBALS['TL_CONFIG']['isotope_base_path'] . '/' . substr($row['alias'], 0, 1) . '/' . $row['alias'] . '/' . $GLOBALS['TL_LANG']['MSC']['imagesFolder'] . '/' . $GLOBALS['TL_LANG']['MSC']['gallery_thumbnail_images_folder'] . '/' . $row['main_image'],
+				'image'				=> $this->getImage('isotope/' . substr($arrImages[0]['src'], 0, 1) . '/' . $arrImages[0]['src'], $this->Isotope->Store->gallery_thumbnail_image_width, $this->Isotope->Store->gallery_thumbnail_image_height),
 				'name'				=> $row['name'],
 				'link'				=> $this->generateProductLink($row['alias'], $row, $this->Isotope->Store->productReaderJumpTo, 'id'),
 				'price'				=> $this->generatePrice($row['price'], $this->strPriceTemplate),
@@ -1131,6 +1133,254 @@ abstract class ModuleIsotopeBase extends Module
 		}
 		
 		return $objAttributeData->fetchAssoc();
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * Shortcut for a single product by alias (from url?)
+	 */
+	protected function getProductByAlias($strAlias)
+	{
+		$objProduct = $this->Database->prepare("SELECT id FROM tl_product_data WHERE alias=?")->limit(1)->execute($strAlias);
+		
+		if (!$objProduct->numRows)
+			return false;
+			
+		$arrProducts = $this->getProducts(array($objProduct->id));
+			
+		return array_shift($arrProducts);
+	}
+	
+	
+	/**
+	 * Shortcut for a single product by ID
+	 */
+	protected function getProduct($intId)
+	{
+		$arrProducts = $this->getProducts(array($intId));
+		
+		return array_shift($arrProducts);
+	}
+	
+	
+	/**
+	 * Retrieve product data.
+	 *
+	 * - Deserialize all data
+	 * - Empty attribtues which are not enabled on the product type
+	 */
+	protected function getProducts($arrIds)
+	{
+		if (!is_array($arrIds) || !count($arrIds))
+			return array();
+			
+		// Product type attributes cache
+		$arrAttributes = array();
+		
+		$arrProducts = array();
+		$objProducts = $this->Database->execute("SELECT * FROM tl_product_data WHERE id IN (" . implode(',', $arrIds) . ")");
+		
+		while( $objProducts->next() )
+		{
+			if (!isset($arrAttributes[$objProducts->type]))
+			{
+				$objType = $this->Database->prepare("SELECT * FROM tl_product_types WHERE id=?")->limit(1)->execute($objProducts->type);
+				
+				$attributeIds = deserialize($objType->attributes);
+				
+				// Skip this product, it does not have any attributes
+				if (!is_array($attributeIds) || !count($attributeIds))
+					continue;
+					
+				$arrAttributes[$objType->id] = $this->Database->execute("SELECT * FROM tl_product_attributes WHERE id IN (" . implode(',', $attributeIds) . ") AND disabled=''")->fetchAllAssoc();
+			}
+			
+			$arrProduct = array('raw'=>$objProducts->row());
+			foreach( $arrAttributes[$objProducts->type] as $attribute )
+			{
+				switch( $attribute['type'] )
+				{
+					case 'media':
+						$varValue = array();
+						$arrImages = deserialize($objProducts->{$attribute['field_name']});
+						
+						foreach( $arrImages as $k => $file )
+						{
+							$strFile = 'isotope/' . substr($file['src'], 0, 1) . '/' . $file['src'];
+							
+							if (is_file(TL_ROOT . '/' . $strFile))
+							{
+								$objFile = new File($strFile);
+								
+								if ($objFile->isGdImage)
+								{
+									$varValue[] = array_merge($file, array
+									(
+										'is_image'		=> true,
+										'large'			=> $this->getImage($strFile, $this->Isotope->Store->large_image_width, $this->Isotope->Store->large_image_height),
+										'medium'		=> $this->getImage($strFile, $this->Isotope->Store->medium_image_width, $this->Isotope->Store->medium_image_height),
+										'thumb'			=> $this->getImage($strFile, $this->Isotope->Store->thumbnail_image_width, $this->Isotope->Store->thumbnail_image_height),
+										'gallery'		=> $this->getImage($strFile, $this->Isotope->Store->gallery_thumbnail_image_width, $this->Isotope->Store->gallery_thumbnail_image_height),
+										'large_size'	=> sprintf(' width="%s" height="%s"', $this->Isotope->Store->large_image_width, $this->Isotope->Store->large_image_height),
+										'medium_size'	=> sprintf(' width="%s" height="%s"', $this->Isotope->Store->medium_image_width, $this->Isotope->Store->medium_image_height),
+										'thumb_size'	=> sprintf(' width="%s" height="%s"', $this->Isotope->Store->thumbnail_image_width, $this->Isotope->Store->thumbnail_image_height),
+										'gallery_size'	=> sprintf(' width="%s" height="%s"', $this->Isotope->Store->gallery_thumbnail_image_width, $this->Isotope->Store->gallery_thumbnail_image_height),
+									));
+								}
+							}
+						}
+						break;
+						
+					case $this->Isotope->Store->priceField:
+					case $this->Isotope->Store->priceOverrideField:
+						$varValue = $this->Isotope->calculatePrice($objProducts->{$attribute['field_name']});
+						break;
+						
+					default:
+						$varValue = deserialize($objProducts->{$attribute['field_name']});
+						break;
+				}
+				
+				$arrProduct[$attribute['field_name']] = $attribute;
+				$arrProduct[$attribute['field_name']]['value'] = $varValue;
+			}
+			
+			$arrProducts[] = $arrProduct;
+		}
+		
+		return $arrProducts;
+	}
+	
+	
+	/**
+	 * Generate a product for the template
+	 */
+	protected function generateProduct($arrProduct, $strTemplate)
+	{
+		$objTemplate = new FrontendTemplate($strTemplate);
+		
+		$arrOptionFields = array();
+		$arrProductOptions = array();
+		
+		foreach( $arrProduct as $field => $attribute )
+		{
+			switch( $field )
+			{
+				case 'raw':
+					$objTemplate->raw = $attribute;
+					break;
+					
+				case 'main_image':
+					if (is_array($attribute['value']) && count($attribute['value']))
+					{
+						$arrImages = $attribute['value'];
+						$objTemplate->hasImage = true;
+						$objTemplate->mainImage = array_shift($arrImages);
+						
+						if (count($arrImages))
+						{
+							$objTemplate->hasGallery = true;
+							$objTemplate->gallery = $arrImages;
+						}
+					}
+					break;
+					
+				default:
+					$blnIsMergedOptionSet = true;
+					
+					if($attribute['is_customer_defined'])
+					{
+						//does it have a value?
+						if($attribute['value'])
+						{
+							$arrOptionFields[] = $field;
+						}															
+						
+						if(!$blnIsMergedOptionSet)
+						{
+							$arrData = $this->getDCATemplate($attribute);	//Grab the skeleton DCA info for widget generation
+
+							$arrProductOptions[] = array
+							(
+								'name'			=> $field,
+								'description'	=> $attribute['description'],									
+								'html'			=> $this->generateProductOptionWidget('field', $arrData, $this->currFormId)
+							);										
+						}
+					}
+					else
+					{
+						switch($attribute['type'])
+						{
+							case 'select':
+							case 'radio':
+							case 'checkbox':
+								//check for a related label to go with the value.
+								$arrOptions = deserialize($attribute['option_list']);
+								$varValues = deserialize($attribute['value']);
+								$arrLabels = array();
+								
+								if($attribute['is_visible_on_front'])
+								{
+									foreach($arrOptions as $option)
+									{
+										if(is_array($varValues))
+										{
+											if(in_array($option['value'], $varValues))
+											{
+												$arrLabels[] = $option['label'];
+											}
+										}
+										else
+										{	
+											if($option['value']===$v)
+											{
+												$arrLabels[] = $option['label'];
+											}
+										}
+									}
+									
+									if($arrLabels)
+									{									
+										$objTemplate->$field = join(',', $arrLabels); 
+									}
+									
+								}
+								break;
+																																		
+							default:
+								if($attribute['is_visible_on_front'])
+								{
+									//just direct render
+									$objTemplate->$field = $attribute['value'];
+								}
+								break;
+						}
+					}
+					break;
+			}
+		}
+		
+		$objTemplate->price = ($arrProduct['use_price_override'] && $arrProduct['use_price_override']['value']) ? $this->Isotope->formatPriceWithCurrency($arrProduct[$this->Isotope->Store->priceOverrideField]['value']) : $this->Isotope->formatPriceWithCurrency($arrProduct[$this->Isotope->Store->priceField]['value']);
+		
+		return $objTemplate->parse();
 	}
 }
 

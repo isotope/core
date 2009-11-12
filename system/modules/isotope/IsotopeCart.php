@@ -649,5 +649,62 @@ class IsotopeCart extends Model
 		return false;
 					
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public function addProduct($intId)
+	{
+		$objProduct = $this->Database->prepare("SELECT * FROM tl_product_data WHERE id=?")->limit(1)->execute($intId);
+		
+		if (!$objProduct->numRows)
+			return false;
+			
+		$objType = $this->Database->prepare("SELECT * FROM tl_product_types WHERE id=?")->limit(1)->execute($objProduct->type);
+		
+		if (!$objType->numRows)
+			return false;
+			
+		$arrAttributeIds = deserialize($objType->attributes);
+		
+		if (!is_array($arrAttributeIds) || !count($arrAttributeIds))
+			return;
+			
+		$objAttributes = $this->Database->execute("SELECT * FROM tl_product_attributes WHERE id IN (" . implode(',', $arrAttributeIds) . ") AND disabled=''");
+		
+		
+		$arrSet = array('pid'=>$this->id, 'tstamp'=>time(), 'product_id'=>$objProduct->id);
+		$arrProductData = array();
+		while( $objAttributes->next() )
+		{
+			$varValue = $objAttributes->is_customer_defined ? $this->Input->post($objAttributes->field_name) : $objProduct->{$objAttributes->field_name};
+			
+			switch( $objAttributes->field_name )
+			{
+				case 'quantity':
+					$arrSet['quantity_requested'] = $varValue;
+					break;
+				
+				default:
+					$arrProductData[$objAttributes->field_name] = $varValue;
+			}
+		}
+		
+		$strProductData = serialize($arrProductData);
+		$arrSet['product_data'] = $strProductData;
+		
+		if (!$this->Database->prepare("UPDATE tl_cart_items SET tstamp=?, quantity_requested=quantity_requested+" . $arrSet['quantity_requested'] . " WHERE pid=? AND product_id=? AND product_data=?")->execute($arrSet['tstamp'], $this->id, $objProduct->id, $strProductData)->affectedRows)
+		{
+			$this->Database->prepare("INSERT INTO tl_cart_items %s")->set($arrSet)->execute();
+		}
+	}
 }
 

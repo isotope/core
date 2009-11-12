@@ -21,6 +21,7 @@
  * PHP version 5
  * @copyright  Winans Creative 2009
  * @author     Fred Bliss <fred@winanscreative.com>
+ * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
@@ -32,7 +33,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 	 * Template
 	 * @var string
 	 */
-	protected $strTemplate = 'iso_reader_product_single';
+	protected $strTemplate = 'mod_productreader';
 
 	/**
 	 * Media Player Template
@@ -45,12 +46,6 @@ class ModuleProductReader extends ModuleIsotopeBase
 	 * @var string
 	 */
 	protected $strExternalMediaPlayerTemplate = 'ce_mediaplayer_external';
-	
-	/**
-	 * Main image raw import folder
-	 * @var string
-	 */
-	protected $strMainImageImportFolder = '';
 	
 	/** 
 	 * Main image base path
@@ -93,13 +88,18 @@ class ModuleProductReader extends ModuleIsotopeBase
 		if (TL_MODE == 'BE')
 		{
 			$objTemplate = new BackendTemplate('be_wildcard');
+			
 			$objTemplate->wildcard = '### ISOTOPE PRODUCT READER ###';
+			$objTemplate->title = $this->headline;
+			$objTemplate->id = $this->id;
+			$objTemplate->link = $this->name;
+			$objTemplate->href = 'typolight/main.php?do=modules&amp;act=edit&amp;id=' . $this->id;
 
 			return $objTemplate->parse();
 		}
 
-		// Return if no news item has been specified
-		if (!$this->Input->get('product'))
+		// Return if no product has been specified
+		if (!strlen($this->Input->get('product')))
 		{
 			return '';
 		}
@@ -108,18 +108,6 @@ class ModuleProductReader extends ModuleIsotopeBase
 		{
 			$this->iso_reader_layout = 'iso_reader_product_single';
 		}
-
-		/*if (!strlen($this->internal_media_player_template))
-		{	
-			$this->strInternalMediaPlayerTemplate = 'ce_mediaplayer_internal';
-		}
-		
-		if(!strlen($this->external_media_player_template))
-		{
-			$this->strExternalMediaPlayerTemplate = 'ce_mediaplayer_external';
-		}*/
-		
-		$this->strTemplate = $this->iso_reader_layout;
 
 		return parent::generate();
 	}
@@ -130,13 +118,74 @@ class ModuleProductReader extends ModuleIsotopeBase
 	 */
 	protected function compile()
 	{
+/*
 		// For Continue Shopping button. This should be tripped every time people hit the product reader
 		if($this->getReferer(ENCODE_AMPERSANDS) != ampersand($this->Environment->request, true))
 		{
 			$_SESSION['referringPage'] = $this->getReferer(ENCODE_AMPERSANDS);
 		}
 		$this->Template->referrer = $_SESSION['referringPage'];
+*/	
 		
+		$arrProduct = $this->getProductByAlias($this->Input->get('product'));
+		
+		if (!$arrProduct)
+		{
+			$this->Template = new FrontendTemplate('mod_message');
+			$this->Template->type = 'empty';
+			$this->Template->message = $GLOBALS['TL_LANG']['MSC']['invalidProductInformation'];
+			return;
+		}
+		
+		// Buttons
+		$arrButtons = array
+		(
+			'add_to_cart'		=> array('label'=>$GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'], 'callback'=>array('IsotopeCart', 'addProduct')),
+		);
+		
+		if (isset($GLOBALS['TL_HOOKS']['isoReaderButtons']) && is_array($GLOBALS['TL_HOOKS']['isoReaderButtons']))
+		{
+			foreach ($GLOBALS['TL_HOOKS']['isoReaderButtons'] as $callback)
+			{
+				$this->import($callback[0]);
+				$arrButtons = $this->$callback[0]->$callback[1]($arrButtons);
+			}
+		}
+		
+		if ($this->Input->post('FORM_SUBMIT') == $this->currFormId && $this->Input->post('product_id') == $arrProduct['raw']['id'])
+		{
+			foreach( $arrButtons as $button => $data )
+			{
+				if (strlen($this->Input->post($button)))
+				{
+					if (is_array($data['callback']) && count($data['callback']) == 2)
+					{
+						$this->import($data['callback'][0]);
+						$this->{$data['callback'][0]}->{$data['callback'][1]}($arrProduct['raw']['id']);
+					}
+					break;
+				}
+			}
+			
+			$this->reload();
+		}
+		
+		
+		$this->Template->action = ampersand($this->Environment->request, true);
+		$this->Template->formId = $this->currFormId;
+		$this->Template->product = $this->generateProduct($arrProduct, $this->iso_reader_layout);
+		$this->Template->buttons = $arrButtons;
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+/*		
 	
 		global $objPage;
 					
@@ -145,20 +194,20 @@ class ModuleProductReader extends ModuleIsotopeBase
 		$arrErrorMessages = array();
 		$this->import('MediaManagement');
 				
-		/*
-		$this->Template->hasExtraImages
-		$this->Template->extraProductImages
-			- has_large_image
-			- large_image_link
-			- thumbnail
-			- onThumbnailClickEvent
-		$this->Template->productOptions
-			- optionType
-			- optionName
-			- options
-				- key
-				- value
-		*/
+		
+//		$this->Template->hasExtraImages
+//		$this->Template->extraProductImages
+//			- has_large_image
+//			- large_image_link
+//			- thumbnail
+//			- onThumbnailClickEvent
+//		$this->Template->productOptions
+//			- optionType
+//			- optionName
+//			- options
+//				- key
+//				- value
+		
 		
 		// FIXME
 		$blnForceRescale = true;
@@ -192,16 +241,18 @@ class ModuleProductReader extends ModuleIsotopeBase
 			
 			$arrProductData =  $objProductData->fetchAllAssoc();
 				
-			/*$objProductAttributeData = $this->Database->prepare("SELECT is_embeddable_media FROM tl_product_attributes WHERE pid=? AND name=?")
-													  ->limit(1)
-													  ->execute($arrProductData['pid'], $arrProductData);
-			*/			
+//			$objProductAttributeData = $this->Database->prepare("SELECT is_embeddable_media FROM tl_product_attributes WHERE pid=? AND name=?")
+//													  ->limit(1)
+//													  ->execute($arrProductData['pid'], $arrProductData);
+
 			foreach($arrProductData as $product)
 			{
 				
 				//For attributes that need pre-processing before renderering out to template.
 				foreach($product as $k=>$v)
 				{
+					$v = deserialize($v);
+					
 					switch($k)
 					{
 						
@@ -322,7 +373,6 @@ class ModuleProductReader extends ModuleIsotopeBase
 								$this->Template->mainImage = $this->arrMainImage;
 
 							}
-							
 							break;
 							
 						case 'audio_source':
@@ -576,10 +626,10 @@ class ModuleProductReader extends ModuleIsotopeBase
 				$arrButtonTypes[] = $buttonSetting[0];
 			}
 					
-			/*if(is_array($arrCustomButtonData))
-			{
-				$arrBaseButtonData = array_merge($arrBaseButtonData, $arrCustomBaseButtonData);
-			}*/
+//			if(is_array($arrCustomButtonData))
+//			{
+//				$arrBaseButtonData = array_merge($arrBaseButtonData, $arrCustomBaseButtonData);
+//			}
 			
 			$this->Template->action = ampersand($this->Environment->request, true);
 			$this->Template->formId = $this->currFormId;
@@ -613,11 +663,11 @@ class ModuleProductReader extends ModuleIsotopeBase
 		}
 		
 			
-			/*$objProductAttributeData = $this->Database->prepare("SELECT is_embeddable_media FROM tl_product_attributes WHERE pid=? AND name=?")
-													  ->limit(1)
-													  ->execute($arrProductData['pid'], $arrProductData);
-			*/			
+//			$objProductAttributeData = $this->Database->prepare("SELECT is_embeddable_media FROM tl_product_attributes WHERE pid=? AND name=?")
+//													  ->limit(1)
+//													  ->execute($arrProductData['pid'], $arrProductData);
 			
+	*/		
 	}
 	
 	
@@ -630,6 +680,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 	 * @return array
 	 *
 	 */
+/*
 	private function getProductImages($strAbsoluteAssetFolderPath, $strRelativeAssetPath, $arrProductData, $strAssetType, $strMainImageFilename, $strProductAlias)
 	{ 
 		//Originally this implied the existence of the file in the appropriate folders because all thumbnailing happened on import or product save.
@@ -764,6 +815,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 		return $arrImages;	
 	}
 	
+*/
 
 	
 	
