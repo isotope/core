@@ -157,7 +157,6 @@ CREATE TABLE `tl_product_attributes` (
   `pid` int(10) unsigned NOT NULL default '0',
   `sorting` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
-  `attr_type_id` int(10) unsigned NOT NULL default '0',
   `name` varchar(255) NOT NULL default '',
   `description` varchar(255) NOT NULL default '',
   `type` varchar(64) NOT NULL default '',
