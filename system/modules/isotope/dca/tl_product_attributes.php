@@ -93,26 +93,12 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 				'href'                => 'act=copy',
 				'icon'                => 'copy.gif'
 			),*/
-			'cut' => array
-			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_product_attributes']['cut'],
-				'href'                => 'act=paste&amp;mode=cut',
-				'icon'                => 'cut.gif',
-				'attributes'          => 'onclick="Backend.getScrollOffset();"'
-			),
 			/*'delete' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_product_attributes']['delete'],
 				'href'                => 'act=delete',
 				'icon'                => 'delete.gif',
 				'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
-			)
-			'toggle' => array
-			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_product_attributes']['toggle'],
-				'icon'                => 'visible.gif',
-				'attributes'          => 'onclick="Backend.getScrollOffset(); return AjaxRequest.toggleVisibility(this, %s, \'product_attributes\');"',
-				'button_callback'     => array('tl_product_attributes', 'toggleIcon')
 			),*/
 			'show' => array
 			(
