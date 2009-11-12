@@ -70,6 +70,10 @@ $GLOBALS['TL_LANG']['tl_product_data']['external'] = array('External file', 'Spe
 $GLOBALS['TL_LANG']['tl_product_data']['opAttribute'] = 'Product Attribute';
 $GLOBALS['TL_LANG']['tl_product_data']['opValueSets'] = 'Option Values';
 
+$GLOBALS['TL_LANG']['tl_product_data']['mmSrc'] = 'Image';
+$GLOBALS['TL_LANG']['tl_product_data']['mmAlt'] = 'Alternate text';
+$GLOBALS['TL_LANG']['tl_product_data']['mmDesc'] = 'Description';
+
 $GLOBALS['TL_LANG']['tl_product_data']['existing_option_set'] = 'Select an existing product option set';
 $GLOBALS['TL_LANG']['tl_product_data']['new_option_set'] = 'Create a new product option set';
 

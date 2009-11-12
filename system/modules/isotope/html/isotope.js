@@ -17,6 +17,55 @@ var Isotope =
 		{
 			$(id).setStyle('display', 'none');
 		}
+	},
+	
+	
+	/**
+	 * Media Manager
+	 * @param object
+	 * @param string
+	 * @param string
+	 */
+	mediaManager: function(el, command, id)
+	{
+		var table = $(id);
+		var tbody = table.getFirst().getNext();
+		var parent = $(el).getParent('tr');
+		var rows = tbody.getChildren();
+
+		Backend.getScrollOffset();
+
+		switch (command)
+		{
+			case 'up':
+				parent.getPrevious() ? parent.injectBefore(parent.getPrevious()) : parent.injectInside(tbody);
+				break;
+
+			case 'down':
+				parent.getNext() ? parent.injectAfter(parent.getNext()) : parent.injectBefore(tbody.getFirst());
+				break;
+
+			case 'delete':
+				(rows.length > 1) ? parent.destroy() : null;
+				break;
+		}
+
+		rows = tbody.getChildren();
+
+		for (var i=0; i<rows.length; i++)
+		{
+			var childs = rows[i].getChildren();
+
+			for (var j=0; j<childs.length; j++)
+			{
+				var first = childs[j].getFirst();
+
+				if (first.type == 'hidden' || first.type == 'textarea')
+				{
+					first.name = first.name.replace(/\[[0-9]+\]/ig, '[' + i + ']');
+				}
+			}
+		}
 	}
 };
 

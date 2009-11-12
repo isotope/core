@@ -1462,13 +1462,24 @@ class ProductCatalog extends Backend
 		
 		$key = $row['archived'] ? '' : ($row['visibility'] ? 'published' : 'unpublished');
 		
-		$arrImages = explode(',', $row['main_image']);
+		$arrImages = deserialize($row['main_image']);
+		$thumbnail = '';
 		
-		$thumbnail = strlen($row['main_image']) > 0 ? $GLOBALS['TL_CONFIG']['isotope_upload_path'] . '/' . $GLOBALS['TL_CONFIG']['isotope_base_path'] . '/' . substr($row['alias'], 0, 1) . '/' . $row['alias'] . '/images/' . $GLOBALS['TL_LANG']['MSC']['gallery_thumbnail_images_folder'] . '/' . $arrImages[0] : ' width="50" height="50';
+		if (is_array($arrImages) && count($arrImages))
+		{
+			foreach( $arrImages as $image )
+			{
+				$strImage = 'isotope/' . substr($image['src'], 0, 1) . '/' . $image['src'];
+				
+				if (!is_file(TL_ROOT . '/' . $strImage))
+					continue;
+					
+				$thumbnail = sprintf('<img src="%s" alt="%s" align="left" style="padding-right: 8px;" />', $this->getImage($strImage, 50, 50), $image['alt']);
+				break;
+			}
+		}
 		
-		//$thumbnail = $GLOBALS['TL_CONFIG']['isotope_upload_path'] . '/' . $GLOBALS['TL_CONFIG']['isotope_base_path'] . '/' . substr($row['alias'], 0, 1) . '/' . $row['alias'] . '/images/' . $GLOBALS['TL_LANG']['MSC']['gallery_thumbnail_images_folder'] . '/' . $arrImages[0];
-		
-		$output = '<div style="margin-top:5px!important;margin-bottom:0px!important;" class="cte_type ' . $key . '"><div><span><img src="' . $thumbnail . '" alt="' . $row['name'] . '" align="left" style="padding-right: 8px;" /><strong>' . $row['name'] . '</strong></span><div><span style="color:#b3b3b3;"><strong>' . $this->Isotope->formatPriceWithCurrency($row['price']) . '</strong></span></div><br /><br /><div><em>' . $GLOBALS['TL_LANG']['tl_product_data']['pages'][0] . ': ' . $this->getCategoryList(deserialize($row['pages'])) . '</em></div></div></div> ';
+		$output = '<div style="margin-top:5px!important;margin-bottom:0px!important;" class="cte_type ' . $key . '"><div><span>' . $thumbnail . '<strong>' . $row['name'] . '</strong></span><div><span style="color:#b3b3b3;"><strong>' . $this->Isotope->formatPriceWithCurrency($row['price']) . '</strong></span></div><br /><br /><div><em>' . $GLOBALS['TL_LANG']['tl_product_data']['pages'][0] . ': ' . $this->getCategoryList(deserialize($row['pages'])) . '</em></div></div></div> ';
 		
 		$fields = array();
 		
