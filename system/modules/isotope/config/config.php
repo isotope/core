@@ -84,12 +84,6 @@ array_insert($GLOBALS['BE_MOD']['store'], 0, array
 		'tables'					=> array('tl_tax_class','tl_tax_rate'),
 		'icon'						=> 'system/modules/isotope/html/icon-taxes.gif',
 	),
-	'isotopeMedia' => array
-	(
-		'tables'					=> array('tl_media'),
-		'icon'						=> 'system/modules/isotope/html/icon_mm.gif',
-//		'stylesheet'				=> 'html/stylesheet.css',
-	),
 	'iso_mail' => array
 	(
 		'tables'					=> array('tl_iso_mail', 'tl_iso_mail_content'),
@@ -405,7 +399,7 @@ $GLOBALS['ISO_ATTR'] = array
 		'is_listing_field'			=> 1,
 		'delete_locked'				=> 1,
 		'rgxp'						=> 'extnd',
-		'save_callback'				=> 'ProductCatalog.generateAlias,MediaManagement.createProductAssetFolders'
+		'save_callback'				=> 'ProductCatalog.generateAlias'
 	),
 	
 	// Product Visibility	
