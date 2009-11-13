@@ -57,9 +57,8 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 
 		'label' => array
 		(
-			'fields'                  => array('name','description'),
-			'format'                  => '%s - <em>%s</em>',
-		//	'label_callback'		  => array('tl_product_types','getRowLabel')
+			'fields'                  => array('name'),
+			'format'                  => '%s',
 		),
 
 		'global_operations' => array
