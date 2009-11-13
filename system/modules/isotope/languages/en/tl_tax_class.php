@@ -29,14 +29,6 @@
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_tax_class']['name'] = array('Tax Class Name', 'Give this tax class a name that explains what it is used for.');
-$GLOBALS['TL_LANG']['tl_tax_class']['mode']	= array('Taxation Mode', 'Select how taxe is applied if this is a second tax.');
-
-
-/**
- * Reference
- */
-$GLOBALS['TL_LANG']['tl_tax_class']['mode_ref']['']		= 'Simple (Both taxes are applied on the total)';
-$GLOBALS['TL_LANG']['tl_tax_class']['mode_ref']['1']	= 'Compound (Second tax is applied on the taxed amount)';
 
 
 /**
@@ -53,5 +45,4 @@ $GLOBALS['TL_LANG']['tl_tax_class']['show']   = array('Order Details', 'Show det
  * Legends
  */
 $GLOBALS['TL_LANG']['tl_tax_class']['name_legend']	= 'Name';
-$GLOBALS['TL_LANG']['tl_tax_class']['mode_legend']	= 'Taxation Mode';
 
