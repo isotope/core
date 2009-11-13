@@ -1249,13 +1249,18 @@ abstract class ModuleIsotopeBase extends Module
 						}
 						break;
 						
-					case $this->Isotope->Store->priceField:
-					case $this->Isotope->Store->priceOverrideField:
-						$varValue = $this->Isotope->calculatePrice($objProducts->{$attribute['field_name']});
-						break;
-						
 					default:
-						$varValue = deserialize($objProducts->{$attribute['field_name']});
+						switch( $attribute['field_name'] )
+						{
+							case $this->Isotope->Store->priceField:
+							case $this->Isotope->Store->priceOverrideField:
+								$varValue = $this->Isotope->calculatePrice($objProducts->{$attribute['field_name']});
+								break;
+						
+							default:
+								$varValue = deserialize($objProducts->{$attribute['field_name']});
+								break;
+						}
 						break;
 				}
 				

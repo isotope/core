@@ -94,8 +94,24 @@ class ModuleProductLister extends ModuleIsotopeBase
 	{
 		global $objPage;
 		
-		$arrProducts = array();
-		$arrProductData = $this->getProducts($this->Database->prepare("SELECT * FROM tl_product_to_category WHERE pid=?")->execute($objPage->id)->fetchEach('product_id'));
+		$arrCategories = array($objPage->id);
+		
+		$objProductIds = $this->Database->prepare("SELECT * FROM tl_product_to_category c, tl_product_data p WHERE c.product_id=p.id AND c.pid IN (" . implode(',', $arrCategories) . ")");
+		
+		// Add pagination
+		if ($this->perPage > 0)
+		{
+			$total = $objProductIds->execute()->numRows;
+			$page = $this->Input->get('page') ? $this->Input->get('page') : 1;
+			$offset = ($page - 1) * $this->perPage;
+
+			$objPagination = new Pagination($total, $this->perPage);
+			$this->Template->pagination = $objPagination->generate("\n  ");
+			
+			$objProductIds->limit($this->perPage, $offset);
+		}
+		
+		$arrProductData = $this->getProducts($objProductIds->execute()->fetchEach('product_id'));
 				
 		if (!is_array($arrProductData) || !count($arrProductData))
 		{
@@ -104,9 +120,6 @@ class ModuleProductLister extends ModuleIsotopeBase
 			$this->Template->message = $GLOBALS['TL_LANG']['MSC']['noProducts'];
 			return;
 		}
-
-		
-		
 		
 		// Buttons
 		$arrButtons = array
@@ -123,6 +136,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 			}
 		}
 		
+		$arrProducts = array();
 		
 		foreach( $arrProductData as $arrProduct )
 		{
