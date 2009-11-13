@@ -34,51 +34,10 @@ class ModuleProductReader extends ModuleIsotopeBase
 	 * @var string
 	 */
 	protected $strTemplate = 'mod_productreader';
+	
+	protected $strFormId = 'iso_product_reader';
+	
 
-	/**
-	 * Media Player Template
-	 * @var string
-	 */
-	protected $strInternalMediaPlayerTemplate = 'ce_mediaplayer_internal';
-	
-	/**
-	 * Media Player Template
-	 * @var string
-	 */
-	protected $strExternalMediaPlayerTemplate = 'ce_mediaplayer_external';
-	
-	/** 
-	 * Main image base path
-	 * @var string
-	 */
-	protected $strMainImageBasePath = '';
-	
-	/**
-	 * Extra images flag
-	 * @var boolean
-	 */
-	protected $hasExtraImages = false;
-	
-	/**
-	 * Does the product have options?
-	 * @var boolean
-	 */
-	protected $hasOptions = false;
-	
-	/**
-	 * Product Id	-  Using this limits us to showing a single product on the reader
-	 * @var integer
-	 */
-	protected $intProductId;
-	
-	protected $currFormId = 'iso_product_reader';
-	
-	/**
-	 * Main Image
-	 * @var array
-	 */
-	protected $arrMainImage = array();
-	
 	/**
 	 * Display a wildcard in the back end
 	 * @return string
@@ -106,7 +65,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 
 		if (!strlen($this->iso_reader_layout))
 		{
-			$this->iso_reader_layout = 'iso_reader_product_single';
+			$this->iso_reader_layout = 'iso_reader_default';
 		}
 
 		return parent::generate();
@@ -152,7 +111,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 			}
 		}
 		
-		if ($this->Input->post('FORM_SUBMIT') == $this->currFormId && $this->Input->post('product_id') == $arrProduct['raw']['id'])
+		if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && $this->Input->post('product_id') == $arrProduct['raw']['id'])
 		{
 			foreach( $arrButtons as $button => $data )
 			{
@@ -172,7 +131,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 		
 		
 		$this->Template->action = ampersand($this->Environment->request, true);
-		$this->Template->formId = $this->currFormId;
+		$this->Template->formId = $this->strFormId;
 		$this->Template->product = $this->generateProduct($arrProduct, $this->iso_reader_layout);
 		$this->Template->buttons = $arrButtons;
 		
@@ -415,7 +374,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 									(
 										'name'			=> $k,
 										'description'	=> $arrAttributeData['description'],									
-										'html'			=> $this->generateProductOptionWidget($k, $arrData, $this->currFormId)
+										'html'			=> $this->generateProductOptionWidget($k, $arrData, $this->strFormId)
 									);										
 								}
 							
@@ -495,7 +454,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 					(
 						'name'			=> $k,
 						'description'	=> $arrAttributeData['description'],									
-						'html'			=> $this->generateProductOptionWidget('product_variants', $arrData, $this->currFormId, $arrOptionFields)
+						'html'			=> $this->generateProductOptionWidget('product_variants', $arrData, $this->strFormId, $arrOptionFields)
 					);	
 				}
 				
@@ -632,7 +591,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 //			}
 			
 			$this->Template->action = ampersand($this->Environment->request, true);
-			$this->Template->formId = $this->currFormId;
+			$this->Template->formId = $this->strFormId;
 			$this->Template->method = 'post';
 			$this->Template->enctype = $this->hasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
 			$this->Template->attributes = '';

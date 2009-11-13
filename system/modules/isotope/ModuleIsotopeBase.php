@@ -1153,6 +1153,19 @@ abstract class ModuleIsotopeBase extends Module
 	
 	
 	
+	
+	
+	
+	/**
+	 * Shortcut for a single product by ID
+	 */
+	protected function getProduct($intId)
+	{
+		$arrProducts = $this->getProducts(array($intId));
+		
+		return array_shift($arrProducts);
+	}
+	
 	/**
 	 * Shortcut for a single product by alias (from url?)
 	 */
@@ -1167,18 +1180,6 @@ abstract class ModuleIsotopeBase extends Module
 			
 		return array_shift($arrProducts);
 	}
-	
-	
-	/**
-	 * Shortcut for a single product by ID
-	 */
-	protected function getProduct($intId)
-	{
-		$arrProducts = $this->getProducts(array($intId));
-		
-		return array_shift($arrProducts);
-	}
-	
 	
 	/**
 	 * Retrieve product data.
@@ -1321,7 +1322,7 @@ abstract class ModuleIsotopeBase extends Module
 							(
 								'name'			=> $field,
 								'description'	=> $attribute['description'],									
-								'html'			=> $this->generateProductOptionWidget('field', $arrData, $this->currFormId)
+								'html'			=> $this->generateProductOptionWidget('field', $arrData, $this->strFormId)
 							);										
 						}
 					}
@@ -1379,6 +1380,8 @@ abstract class ModuleIsotopeBase extends Module
 		}
 		
 		$objTemplate->price = ($arrProduct['use_price_override'] && $arrProduct['use_price_override']['value']) ? $this->Isotope->formatPriceWithCurrency($arrProduct[$this->Isotope->Store->priceOverrideField]['value']) : $this->Isotope->formatPriceWithCurrency($arrProduct[$this->Isotope->Store->priceField]['value']);
+		
+		$objTemplate->href_reader = $this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($this->Isotope->Store->productReaderJumpTo)->fetchAssoc(), '/product/' . $arrProduct['alias']['value']);
 		
 		return $objTemplate->parse();
 	}

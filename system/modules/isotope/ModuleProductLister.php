@@ -21,6 +21,7 @@
  * PHP version 5
  * @copyright  Winans Creative 2009
  * @author     Fred Bliss <fred@winanscreative.com>
+ * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
@@ -32,34 +33,13 @@ class ModuleProductLister extends ModuleIsotopeBase
 	 * Template
 	 * @var string
 	 */
-	protected $strTemplate = 'iso_list_productlisting';
-
-	/**
-	 * Button Form Template
-	 * @var string
-	 */
-	protected $strButtonFormTemplate = 'iso_form_simple';
+	protected $strTemplate = 'mod_productlist';
 	
-	/**
-	 * Button Template
-	 * @var string
-	 */
-	protected $strButtonTemplate = 'form_submit_ajax';
+	protected $strFormId = 'iso_product_list';
+
 	
 	protected $strPriceOverrideTemplate = 'stpl_price_override';
 	
-	/**
-	 * Base File Path for checking file existence and basic file ops.
-	 * @var string
-	 */
-	protected $strFileBasePath = '';
-	
-	/** 
-	 * Current Thumbnail Base Path
-	 * @var string
-	 */
-	protected $strCurrentThumbnailBasePath = '';
-	 
 	/**
 	 *  
 	 *
@@ -86,7 +66,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 		if (TL_MODE == 'BE')
 		{
 			$objTemplate = new BackendTemplate('be_wildcard');
-			$objTemplate->wildcard = '### ISOTOPE PRODUCT LISTING ###';
+			$objTemplate->wildcard = '### ISOTOPE PRODUCT LIST ###';
 			$objTemplate->title = $this->headline;
 			$objTemplate->id = $this->id;
 			$objTemplate->link = $this->name;
@@ -100,12 +80,9 @@ class ModuleProductLister extends ModuleIsotopeBase
 		// Fallback template
 		if (!strlen($this->iso_list_layout))
 		{
-			$this->iso_list_layout = 'iso_list_productlisting';
+			$this->iso_list_layout = 'iso_list_default';
 		}
 
-//		$this->arrJumpToValues = $this->getStoreJumpToValues($this->store_id);	//Deafult keys are "product_reader", "shopping_cart", and "checkout"
-
-		$this->strTemplate = $this->iso_list_layout;
 		return parent::generate();
 	}
 	
@@ -117,8 +94,71 @@ class ModuleProductLister extends ModuleIsotopeBase
 	{
 		global $objPage;
 		
-		$blnIgnorePageId = false;
-		$blnGetChildren = false;
+		$arrProducts = array();
+		$arrProductData = $this->getProducts($this->Database->prepare("SELECT * FROM tl_product_to_category WHERE pid=?")->execute($objPage->id)->fetchEach('product_id'));
+				
+		if (!is_array($arrProductData) || !count($arrProductData))
+		{
+			$this->Template = new FrontendTemplate('mod_message');
+			$this->Template->type = 'empty';
+			$this->Template->message = $GLOBALS['TL_LANG']['MSC']['noProducts'];
+			return;
+		}
+
+		
+		
+		
+		// Buttons
+		$arrButtons = array
+		(
+			'add_to_cart'		=> array('label'=>$GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'], 'callback'=>array('IsotopeCart', 'addProduct')),
+		);
+		
+		if (isset($GLOBALS['TL_HOOKS']['isoListButtons']) && is_array($GLOBALS['TL_HOOKS']['isoReaderButtons']))
+		{
+			foreach ($GLOBALS['TL_HOOKS']['isoListButtons'] as $callback)
+			{
+				$this->import($callback[0]);
+				$arrButtons = $this->$callback[0]->$callback[1]($arrButtons);
+			}
+		}
+		
+		
+		foreach( $arrProductData as $arrProduct )
+		{
+			if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && $this->Input->post('product_id') == $arrProduct['raw']['id'])
+			{
+				foreach( $arrButtons as $button => $data )
+				{
+					if (strlen($this->Input->post($button)))
+					{
+						if (is_array($data['callback']) && count($data['callback']) == 2)
+						{
+							$this->import($data['callback'][0]);
+							$this->{$data['callback'][0]}->{$data['callback'][1]}($arrProduct['raw']['id']);
+						}
+						
+						break;
+					}
+				}
+				
+				$this->reload();
+			}
+			
+			$arrProducts[] = $this->generateProduct($arrProduct, $this->iso_list_layout);
+		}
+		
+		
+		$this->Template->action = ampersand($this->Environment->request, true);
+		$this->Template->formId = $this->strFormId;
+		$this->Template->buttons = $arrButtons;
+		$this->Template->products = $arrProducts;
+		
+		
+		
+/*
+		
+		global $objPage;
 		
 		//Determine category scope
 		switch($this->iso_category_scope)
@@ -137,16 +177,17 @@ class ModuleProductLister extends ModuleIsotopeBase
 		}
 
 			
-		$this->strFileBasePath = $GLOBALS['TL_CONFIG']['isotope_root'];
-		
-		// WE NEED TO FIX THIS... IT IS THE RIGHT DIRECTORY, BUT WE ARE CREATING IT TWICE
-		$this->strCurrentThumbnailBasePath = $GLOBALS['TL_CONFIG']['isotope_base_path'] . '/%s/%s/' . $GLOBALS['TL_LANG']['MSC']['imagesFolder'] . '/' . $GLOBALS['TL_LANG']['MSC']['thumbnail_images_folder'];
-		
-		
-		$this->strCurrentImagesBasePath = $GLOBALS['TL_CONFIG']['isotope_base_path'] . '/%s/%s/' . $GLOBALS['TL_LANG']['MSC']['imagesFolder'];
-		
-		
-		$arrMessages = array();
+
+//		$this->strFileBasePath = $GLOBALS['TL_CONFIG']['isotope_root'];
+//		
+//		// WE NEED TO FIX THIS... IT IS THE RIGHT DIRECTORY, BUT WE ARE CREATING IT TWICE
+//		$this->strCurrentThumbnailBasePath = $GLOBALS['TL_CONFIG']['isotope_base_path'] . '/%s/%s/' . $GLOBALS['TL_LANG']['MSC']['imagesFolder'] . '/' . $GLOBALS['TL_LANG']['MSC']['thumbnail_images_folder'];
+//		
+//		
+//		$this->strCurrentImagesBasePath = $GLOBALS['TL_CONFIG']['isotope_base_path'] . '/%s/%s/' . $GLOBALS['TL_LANG']['MSC']['imagesFolder'];
+//		
+//		
+//		$arrMessages = array();
 					
 		if($this->blnGetChildren)
 		{
@@ -609,6 +650,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 			$objPagination = new Pagination($intTotalRows, $per_page);
 			$this->Template->pagination = $objPagination->generate("\n  ");
 		}
+*/
 	}
 	
 	/**
