@@ -963,48 +963,18 @@ class ProductCatalog extends Backend
 	
 	protected function getProductTypePalettes()
 	{
-		$objProductTypes = $this->Database->prepare("SELECT id, name, attributes FROM tl_product_types")
-									  ->execute();
+		$objProductTypes = $this->Database->prepare("SELECT * FROM tl_product_types")->execute();
 		
-		if($objProductTypes->numRows < 1)
+		if (!$objProductTypes->numRows)
 		{
 			return array();
 		}
-			
-		
-		$objAttributes = $this->Database->prepare("SELECT id, is_hidden_on_backend, is_customer_defined FROM tl_product_attributes")->execute();
-		
-		if($objAttributes->numRows < 1)
-		{
-			throw new Exception('No product attributes found!');		//TODO - language specific error message.
-		}
-				
-		$arrAttributes = $objAttributes->fetchAllAssoc();
-			
-		foreach($arrAttributes as $attribute)
-		{
-			$arrHiddenAttributes[$attribute['id']] = ($attribute['is_hidden_on_backend'] ? $attribute['is_hidden_on_backend'] : $attribute['is_customer_defined']);
-		
-		}		
 		
 		$arrPalettes['default'] = $this->basePaletteAttributes;
 		
 		while($objProductTypes->next())
 		{
-			$arrEnabledAttributes = deserialize($objProductTypes->attributes);	
-					
-			foreach($arrEnabledAttributes as $attribute)
-			{
-				$intIndex = (integer)$attribute;
-				
-				if($arrHiddenAttributes[$intIndex]=='1')
-				{		
-					continue;	
-				}
-				
-				$arrFieldCollection[] = $intIndex;
-			}
-									
+			$arrFieldCollection = deserialize($objProductTypes->attributes);
 			$strAttributes = $this->buildPaletteString($arrFieldCollection);
 			
 			$arrPalettes[$objProductTypes->id] = $strAttributes;					
@@ -1016,21 +986,15 @@ class ProductCatalog extends Backend
 		return $arrPalettes;
 	}
 	
-	protected function getSelectors()
-	{
-		return array();
-	
-	}
-	
 	
 	private function buildPaletteString($arrAttributes, $strAppendToLegend = '', $arrExtraFields = array())
 	{
-		$strFields = join(',', $arrAttributes);
-	
-		$objFieldGroups = $this->Database->prepare("SELECT field_name, fieldGroup FROM tl_product_attributes WHERE id IN(" . $strFields . ") ORDER BY sorting")
-										 ->execute();
+		if (!is_array($arrAttributes) || !count($arrAttributes))
+			return '';
+			
+		$objFieldGroups = $this->Database->execute("SELECT field_name, fieldGroup FROM tl_product_attributes WHERE disabled='' AND is_hidden_on_backend='' AND is_customer_defined='' AND id IN(" . implode(',', $arrAttributes) . ") ORDER BY id=" . implode(' DESC, id=', $arrAttributes) . " DESC");
 		
-		if($objFieldGroups->numRows < 1)
+		if(!$objFieldGroups->numRows)
 		{
 			throw new Exception('No fields returned.');
 		}
@@ -1248,7 +1212,7 @@ class ProductCatalog extends Backend
 	
 	private function initializeFields() 
 	{
-		$objFields = $this->Database->prepare("SELECT * FROM tl_product_attributes ORDER BY sorting ASC")
+		$objFields = $this->Database->prepare("SELECT * FROM tl_product_attributes")
 									->execute();
 		
 		while ($objFields->next())

@@ -155,7 +155,6 @@ CREATE TABLE `tl_product_attribute_types` (
 CREATE TABLE `tl_product_attributes` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
-  `sorting` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
   `name` varchar(255) NOT NULL default '',
   `description` varchar(255) NOT NULL default '',
