@@ -1842,47 +1842,5 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 		return $objTemplate->parse();	
 	}
-	
-/*
-	protected function getSelections($strResourceTable)
-	{
-		//$objSelections = $this->Database->prepare("SELECT options FROM " . $strResourceTable )
-	
-	}
-	
-*/
-/*
-	protected function generateRequiredFieldData()
-	{
-		return $GLOBALS['TEMP_DCA'][$this->strCurrentStep]['fields'];
-	}
-*/
-	
-	//*** AUTHORIZE.NET Processing code - move to authorize class module and call that as the standard approach for handling and rendering out data?
-	
-	private function addAlert($alertText)
-	{
-		return "<span style=\"color:#ff0000;\">" . $alertText . "</span>";
-	}
-	
-	private function generateModuleHeadline($strOrderStatus)
-	{
-		switch($strOrderStatus)
-		{
-			case "Approved":
-				return "Your Order Is Complete!";
-				break;
-				
-			case "Declined":
-				return "Your payment method has been declined.";
-				break;
-			
-			case "Error":
-				return "There was an error with your payment method.";
-				break;
-			default:
-				return;			
-		}
-	}	
 }
 
