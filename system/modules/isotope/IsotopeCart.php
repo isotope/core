@@ -692,6 +692,9 @@ class IsotopeCart extends Model
 				case 'quantity':
 					$arrSet['quantity_requested'] = $varValue;
 					break;
+					
+				case $this->Isotope->Store->priceField:
+					$arrSet['price'] = $varValue;
 				
 				default:
 					$arrProductData[$objAttributes->field_name] = $varValue;
