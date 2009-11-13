@@ -1883,50 +1883,6 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			default:
 				return;			
 		}
-	}
-	
-	private function generateResponseString($arrResponses, $arrResponseLabels)
-	{
-		$responseString .= '<tr><td align="right" colspan="2">&nbsp;</td></tr>';
-			
-			$showReason = false;
-						
-			foreach($arrResponses as $k=>$v)
-			{
-				$value = $v;
-				
-				switch($k)
-				{
-					case 'transaction-status':
-						switch($v)
-						{
-							case "Declined":
-							case "Error":
-								$value = $this->addAlert($v); 
-								$showReason = true;
-								break;
-							default:
-								$value = "<strong>" . $v . "</strong>";
-								break;
-						}
-						break;
-					case 'reason':
-						if(!$showReason)
-						{
-							continue;
-						}
-						
-						$value = $this->addAlert($v) . "<br /><a href=\"" . $this->session['infoPage'] . "\"><strong>Click here to review and correct your order</strong></a>";
-					case 'grand-total':
-						$value = $v;
-						break;
-				}	
-				
-				$responseString .= '<tr><td align="right" width="150">' . $arrResponseLabels[$k] . ':&nbsp;&nbsp;</td><td>' . $value . '</td></tr>';
-			}
-			
-			return $responseString;
-	}
-	
+	}	
 }
 
