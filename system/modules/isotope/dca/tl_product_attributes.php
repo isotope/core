@@ -317,7 +317,7 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 			'options_callback'		  => array('tl_product_attributes','getFields'),
 			'save_callback'			  => array
 			(
-				array('ProductCatalog','importAlternateSourceToCollection')
+//				array('ProductCatalog','importAlternateSourceToCollection')
 			)
 		),
 		'rgxp' => array
@@ -561,6 +561,9 @@ class tl_product_attributes extends Backend
 			$valueCol = $objField->itemTableValueCol;
 			$itemTable = $objField->itemTable;
 			
+			if (!strlen($valueCol) || !strlen($itemTable))
+				return array();
+				
 			try
 			{
 					$objItems = $this->Database->execute("SELECT $idCol, $valueCol FROM $itemTable");

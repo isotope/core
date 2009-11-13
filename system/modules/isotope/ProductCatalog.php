@@ -2212,6 +2212,7 @@ class ProductCatalog extends Backend
 		return $value;
 	}
 	
+/*
 	public function importAlternateSourceToCollection($varValue, DataContainer $dc)
 	{
 		$objTableField = $this->Database->prepare("SELECT list_source_table FROM tl_product_attributes WHERE id=?")
@@ -2248,6 +2249,7 @@ class ProductCatalog extends Backend
 	
 		return $varValue;
 	}
+*/
 	
 	
 	
