@@ -198,23 +198,6 @@ CREATE TABLE `tl_product_attributes` (
 -- --------------------------------------------------------
 
 -- 
--- Table `tl_attributes_to_languages` pid is product id.
---
-CREATE TABLE `tl_attributes_to_languages` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `pid` int(10) unsigned NOT NULL default '0',
-  `sorting` int(10) unsigned NOT NULL default '0',
-  `tstamp` int(10) unsigned NOT NULL default '0',
-  `language` varchar(16) NOT NULL default '',
-  `field_name` varchar(64) NOT NULL default '',
-  `value` text NULL,
-  PRIMARY KEY  (`id`),
-  KEY `pid` (`pid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
--- 
 -- Table `tl_store`
 -- 
 
