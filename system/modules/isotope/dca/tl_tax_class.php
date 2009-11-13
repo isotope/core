@@ -99,23 +99,28 @@ $GLOBALS['TL_DCA']['tl_tax_class'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => 'name',
+		'default'                     => '{name_legend},name;{mode_legend:hide},mode',
 	),
 
 	// Fields
 	'fields' => array
 	(
-		
 		'name' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_class']['name'],
 			'exclude'                 => true,
 			'search'                  => true,
-			'sorting'                 => true,
-			'flag'                    => 1,
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255)
-		)
+		),
+		'mode' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_class']['mode'],
+			'exclude'                 => true,
+			'inputType'               => 'radio',
+			'options'				  => array('', '1'),
+			'reference'				  => &$GLOBALS['TL_LANG']['tl_tax_class']['mode_ref'],
+		),
 	)
 );
 

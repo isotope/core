@@ -28,17 +28,16 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_tax_class']['name'] = array('Tax Class Name','Give this tax class a name that explains what it is used for.');
+$GLOBALS['TL_LANG']['tl_tax_class']['name'] = array('Tax Class Name', 'Give this tax class a name that explains what it is used for.');
+$GLOBALS['TL_LANG']['tl_tax_class']['mode']	= array('Taxation Mode', 'Select how taxe is applied if this is a second tax.');
+
 
 /**
  * Reference
  */
+$GLOBALS['TL_LANG']['tl_tax_class']['mode_ref']['']		= 'Simple (Both taxes are applied on the total)';
+$GLOBALS['TL_LANG']['tl_tax_class']['mode_ref']['1']	= 'Compound (Second tax is applied on the taxed amount)';
 
-/**
- * Additional Operations
- */
-//$GLOBALS['TL_LANG']['tl_tax_class']['authorize_process_payment'] = array('Authorizet.net Point-of-sale Terminal','Conduct a transaction using the Authorize.net point-of-sale terminal');
-//$GLOBALS['TL_LANG']['tl_tax_class']['print_order'] = array('Print this tax class','Print an invoice for the current tax class');
 
 /**
  * Buttons
@@ -48,4 +47,11 @@ $GLOBALS['TL_LANG']['tl_tax_class']['edit']   = array('Edit tax class', 'Edit ta
 $GLOBALS['TL_LANG']['tl_tax_class']['copy']   = array('Copy tax class', 'Copy tax class ID %s');
 $GLOBALS['TL_LANG']['tl_tax_class']['delete'] = array('Delete tax class', 'Delete tax class ID %s');
 $GLOBALS['TL_LANG']['tl_tax_class']['show']   = array('Order Details', 'Show details of tax class ID %s');
+
+
+/**
+ * Legends
+ */
+$GLOBALS['TL_LANG']['tl_tax_class']['name_legend']	= 'Name';
+$GLOBALS['TL_LANG']['tl_tax_class']['mode_legend']	= 'Taxation Mode';
 
