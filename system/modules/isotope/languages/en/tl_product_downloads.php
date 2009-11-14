@@ -37,7 +37,7 @@ $GLOBALS['TL_LANG']['tl_product_downloads']['downloads_allowed']	= array('Downlo
 /**
  * Buttons
  */
-$GLOBALS['TL_LANG']['tl_product_downloads']['new']					= array('New download', 'Add a new download to this product');
+$GLOBALS['TL_LANG']['tl_product_downloads']['new']					= array('Add download', 'Add a new download to this product');
 $GLOBALS['TL_LANG']['tl_product_downloads']['edit']					= array('Edit download', 'Edit download ID %s');
 $GLOBALS['TL_LANG']['tl_product_downloads']['copy']					= array('Duplicate download', 'Duplicate download ID %s');
 $GLOBALS['TL_LANG']['tl_product_downloads']['delete']				= array('Delete download', 'Delete download ID %s');

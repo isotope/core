@@ -48,7 +48,7 @@ $GLOBALS['TL_DCA']['tl_product_downloads'] = array
 			'fields'					=> array('title'),
 			'flag'						=> 1,
 			'panelLayout'				=> 'filter;search,limit',
-			'headerFields'				=> array('id'),
+			'headerFields'				=> array('name', 'alias', 'sku'),
 			'child_record_callback'		=> array('tl_product_downloads', 'listRows')
 		),
 		'label' => array
