@@ -80,7 +80,8 @@ $GLOBALS['TL_LANG']['MSC']['quantity'] = 'Quantity';
 $GLOBALS['TL_LANG']['MSC']['searchTextBoxLabel'] = 'Search Term: ';
 $GLOBALS['TL_LANG']['MSC']['searchFieldsLabel'] = 'Search Fields: ';
 $GLOBALS['TL_LANG']['MSC']['order_conditions'] = 'I agree to the terms & conditions';
- 
+$GLOBALS['TL_LANG']['MSC']['downloadCount'] = '%s download(s)';
+
 $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'] = 'Add To Cart';
 $GLOBALS['TL_LANG']['MSC']['buttonActionString']['add_to_cart'] = 'Add product %s to your cart';
 		

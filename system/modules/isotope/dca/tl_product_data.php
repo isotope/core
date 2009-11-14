@@ -93,13 +93,6 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 				'href'                => 'act=edit',
 				'icon'                => 'edit.gif'
 			),
-			'downloads' => array
-			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['downloads'],
-				'href'                => 'table=tl_product_downloads',
-				'icon'                => 'system/modules/isotope/html/attach.png',
-				'button_callback'	  => array('tl_product_data', 'downloadsButton'),
-			),
 			'cut' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['cut'],
@@ -120,6 +113,13 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 				'href'                => 'act=show',
 				'icon'                => 'show.gif'
 			),
+			'downloads' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['downloads'],
+				'href'                => 'table=tl_product_downloads',
+				'icon'                => 'system/modules/isotope/html/attach.png',
+				'button_callback'	  => array('tl_product_data', 'downloadsButton'),
+			),
 		),
 	),
 );
@@ -137,7 +137,12 @@ class tl_product_data extends Backend
 								  ->limit(1)
 								  ->execute($row['type']);
 
-		return ($objType->downloads) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : '';
+		if (!$objType->downloads)
+			return '';
+			
+		$objDownloads = $this->Database->prepare("SELECT COUNT(*) AS total FROM tl_product_downloads WHERE pid=?")->execute($row['id']);
+			
+		return '<p style="padding-top:8px"><a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).' '.sprintf($GLOBALS['TL_LANG']['MSC']['downloadCount'], $objDownloads->total).'</a></p>';
 	}
 	
 	
