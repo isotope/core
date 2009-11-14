@@ -52,7 +52,6 @@ CREATE TABLE `tl_module` (
 CREATE TABLE `tl_product_data` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
-  `sorting` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
   `archived` char(1) NOT NULL default '',
   `pages` text NULL,

@@ -59,7 +59,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		'sorting' => array
 		(
 			'mode'                    => 1,
-			'fields'                  => array('sorting'),
+			'fields'                  => array('type', 'name'),
 			'flag'                    => 1,
 			'panelLayout'             => 'sort,filter;search,limit',
 		),
@@ -92,13 +92,6 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['edit'],
 				'href'                => 'act=edit',
 				'icon'                => 'edit.gif'
-			),
-			'cut' => array
-			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['cut'],
-				'href'                => 'act=paste&amp;mode=cut',
-				'icon'                => 'cut.gif',
-				'attributes'          => 'onclick="Backend.getScrollOffset();"'
 			),
 			'delete' => array
 			(
