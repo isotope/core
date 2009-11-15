@@ -271,7 +271,7 @@ class MediaManager extends Widget implements uploadable
 						$GLOBALS['TL_LANG']['MSC']['mmUploadImage'],
 						$this->strName,
 						$this->strId,
-						(strlen($this->strClass) ? ' ' . $this->strClass : ''));;
+						(strlen($this->strClass) ? ' ' . $this->strClass : ''));
 
 		if (!is_array($this->varValue) || !count($this->varValue))
 			return $GLOBALS['TL_LANG']['MSC']['mmNoImagesUploaded'] . $upload;
