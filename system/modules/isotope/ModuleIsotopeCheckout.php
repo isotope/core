@@ -588,9 +588,9 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	protected function writeOrder($blnCheckout=false)
 	{
 		$arrBillingAddress = $this->getSelectedAddress('billing');
-		$strBillingAddress = $this->getAddressString($arrBillingAddress);
+		$strBillingAddress = $this->Isotope->generateAddressString($arrBillingAddress);
 		$arrShippingAddress = $this->getSelectedAddress('shipping');
-		$strShippingAddress = $this->getAddressString($arrShippingAddress);		
+		$strShippingAddress = $this->Isotope->generateAddressString($arrShippingAddress);		
 		
 		//TODO?  Consider CC_TYPE and CC_CVV?
 		//exit;
@@ -986,8 +986,8 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		$objTemplate->shippingOptionsListLabel = $GLOBALS['TL_LANG']['MSC']['shippingOptionsLabel'];
 		$objTemplate->shippingOptionsList = $this->Cart->Shipping->optionsList;
 
-		$objTemplate->billingAddress = $this->getAddressString($this->getSelectedAddress('billing'));
-		$objTemplate->shippingAddress = $this->getAddressString($this->getSelectedAddress('shipping'));
+		$objTemplate->billingAddress = $this->Isotope->generateAddressString($this->getSelectedAddress('billing'));
+		$objTemplate->shippingAddress = $this->Isotope->generateAddressString($this->getSelectedAddress('shipping'));
 		
 		$objTemplate->shippingMethod = $this->Cart->Shipping->label;
 		$objTemplate->paymentMethod = $this->Cart->Payment->label;
@@ -1087,47 +1087,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				
 		return $arrAddress;
 	}
-	
-	
-	/**
-	 * Generate an address string for order (overview and order table)
-	 * 
-	 * @todo should use and sort by the selected fields in store configuration
-	 * @access protected
-	 * @param array $arrAddress
-	 * @return string
-	 */
-	protected function getAddressString($arrAddress)
-	{
-		if (!is_array($arrAddress) || !count($arrAddress))
-		{
-			return '';
-		}
-		
-		$arrCountries = $this->getCountries();
-		
-		$strAddress  = (strlen($arrAddress['company']) > 0 ? $arrAddress['company'] . "\n" : '');
-		$strAddress .= $arrAddress['firstname'] . ' ' . $arrAddress['lastname'] . "\n";
-		$strAddress .= $arrAddress['street'] . "\n";
-		$strAddress .= (strlen($arrAddress['street_2']) > 0 ? $arrAddress['street_2'] . "\n" : '');
-		$strAddress .= (strlen($arrAddress['street_3']) > 0 ? $arrAddress['street_3'] . "\n" : '');
-		$strAddress .= $arrAddress['postal'] . ' ' . $arrAddress['city'] . "\n";
-		$strAddress .= (strlen($arrAddress['state']) > 0 ? $arrAddress['state'] . "\n" : '');
-		$strAddress .= $arrCountries[$arrAddress['country']] . "\n\n";
-		$strAddress .= (strlen($arrAddress['email']) > 0 ? $arrAddress['email'] . "\n" : '');
-		$strAddress .= (strlen($arrAddress['phone']) > 0 ? $arrAddress['phone'] . "\n" : '');
-	
-	/*
-		foreach( $this->Isotope->Store->address_fields as $strField )
-		{
-			if (!isset($GLOBALS['TL_DCA'][$strResourceTable]['fields'][$strField]))
-				continue;
-				
-			$arrStepFields[$strField] = $GLOBALS['TL_DCA'][$strResourceTable]['fields'][$strField];
-		}
-	*/
-		return $strAddress;
-	}
+
 	
 	/**
 	 * Returns an array containing all pertinent shipping information for enabled modules

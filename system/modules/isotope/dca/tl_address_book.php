@@ -240,20 +240,9 @@ class tl_address_book extends Backend
 
 	public function renderLabel($arrAddress)
 	{
-		$arrCountries = $this->getCountries();
+		$this->import('Isotope');
 		
-		$strAddress  = '<div style="margin-top:-15px">';
-		
-		$strAddress .= (strlen($arrAddress['company']) > 0 ? $arrAddress['company'] . "<br />" : '');
-		$strAddress .= $arrAddress['firstname'] . ' ' . $arrAddress['lastname'] . "<br />";
-		$strAddress .= $arrAddress['street'] . "<br />";
-		$strAddress .= (strlen($arrAddress['street_2']) > 0 ? $arrAddress['street_2'] . "<br />" : '');
-		$strAddress .= (strlen($arrAddress['street_3']) > 0 ? $arrAddress['street_3'] . "<br />" : '');
-		$strAddress .= $arrAddress['postal'] . ' ' . $arrAddress['city'] . "<br />";
-		$strAddress .= (strlen($arrAddress['state']) > 0 ? $arrAddress['state'] . "<br />" : '');
-		$strAddress .= $arrCountries[$arrAddress['country']];
-	
-		return $strAddress . '</div>';
+		return '<div style="margin-top:-15px">' . $this->Isotope->generateAddressString($arrAddress) . '</div>';
 	}
 	
 	/**

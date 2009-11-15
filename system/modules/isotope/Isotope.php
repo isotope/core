@@ -549,6 +549,54 @@ class Isotope extends Controller
 	
 	
 	/**
+	 * Generate an address string
+	 * 
+	 * @access protected
+	 * @param array $arrAddress
+	 * @return string
+	 */
+	public function generateAddressString($arrAddress)
+	{
+		if (!is_array($arrAddress) || !count($arrAddress))
+			return '';
+		
+		// We need a country to format the address, user default country if none is available
+		if (!strlen($arrAddress['country']))
+		{
+			$arrAddress['country'] = $this->Store->country;
+		}
+		
+		$arrCountries = $this->getCountries();
+		
+		$strFormat = $GLOBALS['ISO_ADR'][$arrAddress['country']];
+		$arrAddress['country'] = $arrCountries[$arrAddress['country']];
+	
+		$arrSearch = $arrReplace = array();
+		foreach( $this->Store->address_fields as $strField )
+		{
+			$arrSearch[] = '{'.$strField.'}';
+			$arrReplace[] = $arrAddress[$strField];
+		}
+		
+		// Parse format
+		$strAddress = str_replace($arrSearch, $arrReplace, $strFormat);
+		
+		// Remove empty tags
+		$strAddress = preg_replace('(\{[^}]+\})', '', $strAddress);
+		
+		// Remove double line breaks
+		do
+		{
+			$strAddress = str_replace('<br /><br />', '<br />', $strAddress, $found);
+		}
+		while ($found > 0);
+		
+	
+		return $strAddress;
+	}
+	
+	
+	/**
 	 * Send an email using the isotope e-mail templates.
 	 * 
 	 * @access public
