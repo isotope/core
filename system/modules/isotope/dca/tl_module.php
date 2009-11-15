@@ -31,7 +31,7 @@
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductLister']			= '{title_legend},name,headline,type;{display_legend},perPage,columns,iso_list_format,iso_show_teaser;{config_legend},iso_category_scope,iso_jump_first,new_products_time_window,featured_products,listing_filters;{template_legend:hide},iso_list_layout;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductReader']			= '{title_legend},name,headline,type;{config_legend},iso_use_quantity;{template_legend:hide},iso_reader_layout;guests,protected;align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoShoppingCart']			= '{title_legend},name,headline,type;iso_cart_layout,iso_forward_cart;guests,protected;align,space,cssID';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoAddressBook']			= '{title_legend},name,headline,type;addressBookTemplate;isoEditable;align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoAddressBook']			= '{title_legend},name,headline,type;align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryManager']	= '{title_legend},name,headline,type;iso_registry_layout;guests,protected;align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistrySearch']	= '{title_legend},name,headline,type;jumpTo;guests,protected;align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryResults']	= '{title_legend},name,headline,type;jumpTo;iso_registry_results;perPage;guests,protected;align,space,cssID';
@@ -133,15 +133,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_checkout_layout'] = array
 	'exclude'                 => true,
 	'inputType'               => 'select',
 	'options'                 => $this->getTemplateGroup('iso_mod_checkout_')
-);
-
-$GLOBALS['TL_DCA']['tl_module']['fields']['addressBookTemplate'] = array
-(
-	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['addressBookTemplate'],
-	'default'                 => 'iso_address_book_list',
-	'exclude'                 => true,
-	'inputType'               => 'select',
-	'options'                 => $this->getTemplateGroup('iso_address_book_')
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['new_products_time_window'] = array
@@ -535,34 +526,6 @@ class tl_module_isotope extends Backend
 		}
 		
 		return $arrValues;
-	}
-	
-	
-	/**
-	 * getEditableCheckoutProperties function.
-	 * 
-	 * Return all editable fields of table tl_address_book
-	 *
-	 * @access public
-	 * @return array
-	 */
-	public function getEditableCheckoutProperties()
-	{
-		$return = array();
-
-		$this->loadDataContainer('tl_address_book');
-		$this->loadLanguageFile('tl_address_book');
-
-		foreach ($GLOBALS['TL_DCA']['tl_address_book']['fields'] as $k=>$v)
-		{
-			if ($v['eval']['isoEditable'])
-			{
-				$return[$k] = $GLOBALS['TL_DCA']['tl_address_book']['fields'][$k]['label'][0];
-			}
-		}
-		
-
-		return $return;
 	}
 	
 	

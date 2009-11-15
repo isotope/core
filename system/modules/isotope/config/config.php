@@ -254,15 +254,23 @@ $GLOBALS['DATAMANAGER_PREUPDATE_FUNCTION'][$GLOBALS['TL_LANG']['MSC']['isotope_f
 
 //$GLOBALS['ISO_ACTIVE_CUSTOM_PRODUCT_BUTTONS'][] = array('add_to_gift_registry');
 
+
+
+/** 
+ * Permissions are access settings for user and groups (fields in tl_user and tl_user_group)
+ */
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_stores';
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_product_types';
 
 
-
+/**
+ * Number formatting
+ */
 $GLOBALS['ISO_NUM']["10000.00"]		= array(2, '.', "");
 $GLOBALS['ISO_NUM']["10,000.00"]	= array(2, '.', ",");
 $GLOBALS['ISO_NUM']["10.000,00"]	= array(2, ',', ".");
 $GLOBALS['ISO_NUM']["10'000.00"]	= array(2, '.', "'");
+
 
 
 $GLOBALS['ISO_CONFIG']['CHECKOUT_STEPS'] = array('login','billing_information','shipping_information','shipping_method','payment_method', 'order_conditions','order_review', 'order_complete', 'order_failed');
