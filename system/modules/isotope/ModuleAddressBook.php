@@ -21,6 +21,7 @@
  * PHP version 5
  * @copyright  Winans Creative 2009
  * @author     Fred Bliss <fred@winanscreative.com>
+ * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
@@ -41,11 +42,8 @@ class ModuleAddressBook extends Module
 
 	protected $strEditTemplate = 'iso_address_book_edit';
 	
-	/**
-	 * User Id
-	 * @var integer
-	 */
-	protected $intUserId;
+	
+	protected $arrAddressFields;
 	
 	
 	
@@ -58,18 +56,27 @@ class ModuleAddressBook extends Module
 		if (TL_MODE == 'BE')
 		{
 			$objTemplate = new BackendTemplate('be_wildcard');
+
 			$objTemplate->wildcard = '### ISOTOPE ADDRESS BOOK ###';
+			$objTemplate->title = $this->headline;
+			$objTemplate->id = $this->id;
+			$objTemplate->link = $this->name;
+			$objTemplate->href = 'typolight/main.php?do=modules&amp;act=edit&amp;id=' . $this->id;
 
 			return $objTemplate->parse();
 		}
+		
+		$this->import('Isotope');
 
-		$this->isoEditable = deserialize($this->isoEditable);
+		$this->arrAddressFields = deserialize($this->Isotope->Store->address_fields);
 
-		// Return if there are not editable fields or if there is no logged in user
-		if (!FE_USER_LOGGED_IN)//!is_array($this->isoEditable) || count($this->isoEditable) < 1 || !FE_USER_LOGGED_IN)
+		// Return if there are not editable fields or if there is not logged in user
+		if (!FE_USER_LOGGED_IN || !is_array($this->arrAddressFields) || !count($this->arrAddressFields))
 		{
 			return '';
 		}
+		
+		$this->import('FrontendUser', 'User');
 
 		return parent::generate();
 	}
@@ -80,14 +87,6 @@ class ModuleAddressBook extends Module
 	 */
 	protected function compile()
 	{
-		global $objPage;
-		
-		$this->import('FrontendUser', 'User');
-
-		$this->intUserId = $this->User->id;
-		
-		$GLOBALS['TL_LANGUAGE'] = $objPage->language;
-
 		$this->loadLanguageFile('tl_address_book');
 		$this->loadDataContainer('tl_address_book');
 
@@ -103,8 +102,6 @@ class ModuleAddressBook extends Module
 				}
 			}
 		}
-			
-			
 		
 		// Set template
 		if (strlen($this->addressBookTemplate))
@@ -121,99 +118,55 @@ class ModuleAddressBook extends Module
 			case 'edit':
 				if($this->Input->get('id'))
 				{
-					$this->editAddress($this->intUserId, $this->Input->get('id'));
+					$this->editAddress($this->Input->get('id'));
 				}
 				break;
 			case 'create':
-				$this->editAddress($this->intUserId);
+				$this->editAddress();
 				break;
 			case 'delete':
 				if($this->Input->get('id'))
 				{
-					$this->deleteAddress($this->intUserId, $this->Input->get('id'));
+					$this->deleteAddress($this->Input->get('id'));
 				}
 				break;
 			default:
-				$this->showAllAddresses($this->intUserId);
+				$this->showAllAddresses();
 				break;
 		
 		}	
 		
 	}
 
-	protected function showAllAddresses($intUserId)
+	protected function showAllAddresses()
 	{
 		global $objPage;
-						
-		$blnShowAddressList = true;
-
-		//Get page info for address book functionality urls
-		$objPageData = $this->Database->prepare("SELECT id, alias FROM tl_page WHERE id=?")
-					  			      ->limit(1)
-						  			  ->execute($objPage->id);
-
-			
-		if($objPageData->numRows > 0)
-		{
-			$arrPage = $objPageData->fetchAssoc();
-		}else{
-			return '';
-		}	
-		//End page info
 		
-			
-		$strCreateNewUrl = ampersand($this->generateFrontendUrl($arrPage, '/ab_action/create'));
+		$arrPage = array('id'=>$objPage->id, 'alias'=>$objPage->alias);
 		
 
 		$objAddresses = $this->Database->prepare("SELECT * FROM tl_address_book WHERE pid=?")
-									   ->execute($intUserId);
+									   ->execute($this->User->id);
 		
 		if($objAddresses->numRows < 1)
 		{
-			
 			$this->Template->message = $GLOBALS['TL_LANG']['ERR']['noAddressBookEntries'];
-			$blnShowAddressList = false;
-		}else{
-		
-			$arrAddressData = $objAddresses->fetchAllAssoc();
-						
-			foreach($arrAddressData as $row)
+		}
+		else
+		{
+			while( $objAddresses->next() )
 			{
-				if(strlen($row['street_2'])<1)
-				{
-					unset($row['street_2']);
-				}else{
-					$row['street'] .= '<br />' . $row['street_2'];
-				}
-				
-				if(strlen($row['street_3'])<1)
-				{
-					unset($row['street_3']);
-				}else{
-					$row['street'] .= '<br />' . $row['street_3'];
-				}
-
-				$strEditUrl = ampersand($this->generateFrontendUrl($arrPage, '/ab_action/edit/id/' . $row['id']));
-				$strDeleteUrl = ampersand($this->generateFrontendUrl($arrPage, '/ab_action/delete/id/' . $row['id']));
-
-				$arrAddressListingFields = array
-				(
-					'name'			=> $row['firstname'] . ' ' . $row['lastname'],
-					'address'		=> $row['street'],
-					'city_state'	=> $row['city'] . ', ' . $row['state'] . ' ' . $row['postal'],
-					'country'		=> $GLOBALS['TL_LANG']['CNT'][$row['country']]
-				);
+				$strEditUrl = ampersand($this->generateFrontendUrl($arrPage, '/ab_action/edit/id/' . $objAddresses->id));
+				$strDeleteUrl = ampersand($this->generateFrontendUrl($arrPage, '/ab_action/delete/id/' . $objAddresses->id));
 								
 				$arrAddresses[] = array
 				(
-					'id'			=> $row['id'],
-					'text'			=> implode("<br />", $arrAddressListingFields),
+					'id'			=> $objAddresses->id,
+					'text'			=> $this->Isotope->generateAddressString($objAddresses->row()),
 					'edit_url'		=> $strEditUrl,
 					'delete_url'	=> $strDeleteUrl
 				);
-						
 			}
-		
 		}
 		
 		
@@ -223,12 +176,11 @@ class ModuleAddressBook extends Module
 		$this->Template->deleteAddressLabel = $GLOBALS['TL_LANG']['deleteAddressLabel'];
 		$this->Template->addresses = $arrAddresses;
 		$this->Template->isotopeBase = $GLOBALS['TL_CONFIG']['isotope_upload_path'];
-		$this->Template->addNewAddress = $strCreateNewUrl;
-		
+		$this->Template->addNewAddress = ampersand($this->generateFrontendUrl($arrPage, '/ab_action/create'));
 	}
 	
 	
-	protected function editAddress($intUserId, $intAddressId=0)
+	protected function editAddress($intAddressId=0)
 	{
 		$this->Template = new FrontendTemplate($this->strEditTemplate);
 
@@ -237,62 +189,49 @@ class ModuleAddressBook extends Module
 		$hasUpload = false;
 		$this->Template->fields = '';
 
-		if($intAddressId==0)
+		if ($intAddressId==0)
 		{
 			$arrRawAddressFields = $this->Database->listFields('tl_address_book');
 
-			if($this->Input->post('FORM_SUBMIT') != 'tl_address_book_' . $this->id)
+			if ($this->Input->post('FORM_SUBMIT') != 'tl_address_book_' . $this->id)
 			{
 				
-				foreach($arrRawAddressFields as $field)
+				foreach( $arrRawAddressFields as $field )
 				{
 					$arrAddressFields[$field['name']] = NULL;
 				}
-			}else{
+			}
+			else
+			{
 				foreach($arrRawAddressFields as $field)
 				{
 					$arrAddressFields[$field['name']] = $this->Input->post($field['name']);
 				}
-				
 			}		
-		}else{
+		}
+		else
+		{
 			$objAddress = $this->Database->prepare("SELECT * FROM tl_address_book WHERE id=? AND pid=?")
 									 ->limit(1)
-									 ->execute($intAddressId, $intUserId);
+									 ->execute($intAddressId, $this->User->id);
 		
-			if($intAddressId!=0 && $objAddress->numRows < 1)
+			if ($intAddressId!=0 && $objAddress->numRows < 1)
 			{
 				return $GLOBALS['TL_LANG']['ERR']['addressDoesNotExist'];
 			}
 					
 			$arrAddressFields = $objAddress->fetchAssoc();
-			
-			
-		}	
-		
-		
-		
-		$this->loadLanguageFile('tl_address_book');
-		$this->loadDataContainer('tl_address_book');
-		
-		foreach($arrAddressFields as $k=>$v)
-		{
-			if($GLOBALS['TL_DCA']['tl_address_book']['fields'][$k]['eval']['isoEditable'])
-			{
-				$arrEditableFields[] = $k;
-			}
 		}
 			
 		// Build form
-		foreach ($arrEditableFields as $i=>$field)
+		foreach ($this->arrAddressFields as $i=>$field)
 		{
 			$arrData = &$GLOBALS['TL_DCA']['tl_address_book']['fields'][$field];
-			$strGroup = $arrData['eval']['feGroup'];
 
 			$strClass = $GLOBALS['TL_FFL'][$arrData['inputType']];
 
 			// Continue if the class is not defined
-			if (!$this->classFileExists($strClass) || !$arrData['eval']['feEditable'])
+			if (!$this->classFileExists($strClass) || !$arrData['eval']['isoEditable'])
 			{
 				continue;
 			}
@@ -363,8 +302,8 @@ class ModuleAddressBook extends Module
 					{
 						$arrSet = array
 						(
-							'pid'			=> $intUserId,
-							'tstamp'		=> time()
+							'pid'			=> $this->User->id,
+							'tstamp'		=> time(),
 						);
 
 						$arrValues[$field] = $varSave;
@@ -385,7 +324,6 @@ class ModuleAddressBook extends Module
 			$temp = $objWidget->parse();
 
 			$this->Template->fields .= $temp;
-			$arrFields[$strGroup][$field] .= $temp;
 		}
 
 		if($intAddressId==0 && $this->Input->post('FORM_SUBMIT') == 'tl_address_book_' . $this->id)
@@ -430,62 +368,17 @@ class ModuleAddressBook extends Module
 		$this->Template->action = ampersand($this->Environment->request, ENCODE_AMPERSANDS);
 		$this->Template->enctype = $hasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
 		$this->Template->rowLast = 'row_' . count($this->editable) . ((($i % 2) == 0) ? ' odd' : ' even');
-
-		// HOOK: add memberlist fields
-		if (in_array('memberlist', $this->Config->getActiveModules()))
-		{
-			$this->Template->profile = $arrFields['profile'];
-			$this->Template->profileDetails = $GLOBALS['TL_LANG']['tl_address_book']['profileDetails'];
-		}
-
-		// HOOK: add newsletter fields
-		if (in_array('newsletter', $this->Config->getActiveModules()))
-		{
-			$this->Template->newsletter = $arrFields['newsletter'];
-			$this->Template->newsletterDetails = $GLOBALS['TL_LANG']['tl_address_book']['newsletterDetails'];
-		}
-
-		// HOOK: add helpdesk fields
-		if (in_array('helpdesk', $this->Config->getActiveModules()))
-		{
-			$this->Template->helpdesk = $arrFields['helpdesk'];
-			$this->Template->helpdeskDetails = $GLOBALS['TL_LANG']['tl_address_book']['helpdeskDetails'];
-		}
 	}
 	
-	protected function deleteAddress($intUserId, $intAddressId)
+	protected function deleteAddress($intAddressId)
 	{
-		if($this->addressExists($intUserId, $intAddressId))
-		{
-			$this->Database->prepare("DELETE FROM tl_address_book WHERE id=? AND pid=?")
-							->execute($intAddressId, $intUserId);
-							
-			//Delete it from the database
-			$strReturnUrl = $_SESSION['FE_DATA']['referer']['current']; //$arrUrlBits[0] . '.html';		
-											
-			$this->redirect(ampersand($this->Environment->base . ltrim($strReturnUrl, '/')));
-
-		}
+		$this->Database->prepare("DELETE FROM tl_address_book WHERE id=? AND pid=?")
+					   ->execute($intAddressId, $this->User->id);
 	
 		$strReturnUrl = $_SESSION['FE_DATA']['referer']['current']; //$arrUrlBits[0] . '.html';		
 											
 		$this->redirect(ampersand($this->Environment->base . ltrim($strReturnUrl, '/')));
 
-	}
-	
-	
-	protected function addressExists($intUserId, $intAddressId)
-	{
-		$objAddressExists = $this->Database->prepare("SELECT COUNT(*) as count FROM tl_address_book WHERE id=? AND pid=?")
-										   ->limit(1)
-										   ->execute($intAddressId, $intUserId);
-		
-		if($objAddressExists->count < 1 || $objAddressExists->numRows < 1)
-		{
-			return false;
-		}
-		
-		return true;
 	}
 }
 
