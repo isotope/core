@@ -262,16 +262,27 @@ class tl_address_book extends Backend
 	 * @param object DataContainer $dc
 	 * @return void
 	 */
-	public function copyInitialAddress(DataContainer $dc)
+	public function copyInitialAddress($dc = null)
 	{
+		if (TL_MODE == 'FE')
+		{
+			if (!FE_USER_LOGGED_IN)
+				return;
+				
+			$this->import('FrontendUser', 'User');
+			$intId = $this->User->id;
+		}
+		else
+		{
+			$intId = $dc->id;
+		}
+		
 		$objAddressInfo = $this->Database->prepare("SELECT COUNT(*) as count FROM tl_address_book WHERE pid=?")
-										 ->execute($this->Input->get('id'));
+										 ->execute($intId);
 												 
 		if($objAddressInfo->numRows < 1)
 		{
-			$objAddress = $this->Database->prepare("SELECT * FROM tl_member WHERE id=?")
-													  ->limit(1)
-													  ->execute($this->Input->get('id'));
+			$objAddress = $this->Database->prepare("SELECT * FROM tl_member WHERE id=?")->limit(1)->execute($intId);
 			
 			if($objAddress->numRows < 1)
 			{
@@ -281,7 +292,7 @@ class tl_address_book extends Backend
 			//copy the address as it exists from the tl_member table.
 			$arrSet = array
 			(
-				'pid'			=> $this->Input->get('id'),
+				'pid'			=> $intId,
 				'tstamp'		=> $objAddress->tstamp,
 				'firstname'		=> $objAddress->firstname,
 				'lastname'		=> $objAddress->lastname,
