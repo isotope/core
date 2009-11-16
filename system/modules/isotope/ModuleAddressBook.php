@@ -182,6 +182,8 @@ class ModuleAddressBook extends Module
 	
 	protected function editAddress($intAddressId=0)
 	{
+		global $objPage;
+		
 		$this->Template = new FrontendTemplate($this->strEditTemplate);
 
 		$arrFields = array();
@@ -368,6 +370,9 @@ class ModuleAddressBook extends Module
 		$this->Template->action = ampersand($this->Environment->request, ENCODE_AMPERSANDS);
 		$this->Template->enctype = $hasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
 		$this->Template->rowLast = 'row_' . count($this->editable) . ((($i % 2) == 0) ? ' odd' : ' even');
+		
+		$this->Template->backBT = $GLOBALS['TL_LANG']['MSC']['backBT'];
+		$this->Template->backLink = $this->generateFrontendUrl(array('id'=>$objPage->id, 'alias'=>$objPage->alias));
 	}
 	
 	protected function deleteAddress($intAddressId)
