@@ -76,6 +76,9 @@ class ModuleAddressBook extends Module
 			return '';
 		}
 		
+		$this->arrAddressFields[] = 'isDefaultBilling';
+		$this->arrAddressFields[] = 'isDefaultShipping';
+		
 		$this->import('FrontendUser', 'User');
 
 		return parent::generate();
@@ -186,7 +189,6 @@ class ModuleAddressBook extends Module
 		
 		$this->Template = new FrontendTemplate($this->strEditTemplate);
 
-		$arrFields = array();
 		$doNotSubmit = false;
 		$hasUpload = false;
 		$this->Template->fields = '';
@@ -248,33 +250,6 @@ class ModuleAddressBook extends Module
 			{
 				$objWidget->validate();
 				$varValue = $objWidget->value;
-				$strUsername = strlen($this->Input->post('username')) ? $this->Input->post('username') : $objUser->username;
-
-				// Check whether the password matches the username
-				if ($objWidget instanceof FormPassword && $varValue == sha1($strUsername))
-				{
-					$objWidget->addError($GLOBALS['TL_LANG']['ERR']['passwordName']);
-				}
-
-				// Convert date formats into timestamps
-				if (strlen($varValue) && in_array($arrData['eval']['rgxp'], array('date', 'time', 'datim')))
-				{
-					$objDate = new Date($varValue, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
-					$varValue = $objDate->tstamp;
-				}
-
-				// Make sure that unique fields are unique
-				if ($arrData['eval']['unique'])
-				{
-					$objUnique = $this->Database->prepare("SELECT * FROM tl_address_book WHERE " . $field . "=? AND id!=?")
-												->limit(1)
-												->execute($varValue, $intAddressId);
-
-					if ($objUnique->numRows)
-					{
-						$objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR']['unique'], (strlen($arrData['label'][0]) ? $arrData['label'][0] : $field)));
-					}
-				}
 
 				// Do not submit if there are errors
 				if ($objWidget->hasErrors())
@@ -297,7 +272,6 @@ class ModuleAddressBook extends Module
 
 					// Set new value
 					$arrAddressFields[$field] = $varValue;
-					$_SESSION['FORM_DATA'][$field] = $varValue;
 					$varSave = is_array($varValue) ? serialize($varValue) : $varValue;
 
 					if($intAddressId==0)
@@ -309,11 +283,12 @@ class ModuleAddressBook extends Module
 						);
 
 						$arrValues[$field] = $varSave;
-					}else{
+					}
+					else
+					{
 						// Save field
 						$this->Database->prepare("UPDATE tl_address_book SET " . $field . "=? WHERE id=?")
 									   ->execute($varSave, $intAddressId);
-
 					}
 				}
 			}
@@ -349,21 +324,27 @@ class ModuleAddressBook extends Module
 		if ($this->Input->post('FORM_SUBMIT') == 'tl_address_book_' . $this->id && !$doNotSubmit)
 		{
 			$strReturnUrl = $_SESSION['FE_DATA']['referer']['current']; //$arrUrlBits[0] . '.html';		
-											
+			
+			// Call onsubmit_callback
+			if (is_array($GLOBALS['TL_DCA']['tl_address_book']['config']['onsubmit_callback']))
+			{
+				foreach ($GLOBALS['TL_DCA']['tl_address_book']['config']['onsubmit_callback'] as $callback)
+				{
+					if (is_array($callback))
+					{
+						$this->import($callback[0]);
+						$this->$callback[0]->$callback[1]();
+					}
+				}
+			}
+			
 			$this->redirect(ampersand($this->Environment->base . ltrim($strReturnUrl, '/')));
-		
 		}
 
 		$this->Template->loginDetails = $GLOBALS['TL_LANG']['tl_address_book']['loginDetails'];
 		$this->Template->addressDetails = $GLOBALS['TL_LANG']['tl_address_book']['addressDetails'];
 		$this->Template->contactDetails = $GLOBALS['TL_LANG']['tl_address_book']['contactDetails'];
 		$this->Template->AddressBook = $GLOBALS['TL_LANG']['tl_address_book']['AddressBook'];
-
-		// Add groups
-		foreach ($arrFields as $k=>$v)
-		{
-			$this->Template->$k = $v;
-		}
 
 		$this->Template->formId = 'tl_address_book_' . $this->id;
 		$this->Template->slabel = specialchars($GLOBALS['TL_LANG']['MSC']['saveData']);

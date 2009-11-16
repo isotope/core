@@ -39,8 +39,12 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 		'dataContainer'               => 'Table',
 		'onload_callback'			  => array
 		(
-			array('tl_address_book','copyInitialAddress')
-		)		
+			array('tl_address_book', 'copyInitialAddress')
+		),
+		'onsubmit_callback' => array
+		(
+			array('tl_address_book', 'updateDefaultAddress'),
+		)
 	),
 
 	// List
@@ -301,6 +305,32 @@ class tl_address_book extends Backend
 			$this->Database->prepare('INSERT INTO tl_address_book %s')
 						   ->set($arrSet)
 						   ->execute();
+		}
+	}
+	
+	
+	/**
+	 * Make sure only one address is marked as default
+	 */
+	public function updateDefaultAddress($dc=null)
+	{
+		$intId = TL_MODE == 'FE' ? $this->Input->get('id') : $dc->id;
+		
+		$objAddress = $this->Database->prepare("SELECT * FROM tl_address_book WHERE id=?")->limit(1)->execute($intId);
+		
+		if (!$objAddress->numRows)
+			return;
+		
+		if ($this->Input->post('isDefaultBilling'))
+		{
+			$this->Database->prepare("UPDATE tl_address_book SET isDefaultBilling='' WHERE pid=?")->execute($objAddress->pid);
+			$this->Database->prepare("UPDATE tl_address_book SET isDefaultBilling='1' WHERE id=?")->execute($objAddress->id);
+		}
+		
+		if ($this->Input->post('isDefaultShipping'))
+		{
+			$this->Database->prepare("UPDATE tl_address_book SET isDefaultShipping='' WHERE pid=?")->execute($objAddress->pid);
+			$this->Database->prepare("UPDATE tl_address_book SET isDefaultShipping='1' WHERE id=?")->execute($objAddress->id);
 		}
 	}
 }
