@@ -41,6 +41,7 @@ $GLOBALS['TL_LANG']['tl_module']['columns']						= array('Columns','Enter a numb
 $GLOBALS['TL_LANG']['tl_module']['store_id']					= array('Store', 'Select the store that this module will be used for.');
 $GLOBALS['TL_LANG']['tl_module']['store_ids']					= array('Stores', 'Select the stores that this module will be used for.');
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_layout']			= array('Checkout Template','Please choose a reader template.  You can add custom reader templates to folder <em>templates</em>. Reader template files start with <em>iso_mod_checkout_</em> and require file extension <em>.tpl</em>');
+$GLOBALS['TL_LANG']['tl_module']['iso_checkout_login']			= array('Checkout Login Module','Select a login module to insert into the checkout module.');
 $GLOBALS['TL_LANG']['tl_module']['iso_payment_modules']			= array('Payment Methods','Select one or more payment methods for this checkout module.');
 $GLOBALS['TL_LANG']['tl_module']['iso_shipping_modules']		= array('Shipping Methods','Select one or more shipping methods for this checkout module.');
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method']			= array('Checkout method','Choose your checkout method.');
@@ -61,7 +62,7 @@ $GLOBALS['TL_LANG']['tl_module']['iso_use_quantity'] 			= array('Enable quantity
 /**
  * References
  */
-$GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['login']	= 'Login/Registration required';
+$GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['member']	= 'Login/Registration required';
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['guest']	= 'Guest checkout only';
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['both']		= 'Both allowed';
 

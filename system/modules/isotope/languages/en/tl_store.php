@@ -31,7 +31,6 @@
 $GLOBALS['TL_LANG']['tl_store']['store_configuration_name']			= array('Store Configuration Name', '');
 $GLOBALS['TL_LANG']['tl_store']['label']							= array('Label', 'The label is used in frontend, e.g. for store switcher.');
 $GLOBALS['TL_LANG']['tl_store']['cookie_duration']					= array('Duration (in days) of Shopping Cart Information', 'Items and their related information will be retrievable for this many days for non-registered members.  A value of 0 means after the session, the items are removed. For registered members cart data is always remembered.');
-$GLOBALS['TL_LANG']['tl_store']['checkout_login_module']			= array('Checkout Login Module','Select a login module to insert into the checkout module.');
 $GLOBALS['TL_LANG']['tl_store']['root_asset_import_path']			= array('Root Asset Import Path','A single directory which contains all "to-be-imported" images and media associated with a given record.  Isotope will look for a corresponding file in this folder instead of in the product\'s standard source folder.');
 $GLOBALS['TL_LANG']['tl_module']['cartJumpTo']						= array('Shopping Cart Jump to page', 'This setting defines to which page a user will be redirected when requesting a full shopping cart view.');
 $GLOBALS['TL_LANG']['tl_module']['checkoutJumpTo']					= array('Checkout Jump to page', 'This setting defines to which page a user will be redirected when completing their transaction.');
@@ -85,8 +84,7 @@ $GLOBALS['TL_LANG']['tl_store']['show']   							= array('Show Store Details', '
  */
 $GLOBALS['TL_LANG']['tl_store']['name_legend']						= 'Name';
 $GLOBALS['TL_LANG']['tl_store']['config_legend']					= 'Configuration';
-$GLOBALS['TL_LANG']['tl_store']['module_legend']	    			= 'Modules';
-$GLOBALS['TL_LANG']['tl_store']['price_legend']	    			= 'Pricing';
+$GLOBALS['TL_LANG']['tl_store']['price_legend']	    				= 'Pricing';
 $GLOBALS['TL_LANG']['tl_store']['currency_legend']	    			= 'Currency formatting';
 $GLOBALS['TL_LANG']['tl_store']['address_legend']	    			= 'Billing and shipping address';
 $GLOBALS['TL_LANG']['tl_store']['redirect_legend']	    			= 'Target pages';

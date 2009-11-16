@@ -28,6 +28,7 @@
 /**
  * Palettes
  */
+$GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][]			= 'iso_checkout_method';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductLister']			= '{title_legend},name,headline,type;{display_legend},perPage,columns,iso_list_format,iso_show_teaser;{config_legend},iso_category_scope,iso_jump_first,new_products_time_window,featured_products,listing_filters;{redirect_legend},iso_reader_jumpTo;{template_legend:hide},iso_list_layout;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductReader']			= '{title_legend},name,headline,type;{config_legend},iso_use_quantity;{template_legend:hide},iso_reader_layout;guests,protected;align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoShoppingCart']			= '{title_legend},name,headline,type;iso_cart_layout,iso_forward_cart;guests,protected;align,space,cssID';
@@ -36,7 +37,9 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryManager']	= '{title_
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistrySearch']	= '{title_legend},name,headline,type;jumpTo;guests,protected;align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryResults']	= '{title_legend},name,headline,type;jumpTo;iso_registry_results;perPage;guests,protected;align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryReader']	= '{title_legend},name,headline,type;iso_registry_reader;guests,protected;align,space,cssID';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoCheckout']				= '{title_legend},name,headline,type;{config_legend},iso_checkout_method,iso_payment_modules,iso_shipping_modules,iso_order_conditions,orderCompleteJumpTo;{template_legend},iso_checkout_layout,iso_mail_customer,iso_mail_admin,iso_sales_email;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoCheckoutmember']			= '{title_legend},name,headline,type;{config_legend},iso_checkout_method,iso_checkout_login,iso_payment_modules,iso_shipping_modules,iso_order_conditions;{redirect_legend},orderCompleteJumpTo;{template_legend},iso_checkout_layout,iso_mail_customer,iso_mail_admin,iso_sales_email;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoCheckoutguest']			= '{title_legend},name,headline,type;{config_legend},iso_checkout_method,iso_payment_modules,iso_shipping_modules,iso_order_conditions;{redirect_legend},orderCompleteJumpTo;{template_legend},iso_checkout_layout,iso_mail_customer,iso_mail_admin,iso_sales_email;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoCheckoutboth']			= '{title_legend},name,headline,type;{config_legend},iso_checkout_method,iso_checkout_login,iso_payment_modules,iso_shipping_modules,iso_order_conditions;{redirect_legend},orderCompleteJumpTo;{template_legend},iso_checkout_layout,iso_mail_customer,iso_mail_admin,iso_sales_email;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoOrderHistory']			= '{title_legend},name,headline,type;{config_legend},store_ids;{redirect_legend},jumpTo;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoOrderDetails']			= '{title_legend},name,headline,type;{redirect_legend},jumpTo;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoStoreSwitcher']			= '{title_legend},name,headline,type;{config_legend},store_ids;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
@@ -75,10 +78,19 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_checkout_method'] = array
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_checkout_method'],
 	'exclude'                 => true,
 	'inputType'               => 'radio',
-	'default'				  => 'login',
-	'options'				  => array('login', 'guest', 'both'),
+	'default'				  => 'member',
+	'options'				  => array('member', 'guest', 'both'),
 	'reference'				  => &$GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref'],
-	'eval'					  => array('mandatory'=>true),
+	'eval'					  => array('mandatory'=>true, 'submitOnChange'=>true),
+);
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_checkout_login'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_checkout_login'],
+	'exclude'                 => true,
+	'inputType'               => 'radio',
+	'options_callback'        => array('tl_module_isotope', 'getLoginModuleList'),
+	'eval'                    => array('mandatory'=>true)
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_reader_layout'] = array
@@ -246,7 +258,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_mail_admin'] = array
 	'exclude'                 => true,
 	'inputType'               => 'select',
 	'foreignKey'              => 'tl_iso_mail.name',
-	'eval'					  => array('includeBlankOption'=>true, 'mandatory'=>true)
+	'eval'					  => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50')
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_sales_email'] = array
@@ -256,7 +268,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_sales_email'] = array
 	'inputType'               => 'text',
 	'eval'                    => array('maxlength'=>255, 'rgxp'=>'email', 'tl_class'=>'w50')
 );
-
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_order_conditions'] = array
 (
@@ -611,5 +622,25 @@ class tl_module_isotope extends Backend
 		return $arrAlias;
 	}
 
+
+	/**
+	 * getLoginModuleList function.
+	 * 
+	 * @access public
+	 * @return array
+	 */
+	public function getLoginModuleList()
+	{
+		$arrModules = array();
+
+		$objModules = $this->Database->execute("SELECT id, name FROM tl_module WHERE type='login'");
+										  
+		while( $objModules->next() )
+		{
+			$arrModules[$objModules->id] = $objModules->name;
+		}
+
+		return $arrModules;
+	}
 }
 

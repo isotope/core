@@ -41,6 +41,7 @@ $GLOBALS['TL_LANG']['tl_module']['columns']						= array('Columns','Enter a numb
 $GLOBALS['TL_LANG']['tl_module']['store_id']					= array('Store', 'Select the store that this module will be used for.');
 $GLOBALS['TL_LANG']['tl_module']['store_ids']					= array('Stores', 'Select the stores that this module will be used for.');
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_layout']			= array('Checkout Template','Please choose a reader template.  You can add custom reader templates to folder <em>templates</em>. Reader template files start with <em>iso_mod_checkout_</em> and require file extension <em>.tpl</em>');
+$GLOBALS['TL_LANG']['tl_module']['iso_checkout_login']			= array('Login-Modul für Kasse','Wählen Sie das Login-Modul welches in der Kasse angezeigt wird.');
 $GLOBALS['TL_LANG']['tl_module']['iso_payment_modules']			= array('Payment Methods','Select one or more payment methods for this checkout module.');
 $GLOBALS['TL_LANG']['tl_module']['iso_shipping_modules']		= array('Shipping Methods','Select one or more shipping methods for this checkout module.');
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method']			= array('Checkout method','Choose your checkout method.');
@@ -57,21 +58,12 @@ $GLOBALS['TL_LANG']['tl_module']['iso_sales_email']				= array('Sales Admin Emai
 $GLOBALS['TL_LANG']['tl_module']['iso_list_format']				= array('Listing Format','Please choose whether the products will be listed in grid or list format.');
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope']				= array('Category Scope','Specify the scope of a product lister.');
 $GLOBALS['TL_LANG']['tl_module']['iso_use_quantity'] 			= array('Enable quantity','Allow users to specify 1 or more of a product to be purchased.');
+
+
 /**
  * References
  */
-$GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['login']	= 'Login/Registration required';
-$GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['guest']	= 'Guest checkout only';
-$GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['both']		= 'Both allowed';
-
-$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['global']				= 'All Categories';
-$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['parent_and_children']	= 'Current Category and Children';
-$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['current_category']			= 'Current Category Only';
-
-/**
- * Legends
- */
-$GLOBALS['TL_LANG']['tl_module']['featured_legend']  = 'Featured product settings';
-$GLOBALS['TL_LANG']['tl_module']['display_legend']    = 'Display settings';
-$GLOBALS['TL_LANG']['tl_module']['config_legend']    = 'Configuration settings';
+$GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['member']	= 'Anmelden/Registrieren erforderlich';
+$GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['guest']	= 'Nur Gast-Bestellungen';
+$GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['both']		= 'Beides erlaubt';
 

@@ -45,6 +45,8 @@ class Isotope extends Frontend
 	public function run()
 	{
 		$this->updateAttributes();
+		
+		$this->Database->execute("UPDATE tl_module SET iso_checkout_method='member' WHERE iso_checkout_method='login'");
 	}
 	
 	

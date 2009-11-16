@@ -102,17 +102,17 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		}
 		
 		/*
-		if(($this->iso_checkout_method == 'login' && !FE_USER_LOGGED_IN) || ($this->iso_checkout_method == 'both' && !FE_USER_LOGGED_IN && !$_SESSION['isotope']['isGuest']))
+		if(($this->iso_checkout_method == 'member' && !FE_USER_LOGGED_IN) || ($this->iso_checkout_method == 'both' && !FE_USER_LOGGED_IN && !$_SESSION['isotope']['isGuest']))
 		{
 			$this->blnShowLoginOptions = true;
 		}*/
 		
-		if(($this->iso_checkout_method == 'login' && !FE_USER_LOGGED_IN) || ($this->iso_checkout_method == 'both' && !FE_USER_LOGGED_IN))
+		if(($this->iso_checkout_method == 'member' && !FE_USER_LOGGED_IN) || ($this->iso_checkout_method == 'both' && !FE_USER_LOGGED_IN))
 		{
 			$this->blnShowLoginOptions = true;
 		}
 		
-		if($this->Input->get('step')!='login' && $this->iso_checkout_method == 'both')
+		if($this->Input->get('step')!='member' && $this->iso_checkout_method == 'both')
 		{
 			$this->blnShowLoginOptions = false;	
 		}
@@ -228,7 +228,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 						'prompt' 		=> $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT'][$this->strCurrentStep],
 						'fields' 		=> $this->getLoginInterface(),
 						'useFieldset' 	=> false
-					);										
+					);
 					break;
 				
 				case 'billing_information':
@@ -409,8 +409,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 					break;
 			}
 		}
-		
-		
+	
 		// User pressed "back" button
 		if (strlen($this->Input->post('previousStep')))
 		{
@@ -459,12 +458,10 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	protected function getLoginInterface()
 	{		
 		$objTemplate = new FrontendTemplate($this->strStepTemplateBaseName . 'login');
-		$objTemplate->loginModule = '{{insert_module::' . $this->Isotope->Store->checkout_login_module . '}}';
-		$objTemplate->allowGuestCheckout = $this->iso_checkout_method!='login' ? true : false;
+		$objTemplate->loginModule = '{{insert_module::' . $this->iso_checkout_login . '}}';
+		$objTemplate->allowGuestCheckout = $this->iso_checkout_method!='member' ? true : false;
 		
 		$objTemplate->guestCheckoutUrl = $this->addToUrl('step=billing_information');
-
-		//$objTemplate->loginModule = '{{insert_module::' . $this->arrStoreSettings['checkout_login_module'] . '}}';
 				
 		return $objTemplate->parse();	
 	}

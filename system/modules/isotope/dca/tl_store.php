@@ -98,7 +98,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{name_legend},store_configuration_name,label;{config_legend},cookie_duration,isDefaultStore;{module_legend},checkout_login_module;{price_legend},priceField,priceOverrideField,priceCalculateFactor,priceCalculateMode,priceRoundPrecision,priceRoundIncrement;{currency_legend},currency,currencySymbol,currencyFormat,currencyPosition;{address_legend},country,countries,address_fields;{redirect_legend},cartJumpTo,checkoutJumpTo;{invoice_legend},invoiceLogo;{images_legend},root_asset_import_path,missing_image_placeholder,gallery_thumbnail_image_width,gallery_thumbnail_image_height,thumbnail_image_width,thumbnail_image_height,medium_image_width,medium_image_height,large_image_width,large_image_height'
+		'default'                     => '{name_legend},store_configuration_name,label;{config_legend},cookie_duration,isDefaultStore;{price_legend},priceField,priceOverrideField,priceCalculateFactor,priceCalculateMode,priceRoundPrecision,priceRoundIncrement;{currency_legend},currency,currencySymbol,currencyFormat,currencyPosition;{address_legend},country,countries,address_fields;{redirect_legend},cartJumpTo,checkoutJumpTo;{invoice_legend},invoiceLogo;{images_legend},root_asset_import_path,missing_image_placeholder,gallery_thumbnail_image_width,gallery_thumbnail_image_height,thumbnail_image_width,thumbnail_image_height,medium_image_width,medium_image_height,large_image_width,large_image_height'
 	),
 
 	// Fields
@@ -138,14 +138,6 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'exclude'                 => true,
 			'inputType'               => 'fileTree',
 			'eval'                    => array('fieldType'=>'radio', 'mandatory'=>false)
-		),
-		'checkout_login_module' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['checkout_login_module'],
-			'exclude'                 => true,
-			'inputType'               => 'radio',
-			'options_callback'        => array('tl_store', 'getLoginModuleList'),
-			'eval'                    => array('moduleTypes'=>array('login'))
 		),
 		'cartJumpTo' => array
 		(
@@ -424,41 +416,6 @@ class tl_store extends Backend
 		
 		return $arrPricingData;
 		
-	}
-	
-	
-	/**
-	 * getLoginModuleList function.
-	 * 
-	 * @access public
-	 * @return array
-	 */
-	public function getLoginModuleList()
-	{
-		$return = array();
-
-		$this->loadDataContainer('tl_store');
-
-		$strModuleTypes = join("','", $GLOBALS['TL_DCA']['tl_store']['fields']['checkout_login_module']['eval']['moduleTypes']);
-		
-		$strModuleTypes = "'" . $strModuleTypes . "'";
-		
-		$objLoginModules = $this->Database->prepare("SELECT id, name FROM tl_module WHERE type IN(" . $strModuleTypes . ")")
-										  ->execute();
-										  
-		if($objLoginModules->numRows < 1)
-		{
-			return '<em>' . $GLOBALS['TL_LANG']['MSC']['noLoginModulesDefined'] . '</em>';
-		}
-		
-		$arrLoginModules = $objLoginModules->fetchAllAssoc();
-
-		foreach ($arrLoginModules as $moduleKey)
-		{
-			$return[$moduleKey['id']] = $moduleKey['name'];
-		}
-
-		return $return;
 	}
 	
 	
