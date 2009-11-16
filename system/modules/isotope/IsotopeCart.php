@@ -681,7 +681,7 @@ class IsotopeCart extends Model
 		$objAttributes = $this->Database->execute("SELECT * FROM tl_product_attributes WHERE id IN (" . implode(',', $arrAttributeIds) . ") AND disabled=''");
 		
 		
-		$arrSet = array('pid'=>$this->id, 'tstamp'=>time(), 'product_id'=>$objProduct->id);
+		$arrSet = array('pid'=>$this->id, 'tstamp'=>time(), 'product_id'=>$objProduct->id, 'quantity_requested'=>1);
 		$arrProductData = array();
 		while( $objAttributes->next() )
 		{
@@ -690,7 +690,7 @@ class IsotopeCart extends Model
 			switch( $objAttributes->field_name )
 			{
 				case 'quantity':
-					$arrSet['quantity_requested'] = $varValue;
+					$arrSet['quantity_requested'] = is_numeric($varValue) ? $varValue : 1;
 					break;
 					
 				case $this->Isotope->Store->priceField:
