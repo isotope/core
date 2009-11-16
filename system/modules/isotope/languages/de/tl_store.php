@@ -32,7 +32,6 @@ $GLOBALS['TL_LANG']['tl_store']['store_configuration_name']			= array('Name der 
 $GLOBALS['TL_LANG']['tl_store']['cookie_duration']					= array('Vorhaltetage der Warenkorb-Informationen', 'Artikel und deren Informationen werden für nicht registrierte Besucher diese Anzahl Tage gespeichert. Ein Wert 0 bedeutet nach dem verlassen der Seite geht der Warenkorb verloren. Der Warenkorb wird für registrierte Mitglieder immer gespeichert.');
 $GLOBALS['TL_LANG']['tl_store']['checkout_login_module']			= array('Login-Modul für Checkout','Wählen Sie das Login-Modul welches in der Kasse angezeigt wird.');
 $GLOBALS['TL_LANG']['tl_store']['root_asset_import_path']			= array('Import-Pfad für Bilder und Mediadateien','Ein Verzeichnis welches alle zu importierenden Bilder und Mediadateien zu einem Datensatz enthält. Isotope sucht nach Dateien in diesem Ordner anstelle des Standard-Quellordners für Produkte.');
-$GLOBALS['TL_LANG']['tl_module']['productReaderJumpTo']				= array('Weiterleitungs-Seite für Produkteleser', 'Wählen Sie die Seite zu der beim klicken auf ein Produkt für Details weitergeleitet werden soll.');
 $GLOBALS['TL_LANG']['tl_module']['cartJumpTo']						= array('Weiterleitungs-Seite für Warenkorb', 'Wählen Sie die Seite auf der sich der Warenkorb befindet.');
 $GLOBALS['TL_LANG']['tl_module']['checkoutJumpTo']					= array('Weiterleitungs-Seite für Kasse', 'Wählen Sie die Seite auf der sich die Kasse befindet.');
 $GLOBALS['TL_LANG']['tl_store']['priceField']						= array('Price Field', 'Select a field that is the price field for this store.');

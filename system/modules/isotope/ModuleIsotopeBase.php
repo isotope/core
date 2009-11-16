@@ -461,24 +461,6 @@ abstract class ModuleIsotopeBase extends Module
 	
 	}
 	
-	protected function getProductReaderJumpTo($intStoreSettingsId)
-	{
-		
-		$objJumpTo = $this->Database->prepare("SELECT productReaderJumpTo FROM tl_store WHERE id=?")
-										  ->limit(1)
-										  ->execute($intStoreSettingsId);
-		
-		if($objJumpTo->numRows < 1)
-		{
-			return '';
-		}
-		
-		$intPageId = $objJumpTo->productReaderJumpTo;
-
-		return $intPageId;
-	
-	}
-	
 	
 	protected function formatProductData($arrProductData)
 	{
@@ -497,7 +479,7 @@ abstract class ModuleIsotopeBase extends Module
 				'id'				=> $row['product_id'],
 				'image'				=> $this->getImage('isotope/' . substr($arrImages[0]['src'], 0, 1) . '/' . $arrImages[0]['src'], $this->Isotope->Store->gallery_thumbnail_image_width, $this->Isotope->Store->gallery_thumbnail_image_height),
 				'name'				=> $row['name'],
-				'link'				=> $this->generateProductLink($row['alias'], $row, $this->Isotope->Store->productReaderJumpTo, 'id'),
+				'link'				=> $this->generateProductLink($row['alias'], $row, $this->iso_reader_jumpTo, 'id'),
 				'price'				=> $this->generatePrice($row['price'], $this->strPriceTemplate),
 				'total_price'		=> $this->generatePrice($intTotalPrice, 'stpl_total_price'),
 				'quantity'			=> $row['quantity_requested'],
@@ -1386,7 +1368,7 @@ abstract class ModuleIsotopeBase extends Module
 		
 		$objTemplate->price = ($arrProduct['use_price_override'] && $arrProduct['use_price_override']['value']) ? $this->Isotope->formatPriceWithCurrency($arrProduct[$this->Isotope->Store->priceOverrideField]['value']) : $this->Isotope->formatPriceWithCurrency($arrProduct[$this->Isotope->Store->priceField]['value']);
 		
-		$objTemplate->href_reader = $this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($this->Isotope->Store->productReaderJumpTo)->fetchAssoc(), '/product/' . $arrProduct['alias']['value']);
+		$objTemplate->href_reader = $this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($this->iso_reader_jumpTo)->fetchAssoc(), '/product/' . $arrProduct['alias']['value']);
 		
 		return $objTemplate->parse();
 	}

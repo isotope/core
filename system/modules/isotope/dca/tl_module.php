@@ -28,7 +28,7 @@
 /**
  * Palettes
  */
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductLister']			= '{title_legend},name,headline,type;{display_legend},perPage,columns,iso_list_format,iso_show_teaser;{config_legend},iso_category_scope,iso_jump_first,new_products_time_window,featured_products,listing_filters;{template_legend:hide},iso_list_layout;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductLister']			= '{title_legend},name,headline,type;{display_legend},perPage,columns,iso_list_format,iso_show_teaser;{config_legend},iso_category_scope,iso_jump_first,new_products_time_window,featured_products,listing_filters;{redirect_legend},iso_reader_jumpTo;{template_legend:hide},iso_list_layout;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductReader']			= '{title_legend},name,headline,type;{config_legend},iso_use_quantity;{template_legend:hide},iso_reader_layout;guests,protected;align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoShoppingCart']			= '{title_legend},name,headline,type;iso_cart_layout,iso_forward_cart;guests,protected;align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoAddressBook']			= '{title_legend},name,headline,type;align,space,cssID';
@@ -88,6 +88,15 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_reader_layout'] = array
 	'exclude'                 => true,
 	'inputType'               => 'select',
 	'options'                 => $this->getTemplateGroup('iso_reader_')
+);
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_reader_jumpTo'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_reader_jumpTo'],
+	'exclude'                 => true,
+	'inputType'               => 'pageTree',
+	'explanation'             => 'jumpTo',
+	'eval'                    => array('fieldType'=>'radio', 'helpwizard'=>true),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_cart_layout'] = array

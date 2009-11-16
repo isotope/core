@@ -15,6 +15,7 @@
 CREATE TABLE `tl_module` (
   `iso_list_layout` varchar(64) NOT NULL default '',
   `iso_reader_layout` varchar(64) NOT NULL default '',
+  `iso_reader_jumpTo` int(10) unsigned NOT NULL default '0',
   `iso_cart_layout` varchar(64) NOT NULL default '',
   `iso_registry_layout` varchar(64) NOT NULL default '',
   `iso_registry_results` varchar(64) NOT NULL default '',
@@ -205,7 +206,6 @@ CREATE TABLE `tl_store` (
   `tstamp` int(10) unsigned NOT NULL default '0',
   `store_configuration_name` varchar(255) NOT NULL default '',
   `label` varchar(255) NOT NULL default '',
-  `productReaderJumpTo` int(10) unsigned NOT NULL default '0',
   `cartJumpTo` int(10) unsigned NOT NULL default '0',
   `checkoutJumpTo` int(10) unsigned NOT NULL default '0',
   `missing_image_placeholder` varchar(255) NOT NULL default '',
