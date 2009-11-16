@@ -591,6 +591,9 @@ class Isotope extends Controller
 		}
 		while ($found > 0);
 		
+		// Remove line break at beginning of address
+		if (strpos($strAddress, '<br />') === 0)
+			$strAddress = substr($strAddress, 6);
 	
 		return $strAddress;
 	}

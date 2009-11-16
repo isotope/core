@@ -1484,91 +1484,27 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 		if (FE_USER_LOGGED_IN)
 		{
-			$objUserAddressData = $this->Database->prepare("SELECT * FROM tl_address_book WHERE pid=?")->execute($this->User->id);
+			$objAddress = $this->Database->prepare("SELECT * FROM tl_address_book WHERE pid=?")->execute($this->User->id);
 			
-			if ($objUserAddressData->numRows)
+			while( $objAddress->next() )
 			{
-				$arrUserAddressEntries = $objUserAddressData->fetchAllAssoc();
+				$arrOptions[] = array
+				(
+					'value'		=> $objAddress->id,
+					'label'		=> $this->Isotope->generateAddressString($objAddress->row()),
+				);
 				
-				//form the options
-				foreach($arrUserAddressEntries as $address)
+				if ($objAddress->isDefaultBilling)
 				{
-					foreach($address as $k=>$v)
-					{
-						switch($k)
-						{
-							case 'tstamp':
-							case 'sorting':
-							case 'pid':
-							case 'phone':
-							case 'email':
-								continue;
-								break;
-								
-							case 'isDefaultShipping':
-								if($v==1)
-								{
-									$intDefaultShippingId = $address['id'];
-								}
-								break;
-							case 'isDefaultBilling':
-								if($v==1)
-								{
-									if(!isset($this->intBillingAddressId))
-									{
-										$this->intBillingAddressId = $address['id'];	//set for use in checkout
-									}
-									
-									$intDefaultBillingId = $address['id'];
-									
-								}
-								
-								break;
-							default:
-								$arrAddresses[$address['id']][$k] = $v;						
-								break; 
-						}
-										
-					}
-					
-					foreach($arrAddresses as $address)
-					{
-						$intAddressId = $address['id'];
-						
-						unset($address['id']);
-						
-						if(strlen($address['street_2'])<1)
-						{
-							unset($address['street_2']);
-						}
-						else
-						{
-							$address['street'] .= '<br />' . $address['street_2'];
-						}
-						
-						if(strlen($address['street_3'])<1)
-						{
-							unset($address['street_3']);
-						}
-						else
-						{
-							$address['street'] .= '<br />' . $address['street_3'];
-						}
-						
-						
-						$arrOptions[] = array
-						(
-							'value'		=> $intAddressId,
-							'label'		=> $address['firstname'] . ' ' . $address['lastname'] . '<br />' .$address['street'] . '<br />' . $address['city'] . ', ' . $address['state'] . '<br />' . $GLOBALS['TL_LANG']['CNT'][$address['country']] . '<br /><br />'
-						);
-					}
+					$intDefaultBillingId = $objAddress->id;
+				}
+				
+				if ($objAddress->isDefaultShipping)
+				{
+					$intDefaultShippingId = $objAddress->id;
 				}
 			}
 		}
-		
-		/*
-		send registry items to registry owner.
-		*/
 		
 		switch($this->strCurrentStep)
 		{
