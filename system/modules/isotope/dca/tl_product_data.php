@@ -70,13 +70,6 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		),
 		'global_operations' => array
 		(
-			'archived' => array
-			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['archived'],
-				'href'                => 'key=archived',
-				'attributes'          => 'onclick="Backend.getScrollOffset();"',
-				'button_callback'     => array('tl_product_data', 'archivedButton'),
-			),
 			'all' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['MSC']['all'],
@@ -139,38 +132,6 @@ class tl_product_data extends Backend
 	}
 	
 	
-	public function archivedButton($href, $label, $title, $attributes, $table)
-	{
-		$this->import('BackendUser', 'User');
-		
-		return ($this->User->isAdmin) ? '&nbsp;&nbsp;::&nbsp;&nbsp;<a href="'.$this->addToUrl($href).'" class="header_archived_products" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ' : '';
-	}
-	
-	
-	/**
-	 * Archive products if it has been ordered
-	 */
-	public function deleteOrArchiveProduct($dc)
-	{
-		$objProduct = $this->Database->prepare("SELECT archived FROM tl_iso_order_items o LEFT OUTER JOIN tl_product_data p ON p.id=o.product_id WHERE p.id=?")->limit(1)->execute($dc->id);
-		
-		if ($objProduct->archived)
-		{
-			$this->Database->prepare("UPDATE tl_product_data SET archived='' WHERE id=?")->execute($dc->id);
-		}
-		elseif ($objProduct->numRows)
-		{
-			$this->Database->prepare("UPDATE tl_product_data SET archived=1 WHERE id=?")->execute($dc->id);
-		}
-		else
-		{
-			$this->redirect(str_replace('key=delete', 'act=delete', $this->Environment->request));
-		}
-		
-		$this->redirect('typolight/main.php?do=product_manager');
-	}
-	
-	
 	/**
 	 * Only list non-archived prodcts
 	 */
@@ -178,9 +139,12 @@ class tl_product_data extends Backend
 	{
 		$this->import('BackendUser', 'User');
 		
+		if ($this->User->isAdmin)
+			return;
+		
 		$arrTypes = is_array($this->User->iso_product_types) ? $this->User->iso_product_types : array(0);
 		
-		$arrProducts = $this->Database->execute("SELECT id FROM tl_product_data WHERE " . ($this->User->isAdmin ? '1=1' : "type IN ('','" . implode("','", $arrTypes) . "')") . ($this->Input->get('key') == 'archived' ? '' : " AND archived=''"))->fetchEach('id');
+		$arrProducts = $this->Database->execute("SELECT id FROM tl_product_data WHERE type IN ('','" . implode("','", $arrTypes) . "')")->fetchEach('id');
 		
 		if (!is_array($arrProducts) || !count($arrProducts))
 		{
