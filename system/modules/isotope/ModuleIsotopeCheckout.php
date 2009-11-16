@@ -1524,11 +1524,11 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			case 'shipping_information':
 				$intDefaultValue = ($intDefaultShippingId ? $intDefaultShippingId : -1);
 				
-				$arrOptions[] = array
+				array_insert($arrOptions, 0, array(array
 				(
 					'value'	=> -1,
 					'label' => &$GLOBALS['TL_LANG']['useBillingAddress'],
-				);
+				)));
 				
 				$arrOptions[] = array
 				(
