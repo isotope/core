@@ -288,21 +288,3 @@ $GLOBALS['TL_LANG']['CUR']['CHF'] = 'CHF - Swiss Franc';
 $GLOBALS['TL_LANG']['CUR_SYMBOL']['USD'] = '$';
 $GLOBALS['TL_LANG']['CUR_SYMBOL']['EUR'] = '€';
 
-
-/** 
- * Default attributes
- */
-$GLOBALS['TL_LANG']['ISO_ATTR']['name']					= array('Name', '');
-$GLOBALS['TL_LANG']['ISO_ATTR']['type']					= array('Type', '');
-$GLOBALS['TL_LANG']['ISO_ATTR']['sku']					= array('SKU', '');
-$GLOBALS['TL_LANG']['ISO_ATTR']['weight']				= array('Weight', '');
-$GLOBALS['TL_LANG']['ISO_ATTR']['quantity']				= array('Quantity', '');
-$GLOBALS['TL_LANG']['ISO_ATTR']['alias']				= array('Alias', '');
-$GLOBALS['TL_LANG']['ISO_ATTR']['visibility']			= array('Visibility', '');
-$GLOBALS['TL_LANG']['ISO_ATTR']['teaser']				= array('Teaser', '');
-$GLOBALS['TL_LANG']['ISO_ATTR']['description']			= array('Description', '');
-$GLOBALS['TL_LANG']['ISO_ATTR']['price']				= array('Price', '');
-$GLOBALS['TL_LANG']['ISO_ATTR']['price_override']		= array('Price Override', '');
-$GLOBALS['TL_LANG']['ISO_ATTR']['use_price_override']	= array('Use Price Override', '');
-$GLOBALS['TL_LANG']['ISO_ATTR']['main_image']				= array('Media', '');
-

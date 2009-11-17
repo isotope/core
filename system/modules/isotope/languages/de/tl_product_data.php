@@ -28,12 +28,21 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_product_data']['pages'] = array('Kategorien','Wählen Sie eine Kategorie (Seite) für dieses Produkt.');
-$GLOBALS['TL_LANG']['tl_product_data']['type'] = array('Product Type','Product types are defined in the Product Type Manager.');
-$GLOBALS['TL_LANG']['tl_product_data']['option_set_source'] = array('Option Set Source','Use an existing option set or create a new one');
-$GLOBALS['TL_LANG']['tl_product_data']['option_sets'] = array('Option Sets','Select an existing Option Set');
-$GLOBALS['TL_LANG']['tl_product_data']['option_set_title'] = array('Option Set Title','Name your new option set. The combination of values for each attribute will be stored and used to produce a new collection of empty subproducts.');
-$GLOBALS['TL_LANG']['tl_product_data']['variants_wizard'] = array('Product Variants','Configure product variants');
+$GLOBALS['TL_LANG']['tl_product_data']['pages']					= array('Kategorien','Wählen Sie eine Kategorie (Seite) für dieses Produkt.');
+$GLOBALS['TL_LANG']['tl_product_data']['type']					= array('Product Type','Product types are defined in the Product Type Manager.');
+$GLOBALS['TL_LANG']['tl_product_data']['alias']					= array('Alias', '');
+$GLOBALS['TL_LANG']['tl_product_data']['name']					= array('Name', '');
+$GLOBALS['TL_LANG']['tl_product_data']['sku']					= array('Artikelnummer', '');
+$GLOBALS['TL_LANG']['tl_product_data']['weight']				= array('Gewicht', '');
+$GLOBALS['TL_LANG']['tl_product_data']['quantity']				= array('Anzahl', '');
+$GLOBALS['TL_LANG']['tl_product_data']['visibility']			= array('Sichtbarkeit', '');
+$GLOBALS['TL_LANG']['tl_product_data']['teaser']				= array('Teaser', '');
+$GLOBALS['TL_LANG']['tl_product_data']['description']			= array('Beschreibung', '');
+$GLOBALS['TL_LANG']['tl_product_data']['price']					= array('Preis', '');
+$GLOBALS['TL_LANG']['tl_product_data']['price_override']		= array('Ersatzpreis', '');
+$GLOBALS['TL_LANG']['tl_product_data']['use_price_override']	= array('Ersatzpreis verwenden', '');
+$GLOBALS['TL_LANG']['tl_product_data']['main_image']			= array('Medien', '');
+
 
 /**
  * Reference

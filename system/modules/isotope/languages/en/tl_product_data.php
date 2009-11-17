@@ -28,12 +28,25 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_product_data']['pages'] = array('Categories','Select a category (page-based categories take advantage of TYPOlight pages features such as navigation automation, protection, templates, and full integration with content elements.');
-$GLOBALS['TL_LANG']['tl_product_data']['type'] = array('Product Type','Product types are defined in the Product Type Manager.');
-$GLOBALS['TL_LANG']['tl_product_data']['option_set_source'] = array('Option Set Source','Use an existing option set or create a new one');
-$GLOBALS['TL_LANG']['tl_product_data']['option_sets'] = array('Option Sets','Select an existing Option Set');
-$GLOBALS['TL_LANG']['tl_product_data']['option_set_title'] = array('Option Set Title','Name your new option set. The combination of values for each attribute will be stored and used to produce a new collection of empty subproducts.');
-$GLOBALS['TL_LANG']['tl_product_data']['variants_wizard'] = array('Product Variants','Configure product variants');
+$GLOBALS['TL_LANG']['tl_product_data']['pages']					= array('Categories','Select a category (page-based categories take advantage of TYPOlight pages features such as navigation automation, protection, templates, and full integration with content elements.');
+$GLOBALS['TL_LANG']['tl_product_data']['type']					= array('Product Type','Product types are defined in the Product Type Manager.');
+$GLOBALS['TL_LANG']['tl_product_data']['alias']					= array('Alias', '');
+$GLOBALS['TL_LANG']['tl_product_data']['name']					= array('Name', '');
+$GLOBALS['TL_LANG']['tl_product_data']['type']					= array('Type', '');
+$GLOBALS['TL_LANG']['tl_product_data']['sku']					= array('SKU', '');
+$GLOBALS['TL_LANG']['tl_product_data']['weight']				= array('Weight', '');
+$GLOBALS['TL_LANG']['tl_product_data']['quantity']				= array('Quantity', '');
+$GLOBALS['TL_LANG']['tl_product_data']['visibility']			= array('Visibility', '');
+$GLOBALS['TL_LANG']['tl_product_data']['teaser']				= array('Teaser', '');
+$GLOBALS['TL_LANG']['tl_product_data']['description']			= array('Description', '');
+$GLOBALS['TL_LANG']['tl_product_data']['price']					= array('Price', '');
+$GLOBALS['TL_LANG']['tl_product_data']['price_override']		= array('Price Override', '');
+$GLOBALS['TL_LANG']['tl_product_data']['use_price_override']	= array('Use Price Override', '');
+$GLOBALS['TL_LANG']['tl_product_data']['main_image']			= array('Media', '');
+$GLOBALS['TL_LANG']['tl_product_data']['option_set_source']		= array('Option Set Source','Use an existing option set or create a new one');
+$GLOBALS['TL_LANG']['tl_product_data']['option_sets']			= array('Option Sets','Select an existing Option Set');
+$GLOBALS['TL_LANG']['tl_product_data']['option_set_title']		= array('Option Set Title','Name your new option set. The combination of values for each attribute will be stored and used to produce a new collection of empty subproducts.');
+$GLOBALS['TL_LANG']['tl_product_data']['variants_wizard']		= array('Product Variants','Configure product variants');
 
 
 /*
