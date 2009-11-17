@@ -101,7 +101,6 @@ $GLOBALS['TL_LANG']['tl_product_data']['copy']			= array('Copy product', 'Copy p
 $GLOBALS['TL_LANG']['tl_product_data']['cut']			= array('Move product', 'Move product ID %s');
 $GLOBALS['TL_LANG']['tl_product_data']['delete']		= array('Delete product', 'Delete product ID %s');
 $GLOBALS['TL_LANG']['tl_product_data']['show']			= array('product details', 'Show details of product ID %s');
-$GLOBALS['TL_LANG']['tl_product_data']['archived']		= array('Show archive', 'Unhide archived products');
 
 
 /** 
