@@ -1254,16 +1254,18 @@ abstract class ModuleIsotopeBase extends Module
 									{
 										$file['is_image'] = true;
 										
-										foreach( array('large', 'medium', 'thumb', 'gallery') as $size )
+										foreach( array('large', 'medium', 'thumbnail', 'gallery') as $size )
 										{
 											$strImage = $this->getImage($strFile, $this->Isotope->Store->{$size . '_image_width'}, $this->Isotope->Store->{$size . '_image_height'});
 											$arrSize = @getimagesize(TL_ROOT . '/' . $strImage);
 											
+											var_dump($arrSize);
+											
 											$file[$size] = $strImage;
 											
-											if (is_array($arrSize) && strlen($arrSize[2]))
+											if (is_array($arrSize) && strlen($arrSize[3]))
 											{
-												$file[$size . '_size'] = $arrSize[2];
+												$file[$size . '_size'] = $arrSize[3];
 											}
 										}
 										
