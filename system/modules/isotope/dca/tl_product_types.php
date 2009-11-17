@@ -220,41 +220,5 @@ class tl_product_types extends Backend
 				break;
 		}
 	}
-
-	
-	/**
-	 * Autogenerate a page alias if it has not been set yet
-	 * @param mixed
-	 * @param object
-	 * @return string
-	 */
-	public function generateAlias($varValue, DataContainer $dc)
-	{
-		
-		// Generate alias if there is none
-		if (!strlen($varValue))
-		{
-							   
-								   
-			$objTitle = $this->Database->prepare("SELECT name FROM tl_product_types WHERE id=?")
-									   ->limit(1)
-									   ->execute($dc->id);
-
-			$varValue = standardize($objTitle->name);
-		
-		
-			$objAlias = $this->Database->prepare("SELECT COUNT(*) AS count FROM tl_product_types WHERE alias=?")
-								   	   ->execute($varValue);
-			
-			if($objAlias->count > 0)
-			{
-				$varValue .= '.' . $dc->id;			
-			}	
-		}
-			
-		return $varValue;
-	}
-	
-
 }
 
