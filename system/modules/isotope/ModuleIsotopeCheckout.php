@@ -199,7 +199,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				'editEnabled' => false,
 				'headline'	  => 'Error',
 				'prompt'	  => '',
-				'fields'	  => '<div class="noItems">' . $GLOBALS['TL_LANG']['MSC']['noItemsInCart'] . '</div>'
+				'fields'	  => '<div class="empty">' . $GLOBALS['TL_LANG']['MSC']['noItemsInCart'] . '</div>'
 			);
 		}
 		else

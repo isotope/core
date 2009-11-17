@@ -5,7 +5,7 @@
 		<?php foreach($this->checkoutSteps as $step): ?>
 		<div class="step"><h1><?php echo $step['headline']; ?></h1> <?php if($step['editEnabled']): ?> <!--<img src="tl_files/isotope/edit.jpg" border="0" class="edit" alt="edit" />--><?php endif; ?>
 			<?php if($step['useFieldset']): ?><fieldset class="accordion"><?php endif;?>
-				<h3><?php echo $step['prompt']; ?></h3>
+				<?php if (strlen($step['prompt'])): ?><h3><?php echo $step['prompt']; ?></h3><?php endif; ?>
 				<?php echo $step['fields']; ?>
 				<div class="clearBoth"></div>
 					<?php if($step['useFieldset']): ?></fieldset><?php endif;?>
