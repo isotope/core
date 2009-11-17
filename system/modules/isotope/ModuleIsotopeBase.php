@@ -205,43 +205,6 @@ abstract class ModuleIsotopeBase extends Module
 	}
 	
 	
-
-	 
-	/** 
-	 * Recursively get child pages associated with a given page id.
-	 *
-	 * @param integer
-	 * @return array
-	 */
-	protected function getChildPages($intPageId)
-	{
-		
-		$objChildPages = $this->Database->prepare("SELECT DISTINCT id FROM tl_page WHERE pid=?")->execute($intPageId);
-		
-						
-		if($objChildPages->numRows < 1)
-		{
-			return;
-		}	
-			
-		$arrChildPages[] = $objChildPages->fetchEach('id');
-											
-		foreach($arrChildPages as $page)
-		{	
-			$arrNewChildPages = $this->getChildPages($page);
-			
-			if(sizeof($arrNewChildPages))
-			{
-				$arrChildPages = array_merge($arrNewChildPages, $arrChildPages);
-			}
-			
-		}
-						
-		return $arrChildPages;
-				
-	}
-	
-	
 	/**
 	 * Generate the required buttons for a products within the current store configuration
 	 * @param integer

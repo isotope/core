@@ -808,7 +808,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 		}
         elseif($this->blnGetChildren)
         {
-		    $arrAssociatedPages = $this->getChildPages($intPageId);
+		    $arrAssociatedPages = $this->getChildRecords($intPageId, 'tl_page');
 			if(sizeof($arrAssociatedPages))
 			{	
 				foreach($arrAssociatedPages as $pageCollection)
