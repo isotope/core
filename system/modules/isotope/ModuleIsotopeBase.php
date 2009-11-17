@@ -1303,6 +1303,10 @@ abstract class ModuleIsotopeBase extends Module
 									
 								}
 								break;
+								
+							case 'longtext':
+								$objTemplate->$field = $attribute['use_rich_text_editor'] ? $attribute['value'] : nl2br($attribute['value']);
+								break;
 																																		
 							default:
 								if($attribute['is_visible_on_front'])
