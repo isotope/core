@@ -34,20 +34,17 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 	// Config
 	'config' => array
 	(
-		'dataContainer'               => 'DynamicTable',
+		'dataContainer'               => 'Table',
 		'switchToEdit'                => false,
 		'enableVersioning'            => false,
 		'doNotCopyRecords'            => true,
 		'ctables'					  => array('tl_product_downloads'),
-		'oncreate_callback'			  => array
-		(
-			array('ProductCatalog', 'loadProductCatalogDCA'),
-		)/*,
+		/*
 		'onload_callback'			  => array
 		(
 			array('tl_product_data', 'checkPermission'),
 			array('MediaManagement', 'createMediaDirectoryStructure')
-		)*/,
+		),*/
 		'onsubmit_callback'			  => array
 		(
 			array('ProductCatalog', 'saveProduct')
@@ -115,6 +112,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 	'palettes' => array
 	(
 		'__selector__'				  => array('type'),
+		'default'					  => '{general_legend},type',
 	),
 	
 	// Fields
@@ -265,6 +263,10 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		),*/
 	),
 );
+
+
+$objPC = new ProductCatalog();
+$objPC->loadProductCatalogDCA();
 
 
 class tl_product_data extends Backend

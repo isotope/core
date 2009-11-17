@@ -59,9 +59,6 @@ class ProductCatalog extends Backend
 	protected $arrTypes = array('text','password','textarea','select','radio','checkbox','upload', 'hidden');
 	protected $arrList = array ('tstamp','pages','new_import'/*,'add_audio_file','add_video_file'*/);	//Basic required fields
 	protected $arrDefault = array ('id', 'tstamp','pages','type','new_import');
-	protected $basePaletteAttributes = '{general_legend},type';
-	protected $arrCountMax = array();
-	protected $arrCountFree = array();
 	protected $arrData = array();
 	protected $arrSubPalettes = array();
 	protected $arrSelectors = array();
@@ -91,12 +88,11 @@ class ProductCatalog extends Backend
 	/**
 	 * ProductCatalog HOOKS: loadProductCatalogDCA, ValidateFormField, ProcessFormData 
 	 */	
-	public function loadProductCatalogDCA($strTable)
+	public function loadProductCatalogDCA()
 	{		
 		//Check for any missing standard attributes and build a list which can then be added into the table tl_product_data.		
 		foreach($GLOBALS['ISO_ATTR'] as $arrSet)
 		{
-		
 			if(!$this->Database->fieldExists($arrSet['field_name'], 'tl_product_data'))
 			{
 				$arrDefaultColumns[$arrSet['type']] = $arrSet['field_name'];
@@ -363,8 +359,6 @@ class ProductCatalog extends Backend
 			}
 			
 		}
-		
-		return $strTable;
 	}
 	
 	protected function getProductType($intProductId)
@@ -772,8 +766,6 @@ class ProductCatalog extends Backend
 			return array();
 		}
 		
-		$arrPalettes['default'] = $this->basePaletteAttributes;
-		
 		while($objProductTypes->next())
 		{
 			$arrFieldCollection = deserialize($objProductTypes->attributes);
@@ -841,7 +833,6 @@ class ProductCatalog extends Backend
 				{
 					$arrFieldsAndGroups[$objFieldGroups->fieldGroup][] = 'option_set_source';
 				}
-				
 			}
 						
 			$arrFieldsAndGroups[$objFieldGroups->fieldGroup][] = $objFieldGroups->field_name;			
@@ -864,7 +855,7 @@ class ProductCatalog extends Backend
 		}
 	
 	
-		$strPalette = $this->basePaletteAttributes;
+		$strPalette = '{general_legend},type';
 		
 		//Build
 		foreach($arrOrderedFieldGroups as $k=>$v)
