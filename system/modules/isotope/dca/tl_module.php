@@ -301,7 +301,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_category_scope'] = array
 	'exclude'                 => true,
 	'inputType'               => 'radio',
 	'default'				  => 'parent_and_children',
-	'options'				  => array('global', 'parent_and_children', 'current_category'),
+	'options'				  => array('global', 'parent_and_first_child','parent_and_all_children', 'current_category'),
 	'reference'				  => &$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref'],
 );
 

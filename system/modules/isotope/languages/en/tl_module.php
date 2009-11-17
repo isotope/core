@@ -67,7 +67,8 @@ $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['guest']	= 'Guest ch
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['both']		= 'Both allowed';
 
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['global']				= 'All Categories';
-$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['parent_and_children']	= 'Current Category and Children';
+$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['parent_and_first_child'] = 'Current Category and First Child Category';
+$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['parent_and_all_children']	= 'Current Category and All Child Categories';
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['current_category']			= 'Current Category Only';
 
 /**

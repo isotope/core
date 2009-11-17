@@ -46,10 +46,15 @@ class ModuleProductLister extends ModuleIsotopeBase
 	 */
 	protected $arrHandleCollection = array();
 	
+	/** 
+	 * 
+	 */
+	protected $blnGetFirstChild = false;
+	
 	/**
 	 * 
 	 */
-	protected $blnGetChildren = false;
+	protected $blnGetAllChildren = false;
        
     /**
      *
@@ -94,35 +99,55 @@ class ModuleProductLister extends ModuleIsotopeBase
 	{
 		global $objPage;
 		
+		$blnUseCategoriesClause = false;
 		
 		//Determine category scope
 		switch($this->iso_category_scope)
 		{
 			case 'global':
+			
 				$this->blnIgnorePageId = true;
-				$strClauses = '';	//remove the default page filter clause, we're not filtering categories in this case.
-									//NOTE: not necessary to set $blnGetChildren to true because we're not filtering by page ID at all.
+				
 				break;
-			case 'parent_and_children':
-
-				$this->blnGetChildren = true;
-				//Set the default page filter clause
+			case 'parent_and_first_child':
+			
+				$this->blnGetFirstChild = true;
+				
+				$arrAllCategories = $this->getChildRecords($objPage->id, 'tl_page');
+				$arrCategories = array_chunk($arrAllCategories, 1);	//Take only the first element
+				$arrCategories[] = $objPage->id;
+				
+				$blnUseCategoriesClause = true;
+				
+				break;
+			case 'parent_and_all_children':
+			
+				$this->blnGetAllChildren = true;
+				
 				$arrCategories = $this->getChildRecords($objPage->id, 'tl_page');	//Get children of this page
 				$arrCategories[] = $objPage->id;
-				$strClauses = " AND c.page_id IN (" . implode(',', $arrCategories) . ")";
+				
+				$blnUseCategoriesClause = true;
+				
 				break;
 			case 'current_category':
+			
 				$this->blnIgnorePageId = false;
-				$this->blnGetChildren = false;
-				//Set the default page filter clause
+				$this->blnGetFirstChild = false;
+				$this->blnGetAllChildren = false;
+				
 				$arrCategories = array($objPage->id);	//This page only.
-				$strClauses = " AND c.page_id IN (" . implode(',', $arrCategories) . ")";
+				
+				$blnUseCategoriesClause = true;
+				
 				break;		
 		}
 	
 		
+		$strCategoriesClause = ($blnUseCategoriesClause ? " AND c.page_id IN (" . implode(',', $arrCategories) . ")" : "");
+
 		
-		$objProductIds = $this->Database->prepare("SELECT * FROM tl_product_categories c, tl_product_data p WHERE c.pid=p.id" . $strClauses);
+		$objProductIds = $this->Database->prepare("SELECT * FROM tl_product_categories c, tl_product_data p WHERE c.pid=p.id" . $strCategoriesClause);
 		
 		// Add pagination
 		if ($this->perPage > 0)
