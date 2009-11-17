@@ -20,7 +20,7 @@
 
 </div>
 </form>
-<div class="product">
+</div>
 <?php endforeach; ?>
 
 <?php echo $this->pagination; ?>
