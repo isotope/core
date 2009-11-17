@@ -381,7 +381,7 @@ class tl_store extends Backend
 	 */
 	public function getPriceFields()
 	{
-		$objPricingFields = $this->Database->execute("SELECT field_name, name FROM tl_product_attributes WHERE fieldGroup='pricing_legend' AND (type='integer' OR type='decimal')");
+		$objPricingFields = $this->Database->execute("SELECT field_name, name FROM tl_product_attributes WHERE legend='pricing_legend' AND (type='integer' OR type='decimal')");
 		
 		if($objPricingFields->numRows < 1)
 		{
@@ -402,7 +402,7 @@ class tl_store extends Backend
 	 */
 	public function getPriceOverrideFields()
 	{
-		$objPricingFields = $this->Database->execute("SELECT field_name, name FROM tl_product_attributes WHERE fieldGroup='pricing_legend' AND type='text'");
+		$objPricingFields = $this->Database->execute("SELECT field_name, name FROM tl_product_attributes WHERE legend='pricing_legend' AND type='text'");
 		
 		if($objPricingFields->numRows < 1)
 		{

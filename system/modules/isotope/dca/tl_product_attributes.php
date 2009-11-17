@@ -53,7 +53,7 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 		'sorting' => array
 		(
 			'mode'                    => 1,
-			'fields'                  => array('fieldGroup', 'name'),
+			'fields'                  => array('legend', 'name'),
 			'flag'					  => 1,
 			'panelLayout'             => 'sort,filter,search,limit'
 		),
@@ -93,20 +93,20 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
     'palettes' => array
     (
         '__selector__'				=> array('type','use_alternate_source','is_customer_defined'),
-		'default'					=> '{general_legend},name,description,field_name;{type_legend},type,fieldGroup;',
-		'text'                     	=> '{general_legend},name,description,field_name;{type_legend},type,fieldGroup;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{use_mode_legend},is_customer_defined;{validation_legend},is_required;{search_filters_legend},is_searchable,is_order_by_enabled;rgxp;{developer_tools_legend:hide},load_callback,save_callback',
-		'shorttext'               	=> '{general_legend},name,description,field_name;{type_legend},type,fieldGroup;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{use_mode_legend},is_customer_defined;{validation_legend},is_required;{search_filters_legend},is_searchable,is_order_by_enabled;rgxp;{developer_tools_legend:hide},load_callback,save_callback',
-		'integer'					=> '{general_legend},name,description,field_name;{type_legend},type,fieldGroup;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{use_mode_legend},is_customer_defined;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled,is_used_for_price_rules,{developer_tools_legend:hide},load_callback,save_callback',
-		'decimal'					=> '{general_legend},name,description,field_name;{type_legend},type,fieldGroup;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;is_customer_defined;is_required,is_filterable,is_order_by_enabled,is_used_for_price_rules,is_listing_field;{developer_tools_legend:hide},load_callback,save_callback',
-		'longtext'					=> '{general_legend},name,description,field_name,use_rich_text_editor;{type_legend},type,fieldGroup;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{use_mode_legend},is_customer_defined;{validation_legend},is_required;{search_filters_legend},is_searchable,is_order_by_enabled;rgxp;{developer_tools_legend:hide},load_callback,save_callback',
-		'datetime'					=> '{general_legend},name,description,field_name;{type_legend},type,fieldGroup;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{validation_legend},is_required;{search_filters_legend},is_order_by_enabled;{developer_tools_legend:hide},load_callback,save_callback',
-		'select'					=> '{general_legend},name,description,field_name;{type_legend},type,fieldGroup;{options_legend},option_list,use_alternate_source;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{use_mode_legend},is_customer_defined,is_multiple_select;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled;{developer_tools_legend:hide},load_callback,save_callback',
-		'boolean'					=> '{general_legend},name,description,field_name;{type_legend},type,fieldGroup;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{use_mode_legend},is_customer_defined,is_multiple_select;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled;{developer_tools_legend:hide},load_callback,save_callback',
-		'options'					=> '{general_legend},name,description,field_name;{type_legend},type,fieldGroup;{options_legend},option_list,{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{use_mode_legend},is_customer_defined,is_multiple_select;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled;{developer_tools_legend:hide},load_callback,save_callback',
-		'fileattach'				=> '{general_legend},name,description,field_name;{type_legend},type,fieldGroup;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{use_mode_legend},is_customer_defined;{validation_legend},is_required;{developer_tools_legend:hide},load_callback,save_callback',
-		'filetree'					=> '{general_legend},name,description,field_name;{type_legend},type,fieldGroup;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{use_mode_legend},is_customer_defined,is_multiple_select,show_files;{validation_legend},is_required,{search_filters_legend},is_filterable;{developer_tools_legend:hide},load_callback,save_callback',
-		'media'						=> '{general_legend},name,description,field_name;{type_legend},type,fieldGroup;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{use_mode_legend},show_files;{validation_legend},is_required;{developer_tools_legend:hide},load_callback,save_callback',
-		'checkbox'					=> '{general_legend},name,description,field_name;{type_legend},type,fieldGroup;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{use_mode_legend},is_customer_defined;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled;{developer_tools_legend:hide},load_callback,save_callback'
+		'default'					=> '{general_legend},name,description,field_name;{type_legend},type,legend;',
+		'text'                     	=> '{general_legend},name,description,field_name;{type_legend},type,legend;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{use_mode_legend},is_customer_defined;{validation_legend},is_required;{search_filters_legend},is_searchable,is_order_by_enabled;rgxp;{developer_tools_legend:hide},load_callback,save_callback',
+		'shorttext'               	=> '{general_legend},name,description,field_name;{type_legend},type,legend;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{use_mode_legend},is_customer_defined;{validation_legend},is_required;{search_filters_legend},is_searchable,is_order_by_enabled;rgxp;{developer_tools_legend:hide},load_callback,save_callback',
+		'integer'					=> '{general_legend},name,description,field_name;{type_legend},type,legend;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{use_mode_legend},is_customer_defined;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled,is_used_for_price_rules,{developer_tools_legend:hide},load_callback,save_callback',
+		'decimal'					=> '{general_legend},name,description,field_name;{type_legend},type,legend;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;is_customer_defined;is_required,is_filterable,is_order_by_enabled,is_used_for_price_rules,is_listing_field;{developer_tools_legend:hide},load_callback,save_callback',
+		'longtext'					=> '{general_legend},name,description,field_name,use_rich_text_editor;{type_legend},type,legend;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{use_mode_legend},is_customer_defined;{validation_legend},is_required;{search_filters_legend},is_searchable,is_order_by_enabled;rgxp;{developer_tools_legend:hide},load_callback,save_callback',
+		'datetime'					=> '{general_legend},name,description,field_name;{type_legend},type,legend;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{validation_legend},is_required;{search_filters_legend},is_order_by_enabled;{developer_tools_legend:hide},load_callback,save_callback',
+		'select'					=> '{general_legend},name,description,field_name;{type_legend},type,legend;{options_legend},option_list,use_alternate_source;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{use_mode_legend},is_customer_defined,is_multiple_select;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled;{developer_tools_legend:hide},load_callback,save_callback',
+		'boolean'					=> '{general_legend},name,description,field_name;{type_legend},type,legend;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{use_mode_legend},is_customer_defined,is_multiple_select;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled;{developer_tools_legend:hide},load_callback,save_callback',
+		'options'					=> '{general_legend},name,description,field_name;{type_legend},type,legend;{options_legend},option_list,{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{use_mode_legend},is_customer_defined,is_multiple_select;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled;{developer_tools_legend:hide},load_callback,save_callback',
+		'fileattach'				=> '{general_legend},name,description,field_name;{type_legend},type,legend;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{use_mode_legend},is_customer_defined;{validation_legend},is_required;{developer_tools_legend:hide},load_callback,save_callback',
+		'filetree'					=> '{general_legend},name,description,field_name;{type_legend},type,legend;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{use_mode_legend},is_customer_defined,is_multiple_select,show_files;{validation_legend},is_required,{search_filters_legend},is_filterable;{developer_tools_legend:hide},load_callback,save_callback',
+		'media'						=> '{general_legend},name,description,field_name;{type_legend},type,legend;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{use_mode_legend},show_files;{validation_legend},is_required;{developer_tools_legend:hide},load_callback,save_callback',
+		'checkbox'					=> '{general_legend},name,description,field_name;{type_legend},type,legend;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{use_mode_legend},is_customer_defined;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled;{developer_tools_legend:hide},load_callback,save_callback'
 
 
     ),
@@ -140,12 +140,12 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 			'eval'                    => array('mandatory'=>true,'includeBlankOption'=>true,'submitOnChange'=>true),
 			'options_callback'		  => array('tl_product_attributes','getAttributeTypes')
 		),
-		'fieldGroup' => array
+		'legend' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['fieldGroup'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['legend'],
 			'inputType'               => 'select',
 			'eval'                    => array('mandatory'=>true,'includeBlankOption'=>false),
-			'options_callback'		  => array('tl_product_attributes','getFieldGroups')
+			'options_callback'		  => array('tl_product_attributes','getLegends')
 		),
 		'field_name' => array
 		(
@@ -341,7 +341,7 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 class tl_product_attributes extends Backend
 {
 
-	public function getFieldGroups()
+	public function getLegends()
 	{
 		$this->loadLanguageFile('tl_product_data');
 		

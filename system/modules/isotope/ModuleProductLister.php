@@ -509,7 +509,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 					$strClauses = " ORDER BY date_added DESC";
 				}
 				
-				$strBaseClause = "visibility=1";
+				$strBaseClause = "published=1";
 			}
 			elseif($this->featured_products==1)
 			{
@@ -519,11 +519,11 @@ class ModuleProductLister extends ModuleIsotopeBase
 					$strClauses = " ORDER BY RAND() LIMIT " . $per_page;
 				}
 				
-				$strBaseClause = "visibility=1";
+				$strBaseClause = "published=1";
 			}
 			else
 			{
-				$strBaseClause = "id IN(" . $product_list . ") AND visibility=1 AND pid=0";
+				$strBaseClause = "id IN(" . $product_list . ") AND published=1 AND pid=0";
 			}	
 			
 			$objTotal = $this->Database->prepare("SELECT COUNT(*) as count FROM tl_product_data WHERE " . $strBaseClause . $strFilterList . $strClauses)

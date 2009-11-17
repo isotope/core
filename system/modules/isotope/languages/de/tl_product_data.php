@@ -35,13 +35,13 @@ $GLOBALS['TL_LANG']['tl_product_data']['name']					= array('Name', '');
 $GLOBALS['TL_LANG']['tl_product_data']['sku']					= array('Artikelnummer', '');
 $GLOBALS['TL_LANG']['tl_product_data']['weight']				= array('Gewicht', '');
 $GLOBALS['TL_LANG']['tl_product_data']['quantity']				= array('Anzahl', '');
-$GLOBALS['TL_LANG']['tl_product_data']['visibility']			= array('Sichtbarkeit', '');
 $GLOBALS['TL_LANG']['tl_product_data']['teaser']				= array('Teaser', '');
 $GLOBALS['TL_LANG']['tl_product_data']['description']			= array('Beschreibung', '');
 $GLOBALS['TL_LANG']['tl_product_data']['price']					= array('Preis', '');
 $GLOBALS['TL_LANG']['tl_product_data']['price_override']		= array('Ersatzpreis', '');
 $GLOBALS['TL_LANG']['tl_product_data']['use_price_override']	= array('Ersatzpreis verwenden', '');
 $GLOBALS['TL_LANG']['tl_product_data']['main_image']			= array('Medien', '');
+$GLOBALS['TL_LANG']['tl_product_data']['published']				= array('Produkt veröffentlichen', 'Klicken Sie hier wenn das Produkt auf der Webseite angezeigt werden soll.');
 
 
 /**
@@ -72,13 +72,5 @@ $GLOBALS['TL_LANG']['tl_product_data']['editheader'] = array('Artikelmerkmale be
 /** 
  * Legends
  */
-$GLOBALS['TL_LANG']['tl_product_data']['general_legend'] = "General Settings";
-$GLOBALS['TL_LANG']['tl_product_data']['pricing_legend'] = "Pricing Settings";
-$GLOBALS['TL_LANG']['tl_product_data']['inventory_legend'] = 'Inventory Settings';
-$GLOBALS['TL_LANG']['tl_product_data']['shipping_legend'] = 'Shipping Settings';
-$GLOBALS['TL_LANG']['tl_product_data']['tax_legend'] = 'Tax Settings';
-$GLOBALS['TL_LANG']['tl_product_data']['options_legend'] = 'Product Options Settings';
-$GLOBALS['TL_LANG']['tl_product_data']['tax_legend'] = 'Tax Settings';
-$GLOBALS['TL_LANG']['tl_product_data']['availability_legend'] = 'Availability Settings';
-$GLOBALS['TL_LANG']['tl_product_data']['media_legend'] = 'Media Management';
+$GLOBALS['TL_LANG']['tl_product_data']['publish_legend'] = 'Veröffentlichung';
 

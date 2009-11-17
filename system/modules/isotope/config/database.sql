@@ -64,6 +64,7 @@ CREATE TABLE `tl_product_data` (
   `option_sets` int(10) unsigned NOT NULL default '0',
   `option_set_title` varchar(255) NOT NULL default '',
   `variants_wizard` text NULL,
+  `published` char(1) NOT NULL default '',
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -160,7 +161,7 @@ CREATE TABLE `tl_product_attributes` (
   `name` varchar(255) NOT NULL default '',
   `description` varchar(255) NOT NULL default '',
   `type` varchar(64) NOT NULL default '',
-  `fieldGroup` varchar(255) NOT NULL default '',
+  `legend` varchar(255) NOT NULL default '',
   `option_list` text NULL,
   `show_files` int(1) NOT NULL default '0',
   `attr_use_mode` varchar(10) NOT NULL default 'fixed',

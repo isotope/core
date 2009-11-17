@@ -45,7 +45,7 @@ class IsotopeRunonce extends Frontend
 	public function run()
 	{
 		$this->insertDefaultAttributeTypes();
-		$this->updateStoreConfig();
+		$this->renameFields();
 		$this->updateAttributes();
 		$this->updateProductCategories();
 		
@@ -55,14 +55,13 @@ class IsotopeRunonce extends Frontend
 		// Remove generateTeaser() callback on product description
 		$this->Database->execute("UPDATE tl_product_attributes SET save_callback='' WHERE save_callback='ProductCatalog.generateTeaser'");
 		
-		// Alias is now part of the default DCA
+		// Drop fields that are now part of the default DCA
 		$this->Database->execute("DELETE FROM tl_product_attributes WHERE field_name='alias'");
-		
-		
+		$this->Database->execute("DELETE FROM tl_product_attributes WHERE field_name='visibility'");
 	}
 	
 	
-	private function updateStoreConfig()
+	private function renameFields()
 	{
 		// tl_store.gallery_thumbnail_image_width has been renamed to tl_store.gallery_image_width
 		if ($this->Database->fieldExists('gallery_thumbnail_image_width', 'tl_store'))
@@ -74,6 +73,18 @@ class IsotopeRunonce extends Frontend
 		if ($this->Database->fieldExists('gallery_thumbnail_image_height', 'tl_store'))
 		{
 			$this->Database->execute("ALTER TABLE tl_store CHANGE COLUMN gallery_thumbnail_image_height gallery_image_height int(10) unsigned NOT NULL default '0'");
+		}
+		
+		// tl_product_data.visiblity has been renamed to tl_product_data.published
+		if ($this->Database->fieldExists('visibility', 'tl_product_data'))
+		{
+			$this->Database->execute("ALTER TABLE tl_product_data CHANGE COLUMN visibility published char(1) NOT NULL default ''");
+		}
+		
+		// tl_product_attributes.fieldGroup has been renamed to tl_product_attributes.legend
+		if ($this->Database->fieldExists('fieldGroup', 'tl_product_attributes'))
+		{
+			$this->Database->execute("ALTER TABLE tl_product_attributes CHANGE COLUMN fieldGroup legend varchar(255) NOT NULL default ''");
 		}
 	}
 	

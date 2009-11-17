@@ -666,7 +666,7 @@ class ProductCatalog extends Backend
 				
 				$strSerializedValues = $this->prepareCategories($objIsNewImport->pages, $dc, $objIsNewImport->id);
 								
-				$this->Database->prepare("UPDATE tl_product_data SET sku=?, pages=?, visibility=1, new_import=0 WHERE id=?")
+				$this->Database->prepare("UPDATE tl_product_data SET sku=?, pages=?, published=1, new_import=0 WHERE id=?")
 							   ->execute($strSKU, $strSerializedValues, $dc->id);
 				
 								
@@ -736,56 +736,51 @@ class ProductCatalog extends Backend
 		if (!is_array($arrAttributes) || !count($arrAttributes))
 			return '';
 			
-		$objFieldGroups = $this->Database->execute("SELECT field_name, fieldGroup FROM tl_product_attributes WHERE disabled='' AND is_hidden_on_backend='' AND is_customer_defined='' AND id IN(" . implode(',', $arrAttributes) . ") ORDER BY id=" . implode(' DESC, id=', $arrAttributes) . " DESC");
+		$objAttributes = $this->Database->execute("SELECT field_name, legend FROM tl_product_attributes WHERE disabled='' AND is_hidden_on_backend='' AND is_customer_defined='' AND id IN(" . implode(',', $arrAttributes) . ") ORDER BY id=" . implode(' DESC, id=', $arrAttributes) . " DESC");
 		
-		if(!$objFieldGroups->numRows)
+		if(!$objAttributes->numRows)
 		{
 			throw new Exception('No fields returned.');
 		}
 		
-		$arrFieldsAndGroups = array();
+		
+		$arrPalette = array
+		(
+			'general_legend' => array('type','alias', 'pages'),
+			'publish_legend' => array('published'),
+		);
 		
 		//Create an array grouped by field group
-		while($objFieldGroups->next())
-		{		
-			if(!is_array($arrFieldsAndGroups[$objFieldGroups->fieldGroup]))
+		while($objAttributes->next())
+		{
+			if($objAttributes->legend == 'options_legend' && !in_array('option_set_source', $arrPalette[$objAttributes->legend]))
 			{
-				$arrFieldsAndGroups[$objFieldGroups->fieldGroup] = array();
-			}	
-			
-			if($objFieldGroups->fieldGroup == 'general_legend' && !in_array('pages', $arrFieldsAndGroups[$objFieldGroups->fieldGroup]))
-			{
-				$arrFieldsAndGroups[$objFieldGroups->fieldGroup][] = 'pages';	//necessary to squeak a required attribute into the prod. type palette.
-			}
-			
-			if($objFieldGroups->fieldGroup == 'options_legend' && !in_array('option_set_source', $arrFieldsAndGroups[$objFieldGroups->fieldGroup]))
-			{
-				$arrFieldsAndGroups[$objFieldGroups->fieldGroup][] = 'option_set_source';
+				$arrPalette[$objAttributes->legend][] = 'option_set_source';
 			}
 
-			if($objFieldGroups->fieldGroup == $strAppendToLegend && sizeof($arrExtraFields))
+			if($objAttributes->legend == $strAppendToLegend && sizeof($arrExtraFields))
 			{
 				foreach($arrExtraFields as $field)
 				{
-					$arrFieldsAndGroups[$objFieldGroups->fieldGroup][] = $field;
+					$arrPalette[$objAttributes->legend][] = $field;
 				}
 			}
 
 			//To do - detemine if product can support variants.  This would be determined by any customer defined attributes being a part of the given palette or not.
-			if($objFieldGroups->fieldGroup == 'options_legend' && !in_array('options_set_source', $arrFieldsAndGroups[$objFieldGroups->fieldGroup]))
+			if($objAttributes->legend == 'options_legend' && !in_array('options_set_source', $arrPalette[$objAttributes->legend]))
 			{
 				if(!in_array('option_set_source', $this->arrSelectors))
 				{
 					$this->arrSelectors[] = 'option_set_source';
 				}
 								
-				if(!in_array('option_set_source', $arrFieldsAndGroups[$objFieldGroups->fieldGroup]))
+				if(!in_array('option_set_source', $arrPalette[$objAttributes->legend]))
 				{
-					$arrFieldsAndGroups[$objFieldGroups->fieldGroup][] = 'option_set_source';
+					$arrPalette[$objAttributes->legend][] = 'option_set_source';
 				}
 			}
 						
-			$arrFieldsAndGroups[$objFieldGroups->fieldGroup][] = $objFieldGroups->field_name;			
+			$arrPalette[$objAttributes->legend][] = $objAttributes->field_name;			
 		}
 
 		
@@ -797,37 +792,19 @@ class ProductCatalog extends Backend
 				
 		
 			
+
 		//This is necessary because otherwise, attributes that do not fall in sequential order in terms of cardinality then get placed out of order in the
 		//palette string.  This allows us to not have to worry about that but ensuring groups are in the correct order.
-		foreach($GLOBALS['ISO_MSC']['tl_product_data']['groups_ordering'] as $group)
-		{
-			$arrOrderedFieldGroups[$group] = $arrFieldsAndGroups[$group];
-		}
-	
-	
-		$strPalette = '{general_legend},type,alias';
+		uksort($arrPalette, create_function('$a,$b', 'return (array_search($a, $GLOBALS["ISO_MSC"]["tl_product_data"]["groups_ordering"]) > array_search($b, $GLOBALS["ISO_MSC"]["tl_product_data"]["groups_ordering"])) ? 1 : -1;'));
 		
 		//Build
-		foreach($arrOrderedFieldGroups as $k=>$v)
+		$arrLegends = array();
+		foreach($arrPalette as $legend=>$fields)
 		{
-			if($k!='general_legend')
-			{
-				$strPalette .= '{' . $k . '},';
-			}
-			else
-			{
-				$strPalette .= ',';
-			}
-			
-			if(is_null($v))
-			{
-				continue;
-			}
-			
-			$strPalette .= join(',', $v) . ';';
+			$arrLegends[] = '{' . $legend . '},' . implode(',', $fields);
 		}
 
-		return $strPalette;
+		return implode(';', $arrLegends);
 	}
 	
 	public function getOptionSets()

@@ -29,14 +29,13 @@
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_product_attributes']['name'] = array('Name', 'Geben Sie einen Namen für dieses Artikelmerkmal ein.');
-$GLOBALS['TL_LANG']['tl_product_attributes']['fieldGroup'] = array('Field Group','Select a field group that this attribute relates to (used to organize related fields into collapsible fieldset groups when editing products.');
 $GLOBALS['TL_LANG']['tl_product_attributes']['field_name'] = array('Interner Name', 'Der interne Feldname muss eindeutig für diesen Artikeltyp sein. Gewisse Felder (z.B. product_name) sind zwingend und können nicht geändert werden.');
 $GLOBALS['TL_LANG']['tl_product_attributes']['type'] = array('Typ', '');
-$GLOBALS['TL_LANG']['tl_product_attributes']['disabled'] = array('Global Disable','Disabled this attribute completely.');
-$GLOBALS['TL_LANG']['tl_product_attributes']['add_to_product_variants'] = array('Add to product variants wizard','If selected, this attribute will be added to the product variants wizard for use as a product variant option.');
 
 
-
+/**
+ * Legends
+ */
 $GLOBALS['TL_LANG']['tl_product_attributes']['general_legend'] = 'General Information';
 $GLOBALS['TL_LANG']['tl_product_attributes']['type_legend'] = 'Attribute Type';
 $GLOBALS['TL_LANG']['tl_product_attributes']['pricing_legend'] = 'Pricing Data';

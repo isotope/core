@@ -36,7 +36,6 @@ $GLOBALS['TL_LANG']['tl_product_data']['type']					= array('Type', '');
 $GLOBALS['TL_LANG']['tl_product_data']['sku']					= array('SKU', '');
 $GLOBALS['TL_LANG']['tl_product_data']['weight']				= array('Weight', '');
 $GLOBALS['TL_LANG']['tl_product_data']['quantity']				= array('Quantity', '');
-$GLOBALS['TL_LANG']['tl_product_data']['visibility']			= array('Visibility', '');
 $GLOBALS['TL_LANG']['tl_product_data']['teaser']				= array('Teaser', '');
 $GLOBALS['TL_LANG']['tl_product_data']['description']			= array('Description', '');
 $GLOBALS['TL_LANG']['tl_product_data']['price']					= array('Price', '');
@@ -47,6 +46,7 @@ $GLOBALS['TL_LANG']['tl_product_data']['option_set_source']		= array('Option Set
 $GLOBALS['TL_LANG']['tl_product_data']['option_sets']			= array('Option Sets','Select an existing Option Set');
 $GLOBALS['TL_LANG']['tl_product_data']['option_set_title']		= array('Option Set Title','Name your new option set. The combination of values for each attribute will be stored and used to produce a new collection of empty subproducts.');
 $GLOBALS['TL_LANG']['tl_product_data']['variants_wizard']		= array('Product Variants','Configure product variants');
+$GLOBALS['TL_LANG']['tl_product_data']['published']				= array('Publish product', 'Click here to show this product on your website.');
 
 
 /*
@@ -113,6 +113,6 @@ $GLOBALS['TL_LANG']['tl_product_data']['shipping_legend'] = 'Shipping Settings';
 $GLOBALS['TL_LANG']['tl_product_data']['tax_legend'] = 'Tax Settings';
 $GLOBALS['TL_LANG']['tl_product_data']['options_legend'] = 'Product Options Settings';
 $GLOBALS['TL_LANG']['tl_product_data']['tax_legend'] = 'Tax Settings';
-$GLOBALS['TL_LANG']['tl_product_data']['availability_legend'] = 'Availability Settings';
 $GLOBALS['TL_LANG']['tl_product_data']['media_legend'] = 'Media Management';
+$GLOBALS['TL_LANG']['tl_product_data']['publish_legend'] = 'Publishing';
 

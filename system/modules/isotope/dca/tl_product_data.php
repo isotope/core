@@ -267,32 +267,13 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 				array('ProductCatalog','saveProductOptions')
 			)
 		),*/
-/*
-		array
-		( 
-			
-			'pid'						=> 0,
-			'tstamp'					=> time(),
-			'sorting'					=> $intSorting,
-			'type'						=> 'checkbox',
-			'field_name'				=> 'visibility',
-			'fieldGroup'				=> 'availability_legend',
-			'name'						=> 'Product Visibility',
-			'description'				=> '',
-			'attr_use_mode'				=> 'fixed',
-			'is_customer_defined'		=> 0,
-			'is_visible_on_front'		=> 0,
-			'is_required'				=> 0,
-			'is_filterable'				=> 0,
-			'is_searchable'				=> 0,
-			'is_used_for_price_rules'	=> 0,
-			'is_multiple_select'		=> 0,
-			'use_rich_text_editor'		=> 0,
-			'is_user_defined'			=> 0,
-			'is_listing_field'			=> 0,
-			'delete_locked'				=> 1
+		'published' => array
+		(
+			'label'					  => &$GLOBALS['TL_LANG']['tl_product_data']['published'],
+			'inputType'				  => 'checkbox',
+			'filter'				  => true,
+			'eval'					  => array('doNotCopy'=>true),
 		),
-*/
 	),
 );
 
@@ -363,7 +344,7 @@ class tl_product_data extends Backend
 	 */
 	public function getRowLabel($row, $label = '')
 	{
-		$key = $row['visibility'] ? 'published' : 'unpublished';
+		$key = $row['published'] ? 'published' : 'unpublished';
 		
 		$arrImages = deserialize($row['main_image']);
 		$thumbnail = '';
