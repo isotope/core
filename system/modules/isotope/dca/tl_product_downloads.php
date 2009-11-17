@@ -148,7 +148,13 @@ class tl_product_downloads extends Backend
 	 */
 	public function listRows($row)
 	{
-		return sprintf('<div style="margin-top: -15px; margin-bottom: -5px">%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span></div>', $row['title'], $row['singleSRC']);
+		if (is_file(TL_ROOT . '/' . $row['singleSRC']))
+		{
+			$objFile = new File($row['singleSRC']);
+			$icon = 'background: url(system/themes/' . $this->getTheme() . '/images/' . $objFile->icon . ') left center no-repeat; padding-left: 22px';
+		}
+		
+		return sprintf('<div style="margin-top: -20px; margin-bottom: -8px; padding-top: 4px; height: 16px;%s">%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span></div>', $icon, $row['title'], $row['singleSRC']);
 	}
 }
 
