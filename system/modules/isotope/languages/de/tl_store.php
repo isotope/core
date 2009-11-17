@@ -51,10 +51,10 @@ $GLOBALS['TL_LANG']['tl_store']['currencyFormat']					= array('Währungsformat',
 $GLOBALS['TL_LANG']['tl_store']['countries']						= array('Länder', 'Wählen Sie die Länder welche bei der Bestellung zur Verfügung stehen.');
 $GLOBALS['TL_LANG']['tl_store']['address_fields']					= array('Adressfelder', 'Wählen Sie die Felder welche bei einer neue Adresse ausgefüllt werden können.');
 
-$GLOBALS['TL_LANG']['tl_store']['gallery_thumbnail_image_width']	= array('Breite für Galerie-Vorschaubild', 'In Pixel.');
-$GLOBALS['TL_LANG']['tl_store']['gallery_thumbnail_image_height']	= array('Höhe für Galerie-Vorschaubild', 'In Pixel.');
-$GLOBALS['TL_LANG']['tl_store']['invoiceLogo'] = array('Invoice Logo','Select a logo to show up on the invoices for this store.');
-$GLOBALS['TL_LANG']['tl_store']['isDefaultStore'] = array('Set as default store','Set this as the default store for back-end currency formatting and other locale-specific information.');
+$GLOBALS['TL_LANG']['tl_store']['gallery_image_width']				= array('Breite für Galerie-Vorschaubild', 'In Pixel.');
+$GLOBALS['TL_LANG']['tl_store']['gallery_image_height']				= array('Höhe für Galerie-Vorschaubild', 'In Pixel.');
+$GLOBALS['TL_LANG']['tl_store']['invoiceLogo']						= array('Invoice Logo','Select a logo to show up on the invoices for this store.');
+$GLOBALS['TL_LANG']['tl_store']['isDefaultStore']					= array('Set as default store','Set this as the default store for back-end currency formatting and other locale-specific information.');
 
 /**
  * Reference

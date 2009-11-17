@@ -54,8 +54,8 @@ $GLOBALS['TL_LANG']['tl_store']['currencyFormat']					= array('Currency formatti
 $GLOBALS['TL_LANG']['tl_store']['country']							= array('Default Country','What is the default country for this store configuration?');
 $GLOBALS['TL_LANG']['tl_store']['countries']						= array('Countries', 'Select the countries you want to allow for checkout.');
 $GLOBALS['TL_LANG']['tl_store']['address_fields']					= array('Address fields', 'Select the fields for a new address when checking out.');
-$GLOBALS['TL_LANG']['tl_store']['gallery_thumbnail_image_width']	= array('Gallery Thumbnail Standard Width', 'In pixels.');
-$GLOBALS['TL_LANG']['tl_store']['gallery_thumbnail_image_height']	= array('Gallery Thumbnail Standard Height', 'In pixels.');
+$GLOBALS['TL_LANG']['tl_store']['gallery_image_width']				= array('Gallery Thumbnail Standard Width', 'In pixels.');
+$GLOBALS['TL_LANG']['tl_store']['gallery_image_height']				= array('Gallery Thumbnail Standard Height', 'In pixels.');
 $GLOBALS['TL_LANG']['tl_store']['invoiceLogo']						= array('Invoice Logo','Select a logo to show up on the invoices for this store.');
 $GLOBALS['TL_LANG']['tl_store']['isDefaultStore']					= array('Set as default store','Set this as the default store for back-end currency formatting and other locale-specific information.');
 

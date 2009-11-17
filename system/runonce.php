@@ -45,6 +45,7 @@ class IsotopeRunonce extends Frontend
 	public function run()
 	{
 		$this->insertDefaultAttributeTypes();
+		$this->updateStoreConfig();
 		$this->updateAttributes();
 		$this->updateProductCategories();
 		
@@ -56,6 +57,24 @@ class IsotopeRunonce extends Frontend
 		
 		// Alias is now part of the default DCA
 		$this->Database->execute("DELETE FROM tl_product_attributes WHERE field_name='alias'");
+		
+		
+	}
+	
+	
+	private function updateStoreConfig()
+	{
+		// tl_store.gallery_thumbnail_image_width has been renamed to tl_store.gallery_image_width
+		if ($this->Database->fieldExists('gallery_thumbnail_image_width', 'tl_store'))
+		{
+			$this->Database->execute("ALTER TABLE tl_store CHANGE COLUMN gallery_thumbnail_image_width gallery_image_width int(10) unsigned NOT NULL default '0'");
+		}
+		
+		// tl_store.gallery_thumbnail_image_height has been renamed to tl_store.gallery_image_height
+		if ($this->Database->fieldExists('gallery_thumbnail_image_height', 'tl_store'))
+		{
+			$this->Database->execute("ALTER TABLE tl_store CHANGE COLUMN gallery_thumbnail_image_height gallery_image_height int(10) unsigned NOT NULL default '0'");
+		}
 	}
 	
 	

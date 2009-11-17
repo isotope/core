@@ -428,7 +428,7 @@ abstract class ModuleIsotopeBase extends Module
 			$arrFormattedProductData[] = array
 			(
 				'id'				=> $row['product_id'],
-				'image'				=> $this->getImage('isotope/' . substr($arrImages[0]['src'], 0, 1) . '/' . $arrImages[0]['src'], $this->Isotope->Store->gallery_thumbnail_image_width, $this->Isotope->Store->gallery_thumbnail_image_height),
+				'image'				=> $this->getImage('isotope/' . substr($arrImages[0]['src'], 0, 1) . '/' . $arrImages[0]['src'], $this->Isotope->Store->gallery_image_width, $this->Isotope->Store->gallery_image_height),
 				'name'				=> $row['name'],
 				'link'				=> $this->generateProductLink($row['alias'], $row, $this->iso_reader_jumpTo, 'id'),
 				'price'				=> $this->generatePrice($row['price'], $this->strPriceTemplate),
@@ -1165,18 +1165,37 @@ abstract class ModuleIsotopeBase extends Module
 								
 								if ($objFile->isGdImage)
 								{
+									$file['is_image'] = true;
+									
+									foreach( array('large', 'medium', 'thumb', 'gallery') as $size )
+									{
+										$strImage = $this->getImage($strFile, $this->Isotope->Store->{$size . '_image_width'}, $this->Isotope->Store->{$size . '_image_height'});
+										$arrSize = @getimagesize(TL_ROOT . '/' . $strImage);
+										
+										$file[$size] = $strImage;
+										
+										if (is_array($arrSize) && strlen($arrSize[2]))
+										{
+											$file[$size . '_size'] = $arrSize[2];
+										}
+									}
+									
+									$varValue[] = $file;
+									
+/*
 									$varValue[] = array_merge($file, array
 									(
 										'is_image'		=> true,
 										'large'			=> $this->getImage($strFile, $this->Isotope->Store->large_image_width, $this->Isotope->Store->large_image_height),
 										'medium'		=> $this->getImage($strFile, $this->Isotope->Store->medium_image_width, $this->Isotope->Store->medium_image_height),
 										'thumb'			=> $this->getImage($strFile, $this->Isotope->Store->thumbnail_image_width, $this->Isotope->Store->thumbnail_image_height),
-										'gallery'		=> $this->getImage($strFile, $this->Isotope->Store->gallery_thumbnail_image_width, $this->Isotope->Store->gallery_thumbnail_image_height),
+										'gallery'		=> $this->getImage($strFile, $this->Isotope->Store->gallery_image_width, $this->Isotope->Store->gallery_image_height),
 										'large_size'	=> sprintf(' width="%s" height="%s"', $this->Isotope->Store->large_image_width, $this->Isotope->Store->large_image_height),
 										'medium_size'	=> sprintf(' width="%s" height="%s"', $this->Isotope->Store->medium_image_width, $this->Isotope->Store->medium_image_height),
 										'thumb_size'	=> sprintf(' width="%s" height="%s"', $this->Isotope->Store->thumbnail_image_width, $this->Isotope->Store->thumbnail_image_height),
-										'gallery_size'	=> sprintf(' width="%s" height="%s"', $this->Isotope->Store->gallery_thumbnail_image_width, $this->Isotope->Store->gallery_thumbnail_image_height),
+										'gallery_size'	=> sprintf(' width="%s" height="%s"', $this->Isotope->Store->gallery_image_width, $this->Isotope->Store->gallery_image_height),
 									));
+*/
 								}
 							}
 						}

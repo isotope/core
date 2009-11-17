@@ -499,7 +499,7 @@ class MediaManagement extends Backend
 	{
 		
 						
-			$objStoreSettings = $this->Database->prepare("SELECT gallery_thumbnail_image_width, gallery_thumbnail_image_height, thumbnail_image_width,thumbnail_image_height,medium_image_width,medium_image_height,large_image_width,large_image_height FROM tl_store WHERE id=?")
+			$objStoreSettings = $this->Database->prepare("SELECT gallery_image_width, gallery_image_height, thumbnail_image_width,thumbnail_image_height,medium_image_width,medium_image_height,large_image_width,large_image_height FROM tl_store WHERE id=?")
 											   ->limit(1)
 											   ->execute($this->Isotope->Store->id);
 			if($objStoreSettings->numRows < 1)
@@ -509,8 +509,8 @@ class MediaManagement extends Backend
 			
 			$arrConstraints = array 
 			(
-				'gallery_thumbnail_images_width'	=> $objStoreSettings->gallery_thumbnail_image_width, 
-				'gallery_thumbnail_images_height'	=> $objStoreSettings->gallery_thumbnail_image_height, 				
+				'gallery_images_width'				=> $objStoreSettings->gallery_image_width, 
+				'gallery_images_height'				=> $objStoreSettings->gallery_image_height, 				
 				'thumbnail_images_width' 			=> $objStoreSettings->thumbnail_image_width,
 				'thumbnail_images_height'			=> $objStoreSettings->thumbnail_image_height,
 				'medium_images_width'				=> $objStoreSettings->medium_image_width,
