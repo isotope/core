@@ -109,20 +109,20 @@ class ModuleProductLister extends ModuleIsotopeBase
 				//Set the default page filter clause
 				$arrCategories = $this->getChildRecords($objPage->id, 'tl_page');	//Get children of this page
 				$arrCategories[] = $objPage->id;
-				$strClauses = " AND c.pid IN (" . implode(',', $arrCategories) . ")";
+				$strClauses = " AND c.page_id IN (" . implode(',', $arrCategories) . ")";
 				break;
 			case 'current_category':
 				$this->blnIgnorePageId = false;
 				$this->blnGetChildren = false;
 				//Set the default page filter clause
 				$arrCategories = array($objPage->id);	//This page only.
-				$strClauses = " AND c.pid IN (" . implode(',', $arrCategories) . ")";
+				$strClauses = " AND c.page_id IN (" . implode(',', $arrCategories) . ")";
 				break;		
 		}
 	
 		
 		
-		$objProductIds = $this->Database->prepare("SELECT * FROM tl_product_to_category c, tl_product_data p WHERE c.product_id=p.id" . $strClauses);
+		$objProductIds = $this->Database->prepare("SELECT * FROM tl_product_categories c, tl_product_data p WHERE c.pid=p.id" . $strClauses);
 		
 		// Add pagination
 		if ($this->perPage > 0)

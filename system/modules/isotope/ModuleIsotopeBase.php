@@ -423,12 +423,12 @@ abstract class ModuleIsotopeBase extends Module
 			
 			$row['id'] = $row['product_id'];	//needed to ensure all product links work for now.
 			
-			$arrImages = deserialize($row['main_image']);
-		
+			//$arrImages = deserialize($row['main_image']);
+	
 			$arrFormattedProductData[] = array
 			(
 				'id'				=> $row['product_id'],
-				'image'				=> $this->getImage('isotope/' . substr($arrImages[0]['src'], 0, 1) . '/' . $arrImages[0]['src'], $this->Isotope->Store->gallery_image_width, $this->Isotope->Store->gallery_image_height),
+				'image'				=> (sizeof($arrImages[0]) ? $this->getImage('isotope/' . substr($arrImages[0]['src'], 0, 1) . '/' . $arrImages[0]['src'], $this->Isotope->Store->gallery_image_width, $this->Isotope->Store->gallery_image_height) : ""),
 				'name'				=> $row['name'],
 				'link'				=> $this->generateProductLink($row['alias'], $row, $this->iso_reader_jumpTo, 'id'),
 				'price'				=> $this->generatePrice($row['price'], $this->strPriceTemplate),
@@ -759,7 +759,7 @@ abstract class ModuleIsotopeBase extends Module
 	 * @param boolean $blnUseTable
 	 * @return string
 	 */
-	public function generateProductOptionWidget($strField, $arrData = array(), $strFormId, $blnUseTable = false)
+	public function generateProductOptionWidget($strField, $arrData = array(), $strFormId, $arrOptionFields, $blnUseTable = false)
 	{
 		
 			$strClass = $GLOBALS['TL_FFL'][$arrData['inputType']];
@@ -804,8 +804,18 @@ abstract class ModuleIsotopeBase extends Module
 				elseif ($objWidget->submitInput() && !$this->doNotSubmit)
 				{
 					//Store this options value to the productOptionsData array which is then serialized and stored for the given product that is being added to the cart.
-										
-					//$this->arrProductOptionsData[] = $this->getProductOptionValues($strField, $arrData['inputType'], $varValue); 					
+					
+					//Has to collect this data differently - product variant data relies upon actual values specified for the given product ID, where as simple options
+					//only rely upon predefined option lists and what ones were actually selected.
+					switch($strField)
+					{					
+						case 'product_variants':
+							$this->arrProductOptionsData = $this->getSubproductValues($varValue, $arrOptionFields);	//field is implied							
+							break;			
+						default:
+							$this->arrProductOptionsData[] = $this->getProductOptionValues($strField, $arrData['inputType'], $varValue); 
+							break;
+					}			
 				}
 			}
 			
@@ -822,6 +832,8 @@ abstract class ModuleIsotopeBase extends Module
 					
 		return $temp;
 	}
+	
+	
 	
 	private function getProductOptionValues($strField, $inputType, $varValue)
 	{	
@@ -914,29 +926,55 @@ abstract class ModuleIsotopeBase extends Module
 	 * @param array $arrOptions
 	 * @return void
 	 */
-	protected function validateOptionValues($arrOptions, $currFormId)
+	protected function validateOptionValues($arrOptions, $currFormId, $blnProductVariants = false, $intPid = 0)
 	{
 		if(sizeof($arrOptions) < 1)
 		{
 			return;
 		}
 		
-		foreach($arrOptions as $option)
+		if(!$blnProductVariants)
 		{
-			$arrAttributeData = $this->getProductAttributeData($option);
-			
-			if($arrAttributeData['is_customer_defined'])
+			foreach($arrOptions as $option)
 			{
-				$arrOptionFields[] = $k;
-						
-				$arrData = $this->getDCATemplate($arrAttributeData);	//Grab the skeleton DCA info for widget generation
-																
-				$this->generateProductOptionWidget($option, $arrData, $currFormId);
-
-			}
-															
-		}	
+				$arrAttributeData = $this->getProductAttributeData($option);
+				
+				if($arrAttributeData['is_customer_defined'])
+				{
+					$arrOptionFields[] = $k;
+							
+					$arrData = $this->getDCATemplate($arrAttributeData);	//Grab the skeleton DCA info for widget generation
+																	
+					$this->generateProductOptionWidget($option, $arrData, $currFormId);
 	
+				}
+																
+			}	
+		}
+		else
+		{
+			if($intPid>0)
+			{
+				//Create a special widget that combins all option value combos that are enabled.
+				$arrData = array
+				(
+					'name'			=> 'subproducts',
+					'description'	=> &$GLOBALS['TL_LANG']['tl_product_data']['product_options'],
+					'inputType'		=> 'select',					
+					'options'		=> $this->getSubproductOptionValues($intPid, $arrOptions),
+					'eval'			=> array()
+				);
+				
+				//$arrData = $this->getDCATemplate($arrAttributeData);	//Grab the skeleton DCA info for widget generation
+	
+				$product['options'][] = array
+				(
+					'name'			=> $k,
+					'description'	=> $arrAttributeData['description'],									
+					'html'			=> $this->generateProductOptionWidget('product_variants', $arrData, $currFormId, $arrOptions)
+				);	
+			}
+		}	
 	}
 	
 	protected function getDCATemplate($arrAttributeData)
@@ -1019,12 +1057,59 @@ abstract class ModuleIsotopeBase extends Module
 			
 			$arrOptions[] = array
 			(
-				'value'	=>		$option['id'],
+				'value'	=>		$option['id'] . '_' . $intPid,
 				'label' => 		$strOptionValue
 			);
 		}
 		
 		return $arrOptions;
+	}
+	
+	/*
+	 * Get the option value data for cart item elaboration
+	 * @param variant $varValue
+	 * @param array $arrOptionFields
+	 * @return array
+	 */
+	protected function getSubproductValues($varValue, $arrOptionFields)
+	{
+			
+		$strOptionValues = join(',', $arrOptionFields);
+		
+		$arrValue = explode('_', $varValue);
+		
+		//values are stored as <id>_<pid> format, e.g. 1_3
+		$intPid = $arrValue[1];
+		$intId = $arrValue[0];
+		
+		//get the selected variant values;
+		$objData = $this->Database->prepare("SELECT " . $strOptionValues . " FROM tl_product_data WHERE pid=? AND id=?")
+								  ->execute($intPid, $intId);
+		
+		if($objData->numRows < 1)
+		{
+			return false;
+		}
+		
+		$arrOptionValues = $objData->fetchAllAssoc();
+				
+		foreach($arrOptionValues as $row)
+		{
+			foreach($row as $k=>$v)
+			{
+			
+				$arrAttributeData = $this->getProductAttributeData($k);
+					
+				$arrOptionData[] = array
+				(
+					'name'		=> $arrAttributeData['name'],
+					'values'	=> array($v)		
+				);
+			}			
+		}
+		
+		return $arrOptionData;
+	
 	}
 	
 	protected function getOptionList($arrAttributeData)

@@ -388,7 +388,7 @@ class Isotope extends Controller
 						 	{
 								//Get first product image if none is specified as main image.
 								$this->import('MediaManagement');
-								$product[$field] = $this->MediaManagement->getFirstOrdinalImage($GLOBALS['TL_CONFIG']['isotope_base_path'] . '/%s/%s/images/gallery_thumbnail_images', $product['alias']);
+								//$product[$field] = $this->MediaManagement->getFirstOrdinalImage('isotope/' );
 								
 							}
 							break;
