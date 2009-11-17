@@ -44,8 +44,10 @@ class Isotope extends Frontend
 	 */
 	public function run()
 	{
+		$this->insertDefaultAttributeTypes();
 		$this->updateAttributes();
 		
+		// Checkout method has been renamed from "login" to "member" to prevent a problem with palette of the login module
 		$this->Database->execute("UPDATE tl_module SET iso_checkout_method='member' WHERE iso_checkout_method='login'");
 	}
 	
@@ -60,7 +62,11 @@ class Isotope extends Frontend
 		{
 			$this->Database->execute("UPDATE tl_product_attributes SET " . $field['name'] . "='' WHERE " . $field['name'] . "='0'");
 		}
-		
+	}
+	
+	
+	private function insertDefaultAttributeTypes()
+	{
 		$objAttributeTypes = $this->Database->execute("SELECT type FROM tl_product_attribute_types");
 		
 		if($objAttributeTypes->numRows < 1)

@@ -21,18 +21,14 @@
  * PHP version 5
  * @copyright  Winans Creative 2009
  * @author     Fred Bliss <fred@winanscreative.com>
+ * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
-/**
- * Class ProductCatalog 
- *
- * @author     Fred Bliss / Portions Authored by Martin Komara and John Brand 
- */
 class ProductCatalog extends Backend
 {
-	//set the store.
+
 	public function __construct()
 	{	
 		parent::__construct();
@@ -81,8 +77,6 @@ class ProductCatalog extends Backend
 			`add_video_file` char(1) NOT NULL default '0',
 			`option_collection` text NULL,
 	*/
-		
-	protected $arrPreExistingRecordInfo;
 
 	
 	/**
@@ -101,16 +95,15 @@ class ProductCatalog extends Backend
 			$objAttributeExists = $this->Database->prepare("SELECT COUNT(*) AS count FROM tl_product_attributes WHERE field_name=?")
 													   ->limit(1)
 													   ->execute($arrSet['field_name']);
+			
 			if($objAttributeExists->count < 1)
 			{
 				$arrAttributesToInsert[] = $arrSet;
 			}
-			
 		}
 			
 		if(sizeof($arrDefaultColumns))
 		{
-
 			foreach($arrDefaultColumns as $k=>$v)
 			{
 				$this->addDefaultAttribute($v, $k);
@@ -131,21 +124,6 @@ class ProductCatalog extends Backend
 		
 		// FIXME: should we exclude "globally disabled" fields?
 		$arrFields = $this->Database->execute("SELECT * FROM tl_product_attributes")->fetchAllAssoc();
-		
-		
-		foreach($arrFields as $field)
-		{
-			foreach($field as $k=>$v)
-			{
-				if($k=='is_hidden_on_backend' && $v!='1')
-				{
-					$arrFieldCollection[] = $field['field_name'];				
-				}
-			}
-		}			
-				
-		$GLOBALS['TL_DCA']['tl_product_data']['list']['label']['fields'] = array_merge($this->arrList, count($arrFieldCollection) ? $arrFieldCollection : array());
-		$GLOBALS['TL_DCA']['tl_product_data']['list']['label']['format'] = '<span style="color:#b3b3b3; padding-right:3px;">[%s]</span>' . (count($arrFields) ? join(', ', array_fill(0,count($arrFields),'%s')) : '');
 
 		// add palettes
 		
@@ -357,9 +335,9 @@ class ProductCatalog extends Backend
 				}
 					
 			}
-			
 		}
 	}
+	
 	
 	protected function getProductType($intProductId)
 	{
@@ -398,6 +376,7 @@ class ProductCatalog extends Backend
 		
 		return $arrReturn;
 	}
+	
 	
 	public function loadProductOptions($varValue, DataContainer $dc)
 	{
@@ -667,22 +646,15 @@ class ProductCatalog extends Backend
 //			$intEnd = $this->Input->get('end');
 //		}
 		
-		$this->import('MediaManagement');
-		
-		$objIsNewImport = $this->Database->prepare("SELECT id, pages, name, sku, alias, description, teaser, main_image FROM tl_product_data WHERE new_import=? AND id=?")
-										 ->execute(1, $dc->id);
+		$objIsNewImport = $this->Database->prepare("SELECT id, pages, name, sku, alias, description FROM tl_product_data WHERE new_import='1' AND id=?")
+										 ->execute($dc->id);
 		
 		
 		
-		if($objIsNewImport->numRows > 0)
+		if($objIsNewImport->numRows)
 		{		
-			//$arrNewImports = $objIsNewImport->fetchAllAssoc();
-			
 			while($objIsNewImport->next())
 			{
-			
-				
-				
 				if(strlen($objIsNewImport->sku) < 1)
 				{
 					$strSKU = $this->generateSKU('', $dc, $dc->id);
@@ -700,24 +672,12 @@ class ProductCatalog extends Backend
 				{
 					$strAlias = $objIsNewImport->alias;
 				}
-				
-				if(strlen($objIsNewImport->teaser) < 1)
-				{
-					$strTeaser = $this->generateTeaser($objIsNewImport->description, $dc, $dc->id, 'import');
-				}
-				else
-				{
-					$strTeaser = $objIsNewImport->teaser;
-				}
+
 				
 				$strSerializedValues = $this->prepareCategories($objIsNewImport->pages, $dc, $objIsNewImport->id);
-	
-				//$this->MediaManagement->thumbnailImportedImages($objIsNewImport->main_image, $dc, $dc->id, $strAlias);
-				
-				//$this->MediaManagement->thumbnailCurrentImageForListing($objIsNewImport->main_image, $dc);
 								
-				$this->Database->prepare("UPDATE tl_product_data SET sku=?, alias=?, teaser=?, pages=?, visibility=1, new_import=0 WHERE id=?")
-							   ->execute($strSKU, $strAlias, $strTeaser, $strSerializedValues, $dc->id);
+				$this->Database->prepare("UPDATE tl_product_data SET sku=?, alias=?, pages=?, visibility=1, new_import=0 WHERE id=?")
+							   ->execute($strSKU, $strAlias, $strSerializedValues, $dc->id);
 				
 								
 				$this->saveProductToCategories($strSerializedValues, $dc, $dc->id);
@@ -1221,72 +1181,6 @@ class ProductCatalog extends Backend
 		}
 
 		return $varValue;
-	}
-	
-	
-	/**
-	 * Generate teaser from description
-	 *
-	 * @param mixed
-	 * @param object
-	 * @return string
-	 */
-	public function generateTeaser($varValue, DataContainer $dc, $id=0, $strMode='')
-	{
-		//For import needs, this is an override of the current record ID because when importing we're
-		//not utlizing the DataContainer.  We should separate these functions with an intermediary function so that this logic
-		//which is repeated across various other functions can be fed just an integer value instead of the more specific
-		//DataContainer and its corresponding values.
-		if($id!=0)
-		{
-			$intId = $id;
-		}else{
-			$intId = $dc->id;
-		}
-		
-		//the initial teaser chunk
-		$string = substr($varValue, 0, $GLOBALS['TL_LANG']['MSC']['teaserLength']);
-		
-		$strFinal = strip_tags($string);					
-		
-		$string = preg_replace('/\[nbsp\]/', '', $strFinal);
-			
-		/*$char = strtolower(strlen($strFinal));
-								
-		while ($char > 0)
-		{
-			if ($strFinal{$char} == ".")
-			{
-				break;
-			}else{
-			
-				$char = $char - 1;
-			}
-		}
-		
-		$char++;
-				
-		$string = substr($strFinal, 0, $char); 	*/
-							
-		$objCurrentTeaser = $this->Database->prepare("SELECT teaser FROM tl_product_data WHERE id=?")
-										   ->limit(1)
-										   ->execute($intId);
-		
-		if($objCurrentTeaser->numRows > 0)
-		{
-			if(strlen($objCurrentTeaser->teaser) < 1)
-			{
-				$this->Database->prepare("UPDATE tl_product_data SET teaser=? WHERE id=?")
-								->execute($string, $intId);
-			}
-		}
-		
-		if($strMode!='import')
-		{
-			return $varValue;
-		}else{
-			return $string;
-		}
 	}
 	
 	
