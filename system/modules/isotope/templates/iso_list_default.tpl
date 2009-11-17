@@ -11,7 +11,7 @@
 <?php endforeach; endif; ?>
 
 <?php if ($this->sku): ?>
-<p class="sku"><?php echo $this->sku; ?></p><?php endif; if ($this->description): ?>
+<p class="sku"><?php echo $this->sku; ?></p><?php endif; if ($this->teaser): ?>
 <p class="teaser"><?php echo $this->teaser; ?></p><?php endif; ?>
 
 <p class="price<?php echo $this->use_price_override ? ' override' : ''; ?>"><?php echo $this->price; ?></p>
