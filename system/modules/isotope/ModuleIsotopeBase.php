@@ -1239,7 +1239,8 @@ abstract class ModuleIsotopeBase extends Module
 					case 'media':
 						$varValue = array();
 						$arrImages = deserialize($objProducts->{$attribute['field_name']});
-						if(sizeof($arrImages))
+						
+						if(strlen($arrImages[0]))
 						{
 							foreach( $arrImages as $k => $file )
 							{
