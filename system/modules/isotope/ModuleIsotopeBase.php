@@ -1319,7 +1319,7 @@ abstract class ModuleIsotopeBase extends Module
 		
 		$objTemplate->price = ($arrProduct['use_price_override'] && $arrProduct['use_price_override']['value']) ? $this->Isotope->formatPriceWithCurrency($arrProduct[$this->Isotope->Store->priceOverrideField]['value']) : $this->Isotope->formatPriceWithCurrency($arrProduct[$this->Isotope->Store->priceField]['value']);
 		
-		$objTemplate->href_reader = $this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($this->iso_reader_jumpTo)->fetchAssoc(), '/product/' . $arrProduct['alias']['value']);
+		$objTemplate->href_reader = $this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($this->iso_reader_jumpTo)->fetchAssoc(), '/product/' . $arrProduct['raw']['alias']);
 		
 		return $objTemplate->parse();
 	}

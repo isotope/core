@@ -646,7 +646,7 @@ class ProductCatalog extends Backend
 //			$intEnd = $this->Input->get('end');
 //		}
 		
-		$objIsNewImport = $this->Database->prepare("SELECT id, pages, name, sku, alias, description FROM tl_product_data WHERE new_import='1' AND id=?")
+		$objIsNewImport = $this->Database->prepare("SELECT id, pages, name, sku, description FROM tl_product_data WHERE new_import='1' AND id=?")
 										 ->execute($dc->id);
 		
 		
@@ -664,20 +664,10 @@ class ProductCatalog extends Backend
 					$strSKU = $objIsNewImport->sku;
 				}
 				
-				if(strlen($objIsNewImport->alias) < 1)
-				{
-					$strAlias = $this->generateAlias('', $dc, $dc->id);
-				}
-				else
-				{
-					$strAlias = $objIsNewImport->alias;
-				}
-
-				
 				$strSerializedValues = $this->prepareCategories($objIsNewImport->pages, $dc, $objIsNewImport->id);
 								
-				$this->Database->prepare("UPDATE tl_product_data SET sku=?, alias=?, pages=?, visibility=1, new_import=0 WHERE id=?")
-							   ->execute($strSKU, $strAlias, $strSerializedValues, $dc->id);
+				$this->Database->prepare("UPDATE tl_product_data SET sku=?, pages=?, visibility=1, new_import=0 WHERE id=?")
+							   ->execute($strSKU, $strSerializedValues, $dc->id);
 				
 								
 				$this->saveProductCategories($strSerializedValues, $dc, $dc->id);
@@ -815,7 +805,7 @@ class ProductCatalog extends Backend
 		}
 	
 	
-		$strPalette = '{general_legend},type';
+		$strPalette = '{general_legend},type,alias';
 		
 		//Build
 		foreach($arrOrderedFieldGroups as $k=>$v)
@@ -1075,57 +1065,6 @@ class ProductCatalog extends Backend
 		return $varValue;
 	}
 
-	
-	/**
-	 * Autogenerate an article alias if it has not been set yet
-	 * @param mixed
-	 * @param object
-	 * @return string
-	 */
-	public function generateAlias($varValue, DataContainer $dc, $id=0)
-	{
-		//For import needs, this is an override of the current record ID because when importing we're
-		//not utlizing the DataContainer.  We should separate these functions with an intermediary function so that this logic
-		//which is repeated across various other functions can be fed just an integer value instead of the more specific
-		//DataContainer and its corresponding values.
-		if($id!=0)
-		{
-			$intId = $id;
-		}else{
-			$intId = $dc->id;
-		}
-		
-		
-		$autoAlias = true;
-
-		// Generate alias if there is none
-		if (!strlen($varValue))
-		{
-			$objProductName = $this->Database->prepare("SELECT name FROM tl_product_data WHERE id=?")
-									   ->limit(1)
-									   ->execute($intId);
-
-			$autoAlias = true;
-			$varValue = standardize($objProductName->name);
-		}
-
-		$objAlias = $this->Database->prepare("SELECT id FROM tl_product_data WHERE id=? OR alias=?")
-								   ->execute($intId, $varValue);
-
-		// Check whether the page alias exists
-		if ($objAlias->numRows > 1)
-		{
-			if (!$autoAlias)
-			{
-				throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['aliasExists'], $varValue));
-			}
-
-			$varValue .= '.' . $intId;
-		}
-
-		return strtolower($varValue);
-	}
-	
 	
 	/**
 	 * Autogenerate an article sku if it has not been set yet

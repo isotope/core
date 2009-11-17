@@ -35,7 +35,6 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 	'config' => array
 	(
 		'dataContainer'               => 'Table',
-		'switchToEdit'                => false,
 		'enableVersioning'            => false,
 		'ctables'					  => array('tl_product_downloads', 'tl_product_categories'),
 		/*
@@ -117,7 +116,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 	'palettes' => array
 	(
 		'__selector__'				  => array('type'),
-		'default'					  => '{general_legend},type',
+		'default'					  => '{general_legend},type,alias',
 	),
 	
 	// Fields
@@ -143,6 +142,18 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 				array('ProductCatalog','saveProductCategories'),
 			),
 			//'explanation'             => 'pageCategories'
+		),
+		'alias' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['alias'],
+			'exclude'                 => true,
+			'inputType'               => 'text',
+			'eval'                    => array('rgxp'=>'alnum', 'doNotCopy'=>true, 'spaceToUnderscore'=>true, 'maxlength'=>128, 'tl_class'=>'clr'),
+			'save_callback' => array
+			(
+				array('tl_product_data', 'generateAlias')
+			)
+
 		),/*
 		'create_variations' => array
 		(
@@ -404,6 +415,45 @@ class tl_product_data extends Backend
 		}
 		
 		return implode(', ', $objCategories->fetchEach('title'));
+	}
+	
+	
+	/**
+	 * Autogenerate a page alias if it has not been set yet
+	 * @param mixed
+	 * @param object
+	 * @return string
+	 */
+	public function generateAlias($varValue, DataContainer $dc)
+	{
+		$autoAlias = false;
+
+		// Generate alias if there is none
+		if (!strlen($varValue))
+		{
+			$objProduct = $this->Database->prepare("SELECT sku, name FROM tl_product_data WHERE id=?")
+										 ->limit(1)
+										 ->execute($dc->id);
+
+			$autoAlias = true;
+			$varValue = strlen($objProduct->sku) ? standardize($objProduct->sku) : standardize($objProduct->name);
+		}
+
+		$objAlias = $this->Database->prepare("SELECT id FROM tl_product_data WHERE id=? OR alias=?")
+								   ->execute($dc->id, $varValue);
+
+		// Check whether the page alias exists
+		if ($objAlias->numRows > 1)
+		{
+			if (!$autoAlias)
+			{
+				throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['aliasExists'], $varValue));
+			}
+
+			$varValue .= '.' . $dc->id;
+		}
+
+		return $varValue;
 	}
 }
 

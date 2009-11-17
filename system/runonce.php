@@ -53,6 +53,9 @@ class IsotopeRunonce extends Frontend
 		
 		// Remove generateTeaser() callback on product description
 		$this->Database->execute("UPDATE tl_product_attributes SET save_callback='' WHERE save_callback='ProductCatalog.generateTeaser'");
+		
+		// Alias is now part of the default DCA
+		$this->Database->execute("DELETE FROM tl_product_attributes WHERE field_name='alias'");
 	}
 	
 	

@@ -381,33 +381,6 @@ $GLOBALS['ISO_ATTR'] = array
 		'delete_locked'				=> 1
 	),
 	
-	// Product Alias	
-	array
-	( 
-		'pid' 						=> 0, 
-		'tstamp'					=> time(),
-		'sorting'					=> $intSorting,
-		'type'						=> 'shorttext',
-		'field_name'				=> 'alias',
-		'fieldGroup'				=> 'general_legend',
-		'name'						=> 'Product Alias',
-		'description'				=> '',
-		'attr_use_mode'				=> 'fixed',
-		'is_customer_defined'		=> 0,
-		'is_visible_on_front'		=> 1,
-		'is_required'				=> 0,
-		'is_filterable'				=> 0,
-		'is_searchable'				=> 1,
-		'is_used_for_price_rules'	=> 0,
-		'is_multiple_select'		=> 0,
-		'use_rich_text_editor'		=> 0,
-		'is_user_defined'			=> 0,
-		'is_listing_field'			=> 1,
-		'delete_locked'				=> 1,
-		'rgxp'						=> 'extnd',
-		'save_callback'				=> 'ProductCatalog.generateAlias'
-	),
-	
 	// Product Visibility	
 	array
 	( 

@@ -58,6 +58,7 @@ CREATE TABLE `tl_product_data` (
   `archived` char(1) NOT NULL default '',
   `pages` text NULL,
   `type` varchar(255) NOT NULL default '',
+  `alias` varchar(128) NOT NULL default '',
   `new_import` char(1) NOT NULL default '',
   `old_images_list` text NULL,
   `option_set_source` varchar(64) NOT NULL default '',
