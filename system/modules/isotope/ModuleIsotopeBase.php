@@ -276,18 +276,6 @@ abstract class ModuleIsotopeBase extends Module
 		$objJump = $this->Database->prepare("SELECT id, alias FROM tl_page WHERE id=?")
 								  ->limit(1)
 								  ->execute($intJumpTo);
-			
-		
-		$objAsetId = $this->Database->prepare("SELECT id FROM tl_product_to_category WHERE product_id=?")
-									->limit(1)
-									->execute($arrProduct['id']);
-				
-		if($objAsetId->numRows < 1)
-		{
-			$intAsetId = 0;
-		}
-	
-		$intAsetId = $objAsetId->id;
 	
 		if ($objJump->numRows > 0)
 		{

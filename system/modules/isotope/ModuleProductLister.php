@@ -96,7 +96,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 		
 		$arrCategories = array($objPage->id);
 		
-		$objProductIds = $this->Database->prepare("SELECT * FROM tl_product_to_category c, tl_product_data p WHERE c.product_id=p.id AND c.pid IN (" . implode(',', $arrCategories) . ")");
+		$objProductIds = $this->Database->prepare("SELECT p.id FROM tl_product_categories c, tl_product_data p WHERE c.pid=p.id AND c.page_id IN (" . implode(',', $arrCategories) . ")");
 		
 		// Add pagination
 		if ($this->perPage > 0)
@@ -111,7 +111,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 			$objProductIds->limit($this->perPage, $offset);
 		}
 		
-		$arrProductData = $this->getProducts($objProductIds->execute()->fetchEach('product_id'));
+		$arrProductData = $this->getProducts($objProductIds->execute()->fetchEach('id'));
 				
 		if (!is_array($arrProductData) || !count($arrProductData))
 		{
@@ -236,7 +236,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 		
 		if($this->new_products_time_window < 1 && $this->featured_products < 1 && !$this->blnIgnorePageId)
 		{
-			$strClauses = " pid IN(" . $strPageList . ")";
+			$strClauses = " page_id IN(" . $strPageList . ")";
 		}
 
 		if(strlen($strClauses))
@@ -246,7 +246,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 		
 		
 		//Get the CAP aggregate sets 		
-		$objAggregateSets = $this->Database->prepare("SELECT * FROM tl_product_to_category" . $strClauses)
+		$objAggregateSets = $this->Database->prepare("SELECT * FROM tl_product_categories" . $strClauses)
 										  ->execute();
 		$strClauses = '';
 				
@@ -514,7 +514,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 				$intTotalRows += $objTotal->count;
 			}
 					
-			//Get the current collection of products based on the tl_product_to_category table data
+			//Get the current collection of products based on the tl_product_categories table data
 			$objProductCollection = $this->Database->prepare("SELECT id, type, tstamp, use_price_override, main_image " . strtolower($field_list) . " FROM tl_product_data WHERE " . $strBaseClause . $strFilterList . $strClauses);
 			
 				

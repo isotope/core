@@ -37,8 +37,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		'dataContainer'               => 'Table',
 		'switchToEdit'                => false,
 		'enableVersioning'            => false,
-		'doNotCopyRecords'            => true,
-		'ctables'					  => array('tl_product_downloads'),
+		'ctables'					  => array('tl_product_downloads', 'tl_product_categories'),
 		/*
 		'onload_callback'			  => array
 		(
@@ -59,7 +58,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			'mode'                    => 1,
 			'fields'                  => array('type', 'name'),
 			'flag'                    => 1,
-			'panelLayout'             => 'sort,filter;search,limit',
+			'panelLayout'             => 'filter;search,limit',
 		),
 		'label' => array
 		(
@@ -85,10 +84,16 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 				'href'                => 'act=edit',
 				'icon'                => 'edit.gif'
 			),
+			'copy' => array
+			(
+				'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['copy'],
+				'href'					=> 'act=copy',
+				'icon'					=> 'copy.gif'
+			),
 			'delete' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['delete'],
-				'href'                => 'key=delete',
+				'href'                => 'act=delete',
 				'icon'                => 'delete.gif',
 				'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
 			),
@@ -126,27 +131,17 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			'eval'					  => array('mandatory'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true),
 			'options_callback'		  => array('tl_product_data', 'getProductTypes'),
 		),
-		'tstamp' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['tstamp'],
-			'search'                  => false,
-			'sorting'				  => true,
-			'flag'                    => 6,
-			'eval'                    => array('rgxp'=>'datim') 
-		),
 		'pages' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['pages'],
-			'inputType'				  => 'pageTree',
-			'search'                  => false,
 			'filter'				  => true,
-			'sorting'				  => true,
-			'flag'                    => 1,
-			'eval'                    => array('mandatory'=>false, 'fieldType'=>'checkbox', 'multiple'=>true, 'helpwizard'=>true),
+			'inputType'				  => 'pageTree',
+			'foreignKey'			  => 'tl_page.title',
+			'eval'                    => array('mandatory'=>false, 'multiple'=>true, 'fieldType'=>'checkbox'),
 			'save_callback'			  => array
 			(
-				array('ProductCatalog','saveProductToCategories')
-			)
+				array('ProductCatalog','saveProductCategories'),
+			),
 			//'explanation'             => 'pageCategories'
 		),/*
 		'create_variations' => array

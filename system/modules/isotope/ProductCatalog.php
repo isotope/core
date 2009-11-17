@@ -680,7 +680,7 @@ class ProductCatalog extends Backend
 							   ->execute($strSKU, $strAlias, $strSerializedValues, $dc->id);
 				
 								
-				$this->saveProductToCategories($strSerializedValues, $dc, $dc->id);
+				$this->saveProductCategories($strSerializedValues, $dc, $dc->id);
 				
 				//Not yet..
 				//$this->saveFilterValuesToCategories($objIsNewImport->pages, $dc, $dc->id);
@@ -1202,57 +1202,32 @@ class ProductCatalog extends Backend
 	
 	
 	/**
-	 * Wrapper for the Category-Attribute-Product associative table logic.  Grabs all necessary values in order to update the CAP table.
-	 *
-	 * @param string
-	 * @param object
-	 * @return string
+	 * Save page ids to tl_product_categories table. This allows to retrieve all products associated to a page.
 	 */
-	public function saveProductToCategories($varValue, DataContainer $dc, $id=0)
-	{	
-		//For import needs, this is an override of the current record ID because when importing we're
-		//not utlizing the DataContainer.  We should separate these functions with an intermediary function so that this logic
-		//which is repeated across various other functions can be fed just an integer value instead of the more specific
-		//DataContainer and its corresponding values.			
-
-
-		if($id!=0)
-		{
-			$intId = $id;
-		}
-		else
-		{
-			$intId = $dc->id;
-		}
+	public function saveProductCategories($varValue, DataContainer $dc)
+	{
+		$arrPages = deserialize($varValue);
 		
-		// New way of storing cap_aggregate. One product per row!! .  This nukes all and redoes them each time the product is saved.  Much more simple.
-		$arrNewPageList = deserialize($varValue);
+		$this->Database->prepare("DELETE FROM tl_product_categories WHERE pid=?")->execute($dc->id);
 		
-		
-		$this->Database->prepare("DELETE FROM tl_product_to_category WHERE product_id=?")->execute($intId);
-		
-		if (is_array($arrNewPageList) && count($arrNewPageList))
+		if (is_array($arrPages) && count($arrPages))
 		{
 			$time = time();
 			$arrQuery = array();
 			$arrValues = array();
 			
-			$intSorting = $this->getNextSortValue('tl_product_to_category');
-			
-			foreach( $arrNewPageList as $intPage )
+			foreach( $arrPages as $intPage )
 			{
-				$arrQuery[] = '(?, ?, ?, ?)';
+				$arrQuery[] = '(?, ?, ?)';
 				
-				$arrValues[] = $intPage;
-				$arrValues[] = $intSorting;
+				$arrValues[] = $dc->id;
 				$arrValues[] = $time;
-				$arrValues[] = $intId;
-				$intSorting+=128;
+				$arrValues[] = $intPage;
 			}
 			
 			if (count($arrQuery))
 			{					   
-				$this->Database->prepare("INSERT INTO tl_product_to_category (pid, sorting, tstamp, product_id) VALUES ".implode(', ', $arrQuery))->execute($arrValues);
+				$this->Database->prepare("INSERT INTO tl_product_categories (pid, tstamp, page_id) VALUES ".implode(', ', $arrQuery))->execute($arrValues);
 			}
 		}
 	
@@ -1621,52 +1596,6 @@ class ProductCatalog extends Backend
 		return $varValue;
 	}
 */
-	
-	
-	
-	/**
-	 * Re-generate tl_product_to_category from pages field.
-	 * 
-	 * @access public
-	 * @return void
-	 */
-	public function repairCAP($dc)
-	{
-		// Delete all
-		$this->Database->prepare("TRUNCATE tl_product_to_category")->execute();	//Truncate to reset index value.
-		
-		$objProducts = $this->Database->execute("SELECT id,pages FROM " . $objAttributeSet->storeTable);
-	
-		$time = time();
-		$arrQuery = array();
-		$arrValues = array();
-		
-		while( $objProducts->next() )
-		{
-			$arrPages = deserialize($objProducts->pages);
-			
-			if (is_array($arrPages) && count($arrPages))
-			{
-				foreach( $arrPages as $intPage )
-				{
-					$arrQuery[] = '(?, ?, ?, ?, ?, ?, ?)';
-					
-					$arrValues[] = $intPage;
-					$arrValues[] = '0';
-					$arrValues[] = $time;
-					$arrValues[] = $objProducts->id;
-				}
-			}
-		}
-		
-		if (count($arrQuery))
-		{
-			$this->Database->prepare("INSERT INTO tl_product_to_category (pid, sorting, tstamp, product_id) VALUES ".implode(', ', $arrQuery))->execute($arrValues);
-		}
-
-		
-		$this->redirect(str_replace('key=repairCAP', '', $this->Environment->request));
-	}
 		
 }
 
