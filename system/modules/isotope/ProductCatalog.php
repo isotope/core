@@ -39,11 +39,6 @@ class ProductCatalog extends Backend
 		
 		$this->import('Isotope');
 	}
-	
-	private function createTable()
-	{
-		$this->Database->execute(sprintf($this->createTableStatement, 'tl_product_data'));
-	}
 
 	protected $sqlDef = array
 	(
@@ -79,18 +74,6 @@ class ProductCatalog extends Backend
 	
 	protected $dropColumnStatement = "ALTER TABLE tl_product_data DROP COLUMN %s";
 
-	protected $createTableStatement = "CREATE TABLE `%s` (
-			`id` int(10) unsigned NOT NULL auto_increment,
-		    `pid` int(10) unsigned NOT NULL default '0',
-		    `sorting` int(10) unsigned NOT NULL default '0',
-			`tstamp` int(10) unsigned NOT NULL default '0',
-			`pages` text NULL,
-			`type` varchar(255) NOT NULL default '',
-			`new_import` char(1) NOT NULL default '',
-  			`old_images_list` text NULL,
-			PRIMARY KEY  (`id`)
-		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-	
 	/*		    `audio_source` varchar(32) NOT NULL default '',
   			`audio_jumpTo` text NULL,
   			`audio_url` varchar(255) NOT NULL default '',
@@ -110,12 +93,6 @@ class ProductCatalog extends Backend
 	 */	
 	public function loadProductCatalogDCA($strTable)
 	{		
-		if(!$this->Database->tableExists('tl_product_data'))
-		{
-			$this->createTable();
-		}
-		
-		
 		//Check for any missing standard attributes and build a list which can then be added into the table tl_product_data.		
 		foreach($GLOBALS['ISO_ATTR'] as $arrSet)
 		{
