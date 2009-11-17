@@ -94,9 +94,34 @@ class ModuleProductLister extends ModuleIsotopeBase
 	{
 		global $objPage;
 		
-		$arrCategories = array($objPage->id);
 		
-		$objProductIds = $this->Database->prepare("SELECT p.id FROM tl_product_categories c, tl_product_data p WHERE c.pid=p.id AND c.page_id IN (" . implode(',', $arrCategories) . ")");
+		//Determine category scope
+		switch($this->iso_category_scope)
+		{
+			case 'global':
+				$this->blnIgnorePageId = true;
+				$strClauses = '';	//remove the default page filter clause, we're not filtering categories in this case.
+									//NOTE: not necessary to set $blnGetChildren to true because we're not filtering by page ID at all.
+				break;
+			case 'parent_and_children':
+				$this->blnGetChildren = true;
+				//Set the default page filter clause
+				$arrCategories = $this->getChildPages($objPage->id);	//Get children of this page
+				$arrCategories[] = $objPage->id;
+				$strClauses = " AND c.pid IN (" . implode(',', $arrCategories) . ")";
+				break;
+			case 'current_category':
+				$this->blnIgnorePageId = false;
+				$this->blnGetChildren = false;
+				//Set the default page filter clause
+				$arrCategories = array($objPage->id);	//This page only.
+				$strClauses = " AND c.pid IN (" . implode(',', $arrCategories) . ")";
+				break;		
+		}
+	
+		
+		
+		$objProductIds = $this->Database->prepare("SELECT * FROM tl_product_to_category c, tl_product_data p WHERE c.product_id=p.id" . $strClauses);
 		
 		// Add pagination
 		if ($this->perPage > 0)
