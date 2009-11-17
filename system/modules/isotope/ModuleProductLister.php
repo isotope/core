@@ -107,7 +107,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 
 				$this->blnGetChildren = true;
 				//Set the default page filter clause
-				$arrCategories = $this->getChildRecords($objPage->id, 'tl_pages');	//Get children of this page
+				$arrCategories = $this->getChildRecords($objPage->id, 'tl_page');	//Get children of this page
 				$arrCategories[] = $objPage->id;
 				$strClauses = " AND c.pid IN (" . implode(',', $arrCategories) . ")";
 				break;
