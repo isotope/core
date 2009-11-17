@@ -1239,48 +1239,50 @@ abstract class ModuleIsotopeBase extends Module
 					case 'media':
 						$varValue = array();
 						$arrImages = deserialize($objProducts->{$attribute['field_name']});
-						
-						foreach( $arrImages as $k => $file )
+						if(sizeof($arrImages))
 						{
-							$strFile = 'isotope/' . substr($file['src'], 0, 1) . '/' . $file['src'];
-							
-							if (is_file(TL_ROOT . '/' . $strFile))
+							foreach( $arrImages as $k => $file )
 							{
-								$objFile = new File($strFile);
+								$strFile = 'isotope/' . substr($file['src'], 0, 1) . '/' . $file['src'];
 								
-								if ($objFile->isGdImage)
+								if (is_file(TL_ROOT . '/' . $strFile))
 								{
-									$file['is_image'] = true;
+									$objFile = new File($strFile);
 									
-									foreach( array('large', 'medium', 'thumb', 'gallery') as $size )
+									if ($objFile->isGdImage)
 									{
-										$strImage = $this->getImage($strFile, $this->Isotope->Store->{$size . '_image_width'}, $this->Isotope->Store->{$size . '_image_height'});
-										$arrSize = @getimagesize(TL_ROOT . '/' . $strImage);
+										$file['is_image'] = true;
 										
-										$file[$size] = $strImage;
-										
-										if (is_array($arrSize) && strlen($arrSize[2]))
+										foreach( array('large', 'medium', 'thumb', 'gallery') as $size )
 										{
-											$file[$size . '_size'] = $arrSize[2];
+											$strImage = $this->getImage($strFile, $this->Isotope->Store->{$size . '_image_width'}, $this->Isotope->Store->{$size . '_image_height'});
+											$arrSize = @getimagesize(TL_ROOT . '/' . $strImage);
+											
+											$file[$size] = $strImage;
+											
+											if (is_array($arrSize) && strlen($arrSize[2]))
+											{
+												$file[$size . '_size'] = $arrSize[2];
+											}
 										}
+										
+										$varValue[] = $file;
+										
+	/*
+										$varValue[] = array_merge($file, array
+										(
+											'is_image'		=> true,
+											'large'			=> $this->getImage($strFile, $this->Isotope->Store->large_image_width, $this->Isotope->Store->large_image_height),
+											'medium'		=> $this->getImage($strFile, $this->Isotope->Store->medium_image_width, $this->Isotope->Store->medium_image_height),
+											'thumb'			=> $this->getImage($strFile, $this->Isotope->Store->thumbnail_image_width, $this->Isotope->Store->thumbnail_image_height),
+											'gallery'		=> $this->getImage($strFile, $this->Isotope->Store->gallery_image_width, $this->Isotope->Store->gallery_image_height),
+											'large_size'	=> sprintf(' width="%s" height="%s"', $this->Isotope->Store->large_image_width, $this->Isotope->Store->large_image_height),
+											'medium_size'	=> sprintf(' width="%s" height="%s"', $this->Isotope->Store->medium_image_width, $this->Isotope->Store->medium_image_height),
+											'thumb_size'	=> sprintf(' width="%s" height="%s"', $this->Isotope->Store->thumbnail_image_width, $this->Isotope->Store->thumbnail_image_height),
+											'gallery_size'	=> sprintf(' width="%s" height="%s"', $this->Isotope->Store->gallery_image_width, $this->Isotope->Store->gallery_image_height),
+										));
+	*/
 									}
-									
-									$varValue[] = $file;
-									
-/*
-									$varValue[] = array_merge($file, array
-									(
-										'is_image'		=> true,
-										'large'			=> $this->getImage($strFile, $this->Isotope->Store->large_image_width, $this->Isotope->Store->large_image_height),
-										'medium'		=> $this->getImage($strFile, $this->Isotope->Store->medium_image_width, $this->Isotope->Store->medium_image_height),
-										'thumb'			=> $this->getImage($strFile, $this->Isotope->Store->thumbnail_image_width, $this->Isotope->Store->thumbnail_image_height),
-										'gallery'		=> $this->getImage($strFile, $this->Isotope->Store->gallery_image_width, $this->Isotope->Store->gallery_image_height),
-										'large_size'	=> sprintf(' width="%s" height="%s"', $this->Isotope->Store->large_image_width, $this->Isotope->Store->large_image_height),
-										'medium_size'	=> sprintf(' width="%s" height="%s"', $this->Isotope->Store->medium_image_width, $this->Isotope->Store->medium_image_height),
-										'thumb_size'	=> sprintf(' width="%s" height="%s"', $this->Isotope->Store->thumbnail_image_width, $this->Isotope->Store->thumbnail_image_height),
-										'gallery_size'	=> sprintf(' width="%s" height="%s"', $this->Isotope->Store->gallery_image_width, $this->Isotope->Store->gallery_image_height),
-									));
-*/
 								}
 							}
 						}
