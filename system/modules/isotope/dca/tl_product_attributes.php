@@ -431,6 +431,7 @@ class tl_product_attributes extends Backend
 	 */
 	public function loadAttributes(DataContainer $dc)
 	{
+		$this->loadDataContainer('tl_product_data');
 		$this->import('ProductCatalog');
 		
 		$this->ProductCatalog->loadProductCatalogDCA('tl_product_data');

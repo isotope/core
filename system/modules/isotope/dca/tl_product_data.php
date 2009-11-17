@@ -68,6 +68,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		(
 			'fields'                  => array('product_name'),
 			'format'                  => '%s',
+			'label_callback'		  => array('tl_product_data','getRowLabel'),
 		),
 		'global_operations' => array
 		(
@@ -109,12 +110,174 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			),
 		),
 	),
+	
+	// Palettes
+	'palettes' => array
+	(
+		'__selector__'				  => array('type'),
+	),
+	
+	// Fields
+	'fields' => array
+	(
+		'type' => array
+		(
+			'label'					  =>  &$GLOBALS['TL_LANG']['tl_product_data']['type'],
+			'inputType'				  => 'select',
+			'filter'				  => true,
+			'eval'					  => array('mandatory'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true),
+			'options_callback'		  => array('tl_product_data', 'getProductTypes'),
+		),
+		'tstamp' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['tstamp'],
+			'search'                  => false,
+			'sorting'				  => true,
+			'flag'                    => 6,
+			'eval'                    => array('rgxp'=>'datim') 
+		),
+		'pages' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['pages'],
+			'inputType'				  => 'pageTree',
+			'search'                  => false,
+			'filter'				  => true,
+			'sorting'				  => true,
+			'flag'                    => 1,
+			'eval'                    => array('mandatory'=>false, 'fieldType'=>'checkbox', 'multiple'=>true, 'helpwizard'=>true),
+			'save_callback'			  => array
+			(
+				array('ProductCatalog','saveProductToCategories')
+			)
+			//'explanation'             => 'pageCategories'
+		),/*
+		'create_variations' => array
+		(
+			'label'					  => &$GLOBALS['TL_LANG']['tl_product_data']['create_variations'],
+			'inputType'				  => 'checkbox',
+			'eval'					  => array('submitOnChange'=>true)		
+		),*/
+		'option_set_source' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['option_set_source'],
+			'default'                 => 'new_option_set',
+			'inputType'               => 'radio',
+			//'options'                 => array('existing_option_set', 'new_option_set'),
+			'reference'               => &$GLOBALS['TL_LANG']['tl_product_data'],
+			'eval'                    => array('submitOnChange'=>true),	//, 'helpwizard'=>true)
+			'options_callback'		  => array('ProductCatalog','getOptionSets')
+		),
+		'option_sets' => array
+		(
+			'label'					  =>  &$GLOBALS['TL_LANG']['tl_product_data']['option_sets'],
+			'inputType'				  => 'select',
+			'eval'					  => array('includeBlankOption'=>true, 'submitOnChange'=>true),
+			'options_callback'		  => array('ProductCatalog','getProductOptionSets')
+		),
+		'option_set_title' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['option_set_title'],
+			'search'                  => true,
+			'inputType'               => 'text',
+			'eval'                    => array('rgxp'=>'extnd', 'maxlength'=>255)
+		),
+		'variants_wizard' => array
+		(
+			'label'					  => &$GLOBALS['TL_LANG']['tl_product_data']['variants_wizard'],
+			'inputType' 			  => 'variantsWizard',
+			'eval'					  => array('mandatory'=>false, 'enableDelete'=>false, 'helpwizard'=>false),
+			'explanation'			  => 'variantsWizard'
+		),/*
+		'add_audio_file' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['add_audio_file'],
+			'default'				  => 'internal',
+			'filter'                  => false,
+			'inputType'               => 'checkbox',
+			'eval'                    => array('submitOnChange'=>true)
+		),
+		'add_video_file' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['add_video_file'],
+			'default'				  => 'internal',
+			'filter'                  => false,
+			'inputType'               => 'checkbox',
+			'eval'                    => array('submitOnChange'=>true)
+		),
+		'audio_source' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['audio_source'],
+			'default'                 => 'internal',
+			'filter'                  => false,
+			'inputType'               => 'radio',
+			'options'                 => array('internal', 'external'),
+			'reference'               => &$GLOBALS['TL_LANG']['tl_product_data'],
+			'eval'                    => array('helpwizard'=>true)
+		),
+		'audio_jumpTo' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['audio_jumpTo'],
+			'inputType'               => 'fileTree',
+			'eval'                    => array('fieldType'=>'radio', 'files'=>true, 'helpwizard'=>true)
+		),
+		'audio_url' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['audio_url'],
+			'search'                  => true,
+			'inputType'               => 'text',
+			'eval'                    => array('decodeEntities'=>true, 'maxlength'=>255)
+		),
+		'video_source' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['video_source'],
+			'default'                 => 'internal',
+			'filter'                  => false,
+			'inputType'               => 'radio',
+			'options'                 => array('internal', 'external'),
+			'reference'               => &$GLOBALS['TL_LANG']['tl_product_data'],
+			'eval'                    => array('helpwizard'=>true)
+		),
+		'video_jumpTo' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['video_jumpTo'],
+			'inputType'               => 'fileTree',
+			'eval'                    => array('fieldType'=>'radio', 'files'=>true, 'helpwizard'=>true)
+		),
+		'video_url' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['video_url'],
+			'search'                  => true,
+			'inputType'               => 'text',
+			'eval'                    => array('decodeEntities'=>true, 'maxlength'=>255)
+		),
+		'option_collection' => array
+		(
+			'label'					  => &$GLOBALS['TL_LANG']['tl_product_data']['option_collection'],
+			'inputType'				  => 'productOptionWizard',
+			'load_callback'			  => array
+			(
+				array('ProductCatalog','loadProductOptions')
+			),
+			'save_callback'			  => array
+			(
+				array('ProductCatalog','saveProductOptions')
+			)
+		),*/
+	),
 );
 
 
 class tl_product_data extends Backend
 {
 
+	public function __construct()
+	{
+		parent::__construct();
+		
+		$this->import('Isotope');
+	}
+	
+	
 	/**
 	 * Show/hide the downloads button
 	 */
@@ -134,7 +297,7 @@ class tl_product_data extends Backend
 	
 	
 	/**
-	 * Only list non-archived prodcts
+	 * Only list product types a user is allowed to see.
 	 */
 	public function checkPermission($dc)
 	{
@@ -158,6 +321,92 @@ class tl_product_data extends Backend
 		{
 			$this->redirect('typolight/main.php?act=error');
 		}
+	}
+	
+	
+	/**
+	 * List products in backend.
+	 */
+	public function getRowLabel($row, $label = '')
+	{
+		$key = $row['archived'] ? '' : ($row['visibility'] ? 'published' : 'unpublished');
+		
+		$arrImages = deserialize($row['main_image']);
+		$thumbnail = '';
+		
+		if (is_array($arrImages) && count($arrImages))
+		{
+			foreach( $arrImages as $image )
+			{
+				$strImage = 'isotope/' . substr($image['src'], 0, 1) . '/' . $image['src'];
+				
+				if (!is_file(TL_ROOT . '/' . $strImage))
+					continue;
+					
+				$thumbnail = sprintf('<img src="%s" alt="%s" align="left" style="padding-right: 8px;" />', $this->getImage($strImage, 50, 50), $image['alt']);
+				break;
+			}
+		}
+		
+		$output = '<div style="margin-top:5px!important;margin-bottom:0px!important;" class="cte_type ' . $key . '"><div><span>' . $thumbnail . '<strong>' . $row['name'] . '</strong></span><div><span style="color:#b3b3b3;"><strong>' . $this->Isotope->formatPriceWithCurrency($row['price']) . '</strong></span></div><br /><br /><div><em>' . $GLOBALS['TL_LANG']['tl_product_data']['pages'][0] . ': ' . $this->getCategoryList(deserialize($row['pages'])) . '</em></div></div></div> ';
+		
+		$fields = array();
+		
+		return $output;
+	}
+	
+	
+	/**
+	 * Returns all allowed product types as array.
+	 *
+	 * @access public
+	 * @param object DataContainer $dc
+	 * @return array
+	 */
+	public function getProductTypes(DataContainer $dc)
+	{
+		$this->import('BackendUser', 'User');
+		
+		$arrTypes = $this->User->iso_product_types;
+		if (!is_array($arrTypes) || !count($arrTypes))
+		{
+			$arrTypes = array(0);
+		}
+		
+		$arrProductTypes = array();
+
+		$objProductTypes = $this->Database->execute("SELECT id,name FROM tl_product_types" . ($this->User->isAdmin ? '' : (" WHERE id IN (".implode(',', $arrTypes).")")));
+
+		while($objProductTypes->next())
+		{
+			$arrProductTypes[$objProductTypes->id] = $objProductTypes->name;
+		}
+
+		return $arrProductTypes;
+	}
+	
+	
+	/**
+	 * Produce a list of categories for the backend listing
+	 *
+	 * @param mixed
+	 * @return string
+	 */
+	private function getCategoryList($varValue)
+	{
+		if(!is_array($varValue) || !count($varValue))
+		{
+			return $GLOBALS['TL_LANG']['MSC']['noCategoriesAssociated'];
+		}
+		
+		$objCategories = $this->Database->execute("SELECT title FROM tl_page WHERE id IN (" . implode(',', $varValue) . ")");
+		
+		if(!$objCategories->numRows)
+		{
+			return $GLOBALS['TL_LANG']['MSC']['noCategoriesAssociated'];
+		}
+		
+		return implode(', ', $objCategories->fetchEach('title'));
 	}
 }
 

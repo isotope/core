@@ -48,8 +48,9 @@ CREATE TABLE `tl_module` (
 -- --------------------------------------------------------
 
 -- 
--- Table `tl_product_data` pid is product id.
+-- Table `tl_product_data`
 --
+
 CREATE TABLE `tl_product_data` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',

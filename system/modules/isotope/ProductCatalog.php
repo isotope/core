@@ -61,7 +61,6 @@ class ProductCatalog extends Backend
 	);
 	
 	protected $arrForm = array();
-	protected $arrFields = array();
 	protected $arrTypes = array('text','password','textarea','select','radio','checkbox','upload', 'hidden');
 	protected $arrList = array ('tstamp','pages','new_import'/*,'add_audio_file','add_video_file'*/);	//Basic required fields
 	protected $arrDefault = array ('id', 'tstamp','pages','type','new_import');
@@ -114,15 +113,6 @@ class ProductCatalog extends Backend
 		if(!$this->Database->tableExists('tl_product_data'))
 		{
 			$this->createTable();
-		}	
-		
-		$objAttributeTypes = $this->Database->execute("SELECT type FROM tl_product_attribute_types");
-		
-		if($objAttributeTypes->numRows < 1)
-		{
-			$this->Database->execute("INSERT INTO `tl_product_attribute_types` (`id`, `pid`, `sorting`, `tstamp`, `type`, `attr_datatype`, `inputType`, `eval`, `name`) VALUES
-(1, 0, 128, 1218221789, 'text', 'varchar', 'text', '', ''),(2, 0, 256, 1218221789, 'integer', 'int', 'text', '', ''),(3, 0, 384, 1218221789, 'decimal', 'decimal', 'text', '', ''),(4, 0, 512, 1218221789, 'longtext', 'text', 'textarea', '', ''),(5, 0, 640, 1218221789, 'datetime', 'datetime', 'text', '', ''),(6, 0, 768, 1218221789, 'select', 'options', 'select', '', ''),(7, 0, 896, 1218221789, 'checkbox', 'options', 'checkbox', '', ''),(8, 0, 1024, 1218221789, 'options', 'options', 'radio', '', ''),(9, 0, 1152, 1218221789, 'file', 'varchar', 'fileTree', '', ''),(10, 0, 1280, 1218221789, 'media', 'varchar', 'imageManager', '', ''),(11, 0, 150, 1218221789, 'shorttext', 'varchar', 'text', '', '')");	
-
 		}
 		
 		
@@ -164,10 +154,13 @@ class ProductCatalog extends Backend
 			
 				$sorting+=128;
 			}
-		}		
-		$this->initializeFields();	//Get field data from tl_product_attributes.  Stored in this->arrFields.
+		}
 		
-		foreach($this->arrFields as $field)
+		// FIXME: should we exclude "globally disabled" fields?
+		$arrFields = $this->Database->execute("SELECT * FROM tl_product_attributes")->fetchAllAssoc();
+		
+		
+		foreach($arrFields as $field)
 		{
 			foreach($field as $k=>$v)
 			{
@@ -179,14 +172,9 @@ class ProductCatalog extends Backend
 		}			
 				
 		$GLOBALS['TL_DCA']['tl_product_data']['list']['label']['fields'] = array_merge($this->arrList, count($arrFieldCollection) ? $arrFieldCollection : array());
-		$GLOBALS['TL_DCA']['tl_product_data']['list']['label']['format'] = '<span style="color:#b3b3b3; padding-right:3px;">[%s]</span>' . (count($this->arrFields) ? join(', ', array_fill(0,count($this->arrFields),'%s')) : '');
-		$GLOBALS['TL_DCA']['tl_product_data']['list']['label']['label_callback'] = array('ProductCatalog','getRowLabel');
+		$GLOBALS['TL_DCA']['tl_product_data']['list']['label']['format'] = '<span style="color:#b3b3b3; padding-right:3px;">[%s]</span>' . (count($arrFields) ? join(', ', array_fill(0,count($arrFields),'%s')) : '');
 
 		// add palettes
-		
-		//TODO: Make selectors dynamic
-		//$GLOBALS['TL_DCA']['tl_product_data']['palettes']['__selector__'] = array('add_audio_file','add_video_file');
-		$GLOBALS['TL_DCA']['tl_product_data']['palettes']['__selector__'] = array('type');
 		
 		//TODO: Make palettes dynamic - start with the basic fields and add additionals for the default palette, while loading the palettes as defined by
 		// each product type from tl_product_types.
@@ -203,175 +191,11 @@ class ProductCatalog extends Backend
 		
 		$GLOBALS['TL_DCA']['tl_product_data']['subpalettes'] = $this->arrSubPalettes;
 
-		// first add common DCA fields
-		$GLOBALS['TL_DCA']['tl_product_data']['fields']['type'] = 
-		array
-		(
-			'label'					  =>  &$GLOBALS['TL_LANG']['tl_product_data']['type'],
-			'inputType'				  => 'select',
-			'filter'				  => true,
-			'eval'					  => array('mandatory'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true),
-			'options_callback'		  => array('ProductCatalog','getProductTypes')
-		);
 		
-		$GLOBALS['TL_DCA']['tl_product_data']['fields']['tstamp'] =
-		array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['tstamp'],
-			'search'                  => false,
-			'sorting'				  => true,
-			'flag'                    => 6,
-			'eval'                    => array('rgxp'=>'datim') 
-		);	
-			
-		$GLOBALS['TL_DCA']['tl_product_data']['fields']['pages'] =
-		array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['pages'],
-			'inputType'				  => 'pageTree',
-			'search'                  => false,
-			'filter'				  => true,
-			'sorting'				  => true,
-			'flag'                    => 1,
-			'eval'                    => array('mandatory'=>false,'fieldType'=>'checkbox', 'multiple'=>true, 'helpwizard'=>true),
-			'reference'			      => $this->getPageLabels(),
-			'save_callback'			  => array
-			(
-				array('ProductCatalog','saveProductToCategories')
-			)
-			//'explanation'             => 'pageCategories'
-		);
-		
-		/*$GLOBALS['TL_DCA']['tl_product_data']['fields']['create_variations'] = array
-		(
-			'label'					  => &$GLOBALS['TL_LANG']['tl_product_data']['create_variations'],
-			'inputType'				  => 'checkbox',
-			'eval'					  => array('submitOnChange'=>true)		
-		);*/
-		
-		$GLOBALS['TL_DCA']['tl_product_data']['fields']['option_set_source'] = array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['option_set_source'],
-			'default'                 => 'new_option_set',
-			'inputType'               => 'radio',
-			//'options'                 => array('existing_option_set', 'new_option_set'),
-			'reference'               => &$GLOBALS['TL_LANG']['tl_product_data'],
-			'eval'                    => array('submitOnChange'=>true),	//, 'helpwizard'=>true)
-			'options_callback'		  => array('ProductCatalog','getOptionSets')
-		);
-			
-		$GLOBALS['TL_DCA']['tl_product_data']['fields']['option_sets'] = array
-		(
-			'label'					  =>  &$GLOBALS['TL_LANG']['tl_product_data']['option_sets'],
-			'inputType'				  => 'select',
-			'eval'					  => array('includeBlankOption'=>true, 'submitOnChange'=>true),
-			'options_callback'		  => array('ProductCatalog','getProductOptionSets')
-		);
-		
-		$GLOBALS['TL_DCA']['tl_product_data']['fields']['option_set_title'] = array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['option_set_title'],
-			'search'                  => true,
-			'inputType'               => 'text',
-			'eval'                    => array('rgxp'=>'extnd', 'maxlength'=>255)
-		);
-			
-		$GLOBALS['TL_DCA']['tl_product_data']['fields']['variants_wizard'] = array
-		(
-			'label'					  => &$GLOBALS['TL_LANG']['tl_product_data']['variants_wizard'],
-			'inputType' 			  => 'variantsWizard',
-			'eval'					  => array('mandatory'=>false, 'enableDelete'=>false, 'helpwizard'=>false),
-			'explanation'			  => 'variantsWizard'
-		);
-		
-		/*
-		$GLOBALS['TL_DCA']['tl_product_data']['fields']['add_audio_file'] = array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['add_audio_file'],
-			'default'				  => 'internal',
-			'filter'                  => false,
-			'inputType'               => 'checkbox',
-			'eval'                    => array('submitOnChange'=>true)
-		);
-		
-		$GLOBALS['TL_DCA']['tl_product_data']['fields']['add_video_file'] = array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['add_video_file'],
-			'default'				  => 'internal',
-			'filter'                  => false,
-			'inputType'               => 'checkbox',
-			'eval'                    => array('submitOnChange'=>true)
-		);
-	
-		$GLOBALS['TL_DCA']['tl_product_data']['fields']['audio_source'] = array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['audio_source'],
-			'default'                 => 'internal',
-			'filter'                  => false,
-			'inputType'               => 'radio',
-			'options'                 => array('internal', 'external'),
-			'reference'               => &$GLOBALS['TL_LANG']['tl_product_data'],
-			'eval'                    => array('helpwizard'=>true)
-		);
-				
-		$GLOBALS['TL_DCA']['tl_product_data']['fields']['audio_jumpTo'] = array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['audio_jumpTo'],
-			'inputType'               => 'fileTree',
-			'eval'                    => array('fieldType'=>'radio', 'files'=>true, 'helpwizard'=>true)
-		);
-		
-		$GLOBALS['TL_DCA']['tl_product_data']['fields']['audio_url'] = array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['audio_url'],
-			'search'                  => true,
-			'inputType'               => 'text',
-			'eval'                    => array('decodeEntities'=>true, 'maxlength'=>255)
-		);
-		
-		$GLOBALS['TL_DCA']['tl_product_data']['fields']['video_source'] = array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['video_source'],
-			'default'                 => 'internal',
-			'filter'                  => false,
-			'inputType'               => 'radio',
-			'options'                 => array('internal', 'external'),
-			'reference'               => &$GLOBALS['TL_LANG']['tl_product_data'],
-			'eval'                    => array('helpwizard'=>true)
-		);		
-		$GLOBALS['TL_DCA']['tl_product_data']['fields']['video_jumpTo'] = array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['video_jumpTo'],
-			'inputType'               => 'fileTree',
-			'eval'                    => array('fieldType'=>'radio', 'files'=>true, 'helpwizard'=>true)
-		);
-		
-		$GLOBALS['TL_DCA']['tl_product_data']['fields']['video_url'] = array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['video_url'],
-			'search'                  => true,
-			'inputType'               => 'text',
-			'eval'                    => array('decodeEntities'=>true, 'maxlength'=>255)
-		);
-
-		$GLOBALS['TL_DCA']['tl_product_data']['fields']['option_collection'] = array
-		(
-			'label'					  => &$GLOBALS['TL_LANG']['tl_product_data']['option_collection'],
-			'inputType'				  => 'productOptionWizard',
-			'load_callback'			  => array
-			(
-				array('ProductCatalog','loadProductOptions')
-			),
-			'save_callback'			  => array
-			(
-				array('ProductCatalog','saveProductOptions')
-			)
-		);*/
 		
 		// add DCA for form fields
-		foreach ($this->arrFields as $key=>$field) 
+		foreach ($arrFields as $field) 
 		{
-			
 			$eval = array();
 			//if ($field['mandatory']) $eval['mandatory'] = 'true';
 			if ($field['is_required']) $eval['mandatory'] = 'true';
@@ -454,8 +278,9 @@ class ProductCatalog extends Backend
 							$strForeignKey = $field['list_source_table'] . '.' . $field['list_source_field'];
 						
 						}
-					}else{
-					
+					}
+					else
+					{
 						$arrValues = array();
 						$arrOptionsList = deserialize($field['option_list']);
 						
@@ -482,45 +307,40 @@ class ProductCatalog extends Backend
 					break;
 			}
 			
-			$filter = ($this->arrForm['useFilter'] && $this->arrForm['filterField'] == $key);
+			$filter = ($this->arrForm['useFilter'] && $this->arrForm['filterField'] == $field['field_name']);
 
-			$GLOBALS['TL_DCA']['tl_product_data']['fields'][$key] =
-				array
+			$GLOBALS['TL_DCA']['tl_product_data']['fields'][$field['field_name']] = array
+			(
+				'label'				=> array($field['name'], $field['description']),
+				'inputType'			=> $inputType,
+				'search'			=> !$filter,
+				'filter'         	=> $filter,
+				'eval'				=> $eval,
+				'load_callback'		=> array
 				(
-					'label'           => array($field['name'], $field['description']),
-					'inputType'				=> $inputType,
-					'search'          => !$filter,
-					'filter'         	=> $filter,
-					'eval'            => $eval,
-					'load_callback'		=> array
-					(
-						array('ProductCatalog','loadField')
-					),
-					'save_callback'		=> array
-					(
-						array('ProductCatalog','saveField')
-					)
-				);
+					array('ProductCatalog','loadField')
+				),
+				'save_callback'		=> array
+				(
+					array('ProductCatalog','saveField')
+				)
+			);
 			
 			if (strlen($field['options_list'])) 
 			{
-				
-				$GLOBALS['TL_DCA']['tl_product_data']['fields'][$key]['options'] = array_keys($arrValues);
-				$GLOBALS['TL_DCA']['tl_product_data']['fields'][$key]['reference'] = $arrValues;
-
-
+				$GLOBALS['TL_DCA']['tl_product_data']['fields'][$field['field_name']]['options'] = array_keys($arrValues);
+				$GLOBALS['TL_DCA']['tl_product_data']['fields'][$field['field_name']]['reference'] = $arrValues;
 			}
 			
 			if(strlen($strForeignKey) && $field['type'] == 'select')
 			{
-				$GLOBALS['TL_DCA']['tl_product_data']['fields'][$key]['foreignKey'] = $strForeignKey;
+				$GLOBALS['TL_DCA']['tl_product_data']['fields'][$field['field_name']]['foreignKey'] = $strForeignKey;
 				$strForeignKey = "";
 			}
 						
 			
 			if (!empty($field['load_callback']))
 			{
-	
 				$arrCallbackSet = explode(',',$field['load_callback']);
 
 				if(is_array($arrCallbackSet))
@@ -530,10 +350,12 @@ class ProductCatalog extends Backend
 						$arrCallbacks[] = explode(".", $callback);
 					}
 																		
-					$GLOBALS['TL_DCA']['tl_product_data']['fields'][$key]['load_callback'] = $arrCallbacks;
+					$GLOBALS['TL_DCA']['tl_product_data']['fields'][$field['field_name']]['load_callback'] = $arrCallbacks;
 					
-				}else{
-					$GLOBALS['TL_DCA']['tl_product_data']['fields'][$key]['load_callback'] = array(
+				}
+				else
+				{
+					$GLOBALS['TL_DCA']['tl_product_data']['fields'][$field['field_name']]['load_callback'] = array(
 						explode(".", $field['load_callback'])
 					);
 				}
@@ -551,10 +373,12 @@ class ProductCatalog extends Backend
 						$arrCallbacks[] = explode(".", $callback);
 					}
 																		
-					$GLOBALS['TL_DCA']['tl_product_data']['fields'][$key]['save_callback'] = $arrCallbacks;
+					$GLOBALS['TL_DCA']['tl_product_data']['fields'][$field['field_name']]['save_callback'] = $arrCallbacks;
 					
-				}else{
-					$GLOBALS['TL_DCA']['tl_product_data']['fields'][$key]['save_callback'] = array(
+				}
+				else
+				{
+					$GLOBALS['TL_DCA']['tl_product_data']['fields'][$field['field_name']]['save_callback'] = array(
 						explode(".", $field['save_callback'])
 					);
 				}
@@ -562,8 +386,8 @@ class ProductCatalog extends Backend
 			}
 			
 		}
-		return $strTable;
 		
+		return $strTable;
 	}
 	
 	protected function getProductType($intProductId)
@@ -602,7 +426,6 @@ class ProductCatalog extends Backend
 		}
 		
 		return $arrReturn;
-	
 	}
 	
 	public function loadProductOptions($varValue, DataContainer $dc)
@@ -614,18 +437,20 @@ class ProductCatalog extends Backend
 			case 'new_option_set':
 				$strOptionSetName = $this->Input->post('option_set_name');
 				$arrValues = $this->Input->post('values');
+				
 				if(!sizeof($arrValues))
 				{
 					return $varValue;
-				}else{
+				}
+				else
+				{
 					foreach($arrValues as $key=>$attribute)
 					{
 						$arrAttributes[$key] = explode(',', trim($attribute));
 					}
-					
-					
 				}
 				break;
+				
 			case 'existing_option_set':
 				$strOptionSetId = $this->Input->post('option_sets');
 				
@@ -804,7 +629,6 @@ class ProductCatalog extends Backend
 	
 	public function loadField($varValue, DataContainer $dc)
 	{
-		
 		// HOOK: loadField callback
 		if (array_key_exists('loadField', $GLOBALS['TL_HOOKS']) && is_array($GLOBALS['TL_HOOKS']['loadField']))
 		{
@@ -815,13 +639,11 @@ class ProductCatalog extends Backend
 			}
 		}
 
-		
 		return $varValue;
 	}
 	
 	public function saveField($varValue, DataContainer $dc)
 	{
-	
 		$objAttribute = $this->Database->prepare("SELECT * FROM tl_product_attributes WHERE field_name=?")
 									   ->limit(1)
 									   ->execute($dc->field);
@@ -832,7 +654,9 @@ class ProductCatalog extends Backend
 		}
 		
 		if($objAttribute->is_filterable)
-				$this->saveFilterValuesToCategories($varValue, $dc);
+		{
+			$this->saveFilterValuesToCategories($varValue, $dc);
+		}
 		
 		//if($objAttribute->is_order_by_enabled)
 				
@@ -852,25 +676,25 @@ class ProductCatalog extends Backend
 		}
 		
 		return $varValue;
-		
 	}
+
 	
 	public function saveProduct(DataContainer $dc)
 	{
 		
-		/*if(!$this->Input->get('begin'))
-		{
-			$intBegin = 0;
-		}else{
-			$intBegin = $this->Input->get('begin');
-		}
-		
-		if(!$this->Input->get('end'))
-		{
-			$intEnd = 30;
-		}else{
-			$intEnd = $this->Input->get('end');
-		}*/
+//		if(!$this->Input->get('begin'))
+//		{
+//			$intBegin = 0;
+//		}else{
+//			$intBegin = $this->Input->get('begin');
+//		}
+//		
+//		if(!$this->Input->get('end'))
+//		{
+//			$intEnd = 30;
+//		}else{
+//			$intEnd = $this->Input->get('end');
+//		}
 		
 		$this->import('MediaManagement');
 		
@@ -930,23 +754,24 @@ class ProductCatalog extends Backend
 				//Not yet..
 				//$this->saveFilterValuesToCategories($objIsNewImport->pages, $dc, $dc->id);
 			}
-			/*
-			if(count($arrNewImports) < 30)
-			{
 			
-				$blnEnd = true;
-			}
-			
-			$intBegin += 30;
-			$intEnd += 30;
-			
-			$strURL = 'main.php?do=products_and_attributes&table=tl_product_data&act=edit&id=667&begin=' . $intBegin . '&end=' . $intEnd;
-			
-			if(!$blnEnd)
-			{
-				header($strURL);
-			}*/
+//			if(count($arrNewImports) < 30)
+//			{
+//			
+//				$blnEnd = true;
+//			}
+//			
+//			$intBegin += 30;
+//			$intEnd += 30;
+//			
+//			$strURL = 'main.php?do=products_and_attributes&table=tl_product_data&act=edit&id=667&begin=' . $intBegin . '&end=' . $intEnd;
+//			
+//			if(!$blnEnd)
+//			{
+//				header($strURL);
+//			}
 		}
+
 						
 		// HOOK: save product callback
 		if (array_key_exists('saveProduct', $GLOBALS['TL_HOOKS']) && is_array($GLOBALS['TL_HOOKS']['saveProduct']))
@@ -1070,7 +895,9 @@ class ProductCatalog extends Backend
 			if($k!='general_legend')
 			{
 				$strPalette .= '{' . $k . '},';
-			}else{
+			}
+			else
+			{
 				$strPalette .= ',';
 			}
 			
@@ -1113,27 +940,6 @@ class ProductCatalog extends Backend
 		return $objCurrentPalette->type;
 	}
 	
-	protected function getPageLabels()
-	{
-		$objPageLabels = $this->Database->prepare("SELECT id,title FROM tl_page")
-							 ->execute();
-							 
-		if($objPageLabels->numRows<1)
-		{
-			return array();
-		}
-		
-		$arrPageLabels= $objPageLabels->fetchAllAssoc();
-		
-		foreach ($arrPageLabels as $page)
-		{
-			$arrPages[$page['id']] = $page['title'];
-		}
-		
-		return $arrPages;
-	}
-	
-	
 	protected function prepareCategories($varValue, DataContainer $dc)
 	{
 		if(is_null($varValue) || strlen(trim($varValue)) < 1)
@@ -1150,7 +956,9 @@ class ProductCatalog extends Backend
 				{
 					return '';
 				}
-			}else{
+			}
+			else
+			{
 				$arrPages[] = $varValue;	//singular value
 			}
 			
@@ -1162,25 +970,7 @@ class ProductCatalog extends Backend
 		return $varValue;
 		
 	}
-	
-	protected function setRecordNewImportValue($varValue, DataContainer $dc, $id=0)
-	{
-		//For import needs, this is an override of the current record ID because when importing we're
-		//not utlizing the DataContainer.  We should separate these functions with an intermediary function so that this logic
-		//which is repeated across various other functions can be fed just an integer value instead of the more specific
-		//DataContainer and its corresponding values.
-		if($id!=0)
-		{
-			$intId = $id;
-		}else{
-			$intId = $dc->id;
-		}
-		
-		
-		$this->Database->prepare("UPDATE tl_product_data SET new_import=? WHERE id=? and new_import=1")
-								->execute(0, $intId);
-	}
-	
+
 	
 	public function generateMappingAttributeList()
 	{
@@ -1208,20 +998,6 @@ class ProductCatalog extends Backend
 					
 		return $arrOptions;
 	}
-	
-	
-	private function initializeFields() 
-	{
-		$objFields = $this->Database->prepare("SELECT * FROM tl_product_attributes")
-									->execute();
-		
-		while ($objFields->next())
-		{
-			$this->arrFields[$objFields->field_name] = $objFields->row();
-		}
-		
-	}
-		
 	
 	public function renameColumn($varValue, DataContainer $dc)
 	{
@@ -1323,41 +1099,6 @@ class ProductCatalog extends Backend
 	
 		return;
 	}
-	
-	
-	/**
-	 * Returns all allowed product types as array.
-	 *
-	 * @access public
-	 * @param object DataContainer $dc
-	 * @return array
-	 */
-	public function getProductTypes(DataContainer $dc)
-	{
-		$this->import('BackendUser', 'User');
-		
-		$arrTypes = $this->User->iso_product_types;
-		if (!is_array($arrTypes) || !count($arrTypes))
-		{
-			$arrTypes = array(0);
-		}
-		
-		$arrOptions = array();
-
-		$objProductTypes = $this->Database->execute("SELECT id,name FROM tl_product_types" . ($this->User->isAdmin ? '' : (" WHERE id IN (".implode(',', $arrTypes).")")));
-		
-		if($objProductTypes->numRows < 1)
-		{
-			return array();
-		}
-
-		while($objProductTypes->next())
-		{
-			$arrOptions[$objProductTypes->id] = $objProductTypes->name;
-		}
-
-		return $arrOptions;
-	}
 
 	
 	/** 
@@ -1383,7 +1124,6 @@ class ProductCatalog extends Backend
 
 	public function changeColumn($varValue, DataContainer $dc)
 	{
-		
 		$objField = $this->Database->prepare("SELECT id, type, name FROM tl_product_attributes WHERE id=?")
 				->limit(1)
 				->execute($dc->id);
@@ -1407,48 +1147,6 @@ class ProductCatalog extends Backend
 		return $varValue;
 	}
 
-	
-	/**
-	 * Row label.
-	 *
-	 * @access public
-	 * @param array $row
-	 * @param string $label
-	 * @param object $dc
-	 * @return string
-	 */
-	public function getRowLabel($row, $label = '')
-	{
-		
-		$this->initializeFields();
-		
-		//$output = '<div><span><img src="' . $row['thumbnail_image'] . '" width="100" alt="' . $row['name'] . '" align="left" style="padding-right: 8px;" /><strong>' . $row['name'] . '</strong></span><div><span style="color:#b3b3b3;"><strong>$' . $row['price'] . '</strong></span></div><br /><br /><div><em>Categories: ' . $this->getCategoryList(deserialize($row['pages'])) . '</em></div></div> ';
-		
-		$key = $row['archived'] ? '' : ($row['visibility'] ? 'published' : 'unpublished');
-		
-		$arrImages = deserialize($row['main_image']);
-		$thumbnail = '';
-		
-		if (is_array($arrImages) && count($arrImages))
-		{
-			foreach( $arrImages as $image )
-			{
-				$strImage = 'isotope/' . substr($image['src'], 0, 1) . '/' . $image['src'];
-				
-				if (!is_file(TL_ROOT . '/' . $strImage))
-					continue;
-					
-				$thumbnail = sprintf('<img src="%s" alt="%s" align="left" style="padding-right: 8px;" />', $this->getImage($strImage, 50, 50), $image['alt']);
-				break;
-			}
-		}
-		
-		$output = '<div style="margin-top:5px!important;margin-bottom:0px!important;" class="cte_type ' . $key . '"><div><span>' . $thumbnail . '<strong>' . $row['name'] . '</strong></span><div><span style="color:#b3b3b3;"><strong>' . $this->Isotope->formatPriceWithCurrency($row['price']) . '</strong></span></div><br /><br /><div><em>' . $GLOBALS['TL_LANG']['tl_product_data']['pages'][0] . ': ' . $this->getCategoryList(deserialize($row['pages'])) . '</em></div></div></div> ';
-		
-		$fields = array();
-		
-		return $output;
-	}
 	
 	/**
 	 * Autogenerate an article alias if it has not been set yet
@@ -1500,8 +1198,9 @@ class ProductCatalog extends Backend
 		return strtolower($varValue);
 	}
 	
+	
 	/**
-	 * Autogenerate an article alias if it has not been set yet
+	 * Autogenerate an article sku if it has not been set yet
 	 * @param mixed
 	 * @param object
 	 * @return string
@@ -1556,7 +1255,9 @@ class ProductCatalog extends Backend
 		return $varValue;
 	}
 	
+	
 	/**
+	 * Generate teaser from description
 	 *
 	 * @param mixed
 	 * @param object
@@ -1620,31 +1321,6 @@ class ProductCatalog extends Backend
 		}
 	}
 	
-	/**
-	 * Produce a list of categories for the backend listing
-	 *
-	 * @param variant
-	 * @return string
-	 */
-	private function getCategoryList($varValue)
-	{
-		if(!is_array($varValue) || sizeof($varValue) < 1)
-		{
-			return $GLOBALS['TL_LANG']['MSC']['noCategoriesAssociated'];
-		}
-		
-		$objCategories = $this->Database->prepare("SELECT title FROM tl_page WHERE id IN (" . join(",", $varValue) . ")")
-										->execute();
-		
-		if($objCategories->numRows < 1)
-		{
-			return $GLOBALS['TL_LANG']['MSC']['noAssociatedCategories'];
-		}
-		
-		$arrCategories = $objCategories->fetchEach('title');
-		
-		return join(", ", $arrCategories);
-	}
 	
 	/**
 	 * Standardize an attribute title to valid mysql field characters and case
@@ -1717,8 +1393,6 @@ class ProductCatalog extends Backend
 				$this->Database->prepare("INSERT INTO tl_product_to_category (pid, sorting, tstamp, product_id) VALUES ".implode(', ', $arrQuery))->execute($arrValues);
 			}
 		}
-		
-		
 	
 		return $varValue;
 	}
@@ -1735,7 +1409,6 @@ class ProductCatalog extends Backend
 	 */
 	public function saveFilterValuesToCategories($varValue, DataContainer $dc, $id=0)
 	{		
-		
 		if(is_null($varValue) || (is_int($varValue) && $varValue == 0))
 		{
 			return $varValue;
@@ -1747,10 +1420,11 @@ class ProductCatalog extends Backend
 		if($id!=0)
 		{
 			$intId = $id;
-		}else{
+		}
+		else
+		{
 			$intId = $dc->id;
 		}
-
 						
 		//Get the current attribute set		
 		$objAttributeID = $this->Database->prepare("SELECT id FROM tl_product_attributes WHERE field_name=?")
@@ -1759,7 +1433,6 @@ class ProductCatalog extends Backend
 		
 		if($objAttributeID->numRows < 1)
 		{
-
 			return $varValue;
 		}
 		
@@ -1986,93 +1659,6 @@ class ProductCatalog extends Backend
 		return;
 	}
 	
-	
-	public function getDefaultDca()
-	{
-		$this->loadLanguageFile('tl_product_data');
-		
-		return array
-		(
-			'config' => array 
-			(
-				'dataContainer'               => 'Table',
-				'switchToEdit'                => true, 
-				'enableVersioning'            => false
-			),
-			
-			'list' => array
-			(
-				'sorting' => array
-				(
-					'mode'                    => 4,
-					'flag'                    => 12,
-					'panelLayout'             => 'filter,limit;search,sort',
-					'headerFields'            => array('name', 'tstamp')
-				),
-				'global_operations' => array
-				(
-					'all' => array
-					(
-							'label'               => &$GLOBALS['TL_LANG']['MSC']['all'],
-							'href'                => 'act=select',
-							'class'               => 'header_edit_all',
-							'attributes'          => 'onclick="Backend.getScrollOffset();"'
-					)
-				),
-				
-				'operations' => array
-				(
-					'edit' => array
-					(
-						'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['edit'],
-						'href'                => 'act=edit',
-						'icon'                => 'edit.gif',
-					),
-					'copy' => array
-					(
-						'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['copy'],
-						'href'                => 'act=copy',
-						'icon'                => 'copy.gif'
-					),
-					'cut' => array
-					(
-						'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['cut'],
-						'href'                => 'act=paste&amp;mode=cut',
-						'icon'                => 'cut.gif',
-						'attributes'          => 'onclick="Backend.getScrollOffset();"'
-					), 
-					'delete' => array
-					(
-						'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['delete'],
-						'href'                => 'act=delete',
-						'icon'                => 'delete.gif',
-						'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
-					),
-					'show' => array
-					(
-						'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['show'],
-						'href'                => 'act=show',
-						'icon'                => 'show.gif'
-					)
-				),
-			),
-			
-			'palettes' => array
-			(
-			),
-			
-			'subpalettes' => array
-			(
-			),
-			
-			'fields' => array
-			(
-			
-			)
-		);
-	}
-		
-	
 	private function generateTitle($strFormat, $values)
 	{
 		$fields = $GLOBALS['TL_DCA']['tl_product_data']['list']['label']['fields'];
@@ -2108,6 +1694,7 @@ class ProductCatalog extends Backend
 				$strFormat = str_replace('{{'.$match.'}}', $replace, $strFormat);
 			}
 		}
+		
 		return $strFormat;
 	}
 
@@ -2132,49 +1719,7 @@ class ProductCatalog extends Backend
 		return '<img src="' . $this->getImage($src, $params['w'], $params['h']) . '" alt="'.specialchars($label).'" />';
 
 	}
-    
-	private function formatTitle($value, &$fieldConf)
-	{
-		if (strlen($value))
-		{
-			switch ($fieldConf['eval']['isotope']['formatFunction'])
-			{
-				case 'string':
-						$value = sprintf($fieldConf['eval']['isotope']['formatStr'], $value);
-						break;
-						
-				case 'number':
-						$decimalPlaces = is_numeric($fieldConf['eval']['catalog']['formatStr']) ? 
-								intval($fieldConf['eval']['catalog']['formatStr']) : 
-								0;
-						$value = number_format($value, $decimalPlaces, 
-								$GLOBALS['TL_LANG']['MSC']['decimalSeparator'],
-								$GLOBALS['TL_LANG']['MSC']['thousandsSeparator']);
-						break;
-						
-				case 'money':
-						$value = money_format($fieldConf['eval']['isotope']['formatStr'], $value);
-						break;
-						
-				case 'date':
-						$value = date($fieldConf['eval']['isotope']['formatStr'], $value);
-						break;
-						
-				default:
-						if ($fieldConf['eval']['rgxp'] == 'date' || $fieldConf['eval']['rgxp'] == 'datim')
-						{
-								$value = date($GLOBALS['TL_CONFIG'][$fieldConf['eval']['rgxp'].'Format'], $value);
-						}
-			}
-			
-			if ($fieldConf['eval']['isotope']['type'] == 'checkbox' && $value)
-			{
-				$value = $fieldConf['label'][0];
-			}
-		}
-				
-		return $value;
-	}
+
 	
 /*
 	public function importAlternateSourceToCollection($varValue, DataContainer $dc)
