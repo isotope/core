@@ -5,7 +5,7 @@
 <?php endif; ?>
 
 <?php if(!sizeof($this->products)): ?>
-	<div class="noItems"><?php echo $this->noItemsInCart; ?></div>
+	<div class="empty"><?php echo $this->noItemsInCart; ?></div>
 <?php else: ?>
 <form action="<?php echo $this->cartJumpTo; ?>" method="post" name="cart_full">
 <input type="hidden" name="action" value="cart_quantity_update"  />
