@@ -87,7 +87,7 @@ $GLOBALS['TL_LANG']['MSC']['buttonActionString']['add_to_cart'] = 'Add product %
 		
 $GLOBALS['TL_LANG']['MSC']['labelPagerSectionTitle'] = 'Page:';
 $GLOBALS['TL_LANG']['MSC']['labelOrderBy'] = 'Order By:';
-$GLOBALS['TL_LANG']['MSC']['noProducts'] = 'There are no products available in this category.';
+$GLOBALS['TL_LANG']['MSC']['noProducts'] = 'No products have been found.';
 $GLOBALS['TL_LANG']['MSC']['invalidProductInformation'] = "We're sorry, the product information you have requested is not showing up in our store. For further assistance please contact us.";
 $GLOBALS['TL_LANG']['MSC']['productDescriptionLabel'] = 'Description';
 

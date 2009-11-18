@@ -1,5 +1,5 @@
 <input type="hidden" name="product_id" value="<?php echo $this->raw['id']; ?>" />
-
+<input type="hidden" name="quantity_requested" value="1" />
 <h3><a href="<?php echo $this->href_reader; ?>"><?php echo $this->name; ?></a></h3>
 
 <?php if ($this->hasImage): ?>
