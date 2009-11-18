@@ -916,9 +916,8 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			if (!$objModule->available)
 				continue;
 						
-			$arrModules[] = sprintf('<input id="ctrl_payment_module_%s" type="radio" name="payment[module]" onclick="Isotope.toggleAddressFields(this,%s)" value="%s"%s /> <label for="ctrl_payment_module_%s">%s</label>',
+			$arrModules[] = sprintf('<input id="ctrl_payment_module_%s" type="radio" name="payment[module]" value="%s"%s /> <label for="ctrl_payment_module_%s">%s</label>',
 									 $objModule->id,
-									 'payment_module_fields_' . $objModule->id,
 									 $objModule->id,
 									 (($arrData['module'] == $objModule->id || $objModules->numRows==1) ? ' checked="checked"' : ''),
 									 $objModule->id,
