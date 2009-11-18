@@ -59,7 +59,7 @@ class ProductCatalog extends Backend
 	protected $arrSubPalettes = array();
 	protected $arrSelectors = array();
 	
-	protected $systemColumns = array('id', 'pid', 'sorting', 'tstamp', 'alias');
+	protected $systemColumns = array('id', 'pid', 'sorting', 'tstamp', 'alias', 'published');
 	
 	protected $renameColumnStatement = "ALTER TABLE tl_product_data CHANGE COLUMN %s %s %s";
 	
