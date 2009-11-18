@@ -54,7 +54,6 @@ class ProductCatalog extends Backend
 	protected $arrForm = array();
 	protected $arrTypes = array('text','password','textarea','select','radio','checkbox','upload', 'hidden');
 	protected $arrList = array ('tstamp','pages','new_import'/*,'add_audio_file','add_video_file'*/);	//Basic required fields
-	protected $arrDefault = array ('id', 'tstamp','pages','type','new_import');
 	protected $arrData = array();
 	protected $arrSubPalettes = array();
 	protected $arrSelectors = array();
