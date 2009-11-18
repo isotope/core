@@ -350,15 +350,7 @@ class IsotopeCart extends Model
 	 */
 	public function getProducts()
 	{
-		if (!$this->arrProducts)
-		{
-			$objCartData = $this->Database->prepare("SELECT * FROM tl_cart_items WHERE tl_cart_items.pid=?")->execute($this->id);
-						
-			$this->arrProducts = $objCartData->fetchAllAssoc();
-	
-		}
-
-		return $this->arrProducts;
+		return $this->Database->prepare("SELECT * FROM tl_cart_items WHERE tl_cart_items.pid=?")->execute($this->id)->fetchAllAssoc();
 	}
 	
 	
@@ -678,13 +670,20 @@ class IsotopeCart extends Model
 		if (!is_array($arrAttributeIds) || !count($arrAttributeIds))
 			return;
 			
-		$objAttributes = $this->Database->execute("SELECT * FROM tl_product_attributes WHERE id IN (" . implode(',', $arrAttributeIds) . ") AND disabled=''");
+		$objAttributes = $this->Database->execute("SELECT * FROM tl_product_attributes");
 		
 		
 		$arrSet = array('pid'=>$this->id, 'tstamp'=>time(), 'product_id'=>$objProduct->id, 'quantity_requested'=>1);
-		$arrProductData = array();
+		$arrProductData = $objProduct->row();
 		while( $objAttributes->next() )
 		{
+			// Drop disabled attribute data
+			if ($objAttributes->disabled || !in_array($objAttributes->id, $arrAttributeIds))
+			{
+				unset($arrProductData[$objAttributes->field_name]);
+				continue;
+			}
+			
 			$varValue = $objAttributes->is_customer_defined ? $this->Input->post($objAttributes->field_name) : $objProduct->{$objAttributes->field_name};
 			
 			switch( $objAttributes->field_name )
