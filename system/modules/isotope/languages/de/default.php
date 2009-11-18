@@ -52,6 +52,8 @@ $GLOBALS['TL_LANG']['ERR']['noStoreConfigurationSet'] = 'Please create a store c
 $GLOBALS['TL_LANG']['ERR']['productNameMissing'] = '<no product name found>';
 $GLOBALS['TL_LANG']['ERR']['noSubProducts'] = 'no sub-products found';
 $GLOBALS['TL_LANG']['ERR']['searchNotEnabled'] = 'Search functionality is not enabled!';
+$GLOBALS['TL_LANG']['ERR']['emptyOrderHistory']			= 'Sie haben noch keine Bestellungen getätigt.';
+$GLOBALS['TL_LANG']['ERR']['orderNotFound']				= 'Die gewünschte Bestellung wurde nicht gefunden.';
 
 
 /**
