@@ -64,24 +64,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 			
 			return $objTemplate->parse();
 		}
-
-
-	
-		// Fallback template
-		if (!strlen($this->iso_list_layout))
-		{
-			$this->iso_list_layout = 'iso_list_default';
-		}
-
-		return parent::generate();
-	}
-	
-	
-	/**
-	 * Generate module
-	 */
-	protected function compile()
-	{
+		
 		global $objPage;
 		
 		//Determine category scope
@@ -104,7 +87,19 @@ class ModuleProductLister extends ModuleIsotopeBase
 				$this->arrCategories = array($objPage->id);
 				break;		
 		}
+		
+		if (!count($this->arrCategories))
+			return '';
+
+		return parent::generate();
+	}
 	
+	
+	/**
+	 * Generate module
+	 */
+	protected function compile()
+	{
 		$objProductIds = $this->Database->prepare("SELECT * FROM tl_product_categories c, tl_product_data p WHERE c.pid=p.id AND c.page_id IN (" . implode(',', $this->arrCategories) . ")");
 		
 		// Add pagination
