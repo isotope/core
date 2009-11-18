@@ -672,8 +672,7 @@ class IsotopeCart extends Model
 			
 		$objAttributes = $this->Database->execute("SELECT * FROM tl_product_attributes");
 		
-		
-		$arrSet = array('pid'=>$this->id, 'tstamp'=>time(), 'product_id'=>$objProduct->id, 'quantity_requested'=>1);
+		$arrSet = array('pid'=>$this->id, 'tstamp'=>time(), 'product_id'=>$objProduct->id);
 		
 		if (is_array($arrProduct) && strlen($arrProduct['href_reader']))
 		{
@@ -693,20 +692,21 @@ class IsotopeCart extends Model
 			$varValue = $objAttributes->is_customer_defined ? $this->Input->post($objAttributes->field_name) : $objProduct->{$objAttributes->field_name};
 			
 			switch( $objAttributes->field_name )
-			{
-				case 'quantity':
-					$arrSet['quantity_requested'] = is_numeric($varValue) ? $varValue : 1;
-					break;
-					
+			{					
 				case $this->Isotope->Store->priceField:
 					$arrSet['price'] = $varValue;
+					break;
 				
 				default:
 					$arrProductData[$objAttributes->field_name] = $varValue;
+					break;
 			}
 		}
 		
+		$arrSet['quantity_requested'] = $this->Input->post('quantity_requested') ? $this->Input->post('quantity_requested') : 1;
+				
 		$strProductData = serialize($arrProductData);
+		
 		$arrSet['product_data'] = $strProductData;
 		
 		if (!$this->Database->prepare("UPDATE tl_cart_items SET tstamp=?, quantity_requested=quantity_requested+" . $arrSet['quantity_requested'] . " WHERE pid=? AND product_id=? AND product_data=?")->execute($arrSet['tstamp'], $this->id, $objProduct->id, $strProductData)->affectedRows)
