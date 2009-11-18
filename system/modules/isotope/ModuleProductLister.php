@@ -44,7 +44,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 	/**
 	 * The ids of all pages we take care of. this is what should later be used eg. for filter data.
 	 */
-	protected $arrCategories;
+	protected $arrCategories = array();
         
         
 	/**
@@ -71,15 +71,15 @@ class ModuleProductLister extends ModuleIsotopeBase
 		switch($this->iso_category_scope)
 		{
 			case 'global':
-				$this->arrCategories = array_unshift($this->getChildRecords($objPage->rootId, 'tl_page'), $objPage->rootId);
+				 $this->arrCategories = array_merge($this->getChildRecords($objPage->rootId, 'tl_page'), array($objPage->rootId));
 				break;
 				
 			case 'parent_and_first_child':
-				$this->arrCategories = array_unshift($this->Database->prepare("SELECT id FROM tl_page WHERE pid=?")->execute($objPage->id)->fetchEach('id'), $objPage->id);
+				$this->arrCategories = array_merge($this->Database->prepare("SELECT id FROM tl_page WHERE pid=?")->execute($objPage->id)->fetchEach('id'), array($objPage->id));
 				break;
 				
 			case 'parent_and_all_children':
-				$this->arrCategories = array_unshift($this->getChildRecords($objPage->id, 'tl_page'), $objPage->id);
+				$this->arrCategories = array_merge($this->getChildRecords($objPage->id, 'tl_page'), array($objPage->id));				
 				break;
 				
 			default:
