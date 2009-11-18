@@ -424,12 +424,12 @@ abstract class ModuleIsotopeBase extends Module
 			$row['id'] = $row['product_id'];	//needed to ensure all product links work for now.
 			
 			
-			$arrImages = (strlen($row['main_image']) ? deserialize($row['main_image']) : array());
+			$arrImages = deserialize($row['main_image'], true);
 	
 			$arrFormattedProductData[] = array
 			(
 				'id'				=> $row['product_id'],
-				'image'				=> (count($arrImages[0]) ? $this->getImage('isotope/' . substr($arrImages[0]['src'], 0, 1) . '/' . $arrImages[0]['src'], $this->Isotope->Store->gallery_image_width, $this->Isotope->Store->gallery_image_height) : ""),
+				'image'				=> (is_array($arrImages[0]) ? $this->getImage('isotope/' . substr($arrImages[0]['src'], 0, 1) . '/' . $arrImages[0]['src'], $this->Isotope->Store->gallery_image_width, $this->Isotope->Store->gallery_image_height) : ""),
 				'name'				=> $row['name'],
 				'link'				=> ($this->iso_reader_jumpTo ? $this->generateProductLink($row['alias'], $row, $this->iso_reader_jumpTo, 'id') : $row['link']),
 				'price'				=> $this->generatePrice($row['price'], $this->strPriceTemplate),
