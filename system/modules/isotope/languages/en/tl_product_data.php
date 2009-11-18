@@ -47,6 +47,7 @@ $GLOBALS['TL_LANG']['tl_product_data']['option_sets']			= array('Option Sets','S
 $GLOBALS['TL_LANG']['tl_product_data']['option_set_title']		= array('Option Set Title','Name your new option set. The combination of values for each attribute will be stored and used to produce a new collection of empty subproducts.');
 $GLOBALS['TL_LANG']['tl_product_data']['variants_wizard']		= array('Product Variants','Configure product variants');
 $GLOBALS['TL_LANG']['tl_product_data']['published']				= array('Publish product', 'Click here to show this product on your website.');
+$GLOBALS['TL_LANG']['tl_product_data']['source']				= array('Source folder', 'Please choose the folder where product assets are located.');
 
 
 /*
@@ -100,7 +101,8 @@ $GLOBALS['TL_LANG']['tl_product_data']['downloads']		= array('Downloads', 'Edit 
 $GLOBALS['TL_LANG']['tl_product_data']['copy']			= array('Copy product', 'Copy product ID %s');
 $GLOBALS['TL_LANG']['tl_product_data']['cut']			= array('Move product', 'Move product ID %s');
 $GLOBALS['TL_LANG']['tl_product_data']['delete']		= array('Delete product', 'Delete product ID %s');
-$GLOBALS['TL_LANG']['tl_product_data']['show']			= array('product details', 'Show details of product ID %s');
+$GLOBALS['TL_LANG']['tl_product_data']['show']			= array('Product details', 'Show details of product ID %s');
+$GLOBALS['TL_LANG']['tl_product_data']['import']		= array('Import assets', 'Import images and other media from a folder');
 
 
 /** 

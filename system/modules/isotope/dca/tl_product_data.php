@@ -67,6 +67,13 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		),
 		'global_operations' => array
 		(
+			'import' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['import'],
+				'href'                => 'key=import',
+				'class'               => 'header_import_assets',
+				'attributes'          => 'onclick="Backend.getScrollOffset();"'
+			),
 			'all' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['MSC']['all'],
@@ -274,6 +281,11 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			'filter'				  => true,
 			'eval'					  => array('doNotCopy'=>true),
 		),
+		'source' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['source'],
+			'eval'                    => array('mandatory'=>true, 'required'=>true, 'fieldType'=>'radio'),
+		),
 	),
 );
 
@@ -461,6 +473,142 @@ class tl_product_data extends Backend
 		}
 
 		return $varValue;
+	}
+	
+	
+	/**
+	 * Import images and other media file for products
+	 */
+	public function importAssets($dc)
+	{
+		$objTree = new FileTree($this->prepareForWidget($GLOBALS['TL_DCA']['tl_product_data']['fields']['source'], 'source', null, 'source', 'tl_product_data'));
+		
+		// Import assets
+		if ($this->Input->post('FORM_SUBMIT') == 'tl_product_data_import' && strlen($this->Input->post('source')))
+		{
+			$this->import('Files');
+			
+			$strPath = $this->Input->post('source');
+			$arrFiles = scan(TL_ROOT . '/' . $strPath);
+			
+			if (!count($arrFiles))
+			{
+				$_SESSION['TL_ERROR'][] = 'No files in this folder';
+				$this->reload();
+			}
+			
+			$arrDelete = array();
+			$objProducts = $this->Database->execute("SELECT * FROM tl_product_data");
+			
+			
+			while( $objProducts->next() )
+			{
+				$arrImages = deserialize($objProducts->main_image);
+				if (!is_array($arrImages))
+					$arrImages = array();
+				
+				$strPattern = '@^(' . $objProducts->alias . '|' . standardize($objProducts->alias) . '|' . $objProducts->sku . '|' . standardize($objProducts->sku) . ')@i';
+				$arrMatches = preg_grep($strPattern, $arrFiles);
+				
+				if (count($arrMatches))
+				{
+					$arrNewImages = array();
+					
+					foreach( $arrMatches as $file )
+					{
+						if (is_dir(TL_ROOT . '/' . $strPath . '/' . $file))
+						{
+							$arrSubfiles = scan(TL_ROOT . '/' . $strPath . '/' . $file);
+							if (count($arrSubfiles))
+							{
+								foreach( $arrSubfiles as $subfile )
+								{
+									if (is_file($strPath . '/' . $file . '/' . $subfile))
+									{
+										$objFile = new File($strPath . '/' . $file . '/' . $subfile);
+									
+										if ($objFile->isGdImage)
+										{
+											$arrNewImages[] = $strPath . '/' . $file . '/' . $subfile;
+										}
+									}
+								}
+							}
+						}
+						elseif (is_file(TL_ROOT . '/' . $strPath . '/' . $file))
+						{
+							$objFile = new File($strPath . '/' . $file);
+							
+							if ($objFile->isGdImage)
+							{
+								$arrNewImages[] = $strPath . '/' . $file;
+							}
+						}
+					}
+					
+					if (count($arrNewImages))
+					{
+						foreach( $arrNewImages as $strFile )
+						{
+							$pathinfo = pathinfo(TL_ROOT . '/' . $strFile);
+							
+							// Make sure directory exists
+							$this->Files->mkdir('isotope/' . substr($pathinfo['filename'], 0, 1) . '/');
+							
+							$strCacheName = $pathinfo['filename'] . '-' . substr(md5_file(TL_ROOT . '/' . $strFile), 0, 8) . '.' . $pathinfo['extension'];
+							
+							$this->Files->copy($strFile, 'isotope/' . substr($pathinfo['filename'], 0, 1) . '/' . $strCacheName);
+							$arrImages[] = array('src'=>$strCacheName);
+							$arrDelete[] = $strFile;
+							
+							$_SESSION['TL_CONFIRM'][] = sprintf('Imported file %s for product "%s"', $pathinfo['filename'] . '.' . $pathinfo['extension'], $objProducts->name);
+						}
+						
+						$this->Database->prepare("UPDATE tl_product_data SET main_image=? WHERE id=?")->execute(serialize($arrImages), $objProducts->id);
+					}
+				}
+			}
+			
+			if (count($arrDelete))
+			{
+				$arrDelete = array_unique($arrDelete);
+				
+				foreach( $arrDelete as $file )
+				{
+					$this->Files->delete($file);
+				}
+			}
+			
+			$this->reload();
+		}
+
+		// Return form
+		return '
+<div id="tl_buttons">
+<a href="'.ampersand(str_replace('&key=import', '', $this->Environment->request)).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
+</div>
+
+<h2 class="sub_headline">'.$GLOBALS['TL_LANG']['tl_product_data']['import'][1].'</h2>'.$this->getMessages().'
+
+<form action="'.ampersand($this->Environment->request, true).'" id="tl_product_data_import" class="tl_form" method="post">
+<div class="tl_formbody_edit">
+<input type="hidden" name="FORM_SUBMIT" value="tl_product_data_import" />
+
+<div class="tl_tbox block">
+  <h3><label for="source">'.$GLOBALS['TL_LANG']['tl_product_data']['source'][0].'</label> <a href="typolight/files.php" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['fileManager']) . '" onclick="Backend.getScrollOffset(); this.blur(); Backend.openWindow(this, 750, 500); return false;">' . $this->generateImage('filemanager.gif', $GLOBALS['TL_LANG']['MSC']['fileManager'], 'style="vertical-align:text-bottom;"') . '</a></h3>'.$objTree->generate().(strlen($GLOBALS['TL_LANG']['tl_product_data']['source'][1]) ? '
+  <p class="tl_help">'.$GLOBALS['TL_LANG']['tl_product_data']['source'][1].'</p>' : '').'
+</div>
+
+</div>
+
+<div class="tl_formbody_submit">
+
+<div class="tl_submit_container">
+<input type="submit" name="save" id="save" class="tl_submit" alt="import product assets" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['tl_product_data']['import'][0]).'" />
+</div>
+
+</div>
+</form>';
 	}
 }
 

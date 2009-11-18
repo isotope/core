@@ -1,3 +1,4 @@
+.header_import_assets { padding:2px 0px 3px 20px; background-image:url("assets.gif"); background-position:left center; background-repeat:no-repeat; }
 .tl_mediamanager th, .tl_mediamanager td { padding: 2px 10px 0 0; }
 .tl_mediamanager input.tl_text_2 { width: 220px; }
 .tl_mediamanager textarea { height: 40px; width: 300px; }
