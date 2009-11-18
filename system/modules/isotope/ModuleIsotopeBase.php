@@ -423,12 +423,12 @@ abstract class ModuleIsotopeBase extends Module
 			
 			$row['id'] = $row['product_id'];	//needed to ensure all product links work for now.
 			
-			//$arrImages = deserialize($row['main_image']);
+			$arrImages = deserialize($row['main_image']);
 	
 			$arrFormattedProductData[] = array
 			(
 				'id'				=> $row['product_id'],
-				'image'				=> (sizeof($arrImages[0]) ? $this->getImage('isotope/' . substr($arrImages[0]['src'], 0, 1) . '/' . $arrImages[0]['src'], $this->Isotope->Store->gallery_image_width, $this->Isotope->Store->gallery_image_height) : ""),
+				'image'				=> (count($arrImages[0]) ? $this->getImage('isotope/' . substr($arrImages[0]['src'], 0, 1) . '/' . $arrImages[0]['src'], $this->Isotope->Store->gallery_image_width, $this->Isotope->Store->gallery_image_height) : ""),
 				'name'				=> $row['name'],
 				'link'				=> $this->generateProductLink($row['alias'], $row, $this->iso_reader_jumpTo, 'id'),
 				'price'				=> $this->generatePrice($row['price'], $this->strPriceTemplate),
@@ -1240,7 +1240,7 @@ abstract class ModuleIsotopeBase extends Module
 						$varValue = array();
 						$arrImages = deserialize($objProducts->{$attribute['field_name']});
 						
-						if(strlen($arrImages[0]))
+						if(is_array($arrImages) && count($arrImages))
 						{
 							foreach( $arrImages as $k => $file )
 							{
@@ -1258,8 +1258,6 @@ abstract class ModuleIsotopeBase extends Module
 										{
 											$strImage = $this->getImage($strFile, $this->Isotope->Store->{$size . '_image_width'}, $this->Isotope->Store->{$size . '_image_height'});
 											$arrSize = @getimagesize(TL_ROOT . '/' . $strImage);
-											
-											var_dump($arrSize);
 											
 											$file[$size] = $strImage;
 											
