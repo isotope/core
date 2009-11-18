@@ -44,7 +44,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 	/**
 	 * The ids of all pages we take care of. this is what should later be used eg. for filter data.
 	 */
-	protected $arrCategories = array();
+	protected $arrCategories;
         
         
 	/**
