@@ -109,16 +109,8 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'__selector__'				  => array('protected'),
 		'default'					  => '{name_legend},name,description;{attributes_legend},attributes;{download_legend:hide},downloads',
 	),
-
-	// Subpalettes
-	'subpalettes' => array
-	(
-		'protected'					  => 'groups',
-	),
-
 
 	// Fields
 	'fields' => array
