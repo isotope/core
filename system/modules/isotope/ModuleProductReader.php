@@ -67,6 +67,10 @@ class ModuleProductReader extends ModuleIsotopeBase
 		{
 			$this->iso_reader_layout = 'iso_reader_default';
 		}
+		
+		global $objPage;
+		
+		$this->iso_reader_jumpTo = $objPage->id;
 
 		return parent::generate();
 	}
@@ -120,7 +124,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 					if (is_array($data['callback']) && count($data['callback']) == 2)
 					{
 						$this->import($data['callback'][0]);
-						$this->{$data['callback'][0]}->{$data['callback'][1]}($arrProduct['raw']['id']);
+						$this->{$data['callback'][0]}->{$data['callback'][1]}($arrProduct['raw']['id'], $arrProduct);
 					}
 					break;
 				}

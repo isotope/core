@@ -653,7 +653,7 @@ class IsotopeCart extends Model
 	
 	
 	
-	public function addProduct($intId)
+	public function addProduct($intId, $arrProduct=null)
 	{
 		$objProduct = $this->Database->prepare("SELECT * FROM tl_product_data WHERE id=?")->limit(1)->execute($intId);
 		
@@ -674,6 +674,12 @@ class IsotopeCart extends Model
 		
 		
 		$arrSet = array('pid'=>$this->id, 'tstamp'=>time(), 'product_id'=>$objProduct->id, 'quantity_requested'=>1);
+		
+		if (is_array($arrProduct) && strlen($arrProduct['href_reader']))
+		{
+			$arrSet['href_reader'] = $arrProduct['href_reader'];
+		}
+		
 		$arrProductData = $objProduct->row();
 		while( $objAttributes->next() )
 		{

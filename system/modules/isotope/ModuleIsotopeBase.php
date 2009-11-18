@@ -430,7 +430,7 @@ abstract class ModuleIsotopeBase extends Module
 				'id'				=> $row['product_id'],
 				'image'				=> (count($arrImages[0]) ? $this->getImage('isotope/' . substr($arrImages[0]['src'], 0, 1) . '/' . $arrImages[0]['src'], $this->Isotope->Store->gallery_image_width, $this->Isotope->Store->gallery_image_height) : ""),
 				'name'				=> $row['name'],
-				'link'				=> $this->generateProductLink($row['alias'], $row, $this->iso_reader_jumpTo, 'id'),
+				'link'				=> ($this->iso_reader_jumpTo ? $this->generateProductLink($row['alias'], $row, $this->iso_reader_jumpTo, 'id') : $row['link']),
 				'price'				=> $this->generatePrice($row['price'], $this->strPriceTemplate),
 				'total_price'		=> $this->generatePrice($intTotalPrice, 'stpl_total_price'),
 				'quantity'			=> $row['quantity_requested'],
@@ -1231,7 +1231,12 @@ abstract class ModuleIsotopeBase extends Module
 				$arrAttributes[$objType->id] = $this->Database->execute("SELECT * FROM tl_product_attributes WHERE id IN (" . implode(',', $attributeIds) . ") AND disabled=''")->fetchAllAssoc();
 			}
 			
-			$arrProduct = array('raw'=>$objProducts->row());
+			$arrProduct = array
+			(
+				'raw'			=> $objProducts->row(),
+				'href_reader'	=> $this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($this->iso_reader_jumpTo)->fetchAssoc(), '/product/' . $objProducts->alias),
+			);
+			
 			foreach( $arrAttributes[$objProducts->type] as $attribute )
 			{
 				switch( $attribute['type'] )
@@ -1330,7 +1335,8 @@ abstract class ModuleIsotopeBase extends Module
 			switch( $field )
 			{
 				case 'raw':
-					$objTemplate->raw = $attribute;
+				case 'href_reader':
+					$objTemplate->$field = $attribute;
 					break;
 					
 				case 'main_image':
@@ -1429,8 +1435,6 @@ abstract class ModuleIsotopeBase extends Module
 		}
 		
 		$objTemplate->price = ($arrProduct['use_price_override'] && $arrProduct['use_price_override']['value']) ? $this->Isotope->formatPriceWithCurrency($arrProduct[$this->Isotope->Store->priceOverrideField]['value']) : $this->Isotope->formatPriceWithCurrency($arrProduct[$this->Isotope->Store->priceField]['value']);
-		
-		$objTemplate->href_reader = $this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($this->iso_reader_jumpTo)->fetchAssoc(), '/product/' . $arrProduct['raw']['alias']);
 		
 		return $objTemplate->parse();
 	}

@@ -340,6 +340,7 @@ CREATE TABLE `tl_cart_items` (
   `product_attribute_collection` text NULL,
   `product_options` text NULL,
   `product_data` blob NULL,
+  `href_reader` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

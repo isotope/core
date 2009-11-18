@@ -409,12 +409,12 @@ class Isotope extends Controller
 				}
 				
 				
-				
 				$arrProducts[$configRow['id']]['cart_item_id'] = $configRow['id'];
 				$arrProducts[$configRow['id']]['source_cart_id'] = $configRow['pid'];
 				$arrProducts[$configRow['id']]['quantity_requested'] = $configRow['quantity_requested'];
 				$arrProducts[$configRow['id']]['product_options'] = deserialize($configRow['product_options']);
 				$arrProducts[$configRow['id']]['price'] = $this->calculatePrice($configRow['price']);
+				$arrProducts[$configRow['id']]['link'] = $configRow['href_reader'];
 			}
 		}
 			
