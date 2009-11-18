@@ -99,6 +99,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 				$this->arrCategories = array_unshift($this->getChildRecords($objPage->id, 'tl_page'), $objPage->id);
 				break;
 				
+			default:
 			case 'current_category':
 				$this->arrCategories = array($objPage->id);
 				break;		
