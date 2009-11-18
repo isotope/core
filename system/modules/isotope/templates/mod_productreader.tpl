@@ -11,7 +11,7 @@
 <?php echo $this->product; ?>
 <?php if ($this->useQuantity): ?>
 <div class="quantity_container">
-<label for="quantity_requested"><?php echo $this->quantityLabel; ?>:</label> <input type="text" name="quantity_requested" value="1" class="tl_select" onblur="if (this.value=='') { this.value='1'; }" onfocus="if (this.value=='1') { this.value=''; }" />
+<label for="quantity_requested"><?php echo $this->quantityLabel; ?>:</label> <input type="text" name="quantity_requested" value="1" size="3" onblur="if (this.value=='') { this.value='1'; }" onfocus="if (this.value=='1') { this.value=''; }" />
 </div>
 <div id="clear"></div>
 <?php else: ?>
