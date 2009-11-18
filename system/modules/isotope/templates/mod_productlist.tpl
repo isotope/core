@@ -6,11 +6,11 @@
 <?php endif; ?>
 
 <?php foreach( $this->products as $product ): ?>
-<div class="product">
+<div class="<?php echo $product['class']; ?>">
 <form action="<?php echo $this->action; ?>" method="post">
 <div class="formbody">
 <input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formId; ?>" />
-<?php echo $product; ?>
+<?php echo $product['html']; ?>
 
 <div class="submit_container">
 <?php foreach( $this->buttons as $name => $button ): ?>

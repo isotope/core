@@ -147,7 +147,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 		
 		$arrProducts = array();
 		
-		foreach( $arrProductData as $arrProduct )
+		foreach( $arrProductData as $i => $arrProduct )
 		{
 			if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && $this->Input->post('product_id') == $arrProduct['raw']['id'])
 			{
@@ -168,7 +168,18 @@ class ModuleProductLister extends ModuleIsotopeBase
 				$this->reload();
 			}
 			
-			$arrProducts[] = $this->generateProduct($arrProduct, $this->iso_list_layout);
+			$arrProducts[] = array
+			(
+				'raw'		=> $arrProduct,
+				'class'		=> ('product' . ($i == 0 ? ' product_first' : '')),
+				'html'		=> $this->generateProduct($arrProduct, $this->iso_list_layout),
+			);
+		}
+		
+		// Add "product_last" css class
+		if (count($arrProducts))
+		{
+			$arrProducts[count($arrProducts)-1]['class'] .= ' product_last';
 		}
 		
 		
