@@ -423,7 +423,8 @@ abstract class ModuleIsotopeBase extends Module
 			
 			$row['id'] = $row['product_id'];	//needed to ensure all product links work for now.
 			
-			$arrImages = deserialize($row['main_image']);
+			
+			$arrImages = (strlen($row['main_image']) ? deserialize($row['main_image']) : array());
 	
 			$arrFormattedProductData[] = array
 			(
