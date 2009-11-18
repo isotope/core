@@ -50,7 +50,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 		'sorting' => array
 		(
 			'mode'                    => 2,
-			'fields'                  => array('tstamp DESC'),
+			'fields'                  => array('date DESC'),
 			'flag'                    => 1,
 			'panelLayout'             => 'filter,search,limit'
 		),
@@ -130,7 +130,12 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 		'details' => array
 		(
 			'input_field_callback'    => array('tl_iso_orders', 'showDetails'),
-		)
+		),
+		'date' => array
+		(
+			'flag'                    => 8,
+			'eval'                    => array('rgxp'=>'date'),
+		),
 		/*,
 		'shippingTotal' => array
 		(
@@ -149,13 +154,6 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 			(
 				array('tl_iso_orders','saveShippingTotal')
 			)
-		),
-		'tstamp' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_news']['tstamp'],
-			'flag'                    => 8,
-			'inputType'               => 'text',
-			'eval'                    => array('rgxp'=>'date'),
 		),
 		'subTotal' => array
 		(
