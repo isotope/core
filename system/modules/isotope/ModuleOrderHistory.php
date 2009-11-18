@@ -46,7 +46,9 @@ class ModuleOrderHistory extends ModuleIsotopeBase
 			return $objTemplate->parse();
 		}
 		
-		if (!FE_USER_LOGGED_IN)
+		$this->store_ids = deserialize($this->store_ids);
+		
+		if (!FE_USER_LOGGED_IN || !is_array($this->store_ids) || !count($this->store_ids))
 			return '';
 		
 		$this->import('FrontendUser', 'User');
@@ -57,10 +59,10 @@ class ModuleOrderHistory extends ModuleIsotopeBase
 	
 	protected function compile()
 	{
-		$objOrders = $this->Database->prepare("SELECT *, (SELECT COUNT(*) FROM tl_iso_order_items WHERE pid=tl_iso_orders.id) AS items FROM tl_iso_orders WHERE pid=? AND store_id=?")->execute($this->User->id, $this->store_id);
+		$objOrders = $this->Database->prepare("SELECT *, (SELECT COUNT(*) FROM tl_iso_order_items WHERE pid=tl_iso_orders.id) AS items FROM tl_iso_orders WHERE pid=? AND store_id IN (" . implode(',', $this->store_ids) . ")")->execute($this->User->id);
 		
 		// No orders found, just display an "empty" message
-		if (!$objOrder->numRows)
+		if (!$objOrders->numRows)
 		{
 			$this->Template = new FrontendTemplate('mod_message');
 			$this->Template->type = 'empty';
@@ -71,6 +73,8 @@ class ModuleOrderHistory extends ModuleIsotopeBase
 		$this->import('Isotope');
 		$this->Isotope->overrideStore($this->store_id);
 		
+		$arrPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->limit(1)->execute($this->jumpTo)->fetchAssoc();
+		
 		$arrOrders = array();
 		while( $objOrders->next() )
 		{
@@ -80,7 +84,10 @@ class ModuleOrderHistory extends ModuleIsotopeBase
 				'date'			=> $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $objOrders->date),
 				'time'			=> $this->parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $objOrders->date),
 				'datime'		=> $this->parseDate($GLOBALS['TL_CONFIG']['datimeFormat'], $objOrders->date),
+				'items'			=> $objOrders->items,
 				'grandTotal'	=> $this->Isotope->formatPriceWithCurrency($objOrders->grandTotal),
+				'status'		=> $GLOBALS['TL_LANG']['MSC']['order_status_labels'][$objOrders->status],
+				'link'			=> ($this->jumpTo ? $this->generateFrontendUrl($arrPage, '/uid/' . $objOrders->uniqid) : ''),
 			);
 		}
 		
