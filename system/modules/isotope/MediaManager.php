@@ -175,15 +175,23 @@ class MediaManager extends Widget implements uploadable
 			}
 			
 			$this->varValue[] = array('src'=>$strCacheName);
-			$this->Database->prepare("UPDATE " . $this->strTable . " SET " . $this->strName . "=? WHERE id=?")->execute(serialize($this->varValue), $this->currentRecord);
+												
+			$this->Database->prepare("UPDATE " . $this->strTable . " SET " . $this->strName . "=? WHERE id=?")->execute(serialize($this->varValue), $this->currentRecord);	
 			
-			exit;
+			unset($_FILES[$this->strName]);
+
+			if($this->Input->post('saveNclose'))
+			{
+				$this->redirect($this->getReferer());
+			}
+			else
+			{
+				$this->redirect($this->Environment->request);
+			}
+
 		}
-
-		unset($_FILES[$this->strName]);
-	}
-
-
+    }
+    
 	/**
 	 * Generate the widget and return it as string
 	 * @return string
@@ -223,6 +231,7 @@ class MediaManager extends Widget implements uploadable
 		// Get new value
 		if ($this->Input->post('FORM_SUBMIT') == $this->strTable)
 		{
+		
 			$this->varValue = $this->Input->post($this->strId);
 		}
 /*
@@ -253,12 +262,14 @@ class MediaManager extends Widget implements uploadable
 		// Save the value
 		if ($this->Input->get($strCommand) || $this->Input->post('FORM_SUBMIT') == $this->strTable)
 		{
+		
 			$this->Database->prepare("UPDATE " . $this->strTable . " SET " . $this->strField . "=? WHERE id=?")
 						   ->execute(serialize($this->varValue), $this->currentRecord);
 
 			// Reload the page
 			if (is_numeric($this->Input->get('cid')) && $this->Input->get('id') == $this->currentRecord)
-			{
+			{	
+				
 				$this->redirect(preg_replace('/&(amp;)?cid=[^&]*/i', '', preg_replace('/&(amp;)?' . preg_quote($strCommand, '/') . '=[^&]*/i', '', $this->Environment->request)));
 			}
 		}
@@ -317,4 +328,5 @@ class MediaManager extends Widget implements uploadable
   </table>' . $upload;
 	}
 }
+
 
