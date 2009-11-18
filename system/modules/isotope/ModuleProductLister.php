@@ -39,28 +39,13 @@ class ModuleProductLister extends ModuleIsotopeBase
 
 	
 	protected $strPriceOverrideTemplate = 'stpl_price_override';
-	
-	/**
-	 *  
-	 *
-	 */
-	protected $arrHandleCollection = array();
-	
-	/** 
-	 * 
-	 */
-	protected $blnGetFirstChild = false;
-	
-	/**
-	 * 
-	 */
-	protected $blnGetAllChildren = false;
        
-    /**
-     *
-     *
-     */ 
-    protected $blnIgnorePageId = false;
+	
+	/**
+	 * The ids of all pages we take care of. this is what should later be used eg. for filter data.
+	 */
+	protected $arrCategories;
+        
         
 	/**
 	 * Display a wildcard in the back end
@@ -99,55 +84,27 @@ class ModuleProductLister extends ModuleIsotopeBase
 	{
 		global $objPage;
 		
-		$blnUseCategoriesClause = false;
-		
 		//Determine category scope
 		switch($this->iso_category_scope)
 		{
 			case 'global':
-			
-				$this->blnIgnorePageId = true;
-				
+				$this->arrCategories = array_unshift($this->getChildRecords($objPage->rootId, 'tl_page'), $objPage->rootId);
 				break;
+				
 			case 'parent_and_first_child':
-			
-				$this->blnGetFirstChild = true;
-				
-				$arrAllCategories = $this->getChildRecords($objPage->id, 'tl_page');
-				$arrCategories = array_chunk($arrAllCategories, 1);	//Take only the first element
-				$arrCategories[] = $objPage->id;
-				
-				$blnUseCategoriesClause = true;
-				
+				$this->arrCategories = array_unshift($this->Database->prepare("SELECT id FROM tl_page WHERE pid=?")->execute($objPage->id)->fetchEach('id'), $objPage->id);
 				break;
+				
 			case 'parent_and_all_children':
-			
-				$this->blnGetAllChildren = true;
-				
-				$arrCategories = $this->getChildRecords($objPage->id, 'tl_page');	//Get children of this page
-				$arrCategories[] = $objPage->id;
-				
-				$blnUseCategoriesClause = true;
-				
+				$this->arrCategories = array_unshift($this->getChildRecords($objPage->id, 'tl_page'), $objPage->id);
 				break;
+				
 			case 'current_category':
-			
-				$this->blnIgnorePageId = false;
-				$this->blnGetFirstChild = false;
-				$this->blnGetAllChildren = false;
-				
-				$arrCategories = array($objPage->id);	//This page only.
-				
-				$blnUseCategoriesClause = true;
-				
+				$this->arrCategories = array($objPage->id);
 				break;		
 		}
 	
-		
-		$strCategoriesClause = ($blnUseCategoriesClause ? " AND c.page_id IN (" . implode(',', $arrCategories) . ")" : "");
-
-		
-		$objProductIds = $this->Database->prepare("SELECT * FROM tl_product_categories c, tl_product_data p WHERE c.pid=p.id" . $strCategoriesClause);
+		$objProductIds = $this->Database->prepare("SELECT * FROM tl_product_categories c, tl_product_data p WHERE c.pid=p.id AND c.page_id IN (" . implode(',', $this->arrCategories) . ")");
 		
 		// Add pagination
 		if ($this->perPage > 0)
@@ -842,48 +799,8 @@ class ModuleProductLister extends ModuleIsotopeBase
 	 *  @return array
 	 */
 	private function getListingFilterData($intAttributeId, $arrClauses = array(), $blnUseCache = true)
-	{	
-		global $objPage;
-		
-		$intPageId = $objPage->id;
-		
-		$arrPages = array();
-		$arrAssociatedPages = array();
-		$arrRefinedValues = array();
-				
-		$strClauses = '';		
-
-        if(!$this->blnGetChildren && !$this->blnIgnorePageId)
-		{                    
-			$strClauses = " AND pid IN ($intPageId)";
-		}
-        elseif($this->blnGetChildren)
-        {
-		    $arrAssociatedPages = $this->getChildRecords($intPageId, 'tl_page');
-			if(sizeof($arrAssociatedPages))
-			{	
-				foreach($arrAssociatedPages as $pageCollection)
-				{
-						
-					foreach($pageCollection as $page)
-					{
-						$arrPages[] = $page;
-					}					
-				}
-									
-			}
-			
-			$arrPages[] = $intPageId; //add the current page as well.
-
-			$strPageList = join(",", $arrPages);
-			
-			$strClauses = " AND pid IN (" . $strPageList . ")";	
-                                                
-		}		
-	
-										
-		$objListingFilterData = $this->Database->prepare("SELECT value_collection FROM tl_filter_values_to_categories WHERE attribute_id=?" . $strClauses)
-												   ->execute($intAttributeId);
+	{
+		$objListingFilterData = $this->Database->prepare("SELECT value_collection FROM tl_filter_values_to_categories WHERE attribute_id=? AND pid IN (" . implode($this->arrCategories) . ")")->execute($intAttributeId);
 			
 		if($objListingFilterData->numRows < 1)
 		{
@@ -901,7 +818,6 @@ class ModuleProductLister extends ModuleIsotopeBase
 			{	
 				$arrValues[] = $value;
 			}
-			
 		}
 		
 		$arrUniqueValues = array_unique($arrValues);
@@ -909,7 +825,6 @@ class ModuleProductLister extends ModuleIsotopeBase
 		$arrRefinedValues = $this->getFilterListData($intAttributeId, $arrUniqueValues);
 				
 		return $arrRefinedValues;
-	
 	}
 	
 	
