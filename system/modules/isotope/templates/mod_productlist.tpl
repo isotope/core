@@ -20,6 +20,7 @@
 
 </div>
 </form>
+<div class="clear"></div>
 </div>
 <?php endforeach; ?>
 
