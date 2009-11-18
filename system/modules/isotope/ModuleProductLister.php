@@ -128,7 +128,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 		// Buttons
 		$arrButtons = array
 		(
-			'add_to_cart'		=> array('label'=>$GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'], 'callback'=>array('IsotopeCart', 'addProduct')),
+			//'add_to_cart'		=> array('label'=>$GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'], 'callback'=>array('IsotopeCart', 'addProduct')),
 		);
 		
 		if (isset($GLOBALS['TL_HOOKS']['isoListButtons']) && is_array($GLOBALS['TL_HOOKS']['isoReaderButtons']))
@@ -163,6 +163,8 @@ class ModuleProductLister extends ModuleIsotopeBase
 				$this->reload();
 			}
 			
+			$arrProduct['detail_link'] = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
+			
 			$arrProducts[] = array
 			(
 				'raw'		=> $arrProduct,
@@ -176,7 +178,6 @@ class ModuleProductLister extends ModuleIsotopeBase
 		{
 			$arrProducts[count($arrProducts)-1]['class'] .= ' product_last';
 		}
-		
 		
 		$this->Template->action = ampersand($this->Environment->request, true);
 		$this->Template->formId = $this->strFormId;

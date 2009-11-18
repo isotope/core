@@ -1337,6 +1337,7 @@ abstract class ModuleIsotopeBase extends Module
 			{
 				case 'raw':
 				case 'href_reader':
+				case 'detail_link':
 					$objTemplate->$field = $attribute;
 					break;
 					
