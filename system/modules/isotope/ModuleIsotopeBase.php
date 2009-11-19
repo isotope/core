@@ -1337,7 +1337,6 @@ abstract class ModuleIsotopeBase extends Module
 			{
 				case 'raw':
 				case 'href_reader':
-				case 'detail_link':
 					$objTemplate->$field = $attribute;
 					break;
 					
@@ -1436,6 +1435,7 @@ abstract class ModuleIsotopeBase extends Module
 			}
 		}
 		
+		$objTemplate->label_detail = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
 		$objTemplate->price = ($arrProduct['use_price_override'] && $arrProduct['use_price_override']['value']) ? $this->Isotope->formatPriceWithCurrency($arrProduct[$this->Isotope->Store->priceOverrideField]['value']) : $this->Isotope->formatPriceWithCurrency($arrProduct[$this->Isotope->Store->priceField]['value']);
 		
 		return $objTemplate->parse();

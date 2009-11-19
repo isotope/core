@@ -161,16 +161,17 @@ class ModuleProductLister extends ModuleIsotopeBase
 				}
 				
 				$this->reload();
-			}
-			
-			$arrProduct['detail_link'] = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
+			}				
 		
 			$arrProducts[] = array
 			(
 				'raw'		=> $arrProduct,
-				'class'		=> ('product' . ($i == 0 ? ' product_first' : '')) . ($this->iso_list_format=='grid' && ($i+1) % $this->columns==0 ? ' clear' : ''),
+				'class'		=> ('product' . ($i == 0 ? ' product_first' : '')) . ($this->iso_list_format=='grid' && $blnSetClear ? ' clearBoth' : ''),
 				'html'		=> $this->generateProduct($arrProduct, $this->iso_list_layout),
 			);
+
+			$blnSetClear = (($i+1) % $this->columns==0 ? true : false);
+
 		}
 		
 		// Add "product_last" css class
