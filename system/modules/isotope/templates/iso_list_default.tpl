@@ -4,9 +4,9 @@
 
 <div class="image_container main_image">
 <?php if ($this->hasImage): ?>
-<a href="<?php echo $this->mainImage['large']; ?>" title="<?php echo $this->mainImage['desc']; ?>" rel="lightbox"><img src="<?php echo $this->mainImage['thumbnail']; ?>" alt="<?php echo $this->mainImage['alt']; ?>"<?php echo $this->mainImage['thumbnail_size']; ?> /></a>
+<a href="<?php echo $this->href_reader; ?>" title="<?php echo $this->mainImage['desc']; ?>"><img src="<?php echo $this->mainImage['thumbnail']; ?>" alt="<?php echo $this->mainImage['alt']; ?>"<?php echo $this->mainImage['thumbnail_size']; ?> /></a>
 <?php else: ?>
-<img src="<?php echo $this->placeholderImage; ?>" alt="<?php echo $this->name; ?>" />
+<a href="<?php echo $this->href_reader; ?>" title="<?php echo $this->mainImage['desc']; ?>"><img src="<?php echo $this->placeholderImage; ?>" alt="<?php echo $this->name; ?>" /></a>
 <?php endif; ?>
 </div>
 
