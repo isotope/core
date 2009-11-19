@@ -75,11 +75,7 @@ class ContentAttributeLinkRepeater extends ContentElement
 						
 			foreach($arrLinkValues as $value)
 			{
-				$arrLinkData[] = array
-				(
-					'value'		=> $value[$objAttributeData->id],
-					'title'		=> $value[$objAttributeData->list_source_field]
-				);
+				$arrLinkData[$value[$objAttributeData->id]] = $value[$objAttributeData->list_source_field];
 			
 			}
 			
@@ -93,24 +89,24 @@ class ContentAttributeLinkRepeater extends ContentElement
 			
 			foreach($arrLinkValues as $value)
 			{
-				$arrLinkData[] = array
-				(
-					'value'		=> $value['value'],
-					'title'		=> $value['label']
-				);
+				$arrLinkData[$value['value']] = $value['label'];
 			
 			}
 		}
 		
+		if($blnSortAlpha) //just a temporary thing. Need to make this an option to set.
+		{
+			asort($arrLinkData);
+		}
 			
-		foreach($arrLinkData as $link)
+		foreach($arrLinkData as $k=>$v)
 		{
 								
 			$arrLinks[] = array
 			(
-				'url'		=>	$this->url . '?' . $filter_name . '=' . $link['value'], //$this->addToURL(),
-				'link'		=>	$link['title'],
-				'title'		=> 	$link['title']
+				'url'		=>	$this->url . '?' . $filter_name . '=' . $k, //$this->addToURL(),
+				'link'		=>	$v,
+				'title'		=> 	$v
 			);
 		}	
 			
