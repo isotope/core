@@ -166,7 +166,8 @@ class ModuleProductLister extends ModuleIsotopeBase
 			$arrProducts[] = array
 			(
 				'raw'		=> $arrProduct,
-				'class'		=> ('product' . ($i == 0 ? ' product_first' : '')) . ($this->iso_list_format=='grid' && $blnSetClear ? ' clearBoth' : ''),
+				'clear'	    => ($this->iso_list_format=='grid' && $blnSetClear ? true : false),
+				'class'		=> ('product' . ($i == 0 ? ' product_first' : '')),
 				'html'		=> $this->generateProduct($arrProduct, $this->iso_list_layout),
 			);
 
