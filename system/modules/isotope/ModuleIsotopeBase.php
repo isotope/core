@@ -19,7 +19,7 @@
  * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Winans Creative 2009
+ * @copyright  Winans Creative 2009 
  * @author     Fred Bliss <fred@winanscreative.com>
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
@@ -1344,6 +1344,7 @@ abstract class ModuleIsotopeBase extends Module
 					if (is_array($attribute['value']) && count($attribute['value']))
 					{
 						$arrImages = $attribute['value'];
+						
 						$objTemplate->hasImage = true;
 						$objTemplate->mainImage = array_shift($arrImages);
 						
@@ -1352,6 +1353,10 @@ abstract class ModuleIsotopeBase extends Module
 							$objTemplate->hasGallery = true;
 							$objTemplate->gallery = $arrImages;
 						}
+					}
+					else
+					{						
+						$objTemplate->placeholderImage = $this->Isotope->Store->missing_image_placeholder;
 					}
 					break;
 					
