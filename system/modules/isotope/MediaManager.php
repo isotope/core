@@ -175,21 +175,9 @@ class MediaManager extends Widget implements uploadable
 			}
 			
 			$this->varValue[] = array('src'=>$strCacheName);
-												
-			$this->Database->prepare("UPDATE " . $this->strTable . " SET " . $this->strName . "=? WHERE id=?")->execute(serialize($this->varValue), $this->currentRecord);	
-			
-			unset($_FILES[$this->strName]);
-
-			if($this->Input->post('saveNclose'))
-			{
-				$this->redirect($this->getReferer());
-			}
-			else
-			{
-				$this->redirect($this->Environment->request);
-			}
-
 		}
+		
+		unset($_FILES[$this->strName]);
     }
     
 	/**
@@ -226,56 +214,12 @@ class MediaManager extends Widget implements uploadable
 					$this->varValue = array_delete($this->varValue, $this->Input->get('cid'));
 					break;
 			}
-		}
-
-		// Get new value
-		if ($this->Input->post('FORM_SUBMIT') == $this->strTable)
-		{
-		
-			$this->varValue = $this->Input->post($this->strId);
-		}
-/*
-
-		// Initialize sorting order
-		foreach ($cols as $col)
-		{
-			$arrCols[$col] = array();
-		}
-
-		foreach ($this->varValue as $v)
-		{
-			// Add only modules of an active section
-			if (in_array($v['col'], $cols))
-			{
-				$arrCols[$v['col']][] = $v;
-			}
-		}
-
-		$this->varValue = array();
-
-		foreach ($arrCols as $arrCol)
-		{
-			$this->varValue = array_merge($this->varValue, $arrCol);
-		}
-
-*/
-		// Save the value
-		if ($this->Input->get($strCommand) || $this->Input->post('FORM_SUBMIT') == $this->strTable)
-		{
-		
+			
 			$this->Database->prepare("UPDATE " . $this->strTable . " SET " . $this->strField . "=? WHERE id=?")
 						   ->execute(serialize($this->varValue), $this->currentRecord);
-
-			// Reload the page
-			if (is_numeric($this->Input->get('cid')) && $this->Input->get('id') == $this->currentRecord)
-			{	
-				
-				$this->redirect(preg_replace('/&(amp;)?cid=[^&]*/i', '', preg_replace('/&(amp;)?' . preg_quote($strCommand, '/') . '=[^&]*/i', '', $this->Environment->request)));
-			}
+						   
+			$this->redirect(preg_replace('/&(amp;)?cid=[^&]*/i', '', preg_replace('/&(amp;)?' . preg_quote($strCommand, '/') . '=[^&]*/i', '', $this->Environment->request)));
 		}
-		
-		
-//		$return = ' <a href="typolight/media_upload.php?act=move&amp;mode=2&amp;pid=' . $GLOBALS['TL_CONFIG']['isotope_upload_path'] . '/' . $path . '" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['fileManager']) . '" onclick="Backend.getScrollOffset(); this.blur(); Backend.openWindow(this, 750, 500); return false;">' . $this->generateImage('system/modules/isotope/html/upload.gif', $GLOBALS['TL_LANG']['MSC']['fileManager'], 'style="vertical-align:text-bottom;"') . '</a>';
 
 		$upload = sprintf('<h3><label for="ctrl_%s"_upload>%s</label></h3><p><input type="file" name="%s" id="ctrl_%s_upload" class="upload%s" /></p>',
 						$this->strId,
