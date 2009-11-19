@@ -164,11 +164,11 @@ class ModuleProductLister extends ModuleIsotopeBase
 			}
 			
 			$arrProduct['detail_link'] = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
-			
+		
 			$arrProducts[] = array
 			(
 				'raw'		=> $arrProduct,
-				'class'		=> ('product' . ($i == 0 ? ' product_first' : '')),
+				'class'		=> ('product' . ($i == 0 ? ' product_first' : '')) . ($this->iso_list_format=='grid' && ($i+1) % $this->columns==0 ? ' clear' : ''),
 				'html'		=> $this->generateProduct($arrProduct, $this->iso_list_layout),
 			);
 		}
