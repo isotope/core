@@ -284,30 +284,6 @@ $GLOBALS['ISO_CONFIG']['CHECKOUT_STEPS'] = array('login','billing_information','
 $GLOBALS['ISO_ATTR'] = array
 (
 
-	//Product SKU			
-	array
-	( 
-		'pid'						=> 0,
-		'tstamp'					=> time(),
-		'type'						=> 'text',
-		'field_name'				=> 'sku',
-		'legend'					=> 'general_legend',
-		'name'						=> 'Product SKU',
-		'description'				=> '',
-		'attr_use_mode'				=> 'fixed',
-		'is_customer_defined'		=> 0,
-		'is_visible_on_front'		=> 1,
-		'is_required'				=> 1,
-		'is_filterable'				=> 0,
-		'is_searchable'				=> 1,
-		'is_used_for_price_rules'	=> 0,
-		'is_multiple_select'		=> 0,
-		'use_rich_text_editor'		=> 0,
-		'is_user_defined'			=> 0,
-		'is_listing_field'			=> 1,
-		'delete_locked'				=> 1
-	),
-	
 	// Product Weight
 	array
 	(  
@@ -317,30 +293,6 @@ $GLOBALS['ISO_ATTR'] = array
 		'field_name'				=> 'weight',
 		'legend'					=> 'shipping_legend',
 		'name'						=> 'Product Weight',
-		'description'				=> '',
-		'attr_use_mode'				=> 'fixed',
-		'is_customer_defined'		=> 0,
-		'is_visible_on_front'		=> 1,
-		'is_required'				=> 0,
-		'is_filterable'				=> 0,
-		'is_searchable'				=> 1,
-		'is_used_for_price_rules'	=> 0,
-		'is_multiple_select'		=> 0,
-		'use_rich_text_editor'		=> 0,
-		'is_user_defined'			=> 0,
-		'is_listing_field'			=> 1,
-		'delete_locked'				=> 1
-	),
-	
-	//Quantity in stock	
-	array
-	( 
-		'pid'						=> 0,
-		'tstamp'					=> time(),
-		'type'						=> 'integer',
-		'field_name'				=> 'quantity',
-		'legend'					=> 'inventory_legend',
-		'name'						=> 'Product Quantity',
 		'description'				=> '',
 		'attr_use_mode'				=> 'fixed',
 		'is_customer_defined'		=> 0,

@@ -58,20 +58,27 @@ CREATE TABLE `tl_product_data` (
   `type` int(10) unsigned NOT NULL default '0',
   `pages` blob NULL,
   `alias` varchar(128) NOT NULL default '',
+  `sku` varchar(128) NOT NULL default '',
   `name` varchar(255) NOT NULL default '',
   `images` blob NULL,
   `teaser` text NULL,
   `description` text NULL,
+  
+  `max_order_quantity` int(10) unsigned NOT NULL default '0',
+  `stock_enabled` char(1) NOT NULL default '',
+  `stock_quantity` int(10) unsigned NOT NULL default '0',
+    
   `tax_class` int(10) unsigned NOT NULL default '0',
 
   `new_import` char(1) NOT NULL default '',
-  `old_images_list` text NULL,
   `option_set_source` varchar(64) NOT NULL default '',
   `option_sets` int(10) unsigned NOT NULL default '0',
   `option_set_title` varchar(255) NOT NULL default '',
   `variants_wizard` text NULL,
 
   `published` char(1) NOT NULL default '',
+  `start` varchar(10) NOT NULL default '',
+  `stop` varchar(10) NOT NULL default '',
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

@@ -55,7 +55,6 @@ class ProductCatalog extends Backend
 	protected $arrTypes = array('text','password','textarea','select','radio','checkbox','upload', 'hidden');
 	protected $arrList = array ('tstamp','pages','new_import'/*,'add_audio_file','add_video_file'*/);	//Basic required fields
 	protected $arrData = array();
-	protected $arrSubPalettes = array();
 	protected $arrSelectors = array();
 	
 	protected $systemColumns = array('id', 'pid', 'sorting', 'tstamp', 'alias', 'published');
@@ -146,6 +145,11 @@ class ProductCatalog extends Backend
 					$inputType = 'text';
 					$eval['rgxp'] = 'date';
 					$eval['datepicker'] = $this->getDatePickerString();
+					break;
+					
+				case 'text':
+					$inputType = 'text';
+					$eval['tl_class'] = 'long';
 					break;
 					
 				case 'shorttext':
@@ -323,15 +327,10 @@ class ProductCatalog extends Backend
 		$arrProductTypePalettes = $this->getProductTypePalettes();
 
 		$GLOBALS['TL_DCA']['tl_product_data']['palettes'] = $GLOBALS['TL_DCA']['tl_product_data']['palettes'] + $arrProductTypePalettes;
-		//$GLOBALS['TL_DCA']['tl_product_data']['subpalettes']['add_audio_file'] = 'audio_source,audio_jumpTo,audio_url';
-		//$GLOBALS['TL_DCA']['tl_product_data']['subpalettes']['add_video_file'] = 'video_source,video_jumpTo,video_url';
 		
 		$arrAdditionalSelectors = $this->arrSelectors;
 		
 		$GLOBALS['TL_DCA']['tl_product_data']['palettes']['__selector__'] = array_merge($GLOBALS['TL_DCA']['tl_product_data']['palettes']['__selector__'], $arrAdditionalSelectors);
-		
-		$GLOBALS['TL_DCA']['tl_product_data']['subpalettes'] = $this->arrSubPalettes;
-
 	}
 	
 	
@@ -967,13 +966,9 @@ class ProductCatalog extends Backend
 	 * @param integer $intSorting
 	 * @return void;
 	 */
-	public function insertAttributeRecord($arrSet, $intSorting = 0)
+	public function insertAttributeRecord($arrSet)
 	{
-		$arrSet['sorting'] = $intSorting;
-		
-		$this->Database->prepare("INSERT INTO tl_product_attributes %s")->set($arrSet)->execute();		
-	
-		return;
+		$this->Database->prepare("INSERT INTO tl_product_attributes %s")->set($arrSet)->execute();
 	}
 
 	

@@ -122,8 +122,14 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'__selector__'				  => array('type'),
-		'default'					  => '{general_legend},type,alias',
+		'__selector__'				=> array('type', 'enable_stocks'),
+		'default'					=> '{general_legend},type,alias',
+	),
+	
+	// Subpalettes
+	'subpalettes' => array
+	(
+		'enable_stocks'				=> 'stocked',
 	),
 	
 	// Fields
@@ -155,20 +161,26 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['alias'],
 			'inputType'				=> 'text',
-			'eval'					=> array('rgxp'=>'alnum', 'doNotCopy'=>true, 'spaceToUnderscore'=>true, 'maxlength'=>128, 'tl_class'=>'clr'),
+			'eval'					=> array('rgxp'=>'alnum', 'doNotCopy'=>true, 'spaceToUnderscore'=>true, 'maxlength'=>128, 'tl_class'=>'w50'),
 			'attributes'			=> array('legend'=>'general_legend', 'fixed'=>true),
 			'save_callback' => array
 			(
-				array('tl_product_data', 'generateAlias')
+				array('tl_product_data', 'generateAlias'),
 			)
-
+		),
+		'sku' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['sku'],
+			'inputType'				=> 'text',
+			'eval'					=> array('maxlength'=>128, 'tl_class'=>'w50'),
+			'attributes'			=> array('mandatory'=>true, 'legend'=>'general_legend'),
 		),
 		'name' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['name'],
 			'search'				=> true,
 			'inputType'				=> 'text',
-			'eval'					=> array('mandatory'=>true, 'tl_class'=>'clr long'),
+			'eval'					=> array('mandatory'=>true, 'tl_class'=>'long'),
 			'attributes'			=> array('legend'=>'general_legend', 'fixed'=>true),
 		),
 		'teaser' => array
@@ -186,6 +198,27 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			'inputType'				=> 'textarea',
 			'eval'					=> array('mandatory'=>true, 'rte'=>'tinyMCE'),
 			'attributes'			=> array('legend'=>'general_legend'),
+		),
+		'max_order_quantity' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['max_order_quantity'],
+			'inputType'				=> 'text',
+			'eval'					=> array('rgxp'=>'digits', 'disabled'=>'disabled'),
+			'attributes'			=> array('legend'=>'inventory_legend'),
+		),
+		'stock_enabled' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['stock_enabled'],
+			'filter'				=> true,
+			'inputType'				=> 'checkbox',
+			'eval'					=> array('submitOnChange'=>true, 'disabled'=>'disabled'),
+			'attributes'			=> array('legend'=>'inventory_legend'),
+		),
+		'stock_quantity' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['stock_quantity'],
+			'inputType'				=> 'text',
+			'eval'					=> array('mandatory'=>true, 'rgxp'=>'digits', 'disabled'=>'disabled'),
 		),
 		'tax_class' => array
 		(
@@ -208,6 +241,20 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			'inputType'				=> 'checkbox',
 			'eval'					=> array('doNotCopy'=>true),
 			'attributes'			=> array('legend'=>'publish_legend', 'fixed'=>true),
+		),
+		'start' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['start'],
+			'inputType'				=> 'text',
+			'eval'					=> array('rgxp'=>'date', 'datepicker'=>$this->getDatePickerString(), 'tl_class'=>'w50 wizard', 'disabled'=>'disabled'),
+			'attributes'			=> array('legend'=>'publish_legend'),
+		),
+		'stop' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['stop'],
+			'inputType'				=> 'text',
+			'eval'					=> array('rgxp'=>'date', 'datepicker'=>$this->getDatePickerString(), 'tl_class'=>'w50 wizard', 'disabled'=>'disabled'),
+			'attributes'			=> array('legend'=>'publish_legend'),
 		),
 		'source' => array
 		(

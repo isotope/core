@@ -50,12 +50,6 @@ $GLOBALS['TL_LANG']['tl_product_data']['published']				= array('Produkt veröffe
 $GLOBALS['TL_LANG']['tl_product_data']['internal'] = array('Interne Datei', 'Wählen Sie eine vorhandene Mediadatei auf dem Webserver aus (Flash oder MP3).');
 $GLOBALS['TL_LANG']['tl_product_data']['external'] = array('Externe Datei', 'Geben Sie den Video einer externen Quelle (wie YouTube) an.');
 
-$GLOBALS['TL_LANG']['tl_product_data']['values']			= 'Option Values';
-$GLOBALS['TL_LANG']['tl_product_data']['sku']				= 'SKU';
-$GLOBALS['TL_LANG']['tl_product_data']['price_change']	= 'Price Change';
-$GLOBALS['TL_LANG']['tl_product_data']['weight_change']	= 'Weight Change';
-$GLOBALS['TL_LANG']['tl_product_data']['quantity']		= 'Quantity';
-
 
 /**
  * Buttons

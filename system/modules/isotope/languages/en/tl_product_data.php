@@ -57,7 +57,7 @@ $GLOBALS['TL_LANG']['tl_product_data']['useOrCreateOptionSet'] = array('Option S
 */
 $GLOBALS['TL_LANG']['tl_product_data']['enabled'] = 'Enabled';
 $GLOBALS['TL_LANG']['tl_product_data']['values']			= 'Option Values';
-$GLOBALS['TL_LANG']['tl_product_data']['sku']				= 'SKU';
+//$GLOBALS['TL_LANG']['tl_product_data']['sku']				= 'SKU';
 $GLOBALS['TL_LANG']['tl_product_data']['price']	= 'Price Change';
 $GLOBALS['TL_LANG']['tl_product_data']['weight']	= 'Weight Change';
 $GLOBALS['TL_LANG']['tl_product_data']['quantity']		= 'Quantity';
