@@ -134,9 +134,8 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 		(
 			'label'					  => &$GLOBALS['TL_LANG']['tl_product_types']['attributes'],
 			'exclude'				  => true,
-			'inputType'				  => 'checkboxWizard',
-			'foreignKey'			  => 'tl_product_attributes.name',
-			'eval'					  => array('multiple'=>true,'mandatory'=>true)		
+			'inputType'				  => 'attributeWizard',
+			'eval'					  => array('mandatory'=>true),
 		),
 		'downloads' => array
 		(

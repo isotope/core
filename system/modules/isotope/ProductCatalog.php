@@ -123,31 +123,12 @@ class ProductCatalog extends Backend
 		
 		// FIXME: should we exclude "globally disabled" fields?
 		$arrFields = $this->Database->execute("SELECT * FROM tl_product_attributes")->fetchAllAssoc();
-
-		// add palettes
-		
-		//TODO: Make palettes dynamic - start with the basic fields and add additionals for the default palette, while loading the palettes as defined by
-		// each product type from tl_product_types.
-		
-		$arrProductTypePalettes = $this->getProductTypePalettes();
-
-		$GLOBALS['TL_DCA']['tl_product_data']['palettes'] = $GLOBALS['TL_DCA']['tl_product_data']['palettes'] + $arrProductTypePalettes;
-		//$GLOBALS['TL_DCA']['tl_product_data']['subpalettes']['add_audio_file'] = 'audio_source,audio_jumpTo,audio_url';
-		//$GLOBALS['TL_DCA']['tl_product_data']['subpalettes']['add_video_file'] = 'video_source,video_jumpTo,video_url';
-		
-		$arrAdditionalSelectors = $this->arrSelectors;
-		
-		$GLOBALS['TL_DCA']['tl_product_data']['palettes']['__selector__'] = array_merge($GLOBALS['TL_DCA']['tl_product_data']['palettes']['__selector__'], $arrAdditionalSelectors);
-		
-		$GLOBALS['TL_DCA']['tl_product_data']['subpalettes'] = $this->arrSubPalettes;
-
 		
 		
 		// add DCA for form fields
 		foreach ($arrFields as $field) 
 		{
 			$eval = array();
-			//if ($field['mandatory']) $eval['mandatory'] = 'true';
 			if ($field['is_required']) $eval['mandatory'] = 'true';
 			if ($field['rgxp']) $eval['rgxp'] = $field['rgxp'];
 			if ($field['multiple']) $eval['multiple'] = $field['multiple'];
@@ -266,6 +247,7 @@ class ProductCatalog extends Backend
 				'search'			=> !$filter,
 				'filter'         	=> $filter,
 				'eval'				=> $eval,
+				'attributes'		=> $field,
 				'load_callback'		=> array
 				(
 					array('ProductCatalog','loadField')
@@ -335,6 +317,21 @@ class ProductCatalog extends Backend
 					
 			}
 		}
+		
+		
+		// Add palettes
+		$arrProductTypePalettes = $this->getProductTypePalettes();
+
+		$GLOBALS['TL_DCA']['tl_product_data']['palettes'] = $GLOBALS['TL_DCA']['tl_product_data']['palettes'] + $arrProductTypePalettes;
+		//$GLOBALS['TL_DCA']['tl_product_data']['subpalettes']['add_audio_file'] = 'audio_source,audio_jumpTo,audio_url';
+		//$GLOBALS['TL_DCA']['tl_product_data']['subpalettes']['add_video_file'] = 'video_source,video_jumpTo,video_url';
+		
+		$arrAdditionalSelectors = $this->arrSelectors;
+		
+		$GLOBALS['TL_DCA']['tl_product_data']['palettes']['__selector__'] = array_merge($GLOBALS['TL_DCA']['tl_product_data']['palettes']['__selector__'], $arrAdditionalSelectors);
+		
+		$GLOBALS['TL_DCA']['tl_product_data']['subpalettes'] = $this->arrSubPalettes;
+
 	}
 	
 	
@@ -730,71 +727,56 @@ class ProductCatalog extends Backend
 	}
 	
 	
-	private function buildPaletteString($arrAttributes, $strAppendToLegend = '', $arrExtraFields = array())
+	private function buildPaletteString($arrFields, $strAppendToLegend = '', $arrExtraFields = array())
 	{
-		if (!is_array($arrAttributes) || !count($arrAttributes))
+		if (!is_array($arrFields) || !count($arrFields))
 			return '';
+		
+		$arrPalette = array();
+		
+		foreach( $arrFields as $field )
+		{
+			// Field does not exist
+			if (!is_array($GLOBALS['TL_DCA']['tl_product_data']['fields'][$field]))
+				continue;
+				
+			$arrAttributes = $GLOBALS['TL_DCA']['tl_product_data']['fields'][$field]['attributes'];
 			
-		$objAttributes = $this->Database->execute("SELECT field_name, legend FROM tl_product_attributes WHERE disabled='' AND is_hidden_on_backend='' AND is_customer_defined='' AND id IN(" . implode(',', $arrAttributes) . ") ORDER BY id=" . implode(' DESC, id=', $arrAttributes) . " DESC");
-		
-		if(!$objAttributes->numRows)
-		{
-			throw new Exception('No fields returned.');
-		}
-		
-		
-		$arrPalette = array
-		(
-			'general_legend' => array('type','alias', 'pages'),
-			'publish_legend' => array('published'),
-		);
-		
-		//Create an array grouped by field group
-		while($objAttributes->next())
-		{
-			if($objAttributes->legend == 'options_legend' && !in_array('option_set_source', $arrPalette[$objAttributes->legend]))
+			if($arrAttributes['legend'] == 'options_legend' && (!is_array($arrPalette[$arrAttributes['legend']]) || !in_array('option_set_source', $arrPalette[$arrAttributes['legend']])))
 			{
-				$arrPalette[$objAttributes->legend][] = 'option_set_source';
+				$arrPalette[$arrAttributes['legend']][] = 'option_set_source';
 			}
 
-			if($objAttributes->legend == $strAppendToLegend && sizeof($arrExtraFields))
+			if($arrAttributes['legend'] == $strAppendToLegend && sizeof($arrExtraFields))
 			{
 				foreach($arrExtraFields as $field)
 				{
-					$arrPalette[$objAttributes->legend][] = $field;
+					$arrPalette[$arrAttributes['legend']][] = $field;
 				}
 			}
 
 			//To do - detemine if product can support variants.  This would be determined by any customer defined attributes being a part of the given palette or not.
-			if($objAttributes->legend == 'options_legend' && !in_array('options_set_source', $arrPalette[$objAttributes->legend]))
+			if($arrAttributes['legend'] == 'options_legend' && !in_array('options_set_source', $arrPalette[$arrAttributes['legend']]))
 			{
 				if(!in_array('option_set_source', $this->arrSelectors))
 				{
 					$this->arrSelectors[] = 'option_set_source';
 				}
 								
-				if(!in_array('option_set_source', $arrPalette[$objAttributes->legend]))
+				if(!in_array('option_set_source', $arrPalette[$arrAttributes['legend']]))
 				{
-					$arrPalette[$objAttributes->legend][] = 'option_set_source';
+					$arrPalette[$arrAttributes['legend']][] = 'option_set_source';
 				}
 			}
 						
-			$arrPalette[$objAttributes->legend][] = $objAttributes->field_name;			
-		}
+			$arrPalette[$arrAttributes['legend']][] = $field;			
 
-		
+		}
+				
 		if(!in_array('option_set_source', $this->arrSelectors))
 		{
 			$this->arrSelectors[] = 'option_set_source';
 		}
-						
-				
-		
-			
-
-		//This is necessary because otherwise, attributes that do not fall in sequential order in terms of cardinality then get placed out of order in the
-		//palette string.  This allows us to not have to worry about that but ensuring groups are in the correct order.
-		uksort($arrPalette, create_function('$a,$b', 'return (array_search($a, $GLOBALS["ISO_MSC"]["tl_product_data"]["groups_ordering"]) > array_search($b, $GLOBALS["ISO_MSC"]["tl_product_data"]["groups_ordering"])) ? 1 : -1;'));
 		
 		//Build
 		$arrLegends = array();

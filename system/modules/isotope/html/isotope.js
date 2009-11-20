@@ -66,7 +66,84 @@ var Isotope =
 				}
 			}
 		}
-	}
+	},
+	
+	/**
+	 * Attribute wizard
+	 * @param object
+	 * @param string
+	 * @param string
+	 */
+	attributeWizard: function(el, command, id)
+	{
+		var container = $(id);
+		var parent = $(el).getParent();
+
+		Backend.getScrollOffset();
+
+		switch (command)
+		{
+			case 'up':
+				if (!parent.getPrevious() || parent.getPrevious().hasClass('fixed'))
+				{
+					parent.injectInside(container);
+				}
+				else
+				{
+					parent.injectBefore(parent.getPrevious());
+				}
+				break;
+
+			case 'down':
+				if (parent.getNext())
+				{
+					parent.injectAfter(parent.getNext());
+				}
+				else
+				{
+					var fel = container.getFirst();
+
+					if (fel.hasClass('fixed'))
+					{
+						fel = fel.getNext();
+					}
+
+					parent.injectBefore(fel);
+				}
+				break;
+
+		}
+	},
+	
+	/**
+	 * Toggle checkbox group
+	 * @param object
+	 * @param string
+	 */
+	toggleCheckboxGroup: function(el, id)
+	{
+		var cls = $(el).className;
+		var status = $(el).checked ? 'checked' : '';
+
+		if (cls == 'tl_checkbox')
+		{
+			$$('#' + id + ' .tl_checkbox').each(function(checkbox)
+			{
+				if (!checkbox.disabled)
+					checkbox.checked = status;
+			});
+		}
+		else if (cls == 'tl_tree_checkbox')
+		{
+			$$('#' + id + ' .parent .tl_tree_checkbox').each(function(checkbox)
+			{
+				if (!checkbox.disabled)
+					checkbox.checked = status;
+			});
+		}
+
+		Backend.getScrollOffset();
+	},
 };
 
 

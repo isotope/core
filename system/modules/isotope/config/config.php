@@ -122,6 +122,7 @@ $GLOBALS['TL_HOOKS']['executePostActions'][] = array('ProductOptionWizard', 'exe
  */
 $GLOBALS['BE_FFL']['mediaManager'] = 'MediaManager';
 $GLOBALS['BE_FFL']['variantsWizard'] = 'VariantsWizard';
+$GLOBALS['BE_FFL']['attributeWizard'] = 'AttributeWizard';
 
 //$GLOBALS['BE_FFL']['productOptionsWizard'] = 'ProductOptionsWizard';
 

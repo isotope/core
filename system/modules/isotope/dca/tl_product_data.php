@@ -132,10 +132,11 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		'type' => array
 		(
 			'label'					  =>  &$GLOBALS['TL_LANG']['tl_product_data']['type'],
-			'inputType'				  => 'select',
 			'filter'				  => true,
-			'eval'					  => array('mandatory'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true),
+			'inputType'				  => 'select',
 			'options_callback'		  => array('tl_product_data', 'getProductTypes'),
+			'eval'					  => array('mandatory'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true),
+			'attributes'			  => array('legend'=>'general_legend', 'fixed'=>true),
 		),
 		'pages' => array
 		(
@@ -144,6 +145,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			'inputType'				  => 'pageTree',
 			'foreignKey'			  => 'tl_page.title',
 			'eval'                    => array('mandatory'=>false, 'multiple'=>true, 'fieldType'=>'checkbox'),
+			'attributes'			  => array('legend'=>'general_legend', 'fixed'=>true),
 			'save_callback'			  => array
 			(
 				array('ProductCatalog','saveProductCategories'),
@@ -156,6 +158,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('rgxp'=>'alnum', 'doNotCopy'=>true, 'spaceToUnderscore'=>true, 'maxlength'=>128, 'tl_class'=>'clr'),
+			'attributes'			  => array('legend'=>'general_legend', 'fixed'=>true),
 			'save_callback' => array
 			(
 				array('tl_product_data', 'generateAlias')
@@ -176,6 +179,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			//'options'                 => array('existing_option_set', 'new_option_set'),
 			'reference'               => &$GLOBALS['TL_LANG']['tl_product_data'],
 			'eval'                    => array('submitOnChange'=>true),	//, 'helpwizard'=>true)
+			'attributes'			  => array('legend'=>'options_legend'),
 			'options_callback'		  => array('ProductCatalog','getOptionSets')
 		),
 		'option_sets' => array
@@ -183,6 +187,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			'label'					  =>  &$GLOBALS['TL_LANG']['tl_product_data']['option_sets'],
 			'inputType'				  => 'select',
 			'eval'					  => array('includeBlankOption'=>true, 'submitOnChange'=>true),
+			'attributes'			  => array('legend'=>'options_legend'),
 			'options_callback'		  => array('ProductCatalog','getProductOptionSets')
 		),
 		'option_set_title' => array
@@ -190,13 +195,15 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['option_set_title'],
 			'search'                  => true,
 			'inputType'               => 'text',
-			'eval'                    => array('rgxp'=>'extnd', 'maxlength'=>255)
+			'eval'                    => array('rgxp'=>'extnd', 'maxlength'=>255),
+			'attributes'			  => array('legend'=>'options_legend')
 		),
 		'variants_wizard' => array
 		(
 			'label'					  => &$GLOBALS['TL_LANG']['tl_product_data']['variants_wizard'],
 			'inputType' 			  => 'variantsWizard',
-			'eval'					  => array('mandatory'=>false, 'enableDelete'=>false, 'helpwizard'=>false),
+			'eval'					  => array('mandatory'=>false, 'enableDelete'=>false),
+			'attributes'			  => array('legend'=>'options_legend'),
 			'explanation'			  => 'variantsWizard'
 		),/*
 		'add_audio_file' => array
@@ -280,6 +287,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			'inputType'				  => 'checkbox',
 			'filter'				  => true,
 			'eval'					  => array('doNotCopy'=>true),
+			'attributes'			  => array('legend'=>'publish_legend', 'fixed'=>true),
 		),
 		'source' => array
 		(
