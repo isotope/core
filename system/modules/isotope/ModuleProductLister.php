@@ -153,7 +153,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 						if (is_array($data['callback']) && count($data['callback']) == 2)
 						{
 							$this->import($data['callback'][0]);
-							$this->{$data['callback'][0]}->{$data['callback'][1]}($arrProduct['raw']['id'], $arrProduct);
+							$this->{$data['callback'][0]}->{$data['callback'][1]}($arrProduct);
 						}
 						
 						break;
