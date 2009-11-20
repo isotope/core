@@ -93,7 +93,7 @@ $GLOBALS['TL_DCA']['tl_tax_rate'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => 'country_id,region_id;postcode;code;rate',
+		'default'                     => '{location_legend},country_id,region_id,postcode,address;{total_legend},total_start,total_stop;code;rate',
 	),
 
 
@@ -107,7 +107,7 @@ $GLOBALS['TL_DCA']['tl_tax_rate'] = array
 			'search'                  => true,
 			'inputType'               => 'select',
 			'options'                 => $this->getCountries(),
-			'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true,'submitOnChange'=>true)
+			'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true, 'tl_class'=>'w50')
 		),
 		'region_id' => array
 		(
@@ -115,8 +115,8 @@ $GLOBALS['TL_DCA']['tl_tax_rate'] = array
 			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'select',
-			'eval'                    => array('includeBlankOption'=>true),
-			'options_callback'		  => array('tl_tax_rate','getRegions')
+			'options_callback'		  => array('tl_tax_rate','getRegions'),
+			'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
 		),
 		'postcode' => array
 		(
@@ -127,6 +127,15 @@ $GLOBALS['TL_DCA']['tl_tax_rate'] = array
 			'flag'                    => 1,
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255)
+		),
+		'address' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['address'],
+			'exclude'                 => true,
+			'inputType'               => 'checkbox',
+			'options'				  => array('billing', 'shipping'),
+			'reference'				  => &$GLOBALS['TL_LANG']['tl_tax_rate'],
+			'eval'                    => array('mandatory'=>true, 'multiple'=>true)
 		),
 		'code' => array
 		(
@@ -146,8 +155,22 @@ $GLOBALS['TL_DCA']['tl_tax_rate'] = array
 			'sorting'                 => true,
 			'flag'                    => 1,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>255, 'rgxp'=>prcnt)
-		)
+			'eval'                    => array('maxlength'=>255, 'rgxp'=>'digits')
+		),
+		'total_start' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['total_start'],
+			'exclude'                 => true,
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>10, 'rgxp'=>'digits', 'tl_class'=>'w50')
+		),
+		'total_stop' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['total_stop'],
+			'exclude'                 => true,
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>10, 'rgxp'=>'digits', 'tl_class'=>'w50')
+		),
 	)
 );
 

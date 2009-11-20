@@ -386,10 +386,6 @@ class Isotope extends Controller
 						case 'images':
 						 	if(!strlen($product[$field]))
 						 	{
-								//Get first product image if none is specified as main image.
-								$this->import('MediaManagement');
-								//$product[$field] = $this->MediaManagement->getFirstOrdinalImage('isotope/' );
-								
 							}
 							break;
 					}

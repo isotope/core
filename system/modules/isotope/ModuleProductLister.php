@@ -693,6 +693,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 	 * @var string
 	 * @return string;
 	 */
+/*
 	protected function getThumbnailImage($intProductId, $strProductAlias, $strProductImage, $strMissingImagePlaceholder, $strFilePath)
 	{
 		$arrImages = explode(',', $strProductImage);
@@ -779,17 +780,6 @@ class ModuleProductLister extends ModuleIsotopeBase
 			
 			$arrImages[] = $strProductImage;
 			$arrImageSizeTypes[] = 'all';
-		
-			/*
-			echo 'image names: ' . var_dump($arrImages);
-			echo "<br /><br />";
-			echo 'constraints: ' . var_dump($arrImageSizeConstraints);
-			echo "<br /><br />";
-			echo "product paths: " . var_dump($arrProductPaths);
-			echo "<br /><br />";
-			echo "Image Size Types: " . var_dump($arrImageSizeTypes);
-			exit;
-			*/
 			
 			$this->MediaManagement->processImages($arrImages, $arrImageSizeConstraints, $arrProductPaths, $arrImageSizeTypes, true, true);
 			
@@ -799,6 +789,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 		}
 	
 	}
+*/
 	
 	/**
 	 *  Get listing filter data from the cache (tl_filter_values_to_categories)
