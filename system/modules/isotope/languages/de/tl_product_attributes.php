@@ -36,13 +36,4 @@ $GLOBALS['TL_LANG']['tl_product_attributes']['type'] = array('Typ', '');
 /**
  * Legends
  */
-$GLOBALS['TL_LANG']['tl_product_attributes']['general_legend'] = 'General Information';
-$GLOBALS['TL_LANG']['tl_product_attributes']['type_legend'] = 'Attribute Type';
-$GLOBALS['TL_LANG']['tl_product_attributes']['pricing_legend'] = 'Pricing Data';
-$GLOBALS['TL_LANG']['tl_product_attributes']['options_legend'] = 'Option Collection Data';
-$GLOBALS['TL_LANG']['tl_product_attributes']['visibility_legend'] = 'Visibility Settings';
-$GLOBALS['TL_LANG']['tl_product_attributes']['use_mode_legend'] = 'Use Mode';
-$GLOBALS['TL_LANG']['tl_product_attributes']['search_filters_legend'] = 'Search & Filtering Settings';
-$GLOBALS['TL_LANG']['tl_product_attributes']['validation_legend'] = 'Validation Settings';
-$GLOBALS['TL_LANG']['tl_product_attributes']['developer_tools_legend'] = 'Developer Tools';
 

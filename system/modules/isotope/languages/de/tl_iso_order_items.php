@@ -28,24 +28,14 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_iso_order_items']['product_name'] = array('Product Name','');
-$GLOBALS['TL_LANG']['tl_iso_order_items']['status'] = array('Status','');
-$GLOBALS['TL_LANG']['tl_iso_order_items'][''] = array('','');
-$GLOBALS['TL_LANG']['tl_iso_order_items'][''] = array('','');
 
 
 /** 
  * Reference
  */
 
-$GLOBALS['TL_LANG']['tl_iso_order_items']['on_hold'] = 'On Hold';
-$GLOBALS['TL_LANG']['tl_iso_order_items']['backordered'] = 'Backordered';
-
 
 /** 
  * Legends
  */
- 
-$GLOBALS['TL_LANG']['tl_iso_order_items']['general_legend'] = 'General Information';
-$GLOBALS['TL_LANG']['tl_iso_order_items']['status_legend'] = 'Product Status';
 

@@ -31,7 +31,3 @@
 $GLOBALS['TL_LANG']['tl_page']['iso_attribute_set']				= array('Artikelmerkmal-Sammlung','Wählen Sie eine Artikelmerkmal-Sammlung um einen Filter für diese Seite zu wählen.');
 $GLOBALS['TL_LANG']['tl_page']['iso_filters']					= array('Auflistungs-Filter','Wählen Sie einen Artikelmerkmal-Filter.');
 
-$GLOBALS['TL_LANG']['tl_page']['isotopeStoreConfig'] = array('Isotope Store Configuration','');
-
-$GLOBALS['TL_LANG']['tl_page']['isotope_legend'] = 'Isotope E-commerce Settings';
-

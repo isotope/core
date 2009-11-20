@@ -45,13 +45,6 @@ $GLOBALS['TL_LANG']['tl_product_data']['published']				= array('Produkt veröffe
 
 
 /**
- * Reference
- */
-$GLOBALS['TL_LANG']['tl_product_data']['internal'] = array('Interne Datei', 'Wählen Sie eine vorhandene Mediadatei auf dem Webserver aus (Flash oder MP3).');
-$GLOBALS['TL_LANG']['tl_product_data']['external'] = array('Externe Datei', 'Geben Sie den Video einer externen Quelle (wie YouTube) an.');
-
-
-/**
  * Buttons
  */
 $GLOBALS['TL_LANG']['tl_product_data']['new']    = array('Neuen Artikel', 'Einen neuen Artikel erstellen');

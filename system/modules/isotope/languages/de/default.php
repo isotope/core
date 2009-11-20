@@ -35,23 +35,7 @@ $GLOBALS['TL_LANG']['CTE']['attributeLinkRepeater']   = array('Artikelmerkmal-Fi
 /**
  * Errors
  */
-$GLOBALS['TL_LANG']['ERR']['tableExists'] = 'Table `%s` already exists. Please choose different name.';
-$GLOBALS['TL_LANG']['ERR']['tableDoesNotExist'] = 'Table `%s` does not exists.';
-$GLOBALS['TL_LANG']['ERR']['columnExists'] = 'Column `%s` already exists. Please choose different name.';
-$GLOBALS['TL_LANG']['ERR']['columnDoesNotExist'] = 'Column `%s` does not exist in table %s.';
-$GLOBALS['TL_LANG']['ERR']['systemColumn'] = 'Name `%s` is reserved for system use. Please choose different name.';
-$GLOBALS['TL_LANG']['ERR']['invalidColumnName'] = 'Invalid column name `%s`. Please use only letters, numbers and underscore.';
-$GLOBALS['TL_LANG']['ERR']['invalidTableName'] = 'Invalid table name `%s`. Please use only letters, numbers and underscore.';
-$GLOBALS['TL_LANG']['ERR']['aliasTitleMissing'] = 'Incorrect alias field configuration. Missing Title field parameter.';
-$GLOBALS['TL_LANG']['ERR']['aliasDuplicate'] = 'Alias field `%s` already defined. Only one alias field is allowed per table.';
-$GLOBALS['TL_LANG']['ERR']['deleteLocked'] = 'Altering or Deleting this attribute is prohibited.';
-$GLOBALS['TL_LANG']['ERR']['missingButtonTemplate'] = 'You must specify a template for the button "%s".';
-$GLOBALS['TL_LANG']['ERR']['noStoreIdFound'] = 'No store id was found associated with this module!';
-$GLOBALS['TL_LANG']['ERR']['order_conditions'] = 'Sie müssen die AGB akzeptieren um fortzufahren';
-$GLOBALS['TL_LANG']['ERR']['noStoreConfigurationSet'] = 'Please create a store configuration';
-$GLOBALS['TL_LANG']['ERR']['productNameMissing'] = '<no product name found>';
-$GLOBALS['TL_LANG']['ERR']['noSubProducts'] = 'no sub-products found';
-$GLOBALS['TL_LANG']['ERR']['searchNotEnabled'] = 'Search functionality is not enabled!';
+$GLOBALS['TL_LANG']['ERR']['order_conditions']			= 'Sie müssen die AGB akzeptieren um fortzufahren';
 $GLOBALS['TL_LANG']['ERR']['emptyOrderHistory']			= 'Sie haben noch keine Bestellungen getätigt.';
 $GLOBALS['TL_LANG']['ERR']['orderNotFound']				= 'Die gewünschte Bestellung wurde nicht gefunden.';
 
@@ -59,12 +43,9 @@ $GLOBALS['TL_LANG']['ERR']['orderNotFound']				= 'Die gewünschte Bestellung wur
 /**
  * Miscellaneous
  */
-$GLOBALS['TL_LANG']['MSC']['quantity'] = 'Quantity';
 $GLOBALS['TL_LANG']['MSC']['order_conditions'] = 'AGB akzeptieren';
- 
 $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'] = 'Bestellen';
 $GLOBALS['TL_LANG']['MSC']['buttonActionString']['add_to_cart'] = '%s bestellen';
-		
 $GLOBALS['TL_LANG']['MSC']['labelSortBy'] = 'Sortieren nach';
 $GLOBALS['TL_LANG']['MSC']['deleteImage'] = 'Entfernen';
 $GLOBALS['TL_LANG']['MSC']['noItemsInCart'] = 'Ihr Warenkorb ist leer.';
@@ -96,32 +77,9 @@ $GLOBALS['TL_LANG']['MSC']['subTotalLabel'] = 'Subtotal: ';
 $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'] = 'Total: ';
 $GLOBALS['TL_LANG']['MSC']['shippingLabel'] = 'Versandkosten: ';
 $GLOBALS['TL_LANG']['MSC']['taxLabel'] = 'Enthaltene MwSt: ';
-$GLOBALS['TL_LANG']['MSC']['shippingOptionsLabel'] = 'Selected Shipping Options: ';
-$GLOBALS['TL_LANG']['MSC']['actualPrice'] = 'Actual Price';
 
 $GLOBALS['TL_LANG']['MSC']['noPaymentModules'] = 'Zur Zeit sind keine Zahlungsoptionen verfügbar.';
 $GLOBALS['TL_LANG']['MSC']['noShippingModules'] = 'Zur Zeit sind keine Versandoptionen verfügbar.';
-
-
-
-$GLOBALS['TL_LANG']['ISO']['productSingle']		= '1 Produkt';
-$GLOBALS['TL_LANG']['ISO']['productMultiple']	= '%s Produkte';
-
-$GLOBALS['TL_LANG']['MSC']['optionSetTitle'] = 'Option Set Name';
-
-/**
- * Shipping modules
- */
-$GLOBALS['TL_LANG']['SHIP']['collection']		= array('Abholung');
-$GLOBALS['TL_LANG']['SHIP']['flat']				= array('Pauschalversand');
-
-
-/**
- * Payment modules
- */
-$GLOBALS['TL_LANG']['PAY']['cash']				= array('Barzahlung');
-$GLOBALS['TL_LANG']['PAY']['paypal']			= array('PayPal Standard');
-$GLOBALS['TL_LANG']['PAY']['postfinance']		= array('Postfinance (Schweizerische Post)');
 
 //Invoice language Entries
 $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] = 'Bestellung';
@@ -154,6 +112,26 @@ $GLOBALS['TL_LANG']['MSC']['payment_status_labels']['cancelled']	= 'Abgebrochen'
 
 //Checkout language entries 
 $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['shipping_information'] = 'Wählen Sie die Versandadresse.';
+
+
+
+$GLOBALS['TL_LANG']['ISO']['productSingle']		= '1 Produkt';
+$GLOBALS['TL_LANG']['ISO']['productMultiple']	= '%s Produkte';
+
+
+/**
+ * Shipping modules
+ */
+$GLOBALS['TL_LANG']['SHIP']['collection']		= array('Abholung');
+$GLOBALS['TL_LANG']['SHIP']['flat']				= array('Pauschalversand');
+
+
+/**
+ * Payment modules
+ */
+$GLOBALS['TL_LANG']['PAY']['cash']				= array('Barzahlung');
+$GLOBALS['TL_LANG']['PAY']['paypal']			= array('PayPal Standard');
+$GLOBALS['TL_LANG']['PAY']['postfinance']		= array('Postfinance (Schweizerische Post)');
 
 
 //Address Book language entries

@@ -30,12 +30,8 @@
  */
 $GLOBALS['TL_LANG']['tl_store']['store_configuration_name']			= array('Name der Shop-Konfiguration', '');
 $GLOBALS['TL_LANG']['tl_store']['cookie_duration']					= array('Vorhaltetage der Warenkorb-Informationen', 'Artikel und deren Informationen werden für nicht registrierte Besucher diese Anzahl Tage gespeichert. Ein Wert 0 bedeutet nach dem verlassen der Seite geht der Warenkorb verloren. Der Warenkorb wird für registrierte Mitglieder immer gespeichert.');
-$GLOBALS['TL_LANG']['tl_store']['root_asset_import_path']			= array('Import-Pfad für Bilder und Mediadateien','Ein Verzeichnis welches alle zu importierenden Bilder und Mediadateien zu einem Datensatz enthält. Isotope sucht nach Dateien in diesem Ordner anstelle des Standard-Quellordners für Produkte.');
 $GLOBALS['TL_LANG']['tl_module']['cartJumpTo']						= array('Weiterleitungs-Seite für Warenkorb', 'Wählen Sie die Seite auf der sich der Warenkorb befindet.');
 $GLOBALS['TL_LANG']['tl_module']['checkoutJumpTo']					= array('Weiterleitungs-Seite für Kasse', 'Wählen Sie die Seite auf der sich die Kasse befindet.');
-$GLOBALS['TL_LANG']['tl_store']['priceField']						= array('Price Field', 'Select a field that is the price field for this store.');
-$GLOBALS['TL_LANG']['tl_store']['priceOverrideField']				= array('Override Price Field', 'Select a field that is the override price field for this store.');
-																	
 $GLOBALS['TL_LANG']['tl_store']['missing_image_placeholder']		= array('Platzhalter-Bild für Produkte', 'Dieses Bild wird verwendet wenn für ein Produkt kein Bild vorhanden ist.');
 $GLOBALS['TL_LANG']['tl_store']['thumbnail_image_width']			= array('Breite für Vorschaubild', 'In Pixel.');
 $GLOBALS['TL_LANG']['tl_store']['thumbnail_image_height']			= array('Höhe für Vorschaubild', 'In Pixel.');
@@ -53,8 +49,7 @@ $GLOBALS['TL_LANG']['tl_store']['address_fields']					= array('Adressfelder', 'W
 
 $GLOBALS['TL_LANG']['tl_store']['gallery_image_width']				= array('Breite für Galerie-Vorschaubild', 'In Pixel.');
 $GLOBALS['TL_LANG']['tl_store']['gallery_image_height']				= array('Höhe für Galerie-Vorschaubild', 'In Pixel.');
-$GLOBALS['TL_LANG']['tl_store']['invoiceLogo']						= array('Invoice Logo','Select a logo to show up on the invoices for this store.');
-$GLOBALS['TL_LANG']['tl_store']['isDefaultStore']					= array('Set as default store','Set this as the default store for back-end currency formatting and other locale-specific information.');
+
 
 /**
  * Reference
