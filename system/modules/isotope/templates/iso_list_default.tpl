@@ -2,13 +2,9 @@
 <input type="hidden" name="quantity_requested" value="1" />
 <h3><a href="<?php echo $this->href_reader; ?>"><?php echo $this->name; ?></a></h3>
 
-<div class="image_container main_image">
 <?php if ($this->hasImage): ?>
-<a href="<?php echo $this->href_reader; ?>" title="<?php echo $this->mainImage['desc']; ?>"><img src="<?php echo $this->mainImage['thumbnail']; ?>" alt="<?php echo $this->mainImage['alt']; ?>"<?php echo $this->mainImage['thumbnail_size']; ?> /></a>
-<?php else: ?>
-<a href="<?php echo $this->href_reader; ?>" title="<?php echo $this->mainImage['desc']; ?>"><img src="<?php echo $this->placeholderImage; ?>" alt="<?php echo $this->name; ?>" /></a>
+<div class="image_container main_image"><a href="<?php echo $this->mainImage['large']; ?>" title="<?php echo $this->mainImage['desc']; ?>" rel="lightbox"><img src="<?php echo $this->mainImage['thumbnail']; ?>" alt="<?php echo $this->mainImage['alt']; ?>"<?php echo $this->mainImage['thumbnail_size']; ?> /></a></div>
 <?php endif; ?>
-</div>
 
 <?php if ($this->sku): ?>
 <p class="sku"><?php echo $this->sku; ?></p><?php endif; if ($this->teaser): ?>

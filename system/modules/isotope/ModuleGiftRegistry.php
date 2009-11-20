@@ -169,7 +169,7 @@ class ModuleGiftRegistry extends ModuleIsotopeBase
 				$arrAggregateSetData = array();
 			}
 				
-			$arrProductData = $this->getProductData($arrAggregateSetData, array('alias','name','price', 'main_image'), 'name');
+			$arrProductData = $this->getProductData($arrAggregateSetData, array('alias','name','price', 'images'), 'name');
 			
 			foreach($arrProductData as $data)
 			{
@@ -342,7 +342,7 @@ class ModuleGiftRegistry extends ModuleIsotopeBase
 			$arrFormattedProductData[] = array
 			(
 				'id'		=> $row['id'],
-				'image'				=> $GLOBALS['TL_CONFIG']['isotope_upload_path'] . '/' . $GLOBALS['TL_CONFIG']['isotope_base_path'] . '/' . substr($row['alias'], 0, 1) . '/' . $row['alias'] . '/' . $GLOBALS['TL_LANG']['MSC']['imagesFolder'] . '/' . $GLOBALS['TL_LANG']['MSC']['thumbnail_images_folder'] . '/' . $row['main_image'],
+				'image'				=> $GLOBALS['TL_CONFIG']['isotope_upload_path'] . '/' . $GLOBALS['TL_CONFIG']['isotope_base_path'] . '/' . substr($row['alias'], 0, 1) . '/' . $row['alias'] . '/' . $GLOBALS['TL_LANG']['MSC']['imagesFolder'] . '/' . $GLOBALS['TL_LANG']['MSC']['thumbnail_images_folder'] . '/' . $row['images'],
 				'name'				=> $row['name'],
 				'link'				=> $this->generateProductLink($row['alias'], $row, $this->Store->productReaderJumpTo, $row['attribute_set_id'], 'id'),
 				'price'				=> $this->generatePrice($row['price'], $this->strPriceTemplate),

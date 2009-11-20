@@ -46,7 +46,7 @@ var Isotope =
 				break;
 
 			case 'delete':
-				(rows.length > 1) ? parent.destroy() : null;
+				parent.destroy();
 				break;
 		}
 

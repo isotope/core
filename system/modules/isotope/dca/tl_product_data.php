@@ -61,7 +61,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		),
 		'label' => array
 		(
-			'fields'                  => array('product_name'),
+			'fields'                  => array('name'),
 			'format'                  => '%s',
 			'label_callback'		  => array('tl_product_data','getRowLabel'),
 		),
@@ -131,40 +131,101 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 	(
 		'type' => array
 		(
-			'label'					  =>  &$GLOBALS['TL_LANG']['tl_product_data']['type'],
-			'filter'				  => true,
-			'inputType'				  => 'select',
-			'options_callback'		  => array('tl_product_data', 'getProductTypes'),
-			'eval'					  => array('mandatory'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true),
-			'attributes'			  => array('legend'=>'general_legend', 'fixed'=>true),
+			'label'					=>  &$GLOBALS['TL_LANG']['tl_product_data']['type'],
+			'filter'				=> true,
+			'inputType'				=> 'select',
+			'options_callback'		=> array('tl_product_data', 'getProductTypes'),
+			'eval'					=> array('mandatory'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true),
+			'attributes'			=> array('legend'=>'general_legend', 'fixed'=>true),
 		),
 		'pages' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['pages'],
-			'filter'				  => true,
-			'inputType'				  => 'pageTree',
-			'foreignKey'			  => 'tl_page.title',
-			'eval'                    => array('mandatory'=>false, 'multiple'=>true, 'fieldType'=>'checkbox'),
-			'attributes'			  => array('legend'=>'general_legend', 'fixed'=>true),
-			'save_callback'			  => array
+			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['pages'],
+			'filter'				=> true,
+			'inputType'				=> 'pageTree',
+			'foreignKey'			=> 'tl_page.title',
+			'eval'					=> array('mandatory'=>false, 'multiple'=>true, 'fieldType'=>'checkbox'),
+			'attributes'			=> array('legend'=>'general_legend', 'fixed'=>true),
+			'save_callback'			=> array
 			(
 				array('ProductCatalog','saveProductCategories'),
 			),
-			//'explanation'             => 'pageCategories'
 		),
 		'alias' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['alias'],
-			'exclude'                 => true,
-			'inputType'               => 'text',
-			'eval'                    => array('rgxp'=>'alnum', 'doNotCopy'=>true, 'spaceToUnderscore'=>true, 'maxlength'=>128, 'tl_class'=>'clr'),
-			'attributes'			  => array('legend'=>'general_legend', 'fixed'=>true),
+			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['alias'],
+			'inputType'				=> 'text',
+			'eval'					=> array('rgxp'=>'alnum', 'doNotCopy'=>true, 'spaceToUnderscore'=>true, 'maxlength'=>128, 'tl_class'=>'clr'),
+			'attributes'			=> array('legend'=>'general_legend', 'fixed'=>true),
 			'save_callback' => array
 			(
 				array('tl_product_data', 'generateAlias')
 			)
 
-		),/*
+		),
+		'name' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['name'],
+			'search'				=> true,
+			'inputType'				=> 'text',
+			'eval'					=> array('mandatory'=>true, 'tl_class'=>'clr long'),
+			'attributes'			=> array('legend'=>'general_legend', 'fixed'=>true),
+		),
+		'teaser' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['teaser'],
+			'search'				=> true,
+			'inputType'				=> 'textarea',
+			'eval'					=> array('style'=>'height:80px'),
+			'attributes'			=> array('legend'=>'general_legend'),
+		),
+		'description' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['description'],
+			'search'				=> true,
+			'inputType'				=> 'textarea',
+			'eval'					=> array('mandatory'=>true, 'rte'=>'tinyMCE'),
+			'attributes'			=> array('legend'=>'general_legend'),
+		),
+		'tax_class' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['tax_class'],
+			'filter'				=> true,
+			'inputType'				=> 'select',
+			'foreignKey'			=> 'tl_tax_class.name',
+			'attributes'			=> array('legend'=>'tax_legend'),
+		),
+		'images' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['images'],
+			'inputType'				=> 'mediaManager',
+			'attributes'			=> array('legend'=>'media_legend', 'fixed'=>true),
+		),
+		'published' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['published'],
+			'filter'				=> true,
+			'inputType'				=> 'checkbox',
+			'eval'					=> array('doNotCopy'=>true),
+			'attributes'			=> array('legend'=>'publish_legend', 'fixed'=>true),
+		),
+		'source' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['source'],
+			'eval'                    => array('mandatory'=>true, 'required'=>true, 'fieldType'=>'radio'),
+		),
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		/*
 		'create_variations' => array
 		(
 			'label'					  => &$GLOBALS['TL_LANG']['tl_product_data']['create_variations'],
@@ -281,19 +342,6 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 				array('ProductCatalog','saveProductOptions')
 			)
 		),*/
-		'published' => array
-		(
-			'label'					  => &$GLOBALS['TL_LANG']['tl_product_data']['published'],
-			'inputType'				  => 'checkbox',
-			'filter'				  => true,
-			'eval'					  => array('doNotCopy'=>true),
-			'attributes'			  => array('legend'=>'publish_legend', 'fixed'=>true),
-		),
-		'source' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['source'],
-			'eval'                    => array('mandatory'=>true, 'required'=>true, 'fieldType'=>'radio'),
-		),
 	),
 );
 
@@ -366,7 +414,7 @@ class tl_product_data extends Backend
 	{
 		$key = $row['published'] ? 'published' : 'unpublished';
 		
-		$arrImages = deserialize($row['main_image']);
+		$arrImages = deserialize($row['images']);
 		$thumbnail = '';
 		
 		if (is_array($arrImages) && count($arrImages))
@@ -511,7 +559,7 @@ class tl_product_data extends Backend
 			
 			while( $objProducts->next() )
 			{
-				$arrImages = deserialize($objProducts->main_image);
+				$arrImages = deserialize($objProducts->images);
 				if (!is_array($arrImages))
 					$arrImages = array();
 				
@@ -572,7 +620,7 @@ class tl_product_data extends Backend
 							$_SESSION['TL_CONFIRM'][] = sprintf('Imported file %s for product "%s"', $pathinfo['filename'] . '.' . $pathinfo['extension'], $objProducts->name);
 						}
 						
-						$this->Database->prepare("UPDATE tl_product_data SET main_image=? WHERE id=?")->execute(serialize($arrImages), $objProducts->id);
+						$this->Database->prepare("UPDATE tl_product_data SET images=? WHERE id=?")->execute(serialize($arrImages), $objProducts->id);
 					}
 				}
 			}

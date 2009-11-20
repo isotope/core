@@ -424,12 +424,12 @@ abstract class ModuleIsotopeBase extends Module
 			$row['id'] = $row['product_id'];	//needed to ensure all product links work for now.
 			
 			
-			$arrImages = deserialize($row['main_image'], true);
+			$arrImages = deserialize($row['images'], true);
 	
 			$arrFormattedProductData[] = array
 			(
 				'id'				=> $row['product_id'],
-				'image'				=> (is_array($arrImages[0]) ? $this->getImage('isotope/' . substr($arrImages[0]['src'], 0, 1) . '/' . $arrImages[0]['src'], $this->Isotope->Store->gallery_image_width, $this->Isotope->Store->gallery_image_height) : $this->getImage($this->Isotope->Store->missing_image_placeholder, $this->Isotope->Store->gallery_image_width, 0)),
+				'image'				=> (is_array($arrImages[0]) ? $this->getImage('isotope/' . substr($arrImages[0]['src'], 0, 1) . '/' . $arrImages[0]['src'], $this->Isotope->Store->gallery_image_width, $this->Isotope->Store->gallery_image_height) : $this->getImage($this->Isotope->Store->missing_image_placeholder, $this->Isotope->Store->gallery_image_width, $this->Isotope->Store->gallery_image_height)),
 				'name'				=> $row['name'],
 				'link'				=> ($this->iso_reader_jumpTo ? $this->generateProductLink($row['alias'], $row, $this->iso_reader_jumpTo, 'id') : $row['link']),
 				'price'				=> $this->generatePrice($row['price'], $this->strPriceTemplate),
@@ -1211,8 +1211,16 @@ abstract class ModuleIsotopeBase extends Module
 		if (!is_array($arrIds) || !count($arrIds))
 			return array();
 			
+		// Make sure field data is available
+		if (!is_array($GLOBALS['TL_DCA']['tl_product_data']['fields']))
+		{
+			$this->loadDataContainer('tl_product_data');
+			$this->loadLanguageFile('tl_product_data');
+		}
+			
 		// Product type attributes cache
 		$arrAttributes = array();
+		$arrFields = &$GLOBALS['TL_DCA']['tl_product_data']['fields'];
 		
 		$arrProducts = array();
 		$objProducts = $this->Database->execute("SELECT * FROM tl_product_data WHERE id IN (" . implode(',', $arrIds) . ")");
@@ -1223,13 +1231,14 @@ abstract class ModuleIsotopeBase extends Module
 			{
 				$objType = $this->Database->prepare("SELECT * FROM tl_product_types WHERE id=?")->limit(1)->execute($objProducts->type);
 				
-				$attributeIds = deserialize($objType->attributes);
+				if (!$objType->numRows)
+					continue;
+				
+				$arrAttributes[$objType->id] = deserialize($objType->attributes);
 				
 				// Skip this product, it does not have any attributes
-				if (!is_array($attributeIds) || !count($attributeIds))
+				if (!is_array($arrAttributes[$objType->id]) || !count($arrAttributes[$objType->id]))
 					continue;
-					
-				$arrAttributes[$objType->id] = $this->Database->execute("SELECT * FROM tl_product_attributes WHERE id IN (" . implode(',', $attributeIds) . ") AND disabled=''")->fetchAllAssoc();
 			}
 			
 			$arrProduct = array
@@ -1240,11 +1249,11 @@ abstract class ModuleIsotopeBase extends Module
 			
 			foreach( $arrAttributes[$objProducts->type] as $attribute )
 			{
-				switch( $attribute['type'] )
+				switch( $arrFields[$attribute]['inputType'] )
 				{
-					case 'media':
+					case 'mediaManager':
 						$varValue = array();
-						$arrImages = deserialize($objProducts->{$attribute['field_name']});
+						$arrImages = deserialize($objProducts->{$attribute});
 						
 						if(is_array($arrImages) && count($arrImages))
 						{
@@ -1274,44 +1283,48 @@ abstract class ModuleIsotopeBase extends Module
 										}
 										
 										$varValue[] = $file;
-										
-	/*
-										$varValue[] = array_merge($file, array
-										(
-											'is_image'		=> true,
-											'large'			=> $this->getImage($strFile, $this->Isotope->Store->large_image_width, $this->Isotope->Store->large_image_height),
-											'medium'		=> $this->getImage($strFile, $this->Isotope->Store->medium_image_width, $this->Isotope->Store->medium_image_height),
-											'thumb'			=> $this->getImage($strFile, $this->Isotope->Store->thumbnail_image_width, $this->Isotope->Store->thumbnail_image_height),
-											'gallery'		=> $this->getImage($strFile, $this->Isotope->Store->gallery_image_width, $this->Isotope->Store->gallery_image_height),
-											'large_size'	=> sprintf(' width="%s" height="%s"', $this->Isotope->Store->large_image_width, $this->Isotope->Store->large_image_height),
-											'medium_size'	=> sprintf(' width="%s" height="%s"', $this->Isotope->Store->medium_image_width, $this->Isotope->Store->medium_image_height),
-											'thumb_size'	=> sprintf(' width="%s" height="%s"', $this->Isotope->Store->thumbnail_image_width, $this->Isotope->Store->thumbnail_image_height),
-											'gallery_size'	=> sprintf(' width="%s" height="%s"', $this->Isotope->Store->gallery_image_width, $this->Isotope->Store->gallery_image_height),
-										));
-	*/
 									}
 								}
 							}
 						}
 						break;
-						
-					default:
-						switch( $attribute['field_name'] )
+				}
+					
+				switch( $attribute )
+				{
+					case 'images':
+						// No image available, add default image
+						if (!count($varValue) && is_file(TL_ROOT . '/' . $this->Isotope->Store->missing_image_placeholder))
 						{
-							case $this->Isotope->Store->priceField:
-							case $this->Isotope->Store->priceOverrideField:
-								$varValue = $this->Isotope->calculatePrice($objProducts->{$attribute['field_name']});
-								break;
-						
-							default:
-								$varValue = deserialize($objProducts->{$attribute['field_name']});
-								break;
+							foreach( array('large', 'medium', 'thumbnail', 'gallery') as $size )
+							{
+								$strImage = $this->getImage($this->Isotope->Store->missing_image_placeholder, $this->Isotope->Store->{$size . '_image_width'}, $this->Isotope->Store->{$size . '_image_height'});
+								$arrSize = @getimagesize(TL_ROOT . '/' . $strImage);
+								
+								$file[$size] = $strImage;
+								
+								if (is_array($arrSize) && strlen($arrSize[3]))
+								{
+									$file[$size . '_size'] = $arrSize[3];
+								}
+							}
+							
+							$varValue[] = $file;
 						}
 						break;
-				}
+						
+					case $this->Isotope->Store->priceField:
+					case $this->Isotope->Store->priceOverrideField:
+						$varValue = $this->Isotope->calculatePrice($objProducts->{$attribute});
+						break;
 				
-				$arrProduct[$attribute['field_name']] = $attribute;
-				$arrProduct[$attribute['field_name']]['value'] = $varValue;
+					default:
+						$varValue = deserialize($objProducts->{$attribute});
+						break;
+				}
+
+				$arrProduct[$attribute] = $arrFields[$attribute];
+				$arrProduct[$attribute]['value'] = $varValue;
 			}
 			
 			$arrProducts[] = $arrProduct;
@@ -1340,7 +1353,7 @@ abstract class ModuleIsotopeBase extends Module
 					$objTemplate->$field = $attribute;
 					break;
 					
-				case 'main_image':
+				case 'images':
 					if (is_array($attribute['value']) && count($attribute['value']))
 					{
 						$arrImages = $attribute['value'];
@@ -1353,10 +1366,6 @@ abstract class ModuleIsotopeBase extends Module
 							$objTemplate->hasGallery = true;
 							$objTemplate->gallery = $arrImages;
 						}
-					}
-					else
-					{						
-						$objTemplate->placeholderImage = $this->Isotope->Store->missing_image_placeholder;
 					}
 					break;
 					
@@ -1428,7 +1437,7 @@ abstract class ModuleIsotopeBase extends Module
 								break;
 																																		
 							default:
-								if($attribute['is_visible_on_front'])
+								if(!isset($attribute['attributes']['is_visible_on_front']) || $attribute['attributes']['is_visible_on_front'])
 								{
 									//just direct render
 									$objTemplate->$field = $attribute['value'];

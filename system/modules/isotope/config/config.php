@@ -283,37 +283,12 @@ $GLOBALS['ISO_CONFIG']['CHECKOUT_STEPS'] = array('login','billing_information','
  */
 $GLOBALS['ISO_ATTR'] = array
 (
-	//Product Name
-	array
-	(
-		'pid'						=> 0,
-		'tstamp'					=> time(),
-		'sorting'					=> $intSorting,
-		'type'						=> 'text',
-		'field_name'				=> 'name',
-		'legend'					=> 'general_legend',
-		'name'						=> 'Product Name',
-		'description'				=> '',
-		'attr_use_mode'				=> 'fixed',
-		'is_customer_defined'		=> 0,
-		'is_visible_on_front'		=> 1,
-		'is_required'				=> 1,
-		'is_filterable'				=> 0,
-		'is_searchable'				=> 1,
-		'is_used_for_price_rules'	=> 0,
-		'is_multiple_select'		=> 0,
-		'use_rich_text_editor'		=> 0,
-		'is_user_defined'			=> 0,
-		'is_listing_field'			=> 1,
-		'delete_locked'				=> 1,
-	),
-	
+
 	//Product SKU			
 	array
 	( 
 		'pid'						=> 0,
 		'tstamp'					=> time(),
-		'sorting'					=> $intSorting,
 		'type'						=> 'text',
 		'field_name'				=> 'sku',
 		'legend'					=> 'general_legend',
@@ -338,7 +313,6 @@ $GLOBALS['ISO_ATTR'] = array
 	(  
 		'pid'						=> 0, 
 		'tstamp'					=> time(),
-		'sorting'					=> $intSorting,
 		'type'						=> 'decimal',
 		'field_name'				=> 'weight',
 		'legend'					=> 'shipping_legend',
@@ -363,7 +337,6 @@ $GLOBALS['ISO_ATTR'] = array
 	( 
 		'pid'						=> 0,
 		'tstamp'					=> time(),
-		'sorting'					=> $intSorting,
 		'type'						=> 'integer',
 		'field_name'				=> 'quantity',
 		'legend'					=> 'inventory_legend',
@@ -382,66 +355,12 @@ $GLOBALS['ISO_ATTR'] = array
 		'is_listing_field'			=> 1,
 		'delete_locked'				=> 1
 	),
-			
-	// Product Teaser		
-	array
-	( 
-		
-		'pid'						=> 0,
-		'tstamp'					=> time(),
-		'sorting'					=> $intSorting,
-		'type'						=> 'longtext',
-		'field_name'				=> 'teaser',
-		'legend'					=> 'general_legend',
-		'name'						=> 'Product Teaser',
-		'description'				=> '',
-		'attr_use_mode'				=> 'fixed',
-		'is_customer_defined'		=> 0,
-		'is_visible_on_front'		=> 1,
-		'is_required'				=> 0,
-		'is_filterable'				=> 0,
-		'is_searchable'				=> 1,
-		'is_used_for_price_rules'	=> 0,
-		'is_multiple_select'		=> 0,
-		'use_rich_text_editor'		=> 0,
-		'is_user_defined'			=> 0,
-		'is_listing_field'			=> 1,
-		'delete_locked'				=> 1
-	),			
-		
-	// Product Description		
-	array
-	( 
-		
-		'pid'						=> 0,
-		'tstamp'					=> time(),
-		'sorting'					=> $intSorting,
-		'type'						=> 'longtext',
-		'field_name'				=> 'description',
-		'legend'					=> 'general_legend',
-		'name'						=> 'Product Description',
-		'description'				=> '',
-		'attr_use_mode'				=> 'fixed',
-		'is_customer_defined'		=> 0,
-		'is_visible_on_front'		=> 1,
-		'is_required'				=> 1,
-		'is_filterable'				=> 0,
-		'is_searchable'				=> 1,
-		'is_used_for_price_rules'	=> 0,
-		'is_multiple_select'		=> 0,
-		'use_rich_text_editor'		=> 1,
-		'is_user_defined'			=> 0,
-		'is_listing_field'			=> 0,
-		'delete_locked'				=> 1,
-		'save_callback'				=> 'ProductCatalog.generateTeaser'
-	),
-			
+	
 	// Product Price		
 	array
 	( 
 		'pid'						=> 0,
 		'tstamp'					=> time(),
-		'sorting'					=> $intSorting,
 		'type'						=> 'decimal',
 		'field_name'				=> 'price',
 		'legend'					=> 'pricing_legend',
@@ -466,7 +385,6 @@ $GLOBALS['ISO_ATTR'] = array
 	( 
 		'pid'						=> 0,
 		'tstamp'					=> time(),
-		'sorting'					=> $intSorting,
 		'type'						=> 'text',
 		'field_name'				=> 'price_override',
 		'legend'					=> 'pricing_legend',
@@ -492,7 +410,6 @@ $GLOBALS['ISO_ATTR'] = array
 		
 		'pid'						=> 0,
 		'tstamp'					=> time(),
-		'sorting'					=> $intSorting,
 		'type'						=> 'checkbox',
 		'field_name'				=> 'use_price_override',
 		'legend'					=> 'pricing_legend',
@@ -511,69 +428,12 @@ $GLOBALS['ISO_ATTR'] = array
 		'is_listing_field'			=> 0,
 		'delete_locked'				=> 1
 	),	
-		
-	// Product Media
-	array
-	( 
-		'pid'						=> 0,
-		'tstamp'					=> time(),
-		'sorting'					=> $intSorting,
-		'type'						=> 'media',
-		'field_name'				=> 'main_image',
-		'legend'					=> 'media_legend',
-		'name'						=> 'Product Media',
-		'description'				=> '',
-		'attr_use_mode'				=> 'fixed',
-		'is_customer_defined'		=> 0,
-		'is_visible_on_front'		=> 1,
-		'is_hidden_on_backend'		=> 1,
-		'is_required'				=> 0,
-		'is_filterable'				=> 0,
-		'is_searchable'				=> 0,
-		'is_used_for_price_rules'	=> 0,
-		'is_multiple_select'		=> 0,
-		'use_rich_text_editor'		=> 0,
-		'is_user_defined'			=> 0,
-		'is_listing_field'			=> 0,
-		'delete_locked'				=> 1,
-//		'save_callback'				=> 'MediaManagement.thumbnailImages',
-		'show_files'				=> 0
-	),
-	
-	// Tax Class		
-	array
-	( 
-		'pid'						=> 0,
-		'tstamp'					=> time(),
-		'sorting'					=> $intSorting,
-		'type'						=> 'select',
-		'field_name'				=> 'tax_class',
-		'legend'					=> 'tax_legend',
-		'name'						=> 'Tax Class',
-		'description'				=> '',
-		'attr_use_mode'				=> 'fixed',
-		'is_customer_defined'		=> 0,
-		'is_visible_on_front'		=> 0,
-		'is_required'				=> 0,
-		'is_filterable'				=> 0,
-		'is_searchable'				=> 0,
-		'is_used_for_price_rules'	=> 1,
-		'is_multiple_select'		=> 0,
-		'use_rich_text_editor'		=> 0,
-		'is_user_defined'			=> 0,
-		'is_listing_field'			=> 0,
-		'use_alternate_source'		=> 1,
-		'list_source_table'			=> 'tl_tax_class',
-		'list_source_field'			=> 'name',
-		'delete_locked'				=> 1
-	),
-	
+
 	// Shipping Class		
 	array
 	( 
 		'pid'						=> 0,
 		'tstamp'					=> time(),
-		'sorting'					=> $intSorting,
 		'type'						=> 'decimal',
 		'field_name'				=> 'shipping_class',
 		'legend'					=> 'shipping_legend',
@@ -593,12 +453,10 @@ $GLOBALS['ISO_ATTR'] = array
 		'delete_locked'				=> 1
 	),
 	
-	// Featured Item		
 	array
 	( 
 		'pid'						=> 0,
 		'tstamp'					=> time(),
-		'sorting'					=> $intSorting,
 		'type'						=> 'checkbox',
 		'field_name'				=> 'shipping_exempt',
 		'legend'					=> 'shipping_legend',
@@ -623,7 +481,6 @@ $GLOBALS['ISO_ATTR'] = array
 	( 
 		'pid'						=> 0,
 		'tstamp'					=> time(),
-		'sorting'					=> $intSorting,
 		'type'						=> 'checkbox',
 		'field_name'				=> 'featured_product',
 		'legend'					=> 'general_legend',

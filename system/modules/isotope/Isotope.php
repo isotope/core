@@ -383,7 +383,7 @@ class Isotope extends Controller
 				{
 					switch($field)
 					{
-						case 'main_image':
+						case 'images':
 						 	if(!strlen($product[$field]))
 						 	{
 								//Get first product image if none is specified as main image.
@@ -399,7 +399,7 @@ class Isotope extends Controller
 						$arrParentProductData = $this->getParentProductData($product['pid']);				
 						
 						$arrProducts[$configRow['id']]['name'] = $arrParentProductData['name'];
-						$arrProducts[$configRow['id']]['main_image'] = $arrParentProductData['main_image'];
+						$arrProducts[$configRow['id']]['images'] = $arrParentProductData['images'];
 					}
 					else
 					{

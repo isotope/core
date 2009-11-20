@@ -79,7 +79,7 @@ class ProductCatalog extends Backend
 
 	
 	/**
-	 * ProductCatalog HOOKS: loadProductCatalogDCA, ValidateFormField, ProcessFormData 
+	 * Initialize the tl_product_data DCA
 	 */	
 	public function loadProductCatalogDCA()
 	{		

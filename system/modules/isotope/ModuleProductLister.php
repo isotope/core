@@ -128,7 +128,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 		// Buttons
 		$arrButtons = array
 		(
-			//'add_to_cart'		=> array('label'=>$GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'], 'callback'=>array('IsotopeCart', 'addProduct')),
+			'add_to_cart'		=> array('label'=>$GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'], 'callback'=>array('IsotopeCart', 'addProduct')),
 		);
 		
 		if (isset($GLOBALS['TL_HOOKS']['isoListButtons']) && is_array($GLOBALS['TL_HOOKS']['isoReaderButtons']))
@@ -533,7 +533,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 			}
 					
 			//Get the current collection of products based on the tl_product_categories table data
-			$objProductCollection = $this->Database->prepare("SELECT id, type, tstamp, use_price_override, main_image " . strtolower($field_list) . " FROM tl_product_data WHERE " . $strBaseClause . $strFilterList . $strClauses);
+			$objProductCollection = $this->Database->prepare("SELECT id, type, tstamp, use_price_override, images " . strtolower($field_list) . " FROM tl_product_data WHERE " . $strBaseClause . $strFilterList . $strClauses);
 			
 				
 			if ($per_page > 0 && $this->featured_products!=1)
@@ -584,7 +584,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 					'alias'			=> $product['alias'],
 					'link'			=> $this->generateProductLink($product['alias'], $product, $this->iso_reader_jumpTo),
 					'price_string'			=> ($product['use_price_override']==1 ? $this->generatePriceStringOverride($this->strPriceOverrideTemplate,$product[$this->Isotope->Store->priceOverrideField]) : $this->generatePrice($this->Isotope->calculatePrice($product[$this->Isotope->Store->priceField]), $this->strPriceTemplate)),
-					'thumbnail'				=> $this->getThumbnailImage($product['id'], $product['alias'], $product['main_image'], $strMissingImagePlaceholder, $this->strFileBasePath),
+					'thumbnail'				=> $this->getThumbnailImage($product['id'], $product['alias'], $product['images'], $strMissingImagePlaceholder, $this->strFileBasePath),
 					'id'			=> $product['id'],
 					'class'         => $classStr,
 				);

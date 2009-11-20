@@ -58,6 +58,11 @@ class IsotopeRunonce extends Frontend
 		// Drop fields that are now part of the default DCA
 		$this->Database->execute("DELETE FROM tl_product_attributes WHERE field_name='alias'");
 		$this->Database->execute("DELETE FROM tl_product_attributes WHERE field_name='visibility'");
+		$this->Database->execute("DELETE FROM tl_product_attributes WHERE field_name='name'");
+		$this->Database->execute("DELETE FROM tl_product_attributes WHERE field_name='teaser'");
+		$this->Database->execute("DELETE FROM tl_product_attributes WHERE field_name='description'");
+		$this->Database->execute("DELETE FROM tl_product_attributes WHERE field_name='tax_class'");
+		$this->Database->execute("DELETE FROM tl_product_attributes WHERE field_name='main_image'");
 	}
 	
 	
@@ -85,6 +90,12 @@ class IsotopeRunonce extends Frontend
 		if ($this->Database->fieldExists('fieldGroup', 'tl_product_attributes'))
 		{
 			$this->Database->execute("ALTER TABLE tl_product_attributes CHANGE COLUMN fieldGroup legend varchar(255) NOT NULL default ''");
+		}
+		
+		// tl_product_date.main_image has been renamed to tl_product_data.images
+		if ($this->Database->fieldExists('main_image', 'tl_product_data'))
+		{
+			$this->Database->execute("ALTER TABLE tl_product_data CHANGE COLUMN main_image images blob NULL");
 		}
 	}
 	

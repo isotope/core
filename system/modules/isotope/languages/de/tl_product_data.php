@@ -40,7 +40,7 @@ $GLOBALS['TL_LANG']['tl_product_data']['description']			= array('Beschreibung', 
 $GLOBALS['TL_LANG']['tl_product_data']['price']					= array('Preis', '');
 $GLOBALS['TL_LANG']['tl_product_data']['price_override']		= array('Ersatzpreis', '');
 $GLOBALS['TL_LANG']['tl_product_data']['use_price_override']	= array('Ersatzpreis verwenden', '');
-$GLOBALS['TL_LANG']['tl_product_data']['main_image']			= array('Medien', '');
+$GLOBALS['TL_LANG']['tl_product_data']['images']				= array('Bilder', '');
 $GLOBALS['TL_LANG']['tl_product_data']['published']				= array('Produkt veröffentlichen', 'Klicken Sie hier wenn das Produkt auf der Webseite angezeigt werden soll.');
 
 
