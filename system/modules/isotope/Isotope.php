@@ -720,6 +720,13 @@ class Isotope extends Controller
 		}
 		
 		return 0;
-	}		
+	}
+	
+	
+	/**
+	 * Required by Model class
+	 */
+	public function getImage($image, $width, $height, $target=null) { return parent::getImage($image, $width, $height, $target); }
+	public function generateFrontendUrl($arrRow, $strParams='') { return parent::generateFrontendUrl($arrRow, $strParams); }
 }
 

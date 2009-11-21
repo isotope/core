@@ -653,16 +653,21 @@ class IsotopeCart extends Model
 	
 	
 	
-	public function addProduct($arrProduct)
+	public function addProduct($objProduct)
 	{
-		$arrSet = array('pid'=>$this->id, 'tstamp'=>time(), 'product_id'=>$arrProduct['raw']['id'], 'product_data'=>$arrProduct);
-		
-		if (is_array($arrProduct) && strlen($arrProduct['href_reader']))
-		{
-			$arrSet['href_reader'] = $arrProduct['href_reader'];
-		}
+		$arrSet = array
+		(
+			'pid'					=> $this->id,
+			'tstamp'				=> time(),
+			'quantity_requested'	=> ($this->Input->post('quantity_requested') ? $this->Input->post('quantity_requested') : 1),
+			'price'					=> $objProduct->{$this->Isotope->Store->priceField},
+			'href_reader'			=> $objProduct->href_reader,
+			'product_id'			=> $objProduct->id,
+			'product_data'			=> serialize($objProduct),
+		);
 		
 
+/*
 		foreach( $arrProduct as $field_name => $arrField )
 		{
 			if (is_array($arrField['attributes']) && $arrField['attributes']['is_customer_defined'])
@@ -670,11 +675,10 @@ class IsotopeCart extends Model
 				$arrProduct[$field_name]['value'] = $this->Input->post($field_name);
 			}
 		}
+*/
 		
-		$arrSet['price'] = $arrProduct[$this->Isotope->Store->priceField]['value'];
-		$arrSet['quantity_requested'] = $this->Input->post('quantity_requested') ? $this->Input->post('quantity_requested') : 1;
-						
-		if (!$this->Database->prepare("UPDATE tl_cart_items SET tstamp=?, quantity_requested=quantity_requested+" . $arrSet['quantity_requested'] . " WHERE pid=? AND product_id=? AND product_data=?")->execute($arrSet['tstamp'], $this->id, $arrSet['id'], serialize($arrProduct))->affectedRows)
+
+		if (!$this->Database->prepare("UPDATE tl_cart_items SET tstamp=?, quantity_requested=quantity_requested+" . $arrSet['quantity_requested'] . " WHERE pid=? AND product_id=? AND product_data=?")->execute($arrSet['tstamp'], $this->id, $arrSet['id'], $arrSet['product_data'])->affectedRows)
 		{
 			$this->Database->prepare("INSERT INTO tl_cart_items %s")->set($arrSet)->execute();
 		}

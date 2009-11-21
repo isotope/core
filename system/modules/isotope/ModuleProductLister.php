@@ -115,9 +115,9 @@ class ModuleProductLister extends ModuleIsotopeBase
 			$objProductIds->limit($this->perPage, $offset);
 		}
 		
-		$arrProductData = $this->getProducts($objProductIds->execute()->fetchEach('id'));
+		$arrProducts = $this->getProducts($objProductIds->execute()->fetchEach('id'));
 				
-		if (!is_array($arrProductData) || !count($arrProductData))
+		if (!is_array($arrProducts) || !count($arrProducts))
 		{
 			$this->Template = new FrontendTemplate('mod_message');
 			$this->Template->type = 'empty';
@@ -140,11 +140,11 @@ class ModuleProductLister extends ModuleIsotopeBase
 			}
 		}
 		
-		$arrProducts = array();
+		$arrBuffer = array();
 		
-		foreach( $arrProductData as $i => $arrProduct )
+		foreach( $arrProducts as $i => $objProduct )
 		{
-			if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && $this->Input->post('product_id') == $arrProduct['raw']['id'])
+			if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && $this->Input->post('product_id') == $objProduct->id)
 			{
 				foreach( $arrButtons as $button => $data )
 				{
@@ -153,7 +153,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 						if (is_array($data['callback']) && count($data['callback']) == 2)
 						{
 							$this->import($data['callback'][0]);
-							$this->{$data['callback'][0]}->{$data['callback'][1]}($arrProduct);
+							$this->{$data['callback'][0]}->{$data['callback'][1]}($objProduct);
 						}
 						
 						break;
@@ -163,12 +163,12 @@ class ModuleProductLister extends ModuleIsotopeBase
 				$this->reload();
 			}				
 		
-			$arrProducts[] = array
+			$arrBuffer[] = array
 			(
-				'raw'		=> $arrProduct,
+				'raw'		=> $objProduct,
 				'clear'	    => ($this->iso_list_format=='grid' && $blnSetClear ? true : false),
 				'class'		=> ('product' . ($i == 0 ? ' product_first' : '')),
-				'html'		=> $this->generateProduct($arrProduct, $this->iso_list_layout),
+				'html'		=> $objProduct->generate($this->iso_list_layout),
 			);
 
 			$blnSetClear = (($i+1) % $this->columns==0 ? true : false);
@@ -176,15 +176,15 @@ class ModuleProductLister extends ModuleIsotopeBase
 		}
 		
 		// Add "product_last" css class
-		if (count($arrProducts))
+		if (count($arrBuffer))
 		{
-			$arrProducts[count($arrProducts)-1]['class'] .= ' product_last';
+			$arrBuffer[count($arrBuffer)-1]['class'] .= ' product_last';
 		}
 		
 		$this->Template->action = ampersand($this->Environment->request, true);
 		$this->Template->formId = $this->strFormId;
 		$this->Template->buttons = $arrButtons;
-		$this->Template->products = $arrProducts;
+		$this->Template->products = $arrBuffer;
 		
 		
 		
