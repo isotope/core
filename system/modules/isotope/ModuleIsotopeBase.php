@@ -1180,9 +1180,14 @@ abstract class ModuleIsotopeBase extends Module
 	 */
 	protected function getProduct($intId)
 	{
-		$arrProducts = $this->getProducts(array($intId));
+		$objProduct = new IsotopeProduct();
 		
-		return array_shift($arrProducts);
+		if (!$objProduct->findBy('id', $intId))
+			return null;
+			
+		$objProduct->reader_jumpTo = $this->iso_reader_jumpTo;
+			
+		return $objProduct;
 	}
 	
 	/**
@@ -1190,14 +1195,14 @@ abstract class ModuleIsotopeBase extends Module
 	 */
 	protected function getProductByAlias($strAlias)
 	{
-		$objProduct = $this->Database->prepare("SELECT id FROM tl_product_data WHERE alias=?")->limit(1)->execute($strAlias);
+		$objProduct = new IsotopeProduct();
 		
-		if (!$objProduct->numRows)
-			return false;
+		if (!$objProduct->findBy('alias', $strAlias))
+			return null;
 			
-		$arrProducts = $this->getProducts(array($objProduct->id));
+		$objProduct->reader_jumpTo = $this->iso_reader_jumpTo;
 			
-		return array_shift($arrProducts);
+		return $objProduct;
 	}
 	
 	/**
@@ -1210,249 +1215,22 @@ abstract class ModuleIsotopeBase extends Module
 	{
 		if (!is_array($arrIds) || !count($arrIds))
 			return array();
-			
-		// Make sure field data is available
-		if (!is_array($GLOBALS['TL_DCA']['tl_product_data']['fields']))
-		{
-			$this->loadDataContainer('tl_product_data');
-			$this->loadLanguageFile('tl_product_data');
-		}
-			
-		// Product type attributes cache
-		$arrAttributes = array();
-		$arrFields = &$GLOBALS['TL_DCA']['tl_product_data']['fields'];
 		
 		$arrProducts = array();
-		$objProducts = $this->Database->execute("SELECT * FROM tl_product_data WHERE id IN (" . implode(',', $arrIds) . ")");
 		
-		while( $objProducts->next() )
+		foreach( $arrIds as $intId )
 		{
-			if (!isset($arrAttributes[$objProducts->type]))
-			{
-				$objType = $this->Database->prepare("SELECT * FROM tl_product_types WHERE id=?")->limit(1)->execute($objProducts->type);
+			$objProduct = new IsotopeProduct();
+		
+			if (!$objProduct->findBy('id', $intId))
+				continue;
 				
-				if (!$objType->numRows)
-					continue;
+			$objProduct->reader_jumpTo = $this->iso_reader_jumpTo;
 				
-				$arrAttributes[$objType->id] = deserialize($objType->attributes);
-				
-				// Skip this product, it does not have any attributes
-				if (!is_array($arrAttributes[$objType->id]) || !count($arrAttributes[$objType->id]))
-					continue;
-			}
-			
-			$arrProduct = array
-			(
-				'raw'			=> $objProducts->row(),
-				'href_reader'	=> $this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($this->iso_reader_jumpTo)->fetchAssoc(), '/product/' . $objProducts->alias),
-			);
-			
-			foreach( $arrAttributes[$objProducts->type] as $attribute )
-			{
-				switch( $arrFields[$attribute]['inputType'] )
-				{
-					case 'mediaManager':
-						$varValue = array();
-						$arrImages = deserialize($objProducts->{$attribute});
-						
-						if(is_array($arrImages) && count($arrImages))
-						{
-							foreach( $arrImages as $k => $file )
-							{
-								$strFile = 'isotope/' . substr($file['src'], 0, 1) . '/' . $file['src'];
-								
-								if (is_file(TL_ROOT . '/' . $strFile))
-								{
-									$objFile = new File($strFile);
-									
-									if ($objFile->isGdImage)
-									{
-										$file['is_image'] = true;
-										
-										foreach( array('large', 'medium', 'thumbnail', 'gallery') as $size )
-										{
-											$strImage = $this->getImage($strFile, $this->Isotope->Store->{$size . '_image_width'}, $this->Isotope->Store->{$size . '_image_height'});
-											$arrSize = @getimagesize(TL_ROOT . '/' . $strImage);
-											
-											$file[$size] = $strImage;
-											
-											if (is_array($arrSize) && strlen($arrSize[3]))
-											{
-												$file[$size . '_size'] = $arrSize[3];
-											}
-										}
-										
-										$varValue[] = $file;
-									}
-								}
-							}
-						}
-						break;
-				}
-					
-				switch( $attribute )
-				{
-					case 'images':
-						// No image available, add default image
-						if (!count($varValue) && is_file(TL_ROOT . '/' . $this->Isotope->Store->missing_image_placeholder))
-						{
-							foreach( array('large', 'medium', 'thumbnail', 'gallery') as $size )
-							{
-								$strImage = $this->getImage($this->Isotope->Store->missing_image_placeholder, $this->Isotope->Store->{$size . '_image_width'}, $this->Isotope->Store->{$size . '_image_height'});
-								$arrSize = @getimagesize(TL_ROOT . '/' . $strImage);
-								
-								$file[$size] = $strImage;
-								
-								if (is_array($arrSize) && strlen($arrSize[3]))
-								{
-									$file[$size . '_size'] = $arrSize[3];
-								}
-							}
-							
-							$varValue[] = $file;
-						}
-						break;
-						
-					case $this->Isotope->Store->priceField:
-					case $this->Isotope->Store->priceOverrideField:
-						$varValue = $this->Isotope->calculatePrice($objProducts->{$attribute});
-						break;
-				
-					default:
-						$varValue = deserialize($objProducts->{$attribute});
-						break;
-				}
-
-				$arrProduct[$attribute] = $arrFields[$attribute];
-				$arrProduct[$attribute]['value'] = $varValue;
-			}
-			
-			$arrProducts[] = $arrProduct;
+			$arrProducts[] = $objProduct;
 		}
 		
 		return $arrProducts;
-	}
-	
-	
-	/**
-	 * Generate a product for the template
-	 */
-	protected function generateProduct($arrProduct, $strTemplate)
-	{
-		$objTemplate = new FrontendTemplate($strTemplate);
-		
-		$arrOptionFields = array();
-		$arrProductOptions = array();
-		
-		foreach( $arrProduct as $field => $attribute )
-		{
-			switch( $field )
-			{
-				case 'raw':
-				case 'href_reader':
-					$objTemplate->$field = $attribute;
-					break;
-					
-				case 'images':
-					if (is_array($attribute['value']) && count($attribute['value']))
-					{
-						$arrImages = $attribute['value'];
-						
-						$objTemplate->hasImage = true;
-						$objTemplate->mainImage = array_shift($arrImages);
-						
-						if (count($arrImages))
-						{
-							$objTemplate->hasGallery = true;
-							$objTemplate->gallery = $arrImages;
-						}
-					}
-					break;
-					
-				default:
-					$blnIsMergedOptionSet = true;
-					
-					if($attribute['is_customer_defined'])
-					{
-						//does it have a value?
-						if($attribute['value'])
-						{
-							$arrOptionFields[] = $field;
-						}															
-						
-						if(!$blnIsMergedOptionSet)
-						{
-							$arrData = $this->getDCATemplate($attribute);	//Grab the skeleton DCA info for widget generation
-
-							$arrProductOptions[] = array
-							(
-								'name'			=> $field,
-								'description'	=> $attribute['description'],									
-								'html'			=> $this->generateProductOptionWidget('field', $arrData, $this->strFormId)
-							);										
-						}
-					}
-					else
-					{
-						switch($attribute['type'])
-						{
-							case 'select':
-							case 'radio':
-							case 'checkbox':
-								//check for a related label to go with the value.
-								$arrOptions = deserialize($attribute['option_list']);
-								$varValues = deserialize($attribute['value']);
-								$arrLabels = array();
-								
-								if($attribute['is_visible_on_front'])
-								{
-									foreach($arrOptions as $option)
-									{
-										if(is_array($varValues))
-										{
-											if(in_array($option['value'], $varValues))
-											{
-												$arrLabels[] = $option['label'];
-											}
-										}
-										else
-										{	
-											if($option['value']===$v)
-											{
-												$arrLabels[] = $option['label'];
-											}
-										}
-									}
-									
-									if($arrLabels)
-									{									
-										$objTemplate->$field = join(',', $arrLabels); 
-									}
-									
-								}
-								break;
-								
-							case 'longtext':
-								$objTemplate->$field = $attribute['use_rich_text_editor'] ? $attribute['value'] : nl2br($attribute['value']);
-								break;
-																																		
-							default:
-								if(!isset($attribute['attributes']['is_visible_on_front']) || $attribute['attributes']['is_visible_on_front'])
-								{
-									//just direct render
-									$objTemplate->$field = $attribute['value'];
-								}
-								break;
-						}
-					}
-					break;
-			}
-		}
-		
-		$objTemplate->label_detail = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
-		$objTemplate->price = ($arrProduct['use_price_override'] && $arrProduct['use_price_override']['value']) ? $this->Isotope->formatPriceWithCurrency($arrProduct[$this->Isotope->Store->priceOverrideField]['value']) : $this->Isotope->formatPriceWithCurrency($arrProduct[$this->Isotope->Store->priceField]['value']);
-		
-		return $objTemplate->parse();
 	}
 }
 

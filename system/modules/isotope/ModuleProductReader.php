@@ -90,9 +90,9 @@ class ModuleProductReader extends ModuleIsotopeBase
 		$this->Template->referrer = $_SESSION['referringPage'];
 */	
 		
-		$arrProduct = $this->getProductByAlias($this->Input->get('product'));
+		$objProduct = $this->getProductByAlias($this->Input->get('product'));
 		
-		if (!$arrProduct)
+		if (!$objProduct)
 		{
 			$this->Template = new FrontendTemplate('mod_message');
 			$this->Template->type = 'empty';
@@ -115,7 +115,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 			}
 		}
 		
-		if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && $this->Input->post('product_id') == $arrProduct['raw']['id'])
+		if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && $this->Input->post('product_id') == $objProduct->id)
 		{
 			foreach( $arrButtons as $button => $data )
 			{
@@ -124,7 +124,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 					if (is_array($data['callback']) && count($data['callback']) == 2)
 					{
 						$this->import($data['callback'][0]);
-						$this->{$data['callback'][0]}->{$data['callback'][1]}($arrProduct);
+						$this->{$data['callback'][0]}->{$data['callback'][1]}($objProduct);
 					}
 					break;
 				}
@@ -136,7 +136,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 		
 		$this->Template->action = ampersand($this->Environment->request, true);
 		$this->Template->formId = $this->strFormId;
-		$this->Template->product = $this->generateProduct($arrProduct, $this->iso_reader_layout);
+		$this->Template->product = $objProduct->generate($this->iso_reader_layout);
 		$this->Template->quantityLabel = $GLOBALS['TL_LANG']['MSC']['quantity'];
 		$this->Template->useQuantity = $this->iso_use_quantity;
 		$this->Template->buttons = $arrButtons;
