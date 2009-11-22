@@ -121,14 +121,14 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'__selector__'				=> array('type', 'enable_stocks'),
+		'__selector__'				=> array('type', 'stock_enabled'),
 		'default'					=> '{general_legend},type,alias',
 	),
 	
 	// Subpalettes
 	'subpalettes' => array
 	(
-		'enable_stocks'				=> 'stocked',
+		'stock_enabled'				=> 'stock_quantity,stock_oversell',
 	),
 	
 	// Fields
@@ -224,14 +224,20 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['stock_enabled'],
 			'filter'				=> true,
 			'inputType'				=> 'checkbox',
-			'eval'					=> array('submitOnChange'=>true, 'disabled'=>'disabled'),
+			'eval'					=> array('submitOnChange'=>true, 'tl_class'=>'clr'),
 			'attributes'			=> array('legend'=>'inventory_legend'),
 		),
 		'stock_quantity' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['stock_quantity'],
 			'inputType'				=> 'text',
-			'eval'					=> array('mandatory'=>true, 'rgxp'=>'digits', 'disabled'=>'disabled'),
+			'eval'					=> array('mandatory'=>true, 'rgxp'=>'digits', 'disabled'=>'disabled', 'tl_class'=>'w50'),
+		),
+		'stock_oversell' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['stock_oversell'],
+			'inputType'				=> 'checkbox',
+			'eval'					=> array('tl_class'=>'w50 m12'),
 		),
 		'weight' => array
 		(
