@@ -63,11 +63,13 @@ CREATE TABLE `tl_product_data` (
   `images` blob NULL,
   `teaser` text NULL,
   `description` text NULL,
-  
+  `price` varchar(255) NOT NULL default '',
+  `price_override` varchar(255) NOT NULL default '',
   `max_order_quantity` int(10) unsigned NOT NULL default '0',
   `stock_enabled` char(1) NOT NULL default '',
   `stock_quantity` int(10) unsigned NOT NULL default '0',
-    
+  `weight` int(10) unsigned NOT NULL default '0',
+  `shipping_exempt` char(1) NOT NULL default '',
   `tax_class` int(10) unsigned NOT NULL default '0',
 
   `new_import` char(1) NOT NULL default '',
