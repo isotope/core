@@ -10,5 +10,5 @@
 <p class="sku"><?php echo $this->sku; ?></p><?php endif; if ($this->teaser): ?>
 <p class="teaser"><?php echo $this->teaser; ?></p><?php endif; ?>
 
-<p class="price<?php echo $this->use_price_override ? ' override' : ''; ?>"><?php echo $this->price; ?></p>
+<p class="price"><?php echo $this->price; ?></p>
 <p class="details"><a href="<?php echo $this->href_reader; ?>"><?php echo $this->label_detail; ?></a></p>

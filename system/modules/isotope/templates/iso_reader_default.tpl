@@ -14,4 +14,4 @@
 <p class="sku"><?php echo $this->sku; ?></p><?php endif; if ($this->description): ?>
 <p class="description"><?php echo $this->description; ?></p><?php endif; ?>
 
-<p class="price<?php echo $this->use_price_override ? ' override' : ''; ?>"><?php echo $this->price; ?></p>
+<p class="price"><?php echo $this->price; ?></p>
