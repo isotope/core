@@ -35,7 +35,8 @@ class IsotopeProduct extends Model
 	protected $strTable = 'tl_product_data';
 	
 	/**
-	 * Copy of $GLOBALS['TL_DCA']['tl_product_data']['fields']. We need to store this or changing the DCA would affect eg. ordered products
+	 * Copy of $GLOBALS['TL_DCA']['tl_product_data']['fields'].
+	 * We need to store this or changing the DCA would affect eg. ordered products
 	 */
 	protected $arrFields;
 	
@@ -198,13 +199,7 @@ class IsotopeProduct extends Model
 	 */
 	public function __sleep()
 	{
-		unset($this->arrCache);
-		unset($this->Session);
-		unset($this->Environment);
-		unset($this->Input);
-		unset($this->Config);
-		unset($this->Database);
-		unset($this->Isotope);
+		return array('arrFields', 'arrAttributes', 'arrDownloads');
 	}
 	
 	
@@ -380,7 +375,7 @@ class IsotopeProduct extends Model
 		
 		$objTemplate->label_detail = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
 		
-		$objTemplate->price = $this->use_price_override ? $this->Isotope->formatPriceWithCurrency($this->{$this->Isotope->Store->priceOverrideField}) : $this->Isotope->formatPriceWithCurrency($this->{$this->Isotope->Store->priceField});
+		$objTemplate->price = strlen($this->{$this->Isotope->Store->priceField}) ? $this->Isotope->formatPriceWithCurrency($this->{$this->Isotope->Store->priceOverrideField}) : $this->Isotope->formatPriceWithCurrency($this->{$this->Isotope->Store->priceField});
 		
 		return $objTemplate->parse();
 	}
