@@ -38,16 +38,20 @@ $GLOBALS['TL_LANG']['tl_product_data']['weight']				= array('Weight', '');
 $GLOBALS['TL_LANG']['tl_product_data']['quantity']				= array('Quantity', '');
 $GLOBALS['TL_LANG']['tl_product_data']['teaser']				= array('Teaser', '');
 $GLOBALS['TL_LANG']['tl_product_data']['description']			= array('Description', '');
+$GLOBALS['TL_LANG']['tl_product_data']['shipping_exempt']		= array('Exempt from shipping', 'Check if item is not a shipped item (such as downloadable products).');
+$GLOBALS['TL_LANG']['tl_product_data']['tax_class']				= array('Tax Class', '');
+$GLOBALS['TL_LANG']['tl_product_data']['images']				= array('Images', '');
+$GLOBALS['TL_LANG']['tl_product_data']['published']				= array('Publish product', 'Click here to show this product on your website.');
+$GLOBALS['TL_LANG']['tl_product_data']['source']				= array('Source folder', 'Please choose the folder where product assets are located.');
+
+
 $GLOBALS['TL_LANG']['tl_product_data']['price']					= array('Price', '');
 $GLOBALS['TL_LANG']['tl_product_data']['price_override']		= array('Price Override', '');
 $GLOBALS['TL_LANG']['tl_product_data']['use_price_override']	= array('Use Price Override', '');
-$GLOBALS['TL_LANG']['tl_product_data']['images']				= array('Images', '');
 $GLOBALS['TL_LANG']['tl_product_data']['option_set_source']		= array('Option Set Source','Use an existing option set or create a new one');
 $GLOBALS['TL_LANG']['tl_product_data']['option_sets']			= array('Option Sets','Select an existing Option Set');
 $GLOBALS['TL_LANG']['tl_product_data']['option_set_title']		= array('Option Set Title','Name your new option set. The combination of values for each attribute will be stored and used to produce a new collection of empty subproducts.');
 $GLOBALS['TL_LANG']['tl_product_data']['variants_wizard']		= array('Product Variants','Configure product variants');
-$GLOBALS['TL_LANG']['tl_product_data']['published']				= array('Publish product', 'Click here to show this product on your website.');
-$GLOBALS['TL_LANG']['tl_product_data']['source']				= array('Source folder', 'Please choose the folder where product assets are located.');
 
 
 /*

@@ -29,17 +29,14 @@
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_product_data']['pages']					= array('Kategorien','Wählen Sie eine Kategorie (Seite) für dieses Produkt.');
-$GLOBALS['TL_LANG']['tl_product_data']['type']					= array('Product Type','Product types are defined in the Product Type Manager.');
 $GLOBALS['TL_LANG']['tl_product_data']['alias']					= array('Alias', '');
-$GLOBALS['TL_LANG']['tl_product_data']['name']					= array('Name', '');
 $GLOBALS['TL_LANG']['tl_product_data']['sku']					= array('Artikelnummer', '');
-$GLOBALS['TL_LANG']['tl_product_data']['weight']				= array('Gewicht', '');
-$GLOBALS['TL_LANG']['tl_product_data']['quantity']				= array('Anzahl', '');
+$GLOBALS['TL_LANG']['tl_product_data']['name']					= array('Name', '');
 $GLOBALS['TL_LANG']['tl_product_data']['teaser']				= array('Teaser', '');
 $GLOBALS['TL_LANG']['tl_product_data']['description']			= array('Beschreibung', '');
 $GLOBALS['TL_LANG']['tl_product_data']['price']					= array('Preis', '');
-$GLOBALS['TL_LANG']['tl_product_data']['price_override']		= array('Ersatzpreis', '');
-$GLOBALS['TL_LANG']['tl_product_data']['use_price_override']	= array('Ersatzpreis verwenden', '');
+$GLOBALS['TL_LANG']['tl_product_data']['price_override']		= array('Ersatz-/Aktionspreis', 'Der Ersatzpreis kann anstelle des Produktpreises angezeigt werden. Ist der Ersatzpreis nicht nummerisch, kann das Produkt nicht bestellt werden.');
+$GLOBALS['TL_LANG']['tl_product_data']['weight']				= array('Gewicht', '');
 $GLOBALS['TL_LANG']['tl_product_data']['images']				= array('Bilder', '');
 $GLOBALS['TL_LANG']['tl_product_data']['published']				= array('Produkt veröffentlichen', 'Klicken Sie hier wenn das Produkt auf der Webseite angezeigt werden soll.');
 
@@ -47,17 +44,15 @@ $GLOBALS['TL_LANG']['tl_product_data']['published']				= array('Produkt veröffe
 /**
  * Buttons
  */
-$GLOBALS['TL_LANG']['tl_product_data']['new']    = array('Neuen Artikel', 'Einen neuen Artikel erstellen');
-$GLOBALS['TL_LANG']['tl_product_data']['edit']   = array('Artikel bearbeiten', 'Artikel ID %s bearbeiten');
-$GLOBALS['TL_LANG']['tl_product_data']['copy']   = array('Artikel duplizieren', 'Artikel ID %s duplizieren');
-$GLOBALS['TL_LANG']['tl_product_data']['cut']   = array('Artikel verschieben', 'Artikel ID %s verschieben');
-$GLOBALS['TL_LANG']['tl_product_data']['delete'] = array('Artikel löschen', 'Artikel ID %s löschen');
-$GLOBALS['TL_LANG']['tl_product_data']['show']   = array('Artikeldetails', 'Details des Artikel ID %s anzeigen');
-$GLOBALS['TL_LANG']['tl_product_data']['editheader'] = array('Artikelmerkmale bearbeiten', 'Artikelmerkmale bearbeiten');
+$GLOBALS['TL_LANG']['tl_product_data']['new']					= array('Neuen Artikel', 'Einen neuen Artikel erstellen');
+$GLOBALS['TL_LANG']['tl_product_data']['edit']					= array('Artikel bearbeiten', 'Artikel ID %s bearbeiten');
+$GLOBALS['TL_LANG']['tl_product_data']['copy']					= array('Artikel duplizieren', 'Artikel ID %s duplizieren');
+$GLOBALS['TL_LANG']['tl_product_data']['delete']				= array('Artikel löschen', 'Artikel ID %s löschen');
+$GLOBALS['TL_LANG']['tl_product_data']['show']					= array('Artikeldetails', 'Details des Artikel ID %s anzeigen');
 
 
 /** 
  * Legends
  */
-$GLOBALS['TL_LANG']['tl_product_data']['publish_legend'] = 'Veröffentlichung';
+$GLOBALS['TL_LANG']['tl_product_data']['publish_legend']		= 'Veröffentlichung';
 

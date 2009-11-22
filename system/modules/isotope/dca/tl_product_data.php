@@ -198,6 +198,20 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			'eval'					=> array('mandatory'=>true, 'rte'=>'tinyMCE'),
 			'attributes'			=> array('legend'=>'general_legend'),
 		),
+		'price' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['price'],
+			'inputType'				=> 'text',
+			'eval'					=> array('mandatory'=>true, 'maxlength'=>255, 'rgxp'=>'digits', 'tl_class'=>'w50'),
+			'attributes'			=> array('legend'=>'pricing_legend', 'fixed'=>true),
+		),
+		'price_override' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['price_override'],
+			'inputType'				=> 'text',
+			'eval'					=> array('maxlength'=>255, 'tl_class'=>'w50'),
+			'attributes'			=> array('legend'=>'pricing_legend'),
+		),
 		'max_order_quantity' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['max_order_quantity'],
@@ -218,6 +232,21 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['stock_quantity'],
 			'inputType'				=> 'text',
 			'eval'					=> array('mandatory'=>true, 'rgxp'=>'digits', 'disabled'=>'disabled'),
+		),
+		'weight' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['weight'],
+			'inputType'				=> 'text',
+			'eval'					=> array('rgxp'=>'digits', 'disabled'=>'disabled', 'tl_class'=>'w50'),
+			'attributes'			=> array('legend'=>'shipping_legend'),
+		),
+		'shipping_exempt' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['shipping_exempt'],
+			'filter'				=> true,
+			'inputType'				=> 'checkbox',
+			'eval'					=> array('submitOnChange'=>true, 'disabled'=>'disabled', 'tl_class'=>'w50'),
+			'attributes'			=> array('legend'=>'shipping_legend'),
 		),
 		'tax_class' => array
 		(

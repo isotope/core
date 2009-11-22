@@ -307,54 +307,6 @@ $GLOBALS['ISO_ATTR'] = array
 		'delete_locked'				=> 1
 	),
 	
-	// Product Price		
-	array
-	( 
-		'pid'						=> 0,
-		'tstamp'					=> time(),
-		'type'						=> 'decimal',
-		'field_name'				=> 'price',
-		'legend'					=> 'pricing_legend',
-		'name'						=> 'Product Price',
-		'description'				=> '',
-		'attr_use_mode'				=> 'fixed',
-		'is_customer_defined'		=> 0,
-		'is_visible_on_front'		=> 1,
-		'is_required'				=> 1,
-		'is_filterable'				=> 0,
-		'is_searchable'				=> 0,
-		'is_used_for_price_rules'	=> 1,
-		'is_multiple_select'		=> 0,
-		'use_rich_text_editor'		=> 0,
-		'is_user_defined'			=> 0,
-		'is_listing_field'			=> 1,
-		'delete_locked'				=> 1
-	),
-		
-	//Product Price Override
-	array
-	( 
-		'pid'						=> 0,
-		'tstamp'					=> time(),
-		'type'						=> 'text',
-		'field_name'				=> 'price_override',
-		'legend'					=> 'pricing_legend',
-		'name'						=> 'Product Price Override',
-		'description'				=> '',
-		'attr_use_mode'				=> 'fixed',
-		'is_customer_defined'		=> 0,
-		'is_visible_on_front'		=> 1,
-		'is_required'				=> 0,
-		'is_filterable'				=> 0,
-		'is_searchable'				=> 1,
-		'is_used_for_price_rules'	=> 0,
-		'is_multiple_select'		=> 0,
-		'use_rich_text_editor'		=> 0,
-		'is_user_defined'			=> 0,
-		'is_listing_field'			=> 1,
-		'delete_locked'				=> 1
-	),
-	
 	// Use Product Price Override	
 	array
 	( 
@@ -397,29 +349,6 @@ $GLOBALS['ISO_ATTR'] = array
 		'is_filterable'				=> 0,
 		'is_searchable'				=> 0,
 		'is_used_for_price_rules'	=> 1,
-		'is_multiple_select'		=> 0,
-		'use_rich_text_editor'		=> 0,
-		'is_user_defined'			=> 0,
-		'is_listing_field'			=> 0,
-		'delete_locked'				=> 1
-	),
-	
-	array
-	( 
-		'pid'						=> 0,
-		'tstamp'					=> time(),
-		'type'						=> 'checkbox',
-		'field_name'				=> 'shipping_exempt',
-		'legend'					=> 'shipping_legend',
-		'name'						=> 'Exempt from shipping',
-		'description'				=> 'Check if item is not a shipped item (downloadable products, for example)',
-		'attr_use_mode'				=> 'fixed',
-		'is_customer_defined'		=> 0,
-		'is_visible_on_front'		=> 0,
-		'is_required'				=> 0,
-		'is_filterable'				=> 0,
-		'is_searchable'				=> 0,
-		'is_used_for_price_rules'	=> 0,
 		'is_multiple_select'		=> 0,
 		'use_rich_text_editor'		=> 0,
 		'is_user_defined'			=> 0,
