@@ -68,6 +68,7 @@ CREATE TABLE `tl_product_data` (
   `max_order_quantity` int(10) unsigned NOT NULL default '0',
   `stock_enabled` char(1) NOT NULL default '',
   `stock_quantity` int(10) unsigned NOT NULL default '0',
+  `stock_oversell` char(1) NOT NULL default '',
   `weight` int(10) unsigned NOT NULL default '0',
   `shipping_exempt` char(1) NOT NULL default '',
   `tax_class` int(10) unsigned NOT NULL default '0',
