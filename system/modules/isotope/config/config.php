@@ -282,31 +282,6 @@ $GLOBALS['ISO_CONFIG']['CHECKOUT_STEPS'] = array('login','billing_information','
  */
 $GLOBALS['ISO_ATTR'] = array
 (
-
-	// Product Weight
-	array
-	(  
-		'pid'						=> 0, 
-		'tstamp'					=> time(),
-		'type'						=> 'decimal',
-		'field_name'				=> 'weight',
-		'legend'					=> 'shipping_legend',
-		'name'						=> 'Product Weight',
-		'description'				=> '',
-		'attr_use_mode'				=> 'fixed',
-		'is_customer_defined'		=> 0,
-		'is_visible_on_front'		=> 1,
-		'is_required'				=> 0,
-		'is_filterable'				=> 0,
-		'is_searchable'				=> 1,
-		'is_used_for_price_rules'	=> 0,
-		'is_multiple_select'		=> 0,
-		'use_rich_text_editor'		=> 0,
-		'is_user_defined'			=> 0,
-		'is_listing_field'			=> 1,
-		'delete_locked'				=> 1
-	),
-	
 	// Shipping Class		
 	array
 	( 
