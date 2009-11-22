@@ -103,10 +103,16 @@ $GLOBALS['TL_DCA']['tl_shipping_modules'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'__selector__'                => array('type'),
-		'default'                     => 'type,name,label,note;countries,minimum_total,maximum_total;groups;enabled',
-		'order_total'                  => 'type,name,label,note;price;countries,minimum_total,maximum_total;groups;enabled',
-		'flat'                        => 'type,name,label,note;price,flatCalculation,surcharge_field;countries,minimum_total,maximum_total;groups;enabled',
+		'__selector__'					=> array('type', 'protected'),
+		'default'						=> 'type,name,label,note;countries,minimum_total,maximum_total;guests,protected;enabled',
+		'order_total'					=> 'type,name,label,note;price;countries,minimum_total,maximum_total;guests,protected;enabled',
+		'flat'							=> 'type,name,label,note;price,flatCalculation,surcharge_field;countries,minimum_total,maximum_total;guests,protected;enabled',
+	),
+	
+	// Subpalettes
+	'subpalettes' => array
+	(
+		'protected'						=> 'groups',
 	),
 
 	// Fields
@@ -190,6 +196,19 @@ $GLOBALS['TL_DCA']['tl_shipping_modules'] = array
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255),
+		),
+		'guests' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_modules']['guests'],
+			'exclude'                 => true,
+			'inputType'               => 'checkbox',
+		),
+		'protected' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_modules']['protected'],
+			'exclude'                 => true,
+			'inputType'               => 'checkbox',
+			'eval'                    => array('submitOnChange'=>true)
 		),
 		'groups' => array
 		(
