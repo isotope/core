@@ -74,6 +74,13 @@ $GLOBALS['TL_DCA']['tl_tax_rate'] = array
 				'href'                => 'act=copy',
 				'icon'                => 'copy.gif'
 			),
+			'cut' => array
+			(
+				'label'					=> &$GLOBALS['TL_LANG']['tl_tax_rate']['cut'],
+				'href'					=> 'act=paste&amp;mode=cut',
+				'icon'					=> 'cut.gif',
+				'attributes'			=> 'onclick="Backend.getScrollOffset();"'
+			),
 			'delete' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_tax_rate']['delete'],
@@ -128,6 +135,7 @@ $GLOBALS['TL_DCA']['tl_tax_rate'] = array
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255)
 		),
+/*
 		'address' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['address'],
@@ -137,6 +145,7 @@ $GLOBALS['TL_DCA']['tl_tax_rate'] = array
 			'reference'				  => &$GLOBALS['TL_LANG']['tl_tax_rate'],
 			'eval'                    => array('mandatory'=>true, 'multiple'=>true)
 		),
+*/
 		'code' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['code'],
