@@ -69,7 +69,7 @@ class IsotopeRunonce extends Frontend
 		$this->Database->execute("DELETE FROM tl_product_attributes WHERE field_name='price'");
 		$this->Database->execute("DELETE FROM tl_product_attributes WHERE field_name='price_override'");
 		$this->Database->execute("DELETE FROM tl_product_attributes WHERE field_name='use_price_override'");
-		$this->Database->execute("DELETE FROM tl_product_attributes WHERE field_name='weight'");
+		$this->Database->execute("DELETE FROM tl_product_attributes WHERE field_name='weight'"); 
 	}
 	
 	
