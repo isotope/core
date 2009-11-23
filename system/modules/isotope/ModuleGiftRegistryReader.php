@@ -106,7 +106,7 @@ class ModuleGiftRegistryReader extends ModuleIsotopeBase
 		$this->Template->registryOwnerName = $arrRegData['firstname'] . ' ' . $arrRegData['lastname'];
 		$this->Template->registryDate = date('m/d/Y', $arrRegData['date']);
 		$this->Template->registryDescription = $arrRegData['description'];
-		$this->Template->cartJumpTo = $this->getPageData($this->Store->cartJumpTo);
+		$this->Template->cartJumpTo = $this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($this->Isotope->Store->cartJumpTo)->fetchAssoc());
 		$this->Template->products = $arrFormattedProductData;
 		$this->Template->noItemsInCart = $GLOBALS['TL_LANG']['MSC']['registry']['noItemsInRegistry'];
 		
@@ -276,25 +276,5 @@ class ModuleGiftRegistryReader extends ModuleIsotopeBase
 
 		return $arrRegData;
 	}
-	
-	/********* THIS IS OBVIOUSLY REDUNDANT BUT I WAS IN A HURRY ***************/
-	/*
-	protected function getPageData($id)
-	{
-		// Get target page
-		$objPage = $this->Database->prepare("SELECT id, alias FROM tl_page WHERE id=?")
-								  ->limit(1)
-								  ->execute($id);
-		
-		
-		if ($objPage->numRows > 0)
-		{
-				$strUrl = $this->generateFrontendUrl($objPage->fetchAssoc());
-			
-		}
-		
-		return $strUrl;
-	}*/
-	
 }
 
