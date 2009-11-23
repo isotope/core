@@ -41,67 +41,16 @@ class ShippingCollection extends Shipping
 		switch( $strKey )
 		{
 			case 'price':
-				$this->import('IsotopeCart', 'Cart');
-				switch($this->type)
-				{
-				/*
-					case 'flat':				
-						switch( $this->flatCalculation )
-						{
-							case 'perProduct':
-								return $this->Isotope->calculatePrice(($this->arrData['price'] * $this->Cart->products) + $this->calculateSurcharge());
-								
-							case 'perItem':
-								return $this->Isotope->calculatePrice(($this->arrData['price'] * $this->Cart->items) + $this->calculateSurcharge());
-								
-							default:
-								return $this->Isotope->calculatePrice($this->arrData['price'] + $this->calculateSurcharge());
-						}
-						break;*/
-					case 'collection':
-						return 0;
-						//return $this->Isotope->calculatePrice($this->calculateShippingRate($this->id, $this->Cart->subTotal));
-						break;
-				}
+				//$this->import('IsotopeCart', 'Cart');
+				return 0;
+				//return $this->Isotope->calculatePrice($this->calculateShippingRate($this->id, $this->Cart->subTotal));
 				break;
 					
 		}
 		
 		return parent::__get($strKey);
 	}
-	
-	
-	protected function calculateSurcharge()
-	{
-		if (!strlen($this->surcharge_field))
-			return 0;
-			
-		$intSurcharge = 0;
-		$arrProducts = $this->Cart->getProducts();
-		
-		foreach( $arrProducts as $product )
-		{
-			// Exclude this product if table does not have this field
-			if ($this->Database->fieldExists($this->surcharge_field, $product['storeTable']))
-			{
-				$strSurcharge = $this->Database->prepare("SELECT * FROM " . $product['storeTable'] . " WHERE id=?")
-											   ->limit(1)
-											   ->execute($product['id'])
-											   ->{$this->surcharge_field};
-											   
-				if ($this->flatCalculation == 'perItem')
-				{
-					$intSurcharge += ($product['quantity_requested'] * floatval($strSurcharge));
-				}
-				else
-				{
-					$intSurcharge += floatval($strSurcharge);
-				}
-			}
-		}
-		
-		return $intSurcharge;
-	}
+
 	
 	public function calculateShippingRate($intPid, $fltCartSubTotal)
 	{

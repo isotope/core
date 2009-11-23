@@ -67,12 +67,12 @@ class ShippingFlat extends Shipping
 		$intSurcharge = 0;
 		$arrProducts = $this->Cart->getProducts();
 		
-		foreach( $arrProducts as $product )
+		foreach( $arrProducts as $objProduct )
 		{
 			// Exclude this product if table does not have this field
-			if ($this->Database->fieldExists($this->surcharge_field, $product['storeTable']))
+			if ($this->Database->fieldExists($this->surcharge_field, 'tl_product_data'))
 			{
-				$strSurcharge = $this->Database->prepare("SELECT * FROM " . $product['storeTable'] . " WHERE id=?")
+				$strSurcharge = $this->Database->prepare("SELECT * FROM tl_product_data WHERE id=?")
 											   ->limit(1)
 											   ->execute($product['id'])
 											   ->{$this->surcharge_field};
