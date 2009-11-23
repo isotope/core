@@ -250,6 +250,7 @@ CREATE TABLE `tl_store` (
   `priceCalculateMode` varchar(3) NOT NULL default '',
   `priceRoundPrecision` int(1) unsigned NOT NULL default '2',
   `priceRoundIncrement` varchar(4) NOT NULL default '',
+  `priceIncludesTax` char(1) NOT NULL default '',
   `currency` varchar(3) NOT NULL default '',
   `currencySymbol` char(1) NOT NULL default '',
   `currencyPosition` varchar(5) NOT NULL default '',
