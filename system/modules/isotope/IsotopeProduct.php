@@ -68,7 +68,7 @@ class IsotopeProduct extends Model
 		// Make sure field data is available
 		if (!is_array($GLOBALS['TL_DCA']['tl_product_data']['fields']))
 		{
-			$this->loadDataContainer('tl_product_data');
+			$this->Isotope->loadDataContainer('tl_product_data');
 			$this->loadLanguageFile('tl_product_data');
 		}
 		
