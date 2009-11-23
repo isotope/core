@@ -33,21 +33,8 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 	 * Template
 	 * @var string
 	 */
-	protected $strTemplate = 'iso_cart_full';
-	
-	/**
-	 * Recall product data, if db has been updated with new information.
-	 * @param boolean
-	 */
-	protected $blnRecallProductData = false;
+	protected $strTemplate = 'mod_shopping_cart';
 
-	
-	/** 
-	 * 
-	 * @param boolean
-	 */
-	
-	protected $sessCartId;
 	
 	/**
 	 * Display a wildcard in the back end
@@ -65,12 +52,6 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 			$objTemplate->href = 'typolight/main.php?do=modules&amp;act=edit&amp;id=' . $this->id;
 
 			return $objTemplate->parse();
-		}
-
-		// Fallback template
-		if (strlen($this->iso_cart_layout))
-		{
-			$this->strTemplate = $this->iso_cart_layout;
 		}
 
 		return parent::generate();
@@ -91,6 +72,8 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 			$this->Template->message = $GLOBALS['TL_LANG']['MSC']['noItemsInCart'];
 			return;
 		}
+		
+		$objTemplate = new FrontendTemplate($this->iso_cart_layout);
 		
 		global $objPage;
 		$blnReload = false;
@@ -138,13 +121,19 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 		}
 		
 		
-		$this->Template->products = $arrProductData;
-		$this->Template->cartJumpTo = $this->generateFrontendUrl($this->Database->prepare("SELECT id,alias FROM tl_page WHERE id=?")->execute($this->Isotope->Store->cartJumpTo)->fetchAssoc());
-		$this->Template->checkoutJumpTo = $this->generateFrontendUrl($this->Database->prepare("SELECT id,alias FROM tl_page WHERE id=?")->execute($this->Isotope->Store->checkoutJumpTo)->fetchAssoc());
-		$this->Template->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
-		$this->Template->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
-		$this->Template->subTotalPrice = $this->generatePrice($this->Cart->subTotal, 'stpl_total_price');
-		$this->Template->grandTotalPrice = $this->generatePrice($this->Cart->subTotal, 'stpl_total_price');		// FIXME
+		$objTemplate->products = $arrProductData;
+		$objTemplate->cartJumpTo = $this->generateFrontendUrl($this->Database->prepare("SELECT id,alias FROM tl_page WHERE id=?")->execute($this->Isotope->Store->cartJumpTo)->fetchAssoc());
+		$objTemplate->checkoutJumpTo = $this->generateFrontendUrl($this->Database->prepare("SELECT id,alias FROM tl_page WHERE id=?")->execute($this->Isotope->Store->checkoutJumpTo)->fetchAssoc());
+		$objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
+		$objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
+		$objTemplate->subTotalPrice = $this->generatePrice($this->Cart->subTotal, 'stpl_total_price');
+		$objTemplate->grandTotalPrice = $this->generatePrice($this->Cart->subTotal, 'stpl_total_price');
+		
+		
+		$this->Template->formId = 'iso_cart_update';
+		$this->Template->formSubmit = 'iso_cart_update';
+		$this->Template->action = $this->Environment->request;
+		$this->Template->cart = $objTemplate->parse();
 	}
 }
 
