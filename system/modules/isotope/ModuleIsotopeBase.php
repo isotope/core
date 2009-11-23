@@ -195,7 +195,7 @@ abstract class ModuleIsotopeBase extends Module
 
 		if ($objPage->numRows)
 		{
-				$strUrl = ampersand($this->generateFrontendUrl($objPage->fetchAssoc(), '/' . $strParams));			
+			$strUrl = ampersand($this->generateFrontendUrl($objPage->fetchAssoc(), '/' . $strParams));			
 		}
 				
 		self::$arrUrlCache[$strCacheKey] = $strUrl;
@@ -235,23 +235,6 @@ abstract class ModuleIsotopeBase extends Module
 		return $strHTML;
 	}
 	
-	
-	public function getPageData($id)
-	{
-		// Get target page
-		$objPage = $this->Database->prepare("SELECT id, alias FROM tl_page WHERE id=?")
-								  ->limit(1)
-								  ->execute($id);
-		
-		
-		if ($objPage->numRows > 0)
-		{
-				$strUrl = $this->generateFrontendUrl($objPage->fetchAssoc());
-			
-		}
-		
-		return $strUrl;
-	}
 			
 	/**
 	 * Generate a URL and return it as string
@@ -413,32 +396,27 @@ abstract class ModuleIsotopeBase extends Module
 	}
 	
 	
-	protected function formatProductData($arrProductData)
+	protected function formatProductData($arrProducts)
 	{
 		global $objPage;
 		
- 		foreach($arrProductData as $row)
+ 		foreach($arrProducts as $objProduct)
 		{	
-			$intTotalPrice = $row['price'] * $row['quantity_requested'];
-			
-			$row['id'] = $row['product_id'];	//needed to ensure all product links work for now.
-			
-			
 			$arrImages = deserialize($row['images'], true);
 	
 			$arrFormattedProductData[] = array
 			(
-				'id'				=> $row['product_id'],
+				'id'				=> $objProduct->id,
 				'image'				=> (is_array($arrImages[0]) ? $this->getImage('isotope/' . substr($arrImages[0]['src'], 0, 1) . '/' . $arrImages[0]['src'], $this->Isotope->Store->gallery_image_width, $this->Isotope->Store->gallery_image_height) : $this->getImage($this->Isotope->Store->missing_image_placeholder, $this->Isotope->Store->gallery_image_width, $this->Isotope->Store->gallery_image_height)),
-				'name'				=> $row['name'],
-				'link'				=> ($this->iso_reader_jumpTo ? $this->generateProductLink($row['alias'], $row, $this->iso_reader_jumpTo, 'id') : $row['link']),
-				'price'				=> $this->generatePrice($row['price'], $this->strPriceTemplate),
-				'total_price'		=> $this->generatePrice($intTotalPrice, 'stpl_total_price'),
-				'quantity'			=> $row['quantity_requested'],
-				'option_values'		=> $row['product_options'],
-				'cart_item_id'		=> $row['cart_item_id'],
+				'name'				=> $objProduct->name,
+				'link'				=> ($this->iso_reader_jumpTo ? $this->generateProductLink($objProduct->alias, $objProduct->getData(), $this->iso_reader_jumpTo, 'id') : $objProduct->href_reader),
+				'price'				=> $this->generatePrice($objProduct->price, $this->strPriceTemplate),
+				'total_price'		=> $this->generatePrice($objProduct->total_price),
+				'quantity'			=> $objProduct->quantity_requested,
+//				'option_values'		=> $row['product_options'],
+//				'cart_item_id'		=> $row['cart_item_id'],
 				'remove_link'		=> $this->generateActionLinkString('remove_from_cart', $row['cart_item_id'], array('quantity'=>0, 'source_cart_id'=>$row['source_cart_id']), $objPage->id),
-				'remove_link_title' => sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $row['name'])
+				'remove_link_title' => sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $objProduct->name)
 			
 			);
 		}
