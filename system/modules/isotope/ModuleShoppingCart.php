@@ -73,38 +73,6 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 			$this->strTemplate = $this->iso_cart_layout;
 		}
 
-		//BUG TO BE FIXED: A session id combined with a cart type is our Cart ID.  Actual record ID field for now is not necessary unless pulling products.
-		//Every time you revisit the page after closign window it is determining that we haven't been here in teh last 30 days but we have.  I need to
-		//Correct the code that is not finding the cookie value and using it to grab the cart with its ID.  
-/*		
-		// Get initial values set up
-		$this->strUserId = $this->getCustomerId();
-		$this->intCartId = $this->userCartExists($this->strUserId);
-		
-		$strExistingCookie = $this->Input->cookie($this->strCartCookie);
-		
-		if(FE_USER_LOGGED_IN)
-		{
-			$this->sessCartId = $this->userCartExists($strExistingCookie, false);		
-		}
-
-		$arrTempProducts = $this->getTempCartProducts($strExistingCookie);
-		
-		if(sizeof($arrTempProducts))
-		{
-			$this->mergeCartData($arrTempProducts);
-		}
-		
-				
-		$this->arrJumpToValues = $this->getStoreJumpToValues($this->store_id);	//Deafult keys are "product_reader", "shopping_cart", and "checkout"
-	
-
-		if(!$this->intCartId)
-		{
-			$this->intCartId = $this->createNewCart($this->strUserId);
-		}
-*/
-		
 		return parent::generate();
 	}
 	
@@ -113,292 +81,70 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 	 * Generate module
 	 */
 	protected function compile()
-	{		
-
-		/*
-		// Call isotope_shopping_cart_onload_callback (e.g. to check permissions)
-		if (is_array($GLOBALS['TL_HOOKS']['isotope_shopping_cart_onload']))
+	{
+		$arrProducts = $this->Cart->getProducts();
+		
+		if (!count($arrProducts))
 		{
-			foreach ($GLOBALS['TL_HOOKS']['isotope_shopping_cart_onload'] as $callback)
+			$this->Template = new FrontendTemplate('mod_message');
+			$this->Template->type = 'empty';
+			$this->Template->message = $GLOBALS['TL_LANG']['MSC']['noItemsInCart'];
+			return;
+		}
+		
+		global $objPage;
+		$blnReload = false;
+		$arrQuantity = $this->Input->post('quantity');
+		$arrProductData = array();
+		
+		foreach( $arrProducts as $objProduct )
+		{
+			if ($this->Input->get('action') == 'remove' && $this->Input->get('id') == $objProduct->cart_id)
 			{
-				if (is_array($callback))
-				{
-					$this->import($callback[0]);
-					$this->$callback[0]->$callback[1]($arrCartItems);
-				}
+				$this->Database->prepare("DELETE FROM tl_cart_items WHERE id=?")->execute($objProduct->cart_id);
+				$this->redirect($this->generateFrontendUrl($objPage->row()));
 			}
-		}
-		*/
-	
-		$strAction = $this->getRequestData('action');	
-		$blnUpdateCartQuantities = false;
-		
-
-		if($strAction=='add_to_cart' || $strAction=='update_cart')
-		{			
-			//$arrOptionWidgets = explode(',', $this->getRequestData('option_fields'));
-			
-			/*if(sizeof($arrOptionWidgets))
-			{	
-				$this->validateOptionValues($arrOptionWidgets, $this->getRequestData('FORM_SUBMIT'));
-			}*/
-			
-			if($this->Input->post('product_variants'))
+			elseif ($this->Input->post('FORM_SUBMIT') == 'iso_cart_update' && is_array($arrQuantity) && $objProduct->cart_id)
 			{
-				$intVariantId = $this->Input->post('product_variants');
-			}else{
-				$intVariantId = 0;
-			}
-		}
-		
-		switch($strAction)
-		{
-			case 'add_to_cart':
-				if(!$this->doNotSubmit)
+				$blnReload = true;
+				if (!$arrQuantity[$objProduct->cart_id])
 				{
-					if($intVariantId!=0)
-					{
-						$intId = $intVariantId;
-					}else{
-						$intId = $this->getRequestData('id');
-					}
-					$this->addToCart($intId, (int)$this->getRequestData('quantity_requested'), $intSourceCartId, $this->arrProductOptionsData);
-					$this->blnRecallProductData = true;
+					$this->Database->prepare("DELETE FROM tl_cart_items WHERE id=?")->execute($objProduct->cart_id);
 				}
-				break;
-				
-			case 'update_cart':
-				if(!$this->doNotSubmit)
+				else
 				{
-					$this->updateCart($this->getRequestData('id'), (int)$this->getRequestData('quantity_requested'), $intSourceCartId, false, $this->arrProductOptionsData);
-					$this->blnRecallProductData = true;
-				}
-
-				break;
-			
-			case 'cart_quantity_update':
-				$blnUpdateCartQuantities = true;	//Requires a different method for updating cart.  Looks for QTY values in an INPUT field which only 		
-				break;								//exists in the full cart template.
-			case 'remove_from_cart':
-				//a new quantity of zero indicates to remove 
-				$this->updateCart($this->getRequestData('id'), 0, $intSourceCartId);
-				$this->blnRecallProductData = true;
-				break;
-			
-			/*	
-			default:
-				// Call isotope_shopping_cart_custom_action
-				if (is_array($GLOBALS['TL_HOOKS']['isotope_shopping_cart_custom_action']))
-				{
-					foreach ($GLOBALS['TL_HOOKS']['isotope_shopping_cart_custom_action'] as $callback)
-					{
-						if (is_array($callback))
-						{
-							$this->import($callback[0]);
-							$this->$callback[0]->$callback[1]($strAction);
-						}
-					}
-				}
-			break;
-			*/
-		}				
-						
-		//Hit the database for the product data for cart  This is what will happen if the user is viewing the cart directly instead of via an action
-		//such as adding a product
-		//$this->blnRecallProductData = true;
-		
-		$session = $this->Session->getData();
-
-		if(!is_array($session) || !is_array($session['isotope']) || !array_key_exists('cart_data', $session['isotope']) || !sizeof($session['isotope']['cart_data']) < 1 || $this->blnRecallProductData)
-		{		
-			//what fields to display out in cart.
-			
-			$arrDisplayFields = array('alias','name','price', 'images');
-						
-			$arrProductData = $this->Isotope->getProductData($this->Cart->getProducts(), $arrDisplayFields, 'name');
-			
-			if(is_array($arrProductData) && sizeof($arrProductData))
-			{
-				foreach($arrProductData as $k => $data)
-				{
-					$arrCartItemIds[] = $data['cart_item_id'];
+					$this->Database->prepare("UPDATE tl_cart_items SET quantity_requested=? WHERE id=?")->execute($arrQuantity[$objProduct->cart_id], $objProduct->cart_id);
 				}
 			}
-		}	
-	
-		//Only happens in the full cart interface - updating cart quantities on items already in the cart.  Needs to happen after getting product data.
-		if(strlen($blnUpdateCartQuantities))
-		{
-				
-			foreach($arrCartItemIds as $row)
-			{				
-				$this->updateCart($row, $this->getRequestData('product_qty_' . $row), $intSourceCartId, true);		
-			}
 			
-			$arrProductData = $this->Isotope->getProductData($this->Cart->getProducts(), $arrDisplayFields, 'name');
-						
+			$arrProductData[] = array
+			(
+				'id'				=> $objProduct->id,
+				'image'				=> $objProduct->images[0],
+				'name'				=> $objProduct->name,
+				'link'				=> $objProduct->href_reader,
+				'price'				=> $this->generatePrice($objProduct->price, $this->strPriceTemplate),
+				'total_price'		=> $this->generatePrice($objProduct->total_price),
+				'quantity'			=> $objProduct->quantity_requested,
+				'cart_item_id'		=> $objProduct->cart_id,
+				'remove_link'		=> $this->generateFrontendUrl($objPage->row(), '/action/remove/id/'.$objProduct->cart_id),
+				'remove_link_title' => sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $objProduct->name)
+			);
 		}
 		
-			
-		if(!sizeof($arrProductData))
+		if ($blnReload)
 		{
-			$arrFormattedProductData = array();
+			$this->reload();
 		}
-		else
-		{
-			$arrFormattedProductData = $this->formatProductData($arrProductData);
-		}
-				
-		$this->Template->cartJumpTo = $this->getPageData($this->Isotope->Store->cartJumpTo);
-		$this->Template->checkoutJumpTo = $this->getPageData($this->Isotope->Store->checkoutJumpTo);
-		$this->Template->products = $arrFormattedProductData;
+		
+		
+		$this->Template->products = $arrProductData;
+		$this->Template->cartJumpTo = $this->generateFrontendUrl($this->Database->prepare("SELECT id,alias FROM tl_page WHERE id=?")->execute($this->Isotope->Store->cartJumpTo)->fetchAssoc());
+		$this->Template->checkoutJumpTo = $this->generateFrontendUrl($this->Database->prepare("SELECT id,alias FROM tl_page WHERE id=?")->execute($this->Isotope->Store->checkoutJumpTo)->fetchAssoc());
 		$this->Template->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
 		$this->Template->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
-		$this->Template->taxLabel = $GLOBALS['TL_LANG']['MSC']['shippingLabel'];
-		$this->Template->taxTotal = $this->generatePrice($taxPriceAdjustment);
-		$this->Template->taxLabel = sprintf($GLOBALS['TL_LANG']['MSC']['taxLabel'], 'Sales');
-		$this->Template->taxTotal = $this->generatePrice($this->Cart->taxTotal);
 		$this->Template->subTotalPrice = $this->generatePrice($this->Cart->subTotal, 'stpl_total_price');
 		$this->Template->grandTotalPrice = $this->generatePrice($this->Cart->subTotal, 'stpl_total_price');		// FIXME
-		$this->Template->noItemsInCart = $GLOBALS['TL_LANG']['MSC']['noItemsInCart'];
-		
-		
-		if(strlen($strAction))
-		{
-			$strReturnUrl = $_SESSION['FE_DATA']['referer']['current'];
-			
-			$this->redirect(ampersand($this->Environment->url . $strReturnUrl));
-					
-		}
-		
-		//$product['name']
-		//$product['options']
-		//$product['quantity_requested']
-		//$product['price']
-		
-	}
-	
-	
-	
-	
-	/**
-	 * Add one or more units of a given product to the cart
-	 * @param integer
-	 * @param integer
-	 * @param array
-	 * @return boolean
-	 */
-	protected function addToCart($intProductId, $intQuantity, $intSourceCartId = 0, $arrProductOptionsData = array())
-	{	
-		$fltProductBasePrice = $this->getRequestData('price') ? $this->getRequestData('price') : $this->Isotope->getProductPrice($intProductId);
-		
-		$fltProductPrice = $this->Isotope->applyRules($fltProductBasePrice, $intProductId);
-		//$fltProductPrice = $fltProductBasePrice;
-			
-		if(sizeof($arrProductOptionsData))
-		{
-			// we can't assume this product is the same as another, so we add an item.
-			//$objTask = $this->Database->prepare("INSERT INTO tl_task %s")->set($arrSet)->execute();
-			//$pid = $objTask->insertId;
-			$time = time();
-
-			// Insert task
-			$arrSet = array
-			(
-				'pid'					=> $this->Cart->id,
-				'tstamp' 				=> $time,
-				'product_id'			=> $intProductId,
-				'quantity_requested'	=> $intQuantity,
-				'price'					=> $fltProductPrice,
-				//'source_cart_id'		=> $intSourceCartId//,
-				'product_options'		=> serialize($arrProductOptionsData)
-			);
-			
-			$this->Database->prepare("INSERT INTO tl_cart_items %s")->set($arrSet)->execute();
-		}
-		else
-		{
-			if($this->Cart->containsProduct($intProductId) && !$this->Cart->hasOptions($intProductId))
-			{
-				
-				
-					$this->Database->prepare("UPDATE tl_cart_items SET quantity_requested=(quantity_requested+" . $intQuantity . ")" . $strAdditionalFields . " WHERE product_id=? AND pid=?")
-								   ->execute($intProductId, $this->Cart->id);
-				
-			}
-			else
-			{
-				//$objTask = $this->Database->prepare("INSERT INTO tl_task %s")->set($arrSet)->execute();
-				//$pid = $objTask->insertId;
-				$time = time();
-			
-				// Insert task
-				$arrSet = array
-				(
-					'pid'					=> $this->Cart->id,
-					'tstamp' 				=> $time,
-					'product_id'			=> $intProductId,
-					'quantity_requested'	=> $intQuantity,
-					'price'					=> $fltProductPrice,
-					//'source_cart_id'		=> $intSourceCartId//,
-					'product_options'		=> serialize($arrProductOptionsData)
-				);
-				
-				
-				
-				$this->Database->prepare("INSERT INTO tl_cart_items %s")->set($arrSet)->execute();
-			}
-		}
-		
-		if ($this->iso_forward_cart)
-		{
-			$this->import('Isotope');
-			$this->jumpToOrReload($this->Isotope->Store->cartJumpTo);
-		}
-	}
-	
-	/**
-	 * Remove one or more units of a given product from the cart
-	 * @param integer
-	 * @param integer
-	 * @param array
-	 * @return boolean
-	 */
-	protected function updateCart($intCartItemId, $intQuantity, $intSourceCartId = 0, $blnOverwriteQty = false, $arrProductOptionsData = array())
-	{
-		//Get visitor's cart
-		
-		//Prepare & execute the query.
-		if(!is_null($intQuantity) && $intQuantity==0)
-		{
-			
-			//Some sort of confirm maybe?
-			$strQuery = "DELETE FROM tl_cart_items WHERE id=? AND pid=?";
-
-		}
-		else
-		{
-			if($blnOverwriteQty)
-			{
-				$strClause = $intQuantity;
-			}
-			else
-			{
-				$strClause = "(quantity_requested+" . $intQuantity . ")";
-			}
-			
-			$strProductOptions = serialize($arrProductOptionsData);
-			
-			$strQuery = "UPDATE tl_cart_items SET quantity_requested=$strClause WHERE id=? AND pid=?";			
-			
-		}
-
-		$this->Database->prepare($strQuery)
-					   ->execute($intCartItemId, $this->Cart->id, $intSourceCartId);
-	
-		$this->blnRecallProductData = true;
-		
-		return;
 	}
 }
 

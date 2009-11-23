@@ -19,7 +19,7 @@
 <?php foreach($this->products as $product): ?>
 		<tr class="product">
 			<td class="quantity"><?php echo $product['quantity']; ?>x</td>
-	        <td class="productName"><?php echo strlen($product['name']) > 20 ? substr($product['name'], 0, 20).'...' : $product['name']; ?></td>
+	        <td class="productName"><?php echo $product['name']; ?></td>
 			<td class="price"><?php echo $product['total_price']; ?></td>
 		</tr>
 <?php endforeach; ?>
