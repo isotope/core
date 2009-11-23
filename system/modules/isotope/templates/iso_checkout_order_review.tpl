@@ -6,7 +6,7 @@
 		<?php foreach($this->products as $product): ?>
 				<!-- BEGIN PRODUCT-->
 		        <tr class="product">
-		   			<td class="col productImg"><a href="<?php echo $product['link']; ?>" title="<?php echo $product['name']; ?>"><img src="<?php echo $product['image'] ?>" alt="<?php echo $product['name']; ?>" border="0" class="thumbnail" /></a></td>
+		   			<td class="col productImg"><a href="<?php echo $product['link']; ?>" title="<?php echo $product['name']; ?>"><img src="<?php echo $product['image']['gallery'] ?>" alt="<?php echo $product['image']['alt']; ?>" class="thumbnail"<?php echo $product['image']['gallery_size']; ?> /></a></td>
 		       		<td class="col productInfo">
 		       				<h3 class="productName"><?php echo $product['name']; ?></h3>
 		       				<div class="optionswrapper">
