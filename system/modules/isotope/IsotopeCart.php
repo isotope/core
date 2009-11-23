@@ -133,17 +133,17 @@ class IsotopeCart extends Model
 					break;
 					
 				case 'subTotal':
-					$this->arrCache[$strKey] = $this->calculateTotal($this->Isotope->getProductData($this->getProducts(), array($this->Isotope->Store->priceField), $this->Isotope->Store->priceField));
+					$this->arrCache[$strKey] = $this->calculateTotal($this->getProducts());
 					break;
 					
 				case 'taxTotal':
 					// FIXME: currently rounds to 0.05 (swiss francs)
-					$this->arrCache[$strKey] = (float)$this->calculateTax($this->Isotope->getProductData($this->getProducts(), array($this->Isotope->Store->priceField, 'tax_class'), $this->Isotope->Store->priceField));
+					$this->arrCache[$strKey] = (float)$this->calculateTax($this->getProducts());
 					break;
 					
 				case 'taxTotalWithShipping':
 					// FIXME: currently rounds to 0.05 (swiss francs)
-					return (float)$this->calculateTax($this->Isotope->getProductData($this->getProducts(), array($this->Isotope->Store->priceField, 'tax_class'), $this->Isotope->Store->priceField)) + $this->shippingTotal;
+					return $this->taxTotal + $this->shippingTotal;
 					break;
 				
 				case 'shippingTotal':
@@ -238,7 +238,9 @@ class IsotopeCart extends Model
 				{
 					$this->Database->prepare("UPDATE tl_cart_items SET pid=? WHERE id=?")->execute($this->id, $objCartData->id);					
 				
-				}else{
+				}
+				else
+				{
 					while( $objExistingMemberCartData->next() )
 					{
 						// Only sum quantity if two products with same ids have no product options.
@@ -296,7 +298,9 @@ class IsotopeCart extends Model
  			{
  				$strClass = $GLOBALS['ISO_PAY'][$objPayment->type];
  				$this->Payment = new $strClass($objPayment->row());
- 			}else{
+ 			}
+ 			else
+ 			{
  				$this->Payment = null;
  			}
  		}
@@ -348,58 +352,30 @@ class IsotopeCart extends Model
 	 * @access public
 	 * @return array
 	 */
-	public function getProducts()
+	public function getProducts($strTemplate='')
 	{
-		return $this->Database->prepare("SELECT * FROM tl_cart_items WHERE tl_cart_items.pid=?")->execute($this->id)->fetchAllAssoc();
-	}
-	
-	
-	public function getProductsAsHtml()
-	{
-		$this->import('Isotope');
+		$arrProducts = array();
+		$objProducts = $this->Database->prepare("SELECT * FROM tl_cart_items WHERE pid=?")->execute($this->id);
 		
-		$arrProducts = $this->Isotope->getProductData($this->getProducts(), array('alias','name'), 'name');
-		
-		if (!count($arrProducts))
-			return '';
-		
-		$strBuffer  = "<table class='products'>\n";
-		$strBuffer .= "<tr><td class='name'>" . $GLOBALS['TL_LANG']['MSC']['iso_order_items'] ."</td><td class='quantity'>" . $GLOBALS['TL_LANG']['MSC']['iso_quantity_header'] ."</td><td class='price'>". $GLOBALS['TL_LANG']['MSC']['iso_price_header']  ."</td><td class='subtotal'>". $GLOBALS['TL_LANG']['MSC']['iso_subtotal_header'] ."</td></tr>\n";
-		
-		foreach( $arrProducts as $product )
+		while( $objProducts->next() )
 		{
-			$strBuffer .= '<tr>';
-			$strBuffer .= '<td>' . $product['name'] . '</td>';
-			$strBuffer .= '<td>' . $product['quantity_requested'] . ' x </td>';
-			$strBuffer .= '<td>' . $this->Isotope->formatPriceWithCurrency($product[$this->Isotope->Store->priceField]) . '</td>';
-			$strBuffer .= '<td>' . $this->Isotope->formatPriceWithCurrency($product['quantity_requested'] * $product[$this->Isotope->Store->priceField]) . '</td>';
-			$strBuffer .= "</tr>\n";
+			// Do not use the TYPOlight function deserialize() cause it handles arrays not objects
+			$objProduct = unserialize($objProducts->product_data);
+			
+			$objProduct->quantity_requested = $objProducts->quantity_requested;
+			$objProduct->cart_id = $objProducts->id;
+			
+			$arrProducts[] = $objProduct;
 		}
 		
-		return $strBuffer . '</table>';
-	}
-	
-	
-	public function getProductsAsString()
-	{
-		$this->import('Isotope');
-		
-		$arrProducts = $this->Isotope->getProductData($this->getProducts(), array('alias','name'), 'name');
-		
-		if (!count($arrProducts))
-			return 'Keine Produkte';
-		
-//		$strBuffer = "Name    Anzahl</td><td>Preis</td><td>Betrag</td></tr>\n";
-		
-		foreach( $arrProducts as $product )
+		if (strlen($strTemplate))
 		{
-			$strBuffer .= $product['name'] . ': ';
-			$strBuffer .= $product['quantity_requested'] . ' x ';
-			$strBuffer .= $this->Isotope->formatPriceWithCurrency($product[$this->Isotope->Store->priceField]) . ' = ';
-			$strBuffer .= $this->Isotope->formatPriceWithCurrency($product['quantity_requested'] * $product[$this->Isotope->Store->priceField]);
+			$objTemplate = new FrontendTemplate($strTemplate);
+			$objTemplate->products = $arrProducts;
+			return $objTemplate->parse();
 		}
 		
-		return $strBuffer;
+		return $arrProducts;
 	}
 	
 
@@ -410,24 +386,19 @@ class IsotopeCart extends Model
 	 * @param array $arrProductData
 	 * @return float
 	 */
-	protected function calculateTotal($arrProductData)
+	protected function calculateTotal($arrProducts)
 	{
+		if (!is_array($arrProducts) || !count($arrProducts))
+			return 0;
+			
 		$fltTotal = 0;
 		
-		if(is_array($arrProductData) && sizeof($arrProductData))
+		foreach($arrProducts as $objProduct)
 		{
-			
-			foreach($arrProductData as $data)
-			{
-				$fltTotal += ((float)$data[$this->Isotope->Store->priceField] * (int)$data['quantity_requested']);
-			}
-			
-			$taxPriceAdjustment = 0; // $this->getTax($floatSubTotalPrice, $arrTaxRules, 'MULTIPLY');
+			$fltTotal += ((float)$objProduct->price * (int)$objProduct->quantity_requested);
 		}
-		else
-		{
-			return 0.00;
-		}
+			
+		$taxPriceAdjustment = 0; // $this->getTax($floatSubTotalPrice, $arrTaxRules, 'MULTIPLY');
 		
 		return (float)$fltTotal + (float)$taxPriceAdjustment;
 	}
@@ -440,8 +411,10 @@ class IsotopeCart extends Model
 	 * @param array $arrProductData
 	 * @return array
 	 */
-	protected function calculateTax($arrProductData)
+	protected function calculateTax($arrProducts)
 	{
+		return 0; // FIXME
+		
 		$this->import('FrontendUser','User');
 		
 		if($arrProductData)
@@ -605,6 +578,7 @@ class IsotopeCart extends Model
 	 * @param int $intProductId
 	 * @return bool
 	 */
+/*
 	public function containsProduct($intProductId)
 	{
 		return ($this->Database->prepare("SELECT * FROM tl_cart_items WHERE pid=? AND product_id=?")
@@ -612,6 +586,7 @@ class IsotopeCart extends Model
 							   ->execute($this->id, $intProductId)
 							   ->numRows ? true : false);
 	}
+*/
 	
 	/**
 	 * Check if a product has any options associated with it.
