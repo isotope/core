@@ -29,7 +29,6 @@
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_module']['iso_reader_jumpTo']			= array('Weiterleitungs-Seite für Produkteleser', 'Wählen Sie die Seite zu der beim klicken auf ein Produkt für Details weitergeleitet werden soll.');
-$GLOBALS['TL_LANG']['tl_module']['iso_checkout_login']			= array('Login-Modul für Kasse','Wählen Sie das Login-Modul welches in der Kasse angezeigt wird.');
 
 
 /**
