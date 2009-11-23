@@ -52,9 +52,6 @@ class IsotopeRunonce extends Frontend
 		// Checkout method has been renamed from "login" to "member" to prevent a problem with palette of the login module
 		$this->Database->execute("UPDATE tl_module SET iso_checkout_method='member' WHERE iso_checkout_method='login'");
 		
-		// Remove generateTeaser() callback on product description
-		$this->Database->execute("UPDATE tl_product_attributes SET save_callback='' WHERE save_callback='ProductCatalog.generateTeaser'");
-		
 		// Drop fields that are now part of the default DCA
 		$this->Database->execute("DELETE FROM tl_product_attributes WHERE field_name='alias'");
 		$this->Database->execute("DELETE FROM tl_product_attributes WHERE field_name='visibility'");
@@ -69,7 +66,11 @@ class IsotopeRunonce extends Frontend
 		$this->Database->execute("DELETE FROM tl_product_attributes WHERE field_name='price'");
 		$this->Database->execute("DELETE FROM tl_product_attributes WHERE field_name='price_override'");
 		$this->Database->execute("DELETE FROM tl_product_attributes WHERE field_name='use_price_override'");
-		$this->Database->execute("DELETE FROM tl_product_attributes WHERE field_name='weight'"); 
+		$this->Database->execute("DELETE FROM tl_product_attributes WHERE field_name='weight'");
+		
+		// Because configuration has been changed to objects, we cannot use the existing cart data
+		$this->Database->prepare("TRUNCATE TABLE tl_cart_items");
+		$this->Database->prepare("TRUNCATE TABLE tl_cart");
 	}
 	
 	
