@@ -45,7 +45,7 @@ CREATE TABLE `tl_module` (
   `iso_filterFields` blob NULL,
   `iso_orderByFields` blob NULL,
   `iso_searchFields` blob NULL,
-  `iso_enabledLimit` char(1) NOT NULL default '',
+  `iso_enableLimit` char(1) NOT NULL default '',
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
