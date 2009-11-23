@@ -22,7 +22,7 @@ CREATE TABLE `tl_module` (
   `iso_registry_reader` varchar(64) NOT NULL default '',
   `iso_checkout_layout` varchar(64) NOT NULL default '',
   `iso_checkout_method` varchar(10) NOT NULL default '',
-  `iso_checkout_login` int(10) unsigned NOT NULL default '0',
+  `iso_login_jumpTo` int(10) unsigned NOT NULL default '0',
   `iso_payment_modules` text NULL,
   `iso_shipping_modules` text NULL,
   `iso_show_teaser` char(1) NOT NULL default '',
