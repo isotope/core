@@ -96,49 +96,68 @@ class IsotopeProduct extends Model
 				// Initialize attribute
 				if (!isset($this->arrCache[$strKey]))
 				{
-					switch( $this->arrFields[$strKey]['inputType'] )
+					if (isset($this->arrFields[$strKey]))
 					{
-						case 'mediaManager':
-							$varValue = array();
-							$arrImages = deserialize($this->arrData[$strKey]);
-							
-							if(is_array($arrImages) && count($arrImages))
-							{
-								foreach( $arrImages as $k => $file )
+						switch( $this->arrFields[$strKey]['inputType'] )
+						{
+							case 'mediaManager':
+								$varValue = array();
+								$arrImages = deserialize($this->arrData[$strKey]);
+								
+								if(is_array($arrImages) && count($arrImages))
 								{
-									$strFile = 'isotope/' . substr($file['src'], 0, 1) . '/' . $file['src'];
-									
-									if (is_file(TL_ROOT . '/' . $strFile))
+									foreach( $arrImages as $k => $file )
 									{
-										$objFile = new File($strFile);
+										$strFile = 'isotope/' . substr($file['src'], 0, 1) . '/' . $file['src'];
 										
-										if ($objFile->isGdImage)
+										if (is_file(TL_ROOT . '/' . $strFile))
 										{
-											$file['is_image'] = true;
+											$objFile = new File($strFile);
 											
-											foreach( array('large', 'medium', 'thumbnail', 'gallery') as $size )
+											if ($objFile->isGdImage)
 											{
-												$strImage = $this->Isotope->getImage($strFile, $this->Isotope->Store->{$size . '_image_width'}, $this->Isotope->Store->{$size . '_image_height'});
-												$arrSize = @getimagesize(TL_ROOT . '/' . $strImage);
+												$file['is_image'] = true;
 												
-												$file[$size] = $strImage;
-												
-												if (is_array($arrSize) && strlen($arrSize[3]))
+												foreach( array('large', 'medium', 'thumbnail', 'gallery') as $size )
 												{
-													$file[$size . '_size'] = $arrSize[3];
+													$strImage = $this->Isotope->getImage($strFile, $this->Isotope->Store->{$size . '_image_width'}, $this->Isotope->Store->{$size . '_image_height'});
+													$arrSize = @getimagesize(TL_ROOT . '/' . $strImage);
+													
+													$file[$size] = $strImage;
+													
+													if (is_array($arrSize) && strlen($arrSize[3]))
+													{
+														$file[$size . '_size'] = $arrSize[3];
+													}
 												}
+												
+												$varValue[] = $file;
 											}
-											
-											$varValue[] = $file;
 										}
 									}
 								}
-							}
-							break;
+								break;
+						}
 					}
 						
 					switch( $strKey )
 					{
+						case 'price':
+							$varValue = $this->Isotope->calculatePrice((strlen($this->arrData[$this->Isotope->Store->priceOverrideField]) ? $this->arrData[$this->Isotope->Store->priceOverrideField] : $this->arrData[$this->Isotope->Store->priceField]));
+							break;
+							
+						case 'total_price':
+							$varValue = $this->Isotope->calculatePrice((($this->quantity_requested ? $this->quantity_requested : 1) * $this->price));
+							break;
+							
+						case 'formatted_price':
+							$varValue = $this->Isotope->formatPriceWithCurrency($this->price);
+							break;
+							
+						case 'formatted_total_price':
+							$varValue = $this->Isotope->formatPriceWithCurrency($this->total_price);
+							break;
+							
 						case 'images':
 							// No image available, add default image
 							if (!count($varValue) && is_file(TL_ROOT . '/' . $this->Isotope->Store->missing_image_placeholder))
@@ -159,18 +178,9 @@ class IsotopeProduct extends Model
 								$varValue[] = $file;
 							}
 							break;
-							
-						case $this->Isotope->Store->priceField:
-						case $this->Isotope->Store->priceOverrideField:
-							$varValue = $this->Isotope->calculatePrice($this->arrData[$strKey]);
-							break;
-					
-						default:
-							$varValue = deserialize($this->arrData[$strKey]);
-							break;
 					}
 		
-					$this->arrCache[$strKey] = $varValue;
+					$this->arrCache[$strKey] = $varValue ? $varValue : deserialize($this->arrData[$strKey]);;
 				}
 				
 				return $this->arrCache[$strKey];
@@ -199,7 +209,7 @@ class IsotopeProduct extends Model
 	 */
 	public function __sleep()
 	{
-		return array('arrFields', 'arrAttributes', 'arrDownloads');
+		return array('arrFields', 'arrAttributes', 'arrDownloads', 'arrData');
 	}
 	
 	
