@@ -132,13 +132,6 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'inputType'               => 'checkbox',
 			'eval'						=> array('doNotCopy'=>true, 'fallback'=>true, 'tl_class'=>'w50 m12'),
 		),
-		'root_asset_import_path' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['root_asset_import_path'],
-			'exclude'                 => true,
-			'inputType'               => 'fileTree',
-			'eval'                    => array('fieldType'=>'radio', 'mandatory'=>false)
-		),
 		'cartJumpTo' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_module']['cartJumpTo'],
