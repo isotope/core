@@ -385,7 +385,7 @@ class IsotopeProduct extends Model
 		
 		$objTemplate->label_detail = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
 		
-		$objTemplate->price = strlen($this->{$this->Isotope->Store->priceField}) ? $this->Isotope->formatPriceWithCurrency($this->{$this->Isotope->Store->priceOverrideField}) : $this->Isotope->formatPriceWithCurrency($this->{$this->Isotope->Store->priceField});
+		$objTemplate->price = $this->formatted_price;
 		
 		return $objTemplate->parse();
 	}
