@@ -242,7 +242,6 @@ CREATE TABLE `tl_store` (
   `gallery_image_width` int(10) unsigned NOT NULL default '0',
   `gallery_image_height` int(10) unsigned NOT NULL default '0', 
   `cookie_duration` int(10) unsigned NOT NULL default '0',
-  `root_asset_import_path` varchar(255) NOT NULL default '',
   `country` varchar(2) NOT NULL default '',
   `priceField` varchar(64) NOT NULL default '',
   `priceOverrideField` varchar(64) NOT NULL default '',
