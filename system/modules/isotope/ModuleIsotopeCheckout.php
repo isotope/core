@@ -965,9 +965,28 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		}
 					
 		
-		$arrProductData = $this->Isotope->getProductData($this->Cart->getProducts(), array('alias','name','price', 'images'), 'name');
+		global $objPage;
+		$arrProductData = array();
+		$arrProducts = $this->Cart->getProducts();
 		
-		$objTemplate->products = $this->formatProductData($arrProductData);
+		foreach( $arrProducts as $objProduct )
+		{
+			$arrProductData[] = array
+			(
+				'id'				=> $objProduct->id,
+				'image'				=> $objProduct->images[0],
+				'name'				=> $objProduct->name,
+				'link'				=> $objProduct->href_reader,
+				'price'				=> $this->generatePrice($objProduct->price, $this->strPriceTemplate),
+				'total_price'		=> $this->generatePrice($objProduct->total_price),
+				'quantity'			=> $objProduct->quantity_requested,
+				'cart_item_id'		=> $objProduct->cart_id,
+				'remove_link'		=> $this->generateFrontendUrl($objPage->row(), '/action/remove/id/'.$objProduct->cart_id),
+				'remove_link_title' => sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $objProduct->name)
+			);
+		}
+		
+		$objTemplate->products = $arrProductData;
 		
 		$objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
 		$objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
@@ -1086,283 +1105,8 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 
 	
 	/**
-	 * Returns an array containing all pertinent shipping information for enabled modules
-	 * @param array
-	 * @return array
+	 * return a widget object from another table
 	 */
-/*
-	protected function getShippingServicesAndTiers($arrModuleIds)
-	{
-		if (!is_array($arrModuleIds) || !count($arrModuleIds))
-			return array();
-
-		foreach($arrModuleIds as $module)
-		{
-			//Load configuration data for the shipping method.
-			$objShippingModuleData = $this->Database->prepare("SELECT s.name, sr.* FROM tl_shipping_modules s INNER JOIN tl_shipping_options sr ON s.id=sr.pid WHERE s.id=?")
-										  ->execute($module);
-										  
-			if(!$objShippingModuleData->numRows)
-			{
-				continue;
-			}
-			
-			//Gather all relevant data
-			$arrShippingModuleData = $objShippingModuleData->fetchAllAssoc();
-			$arrRates = array();
-								
-			foreach($arrShippingModuleData as $tier)
-			{				
-				$arrRates[] = array
-				(
-					(float)$tier['upper_limit'],
-					(float)$tier['rate'],
-					$tier['id']
-				);
-			}
-			
-			$arrShippingModules[] = array
-			(
-				'id'			=> $arrShippingModuleData['id'],
-				'rate_name'		=> $arrShippingModuleData[0]['name'] . ' ' . $arrShippingModuleData[0]['description'],
-				'rates'			=> $arrRates
-			);
-		}
-			
-		return $arrModules;
-	}
-	
-*/
-/*
-	
-	protected function calculateShippingCost($arrShippingModules)
-	{
-		if (!is_array($arrShippingModules) || !count($arrShippingModules))
-			return array();
-			
-		foreach($arrShippingModules as $rate)
-		{
-			$i = 0;
-		
-			foreach($rate['rates'] as $rateTier)
-			{
-				if(!$blnRateIsSet)
-				{	
-					if((float)$this->Cart->subTotal < (float)$rate['rates'][$i][0])
-					{
-						$fltShippingCost = (float)$rate['rates'][$i][1];
-						$this->intShippingRateId = $rate['rates'][$i][2];	//Only assign here until a choice can be made!!!!!
-						
-						$arrShippingMethods[] = array
-						(
-							'shipping_rate_id'		=> $rate['rates'][$i][2],
-							'title' 				=> $rate['rate_name'],
-							'cost'					=> $this->Isotope->formatPriceWithCurrency($fltShippingCost),
-						);
-						break;
-
-					}
-				}
-			
-				$i++;
-			}
-		
-			
-		}	
-	
-		
-		//Set order total for payment
-		
-		$this->fltOrderShippingTotal = $fltShippingCost;
-		return $arrShippingMethods;
-		
-	}
-*/
-	
-/*
-	protected function calculateOrderSubtotal($intCartId, $strUserId)
-	{
-		//Grab needed product data
-		$arrAggregateSetData = $this->Cart->getProducts();
-			
-		if(!sizeof($arrAggregateSetData))
-		{
-			$arrAggregateSetData = array();
-		}
-		
-		$arrProductData = $this->Isotope->getProductData($arrAggregateSetData, array('price'), 'price');
-				
-		return $this->getOrderTotal($arrProductData);
-	
-	}
-*/
-	
-	/**
-	 * @todo: where is $fltGiftWrap coming from?
-	 */
-/*
-	protected function calculateOrderTotal()
-	{	
-		return $this->Cart->subTotal + $fltGiftWrap + $this->fltOrderShippingTotal + $this->fltOrderTaxTotal;
-	}
-	
-*/
-	/**
-	 * For now this assumes all items are taxable.
-	 */
-/*
-	protected function calculateTax($arrProductData)
-	{
-		// FIXME
-		return 0;
-		$this->import('FrontendUser','User');
-				
-		foreach($arrProductData as $row)
-		{
-			$arrTaxClasses[] = $row['tax_class'];	
-		}
-	
-		//Get the tax rates for the given class.
-		$arrTaxClassRecords = array_unique($arrTaxClasses);
-		
-		if(sizeof($arrTaxClassRecords))
-		{		
-			$strTaxRates = join(',', $arrTaxClassRecords);
-		}
-		
-		if(strlen(trim($strTaxRates)) < 1)
-		{
-			return array();
-		}
-		
-		
-		$objTaxRates = $this->Database->prepare("SELECT r.pid, r.country_id, r.region_id, r.postcode, r.rate, (SELECT name FROM tl_tax_class c WHERE c.id=r.pid) AS class_name FROM tl_tax_rate r WHERE r.pid IN(" . $strTaxRates . ")")
-									  ->execute();
-		
-		if($objTaxRates->numRows < 1)
-		{
-			return 0.00;
-		}
-		
-		$arrTaxRates = $objTaxRates->fetchAllAssoc();
-		
-		foreach($arrTaxRates as $rate)
-		{
-			//eventually this will also contain the formula or calc rule for the given tax rate.
-			$arrRates[$rate['pid']] = array
-			(
-				'rate'			=> $rate['rate'],
-				'country_id'	=> $rate['country_id'],
-				'region_id'		=> $rate['region_id'],
-				'postal_code'	=> $rate['postcode'],
-				'class_name'	=> $rate['class_name']	//we need to output this to template for customers.
-			);
-		}
-		
-		$arrBillingAddress = $this->getSelectedAddress($this->intBillingAddressId, 'billing_information'); //Tax calculated based on billing address.
-		$arrShippingAddress = $this->getSelectedAddress($this->intShippingAddressId, 'shipping_information');
-		
-		$arrAddresses[] = $arrBillingAddress;
-		$arrAddresses[] = $arrShippingAddress;
-		
-		//the calculation logic for tax rates will need to be something we can set in the backend eventually.  This is specific to Kolbo right now
-		//as tax class 3 = luxury tax.
-		foreach($arrProductData as $product)
-		{
-			$blnAlreadyCalculatedTax = false;
-			$blnCalculate = false;
-			
-			foreach($arrAddresses as $address)
-			{
-				if($product['tax_class']!=0)
-				{
-					//only check what we need to.  There may be a better logic gate to express this but I haven't figured out what it is yet. ;)
-					if(strlen($rate['postalcode']))
-					{
-						if($address['postal']==$rate['postal_code'] && $address['state']==$rate['region_id'] && $address['country']==$rate['country_id'])
-						{
-							$blnCalculate = true;
-						}
-					}
-					elseif(strlen($rate['region_id']) && strlen($rate['country_id']))
-					{
-						if($address['state']==$rate['region_id'] && $address['country']==$rate['country_id'])
-						{
-							
-							$blnCalculate = true;
-						}
-					}
-//					elseif(strlen($rate['country_id']))
-//					{
-//						if($address['country']==$rate['country_id'])
-//						{
-//							$blnCalculate = true;
-//						}	
-//					}		
-					
-					if($blnCalculate && !$blnAlreadyCalculatedTax)
-					{
-						//This needs to be database-driven.  We know what these tax values are right now and later it must not assume anything obviously.
-						switch($product['tax_class'])
-						{
-							case '1':
-									//if(strlen($rate['region_id']) > 0 && $this->User->state==$rate['region_id'])
-									$fltSalesTax += (float)$product['price'] * $arrRates[$product['tax_class']]['rate'] / 100;
-									
-									//$arrTaxInfo['code'] = $
-								break;
-								
-							case '2':	//Luxury tax.  5% of the difference over $175.00  this trumps standard sales tax.
-								if((float)$product['price'] >= 175)
-								{
-									$fltTaxableAmount = (float)$product['price'] - 175;
-									$fltSalesTax += $fltTaxableAmount * $arrRates[$product['tax_class']]['rate'] / 100;
-								}else{
-									//fallback if the price is below to standard sales tax.
-									$fltTaxableAmount = (float)$product['price'] - 175;
-									$fltSalesTax += $fltTaxableAmount * $arrRates[$product['tax_class']]['rate'] / 100;
-								}
-														
-								break;
-								
-							case '3':	//because tax class 2 is exempt in Kolbo.
-							default:
-								break;			
-						}
-						
-						$blnAlreadyCalculatedTax = true;
-					}
-				} //end if($product['tax_class'])
-			}//end foreach($arrAddresses)
-		}
-		
-		$this->fltOrderTaxTotal = number_format($fltSalesTax, 2);
-	
-		$arrTaxInfo[] = array
-		(
-			'class'			=> 'Sales Tax',
-			'total'			=> $this->generatePrice($fltSalesTax)
-		);
-		
-		return $arrTaxInfo;
-	}
-*/
-	
-	
-/*
-	protected function calculateLuxuryTax($arrProductData)
-	{
-		foreach($arrProductData as $product)
-		{
-			
-		}
-		
-		return $fltLuxuryTaxTotal;
-	}
-*/
-	
-	/** return a widget object from another table
-	*/
 	protected function generateCommentWidget($strResourceTable, $strField)
 	{
 		$this->loadLanguageFile($strResourceTable);
