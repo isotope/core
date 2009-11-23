@@ -42,6 +42,10 @@ CREATE TABLE `tl_module` (
   `iso_list_format` varchar(64) NOT NULL default '',
   `iso_category_scope` varchar(64) NOT NULL default '',
   `iso_use_quantity` char(1) NOT NULL default '',
+  `iso_filterFields` blob NULL,
+  `iso_orderByFields` blob NULL,
+  `iso_searchFields` blob NULL,
+  `iso_enabledLimit` char(1) NOT NULL default '',
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 

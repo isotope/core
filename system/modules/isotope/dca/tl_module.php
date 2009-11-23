@@ -43,6 +43,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['isoCheckoutboth']			= '{title_legen
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoOrderHistory']			= '{title_legend},name,headline,type;{config_legend},store_ids;{redirect_legend},jumpTo;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoOrderDetails']			= '{title_legend},name,headline,type;{redirect_legend},jumpTo;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoStoreSwitcher']			= '{title_legend},name,headline,type;{config_legend},store_ids;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoFilters']				= '{title_legend},name,headline,type;{config_legend},iso_enableLimit,iso_filterFields,iso_orderByFields,iso_searchFields;{template_legend:hide},iso_filter_layout;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 
 
 /**
@@ -305,6 +306,41 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_category_scope'] = array
 	'reference'				  => &$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref'],
 );
 
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_filterFields'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_filterFields'],
+	'exclude'                 => true,
+	'inputType'               => 'checkboxWizard',
+	'eval'					  => array('multiple'=>true),
+	'options_callback'		  => array('tl_module_isotope','getFilterFields')
+);
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_orderByFields'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_orderByFields'],
+	'exclude'                 => true,
+	'inputType'               => 'checkboxWizard',
+	'eval'					  => array('multiple'=>true),
+	'options_callback'		  => array('tl_module_isotope','getSortByFields')
+);
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_searchFields'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_searchFields'],
+	'exclude'                 => true,
+	'inputType'               => 'checkboxWizard',
+	'eval'					  => array('multiple'=>true),
+	'options_callback'		  => array('tl_module_isotope','getSearchFields')
+);
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_enableLimit'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_enableLimit'],
+	'exclude'                 => true,
+	'inputType'               => 'checkbox'
+);
+
 /**
  * tl_module_isotope class.
  * 
@@ -320,11 +356,75 @@ class tl_module_isotope extends Backend
 	 * @access public
 	 * @return array
 	 */
-	public function getFilters()
+	public function getFilterFields()
 	{
 		
 		
 		$objFilters = $this->Database->prepare("SELECT id, name FROM tl_product_attributes WHERE is_filterable=?")
+									 ->execute(1);
+									 
+		if($objFilters->numRows < 1)
+		{
+			return $GLOBALS['TL_LANG']['MSC']['noResult'];
+		}
+		
+		$arrFilters = $objFilters->fetchAllAssoc();
+		
+		foreach($arrFilters as $filter)
+		{
+						
+			$arrOptionGroups[$filter['id']] = $filter['name'];
+		
+		}
+		
+		return $arrOptionGroups;
+	}
+	
+	/**
+	 * getFilters function.
+	 * 
+	 * @todo Returns an error string but should be an array
+	 *
+	 * @access public
+	 * @return array
+	 */
+	public function getSortByFields()
+	{
+		
+		
+		$objFilters = $this->Database->prepare("SELECT id, name FROM tl_product_attributes WHERE is_order_by_enabled=?")
+									 ->execute(1);
+									 
+		if($objFilters->numRows < 1)
+		{
+			return $GLOBALS['TL_LANG']['MSC']['noResult'];
+		}
+		
+		$arrFilters = $objFilters->fetchAllAssoc();
+		
+		foreach($arrFilters as $filter)
+		{
+						
+			$arrOptionGroups[$filter['id']] = $filter['name'];
+		
+		}
+		
+		return $arrOptionGroups;
+	}
+	
+	/**
+	 * getFilters function.
+	 * 
+	 * @todo Returns an error string but should be an array
+	 *
+	 * @access public
+	 * @return array
+	 */
+	public function getSearchFields()
+	{
+		
+		
+		$objFilters = $this->Database->prepare("SELECT id, name FROM tl_product_attributes WHERE is_searchable=? AND type='text'")
 									 ->execute(1);
 									 
 		if($objFilters->numRows < 1)
