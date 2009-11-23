@@ -395,36 +395,6 @@ abstract class ModuleIsotopeBase extends Module
 	
 	}
 	
-	
-	protected function formatProductData($arrProducts)
-	{
-		global $objPage;
-		
- 		foreach($arrProducts as $objProduct)
-		{	
-			$arrImages = deserialize($row['images'], true);
-	
-			$arrFormattedProductData[] = array
-			(
-				'id'				=> $objProduct->id,
-				'image'				=> (is_array($arrImages[0]) ? $this->getImage('isotope/' . substr($arrImages[0]['src'], 0, 1) . '/' . $arrImages[0]['src'], $this->Isotope->Store->gallery_image_width, $this->Isotope->Store->gallery_image_height) : $this->getImage($this->Isotope->Store->missing_image_placeholder, $this->Isotope->Store->gallery_image_width, $this->Isotope->Store->gallery_image_height)),
-				'name'				=> $objProduct->name,
-				'link'				=> ($this->iso_reader_jumpTo ? $this->generateProductLink($objProduct->alias, $objProduct->getData(), $this->iso_reader_jumpTo, 'id') : $objProduct->href_reader),
-				'price'				=> $this->generatePrice($objProduct->price, $this->strPriceTemplate),
-				'total_price'		=> $this->generatePrice($objProduct->total_price),
-				'quantity'			=> $objProduct->quantity_requested,
-//				'option_values'		=> $row['product_options'],
-//				'cart_item_id'		=> $row['cart_item_id'],
-				'remove_link'		=> $this->generateActionLinkString('remove_from_cart', $row['cart_item_id'], array('quantity'=>0, 'source_cart_id'=>$row['source_cart_id']), $objPage->id),
-				'remove_link_title' => sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $objProduct->name)
-			
-			);
-		}
-		
-		return $arrFormattedProductData;
-	}
-	
-	
 	protected function getRootAssetImportPath($intStoreId)
 	{
 		$objPath = $this->Database->prepare("SELECT root_asset_import_path FROM tl_store WHERE id=?")
