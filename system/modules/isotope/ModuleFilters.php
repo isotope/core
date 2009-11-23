@@ -36,60 +36,148 @@ class ModuleFilters extends ModuleIsotopeBase
 
 
 	/**
-	 * Generate module
+	 * Display a wildcard in the back end
+	 * @return string
+	 */
+	public function generate()
+	{
+		
+		if (TL_MODE == 'BE')
+		{
+			$objTemplate = new BackendTemplate('be_wildcard');
+			$objTemplate->wildcard = '### ISOTOPE FILTER MODULE ###';
+			$objTemplate->title = $this->headline;
+			$objTemplate->id = $this->id;
+			$objTemplate->link = $this->name;
+			$objTemplate->href = 'typolight/main.php?do=modules&amp;act=edit&amp;id=' . $this->id;
+
+			return $objTemplate->parse();
+		}		
+		
+		return parent::generate();
+	}
+	
+	/**
+	 * Compile module
 	 */
 	protected function compile()
 	{
-		//We're looking for filter, sort, search and limit functionality
-		//Filters are rendered individually, sorts are compiled into a single sort by widget, serach also compiled, and limit is stock on/off
-		$objFilters = $this->Database->prepare("SELECT * FROM tl_product_attributes WHERE (is_filterable='1' OR is_searchable='1' OR is_order_by_enabled='1')")
-									 ->execute();
 		
-		if(!$objFilters->numRows)
+		$arrFilterFields = deserialize($this->iso_filterFields);
+		$arrOrderByFields = deserialize($this->iso_orderByFields);
+		$arrSearchFields = deserialize($this->iso_searchFields);
+		$arrLimit = array();
+		
+		$this->loadLanguageFile('tl_product_data');
+		
+		$arrOrderByFields[] = array
+		(
+			'type'			=> 'text',
+			'field_name'	=> 'name',
+			'label'			=> $GLOBALS['TL_LANG']['tl_product_data']['name'][0]
+		);
+		
+		$arrOrderByFields[] = array
+		(
+			'type'			=> 'decimal',
+			'field_name'	=> 'price',
+			'label'			=> $GLOBALS['TL_LANG']['tl_product_data']['price'][0]
+		);
+		
+		$arrSearchFields = array('name','description');
+		
+		foreach($arrFilterFields as $field)
 		{
-			return '';
+				
+			//Render as a select widget, for now.  Perhaps make flexible in the future.
+			$arrFilters[] = array
+			(
+				'html'		=> ''	//render filter widget
+			);
 		}
 		
-		$objFilters->fetchAllAssoc();
-		
-		while($objFilters->next())
+				
+		if($arrOrderByFields)
 		{
-				if($objFilters->is_filterable)
-				{
-					//Render as a select widget, for now.  Perhaps make flexible in the future.
-				}
-				
-				if($objFilters->is_searchable)
-				{
-					//Add to the clause for text search.  
-				}
-				
-				if($objFilters->is_order_by_enabled)
-				{
-					//Produce an option 
-				}
-		
+			$arrOrderByOptions = $this->getOrderByOptions($arrOrderByFields);
 		}
 		
-		if($this->enableLimit)
+		if($this->iso_enableLimit)
 		{
 			//Generate the limits per page... used to be derived from the number of columns in grid format, but not in list format.  For now, just a standard list.
+			$arrLimit = array(10,20,50,100,200);
 		}
-		
-		
+
+		$this->Template->perPage = $this->iso_enableLimit;
+		$this->Template->limit = $arrLimit;
 		$this->Template->filters = $arrFilters;	
-		$this->Template->action = '';
-		$this->Template->order_by = '';
-		$this->Template->search = '';
-		$this->Template->sort = '';
-		$this->Template->per_page = '';
-		$this->Template->per_page_label = '';
-		$this->Template->for = '';
+		$this->Template->action = $this->Environment->request;
+		$this->Template->orderBy = $arrOrderByOptions;
+		$this->Template->order_by = $this->Input->get('order_by');
+		$this->Template->per_page = $this->Input->get('per_page');
+		$this->Template->per_page_label = $GLOBALS['TL_LANG']['MSC']['perPage'];
+		$this->Template->for = $this->Input->get('keywords');
 		$this->Template->keywords_label = '';
-		$this->Template->search_label = '';
+		$this->Template->search_label = $GLOBALS['TL_LANG']['MSC']['search'];
 
 	}
 	
+	private function getOrderByOptions($arrAttributes)
+	{		
+		
+		foreach($arrAttributes as $attribute)
+		{
+			$arrSortingDirections = $this->generateSortingDirections($attribute['type']);
+			
+			$arrOptions[$attribute['field_name'] . '-ASC'] = $attribute['label'] . ' ' . $arrSortingDirections['ASC'];
+			$arrOptions[$attribute['field_name'] . '-DESC'] = $attribute['label'] . ' ' . $arrSortingDirections['DESC'];
 	
+		}
+		
+		return $arrOptions;
+	}
+	
+	private function generateSortingDirections($strType)
+	{
+		switch($strType)
+		{
+			case 'integer':
+			case 'decimal':
+			
+				return array('ASC' => $GLOBALS['TL_LANG']['MSC']['low_to_high'], 'DESC' => $GLOBALS['TL_LANG']['MSC']['high_to_low']);
+				break;
+			
+			case 'text':
+			
+				return array('ASC' => $GLOBALS['TL_LANG']['MSC']['a_to_z'], 'DESC' => $GLOBALS['TL_LANG']['MSC']['z_to_a']);
+				break;
+			case 'datetime':
+				
+				return array('ASC' => $GLOBALS['TL_LANG']['MSC']['old_to_new'], 'DESC' => $GLOBALS['TL_LANG']['MSC']['new_to_old']);
+				break;
+			default:
+				return;
+				break;
+		}
+	
+	}
+	
+	/**
+	 *	Calculate the per-page options based on the number of product columns specified.  The first option is always * 4 rows
+	 *  for example, 5 wide * 4 rows = default option of 20 per page.
+	 *
+	 *	@param integer
+	 *	@return array
+	 */
+	private function getPerPageOptions($intColumns, $intRows = 4)
+	{
+		$arrPerPageOptions[] = ($intColumns * $intRows) * 1;
+		$arrPerPageOptions[] = ($intColumns * $intRows) * 2;
+		$arrPerPageOptions[] = ($intColumns * $intRows) * 3;
+		$arrPerPageOptions[] = ($intColumns * $intRows) * 5;
+		$arrPerPageOptions[] = ($intColumns * $intRows) * 10;
+	
+		return $arrPerPageOptions;
+	}
 }
 

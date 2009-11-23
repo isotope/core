@@ -58,13 +58,14 @@ $GLOBALS['TL_LANG']['tl_product_data']['optionSetTitle'] = array('New Option Set
 $GLOBALS['TL_LANG']['tl_product_data']['optionSetSelect'] = array('Option Set','Select an existing option set');
 $GLOBALS['TL_LANG']['tl_product_data']['useOrCreateOptionSet'] = array('Option Set Mode','');
 */
+/*
 $GLOBALS['TL_LANG']['tl_product_data']['enabled'] = 'Enabled';
 $GLOBALS['TL_LANG']['tl_product_data']['values']			= 'Option Values';
 //$GLOBALS['TL_LANG']['tl_product_data']['sku']				= 'SKU';
 $GLOBALS['TL_LANG']['tl_product_data']['price']	= 'Price Change';
 $GLOBALS['TL_LANG']['tl_product_data']['weight']	= 'Weight Change';
 $GLOBALS['TL_LANG']['tl_product_data']['quantity']		= 'Quantity';
-
+*/
 /*
 $GLOBALS['TL_LANG']['tl_product_data']['audio_source'] = array('Audio File Source', 'Link to an internal or external media source instead of the default page.');
 $GLOBALS['TL_LANG']['tl_product_data']['audio_jumpTo'] = array('Select Internal File', 'Please select the page to which visitors will be redirected.');
