@@ -43,8 +43,8 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['isoCheckoutboth']			= '{title_legen
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoOrderHistory']			= '{title_legend},name,headline,type;{config_legend},store_ids;{redirect_legend},jumpTo;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoOrderDetails']			= '{title_legend},name,headline,type;{redirect_legend},jumpTo;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoStoreSwitcher']			= '{title_legend},name,headline,type;{config_legend},store_ids;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoFilters']				= '{title_legend},name,headline,type;{config_legend},iso_enableLimit,iso_filterFields,iso_orderByFields,iso_searchFields;{template_legend:hide},iso_filter_layout;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
-
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoFilterModule']			= '{title_legend},name,headline,type;{config_legend},iso_enableLimit,iso_filterFields,iso_orderByFields,iso_searchFields;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
+//{template_legend:hide},iso_filter_layout; not right now... filters are widgets that are generated.
 
 /**
  * Fields
@@ -340,6 +340,16 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_enableLimit'] = array
 	'exclude'                 => true,
 	'inputType'               => 'checkbox'
 );
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_filter_layout'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_filter_layout'],
+	'default'                 => 'iso_reader_product_single',
+	'exclude'                 => true,
+	'inputType'               => 'select',
+	'options'                 => $this->getTemplateGroup('iso_filters_')
+);
+
 
 /**
  * tl_module_isotope class.
@@ -743,4 +753,3 @@ class tl_module_isotope extends Backend
 		return $arrModules;
 	}
 }
-

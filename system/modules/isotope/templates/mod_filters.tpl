@@ -4,40 +4,52 @@
 <<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
 <?php endif; ?>
 
+<?php if ($this->orderBy): ?>
+
+<div class="filter_order_by">
+<form action="<?php echo $this->action; ?>" method="get">
+<select name="order_by" id="ctrl_order_by" class="select" onchange="this.form.submit();">
+<?php 	foreach($this->orderBy as $value=>$label): ?>
+<option value="<?php echo $value; ?>"<?php echo ($value==$this->order_by ? " selected" : "") ?>><?php echo $label; ?></option>
+<?php	endforeach; ?>
+</select>
+<?php endif; ?>
+</form>
+</div>
+
 <?php if ($this->searchable): ?>
 
-<div class="list_search">
+<div class="filter_search">
 <form action="<?php echo $this->action; ?>" method="get">
 <div class="formbody">
 <input type="hidden" name="order_by" value="<?php echo $this->order_by; ?>" />
-<input type="hidden" name="sort" value="<?php echo $this->sort; ?>" />
 <input type="hidden" name="per_page" value="<?php echo $this->per_page; ?>" />
 <label for="ctrl_for" class="invisible"><?php echo $this->keywords_label; ?></label>
 <input type="text" name="for" id="ctrl_for" class="text" value="<?php echo $this->for; ?>" />
-<input type="submit" class="submit" value="<?php echo $this->search_label; ?>" />
 </div>
 </form>
 </div>
 <?php endif; ?>
-<?php if ($this->per_page): ?>
+<?php if ($this->perPage): ?>
 
-<div class="list_per_page">
+<div class="filter_per_page">
 <form action="<?php echo $this->action; ?>" method="get">
 <div class="formbody">
 <input type="hidden" name="order_by" value="<?php echo $this->order_by; ?>" />
 <input type="hidden" name="for" value="<?php echo $this->for; ?>" />
 <label for="ctrl_per_page" class="invisible"><?php echo $this->per_page_label; ?></label>
-<select name="per_page" id="ctrl_per_page" class="select">
+<select name="per_page" id="ctrl_per_page" class="select" onchange="this.form.submit();">
 <?php foreach($this->limit as $row): ?>
-  <option value="<?php echo $row; ?>"<?php if ($this->per_page == $row): ?> selected="selected"<?php endif; ?>><?php echo row; ?></option>
+  <option value="<?php echo $row; ?>"<?php if ($this->per_page == $row): ?> selected="selected"<?php endif; ?>><?php echo $row; ?></option>
 <?php endforeach; ?>
 </select>
-<input type="submit" class="submit" value="<?php echo $this->per_page_label; ?>" />
 </div>
 </form>
 </div>
 <?php endif; ?>
+<?php if($this->filters): ?>
 <?php foreach($this->filters as $filter): ?>
 <?php 	echo $filter['html']; ?>
 <?php endforeach; ?>
+<?php endif; ?>
 </div>

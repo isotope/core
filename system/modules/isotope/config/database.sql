@@ -27,7 +27,7 @@ CREATE TABLE `tl_module` (
   `iso_shipping_modules` text NULL,
   `iso_show_teaser` char(1) NOT NULL default '',
   `new_products_time_window` int(10) unsigned NOT NULL default '0',
-  `listing_filters` text NULL,
+  `filter_module` text NULL,
   `columns` int(10) unsigned NOT NULL default '0',
   `store_id` int(10) unsigned NOT NULL default '0',
   `store_ids` blob NULL,
@@ -42,10 +42,12 @@ CREATE TABLE `tl_module` (
   `iso_list_format` varchar(64) NOT NULL default '',
   `iso_category_scope` varchar(64) NOT NULL default '',
   `iso_use_quantity` char(1) NOT NULL default '',
+  `iso_filter_layout` varchar(64) NOT NULL default '',
   `iso_filterFields` blob NULL,
   `iso_orderByFields` blob NULL,
   `iso_searchFields` blob NULL,
   `iso_enableLimit` char(1) NOT NULL default '',
+
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
@@ -279,6 +281,21 @@ CREATE TABLE `tl_product_categories` (
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+-- --------------------------------------------------------
+
+-- 
+-- Table `tl_filter_configuration`
+--
+
+CREATE TABLE `tl_filter_configuration` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `pid` int(10) unsigned NOT NULL default '0',
+  `tstamp` int(10) unsigned NOT NULL default '0',
+  `title` varchar(255) NOT NULL default '',
+  `enabledFilters` blob,
+  PRIMARY KEY  (`id`),
+  KEY `pid` (`pid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
