@@ -87,40 +87,29 @@ abstract class Payment extends Frontend
 		switch( $strKey )
 		{
 			case 'available':
+			
+				if (!$this->enabled && !BE_USER_LOGGED_IN)
+					return false;
 				
 				$this->import('IsotopeCart', 'Cart');
 				
-				if (($this->minimum_total > 0 && $this->minimum_total > $this->Cart->subTotal) || ($this->minimum_total > 0 && $this->maximum_total < $this->Cart->subTotal))
+				if (($this->minimum_total > 0 && $this->minimum_total > $this->Cart->subTotal) || ($this->maximum_total > 0 && $this->maximum_total < $this->Cart->subTotal))
 					return false;
 					
-				$arrAllowed = deserialize($this->shipping_modules);
-				
-				foreach($arrAllowed as $allowed)
-				{
+				$arrShippings = deserialize($this->shipping_modules);
+				if (is_array($arrShippings) && (!$_SESSION['FORM_DATA']['shipping']['module'] && !in_array(0, $arrShippings)) && !in_array($_SESSION['FORM_DATA']['shipping']['module'], $arrShippings))
+					return false;
 					
-					if(substr($allowed, '_'))
+				$arrTypes = deserialize($this->product_types);
+				if (is_array($arrTypes) && count($arrTypes))
+				{
+					$arrProducts = $this->Cart->getProducts();
+					foreach( $arrProducts as $objProduct )
 					{
-						$arrModuleId = split('_', $allowed);
-						$arrModuleIds[] = $arrModuleId[0];
-					}else{
-						$arrModuleIds[] = $allowed;
+						if (!in_array($objProduct->type, $arrTypes))
+							return false;
 					}
 				}
-				
-				/*
-				if(isset($_SESSION['FORM_DATA']['billing_address']))
-			    {
-			           //TODO - fix to load addres in a consistent manner.
-					$this->loadSelectedAddressById($_SESSION['FORM_DATA']['billing_address'], 'billing');
-			    	$strCountry = $_SESSION['FORM_DATA']['billing_information_country'];
-			    }
-				*/
-				
-				if (!is_array($arrAllowed) || !count($arrAllowed) || !in_array($_SESSION['FORM_DATA']['shipping']['module'], $arrModuleIds))
-					return false;
-					
-				if (!$this->enabled && !BE_USER_LOGGED_IN)
-					return false;
 					
 				return true;
 				break;
