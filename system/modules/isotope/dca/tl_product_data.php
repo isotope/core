@@ -251,7 +251,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['shipping_exempt'],
 			'filter'				=> true,
 			'inputType'				=> 'checkbox',
-			'eval'					=> array('submitOnChange'=>true, 'disabled'=>'disabled', 'tl_class'=>'w50'),
+			'eval'					=> array('tl_class'=>'w50'),
 			'attributes'			=> array('legend'=>'shipping_legend'),
 		),
 		'tax_class' => array
