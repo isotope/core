@@ -37,6 +37,10 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 		'dataContainer'               => 'Table',
 		'ctable'                      => array('tl_payment_options'),
 		'enableVersioning'            => true,
+		'onload_callback'			  => array
+		(
+			array('tl_payment_modules', 'loadShippingModules'),
+		),
 	),
 
 	// List
@@ -105,10 +109,10 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 	(
 		'__selector__'                => array('type'),
 		'default'                     => '{type_legend},type,name',
-		'cash'						  => '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules;{enabled_legend},enabled',
-		'paypal'                      => '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,postsale_mail,minimum_total,maximum_total,countries,shipping_modules;{paypal_legend},paypal_account,paypal_business;{enabled_legend},debug,enabled',
-		'postfinance'                 => '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,postsale_mail,minimum_total,maximum_total,countries,shipping_modules;{postfinance_legend},postfinance_pspid,postfinance_secret,postfinance_method;{enabled_legend},debug,enabled',
-		'authorizedotnet'			  => '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,allowed_cc_types,minimum_total,maximum_total,countries,shipping_modules;{authorize_legend},authorize_login,authorize_trans_key,authorize_trans_type,authorize_delimiter,authorize_bypass_live_collection;{enabled_legend},debug,enabled',
+		'cash'						  => '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{enabled_legend},enabled',
+		'paypal'                      => '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,postsale_mail,minimum_total,maximum_total,countries,shipping_modules,product_types;{paypal_legend},paypal_account,paypal_business;{enabled_legend},debug,enabled',
+		'postfinance'                 => '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,postsale_mail,minimum_total,maximum_total,countries,shipping_modules,product_types;{postfinance_legend},postfinance_pspid,postfinance_secret,postfinance_method;{enabled_legend},debug,enabled',
+		'authorizedotnet'			  => '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,allowed_cc_types,minimum_total,maximum_total,countries,shipping_modules,product_types;{authorize_legend},authorize_login,authorize_trans_key,authorize_trans_type,authorize_delimiter,authorize_bypass_live_collection;{enabled_legend},debug,enabled',
 	),
 
 	// Fields
@@ -206,7 +210,14 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['shipping_modules'],
 			'exclude'                 => true,
 			'inputType'               => 'select',
-			'options_callback'        => array('tl_payment_modules', 'getShippingModules'),
+			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'size'=>8, 'tl_class'=>'clr'),
+		),
+		'product_types' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['product_types'],
+			'exclude'                 => true,
+			'inputType'               => 'select',
+			'foreignKey'			  => 'tl_product_types.name',
 			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'size'=>8, 'tl_class'=>'clr'),
 		),
 		'paypal_account' => array
@@ -376,36 +387,25 @@ class tl_payment_modules extends Backend
 	
 	
 	/**
-	 * Get all available shipping modules.
+	 * Load shipping modules into the DCA. options_callback would not work due to numeric array keys.
 	 * 
 	 * @access public
 	 * @param object $dc
-	 * @return array
+	 * @return void
 	 */
-	public function getShippingModules($dc)
+	public function loadShippingModules($dc)
 	{
-		$arrModules = array();
+		$arrModules = array(0=>$GLOBALS['TL_LANG']['tl_payment_modules']['no_shipping']);
 		
 		$objShippings = $this->Database->execute("SELECT * FROM tl_shipping_modules ORDER BY name");
 		
 		while( $objShippings->next() )
 		{
-			$objOptions = $this->Database->prepare("SELECT * FROM tl_shipping_options WHERE pid=?")->execute($objShippings->id);
-			
-			if ($objOptions->numRows)
-			{
-				while( $objOptions->next() )
-				{
-					$arrModules[$objShippings->name][$objShippings->id.'_'.$objOptions->id] = $objOptions->name;
-				}
-			}
-			else
-			{
-				$arrModules[$objShippings->id] = $objShippings->name;
-			}
+			$arrModules[$objShippings->id] = $objShippings->name;
 		}
 		
-		return $arrModules;
+		$GLOBALS['TL_DCA']['tl_payment_modules']['fields']['shipping_modules']['options'] = array_keys($arrModules);
+		$GLOBALS['TL_DCA']['tl_payment_modules']['fields']['shipping_modules']['reference'] = $arrModules;
 	}
 	
 	

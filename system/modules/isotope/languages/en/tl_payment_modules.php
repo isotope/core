@@ -40,6 +40,7 @@ $GLOBALS['TL_LANG']['tl_payment_modules']['minimum_total']			= array('Minimum to
 $GLOBALS['TL_LANG']['tl_payment_modules']['maximum_total']			= array('Maximum total', 'Enter a number greater zero to exclude this payment method for higher priced orders.');
 $GLOBALS['TL_LANG']['tl_payment_modules']['countries']				= array('Available countries', 'Select the countries where this payment methos may be used (customer\'s billing address).');
 $GLOBALS['TL_LANG']['tl_payment_modules']['shipping_modules']		= array('Shipping methods', 'You can restrict this payment method to certain shipping methods (eg. Cash only when picking up).');
+$GLOBALS['TL_LANG']['tl_payment_modules']['product_types']			= array('Product types', 'You can restrict this payment method to certain product types. If the cart contains a product type you have not selected, the payment module is not available.');
 $GLOBALS['TL_LANG']['tl_payment_modules']['paypal_account']			= array('PayPal Account', 'Enter your paypal account (email address).');
 $GLOBALS['TL_LANG']['tl_payment_modules']['paypal_business']		= array('Article name', 'The PayPal checkout screen will show this one-liner for order items.');
 
@@ -76,9 +77,15 @@ $GLOBALS['TL_LANG']['tl_payment_modules']['authorize_delimiter']	= array('Author
 $GLOBALS['TL_LANG']['tl_payment_modules']['authorize_trans_type']	= array('Authorize.net Transaction Type','Authorize and Capture, for example - the first stage is authorizing by validating the data entered by the customer and the next step is submitting for settlement, which is called "capture".');
 */
 
+
 /**
  * References
  */
+$GLOBALS['TL_LANG']['tl_payment_modules']['no_shipping']	= 'Orders without shipping';
+
+
+
+
 $GLOBALS['TL_LANG']['tl_payment_modules']['test']    	= array('Test Account', 'In this operation mode, any credit card transactions will not be processed, but you will be able to test functionality.');
 $GLOBALS['TL_LANG']['tl_payment_modules']['live']    	= array('Live Account', 'Warning: Credit Cards <strong>WILL BE PROCESSED!</strong>');
 
