@@ -143,24 +143,37 @@ class IsotopeCart extends Model
 					
 				case 'taxTotalWithShipping':
 					// FIXME: currently rounds to 0.05 (swiss francs)
-					return $this->taxTotal + $this->shippingTotal;
+					$this->arrCache[$strKey] =  $this->taxTotal + $this->shippingTotal;
 					break;
 				
 				case 'shippingTotal':
-					return $this->hasShipping ? (float)$this->Shipping->price : 0.00;
+					$this->arrCache[$strKey] = $this->hasShipping ? (float)$this->Shipping->price : 0.00;
 					break;
 					
 				case 'grandTotal':
 					//return ($this->subTotal + $this->taxTotalWithShipping);
-					return ($this->subTotal + $this->taxTotal + $this->shippingTotal);
+					$this->arrCache[$strKey] = ($this->subTotal + $this->taxTotal + $this->shippingTotal);
+					break;
+					
+				case 'requiresShipping':
+					$this->arrCache[$strKey] = false;
+					$arrProducts = $this->getProducts();
+					foreach( $arrProducts as $objProduct )
+					{
+						if (!$objProduct->shipping_exempt)
+						{
+							$this->arrCache[$strKey] = true;
+							break;
+						}
+					}
 					break;
 					
 				case 'hasShipping':
-					return is_object($this->Shipping) ? true : false;
+					$this->arrCache[$strKey] = is_object($this->Shipping) ? true : false;
 					break;
 					
 				case 'hasPayment':
-					return is_object($this->Payment) ? true : false;
+					$this->arrCache[$strKey] = is_object($this->Payment) ? true : false;
 					break;
 			}
 		}
