@@ -225,7 +225,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['orderCompleteJumpTo'] = array
 	'exclude'                 => true,
 	'inputType'               => 'pageTree',
 	'explanation'             => 'jumpTo',
-	'eval'                    => array('fieldType'=>'radio')
+	'eval'                    => array('mandatory'=>true, 'fieldType'=>'radio')
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_forward_cart'] = array
