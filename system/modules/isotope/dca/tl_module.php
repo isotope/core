@@ -680,26 +680,15 @@ class tl_module_isotope extends Backend
 	 */
 	public function getShippingModules()
 	{
-		$return = array();
+		$arrModules = array();
+		$objModules = $this->Database->execute("SELECT * FROM tl_shipping_modules WHERE enabled=1");
 		
-		
-		$objShippingModules = $this->Database->prepare("SELECT * FROM tl_shipping_modules WHERE enabled=?")
-											->execute('1');
-		
-		if($objShippingModules->numRows < 1)
+		while( $objModules->next() )
 		{
-			return '<i>' .  $GLOBALS['TL_LANG']['MSC']['noShippingModules'] . '</i>';
-		}	
+			$arrModules[$objModules->id] = $objModules->name;
+		}
 		
-		$arrShippingModules = $objShippingModules->fetchAllAssoc();
-				
-		foreach($arrShippingModules as $module)
-		{
-			
-			$return[$module['id']] = $module['name'];
-		}	
-	
-		return $return;
+		return $arrModules;
 	}
 	
 	
