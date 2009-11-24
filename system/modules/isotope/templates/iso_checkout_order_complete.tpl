@@ -1,4 +1,4 @@
-<div class="iso_checkout_order_complete">
+<div class="iso_checkout_complete">
 
 <div class="thanks">
 <?php echo $this->checkoutForm; ?>

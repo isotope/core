@@ -115,7 +115,7 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 			'sorting'                 => true,
 			'flag'                    => 1,
 			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'isoEditable'=>true, 'isoCheckoutGroups'=>array('billing_information','shipping_information'), 'maxlength'=>255, 'tl_class'=>'w50'),
+			'eval'                    => array('mandatory'=>true, 'isoEditable'=>true, 'isoCheckoutGroups'=>array('billing_address','shipping_address'), 'maxlength'=>255, 'tl_class'=>'w50'),
 		),
 		'lastname' => array
 		(
@@ -125,7 +125,7 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 			'sorting'                 => true,
 			'flag'                    => 1,
 			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'isoEditable'=>true, 'isoCheckoutGroups'=>array('billing_information','shipping_information'), 'maxlength'=>255, 'tl_class'=>'w50'),
+			'eval'                    => array('mandatory'=>true, 'isoEditable'=>true, 'isoCheckoutGroups'=>array('billing_address','shipping_address'), 'maxlength'=>255, 'tl_class'=>'w50'),
 		),
 		'company' => array
 		(
@@ -135,7 +135,7 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 			'sorting'                 => true,
 			'flag'                    => 1,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>255, 'isoEditable'=>true, 'isoCheckoutGroups'=>array('billing_information','shipping_information'), 'tl_class'=>'w50'),
+			'eval'                    => array('maxlength'=>255, 'isoEditable'=>true, 'isoCheckoutGroups'=>array('billing_address','shipping_address'), 'tl_class'=>'w50'),
 		),
 		'street' => array
 		(
@@ -143,7 +143,7 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>255, 'isoEditable'=>true, 'isoCheckoutGroups'=>array('billing_information','shipping_information'), 'tl_class'=>'w50'),
+			'eval'                    => array('maxlength'=>255, 'isoEditable'=>true, 'isoCheckoutGroups'=>array('billing_address','shipping_address'), 'tl_class'=>'w50'),
 		),
 		'postal' => array
 		(
@@ -151,7 +151,7 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>32, 'isoEditable'=>true, 'isoCheckoutGroups'=>array('billing_information','shipping_information'), 'tl_class'=>'w50'),
+			'eval'                    => array('maxlength'=>32, 'isoEditable'=>true, 'isoCheckoutGroups'=>array('billing_address','shipping_address'), 'tl_class'=>'w50'),
 		),
 		'city' => array
 		(
@@ -161,7 +161,7 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 			'search'                  => true,
 			'sorting'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>255, 'isoEditable'=>true, 'isoCheckoutGroups'=>array('billing_information','shipping_information'), 'tl_class'=>'w50'),
+			'eval'                    => array('maxlength'=>255, 'isoEditable'=>true, 'isoCheckoutGroups'=>array('billing_address','shipping_address'), 'tl_class'=>'w50'),
 		),
 		'state' => array
 		(
@@ -169,7 +169,7 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 			'exclude'                 => true,
 			'sorting'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>64, 'isoEditable'=>true, 'isoCheckoutGroups'=>array('billing_information','shipping_information'), 'tl_class'=>'w50'),
+			'eval'                    => array('maxlength'=>64, 'isoEditable'=>true, 'isoCheckoutGroups'=>array('billing_address','shipping_address'), 'tl_class'=>'w50'),
 		),
 		'country' => array
 		(
@@ -179,7 +179,7 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 			'sorting'                 => true,
 			'inputType'               => 'select',
 			'options'                 => $this->getCountries(),
-			'eval'                    => array('includeBlankOption'=>true, 'isoEditable'=>true, 'isoCheckoutGroups'=>array('billing_information','shipping_information'), 'tl_class'=>'w50'),
+			'eval'                    => array('includeBlankOption'=>true, 'isoEditable'=>true, 'isoCheckoutGroups'=>array('billing_address','shipping_address'), 'tl_class'=>'w50'),
 		),
 		'phone' => array
 		(
@@ -187,7 +187,7 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>64, 'rgxp'=>'phone', 'isoEditable'=>true, 'isoCheckoutGroups'=>array('billing_information'), 'tl_class'=>'w50'),
+			'eval'                    => array('maxlength'=>64, 'rgxp'=>'phone', 'isoEditable'=>true, 'isoCheckoutGroups'=>array('billing_address'), 'tl_class'=>'w50'),
 		),
 		'email' => array
 		(
@@ -195,7 +195,7 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>64, 'rgxp'=>'email', 'isoEditable'=>true, 'isoCheckoutGroups'=>array('billing_information'), 'tl_class'=>'w50'),
+			'eval'                    => array('maxlength'=>64, 'rgxp'=>'email', 'isoEditable'=>true, 'isoCheckoutGroups'=>array('billing_address'), 'tl_class'=>'w50'),
 		),
 		
 	/*

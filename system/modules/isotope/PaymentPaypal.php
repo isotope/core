@@ -162,8 +162,8 @@ class PaymentPaypal extends Payment
 <input type="hidden" name="no_note" value="1">
 <input type="hidden" name="currency_code" value="' . $this->Isotope->Store->currency . '">
 <input type="hidden" name="button_subtype" value="services">
-<input type="hidden" name="return" value="' . $this->Environment->url . '/' . $this->addToUrl('step=order_complete') . '">
-<input type="hidden" name="cancel_return" value="' . $this->Environment->url . '/' . $this->addToUrl('step=order_failed') . '">
+<input type="hidden" name="return" value="' . $this->Environment->url . '/' . $this->addToUrl('step=complete') . '">
+<input type="hidden" name="cancel_return" value="' . $this->Environment->url . '/' . $this->addToUrl('step=failed') . '">
 <input type="hidden" name="rm" value="0">
 <input type="hidden" name="invoice" value="' . $objOrder->order_id . '">
 <input type="hidden" name="notify_url" value="' . $this->Environment->base . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id . '">
