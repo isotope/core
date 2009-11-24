@@ -35,8 +35,6 @@ $GLOBALS['TL_DCA']['tl_tax_class'] = array
 	'config' => array
 	(
 		'dataContainer'               => 'Table',
-		'ctable'					  => array('tl_tax_rate'),
-		'switchToEdit'                => true,
 		'enableVersioning'            => true
 	),
 
@@ -71,7 +69,7 @@ $GLOBALS['TL_DCA']['tl_tax_class'] = array
 			'edit' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_tax_class']['edit'],
-				'href'                => 'table=tl_tax_rate',
+				'href'                => 'act=edit',
 				'icon'                => 'edit.gif'
 			),
 			'copy' => array
@@ -99,7 +97,7 @@ $GLOBALS['TL_DCA']['tl_tax_class'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{name_legend},name',
+		'default'                     => '{name_legend},name;{rate_legend:hide},includes,label,rates',
 	),
 
 	// Fields
@@ -108,11 +106,51 @@ $GLOBALS['TL_DCA']['tl_tax_class'] = array
 		'name' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_class']['name'],
-			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255, 'mandatory'=>true, 'tl_class'=>'long'),
 		),
+		'includes' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_class']['includes'],
+			'inputType'               => 'select',
+			'options_callback'		  => array('tl_tax_class', 'getTaxRates'),
+			'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
+		),
+		'label' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_class']['label'],
+			'search'                  => true,
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>255, 'tl_class'=>'w50'),
+		),
+		'rates' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_class']['rates'],
+			'inputType'               => 'checkboxWizard',
+			'options_callback'		  => array('tl_tax_class', 'getTaxRates'),
+			'eval'                    => array('multiple'=>true, 'tl_class'=>'clr'),
+		),
 	)
 );
+
+
+class tl_tax_class extends Backend
+{
+	
+	public function getTaxRates()
+	{
+		$arrCountries = $this->getCountries();
+		$arrRates = array();
+		
+		$objRates = $this->Database->execute("SELECT * FROM tl_tax_rate ORDER BY country, name");
+		
+		while( $objRates->next() )
+		{
+			$arrRates[$objRates->id] = $arrCountries[$objRates->country] . ' - ' . $objRates->name;
+		}
+		
+		return $arrRates;
+	}
+}
 

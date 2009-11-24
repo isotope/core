@@ -78,10 +78,15 @@ array_insert($GLOBALS['BE_MOD']['store'], 0, array
 		'tables'					=> array('tl_payment_modules', 'tl_payment_options'),
 		'icon'						=> 'system/modules/isotope/html/icon-payment.png',
 	),
-	'taxes' => array
+	'tax_class' => array
 	(
-		'tables'					=> array('tl_tax_class','tl_tax_rate'),
-		'icon'						=> 'system/modules/isotope/html/icon-taxes.gif',
+		'tables'					=> array('tl_tax_class'),
+		'icon'						=> 'system/modules/isotope/html/icon-taxclass.gif',
+	),
+	'tax_rate' => array
+	(
+		'tables'					=> array('tl_tax_rate'),
+		'icon'						=> 'system/modules/isotope/html/icon-taxrate.gif',
 	),
 	'iso_mail' => array
 	(
@@ -113,6 +118,10 @@ $GLOBALS['TL_HOOKS']['replaceInsertTags'][]			= array('IsotopeFrontend', 'replac
 $GLOBALS['TL_HOOKS']['executePostActions'][] = array('ProductOptionWizard', 'executePostActions');
 
 //$GLOBALS['TL_HOOKS']['executePostActions'][] = array('AutoComplete', 'executePostActions');
+
+
+$GLOBALS['TL_HOOKS']['isoCheckoutSurcharge'][] = array('IsotopeCart', 'getShippingSurcharge');
+$GLOBALS['TL_HOOKS']['isoCheckoutSurcharge'][] = array('IsotopeCart', 'getPaymentSurcharge');
 
 
 

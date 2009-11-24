@@ -7,10 +7,10 @@
 <table cellpadding="0" cellspacing="0" summary="Shopping Cart">
 <tfoot>
 	<tr class="subtotal foot_first foot_last">
-		<td class="head_0 head_first">&nbsp;</td>
-		<td class="head_1 name" colspan="2"><?php echo $this->subTotalLabel; ?></td>
-		<td class="head_2 price" colspan="2"><?php echo $this->subTotalPrice; ?></td>
-		<td class="head_3 head_last">&nbsp;</td>
+		<td class="col_first">&nbsp;</td>
+		<td class="name" colspan="2"><?php echo $this->subTotalLabel; ?></td>
+		<td class="price" colspan="2"><?php echo $this->subTotalPrice; ?></td>
+		<td class="col_last">&nbsp;</td>
 	</tr>
 	
 </tfoot>

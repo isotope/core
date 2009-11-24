@@ -63,8 +63,6 @@ class Isotope extends Controller
 		$this->import('Database');
 		$this->import('FrontendUser', 'User');
 		
-		
-		
 		$blnForceDefault = (TL_MODE=='BE' ? true : false);
 		
 		if (strlen($_SESSION['isotope']['store_id']))
@@ -220,7 +218,7 @@ class Isotope extends Controller
 	/**
 	 * Calculate price in foreign currencies.
 	 */
-	public function calculatePrice($fltPrice)
+	public function calculatePrice($fltPrice, $intTaxClass=0)
 	{
 		// If price or override price is a string
 		if (!is_numeric($fltPrice))
@@ -247,7 +245,104 @@ class Isotope extends Controller
 			$fltPrice = round($fltPrice, $this->Store->priceRoundPrecision);
 		}
 		
+		// Possibly add/subtract tax
+		if ($intTaxClass > 0)
+		{
+			$fltPrice = $this->calculateTax($intTaxClass, $fltPrice, false);
+		}
+		
 		return $fltPrice;
+	}
+	
+	
+	/**
+	 * Calculate tax for a certain tax class, based on the current user information 
+	 */
+	public function calculateTax($intTaxClass, $fltPrice, $blnAdd=true)
+	{
+		$this->import('IsotopeCart', 'Cart');
+		
+		$objTaxClass = $this->Database->prepare("SELECT * FROM tl_tax_class WHERE id=?")->limit(1)->execute($intTaxClass);
+		
+		if (!$objTaxClass->numRows)
+			return $fltPrice;
+			
+		$arrTaxes = array();
+		$objIncludes = $this->Database->prepare("SELECT * FROM tl_tax_rate WHERE id=?")->limit(1)->execute($objTaxClass->includes);
+		
+		if ($objIncludes->numRows)
+		{
+			$arrTaxRate = deserialize($objIncludes->rate);
+			
+			// final price / (1 + (tax / 100)
+			if (strlen($arrTaxRate['unit']))
+			{
+				$fltTax = $fltPrice - ($fltPrice / (1 + (floatval($arrTaxRate['value']) / 100)));
+			}
+			// Full amount
+			else
+			{
+				$fltTax = floatval($arrTaxRate['value']);
+			}
+			
+			if (!$this->Cart->useTaxRate($objIncludes, $fltPrice))
+			{
+				$fltPrice -= $fltTax;
+			}
+			else
+			{
+				$arrTaxes[$objTaxClass->id.'_'.$objIncludes->id] = array
+				(
+					'label'			=> (strlen($objTaxClass->label) ? $objTaxClass->label : $objIncludes->label),
+					'price'			=> $arrTaxRate['value'] . $arrTaxRate['unit'],
+					'total_price'	=> $fltTax,
+					'add'			=> false,
+				);
+			}
+		}
+
+		if (!$blnAdd)
+		{
+			return $fltPrice;
+		}
+		
+		$arrRates = deserialize($objTaxClass->rates);
+		if (!is_array($arrRates) || !count($arrRates))
+			return $arrTaxes;
+		
+		$objRates = $this->Database->execute("SELECT * FROM tl_tax_rate WHERE id IN (" . implode(',', $arrRates) . ") ORDER BY id=" . implode(" DESC, id=", $arrRates) . " DESC");
+		
+		while( $objRates->next() )
+		{
+			if ($this->Cart->useTaxRate($objRates, $fltPrice))
+			{
+				$arrTaxRate = deserialize($objRates->rate);
+				
+				// final price * (1 + (tax / 100)
+				if (strlen($arrTaxRate['unit']))
+				{
+					$fltTax = ($fltPrice * (1 + (floatval($arrTaxRate['value']) / 100))) - $fltPrice;
+				}
+				// Full amount
+				else
+				{
+					$fltTax = floatval($arrTaxRate['value']);
+				}
+				
+				$arrTaxes[$objRates->id] = array
+				(
+					'label'			=> $objRates->label,
+					'price'			=> $arrTaxRate['value'] . $arrTaxRate['unit'],
+					'total_price'	=> $fltTax,
+					'add'			=> true,
+				);
+				
+				if ($objRates->stop)
+					break;
+			}
+		}
+		
+		return $arrTaxes;
 	}
 	
 

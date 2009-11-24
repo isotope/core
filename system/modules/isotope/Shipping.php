@@ -27,8 +27,6 @@
 
 /**
  * Parent class for all shipping gateway modules
- * 
- * @extends Frontend
  */
 abstract class Shipping extends Frontend
 {
@@ -106,39 +104,8 @@ abstract class Shipping extends Frontend
 					return false;
 									
 				$arrCountries = deserialize($this->countries);
-				
-				
-				// Use billing address
-				if ($_SESSION['FORM_DATA']['shipping_address'] == -1)
-				{
-					if ($_SESSION['FORM_DATA']['billing_address'] > 0)
-					{
-						//TODO - fix to load address in a consistent manner.
-						$this->Isotope->loadAddressById($_SESSION['FORM_DATA']['billing_address'], 'billing');
-				        $strCountry = $_SESSION['FORM_DATA']['billing_information_country'];
-					}
-					else
-					{
-						$strCountry = $_SESSION['FORM_DATA']['billing_information_country'];
-					}
-				}
-				
-				// Selected a shipping address
-				elseif($_SESSION['FORM_DATA']['shipping_address'] > 0)
-			    {
-					//TODO - fix to load address in a consistent manner.
-					$this->Isotope->loadAddressById($_SESSION['FORM_DATA']['shipping_address'], 'shipping');
-			        $strCountry = $_SESSION['FORM_DATA']['shipping_information_country'];
-			    }
-			    
-			    // New custom shipping address
-			    else
-			    {
-					$strCountry = $_SESSION['FORM_DATA']['shipping_information_country'];
-//					$strCountry = (!isset($_SESSION['FORM_DATA']['shipping_information_country']) ? $_SESSION['FORM_DATA']['billing_information_country'] : ($_SESSION['FORM_DATA']['shipping_address'][0] ? $_SESSION['FORM_DATA']['billing_information_country'] : $_SESSION['FORM_DATA']['shipping_information_country']));
-				}	
-					
-				if(sizeof($arrCountries)>0 && !in_array(strtolower($strCountry), $arrCountries))
+
+				if(count($arrCountries) && !in_array($this->Cart->customerCountry, $arrCountries))
 					return false;
 					
 				return true;
@@ -198,5 +165,20 @@ abstract class Shipping extends Frontend
 	 * @return void
 	 */
 	public function getShippingOptions() {}
+	
+	
+	/**
+	 * Return the checkout review information.
+	 *
+	 * Use this to return custom checkout information about this shipping module.
+	 * Example: Information about tracking codes.
+	 *
+	 * @access public
+	 * @return string
+	 */
+	public function checkoutReview()
+	{
+		return $this->label;
+	}
 }
 

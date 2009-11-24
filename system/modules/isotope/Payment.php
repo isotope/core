@@ -184,5 +184,20 @@ abstract class Payment extends Frontend
 	{
 		return false;
 	}
+	
+	
+	/**
+	 * Return the checkout review information.
+	 *
+	 * Use this to return custom checkout information about this shipping module.
+	 * Example: parial information about the used credit card.
+	 *
+	 * @access public
+	 * @return string
+	 */
+	public function checkoutReview()
+	{
+		return $this->label;
+	}
 }
 
