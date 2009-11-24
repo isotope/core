@@ -75,7 +75,6 @@ $GLOBALS['TL_LANG']['MSC']['REGIONS']['us'] = array('AK','AL','AR','AS','AZ','CA
 /**
  * Miscellaneous
  */
-
 $GLOBALS['TL_LANG']['MSC']['detailLabel'] = 'View Details';
 $GLOBALS['TL_LANG']['MSC']['mmNoImagesUploaded'] = 'No images uploaded.';
 $GLOBALS['TL_LANG']['MSC']['mmUploadImage'] = 'Upload new image';
@@ -121,7 +120,7 @@ $GLOBALS['TL_LANG']['MSC']['deleteImage'] = 'Remove';
 $GLOBALS['TL_LANG']['MSC']['noItemsInCart'] = 'There are no items in your cart';
 $GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'] = 'Remove %s from your cart';
 $GLOBALS['TL_LANG']['MSC']['subTotalLabel'] = 'Order Subtotal: ';
-$GLOBALS['TL_LANG']['MSC']['shippingLabel'] = 'Shipping: ';
+$GLOBALS['TL_LANG']['MSC']['shippingLabel'] = 'Shipping';
 $GLOBALS['TL_LANG']['MSC']['taxLabel'] = '%s Tax: ';
 $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'] = 'Order Total: ';
 $GLOBALS['TL_LANG']['MSC']['shippingOptionsLabel'] = 'Selected Shipping Options: ';
@@ -131,22 +130,6 @@ $GLOBALS['TL_LANG']['MSC']['selectItemPrompt'] = "(select)";
 $GLOBALS['TL_LANG']['MSC']['actualPrice'] = 'Actual Price';
 $GLOBALS['TL_LANG']['MSC']['noPaymentModules'] = 'No payment options are currently available';
 $GLOBALS['TL_LANG']['MSC']['noShippingModules'] = 'No shipping options are currently available.';
-//Checkout language entries 
-$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['login'] = 'Please select a checkout method.';
-$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['shipping_information'] = 'Enter your shipping information or select an existing address.';
-$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['billing_information'] = (FE_USER_LOGGED_IN) ? 'Enter your billing information or select an existing address.' : 'Enter your billing information';
-$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['shipping_method'] = 'Select a shipping method.';
-$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['payment_method'] = 'Enter your payment information.';
-$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['order_review'] = 'Review and confirm your order details.';
-
-$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE']['login'] = 'Checkout Method';
-$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE']['shipping_information'] = 'Shipping Information';
-$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE']['billing_information'] = 'Billing Information';
-$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE']['shipping_method'] = 'Shipping Method';
-$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE']['payment_method'] = 'Payment Method';
-$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE']['order_conditions'] = 'Order Conditions';
-$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE']['order_review'] = 'Order Review';
-$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE']['order_complete'] = 'Order Complete!';
 
 //Registry language entries 
 $GLOBALS['TL_LANG']['MSC']['registry']['lastname'] = 'Search by Last Name:';
@@ -161,13 +144,14 @@ $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_registry'] = 'Add To Registry'
 $GLOBALS['TL_LANG']['MSC']['buttonActionString']['add_to_registry'] = 'Add product %s to your registry';
 $GLOBALS['TL_LANG']['MSC']['notAvailableOnline'] = 'Call for Price';
 
-//Address Book language entries
+//Addresses
 $GLOBALS['TL_LANG']['addressBookLabel'] = 'Addresses';
 $GLOBALS['TL_LANG']['editAddressLabel'] = 'Edit';
 $GLOBALS['TL_LANG']['deleteAddressLabel'] = 'Delete';
 $GLOBALS['TL_LANG']['createNewAddressLabel'] = 'Create New Address';
 $GLOBALS['TL_LANG']['useBillingAddress'] = 'Use billing address';
 $GLOBALS['TL_LANG']['differentShippingAddress'] = 'Different shipping address';
+
 
 //Invoice language Entries
 $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] = 'Invoice';
@@ -237,16 +221,28 @@ $GLOBALS['TL_LANG']['MSC']['z_to_a'] = 'Z to A';
 $GLOBALS['TL_LANG']['MSC']['old_to_new'] = 'old to new';
 $GLOBALS['TL_LANG']['MSC']['new_to_old'] = 'new to old';
 
-$GLOBALS['TL_LANG']['MSC']['teaserLength'] = 300;
-
-$GLOBALS['TL_LANG']['MSC']['validMediaFileTypes']['images'] = array('bmp','gif','jpeg','jpg','jpe','png','tiff','tif');
-$GLOBALS['TL_LANG']['MSC']['validMediaFileTypes']['audio'] = array('mpga','mp2','mp3','wav','aif','aiff','aifc','ram','rm','rpm','ra');
-$GLOBALS['TL_LANG']['MSC']['validMediaFileTypes']['video'] = array('mpeg','mpg','mpe','qt','mov','avi','movie','rv');
 
 
-
+/**
+ * Isotope module labels
+ */
 $GLOBALS['TL_LANG']['ISO']['productSingle']		= '1 Product';
 $GLOBALS['TL_LANG']['ISO']['productMultiple']	= '%s Products';
+
+$GLOBALS['TL_LANG']['ISO']['shipping_address_message'] = 'Enter your shipping information or select an existing address.';
+$GLOBALS['TL_LANG']['ISO']['billing_address_message'] = 'Enter your billing information or select an existing address.';
+$GLOBALS['TL_LANG']['ISO']['billing_address_guest_message'] = 'Enter your billing information';
+$GLOBALS['TL_LANG']['ISO']['shipping_method_message'] = 'Select a shipping method.';
+$GLOBALS['TL_LANG']['ISO']['payment_method_message'] = 'Enter your payment information.';
+$GLOBALS['TL_LANG']['ISO']['order_review_message'] = 'Review and confirm your order details.';
+
+$GLOBALS['TL_LANG']['ISO']['shipping_address']		= 'Shipping Information';
+$GLOBALS['TL_LANG']['ISO']['billing_address']		= 'Billing Information';
+$GLOBALS['TL_LANG']['ISO']['shipping_method']		= 'Shipping Method';
+$GLOBALS['TL_LANG']['ISO']['payment_method']		= 'Payment Method';
+$GLOBALS['TL_LANG']['ISO']['order_conditions']		= 'Order Conditions';
+$GLOBALS['TL_LANG']['ISO']['order_review']			= 'Order Review';
+
 
 
 /**

@@ -68,7 +68,9 @@ class IsotopeCart extends Model
 	 * Cache all products for speed improvements
 	 * @var array
 	 */
-	protected $arrProducts = array();
+	protected $arrProducts;
+	
+	protected $arrSurcharges;
 	
 	/**
 	 * Shipping object if shipping module is set in session
@@ -118,7 +120,9 @@ class IsotopeCart extends Model
 		{
 			return $this->arrData[$strKey];
 		}
+		
 		$this->import('Isotope');
+		
 		// Add to cache if not available
 		if (!array_key_exists($strKey, $this->arrCache))
 		{
@@ -137,8 +141,16 @@ class IsotopeCart extends Model
 					break;
 					
 				case 'taxTotal':
-					// FIXME: currently rounds to 0.05 (swiss francs)
-					$this->arrCache[$strKey] = (float)$this->calculateTax($this->getProducts());
+					$intTaxTotal = 0;
+					$arrSurcharges = $this->getSurcharges();
+					
+					foreach( $arrSurcharges as $arrSurcharge )
+					{
+						if ($arrSurcharge['add'])
+							$intTaxTotal += $arrSurcharge['total_price'];
+					}
+					
+					$this->arrCache[$strKey] = $intTaxTotal;
 					break;
 					
 				case 'taxTotalWithShipping':
@@ -151,7 +163,6 @@ class IsotopeCart extends Model
 					break;
 					
 				case 'grandTotal':
-					//return ($this->subTotal + $this->taxTotalWithShipping);
 					$this->arrCache[$strKey] = ($this->subTotal + $this->taxTotal + $this->shippingTotal);
 					break;
 					
@@ -174,6 +185,51 @@ class IsotopeCart extends Model
 					
 				case 'hasPayment':
 					$this->arrCache[$strKey] = is_object($this->Payment) ? true : false;
+					break;
+					
+				case 'customerCountry':
+					return 'ch';
+					
+						/*
+
+						// Use billing address
+						if ($_SESSION['FORM_DATA']['shipping_address'] == -1)
+						{
+							if ($_SESSION['FORM_DATA']['billing_address'] > 0)
+							{
+								//TODO - fix to load address in a consistent manner.
+								$this->Isotope->loadAddressById($_SESSION['FORM_DATA']['billing_address'], 'billing');
+						        $strCountry = $_SESSION['FORM_DATA']['billing_address_country'];
+							}
+							else
+							{
+								$strCountry = $_SESSION['FORM_DATA']['billing_address_country'];
+							}
+						}
+						
+						// Selected a shipping address
+						elseif($_SESSION['FORM_DATA']['shipping_address'] > 0)
+					    {
+							//TODO - fix to load address in a consistent manner.
+							$this->Isotope->loadAddressById($_SESSION['FORM_DATA']['shipping_address'], 'shipping');
+					        $strCountry = $_SESSION['FORM_DATA']['shipping_address_country'];
+					    }
+					    
+					    // New custom shipping address
+					    else
+					    {
+							$strCountry = $_SESSION['FORM_DATA']['shipping_address_country'];
+		//					$strCountry = (!isset($_SESSION['FORM_DATA']['shipping_information_country']) ? $_SESSION['FORM_DATA']['billing_information_country'] : ($_SESSION['FORM_DATA']['shipping_address'][0] ? $_SESSION['FORM_DATA']['billing_information_country'] : $_SESSION['FORM_DATA']['shipping_information_country']));
+						}
+						
+*/
+						
+					break;
+					
+				case 'customerRegion':
+					break;
+					
+				case 'customerPostal':
 					break;
 			}
 		}
@@ -321,19 +377,6 @@ class IsotopeCart extends Model
 	
 	
 	/**
-	 * Auto-Save to database
-	 *//*
-	public function __destruct()
-	{
-		// Update timestamp
-		$this->tstamp = time();
-		$this->last_visit = time();
-		
-		$this->save();
-	}*/
-	
-	
-	/**
 	 * Find a record by its reference field and return true if it has been found. Include cart type id.
 	 * @param  int
 	 * @return boolean
@@ -367,29 +410,218 @@ class IsotopeCart extends Model
 	 */
 	public function getProducts($strTemplate='')
 	{
-		$arrProducts = array();
-		$objProducts = $this->Database->prepare("SELECT * FROM tl_cart_items WHERE pid=?")->execute($this->id);
-		
-		while( $objProducts->next() )
+		if (!is_array($this->arrProducts))
 		{
-			// Do not use the TYPOlight function deserialize() cause it handles arrays not objects
-			$objProduct = unserialize($objProducts->product_data);
+			$this->arrProducts = array();
+			$objProducts = $this->Database->prepare("SELECT * FROM tl_cart_items WHERE pid=?")->execute($this->id);
 			
-			$objProduct->quantity_requested = $objProducts->quantity_requested;
-			$objProduct->cart_id = $objProducts->id;
-			
-			$arrProducts[] = $objProduct;
+			while( $objProducts->next() )
+			{
+				// Do not use the TYPOlight function deserialize() cause it handles arrays not objects
+				$objProduct = unserialize($objProducts->product_data);
+				
+				$objProduct->quantity_requested = $objProducts->quantity_requested;
+				$objProduct->cart_id = $objProducts->id;
+				
+				$this->arrProducts[] = $objProduct;
+			}
 		}
 		
 		if (strlen($strTemplate))
 		{
 			$objTemplate = new FrontendTemplate($strTemplate);
-			$objTemplate->products = $arrProducts;
+			$objTemplate->products = $this->arrProducts;
 			return $objTemplate->parse();
 		}
 		
-		return $arrProducts;
+		return $this->arrProducts;
 	}
+	
+	
+	/**
+	 * Callback for add_to_cart button
+	 *
+	 * @todo	fetch data of custom fields
+	 * @access	public
+	 * @param	object
+	 * @return	void
+	 */
+	public function addProduct($objProduct)
+	{
+		$arrSet = array
+		(
+			'pid'					=> $this->id,
+			'tstamp'				=> time(),
+			'quantity_requested'	=> ($this->Input->post('quantity_requested') ? $this->Input->post('quantity_requested') : 1),
+			'price'					=> $objProduct->{$this->Isotope->Store->priceField},
+			'href_reader'			=> $objProduct->href_reader,
+			'product_id'			=> $objProduct->id,
+			'product_data'			=> serialize($objProduct),
+		);
+		
+
+/*
+		foreach( $arrProduct as $field_name => $arrField )
+		{
+			if (is_array($arrField['attributes']) && $arrField['attributes']['is_customer_defined'])
+			{
+				$arrProduct[$field_name]['value'] = $this->Input->post($field_name);
+			}
+		}
+*/
+		
+
+		if (!$this->Database->prepare("UPDATE tl_cart_items SET tstamp=?, quantity_requested=quantity_requested+" . $arrSet['quantity_requested'] . " WHERE pid=? AND product_id=? AND product_data=?")->execute($arrSet['tstamp'], $this->id, $arrSet['product_id'], $arrSet['product_data'])->affectedRows)
+		{
+			$this->Database->prepare("INSERT INTO tl_cart_items %s")->set($arrSet)->execute();
+		}
+	}
+	
+	
+	/**
+	 * Hook-callback for isoCheckoutSurcharge. Accesses the shipping module to get a shipping surcharge.
+	 *
+	 * @access	public
+	 * @param	array
+	 * @return	array
+	 */
+	public function getShippingSurcharge($arrSurcharges)
+	{
+		if ($this->hasShipping && $this->Shipping->price > 0)
+		{
+			$arrSurcharges[] = array
+			(
+				'label'			=> ($GLOBALS['TL_LANG']['MSC']['shippingLabel'] . ' (' . $this->Shipping->label . ')'),
+				'price'			=> '&nbsp;',
+				'total_price'	=> $this->Shipping->price,
+				'tax_class'		=> 0,
+				'add_tax'		=> false,
+			);
+		}
+		
+		return $arrSurcharges;
+	}
+	
+	
+	/**
+	 * Hook-callback for isoCheckoutSurcharge. Accesses the payment module to get a payment surcharge.
+	 *
+	 * @access	public
+	 * @param	array
+	 * @return	array
+	 */
+	public function getPaymentSurcharge($arrSurcharges)
+	{
+		return $arrSurcharges;
+	}
+	
+	
+	
+	
+	
+	
+	
+	public function getSurcharges()
+	{
+		if (!is_array($this->arrSurcharges))
+		{
+			$arrPreTax = $arrPostTax = $arrTaxes = array();
+			$arrProducts = $this->getProducts();
+			
+			foreach( $arrProducts as $pid => $objProduct )
+			{
+				$arrTaxIds = array();
+				$arrTax = $this->Isotope->calculateTax($objProduct->tax_class, $objProduct->total_price);
+				
+				foreach ($arrTax as $k => $tax)
+				{
+					if (array_key_exists($k, $arrTaxes))
+					{
+						$arrTaxes[$k]['total_price'] += $tax['total_price'];
+						
+						if (is_numeric($arrTaxes[$k]['price']) && is_numeric($tax['price']))
+						{
+							$arrTaxes[$k]['price'] += $tax['price'];
+						}
+					}
+					else
+					{
+						$arrTaxes[$k] = $tax;
+					}
+					
+					$arrTaxes[$k]['tax_id'] = array_search($k, array_keys($arrTaxes)) + 1;
+					$arrTaxIds[] = array_search($k, array_keys($arrTaxes)) + 1;
+				}
+				
+				$this->arrProducts[$pid]->tax_id = implode(',', $arrTaxIds);
+			}
+			
+			$arrSurcharges = array();
+			if (isset($GLOBALS['TL_HOOKS']['isoCheckoutSurcharge']) && is_array($GLOBALS['TL_HOOKS']['isoCheckoutSurcharge']))
+			{
+				foreach ($GLOBALS['TL_HOOKS']['isoCheckoutSurcharge'] as $callback)
+				{
+					$this->import($callback[0]);
+					$arrSurcharges = $this->{$callback[0]}->{$callback[1]}($arrSurcharges);
+				}
+			}
+			
+			foreach( $arrSurcharges as $arrSurcharge )
+			{
+				if ($arrSurcharge['tax_class'] > 0)
+				{
+					$arrPreTax[] = $arrSurcharge;
+				}
+				else
+				{
+					$arrPostTax[] = $arrSurcharge;
+				}
+			}
+			
+			foreach( $arrPreTax as $arrSurcharge )
+			{
+				$arrTax = $this->Isotope->calculateTax($arrSurcharge['tax_class'], $arrSurcharge['total_price'], $arrSurcharge['add_tax']);
+				
+				foreach ($arrTax as $k => $tax)
+				{
+					if (array_key_exists($k, $arrTaxes))
+					{
+						$arrTaxes[$k]['total_price'] += $tax['total_price'];
+						
+						if (is_numeric($arrTaxes[$k]['price']) && is_numeric($tax['price']))
+						{
+							$arrTaxes[$k]['price'] += $tax['price'];
+						}
+					}
+					else
+					{
+						$arrTaxes[$k] = $tax;
+					}
+					
+					$arrTaxes[$k]['tax_id'] = array_search($k, array_keys($arrTaxes)) + 1;
+				}
+			}
+			
+			$this->arrSurcharges = array_merge($arrPreTax, $arrTaxes, $arrPostTax);
+		}
+		
+		return $this->arrSurcharges;
+	}
+	
+	
+	public function useTaxRate($objRate, $fltPrice)
+	{
+		if ($objRate->country != $this->customerCountry)
+			return false;
+			
+		return true;
+	}
+	
+	
+	
+	
+	
+	
 	
 
 	/**
@@ -423,7 +655,7 @@ class IsotopeCart extends Model
 	 * @access protected
 	 * @param array $arrProductData
 	 * @return array
-	 */
+	 *//*
 	protected function calculateTax($arrProducts)
 	{
 		return 0; // FIXME
@@ -526,13 +758,13 @@ class IsotopeCart extends Model
 								$blnCalculate = true;
 							}
 						}
-						/*elseif(strlen($rate['country_id']))
-						{
-							if($address['country']==$rate['country_id'])
-							{
-								$blnCalculate = true;
-							}	
-						}*/		
+//						elseif(strlen($rate['country_id']))
+//						{
+//							if($address['country']==$rate['country_id'])
+//							{
+//								$blnCalculate = true;
+//							}	
+//						}
 						
 				
 					
@@ -561,7 +793,7 @@ class IsotopeCart extends Model
 															
 									break;
 									
-								case '3':	//because tax class 2 is exempt in Kolbo.*/
+								case '3':	//because tax class 2 is exempt in Kolbo.
 								default:
 									break;			
 							}
@@ -573,33 +805,17 @@ class IsotopeCart extends Model
 			}
 			
 			return $fltSalesTax;
-			/*$this->arrTaxInfo[] = array
-			(
-				'class'			=> 'Sales Tax',
-				'total'			=> number_format($fltSalesTax, 2)
-			);
-			
-			return $arrTaxInfo;*/
+//			$this->arrTaxInfo[] = array
+//			(
+//				'class'			=> 'Sales Tax',
+//				'total'			=> number_format($fltSalesTax, 2)
+//			);
+//			
+//			return $arrTaxInfo;
 		}
 	}
-	
-	/**
-	 * Check if a product is already in cart.
-	 * 
-	 * @todo use cache data
-	 * @access public
-	 * @param int $intProductId
-	 * @return bool
-	 */
-/*
-	public function containsProduct($intProductId)
-	{
-		return ($this->Database->prepare("SELECT * FROM tl_cart_items WHERE pid=? AND product_id=?")
-							   ->limit(1)
-							   ->execute($this->id, $intProductId)
-							   ->numRows ? true : false);
-	}
 */
+	
 	
 	/**
 	 * Check if a product has any options associated with it.
@@ -628,48 +844,6 @@ class IsotopeCart extends Model
 		
 		return false;
 					
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	public function addProduct($objProduct)
-	{
-		$arrSet = array
-		(
-			'pid'					=> $this->id,
-			'tstamp'				=> time(),
-			'quantity_requested'	=> ($this->Input->post('quantity_requested') ? $this->Input->post('quantity_requested') : 1),
-			'price'					=> $objProduct->{$this->Isotope->Store->priceField},
-			'href_reader'			=> $objProduct->href_reader,
-			'product_id'			=> $objProduct->id,
-			'product_data'			=> serialize($objProduct),
-		);
-		
-
-/*
-		foreach( $arrProduct as $field_name => $arrField )
-		{
-			if (is_array($arrField['attributes']) && $arrField['attributes']['is_customer_defined'])
-			{
-				$arrProduct[$field_name]['value'] = $this->Input->post($field_name);
-			}
-		}
-*/
-		
-
-		if (!$this->Database->prepare("UPDATE tl_cart_items SET tstamp=?, quantity_requested=quantity_requested+" . $arrSet['quantity_requested'] . " WHERE pid=? AND product_id=? AND product_data=?")->execute($arrSet['tstamp'], $this->id, $arrSet['product_id'], $arrSet['product_data'])->affectedRows)
-		{
-			$this->Database->prepare("INSERT INTO tl_cart_items %s")->set($arrSet)->execute();
-		}
 	}
 }
 

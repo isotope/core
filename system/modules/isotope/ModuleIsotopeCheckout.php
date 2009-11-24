@@ -216,14 +216,18 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		}
 		
 		// Show checkout steps
+		$blnStepPassed = true;
 		$arrSteps = array();
 		foreach( $arrStepKeys as $i => $step )
 		{
+			if ($this->strCurrentStep == $step)
+				$blnStepPassed = false;
+				
 			$arrSteps[] = array
 			(
-				'class'	=> $step . ($this->strCurrentStep == $step ? ' active' : '') . ($i == 0 ? ' first' : ''),
+				'class'	=> $step . ($this->strCurrentStep == $step ? ' active' : '') . ($blnStepPassed ? ' passed' : '') . ($i == 0 ? ' first' : ''),
 				'label'	=> $step,
-				'href'	=> '',
+				'href'	=> ($blnStepPassed ? $this->addToUrl('step='.$step) : ''),
 				'title'	=> 'Go back to step "'.$step.'"',
 			);
 		}
@@ -305,6 +309,8 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	{
 		$objTemplate = new FrontendTemplate($this->strStepTemplateBaseName . 'billing_address');
 		
+		$objTemplate->headline = $GLOBALS['TL_LANG']['ISO']['billing_address'];
+		$objTemplate->message = (FE_USER_LOGGED_IN ? $GLOBALS['TL_LANG']['ISO']['billing_address_message'] : $GLOBALS['TL_LANG']['ISO']['billing_address_guest_message']);
 		$objTemplate->fields = $this->generateAddressWidget('billing_address');
 		
 		return $objTemplate->parse();
@@ -317,6 +323,8 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			
 		$objTemplate = new FrontendTemplate($this->strStepTemplateBaseName . 'shipping_address');
 		
+		$objTemplate->headline = $GLOBALS['TL_LANG']['ISO']['shipping_address'];
+		$objTemplate->message = $GLOBALS['TL_LANG']['ISO']['shipping_address_message'];
 		$objTemplate->fields =  $this->generateAddressWidget('shipping_address');
 		
 		return $objTemplate->parse();
@@ -351,7 +359,11 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		}
 
 		$objTemplate = new FrontendTemplate($this->strStepTemplateBaseName . 'shipping_method');
+		
+		$objTemplate->headline = $GLOBALS['TL_LANG']['ISO']['shipping_method'];
+		$objTemplate->message = $GLOBALS['TL_LANG']['ISO']['shipping_method_message'];
 		$objTemplate->shippingMethods = $arrShippingMethods;
+		
 		return $objTemplate->parse();	
 	}
 	
@@ -409,7 +421,8 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 		$objTemplate = new FrontendTemplate($this->strStepTemplateBaseName . 'payment_method');
 
-		//Get rendered module html by payment option.
+		$objTemplate->headline = $GLOBALS['TL_LANG']['ISO']['payment_method'];
+		$objTemplate->message = $GLOBALS['TL_LANG']['ISO']['payment_method_message'];
 		$objTemplate->paymentMethods = $arrModules;
 	
 		return $objTemplate->parse();
@@ -452,6 +465,9 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 		$objTemplate = new FrontendTemplate($this->strStepTemplateBaseName . 'order_review');
 		
+		$objTemplate->headline = $GLOBALS['TL_LANG']['ISO']['order_review'];
+		$objTemplate->message = $GLOBALS['TL_LANG']['ISO']['order_review_message'];
+		
 		$strForm = $this->Cart->hasPayment ? $this->Cart->Payment->checkoutForm() : '';
 
 		if ($strForm !== false)
@@ -460,7 +476,19 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		}
 					
 		
-		global $objPage;
+		$arrSurcharges = array();
+		foreach( $this->Cart->getSurcharges() as $arrSurcharge )
+		{
+			$arrSurcharges[] = array
+			(
+				'label'			=> $arrSurcharge['label'],
+				'price'			=> $this->Isotope->formatPriceWithCurrency($arrSurcharge['price']),
+				'total_price'	=> $this->Isotope->formatPriceWithCurrency($arrSurcharge['total_price']),
+				'tax_id'		=> $arrSurcharge['tax_id'],
+			);
+		}
+		
+		
 		$arrProductData = array();
 		$arrProducts = $this->Cart->getProducts();
 		
@@ -472,32 +500,26 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				'image'				=> $objProduct->images[0],
 				'name'				=> $objProduct->name,
 				'link'				=> $objProduct->href_reader,
-				'price'				=> $this->generatePrice($objProduct->price, $this->strPriceTemplate),
-				'total_price'		=> $this->generatePrice($objProduct->total_price),
+				'price'				=> $objProduct->formatted_price,
+				'total_price'		=> $objProduct->formatted_total_price,
 				'quantity'			=> $objProduct->quantity_requested,
+				'tax_id'			=> $objProduct->tax_id,
 			);
 		}
 		
-		$objTemplate->products = $arrProductData;
 		
+		$objTemplate->products = $arrProductData;
+		$objTemplate->surcharges = $arrSurcharges;
 		$objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
 		$objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
-		$objTemplate->taxLabel = sprintf($GLOBALS['TL_LANG']['MSC']['taxLabel'], 'Sales');
-		$objTemplate->shippingLabel = $GLOBALS['TL_LANG']['MSC']['shippingLabel'];
+		
 		$objTemplate->subTotalPrice = $this->generatePrice($this->Cart->subTotal);
-		$objTemplate->taxTotal = $this->generatePrice($this->Cart->taxTotal);
 		$objTemplate->grandTotalPrice = $this->generatePrice($this->Cart->grandTotal, 'stpl_total_price');
-		$fltShippingCost = $this->Cart->Shipping->price + $this->Cart->Shipping->optionsPrice;
-		$objTemplate->shippingTotal = $this->generatePrice($fltShippingCost);
-		//$objTemplate->shippingOptions = $this->generatePrice($this->Cart->Shipping->optionsPrice);
-		$objTemplate->shippingOptionsListLabel = $GLOBALS['TL_LANG']['MSC']['shippingOptionsLabel'];
-		$objTemplate->shippingOptionsList = $this->Cart->Shipping->optionsList;
 
 		$objTemplate->billingAddress = $this->Isotope->generateAddressString($this->getSelectedAddress('billing'));
 		$objTemplate->shippingAddress = $this->Isotope->generateAddressString($this->getSelectedAddress('shipping'));
-		
-		$objTemplate->shippingMethod = $this->Cart->Shipping->label;
-		$objTemplate->paymentMethod = $this->Cart->Payment->label;
+		$objTemplate->shippingMethod = ($this->Cart->hasShipping ? $this->Cart->Shipping->checkoutReview() : '');
+		$objTemplate->paymentMethod = $this->Cart->Payment->checkoutReview();
 		$objTemplate->checkoutForm = $strForm;
 
 		return $objTemplate->parse();
@@ -853,6 +875,9 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			
 			while( $objAddress->next() )
 			{
+				if (!in_array($objAddress->country, $this->Isotope->Store->countries))
+					continue;
+					
 				$arrOptions[] = array
 				(
 					'value'		=> $objAddress->id,
@@ -930,7 +955,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		}
 		
 		$strBuffer .= '<div id="' . $field . '_new"' . (((!FE_USER_LOGGED_IN && $field == 'billing_address') || $objWidget->value == 0) ? '' : ' style="display:none">');
-		$strBuffer .= '<span><h3>' . $GLOBALS['TL_LANG']['createNewAddressLabel'] . '</h3>' . $this->getCurrentStepWidgets('tl_address_book', $field) . '</span>';
+		$strBuffer .= '<span>' . $this->getCurrentStepWidgets('tl_address_book', $field) . '</span>';
 		$strBuffer .= '</div>';
 		
 		return $strBuffer;

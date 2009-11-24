@@ -143,7 +143,7 @@ class IsotopeProduct extends Model
 					switch( $strKey )
 					{
 						case 'price':
-							$varValue = $this->Isotope->calculatePrice((strlen($this->arrData[$this->Isotope->Store->priceOverrideField]) ? $this->arrData[$this->Isotope->Store->priceOverrideField] : $this->arrData[$this->Isotope->Store->priceField]));
+							$varValue = $this->Isotope->calculatePrice((strlen($this->arrData[$this->Isotope->Store->priceOverrideField]) ? $this->arrData[$this->Isotope->Store->priceOverrideField] : $this->arrData[$this->Isotope->Store->priceField]), $this->arrData['tax_class']);
 							break;
 							
 						case 'total_price':

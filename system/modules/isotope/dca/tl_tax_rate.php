@@ -35,8 +35,11 @@ $GLOBALS['TL_DCA']['tl_tax_rate'] = array
 	'config' => array
 	(
 		'dataContainer'               => 'Table',
-		'ptable'					  => 'tl_tax_class',
-		'enableVersioning'            => true
+		'enableVersioning'            => true,
+		'onload_callback'			  => array
+		(
+			array('tl_tax_rate', 'addCurrencyRate'),
+		),
 	),
 
 	// List
@@ -44,11 +47,15 @@ $GLOBALS['TL_DCA']['tl_tax_rate'] = array
 	(
 		'sorting' => array
 		(
-			'mode'                    => 4,
-			'fields'                  => array('sorting'),
+			'mode'                    => 1,
+			'fields'                  => array('country', 'name'),
 			'panelLayout'             => 'filter;search,limit',
-			'headerFields'            => array('name'),
-			'child_record_callback'	  => array('tl_tax_rate','getRowLabel')
+		),
+		'label' => array
+		(
+			'fields'				  => array('name'),
+			'format'				  => '%s',
+			'label_callback'		  => array('tl_tax_rate', 'listRow'),
 		),
 		'global_operations' => array
 		(
@@ -100,25 +107,39 @@ $GLOBALS['TL_DCA']['tl_tax_rate'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{location_legend},country_id,region_id,postcode,address;{total_legend},total_start,total_stop;code;rate',
+		'default'                     => '{name_legend},name,label;{location_legend},country,region,postcode,address;amount;store,rate,stop',
 	),
 
 
 	// Fields
 	'fields' => array
 	(
-		'country_id' => array
+		'name' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['country_id'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['name'],
+			'search'                  => true,
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>255, 'mandatory'=>true, 'tl_class'=>'w50'),
+		),
+		'label' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['label'],
+			'search'                  => true,
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>255, 'mandatory'=>true, 'tl_class'=>'w50'),
+		),
+		'country' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['country'],
 			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'select',
 			'options'                 => $this->getCountries(),
-			'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true, 'tl_class'=>'w50')
+			'eval'                    => array('includeBlankOption'=>true, 'submitOnChange'=>true, 'tl_class'=>'w50')
 		),
-		'region_id' => array
+		'region' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['region_id'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['region'],
 			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'select',
@@ -135,7 +156,6 @@ $GLOBALS['TL_DCA']['tl_tax_rate'] = array
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255)
 		),
-/*
 		'address' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['address'],
@@ -145,40 +165,36 @@ $GLOBALS['TL_DCA']['tl_tax_rate'] = array
 			'reference'				  => &$GLOBALS['TL_LANG']['tl_tax_rate'],
 			'eval'                    => array('mandatory'=>true, 'multiple'=>true)
 		),
-*/
-		'code' => array
+		'store' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['code'],
-			'exclude'                 => true,
-			'search'                  => true,
-			'sorting'                 => true,
-			'flag'                    => 1,
-			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>255)
+			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['store'],
+			'inputType'               => 'select',
+			'foreignKey'			  => 'tl_store.store_configuration_name',
+			'eval'                    => array('includeBlankOption'=>true, 'submitOnChange'=>true),
 		),
 		'rate' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['rate'],
-			'exclude'                 => true,
-			'search'                  => true,
-			'sorting'                 => true,
-			'flag'                    => 1,
-			'inputType'               => 'text',
+			'inputType'               => 'inputUnit',
+			'options'				  => array('%'=>'%'),
 			'eval'                    => array('maxlength'=>255, 'rgxp'=>'digits')
 		),
-		'total_start' => array
+		'amount' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['total_start'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['amount'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>10, 'rgxp'=>'digits', 'tl_class'=>'w50')
+			'eval'                    => array('multiple'=>true, 'size'=>2, 'maxlength'=>10, 'rgxp'=>'digits', 'tl_class'=>'w50'),
 		),
-		'total_stop' => array
+		'compound' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['total_stop'],
-			'exclude'                 => true,
-			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>10, 'rgxp'=>'digits', 'tl_class'=>'w50')
+			'label'						=> &$GLOBALS['TL_LANG']['tl_tax_rate']['compound'],
+			'inputType'					=> 'checkbox',
+		),
+		'stop' => array
+		(
+			'label'						=> &$GLOBALS['TL_LANG']['tl_tax_rate']['stop'],
+			'inputType'					=> 'checkbox',
 		),
 	)
 );
@@ -204,7 +220,7 @@ class tl_tax_rate extends Backend
 	 */
 	public function getRegions(DataContainer $dc)
 	{
-		$objCountryId = $this->Database->prepare("SELECT country_id FROM tl_tax_rate WHERE id=?")
+		$objCountryId = $this->Database->prepare("SELECT country FROM tl_tax_rate WHERE id=?")
 									   ->limit(1)
 									   ->execute($dc->id);
 	
@@ -213,25 +229,44 @@ class tl_tax_rate extends Backend
 			return '';
 		}
 		
-		if(sizeof($GLOBALS['TL_LANG']['MSC']['REGIONS'][$objCountryId->country_id]))
+		if(sizeof($GLOBALS['TL_LANG']['MSC']['REGIONS'][$objCountryId->country]))
 		{
 			// yes we have regions;
-			return $GLOBALS['TL_LANG']['MSC']['REGIONS'][$objCountryId->country_id];
+			return $GLOBALS['TL_LANG']['MSC']['REGIONS'][$objCountryId->country];
 		}
 	
 		return '';
 	}
 	
-	/**
-	 * getRowLabel function.
-	 * 
-	 * @access public
-	 * @param array $arrRow
-	 * @return string
-	 */
-	public function getRowLabel($arrRow)
+	
+	public function listRow($row)
 	{
-		return $GLOBALS['TL_LANG']['CNT'][$arrRow['country_id']] . (strlen($arrRow['region_id']) > 0 ? ', ' . $arrRow['region_id'] : NULL) . (strlen($arrRow['code']) > 0 ? ', ' . $arrRow['code'] : NULL) . ' - %' . $arrRow['rate'];
+		$arrRate = deserialize($row['rate']);
+		
+		if ($row['store'] && !$arrRate['unit'])
+		{
+			$this->import('Isotope');
+			$this->Isotope->overrideStore($row['store']);
+			
+			$strRate = $this->Isotope->formatPriceWithCurrency($arrRate['value']);
+		}
+		else
+		{
+			$strRate = $arrRate['value'] . '%';
+		}
+		
+		return sprintf('%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>', $row['name'], $strRate);
+	}
+	
+	
+	public function addCurrencyRate($dc)
+	{
+		$objStore = $this->Database->prepare("SELECT tl_store.* FROM tl_tax_rate LEFT OUTER JOIN tl_store ON tl_store.id=tl_tax_rate.store WHERE tl_tax_rate.id=?")->execute($dc->id);
+		
+		if ($objStore->currency)
+		{
+			$GLOBALS['TL_DCA']['tl_tax_rate']['fields']['rate']['options'][''] = $objStore->currency;
+		}
 	}
 }
 

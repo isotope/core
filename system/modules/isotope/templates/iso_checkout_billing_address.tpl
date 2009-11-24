@@ -1,5 +1,5 @@
 <div id="billing_address">
-<h2>Billing Address</h2>
-<p>Please select or enter your billing address.</p>
+<h2><?php echo $this->headline; ?></h2>
+<p><?php echo $this->message; ?></p>
 <?php echo $this->fields; ?>
 </div>

@@ -330,29 +330,6 @@ abstract class ModuleIsotopeBase extends Module
 		return $arrArchives;
 	}
 	
-
-	
-	/**
-	 * Generate a price string based on an product price, a template, and any pricing rules that apply.
-	 *
-	 * @param integer
-	 * @return string (formatted html)
-	 *
-	 */
-	protected function generatePriceStringOverride($strPriceOverrideTemplate, $varValue)
-	{
-			
-		$objTemplate = new FrontendTemplate($strPriceOverrideTemplate);
-				
-		$objTemplate->price = $varValue;
-		
-		
-		//$objPriceTemplate->priceNote = $this->getPriceNote($intProductId); - Additional note to appear below the price itself, perhaps indicating what price includes?
-				
-		return $objTemplate->parse();
-		
-	}
-	
 	
 	protected function generatePrice($fltPrice, $strTemplate='stpl_price')
 	{
@@ -425,7 +402,7 @@ abstract class ModuleIsotopeBase extends Module
 	{
 		if($intLength == 0 || empty($intLength))
 		{
-			$intLength = $GLOBALS['TL_LANG']['MSC']['teaserLength'];
+			$intLength = 300;
 		}
 		
 		$string = substr($varValue, 0, $intLength);

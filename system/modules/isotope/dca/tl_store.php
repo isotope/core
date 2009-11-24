@@ -98,7 +98,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{name_legend},store_configuration_name,label;{config_legend},cookie_duration,isDefaultStore;{price_legend},priceField,priceOverrideField,priceIncludesTax,priceCalculateFactor,priceCalculateMode,priceRoundPrecision,priceRoundIncrement;{currency_legend},currency,currencySymbol,currencyFormat,currencyPosition;{address_legend},country,countries,address_fields;{redirect_legend},cartJumpTo,checkoutJumpTo;{invoice_legend},invoiceLogo;{images_legend},root_asset_import_path,missing_image_placeholder,gallery_image_width,gallery_image_height,thumbnail_image_width,thumbnail_image_height,medium_image_width,medium_image_height,large_image_width,large_image_height'
+		'default'                     => '{name_legend},store_configuration_name,label;{config_legend},cookie_duration,isDefaultStore;{price_legend},priceField,priceOverrideField,priceCalculateFactor,priceCalculateMode,priceRoundPrecision,priceRoundIncrement;{currency_legend},currency,currencySymbol,currencyFormat,currencyPosition;{address_legend},country,countries,address_fields;{redirect_legend},cartJumpTo,checkoutJumpTo;{invoice_legend},invoiceLogo;{images_legend},root_asset_import_path,missing_image_placeholder,gallery_image_width,gallery_image_height,thumbnail_image_width,thumbnail_image_height,medium_image_width,medium_image_height,large_image_width,large_image_height'
 	),
 
 	// Fields
@@ -276,14 +276,6 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'inputType'               => 'select',
 			'options'				  => array('0.01', '0.05'),
 			'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
-		),
-		'priceIncludesTax' => array
-		(
-			'label'						=> &$GLOBALS['TL_LANG']['tl_store']['priceIncludesTax'],
-			'exclude'					=> true,
-			'default'					=> '1',
-			'inputType'					=> 'checkbox',
-			'eval'						=> array('tl_class'=>'clr'),
 		),
 		'currency' => array
 		(

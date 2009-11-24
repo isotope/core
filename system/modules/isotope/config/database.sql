@@ -250,7 +250,6 @@ CREATE TABLE `tl_store` (
   `priceCalculateMode` varchar(3) NOT NULL default '',
   `priceRoundPrecision` int(1) unsigned NOT NULL default '2',
   `priceRoundIncrement` varchar(4) NOT NULL default '',
-  `priceIncludesTax` char(1) NOT NULL default '',
   `currency` varchar(3) NOT NULL default '',
   `currencySymbol` char(1) NOT NULL default '',
   `currencyPosition` varchar(5) NOT NULL default '',
@@ -641,11 +640,12 @@ CREATE TABLE `tl_iso_order_downloads` (
 
 CREATE TABLE `tl_tax_class` (
   `id` int(10) unsigned NOT NULL auto_increment,
-  `pid` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
   `name` varchar(255) NOT NULL default '',
-  PRIMARY KEY  (`id`),
-  KEY `pid` (`pid`)
+  `label` varchar(255) NOT NULL default '',
+  `includes` int(10) unsigned NOT NULL default '0',
+  `rates` blob NULL,
+  PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
@@ -657,16 +657,19 @@ CREATE TABLE `tl_tax_class` (
 
 CREATE TABLE `tl_tax_rate` (
   `id` int(10) unsigned NOT NULL auto_increment,
-  `pid` int(10) unsigned NOT NULL default '0',
-  `sorting` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
-  `country_id` varchar(255) NOT NULL default '',
-  `region_id` varchar(255) NOT NULL default '',
+  `name` varchar(255) NOT NULL default '',
+  `label` varchar(255) NOT NULL default '',
+  `country` varchar(255) NOT NULL default '',
+  `region` varchar(255) NOT NULL default '',
   `postcode` varchar(255) NOT NULL default '',
-  `code` varchar(255) NOT NULL default '',
-  `rate` double NULL default NULL,
-  PRIMARY KEY  (`id`),
-  KEY `pid` (`pid`)
+  `store` int(10) unsigned NOT NULL default '0',
+  `rate` varchar(255) NOT NULL default '',
+  `address` blob NULL,
+  `amount` varchar(255) NOT NULL default '',
+  `compound` char(1) NOT NULL default '',
+  `stop` char(1) NOT NULL default '',
+  PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
