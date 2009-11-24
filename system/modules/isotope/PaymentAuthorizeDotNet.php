@@ -99,7 +99,7 @@ class PaymentAuthorizeDotNet extends Payment
 					$this->response = 'successful';
 					
 					return true;
-					//$this->redirect($this->addToUrl('step=order_complete'));
+					//$this->redirect($this->addToUrl('step=complete'));
 					break;
 				case 'Error':
 				case 'Declined':

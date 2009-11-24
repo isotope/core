@@ -58,6 +58,7 @@ $GLOBALS['TL_LANG']['ERR']['emptyOrderHistory']			= 'You have not yet placed any
 $GLOBALS['TL_LANG']['ERR']['orderNotFound']				= 'The requested order was not found.';
 $GLOBALS['TL_LANG']['ERR']['missingCurrencyFormat']		= 'Currency formatting not found';
 $GLOBALS['TL_LANG']['ERR']['searchNotEnabled'] = 'Search functionality is not enabled!';
+$GLOBALS['TL_LANG']['ERR']['isoLoginRequired'] = 'You must be logged in to checkout.';
 
 
 //Checkout Errors
@@ -241,16 +242,6 @@ $GLOBALS['TL_LANG']['MSC']['teaserLength'] = 300;
 $GLOBALS['TL_LANG']['MSC']['validMediaFileTypes']['images'] = array('bmp','gif','jpeg','jpg','jpe','png','tiff','tif');
 $GLOBALS['TL_LANG']['MSC']['validMediaFileTypes']['audio'] = array('mpga','mp2','mp3','wav','aif','aiff','aifc','ram','rm','rpm','ra');
 $GLOBALS['TL_LANG']['MSC']['validMediaFileTypes']['video'] = array('mpeg','mpg','mpe','qt','mov','avi','movie','rv');
-
-
-/**
- * Data Manager Preprocessing Functions
- */
-$GLOBALS['TL_LANG']['MSC']['DATAMANAGER_PREUPDATE_FUNCTION']['getStringChunk'] = array('Grab Partial String (' . $GLOBALS['TL_LANG']['MSC']['teaserLength'] . ' Characters)','Only grab the first ' . $GLOBALS['TL_LANG']['MSC']['teaserLength'] . ' characters (stopping at end of the sentence after or on the 300 character mark).');
-$GLOBALS['TL_LANG']['MSC']['DATAMANAGER_PREUPDATE_FUNCTION']['createSKU'] = array('Create a SKU Value','Using this field value, createa a unique SKU for this product');
-$GLOBALS['TL_LANG']['MSC']['DATAMANAGER_PREUPDATE_FUNCTION']['productImageImport'] = array('Product Images Import', 'Resize and store images associated with a given product.');
-$GLOBALS['TL_LANG']['MSC']['DATAMANAGER_PREUPDATE_FUNCTION']['convertToPrice'] = array('Convert to Price','Attempt to make this field a price (decimal value) in the format %sXX.XX');
-$GLOBALS['TL_LANG']['MSC']['DATAMANAGER_PREUPDATE_FUNCTION']['convertToWeight'] = array('Convert to Weight','Attempt to make this field a weight (decimal value) in the foram X.XX%s');
 
 
 

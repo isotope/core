@@ -245,12 +245,6 @@ $GLOBALS['ISO_PLUGINS']['jwMediaPlayer']['mediaRSSPlaylist'] = 'media_rss';
 
 $GLOBALS['TL_LANG']['MSC']['isotope_function_group'] = 'Isotope Ecommerce Functions';
 
-$GLOBALS['DATAMANAGER_PREUPDATE_FUNCTION'][$GLOBALS['TL_LANG']['MSC']['isotope_function_group']][] = array('getStringChunk' => array('ProductCatalog','generateTeaser'));
-$GLOBALS['DATAMANAGER_PREUPDATE_FUNCTION'][$GLOBALS['TL_LANG']['MSC']['isotope_function_group']][] = array('createSKU' => array('ProductCatalog','generateSKU'));
-$GLOBALS['DATAMANAGER_PREUPDATE_FUNCTION'][$GLOBALS['TL_LANG']['MSC']['isotope_function_group']][] = array('productImageImport' => array('MediaManager','productImageImport'));
-$GLOBALS['DATAMANAGER_PREUPDATE_FUNCTION'][$GLOBALS['TL_LANG']['MSC']['isotope_function_group']][] = array('convertToPrice' => array('DataManager','convertToDecimal'));
-$GLOBALS['DATAMANAGER_PREUPDATE_FUNCTION'][$GLOBALS['TL_LANG']['MSC']['isotope_function_group']][] = array('convertToWeight' => array('DataManager','convertToDecimal'));
-
 //$GLOBALS['ISO_ACTIVE_CUSTOM_PRODUCT_BUTTONS'][] = array('add_to_gift_registry');
 
 
@@ -272,7 +266,27 @@ $GLOBALS['ISO_NUM']["10'000.00"]	= array(2, '.', "'");
 
 
 
-$GLOBALS['ISO_CONFIG']['CHECKOUT_STEPS'] = array('login','billing_information','shipping_information','shipping_method','payment_method', 'order_conditions','order_review', 'order_complete', 'order_failed');
+$GLOBALS['ISO_CHECKOUT_STEPS'] = array
+(
+	'address' => array
+	(
+		array('ModuleIsotopeCheckout', 'getBillingAddressInterface'),
+		array('ModuleIsotopeCheckout', 'getShippingAddressInterface'),
+	),
+	'shipping' => array
+	(
+		array('ModuleIsotopeCheckout', 'getShippingModulesInterface'),
+	),
+	'payment' => array
+	(
+		array('ModuleIsotopeCheckout', 'getPaymentModulesInterface'),
+	),
+	'review' => array
+	(
+		array('ModuleIsotopeCheckout', 'getOrderReviewInterface'),
+		array('ModuleIsotopeCheckout', 'getOrderConditionsInterface'),
+	),
+);
 
 
 

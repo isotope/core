@@ -182,10 +182,10 @@ class PaymentPostfinance extends Payment
 <input type="hidden" name="ownertelno" value="' . $arrAddress['phone'] . '">
 <input type="hidden" name="SHASign" value="' . $arrData['SHASign'] . '">
 <!-- post payment redirection: see chapter 8.2 -->
-<input type="hidden" name="accepturl" value="' . $this->Environment->base . $this->addToUrl('step=order_complete') . '">
-<input type="hidden" name="declineurl" value="' . $this->Environment->base . $this->addToUrl('step=order_failed') . '">
-<input type="hidden" name="exceptionurl" value="' . $this->Environment->base . $this->addToUrl('step=order_failed') . '">
-<input type="hidden" name="cancelurl" value="' . $this->Environment->base . $this->addToUrl('step=order_failed') . '">
+<input type="hidden" name="accepturl" value="' . $this->Environment->base . $this->addToUrl('step=complete') . '">
+<input type="hidden" name="declineurl" value="' . $this->Environment->base . $this->addToUrl('step=failed') . '">
+<input type="hidden" name="exceptionurl" value="' . $this->Environment->base . $this->addToUrl('step=failed') . '">
+<input type="hidden" name="cancelurl" value="' . $this->Environment->base . $this->addToUrl('step=failed') . '">
 <input type="hidden" name="paramplus" value="mod=pay&id=' . $this->id . '">
 <input type="submit" value="Bezahlen">
 </form>
