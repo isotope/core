@@ -43,6 +43,15 @@ $GLOBALS['TL_LANG']['ERR']['orderNotFound']				= 'Die gewünschte Bestellung wur
 /**
  * Miscellaneous
  */
+$GLOBALS['TL_LANG']['MSC']['checkoutBT']				= 'Proceed to Checkout';
+$GLOBALS['TL_LANG']['MSC']['continueShoppingBT']		= 'Continue shopping';
+$GLOBALS['TL_LANG']['MSC']['updateCartBT']				= 'Update Cart';
+
+
+
+
+ 
+
 $GLOBALS['TL_LANG']['MSC']['order_conditions'] = 'AGB akzeptieren';
 $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'] = 'Bestellen';
 $GLOBALS['TL_LANG']['MSC']['buttonActionString']['add_to_cart'] = '%s bestellen';
@@ -73,8 +82,8 @@ $GLOBALS['TL_LANG']['MSC']['previousStep']	= 'Zurück';
 $GLOBALS['TL_LANG']['MSC']['nextStep']		= 'Weiter';
 $GLOBALS['TL_LANG']['MSC']['confirmOrder']	= 'Bestellen';
 
-$GLOBALS['TL_LANG']['MSC']['subTotalLabel'] = 'Subtotal: ';
-$GLOBALS['TL_LANG']['MSC']['grandTotalLabel'] = 'Total: ';
+$GLOBALS['TL_LANG']['MSC']['subTotalLabel'] = 'Zwischensumme';
+$GLOBALS['TL_LANG']['MSC']['grandTotalLabel'] = 'Total:';
 $GLOBALS['TL_LANG']['MSC']['shippingLabel'] = 'Versandkosten: ';
 $GLOBALS['TL_LANG']['MSC']['taxLabel'] = 'Enthaltene MwSt: ';
 
