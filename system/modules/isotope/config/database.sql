@@ -20,7 +20,6 @@ CREATE TABLE `tl_module` (
   `iso_registry_layout` varchar(64) NOT NULL default '',
   `iso_registry_results` varchar(64) NOT NULL default '',
   `iso_registry_reader` varchar(64) NOT NULL default '',
-  `iso_checkout_layout` varchar(64) NOT NULL default '',
   `iso_checkout_method` varchar(10) NOT NULL default '',
   `iso_login_jumpTo` int(10) unsigned NOT NULL default '0',
   `iso_payment_modules` text NULL,
