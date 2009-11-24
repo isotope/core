@@ -80,7 +80,7 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 		$arrQuantity = $this->Input->post('quantity');
 		$arrProductData = array();
 		
-		foreach( $arrProducts as $objProduct )
+		foreach( $arrProducts as $i => $objProduct )
 		{
 			if ($this->Input->get('action') == 'remove' && $this->Input->get('id') == $objProduct->cart_id)
 			{
@@ -111,7 +111,8 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 				'quantity'			=> $objProduct->quantity_requested,
 				'cart_item_id'		=> $objProduct->cart_id,
 				'remove_link'		=> $this->generateFrontendUrl($objPage->row(), '/action/remove/id/'.$objProduct->cart_id),
-				'remove_link_title' => sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $objProduct->name)
+				'remove_link_title' => sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $objProduct->name),
+				'class'				=> 'row_' . $i . ($i%2 ? ' even' : ' odd') . ($i==0 ? ' row_first' : ''),
 			);
 		}
 		
@@ -120,7 +121,15 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 			$this->reload();
 		}
 		
+		if (count($arrProductData))
+		{
+			$arrProductData[count($arrProductData)-1]['class'] .= ' row_last';
+		}
 		
+		
+		$objTemplate->formId = 'iso_cart_update';
+		$objTemplate->formSubmit = 'iso_cart_update';
+		$objTemplate->action = $this->Environment->request;
 		$objTemplate->products = $arrProductData;
 		$objTemplate->cartJumpTo = $this->generateFrontendUrl($this->Database->prepare("SELECT id,alias FROM tl_page WHERE id=?")->execute($this->Isotope->Store->cartJumpTo)->fetchAssoc());
 		$objTemplate->checkoutJumpTo = $this->generateFrontendUrl($this->Database->prepare("SELECT id,alias FROM tl_page WHERE id=?")->execute($this->Isotope->Store->checkoutJumpTo)->fetchAssoc());
@@ -130,9 +139,6 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 		$objTemplate->grandTotalPrice = $this->generatePrice($this->Cart->subTotal, 'stpl_total_price');
 		
 		
-		$this->Template->formId = 'iso_cart_update';
-		$this->Template->formSubmit = 'iso_cart_update';
-		$this->Template->action = $this->Environment->request;
 		$this->Template->cart = $objTemplate->parse();
 	}
 }

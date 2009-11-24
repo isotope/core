@@ -6,14 +6,7 @@
 <<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
 <?php endif; ?>
 
-<form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>" method="post">
-<div class="formbody">
-<input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formSubmit; ?>" />
-
 <?php echo $this->cart; ?>
-
-</div>
-</form>
 
 </div>
 <!-- indexer::continue -->
