@@ -15,3 +15,11 @@
 <p class="description"><?php echo $this->description; ?></p><?php endif; ?>
 
 <p class="price"><?php echo $this->price; ?></p>
+
+<?php if($this->buttons): ?>
+<div class="submit_container">
+<?php foreach( $this->buttons as $name => $button ): ?>
+	<button type="submit" name="<?php echo $name; ?>" value="1"><?php echo $button['label']; ?></button>
+<?php endforeach; ?>
+</div>
+<?php endif; ?>

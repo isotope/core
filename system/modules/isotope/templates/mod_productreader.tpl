@@ -18,15 +18,6 @@
 <input type="hidden" name="quantity_requested" value="1" />
 <?php endif; ?>
 
-<div class="submit_container">
-<?php foreach( $this->buttons as $name => $button ): ?>
-	<button type="submit" name="<?php echo $name; ?>" value="1"><?php echo $button['label']; ?></button>
-<?php endforeach; ?>
-</div>
-<div class="detail_container">
-<a href="<?php echo $this->href_reader; ?>"><?php echo $this->detailsLabel; ?></a>
-</div>
-
 </div>
 </form>
 
