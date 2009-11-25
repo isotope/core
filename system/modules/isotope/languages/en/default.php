@@ -83,6 +83,10 @@ $GLOBALS['TL_LANG']['MSC']['searchTextBoxLabel'] = 'Search Term: ';
 $GLOBALS['TL_LANG']['MSC']['searchFieldsLabel'] = 'Search Fields: ';
 $GLOBALS['TL_LANG']['MSC']['order_conditions'] = 'I agree to the terms & conditions';
 $GLOBALS['TL_LANG']['MSC']['downloadCount'] = '%s download(s)';
+$GLOBALS['TL_LANG']['MSC']['perPage'] = 'Products Per Page';
+$GLOBALS['TL_LANG']['MSC']['searchTerms'] = 'Keywords';
+$GLOBALS['TL_LANG']['MSC']['search'] = 'Search';
+$GLOBALS['TL_LANG']['MSC']['clearFilters'] = 'Clear Filters';
 
 $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'] = 'Add To Cart';
 $GLOBALS['TL_LANG']['MSC']['buttonActionString']['add_to_cart'] = 'Add product %s to your cart';
@@ -130,6 +134,10 @@ $GLOBALS['TL_LANG']['MSC']['selectItemPrompt'] = "(select)";
 $GLOBALS['TL_LANG']['MSC']['actualPrice'] = 'Actual Price';
 $GLOBALS['TL_LANG']['MSC']['noPaymentModules'] = 'No payment options are currently available';
 $GLOBALS['TL_LANG']['MSC']['noShippingModules'] = 'No shipping options are currently available.';
+
+$GLOBALS['TL_LANG']['MSC']['checkoutBT']				= 'Proceed to Checkout';
+$GLOBALS['TL_LANG']['MSC']['continueShoppingBT']		= 'Continue shopping';
+$GLOBALS['TL_LANG']['MSC']['updateCartBT']				= 'Update Cart';
 
 //Registry language entries 
 $GLOBALS['TL_LANG']['MSC']['registry']['lastname'] = 'Search by Last Name:';

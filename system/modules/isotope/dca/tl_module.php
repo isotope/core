@@ -43,7 +43,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['isoCheckoutboth']			= '{title_legen
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoOrderHistory']			= '{title_legend},name,headline,type;{config_legend},store_ids;{redirect_legend},jumpTo;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoOrderDetails']			= '{title_legend},name,headline,type;{redirect_legend},jumpTo;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoStoreSwitcher']			= '{title_legend},name,headline,type;{config_legend},store_ids;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoFilterModule']			= '{title_legend},name,headline,type;{config_legend},iso_enableLimit,iso_filterFields,iso_orderByFields,iso_searchFields;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoFilterModule']			= '{title_legend},name,headline,type;{config_legend},iso_listingModules,iso_enableLimit,iso_filterFields,iso_orderByFields,iso_searchFields;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 //{template_legend:hide},iso_filter_layout; not right now... filters are widgets that are generated.
 
 /**
@@ -339,6 +339,15 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_filter_layout'] = array
 	'exclude'                 => true,
 	'inputType'               => 'select',
 	'options'                 => $this->getTemplateGroup('iso_filters_')
+);
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_listingModules'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_listingModules'],
+	'exclude'                 => true,
+	'inputType'               => 'checkbox',
+	'eval'					  => array('multiple'=>true),
+	'options_callback'		  => array('tl_module_isotope','getListingModules')
 );
 
 
@@ -691,7 +700,25 @@ class tl_module_isotope extends Backend
 		return $arrModules;
 	}
 	
-	
+		/**
+	 * Returns a list of listing
+	 *
+	 * @access public
+	 * @return array
+	 */
+	public function getListingModules()
+	{
+		$arrListingModules = array();
+		$objListingModules = $this->Database->execute("SELECT id, name FROM tl_module WHERE type='isoProductLister'");
+		
+		while( $objListingModules->next() )
+		{
+			$arrListingModules[$objListingModules->id] = $objListingModules->name;
+		}
+		
+		return $arrListingModules;
+	}
+
 	/**
 	 * Get all articles and return them as array
 	 * @param object

@@ -59,7 +59,6 @@ class Isotope extends Controller
 	protected function __construct()
 	{
 		parent::__construct();
-		
 		$this->import('Database');
 		$this->import('FrontendUser', 'User');
 		
@@ -735,9 +734,8 @@ class Isotope extends Controller
 	
 	/**
 	 * Required by Model class
-	 */
-	public function getImage($image, $width, $height, $target=null) { return parent::getImage($image, $width, $height, $target); }
+	 */	
+	public function getImage($image, $width, $height, $mode='proportional', $target=null) { if(VERSION=='2.8'){ return parent::getImage($image, $width, $height, $mode, $target); }else{ return parent::getImage($image, $width, $height, $target); } }
 	public function generateFrontendUrl($arrRow, $strParams='') { return parent::generateFrontendUrl($arrRow, $strParams); }
 	public function loadDataContainer($strName) { return parent::loadDataContainer($strName); }
 }
-
