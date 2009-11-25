@@ -62,11 +62,55 @@ class ModuleFilters extends ModuleIsotopeBase
 	 */
 	protected function compile()
 	{
+		global $objPage;
 		
 		$arrFilterFields = deserialize($this->iso_filterFields);
 		$arrOrderByFields = deserialize($this->iso_orderByFields);
 		$arrSearchFields = deserialize($this->iso_searchFields);
+		$arrListingModules = deserialize($this->iso_listingModules);
+		
 		$arrLimit = array();
+			
+		
+		$arrAjaxParams[] = 'action=fmd';
+		$arrAjaxParams[] = 'id=' . $arrListingModules[0];
+		
+		if($this->Input->get('per_page'))
+		{
+			$arrAjaxParams[] = 'per_page=' . $this->Input->get('per_page');
+		}
+		
+		if($this->Input->get('page'))
+		{
+			$arrAjaxParams[] = 'page='.$this->Input->get('page');
+		}
+		
+		if($this->Input->get('order_by'))
+		{
+			$arrAjaxParams[] = 'order_by='.$this->Input->get('order_by');
+		}
+		
+		if($this->Input->get('for'))
+		{
+			$arrAjaxParams[] = 'for='.$this->Input->get('for');
+		}
+		
+		$arrAjaxParams[] = 'rid='.$objPage->rootId;
+		$arrAjaxParams[] = 'pid='.$objPage->id;
+		
+		if(count($arrFilterFields))
+		{
+			foreach($arrFilterFields as $filter)
+			{
+				if($this->Input->get($filter))
+				{
+					$arrAjaxParams[] = $filter .'='. $this->Input->get($filter);
+				}
+			}
+		}
+		
+		$strAjaxParams = implode('&', $arrAjaxParams);	//build the ajax params
+		
 		
 		$this->loadLanguageFile('tl_product_data');
 		
@@ -86,14 +130,17 @@ class ModuleFilters extends ModuleIsotopeBase
 		
 		$arrSearchFields = array('name','description');
 		
-		foreach($arrFilterFields as $field)
+		if(count($arrFilterFields))
 		{
-				
-			//Render as a select widget, for now.  Perhaps make flexible in the future.
-			$arrFilters[] = array
-			(
-				'html'		=> ''	//render filter widget
-			);
+			foreach($arrFilterFields as $field)
+			{
+					
+				//Render as a select widget, for now.  Perhaps make flexible in the future.
+				$arrFilters[] = array
+				(
+					'html'		=> ''	//render filter widget
+				);
+			}
 		}
 		
 				
@@ -105,21 +152,33 @@ class ModuleFilters extends ModuleIsotopeBase
 		if($this->iso_enableLimit)
 		{
 			//Generate the limits per page... used to be derived from the number of columns in grid format, but not in list format.  For now, just a standard list.
-			$arrLimit = array(10,20,50,100,200);
+			$arrLimit = array(3,10,20,50,100,200);
 		}
+		
+		$strImage = "system/themes/default/images/loading.gif";
+		
+		$arrImageSize = getimagesize(TL_ROOT . '/' . $strImage);	
 
+		$arrLoaderImage['path'] = $strImage;
+		$arrLoaderImage['width'] = $arrImageSize[0];
+		$arrLoaderImage['height'] = $arrImageSize[1];
+		$this->Template->enableAjax = true; //$this->iso_enableFilterAjax;
+		$this->Template->searchable = true; //$this->iso_enableSearch;
+		$this->Template->ajaxLoaderImage = $arrLoaderImage;
+		$this->Template->ajaxParams = $strAjaxParams;
 		$this->Template->perPage = $this->iso_enableLimit;
 		$this->Template->limit = $arrLimit;
 		$this->Template->filters = $arrFilters;	
 		$this->Template->action = $this->Environment->request;
 		$this->Template->orderBy = $arrOrderByOptions;
 		$this->Template->order_by = $this->Input->get('order_by');
-		$this->Template->per_page = $this->Input->get('per_page');
-		$this->Template->per_page_label = $GLOBALS['TL_LANG']['MSC']['perPage'];
-		$this->Template->for = $this->Input->get('keywords');
-		$this->Template->keywords_label = '';
-		$this->Template->search_label = $GLOBALS['TL_LANG']['MSC']['search'];
-
+		$this->Template->per_page = ($this->Input->get('per_page') ? $this->Input->get('per_page') : 10);
+		$this->Template->page = ($this->Input->get('page') ? $this->Input->get('page') : 1);
+		$this->Template->for = $this->Input->get('for');
+		$this->Template->perPageLabel = $GLOBALS['TL_LANG']['MSC']['perPage'];
+		$this->Template->keywordsLabel = $GLOBALS['TL_LANG']['MSC']['searchTerms'];
+		$this->Template->searchLabel = $GLOBALS['TL_LANG']['MSC']['search'];
+		$this->Template->clearLabel = $GLOBALS['TL_LANG']['MSC']['clearFilters'];
 	}
 	
 	private function getOrderByOptions($arrAttributes)
@@ -180,4 +239,3 @@ class ModuleFilters extends ModuleIsotopeBase
 		return $arrPerPageOptions;
 	}
 }
-

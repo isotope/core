@@ -61,6 +61,9 @@ $GLOBALS['TL_LANG']['tl_module']['iso_filterFields']			= array('Enabled filters'
 $GLOBALS['TL_LANG']['tl_module']['iso_orderByFields']			= array('Enabled order by fields','Please select orderable fields to enable.');
 $GLOBALS['TL_LANG']['tl_module']['iso_searchFields']			= array('Enabled search fields','Please select search fields to enable.');
 $GLOBALS['TL_LANG']['tl_module']['iso_enableLimit']				= array('Enable per-page limiting','Allow the user to select the number of records to show per page.');
+$GLOBALS['TL_LANG']['tl_module']['iso_listingModules']			= array('Listing modules','Please choose one or more listing modules this filter module will work with.');
+
+
 /**
  * References
  */
