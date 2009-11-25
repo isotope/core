@@ -19,7 +19,7 @@
 <?php if($this->buttons): ?>
 <div class="submit_container">
 <?php foreach( $this->buttons as $name => $button ): ?>
-	<button type="submit" name="<?php echo $name; ?>" value="1"><?php echo $button['label']; ?></button>
+	<button type="submit" class="submit <?php echo $name; ?>" name="<?php echo $name; ?>" value="1"><?php echo $button['label']; ?></button>
 <?php endforeach; ?>
 </div>
 <?php endif; ?>
