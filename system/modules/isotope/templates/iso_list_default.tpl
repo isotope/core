@@ -15,6 +15,11 @@
 
 <?php if($this->buttons): ?>
 <div class="submit_container">
+<?php if ($this->useQuantity): ?>
+<div class="quantity_container">
+<label for="quantity_requested"><?php echo $this->quantityLabel; ?>:</label> <input type="text" class="text quantity_requested" name="quantity_requested" value="1" size="3" onblur="if (this.value=='') { this.value='1'; }" onfocus="if (this.value=='1') { this.value=''; }" />
+</div>
+<?php endif; ?>
 <?php foreach( $this->buttons as $name => $button ): ?>
 	<button type="submit" class="submit <?php echo $name; ?>" name="<?php echo $name; ?>" value="1"><?php echo $button['label']; ?></button>
 <?php endforeach; ?>

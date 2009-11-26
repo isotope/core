@@ -145,6 +145,14 @@ class ModuleProductLister extends ModuleIsotopeBase
 			}
 		}
 		
+		
+		$arrTemplateData = array
+		(
+			'buttons'		=> $arrButtons,
+			'quantityLabel'	=> $GLOBALS['TL_LANG']['MSC']['quantity'],
+			'useQuantity'	=> $this->iso_use_quantity,
+		);
+		
 		$arrBuffer = array();
 		
 		foreach( $arrProducts as $i => $objProduct )
@@ -158,7 +166,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 						if (is_array($data['callback']) && count($data['callback']) == 2)
 						{
 							$this->import($data['callback'][0]);
-							$this->{$data['callback'][0]}->{$data['callback'][1]}($objProduct);
+							$this->{$data['callback'][0]}->{$data['callback'][1]}($objProduct, $this);
 						}
 						
 						break;
@@ -173,7 +181,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 				'raw'		=> $objProduct,
 				'clear'	    => ($this->iso_list_format=='grid' && $blnSetClear ? true : false),
 				'class'		=> ('product' . ($i == 0 ? ' product_first' : '')),
-				'html'		=> $objProduct->generate($this->iso_list_layout, $arrButtons),
+				'html'		=> $objProduct->generate($this->iso_list_layout, $arrTemplateData),
 			);
 
 			$blnSetClear = (($i+1) % $this->columns==0 ? true : false);

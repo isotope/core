@@ -81,15 +81,6 @@ class ModuleProductReader extends ModuleIsotopeBase
 	 */
 	protected function compile()
 	{
-/*
-		// For Continue Shopping button. This should be tripped every time people hit the product reader
-		if($this->getReferer(ENCODE_AMPERSANDS) != ampersand($this->Environment->request, true))
-		{
-			$_SESSION['referringPage'] = $this->getReferer(ENCODE_AMPERSANDS);
-		}
-		$this->Template->referrer = $_SESSION['referringPage'];
-*/	
-		
 		$objProduct = $this->getProductByAlias($this->Input->get('product'));
 		
 		if (!$objProduct)
@@ -124,7 +115,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 					if (is_array($data['callback']) && count($data['callback']) == 2)
 					{
 						$this->import($data['callback'][0]);
-						$this->{$data['callback'][0]}->{$data['callback'][1]}($objProduct);
+						$this->{$data['callback'][0]}->{$data['callback'][1]}($objProduct, $this);
 					}
 					break;
 				}
@@ -133,13 +124,16 @@ class ModuleProductReader extends ModuleIsotopeBase
 			$this->reload();
 		}
 		
+		$arrTemplateData = array
+		(
+			'buttons'		=> $arrButtons,
+			'quantityLabel'	=> $GLOBALS['TL_LANG']['MSC']['quantity'],
+			'useQuantity'	=> $this->iso_use_quantity,
+		);
 		
 		$this->Template->action = ampersand($this->Environment->request, true);
 		$this->Template->formId = $this->strFormId;
-		$this->Template->product = $objProduct->generate($this->iso_reader_layout, $arrButtons);
-		$this->Template->quantityLabel = $GLOBALS['TL_LANG']['MSC']['quantity'];
-		$this->Template->useQuantity = $this->iso_use_quantity;
-		$this->Template->buttons = $arrButtons;
+		$this->Template->product = $objProduct->generate($this->iso_reader_layout, $arrTemplateData);
 		
 		
 		
