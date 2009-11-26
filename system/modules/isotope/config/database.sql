@@ -447,6 +447,7 @@ CREATE TABLE `tl_payment_modules` (
   `authorize_email_customer` char(1) NOT NULL default '',
   `authorize_bypass_live_collection` char(1) NOT NULL default '',
   `groups` blob NULL,
+  `button` varchar(255) NOT NULL default '',
   `debug` char(1) NOT NULL default '',
   `enabled` char(1) NOT NULL default '',
   PRIMARY KEY  (`id`),

@@ -43,6 +43,7 @@ $GLOBALS['TL_LANG']['tl_payment_modules']['postsale_mail']			= array('E-Mail Vor
 $GLOBALS['TL_LANG']['tl_payment_modules']['postfinance_pspid']		= array('Postfinance PSPID', 'Die PSPID ist Ihr eindeutiger Erkennungsname im Postfinance-System.');
 $GLOBALS['TL_LANG']['tl_payment_modules']['postfinance_secret']		= array('Postfinance Geheimschlüssel', 'Diese Daten werden zur Prüfung der Zahlungsübergabe verwendet (Punkt 3.2 in den technischen Einstellungen).');
 $GLOBALS['TL_LANG']['tl_payment_modules']['postfinance_method']		= array('Postfinance Methode', 'Art der Datenübermittlung seitens Postfinance (Punkt 1.1 in den technischen Einstellungen).');
+$GLOBALS['TL_LANG']['tl_payment_modules']['button']					= array('Bestellen-Button', 'Wählen Sie ein Bild falls Sie einen eigenen Bestellen-Button darstellen möchten.');
 $GLOBALS['TL_LANG']['tl_payment_modules']['debug']					= array('Testsystem verwenden', 'Aktivieren Sie diese Option um ein Testsystem zu verwenden, auf dem keine echten Zahlungen ausgeführt werden.');
 $GLOBALS['TL_LANG']['tl_payment_modules']['enabled']				= array('Modul aktivieren', 'Klicken Sie hier wenn dieses Modul für Besucher sichtbar sein soll.');
 

@@ -110,7 +110,7 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 		'__selector__'                => array('type'),
 		'default'                     => '{type_legend},type,name',
 		'cash'						  => '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{enabled_legend},enabled',
-		'paypal'                      => '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,postsale_mail,minimum_total,maximum_total,countries,shipping_modules,product_types;{paypal_legend},paypal_account,paypal_business;{enabled_legend},debug,enabled',
+		'paypal'                      => '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,postsale_mail,minimum_total,maximum_total,countries,shipping_modules,product_types;{paypal_legend},paypal_account,paypal_business;{template_legend},button;{enabled_legend},debug,enabled',
 		'postfinance'                 => '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,postsale_mail,minimum_total,maximum_total,countries,shipping_modules,product_types;{postfinance_legend},postfinance_pspid,postfinance_secret,postfinance_method;{enabled_legend},debug,enabled',
 		'authorizedotnet'			  => '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,allowed_cc_types,minimum_total,maximum_total,countries,shipping_modules,product_types;{authorize_legend},authorize_login,authorize_trans_key,authorize_trans_type,authorize_delimiter,authorize_bypass_live_collection;{enabled_legend},debug,enabled',
 	),
@@ -218,7 +218,7 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 			'exclude'                 => true,
 			'inputType'               => 'select',
 			'foreignKey'			  => 'tl_product_types.name',
-			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'size'=>8, 'tl_class'=>'clr'),
+			'eval'                    => array('multiple'=>true, 'size'=>8, 'tl_class'=>'clr'),
 		),
 		'paypal_account' => array
 		(
@@ -293,6 +293,13 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['authorize_bypass_live_collection'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
+		),
+		'button' => array
+		(
+			'label'					  => &$GLOBALS['TL_LANG']['tl_payment_modules']['button'],
+			'exclude'				  => true,
+			'inputType'				  => 'fileTree',
+			'eval'					  => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>'jpg,jpeg,png,gif'),
 		),
 		'debug' => array
 		(

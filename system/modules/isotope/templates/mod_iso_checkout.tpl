@@ -31,7 +31,7 @@
 <?php if ($this->showPrevious || $this->showNext): ?>
 	<div class="submit_container">
 		<?php if ($this->showPrevious): ?><button type="submit" class="submit previous button" name="previousStep" value="1"><?php echo $this->previousLabel; ?></button><?php endif; if ($this->showNext): ?>
-		<button type="submit" class="submit next button" name="nextStep" value="1"><?php echo $this->nextLabel; ?></button><?php endif; ?>
+		<button type="submit" class="submit <?php echo $this->nextClass; ?> button" name="nextStep" value="1"><?php echo $this->nextLabel; ?></button><?php endif; ?>
 	</div>
 <?php endif; ?>
 </form>
