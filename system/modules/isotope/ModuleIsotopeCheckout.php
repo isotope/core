@@ -226,7 +226,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			$arrSteps[] = array
 			(
 				'class'	=> $step . ($this->strCurrentStep == $step ? ' active' : '') . ($blnStepPassed ? ' passed' : '') . ($i == 0 ? ' first' : ''),
-				'label'	=> $step,
+				'label'	=> (strlen($GLOBALS['TL_LANG']['ISO']['checkout_'.$step]) ? $GLOBALS['TL_LANG']['ISO']['checkout_'.$step] : $step),
 				'href'	=> ($blnStepPassed ? $this->addToUrl('step='.$step) : ''),
 				'title'	=> 'Go back to step "'.$step.'"',
 			);
@@ -494,17 +494,16 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 		foreach( $arrProducts as $objProduct )
 		{
-			$arrProductData[] = array
+			$arrProductData[] = array_merge($objProduct->getAttributes(), array
 			(
 				'id'				=> $objProduct->id,
 				'image'				=> $objProduct->images[0],
-				'name'				=> $objProduct->name,
 				'link'				=> $objProduct->href_reader,
 				'price'				=> $objProduct->formatted_price,
 				'total_price'		=> $objProduct->formatted_total_price,
 				'quantity'			=> $objProduct->quantity_requested,
 				'tax_id'			=> $objProduct->tax_id,
-			);
+			));
 		}
 		
 		
