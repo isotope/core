@@ -100,11 +100,10 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 				}
 			}
 			
-			$arrProductData[] = array
+			$arrProductData[] = array_merge($objProduct->getAttributes(), array
 			(
 				'id'				=> $objProduct->id,
 				'image'				=> $objProduct->images[0],
-				'name'				=> $objProduct->name,
 				'link'				=> $objProduct->href_reader,
 				'price'				=> $this->generatePrice($objProduct->price, $this->strPriceTemplate),
 				'total_price'		=> $this->generatePrice($objProduct->total_price),
@@ -113,7 +112,7 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 				'remove_link'		=> $this->generateFrontendUrl($objPage->row(), '/action/remove/id/'.$objProduct->cart_id),
 				'remove_link_title' => sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $objProduct->name),
 				'class'				=> 'row_' . $i . ($i%2 ? ' even' : ' odd') . ($i==0 ? ' row_first' : ''),
-			);
+			));
 		}
 		
 		if ($blnReload)

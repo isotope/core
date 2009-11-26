@@ -269,6 +269,22 @@ class IsotopeProduct extends Model
 	
 	
 	/**
+	 * Return all attributes for this product
+	 */
+	public function getAttributes()
+	{
+		$arrData = array();
+		
+		foreach( $this->arrAttributes as $attribute )
+		{
+			$arrData[$attribute] = $this->$attribute;
+		}
+		
+		return $arrData;
+	}
+	
+	
+	/**
 	 * Generate a product template
 	 */
 	public function generate($strTemplate, $arrData=array())

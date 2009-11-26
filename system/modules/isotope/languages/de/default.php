@@ -63,21 +63,6 @@ $GLOBALS['TL_LANG']['MSC']['noCategoriesAssociated'] = 'Dieses Produkt ist keine
 $GLOBALS['TL_LANG']['MSC']['invalidProductInformation'] = 'Das gewünschte Produkt ist nicht vorhanden oder wurde aus dem Shop entfernt.';
 $GLOBALS['TL_LANG']['MSC']['noProducts'] = 'Zurzeit sind in dieser Kategorie keine Produkte vorhanden.';
 
-//Checkout language entries 
-$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['billing_information'] = 'Bitte geben Sie Ihre Adresse ein.';
-$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['shipping_method'] = 'Wählen Sie eine Versandart.';
-$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['payment_method'] = 'Wählen Sie eine Zahlungsart.';
-$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['order_review'] = 'Überprüfen Sie Ihre Bestellung.';
-$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['order_complete'] = 'Bestellung erfolgreich!';
-
-$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE']['billing_information'] = 'Rechnungsadresse';
-$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE']['shipping_information'] = 'Versandadresse';
-$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE']['shipping_method'] = 'Versandmethode';
-$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE']['payment_method'] = 'Zahlungsart';
-$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE']['order_conditions'] = 'AGB akzeptieren';
-$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE']['order_review'] = 'Bestellübersicht';
-$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['HEADLINE']['order_complete'] = 'Bestellung erfolgreich!';
-
 $GLOBALS['TL_LANG']['MSC']['previousStep']	= 'Zurück';
 $GLOBALS['TL_LANG']['MSC']['nextStep']		= 'Weiter';
 $GLOBALS['TL_LANG']['MSC']['confirmOrder']	= 'Bestellen';
@@ -126,6 +111,24 @@ $GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['shipping_information'] = 
 
 $GLOBALS['TL_LANG']['ISO']['productSingle']		= '1 Produkt';
 $GLOBALS['TL_LANG']['ISO']['productMultiple']	= '%s Produkte';
+
+$GLOBALS['TL_LANG']['ISO']['shipping_address_message'] = 'Wählen Sie Ihre Versandadresse oder geben Sie eine Neue ein.';
+$GLOBALS['TL_LANG']['ISO']['billing_address_message'] = 'Wählen Sie Ihre Rechnungsadresse oder geben Sie eine Neue ein.';
+$GLOBALS['TL_LANG']['ISO']['billing_address_guest_message'] = 'Bitte geben Sie Ihre Adresse ein.';
+$GLOBALS['TL_LANG']['ISO']['shipping_method_message'] = 'Wählen Sie eine Versandart.';
+$GLOBALS['TL_LANG']['ISO']['payment_method_message'] = 'Wählen Sie eine Zahlungsart.';
+$GLOBALS['TL_LANG']['ISO']['order_review_message'] = 'Überprüfen Sie Ihre Bestellung.';
+
+$GLOBALS['TL_LANG']['ISO']['checkout_address']			= 'Adresse';
+$GLOBALS['TL_LANG']['ISO']['checkout_shipping']			= 'Versand';
+$GLOBALS['TL_LANG']['ISO']['checkout_payment']			= 'Bezahlung';
+$GLOBALS['TL_LANG']['ISO']['checkout_review']			= 'Überprüfung';
+$GLOBALS['TL_LANG']['ISO']['billing_address']			= 'Rechnungsadresse';
+$GLOBALS['TL_LANG']['ISO']['shipping_address']			= 'Versandadresse';
+$GLOBALS['TL_LANG']['ISO']['shipping_method']			= 'Versandmethode';
+$GLOBALS['TL_LANG']['ISO']['payment_method']			= 'Zahlungsart';
+$GLOBALS['TL_LANG']['ISO']['order_conditions']			= 'AGB akzeptieren';
+$GLOBALS['TL_LANG']['ISO']['order_review']				= 'Bestellübersicht';
 
 
 /**
