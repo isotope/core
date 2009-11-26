@@ -271,9 +271,11 @@ class IsotopeProduct extends Model
 	/**
 	 * Generate a product template
 	 */
-	public function generate($strTemplate, $arrButtons=array())
+	public function generate($strTemplate, $arrData=array())
 	{
 		$objTemplate = new FrontendTemplate($strTemplate);
+
+		$objTemplate->setData($arrData);
 		
 		$arrOptionFields = array();
 		$arrProductOptions = array();
@@ -386,7 +388,6 @@ class IsotopeProduct extends Model
 		$objTemplate->label_detail = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
 		
 		$objTemplate->price = $this->formatted_price;
-		$objTemplate->buttons = $arrButtons;
 		
 		return $objTemplate->parse();
 	}
