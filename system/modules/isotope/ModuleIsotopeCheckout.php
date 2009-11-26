@@ -105,6 +105,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		$this->Template->formSubmit = $this->strFormId;
 		$this->Template->previousLabel = specialchars($GLOBALS['TL_LANG']['MSC']['previousStep']);
 		$this->Template->nextLabel = specialchars($GLOBALS['TL_LANG']['MSC']['nextStep']);
+		$this->Template->nextClass = 'next';
 		$this->Template->showPrevious = true;
 		$this->Template->showNext = true;
 		$this->Template->showForm = true;
@@ -246,6 +247,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		elseif (array_search($this->strCurrentStep, $arrStepKeys) === (count($arrStepKeys)-1))
 		{
 			$this->Template->action = $this->addToUrl('step=complete');
+			$this->Template->nextClass = 'confirm';
 			$this->Template->nextLabel = specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']);
 		}
 		
