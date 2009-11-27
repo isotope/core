@@ -58,11 +58,14 @@
 <?php 	echo $filter['html']; ?>
 <?php endforeach; ?>
 <?php endif; ?>
-</div>
 <div class="clear_filters"><button type="button" name="clear" id="ctrl_clear"><?php echo $this->clearLabel; ?></button></div>
+<div class="clear">&nbsp;</div>
+</div>
+
 <?php if($this->enableAjax): ?>
+<div id="ajaxOverlay" style="display: none;">&nbsp;</div>
 <div id="ajaxLoader" class="ctrl_ajax_loader" style="display: none;">
-<p align="center"><img src="<?php echo $this->ajaxLoaderImage['path']; ?>" alt="<?php echo $this->loadingMessage; ?>" border="0" width="<?php echo $this->ajaxLoaderImage['width']; ?>" height="<?php echo $this->ajaxLoaderImage['height']; ?>" /><br /><br />Loading...<?php echo $this->loadingMessage; ?></p>
+<p>Loading...<br /><?php echo $this->loadingMessage; ?></p>
 </div>
 <script language="javascript" type="text/javascript">
 
@@ -70,11 +73,13 @@ window.addEvent('domready', function() {
 	
 	function showLoader()
 	{
+		$('ajaxOverlay').setStyle('display','block');
 		$('ajaxLoader').setStyle('display','block');
 	}
 	
 	function hideLoader()
 	{
+		$('ajaxOverlay').setStyle('display','none');
 		$('ajaxLoader').setStyle('display','none');
 	}
 	
