@@ -279,21 +279,6 @@ CREATE TABLE `tl_product_categories` (
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
--- 
--- Table `tl_filter_configuration`
---
-
-CREATE TABLE `tl_filter_configuration` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `pid` int(10) unsigned NOT NULL default '0',
-  `tstamp` int(10) unsigned NOT NULL default '0',
-  `title` varchar(255) NOT NULL default '',
-  `enabledFilters` blob,
-  PRIMARY KEY  (`id`),
-  KEY `pid` (`pid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
