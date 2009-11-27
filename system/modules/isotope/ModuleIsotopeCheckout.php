@@ -34,25 +34,8 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	 * @var string
 	 */
 	protected $strTemplate = 'mod_iso_checkout';
-	
-	/**
-	 *
-	 */
-	protected $blnShowLoginOptions = false;
-	
-	/**
-	 * Recall product data, if db has been updated with new information.
-	 * @param boolean
-	 */
-	//protected $blnRecallProductData = false;
 
 	protected $strStepTemplateBaseName = 'iso_checkout_';
-
-	protected $intBillingAddressId = 0;
-	
-	protected $intShippingAddressId = 0;	
-	
-	protected $intShippingRateId = 0;
 	
 	public $doNotSubmit = false;
 	
@@ -98,46 +81,12 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			$this->Template->message = $GLOBALS['TL_LANG']['MSC']['noItemsInCart'];
 			return;
 		}
-		
-		// Default template settings. Must be set at beginning so they can be overwritten later (eg. trough callback)
-		$this->Template->action = ampersand($this->Environment->request, ENCODE_AMPERSANDS);
-		$this->Template->formId = $this->strFormId;
-		$this->Template->formSubmit = $this->strFormId;
-		$this->Template->previousLabel = specialchars($GLOBALS['TL_LANG']['MSC']['previousStep']);
-		$this->Template->nextLabel = specialchars($GLOBALS['TL_LANG']['MSC']['nextStep']);
-		$this->Template->nextClass = 'next';
-		$this->Template->showPrevious = true;
-		$this->Template->showNext = true;
-		$this->Template->showForm = true;
 
 
-
-
-
-		$intBillingAddressId = ($this->Input->post('billing_address') ? $this->Input->post('billing_address') : $_SESSION['FORM_DATA']['billing_address']);
-		
-		if($intBillingAddressId > 0)
-		{
-			$this->intBillingAddressId = $intBillingAddressId;
-		}
-				
-		$intShippingAddressId = ($this->Input->post('shipping_address') ? $this->Input->post('shipping_address') : $_SESSION['FORM_DATA']['shipping_address']);
-
-		if((integer)$intShippingAddressId > 0)
-		{
-			$this->intShippingAddressId = $intShippingAddressId;
-		}
-		
-		
-		
-		
-		
-		
-		
 		// Redirect to login page if not logged in
 		if($this->iso_checkout_method == 'member' && !FE_USER_LOGGED_IN)
 		{
-			$objPage = $this->Database->prepare("SELECT id,alias FROM tl_page WHERE id=?")->execute($this->iso_login_jumpTo);
+			$objPage = $this->Database->prepare("SELECT id,alias FROM tl_page WHERE id=?")->limit(1)->execute($this->iso_login_jumpTo);
 			
 			if (!$objPage->numRows)
 			{
@@ -149,6 +98,25 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			
 			$this->redirect($this->generateFrontendUrl($objPage->row()));
 		}
+		elseif($this->iso_checkout_method == 'guest' && FE_USER_LOGGED_IN)
+		{
+			$this->Template = new FrontendTemplate('mod_message');
+			$this->Template->type = 'error';
+			$this->Template->message = 'User checkout not allowed';
+			return;
+		}
+
+		
+		// Default template settings. Must be set at beginning so they can be overwritten later (eg. trough callback)
+		$this->Template->action = ampersand($this->Environment->request, ENCODE_AMPERSANDS);
+		$this->Template->formId = $this->strFormId;
+		$this->Template->formSubmit = $this->strFormId;
+		$this->Template->previousLabel = specialchars($GLOBALS['TL_LANG']['MSC']['previousStep']);
+		$this->Template->nextLabel = specialchars($GLOBALS['TL_LANG']['MSC']['nextStep']);
+		$this->Template->nextClass = 'next';
+		$this->Template->showPrevious = true;
+		$this->Template->showNext = true;
+		$this->Template->showForm = true;
 		
 		
 		// Remove shipping step if no items are shipped
@@ -186,37 +154,42 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				
 			default:
 				
-				$arrStepKeys = array_keys($GLOBALS['ISO_CHECKOUT_STEPS']);
-		
-				// Send user to the first step
-				if (!strlen($this->strCurrentStep) || !in_array($this->strCurrentStep, $arrStepKeys))
+				// Run trough all steps until we find the current one or one reports failure
+				foreach( $GLOBALS['ISO_CHECKOUT_STEPS'] as $step => $arrCallbacks )
 				{
-					$this->redirect($this->addToUrl('step=' . $arrStepKeys[0]));
+					$strBuffer = '';
+					foreach( $arrCallbacks as $callback )
+					{
+						if ($callback[0] == 'ModuleIsotopeCheckout')
+						{
+							$strBuffer .= $this->{$callback[1]}();
+						}
+						else
+						{
+							$this->import($callback[0]);
+							$strBuffer .= $this->{$callback[0]}->{$callback[1]}($this);
+						}
+						
+						if ($this->doNotSubmit && $step != $this->strCurrentStep)
+						{
+							$this->redirect($this->addToUrl('step=' . $step));
+						}
+					}
+					
+					if ($step == $this->strCurrentStep)
+						break;
 				}
 				
-				// Load current step callbacks
-				$strBuffer = '';
-				$arrCallbacks = $GLOBALS['ISO_CHECKOUT_STEPS'][$this->strCurrentStep];
-				
-				foreach( $arrCallbacks as $callback )
-				{
-					if ($callback[0] == 'ModuleIsotopeCheckout')
-					{
-						$strBuffer .= $this->{$callback[1]}();
-					}
-					else
-					{
-						$this->import($callback[0]);
-						$strBuffer = $this->{$callback[0]}->{$callback[1]}($this);
-					}
-				}
-				
+				if (!strlen($this->strCurrentStep))
+					$this->strCurrentStep = $step;
+					
 				$this->Template->fields = $strBuffer;
 				
 				break;
 		}
 		
 		// Show checkout steps
+		$arrStepKeys = array_keys($GLOBALS['ISO_CHECKOUT_STEPS']);
 		$blnStepPassed = true;
 		$arrSteps = array();
 		foreach( $arrStepKeys as $i => $step )
@@ -334,9 +307,6 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	
 	protected function getShippingModulesInterface()
 	{
-		// FIXME: hack so user must select a valid payment method
-		unset($_SESSION['FORM_DATA']['payment']);
-				
 		$arrModuleIds = deserialize($this->iso_shipping_modules);
 		
 		$arrData = $this->Input->post('shipping');
@@ -372,25 +342,12 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	
 	protected function getPaymentModulesInterface()
 	{
-		$arrData = $this->Input->post('payment');
-		
-		$arrData = is_array($arrData) ? $arrData : $_SESSION['FORM_DATA']['payment'];
-		
-		if (!strlen($arrData['module']))
-		{
-			$this->doNotSubmit = true;
-		}
-		else
-		{
-			$_SESSION['FORM_DATA']['payment'] = $arrData;
-		}
-		
-		
 		$arrModules = array();
 		$arrModuleIds = deserialize($this->iso_payment_modules);
 		
 		if (is_array($arrModuleIds) && count($arrModuleIds))
 		{
+			$arrData = $this->Input->post('payment');
 			$objModules = $this->Database->execute("SELECT * FROM tl_payment_modules WHERE id IN (" . implode(',', $arrModuleIds) . ")");
 			
 			while( $objModules->next() )
@@ -398,27 +355,47 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				$strClass = $GLOBALS['ISO_PAY'][$objModules->type];
 				
 				if (!strlen($strClass) || !$this->classFileExists($strClass))
-				{
-					continue;	
-				}
+					continue;
 				
 				$objModule = new $strClass($objModules->row());
 							
 				if (!$objModule->available)
 					continue;
+					
+				if (is_array($arrData) && $arrData['module'] == $objModule->id)
+	 			{
+	 				$_SESSION['CHECKOUT_DATA']['payment'] = $arrData;
+	 			}
+	 			
+	 			if (is_array($_SESSION['CHECKOUT_DATA']['payment']) && $_SESSION['CHECKOUT_DATA']['payment']['module'] == $objModule->id)
+	 			{
+	 				$this->Cart->Payment = $objModule;
+	 			}
 							
 				$arrModules[] = sprintf('<input id="ctrl_payment_module_%s" type="radio" name="payment[module]" value="%s"%s /> <label for="ctrl_payment_module_%s">%s</label>',
 										 $objModule->id,
 										 $objModule->id,
-										 (($arrData['module'] == $objModule->id || $objModules->numRows==1) ? ' checked="checked"' : ''),
+										 ($this->Cart->Payment->id == $objModule->id ? ' checked="checked"' : ''),
 										 $objModule->id,
-	 									 $objModule->label);			
+	 									 $objModule->label);
+	 									 
+	 			$objLastModule = $objModule;
 			}
 		}
 		
 		if(!count($arrModules))
 		{
+			$this->doNotSubmit = true;
 			return '<i>' . $GLOBALS['TL_LANG']['MSC']['noPaymentModules'] . '</i>';
+		}
+		elseif (!$this->Cart->hasPayment && !strlen($_SESSION['CHECKOUT_DATA']['payment']['module']) && count($arrModules) == 1)
+		{
+			$this->Cart->Payment = $objLastModule;
+			$_SESSION['CHECKOUT_DATA']['payment']['module'] = $this->Cart->Payment->id;
+		}
+		elseif (!$this->Cart->hasPayment)
+		{
+			$this->doNotSubmit = true;
 		}
 		
 		$objTemplate = new FrontendTemplate($this->strStepTemplateBaseName . 'payment_method');
@@ -872,7 +849,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 		if (FE_USER_LOGGED_IN)
 		{
-			$objAddress = $this->Database->prepare("SELECT * FROM tl_address_book WHERE pid=?")->execute($this->User->id);
+			$objAddress = $this->Database->prepare("SELECT * FROM tl_address_book WHERE pid=? ORDER BY isDefaultBilling DESC, isDefaultShipping DESC")->execute($this->User->id);
 			
 			while( $objAddress->next() )
 			{
