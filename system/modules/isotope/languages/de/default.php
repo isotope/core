@@ -104,9 +104,6 @@ $GLOBALS['TL_LANG']['MSC']['payment_status_labels']['paid']			= 'Bezahlt';
 $GLOBALS['TL_LANG']['MSC']['payment_status_labels']['failed']		= 'Fehlgeschlagen';
 $GLOBALS['TL_LANG']['MSC']['payment_status_labels']['cancelled']	= 'Abgebrochen';
 
-//Checkout language entries 
-$GLOBALS['TL_LANG']['MSC']['CHECKOUT_STEP']['PROMPT']['shipping_information'] = 'Wählen Sie die Versandadresse.';
-
 
 
 $GLOBALS['TL_LANG']['ISO']['productSingle']		= '1 Produkt';

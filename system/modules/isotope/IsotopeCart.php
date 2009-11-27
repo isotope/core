@@ -187,54 +187,85 @@ class IsotopeCart extends Model
 					$this->arrCache[$strKey] = is_object($this->Payment) ? true : false;
 					break;
 					
-				case 'customerCountry':
-					return 'ch';
+				case 'billingAddress':
+					if (strlen($this->arrCache['billingAddress_id']) && $this->arrCache['billingAddress_id'] > 0)
+					{
+						$objAddress = $this->Database->prepare("SELECT * FROM tl_address_book WHERE id=?")->limit(1)->execute($intAddressId);
+						
+						if ($objAddress->numRows)
+							return $objAddress->fetchAssoc();
+					}
+					elseif (strlen($this->arrCache['billingAddress_id']) && $this->arrCache['billingAddress_id'] == 0 && is_array($this->arrCache['billingAddress_data']))
+					{
+						return $this->arrCache['billingAddress_data'];
+					}
 					
-						/*
-
-						// Use billing address
-						if ($_SESSION['FORM_DATA']['shipping_address'] == -1)
-						{
-							if ($_SESSION['FORM_DATA']['billing_address'] > 0)
-							{
-								//TODO - fix to load address in a consistent manner.
-								$this->Isotope->loadAddressById($_SESSION['FORM_DATA']['billing_address'], 'billing');
-						        $strCountry = $_SESSION['FORM_DATA']['billing_address_country'];
-							}
-							else
-							{
-								$strCountry = $_SESSION['FORM_DATA']['billing_address_country'];
-							}
-						}
+					if (FE_USER_LOGGED_IN)
+					{
+						$objAddress = $this->Database->prepare("SELECT * FROM tl_address_book WHERE pid=? AND isDefaultBilling='1'")->limit(1)->execute($this->User->id);
 						
-						// Selected a shipping address
-						elseif($_SESSION['FORM_DATA']['shipping_address'] > 0)
-					    {
-							//TODO - fix to load address in a consistent manner.
-							$this->Isotope->loadAddressById($_SESSION['FORM_DATA']['shipping_address'], 'shipping');
-					        $strCountry = $_SESSION['FORM_DATA']['shipping_address_country'];
-					    }
-					    
-					    // New custom shipping address
-					    else
-					    {
-							$strCountry = $_SESSION['FORM_DATA']['shipping_address_country'];
-		//					$strCountry = (!isset($_SESSION['FORM_DATA']['shipping_information_country']) ? $_SESSION['FORM_DATA']['billing_information_country'] : ($_SESSION['FORM_DATA']['shipping_address'][0] ? $_SESSION['FORM_DATA']['billing_information_country'] : $_SESSION['FORM_DATA']['shipping_information_country']));
-						}
-						
-*/
-						
+						if ($objAddress->numRows)
+							return $objAddress->fetchAssoc();
+							
+						return $this->User->getData();
+					}
+					
+					return array('country' => $this->Isotope->Store->country);
 					break;
 					
-				case 'customerRegion':
-					break;
+				case 'shippingAddress':
+					if (!strlen($this->arrCache['shippingAddress_id']) || $this->arrCache['shippingAddress_id'] == -1)
+						return $this->billingAddress;
+						
+					if ($this->arrCache['shippingAddress_id'] > 0)
+					{
+						$objAddress = $this->Database->prepare("SELECT * FROM tl_address_book WHERE id=?")->limit(1)->execute($intAddressId);
+						
+						if ($objAddress->numRows)
+							return $objAddress->fetchAssoc();
+					}
+					elseif ($this->arrCache['shippingAddress_id'] == 0 && is_array($this->arrCache['shippingAddress_data']))
+					{
+						return $this->arrCache['shippingAddress_data'];
+					}
 					
-				case 'customerPostal':
+					if (FE_USER_LOGGED_IN)
+					{
+						$objAddress = $this->Database->prepare("SELECT * FROM tl_address_book WHERE pid=? AND isDefaultShipping='1'")->limit(1)->execute($this->User->id);
+						
+						if ($objAddress->numRows)
+							return $objAddress->fetchAssoc();
+					}
+					
+					return $this->billingAddress;
 					break;
 			}
 		}
 		
 		return $this->arrCache[$strKey];
+	}
+	
+	
+	public function __set($strKey, $varValue)
+	{
+		switch( $strKey )
+		{
+			case 'billingAddress':
+			case 'shippingAddress':
+				if (is_array($varValue))
+				{
+					$this->arrCache[$strKey.'_id'] = 0;
+					$this->arrCache[$strKey.'_data'] = $varValue;
+				}
+				else
+				{
+					$this->arrCache[$strKey.'_id'] = $varValue;
+				}
+				break;
+			
+			default:
+				parent::__set($strKey, $varValue);
+		}
 	}
 	
 	
@@ -347,6 +378,7 @@ class IsotopeCart extends Model
 			$this->Database->prepare("DELETE FROM tl_cart WHERE session=? AND pid=0")->execute($this->strHash);
  		}
  		
+/*
  		// Load shipping object
  		if ($_SESSION['FORM_DATA']['shipping']['module'])
  		{
@@ -373,6 +405,7 @@ class IsotopeCart extends Model
  				$this->Payment = null;
  			}
  		}
+*/
 	}
 	
 	
@@ -611,7 +644,9 @@ class IsotopeCart extends Model
 	
 	public function useTaxRate($objRate, $fltPrice)
 	{
-		if ($objRate->country != $this->customerCountry)
+//		$arrAddress = deserialize($objRate);
+		
+		if ($objRate->country != $this->billingAddress['country'])
 			return false;
 			
 		return true;
