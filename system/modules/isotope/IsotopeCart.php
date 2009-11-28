@@ -180,11 +180,11 @@ class IsotopeCart extends Model
 					break;
 					
 				case 'hasShipping':
-					$this->arrCache[$strKey] = is_object($this->Shipping) ? true : false;
+					return is_object($this->Shipping) ? true : false;
 					break;
 					
 				case 'hasPayment':
-					$this->arrCache[$strKey] = is_object($this->Payment) ? true : false;
+					return is_object($this->Payment) ? true : false;
 					break;
 					
 				case 'billingAddress':
