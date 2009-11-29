@@ -582,7 +582,9 @@ class ModuleProductLister extends ModuleIsotopeBase
 			{
 				case 'search':
 					$arrReturn['sql'] 		= "p." . $strKey . " LIKE ?";
-					$arrReturn['value'] 	= "%%" . $varValue . "%";	//double wildcard necessary to get around vsprintf bug.				
+					$strValue = str_replace('%', '', $varValue);
+		
+					$arrReturn['value'] 	= "%%" . $strValue . "%";	//double wildcard necessary to get around vsprintf bug.				
 					break;
 				case 'filter':
 					$arrReturn['sql']		= "p." . $strKey . "=?";
