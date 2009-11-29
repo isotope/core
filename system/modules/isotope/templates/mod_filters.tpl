@@ -84,60 +84,65 @@ window.addEvent('domready', function() {
 	}
 	
 	function insertProductList(html)
-	{
+	{				
 		$('product_list').set('html', html);
+		modifyPagination();
 	}
-	
+		
 	function getQueryString()
 	{
 		return '&order_by=' + $('ctrl_order_by').get('value') + '&per_page=' + $('ctrl_per_page').get('value') + '&for=' + $('ctrl_for').get('value');
 	}
 
-	function getPageQueryString($i)
+	function setPage($i)
 	{
 		
-		return '&order_by=' + $('ctrl_order_by').get('value') + '&per_page=' + $('ctrl_per_page').get('value') + '&page=' + $('ctrl_page').get('value') + '&for=' + $('ctrl_for').get('value');
+		return '&page=' + $i;
 	}
-		
+			
+	function gup( name, url )
+	{
+	  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+	  var regexS = "[\\?&]"+name+"=([^&#]*)";
+	  var regex = new RegExp( regexS );
+	  var results = regex.exec( url );
+	  if( results == null )
+		return "";
+	  else
+		return results[1];
+	}
+	
 	function modifyPagination()
 	{
 		var paginationLinks = $$('div.pagination ul li').getChildren('a');
-		var currIndex;
-		
+				
 		paginationLinks.each(function(item, index){
-		
+			
+			var qString = item.get('href').toString();
+			
+			var pageNum = gup('page',qString);
+			
+			item.set('href','#');			
+			
 			item.addEvent('click', function(event) {
 				event.stop();
 				var req = new Request({
 					method: 'get',
 					url: 'ajax.php',
-					data: '<?php echo $this->ajaxParams; ?>' + getQueryString(),
+					data: '<?php echo $this->ajaxParams; ?>' + getQueryString() + setPage(pageNum),
 					onRequest: showLoader(),
-					onSuccess: function(responseText, responseXML) { insertProductList(responseText); hideLoader(); modifyPagination(); setPage(); }
+					onSuccess: function(responseText, responseXML) { insertProductList(responseText); hideLoader(); }
 				}).send();
-			});
-			
-			item.set('href','#');
-			item.set('id','page_' + (index+1));
-			
-			if(item.hasClass('first'))
-			{
-				item.set('id','page_1');				
-			}
-			
-			if(item.hasClass('last'))
-			{								
-				item.set('id','page_' + $('ctrl_last_page').get('value'));				
-			}
-					
+			});		
 					
 		});
 	}
-		
+	
 	var searchForm = $('searchForm');
 	
 	searchForm.addEvent('submit',function(event){ event.stop(); }); 
-
+	modifyPagination();
+	
 	var ctrlClear = $('ctrl_clear');
 		
 		ctrlClear.addEvent('click', function(event) {
@@ -164,7 +169,7 @@ window.addEvent('domready', function() {
              url: 'ajax.php',
              data: '<?php echo $this->ajaxParams; ?>' + getQueryString(),
              onRequest: showLoader(),
-             onSuccess: function(responseText, responseXML) { insertProductList(responseText); hideLoader(); modifyPagination(); }
+             onSuccess: function(responseText, responseXML) { insertProductList(responseText); hideLoader(); }
          }).send();
 		
      });
@@ -180,7 +185,7 @@ window.addEvent('domready', function() {
              url: 'ajax.php',
              data: '<?php echo $this->ajaxParams; ?>' + getQueryString(),
              onRequest: showLoader(),
-             onSuccess: function(responseText, responseXML) { insertProductList(responseText); hideLoader(); modifyPagination(); }
+             onSuccess: function(responseText, responseXML) { insertProductList(responseText); hideLoader(); }
          }).send();
 		
      });
@@ -196,7 +201,7 @@ window.addEvent('domready', function() {
 	             url: 'ajax.php',
 	             data: '<?php echo $this->ajaxParams; ?>' + getQueryString(),
 	             onRequest: showLoader(),
-	             onSuccess: function(responseText, responseXML) { insertProductList(responseText); hideLoader(); modifyPagination(); }
+	             onSuccess: function(responseText, responseXML) { insertProductList(responseText); hideLoader(); }
 	         }).send();
 		 }
      });
@@ -211,11 +216,13 @@ window.addEvent('domready', function() {
              url: 'ajax.php',
              data: '<?php echo $this->ajaxParams; ?>' + getQueryString(),
              onRequest: showLoader(),
-             onSuccess: function(responseText, responseXML) { insertProductList(responseText); hideLoader(); modifyPagination(); }
+             onSuccess: function(responseText, responseXML) { insertProductList(responseText); hideLoader(); }
          }).send();
 		
      });
     <?php endif; ?>
+	
+	
 
 });
 </script>
