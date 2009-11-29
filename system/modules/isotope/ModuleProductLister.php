@@ -468,16 +468,31 @@ class ModuleProductLister extends ModuleIsotopeBase
 				$arrOrderBySQL[] = implode(" ", $row);
 			}
 			
-			$strOrderBySQL = implode(', ', $arrOrderBySQL);
+			foreach($arrOrderBySQL as $row)
+			{
+				$arrRow = explode(" ", $row);
+				
+				switch($arrRow[0])
+				{
+					case 'price':		//Workaround to deal with price field being VARCHAR... check on this with Andreas... should be field type decimal.
+						$arrOrderBySQLWithParentTable[] = "CAST(p." . $arrRow[0] . " AS decimal) " . $arrRow[1];
+						break;
+					default:
+						$arrOrderBySQLWithParentTable[] = "p." . $row;
+						break;
+				}
+			}
+			
+			$strOrderBySQL = implode(', ', $arrOrderBySQLWithParentTable);
 		}
 		
 		$strFilterSQL = (count($arrFilterChunks) ? implode(" AND ", $arrFilterChunks) : NULL);
 		$strSearchSQL = (count($arrSearchChunks) ? implode(" OR ", $arrSearchChunks) : NULL);
 		//$strParams = (count($arrParams) ? implode(",", $arrParams) : NULL);
 		
-//echo "SELECT * FROM tl_product_categories c, tl_product_data p WHERE c.pid=p.id" . ($strFilterSQL ? " AND (" . $strFilterSQL . ")" : "") . " AND c.page_id IN (" . implode(',', $this->arrCategories) . ")" . ($strSearchSQL ? " AND (" . $strSearchSQL . ") : "") . ($strOrderBySQL ? " ORDER BY " . $strOrderBySQL : "");
+		//echo "SELECT p.* FROM tl_product_categories c, tl_product_data p WHERE p.id=c.pid" . ($strFilterSQL ? " AND (" . $strFilterSQL . ")" : "") . " AND c.page_id IN (" . implode(',', $this->arrCategories) . ")" . ($strSearchSQL ? " AND (" . $strSearchSQL . ")" : "") . ($strOrderBySQL ? " ORDER BY " . $strOrderBySQL : "");
 		
-		$objProductIds = $this->Database->prepare("SELECT * FROM tl_product_categories c, tl_product_data p WHERE c.pid=p.id" . ($strFilterSQL ? " AND (" . $strFilterSQL . ")" : "") . " AND c.page_id IN (" . implode(',', $this->arrCategories) . ")" . ($strSearchSQL ? " AND (" . $strSearchSQL . ")" : "") . ($strOrderBySQL ? " ORDER BY " . $strOrderBySQL : ""));
+		$objProductIds = $this->Database->prepare("SELECT p.* FROM tl_product_categories c, tl_product_data p WHERE p.id=c.pid" . ($strFilterSQL ? " AND (" . $strFilterSQL . ")" : "") . " AND c.page_id IN (" . implode(',', $this->arrCategories) . ")" . ($strSearchSQL ? " AND (" . $strSearchSQL . ")" : "") . ($strOrderBySQL ? " ORDER BY " . $strOrderBySQL : ""));
 		
 		// Add pagination
 		if ($this->perPage > 0)
@@ -565,11 +580,11 @@ class ModuleProductLister extends ModuleIsotopeBase
 			switch($strType)
 			{
 				case 'search':
-					$arrReturn['sql'] 		= $strKey . " LIKE ?";
+					$arrReturn['sql'] 		= "p." . $strKey . " LIKE ?";
 					$arrReturn['value'] 	= "%" . $varValue . "%";
 					break;
 				case 'filter':
-					$arrReturn['sql']		= $strKey . "=?";
+					$arrReturn['sql']		= "p." . $strKey . "=?";
 					$arrReturn['value']		= $varValue;
 					break;
 				default:
