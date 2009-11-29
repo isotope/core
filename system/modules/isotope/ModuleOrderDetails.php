@@ -52,8 +52,6 @@ class ModuleOrderDetails extends ModuleIsotopeBase
 	
 	protected function compile()
 	{
-//		print_r($this->Database->execute("SELECT * FROM tl_iso_orders")->fetchAllAssoc());
-
 		global $objPage;
 		
 		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE uniqid=?")->limit(1)->execute($this->Input->get('uid'));
@@ -65,6 +63,8 @@ class ModuleOrderDetails extends ModuleIsotopeBase
 			$this->Template->message = $GLOBALS['TL_LANG']['ERR']['orderNotFound'];
 			return;
 		}
+		
+		$this->Template->setData($objOrder->row());
 		
 		$this->import('Isotope');
 		$this->Isotope->overrideStore($objOrder->store_id);
@@ -124,17 +124,52 @@ class ModuleOrderDetails extends ModuleIsotopeBase
 			);
 		}
 		
-		$this->Template->setData($objOrder->row());
+		
 		$this->Template->items = $arrItems;
 		$this->Template->downloads = $arrAllDownloads;
+		
 		$this->Template->raw = $objOrder->row();
+		
 		$this->Template->date = $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $objOrder->date);
 		$this->Template->time = $this->parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $objOrder->date);
 		$this->Template->datim = $this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $objOrder->date);
+		
 		$this->Template->subTotal = $this->Isotope->formatPriceWithCurrency($objOrder->subTotal);
 		$this->Template->taxTotal = $this->Isotope->formatPriceWithCurrency($objOrder->taxTotal);
 		$this->Template->shippingTotal = $this->Isotope->formatPriceWithCurrency($objOrder->shippingTotal);
 		$this->Template->grandTotal = $this->Isotope->formatPriceWithCurrency($objOrder->grandTotal);
+		
+		$arrSurcharges = array();
+		foreach( deserialize($objOrder->surcharges) as $arrSurcharge )
+		{
+			$arrSurcharges[] = array
+			(
+				'label'			=> $arrSurcharge['label'],
+				'price'			=> $this->Isotope->formatPriceWithCurrency($arrSurcharge['price']),
+				'total_price'	=> $this->Isotope->formatPriceWithCurrency($arrSurcharge['total_price']),
+				'tax_id'		=> $arrSurcharge['tax_id'],
+			);
+		}
+		
+		$this->Template->surcharges = $arrSurcharges;
+		
+		$this->Template->billing_label = 'Rechnungsadresse';
+		$this->Template->billing_address = $this->Isotope->generateAddressString(deserialize($objOrder->billing_address));
+		if (strlen($objOrder->shipping_method))
+		{
+			$arrShippingAddress = deserialize($objOrder->shipping_address);
+			if (!is_array($arrShippingAddress) || $arrShippingAddress['id'] == -1)
+			{
+				$this->Template->has_shipping = false;
+				$this->Template->billing_label = 'Rechnungs & Lieferaddresse';
+			}
+			else
+			{
+				$this->Template->has_shipping = true;
+				$this->Template->shipping_label = 'Lieferadresse';
+				$this->Template->shipping_address = $this->Isotope->generateAddressString($arrShippingAddress);
+			}
+		}
 	}
 }
 

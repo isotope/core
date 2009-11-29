@@ -43,8 +43,6 @@ class Isotope extends Controller
 	
 	public $Store;
 	public $Cart;
-	public $Payment;
-	public $Shipping;
 	
 	
 	/**
@@ -563,7 +561,7 @@ class Isotope extends Controller
 	public function generateAddressString($arrAddress)
 	{
 		if (!is_array($arrAddress) || !count($arrAddress))
-			return '';
+			return $arrAddress;
 		
 		// We need a country to format the address, user default country if none is available
 		if (!strlen($arrAddress['country']))

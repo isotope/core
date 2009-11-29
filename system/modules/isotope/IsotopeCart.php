@@ -188,14 +188,14 @@ class IsotopeCart extends Model
 					break;
 					
 				case 'billingAddress':
-					if (strlen($this->arrCache['billingAddress_id']) && $this->arrCache['billingAddress_id'] > 0)
+					if ($this->arrCache['billingAddress_id'] > 0)
 					{
-						$objAddress = $this->Database->prepare("SELECT * FROM tl_address_book WHERE id=?")->limit(1)->execute($intAddressId);
+						$objAddress = $this->Database->prepare("SELECT * FROM tl_address_book WHERE id=?")->limit(1)->execute($this->arrCache['billingAddress_id']);
 						
 						if ($objAddress->numRows)
 							return $objAddress->fetchAssoc();
 					}
-					elseif (strlen($this->arrCache['billingAddress_id']) && $this->arrCache['billingAddress_id'] == 0 && is_array($this->arrCache['billingAddress_data']))
+					elseif ($this->arrCache['billingAddress_id'] === 0 && is_array($this->arrCache['billingAddress_data']))
 					{
 						return $this->arrCache['billingAddress_data'];
 					}
@@ -207,7 +207,8 @@ class IsotopeCart extends Model
 						if ($objAddress->numRows)
 							return $objAddress->fetchAssoc();
 							
-						return $this->User->getData();
+						// Return the default user data, but ID should be 0 to know that it is a custom/new address
+						return array_merge($this->User->getData(), array('id'=>0));
 					}
 					
 					return array('country' => $this->Isotope->Store->country);
@@ -215,20 +216,20 @@ class IsotopeCart extends Model
 					
 				case 'shippingAddress':
 					if (!strlen($this->arrCache['shippingAddress_id']) || $this->arrCache['shippingAddress_id'] == -1)
-						return $this->billingAddress;
+						return array('id' => -1);
 						
 					if ($this->arrCache['shippingAddress_id'] > 0)
 					{
-						$objAddress = $this->Database->prepare("SELECT * FROM tl_address_book WHERE id=?")->limit(1)->execute($intAddressId);
+						$objAddress = $this->Database->prepare("SELECT * FROM tl_address_book WHERE id=?")->limit(1)->execute($this->arrCache['shippingAddress_id']);
 						
 						if ($objAddress->numRows)
 							return $objAddress->fetchAssoc();
 					}
-					elseif ($this->arrCache['shippingAddress_id'] == 0 && is_array($this->arrCache['shippingAddress_data']))
+					elseif ($this->arrCache['shippingAddress_id'] === 0 && is_array($this->arrCache['shippingAddress_data']))
 					{
 						return $this->arrCache['shippingAddress_data'];
 					}
-					
+
 					if (FE_USER_LOGGED_IN)
 					{
 						$objAddress = $this->Database->prepare("SELECT * FROM tl_address_book WHERE pid=? AND isDefaultShipping='1'")->limit(1)->execute($this->User->id);
@@ -237,7 +238,7 @@ class IsotopeCart extends Model
 							return $objAddress->fetchAssoc();
 					}
 					
-					return $this->billingAddress;
+					return array('id' => -1);
 					break;
 			}
 		}
@@ -251,15 +252,28 @@ class IsotopeCart extends Model
 		switch( $strKey )
 		{
 			case 'billingAddress':
-			case 'shippingAddress':
+			case 'billing_address':
 				if (is_array($varValue))
 				{
-					$this->arrCache[$strKey.'_id'] = 0;
-					$this->arrCache[$strKey.'_data'] = $varValue;
+					$this->arrCache['billingAddress_id'] = 0;
+					$this->arrCache['billingAddress_data'] = $varValue;
 				}
 				else
 				{
-					$this->arrCache[$strKey.'_id'] = $varValue;
+					$this->arrCache['billingAddress_id'] = $varValue;
+				}
+				break;
+
+			case 'shippingAddress':
+			case 'shipping_address':
+				if (is_array($varValue))
+				{
+					$this->arrCache['shippingAddress_id'] = 0;
+					$this->arrCache['shippingAddress_data'] = $varValue;
+				}
+				else
+				{
+					$this->arrCache['shippingAddress_id'] = $varValue;
 				}
 				break;
 			
