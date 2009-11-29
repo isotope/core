@@ -91,7 +91,9 @@ window.addEvent('domready', function() {
 		
 	function getQueryString($perPage)
 	{
-		return '&order_by=' + $('ctrl_order_by').get('value') + '&for=' + $('ctrl_for').get('value') + '&per_page=' + $perPage;
+		var keyword = $('ctrl_for').get('value').toString();
+		
+		return '&order_by=' + $('ctrl_order_by').get('value') + '&for=' + keyword.replace('%', '') + '&per_page=' + $perPage;
 	}
 	
 	function setPage($i)
@@ -129,6 +131,7 @@ window.addEvent('domready', function() {
 				var req = new Request({
 					method: 'get',
 					url: 'ajax.php',
+					urlencoded: true,
 					data: '<?php echo $this->ajaxParams; ?>' + getQueryString($('ctrl_per_page').get('value')) + setPage(pageNum),
 					onRequest: showLoader(),
 					onSuccess: function(responseText, responseXML) { insertProductList(responseText); hideLoader(); }
@@ -155,6 +158,7 @@ window.addEvent('domready', function() {
 			var req = new Request({
 				method: 'get',
 				url: 'ajax.php',
+				urlencoded: true,
 				data: '<?php echo $this->ajaxParams; ?>' + getQueryString(10),
 				onRequest: showLoader(),
 				onSuccess: function(responseText, responseXML) { insertProductList(responseText); hideLoader(); }
@@ -168,6 +172,7 @@ window.addEvent('domready', function() {
          var req = new Request({
              method: 'get',
              url: 'ajax.php',
+			 urlencoded: true,
              data: '<?php echo $this->ajaxParams; ?>' + getQueryString($('ctrl_per_page').get('value')),
              onRequest: showLoader(),
              onSuccess: function(responseText, responseXML) { insertProductList(responseText); hideLoader(); }
@@ -184,6 +189,7 @@ window.addEvent('domready', function() {
          var req = new Request({
              method: 'get',
              url: 'ajax.php',
+			 urlencoded: true,
              data: '<?php echo $this->ajaxParams; ?>' + getQueryString($('ctrl_per_page').get('value')),
              onRequest: showLoader(),
              onSuccess: function(responseText, responseXML) { insertProductList(responseText); hideLoader(); }
@@ -200,6 +206,7 @@ window.addEvent('domready', function() {
 	         var req = new Request({
 	             method: 'get',
 	             url: 'ajax.php',
+				 urlencoded: true,
 	             data: '<?php echo $this->ajaxParams; ?>' + getQueryString($('ctrl_per_page').get('value')),
 	             onRequest: showLoader(),
 	             onSuccess: function(responseText, responseXML) { insertProductList(responseText); hideLoader(); }
@@ -215,6 +222,7 @@ window.addEvent('domready', function() {
          var req = new Request({
              method: 'get',
              url: 'ajax.php',
+			 urlencoded: true,
              data: '<?php echo $this->ajaxParams; ?>' + getQueryString($('ctrl_per_page').get('value')),
              onRequest: showLoader(),
              onSuccess: function(responseText, responseXML) { insertProductList(responseText); hideLoader(); }
