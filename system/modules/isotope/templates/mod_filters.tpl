@@ -89,11 +89,11 @@ window.addEvent('domready', function() {
 		modifyPagination();
 	}
 		
-	function getQueryString()
+	function getQueryString($perPage)
 	{
-		return '&order_by=' + $('ctrl_order_by').get('value') + '&per_page=' + $('ctrl_per_page').get('value') + '&for=' + $('ctrl_for').get('value');
+		return '&order_by=' + $('ctrl_order_by').get('value') + '&for=' + $('ctrl_for').get('value') + '&per_page=' + $perPage;
 	}
-
+	
 	function setPage($i)
 	{
 		
@@ -129,7 +129,7 @@ window.addEvent('domready', function() {
 				var req = new Request({
 					method: 'get',
 					url: 'ajax.php',
-					data: '<?php echo $this->ajaxParams; ?>' + getQueryString() + setPage(pageNum),
+					data: '<?php echo $this->ajaxParams; ?>' + getQueryString($('ctrl_per_page').get('value')) + setPage(pageNum),
 					onRequest: showLoader(),
 					onSuccess: function(responseText, responseXML) { insertProductList(responseText); hideLoader(); }
 				}).send();
@@ -151,10 +151,11 @@ window.addEvent('domready', function() {
 			$('ctrl_for').set('value', '');
 			$('ctrl_per_page').set('value',10);
 			
+			
 			var req = new Request({
 				method: 'get',
 				url: 'ajax.php',
-				data: '<?php echo $this->ajaxParams; ?>',
+				data: '<?php echo $this->ajaxParams; ?>' + getQueryString(10),
 				onRequest: showLoader(),
 				onSuccess: function(responseText, responseXML) { insertProductList(responseText); hideLoader(); }
 			}).send();		
@@ -167,7 +168,7 @@ window.addEvent('domready', function() {
          var req = new Request({
              method: 'get',
              url: 'ajax.php',
-             data: '<?php echo $this->ajaxParams; ?>' + getQueryString(),
+             data: '<?php echo $this->ajaxParams; ?>' + getQueryString($('ctrl_per_page').get('value')),
              onRequest: showLoader(),
              onSuccess: function(responseText, responseXML) { insertProductList(responseText); hideLoader(); }
          }).send();
@@ -183,7 +184,7 @@ window.addEvent('domready', function() {
          var req = new Request({
              method: 'get',
              url: 'ajax.php',
-             data: '<?php echo $this->ajaxParams; ?>' + getQueryString(),
+             data: '<?php echo $this->ajaxParams; ?>' + getQueryString($('ctrl_per_page').get('value')),
              onRequest: showLoader(),
              onSuccess: function(responseText, responseXML) { insertProductList(responseText); hideLoader(); }
          }).send();
@@ -199,7 +200,7 @@ window.addEvent('domready', function() {
 	         var req = new Request({
 	             method: 'get',
 	             url: 'ajax.php',
-	             data: '<?php echo $this->ajaxParams; ?>' + getQueryString(),
+	             data: '<?php echo $this->ajaxParams; ?>' + getQueryString($('ctrl_per_page').get('value')),
 	             onRequest: showLoader(),
 	             onSuccess: function(responseText, responseXML) { insertProductList(responseText); hideLoader(); }
 	         }).send();
@@ -214,7 +215,7 @@ window.addEvent('domready', function() {
          var req = new Request({
              method: 'get',
              url: 'ajax.php',
-             data: '<?php echo $this->ajaxParams; ?>' + getQueryString(),
+             data: '<?php echo $this->ajaxParams; ?>' + getQueryString($('ctrl_per_page').get('value')),
              onRequest: showLoader(),
              onSuccess: function(responseText, responseXML) { insertProductList(responseText); hideLoader(); }
          }).send();
