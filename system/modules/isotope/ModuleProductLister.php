@@ -387,6 +387,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 		$arrSearchClauses = array();
 		$arrOrderByClauses = array();
 		$arrFilterChunks = array();
+		$arrParams = NULL;
 
 		$objTemplate = new FrontendTemplate($this->strTemplate);
 				
@@ -488,10 +489,10 @@ class ModuleProductLister extends ModuleIsotopeBase
 		
 		$strFilterSQL = (count($arrFilterChunks) ? implode(" AND ", $arrFilterChunks) : NULL);
 		$strSearchSQL = (count($arrSearchChunks) ? implode(" OR ", $arrSearchChunks) : NULL);
+		
 		//$strParams = (count($arrParams) ? implode(",", $arrParams) : NULL);
 		
 		//echo "SELECT p.* FROM tl_product_categories c, tl_product_data p WHERE p.id=c.pid" . ($strFilterSQL ? " AND (" . $strFilterSQL . ")" : "") . " AND c.page_id IN (" . implode(',', $this->arrCategories) . ")" . ($strSearchSQL ? " AND (" . $strSearchSQL . ")" : "") . ($strOrderBySQL ? " ORDER BY " . $strOrderBySQL : "");
-		
 		$objProductIds = $this->Database->prepare("SELECT p.* FROM tl_product_categories c, tl_product_data p WHERE p.id=c.pid" . ($strFilterSQL ? " AND (" . $strFilterSQL . ")" : "") . " AND c.page_id IN (" . implode(',', $this->arrCategories) . ")" . ($strSearchSQL ? " AND (" . $strSearchSQL . ")" : "") . ($strOrderBySQL ? " ORDER BY " . $strOrderBySQL : ""));
 		
 		// Add pagination
@@ -581,7 +582,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 			{
 				case 'search':
 					$arrReturn['sql'] 		= "p." . $strKey . " LIKE ?";
-					$arrReturn['value'] 	= "%" . $varValue . "%";
+					$arrReturn['value'] 	= "%%" . $varValue . "%";	//double wildcard necessary to get around vsprintf bug.				
 					break;
 				case 'filter':
 					$arrReturn['sql']		= "p." . $strKey . "=?";
