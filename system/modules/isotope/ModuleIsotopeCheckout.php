@@ -43,16 +43,17 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	
 	protected $strFormId = 'iso_mod_checkout';
 
+
 	/**
 	 * Display a wildcard in the back end
 	 * @return string
 	 */
 	public function generate()
 	{
-		
 		if (TL_MODE == 'BE')
 		{
 			$objTemplate = new BackendTemplate('be_wildcard');
+			
 			$objTemplate->wildcard = '### ISOTOPE CHECKOUT ###';
 			$objTemplate->title = $this->headline;
 			$objTemplate->id = $this->id;
@@ -126,67 +127,64 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		}
 		
 		
-		switch( $this->strCurrentStep )
+		if ($this->strCurrentStep == 'failed')
 		{
-			case 'complete':
-			
-				$varPaymentStatus = $this->Cart->Payment->processPayment();
-				
-				if ($varPaymentStatus === true)
+			$this->Database->prepare("UPDATE tl_iso_orders SET status='failed' WHERE cart_id=?")->execute($this->Cart->id);
+			$this->Template->mtype = 'error';
+			$this->Template->message = strlen($this->Input->get('reason')) ? $this->Input->get('reason') : $GLOBALS['TL_LANG']['ERR']['orderFailed'];
+			$this->strCurrentStep = 'review';
+		}
+		
+		
+		// Run trough all steps until we find the current one or one reports failure
+		foreach( $GLOBALS['ISO_CHECKOUT_STEPS'] as $step => $arrCallbacks )
+		{
+			$strBuffer = '';
+			foreach( $arrCallbacks as $callback )
+			{
+				if ($callback[0] == 'ModuleIsotopeCheckout')
 				{
-					$this->writeOrder(true);
-					$this->redirect($this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($this->orderCompleteJumpTo)->fetchAssoc()));
+					$strBuffer .= $this->{$callback[1]}();
 				}
 				else
 				{
-					$this->writeOrder(false);
-					$this->Template->fields = $varPaymentStatus;
-					$this->Template->showNext = false;
-					$this->Template->showPrevious = false;
+					$this->import($callback[0]);
+					$strBuffer .= $this->{$callback[0]}->{$callback[1]}($this);
 				}
-				break;
 				
-			case 'failed':
-				$this->Database->prepare("UPDATE tl_iso_orders SET status='failed' WHERE cart_id=?")->execute($this->Cart->id);
-				$this->Template->mtype = 'error';
-				$this->Template->message = strlen($this->Input->get('reason')) ? $this->Input->get('reason') : $GLOBALS['TL_LANG']['ERR']['orderFailed'];
-				$this->strCurrentStep = 'review';
-				
-			default:
-				
-				// Run trough all steps until we find the current one or one reports failure
-				foreach( $GLOBALS['ISO_CHECKOUT_STEPS'] as $step => $arrCallbacks )
+				if ($this->doNotSubmit && $step != $this->strCurrentStep)
 				{
-					$strBuffer = '';
-					foreach( $arrCallbacks as $callback )
-					{
-						if ($callback[0] == 'ModuleIsotopeCheckout')
-						{
-							$strBuffer .= $this->{$callback[1]}();
-						}
-						else
-						{
-							$this->import($callback[0]);
-							$strBuffer .= $this->{$callback[0]}->{$callback[1]}($this);
-						}
-						
-						if ($this->doNotSubmit && $step != $this->strCurrentStep)
-						{
-							$this->redirect($this->addToUrl('step=' . $step));
-						}
-					}
-					
-					if ($step == $this->strCurrentStep)
-						break;
+					$this->redirect($this->addToUrl('step=' . $step));
 				}
-				
-				if (!strlen($this->strCurrentStep))
-					$this->strCurrentStep = $step;
-					
-				$this->Template->fields = $strBuffer;
-				
+			}
+			
+			if ($step == $this->strCurrentStep)
 				break;
 		}
+		
+		
+		if ($this->strCurrentStep == 'complete')
+		{
+			$strBuffer = $this->Cart->Payment->processPayment();
+				
+			if ($strBuffer === true)
+			{
+				$strUniqueId = $this->writeOrder(true);
+				$this->redirect($this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($this->orderCompleteJumpTo)->fetchAssoc(), '/uid/'.$strUniqueId));
+			}
+			else
+			{
+				$this->writeOrder(false);
+				$this->Template->showNext = false;
+				$this->Template->showPrevious = false;
+			}
+		}
+		
+		$this->Template->fields = $strBuffer;
+		
+		if (!strlen($this->strCurrentStep))
+			$this->strCurrentStep = $step;
+		
 		
 		// Show checkout steps
 		$arrStepKeys = array_keys($GLOBALS['ISO_CHECKOUT_STEPS']);
@@ -307,34 +305,71 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	
 	protected function getShippingModulesInterface()
 	{
+		$arrModules = array();
 		$arrModuleIds = deserialize($this->iso_shipping_modules);
 		
-		$arrData = $this->Input->post('shipping');
-		
-		$arrData = is_array($arrData) ? $arrData : $_SESSION['FORM_DATA']['shipping'];
-		
-		if (!strlen($arrData['module']))
+		if (is_array($arrModuleIds) && count($arrModuleIds))
+		{
+			$arrData = $this->Input->post('shipping');
+			$objModules = $this->Database->execute("SELECT * FROM tl_shipping_modules WHERE id IN (" . implode(',', $arrModuleIds) . ") AND enabled='1'");
+			
+			while( $objModules->next() )
+			{
+				$strClass = $GLOBALS['ISO_SHIP'][$objModules->type];
+				
+				if (!strlen($strClass) || !$this->classFileExists($strClass))
+					continue;
+				
+				$objModule = new $strClass($objModules->row());
+				
+				if (!$objModule->available)
+					continue;
+					
+				if (is_array($arrData) && $arrData['module'] == $objModule->id)
+	 			{
+	 				$_SESSION['CHECKOUT_DATA']['shipping'] = $arrData;
+	 			}
+	 			
+	 			if (is_array($_SESSION['CHECKOUT_DATA']['shipping']) && $_SESSION['CHECKOUT_DATA']['shipping']['module'] == $objModule->id)
+	 			{
+	 				$this->Cart->Shipping = $objModule;
+	 			}
+				
+				$arrModules[] = sprintf('<input id="ctrl_shipping_module_%s" type="radio" name="shipping[module]" value="%s"%s /> <label for="ctrl_shipping_module_%s">%s: %s</label>%s%s',
+										 $objModule->id,
+										 $objModule->id,
+										 ($this->Cart->Shipping->id == $objModule->id ? ' checked="checked"' : ''),
+										 $objModule->id,
+	 									 $objModule->label,
+	 									 $this->Isotope->formatPriceWithCurrency($objModule->price), 
+	 									 ($objModule->note ? '<div class="clearBoth"></div><br /><div class="shippingNote"><strong>Note:</strong><br />' . $objModule->note . '</div>' : ''),
+	 									 ($objModule->getShippingOptions($objModule->id) ? '<div class="clearBoth"></div><br /><div class="shippingOptions"><strong>Options:</strong><br />' . $objModule->getShippingOptions($objModule->id) . '</div>' : ''));
+	 									 
+	 			$objLastModule = $objModule;
+			}
+		}
+				
+		if(!count($arrModules))
 		{
 			$this->doNotSubmit = true;
-		}
-		else
-		{
-			$_SESSION['FORM_DATA']['shipping'] = $arrData;
-		}
-		
-		$arrShippingMethods = $this->getShippingModules($arrModuleIds, $arrData);
-				
-		if(!count($arrShippingMethods))
-		{
 			$this->Template->showNext = false;
 			return '<i>' . $GLOBALS['TL_LANG']['MSC']['noShippingModules'] . '</i>';
+		}
+		elseif (!$this->Cart->hasShipping && !strlen($_SESSION['CHECKOUT_DATA']['shipping']['module']) && count($arrModules) == 1)
+		{
+			$this->Cart->Shipping = $objLastModule;
+			$_SESSION['CHECKOUT_DATA']['shipping']['module'] = $this->Cart->Shipping->id;
+		}
+		elseif (!$this->Cart->hasShipping)
+		{
+			$this->doNotSubmit = true;
 		}
 
 		$objTemplate = new FrontendTemplate($this->strStepTemplateBaseName . 'shipping_method');
 		
 		$objTemplate->headline = $GLOBALS['TL_LANG']['ISO']['shipping_method'];
 		$objTemplate->message = $GLOBALS['TL_LANG']['ISO']['shipping_method_message'];
-		$objTemplate->shippingMethods = $arrShippingMethods;
+		$objTemplate->shippingMethods = $arrModules;
 		
 		return $objTemplate->parse();	
 	}
@@ -348,7 +383,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		if (is_array($arrModuleIds) && count($arrModuleIds))
 		{
 			$arrData = $this->Input->post('payment');
-			$objModules = $this->Database->execute("SELECT * FROM tl_payment_modules WHERE id IN (" . implode(',', $arrModuleIds) . ")");
+			$objModules = $this->Database->execute("SELECT * FROM tl_payment_modules WHERE id IN (" . implode(',', $arrModuleIds) . ") AND enabled='1'");
 			
 			while( $objModules->next() )
 			{
@@ -386,6 +421,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		if(!count($arrModules))
 		{
 			$this->doNotSubmit = true;
+			$this->Template->showNext = false;
 			return '<i>' . $GLOBALS['TL_LANG']['MSC']['noPaymentModules'] . '</i>';
 		}
 		elseif (!$this->Cart->hasPayment && !strlen($_SESSION['CHECKOUT_DATA']['payment']['module']) && count($arrModules) == 1)
@@ -494,8 +530,8 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		$objTemplate->subTotalPrice = $this->generatePrice($this->Cart->subTotal);
 		$objTemplate->grandTotalPrice = $this->generatePrice($this->Cart->grandTotal, 'stpl_total_price');
 
-		$objTemplate->billingAddress = $this->Isotope->generateAddressString($this->getSelectedAddress('billing'));
-		$objTemplate->shippingAddress = $this->Isotope->generateAddressString($this->getSelectedAddress('shipping'));
+		$objTemplate->billingAddress = $this->Isotope->generateAddressString($this->Cart->billingAddress);
+		$objTemplate->shippingAddress = $this->Cart->shippingAddress['id'] == -1 ? '' : $this->Isotope->generateAddressString($this->Cart->shippingAddress);
 		$objTemplate->shippingMethod = ($this->Cart->hasShipping ? $this->Cart->Shipping->checkoutReview() : '');
 		$objTemplate->paymentMethod = $this->Cart->Payment->checkoutReview();
 		$objTemplate->checkoutForm = $strForm;
@@ -515,55 +551,30 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	 */
 	protected function writeOrder($blnCheckout=false)
 	{
-		$arrBillingAddress = $this->getSelectedAddress('billing');
-		$strBillingAddress = $this->Isotope->generateAddressString($arrBillingAddress);
-		$arrShippingAddress = $this->getSelectedAddress('shipping');
-		$strShippingAddress = $this->Isotope->generateAddressString($arrShippingAddress);		
-		
-		//TODO?  Consider CC_TYPE and CC_CVV?
-		//exit;
-		
-		/*$arrTotals = array
-		(
-			'subTotal'			=> $this->Cart->subTotal, 
-			'taxTotal'			=> $this->Cart->taxTotal, 
-			'shippingTotal'		=> $this->Cart->shippingTotal,
-			'grandTotal'		=> $this->Cart->grandTotal
-		);
-		
-		//$arrShippingData['shipping_options'] = $this->getSelectedShippingOptions(); //TODO - build and store this information.
-		
-		$arrPaymentData['payment_method_id'] = $this->Cart->Payment->id;
-		*/
-		$arrPaymentData['address'] 	= $arrBillingAddress;
-		/*
-		$arrPaymentData['totals'] 	= $arrTotals;	
-		$arrPaymentData['currency'] = $this->Isotope->Store->currency;*/
-
-		$arrShippingData['shipping_method_id'] = $this->Cart->Shipping->id;
-		$arrShippingData['shipping_address'] = $arrShippingAddress;
+		$strUniqueId = uniqid($this->Isotope->Store->orderPrefix, true);
 	
 		$arrSet = array
 		(
 			'pid'					=> (FE_USER_LOGGED_IN ? $this->User->id : 0),
 			'tstamp'				=> time(),
 			'date'					=> time(),
-			'uniqid'				=> uniqid($this->Isotope->Store->orderPrefix, true),
+			'uniqid'				=> $strUniqueId,
 			'store_id'				=> $this->Isotope->Store->id,
 			'cart_id'				=> $this->Cart->id,
 			//'source_cart_id'		=> $this->Cart->id,
+			
 			'subTotal'				=> $this->Cart->subTotal,		// + ($this->Input->post('gift_wrap') ? 10 : 0),		
 			'taxTotal'	 			=> $this->Cart->taxTotal,
 			'shippingTotal'			=> $this->Cart->shippingTotal,
 			'grandTotal'			=> $this->Cart->grandTotal,
-			'shipping_method'		=> ($this->Cart->hasShipping ? $this->Cart->Shipping->label : ''),
-			'payment_method'		=> $this->Cart->Payment->label,
+			'surcharges'			=> $this->Cart->getSurcharges(),
+			
+			'shipping_method'		=> ($this->Cart->hasShipping ? $this->Cart->Shipping->checkoutReview() : ''),
+			'payment_method'		=> $this->Cart->Payment->checkoutReview(),
 			'status'				=> ($blnCheckout ? $this->Cart->Payment->new_order_status : ''),
 			'language'				=> $GLOBALS['TL_LANGUAGE'],
-			'billing_address'		=> $strBillingAddress,
-			'shipping_address'		=> $strShippingAddress,
-			'payment_data'			=> serialize($arrPaymentData),
-			'shipping_data'			=> serialize($arrShippingData),
+			'billing_address'		=> serialize($this->Cart->billingAddress),
+			'shipping_address'		=> serialize($this->Cart->shippingAddress),
 			'currency'				=> $this->Isotope->Store->currency
 		);
 		
@@ -574,7 +585,6 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			$arrSet['cc_exp'] 	= $_SESSION['FORM_DATA']['cc_exp'];
 			$arrSet['cc_type'] = isset($_SESSION['FORM_DATA']['cc_type']) ? $_SESSION['FORM_DATA']['cc_type'] : "";
 			$arrSet['cc_cvv'] = isset($_SESSION['FORM_DATA']['cc_cvv']) ? $_SESSION['FORM_DATA']['cc_cvv'] : "";
-
 		}
 		
 		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=? AND status!='cancelled'")->limit(1)->execute($this->Cart->id);
@@ -603,6 +613,9 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 		if ($blnCheckout)
 		{
+			$strBillingAddress = $this->Isotope->generateAddressString($this->Cart->billingAddress);
+			$strShippingAddress = $this->Cart->shippingAddress['id'] == -1 ? '' : $this->Isotope->generateAddressString($this->Cart->shippingAddress);
+
 			$arrData = array
 			(
 				'order_id'					=> ($this->Isotope->Store->orderPrefix . $orderId),
@@ -616,9 +629,9 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				'cart_text'					=> $this->Cart->getProducts('iso_products_text'),
 				'cart_html'					=> $this->Cart->getProducts('iso_products_html'),
 				'billing_address'			=> $strBillingAddress,
-				'billing_address_html'		=> nl2br($strBillingAddress),
+				'billing_address_text'		=> str_replace('<br />', "\n", $strBillingAddress),
 				'shipping_address'			=> $strShippingAddress,
-				'shipping_address_html'		=> nl2br($strShippingAddress),
+				'shipping_address_text'		=> str_replace('<br />', "\n", $strShippingAddress),
 				'shipping_method'			=> $this->Cart->Shipping->label,
 				'shipping_note'				=> $this->Cart->Shipping->note,
 				'shipping_note_text'		=> strip_tags($this->Cart->Shipping->note),
@@ -627,24 +640,19 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				'payment_note_text'			=> strip_tags($this->Cart->Payment->note),
 			);
 			
-			foreach( $arrBillingAddress as $k => $v )
-			{
-				$arrData['billing_'.$k] = $v;
-			}
-		
 			$this->log('New order ID ' . $orderId . ' has been placed', 'ModuleIsotopeCheckout writeOrder()', TL_ACCESS);
 			$salesEmail = $this->iso_sales_email ? $this->iso_sales_email : $GLOBALS['TL_ADMIN_EMAIL'];
 			$this->Isotope->sendMail($this->iso_mail_admin, $salesEmail, $GLOBALS['TL_LANGUAGE'], $arrData);
-			$this->Isotope->sendMail($this->iso_mail_customer, $arrBillingAddress['email'], $GLOBALS['TL_LANGUAGE'], $arrData);
+			$this->Isotope->sendMail($this->iso_mail_customer, $this->Cart->billingAddress['email'], $GLOBALS['TL_LANGUAGE'], $arrData);
 			
 			$this->copyCartItems($this->Cart->id, $orderId);
 			
 			$this->Cart->delete();
-			unset($_SESSION['FORM_DATA']);
+			unset($_SESSION['CHECKOUT_DATA']);
 			unset($_SESSION['isotope']);
 		}
 		
-		return ($this->Isotope->Store->orderPrefix . $orderId);
+		return $strUniqueId;
 	}
 	
 	/** 
@@ -693,83 +701,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		}
 	}
 	
-	protected function getShippingModules($arrModuleIds, $arrData)
-	{
-		if (!is_array($arrModuleIds) || !count($arrModuleIds))
-			return array();
-			
-		$arrModules = array();
-		$objModules = $this->Database->execute("SELECT * FROM tl_shipping_modules WHERE id IN (" . implode(',', $arrModuleIds) . ") AND enabled='1'");
-		
-		while( $objModules->next() )
-		{
-			$strClass = $GLOBALS['ISO_SHIP'][$objModules->type];
-			
-			if (!strlen($strClass) || !$this->classFileExists($strClass))
-			{
-				continue;	
-			}
-			
-			$objModule = new $strClass($objModules->row());
-			
-			switch($objModule->type)
-			{
-				case 'flat':
-					$fltShippingCost = $objModule->price;
-					break;
-				case 'order_total':
-					//$arrProducts = $this->Cart->getProducts();
-				
-					$fltEligibleSubTotal = $objModule->getAdjustedSubTotal($this->Cart->subTotal);
-				
-					if($fltEligibleSubTotal>0)
-					{
-						$fltShippingCost = $objModule->calculateShippingRate($objModule->id, $fltEligibleSubTotal);
-					}else{
-						
-						$blnNoShippingApplicable = true;
-					}
-					break;
-				default:
-					break;	//TODO insert hook for different methods of calculation.
-					
-			}
-			
-			
-			if (!$objModule->available)
-				continue;
-			
-			
-			if($blnNoShippingApplicable)
-			{
-				$arrModules[] = sprintf('<input id="ctrl_shipping_module_%s" type="radio" name="shipping[module]" value="%s"%s /> <label for="ctrl_shipping_module_%s">%s: %s</label>',
-										$objModule->id,
-										$objModule->id,
-										' checked="checked"',
-										$objModule->id,
-										'Shipping Exempt',
-										$GLOBALS['TL_LANG']['MSC']['noItemsEligibleForShipping']
-									   );			
-			}
-			else
-			{
-				$arrModules[] = sprintf('<input id="ctrl_shipping_module_%s" type="radio" name="shipping[module]" value="%s"%s /> <label for="ctrl_shipping_module_%s">%s: %s</label>%s%s',
-										 $objModule->id,
-										 $objModule->id,
-										 (($arrData['module'] == $objModule->id || $objModules->numRows==1) ? ' checked="checked"' : ''),
-										 $objModule->id,
-	 									 $objModule->label,
-	 									 $this->Isotope->formatPriceWithCurrency($fltShippingCost), 
-	 									 ($objModule->note ? '<div class="clearBoth"></div><br /><div class="shippingNote"><strong>Note:</strong><br />' . $objModule->note . '</div>' : null),
-	 									 ($objModule->getShippingOptions($objModule->id) ? '<div class="clearBoth"></div><br /><div class="shippingOptions"><strong>Options:</strong><br />' . $objModule->getShippingOptions($objModule->id) . '</div>' : null));
-			}
- 			
-		}
-				
-		return $arrModules;
-	}
-	
-	
+/*
 	protected function getSelectedAddress($strStep = 'billing')
 	{
 
@@ -836,14 +768,12 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				
 		return $arrAddress;
 	}
+*/
 		
 	
 	
 	protected function generateAddressWidget($field)
 	{
-		$this->loadLanguageFile('tl_address_book');
-		$this->loadDataContainer('tl_address_book');
-		
 		$strBuffer = '';
 		$arrOptions = array();
 		
@@ -861,36 +791,14 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 					'value'		=> $objAddress->id,
 					'label'		=> $this->Isotope->generateAddressString($objAddress->row()),
 				);
-				
-				if ($objAddress->isDefaultBilling)
-				{
-					$intDefaultBillingId = $objAddress->id;
-				}
-				
-				if ($objAddress->isDefaultShipping)
-				{
-					$intDefaultShippingId = $objAddress->id;
-				}
 			}
 		}
 		
 		switch($field)
 		{
-			case 'billing_address':
-				$intDefaultValue = ($intDefaultBillingId ? $intDefaultBillingId : 0);
-				
-				if (FE_USER_LOGGED_IN)
-				{
-					$arrOptions[] = array
-					(
-						'value'	=> 0,
-						'label' => &$GLOBALS['TL_LANG']['createNewAddressLabel'],
-					);
-				}
-				break;
-			
 			case 'shipping_address':
-				$intDefaultValue = ($intDefaultShippingId ? $intDefaultShippingId : -1);
+				$arrAddress = $_SESSION['CHECKOUT_DATA'][$field] ? $_SESSION['CHECKOUT_DATA'][$field] : $this->Cart->shippingAddress;
+				$intDefaultValue = $arrAddress['id'] ? $arrAddress['id'] : 0;
 				
 				array_insert($arrOptions, 0, array(array
 				(
@@ -905,8 +813,20 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				);
 
 				break;
-		
+				
+			case 'billing_address':
 			default:
+				$arrAddress = $_SESSION['CHECKOUT_DATA'][$field] ? $_SESSION['CHECKOUT_DATA'][$field] : $this->Cart->billingAddress;
+				$intDefaultValue = $arrAddress['id'] ? $arrAddress['id'] : 0;
+				
+				if (FE_USER_LOGGED_IN)
+				{
+					$arrOptions[] = array
+					(
+						'value'	=> 0,
+						'label' => &$GLOBALS['TL_LANG']['createNewAddressLabel'],
+					);
+				}
 				break;
 		}
 	
@@ -914,22 +834,34 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		{
 			$strClass = $GLOBALS['TL_FFL']['radio'];
 			
-			$objWidget = new $strClass($this->prepareForWidget($arrData, $field, (strlen($_SESSION['FORM_DATA'][$field]) ? $_SESSION['FORM_DATA'][$field] : $intDefaultValue)));
+			$objWidget = new $strClass(array('id'=>$field, 'name'=>$field, 'required'=>true));
 			$objWidget->options = $arrOptions;
+			$objWidget->value = $intDefaultValue;
 			$objWidget->onclick = "Isotope.toggleAddressFields(this, '" . $field . "_new');";
 					
 			$objWidget->storeValues = true;
 
 			// Validate input
-			if ($this->Input->post('FORM_SUBMIT') == $this->strFormId)
+			if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && strlen($this->Input->post($field)))
 			{
 				$objWidget->validate();
-				$varValue = $objWidget->value;
 				
-				$_SESSION['FORM_DATA'][$field] = $varValue;
+				if ($objWidget->hasErrors())
+				{
+					$this->doNotSubmit = true;
+				}
+				else
+				{
+					$_SESSION['CHECKOUT_DATA'][$field]['id'] = $objWidget->value;
+				}
 			}
 			
 			$strBuffer .= $objWidget->parse();
+		}
+		
+		if (strlen($_SESSION['CHECKOUT_DATA'][$field]['id']))
+		{
+			$this->Cart->$field = $_SESSION['CHECKOUT_DATA'][$field]['id'];
 		}
 		
 		$strBuffer .= '<div id="' . $field . '_new"' . (((!FE_USER_LOGGED_IN && $field == 'billing_address') || $objWidget->value == 0) ? '' : ' style="display:none">');
@@ -937,7 +869,6 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		$strBuffer .= '</div>';
 		
 		return $strBuffer;
-
 	}
 	
 	
@@ -945,45 +876,27 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	 * Generate the current step widgets.
 	 * strResourceTable is used either to load a DCA or else to gather settings related to a given DCA.
 	 */
-	protected function getCurrentStepWidgets($strResourceTable, $strAddressField, $blnLoadDataContainer = true, $arrFieldData = null)
-	{	
+	protected function getCurrentStepWidgets($strResourceTable, $strAddressField)
+	{
 		$objTemplate = new FrontendTemplate('fields_insert');
-						
-		if($blnLoadDataContainer)
-		{
-			$this->loadLanguageFile($strResourceTable);
-			$this->loadDataContainer($strResourceTable);
-			
-			$arrStepFields = array();
-			
-			foreach( $this->Isotope->Store->address_fields as $strField )
-			{
-				if (!isset($GLOBALS['TL_DCA'][$strResourceTable]['fields'][$strField]))
-					continue;
-					
-				$arrStepFields[$strField] = $GLOBALS['TL_DCA'][$strResourceTable]['fields'][$strField];
-			}
-		}
-		else
-		{
-			//Get static temp dca info to proceed with widget generation
-			$arrStepFields = array(); //Which will be another DCA defined somewhere.
-		}
+		
+		$this->loadLanguageFile($strResourceTable);
+		$this->loadDataContainer($strResourceTable);
+		
+		$arrAddress = array('id'=>0);
 
-		foreach($arrStepFields as $field => $arrData)
+		foreach( $this->Isotope->Store->address_fields as $field )
 		{
+			$arrData = $GLOBALS['TL_DCA'][$strResourceTable]['fields'][$field];
+			
+			if (!is_array($arrData))
+				continue;
+			
 			$strClass = $GLOBALS['TL_FFL'][$arrData['inputType']];
 			
 			// Continue if the class is not defined
-			if (!$this->classFileExists($strClass) || !$arrData['eval']['isoEditable'] || !sizeof($arrData['eval']['isoCheckoutGroups']))
-			{
+			if (!$this->classFileExists($strClass) || !$arrData['eval']['isoEditable'] || !count($arrData['eval']['isoCheckoutGroups']) || !in_array($strAddressField, $arrData['eval']['isoCheckoutGroups']))
 				continue;
-			}
-			
-			if(sizeof($arrData['eval']['isoCheckoutGroups']) && !in_array($strAddressField, $arrData['eval']['isoCheckoutGroups']))
-			{
-				continue;
-			}
 			
 			// Special field "country"
 			if ($field == 'country')
@@ -994,13 +907,13 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				$arrData['default'] = $this->Isotope->Store->country;
 			}
 
-			$objWidget = new $strClass($this->prepareForWidget($arrData, $strAddressField . '_' . $field, (strlen($_SESSION['FORM_DATA'][$strAddressField . '_' . $field]) ? $_SESSION['FORM_DATA'][$strAddressField . '_' . $field] : (strlen($this->User->$field) ? $this->User->$field : $arrData['default']))));
+			$objWidget = new $strClass($this->prepareForWidget($arrData, $strAddressField . '_' . $field, (strlen($_SESSION['CHECKOUT_DATA'][$strAddressField][$field]) ? $_SESSION['CHECKOUT_DATA'][$strAddressField][$field] : (strlen($this->User->$field) ? $this->User->$field : $arrData['default']))));
 			
 			$objWidget->storeValues = true;
 			$objWidget->rowClass = 'row_'.$i . (($i == 0) ? ' row_first' : '') . ((($i % 2) == 0) ? ' even' : ' odd');
 			
 			// Validate input
-			if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && $this->Input->post($strAddressField) == 0)//$strResourceTable . '_' . $this->id)
+			if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && $this->Input->post($strAddressField) === '0')
 			{
 				$objWidget->validate();
 				
@@ -1022,30 +935,21 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				// Store current value
 				elseif ($objWidget->submitInput())
 				{
-					$_SESSION['FORM_DATA'][$strAddressField . '_' . $field] = $varValue;
+					$arrAddress[$field] = $varValue;
 				}
 			}
 
-/*
-			if ($objWidget instanceof uploadable)
-			{
-				$hasUpload = true;
-			}
-*/
-
-			$temp = $objWidget->parse();
-				
-			$fields .= $temp;
-			$arrFields[$field] .= $temp;
-			$objTemplate->fields .= $temp;
-
-//			$this->Session->setData($this->arrSession);
+			$objTemplate->fields .= $objWidget->parse();
 		}
 		
-		// Redirect or reload if there was no error
-		if ($this->Input->post('FORM_SUBMIT') == $strResourceTable . '_' . $this->id && !$this->doNotSubmit)
+		if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && $this->Input->post($strAddressField) === '0' && !$this->doNotSubmit)
 		{
-			//$this->jumpToOrReload($this->jumpTo);
+			$_SESSION['CHECKOUT_DATA'][$strAddressField] = $arrAddress;
+		}
+		
+		if ($_SESSION['CHECKOUT_DATA'][$strAddressField] && strlen($_SESSION['CHECKOUT_DATA'][$strAddressField]['id']) && $_SESSION['CHECKOUT_DATA'][$strAddressField]['id'] == 0)
+		{
+			$this->Cart->$strAddressField = $_SESSION['CHECKOUT_DATA'][$strAddressField];
 		}
 
 		return $objTemplate->parse();	

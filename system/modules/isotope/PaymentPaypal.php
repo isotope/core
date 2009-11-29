@@ -41,9 +41,24 @@ class PaymentPaypal extends Payment
 	 */
 	public function processPayment()
 	{
-		return true;
+		$this->import('IsotopeCart', 'Cart');
+		
+		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=? AND status!='cancelled'")->limit(1)->execute($this->Cart->id);
+		
+		$arrData = deserialize($objOrder->payment_data, true);
+		
+		if (strlen($arrData['status']) && $arrData['status'] == 'Completed')
+		{
+			return true;
+		}
+		
 		// Reload page every 5 seconds and check if payment was successful
-//		$GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="5,http://...">';
+		$GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="5,' . $this->Environment->url . '/' . $this->Environment->request . '">';
+		
+		$objTemplate = new FrontendTemplate('mod_message');
+		$objTemplate->type = 'processing';
+		$objTemplate->message = 'Your PayPal payment is being processed. Please be patient...';
+		return $objTemplate->parse();
 	}
 	
 	
@@ -80,20 +95,20 @@ class PaymentPaypal extends Payment
 			$this->loadLanguageFile('default');
 			
 			// Load / initialize data
-			$arrSet = array();
-			if (!is_array($arrSet['payment_data'] = deserialize($objOrder->payment_data))) $arrSet['payment_data'] = array();
+			$arrPayment = deserialize($objOrder->payment_data, true);
 			
 			// Store request data in order for future references
-			$arrSet['payment_data']['POSTSALE'][] = $_POST;
+			$arrPayment['POSTSALE'][] = $_POST;
 			
 			
 			$arrData = $objOrder->row();
-			$arrData['old_payment_status'] = $GLOBALS['TL_LANG']['MSC']['payment_status_labels'][$arrSet['payment_data']['status']];
+			$arrData['old_payment_status'] = $GLOBALS['TL_LANG']['MSC']['payment_status_labels'][$arrPayment['status']];
 			
-			$arrSet['payment_data']['status'] = $this->Input->post('payment_status');
+			$arrPayment['status'] = $this->Input->post('payment_status');
+			$arrData['new_payment_status'] = $GLOBALS['TL_LANG']['MSC']['payment_status_labels'][$arrPayment['status']];
 			
 			// array('pending','processing','shipped','complete','on_hold', 'cancelled'),
-			switch( $this->Input->post('payment_status') )
+			switch( $arrPayment['status'] )
 			{
 				case 'Completed':
 					break;
@@ -103,7 +118,7 @@ class PaymentPaypal extends Payment
 				case 'Expired':
 				case 'Failed':
 				case 'Voided':
-					$arrSet['status'] = 'cancelled';
+					$this->Database->prepare("UPDATE tl_iso_orders SET status=? WHERE id=?")->execute('cancelled', $objOrder->id);
 					break;
 					
 				case 'In-Progress':
@@ -115,9 +130,7 @@ class PaymentPaypal extends Payment
 					break;
 			}
 			
-			$this->Database->prepare("UPDATE tl_iso_orders %s WHERE id=?")->set($arrSet)->execute($objOrder->id);
-			
-			$arrData['new_payment_status'] = $GLOBALS['TL_LANG']['MSC']['payment_status_labels'][$arrSet['payment_data']['status']];
+			$this->Database->prepare("UPDATE tl_iso_orders SET payment_data=? WHERE id=?")->execute(serialize($arrPayment), $objOrder->id);
 			
 			if ($this->postsale_mail)
 			{
@@ -164,7 +177,6 @@ class PaymentPaypal extends Payment
 <input type="hidden" name="button_subtype" value="services">
 <input type="hidden" name="return" value="' . $this->Environment->url . '/' . $this->addToUrl('step=complete') . '">
 <input type="hidden" name="cancel_return" value="' . $this->Environment->url . '/' . $this->addToUrl('step=failed') . '">
-<input type="hidden" name="rm" value="0">
 <input type="hidden" name="invoice" value="' . $objOrder->order_id . '">
 <input type="hidden" name="notify_url" value="' . $this->Environment->base . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id . '">
 <input type="hidden" name="bn" value="PP-BuyNowBF:btn_paynowCC_LG.gif:NonHosted">

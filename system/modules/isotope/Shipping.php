@@ -102,10 +102,14 @@ abstract class Shipping extends Frontend
 				
 				if (($this->minimum_total > 0 && $this->minimum_total > $this->Cart->subTotal) || ($this->minimum_total > 0 && $this->maximum_total < $this->Cart->subTotal))
 					return false;
-									
+				
 				$arrCountries = deserialize($this->countries);
+				
+				$arrAddress = $this->Cart->shippingAddress;
+				if ($arrAddress['id'] == -1)
+					$arrAddress = $this->Cart->billingAddress;
 
-				if(count($arrCountries) && !in_array($this->Cart->shippingAddress['country'], $arrCountries))
+				if(count($arrCountries) && !in_array($arrAddress['country'], $arrCountries))
 					return false;
 					
 				return true;

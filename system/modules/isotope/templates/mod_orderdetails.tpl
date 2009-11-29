@@ -11,14 +11,16 @@ Bestellung vom: <?php echo $this->datim; ?><br />
 </div>
 
 <div class="billing">
-<h2>Rechnungsadresse</h2>
-<?php echo nl2br($this->billing_address); ?>
+<h2><?php echo $this->billing_label; ?></h2>
+<?php echo $this->billing_address; ?>
 </div>
 
+<?php if ($this->has_shipping): ?>
 <div class="shipping">
-<h2>Lieferadresse</h2>
-<?php echo nl2br($this->shipping_address); ?>
+<h2><?php echo $this->shipping_label; ?></h2>
+<?php echo $this->shipping_address; ?>
 </div>
+<?php endif; ?>
 
 <h2>Bestellungsübersicht</h2>
 <table cellspacing="0" cellpadding="0" summary="Order items">
@@ -38,25 +40,13 @@ Bestellung vom: <?php echo $this->datim; ?><br />
 			<td>&nbsp;</td>
 			<td><?php echo $this->subTotal; ?></td>
 		</tr>
-<!--
+<?php if (is_array($this->surcharges)): foreach( $this->surcharges as $surcharge ): ?>
 		<tr>
-			<td colspan="4">Admin. Gebühren</td>
-			<td>2.5 %</td>
-			<td>CHF 3.15</td>
+			<td colspan="4"><?php echo $surcharge['label']; ?></td>
+			<td><?php echo $surcharge['price']; ?></td>
+			<td><?php echo $surcharge['total_price']; ?></td>
 		</tr>
--->
-		<tr class="shippingTotal">
-			<td colspan="4">Lieferkosten</td>
-			<td>&nbsp;</td>
-			<td><?php echo $this->shippingTotal; ?></td>
-		</tr>
-<!--
-		<tr>
-			<td colspan="4">Enthaltene Steuern</td>
-			<td>7.6 %</td>
-			<td><?php echo $this->taxTotal; ?></td>
-		</tr>
--->
+<?php endforeach; endif; ?>
 		<tr class="grandTotal">
 			<td colspan="4">Gesamtsumme</td>
 			<td>&nbsp;</td>
