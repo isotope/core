@@ -59,7 +59,7 @@ class ModuleOrderHistory extends ModuleIsotopeBase
 	
 	protected function compile()
 	{
-		$objOrders = $this->Database->prepare("SELECT *, (SELECT COUNT(*) FROM tl_iso_order_items WHERE pid=tl_iso_orders.id) AS items FROM tl_iso_orders WHERE pid=? AND store_id IN (" . implode(',', $this->store_ids) . ")")->execute($this->User->id);
+		$objOrders = $this->Database->prepare("SELECT *, (SELECT COUNT(*) FROM tl_iso_order_items WHERE pid=tl_iso_orders.id) AS items FROM tl_iso_orders WHERE status!='' AND pid=? AND store_id IN (" . implode(',', $this->store_ids) . ")")->execute($this->User->id);
 		
 		// No orders found, just display an "empty" message
 		if (!$objOrders->numRows)
