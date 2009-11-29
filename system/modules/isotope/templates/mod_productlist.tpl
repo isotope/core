@@ -4,10 +4,6 @@
 <<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
 <?php endif; ?>
 
-<form action="<?php echo $this->action; ?>" method="post">
-<input type="hidden" name="lastPage" id="ctrl_last_page" value="<?php echo $this->lastPage; ?>" />
-</form>
-
 <div id="product_list">
 <?php foreach( $this->products as $product ): ?>
 <?php if($product['clear']): ?>
@@ -23,8 +19,7 @@
 <div class="clear"></div>
 </div>
 <?php endforeach; ?>
-</div>
 
 <?php echo $this->pagination; ?>
-
+</div>
 </div>

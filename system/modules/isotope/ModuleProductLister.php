@@ -193,7 +193,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 		{
 			$arrBuffer[count($arrBuffer)-1]['class'] .= ' product_last';
 		}
-		
+
 		$this->Template->action = ampersand($this->Environment->request, true);
 		$this->Template->formId = $this->strFormId;
 		$this->Template->buttons = $arrButtons;
@@ -485,7 +485,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 			$total = $objProductIds->execute($arrParams)->numRows;
 			$page = $this->currentPage ? $this->currentPage : 1;
 			$offset = ($page - 1) * $this->perPage;
-			$fltLastPage = $total / $this->perPage;
+
 			$objPagination = new Pagination($total, $this->perPage);
 			$objTemplate->pagination = $objPagination->generate("\n  ");
 			
@@ -540,7 +540,6 @@ class ModuleProductLister extends ModuleIsotopeBase
 			$arrBuffer[count($arrBuffer)-1]['class'] .= ' product_last';
 		}
 		
-		$objTemplate->lastPage = round($fltLastPage,0);
 		$objTemplate->action = $this->Environment->base;
 		$objTemplate->formId = $this->strFormId;
 		$objTemplate->buttons = $arrButtons;
