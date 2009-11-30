@@ -79,6 +79,11 @@ class ModuleOrderDetails extends ModuleIsotopeBase
 		
 		while( $objItems->next() )
 		{
+			$objProduct = unserialize($objItems->product_data);
+			
+			if (!is_object($objProduct))
+				continue;
+			
 			if ($objItems->downloads_allowed/* && $objItems->has_downlaods > 0*/)
 			{
 				$arrDownloads = array();
@@ -115,16 +120,17 @@ class ModuleOrderDetails extends ModuleIsotopeBase
 			(
 				'raw'			=> $objItems->row(),
 				'downloads'		=> (is_array($arrDownloads) ? $arrDownloads : array()),
-				'sku'			=> $objItems->sku,
-				'name'			=> $objItems->name,
+				'name'			=> $objProduct->name,
 				'quantity'		=> $objItems->quantity_sold,
-				'price'			=> $this->Isotope->formatPriceWithCurrency($objItems->price),
-				'total'			=> $this->Isotope->formatPriceWithCurrency(($objItems->price * $objItems->quantity_sold)),
+				'price'			=> $this->Isotope->formatPriceWithCurrency($objProduct->price),
+				'total'			=> $this->Isotope->formatPriceWithCurrency(($objProduct->price * $objItems->quantity_sold)),
 				'href'			=> ($this->jumpTo ? $this->generateFrontendUrl($arrPage, '/product/'.$objItems->alias) : ''),
+				'tax_id'		=> $objProduct->tax_id,
 			);
 		}
 		
 		
+		$this->Template->info = deserialize($objOrder->checkout_info);
 		$this->Template->items = $arrItems;
 		$this->Template->downloads = $arrAllDownloads;
 		
@@ -134,9 +140,7 @@ class ModuleOrderDetails extends ModuleIsotopeBase
 		$this->Template->time = $this->parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $objOrder->date);
 		$this->Template->datim = $this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $objOrder->date);
 		
-		$this->Template->subTotal = $this->Isotope->formatPriceWithCurrency($objOrder->subTotal);
-		$this->Template->taxTotal = $this->Isotope->formatPriceWithCurrency($objOrder->taxTotal);
-		$this->Template->shippingTotal = $this->Isotope->formatPriceWithCurrency($objOrder->shippingTotal);
+		$this->Template->subTotalPrice = $this->Isotope->formatPriceWithCurrency($objOrder->subTotal);
 		$this->Template->grandTotal = $this->Isotope->formatPriceWithCurrency($objOrder->grandTotal);
 		
 		$arrSurcharges = array();

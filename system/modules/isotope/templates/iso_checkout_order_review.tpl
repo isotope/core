@@ -3,24 +3,13 @@
 <h2><?php echo $this->headline; ?></h2>
 <p><?php echo $this->message; ?></p>
 
-<div class="billing_address">
-	<h3>Billing<?php echo strlen($this->shippingAddress) ? '' : ' & Shipping'; ?> Address</h3>
-	<?php echo $this->billingAddress; ?>
+<?php foreach( $this->info as $type => $data ): ?>
+<div class="info_container <?php echo $type . $data['class']; ?>">
+	<h3><?php echo $data['headline']; ?></h3>
+	<div class="info"><?php echo $data['info']; ?></div>
 </div>
-<?php if (strlen($this->shippingAddress)): ?>
-<div class="shipping_address">
-	<h3>Shipping Address</h3>
-	<?php echo $this->shippingAddress; ?>
-</div>
-<?php endif; ?>
-<div class="shipping_method">
-	<h3>Shipping Method</h3>
-	<?php echo $this->shippingMethod; ?>
-</div>
-<div class="payment_method">
-	<h3>Payment Method</h3>
-	<?php echo $this->paymentMethod; ?>
-</div>
+<?php endforeach; ?>
+<div class="clear">&nbsp;</div>
 
 <table cellpadding="0" cellspacing="0" summary="Shopping Cart">
 <tfoot>
