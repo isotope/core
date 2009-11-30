@@ -29,7 +29,7 @@
  * Palettes
  */
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][]			= 'iso_checkout_method';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductLister']			= '{title_legend},name,headline,type;{display_legend},perPage,columns,iso_list_format,iso_show_teaser;{config_legend},iso_use_quantity,iso_category_scope,iso_jump_first,new_products_time_window,featured_products,listing_filters;{redirect_legend},iso_reader_jumpTo;{template_legend:hide},iso_list_layout;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductLister']			= '{title_legend},name,headline,type;{display_legend},perPage,columns,iso_list_format,iso_show_teaser;{config_legend},iso_use_quantity,iso_category_scope,iso_jump_first,new_products_time_window,featured_products;{redirect_legend},iso_reader_jumpTo;{template_legend:hide},iso_list_layout;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductReader']			= '{title_legend},name,headline,type;{config_legend},iso_use_quantity;{template_legend:hide},iso_reader_layout;guests,protected;align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoShoppingCart']			= '{title_legend},name,headline,type;iso_cart_layout,iso_forward_cart;guests,protected;align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoAddressBook']			= '{title_legend},name,headline,type;align,space,cssID';
@@ -71,7 +71,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_use_quantity'] = array
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_use_quantity'],
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
-	'eval'					  => array('tl_class'=>'w50')
+	'eval'					  => array()
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_checkout_method'] = array
@@ -365,6 +365,9 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_disableFilterAjax'] = array
 	'inputType'               => 'checkbox',
 	'eval'					  => array('tl_class'=>'w50')
 );
+
+
+
 /**
  * tl_module_isotope class.
  * 
