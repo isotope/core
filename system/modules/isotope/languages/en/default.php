@@ -248,12 +248,13 @@ $GLOBALS['TL_LANG']['ISO']['checkout_address']				= 'Address';
 $GLOBALS['TL_LANG']['ISO']['checkout_shipping']				= 'Shipping';
 $GLOBALS['TL_LANG']['ISO']['checkout_payment']				= 'Payment';
 $GLOBALS['TL_LANG']['ISO']['checkout_review']				= 'Review';
-$GLOBALS['TL_LANG']['ISO']['shipping_address']		= 'Shipping Information';
-$GLOBALS['TL_LANG']['ISO']['billing_address']		= 'Billing Information';
-$GLOBALS['TL_LANG']['ISO']['shipping_method']		= 'Shipping Method';
-$GLOBALS['TL_LANG']['ISO']['payment_method']		= 'Payment Method';
-$GLOBALS['TL_LANG']['ISO']['order_conditions']		= 'Order Conditions';
-$GLOBALS['TL_LANG']['ISO']['order_review']			= 'Order Review';
+$GLOBALS['TL_LANG']['ISO']['billing_address']				= 'Billing Address';
+$GLOBALS['TL_LANG']['ISO']['shipping_address']				= 'Shipping Address';
+$GLOBALS['TL_LANG']['ISO']['billing_shipping_address']		= 'Billing & Shipping Address';
+$GLOBALS['TL_LANG']['ISO']['shipping_method']				= 'Shipping Method';
+$GLOBALS['TL_LANG']['ISO']['payment_method']				= 'Payment Method';
+$GLOBALS['TL_LANG']['ISO']['order_conditions']				= 'Order Conditions';
+$GLOBALS['TL_LANG']['ISO']['order_review']					= 'Order Review';
 
 
 

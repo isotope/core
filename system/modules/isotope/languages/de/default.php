@@ -73,7 +73,7 @@ $GLOBALS['TL_LANG']['MSC']['shippingLabel'] = 'Versandkosten';
 $GLOBALS['TL_LANG']['MSC']['taxLabel'] = 'Enthaltene MwSt: ';
 
 $GLOBALS['TL_LANG']['MSC']['noPaymentModules'] = 'Zur Zeit sind keine Zahlungsoptionen verfügbar.';
-$GLOBALS['TL_LANG']['MSC']['noShippingModules'] = 'Zur Zeit sind keine Versandoptionen verfügbar.';
+$GLOBALS['TL_LANG']['MSC']['noShippingModules'] = 'Leider können die Produkte zur Zeit nicht in Ihr Land geliefert werden. Bitte wählen Sie eine andere Lieferadresse oder nur Artikel die nicht versendet werden müssen (z.B. Download-Artikel).';
 
 //Invoice language Entries
 $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] = 'Bestellung';
@@ -122,6 +122,7 @@ $GLOBALS['TL_LANG']['ISO']['checkout_payment']			= 'Bezahlung';
 $GLOBALS['TL_LANG']['ISO']['checkout_review']			= 'Überprüfung';
 $GLOBALS['TL_LANG']['ISO']['billing_address']			= 'Rechnungsadresse';
 $GLOBALS['TL_LANG']['ISO']['shipping_address']			= 'Versandadresse';
+$GLOBALS['TL_LANG']['ISO']['billing_shipping_address']	= 'Rechnungs- und Versandadresse';
 $GLOBALS['TL_LANG']['ISO']['shipping_method']			= 'Versandmethode';
 $GLOBALS['TL_LANG']['ISO']['payment_method']			= 'Zahlungsart';
 $GLOBALS['TL_LANG']['ISO']['order_conditions']			= 'AGB akzeptieren';
