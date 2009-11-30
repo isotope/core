@@ -493,13 +493,13 @@ class IsotopeCart extends Model
 	 * @param	object
 	 * @return	void
 	 */
-	public function addProduct($objProduct, $objModule)
+	public function addProduct($objProduct, $objModule=null)
 	{
 		$arrSet = array
 		(
 			'pid'					=> $this->id,
 			'tstamp'				=> time(),
-			'quantity_requested'	=> (($objModule->iso_use_quantity && intval($this->Input->post('quantity_requested')) > 0) ? intval($this->Input->post('quantity_requested')) : 1),
+			'quantity_requested'	=> ((is_object($objModule) && $objModule->iso_use_quantity && intval($this->Input->post('quantity_requested')) > 0) ? intval($this->Input->post('quantity_requested')) : 1),
 			'price'					=> $objProduct->{$this->Isotope->Store->priceField},
 			'href_reader'			=> $objProduct->href_reader,
 			'product_id'			=> $objProduct->id,
