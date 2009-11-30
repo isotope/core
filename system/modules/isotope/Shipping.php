@@ -104,12 +104,8 @@ abstract class Shipping extends Frontend
 					return false;
 				
 				$arrCountries = deserialize($this->countries);
-				
-				$arrAddress = $this->Cart->shippingAddress;
-				if ($arrAddress['id'] == -1)
-					$arrAddress = $this->Cart->billingAddress;
 
-				if(count($arrCountries) && !in_array($arrAddress['country'], $arrCountries))
+				if(count($arrCountries) && !in_array($this->Cart->shippingAddress['country'], $arrCountries))
 					return false;
 					
 				return true;
