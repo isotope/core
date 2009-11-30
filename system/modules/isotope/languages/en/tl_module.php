@@ -62,8 +62,8 @@ $GLOBALS['TL_LANG']['tl_module']['iso_orderByFields']			= array('Enabled order b
 $GLOBALS['TL_LANG']['tl_module']['iso_searchFields']			= array('Enabled search fields','Please select search fields to enable.');
 $GLOBALS['TL_LANG']['tl_module']['iso_enableLimit']				= array('Enable per-page limiting','Allow the user to select the number of records to show per page.');
 $GLOBALS['TL_LANG']['tl_module']['iso_listingModules']			= array('Listing modules','Please choose one or more listing modules this filter module will work with.');
-
-
+$GLOBALS['TL_LANG']['tl_module']['iso_enableSearch']			= array('Enable search','Please check this if you would like to enable product search.');
+$GLOBALS['TL_LANG']['tl_module']['iso_disableFilterAjax']		= array('Disable filter AJAX','Please check this if you would prefer not to use the AJAX filtering functionality.');
 /**
  * References
  */

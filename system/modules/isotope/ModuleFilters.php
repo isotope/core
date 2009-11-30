@@ -75,24 +75,24 @@ class ModuleFilters extends ModuleIsotopeBase
 		$arrAjaxParams[] = 'action=fmd';
 		$arrAjaxParams[] = 'id=' . $arrListingModules[0];
 		
-		if($this->Input->get('per_page'))
+		if($this->getRequestData('per_page'))
 		{
-			$arrAjaxParams[] = 'per_page=' . $this->Input->get('per_page');
+			$arrAjaxParams[] = 'per_page=' . $this->getRequestData('per_page');
 		}
 		
-		if($this->Input->get('page'))
+		if($this->getRequestData('page'))
 		{
-			$arrAjaxParams[] = 'page='.$this->Input->get('page');
+			$arrAjaxParams[] = 'page='.$this->getRequestData('page');
 		}
 		
-		if($this->Input->get('order_by'))
+		if($this->getRequestData('order_by'))
 		{
-			$arrAjaxParams[] = 'order_by='.$this->Input->get('order_by');
+			$arrAjaxParams[] = 'order_by='.$this->getRequestData('order_by');
 		}
 		
-		if($this->Input->get('for'))
+		if($this->getRequestData('for'))
 		{
-			$arrAjaxParams[] = 'for='.$this->Input->get('for');
+			$arrAjaxParams[] = 'for='.$this->getRequestData('for');
 		}
 		
 		$arrAjaxParams[] = 'rid='.$objPage->rootId;
@@ -102,9 +102,9 @@ class ModuleFilters extends ModuleIsotopeBase
 		{
 			foreach($arrFilterFields as $filter)
 			{
-				if($this->Input->get($filter))
+				if($this->getRequestData($filter))
 				{
-					$arrAjaxParams[] = $filter .'='. $this->Input->get($filter);
+					$arrAjaxParams[] = $filter .'='. $this->getRequestData($filter);
 				}
 			}
 		}
@@ -162,22 +162,27 @@ class ModuleFilters extends ModuleIsotopeBase
 		$arrLoaderImage['path'] = $strImage;
 		$arrLoaderImage['width'] = $arrImageSize[0];
 		$arrLoaderImage['height'] = $arrImageSize[1];
-		$this->Template->enableAjax = true; //$this->iso_enableFilterAjax;
-		$this->Template->searchable = true; //$this->iso_enableSearch;
+	
+		$arrCleanUrl = explode('?', $this->Environment->request);
+	
+		$this->Template->disableAjax = $this->iso_disableFilterAjax;
+		$this->Template->searchable = $this->iso_enableSearch;
 		$this->Template->ajaxLoaderImage = $arrLoaderImage;
 		$this->Template->ajaxParams = $strAjaxParams;
 		$this->Template->perPage = $this->iso_enableLimit;
 		$this->Template->limit = $arrLimit;
 		$this->Template->filters = $arrFilters;	
 		$this->Template->action = $this->Environment->request;
+		$this->Template->baseUrl = $arrCleanUrl[0];
 		$this->Template->orderBy = $arrOrderByOptions;
-		$this->Template->order_by = $this->Input->get('order_by');
-		$this->Template->per_page = ($this->Input->get('per_page') ? $this->Input->get('per_page') : 10);
-		$this->Template->page = ($this->Input->get('page') ? $this->Input->get('page') : 1);
-		$this->Template->for = $this->Input->get('for');
+		$this->Template->order_by = $this->getRequestData('order_by');
+		$this->Template->per_page = ($this->getRequestData('per_page') ? $this->getRequestData('per_page') : 10);
+		$this->Template->page = ($this->getRequestData('page') ? $this->getRequestData('page') : 1);
+		$this->Template->for = $this->getRequestData('for');
 		$this->Template->perPageLabel = $GLOBALS['TL_LANG']['MSC']['perPage'];
 		$this->Template->keywordsLabel = $GLOBALS['TL_LANG']['MSC']['searchTerms'];
 		$this->Template->searchLabel = $GLOBALS['TL_LANG']['MSC']['search'];
+		$this->Template->submitLabel = $GLOBALS['TL_LANG']['MSC']['labelSubmit'];
 		$this->Template->clearLabel = $GLOBALS['TL_LANG']['MSC']['clearFilters'];
 	}
 	

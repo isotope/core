@@ -43,7 +43,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['isoCheckoutboth']			= '{title_legen
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoOrderHistory']			= '{title_legend},name,headline,type;{config_legend},store_ids;{redirect_legend},jumpTo;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoOrderDetails']			= '{title_legend},name,headline,type;{redirect_legend},jumpTo;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoStoreSwitcher']			= '{title_legend},name,headline,type;{config_legend},store_ids;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoFilterModule']			= '{title_legend},name,headline,type;{config_legend},iso_listingModules,iso_enableLimit,iso_filterFields,iso_orderByFields,iso_searchFields;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoFilterModule']			= '{title_legend},name,headline,type;{config_legend},iso_listingModules,iso_enableLimit,iso_enableSearch,iso_disableFilterAjax,iso_filterFields,iso_orderByFields,iso_searchFields;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 //{template_legend:hide},iso_filter_layout; not right now... filters are widgets that are generated.
 
 /**
@@ -350,7 +350,21 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_listingModules'] = array
 	'options_callback'		  => array('tl_module_isotope','getListingModules')
 );
 
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_enableSearch'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_enableSearch'],
+	'exclude'                 => true,
+	'inputType'               => 'checkbox',
+	'eval'					  => array('tl_class'=>'w50')
+);
 
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_disableFilterAjax'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_disableFilterAjax'],
+	'exclude'                 => true,
+	'inputType'               => 'checkbox',
+	'eval'					  => array('tl_class'=>'w50')
+);
 /**
  * tl_module_isotope class.
  * 

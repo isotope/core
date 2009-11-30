@@ -37,14 +37,20 @@ class ModuleProductLister extends ModuleIsotopeBase
 	
 	protected $strFormId = 'iso_product_list';
 
-	
 	protected $strPriceOverrideTemplate = 'stpl_price_override';
-       
+
+	protected $strOrderBySQL;
+	
+	protected $strFilterSQL;
+	
+	protected $strSearchSQL;
+	
+	protected $arrParams;		     
 	
 	/**
 	 * The ids of all pages we take care of. this is what should later be used eg. for filter data.
 	 */
-	protected $arrCategories;
+	protected $arrCategories = array();
         
         
 	/**
@@ -67,26 +73,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 		
 		global $objPage;
 		
-		//Determine category scope
-		switch($this->iso_category_scope)
-		{
-			case 'global':
-				 $this->arrCategories = array_merge($this->getChildRecords($objPage->rootId, 'tl_page'), array($objPage->rootId));
-				break;
-				
-			case 'parent_and_first_child':
-				$this->arrCategories = array_merge($this->Database->prepare("SELECT id FROM tl_page WHERE pid=?")->execute($objPage->id)->fetchEach('id'), array($objPage->id));
-				break;
-				
-			case 'parent_and_all_children':
-				$this->arrCategories = array_merge($this->getChildRecords($objPage->id, 'tl_page'), array($objPage->id));				
-				break;
-				
-			default:
-			case 'current_category':
-				$this->arrCategories = array($objPage->id);
-				break;		
-		}
+		$this->arrCategories = $this->setCategories($this->iso_category_scope, $objPage->rootId, $objPage->id);	
 		
 		if (!count($this->arrCategories))
 			return '';
@@ -100,18 +87,36 @@ class ModuleProductLister extends ModuleIsotopeBase
 	 */
 	protected function compile()
 	{
+		if($this->getRequestData('clear'))
+		{
+			$arrFilters = array();
+		}
+		else
+		{
+			$arrFilters = array('for'=>$this->getRequestData('for'),'per_page'=>$this->getRequestData('per_page'),'page'=>$this->getRequestData('page'),'order_by'=>$this->getRequestData('order_by'));	
 		
-		$this->perPage = ($this->Input->get('per_page') ? $this->Input->get('per_page') : 10);
-		$this->orderBy = $this->Input->get('order_by');
-		$this->searchTerms = $this->Input->get('for');
+			/*$arrFilterFields = implode(',', $this->Input->get('filters'));	//get the names of filters we are using
+	
+			foreach($arrFilterFields as $field)
+			{
+				if($this->Input->get($field))
+				{
+					$arrFilters[$field] = $this->Input->get($field);
+				}
+			}*/
+						
+			$this->perPage = ($this->getRequestData('per_page') ? $this->getRequestData('per_page') : 10);
+								
+			$this->setFilterSQL($arrFilters);
+		}
 		
-		$objProductIds = $this->Database->prepare("SELECT * FROM tl_product_categories c, tl_product_data p WHERE c.pid=p.id AND c.page_id IN (" . implode(',', $this->arrCategories) . ")");
+		$objProductIds = $this->Database->prepare("SELECT p.* FROM tl_product_categories c, tl_product_data p WHERE p.id=c.pid" . ($this->strFilterSQL ? " AND (" . $this->strFilterSQL . ")" : "") . " AND c.page_id IN (" . implode(',', $this->arrCategories) . ")" . ($this->strSearchSQL ? " AND (" . $this->strSearchSQL . ")" : "") . ($this->strOrderBySQL ? " ORDER BY " . $this->strOrderBySQL : ""));
 		
 		// Add pagination
 		if ($this->perPage > 0)
 		{
-			$total = $objProductIds->execute()->numRows;
-			$page = $this->Input->get('page') ? $this->Input->get('page') : 1;
+			$total = $objProductIds->execute($this->arrParams)->numRows;
+			$page = $this->getRequestData('page') ? $this->getRequestData('page') : 1;
 			$offset = ($page - 1) * $this->perPage;
 
 			$objPagination = new Pagination($total, $this->perPage);
@@ -120,7 +125,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 			$objProductIds->limit($this->perPage, $offset);
 		}
 		
-		$arrProducts = $this->getProducts($objProductIds->execute()->fetchEach('id'));
+		$arrProducts = $this->getProducts($objProductIds->execute($this->arrParams)->fetchEach('id'));
 				
 		if (!is_array($arrProducts) || !count($arrProducts))
 		{
@@ -353,64 +358,13 @@ class ModuleProductLister extends ModuleIsotopeBase
 	
 	}
 	
-	public function generateAjax()
+	protected function setFilterSQL($arrFilters)
 	{
-		
-		 
-		//get the default params
-		$arrFilters = array('for'=>$this->Input->get('for'),'per_page'=>$this->Input->get('per_page'),'page'=>$this->Input->get('page'),'order_by'=>$this->Input->get('order_by'));	
-
-
-		/*$arrFilterFields = implode(',', $this->Input->get('filters'));	//get the names of filters we are using
-
-		foreach($arrFilterFields as $field)
-		{
-			if($this->Input->get($field))
-			{
-				$arrFilters[$field] = $this->Input->get($field);
-			}
-		}*/	
-
-		$strHtml = $this->generateListing($arrFilters);
-
-		return $strHtml;
-	}
-
-	/**
-	 * Generate the listing template in html to update the listing results
-	 * @var array $arrFilters
-	 * @return string
-	 */
-	protected function generateListing($arrFilters)
-	{				
 		$arrFilterClauses = array();
 		$arrSearchClauses = array();
 		$arrOrderByClauses = array();
 		$arrFilterChunks = array();
-		$arrParams = NULL;
-
-		$objTemplate = new FrontendTemplate($this->strTemplate);
-				
-		//Determine category scope
-		switch($this->iso_category_scope)
-		{
-			case 'global':
-				 $this->arrCategories = array_merge($this->getChildRecords($this->Input->get('rid'), 'tl_page'), array($this->Input->get('rid')));
-				break;
-				
-			case 'parent_and_first_child':
-				$this->arrCategories = array_merge($this->Database->prepare("SELECT id FROM tl_page WHERE pid=?")->execute($this->Input->get('pid'))->fetchEach('id'), array($this->Input->get('pid')));
-				break;
-				
-			case 'parent_and_all_children':
-				$this->arrCategories = array_merge($this->getChildRecords($this->Input->get('pid'), 'tl_page'), array($this->Input->get('pid')));				
-				break;
-				
-			default:
-			case 'current_category':
-				$this->arrCategories = array($this->Input->get('pid'));
-				break;		
-		}
+		$arrOrderBySQLWithParentTable = array();
 		
 		foreach($arrFilters as $filter=>$value)
 		{
@@ -448,7 +402,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 			foreach($arrFilterClauses as $param)
 			{
 				$arrFilterChunks[] = $param['sql'];
-				$arrParams[] = $param['value'];
+				$this->arrParams[] = $param['value'];
 			}
 		}	
 
@@ -457,7 +411,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 			foreach($arrSearchClauses as $param)
 			{
 				$arrSearchChunks[] = $param['sql'];
-				$arrParams[] = $param['value'];
+				$this->arrParams[] = $param['value'];
 			}
 		}	
 
@@ -471,34 +425,103 @@ class ModuleProductLister extends ModuleIsotopeBase
 			
 			foreach($arrOrderBySQL as $row)
 			{
-				$arrRow = explode(" ", $row);
-				
-				switch($arrRow[0])
+				if(strlen($row))
 				{
-					case 'price':		//Workaround to deal with price field being VARCHAR... check on this with Andreas... should be field type decimal.
-						$arrOrderBySQLWithParentTable[] = "CAST(p." . $arrRow[0] . " AS decimal) " . $arrRow[1];
-						break;
-					default:
-						$arrOrderBySQLWithParentTable[] = "p." . $row;
-						break;
+					$arrRow = explode(" ", $row);
+					
+					switch($arrRow[0])
+					{
+						case 'price':		//Workaround to deal with price field being VARCHAR... check on this with Andreas... should be field type decimal.
+							$arrOrderBySQLWithParentTable[] = "CAST(p." . $arrRow[0] . " AS decimal) " . $arrRow[1];
+							break;
+						default:
+							$arrOrderBySQLWithParentTable[] = "p." . $row;
+							break;
+					}
 				}
 			}
 			
-			$strOrderBySQL = implode(', ', $arrOrderBySQLWithParentTable);
+			$this->strOrderBySQL = implode(', ', $arrOrderBySQLWithParentTable);
 		}
 		
-		$strFilterSQL = (count($arrFilterChunks) ? implode(" AND ", $arrFilterChunks) : NULL);
-		$strSearchSQL = (count($arrSearchChunks) ? implode(" OR ", $arrSearchChunks) : NULL);
+		$this->strFilterSQL = (count($arrFilterChunks) ? implode(" AND ", $arrFilterChunks) : NULL);
+		$this->strSearchSQL = (count($arrSearchChunks) ? implode(" OR ", $arrSearchChunks) : NULL);
+
+	}
+	
+	protected function setCategories($strScope, $intRootId = 0, $intPageId = 0)
+	{
+		$arrCategories = array();
+		
+		//Determine category scope
+		switch($strScope)
+		{
+			case 'global':
+				 $arrCategories = array_merge($this->getChildRecords($intRootId, 'tl_page'), array($intRootId));
+				break;
+				
+			case 'parent_and_first_child':
+				$arrCategories = array_merge($this->Database->prepare("SELECT id FROM tl_page WHERE pid=?")->execute($intPageId)->fetchEach('id'), array($intPageId));
+				break;
+				
+			case 'parent_and_all_children':
+				$arrCategories = array_merge($this->getChildRecords($intPageId, 'tl_page'), array($intPageId));				
+				break;
+				
+			default:
+			case 'current_category':
+				$arrCategories = array($intPageId);
+				break;		
+		}
+		
+		return $arrCategories;
+	}
+	
+	public function generateAjax()
+	{
+		
+		 
+		//get the default params
+		$arrFilters = array('for'=>$this->Input->get('for'),'per_page'=>$this->Input->get('per_page'),'page'=>$this->Input->get('page'),'order_by'=>$this->Input->get('order_by'));	
+
+
+		/*$arrFilterFields = implode(',', $this->Input->get('filters'));	//get the names of filters we are using
+
+		foreach($arrFilterFields as $field)
+		{
+			if($this->Input->get($field))
+			{
+				$arrFilters[$field] = $this->Input->get($field);
+			}
+		}*/	
+
+		$strHtml = $this->generateAJAXListing($arrFilters);
+
+		return $strHtml;
+	}
+
+	/**
+	 * Generate the listing template in html to update the listing results
+	 * @var array $arrFilters
+	 * @return string
+	 */
+	protected function generateAJAXListing($arrFilters)
+	{				
+		$objTemplate = new FrontendTemplate($this->strTemplate);
+		
+		$this->arrCategories = $this->setCategories($this->iso_category_scope, $this->getRequestData('rid'), $this->getRequestData('pid'));		
+		
+		$this->setFilterSQL($arrFilters);
 		
 		//$strParams = (count($arrParams) ? implode(",", $arrParams) : NULL);
 		
-		//echo "SELECT p.* FROM tl_product_categories c, tl_product_data p WHERE p.id=c.pid" . ($strFilterSQL ? " AND (" . $strFilterSQL . ")" : "") . " AND c.page_id IN (" . implode(',', $this->arrCategories) . ")" . ($strSearchSQL ? " AND (" . $strSearchSQL . ")" : "") . ($strOrderBySQL ? " ORDER BY " . $strOrderBySQL : "");
-		$objProductIds = $this->Database->prepare("SELECT p.* FROM tl_product_categories c, tl_product_data p WHERE p.id=c.pid" . ($strFilterSQL ? " AND (" . $strFilterSQL . ")" : "") . " AND c.page_id IN (" . implode(',', $this->arrCategories) . ")" . ($strSearchSQL ? " AND (" . $strSearchSQL . ")" : "") . ($strOrderBySQL ? " ORDER BY " . $strOrderBySQL : ""));
+		//echo "SELECT p.* FROM tl_product_categories c, tl_product_data p WHERE p.id=c.pid" . ($this->strFilterSQL ? " AND (" . $this->strFilterSQL . ")" : "") . " AND c.page_id IN (" . implode(',', $this->arrCategories) . ")" . ($this->strSearchSQL ? " AND (" . $this->strSearchSQL . ")" : "") . ($this->strOrderBySQL ? " ORDER BY " . $this->strOrderBySQL : "");
+		$objProductIds = $this->Database->prepare("SELECT p.* FROM tl_product_categories c, tl_product_data p WHERE p.id=c.pid" . ($this->strFilterSQL ? " AND (" . $this->strFilterSQL . ")" : "") . " AND c.page_id IN (" . implode(',', $this->arrCategories) . ")" . ($this->strSearchSQL ? " AND (" . $this->strSearchSQL . ")" : "") . ($this->strOrderBySQL ? " ORDER BY " . $this->strOrderBySQL : ""));
 		
 		// Add pagination
 		if ($this->perPage > 0)
 		{
-			$total = $objProductIds->execute($arrParams)->numRows;
+			$total = $objProductIds->execute($this->arrParams)->numRows;
 			$page = $this->currentPage ? $this->currentPage : 1;
 			$offset = ($page - 1) * $this->perPage;
 
@@ -508,7 +531,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 			$objProductIds->limit($this->perPage, $offset);
 		}
 		
-		$arrProducts = $this->getProducts($objProductIds->execute($arrParams)->fetchEach('id'));
+		$arrProducts = $this->getProducts($objProductIds->execute($this->arrParams)->fetchEach('id'));
 				
 		if (!is_array($arrProducts) || !count($arrProducts))
 		{
