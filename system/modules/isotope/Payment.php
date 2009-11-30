@@ -97,7 +97,7 @@ abstract class Payment extends Frontend
 					return false;
 					
 				$arrShippings = deserialize($this->shipping_modules);
-				if (is_array($arrShippings) && (!$_SESSION['FORM_DATA']['shipping']['module'] && !in_array(0, $arrShippings)) && !in_array($_SESSION['FORM_DATA']['shipping']['module'], $arrShippings))
+				if (is_array($arrShippings) && (!$this->Cart->hasShipping && !in_array(0, $arrShippings)) && ($this->Cart->hasShipping && !in_array($this->Cart->Shipping->id, $arrShippings)))
 					return false;
 					
 				$arrTypes = deserialize($this->product_types);
