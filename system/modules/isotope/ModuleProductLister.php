@@ -105,8 +105,8 @@ class ModuleProductLister extends ModuleIsotopeBase
 				}
 			}*/
 						
-			$this->perPage = ($this->getRequestData('per_page') ? $this->getRequestData('per_page') : 10);
-								
+			$this->perPage = ($this->getRequestData('per_page') ? $this->getRequestData('per_page') : $this->perPage);
+							
 			$this->setFilterSQL($arrFilters);
 		}
 		

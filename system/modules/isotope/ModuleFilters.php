@@ -167,16 +167,16 @@ class ModuleFilters extends ModuleIsotopeBase
 	
 		$this->Template->disableAjax = $this->iso_disableFilterAjax;
 		$this->Template->searchable = $this->iso_enableSearch;
+		$this->Template->perPage = $this->iso_enableLimit;
 		$this->Template->ajaxLoaderImage = $arrLoaderImage;
 		$this->Template->ajaxParams = $strAjaxParams;
-		$this->Template->perPage = $this->iso_enableLimit;
 		$this->Template->limit = $arrLimit;
 		$this->Template->filters = $arrFilters;	
 		$this->Template->action = $this->Environment->request;
 		$this->Template->baseUrl = $arrCleanUrl[0];
 		$this->Template->orderBy = $arrOrderByOptions;
 		$this->Template->order_by = $this->getRequestData('order_by');
-		$this->Template->per_page = ($this->getRequestData('per_page') ? $this->getRequestData('per_page') : 10);
+		$this->Template->per_page = ($this->getRequestData('per_page') ? $this->getRequestData('per_page') : '');
 		$this->Template->page = ($this->getRequestData('page') ? $this->getRequestData('page') : 1);
 		$this->Template->for = $this->getRequestData('for');
 		$this->Template->perPageLabel = $GLOBALS['TL_LANG']['MSC']['perPage'];
