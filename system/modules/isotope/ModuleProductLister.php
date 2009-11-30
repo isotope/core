@@ -109,12 +109,15 @@ class ModuleProductLister extends ModuleIsotopeBase
 							
 			$this->setFilterSQL($arrFilters);
 		}
-		
+
 		$objProductIds = $this->Database->prepare("SELECT p.* FROM tl_product_categories c, tl_product_data p WHERE p.id=c.pid" . ($this->strFilterSQL ? " AND (" . $this->strFilterSQL . ")" : "") . " AND c.page_id IN (" . implode(',', $this->arrCategories) . ")" . ($this->strSearchSQL ? " AND (" . $this->strSearchSQL . ")" : "") . ($this->strOrderBySQL ? " ORDER BY " . $this->strOrderBySQL : ""));
+		
+		
 		
 		// Add pagination
 		if ($this->perPage > 0)
 		{
+			
 			$total = $objProductIds->execute($this->arrParams)->numRows;
 			$page = $this->getRequestData('page') ? $this->getRequestData('page') : 1;
 			$offset = ($page - 1) * $this->perPage;
@@ -368,33 +371,35 @@ class ModuleProductLister extends ModuleIsotopeBase
 		
 		foreach($arrFilters as $filter=>$value)
 		{
-			switch($filter)
+			if($value)
 			{
-				
-				case 'order_by':
-					$arrOrderByClauses[] = explode('-', $value);
-					break;
-				case 'per_page':
-					//prepare per-page limit
-					$this->perPage = $value;
-					break;
-				case 'page':
-					$this->currentPage = $value;
-					break;
-				case 'for':
-					//prepare clause for text search. TODO:  need to add filter for each std. search field plus any additional user-defined.
-					$arrSearchFields = array('name','description');
+				switch($filter)
+				{
 					
-					foreach($arrSearchFields as $field)
-					{
-						$arrSearchClauses[] = $this->addFilter($value, $field, 'search');
-					}
-					break;
-				default:
-					$arrFilterClauses[] = $this->addFilter($value, $filter, 'filter');
-					break;
-			}
+					case 'order_by':
+						$arrOrderByClauses[] = explode('-', $value);
+						break;
+					case 'per_page':
+						//prepare per-page limit
+						$this->perPage = $value;
+						break;
+					case 'page':
+						$this->currentPage = $value;
+						break;
+					case 'for':
+						//prepare clause for text search. TODO:  need to add filter for each std. search field plus any additional user-defined.
+						$arrSearchFields = array('name','description');
 						
+						foreach($arrSearchFields as $field)
+						{
+							$arrSearchClauses[] = $this->addFilter($value, $field, 'search');
+						}
+						break;
+					default:
+						$arrFilterClauses[] = $this->addFilter($value, $filter, 'filter');
+						break;
+				}
+			}						
 		}
 		
 		if(count($arrFilterClauses[0]))
