@@ -10,58 +10,48 @@
 Bestellung vom: <?php echo $this->datim; ?><br />
 </div>
 
-<div class="billing">
-<h2><?php echo $this->billing_label; ?></h2>
-<?php echo $this->billing_address; ?>
+<?php foreach( $this->info as $type => $data ): ?>
+<div class="info_container <?php echo $type . $data['class']; ?>">
+	<h3><?php echo $data['headline']; ?></h3>
+	<div class="info"><?php echo $data['info']; ?></div>
 </div>
+<?php endforeach; ?>
+<div class="clear">&nbsp;</div>
 
-<?php if ($this->has_shipping): ?>
-<div class="shipping">
-<h2><?php echo $this->shipping_label; ?></h2>
-<?php echo $this->shipping_address; ?>
-</div>
-<?php endif; ?>
-
-<h2>Bestellungsübersicht</h2>
 <table cellspacing="0" cellpadding="0" summary="Order items">
-	<thead>
-		<tr>
-			<th>Pos.</th>
-			<th>Artikelnummer</th>
-			<th>Name</th>
-			<th>Anzahl</th>
-			<th>Einzelpreis</th>
-			<th>Gesamtpreis</th>
-		</tr>
-	</thead>
 	<tfoot>
-		<tr class="subTotal">
-			<td colspan="4">Zwischensumme</td>
-			<td>&nbsp;</td>
-			<td><?php echo $this->subTotal; ?></td>
+		<tr class="subtotal foot_first">
+			<td class="col_first">&nbsp;</td>
+			<td class="name" colspan="2"><?php echo $this->subTotalLabel; ?></td>
+			<td class="price">&nbsp;</td>
+			<td class="price total"><?php echo $this->subTotalPrice; ?></td>
+			<td class="col_last tax">&nbsp;</td>
 		</tr>
 <?php if (is_array($this->surcharges)): foreach( $this->surcharges as $surcharge ): ?>
 		<tr>
-			<td colspan="4"><?php echo $surcharge['label']; ?></td>
-			<td><?php echo $surcharge['price']; ?></td>
-			<td><?php echo $surcharge['total_price']; ?></td>
+			<td class="col_first">&nbsp;</td>
+			<td class="name" colspan="2"><?php echo $surcharge['label']; ?></td>
+			<td class="price"><?php echo $surcharge['price']; ?></td>
+			<td class="price total"><?php echo $surcharge['total_price']; ?></td>
+			<td class="col_last tax"><?php echo $surcharge['tax_id']; ?></td>
 		</tr>
 <?php endforeach; endif; ?>
-		<tr class="grandTotal">
-			<td colspan="4">Gesamtsumme</td>
-			<td>&nbsp;</td>
-			<td><?php echo $this->grandTotal; ?></td>
+		<tr class="grandtotal foot_last">
+			<td class="col_first">&nbsp;</td>
+			<td class="name" colspan="2">Gesamtsumme</td>
+			<td class="price total" colspan="2"><?php echo $this->grandTotal; ?></td>
+			<td class="col_last tax">&nbsp;</td>
 		</tr>
 	</tfoot>
 	<tbody>
-<?php foreach( $this->items as $i => $item ): ?>
+<?php foreach( $this->items as $item ): ?>
 		<tr>
-			<td><?php echo $i; ?></td>
-			<td><?php echo $item['sku']; ?></td>
-			<td><?php if (strlen($item['href'])): ?><a href="<?php echo $item['href']; ?>"><?php endif; echo $item['name']; if (strlen($item['href'])): ?></a><?php endif; ?></td>
-			<td><?php echo $item['quantity']; ?></td>
-			<td><?php echo $item['price']; ?></td>
-			<td><?php echo $item['total']; ?></td>
+			<td class="col_0 col_first"><?php echo $item['sku']; ?></td>
+			<td class="col_1 name"><?php if (strlen($item['href'])): ?><a href="<?php echo $item['href']; ?>"><?php endif; echo $item['name']; if (strlen($item['href'])): ?></a><?php endif; ?></td>
+			<td class="col_2 quantity"><?php echo $item['quantity']; ?></td>
+			<td class="col_3 price"><?php echo $item['price']; ?></td>
+			<td class="col_4 price total"><?php echo $item['total']; ?></td>
+	    	<td class="col_5 col_last tax"><?php echo $product['tax_id']; ?></td>
 		</tr>
 <?php endforeach; ?>
 	</tbody>
