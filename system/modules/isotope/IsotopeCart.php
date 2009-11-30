@@ -215,8 +215,8 @@ class IsotopeCart extends Model
 					break;
 					
 				case 'shippingAddress':
-					if (!strlen($this->arrCache['shippingAddress_id']) || $this->arrCache['shippingAddress_id'] == -1)
-						return array('id' => -1);
+					if ($this->arrCache['shippingAddress_id'] == -1)
+						return array_merge($this->billingAddress, array('id' => -1));
 						
 					if ($this->arrCache['shippingAddress_id'] > 0)
 					{
@@ -238,7 +238,7 @@ class IsotopeCart extends Model
 							return $objAddress->fetchAssoc();
 					}
 					
-					return array('id' => -1);
+					return array_merge($this->billingAddress, array('id' => -1));
 					break;
 			}
 		}
