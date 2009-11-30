@@ -5,7 +5,7 @@
     <?php endif; ?>
     
     <div class="formbody">
-        <form id="filterForm" action="<?php echo $this->action; ?>" method="<?php echo (!$this->disableAjax ? "get" : "post"); ?>">
+        <form id="filterForm" action="<?php echo $this->action; ?>" method="<?php echo (!$this->disableAjax ? "get" : "post"); ?>">            
             <?php if($this->orderBy): ?>
                 <div class="filter_order_by">
                     <select name="order_by" id="ctrl_order_by" class="select">
@@ -23,10 +23,11 @@
                 </div>
             <?php endif; ?>
             
-            <?php if ($this->perPage): ?>
+            <?php if ($this->perPage): ?>            	
                 <div class="filter_per_page">
                 <label for="ctrl_per_page" class="invisible"><?php echo $this->perPageLabel; ?></label>
                 <select name="per_page" id="ctrl_per_page" class="select">
+                  <option value=""<?php echo (!$this->per_page ? " selected" : ""); ?>>-</option>
                 <?php foreach($this->limit as $row): ?>
                   <option value="<?php echo $row; ?>"<?php if ($this->per_page == $row): ?> selected="selected"<?php endif; ?>><?php echo $row; ?></option>
                 <?php endforeach; ?>
@@ -157,7 +158,7 @@ window.addEvent('domready', function() {
 				method: 'get',
 				url: 'ajax.php',
 				urlencoded: true,
-				data: '<?php echo $this->ajaxParams; ?>' + getQueryString(10),
+				data: '<?php echo $this->ajaxParams; ?>' + getQueryString(<?php echo $this->per_page; ?>),
 				onRequest: showLoader(),
 				onSuccess: function(responseText, responseXML) { insertProductList(responseText); hideLoader(); }
 			}).send();		
