@@ -143,7 +143,7 @@ var Isotope =
 		}
 
 		Backend.getScrollOffset();
-	},
+	}
 };
 
 
