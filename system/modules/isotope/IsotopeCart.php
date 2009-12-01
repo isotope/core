@@ -580,24 +580,27 @@ class IsotopeCart extends Model
 				$arrTaxIds = array();
 				$arrTax = $this->Isotope->calculateTax($objProduct->tax_class, $objProduct->total_price);
 				
-				foreach ($arrTax as $k => $tax)
+				if (is_array($arrTax))
 				{
-					if (array_key_exists($k, $arrTaxes))
+					foreach ($arrTax as $k => $tax)
 					{
-						$arrTaxes[$k]['total_price'] += $tax['total_price'];
-						
-						if (is_numeric($arrTaxes[$k]['price']) && is_numeric($tax['price']))
+						if (array_key_exists($k, $arrTaxes))
 						{
-							$arrTaxes[$k]['price'] += $tax['price'];
+							$arrTaxes[$k]['total_price'] += $tax['total_price'];
+							
+							if (is_numeric($arrTaxes[$k]['price']) && is_numeric($tax['price']))
+							{
+								$arrTaxes[$k]['price'] += $tax['price'];
+							}
 						}
+						else
+						{
+							$arrTaxes[$k] = $tax;
+						}
+						
+						$arrTaxes[$k]['tax_id'] = array_search($k, array_keys($arrTaxes)) + 1;
+						$arrTaxIds[] = array_search($k, array_keys($arrTaxes)) + 1;
 					}
-					else
-					{
-						$arrTaxes[$k] = $tax;
-					}
-					
-					$arrTaxes[$k]['tax_id'] = array_search($k, array_keys($arrTaxes)) + 1;
-					$arrTaxIds[] = array_search($k, array_keys($arrTaxes)) + 1;
 				}
 				
 				$this->arrProducts[$pid]->tax_id = implode(',', $arrTaxIds);
