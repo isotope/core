@@ -255,6 +255,7 @@ $GLOBALS['TL_LANG']['ISO']['shipping_method']				= 'Shipping Method';
 $GLOBALS['TL_LANG']['ISO']['payment_method']				= 'Payment Method';
 $GLOBALS['TL_LANG']['ISO']['order_conditions']				= 'Order Conditions';
 $GLOBALS['TL_LANG']['ISO']['order_review']					= 'Order Review';
+$GLOBALS['TL_LANG']['ISO']['changeCheckoutInfo']			= 'Change';
 
 
 
