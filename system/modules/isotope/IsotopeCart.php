@@ -661,10 +661,51 @@ class IsotopeCart extends Model
 	
 	public function useTaxRate($objRate, $fltPrice)
 	{
-//		$arrAddress = deserialize($objRate);
+		$arrAddresses = deserialize($objRate->address);
 		
-		if ($objRate->country != $this->billingAddress['country'])
-			return false;
+		if (is_array($arrAddresses) && count($arrAddresses))
+		{
+			foreach( $arrAddresses as $address )
+			{
+				$arrAddress = $this->{$address . 'Address'};
+				
+				if (strlen($objRate->country) && $objRate->country != $arrAddress['country'])
+					return false;
+					
+				if (strlen($objRate->subdivision) && $objRate->subdivision != $arrAddress['subdivision'])
+					return false;
+					
+				$arrPostal = deserialize($objRate->postal);
+				if (is_array($arrPostal) && count($arrPostal) && strlen($arrPostal[0]))
+				{
+					if (strlen($arrPostal[1]))
+					{
+						if ($arrPostal[0] > $arrAddress['postal'] || $arrPostal[1] < $arrAddress['postal'])
+							return false;
+					}
+					else
+					{
+						if ($arrPostal[0] != $arrAddress['postal'])
+							return false;
+					}
+				}
+				
+				$arrPrice = deserialize($objRate->amount);
+				if (is_array($arrPrice) && count($arrPrice) && strlen($arrPrice[0]))
+				{
+					if (strlen($arrPrice[1]))
+					{
+						if ($arrPrice[0] > $fltPrice || $arrPrice[1] < $fltPrice)
+							return false;
+					}
+					else
+					{
+						if ($arrPrice[0] != $fltPrice)
+							return false;
+					}
+				}
+			}
+		}
 			
 		return true;
 	}

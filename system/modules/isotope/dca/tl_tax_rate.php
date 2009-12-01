@@ -107,7 +107,7 @@ $GLOBALS['TL_DCA']['tl_tax_rate'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{name_legend},name,label;{location_legend},country,subdivision,postcode,address;amount;store,rate,stop',
+		'default'                     => '{name_legend},name,label;{location_legend},address,country,subdivision,postal;amount;store,rate,stop',
 	),
 
 
@@ -117,22 +117,26 @@ $GLOBALS['TL_DCA']['tl_tax_rate'] = array
 		'name' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['name'],
-			'search'                  => true,
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255, 'mandatory'=>true, 'tl_class'=>'w50'),
 		),
 		'label' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['label'],
-			'search'                  => true,
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255, 'mandatory'=>true, 'tl_class'=>'w50'),
+		),
+		'address' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['address'],
+			'inputType'               => 'checkbox',
+			'options'				  => array('billing', 'shipping'),
+			'reference'				  => &$GLOBALS['TL_LANG']['tl_tax_rate'],
+			'eval'                    => array('mandatory'=>true, 'multiple'=>true)
 		),
 		'country' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['country'],
-			'exclude'                 => true,
-			'search'                  => true,
 			'inputType'               => 'select',
 			'options'                 => $this->getCountries(),
 			'eval'                    => array('includeBlankOption'=>true, 'submitOnChange'=>true, 'tl_class'=>'w50')
@@ -140,30 +144,16 @@ $GLOBALS['TL_DCA']['tl_tax_rate'] = array
 		'subdivision' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['subdivision'],
-			'exclude'                 => true,
-			'search'                  => true,
 			'inputType'               => 'select',
 			'options_callback'		  => array('tl_tax_rate', 'getSubdivisions'),
 			'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
 		),
-		'postcode' => array
+		'postal' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['postcode'],
-			'exclude'                 => true,
-			'search'                  => true,
-			'sorting'                 => true,
+			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['postal'],
 			'flag'                    => 1,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>255)
-		),
-		'address' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['address'],
-			'exclude'                 => true,
-			'inputType'               => 'checkbox',
-			'options'				  => array('billing', 'shipping'),
-			'reference'				  => &$GLOBALS['TL_LANG']['tl_tax_rate'],
-			'eval'                    => array('mandatory'=>true, 'multiple'=>true)
+			'eval'                    => array('multiple'=>true, 'size'=>2, 'maxlength'=>10, 'rgxp'=>'digits', 'tl_class'=>'w50'),
 		),
 		'store' => array
 		(
@@ -182,7 +172,6 @@ $GLOBALS['TL_DCA']['tl_tax_rate'] = array
 		'amount' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['amount'],
-			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('multiple'=>true, 'size'=>2, 'maxlength'=>10, 'rgxp'=>'digits', 'tl_class'=>'w50'),
 		),
