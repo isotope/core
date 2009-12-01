@@ -233,13 +233,6 @@ class Isotope extends Controller
 					$fltPrice = $fltPrice / $this->Store->priceCalculateFactor;
 					break;
 			}
-			
-			if ($this->Store->priceRoundIncrement == '0.05')
-			{
-				$fltPrice = round($fltPrice * 20)/20;
-			}
-			
-			$fltPrice = round($fltPrice, $this->Store->priceRoundPrecision);
 		}
 		
 		// Possibly add/subtract tax
@@ -247,6 +240,13 @@ class Isotope extends Controller
 		{
 			$fltPrice = $this->calculateTax($intTaxClass, $fltPrice, false);
 		}
+		
+		if ($this->Store->priceRoundIncrement == '0.05')
+		{
+			$fltPrice = (round(20*$fltPrice))/20;
+		}
+		
+		$fltPrice = round($fltPrice, $this->Store->priceRoundPrecision);
 		
 		return $fltPrice;
 	}
