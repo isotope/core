@@ -34,6 +34,7 @@ $GLOBALS['TL_LANG']['tl_product_data']['sku']					= array('Artikelnummer', '');
 $GLOBALS['TL_LANG']['tl_product_data']['name']					= array('Name', '');
 $GLOBALS['TL_LANG']['tl_product_data']['teaser']				= array('Teaser', '');
 $GLOBALS['TL_LANG']['tl_product_data']['description']			= array('Beschreibung', '');
+$GLOBALS['TL_LANG']['tl_product_data']['shipping_exempt']		= array('Wird nicht versendet', 'Klicken Sie hier wenn dieses Produkt nicht versendet wird.');
 $GLOBALS['TL_LANG']['tl_product_data']['price']					= array('Preis', '');
 $GLOBALS['TL_LANG']['tl_product_data']['price_override']		= array('Ersatz-/Aktionspreis', 'Der Ersatzpreis kann anstelle des Produktpreises angezeigt werden. Ist der Ersatzpreis nicht nummerisch, kann das Produkt nicht bestellt werden.');
 $GLOBALS['TL_LANG']['tl_product_data']['weight']				= array('Gewicht', '');
