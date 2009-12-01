@@ -28,8 +28,8 @@
 /**
  * Address formatting for different countries
  */
-$GLOBALS['ISO_ADR']['at']	= '{company}<br />{firstname} {lastname}<br />{street}<br />{street_2}<br />{street_3}<br />{postal} {city}<br />{state}<br />{country}';
-$GLOBALS['ISO_ADR']['ch']	= '{company}<br />{firstname} {lastname}<br />{street}<br />{street_2}<br />{street_3}<br />{postal} {city}<br />{state}<br />{country}';
-$GLOBALS['ISO_ADR']['de']	= '{company}<br />{firstname} {lastname}<br />{street}<br />{street_2}<br />{street_3}<br />{postal} {city}<br />{state}<br />{country}';
+$GLOBALS['ISO_ADR']['at']	= '{company}<br />{firstname} {lastname}<br />{street}<br />{street_2}<br />{street_3}<br />{postal} {city}<br />{country}';
+$GLOBALS['ISO_ADR']['ch']	= '{company}<br />{firstname} {lastname}<br />{street}<br />{street_2}<br />{street_3}<br />{postal} {city}<br />{country}';
+$GLOBALS['ISO_ADR']['de']	= '{company}<br />{firstname} {lastname}<br />{street}<br />{street_2}<br />{street_3}<br />{postal} {city}<br />{country}';
 $GLOBALS['ISO_ADR']['us']	= '{company}<br />{firstname} {lastname}<br />{street}<br />{street_2}<br />{street_3}<br />{city}, {state} {postal}<br />{country}';
 
