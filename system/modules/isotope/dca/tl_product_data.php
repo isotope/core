@@ -280,14 +280,14 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['start'],
 			'inputType'				=> 'text',
-			'eval'					=> array('rgxp'=>'date', 'datepicker'=>$this->getDatePickerString(), 'tl_class'=>'w50 wizard', 'disabled'=>'disabled'),
+			'eval'					=> array('rgxp'=>'date', 'datepicker'=>$this->getDatePickerString(), 'tl_class'=>'w50 wizard'),
 			'attributes'			=> array('legend'=>'publish_legend'),
 		),
 		'stop' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['stop'],
 			'inputType'				=> 'text',
-			'eval'					=> array('rgxp'=>'date', 'datepicker'=>$this->getDatePickerString(), 'tl_class'=>'w50 wizard', 'disabled'=>'disabled'),
+			'eval'					=> array('rgxp'=>'date', 'datepicker'=>$this->getDatePickerString(), 'tl_class'=>'w50 wizard'),
 			'attributes'			=> array('legend'=>'publish_legend'),
 		),
 		'source' => array

@@ -236,6 +236,9 @@ class IsotopeProduct extends Model
 	{
 		if (!parent::findBy($strRefField, $varRefId))
 			return false;
+			
+		if (!$this->arrData['published'] || (strlen($this->arrData['start']) && $this->arrData['start'] > time()) || (strlen($this->arrData['stop']) && $this->arrData['stop'] < time()))
+			return false;
 		
 		$objType = $this->Database->prepare("SELECT * FROM tl_product_types WHERE id=?")->execute($this->arrData['type']);
 		
