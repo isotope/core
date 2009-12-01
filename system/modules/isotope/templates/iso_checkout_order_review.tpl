@@ -4,7 +4,8 @@
 <p><?php echo $this->message; ?></p>
 
 <?php foreach( $this->info as $type => $data ): ?>
-<div class="info_container <?php echo $type . $data['class']; ?>">
+<div class="info_container <?php echo $type . $data['class']; ?>"><?php if ($data['edit']): ?>
+	<a href="<?php echo $data['edit']; ?>" class="edit"><?php echo $this->edit_info; ?></a><?php endif; ?>
 	<h3><?php echo $data['headline']; ?></h3>
 	<div class="info"><?php echo $data['info']; ?></div>
 </div>

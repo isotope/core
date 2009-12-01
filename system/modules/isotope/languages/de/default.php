@@ -127,6 +127,7 @@ $GLOBALS['TL_LANG']['ISO']['shipping_method']			= 'Versandmethode';
 $GLOBALS['TL_LANG']['ISO']['payment_method']			= 'Zahlungsart';
 $GLOBALS['TL_LANG']['ISO']['order_conditions']			= 'AGB akzeptieren';
 $GLOBALS['TL_LANG']['ISO']['order_review']				= 'Bestellübersicht';
+$GLOBALS['TL_LANG']['ISO']['changeCheckoutInfo']		= 'Ändern';
 
 
 /**

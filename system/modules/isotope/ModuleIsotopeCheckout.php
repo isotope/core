@@ -290,6 +290,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				(
 					'headline'	=> ($this->Cart->shippingAddress['id'] == -1 ? $GLOBALS['TL_LANG']['ISO']['billing_shipping_address'] : $GLOBALS['TL_LANG']['ISO']['billing_address']),
 					'info'		=> $this->Isotope->generateAddressString($this->Cart->billingAddress),
+					'edit'		=> $this->addToUrl('step=address'),
 				),
 			);
 		}
@@ -319,6 +320,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				(
 					'headline'	=> $GLOBALS['TL_LANG']['ISO']['shipping_address'],
 					'info'		=> $this->Isotope->generateAddressString($this->Cart->shippingAddress),
+					'edit'		=> $this->addToUrl('step=address'),
 				),
 			);
 		}
@@ -345,6 +347,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				(
 					'headline'	=> $GLOBALS['TL_LANG']['ISO']['shipping_method'],
 					'info'		=> $this->Cart->Shipping->checkoutReview(),
+					'edit'		=> $this->addToUrl('step=shipping'),
 				),
 			);
 		}
@@ -439,6 +442,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				(
 					'headline'	=> $GLOBALS['TL_LANG']['ISO']['payment_method'],
 					'info'		=> $this->Cart->Payment->checkoutReview(),
+					'edit'		=> $this->addToUrl('step=payment'),
 				),
 			);
 		}
@@ -598,6 +602,8 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		$objTemplate->info = $this->getCheckoutInfo();
 		$objTemplate->products = $arrProductData;
 		$objTemplate->surcharges = $arrSurcharges;
+		
+		$objTemplate->edit_info = $GLOBALS['TL_LANG']['ISO']['changeCheckoutInfo'];
 		$objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
 		$objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
 		
