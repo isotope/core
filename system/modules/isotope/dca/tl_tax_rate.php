@@ -107,7 +107,7 @@ $GLOBALS['TL_DCA']['tl_tax_rate'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{name_legend},name,label;{location_legend},country,region,postcode,address;amount;store,rate,stop',
+		'default'                     => '{name_legend},name,label;{location_legend},country,subdivision,postcode,address;amount;store,rate,stop',
 	),
 
 
@@ -137,13 +137,13 @@ $GLOBALS['TL_DCA']['tl_tax_rate'] = array
 			'options'                 => $this->getCountries(),
 			'eval'                    => array('includeBlankOption'=>true, 'submitOnChange'=>true, 'tl_class'=>'w50')
 		),
-		'region' => array
+		'subdivision' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['region'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['subdivision'],
 			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'select',
-			'options_callback'		  => array('tl_tax_rate','getRegions'),
+			'options_callback'		  => array('tl_tax_rate', 'getSubdivisions'),
 			'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
 		),
 		'postcode' => array
@@ -211,31 +211,21 @@ $GLOBALS['TL_DCA']['tl_tax_rate'] = array
 class tl_tax_rate extends Backend
 {
 
-	/**
-	 * getRegions function.
-	 * 
-	 * @access public
-	 * @param object DataContainer $dc
-	 * @return string
-	 */
-	public function getRegions(DataContainer $dc)
+	public function getSubdivisions(DataContainer $dc)
 	{
-		$objCountryId = $this->Database->prepare("SELECT country FROM tl_tax_rate WHERE id=?")
-									   ->limit(1)
-									   ->execute($dc->id);
+		$objTaxRate = $this->Database->prepare("SELECT country FROM tl_tax_rate WHERE id=?")->limit(1)->execute($dc->id);
 	
-		if($objCountryId->numRows < 1)
-		{
-			return '';
-		}
+		if(!$objTaxRate->numRows || !strlen($objTaxRate->country))
+			return array();
+			
+		$this->loadLanguageFile('subdivisions');
 		
-		if(sizeof($GLOBALS['TL_LANG']['MSC']['REGIONS'][$objCountryId->country]))
+		if(array_key_exists($objTaxRate->country, $GLOBALS['TL_LANG']['DIV']))
 		{
-			// yes we have regions;
-			return $GLOBALS['TL_LANG']['MSC']['REGIONS'][$objCountryId->country];
+			return $GLOBALS['TL_LANG']['DIV'][$objTaxRate->country];
 		}
 	
-		return '';
+		return array();
 	}
 	
 	
