@@ -68,9 +68,6 @@ $GLOBALS['TL_LANG']['MSC']['ERR']['specifyBillingAddress'] = 'A billing address 
 $GLOBALS['TL_LANG']['ERR']['addressDoesNotExist'] = 'This address does not exist in your address book.';
 $GLOBALS['TL_LANG']['ERR']['noAddressBookEntries'] = 'You have no address book entries.';
 
-//Regions, by country code
-$GLOBALS['TL_LANG']['MSC']['REGIONS']['us'] = array('AK','AL','AR','AS','AZ','CA','CO','CT','DC','DC','DE','FL','FM','GA','GU','HI','IA','ID','IL','IN','KS','KY','LA','MA','MD','ME','MH','MI','MN','MO','MP','MS','MT','NC','ND','NE','NH','NJ','NM','NV','NY','OH','OK','OR','PA','PR','PW','RI','SC','SD','TN','TX','UT','VA','VI','VT','WA','WI','WV','WY');
-
 
 /**
  * Miscellaneous
