@@ -261,6 +261,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			'inputType'				=> 'select',
 			'foreignKey'			=> 'tl_tax_class.name',
 			'attributes'			=> array('legend'=>'tax_legend'),
+			'eval'					=> array('includeBlankOption'=>true),
 		),
 		'images' => array
 		(
