@@ -970,6 +970,10 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		{
 			$this->Cart->$field = $_SESSION['CHECKOUT_DATA'][$field]['id'];
 		}
+		elseif (!FE_USER_LOGGED_IN)
+		{
+			$this->doNotSubmit = true;
+		}
 		
 		$strBuffer .= '<div id="' . $field . '_new"' . (((!FE_USER_LOGGED_IN && $field == 'billing_address') || $objWidget->value == 0) ? '' : ' style="display:none">');
 		$strBuffer .= '<span>' . $this->getCurrentStepWidgets('tl_address_book', $field) . '</span>';
