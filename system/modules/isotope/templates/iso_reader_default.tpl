@@ -6,6 +6,15 @@
 <div class="image_container main_image"><a href="<?php echo $this->mainImage['large']; ?>" title="<?php echo $this->mainImage['desc']; ?>" rel="lightbox"><img src="<?php echo $this->mainImage['thumbnail']; ?>" alt="<?php echo $this->mainImage['alt']; ?>"<?php echo $this->mainImage['thumbnail_size']; ?> /></a></div>
 <?php endif; ?>
 
+<?php if ($this->hasOptions): ?>
+<input type="hidden" name="product_options" value="<?php echo $this->optionList; ?>" />
+<div class="options">
+<?php foreach($this->options as $option): ?>
+	<?php echo $option['html']; ?>
+<?php endforeach; ?>
+</div>
+<?php endif; ?>
+
 <?php if ($this->hasGallery): foreach( $this->gallery as $image ): ?>
 <div class="image_container gallery"><a href="<?php echo $image['large']; ?>" title="<?php echo $image['desc']; ?>" rel="lightbox"><img src="<?php echo $image['gallery']; ?>" alt="<?php echo $image['alt']; ?>"<?php echo $image['gallery_size']; ?> /></a></div>
 <?php endforeach; endif; ?>

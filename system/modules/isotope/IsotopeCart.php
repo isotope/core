@@ -468,6 +468,7 @@ class IsotopeCart extends Model
 				$objProduct = unserialize($objProducts->product_data);
 				
 				$objProduct->quantity_requested = $objProducts->quantity_requested;
+				$objProduct->product_options = deserialize($objProducts->product_options);
 				$objProduct->cart_id = $objProducts->id;
 				
 				$this->arrProducts[] = $objProduct;
@@ -494,7 +495,7 @@ class IsotopeCart extends Model
 	 * @return	void
 	 */
 	public function addProduct($objProduct, $objModule=null)
-	{
+	{		
 		$arrSet = array
 		(
 			'pid'					=> $this->id,
@@ -504,8 +505,8 @@ class IsotopeCart extends Model
 			'href_reader'			=> $objProduct->href_reader,
 			'product_id'			=> $objProduct->id,
 			'product_data'			=> serialize($objProduct),
+			'product_options'		=> $this->getProductOptionValues($this->Input->post('product_options'))
 		);
-		
 
 /*
 		foreach( $arrProduct as $field_name => $arrField )
@@ -525,6 +526,119 @@ class IsotopeCart extends Model
 	}
 	
 	
+	
+	private function getProductOptionValues($strProductOptions)
+	{	
+		$arrProductOptions = explode(',', $strProductOptions);
+		
+		foreach($arrProductOptions as $option)
+		{	
+			$arrAttributeData = $this->getProductAttributeData($option); //1 will eventually be irrelevant but for now just going with it...
+			
+			$varValue = $this->Input->post($option);
+			
+			switch($arrAttributeData['type'])
+			{
+				case 'radio':
+				case 'checkbox':
+				case 'select':
+					
+					//get the actual labels, not the key reference values.
+					$arrOptions = $this->getOptionList($arrAttributeData);
+					
+					if(is_array($varValue))
+					{
+						
+						foreach($varValue as $value)
+						{
+							foreach($arrOptions as $optionRow)
+							{
+								if($optionRow['value']==$value)
+								{
+									$varOptionValues[] = $optionRow['label'];
+									break;
+								}
+							}
+						}	
+					}
+					else
+					{
+						
+						foreach($arrOptions as $optionRow)
+						{
+							if($optionRow['value']==$varValue)
+							{
+								$varOptionValues[] = $optionRow['label'];
+								break;
+							}
+						}
+					}				
+					break;
+				default:
+					//these values are not by reference - they were directly entered.  
+					if(is_array($varValue))
+					{
+						foreach($varValue as $value)
+						{
+							$varOptionValues[] = $value;
+						}
+					}
+					else
+					{
+						$varOptionValues[] = $varValue;
+					}
+					
+					break;
+			
+			}		
+		
+			$arrValues[$option] = array
+			(
+				'name'		=> $arrAttributeData['name'],
+				'values'	=> $varOptionValues			
+			);
+		}
+		
+		return serialize($arrValues);
+	}
+	
+	
+	
+	protected function getOptionList($arrAttributeData)
+	{
+		if($arrAttributeData['use_alternate_source']==1)
+		{
+			
+			if(strlen($arrAttributeData['list_source_table']) > 0 && strlen($arrAttributeData['list_source_field']) > 0)
+			{
+				$strForeignKey = $arrAttributeData['list_source_table'] . '.' . $arrAttributeData['list_source_field'];
+			
+			}
+		}else{
+			$arrValues = deserialize($arrAttributeData['option_list']);
+		}
+	
+		return $arrValues;
+	}
+
+
+	protected function getProductAttributeData($strFieldName)
+	{		
+		
+		$objAttributeData = $this->Database->prepare("SELECT * FROM tl_product_attributes WHERE field_name=?")
+										   ->limit(1)
+										   ->execute($strFieldName);
+
+		if($objAttributeData->numRows < 1)
+		{
+			
+			return array();
+		}
+		
+		return $objAttributeData->fetchAssoc();
+	}
+
+
 	/**
 	 * Hook-callback for isoCheckoutSurcharge. Accesses the shipping module to get a shipping surcharge.
 	 *

@@ -131,20 +131,13 @@ class ModuleProductReader extends ModuleIsotopeBase
 			'useQuantity'	=> $this->iso_use_quantity,
 		);
 		
+		
+		
 		$this->Template->action = ampersand($this->Environment->request, true);
 		$this->Template->formId = $this->strFormId;
 		$this->Template->product = $this->generateProduct($objProduct, $this->iso_reader_layout, $arrTemplateData);
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-/*		
+		/*		
 	
 		global $objPage;
 					

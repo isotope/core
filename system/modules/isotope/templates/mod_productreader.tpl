@@ -8,7 +8,9 @@
 <form action="<?php echo $this->action; ?>" method="post">
 <div class="formbody">
 <input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formId; ?>" />
+
 <?php echo $this->product; ?>
+
 </div>
 </form>
 
