@@ -147,7 +147,7 @@ class IsotopeProduct extends Model
 							break;
 							
 						case 'total_price':
-							$varValue = ($this->quantity_requested ? $this->quantity_requested : 1) * $this->price;
+							return ($this->quantity_requested ? $this->quantity_requested : 1) * $this->price;
 							break;
 							
 						case 'formatted_price':
