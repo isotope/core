@@ -20,14 +20,14 @@
 		<td class="col_0 col_first image"><a href="<?php echo $product['link']; ?>" title="<?php echo $product['name']; ?>"><img src="<?php echo $product['image']['gallery']; ?>" alt="<?php echo $product['image']['alt']; ?>" class="thumbnail"<?php echo $product['image']['gallery_size']; ?> /></a></td>
    		<td class="col_1 name">
    			<a href="<?php echo $product['link']; ?>" title="<?php echo $product['name']; ?>"><?php echo $product['name']; ?></a>
-			<?php if(count($product['option_values'])>0): ?>
+			<?php if($product['product_options']): ?>
 			<div class="optionswrapper">
 				<ul class="productOptions">
-				<?php foreach($product['option_values'] as $option): ?>
+				<?php foreach($product['product_options'] as $option): ?>
 					<li><strong><?php echo $option['name']; ?>:</strong> <?php echo implode(', ', $option['values']); ?></li>
 				<!--<div class="option"><span class="optionname">OPTION:</span> PRODUCT OPTION</div>-->
-			<?php endforeach; ?>
-			</ul>
+				<?php endforeach; ?>
+				</ul>
 			</div>
 			<?php endif; ?>
 		</td>

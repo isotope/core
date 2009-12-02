@@ -692,7 +692,7 @@ abstract class ModuleIsotopeBase extends Module
 	 * @param boolean $blnUseTable
 	 * @return string
 	 */
-	public function generateProductOptionWidget($strField, $arrData = array(), $strFormId, $arrOptionFields, $blnUseTable = false)
+	public function generateProductOptionWidget($strField, $arrData = array(), $strFormId, $arrOptionFields = array(), $blnUseTable = false)
 	{
 		
 			$strClass = $GLOBALS['TL_FFL'][$arrData['inputType']];
@@ -711,7 +711,7 @@ abstract class ModuleIsotopeBase extends Module
 			
 			sizeof($arrData['options']) ? $objWidget->options = $arrData['options'] : $objWidget->options = NULL;
 			//$_SESSION['FORM_DATA'][$strField] = $objWidget->value;
-				
+			
 			// Validate input
 			if ($this->Input->post('FORM_SUBMIT') == $strFormId)
 			{
@@ -743,7 +743,10 @@ abstract class ModuleIsotopeBase extends Module
 					switch($strField)
 					{					
 						case 'product_variants':
-							$this->arrProductOptionsData = $this->getSubproductValues($varValue, $arrOptionFields);	//field is implied							
+							if(count($arrOptionFields))
+							{
+								$this->arrProductOptionsData = $this->getSubproductValues($varValue, $arrOptionFields);	//field is implied							
+							}
 							break;			
 						default:
 							$this->arrProductOptionsData[] = $this->getProductOptionValues($strField, $arrData['inputType'], $varValue); 
@@ -941,7 +944,13 @@ abstract class ModuleIsotopeBase extends Module
 				//$arrOptions = $this->getOptionList($arrAttributeData);	//TODO - needs to be replaced to load option values from enabled subproducts.
 				
 				//START HERE - either grab from products themselves or else from variant_data serialized values... this would be quicker, but reliable?
-				$arrOptions = $this->getSubproductOptionValues($arrAttributeData['name'], array());
+				//$arrOptions = $this->getSubproductOptionValues($arrAttributeData['name'], array());
+				$arrOptionList = deserialize($arrAttributeData['option_list']);
+				
+				foreach($arrOptionList as $k=>$v)
+				{
+					$arrOptions[$k] = $v;
+				}
 					
 				$arrData['inputType'] 	= $strType;
 				$arrData['default'] 	= '';
@@ -1198,29 +1207,35 @@ abstract class ModuleIsotopeBase extends Module
 					break;
 					
 				default:
-					$blnIsMergedOptionSet = true;
+					$blnIsMergedOptionSet = false;
 					
 					if($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['is_customer_defined'])
 					{
-/*
+						/*
 						//does it have a value?
 						if($varValue)
 						{
 							$arrOptionFields[] = $attribute;
 						}															
+						*/		
+						$objTemplate->hasOptions = true;
+						
+						$arrAttributeData = $this->getProductAttributeData($attribute);
+						
+						$arrEnabledOptions[] = $attribute;
 						
 						if(!$blnIsMergedOptionSet)
 						{
-							$arrData = $this->getDCATemplate($attribute);	//Grab the skeleton DCA info for widget generation
+							$arrData = $this->getDCATemplate($arrAttributeData);	//Grab the skeleton DCA info for widget generation
 
 							$arrProductOptions[] = array
 							(
 								'name'			=> $attribute,
 								'description'	=> $GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['description'],									
-								'html'			=> $this->generateProductOptionWidget('field', $arrData, $this->strFormId)
+								'html'			=> $this->generateProductOptionWidget($attribute, $arrData, '')
 							);										
 						}
-*/
+
 					}
 					else
 					{
@@ -1278,13 +1293,16 @@ abstract class ModuleIsotopeBase extends Module
 					break;
 			}
 		}
-		
+
 		$objTemplate->raw = $objProduct->getData();
 		$objTemplate->href_reader = $objProduct->href_reader;
 		
 		$objTemplate->label_detail = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
 		
 		$objTemplate->price = $objProduct->formatted_price;
+		$objTemplate->options = $arrProductOptions;	
+				
+		$objTemplate->optionList = implode(',', $arrEnabledOptions);
 		
 		return $objTemplate->parse();
 	}

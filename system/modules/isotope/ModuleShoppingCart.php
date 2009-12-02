@@ -109,12 +109,13 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 				'total_price'		=> $this->generatePrice($objProduct->total_price),
 				'quantity'			=> $objProduct->quantity_requested,
 				'cart_item_id'		=> $objProduct->cart_id,
+				'product_options'	=> $objProduct->product_options,
 				'remove_link'		=> $this->generateFrontendUrl($objPage->row(), '/action/remove/id/'.$objProduct->cart_id),
 				'remove_link_title' => sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $objProduct->name),
 				'class'				=> 'row_' . $i . ($i%2 ? ' even' : ' odd') . ($i==0 ? ' row_first' : ''),
 			));
 		}
-		
+
 		if ($blnReload)
 		{
 			$this->reload();

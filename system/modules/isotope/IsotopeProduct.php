@@ -41,6 +41,12 @@ class IsotopeProduct extends Model
 	protected $arrAttributes = array();
 	
 	/**
+	 * Product Options
+	 * @var array
+	 */
+	protected $arrOptions = array();
+	
+	/**
 	 * Downloads for this product
 	 */
 	protected $arrDownloads = array();
@@ -72,8 +78,7 @@ class IsotopeProduct extends Model
 			case 'id':
 			case 'pid':
 			case 'href_reader':
-				return $this->arrData[$strKey];
-				
+				return $this->arrData[$strKey];			
 			case 'hasDownloads':
 				return count($this->arrDownloads) ? true : false;
 				
@@ -234,7 +239,7 @@ class IsotopeProduct extends Model
 		
 		if (!is_array($this->arrAttributes) || !count($this->arrAttributes))
 			return false;
-		
+						
 		// Cache downloads for this product
 		if ($objType->downloads)
 		{
@@ -255,6 +260,11 @@ class IsotopeProduct extends Model
 		return $this->arrDownloads;
 	}
 	
+	public function getOptions()
+	{
+		return $this->arrOptions;
+	}
+	
 	
 	/**
 	 * Return all attributes for this product
@@ -269,6 +279,7 @@ class IsotopeProduct extends Model
 		}
 		
 		return $arrData;
-	}
+	}	
+	
 }
 
