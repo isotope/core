@@ -1157,5 +1157,136 @@ abstract class ModuleIsotopeBase extends Module
 		
 		return $arrProducts;
 	}
+	
+	
+	/**
+	 * Generate a product template
+	 */
+	public function generateProduct($objProduct, $strTemplate, $arrData=array())
+	{
+		// Make sure field data is available
+		if (!is_array($GLOBALS['TL_DCA']['tl_product_data']['fields']))
+		{
+			$this->Isotope->loadDataContainer('tl_product_data');
+			$this->loadLanguageFile('tl_product_data');
+		}
+		
+		$objTemplate = new FrontendTemplate($strTemplate);
+
+		$objTemplate->setData($arrData);
+		
+		$arrOptionFields = array();
+		$arrProductOptions = array();
+		$arrAttributes = $objProduct->getAttributes();
+		
+		foreach( $arrAttributes as $attribute => $varValue )
+		{
+			switch( $attribute )
+			{
+				case 'images':
+					if (is_array($varValue) && count($varValue))
+					{
+						$objTemplate->hasImage = true;
+						$objTemplate->mainImage = array_shift($varValue);
+						
+						if (count($varValue))
+						{
+							$objTemplate->hasGallery = true;
+							$objTemplate->gallery = $varValue;
+						}
+					}
+					break;
+					
+				default:
+					$blnIsMergedOptionSet = true;
+					
+					if($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['is_customer_defined'])
+					{
+/*
+						//does it have a value?
+						if($varValue)
+						{
+							$arrOptionFields[] = $attribute;
+						}															
+						
+						if(!$blnIsMergedOptionSet)
+						{
+							$arrData = $this->getDCATemplate($attribute);	//Grab the skeleton DCA info for widget generation
+
+							$arrProductOptions[] = array
+							(
+								'name'			=> $attribute,
+								'description'	=> $GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['description'],									
+								'html'			=> $this->generateProductOptionWidget('field', $arrData, $this->strFormId)
+							);										
+						}
+*/
+					}
+					else
+					{
+						switch($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['type'])
+						{
+							case 'select':
+							case 'radio':
+							case 'checkbox':
+								//check for a related label to go with the value.
+								$arrOptions = deserialize($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['option_list']);
+								$varValues = deserialize($varValue);
+								$arrLabels = array();
+								
+								if($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['is_visible_on_front'])
+								{
+									foreach($arrOptions as $option)
+									{
+										if(is_array($varValues))
+										{
+											if(in_array($option['value'], $varValues))
+											{
+												$arrLabels[] = $option['label'];
+											}
+										}
+										else
+										{	
+											if($option['value']===$v)
+											{
+												$arrLabels[] = $option['label'];
+											}
+										}
+									}
+									
+									if($arrLabels)
+									{									
+										$objTemplate->$attribute = join(',', $arrLabels); 
+									}
+									
+								}
+								break;
+								
+							case 'longtext':
+								$objTemplate->$attribute = $GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['use_rich_text_editor'] ? $varValue : nl2br($varValue);
+								break;
+																																		
+							default:
+								if(!isset($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['is_visible_on_front']) || $GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['is_visible_on_front'])
+								{
+									//just direct render
+									$objTemplate->$attribute = $varValue;
+								}
+								break;
+						}
+					}
+					break;
+			}
+		}
+		
+		$objTemplate->raw = $objProduct->getData();
+		$objTemplate->href_reader = $objProduct->href_reader;
+		
+		$objTemplate->label_detail = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
+		
+		$objTemplate->price = $objProduct->formatted_price;
+		
+		return $objTemplate->parse();
+	}
 }
 
