@@ -735,5 +735,4 @@ class Isotope extends Controller
 	 */	
 	public function getImage($image, $width, $height, $mode='proportional', $target=null) { if(VERSION=='2.8'){ return parent::getImage($image, $width, $height, $mode, $target); }else{ return parent::getImage($image, $width, $height, $target); } }
 	public function generateFrontendUrl($arrRow, $strParams='') { return parent::generateFrontendUrl($arrRow, $strParams); }
-	public function loadDataContainer($strName) { return parent::loadDataContainer($strName); }
 }
