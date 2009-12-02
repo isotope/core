@@ -35,12 +35,6 @@ class IsotopeProduct extends Model
 	protected $strTable = 'tl_product_data';
 	
 	/**
-	 * Copy of $GLOBALS['TL_DCA']['tl_product_data']['fields'].
-	 * We need to store this or changing the DCA would affect eg. ordered products
-	 */
-	protected $arrFields;
-	
-	/**
 	 * Attributes assigned to this product
 	 * @var array
 	 */
@@ -64,15 +58,6 @@ class IsotopeProduct extends Model
 	{
 		parent::__construct();
 		$this->import('Isotope');
-		
-		// Make sure field data is available
-		if (!is_array($GLOBALS['TL_DCA']['tl_product_data']['fields']))
-		{
-			$this->Isotope->loadDataContainer('tl_product_data');
-			$this->loadLanguageFile('tl_product_data');
-		}
-		
-		$this->arrFields = $GLOBALS['TL_DCA']['tl_product_data']['fields'];
 	}
 	
 	
@@ -96,9 +81,9 @@ class IsotopeProduct extends Model
 				// Initialize attribute
 				if (!isset($this->arrCache[$strKey]))
 				{
-					if (isset($this->arrFields[$strKey]))
+					if (isset($GLOBALS['TL_DCA']['tl_product_data']['fields'][$strKey]))
 					{
-						switch( $this->arrFields[$strKey]['inputType'] )
+						switch( $GLOBALS['TL_DCA']['tl_product_data']['fields'][$strKey]['inputType'] )
 						{
 							case 'mediaManager':
 								$varValue = array();
@@ -209,7 +194,7 @@ class IsotopeProduct extends Model
 	 */
 	public function __sleep()
 	{
-		return array('arrFields', 'arrAttributes', 'arrDownloads', 'arrData');
+		return array('arrAttributes', 'arrDownloads', 'arrData');
 	}
 	
 	
@@ -284,131 +269,6 @@ class IsotopeProduct extends Model
 		}
 		
 		return $arrData;
-	}
-	
-	
-	/**
-	 * Generate a product template
-	 */
-	public function generate($strTemplate, $arrData=array())
-	{
-		$objTemplate = new FrontendTemplate($strTemplate);
-
-		$objTemplate->setData($arrData);
-		
-		$arrOptionFields = array();
-		$arrProductOptions = array();
-		
-		foreach( $this->arrAttributes as $attribute )
-		{
-			$varValue = $this->$attribute;
-			
-			switch( $attribute )
-			{
-				case 'images':
-					if (is_array($varValue) && count($varValue))
-					{
-						$objTemplate->hasImage = true;
-						$objTemplate->mainImage = array_shift($varValue);
-						
-						if (count($varValue))
-						{
-							$objTemplate->hasGallery = true;
-							$objTemplate->gallery = $varValue;
-						}
-					}
-					break;
-					
-				default:
-					$blnIsMergedOptionSet = true;
-					
-					if($this->arrFields[$attribute]['attributes']['is_customer_defined'])
-					{
-/*
-						//does it have a value?
-						if($varValue)
-						{
-							$arrOptionFields[] = $attribute;
-						}															
-						
-						if(!$blnIsMergedOptionSet)
-						{
-							$arrData = $this->getDCATemplate($attribute);	//Grab the skeleton DCA info for widget generation
-
-							$arrProductOptions[] = array
-							(
-								'name'			=> $attribute,
-								'description'	=> $this->arrFields[$attribute]['attributes']['description'],									
-								'html'			=> $this->generateProductOptionWidget('field', $arrData, $this->strFormId)
-							);										
-						}
-*/
-					}
-					else
-					{
-						switch($this->arrFields[$attribute]['attributes']['type'])
-						{
-							case 'select':
-							case 'radio':
-							case 'checkbox':
-								//check for a related label to go with the value.
-								$arrOptions = deserialize($this->arrFields[$attribute]['attributes']['option_list']);
-								$varValues = deserialize($varValue);
-								$arrLabels = array();
-								
-								if($this->arrFields[$attribute]['attributes']['is_visible_on_front'])
-								{
-									foreach($arrOptions as $option)
-									{
-										if(is_array($varValues))
-										{
-											if(in_array($option['value'], $varValues))
-											{
-												$arrLabels[] = $option['label'];
-											}
-										}
-										else
-										{	
-											if($option['value']===$v)
-											{
-												$arrLabels[] = $option['label'];
-											}
-										}
-									}
-									
-									if($arrLabels)
-									{									
-										$objTemplate->$attribute = join(',', $arrLabels); 
-									}
-									
-								}
-								break;
-								
-							case 'longtext':
-								$objTemplate->$attribute = $this->arrFields[$attribute]['attributes']['use_rich_text_editor'] ? $varValue : nl2br($varValue);
-								break;
-																																		
-							default:
-								if(!isset($this->arrFields[$attribute]['attributes']['is_visible_on_front']) || $this->arrFields[$attribute]['attributes']['is_visible_on_front'])
-								{
-									//just direct render
-									$objTemplate->$attribute = $varValue;
-								}
-								break;
-						}
-					}
-					break;
-			}
-		}
-		
-		$objTemplate->raw = $this->arrData;
-		$objTemplate->href_reader = $this->href_reader;
-		
-		$objTemplate->label_detail = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
-		
-		$objTemplate->price = $this->formatted_price;
-		
-		return $objTemplate->parse();
 	}
 }
 
