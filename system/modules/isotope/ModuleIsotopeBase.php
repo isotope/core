@@ -84,6 +84,13 @@ abstract class ModuleIsotopeBase extends Module
 			
 			// Load isotope javascript class
 			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/html/isotope.js';
+			
+			// Make sure field data is available
+			if (!is_array($GLOBALS['TL_DCA']['tl_product_data']['fields']))
+			{
+				$this->loadDataContainer('tl_product_data');
+				$this->loadLanguageFile('tl_product_data');
+			}
 		}
 	}
 	
@@ -1164,13 +1171,6 @@ abstract class ModuleIsotopeBase extends Module
 	 */
 	public function generateProduct($objProduct, $strTemplate, $arrData=array())
 	{
-		// Make sure field data is available
-		if (!is_array($GLOBALS['TL_DCA']['tl_product_data']['fields']))
-		{
-			$this->loadDataContainer('tl_product_data');
-			$this->loadLanguageFile('tl_product_data');
-		}
-		
 		$objTemplate = new FrontendTemplate($strTemplate);
 
 		$objTemplate->setData($arrData);
