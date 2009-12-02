@@ -137,7 +137,7 @@ class IsotopeCart extends Model
 					break;
 					
 				case 'subTotal':
-					$this->arrCache[$strKey] = $this->calculateTotal($this->getProducts());
+					return $this->calculateTotal($this->getProducts());
 					break;
 					
 				case 'taxTotal':
@@ -163,7 +163,7 @@ class IsotopeCart extends Model
 					break;
 					
 				case 'grandTotal':
-					$this->arrCache[$strKey] = ($this->subTotal + $this->taxTotal + $this->shippingTotal);
+					return ($this->subTotal + $this->taxTotal + $this->shippingTotal);
 					break;
 					
 				case 'requiresShipping':
