@@ -96,8 +96,12 @@ abstract class Payment extends Frontend
 				if (($this->minimum_total > 0 && $this->minimum_total > $this->Cart->subTotal) || ($this->maximum_total > 0 && $this->maximum_total < $this->Cart->subTotal))
 					return false;
 					
+				$arrCountries = deserialize($this->countries);
+				if(is_array($arrCountries) && count($arrCountries) && !in_array($this->Cart->billingAddress['country'], $arrCountries))
+					return false;
+					
 				$arrShippings = deserialize($this->shipping_modules);
-				if (is_array($arrShippings) && (!$this->Cart->hasShipping && !in_array(0, $arrShippings)) && ($this->Cart->hasShipping && !in_array($this->Cart->Shipping->id, $arrShippings)))
+				if (is_array($arrShippings) && count($arrShippings) && ((!$this->Cart->hasShipping && !in_array(0, $arrShippings)) || ($this->Cart->hasShipping && !in_array($this->Cart->Shipping->id, $arrShippings))))
 					return false;
 					
 				$arrTypes = deserialize($this->product_types);
