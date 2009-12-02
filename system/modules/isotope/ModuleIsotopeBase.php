@@ -1167,7 +1167,7 @@ abstract class ModuleIsotopeBase extends Module
 		// Make sure field data is available
 		if (!is_array($GLOBALS['TL_DCA']['tl_product_data']['fields']))
 		{
-			$this->Isotope->loadDataContainer('tl_product_data');
+			$this->loadDataContainer('tl_product_data');
 			$this->loadLanguageFile('tl_product_data');
 		}
 		
