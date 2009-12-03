@@ -461,7 +461,7 @@ class IsotopeCart extends Model
 		{
 			$this->arrProducts = array();
 			$objProducts = $this->Database->prepare("SELECT * FROM tl_cart_items WHERE pid=?")->execute($this->id);
-			
+	
 			while( $objProducts->next() )
 			{
 				// Do not use the TYPOlight function deserialize() cause it handles arrays not objects
@@ -481,7 +481,7 @@ class IsotopeCart extends Model
 			$objTemplate->products = $this->arrProducts;
 			return $objTemplate->parse();
 		}
-		
+
 		return $this->arrProducts;
 	}
 	
@@ -519,7 +519,7 @@ class IsotopeCart extends Model
 */
 		
 
-		if (!$this->Database->prepare("UPDATE tl_cart_items SET tstamp=?, quantity_requested=quantity_requested+" . $arrSet['quantity_requested'] . " WHERE pid=? AND product_id=? AND product_data=?")->execute($arrSet['tstamp'], $this->id, $arrSet['product_id'], $arrSet['product_data'])->affectedRows)
+		if (!$this->Database->prepare("UPDATE tl_cart_items SET tstamp=?, quantity_requested=quantity_requested+" . $arrSet['quantity_requested'] . " WHERE pid=? AND product_id=? AND product_data=? AND product_options=?")->execute($arrSet['tstamp'], $this->id, $arrSet['product_id'], $arrSet['product_data'], $arrSet['product_options'])->affectedRows)
 		{
 			$this->Database->prepare("INSERT INTO tl_cart_items %s")->set($arrSet)->execute();
 		}
