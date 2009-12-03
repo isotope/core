@@ -72,6 +72,8 @@ $GLOBALS['TL_LANG']['ERR']['noAddressBookEntries'] = 'You have no address book e
 /**
  * Miscellaneous
  */
+$GLOBALS['TL_LANG']['MSC']['paypal_processing'] = 'Your PayPal payment is being processed. Please be patient...';
+$GLOBALS['TL_LANG']['MSC']['paypal_processing_failed'] = 'Your PayPal payment could not be processed.';
 $GLOBALS['TL_LANG']['MSC']['detailLabel'] = 'View Details';
 $GLOBALS['TL_LANG']['MSC']['mmNoImagesUploaded'] = 'No images uploaded.';
 $GLOBALS['TL_LANG']['MSC']['mmUploadImage'] = 'Upload new image';
@@ -268,7 +270,7 @@ $GLOBALS['TL_LANG']['SHIP']['flat']				= array('Flat-price shipping');
  * Payment modules
  */
 $GLOBALS['TL_LANG']['PAY']['cash']				= array('Cash', 'Use this for all offline processed payment.');
-$GLOBALS['TL_LANG']['PAY']['paypal']			= array('PayPal Standard', 'This PayPal module does currently not support IPN (Instant Payment Notifications).');
+$GLOBALS['TL_LANG']['PAY']['paypal']			= array('PayPal Standard Checkout', 'This PayPal module supports IPN (Instant Payment Notifications).');
 $GLOBALS['TL_LANG']['PAY']['postfinance']		= array('Postfinance', 'Payment gateway for the swiss post payment system that supports various card types. The store will be instantly notified about successfull transactions.');
 $GLOBALS['TL_LANG']['PAY']['authorizedotnet']	= array('Authorize.net', 'An Authorize.net payment gateway.');
 

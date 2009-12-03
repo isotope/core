@@ -141,7 +141,7 @@ $GLOBALS['TL_LANG']['SHIP']['flat']				= array('Pauschalversand');
  * Payment modules
  */
 $GLOBALS['TL_LANG']['PAY']['cash']				= array('Barzahlung');
-$GLOBALS['TL_LANG']['PAY']['paypal']			= array('PayPal Standard');
+$GLOBALS['TL_LANG']['PAY']['paypal']			= array('PayPal Standard Checkout', 'Dieses PayPal-Modul unterstützt IPN (Instant Payment Notification).');
 $GLOBALS['TL_LANG']['PAY']['postfinance']		= array('Postfinance (Schweizerische Post)');
 
 

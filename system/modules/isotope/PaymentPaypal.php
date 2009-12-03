@@ -49,7 +49,25 @@ class PaymentPaypal extends Payment
 		
 		if (strlen($arrData['status']) && $arrData['status'] == 'Completed')
 		{
+			unset($_SESSION['PAYPAL_TIMEOUT']);
 			return true;
+		}
+		
+		if (!isset($_SESSION['PAYPAL_TIMEOUT']))
+		{
+			$_SESSION['PAYPAL_TIMEOUT'] = 60;
+		}
+		else
+		{
+			$_SESSION['PAYPAL_TIMEOUT'] = $_SESSION['PAYPAL_TIMEOUT'] - 5;
+		}
+		
+		if ($_SESSION['PAYPAL_TIMEOUT'] === 0)
+		{
+			$objTemplate = new FrontendTemplate('mod_message');
+			$objTemplate->type = 'error';
+			$objTemplate->message = $GLOBALS['TL_LANG']['MSC']['paypal_processing_failed'];
+			return $objTemplate->parse();
 		}
 		
 		// Reload page every 5 seconds and check if payment was successful
@@ -57,7 +75,7 @@ class PaymentPaypal extends Payment
 		
 		$objTemplate = new FrontendTemplate('mod_message');
 		$objTemplate->type = 'processing';
-		$objTemplate->message = 'Your PayPal payment is being processed. Please be patient...';
+		$objTemplate->message = $GLOBALS['TL_LANG']['MSC']['paypal_processing'];
 		return $objTemplate->parse();
 	}
 	
@@ -177,6 +195,7 @@ class PaymentPaypal extends Payment
 <input type="hidden" name="button_subtype" value="services">
 <input type="hidden" name="return" value="' . $this->Environment->url . '/' . $this->addToUrl('step=complete') . '">
 <input type="hidden" name="cancel_return" value="' . $this->Environment->url . '/' . $this->addToUrl('step=failed') . '">
+<input type="hidden" name="rm" value="1">
 <input type="hidden" name="invoice" value="' . $objOrder->order_id . '">
 <input type="hidden" name="notify_url" value="' . $this->Environment->base . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id . '">
 <input type="hidden" name="bn" value="PP-BuyNowBF:btn_paynowCC_LG.gif:NonHosted">
