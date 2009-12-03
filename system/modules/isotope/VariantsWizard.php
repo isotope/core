@@ -45,7 +45,7 @@ class VariantsWizard extends Widget
 	 */
 	protected $strTemplate = 'be_widget';
 
-	protected $strAttributes = 'pid,tstamp,sku,price,weight,quantity';
+	protected $strAttributes = 'pid,tstamp,sku,price,weight';
 	
 	protected $arrEditableAttributes = array();
 	
@@ -664,7 +664,7 @@ class VariantsWizard extends Widget
 	protected function getProductTypeData($intId)
 	{
 		
-		$objProductTypeData = $this->Database->prepare("SELECT pt.id, pt.attributes FROM tl_product_types pt, tl_product_data pd WHERE pt.alias=pd.type AND pd.id=?")
+		$objProductTypeData = $this->Database->prepare("SELECT pt.id, pt.attributes FROM tl_product_types pt, tl_product_data pd WHERE pt.id=pd.type AND pd.id=?")
 											 ->limit(1)
 											 ->execute($intId);
 		
@@ -681,9 +681,7 @@ class VariantsWizard extends Widget
 	
 	protected function getOptionAttributes($arrAttributes)
 	{
-		$strProductAttributes = join(',', $arrAttributes);
-		
-		$objOptionAttributes = $this->Database->prepare("SELECT id, name, field_name, is_customer_defined FROM tl_product_attributes WHERE add_to_product_variants='1' AND id IN(" . $strProductAttributes . ")")
+		$objOptionAttributes = $this->Database->prepare("SELECT id, name, field_name, is_customer_defined FROM tl_product_attributes WHERE add_to_product_variants='1' AND field_name IN('" . implode("','", $arrAttributes) . "')")
 											  ->execute();
 			
 			

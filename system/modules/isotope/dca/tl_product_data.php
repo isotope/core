@@ -179,7 +179,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['name'],
 			'search'				=> true,
 			'inputType'				=> 'text',
-			'eval'					=> array('mandatory'=>true, 'tl_class'=>'long'),
+			'eval'					=> array('mandatory'=>true, 'tl_class'=>'clr long'),
 			'attributes'			=> array('legend'=>'general_legend', 'fixed'=>true),
 		),
 		'teaser' => array
