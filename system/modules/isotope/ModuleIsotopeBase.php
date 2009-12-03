@@ -1184,6 +1184,7 @@ abstract class ModuleIsotopeBase extends Module
 
 		$objTemplate->setData($arrData);
 		
+		$arrEnabledOptions = array();
 		$arrOptionFields = array();
 		$arrProductOptions = array();
 		$arrAttributes = $objProduct->getAttributes();

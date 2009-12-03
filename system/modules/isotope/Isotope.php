@@ -417,18 +417,17 @@ class Isotope extends Controller
 		(
 			'pid'				=> $intId,
 			'tstamp'			=> $arrData['tstamp'],
-			'firstname'			=> $arrData['firstname'],
-			'lastname'			=> $arrData['lastname'],
-			'company'			=> $arrData['company'],
-			'street'			=> $arrData['street'],
-			'postal'			=> $arrData['postal'],
-			'city'				=> $arrData['city'],
-			'state'				=> $arrData['state'],
-			'country'			=> $arrData['country'],
-			'phone'				=> $arrData['phone'],
+			'firstname'			=> strval($arrData['firstname']),
+			'lastname'			=> strval($arrData['lastname']),
+			'company'			=> strval($arrData['company']),
+			'street'			=> strval($arrData['street']),
+			'postal'			=> strval($arrData['postal']),
+			'city'				=> strval($arrData['city']),
+			'state'				=> strval($arrData['state']),
+			'country'			=> strval($arrData['country']),
+			'phone'				=> strval($arrData['phone']),
 			'isDefaultBilling'	=> '1',
-			'isDefaultShipping' => '1',
-		
+			'isDefaultShipping' => '',
 		);
 	
 		
