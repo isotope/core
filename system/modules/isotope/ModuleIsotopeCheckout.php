@@ -975,7 +975,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			$this->doNotSubmit = true;
 		}
 		
-		$strBuffer .= '<div id="' . $field . '_new"' . (((!FE_USER_LOGGED_IN && $field == 'billing_address') || $objWidget->value == 0) ? '' : ' style="display:none">');
+		$strBuffer .= '<div id="' . $field . '_new" class="address_new"' . (((!FE_USER_LOGGED_IN && $field == 'billing_address') || $objWidget->value == 0) ? '' : ' style="display:none">');
 		$strBuffer .= '<span>' . $this->getCurrentStepWidgets('tl_address_book', $field) . '</span>';
 		$strBuffer .= '</div>';
 		
