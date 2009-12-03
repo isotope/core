@@ -200,10 +200,12 @@ class ProductCatalog extends Backend
 						}											
 						
 					}
+
 					break;
 					
 				case 'select':
 					$inputType = 'select';
+					
 					//$inputType = 'productOptionsWizard';
 					
 					if($field['use_alternate_source']==1)
@@ -219,7 +221,7 @@ class ProductCatalog extends Backend
 						$arrValues = array();
 						$arrOptionsList = deserialize($field['option_list']);
 						
-						if(sizeof($arrOptionList))
+						if(sizeof($arrOptionsList))
 						{												
 							foreach ($arrOptionsList as $option)
 							{
@@ -232,7 +234,7 @@ class ProductCatalog extends Backend
 							}											
 						}
 					}	
-					
+		
 					//optional?
 					$eval['includeBlankOption'] = true;
 					break;
@@ -262,7 +264,7 @@ class ProductCatalog extends Backend
 				)
 			);
 			
-			if (strlen($field['options_list'])) 
+			if (strlen($field['option_list'])) 
 			{
 				$GLOBALS['TL_DCA']['tl_product_data']['fields'][$field['field_name']]['options'] = array_keys($arrValues);
 				$GLOBALS['TL_DCA']['tl_product_data']['fields'][$field['field_name']]['reference'] = $arrValues;
@@ -331,6 +333,7 @@ class ProductCatalog extends Backend
 		$arrAdditionalSelectors = $this->arrSelectors;
 		
 		$GLOBALS['TL_DCA']['tl_product_data']['palettes']['__selector__'] = array_merge($GLOBALS['TL_DCA']['tl_product_data']['palettes']['__selector__'], $arrAdditionalSelectors);
+		
 	}
 	
 	
@@ -714,6 +717,7 @@ class ProductCatalog extends Backend
 		while($objProductTypes->next())
 		{
 			$arrFieldCollection = deserialize($objProductTypes->attributes);
+											
 			$strAttributes = $this->buildPaletteString($arrFieldCollection);
 			
 			$arrPalettes[$objProductTypes->id] = $strAttributes;					
