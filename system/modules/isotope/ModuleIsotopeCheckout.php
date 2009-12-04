@@ -108,6 +108,12 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			$this->Template->message = 'User checkout not allowed';
 			return;
 		}
+		
+		
+		if (!$this->iso_forward_review && !strlen($this->Input->get('step')))
+		{
+			$this->redirectToNextStep();
+		}
 
 		
 		// Default template settings. Must be set at beginning so they can be overwritten later (eg. trough callback)
