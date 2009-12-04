@@ -122,6 +122,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['cookie_duration'],
 			'exclude'                 => true,
+			'default'				  => 30,
 			'inputType'               => 'text',
 			'eval'                    => array('rgxp'=>'digit', 'maxlength'=>4, 'tl_class'=>'w50')
 		),
@@ -166,6 +167,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['gallery_image_width'],
 			'exclude'                 => true,
+			'default'				  => 50,
 			'inputType'               => 'text',
 			'eval'                    => array('rgxp'=>'digit', 'mandatory'=>true, 'maxlength'=>10, 'tl_class'=>'w50')
 		),
@@ -180,6 +182,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['thumbnail_image_width'],
 			'exclude'                 => true,
+			'default'				  => 100,
 			'inputType'               => 'text',
 			'eval'                    => array('rgxp'=>'digit', 'mandatory'=>true, 'maxlength'=>10, 'tl_class'=>'w50')
 		),
@@ -194,6 +197,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['medium_image_width'],
 			'exclude'                 => true,
+			'default'				  => 200,
 			'inputType'               => 'text',
 			'eval'                    => array('rgxp'=>'digit', 'mandatory'=>true, 'maxlength'=>10, 'tl_class'=>'w50')
 		),
@@ -208,6 +212,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['large_image_width'],
 			'exclude'                 => true,
+			'default'				  => 400,
 			'inputType'               => 'text',
 			'eval'                    => array('rgxp'=>'digit', 'mandatory'=>true, 'maxlength'=>10, 'tl_class'=>'w50')
 		),
@@ -231,6 +236,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['priceField'],
 			'exclude'                 => true,
+			'default'				  => 'price',
 			'inputType'               => 'select',
 			'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
 			'options_callback'		  => array('tl_store', 'getPriceFields'),
@@ -239,6 +245,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['priceOverrideField'],
 			'exclude'                 => true,
+			'default'				  => 'price_override',
 			'inputType'               => 'select',
 			'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
 			'options_callback'		  => array('tl_store', 'getPriceFields'),

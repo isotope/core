@@ -564,14 +564,21 @@ class tl_product_data extends Backend
 			return $GLOBALS['TL_LANG']['MSC']['noCategoriesAssociated'];
 		}
 		
-		$objCategories = $this->Database->execute("SELECT title FROM tl_page WHERE id IN (" . implode(',', $varValue) . ")");
+		$objCategories = $this->Database->execute("SELECT id,title FROM tl_page WHERE id IN (" . implode(',', $varValue) . ")");
 		
 		if(!$objCategories->numRows)
 		{
 			return $GLOBALS['TL_LANG']['MSC']['noCategoriesAssociated'];
 		}
 		
-		return implode(', ', $objCategories->fetchEach('title'));
+		$arrCategories = array();
+		
+		while( $objCategories->next() )
+		{
+			$arrCategories[] = '<a href="' . $this->addToUrl('table=tl_product_categories&id='.$objCategories->id) . '">' . $objCategories->title . '</a>';
+		}
+		
+		return implode(', ', $arrCategories);
 	}
 	
 	
