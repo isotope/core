@@ -125,7 +125,10 @@ class Isotope extends Controller
 			}
 		}
 		
-		$this->Store = new IsotopeStore($this->intDefaultStore);
+		if ($this->intDefaultStore)
+		{
+			$this->Store = new IsotopeStore($this->intDefaultStore);
+		}
 	}
 	
 	
