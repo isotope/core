@@ -716,14 +716,19 @@ class ProductCatalog extends Backend
 		
 		while($objProductTypes->next())
 		{
+			$arrFieldCollection = array();
+			$strAttributes = "";
+			
 			$arrFieldCollection = deserialize($objProductTypes->attributes);
 											
-			$strAttributes = $this->buildPaletteString($arrFieldCollection);
+			$strAttributes = $this->buildPaletteString($arrFieldCollection, 'options_legend', array('variants_wizard'));
 			
 			$arrPalettes[$objProductTypes->id] = $strAttributes;					
-			
+	
+			/*
 			$arrPalettes[$objProductTypes->id . '_existing_option_set'] = $this->buildPaletteString($arrFieldCollection, 'options_legend', array('option_sets','variants_wizard'));
 			$arrPalettes[$objProductTypes->id . '_new_option_set'] = $this->buildPaletteString($arrFieldCollection, 'options_legend', array('option_set_title','variants_wizard'));
+			*/
 		}
 		
 		return $arrPalettes;
@@ -736,7 +741,7 @@ class ProductCatalog extends Backend
 			return '';
 		
 		$arrPalette = array();
-		
+	
 		foreach( $arrFields as $field )
 		{
 			// Field does not exist
@@ -744,22 +749,24 @@ class ProductCatalog extends Backend
 				continue;
 				
 			$arrAttributes = $GLOBALS['TL_DCA']['tl_product_data']['fields'][$field]['attributes'];
-			
-			if($arrAttributes['legend'] == 'options_legend' && (!is_array($arrPalette[$arrAttributes['legend']]) || !in_array('option_set_source', $arrPalette[$arrAttributes['legend']])))
+	
+			/*if($arrAttributes['legend'] == 'options_legend' && (!is_array($arrPalette[$arrAttributes['legend']]) || !in_array('option_set_source', $arrPalette[$arrAttributes['legend']])))
 			{
 				$arrPalette[$arrAttributes['legend']][] = 'option_set_source';
-			}
+			}*/
 
-			if($arrAttributes['legend'] == $strAppendToLegend && sizeof($arrExtraFields))
+			if(count($arrExtraFields))
 			{
-				foreach($arrExtraFields as $field)
-				{
-					$arrPalette[$arrAttributes['legend']][] = $field;
+				
+				foreach($arrExtraFields as $extrafield)
+				{				
+					if(is_array($arrPalette[$strAppendToLegend]) && !in_array($extrafield, $arrPalette[$strAppendToLegend]))
+						$arrPalette[$strAppendToLegend][] = $extrafield;
 				}
 			}
 
 			//To do - detemine if product can support variants.  This would be determined by any customer defined attributes being a part of the given palette or not.
-			if($arrAttributes['legend'] == 'options_legend' && !in_array('options_set_source', $arrPalette[$arrAttributes['legend']]))
+			/*if($arrAttributes['legend'] == 'options_legend' && !in_array('options_set_source', $arrPalette[$arrAttributes['legend']]))
 			{
 				if(!in_array('option_set_source', $this->arrSelectors))
 				{
@@ -770,17 +777,19 @@ class ProductCatalog extends Backend
 				{
 					$arrPalette[$arrAttributes['legend']][] = 'option_set_source';
 				}
-			}
+			}*/
 						
 			$arrPalette[$arrAttributes['legend']][] = $field;			
 
 		}
-				
+		
+		/*		
 		if(!in_array('option_set_source', $this->arrSelectors))
 		{
 			$this->arrSelectors[] = 'option_set_source';
 		}
-		
+		*/
+
 		//Build
 		$arrLegends = array();
 		foreach($arrPalette as $legend=>$fields)

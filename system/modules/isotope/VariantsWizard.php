@@ -45,7 +45,7 @@ class VariantsWizard extends Widget
 	 */
 	protected $strTemplate = 'be_widget';
 
-	protected $strAttributes = 'pid,tstamp,sku,price,weight';
+	protected $strAttributes = 'pid,tstamp,sku,price,weight,stock_quantity';
 	
 	protected $arrEditableAttributes = array();
 	
@@ -93,6 +93,8 @@ class VariantsWizard extends Widget
 	 */
 	public function generate()
 	{
+		$arrColumns = array();
+		
 		$this->import('Database');
 		//$this->loadDataContainer('tl_product_data');
 		$this->loadLanguageFile('tl_product_data');
@@ -116,7 +118,7 @@ class VariantsWizard extends Widget
 		
 		// STEP 1: Get product type data
 		$arrProductTypeData = $this->getProductTypeData($this->Input->get('id'));
-		
+				
 		// STEP 2: Get editable attributes
 		$this->arrEditableAttributes = $this->getOptionAttributes(deserialize($arrProductTypeData['attributes']));
 		
@@ -136,17 +138,15 @@ class VariantsWizard extends Widget
 				$arrValues = $this->Input->post('values');
 				
 				
-				
-				
 				$arrSet = $this->createAttributeValues($arrValues);	//Structure the CSV input into an associative array
 				
-				if(sizeof($arrSet))
+				if(count($arrSet))
 				{	
 					$this->createSubProducts($this->Input->get('id'), $arrSet);
 				}
 			}
 						
-			$arrEnabled = $this->Input->post('sub_visibility');
+			$arrEnabled = $this->Input->post('sub_published');
 			$arrSku = $this->Input->post('sub_sku');
 			$arrQuantity = $this->Input->post('sub_quantity');
 			$arrPrice = $this->Input->post('sub_price');
@@ -154,24 +154,24 @@ class VariantsWizard extends Widget
 			
 						
 			$arrVariantData = array(
-				'visibility'	=> $arrEnabled,
-				'sku'			=> $arrSku,
-				'quantity'  	=> $arrQuantity,
-				'price'			=> $arrPrice,
-				'weight'		=> $arrWeight				
+				'published'		=> $arrEnabled,
+				'sku'				=> $arrSku,
+				'stock_quantity'  	=> $arrQuantity,
+				'price'				=> $arrPrice,
+				'weight'			=> $arrWeight				
 			);
 			
 			$this->saveVariantData($arrVariantData);
 			
-			if(sizeof($arrEnabled))
+			if(count($arrEnabled))
 			{
 				foreach($arrEnabled as $k=>$v)
 				{
-					$arrInputValues[$k]['visibility'] = $v;
+					$arrInputValues[$k]['published'] = $v;
 				}
 			}
 			
-			if(sizeof($arrSku))
+			if(count($arrSku))
 			{			
 				foreach($arrSku as $k=>$v)
 				{
@@ -180,15 +180,15 @@ class VariantsWizard extends Widget
 				}
 			}
 			
-			if(sizeof($arrQuantity))
+			if(count($arrQuantity))
 			{			
 				foreach($arrQuantity as $k=>$v)
 				{
-					$arrInputValues[$k]['quantity'] = $v;
+					$arrInputValues[$k]['stock_quantity'] = $v;
 				}
 			}
 			
-			if(sizeof($arrPrice))
+			if(count($arrPrice))
 			{			
 				foreach($arrPrice as $k=>$v)
 				{
@@ -196,7 +196,7 @@ class VariantsWizard extends Widget
 				}
 			}
 			
-			if(sizeof($arrWeight))
+			if(count($arrWeight))
 			{			
 				foreach($arrWeight as $k=>$v)
 				{
@@ -212,12 +212,15 @@ class VariantsWizard extends Widget
 		}
 		
 		$arrVariantData = $this->getVariantData($this->Input->get('id'));
+		
 				// STEP 4a: build SQL field string for subproduct data call		
 		$arrSubProductData = $this->getSubProducts($this->Input->get('id'), $this->arrEditableAttributes, $arrVariantData);
 		
+		if(count($arrSubProductData))
+		{
+			$arrColumns = array_keys($arrSubProductData[0]);
+		}
 		
-		$arrColumns = array_keys($arrSubProductData[0]);
-
 		// STEP 6: Render the "Select All" Checkbox
 		$strSelectAllCheckbox = $this->renderSelectAllCheckbox();
 		
@@ -246,15 +249,11 @@ class VariantsWizard extends Widget
 		    	{
 		    		case 'id':
 		    		case 'key':
-		    		case 'visibility':
+		    		case 'published':
 		    			continue;
-		    			break;
-					case 'price':
-					case 'weight':
-		    			$return .= '<th><strong>'.$GLOBALS['TL_LANG']['tl_product_data'][$column].'</strong> </th>';
-						break;				
+		    			break;		
 					default:
-		    			$return .= '<th><strong>'.$GLOBALS['TL_LANG']['tl_product_data'][$column].'</strong></th>';
+		    			$return .= '<th><strong>'.$GLOBALS['TL_LANG']['tl_product_data'][$column][0].'</strong></th>';
 						break;
 		    	}
 		    }
@@ -268,16 +267,16 @@ class VariantsWizard extends Widget
 			(
 				'id'					=> $row['id'], 
 				'key'					=> $arrAttributeValues['key'],
-				'sub_visibility'				=> ($row['visibility'] ? ($blnTrackQuantity ? (($row['quantity'] < 1 && !$blnAllowBackorder) ? 0 : 1) : 1) : 0),
+				'sub_published'				=> ($row['published'] ? ($blnTrackQuantity ? (($row['stock_quantity'] < 1 && !$blnAllowBackorder) ? 0 : 1) : 1) : 0),
 				'values'				=> join(',', $arrAttributeValues['value']),
 				'sku'					=> $row['sku'],
 				'price'					=> $row['price'],
 				'weight'				=> $row['weight'],
-				'quantity'				=> $row['quantity']
+				'stock_quantity'				=> $row['stock_quantity']
 			);
 		*/
 	
-		if(sizeof($arrSubProductData))	//Subproducts always created at this point or loaded.
+		if(count($arrSubProductData))	//Subproducts always created at this point or loaded.
 		{
 			foreach($arrSubProductData as $row)
 			{
@@ -346,7 +345,7 @@ class VariantsWizard extends Widget
 		/*
 		$arrSubProductData['visible'];
 		$arrSubProductData['sku'];
-		$arrSubProductData['quantity'];
+		$arrSubProductData['stock_quantity'];
 		$arrSubProductData['price'];
 		$arrSubProductData['weight'];
 		
@@ -375,7 +374,7 @@ class VariantsWizard extends Widget
 			
 						
 			
-			$this->Database->prepare("UPDATE tl_product_data SET price=?, weight=?, sku=?, visibility=?, quantity=? WHERE id=?")->execute($row['price'], $row['weight'], $this->Input->post('sku') . '-' . $row['sku'], $row['visibility'], $row['quantity'], $intId);
+			$this->Database->prepare("UPDATE tl_product_data SET price=?, weight=?, sku=?, published=?, stock_quantity=? WHERE id=?")->execute($row['price'], $row['weight'], $this->Input->post('sku') . '-' . $row['sku'], $row['published'], $row['stock_quantity'], $intId);
 			
 			
 		}
@@ -449,7 +448,7 @@ class VariantsWizard extends Widget
 		$arrSet = array();
 		$arrValues = array();
 		
-		if(sizeof($arrAttributes)>0)
+		if(count($arrAttributes))
 		{
 			
 			//I need to take one or more attribute value sets, e.g. color: red, green, blue, and size: small, medium, large and create each possible combo as an attribute value set.
@@ -462,7 +461,7 @@ class VariantsWizard extends Widget
 				}
 			}
 			
-			if(sizeof($arrValues))
+			if(count($arrValues))
 			{
 			
 				foreach($arrValues as $row)
@@ -478,8 +477,7 @@ class VariantsWizard extends Widget
 				}
 							
 				$arrSet = $this->getAllPossibilities($arrRows);
-						
-				
+										
 				//NOT SURE HOW WE'RE STORING THIS QUITE YET!
 				switch($this->Input->post('option_set_source'))
 				{
@@ -507,15 +505,16 @@ class VariantsWizard extends Widget
 	 * @param array $arrSet
 	 * return void
 	 */
-	protected function createSubProducts($intId, $arrSet)
+	protected function createSubProducts($intId, $arrSetFinal)
 	{			
-		$intSize = (sizeof($arrSet) / 2);
+		//$intSize = (count($arrSet) / 2);
 
-		$arrSetFinal = array_chunk($arrSet, $intSize);	//have to split it in half for now.
-				
+		//$arrSetFinal = array_chunk($arrSet, $intSize);	//have to split it in half for now.
+		
+			
 		$i=0;
 		
-		foreach($arrSetFinal[0] as $row)
+		foreach($arrSetFinal as $row)
 		{
 						
 			$arrValues = array((integer)$intId, time(), '', 0, 0, 0);	//starting row values
@@ -534,6 +533,7 @@ class VariantsWizard extends Widget
 		$strValues = join('\'),(\'', $arrValueSets);
 		
 		$strSQL = "INSERT INTO tl_product_data (" . $this->strAttributes . ")VALUES('" . $strValues . "')";
+				echo $strSQL;
 					
 		$this->Database->prepare($strSQL)->execute();
 	}
@@ -558,12 +558,12 @@ class VariantsWizard extends Widget
 	public function getSubProducts($intPid, $arrEditableAttributes = array(), $arrVariantData = array())
 	{
 			
-		
+		$arrSubProductData = array();
 		//STEP 5: Get all subproducts from DB
 		$objSubProducts = $this->Database->prepare("SELECT id, " . $this->strAttributes . " FROM tl_product_data WHERE pid=?")
 										 ->execute($intPid);
 										 
-		//$arrSubProducts[] = array('id'=>0, 'visibility'=>0, 'attribute_values'=>array(), 'sku'=>'', 'price'=>0, 'unit' => '#', 'weight' => '0', 'qty' => 0);
+		//$arrSubProducts[] = array('id'=>0, 'published'=>0, 'attribute_values'=>array(), 'sku'=>'', 'price'=>0, 'unit' => '#', 'weight' => '0', 'qty' => 0);
 		
 		if($objSubProducts->numRows < 1)
 		{
@@ -590,9 +590,9 @@ class VariantsWizard extends Widget
 				$arrAttributeValues[] = $row[$attribute];
 			}
 			
-			$blnEnabled = ($row['visibility'] ? ($blnTrackQuantity ? (($row['quantity'] < 1 && !$blnAllowBackorder) ? 0 : 1) : 1) : 0);
+			$blnEnabled = ($row['published'] ? ($blnTrackQuantity ? (($row['stock_quantity'] < 1 && !$blnAllowBackorder) ? 0 : 1) : 1) : 0);
 			
-			$intCheckboxValue = (is_array($arrVariantData) && in_array($row['id'], $arrVariantData['visibility']) ? $row['id'] : 0);
+			$intCheckboxValue = (is_array($arrVariantData) && in_array($row['id'], $arrVariantData['published']) ? $row['id'] : 0);
 			$strSkuValue = (is_array($arrVariantData) ? $arrVariantData['sku'][$row['id']] : '');
 			$strPriceValue = (is_array($arrVariantData) ? $arrVariantData['price'][$row['id']] : '');
 			$strWeightValue = (is_array($arrVariantData) ? $arrVariantData['weight'][$row['id']] : '');
@@ -602,12 +602,12 @@ class VariantsWizard extends Widget
 			(
 				'id'					=> $row['id'],
 				'key'					=> '',//$arrAttributeValues['key'],
-				'visibility'			=> array($this->renderMatrixCheckBox('sub_visibility', $row['id'], $intCheckboxValue)),
+				'published'			=> array($this->renderMatrixCheckBox('sub_published', $row['id'], $intCheckboxValue)),
 				'values'				=> array(join(',', $arrAttributeValues)),
 				'sku'					=> array($this->renderMatrixTextBox('sub_sku', $row['id'], $strSkuValue, 60)),
 				'price'					=> array($this->renderMatrixTextBox('sub_price', $row['id'], $strPriceValue, 60), $row['price']),
 				'weight'				=> array($this->renderMatrixTextBox('sub_weight', $row['id'], $strWeightValue, 60), $row['weight']),
-				'quantity'				=> array($this->renderMatrixTextBox('sub_quantity', $row['id'], $row['quantity'])),
+				'stock_quantity'		=> array($this->renderMatrixTextBox('sub_stock_quantity', $row['id'], $row['stock_quantity'])),
 				//'buttons'				=> $this->generateButtons('variants_wizard', $row['id'])
 			);
 		}
@@ -668,22 +668,19 @@ class VariantsWizard extends Widget
 											 ->limit(1)
 											 ->execute($intId);
 		
-		if($objProductTypeData->numRows < 1)
-		{
-			
-		}
 		
 		$arrData = $objProductTypeData->fetchAssoc();
-	
+		
 		return $arrData;
 	}
 	
 	
 	protected function getOptionAttributes($arrAttributes)
 	{
-		$objOptionAttributes = $this->Database->prepare("SELECT id, name, field_name, is_customer_defined FROM tl_product_attributes WHERE add_to_product_variants='1' AND field_name IN('" . implode("','", $arrAttributes) . "')")
+		
+		$objOptionAttributes = $this->Database->prepare("SELECT id, name, field_name FROM tl_product_attributes WHERE is_customer_defined='1' AND add_to_product_variants='1' AND field_name IN('" . implode("','", $arrAttributes) . "')")
 											  ->execute();
-			
+				
 			
 		if($objOptionAttributes->numRows < 1)
 		{
@@ -696,10 +693,7 @@ class VariantsWizard extends Widget
 		
 		foreach($arrRows as $row)
 		{
-			if($row['is_customer_defined'])
-			{
-				$arrData[] = $row;
-			}
+			$arrData[] = $row;
 		}
 	
 		return $arrData;
@@ -719,7 +713,7 @@ class VariantsWizard extends Widget
 	
 	protected function renderSelectAllCheckbox()
 	{
-		return '<span class="fixed"><label for="check_all_enabled" style="color:#a6a6a6;"><em>' . $GLOBALS['TL_LANG']['MSC']['selectAll'] . '</em></label><br /><input type="checkbox" id="check_all_opt_sub_visibility" class="tl_checkbox" onclick="Backend.toggleCheckboxGroup(this, \'opt_sub_visibility\')" /></span>';
+		return '<span class="fixed"><label for="check_all_enabled" style="color:#a6a6a6;"><em>' . $GLOBALS['TL_LANG']['MSC']['selectAll'] . '</em></label><br /><input type="checkbox" id="check_all_opt_sub_published" class="tl_checkbox" onclick="Backend.toggleCheckboxGroup(this, \'opt_sub_published\')" /></span>';
 	}
 	
 	protected function renderMatrixCheckBox($strName, $intId, $strValue, $intLength=15)
