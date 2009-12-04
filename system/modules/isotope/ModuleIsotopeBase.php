@@ -1208,25 +1208,26 @@ abstract class ModuleIsotopeBase extends Module
 					break;
 					
 				default:
-					$blnIsMergedOptionSet = false;
-					
+										
 					if($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['is_customer_defined'])
-					{
-						/*
-						//does it have a value?
-						if($varValue)
-						{
-							$arrOptionFields[] = $attribute;
-						}															
-						*/		
+					{						
+						
 						$objTemplate->hasOptions = true;
 						
-						$arrAttributeData = $this->getProductAttributeData($attribute);
-						
-						$arrEnabledOptions[] = $attribute;
-						
-						if(!$blnIsMergedOptionSet)
+						if($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['add_to_product_variants'])
 						{
+							if($varValue)
+							{
+								$blnIsMergedOptionSet = true;
+								$arrOptionFields[] = $attribute;
+							}
+						}
+						else
+						{
+							$arrAttributeData = $this->getProductAttributeData($attribute);
+							
+							$arrEnabledOptions[] = $attribute;
+											
 							$arrData = $this->getDCATemplate($arrAttributeData);	//Grab the skeleton DCA info for widget generation
 
 							$arrProductOptions[] = array
@@ -1236,7 +1237,6 @@ abstract class ModuleIsotopeBase extends Module
 								'html'			=> $this->generateProductOptionWidget($attribute, $arrData, '')
 							);										
 						}
-
 					}
 					else
 					{
@@ -1295,6 +1295,30 @@ abstract class ModuleIsotopeBase extends Module
 			}
 		}
 
+		if($blnIsMergedOptionSet && sizeof($arrOptionFields))
+		{
+ 
+			//Create a special widget that combins all option value combos that are enabled.
+			$arrData = array
+			(
+	            'name'      => 'subproducts',
+	            'description'  => &$GLOBALS['TL_LANG']['tl_product_data']['product_options'],
+	            'inputType'    => 'select',          
+	            'options'    => $this->getSubproductOptionValues($product['id'], $arrOptionFields),
+	            'eval'      => array()
+	        );
+          
+          //$arrData = $this->getDCATemplate($arrAttributeData);  //Grab the skeleton DCA info for widget generation
+
+          $arrVariantWidget = array
+          (
+            'name'      => $k,
+            'description'  => $arrAttributeData['description'],                  
+            'html'      => $this->generateProductOptionWidget('product_variants', $arrData, '', $arrOptionFields)
+          ); 
+           
+        }
+
 		$objTemplate->raw = $objProduct->getData();
 		$objTemplate->href_reader = $objProduct->href_reader;
 		
@@ -1302,6 +1326,7 @@ abstract class ModuleIsotopeBase extends Module
 		
 		$objTemplate->price = $objProduct->formatted_price;
 		$objTemplate->options = $arrProductOptions;	
+		$objTemplate->variant_widget = $arrVariantWidget;
 				
 		$objTemplate->optionList = implode(',', $arrEnabledOptions);
 		
