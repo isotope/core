@@ -296,17 +296,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['source'],
 			'eval'                    => array('mandatory'=>true, 'required'=>true, 'fieldType'=>'radio'),
 		),
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+				
 		/*
 		'create_variations' => array
 		(
@@ -314,7 +304,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			'inputType'				  => 'checkbox',
 			'eval'					  => array('submitOnChange'=>true)		
 		),*/
-		'option_set_source' => array
+		/*'option_set_source' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['option_set_source'],
 			'default'                 => 'new_option_set',
@@ -340,7 +330,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			'inputType'               => 'text',
 			'eval'                    => array('rgxp'=>'extnd', 'maxlength'=>255),
 			'attributes'			  => array('legend'=>'options_legend')
-		),
+		),*/
 		'variants_wizard' => array
 		(
 			'label'					  => &$GLOBALS['TL_LANG']['tl_product_data']['variants_wizard'],

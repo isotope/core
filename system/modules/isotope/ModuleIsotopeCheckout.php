@@ -979,7 +979,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		}
 		elseif (!FE_USER_LOGGED_IN)
 		{
-			$this->doNotSubmit = true;
+		//	$this->doNotSubmit = true;
 		}
 		
 		$strBuffer .= '<div id="' . $field . '_new" class="address_new"' . (((!FE_USER_LOGGED_IN && $field == 'billing_address') || $objWidget->value == 0) ? '' : ' style="display:none">');
