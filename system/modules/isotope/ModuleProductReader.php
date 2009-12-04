@@ -136,6 +136,6 @@ class ModuleProductReader extends ModuleIsotopeBase
 		$this->Template->action = ampersand($this->Environment->request, true);
 		$this->Template->formId = $this->strFormId;
 		$this->Template->product = $this->generateProduct($objProduct, $this->iso_reader_layout, $arrTemplateData);
-		
+	}		
 }
 
