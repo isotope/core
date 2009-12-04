@@ -44,6 +44,10 @@ class IsotopeRunonce extends Frontend
 	 */
 	public function run()
 	{
+		// Cancel if shop has not yet been installed
+		if (!$this->Database->tableExists('tl_store'))
+			return;
+			
 		$this->insertDefaultAttributeTypes();
 		$this->renameFields();
 		$this->updateAttributes();
