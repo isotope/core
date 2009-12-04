@@ -43,10 +43,10 @@
 		<td class="col_0 col_first image"><img src="<?php echo $product['image']['gallery']; ?>" alt="<?php echo $product['image']['alt']; ?>" class="thumbnail"<?php echo $product['image']['gallery_size']; ?> /></td>
    		<td class="col_1 name">
    			<?php echo $product['name']; ?>
-			<?php if(count($product['option_values'])>0): ?>
+			<?php if(count($product['product_options'])>0): ?>
 			<div class="optionswrapper">
 				<ul class="productOptions">
-				<?php foreach($product['option_values'] as $option): ?>
+				<?php foreach($product['product_options'] as $option): ?>
 					<li><strong><?php echo $option['name']; ?>:</strong> <?php echo implode(', ', $option['values']); ?></li>
 				<!--<div class="option"><span class="optionname">OPTION:</span> PRODUCT OPTION</div>-->
 			<?php endforeach; ?>
