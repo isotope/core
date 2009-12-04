@@ -343,11 +343,11 @@ class tl_iso_orders extends Backend
 		  <div style="display: inline;">
 		    <div style="width: 50%; float: left">
 		      <h2>' . $GLOBALS['TL_LANG']['MSC']['iso_billing_address_header'] . ':</h2>
-		      ' . nl2br($row['billing_address']) . '
+		      ' . $this->Isotope->generateAddressString(deserialize($row['billing_address'])) . '
 		    </div>
 		    <div style="width: 50%; float: left">
 		      <h2>' . $GLOBALS['TL_LANG']['MSC']['iso_shipping_address_header'] . ':</h2>
-		      ' . nl2br($row['shipping_address']) . '
+		      ' . $this->Isotope->generateAddressString(deserialize($row['shipping_address'])) . '
 		    </div>
 		  </div>
 		  <div style="clear: both;"></div>
