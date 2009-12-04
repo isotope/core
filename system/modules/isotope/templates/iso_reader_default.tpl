@@ -8,6 +8,11 @@
 
 <?php if ($this->hasOptions): ?>
 <input type="hidden" name="product_options" value="<?php echo $this->optionList; ?>" />
+<div class="variants">
+<?php if ($this->variant_widget): ?>
+	<?php echo $this->variant_widget['html']; ?>
+<?php endif; ?>
+</div>
 <div class="options">
 <?php foreach($this->options as $option): ?>
 	<?php echo $option['html']; ?>
