@@ -496,14 +496,32 @@ class IsotopeCart extends Model
 	 */
 	public function addProduct($objProduct, $objModule=null)
 	{		
+		if($this->Input->post('product_variants'))
+		{
+			$arrSelectedVariant = explode('_', $this->Input->post('product_variants'));
+			
+			$intSubProductId = $arrSelectedVariant[0];
+								
+			$arrSubProduct = $objProduct->getSubProduct($intSubProductId);
+			
+			//Override the  base product values if necessary
+			$objProduct->subId = $intSubProductId;
+						
+			$objProduct->{$this->Isotope->Store->priceField} = (float)$arrSubProduct['price'];
+			
+			$objProduct->sku = $objProduct->sku . ($arrSubProduct['sku'] ? $arrSubProduct['sku'] : '');
+			
+			$objProduct->weight = $arrSubProduct['weight'];		
+		}		
+
 		$arrSet = array
 		(
 			'pid'					=> $this->id,
 			'tstamp'				=> time(),
 			'quantity_requested'	=> ((is_object($objModule) && $objModule->iso_use_quantity && intval($this->Input->post('quantity_requested')) > 0) ? intval($this->Input->post('quantity_requested')) : 1),
-			'price'					=> $objProduct->{$this->Isotope->Store->priceField},
+			'price'					=> $objProduct->${$this->Isotope->Store->priceField},	//NOTE: Won't reference the variable unless $ precedes curly brackets!
 			'href_reader'			=> $objProduct->href_reader,
-			'product_id'			=> $objProduct->id,
+			'product_id'			=> ($objProduct->subId ? $objProduct->subId : $objProduct->id),
 			'product_data'			=> serialize($objProduct),
 			'product_options'		=> $this->getProductOptionValues($this->Input->post('product_options'))
 		);
@@ -526,7 +544,9 @@ class IsotopeCart extends Model
 	}
 	
 	
-	
+	/** 
+	 * Need to grab the corresponding data from the subproduct if product_variants is being called!
+	 */
 	private function getProductOptionValues($strProductOptions)
 	{	
 		$arrProductOptions = explode(',', $strProductOptions);
