@@ -139,9 +139,6 @@ abstract class ModuleIsotopeBase extends Module
 					}
 				}
 		}	
-					
-											
-			return $arrButtonHTML;
 			
 			/*		
 			Button Model Properties Not yet used - BEGIN
@@ -154,6 +151,8 @@ abstract class ModuleIsotopeBase extends Module
 
 			Button Model Properties Not yet used - END
 		*/	
+			return $arrButtonHTML;
+
 	}
 	
 	/**
@@ -975,7 +974,7 @@ abstract class ModuleIsotopeBase extends Module
 			return array();
 			
 		$strOptionValues = join(',', $arrOptionList);
-		
+
 		$objData = $this->Database->prepare("SELECT id, " . $strOptionValues . ", price FROM tl_product_data WHERE pid=?")
 								  ->execute($intPid);
 		
@@ -985,7 +984,7 @@ abstract class ModuleIsotopeBase extends Module
 		}
 		
 		$arrOptionValues = $objData->fetchAllAssoc();
-				
+
 		foreach($arrOptionValues as $option)
 		{
 			$arrValues = array();
@@ -1214,20 +1213,20 @@ abstract class ModuleIsotopeBase extends Module
 						
 						$objTemplate->hasOptions = true;
 						
+						
 						if($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['add_to_product_variants'])
 						{
-							if($varValue)
-							{
-								$blnIsMergedOptionSet = true;
-								$arrOptionFields[] = $attribute;
-							}
+							$arrEnabledOptions[] = 'product_variants';
+							
+							$blnIsMergedOptionSet = true;
+							$arrOptionFields[] = $attribute;	
 						}
 						else
 						{
 							$arrAttributeData = $this->getProductAttributeData($attribute);
 							
-							$arrEnabledOptions[] = $attribute;
-											
+							$arrEnabledOptions[] = $attribute;	
+																	
 							$arrData = $this->getDCATemplate($arrAttributeData);	//Grab the skeleton DCA info for widget generation
 
 							$arrProductOptions[] = array
@@ -1304,7 +1303,7 @@ abstract class ModuleIsotopeBase extends Module
 	            'name'      => 'subproducts',
 	            'description'  => &$GLOBALS['TL_LANG']['tl_product_data']['product_options'],
 	            'inputType'    => 'select',          
-	            'options'    => $this->getSubproductOptionValues($product['id'], $arrOptionFields),
+	            'options'    => $this->getSubproductOptionValues($objProduct->id, $arrOptionFields),
 	            'eval'      => array()
 	        );
           
@@ -1318,7 +1317,9 @@ abstract class ModuleIsotopeBase extends Module
           ); 
            
         }
-
+		
+		
+		
 		$objTemplate->raw = $objProduct->getData();
 		$objTemplate->href_reader = $objProduct->href_reader;
 		

@@ -55,8 +55,7 @@ class IsotopeProduct extends Model
 	 * Cache properties, cache is dropped when serializing
 	 */
 	protected $arrCache = array();
-	
-	
+		
 	/**
 	 * Construct the object
 	 */
@@ -78,10 +77,9 @@ class IsotopeProduct extends Model
 			case 'id':
 			case 'pid':
 			case 'href_reader':
-				return $this->arrData[$strKey];			
+				return $this->arrData[$strKey];
 			case 'hasDownloads':
 				return count($this->arrDownloads) ? true : false;
-				
 			default:
 				// Initialize attribute
 				if (!isset($this->arrCache[$strKey]))
@@ -170,7 +168,7 @@ class IsotopeProduct extends Model
 							break;
 					}
 		
-					$this->arrCache[$strKey] = $varValue ? $varValue : deserialize($this->arrData[$strKey]);;
+					$this->arrCache[$strKey] = $varValue ? $varValue : deserialize($this->arrData[$strKey]);
 				}
 				
 				return $this->arrCache[$strKey];
@@ -184,13 +182,13 @@ class IsotopeProduct extends Model
 	public function __set($strKey, $varValue)
 	{
 		switch( $strKey )
-		{
+		{				
 			case 'reader_jumpTo':
-				$this->arrData['href_reader'] = $this->Isotope->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($varValue)->fetchAssoc(), '/product/' . $this->arrData['alias']);
-				
+				$this->arrData['href_reader'] = $this->Isotope->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($varValue)->fetchAssoc(), '/product/' . $this->arrData['alias']);		
 			default:
 				$this->arrCache[$strKey] = $varValue;
-		}
+		}	
+	
 	}
 	
 	
@@ -281,5 +279,24 @@ class IsotopeProduct extends Model
 		return $arrData;
 	}	
 	
+	/** 
+	 * Get subproduct attributes for product variants
+	 */
+	public function getSubProduct($intId)
+	{
+		
+		$objSubProduct = $this->Database->prepare("SELECT sku, price, stock_quantity, weight FROM tl_product_data WHERE id=?")
+										 ->limit(1)
+										 ->execute($intId);
+		
+		if(!$objSubProduct->numRows)
+		{
+			return array();
+		}
+		
+		return $objSubProduct->fetchAssoc();
+	
+	}
+		
 }
 
