@@ -166,7 +166,7 @@ $GLOBALS['TL_FFL']['textCollection'] = 'FormTextCollectionField';
  */
 $GLOBALS['ISO_SHIP']['order_total']	 = 'ShippingOrderTotal';
 $GLOBALS['ISO_SHIP']['flat']		 = 'ShippingFlat';
-
+$GLOBALS['ISO_SHIP']['ups']			 = 'ShippingUPS';
 
 /**
  * Payment modules
