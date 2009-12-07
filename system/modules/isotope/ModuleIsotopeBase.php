@@ -540,7 +540,7 @@ abstract class ModuleIsotopeBase extends Module
 	 */
 	protected function getFilterListData($intAttributeId, $arrValues = array())
 	{
-		if(sizeof($arrValues) < 1)
+		if(count($arrValues) < 1)
 		{
 			$blnGrabAll = true;
 		}
@@ -708,7 +708,7 @@ abstract class ModuleIsotopeBase extends Module
 			
 			$objWidget->storeValues = true;
 			
-			sizeof($arrData['options']) ? $objWidget->options = $arrData['options'] : $objWidget->options = NULL;
+			count($arrData['options']) ? $objWidget->options = $arrData['options'] : $objWidget->options = NULL;
 			//$_SESSION['FORM_DATA'][$strField] = $objWidget->value;
 			
 			// Validate input
@@ -863,7 +863,7 @@ abstract class ModuleIsotopeBase extends Module
 	 */
 	protected function validateOptionValues($arrOptions, $currFormId, $blnProductVariants = false, $intPid = 0)
 	{
-		if(sizeof($arrOptions) < 1)
+		if(count($arrOptions) < 1)
 		{
 			return;
 		}
@@ -998,7 +998,7 @@ abstract class ModuleIsotopeBase extends Module
 			
 			$arrOptions[] = array
 			(
-				'value'	=>		$option['id'] . '_' . $intPid,
+				'value'	=>		$option['id'],
 				'label' => 		$strOptionValue
 			);
 		}
@@ -1016,16 +1016,10 @@ abstract class ModuleIsotopeBase extends Module
 	{
 			
 		$strOptionValues = join(',', $arrOptionFields);
-		
-		$arrValue = explode('_', $varValue);
-		
-		//values are stored as <id>_<pid> format, e.g. 1_3
-		$intPid = $arrValue[1];
-		$intId = $arrValue[0];
-		
+						
 		//get the selected variant values;
-		$objData = $this->Database->prepare("SELECT " . $strOptionValues . " FROM tl_product_data WHERE pid=? AND id=?")
-								  ->execute($intPid, $intId);
+		$objData = $this->Database->prepare("SELECT " . $strOptionValues . " FROM tl_product_data WHERE id=?")
+								  ->execute($varValue);
 		
 		if($objData->numRows < 1)
 		{
@@ -1184,7 +1178,7 @@ abstract class ModuleIsotopeBase extends Module
 		$objTemplate->setData($arrData);
 		
 		$arrEnabledOptions = array();
-		$arrOptionFields = array();
+		$arrVariantOptionFields = array();
 		$arrProductOptions = array();
 		$arrAttributes = $objProduct->getAttributes();
 		
@@ -1215,11 +1209,9 @@ abstract class ModuleIsotopeBase extends Module
 						
 						
 						if($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['add_to_product_variants'])
-						{
-							$arrEnabledOptions[] = 'product_variants';
-							
+						{					
 							$blnIsMergedOptionSet = true;
-							$arrOptionFields[] = $attribute;	
+							$arrVariantOptionFields[] = $attribute;	
 						}
 						else
 						{
@@ -1294,7 +1286,7 @@ abstract class ModuleIsotopeBase extends Module
 			}
 		}
 
-		if($blnIsMergedOptionSet && sizeof($arrOptionFields))
+		if($blnIsMergedOptionSet && count($arrVariantOptionFields))
 		{
  
 			//Create a special widget that combins all option value combos that are enabled.
@@ -1303,17 +1295,18 @@ abstract class ModuleIsotopeBase extends Module
 	            'name'      => 'subproducts',
 	            'description'  => &$GLOBALS['TL_LANG']['tl_product_data']['product_options'],
 	            'inputType'    => 'select',          
-	            'options'    => $this->getSubproductOptionValues($objProduct->id, $arrOptionFields),
+	            'options'    => $this->getSubproductOptionValues($objProduct->id, $arrVariantOptionFields),
 	            'eval'      => array()
 	        );
           
           //$arrData = $this->getDCATemplate($arrAttributeData);  //Grab the skeleton DCA info for widget generation
+		  $arrAttributeData = $this->getProductAttributeData($k);
 
           $arrVariantWidget = array
           (
             'name'      => $k,
-            'description'  => $arrAttributeData['description'],                  
-            'html'      => $this->generateProductOptionWidget('product_variants', $arrData, '', $arrOptionFields)
+            'description'  => $GLOBALS['TL_LANG']['MSC']['labelProductVariants'],                  
+            'html'      => $this->generateProductOptionWidget('product_variants', $arrData, '', $arrVariantOptionFields)
           ); 
            
         }
@@ -1327,6 +1320,7 @@ abstract class ModuleIsotopeBase extends Module
 		
 		$objTemplate->price = $objProduct->formatted_price;
 		$objTemplate->options = $arrProductOptions;	
+		$objTemplate->variantList = implode(',', $arrVariantOptionFields);
 		$objTemplate->variant_widget = $arrVariantWidget;
 				
 		$objTemplate->optionList = implode(',', $arrEnabledOptions);

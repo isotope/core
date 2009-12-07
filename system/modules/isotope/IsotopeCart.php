@@ -496,24 +496,33 @@ class IsotopeCart extends Model
 	 */
 	public function addProduct($objProduct, $objModule=null)
 	{		
+		$arrAllOptionValues = array();
+		
+		$strAllOptionValues = $this->getProductOptionValues($this->Input->post('product_options'));
+		
 		if($this->Input->post('product_variants'))
-		{
-			$arrSelectedVariant = explode('_', $this->Input->post('product_variants'));
+		{			
+			$objProduct->setVariant($this->Input->post('product_variants'), $this->Input->post('variant_options'));	
 			
-			$intSubProductId = $arrSelectedVariant[0];
-								
-			$arrSubProduct = $objProduct->getSubProduct($intSubProductId);
+			$arrVariantOptions = explode(',', $this->Input->post('variant_options'));
 			
-			//Override the  base product values if necessary
-			$objProduct->subId = $intSubProductId;
-						
-			$objProduct->{$this->Isotope->Store->priceField} = (float)$arrSubProduct['price'];
+			//cycle through each product object's set variant option.
+			foreach($arrVariantOptions as $option)
+			{
+				$arrAttributeData = $this->getProductAttributeData($option);
+				
+				$arrVariantOptionValues[$option] = array
+				(
+					'name'		=> $arrAttributeData['name'],
+					'values'	=> array($objProduct->$option)
+				);
+			}
 			
-			$objProduct->sku = $objProduct->sku . ($arrSubProduct['sku'] ? $arrSubProduct['sku'] : '');
+			$arrAllOptionValues = array_merge(deserialize($this->getProductOptionValues($this->Input->post('product_options'))), $arrVariantOptionValues);
 			
-			$objProduct->weight = $arrSubProduct['weight'];		
-		}		
-
+			$strAllOptionValues = serialize($arrAllOptionValues);
+		}
+				
 		$arrSet = array
 		(
 			'pid'					=> $this->id,
@@ -523,7 +532,7 @@ class IsotopeCart extends Model
 			'href_reader'			=> $objProduct->href_reader,
 			'product_id'			=> ($objProduct->subId ? $objProduct->subId : $objProduct->id),
 			'product_data'			=> serialize($objProduct),
-			'product_options'		=> $this->getProductOptionValues($this->Input->post('product_options'))
+			'product_options'		=> $strAllOptionValues 
 		);
 
 /*
@@ -550,6 +559,8 @@ class IsotopeCart extends Model
 	private function getProductOptionValues($strProductOptions)
 	{	
 		$arrProductOptions = explode(',', $strProductOptions);
+		
+		
 		
 		foreach($arrProductOptions as $option)
 		{	

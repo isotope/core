@@ -14,12 +14,15 @@
 		<div class="removeButton"><a href="<?php echo $product['remove_link']; ?>" title="<?php echo $product['remove_link_title']; ?>">Remove</a></div>
         <div class="productName"><?php echo $product['name']; ?></div>
 		<div class="info">
-        	<?php if(sizeof($product['options'])): ?>
-				<div class="optionswrapper">	
-				<?php foreach($product['options'] as $option): ?>
-					<div class="option"><span class="optionname">OPTION:</span> $option['value']</div>
+        	<?php if($product['product_options']): ?>
+			<div class="optionswrapper">
+				<ul class="productOptions">
+				<?php foreach($product['product_options'] as $option): ?>
+					<li><strong><?php echo $option['name']; ?>:</strong> <?php echo implode(', ', $option['values']); ?></li>
+				<!--<div class="option"><span class="optionname">OPTION:</span> PRODUCT OPTION</div>-->
 				<?php endforeach; ?>
-                </div>
+				</ul>
+			</div>
 			<?php endif; ?>
 			<div class="price">Qty x <?php echo $product['quantity']; ?> = <span class="total"><?php echo $product['total_price']; ?></span></div>
 		</div>
