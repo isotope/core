@@ -104,9 +104,10 @@ $GLOBALS['TL_DCA']['tl_shipping_modules'] = array
 	'palettes' => array
 	(
 		'__selector__'					=> array('type', 'protected'),
-		'default'						=> 'type,name,label,note;countries,minimum_total,maximum_total;guests,protected;enabled',
-		'order_total'					=> 'type,name,label,note;price;countries,minimum_total,maximum_total;guests,protected;enabled',
-		'flat'							=> 'type,name,label,note;price,flatCalculation,surcharge_field;countries,minimum_total,maximum_total;guests,protected;enabled',
+		'default'						=> '{title_legend},type,name,label,note;{configuration_legend},countries,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+		'order_total'					=> '{title_legend},type,name,label,note;{configuration_legend},price;countries,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+		'flat'							=> '{title_legend},type,name,label,note;price,flatCalculation,surcharge_field;{configuration_legend},countries,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+		'ups'							=> '{title_legend},type,name,label,note;{ups_legend},ups_accessKey,ups_developersKey,ups_userName,ups_password;{configuration_legend},countries,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled'
 	),
 	
 	// Subpalettes
@@ -151,6 +152,38 @@ $GLOBALS['TL_DCA']['tl_shipping_modules'] = array
 			'exclude'                 => true,
 			'inputType'               => 'textarea',
 			'eval'                    => array('rte'=>'tinyMCE', 'decodeEntities'=>true),
+		),
+		'ups_accessKey' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_modules']['ups_accessKey'],
+			'exclude'                 => true,
+			'search'                  => true,
+			'inputType'               => 'text',
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>255)
+		),
+		'ups_developersKey' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_modules']['ups_developersKey'],
+			'exclude'                 => true,
+			'search'                  => true,
+			'inputType'               => 'text',
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>255)
+		),
+		'ups_userName' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_modules']['ups_userName'],
+			'exclude'                 => true,
+			'search'                  => true,
+			'inputType'               => 'text',
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>255)
+		),
+		'ups_password' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_modules']['ups_password'],
+			'exclude'                 => true,
+			'search'                  => true,
+			'inputType'               => 'text',
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>255)
 		),
 		'countries' => array
 		(

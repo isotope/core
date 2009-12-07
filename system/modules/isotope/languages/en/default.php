@@ -264,6 +264,7 @@ $GLOBALS['TL_LANG']['ISO']['changeCheckoutInfo']			= 'Change';
 $GLOBALS['TL_LANG']['SHIP']['collection']		= array('Collection');
 $GLOBALS['TL_LANG']['SHIP']['order_total']		= array('Order total-based shipping');
 $GLOBALS['TL_LANG']['SHIP']['flat']				= array('Flat-price shipping');
+$GLOBALS['TL_LANG']['SHIP']['ups']				= array('UPS Live Rates and Service shipping');
 
 
 /**

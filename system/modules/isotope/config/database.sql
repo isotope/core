@@ -71,13 +71,13 @@ CREATE TABLE `tl_product_data` (
   `images` blob NULL,
   `teaser` text NULL,
   `description` text NULL,
-  `price` decimal(9,3) unsigned NOT NULL default '0',
+  `price` decimal(9,3) unsigned NOT NULL default '0.000',
   `price_override` varchar(255) NOT NULL default '',
   `max_order_quantity` int(10) unsigned NOT NULL default '0',
   `stock_enabled` char(1) NOT NULL default '',
   `stock_quantity` int(10) unsigned NOT NULL default '0',
   `stock_oversell` char(1) NOT NULL default '',
-  `weight` decimal(9,3) unsigned NOT NULL default '0',
+  `weight` decimal(9,3) unsigned NOT NULL default '0.000',
   `shipping_exempt` char(1) NOT NULL default '',
   `tax_class` int(10) unsigned NOT NULL default '0',
 
@@ -481,6 +481,10 @@ CREATE TABLE `tl_shipping_modules` (
   `protected` char(1) NOT NULL default '',
   `groups` blob NULL,
   `enabled` char(1) NOT NULL default '',
+  `ups_accessKey` varchar(255) NOT NULL default '',
+  `ups_developersKey` varchar(255) NOT NULL default '',
+  `ups_userName` varchar(255) NOT NULL default '',
+  `ups_password` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`id`),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
