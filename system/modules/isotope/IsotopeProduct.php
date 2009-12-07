@@ -282,19 +282,33 @@ class IsotopeProduct extends Model
 	/** 
 	 * Get subproduct attributes for product variants
 	 */
-	public function getSubProduct($intId)
+	public function setVariant($intId, $strVariantFields)
 	{
-		
-		$objSubProduct = $this->Database->prepare("SELECT sku, price, stock_quantity, weight FROM tl_product_data WHERE id=?")
+		$strPriceField = $this->Isotope->Store->priceField;
+				
+		$objVariant = $this->Database->prepare("SELECT id, sku, weight, " . $strPriceField .", " . $strVariantFields . " FROM tl_product_data WHERE id=?")
 										 ->limit(1)
 										 ->execute($intId);
 		
-		if(!$objSubProduct->numRows)
+		if(!$objVariant->numRows)
 		{
 			return array();
 		}
 		
-		return $objSubProduct->fetchAssoc();
+		$arrValues = $objVariant->fetchAssoc();
+		
+		foreach($arrValues as $k=>$v)
+		{
+			switch($k)
+			{
+				case 'price':
+					$this->arrData[$k] = $this->Isotope->calculatePrice($v, $this->arrData['tax_class']);
+					break;
+				default:
+					$this->arrData[$k] = $v;
+			
+			}
+		}
 	
 	}
 		

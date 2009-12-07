@@ -8,9 +8,10 @@
 
 <?php if ($this->hasOptions): ?>
 <input type="hidden" name="product_options" value="<?php echo $this->optionList; ?>" />
+<input type="hidden" name="variant_options" value="<?php echo $this->variantList; ?>" />
 <div class="variants">
 <?php if ($this->variant_widget): ?>
-	<?php echo $this->variant_widget['html']; ?>
+	<label for="<?php echo $this->variant_widget['name']; ?>"><?php echo $this->variant_widget['description']; ?> </label><?php echo $this->variant_widget['html']; ?>
 <?php endif; ?>
 </div>
 <div class="options">
