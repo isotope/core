@@ -70,7 +70,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 			
 			return $objTemplate->parse();
 		}
-		
+
 		global $objPage;
 		
 		$this->arrCategories = $this->setCategories($this->iso_category_scope, $objPage->rootId, $objPage->id);	
@@ -511,7 +511,21 @@ class ModuleProductLister extends ModuleIsotopeBase
 	 * @return string
 	 */
 	protected function generateAJAXListing($arrFilters)
-	{				
+	{	
+						
+		$objTemplateName = $this->Database->prepare("SELECT iso_list_layout FROM tl_module WHERE id=?")
+									  ->limit(1)
+									  ->execute($this->id);
+	
+		if($objTemplateName->numRows)
+		{
+			$strTemplate = $objTemplateName->iso_list_layout;
+		}
+		else
+		{
+			$strTemplate = $this->iso_list_layout;
+		}
+		
 		$objTemplate = new FrontendTemplate($this->strTemplate);
 		
 		$this->arrCategories = $this->setCategories($this->iso_category_scope, $this->getRequestData('rid'), $this->getRequestData('pid'));		
@@ -537,7 +551,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 		}
 		
 		$arrProducts = $this->getProducts($objProductIds->execute($this->arrParams)->fetchEach('id'));
-				
+			
 		if (!is_array($arrProducts) || !count($arrProducts))
 		{
 			$objTemplate = new FrontendTemplate('mod_message');
@@ -561,6 +575,14 @@ class ModuleProductLister extends ModuleIsotopeBase
 			}
 		}
 		
+		
+		$arrTemplateData = array
+		(
+			'buttons'		=> $arrButtons,
+			'quantityLabel'	=> $GLOBALS['TL_LANG']['MSC']['quantity'],
+			'useQuantity'	=> $this->iso_use_quantity,
+		);
+		
 		$arrBuffer = array();
 		
 		foreach( $arrProducts as $i => $objProduct )
@@ -571,7 +593,8 @@ class ModuleProductLister extends ModuleIsotopeBase
 				'raw'		=> $objProduct,
 				'clear'	    => ($this->iso_list_format=='grid' && $blnSetClear ? true : false),
 				'class'		=> ('product' . ($i == 0 ? ' product_first' : '')),
-				'html'		=> $this->generateProduct($objProduct, $this->iso_list_layout),
+				'html'		=> $this->generateProduct($objProduct, $this->iso_list_layout, $arrTemplateData),
+
 			);
 
 			$blnSetClear = (($i+1) % $this->columns==0 ? true : false);

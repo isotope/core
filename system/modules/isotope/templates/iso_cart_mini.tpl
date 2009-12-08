@@ -14,7 +14,7 @@
 		<div class="removeButton"><a href="<?php echo $product['remove_link']; ?>" title="<?php echo $product['remove_link_title']; ?>">Remove</a></div>
         <div class="productName"><?php echo $product['name']; ?></div>
 		<div class="info">
-        	<?php if($product['product_options']): ?>
+        	<?php if($this->showOptions && $product['product_options']): ?>
 			<div class="optionswrapper">
 				<ul class="productOptions">
 				<?php foreach($product['product_options'] as $option): ?>

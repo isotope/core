@@ -1130,10 +1130,13 @@ class ProductCatalog extends Backend
 				$arrValues[] = $intPage;
 			}
 			
+						
 			if (count($arrQuery))
-			{					   
+			{								   
 				$this->Database->prepare("INSERT INTO tl_product_categories (pid, tstamp, page_id) VALUES ".implode(', ', $arrQuery))->execute($arrValues);
 			}
+			
+			
 		}
 	
 		return $varValue;

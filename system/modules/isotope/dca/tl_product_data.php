@@ -37,11 +37,10 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		'dataContainer'               => 'Table',
 		'enableVersioning'            => false,
 		'ctable'					  => array('tl_product_downloads', 'tl_product_categories'),
-		/*
 		'onload_callback'			  => array
 		(
 			array('tl_product_data', 'checkPermission'),
-		),*/
+		),
 		'onsubmit_callback'			  => array
 		(
 			array('ProductCatalog', 'saveProduct')
@@ -459,22 +458,38 @@ class tl_product_data extends Backend
 		$this->import('BackendUser', 'User');
 		
 		if ($this->User->isAdmin)
-			return;
+		{			
+			$arrProducts = $this->Database->execute("SELECT id FROM tl_product_data WHERE pid=0")->fetchEach('id');
 		
-		$arrTypes = is_array($this->User->iso_product_types) ? $this->User->iso_product_types : array(0);
-		
-		$arrProducts = $this->Database->execute("SELECT id FROM tl_product_data WHERE type IN ('','" . implode("','", $arrTypes) . "')")->fetchEach('id');
-		
-		if (!is_array($arrProducts) || !count($arrProducts))
-		{
-			$arrProducts = array(0);
+			if (!is_array($arrProducts) || !count($arrProducts))
+			{
+				$arrProducts = array(0);
+			}
+			
+			$GLOBALS['TL_DCA']['tl_product_data']['list']['sorting']['root'] = $arrProducts;
+			
+			if (strlen($this->Input->get('id')) && !in_array($this->Input->get('id'), $arrProducts))
+			{
+				$this->redirect('typolight/main.php?act=error');
+			}
 		}
-		
-		$GLOBALS['TL_DCA']['tl_product_data']['list']['sorting']['root'] = $arrProducts;
-		
-		if (strlen($this->Input->get('id')) && !in_array($this->Input->get('id'), $arrProducts))
-		{
-			$this->redirect('typolight/main.php?act=error');
+		else
+		{		
+			$arrTypes = is_array($this->User->iso_product_types) ? $this->User->iso_product_types : array(0);
+			
+			$arrProducts = $this->Database->execute("SELECT id FROM tl_product_data WHERE pid=0 AND type IN ('','" . implode("','", $arrTypes) . "')")->fetchEach('id');
+			
+			if (!is_array($arrProducts) || !count($arrProducts))
+			{
+				$arrProducts = array(0);
+			}
+			
+			$GLOBALS['TL_DCA']['tl_product_data']['list']['sorting']['root'] = $arrProducts;
+			
+			if (strlen($this->Input->get('id')) && !in_array($this->Input->get('id'), $arrProducts))
+			{
+				$this->redirect('typolight/main.php?act=error');
+			}
 		}
 	}
 	
