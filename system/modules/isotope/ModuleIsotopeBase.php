@@ -1288,7 +1288,7 @@ abstract class ModuleIsotopeBase extends Module
 
 		if($blnIsMergedOptionSet && count($arrVariantOptionFields))
 		{
- 
+ 			$objTemplate->hasVariants = true;
 			//Create a special widget that combins all option value combos that are enabled.
 			$arrData = array
 			(
