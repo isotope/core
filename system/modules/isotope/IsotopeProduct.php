@@ -185,10 +185,6 @@ class IsotopeProduct extends Model
 		{				
 			case 'reader_jumpTo':
 				$this->arrData['href_reader'] = $this->Isotope->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($varValue)->fetchAssoc(), '/product/' . $this->arrData['alias']);		
-			case $this->Isotope->Store->priceField:
-			case 'weight':
-			case 'sku':
-				$this->arrData[$strKey];
 			default:
 				$this->arrCache[$strKey] = $varValue;
 		}	
