@@ -125,6 +125,7 @@ class tl_product_categories extends Backend
 	public function listRows($row)
 	{
 		$this->loadDataContainer('tl_product_data');
+		$this->loadLanguageFile('tl_product_data');
 		
 		$objProduct = $this->Database->prepare("SELECT * FROM tl_product_data WHERE id=?")->limit(1)->execute($row['pid']);
 		
