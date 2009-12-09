@@ -143,8 +143,61 @@ var Isotope =
 		}
 
 		Backend.getScrollOffset();
+	},
+	
+	/**
+	 * Add the interactive help
+	 */
+	addInteractiveHelp: function()
+	{
+		$$('a.tl_tip').each(function(el)
+		{
+			if (el.retrieve('complete'))
+			{
+				return;
+			}
+
+			el.addEvent('mouseover', function()
+			{
+				el.timo = setTimeout(function()
+				{
+					var box = $('tl_helpBox');
+
+					if (!box)
+					{
+						box = new Element('div').setProperty('id', 'tl_helpBox').injectInside($(document.body));
+					}
+
+					var scroll = el.getTop();
+
+					box.set('html', el.get('longdesc'));
+					box.setStyle('display', 'block');
+					box.setStyle('top', (scroll + 18) + 'px');
+				}, 1000);
+			});
+
+			el.addEvent('mouseout', function()
+			{
+				var box = $('tl_helpBox');
+
+				if (box)
+				{
+					box.setStyle('display', 'none');
+				}
+
+				clearTimeout(el.timo);
+			});
+
+			el.store('complete', true);
+		});
 	}
 };
+
+
+window.addEvent('domready', function()
+{
+	Isotope.addInteractiveHelp();
+});
 
 
 /**

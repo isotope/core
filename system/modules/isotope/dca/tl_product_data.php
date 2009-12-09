@@ -564,23 +564,35 @@ class tl_product_data extends Backend
 	 */
 	private function getCategoryList($varValue)
 	{
+		$arrPages = array();
+		
 		if(!is_array($varValue) || !count($varValue))
 		{
 			return $GLOBALS['TL_LANG']['MSC']['noCategoriesAssociated'];
 		}
-		
-		$objCategories = $this->Database->execute("SELECT id,title FROM tl_page WHERE id IN (" . implode(',', $varValue) . ")");
-		
-		if(!$objCategories->numRows)
-		{
-			return $GLOBALS['TL_LANG']['MSC']['noCategoriesAssociated'];
-		}
-		
+				
 		$arrCategories = array();
 		
-		while( $objCategories->next() )
+		foreach( $varValue as $intPage )
 		{
-			$arrCategories[] = '<a href="' . $this->addToUrl('table=tl_product_categories&id='.$objCategories->id) . '">' . $objCategories->title . '</a>';
+			if (!$arrPages[$intPage])
+			{
+				$objPage = $this->getPageDetails($intPage);
+				$arrPages[$intPage]['title'] = $objPage->title;
+				
+				$objPages = $this->Database->execute("SELECT * FROM tl_page WHERE id IN (" . implode(',', $objPage->trail) . ") ORDER BY id=" . implode(' DESC, id=', $objPage->trail) . " DESC");
+				
+				$arrHelp = array();
+				while( $objPages->next() )
+				{
+					$arrHelp[] = $objPages->title;
+				}
+				
+				$arrPages[$intPage]['help'] = implode(' » ', $arrHelp);
+			}
+			
+			
+			$arrCategories[] = '<a class="tl_tip" longdesc="' . $arrPages[$intPage]['help'] . '" href="' . $this->addToUrl('table=tl_product_categories&id='.$intPage) . '">' . $arrPages[$intPage]['title'] . '</a>';
 		}
 		
 		return implode(', ', $arrCategories);
