@@ -105,26 +105,6 @@ class ShippingUPS extends Shipping
 	 */
 	protected $intStatusPass = 1;
 	
-	/**
-	 * Constructor for the Object
-	 * 
-	 * @access public
-	 * @param array $shipment array of shipment data
-	 * @param array $shipper array of shipper data
-	 * @param array $ship_from array of ship from data
-	 * @param array $desination array of destination data
-	 */
-	public function __construct($shipment, $shipper, $ship_from, $desination) {
-		parent::__construct();
-		
-		// set object properties
-		$this->server = $GLOBALS['ups_api']['server'].'/ups.app/xml/Rate';
-		$this->shipment = $shipment;
-		$this->shipper = $shipper;
-		$this->ship_from = $ship_from;
-		$this->destination = $desination;
-	} // end function __construct()
-
 
 	/**
 	 * Return an object property
@@ -139,11 +119,86 @@ class ShippingUPS extends Shipping
 		{
 			case 'price':
 				$this->import('IsotopeCart', 'Cart');
-				/*
+												
+				$arrDestination = array
+				(
+					'name'			=> $this->Cart->shippingAddress['firstname'] . ' ' . $this->Cart->shippingAddress['lastname'],
+					'phone'			=> $this->Cart->shippingAddress['phone'],
+					'company'		=> $this->Cart->shippingAddress['company'],
+					'street'		=> $this->Cart->shippingAddress['street'],
+					'street2'		=> $this->Cart->shippingAddress['street_2'],
+					'street3'		=> $this->Cart->shippingAddress['street_3'],
+					'city'			=> $this->Cart->shippingAddress['city'],
+					'state'			=> $this->Cart->shippingAddress['state'],
+					'zip'			=> $this->Cart->shippingAddress['postal'],
+					'country'		=> $this->Cart->shippingAddress['country']
+				);
+
+				$arrOrigin = array
+				(
+					'name'			=> $this->Isotope->Store->firstname . ' ' . $this->Isotope->Store->lastname,
+					'phone'			=> $this->Isotope->Store->phone,
+					'company'		=> $this->Isotope->Store->company,
+					'street'		=> $this->Isotope->Store->street,
+					'street2'		=> $this->Isotope->Store->street_2,
+					'street3'		=> $this->Isotope->Store->street_3,
+					'city'			=> $this->Isotope->Store->city,
+					'state'			=> $this->Isotope->Store->state,
+					'zip'			=> $this->Isotope->Store->postal,
+					'country'		=> $this->Isotope->Store->country
+				);
 				
-				send XML request.s
-				
+				var_dump($this->Isotope->Store);
+				exit;
+				/** 
+					<PackagingType>
+						<Code>02</Code>
+						<Description>Customer Supplied</Description>
+					</PackagingType>
+					<Description>Rate</Description>
+					<PackageWeight>
+						<UnitOfMeasurement>
+							<Code>LBS</Code>
+						</UnitOfMeasurement>
+						<Weight>10</Weight>
+					</PackageWeight>
 				*/
+				
+				$arrShipment['service'] = '03';		//Ground for now
+				
+				
+				$arrShipment['pickup_type']	= array
+				(
+					'code'			=> '06',		//default to one-time, but needs perhaps to be chosen by store admin.
+					'description'	=> '' 
+				);
+					
+				$arrShipment['packages'][] = array
+				(					
+					'packaging'		=> array
+					(
+						'code'			=> '00',	//unknown, for now
+						'description'	=> ''
+					),
+					'description'	=> '',
+					'units'			=> $this->Isotope->Store->weightUnit,   //weight unit code, lbs or kgs.
+					'weight'		=> $this->Cart->totalWeight,	//shipment weight...  product field "weight" * "quantity_requested" 
+					
+				);		
+				
+				// set object properties
+				$this->server = 'https://www.ups.com/ups.app/xml/Rate';
+				
+				$this->shipment = $arrShipment;  
+				
+				$this->shipper = $arrOrigin;	//FOR NOW, This is assumed to be the same for origin and shipping info			
+				$this->ship_from = $arrOrigin;  //FOR NOW, This is assumed to be the same for origin and shipping info.  Could be used to ship from multiple fulfillment places, drop shipping, etc.
+				
+				$this->destination = $arrDestination;
+		
+				$strRequestXML = $this->buildRequest('RatingServiceSelectionRequest');
+								
+				$this->sendRequest($strRequestXML);
 				break;
 		}
 		
@@ -194,22 +249,141 @@ class ShippingUPS extends Shipping
 	 * @return string $return_value request XML
 	 */
 	public function buildRequest($customer_context = null) {
-		// create the access request element
-		$access_dom = new DOMDocument('1.0');
-		$access_element = $access_dom->appendChild(
+		// create the new dom document
+		$xml = new DOMDocument('1.0', 'utf-8');
+		
+	
+		$access_element = $xml->appendChild(
 			new DOMElement('AccessRequest'));
 		$access_element->setAttributeNode(new DOMAttr('xml:lang', 'en-US'));
 		
 		// create the child elements
 		$access_element->appendChild(
-			new DOMElement('AccessLicenseNumber', $this->access_key));
+			new DOMElement('AccessLicenseNumber', $this->ups_accessKey));
 		$access_element->appendChild(
-			new DOMElement('UserId', $this->username));
+			new DOMElement('UserId', $this->ups_userName));
 		$access_element->appendChild(
-			new DOMElement('Password', $this->password));
+			new DOMElement('Password', $this->ups_password));
+						
+		/** create the AddressValidationRequest element **/
+		$rate = $xml->appendChild(
+			new DOMElement('RatingServiceSelectionRequest'));
+		$rate->setAttributeNode(new DOMAttr('xml:lang', 'en-US'));
 		
-		return $access_dom->saveXML();
+		// create the child elements
+		$request = $this->buildRequest_RequestElement($rate,
+			'Rate', 'Rate', $customer_context);
+		
+		
+		/** build the pickup type node **/
+		$pickup_type = $rate->appendChild(new DOMElement('PickupType'));
+		$pickup_type->appendChild(new DOMElement('Code',
+			$this->shipment['pickup_type']['code']));
+		$pickup_type->appendChild(new DOMElement('Description',
+			$this->shipment['pickup_type']['description']));
+		
+		$shipment = $rate->appendChild(new DOMElement('Shipment'));
+		
+		$this->buildRequest_Shipper($shipment);
+		$this->buildRequest_Destination($shipment);
+		$this->buildRequest_ShipFrom($shipment);
+		$shipment = $this->buildRequest_Shipment($shipment);
+		
+		return $xml->saveXML();
 	} // end function buildRequest()
+	
+	/**
+	 * Send a request to the UPS Server using xmlrpc
+	 * 
+	 * @access public
+	 * @params string $request_xml XML request from the child objects
+	 * buildRequest() method
+	 * @params boool $return_raw_xml whether or not to return the raw XML from
+	 * the request
+	 * 
+	 * @todo remove array creation after switching over to xpath
+	 */
+	public function sendRequest($request_xml, $return_raw_xml = false) 
+	{
+		  $ch = curl_init($this->server);  
+                curl_setopt($ch, CURLOPT_HEADER, 1);  
+                curl_setopt($ch,CURLOPT_POST,1);  
+                curl_setopt($ch,CURLOPT_TIMEOUT, 60);  
+                curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);  
+                curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, 0);  
+                curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, 0);  
+                curl_setopt($ch,CURLOPT_POSTFIELDS,$request_xml);  
+                $response=curl_exec ($ch);  
+
+                // Find out if the UPS service is down
+                preg_match_all('/HTTP\/1\.\d\s(\d+)/',$result,$matches);
+                foreach($matches[1] as $key=>$value) {
+                    if ($value != 100 && $value != 200) {
+                        throw new Exception("The UPS service seems to be down with HTTP/1.1 $value");
+                    }
+                }
+
+                //echo '<!-- '. $result. ' -->'; // THIS LINE IS FOR DEBUG PURPOSES ONLY-IT WILL SHOW IN HTML COMMENTS  
+              /*  $data = strstr($result, '<?');  
+                $xml_parser = xml_parser_create();  
+                xml_parse_into_struct($xml_parser, $data, $vals, $index);  
+                xml_parser_free($xml_parser);  
+                $params = array();  
+                $level = array();  
+                foreach ($vals as $xml_elem) {  
+                    if ($xml_elem['type'] == 'open') {  
+                        if (array_key_exists('attributes',$xml_elem)) {  
+                            list($level[$xml_elem['level']],$extra) = array_values($xml_elem['attributes']);  
+                        } else {  
+                            $level[$xml_elem['level']] = $xml_elem['tag'];  
+                    }  
+                }  
+                if ($xml_elem['type'] == 'complete') {  
+                  $start_level = 1;  
+                  $php_stmt = '$params';  
+                  while($start_level < $xml_elem['level']) {  
+                       $php_stmt .= '[$level['.$start_level.']]';  
+                       $start_level++;  
+                  }  
+                  $php_stmt .= '[$xml_elem[\'tag\']] = $xml_elem[\'value\'];';  
+                  eval($php_stmt);  
+                  }  
+                }  */
+        curl_close($ch);  
+                
+		// create the context stream and make the request
+		/*$context = stream_context_create(array(
+			'http' => array(
+				'method' => 'POST',
+				'header' => 'Content-Type: text/xml',
+				'content' => $request_xml,
+			),
+		));
+		$response = file_get_contents($this->server, false, $context);
+		*/
+		// TODO: remove array creation after switching over to xpath
+		// create an array from the raw XML data
+		/*$this->response_array = unserialize($response);
+		var_dump($this->response_array);
+		*/
+		echo $response;
+		exit;
+		// build the dom objects
+		$this->response = new DOMDocument();
+		$this->response->loadXML($response);
+		$this->xpath = new DOMXPath($this->response);
+		$this->root_node = $this->xpath->query(
+			'/'.$this->getRootNodeName())->item(0);
+		
+		// check if we should return the raw XML data
+		if ($return_raw_xml) {
+			return $response;
+		} // end if we should return the raw XML
+		
+		// return the response as an array
+		return $this->response_array;
+	} // end function sendRequest()
+
 
 		/**
 	 * Returns the error message(s) from the response
@@ -254,49 +428,6 @@ class ShippingUPS extends Shipping
 		return false;
 	} // end function isError
 	
-	/**
-	 * Send a request to the UPS Server using xmlrpc
-	 * 
-	 * @access public
-	 * @params string $request_xml XML request from the child objects
-	 * buildRequest() method
-	 * @params boool $return_raw_xml whether or not to return the raw XML from
-	 * the request
-	 * 
-	 * @todo remove array creation after switching over to xpath
-	 */
-	public function sendRequest($request_xml, $return_raw_xml = false) {
-		
-		// create the context stream and make the request
-		$context = stream_context_create(array(
-			'http' => array(
-				'method' => 'POST',
-				'header' => 'Content-Type: text/xml',
-				'content' => $request_xml,
-			),
-		));
-		$response = file_get_contents($this->server, false, $context);
-		
-		// TODO: remove array creation after switching over to xpath
-		// create an array from the raw XML data
-		$this->response_array = unserialize($response);
-		var_dump($this->response_array);
-		exit;
-		// build the dom objects
-		$this->response = new DOMDocument();
-		$this->response->loadXML($response);
-		$this->xpath = new DOMXPath($this->response);
-		$this->root_node = $this->xpath->query(
-			'/'.$this->getRootNodeName())->item(0);
-		
-		// check if we should return the raw XML data
-		if ($return_raw_xml) {
-			return $response;
-		} // end if we should return the raw XML
-		
-		// return the response as an array
-		return $this->response_array;
-	} // end function sendRequest()
 	
 	/**
 	 * Builds the Request element
@@ -352,169 +483,7 @@ class ShippingUPS extends Shipping
 		return $request;
 	} // end function buildRequest_RequestElement()
 	
-		/**
-	 * Returns charges for each package
-	 * 
-	 * @return array
-	 */
-	public function getPackageCharges() {
-		$return_value = array();
-		
-		// iterate over the packages
-		$packages = $this->xpath->query(self::NODE_NAME_RATED_SHIPMENT.
-			'/RatedPackage', $this->root_node);
-		foreach ($packages as $package) {
-			$return_value[] = array(
-				'currency_code' => $this->xpath->query(
-					'TotalCharges/CurrencyCode',
-					$package)->item(0)->nodeValue,
-				'transportation' => $this->xpath->query(
-					'TransportationCharges/'.self::NODE_NAME_MONETARY_VALUE,
-					$package)->item(0)->nodeValue,
-				'service_options' => $this->xpath->query(
-					'ServiceOptionsCharges/'.self::NODE_NAME_MONETARY_VALUE,
-					$package)->item(0)->nodeValue,
-				'total' => $this->xpath->query(
-					'TotalCharges/'.self::NODE_NAME_MONETARY_VALUE,
-					$package)->item(0)->nodeValue,
-			); // end $return_value
-		} // end for each package
-		
-		return $return_value;
-	} // end function getPackageCharges()
-	
-	/**
-	 * Returns charges for each package
-	 * 
-	 * @return array
-	 */
-	public function getPackageWeight() {
-		$return_value = array();
-		
-		// iterate over the packages
-		$packages = $this->xpath->query(self::NODE_NAME_RATED_SHIPMENT.
-			'/RatedPackage', $this->root_node);
-		foreach ($packages as $package) {
-			$return_value[] = array(
-				'weight' => $this->xpath->query(
-					'BillingWeight/Weight', $package)
-					->item(0)->nodeValue,
-				'units' => $this->xpath->query(
-					'BillingWeight/UnitOfMeasurement/Code', $package)
-					->item(0)->nodeValue,
-			); // end $return_value
-		} // end for each package
-		
-		return $return_value;
-	} // end function getPackageCharges()
-	
-	/**
-	 * Returns charges for the entire shipment
-	 * 
-	 * @return array
-	 */
-	public function getShipmentCharges() {
-		$rated_shipment = $this->xpath->query(
-			self::NODE_NAME_RATED_SHIPMENT, $this->root_node)->item(0);
-		
-		$return_value = array(
-			'currency_code' => $this->xpath->query(
-				'TotalCharges/CurrencyCode',
-				$rated_shipment)->item(0)->nodeValue,
-			'transportation' => $this->xpath->query(
-				'TransportationCharges/'.self::NODE_NAME_MONETARY_VALUE,
-				$rated_shipment)->item(0)->nodeValue,
-			'service_options' => $this->xpath->query(
-				'ServiceOptionsCharges/'.self::NODE_NAME_MONETARY_VALUE,
-				$rated_shipment)->item(0)->nodeValue,
-			'total' => $this->xpath->query(
-				'TotalCharges/'.self::NODE_NAME_MONETARY_VALUE,
-				$rated_shipment)->item(0)->nodeValue,
-		); // end $return_value
-		
-		return $return_value;
-	} // end function
-	
-	/**
-	 * Returns billing weight for the entire shipment
-	 * 
-	 * @return array
-	 */
-	public function getShipmentWeight() {
-		$rated_shipment = $this->xpath->query(
-			self::NODE_NAME_RATED_SHIPMENT, $this->root_node)->item(0);
-		
-		$return_value = array(
-			'weight' => $this->xpath->query(
-				'BillingWeight/Weight', $rated_shipment)->item(0)->nodeValue,
-			'units' => $this->xpath->query(
-				'BillingWeight/UnitOfMeasurement/Code', $rated_shipment)
-				->item(0)->nodeValue,
-		); // end $return_value
-		
-		return $return_value;
-	} // end function getShipmentWeight()
-	
-	/**
-	 * Returns any warnings from the response
-	 * 
-	 * @return array
-	 */
-	public function getWarnings() {
-		$warnings = $this->xpath->query(self::NODE_NAME_RATED_SHIPMENT.
-			'/RatedShipmentWarning', $this->root_node);
-		
-		// iterate over the warnings
-		$return_value = array();
-		foreach ($warnings as $warning) {
-			$return_value[] = $warning->nodeValue;
-		} // end for each warning
-		
-		return $return_value;
-	} // end function getWarnings()
-	
-	/**
-	 * Builds the XML used to make the request
-	 * 
-	 * If $customer_context is an array it should be in the format:
-	 * $customer_context = array('Element' => 'Value');
-	 * 
-	 * @access public
-	 * @param array|string $cutomer_context customer data
-	 * @return string $return_value request XML
-	 */
-	public function buildRequest($customer_context = null) {
-		// create the new dom document
-		$xml = new DOMDocument('1.0', 'utf-8');
-		
-		
-		/** create the AddressValidationRequest element **/
-		$rate = $xml->appendChild(
-			new DOMElement('RatingServiceSelectionRequest'));
-		$rate->setAttributeNode(new DOMAttr('xml:lang', 'en-US'));
-		
-		// create the child elements
-		$requst = $this->buildRequest_RequestElement($rate,
-			'Rate', 'Rate', $customer_context);
-		
-		
-		/** build the pickup type node **/
-		$pickup_type = $rate->appendChild(new DOMElement('PickupType'));
-		$pickup_type->appendChild(new DOMElement('Code',
-			$this->shipment['pickup_type']['code']));
-		$pickup_type->appendChild(new DOMElement('Description',
-			$this->shipment['pickup_type']['description']));
-		
-		$shipment = $rate->appendChild(new DOMElement('Shipment'));
-		
-		$this->buildRequest_Shipper($shipment);
-		$this->buildRequest_Destination($shipment);
-		$this->buildRequest_ShipFrom($shipment);
-		$shipment = $this->buildRequest_Shipment($shipment);
-		
-		return $this->buildRequest().$xml->saveXML();
-	} // end function buildRequest()
-	
+
 	/**
 	 * Builds the destination elements
 	 * 
@@ -782,6 +751,26 @@ class ShippingUPS extends Shipping
 	} // end function buildRequest_Shipper()
 	
 	/**
+	 * Returns any warnings from the response
+	 * 
+	 * @return array
+	 */
+	public function getWarnings() {
+		$warnings = $this->xpath->query(self::NODE_NAME_RATED_SHIPMENT.
+			'/RatedShipmentWarning', $this->root_node);
+		
+		// iterate over the warnings
+		$return_value = array();
+		foreach ($warnings as $warning) {
+			$return_value[] = $warning->nodeValue;
+		} // end for each warning
+		
+		return $return_value;
+	} // end function getWarnings()
+	
+
+	
+	/**
 	 * Returns the name of the servies response root node
 	 * 
 	 * @access protected
@@ -794,15 +783,7 @@ class ShippingUPS extends Shipping
 	} // end function getRootNodeName()
 	
 	
-	/**
-	 * Returns the name of the servies response root node
-	 * 
-	 * @access protected
-	 * @return string
-	 * 
-	 * @todo remove after phps self scope has been fixed
-	 */
-	protected abstract function getRootNodeName();
+	
 	
 }
 
