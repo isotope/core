@@ -185,11 +185,13 @@ class PaymentPaypal extends Payment
 		return '
 <form action="https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr" method="post">
 <input type="hidden" name="cmd" value="_xclick">
+<input type="hidden" name="charset" value="UTF-8">
 <input type="hidden" name="business" value="' . $this->paypal_account . '">
 <input type="hidden" name="lc" value="' . strtoupper($GLOBALS['TL_LANGUAGE']) . '">
 <input type="hidden" name="item_name" value="' . $this->paypal_business . '"/>
 <input type="hidden" name="amount" value="' . $this->Cart->subTotal . '"/>
 <input type="hidden" name="shipping" value="' . $this->Cart->shippingTotal . '">
+<input type="hidden" name="no_shipping" value="1">
 <input type="hidden" name="no_note" value="1">
 <input type="hidden" name="currency_code" value="' . $this->Isotope->Store->currency . '">
 <input type="hidden" name="button_subtype" value="services">
@@ -197,6 +199,17 @@ class PaymentPaypal extends Payment
 <input type="hidden" name="cancel_return" value="' . $this->Environment->url . '/' . $this->addToUrl('step=failed') . '">
 <input type="hidden" name="rm" value="1">
 <input type="hidden" name="invoice" value="' . $objOrder->order_id . '">
+
+<input type="hidden" name="address_override" value="1">
+<input type="hidden" name="first_name" value="' . $this->Cart->billingAddress['firstname'] . '">
+<input type="hidden" name="last_name" value="' . $this->Cart->billingAddress['lastname'] . '">
+<input type="hidden" name="address1" value="' . $this->Cart->billingAddress['street'] . '">
+<input type="hidden" name="zip" value="' . $this->Cart->billingAddress['postal'] . '">
+<input type="hidden" name="city" value="' . $this->Cart->billingAddress['city'] . '">
+<input type="hidden" name="country" value="' . strtoupper($this->Cart->billingAddress['country']) . '">
+<input type="hidden" name="email" value="' . $this->Cart->billingAddress['email'] . '">
+<input type="hidden" name="night_phone_c" value="' . $this->Cart->billingAddress['phone'] . '">
+
 <input type="hidden" name="notify_url" value="' . $this->Environment->base . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id . '">
 <input type="hidden" name="bn" value="PP-BuyNowBF:btn_paynowCC_LG.gif:NonHosted">
 <input type="' . (strlen($this->button) ? 'image" src="'.$this->button.'" border="0"' : 'submit" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']).'"') . ' name="submit" alt="PayPal - The safer, easier way to pay online!">
