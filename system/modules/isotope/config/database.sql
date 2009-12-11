@@ -30,7 +30,6 @@ CREATE TABLE `tl_module` (
   `columns` int(10) unsigned NOT NULL default '0',
   `store_id` int(10) unsigned NOT NULL default '0',
   `store_ids` blob NULL,
-  `orderCompleteJumpTo` int(10) unsigned NOT NULL default '0',
   `iso_jump_first` char(1) NOT NULL default '',
   `iso_forward_cart` char(1) NOT NULL default '',
   `iso_forward_review` char(1) NOT NULL default '',
@@ -50,6 +49,9 @@ CREATE TABLE `tl_module` (
   `iso_listingModules` blob NULL,
   `iso_enableSearch` char(1) NOT NULL default '',
   `iso_disableFilterAjax` char(1) NOT NULL default '',
+  `iso_cart_jumpTo` int(10) unsigned NOT NULL default '0',
+  `iso_checkout_jumpTo` int(10) unsigned NOT NULL default '0',
+  `orderCompleteJumpTo` int(10) unsigned NOT NULL default '0',
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
@@ -234,8 +236,6 @@ CREATE TABLE `tl_store` (
   `tstamp` int(10) unsigned NOT NULL default '0',
   `store_configuration_name` varchar(255) NOT NULL default '',
   `label` varchar(255) NOT NULL default '',
-  `cartJumpTo` int(10) unsigned NOT NULL default '0',
-  `checkoutJumpTo` int(10) unsigned NOT NULL default '0',
   `missing_image_placeholder` varchar(255) NOT NULL default '',
   `thumbnail_image_width` int(10) unsigned NOT NULL default '0',
   `thumbnail_image_height` int(10) unsigned NOT NULL default '0',

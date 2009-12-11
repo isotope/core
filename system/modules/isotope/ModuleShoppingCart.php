@@ -131,8 +131,8 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 		$objTemplate->formSubmit = 'iso_cart_update';
 		$objTemplate->action = $this->Environment->request;
 		$objTemplate->products = $arrProductData;
-		$objTemplate->cartJumpTo = $this->generateFrontendUrl($this->Database->prepare("SELECT id,alias FROM tl_page WHERE id=?")->execute($this->Isotope->Store->cartJumpTo)->fetchAssoc());
-		$objTemplate->checkoutJumpTo = $this->generateFrontendUrl($this->Database->prepare("SELECT id,alias FROM tl_page WHERE id=?")->execute($this->Isotope->Store->checkoutJumpTo)->fetchAssoc());
+		$objTemplate->cartJumpTo = $this->generateFrontendUrl($this->Database->prepare("SELECT id,alias FROM tl_page WHERE id=?")->execute($this->iso_cart_jumpTo)->fetchAssoc());
+		$objTemplate->checkoutJumpTo = $this->generateFrontendUrl($this->Database->prepare("SELECT id,alias FROM tl_page WHERE id=?")->execute($this->iso_checkout_jumpTo)->fetchAssoc());
 		$objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
 		$objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
 		$objTemplate->subTotalPrice = $this->generatePrice($this->Cart->subTotal, 'stpl_total_price');

@@ -106,7 +106,7 @@ class ModuleGiftRegistryReader extends ModuleIsotopeBase
 		$this->Template->registryOwnerName = $arrRegData['firstname'] . ' ' . $arrRegData['lastname'];
 		$this->Template->registryDate = date('m/d/Y', $arrRegData['date']);
 		$this->Template->registryDescription = $arrRegData['description'];
-		$this->Template->cartJumpTo = $this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($this->Isotope->Store->cartJumpTo)->fetchAssoc());
+		$this->Template->cartJumpTo = $this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($this->iso_cart_jumpTo)->fetchAssoc());
 		$this->Template->products = $arrFormattedProductData;
 		$this->Template->noItemsInCart = $GLOBALS['TL_LANG']['MSC']['registry']['noItemsInRegistry'];
 		
