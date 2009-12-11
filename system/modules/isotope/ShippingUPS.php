@@ -184,7 +184,9 @@ class ShippingUPS extends Shipping
 		
 				$strRequestXML = $this->buildRequest('RatingServiceSelectionRequest');
 								
-				$this->sendRequest($strRequestXML);
+				$strResponseXML = $this->sendRequest($strRequestXML);
+				//Get price for service.
+				
 				break;
 		}
 		
@@ -289,7 +291,7 @@ class ShippingUPS extends Shipping
 	 * 
 	 * @todo remove array creation after switching over to xpath
 	 */
-	public function sendRequest($request_xml, $return_raw_xml = false) 
+	public function sendRequest($request_xml, $return_raw_xml = true) 
 	{
 
 		  $ch = curl_init($this->server);  
