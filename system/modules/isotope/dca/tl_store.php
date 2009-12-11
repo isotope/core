@@ -98,7 +98,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{name_legend},store_configuration_name,label;{config_legend},cookie_duration,isDefaultStore;{price_legend},priceField,priceOverrideField,priceCalculateFactor,priceCalculateMode,priceRoundPrecision,priceRoundIncrement;{currency_legend},currency,currencySymbol,currencyFormat,currencyPosition;{address_legend},country,countries,address_fields;{redirect_legend},cartJumpTo,checkoutJumpTo;{invoice_legend},invoiceLogo;{images_legend},root_asset_import_path,missing_image_placeholder,gallery_image_width,gallery_image_height,thumbnail_image_width,thumbnail_image_height,medium_image_width,medium_image_height,large_image_width,large_image_height'
+		'default'                     => '{name_legend},store_configuration_name,label;{config_legend},cookie_duration,isDefaultStore;{price_legend},priceField,priceOverrideField,priceCalculateFactor,priceCalculateMode,priceRoundPrecision,priceRoundIncrement;{currency_legend},currency,currencySymbol,currencyFormat,currencyPosition;{address_legend},country,countries,address_fields;{invoice_legend},invoiceLogo;{images_legend},root_asset_import_path,missing_image_placeholder,gallery_image_width,gallery_image_height,thumbnail_image_width,thumbnail_image_height,medium_image_width,medium_image_height,large_image_width,large_image_height'
 	),
 
 	// Fields
@@ -132,22 +132,6 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
 			'eval'						=> array('doNotCopy'=>true, 'fallback'=>true, 'tl_class'=>'w50 m12'),
-		),
-		'cartJumpTo' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_module']['cartJumpTo'],
-			'exclude'                 => true,
-			'inputType'               => 'pageTree',
-			'explanation'             => 'jumpTo',
-			'eval'                    => array('fieldType'=>'radio', 'helpwizard'=>true)
-		),
-		'checkoutJumpTo' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_module']['checkoutJumpTo'],
-			'exclude'                 => true,
-			'inputType'               => 'pageTree',
-			'explanation'             => 'jumpTo',
-			'eval'                    => array('fieldType'=>'radio', 'helpwizard'=>true)
 		),
 		'missing_image_placeholder' => array
 		(

@@ -30,8 +30,6 @@
  */
 $GLOBALS['TL_LANG']['tl_store']['store_configuration_name']			= array('Name der Shop-Konfiguration', '');
 $GLOBALS['TL_LANG']['tl_store']['cookie_duration']					= array('Vorhaltetage der Warenkorb-Informationen', 'Artikel und deren Informationen werden für nicht registrierte Besucher diese Anzahl Tage gespeichert. Ein Wert 0 bedeutet nach dem verlassen der Seite geht der Warenkorb verloren. Der Warenkorb wird für registrierte Mitglieder immer gespeichert.');
-$GLOBALS['TL_LANG']['tl_module']['cartJumpTo']						= array('Weiterleitungs-Seite für Warenkorb', 'Wählen Sie die Seite auf der sich der Warenkorb befindet.');
-$GLOBALS['TL_LANG']['tl_module']['checkoutJumpTo']					= array('Weiterleitungs-Seite für Kasse', 'Wählen Sie die Seite auf der sich die Kasse befindet.');
 $GLOBALS['TL_LANG']['tl_store']['missing_image_placeholder']		= array('Platzhalter-Bild für Produkte', 'Dieses Bild wird verwendet wenn für ein Produkt kein Bild vorhanden ist.');
 $GLOBALS['TL_LANG']['tl_store']['thumbnail_image_width']			= array('Breite für Vorschaubild', 'In Pixel.');
 $GLOBALS['TL_LANG']['tl_store']['thumbnail_image_height']			= array('Höhe für Vorschaubild', 'In Pixel.');

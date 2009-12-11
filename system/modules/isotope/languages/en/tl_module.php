@@ -64,6 +64,9 @@ $GLOBALS['TL_LANG']['tl_module']['iso_enableLimit']				= array('Enable per-page 
 $GLOBALS['TL_LANG']['tl_module']['iso_listingModules']			= array('Listing modules','Please choose one or more listing modules this filter module will work with.');
 $GLOBALS['TL_LANG']['tl_module']['iso_enableSearch']			= array('Enable search','Please check this if you would like to enable product search.');
 $GLOBALS['TL_LANG']['tl_module']['iso_disableFilterAjax']		= array('Disable filter AJAX','Please check this if you would prefer not to use the AJAX filtering functionality.');
+$GLOBALS['TL_LANG']['tl_module']['iso_cart_jumpTo']				= array('Shopping Cart Jump to page', 'This setting defines to which page a user will be redirected when requesting a full shopping cart view.');
+$GLOBALS['TL_LANG']['tl_module']['iso_checkout_jumpTo']			= array('Checkout Jump to page', 'This setting defines to which page a user will be redirected when completing their transaction.');
+
 
 /**
  * References
@@ -71,11 +74,11 @@ $GLOBALS['TL_LANG']['tl_module']['iso_disableFilterAjax']		= array('Disable filt
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['member']	= 'Login/Registration required';
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['guest']	= 'Guest checkout only';
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['both']		= 'Both allowed';
-
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['global']				= 'All Categories';
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['parent_and_first_child'] = 'Current Category and First Child Category';
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['parent_and_all_children']	= 'Current Category and All Child Categories';
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['current_category']			= 'Current Category Only';
+
 
 /**
  * Legends
