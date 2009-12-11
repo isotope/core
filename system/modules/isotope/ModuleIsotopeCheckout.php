@@ -1029,10 +1029,11 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			
 			$objWidget->storeValues = true;
 			$objWidget->rowClass = 'row_'.$i . (($i == 0) ? ' row_first' : '') . ((($i % 2) == 0) ? ' even' : ' odd');
-			
+	
 			// Validate input
-			if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && $this->Input->post($strAddressField) === '0')
+			if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && ($this->Input->post($strAddressField) === '0' || !$this->Input->post($strAddressField)))
 			{
+				
 				$objWidget->validate();
 				
 				$varValue = $objWidget->value;
@@ -1053,18 +1054,18 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				// Store current value
 				elseif ($objWidget->submitInput())
 				{
-					$arrAddress[$field] = $varValue;
+					$arrAddress[$field] = $varValue;					
 				}
 			}
 
 			$objTemplate->fields .= $objWidget->parse();
 		}
 		
-		if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && $this->Input->post($strAddressField) === '0' && !$this->doNotSubmit)
+		if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && ($this->Input->post($strAddressField) === '0' || !$this->Input->post($strAddressField)) && !$this->doNotSubmit)
 		{
 			$_SESSION['CHECKOUT_DATA'][$strAddressField] = $arrAddress;
 		}
-		
+				
 		if ($_SESSION['CHECKOUT_DATA'][$strAddressField] && strlen($_SESSION['CHECKOUT_DATA'][$strAddressField]['id']) && $_SESSION['CHECKOUT_DATA'][$strAddressField]['id'] == 0)
 		{
 			$this->Cart->$strAddressField = $_SESSION['CHECKOUT_DATA'][$strAddressField];

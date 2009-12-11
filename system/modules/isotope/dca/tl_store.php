@@ -98,7 +98,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{name_legend},store_configuration_name,label;{config_legend},cookie_duration,isDefaultStore;{price_legend},priceField,priceOverrideField,priceCalculateFactor,priceCalculateMode,priceRoundPrecision,priceRoundIncrement;{currency_legend},currency,currencySymbol,currencyFormat,currencyPosition;{address_legend},country,countries,address_fields;{invoice_legend},invoiceLogo;{images_legend},root_asset_import_path,missing_image_placeholder,gallery_image_width,gallery_image_height,thumbnail_image_width,thumbnail_image_height,medium_image_width,medium_image_height,large_image_width,large_image_height'
+		'default'                     => '{name_legend},store_configuration_name,label;{shipping_legend},firstname,lastname,company,street,postal,city,state,country,emailShipping,phone;{config_legend},weightUnit,cookie_duration,isDefaultStore;{price_legend},priceField,priceOverrideField,priceCalculateFactor,priceCalculateMode,priceRoundPrecision,priceRoundIncrement;{currency_legend},currency,currencySymbol,currencyFormat,currencyPosition;{address_legend},country,countries,address_fields;{redirect_legend},cartJumpTo,checkoutJumpTo;{invoice_legend},invoiceLogo;{images_legend},root_asset_import_path,missing_image_placeholder,gallery_image_width,gallery_image_height,thumbnail_image_width,thumbnail_image_height,medium_image_width,medium_image_height,large_image_width,large_image_height'
 	),
 
 	// Fields
@@ -117,6 +117,96 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255, 'tl_class'=>'w50'),
+		),
+		'firstname' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['firstname'],
+			'exclude'                 => true,
+			'search'                  => true,
+			'sorting'                 => true,
+			'flag'                    => 1,
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>255, 'tl_class'=>'w50'),
+		),
+		'lastname' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['lastname'],
+			'exclude'                 => true,
+			'search'                  => true,
+			'sorting'                 => true,
+			'flag'                    => 1,
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>255, 'tl_class'=>'w50'),
+		),
+		'company' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['company'],
+			'exclude'                 => true,
+			'search'                  => true,
+			'sorting'                 => true,
+			'flag'                    => 1,
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>255, 'tl_class'=>'w50'),
+		),
+		'street' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['street'],
+			'exclude'                 => true,
+			'search'                  => true,
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>255, 'tl_class'=>'w50'),
+		),
+		'postal' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['postal'],
+			'exclude'                 => true,
+			'search'                  => true,
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>32, 'tl_class'=>'w50'),
+		),
+		'city' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['city'],
+			'exclude'                 => true,
+			'filter'                  => true,
+			'search'                  => true,
+			'sorting'                 => true,
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>255, 'tl_class'=>'w50'),
+		),
+		'state' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['state'],
+			'exclude'                 => true,
+			'sorting'                 => true,
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>64, 'tl_class'=>'w50'),
+		),
+		'country' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['country'],
+			'exclude'                 => true,
+			'filter'                  => true,
+			'sorting'                 => true,
+			'inputType'               => 'select',
+			'options'                 => $this->getCountries(),
+			'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
+		),
+		'phone' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['phone'],
+			'exclude'                 => true,
+			'search'                  => true,
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>64, 'rgxp'=>'phone', 'tl_class'=>'w50'),
+		),
+		'emailShipping' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['emailShipping'],
+			'exclude'                 => true,
+			'search'                  => true,
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>64, 'rgxp'=>'email', 'tl_class'=>'w50'),
 		),
 		'cookie_duration' => array
 		(
@@ -325,6 +415,17 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>4),
 		),
+		'weightUnit' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['weightUnit'],
+			'exclude'                 => true,
+			'filter'                  => true,
+			'sorting'                 => true,
+			'inputType'               => 'select',
+			'options'                 => array_keys($GLOBALS['TL_LANG']['tl_store']['weightUnits']),
+			'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
+			'reference'				  => $GLOBALS['TL_LANG']['tl_store']['weightUnits']
+		),
 	)
 );
 
@@ -387,7 +488,7 @@ class tl_store extends Backend
 	
 	
 	/**
-	 * Get all checkout fields in tl_address_book.
+	 * Get all checkout fields in tl_store.
 	 * 
 	 * @todo check if we need to use param "isoEditable"
 	 * @access public

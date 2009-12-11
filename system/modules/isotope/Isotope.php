@@ -562,6 +562,7 @@ class Isotope extends Controller
 	 */
 	public function generateAddressString($arrAddress)
 	{
+		
 		if (!is_array($arrAddress) || !count($arrAddress))
 			return $arrAddress;
 		
