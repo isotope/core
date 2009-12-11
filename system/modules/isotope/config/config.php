@@ -162,6 +162,18 @@ $GLOBALS['FE_MOD']['isotope'] = array
 $GLOBALS['TL_FFL']['textCollection'] = 'FormTextCollectionField';
 
 
+/** 
+ * 
+ *
+ */
+$GLOBALS['ISO_WGT'] = array
+(
+	'gram' 	=> 1,
+	'kg' 	=> 1000,
+	'oz' 	=> 28.35,
+	'lbs' 	=> 453.6,
+);
+
 /**
  * Shipping modules
  */

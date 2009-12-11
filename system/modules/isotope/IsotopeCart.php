@@ -178,7 +178,15 @@ class IsotopeCart extends Model
 						}
 					}
 					break;
-					
+				case 'totalWeight':
+					$this->arrCache[$strKey] = false;
+					$arrProducts = $this->getProducts();
+					foreach($arrProducts as $objProduct)
+					{
+						$fltShippingWeight += $objProduct->weight * $objProduct->quantity_requested;
+					}	
+					return (float)$fltShippingWeight;
+					break;
 				case 'hasShipping':
 					return is_object($this->Shipping) ? true : false;
 					break;
@@ -199,9 +207,9 @@ class IsotopeCart extends Model
 					{
 						return $this->arrCache['billingAddress_data'];
 					}
-					
+								
 					if (FE_USER_LOGGED_IN)
-					{
+					{					
 						$objAddress = $this->Database->prepare("SELECT * FROM tl_address_book WHERE pid=? AND isDefaultBilling='1'")->limit(1)->execute($this->User->id);
 						
 						if ($objAddress->numRows)
@@ -209,14 +217,16 @@ class IsotopeCart extends Model
 							
 						// Return the default user data, but ID should be 0 to know that it is a custom/new address
 						return array_merge($this->User->getData(), array('id'=>0));
-					}
-					
-					return array('country' => $this->Isotope->Store->country);
+					}					
+					return $this->arrCache['billingAddress_data'];
 					break;
 					
 				case 'shippingAddress':
+					
 					if ($this->arrCache['shippingAddress_id'] == -1)
+					{									
 						return array_merge($this->billingAddress, array('id' => -1));
+					}
 						
 					if ($this->arrCache['shippingAddress_id'] > 0)
 					{
@@ -252,7 +262,7 @@ class IsotopeCart extends Model
 		switch( $strKey )
 		{
 			case 'billingAddress':
-			case 'billing_address':
+			case 'billing_address':			
 				if (is_array($varValue))
 				{
 					$this->arrCache['billingAddress_id'] = 0;

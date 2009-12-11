@@ -115,11 +115,12 @@ class ShippingUPS extends Shipping
 	 */
 	public function __get($strKey)
 	{
+		
 		switch( $strKey )
 		{
 			case 'price':
 				$this->import('IsotopeCart', 'Cart');
-												
+										
 				$arrDestination = array
 				(
 					'name'			=> $this->Cart->shippingAddress['firstname'] . ' ' . $this->Cart->shippingAddress['lastname'],
@@ -148,22 +149,7 @@ class ShippingUPS extends Shipping
 					'country'		=> $this->Isotope->Store->country
 				);
 				
-				var_dump($this->Isotope->Store);
-				exit;
-				/** 
-					<PackagingType>
-						<Code>02</Code>
-						<Description>Customer Supplied</Description>
-					</PackagingType>
-					<Description>Rate</Description>
-					<PackageWeight>
-						<UnitOfMeasurement>
-							<Code>LBS</Code>
-						</UnitOfMeasurement>
-						<Weight>10</Weight>
-					</PackageWeight>
-				*/
-				
+								
 				$arrShipment['service'] = '03';		//Ground for now
 				
 				
@@ -305,8 +291,9 @@ class ShippingUPS extends Shipping
 	 */
 	public function sendRequest($request_xml, $return_raw_xml = false) 
 	{
+
 		  $ch = curl_init($this->server);  
-                curl_setopt($ch, CURLOPT_HEADER, 1);  
+                curl_setopt($ch, CURLOPT_HEADER, 0);  
                 curl_setopt($ch,CURLOPT_POST,1);  
                 curl_setopt($ch,CURLOPT_TIMEOUT, 60);  
                 curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);  
@@ -322,35 +309,15 @@ class ShippingUPS extends Shipping
                         throw new Exception("The UPS service seems to be down with HTTP/1.1 $value");
                     }
                 }
-
-                //echo '<!-- '. $result. ' -->'; // THIS LINE IS FOR DEBUG PURPOSES ONLY-IT WILL SHOW IN HTML COMMENTS  
-              /*  $data = strstr($result, '<?');  
-                $xml_parser = xml_parser_create();  
-                xml_parse_into_struct($xml_parser, $data, $vals, $index);  
-                xml_parser_free($xml_parser);  
-                $params = array();  
-                $level = array();  
-                foreach ($vals as $xml_elem) {  
-                    if ($xml_elem['type'] == 'open') {  
-                        if (array_key_exists('attributes',$xml_elem)) {  
-                            list($level[$xml_elem['level']],$extra) = array_values($xml_elem['attributes']);  
-                        } else {  
-                            $level[$xml_elem['level']] = $xml_elem['tag'];  
-                    }  
-                }  
-                if ($xml_elem['type'] == 'complete') {  
-                  $start_level = 1;  
-                  $php_stmt = '$params';  
-                  while($start_level < $xml_elem['level']) {  
-                       $php_stmt .= '[$level['.$start_level.']]';  
-                       $start_level++;  
-                  }  
-                  $php_stmt .= '[$xml_elem[\'tag\']] = $xml_elem[\'value\'];';  
-                  eval($php_stmt);  
-                  }  
-                }  */
-        curl_close($ch);  
                 
+                
+
+        curl_close($ch);  
+        
+        $response = trim($response);
+        $response = utf8_encode($response);        
+		
+		
 		// create the context stream and make the request
 		/*$context = stream_context_create(array(
 			'http' => array(
@@ -363,14 +330,11 @@ class ShippingUPS extends Shipping
 		*/
 		// TODO: remove array creation after switching over to xpath
 		// create an array from the raw XML data
-		/*$this->response_array = unserialize($response);
-		var_dump($this->response_array);
-		*/
-		echo $response;
-		exit;
+		
 		// build the dom objects
 		$this->response = new DOMDocument();
 		$this->response->loadXML($response);
+		
 		$this->xpath = new DOMXPath($this->response);
 		$this->root_node = $this->xpath->query(
 			'/'.$this->getRootNodeName())->item(0);
@@ -779,7 +743,7 @@ class ShippingUPS extends Shipping
 	 * @todo remove after phps self scope has been fixed
 	 */
 	protected function getRootNodeName() {
-		return $this->rootNodeName;
+		return NODE_NAME_ROOT_NODE;
 	} // end function getRootNodeName()
 	
 	
