@@ -179,13 +179,15 @@ class IsotopeCart extends Model
 					}
 					break;
 				case 'totalWeight':
-					$this->arrCache[$strKey] = false;
+				
 					$arrProducts = $this->getProducts();
+					
 					foreach($arrProducts as $objProduct)
 					{
 						$fltShippingWeight += $objProduct->weight * $objProduct->quantity_requested;
-					}	
-					return (float)$fltShippingWeight;
+					}
+											
+					return $fltShippingWeight;
 					break;
 				case 'hasShipping':
 					return is_object($this->Shipping) ? true : false;
@@ -196,6 +198,7 @@ class IsotopeCart extends Model
 					break;
 					
 				case 'billingAddress':
+			
 					if ($this->arrCache['billingAddress_id'] > 0)
 					{
 						$objAddress = $this->Database->prepare("SELECT * FROM tl_address_book WHERE id=?")->limit(1)->execute($this->arrCache['billingAddress_id']);
@@ -217,14 +220,19 @@ class IsotopeCart extends Model
 							
 						// Return the default user data, but ID should be 0 to know that it is a custom/new address
 						return array_merge($this->User->getData(), array('id'=>0));
+					}
+					else
+					{
+						return $_SESSION['CHECKOUT_DATA']['billing_address'];
 					}					
+					
 					return $this->arrCache['billingAddress_data'];
 					break;
 					
 				case 'shippingAddress':
-					
+				
 					if ($this->arrCache['shippingAddress_id'] == -1)
-					{									
+					{							
 						return array_merge($this->billingAddress, array('id' => -1));
 					}
 						
@@ -235,9 +243,16 @@ class IsotopeCart extends Model
 						if ($objAddress->numRows)
 							return $objAddress->fetchAssoc();
 					}
-					elseif ($this->arrCache['shippingAddress_id'] === 0 && is_array($this->arrCache['shippingAddress_data']))
+					
+					if ($this->arrCache['shippingAddress_id'] == 0 && !is_array($this->arrCache['shippingAddress_data']))
 					{
-						return $this->arrCache['shippingAddress_data'];
+					
+						return $this->arrCache['billingAddress_data'];
+					}
+					else
+					{	
+									
+						return $this->arrCache['billingAddress_data'];
 					}
 
 					if (FE_USER_LOGGED_IN)
@@ -248,6 +263,9 @@ class IsotopeCart extends Model
 							return $objAddress->fetchAssoc();
 					}
 					
+					if(!is_array($this->billingAddress))
+						$this->billingAddress = array();
+					 
 					return array_merge($this->billingAddress, array('id' => -1));
 					break;
 			}

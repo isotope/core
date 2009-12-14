@@ -911,9 +911,10 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		switch($field)
 		{
 			case 'shipping_address':
-				$arrAddress = $_SESSION['CHECKOUT_DATA'][$field] ? $_SESSION['CHECKOUT_DATA'][$field] : $this->Cart->shippingAddress;
-				$intDefaultValue = $arrAddress['id'] ? $arrAddress['id'] : 0;
 				
+				$arrAddress = $_SESSION['CHECKOUT_DATA'][$field] ? $_SESSION['CHECKOUT_DATA'][$field] : $this->Cart->shippingAddress;				
+				$intDefaultValue = $arrAddress['id'] ? $arrAddress['id'] : null;
+
 				array_insert($arrOptions, 0, array(array
 				(
 					'value'	=> -1,
@@ -950,7 +951,9 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			
 			$objWidget = new $strClass(array('id'=>$field, 'name'=>$field, 'required'=>true));
 			$objWidget->options = $arrOptions;
+						
 			$objWidget->value = $intDefaultValue;
+			
 			$objWidget->onclick = "Isotope.toggleAddressFields(this, '" . $field . "_new');";
 					
 			$objWidget->storeValues = true;
@@ -965,7 +968,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 					$this->doNotSubmit = true;
 				}
 				else
-				{
+				{				
 					$_SESSION['CHECKOUT_DATA'][$field]['id'] = $objWidget->value;
 				}
 			}
@@ -974,13 +977,15 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		}
 		
 		if (strlen($_SESSION['CHECKOUT_DATA'][$field]['id']))
-		{
+		{			
 			$this->Cart->$field = $_SESSION['CHECKOUT_DATA'][$field]['id'];
 		}
 		elseif (!FE_USER_LOGGED_IN)
 		{
+			
 		//	$this->doNotSubmit = true;
 		}
+		
 		
 		$strBuffer .= '<div id="' . $field . '_new" class="address_new"' . (((!FE_USER_LOGGED_IN && $field == 'billing_address') || $objWidget->value == 0) ? '' : ' style="display:none">');
 		$strBuffer .= '<span>' . $this->getCurrentStepWidgets('tl_address_book', $field) . '</span>';
@@ -1002,7 +1007,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		$this->loadDataContainer($strResourceTable);
 		
 		$arrAddress = array('id'=>0);
-
+		
 		foreach( $this->Isotope->Store->address_fields as $field )
 		{
 			$arrData = $GLOBALS['TL_DCA'][$strResourceTable]['fields'][$field];
@@ -1047,7 +1052,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 
 				// Do not submit if there are errors
 				if ($objWidget->hasErrors())
-				{
+				{					
 					$this->doNotSubmit = true;
 				}
 
@@ -1061,16 +1066,17 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			$objTemplate->fields .= $objWidget->parse();
 		}
 		
-		if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && ($this->Input->post($strAddressField) === '0' || !$this->Input->post($strAddressField)) && !$this->doNotSubmit)
-		{
-			$_SESSION['CHECKOUT_DATA'][$strAddressField] = $arrAddress;
+		if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && !$this->doNotSubmit)
+		{					
+			$_SESSION['CHECKOUT_DATA'][$strAddressField] = $arrAddress;		
 		}
-				
-		if ($_SESSION['CHECKOUT_DATA'][$strAddressField] && strlen($_SESSION['CHECKOUT_DATA'][$strAddressField]['id']) && $_SESSION['CHECKOUT_DATA'][$strAddressField]['id'] == 0)
-		{
+			
+		if ($_SESSION['CHECKOUT_DATA'][$strAddressField])
+		{					
 			$this->Cart->$strAddressField = $_SESSION['CHECKOUT_DATA'][$strAddressField];
 		}
-
+	
+		
 		return $objTemplate->parse();	
 	}
 	

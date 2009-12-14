@@ -422,9 +422,8 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'filter'                  => true,
 			'sorting'                 => true,
 			'inputType'               => 'select',
-			'options'                 => array_keys($GLOBALS['TL_LANG']['tl_store']['weightUnits']),
+			'options'                 => $GLOBALS['TL_LANG']['tl_store']['weightUnits'],
 			'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
-			'reference'				  => $GLOBALS['TL_LANG']['tl_store']['weightUnits']
 		),
 	)
 );

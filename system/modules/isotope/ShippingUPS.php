@@ -120,7 +120,7 @@ class ShippingUPS extends Shipping
 		{
 			case 'price':
 				$this->import('IsotopeCart', 'Cart');
-										
+						
 				$arrDestination = array
 				(
 					'name'			=> $this->Cart->shippingAddress['firstname'] . ' ' . $this->Cart->shippingAddress['lastname'],
@@ -149,29 +149,33 @@ class ShippingUPS extends Shipping
 					'country'		=> $this->Isotope->Store->country
 				);
 				
-								
-				$arrShipment['service'] = '03';		//Ground for now
+							
+				$arrShipment['service'] = ((integer)$this->ups_enabledService < 10 ? "0" . $this->ups_enabledService : $this->ups_enabledService);		//Ground for now
 				
 				
 				$arrShipment['pickup_type']	= array
 				(
-					'code'			=> '06',		//default to one-time, but needs perhaps to be chosen by store admin.
+					'code'			=> '03',		//default to one-time, but needs perhaps to be chosen by store admin.
 					'description'	=> '' 
 				);
+				
+				$strWeightUnit = $this->Isotope->Store->weightUnit;
+				
+				$fltWeight = $this->Cart->totalWeight;
 					
 				$arrShipment['packages'][] = array
 				(					
 					'packaging'		=> array
 					(
-						'code'			=> '00',	//unknown, for now
+						'code'			=> '02',	//counter
 						'description'	=> ''
 					),
 					'description'	=> '',
-					'units'			=> $this->Isotope->Store->weightUnit,   //weight unit code, lbs or kgs.
-					'weight'		=> $this->Cart->totalWeight,	//shipment weight...  product field "weight" * "quantity_requested" 
+					'units'			=> $strWeightUnit,   //weight unit code, lbs or kgs.
+					'weight'		=> $fltWeight,	//shipment weight...  product field "weight" * "quantity_requested" 
 					
-				);		
-				
+				);								
+							
 				// set object properties
 				$this->server = 'https://www.ups.com/ups.app/xml/Rate';
 				
@@ -181,18 +185,34 @@ class ShippingUPS extends Shipping
 				$this->ship_from = $arrOrigin;  //FOR NOW, This is assumed to be the same for origin and shipping info.  Could be used to ship from multiple fulfillment places, drop shipping, etc.
 				
 				$this->destination = $arrDestination;
-		
-				$strRequestXML = $this->buildRequest('RatingServiceSelectionRequest');
-								
-				$strResponseXML = $this->sendRequest($strRequestXML);
-				//Get price for service.
-				
+										
+				return $this->getShippingRate();
+					
+
 				break;
 		}
 		
 		return parent::__get($strKey);
 	}
 	
+	protected function getShippingRate()
+	{
+		$strRequestXML = $this->buildRequest('RatingServiceSelectionRequest');
+								
+		$strResponseXML = $this->sendRequest($strRequestXML);
+	
+		//Get price for service.
+		$this->response = new DOMDocument();
+		$this->response->loadXML($strResponseXML);
+		
+		$this->xpath = new DOMXPath($this->response);
+		
+		$domNode = $this->xpath->query(
+			'/RatingServiceSelectionResponse/RatedShipment/RatedPackage/TotalCharges/MonetaryValue')->item(0);
+				
+		return floatval($domNode->nodeValue);
+		
+	}
 	
 	protected function calculateSurcharge()
 	{
