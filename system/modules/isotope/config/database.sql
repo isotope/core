@@ -498,6 +498,7 @@ CREATE TABLE `tl_shipping_modules` (
   `ups_developersKey` varchar(255) NOT NULL default '',
   `ups_userName` varchar(255) NOT NULL default '',
   `ups_password` varchar(255) NOT NULL default '',
+  `ups_enabledService` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`id`),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
