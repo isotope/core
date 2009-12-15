@@ -186,7 +186,7 @@ class ShippingUPS extends Shipping
 				
 				$this->destination = $arrDestination;
 										
-				return $this->getShippingRate();
+				return $this->calculateShippingRate();
 					
 
 				break;
@@ -195,7 +195,7 @@ class ShippingUPS extends Shipping
 		return parent::__get($strKey);
 	}
 	
-	protected function getShippingRate()
+	public function calculateShippingRate()
 	{
 		$strRequestXML = $this->buildRequest('RatingServiceSelectionRequest');
 								

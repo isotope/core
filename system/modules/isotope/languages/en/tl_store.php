@@ -56,7 +56,17 @@ $GLOBALS['TL_LANG']['tl_store']['gallery_image_width']				= array('Gallery Thumb
 $GLOBALS['TL_LANG']['tl_store']['gallery_image_height']				= array('Gallery Thumbnail Standard Height', 'In pixels.');
 $GLOBALS['TL_LANG']['tl_store']['invoiceLogo']						= array('Invoice Logo','Select a logo to show up on the invoices for this store.');
 $GLOBALS['TL_LANG']['tl_store']['isDefaultStore']					= array('Set as default store','Set this as the default store for back-end currency formatting and other locale-specific information.');
-
+$GLOBALS['TL_LANG']['tl_store']['firstname']   						= array('First name', 'Please enter the first name (if applicable).');
+$GLOBALS['TL_LANG']['tl_store']['lastname']    						= array('Last name', 'Please enter the last name (if applicable).');
+$GLOBALS['TL_LANG']['tl_store']['company']     						= array('Company', 'You can enter a company name here (if applicable).');
+$GLOBALS['TL_LANG']['tl_store']['street']      						= array('Street', 'Please enter the street name and the street number.');
+$GLOBALS['TL_LANG']['tl_store']['postal']      						= array('Postal code', 'Please enter the postal code.');
+$GLOBALS['TL_LANG']['tl_store']['city']       						= array('City', 'Plase enter the name of the city.');
+$GLOBALS['TL_LANG']['tl_store']['state']       						= array('State', 'Plase enter the name of the state.');
+$GLOBALS['TL_LANG']['tl_store']['country']     						= array('Country', 'Please select a country.');
+$GLOBALS['TL_LANG']['tl_store']['phone']       						= array('Phone number', 'Please enter the phone number.');
+$GLOBALS['TL_LANG']['tl_store']['emailShipping'] 					= array('Shipping E-mail address', 'Please enter a valid e-mail address.');
+$GLOBALS['TL_LANG']['tl_store']['weightUnit']						= array('Weight unit of measurement','Specify the unit of measurement for weight (LBS or KGS)');
 
 /**
  * Reference
@@ -66,6 +76,8 @@ $GLOBALS['TL_LANG']['tl_store']['right']							= 'To the right of price';
 $GLOBALS['TL_LANG']['tl_store']['div']								= 'Divide';
 $GLOBALS['TL_LANG']['tl_store']['mul']								= 'Multiply';
 
+$GLOBALS['TL_LANG']['tl_store']['weightUnits']['LBS']				= 'Pounds';
+$GLOBALS['TL_LANG']['tl_store']['weightUnits']['KGS']				= 'Kilos';
 
 /**
  * Buttons
@@ -81,6 +93,7 @@ $GLOBALS['TL_LANG']['tl_store']['show']   							= array('Show Store Details', '
  * Legends
  */
 $GLOBALS['TL_LANG']['tl_store']['name_legend']						= 'Name';
+$GLOBALS['TL_LANG']['tl_store']['shipping_legend']					= 'Shipping Information';
 $GLOBALS['TL_LANG']['tl_store']['config_legend']					= 'Configuration';
 $GLOBALS['TL_LANG']['tl_store']['price_legend']	    				= 'Pricing';
 $GLOBALS['TL_LANG']['tl_store']['currency_legend']	    			= 'Currency formatting';

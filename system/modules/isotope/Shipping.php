@@ -89,8 +89,9 @@ abstract class Shipping extends Frontend
 		switch( $strKey )
 		{
 			case 'available':
+				
 				if (($this->guests && FE_USER_LOGGED_IN) || ($this->protected && !FE_USER_LOGGED_IN))
-				{					
+				{			
 					return false;
 				}
 				
@@ -106,10 +107,10 @@ abstract class Shipping extends Frontend
 					return false;
 				
 				$arrCountries = deserialize($this->countries);
-
+			
 				if(count($arrCountries) && !in_array($this->Cart->shippingAddress['country'], $arrCountries))
 					return false;
-					
+								
 				return true;
 				break;
 				

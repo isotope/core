@@ -28,6 +28,26 @@
 class ShippingUSPS extends Shipping
 {
 
+	/** 
+	 * Origin zip code
+	 * string
+	 */
+	protected $strOriginZip;
+	
+	/** 
+	 * Destination zip code
+	 * string
+	 */
+	protected $strDestinationZip;
+	
+	
+	/** 
+	 * Weight data (pounds, ounces)
+	 * array
+	 */
+	protected $arrWeightData = array();
+	
+	
 	/**
 	 * Return an object property
 	 *
@@ -36,14 +56,14 @@ class ShippingUSPS extends Shipping
 	 * @return mixed
 	 */
 	public function __get($strKey)
-	{
+	{		
 		
 		switch( $strKey )
 		{
 			case 'price':
 				$this->import('IsotopeCart', 'Cart');
 						
-				$arrDestination = array
+				/*$arrDestination = array
 				(
 					'name'			=> $this->Cart->shippingAddress['firstname'] . ' ' . $this->Cart->shippingAddress['lastname'],
 					'phone'			=> $this->Cart->shippingAddress['phone'],
@@ -55,9 +75,9 @@ class ShippingUSPS extends Shipping
 					'state'			=> $this->Cart->shippingAddress['state'],
 					'zip'			=> $this->Cart->shippingAddress['postal'],
 					'country'		=> $this->Cart->shippingAddress['country']
-				);
+				);*/
 
-				$arrOrigin = array
+				/*$arrOrigin = array
 				(
 					'name'			=> $this->Isotope->Store->firstname . ' ' . $this->Isotope->Store->lastname,
 					'phone'			=> $this->Isotope->Store->phone,
@@ -69,84 +89,89 @@ class ShippingUSPS extends Shipping
 					'state'			=> $this->Isotope->Store->state,
 					'zip'			=> $this->Isotope->Store->postal,
 					'country'		=> $this->Isotope->Store->country
-				);
+				);*/
+			
+				$strOriginZip = $this->Isotope->Store->postal;
+				$strDestiationZip = $this->Cart->shippingAddress['postal'];
 				
-							
-				/*$arrShipment['service'] = ((integer)$this->ups_enabledService < 10 ? "0" . $this->ups_enabledService : $this->ups_enabledService);		//Ground for now
+															
+				$fltWeight = $this->Cart->totalWeight;
 				
-				
-				$arrShipment['pickup_type']	= array
+				$arrWeight = explode('.', (string)$fltWeight);
+	
+				$this->arrWeightData = array
 				(
-					'code'			=> '03',		//default to one-time, but needs perhaps to be chosen by store admin.
-					'description'	=> '' 
+					'pounds'		=> $arrWeight[0],
+					'ounces'		=> (integer)$arrWeight[1] * 16
 				);
 				
-				$strWeightUnit = $this->Isotope->Store->weightUnit;
+				return $this->calculateShippingRate();
+				break;
+		}
+		
+		return parent::__get($strKey);
+		
+	}
+	
 				
-				$fltWeight = $this->Cart->totalWeight;*/
-				
-				
-# function USPSParcelRate($weight,$dest_zip) {  
-#   
-# // This script was written by Mark Sanborn at http://www.marksanborn.net  
-# // If this script benefits you are your business please consider a donation  
-# // You can donate at http://www.marksanborn.net/donate.    
-#   
-# // ========== CHANGE THESE VALUES TO MATCH YOUR OWN ===========  
-#   
-# $userName = 'username'; // Your USPS Username  
-# $orig_zip = '12345'; // Zipcode you are shipping FROM  
-#   
-# // =============== DON'T CHANGE BELOW THIS LINE ===============  
-#   
-# $url = "http://Production.ShippingAPIs.com/ShippingAPI.dll";  
-# $ch = curl_init();  
-#   
-# // set the target url  
-# curl_setopt($ch, CURLOPT_URL,$url);  
-# curl_setopt($ch, CURLOPT_HEADER, 1);  
-# curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);  
-#   
-# // parameters to post  
-# curl_setopt($ch, CURLOPT_POST, 1);  
-#   
-# $data = "API=RateV3&XML=<RateV3Request USERID=\"$userName\"><Package ID=\"1ST\"><Service>PRIORITY</Service><ZipOrigination>$orig_zip</ZipOrigination><ZipDestination>$dest_zip</ZipDestination><Pounds>$weight</Pounds><Ounces>0</Ounces><Size>REGULAR</Size><Machinable>TRUE</Machinable></Package></RateV3Request>";  
-#   
-# // send the POST values to USPS  
-# curl_setopt($ch, CURLOPT_POSTFIELDS,$data);  
-#   
-# $result=curl_exec ($ch);  
-# $data = strstr($result, '<?');  
-# // echo '<!-- '. $data. ' -->'; // Uncomment to show XML in comments  
-# $xml_parser = xml_parser_create();  
-# xml_parse_into_struct($xml_parser, $data, $vals, $index);  
-# xml_parser_free($xml_parser);  
-# $params = array();  
-# $level = array();  
-# foreach ($vals as $xml_elem) {  
-#     if ($xml_elem['type'] == 'open') {  
-#         if (array_key_exists('attributes',$xml_elem)) {  
-#             list($level[$xml_elem['level']],$extra) = array_values($xml_elem['attributes']);  
-#         } else {  
-#         $level[$xml_elem['level']] = $xml_elem['tag'];  
-#         }  
-#     }  
-#     if ($xml_elem['type'] == 'complete') {  
-#     $start_level = 1;  
-#     $php_stmt = '$params';  
-#     while($start_level < $xml_elem['level']) {  
-#         $php_stmt .= '[$level['.$start_level.']]';  
-#         $start_level++;  
-#     }  
-#     $php_stmt .= '[$xml_elem[\'tag\']] = $xml_elem[\'value\'];';  
-#     eval($php_stmt);  
-#     }  
-# }  
-# curl_close($ch);  
-# // echo '<pre>'; print_r($params); echo'</pre>'; // Uncomment to see xml tags  
-# return $params['RATEV3RESPONSE']['1ST']['1']['RATE'];  
-# }  
+	public function calculateShippingRate()
+	{				  
+		 $userName = $this->usps_userName; // Your USPS Username  
+		 $orig_zip = $this->strOriginZip; // Zipcode you are shipping FROM  
+		 $dest_zip = $this->strDestinationZip; // Zipcode you are shipping TO 
+		  
+		 $url = "http://production.shippingapis.com/ShippingAPI.dll";  
+		 $ch = curl_init();  
+		   
+		 // set the target url  
+		 curl_setopt($ch, CURLOPT_URL,$url);  
+		 curl_setopt($ch, CURLOPT_HEADER, 1);  
+		 curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);  
+		   
+		 // parameters to post  
+		 curl_setopt($ch, CURLOPT_POST, 1);  
+		
+		 $data = "API=RateV3&XML=<RateV3Request USERID=\"" . $userName . "\"><Package ID=\"1ST\"><Service>" . $this->usps_service . "</Service><ZipOrigination>" . $orig_zip . "</ZipOrigination><ZipDestination>" . $dest_zip . "</ZipDestination><Pounds>" . $arrWeightData['pounds'] . "</Pounds><Ounces>" . $arrWeightData['ounces'] . "</Ounces><Size>REGULAR</Size><Machinable>TRUE</Machinable></Package></RateV3Request>";  
+		   
+		// send the POST values to USPS  
+		curl_setopt($ch, CURLOPT_POSTFIELDS,$data);  
+		  
+		$result=curl_exec ($ch);  
+		echo $result;
+		$data = strstr($result, '<?');  
+					 
+		echo $data;
+		 //echo '<!-- '. $data. ' -->'; // Uncomment to show XML in comments  
+		$xml_parser = xml_parser_create();  
+		xml_parse_into_struct($xml_parser, $data, $vals, $index);  
+		xml_parser_free($xml_parser);  
+		$params = array();  
+		$level = array();  
+		foreach ($vals as $xml_elem) {  
+		    if ($xml_elem['type'] == 'open') {  
+		        if (array_key_exists('attributes',$xml_elem)) {  
+		            list($level[$xml_elem['level']],$extra) = array_values($xml_elem['attributes']);  
+		        } else {  
+		        $level[$xml_elem['level']] = $xml_elem['tag'];  
+		        }  
+		    }  
+		    if ($xml_elem['type'] == 'complete') {  
+		    $start_level = 1;  
+		    $php_stmt = '$params';  
+		    while($start_level < $xml_elem['level']) {  
+		        $php_stmt .= '[$level['.$start_level.']]';  
+		        $start_level++;  
+		    }  
+		    $php_stmt .= '[$xml_elem[\'tag\']] = $xml_elem[\'value\'];';  
+		    eval($php_stmt);  
+		    }  
+		}  
+		
+		curl_close($ch);  
+		
+		// echo '<pre>'; print_r($params); echo'</pre>'; // Uncomment to see xml tags  
+		return $params['RATEV3RESPONSE']['1ST']['1']['RATE'];  
+		  
+	}
 
 }
-
-?>
