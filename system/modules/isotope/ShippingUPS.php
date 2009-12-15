@@ -27,6 +27,8 @@
 
 class ShippingUPS extends Shipping
 {
+	protected $shipping_options = array();
+
 	/**
 	 * Node name for the Monetary Value
 	 * 
@@ -766,10 +768,6 @@ class ShippingUPS extends Shipping
 	 */
 	protected function getRootNodeName() {
 		return NODE_NAME_ROOT_NODE;
-	} // end function getRootNodeName()
-	
-	
-	
-	
+	} // end function getRootNodeName()	
 }
 

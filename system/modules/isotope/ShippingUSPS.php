@@ -27,6 +27,7 @@
 
 class ShippingUSPS extends Shipping
 {
+	protected $shipping_options = array();
 
 	/** 
 	 * Origin zip code
@@ -137,10 +138,9 @@ class ShippingUSPS extends Shipping
 		curl_setopt($ch, CURLOPT_POSTFIELDS,$data);  
 		  
 		$result=curl_exec ($ch);  
-		echo $result;
+		
 		$data = strstr($result, '<?');  
-					 
-		echo $data;
+						
 		 //echo '<!-- '. $data. ' -->'; // Uncomment to show XML in comments  
 		$xml_parser = xml_parser_create();  
 		xml_parse_into_struct($xml_parser, $data, $vals, $index);  
