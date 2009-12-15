@@ -244,10 +244,9 @@ class IsotopeCart extends Model
 							return $objAddress->fetchAssoc();
 					}
 					
-					if ($this->arrCache['shippingAddress_id'] == 0 && !is_array($this->arrCache['shippingAddress_data']))
+					if ($this->arrCache['shippingAddress_id'] == 0 && count($this->arrCache['shippingAddress_data']))
 					{
-					
-						return $this->arrCache['billingAddress_data'];
+						return $this->arrCache['shippingAddress_data'];
 					}
 					else
 					{	

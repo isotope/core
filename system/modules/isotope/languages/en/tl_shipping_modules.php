@@ -46,6 +46,10 @@ $GLOBALS['TL_LANG']['tl_shipping_modules']['ups_accessKey']     = array('UPS XML
 $GLOBALS['TL_LANG']['tl_shipping_modules']['ups_developersKey']    = array('UPS developer\'s key','This is a special alphanumeric key issued by UPS once you sign up for a UPS account and for access to the UPS Online Tools API');
 $GLOBALS['TL_LANG']['tl_shipping_modules']['ups_userName']     	= array('UPS username','This is the UPS account username that you chose while signing up on the UPS website.');
 $GLOBALS['TL_LANG']['tl_shipping_modules']['ups_password']     	= array('UPS password','This is the UPS password that you chose while signing up on the UPS website.');
+$GLOBALS['TL_LANG']['tl_shipping_modules']['ups_enabledService'] = array('UPS Service Type','Select a UPS shipping service to offer.');
+$GLOBALS['TL_LANG']['tl_shipping_modules']['usps_enabledService'] = array('USPS Service Type','Select a USPS shipping service to offer.');
+$GLOBALS['TL_LANG']['tl_shipping_modules']['usps_userName']     	= array('USPS username','This is the USPS account username that you chose while signing up on the USPS website.');
+
 
 /** 
  * Legends 
@@ -56,6 +60,7 @@ $GLOBALS['TL_LANG']['tl_shipping_modules']['configuration_legend'] = "General co
 $GLOBALS['TL_LANG']['tl_shipping_modules']['expert_legend'] = "Expert settings";
 $GLOBALS['TL_LANG']['tl_shipping_modules']['enabled_legend'] = "Enabled settings";
 $GLOBALS['TL_LANG']['tl_shipping_modules']['ups_legend'] = "UPS API settings";
+$GLOBALS['TL_LANG']['tl_shipping_modules']['usps_legend'] = "USPS API settings";
 
 /**
  * Buttons
@@ -72,7 +77,30 @@ $GLOBALS['TL_LANG']['tl_shipping_modules']['tstamp'] = array('Date Modified', ''
 /**
  * References
  */
-$GLOBALS['TL_LANG']['tl_shipping_modules']['flat']				= 'Flat';
-$GLOBALS['TL_LANG']['tl_shipping_modules']['perProduct']		= 'Per Product';
-$GLOBALS['TL_LANG']['tl_shipping_modules']['perItem']			= 'Per Item';
-
+$GLOBALS['TL_LANG']['tl_shipping_modules']['flat']					 						= 'Flat';
+$GLOBALS['TL_LANG']['tl_shipping_modules']['perProduct']			 						= 'Per Product';
+$GLOBALS['TL_LANG']['tl_shipping_modules']['perItem']				 						= 'Per Item';
+$GLOBALS['TL_LANG']['tl_shipping_modules']['ups_service']['01'] 	 						= 'Next Day Air';
+$GLOBALS['TL_LANG']['tl_shipping_modules']['ups_service']['02'] 	 						= '2nd Day Air'; 
+$GLOBALS['TL_LANG']['tl_shipping_modules']['ups_service']['03'] 	 						= 'UPS Ground';
+$GLOBALS['TL_LANG']['tl_shipping_modules']['ups_service']['07']		 						= 'Worldwide Express'; 
+$GLOBALS['TL_LANG']['tl_shipping_modules']['ups_service']['08']		 						= 'Worldwide Expedited';
+$GLOBALS['TL_LANG']['tl_shipping_modules']['ups_service']['11'] 	 						= 'International Standard';
+$GLOBALS['TL_LANG']['tl_shipping_modules']['ups_service']['12'] 	 						= '3 Day Select';
+$GLOBALS['TL_LANG']['tl_shipping_modules']['ups_service']['13'] 	 						= 'Next Day Air Saver';
+$GLOBALS['TL_LANG']['tl_shipping_modules']['ups_service']['14'] 	 						= 'Next Day Air Early AM';
+$GLOBALS['TL_LANG']['tl_shipping_modules']['ups_service']['54'] 	 						= 'Worldwide Express Plus'; 
+$GLOBALS['TL_LANG']['tl_shipping_modules']['ups_service']['65'] 	 						= 'International Saver'; 
+$GLOBALS['TL_LANG']['tl_shipping_modules']['usps_service']['PARCEL'] 						= 'USPS Parcel Post';
+$GLOBALS['TL_LANG']['tl_shipping_modules']['usps_service']['PRIORITY'] 						= 'USPS Priority Mail (2-3 days average)';
+$GLOBALS['TL_LANG']['tl_shipping_modules']['usps_service']['EXPRESS'] 						= 'USPS Express Mail (Overnight Guaranteed)';
+$GLOBALS['TL_LANG']['tl_shipping_modules']['usps_service']['FIRST CLASS']					= 'USPS First Class';
+$GLOBALS['TL_LANG']['tl_shipping_modules']['usps_service']['PRIORITY COMMERCIAL'] 			= 'USPS Priority Commercial';
+$GLOBALS['TL_LANG']['tl_shipping_modules']['usps_service']['EXPRESS COMMERCIAL']			= 'USPS Express Commercial';
+$GLOBALS['TL_LANG']['tl_shipping_modules']['usps_service']['EXPRESS SH']					= 'USPS Express Sundays & Holidays';
+$GLOBALS['TL_LANG']['tl_shipping_modules']['usps_service']['EXPRESS SH COMMERCIAL']			= 'USPS Express Sundays & Holidays Commercial';
+$GLOBALS['TL_LANG']['tl_shipping_modules']['usps_service']['EXPRESS HFP']					= 'USPS Express Hold For Pickup';
+$GLOBALS['TL_LANG']['tl_shipping_modules']['usps_service']['EXPRESS HFP COMMERCIAL']		= 'USPS Express Hold For Pickup Commercial';
+$GLOBALS['TL_LANG']['tl_shipping_modules']['usps_service']['BPM'] 							= 'USPS Bound Printed Matter';
+$GLOBALS['TL_LANG']['tl_shipping_modules']['usps_service']['MEDIA'] 						= 'USPS Media Mail';
+$GLOBALS['TL_LANG']['tl_shipping_modules']['usps_service']['LIBRARY']						= 'USPS Library Mail';  

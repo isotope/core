@@ -71,7 +71,7 @@ array_insert($GLOBALS['BE_MOD']['store'], 0, array
 	),
 	'shipping' => array
 	(
-			'tables'				=> array('tl_shipping_modules', 'tl_shipping_options'),
+			'tables'				=> array('tl_shipping_modules'),
 			'icon'					=> 'system/modules/isotope/html/icon-shipping.gif',
 	),
 	'payment' => array
@@ -180,6 +180,7 @@ $GLOBALS['ISO_WGT'] = array
 $GLOBALS['ISO_SHIP']['order_total']	 = 'ShippingOrderTotal';
 $GLOBALS['ISO_SHIP']['flat']		 = 'ShippingFlat';
 $GLOBALS['ISO_SHIP']['ups']			 = 'ShippingUPS';
+$GLOBALS['ISO_SHIP']['usps']		 = 'ShippingUSPS';
 
 /**
  * Payment modules

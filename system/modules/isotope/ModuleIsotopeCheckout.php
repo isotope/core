@@ -360,7 +360,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 		$arrModules = array();
 		$arrModuleIds = deserialize($this->iso_shipping_modules);
-		
+	
 		if (is_array($arrModuleIds) && count($arrModuleIds))
 		{
 			$arrData = $this->Input->post('shipping');
@@ -369,7 +369,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			while( $objModules->next() )
 			{
 				$strClass = $GLOBALS['ISO_SHIP'][$objModules->type];
-				
+					
 				if (!strlen($strClass) || !$this->classFileExists($strClass))
 					continue;
 				
@@ -1006,7 +1006,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		$this->loadLanguageFile($strResourceTable);
 		$this->loadDataContainer($strResourceTable);
 		
-		$arrAddress = array('id'=>0);
+		//$arrAddress = array('id'=>0);
 		
 		foreach( $this->Isotope->Store->address_fields as $field )
 		{

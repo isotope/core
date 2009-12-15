@@ -266,6 +266,7 @@ $GLOBALS['TL_LANG']['SHIP']['collection']		= array('Collection');
 $GLOBALS['TL_LANG']['SHIP']['order_total']		= array('Order total-based shipping');
 $GLOBALS['TL_LANG']['SHIP']['flat']				= array('Flat-price shipping');
 $GLOBALS['TL_LANG']['SHIP']['ups']				= array('UPS Live Rates and Service shipping');
+$GLOBALS['TL_LANG']['SHIP']['usps']				= array('USPS Live Rates and Service shipping');
 
 
 /**
@@ -292,3 +293,10 @@ $GLOBALS['TL_LANG']['CUR']['CHF'] = 'CHF - Swiss Franc';
 $GLOBALS['TL_LANG']['CUR_SYMBOL']['USD'] = '$';
 $GLOBALS['TL_LANG']['CUR_SYMBOL']['EUR'] = '€';
 
+/** 
+ * Weight Units 
+ */
+$GLOBALS['ISO_WGT']['gram'] 	= 'grams';
+$GLOBALS['ISO_WGT']['kg']		= 'kilograms';
+$GLOBALS['ISO_WGT']['oz'] 		= 'ounces';
+$GLOBALS['ISO_WGT']['lbs']		= 'pounds';
