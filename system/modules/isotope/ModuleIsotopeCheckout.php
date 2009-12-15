@@ -142,8 +142,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			$this->Template->message = strlen($this->Input->get('reason')) ? $this->Input->get('reason') : $GLOBALS['TL_LANG']['ERR']['orderFailed'];
 			$this->strCurrentStep = 'review';
 		}
-		
-		
+			
 		// Run trough all steps until we find the current one or one reports failure
 		foreach( $GLOBALS['ISO_CHECKOUT_STEPS'] as $step => $arrCallbacks )
 		{
@@ -159,17 +158,25 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 					$this->import($callback[0]);
 					$strBuffer .= $this->{$callback[0]}->{$callback[1]}(&$this);
 				}
-				
+			
 				if ($this->doNotSubmit && $step != $this->strCurrentStep)
-				{
+				{			
 					$this->redirect($this->addToUrl('step=' . $step));
 				}
+			
 			}
 			
 			if ($step == $this->strCurrentStep)
 				break;
 		}
 		
+		/*	
+		foreach($GLOBALS['ISO_CHECKOUT_STEPS'][$this->strCurrentStep] as $step)
+		{		
+			$this->import($step[0]);
+			$strBuffer .= $this->{$step[0]}->{$step[1]}(&$this);
+		}
+		*/
 		
 		if ($this->strCurrentStep == 'complete')
 		{
@@ -251,8 +258,9 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	protected function redirectToNextStep()
 	{
 		$arrSteps = array_keys($GLOBALS['ISO_CHECKOUT_STEPS']);
+	
 		if (!in_array($this->strCurrentStep, $arrSteps))
-		{
+		{						
 			$this->redirect($this->addToUrl('step='.array_shift($arrSteps)));
 		}
 		else
@@ -403,7 +411,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		}
 				
 		if(!count($arrModules))
-		{
+		{			
 			$this->doNotSubmit = true;
 			$this->Template->showNext = false;
 			
@@ -420,10 +428,10 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			$this->Cart->Shipping = $objLastModule;
 			$_SESSION['CHECKOUT_DATA']['shipping']['module'] = $this->Cart->Shipping->id;
 		}
-		elseif (!$this->Cart->hasShipping)
-		{
+		/*elseif (!$this->Cart->hasShipping)
+		{			
 			$this->doNotSubmit = true;
-		}
+		}*/
 
 		$objTemplate = new FrontendTemplate($this->strStepTemplateBaseName . 'shipping_method');
 		
@@ -440,7 +448,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		if ($blnReview)
 		{
 			if (!$this->Cart->hasPayment)
-				return false;
+				//return false;
 			
 			return array
 			(
@@ -452,6 +460,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				),
 			);
 		}
+		
 		
 		$arrModules = array();
 		$arrModuleIds = deserialize($this->iso_payment_modules);
@@ -514,7 +523,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		}
 		elseif (!$this->Cart->hasPayment)
 		{
-			$this->doNotSubmit = true;
+			//$this->doNotSubmit = true;
 		}
 		
 		$objTemplate = new FrontendTemplate($this->strStepTemplateBaseName . 'payment_method');
@@ -1029,16 +1038,16 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				$arrData['options'] = array_intersect_key($arrData['options'], $arrCountries);
 				$arrData['default'] = $this->Isotope->Store->country;
 			}
-
+			
 			$objWidget = new $strClass($this->prepareForWidget($arrData, $strAddressField . '_' . $field, (strlen($_SESSION['CHECKOUT_DATA'][$strAddressField][$field]) ? $_SESSION['CHECKOUT_DATA'][$strAddressField][$field] : (strlen($this->User->$field) ? $this->User->$field : $arrData['default']))));
 			
 			$objWidget->storeValues = true;
 			$objWidget->rowClass = 'row_'.$i . (($i == 0) ? ' row_first' : '') . ((($i % 2) == 0) ? ' even' : ' odd');
-	
+			
 			// Validate input
 			if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && ($this->Input->post($strAddressField) === '0' || !$this->Input->post($strAddressField)))
-			{
-				
+			{	
+										
 				$objWidget->validate();
 				
 				$varValue = $objWidget->value;
@@ -1052,7 +1061,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 
 				// Do not submit if there are errors
 				if ($objWidget->hasErrors())
-				{					
+				{	
 					$this->doNotSubmit = true;
 				}
 
