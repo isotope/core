@@ -143,12 +143,15 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			$this->strCurrentStep = 'review';
 		}
 			
+	
+	//exit;
 		// Run trough all steps until we find the current one or one reports failure
 		foreach( $GLOBALS['ISO_CHECKOUT_STEPS'] as $step => $arrCallbacks )
 		{
 			$strBuffer = '';
 			foreach( $arrCallbacks as $callback )
 			{
+				
 				if ($callback[0] == 'ModuleIsotopeCheckout')
 				{
 					$strBuffer .= $this->{$callback[1]}();
@@ -169,15 +172,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			if ($step == $this->strCurrentStep)
 				break;
 		}
-		
-		/*	
-		foreach($GLOBALS['ISO_CHECKOUT_STEPS'][$this->strCurrentStep] as $step)
-		{		
-			$this->import($step[0]);
-			$strBuffer .= $this->{$step[0]}->{$step[1]}(&$this);
-		}
-		*/
-		
+				
 		if ($this->strCurrentStep == 'complete')
 		{
 			$strBuffer = $this->Cart->Payment->processPayment();
@@ -350,6 +345,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	
 	protected function getShippingModulesInterface($blnReview=false)
 	{
+		
 		if ($blnReview)
 		{
 			if (!$this->Cart->hasShipping)
@@ -371,7 +367,8 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	
 		if (is_array($arrModuleIds) && count($arrModuleIds))
 		{
-			$arrData = $this->Input->post('shipping');
+			$arrData = ($this->Input->post('shipping') ? $this->Input->post('shipping') : $_SESSION['CHECKOUT_DATA']['shipping']);
+			
 			$objModules = $this->Database->execute("SELECT * FROM tl_shipping_modules WHERE id IN (" . implode(',', $arrModuleIds) . ") AND enabled='1'");
 			
 			while( $objModules->next() )
@@ -448,7 +445,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		if ($blnReview)
 		{
 			if (!$this->Cart->hasPayment)
-				//return false;
+				return false;
 			
 			return array
 			(
@@ -922,7 +919,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			case 'shipping_address':
 				
 				$arrAddress = $_SESSION['CHECKOUT_DATA'][$field] ? $_SESSION['CHECKOUT_DATA'][$field] : $this->Cart->shippingAddress;				
-				$intDefaultValue = $arrAddress['id'] ? $arrAddress['id'] : null;
+				$intDefaultValue = $arrAddress['id'] ? $arrAddress['id'] : -1;
 
 				array_insert($arrOptions, 0, array(array
 				(
