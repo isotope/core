@@ -144,10 +144,13 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		}
 			
 	
-	//exit;
 		// Run trough all steps until we find the current one or one reports failure
 		foreach( $GLOBALS['ISO_CHECKOUT_STEPS'] as $step => $arrCallbacks )
 		{
+			$this->strFormId = 'iso_mod_checkout_' . $step;
+			$this->Template->formId = $this->strFormId;
+			$this->Template->formSubmit = $this->strFormId;
+			
 			$strBuffer = '';
 			foreach( $arrCallbacks as $callback )
 			{
