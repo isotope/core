@@ -42,6 +42,11 @@ class ShippingUSPS extends Shipping
 	protected $strDestinationZip;
 	
 	
+	protected $strShippingMode;
+	
+	
+	protected $strAPIMode = 'RateV3';
+	
 	/** 
 	 * Weight data (pounds, ounces)
 	 * array
@@ -92,20 +97,25 @@ class ShippingUSPS extends Shipping
 					'country'		=> $this->Isotope->Store->country
 				);*/
 			
-				$strOriginZip = $this->Isotope->Store->postal;
-				$strDestiationZip = $this->Cart->shippingAddress['postal'];
+				$this->strOriginZip = $this->Isotope->Store->postal;
+				$this->strDestinationZip = $this->Cart->shippingAddress['postal'];
+				$this->strShippingMode = $this->getShippingMode($this->Cart->shippingAddress['country']);
 				
+				if($this->Cart->shippingAddress['country']!='us')
+				{
+					$this->strAPIMode = 'IntlRate';
+				}
 															
 				$fltWeight = $this->Cart->totalWeight;
 				
 				$arrWeight = explode('.', (string)$fltWeight);
-	
+
 				$this->arrWeightData = array
 				(
 					'pounds'		=> $arrWeight[0],
-					'ounces'		=> (integer)$arrWeight[1] * 16
+					'ounces'		=> ((integer)$arrWeight[1] / 100) * 16
 				);
-				
+
 				return $this->calculateShippingRate();
 				break;
 		}
@@ -132,8 +142,8 @@ class ShippingUSPS extends Shipping
 		 // parameters to post  
 		 curl_setopt($ch, CURLOPT_POST, 1);  
 		
-		 $data = "API=RateV3&XML=<RateV3Request USERID=\"" . $userName . "\"><Package ID=\"1ST\"><Service>" . $this->usps_service . "</Service><ZipOrigination>" . $orig_zip . "</ZipOrigination><ZipDestination>" . $dest_zip . "</ZipDestination><Pounds>" . $arrWeightData['pounds'] . "</Pounds><Ounces>" . $arrWeightData['ounces'] . "</Ounces><Size>REGULAR</Size><Machinable>TRUE</Machinable></Package></RateV3Request>";  
-		   
+		 $data = "API=" . $this->strAPIMode . "&XML=<RateV3Request USERID=\"" . $userName . "\"><Package ID=\"1ST\"><Service>" . $this->usps_enabledService . "</Service><ZipOrigination>" . $orig_zip . "</ZipOrigination><ZipDestination>" . $dest_zip . "</ZipDestination><Pounds>" . $this->arrWeightData['pounds'] . "</Pounds><Ounces>" . $this->arrWeightData['ounces'] . "</Ounces><Size>REGULAR</Size><Machinable>TRUE</Machinable></Package></RateV3Request>";  
+
 		// send the POST values to USPS  
 		curl_setopt($ch, CURLOPT_POSTFIELDS,$data);  
 		  
@@ -141,7 +151,7 @@ class ShippingUSPS extends Shipping
 		
 		$data = strstr($result, '<?');  
 						
-		 //echo '<!-- '. $data. ' -->'; // Uncomment to show XML in comments  
+		// echo '<!-- '. $data. ' -->'; // Uncomment to show XML in comments  
 		$xml_parser = xml_parser_create();  
 		xml_parse_into_struct($xml_parser, $data, $vals, $index);  
 		xml_parser_free($xml_parser);  
@@ -169,9 +179,16 @@ class ShippingUSPS extends Shipping
 		
 		curl_close($ch);  
 		
-		// echo '<pre>'; print_r($params); echo'</pre>'; // Uncomment to see xml tags  
-		return $params['RATEV3RESPONSE']['1ST']['1']['RATE'];  
+		
+		//echo '<pre>'; print_r($params); echo'</pre>'; // Uncomment to see xml tags  
+		return $params['RATEV3RESPONSE']['1ST'][$GLOBALS['ISO']['MSC']['USPS'][$this->strShippingMode]['RRC'][$this->usps_enabledService]]['RATE'];  
 		  
 	}
 
+	public function getShippingMode($strCountry)
+	{
+		return ($strCountry=='us' ? 'DOMESTIC' : 'INTERNATIONAL');
+	}
+	
+	
 }
