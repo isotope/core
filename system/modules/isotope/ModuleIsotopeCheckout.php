@@ -920,9 +920,8 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		switch($field)
 		{
 			case 'shipping_address':
-				
 				$arrAddress = $_SESSION['CHECKOUT_DATA'][$field] ? $_SESSION['CHECKOUT_DATA'][$field] : $this->Cart->shippingAddress;				
-				$intDefaultValue = $arrAddress['id'] ? $arrAddress['id'] : -1;
+				$intDefaultValue = strlen($arrAddress['id']) ? $arrAddress['id'] : -1;
 
 				array_insert($arrOptions, 0, array(array
 				(
@@ -941,7 +940,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			case 'billing_address':
 			default:
 				$arrAddress = $_SESSION['CHECKOUT_DATA'][$field] ? $_SESSION['CHECKOUT_DATA'][$field] : $this->Cart->billingAddress;
-				$intDefaultValue = $arrAddress['id'] ? $arrAddress['id'] : 0;
+				$intDefaultValue = strlen($arrAddress['id']) ? $arrAddress['id'] : 0;
 				
 				if (FE_USER_LOGGED_IN)
 				{
@@ -960,11 +959,8 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			
 			$objWidget = new $strClass(array('id'=>$field, 'name'=>$field, 'required'=>true));
 			$objWidget->options = $arrOptions;
-						
 			$objWidget->value = $intDefaultValue;
-			
 			$objWidget->onclick = "Isotope.toggleAddressFields(this, '" . $field . "_new');";
-					
 			$objWidget->storeValues = true;
 
 			// Validate input
@@ -977,7 +973,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 					$this->doNotSubmit = true;
 				}
 				else
-				{				
+				{
 					$_SESSION['CHECKOUT_DATA'][$field]['id'] = $objWidget->value;
 				}
 			}
@@ -986,7 +982,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		}
 		
 		if (strlen($_SESSION['CHECKOUT_DATA'][$field]['id']))
-		{			
+		{
 			$this->Cart->$field = $_SESSION['CHECKOUT_DATA'][$field]['id'];
 		}
 		elseif (!FE_USER_LOGGED_IN)
@@ -1014,8 +1010,6 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 		$this->loadLanguageFile($strResourceTable);
 		$this->loadDataContainer($strResourceTable);
-		
-		//$arrAddress = array('id'=>0);
 		
 		foreach( $this->Isotope->Store->address_fields as $field )
 		{
@@ -1046,8 +1040,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			
 			// Validate input
 			if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && ($this->Input->post($strAddressField) === '0' || !$this->Input->post($strAddressField)))
-			{	
-										
+			{
 				$objWidget->validate();
 				
 				$varValue = $objWidget->value;
@@ -1068,20 +1061,21 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				// Store current value
 				elseif ($objWidget->submitInput())
 				{
-					$arrAddress[$field] = $varValue;					
+					$arrAddress[$field] = $varValue;
 				}
 			}
 
 			$objTemplate->fields .= $objWidget->parse();
 		}
 		
-		if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && !$this->doNotSubmit)
-		{					
+		if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && !$this->doNotSubmit && is_array($arrAddress) && count($arrAddress))
+		{
+			$arrAddress['id'] = 0;
 			$_SESSION['CHECKOUT_DATA'][$strAddressField] = $arrAddress;		
 		}
-			
-		if ($_SESSION['CHECKOUT_DATA'][$strAddressField])
-		{					
+
+		if (is_array($_SESSION['CHECKOUT_DATA'][$strAddressField]) && $_SESSION['CHECKOUT_DATA'][$strAddressField]['id'] === 0)
+		{
 			$this->Cart->$strAddressField = $_SESSION['CHECKOUT_DATA'][$strAddressField];
 		}
 	
@@ -1100,7 +1094,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			{
 				if ($step == 'review')
 					continue;
-					
+				
 				foreach( $arrCallbacks as $callback )
 				{
 					if ($callback[0] == 'ModuleIsotopeCheckout')

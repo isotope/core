@@ -248,11 +248,6 @@ class IsotopeCart extends Model
 					{
 						return $this->arrCache['shippingAddress_data'];
 					}
-					else
-					{	
-									
-						return $this->arrCache['billingAddress_data'];
-					}
 
 					if (FE_USER_LOGGED_IN)
 					{
@@ -262,10 +257,7 @@ class IsotopeCart extends Model
 							return $objAddress->fetchAssoc();
 					}
 					
-					if(!is_array($this->billingAddress))
-						$this->billingAddress = array();
-					 
-					return array_merge($this->billingAddress, array('id' => -1));
+					return array_merge((is_array($this->billingAddress) ? $this->billingAddress : array()), array('id' => -1));
 					break;
 			}
 		}
