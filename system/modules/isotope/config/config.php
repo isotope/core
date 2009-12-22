@@ -30,10 +30,6 @@ $GLOBALS['TL_CONFIG']['isotope_root'] = TL_ROOT . '/isotope';
 $GLOBALS['TL_CONFIG']['isotope_upload_path'] = 'isotope';
 
 
-// Rules workaround
-$GLOBALS['ISO_RULES']['excludeAttributeSets'] = array(); //array(6, 3);
-
-
 /**
  * Backend modules
  */

@@ -7,7 +7,7 @@
 <?php endif; ?>
 
 <div class="meta">
-Bestellung vom: <?php echo $this->datim; ?><br />
+<?php echo $this->datimLabel; ?>: <?php echo $this->datim; ?><br />
 </div>
 
 <?php foreach( $this->info as $type => $data ): ?>
@@ -38,7 +38,7 @@ Bestellung vom: <?php echo $this->datim; ?><br />
 <?php endforeach; endif; ?>
 		<tr class="grandtotal foot_last">
 			<td class="col_first">&nbsp;</td>
-			<td class="name" colspan="2">Gesamtsumme</td>
+			<td class="name" colspan="2"><?php echo $this->grandTotalLabel; ?></td>
 			<td class="price total" colspan="2"><?php echo $this->grandTotal; ?></td>
 			<td class="col_last tax">&nbsp;</td>
 		</tr>
@@ -59,7 +59,7 @@ Bestellung vom: <?php echo $this->datim; ?><br />
 
 
 <?php if (count($this->downloads)): ?>
-<h2>Verfügbare Downloads</h2>
+<h2><?php echo $this->downloadsLabel; ?></h2>
 <?php foreach( $this->downloads as $download ): ?>
 <div class="download"><?php if ($download['downloadable']): ?><a href="<?php echo $download['href']; ?>" /><?php endif; echo $download['title']; if ($download['downloadable']): ?></a><?php endif; echo $download['remaining']; ?></div>
 <?php endforeach; endif; ?>

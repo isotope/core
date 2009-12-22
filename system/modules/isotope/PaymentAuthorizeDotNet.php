@@ -188,9 +188,8 @@ class PaymentAuthorizeDotNet extends Payment
 			$arrCCTypes = deserialize($this->allowed_cc_types);
 		}
 		
-		
 		$strReturn = '
-		<form method="post" action="' . $this->Environment->request . $this->redirect($this->addToUrl('step=complete')) . '">
+		<form method="post" action="' . $this->Environment->request . $this->addToUrl('step=complete') .'">
 		<input type="hidden" name="FORM_SUBMIT" value="iso_mod_checkout_review" />
 		<input type="hidden" name="x_login" value="' . $this->authorize_login . '">
 		<input type="hidden" name="x_url" value="' . $strCurlUrl . '">

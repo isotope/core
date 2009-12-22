@@ -133,15 +133,18 @@ class ModuleOrderDetails extends ModuleIsotopeBase
 		$this->Template->info = deserialize($objOrder->checkout_info);
 		$this->Template->items = $arrItems;
 		$this->Template->downloads = $arrAllDownloads;
+		$this->Template->downloadsLabel = $GLOBALS['TL_LANG']['MSC']['downloadsLabel'];
 		
 		$this->Template->raw = $objOrder->row();
 		
 		$this->Template->date = $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $objOrder->date);
 		$this->Template->time = $this->parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $objOrder->date);
 		$this->Template->datim = $this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $objOrder->date);
+		$this->Template->datimLabel = $GLOBALS['TL_LANG']['MSC']['datimLabel'];
 		
 		$this->Template->subTotalPrice = $this->Isotope->formatPriceWithCurrency($objOrder->subTotal);
 		$this->Template->grandTotal = $this->Isotope->formatPriceWithCurrency($objOrder->grandTotal);
+		$this->Template->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
 		
 		$arrSurcharges = array();
 		foreach( deserialize($objOrder->surcharges) as $arrSurcharge )

@@ -178,6 +178,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				
 		if ($this->strCurrentStep == 'complete')
 		{
+			
 			$strBuffer = $this->Cart->Payment->processPayment();
 				
 			if ($strBuffer === true)
