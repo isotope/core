@@ -72,6 +72,8 @@ $GLOBALS['TL_LANG']['ERR']['noAddressBookEntries'] = 'You have no address book e
 /**
  * Miscellaneous
  */
+$GLOBALS['TL_LANG']['MSC']['datimLabel']				= 'Order date';
+$GLOBALS['TL_LANG']['MSC']['downloadsLabel']			= 'Your downloadable products';
 $GLOBALS['TL_LANG']['MSC']['paypal_processing'] = 'Your PayPal payment is being processed. Please be patient...';
 $GLOBALS['TL_LANG']['MSC']['paypal_processing_failed'] = 'Your PayPal payment could not be processed.';
 $GLOBALS['TL_LANG']['MSC']['detailLabel'] = 'View Details';

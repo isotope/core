@@ -48,9 +48,8 @@ $GLOBALS['TL_LANG']['MSC']['continueShoppingBT']		= 'Continue shopping';
 $GLOBALS['TL_LANG']['MSC']['updateCartBT']				= 'Update Cart';
 
 
-
-
- 
+$GLOBALS['TL_LANG']['MSC']['datimLabel']				= 'Bestellung vom';
+ $GLOBALS['TL_LANG']['MSC']['downloadsLabel']			= 'Verfügbare downloads';
 
 $GLOBALS['TL_LANG']['MSC']['order_conditions'] = 'AGB akzeptieren';
 $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'] = 'Bestellen';
