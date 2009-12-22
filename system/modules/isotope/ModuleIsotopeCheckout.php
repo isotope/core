@@ -189,7 +189,8 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			{
 				$this->writeOrder(false);
 				$this->Template->showNext = false;
-				$this->Template->showPrevious = false;
+				$this->Template->showPrevious = true;
+				$this->redirect($this->addToUrl('step=failed'));
 			}
 		}
 		
