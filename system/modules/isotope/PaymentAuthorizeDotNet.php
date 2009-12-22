@@ -27,7 +27,7 @@
  
 class PaymentAuthorizeDotNet extends Payment
 {
-	
+		
 	/**
 	 * Process payment on confirmation page.
 	 * 
@@ -125,7 +125,7 @@ class PaymentAuthorizeDotNet extends Payment
 
 			//Bypass actual live curl hit, just approve for later processing.
 			$this->response = 'successful';
-			
+
 		}
 		
 		return true;
@@ -190,7 +190,7 @@ class PaymentAuthorizeDotNet extends Payment
 		
 		
 		$strReturn = '
-		<form method="post" action="' . $this->Environment->request . '">
+		<form method="post" action="' . $this->Environment->request . $this->redirect($this->addToUrl('step=complete')) . '">
 		<input type="hidden" name="FORM_SUBMIT" value="iso_mod_checkout_review" />
 		<input type="hidden" name="x_login" value="' . $this->authorize_login . '">
 		<input type="hidden" name="x_url" value="' . $strCurlUrl . '">

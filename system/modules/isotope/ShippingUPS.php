@@ -199,21 +199,30 @@ class ShippingUPS extends Shipping
 	
 	public function calculateShippingRate()
 	{
-		$strRequestXML = $this->buildRequest('RatingServiceSelectionRequest');
-								
-		$strResponseXML = $this->sendRequest($strRequestXML);
-	
-		//Get price for service.
-		$this->response = new DOMDocument();
-		$this->response->loadXML($strResponseXML);
+		if($_SESSION['CHECKOUT_DATA']['shipping']['modules'][$this->id]['price'])	//to avoid calling the CURL multiple times which slows us down.
+		{
+			 $fltPrice = $_SESSION['CHECKOUT_DATA']['shipping']['modules'][$this->id]['price'];
+		}
+		else
+		{	
+			$strRequestXML = $this->buildRequest('RatingServiceSelectionRequest');
+									
+			$strResponseXML = $this->sendRequest($strRequestXML);
 		
-		$this->xpath = new DOMXPath($this->response);
+			//Get price for service.
+			$this->response = new DOMDocument();
+			$this->response->loadXML($strResponseXML);
+			
+			$this->xpath = new DOMXPath($this->response);
+			
+			$domNode = $this->xpath->query(
+				'/RatingServiceSelectionResponse/RatedShipment/RatedPackage/TotalCharges/MonetaryValue')->item(0);
+					
+			$fltPrice = floatval($domNode->nodeValue);
+			$_SESSION['CHECKOUT_DATA']['shipping']['modules'][$this->id]['price'] = $fltPrice;
+		}
 		
-		$domNode = $this->xpath->query(
-			'/RatingServiceSelectionResponse/RatedShipment/RatedPackage/TotalCharges/MonetaryValue')->item(0);
-				
-		return floatval($domNode->nodeValue);
-		
+		return $fltPrice;
 	}
 	
 	protected function calculateSurcharge()
