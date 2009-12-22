@@ -190,6 +190,8 @@ class PaymentAuthorizeDotNet extends Payment
 		
 		
 		$strReturn = '
+		<form method="post" action="' . $this->Environment->request . '">
+		<input type="hidden" name="FORM_SUBMIT" value="iso_mod_checkout_review" />
 		<input type="hidden" name="x_login" value="' . $this->authorize_login . '">
 		<input type="hidden" name="x_url" value="' . $strCurlUrl . '">
 		<input type="hidden" name="x_version" value="3.1">
@@ -224,7 +226,8 @@ class PaymentAuthorizeDotNet extends Payment
 		}
 		$strReturn .= '</select></td></tr>
 		<tr><td><label for="cc_exp">Credit Card Expiration (mm/yy):</label></td><td><input type="text" name="cc_exp" id="ctrl_cc_exp" /></td></tr></tbody></table>';
-		
+		$strReturn .= '<button type="submit" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']).'" name="submit_order">'.specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']).'</button>
+		</form>';
 		return $strReturn;
 
 	}
