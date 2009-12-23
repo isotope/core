@@ -60,6 +60,13 @@
     	<td class="col_5 col_last tax"><?php echo $product['tax_id']; ?></td>
 	</tr>
 <?php endforeach; ?>
+<?php if($this->conditions): ?>
+	<tr>
+		<td colspan="6">
+			<?php echo $this->conditions; ?>
+		</td>
+	</tr>
+<?php endif; ?>
 </tbody>
 </table>
 

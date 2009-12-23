@@ -626,7 +626,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 		$objTemplate->subTotalPrice = $this->generatePrice($this->Cart->subTotal);
 		$objTemplate->grandTotalPrice = $this->generatePrice($this->Cart->grandTotal, 'stpl_total_price');
-
+		$objTemplate->conditions = $this->getOrderConditionsInterface($blnReview);
 		$objTemplate->checkoutForm = $strForm;
 		
 		return $objTemplate->parse();
