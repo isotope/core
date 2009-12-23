@@ -8,10 +8,10 @@
 
 <table cellspacing="0" cellpadding="0" summary="Shop Orders">
 	<tr>
-		<th>Bestellt</th>
-		<th>Anzahl Artikel</th>
-		<th>Gesamtpreis</th>
-		<th>Status</th>
+		<th><?php echo $this->dateLabel; ?></th>
+		<th><?php echo $this->quantityLabel; ?></th>
+		<th><?php echo $this->subTotalLabel; ?></th>
+		<th><?php echo $this->statusLabel; ?></th>
 		<th>&nbsp;</th>
 	</tr>
 <?php foreach( $this->orders as $order ): ?>
