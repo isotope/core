@@ -547,8 +547,8 @@ class IsotopeCart extends Model
 			'pid'					=> $this->id,
 			'tstamp'				=> time(),
 			'quantity_requested'	=> ((is_object($objModule) && $objModule->iso_use_quantity && intval($this->Input->post('quantity_requested')) > 0) ? intval($this->Input->post('quantity_requested')) : 1),
-			'price'					=> $objProduct->${$this->Isotope->Store->priceField},	//NOTE: Won't reference the variable unless $ precedes curly brackets!
-			'price_override'		=> $objProduct->${$this->Isotope->Store->priceOverrideField},
+			'price'					=> $objProduct->price,	//NOTE: Won't reference the variable unless $ precedes curly brackets!
+			'price_override'		=> $objProduct->price_override,
 			'href_reader'			=> $objProduct->href_reader,
 			'product_id'			=> ($objProduct->subId ? $objProduct->subId : $objProduct->id),
 			'product_data'			=> serialize($objProduct),
