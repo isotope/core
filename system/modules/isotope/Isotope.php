@@ -695,10 +695,10 @@ class Isotope extends Controller
 			$isExcluded = false;
 		}
 		
-		$isExcluded = in_array($objData->pid, $GLOBALS['ISO_RULES']['excludeAttributeSets']);
+		//$isExcluded = in_array($objData->pid, $GLOBALS['ISO_RULES']['excludeAttributeSets']);
 		
 						
-		if(in_array(2, $this->User->groups) && !$isExcluded)	//this is where rules will later be loaded
+		if(in_array(2, $this->User->groups))	//this is where rules will later be loaded
 		{
 			$fltAdjustedPrice = $fltProductBasePrice - ($fltProductBasePrice * .1);
 		}else{
