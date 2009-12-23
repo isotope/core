@@ -55,7 +55,7 @@
 			<?php endif; ?>
 		</td>
 		<td class="col_2 quantity"><?php echo $product['quantity']; ?> x</td>
-   		<td class="col_3 price"><?php echo $product['price']; ?></td>
+   		<td class="col_3 price"><?php echo ($product['price_override'] ? $product['price_override'] : $product['price']); ?></td>
     	<td class="col_4 price total"><?php echo $product['total_price']; ?></td>
     	<td class="col_5 col_last tax"><?php echo $product['tax_id']; ?></td>
 	</tr>
