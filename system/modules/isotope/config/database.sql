@@ -448,7 +448,7 @@ CREATE TABLE `tl_payment_modules` (
   `authorize_trans_type` varchar(32) NOT NULL default '',
   `authorize_relay_response` char(1) NOT NULL default '',
   `authorize_email_customer` char(1) NOT NULL default '',
-  `authorize_bypass_live_collection` char(1) NOT NULL default '',
+  `authorize_require_ccv` char(1) NOT NULL default '',
   `groups` blob NULL,
   `button` varchar(255) NOT NULL default '',
   `debug` char(1) NOT NULL default '',
@@ -596,6 +596,7 @@ CREATE TABLE `tl_iso_orders` (
   `gift_message` text NULL,
   `gift_wrap` char(1) NOT NULL default '', 
   `currency` varchar(4) NOT NULL default '',
+  `x_trans_id` varchar(32) NOT NULL default '',
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

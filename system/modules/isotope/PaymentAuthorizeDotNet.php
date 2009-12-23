@@ -35,98 +35,106 @@ class PaymentAuthorizeDotNet extends Payment
 	 * @return void
 	 */
 	public function processPayment()
-	{
-		if(!$this->authorize_bypass_live_collection)
+	{		
+		//for Authorize.net - this would be where to handle logging response information from the server.
+		$authnet_values = array
+		(
+			"x_login"							=> $this->authorize_login,
+			"x_version"							=> $this->getRequestData('x_version'),
+			"x_test_request"					=> $this->debug,
+			"x_delim_char"						=> $this->authorize_delimiter,
+			"x_delim_data"						=> "TRUE",
+			"x_url"								=> "FALSE",
+			"x_test_request"					=> $this->getRequestData('x_test_request'),
+			"x_type"							=> $this->authorize_trans_type,
+			"x_method"							=> "CC",
+			"x_tran_key"						=> $this->authorize_trans_key,
+			"x_card_num"						=> $this->getRequestData('cc_num'),
+			"x_exp_date"						=> $this->getRequestData('cc_exp'),
+			"x_description"						=> "Order Number " . $objDc->id,
+			"x_amount"							=> $this->Cart->grandTotal,
+			"x_first_name"						=> $this->getRequestData('x_first_name'),
+			"x_last_name"						=> $this->getRequestData('x_last_name'),
+			"x_address"							=> $this->getRequestData('x_address'),
+			"x_city"							=> $this->getRequestData('x_city'),
+			"x_state"							=> $this->getRequestData('x_state'),
+			"x_zip"								=> $this->getRequestData('x_zip'),
+			"x_company"							=> $this->getRequestData('x_company'),
+			"x_email_customer"					=> "FALSE"
+		);
+
+		if($this->authorize_require_ccv)
 		{
-			//for Authorize.net - this would be where to handle logging response information from the server.
-			$authnet_values = array
-			(
-				"x_login"							=> $this->authorize_login,
-				"x_version"							=> $this->getRequestData('x_version'),
-				"x_test_request"					=> $this->debug,
-				"x_delim_char"						=> $this->authorize_delimiter,
-				"x_delim_data"						=> "TRUE",
-				"x_url"								=> "FALSE",
-				"x_test_request"					=> $this->getRequestData('x_test_request'),
-				"x_type"							=> $this->authorize_trans_type,
-				"x_method"							=> "CC",
-				"x_tran_key"						=> $this->authorize_trans_key,
-				"x_card_num"						=> $this->getRequestData('cc_num'),
-				"x_exp_date"						=> $this->getRequestData('cc_exp'),
-				"x_description"						=> "Order Number " . $objDc->id,
-				"x_amount"							=> $this->Cart->grandTotal,
-				"x_first_name"						=> $this->getRequestData('x_first_name'),
-				"x_last_name"						=> $this->getRequestData('x_last_name'),
-				"x_address"							=> $this->getRequestData('x_address'),
-				"x_city"							=> $this->getRequestData('x_city'),
-				"x_state"							=> $this->getRequestData('x_state'),
-				"x_zip"								=> $this->getRequestData('x_zip'),
-				"x_company"							=> $this->getRequestData('x_company'),
-				"x_email_customer"					=> "FALSE"
-			);
-	
-			foreach( $authnet_values as $key => $value ) $fields .= "$key=" . urlencode( $value ) . "&";
-			$ch = curl_init(); 
-	
-			###  Uncomment the line ABOVE for test accounts or BELOW for live merchant accounts
-			### $ch = curl_init("https://secure.authorize.net/gateway/transact.dll"); 
-			
-			curl_setopt($ch, CURLOPT_URL, sprintf('https://%s.authorize.net/gateway/transact.dll', $this->getRequestData('x_url'))); 
-			curl_setopt($ch, CURLOPT_HEADER, 0); // set to 0 to eliminate header info from response
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // Returns response data instead of TRUE(1)
-			curl_setopt($ch, CURLOPT_POSTFIELDS, rtrim( $fields, "& " )); // use HTTP POST to send form data
-	
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); // uncomment this line if you get no gateway response. ###
-			$resp = curl_exec($ch); //execute post and get results
-			curl_close ($ch);
-			
-							
-			$arrResponses = $this->handleResponse($resp);
-	
-			foreach(array_keys($arrResponses) as $key)
-			{
-				$arrReponseLabels[strtolower(standardize($key))] = $key;
-			}
-		
-		
-			//FIXME?? - This just doesn't seem like a good way to handle this info...
-			$_SESSION['FORM_DATA']['cc_num'] = $this->getRequestData('cc_num');
-			$_SESSION['FORM_DATA']['cc_exp'] = $this->getRequestData('cc_exp');
-		
-			switch($arrResponses['transaction-status'])
-			{
-				case 'Approved':
-					$this->response = 'successful';
-					
-					return true;
-					//$this->redirect($this->addToUrl('step=complete'));
-					break;
-				case 'Error':
-				case 'Declined':
-					$this->response = 'failed';
-					$this->reason = $arrResponses['reason'];
-					
-					return false;
-					break;
-				default:
-					$this->response = 'failed';
-					$this->reason = $arrResponses['reason'];
-					
-					return false;
-					break;
-			}
-		
-		}else{
-	
-			//FIXME?? - This just doesn't seem like a good way to handle this info...
-			$_SESSION['FORM_DATA']['cc_num'] = $this->getRequestData('cc_num');
-			$_SESSION['FORM_DATA']['cc_exp'] = $this->getRequestData('cc_exp');
-			$_SESSION['FORM_DATA']['cc_type'] = $this->getRequestData('cc_type');
-
-			//Bypass actual live curl hit, just approve for later processing.
-			$this->response = 'successful';
-
+			$authnet_values["x_card_code"] = $this->getRequestData('cc_ccv');
 		}
+
+		foreach( $authnet_values as $key => $value ) $fields .= "$key=" . urlencode( $value ) . "&";
+		$ch = curl_init(); 
+
+		###  Uncomment the line ABOVE for test accounts or BELOW for live merchant accounts
+		### $ch = curl_init("https://secure.authorize.net/gateway/transact.dll"); 
+		
+		curl_setopt($ch, CURLOPT_URL, 'https://secure.authorize.net/gateway/transact.dll'); 
+		curl_setopt($ch, CURLOPT_HEADER, 0); // set to 0 to eliminate header info from response
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // Returns response data instead of TRUE(1)
+		curl_setopt($ch, CURLOPT_POSTFIELDS, rtrim( $fields, "& " )); // use HTTP POST to send form data
+
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); // uncomment this line if you get no gateway response. ###
+		$resp = curl_exec($ch); //execute post and get results
+		curl_close ($ch);
+		
+						
+		$arrResponses = $this->handleResponse($resp);
+
+		foreach(array_keys($arrResponses) as $key)
+		{
+			$arrReponseLabels[strtolower(standardize($key))] = $key;
+		}
+	
+	
+		//FIXME?? - This just doesn't seem like a good way to handle this info...
+		
+		//Save Auth.net-specific data
+		
+	
+		switch($arrResponses['transaction-status'])
+		{
+			case 'Approved':
+				$this->response = 'successful';
+				
+				$strTransactionId = (string)$arrResponses['transaction-id'];
+				
+				if(!strlen($strTransactionId))
+				{
+					$strTransactionId = '0';
+				}
+				
+				$this->import('IsotopeCart','Cart');
+				
+				//commit the transaction id and cart id to a new order.
+				$arrSet['cart_id'] = $this->Cart->id;
+				$arrSet['x_trans_id'] = $strTransactionId;
+				
+				$this->Database->prepare("INSERT INTO tl_iso_orders %s")
+							   ->set($arrSet)
+							   ->execute();
+				return true;
+				break;
+			case 'Error':
+			case 'Declined':
+				$this->response = 'failed';
+				$_SESSION['CHECKOUT_DATA']['TRANSACTION_RESPONSE']['ERROR']['REASON'] = $arrResponses['reason'];
+				
+				return false;
+				break;
+			default:
+				$this->response = 'failed';
+				$this->reason = $arrResponses['reason'];
+				
+				return false;
+				break;
+		}
+	
 		
 		return true;
 		
@@ -203,7 +211,7 @@ class PaymentAuthorizeDotNet extends Payment
 		<input type="hidden" name="x_card_num" value="' . $this->Input->post('cc_num') . '">
 		<input type="hidden" name="x_card_type" value="' . $this->Input->post('cc_type') . '">
 		<input type="hidden" name="x_exp_date" value="' . $this->Input->post('cc_exp') . '">
-		<!--<input type="hidden" name="x_card_code" value="' . $this->Input->post('cc_cvv') . '">-->
+		<input type="hidden" name="x_card_code" value="' . $this->Input->post('cc_cvv') . '">
 		<input type="hidden" name="x_description" value="New Order ID ' . $objOrder->order_id . ($this->debug ? ' ' . $GLOBALS['TL_LANG']['MSC']['testTransaction'] : '') . '">
 		<input type="hidden" name="x_amount" value="' . $this->Cart->grandTotal . '">
 		<input type="hidden" name="x_first_name" value="' . $arrAddress['firstname'] . '">
@@ -216,14 +224,21 @@ class PaymentAuthorizeDotNet extends Payment
 		<input type="hidden" name="x_email_customer" value="FALSE">
 		<input type="hidden" name="x_email"' . $arrAddress['email'] . '">
 		<table cellpadding="0" cellspacing="0" border="0">
-		<tbody>
-		<tr><td><label for="cc_num">Credit Card Number:</label></td><td><input type="text" name="cc_num" id="ctrl_cc_num" /></td></tr>
+		<tbody>';
+		
+		if($_SESSION['CHECKOUT_DATA']['TRANSACTION_RESPONSE']['ERROR']['REASON'])
+		{
+			$strReturn .= '<tr><td colspan="2"><div class="paymentError">' . $_SESSION['CHECKOUT_DATA']['TRANSACTION_RESPONSE']['ERROR']['REASON'] . '</div></td></tr>';
+		}
+		
+		$strReturn .= '<tr><td><label for="cc_num">Credit Card Number:</label></td><td><input type="text" name="cc_num" id="ctrl_cc_num" /></td></tr>
 		<tr><td><label for="cc_type">Credit Card Type:</label></td><td><select name="cc_type" id="ctrl_cc_type"><option value="" selected>-</option>';
 		foreach($arrCCTypes as $type)
 		{
 			$strReturn .= '<option value="' . $type . '">' . $GLOBALS['ISO_PAY']['cc_types'][$type] . '</option>';
 		}
 		$strReturn .= '</select></td></tr>
+		<tr><td><label for="cc_ccv">Card Code Verification (3 or 4 digits):</label></td><td><input type="text" name="cc_ccv" id="ctrl_cc_exp" /></td></tr>
 		<tr><td><label for="cc_exp">Credit Card Expiration (mm/yy):</label></td><td><input type="text" name="cc_exp" id="ctrl_cc_exp" /></td></tr></tbody></table>';
 		$strReturn .= '<button type="submit" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']).'" name="submit_order">'.specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']).'</button>
 		</form>';

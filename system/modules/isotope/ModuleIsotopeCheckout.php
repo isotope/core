@@ -126,8 +126,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		$this->Template->showPrevious = true;
 		$this->Template->showNext = true;
 		$this->Template->showForm = true;
-		
-		
+				
 		// Remove shipping step if no items are shipped
 		if (!$this->Cart->requiresShipping)
 		{
@@ -629,7 +628,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		$objTemplate->grandTotalPrice = $this->generatePrice($this->Cart->grandTotal, 'stpl_total_price');
 
 		$objTemplate->checkoutForm = $strForm;
-
+		
 		return $objTemplate->parse();
 	}
 
@@ -670,15 +669,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			'shipping_address'		=> serialize($this->Cart->shippingAddress),
 			'currency'				=> $this->Isotope->Store->currency
 		);
-		
-		//FIXME?  Sort of strange way to have to handle credit card data...
-		if($_SESSION['FORM_DATA']['cc_num'] && $_SESSION['FORM_DATA']['cc_exp'])
-		{			
-			$arrSet['cc_num'] 	= $_SESSION['FORM_DATA']['cc_num'];
-			$arrSet['cc_exp'] 	= $_SESSION['FORM_DATA']['cc_exp'];
-			$arrSet['cc_type'] = isset($_SESSION['FORM_DATA']['cc_type']) ? $_SESSION['FORM_DATA']['cc_type'] : "";
-			$arrSet['cc_cvv'] = isset($_SESSION['FORM_DATA']['cc_cvv']) ? $_SESSION['FORM_DATA']['cc_cvv'] : "";
-		}
+				
 		
 		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=? AND status!='cancelled'")->limit(1)->execute($this->Cart->id);
 		
