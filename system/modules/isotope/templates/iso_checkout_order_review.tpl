@@ -63,7 +63,9 @@
 <?php if($this->conditions): ?>
 	<tr>
 		<td colspan="6">
+			<div class="order_conditions_container">
 			<?php echo $this->conditions; ?>
+			</div>
 		</td>
 	</tr>
 <?php endif; ?>
