@@ -92,6 +92,12 @@ class ModuleOrderHistory extends ModuleIsotopeBase
 		}
 		
 		$this->Template->orders = $arrOrders;
+		
+		$this->Template->dateLabel = $GLOBALS['TL_LANG']['MSC']['iso_order_date'];
+		$this->Template->statusLabel = $GLOBALS['TL_LANG']['MSC']['iso_order_status'];
+		$this->Template->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
+		$this->Template->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
+		$this->Template->quantityLabel = $GLOBALS['TL_LANG']['MSC']['iso_quantity_header'];
 	}
 }
 
