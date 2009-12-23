@@ -375,6 +375,7 @@ CREATE TABLE `tl_cart_items` (
   `quantity_requested` int(10) unsigned NOT NULL default '0',
   `quantity_sold` int(10) unsigned NOT NULL default '0',
   `price` double NULL default NULL,
+  `price_override` varchar(255) NOT NULL default '',
   `product_attribute_collection` text NULL,
   `product_options` text NULL,
   `product_data` blob NULL,

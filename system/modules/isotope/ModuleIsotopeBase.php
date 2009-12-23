@@ -1091,24 +1091,6 @@ abstract class ModuleIsotopeBase extends Module
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	/**
 	 * Shortcut for a single product by ID
 	 */

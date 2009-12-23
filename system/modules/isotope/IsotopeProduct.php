@@ -133,7 +133,9 @@ class IsotopeProduct extends Model
 						case 'price':
 							return $this->Isotope->calculatePrice((strlen($this->arrData[$this->Isotope->Store->priceOverrideField]) ? $this->arrData[$this->Isotope->Store->priceOverrideField] : $this->arrData[$this->Isotope->Store->priceField]), $this->arrData['tax_class']);
 							break;
-							
+						case 'price_override':
+							return $this->arrData[$this->Isotope->Store->priceOverrideField];
+							break;	
 						case 'total_price':
 							return ($this->quantity_requested ? $this->quantity_requested : 1) * $this->price;
 							break;
@@ -301,7 +303,7 @@ class IsotopeProduct extends Model
 		{
 			switch($k)
 			{
-				case 'price':
+				case $strPriceField:
 					$this->arrData[$k] = $this->Isotope->calculatePrice($v, $this->arrData['tax_class']);
 					break;
 				default:
@@ -311,6 +313,20 @@ class IsotopeProduct extends Model
 		}
 	
 	}
+	
+	public function setPrice($fltPrice)
+	{	
+		$strPriceField = $this->Isotope->Store->priceField;
+
+		$this->arrData[$strPriceField] = $this->Isotope->calculatePrice($fltPrice, $this->arrData['tax_class']);
+	}
+	
+	public function setPriceOverride($varValue)
+	{	
+		$strPriceOverrideField = $this->Isotope->Store->overridePriceField;
 		
+		$this->arrData[$strPriceOverrideField] = $varValue;
+	}
+	
 }
 
