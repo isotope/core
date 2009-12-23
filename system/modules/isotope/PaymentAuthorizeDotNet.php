@@ -231,18 +231,57 @@ class PaymentAuthorizeDotNet extends Payment
 			$strReturn .= '<tr><td colspan="2"><div class="paymentError">' . $_SESSION['CHECKOUT_DATA']['TRANSACTION_RESPONSE']['ERROR']['REASON'] . '</div></td></tr>';
 		}
 		
-		$strReturn .= '<tr><td><label for="cc_num">Credit Card Number:</label></td><td><input type="text" name="cc_num" id="ctrl_cc_num" /></td></tr>
-		<tr><td><label for="cc_type">Credit Card Type:</label></td><td><select name="cc_type" id="ctrl_cc_type"><option value="" selected>-</option>';
-		foreach($arrCCTypes as $type)
-		{
-			$strReturn .= '<option value="' . $type . '">' . $GLOBALS['ISO_PAY']['cc_types'][$type] . '</option>';
-		}
-		$strReturn .= '</select></td></tr>
-		<tr><td><label for="cc_ccv">Card Code Verification (3 or 4 digits):</label></td><td><input type="text" name="cc_ccv" id="ctrl_cc_exp" /></td></tr>
-		<tr><td><label for="cc_exp">Credit Card Expiration (mm/yy):</label></td><td><input type="text" name="cc_exp" id="ctrl_cc_exp" /></td></tr></tbody></table>';
+		$strReturn .= $this->getCreditCardForm();
+		
 		$strReturn .= '<button type="submit" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']).'" name="submit_order">'.specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']).'</button>
 		</form>';
 		return $strReturn;
+
+	}
+	
+	private function getCreditCardForm()
+	{
+		$strReturn .= '<tr><td><label for="cc_num">Credit Card Number:</label></td><td><input type="text" name="cc_num" id="ctrl_cc_num" /></td></tr>
+		<tr><td><label for="cc_type">Credit Card Type:</label></td><td><select name="cc_type" id="ctrl_cc_type"><option value="" selected>-</option>';
+		
+		foreach($arrCCTypes as $type)
+		{
+			$arrTypes[$type] = $GLOBALS['ISO_PAY']['cc_types'][$type];
+		}
+		
+		$strReturn .= '</select></td></tr>
+		<tr><td><label for="cc_ccv">Card Code Verification (3 or 4 digits):</label></td><td><input type="text" name="cc_ccv" id="ctrl_cc_exp" /></td></tr>
+		<tr><td><label for="cc_exp">Credit Card Expiration (mm/yy):</label></td><td><input type="text" name="cc_exp" id="ctrl_cc_exp" /></td></tr></tbody></table>';
+		
+		
+		$objCCNum = new FormTextBox(array('id'=>'iso_cc_num', 'name'=>'cc_num', 'label'=>'Credit Card Number')));
+		$objCCType = new FormSelectMenu(array('id'=>'iso_cc_num', 'name'=>'cc_num', 'label'=>'Credit Card Type', 'options' => $arrTypes, 'eval'=>array('includeBlankOption'=>true)));
+		
+		
+		
+		if($this->authorize_require_ccv)
+		{
+			$objCCCCV = new FormTextBox(array('id'=>'iso_cc_ccv', 'name'=>'cc_ccv', 'label'=>'Card Code Verification # (3 or 4 digits)')));
+			$objCCCCV->mandatory = true;
+		}
+		
+		$objCCNum->mandatory = true;
+		$objCCType->mandatory = true;
+		
+		// Validate input
+		if ($this->Input->post('FORM_SUBMIT') == $this->strFormId)
+		{
+			$objConditions->validate();
+			
+			if (!strlen($objConditions->value))
+			{
+				$objConditions->addError($GLOBALS['TL_LANG']['ERR']['order_conditions']);
+			}
+			
+			if ($objConditions->hasErrors())
+			{
+				$this->doNotSubmit = true;
+			}
 
 	}
 	
