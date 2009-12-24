@@ -113,7 +113,11 @@ class PaymentAuthorizeDotNet extends Payment
 				
 				//commit the transaction id and cart id to a new order.
 				$arrSet['cart_id'] = $this->Cart->id;
-				$arrSet['x_trans_id'] = $strTransactionId;
+				
+				$objOrder = $this->Database->prepare("SELECT payment_data FROM tl_iso_orders WHERE cart_id=?")->execute($this->Cart->id);
+				$arrPaymentData = deserialize($objOrder->payment_data, true);
+				$arrPaymentData['x_trans_id'] = $strTransactionId;
+				$arrSet['payment_data'] = serialize($arrPaymentData);
 				
 				$this->Database->prepare("INSERT INTO tl_iso_orders %s")
 							   ->set($arrSet)
