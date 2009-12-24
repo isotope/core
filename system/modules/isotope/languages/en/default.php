@@ -258,7 +258,10 @@ $GLOBALS['TL_LANG']['ISO']['payment_method']				= 'Payment Method';
 $GLOBALS['TL_LANG']['ISO']['order_conditions']				= 'Order Conditions';
 $GLOBALS['TL_LANG']['ISO']['order_review']					= 'Order Review';
 $GLOBALS['TL_LANG']['ISO']['changeCheckoutInfo']			= 'Change';
-
+$GLOBALS['TL_LANG']['ISO']['cc_num']						= 'Credit Card Number';
+$GLOBALS['TL_LANG']['ISO']['cc_type']						= 'Credit Card Type';
+$GLOBALS['TL_LANG']['ISO']['cc_exp']						= 'Credit Card Expiration (mm/yy)';
+$GLOBALS['TL_LANG']['ISO']['cc_ccv']						= 'CCV Number (3 or 4 digit code)';
 
 
 /**

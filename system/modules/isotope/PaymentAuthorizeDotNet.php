@@ -173,7 +173,7 @@ class PaymentAuthorizeDotNet extends Payment
 		$objOrder = $this->Database->prepare("SELECT order_id FROM tl_iso_orders WHERE cart_id=?")->execute($this->Cart->id);
 		$arrAddress = $this->Isotope->getAddress('billing');
 		
-		
+		$arrRequiredFields = array('cc_num'=>'text','cc_type'=>'select','cc_exp'=>'text','cc_ccv'=>'text');
 			
 		$strTestValue = "false";
 		$strCurlUrl = 'secure'; 
@@ -231,7 +231,7 @@ class PaymentAuthorizeDotNet extends Payment
 			$strReturn .= '<tr><td colspan="2"><div class="paymentError">' . $_SESSION['CHECKOUT_DATA']['TRANSACTION_RESPONSE']['ERROR']['REASON'] . '</div></td></tr>';
 		}
 		
-		$strReturn .= $this->getCreditCardForm();
+		$strReturn .= $this->getCreditCardForm($arrRequiredFields, $arrCCTypes);
 		
 		$strReturn .= '<button type="submit" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']).'" name="submit_order">'.specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']).'</button>
 		</form>';
@@ -239,7 +239,7 @@ class PaymentAuthorizeDotNet extends Payment
 
 	}
 	
-	private function getCreditCardForm()
+	private function getCreditCardForm($arrRequiredFields, $arrCCTypes = array())
 	{
 		$strReturn .= '<tr><td><label for="cc_num">Credit Card Number:</label></td><td><input type="text" name="cc_num" id="ctrl_cc_num" /></td></tr>
 		<tr><td><label for="cc_type">Credit Card Type:</label></td><td><select name="cc_type" id="ctrl_cc_type"><option value="" selected>-</option>';
@@ -253,36 +253,76 @@ class PaymentAuthorizeDotNet extends Payment
 		<tr><td><label for="cc_ccv">Card Code Verification (3 or 4 digits):</label></td><td><input type="text" name="cc_ccv" id="ctrl_cc_exp" /></td></tr>
 		<tr><td><label for="cc_exp">Credit Card Expiration (mm/yy):</label></td><td><input type="text" name="cc_exp" id="ctrl_cc_exp" /></td></tr></tbody></table>';
 		
-		
-		$objCCNum = new FormTextBox(array('id'=>'iso_cc_num', 'name'=>'cc_num', 'label'=>'Credit Card Number')));
-		$objCCType = new FormSelectMenu(array('id'=>'iso_cc_num', 'name'=>'cc_num', 'label'=>'Credit Card Type', 'options' => $arrTypes, 'eval'=>array('includeBlankOption'=>true)));
-		
-		
-		
-		if($this->authorize_require_ccv)
+		foreach($arrRequiredFields as $k=>$v)
 		{
-			$objCCCCV = new FormTextBox(array('id'=>'iso_cc_ccv', 'name'=>'cc_ccv', 'label'=>'Card Code Verification # (3 or 4 digits)')));
-			$objCCCCV->mandatory = true;
-		}
-		
-		$objCCNum->mandatory = true;
-		$objCCType->mandatory = true;
-		
-		// Validate input
-		if ($this->Input->post('FORM_SUBMIT') == $this->strFormId)
-		{
-			$objConditions->validate();
-			
-			if (!strlen($objConditions->value))
+
+			switch($k)
 			{
-				$objConditions->addError($GLOBALS['TL_LANG']['ERR']['order_conditions']);
+				case 'cc_num':
+					$arrData = array(
+						'label'			=> $GLOBALS['TL_LANG']['ISO'][$k],
+						'inputType'		=> 'text',
+						'eval'			=> array('mandatory'=>true, 'rgxp'=>'digit')
+					);
+					break;
+				case 'cc_type':
+					$arrData = array(
+						'label'			=> $GLOBALS['TL_LANG']['ISO'][$k],
+						'inputType'		=> 'select',
+						'options'		=> $arrCCTypes,
+						'eval'			=> array('mandatory'=>true, 'rgxp'=>'digit'),
+						'reference'		=> $GLOBALS['ISO_PAY']['cc_types']
+					);
+					break;
+				case 'cc_exp':
+					$arrData = array(
+						'label'			=> $GLOBALS['TL_LANG']['ISO'][$k],
+						'inputType'		=> 'text',
+						'eval'			=> array('mandatory'=>true)
+					);
+					break;
+				case 'cc_ccv':
+					$arrData = array(
+						'label'			=> $GLOBALS['TL_LANG']['ISO'][$k],
+						'inputType'		=> 'text',
+						'eval'			=> array('mandatory'=>true)						
+					);
+					break;
+				default:
+					continue;
+					break;
 			}
 			
-			if ($objConditions->hasErrors())
+			$strClass = $GLOBALS['TL_FFL'][$arrData['inputType']];
+
+			// Continue if the class is not defined
+			if (!$this->classFileExists($strClass))
 			{
-				$this->doNotSubmit = true;
+				continue;
 			}
 
+			$arrData['eval']['tableless'] = true;
+
+			$objWidget = new $strClass($this->prepareForWidget($arrData, $field, $_SESSION['CHECKOUT_DATA'][$field]));
+			
+			$objWidget->mandatory = true;
+			
+			// Validate input
+			if ($this->Input->post('FORM_SUBMIT') == $this->strFormId)
+			{
+				$objWidget->validate();
+				
+				if (!strlen($objWidget->value))
+				{
+					$objWidget->addError($GLOBALS['TL_LANG']['ERR'][$k]);
+				}
+				
+				if ($objWidget->hasErrors())
+				{
+					$this->doNotSubmit = true;
+				}
+			}
+		}
 	}
 	
 	private function getRequestData($strKey)
