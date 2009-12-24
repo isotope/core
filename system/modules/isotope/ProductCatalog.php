@@ -627,84 +627,6 @@ class ProductCatalog extends Backend
 	}
 
 	
-	public function saveProduct(DataContainer $dc)
-	{
-		
-//		if(!$this->Input->get('begin'))
-//		{
-//			$intBegin = 0;
-//		}else{
-//			$intBegin = $this->Input->get('begin');
-//		}
-//		
-//		if(!$this->Input->get('end'))
-//		{
-//			$intEnd = 30;
-//		}else{
-//			$intEnd = $this->Input->get('end');
-//		}
-		
-		$objIsNewImport = $this->Database->prepare("SELECT id, pages, name, sku, description FROM tl_product_data WHERE new_import='1' AND id=?")
-										 ->execute($dc->id);
-		
-		
-		
-		if($objIsNewImport->numRows)
-		{		
-			while($objIsNewImport->next())
-			{
-				if(strlen($objIsNewImport->sku) < 1)
-				{
-					$strSKU = $this->generateSKU('', $dc, $dc->id);
-				}
-				else
-				{
-					$strSKU = $objIsNewImport->sku;
-				}
-				
-				$strSerializedValues = $this->prepareCategories($objIsNewImport->pages, $dc, $objIsNewImport->id);
-								
-				$this->Database->prepare("UPDATE tl_product_data SET sku=?, pages=?, published=1, new_import=0 WHERE id=?")
-							   ->execute($strSKU, $strSerializedValues, $dc->id);
-				
-								
-				$this->saveProductCategories($strSerializedValues, $dc, $dc->id);
-				
-				//Not yet..
-				//$this->saveFilterValuesToCategories($objIsNewImport->pages, $dc, $dc->id);
-			}
-			
-//			if(count($arrNewImports) < 30)
-//			{
-//			
-//				$blnEnd = true;
-//			}
-//			
-//			$intBegin += 30;
-//			$intEnd += 30;
-//			
-//			$strURL = 'main.php?do=products_and_attributes&table=tl_product_data&act=edit&id=667&begin=' . $intBegin . '&end=' . $intEnd;
-//			
-//			if(!$blnEnd)
-//			{
-//				header($strURL);
-//			}
-		}
-
-						
-		// HOOK: save product callback
-		if (array_key_exists('saveProduct', $GLOBALS['TL_HOOKS']) && is_array($GLOBALS['TL_HOOKS']['saveProduct']))
-		{
-			foreach ($GLOBALS['TL_HOOKS']['saveProduct'] as $callback)
-			{
-				$this->import($callback[0]);
-				$this->$callback[0]->$callback[1]($dc, 'tl_product_data');
-			}
-		}
-		
-			
-	}
-	
 	protected function getProductTypePalettes()
 	{
 		$objProductTypes = $this->Database->prepare("SELECT * FROM tl_product_types")->execute();
@@ -1104,45 +1026,6 @@ class ProductCatalog extends Backend
 		
 		return $varValue;
 	}
-	
-	
-	/**
-	 * Save page ids to tl_product_categories table. This allows to retrieve all products associated to a page.
-	 */
-	public function saveProductCategories($varValue, DataContainer $dc)
-	{
-		$arrPages = deserialize($varValue);
-		
-		$this->Database->prepare("DELETE FROM tl_product_categories WHERE pid=?")->execute($dc->id);
-		
-		if (is_array($arrPages) && count($arrPages))
-		{
-			$time = time();
-			$arrQuery = array();
-			$arrValues = array();
-			
-			foreach( $arrPages as $intPage )
-			{
-				$arrQuery[] = '(?, ?, ?)';
-				
-				$arrValues[] = $dc->id;
-				$arrValues[] = $time;
-				$arrValues[] = $intPage;
-			}
-			
-						
-			if (count($arrQuery))
-			{								   
-				$this->Database->prepare("INSERT INTO tl_product_categories (pid, tstamp, page_id) VALUES ".implode(', ', $arrQuery))->execute($arrValues);
-			}
-			
-			
-		}
-	
-		return $varValue;
-	}
-	
-
 	
 	
 	/**

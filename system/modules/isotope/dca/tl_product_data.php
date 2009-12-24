@@ -41,10 +41,6 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		(
 			array('tl_product_data', 'checkPermission'),
 		),
-		'onsubmit_callback'			  => array
-		(
-			array('ProductCatalog', 'saveProduct')
-		),
 	),
 	
 	// List
@@ -152,7 +148,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			'attributes'			=> array('legend'=>'general_legend', 'fixed'=>true),
 			'save_callback'			=> array
 			(
-				array('ProductCatalog','saveProductCategories'),
+				array('tl_product_data','saveProductCategories'),
 			),
 		),
 		'alias' => array
@@ -634,6 +630,36 @@ class tl_product_data extends Backend
 			$varValue .= '.' . $dc->id;
 		}
 
+		return $varValue;
+	}
+	
+	
+	/**
+	 * Save page ids to tl_product_categories table. This allows to retrieve all products associated to a page.
+	 */
+	public function saveProductCategories($varValue, DataContainer $dc)
+	{
+		$arrIds = deserialize($varValue);
+		
+		if (is_array($arrIds) && count($arrIds))
+		{
+			$time = time();
+			$this->Database->prepare("DELETE FROM tl_product_categories WHERE pid=? AND page_id NOT IN (" . implode(',', $arrIds) . ")")->execute($dc->id);
+			$objPages = $this->Database->prepare("SELECT page_id FROM tl_product_categories WHERE pid=?")->execute($dc->id);
+			$arrIds = array_diff($arrIds, $objPages->fetchEach('page_id'));
+			
+			foreach( $arrIds as $id )
+			{
+				$intSorting = $this->Database->prepare("SELECT sorting FROM tl_product_categories WHERE page_id=? ORDER BY sorting DESC")->limit(1)->execute($id)->sorting;
+				$intSorting += 128;
+				$this->Database->prepare("INSERT INTO tl_product_categories (pid,tstamp,page_id,sorting) VALUES (?,?,?,?)")->execute($dc->id, $time, $id, $intSorting);
+			}
+		}
+		else
+		{
+			$this->Database->prepare("DELETE FROM tl_product_categories WHERE pid=?")->execute($dc->id);
+		}
+	
 		return $varValue;
 	}
 	
