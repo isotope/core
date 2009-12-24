@@ -138,7 +138,7 @@ $GLOBALS['TL_DCA']['tl_shipping_options'] = array
 			'exclude'                 => true,
 			'filter'                  => true,
 			'inputType'               => 'select',
-			'options'				  => array_keys($GLOBALS['TL_LANG']['tl_shipping_options']['types']),
+//			'options'				  => array_keys($GLOBALS['TL_LANG']['tl_shipping_options']['types']),
 			'reference'               => &$GLOBALS['TL_LANG']['tl_shipping_options']['types'],
 			'eval'                    => array('helpwizard'=>true, 'submitOnChange'=>true)
 		),
@@ -147,7 +147,7 @@ $GLOBALS['TL_DCA']['tl_shipping_options'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['limit_type'],
 			'exclude'                 => true,
 			'inputType'               => 'select',
-			'options'				  => array_keys($GLOBALS['TL_LANG']['tl_shipping_options']['limit']),
+//			'options'				  => array_keys($GLOBALS['TL_LANG']['tl_shipping_options']['limit']),
 			'eval'                    => array('mandatory'=>true,'includeBlankOption'=>true),
 			'reference'				  => $GLOBALS['TL_LANG']['tl_shipping_options']['limit']
 		),
