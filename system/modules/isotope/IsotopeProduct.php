@@ -327,16 +327,5 @@ class IsotopeProduct extends Model
 		
 		$this->arrData[$strPriceOverrideField] = $varValue;
 	}
-	
-	public function setSku($varValue)
-	{
-		$this->arrData['sku'] = $varValue;
-	}
-	
-	public function setProductName($varValue)
-	{
-		$this->arrData['name'] = $varValue;
-	}
-	
 }
 
