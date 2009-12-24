@@ -43,7 +43,7 @@
 		<td class="col_0 col_first image"><img src="<?php echo $product['image']['gallery']; ?>" alt="<?php echo $product['image']['alt']; ?>" class="thumbnail"<?php echo $product['image']['gallery_size']; ?> /></td>
    		<td class="col_1 name">
    			<?php echo $product['name']; ?>
-			<?php if(count($product['product_options'])>0): ?>
+			<?php if(is_array($product['product_options']) && count($product['product_options'])): ?>
 			<div class="optionswrapper">
 				<ul class="productOptions">
 				<?php foreach($product['product_options'] as $option): ?>
