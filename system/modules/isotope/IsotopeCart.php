@@ -578,6 +578,9 @@ class IsotopeCart extends Model
 	 */
 	private function getProductOptionValues($strProductOptions)
 	{	
+		if (!strlen($strProductOptions))
+			return '';
+			
 		$arrProductOptions = explode(',', $strProductOptions);
 		
 		
