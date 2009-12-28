@@ -635,7 +635,7 @@ class ProductCatalog extends Backend
 		{
 			return array();
 		}
-		echo $objProductTypes->numRows;
+		
 		while($objProductTypes->next())
 		{
 			$arrFieldCollection = array();
