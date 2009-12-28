@@ -168,9 +168,8 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 			'exclude'                 => true,
 			'filter'                  => true,
 			'inputType'               => 'checkbox',
-			'options'        		  => array_keys($GLOBALS['ISO_PAY']['cc_types']),
-			'eval'					  => array('multiple'=>true, 'tl_class'=>'w50'),
-			'reference'               => &$GLOBALS['ISO_PAY']['cc_types']
+			'eval'					  => array('multiple'=>true, 'tl_class'=>'clr'),
+			'options_callback'		  => array('tl_payment_modules', 'getAllowedCCTypes') 
 		),
 		'postsale_mail' => array
 		(
@@ -350,6 +349,46 @@ class tl_payment_modules extends Backend
 		return '';
 	}
 	
+	public function getAllowedCCTypes(DataContainer $dc)
+	{
+		$arrReturn = array();
+		
+		$objModuleType = $this->Database->prepare("SELECT * FROM tl_payment_modules WHERE id=?")->execute($dc->id);
+		
+		
+		if(!$objModuleType->numRows)
+		{
+		
+			return array();
+		}
+		
+		$strClass = $GLOBALS['ISO_PAY'][$objModuleType->type];
+		
+		if(!strlen($strClass) || !$this->classFileExists($strClass))
+		{
+
+			return array();
+		}
+		
+		try
+		{
+			$objModule = new $strClass($objModuleType->fetchAssoc());
+			
+			$arrCCTypes = $objModule->getAllowedCCTypes();
+			
+			foreach($arrCCTypes as $type)
+			{
+				$arrReturn[$type] = $GLOBALS['TL_LANG']['PAY']['CCT'][$objModuleType->type][$type];
+			}
+			
+			return $arrReturn;
+		}
+		catch (Exception $e) {}
+		
+		return array();
+		
+	
+	}
 	
 	public function getOrderStatus($dc)
 	{
