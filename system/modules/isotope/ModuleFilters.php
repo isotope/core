@@ -114,7 +114,10 @@ class ModuleFilters extends ModuleIsotopeBase
 		
 		$this->loadLanguageFile('tl_product_data');
 		
-		$arrOrderByFields = $this->getOrderByFields($arrOrderByFieldIds);
+		if(count($arrOrderByFieldIds))
+		{
+			$arrOrderByFields = $this->getOrderByFields($arrOrderByFieldIds);
+		}
 		
 		$arrOrderByFields[] = array
 		(
