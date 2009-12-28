@@ -374,6 +374,19 @@ class IsotopeCart extends Model
 				}
 				else
 				{
+					/** 
+					 *	Do something to cart data when merging products into a member cart.  Good for applying rules.
+					 *
+					 */
+					if (isset($GLOBALS['TL_HOOKS']['isoOnCartMerge']) && is_array($GLOBALS['TL_HOOKS']['isoOnCartMerge']))
+					{
+						foreach ($GLOBALS['TL_HOOKS']['isoOnCartMerge'] as $callback)
+						{
+							$this->import($callback[0]);
+							$objCartData = $this->{$callback[0]}->{$callback[1]}($objCartData);
+						}
+					}
+
 					while( $objExistingMemberCartData->next() )
 					{
 						// Only sum quantity if two products with same ids have no product options.
@@ -397,11 +410,14 @@ class IsotopeCart extends Model
 				}
 				
 				
+
+				/*					
 				$this->import('Isotope');
 								
-				$fltNewProductPrice = $this->Isotope->applyRules($objCartData->price, $objCartData->product_id);
+				$fltNewProductPrice = $this->Isotope->applyRules($objCartData->product_id);
 				
-				$this->Database->prepare("UPDATE tl_cart_items SET price=? WHERE id=?")->execute($fltNewProductPrice, $objCartData->id);
+				$this->Database->prepare("UPDATE tl_cart_items SET price=? WHERE id=?")->execute($fltProductPric, $objCartData->id);
+				*/
 			}
 			
 			// Delete cookie
@@ -485,7 +501,7 @@ class IsotopeCart extends Model
 			{
 				// Do not use the TYPOlight function deserialize() cause it handles arrays not objects
 				$objProduct = unserialize($objProducts->product_data);
-				
+								
 				$objProduct->quantity_requested = $objProducts->quantity_requested;
 				$objProduct->product_options = deserialize($objProducts->product_options);
 				$objProduct->cart_id = $objProducts->id;
@@ -541,6 +557,20 @@ class IsotopeCart extends Model
 			
 			$strAllOptionValues = serialize($arrAllOptionValues);
 		}
+
+		/**
+		 * Hook to allow additional tweaks to the product object prior to adding to the cart.
+		 *
+		 */
+		/*if (isset($GLOBALS['TL_HOOKS']['isoOnAddToCart']) && is_array($GLOBALS['TL_HOOKS']['isoOnAddToCart']))
+		{
+			foreach ($GLOBALS['TL_HOOKS']['isoOnAddToCart'] as $callback)
+			{
+				$this->import($callback[0]);
+				$objProduct = $this->{$callback[0]}->{$callback[1]}($objProduct);
+			}
+		}*/
+
 				
 		$arrSet = array
 		(
@@ -570,8 +600,16 @@ class IsotopeCart extends Model
 		{
 			$this->Database->prepare("INSERT INTO tl_cart_items %s")->set($arrSet)->execute();
 		}
+				
 	}
 	
+	public function deleteProduct($intId)
+	{
+		$objProducts = $this->getProducts();
+		
+		$this->Database->prepare("DELETE FROM tl_cart_items WHERE id=?")
+					   ->execute($intId);					   
+	}
 	
 	/** 
 	 * Need to grab the corresponding data from the subproduct if product_variants is being called!

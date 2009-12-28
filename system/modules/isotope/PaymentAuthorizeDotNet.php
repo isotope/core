@@ -27,6 +27,7 @@
  
 class PaymentAuthorizeDotNet extends Payment
 {
+	protected $strFormId;
 		
 	/**
 	 * Process payment on confirmation page.
@@ -95,7 +96,6 @@ class PaymentAuthorizeDotNet extends Payment
 		//FIXME?? - This just doesn't seem like a good way to handle this info...
 		
 		//Save Auth.net-specific data
-		
 	
 		switch($arrResponses['transaction-status'])
 		{
@@ -114,27 +114,27 @@ class PaymentAuthorizeDotNet extends Payment
 				//commit the transaction id and cart id to a new order.
 				$arrSet['cart_id'] = $this->Cart->id;
 				
+<<<<<<< .mine
+				$objOrder = $this->Database->prepare("SELECT payment_data FROM tl_iso_orders WHERE cart_id=?")->execute($this->Cart->id);
+				$arrPaymentData = deserialize($objOrder->payment_data, true);
+				$arrPaymentData['x_tran_id'] = $strTransactionId;
+				$arrSet['payment_data'] = serialize($arrPaymentData);
+				
+=======
 				$objOrder = $this->Database->prepare("SELECT payment_data FROM tl_iso_orders WHERE cart_id=?")->execute($this->Cart->id);
 				$arrPaymentData = deserialize($objOrder->payment_data, true);
 				$arrPaymentData['x_trans_id'] = $strTransactionId;
 				$arrSet['payment_data'] = serialize($arrPaymentData);
 				
+>>>>>>> .r571
 				$this->Database->prepare("INSERT INTO tl_iso_orders %s")
 							   ->set($arrSet)
 							   ->execute();
 				return true;
 				break;
-			case 'Error':
-			case 'Declined':
-				$this->response = 'failed';
-				$_SESSION['CHECKOUT_DATA']['TRANSACTION_RESPONSE']['ERROR']['REASON'] = $arrResponses['reason'];
-				
-				return false;
-				break;
 			default:
 				$this->response = 'failed';
-				$this->reason = $arrResponses['reason'];
-				
+				$_SESSION['CHECKOUT_DATA']['TRANSACTION_RESPONSE']['ERROR']['REASON'] = $arrResponses['reason'];
 				return false;
 				break;
 		}
@@ -174,6 +174,8 @@ class PaymentAuthorizeDotNet extends Payment
 		$this->import('Isotope');
 		$this->import('IsotopeCart', 'Cart');
 		
+		$this->strFormId = 'iso_mod_checkout_review';
+		
 		$objOrder = $this->Database->prepare("SELECT order_id FROM tl_iso_orders WHERE cart_id=?")->execute($this->Cart->id);
 		$arrAddress = $this->Isotope->getAddress('billing');
 		
@@ -195,14 +197,11 @@ class PaymentAuthorizeDotNet extends Payment
 		);
 		
 		$this->Database->prepare("UPDATE tl_iso_orders SET payment_data=? WHERE id=?")->execute(serialize($arrData), $objOrder->id);
-		if(strlen($this->allowed_cc_types))
-		{
-			$arrCCTypes = deserialize($this->allowed_cc_types);
-		}
 		
-		$strReturn = '
+		/*$strReturn = '
 		<form method="post" action="' . $this->Environment->request . $this->addToUrl('step=complete') .'">
-		<input type="hidden" name="FORM_SUBMIT" value="iso_mod_checkout_review" />
+		*/
+		$strReturn ='<input type="hidden" name="FORM_SUBMIT" value="' . $this->strFormId . '" />
 		<input type="hidden" name="x_login" value="' . $this->authorize_login . '">
 		<input type="hidden" name="x_url" value="' . $strCurlUrl . '">
 		<input type="hidden" name="x_version" value="3.1">
@@ -232,31 +231,24 @@ class PaymentAuthorizeDotNet extends Payment
 		
 		if($_SESSION['CHECKOUT_DATA']['TRANSACTION_RESPONSE']['ERROR']['REASON'])
 		{
-			$strReturn .= '<tr><td colspan="2"><div class="paymentError">' . $_SESSION['CHECKOUT_DATA']['TRANSACTION_RESPONSE']['ERROR']['REASON'] . '</div></td></tr>';
+			$strReturn .= '<tr><td colspan="2"><p class="error">' . $_SESSION['CHECKOUT_DATA']['TRANSACTION_RESPONSE']['ERROR']['REASON'] . '</p></td></tr>';
 		}
 		
-		$strReturn .= $this->getCreditCardForm($arrRequiredFields, $arrCCTypes);
-		
+		$strReturn .= $this->getPaymentForm($arrRequiredFields);
+		$strReturn .= '</tbody></table>';
 		$strReturn .= '<button type="submit" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']).'" name="submit_order">'.specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']).'</button>
-		</form>';
+		';
 		return $strReturn;
 
 	}
 	
-	private function getCreditCardForm($arrRequiredFields, $arrCCTypes = array())
+	private function getPaymentForm($arrRequiredFields)
 	{
-		$strReturn .= '<tr><td><label for="cc_num">Credit Card Number:</label></td><td><input type="text" name="cc_num" id="ctrl_cc_num" /></td></tr>
-		<tr><td><label for="cc_type">Credit Card Type:</label></td><td><select name="cc_type" id="ctrl_cc_type"><option value="" selected>-</option>';
-		
-		foreach($arrCCTypes as $type)
+		if(strlen($this->allowed_cc_types))
 		{
-			$arrTypes[$type] = $GLOBALS['ISO_PAY']['cc_types'][$type];
-		}
-		
-		$strReturn .= '</select></td></tr>
-		<tr><td><label for="cc_ccv">Card Code Verification (3 or 4 digits):</label></td><td><input type="text" name="cc_ccv" id="ctrl_cc_exp" /></td></tr>
-		<tr><td><label for="cc_exp">Credit Card Expiration (mm/yy):</label></td><td><input type="text" name="cc_exp" id="ctrl_cc_exp" /></td></tr></tbody></table>';
-		
+			$arrCCTypes = deserialize($this->allowed_cc_types);
+		}	
+				
 		foreach($arrRequiredFields as $k=>$v)
 		{
 
@@ -265,14 +257,14 @@ class PaymentAuthorizeDotNet extends Payment
 				case 'cc_num':
 					$arrData = array(
 						'label'			=> $GLOBALS['TL_LANG']['ISO'][$k],
-						'inputType'		=> 'text',
+						'inputType'		=> $v,
 						'eval'			=> array('mandatory'=>true, 'rgxp'=>'digit')
 					);
 					break;
 				case 'cc_type':
 					$arrData = array(
 						'label'			=> $GLOBALS['TL_LANG']['ISO'][$k],
-						'inputType'		=> 'select',
+						'inputType'		=> $v,
 						'options'		=> $arrCCTypes,
 						'eval'			=> array('mandatory'=>true, 'rgxp'=>'digit'),
 						'reference'		=> $GLOBALS['ISO_PAY']['cc_types']
@@ -281,14 +273,14 @@ class PaymentAuthorizeDotNet extends Payment
 				case 'cc_exp':
 					$arrData = array(
 						'label'			=> $GLOBALS['TL_LANG']['ISO'][$k],
-						'inputType'		=> 'text',
+						'inputType'		=> $v,
 						'eval'			=> array('mandatory'=>true)
 					);
 					break;
 				case 'cc_ccv':
 					$arrData = array(
 						'label'			=> $GLOBALS['TL_LANG']['ISO'][$k],
-						'inputType'		=> 'text',
+						'inputType'		=> $v,
 						'eval'			=> array('mandatory'=>true)						
 					);
 					break;
@@ -307,7 +299,7 @@ class PaymentAuthorizeDotNet extends Payment
 
 			$arrData['eval']['tableless'] = true;
 
-			$objWidget = new $strClass($this->prepareForWidget($arrData, $field, $_SESSION['CHECKOUT_DATA'][$field]));
+			$objWidget = new $strClass($this->prepareForWidget($arrData, $k, $_SESSION['CHECKOUT_DATA'][$k]));
 			
 			$objWidget->mandatory = true;
 			
@@ -326,7 +318,11 @@ class PaymentAuthorizeDotNet extends Payment
 					$this->doNotSubmit = true;
 				}
 			}
+			
+			$strReturn .= $objWidget->parse();
 		}
+		
+		return $strReturn;
 	}
 	
 	private function getRequestData($strKey)

@@ -62,7 +62,12 @@ $GLOBALS['TL_LANG']['ERR']['isoLoginRequired'] = 'You must be logged in to check
 
 
 //Checkout Errors
-$GLOBALS['TL_LANG']['MSC']['ERR']['specifyBillingAddress'] = 'A billing address was not fuond.  Please specify a billing address.';
+$GLOBALS['TL_LANG']['ERR']['specifyBillingAddress'] = 'A billing address was not fuond.  Please specify a billing address.';
+$GLOBALS['TL_LANG']['ERR']['cc_num']				= 'Please provide a credit card number.';
+$GLOBALS['TL_LANG']['ERR']['cc_type']				= 'Please select a credit card type.';
+$GLOBALS['TL_LANG']['ERR']['cc_exp']				= 'Please provide a credit card expiration date in the mm/yy format.';
+$GLOBALS['TL_LANG']['ERR']['cc_ccv']				= 'Please provide a card code verification number (3 or 4 digits found on the front or back of the card).';
+
 
 //Address Book Errors
 $GLOBALS['TL_LANG']['ERR']['addressDoesNotExist'] = 'This address does not exist in your address book.';
@@ -72,6 +77,8 @@ $GLOBALS['TL_LANG']['ERR']['noAddressBookEntries'] = 'You have no address book e
 /**
  * Miscellaneous
  */
+$GLOBALS['TL_LANG']['MSC']['yes']						= 'Yes';
+$GLOBALS['TL_LANG']['MSC']['no']						= 'No';
 $GLOBALS['TL_LANG']['MSC']['datimLabel']				= 'Order date';
 $GLOBALS['TL_LANG']['MSC']['downloadsLabel']			= 'Your downloadable products';
 $GLOBALS['TL_LANG']['MSC']['paypal_processing'] = 'Your PayPal payment is being processed. Please be patient...';
