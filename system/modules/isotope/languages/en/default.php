@@ -332,6 +332,15 @@ $GLOBALS['TL_LANG']['PAY']['paypal']			= array('PayPal Standard Checkout', 'This
 $GLOBALS['TL_LANG']['PAY']['postfinance']		= array('Postfinance', 'Payment gateway for the swiss post payment system that supports various card types. The store will be instantly notified about successfull transactions.');
 $GLOBALS['TL_LANG']['PAY']['authorizedotnet']	= array('Authorize.net', 'An Authorize.net payment gateway.');
 
+$GLOBALS['TL_LANG']['PAY']['CCT']['authorizedotnet']['mc'] = 'MasterCard';
+$GLOBALS['TL_LANG']['PAY']['CCT']['authorizedotnet']['visa'] = 'Visa';
+$GLOBALS['TL_LANG']['PAY']['CCT']['authorizedotnet']['amex'] = 'American Express';
+$GLOBALS['TL_LANG']['PAY']['CCT']['authorizedotnet']['discover'] = 'Discover';
+$GLOBALS['TL_LANG']['PAY']['CCT']['authorizedotnet']['jcb'] = 'JCB';
+$GLOBALS['TL_LANG']['PAY']['CCT']['authorizedotnet']['diners'] = 'Diner\'s Club';
+$GLOBALS['TL_LANG']['PAY']['CCT']['authorizedotnet']['enroute'] = 'EnRoute';
+
+
 
 
 /**
