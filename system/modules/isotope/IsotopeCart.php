@@ -183,10 +183,10 @@ class IsotopeCart extends Model
 					$arrProducts = $this->getProducts();
 					
 					foreach($arrProducts as $objProduct)
-					{
+					{						
 						$fltShippingWeight += $objProduct->weight * $objProduct->quantity_requested;
 					}
-											
+										
 					return $fltShippingWeight;
 					break;
 				case 'hasShipping':
@@ -505,7 +505,7 @@ class IsotopeCart extends Model
 				$objProduct->quantity_requested = $objProducts->quantity_requested;
 				$objProduct->product_options = deserialize($objProducts->product_options);
 				$objProduct->cart_id = $objProducts->id;
-				
+	
 				$this->arrProducts[] = $objProduct;
 			}
 		}

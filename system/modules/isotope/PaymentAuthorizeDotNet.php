@@ -261,7 +261,7 @@ class PaymentAuthorizeDotNet extends Payment
 						'inputType'		=> $v,
 						'options'		=> $arrCCTypes,
 						'eval'			=> array('mandatory'=>true, 'rgxp'=>'digit'),
-						'reference'		=> $GLOBALS['ISO_PAY']['cc_types']
+						'reference'		=> $GLOBALS['TL_LANG']['PAY']['CCT']['authorizedotnet']
 					);
 					break;
 				case 'cc_exp':
