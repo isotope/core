@@ -384,9 +384,9 @@ class IsotopePOS extends Backend
 		$objTemplate->orderBillingAddressString = $strBillingAddress;
 		$objTemplate->orderShippingAddressHeader = $GLOBALS['TL_LANG']['MSC']['iso_shipping_address_header'];
 		$objTemplate->orderShippingAddressString = $strShippingAddress;
-		$objTemplate->paymentInfoHeader = $GLOBALS['TL_LANG']['MSC']['iso_payment_info_header'];
+		$objTemplate->paymentInfoHeader = $GLOBALS['TL_LANG']['ISO']['payment_method'];
 		$objTemplate->paymentInfoString = $strPaymentInfo;
-		$objTemplate->shippingInfoHeader = $GLOBALS['TL_LANG']['MSC']['iso_shipping_info_header'];
+		$objTemplate->shippingInfoHeader = $GLOBALS['TL_LANG']['ISO']['shipping_method'];
 		$objTemplate->shippingInfoString = $arrOrderInfo['shipping_method']; //$strShippingInfo;
 		$objTemplate->orderTrackingInfoString = $strOrderTrackingInfo;
 		$objTemplate->productNameHeader = $GLOBALS['TL_LANG']['MSC']['iso_product_name_header'];
