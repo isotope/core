@@ -613,7 +613,7 @@ class tl_product_data extends Backend
 										 ->execute($dc->id);
 
 			$autoAlias = true;
-			$varValue = strlen($objProduct->sku) ? standardize($objProduct->sku) : standardize($objProduct->name);
+			$varValue = strlen($objProduct->name) ? standardize($objProduct->name) : standardize($objProduct->sku);
 		}
 
 		$objAlias = $this->Database->prepare("SELECT id FROM tl_product_data WHERE id=? OR alias=?")
