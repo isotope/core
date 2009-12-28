@@ -65,7 +65,7 @@ class ModuleFilters extends ModuleIsotopeBase
 		global $objPage;
 		
 		$arrFilterFields = deserialize($this->iso_filterFields);
-		$arrOrderByFields = deserialize($this->iso_orderByFields);
+		$arrOrderByFieldIds = deserialize($this->iso_orderByFields);
 		$arrSearchFields = deserialize($this->iso_searchFields);
 		$arrListingModules = deserialize($this->iso_listingModules);
 		
@@ -113,6 +113,8 @@ class ModuleFilters extends ModuleIsotopeBase
 		
 		
 		$this->loadLanguageFile('tl_product_data');
+		
+		$arrOrderByFields = $this->getOrderByFields($arrOrderByFieldIds);
 		
 		$arrOrderByFields[] = array
 		(
@@ -200,6 +202,25 @@ class ModuleFilters extends ModuleIsotopeBase
 		
 		return $arrOptions;
 	}
+	
+	public function getOrderByFields($arrFieldIds)
+	{
+		foreach($arrFieldIds as $field)
+		{
+			$objAttribute = $this->Database->prepare("SELECT * FROM tl_product_attributes WHERE id=?")
+						       ->limit(1)
+						       ->execute($field);
+			if(!$objAttribute->numRows)
+			{
+				continue;
+			}
+			
+			$arrAttributeData[] = $objAttribute->fetchAssoc();
+		}
+
+		return $arrAttributeData;
+	}
+
 	
 	private function generateSortingDirections($strType)
 	{
