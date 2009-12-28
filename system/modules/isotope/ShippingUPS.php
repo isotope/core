@@ -150,8 +150,7 @@ class ShippingUPS extends Shipping
 					'zip'			=> $this->Isotope->Store->postal,
 					'country'		=> $this->Isotope->Store->country
 				);
-				
-							
+											
 				$arrShipment['service'] = ((integer)$this->ups_enabledService < 10 ? "0" . $this->ups_enabledService : $this->ups_enabledService);		//Ground for now
 				
 				
@@ -219,6 +218,7 @@ class ShippingUPS extends Shipping
 				'/RatingServiceSelectionResponse/RatedShipment/RatedPackage/TotalCharges/MonetaryValue')->item(0);
 					
 			$fltPrice = floatval($domNode->nodeValue);
+			
 			$_SESSION['CHECKOUT_DATA']['shipping']['modules'][$this->id]['price'] = $fltPrice;
 		}
 		
