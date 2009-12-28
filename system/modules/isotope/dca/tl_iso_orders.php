@@ -228,7 +228,6 @@ class tl_iso_orders extends Backend
 		parent::__construct();
 		
 		$this->import('Isotope');
-	
 	}
 	/**
 	 * Return a string of more buttons for the orders module.
@@ -358,7 +357,7 @@ class tl_iso_orders extends Backend
 		  <div style="clear: both;"></div><!--
 		  <h2>Gift Wrap:</h2>
 		  <div style="padding: 15px;">
-		    ' . ($row['gift_wrap'] ? 'Ja' : 'Nein') . '
+		    ' . ($row['gift_wrap'] ? $GLOBALS['TL_LANG']['MSC']['yes'] : $GLOBALS['TL_LANG']['MSC']['no']) . '
 		  </div>
 		  <div style="clear: both;"></div>
 		  <h2>Gift Message:</h2>
@@ -385,29 +384,26 @@ class tl_iso_orders extends Backend
    */
   protected function getProducts($intSourceCartId)
   {
-    $arrProductListsByTable = array();
-    $arrProductData = array();
-    
-    $objProductData = $this->Database->prepare("SELECT * FROM tl_cart_items WHERE pid=?")
+   
+    $objProducts = $this->Database->prepare("SELECT * FROM tl_cart_items WHERE pid=?")
                      ->execute($intSourceCartId);
     
-    if($objProductData->numRows < 1)
+    if($objProducts->numRows < 1)
     {
       return '';
     }
     
-    $arrProductData = $objProductData->fetchAllAssoc();
-   
-    
-    foreach($arrProductData as $productData)
+   while($objProducts->next())
     {
-    	
+      $objProduct = unserialize($objProducts->product_data);
+
       $arrProductLists[] = array
       (
-          'id'        => $productData['product_id'], 
-          'quantity'      => $productData['quantity_requested'],
-		  'price'		=> $productData['price'],
-		  'options'		=> deserialize($productData['product_options'])
+          'id'        	=> $objProducts->product_id, 
+		  'name'	 	=> $objProduct->name,
+          'quantity'    => $objProducts->quantity_requested,
+		  'price'		=> $objProducts->price,
+		  'options'		=> deserialize($objProducts->product_options)
       );
     }
       
@@ -416,25 +412,16 @@ class tl_iso_orders extends Backend
 
       $fltProductTotal = 0.00;
       
-                  
-      $objProductExtendedData = $this->Database->prepare("SELECT name FROM tl_product_data WHERE id=?")
-					      					   ->limit(1)
-					                           ->execute($productList['id']);
-                  
-      if($objProductExtendedData->numRows < 1)
-      {
-        continue;
-      }   
-           
+                             
       $fltProductTotal = (int)$productList['quantity'] * (float)$productList['price'];      
       
-      $strProductData .= $objProductExtendedData->name . ' - ' . $this->Isotope->formatPriceWithCurrency($productList['price']) . ' x ' . $productList['quantity'] . ' = ' . $this->Isotope->formatPriceWithCurrency($fltProductTotal) . '<br />';
+      $strProductData .= '<h3>' . $productList['name'] . ' - ' . $this->Isotope->formatPriceWithCurrency($productList['price']) . ' x ' . $productList['quantity'] . ' = ' . $this->Isotope->formatPriceWithCurrency($fltProductTotal) . '</h3>';
         
         
         
         if(sizeof($productList['options']))
         {
-          	$strProductData .= '<p><strong>' . $GLOBALS['TL_LANG']['MSC']['productOptionsLabel'] . '</strong></p>';
+          	$strProductData .= '<p><strong>' . $GLOBALS['TL_LANG']['MSC']['productOptionsLabel'] . '</strong>';
 
         	foreach($productList['options'] as $rowData)
         	{       
@@ -446,9 +433,12 @@ class tl_iso_orders extends Backend
 			    $strProductData .= '    </li>';     						
 				$strProductData .= '</ul>'; 
         	}
-        
+        	
+			$strProductData .= '</p>';
+		
         }
- 
+ 		
+		$strProductData .= '<br /><br />';
     }
     
     return $strProductData;

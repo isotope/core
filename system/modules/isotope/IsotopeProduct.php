@@ -186,7 +186,15 @@ class IsotopeProduct extends Model
 		switch( $strKey )
 		{				
 			case 'reader_jumpTo':
-				$this->arrData['href_reader'] = $this->Isotope->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($varValue)->fetchAssoc(), '/product/' . $this->arrData['alias']);		
+				$this->arrData['href_reader'] = $this->Isotope->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($varValue)->fetchAssoc(), '/product/' . $this->arrData['alias']);	
+				break;
+			case 'sku':
+			case 'name':
+				$this->arrData[$strKey] = $varValue;
+				break;
+			case 'price':
+				$this->arrData[$this->Isotope->Store->priceField] = $varValue;
+				break;	
 			default:
 				$this->arrCache[$strKey] = $varValue;
 		}	

@@ -684,30 +684,21 @@ class Isotope extends Controller
 	}
 	
 	
-	public function applyRules($fltProductBasePrice, $intProductId)
+	/**
+	 * Apply some sort of rule to a given product attribute
+	 * @access public
+	 * @param integer $intProductId
+	 * @param string $strAttribute
+	 * @param variant $varValue
+	 *
+	 * @return void
+	 */
+	public function applyProductRule($objProduct)
 	{
-		$objData = $this->Database->prepare("SELECT pid FROM tl_product_data WHERE id=?")
-										->limit(1)
-										->execute($intProductId);
-										
-		if($objData->numRows < 1)
-		{
-			$isExcluded = false;
-		}
+		/*
+		$objProduct = $this->Cart->getProducts($intProductId);
 		
-		//$isExcluded = in_array($objData->pid, $GLOBALS['ISO_RULES']['excludeAttributeSets']);
-		
-						
-		if(in_array(2, $this->User->groups))	//this is where rules will later be loaded
-		{
-			$fltAdjustedPrice = $fltProductBasePrice - ($fltProductBasePrice * .1);
-		}else{
-			$fltAdjustedPrice = $fltProductBasePrice;
-		}
-		
-		return $fltAdjustedPrice;
-		
-		//return $fltProductBasePrice;
+		*/
 	
 	}
 	

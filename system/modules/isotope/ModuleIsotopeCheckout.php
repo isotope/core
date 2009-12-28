@@ -619,7 +619,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		$objTemplate->info = $this->getCheckoutInfo();
 		$objTemplate->products = $arrProductData;
 		$objTemplate->surcharges = $arrSurcharges;
-		
+		$objTemplate->action = ampersand($this->Environment->base . $this->addToUrl('step=complete'), true);
 		$objTemplate->edit_info = $GLOBALS['TL_LANG']['ISO']['changeCheckoutInfo'];
 		$objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
 		$objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];

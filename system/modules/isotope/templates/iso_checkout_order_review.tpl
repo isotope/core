@@ -11,7 +11,7 @@
 </div>
 <?php endforeach; ?>
 <div class="clear">&nbsp;</div>
-
+<form action="<?php echo $this->action; ?>" method="post">
 <table cellpadding="0" cellspacing="0" summary="Shopping Cart">
 <tfoot>
 	<tr class="subtotal foot_first">
@@ -73,5 +73,6 @@
 </table>
 
 <?php if ($this->checkoutForm): ?><div class="payment_form"><?php echo $this->checkoutForm; ?></div><?php endif; ?>
+</form>
 </div>
 

@@ -147,7 +147,7 @@ class IsotopePOS extends Backend
 			$delimChar = $objAIMConfig->authorize_delimiter;
 			$loginID = $objAIMConfig->authorize_login;
 			$transKey = $objAIMConfig->authorize_trans_key;
-			$transType = $objAIMConfig->authorize_trans_type;
+			$transType = 'PRIOR_AUTH_AND_CAPTURE'; //$objAIMConfig->authorize_trans_type;
 			$status = ($objAIMConfig->debug ? "TRUE" : "FALSE");
 			$strMode = ($objAIMConfig->debug ? "test" : "secure");
 			//var_dump($status);
@@ -179,6 +179,7 @@ class IsotopePOS extends Backend
 				"x_state"							=> $arrPaymentInfo['address']['state'],
 				"x_zip"								=> $arrPaymentInfo['address']['postal'],
 				"x_company"							=> $arrPaymentInfo['address']['company'],
+				"x_tran_id"							=> $arrPaymentInfo['x_tran_id']
 				//"x_email_customer"				=> "TRUE",
 				//"x_email"							=> $this->arrBillingInfo['email']
 			);
@@ -208,7 +209,7 @@ class IsotopePOS extends Backend
 			###  Uncomment the line ABOVE for test accounts or BELOW for live merchant accounts
 			### $ch = curl_init("https://secure.authorize.net/gateway/transact.dll"); 
 			
-			curl_setopt($ch, CURLOPT_URL, sprintf('https://%s.authorize.net/gateway/transact.dll', $strMode)); 
+			curl_setopt($ch, CURLOPT_URL, sprintf('https://secure.authorize.net/gateway/transact.dll', $strMode)); 
 			curl_setopt($ch, CURLOPT_HEADER, 0); // set to 0 to eliminate header info from response
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // Returns response data instead of TRUE(1)
 			curl_setopt($ch, CURLOPT_POSTFIELDS, rtrim( $fields, "& " )); // use HTTP POST to send form data
@@ -368,9 +369,9 @@ class IsotopePOS extends Backend
 				
 		//$this->fltOrderTotal = (float)$arrOrderInfo['subTotal'] + (float)$arrOrderInfo['taxTotal'] + (float)$arrOrderInfo['shippingTotal'];
 		
-		$strBillingAddress = nl2br($arrOrderInfo['billing_address']); //$this->createAddressString($arrOrderInfo, 'billing');
-		$strShippingAddress = nl2br($arrOrderInfo['shipping_address']); //$this->createAddressString($arrOrderInfo, 'shipping');
-
+		$strBillingAddress = $this->Isotope->generateAddressString(deserialize($arrOrderInfo['billing_address']));
+		$strShippingAddress = $this->Isotope->generateAddressString(deserialize($arrOrderInfo['shipping_address']));
+		
 		$strPaymentInfo = $this->generatePaymentInfoString($arrOrderInfo);
 		//$strShippingInfo = $this->generateShippingInfoString($arrOrderInfo['shipping_rate_id']);
 		
@@ -585,9 +586,7 @@ class IsotopePOS extends Backend
 				); 	
  
     }
-    
-    $this->Isotope->setStore(true);	//Revert back to default store.
-    	
+        	
     return $arrAllProducts;
   }
 
