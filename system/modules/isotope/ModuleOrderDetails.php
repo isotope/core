@@ -31,9 +31,9 @@ class ModuleOrderDetails extends ModuleIsotopeBase
 	protected $strTemplate = 'mod_orderdetails';
 	
 	
-	public function generate()
+	public function generate($blnBackend=false)
 	{
-		if (TL_MODE == 'BE')
+		if (TL_MODE == 'BE' && !$blnBackend)
 		{
 			$objTemplate = new BackendTemplate('be_wildcard');
 
@@ -44,6 +44,12 @@ class ModuleOrderDetails extends ModuleIsotopeBase
 			$objTemplate->href = 'typolight/main.php?do=modules&amp;act=edit&amp;id=' . $this->id;
 
 			return $objTemplate->parse();
+		}
+		
+		if ($blnBackend)
+		{
+			$this->backend = true;
+			$this->jumpTo = 0;
 		}
 		
 		return parent::generate();
@@ -94,7 +100,7 @@ class ModuleOrderDetails extends ModuleIsotopeBase
 					// Send file to the browser
 					if (strlen($this->Input->get('file')) && $this->Input->get('file') == $objDownloads->id && ($objDownloads->downloads_allowed == 0 || $objDownloads->downloads_remaining > 0))
 					{
-						if ($objDownloads->downloads_remaining > 0)
+						if ($objDownloads->downloads_remaining > 0 && !$this->backend)
 						{
 							$this->Database->prepare("UPDATE tl_iso_order_downloads SET downloads_remaining=? WHERE id=?")->execute(($objDownloads->downloads_remaining-1), $objDownloads->id);
 						}
@@ -118,14 +124,15 @@ class ModuleOrderDetails extends ModuleIsotopeBase
 			
 			$arrItems[] = array
 			(
-				'raw'			=> $objItems->row(),
-				'downloads'		=> (is_array($arrDownloads) ? $arrDownloads : array()),
-				'name'			=> $objProduct->name,
-				'quantity'		=> $objItems->quantity_sold,
-				'price'			=> $this->Isotope->formatPriceWithCurrency($objProduct->price),
-				'total'			=> $this->Isotope->formatPriceWithCurrency(($objProduct->price * $objItems->quantity_sold)),
-				'href'			=> ($this->jumpTo ? $this->generateFrontendUrl($arrPage, '/product/'.$objItems->alias) : ''),
-				'tax_id'		=> $objProduct->tax_id,
+				'raw'				=> $objItems->row(),
+				'name'				=> $objProduct->name,
+				'product_options'	=> deserialize($objItems->product_options),
+				'quantity'			=> $objItems->quantity_sold,
+				'price'				=> $this->Isotope->formatPriceWithCurrency($objProduct->price),
+				'total'				=> $this->Isotope->formatPriceWithCurrency(($objProduct->price * $objItems->quantity_sold)),
+				'href'				=> ($this->jumpTo ? $this->generateFrontendUrl($arrPage, '/product/'.$objItems->alias) : ''),
+				'tax_id'			=> $objProduct->tax_id,
+				'downloads'			=> (is_array($arrDownloads) ? $arrDownloads : array()),
 			);
 		}
 		
@@ -140,7 +147,7 @@ class ModuleOrderDetails extends ModuleIsotopeBase
 		$this->Template->date = $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $objOrder->date);
 		$this->Template->time = $this->parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $objOrder->date);
 		$this->Template->datim = $this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $objOrder->date);
-		$this->Template->datimLabel = $GLOBALS['TL_LANG']['MSC']['datimLabel'];
+		$this->Template->orderDetailsHeadline = sprintf($GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline'], $objOrder->order_id, $this->Template->datim);
 		
 		$this->Template->subTotalPrice = $this->Isotope->formatPriceWithCurrency($objOrder->subTotal);
 		$this->Template->grandTotal = $this->Isotope->formatPriceWithCurrency($objOrder->grandTotal);

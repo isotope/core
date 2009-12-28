@@ -47,9 +47,8 @@ $GLOBALS['TL_LANG']['MSC']['checkoutBT']				= 'Proceed to Checkout';
 $GLOBALS['TL_LANG']['MSC']['continueShoppingBT']		= 'Continue shopping';
 $GLOBALS['TL_LANG']['MSC']['updateCartBT']				= 'Update Cart';
 
-
-$GLOBALS['TL_LANG']['MSC']['datimLabel']				= 'Bestellung vom';
- $GLOBALS['TL_LANG']['MSC']['downloadsLabel']			= 'Verfügbare downloads';
+$GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline']		= 'Bestellung Nr. %s vom %s';
+$GLOBALS['TL_LANG']['MSC']['downloadsLabel']			= 'Verfügbare downloads';
 
 $GLOBALS['TL_LANG']['MSC']['order_conditions'] = 'AGB akzeptieren';
 $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'] = 'Bestellen';
@@ -80,8 +79,6 @@ $GLOBALS['TL_LANG']['MSC']['iso_order_status'] = 'Status';
 $GLOBALS['TL_LANG']['MSC']['iso_order_date'] = 'Bestelldatum';
 $GLOBALS['TL_LANG']['MSC']['iso_billing_address_header'] = 'Rechnungsadresse';
 $GLOBALS['TL_LANG']['MSC']['iso_shipping_address_header'] = 'Versandadresse';
-$GLOBALS['TL_LANG']['MSC']['iso_payment_info_header'] = 'Zahlungsart';
-$GLOBALS['TL_LANG']['MSC']['iso_shipping_info_header'] = 'Versandart';
 $GLOBALS['TL_LANG']['MSC']['iso_tax_header'] = 'Davon MwSt.';	
 $GLOBALS['TL_LANG']['MSC']['iso_subtotal_header'] = 'Subtotal';
 $GLOBALS['TL_LANG']['MSC']['iso_order_shipping_header'] = 'Versandkosten';

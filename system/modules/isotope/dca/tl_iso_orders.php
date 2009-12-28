@@ -223,12 +223,15 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
  */
 class tl_iso_orders extends Backend
 {
+
 	public function __construct()
 	{
 		parent::__construct();
 		
 		$this->import('Isotope');
 	}
+	
+	
 	/**
 	 * Return a string of more buttons for the orders module.
 	 * 
@@ -260,49 +263,47 @@ class tl_iso_orders extends Backend
 	}
 	
 	
-  /**
-   * getOrderLabel function.
-   * 
-   * @access public
-   * @param array $row
-   * @param string $label
-   * @return string
-   */
-  public function getOrderLabel($row, $label)
-  {
-    return '
-<div class="limit_height' . (!$GLOBALS['TL_CONFIG']['doNotCollapse'] ? ' h110' : '') . ' block">
-  ' . $this->getOrderDescription($row) . '
-</div>  </div>';
-  }
-    
-  
-  public function showDetails($dc, $xlabel)
-  {
-    $objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE id=?")->limit(1)->execute($dc->id);
-    
-    if (!$objOrders->numRows)
-    {
-      $GLOBALS['TL_HOOKS']['outputBackendTemplate'][] = array('tl_iso_orders', 'injectPrintCSS');
-      
-      return $this->getOrderDescription($objOrder->row());
-    }
-      
-    return '';
-  }
-  
-  /** 
-   * Adjust the grand total to reflect the new shipping total.
-   *
-   * @param variant $varValue
-   * @param object $dc
-   * @return $varValue
-   */
-  public function saveShippingTotal($varValue, DataContainer $dc)
-  {
-		$objTotals = $this->Database->prepare("SELECT subTotal, taxTotal FROM tl_iso_orders WHERE id=?")
-									->limit(1)
-									->execute($dc->id);
+	/**
+	* getOrderLabel function.
+	* 
+	* @access public
+	* @param array $row
+	* @param string $label
+	* @return string
+	*/
+	public function getOrderLabel($row, $label)
+	{
+		return '
+		<div class="limit_height' . (!$GLOBALS['TL_CONFIG']['doNotCollapse'] ? ' h110' : '') . ' block">
+		' . $this->getOrderDescription($row) . '
+		</div>  </div>';
+	}
+	
+	
+	public function showDetails($dc, $xlabel)
+	{
+		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE id=?")->limit(1)->execute($dc->id);
+		
+		if ($objOrder->numRows)
+		{
+			$GLOBALS['TL_HOOKS']['outputBackendTemplate'][] = array('tl_iso_orders', 'injectPrintCSS');
+			
+			return $this->getOrderDescription($objOrder->row());
+		}
+	
+		return '';
+	}
+	
+	/** 
+	* Adjust the grand total to reflect the new shipping total.
+	*
+	* @param variant $varValue
+	* @param object $dc
+	* @return $varValue
+	*/
+	public function saveShippingTotal($varValue, DataContainer $dc)
+	{
+		$objTotals = $this->Database->prepare("SELECT subTotal, taxTotal FROM tl_iso_orders WHERE id=?")->limit(1)->execute($dc->id);
 		
 		if($objTotals->numRows < 1)
 		{
@@ -312,198 +313,71 @@ class tl_iso_orders extends Backend
 		
 		$fltGrandTotal = (float)$varValue + $objTotals->subTotal + $objTotals->taxTotal;
 		
-		$this->Database->prepare("UPDATE tl_iso_orders SET grandTotal=?")
-					   ->execute($fltGrandTotal);
+		$this->Database->prepare("UPDATE tl_iso_orders SET grandTotal=?")->execute($fltGrandTotal);
 		
 		return $varValue;
-  }  
-  
-    
-  protected function getOrderDescription($row)
-  {
-    $strProductList = $this->getProducts($row['cart_id']);
+	}  
 	
-	$this->Isotope->overrideStore($row['store_id']);	//Which store it was ordered from is important, not what the default backend store is.
 	
-    return '
-		  <div>
-		    <h2>' . $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] .': ' . $row['order_id'] . ' (#' . $row['id'] . ')</h2><!--
-		    ' . 'von Gast-Benutzer' . '<br /> -->
-		    ' . $GLOBALS['TL_LANG']['MSC']['iso_order_status'] . ': <strong>' . $GLOBALS['TL_LANG']['MSC']['order_status_labels'][$row['status']] . '</strong><br />
-		    ' . $GLOBALS['TL_LANG']['MSC']['iso_order_date'] . ': ' . $this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $row['date']) . '<br />
-		    ' . $GLOBALS['TL_LANG']['MSC']['iso_payment_info_header'] . ': ' . $row['payment_method']  . '<br />
-		    ' . $GLOBALS['TL_LANG']['MSC']['iso_shipping_info_header'] . ': ' . $row['shipping_method']  . '<br />
-		    ' . $GLOBALS['TL_LANG']['MSC']['iso_subtotal_header'] . ': ' . $this->Isotope->formatPriceWithCurrency($row['subTotal']) . '<br />
-		    ' . $GLOBALS['TL_LANG']['MSC']['iso_tax_header'] . ': ' . $this->Isotope->formatPriceWithCurrency($row['taxTotal']) . '<br />
-		    ' . $GLOBALS['TL_LANG']['MSC']['iso_order_shipping_header'] . ': ' . $this->Isotope->formatPriceWithCurrency($row['shippingTotal']) . '<br />
-		    ' . $GLOBALS['TL_LANG']['MSC']['iso_order_grand_total_header'] . ': ' . $this->Isotope->formatPriceWithCurrency($row['grandTotal']) . '
-		  </div>
-		  <br />
-		  <div style="display: inline;">
-		    <div style="width: 50%; float: left">
-		      <h2>' . $GLOBALS['TL_LANG']['MSC']['iso_billing_address_header'] . ':</h2>
-		      ' . $this->Isotope->generateAddressString(deserialize($row['billing_address'])) . '
-		    </div>
-		    <div style="width: 50%; float: left">
-		      <h2>' . $GLOBALS['TL_LANG']['MSC']['iso_shipping_address_header'] . ':</h2>
-		      ' . $this->Isotope->generateAddressString(deserialize($row['shipping_address'])) . '
-		    </div>
-		  </div>
-		  <div style="clear: both;"></div>
-		  <h2>' . $GLOBALS['TL_LANG']['MSC']['iso_order_items'] . ':</h2>
-		  <div style="border: solid 1px #cccccc; margin: 10px; padding: 10px;">
-		    ' . $strProductList . '
-		  </div>
-		  <div style="clear: both;"></div><!--
-		  <h2>Gift Wrap:</h2>
-		  <div style="padding: 15px;">
-		    ' . ($row['gift_wrap'] ? $GLOBALS['TL_LANG']['MSC']['yes'] : $GLOBALS['TL_LANG']['MSC']['no']) . '
-		  </div>
-		  <div style="clear: both;"></div>
-		  <h2>Gift Message:</h2>
-		  <div style="padding: 15px;">
-		    ' . $row['gift_message'] . '
-		  </div>
-		  <div style="clear: both;"></div>
-		  <h2>Order Comments:</h2>
-		  <div style="padding: 15px;">
-		    ' . $row['order_comments'] . '
-		  </div>-->';
-
-	$this->Isotope->resetStore(true);	//SET IT BACK!!!!
-  
-  }
-  
- 	
-  /**
-   * getProducts function.
-   * 
-   * @access protected
-   * @param integer $intSourceCartId
-   * @return string
-   */
-  protected function getProducts($intSourceCartId)
-  {
-   
-    $objProducts = $this->Database->prepare("SELECT * FROM tl_cart_items WHERE pid=?")
-                     ->execute($intSourceCartId);
-    
-    if($objProducts->numRows < 1)
-    {
-      return '';
-    }
-    
-   while($objProducts->next())
-    {
-      $objProduct = unserialize($objProducts->product_data);
-
-      $arrProductLists[] = array
-      (
-          'id'        	=> $objProducts->product_id, 
-		  'name'	 	=> $objProduct->name,
-          'quantity'    => $objProducts->quantity_requested,
-		  'price'		=> $objProducts->price,
-		  'options'		=> deserialize($objProducts->product_options)
-      );
-    }
-      
-    foreach($arrProductLists as $productList)
-    {         
-
-      $fltProductTotal = 0.00;
-      
-                             
-      $fltProductTotal = (int)$productList['quantity'] * (float)$productList['price'];      
-      
-      $strProductData .= '<h3>' . $productList['name'] . ' - ' . $this->Isotope->formatPriceWithCurrency($productList['price']) . ' x ' . $productList['quantity'] . ' = ' . $this->Isotope->formatPriceWithCurrency($fltProductTotal) . '</h3>';
-        
-        
-        
-        if(sizeof($productList['options']))
-        {
-          	$strProductData .= '<p><strong>' . $GLOBALS['TL_LANG']['MSC']['productOptionsLabel'] . '</strong>';
-
-        	foreach($productList['options'] as $rowData)
-        	{       
-        		$arrValues = deserialize($rowData['values']);
-        				
-		        $strProductData .= '<ul>';
-		   		$strProductData .= '	<li>' . $rowData['name'] . ': ';
-		        $strProductData .= implode(', ', $arrValues);
-			    $strProductData .= '    </li>';     						
-				$strProductData .= '</ul>'; 
-        	}
-        	
-			$strProductData .= '</p>';
-		
-        }
- 		
-		$strProductData .= '<br /><br />';
-    }
-    
-    return $strProductData;
-  }
-    
-
+	protected function getOrderDescription($row)
+	{
+		$this->Input->setGet('uid', $row['uniqid']);
+		$objModule = new ModuleOrderDetails($this->Database->execute("SELECT * FROM tl_module WHERE type='isoOrderDetails'"));
+		return $objModule->generate(true);
+	}
+	
+	
 	/**
-	* loadAddress function.
+	* getProducts function.
 	* 
-	* @todo Return value "no address specified" must be possible to translate
-	*
 	* @access protected
-	* @param mixed $varValue
-	* @param integer $intId
+	* @param integer 
 	* @return string
 	*/
-	protected function loadAddress($varValue, $intId)
+	protected function getProducts($intOrderId)
 	{
-		$intPid = $this->getPid($intId, 'tl_iso_orders');
+		$objProducts = $this->Database->prepare("SELECT * FROM tl_iso_order_items WHERE pid=?")->execute($intOrderId);
 		
-		$objAddress = $this->Database->prepare("SELECT * FROM tl_address_book WHERE id=? and pid=?")
-									 ->limit(1)
-									 ->execute($varValue, $intPid);
-		
-		if($objAddress->numRows < 1)
+		if (!$objProducts->numRows)
+			return '';
+	
+		while( $objProducts->next() )
 		{
-			return 'no address specified';
+			$objProduct = unserialize($objProducts->product_data);
+			
+			$fltProductTotal = (int)$objProducts->quantity_sold * (float)$objProducts->price;      
+			
+			$strProductData .= '<tr><td>' . $objProduct->name;
+			
+			$arrOptions = deserialize(deserialize($objProducts->product_options));
+			
+			if(is_array($arrOptions) && count($arrOptions))
+			{
+				$strProductData .= '<ul>';
+
+				foreach($arrOptions as $rowData)
+				{       
+					$arrValues = deserialize($rowData['values']);
+					
+					$strProductData .= '	<li>' . $rowData['name'] . ': ';
+					$strProductData .= implode(', ', $arrValues);
+					$strProductData .= '    </li>';
+				}
+				
+				$strProductData .= '</ul>';
+			}
+			
+			$strProductData .= '</td>';
+			
+			$strProductData .= '<td>' . $objProducts->quantity_sold . '</td><td>' . $this->Isotope->formatPriceWithCurrency($objProducts->price) . '</td><td>' . $this->Isotope->formatPriceWithCurrency($fltProductTotal) . '</td>';
+			
+			$strProductData .= '</tr>';
+			
 		}
 		
-		$strAddress = $objAddress->firstname . ' ' . $objAddress->lastname . "<br />";
-		$strAddress .= $objAddress->street . "<br />";
-		$strAddress .= $objAddress->city . ', ' . $objAddress->state . '  ' . $objAddress->postal . "<br />";
-		$strAddress .= $objAddress->country;
-		
-		return $strAddress;
+		return $strProductData;
 	}
-
-
-	/**
-	* getPid function.
-	* 
-	* @access protected
-	* @param integer $intId
-	* @param string $strTable
-	* @return integer
-	*/
-	protected function getPid($intId, $strTable)
-	{
-		if(!$this->Database->fieldExists('pid', $strTable))
-		{
-			return 0;
-		}
 	
-		$objPid = $this->Database->prepare("SELECT pid FROM " . $strTable . " WHERE id=?")
-								 ->limit(1)
-								 ->execute($intId);
-	
-		if($objPid->numRows < 1)
-		{
-			return 0;
-		}
-	
-		return $objPid->pid;
-	}
-
 
 	/**
 	* Review order page stores temporary information in this table to know it when user is redirected to a payment provider. We do not show this data in backend.

@@ -27,14 +27,12 @@
 
 /**
  * Content Elements
- *
  */
 $GLOBALS['TL_LANG']['CTE']['attributeLinkRepeater']   = array('Attribute Filter Lister', 'This element generates a collection of hyperlinks from a selected product attribute filter.');
 
 
 /**
  * Errors
- *
  */
 $GLOBALS['TL_LANG']['ERR']['tableExists'] = 'Table `%s` already exists. Please choose different name.';
 $GLOBALS['TL_LANG']['ERR']['tableDoesNotExist'] = 'Table `%s` does not exists.';
@@ -77,9 +75,7 @@ $GLOBALS['TL_LANG']['ERR']['noAddressBookEntries'] = 'You have no address book e
 /**
  * Miscellaneous
  */
-$GLOBALS['TL_LANG']['MSC']['yes']						= 'Yes';
-$GLOBALS['TL_LANG']['MSC']['no']						= 'No';
-$GLOBALS['TL_LANG']['MSC']['datimLabel']				= 'Order date';
+$GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline']		= 'Order no %s / %s';
 $GLOBALS['TL_LANG']['MSC']['downloadsLabel']			= 'Your downloadable products';
 $GLOBALS['TL_LANG']['MSC']['paypal_processing'] = 'Your PayPal payment is being processed. Please be patient...';
 $GLOBALS['TL_LANG']['MSC']['paypal_processing_failed'] = 'Your PayPal payment could not be processed.';
@@ -176,8 +172,6 @@ $GLOBALS['TL_LANG']['MSC']['iso_order_status'] = 'Status';
 $GLOBALS['TL_LANG']['MSC']['iso_order_date'] = 'Order date';
 $GLOBALS['TL_LANG']['MSC']['iso_billing_address_header'] = 'Billing Address';
 $GLOBALS['TL_LANG']['MSC']['iso_shipping_address_header'] = 'Shipping Address';
-$GLOBALS['TL_LANG']['MSC']['iso_payment_info_header'] = 'Payment Information';
-$GLOBALS['TL_LANG']['MSC']['iso_shipping_info_header'] = 'Shipping Information';
 $GLOBALS['TL_LANG']['MSC']['iso_tax_header'] = 'Tax';	
 $GLOBALS['TL_LANG']['MSC']['iso_subtotal_header'] = 'Subtotal';
 $GLOBALS['TL_LANG']['MSC']['iso_order_shipping_header'] = 'Shipping & Handling';

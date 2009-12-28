@@ -61,9 +61,10 @@ array_insert($GLOBALS['BE_MOD']['store'], 0, array
 	'orders' => array
 	(
 		'tables'					=> array('tl_iso_orders','tl_iso_order_items'),
+		'icon'						=> 'system/modules/isotope/html/icon-orders.gif',
+		'stylesheet'				=> 'system/modules/isotope/html/backend.css',
 		'authorize_process_payment'	=> array('IsotopePOS', 'getPOSInterface'),
 		'print_order'				=> array('IsotopePOS','printInvoice'),
-		'icon'						=> 'system/modules/isotope/html/icon-orders.gif',
 	),
 	'shipping' => array
 	(
