@@ -635,7 +635,7 @@ class ProductCatalog extends Backend
 		{
 			return array();
 		}
-		
+		echo $objProductTypes->numRows;
 		while($objProductTypes->next())
 		{
 			$arrFieldCollection = array();
@@ -643,7 +643,7 @@ class ProductCatalog extends Backend
 			
 			$arrFieldCollection = deserialize($objProductTypes->attributes);
 											
-			$strAttributes = $this->buildPaletteString($arrFieldCollection, 'options_legend', array('variants_wizard'));
+			$strAttributes = $this->buildPaletteString($arrFieldCollection);
 			
 			$arrPalettes[$objProductTypes->id] = $strAttributes;					
 	
@@ -652,7 +652,7 @@ class ProductCatalog extends Backend
 			$arrPalettes[$objProductTypes->id . '_new_option_set'] = $this->buildPaletteString($arrFieldCollection, 'options_legend', array('option_set_title','variants_wizard'));
 			*/
 		}
-		
+
 		return $arrPalettes;
 	}
 	
