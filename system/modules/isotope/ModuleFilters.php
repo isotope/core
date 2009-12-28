@@ -72,7 +72,7 @@ class ModuleFilters extends ModuleIsotopeBase
 		$arrLimit = array();
 			
 		
-		$arrAjaxParams[] = 'action=fmd';
+		$arrAjaxParams[] = 'action=fmd'; 
 		$arrAjaxParams[] = 'id=' . $arrListingModules[0];
 		
 		if($this->getRequestData('per_page'))
@@ -207,7 +207,7 @@ class ModuleFilters extends ModuleIsotopeBase
 	{
 		foreach($arrFieldIds as $field)
 		{
-			$objAttribute = $this->Database->prepare("SELECT * FROM tl_product_attributes WHERE id=?")
+			$objAttribute = $this->Database->prepare("SELECT name, type, field_name FROM tl_product_attributes WHERE id=?")
 						       ->limit(1)
 						       ->execute($field);
 			if(!$objAttribute->numRows)
@@ -215,12 +215,16 @@ class ModuleFilters extends ModuleIsotopeBase
 				continue;
 			}
 			
-			$arrAttributeData[] = $objAttribute->fetchAssoc();
+			$arrAttributeData[] = array
+			(
+				'type'			=> $objAttribute->type,
+				'field_name'    => $objAttribute->field_name,
+				'label'			=> $objAttribute->name
+			);
 		}
 
 		return $arrAttributeData;
 	}
-
 	
 	private function generateSortingDirections($strType)
 	{
