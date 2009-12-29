@@ -85,7 +85,7 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 			if ($this->Input->get('action') == 'remove' && $this->Input->get('id') == $objProduct->cart_id)
 			{
 				$this->Database->prepare("DELETE FROM tl_cart_items WHERE id=?")->execute($objProduct->cart_id);
-				$this->redirect((strlen($this->Input->get('referer')) ? base64_decode($this->Input->get('referer')) : $this->generateFrontendUrl($objPage->row())));
+				$this->redirect((strlen($this->Input->get('referer')) ? base64_decode($this->Input->get('referer', true)) : $this->generateFrontendUrl($objPage->row())));
 			}
 			elseif ($this->Input->post('FORM_SUBMIT') == 'iso_cart_update' && is_array($arrQuantity) && $objProduct->cart_id)
 			{
