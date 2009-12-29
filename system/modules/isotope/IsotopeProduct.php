@@ -78,8 +78,19 @@ class IsotopeProduct extends Model
 			case 'pid':
 			case 'href_reader':
 				return $this->arrData[$strKey];
+				
+			case 'price':
+				return $this->Isotope->calculatePrice($this->arrData[$this->Isotope->Store->priceField], $this->arrData['tax_class']);
+				
+			case 'price_override':
+				return ($this->arrData[$this->Isotope->Store->priceOverrideField] ? $this->arrData[$this->Isotope->Store->priceOverrideField] : '');
+				
+			case 'total_price':
+				return ($this->quantity_requested ? $this->quantity_requested : 1) * $this->price;
+				
 			case 'hasDownloads':
 				return count($this->arrDownloads) ? true : false;
+				
 			default:
 				// Initialize attribute
 				if (!isset($this->arrCache[$strKey]))
@@ -130,17 +141,6 @@ class IsotopeProduct extends Model
 						
 					switch( $strKey )
 					{
-						case 'price':
-							//return $this->Isotope->calculatePrice((strlen($this->arrData[$this->Isotope->Store->priceOverrideField]) ? $this->arrData[$this->Isotope->Store->priceOverrideField] : $this->arrData[$this->Isotope->Store->priceField]), $this->arrData['tax_class']);
-							return $this->Isotope->calculatePrice($this->arrData[$this->Isotope->Store->priceField], $this->arrData['tax_class']);
-							break;
-						case 'price_override':
-							return ($this->arrData[$this->Isotope->Store->priceOverrideField] ? $this->arrData[$this->Isotope->Store->priceOverrideField] : '');
-							break;	
-						case 'total_price':
-							return ($this->quantity_requested ? $this->quantity_requested : 1) * $this->price;
-							break;
-							
 						case 'formatted_price':
 							$varValue = $this->Isotope->formatPriceWithCurrency($this->price);
 							break;
@@ -185,20 +185,27 @@ class IsotopeProduct extends Model
 	public function __set($strKey, $varValue)
 	{
 		switch( $strKey )
-		{				
+		{
 			case 'reader_jumpTo':
 				$this->arrData['href_reader'] = $this->Isotope->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($varValue)->fetchAssoc(), '/product/' . $this->arrData['alias']);	
 				break;
+			
 			case 'sku':
 			case 'name':
 				$this->arrData[$strKey] = $varValue;
 				break;
+			
 			case 'price':
 				$this->arrData[$this->Isotope->Store->priceField] = $varValue;
-				break;	
+				break;
+				
+			case 'price_override':
+				$this->arrData[$this->Isotope->Store->overridePriceField] = $varValue;
+				break;
+			
 			default:
 				$this->arrCache[$strKey] = $varValue;
-		}	
+		}
 	
 	}
 	
@@ -235,7 +242,7 @@ class IsotopeProduct extends Model
 	{
 		if (!parent::findBy($strRefField, $varRefId))
 			return false;
-			
+		
 		if (!$this->arrData['published'] || (strlen($this->arrData['start']) && $this->arrData['start'] > time()) || (strlen($this->arrData['stop']) && $this->arrData['stop'] < time()))
 			return false;
 		
@@ -243,12 +250,12 @@ class IsotopeProduct extends Model
 		
 		if (!$objType->numRows)
 			return false;
-			
+		
 		$this->arrAttributes = deserialize($objType->attributes);
 		
 		if (!is_array($this->arrAttributes) || !count($this->arrAttributes))
 			return false;
-						
+		
 		// Cache downloads for this product
 		if ($objType->downloads)
 		{
@@ -288,23 +295,20 @@ class IsotopeProduct extends Model
 		}
 		
 		return $arrData;
-	}	
+	}
+	
 	
 	/** 
-	 * Get subproduct attributes for product variants
+	 * Set subproduct attributes for product variants
 	 */
 	public function setVariant($intId, $strVariantFields)
 	{
 		$strPriceField = $this->Isotope->Store->priceField;
 				
-		$objVariant = $this->Database->prepare("SELECT id, sku, weight, " . $strPriceField .", " . $strVariantFields . " FROM tl_product_data WHERE id=?")
-										 ->limit(1)
-										 ->execute($intId);
+		$objVariant = $this->Database->prepare("SELECT id, sku, weight, " . $strPriceField . ", " . $strVariantFields . " FROM tl_product_data WHERE id=?")->limit(1)->execute($intId);
 		
 		if(!$objVariant->numRows)
-		{
-			return array();
-		}
+			return;
 		
 		$arrValues = $objVariant->fetchAssoc();
 		
@@ -315,26 +319,11 @@ class IsotopeProduct extends Model
 				case $strPriceField:
 					$this->arrData[$k] = $this->Isotope->calculatePrice($v, $this->arrData['tax_class']);
 					break;
+					
 				default:
 					$this->arrData[$k] = $v;
-			
 			}
 		}
-	
-	}
-	
-	public function setPrice($fltPrice)
-	{	
-		$strPriceField = $this->Isotope->Store->priceField;
-
-		$this->arrData[$strPriceField] = $this->Isotope->calculatePrice($fltPrice, $this->arrData['tax_class']);
-	}
-	
-	public function setPriceOverride($varValue)
-	{	
-		$strPriceOverrideField = $this->Isotope->Store->overridePriceField;
-		
-		$this->arrData[$strPriceOverrideField] = $varValue;
 	}
 }
 
