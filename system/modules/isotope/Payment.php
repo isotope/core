@@ -191,6 +191,15 @@ abstract class Payment extends Frontend
 	
 	
 	/**
+	 * Return a list of valid credit card types for this payment module
+	 */
+	public function getAllowedCCTypes()
+	{
+		return array();
+	}
+	
+	
+	/**
 	 * Return the checkout review information.
 	 *
 	 * Use this to return custom checkout information about this shipping module.
