@@ -85,7 +85,7 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 			if ($this->Input->get('action') == 'remove' && $this->Input->get('id') == $objProduct->cart_id)
 			{
 				$this->Database->prepare("DELETE FROM tl_cart_items WHERE id=?")->execute($objProduct->cart_id);
-				$this->redirect((strlen($this->Input->get('redirect')) ? urldecode($this->Input->get('redirect')) : $this->generateFrontendUrl($objPage->row())));
+				$this->redirect((strlen($this->Input->get('referer')) ? base64_decode($this->Input->get('referer')) : $this->generateFrontendUrl($objPage->row())));
 			}
 			elseif ($this->Input->post('FORM_SUBMIT') == 'iso_cart_update' && is_array($arrQuantity) && $objProduct->cart_id)
 			{
@@ -110,7 +110,7 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 				'quantity'			=> $objProduct->quantity_requested,
 				'cart_item_id'		=> $objProduct->cart_id,
 				'product_options'	=> $objProduct->product_options,
-				'remove_link'		=> $this->generateFrontendUrl($objPage->row(), '/action/remove/id/'.$objProduct->cart_id.'/redirect/'.urlencode($this->Environment->request)),
+				'remove_link'		=> $this->generateFrontendUrl($objPage->row(), '/action/remove/id/'.$objProduct->cart_id.'/referer/'.base64_encode($this->Environment->request)),
 				'remove_link_title' => sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $objProduct->name),
 				'class'				=> 'row_' . $i . ($i%2 ? ' even' : ' odd') . ($i==0 ? ' row_first' : ''),
 			));
