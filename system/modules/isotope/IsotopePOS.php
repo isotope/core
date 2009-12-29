@@ -227,20 +227,6 @@ class IsotopePOS extends Backend
 //		$arrOrderInfo = $objOrderInfo->fetchAssoc();
 		
 		
-		$this->Isotope->overrideStore($objOrder->store_id);
-
-		
-		$objInvoiceLogo = $this->Database->prepare("SELECT invoiceLogo FROM tl_store WHERE id=?")
-										 ->limit(1)
-										 ->execute($objOrder->store_id);
-		
-		if($objInvoiceLogo->numRows < 1)
-		{
-			$strInvoiceLogo = null;
-		}else{
-			$strInvoiceLogo = $objInvoiceLogo->invoiceLogo;
-		}
-		
 		//Store ID MUST be set prior to importing the Isotope or IsotopeStore libraries!
 				
 		//$this->fltOrderTotal = (float)$arrOrderInfo['subTotal'] + (float)$arrOrderInfo['taxTotal'] + (float)$arrOrderInfo['shippingTotal'];
@@ -380,11 +366,27 @@ class IsotopePOS extends Backend
 		}
 		
 		$objTemplate = new BackendTemplate($this->strTemplate);
-		
+				
 		$objTemplate->setData($objOrder->row());
 		
 		$this->import('Isotope');
 		$this->Isotope->overrideStore($objOrder->store_id);
+		
+		// Invoice Logo
+		$objInvoiceLogo = $this->Database->prepare("SELECT invoiceLogo FROM tl_store WHERE id=?")
+										 ->limit(1)
+										 ->execute($objOrder->store_id);
+		
+		if($objInvoiceLogo->numRows < 1)
+		{
+			$strInvoiceLogo = null;
+		}else{
+			$strInvoiceLogo = $objInvoiceLogo->invoiceLogo;
+		}
+		
+		$objTemplate->logoImage = strlen($strInvoiceLogo) ? $this->Environment->base . $strInvoiceLogo : false;
+		
+		$objTemplate->invoiceTitle = $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] . '_' . $objOrder->id . '_' . time();
 		
 		// Article reader
 		$arrPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->limit(1)->execute($this->jumpTo)->fetchAssoc();
