@@ -83,7 +83,13 @@ $GLOBALS['TL_LANG']['MSC']['iso_tax_header'] = 'Davon MwSt.';
 $GLOBALS['TL_LANG']['MSC']['iso_subtotal_header'] = 'Subtotal';
 $GLOBALS['TL_LANG']['MSC']['iso_order_shipping_header'] = 'Versandkosten';
 $GLOBALS['TL_LANG']['MSC']['iso_order_grand_total_header'] = 'Total';
-$GLOBALS['TL_LANG']['MSC']['iso_order_items_header'] = 'Artikel';
+$GLOBALS['TL_LANG']['MSC']['iso_order_items'] = 'Artikel';
+$GLOBALS['TL_LANG']['MSC']['iso_quantity_header'] = 'Anzahl';
+$GLOBALS['TL_LANG']['MSC']['iso_price_header'] = 'Preis';
+$GLOBALS['TL_LANG']['MSC']['iso_sku_header'] = 'Artikelnr.';
+$GLOBALS['TL_LANG']['MSC']['iso_product_name_header'] = 'Produkt';
+$GLOBALS['TL_LANG']['MSC']['iso_card_name_title'] = 'Name auf Kreditkarte';
+
 
 // Order Status
 $GLOBALS['TL_LANG']['MSC']['order_status_labels']['pending']		= 'Offen';

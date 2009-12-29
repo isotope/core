@@ -536,6 +536,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		return $objTemplate->parse();
 	}
 	
+	
 	protected function getOrderConditionsInterface($blnReview=false)
 	{
 		if (!$this->iso_order_conditions)
@@ -563,6 +564,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 		return $strBuffer . '<div class="order_conditions">' . $objConditions->parse() . '</div>';
 	}
+	
 	
 	protected function getOrderReviewInterface($blnWriteOrder=true)
 	{
@@ -619,7 +621,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		$objTemplate->info = $this->getCheckoutInfo();
 		$objTemplate->products = $arrProductData;
 		$objTemplate->surcharges = $arrSurcharges;
-		$objTemplate->action = ampersand($this->Environment->base . $this->addToUrl('step=complete'), true);
+		$objTemplate->action = ampersand($this->Environment->base . $this->addToUrl('step=complete'), true); // FIXME: this is not nessessary/wanted.
 		$objTemplate->edit_info = $GLOBALS['TL_LANG']['ISO']['changeCheckoutInfo'];
 		$objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
 		$objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
@@ -632,12 +634,6 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		return $objTemplate->parse();
 	}
 
-	
-	
-	
-	
-	
-	
 	
 	/**
 	 * @todo Guest cannot be found in tl_user, emailCustomer() will fail
@@ -698,7 +694,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		if ($blnCheckout)
 		{
 			$strBillingAddress = $this->Isotope->generateAddressString($this->Cart->billingAddress);
-			$strShippingAddress = $this->Cart->shippingAddress['id'] == -1 ? '' : $this->Isotope->generateAddressString($this->Cart->shippingAddress);
+			$strShippingAddress = $this->Cart->shippingAddress['id'] == -1 ? $GLOBALS['TL_LANG']['useBillingAddress'] : $this->Isotope->generateAddressString($this->Cart->shippingAddress);
 
 			$arrData = array
 			(
@@ -724,6 +720,16 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				'payment_note_text'			=> strip_tags($this->Cart->Payment->note),
 			);
 			
+			foreach( $this->Cart->billingAddress as $k => $v )
+			{
+				$arrData['billing_'.$k] = $v;
+			}
+			
+			foreach( $this->Cart->shippingAddress as $k => $v )
+			{
+				$arrData['shipping_'.$k] = $v;
+			}
+			
 			$this->log('New order ID ' . $orderId . ' has been placed', 'ModuleIsotopeCheckout writeOrder()', TL_ACCESS);
 			$salesEmail = $this->iso_sales_email ? $this->iso_sales_email : $GLOBALS['TL_ADMIN_EMAIL'];
 			$this->Isotope->sendMail($this->iso_mail_admin, $salesEmail, $GLOBALS['TL_LANGUAGE'], $arrData);
@@ -739,9 +745,9 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		return $strUniqueId;
 	}
 	
+	
 	/** 
-	 * Copy items from the cart and place in the order items reference table.
-	 * Also stores product downloads.
+	 * Copy items from the cart and place in the order items reference table. Also stores product downloads.
 	 *
 	 * @param integer $intCartId
 	 * @param integer $intOrderId
@@ -781,113 +787,9 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				$this->Database->prepare("INSERT INTO tl_iso_order_downloads %s")->set($arrSet)->execute();
 			}
 		}
-		
-/*
-		$objCartItems = $this->Database->prepare("SELECT * FROM tl_cart_items WHERE pid=?")->execute($intCartId);
-		
-		while( $objCartItems->next() )
-		{
-			$arrSet = array
-			(
-				'pid'				=> $intOrderId,
-				'tstamp'			=> time(),
-				'product_id'		=> $objCartItems->product_id,
-				'quantity_sold'		=> $objCartItems->quantity_requested,
-				'price'				=> $objCartItems->price,
-				'product_options'	=> $objCartItems->product_options,
-			);
-			
-			$itemId = $this->Database->prepare("INSERT INTO tl_iso_order_items %s")->set($arrSet)->execute()->insertId;
-			
-			$objDownloads = $this->Database->prepare("SELECT * FROM tl_product_downloads WHERE pid=?")->execute($objCartItems->product_id);
-			
-			while( $objDownloads->next() )
-			{
-				$arrSet = array
-				(
-					'pid'					=> $itemId,
-					'tstamp'				=> time(),
-					'download_id'			=> $objDownloads->id,
-					'downloads_remaining'	=> ($objDownloads->downloads_allowed > 0 ? $objDownloads->downloads_allowed : ''),
-				);
-				
-				$this->Database->prepare("INSERT INTO tl_iso_order_downloads %s")->set($arrSet)->execute();
-			}
-		}
-*/
 	}
 	
-/*
-	protected function getSelectedAddress($strStep = 'billing')
-	{
-
-		$intAddressId = $_SESSION['FORM_DATA'][$strStep.'_address'];
-
-		// Take billing address
-		if ($intAddressId == -1)
-		{
-			return array();
-		}
 		
-		//gather from form
-		if ($intAddressId == 0)
-		{	
-			$arrAddress = array
-			(
-				'company'		=> $_SESSION['FORM_DATA'][$strStep . '_information_company'],
-				'firstname'		=> $_SESSION['FORM_DATA'][$strStep . '_information_firstname'],
-				'lastname'		=> $_SESSION['FORM_DATA'][$strStep . '_information_lastname'],
-				'street'		=> $_SESSION['FORM_DATA'][$strStep . '_information_street'],
-				'street_2'		=> $_SESSION['FORM_DATA'][$strStep . '_information_street_2'],
-				'street_3'		=> $_SESSION['FORM_DATA'][$strStep . '_information_street_3'],
-				'city'			=> $_SESSION['FORM_DATA'][$strStep . '_information_city'],
-				'state'			=> $_SESSION['FORM_DATA'][$strStep . '_information_state'],
-				'postal'		=> $_SESSION['FORM_DATA'][$strStep . '_information_postal'],
-				'country'		=> $_SESSION['FORM_DATA'][$strStep . '_information_country'],
-			);
-						
-			if ($strStep == 'billing')
-			{
-				$arrAddress['email'] = (strlen($_SESSION['FORM_DATA'][$strStep . '_information_email']) ? $_SESSION['FORM_DATA'][$strStep . '_information_email'] : $this->User->email);
-				$arrAddress['phone'] = (strlen($_SESSION['FORM_DATA'][$strStep . '_information_phone']) ? $_SESSION['FORM_DATA'][$strStep . '_information_phone'] : $this->User->phone);
-			}
-		}
-		else
-		{
-			$objAddress = $this->Database->prepare("SELECT * FROM tl_address_book WHERE id=?")
-												->limit(1)
-												->execute($intAddressId);
-		
-			if($objAddress->numRows < 1)
-			{
-				return $GLOBALS['TL_LANG']['MSC']['ERR']['specifyBillingAddress'];
-			}
-			
-			$arrAddress = $objAddress->fetchAssoc();
-			
-			$arrAddress['email'] = (strlen($arrAddress['email']) ? $arrAddress['email'] : $this->User->email);
-			$arrAddress['phone'] = (strlen($arrAddress['phone']) ? $arrAddress['phone'] : $this->User->phone);
-			
-			$_SESSION['FORM_DATA'][$strStep . '_information_company'] = $arrAddress['company'];
-			$_SESSION['FORM_DATA'][$strStep . '_information_firstname'] = $arrAddress['firstname'];
-			$_SESSION['FORM_DATA'][$strStep . '_information_lastname'] = $arrAddress['lastname'];
-			$_SESSION['FORM_DATA'][$strStep . '_information_street'] = $arrAddress['street'];
-			$_SESSION['FORM_DATA'][$strStep . '_information_street_2'] = $arrAddress['street_2'];
-			$_SESSION['FORM_DATA'][$strStep . '_information_street_3'] = $arrAddress['street_3'];
-			$_SESSION['FORM_DATA'][$strStep . '_information_city'] = $arrAddress['city'];
-			$_SESSION['FORM_DATA'][$strStep . '_information_state'] = $arrAddress['state'];
-			$_SESSION['FORM_DATA'][$strStep . '_information_postal'] = $arrAddress['postal'];
-			$_SESSION['FORM_DATA'][$strStep . '_information_country'] = $arrAddress['country'];			
-			$_SESSION['FORM_DATA'][$strStep . '_information_email'] = $arrAddress['email'];
-			$_SESSION['FORM_DATA'][$strStep . '_information_phone'] = $arrAddress['phone'];
-		}
-				
-		return $arrAddress;
-	}
-*/
-		
-	
-	
 	protected function generateAddressWidget($field)
 	{
 		$strBuffer = '';
