@@ -202,6 +202,7 @@ $GLOBALS['TL_LANG']['MSC']['order_status_labels']['shipped']	= 'Shipped';
 $GLOBALS['TL_LANG']['MSC']['order_status_labels']['complete']	= 'Complete';
 $GLOBALS['TL_LANG']['MSC']['order_status_labels']['on_hold']	= 'On Hold';
 $GLOBALS['TL_LANG']['MSC']['order_status_labels']['cancelled']	= 'Cancelled';
+$GLOBALS['TL_LANG']['MSC']['order_status_labels']['test'] 		= 'Test Transaction';
 
 // Payment status options
 $GLOBALS['TL_LANG']['MSC']['payment_status_labels']['pending']		= 'Pending';

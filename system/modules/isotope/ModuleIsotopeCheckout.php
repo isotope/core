@@ -668,7 +668,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				
 		
 		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=? AND status!='cancelled'")->limit(1)->execute($this->Cart->id);
-		
+	
 		if (!$objOrder->numRows)
 		{
 			$objOrder = $this->Database->prepare("INSERT INTO tl_iso_orders %s")

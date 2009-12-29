@@ -100,6 +100,9 @@ class PaymentAuthorizeDotNet extends Payment
 		switch($arrResponses['transaction-status'])
 		{
 			case 'Approved':
+				$arrPaymentData = array();
+				$arrSet = array();
+				
 				$this->response = 'successful';
 				
 				$strTransactionId = (string)$arrResponses['transaction-id'];
@@ -111,19 +114,34 @@ class PaymentAuthorizeDotNet extends Payment
 				
 				$this->import('IsotopeCart','Cart');
 				
+				$strCCNum = rtrim($this->Input->post('cc_num'));
+							
+				$arrPaymentData['x_trans_id'] = $strTransactionId;
+				
+				$arrPaymentData['cc-last-four'] = substr($strCCNum, strlen($strCCNum) - 4, 4);
+				
 				//commit the transaction id and cart id to a new order.
+				$arrSet['payment_data'] = serialize($arrPaymentData);
+				
 				$arrSet['cart_id'] = $this->Cart->id;
 
-				$objOrder = $this->Database->prepare("SELECT payment_data FROM tl_iso_orders WHERE cart_id=?")->execute($this->Cart->id);
-
-				$arrPaymentData = deserialize($objOrder->payment_data, true);
-				$arrPaymentData['x_trans_id'] = $strTransactionId;
-
-				$arrSet['payment_data'] = serialize($arrPaymentData);
-
-				$this->Database->prepare("INSERT INTO tl_iso_orders %s")
-							   ->set($arrSet)
-							   ->execute();
+				$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")
+										   ->limit(1)
+										   ->execute($this->Cart->id);
+				
+				if(!$objOrder->numRows)
+				{
+					$this->Database->prepare("INSERT INTO tl_iso_orders %s")
+								   ->set($arrSet)
+								   ->execute();				
+				}
+				else
+				{
+					$this->Database->prepare("UPDATE tl_iso_orders %s WHERE id=?")
+								   ->set($arrSet)
+								   ->execute($objOrder->id);
+				}
+				
 				return true;
 				break;
 			default:
@@ -132,10 +150,6 @@ class PaymentAuthorizeDotNet extends Payment
 				return false;
 				break;
 		}
-	
-		
-		return true;
-		
 		
 	}
 	
@@ -206,7 +220,6 @@ class PaymentAuthorizeDotNet extends Payment
 		<input type="hidden" name="x_method" value="CC">
 		<input type="hidden" name="x_tran_key" value="' . $this->authorize_trans_key . '">
 		<input type="hidden" name="x_card_num" value="' . $this->Input->post('cc_num') . '">
-		<input type="hidden" name="x_card_type" value="' . $this->Input->post('cc_type') . '">
 		<input type="hidden" name="x_exp_date" value="' . $this->Input->post('cc_exp') . '">
 		<input type="hidden" name="x_card_code" value="' . $this->Input->post('cc_cvv') . '">
 		<input type="hidden" name="x_description" value="New Order ID ' . $objOrder->order_id . ($this->debug ? ' ' . $GLOBALS['TL_LANG']['MSC']['testTransaction'] : '') . '">
@@ -261,7 +274,7 @@ class PaymentAuthorizeDotNet extends Payment
 						'inputType'		=> $v,
 						'options'		=> $arrCCTypes,
 						'eval'			=> array('mandatory'=>true, 'rgxp'=>'digit'),
-						'reference'		=> $GLOBALS['TL_LANG']['PAY']['CCT']['authorizedotnet']
+						'reference'		=> $GLOBALS['TL_LANG']['CCT']
 					);
 					break;
 				case 'cc_exp':
