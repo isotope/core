@@ -82,10 +82,10 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 		
 		foreach( $arrProducts as $i => $objProduct )
 		{
-			if($this->Input->post('remove'))
+			if ($this->Input->get('action') == 'remove' && $this->Input->get('id') == $objProduct->cart_id)
 			{
-				$this->Database->prepare("DELETE FROM tl_cart_items WHERE id=?")->execute($this->Input->post('remove'));
-				$this->reload();
+				$this->Database->prepare("DELETE FROM tl_cart_items WHERE id=?")->execute($objProduct->cart_id);
+				$this->redirect($this->generateFrontendUrl($objPage->row()));
 			}
 			elseif ($this->Input->post('FORM_SUBMIT') == 'iso_cart_update' && is_array($arrQuantity) && $objProduct->cart_id)
 			{
@@ -110,6 +110,7 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 				'quantity'			=> $objProduct->quantity_requested,
 				'cart_item_id'		=> $objProduct->cart_id,
 				'product_options'	=> $objProduct->product_options,
+				'remove_link'		=> $this->generateFrontendUrl($objPage->row(), '/action/remove/id/'.$objProduct->cart_id),
 				'remove_link_title' => sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $objProduct->name),
 				'class'				=> 'row_' . $i . ($i%2 ? ' even' : ' odd') . ($i==0 ? ' row_first' : ''),
 			));
@@ -125,17 +126,7 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 			$arrProductData[count($arrProductData)-1]['class'] .= ' row_last';
 		}
 		
-		$strRemoveImage = 'system/modules/isotope/html/trash.png';
 		
-		$arrImageSize = getimagesize(TL_ROOT . '/' . $strRemoveImage);
-
-		$arrRemoveImage = array
-		(
-			'image' => $this->Isotope->getImage($strRemoveImage, $arrImageSize[0], $arrImageSize[1]),
-			'size'	=> $arrImageSize[3]
-		);
-		
-		$objTemplate->removeImage = $arrRemoveImage;		
 		$objTemplate->formId = 'iso_cart_update';
 		$objTemplate->formSubmit = 'iso_cart_update';
 		$objTemplate->action = $this->Environment->request;
