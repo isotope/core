@@ -47,7 +47,7 @@ class IsotopeCart extends Model
 	protected $strTable = 'tl_cart';
 	
 	/**
-	 * Cart type. Can be "2" for gift registry.
+	 * Cart type. Example: can be "2" for gift registry.
 	 * @var int
 	 */
 	protected $intType = 1;
@@ -138,7 +138,6 @@ class IsotopeCart extends Model
 					
 				case 'subTotal':
 					return $this->calculateTotal($this->getProducts());
-					break;
 					
 				case 'taxTotal':
 					$intTaxTotal = 0;
@@ -154,7 +153,6 @@ class IsotopeCart extends Model
 					break;
 					
 				case 'taxTotalWithShipping':
-					// FIXME: currently rounds to 0.05 (swiss francs)
 					$this->arrCache[$strKey] =  $this->taxTotal + $this->shippingTotal;
 					break;
 				
@@ -164,7 +162,6 @@ class IsotopeCart extends Model
 					
 				case 'grandTotal':
 					return ($this->subTotal + $this->taxTotal + $this->shippingTotal);
-					break;
 					
 				case 'requiresShipping':
 					$this->arrCache[$strKey] = false;
@@ -178,6 +175,7 @@ class IsotopeCart extends Model
 						}
 					}
 					break;
+					
 				case 'totalWeight':
 				
 					$arrProducts = $this->getProducts();
@@ -188,14 +186,12 @@ class IsotopeCart extends Model
 					}
 										
 					return $fltShippingWeight;
-					break;
+					
 				case 'hasShipping':
 					return is_object($this->Shipping) ? true : false;
-					break;
 					
 				case 'hasPayment':
 					return is_object($this->Payment) ? true : false;
-					break;
 					
 				case 'billingAddress':
 			
@@ -227,7 +223,6 @@ class IsotopeCart extends Model
 					}					
 					
 					return $this->arrCache['billingAddress_data'];
-					break;
 					
 				case 'shippingAddress':
 				
@@ -258,7 +253,6 @@ class IsotopeCart extends Model
 					}
 					
 					return array_merge((is_array($this->billingAddress) ? $this->billingAddress : array()), array('id' => -1));
-					break;
 			}
 		}
 		
@@ -315,8 +309,7 @@ class IsotopeCart extends Model
 		
 		$this->strHash = $this->Input->cookie($this->strCookie);
 		
-		//  Check to see if the user is logged in.  If not, cart data should be found in session data. - THIS IS CURRENTLY STORED IN THE DB - the cart is identified by session ID at the moment.
-		
+		//  Check to see if the user is logged in.
 		if (!FE_USER_LOGGED_IN)
 		{	
 			if(!strlen($this->strHash))	
@@ -331,7 +324,6 @@ class IsotopeCart extends Model
 		else
 		{
 			$this->import('FrontendUser', 'User');
-			
 	 		$this->findBy('pid', $this->User->id);
 		}
 				
@@ -361,10 +353,7 @@ class IsotopeCart extends Model
 										  
 			while( $objCartData->next() )
 			{
-				
-				$objExistingMemberCartData = $this->Database->prepare("SELECT * FROM tl_cart_items WHERE product_id=? AND pid=?")
-											->limit(1)
-											->execute($objCartData->product_id, $this->id);
+				$objExistingMemberCartData = $this->Database->prepare("SELECT * FROM tl_cart_items WHERE product_id=? AND pid=?")->limit(1)->execute($objCartData->product_id, $this->id);
 									
 				//Nothing existing in member's cart, just add items to it.		 
 				if($objExistingMemberCartData->numRows < 1)
@@ -374,10 +363,7 @@ class IsotopeCart extends Model
 				}
 				else
 				{
-					/** 
-					 *	Do something to cart data when merging products into a member cart.  Good for applying rules.
-					 *
-					 */
+					// Do something to cart data when merging products into a member cart.  Good for applying rules.
 					if (isset($GLOBALS['TL_HOOKS']['isoOnCartMerge']) && is_array($GLOBALS['TL_HOOKS']['isoOnCartMerge']))
 					{
 						foreach ($GLOBALS['TL_HOOKS']['isoOnCartMerge'] as $callback)
@@ -408,16 +394,6 @@ class IsotopeCart extends Model
 						}
 					}
 				}
-				
-				
-
-				/*					
-				$this->import('Isotope');
-								
-				$fltNewProductPrice = $this->Isotope->applyRules($objCartData->product_id);
-				
-				$this->Database->prepare("UPDATE tl_cart_items SET price=? WHERE id=?")->execute($fltProductPric, $objCartData->id);
-				*/
 			}
 			
 			// Delete cookie
@@ -426,35 +402,6 @@ class IsotopeCart extends Model
 			// Delete cart
 			$this->Database->prepare("DELETE FROM tl_cart WHERE session=? AND pid=0")->execute($this->strHash);
  		}
- 		
-/*
- 		// Load shipping object
- 		if ($_SESSION['FORM_DATA']['shipping']['module'])
- 		{
- 			$objShipping = $this->Database->prepare("SELECT * FROM tl_shipping_modules WHERE id=?")->limit(1)->execute($_SESSION['FORM_DATA']['shipping']['module']);
- 			if ($objShipping->numRows)
- 			{
- 				$strClass = $GLOBALS['ISO_SHIP'][$objShipping->type];
- 				$this->Shipping = new $strClass($objShipping->row());
- 			}
- 		}
- 		
- 		
- 		// Load payment object
- 		if ($_SESSION['FORM_DATA']['payment']['module'])
- 		{
- 			$objPayment = $this->Database->prepare("SELECT * FROM tl_payment_modules WHERE id=?")->limit(1)->execute($_SESSION['FORM_DATA']['payment']['module']);
- 			if ($objPayment->numRows)
- 			{
- 				$strClass = $GLOBALS['ISO_PAY'][$objPayment->type];
- 				$this->Payment = new $strClass($objPayment->row());
- 			}
- 			else
- 			{
- 				$this->Payment = null;
- 			}
- 		}
-*/
 	}
 	
 	
@@ -469,8 +416,7 @@ class IsotopeCart extends Model
 		$this->strRefField = $strRefField;
 		$this->varRefId = $varRefId;
 
-		$resResult = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE " . $this->strRefField . "=? AND cart_type_id=?")
-									->execute($this->varRefId, $this->intType);
+		$resResult = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE " . $this->strRefField . "=? AND cart_type_id=?")->execute($this->varRefId, $this->intType);
 
 		if ($resResult->numRows == 1)
 		{
@@ -557,20 +503,6 @@ class IsotopeCart extends Model
 			
 			$strAllOptionValues = serialize($arrAllOptionValues);
 		}
-
-		/**
-		 * Hook to allow additional tweaks to the product object prior to adding to the cart.
-		 *
-		 */
-		/*if (isset($GLOBALS['TL_HOOKS']['isoOnAddToCart']) && is_array($GLOBALS['TL_HOOKS']['isoOnAddToCart']))
-		{
-			foreach ($GLOBALS['TL_HOOKS']['isoOnAddToCart'] as $callback)
-			{
-				$this->import($callback[0]);
-				$objProduct = $this->{$callback[0]}->{$callback[1]}($objProduct);
-			}
-		}*/
-
 				
 		$arrSet = array
 		(
@@ -584,32 +516,19 @@ class IsotopeCart extends Model
 			'product_data'			=> serialize($objProduct),
 			'product_options'		=> $strAllOptionValues 
 		);
-		
-/*
-		foreach( $arrProduct as $field_name => $arrField )
-		{
-			if (is_array($arrField['attributes']) && $arrField['attributes']['is_customer_defined'])
-			{
-				$arrProduct[$field_name]['value'] = $this->Input->post($field_name);
-			}
-		}
-*/
-		
 
 		if (!$this->Database->prepare("UPDATE tl_cart_items SET tstamp=?, quantity_requested=quantity_requested+" . $arrSet['quantity_requested'] . " WHERE pid=? AND product_id=? AND product_data=? AND product_options=?")->execute($arrSet['tstamp'], $this->id, $arrSet['product_id'], $arrSet['product_data'], $arrSet['product_options'])->affectedRows)
 		{
 			$this->Database->prepare("INSERT INTO tl_cart_items %s")->set($arrSet)->execute();
 		}
-				
 	}
+	
 	
 	public function deleteProduct($intId)
 	{
-		$objProducts = $this->getProducts();
-		
-		$this->Database->prepare("DELETE FROM tl_cart_items WHERE id=?")
-					   ->execute($intId);					   
+		$this->Database->prepare("DELETE FROM tl_cart_items WHERE id=?")->execute($intId);					   
 	}
+	
 	
 	/** 
 	 * Need to grab the corresponding data from the subproduct if product_variants is being called!
@@ -620,8 +539,6 @@ class IsotopeCart extends Model
 			return '';
 			
 		$arrProductOptions = explode(',', $strProductOptions);
-		
-		
 		
 		foreach($arrProductOptions as $option)
 		{	
@@ -640,7 +557,6 @@ class IsotopeCart extends Model
 					
 					if(is_array($varValue))
 					{
-						
 						foreach($varValue as $value)
 						{
 							foreach($arrOptions as $optionRow)
@@ -655,7 +571,6 @@ class IsotopeCart extends Model
 					}
 					else
 					{
-						
 						foreach($arrOptions as $optionRow)
 						{
 							if($optionRow['value']==$varValue)
@@ -666,9 +581,10 @@ class IsotopeCart extends Model
 						}
 					}				
 					break;
+					
 				default:
 					//these values are not by reference - they were directly entered.  
-					if(is_array($varValue))
+					if (is_array($varValue))
 					{
 						foreach($varValue as $value)
 						{
@@ -679,9 +595,7 @@ class IsotopeCart extends Model
 					{
 						$varOptionValues[] = $varValue;
 					}
-					
 					break;
-			
 			}		
 		
 			$arrValues[$option] = array
@@ -698,15 +612,15 @@ class IsotopeCart extends Model
 	
 	protected function getOptionList($arrAttributeData)
 	{
-		if($arrAttributeData['use_alternate_source']==1)
+		if ($arrAttributeData['use_alternate_source']==1)
 		{
-			
 			if(strlen($arrAttributeData['list_source_table']) > 0 && strlen($arrAttributeData['list_source_field']) > 0)
 			{
 				$strForeignKey = $arrAttributeData['list_source_table'] . '.' . $arrAttributeData['list_source_field'];
-			
 			}
-		}else{
+		}
+		else
+		{
 			$arrValues = deserialize($arrAttributeData['option_list']);
 		}
 	
@@ -717,13 +631,10 @@ class IsotopeCart extends Model
 	protected function getProductAttributeData($strFieldName)
 	{		
 		
-		$objAttributeData = $this->Database->prepare("SELECT * FROM tl_product_attributes WHERE field_name=?")
-										   ->limit(1)
-										   ->execute($strFieldName);
+		$objAttributeData = $this->Database->prepare("SELECT * FROM tl_product_attributes WHERE field_name=?")->limit(1)->execute($strFieldName);
 
-		if($objAttributeData->numRows < 1)
+		if (!$objAttributeData->numRows)
 		{
-			
 			return array();
 		}
 		
@@ -757,8 +668,9 @@ class IsotopeCart extends Model
 	
 	
 	/**
-	 * Hook-callback for isoCheckoutSurcharge. Accesses the payment module to get a payment surcharge.
+	 * Hook-callback for isoCheckoutSurcharge.
 	 *
+	 * @todo	Accesses the payment module to get a payment surcharge.
 	 * @access	public
 	 * @param	array
 	 * @return	array
@@ -917,12 +829,6 @@ class IsotopeCart extends Model
 	}
 	
 	
-	
-	
-	
-	
-	
-
 	/**
 	 * Calculate total price for products.
 	 * 
@@ -946,174 +852,6 @@ class IsotopeCart extends Model
 		
 		return (float)$fltTotal + (float)$taxPriceAdjustment;
 	}
-
-	
-	/**
-	 * Calculate Tax per product, considering product tax class.
-	 * 
-	 * @access protected
-	 * @param array $arrProductData
-	 * @return array
-	 *//*
-	protected function calculateTax($arrProducts)
-	{
-		return 0; // FIXME
-		
-		$this->import('FrontendUser','User');
-		
-		if($arrProductData)
-		{	
-			foreach($arrProductData as $row)
-			{
-				if(strlen($row['tax_class']))
-					$arrTaxClasses[] = $row['tax_class'];	
-			}
-			
-			if(is_array($arrTaxClassRecords))
-			{
-				//Get the tax rates for the given class.
-				$arrTaxClassRecords = array_unique($arrTaxClasses);
-			}else{
-				return array();
-			}
-			
-					
-			if(sizeof($arrTaxClassRecords))
-			{		
-				$strTaxRates = join(',', $arrTaxClassRecords);
-			}
-			
-			if(strlen(trim($strTaxRates)) < 1)
-			{
-				return array();
-			}
-			
-			
-			$objTaxRates = $this->Database->prepare("SELECT r.pid, r.country_id, r.region_id, r.postcode, r.rate, (SELECT name FROM tl_tax_class c WHERE c.id=r.pid) AS class_name FROM tl_tax_rate r WHERE r.pid IN(" . $strTaxRates . ")")
-										  ->execute();
-			
-			if($objTaxRates->numRows < 1)
-			{
-				return 0.00;
-			}
-			
-			$arrTaxRates = $objTaxRates->fetchAllAssoc();
-			
-			foreach($arrTaxRates as $rate)
-			{
-				//eventually this will also contain the formula or calc rule for the given tax rate.
-				$arrRates[$rate['pid']] = array
-				(
-					'rate'			=> $rate['rate'],
-					'country_id'	=> $rate['country_id'],
-					'region_id'		=> $rate['region_id'],
-					'postal_code'	=> $rate['postcode'],
-					'class_name'	=> $rate['class_name']	//we need to output this to template for customers.
-				);
-			}
-			
-			
-			
-			$arrBillingAddress = $this->Isotope->getAddress('billing'); //Tax calculated based on billing address.
-			$arrShippingAddress = $this->Isotope->getAddress('shipping');
-			
-			$arrAddresses[] = $arrBillingAddress;
-			$arrAddresses[] = $arrShippingAddress;
-			
-			//the calculation logic for tax rates will need to be something we can set in the backend eventually.  This is specific to Kolbo right now
-			//as tax class 3 = luxury tax.
-			foreach($arrProductData as $product)
-			{
-				$blnAlreadyCalculatedTax = false;
-				$blnCalculate = false; 
-				
-						
-				foreach($arrAddresses as $address)
-				{		
-					if(is_null($address['country']) || strlen($address['country']) < 1)
-					{
-						$address['country'] = 'us';	//Default
-					}
-					
-					if($product['tax_class']!=0)
-					{
-					
-						//only check what we need to.  There may be a better logic gate to express this but I haven't figured out what it is yet. ;)
-						if(strlen($arrRates[$product['tax_class']]['postalcode']))
-						{
-							if($address['postal']==$arrRates[$product['tax_class']]['postal_code'] && $address['state']==$arrRates[$product['tax_class']]['region_id'] && $address['country']==$arrRates[$product['tax_class']]['country_id'])
-							{
-								
-								$blnCalculate = true;
-							}
-						}
-						elseif(strlen($arrRates[$product['tax_class']]['region_id']) && strlen($arrRates[$product['tax_class']]['country_id']))
-						{
-							
-							
-							if($address['state']==$arrRates[$product['tax_class']]['region_id'] && $address['country']==$arrRates[$product['tax_class']]['country_id'])
-							{
-									
-								$blnCalculate = true;
-							}
-						}
-//						elseif(strlen($rate['country_id']))
-//						{
-//							if($address['country']==$rate['country_id'])
-//							{
-//								$blnCalculate = true;
-//							}	
-//						}
-						
-				
-					
-						if($blnCalculate && !$blnAlreadyCalculatedTax)
-						{
-							//This needs to be database-driven.  We know what these tax values are right now and later it must not assume anything obviously.
-							switch($product['tax_class'])
-							{
-								case '1':
-										//if(strlen($rate['region_id']) > 0 && $this->User->state==$rate['region_id'])
-										$fltSalesTax += (((float)$product[$this->Isotope->Store->priceField] * $arrRates[$product['tax_class']]['rate'] / 100) * $product['quantity_requested']);
-										
-										//$arrTaxInfo['code'] = $
-									break;
-									
-								/*case '2':	//Luxury tax.  5% of the difference over $175.00  this trumps standard sales tax.
-									if((float)$product[$this->Isotope->Store->priceField] >= 175)
-									{
-										$fltTaxableAmount = (float)$product[$this->Isotope->Store->priceField] - 175;
-										$fltSalesTax += (($fltTaxableAmount * $arrRates[$product['tax_class']]['rate'] / 100) * $product['quantity_requested']);
-									}else{
-										//fallback if the price is below to standard sales tax.
-										$fltTaxableAmount = (float)$product[$this->Isotope->Store->priceField] - 175;
-										$fltSalesTax += (($fltTaxableAmount * $arrRates[$product['tax_class']]['rate'] / 100) * $product['quantity_requested']);
-									}
-															
-									break;
-									
-								case '3':	//because tax class 2 is exempt in Kolbo.
-								default:
-									break;			
-							}
-							
-							$blnAlreadyCalculatedTax = true;
-						}
-					} //end if($product['tax_class'])
-				} //end foreach($arrAddresses)
-			}
-			
-			return $fltSalesTax;
-//			$this->arrTaxInfo[] = array
-//			(
-//				'class'			=> 'Sales Tax',
-//				'total'			=> number_format($fltSalesTax, 2)
-//			);
-//			
-//			return $arrTaxInfo;
-		}
-	}
-*/
 	
 	
 	/**
@@ -1132,17 +870,12 @@ class IsotopeCart extends Model
 		
 		$arrOptions = deserialize($objProductOptions->product_options);
 		
-		//echo $intProductId . '<br /><br />';
-		
-		//var_dump($arrOptions);
-		
 		if(is_array($arrOptions) && strlen(implode('',$arrOptions)))
 		{	
 			return true;
 		}
 		
 		return false;
-					
 	}
 }
 
