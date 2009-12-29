@@ -351,43 +351,25 @@ class tl_payment_modules extends Backend
 	
 	public function getAllowedCCTypes(DataContainer $dc)
 	{
-		$arrReturn = array();
-		
-		$objModuleType = $this->Database->prepare("SELECT * FROM tl_payment_modules WHERE id=?")->execute($dc->id);
-		
+		$objModuleType = $this->Database->prepare("SELECT * FROM tl_payment_modules WHERE id=?")->limit(1)->execute($dc->id);
 		
 		if(!$objModuleType->numRows)
-		{
-		
 			return array();
-		}
 		
 		$strClass = $GLOBALS['ISO_PAY'][$objModuleType->type];
 		
 		if(!strlen($strClass) || !$this->classFileExists($strClass))
-		{
-
 			return array();
-		}
 		
-		try
+		$arrCCTypes = array();
+		$objModule = new $strClass($objModuleType->fetchAssoc());
+			
+		foreach($objModule->getAllowedCCTypes() as $type)
 		{
-			$objModule = new $strClass($objModuleType->fetchAssoc());
-			
-			$arrCCTypes = $objModule->getAllowedCCTypes();
-			
-			foreach($arrCCTypes as $type)
-			{
-				$arrReturn[$type] = $GLOBALS['TL_LANG']['PAY']['CCT'][$objModuleType->type][$type];
-			}
-			
-			return $arrReturn;
+			$arrCCTypes[$type] = $GLOBALS['TL_LANG']['CCT'][$type];
 		}
-		catch (Exception $e) {}
-		
-		return array();
-		
-	
+			
+		return $arrCCTypes;
 	}
 	
 	public function getOrderStatus($dc)
