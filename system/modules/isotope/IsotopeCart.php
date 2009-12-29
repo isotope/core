@@ -429,6 +429,17 @@ class IsotopeCart extends Model
 		return false;
 	}
 	
+	
+	/**
+	 * Also delete cart items when dropping this cart.
+	 */
+	public function delete()
+	{
+		$this->Database->prepare("DELETE FROM tl_cart_items WHERE pid=?")->execute($this->id);
+		
+		return parent::delete();
+	}
+	
 
 	/**
 	 * Fetch products from database.
