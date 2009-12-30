@@ -241,12 +241,14 @@ $GLOBALS['TL_LANG']['MSC']['new_to_old'] = 'new to old';
 $GLOBALS['TL_LANG']['ISO']['productSingle']		= '1 Product';
 $GLOBALS['TL_LANG']['ISO']['productMultiple']	= '%s Products';
 
-$GLOBALS['TL_LANG']['ISO']['shipping_address_message'] = 'Enter your shipping information or select an existing address.';
-$GLOBALS['TL_LANG']['ISO']['billing_address_message'] = 'Enter your billing information or select an existing address.';
+$GLOBALS['TL_LANG']['ISO']['shipping_address_message']	= 'Enter your shipping information or select an existing address.';
+$GLOBALS['TL_LANG']['ISO']['billing_address_message']	= 'Enter your billing information or select an existing address.';
 $GLOBALS['TL_LANG']['ISO']['billing_address_guest_message'] = 'Enter your billing information';
-$GLOBALS['TL_LANG']['ISO']['shipping_method_message'] = 'Select a shipping method.';
-$GLOBALS['TL_LANG']['ISO']['payment_method_message'] = 'Enter your payment information.';
-$GLOBALS['TL_LANG']['ISO']['order_review_message'] = 'Review and confirm your order details.';
+$GLOBALS['TL_LANG']['ISO']['shipping_method_message']	= 'Select a shipping method.';
+$GLOBALS['TL_LANG']['ISO']['shipping_method_missing']	= 'Please select a shipping method.';
+$GLOBALS['TL_LANG']['ISO']['payment_method_message']	= 'Enter your payment information.';
+$GLOBALS['TL_LANG']['ISO']['payment_method_missing']	= 'Please select a payment method.';
+$GLOBALS['TL_LANG']['ISO']['order_review_message']		= 'Review and confirm your order details.';
 
 $GLOBALS['TL_LANG']['ISO']['checkout_address']				= 'Address';
 $GLOBALS['TL_LANG']['ISO']['checkout_shipping']				= 'Shipping';
