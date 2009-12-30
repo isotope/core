@@ -975,7 +975,7 @@ abstract class ModuleIsotopeBase extends Module
 			
 		$strOptionValues = join(',', $arrOptionList);
 
-		$objData = $this->Database->prepare("SELECT id, " . $strOptionValues . ", price FROM tl_product_data WHERE pid=?")
+		$objData = $this->Database->prepare("SELECT id, " . $strOptionValues . ", price FROM tl_product_data WHERE pid=? AND published='1'")
 								  ->execute($intPid);
 		
 		if($objData->numRows < 1)
