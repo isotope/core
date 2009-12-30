@@ -410,6 +410,8 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	 			$objLastModule = $objModule;
 			}
 		}
+		
+		$objTemplate = new FrontendTemplate($this->strStepTemplateBaseName . 'shipping_method');
 				
 		if(!count($arrModules))
 		{			
@@ -429,12 +431,15 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			$this->Cart->Shipping = $objLastModule;
 			$_SESSION['CHECKOUT_DATA']['shipping']['module'] = $this->Cart->Shipping->id;
 		}
-		/*elseif (!$this->Cart->hasShipping)
-		{			
+		elseif (!$this->Cart->hasShipping)
+		{
+			if (count($_POST))
+			{
+				$objTemplate->error = $GLOBALS['TL_LANG']['ISO']['shipping_method_missing'];
+			}
+			
 			$this->doNotSubmit = true;
-		}*/
-
-		$objTemplate = new FrontendTemplate($this->strStepTemplateBaseName . 'shipping_method');
+		}
 		
 		$objTemplate->headline = $GLOBALS['TL_LANG']['ISO']['shipping_method'];
 		$objTemplate->message = $GLOBALS['TL_LANG']['ISO']['shipping_method_message'];
@@ -504,6 +509,8 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			}
 		}
 		
+		$objTemplate = new FrontendTemplate($this->strStepTemplateBaseName . 'payment_method');
+		
 		if(!count($arrModules))
 		{
 			$this->doNotSubmit = true;
@@ -524,10 +531,13 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		}
 		elseif (!$this->Cart->hasPayment)
 		{
-			//$this->doNotSubmit = true;
+			if (count($_POST))
+			{
+				$objTemplate->error = $GLOBALS['TL_LANG']['ISO']['payment_method_missing'];
+			}
+			
+			$this->doNotSubmit = true;
 		}
-		
-		$objTemplate = new FrontendTemplate($this->strStepTemplateBaseName . 'payment_method');
 
 		$objTemplate->headline = $GLOBALS['TL_LANG']['ISO']['payment_method'];
 		$objTemplate->message = $GLOBALS['TL_LANG']['ISO']['payment_method_message'];
