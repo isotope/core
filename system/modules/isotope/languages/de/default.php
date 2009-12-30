@@ -130,6 +130,7 @@ $GLOBALS['TL_LANG']['ISO']['payment_method']			= 'Zahlungsart';
 $GLOBALS['TL_LANG']['ISO']['order_conditions']			= 'AGB akzeptieren';
 $GLOBALS['TL_LANG']['ISO']['order_review']				= 'Bestellübersicht';
 $GLOBALS['TL_LANG']['ISO']['changeCheckoutInfo']		= 'Ändern';
+$GLOBALS['TL_LANG']['ISO']['pay_with_paypal']			= array('Mit PayPal bezahlen', 'Sie sollten nun automatisch zur PayPal Webseite weitergeleitet werden. Falls Sie nicht weitergeleitet werden, klicken Sie bitte auf "Jetzt bezahlen".', 'Jetzt bezahlen');
 
 
 /**

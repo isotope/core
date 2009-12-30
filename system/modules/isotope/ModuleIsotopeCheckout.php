@@ -174,10 +174,22 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			if ($step == $this->strCurrentStep)
 				break;
 		}
-				
+		
+		if ($this->strCurrentStep == 'process')
+		{
+			$strBuffer = $this->Cart->hasPayment ? $this->Cart->Payment->checkoutForm() : false;
+			
+			if ($strBuffer === false)
+			{
+				$this->redirect($this->addToUrl('step=complete'));
+			}
+			
+			$this->Template->showForm = false;
+			$this->doNotSubmit = true;
+		}
+		
 		if ($this->strCurrentStep == 'complete')
 		{
-			
 			$strBuffer = $this->Cart->Payment->processPayment();
 				
 			if ($strBuffer === true)
@@ -231,7 +243,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		// Show "confirm order" button if this is the last step
 		elseif (array_search($this->strCurrentStep, $arrStepKeys) === (count($arrStepKeys)-1))
 		{
-			$this->Template->action = $this->addToUrl('step=complete');
+			$this->Template->action = $this->addToUrl('step=process');
 			$this->Template->nextClass = 'confirm';
 			$this->Template->nextLabel = specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']);
 		}
@@ -587,15 +599,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 		$objTemplate->headline = $GLOBALS['TL_LANG']['ISO']['order_review'];
 		$objTemplate->message = $GLOBALS['TL_LANG']['ISO']['order_review_message'];
-		
-		$strForm = $this->Cart->hasPayment ? $this->Cart->Payment->checkoutForm() : '';
-
-		if ($strForm !== false)
-		{
-			$this->Template->showForm = false;
-		}
-		
-		
+				
 		$arrProductData = array();
 		$arrProducts = $this->Cart->getProducts();
 		
@@ -631,7 +635,6 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		$objTemplate->info = $this->getCheckoutInfo();
 		$objTemplate->products = $arrProductData;
 		$objTemplate->surcharges = $arrSurcharges;
-		$objTemplate->action = ampersand($this->Environment->base . $this->addToUrl('step=complete'), true); // FIXME: this is not nessessary/wanted.
 		$objTemplate->edit_info = $GLOBALS['TL_LANG']['ISO']['changeCheckoutInfo'];
 		$objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
 		$objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
@@ -639,7 +642,6 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		$objTemplate->subTotalPrice = $this->generatePrice($this->Cart->subTotal);
 		$objTemplate->grandTotalPrice = $this->generatePrice($this->Cart->grandTotal, 'stpl_total_price');
 		$objTemplate->conditions = $this->getOrderConditionsInterface($blnReview);
-		$objTemplate->checkoutForm = $strForm;
 		
 		return $objTemplate->parse();
 	}
