@@ -743,3 +743,7 @@ CREATE TABLE `tl_iso_mail_content` (
   KEY `pid` (`pid`),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+
+-- PRODUCT ATTRIBUTES START --
+-- PRODUCT ATTRIBUTES STOP --
+

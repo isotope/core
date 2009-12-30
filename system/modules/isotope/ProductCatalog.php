@@ -38,16 +38,16 @@ class ProductCatalog extends Backend
 
 	protected $sqlDef = array
 	(
-		'integer'        => "int(10) NULL default NULL",
-		'decimal'       => "double NULL default NULL",
+		'integer'		=> "int(10) NULL default NULL",
+		'decimal'		=> "double NULL default NULL",
 		'shorttext'		=> "varchar(128) NOT NULL default ''",
-		'text'          => "varchar(255) NOT NULL default ''",
-		'longtext'      => "text NULL",
-		'datetime'		=>	"int(10) unsigned NOT NULL default '0'",
-		'select'        => "int(10) NOT NULL default 0",
-		'checkbox'      => "char(1) NOT NULL default ''",
+		'text'			=> "varchar(255) NOT NULL default ''",
+		'longtext'		=> "text NULL",
+		'datetime'		=> "int(10) unsigned NOT NULL default '0'",
+		'select'		=> "varchar(255) NOT NULL default ''",
+		'checkbox'		=> "char(1) NOT NULL default ''",
 		'options'		=> "text NULL",
-		'file'          => "text NULL",
+		'file'			=> "text NULL",
 		'media'			=> "blob NULL",
 	);
 	
@@ -841,6 +841,9 @@ class ProductCatalog extends Backend
 		$fieldType = $objField->type ? $objField->type : 'text';
 		$fieldName = $objField->field_name;
 		
+		$this->import('IsotopeDatabase');
+		$this->IsotopeDatabase->update($fieldName, $this->sqlDef[$fieldType]);
+		
 		if ($this->Database->fieldExists($fieldName, 'tl_product_data'))
 		{
 			if ($objField->field_name != $varValue)
@@ -887,6 +890,8 @@ class ProductCatalog extends Backend
 		
 		$statement = sprintf($this->createColumnStatement, $varValue, $this->sqlDef[$fieldType]);
 		
+		$this->import('IsotopeDatabase');
+		$this->IsotopeDatabase->update($fieldName, $this->sqlDef[$fieldType]);
 				
 		$this->Database->execute($statement);
 		
@@ -947,6 +952,9 @@ class ProductCatalog extends Backend
 			if ($varValue != $fieldType)
 			{
 				$this->Database->execute(sprintf($this->createColumnStatement, $fieldName, $this->sqlDefColumn[$varValue]));
+				
+				$this->import('IsotopeDatabase');
+				$this->IsotopeDatabase->update($fieldName, $this->sqlDef[$fieldType]);
 			}
 		}
 		
