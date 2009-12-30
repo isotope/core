@@ -266,6 +266,7 @@ $GLOBALS['TL_LANG']['ISO']['cc_num']						= 'Credit Card Number';
 $GLOBALS['TL_LANG']['ISO']['cc_type']						= 'Credit Card Type';
 $GLOBALS['TL_LANG']['ISO']['cc_exp']						= 'Credit Card Expiration (mm/yy)';
 $GLOBALS['TL_LANG']['ISO']['cc_ccv']						= 'CCV Number (3 or 4 digit code)';
+$GLOBALS['TL_LANG']['ISO']['pay_with_paypal']				= array('Pay with PayPal', 'You will be redirected to the PayPal payment website. If you are not automatically redirected, please click on the "Pay now" button.', 'Pay now');
 
 
 /**
