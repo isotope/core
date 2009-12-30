@@ -154,7 +154,7 @@ class VariantsWizard extends Widget
 			
 						
 			$arrVariantData = array(
-				'published'		=> $arrEnabled,
+				'published'			=> $arrEnabled,
 				'sku'				=> $arrSku,
 				'stock_quantity'  	=> $arrQuantity,
 				'price'				=> $arrPrice,
@@ -167,7 +167,7 @@ class VariantsWizard extends Widget
 			{
 				foreach($arrEnabled as $k=>$v)
 				{
-					$arrInputValues[$k]['published'] = $v;
+					$arrInputValues[$v]['published'] = '1';
 				}
 			}
 			
@@ -207,7 +207,6 @@ class VariantsWizard extends Widget
 						
 			/*var_dump($arrSubProductData);
 			exit;*/
-			
 			$this->saveSubProductData($arrInputValues);
 		}
 		
@@ -342,6 +341,7 @@ class VariantsWizard extends Widget
     
 	protected function saveSubProductData($arrData)
 	{
+		
 		/*
 		$arrSubProductData['visible'];
 		$arrSubProductData['sku'];
