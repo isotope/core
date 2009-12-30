@@ -243,7 +243,6 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		// Show "confirm order" button if this is the last step
 		elseif (array_search($this->strCurrentStep, $arrStepKeys) === (count($arrStepKeys)-1))
 		{
-			$this->Template->action = $this->addToUrl('step=process');
 			$this->Template->nextClass = 'confirm';
 			$this->Template->nextLabel = specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']);
 		}
@@ -276,8 +275,16 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		}
 		else
 		{
-			$strKey = array_search($this->strCurrentStep, $arrSteps);
-			$this->redirect($this->addToUrl('step='.$arrSteps[($strKey+1)]));
+			$intKey = array_search($this->strCurrentStep, $arrSteps) + 1;
+			
+			if ($intKey == count($arrSteps))
+			{
+				$this->redirect($this->addToUrl('step=process'));
+			}
+			else
+			{
+				$this->redirect($this->addToUrl('step='.$arrSteps[$intKey]));
+			}
 		}
 	}
 	
