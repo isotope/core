@@ -38,13 +38,13 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 		'enableVersioning'            => true,
 		'onload_callback'             => array
 		(
-			array('tl_product_attributes', 'loadAttributes'),
+//			array('tl_product_attributes', 'loadAttributes'),
 			array('tl_product_attributes', 'checkPermission'),
 		),
 		'ondelete_callback'			  => array
 		(
 			array('tl_product_attributes', 'checkFieldLock')
-		)
+		),
 	),
 	
 	// List
@@ -355,7 +355,6 @@ class tl_product_attributes extends Backend
 		}
 		
 		return $arrGroups;
-	
 	}
 
 
@@ -386,22 +385,15 @@ class tl_product_attributes extends Backend
 	}
 	
 
-	/**
-	 * loadAttributes function.
-	 * 
-	 * @access public
-	 * @param object DataContainer $dc
-	 * @return void
-	 */
+/*
 	public function loadAttributes(DataContainer $dc)
 	{
 		$this->loadDataContainer('tl_product_data');
 		$this->import('ProductCatalog');
 		
 		$this->ProductCatalog->loadProductCatalogDCA('tl_product_data');
-			
 	}
-	
+*/
 	
 	
 	public function checkPermission($dc)
