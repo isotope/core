@@ -400,7 +400,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				$arrModules[] = sprintf('<input id="ctrl_shipping_module_%s" type="radio" name="shipping[module]" value="%s"%s /> <label for="ctrl_shipping_module_%s">%s: %s</label>%s%s',
 										 $objModule->id,
 										 $objModule->id,
-										 ($this->Cart->Shipping->id == $objModule->id ? ' checked="checked"' : ''),
+										 ($this->Cart->Shipping->id == $objModule->id || $objModules->numRows==1 ? ' checked="checked"' : ''),
 										 $objModule->id,
 	 									 $objModule->label,
 	 									 $this->Isotope->formatPriceWithCurrency($objModule->price), 
@@ -496,7 +496,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				$arrModules[] = sprintf('<input id="ctrl_payment_module_%s" type="radio" name="payment[module]" value="%s"%s /> <label for="ctrl_payment_module_%s">%s</label>',
 										 $objModule->id,
 										 $objModule->id,
-										 ($this->Cart->Payment->id == $objModule->id ? ' checked="checked"' : ''),
+										 ($this->Cart->Payment->id == $objModule->id || $objModules->numRows==1 ? ' checked="checked"' : ''),
 										 $objModule->id,
 	 									 $objModule->label);
 	 									 
