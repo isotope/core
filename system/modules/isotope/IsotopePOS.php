@@ -386,7 +386,7 @@ class IsotopePOS extends Backend
 		
 		$objTemplate->logoImage = strlen($strInvoiceLogo) ? $this->Environment->base . $strInvoiceLogo : false;
 		
-		$objTemplate->invoiceTitle = $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] . '_' . $objOrder->id . '_' . time();
+		$objTemplate->invoiceTitle = $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] . ' ' . $objOrder->id . ' - ' . date('m-d-Y g:i', $objOrder->tstamp);
 		
 		// Article reader
 		$arrPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->limit(1)->execute($this->jumpTo)->fetchAssoc();

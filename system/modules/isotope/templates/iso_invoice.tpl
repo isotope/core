@@ -99,7 +99,7 @@
 	<table id="header" cellpadding="5" cellspacing="0" border="0" width="100%">
 		<tr>
 		<td id="logo"><img src="<?php echo $this->logoImage; ?>" /></td>
-		<td style="text-align:right;"><p style="font-size:14px; margin-top:0px; margin-bottom:10px; padding:0px;"><?php echo $this->invoiceTitle; ?></p></td>
+		<td style="text-align:right;"><p style="font-size:1.2em; margin-top:0px; margin-bottom:10px; padding:0px;"><?php echo $this->invoiceTitle; ?></p></td>
 		</tr>
 	</table>
 	<?php endif; ?>
@@ -115,27 +115,6 @@
 	<div class="clear">&nbsp;</div>
 	
 	<table cellspacing="0" cellpadding="0" summary="Order items">
-		<tfoot>
-			<tr class="subtotal foot_first">
-				<td class="col_first name" colspan="2"><?php echo $this->subTotalLabel; ?></td>
-				<td class="price">&nbsp;</td>
-				<td class="price total"><?php echo $this->subTotalPrice; ?></td>
-				<td class="col_last tax">&nbsp;</td>
-			</tr>
-	<?php if (is_array($this->surcharges)): foreach( $this->surcharges as $surcharge ): ?>
-			<tr>
-				<td class="col_first name" colspan="2"><?php echo $surcharge['label']; ?></td>
-				<td class="price"><?php echo $surcharge['price']; ?></td>
-				<td class="price total"><?php echo $surcharge['total_price']; ?></td>
-				<td class="col_last tax"><?php echo $surcharge['tax_id']; ?></td>
-			</tr>
-	<?php endforeach; endif; ?>
-			<tr class="grandtotal foot_last">
-				<td class="col_first name" colspan="2"><?php echo $this->grandTotalLabel; ?></td>
-				<td class="price total" colspan="2"><?php echo $this->grandTotal; ?></td>
-				<td class="col_last tax">&nbsp;</td>
-			</tr>
-		</tfoot>
 		<tbody>
 	<?php foreach( $this->items as $item ): ?>
 			<tr>
@@ -156,6 +135,28 @@
 		    	<td class="col_4 col_last tax"><?php echo $product['tax_id']; ?></td>
 			</tr>
 	<?php endforeach; ?>
+			<tr class="subtotal foot_first">
+				<td class="col_0"></td>
+				<td class="col_1 name" colspan="2"><?php echo $this->subTotalLabel; ?></td>
+				<td class="col_2 price">&nbsp;</td>
+				<td class="col_3 price total"><?php echo $this->subTotalPrice; ?></td>
+				<td class="col_4 col_last tax">&nbsp;</td>
+			</tr>
+	<?php if (is_array($this->surcharges)): foreach( $this->surcharges as $surcharge ): ?>
+			<tr>
+				<td class="col_0"></td>
+				<td class="col_first name" colspan="2"><?php echo $surcharge['label']; ?></td>
+				<td class="price"><?php echo $surcharge['price']; ?></td>
+				<td class="price total"><?php echo $surcharge['total_price']; ?></td>
+				<td class="col_last tax"><?php echo $surcharge['tax_id']; ?></td>
+			</tr>
+	<?php endforeach; endif; ?>
+			<tr class="grandtotal foot_last">
+				<td class="col_0"></td>
+				<td class="col_first name" colspan="2"><?php echo $this->grandTotalLabel; ?></td>
+				<td class="price total" colspan="2"><?php echo $this->grandTotal; ?></td>
+				<td class="col_last tax">&nbsp;</td>
+			</tr>
 		</tbody>
 	</table>
 	
