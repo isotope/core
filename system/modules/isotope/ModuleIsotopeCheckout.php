@@ -307,11 +307,6 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	}
 	
 	
-		
-	
-	
-
-	
 	protected function getBillingAddressInterface($blnReview=false)
 	{
 		if ($blnReview)
@@ -335,6 +330,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 		return $objTemplate->parse();
 	}
+	
 	
 	protected function getShippingAddressInterface($blnReview=false)
 	{
@@ -366,9 +362,9 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		return $objTemplate->parse();
 	}
 	
+	
 	protected function getShippingModulesInterface($blnReview=false)
 	{
-		
 		if ($blnReview)
 		{
 			if (!$this->Cart->hasShipping)
@@ -463,7 +459,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		$objTemplate->headline = $GLOBALS['TL_LANG']['ISO']['shipping_method'];
 		$objTemplate->message = $GLOBALS['TL_LANG']['ISO']['shipping_method_message'];
 		$objTemplate->shippingMethods = $arrModules;
-		
+
 		return $objTemplate->parse();	
 	}
 	
@@ -516,13 +512,21 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	 			{
 	 				$this->Cart->Payment = $objModule;
 	 			}
+	 			
+	 			// Custom payment fields for module
+	 			$strForm = $objModule->paymentForm($this);
+	 			if (strlen($strForm))
+	 			{
+	 				$strForm = '<div class="payment_data" id="payment_data_' . $objModule->id . '">' . $strForm . '</div>';
+	 			}
 							
-				$arrModules[] = sprintf('<input id="ctrl_payment_module_%s" type="radio" name="payment[module]" value="%s"%s /> <label for="ctrl_payment_module_%s">%s</label>',
+				$arrModules[] = sprintf('<input id="ctrl_payment_module_%s" type="radio" class="radio payment_module" name="payment[module]" value="%s"%s /> <label for="ctrl_payment_module_%s">%s</label>%s',
 										 $objModule->id,
 										 $objModule->id,
 										 ($this->Cart->Payment->id == $objModule->id || $objModules->numRows==1 ? ' checked="checked"' : ''),
 										 $objModule->id,
-	 									 $objModule->label);
+	 									 $objModule->label,
+	 									 $strForm);
 	 									 
 	 			$objLastModule = $objModule;
 			}

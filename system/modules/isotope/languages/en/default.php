@@ -61,10 +61,11 @@ $GLOBALS['TL_LANG']['ERR']['isoLoginRequired'] = 'You must be logged in to check
 
 //Checkout Errors
 $GLOBALS['TL_LANG']['ERR']['specifyBillingAddress'] = 'A billing address was not fuond.  Please specify a billing address.';
-$GLOBALS['TL_LANG']['ERR']['cc_num']				= 'Please provide a credit card number.';
+$GLOBALS['TL_LANG']['ERR']['cc_num']				= 'Please provide a valid credit card number.';
 $GLOBALS['TL_LANG']['ERR']['cc_type']				= 'Please select a credit card type.';
 $GLOBALS['TL_LANG']['ERR']['cc_exp']				= 'Please provide a credit card expiration date in the mm/yy format.';
 $GLOBALS['TL_LANG']['ERR']['cc_ccv']				= 'Please provide a card code verification number (3 or 4 digits found on the front or back of the card).';
+$GLOBALS['TL_LANG']['ERR']['cc_match']				= 'Your credit card number does not match the selected credit card type.';
 
 
 //Address Book Errors

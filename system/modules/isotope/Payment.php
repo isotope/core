@@ -58,6 +58,12 @@ abstract class Payment extends Frontend
 	{
 		parent::__construct();
 
+		$arrRow['allowed_cc_types'] = deserialize($arrRow['allowed_cc_types']);
+		if (is_array($arrRow['allowed_cc_types']))
+		{
+			$arrRow['allowed_cc_types'] = array_intersect($this->getAllowedCCTypes(), $arrRow['allowed_cc_types']);
+		}
+		
 		$this->arrData = $arrRow;
 	}
 	
@@ -179,6 +185,24 @@ abstract class Payment extends Frontend
 	
 	
 	/**
+	 * Return a html form for payment data or an empty string.
+	 *
+	 * The input fields should be from array "payment" including the payment module ID.
+	 * Example: <input type="text" name="payment[$this->id][cc_num]" />
+	 * Post-Value "payment" is automatically stored in $_SESSION['CHECKOUT_DATA']['payment']
+	 * You can set $objCheckoutModule->doNotSubmit = true if post is sent but data is invalid.
+	 * 
+	 * @access	public
+	 * @param	object	The checkout module object. 
+	 * @return	string
+	 */
+	public function paymentForm($objCheckoutModule)
+	{
+		return '';
+	}
+	
+	
+	/**
 	 * Return a html form for checkout or false.
 	 * 
 	 * @access public
@@ -202,7 +226,7 @@ abstract class Payment extends Frontend
 	/**
 	 * Return the checkout review information.
 	 *
-	 * Use this to return custom checkout information about this shipping module.
+	 * Use this to return custom checkout information about this payment module.
 	 * Example: parial information about the used credit card.
 	 *
 	 * @access public
@@ -211,6 +235,71 @@ abstract class Payment extends Frontend
 	public function checkoutReview()
 	{
 		return $this->label;
+	}
+	
+	
+	/**
+	 * Validate a credit card number and return the card type.
+	 * http://regexlib.com/UserPatterns.aspx?authorid=7128ecda-5ab1-451d-98d9-f94d2a453b37
+	 *
+	 * @access	protected
+	 * @param	string
+	 * @return	mixed
+	 */
+	protected function validateCreditCard($strNumber)
+	{
+		$strNumber = preg_replace('@[^0-9]+@', '', $strNumber);
+		
+		if (preg_match('@(^4\d{12}$)|(^4[0-8]\d{14}$)|(^(49)[^013]\d{13}$)|(^(49030)[0-1]\d{10}$)|(^(49033)[0-4]\d{10}$)|(^(49110)[^12]\d{10}$)|(^(49117)[0-3]\d{10}$)|(^(49118)[^0-2]\d{10}$)|(^(493)[^6]\d{12}$)@', $strNumber))
+		{
+			return 'visa';
+		}
+		elseif (preg_match('@(^(5[0678])\d{11,18}$) |(^(6[^0357])\d{11,18}$) |(^(601)[^1]\d{9,16}$) |(^(6011)\d{9,11}$) |(^(6011)\d{13,16}$) |(^(65)\d{11,13}$) |(^(65)\d{15,18}$) |(^(633)[^34](\d{9,16}$)) |(^(6333)[0-4](\d{8,10}$)) |(^(6333)[0-4](\d{12}$)) |(^(6333)[0-4](\d{15}$)) |(^(6333)[5-9](\d{8,10}$)) |(^(6333)[5-9](\d{12}$)) |(^(6333)[5-9](\d{15}$)) |(^(6334)[0-4](\d{8,10}$)) |(^(6334)[0-4](\d{12}$)) |(^(6334)[0-4](\d{15}$)) |(^(67)[^(59)](\d{9,16}$)) |(^(6759)](\d{9,11}$)) |(^(6759)](\d{13}$)) |(^(6759)](\d{16}$)) |(^(67)[^(67)](\d{9,16}$)) |(^(6767)](\d{9,11}$)) |(^(6767)](\d{13}$)) |(^(6767)](\d{16}$))@', $strNumber))
+		{
+			return 'maestro';
+		}
+		elseif (preg_match('@^5[1-5]\d{14}$@', $strNumber))
+		{
+			return 'mc';
+		}
+		elseif (preg_match('@(^(6011)\d{12}$)|(^(65)\d{14}$)@', $strNumber))
+		{
+			return 'discover';
+		}
+		elseif (preg_match('@(^3[47])((\d{11}$)|(\d{13}$))@', $strNumber))
+		{
+			return 'amex';
+		}
+		elseif (preg_match('@(^(6334)[5-9](\d{11}$|\d{13,14}$)) |(^(6767)(\d{12}$|\d{14,15}$))@', $strNumber))
+		{
+			return 'solo';
+		}
+		elseif (preg_match('@(^(49030)[2-9](\d{10}$|\d{12,13}$)) |(^(49033)[5-9](\d{10}$|\d{12,13}$)) |(^(49110)[1-2](\d{10}$|\d{12,13}$)) |(^(49117)[4-9](\d{10}$|\d{12,13}$)) |(^(49118)[0-2](\d{10}$|\d{12,13}$)) |(^(4936)(\d{12}$|\d{14,15}$)) |(^(564182)(\d{11}$|\d{13,14}$)) |(^(6333)[0-4](\d{11}$|\d{13,14}$)) |(^(6759)(\d{12}$|\d{14,15}$))@', $strNumber))
+		{
+			return 'switch';
+		}
+		elseif (preg_match('@(^(352)[8-9](\d{11}$|\d{12}$))|(^(35)[3-8](\d{12}$|\d{13}$))@', $strNumber))
+		{
+			return 'jcb';
+		}
+		elseif (preg_match('@(^(30)[0-5]\d{11}$)|(^(36)\d{12}$)|(^(38[0-8])\d{11}$)@', $strNumber))
+		{
+			return 'diners';
+		}
+		elseif (preg_match('@^(389)[0-9]{11}$@', $strNumber))
+		{
+			return 'cartblanche';
+		}
+		elseif (preg_match('@(^(2014)|^(2149))\d{11}$@', $strNumber))
+		{
+			return 'enroute';
+		}
+		elseif (preg_match('@(^(5[0678])\d{11,18}$)|(^(6[^05])\d{11,18}$)|(^(601)[^1]\d{9,16}$)|(^(6011)\d{9,11}$)|(^(6011)\d{13,16}$)|(^(65)\d{11,13}$)|(^(65)\d{15,18}$)|(^(49030)[2-9](\d{10}$|\d{12,13}$))|(^(49033)[5-9](\d{10}$|\d{12,13}$))|(^(49110)[1-2](\d{10}$|\d{12,13}$))|(^(49117)[4-9](\d{10}$|\d{12,13}$))|(^(49118)[0-2](\d{10}$|\d{12,13}$))|(^(4936)(\d{12}$|\d{14,15}$))@', $strNumber))
+		{
+			return 'ukdebit';
+		}
+		
+		return false;
 	}
 }
 
