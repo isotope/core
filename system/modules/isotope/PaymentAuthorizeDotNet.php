@@ -59,6 +59,32 @@ class PaymentAuthorizeDotNet extends Payment
 		
 		$fields = '';
 		
+		$arrSet['cart_id'] = $this->Cart->id;
+		
+		//Create a new order if one can't be found.
+		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")
+										   ->limit(1)
+										   ->execute($this->Cart->id);
+		
+		if(!$objOrder->numRows)
+		{
+
+			$objOrder = $this->Database->prepare("INSERT INTO tl_iso_orders %s")
+						   				->set($arrSet)
+						   				->execute();		
+						   		
+			$intOrderId = $objOrder->insertId;
+		}
+		else
+		{
+			$intOrderId = $objOrder->id;
+			
+			$this->Database->prepare("UPDATE tl_iso_orders %s WHERE id=?")
+						   ->set($arrSet)
+						   ->execute($intOrderId);
+		}
+		
+		
 		//for Authorize.net - this would be where to handle logging response information from the server.
 		$authnet_values = array
 		(
@@ -73,7 +99,7 @@ class PaymentAuthorizeDotNet extends Payment
 			"x_tran_key"						=> $this->authorize_trans_key,
 			"x_card_num"						=> $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_num'],
 			"x_exp_date"						=> $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_exp'],
-			"x_description"						=> "Order Number " . $objDc->id,
+			"x_description"						=> "Order Number " . $intOrderId,
 			"x_amount"							=> $this->Cart->grandTotal,
 			"x_first_name"						=> $this->Cart->billingAddress['firstname'],
 			"x_last_name"						=> $this->Cart->billingAddress['lastname'],
@@ -147,26 +173,20 @@ class PaymentAuthorizeDotNet extends Payment
 				$arrPaymentData['cc-last-four'] = substr($strCCNum, strlen($strCCNum) - 4, 4);
 				
 				//commit the transaction id and cart id to a new order.
-				$arrSet['payment_data'] = serialize($arrPaymentData);
+				$arrSet['payment_data'] = serialize($arrPaymentData);								
 				
-				$arrSet['cart_id'] = $this->Cart->id;
-
-				$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")
-										   ->limit(1)
-										   ->execute($this->Cart->id);
-				
-				if(!$objOrder->numRows)
+				/*if(!$objOrder->numRows)
 				{
 					$this->Database->prepare("INSERT INTO tl_iso_orders %s")
 								   ->set($arrSet)
 								   ->execute();				
 				}
 				else
-				{
+				{*/
 					$this->Database->prepare("UPDATE tl_iso_orders %s WHERE id=?")
 								   ->set($arrSet)
 								   ->execute($objOrder->id);
-				}
+				//}
 				
 				return true;
 				break;
