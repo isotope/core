@@ -185,6 +185,9 @@ class PaymentAuthorizeDotNet extends Payment
 				
 			default:
 				$_SESSION['CHECKOUT_DATA']['payment'][$this->id]['error'] = $arrResponses['reason'];
+				
+				//TODO: store the reason for a failure for later in case the payment info can be corrected.
+				
 				$this->redirect($this->addToUrl('step=payment'));
 				break;
 		}
