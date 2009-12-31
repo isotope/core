@@ -96,7 +96,7 @@ class PaymentAuthorizeDotNet extends Payment
 		}
 		
 		$objRequest = new Request();
-		$objRequest->send('https://' . ($this->debug ? 'text' : 'secure') . '.authorize.net/gateway/transact.dll', $fields, 'post');
+		$objRequest->send('https://secure.authorize.net/gateway/transact.dll', $fields, 'post');
 		
 		$arrResponses = $this->handleResponse($objRequest->response);
 		
@@ -112,7 +112,7 @@ class PaymentAuthorizeDotNet extends Payment
 
 		$arrResponses = $this->handleResponse($resp);
 */
-
+		
 		foreach(array_keys($arrResponses) as $key)
 		{
 			$arrReponseLabels[strtolower(standardize($key))] = $key;
