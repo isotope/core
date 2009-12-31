@@ -43,20 +43,10 @@ array_insert($GLOBALS['BE_MOD']['store'], 0, array
 	'product_manager' => array
 	(
 		'tables'					=> array('tl_product_data', 'tl_product_downloads', 'tl_product_categories'),
-		'icon'						=> 'system/modules/isotope/html/icon_pm.gif',
+		'icon'						=> 'system/modules/isotope/html/icon-products.gif',
 		'stylesheet'				=> 'system/modules/isotope/html/backend.css',
 		'javascript'				=> 'system/modules/isotope/html/isotope.js',
 		'import'					=> array('tl_product_data', 'importAssets'),
-	),
-	'product_type_manager' => array
-	(
-		'tables'					=> array('tl_product_types'),
-		'icon'						=> 'system/modules/isotope/html/cog_edit.png'
-	),
-	'attribute_manager' => array
-	(
-		'tables'					=> array('tl_product_attributes'),
-		'icon'						=> 'system/modules/isotope/html/icon_pa.gif',
 	),
 	'orders' => array
 	(
@@ -89,12 +79,22 @@ array_insert($GLOBALS['BE_MOD']['store'], 0, array
 	'iso_mail' => array
 	(
 		'tables'					=> array('tl_iso_mail', 'tl_iso_mail_content'),
-		'icon'						=> 'system/modules/isotope/html/icon_mail.png',
+		'icon'						=> 'system/modules/isotope/html/icon-mail.gif',
+	),
+	'product_type_manager' => array
+	(
+		'tables'					=> array('tl_product_types'),
+		'icon'						=> 'system/modules/isotope/html/icon-types.gif'
+	),
+	'attribute_manager' => array
+	(
+		'tables'					=> array('tl_product_attributes'),
+		'icon'						=> 'system/modules/isotope/html/icon-attributes.gif',
 	),
 	'store_configuration' => array
 	(
 		'tables'					=> array('tl_store'),
-		'icon'						=> 'system/modules/isotope/html/icon_iso.gif',
+		'icon'						=> 'system/modules/isotope/html/icon-store.gif',
 	),
 ));
 

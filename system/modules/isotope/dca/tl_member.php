@@ -41,7 +41,7 @@ $GLOBALS['TL_DCA']['tl_member']['list']['operations']['address_book'] = array
 (
 	'label'               => &$GLOBALS['TL_LANG']['tl_member']['address_book'],
 	'href'                => 'table=tl_address_book',
-	'icon'                => 'system/modules/isotope/html/addrBook.jpg'
+	'icon'                => 'system/modules/isotope/html/icon-addressbook.gif',
 );
 
 
