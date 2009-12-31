@@ -172,21 +172,13 @@ class PaymentAuthorizeDotNet extends Payment
 				
 				$arrPaymentData['cc-last-four'] = substr($strCCNum, strlen($strCCNum) - 4, 4);
 				
-				//commit the transaction id and cart id to a new order.
+				//commit the transaction id and last four of the credit cart to the order.
 				$arrSet['payment_data'] = serialize($arrPaymentData);								
 				
-				/*if(!$objOrder->numRows)
-				{
-					$this->Database->prepare("INSERT INTO tl_iso_orders %s")
-								   ->set($arrSet)
-								   ->execute();				
-				}
-				else
-				{*/
-					$this->Database->prepare("UPDATE tl_iso_orders %s WHERE id=?")
-								   ->set($arrSet)
-								   ->execute($objOrder->id);
-				//}
+
+				$this->Database->prepare("UPDATE tl_iso_orders %s WHERE id=?")
+							   ->set($arrSet)
+							   ->execute($intOrderId);
 				
 				return true;
 				break;
