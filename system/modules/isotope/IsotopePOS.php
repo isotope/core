@@ -92,8 +92,8 @@ class IsotopePOS extends Backend
 		
 							
 		$arrPaymentInfo = deserialize($arrOrderInfo['payment_data']);
-			
-		$this->fltOrderTotal = $arrPaymentInfo['totals']['grandTotal'];
+		
+		$this->fltOrderTotal = $arrOrderInfo['grandTotal'];
 		
 		
 		//Get the authorize.net configuration data			
@@ -119,6 +119,7 @@ class IsotopePOS extends Backend
 			$strMode = ($objAIMConfig->debug ? "test" : "secure");
 		}
 
+
 		if ($this->Input->post('FORM_SUBMIT') == 'mod_pos_terminal' && $arrPaymentInfo['x_trans_id']!=="0")
 		{
 			
@@ -131,24 +132,15 @@ class IsotopePOS extends Backend
 				"x_trans_id"						=> $arrPaymentInfo['x_trans_id'],
 				"x_amount"							=> number_format($this->fltOrderTotal, 2)
 			);
-			
+						
 			foreach( $authnet_values as $key => $value ) $fields .= "$key=" . urlencode( $value ) . "&";
 
-			$ch = curl_init(); 
-
-			###  Uncomment the line ABOVE for test accounts or BELOW for live merchant accounts
-			### $ch = curl_init("https://secure.authorize.net/gateway/transact.dll"); 
-			
-			curl_setopt($ch, CURLOPT_URL, sprintf('https://secure.authorize.net/gateway/transact.dll', $strMode)); 
-			curl_setopt($ch, CURLOPT_HEADER, 0); // set to 0 to eliminate header info from response
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // Returns response data instead of TRUE(1)
-			curl_setopt($ch, CURLOPT_POSTFIELDS, rtrim( $fields, "& " )); // use HTTP POST to send form data
-
-			#curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); // uncomment this line if you get no gateway response. ###
-			$resp = curl_exec($ch); //execute post and get results
-			curl_close ($ch);
-							
-			$arrResponses = $this->handleResponse($resp);
+					
+			$objRequest = new Request();
+			$objRequest->send('https://secure.authorize.net/gateway/transact.dll', $fields, 'post');
+		
+			$arrResponses = $this->handleResponse($objRequest->response);
+									
 
 			foreach(array_keys($arrResponses) as $key)
 			{
@@ -158,6 +150,26 @@ class IsotopePOS extends Backend
 			$objTemplate->fields = $this->generateResponseString($arrResponses, $arrReponseLabels);
 			
 			$objTemplate->headline = $this->generateModuleHeadline($arrResponses['transaction-status']) . ' - ' . $this->strReason;
+			
+			$arrPaymentInfo['authorize_response'] = $arrResponses['transaction-status'];
+			
+			switch($arrResponses['transaction-status'])
+			{
+				case 'Approved':					
+					$strPaymentInfo = serialize($arrPaymentInfo);
+					
+					$this->Database->prepare("UPDATE tl_iso_orders SET status='complete', payment_data=? WHERE id=?")
+								   ->execute($this->intOrderId, $strPaymentInfo);
+					break;
+				default:
+					$arrPaymentInfo['authorize_reason'] = $arrResponses['reason'];
+					$strPaymentInfo = serialize($arrPaymentInfo);
+					
+					$this->Database->prepare("UPDATE tl_iso_orders SET status='on_hold', payment_data=? WHERE id=?")
+								   ->execute($this->intOrderId, $strPaymentInfo);					
+					break;
+			
+			}
 			
 			$objTemplate->isConfirmation = true;
 			
