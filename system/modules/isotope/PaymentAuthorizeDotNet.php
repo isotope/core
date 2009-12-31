@@ -183,6 +183,7 @@ class PaymentAuthorizeDotNet extends Payment
 	public function paymentForm($objCheckoutModule)
 	{
 		$strBuffer = '';
+		$arrPayment = $this->Input->post('payment');
 		$arrCCTypes = deserialize($this->allowed_cc_types);
 		
 		$arrFields = array
@@ -228,7 +229,7 @@ class PaymentAuthorizeDotNet extends Payment
 			$objWidget = new $strClass($this->prepareForWidget($arrData, 'payment['.$this->id.']['.$field.']', $_SESSION['CHECKOUT_DATA']['payment'][$this->id][$field]));
 			
 			// Validate input
-			if ($this->Input->post('FORM_SUBMIT') == 'iso_mod_checkout_payment')
+			if ($this->Input->post('FORM_SUBMIT') == 'iso_mod_checkout_payment' && $arrPayment['module'] == $this->id)
 			{
 				$objWidget->validate();
 				
@@ -245,9 +246,8 @@ class PaymentAuthorizeDotNet extends Payment
 			$strBuffer .= $objWidget->parse();
 		}
 		
-		if ($this->Input->post('FORM_SUBMIT') == 'iso_mod_checkout_payment' && !$objCheckoutModule->doNotSubmit)
+		if ($this->Input->post('FORM_SUBMIT') == 'iso_mod_checkout_payment' && $arrPayment['module'] == $this->id && !$objCheckoutModule->doNotSubmit)
 		{
-			$arrPayment = $this->Input->post('payment');
 			$strCard = $this->validateCreditCard($arrPayment[$this->id]['cc_num']);
 			
 			if ($strCard === false)
