@@ -21,6 +21,7 @@
  * PHP version 5
  * @copyright  Winans Creative 2009
  * @author     Fred Bliss <fred@winanscreative.com>
+ * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
  
@@ -59,33 +60,10 @@ class PaymentAuthorizeDotNet extends Payment
 		
 		$fields = '';
 		
-		$arrSet['cart_id'] = $this->Cart->id;
+		// Get the current order, review page will create the data
+		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->execute($this->Cart->id);
 		
-		//Create a new order if one can't be found.
-		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")
-										   ->limit(1)
-										   ->execute($this->Cart->id);
-		
-		if(!$objOrder->numRows)
-		{
-
-			$objOrder = $this->Database->prepare("INSERT INTO tl_iso_orders %s")
-						   				->set($arrSet)
-						   				->execute();		
-						   		
-			$intOrderId = $objOrder->insertId;
-		}
-		else
-		{
-			$intOrderId = $objOrder->id;
-			
-			$this->Database->prepare("UPDATE tl_iso_orders %s WHERE id=?")
-						   ->set($arrSet)
-						   ->execute($intOrderId);
-		}
-		
-		
-		//for Authorize.net - this would be where to handle logging response information from the server.
+		// for Authorize.net - this would be where to handle logging response information from the server.
 		$authnet_values = array
 		(
 			"x_login"							=> $this->authorize_login,
@@ -99,7 +77,7 @@ class PaymentAuthorizeDotNet extends Payment
 			"x_tran_key"						=> $this->authorize_trans_key,
 			"x_card_num"						=> $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_num'],
 			"x_exp_date"						=> $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_exp'],
-			"x_description"						=> "Order Number " . $intOrderId,
+			"x_description"						=> "Order Number " . $objOrder->order_id,
 			"x_amount"							=> $this->Cart->grandTotal,
 			"x_first_name"						=> $this->Cart->billingAddress['firstname'],
 			"x_last_name"						=> $this->Cart->billingAddress['lastname'],
@@ -125,20 +103,7 @@ class PaymentAuthorizeDotNet extends Payment
 		$objRequest->send('https://secure.authorize.net/gateway/transact.dll', $fields, 'post');
 		
 		$arrResponses = $this->handleResponse($objRequest->response);
-		
-/*
-		$ch = curl_init(); 
-		curl_setopt($ch, CURLOPT_URL, ('https://secure.authorize.net/gateway/transact.dll'));
-		curl_setopt($ch, CURLOPT_HEADER, 0); // set to 0 to eliminate header info from response
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // Returns response data instead of TRUE(1)
-		curl_setopt($ch, CURLOPT_POSTFIELDS, rtrim( $fields, "& " )); // use HTTP POST to send form data
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); // uncomment this line if you get no gateway response. ###
-		$resp = curl_exec($ch); //execute post and get results
-		curl_close ($ch);
-
-		$arrResponses = $this->handleResponse($resp);
-*/
-		
+				
 		foreach(array_keys($arrResponses) as $key)
 		{
 			$arrReponseLabels[strtolower(standardize($key))] = $key;
@@ -152,8 +117,7 @@ class PaymentAuthorizeDotNet extends Payment
 		switch($arrResponses['transaction-status'])
 		{
 			case 'Approved':
-				$arrPaymentData = array();
-				$arrSet = array();
+				$arrPaymentData = deserialize($objOrder->payment_data, true);
 				
 				$this->response = 'successful';
 				
@@ -171,14 +135,8 @@ class PaymentAuthorizeDotNet extends Payment
 				$arrPaymentData['x_trans_id'] = $strTransactionId;
 				
 				$arrPaymentData['cc-last-four'] = substr($strCCNum, strlen($strCCNum) - 4, 4);
-				
-				//commit the transaction id and last four of the credit cart to the order.
-				$arrSet['payment_data'] = serialize($arrPaymentData);								
-				
 
-				$this->Database->prepare("UPDATE tl_iso_orders %s WHERE id=?")
-							   ->set($arrSet)
-							   ->execute($intOrderId);
+				$this->Database->prepare("UPDATE tl_iso_orders SET payment_data=? WHERE id=?")->execute(serialize($arrPaymentData), $objOrder->id);
 				
 				return true;
 				break;
