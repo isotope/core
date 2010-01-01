@@ -120,6 +120,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		$this->Template->action = ampersand($this->Environment->request, ENCODE_AMPERSANDS);
 		$this->Template->formId = $this->strFormId;
 		$this->Template->formSubmit = $this->strFormId;
+		$this->Template->enctype = 'application/x-www-form-urlencoded';
 		$this->Template->previousLabel = specialchars($GLOBALS['TL_LANG']['MSC']['previousStep']);
 		$this->Template->nextLabel = specialchars($GLOBALS['TL_LANG']['MSC']['nextStep']);
 		$this->Template->nextClass = 'next';
@@ -572,30 +573,123 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	
 	protected function getOrderConditionsInterface($blnReview=false)
 	{
-		if (!$this->iso_order_conditions)
+		if (!$this->iso_order_conditions || $blnReview)
 			return '';
-					
-		$strBuffer = $this->getArticle($this->iso_order_conditions, false, true);
 		
-		$objConditions = new FormCheckBox(array('id'=>'iso_conditions', 'name'=>'iso_conditions', 'options'=>array(array('value'=>'1', 'label'=>$GLOBALS['TL_LANG']['MSC']['order_conditions'])), 'tableless'=>true));
+		$objForm = $this->Database->prepare("SELECT * FROM tl_form WHERE id=?")->limit(1)->execute($this->iso_order_conditions);
 		
-		// Validate input
-		if ($this->Input->post('FORM_SUBMIT') == $this->strFormId)
+		$hasUpload = false;
+		$arrSubmitted = array();
+
+		$this->loadDataContainer('tl_form_field');
+
+		$strFields = '';
+		$strHidden = '';
+
+//		$this->getMaxFileSize();
+
+		// Get all form fields
+		$objFields = $this->Database->prepare("SELECT * FROM tl_form_field WHERE pid=? ORDER BY sorting")
+									->execute($objForm->id);
+
+		$row = 0;
+		$max_row = $objFields->numRows;
+
+		while ($objFields->next())
 		{
-			$objConditions->validate();
-			
-			if (!strlen($objConditions->value))
+			$strClass = $GLOBALS['TL_FFL'][$objFields->type];
+
+			// Continue if the class is not defined
+			if (!$this->classFileExists($strClass))
 			{
-				$objConditions->addError($GLOBALS['TL_LANG']['ERR']['order_conditions']);
+				continue;
 			}
-			
-			if ($objConditions->hasErrors())
+
+			$arrData = $objFields->row();
+
+			$arrData['decodeEntities'] = true;
+			$arrData['allowHtml'] = $objForm->allowTags;
+			$arrData['rowClass'] = 'row_'.$row . (($row == 0) ? ' row_first' : (($row == ($max_row - 1)) ? ' row_last' : '')) . ((($row % 2) == 0) ? ' even' : ' odd');
+			$arrData['tableless'] = true;
+
+			// Increase the row count if its a password field
+			if ($objFields->type == 'password')
 			{
-				$this->doNotSubmit = true;
+				++$row;
+				++$max_row;
+
+				$arrData['rowClassConfirm'] = 'row_'.$row . (($row == ($max_row - 1)) ? ' row_last' : '') . ((($row % 2) == 0) ? ' even' : ' odd');
 			}
+
+			$objWidget = new $strClass($arrData);
+			$objWidget->required = $objFields->mandatory ? true : false;
+
+			// HOOK: load form field callback
+			if (isset($GLOBALS['TL_HOOKS']['loadFormField']) && is_array($GLOBALS['TL_HOOKS']['loadFormField']))
+			{
+				foreach ($GLOBALS['TL_HOOKS']['loadFormField'] as $callback)
+				{
+					$this->import($callback[0]);
+					$objWidget = $this->$callback[0]->$callback[1]($objWidget, $this->strFormId, $objForm->row());
+				}
+			}
+
+			// Validate input
+			if ($this->Input->post('FORM_SUBMIT') == $this->strFormId)
+			{
+				$objWidget->validate();
+
+				// HOOK: validate form field callback
+				if (isset($GLOBALS['TL_HOOKS']['validateFormField']) && is_array($GLOBALS['TL_HOOKS']['validateFormField']))
+				{
+					foreach ($GLOBALS['TL_HOOKS']['validateFormField'] as $callback)
+					{
+						$this->import($callback[0]);
+						$objWidget = $this->$callback[0]->$callback[1]($objWidget, $this->strFormId, $objForm->row());
+					}
+				}
+
+				if ($objWidget->hasErrors())
+				{
+					$this->doNotSubmit = true;
+				}
+
+				// Store current value in the session
+				elseif ($objWidget->submitInput())
+				{
+					$arrSubmitted[$objFields->name] = $objWidget->value;
+				}
+
+				unset($_POST[$objFields->name]);
+			}
+
+			if ($objWidget instanceof uploadable)
+			{
+				$hasUpload = true;
+			}
+
+			if ($objWidget instanceof FormHidden)
+			{
+				$strHidden .= $objWidget->parse();
+				--$max_row;
+				continue;
+			}
+
+			$strFields .= $objWidget->parse();
+			++$row;
 		}
-		
-		return $strBuffer . '<div class="order_conditions">' . $objConditions->parse() . '</div>';
+
+		$strAttributes = '';
+		$arrAttributes = deserialize($objForm->attributes, true);
+
+		if (strlen($arrAttributes[1]))
+		{
+			$strAttributes .= ' ' . $arrAttributes[1];
+		}
+
+		$this->Template->enctype = $hasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
+
+		return '<div class="order_conditions' . $strAttributes . '">' . $strHidden . $strFields . '</div>';
 	}
 	
 	
@@ -652,7 +746,6 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 		$objTemplate->subTotalPrice = $this->generatePrice($this->Cart->subTotal);
 		$objTemplate->grandTotalPrice = $this->generatePrice($this->Cart->grandTotal, 'stpl_total_price');
-		$objTemplate->conditions = $this->getOrderConditionsInterface($blnReview);
 		
 		return $objTemplate->parse();
 	}

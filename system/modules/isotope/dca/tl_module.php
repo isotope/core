@@ -273,7 +273,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_order_conditions'] = array
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions'],
 	'exclude'                 => true,
 	'inputType'               => 'select',
-	'options_callback'        => array('tl_module_isotope', 'getArticleAlias'),
+	'options_callback'        => array('tl_module_isotope', 'getForms'),
 	'eval'                    => array('includeBlankOption'=>true)
 );
 
@@ -762,23 +762,21 @@ class tl_module_isotope extends Backend
 	}
 
 	/**
-	 * Get all articles and return them as array
+	 * Get all forms and return them as array
 	 * @param object
 	 * @return array
 	 */
-	public function getArticleAlias(DataContainer $dc)
+	public function getForms(DataContainer $dc)
 	{
-		$arrAlias = array();
-		$this->loadLanguageFile('tl_article');
+		$arrForms = array();
+		$objForms = $this->Database->execute("SELECT * FROM tl_form ORDER BY title");
 
-		$objAlias = $this->Database->execute("SELECT id, title, inColumn, (SELECT title FROM tl_page WHERE tl_page.id=tl_article.pid) AS parent FROM tl_article ORDER BY parent, sorting");
-
-		while ($objAlias->next())
+		while ($objForms->next())
 		{
-			$arrAlias[$objAlias->parent][$objAlias->id] = $objAlias->id . ' - ' . $objAlias->title . ' (' . (strlen($GLOBALS['TL_LANG']['tl_article'][$objAlias->inColumn]) ? $GLOBALS['TL_LANG']['tl_article'][$objAlias->inColumn] : $objAlias->inColumn) . ')';
+			$arrForms[$objForms->id] = $objForms->title;
 		}
 
-		return $arrAlias;
+		return $arrForms;
 	}
 
 

@@ -21,7 +21,7 @@
 <?php endif; ?>
 
 <?php if ($this->showForm): ?>
-<form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>" method="post">
+<form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>" method="post" enctype="<?php echo $this->enctype; ?>">
 <div class="formbody">
 <input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formSubmit; ?>" />
 <?php echo $this->hidden; ?>
