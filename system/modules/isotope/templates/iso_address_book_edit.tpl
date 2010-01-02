@@ -18,6 +18,7 @@
   </tr>
 </table>
 </div>
+</div>
 </form>
 
 <p class="back"><a href="<?php echo $this->backLink; ?>"><?php echo $this->backBT; ?></a></p>
