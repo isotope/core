@@ -28,8 +28,8 @@
 /**
  * Palettes
  */
-$GLOBALS['TL_DCA']['tl_user']['palettes']['extend'] = str_replace('{account_legend}', '{isotope_legend},iso_product_types,iso_stores;{account_legend}', $GLOBALS['TL_DCA']['tl_user']['palettes']['extend']);
-$GLOBALS['TL_DCA']['tl_user']['palettes']['custom'] = str_replace('{account_legend}', '{isotope_legend},iso_product_types,iso_stores;{account_legend}', $GLOBALS['TL_DCA']['tl_user']['palettes']['custom']);
+$GLOBALS['TL_DCA']['tl_user']['palettes']['extend'] = str_replace('{account_legend}', '{isotope_legend},iso_product_types,iso_stores,iso_modules;{account_legend}', $GLOBALS['TL_DCA']['tl_user']['palettes']['extend']);
+$GLOBALS['TL_DCA']['tl_user']['palettes']['custom'] = str_replace('{account_legend}', '{isotope_legend},iso_product_types,iso_stores,iso_modules;{account_legend}', $GLOBALS['TL_DCA']['tl_user']['palettes']['custom']);
 
 
 /**
@@ -52,4 +52,36 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_stores'] = array
 	'foreignKey'			  => 'tl_store.store_configuration_name',
 	'eval'                    => array('multiple'=>true),
 );
+
+$GLOBALS['TL_DCA']['tl_user']['fields']['iso_modules'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_user']['iso_modules'],
+	'exclude'                 => true,
+	'filter'                  => true,
+	'inputType'               => 'checkbox',
+	'options_callback'		  => array('tl_user_isotope', 'getIsotopeModules'),
+	'reference'               => &$GLOBALS['TL_LANG']['IMD'],
+	'eval'                    => array('multiple'=>true, 'helpwizard'=>true),
+);
+
+
+class tl_user_isotope extends Backend
+{
+
+	/**
+	 * Return all modules except profile modules
+	 * @return array
+	 */
+	public function getIsotopeModules()
+	{
+		$arrModules = array();
+
+		foreach ($GLOBALS['ISO_MOD'] as $k=>$v)
+		{
+			$arrModules = array_merge($arrModules, array_keys($v));
+		}
+
+		return $arrModules;
+	}
+}
 

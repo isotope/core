@@ -28,7 +28,7 @@
 /**
  * Palettes
  */
-$GLOBALS['TL_DCA']['tl_user_group']['palettes']['default'] = str_replace('{alexf_legend}', '{isotope_legend},iso_product_types,iso_stores;{alexf_legend}', $GLOBALS['TL_DCA']['tl_user_group']['palettes']['default']);
+$GLOBALS['TL_DCA']['tl_user_group']['palettes']['default'] = str_replace('{alexf_legend}', '{isotope_legend},iso_product_types,iso_stores,iso_modules;{alexf_legend}', $GLOBALS['TL_DCA']['tl_user_group']['palettes']['default']);
 
 
 /**
@@ -36,7 +36,7 @@ $GLOBALS['TL_DCA']['tl_user_group']['palettes']['default'] = str_replace('{alexf
  */
 $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_product_types'] = array
 (
-	'label'                   => &$GLOBALS['TL_LANG']['tl_user']['iso_product_types'],
+	'label'                   => &$GLOBALS['TL_LANG']['tl_user_group']['iso_product_types'],
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
 	'foreignKey'			  => 'tl_product_types.name',
@@ -45,10 +45,42 @@ $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_product_types'] = array
 
 $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_stores'] = array
 (
-	'label'                   => &$GLOBALS['TL_LANG']['tl_user']['iso_stores'],
+	'label'                   => &$GLOBALS['TL_LANG']['tl_user_group']['iso_stores'],
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
 	'foreignKey'			  => 'tl_store.store_configuration_name',
 	'eval'                    => array('multiple'=>true),
 );
+
+$GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_modules'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_user']['iso_modules'],
+	'exclude'                 => true,
+	'filter'                  => true,
+	'inputType'               => 'checkbox',
+	'options_callback'		  => array('tl_user_group_isotope', 'getIsotopeModules'),
+	'reference'               => &$GLOBALS['TL_LANG']['IMD'],
+	'eval'                    => array('multiple'=>true, 'helpwizard'=>true),
+);
+
+
+class tl_user_group_isotope extends Backend
+{
+
+	/**
+	 * Return all modules except profile modules
+	 * @return array
+	 */
+	public function getIsotopeModules()
+	{
+		$arrModules = array();
+
+		foreach ($GLOBALS['ISO_MOD'] as $k=>$v)
+		{
+			$arrModules = array_merge($arrModules, array_keys($v));
+		}
+
+		return $arrModules;
+	}
+}
 

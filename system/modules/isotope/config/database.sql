@@ -689,6 +689,7 @@ CREATE TABLE `tl_tax_rate` (
 CREATE TABLE `tl_user` (
  `iso_product_types` blob NULL,
  `iso_stores` blob NULL,
+ `iso_modules` blob NULL,
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
@@ -701,6 +702,7 @@ CREATE TABLE `tl_user` (
 CREATE TABLE `tl_user_group` (
  `iso_product_types` blob NULL,
  `iso_stores` blob NULL,
+ `iso_modules` blob NULL,
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
