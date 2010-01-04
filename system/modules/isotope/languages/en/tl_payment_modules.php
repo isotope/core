@@ -51,18 +51,6 @@ $GLOBALS['TL_LANG']['tl_payment_modules']['button']					= array('Checkout button
 $GLOBALS['TL_LANG']['tl_payment_modules']['allowed_cc_types'] = array('Allowed Credit Card Types', 'Select which credit cards the payment module accepts.');
 $GLOBALS['TL_LANG']['tl_payment_modules']['enabled'] = array('Enabled', 'Is the module available for use in the store?');
 
-$GLOBALS['TL_LANG']['tl_payment_modules']['title'] 		= array('Title', 'Title of the current configuration');
-$GLOBALS['TL_LANG']['tl_payment_modules']['loginID'] 		= array('Login ID', 'Enter your Login ID for the Authorize.net account.');
-$GLOBALS['TL_LANG']['tl_payment_modules']['transKey']		= array('Transaction Key', 'Enter your Transaction Key for the Authorize.net account.');
-$GLOBALS['TL_LANG']['tl_payment_modules']['status'] 		= array('Module Status', 'Whether or not the module is performing live transactions.');
-$GLOBALS['TL_LANG']['tl_payment_modules']['cssID']        = array('Style sheet ID and class', 'Here you can enter a style sheet ID (id attribute) and one or more style sheet classes (class attributes) to be able to format the content element using CSS.');
-$GLOBALS['TL_LANG']['tl_payment_modules']['space']     	= array('Space in front and after', 'Please enter the spacing in front of and after the article in pixel.');
-$GLOBALS['TL_LANG']['tl_payment_modules']['debugging']	= array('Debug Mode', 'Display additional information helpful to testing and debugging.');
-$GLOBALS['TL_LANG']['tl_payment_modules']['transType']	= array('Transaction Type', 'Select a transaction type from the list.');
-$GLOBALS['TL_LANG']['tl_payment_modules']['delimResponse']	= array('Delimited-data response', 'Receive a delimited-data response from the gateway (recommended).');
-$GLOBALS['TL_LANG']['tl_payment_modules']['delimChar']	= array('Delimiter (Character)', 'A character used to separate fields in the response data.');
-$GLOBALS['TL_LANG']['tl_payment_modules']['productModule']	= array('Product Module', 'The module from which data originates and is used to post the transaction with.');
-$GLOBALS['TL_LANG']['tl_payment_modules']['checkoutFields']	= array('Checkout Fields', 'The fields read for review on the confirm page.');
 $GLOBALS['TL_LANG']['tl_payment_modules']['authorize_login']	= array('Authorize.net Login','Provided when you have completed signup for your gateway');
 $GLOBALS['TL_LANG']['tl_payment_modules']['authorize_trans_key']	= array('Authorize.net Transaction Key','Provided when you have completed signup for your gateway');
 $GLOBALS['TL_LANG']['tl_payment_modules']['authorize_delimiter']	= array('Authorize.net Delimiter','What character should be inserted as the data delimiter for the response?');
@@ -83,19 +71,6 @@ $GLOBALS['TL_LANG']['tl_payment_modules']['authorize_trans_type']	= array('Autho
  * References
  */
 $GLOBALS['TL_LANG']['tl_payment_modules']['no_shipping']	= 'Orders without shipping';
-
-
-
-
-$GLOBALS['TL_LANG']['tl_payment_modules']['test']    	= array('Test Account', 'In this operation mode, any credit card transactions will not be processed, but you will be able to test functionality.');
-$GLOBALS['TL_LANG']['tl_payment_modules']['live']    	= array('Live Account', 'Warning: Credit Cards <strong>WILL BE PROCESSED!</strong>');
-
-$GLOBALS['TL_LANG']['tl_payment_modules']['off']    	= array('Off', 'Debugging mode is <strong>off</strong>.');
-$GLOBALS['TL_LANG']['tl_payment_modules']['on']   	= array('On', 'Debugging mode is <strong>on</strong>. Additional information will be displayed!');
-
-$GLOBALS['TL_LANG']['tl_payment_modules']['true']    	= array('True', 'Send a delimited-data response back if request is successful.');
-$GLOBALS['TL_LANG']['tl_payment_modules']['false']   	= array('False', 'Do not send a delimited-data response back (not recommended).');
-
 $GLOBALS['TL_LANG']['tl_payment_modules']['AUTH_CAPTURE']			= array('Authorize and Capture', 'Transactions of this type will be sent for authorization. The transaction will be automatically picked up for settlement if approved. This is the default transaction type in the gateway. If no type is indicated when submitting transactions to the gateway, the gateway will assume that the transaction is of the type');
 $GLOBALS['TL_LANG']['tl_payment_modules']['AUTH_ONLY']			= array('Authorize Only', 'Transactions of this type are submitted if the merchant wishes to validate the credit card for the amount of the goods sold. If the merchant does not have goods in stock or wishes to review orders before shipping the goods, this transaction type should be submitted. The gateway will send this type of transaction to the financial institution for approval. However this transaction will not be sent for settlement. If the merchant does not act on the transaction within 30 days, the transaction will no longer be available for capture.');
 $GLOBALS['TL_LANG']['tl_payment_modules']['CAPTURE_ONLY']			= array('Capture Only', 'This is a request to settle a transaction that was not submitted for authorization through the payment gateway. The gateway will accept this transaction if an authorization code is submitted. x_auth_code is a required field for CAPTURE_ONLY type transactions.');

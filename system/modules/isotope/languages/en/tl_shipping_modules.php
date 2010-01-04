@@ -71,7 +71,6 @@ $GLOBALS['TL_LANG']['tl_shipping_modules']['copy']   = array('Copy shipping', 'C
 $GLOBALS['TL_LANG']['tl_shipping_modules']['delete'] = array('Delete shipping', 'Delete shipping method ID %s');
 $GLOBALS['TL_LANG']['tl_shipping_modules']['show']   = array('shipping Details', 'Show details of shipping method ID %s');
 $GLOBALS['TL_LANG']['tl_shipping_modules']['shipping_rates']   = array('Edit Rules', 'Edit the shipping rates');
-$GLOBALS['TL_LANG']['tl_shipping_modules']['tstamp'] = array('Date Modified', '');
 
 
 /**

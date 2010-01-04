@@ -30,21 +30,13 @@
  * Backend Modules
  */
 $GLOBALS['TL_LANG']['MOD']['store']						= 'Isotope eCommerce';
-$GLOBALS['TL_LANG']['MOD']['isotopeMedia']				= array('File manager', 'This module allows you to upload new files to the server or to manage existing files and folders for the Isotope file system.');
-$GLOBALS['TL_LANG']['MOD']['orders']					= array('Orders', '');
-$GLOBALS['TL_LANG']['MOD']['shipping']					= array('Shipping methods','');
-$GLOBALS['TL_LANG']['MOD']['payment']					= array('Payment methods','');
-$GLOBALS['TL_LANG']['MOD']['tax_class']					= array('Tax classes','Set up tax classes.');
-$GLOBALS['TL_LANG']['MOD']['tax_rate']					= array('Tax rates','Set up tax rates.');
-$GLOBALS['TL_LANG']['MOD']['attribute_manager']			= array('Attribute manager','');
-$GLOBALS['TL_LANG']['MOD']['product_type_manager']		= array('Product type manager','');
 $GLOBALS['TL_LANG']['MOD']['product_manager']			= array('Product management','');
-$GLOBALS['TL_LANG']['MOD']['iso_mail']					= array('E-Mail manager','');
-$GLOBALS['TL_LANG']['MOD']['store_configuration']		= array('Store configuration','');
+$GLOBALS['TL_LANG']['MOD']['orders']					= array('Orders', '');
+$GLOBALS['TL_LANG']['MOD']['isotope']					= array('Store configuration','');
 
 
 /**														
- * Front end modules									
+ * Frontend modules									
  */
 $GLOBALS['TL_LANG']['FMD']['isotope']					= 'Isotope Online-Shop';
 $GLOBALS['TL_LANG']['FMD']['isoFilterModule']			= array('Isotope Filter Module', 'Define individual filters for Isotope such as category trees and product attribute filters.');
@@ -61,4 +53,21 @@ $GLOBALS['TL_LANG']['FMD']['isoAddressBook']			= array('Isotope Address Book','A
 $GLOBALS['TL_LANG']['FMD']['isoOrderHistory']			= array('Order History', '');
 $GLOBALS['TL_LANG']['FMD']['isoOrderDetails']			= array('Order Details', '');
 $GLOBALS['TL_LANG']['FMD']['isoStoreSwitcher']			= array('Store Switcher', 'Switch between store configuration to change currency and other settings.');
+
+
+/**
+ * Isotope Modules
+ */
+$GLOBALS['TL_LANG']['ISO']['config_module']				= 'Isotope eCommerce configuration';
+$GLOBALS['TL_LANG']['IMD']['checkout']					= 'Checkout Flow';
+$GLOBALS['TL_LANG']['IMD']['product']					= 'Products';
+$GLOBALS['TL_LANG']['IMD']['config']					= 'General settings';
+$GLOBALS['TL_LANG']['IMD']['shipping']					= array('Shipping methods','');
+$GLOBALS['TL_LANG']['IMD']['payment']					= array('Payment methods','');
+$GLOBALS['TL_LANG']['IMD']['tax_class']					= array('Tax classes','Set up tax classes.');
+$GLOBALS['TL_LANG']['IMD']['tax_rate']					= array('Tax rates','Set up tax rates.');
+$GLOBALS['TL_LANG']['IMD']['attribute_manager']			= array('Attribute manager','');
+$GLOBALS['TL_LANG']['IMD']['product_type_manager']		= array('Product type manager','');
+$GLOBALS['TL_LANG']['IMD']['iso_mail']					= array('E-Mail manager','');
+$GLOBALS['TL_LANG']['IMD']['store_configuration']		= array('Store configuration','');
 

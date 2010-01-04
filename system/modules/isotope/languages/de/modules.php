@@ -29,20 +29,13 @@
  * Backend Modules
  */
 $GLOBALS['TL_LANG']['MOD']['store']						= 'Isotope eCommerce';
-$GLOBALS['TL_LANG']['MOD']['orders']					= array('Bestellungen', '');
-$GLOBALS['TL_LANG']['MOD']['shipping']					= array('Versandarten','');
-$GLOBALS['TL_LANG']['MOD']['payment']					= array('Zahlungsarten','');
-$GLOBALS['TL_LANG']['MOD']['tax_class']					= array('Steuerklassen', '');
-$GLOBALS['TL_LANG']['MOD']['tax_rate']					= array('Steuersätze', '');
-$GLOBALS['TL_LANG']['MOD']['attribute_manager']			= array('Attribute','');
-$GLOBALS['TL_LANG']['MOD']['product_type_manager']		= array('Produkttypen','');
 $GLOBALS['TL_LANG']['MOD']['product_manager']			= array('Produkte','');
-$GLOBALS['TL_LANG']['MOD']['store_configuration']		= array('Konfigurationen','');
-$GLOBALS['TL_LANG']['MOD']['iso_mail']					= array('E-Mail Vorlagen','');
+$GLOBALS['TL_LANG']['MOD']['orders']					= array('Bestellungen', '');
+$GLOBALS['TL_LANG']['MOD']['isotope']					= array('Shop-Konfiguration', '');
 
 
 /**
- * Front end modules
+ * Frontend modules
  */ 
 $GLOBALS['TL_LANG']['FMD']['isotope']					= 'Isotope eCommerce';
 $GLOBALS['TL_LANG']['FMD']['isoFilterModule']			= array('Isotope Filter-Modul', 'Erstellt individuelle Filter für Isotope wie einen Kategorienbaum oder Produktattribut-Filter.');
@@ -54,3 +47,18 @@ $GLOBALS['TL_LANG']['FMD']['isoAddressBook']			= array('Isotope Addressbuch','Er
 $GLOBALS['TL_LANG']['FMD']['isoOrderHistory']			= array('Vergangene Bestellungen', 'Zeigt eine Liste der bisherigen Bestellungen an.');
 $GLOBALS['TL_LANG']['FMD']['isoOrderDetails']			= array('Bestellungsdetails', 'Kunden können mit diesem Modul ihre vergangenen Bestellungen sehen und z.B. Download-Artikel herunterladen.');
 
+
+/**
+ * Isotope modules
+ */
+$GLOBALS['TL_LANG']['IMD']['checkout']					= 'Bestellablauf';
+$GLOBALS['TL_LANG']['IMD']['product']					= 'Produkte';
+$GLOBALS['TL_LANG']['IMD']['config']					= 'Allgemeine Einstellungen';
+$GLOBALS['TL_LANG']['IMD']['shipping']					= array('Versandarten', 'Legen Sie Versandarten für verschiedene Regionen an, welche Sie beliefern. Wenn im Warenkorb nur Artikel enthalten sind, welche keinen Versand erfordern, wird die Versandart in der Kasse nicht berücksichtigt.');
+$GLOBALS['TL_LANG']['IMD']['payment']					= array('Zahlungsarten', 'Hier definieren Sie die für Ihren Shop erlaubten Zahlungsarten. Es werden verschiedene Zahlungsmodule unterstützt (z.B. PayPal, Barzahlung usw). Zahlungsmodule können bezüglich Produkttypen, Versandarten, Länder und anderen Einstellungen eingeschränkt werden. Es ist gut möglich dass Sie für dieselbe Zahlungsart mehrere Module anlegen müssen, um die volle Flexibilität zu erreichen.');
+$GLOBALS['TL_LANG']['IMD']['tax_class']					= array('Steuerklassen', 'In Steuerklassen gruppieren Sie mehrere Steuersätze, um diesen dann den entsprechenden Produkten zuzuweisen. In Steuerklassen können Sie auch festlegen ob ein Produktpreis bereits Steuern enthält (welche dann ggf. beim Versand ins Ausland abgezogen werden).');
+$GLOBALS['TL_LANG']['IMD']['tax_rate']					= array('Steuersätze', 'Steuersätze definieren die Gebühren welche zum Preis hinzugerechnet werden sollen. Dies muss nicht zwingend eine Umsatzsteuer sein, sondern z.B. auch ein Zuschlag bei verwenden einer bestimmten Zahlungsart (Kreditkarte).');
+$GLOBALS['TL_LANG']['IMD']['product_type_manager']		= array('Produkttypen', 'Mittels Produkttypen können Sie Ihre Produkte gruppieren. Verschiedene Produttypen können verschiedene Felder und Funktionen (z.B. Downloads aktiveren) enthalten.');
+$GLOBALS['TL_LANG']['IMD']['attribute_manager']			= array('Attribute', 'In der Attributverewaltung können Sie eigene Felder für Ihre Produkte anlegen. Dies ist z.B. hilfreich wenn Ihr Produkt einen Untertitel haben soll. Beachten Sie dass die entsprechenden Felder dann manuell im Template ausgegeben werden müssen (=Template-Anpassung).');
+$GLOBALS['TL_LANG']['IMD']['iso_mail']					= array('E-Mail Vorlagen', 'E-Mail Vorlagen werden für den Versand von Bestellbestätigungen und anderen Nachrichten an Kunden und Shopbetreiber verwendet. Jede Vorlage kann in mehrere Sprachen angelegt werden. Vergessen Sie nicht bei der Hauptsprache den Sprachen-Fallback zu aktivieren!');
+$GLOBALS['TL_LANG']['IMD']['store_configuration']		= array('Konfigurationen', 'Konfigurationen umfassen Einstellungen bezüglich Währung, Preisberechnung, Adressaufbereitung, Produktbildgrössen und anderem. Sie können mehrere Konfigurationen anlegen und diese im Shop-Betrieb (über das entsprechende Frontend-Modul) wechseln, um z.B. eine Umschaltung zwischen mehreren Währungen zu ermöglichen.');

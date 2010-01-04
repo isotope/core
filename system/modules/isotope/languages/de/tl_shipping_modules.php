@@ -28,7 +28,6 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_shipping_modules']['tstamp'] 			= array('Änderungsdatum', '');
 $GLOBALS['TL_LANG']['tl_shipping_modules']['name']				= array('Name der Versandart', '');
 $GLOBALS['TL_LANG']['tl_shipping_modules']['price']				= array('Preis', '');
 $GLOBALS['TL_LANG']['tl_shipping_modules']['flatCalculation']	= array('Berechnung Pauschalpreis', '');

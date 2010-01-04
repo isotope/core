@@ -44,7 +44,6 @@ $GLOBALS['TL_LANG']['tl_store']['priceCalculateFactor']				= array('Price factor
 $GLOBALS['TL_LANG']['tl_store']['priceCalculateMode']				= array('Calculation mode', 'Divide or multiply using this factor.');
 $GLOBALS['TL_LANG']['tl_store']['priceRoundPrecision']				= array('Rounding precision', 'How much decimal precicion to have. Only applies if price multiplier is not 1. See PHP manual for round().');
 $GLOBALS['TL_LANG']['tl_store']['priceRoundIncrement']				= array('Rounding increment', 'Some currencies (eg. swiss francs) do not support 0.01 precicion.');
-$GLOBALS['TL_LANG']['tl_store']['priceIncludesTax']					= array('Price includes tax', 'Define if tax is added to price or not.');
 $GLOBALS['TL_LANG']['tl_store']['currency']							= array('Currency', 'Please select a currency for this store.');
 $GLOBALS['TL_LANG']['tl_store']['currencySymbol']					= array('Use currency symbol', 'Use a currency symbol ($, €) if available.');
 $GLOBALS['TL_LANG']['tl_store']['currencyPosition']					= array('Position of currency code/symbol', 'Select if you want to show currency on the left or right side of the price.');
