@@ -36,7 +36,8 @@ $GLOBALS['TL_DCA']['tl_iso_order_items'] = array
 	(
 		'dataContainer'               => 'Table',
 		'enableVersioning'            => false,
-		'ptable'					  => 'tl_iso_orders'
+		'ptable'					  => 'tl_iso_orders',
+		'ctable'					  => array('tl_iso_order_downloads'),
 	),
 	
 	// List
