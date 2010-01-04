@@ -68,7 +68,6 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 				'href'                => 'act=edit',
 				'icon'                => 'edit.gif'
 			),
-			/*
 			'delete' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_iso_orders']['delete'],
@@ -76,7 +75,6 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 				'icon'                => 'delete.gif',
 				'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
 			),
-			*/
 			'show' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_iso_orders']['show'],
@@ -397,13 +395,19 @@ class tl_iso_orders extends Backend
 		
 		$objOrders = $this->Database->execute("SELECT * FROM tl_iso_orders WHERE status!=''" . ($this->User->isAdmin ? '' : " AND store_id IN (".implode(',', $arrStores).")"));
 		
-		if (!$objOrders->numRows)
+		$arrIds = $objOrders->fetchEach('id');
+		
+		if (!count($arrIds))
+			$arrIds = array(0);
+		
+		$GLOBALS['TL_DCA']['tl_iso_orders']['list']['sorting']['root'] = $arrIds;
+		
+		if (!$this->User->isAdmin)
 		{
-			$GLOBALS['TL_DCA']['tl_iso_orders']['list']['sorting']['root'] = array(0);
-		}
-		else
-		{
-			$GLOBALS['TL_DCA']['tl_iso_orders']['list']['sorting']['root'] = $objOrders->fetchEach('id');
+			unset($GLOBALS['TL_DCA']['tl_iso_orderes']['list']['operations']['delete']);
+			
+			if ($this->Input->get('act') == 'delete' || (strlen($this->Input->get('id')) && !in_array($this->Input->get('id'), $arrIds)))
+				$this->redirect('typolight/main.php?act=error');
 		}
 	}
 
