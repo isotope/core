@@ -31,7 +31,6 @@
 $GLOBALS['TL_LANG']['tl_tax_rate']['country']		= array('Country', 'Select a country this tax class applies to.');
 $GLOBALS['TL_LANG']['tl_tax_rate']['subdivision']	= array('State/Region', 'Select a state or region this tax class applies to.');
 $GLOBALS['TL_LANG']['tl_tax_rate']['postal']		= array('Postal Code', 'Specify a postal code this tax class applies to.');
-$GLOBALS['TL_LANG']['tl_tax_rate']['code']			= array('Code', 'A human-readable code for this tax class.');
 $GLOBALS['TL_LANG']['tl_tax_rate']['rate']			= array('Tax Rate', 'A rate in percent this tax is set at.');
 $GLOBALS['TL_LANG']['tl_tax_rate']['store'] 		= array('Store', 'Select the store that the tax rate applies to.');
 

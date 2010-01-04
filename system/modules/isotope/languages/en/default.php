@@ -111,17 +111,6 @@ $GLOBALS['TL_LANG']['MSC']['previousStep']	= 'Back';
 $GLOBALS['TL_LANG']['MSC']['nextStep']		= 'Continue';
 $GLOBALS['TL_LANG']['MSC']['confirmOrder']	= 'Order';
 
-$GLOBALS['TL_LANG']['MSC']['defaultAssetsBasePath'] = 'assets';	
-$GLOBALS['TL_LANG']['MSC']['assetsImportBasePath'] = 'assets_for_import';
-$GLOBALS['TL_LANG']['MSC']['audioFolder'] = 'audio';
-$GLOBALS['TL_LANG']['MSC']['imagesFolder'] = 'images';
-$GLOBALS['TL_LANG']['MSC']['videoFolder'] = 'video';
-$GLOBALS['TL_LANG']['MSC']['large_images_folder'] = 'large_images';
-$GLOBALS['TL_LANG']['MSC']['medium_images_folder'] = 'medium_images';
-$GLOBALS['TL_LANG']['MSC']['thumbnail_images_folder'] = 'thumbnail_images';
-$GLOBALS['TL_LANG']['MSC']['gallery_thumbnail_images_folder'] = 'gallery_thumbnail_images';
-$GLOBALS['TL_LANG']['MSC']['playSoundMessage'] = 'Audio Sample:';
-$GLOBALS['TL_LANG']['MSC']['playlistDescriptionTemplate'] = '%s - %s';
 $GLOBALS['TL_LANG']['MSC']['noCategoriesAssociated'] = 'No categories are associated with this product.';
 $GLOBALS['TL_LANG']['MSC']['labelPerPage'] = 'Per Page';
 $GLOBALS['TL_LANG']['MSC']['labelSortBy'] = 'Sort By';
@@ -155,8 +144,6 @@ $GLOBALS['TL_LANG']['MSC']['registry']['emptyField'] = 'Please fill in both fiel
 $GLOBALS['TL_LANG']['MSC']['registry']['noItemsInRegistry'] = 'There are no items in this registry available for purchase.';
 $GLOBALS['TL_LANG']['MSC']['registry']['noresultsText'] = 'There are no registries matching your search: %s';
 $GLOBALS['TL_LANG']['MSC']['registry']['sResults'] = '%s gift registries were found for %s on or around %s';
-$GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_registry'] = 'Add To Registry';
-$GLOBALS['TL_LANG']['MSC']['buttonActionString']['add_to_registry'] = 'Add product %s to your registry';
 $GLOBALS['TL_LANG']['MSC']['notAvailableOnline'] = 'Call for Price';
 
 //Addresses
@@ -186,17 +173,6 @@ $GLOBALS['TL_LANG']['MSC']['iso_product_name_header'] = 'Product Name';
 $GLOBALS['TL_LANG']['MSC']['iso_card_name_title'] = 'Name on Credit Card';
 
 
-$GLOBALS['TL_LANG']['MSC']['store_title'] = '';
-
-//Admin order notfication language entries
-$GLOBALS['TL_LANG']['MSC']['subject_new_order_admin_notify'] = 'New order has been placed on %s';
-$GLOBALS['TL_LANG']['MSC']['message_new_order_admin_notify'] = "An new order (ID %s) has been placed! \n\nOrder Details: \n\n %s";
-
-//Customer order notification language entries
-$GLOBALS['TL_LANG']['MSC']['subject_new_order_customer_thank_you'] = 'Thank you for your order at %s!';
-$GLOBALS['TL_LANG']['MSC']['message_new_order_customer_thank_you'] = "Dear %s, \n\n Thank you for your order!  You will receive a notification once final shipping charges have been assessed with your updated order total.  If you have any questions please email us at %s";
-
-
 // Order status options
 $GLOBALS['TL_LANG']['MSC']['order_status_labels']['pending']	= 'Pending';
 $GLOBALS['TL_LANG']['MSC']['order_status_labels']['processing']	= 'Processing';
@@ -216,17 +192,6 @@ $GLOBALS['TL_LANG']['MSC']['payment_status_labels']['cancelled']	= 'Cancelled';
 //Shipping language entries
 $GLOBALS['TL_LANG']['MSC']['noItemsEligibleForShipping'] = 'This order consists solely of items that are not shipped.';
 
-
-//$GLOBALS['TL_LANG']['MSC'][''] = '';
-
-
-$GLOBALS['TL_LANG']['MSC']['mp3'] = 'audio/mpeg';
-$GLOBALS['TL_LANG']['MSC']['flv'] = 'video/x-flv';
-
-
-$GLOBALS['TL_LANG']['MSC']['altTextFormat'] = '%s - %s';
-
-$GLOBALS['TL_LANG']['MSC']['thumbnailImageClickEvent'] = 'class="highslide" onclick="return hs.expand(this, { slideshowGroup: ' . "'productImages'" . ' })"';
 
 $GLOBALS['TL_LANG']['MSC']['low_to_high'] = 'lo to hi';
 $GLOBALS['TL_LANG']['MSC']['high_to_low'] = 'hi to lo';

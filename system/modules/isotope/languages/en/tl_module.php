@@ -45,7 +45,6 @@ $GLOBALS['TL_LANG']['tl_module']['iso_payment_modules']			= array('Payment metho
 $GLOBALS['TL_LANG']['tl_module']['iso_shipping_modules']		= array('Shipping methods','Select one or more shipping methods for this checkout module.');
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method']			= array('Checkout method','Choose your checkout method.');
 $GLOBALS['TL_LANG']['tl_module']['iso_order_conditions']		= array('Order conditions article','Choose an article that is used to display your order terms and conditions (optional).');
-$GLOBALS['TL_LANG']['tl_module']['addressBookTemplate']			= array('Address book listing template','Select a listing template.');
 $GLOBALS['TL_LANG']['tl_module']['orderCompleteJumpTo']			= array('Completed order jump to page','Select a page the customer will be referred to after their order is complete.');
 $GLOBALS['TL_LANG']['tl_module']['iso_jump_first']				= array('Redirect to first product', 'Check here if users are redirected to the first product of the list.');
 $GLOBALS['TL_LANG']['tl_module']['iso_forward_cart']			= array('Forward to cart', 'Forward to cart page when adding a product.');

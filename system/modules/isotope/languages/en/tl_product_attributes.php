@@ -84,8 +84,6 @@ $GLOBALS['TL_LANG']['tl_product_attributes']['file'] = 'File Attachment';
 $GLOBALS['TL_LANG']['tl_product_attributes']['media'] = 'Media (Images, Movies, Mp3s, etc.)';
 $GLOBALS['TL_LANG']['tl_product_attributes']['label'] = 'Label/Fixed Display';
 $GLOBALS['TL_LANG']['tl_product_attributes']['input'] = 'Accept Input From Customer';
-$GLOBALS['TL_LANG']['tl_product_attributes']['required_val']['0'] = 'Not Required';
-$GLOBALS['TL_LANG']['tl_product_attributes']['required_val']['1'] = 'Required';
 
 $GLOBALS['TL_LANG']['tl_product_attributes']['rgxpOptions']['alnum'] = 'Numbers and Letters Only';
 $GLOBALS['TL_LANG']['tl_product_attributes']['rgxpOptions']['extnd'] = 'All standard characters except: #&()/>=<';

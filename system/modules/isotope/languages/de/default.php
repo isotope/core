@@ -107,7 +107,6 @@ $GLOBALS['TL_LANG']['MSC']['payment_status_labels']['failed']		= 'Fehlgeschlagen
 $GLOBALS['TL_LANG']['MSC']['payment_status_labels']['cancelled']	= 'Abgebrochen';
 
 
-
 $GLOBALS['TL_LANG']['ISO']['productSingle']		= '1 Produkt';
 $GLOBALS['TL_LANG']['ISO']['productMultiple']	= '%s Produkte';
 
