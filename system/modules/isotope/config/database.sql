@@ -275,6 +275,7 @@ CREATE TABLE `tl_store` (
   `phone` varchar(64) NOT NULL default '',
   `emailShipping` varchar(255) NOT NULL default '',
   `weightUnit` varchar(10) NOT NULL default '',
+  `enableGoogleAnalytics` char(1) NOT NULL default '',
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
