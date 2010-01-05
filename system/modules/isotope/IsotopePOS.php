@@ -114,7 +114,7 @@ class IsotopePOS extends Backend
 			$delimChar = $objAIMConfig->authorize_delimiter;
 			$loginID = $objAIMConfig->authorize_login;
 			$transKey = $objAIMConfig->authorize_trans_key;
-			$transType = 'PRIOR_AUTH_AND_CAPTURE'; //$objAIMConfig->authorize_trans_type;
+			$transType = 'PRIOR_AUTH_CAPTURE'; //$objAIMConfig->authorize_trans_type;
 			$status = ($objAIMConfig->debug ? "TRUE" : "FALSE");
 			$strMode = ($objAIMConfig->debug ? "test" : "secure");
 		}
@@ -126,22 +126,30 @@ class IsotopePOS extends Backend
 				
 			$authnet_values = array
 			(
+				"x_version"							=> '3.1',
 				"x_login"							=> $loginID,
-				"x_type"							=> $transType,
 				"x_tran_key"						=> $transKey,
+				"x_type"							=> $transType,
 				"x_trans_id"						=> $arrPaymentInfo['x_trans_id'],
-				"x_amount"							=> number_format($this->fltOrderTotal, 2)
+				"x_amount"							=> number_format($this->fltOrderTotal, 2),
+				"x_delim_data"						=> 'TRUE',
+				"x_delim_char"						=> ',',
+				"x_encap_char"						=> '"',
+				"x_relay_response"					=> 'FALSE'
+			
 			);
+			
 						
 			foreach( $authnet_values as $key => $value ) $fields .= "$key=" . urlencode( $value ) . "&";
 
-					
+			$fieldsFinal = rtrim($fields, '&');
+						
 			$objRequest = new Request();
-			$objRequest->send('https://secure.authorize.net/gateway/transact.dll', $fields, 'post');
+			
+			$objRequest->send('https://secure.authorize.net/gateway/transact.dll', $fieldsFinal, 'post');
 		
 			$arrResponses = $this->handleResponse($objRequest->response);
-									
-
+								
 			foreach(array_keys($arrResponses) as $key)
 			{
 				$arrReponseLabels[strtolower(standardize($key))] = $key;
@@ -155,18 +163,19 @@ class IsotopePOS extends Backend
 			
 			switch($arrResponses['transaction-status'])
 			{
-				case 'Approved':					
+				case 'Approved':		
+					$arrPaymentInfo['authorization_code'] = $arrResponses['authorization-code'];			
 					$strPaymentInfo = serialize($arrPaymentInfo);
 					
-					$this->Database->prepare("UPDATE tl_iso_orders SET status='complete', payment_data=? WHERE id=?")
-								   ->execute($this->intOrderId, $strPaymentInfo);
+					$this->Database->prepare("UPDATE tl_iso_orders SET status='processing', payment_data=? WHERE id=?")
+								   ->execute($strPaymentInfo, $this->intOrderId);
 					break;
 				default:
 					$arrPaymentInfo['authorize_reason'] = $arrResponses['reason'];
 					$strPaymentInfo = serialize($arrPaymentInfo);
 					
 					$this->Database->prepare("UPDATE tl_iso_orders SET status='on_hold', payment_data=? WHERE id=?")
-								   ->execute($this->intOrderId, $strPaymentInfo);					
+								   ->execute($strPaymentInfo, $this->intOrderId);					
 					break;
 			
 			}
@@ -876,7 +885,7 @@ class IsotopePOS extends Backend
 		
 		$i=1;
 		
-		$arrFieldsToDisplay = array(1, 4, 7, 9, 10, 11, 14, 15, 16, 17, 18, 19, 20, 22, 23, 24);	//Dynamic Later
+		$arrFieldsToDisplay = array(1, 4, 5, 7, 9, 10, 11, 14, 15, 16, 17, 18, 19, 20, 22, 23, 24);	//Dynamic Later
 		
 		foreach($arrResponseString as $currResponseString)
 		{
@@ -909,7 +918,10 @@ class IsotopePOS extends Backend
 							$ftitle = "Reason";
 							$fval = $pstr_trimmed;
 							break;
-							
+						case 5:
+							$ftitle = "Authorization Code";
+							$fval = $pstr_trimmed;
+							break;
 						case 7:
 							$ftitle = "Transaction ID";
 							$fval = $pstr_trimmed;
