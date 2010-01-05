@@ -148,7 +148,8 @@ class ModuleOrderDetails extends ModuleIsotopeBase
 		$this->Template->time = $this->parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $objOrder->date);
 		$this->Template->datim = $this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $objOrder->date);
 		$this->Template->orderDetailsHeadline = sprintf($GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline'], $objOrder->order_id, $this->Template->datim);
-		
+		$this->Template->orderStatus = sprintf($GLOBALS['TL_LANG']['MSC']['orderStatusHeadline'], $GLOBALS['TL_LANG']['MSC']['payment_status_labels'][$objOrder->status]);
+		$this->Template->orderStatusKey = $objOrder->status;
 		$this->Template->subTotalPrice = $this->Isotope->formatPriceWithCurrency($objOrder->subTotal);
 		$this->Template->grandTotal = $this->Isotope->formatPriceWithCurrency($objOrder->grandTotal);
 		$this->Template->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
@@ -170,6 +171,7 @@ class ModuleOrderDetails extends ModuleIsotopeBase
 		
 		$this->Template->billing_label = $GLOBALS['TL_LANG']['ISO']['billing_address'];
 		$this->Template->billing_address = $this->Isotope->generateAddressString(deserialize($objOrder->billing_address));
+		
 		if (strlen($objOrder->shipping_method))
 		{
 			$arrShippingAddress = deserialize($objOrder->shipping_address);

@@ -5,7 +5,7 @@
 
 <<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
 <?php endif; ?>
-
+<h2 class="<?php echo $this->orderStatusKey; ?>"><?php echo $this->orderStatus; ?></h2>
 <h2><?php echo $this->orderDetailsHeadline; ?></h2>
 
 <?php foreach( $this->info as $type => $data ): ?>

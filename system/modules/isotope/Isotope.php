@@ -583,13 +583,13 @@ class Isotope extends Controller
 			$arrSearch[] = '{'.$strField.'}';
 			$arrReplace[] = $arrAddress[$strField];
 		}
-		
+
 		// Parse format
 		$strAddress = str_replace($arrSearch, $arrReplace, $strFormat);
-		
+	
 		// Remove empty tags
 		$strAddress = preg_replace('(\{[^}]+\})', '', $strAddress);
-		
+	
 		// Remove double line breaks
 		do
 		{

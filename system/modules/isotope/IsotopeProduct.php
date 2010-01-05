@@ -215,6 +215,9 @@ class IsotopeProduct extends Model
 	 */
 	public function __sleep()
 	{
+		//clean up product object - remove non-essential data to reduce table size.
+		unset($this->arrData['description'], $this->arrData['variants_wizard'], $this->arrData['teaser']);
+	
 		return array('arrAttributes', 'arrDownloads', 'arrData');
 	}
 	

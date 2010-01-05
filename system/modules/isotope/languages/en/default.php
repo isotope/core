@@ -134,6 +134,7 @@ $GLOBALS['TL_LANG']['MSC']['noShippingModules'] = 'No shipping options are curre
 $GLOBALS['TL_LANG']['MSC']['checkoutBT']				= 'Proceed to Checkout';
 $GLOBALS['TL_LANG']['MSC']['continueShoppingBT']		= 'Continue shopping';
 $GLOBALS['TL_LANG']['MSC']['updateCartBT']				= 'Update Cart';
+$GLOBALS['TL_LANG']['MSC']['orderStatusHeadline']		= 'Order Status: %s';
 
 //Registry language entries 
 $GLOBALS['TL_LANG']['MSC']['registry']['lastname'] = 'Search by Last Name:';
