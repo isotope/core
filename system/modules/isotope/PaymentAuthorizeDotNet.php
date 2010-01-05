@@ -256,11 +256,6 @@ class PaymentAuthorizeDotNet extends Payment
 	}
 	
 	
-	public function getOrderLabel($intId)
-	{
-		
-	}
-	
 	private function generateResponseString($arrResponses, $arrResponseLabels)
 	{
 		$responseString .= '<tr><td align="right" colspan="2">&nbsp;</td></tr>';
