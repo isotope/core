@@ -66,6 +66,7 @@ $GLOBALS['TL_LANG']['tl_store']['country']     						= array('Country', 'Please 
 $GLOBALS['TL_LANG']['tl_store']['phone']       						= array('Phone number', 'Please enter the phone number.');
 $GLOBALS['TL_LANG']['tl_store']['emailShipping'] 					= array('Shipping E-mail address', 'Please enter a valid e-mail address.');
 $GLOBALS['TL_LANG']['tl_store']['weightUnit']						= array('Weight unit of measurement','Specify the unit of measurement for weight (LBS or KGS)');
+$GLOBALS['TL_LANG']['tl_store']['enableGoogleAnalytics']			= array('Enable Google Analytics e-commerce tracking','Add Google Analytics e-commerce tracking. Please note you will also have to enable e-commerce tracking in your Google Analytics account.');
 
 /**
  * Reference
