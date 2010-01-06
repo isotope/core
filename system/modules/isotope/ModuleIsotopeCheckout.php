@@ -1135,22 +1135,5 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 		return $this->arrCheckoutInfo;
 	}
-	
-	// MyClass.php
-	public function generatePage(Database_Result $objPage, Database_Result $objLayout, PageRegular $this)
-	{
-			
-   		// Do something
-		switch($this->Input->post('step'))
-		{
-			case 'complete':
-				if($this->Isotope->Store->enableGoogleAnalytics)
-				{
-					//Grab order id and items for Google analytics tracking and add to google code block.
-				}
-				break;
-		
-		}
-	}
 }
 
