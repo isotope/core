@@ -112,7 +112,7 @@ class ModuleOrderDetails extends ModuleIsotopeBase
 					(
 						'raw'			=> $objDownloads->row(),
 						'title'			=> $objDownloads->title,
-						'href'			=> ($this->generateFrontendUrl($objPage->row()) . '?uid=' . $this->Input->get('uid') . '&amp;file=' . $objDownloads->id),
+						'href'			=> (TL_MODE == 'FE' ? ($this->generateFrontendUrl($objPage->row()) . '?uid=' . $this->Input->get('uid') . '&amp;file=' . $objDownloads->id) : ''),
 						'remaining'		=> ($objDownloads->downloads_allowed > 0 ? sprintf('<br />%s Downloads verbleibend', intval($objDownloads->downloads_remaining)) : ''),
 						'downloadable'	=> (($objDownloads->downloads_allowed == 0 || $objDownloads->downloads_remaining > 0) ? true : false),
 					);
