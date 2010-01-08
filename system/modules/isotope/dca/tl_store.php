@@ -98,7 +98,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{name_legend},store_configuration_name,label;{shipping_legend},firstname,lastname,company,street,postal,city,state,country,emailShipping,phone;{config_legend},weightUnit,cookie_duration,isDefaultStore,enableGoogleAnalytics;{price_legend},priceField,priceOverrideField,priceCalculateFactor,priceCalculateMode,priceRoundPrecision,priceRoundIncrement;{currency_legend},currency,currencySymbol,currencyFormat,currencyPosition;{address_legend},country,countries,address_fields;{redirect_legend},cartJumpTo,checkoutJumpTo;{invoice_legend},invoiceLogo;{images_legend},root_asset_import_path,missing_image_placeholder,gallery_image_width,gallery_image_height,thumbnail_image_width,thumbnail_image_height,medium_image_width,medium_image_height,large_image_width,large_image_height'
+		'default'                     => '{name_legend},store_configuration_name,label;{address_legend:hide},firstname,lastname,company,street,postal,city,state,country,emailShipping,phone,shipping_countries,billing_countries,shipping_fields,billing_fields;{config_legend},weightUnit,cookie_duration,isDefaultStore,enableGoogleAnalytics;{price_legend},priceField,priceOverrideField,priceCalculateFactor,priceCalculateMode,priceRoundPrecision,priceRoundIncrement;{currency_legend},currency,currencySymbol,currencyFormat,currencyPosition;{redirect_legend},cartJumpTo,checkoutJumpTo;{invoice_legend},invoiceLogo;{images_legend},root_asset_import_path,missing_image_placeholder,gallery_image_width,gallery_image_height,thumbnail_image_width,thumbnail_image_height,medium_image_width,medium_image_height,large_image_width,large_image_height'
 	),
 
 	// Fields
@@ -189,8 +189,9 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'filter'                  => true,
 			'sorting'                 => true,
 			'inputType'               => 'select',
+			'default'				  => $this->User->country,
 			'options'                 => $this->getCountries(),
-			'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
+			'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
 		),
 		'phone' => array
 		(
@@ -208,6 +209,40 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>64, 'rgxp'=>'email', 'tl_class'=>'w50'),
 		),
+		'shipping_countries' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['shipping_countries'],
+			'exclude'                 => true,
+			'inputType'               => 'select',
+			'default'                 => array_keys($this->getCountries()),
+			'options'                 => $this->getCountries(),
+			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'size'=>8, 'tl_class'=>'w50'),
+		),
+		'shipping_fields' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['shipping_fields'],
+			'exclude'                 => true,
+			'inputType'               => 'checkboxWizard',
+			'options_callback'		  => array('tl_store', 'getAddressFields'),
+			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'w50 w50h'),
+		),
+		'billing_countries' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['billing_countries'],
+			'exclude'                 => true,
+			'inputType'               => 'select',
+			'default'                 => array_keys($this->getCountries()),
+			'options'                 => $this->getCountries(),
+			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'size'=>8, 'tl_class'=>'w50 w50h'),
+		),
+		'billing_fields' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['billing_fields'],
+			'exclude'                 => true,
+			'inputType'               => 'checkboxWizard',
+			'options_callback'		  => array('tl_store', 'getAddressFields'),
+			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'w50 w50h'),
+		),
 		'enableGoogleAnalytics' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['enableGoogleAnalytics'],
@@ -221,7 +256,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'exclude'                 => true,
 			'default'				  => 30,
 			'inputType'               => 'text',
-			'eval'                    => array('rgxp'=>'digit', 'maxlength'=>4, 'tl_class'=>'w50')
+			'eval'                    => array('rgxp'=>'digit', 'maxlength'=>4, 'tl_class'=>'w50 w50h')
 		),
 		'isDefaultStore' => array
 		(
@@ -303,15 +338,6 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('rgxp'=>'digit', 'maxlength'=>10, 'tl_class'=>'w50'),
-		),		
-		'country' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['country'],
-			'exclude'                 => true,
-			'inputType'               => 'select',
-			'default'				  => $this->User->country,
-			'options'				  => $this->getCountries(),
-			'eval'                    => array('includeBlankOption'=>true, 'mandatory'=>true),
 		),
 		'priceField' => array
 		(
@@ -397,23 +423,6 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'inputType'               => 'select',
 			'options'				  => array_keys($GLOBALS['ISO_NUM']),
 			'eval'                    => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50'),
-		),
-		'countries' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['countries'],
-			'exclude'                 => true,
-			'inputType'               => 'select',
-			'default'                 => array_keys($this->getCountries()),
-			'options'                 => $this->getCountries(),
-			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'size'=>8, 'tl_class'=>'clr'),
-		),
-		'address_fields' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['address_fields'],
-			'exclude'                 => true,
-			'inputType'               => 'checkboxWizard',
-			'options_callback'		  => array('tl_store', 'getAddressFields'),
-			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'clr'),
 		),
 		'orderPrefix' => array
 		(

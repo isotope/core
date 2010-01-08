@@ -52,6 +52,7 @@ class IsotopeRunonce extends Frontend
 		$this->renameFields();
 		$this->updateAttributes();
 		$this->updateProductCategories();
+		$this->updateStoreConfigurations();
 		
 		// Checkout method has been renamed from "login" to "member" to prevent a problem with palette of the login module
 		$this->Database->execute("UPDATE tl_module SET iso_checkout_method='member' WHERE iso_checkout_method='login'");
@@ -146,6 +147,23 @@ class IsotopeRunonce extends Frontend
 			$this->Database->execute("INSERT INTO tl_product_categories (pid,tstamp,page_id) (SELECT product_id AS pid, tstamp, pid AS page_id FROM tl_product_to_category)");
 			
 			$this->Database->execute("DROP TABLE tl_product_to_category");
+		}
+	}
+	
+	private function updateStoreConfigurations()
+	{
+		if ($this->Database->fieldExists('countries', 'tl_store'))
+		{
+			$this->Database->execute("ALTER TABLE tl_store CHANGE COLUMN countries shipping_countries blob NULL");
+			$this->Database->execute("ALTER TABLE tl_store ADD COLUMN billing_countries blob NULL");
+			$this->Database->prepare("UPDATE tl_store SET billing_countries=shipping_countries");
+		}
+		
+		if ($this->Database->fieldExists('address_fields', 'tl_store'))
+		{
+			$this->Database->execute("ALTER TABLE tl_store CHANGE COLUMN address_fields shipping_fields blob NULL");
+			$this->Database->execute("ALTER TABLE tl_store ADD COLUMN billing_fields blob NULL");
+			$this->Database->prepare("UPDATE tl_store SET billing_fields=shipping_fields");
 		}
 	}
 }

@@ -560,11 +560,15 @@ class Isotope extends Controller
 	 * @param array $arrAddress
 	 * @return string
 	 */
-	public function generateAddressString($arrAddress)
+	public function generateAddressString($arrAddress, $arrFields=null)
 	{
-		
 		if (!is_array($arrAddress) || !count($arrAddress))
 			return $arrAddress;
+			
+		if (!is_array($arrFields))
+		{
+			$arrFields = $this->Store->billing_fields;
+		}
 		
 		// We need a country to format the address, user default country if none is available
 		if (!strlen($arrAddress['country']))
@@ -578,7 +582,7 @@ class Isotope extends Controller
 		$arrAddress['country'] = $arrCountries[$arrAddress['country']];
 	
 		$arrSearch = $arrReplace = array();
-		foreach( $this->Store->address_fields as $strField )
+		foreach( $arrFields as $strField )
 		{
 			$arrSearch[] = '{'.$strField.'}';
 			$arrReplace[] = $arrAddress[$strField];
@@ -593,7 +597,7 @@ class Isotope extends Controller
 		// Remove double line breaks
 		do
 		{
-			$strAddress = str_replace('<br /><br />', '<br />', $strAddress, $found);
+			$strAddress = str_replace('<br /><br />', '<br />', trim($strAddress), $found);
 		}
 		while ($found > 0);
 		

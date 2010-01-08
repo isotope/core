@@ -48,9 +48,6 @@ $GLOBALS['TL_LANG']['tl_store']['currency']							= array('Currency', 'Please se
 $GLOBALS['TL_LANG']['tl_store']['currencySymbol']					= array('Use currency symbol', 'Use a currency symbol ($, €) if available.');
 $GLOBALS['TL_LANG']['tl_store']['currencyPosition']					= array('Position of currency code/symbol', 'Select if you want to show currency on the left or right side of the price.');
 $GLOBALS['TL_LANG']['tl_store']['currencyFormat']					= array('Currency formatting', 'Choose a formatting for prices.');
-$GLOBALS['TL_LANG']['tl_store']['country']							= array('Default Country','What is the default country for this store configuration?');
-$GLOBALS['TL_LANG']['tl_store']['countries']						= array('Countries', 'Select the countries you want to allow for checkout.');
-$GLOBALS['TL_LANG']['tl_store']['address_fields']					= array('Address fields', 'Select the fields for a new address when checking out.');
 $GLOBALS['TL_LANG']['tl_store']['gallery_image_width']				= array('Gallery Thumbnail Standard Width', 'In pixels.');
 $GLOBALS['TL_LANG']['tl_store']['gallery_image_height']				= array('Gallery Thumbnail Standard Height', 'In pixels.');
 $GLOBALS['TL_LANG']['tl_store']['invoiceLogo']						= array('Invoice Logo','Select a logo to show up on the invoices for this store.');
@@ -62,9 +59,13 @@ $GLOBALS['TL_LANG']['tl_store']['street']      						= array('Street', 'Please e
 $GLOBALS['TL_LANG']['tl_store']['postal']      						= array('Postal code', 'Please enter the postal code.');
 $GLOBALS['TL_LANG']['tl_store']['city']       						= array('City', 'Plase enter the name of the city.');
 $GLOBALS['TL_LANG']['tl_store']['state']       						= array('State', 'Plase enter the name of the state.');
-$GLOBALS['TL_LANG']['tl_store']['country']     						= array('Country', 'Please select a country.');
+$GLOBALS['TL_LANG']['tl_store']['country']     						= array('Country', 'Please select a country. This is also the default for custom shipping/billing addresses.');
 $GLOBALS['TL_LANG']['tl_store']['phone']       						= array('Phone number', 'Please enter the phone number.');
 $GLOBALS['TL_LANG']['tl_store']['emailShipping'] 					= array('Shipping E-mail address', 'Please enter a valid e-mail address.');
+$GLOBALS['TL_LANG']['tl_store']['shipping_countries']				= array('Shipping countries', 'Select the countries you want to allow for checkout shipping address.');
+$GLOBALS['TL_LANG']['tl_store']['shipping_fields']					= array('Shipping address fields', 'Select the fields for a new shipping address when checking out.');
+$GLOBALS['TL_LANG']['tl_store']['billing_countries']				= array('Billing countries', 'Select the countries you want to allow for checkout billing address.');
+$GLOBALS['TL_LANG']['tl_store']['billing_fields']					= array('Billing address fields', 'Select the fields for a new billing address when checking out.');
 $GLOBALS['TL_LANG']['tl_store']['weightUnit']						= array('Weight unit of measurement','Specify the unit of measurement for weight (LBS or KGS)');
 $GLOBALS['TL_LANG']['tl_store']['enableGoogleAnalytics']			= array('Enable Google Analytics e-commerce tracking','Add Google Analytics e-commerce tracking. Please note you will also have to enable e-commerce tracking in your Google Analytics account.');
 
@@ -93,11 +94,10 @@ $GLOBALS['TL_LANG']['tl_store']['show']   							= array('Show Store Details', '
  * Legends
  */
 $GLOBALS['TL_LANG']['tl_store']['name_legend']						= 'Name';
-$GLOBALS['TL_LANG']['tl_store']['shipping_legend']					= 'Shipping Information';
+$GLOBALS['TL_LANG']['tl_store']['address_legend']	    			= 'Address configuration';
 $GLOBALS['TL_LANG']['tl_store']['config_legend']					= 'Configuration';
 $GLOBALS['TL_LANG']['tl_store']['price_legend']	    				= 'Pricing';
 $GLOBALS['TL_LANG']['tl_store']['currency_legend']	    			= 'Currency formatting';
-$GLOBALS['TL_LANG']['tl_store']['address_legend']	    			= 'Billing and shipping address';
 $GLOBALS['TL_LANG']['tl_store']['invoice_legend']	    			= 'Invoice';
 $GLOBALS['TL_LANG']['tl_store']['images_legend']	    			= 'Images';
 

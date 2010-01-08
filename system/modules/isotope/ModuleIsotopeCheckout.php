@@ -317,7 +317,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				'billing_address' => array
 				(
 					'headline'	=> ($this->Cart->shippingAddress['id'] == -1 ? $GLOBALS['TL_LANG']['ISO']['billing_shipping_address'] : $GLOBALS['TL_LANG']['ISO']['billing_address']),
-					'info'		=> $this->Isotope->generateAddressString($this->Cart->billingAddress),
+					'info'		=> $this->Isotope->generateAddressString($this->Cart->billingAddress, $this->Isotope->Store->billing_fields),
 					'edit'		=> $this->addToUrl('step=address'),
 				),
 			);
@@ -348,7 +348,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				'shipping_address' => array
 				(
 					'headline'	=> $GLOBALS['TL_LANG']['ISO']['shipping_address'],
-					'info'		=> $this->Isotope->generateAddressString($this->Cart->shippingAddress),
+					'info'		=> $this->Isotope->generateAddressString($this->Cart->shippingAddress, $this->Isotope->Store->shipping_fields),
 					'edit'		=> $this->addToUrl('step=address'),
 				),
 			);
@@ -809,8 +809,8 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 		if ($blnCheckout)
 		{
-			$strBillingAddress = $this->Isotope->generateAddressString($this->Cart->billingAddress);
-			$strShippingAddress = $this->Cart->shippingAddress['id'] == -1 ? $GLOBALS['TL_LANG']['useBillingAddress'] : $this->Isotope->generateAddressString($this->Cart->shippingAddress);
+			$strBillingAddress = $this->Isotope->generateAddressString($this->Cart->billingAddress, $this->Isotope->Store->billing_fields);
+			$strShippingAddress = $this->Cart->shippingAddress['id'] == -1 ? $GLOBALS['TL_LANG']['useBillingAddress'] : $this->Isotope->generateAddressString($this->Cart->shippingAddress, $this->Isotope->Store->shipping_fields);
 
 			$arrData = array
 			(
@@ -910,6 +910,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	{
 		$strBuffer = '';
 		$arrOptions = array();
+		$arrCountries = ($field == 'billing_address' ? $this->Isotope->Store->billing_countries : $this->Isotope->Store->shipping_countries);
 		
 		if (FE_USER_LOGGED_IN)
 		{
@@ -917,13 +918,13 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			
 			while( $objAddress->next() )
 			{
-				if (!in_array($objAddress->country, $this->Isotope->Store->countries))
+				if (!in_array($objAddress->country, $arrCountries))
 					continue;
 					
 				$arrOptions[] = array
 				(
 					'value'		=> $objAddress->id,
-					'label'		=> $this->Isotope->generateAddressString($objAddress->row()),
+					'label'		=> $this->Isotope->generateAddressString($objAddress->row(), ($field == 'billing_address' ? $this->Isotope->Store->billing_fields : $this->Isotope->Store->shipping_fields)),
 				);
 			}
 		}
@@ -1022,7 +1023,9 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		$this->loadLanguageFile($strResourceTable);
 		$this->loadDataContainer($strResourceTable);
 		
-		foreach( $this->Isotope->Store->address_fields as $field )
+		$arrFields = ($strAddressField == 'billing_address' ? $this->Isotope->Store->billing_fields : $this->Isotope->Store->shipping_fields);
+		
+		foreach( $arrFields as $field )
 		{
 			$arrData = $GLOBALS['TL_DCA'][$strResourceTable]['fields'][$field];
 			
@@ -1032,15 +1035,13 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			$strClass = $GLOBALS['TL_FFL'][$arrData['inputType']];
 			
 			// Continue if the class is not defined
-			if (!$this->classFileExists($strClass) || !$arrData['eval']['isoEditable'] || !count($arrData['eval']['isoCheckoutGroups']) || !in_array($strAddressField, $arrData['eval']['isoCheckoutGroups']))
+			if (!$this->classFileExists($strClass) || !$arrData['eval']['isoEditable'])
 				continue;
 			
 			// Special field "country"
 			if ($field == 'country')
 			{
-				$arrCountries = array_combine(array_values($this->Isotope->Store->countries), array_keys($this->Isotope->Store->countries));
-				
-				$arrData['options'] = array_intersect_key($arrData['options'], $arrCountries);
+				$arrData['options'] = ($strAddressField == 'billing_address' ? $this->Isotope->Store->billing_countries : $this->Isotope->Store->shipping_countries);
 				$arrData['default'] = $this->Isotope->Store->country;
 			}
 			

@@ -66,6 +66,7 @@ array_insert($GLOBALS['BE_MOD']['store'], 0, array
 		'callback'					=> 'ModuleIsotopeConfig',
 		'tables'					=> array('tl_store', 'tl_shipping_modules', 'tl_payment_modules', 'tl_payment_options', 'tl_tax_class', 'tl_tax_rate', 'tl_product_types', 'tl_product_attributes', 'tl_iso_mail', 'tl_iso_mail_content'),
 		'icon'						=> 'system/modules/isotope/html/icon-store.gif',
+		'stylesheet'				=> 'system/modules/isotope/html/backend.css',
 	),
 ));
 
