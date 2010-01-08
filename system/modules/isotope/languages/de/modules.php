@@ -31,6 +31,7 @@
 $GLOBALS['TL_LANG']['MOD']['store']						= 'Isotope eCommerce';
 $GLOBALS['TL_LANG']['MOD']['product_manager']			= array('Produkte','');
 $GLOBALS['TL_LANG']['MOD']['orders']					= array('Bestellungen', '');
+$GLOBALS['TL_LANG']['MOD']['iso_statistics']			= array('Verkaufsstatistik', '');
 $GLOBALS['TL_LANG']['MOD']['isotope']					= array('Shop-Konfiguration', '');
 
 
