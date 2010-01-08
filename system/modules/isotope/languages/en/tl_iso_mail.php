@@ -31,8 +31,8 @@
 $GLOBALS['TL_LANG']['tl_iso_mail']['name']			= array('Name', 'Please enter a name fro the email. Used as a reference in the system.');
 $GLOBALS['TL_LANG']['tl_iso_mail']['senderName']	= array('Sender Name', 'Enter the name of the sender.');
 $GLOBALS['TL_LANG']['tl_iso_mail']['sender']		= array('Sender Email', 'Enter the e-mail address of the sender. The recipient will reply to this address.');
-$GLOBALS['TL_LANG']['tl_iso_mail']['cc']			= array('Send a CC to', 'Please enter a valid e-mail addresses, which a copy of the message should be. The recipient can see these addresses!');
-$GLOBALS['TL_LANG']['tl_iso_mail']['bcc']			= array('Send a BCC to', 'Please enter a valid e-mail address which a copy of the message should be sent. The recipient cannot see these addresses!');
+$GLOBALS['TL_LANG']['tl_iso_mail']['cc']			= array('Send a CC to', 'Recipients that should receive a carbon copy of the mail. Separate multiple addresses with a comma.');
+$GLOBALS['TL_LANG']['tl_iso_mail']['bcc']			= array('Send a BCC to', 'Recipients that should receive a blind carbon copy of the mail. Separate multiple addresses with a comma.');
 $GLOBALS['TL_LANG']['tl_iso_mail']['template']		= array('Email Template', 'Here you can select an HTML e-mail template to use.');
 
 

@@ -31,8 +31,8 @@
 $GLOBALS['TL_LANG']['tl_iso_mail']['name']			= array('Name', 'Bitte geben Sie einen Namen ein. Dieser wir lediglich als Referenz im System verwendet.');
 $GLOBALS['TL_LANG']['tl_iso_mail']['senderName']	= array('Absendername', 'Geben Sie den Namen des Absenders ein.');
 $GLOBALS['TL_LANG']['tl_iso_mail']['sender']		= array('Absenderadresse', 'Geben Sie die E-Mail Adresse des Absenders ein. Der Empfänger wird bei Antworten an diese Adresse senden.');
-$GLOBALS['TL_LANG']['tl_iso_mail']['cc']			= array('Kopie senden an', 'Geben Sie gültige E-Mail Adressen ein, welche eine Kopie der Nachricht erhalten sollen. Der Empfänger kann diese Adressen sehen!');
-$GLOBALS['TL_LANG']['tl_iso_mail']['bcc']			= array('Blinkkopie senden an', 'Geben Sie gültige E-Mail Adressen ein, welche eine Kopie der Nachricht erhalten sollen. Der Empfänger kann diese Adressen nicht sehen!');
+$GLOBALS['TL_LANG']['tl_iso_mail']['cc']			= array('Kopie senden an', 'Empfänger welche eine Kopie der Nachricht erhalten sollen. Trennen Sie mehrere E-Mail Adressen mit einem Komma.');
+$GLOBALS['TL_LANG']['tl_iso_mail']['bcc']			= array('Blinkkopie senden an', 'Empfänger welche eine Blindkopie der Nachricht erhalten sollen. Trennen Sie mehrere E-Mail Adressen mit einem Komma.');
 $GLOBALS['TL_LANG']['tl_iso_mail']['template']		= array('E-Mail-Template', 'Hier können Sie das E-Mail-Template für HTML-Inhalte auswählen.');
 
 
