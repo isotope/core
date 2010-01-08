@@ -130,14 +130,14 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_mail']['cc'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>255, 'rgxp'=>'email', 'tl_class'=>'w50'),
+			'eval'                    => array('maxlength'=>255, 'rgxp'=>'extnd', 'tl_class'=>'w50'),
 		),
 		'bcc' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_mail']['bcc'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>255, 'rgxp'=>'email', 'tl_class'=>'w50'),
+			'eval'                    => array('maxlength'=>255, 'rgxp'=>'extnd', 'tl_class'=>'w50'),
 		),
 		'template' => array
 		(

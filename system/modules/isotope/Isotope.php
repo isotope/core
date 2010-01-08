@@ -672,12 +672,20 @@ class Isotope extends Controller
 		
 		if (strlen($objMail->cc))
 		{
-			$objEmail->sendCc($objMail->cc);
+			$arrRecipients = trimsplit(',', $objMail->cc);
+			foreach( $arrRecipients as $recipient )
+			{
+				$objEmail->sendCc($recipient);
+			}
 		}
 		
 		if (strlen($objMail->bcc))
 		{
-			$objEmail->sendBcc($objMail->bcc);
+			$arrRecipients = trimsplit(',', $objMail->ccc);
+			foreach( $arrRecipients as $recipient )
+			{
+				$objEmail->sendBcc($recipient);
+			}
 		}
 		
 		$objEmail->sendTo($strRecipient);
