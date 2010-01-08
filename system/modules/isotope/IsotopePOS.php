@@ -502,7 +502,7 @@ class IsotopePOS extends Backend
 		$objTemplate->surcharges = $arrSurcharges;
 		
 		$objTemplate->billing_label = $GLOBALS['TL_LANG']['ISO']['billing_address'];
-		$objTemplate->billing_address = $this->Isotope->generateAddressString(deserialize($objOrder->billing_address));
+		$objTemplate->billing_address = $this->Isotope->generateAddressString(deserialize($objOrder->billing_address), $this->Isotope->Store->billing_fields);
 		if (strlen($objOrder->shipping_method))
 		{
 			$arrShippingAddress = deserialize($objOrder->shipping_address);
@@ -515,7 +515,7 @@ class IsotopePOS extends Backend
 			{
 				$objTemplate->has_shipping = true;
 				$objTemplate->shipping_label = $GLOBALS['TL_LANG']['ISO']['shipping_address'];
-				$objTemplate->shipping_address = $this->Isotope->generateAddressString($arrShippingAddress);
+				$objTemplate->shipping_address = $this->Isotope->generateAddressString($arrShippingAddress, $this->Isotope->Store->shipping_fields);
 			}
 		}
 		

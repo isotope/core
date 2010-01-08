@@ -170,7 +170,7 @@ class ModuleOrderDetails extends ModuleIsotopeBase
 		$this->Template->surcharges = $arrSurcharges;
 		
 		$this->Template->billing_label = $GLOBALS['TL_LANG']['ISO']['billing_address'];
-		$this->Template->billing_address = $this->Isotope->generateAddressString(deserialize($objOrder->billing_address));
+		$this->Template->billing_address = $this->Isotope->generateAddressString(deserialize($objOrder->billing_address), $this->Isotope->Store->billing_fields);
 		
 		if (strlen($objOrder->shipping_method))
 		{
@@ -184,7 +184,7 @@ class ModuleOrderDetails extends ModuleIsotopeBase
 			{
 				$this->Template->has_shipping = true;
 				$this->Template->shipping_label = $GLOBALS['TL_LANG']['ISO']['shipping_address'];
-				$this->Template->shipping_address = $this->Isotope->generateAddressString($arrShippingAddress);
+				$this->Template->shipping_address = $this->Isotope->generateAddressString($arrShippingAddress, $this->Isotope->Store->shipping_fields);
 			}
 		}
 	}

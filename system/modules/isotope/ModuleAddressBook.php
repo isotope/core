@@ -68,7 +68,7 @@ class ModuleAddressBook extends Module
 		
 		$this->import('Isotope');
 
-		$this->arrAddressFields = deserialize($this->Isotope->Store->address_fields);
+		$this->arrAddressFields = deserialize($this->Isotope->Store->billing_fields);
 
 		// Return if there are not editable fields or if there is not logged in user
 		if (!FE_USER_LOGGED_IN || !is_array($this->arrAddressFields) || !count($this->arrAddressFields))
