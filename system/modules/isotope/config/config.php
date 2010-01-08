@@ -56,6 +56,11 @@ array_insert($GLOBALS['BE_MOD']['store'], 0, array
 		'authorize_process_payment'	=> array('IsotopePOS', 'getPOSInterface'),
 		'print_order'				=> array('IsotopePOS','printInvoice'),
 	),
+	'iso_statistics' => array
+	(
+		'callback'					=> 'ModuleIsotopeStatistics',
+		'icon'						=> 'system/modules/isotope/html/icon-statistics.gif',
+	),
 	'isotope' => array
 	(
 		'callback'					=> 'ModuleIsotopeConfig',
