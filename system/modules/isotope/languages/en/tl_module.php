@@ -65,7 +65,7 @@ $GLOBALS['TL_LANG']['tl_module']['iso_enableSearch']			= array('Enable search','
 $GLOBALS['TL_LANG']['tl_module']['iso_disableFilterAjax']		= array('Disable filter AJAX','Please check this if you would prefer not to use the AJAX filtering functionality.');
 $GLOBALS['TL_LANG']['tl_module']['iso_cart_jumpTo']				= array('Shopping Cart Jump to page', 'This setting defines to which page a user will be redirected when requesting a full shopping cart view.');
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_jumpTo']			= array('Checkout Jump to page', 'This setting defines to which page a user will be redirected when completing their transaction.');
-
+$GLOBALS['TL_LANG']['tl_module']['showProductNameInPageTitle']  = array('Show product name in page title','Show product name in page title.');
 
 /**
  * References
