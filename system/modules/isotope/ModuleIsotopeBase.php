@@ -1155,6 +1155,7 @@ abstract class ModuleIsotopeBase extends Module
 	 */
 	public function generateProduct($objProduct, $strTemplate, $arrData=array())
 	{
+		
 		$objTemplate = new FrontendTemplate($strTemplate);
 
 		$objTemplate->setData($arrData);
@@ -1183,7 +1184,7 @@ abstract class ModuleIsotopeBase extends Module
 					break;
 					
 				default:
-										
+									
 					if($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['is_customer_defined'])
 					{						
 						
@@ -1212,42 +1213,69 @@ abstract class ModuleIsotopeBase extends Module
 						}
 					}
 					else
-					{
+					{						
 						switch($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['type'])
 						{
 							case 'select':
 							case 'radio':
 							case 'checkbox':
-								//check for a related label to go with the value.
-								$arrOptions = deserialize($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['option_list']);
-								$varValues = deserialize($varValue);
-								$arrLabels = array();
 								
-								if($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['is_visible_on_front'])
-								{
-									foreach($arrOptions as $option)
+								if($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['use_alternate_source'])
+								{																											
+									$objData = $this->Database->prepare("SELECT * FROM " . $GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['list_source_table'] . " WHERE id=?")						
+															  ->limit(1)									 
+															  ->execute($varValue);
+									
+									if(!$objData->numRows)
+									{										
+										$objTemplate->$attribute = $varValue;
+									}
+									else
 									{
-										if(is_array($varValues))
+									
+										$objTemplate->$attribute = array
+										(
+											'id'	=> $varValue,
+											'raw'	=> $objData->fetchAssoc()
+										);										
+									
+									}									
+									
+								}
+								else
+								{
+								
+									//check for a related label to go with the value.
+									$arrOptions = deserialize($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['option_list']);
+									$varValues = deserialize($varValue);
+									$arrLabels = array();
+									
+									if($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['is_visible_on_front'])
+									{
+										foreach($arrOptions as $option)
 										{
-											if(in_array($option['value'], $varValues))
+											if(is_array($varValues))
 											{
-												$arrLabels[] = $option['label'];
+												if(in_array($option['value'], $varValues))
+												{
+													$arrLabels[] = $option['label'];
+												}
+											}
+											else
+											{	
+												if($option['value']===$v)
+												{
+													$arrLabels[] = $option['label'];
+												}
 											}
 										}
-										else
-										{	
-											if($option['value']===$v)
-											{
-												$arrLabels[] = $option['label'];
-											}
+										
+										if($arrLabels)
+										{									
+											$objTemplate->$attribute = join(',', $arrLabels); 
 										}
+										
 									}
-									
-									if($arrLabels)
-									{									
-										$objTemplate->$attribute = join(',', $arrLabels); 
-									}
-									
 								}
 								break;
 								
