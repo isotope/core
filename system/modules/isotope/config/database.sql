@@ -52,6 +52,7 @@ CREATE TABLE `tl_module` (
   `iso_cart_jumpTo` int(10) unsigned NOT NULL default '0',
   `iso_checkout_jumpTo` int(10) unsigned NOT NULL default '0',
   `orderCompleteJumpTo` int(10) unsigned NOT NULL default '0',
+  `showProductNameInPageTitle` char(1) NOT NULL default '',
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
