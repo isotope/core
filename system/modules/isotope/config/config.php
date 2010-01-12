@@ -157,7 +157,6 @@ $GLOBALS['TL_HOOKS']['executePostActions'][] = array('ProductOptionWizard', 'exe
 $GLOBALS['TL_HOOKS']['isoCheckoutSurcharge'][] = array('IsotopeCart', 'getShippingSurcharge');
 $GLOBALS['TL_HOOKS']['isoCheckoutSurcharge'][] = array('IsotopeCart', 'getPaymentSurcharge');
 
-$GLOBALS['TL_HOOKS']['addCustomRegexp'][] = array('Isotope', 'addCustomRegexp');
 
 
 /**
