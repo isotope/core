@@ -969,7 +969,9 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		{
 			$strClass = $GLOBALS['TL_FFL']['radio'];
 			
-			$objWidget = new $strClass(array('id'=>$field, 'name'=>$field, 'required'=>true));
+			$arrData = array('id'=>$field, 'name'=>$field, 'required'=>true);
+			
+			$objWidget = new $strClass($arrData);
 			$objWidget->options = $arrOptions;
 			$objWidget->value = $intDefaultValue;
 			$objWidget->onclick = "Isotope.toggleAddressFields(this, '" . $field . "_new');";

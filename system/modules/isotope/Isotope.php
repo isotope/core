@@ -734,8 +734,31 @@ class Isotope extends Controller
 		
 		return 0;
 	}
-	
-	
+
+	public function addCustomRegexp($strRegexp, $varValue, Widget $objWidget)
+	{
+		
+		switch($strRegexp)
+		{
+		
+			case 'regabbrev':
+				
+				$strCountry = $this->Input->post('billing_address_country') ? $this->Input->post('billing_address_country') : $this->Input->post('shipping_address_country');
+				
+				switch($strCountry)
+				{
+					case 'us':				
+						if (!preg_match('/^(A[LKSZRAP]|C[AOT]|D[EC]|F[LM]|G[AU]|HI|I[ADLN]|K[SY]|LA|M[ADEHINOPST]|N[CDEHJMVY]|O[HKR]|P[ARW]|RI|S[CD] |T[NX]|UT|V[AIT]|W[AIVY])$/', $varValue))
+						{
+							$objWidget->addError('Field ' . $objWidget->label . ' should be a valid state abbreviation with both letters in upper case.');
+						}
+					default:
+						return true;
+				}				
+				return true;
+				break;			
+		}
+	}
 	/**
 	 * Required by Model class
 	 */	
