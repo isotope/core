@@ -169,7 +169,7 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 			'exclude'                 => true,
 			'sorting'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>64, 'isoEditable'=>true, 'tl_class'=>'w50', 'rgxp'=>'regabbrev'),
+			'eval'                    => array('maxlength'=>64, 'isoEditable'=>true, 'tl_class'=>'w50'),
 		),
 		'country' => array
 		(
