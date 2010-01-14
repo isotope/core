@@ -115,7 +115,7 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
     'subpalettes' => array
     (
        'use_alternate_source'		=> 'list_source_table,list_source_field',
-    	'is_customer_defined'		=> 'add_to_product_variants,text_collection_rows'
+    	'is_customer_defined'		=> 'add_to_product_variants'
     ),
 
     // Fields
