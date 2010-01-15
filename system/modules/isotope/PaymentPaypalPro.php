@@ -97,6 +97,48 @@ class PaymentPaypal extends Payment
 		$objRequest = new Request();
 		$objRequest->send(('https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/webscr?cmd=_express-checkout&token=' . ), implode('&', $arrData), 'post');
 		
+		/* TO INTEGRATE
+			//converting NVPResponse to an Associative Array
+		$nvpResArray = $this->deformatNVP($response);
+		$nvpReqArray = $this->deformatNVP($nvpreq);
+		$_SESSION['nvpReqArray'] = $nvpReqArray;
+		
+		
+			*************
+			if NO SUCCESS
+			*************
+			
+		if (curl_errno($ch)) 
+			{
+			// moving to display page to display curl errors
+
+			$_SESSION['curl_error_no'] = curl_errno($ch) ;
+			$_SESSION['curl_error_msg'] = curl_error($ch);
+			
+			$this->_error				= true;
+			$this->ack					= 'Failure';
+			$this->_error_type			= 'curl';
+			$this->_error_date			= date("Y-m-d H:i:s");
+			$this->_error_code			= curl_errno($ch);
+			$this->_error_short_message	= 'There was an error trying to contact the PayPal servers. (curl error) See long message for details.';
+			$this->_error_long_message	= curl_error($ch);
+			
+			return false;
+			} 
+	
+			*************
+			if SUCCESS
+			*************
+		
+		else 
+			{
+			//closing the curl
+			curl_close($ch);
+			}
+		
+		return $nvpResArray;
+		 END TO INTEGRATE */
+		
 		if ($objRequest->response == 'VERIFIED' && $this->Input->post('receiver_email') == $this->paypal_account)
 		{
 			$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE order_id=?")->limit(1)->execute($this->Input->post('invoice'));
@@ -787,8 +829,9 @@ $(\'payment_form\').submit();
 	
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
 		curl_setopt($ch, CURLOPT_POST, 1);
+		
 		//if USE_PROXY constant set to TRUE in Constants.php, then only proxy will be enabled.
-	   //Set proxy name to PROXY_HOST and port number to PROXY_PORT in constants.php 
+	    //Set proxy name to PROXY_HOST and port number to PROXY_PORT in constants.php 
 		if($this->USE_PROXY)
 			curl_setopt ($ch, CURLOPT_PROXY, $this->PROXY_HOST.":".$this->PROXY_PORT); 
 	
@@ -802,7 +845,7 @@ $(\'payment_form\').submit();
 		//getting response from server
 		$response = curl_exec($ch);
 	
-		//convrting NVPResponse to an Associative Array
+		//converting NVPResponse to an Associative Array
 		$nvpResArray = $this->deformatNVP($response);
 		$nvpReqArray = $this->deformatNVP($nvpreq);
 		$_SESSION['nvpReqArray'] = $nvpReqArray;
