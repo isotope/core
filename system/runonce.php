@@ -110,6 +110,38 @@ class IsotopeRunonce extends Frontend
 		{
 			$this->Database->execute("ALTER TABLE tl_product_data CHANGE COLUMN main_image images blob NULL");
 		}
+		
+		// tl_address_book.state has been renamed to tl_address_book.subdivision
+		if ($this->Database->fieldExists('state', 'tl_address_book'))
+		{
+			$this->Database->execute("ALTER TABLE tl_address_book CHANGE COLUMN state subdivision varchar(10) NOT NULL default ''");
+		}
+		
+		// tl_address_book.street has been renamed to tl_address_book.street_1
+		if ($this->Database->fieldExists('street', 'tl_address_book'))
+		{
+			$this->Database->execute("ALTER TABLE tl_address_book CHANGE COLUMN street street_1 varchar(255) NOT NULL default ''");
+			$this->Database->execute("ALTER TABLE tl_store CHANGE COLUMN street street_1 varchar(255) NOT NULL default ''");
+			$objStores = $this->Database->execute("SELECT * FROM tl_store");
+			
+			while( $objStores->next() )
+			{
+				$arrBilling = deserialize($objStores->billing_fields, true);
+				$arrShipping = deserialize($objStores->shipping_fields, true);
+				
+				if (($k = array_search('street', $arrBilling)) !== false)
+				{
+					$arrBilling[$k] = 'street_1';
+				}
+				
+				if (($k = array_search('street', $arrShipping)) !== false)
+				{
+					$arrShipping[$k] = 'street_1';
+				}
+				
+				$this->Database->prepare("UPDATE tl_store SET shipping_fields=?, billing_fields=? WHERE id=?")->execute(serialize($arrShipping), serialize($arrBilling), $objStores->id);
+			}
+		}
 	}
 	
 	

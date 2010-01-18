@@ -29,18 +29,20 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_address_book']['firstname']   = array('First name', 'Please enter the first name.');
-$GLOBALS['TL_LANG']['tl_address_book']['lastname']    = array('Last name', 'Please enter the last name.');
-$GLOBALS['TL_LANG']['tl_address_book']['company']     = array('Company', 'You can enter a company name here.');
-$GLOBALS['TL_LANG']['tl_address_book']['street']      = array('Street', 'Please enter the street name and the street number.');
-$GLOBALS['TL_LANG']['tl_address_book']['postal']      = array('Postal code', 'Please enter the postal code.');
-$GLOBALS['TL_LANG']['tl_address_book']['city']        = array('City', 'Plase enter the name of the city.');
-$GLOBALS['TL_LANG']['tl_address_book']['state']       = array('State', 'Plase enter the name of the state.');
-$GLOBALS['TL_LANG']['tl_address_book']['country']     = array('Country', 'Please select a country.');
-$GLOBALS['TL_LANG']['tl_address_book']['phone']       = array('Phone number', 'Please enter the phone number.');
-$GLOBALS['TL_LANG']['tl_address_book']['email']       = array('E-mail address', 'Please enter a valid e-mail address.');
-$GLOBALS['TL_LANG']['tl_address_book']['isDefaultBilling'] = array('Default Billing Address', 'Is this your default billing address?');
-$GLOBALS['TL_LANG']['tl_address_book']['isDefaultShipping'] = array('Default Shipping Address', 'Is this your default shipping address?');
+$GLOBALS['TL_LANG']['tl_address_book']['firstname']		= array('First name', 'Please enter the first name.');
+$GLOBALS['TL_LANG']['tl_address_book']['lastname']		= array('Last name', 'Please enter the last name.');
+$GLOBALS['TL_LANG']['tl_address_book']['company']		= array('Company', 'You can enter a company name here.');
+$GLOBALS['TL_LANG']['tl_address_book']['street_1']		= array('Street', 'Please enter the street name and the street number.');
+$GLOBALS['TL_LANG']['tl_address_book']['street_2']		= array('Street 2', 'Enter a second street info if there\'s any.');
+$GLOBALS['TL_LANG']['tl_address_book']['street_3']		= array('Street 3', 'Enter a third street info if there\'s any.');
+$GLOBALS['TL_LANG']['tl_address_book']['postal']		= array('Postal code', 'Please enter the postal code.');
+$GLOBALS['TL_LANG']['tl_address_book']['city']			= array('City', 'Plase enter the name of the city.');
+$GLOBALS['TL_LANG']['tl_address_book']['subdivision']	= array('State', 'Plase enter the name of the state.');
+$GLOBALS['TL_LANG']['tl_address_book']['country']		= array('Country', 'Please select a country.');
+$GLOBALS['TL_LANG']['tl_address_book']['phone']			= array('Phone number', 'Please enter the phone number.');
+$GLOBALS['TL_LANG']['tl_address_book']['email']			= array('E-mail address', 'Please enter a valid e-mail address.');
+$GLOBALS['TL_LANG']['tl_address_book']['isDefaultBilling']	= array('Default Billing Address', 'Is this your default billing address?');
+$GLOBALS['TL_LANG']['tl_address_book']['isDefaultShipping']	= array('Default Shipping Address', 'Is this your default shipping address?');
 
 
 /**

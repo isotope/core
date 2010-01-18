@@ -23,6 +23,10 @@
  * @author     Fred Bliss <fred@winanscreative.com>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
+ 
+ 
+// Load country sub-divisions
+$this->loadLanguageFile('subdivisions');
 
 
 /**
@@ -139,14 +143,16 @@ $GLOBALS['TL_DCA']['tl_tax_rate'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['country'],
 			'inputType'               => 'select',
 			'options'                 => $this->getCountries(),
-			'eval'                    => array('includeBlankOption'=>true, 'submitOnChange'=>true, 'tl_class'=>'w50')
+			'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50')
 		),
 		'subdivision' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['subdivision'],
-			'inputType'               => 'select',
-			'options_callback'		  => array('tl_tax_rate', 'getSubdivisions'),
-			'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
+			'exclude'                 => true,
+			'sorting'                 => true,
+			'inputType'               => 'conditionalselect',
+			'options'				  => $GLOBALS['TL_LANG']['DIV'],
+			'eval'                    => array('conditionField'=>'country', 'tl_class'=>'w50'),
 		),
 		'postal' => array
 		(

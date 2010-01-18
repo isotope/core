@@ -589,7 +589,7 @@ class IsotopePOS extends Backend
 		$strAddress .= ' ' . $arrOrderInfo[$strAddressType . '_information_lastname'];
 		$strAddress = '<br />' . $arrOrderInfo[$strStep . '_information_company'];
 
-		$strStreetAddress = $arrOrderInfo[$strAddressType . '_information_street'];
+		$strStreetAddress = $arrOrderInfo[$strAddressType . '_information_street_1'];
 		$strStreetAddress .= $arrOrderInfo[$strAddressType . '_information_street_2'] ? '<br /> ' . $arrOrderInfo[$strAddressType . '_information_street_2'] : '';
 		$strStreetAddress .= $arrOrderInfo[$strAddressType . '_information_street_3'] ? '<br /> ' . $arrOrderInfo[$strAddressType . '_information_street_3'] : '';				
 		
@@ -734,7 +734,7 @@ class IsotopePOS extends Backend
 		
 		
 		$strAddress = $objAddress->firstname . ' ' . $objAddress->lastname . "<br />";
-		$strAddress .= $objAddress->street . "<br />";
+		$strAddress .= $objAddress->street_1 . "<br />";
 		$strAddress .= $objAddress->city . ', ' . $objAddress->state . '  ' . $objAddress->postal . "<br />";
 		$strAddress .= $objAddress->country;
 

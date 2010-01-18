@@ -416,7 +416,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				$arrModules[] = sprintf('<input id="ctrl_shipping_module_%s" type="radio" name="shipping[module]" value="%s"%s /> <label for="ctrl_shipping_module_%s">%s: %s</label>%s%s',
 										 $objModule->id,
 										 $objModule->id,
-										 ($this->Cart->Shipping->id == $objModule->id || $objModules->numRows==1 ? ' checked="checked"' : ''),
+										 (($this->Cart->Shipping->id == $objModule->id || $objModules->numRows==1) ? ' checked="checked"' : ''),
 										 $objModule->id,
 	 									 $objModule->label,
 	 									 $this->Isotope->formatPriceWithCurrency($objModule->price), 
@@ -524,7 +524,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				$arrModules[] = sprintf('<input id="ctrl_payment_module_%s" type="radio" class="radio payment_module" name="payment[module]" value="%s"%s /> <label for="ctrl_payment_module_%s">%s</label>%s',
 										 $objModule->id,
 										 $objModule->id,
-										 ($this->Cart->Payment->id == $objModule->id || $objModules->numRows==1 ? ' checked="checked"' : ''),
+										 (($this->Cart->Payment->id == $objModule->id || $objModules->numRows==1) ? ' checked="checked"' : ''),
 										 $objModule->id,
 	 									 $objModule->label,
 	 									 $strForm);
@@ -1043,8 +1043,13 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			// Special field "country"
 			if ($field == 'country')
 			{
-				$arrData['options'] = ($strAddressField == 'billing_address' ? $this->Isotope->Store->billing_countries : $this->Isotope->Store->shipping_countries);
+				$arrCountries = ($strAddressField == 'billing_address' ? $this->Isotope->Store->billing_countries : $this->Isotope->Store->shipping_countries);
+				$arrData['options'] = array_intersect_key($arrData['options'], array_flip($arrCountries));
 				$arrData['default'] = $this->Isotope->Store->country;
+			}
+			if (strlen($arrData['eval']['conditionField']))
+			{
+				$arrData['eval']['conditionField'] = $strAddressField . '_' . $arrData['eval']['conditionField'];
 			}
 			
 			$objWidget = new $strClass($this->prepareForWidget($arrData, $strAddressField . '_' . $field, (strlen($_SESSION['CHECKOUT_DATA'][$strAddressField][$field]) ? $_SESSION['CHECKOUT_DATA'][$strAddressField][$field] : (strlen($this->User->$field) ? $this->User->$field : $arrData['default']))));

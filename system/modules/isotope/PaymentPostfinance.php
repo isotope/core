@@ -176,7 +176,7 @@ class PaymentPostfinance extends Payment
 <input type="hidden" name="language" value="' . $GLOBALS['TL_LANGUAGE'] . '_' . strtoupper($GLOBALS['TL_LANGUAGE']) . '">
 <input type="hidden" name="EMAIL" value="' . $arrAddress['email'] . '">
 <input type="hidden" name="ownerZIP" value="' . $arrAddress['postal'] . '">
-<input type="hidden" name="owneraddress" value="' . $arrAddress['street'] . '">
+<input type="hidden" name="owneraddress" value="' . $arrAddress['street_1'] . '">
 <input type="hidden" name="ownercty" value="' . $arrAddress['country'] . '">
 <input type="hidden" name="ownertown" value="' . $arrAddress['city'] . '">
 <input type="hidden" name="ownertelno" value="' . $arrAddress['phone'] . '">
