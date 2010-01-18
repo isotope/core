@@ -423,7 +423,7 @@ class Isotope extends Controller
 			'firstname'			=> strval($arrData['firstname']),
 			'lastname'			=> strval($arrData['lastname']),
 			'company'			=> strval($arrData['company']),
-			'street'			=> strval($arrData['street']),
+			'street_1'			=> strval($arrData['street']),
 			'postal'			=> strval($arrData['postal']),
 			'city'				=> strval($arrData['city']),
 			'state'				=> strval($arrData['state']),
@@ -484,7 +484,7 @@ class Isotope extends Controller
 				'company'		=> $_SESSION['FORM_DATA'][$strStep . '_information_company'],
 				'firstname'		=> $_SESSION['FORM_DATA'][$strStep . '_information_firstname'],
 				'lastname'		=> $_SESSION['FORM_DATA'][$strStep . '_information_lastname'],
-				'street'		=> $_SESSION['FORM_DATA'][$strStep . '_information_street'],
+				'street_1'		=> $_SESSION['FORM_DATA'][$strStep . '_information_street_1'],
 				'street_2'		=> $_SESSION['FORM_DATA'][$strStep . '_information_street_2'],
 				'street_3'		=> $_SESSION['FORM_DATA'][$strStep . '_information_street_3'],
 				'city'			=> $_SESSION['FORM_DATA'][$strStep . '_information_city'],
@@ -539,7 +539,7 @@ class Isotope extends Controller
 		$_SESSION['FORM_DATA'][$strStep . '_information_company'] = $arrAddress['company'];
 		$_SESSION['FORM_DATA'][$strStep . '_information_firstname'] = $arrAddress['firstname'];
 		$_SESSION['FORM_DATA'][$strStep . '_information_lastname'] = $arrAddress['lastname'];
-		$_SESSION['FORM_DATA'][$strStep . '_information_street'] = $arrAddress['street'];
+		$_SESSION['FORM_DATA'][$strStep . '_information_street_1'] = $arrAddress['street_1'];
 		$_SESSION['FORM_DATA'][$strStep . '_information_street_2'] = $arrAddress['street_2'];
 		$_SESSION['FORM_DATA'][$strStep . '_information_street_3'] = $arrAddress['street_3'];
 		$_SESSION['FORM_DATA'][$strStep . '_information_city'] = $arrAddress['city'];
@@ -584,6 +584,20 @@ class Isotope extends Controller
 		$arrSearch = $arrReplace = array();
 		foreach( $arrFields as $strField )
 		{
+			if ($strField == 'subdivision' && strlen($arrAddress['subdivision']))
+			{
+				if (!is_array($GLOBALS['TL_LANG']['DIV']))
+				{
+					$this->loadLanguageFile('subdivisions');
+				}
+				
+				list($country, $subdivion) = explode('-', $arrAddress['subdivision']);
+				$arrAddress['subdivision'] = $GLOBALS['TL_LANG']['DIV'][$country][$arrAddress['subdivision']];
+			
+				$arrSearch[] = '{subdivision-abbr}';
+				$arrReplace[] = $subdivion;
+			}
+			
 			$arrSearch[] = '{'.$strField.'}';
 			$arrReplace[] = $arrAddress[$strField];
 		}
@@ -604,6 +618,10 @@ class Isotope extends Controller
 		// Remove line break at beginning of address
 		if (strpos($strAddress, '<br />') === 0)
 			$strAddress = substr($strAddress, 6);
+			
+		// Remove line break at end of address
+		if (substr($strAddress, -6) == '<br />')
+			$strAddress = substr($strAddress, 0, -6);
 	
 		return $strAddress;
 	}

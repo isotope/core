@@ -24,6 +24,10 @@
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
+ 
+
+// Load country sub-divisions
+$this->loadLanguageFile('subdivisions');
 
 
 /**
@@ -101,7 +105,7 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'					  => '{personal_legend},firstname,lastname;{address_legend:hide},company,street,postal,city,state,country;{contact_legend},email,phone;{default_legend},isDefaultBilling,isDefaultShipping',
+		'default'					  => '{personal_legend},firstname,lastname;{address_legend:hide},company,street_1,street_2,street_3,postal,city,subdivision,country;{contact_legend},email,phone;{default_legend},isDefaultBilling,isDefaultShipping',
 	),
 
 	// Fields
@@ -137,9 +141,25 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255, 'isoEditable'=>true, 'tl_class'=>'w50'),
 		),
-		'street' => array
+		'street_1' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_address_book']['street'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_address_book']['street_1'],
+			'exclude'                 => true,
+			'search'                  => true,
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>255, 'isoEditable'=>true, 'tl_class'=>'w50'),
+		),
+		'street_2' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_address_book']['street_2'],
+			'exclude'                 => true,
+			'search'                  => true,
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>255, 'isoEditable'=>true, 'tl_class'=>'w50'),
+		),
+		'street_3' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_address_book']['street_3'],
 			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'text',
@@ -163,13 +183,14 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255, 'isoEditable'=>true, 'tl_class'=>'w50'),
 		),
-		'state' => array
+		'subdivision' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_address_book']['state'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_address_book']['subdivision'],
 			'exclude'                 => true,
 			'sorting'                 => true,
-			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>64, 'isoEditable'=>true, 'tl_class'=>'w50'),
+			'inputType'               => 'conditionalselect',
+			'options'				  => $GLOBALS['TL_LANG']['DIV'],
+			'eval'                    => array('isoEditable'=>true, 'conditionField'=>'country', 'tl_class'=>'w50'),
 		),
 		'country' => array
 		(
@@ -197,25 +218,6 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>64, 'rgxp'=>'email', 'isoEditable'=>true, 'tl_class'=>'w50'),
 		),
-		
-	/*
-		'street_2' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_address_book']['street'],
-			'exclude'                 => true,
-			'search'                  => true,
-			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>255, 'insertTag'=>true, 'feViewable'=>true, 'feGroup'=>'address', 'isoEditable'=>true, 'isoCheckoutGroups'=>array('billing_information','shipping_information'))
-		),
-		'street_3' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_address_book']['street'],
-			'exclude'                 => true,
-			'search'                  => true,
-			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>255, 'insertTag'=>true, 'feViewable'=>true, 'feGroup'=>'address', 'isoEditable'=>true, 'isoCheckoutGroups'=>array('billing_information','shipping_information'))
-		),
-*/
 		'isDefaultBilling' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_address_book']['isDefaultBilling'],
@@ -291,7 +293,7 @@ class tl_address_book extends Backend
 				'firstname'		=> $objAddress->firstname,
 				'lastname'		=> $objAddress->lastname,
 				'company'		=> $objAddress->company,
-				'street'		=> $objAddress->street,
+				'street_1'		=> $objAddress->street,
 				'postal'		=> $objAddress->postal,
 				'city'			=> $objAddress->city,
 				'state'			=> $objAddress->state,

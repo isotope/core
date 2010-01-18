@@ -205,7 +205,8 @@ class PaymentPaypal extends Payment
 <input type="hidden" name="address_override" value="1">
 <input type="hidden" name="first_name" value="' . $this->Cart->billingAddress['firstname'] . '">
 <input type="hidden" name="last_name" value="' . $this->Cart->billingAddress['lastname'] . '">
-<input type="hidden" name="address1" value="' . $this->Cart->billingAddress['street'] . '">
+<input type="hidden" name="address1" value="' . $this->Cart->billingAddress['street_1'] . '">
+<input type="hidden" name="address2" value="' . $this->Cart->billingAddress['street_2'] . '">
 <input type="hidden" name="zip" value="' . $this->Cart->billingAddress['postal'] . '">
 <input type="hidden" name="city" value="' . $this->Cart->billingAddress['city'] . '">
 <input type="hidden" name="country" value="' . strtoupper($this->Cart->billingAddress['country']) . '">
