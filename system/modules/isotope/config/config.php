@@ -221,6 +221,7 @@ $GLOBALS['ISO_SHIP']['usps']		 = 'ShippingUSPS';
  */
 $GLOBALS['ISO_PAY']['cash']						= 'PaymentCash';
 $GLOBALS['ISO_PAY']['paypal']					= 'PaymentPaypal';
+$GLOBALS['ISO_PAY']['paypalpro']				= 'PaymentPaypalPro';
 $GLOBALS['ISO_PAY']['postfinance']				= 'PaymentPostfinance';
 $GLOBALS['ISO_PAY']['authorizedotnet']			= 'PaymentAuthorizeDotNet';
 

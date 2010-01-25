@@ -111,6 +111,7 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 		'default'                     => '{type_legend},type,name',
 		'cash'						  => '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{enabled_legend},enabled',
 		'paypal'                      => '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,postsale_mail,minimum_total,maximum_total,countries,shipping_modules,product_types;{paypal_legend},paypal_account,paypal_business;{template_legend},button;{enabled_legend},debug,enabled',
+		'paypalpro'					  => '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,postsale_mail,minimum_total,maximum_total,countries,shipping_modules,product_types;{paypalpro_legend},paypalpro_apiUserName,paypalpro_apiPassword,paypalpro_apiSignature;{template_legend},button;{enabled_legend},debug,enabled',
 		'postfinance'                 => '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,postsale_mail,minimum_total,maximum_total,countries,shipping_modules,product_types;{postfinance_legend},postfinance_pspid,postfinance_secret,postfinance_method;{enabled_legend},debug,enabled',
 		'authorizedotnet'			  => '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,allowed_cc_types,minimum_total,maximum_total,countries,shipping_modules,product_types;{authorize_legend},authorize_login,authorize_trans_key,authorize_trans_type,authorize_delimiter,authorize_require_ccv;{enabled_legend},debug,enabled',
 	),
@@ -232,6 +233,27 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
+		),
+		'paypalpro_apiUserName' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['paypalpro_apiUserName'],
+			'exclude'                 => true,
+			'inputType'               => 'text',
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
+		),
+		'paypalpro_apiPassword' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['paypalpro_apiPassword'],
+			'exclude'                 => true,
+			'inputType'               => 'text',
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
+		),
+		'paypalpro_apiSignature' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['paypalpro_apiSignature'],
+			'exclude'                 => true,
+			'inputType'               => 'text',
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
 		),
 		'postfinance_pspid' => array
 		(
