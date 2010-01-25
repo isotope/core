@@ -47,7 +47,6 @@
 				<ul class="productOptions">
 				<?php foreach($product['product_options'] as $option): ?>
 					<li><strong><?php echo $option['name']; ?>:</strong> <?php echo implode(', ', $option['values']); ?></li>
-				<!--<div class="option"><span class="optionname">OPTION:</span> PRODUCT OPTION</div>-->
 			<?php endforeach; ?>
 			</ul>
 			</div>
