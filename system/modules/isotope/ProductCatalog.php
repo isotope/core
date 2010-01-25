@@ -841,21 +841,27 @@ class ProductCatalog extends Backend
 		$fieldType = $objField->type ? $objField->type : 'text';
 		$fieldName = $objField->field_name;
 		
-		$this->import('IsotopeDatabase');
-		$this->IsotopeDatabase->update($fieldName, $this->sqlDef[$fieldType]);
+		$this->loadDataContainer('tl_product_data');
 		
-		if ($this->Database->fieldExists($fieldName, 'tl_product_data'))
-		{
-			if ($objField->field_name != $varValue)
+		//see if this field already exists in the core DCA.  if so only create a record in product attributes to extend it.
+		if(!array_key_exists($varValue, $GLOBALS['TL_DCA']['tl_product_data']['fields']))
+		{		
+			$this->import('IsotopeDatabase');
+			$this->IsotopeDatabase->update($fieldName, $this->sqlDef[$fieldType]);
+			
+			if ($this->Database->fieldExists($fieldName, 'tl_product_data'))
 			{
-				$statement = sprintf($this->renameColumnStatement, $fieldName, $varValue, $this->sqlDef[$fieldType]);
+				if ($objField->field_name != $varValue)
+				{
+					$statement = sprintf($this->renameColumnStatement, $fieldName, $varValue, $this->sqlDef[$fieldType]);
+				}
+			}
+			else
+			{
+				$statement = sprintf($this->createColumnStatement, $varValue, $this->sqlDef[$fieldType]);
 			}
 		}
-		else
-		{
-			$statement = sprintf($this->createColumnStatement, $varValue, $this->sqlDef[$fieldType]);
-		}
-		
+				
 		if (strlen($statement))
 			$this->Database->execute($statement);
 		
