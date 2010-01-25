@@ -43,6 +43,11 @@ $GLOBALS['TL_LANG']['tl_payment_modules']['shipping_modules']		= array('Shipping
 $GLOBALS['TL_LANG']['tl_payment_modules']['product_types']			= array('Product types', 'You can restrict this payment method to certain product types. If the cart contains a product type you have not selected, the payment module is not available.');
 $GLOBALS['TL_LANG']['tl_payment_modules']['paypal_account']			= array('PayPal Account', 'Enter your paypal account (email address).');
 $GLOBALS['TL_LANG']['tl_payment_modules']['paypal_business']		= array('Article name', 'The PayPal checkout screen will show this one-liner for order items.');
+$GLOBALS['TL_LANG']['tl_payment_modules']['paypalpro_apiUserName']  = array('Paypal Pro username','');
+$GLOBALS['TL_LANG']['tl_payment_modules']['paypalpro_apiPassword']  = array('Paypal Pro password','An alphanumeric string similar in format to this: QFZCWN5HZM8VBG7Q');
+$GLOBALS['TL_LANG']['tl_payment_modules']['paypalpro_apiSignature'] = array('Paypal Pro api signature','An alphanumeric string similar in format to this: A-IzJhZZjhg29XQ2qnhapuwxIDzyAZQ92FRP5dqBzVesOkzbdUONzmOU');
+
+
 $GLOBALS['TL_LANG']['tl_payment_modules']['button']					= array('Checkout button', 'You can show a custom checkout button instead of the default one.');
 
 
@@ -85,7 +90,8 @@ $GLOBALS['TL_LANG']['tl_payment_modules']['PRIOR_AUTH_CAPTURE']	= array('Prior A
 $GLOBALS['TL_LANG']['tl_payment_modules']['type_legend']		= 'Name & Type';
 $GLOBALS['TL_LANG']['tl_payment_modules']['note_legend']		= 'Additional Notes';
 $GLOBALS['TL_LANG']['tl_payment_modules']['config_legend']		= 'General Configuration';
-$GLOBALS['TL_LANG']['tl_payment_modules']['paypal_legend']		= 'PayPal Configuration';
+$GLOBALS['TL_LANG']['tl_payment_modules']['paypal_legend']		= 'PayPal IPN Configuration';
+$GLOBALS['TL_LANG']['tl_payment_modules']['paypalpro_legend']	= 'PayPal Pro Configuration';
 $GLOBALS['TL_LANG']['tl_payment_modules']['postfinance_legend']	= 'Postfinance Configuration';
 $GLOBALS['TL_LANG']['tl_payment_modules']['authorize_legend']	= 'Authorize.net Configuration';
 $GLOBALS['TL_LANG']['tl_payment_modules']['enabled_legend']		= 'Module Enabling Details';

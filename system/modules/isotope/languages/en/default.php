@@ -136,8 +136,10 @@ $GLOBALS['TL_LANG']['MSC']['continueShoppingBT']		= 'Continue shopping';
 $GLOBALS['TL_LANG']['MSC']['updateCartBT']				= 'Update Cart';
 $GLOBALS['TL_LANG']['MSC']['orderStatusHeadline']		= 'Order Status: %s';
 
+
 $GLOBALS['TL_LANG']['MSC']['labelDonations']			= 'Pledge a gift of';
 $GLOBALS['TL_LANG']['MSC']['addDonation']				= 'Donate';
+
 //Registry language entries 
 $GLOBALS['TL_LANG']['MSC']['registry']['lastname'] = 'Search by Last Name:';
 $GLOBALS['TL_LANG']['MSC']['registry']['datestr'] = 'Enter Date of Event:';
@@ -297,6 +299,7 @@ $GLOBALS['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';*/
  */
 $GLOBALS['TL_LANG']['PAY']['cash']				= array('Cash', 'Use this for all offline processed payment.');
 $GLOBALS['TL_LANG']['PAY']['paypal']			= array('PayPal Standard Checkout', 'This PayPal module supports IPN (Instant Payment Notifications).');
+$GLOBALS['TL_LANG']['PAY']['paypalpro']			= array('PayPal Pro', 'This PayPal module is a full service credit card gateway.');
 $GLOBALS['TL_LANG']['PAY']['postfinance']		= array('Postfinance', 'Payment gateway for the swiss post payment system that supports various card types. The store will be instantly notified about successfull transactions.');
 $GLOBALS['TL_LANG']['PAY']['authorizedotnet']	= array('Authorize.net', 'An Authorize.net payment gateway.');
 
