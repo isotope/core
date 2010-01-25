@@ -8,7 +8,18 @@
 		
 <?php foreach( $this->products as $objProduct ): ?>
 <tr>
-	<td><?php echo $objProduct->name; ?></td>
+	<td>
+		<?php echo $objProduct->name; ?>
+		<?php if(is_array($objProduct->product_options) && count($objProduct->product_options)): ?>
+		<div class="optionswrapper">
+			<ul class="productOptions">
+			<?php foreach($objProduct->product_options as $option): ?>
+				<li><strong><?php echo $option['name']; ?>:</strong> <?php echo implode(', ', $option['values']); ?></li>
+			<?php endforeach; ?>
+			</ul>
+		</div>
+		<?php endif; ?>
+	</td>
 	<td><?php echo $objProduct->quantity_requested; ?></td>
 	<td><?php echo $objProduct->formatted_price; ?></td>
 	<td><?php echo $objProduct->formatted_total_price; ?></td>
