@@ -29,8 +29,13 @@
 <p class="sku"><?php echo $this->sku; ?></p><?php endif; if ($this->description): ?>
 <p class="description"><?php echo $this->description; ?></p><?php endif; ?>
 
-<?php if($this->hasVariants): ?>
-<p class="price"><?php echo $this->price; ?></p>
+<?php if(!$this->hasVariants): ?>
+<p class="price">
+	<?php if($this->editablePrice): ?>
+    	<label for="<?php echo $this->price['name']; ?>"><?php echo $this->price['description']; ?> </label><?php echo $this->price['html']; ?>
+    <?php else: ?>
+    	<?php $this->price; ?></p>
+	<?php endif; ?>
 <?php endif; ?>
 
 <?php if($this->buttons): ?>

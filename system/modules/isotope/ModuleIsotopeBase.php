@@ -921,8 +921,11 @@ abstract class ModuleIsotopeBase extends Module
 		switch($arrAttributeData['type'])
 		{
 			case 'text':
-				$arrData['inputType'] = 'textCollection';
-				$arrData['eval']['collectionsize'] = $arrAttributeData['text_collection_rows'];
+			case 'decimal':
+			case 'integer':
+		
+				$arrData['inputType'] = 'text';
+				$arrData['eval']['collectionsize'] = 1; //$arrAttributeData['text_collection_rows'];
 				$arrData['eval']['prompt'] = $arrAttributeData['name'];
 				$arrData['eval']['maxlength'] = 255;
 				break;
@@ -1211,6 +1214,7 @@ abstract class ModuleIsotopeBase extends Module
 								'html'			=> $this->generateProductOptionWidget($attribute, $arrData, '')
 							);										
 						}
+						
 					}
 					else
 					{						
@@ -1320,8 +1324,7 @@ abstract class ModuleIsotopeBase extends Module
           ); 
            
         }
-		
-		
+				
 		
 		$objTemplate->raw = $objProduct->getData();
 		$objTemplate->href_reader = $objProduct->href_reader;
@@ -1330,6 +1333,7 @@ abstract class ModuleIsotopeBase extends Module
 		
 		$objTemplate->price = $objProduct->formatted_price;
 		$objTemplate->options = $arrProductOptions;	
+		$objTemlpate->hasOptions = (count($arrProductOptions) ? true : false);
 		$objTemplate->variantList = implode(',', $arrVariantOptionFields);
 		$objTemplate->variant_widget = $arrVariantWidget;
 				

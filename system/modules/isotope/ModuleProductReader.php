@@ -137,10 +137,8 @@ class ModuleProductReader extends ModuleIsotopeBase
 		
 		$this->Template->product = $this->generateProduct($objProduct, $this->iso_reader_layout, $arrTemplateData);
 		
-		if($this->showProductNameInPageTitle)
-		{
-			$objPage->title .= ' - ' . $objProduct->name;
-		}
+		$objPage->title .= ' - ' . $objProduct->name;
+		
 	}		
 }
 

@@ -189,7 +189,9 @@ class IsotopeProduct extends Model
 			case 'reader_jumpTo':
 				$this->arrData['href_reader'] = $this->Isotope->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($varValue)->fetchAssoc(), '/product/' . $this->arrData['alias']);	
 				break;
-			
+			case 'reader_jumpTo_Override':
+				$this->arrData['href_reader'] = $varValue;	
+				break;
 			case 'sku':
 			case 'name':
 				$this->arrData[$strKey] = $varValue;

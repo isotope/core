@@ -29,21 +29,38 @@
  * Palettes
  */
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][]			= 'iso_checkout_method';
+
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductLister']			= '{title_legend},name,headline,type;{display_legend},perPage,columns,iso_list_format,iso_show_teaser;{config_legend},iso_use_quantity,iso_category_scope,iso_jump_first,new_products_time_window,featured_products;{redirect_legend},iso_reader_jumpTo;{template_legend:hide},iso_list_layout;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductReader']			= '{title_legend},name,headline,type;{config_legend},iso_use_quantity,showProductNameInPageTitle;{template_legend:hide},iso_reader_layout;guests,protected;align,space,cssID';
+
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductReader']			= '{title_legend},name,headline,type;{config_legend},iso_use_quantity;{template_legend:hide},iso_reader_layout;guests,protected;align,space,cssID';
+
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoDonationsModule']			= '{title_legend},name,headline,type;{config_legend},iso_donationProduct;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
+
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoShoppingCart']			= '{title_legend},name,headline,type;{config_legend},iso_forward_cart;{redirect_legend},iso_cart_jumpTo,iso_checkout_jumpTo;{template_legend},iso_cart_layout;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoAddressBook']			= '{title_legend},name,headline,type;align,space,cssID';
+
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryManager']	= '{title_legend},name,headline,type;iso_registry_layout;guests,protected;align,space,cssID';
+
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistrySearch']	= '{title_legend},name,headline,type;jumpTo;guests,protected;align,space,cssID';
+
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryResults']	= '{title_legend},name,headline,type;jumpTo;iso_registry_results;perPage;guests,protected;align,space,cssID';
+
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryReader']	= '{title_legend},name,headline,type;iso_registry_reader,iso_cart_jumpTo;guests,protected;align,space,cssID';
+
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoCheckoutmember']			= '{title_legend},name,headline,type;{config_legend},iso_checkout_method,iso_payment_modules,iso_shipping_modules,iso_order_conditions;{redirect_legend},iso_forward_review,orderCompleteJumpTo,iso_login_jumpTo;{template_legend},iso_mail_customer,iso_mail_admin,iso_sales_email;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
+
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoCheckoutguest']			= '{title_legend},name,headline,type;{config_legend},iso_checkout_method,iso_payment_modules,iso_shipping_modules,iso_order_conditions;{redirect_legend},iso_forward_review,orderCompleteJumpTo;{template_legend},iso_mail_customer,iso_mail_admin,iso_sales_email;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
+
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoCheckoutboth']			= '{title_legend},name,headline,type;{config_legend},iso_checkout_method,iso_payment_modules,iso_shipping_modules,iso_order_conditions;{redirect_legend},iso_forward_review,orderCompleteJumpTo;{template_legend},iso_login_jumpTo,iso_mail_customer,iso_mail_admin,iso_sales_email;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
+
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoOrderHistory']			= '{title_legend},name,headline,type;{config_legend},store_ids;{redirect_legend},jumpTo;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
+
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoOrderDetails']			= '{title_legend},name,headline,type;{redirect_legend},jumpTo;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
+
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoStoreSwitcher']			= '{title_legend},name,headline,type;{config_legend},store_ids;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
+
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoFilterModule']			= '{title_legend},name,headline,type;{config_legend},iso_listingModules,iso_enableLimit,iso_enableSearch,iso_disableFilterAjax,iso_filterFields,iso_orderByFields,iso_searchFields;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
+
 //{template_legend:hide},iso_filter_layout; not right now... filters are widgets that are generated.
 
 /**
@@ -391,13 +408,16 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_checkout_jumpTo'] = array
 	'eval'                    => array('fieldType'=>'radio', 'helpwizard'=>true)
 );
 
-$GLOBALS['TL_DCA']['tl_module']['fields']['showProductNameInPageTitle'] = array
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_donationProduct'] = array
 (
-	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['showProductNameInPageTitle'],
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_donationProduct'],
 	'exclude'                 => true,
-	'inputType'               => 'checkbox',
-	'eval'					  => array()
+	'inputType'               => 'select',
+	'eval'					  => array('includeBlankOption'=>true, 'mandatory'=>true),
+	'options_callback'        => array('tl_module_isotope','getDonationProducts')
 );
+
 
 
 /**
@@ -407,6 +427,26 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['showProductNameInPageTitle'] = array
  */
 class tl_module_isotope extends Backend
 {
+
+	public function getDonationProducts()
+	{
+		$objProducts = $this->Database->prepare("SELECT id, name FROM tl_product_data WHERE alias LIKE ?")
+									  ->execute('%donation%');
+		
+		if(!$objProducts->numRows)
+		{
+			return array();
+		}
+		
+		while($objProducts->next())
+		{
+			$arrReturn[$objProducts->id] = $objProducts->name;
+		}
+		
+		return $arrReturn;
+		
+	}
+	
 	/**
 	 * getFilters function.
 	 * 
