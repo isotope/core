@@ -186,6 +186,7 @@ $GLOBALS['FE_MOD']['isotope'] = array
 	'isoOrderHistory'			=> 'ModuleOrderHistory',
 	'isoOrderDetails'			=> 'ModuleOrderDetails',
 	'isoStoreSwitcher'			=> 'ModuleStoreSwitcher',
+	'isoDonationsModule'		=> 'ModuleDonations'
 );
 
 

@@ -136,6 +136,8 @@ $GLOBALS['TL_LANG']['MSC']['continueShoppingBT']		= 'Continue shopping';
 $GLOBALS['TL_LANG']['MSC']['updateCartBT']				= 'Update Cart';
 $GLOBALS['TL_LANG']['MSC']['orderStatusHeadline']		= 'Order Status: %s';
 
+$GLOBALS['TL_LANG']['MSC']['labelDonations']			= 'Pledge a gift of';
+$GLOBALS['TL_LANG']['MSC']['addDonation']				= 'Donate';
 //Registry language entries 
 $GLOBALS['TL_LANG']['MSC']['registry']['lastname'] = 'Search by Last Name:';
 $GLOBALS['TL_LANG']['MSC']['registry']['datestr'] = 'Enter Date of Event:';
