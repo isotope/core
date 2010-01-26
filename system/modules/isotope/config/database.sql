@@ -445,6 +445,7 @@ CREATE TABLE `tl_payment_modules` (
   `paypalpro_apiUserName` varchar(255) NOT NULL default '',
   `paypalpro_apiPassword` varchar(255) NOT NULL default '',
   `paypalpro_apiSignature` varchar(255) NOT NULL default '',
+  `paypalpro_transType` varchar(64) NOT NULL default '',
   `postfinance_pspid` varchar(255) NOT NULL default '',
   `postfinance_secret` varchar(255) NOT NULL default '',
   `postfinance_method` varchar(4) NOT NULL default '',
