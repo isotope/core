@@ -46,7 +46,7 @@ $GLOBALS['TL_LANG']['tl_payment_modules']['paypal_business']		= array('Article n
 $GLOBALS['TL_LANG']['tl_payment_modules']['paypalpro_apiUserName']  = array('Paypal Pro username','');
 $GLOBALS['TL_LANG']['tl_payment_modules']['paypalpro_apiPassword']  = array('Paypal Pro password','An alphanumeric string similar in format to this: QFZCWN5HZM8VBG7Q');
 $GLOBALS['TL_LANG']['tl_payment_modules']['paypalpro_apiSignature'] = array('Paypal Pro api signature','An alphanumeric string similar in format to this: A-IzJhZZjhg29XQ2qnhapuwxIDzyAZQ92FRP5dqBzVesOkzbdUONzmOU');
-
+$GLOBALS['TL_LANG']['tl_payment_modules']['paypalpro_transType']	= array('Paypal Pro transaction type','Please select a transaction type.');
 
 $GLOBALS['TL_LANG']['tl_payment_modules']['button']					= array('Checkout button', 'You can show a custom checkout button instead of the default one.');
 
@@ -83,6 +83,8 @@ $GLOBALS['TL_LANG']['tl_payment_modules']['CREDIT'] 				= array('Credit', 'This 
 $GLOBALS['TL_LANG']['tl_payment_modules']['VOID']					= array('Void', 'This transaction is an action on a previous transaction and is used to cancel the previous transaction and ensure it does not get sent for settlement. It can be done on any type of transaction (i.e., CREDIT, AUTH_CAPTURE, CAPTURE_ONLY, and AUTH_ONLY). The transaction will be accepted by the gateway if the following conditions are met: <ul><li>The transaction is submitted with the ID of the transaction that has to be voided.</li><li>The gateway has a record of the transaction referenced by the ID.</li><li>The transaction has not been sent for settlement.</li></ul>');
 $GLOBALS['TL_LANG']['tl_payment_modules']['PRIOR_AUTH_CAPTURE']	= array('Prior Authorization and Capture', 'This transaction is used to request settlement for a transaction that was previously submitted as an AUTH_ONLY. The gateway will accept this transaction and initiate settlement if the following conditions are met: <ul> <li>The transaction is submitted with the ID of the original authorization-only transaction, which needs to be settled.</li> <li>The transaction ID is valid and the system has a record of the original authorization-only transaction being submitted.</li> <li>The original transaction referred to is not already settled or expired or errored.</li><li>The amount being requested for settlement in this transaction is less than or equal to the original authorized amount.</li></ul>If no amount is submitted in this transaction, the gateway will initiate settlement for the amount of the originally authorized transaction. <em>Note: If extended line item, tax, freight, and/or duty information was submitted with the original transaction, adjusted information may be submitted in the event that the transaction amount changed. If no adjusted line item, tax, freight, and/or duty information is submitted, the information submitted with the original transaction will apply.</em>');
 
+$GLOBALS['TL_LANG']['tl_payment_module']['paypalpro_transTypes']['Sale'] = 'Complete Sale'; 
+$GLOBALS['TL_LANG']['tl_payment_module']['paypalpro_transTypes']['Auth'] = 'Authorize Only';
 
 /**
  * Legends
