@@ -489,8 +489,9 @@ class IsotopeCart extends Model
 	public function addProduct($objProduct, $objModule=null)
 	{		
 		$arrAllOptionValues = array();
+		$arrOptionValues = array();
+		$arrVariantOptions = array();
 		
-		$strAllOptionValues = $this->getProductOptionValues($this->Input->post('product_options'));
 		
 		if($this->Input->post('product_variants'))
 		{			
@@ -510,8 +511,22 @@ class IsotopeCart extends Model
 				);
 			}
 			
-			$arrAllOptionValues = array_merge(deserialize($this->getProductOptionValues($this->Input->post('product_options'))), $arrVariantOptionValues);
 			
+			//$arrAllOptionValues = array_merge(deserialize($this->getProductOptionValues($this->Input->post('product_options'))), $arrVariantOptionValues);
+		
+		}
+		
+		if($this->Input->post('product_options'))
+		{
+			
+			$arrOptionValues = deserialize($this->getProductOptionValues($this->Input->post('product_options')));
+
+		}
+		
+		$arrAllOptionValues = array_merge($arrOptionValues, $arrVariantOptionValues);
+		
+		if(count($arrAllOptionValues))
+		{
 			$strAllOptionValues = serialize($arrAllOptionValues);
 		}
 				
