@@ -458,14 +458,15 @@ class IsotopePOS extends Backend
 			
 			$arrItems[] = array
 			(
-				'raw'			=> $objItems->row(),
-				'downloads'		=> (is_array($arrDownloads) ? $arrDownloads : array()),
-				'name'			=> $objProduct->name,
-				'quantity'		=> $objItems->quantity_sold,
-				'price'			=> $this->Isotope->formatPriceWithCurrency($objProduct->price),
-				'total'			=> $this->Isotope->formatPriceWithCurrency(($objProduct->price * $objItems->quantity_sold)),
-				'href'			=> ($this->jumpTo ? $this->generateFrontendUrl($arrPage, '/product/'.$objItems->alias) : ''),
-				'tax_id'		=> $objProduct->tax_id,
+				'raw'				=> $objItems->row(),
+				'product_options' 	=> deserialize($objItems->product_options),
+				'downloads'			=> (is_array($arrDownloads) ? $arrDownloads : array()),
+				'name'				=> $objProduct->name,
+				'quantity'			=> $objItems->quantity_sold,
+				'price'				=> $this->Isotope->formatPriceWithCurrency($objProduct->price),
+				'total'				=> $this->Isotope->formatPriceWithCurrency(($objProduct->price * $objItems->quantity_sold)),
+				'href'				=> ($this->jumpTo ? $this->generateFrontendUrl($arrPage, '/product/'.$objItems->alias) : ''),
+				'tax_id'			=> $objProduct->tax_id,
 			);
 		}
 		

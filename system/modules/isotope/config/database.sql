@@ -455,7 +455,7 @@ CREATE TABLE `tl_payment_modules` (
   `authorize_trans_type` varchar(32) NOT NULL default '',
   `authorize_relay_response` char(1) NOT NULL default '',
   `authorize_email_customer` char(1) NOT NULL default '',
-  `authorize_require_ccv` char(1) NOT NULL default '',
+  `requireCCV` char(1) NOT NULL default '',
   `groups` blob NULL,
   `button` varchar(255) NOT NULL default '',
   `debug` char(1) NOT NULL default '',

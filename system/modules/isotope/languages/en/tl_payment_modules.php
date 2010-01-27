@@ -49,6 +49,7 @@ $GLOBALS['TL_LANG']['tl_payment_modules']['paypalpro_apiSignature'] = array('Pay
 $GLOBALS['TL_LANG']['tl_payment_modules']['paypalpro_transType']	= array('Paypal Pro transaction type','Please select a transaction type.');
 
 $GLOBALS['TL_LANG']['tl_payment_modules']['button']					= array('Checkout button', 'You can show a custom checkout button instead of the default one.');
+$GLOBALS['TL_LANG']['tl_payment_modules']['requireCCV'] = array('Require Card Code Verification (CCV) Number','Choose this option if you would like to increase transaction security by requiring the card code verification number.');
 
 
 
@@ -60,7 +61,6 @@ $GLOBALS['TL_LANG']['tl_payment_modules']['authorize_login']	= array('Authorize.
 $GLOBALS['TL_LANG']['tl_payment_modules']['authorize_trans_key']	= array('Authorize.net Transaction Key','Provided when you have completed signup for your gateway');
 $GLOBALS['TL_LANG']['tl_payment_modules']['authorize_delimiter']	= array('Authorize.net Delimiter','What character should be inserted as the data delimiter for the response?');
 $GLOBALS['TL_LANG']['tl_payment_modules']['authorize_trans_type']	= array('Authorize.net Transaction Type','Authorize and Capture, for example - the first stage is authorizing by validating the data entered by the customer and the next step is submitting for settlement, which is called "capture".');
-$GLOBALS['TL_LANG']['tl_payment_modules']['authorize_require_ccv'] = array('Require Card Code Verification (CCV) Number','Choose this option if you would like to increase transaction security by requiring the card code verification number.');
 $GLOBALS['TL_LANG']['tl_payment_modules']['debug']					= array('Enable Debug Mode', 'For testing without actually capturing for payment.');
 $GLOBALS['TL_LANG']['tl_payment_modules']['enabled']				= array('Enabled', 'Is this payment module enabled?');
 $GLOBALS['TL_LANG']['tl_payment_modules']['groups']			= array('Member Groups','Restrict this Payment option to certain member groups.');
