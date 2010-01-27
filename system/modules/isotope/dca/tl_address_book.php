@@ -147,7 +147,7 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>255, 'isoEditable'=>true, 'tl_class'=>'w50'),
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'isoEditable'=>true, 'tl_class'=>'w50'),
 		),
 		'street_2' => array
 		(
@@ -171,7 +171,7 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>32, 'isoEditable'=>true, 'tl_class'=>'w50'),
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>32, 'isoEditable'=>true, 'tl_class'=>'w50'),
 		),
 		'city' => array
 		(
@@ -181,7 +181,7 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 			'search'                  => true,
 			'sorting'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>255, 'isoEditable'=>true, 'tl_class'=>'w50'),
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'isoEditable'=>true, 'tl_class'=>'w50'),
 		),
 		'subdivision' => array
 		(
@@ -200,7 +200,7 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 			'sorting'                 => true,
 			'inputType'               => 'select',
 			'options'                 => $this->getCountries(),
-			'eval'                    => array('includeBlankOption'=>true, 'isoEditable'=>true, 'tl_class'=>'w50'),
+			'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'isoEditable'=>true, 'tl_class'=>'w50'),
 		),
 		'phone' => array
 		(
