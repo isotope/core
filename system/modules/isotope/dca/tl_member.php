@@ -97,7 +97,7 @@ class tl_member_isotope_extended extends Backend
 				'street'		=> $objAddress->street,
 				'postal'		=> $objAddress->postal,
 				'city'			=> $objAddress->city,
-				'state'			=> $objAddress->state,
+				'subdivision'	=> $objAddress->state,
 				'country'		=> $objAddress->country,
 				'phone'			=> $objAddress->phone,
 				'isDefaultBilling'	=> '1',

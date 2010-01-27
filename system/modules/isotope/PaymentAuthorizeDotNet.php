@@ -83,7 +83,7 @@ class PaymentAuthorizeDotNet extends Payment
 			"x_last_name"						=> $this->Cart->billingAddress['lastname'],
 			"x_address"							=> $this->Cart->billingAddress['street_1']."\n".$this->Cart->billingAddress['street_2']."\n".$this->Cart->billingAddress['street_3'],
 			"x_city"							=> $this->Cart->billingAddress['city'],
-			"x_state"							=> $this->Cart->billingAddress['state'],
+			"x_state"							=> $this->Cart->billingAddress['subdivision'],
 			"x_zip"								=> $this->Cart->billingAddress['postal'],
 			"x_company"							=> $this->Cart->billingAddress['company'],
 			"x_email_customer"					=> "FALSE"

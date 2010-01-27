@@ -49,7 +49,7 @@ $GLOBALS['TL_LANG']['tl_payment_modules']['paypalpro_apiSignature'] = array('Pay
 $GLOBALS['TL_LANG']['tl_payment_modules']['paypalpro_transType']	= array('Paypal Pro transaction type','Please select a transaction type.');
 
 $GLOBALS['TL_LANG']['tl_payment_modules']['button']					= array('Checkout button', 'You can show a custom checkout button instead of the default one.');
-$GLOBALS['TL_LANG']['tl_payment_modules']['requireCCV'] = array('Require Card Code Verification (CCV) Number','Choose this option if you would like to increase transaction security by requiring the card code verification number.');
+$GLOBALS['TL_LANG']['tl_payment_modules']['requireCCV'] 			= array('Require Card Code Verification (CCV) Number','Choose this option if you would like to increase transaction security by requiring the card code verification number.');
 
 
 

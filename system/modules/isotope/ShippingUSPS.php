@@ -78,7 +78,7 @@ class ShippingUSPS extends Shipping
 					'street2'		=> $this->Cart->shippingAddress['street_2'],
 					'street3'		=> $this->Cart->shippingAddress['street_3'],
 					'city'			=> $this->Cart->shippingAddress['city'],
-					'state'			=> $this->Cart->shippingAddress['state'],
+					'state'			=> $this->Cart->shippingAddress['subdivision'],
 					'zip'			=> $this->Cart->shippingAddress['postal'],
 					'country'		=> $this->Cart->shippingAddress['country']
 				);*/
