@@ -426,7 +426,7 @@ class Isotope extends Controller
 			'street_1'			=> strval($arrData['street']),
 			'postal'			=> strval($arrData['postal']),
 			'city'				=> strval($arrData['city']),
-			'state'				=> strval($arrData['state']),
+			'subdivision'		=> strval($arrData['state']),
 			'country'			=> strval($arrData['country']),
 			'phone'				=> strval($arrData['phone']),
 			'isDefaultBilling'	=> '1',
