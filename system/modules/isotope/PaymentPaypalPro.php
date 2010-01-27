@@ -97,41 +97,33 @@ class PaymentPaypalPro extends Payment
 			$arrData['CVV2'] = $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_ccv'];
 		}
 		
-		
-		/* Construct and add any items found in this instance */
-		/* - MAY NOT BE NECESSARY
-		if(!empty($this->ItemsArray))
-			{
-			// Counter for the total of all the items put together
-			$total_items_amount = 0;
-			// Go through the items array
-			foreach($this->ItemsArray as $key => $value)
-				{
-				// Get the array of the current item from the main array
-				$current_item = $this->ItemsArray[$key];
-				// Add it to the request string
-				$nvpstr .= "&L_NAME".$key."=".$current_item['name'].
-							"&L_NUMBER".$key."=".$current_item['number'].
-							"&L_QTY".$key."=".$current_item['quantity'].
-							"&L_TAXAMT".$key."=".$current_item['amount_tax'].
-							"&L_AMT".$key."=".$current_item['amount'];
-				// Add this item's amount to the total current count
-				$total_items_amount += ($current_item['amount'] * $current_item['quantity']);
-				}
-			// Set the amount_items for this instance and ITEMAMT added to the request string
-			$this->amount_items = $total_items_amount;
-			$nvpstr .= "&ITEMAMT=".urlencode($total_items_amount);
-			}
-		
-		*/
-				
+						
 		//$arrData = deserialize($objOrder->payment_data, true);
 		
 		$objRequest = new Request();
-		$objRequest->send('https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/webscr?cmd=_express-checkout&token=', implode('&', $arrData), 'post');
+		$objRequest->send('https://api-3t.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/nvp', implode('&', $arrData), 'post');
 
-		//$objRequest->response;
+		$nvpstr = $objRequest->response;
 		
+		
+		while(strlen($nvpstr))
+		{
+			//postion of Key
+			$keypos= strpos($nvpstr,'=');
+			//position of value
+			$valuepos = strpos($nvpstr,'&') ? strpos($nvpstr,'&'): strlen($nvpstr);
+	
+			/*getting the Key and Value values and storing in a Associative Array*/
+			$keyval=substr($nvpstr,$intial,$keypos);
+			$valval=substr($nvpstr,$keypos+1,$valuepos-$keypos-1);
+			
+			//decoding the respose
+			$arrResponse[urldecode($keyval)] =urldecode( $valval);
+			
+			$nvpstr=substr($nvpstr,$valuepos+1,strlen($nvpstr));
+		}
+		
+				
 		/*
 			response array
 			'DoDirectPayment' => array(
@@ -149,130 +141,52 @@ class PaymentPaypalPro extends Payment
 				,
 		*/
 		
-		//	LIVE
-		// private $API_ENDPOINT = 'https://api-3t.paypal.com/nvp';
-		//	SANDBOX
-		$API_ENDPOINT = 'https://api-3t.sandbox.paypal.com/nvp';
-
-		
-		if (strlen($arrData['status']) && $arrData['status'] == 'Completed')
+		if(strtoupper($arrResponse["ACK"]) != "SUCCESS" AND strtoupper($arrResponse["ACK"]) != "SUCCESSWITHWARNING")
 		{
-			unset($_SESSION['PAYPAL_TIMEOUT']);
+			/*$this->Error['TIMESTAMP']		= $arrResponse['TIMESTAMP'];
+			$this->Error['CORRELATIONID']	= @$this->Response['CORRELATIONID'];
+			$this->Error['ACK']				= $this->Response['ACK'];
+			$this->Error['ERRORCODE']		= $this->Response['L_ERRORCODE0'];
+			$this->Error['SHORTMESSAGE']	= $this->Response['L_SHORTMESSAGE0'];
+			$this->Error['LONGMESSAGE']		= $this->Response['L_LONGMESSAGE0'];
+			$this->Error['SEVERITYCODE']	= $this->Response['L_SEVERITYCODE0'];
+			$this->Error['VERSION']			= @$this->Response['VERSION'];
+			$this->Error['BUILD']			= @$this->Response['BUILD'];*/
+			
+			// TODO: Error codes for AVSCODE and CVV@MATCH
+			/*
+			$this->_error				= true;
+			$this->_error_ack			= $this->Response['ACK'];
+			$this->ack					= 'Failure';
+			$this->_error_type			= 'paypal';
+			$this->_error_date			= $this->Response['TIMESTAMP'];
+			$this->_error_code			= $this->Response['L_ERRORCODE0'];
+			$this->_error_short_message	= $this->Response['L_SHORTMESSAGE0'];
+			$this->_error_long_message	= $this->Response['L_LONGMESSAGE0'];
+			$this->_error_severity_code	= $this->Response['L_SEVERITYCODE0'];
+			$this->_error_version		= @$this->Response['VERSION'];
+			$this->_error_build			= @$this->Response['BUILD']; 
+			*/
+			
+			$_SESSION['CHECKOUT_DATA']['payment'][$this->id]['error'] = $arrResponses['L_SHORTMESSAGE0'];
+				
+			//TODO: store the reason for a failure for later in case the payment info can be corrected.
+			
+			$this->redirect($this->addToUrl('step=payment'));
+		}			
+		elseif(strtoupper($arrResponse["ACK"]) == 'SUCCESS' OR strtoupper($arrResponse["ACK"]) == 'SUCCESSWITHWARNING')
+		{
+			/*
+			Take the response variables and put them into the local class variables
+			*/
+			/*foreach($this->ResponseFieldsArray['DoDirectPayment'] as $key => $value)
+				$this->$key = $this->Response[$value];
+			*/
 			return true;
 		}
 		
-		if (!isset($_SESSION['PAYPAL_TIMEOUT']))
-		{
-			$_SESSION['PAYPAL_TIMEOUT'] = 60;
-		}
-		else
-		{
-			$_SESSION['PAYPAL_TIMEOUT'] = $_SESSION['PAYPAL_TIMEOUT'] - 5;
-		}
-		
-		if ($_SESSION['PAYPAL_TIMEOUT'] === 0)
-		{
-			$objTemplate = new FrontendTemplate('mod_message');
-			$objTemplate->type = 'error';
-			$objTemplate->message = $GLOBALS['TL_LANG']['MSC']['paypal_processing_failed'];
-			return $objTemplate->parse();
-		}
-	
-		
-		$objTemplate = new FrontendTemplate('mod_message');
-		$objTemplate->type = 'processing';
-		$objTemplate->message = $GLOBALS['TL_LANG']['MSC']['paypal_processing'];
-		return $objTemplate->parse();
 	}
 	
-	
-	/**
-	 * Process PayPal Instant Payment Notifications (IPN)
-	 *
-	 * @access public
-	 * @return void
-	 */
-	public function processPostSale() 
-	{
-		$arrData = array();
-		
-		foreach( $_POST as $k => $v )
-		{
-			$arrData[] = $k . '=' . $v;
-		}
-
-
-		
-		if ($objRequest->response == 'VERIFIED' && $this->Input->post('receiver_email') == $this->paypal_account)
-		{
-			$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE order_id=?")->limit(1)->execute($this->Input->post('invoice'));
-		
-			if (!$objOrder->numRows)
-			{
-				$this->log('Order ID "' . $this->Input->post('invoice') . '" not found', 'PaymentPaypal processPostSale()', TL_ERROR);
-				return;
-			}
-
-			// Set the current system to the language when the user placed the order.
-			// This will result in correct e-mails and payment description.
-			$GLOBALS['TL_LANGUAGE'] = $objOrder->language;
-			$this->loadLanguageFile('default');
-			
-			// Load / initialize data
-			$arrPayment = deserialize($objOrder->payment_data, true);
-			
-			// Store request data in order for future references
-			$arrPayment['POSTSALE'][] = $_POST;
-			
-			
-			$arrData = $objOrder->row();
-			$arrData['old_payment_status'] = $GLOBALS['TL_LANG']['MSC']['payment_status_labels'][$arrPayment['status']];
-			
-			$arrPayment['status'] = $this->Input->post('payment_status');
-			$arrData['new_payment_status'] = $GLOBALS['TL_LANG']['MSC']['payment_status_labels'][$arrPayment['status']];
-			
-			// array('pending','processing','shipped','complete','on_hold', 'cancelled'),
-			switch( $arrPayment['status'] )
-			{
-				case 'Completed':
-					break;
-					
-				case 'Canceled_Reversal':
-				case 'Denied':
-				case 'Expired':
-				case 'Failed':
-				case 'Voided':
-					$this->Database->prepare("UPDATE tl_iso_orders SET status=? WHERE id=?")->execute('cancelled', $objOrder->id);
-					break;
-					
-				case 'In-Progress':
-				case 'Partially_Refunded':
-				case 'Pending':
-				case 'Processed':
-				case 'Refunded':
-				case 'Reversed':
-					break;
-			}
-			
-			$this->Database->prepare("UPDATE tl_iso_orders SET payment_data=? WHERE id=?")->execute(serialize($arrPayment), $objOrder->id);
-			
-			if ($this->postsale_mail)
-			{
-				$this->Import('Isotope');
-				$this->Isotope->overrideStore($objOrder->store_id);
-				$this->Isotope->sendMail($this->postsale_mail, $GLOBALS['TL_ADMIN_EMAIL'], $GLOBALS['TL_LANGUAGE'], $arrData);
-			}
-			
-			$this->log('PayPal IPN: data accepted ' . print_r($_POST, true), 'PaymentPaypal processPostSale()', TL_GENERAL);
-		}
-		else
-		{
-			$this->log('PayPal IPN: data rejected (' . $objRequest->response . ') ' . print_r($_POST, true), 'PaymentPaypal processPostSale()', TL_GENERAL);
-		}
-		
-		header('HTTP/1.1 200 OK');
-		exit;
-	}
 	
 	
 	/**
@@ -283,53 +197,105 @@ class PaymentPaypalPro extends Payment
 	 */
 	public function checkoutForm()
 	{
-		$this->import('Isotope');
-		$this->import('IsotopeCart', 'Cart');
+		$strBuffer = '';
+		$arrPayment = $this->Input->post('payment');
+		$arrCCTypes = deserialize($this->allowed_cc_types);
 		
-		$objOrder = $this->Database->prepare("SELECT order_id FROM tl_iso_orders WHERE cart_id=?")->execute($this->Cart->id);
+		$arrFields = array
+		(
+			'cc_num' => array
+			(
+				'label'			=> &$GLOBALS['TL_LANG']['ISO']['cc_num'],
+				'inputType'		=> 'text',
+				'eval'			=> array('mandatory'=>true, 'rgxp'=>'digit', 'tableless'=>true),
+			),
+			'cc_type' => array
+			(
+				'label'			=> &$GLOBALS['TL_LANG']['ISO']['cc_type'],
+				'inputType'		=> 'select',
+				'options'		=> $arrCCTypes,
+				'eval'			=> array('mandatory'=>true, 'rgxp'=>'digit', 'tableless'=>true),
+				'reference'		=> &$GLOBALS['TL_LANG']['CCT'],
+			),
+			'cc_exp' => array
+			(
+				'label'			=> &$GLOBALS['TL_LANG']['ISO']['cc_exp'],
+				'inputType'		=> 'text',
+				'eval'			=> array('mandatory'=>true, 'tableless'=>true),
+			),
+			'cc_ccv' => array
+			(
+				'label'			=> &$GLOBALS['TL_LANG']['ISO']['cc_ccv'],
+				'inputType'		=> 'text',
+				'eval'			=> array('mandatory'=>true, 'tableless'=>true)						
+			),
+		);
+				
+		foreach( $arrFields as $field => $arrData )
+		{
+			$strClass = $GLOBALS['TL_FFL'][$arrData['inputType']];
+
+			// Continue if the class is not defined
+			if (!$this->classFileExists($strClass))
+			{
+				continue;
+			}
+
+			$objWidget = new $strClass($this->prepareForWidget($arrData, 'payment['.$this->id.']['.$field.']', $_SESSION['CHECKOUT_DATA']['payment'][$this->id][$field]));
+			
+			// Validate input
+			if ($this->Input->post('FORM_SUBMIT') == 'iso_mod_checkout_payment' && $arrPayment['module'] == $this->id)
+			{
+				$objWidget->validate();
+				
+				if ($objWidget->hasErrors())
+				{
+					$objCheckoutModule->doNotSubmit = true;
+				}
+			}
+			elseif ($objWidget->mandatory && !strlen($objWidget->value))
+			{
+				$objCheckoutModule->doNotSubmit = true;
+			}
+			
+			$strBuffer .= $objWidget->parse();
+		}
 		
-		return '
-<h2>' . $GLOBALS['TL_LANG']['ISO']['pay_with_paypal'][0] . '</h2>
-<p class="message">' . $GLOBALS['TL_LANG']['ISO']['pay_with_paypal'][1] . '</p>
-<form id="payment_form" action="https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr" method="post">
-<input type="hidden" name="cmd" value="_xclick">
-<input type="hidden" name="charset" value="UTF-8">
-<input type="hidden" name="business" value="' . $this->paypal_account . '">
-<input type="hidden" name="lc" value="' . strtoupper($GLOBALS['TL_LANGUAGE']) . '">
-<input type="hidden" name="item_name" value="' . $this->paypal_business . '"/>
-<input type="hidden" name="amount" value="' . $this->Cart->subTotal . '"/>
-<input type="hidden" name="shipping" value="' . $this->Cart->shippingTotal . '">
-<input type="hidden" name="no_shipping" value="1">
-<input type="hidden" name="no_note" value="1">
-<input type="hidden" name="currency_code" value="' . $this->Isotope->Store->currency . '">
-<input type="hidden" name="button_subtype" value="services">
-<input type="hidden" name="return" value="' . $this->Environment->url . '/' . $this->addToUrl('step=complete') . '">
-<input type="hidden" name="cancel_return" value="' . $this->Environment->url . '/' . $this->addToUrl('step=failed') . '">
-<input type="hidden" name="rm" value="1">
-<input type="hidden" name="invoice" value="' . $objOrder->order_id . '">
-
-<input type="hidden" name="address_override" value="1">
-<input type="hidden" name="first_name" value="' . $this->Cart->billingAddress['firstname'] . '">
-<input type="hidden" name="last_name" value="' . $this->Cart->billingAddress['lastname'] . '">
-<input type="hidden" name="address1" value="' . $this->Cart->billingAddress['street'] . '">
-<input type="hidden" name="zip" value="' . $this->Cart->billingAddress['postal'] . '">
-<input type="hidden" name="city" value="' . $this->Cart->billingAddress['city'] . '">
-<input type="hidden" name="country" value="' . strtoupper($this->Cart->billingAddress['country']) . '">
-<input type="hidden" name="email" value="' . $this->Cart->billingAddress['email'] . '">
-<input type="hidden" name="night_phone_c" value="' . $this->Cart->billingAddress['phone'] . '">
-
-<input type="hidden" name="notify_url" value="' . $this->Environment->base . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id . '">
-<input type="hidden" name="bn" value="PP-BuyNowBF:btn_paynowCC_LG.gif:NonHosted">
-<input type="' . (strlen($this->button) ? 'image" src="'.$this->button.'" border="0"' : 'submit" value="'.specialchars($GLOBALS['TL_LANG']['ISO']['pay_with_paypal'][2]).'"') . ' alt="PayPal - The safer, easier way to pay online!">
-<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
-</form>
-
-<script type="text/javascript">
-<!--//--><![CDATA[//><!--
-$(\'payment_form\').submit();
-//--><!]]>
-</script>';
+		if ($this->Input->post('FORM_SUBMIT') == 'iso_mod_checkout_payment' && $arrPayment['module'] == $this->id && !$objCheckoutModule->doNotSubmit)
+		{
+			$strCard = $this->validateCreditCard($arrPayment[$this->id]['cc_num']);
+			
+			if ($strCard === false)
+			{
+				$strBuffer = '<p class="error">' . $GLOBALS['TL_LANG']['ERR']['cc_num'] . '</p>' . $strBuffer;
+				$objCheckoutModule->doNotSubmit = true;
+			}
+			elseif ($strCard != $arrPayment[$this->id]['cc_type'])
+			{
+				$strBuffer = '<p class="error">' . $GLOBALS['TL_LANG']['ERR']['cc_match'] . '</p>' . $strBuffer;
+				$objCheckoutModule->doNotSubmit = true;
+			}
+		}
+		
+		if (strlen($_SESSION['CHECKOUT_DATA']['payment'][$this->id]['error']))
+		{
+			$strBuffer = '<p class="error">' . $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['error'] . '</p>' . $strBuffer;
+			unset($_SESSION['CHECKOUT_DATA']['payment'][$this->id]['error']);
+		}
+		
+		return $strBuffer;
 	}
+	
+	public function checkoutReview()
+	{
+		$type = $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_type'];
+		$num = $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_num'];
+		
+		$strCard = implode(' ', str_split((substr($num, 0, 2) . str_repeat('*', (strlen($num)-6)) . substr($num, -4)), 4));
+		
+		return sprintf('%s<br />%s: %s', $this->label, $GLOBALS['TL_LANG']['CCT'][$type], $strCard);
+	}
+
 	
 	public function getAllowedCCTypes()
 	{
