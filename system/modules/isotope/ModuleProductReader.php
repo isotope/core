@@ -81,6 +81,8 @@ class ModuleProductReader extends ModuleIsotopeBase
 	 */
 	protected function compile()
 	{
+		global $objPage;
+
 		$objProduct = $this->getProductByAlias($this->Input->get('product'));
 		
 		if (!$objProduct)
