@@ -89,7 +89,7 @@ class PaymentAuthorizeDotNet extends Payment
 			"x_email_customer"					=> "FALSE"
 		);
 
-		if($this->authorize_require_ccv)
+		if($this->requireCCV)
 		{
 			$authnet_values["x_card_code"] = $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_ccv'];
 		}
