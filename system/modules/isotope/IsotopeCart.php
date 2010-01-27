@@ -477,7 +477,7 @@ class IsotopeCart extends Model
 		return $this->arrProducts;
 	}
 	
-		
+	
 	/**
 	 * Callback for add_to_cart button
 	 *
@@ -489,20 +489,14 @@ class IsotopeCart extends Model
 	public function addProduct($objProduct, $objModule=null)
 	{		
 		$arrAllOptionValues = array();
-		$arrProductOptions = array();
-		$strPriceField = $this->Isotope->Store->priceField;
-	
-		if($this->Input->post('product_options'))
-		{			
-			$arrProductOptions = deserialize($this->getProductOptionValues($this->Input->post('product_options')));
-		}		
-				
+		
+		$strAllOptionValues = $this->getProductOptionValues($this->Input->post('product_options'));
+		
 		if($this->Input->post('product_variants'))
 		{			
 			$objProduct->setVariant($this->Input->post('product_variants'), $this->Input->post('variant_options'));	
 			
 			$arrVariantOptions = explode(',', $this->Input->post('variant_options'));
-			
 			
 			//cycle through each product object's set variant option.
 			foreach($arrVariantOptions as $option)
@@ -516,13 +510,11 @@ class IsotopeCart extends Model
 				);
 			}
 			
-			
-			$arrAllOptionValues = array_merge($arrProductOptions, $arrVariantOptionValues);
+			$arrAllOptionValues = array_merge(deserialize($this->getProductOptionValues($this->Input->post('product_options'))), $arrVariantOptionValues);
 			
 			$strAllOptionValues = serialize($arrAllOptionValues);
-		}	
-		
-						
+		}
+				
 		$arrSet = array
 		(
 			'pid'					=> $this->id,
