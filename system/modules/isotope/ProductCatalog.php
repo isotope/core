@@ -264,8 +264,8 @@ class ProductCatalog extends Backend
 				)
 			);
 			
-			if (strlen($field['option_list'])) 
-			{
+			if (strlen($field['option_list']) && count($arrValues)) 
+			{				
 				$GLOBALS['TL_DCA']['tl_product_data']['fields'][$field['field_name']]['options'] = array_keys($arrValues);
 				$GLOBALS['TL_DCA']['tl_product_data']['fields'][$field['field_name']]['reference'] = $arrValues;
 			}
