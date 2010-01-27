@@ -1333,7 +1333,7 @@ abstract class ModuleIsotopeBase extends Module
 		
 		$objTemplate->price = $objProduct->formatted_price;
 		$objTemplate->options = $arrProductOptions;	
-		$objTemplate->hasOptions = (count($arrProductOptions) ? true : false);
+		$objTemplate->hasOptions = (count($arrProductOptions) || count($arrVariantWidget) ? true : false);
 		$objTemplate->variantList = implode(',', $arrVariantOptionFields);
 		$objTemplate->variant_widget = $arrVariantWidget;
 				
