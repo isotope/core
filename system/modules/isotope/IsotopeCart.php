@@ -523,7 +523,7 @@ class IsotopeCart extends Model
 
 		}
 		
-		$arrAllOptionValues = array_merge($arrOptionValues, $arrVariantOptionValues);
+		$arrAllOptionValues = array_merge($arrOptionValues, $arrVariantOptions);
 		
 		if(count($arrAllOptionValues))
 		{
