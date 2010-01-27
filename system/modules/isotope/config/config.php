@@ -140,33 +140,26 @@ $GLOBALS['ISO_MOD'] = array
 /**
  * Hooks
  */
-//$GLOBALS['TL_HOOKS']['createNewUser'][]				= array('IsotopeCallbacks','copyAddressBookEntry');
-//$GLOBALS['TL_HOOKS']['createNewUser'][]				= array('IsotopeCallbacks','autoActivateNewMember');
 $GLOBALS['TL_HOOKS']['createNewUser'][]				= array('Isotope','createNewUser');
 $GLOBALS['TL_HOOKS']['getMappingAttributes'][]		= array('ProductCatalog','generateMappingAttributeList');
-//$GLOBALS['TL_HOOKS']['mappingAttributesCallback'][]	= array('products_attribute_set' => array('ProductCatalog','batchUpdateCAPAggregate'));
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][]			= array('IsotopeFrontend', 'replaceIsotopeTags');
-//$GLOBALS['TL_HOOKS']['postLogin'][] = array('IsotopeCallbacks','memberLogin');
-
-//$GLOBALS['TL_HOOKS']['getMappingAttributes'][]	= array('getProductMapping' => array('ProductCatalog','generateMappingAttributeList'));
-$GLOBALS['TL_HOOKS']['executePostActions'][] = array('ProductOptionWizard', 'executePostActions');
-
-//$GLOBALS['TL_HOOKS']['executePostActions'][] = array('AutoComplete', 'executePostActions');
+$GLOBALS['TL_HOOKS']['executePostActions'][]		= array('ProductOptionWizard', 'executePostActions');
 
 
+/**
+ * Checkout surcharge calculation callbacks
+ */
 $GLOBALS['TL_HOOKS']['isoCheckoutSurcharge'][] = array('IsotopeCart', 'getShippingSurcharge');
 $GLOBALS['TL_HOOKS']['isoCheckoutSurcharge'][] = array('IsotopeCart', 'getPaymentSurcharge');
 
 
-
 /**
- * Backend widgets
+ * Backend form fields
  */
 $GLOBALS['BE_FFL']['mediaManager'] = 'MediaManager';
 $GLOBALS['BE_FFL']['variantsWizard'] = 'VariantsWizard';
 $GLOBALS['BE_FFL']['attributeWizard'] = 'AttributeWizard';
 
-//$GLOBALS['BE_FFL']['productOptionsWizard'] = 'ProductOptionsWizard';
 
 /**
  * Frontend modules
@@ -191,14 +184,13 @@ $GLOBALS['FE_MOD']['isotope'] = array
 
 
 /** 
- * Frontend Form Fields
+ * Form fields
  */
 $GLOBALS['TL_FFL']['textCollection'] = 'FormTextCollectionField';
 
 
 /** 
- * 
- *
+ * Weight conversation
  */
 $GLOBALS['ISO_WGT'] = array
 (
@@ -208,6 +200,7 @@ $GLOBALS['ISO_WGT'] = array
 	'lbs' 	=> 453.6,
 );
 
+
 /**
  * Shipping modules
  */
@@ -215,6 +208,7 @@ $GLOBALS['ISO_SHIP']['order_total']	 = 'ShippingOrderTotal';
 $GLOBALS['ISO_SHIP']['flat']		 = 'ShippingFlat';
 $GLOBALS['ISO_SHIP']['ups']			 = 'ShippingUPS';
 $GLOBALS['ISO_SHIP']['usps']		 = 'ShippingUSPS';
+
 
 /**
  * Payment modules
@@ -224,6 +218,7 @@ $GLOBALS['ISO_PAY']['paypal']					= 'PaymentPaypal';
 $GLOBALS['ISO_PAY']['paypalpro']				= 'PaymentPaypalPro';
 $GLOBALS['ISO_PAY']['postfinance']				= 'PaymentPostfinance';
 $GLOBALS['ISO_PAY']['authorizedotnet']			= 'PaymentAuthorizeDotNet';
+
 
 /** 
  * Order module additional operations
@@ -265,41 +260,17 @@ $GLOBALS['ISO_MSC']['tl_product_data']['groups_ordering'] = array
 	'pagination'			 => ''
 );
 
-ß
+
 $GLOBALS['FE_MOD']['isoLister']['TPL_COLL']['generic_listing'] = array(
 	'value'					=> '',
 	'label'					=> ''
 );*/
 
-
-/**
- * Used in store configuration to enable/disable certain store-wide features
- * @todo what do we need that for?
- */
-$GLOBALS['ISOTOPE_FE_MODULES'][] = 'isoShoppingCart';
-$GLOBALS['ISOTOPE_FE_MODULES'][] = 'isoCheckout';
-$GLOBALS['ISOTOPE_FE_MODULES'][] = 'isoGiftRegistry';
-$GLOBALS['ISOTOPE_FE_MODULES'][] = 'isoAddressBook';
-
-//$GLOBALS['ISOTOPE_FE_MODULES'][] = 'isoProductComments';
-//$GLOBALS['ISOTOPE_FE_MODULES'][] = 'isoCartWishlist';
-
-//$GLOBALS['ISO_PAYMENT_MODULE']['GATEWAY_TYPES'][] = 'authorize';
-
-//$GLOBALS['ISO_PAYMENT_MODULE']['GATEWAY_TYPES'][] = 'paypal_pro';
-
 	
 /**
- * Various
+ * Content elements
  */
 $GLOBALS['TL_CTE']['links']['attributeLinkRepeater'] = 'ContentAttributeLinkRepeater';
-  
-$GLOBALS['ISO_PLUGINS']['jwMediaPlayer']['mediaRSSPlaylist'] = 'media_rss';
-
-$GLOBALS['TL_LANG']['MSC']['isotope_function_group'] = 'Isotope Ecommerce Functions';
-
-//$GLOBALS['ISO_ACTIVE_CUSTOM_PRODUCT_BUTTONS'][] = array('add_to_gift_registry');
-
 
 
 /** 
@@ -319,7 +290,9 @@ $GLOBALS['ISO_NUM']["10.000,00"]	= array(2, ',', ".");
 $GLOBALS['ISO_NUM']["10'000.00"]	= array(2, '.', "'");
 
 
-
+/**
+ * Step callbacks for checkout module
+ */
 $GLOBALS['ISO_CHECKOUT_STEPS'] = array
 (
 	'address' => array
