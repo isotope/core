@@ -42,46 +42,151 @@ class PaymentPaypalPro extends Payment
 	public function processPayment()
 	{
 		$this->import('IsotopeCart', 'Cart');
+		$this->import('Isotope');
 		
 		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=? AND status!='cancelled'")->limit(1)->execute($this->Cart->id);
 		
-		$arrData = deserialize($objOrder->payment_data, true);
+		$arrPaymentData = deserialize($objOrder->payment_data);
+		
+		
+		$arrData = array
+		(
+			'METHOD'				=> 'DoDirectPayment',
+			'VERSION'				=> '3.0',
+			'PWD'					=> $this->paypalpro_apiPassword,
+			'USER'					=> $this->paypalpro_apiUserName,
+			'SIGNATURE'				=> $this->paypalpro_apiSignature,
+			'PAYMENTACTION'			=> $this->paypalpro_transType,
+			'IPADDRESS'				=> $this->Environment->ip,
+			'AMT'					=> $this->Cart->grandTotal,
+			'CREDITCARDTYPE'		=> $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_type'],
+			'ACCT'					=> $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_num'],
+			'EXPDATE'				=> $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_num'],
+			'FIRSTNAME'				=> $this->Cart->billingAddress['firstname'],
+			'LASTNAME'				=> $this->Cart->billingAddress['lastname'],
+			'STREET'				=> $this->Cart->billingAddress['street_1'],
+			'STREET2'				=> $this->Cart->billingAddress['street_2']."\n".$this->Cart->billingAddress['street_3'],
+			'CITY'					=> $this->Cart->billingAddress['city'],
+			'STATE'					=> $this->Cart->billingAddress['state'],
+			'COUNTRYCODE'			=> $this->Cart->billingAddress['country'],
+			'ZIP'					=> $this->Cart->billingAddress['postal'],
+			//'NOTIFYURL'				=> '',
+			'CURRENCYCODE'			=> $this->Isotope->Store->currency,
+			'ITEMAMT'				=> $this->Cart->subTotal,
+			'SHIPPINGAMT'			=> $this->Cart->shippingTotal,
+			'HANDLINGAMT'			=> 0,	//TODO: support handling charges
+			'TAXAMT'				=> '',
+			'DESC'					=> "Order Number " . $objOrder->order_id,
+			'CUSTOM'				=> '',
+			'INVNUM'				=> $objOrder->id,
+			'EMAIL'					=> '',
+			'PHONENUM'				=> '',
+			'SHIPTONAME'			=> '',
+			'SHIPTOSTREET'			=> '',
+			'SHIPTOSTREET2'			=> '',
+			'SHIPTOCITY'			=> '',
+			'SHIPTOSTATE'			=> '',
+			'SHIPTOZIP'				=> '',
+			'SHIPTOCOUNTRYCODE'		=> '',
+			'SHIPTOPHONENUM'		=> ''
+			
+		);	
+		
+		if($this->requireCCV)
+		{
+			$arrData['CVV2'] = $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_ccv'];
+		}
+		
+		/*	'payment_type' => array('name' => 'PAYMENTACTION', 'required' => 'yes'),
+			'ip_address' => array('name' => 'IPADDRESS', 'required' => 'yes'),
+			'amount_total' => array('name' => 'AMT', 'required' => 'yes'), 
+			'credit_card_type' => array('name' => 'CREDITCARDTYPE', 'required' => 'yes'), 
+			'credit_card_number' => array('name' => 'ACCT', 'required' => 'yes'), 
+			'expire_date' => array('name' => 'EXPDATE', 'required' => 'yes'), 
+			'first_name' => array('name' => 'FIRSTNAME', 'required' => 'yes'), 
+			'last_name' => array('name' => 'LASTNAME', 'required' => 'yes'), 
+			'address1' => array('name' => 'STREET', 'required' => 'no'), 
+			'address2' => array('name' => 'STREET2', 'required' => 'no'), 
+			'city' => array('name' => 'CITY', 'required' => 'no'), 
+			'state' => array('name' => 'STATE', 'required' => 'no'), 
+			'country_code' => array('name' => 'COUNTRYCODE', 'required' => 'no'), 
+			'postal_code' => array('name' => 'ZIP', 'required' => 'no'), 
+			'notify_url' => array('name' => 'NOTIFYURL', 'required' => 'no'), 
+			'currency_code' => array('name' => 'CURRENCYCODE', 'required' => 'no'), 
+			'amount_items' => array('name' => 'ITEMAMT', 'required' => 'no'), 
+			'amount_shipping' => array('name' => 'SHIPPINGAMT', 'required' => 'no'), 
+			'amount_handling' => array('name' => 'HANDLINGAMT', 'required' => 'no'), 
+			'amount_tax' => array('name' => 'TAXAMT', 'required' => 'no'), 
+			'description' => array('name' => 'DESC', 'required' => 'no'), 
+			'custom' => array('name' => 'CUSTOM', 'required' => 'no'), 
+			'invoice' => array('name' => 'INVNUM', 'required' => 'no'), 
+			'cvv2_code' => array('name' => 'CVV2', 'required' => 'yes'), 
+			'email' => array('name' => 'EMAIL', 'required' => 'no'), 
+			'phone_number' => array('name' => 'PHONENUM', 'required' => 'no'), 
+			'shipping_name' => array('name' => 'SHIPTONAME', 'required' => 'no'), 
+			'shipping_address1' => array('name' => 'SHIPTOSTREET', 'required' => 'no'), 
+			'shipping_address2' => array('name' => 'SHIPTOSTREET2', 'required' => 'no'), 
+			'shipping_city' => array('name' => 'SHIPTOCITY', 'required' => 'no'), 
+			'shipping_state' => array('name' => 'SHIPTOSTATE', 'required' => 'no'), 
+			'shipping_postal_code' => array('name' => 'SHIPTOZIP', 'required' => 'no'), 
+			'shipping_country_code' => array('name' => 'SHIPTOCOUNTRYCODE', 'required' => 'no'), 
+			'shipping_phone_number' => array('name' => 'SHIPTOPHONENUM', 'required' => 'no')*/
+
+		/* Construct and add any items found in this instance */
+		/* - MAY NOT BE NECESSARY
+		if(!empty($this->ItemsArray))
+			{
+			// Counter for the total of all the items put together
+			$total_items_amount = 0;
+			// Go through the items array
+			foreach($this->ItemsArray as $key => $value)
+				{
+				// Get the array of the current item from the main array
+				$current_item = $this->ItemsArray[$key];
+				// Add it to the request string
+				$nvpstr .= "&L_NAME".$key."=".$current_item['name'].
+							"&L_NUMBER".$key."=".$current_item['number'].
+							"&L_QTY".$key."=".$current_item['quantity'].
+							"&L_TAXAMT".$key."=".$current_item['amount_tax'].
+							"&L_AMT".$key."=".$current_item['amount'];
+				// Add this item's amount to the total current count
+				$total_items_amount += ($current_item['amount'] * $current_item['quantity']);
+				}
+			// Set the amount_items for this instance and ITEMAMT added to the request string
+			$this->amount_items = $total_items_amount;
+			$nvpstr .= "&ITEMAMT=".urlencode($total_items_amount);
+			}
+		
+		*/
+				
+		//$arrData = deserialize($objOrder->payment_data, true);
 		
 		$objRequest = new Request();
-		$objRequest->send(('https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/webscr?cmd=_express-checkout&token=' . ), implode('&', $arrData), 'post');
+		$objRequest->send('https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/webscr?cmd=_express-checkout&token=', implode('&', $arrData), 'post');
 
-			private $API_USERNAME = 'sdk-three_api1.sdk.com';
-	
-	/**
-	# API_password: The password associated with the API user
-	# If you are using your own API username, enter the API password that
-	# was generated by PayPal below
-	# IMPORTANT - HAVING YOUR API PASSWORD INCLUDED IN THE MANNER IS NOT
-	# SECURE, AND ITS ONLY BEING SHOWN THIS WAY FOR TESTING PURPOSES
-	*/
-	
-	//	LIVE
-	// private $API_PASSWORD = '';
-	//	SANDBOX
-	private $API_PASSWORD = 'QFZCWN5HZM8VBG7Q';
-	
-	/**
-	# API_Signature:The Signature associated with the API user. which is generated by paypal.
-	*/
-	
-	//	LIVE
-	// private $API_SIGNATURE = '';
-	//	SANDBOX
-	private $API_SIGNATURE = 'A-IzJhZZjhg29XQ2qnhapuwxIDzyAZQ92FRP5dqBzVesOkzbdUONzmOU';
-	
-	/**
-	# Endpoint: this is the server URL which you have to connect for submitting your API request.
-	*/
-	
-	//	LIVE
-	// private $API_ENDPOINT = 'https://api-3t.paypal.com/nvp';
-	//	SANDBOX
-	private $API_ENDPOINT = 'https://api-3t.sandbox.paypal.com/nvp';
+		//$objRequest->response;
+		
+		/*
+			response array
+			'DoDirectPayment' => array(
+						'timestamp' => 'TIMESTAMP',
+						'correlation_id' => 'CORRELATIONID',
+						'ack' => 'ACK',
+						'version' => 'VERSION',
+						'build' => 'BUILD',
+						'avs_code' => 'AVSCODE',
+						'cvv2_match' => 'CVV2MATCH',
+						'transaction_id' => 'TRANSACTIONID',
+						'amount_total' => 'AMT',
+						'currency_code' => 'CURRENCYCODE'
+						)
+				,
+		*/
+		
+		//	LIVE
+		// private $API_ENDPOINT = 'https://api-3t.paypal.com/nvp';
+		//	SANDBOX
+		$API_ENDPOINT = 'https://api-3t.sandbox.paypal.com/nvp';
 
 		
 		if (strlen($arrData['status']) && $arrData['status'] == 'Completed')
@@ -124,355 +229,13 @@ class PaymentPaypalPro extends Payment
 	public function processPostSale() 
 	{
 		$arrData = array();
+		
 		foreach( $_POST as $k => $v )
 		{
 			$arrData[] = $k . '=' . $v;
 		}
 
-			// AVS Response Code Values and Meanings
-	//	$AvsResponseCodesArray[CODE][MESSAGE]
-	//	$AvsResponseCodesArray[CODE][DETAILS]
-	$AvsResponseCodesArray = array (
-			'A' => array('message' => 'Address', 'details' => 'Address Only (no ZIP)'),
-			'B' => array('message' => 'International "A"', 'details' => 'Address Only (no ZIP)'),
-			'C' => array('message' => 'International "N"', 'details' => 'None - The transaction is declined.'),
-			'D' => array('message' => 'International "X"', 'details' => 'Address and Postal Code'),
-			'E' => array('message' => 'Not Allowed for MOTO (Internet/Phone) transactions', 'details' => 'Not applicable - The transaction is declined.'),
-			'F' => array('message' => 'UK-Specific "X"', 'details' => 'Address and Postal Code'),
-			'G' => array('message' => 'Global Unavailable', 'details' => 'Not applicable'),
-			'I' => array('message' => 'International Unavailable', 'details' => 'Not applicable'),
-			'N' => array('message' => 'No', 'details' => 'None - The transaction is declined.'),
-			'P' => array('message' => 'Postal (International "Z")', 'details' => 'Postal Code only (no Address)'),
-			'R' => array('message' => 'Retry', 'details' => 'Not Applicable'),
-			'S' => array('message' => 'Service Not Supported', 'details' => 'Not Applicable'),
-			'U' => array('message' => 'Unavailable', 'details' => 'Not Applicable'),
-			'W' => array('message' => 'Whole ZIP', 'details' => 'Nine-digit ZIP code (no Address)'),
-			'X' => array('message' => 'Exact Match', 'details' => 'Address and nine-digit ZIP code'),
-			'Y' => array('message' => 'Yes', 'details' => 'Address and five-digit ZIP'),
-			'Z' => array('message' => 'ZIP', 'details' => 'Five-digit ZIP code (no Address)'),
-			'' => array('message' => 'Error', 'details' => 'Not Applicable')
-		);
-			
-	// CVV Rsponse Code Values and Meanings
-	//	$CvvResponseCodesArray[CODE][MESSAGE]
-	//	$CvvResponseCodesArray[CODE][DETAILS]
-	$CvvResponseCodesArray = array (
-			'M' => array('message' => 'Match', 'details' => 'CVV2'), 
-			'N' => array('message' => 'No Match', 'details' => 'None'), 
-			'P' => array('message' => 'Not Processed', 'details' => 'Not Applicable'), 
-			'S' => array('message' => 'Service not supported', 'details' => 'Not Applicable'), 
-			'U' => array('message' => 'Service not available', 'details' => 'Not Applicable'), 
-			'X' => array('message' => 'No response', 'details' => 'Not Applicable')
-		);
-	
-	// CVV Rsponse Code Values and Meanings for Switch and Solo cards
-	// TODO: ??
-			
-	
-	
-	
-	$RequestFieldsArray = array(
-		'DoDirectPayment' => array(
-				'payment_type' => array('name' => 'PAYMENTACTION', 'required' => 'yes'),
-				'ip_address' => array('name' => 'IPADDRESS', 'required' => 'yes'),
-				'amount_total' => array('name' => 'AMT', 'required' => 'yes'), 
-				'credit_card_type' => array('name' => 'CREDITCARDTYPE', 'required' => 'yes'), 
-				'credit_card_number' => array('name' => 'ACCT', 'required' => 'yes'), 
-				'expire_date' => array('name' => 'EXPDATE', 'required' => 'yes'), 
-				'first_name' => array('name' => 'FIRSTNAME', 'required' => 'yes'), 
-				'last_name' => array('name' => 'LASTNAME', 'required' => 'yes'), 
-				'address1' => array('name' => 'STREET', 'required' => 'no'), 
-				'address2' => array('name' => 'STREET2', 'required' => 'no'), 
-				'city' => array('name' => 'CITY', 'required' => 'no'), 
-				'state' => array('name' => 'STATE', 'required' => 'no'), 
-				'country_code' => array('name' => 'COUNTRYCODE', 'required' => 'no'), 
-				'postal_code' => array('name' => 'ZIP', 'required' => 'no'), 
-				'notify_url' => array('name' => 'NOTIFYURL', 'required' => 'no'), 
-				'currency_code' => array('name' => 'CURRENCYCODE', 'required' => 'no'), 
-				'amount_items' => array('name' => 'ITEMAMT', 'required' => 'no'), 
-				'amount_shipping' => array('name' => 'SHIPPINGAMT', 'required' => 'no'), 
-				'amount_handling' => array('name' => 'HANDLINGAMT', 'required' => 'no'), 
-				'amount_tax' => array('name' => 'TAXAMT', 'required' => 'no'), 
-				'description' => array('name' => 'DESC', 'required' => 'no'), 
-				'custom' => array('name' => 'CUSTOM', 'required' => 'no'), 
-				'invoice' => array('name' => 'INVNUM', 'required' => 'no'), 
-				'cvv2_code' => array('name' => 'CVV2', 'required' => 'yes'), 
-				'email' => array('name' => 'EMAIL', 'required' => 'no'), 
-				'phone_number' => array('name' => 'PHONENUM', 'required' => 'no'), 
-				'shipping_name' => array('name' => 'SHIPTONAME', 'required' => 'no'), 
-				'shipping_address1' => array('name' => 'SHIPTOSTREET', 'required' => 'no'), 
-				'shipping_address2' => array('name' => 'SHIPTOSTREET2', 'required' => 'no'), 
-				'shipping_city' => array('name' => 'SHIPTOCITY', 'required' => 'no'), 
-				'shipping_state' => array('name' => 'SHIPTOSTATE', 'required' => 'no'), 
-				'shipping_postal_code' => array('name' => 'SHIPTOZIP', 'required' => 'no'), 
-				'shipping_country_code' => array('name' => 'SHIPTOCOUNTRYCODE', 'required' => 'no'), 
-				'shipping_phone_number' => array('name' => 'SHIPTOPHONENUM', 'required' => 'no')
-				)
-		,		
-		'SetExpressCheckout' => array(
-				'RETURN_URL' => array('name' => 'RETURNURL', 'required' => 'yes'),
-				'CANCEL_URL' => array('name' => 'CANCELURL', 'required' => 'yes'),
-				'amount_total' => array('name' => 'AMT', 'required' => 'yes'), 
-				'currency_code' => array('name' => 'CURRENCYCODE', 'required' => 'no'), 
-				'amount_max' => array('name' => 'MAXAMT', 'required' => 'no'), 
-				'payment_type' => array('name' => 'PAYMENTACTION', 'required' => 'no'), 
-				'email' => array('name' => 'EMAIL', 'required' => 'no'), 
-				'description' => array('name' => 'DESC', 'required' => 'no'), 
-				'custom' => array('name' => 'CUSTOM', 'required' => 'no'), 
-				'invoice' => array('name' => 'INVNUM', 'required' => 'no'), 
-				'phone_number' => array('name' => 'PHONENUM', 'required' => 'no'), 
-				'shipping_name' => array('name' => 'SHIPTONAME', 'required' => 'no'), 
-				'shipping_address1' => array('name' => 'SHIPTOSTREET', 'required' => 'no'), 
-				'shipping_address2' => array('name' => 'SHIPTOSTREET2', 'required' => 'no'), 
-				'shipping_city' => array('name' => 'SHIPTOCITY', 'required' => 'no'), 
-				'shipping_state' => array('name' => 'SHIPTOSTATE', 'required' => 'no'), 
-				'shipping_postal_code' => array('name' => 'SHIPTOZIP', 'required' => 'no'), 
-				'shipping_country_code' => array('name' => 'SHIPTOCOUNTRYCODE', 'required' => 'no'), 
-				'shipping_phone_number' => array('name' => 'SHIPTOPHONENUM', 'required' => 'no'), 
-				'require_confirmed_shipping_address' => array('name' => 'REQCONFIRMSHIPPING', 'required' => 'no'),
-				'no_shipping' => array('name' => 'NOSHIPPING', 'required' => 'no'), 
-				'address_override' => array('name' => 'ADDROVERRIDE', 'required' => 'no'), 
-				'token' => array('name' => 'TOKEN', 'required' => 'no'), 
-				'locale_code' => array('name' => 'LOCALECODE', 'required' => 'no'), 
-				'page_style' => array('name' => 'PAGESTYLE', 'required' => 'no'), 
-				'hdr_img' => array('name' => 'HDRIMG', 'required' => 'no'), 
-				'hdr_border_color' => array('name' => 'HDRBORDERCOLOR', 'required' => 'no'), 
-				'hdr_background_color' => array('name' => 'HDRBACKCOLOR', 'required' => 'no'), 
-				'payflow_color' => array('name' => 'PAYFLOWCOLOR', 'required' => 'no'), 
-				'channel_type' => array('name' => 'CHANNELTYPE', 'required' => 'no'), 
-				'solution_type' => array('name' => 'SOLUTIONTYPE', 'required' => 'no') 
-				)
-		,		
-		'GetExpressCheckoutDetails' => array(
-				'token' => array('name' => 'TOKEN', 'required' => 'yes')
-				)
-		,		
-		'DoExpressCheckoutPayment' => array(
-				'token' => array('name' => 'TOKEN', 'required' => 'yes'),
-				'payment_type' => array('name' => 'PAYMENTACTION', 'required' => 'yes'), 
-				'payer_id' => array('name' => 'PAYERID', 'required' => 'yes'),
-				'amount_total' => array('name' => 'AMT', 'required' => 'yes'), 
-				'description' => array('name' => 'DESC', 'required' => 'no'), 
-				'custom' => array('name' => 'CUSTOM', 'required' => 'no'), 
-				'invoice' => array('name' => 'INVNUM', 'required' => 'no'), 
-				'notify_url' => array('name' => 'NOTIFYURL', 'required' => 'no'), 
-				'amount_items' => array('name' => 'ITEMAMT', 'required' => 'no'), 
-				'amount_shipping' => array('name' => 'SHIPPINGAMT', 'required' => 'no'), 
-				'amount_handling' => array('name' => 'HANDLINGAMT', 'required' => 'no'), 
-				'amount_tax' => array('name' => 'TAXAMT', 'required' => 'no'), 
-				'currency_code' => array('name' => 'CURRENCYCODE', 'required' => 'no'), 
-				'shipping_name' => array('name' => 'SHIPTONAME', 'required' => 'no'), 
-				'shipping_address1' => array('name' => 'SHIPTOSTREET', 'required' => 'no'), 
-				'shipping_address2' => array('name' => 'SHIPTOSTREET2', 'required' => 'no'), 
-				'shipping_city' => array('name' => 'SHIPTOCITY', 'required' => 'no'), 
-				'shipping_state' => array('name' => 'SHIPTOSTATE', 'required' => 'no'), 
-				'shipping_postal_code' => array('name' => 'SHIPTOZIP', 'required' => 'no'), 
-				'shipping_country_code' => array('name' => 'SHIPTOCOUNTRYCODE', 'required' => 'no'), 
-				'shipping_phone_number' => array('name' => 'SHIPTOPHONENUM', 'required' => 'no')
-				)
-		,		
-		'GetTransactionDetails' => array(
-				'transaction_id' => array('name' => 'TRANSACTIONID', 'required' => 'yes')
-				)
-		,		
-		'RefundTransaction' => array(
-				'transaction_id' => array('name' => 'TRANSACTIONID', 'required' => 'yes'), 
-				'refund_type' => array('name' => 'REFUNDTYPE', 'required' => 'yes'), 
-				'amount_total' => array('name' => 'AMT', 'required' => 'no'), 
-				'note' => array('name' => 'NOTE', 'required' => 'no'),
-				)
-		);
-	
-	
-	$ResponseFieldsArray = array(
-		'DoDirectPayment' => array(
-				'timestamp' => 'TIMESTAMP',
-				'correlation_id' => 'CORRELATIONID',
-				'ack' => 'ACK',
-				'version' => 'VERSION',
-				'build' => 'BUILD',
-				'avs_code' => 'AVSCODE',
-				'cvv2_match' => 'CVV2MATCH',
-				'transaction_id' => 'TRANSACTIONID',
-				'amount_total' => 'AMT',
-				'currency_code' => 'CURRENCYCODE'
-				)
-		,
-		'SetExpressCheckout' => array(
-				'timestamp' => 'TIMESTAMP',
-				'correlation_id' => 'CORRELATIONID',
-				'ack' => 'ACK',
-				'version' => 'VERSION',
-				'build' => 'BUILD',
-				'token' => 'TOKEN'
-				)
-		,
-		'DoExpressCheckoutPayment' => array(
-				'timestamp' => 'TIMESTAMP',
-				'correlation_id' => 'CORRELATIONID',
-				'ack' => 'ACK',
-				'version' => 'VERSION',
-				'build' => 'BUILD',
-				'token' => 'TOKEN',
-				'transaction_id' => 'TRANSACTIONID',
-				'transaction_type' => 'TRANSACTIONTYPE',
-				'payment_type' => 'PAYMENTTYPE',
-				'order_time' => 'ORDERTIME',
-				'amount_total' => 'AMT',
-				'currency_code' => 'CURRENCYCODE',
-				'amount_fee' => 'FEEAMT',
-				'amount_settle' => 'SETTLEAMT',
-				'amount_tax' => 'TAXAMT',
-				'exchange_rate' => 'EXCHANGERATE',
-				'payment_status' => 'PAYMENTSTATUS',
-				'payment_pending_reason' => 'PENDINGREASON',
-				'payment_reason_code' => 'REASONCODE'
-				)
-		,
-		'GetExpressCheckoutDetails' => array(
-				'timestamp' => 'TIMESTAMP',
-				'correlation_id' => 'CORRELATIONID',
-				'ack' => 'ACK',
-				'version' => 'VERSION',
-				'build' => 'BUILD',
-				'token' => 'TOKEN',
-				'email' => 'EMAIL',
-				'payer_id' => 'PAYERID',
-				'payer_status' => 'PAYERSTATUS',
-				'salutation' => 'SALUTATION',
-				'first_name' => 'FIRSTNAME',
-				'middle_name' => 'MIDDLENAME',
-				'last_name' => 'LASTNAME',
-				'suffix' => 'SUFFIX',
-				'country_code' => 'COUNTRYCODE',
-				'business' => 'BUSINESS',
-				'shipping_name' => 'SHIPTONAME',
-				'shipping_address1' => 'SHIPTOSTREET',
-				'shipping_address2' => 'SHIPTOSTREET2',
-				'shipping_city' => 'SHIPTOCITY',
-				'shipping_state' => 'SHIPTOSTATE',
-				'shipping_country_code' => 'SHIPTOCOUNTRYCODE',
-				'shipping_country_name' => 'SHIPTOCOUNTRYNAME',
-				'shipping_postal_code' => 'SHIPTOZIP',
-				'address_id' => 'ADDRESSID', // Is this a returned variable? Some docs say yes, some no
-				'address_status' => 'ADDRESSSTATUS',
-				'description' => 'DESC',
-				'custom' => 'CUSTOM',
-				'phone_number' => 'PHONENUM'
-				)
-		,
-		'GetTransactionDetails' => array(
-				'timestamp' => 'TIMESTAMP',
-				'correlation_id' => 'CORRELATIONID',
-				'ack' => 'ACK',
-				'version' => 'VERSION',
-				'build' => 'BUILD',
-				'receiver_business' => 'RECEIVERBUSINESS',
-				'receiver_email' => 'RECEIVEREMAIL',
-				'receiver_id' => 'RECEIVERID',
-				'email' => 'EMAIL',
-				'payer_id' => 'PAYERID',
-				'payer_status' => 'PAYERSTATUS',
-				'salutation' => 'SALUTATION',
-				'first_name' => 'FIRSTNAME',
-				'last_name' => 'LASTNAME',
-				'middle_name' => 'MIDDLENAME',
-				'suffix' => 'SUFFIX',
-				'payer_business' => 'PAYERBUSINESS',
-				'country_code' => 'COUNTRYCODE',
-				'business' => 'BUSINESS',
-				'shipping_name' => 'SHIPTONAME',
-				'shipping_address1' => 'SHIPTOSTREET',
-				'shipping_address2' => 'SHIPTOSTREET2',
-				'shipping_city' => 'SHIPTOCITY',
-				'shipping_state' => 'SHIPTOSTATE',
-				'shipping_country_code' => 'SHIPTOCOUNTRYCODE',
-				'shipping_country_name' => 'SHIPTOCOUNTRYNAME',
-				'shipping_postal_code' => 'SHIPTOZIP',
-				'address_id' => 'ADDRESSID', // Is this a returned variable? Some docs say yes, some no
-				'address_status' => 'ADDRESSSTATUS',
-				'address_owner' => 'ADDRESSOWNER',
-				'parent_transaction_id' => 'PARENTTRANSACTIONID',
-				'transaction_id' => 'TRANSACTIONID',
-				'receipt_id' => 'RECEIPTID',
-				'transaction_type' => 'TRANSACTIONTYPE',
-				'payment_type' => 'PAYMENTTYPE',
-				'order_time' => 'ORDERTIME',
-				'amount_total' => 'AMT',
-				'currency_code' => 'CURRENCYCODE',
-				'amount_fee' => 'FEEAMT',
-				'amount_settle' => 'SETTLEAMT',
-				'amount_tax' => 'TAXAMT',
-				'exchange_rate' => 'EXCHANGERATE',
-				'payment_status' => 'PAYMENTSTATUS',
-				'payment_pending_reason' => 'PENDINGREASON',
-				'payment_reason_code' => 'REASONCODE',
-				'amount_sales_tax' => 'SALESTAX',
-				'invoice' => 'INVNUM',
-				'note' => 'NOTE',
-				'custom' => 'CUSTOM',
-				'subscription_id' => 'SUBSCRIPTIONID',
-				'subscription_date' => 'SUBSCRIPTIONDATE',
-				'effective_date' => 'EFFECTIVEDATE',
-				'retry_time' => 'RETRYTIME',
-				'user_name' => 'USERNAME',
-				'recurrences' => 'RECURRENCES',
-				'reattempt' => 'REATTEMPT',
-				'recurring' => 'RECURRING',
-				'period' => 'PERIOD',
-				'buyer_id' => 'BUYERID',
-				'closing_date' => 'CLOSINGDATE',
-				'multiitem' => 'MULTIITEM'
-				)
-		,
-		'RefundTransaction' => array(
-				'refund_transaction_id' => 'REFUNDTRANSACTIONID',
-				'amount_refund_net' => 'NETFUNDAMT',
-				'amount_refund_fee' => 'FEEREFUNDAMT',
-				'amount_refund_total' => 'GROSSREFUNDAMT'
-				)
-		);
-		/* TO INTEGRATE
-			//converting NVPResponse to an Associative Array
-		$nvpResArray = $this->deformatNVP($response);
-		$nvpReqArray = $this->deformatNVP($nvpreq);
-		$_SESSION['nvpReqArray'] = $nvpReqArray;
-		
-		
-			*************
-			if NO SUCCESS
-			*************
-			
-		if (curl_errno($ch)) 
-			{
-			// moving to display page to display curl errors
 
-			$_SESSION['curl_error_no'] = curl_errno($ch) ;
-			$_SESSION['curl_error_msg'] = curl_error($ch);
-			
-			$this->_error				= true;
-			$this->ack					= 'Failure';
-			$this->_error_type			= 'curl';
-			$this->_error_date			= date("Y-m-d H:i:s");
-			$this->_error_code			= curl_errno($ch);
-			$this->_error_short_message	= 'There was an error trying to contact the PayPal servers. (curl error) See long message for details.';
-			$this->_error_long_message	= curl_error($ch);
-			
-			return false;
-			} 
-	
-			*************
-			if SUCCESS
-			*************
-		
-		else 
-			{
-			//closing the curl
-			curl_close($ch);
-			}
-		
-		return $nvpResArray;
-		 END TO INTEGRATE */
 		
 		if ($objRequest->response == 'VERIFIED' && $this->Input->post('receiver_email') == $this->paypal_account)
 		{
@@ -602,864 +365,10 @@ $(\'payment_form\').submit();
 </script>';
 	}
 	
-		public function DoDirectPayment()
-		{
-		// urlencode the needed variables
-		$this->urlencodeVariables();
-		
-		/* Construct the request string that will be sent to PayPal.
-		   The variable $nvpstr contains all the variables and is a
-		   name value pair string with & as a delimiter */
-		$nvpstr = $this->generateNVPString('DoDirectPayment');
-		
-		/* Construct and add any items found in this instance */
-		if(!empty($this->ItemsArray))
-			{
-			// Counter for the total of all the items put together
-			$total_items_amount = 0;
-			// Go through the items array
-			foreach($this->ItemsArray as $key => $value)
-				{
-				// Get the array of the current item from the main array
-				$current_item = $this->ItemsArray[$key];
-				// Add it to the request string
-				$nvpstr .= "&L_NAME".$key."=".$current_item['name'].
-							"&L_NUMBER".$key."=".$current_item['number'].
-							"&L_QTY".$key."=".$current_item['quantity'].
-							"&L_TAXAMT".$key."=".$current_item['amount_tax'].
-							"&L_AMT".$key."=".$current_item['amount'];
-				// Add this item's amount to the total current count
-				$total_items_amount += ($current_item['amount'] * $current_item['quantity']);
-				}
-			// Set the amount_items for this instance and ITEMAMT added to the request string
-			$this->amount_items = $total_items_amount;
-			$nvpstr .= "&ITEMAMT=".urlencode($total_items_amount);
-			}
-		
-		// decode the variables incase we still require access to them in our program
-		$this->urldecodeVariables();
-		
-		/* Make the API call to PayPal, using API signature.
-		   The API response is stored in an associative array called $this->Response */
-		$this->Response = $this->hash_call("DoDirectPayment", $nvpstr);
-		
-		// TODO: Add error handling for the hash_call
-		
-		/* Display the API response back to the browser.
-		   If the response from PayPal was a success, display the response parameters'
-		   If the response was an error, display the errors received using APIError.php.
-		   */
-		
-		/*
-			*************
-			if NO SUCCESS
-			*************
-			*/
-		if(strtoupper($this->Response["ACK"]) != "SUCCESS" AND strtoupper($this->Response["ACK"]) != "SUCCESSWITHWARNING")
-			{
-			$this->Error['TIMESTAMP']		= @$this->Response['TIMESTAMP'];
-			$this->Error['CORRELATIONID']	= @$this->Response['CORRELATIONID'];
-			$this->Error['ACK']				= $this->Response['ACK'];
-			$this->Error['ERRORCODE']		= $this->Response['L_ERRORCODE0'];
-			$this->Error['SHORTMESSAGE']	= $this->Response['L_SHORTMESSAGE0'];
-			$this->Error['LONGMESSAGE']		= $this->Response['L_LONGMESSAGE0'];
-			$this->Error['SEVERITYCODE']	= $this->Response['L_SEVERITYCODE0'];
-			$this->Error['VERSION']			= @$this->Response['VERSION'];
-			$this->Error['BUILD']			= @$this->Response['BUILD'];
-			
-			// TODO: Error codes for AVSCODE and CVV@MATCH
-			
-			$this->_error				= true;
-			$this->_error_ack			= $this->Response['ACK'];
-			$this->ack					= 'Failure';
-			$this->_error_type			= 'paypal';
-			$this->_error_date			= $this->Response['TIMESTAMP'];
-			$this->_error_code			= $this->Response['L_ERRORCODE0'];
-			$this->_error_short_message	= $this->Response['L_SHORTMESSAGE0'];
-			$this->_error_long_message	= $this->Response['L_LONGMESSAGE0'];
-			$this->_error_severity_code	= $this->Response['L_SEVERITYCODE0'];
-			$this->_error_version		= @$this->Response['VERSION'];
-			$this->_error_build			= @$this->Response['BUILD']; 
-			
-			return false;
-			}
-			/*
-			*************
-			if SUCCESS
-			*************
-			*/
-		elseif(strtoupper($this->Response["ACK"]) == 'SUCCESS' OR strtoupper($this->Response["ACK"]) == 'SUCCESSWITHWARNING')
-			{
-			/*
-			Take the response variables and put them into the local class variables
-			*/
-			foreach($this->ResponseFieldsArray['DoDirectPayment'] as $key => $value)
-				$this->$key = $this->Response[$value];
-			
-			return true;
-			}
-		}
+	public function getAllowedCCTypes()
+	{
+		return array('mc', 'visa', 'amex', 'discover', 'jcb', 'diners', 'enroute');				
+	}
 	
-	
-	
-	
-	
-	function SetExpressCheckout()
-		{
-		// TODO: Add error handling prior to trying to make PayPal calls. ie: missing amount_total or RETURN_URL
-		
-		// urlencode the needed variables
-		$this->urlencodeVariables();
-		
-		/* Construct the parameter string that describes the PayPal payment
-			the varialbes were set in the web form, and the resulting string
-			is stored in $nvpstr
-			*/
-		$nvpstr = $this->generateNVPString('SetExpressCheckout');
-				
-		// decode the variables incase we still require access to them in our program
-		$this->urldecodeVariables();
-		
-		/* Make the call to PayPal to set the Express Checkout token
-			If the API call succeded, then redirect the buyer to PayPal
-			to begin to authorize payment.  If an error occured, show the
-			resulting errors
-			*/
-		$this->Response = $this->hash_call("SetExpressCheckout", $nvpstr);
-		
-		/* Display the API response back to the browser.
-		   If the response from PayPal was a success, display the response parameters'
-		   If the response was an error, display the errors received using APIError.php.
-		   */		
-		/*
-			*************
-			if NO SUCCESS
-			*************
-			*/
-		if(strtoupper($this->Response["ACK"]) != "SUCCESS")
-			{
-			$this->Error['TIMESTAMP']		= @$this->Response['TIMESTAMP'];
-			$this->Error['CORRELATIONID']	= @$this->Response['CORRELATIONID'];
-			$this->Error['ACK']				= $this->Response['ACK'];
-			$this->Error['ERRORCODE']		= $this->Response['L_ERRORCODE0'];
-			$this->Error['SHORTMESSAGE']	= $this->Response['L_SHORTMESSAGE0'];
-			$this->Error['LONGMESSAGE']		= $this->Response['L_LONGMESSAGE0'];
-			$this->Error['SEVERITYCODE']	= $this->Response['L_SEVERITYCODE0'];
-			$this->Error['VERSION']			= @$this->Response['VERSION'];
-			$this->Error['BUILD']			= @$this->Response['BUILD'];
-			
-			$this->_error				= true;
-			$this->_error_ack			= $this->Response['ACK'];
-			$this->ack					= 'Failure';
-			$this->_error_type			= 'paypal';
-			$this->_error_date			= $this->Response['TIMESTAMP'];
-			$this->_error_code			= $this->Response['L_ERRORCODE0'];
-			$this->_error_short_message	= $this->Response['L_SHORTMESSAGE0'];
-			$this->_error_long_message	= $this->Response['L_LONGMESSAGE0'];
-			$this->_error_severity_code	= $this->Response['L_SEVERITYCODE0'];
-			$this->_error_version		= @$this->Response['VERSION'];
-			$this->_error_build			= @$this->Response['BUILD']; 
-			
-			return false;
-			/*
-			$_SESSION['reshash']=$this->Response;
-			$location = "APIError.php";
-			header("Location: $location");
-			*/
-			}
-		/*
-			*************
-			if SUCCESS
-			*************
-			*/
-		elseif(strtoupper($this->Response["ACK"]) == 'SUCCESS')
-			{
-			/*
-			Take the response variables and put them into the local class variables
-			*/
-			foreach($this->ResponseFieldsArray['SetExpressCheckout'] as $key => $value)
-				$this->$key = $this->Response[$value];
-			
-			return true;
-			}
-		}
-	
-	function SetExpressCheckoutSuccessfulRedirect()
-		{
-		// Redirect to paypal.com here
-		$token = urlencode($this->Response["TOKEN"]);
-		$paypal_url = $this->PAYPAL_URL.$token;
-		header("Location: ".$paypal_url);
-		}
-	
-	
-	
-	
-	function GetExpressCheckoutDetails()
-		{
-		// TODO: Add error handling prior to PayPal calls. ie: missing TOKEN
-		
-		/* At this point, the buyer has completed in authorizing payment
-			at PayPal.  The script will now call PayPal with the details
-			of the authorization, incuding any shipping information of the
-			buyer.  Remember, the authorization is not a completed transaction
-			at this state - the buyer still needs an additional step to finalize
-			the transaction
-			*/
-
-		 /* Build a second API request to PayPal, using the token as the
-			ID to get the details on the payment authorization
-			*/
-		/* Construct the parameter string that describes the PayPal payment
-			the varialbes were set in the web form, and the resulting string
-			is stored in $nvpstr
-			*/
-		$nvpstr = $this->generateNVPString('GetExpressCheckoutDetails');
-
-		 /* Make the API call and store the results in an array.  If the
-			call was a success, show the authorization details, and provide
-			an action to complete the payment.  If failed, show the error
-			*/
-		$this->Response = $this->hash_call("GetExpressCheckoutDetails", $nvpstr);
-		
-		/*
-			*************
-			if NO SUCCESS
-			*************
-			*/
-		if(strtoupper($this->Response["ACK"]) != "SUCCESS")
-			{
-			$this->Error['TIMESTAMP']		= @$this->Response['TIMESTAMP'];
-			$this->Error['CORRELATIONID']	= @$this->Response['CORRELATIONID'];
-			$this->Error['ACK']				= $this->Response['ACK'];
-			$this->Error['ERRORCODE']		= $this->Response['L_ERRORCODE0'];
-			$this->Error['SHORTMESSAGE']	= $this->Response['L_SHORTMESSAGE0'];
-			$this->Error['LONGMESSAGE']		= $this->Response['L_LONGMESSAGE0'];
-			$this->Error['SEVERITYCODE']	= $this->Response['L_SEVERITYCODE0'];
-			$this->Error['VERSION']			= @$this->Response['VERSION'];
-			$this->Error['BUILD']			= @$this->Response['BUILD'];
-			
-			$this->_error				= true;
-			$this->_error_ack			= $this->Response['ACK'];
-			$this->ack					= 'Failure';
-			$this->_error_type			= 'paypal';
-			$this->_error_date			= $this->Response['TIMESTAMP'];
-			$this->_error_code			= $this->Response['L_ERRORCODE0'];
-			$this->_error_short_message	= $this->Response['L_SHORTMESSAGE0'];
-			$this->_error_long_message	= $this->Response['L_LONGMESSAGE0'];
-			$this->_error_severity_code	= $this->Response['L_SEVERITYCODE0'];
-
-			$this->_error_version		= @$this->Response['VERSION'];
-			$this->_error_build			= @$this->Response['BUILD']; 
-			
-			return false;
-			/*
-			$_SESSION['reshash']=$this->Response;
-			$location = "APIError.php";
-			header("Location: $location");
-			*/
-			}
-		/*
-			***********
-			if SUCCESS
-			***********
-			*/
-		elseif(strtoupper($this->Response["ACK"]) == 'SUCCESS')
-			{
-			/*
-			Take the response variables and put them into the local class variables
-			*/
-			foreach($this->ResponseFieldsArray['GetExpressCheckoutDetails'] as $key => $value)
-				$this->$key = $this->Response[$value];
-			
-			return true;
-			}
-		
-		}
-	
-	
-	
-	
-	function DoExpressCheckoutPayment()
-		{
-		// TODO: Error checking. ie: we require a token and payer_id here
-		
-		// urlencode the needed variables
-		$this->urlencodeVariables();
-		
-		/* Construct the parameter string that describes the PayPal payment
-			the varialbes were set in the web form, and the resulting string
-			is stored in $nvpstr
-			*/
-		$nvpstr = $this->generateNVPString('DoExpressCheckoutPayment');
-		
-		/* Construct and add any items found in this instance */
-		if(!empty($this->ItemsArray))
-			{
-			// Counter for the total of all the items put together
-			$total_items_amount = 0;
-			// Go through the items array
-			foreach($this->ItemsArray as $key => $value)
-				{
-				// Get the array of the current item from the main array
-				$current_item = $this->ItemsArray[$key];
-				// Add it to the request string
-				$nvpstr .= "&L_NAME".$key."=".$current_item['name'].
-							"&L_NUMBER".$key."=".$current_item['number'].
-							"&L_QTY".$key."=".$current_item['quantity'].
-							"&L_TAXAMT".$key."=".$current_item['amount_tax'].
-							"&L_AMT".$key."=".$current_item['amount'];
-				// Add this item's amount to the total current count
-				$total_items_amount += ($current_item['amount'] * $current_item['quantity']);
-				}
-			// Set the amount_items for this instance and ITEMAMT added to the request string
-			$this->amount_items = $total_items_amount;
-			$nvpstr .= "&ITEMAMT=".$total_items_amount;
-			}
-
-		 /* Make the call to PayPal to finalize payment
-			If an error occured, show the resulting errors
-			*/
-		$this->Response = $this->hash_call("DoExpressCheckoutPayment", $nvpstr);
-		
-		// decode the variables incase we still require access to them in our program
-		$this->urldecodeVariables();
-		
-		/* Display the API response back to the browser.
-		   If the response from PayPal was a success, display the response parameters'
-		   If the response was an error, display the errors received using APIError.php.
-		   */
-		
-		/*
-			*************
-			if NO SUCCESS
-			*************
-			*/
-		if(strtoupper($this->Response["ACK"]) != "SUCCESS")
-			{
-			$this->Error['TIMESTAMP']		= @$this->Response['TIMESTAMP'];
-			$this->Error['CORRELATIONID']	= @$this->Response['CORRELATIONID'];
-			$this->Error['ACK']				= $this->Response['ACK'];
-			$this->Error['ERRORCODE']		= $this->Response['L_ERRORCODE0'];
-			$this->Error['SHORTMESSAGE']	= $this->Response['L_SHORTMESSAGE0'];
-			$this->Error['LONGMESSAGE']		= $this->Response['L_LONGMESSAGE0'];
-			$this->Error['SEVERITYCODE']	= $this->Response['L_SEVERITYCODE0'];
-			$this->Error['VERSION']			= @$this->Response['VERSION'];
-			$this->Error['BUILD']			= @$this->Response['BUILD'];
-			
-			$this->_error				= true;
-			$this->_error_ack			= $this->Response['ACK'];
-			$this->ack					= 'Failure';
-			$this->_error_type			= 'paypal';
-			$this->_error_date			= $this->Response['TIMESTAMP'];
-			$this->_error_code			= $this->Response['L_ERRORCODE0'];
-			$this->_error_short_message	= $this->Response['L_SHORTMESSAGE0'];
-			$this->_error_long_message	= $this->Response['L_LONGMESSAGE0'];
-			$this->_error_severity_code	= $this->Response['L_SEVERITYCODE0'];
-			$this->_error_version		= @$this->Response['VERSION'];
-			$this->_error_build			= @$this->Response['BUILD']; 
-			
-			return false;
-			/*
-			$_SESSION['reshash']=$this->Response;
-			$location = "APIError.php";
-			header("Location: $location");
-			*/
-			}
-		/*
-			*************
-			if SUCCESS
-			*************
-			*/
-		elseif(strtoupper($this->Response["ACK"]) == 'SUCCESS')
-			{
-			/*
-			Take the response variables and put them into the local class variables
-			*/
-			foreach($this->ResponseFieldsArray['DoExpressCheckoutPayment'] as $key => $value)
-				$this->$key = $this->Response[$value];
-			
-			return true;
-			}
-		}
-	
-	
-	
-	
-	function GetTransactionDetails()
-		{
-		/* Construct the parameter string that describes the PayPal payment
-			the varialbes were set in the web form, and the resulting string
-			is stored in $nvpstr
-			*/
-		$nvpstr = $this->generateNVPString('GetTransactionDetails');
-		
-		/* Make the API call to PayPal, using API signature.
-		   The API response is stored in an associative array called $resArray */
-		$this->Response = $this->hash_call("GetTransactionDetails", $nvpstr);
-		
-		/* Next, collect the API request in the associative array $reqArray
-		   as well to display back to the browser.
-		   Normally you wouldnt not need to do this, but its shown for testing */
-		
-		/* Display the API response back to the browser.
-		   If the response from PayPal was a success, display the response parameters'
-		   If the response was an error, display the errors received using APIError.php.
-		   */
-		
-		/*
-			*************
-			if NO SUCCESS
-			*************
-			*/
-		if(strtoupper($this->Response["ACK"]) != "SUCCESS")
-			{
-			$this->Error['TIMESTAMP']		= @$this->Response['TIMESTAMP'];
-			$this->Error['CORRELATIONID']	= @$this->Response['CORRELATIONID'];
-			$this->Error['ACK']				= $this->Response['ACK'];
-			$this->Error['ERRORCODE']		= $this->Response['L_ERRORCODE0'];
-			$this->Error['SHORTMESSAGE']	= $this->Response['L_SHORTMESSAGE0'];
-			$this->Error['LONGMESSAGE']		= $this->Response['L_LONGMESSAGE0'];
-			$this->Error['SEVERITYCODE']	= $this->Response['L_SEVERITYCODE0'];
-			$this->Error['VERSION']			= @$this->Response['VERSION'];
-			$this->Error['BUILD']			= @$this->Response['BUILD'];
-			
-			$this->_error				= true;
-			$this->_error_ack			= $this->Response['ACK'];
-			$this->ack					= 'Failure';
-			$this->_error_type			= 'paypal';
-			$this->_error_date			= $this->Response['TIMESTAMP'];
-			$this->_error_code			= $this->Response['L_ERRORCODE0'];
-			$this->_error_short_message	= $this->Response['L_SHORTMESSAGE0'];
-			$this->_error_long_message	= $this->Response['L_LONGMESSAGE0'];
-			$this->_error_severity_code	= $this->Response['L_SEVERITYCODE0'];
-			$this->_error_version		= @$this->Response['VERSION'];
-			$this->_error_build			= @$this->Response['BUILD']; 
-			
-			return false;
-			/*
-			$_SESSION['reshash']=$this->Response;
-			$location = "APIError.php";
-			header("Location: $location");
-			*/
-			}
-		/*
-			*************
-			if SUCCESS
-			*************
-			*/
-		elseif(strtoupper($this->Response["ACK"]) == 'SUCCESS')
-			{
-			/*
-			Take the response variables and put them into the local class variables
-			*/
-			foreach($this->ResponseFieldsArray['GetTransactionDetails'] as $key => $value)
-				$this->$key = $this->Response[$value];
-			
-			$this->getItems($this->Response);
-			
-			return true;
-			}
-		}
-	
-	
-	
-	
-	function RefundTransaction()
-		{
-		/* Construct the parameter string that describes the PayPal payment
-			the varialbes were set in the web form, and the resulting string
-			is stored in $nvpstr
-			*/
-		$nvpstr = $this->generateNVPString('RefundTransaction');
-		
-		/* Make the API call to PayPal, using API signature.
-		   The API response is stored in an associative array called $resArray */
-		$this->Response = $this->hash_call("RefundTransaction", $nvpstr);
-		
-		/* Next, collect the API request in the associative array $reqArray
-		   as well to display back to the browser.
-		   Normally you wouldnt not need to do this, but its shown for testing */
-		
-		/* Display the API response back to the browser.
-		   If the response from PayPal was a success, display the response parameters'
-		   If the response was an error, display the errors received using APIError.php.
-		   */
-		
-		/*
-			*************
-			if NO SUCCESS
-			*************
-			*/
-		if(strtoupper($this->Response["ACK"]) != "SUCCESS")
-			{
-			$this->Error['TIMESTAMP']		= @$this->Response['TIMESTAMP'];
-			$this->Error['CORRELATIONID']	= @$this->Response['CORRELATIONID'];
-			$this->Error['ACK']				= $this->Response['ACK'];
-			$this->Error['ERRORCODE']		= $this->Response['L_ERRORCODE0'];
-			$this->Error['SHORTMESSAGE']	= $this->Response['L_SHORTMESSAGE0'];
-			$this->Error['LONGMESSAGE']		= $this->Response['L_LONGMESSAGE0'];
-			$this->Error['SEVERITYCODE']	= $this->Response['L_SEVERITYCODE0'];
-			$this->Error['VERSION']			= @$this->Response['VERSION'];
-			$this->Error['BUILD']			= @$this->Response['BUILD'];
-			
-			$this->_error				= true;
-			$this->_error_ack			= $this->Response['ACK'];
-			$this->ack					= 'Failure';
-			$this->_error_type			= 'paypal';
-			$this->_error_date			= $this->Response['TIMESTAMP'];
-			$this->_error_code			= $this->Response['L_ERRORCODE0'];
-			$this->_error_short_message	= $this->Response['L_SHORTMESSAGE0'];
-			$this->_error_long_message	= $this->Response['L_LONGMESSAGE0'];
-			$this->_error_severity_code	= $this->Response['L_SEVERITYCODE0'];
-			$this->_error_version		= @$this->Response['VERSION'];
-			$this->_error_build			= @$this->Response['BUILD']; 
-			
-			return false;
-			/*
-			$_SESSION['reshash']=$this->Response;
-			$location = "APIError.php";
-			header("Location: $location");
-			*/
-			}
-		/*
-			*************
-			if SUCCESS
-			*************
-			*/
-		elseif(strtoupper($this->Response["ACK"]) == 'SUCCESS')
-			{
-			/*
-			Take the response variables and put them into the local class variables
-			*/
-			foreach($this->ResponseFieldsArray['RefundTransaction'] as $key => $value)
-				$this->$key = $this->Response[$value];
-			
-			$this->getItems($this->Response);
-			
-			return true;
-			}
-		}
-	
-	
-
-	
-		
-	/**
-	  * hash_call: Function to perform the API call to PayPal using API signature
-	  * @methodName is name of API  method.
-	  * @nvpStr is nvp string.
-	  * returns an associtive array containing the response from the server.
-	*/
-	private function hash_call($methodName, $nvpStr)
-		{
-		//setting the curl parameters.
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL,$this->API_ENDPOINT);
-		curl_setopt($ch, CURLOPT_VERBOSE, 1);
-	
-		//turning off the server and peer verification(TrustManager Concept).
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
-	
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		
-		//if USE_PROXY constant set to TRUE in Constants.php, then only proxy will be enabled.
-	    //Set proxy name to PROXY_HOST and port number to PROXY_PORT in constants.php 
-		if($this->USE_PROXY)
-			curl_setopt ($ch, CURLOPT_PROXY, $this->PROXY_HOST.":".$this->PROXY_PORT); 
-	
-		//NVPRequest for submitting to server
-		$nvpreq = "METHOD=".urlencode($methodName)."&VERSION=".urlencode($this->VERSION)."&PWD=".urlencode($this->API_PASSWORD).
-				"&USER=".urlencode($this->API_USERNAME)."&SIGNATURE=".urlencode($this->API_SIGNATURE).$nvpStr;
-		
-		//setting the nvpreq as POST FIELD to curl
-		curl_setopt($ch,CURLOPT_POSTFIELDS,$nvpreq);
-	
-		//getting response from server
-		$response = curl_exec($ch);
-	
-		//converting NVPResponse to an Associative Array
-		$nvpResArray = $this->deformatNVP($response);
-		$nvpReqArray = $this->deformatNVP($nvpreq);
-		$_SESSION['nvpReqArray'] = $nvpReqArray;
-		
-		/*
-			*************
-			if NO SUCCESS
-			*************
-			*/
-		if (curl_errno($ch)) 
-			{
-			// moving to display page to display curl errors
-
-			$_SESSION['curl_error_no'] = curl_errno($ch) ;
-			$_SESSION['curl_error_msg'] = curl_error($ch);
-			
-			$this->_error				= true;
-			$this->ack					= 'Failure';
-			$this->_error_type			= 'curl';
-			$this->_error_date			= date("Y-m-d H:i:s");
-			$this->_error_code			= curl_errno($ch);
-			$this->_error_short_message	= 'There was an error trying to contact the PayPal servers. (curl error) See long message for details.';
-			$this->_error_long_message	= curl_error($ch);
-			
-			return false;
-			} 
-		/*
-			*************
-			if SUCCESS
-			*************
-			*/
-		else 
-			{
-			//closing the curl
-			curl_close($ch);
-			}
-		
-		return $nvpResArray;
-		}
-		
-		
-		
-		/** This function will take NVPString and convert it to an Associative Array and it will decode the response.
-		  * It is usefull to search for a particular key and displaying arrays.
-		  * @nvpstr is NVPString.
-		  * @nvpArray is Associative Array.
-		  */
-		private function deformatNVP($nvpstr)
-			{
-			$intial=0;
-			$nvpArray = array();
-			
-			while(strlen($nvpstr))
-				{
-				//postion of Key
-				$keypos= strpos($nvpstr,'=');
-				//position of value
-				$valuepos = strpos($nvpstr,'&') ? strpos($nvpstr,'&'): strlen($nvpstr);
-		
-				/*getting the Key and Value values and storing in a Associative Array*/
-				$keyval=substr($nvpstr,$intial,$keypos);
-				$valval=substr($nvpstr,$keypos+1,$valuepos-$keypos-1);
-				//decoding the respose
-				$nvpArray[urldecode($keyval)] =urldecode( $valval);
-				$nvpstr=substr($nvpstr,$valuepos+1,strlen($nvpstr));
-				}
-				
-			return $nvpArray;
-			}
-		
-		
-		
-		
-		/** This function will add an item to the itemArray for use in doDirectPayment and doExpressCheckoutPayment
-		  */
-		public function addItem($name, $number, $quantity, $amount_tax, $amount)
-			{
-			$new_item =  array(
-					'name' => $name, 
-					'number' => $number, 
-					'quantity' => $quantity, 
-					'amount_tax' => $amount_tax, 
-					'amount' => $amount);
-			
-			$this->ItemsArray[] = $new_item;
-			
-			// TODO: Should recalculate and set $this->amount_items after every new item is added. Or is this done on each request?
-			}
-		
-		
-		
-		private function getItems($passed_response)
-			{
-			// Clear any current items
-			$this->ItemsArray = '';
-			
-			// Get the items if there are any
-			// Start this off by checking for a first item
-			if(!empty($passed_response['L_NAME0']) OR !empty($passed_response['L_NUMBER0']) OR !empty($passed_response['L_QTY0']))
-				{
-				$i = 0;
-				// Start a loop to get all the items (up to 200)
-				// We'll break out of it if we stop finding items
-				while($i < 200)
-					{
-					// One of the Name, Number, and Qty fields may be empty, so check all of them
-					//   and if any of them are filled, then we have an item
-					if(!empty($passed_response['L_NAME'.$i]) OR !empty($passed_response['L_NUMBER'.$i]) OR !empty($passed_response['L_QTY'.$i]))
-						{
-						$new_item =  array(
-								'name' => $passed_response['L_NAME'.$i], 
-								'number' => $passed_response['L_NUMBER'.$i], 
-								'quantity' => $passed_response['L_QTY'.$i], 
-								'amount_tax' => $passed_response['L_TAXAMT'.$i], 
-								'amount' => $passed_response['L_AMT'.$i]);
-						
-						$this->ItemsArray[] = $new_item;
-						$i++;
-						}
-					else
-						break;
-					}
-				}
-			}
-		
-		
-		
-		private function generateNVPString($type)
-			{
-			$temp_nvp_str = '';
-			// Go through the selected RequestFieldsArray and create the request string
-			//    based on whether the field is required or filled
-			// TODO: return error if required field is empty?
-			foreach($this->RequestFieldsArray[$type] as $key => $value)
-				{
-				if($value['required'] == 'yes')
-					$temp_nvp_str .= '&'.$value['name'].'='.$this->$key;
-				elseif(!empty($this->$key))
-					$temp_nvp_str .= '&'.$value['name'].'='.$this->$key;
-				}
-			return $temp_nvp_str;
-			}
-		
-		
-		
-		/** This function encodes all applicable variables for transport to PayPal
-		  */
-		private function urlencodeVariables()
-			{
-			// Decode all specified variables
-			$this->payment_type			= urlencode($this->payment_type);
-			
-			$this->email		= urlencode($this->email);
-			$this->first_name			= urlencode($this->first_name);
-			$this->last_name			= urlencode($this->last_name);
-			$this->credit_card_type		= urlencode($this->credit_card_type);
-			$this->credit_card_number	= urlencode($this->credit_card_number);
-			$this->expire_date_month		= urlencode($this->expire_date_month);
-			
-			// Month must be padded with leading zero
-			$this->expire_date_month	= urlencode(str_pad($this->expire_date_month, 2, '0', STR_PAD_LEFT));
-			
-			$this->expire_date_year	= urlencode($this->expire_date_year);
-			$this->cvv2_code		= urlencode($this->cvv2_code);
-			$this->address1			= urlencode($this->address1);
-			$this->address2			= urlencode($this->address2);
-			$this->city				= urlencode($this->city);
-			$this->state			= urlencode($this->state);
-			$this->postal_code		= urlencode($this->postal_code);
-			$this->country_code		= urlencode($this->country_code);
-			
-			$this->currency_code	= urlencode($this->currency_code);
-			$this->ip_address		= urlencode($this->ip_address);
-			
-			$this->shipping_name			= urlencode($this->shipping_name);
-			$this->shipping_address1		= urlencode($this->shipping_address1);
-			$this->shipping_address2		= urlencode($this->shipping_address2);
-			$this->shipping_city			= urlencode($this->shipping_city);
-			$this->shipping_state			= urlencode($this->shipping_state);
-			$this->shipping_postal_code		= urlencode($this->shipping_postal_code);
-			$this->shipping_country_code	= urlencode($this->shipping_country_code);
-			$this->shipping_phone_number			= urlencode($this->shipping_phone_number);
-			
-			$this->amount_total		= urlencode($this->amount_total);
-			$this->amount_shipping	= urlencode($this->amount_shipping);
-			$this->amount_tax		= urlencode($this->amount_tax);
-			$this->amount_handling	= urlencode($this->amount_handling);
-			$this->amount_items		= urlencode($this->amount_items);
-			
-			$this->token		= urlencode($this->token);
-			$this->payer_id		= urlencode($this->payer_id);
-			
-	
-			if(!empty($this->ItemsArray))
-				{
-				// Go through the items array
-				foreach($this->ItemsArray as $key => $value)
-					{
-					// Get the array of the current item from the main array
-					$current_item = $this->ItemsArray[$key];
-					// Encode everything
-					// TODO: use a foreach loop instead
-					$current_item['name'] = urlencode($current_item['name']);
-					$current_item['number'] = urlencode($current_item['number']);
-					$current_item['quantity'] = urlencode($current_item['quantity']);
-					$current_item['amount_tax'] = urlencode($current_item['amount_tax']);
-					$current_item['amount'] = urlencode($current_item['amount']);
-					// Put the encoded array back in the item array (replaces previous array)
-					$this->ItemsArray[$key] = $current_item;
-					}
-				}
-			}
-		
-		/** This function DEcodes all applicable variables for use in application/database
-		  */
-		private function urldecodeVariables()
-			{
-			// Decode all specified variables
-			$this->payment_type			= urldecode($this->payment_type);
-			
-			$this->email		= urldecode($this->email);
-			$this->first_name			= urldecode($this->first_name);
-			$this->last_name			= urldecode($this->last_name);
-			$this->credit_card_type		= urldecode($this->credit_card_type);
-			$this->credit_card_number	= urldecode($this->credit_card_number);
-			$this->expire_date_month		= urldecode($this->expire_date_month);
-			
-			// Month must be padded with leading zero
-			$this->expire_date_month	= urldecode(str_pad($this->expire_date_month, 2, '0', STR_PAD_LEFT));
-			
-			$this->expire_date_year	= urldecode($this->expire_date_year);
-			$this->cvv2_code		= urldecode($this->cvv2_code);
-			$this->address1			= urldecode($this->address1);
-			$this->address2			= urldecode($this->address2);
-			$this->city				= urldecode($this->city);
-			$this->state			= urldecode($this->state);
-			$this->postal_code		= urldecode($this->postal_code);
-			$this->country_code		= urldecode($this->country_code);
-			
-			$this->currency_code	= urldecode($this->currency_code);
-			$this->ip_address		= urldecode($this->ip_address);
-			
-			$this->shipping_name				= urldecode($this->shipping_name);
-			$this->shipping_address1			= urldecode($this->shipping_address1);
-			$this->shipping_address2			= urldecode($this->shipping_address2);
-			$this->shipping_city				= urldecode($this->shipping_city);
-			$this->shipping_state				= urldecode($this->shipping_state);
-			$this->shipping_postal_code			= urldecode($this->shipping_postal_code);
-			$this->shipping_country_code		= urldecode($this->shipping_country_code);
-			$this->shipping_phone_number	= urldecode($this->shipping_phone_number);
-			
-			$this->amount_total		= urldecode($this->amount_total);
-			$this->amount_shipping	= urldecode($this->amount_shipping);
-			$this->amount_tax		= urldecode($this->amount_tax);
-			$this->amount_handling	= urldecode($this->amount_handling);
-			$this->amount_items		= urldecode($this->amount_items);
-			
-			$this->token		= urldecode($this->token);
-			$this->payer_id		= urldecode($this->payer_id);
-			
-			
-			if(!empty($this->ItemsArray))
-				{
-				// Go through the items array
-				foreach($this->ItemsArray as $key => $value)
-					{
-					// Get the array of the current item from the main array
-					$current_item = $this->ItemsArray[$key];
-					// Decode everything
-					// TODO: use a foreach loop instead
-					$current_item['name'] = urldecode($current_item['name']);
-					$current_item['number'] = urldecode($current_item['number']);
-					$current_item['quantity'] = urldecode($current_item['quantity']);
-					$current_item['amount_tax'] = urldecode($current_item['amount_tax']);
-					$current_item['amount'] = urldecode($current_item['amount']);
-					// Put the decoded array back in the item array (replaces previous array)
-					$this->ItemsArray[$key] = $current_item;
-					}
-				}
-			}
 }
 
