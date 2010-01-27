@@ -296,7 +296,7 @@ class tl_address_book extends Backend
 				'street_1'		=> $objAddress->street,
 				'postal'		=> $objAddress->postal,
 				'city'			=> $objAddress->city,
-				'state'			=> $objAddress->state,
+				'subdivision'	=> $objAddress->state,
 				'country'		=> $objAddress->country,
 				'phone'			=> $objAddress->phone,
 				'isDefaultBilling'	=> '1',

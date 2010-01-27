@@ -488,7 +488,7 @@ class Isotope extends Controller
 				'street_2'		=> $_SESSION['FORM_DATA'][$strStep . '_information_street_2'],
 				'street_3'		=> $_SESSION['FORM_DATA'][$strStep . '_information_street_3'],
 				'city'			=> $_SESSION['FORM_DATA'][$strStep . '_information_city'],
-				'state'			=> $_SESSION['FORM_DATA'][$strStep . '_information_state'],
+				'subdivision'	=> $_SESSION['FORM_DATA'][$strStep . '_information_subdivision'],
 				'postal'		=> $_SESSION['FORM_DATA'][$strStep . '_information_postal'],
 				'country'		=> $_SESSION['FORM_DATA'][$strStep . '_information_country'],
 			);
@@ -543,7 +543,7 @@ class Isotope extends Controller
 		$_SESSION['FORM_DATA'][$strStep . '_information_street_2'] = $arrAddress['street_2'];
 		$_SESSION['FORM_DATA'][$strStep . '_information_street_3'] = $arrAddress['street_3'];
 		$_SESSION['FORM_DATA'][$strStep . '_information_city'] = $arrAddress['city'];
-		$_SESSION['FORM_DATA'][$strStep . '_information_state'] = $arrAddress['state'];
+		$_SESSION['FORM_DATA'][$strStep . '_information_subdivision'] = $arrAddress['subdivision'];
 		$_SESSION['FORM_DATA'][$strStep . '_information_postal'] = $arrAddress['postal'];
 		$_SESSION['FORM_DATA'][$strStep . '_information_country'] = $arrAddress['country'];			
 		$_SESSION['FORM_DATA'][$strStep . '_information_email'] = $strEmail;

@@ -67,7 +67,7 @@ class PaymentPaypalPro extends Payment
 			'STREET'				=> $this->Cart->billingAddress['street_1'],
 			'STREET2'				=> $this->Cart->billingAddress['street_2']."\n".$this->Cart->billingAddress['street_3'],
 			'CITY'					=> $this->Cart->billingAddress['city'],
-			'STATE'					=> $this->Cart->billingAddress['state'],
+			'STATE'					=> $this->Cart->billingAddress['subdivision'],
 			'COUNTRYCODE'			=> $this->Cart->billingAddress['country'],
 			'ZIP'					=> $this->Cart->billingAddress['postal'],
 			//'NOTIFYURL'				=> '',
@@ -75,20 +75,20 @@ class PaymentPaypalPro extends Payment
 			'ITEMAMT'				=> $this->Cart->subTotal,
 			'SHIPPINGAMT'			=> $this->Cart->shippingTotal,
 			'HANDLINGAMT'			=> 0,	//TODO: support handling charges
-			'TAXAMT'				=> '',
+			'TAXAMT'				=> $this->Cart->taxTotal,
 			'DESC'					=> "Order Number " . $objOrder->order_id,
-			'CUSTOM'				=> '',
+			//'CUSTOM'				=> '',
 			'INVNUM'				=> $objOrder->id,
-			'EMAIL'					=> '',
-			'PHONENUM'				=> '',
-			'SHIPTONAME'			=> '',
-			'SHIPTOSTREET'			=> '',
-			'SHIPTOSTREET2'			=> '',
-			'SHIPTOCITY'			=> '',
-			'SHIPTOSTATE'			=> '',
-			'SHIPTOZIP'				=> '',
-			'SHIPTOCOUNTRYCODE'		=> '',
-			'SHIPTOPHONENUM'		=> ''
+			'EMAIL'					=> $this->Cart->billingAddress['email'],
+			'PHONENUM'				=> $this->Cart->billingAddress['phone'],
+			'SHIPTONAME'			=> $this->Cart->shippingAddress['firstname'] . ' ' . $this->Cart->billingAddress['lastname'],
+			'SHIPTOSTREET'			=> $this->Cart->shippingAddress['street_1'],
+			'SHIPTOSTREET2'			=> $this->Cart->shippingAddress['street_2']."\n".$this->Cart->shippingAddress['street_3'],
+			'SHIPTOCITY'			=> $this->Cart->shippingAddress['city'],
+			'SHIPTOSTATE'			=> $this->Cart->shippingAddress['subdivision'],
+			'SHIPTOZIP'				=> $this->Cart->shippingAddress['postal'],
+			'SHIPTOCOUNTRYCODE'		=> $this->Cart->shippingAddress['country'],
+			'SHIPTOPHONENUM'		=> $this->Cart->shippingAddress['phone']
 			
 		);	
 		
@@ -97,41 +97,7 @@ class PaymentPaypalPro extends Payment
 			$arrData['CVV2'] = $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_ccv'];
 		}
 		
-		/*	'payment_type' => array('name' => 'PAYMENTACTION', 'required' => 'yes'),
-			'ip_address' => array('name' => 'IPADDRESS', 'required' => 'yes'),
-			'amount_total' => array('name' => 'AMT', 'required' => 'yes'), 
-			'credit_card_type' => array('name' => 'CREDITCARDTYPE', 'required' => 'yes'), 
-			'credit_card_number' => array('name' => 'ACCT', 'required' => 'yes'), 
-			'expire_date' => array('name' => 'EXPDATE', 'required' => 'yes'), 
-			'first_name' => array('name' => 'FIRSTNAME', 'required' => 'yes'), 
-			'last_name' => array('name' => 'LASTNAME', 'required' => 'yes'), 
-			'address1' => array('name' => 'STREET', 'required' => 'no'), 
-			'address2' => array('name' => 'STREET2', 'required' => 'no'), 
-			'city' => array('name' => 'CITY', 'required' => 'no'), 
-			'state' => array('name' => 'STATE', 'required' => 'no'), 
-			'country_code' => array('name' => 'COUNTRYCODE', 'required' => 'no'), 
-			'postal_code' => array('name' => 'ZIP', 'required' => 'no'), 
-			'notify_url' => array('name' => 'NOTIFYURL', 'required' => 'no'), 
-			'currency_code' => array('name' => 'CURRENCYCODE', 'required' => 'no'), 
-			'amount_items' => array('name' => 'ITEMAMT', 'required' => 'no'), 
-			'amount_shipping' => array('name' => 'SHIPPINGAMT', 'required' => 'no'), 
-			'amount_handling' => array('name' => 'HANDLINGAMT', 'required' => 'no'), 
-			'amount_tax' => array('name' => 'TAXAMT', 'required' => 'no'), 
-			'description' => array('name' => 'DESC', 'required' => 'no'), 
-			'custom' => array('name' => 'CUSTOM', 'required' => 'no'), 
-			'invoice' => array('name' => 'INVNUM', 'required' => 'no'), 
-			'cvv2_code' => array('name' => 'CVV2', 'required' => 'yes'), 
-			'email' => array('name' => 'EMAIL', 'required' => 'no'), 
-			'phone_number' => array('name' => 'PHONENUM', 'required' => 'no'), 
-			'shipping_name' => array('name' => 'SHIPTONAME', 'required' => 'no'), 
-			'shipping_address1' => array('name' => 'SHIPTOSTREET', 'required' => 'no'), 
-			'shipping_address2' => array('name' => 'SHIPTOSTREET2', 'required' => 'no'), 
-			'shipping_city' => array('name' => 'SHIPTOCITY', 'required' => 'no'), 
-			'shipping_state' => array('name' => 'SHIPTOSTATE', 'required' => 'no'), 
-			'shipping_postal_code' => array('name' => 'SHIPTOZIP', 'required' => 'no'), 
-			'shipping_country_code' => array('name' => 'SHIPTOCOUNTRYCODE', 'required' => 'no'), 
-			'shipping_phone_number' => array('name' => 'SHIPTOPHONENUM', 'required' => 'no')*/
-
+		
 		/* Construct and add any items found in this instance */
 		/* - MAY NOT BE NECESSARY
 		if(!empty($this->ItemsArray))
