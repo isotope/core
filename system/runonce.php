@@ -112,13 +112,13 @@ class IsotopeRunonce extends Frontend
 		}
 		
 		// tl_address_book.state has been renamed to tl_address_book.subdivision
-		if ($this->Database->fieldExists('state', 'tl_address_book'))
+		if ($this->Database->fieldExists('state', 'tl_address_book') && !$this->Database->fieldExists('subdivision', 'tl_address_book'))
 		{
 			$this->Database->execute("ALTER TABLE tl_address_book CHANGE COLUMN state subdivision varchar(10) NOT NULL default ''");
 		}
 		
 		// tl_address_book.street has been renamed to tl_address_book.street_1
-		if ($this->Database->fieldExists('street', 'tl_address_book'))
+		if ($this->Database->fieldExists('street', 'tl_address_book') && !$this->Database->fieldExists('street_1','tl_address_book'))
 		{
 			$this->Database->execute("ALTER TABLE tl_address_book CHANGE COLUMN street street_1 varchar(255) NOT NULL default ''");
 			$this->Database->execute("ALTER TABLE tl_store CHANGE COLUMN street street_1 varchar(255) NOT NULL default ''");
@@ -184,14 +184,14 @@ class IsotopeRunonce extends Frontend
 	
 	private function updateStoreConfigurations()
 	{
-		if ($this->Database->fieldExists('countries', 'tl_store'))
+		if ($this->Database->fieldExists('countries', 'tl_store') && !$this->Database->fieldExists('shipping_countries','tl_store'))
 		{
 			$this->Database->execute("ALTER TABLE tl_store CHANGE COLUMN countries shipping_countries blob NULL");
 			$this->Database->execute("ALTER TABLE tl_store ADD COLUMN billing_countries blob NULL");
 			$this->Database->prepare("UPDATE tl_store SET billing_countries=shipping_countries");
 		}
 		
-		if ($this->Database->fieldExists('address_fields', 'tl_store'))
+		if ($this->Database->fieldExists('address_fields', 'tl_store') && !$this->Database->fieldExists('shipping_fields','tl_store'))
 		{
 			$this->Database->execute("ALTER TABLE tl_store CHANGE COLUMN address_fields shipping_fields blob NULL");
 			$this->Database->execute("ALTER TABLE tl_store ADD COLUMN billing_fields blob NULL");
