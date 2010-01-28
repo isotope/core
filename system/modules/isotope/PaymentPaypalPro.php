@@ -195,7 +195,7 @@ class PaymentPaypalPro extends Payment
 	 * @access public
 	 * @return string
 	 */
-	public function checkoutForm()
+	public function paymentForm($objCheckoutModule)
 	{
 		$strBuffer = '';
 		$arrPayment = $this->Input->post('payment');
