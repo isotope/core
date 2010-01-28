@@ -575,16 +575,19 @@ class tl_product_data extends Backend
 			{
 				$objPage = $this->getPageDetails($intPage);
 				$arrPages[$intPage]['title'] = $objPage->title;
-				
-				$objPages = $this->Database->execute("SELECT * FROM tl_page WHERE id IN (" . implode(',', $objPage->trail) . ") ORDER BY id=" . implode(' DESC, id=', $objPage->trail) . " DESC");
-				
-				$arrHelp = array();
-				while( $objPages->next() )
-				{
-					$arrHelp[] = $objPages->title;
+			
+				if(count($objPage->trail))
+				{	
+					$objPages = $this->Database->execute("SELECT * FROM tl_page WHERE id IN (" . implode(',', $objPage->trail) . ") ORDER BY id=" . implode(' DESC, id=', $objPage->trail) . " DESC");
+					
+					$arrHelp = array();
+					while( $objPages->next() )
+					{
+						$arrHelp[] = $objPages->title;
+					}
+					
+					$arrPages[$intPage]['help'] = implode(' , ', $arrHelp);
 				}
-				
-				$arrPages[$intPage]['help'] = implode(' » ', $arrHelp);
 			}
 			
 			

@@ -84,7 +84,7 @@ $GLOBALS['TL_LANG']['tl_payment_modules']['VOID']					= array('Void', 'This tran
 $GLOBALS['TL_LANG']['tl_payment_modules']['PRIOR_AUTH_CAPTURE']	= array('Prior Authorization and Capture', 'This transaction is used to request settlement for a transaction that was previously submitted as an AUTH_ONLY. The gateway will accept this transaction and initiate settlement if the following conditions are met: <ul> <li>The transaction is submitted with the ID of the original authorization-only transaction, which needs to be settled.</li> <li>The transaction ID is valid and the system has a record of the original authorization-only transaction being submitted.</li> <li>The original transaction referred to is not already settled or expired or errored.</li><li>The amount being requested for settlement in this transaction is less than or equal to the original authorized amount.</li></ul>If no amount is submitted in this transaction, the gateway will initiate settlement for the amount of the originally authorized transaction. <em>Note: If extended line item, tax, freight, and/or duty information was submitted with the original transaction, adjusted information may be submitted in the event that the transaction amount changed. If no adjusted line item, tax, freight, and/or duty information is submitted, the information submitted with the original transaction will apply.</em>');
 
 $GLOBALS['TL_LANG']['tl_payment_module']['paypalpro_transTypes']['Sale'] = 'Complete Sale'; 
-$GLOBALS['TL_LANG']['tl_payment_module']['paypalpro_transTypes']['Auth'] = 'Authorize Only';
+$GLOBALS['TL_LANG']['tl_payment_module']['paypalpro_transTypes']['Authorization'] = 'Authorize Only';
 
 /**
  * Legends
