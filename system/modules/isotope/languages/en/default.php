@@ -66,7 +66,7 @@ $GLOBALS['TL_LANG']['ERR']['cc_type']				= 'Please select a credit card type.';
 $GLOBALS['TL_LANG']['ERR']['cc_exp']				= 'Please provide a credit card expiration date in the mm/yy format.';
 $GLOBALS['TL_LANG']['ERR']['cc_ccv']				= 'Please provide a card code verification number (3 or 4 digits found on the front or back of the card).';
 $GLOBALS['TL_LANG']['ERR']['cc_match']				= 'Your credit card number does not match the selected credit card type.';
-
+$GLOBALS['TL_LANG']['ERR']['cc_exp_paypal']			= 'Please provide a credit card expiration date in the mm/yyyy format.';
 
 //Address Book Errors
 $GLOBALS['TL_LANG']['ERR']['addressDoesNotExist'] = 'This address does not exist in your address book.';
@@ -238,6 +238,7 @@ $GLOBALS['TL_LANG']['ISO']['cc_num']						= 'Credit Card Number';
 $GLOBALS['TL_LANG']['ISO']['cc_type']						= 'Credit Card Type';
 $GLOBALS['TL_LANG']['ISO']['cc_exp']						= 'Credit Card Expiration (mm/yy)';
 $GLOBALS['TL_LANG']['ISO']['cc_ccv']						= 'CCV Number (3 or 4 digit code)';
+$GLOBALS['TL_LANG']['ISO']['cc_exp_paypal']					= 'Credit Card Expiration (mm/yyyy)';
 $GLOBALS['TL_LANG']['ISO']['pay_with_paypal']				= array('Pay with PayPal', 'You will be redirected to the PayPal payment website. If you are not automatically redirected, please click on the "Pay now" button.', 'Pay now');
 
 

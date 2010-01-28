@@ -261,7 +261,7 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 			'exclude'                 => true,
 			'default'				  => 'Sale',
 			'inputType'               => 'select',
-			'options'				  => array('Sale', 'Auth'),
+			'options'				  => array('Sale', 'Authorization'),
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
 			'reference'				  => &$GLOBALS['TL_LANG']['tl_payment_module']['paypalpro_transTypes']
 		),

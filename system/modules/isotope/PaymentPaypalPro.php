@@ -48,11 +48,15 @@ class PaymentPaypalPro extends Payment
 		
 		$arrPaymentData = deserialize($objOrder->payment_data);
 		
+		$arrBillingSubdivision = explode('-', $this->Cart->billingAddress['subdivision']);
+		$arrShippingSubdivision = explode('-', $this->Cart->shippingAddress['subdivision']); 
+		
+		$strExp = str_replace('/','',$_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_exp']);
 		
 		$arrData = array
 		(
 			'METHOD'				=> 'DoDirectPayment',
-			'VERSION'				=> '3.0',
+			'VERSION'				=> '60.0',
 			'PWD'					=> $this->paypalpro_apiPassword,
 			'USER'					=> $this->paypalpro_apiUserName,
 			'SIGNATURE'				=> $this->paypalpro_apiSignature,
@@ -61,13 +65,13 @@ class PaymentPaypalPro extends Payment
 			'AMT'					=> $this->Cart->grandTotal,
 			'CREDITCARDTYPE'		=> $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_type'],
 			'ACCT'					=> $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_num'],
-			'EXPDATE'				=> $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_num'],
+			'EXPDATE'				=> $strExp,
 			'FIRSTNAME'				=> $this->Cart->billingAddress['firstname'],
 			'LASTNAME'				=> $this->Cart->billingAddress['lastname'],
 			'STREET'				=> $this->Cart->billingAddress['street_1'],
 			'STREET2'				=> $this->Cart->billingAddress['street_2']."\n".$this->Cart->billingAddress['street_3'],
 			'CITY'					=> $this->Cart->billingAddress['city'],
-			'STATE'					=> $this->Cart->billingAddress['subdivision'],
+			'STATE'					=> $arrBillingSubdivision[1],
 			'COUNTRYCODE'			=> $this->Cart->billingAddress['country'],
 			'ZIP'					=> $this->Cart->billingAddress['postal'],
 			//'NOTIFYURL'				=> '',
@@ -85,31 +89,35 @@ class PaymentPaypalPro extends Payment
 			'SHIPTOSTREET'			=> $this->Cart->shippingAddress['street_1'],
 			'SHIPTOSTREET2'			=> $this->Cart->shippingAddress['street_2']."\n".$this->Cart->shippingAddress['street_3'],
 			'SHIPTOCITY'			=> $this->Cart->shippingAddress['city'],
-			'SHIPTOSTATE'			=> $this->Cart->shippingAddress['subdivision'],
+			'SHIPTOSTATE'			=> $arrShippingSubdivision[1],
 			'SHIPTOZIP'				=> $this->Cart->shippingAddress['postal'],
 			'SHIPTOCOUNTRYCODE'		=> $this->Cart->shippingAddress['country'],
 			'SHIPTOPHONENUM'		=> $this->Cart->shippingAddress['phone']
 			
 		);	
-		
+	
 		if($this->requireCCV)
 		{
 			$arrData['CVV2'] = $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_ccv'];
 		}
 		
-						
-		//$arrData = deserialize($objOrder->payment_data, true);
+		$arrFinal = array_map(array($this,'urlEncodeVars'), $arrData);
 		
+		foreach($arrFinal as $k=>$v)
+		{
+			$arrNVP[] .= $k . '=' . $v;
+		}
+								
 		$objRequest = new Request();
-		$objRequest->send('https://api-3t.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/nvp', implode('&', $arrData), 'post');
-
+		$objRequest->send('https://api-3t.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/nvp', implode('&', $arrNVP), 'POST');
+		
 		$nvpstr = $objRequest->response;
-		
-		
+				
 		while(strlen($nvpstr))
 		{
 			//postion of Key
 			$keypos= strpos($nvpstr,'=');
+			
 			//position of value
 			$valuepos = strpos($nvpstr,'&') ? strpos($nvpstr,'&'): strlen($nvpstr);
 	
@@ -126,7 +134,8 @@ class PaymentPaypalPro extends Payment
 				
 		/*
 			response array
-			'DoDirectPayment' => array(
+			'DoDirectPayment' => array
+			(
 						'timestamp' => 'TIMESTAMP',
 						'correlation_id' => 'CORRELATIONID',
 						'ack' => 'ACK',
@@ -137,8 +146,7 @@ class PaymentPaypalPro extends Payment
 						'transaction_id' => 'TRANSACTIONID',
 						'amount_total' => 'AMT',
 						'currency_code' => 'CURRENCYCODE'
-						)
-				,
+			)
 		*/
 		
 		if(strtoupper($arrResponse["ACK"]) != "SUCCESS" AND strtoupper($arrResponse["ACK"]) != "SUCCESSWITHWARNING")
@@ -167,9 +175,10 @@ class PaymentPaypalPro extends Payment
 			$this->_error_version		= @$this->Response['VERSION'];
 			$this->_error_build			= @$this->Response['BUILD']; 
 			*/
+		
 			
-			$_SESSION['CHECKOUT_DATA']['payment'][$this->id]['error'] = $arrResponses['L_SHORTMESSAGE0'];
-				
+			$_SESSION['CHECKOUT_DATA']['payment'][$this->id]['error'] = $arrResponse['L_LONGMESSAGE0'];
+
 			//TODO: store the reason for a failure for later in case the payment info can be corrected.
 			
 			$this->redirect($this->addToUrl('step=payment'));
@@ -187,6 +196,10 @@ class PaymentPaypalPro extends Payment
 		
 	}
 	
+	public function urlEncodeVars($v)
+	{
+		return urlencode($v);
+	}
 	
 	
 	/**
@@ -219,7 +232,7 @@ class PaymentPaypalPro extends Payment
 			),
 			'cc_exp' => array
 			(
-				'label'			=> &$GLOBALS['TL_LANG']['ISO']['cc_exp'],
+				'label'			=> &$GLOBALS['TL_LANG']['ISO']['cc_exp_paypal'],
 				'inputType'		=> 'text',
 				'eval'			=> array('mandatory'=>true, 'tableless'=>true),
 			),
@@ -252,6 +265,8 @@ class PaymentPaypalPro extends Payment
 				{
 					$objCheckoutModule->doNotSubmit = true;
 				}
+			
+				
 			}
 			elseif ($objWidget->mandatory && !strlen($objWidget->value))
 			{
@@ -265,6 +280,12 @@ class PaymentPaypalPro extends Payment
 		{
 			$strCard = $this->validateCreditCard($arrPayment[$this->id]['cc_num']);
 			
+			if(!preg_match('/^((0[1-9])|(1[0-2]))\/((20[1-2][0-9]))$/', $arrPayment[$this->id]['cc_exp']))
+			{
+				$strBuffer = '<p class="error">' . $GLOBALS['TL_LANG']['ERR']['cc_exp_paypal'] . '</p>' . $strBuffer;
+				$objCheckoutModule->doNotSubmit = true;
+			}
+
 			if ($strCard === false)
 			{
 				$strBuffer = '<p class="error">' . $GLOBALS['TL_LANG']['ERR']['cc_num'] . '</p>' . $strBuffer;
@@ -274,7 +295,8 @@ class PaymentPaypalPro extends Payment
 			{
 				$strBuffer = '<p class="error">' . $GLOBALS['TL_LANG']['ERR']['cc_match'] . '</p>' . $strBuffer;
 				$objCheckoutModule->doNotSubmit = true;
-			}
+			}			
+			
 		}
 		
 		if (strlen($_SESSION['CHECKOUT_DATA']['payment'][$this->id]['error']))
@@ -299,7 +321,7 @@ class PaymentPaypalPro extends Payment
 	
 	public function getAllowedCCTypes()
 	{
-		return array('mc', 'visa', 'amex', 'discover', 'jcb', 'diners', 'enroute');				
+		return array('mc', 'visa', 'amex', 'discover', 'jcb', 'diners');				
 	}
 	
 }
