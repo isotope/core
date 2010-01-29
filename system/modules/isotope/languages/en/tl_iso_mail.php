@@ -34,6 +34,7 @@ $GLOBALS['TL_LANG']['tl_iso_mail']['sender']		= array('Sender Email', 'Enter the
 $GLOBALS['TL_LANG']['tl_iso_mail']['cc']			= array('Send a CC to', 'Recipients that should receive a carbon copy of the mail. Separate multiple addresses with a comma.');
 $GLOBALS['TL_LANG']['tl_iso_mail']['bcc']			= array('Send a BCC to', 'Recipients that should receive a blind carbon copy of the mail. Separate multiple addresses with a comma.');
 $GLOBALS['TL_LANG']['tl_iso_mail']['template']		= array('Email Template', 'Here you can select an HTML e-mail template to use.');
+$GLOBALS['TL_LANG']['tl_iso_mail']['originateFromCustomerEmail'] = array('Send from customer email','Send this email using the customer\'s email as the sender.');
 
 
 /**

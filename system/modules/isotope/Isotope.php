@@ -648,8 +648,8 @@ class Isotope extends Controller
 		}
 		
 		$objEmail = new Email();
-		$objEmail->from = $objMail->sender;
-		$objEmail->fromName = $objMail->senderName;
+		$objEmail->from = ($objMail->originateFromCustomerEmail && $arrData['customer_email'] ? $arrData['customer_email'] : $objMail->sender);
+		$objEmail->fromName = ($objMail->originateFromCustomerEmail && $arrData['customer_name'] ? $arrData['customer_name'] : $objMail->senderName);
 		$objEmail->subject = $this->parseSimpleTokens($objMail->subject, $arrData);
 		
 		// Replace insert tags

@@ -34,6 +34,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 	// Config
 	'config' => array
 	(
+		'label'                       => &$GLOBALS['TL_LANG']['MSC']['productsTitle'],
 		'dataContainer'               => 'Table',
 		'enableVersioning'            => false,
 		'ctable'					  => array('tl_product_downloads', 'tl_product_categories'),
@@ -48,10 +49,12 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 	(
 		'sorting' => array
 		(
-			'mode'                    => 1,
-			'fields'                  => array('type', 'name'),
-			'flag'                    => 1,
-			'panelLayout'             => 'filter;search,limit',
+			'mode'                    => 5,
+			//'fields'                  => array('type', 'name'),
+			'icon'                    => 'pagemounts.gif',
+			'paste_button_callback'   => array('tl_product_data', 'pasteProduct')
+//			'flag'                    => 1,
+//			'panelLayout'             => 'filter;search,limit',
 		),
 		'label' => array
 		(
@@ -68,6 +71,12 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 				'class'               => 'header_import_assets',
 				'attributes'          => 'onclick="Backend.getScrollOffset();"'
 			),
+			'toggleNodes' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['MSC']['toggleNodes'],
+				'href'                => 'ptg=all',
+				'class'               => 'header_toggle'
+			),
 			'all' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['MSC']['all'],
@@ -82,20 +91,47 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['edit'],
 				'href'                => 'act=edit',
-				'icon'                => 'edit.gif'
+				'icon'                => 'edit.gif',
+				'button_callback'     => array('tl_product_data', 'editProduct')
 			),
 			'copy' => array
 			(
-				'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['copy'],
-				'href'					=> 'act=copy',
-				'icon'					=> 'copy.gif'
+				'label'				  => &$GLOBALS['TL_LANG']['tl_product_data']['copy'],
+				'href'                => 'act=paste&amp;mode=copy',
+				'icon'                => 'copy.gif',
+				'attributes'          => 'onclick="Backend.getScrollOffset();"',
+				'button_callback'     => array('tl_product_data', 'copyProduct')
 			),
+			'copyChilds' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['copyChilds'],
+				'href'                => 'act=paste&amp;mode=copy&amp;childs=1',
+				'icon'                => 'copychilds.gif',
+				'attributes'          => 'onclick="Backend.getScrollOffset();"',
+				'button_callback'     => array('tl_product_data', 'copyProductWithSubproducts')
+			),
+			'cut' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['cut'],
+				'href'                => 'act=paste&amp;mode=cut',
+				'icon'                => 'cut.gif',
+				'attributes'          => 'onclick="Backend.getScrollOffset();"',
+				'button_callback'     => array('tl_product_data', 'cutProduct')
+			)/*,
+			'toggle' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['toggle'],
+				'icon'                => 'visible.gif',
+				'attributes'          => 'onclick="Backend.getScrollOffset(); return AjaxRequest.toggleVisibility(this, %s);"',
+				'button_callback'     => array('tl_product_data', 'toggleIcon')
+			)*/,
 			'delete' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['delete'],
 				'href'                => 'act=delete',
 				'icon'                => 'delete.gif',
-				'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
+				'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"',
+				'button_callback'     => array('tl_product_data', 'deleteProduct')
 			),
 			'show' => array
 			(
@@ -423,10 +459,44 @@ class tl_product_data extends Backend
 	public function __construct()
 	{
 		parent::__construct();
-		
+
+		$this->import('BackendUser', 'User');
 		$this->import('Isotope');
 	}
-	
+
+
+	/**
+	 * Add an image to each product in the tree
+	 * @param array
+	 * @param string
+	 * @param string
+	 * @param object
+	 * @param boolean
+	 * @return string
+	 */
+	public function addIcon($row, $label, $imageAttribute, DataContainer $dc=null, $blnReturnImage=false)
+	{
+
+		// Get image name
+		$arrImage = deserialize($row['images']);
+		
+		if(count($arrImage))
+		{
+			$image = $arrImage['src'];
+		}
+
+		// Return the image only
+		//if ($blnReturnImage)
+		//{
+			return $this->generateImage($image, '', $imageAttribute);
+		//}
+
+		// Add breadcrumb link
+		//$label = '<a href="' . $this->addToUrl('node='.$row['id']) . '">' . $label . '</a>';
+
+		// Return image
+		//return '<a href="'.$this->generateFrontendUrl($row).'" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['view']).'"' . (($dc->table != 'tl_page') ? ' class="tl_gray"' : '') . LINK_NEW_WINDOW . '>'.$this->generateImage($image, '', $imageAttribute).'</a> '.$label;
+	}
 	
 	/**
 	 * Show/hide the downloads button
@@ -514,13 +584,50 @@ class tl_product_data extends Backend
 			}
 		}
 		
-		$output = '<div style="margin-top:5px!important;margin-bottom:0px!important;" class="cte_type ' . $key . '"><div><span>' . $thumbnail . '<strong>' . $row['name'] . '</strong></span><div><span style="color:#b3b3b3;"><strong>' . $this->Isotope->formatPriceWithCurrency($row['price']) . '</strong></span></div><br /><br /><div><em>' . $GLOBALS['TL_LANG']['tl_product_data']['pages'][0] . ': ' . $this->getCategoryList(deserialize($row['pages'])) . '</em></div></div></div> ';
+		$output = '<div style="margin-top:5px!important;margin-bottom:0px!important;" class="cte_type ' . $key . '"><div><span>' . $thumbnail . '<strong>' . $row['name'] . '</strong></span><div><span style="color:#b3b3b3;"><strong>' . ($row['pid']!=0 ? $this->getVariantValues($row) : '') . $this->Isotope->formatPriceWithCurrency($row['price']) . '</strong></span></div><br /><br /><div>' . ($row['pid']==0 ? '<em>' . $GLOBALS['TL_LANG']['tl_product_data']['pages'][0] .': ' . $this->getCategoryList(deserialize($row['pages'])) . '</em>' : '') . '</div></div></div> ';
 		
 		$fields = array();
 		
 		return $output;
 	}
 	
+	public function getVariantValues($row)
+	{	
+			$objVariantAttributes = $this->Database->prepare("SELECT name, field_name FROM tl_product_attributes WHERE add_to_product_variants=?")
+									  				->execute(1);
+			if(!$objVariantAttributes->numRows)
+			{
+				return '';
+			}
+			
+			while($objVariantAttributes->next())
+			{
+				$strField = $objVariantAttributes->field_name;
+				
+				if(array_key_exists($strField, $row))
+				{
+					$arrVariantValues[] = array
+					(
+						'label'		=> $objVariantAttributes->name,
+						'value'		=> $row[$strField]
+					);
+				}
+			}
+	
+			if(count($arrVariantValues))
+			{
+				$strReturn = '<ul>';
+				
+					foreach($arrVariantValues as $record)
+					{
+						$strReturn .= '<li>' . $record['label'] . ': ' . $record['value'] . '</li>';
+					}		
+				
+				$strReturn .= '</ul>';			
+			}
+			
+			return $strReturn;
+	}
 	
 	/**
 	 * Returns all allowed product types as array.
@@ -574,12 +681,13 @@ class tl_product_data extends Backend
 			if (!$arrPages[$intPage])
 			{
 				$objPage = $this->getPageDetails($intPage);
-				$arrPages[$intPage]['title'] = $objPage->title;
-			
 				if(count($objPage->trail))
-				{	
+				{
+					$arrPages[$intPage]['title'] = $objPage->title;
+								
 					$objPages = $this->Database->execute("SELECT * FROM tl_page WHERE id IN (" . implode(',', $objPage->trail) . ") ORDER BY id=" . implode(' DESC, id=', $objPage->trail) . " DESC");
-					
+				
+								
 					$arrHelp = array();
 					while( $objPages->next() )
 					{
@@ -801,5 +909,175 @@ class tl_product_data extends Backend
 </div>
 </form>';
 	}
+
+		/**
+	 * Return the edit page button
+	 * @param array
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @return string
+	 */
+	public function editProduct($row, $href, $label, $title, $icon, $attributes)
+	{
+		$objParentType = $this->Database->prepare("SELECT type FROM tl_product_data WHERE pid=? OR id=?")
+										->limit(1)
+										->execute($row['id'], $row['id']);
+		
+		if(!$objParentType->numRows)
+		{
+			return '';
+		}
+		
+		return ($this->User->isAdmin || (in_array($objParentType->type, $this->User->iso_product_types) && $this->User->isAllowed(1, $row))) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
+	
+	}
+
+
+	/**
+	 * Return the copy page button
+	 * @param array
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @return string
+	 */
+	public function copyProduct($row, $href, $label, $title, $icon, $attributes, $table)
+	{
+		if ($GLOBALS['TL_DCA'][$table]['config']['closed'])
+		{
+			return '';
+		}
+
+		return ($this->User->isAdmin || (in_array($row['type'], $this->User->iso_product_types) && $this->User->isAllowed(2, $row))) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
+	}
+
+
+	/**
+	 * Return the copy page with subpages button
+	 * @param array
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @return string
+	 */
+	public function copyProductWithSubproducts($row, $href, $label, $title, $icon, $attributes, $table)
+	{
+		if ($GLOBALS['TL_DCA'][$table]['config']['closed'])
+		{
+			return '';
+		}
+
+		$objSubpages = $this->Database->prepare("SELECT * FROM tl_product_data WHERE pid=?")
+									  ->limit(1)
+									  ->execute($row['id']);
+
+		return ($objSubpages->numRows && ($this->User->isAdmin || (in_array($row['type'], $this->User->iso_product_types) && $this->User->isAllowed(2, $row)))) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
+	}
+
+
+	/**
+	 * Return the cut page button
+	 * @param array
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @return string
+	 */
+	public function cutProduct($row, $href, $label, $title, $icon, $attributes)
+	{
+		return ($this->User->isAdmin || (in_array($row['type'], $this->User->iso_product_types) && $this->User->isAllowed(2, $row))) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
+	}
+
+
+	/**
+	 * Return the paste page button
+	 * @param object
+	 * @param array
+	 * @param string
+	 * @param boolean
+	 * @param array
+	 * @return string
+	 */
+	public function pasteProduct(DataContainer $dc, $row, $table, $cr, $arrClipboard=false)
+	{
+		$disablePA = false;
+		$disablePI = false;
+
+		// Disable all buttons if there is a circular reference
+		if ($arrClipboard !== false && ($arrClipboard['mode'] == 'cut' && ($cr == 1 || $arrClipboard['id'] == $row['id']) || $arrClipboard['mode'] == 'cutAll' && ($cr == 1 || in_array($row['id'], $arrClipboard['id']))))
+		{
+			$disablePA = true;
+			$disablePI = true;
+		}
+
+		// Check permissions if the user is not an administrator
+		if (!$this->User->isAdmin)
+		{
+			// Disable "paste into" button if there is no permission 2 for the current page
+			if (!$disablePI && !$this->User->isAllowed(2, $row))
+			{
+				$disablePI = true;
+			}
+
+			$objProduct = $this->Database->prepare("SELECT * FROM " . $table . " WHERE id=?")
+									  ->limit(1)
+									  ->execute($row['pid']);
+
+			// Disable "paste after" button if there is no permission 2 for the parent page
+			if (!$disablePA && $objProduct->numRows)
+			{
+				if (!$this->User->isAllowed(2, $objProduct->fetchAssoc()))
+				{
+					$disablePA = true;
+				}
+			}
+
+			// Disable "paste after" button if the parent page is a root page and the user is not an administrator
+			if (!$disablePA && ($row['pid'] < 1 || in_array($row['id'], $dc->rootIds)))
+			{
+				$disablePA = true;
+			}
+		}
+
+		// Return the buttons
+		$imagePasteAfter = $this->generateImage('pasteafter.gif', sprintf($GLOBALS['TL_LANG'][$table]['pasteafter'][1], $row['id']), 'class="blink"');
+		$imagePasteInto = $this->generateImage('pasteinto.gif', sprintf($GLOBALS['TL_LANG'][$table]['pasteinto'][1], $row['id']), 'class="blink"');
+
+		if ($row['id'] > 0)
+		{
+			$return = $disablePA ? $this->generateImage('pasteafter_.gif', '', 'class="blink"').' ' : '<a href="'.$this->addToUrl('act='.$arrClipboard['mode'].'&amp;mode=1&amp;pid='.$row['id'].(!is_array($arrClipboard['id']) ? '&amp;id='.$arrClipboard['id'] : '')).'" title="'.specialchars(sprintf($GLOBALS['TL_LANG'][$table]['pasteafter'][1], $row['id'])).'" onclick="Backend.getScrollOffset();">'.$imagePasteAfter.'</a> ';
+		}
+
+		return $return.($disablePI ? $this->generateImage('pasteinto_.gif', '', 'class="blink"').' ' : '<a href="'.$this->addToUrl('act='.$arrClipboard['mode'].'&amp;mode=2&amp;pid='.$row['id'].(!is_array($arrClipboard['id']) ? '&amp;id='.$arrClipboard['id'] : '')).'" title="'.specialchars(sprintf($GLOBALS['TL_LANG'][$table]['pasteinto'][1], $row['id'])).'" onclick="Backend.getScrollOffset();">'.$imagePasteInto.'</a> ');
+	}
+
+
+	/**
+	 * Return the delete page button
+	 * @param array
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @return string
+	 */
+	public function deleteProduct($row, $href, $label, $title, $icon, $attributes)
+	{
+		$root = func_get_arg(7);
+		return ($this->User->isAdmin || (in_array($row['type'], $this->User->iso_product_types) && $this->User->isAllowed(3, $row) && !in_array($row['id'], $root))) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
+	}
+
 }
 
