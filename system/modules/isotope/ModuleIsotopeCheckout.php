@@ -814,6 +814,8 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			$arrData = array
 			(
 				'order_id'					=> ($this->Isotope->Store->orderPrefix . $orderId),
+				'customer_name'				=> ($this->Cart->billingAddress['firstname'] . ' ' . $this->Cart->billingAddress['lastname']),
+				'customer_email'			=> $this->Cart->billingAddress['email'],
 				'items'						=> $this->Cart->items,
 				'products'					=> $this->Cart->products,
 				'subTotal'					=> $this->Isotope->formatPriceWithCurrency($this->Cart->subTotal),

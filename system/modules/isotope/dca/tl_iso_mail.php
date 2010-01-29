@@ -98,7 +98,7 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{name_legend},name;{address_legend},senderName,sender,cc,bcc;{expert_legend:hide},template',
+		'default'                     => '{name_legend},name;{address_legend},senderName,originateFromCustomerEmail,sender,cc,bcc;{expert_legend:hide},template',
 	),
 
 	// Fields
@@ -148,6 +148,12 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
 			'options'                 => $this->getTemplateGroup('mail_'),
 			'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
 		),
+		'originateFromCustomerEmail' => array
+		(
+			'label'			  	 	 => &$GLOBALS['TL_LANG']['tl_iso_mail']['originateFromCustomerEmail'],
+			'exclude'		  		 => true,
+			'inputType'		  		 => 'checkbox',
+		)
 	)
 );
 

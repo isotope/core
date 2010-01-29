@@ -58,7 +58,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 	 * @return string
 	 */
 	public function generate()
-	{
+	{		
 		if (TL_MODE == 'BE')
 		{
 			$objTemplate = new BackendTemplate('be_wildcard');
@@ -74,7 +74,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 		global $objPage;
 		
 		$this->arrCategories = $this->setCategories($this->iso_category_scope, $objPage->rootId, $objPage->id);	
-		
+	
 		if (!count($this->arrCategories))
 			return '';
 

@@ -71,7 +71,7 @@ abstract class ModuleIsotopeBase extends Module
 	public function __construct(Database_Result $objModule, $strColumn='main')
 	{
 		parent::__construct($objModule, $strColumn);
-		
+	
 		if (TL_MODE == 'FE')
 		{	
 			$this->import('Isotope');
@@ -90,6 +90,7 @@ abstract class ModuleIsotopeBase extends Module
 			{
 				$this->loadDataContainer('tl_product_data');
 				$this->loadLanguageFile('tl_product_data');
+				
 			}
 		}
 	}
