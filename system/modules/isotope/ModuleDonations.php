@@ -25,7 +25,7 @@
  */
 
 
-class ModuleDonations extends Module
+class ModuleDonations extends ModuleIsotopeBase
 {
 	/**
 	 * Template
@@ -61,58 +61,116 @@ class ModuleDonations extends Module
 	 */
 	protected function compile()
 	{
+		$arrOptions = array();
+		$arrWidgets = array();
+		
+		$arrWidgets[] = $this->generateWishListWidget();
+		$arrWidgets[] = $this->generateCommentsWidget();
+		
+		foreach($arrWidgets as $objWidget)
+		{
+			$objWidget->storeValues = true;
+			$objWidget->tableless = false;		
+	
+	
+			if ($this->Input->post('FORM_SUBMIT') == $this->strFormId)
+			{
+				$objWidget->validate();
+				$varValue = $objWidget->value;
+					
+			
+				// Do not submit if there are errors
+				if ($objWidget->hasErrors())
+				{				
+					$this->doNotSubmit = true;
+				}
+	
+						
+			}
+			$arrOptions[] = $objWidget->name;
+			$this->Template->fields .= $objWidget->parse() . '<br /><br />';
+		}
+		
 		
 		$objWidget = $this->generateDonationWidget();
-	
-		$objWidget->storeValues = true;
-		$objWidget->tableless = false;		
-
-
+		
 		if ($this->Input->post('FORM_SUBMIT') == $this->strFormId)
 		{
 			$objWidget->validate();
 			$varValue = $objWidget->value;
 				
-		
+			
 			// Do not submit if there are errors
-			if ($objWidget->hasErrors() || !$objWidget->value)
+			if ($objWidget->hasErrors())
 			{				
 				$this->doNotSubmit = true;
-				/*$objTemplate = new FrontendTemplate('mod_message');
-				$objTemplate->class = 'payment_method';
-				$objTemplate->hl = 'h2';
-				$objTemplate->headline = $GLOBALS['TL_LANG']['ISO']['payment_method'];
-				$objTemplate->type = 'error';
-				$objTemplate->message = $GLOBALS['TL_LANG']['MSC']['noPaymentModules'];
-				return $objTemplate->parse();*/
-			}
-			elseif ($objWidget->submitInput())
-			{
-				$this->import('IsotopeCart','Cart');
-				// Set new value
-								
-				$objProduct = $this->getProduct($this->iso_donationProduct);
-				
-				//Manually cobble together a product
-				$objProduct->price = $this->Input->post('donation_amount');
-				$objProduct->reader_jumpTo_Override = $this->Environment->request;
-				$this->Cart->addProduct($objProduct);
-				
-				$this->reload();
 			}
 
-		
-		}
 					
+		}
+		
+		$this->Template->fields .= $objWidget->parse();
+	
+		if($this->Input->post('FORM_SUBMIT') == $this->strFormId && !$this->doNotSubmit)
+		{
+			$this->import('IsotopeCart','Cart');
+									
+			$objProduct = $this->getProduct($this->iso_donationProduct);
+			
+			//Manually cobble together a product
+			$objProduct->price = $this->Input->post('donation_amount');
+			$objProduct->product_options = ($strOptionValues ? $strOptionValues : NULL);
+			$objProduct->reader_jumpTo_Override = $this->Environment->request;
+			$this->Cart->addProduct($objProduct);
+			$this->reload();
+		}
+		
+		$this->Template->productOptionsList = implode(',', $arrOptions);							
 		$this->Template->action = ampersand($this->Environment->request, true);
 		$this->Template->formId = $this->strFormId;
 		$this->Template->slabel = specialchars($GLOBALS['TL_LANG']['MSC']['addDonation']);
-		$this->Template->fields = $objWidget->parse();
+		
 
 	}
 	
 	
+	private function generateWishListWidget()
+	{
+		$arrAttributeData = $this->getProductAttributeData('wish_list');
+		
+		$arrOptionList = deserialize($arrAttributeData['option_list']);
 
+		array_unshift($arrOptionList, array('value'=>'-','label'=>'-'));
+		
+		$arrData = array
+		(
+			'label'			=> array($arrAttributeData['name'],$arrAttributeData['description']),
+			'inputType'		=> 'select',
+			'eval'			=> array('includeBlankOption'=>true)
+		);
+		
+		$objWidget = new FormSelectMenu($this->prepareForWidget($arrData, 'wish_list', ''));
+		
+		$objWidget->options = $arrOptionList;
+	
+		return $objWidget;
+	}
+
+	private function generateCommentsWidget()
+	{
+		$arrAttributeData = $this->getProductAttributeData('donation_comments');
+	
+		$arrData = array
+		(
+			'label'			=> array($arrAttributeData['name'],$arrAttributeData['description']),
+			'inputType'		=> 'textarea',
+			'eval'			=> array('rgxp'=>'extnd')
+		);
+		
+		$objWidget = new FormTextArea($this->prepareForWidget($arrData, 'donation_comments', ''));
+	
+		return $objWidget;
+	}
 
 	private function generateDonationWidget()
 	{
@@ -120,11 +178,13 @@ class ModuleDonations extends Module
 		(
 			'label'			=> &$GLOBALS['TL_LANG']['MSC']['labelDonations'],
 			'inputType'		=> 'text',
-			'eval'			=> array('mandatory'=>true,'rgxp'=>'digit')
+			'eval'			=> array('mandatory'=>true, 'rgxp'=>'digit')
 		);
 		
 		$objWidget = new FormTextField($this->prepareForWidget($arrData, 'donation_amount', ''));
-	
+		
+		$objWidget->required = true;
+		
 		return $objWidget;
 	}
 
@@ -153,6 +213,8 @@ class ModuleDonations extends Module
 		return $objAttributeData->fetchAssoc();
 	}
 	
+	
+	
 	/**
 	 * Shortcut for a single product by ID
 	 */
@@ -166,6 +228,7 @@ class ModuleDonations extends Module
 		return $objProduct;
 	}
 	
+
 
 
 }
