@@ -523,7 +523,14 @@ class IsotopeCart extends Model
 
 		}
 		
-		$arrAllOptionValues = array_merge($arrOptionValues, $arrVariantOptions);
+		if(count($arrVariantOptions))
+		{
+			$arrAllOptionValues = array_merge($arrOptionValues, $arrVariantOptions);
+		}
+		else
+		{
+			$arrAllOptionValues = $arrOptionValues;
+		}
 		
 		if(count($arrAllOptionValues))
 		{
@@ -540,7 +547,7 @@ class IsotopeCart extends Model
 			'href_reader'			=> $objProduct->href_reader,
 			'product_id'			=> ($objProduct->subId ? $objProduct->subId : $objProduct->id),
 			'product_data'			=> serialize($objProduct),
-			'product_options'		=> $strAllOptionValues 
+			'product_options'		=> ($strAllOptionValues ? $strAllOptionValues : NULL) 
 		);
 
 		if (!$this->Database->prepare("UPDATE tl_cart_items SET tstamp=?, quantity_requested=quantity_requested+" . $arrSet['quantity_requested'] . " WHERE pid=? AND product_id=? AND product_data=? AND product_options=?")->execute($arrSet['tstamp'], $this->id, $arrSet['product_id'], $arrSet['product_data'], $arrSet['product_options'])->affectedRows)
@@ -559,15 +566,19 @@ class IsotopeCart extends Model
 	/** 
 	 * Need to grab the corresponding data from the subproduct if product_variants is being called!
 	 */
-	private function getProductOptionValues($strProductOptions)
-	{	
+	public function getProductOptionValues($strProductOptions)
+	{			
 		if (!strlen($strProductOptions))
 			return '';
+		
+		$arrValues = array();
 			
 		$arrProductOptions = explode(',', $strProductOptions);
 		
 		foreach($arrProductOptions as $option)
 		{	
+			$varOptionValues = array();
+			
 			$arrAttributeData = $this->getProductAttributeData($option); //1 will eventually be irrelevant but for now just going with it...
 			
 			$varValue = $this->Input->post($option);
@@ -619,16 +630,22 @@ class IsotopeCart extends Model
 					}
 					else
 					{
-						$varOptionValues[] = $varValue;
+						if($varValue)
+						{
+							$varOptionValues[] = $varValue;
+						}
 					}
 					break;
 			}		
-		
-			$arrValues[$option] = array
-			(
-				'name'		=> $arrAttributeData['name'],
-				'values'	=> $varOptionValues			
-			);
+			
+			if(sizeof($varOptionValues))
+			{
+				$arrValues[$option] = array
+				(
+					'name'		=> $arrAttributeData['name'],
+					'values'	=> $varOptionValues			
+				);
+			}
 		}
 		
 		return serialize($arrValues);

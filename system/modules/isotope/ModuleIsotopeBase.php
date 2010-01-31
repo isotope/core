@@ -771,7 +771,7 @@ abstract class ModuleIsotopeBase extends Module
 	
 	
 	
-	private function getProductOptionValues($strField, $inputType, $varValue)
+	protected function getProductOptionValues($strField, $inputType, $varValue)
 	{	
 		
 		$arrAttributeData = $this->getProductAttributeData($strField); //1 will eventually be irrelevant but for now just going with it...
