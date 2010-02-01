@@ -1144,5 +1144,55 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		
 		return $this->arrCheckoutInfo;
 	}
+	
+	public function googleTracking()
+	{
+		/*$objTemplate = new FrontendTemplate('iso_google_analytics');
+		
+		$arrState = explode(',', $this->Cart->billingAddress['subdivision']);
+		
+		$arrProducts = $this->Cart->getProducts();
+		
+		
+		foreach($arrProducts as $product)
+		{
+			$strVariant = $this->getProductVariantValue($product['id']);
+			
+			$arrItems[] = array
+			(
+				'sku'		=> $product['sku'],
+				'name'		=> $product['name'],
+				'variant'	=> $strVariant,
+				'price'		=> $product['price'],
+				'quantity'	=> $product['quantity_requested']
+			);
+		}
+		
+		$objTemplate->id = $intOrderId;
+		$objTemplate->storeName = $this->Isotope->Store->store_configuration_name;
+		$objTemplate->grandTotal = $this->Cart->grandTotal;
+		$objTemplate->tax = $this->Cart->taxTotal;
+		$objTemplate->shipping = $this->Cart->shippingTotal;
+		$objTemplate->city = $this->Cart->billingAddress['city'];
+		$objTemplate->state = $arrState[1];
+		$objTemplate->country = $this->Cart->billingAddress['country'];
+		$objTemplate->items = $arrItems;
+		
+		<?php foreach($this->items as $item): ?>
+		pageTracker._addItem(
+		   '<?php echo $this->id; ?>',			//Order ID, not product id!
+		   '<?php echo $item['sku']; ?>',
+		   '<?php echo $item['name']; ?>',
+		   '<?php echo $item['variant']; ?>',
+		   '<?php echo $item['price']; ?>',
+		   '<?php echo $item['quantity']; ?>'
+		);
+		<?php endforeach; ?>
+		pageTracker._trackTrans();
+		
+				
+		*/
+		return $objTemplate->parse();
+	}
 }
 
