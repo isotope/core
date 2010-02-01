@@ -523,9 +523,9 @@ class IsotopeCart extends Model
 
 		}
 		
-		if(count($arrVariantOptions))
+		if(count($arrVariantOptionValues))
 		{
-			$arrAllOptionValues = array_merge($arrOptionValues, $arrVariantOptions);
+			$arrAllOptionValues = array_merge($arrOptionValues, $arrVariantOptionValues);
 		}
 		else
 		{
