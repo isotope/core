@@ -101,7 +101,7 @@ class VariantsWizard extends Widget
 		
 		$blnTrackQuantity = false;
 		
-		$this->arrButtons = array('delete');
+		$this->arrButtons = array('up','down','delete');
 		$strCommand = 'cmd_' . $this->strField;
 
 		// Change the order
@@ -109,7 +109,12 @@ class VariantsWizard extends Widget
 		{
 			switch ($this->Input->get($strCommand))
 			{
-
+				case 'up':
+					$this->varValue = array_move_up($this->varValue, $this->Input->get('cid'));
+					break;
+				case 'down':
+					$this->varValue = array_move_down($this->varValue, $this->Input->get('cid'));
+					break;
 				case 'delete':
 					$this->varValue = array_delete($this->varValue, $this->Input->get('cid'));
 					break;
@@ -608,7 +613,7 @@ class VariantsWizard extends Widget
 				'price'					=> array($this->renderMatrixTextBox('sub_price', $row['id'], $strPriceValue, 60), $row['price']),
 				'weight'				=> array($this->renderMatrixTextBox('sub_weight', $row['id'], $strWeightValue, 60), $row['weight']),
 				'stock_quantity'		=> array($this->renderMatrixTextBox('sub_stock_quantity', $row['id'], $row['stock_quantity'])),
-				//'buttons'				=> $this->generateButtons('variants_wizard', $row['id'])
+				'buttons'				=> $this->generateButtons('variants_wizard', $row['id'])
 			);
 		}
 			
