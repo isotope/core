@@ -148,6 +148,7 @@ CREATE TABLE `tl_product_types` (
   `name` varchar(255) NOT NULL default '',
   `description` text NULL,
   `attributes` blob NULL,
+  `variant_attributes` blob NULL,
   `downloads` char(1) NOT NULL default '',
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)

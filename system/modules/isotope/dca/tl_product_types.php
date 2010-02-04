@@ -109,7 +109,7 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'					  => '{name_legend},name,description;{attributes_legend},attributes;{download_legend:hide},downloads',
+		'default'					  => '{name_legend},name,description;{attributes_legend},attributes,variant_attributes;{download_legend:hide},downloads',
 	),
 
 	// Fields
@@ -136,6 +136,13 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 			'exclude'				  => true,
 			'inputType'				  => 'attributeWizard',
 			'eval'					  => array('mandatory'=>true),
+		),
+        'variant_attributes' => array
+		(
+			'label'					  => &$GLOBALS['TL_LANG']['tl_product_types']['variant_attributes'],
+			'exclude'				  => true,
+			'inputType'				  => 'attributeWizard',
+			'eval'					  => array('noDisable'=>true),
 		),
 		'downloads' => array
 		(

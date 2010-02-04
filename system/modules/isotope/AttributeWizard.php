@@ -62,7 +62,9 @@ class AttributeWizard extends Widget
 			case 'mandatory':
 				$this->arrConfiguration['mandatory'] = $varValue ? true : false;
 				break;
-
+			case 'noDisable':
+				$this->arrConfiguration['noDisable'] = $varValue ? true : false;
+				break;
 			default:
 				parent::__set($strKey, $varValue);
 				break;
@@ -224,7 +226,8 @@ class AttributeWizard extends Widget
 	 */
 	protected function generateCheckbox($arrOption, $strGroup, $strButtons)
 	{
-		if ($arrOption['disabled'])
+		
+		if (!$this->noDisable && $arrOption['disabled'])
 		{
 			return sprintf('<span><input type="hidden" name="%s" value="%s"%s /><input id="opt_%s" type="checkbox" class="tl_checkbox" disabled="disabled" checked="checked" /> %s <label for="opt_%s">%s</label></span>',
 							$this->strName . '[]',
