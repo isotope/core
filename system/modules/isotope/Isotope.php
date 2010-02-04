@@ -429,6 +429,7 @@ class Isotope extends Controller
 			'subdivision'		=> strval($arrData['state']),
 			'country'			=> strval($arrData['country']),
 			'phone'				=> strval($arrData['phone']),
+			'email'				=> strval($arrData['email']),
 			'isDefaultBilling'	=> '1',
 			'isDefaultShipping' => '',
 		);
