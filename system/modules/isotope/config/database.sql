@@ -65,6 +65,7 @@ CREATE TABLE `tl_module` (
 CREATE TABLE `tl_product_data` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
+  `sorting` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
   `type` int(10) unsigned NOT NULL default '0',
   `pages` blob NULL,
