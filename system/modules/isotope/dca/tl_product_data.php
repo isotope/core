@@ -52,9 +52,9 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			'mode'                    => 5,
 			//'fields'                  => array('type', 'name'),
 			'icon'                    => 'pagemounts.gif',
-			'paste_button_callback'   => array('tl_product_data', 'pasteProduct')
+			'paste_button_callback'   => array('tl_product_data', 'pasteProduct'),
 //			'flag'                    => 1,
-//			'panelLayout'             => 'filter;search,limit',
+			'panelLayout'             => 'filter;search,limit',
 		),
 		'label' => array
 		(
@@ -109,7 +109,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 				'icon'                => 'copychilds.gif',
 				'attributes'          => 'onclick="Backend.getScrollOffset();"',
 				'button_callback'     => array('tl_product_data', 'copyProductWithSubproducts')
-			),
+			)/*,
 			'cut' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['cut'],
@@ -117,7 +117,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 				'icon'                => 'cut.gif',
 				'attributes'          => 'onclick="Backend.getScrollOffset();"',
 				'button_callback'     => array('tl_product_data', 'cutProduct')
-			)/*,
+			),
 			'toggle' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['toggle'],
@@ -522,10 +522,24 @@ class tl_product_data extends Backend
 	public function checkPermission($dc)
 	{
 		$this->import('BackendUser', 'User');
-		
+				
 		if ($this->User->isAdmin)
 		{			
-			$arrProducts = $this->Database->execute("SELECT id FROM tl_product_data WHERE pid=0")->fetchEach('id');
+		
+			$objPid = $this->Database->prepare("SELECT pid FROM tl_product_data WHERE id=?")
+									 ->limit(1)
+									 ->execute($dc->id);
+			
+			if(!$objPid->numRows)
+			{
+				$intPid = 0;
+			}
+			else
+			{
+				$intPid = $objPid->pid;
+			}
+			
+			$arrProducts = $this->Database->execute("SELECT id FROM tl_product_data WHERE pid=" . $intPid)->fetchEach('id');
 		
 			if (!is_array($arrProducts) || !count($arrProducts))
 			{
@@ -971,7 +985,7 @@ class tl_product_data extends Backend
 	 */
 	public function copyProductWithSubproducts($row, $href, $label, $title, $icon, $attributes, $table)
 	{
-		if ($GLOBALS['TL_DCA'][$table]['config']['closed'])
+		if ($GLOBALS['TL_DCA'][$table]['config']['closed'] || $row['pid']>0)
 		{
 			return '';
 		}
@@ -1025,10 +1039,10 @@ class tl_product_data extends Backend
 		if (!$this->User->isAdmin)
 		{
 			// Disable "paste into" button if there is no permission 2 for the current page
-			if (!$disablePI && !$this->User->isAllowed(2, $row))
-			{
+			//if (!$disablePI && !$this->User->isAllowed(2, $row))
+			//{
 				$disablePI = true;
-			}
+			//}
 
 			$objProduct = $this->Database->prepare("SELECT * FROM " . $table . " WHERE id=?")
 									  ->limit(1)

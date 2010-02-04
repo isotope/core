@@ -132,6 +132,7 @@ class ProductCatalog extends Backend
 			if ($field['rgxp']) $eval['rgxp'] = $field['rgxp'];
 			if ($field['multiple']) $eval['multiple'] = $field['multiple'];
 	
+			
 			// check for options lookup 
 			$inputType = '';
 			switch ($field['type'])
@@ -244,6 +245,22 @@ class ProductCatalog extends Backend
 					break;
 			}
 			
+			
+			if ($field['add_to_product_variants'])
+			{
+				if($this->Input->get('id') && $this->Input->get('do')=='product_manager')
+				{
+					$objPid = $this->Database->prepare("SELECT pid FROM tl_product_data WHERE id=?")
+											 ->limit(1)
+											 ->execute($this->Input->get('id'));
+					
+					if($objPid->numRows && $objPid->pid>0)
+					{
+						$inputType = 'text';
+					}
+				}
+			}
+			
 			$filter = ($this->arrForm['useFilter'] && $this->arrForm['filterField'] == $field['field_name']);
 
 			$GLOBALS['TL_DCA']['tl_product_data']['fields'][$field['field_name']] = array
@@ -334,6 +351,24 @@ class ProductCatalog extends Backend
 		
 		$GLOBALS['TL_DCA']['tl_product_data']['palettes']['__selector__'] = array_merge($GLOBALS['TL_DCA']['tl_product_data']['palettes']['__selector__'], $arrAdditionalSelectors);
 		
+		if($this->Input->get('id') && $this->Input->get('do')=='product_manager')
+		{
+			//Check and update to load the palette
+			$objProductType = $this->Database->prepare("SELECT d.type AS selfType, (SELECT type FROM tl_product_data p WHERE p.id=d.pid AND d.pid!=0) AS parentType FROM tl_product_data d  WHERE d.id=?")
+											 ->limit(1)
+											 ->execute($this->Input->get('id'));
+			
+			if(!$objProductType->numRows || $objProductType->selfType==0)
+			{
+			
+				//set the type for the subproduct
+				$this->Database->prepare("UPDATE tl_product_data SET type=" . $objProductType->parentType . " WHERE id=?")
+							   ->set($arrSet)
+							   ->execute($this->Input->get('id'));
+	
+			}
+		}
+				
 	}
 	
 	
@@ -346,7 +381,7 @@ class ProductCatalog extends Backend
 		if($objProductType->numRows < 1)
 		{
 			throw new Exception('no product type returned for this product!');	//TODO: Add to language array
-		}
+		}		
 		
 		return $objProductType->type;
 		
@@ -629,6 +664,7 @@ class ProductCatalog extends Backend
 	
 	protected function getProductTypePalettes()
 	{
+		
 		$objProductTypes = $this->Database->prepare("SELECT * FROM tl_product_types")->execute();
 		
 		if (!$objProductTypes->numRows)
@@ -641,16 +677,32 @@ class ProductCatalog extends Backend
 			$arrFieldCollection = array();
 			$strAttributes = "";
 			
-			$arrFieldCollection = deserialize($objProductTypes->attributes);
-											
+			$objPid = $this->Database->prepare("SELECT pid FROM tl_product_data WHERE id=?")
+									 ->limit(1)
+									 ->execute($this->Input->get('id'));
+			
+			if(!$objPid->numRows)
+			{
+				$strAttributeField = 'attributes';
+			}
+			else
+			{
+				if($objPid->pid!=0)
+				{
+					$strAttributeField = 'variant_attributes';
+				}
+				else
+				{
+					$strAttributeField = 'attributes';
+				}
+			}
+						
+			$arrFieldCollection = deserialize($objProductTypes->$strAttributeField);
+							
 			$strAttributes = $this->buildPaletteString($arrFieldCollection);
 			
 			$arrPalettes[$objProductTypes->id] = $strAttributes;					
-	
-			/*
-			$arrPalettes[$objProductTypes->id . '_existing_option_set'] = $this->buildPaletteString($arrFieldCollection, 'options_legend', array('option_sets','variants_wizard'));
-			$arrPalettes[$objProductTypes->id . '_new_option_set'] = $this->buildPaletteString($arrFieldCollection, 'options_legend', array('option_set_title','variants_wizard'));
-			*/
+
 		}
 
 		return $arrPalettes;
@@ -700,6 +752,7 @@ class ProductCatalog extends Backend
 					$arrPalette[$arrAttributes['legend']][] = 'option_set_source';
 				}
 			}*/
+						
 						
 			$arrPalette[$arrAttributes['legend']][] = $field;			
 
