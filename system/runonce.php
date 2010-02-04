@@ -117,6 +117,18 @@ class IsotopeRunonce extends Frontend
 			$this->Database->execute("ALTER TABLE tl_address_book CHANGE COLUMN state subdivision varchar(10) NOT NULL default ''");
 		}
 		
+		// tl_store.state has been renamed to tl_store.subdivision
+		if ($this->Database->fieldExists('state', 'tl_store') && !$this->Database->fieldExists('subdivision', 'tl_store'))
+		{
+			$this->Database->execute("ALTER TABLE tl_store CHANGE COLUMN state subdivision varchar(10) NOT NULL default ''");
+		}
+		
+		// tl_store.street has been renamed to tl_store.street_1
+		if ($this->Database->fieldExists('street', 'tl_store') && !$this->Database->fieldExists('street_1', 'tl_store'))
+		{
+			$this->Database->execute("ALTER TABLE tl_store CHANGE COLUMN street street_1 varchar(255) NOT NULL default ''");
+		}
+		
 		// tl_address_book.street has been renamed to tl_address_book.street_1
 		if ($this->Database->fieldExists('street', 'tl_address_book') && !$this->Database->fieldExists('street_1','tl_address_book'))
 		{
