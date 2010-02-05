@@ -1039,10 +1039,10 @@ class tl_product_data extends Backend
 		if (!$this->User->isAdmin)
 		{
 			// Disable "paste into" button if there is no permission 2 for the current page
-			//if (!$disablePI && !$this->User->isAllowed(2, $row))
-			//{
+			if (!$disablePI && !$this->User->isAllowed(2, $row) || $row['pid']>0)
+			{
 				$disablePI = true;
-			//}
+			}
 
 			$objProduct = $this->Database->prepare("SELECT * FROM " . $table . " WHERE id=?")
 									  ->limit(1)
@@ -1062,6 +1062,12 @@ class tl_product_data extends Backend
 			{
 				$disablePA = true;
 			}
+		}
+		
+		// Disable "paste into" button if there is no permission 2 for the current page
+		if ($row['pid']>0)
+		{
+			$disablePI = true;
 		}
 
 		// Return the buttons
