@@ -522,8 +522,8 @@ class tl_product_data extends Backend
 	public function checkPermission($dc)
 	{
 		$this->import('BackendUser', 'User');
-				
-		if ($this->User->isAdmin)
+		return;		
+		/*if ($this->User->isAdmin)
 		{			
 		
 			$objPid = $this->Database->prepare("SELECT pid FROM tl_product_data WHERE id=?")
@@ -552,6 +552,12 @@ class tl_product_data extends Backend
 			{
 				$this->redirect('typolight/main.php?act=error');
 			}
+			
+			// Add access rights to new pages
+			if ($this->Input->get('act') == 'create')
+			{
+				$GLOBALS['TL_DCA']['tl_page']['fields']['includeChmod']['default'] = 1;
+			}
 		}
 		else
 		{		
@@ -570,7 +576,7 @@ class tl_product_data extends Backend
 			{
 				$this->redirect('typolight/main.php?act=error');
 			}
-		}
+		}*/
 	}
 	
 	
@@ -1034,7 +1040,7 @@ class tl_product_data extends Backend
 			$disablePA = true;
 			$disablePI = true;
 		}
-
+echo $disablePI;
 		// Check permissions if the user is not an administrator
 		if (!$this->User->isAdmin)
 		{
