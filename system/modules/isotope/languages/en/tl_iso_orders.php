@@ -55,7 +55,7 @@ $GLOBALS['TL_LANG']['tl_iso_orders']['shipping_method_labels']['ups_ground'] = '
  */
 $GLOBALS['TL_LANG']['tl_iso_orders']['authorize_process_payment'] = array('Authorizet.net Point-of-sale Terminal','Conduct a transaction using the Authorize.net point-of-sale terminal');
 $GLOBALS['TL_LANG']['tl_iso_orders']['print_order'] = array('Print this order','Print an invoice for the current order');
-
+$GLOBALS['TL_LANG']['tl_iso_orders']['export_emails'] = 'Export Order Emails';
 
 /**
  * Buttons
