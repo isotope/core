@@ -60,6 +60,16 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 			'label'                   => '%s',
 			'label_callback'          => array('tl_iso_orders', 'getOrderLabel')
 		),
+		'global_operations' => array
+		(
+			'export_emails' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_orders']['export_emails'],
+				'href'                => 'key=export_emails',
+				'class'               => 'header_css_import',
+				'attributes'          => 'onclick="Backend.getScrollOffset();"'
+			)
+		),
 		'operations' => array
 		(
 			'edit' => array

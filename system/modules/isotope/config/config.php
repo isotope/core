@@ -53,6 +53,7 @@ array_insert($GLOBALS['BE_MOD']['store'], 0, array
 		'tables'					=> array('tl_iso_orders', 'tl_iso_order_items'),
 		'icon'						=> 'system/modules/isotope/html/icon-orders.gif',
 		'stylesheet'				=> 'system/modules/isotope/html/backend.css',
+		'export_emails'     		=> array('IsotopeExport', 'exportOrderEmails'),
 		'authorize_process_payment'	=> array('IsotopePOS', 'getPOSInterface'),
 		'print_order'				=> array('IsotopePOS','printInvoice'),
 	),
@@ -144,6 +145,8 @@ $GLOBALS['TL_HOOKS']['createNewUser'][]				= array('Isotope','createNewUser');
 $GLOBALS['TL_HOOKS']['getMappingAttributes'][]		= array('ProductCatalog','generateMappingAttributeList');
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][]			= array('IsotopeFrontend', 'replaceIsotopeTags');
 $GLOBALS['TL_HOOKS']['executePostActions'][]		= array('ProductOptionWizard', 'executePostActions');
+//$GLOBALS['TL_HOOKS']['googleTracking'][] 			= array('ModuleIsotopeCheckout', 'googleTracking');
+
 
 
 /**

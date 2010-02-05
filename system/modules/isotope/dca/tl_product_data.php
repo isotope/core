@@ -521,8 +521,9 @@ class tl_product_data extends Backend
 	 */
 	public function checkPermission($dc)
 	{
-		$this->import('BackendUser', 'User');
-		return;		
+		return;
+		//$this->import('BackendUser', 'User');
+				
 		/*if ($this->User->isAdmin)
 		{			
 		
