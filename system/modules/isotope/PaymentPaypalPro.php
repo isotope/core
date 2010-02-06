@@ -56,14 +56,15 @@ class PaymentPaypalPro extends Payment
 		$arrData = array
 		(
 			'METHOD'				=> 'DoDirectPayment',
-			'VERSION'				=> '60.0',
-			'PWD'					=> $this->paypalpro_apiPassword,
-			'USER'					=> $this->paypalpro_apiUserName,
-			'SIGNATURE'				=> $this->paypalpro_apiSignature,
+			'VERSION'				=> '51.0',
+			'PWD'					=> ($this->debug ? 'QFZCWN5HZM8VBG7Q' : $this->paypalpro_apiPassword),
+			'USER'					=> ($this->debug ? 'sdk-three_api1.sdk.com' : $this->paypalpro_apiUserName),
+			'SIGNATURE'				=> ($this->debug ? 'A-IzJhZZjhg29XQ2qnhapuwxIDzyAZQ92FRP5dqBzVesOkzbdUONzmOU' : $this->paypalpro_apiSignature),
 			'PAYMENTACTION'			=> $this->paypalpro_transType,
 			'IPADDRESS'				=> $this->Environment->ip,
 			'AMT'					=> $this->Cart->grandTotal,
-			'CREDITCARDTYPE'		=> $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_type'],
+			'RETURNFMFDETAILS'		=> ($this->debug ? 1 : 0),
+			'CREDITCARDTYPE'		=> ucwords($_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_type']),
 			'ACCT'					=> $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_num'],
 			'EXPDATE'				=> $strExp,
 			'FIRSTNAME'				=> $this->Cart->billingAddress['firstname'],
@@ -72,27 +73,18 @@ class PaymentPaypalPro extends Payment
 			'STREET2'				=> $this->Cart->billingAddress['street_2']."\n".$this->Cart->billingAddress['street_3'],
 			'CITY'					=> $this->Cart->billingAddress['city'],
 			'STATE'					=> $arrBillingSubdivision[1],
-			'COUNTRYCODE'			=> $this->Cart->billingAddress['country'],
+			'COUNTRYCODE'			=> strtoupper($this->Cart->billingAddress['country']),
 			'ZIP'					=> $this->Cart->billingAddress['postal'],
-			//'NOTIFYURL'				=> '',
 			'CURRENCYCODE'			=> $this->Isotope->Store->currency,
 			'ITEMAMT'				=> $this->Cart->subTotal,
 			'SHIPPINGAMT'			=> $this->Cart->shippingTotal,
 			'HANDLINGAMT'			=> 0,	//TODO: support handling charges
 			'TAXAMT'				=> $this->Cart->taxTotal,
 			'DESC'					=> "Order Number " . $objOrder->order_id,
-			//'CUSTOM'				=> '',
-			'INVNUM'				=> $objOrder->id,
+			'INVNUM'				=> $objOrder->id . '-' . time(),
 			'EMAIL'					=> $this->Cart->billingAddress['email'],
 			'PHONENUM'				=> $this->Cart->billingAddress['phone'],
-			'SHIPTONAME'			=> $this->Cart->shippingAddress['firstname'] . ' ' . $this->Cart->billingAddress['lastname'],
-			'SHIPTOSTREET'			=> $this->Cart->shippingAddress['street_1'],
-			'SHIPTOSTREET2'			=> $this->Cart->shippingAddress['street_2']."\n".$this->Cart->shippingAddress['street_3'],
-			'SHIPTOCITY'			=> $this->Cart->shippingAddress['city'],
-			'SHIPTOSTATE'			=> $arrShippingSubdivision[1],
-			'SHIPTOZIP'				=> $this->Cart->shippingAddress['postal'],
-			'SHIPTOCOUNTRYCODE'		=> $this->Cart->shippingAddress['country'],
-			'SHIPTOPHONENUM'		=> $this->Cart->shippingAddress['phone']
+			
 			
 		);	
 	
@@ -107,9 +99,9 @@ class PaymentPaypalPro extends Payment
 		{
 			$arrNVP[] .= $k . '=' . $v;
 		}
-								
+					
 		$objRequest = new Request();
-		$objRequest->send('https://api-3t.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/nvp', implode('&', $arrNVP), 'POST');
+		$objRequest->send('https://api-3t.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/nvp', implode('&', $arrNVP), 'post');
 		
 		$nvpstr = $objRequest->response;
 				
@@ -149,7 +141,7 @@ class PaymentPaypalPro extends Payment
 			)
 		*/
 		
-		if(strtoupper($arrResponse["ACK"]) != "SUCCESS" AND strtoupper($arrResponse["ACK"]) != "SUCCESSWITHWARNING")
+		if(strtoupper($arrResponse["ACK"]) != "SUCCESS" && strtoupper($arrResponse["ACK"]) != "SUCCESSWITHWARNING")
 		{
 			/*$this->Error['TIMESTAMP']		= $arrResponse['TIMESTAMP'];
 			$this->Error['CORRELATIONID']	= @$this->Response['CORRELATIONID'];
@@ -175,7 +167,8 @@ class PaymentPaypalPro extends Payment
 			$this->_error_version		= @$this->Response['VERSION'];
 			$this->_error_build			= @$this->Response['BUILD']; 
 			*/
-		
+
+			
 			
 			$_SESSION['CHECKOUT_DATA']['payment'][$this->id]['error'] = $arrResponse['L_LONGMESSAGE0'];
 
