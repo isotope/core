@@ -53,6 +53,29 @@ class PaymentPaypalPro extends Payment
 		
 		$strExp = str_replace('/','',$_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_exp']);
 		
+		switch($_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_type'])
+		{
+			case 'mc':
+				$strCardType = 'MasterCard';
+				break;
+			case 'visa':
+				$strCardType = 'Visa';
+				break;
+			case 'amex':
+				$strCardType = 'Amex';
+				break; 
+			case 'discover':
+				$strCardType = 'Discover';
+				break;
+			case 'jcb':
+				$strCardType = 'Jcb';
+				break;
+			case 'diners':
+				$strCardType = 'Diners';
+				break;
+		}
+		
+		
 		$arrData = array
 		(
 			'METHOD'				=> 'DoDirectPayment',
@@ -64,7 +87,7 @@ class PaymentPaypalPro extends Payment
 			'IPADDRESS'				=> $this->Environment->ip,
 			'AMT'					=> $this->Cart->grandTotal,
 			'RETURNFMFDETAILS'		=> ($this->debug ? 1 : 0),
-			'CREDITCARDTYPE'		=> ucwords($_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_type']),
+			'CREDITCARDTYPE'		=> $strCardType,
 			'ACCT'					=> $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_num'],
 			'EXPDATE'				=> $strExp,
 			'FIRSTNAME'				=> $this->Cart->billingAddress['firstname'],
@@ -314,7 +337,7 @@ class PaymentPaypalPro extends Payment
 	
 	public function getAllowedCCTypes()
 	{
-		return array('MasterCard', 'Visa', 'Amex', 'Discover', 'Jcb', 'Diners');				
+		return array('mc', 'visa', 'amex', 'discover', 'jcb', 'diners');				
 	}
 	
 }

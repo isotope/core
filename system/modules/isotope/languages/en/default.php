@@ -316,12 +316,6 @@ $GLOBALS['TL_LANG']['CCT']['discover']			= 'Discover';
 $GLOBALS['TL_LANG']['CCT']['jcb']				= 'JCB';
 $GLOBALS['TL_LANG']['CCT']['diners']			= 'Diner\'s Club';
 $GLOBALS['TL_LANG']['CCT']['enroute']			= 'EnRoute';
-$GLOBALS['TL_LANG']['CCT']['Visa']				= 'Visa';
-$GLOBALS['TL_LANG']['CCT']['MasterCard']		= 'MasterCard';
-$GLOBALS['TL_LANG']['CCT']['Amex']				= 'American Express';
-$GLOBALS['TL_LANG']['CCT']['Discover']		    = 'Discover';
-$GLOBALS['TL_LANG']['CCT']['Jcb']				= 'JCB';
-$GLOBALS['TL_LANG']['CCT']['Diners']			= 'Diners';
 
 /**
  * Currencies
