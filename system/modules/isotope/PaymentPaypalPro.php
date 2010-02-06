@@ -314,7 +314,7 @@ class PaymentPaypalPro extends Payment
 	
 	public function getAllowedCCTypes()
 	{
-		return array('mc', 'visa', 'amex', 'discover', 'jcb', 'diners');				
+		return array('MasterCard', 'Visa', 'Amex', 'Discover', 'Jcb', 'Diners');				
 	}
 	
 }
