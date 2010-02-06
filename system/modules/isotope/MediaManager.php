@@ -134,7 +134,7 @@ class MediaManager extends Widget implements uploadable
 		if (($arrImageSize = @getimagesize($file['tmp_name'])) != false)
 		{
 			// Image exceeds maximum image width
-			if ($arrImageSize[0] > $GLOBALS['TL_CONFIG']['imageWidth'])
+			if ($arrImageSize[0] > $GLOBALS['TL_CONFIG']['imageWidth'] || $arrImageSize[0] > 1200)
 			{
 				$this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['filewidth'], $file['name'], $GLOBALS['TL_CONFIG']['imageWidth']));
 				$this->log('File "'.$file['name'].'" exceeds the maximum image width of '.$GLOBALS['TL_CONFIG']['imageWidth'].' pixels', 'FormFileUpload validate()', TL_ERROR);
@@ -144,7 +144,7 @@ class MediaManager extends Widget implements uploadable
 			}
 
 			// Image exceeds maximum image height
-			if ($arrImageSize[1] > $GLOBALS['TL_CONFIG']['imageHeight'])
+			if ($arrImageSize[1] > $GLOBALS['TL_CONFIG']['imageHeight'] || $arrImageSize > 1200)
 			{
 				$this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['fileheight'], $file['name'], $GLOBALS['TL_CONFIG']['imageHeight']));
 				$this->log('File "'.$file['name'].'" exceeds the maximum image height of '.$GLOBALS['TL_CONFIG']['imageHeight'].' pixels', 'FormFileUpload validate()', TL_ERROR);
