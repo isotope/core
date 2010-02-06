@@ -21,10 +21,8 @@
  * PHP version 5
  * @copyright  Winans Creative 2009
  * @author     Fred Bliss <fred@winanscreative.com>
- * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
-
 
 class ModuleIsotopeCheckout extends ModuleIsotopeBase
 {
@@ -1147,24 +1145,30 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	
 	public function googleTracking()
 	{
-		/*$objTemplate = new FrontendTemplate('iso_google_analytics');
+		if(!$this->Isotope->Store->enableGoogleAnalytics || $this->Input->get('step')!='complete' || !file_exists(TL_ROOT . '/system/modules/googleanalytics/GoogleAnalytics.php'))
+		{
+			return '';
+		}
+		
+		$objTemplate = new FrontendTemplate('iso_google_analytics');
 		
 		$arrState = explode(',', $this->Cart->billingAddress['subdivision']);
 		
 		$arrProducts = $this->Cart->getProducts();
 		
-		
-		foreach($arrProducts as $product)
+		$arrVariantValues = $this->getProductVariantValues($arrProducts);
+			
+		foreach($arrProducts as $objProduct)
 		{
-			$strVariant = $this->getProductVariantValue($product['id']);
+			$strVariant = (is_array($arrVariantValues[$objProduct->id]['variants']) ? implode(' ', $arrVariantValues[$objProduct->id]['variants']) : ''); 
 			
 			$arrItems[] = array
 			(
-				'sku'		=> $product['sku'],
-				'name'		=> $product['name'],
+				'sku'		=> $objProduct->sku,
+				'name'		=> $objProduct->name,
 				'variant'	=> $strVariant,
-				'price'		=> $product['price'],
-				'quantity'	=> $product['quantity_requested']
+				'price'		=> $objProduct->price,
+				'quantity'	=> $objProduct->quantity_requested
 			);
 		}
 		
@@ -1177,22 +1181,36 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		$objTemplate->state = $arrState[1];
 		$objTemplate->country = $this->Cart->billingAddress['country'];
 		$objTemplate->items = $arrItems;
-		
-		<?php foreach($this->items as $item): ?>
-		pageTracker._addItem(
-		   '<?php echo $this->id; ?>',			//Order ID, not product id!
-		   '<?php echo $item['sku']; ?>',
-		   '<?php echo $item['name']; ?>',
-		   '<?php echo $item['variant']; ?>',
-		   '<?php echo $item['price']; ?>',
-		   '<?php echo $item['quantity']; ?>'
-		);
-		<?php endforeach; ?>
-		pageTracker._trackTrans();
-		
-				
-		*/
+	
 		return $objTemplate->parse();
+	}
+	
+	private function getProductVariantValue($arrProducts)
+	{
+		$objVariantAttributes = $this->Database->prepare("SELECT name, field_name FROM tl_product_attributes WHERE add_to_product_variants=?")
+									  				->execute(1);
+			if(!$objVariantAttributes->numRows)
+			{
+				return '';
+			}
+			
+			while($objVariantAttributes->next())
+			{
+				$strField = $objVariantAttributes->field_name;
+				
+				foreach($arrProducts as $objProduct)
+				{
+					if(property_exists($objProduct, $strField))
+					{
+						if($row[$strField])
+						{
+							$arrReturn[$objProduct->id]['variants'][] = $row[$strField];
+						}
+					}
+				}
+			}
+			
+			return $arrReturn;
 	}
 }
 

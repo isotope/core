@@ -261,10 +261,9 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		),
 		'enableGoogleAnalytics' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['enableGoogleAnalytics'],
+			'label'                   => array($GLOBALS['TL_LANG']['tl_store']['enableGoogleAnalytics'][0], (!file_exists(TL_ROOT . '/system/modules/googleanalytics/GoogleAnalytics.php') ? $GLOBALS['TL_LANG']['MSC']['missingGoogleAnalyticsExtension'] : $GLOBALS['TL_LANG']['tl_store']['enableGoogleAnalytics'][0])),
 			'exclude'                 => true,
-			'inputType'               => 'checkbox',
-			'eval'					  => array('tl_class'=>'clr')
+			'inputType'               => 'checkbox'
 		),
 		'cookie_duration' => array
 		(
@@ -468,7 +467,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
  */
 class tl_store extends Backend
 {
-
+	
 	public function checkPermission($dc)
 	{
 		$this->import('BackendUser', 'User');
