@@ -1,4 +1,4 @@
-<input type="hidden" name="product_id" value="<?php echo $this->raw['id']; ?>" />
+<input type="hidden" id="ctrl_product_id" name="product_id" value="<?php echo $this->raw['id']; ?>" />
 
 <h2><?php echo $this->name; ?></h2>
 
