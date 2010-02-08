@@ -52,6 +52,7 @@ window.addEvent('domready', function() {
 	
 	var ctrlVariants = $('ctrl_product_variants');
 	
+	var parentProduct = $('ctrl_product_id');
 	
 	ctrlVariants.addEvent('change', function(event) {
 		event.stop();
@@ -60,7 +61,7 @@ window.addEvent('domready', function() {
 			method: 'get',
 			url: 'ajax.php',
 			urlencoded: true,
-			data: '<?php echo $this->ajaxParams; ?>' + '&variant=' + this.value + '&container=image_main',
+			data: '<?php echo $this->ajaxParams; ?>' + '&product_id=' + parentProduct.value + '&variant=' + this.value + '&container=image_main',
 			onRequest: showLoader(),
 			onSuccess: function(responseText, responseXML) { replaceMainImage(responseText); hideLoader(); }
 		}).send();	
@@ -69,11 +70,10 @@ window.addEvent('domready', function() {
 			method: 'get',
 			url: 'ajax.php',
 			urlencoded: true,
-			data: '<?php echo $this->ajaxParams; ?>' + '&variant=' + this.value + '&container=image_gallery',
+			data: '<?php echo $this->ajaxParams; ?>' + '&product_id=' + parentProduct.value + '&variant=' + this.value + '&container=image_gallery',
 			onRequest: showLoader(),
 			onSuccess: function(responseText, responseXML) { replaceGallery(responseText); hideLoader(); }
 		}).send();	
-	});
 });
 </script>
 <?php endif; ?>

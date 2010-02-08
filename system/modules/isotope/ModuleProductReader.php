@@ -158,14 +158,18 @@ class ModuleProductReader extends ModuleIsotopeBase
 		$this->Template->action = ampersand($this->Environment->request, true);
 		$this->Template->formId = $this->strFormId;
 		
-		$this->Template->product = $this->generateProduct($objProduct, $this->iso_reader_layout, $arrTemplateData);
+		$this->Template->product = $this->generateProduct($objProduct, $this->iso_reader_layout, $arrTemplateData, $this->strFormId);
 		
 		$objPage->title .= ' - ' . $objProduct->name;
-		
+		$objPage->description .= $objProduct->description;
 	}		
 	
+	/** 
+	 * TODO - Switch to JSON to allow flexibility to grab and return structured data for use in various elements on the product reader page in a single call
+	 */
 	public function generateAjax()
 	{
+		$objParentProduct = $this->getProduct($this->Input->get('product_id'));
 		
 		$objProduct = $this->getProduct($this->Input->get('variant'));
 
@@ -180,11 +184,18 @@ class ModuleProductReader extends ModuleIsotopeBase
 					
 					$arrImages = $objProduct->images;
 					
-					unset($arrImages[0]);
+					unset($arrImages[0]);	//remove first image from gallery.
 					
-					foreach($arrImages as $image)
+					if(!count($arrImages))
 					{
-						$strHtml .= "<div class=\"image_container gallery\"><a href=\"" . $image['large'] . "\" title=\"" . $image['desc'] . "\" rel=\"lightbox\"><img src=\"" . $image['gallery'] . "\" alt=\"" . $image['alt'] . "\"" . $image['gallery_size'] . " /></a></div>";
+						$strHtml = '';
+					}
+					else
+					{
+						foreach($arrImages as $image)
+						{
+							$strHtml .= "<div class=\"image_container gallery\"><a href=\"" . $image['large'] . "\" title=\"" . $image['desc'] . "\" rel=\"lightbox\"><img src=\"" . $image['gallery'] . "\" alt=\"" . $image['alt'] . "\"" . $image['gallery_size'] . " /></a></div>";
+						}
 					}
 					break;
 				default:
@@ -194,7 +205,34 @@ class ModuleProductReader extends ModuleIsotopeBase
 		}
 		else
 		{
-			$strHtml = '';
+		    switch($this->Input->get('container'))
+			{
+				case 'image_main':
+	                		//revert to fallback image (placeholder image or else main image fallback
+					$strHtml = "<a href=\"" . $objParentProduct->images[0]['large'] . "\" title=\"" . $objParentProduct->images[0]['desc'] . "\" rel=\"lightbox\"><img src=\"" . $objParentProduct->images[0]['thumbnail'] . "\" alt=\"" . $objParentProduct->images[0]['alt'] . "\"" . $objParentProduct->images[0]['thumbnail_size'] . "/></a>";
+					break;
+				case 'image_gallery':
+					
+					$arrImages = $objParentProduct->images;
+					
+					unset($arrImages[0]);	//remove first image from gallery.
+					
+					if(!count($arrImages))
+					{
+						$strHtml = '';
+					}
+					else
+					{
+						foreach($arrImages as $image)
+						{
+							$strHtml .= "<div class=\"image_container gallery\"><a href=\"" . $image['large'] . "\" title=\"" . $image['desc'] . "\" rel=\"lightbox\"><img src=\"" . $image['gallery'] . "\" alt=\"" . $image['alt'] . "\"" . $image['gallery_size'] . " /></a></div>";
+						}
+					}
+					break;
+				default:
+					$strHtml = '';
+					break;
+			}
 		}
 						
 		return $strHtml;

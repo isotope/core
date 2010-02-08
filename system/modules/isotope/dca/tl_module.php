@@ -32,7 +32,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][]			= 'iso_checkout_
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductLister']			= '{title_legend},name,headline,type;{display_legend},perPage,columns,iso_list_format,iso_show_teaser;{config_legend},iso_use_quantity,iso_category_scope,iso_jump_first,new_products_time_window,featured_products;{redirect_legend},iso_reader_jumpTo;{template_legend:hide},iso_list_layout;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductReader']			= '{title_legend},name,headline,type;{config_legend},iso_use_quantity;{template_legend:hide},iso_reader_layout;guests,protected;align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductReader']			= '{title_legend},name,headline,type;{config_legend},iso_use_quantity,iso_disableFilterAjax;{template_legend:hide},iso_reader_layout;guests,protected;align,space,cssID';
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoDonationsModule']			= '{title_legend},name,headline,type;{config_legend},iso_donationProduct;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 
