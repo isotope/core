@@ -51,6 +51,8 @@ class VariantsWizard extends Widget
 	
 	protected $arrButtons = array();
 	
+	protected $valueCount = 0;
+	
 	public function __construct()
 	{
 		parent::__construct();
@@ -315,6 +317,25 @@ class VariantsWizard extends Widget
 		return $return.'</tbody></table>';  
 		
 	}
+		
+	/*
+	public function generateCodes($arr) {
+		if(count($arr)) {
+			for($i=0; $i<count($arr[0]); $i++) {
+				$tmp = $arr;
+				$this->codes[$this->pos] = $arr[0][$i];
+				$tarr = array_shift($tmp);
+				$this->pos++;
+				$this->generateCodes($tmp); 
+	
+			}
+		} else {
+			$this->arrCombos[] = $this->codes;
+		}
+		$pos--;
+	}
+
+*/
 	
 	protected function getAllPossibilities($a){
 	   $out = array();
@@ -332,7 +353,15 @@ class VariantsWizard extends Widget
 			 $out[] = array_merge(array($v1), $v2);
 		  }
 	   }
-	   return $out;
+	   
+	   if(count($a) > 1)
+	   {
+	   
+	   		$arrReturn = array_slice($out, 0, count($out)/2);
+	   }
+	
+	   //exit;
+	   return $arrReturn;
 	}
 
 	protected function saveVariantData($arrData)
@@ -480,8 +509,13 @@ class VariantsWizard extends Widget
 					
 					$arrRows[] = $arrTrimmedValues;
 				}
-							
+
+				$this->valueCount = count($arrRows);
+
 				$arrSet = $this->getAllPossibilities($arrRows);
+		
+				asort($arrSet);
+				//$arrSet = $this->getAllPossibilities($arrRows);
 										
 				//NOT SURE HOW WE'RE STORING THIS QUITE YET!
 				switch($this->Input->post('option_set_source'))

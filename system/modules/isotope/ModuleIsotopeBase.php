@@ -708,7 +708,7 @@ abstract class ModuleIsotopeBase extends Module
 			$objWidget = new $strClass($this->prepareForWidget($arrData, $strField));
 			
 			$objWidget->storeValues = true;
-			
+			$objWidget->tableless = true;
 			count($arrData['options']) ? $objWidget->options = $arrData['options'] : $objWidget->options = NULL;
 			//$_SESSION['FORM_DATA'][$strField] = $objWidget->value;
 			
