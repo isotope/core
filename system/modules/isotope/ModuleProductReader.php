@@ -83,6 +83,27 @@ class ModuleProductReader extends ModuleIsotopeBase
 	{
 		global $objPage;
 
+		$arrAjaxParams[] = 'action=fmd'; 
+		$arrAjaxParams[] = 'id=' . $this->id;
+		$arrAjaxParams[] = 'rid='.$objPage->rootId;
+		$arrAjaxParams[] = 'pid='.$objPage->id;
+
+		$strAjaxParams = implode('&', $arrAjaxParams);	//build the ajax params
+		$strImage = "system/themes/default/images/loading.gif";
+		
+		$arrImageSize = getimagesize(TL_ROOT . '/' . $strImage);	
+
+		$arrLoaderImage['path'] = $strImage;
+		$arrLoaderImage['width'] = $arrImageSize[0];
+		$arrLoaderImage['height'] = $arrImageSize[1];
+	
+		$arrCleanUrl = explode('?', $this->Environment->request);
+	
+		$this->Template->disableAjax = $this->iso_disableFilterAjax;
+		
+		$this->Template->ajaxLoaderImage = $arrLoaderImage;
+		$this->Template->ajaxParams = $strAjaxParams;
+
 		$objProduct = $this->getProductByAlias($this->Input->get('product'));
 		
 		if (!$objProduct)
@@ -142,5 +163,57 @@ class ModuleProductReader extends ModuleIsotopeBase
 		$objPage->title .= ' - ' . $objProduct->name;
 		
 	}		
+	
+	public function generateAjax()
+	{
+		
+		$objProduct = $this->getProduct($this->Input->get('variant'));
+
+		if($objProduct->images)
+		{
+			switch($this->Input->get('container'))
+			{
+				case 'image_main':
+					$strHtml = "<a href=\"" . $objProduct->images[0]['large'] . "\" title=\"" . $objProduct->images[0]['desc'] . "\" rel=\"lightbox\"><img src=\"" . $objProduct->images[0]['thumbnail'] . "\" alt=\"" . $objProduct->images[0]['alt'] . "\"" . $objProduct->images[0]['thumbnail_size'] . "/></a>";
+					break;
+				case 'image_gallery':
+					
+					$arrImages = $objProduct->images;
+					
+					unset($arrImages[0]);
+					
+					foreach($arrImages as $image)
+					{
+						$strHtml .= "<div class=\"image_container gallery\"><a href=\"" . $image['large'] . "\" title=\"" . $image['desc'] . "\" rel=\"lightbox\"><img src=\"" . $image['gallery'] . "\" alt=\"" . $image['alt'] . "\"" . $image['gallery_size'] . " /></a></div>";
+					}
+					break;
+				default:
+					$strHtml = '';
+					break;
+			}
+		}
+		else
+		{
+			$strHtml = '';
+		}
+						
+		return $strHtml;
+	}
+
+	public function getImages($intProductId)
+	{
+		$objImages = $this->Database->prepare("SELECT images FROM tl_product_data WHERE id=?")
+								   ->limit(1)
+								   ->execute($intProductId);
+		
+		if(!$objImages->numRows)
+		{
+			return array();
+		}
+		
+		return deserialize($objImages->images);
+	
+	}
+
 }
 
