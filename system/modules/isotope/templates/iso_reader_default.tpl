@@ -1,6 +1,6 @@
 <input type="hidden" id="ctrl_product_id" name="product_id" value="<?php echo $this->raw['id']; ?>" />
 
-<h2><?php echo $this->name; ?></h2>
+<h2 id="product_name"><?php echo $this->name; ?></h2>
 
 <?php if ($this->hasImage): ?>
 <div id="image_main" class="image_container main_image"><a href="<?php echo $this->mainImage['large']; ?>" title="<?php echo $this->mainImage['desc']; ?>" rel="lightbox"><img src="<?php echo $this->mainImage['thumbnail']; ?>" alt="<?php echo $this->mainImage['alt']; ?>"<?php echo $this->mainImage['thumbnail_size']; ?> /></a></div>
@@ -35,7 +35,7 @@
 <p class="description"><?php echo $this->description; ?></p><?php endif; ?>
 
 <?php if(!$this->hasVariants): ?>
-<p class="price">
+<p id="product_price" class="price">
 	<?php if($this->editablePrice): ?>
     	<label for="<?php echo $this->price['name']; ?>"><?php echo $this->price['description']; ?> </label><?php echo $this->price['html']; ?>
     <?php else: ?>

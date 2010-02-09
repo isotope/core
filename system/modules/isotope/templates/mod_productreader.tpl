@@ -56,8 +56,38 @@ window.addEvent('domready', function() {
 	
 	ctrlVariants.addEvent('change', function(event) {
 		event.stop();
-						
-		var req = new Request({
+		
+		var jsonParams = {<?php echo $this->ajaxParams; ?>, 'product_id': parentProduct.value, 'variant': this.value};
+		
+		var request = new Request.JSON({
+			url: 'ajax.php',
+			onComplete: function(objProduct) {
+				//direct update of elements with html that might need replacing, such as price, description, etc.
+				for(var key in objProduct)
+				{
+					currElement = document.id('product_' + key);
+					
+					currElement.set('html', objProduct[key]);		
+				});
+				
+				//image update handler
+				objProduct.images.each(function(item, index){
+					switch(index)
+					{
+						case 0:							
+							replaceMainImage(item);
+							break;
+						default:
+							replaceGallery(item);
+							break;
+					}
+				});
+			}
+		}).send(jsonParams);
+	});
+	
+	 			
+	/*	var req = new Request({
 			method: 'get',
 			url: 'ajax.php',
 			urlencoded: true,
@@ -73,7 +103,7 @@ window.addEvent('domready', function() {
 			data: '<?php echo $this->ajaxParams; ?>' + '&product_id=' + parentProduct.value + '&variant=' + this.value + '&container=image_gallery',
 			onRequest: showLoader(),
 			onSuccess: function(responseText, responseXML) { replaceGallery(responseText); hideLoader(); }
-		}).send();	
+		}).send();	*/
 });
 </script>
 <?php endif; ?>
