@@ -83,14 +83,14 @@ class ModuleProductReader extends ModuleIsotopeBase
 	{
 		global $objPage;
 
-		$arrAjaxParams[] = 'action=fmd'; 
-		$arrAjaxParams[] = 'id=' . $this->id;
-		$arrAjaxParams[] = 'rid='.$objPage->rootId;
-		$arrAjaxParams[] = 'pid='.$objPage->id;
+		$arrAjaxParams[] = "'action': 'fmd'"; 
+		$arrAjaxParams[] = "'id': '" . $this->id . "'";
+		$arrAjaxParams[] = "'rid': '" . $objPage->rootId . "'";
+		$arrAjaxParams[] = "'pid': '" . $objPage->id . "'";
 
-		$strAjaxParams = implode('&', $arrAjaxParams);	//build the ajax params
+		$strAjaxParams = implode(", ", $arrAjaxParams);	//build the ajax params
 		$strImage = "system/themes/default/images/loading.gif";
-		
+	
 		$arrImageSize = getimagesize(TL_ROOT . '/' . $strImage);	
 
 		$arrLoaderImage['path'] = $strImage;
@@ -105,6 +105,11 @@ class ModuleProductReader extends ModuleIsotopeBase
 		$this->Template->ajaxParams = $strAjaxParams;
 
 		$objProduct = $this->getProductByAlias($this->Input->get('product'));
+		
+		foreach($objProduct as $k=>$v)
+		{
+			$arrJSON[$k] => $v;
+		}
 		
 		if (!$objProduct)
 		{
@@ -173,6 +178,12 @@ class ModuleProductReader extends ModuleIsotopeBase
 		
 		$objProduct = $this->getProduct($this->Input->get('variant'));
 
+		foreach($objProduct as $k=>$v)
+		{
+			$arrJSON[$k] => $v;
+		}
+		
+		
 		if($objProduct->images)
 		{
 			switch($this->Input->get('container'))
@@ -234,8 +245,16 @@ class ModuleProductReader extends ModuleIsotopeBase
 					break;
 			}
 		}
-						
-		return $strHtml;
+			
+		//provide pre PHP 5.2 functionality that formats the array into a JSON-happy data structure.			
+		if(!function_exists('json_encode') ? var_dump($this->jsonEncode($arrJSON)) : var_dump(json_encode($arrJSON)));
+		
+		exit;
+	}
+	
+	private function jsonEncode($arrJSON)
+	{
+		
 	}
 
 	public function getImages($intProductId)
