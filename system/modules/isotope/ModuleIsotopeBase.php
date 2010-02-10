@@ -1157,7 +1157,7 @@ abstract class ModuleIsotopeBase extends Module
 	/**
 	 * Generate a product template
 	 */
-	public function generateProduct($objProduct, $strTemplate, $arrData=array())
+	public function generateProduct($objProduct, $strTemplate, $arrData=array(), $strFormId='')
 	{
 		
 		$objTemplate = new FrontendTemplate($strTemplate);
@@ -1321,7 +1321,7 @@ abstract class ModuleIsotopeBase extends Module
           (
             'name'      => $k,
             'description'  => $GLOBALS['TL_LANG']['MSC']['labelProductVariants'],                  
-            'html'      => $this->generateProductOptionWidget('product_variants', $arrData, '', $arrVariantOptionFields)
+            'html'      => $this->generateProductOptionWidget('product_variants', $arrData, $this->strFormId, $arrVariantOptionFields)
           ); 
            
         }
