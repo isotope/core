@@ -36,14 +36,16 @@ window.addEvent('domready', function() {
 		$('ajaxLoader').setStyle('display','none');
 	}
 	
-	function replaceMainImage(html)
+	function replaceMainImage(image)
 	{				
-		$('image_main').set('html', html);
+		return html = "<a href=\"" + image['large'] + "\" title=\"" + image['desc'] + "\" rel=\"lightbox\"><img src=\"" + image['thumbnail'] + "\" alt=\"" + image['alt'] + "\"" + image['thumbnail_size'] + "/></a>\n";
+		
 	}
 	
-	function replaceGallery(html)
-	{				
-		$('image_gallery').set('html', html);
+	function replaceGallery(image)
+	{	
+		return html = "<a href=\"" + image['large'] + "\" title=\"" + image['desc'] + "\" rel=\"lightbox\"><img src=\"" + image['gallery'] + "\" alt=\"" + image['alt'] + "\"" + image['gallery_size'] + "/></a>\n";
+		
 	}
 	
 	var productForm = $('productForm');
@@ -57,33 +59,47 @@ window.addEvent('domready', function() {
 	ctrlVariants.addEvent('change', function(event) {
 		event.stop();
 		
-		var jsonParams = {<?php echo $this->ajaxParams; ?>, 'product_id': parentProduct.value, 'variant': this.value};
-		
 		var request = new Request.JSON({
 			url: 'ajax.php',
+			method: 'get',
+			onRequest: showLoader(),
 			onComplete: function(objProduct) {
+				
+				hideLoader();
+		
 				//direct update of elements with html that might need replacing, such as price, description, etc.
 				for(var key in objProduct)
-				{
-					currElement = document.id('product_' + key);
-					
-					currElement.set('html', objProduct[key]);		
-				});
+				{					
+					var currElement = document.id('product_' + key);
+										
+					if(currElement)
+					{
+						currElement.set('html', objProduct[key]);		
+					}
+				}
 				
+				var imagesHtml = new String();
+							
 				//image update handler
 				objProduct.images.each(function(item, index){
+					
 					switch(index)
 					{
 						case 0:							
-							replaceMainImage(item);
+							$('image_main').set('html', replaceMainImage(item));							
 							break;
-						default:
-							replaceGallery(item);
+						default:							
+							imagesHtml += replaceGallery(item);							
 							break;
+					}				
+					
+					if(imagesHtml.length>0)
+					{
+						$('image_gallery').set('html', imagesHtml);
 					}
 				});
 			}
-		}).send(jsonParams);
+		}).send('<?php echo $this->ajaxParams; ?>' + '&product_id=' + parentProduct.value + '&variant=' + this.value);
 	});
 	
 	 			

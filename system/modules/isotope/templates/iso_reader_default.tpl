@@ -2,6 +2,7 @@
 
 <h2 id="product_name"><?php echo $this->name; ?></h2>
 
+
 <?php if ($this->hasImage): ?>
 <div id="image_main" class="image_container main_image"><a href="<?php echo $this->mainImage['large']; ?>" title="<?php echo $this->mainImage['desc']; ?>" rel="lightbox"><img src="<?php echo $this->mainImage['thumbnail']; ?>" alt="<?php echo $this->mainImage['alt']; ?>"<?php echo $this->mainImage['thumbnail_size']; ?> /></a></div>
 <?php endif; ?>
@@ -34,14 +35,14 @@
 <p class="sku"><?php echo $this->sku; ?></p><?php endif; if ($this->description): ?>
 <p class="description"><?php echo $this->description; ?></p><?php endif; ?>
 
-<?php if(!$this->hasVariants): ?>
+<?php //if(!$this->hasVariants): ?>
 <p id="product_price" class="price">
 	<?php if($this->editablePrice): ?>
     	<label for="<?php echo $this->price['name']; ?>"><?php echo $this->price['description']; ?> </label><?php echo $this->price['html']; ?>
     <?php else: ?>
-    	<?php $this->price; ?></p>
+    	<?php echo $this->price; ?></p>
 	<?php endif; ?>
-<?php endif; ?>
+<?php //endif; ?>
 
 <?php if($this->buttons): ?>
 <div class="submit_container">
