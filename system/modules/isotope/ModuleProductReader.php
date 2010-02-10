@@ -83,12 +83,10 @@ class ModuleProductReader extends ModuleIsotopeBase
 	{
 		global $objPage;
 
-		$arrAjaxParams[] = "'action': 'fmd'"; 
-		$arrAjaxParams[] = "'id': '" . $this->id . "'";
-		$arrAjaxParams[] = "'rid': '" . $objPage->rootId . "'";
-		$arrAjaxParams[] = "'pid': '" . $objPage->id . "'";
+		$arrAjaxParams[] = 'action=fmd'; 
+		$arrAjaxParams[] = 'id='. $this->id;
 
-		$strAjaxParams = implode(", ", $arrAjaxParams);	//build the ajax params
+		$strAjaxParams = implode("&", $arrAjaxParams);	//build the ajax params
 		$strImage = "system/themes/default/images/loading.gif";
 	
 		$arrImageSize = getimagesize(TL_ROOT . '/' . $strImage);	
@@ -105,12 +103,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 		$this->Template->ajaxParams = $strAjaxParams;
 
 		$objProduct = $this->getProductByAlias($this->Input->get('product'));
-		
-		foreach($objProduct as $k=>$v)
-		{
-			$arrJSON[$k] => $v;
-		}
-		
+				
 		if (!$objProduct)
 		{
 			$this->Template = new FrontendTemplate('mod_message');
@@ -178,82 +171,62 @@ class ModuleProductReader extends ModuleIsotopeBase
 		
 		$objProduct = $this->getProduct($this->Input->get('variant'));
 
-		foreach($objProduct as $k=>$v)
-		{
-			$arrJSON[$k] => $v;
-		}
+		$arrAttributes = $objProduct->getAttributes();
 		
+		unset($arrAttributes['variants_wizard']);
 		
-		if($objProduct->images)
+		foreach($arrAttributes as $k=>$v)
 		{
-			switch($this->Input->get('container'))
+			if(!$objProduct->$k)
+				$arrAttributes[$k] = $objParentProduct->$k;
+		
+			if($k==$this->Isotope->Store->priceField)
 			{
-				case 'image_main':
-					$strHtml = "<a href=\"" . $objProduct->images[0]['large'] . "\" title=\"" . $objProduct->images[0]['desc'] . "\" rel=\"lightbox\"><img src=\"" . $objProduct->images[0]['thumbnail'] . "\" alt=\"" . $objProduct->images[0]['alt'] . "\"" . $objProduct->images[0]['thumbnail_size'] . "/></a>";
-					break;
-				case 'image_gallery':
-					
-					$arrImages = $objProduct->images;
-					
-					unset($arrImages[0]);	//remove first image from gallery.
-					
-					if(!count($arrImages))
-					{
-						$strHtml = '';
-					}
-					else
-					{
-						foreach($arrImages as $image)
-						{
-							$strHtml .= "<div class=\"image_container gallery\"><a href=\"" . $image['large'] . "\" title=\"" . $image['desc'] . "\" rel=\"lightbox\"><img src=\"" . $image['gallery'] . "\" alt=\"" . $image['alt'] . "\"" . $image['gallery_size'] . " /></a></div>";
-						}
-					}
-					break;
-				default:
-					$strHtml = '';
-					break;
+				$arrAttributes[$k] = $this->Isotope->formatPriceWithCurrency($v);
 			}
+		}		
+
+		//provide pre PHP 5.2 functionality that formats the array into a JSON-happy data structure.			
+		if(!function_exists('json_encode'))
+		{
+			echo $this->jsonEncode($arrAttributes);
 		}
 		else
 		{
-		    switch($this->Input->get('container'))
-			{
-				case 'image_main':
-	                		//revert to fallback image (placeholder image or else main image fallback
-					$strHtml = "<a href=\"" . $objParentProduct->images[0]['large'] . "\" title=\"" . $objParentProduct->images[0]['desc'] . "\" rel=\"lightbox\"><img src=\"" . $objParentProduct->images[0]['thumbnail'] . "\" alt=\"" . $objParentProduct->images[0]['alt'] . "\"" . $objParentProduct->images[0]['thumbnail_size'] . "/></a>";
-					break;
-				case 'image_gallery':
-					
-					$arrImages = $objParentProduct->images;
-					
-					unset($arrImages[0]);	//remove first image from gallery.
-					
-					if(!count($arrImages))
-					{
-						$strHtml = '';
-					}
-					else
-					{
-						foreach($arrImages as $image)
-						{
-							$strHtml .= "<div class=\"image_container gallery\"><a href=\"" . $image['large'] . "\" title=\"" . $image['desc'] . "\" rel=\"lightbox\"><img src=\"" . $image['gallery'] . "\" alt=\"" . $image['alt'] . "\"" . $image['gallery_size'] . " /></a></div>";
-						}
-					}
-					break;
-				default:
-					$strHtml = '';
-					break;
-			}
+			echo json_encode($arrAttributes);
 		}
-			
-		//provide pre PHP 5.2 functionality that formats the array into a JSON-happy data structure.			
-		if(!function_exists('json_encode') ? var_dump($this->jsonEncode($arrJSON)) : var_dump(json_encode($arrJSON)));
-		
-		exit;
+
 	}
 	
-	private function jsonEncode($arrJSON)
+	private function jsonEncode($arrJSON, $skipBracket = false)
 	{
+		
+
+		foreach($arrJSON as $k=>$v)
+		{								
+			$strReturn = (is_numeric($k) ? NULL : '"' . $k . '":');
+						
+			if(is_array($v) && count($v) > 1)
+			{			
+				$arrReturn[] = (!$skipBracket ? "[{" : NULL) . $this->jsonEncode($v, true) . (!$skipBracket ? "}]" : NULL);
+				
+				$strChars = (!$skipBracket ? ',' : '},{');
+				
+				$strReturn .= implode($strChars, $arrReturn);
+			}
+			elseif(is_array($v) && count($v)==1)
+			{
+				$strReturn .= '[' . (!is_null($v[0]) ? '"' . str_replace("/", "\/", $v[0]) . '"' : 'null') . ']';
+			}
+			else
+			{
+				$strReturn .= (!is_null($v) ? '"' . str_replace("/", "\/", $v) . '"' : 'null');
+			}
+				
+			$arrReturnString[] =  $strReturn;
+		}	
+		
+		return implode($strChars, $arrReturnString);
 		
 	}
 
