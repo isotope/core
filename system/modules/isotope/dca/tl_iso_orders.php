@@ -115,11 +115,11 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 	(
 		'status' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['status'],
-			'filter'                  => true,
-			'inputType'               => 'select',
-			'options'         => array('pending','processing','shipped','complete','on_hold', 'cancelled'),
-			'reference'         => &$GLOBALS['TL_LANG']['MSC']['order_status_labels'],
+			'label'                 => &$GLOBALS['TL_LANG']['tl_iso_orders']['status'],
+			'filter'                => true,
+			'inputType'             => 'select',
+			'options'         		=> array('pending','processing','shipped','complete','on_hold', 'cancelled'),
+			'reference'         	=> &$GLOBALS['TL_LANG']['MSC']['order_status_labels'],
 		),
 		'shippingTotal' => array
 		(
@@ -250,20 +250,42 @@ class tl_iso_orders extends Backend
 	 */
 	public function moduleOperations($arrRow)
 	{
-		foreach($GLOBALS['ISO_ORDERS']['operations'] as $operation)
+		foreach($GLOBALS['ISO_ORDERS']['operations'] as $k=>$v)
 		{
-			$strClass = $operation;
-	
-			if (!strlen($strClass) || !$this->classFileExists($strClass))
-				return '';
-				
-			try 
+			$objPaymentMethod = $this->Database->prepare("SELECT checkout_info FROM tl_iso_orders WHERE id=?")
+											   ->limit(1)
+											   ->execute($arrRow['id']);
+											   
+			if(!$objPaymentMethod->numRows)
 			{
-				$objModule = new $strClass($arrRow);
-				$strButtons .= $objModule->moduleOperations($arrRow['id']);
+				return '';
 			}
-			catch (Exception $e) {}
 			
+			$arrCheckoutData = deserialize($objPaymentMethod->checkout_data);
+			
+			$objPaymentType = $this->Database->prepare("SELECT type FROM tl_payment_modules WHERE id=?")
+											 ->limit(1)
+											 ->execute($arrCheckoutData['payment_method_id']);
+						
+			
+			if($objPaymentType->numRows && $objPaymentType['type']==$k)
+			{				
+					$strClass = $v;
+	
+					if (!strlen($strClass) || !$this->classFileExists($strClass))
+						return '';
+						
+					try 
+					{
+						$objModule = new $strClass($arrRow);
+						$strButtons .= $objModule->moduleOperations($arrRow['id']);
+					}
+					catch (Exception $e) {}
+
+			}
+			
+			
+						
 			
 		}
 		

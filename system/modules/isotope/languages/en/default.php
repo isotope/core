@@ -203,8 +203,8 @@ $GLOBALS['TL_LANG']['MSC']['low_to_high'] = 'lo to hi';
 $GLOBALS['TL_LANG']['MSC']['high_to_low'] = 'hi to lo';
 $GLOBALS['TL_LANG']['MSC']['a_to_z'] = 'A to Z';
 $GLOBALS['TL_LANG']['MSC']['z_to_a'] = 'Z to A';
-$GLOBALS['TL_LANG']['MSC']['old_to_new'] = 'later to earlier';
-$GLOBALS['TL_LANG']['MSC']['new_to_old'] = 'earlier to later';
+$GLOBALS['TL_LANG']['MSC']['old_to_new'] = 'earlier to later';
+$GLOBALS['TL_LANG']['MSC']['new_to_old'] = 'later to earlier';
 
 
 
@@ -301,7 +301,8 @@ $GLOBALS['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';*/
  */
 $GLOBALS['TL_LANG']['PAY']['cash']				= array('Cash', 'Use this for all offline processed payment.');
 $GLOBALS['TL_LANG']['PAY']['paypal']			= array('PayPal Standard Checkout', 'This PayPal module supports IPN (Instant Payment Notifications).');
-$GLOBALS['TL_LANG']['PAY']['paypalpro']			= array('PayPal Pro', 'This PayPal module is a full service credit card gateway.');
+$GLOBALS['TL_LANG']['PAY']['paypalpro']			= array('PayPal Website Payments Pro', 'This PayPal module is a full service credit card gateway using Paypals own Website Payments Pro gateway.  Recommended only for low-traffic situations with no transactions over $10,000.');
+$GLOBALS['TL_LANG']['PAY']['paypalpayflowpro']	= array('PayPal Payflow Pro', 'The PayPal Payflow module is a full service credit card gateway, a more robust solution for most e-commerce sites.');
 $GLOBALS['TL_LANG']['PAY']['postfinance']		= array('Postfinance', 'Payment gateway for the swiss post payment system that supports various card types. The store will be instantly notified about successfull transactions.');
 $GLOBALS['TL_LANG']['PAY']['authorizedotnet']	= array('Authorize.net', 'An Authorize.net payment gateway.');
 
