@@ -219,6 +219,7 @@ $GLOBALS['ISO_SHIP']['usps']		 = 'ShippingUSPS';
 $GLOBALS['ISO_PAY']['cash']						= 'PaymentCash';
 $GLOBALS['ISO_PAY']['paypal']					= 'PaymentPaypal';
 $GLOBALS['ISO_PAY']['paypalpro']				= 'PaymentPaypalPro';
+$GLOBALS['ISO_PAY']['paypalpayflowpro']			= 'PaymentPaypalPayflowPro';
 $GLOBALS['ISO_PAY']['postfinance']				= 'PaymentPostfinance';
 $GLOBALS['ISO_PAY']['authorizedotnet']			= 'PaymentAuthorizeDotNet';
 
@@ -226,7 +227,8 @@ $GLOBALS['ISO_PAY']['authorizedotnet']			= 'PaymentAuthorizeDotNet';
 /** 
  * Order module additional operations
  */
-$GLOBALS['ISO_ORDERS']['operations'][] = 'IsotopePOS';
+$GLOBALS['ISO_ORDERS']['operations']['authorizedotnet'] = 'IsotopePOS';
+$GLOBALS['ISO_ORDERS']['operations']['paypalpayflowpro'] = 'PayflowProPOS';
 
 
 /** 

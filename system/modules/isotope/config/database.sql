@@ -1,4 +1,4 @@
--- **********************************************************
+- **********************************************************
 -- *                                                        *
 -- * IMPORTANT NOTE                                         *
 -- *                                                        *
@@ -448,6 +448,10 @@ CREATE TABLE `tl_payment_modules` (
   `paypalpro_apiPassword` varchar(255) NOT NULL default '',
   `paypalpro_apiSignature` varchar(255) NOT NULL default '',
   `paypalpro_transType` varchar(64) NOT NULL default '',
+  `payflowpro_user` varchar(255) NOT NULL default '',
+  `payflowpro_vendor` varchar(255) NOT NULL default '',
+  `payflowpro_password` varchar(255) NOT NULL default '',
+  `payflowpro_transType` varchar(255) NOT NULL default '',
   `postfinance_pspid` varchar(255) NOT NULL default '',
   `postfinance_secret` varchar(255) NOT NULL default '',
   `postfinance_method` varchar(4) NOT NULL default '',

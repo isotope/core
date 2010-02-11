@@ -830,6 +830,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				'shipping_method'			=> $this->Cart->Shipping->label,
 				'shipping_note'				=> $this->Cart->Shipping->note,
 				'shipping_note_text'		=> strip_tags($this->Cart->Shipping->note),
+				'payment_method_id'			=> $this->Cart->Payment->id,
 				'payment_method'			=> $this->Cart->Payment->label,
 				'payment_note'				=> $this->Cart->Payment->note,
 				'payment_note_text'			=> strip_tags($this->Cart->Payment->note),
