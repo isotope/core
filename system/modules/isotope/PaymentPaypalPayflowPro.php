@@ -76,6 +76,10 @@ class PaymentPaypalPayflowPro extends Payment
 		}
 		
 		
+		$arrExpDate = explode('/', $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_exp']);
+		
+		$strExpDate = $arrExpDate[0] . substr($arrExpDate[1], 2, 2);
+	
 		$arrData = array
 		(			
 			'USER'					=> $this->payflowpro_user,
@@ -83,9 +87,9 @@ class PaymentPaypalPayflowPro extends Payment
 			'PARTNER'				=> 'PayPal',
 			'PWD'					=> $this->payflowpro_password,
 			'TENDER'				=> 'C', //Can also be a paypal account.  need to build this in.
-			'TRXTYPE'				=> $this->payflowpro_transType, //  S = Sale transaction, A = Authorisation, C = Credit, D = Delayed Capture, V = Void  
+			'TRXTYPE'				=> 'S', //$this->payflowpro_transType, //  S = Sale transaction, A = Authorisation, C = Credit, D = Delayed Capture, V = Void  
 			'ACCT'					=> $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_num'],
-			'EXPDATE'				=> $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_exp'],
+			'EXPDATE'				=> $strExpDate,
 			'NAME'					=> $strCardType,
 			'AMT'					=> $this->Cart->grandTotal,
 			'CURRENCY'				=> $this->Isotope->Store->currency,
@@ -109,9 +113,9 @@ class PaymentPaypalPayflowPro extends Payment
 		
 			
 		
-		$arrFinal = array_map(array($this,'urlEncodeVars'), $arrData);
+		//$arrFinal = array_map(array($this,'urlEncodeVars'), $arrData);
 		
-		foreach($arrFinal as $k=>$v)
+		foreach($arrData as $k=>$v)
 		{
 			$arrNVP[] .= $k . '=' . $v;
 		}
@@ -142,90 +146,25 @@ class PaymentPaypalPayflowPro extends Payment
 
 		$objRequest->send('https://' . ($this->debug ? 'pilot-' : '') . 'payflowpro.verisign.com/transaction', implode('&', $arrNVP), 'post');
 		
-		$nvpstr = $objRequest->response;
-				
-		while(strlen($nvpstr))
+		$pfpro = explode('&', $objRequest->response);
+		
+		foreach($pfpro as $row)
 		{
-			//postion of Key
-			$keypos= strpos($nvpstr,'=');
+			$arrPair = explode('=', $row);
 			
-			//position of value
-			$valuepos = strpos($nvpstr,'&') ? strpos($nvpstr,'&'): strlen($nvpstr);
-	
-			/*getting the Key and Value values and storing in a Associative Array*/
-			$keyval=substr($nvpstr,$intial,$keypos);
-			$valval=substr($nvpstr,$keypos+1,$valuepos-$keypos-1);
-			
-			//decoding the respose
-			$arrResponse[urldecode($keyval)] =urldecode( $valval);
-			
-			$nvpstr=substr($nvpstr,$valuepos+1,strlen($nvpstr));
+			$arrResponse[$arrPair[0]] = $arrPair[1];
 		}
 		
-				
-		/*
-			response array
-			'DoDirectPayment' => array
-			(
-						'timestamp' => 'TIMESTAMP',
-						'correlation_id' => 'CORRELATIONID',
-						'ack' => 'ACK',
-						'version' => 'VERSION',
-						'build' => 'BUILD',
-						'avs_code' => 'AVSCODE',
-						'cvv2_match' => 'CVV2MATCH',
-						'transaction_id' => 'TRANSACTIONID',
-						'amount_total' => 'AMT',
-						'currency_code' => 'CURRENCYCODE'
-			)
-		*/
 		
-		if(strtoupper($arrResponse["ACK"]) != "SUCCESS" && strtoupper($arrResponse["ACK"]) != "SUCCESSWITHWARNING")
-		{
-			/*$this->Error['TIMESTAMP']		= $arrResponse['TIMESTAMP'];
-			$this->Error['CORRELATIONID']	= @$this->Response['CORRELATIONID'];
-			$this->Error['ACK']				= $this->Response['ACK'];
-			$this->Error['ERRORCODE']		= $this->Response['L_ERRORCODE0'];
-			$this->Error['SHORTMESSAGE']	= $this->Response['L_SHORTMESSAGE0'];
-			$this->Error['LONGMESSAGE']		= $this->Response['L_LONGMESSAGE0'];
-			$this->Error['SEVERITYCODE']	= $this->Response['L_SEVERITYCODE0'];
-			$this->Error['VERSION']			= @$this->Response['VERSION'];
-			$this->Error['BUILD']			= @$this->Response['BUILD'];*/
+		if (isset($arrResponse['RESULT']) && $arrResponse['RESULT'] == 0) {
+        	return true;
+      	} else {
+      	
+       		$_SESSION['CHECKOUT_DATA']['payment'][$this->id]['error'] = $arrResponse['RESPMSG'];
+       		
+        	$this->redirect($this->addToUrl('step=payment'));   
+      	}
 			
-			// TODO: Error codes for AVSCODE and CVV@MATCH
-			/*
-			$this->_error				= true;
-			$this->_error_ack			= $this->Response['ACK'];
-			$this->ack					= 'Failure';
-			$this->_error_type			= 'paypal';
-			$this->_error_date			= $this->Response['TIMESTAMP'];
-			$this->_error_code			= $this->Response['L_ERRORCODE0'];
-			$this->_error_short_message	= $this->Response['L_SHORTMESSAGE0'];
-			$this->_error_long_message	= $this->Response['L_LONGMESSAGE0'];
-			$this->_error_severity_code	= $this->Response['L_SEVERITYCODE0'];
-			$this->_error_version		= @$this->Response['VERSION'];
-			$this->_error_build			= @$this->Response['BUILD']; 
-			*/
-
-			
-			
-			$_SESSION['CHECKOUT_DATA']['payment'][$this->id]['error'] = $arrResponse['L_LONGMESSAGE0'];
-
-			//TODO: store the reason for a failure for later in case the payment info can be corrected.
-			
-			$this->redirect($this->addToUrl('step=payment'));
-		}			
-		elseif(strtoupper($arrResponse["ACK"]) == 'SUCCESS' OR strtoupper($arrResponse["ACK"]) == 'SUCCESSWITHWARNING')
-		{
-			/*
-			Take the response variables and put them into the local class variables
-			*/
-			/*foreach($this->ResponseFieldsArray['DoDirectPayment'] as $key => $value)
-				$this->$key = $this->Response[$value];
-			*/
-			return true;
-		}
-		
 	}
 	
 	public function urlEncodeVars($v)
