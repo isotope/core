@@ -1321,7 +1321,8 @@ abstract class ModuleIsotopeBase extends Module
           (
             'name'      => $k,
             'description'  => $GLOBALS['TL_LANG']['MSC']['labelProductVariants'],                  
-            'html'      => $this->generateProductOptionWidget('product_variants', $arrData, $this->strFormId, $arrVariantOptionFields)
+            'html'		=> $this->generateProductOptionWidget('product_variants', $arrData, '', $arrVariantOptionFields)
+			//'html'      => $this->generateProductOptionWidget('product_variants', $arrData, $this->strFormId, $arrVariantOptionFields)
           ); 
            
         }
