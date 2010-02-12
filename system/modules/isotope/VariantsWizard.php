@@ -73,7 +73,7 @@ class VariantsWizard extends Widget
 			case 'value':
 				$this->varValue = deserialize($varValue);
 				break;
-
+	
 			case 'mandatory':
 				$this->arrConfiguration['mandatory'] = $varValue ? true : false;
 				break;
@@ -571,7 +571,20 @@ class VariantsWizard extends Widget
 		
 		$strValues = join('\'),(\'', $arrValueSets);
 		
-		$strSQL = "INSERT INTO tl_product_data (" . $this->strAttributes . ")VALUES('" . $strValues . "')";
+		$objProductType = $this->Database->prepare("SELECT type FROM tl_product_data WHERE id=?")
+										 ->limit(1)
+										 ->execute($this->Input->get('id'));
+										 
+		if(!$objProductType->numRows)
+		{
+			$intProductType = 1;
+		}
+		else
+		{
+			$intProductType = $objProductType->type;
+		}
+		
+		$strSQL = "INSERT INTO tl_product_data (type," . $this->strAttributes . ")VALUES('" . $intProductType . "','" . $strValues . "')";
 				echo $strSQL;
 					
 		$this->Database->prepare($strSQL)->execute();
