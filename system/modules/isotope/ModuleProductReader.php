@@ -179,11 +179,14 @@ class ModuleProductReader extends ModuleIsotopeBase
 		{
 			if(!$objProduct->$k)
 				$arrAttributes[$k] = $objParentProduct->$k;
-		
-			if($k==$this->Isotope->Store->priceField)
+					
+			switch($k)
 			{
-				$arrAttributes[$k] = $this->Isotope->formatPriceWithCurrency($v);
+				case $this->Isotope->Store->priceField:
+					$arrAttributes[$k] = $this->Isotope->formatPriceWithCurrency($v);
+					break;
 			}
+			
 		}		
 
 		//provide pre PHP 5.2 functionality that formats the array into a JSON-happy data structure.			
