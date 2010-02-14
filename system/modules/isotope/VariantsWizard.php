@@ -45,7 +45,7 @@ class VariantsWizard extends Widget
 	 */
 	protected $strTemplate = 'be_widget';
 
-	protected $strAttributes = 'pid,tstamp,sku,price,weight,stock_quantity';
+	protected $strAttributes = 'type,pid,tstamp,sku,price,weight,stock_quantity';
 	
 	protected $arrEditableAttributes = array();
 	
@@ -553,10 +553,24 @@ class VariantsWizard extends Widget
 			
 		$i=0;
 		
+		$objProductType = $this->Database->prepare("SELECT type FROM tl_product_data WHERE id=?")
+										 ->limit(1)
+										 ->execute($this->Input->get('id'));
+										 
+		if(!$objProductType->numRows)
+		{
+			$intProductType = 1;
+		}
+		else
+		{
+			$intProductType = $objProductType->type;
+		}
+		
+		
 		foreach($arrSetFinal as $row)
 		{
 						
-			$arrValues = array((integer)$intId, time(), '', 0, 0, 0);	//starting row values
+			$arrValues = array((integer)$intProductType, (integer)$intId, time(), '', 0, 0, 0);	//starting row values
 						
 			$arrRowCombinations[] = array_merge($arrValues, $row);
 			
@@ -571,21 +585,10 @@ class VariantsWizard extends Widget
 		
 		$strValues = join('\'),(\'', $arrValueSets);
 		
-		$objProductType = $this->Database->prepare("SELECT type FROM tl_product_data WHERE id=?")
-										 ->limit(1)
-										 ->execute($this->Input->get('id'));
-										 
-		if(!$objProductType->numRows)
-		{
-			$intProductType = 1;
-		}
-		else
-		{
-			$intProductType = $objProductType->type;
-		}
 		
-		$strSQL = "INSERT INTO tl_product_data (type," . $this->strAttributes . ")VALUES('" . $intProductType . "','" . $strValues . "')";
-				echo $strSQL;
+		
+		$strSQL = "INSERT INTO tl_product_data (" . $this->strAttributes . ")VALUES('" . $strValues . "')";
+
 					
 		$this->Database->prepare($strSQL)->execute();
 	}
