@@ -110,6 +110,14 @@ class ModuleProductLister extends ModuleIsotopeBase
 			$this->setFilterSQL($arrFilters);
 		}
 
+		if(!$this->strOrderBySQL)
+		{
+			if($this->iso_listingSortField)
+			{
+				$this->strOrderBySQL = $this->iso_listingSortField . '-' . $this->iso_listingSortDirection;
+			}
+		}
+		
 		$objProductIds = $this->Database->prepare("SELECT p.* FROM tl_product_categories c, tl_product_data p WHERE p.id=c.pid" . ($this->strFilterSQL ? " AND (" . $this->strFilterSQL . ")" : "") . " AND c.page_id IN (" . implode(',', $this->arrCategories) . ")" . ($this->strSearchSQL ? " AND (" . $this->strSearchSQL . ")" : "") . ($this->strOrderBySQL ? " ORDER BY " . $this->strOrderBySQL : ""));
 		
 		
