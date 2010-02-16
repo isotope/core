@@ -90,13 +90,13 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 				'label'               => &$GLOBALS['TL_LANG']['tl_iso_orders']['show'],
 				'href'                => 'act=show',
 				'icon'                => 'show.gif'
-			),
+			)/*,
 			'edit_order' => array
 			(
 				'label'         => &$GLOBALS['TL_LANG']['tl_iso_orders']['edit_order'],
 				'href'          => 'table=tl_iso_order_items',
 				'icon'          => 'system/modules/isotope/html/edit_order.png'      
-			),
+			)*/,
 			'print_order' => array
 			(
 				'label'			=> &$GLOBALS['TL_LANG']['tl_iso_orders']['print_order'],
