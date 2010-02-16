@@ -110,14 +110,15 @@ class ModuleProductLister extends ModuleIsotopeBase
 			$this->setFilterSQL($arrFilters);
 		}
 
-		if(!$this->strOrderBySQL)
+		if($this->strOrderBySQL=='sorting')
 		{
+
 			if($this->iso_listingSortField)
 			{
-				$this->strOrderBySQL = $this->iso_listingSortField . '-' . $this->iso_listingSortDirection;
-			}
+				$this->setFilterSQL(array('order_by' => ($this->iso_listingSortField.'-'.$this->iso_listingSortDirection)));
+		    }
 		}
-		
+				
 		$objProductIds = $this->Database->prepare("SELECT p.* FROM tl_product_categories c, tl_product_data p WHERE p.id=c.pid" . ($this->strFilterSQL ? " AND (" . $this->strFilterSQL . ")" : "") . " AND c.page_id IN (" . implode(',', $this->arrCategories) . ")" . ($this->strSearchSQL ? " AND (" . $this->strSearchSQL . ")" : "") . ($this->strOrderBySQL ? " ORDER BY " . $this->strOrderBySQL : ""));
 		
 		
@@ -493,25 +494,42 @@ class ModuleProductLister extends ModuleIsotopeBase
 	public function generateAjax()
 	{
 		
-		 
-		//get the default params
-		$arrFilters = array('for'=>$this->Input->get('for'),'per_page'=>$this->Input->get('per_page'),'page'=>$this->Input->get('page'),'order_by'=>$this->Input->get('order_by'));	
-
-
-		/*$arrFilterFields = implode(',', $this->Input->get('filters'));	//get the names of filters we are using
-
-		foreach($arrFilterFields as $field)
+		if($this->Input->get('clear'))
 		{
-			if($this->Input->get($field))
+			$arrFilters = array();
+		} 
+		else
+		{
+		
+			//get the default params
+			$arrFilters = array('for'=>$this->Input->get('for'),'per_page'=>$this->Input->get('per_page'),'page'=>$this->Input->get('page'),'order_by'=>$this->Input->get('order_by'));	
+
+			/*$arrFilterFields = implode(',', $this->Input->get('filters'));	//get the names of filters we are using
+	
+			foreach($arrFilterFields as $field)
 			{
-				$arrFilters[$field] = $this->Input->get($field);
-			}
-		}*/	
+				if($this->Input->get($field))
+				{
+					$arrFilters[$field] = $this->Input->get($field);
+				}
+			}*/	
+			
+		}
+
+		if(!count($arrFilters['order_by']))
+		{	
+			if($this->iso_listingSortField)
+			{
+				$arrFilters = array('order_by' => ($this->iso_listingSortField.'-'.$this->iso_listingSortDirection));
+	            	}
+		}
+		
 
 		$strHtml = $this->generateAJAXListing($arrFilters);
 
 		return $strHtml;
 	}
+
 
 	/**
 	 * Generate the listing template in html to update the listing results
