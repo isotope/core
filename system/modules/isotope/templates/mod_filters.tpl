@@ -149,16 +149,18 @@ window.addEvent('domready', function() {
 		
 		ctrlClear.addEvent('click', function(event) {
 			event.stop();
-			
+
+			var intPerPage = <?php echo ($this->per_page ? $this->per_page : "10") ?>;		
+
 			$('ctrl_for').set('value', '');
-			$('ctrl_per_page').set('value',10);
-			
+			$('ctrl_order_by').set('value', '');
+			$('ctrl_per_page').set('value',intPerPage);
 			
 			var req = new Request({
 				method: 'get',
 				url: 'ajax.php',
 				urlencoded: true,
-				data: '<?php echo $this->ajaxParams; ?>' + getQueryString(<?php echo $this->per_page; ?>),
+				data: '<?php echo $this->ajaxParams; ?>' + getQueryString(intPerPage) + '&clear=1',
 				onRequest: showLoader(),
 				onSuccess: function(responseText, responseXML) { insertProductList(responseText); hideLoader(); }
 			}).send();		
