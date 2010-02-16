@@ -193,6 +193,7 @@ class ModuleFilters extends ModuleIsotopeBase
 	
 	private function getOrderByOptions($arrAttributes)
 	{		
+		$arrOptions[''] = '-';
 		
 		foreach($arrAttributes as $attribute)
 		{

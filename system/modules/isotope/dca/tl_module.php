@@ -30,7 +30,7 @@
  */
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][]			= 'iso_checkout_method';
 
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductLister']			= '{title_legend},name,headline,type;{display_legend},perPage,columns,iso_list_format,iso_show_teaser;{config_legend},iso_use_quantity,iso_category_scope,iso_jump_first,new_products_time_window,featured_products;{redirect_legend},iso_reader_jumpTo;{template_legend:hide},iso_list_layout;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductLister']			= '{title_legend},name,headline,type;{display_legend},perPage,columns,iso_list_format,iso_show_teaser;{config_legend},iso_use_quantity,iso_category_scope,iso_jump_first,iso_listingSortField,iso_listingSortDirection,new_products_time_window,featured_products;{redirect_legend},iso_reader_jumpTo;{template_legend:hide},iso_list_layout;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductReader']			= '{title_legend},name,headline,type;{config_legend},iso_use_quantity,iso_disableFilterAjax;{template_legend:hide},iso_reader_layout;guests,protected;align,space,cssID';
 
@@ -419,6 +419,25 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_donationProduct'] = array
 );
 
 
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_listingSortField'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_listingSortField'],
+	'exclude'                 => true,
+	'inputType'               => 'select',
+	'eval'					  => array('includeBlankOption'=>true),
+	'options_callback'		  => array('tl_module_isotope','getSortableAttributes')
+);
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_listingSortDirection'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_listingSortDirection'],
+	'exclude'                 => true,
+	'default'				  => 'DESC',
+	'inputType'               => 'select',
+	'options'				  => array('DESC','ASC'),
+	'reference'				  => &$GLOBALS['TL_LANG']['tl_module']['sortingDirection']
+);
+
 
 /**
  * tl_module_isotope class.
@@ -427,6 +446,26 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_donationProduct'] = array
  */
 class tl_module_isotope extends Backend
 {
+
+	public function getSortableAttributes()
+	{
+		$arrReturn = array();
+		
+		$objData = $this->Database->prepare("SELECT name, field_name FROM tl_product_attributes WHERE is_order_by_enabled='1' AND disabled!='1'")
+								  ->execute();
+		
+		if(!$objData->numRows)
+		{
+			return array();
+		}
+		
+		while($objData->next())
+		{
+			$arrReturn[$objData->field_name] = $objData->name;
+		}
+		
+		return $arrReturn;
+	}
 
 	public function getDonationProducts()
 	{

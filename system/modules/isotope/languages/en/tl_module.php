@@ -65,8 +65,9 @@ $GLOBALS['TL_LANG']['tl_module']['iso_enableSearch']			= array('Enable search','
 $GLOBALS['TL_LANG']['tl_module']['iso_disableFilterAjax']		= array('Disable AJAX/JSON','Please check this if you would prefer not to use the AJAX/JSON functionality.');
 $GLOBALS['TL_LANG']['tl_module']['iso_cart_jumpTo']				= array('Shopping Cart Jump to page', 'This setting defines to which page a user will be redirected when requesting a full shopping cart view.');
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_jumpTo']			= array('Checkout Jump to page', 'This setting defines to which page a user will be redirected when completing their transaction.');
-$GLOBALS['TL_LANG']['tl_module']['iso_donationProduct']				= array('Donation Product','Select a product to be used for donations.');
-
+$GLOBALS['TL_LANG']['tl_module']['iso_donationProduct']			= array('Donation Product','Select a product to be used for donations.');
+$GLOBALS['TL_LANG']['tl_module']['iso_listingSortField'] 		= array('Initial sorting field','Select a sorting field to sort the listing by on first page load.');
+$GLOBALS['TL_LANG']['tl_module']['iso_listingSortDirection'] 	= array('Initial sorting direction','Select a initial sorting direction.');
 /**
  * References
  */
@@ -78,6 +79,8 @@ $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['parent_and_first_chi
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['parent_and_all_children']	= 'Current Category and All Child Categories';
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['current_category']			= 'Current Category Only';
 
+$GLOBALS['TL_LANG']['tl_module']['sortingDirection']['ASC'] 	= "Low to High/A to Z";
+$GLOBALS['TL_LANG']['tl_module']['sortingDirection']['DESC'] 	= "High to Low/Z to A";
 
 /**
  * Legends

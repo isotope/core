@@ -53,6 +53,8 @@ CREATE TABLE `tl_module` (
   `iso_checkout_jumpTo` int(10) unsigned NOT NULL default '0',
   `orderCompleteJumpTo` int(10) unsigned NOT NULL default '0',
   `iso_donationProduct` int(10) unsigned NOT NULL default '0',
+  `iso_listingSortField` varchar(255) NOT NULL default '',
+  `iso_listingSortDirection` varchar(8) NOT NULL default '',
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
@@ -629,6 +631,7 @@ CREATE TABLE `tl_iso_order_items` (
   `price` double NULL default NULL,
   `product_options` text NULL,
   `product_data` blob NULL,
+  `product_status` varchar(255) NOT NULL default '',
   `status` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
