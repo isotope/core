@@ -97,6 +97,12 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 				'href'          => 'table=tl_iso_order_items',
 				'icon'          => 'system/modules/isotope/html/edit_order.png'      
 			),
+			'print_order' => array
+			(
+				'label'			=> &$GLOBALS['TL_LANG']['tl_iso_orders']['print_order'],
+				'href'			=> 'key=print_order',
+				'icon'			=> 'system/modules/isotope/html/printer.png'
+			),
 			'buttons' => array
 			(
 				'button_callback'     => array('tl_iso_orders', 'moduleOperations'),
