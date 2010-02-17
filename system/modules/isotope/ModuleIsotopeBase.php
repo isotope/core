@@ -694,7 +694,8 @@ abstract class ModuleIsotopeBase extends Module
 	 */
 	public function generateProductOptionWidget($strField, $arrData = array(), $strFormId, $arrOptionFields = array(), $blnUseTable = false)
 	{
-		
+			$hideVariants = false;
+			
 			$strClass = $GLOBALS['TL_FFL'][$arrData['inputType']];
 										
 			// Continue if the class is not defined
@@ -747,6 +748,11 @@ abstract class ModuleIsotopeBase extends Module
 							{
 								$this->arrProductOptionsData = $this->getSubproductValues($varValue, $arrOptionFields);	//field is implied							
 							}
+							
+							if(!count($this->arrProductOptionsData))
+							{
+								$hideVariants = true;
+							}
 							break;			
 						default:
 							$this->arrProductOptionsData[] = $this->getProductOptionValues($strField, $arrData['inputType'], $varValue); 
@@ -763,10 +769,12 @@ abstract class ModuleIsotopeBase extends Module
 			//$_SESSION['FORM_DATA'][$strField] = $varValue;
 			
 			//$varSave = is_array($varValue) ? serialize($varValue) : $varValue;
-					
-			$temp .= $objWidget->parse() . '<br />';
-					
-		return $temp;
+			
+			if(!$hideVariants)
+			{
+				$temp .= $objWidget->parse() . '<br />';
+				return $temp;
+			}
 	}
 	
 	
@@ -889,15 +897,17 @@ abstract class ModuleIsotopeBase extends Module
 		}
 		else
 		{
+		
 			if($intPid>0)
 			{
-				//Create a special widget that combins all option value combos that are enabled.
+		
+				//Create a special widget that combines all option value combos that are enabled.
 				$arrData = array
 				(
 					'name'			=> 'subproducts',
 					'description'	=> &$GLOBALS['TL_LANG']['tl_product_data']['product_options'],
 					'inputType'		=> 'select',					
-					'options'		=> $this->getSubproductOptionValues($intPid, $arrOptions),
+					'options'		=> $arrSubproductOptions,
 					'eval'			=> array()
 				);
 				
@@ -1157,7 +1167,7 @@ abstract class ModuleIsotopeBase extends Module
 	/**
 	 * Generate a product template
 	 */
-	public function generateProduct($objProduct, $strTemplate, $arrData=array(), $strFormId='')
+	public function generateProduct($objProduct, $strTemplate, $arrData=array(), $strFormId='', $intParentProductId = 0)
 	{
 		
 		$objTemplate = new FrontendTemplate($strTemplate);
@@ -1303,6 +1313,7 @@ abstract class ModuleIsotopeBase extends Module
 
 		if($blnIsMergedOptionSet && count($arrVariantOptionFields))
 		{
+			
  			$objTemplate->hasVariants = true;
 			//Create a special widget that combins all option value combos that are enabled.
 			$arrData = array
@@ -1310,24 +1321,33 @@ abstract class ModuleIsotopeBase extends Module
 	            'name'      => 'subproducts',
 	            'description'  => &$GLOBALS['TL_LANG']['tl_product_data']['product_options'],
 	            'inputType'    => 'select',          
-	            'options'    => $this->getSubproductOptionValues($objProduct->id, $arrVariantOptionFields),
+	            'options'    => $this->getSubproductOptionValues(($intParentProductId ? $intParentProductId : $objProduct->id), $arrVariantOptionFields),
 	            'eval'      => array()
 	        );
-          
+       
           //$arrData = $this->getDCATemplate($arrAttributeData);  //Grab the skeleton DCA info for widget generation
 		  $arrAttributeData = $this->getProductAttributeData($k);
 
-          $arrVariantWidget = array
-          (
-            'name'      => $k,
-            'description'  => $GLOBALS['TL_LANG']['MSC']['labelProductVariants'],                  
-            'html'		=> $this->generateProductOptionWidget('product_variants', $arrData, '', $arrVariantOptionFields)
-			//'html'      => $this->generateProductOptionWidget('product_variants', $arrData, $this->strFormId, $arrVariantOptionFields)
-          ); 
-           
+		  $strHtml = $this->generateProductOptionWidget('product_variants', $arrData, '', $arrVariantOptionFields);
+	
+		  if(strlen($strHtml) && $arrData['options'])
+		  {
+			  $arrVariantWidget = array
+			  (
+				'name'      => $k,
+				'description'  => $GLOBALS['TL_LANG']['MSC']['labelProductVariants'],                  
+				'html'		=> $strHtml 
+				//'html'      => $this->generateProductOptionWidget('product_variants', $arrData, $this->strFormId, $arrVariantOptionFields)
+			  ); 
+		   }
+		   else
+		   {
+		   		$objTemplate->hasVariants = false;
+		   }           
         }
-				
 		
+		
+
 		$objTemplate->raw = $objProduct->getData();
 		$objTemplate->href_reader = $objProduct->href_reader;
 		
@@ -1343,5 +1363,6 @@ abstract class ModuleIsotopeBase extends Module
 		
 		return $objTemplate->parse();
 	}
+	
 }
 

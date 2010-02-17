@@ -491,8 +491,7 @@ class IsotopeCart extends Model
 		$arrAllOptionValues = array();
 		$arrOptionValues = array();
 		$arrVariantOptions = array();
-		
-		
+				
 		if($this->Input->post('product_variants'))
 		{			
 			$objProduct->setVariant($this->Input->post('product_variants'), $this->Input->post('variant_options'));	
