@@ -90,7 +90,10 @@ class IsotopeProduct extends Model
 				
 			case 'hasDownloads':
 				return count($this->arrDownloads) ? true : false;
-				
+			
+			case 'hasVariants':
+				return $this->getFirstChild($this->id) ? true : false;
+				break;
 			default:
 				// Initialize attribute
 				if (!isset($this->arrCache[$strKey]))
@@ -205,6 +208,27 @@ class IsotopeProduct extends Model
 				$this->arrData[$this->Isotope->Store->overridePriceField] = $varValue;
 				break;
 			
+			case 'images':					
+					// No image available, add default image
+					if (!count($varValue) && is_file(TL_ROOT . '/' . $this->Isotope->Store->missing_image_placeholder))
+					{
+						foreach( array('large', 'medium', 'thumbnail', 'gallery') as $size )
+						{
+							$strImage = $this->Isotope->getImage($this->Isotope->Store->missing_image_placeholder, $this->Isotope->Store->{$size . '_image_width'}, $this->Isotope->Store->{$size . '_image_height'});
+							$arrSize = @getimagesize(TL_ROOT . '/' . $strImage);
+							
+							$file[$size] = $strImage;
+							
+							if (is_array($arrSize) && strlen($arrSize[3]))
+							{
+								$file[$size . '_size'] = $arrSize[3];
+							}
+						}
+						
+						$this->arrData[$strKey][] = $file;
+					}
+					break;
+			
 			default:
 				$this->arrCache[$strKey] = $varValue;
 		}
@@ -286,7 +310,20 @@ class IsotopeProduct extends Model
 		return $this->arrOptions;
 	}
 	
-	
+	public function getFirstChild($intProductId)
+	{
+		$objId = $this->Database->prepare("SELECT id FROM tl_product_data WHERE pid=? ORDER BY sorting ASC, id ASC")
+								->limit(1)
+								->execute($intProductId);
+		
+		if(!$objId->numRows)
+		{
+			return false;
+		}
+		
+		return $objId->id;
+	}
+
 	/**
 	 * Return all attributes for this product
 	 */
@@ -294,7 +331,22 @@ class IsotopeProduct extends Model
 	{
 		$arrData = array();
 		
-		foreach( $this->arrAttributes as $attribute )
+		$objAttributeStatus = $this->Database->prepare("SELECT field_name FROM tl_product_attributes WHERE field_name IN(" . implode(",", $this->arrAttributes) . ") AND disabled='1'");
+		
+		if(!$objAttributeStatus->numRows)
+		{
+			$arrAttributes = $this->arrAttributes;
+		}
+		else
+		{
+			while($objAttributeStatus->next())
+			{
+				unset($this->arrAttributes[$objAttributeStatus->field_name]);
+			}
+		}
+		
+		
+		foreach( $arrAttributes as $attribute )
 		{
 			$arrData[$attribute] = $this->$attribute;
 		}
@@ -310,7 +362,7 @@ class IsotopeProduct extends Model
 	{
 		$strPriceField = $this->Isotope->Store->priceField;
 				
-		$objVariant = $this->Database->prepare("SELECT id, sku, weight, " . $strPriceField . ", " . $strVariantFields . " FROM tl_product_data WHERE id=?")->limit(1)->execute($intId);
+		$objVariant = $this->Database->prepare("SELECT id, sku, weight, " . $strPriceField . ", " . $strVariantFields . ", images FROM tl_product_data WHERE id=?")->limit(1)->execute($intId);
 		
 		if(!$objVariant->numRows)
 			return;
