@@ -5,7 +5,7 @@
 <<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
 <?php endif; ?>
 
-<form id="productForm" action="<?php echo $this->action; ?>" method="<?php echo (!$this->disableAjax ? "get" : "post"); ?>">
+<form id="productForm" action="<?php echo $this->action; ?>" method="post">
 <div class="formbody">
 <input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formId; ?>" />
 
@@ -38,24 +38,22 @@ window.addEvent('domready', function() {
 	
 	function replaceMainImage(image)
 	{				
-		return html = "<a href=\"" + image['large'] + "\" title=\"" + image['desc'] + "\" rel=\"lightbox\"><img src=\"" + image['thumbnail'] + "\" alt=\"" + image['alt'] + "\"" + image['thumbnail_size'] + "/></a>\n";
+		return html = "<a href=\"" + image['large'] + "\" title=\"" + image['desc'] + "\" rel=\"lightbox\"><img src=\"" + image['thumbnail'] + "\" alt=\"" + image['alt'] + "\"" + image['thumbnail_size'] + "/><\/a>\n";
 		
 	}
 	
 	function replaceGallery(image)
 	{	
-		return html = "<a href=\"" + image['large'] + "\" title=\"" + image['desc'] + "\" rel=\"lightbox\"><img src=\"" + image['gallery'] + "\" alt=\"" + image['alt'] + "\"" + image['gallery_size'] + "/></a>\n";
+		return html = "<a href=\"" + image['large'] + "\" title=\"" + image['desc'] + "\" rel=\"lightbox\"><img src=\"" + image['gallery'] + "\" alt=\"" + image['alt'] + "\"" + image['gallery_size'] + "/><\/a>\n";
 		
 	}
 	
+	//productForm.addEvent('submit',function(event){ event.stop(); }); 
+	
 	var productForm = $('productForm');
 	
-	productForm.addEvent('submit',function(event){ event.stop(); }); 
-	
 	var ctrlVariants = $('ctrl_product_variants');
-	
-	var parentProduct = $('ctrl_product_id');
-	
+		
 	ctrlVariants.addEvent('change', function(event) {
 		event.stop();
 		
@@ -79,7 +77,8 @@ window.addEvent('domready', function() {
 				}
 				
 				var imagesHtml = new String();
-							
+				
+				$('image_gallery').set('html', '');		
 				//image update handler
 				objProduct.images.each(function(item, index){
 					
@@ -99,27 +98,8 @@ window.addEvent('domready', function() {
 					}
 				});
 			}
-		}).send('<?php echo $this->ajaxParams; ?>' + '&product_id=' + parentProduct.value + '&variant=' + this.value);
+		}).send('<?php echo $this->ajaxParams; ?>' + '&variant=' + this.value);
 	});
-	
-	 			
-	/*	var req = new Request({
-			method: 'get',
-			url: 'ajax.php',
-			urlencoded: true,
-			data: '<?php echo $this->ajaxParams; ?>' + '&product_id=' + parentProduct.value + '&variant=' + this.value + '&container=image_main',
-			onRequest: showLoader(),
-			onSuccess: function(responseText, responseXML) { replaceMainImage(responseText); hideLoader(); }
-		}).send();	
-		
-		var req = new Request({
-			method: 'get',
-			url: 'ajax.php',
-			urlencoded: true,
-			data: '<?php echo $this->ajaxParams; ?>' + '&product_id=' + parentProduct.value + '&variant=' + this.value + '&container=image_gallery',
-			onRequest: showLoader(),
-			onSuccess: function(responseText, responseXML) { replaceGallery(responseText); hideLoader(); }
-		}).send();	*/
 });
 </script>
 <?php endif; ?>
