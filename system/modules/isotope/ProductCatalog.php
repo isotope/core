@@ -40,7 +40,6 @@ class ProductCatalog extends Backend
 	(
 		'integer'		=> "int(10) NULL default NULL",
 		'decimal'		=> "double NULL default NULL",
-		'shorttext'		=> "varchar(128) NOT NULL default ''",
 		'text'			=> "varchar(255) NOT NULL default ''",
 		'longtext'		=> "text NULL",
 		'datetime'		=> "int(10) unsigned NOT NULL default '0'",
@@ -60,6 +59,8 @@ class ProductCatalog extends Backend
 	protected $systemColumns = array('id', 'pid', 'sorting', 'tstamp', 'alias', 'published');
 	
 	protected $renameColumnStatement = "ALTER TABLE tl_product_data CHANGE COLUMN %s %s %s";
+	
+	protected $modifyColumnStatement = "ALTER TABLE tl_product_data MODIFY %s %s";
 	
 	protected $createColumnStatement = "ALTER TABLE tl_product_data ADD %s %s";
 	
@@ -152,11 +153,7 @@ class ProductCatalog extends Backend
 					$inputType = 'text';
 					$eval['tl_class'] = 'long';
 					break;
-					
-				case 'shorttext':
-					$inputType = 'text';
-					break;
-					
+			
 				case 'longtext':
 					$inputType = 'textarea';
 					
@@ -882,6 +879,27 @@ class ProductCatalog extends Backend
 		return $arrOptions;
 	}
 	
+	public function changeFieldType(DataContainer $dc)
+	{
+		
+		$objField = $this->Database->prepare("SELECT * FROM tl_product_attributes WHERE id=?")
+								   ->limit(1)
+								   ->execute($dc->id);
+		
+		if(!$objField->numRows)
+		{
+			throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['missingAttribute'], $dc->id));
+		}
+		
+		if($objField->type!=$this->Input->post('type'))
+		{
+			$statement = sprintf($this->modifyColumnStatement, $this->Input->post('field_name'), $this->sqlDef[$this->Input->post('type')]);
+		}
+		
+		if (strlen($statement))
+			$this->Database->execute($statement);
+	}
+	
 	public function renameColumn($varValue, DataContainer $dc)
 	{
 		
@@ -941,6 +959,7 @@ class ProductCatalog extends Backend
 			{
 				$statement = sprintf($this->renameColumnStatement, $fieldName, $varValue, $this->sqlDef[$fieldType]);
 			}
+			
 		}
 		else
 		{
