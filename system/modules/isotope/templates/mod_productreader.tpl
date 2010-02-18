@@ -53,6 +53,7 @@ window.addEvent('domready', function() {
 	var productForm = $('productForm');
 	
 	var ctrlVariants = $('ctrl_product_variants');
+	var ctrlProductId = $('ctrl_product_id');
 		
 	ctrlVariants.addEvent('change', function(event) {
 		event.stop();
@@ -98,7 +99,7 @@ window.addEvent('domready', function() {
 					}
 				});
 			}
-		}).send('<?php echo $this->ajaxParams; ?>' + '&variant=' + this.value);
+		}).send('<?php echo $this->ajaxParams; ?>&product_id=' + ctrlProductId.value + '&variant=' + this.value);
 	});
 });
 </script>
