@@ -34,15 +34,15 @@
 <?php endif; ?>
 
 <?php if ($this->sku): ?>
-<p class="sku"><?php echo $this->sku; ?></p><?php endif; if ($this->description): ?>
-<p class="description"><?php echo $this->description; ?></p><?php endif; ?>
+<div class="sku"><?php echo $this->sku; ?></div><?php endif; if ($this->description): ?>
+<div class="description"><?php echo $this->description; ?></div><?php endif; ?>
 
 <?php //if(!$this->hasVariants): ?>
-<p id="product_price" class="price">
+<div id="product_price" class="price">
 	<?php if($this->editablePrice): ?>
     	<label for="<?php echo $this->price['name']; ?>"><?php echo $this->price['description']; ?> </label><?php echo $this->price['html']; ?>
     <?php else: ?>
-    	<?php echo $this->price; ?></p>
+    	<?php echo $this->price; ?></div>
 	<?php endif; ?>
 <?php //endif; ?>
 

@@ -126,26 +126,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 				$arrButtons = $this->$callback[0]->$callback[1]($arrButtons);
 			}
 		}
-		
-		if ($this->Input->post('FORM_SUBMIT') == $this->strFormId) // && $this->Input->post('product_id') == $objProduct->id)
-		{			
-			foreach( $arrButtons as $button => $data )
-			{
-				if (strlen($this->Input->post($button)))
-				{
-					if (is_array($data['callback']) && count($data['callback']) == 2)
-					{
-					
-						$this->import($data['callback'][0]);
-						$this->{$data['callback'][0]}->{$data['callback'][1]}($objProduct, $this);
-					}
-					break;
-				}
-			}
-			
-			$this->reload();
-		}
-		
+						
 		$arrTemplateData = array
 		(
 			'buttons'		=> $arrButtons,
@@ -158,7 +139,8 @@ class ModuleProductReader extends ModuleIsotopeBase
 		$this->Template->formId = $this->strFormId;
 		
 		
-		if($intFirstChild = $objProduct->getFirstChild($objProduct->id))
+		
+		/*if($intFirstChild = $objProduct->getFirstChild($objProduct->id))
 		{						
 			if($intFirstChild)
 			{
@@ -181,10 +163,30 @@ class ModuleProductReader extends ModuleIsotopeBase
 				
 			}
 		
+		}*/
+				
+				
+		$this->Template->product = $this->generateProduct($objProduct, $this->iso_reader_layout, $arrTemplateData, $this->strFormId, $intParentProductId);	
+
+
+		if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && !$this->doNotSubmit) // && $this->Input->post('product_id') == $objProduct->id)
+		{			
+			foreach( $arrButtons as $button => $data )
+			{
+				if (strlen($this->Input->post($button)))
+				{
+					if (is_array($data['callback']) && count($data['callback']) == 2)
+					{
+					
+						$this->import($data['callback'][0]);
+						$this->{$data['callback'][0]}->{$data['callback'][1]}($objProduct, $this);
+					}
+					break;
+				}
+			}
+			
+			$this->reload();
 		}
-				
-				
-		$this->Template->product = $this->generateProduct($objProduct, $this->iso_reader_layout, $arrTemplateData, '', $intParentProductId);	
 
 		
 		$objPage->title .= ' - ' . $objProduct->name;
@@ -197,37 +199,44 @@ class ModuleProductReader extends ModuleIsotopeBase
 	public function generateAjax()
 	{
 		
-		
-		$objProduct = $this->getProduct($this->Input->get('variant'));
-
-		if($objProduct->pid)
+		if(!$this->Input->get('variant'))
 		{
-			$objParentProduct = $this->getProduct($objProduct->pid);
-			$arrParentAttributes = $objParentProduct->getAttributes();
-			unset($arrParentAttributes['images']);
+			$objProduct = $this->getProductByAlias($this->Input->get('product_id'));
+			$arrAttributes = $objProduct->getAttributes();
 		}
-			
-		$arrAttributes = $objProduct->getAttributes();
-			
-		unset($arrAttributes['variants_wizard']);
-		
-		
-		
-		foreach($arrAttributes as $k=>$v)
+		else
 		{
-			if(!$objProduct->$k)
-				$arrAttributes[$k] = $arrParentAttributes[$k];				
-		
-			switch($k)
+			$objProduct = $this->getProduct((integer)$this->Input->get('variant'));
+	
+			if($objProduct->pid)
 			{
-				case $this->Isotope->Store->priceField:
-					$arrAttributes[$k] = $this->Isotope->formatPriceWithCurrency($v);
-					break;
+				$objParentProduct = $this->getProduct($objProduct->pid);
 				
+				$arrParentAttributes = $objParentProduct->getAttributes();
+				
+				unset($arrParentAttributes['images']);	//clear the image array
 			}
+				
+			$arrAttributes = $objProduct->getAttributes();
+				
+			unset($arrAttributes['variants_wizard']);		
 			
-		}		
-
+			foreach($arrAttributes as $k=>$v)
+			{
+				if(!$objProduct->$k)
+					$arrAttributes[$k] = $arrParentAttributes[$k];				
+			
+				switch($k)
+				{
+					case $this->Isotope->Store->priceField:
+						$arrAttributes[$k] = $this->Isotope->formatPriceWithCurrency($v);
+						break;
+					
+				}
+				
+			}		
+		}
+		
 		//provide pre PHP 5.2 functionality that formats the array into a JSON-happy data structure.			
 		if(!function_exists('json_encode'))
 		{

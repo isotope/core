@@ -704,14 +704,14 @@ abstract class ModuleIsotopeBase extends Module
 				
 				return false;	
 			}
-		
+
+			$arrData['eval']['required'] = $arrData['eval']['mandatory'] ? true : false;
 	
 			$objWidget = new $strClass($this->prepareForWidget($arrData, $strField));
 			
 			$objWidget->storeValues = true;
 			$objWidget->tableless = true;
-			count($arrData['options']) ? $objWidget->options = $arrData['options'] : $objWidget->options = NULL;
-			//$_SESSION['FORM_DATA'][$strField] = $objWidget->value;
+	
 			
 			// Validate input
 			if ($this->Input->post('FORM_SUBMIT') == $strFormId)
@@ -730,13 +730,13 @@ abstract class ModuleIsotopeBase extends Module
 	
 				if ($objWidget->hasErrors())
 				{
-					$this->doNotSubmit = true;
-					$_SESSION['FORM_DATA'][$strField] = $varValue;
+					$this->doNotSubmit = true;					
 				}
 	
 				// Store current value
-				elseif ($objWidget->submitInput() && !$this->doNotSubmit)
+				elseif ($objWidget->submitInput())
 				{
+					$_SESSION['FORM_DATA'][$strField] = $varValue;
 					//Store this options value to the productOptionsData array which is then serialized and stored for the given product that is being added to the cart.
 					
 					//Has to collect this data differently - product variant data relies upon actual values specified for the given product ID, where as simple options
@@ -765,7 +765,7 @@ abstract class ModuleIsotopeBase extends Module
 			{
 				$this->hasUpload = true;
 			}
-					
+								
 			//$_SESSION['FORM_DATA'][$strField] = $varValue;
 			
 			//$varSave = is_array($varValue) ? serialize($varValue) : $varValue;
@@ -927,7 +927,7 @@ abstract class ModuleIsotopeBase extends Module
 	{
 		$arrData['label'] 	= $arrAttributeData['description'];
 		$arrData['prompt'] 	= $arrAttributeData['name'];
-		$arrData['eval']['mandatory'] = $arrAttributeData['is_required'] ? true : false;
+		$arrData['eval']['required'] = $arrAttributeData['is_required'] ? true : false;
 
 		switch($arrAttributeData['type'])
 		{
@@ -1010,11 +1010,7 @@ abstract class ModuleIsotopeBase extends Module
 			
 			$strOptionValue = join(',', $arrValues) . ' - ' . $this->Isotope->formatPriceWithCurrency($option['price']);
 			
-			$arrOptions[] = array
-			(
-				'value'	=>		$option['id'],
-				'label' => 		$strOptionValue
-			);
+			$arrOptions[$option['id']] = $strOptionValue;
 		}
 		
 		return $arrOptions;
@@ -1113,8 +1109,10 @@ abstract class ModuleIsotopeBase extends Module
 		$objProduct = new IsotopeProduct();
 		
 		if (!$objProduct->findBy('id', $intId))
+		{						
 			return null;
-			
+		}
+		
 		$objProduct->reader_jumpTo = $this->iso_reader_jumpTo;
 			
 		return $objProduct;
@@ -1218,11 +1216,13 @@ abstract class ModuleIsotopeBase extends Module
 																	
 							$arrData = $this->getDCATemplate($arrAttributeData);	//Grab the skeleton DCA info for widget generation
 
+							$arrData['eval']['includeBlankOption'] = true;
+
 							$arrProductOptions[] = array
 							(
 								'name'			=> $attribute,
 								'description'	=> $GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['description'],									
-								'html'			=> $this->generateProductOptionWidget($attribute, $arrData, '')
+								'html'			=> $this->generateProductOptionWidget($attribute, $arrData, $strFormId)
 							);										
 						}
 						
@@ -1322,13 +1322,13 @@ abstract class ModuleIsotopeBase extends Module
 	            'description'  => &$GLOBALS['TL_LANG']['tl_product_data']['product_options'],
 	            'inputType'    => 'select',          
 	            'options'    => $this->getSubproductOptionValues(($intParentProductId ? $intParentProductId : $objProduct->id), $arrVariantOptionFields),
-	            'eval'      => array()
+	            'eval'      => array('includeBlankOption'=>true,'mandatory'=>true)
 	        );
        
           //$arrData = $this->getDCATemplate($arrAttributeData);  //Grab the skeleton DCA info for widget generation
 		  $arrAttributeData = $this->getProductAttributeData($k);
 
-		  $strHtml = $this->generateProductOptionWidget('product_variants', $arrData, '', $arrVariantOptionFields);
+		  $strHtml = $this->generateProductOptionWidget('product_variants', $arrData, $strFormId, $arrVariantOptionFields);
 	
 		  if(strlen($strHtml) && $arrData['options'])
 		  {
