@@ -169,7 +169,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 	private function cleanForMeta($strText, $length)
 	{
 		$string = strip_tags($strText);
-		
+		/*
 
  
         // If string exceeds the truncation length
@@ -177,15 +177,16 @@ class ModuleProductReader extends ModuleIsotopeBase
  
                 // Output infoBox with output set
                 $end = $length - strlen($string);
+                
                 while($string[$end]!=$end_char) $end--;
                 return substr_replace($string, '', ++$end);
  
         } else {
  
-                // Return string as is
+         */       // Return string as is
                 return $string;
  
-        }
+        //}
 		
 	}
 	
