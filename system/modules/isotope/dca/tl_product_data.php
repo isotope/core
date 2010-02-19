@@ -50,11 +50,8 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		'sorting' => array
 		(
 			'mode'                    => 5,
-			//'fields'                  => array('type', 'name'),
 			'icon'                    => 'pagemounts.gif',
 			'paste_button_callback'   => array('tl_product_data', 'pasteProduct'),
-//			'flag'                    => 1,
-			'panelLayout'             => 'filter;search,limit',
 		),
 		'label' => array
 		(
@@ -109,7 +106,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 				'icon'                => 'copychilds.gif',
 				'attributes'          => 'onclick="Backend.getScrollOffset();"',
 				'button_callback'     => array('tl_product_data', 'copyProductWithSubproducts')
-			)/*,
+			),
 			'cut' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['cut'],
@@ -117,7 +114,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 				'icon'                => 'cut.gif',
 				'attributes'          => 'onclick="Backend.getScrollOffset();"',
 				'button_callback'     => array('tl_product_data', 'cutProduct')
-			),
+			)/*,
 			'toggle' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['toggle'],
@@ -1017,7 +1014,7 @@ class tl_product_data extends Backend
 	 */
 	public function cutProduct($row, $href, $label, $title, $icon, $attributes)
 	{
-		return ($this->User->isAdmin || (in_array($row['type'], $this->User->iso_product_types) && $this->User->isAllowed(2, $row))) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
+		return ($this->User->isAdmin ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon))).' ';
 	}
 
 
@@ -1046,7 +1043,7 @@ echo $disablePI;
 		if (!$this->User->isAdmin)
 		{
 			// Disable "paste into" button if there is no permission 2 for the current page
-			if (!$disablePI && !$this->User->isAllowed(2, $row) || $row['pid']>0)
+			if (!$disablePI && $row['pid']>0)
 			{
 				$disablePI = true;
 			}
