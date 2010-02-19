@@ -908,7 +908,7 @@ abstract class ModuleIsotopeBase extends Module
 					'description'	=> &$GLOBALS['TL_LANG']['tl_product_data']['product_options'],
 					'inputType'		=> 'select',					
 					'options'		=> $arrSubproductOptions,
-					'eval'			=> array()
+					'eval'			=> array('mandatory'=>true)
 				);
 				
 				//$arrData = $this->getDCATemplate($arrAttributeData);	//Grab the skeleton DCA info for widget generation
@@ -927,7 +927,7 @@ abstract class ModuleIsotopeBase extends Module
 	{
 		$arrData['label'] 	= $arrAttributeData['description'];
 		$arrData['prompt'] 	= $arrAttributeData['name'];
-		$arrData['eval']['required'] = $arrAttributeData['is_required'] ? true : false;
+		$arrData['eval']['mandatory'] = $arrAttributeData['is_required'] ? true : false;
 
 		switch($arrAttributeData['type'])
 		{
