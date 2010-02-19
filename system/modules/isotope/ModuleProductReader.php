@@ -163,8 +163,32 @@ class ModuleProductReader extends ModuleIsotopeBase
 		}
 
 		$objPage->title .= ' - ' . $objProduct->name;
-		$objPage->description .= $objProduct->description;
+		$objPage->description .= $this->cleanForMeta($objProduct->description, 200);
 	}		
+	
+	private function cleanForMeta($strText, 200)
+	{
+		$string = strip_tags($strText);
+		
+
+ 
+        // If string exceeds the truncation length
+        if (strlen($string) > $length) {
+ 
+                // Output infoBox with output set
+                $end = $length - strlen($string));
+                while($string[$end]!=$end_char) $end--;
+                return substr_replace($string, '', ++$end);
+ 
+        } else {
+ 
+                // Return string as is
+                return $string;
+ 
+        }
+		
+	}
+	
 	
 	/** 
 	 * TODO - Switch to JSON to allow flexibility to grab and return structured data for use in various elements on the product reader page in a single call
