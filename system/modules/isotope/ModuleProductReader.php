@@ -176,7 +176,7 @@ class ModuleProductReader extends ModuleIsotopeBase
         if (strlen($string) > $length) {
  
                 // Output infoBox with output set
-                $end = $length - strlen($string));
+                $end = $length - strlen($string);
                 while($string[$end]!=$end_char) $end--;
                 return substr_replace($string, '', ++$end);
  
