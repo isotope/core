@@ -1176,7 +1176,7 @@ abstract class ModuleIsotopeBase extends Module
 		$arrVariantOptionFields = array();
 		$arrProductOptions = array();
 		$arrAttributes = $objProduct->getAttributes();
-		
+	
 		foreach( $arrAttributes as $attribute => $varValue )
 		{
 			switch( $attribute )
