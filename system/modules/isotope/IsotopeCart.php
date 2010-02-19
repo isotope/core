@@ -509,8 +509,7 @@ class IsotopeCart extends Model
 					'values'	=> array($objProduct->$option)
 				);
 			}
-			
-			
+
 			//$arrAllOptionValues = array_merge(deserialize($this->getProductOptionValues($this->Input->post('product_options'))), $arrVariantOptionValues);
 		
 		}

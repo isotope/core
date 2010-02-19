@@ -137,38 +137,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 		
 		$this->Template->action = ampersand($this->Environment->request, true);
 		$this->Template->formId = $this->strFormId;
-		
-		
-		
-		/*if($intFirstChild = $objProduct->getFirstChild($objProduct->id))
-		{						
-			if($intFirstChild)
-			{
-				$arrAttributes = $objProduct->getAttributes();
 				
-				$this->loadDataContainer('tl_product_data');
-				
-				foreach($arrAttributes as $attribute=>$value)
-				{
-					
-					if($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['is_customer_defined'] && $GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['add_to_product_variants'])
-					{						
-						$arrVariantOptionFields[] = $attribute;	
-					}
-				}
-				
-				$intParentProductId = $objProduct->id;
-				//Get the first one's product data
-				$objProduct->setVariant($intFirstChild, implode(',', $arrVariantOptionFields));
-				
-			}
-		
-		}*/
-				
-				
-		$this->Template->product = $this->generateProduct($objProduct, $this->iso_reader_layout, $arrTemplateData, $this->strFormId, $intParentProductId);	
-
-
 		if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && !$this->doNotSubmit) // && $this->Input->post('product_id') == $objProduct->id)
 		{			
 			foreach( $arrButtons as $button => $data )
@@ -188,7 +157,8 @@ class ModuleProductReader extends ModuleIsotopeBase
 			$this->reload();
 		}
 
-		
+		$this->Template->product = $this->generateProduct($objProduct, $this->iso_reader_layout, $arrTemplateData, $this->strFormId, $intParentProductId);	
+
 		$objPage->title .= ' - ' . $objProduct->name;
 		$objPage->description .= $objProduct->description;
 	}		
@@ -207,7 +177,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 		else
 		{
 			$objProduct = $this->getProduct((integer)$this->Input->get('variant'));
-	
+
 			if($objProduct->pid)
 			{
 				$objParentProduct = $this->getProduct($objProduct->pid);
@@ -223,7 +193,8 @@ class ModuleProductReader extends ModuleIsotopeBase
 			
 			foreach($arrAttributes as $k=>$v)
 			{
-				if(!$objProduct->$k)
+
+				if(!$v)
 					$arrAttributes[$k] = $arrParentAttributes[$k];				
 			
 				switch($k)
