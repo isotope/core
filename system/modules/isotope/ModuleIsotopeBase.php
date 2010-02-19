@@ -716,6 +716,7 @@ abstract class ModuleIsotopeBase extends Module
 			// Validate input
 			if ($this->Input->post('FORM_SUBMIT') == $strFormId)
 			{
+				$GLOBALS['TL_LANG']['ERR']['mandatory'] = 'Please select an option.';
 				
 				$objWidget->validate();
 				$varValue = $objWidget->value;
