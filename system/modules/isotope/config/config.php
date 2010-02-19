@@ -320,7 +320,59 @@ $GLOBALS['ISO_CHECKOUT_STEPS'] = array
 	),
 );
 
-
+$GLOBALS['ISO_ATTR_TYPES'] = array
+(
+	'text' => array
+	(
+		'dataType'		=> 'varchar',
+		'inputType'		=> 'text'
+	),
+	'integer' => array
+	(
+		'dataType'		=> 'int',
+		'inputType'		=> 'text'
+	),
+	'decimal' => array
+	(
+		'dataType'		=> 'decimal',
+		'inputType'		=> 'text'
+	),
+	'longtext' => array
+	(
+		'dataType'		=> 'text',
+		'inputType'		=> 'textarea'
+	),
+	'datetime' => array
+	(
+		'dataType'		=> 'varchar',
+		'inputType'		=> 'text'
+	),
+	'select_list' => array
+	(
+		'dataType'		=> 'varchar',
+		'inputType'		=> 'select'
+	),
+	'checkbox_list'	=> array
+	(
+		'dataType'		=> 'varchar',
+		'inputType'		=> 'checkbox'
+	),
+	'option_list' => array
+	(
+		'dataType'		=> 'varchar',
+		'inputType'		=> 'radio'
+	), 
+	'file'		  => array
+	(
+		'dataType'		=> 'varchar',
+		'inputType'		=> 'fileTree'
+	),
+	'media'		  => array
+	(
+		'dataType'		=> 'varchar',
+		'inputType'		=> 'mediaManager'
+	)
+);
 
 /**
  * These fields are default fields required to get the store and default templates working
