@@ -959,11 +959,20 @@ abstract class ModuleIsotopeBase extends Module
 				
 				//START HERE - either grab from products themselves or else from variant_data serialized values... this would be quicker, but reliable?
 				//$arrOptions = $this->getSubproductOptionValues($arrAttributeData['name'], array());
-				$arrOptionList = deserialize($arrAttributeData['option_list']);
-				
-				foreach($arrOptionList as $k=>$v)
+				if($arrAttributeData['use_alternate_source'])
 				{
-					$arrOptions[$k] = $v;
+					$arrOptionList = '';
+				
+				
+				}
+				else
+				{
+					$arrOptionList = deserialize($arrAttributeData['option_list']);
+				}	
+				
+				foreach($arrOptionList as $row)
+				{
+					$arrOptions[$row['value']] = $row['label'];
 				}
 					
 				$arrData['inputType'] 	= $strType;
@@ -1065,13 +1074,28 @@ abstract class ModuleIsotopeBase extends Module
 			
 			if(strlen($arrAttributeData['list_source_table']) > 0 && strlen($arrAttributeData['list_source_field']) > 0)
 			{
-				$strForeignKey = $arrAttributeData['list_source_table'] . '.' . $arrAttributeData['list_source_field'];
-			
+				//$strForeignKey = $arrAttributeData['list_source_table'] . '.' . $arrAttributeData['list_source_field'];
+				$objOptions = $this->Database->prepare("SELECT id, " . $arrAttributeData['list_source_field'] . " FROM " . $arrAttributeData['list_source_table'])
+											 ->execute();
+				
+				if(!$objOptions->numRows)
+				{
+					return array();
+				}
+				
+				while($objOptions->next())
+				{
+					$arrValues[] = array
+					(
+						'value'		=> $objOptions->id,
+						'label'		=> $objOptions->$arrAttributeData['list_source_field']
+					);
+				}
 			}
 		}else{
 			$arrValues = deserialize($arrAttributeData['option_list']);
 		}
-	
+		
 		return $arrValues;
 	}
 	
@@ -1222,7 +1246,7 @@ abstract class ModuleIsotopeBase extends Module
 							$arrProductOptions[] = array
 							(
 								'name'			=> $attribute,
-								'description'	=> $GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['description'],									
+								'description'	=> (strlen($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['description']) ? $GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['description'] : $GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['name']),									
 								'html'			=> $this->generateProductOptionWidget($attribute, $arrData, $strFormId)
 							);										
 						}
