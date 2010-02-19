@@ -166,27 +166,28 @@ class ModuleProductReader extends ModuleIsotopeBase
 		$objPage->description .= $this->cleanForMeta($objProduct->description, 200);
 	}		
 	
-	private function cleanForMeta($strText, $length)
+	private function cleanForMeta($strText, $limit)
 	{
 		$string = strip_tags($strText);
-		/*
-
- 
-        // If string exceeds the truncation length
-        if (strlen($string) > $length) {
- 
-                // Output infoBox with output set
-                $end = $length - strlen($string);
-                
-                while($string[$end]!=$end_char) $end--;
-                return substr_replace($string, '', ++$end);
- 
-        } else {
- 
-         */       // Return string as is
-                return $string;
- 
-        //}
+		
+		$break="."; 
+		
+		$pad=".";
+		
+		
+		// return with no change if string is shorter than $limit  
+		if(strlen($string) <= $limit) return $string; 
+		
+		// is $break present between $limit and the end of the string?  
+		if(false !== ($breakpoint = strpos($string, $break, $limit))) 
+		{ 
+			if($breakpoint < strlen($string) - 1) 
+			{ 
+				$string = substr($string, 0, $breakpoint) . $pad; 
+			} 
+		} 
+		
+		return $string; 
 		
 	}
 	
