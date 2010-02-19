@@ -48,7 +48,7 @@ class IsotopeRunonce extends Frontend
 		if (!$this->Database->tableExists('tl_store'))
 			return;
 			
-		$this->insertDefaultAttributeTypes();
+		//$this->insertDefaultAttributeTypes();
 		$this->renameFields();
 		$this->updateAttributes();
 		$this->updateProductCategories();
