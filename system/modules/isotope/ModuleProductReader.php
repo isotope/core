@@ -166,7 +166,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 		$objPage->description .= $this->cleanForMeta($objProduct->description, 200);
 	}		
 	
-	private function cleanForMeta($strText, 200)
+	private function cleanForMeta($strText, $length)
 	{
 		$string = strip_tags($strText);
 		
