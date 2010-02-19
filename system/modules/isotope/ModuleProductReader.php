@@ -137,7 +137,12 @@ class ModuleProductReader extends ModuleIsotopeBase
 		
 		$this->Template->action = ampersand($this->Environment->request, true);
 		$this->Template->formId = $this->strFormId;
+
+
+
+		$this->Template->product = $this->generateProduct($objProduct, $this->iso_reader_layout, $arrTemplateData, $this->strFormId, $intParentProductId);	
 				
+		
 		if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && !$this->doNotSubmit) // && $this->Input->post('product_id') == $objProduct->id)
 		{			
 			foreach( $arrButtons as $button => $data )
@@ -156,8 +161,6 @@ class ModuleProductReader extends ModuleIsotopeBase
 			
 			$this->reload();
 		}
-
-		$this->Template->product = $this->generateProduct($objProduct, $this->iso_reader_layout, $arrTemplateData, $this->strFormId, $intParentProductId);	
 
 		$objPage->title .= ' - ' . $objProduct->name;
 		$objPage->description .= $objProduct->description;

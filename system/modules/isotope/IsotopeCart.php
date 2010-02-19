@@ -494,19 +494,26 @@ class IsotopeCart extends Model
 				
 		if($this->Input->post('product_variants'))
 		{			
-			$objProduct->setVariant($this->Input->post('product_variants'), $this->Input->post('variant_options'));	
+			$objVariant = $this->getProduct($this->Input->post('product_variants'));
+			
+			$arrOptions = $objVariant->getAttributes();
+			
+			
+			//$objProduct->setVariant($this->Input->post('product_variants'), $this->Input->post('variant_options'));	
 			
 			$arrVariantOptions = explode(',', $this->Input->post('variant_options'));
 			
 			//cycle through each product object's set variant option.
 			foreach($arrVariantOptions as $option)
 			{
-				$arrAttributeData = $this->getProductAttributeData($option);
+				$strValue = $arrOptions[$option];
+				
+				$strName = $this->getAttributeName($option);
 				
 				$arrVariantOptionValues[$option] = array
 				(
-					'name'		=> $arrAttributeData['name'],
-					'values'	=> array($objProduct->$option)
+					'name'		=> ($strName ? $strName : $option),
+					'values'	=> array($strValue)
 				);
 			}
 
@@ -560,6 +567,19 @@ class IsotopeCart extends Model
 		$this->Database->prepare("DELETE FROM tl_cart_items WHERE id=?")->execute($intId);					   
 	}
 	
+	public function getAttributeName($strField)
+	{
+		$objName = $this->Database->prepare("SELECT name FROM tl_product_attributes WHERE field_name=?")
+								  ->limit(1)
+								  ->execute($strField);
+		
+		if(!$objName->numRows)
+		{
+			return false;
+		}
+		
+		return $objName->name;
+	}
 	
 	/** 
 	 * Need to grab the corresponding data from the subproduct if product_variants is being called!
@@ -918,5 +938,23 @@ class IsotopeCart extends Model
 		
 		return false;
 	}
+	
+	/**
+	 * Shortcut for a single product by ID
+	 */
+	protected function getProduct($intId)
+	{
+		$objProduct = new IsotopeProduct();
+		
+		if (!$objProduct->findBy('id', $intId))
+		{						
+			return null;
+		}
+		
+		$objProduct->reader_jumpTo = $this->iso_reader_jumpTo;
+			
+		return $objProduct;
+	}
+
 }
 
