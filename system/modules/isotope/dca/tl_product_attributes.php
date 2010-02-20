@@ -375,16 +375,11 @@ class tl_product_attributes extends Backend
 	{
 		$arrOptions = array();
 
-		$objAttributeTypes = $this->Database->execute("SELECT type FROM tl_product_attribute_types");
-				
-		
-		$arrAttributeTypes = $objAttributeTypes->fetchAllAssoc();								
-
-		foreach ($arrAttributeTypes as $attrType)
+		foreach($GLOBALS['ISO_ATTR_TYPES'] as $type)
 		{
-			$arrOptions[$attrType['type']] = $GLOBALS['TL_LANG']['tl_product_attributes'][$attrType['type']];
+			$arrOptions[$type] = $GLOBALS['TL_LANG']['tl_product_attributes'][$type];		
 		}
-
+		
 		return $arrOptions;
 	}
 	
