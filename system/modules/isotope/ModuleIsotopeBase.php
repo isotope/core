@@ -1389,5 +1389,37 @@ abstract class ModuleIsotopeBase extends Module
 		return $objTemplate->parse();
 	}
 	
+	public function jsonEncode($arrJSON, $skipBracket = false)
+	{
+		
+
+		foreach($arrJSON as $k=>$v)
+		{								
+			$strReturn = (is_numeric($k) ? NULL : '"' . $k . '":');
+						
+			if(is_array($v) && count($v) > 1)
+			{			
+				$arrReturn[] = (!$skipBracket ? "[{" : NULL) . $this->jsonEncode($v, true) . (!$skipBracket ? "}]" : NULL);
+				
+				$strChars = (!$skipBracket ? ',' : '},{');
+				
+				$strReturn .= implode($strChars, $arrReturn);
+			}
+			elseif(is_array($v) && count($v)==1)
+			{
+				$strReturn .= '[' . (!is_null($v[0]) ? '"' . str_replace("/", "\/", $v[0]) . '"' : 'null') . ']';
+			}
+			else
+			{
+				$strReturn .= (!is_null($v) ? '"' . str_replace("/", "\/", $v) . '"' : 'null');
+			}
+				
+			$arrReturnString[] =  $strReturn;
+		}	
+		
+		return implode($strChars, $arrReturnString);
+		
+	}
+	
 }
 
