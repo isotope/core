@@ -173,8 +173,17 @@ class ModuleProductLister extends ModuleIsotopeBase
 		$arrBuffer = array();
 		
 		foreach( $arrProducts as $i => $objProduct )
-		{
-			if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && $this->Input->post('product_id') == $objProduct->id)
+		{	
+			$arrBuffer[] = array
+			(
+				'raw'		=> $objProduct,
+				'clear'	    => ($this->iso_list_format=='grid' && $blnSetClear ? true : false),
+				'class'		=> ('product' . ($i == 0 ? ' product_first' : '')),
+				'html'		=> $this->generateProduct($objProduct, $this->iso_list_layout, $arrTemplateData),
+			);
+
+
+			if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && !$this->doNotSubmit)
 			{
 				foreach( $arrButtons as $button => $data )
 				{
@@ -191,16 +200,8 @@ class ModuleProductLister extends ModuleIsotopeBase
 				}
 				
 				$this->reload();
-			}				
-		
-			$arrBuffer[] = array
-			(
-				'raw'		=> $objProduct,
-				'clear'	    => ($this->iso_list_format=='grid' && $blnSetClear ? true : false),
-				'class'		=> ('product' . ($i == 0 ? ' product_first' : '')),
-				'html'		=> $this->generateProduct($objProduct, $this->iso_list_layout, $arrTemplateData),
-			);
-
+			}	
+			
 			$blnSetClear = (($i+1) % $this->columns==0 ? true : false);
 
 		}
@@ -209,6 +210,23 @@ class ModuleProductLister extends ModuleIsotopeBase
 		if (count($arrBuffer))
 		{
 			$arrBuffer[count($arrBuffer)-1]['class'] .= ' product_last';
+		}
+
+		if(!$this->iso_disableFilterAjax)
+		{
+			$arrAjaxParams[] = 'action=fmd'; 
+			$arrAjaxParams[] = 'id='. $this->id;
+	
+			$strAjaxParams = implode("&", $arrAjaxParams);	//build the ajax params
+			$strImagePath = "system/themes/default/images/loading.gif";	//TODO: set in module.
+		
+			$objScriptTemplate = new FrontendTemplate('js_products');
+
+			$objScriptTemplate->ajaxParams = $strAjaxParams;			
+			$objScriptTemplate->ajaxLoadingMessage = $GLOBALS['TL_LANG']['MSC']['ajaxLoadingMessage'];
+			$objScriptTemplate->ajaxLoadingImage = $this->generateImage($strImagePath);
+				
+			$this->Template->script = $objScriptTemplate->parse();
 		}
 
 		$this->Template->action = ampersand($this->Environment->request, true);

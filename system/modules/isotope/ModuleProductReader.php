@@ -82,25 +82,27 @@ class ModuleProductReader extends ModuleIsotopeBase
 	protected function compile()
 	{
 		global $objPage;
-
-		$arrAjaxParams[] = 'action=fmd'; 
-		$arrAjaxParams[] = 'id='. $this->id;
-
-		$strAjaxParams = implode("&", $arrAjaxParams);	//build the ajax params
-		$strImage = "system/themes/default/images/loading.gif";
-	
-		$arrImageSize = getimagesize(TL_ROOT . '/' . $strImage);	
-
-		$arrLoaderImage['path'] = $strImage;
-		$arrLoaderImage['width'] = $arrImageSize[0];
-		$arrLoaderImage['height'] = $arrImageSize[1];
 	
 		$arrCleanUrl = explode('?', $this->Environment->request);
 	
-		$this->Template->disableAjax = $this->iso_disableFilterAjax;
+		if(!$this->iso_disableFilterAjax)
+		{
+			$arrAjaxParams[] = 'action=fmd'; 
+			$arrAjaxParams[] = 'id='. $this->id;
+	
+			$strAjaxParams = implode("&", $arrAjaxParams);	//build the ajax params
+			$strImagePath = "system/themes/default/images/loading.gif";	//TODO: set in module.
 		
-		$this->Template->ajaxLoaderImage = $arrLoaderImage;
-		$this->Template->ajaxParams = $strAjaxParams;
+			$objScriptTemplate = new FrontendTemplate('js_products');
+
+			$objScriptTemplate->ajaxParams = $strAjaxParams;			
+			$objScriptTemplate->ajaxLoadingMessage = $GLOBALS['TL_LANG']['MSC']['ajaxLoadingMessage'];
+			$objScriptTemplate->ajaxLoadingImage = $this->generateImage($strImagePath);
+				
+			$this->Template->script = $objScriptTemplate->parse();
+		}
+			
+
 
 		$objProduct = $this->getProductByAlias($this->Input->get('product'));
 			
@@ -196,8 +198,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 	 * TODO - Switch to JSON to allow flexibility to grab and return structured data for use in various elements on the product reader page in a single call
 	 */
 	public function generateAjax()
-	{
-		
+	{		
 		if(!$this->Input->get('variant'))
 		{
 			$objProduct = $this->getProductByAlias($this->Input->get('product_id'));
@@ -247,39 +248,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 			echo json_encode($arrAttributes);
 		}
 
-	}
-	
-	private function jsonEncode($arrJSON, $skipBracket = false)
-	{
-		
-
-		foreach($arrJSON as $k=>$v)
-		{								
-			$strReturn = (is_numeric($k) ? NULL : '"' . $k . '":');
-						
-			if(is_array($v) && count($v) > 1)
-			{			
-				$arrReturn[] = (!$skipBracket ? "[{" : NULL) . $this->jsonEncode($v, true) . (!$skipBracket ? "}]" : NULL);
-				
-				$strChars = (!$skipBracket ? ',' : '},{');
-				
-				$strReturn .= implode($strChars, $arrReturn);
-			}
-			elseif(is_array($v) && count($v)==1)
-			{
-				$strReturn .= '[' . (!is_null($v[0]) ? '"' . str_replace("/", "\/", $v[0]) . '"' : 'null') . ']';
-			}
-			else
-			{
-				$strReturn .= (!is_null($v) ? '"' . str_replace("/", "\/", $v) . '"' : 'null');
-			}
-				
-			$arrReturnString[] =  $strReturn;
-		}	
-		
-		return implode($strChars, $arrReturnString);
-		
-	}
+	}	
 
 	public function getImages($intProductId)
 	{
