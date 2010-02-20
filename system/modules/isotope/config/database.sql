@@ -160,28 +160,6 @@ CREATE TABLE `tl_product_types` (
 
 -- --------------------------------------------------------
 
--- 
--- Table `tl_product_attribute_types
---
-
-CREATE TABLE `tl_product_attribute_types` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `pid` int(10) unsigned NOT NULL default '0',
-  `sorting` int(10) unsigned NOT NULL default '0',
-  `tstamp` int(10) unsigned NOT NULL default '0',
-  `type` varchar(255) NOT NULL default '',
-  `attr_datatype` varchar(255) NOT NULL default '',
-  `inputType` varchar(64) NOT NULL default '',
-  `eval` text NULL,
-  `name` varchar(255) NOT NULL default '',
-  PRIMARY KEY  (`id`),
-  KEY `pid` (`pid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
-
-
-
--- --------------------------------------------------------
-
 --
 -- Table `tl_product_attributes`
 --
