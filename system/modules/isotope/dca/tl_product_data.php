@@ -656,7 +656,7 @@ class tl_product_data extends Backend
 	 */
 	public function getProductTypes(DataContainer $dc)
 	{
-		/*$this->import('BackendUser', 'User');
+		$this->import('BackendUser', 'User');
 		
 		$arrTypes = $this->User->iso_product_types;
 		if (!is_array($arrTypes) || !count($arrTypes))
@@ -673,13 +673,8 @@ class tl_product_data extends Backend
 			$arrProductTypes[$objProductTypes->id] = $objProductTypes->name;
 		}
 
-		return $arrProductTypes;*/
-		
-		foreach($GLOBALS['ISO_ATTR_TYPES'] as $type)
-		{
-			
-		
-		}
+		return $arrProductTypes;
+	
 	}
 	
 	
