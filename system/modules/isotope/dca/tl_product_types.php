@@ -53,7 +53,8 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 			'mode'					=> 5,
 			'fields'				=> array('name'),
 			'flag'					=> 1,
-			'panelLayout'			=> 'filter;search,limit'
+			'panelLayout'			=> 'filter;search,limit',
+			'paste_button_callback'	=> array('tl_product_types', 'pasteButton'),
 		),
 		'label' => array
 		(
@@ -329,6 +330,26 @@ class tl_product_types extends Backend
 			return '';
 			
 		return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
+	}
+	
+	
+	public function pasteButton(DataContainer $dc, $row, $table, $cr, $arrClipboard=false)
+	{
+		$this->import('BackendUser', 'User');
+
+		$imagePasteAfter = $this->generateImage('pasteafter.gif', sprintf($GLOBALS['TL_LANG'][$dc->table]['pasteafter'][1], $row['id']));
+		$imagePasteInto = $this->generateImage('pasteinto.gif', sprintf($GLOBALS['TL_LANG'][$dc->table]['pasteinto'][1], $row['id']));
+
+		if ($row['id'] == 0)
+		{
+			return ($row['type'] == 'root' || $cr) ? $this->generateImage('pasteinto_.gif').' ' : '<a href="'.$this->addToUrl('act='.$arrClipboard['mode'].'&mode=2&pid='.$row['id'].'&id='.$arrClipboard['id']).'" title="'.specialchars(sprintf($GLOBALS['TL_LANG'][$dc->table]['pasteinto'][1], $row['id'])).'" onclick="Backend.getScrollOffset();">'.$imagePasteInto.'</a> ';
+		}
+		elseif ($row['pid'] > 0)
+		{
+			return '';
+		}
+
+		return (($arrClipboard['mode'] == 'cut' && $arrClipboard['id'] == $row['id']) || $cr) ? $this->generateImage('pasteafter_.gif').' ' : '<a href="'.$this->addToUrl('act='.$arrClipboard['mode'].'&mode=1&pid='.$row['id'].'&id='.$arrClipboard['id']).'" title="'.specialchars(sprintf($GLOBALS['TL_LANG'][$dc->table]['pasteafter'][1], $row['id'])).'" onclick="Backend.getScrollOffset();">'.$imagePasteAfter.'</a> ';
 	}
 }
 
