@@ -140,7 +140,7 @@ CREATE TABLE `tl_product_option_sets` (
 -- --------------------------------------------------------
 
 -- 
--- Table `tl_product_types
+-- Table `tl_product_types`
 --
 
 CREATE TABLE `tl_product_types` (
@@ -153,6 +153,8 @@ CREATE TABLE `tl_product_types` (
   `attributes` blob NULL,
   `variant_attributes` blob NULL,
   `downloads` char(1) NOT NULL default '',
+  `language` varchar(255) NOT NULL default '',
+  `languages` blob NULL,
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
