@@ -34,7 +34,8 @@ class ModuleFilters extends ModuleIsotopeBase
 	 */
 	protected $strTemplate = 'mod_filters';
 
-
+	protected $strFormId = 'iso_filters';
+	
 	/**
 	 * Display a wildcard in the back end
 	 * @return string
@@ -69,48 +70,54 @@ class ModuleFilters extends ModuleIsotopeBase
 		$arrSearchFields = deserialize($this->iso_searchFields);
 		$arrListingModules = deserialize($this->iso_listingModules);
 		
-		$arrLimit = array();
+		$arrLimit = array();	
+
+		if(!$this->iso_disableFilterAjax)
+		{
+			$arrAjaxParams[] = 'id=' . $arrListingModules[0];
 			
-		
-		$arrAjaxParams[] = 'action=fmd'; 
-		$arrAjaxParams[] = 'id=' . $arrListingModules[0];
-		
-		if($this->getRequestData('per_page'))
-		{
-			$arrAjaxParams[] = 'per_page=' . $this->getRequestData('per_page');
-		}
-		
-		if($this->getRequestData('page'))
-		{
-			$arrAjaxParams[] = 'page='.$this->getRequestData('page');
-		}
-		
-		if($this->getRequestData('order_by'))
-		{
-			$arrAjaxParams[] = 'order_by='.$this->getRequestData('order_by');
-		}
-		
-		if($this->getRequestData('for'))
-		{
-			$arrAjaxParams[] = 'for='.$this->getRequestData('for');
-		}
-		
-		$arrAjaxParams[] = 'rid='.$objPage->rootId;
-		$arrAjaxParams[] = 'pid='.$objPage->id;
-		
-		if(count($arrFilterFields))
-		{
-			foreach($arrFilterFields as $filter)
+			if($this->getRequestData('per_page'))
 			{
-				if($this->getRequestData($filter))
+				$arrAjaxParams[] = 'per_page=' . $this->getRequestData('per_page');
+			}
+			
+			if($this->getRequestData('page'))
+			{
+				$arrAjaxParams[] = 'page='.$this->getRequestData('page');
+			}
+			
+			if($this->getRequestData('order_by'))
+			{
+				$arrAjaxParams[] = 'order_by='.$this->getRequestData('order_by');
+			}
+			
+			if($this->getRequestData('for'))
+			{
+				$arrAjaxParams[] = 'for='.$this->getRequestData('for');
+			}
+			
+			$arrAjaxParams[] = 'rid='.$objPage->rootId;
+			$arrAjaxParams[] = 'pid='.$objPage->id;
+			
+			if(count($arrFilterFields))
+			{
+				foreach($arrFilterFields as $filter)
 				{
-					$arrAjaxParams[] = $filter .'='. $this->getRequestData($filter);
+					if($this->getRequestData($filter))
+					{
+						$arrAjaxParams[] = $filter .'='. $this->getRequestData($filter);
+					}
 				}
 			}
+			
+			$strAjaxParams = implode('&', $arrAjaxParams);	//build the ajax params
+	
+			$objScriptTemplate = new FrontendTemplate('js_filters');
+			
+			$objScriptTemplate->ajaxParams = $strAjaxParams;			
+			$objScriptTemplate->mId = $arrListingModules[0];		
+			$this->Template->script = $objScriptTemplate->parse();
 		}
-		
-		$strAjaxParams = implode('&', $arrAjaxParams);	//build the ajax params
-		
 		
 		$this->loadLanguageFile('tl_product_data');
 		
@@ -158,23 +165,13 @@ class ModuleFilters extends ModuleIsotopeBase
 		{
 			//Generate the limits per page... used to be derived from the number of columns in grid format, but not in list format.  For now, just a standard list.
 			$arrLimit = array(3,10,20,50,100,200);
-		}
-		
-		$strImage = "system/themes/default/images/loading.gif";
-		
-		$arrImageSize = getimagesize(TL_ROOT . '/' . $strImage);	
-
-		$arrLoaderImage['path'] = $strImage;
-		$arrLoaderImage['width'] = $arrImageSize[0];
-		$arrLoaderImage['height'] = $arrImageSize[1];
+		}	
 	
 		$arrCleanUrl = explode('?', $this->Environment->request);
 	
-		$this->Template->disableAjax = $this->iso_disableFilterAjax;
+		
 		$this->Template->searchable = $this->iso_enableSearch;
 		$this->Template->perPage = $this->iso_enableLimit;
-		$this->Template->ajaxLoaderImage = $arrLoaderImage;
-		$this->Template->ajaxParams = $strAjaxParams;
 		$this->Template->limit = $arrLimit;
 		$this->Template->filters = $arrFilters;	
 		$this->Template->action = $this->Environment->request;

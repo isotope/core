@@ -87,18 +87,13 @@ class ModuleProductReader extends ModuleIsotopeBase
 	
 		if(!$this->iso_disableFilterAjax)
 		{
-			$arrAjaxParams[] = 'action=fmd'; 
 			$arrAjaxParams[] = 'id='. $this->id;
 	
 			$strAjaxParams = implode("&", $arrAjaxParams);	//build the ajax params
-			$strImagePath = "system/themes/default/images/loading.gif";	//TODO: set in module.
-		
+	
 			$objScriptTemplate = new FrontendTemplate('js_products');
-
-			$objScriptTemplate->ajaxParams = $strAjaxParams;			
-			$objScriptTemplate->ajaxLoadingMessage = $GLOBALS['TL_LANG']['MSC']['ajaxLoadingMessage'];
-			$objScriptTemplate->ajaxLoadingImage = $this->generateImage($strImagePath);
-				
+			$objScriptTemplate->ajaxParams = $strAjaxParams;	
+			$objScriptTemplate->mId = $this->id;
 			$this->Template->script = $objScriptTemplate->parse();
 		}
 			
@@ -201,7 +196,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 	{		
 		if(!$this->Input->get('variant'))
 		{
-			$objProduct = $this->getProductByAlias($this->Input->get('product_id'));
+			$objProduct = $this->getProductByAlias($this->Input->get('product'));
 			$arrAttributes = $objProduct->getAttributes();
 		}
 		else

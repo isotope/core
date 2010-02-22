@@ -86,7 +86,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 	 * Generate module
 	 */
 	protected function compile()
-	{
+	{		
 		if($this->getRequestData('clear'))
 		{
 			$arrFilters = array();
@@ -138,7 +138,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 		}
 		
 		$arrProducts = $this->getProducts($objProductIds->execute($this->arrParams)->fetchEach('id'));
-				
+			
 		if (!is_array($arrProducts) || !count($arrProducts))
 		{
 			$this->Template = new FrontendTemplate('mod_message');
@@ -161,7 +161,6 @@ class ModuleProductLister extends ModuleIsotopeBase
 				$arrButtons = $this->$callback[0]->$callback[1]($arrButtons);
 			}
 		}
-		
 		
 		$arrTemplateData = array
 		(
@@ -205,7 +204,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 			$blnSetClear = (($i+1) % $this->columns==0 ? true : false);
 
 		}
-		
+	
 		// Add "product_last" css class
 		if (count($arrBuffer))
 		{
@@ -214,18 +213,11 @@ class ModuleProductLister extends ModuleIsotopeBase
 
 		if(!$this->iso_disableFilterAjax)
 		{
-			$arrAjaxParams[] = 'action=fmd'; 
-			$arrAjaxParams[] = 'id='. $this->id;
-	
-			$strAjaxParams = implode("&", $arrAjaxParams);	//build the ajax params
-			$strImagePath = "system/themes/default/images/loading.gif";	//TODO: set in module.
 		
 			$objScriptTemplate = new FrontendTemplate('js_products');
 
-			$objScriptTemplate->ajaxParams = $strAjaxParams;			
-			$objScriptTemplate->ajaxLoadingMessage = $GLOBALS['TL_LANG']['MSC']['ajaxLoadingMessage'];
-			$objScriptTemplate->ajaxLoadingImage = $this->generateImage($strImagePath);
-				
+			$objScriptTemplate->mId = $this->id;			
+
 			$this->Template->script = $objScriptTemplate->parse();
 		}
 
@@ -506,6 +498,19 @@ class ModuleProductLister extends ModuleIsotopeBase
 				break;		
 		}
 		
+		$i = 0;
+		
+		foreach($arrCategories as $row)
+		{
+		
+			if(!$row)
+			{
+				unset($arrCategories[$i]);
+			}
+			
+			$i++;
+		}
+		
 		return $arrCategories;
 	}
 	
@@ -649,6 +654,15 @@ class ModuleProductLister extends ModuleIsotopeBase
 		if (count($arrBuffer))
 		{
 			$arrBuffer[count($arrBuffer)-1]['class'] .= ' product_last';
+		}
+		
+		if(!$this->iso_disableFilterAjax)
+		{
+			$objScriptTemplate = new FrontendTemplate('js_products');
+
+			$objScriptTemplate->mId = $this->id;			
+
+			$this->Template->script = $objScriptTemplate->parse();
 		}
 		
 		$objTemplate->action = $this->Environment->base;
