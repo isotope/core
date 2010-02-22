@@ -33,13 +33,14 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 	// Config
 	'config' => array
 	(
-		'label'                       => &$GLOBALS['TL_LANG']['MSC']['productsTitle'],
+		'label'                       => &$GLOBALS['TL_LANG']['MOD']['product_manager'][0],
 		'dataContainer'               => 'Table',
 		'enableVersioning'            => false,
 		'ctable'					  => array('tl_product_downloads', 'tl_product_categories'),
 		'onload_callback'			  => array
 		(
 			array('tl_product_data', 'checkPermission'),
+			array('tl_product_data', 'addBreadcrumb'),
 		),
 	),
 	
@@ -49,7 +50,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		'sorting' => array
 		(
 			'mode'                    => 5,
-			'icon'                    => 'pagemounts.gif',
+			'icon'                    => 'system/modules/isotope/html/icon-products.gif',
 			'paste_button_callback'   => array('tl_product_data', 'pasteProduct'),
 		),
 		'label' => array
@@ -551,6 +552,110 @@ class tl_product_data extends Backend
 			$GLOBALS['TL_DCA']['tl_product_data']['list']['sorting']['root'] = $objProducts->fetchEach('id');
 		}
 */
+	}
+	
+	
+	/**
+	 * Add the breadcrumb menu
+	 */
+	public function addBreadcrumb()
+	{
+		// Set a new node
+		if (isset($_GET['node']))
+		{
+			$this->Session->set('tl_page_node', $this->Input->get('node'));
+			$this->redirect(preg_replace('/&node=[^&]*/', '', $this->Environment->request));
+		}
+
+		$intNode = $this->Session->get('tl_page_node');
+
+		if ($intNode < 1)
+		{
+			return;
+		}
+
+		$arrIds = array();
+		$arrLinks = array();
+
+		// Generate breadcrumb trail
+		if ($intNode)
+		{
+			$this->loadDataContainer('tl_page');
+			$tl_page = new tl_page();
+			$intId = $intNode;
+
+			do
+			{
+				$objPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")
+								->limit(1)
+								->execute($intId);
+
+				if ($objPage->numRows < 1)
+				{
+					// Currently selected page does not exits
+					if ($intId == $intNode)
+					{
+						$this->Session->set('tl_page_node', 0);
+						return;
+					}
+
+					break;
+				}
+
+				$arrIds[] = $intId;
+
+				// No link for the active page
+				if ($objPage->id == $intNode)
+				{
+					$arrLinks[] = $tl_page->addIcon($objPage->row(), '', null, '', true) . ' ' . $objPage->title;
+				}
+				else
+				{
+					$arrLinks[] = $tl_page->addIcon($objPage->row(), '', null, '', true) . ' <a href="' . $this->addToUrl('node='.$objPage->id) . '">' . $objPage->title . '</a>';
+				}
+
+				// Do not show the mounted pages
+				if (!$this->User->isAdmin && in_array($objPage->id, $this->User->pagemounts))
+				{
+					break;
+				}
+
+				$intId = $objPage->pid;
+			}
+			while ($intId > 0 && $objPage->type != 'root');
+		}
+
+		// Check whether the node is mounted
+		if (!$this->User->isAdmin && !$this->User->hasAccess($arrIds, 'pagemounts'))
+		{
+			$this->Session->set('tl_page_node', 0);
+
+			$this->log('Page ID '.$intNode.' was not mounted', 'tl_page addBreadcrumb', TL_ERROR);
+			$this->redirect('typolight/main.php?act=error');
+		}
+
+		// Limit tree
+		$arrNodes = array_merge(array($intNode), $this->getChildRecords($intNode, 'tl_page'));
+		$objProducts = $this->Database->execute("SELECT pid FROM tl_product_categories WHERE page_id IN (" . implode(',', $arrNodes) . ")");
+		if ($objProducts->numRows)
+		{
+			$GLOBALS['TL_DCA']['tl_product_data']['list']['sorting']['root'] = $objProducts->fetchEach('pid');
+		}
+		else
+		{
+			$GLOBALS['TL_DCA']['tl_product_data']['list']['sorting']['root'] = array(0);
+		}
+
+		// Add root link
+		$arrLinks[] = '<img src="system/themes/' . $this->getTheme() . '/images/pagemounts.gif" width="18" height="18" alt="" /> <a href="' . $this->addToUrl('node=0') . '">' . $GLOBALS['TL_LANG']['MSC']['filterAll'] . '</a>';
+		$arrLinks = array_reverse($arrLinks);
+
+		// Insert breadcrumb menu
+		$GLOBALS['TL_DCA']['tl_product_data']['list']['sorting']['breadcrumb'] .= '
+
+<ul id="tl_breadcrumb">
+  <li>' . implode(' &gt; </li><li>', $arrLinks) . '</li>
+</ul>';
 	}
 	
 	
