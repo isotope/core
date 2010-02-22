@@ -72,53 +72,6 @@ class ModuleFilters extends ModuleIsotopeBase
 		
 		$arrLimit = array();	
 
-		if(!$this->iso_disableFilterAjax)
-		{
-			$arrAjaxParams[] = 'id=' . $arrListingModules[0];
-			
-			if($this->getRequestData('per_page'))
-			{
-				$arrAjaxParams[] = 'per_page=' . $this->getRequestData('per_page');
-			}
-			
-			if($this->getRequestData('page'))
-			{
-				$arrAjaxParams[] = 'page='.$this->getRequestData('page');
-			}
-			
-			if($this->getRequestData('order_by'))
-			{
-				$arrAjaxParams[] = 'order_by='.$this->getRequestData('order_by');
-			}
-			
-			if($this->getRequestData('for'))
-			{
-				$arrAjaxParams[] = 'for='.$this->getRequestData('for');
-			}
-			
-			$arrAjaxParams[] = 'rid='.$objPage->rootId;
-			$arrAjaxParams[] = 'pid='.$objPage->id;
-			
-			if(count($arrFilterFields))
-			{
-				foreach($arrFilterFields as $filter)
-				{
-					if($this->getRequestData($filter))
-					{
-						$arrAjaxParams[] = $filter .'='. $this->getRequestData($filter);
-					}
-				}
-			}
-			
-			$strAjaxParams = implode('&', $arrAjaxParams);	//build the ajax params
-	
-			$objScriptTemplate = new FrontendTemplate('js_filters');
-			
-			$objScriptTemplate->ajaxParams = $strAjaxParams;			
-			$objScriptTemplate->mId = $arrListingModules[0];		
-			$this->Template->script = $objScriptTemplate->parse();
-		}
-		
 		$this->loadLanguageFile('tl_product_data');
 		
 		if(count($arrOrderByFieldIds))
@@ -169,6 +122,54 @@ class ModuleFilters extends ModuleIsotopeBase
 	
 		$arrCleanUrl = explode('?', $this->Environment->request);
 	
+	if(!$this->iso_disableFilterAjax)
+		{
+			$arrAjaxParams[] = 'id=' . $arrListingModules[0];
+			
+			if($this->getRequestData('per_page'))
+			{
+				$arrAjaxParams[] = 'per_page=' . $this->getRequestData('per_page');
+			}
+			
+			if($this->getRequestData('page'))
+			{
+				$arrAjaxParams[] = 'page='.$this->getRequestData('page');
+			}
+			
+			if($this->getRequestData('order_by'))
+			{
+				$arrAjaxParams[] = 'order_by='.$this->getRequestData('order_by');
+			}
+			
+			if($this->getRequestData('for'))
+			{
+				$arrAjaxParams[] = 'for='.$this->getRequestData('for');
+			}
+			
+			$arrAjaxParams[] = 'rid='.$objPage->rootId;
+			$arrAjaxParams[] = 'pid='.$objPage->id;
+			
+			if(count($arrFilterFields))
+			{
+				foreach($arrFilterFields as $filter)
+				{
+					if($this->getRequestData($filter))
+					{
+						$arrAjaxParams[] = $filter .'='. $this->getRequestData($filter);
+					}
+				}
+			}
+			
+			$strAjaxParams = implode('&', $arrAjaxParams);	//build the ajax params
+	
+			$objScriptTemplate = new FrontendTemplate('js_filters');
+			$objScriptTemplate->searchable = $this->iso_enableSearch;
+			$objScriptTemplate->perPage = $this->iso_enableLimit;
+			$objScriptTemplate->orderBy = $arrOrderByOptions;			
+			$objScriptTemplate->ajaxParams = $strAjaxParams;			
+			$objScriptTemplate->mId = $arrListingModules[0];		
+			$this->Template->script = $objScriptTemplate->parse();
+		}
 		
 		$this->Template->searchable = $this->iso_enableSearch;
 		$this->Template->perPage = $this->iso_enableLimit;
