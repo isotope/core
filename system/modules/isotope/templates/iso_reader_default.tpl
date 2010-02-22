@@ -6,24 +6,22 @@
 <?php if ($this->hasImage): ?>
 <div id="image_main" class="image_container main_image"><a href="<?php echo $this->mainImage['large']; ?>" title="<?php echo $this->mainImage['desc']; ?>" rel="lightbox"><img src="<?php echo $this->mainImage['thumbnail']; ?>" alt="<?php echo $this->mainImage['alt']; ?>"<?php echo $this->mainImage['thumbnail_size']; ?> /></a></div>
 <?php endif; ?>
-
-<?php if ($this->hasOptions): ?>
-<input type="hidden" name="product_options" value="<?php echo $this->optionList; ?>" />
-<input type="hidden" name="variant_options" value="<?php echo $this->variantList; ?>" />
+<?php if ($this->variant_widget): ?>
 <div class="variants">
-<?php if ($this->hasVariants): ?>
+<input type="hidden" name="variant_options" value="<?php echo $this->variantList; ?>" />
 <?php if ($this->variant_widget): ?>
 	<label for="<?php echo $this->variant_widget['name']; ?>"><?php echo $this->variant_widget['description']; ?> </label><?php echo $this->variant_widget['html']; ?>
 <?php endif; ?>
 <?php endif; ?>
 </div>
+<?php if($this->options): ?>
 <div class="options">
+<input type="hidden" name="product_options" value="<?php echo $this->optionList; ?>" /><div class="options">
 <?php foreach($this->options as $option): ?>
-	<?php echo $option['html']; ?>
+	<label for="<?php echo $option['name']; ?>"><?php echo $option['description']; ?> </label><?php echo $option['html']; ?>
 <?php endforeach; ?>
 </div>
 <?php endif; ?>
-
 
 <?php if ($this->hasGallery): ?>
 <div id="image_gallery">

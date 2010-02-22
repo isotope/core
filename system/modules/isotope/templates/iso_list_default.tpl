@@ -1,5 +1,3 @@
-<input type="hidden" name="product_id" value="<?php echo $this->raw['id']; ?>" />
-
 <h3><a href="<?php echo $this->href_reader; ?>"><?php echo $this->name; ?></a></h3>
 
 <?php if ($this->hasImage): ?>
@@ -15,14 +13,14 @@
 
 <?php if($this->buttons): ?>
 <div class="submit_container">
-<?php if ($this->hasOptions): ?>
-<input type="hidden" name="product_options" value="<?php echo $this->optionList; ?>" />
-<input type="hidden" name="variant_options" value="<?php echo $this->variantList; ?>" />
-<div class="variants">
 <?php if ($this->variant_widget): ?>
-	<label for="<?php echo $this->variant_widget['name']; ?>"><?php echo $this->variant_widget['description']; ?> </label><?php echo $this->variant_widget['html']; ?>
-<?php endif; ?>
+<div class="variants">
+<input type="hidden" name="variant_options" value="<?php echo $this->variantList; ?>" />
+<label for="<?php echo $this->variant_widget['name']; ?>"><?php echo $this->variant_widget['description']; ?> </label><?php echo $this->variant_widget['html']; ?>
 </div>
+<?php endif; ?>
+<?php if($this->options): ?>
+<input type="hidden" name="product_options" value="<?php echo $this->optionList; ?>" />
 <div class="options">
 <?php foreach($this->options as $option): ?>
 	<?php echo $option['html']; ?>
@@ -35,7 +33,7 @@
 </div>
 <?php endif; ?>
 <?php foreach( $this->buttons as $name => $button ): ?>
-	<button type="submit" class="submit <?php echo $name; ?>" name="<?php echo $name; ?>" value="1"><?php echo $button['label']; ?></button>
+	<button type="submit" class="submit <?php echo $name; ?>" id="<?php echo $name . '_' . $this->raw['id']; ?>" name="<?php echo $name; ?>[<?php echo $this->raw['id']; ?>]" value="<?php echo $this->raw['id']; ?>"><?php echo $button['label']; ?></button>
 <?php endforeach; ?>
 </div>
 <?php endif; ?>
