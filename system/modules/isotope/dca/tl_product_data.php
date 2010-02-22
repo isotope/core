@@ -463,39 +463,6 @@ class tl_product_data extends Backend
 
 
 	/**
-	 * Add an image to each product in the tree
-	 * @param array
-	 * @param string
-	 * @param string
-	 * @param object
-	 * @param boolean
-	 * @return string
-	 */
-	public function addIcon($row, $label, $imageAttribute, DataContainer $dc=null, $blnReturnImage=false)
-	{
-
-		// Get image name
-		$arrImage = deserialize($row['images']);
-		
-		if(count($arrImage))
-		{
-			$image = $arrImage['src'];
-		}
-
-		// Return the image only
-		//if ($blnReturnImage)
-		//{
-			return $this->generateImage($image, '', $imageAttribute);
-		//}
-
-		// Add breadcrumb link
-		//$label = '<a href="' . $this->addToUrl('node='.$row['id']) . '">' . $label . '</a>';
-
-		// Return image
-		//return '<a href="'.$this->generateFrontendUrl($row).'" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['view']).'"' . (($dc->table != 'tl_page') ? ' class="tl_gray"' : '') . LINK_NEW_WINDOW . '>'.$this->generateImage($image, '', $imageAttribute).'</a> '.$label;
-	}
-	
-	/**
 	 * Show/hide the downloads button
 	 */
 	public function downloadsButton($row, $href, $label, $title, $icon, $attributes)
@@ -518,7 +485,6 @@ class tl_product_data extends Backend
 	 */
 	public function checkPermission($dc)
 	{
-		return;
 		//$this->import('BackendUser', 'User');
 				
 		/*if ($this->User->isAdmin)
@@ -575,6 +541,17 @@ class tl_product_data extends Backend
 				$this->redirect('typolight/main.php?act=error');
 			}
 		}*/
+		
+/*
+		$objProducts = $this->Database->execute("SELECT id FROM tl_product_data WHERE pid=0");
+		
+		echo $objProducts->numRows;
+		
+		if ($objProducts->numRows)
+		{
+			$GLOBALS['TL_DCA']['tl_product_data']['list']['sorting']['root'] = $objProducts->fetchEach('id');
+		}
+*/
 	}
 	
 	
@@ -583,8 +560,6 @@ class tl_product_data extends Backend
 	 */
 	public function getRowLabel($row, $label = '')
 	{
-		$key = $row['published'] ? 'published' : 'unpublished';
-		
 		$arrImages = deserialize($row['images']);
 		$thumbnail = '';
 		
@@ -602,11 +577,14 @@ class tl_product_data extends Backend
 			}
 		}
 		
-		$output = '<div style="margin-top:5px!important;margin-bottom:0px!important;" class="cte_type ' . $key . '"><div><span>' . $thumbnail . '<strong>' . $row['name'] . '</strong></span><div><span style="color:#b3b3b3;"><strong>' . ($row['pid']!=0 ? $this->getVariantValues($row) : '') . $this->Isotope->formatPriceWithCurrency($row['price']) . '</strong></span></div><br /><br /><div>' . ($row['pid']==0 ? '<em>' . $GLOBALS['TL_LANG']['tl_product_data']['pages'][0] .': ' . $this->getCategoryList(deserialize($row['pages'])) . '</em>' : '') . '</div></div></div> ';
+		$strButtons = $this->languageButtons($row);
 		
-		$fields = array();
+		if ($row['pid'] > 0)
+		{
+			return sprintf('<div class="iso_product"><strong>%s</strong></div>', $this->getVariantValues($row));
+		}
 		
-		return $output;
+		return '<div class="iso_product"><strong>' . $row['name'] . '</strong><div>' . ($row['pid']==0 ? '<em>' . $GLOBALS['TL_LANG']['tl_product_data']['pages'][0] .': ' . $this->getCategoryList(deserialize($row['pages'])) . '</em>' : '') . '</div></div> ';
 	}
 	
 	public function getVariantValues($row)
@@ -667,7 +645,7 @@ class tl_product_data extends Backend
 		
 		$arrProductTypes = array();
 
-		$objProductTypes = $this->Database->execute("SELECT id,name FROM tl_product_types WHERE pid=0" . ($this->User->isAdmin ? '' : (" AND id IN (".implode(',', $arrTypes).")")));
+		$objProductTypes = $this->Database->execute("SELECT id,name FROM tl_product_types WHERE pid=0" . ($this->User->isAdmin ? '' : (" AND id IN (".implode(',', $arrTypes).")")) . " ORDER BY sorting");
 
 		while($objProductTypes->next())
 		{
@@ -675,7 +653,6 @@ class tl_product_data extends Backend
 		}
 
 		return $arrProductTypes;
-	
 	}
 	
 	
@@ -1040,7 +1017,7 @@ class tl_product_data extends Backend
 			$disablePA = true;
 			$disablePI = true;
 		}
-echo $disablePI;
+
 		// Check permissions if the user is not an administrator
 		if (!$this->User->isAdmin)
 		{
@@ -1090,14 +1067,7 @@ echo $disablePI;
 
 
 	/**
-	 * Return the delete page button
-	 * @param array
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @return string
+	 * Return the delete product button
 	 */
 	public function deleteProduct($row, $href, $label, $title, $icon, $attributes)
 	{
@@ -1105,5 +1075,51 @@ echo $disablePI;
 		return ($this->User->isAdmin || (in_array($row['type'], $this->User->iso_product_types) && $this->User->isAllowed(3, $row) && !in_array($row['id'], $root))) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
 	}
 
+	
+	/**
+	 * Return a list of language buttons for editing language-specific product data.
+	 */
+	public function languageButtons($row)
+	{
+		$objType = $this->Database->prepare("SELECT * FROM tl_product_types WHERE id=?")->limit(1)->execute($row['type']);
+		
+		$arrLanguages = deserialize($objType->languages);
+		
+		if (is_array($arrLanguages) && count($arrLanguages))
+		{
+			$strBuffer = '<br />';
+			foreach( $arrLanguages as $language )
+			{
+				$strBuffer .= '<a href="' . $this->addToUrl('key=language&language='.$language.'&id='.$row['id']) . '"><img src="system/modules/isotope/html/languages/' . $language . '.gif" alt="" /></a>';
+			}
+			
+			return $strBuffer;
+		}
+		
+		return '';
+	}
+	
+	
+	/**
+	 * Button link for editing a language. Will check if the language product exists, otherwise create it and redirect to the edit page.
+	 */
+	public function editLanguage()
+	{
+		$intId = $this->Input->get('id');
+		$strLanguage = $this->Input->get('language');
+		
+		$objProduct = $this->Database->prepare("SELECT * FROM tl_product_data WHERE (id=? OR pid=?) AND language=?")->execute($intId, $intId, $strLanguage);
+		
+		if (!$objProduct->numRows)
+		{
+			$intId = $this->Database->prepare("INSERT INTO tl_product_data (pid,tstamp,language) VALUES (?,?,?)")->execute($intId, time(), $strLanguage)->insertId;
+		}
+		else
+		{
+			$intId = $objProduct->id;
+		}
+		
+		$this->redirect('typolight/main.php?do=product_manager&act=edit&id=' . $intId);
+	}
 }
 
