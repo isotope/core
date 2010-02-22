@@ -647,8 +647,9 @@ class tl_product_data extends Backend
 			return $strReturn;
 	}
 	
+	
 	/**
-	 * Returns all allowed product types as array.
+	 * Returns all allowed product types as array, hide language sub-ids.
 	 *
 	 * @access public
 	 * @param object DataContainer $dc
@@ -666,7 +667,7 @@ class tl_product_data extends Backend
 		
 		$arrProductTypes = array();
 
-		$objProductTypes = $this->Database->execute("SELECT id,name FROM tl_product_types" . ($this->User->isAdmin ? '' : (" WHERE id IN (".implode(',', $arrTypes).")")));
+		$objProductTypes = $this->Database->execute("SELECT id,name FROM tl_product_types WHERE pid=0" . ($this->User->isAdmin ? '' : (" AND id IN (".implode(',', $arrTypes).")")));
 
 		while($objProductTypes->next())
 		{
