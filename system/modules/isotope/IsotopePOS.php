@@ -243,57 +243,8 @@ class IsotopePOS extends Backend
 										   ->limit(1)
 										   ->execute($objDc->id);
 		
-		
-		
-//		$arrOrderInfo = $objOrderInfo->fetchAssoc();
-		
-		
-		//Store ID MUST be set prior to importing the Isotope or IsotopeStore libraries!
-				
-		//$this->fltOrderTotal = (float)$arrOrderInfo['subTotal'] + (float)$arrOrderInfo['taxTotal'] + (float)$arrOrderInfo['shippingTotal'];
-		
-		//$strBillingAddress = $this->Isotope->generateAddressString(deserialize($arrOrderInfo['billing_address']));
-		//$strShippingAddress = $this->Isotope->generateAddressString(deserialize($arrOrderInfo['shipping_address']));
-		
-		//$arrCheckoutInfo = deserialize($arrOrderInfo['checkout_info']);
-		//$strShippingInfo = $this->generateShippingInfoString($arrOrderInfo['shipping_rate_id']);
-		
-		//$arrItems = $this->getItems($arrOrderInfo['id']);
-/*		
-		$objTemplate = new BackendTemplate('iso_invoice');
-		
-		$objTemplate->invoiceTitle = $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] . ' #' . $this->intOrderId . '-' . date('mjY', $arrOrderInfo['tstamp']);		
-		$objTemplate->orderBillingAddressHeader = $GLOBALS['TL_LANG']['MSC']['iso_billing_address_header'];
-		$objTemplate->orderBillingAddressString = $strBillingAddress;
-		$objTemplate->orderShippingAddressHeader = $GLOBALS['TL_LANG']['MSC']['iso_shipping_address_header'];
-		$objTemplate->orderShippingAddressString = $strShippingAddress;
-		$objTemplate->paymentInfoHeader = $GLOBALS['TL_LANG']['ISO']['payment_method'];
-		$objTemplate->paymentInfoString = $arrCheckoutInfo['payment_method']['info'];
-		$objTemplate->shippingInfoHeader = $GLOBALS['TL_LANG']['ISO']['shipping_method'];
-		$objTemplate->shippingInfoString = $arrCheckoutInfo['shipping_method']['info']; //$strShippingInfo;
-		$objTemplate->orderTrackingInfoString = $strOrderTrackingInfo;
-		$objTemplate->productNameHeader = $GLOBALS['TL_LANG']['MSC']['iso_product_name_header'];
-		$objTemplate->productSkuHeader = $GLOBALS['TL_LANG']['MSC']['iso_sku_header'];
-		$objTemplate->productPriceHeader = $GLOBALS['TL_LANG']['MSC']['iso_price_header'];
-		$objTemplate->productQuantityHeader = $GLOBALS['TL_LANG']['MSC']['iso_quantity_header'];
-		$objTemplate->productTaxHeader = $GLOBALS['TL_LANG']['MSC']['iso_tax_header'];	
-		$objTemplate->productSubtotalHeader = $GLOBALS['TL_LANG']['MSC']['iso_subtotal_header'];
-		$objTemplate->items = $arrItems;	//name, sku, price, quantity, tax, subtotal, options = array('name', 'value')
-		$objTemplate->orderSubtotalHeader = $GLOBALS['TL_LANG']['MSC']['iso_subtotal_header'];
-		$objTemplate->orderTaxHeader = $GLOBALS['TL_LANG']['MSC']['iso_tax_header'];
-		$objTemplate->orderShippingHeader = $GLOBALS['TL_LANG']['MSC']['iso_order_shipping_header'];
-		$objTemplate->orderGrandTotalHeader = $GLOBALS['TL_LANG']['MSC']['iso_order_grand_total_header'];
-		$objTemplate->orderSubtotal = $this->Isotope->formatPriceWithCurrency($arrOrderInfo['subTotal']); 
-		$objTemplate->orderTaxTotal = $this->Isotope->formatPriceWithCurrency($arrOrderInfo['taxTotal']); 
-		$objTemplate->orderShippingTotal = $this->Isotope->formatPriceWithCurrency($arrOrderInfo['shippingTotal']); 
-		$objTemplate->orderGrandTotal = $this->Isotope->formatPriceWithCurrency($arrOrderInfo['grandTotal']);
-		$objTemplate->orderFooterString = '';	
-		$objTemplate->logoImage = strlen($strInvoiceLogo) ? $this->Environment->base . $strInvoiceLogo : false;
-*/
 		$strInvoiceTitle = $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] . '_' . $objDc->id . '_' . time();
 
-		
-		//$strArticle = html_entity_decode($strArticle, ENT_QUOTES, $GLOBALS['TL_CONFIG']['characterSet']);
 		
 		// Replace relative links
 		$arrLinks = array();
@@ -404,8 +355,8 @@ class IsotopePOS extends Backend
 		}else{
 			$strInvoiceLogo = $objInvoiceLogo->invoiceLogo;
 		}
-		
-		$objTemplate->logoImage = strlen($strInvoiceLogo) ? $this->Environment->base . $strInvoiceLogo : false;
+
+		$objTemplate->logoImage = strlen($strInvoiceLogo) && file_exists(TL_ROOT . '/' . $strInvoiceLogo) ? $this->generateImage($strInvoiceLogo) : false;
 		
 		$objTemplate->invoiceTitle = $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] . ' ' . $objOrder->id . ' - ' . date('m-d-Y g:i', $objOrder->tstamp);
 		

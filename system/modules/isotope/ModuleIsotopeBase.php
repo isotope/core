@@ -84,6 +84,7 @@ abstract class ModuleIsotopeBase extends Module
 			
 			// Load isotope javascript class
 			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/html/isotope.js';
+			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/html/isotope_frontend.js';
 			
 			// Make sure field data is available
 			if (!is_array($GLOBALS['TL_DCA']['tl_product_data']['fields']))
@@ -692,7 +693,7 @@ abstract class ModuleIsotopeBase extends Module
 	 * @param boolean $blnUseTable
 	 * @return string
 	 */
-	public function generateProductOptionWidget($strField, $arrData = array(), $strFormId, $arrOptionFields = array(), $blnUseTable = false)
+	public function generateProductOptionWidget($strField, $arrData = array(), $intProductId = 0, $strFormId = '', $arrOptionFields = array(), $blnUseTable = false)
 	{
 			$hideVariants = false;
 			
@@ -711,7 +712,8 @@ abstract class ModuleIsotopeBase extends Module
 			
 			$objWidget->storeValues = true;
 			$objWidget->tableless = true;
-	
+			$objWidget->name .= "[" . $intProductId . "]";
+			$objWidget->id .= "_" . $intProductId;
 			
 			// Validate input
 			if ($this->Input->post('FORM_SUBMIT') == $strFormId)
@@ -890,7 +892,7 @@ abstract class ModuleIsotopeBase extends Module
 							
 					$arrData = $this->getDCATemplate($arrAttributeData);	//Grab the skeleton DCA info for widget generation
 																	
-					$this->generateProductOptionWidget($option, $arrData, $currFormId);
+					$this->generateProductOptionWidget($option, $arrData, $objProduct->id, $currFormId);
 	
 				}
 																
@@ -918,7 +920,7 @@ abstract class ModuleIsotopeBase extends Module
 				(
 					'name'			=> $k,
 					'description'	=> $arrAttributeData['description'],									
-					'html'			=> $this->generateProductOptionWidget('product_variants', $arrData, $currFormId, $arrOptions)
+					'html'			=> $this->generateProductOptionWidget('product_variants', $arrData, $objProduct->id, $currFormId, $arrOptions)
 				);	
 			}
 		}	
@@ -1247,7 +1249,7 @@ abstract class ModuleIsotopeBase extends Module
 							(
 								'name'			=> $attribute,
 								'description'	=> (strlen($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['description']) ? $GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['description'] : $GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['name']),									
-								'html'			=> $this->generateProductOptionWidget($attribute, $arrData, $strFormId)
+								'html'			=> $this->generateProductOptionWidget($attribute, $arrData, $objProduct->id, $strFormId)
 							);										
 						}
 						
@@ -1353,7 +1355,7 @@ abstract class ModuleIsotopeBase extends Module
           //$arrData = $this->getDCATemplate($arrAttributeData);  //Grab the skeleton DCA info for widget generation
 		  $arrAttributeData = $this->getProductAttributeData($k);
 
-		  $strHtml = $this->generateProductOptionWidget('product_variants', $arrData, $strFormId, $arrVariantOptionFields);
+		  $strHtml = $this->generateProductOptionWidget('product_variants', $arrData, $objProduct->id, $strFormId, $arrVariantOptionFields);
 	
 		  if(strlen($strHtml) && $arrData['options'])
 		  {
