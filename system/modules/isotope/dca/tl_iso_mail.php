@@ -53,7 +53,6 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
 		(
 			'fields'                  => array('name', 'sender'),
 			'format'                  => '%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>',
-//			'label_callback'          => array('', 'addIcon')
 		),
 		'global_operations' => array
 		(
