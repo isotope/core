@@ -88,7 +88,7 @@ $GLOBALS['ISO_MOD'] = array
 	(
 		'shipping' => array
 		(
-				'tables'				=> array('tl_shipping_modules'),
+				'tables'				=> array('tl_shipping_modules','tl_shipping_options'),
 				'icon'					=> 'system/modules/isotope/html/icon-shipping.gif',
 		),
 		'payment' => array
