@@ -47,6 +47,7 @@ array_insert($GLOBALS['BE_MOD']['store'], 0, array
 		'stylesheet'				=> 'system/modules/isotope/html/backend.css',
 		'javascript'				=> 'system/modules/isotope/html/isotope.js',
 		'import'					=> array('tl_product_data', 'importAssets'),
+		'language'					=> array('tl_product_data', 'editLanguage'),
 	),
 	'orders' => array
 	(
@@ -224,6 +225,13 @@ $GLOBALS['ISO_PAY']['paypalpro']				= 'PaymentPaypalPro';
 $GLOBALS['ISO_PAY']['paypalpayflowpro']			= 'PaymentPaypalPayflowPro';
 $GLOBALS['ISO_PAY']['postfinance']				= 'PaymentPostfinance';
 $GLOBALS['ISO_PAY']['authorizedotnet']			= 'PaymentAuthorizeDotNet';
+
+
+/**
+ * Product types
+ */
+$GLOBALS['ISO_PRD']['default']					= 'IsotopeProduct';
+$GLOBALS['ISO_PRD']['variant']					= 'IsotopeProduct';
 
 
 /** 
