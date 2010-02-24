@@ -108,7 +108,9 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'					=> '{name_legend},name,description;{language_legend},language,languages;{attributes_legend},attributes,variant_attributes;{download_legend:hide},downloads',
+		'__selector__'				=> array('type'),
+		'default'					=> '{name_legend},name,type,description;{language_legend},language,languages;{attributes_legend},attributes;{download_legend:hide},downloads',
+		'variant'					=> '{name_legend},name,type,description;{language_legend},language,languages;{attributes_legend},attributes,variant_attributes;{download_legend:hide},downloads',
 		'language'					=> '{language_legend},language;{attributes_legend},attributes',
 	),
 
@@ -120,7 +122,17 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_product_types']['name'],
 			'exclude'				=> true,
 			'inputType'				=> 'text',
-			'eval'					=> array('mandatory'=>true, 'maxlength'=>61)
+			'eval'					=> array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50')
+		),
+		'type' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_product_types']['type'],
+			'exclude'				=> true,
+			'inputType'				=> 'select',
+			'default'				=> 'default',
+			'options'				=> array_keys($GLOBALS['ISO_PRD']),
+			'reference'				=> &$GLOBALS['TL_LANG']['PRD'],
+			'eval'					=> array('mandatory'=>true, 'submitOnChange'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
 		),
 		'description' => array
 		(
@@ -327,7 +339,7 @@ class tl_product_types extends Backend
 	public function hideLanguageButtons($row, $href, $label, $title, $icon, $attributes, $table)
 	{
 		if ($row['pid'] > 0)
-			return '';
+			return '<span>'.$this->generateImage(str_replace('.gif', '_.gif', $icon)).'</span> ';
 			
 		return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
 	}
