@@ -334,6 +334,7 @@ $GLOBALS['TL_LANG']['CCT']['enroute']			= 'EnRoute';
 $GLOBALS['TL_LANG']['CUR']['USD'] = 'USD - US Dollar';
 $GLOBALS['TL_LANG']['CUR']['EUR'] = 'EUR - Euro';
 $GLOBALS['TL_LANG']['CUR']['CHF'] = 'CHF - Swiss Franc';
+$GLOBALS['TL_LANG']['CUR']['GBP'] = 'GBP - Pound Sterling';
 
 
 /**
