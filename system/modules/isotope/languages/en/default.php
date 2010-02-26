@@ -341,6 +341,7 @@ $GLOBALS['TL_LANG']['CUR']['CHF'] = 'CHF - Swiss Franc';
  */
 $GLOBALS['TL_LANG']['CUR_SYMBOL']['USD'] = '$';
 $GLOBALS['TL_LANG']['CUR_SYMBOL']['EUR'] = '€';
+$GLOBALS['TL_LANG']['CUR_SYMBOL']['GBP'] = '£';
 
 /** 
  * Weight Units 
