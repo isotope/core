@@ -342,11 +342,14 @@ class ProductCatalog extends Backend
 		// Add palettes
 		$arrProductTypePalettes = $this->getProductTypePalettes();
 
-		$GLOBALS['TL_DCA']['tl_product_data']['palettes'] = $GLOBALS['TL_DCA']['tl_product_data']['palettes'] + $arrProductTypePalettes;
+		if(count($arrProductTypePalettes))
+		{
+			$GLOBALS['TL_DCA']['tl_product_data']['palettes'] = $GLOBALS['TL_DCA']['tl_product_data']['palettes'] + $arrProductTypePalettes;
+				
+			$arrAdditionalSelectors = $this->arrSelectors;
 		
-		$arrAdditionalSelectors = $this->arrSelectors;
-		
-		$GLOBALS['TL_DCA']['tl_product_data']['palettes']['__selector__'] = array_merge($GLOBALS['TL_DCA']['tl_product_data']['palettes']['__selector__'], $arrAdditionalSelectors);
+			$GLOBALS['TL_DCA']['tl_product_data']['palettes']['__selector__'] = array_merge($GLOBALS['TL_DCA']['tl_product_data']['palettes']['__selector__'], $arrAdditionalSelectors);
+		}
 		
 		if($this->Input->get('id') && $this->Input->get('do')=='product_manager' && !$this->Input->get('mode'))
 		{
