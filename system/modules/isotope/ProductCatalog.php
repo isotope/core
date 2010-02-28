@@ -696,30 +696,33 @@ class ProductCatalog extends Backend
 						
 			$arrFieldCollection = deserialize($objProductTypes->$strAttributeField);
 			
-			$objHiddenAttributes = $this->Database->execute("SELECT field_name FROM tl_product_attributes WHERE is_hidden_on_backend='1'");
-					
-			if($objHiddenAttributes->numRows > 0)
-			{				
-				while($objHiddenAttributes->next())
-				{
-					$i = 0;
-					
-					foreach($arrFieldCollection as $field)
-					{
-						if($field==$objHiddenAttributes->field_name && $strAttributeField=='attributes')
-						{
-							unset($arrFieldCollection[$i]);
-						}
+			if(is_array($arrFieldCollection) && count($arrFieldCollection) > 0)
+			{
+				
+				$objHiddenAttributes = $this->Database->execute("SELECT field_name FROM tl_product_attributes WHERE is_hidden_on_backend='1'");
 						
-						$i++;
+				if($objHiddenAttributes->numRows > 0)
+				{				
+					while($objHiddenAttributes->next())
+					{
+						$i = 0;
+						
+						foreach($arrFieldCollection as $field)
+						{
+							if($field==$objHiddenAttributes->field_name && $strAttributeField=='attributes')
+							{
+								unset($arrFieldCollection[$i]);
+							}
+							
+							$i++;
+						}
 					}
 				}
+								
+				$strAttributes = $this->buildPaletteString($arrFieldCollection);
+				
+				$arrPalettes[$objProductTypes->id] = $strAttributes;					
 			}
-							
-			$strAttributes = $this->buildPaletteString($arrFieldCollection);
-			
-			$arrPalettes[$objProductTypes->id] = $strAttributes;					
-
 		}
 
 		return $arrPalettes;
