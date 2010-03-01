@@ -160,7 +160,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				else
 				{
 					$this->import($callback[0]);
-					$strBuffer .= $this->{$callback[0]}->{$callback[1]}(&$this);
+					$strBuffer .= $this->{$callback[0]}->{$callback[1]}($this);
 				}
 			
 				if ($this->doNotSubmit && $step != $this->strCurrentStep)
@@ -1123,7 +1123,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 					else
 					{
 						$this->import($callback[0]);
-						$arrInfo = $this->{$callback[0]}->{$callback[1]}(&$this, true);
+						$arrInfo = $this->{$callback[0]}->{$callback[1]}($this, true);
 					}
 					
 					if (is_array($arrInfo) && count($arrInfo))
