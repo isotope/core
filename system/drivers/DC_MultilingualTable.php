@@ -279,6 +279,7 @@ class DC_MultilingualTable extends DC_Table
 		// Check languages
 		if (is_array($this->arrLanguages) && count($this->arrLanguages))
 		{
+			$arrAvailableLanguages = $this->Database->prepare("SELECT language FROM " . $this->strTable . " WHERE pid=?")->execute($this->intId)->fetchEach('language');
 			$languages = '';
 			$arrLanguageLabels = $this->getLanguages();
 			
@@ -286,12 +287,12 @@ class DC_MultilingualTable extends DC_Table
 			{
 				if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId] == $language)
 				{
-					$languages .= '<option value="'.$language.'" selected="selected">'.$arrLanguageLabels[$language].'</option>';
+					$languages .= '<option value="' . $language . '" selected="selected">' . $arrLanguageLabels[$language] .'</option>';
 					$_SESSION['TL_INFO'] = array($GLOBALS['TL_LANG']['MSC']['editingLanguage']);
 					continue;
 				}
 				
-				$languages .= '<option value="'.$language.'">'.$arrLanguageLabels[$language].'</option>';
+				$languages .= '<option value="' . $language . '">' . $arrLanguageLabels[$language] . (in_array($language, $arrAvailableLanguages) ? '' : ' ('.$GLOBALS['TL_LANG']['MSC']['undefinedLanguage'].')') . '</option>';
 			}
 			
 			$language = '
