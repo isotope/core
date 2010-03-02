@@ -34,7 +34,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 	'config' => array
 	(
 		'label'                       => &$GLOBALS['TL_LANG']['MOD']['product_manager'][0],
-		'dataContainer'               => 'Table',
+		'dataContainer'               => 'ProductData',
 		'enableVersioning'            => false,
 		'ctable'					  => array('tl_product_downloads', 'tl_product_categories'),
 		'onload_callback'			  => array
@@ -73,13 +73,6 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 				'label'               => &$GLOBALS['TL_LANG']['MSC']['toggleNodes'],
 				'href'                => 'ptg=all',
 				'class'               => 'header_toggle'
-			),
-			'all' => array
-			(
-				'label'               => &$GLOBALS['TL_LANG']['MSC']['all'],
-				'href'                => 'act=select',
-				'class'               => 'header_edit_all',
-				'attributes'          => 'onclick="Backend.getScrollOffset();"'
 			),
 		),
 		'operations' => array
@@ -1011,7 +1004,8 @@ class tl_product_data extends Backend
 </form>';
 	}
 
-		/**
+	
+	/**
 	 * Return the edit page button
 	 * @param array
 	 * @param string
