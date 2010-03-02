@@ -27,24 +27,7 @@
 
 
 /**
- * Backend modules
+ * Fields
  */
-array_insert($GLOBALS['BE_MOD']['store'], 1, array
-(
-	'iso_dimensions' => array
-	(
-		'tables'		=> array('tl_product_dimensions', 'tl_product_dimension_prices'),
-		'icon'			=> 'system/modules/isotope_dimensions/html/icon-dimensions.png',
-	),
-));
-
-
-/**
- * Product types
- */
-$GLOBALS['ISO_PRODUCT']['dimension'] = array
-(
-	'class'				=> 'DimensionProduct',
-	'disabledFields'	=> array('price', 'price_override'),
-);
+$GLOBALS['TL_LANG']['tl_product_types']['dimensions']	= array('Preisgruppe', 'Wählen Sie die Preisgruppe für Flächenpreise');
 

@@ -45,6 +45,15 @@ class AttributeWizard extends Widget
 	 * @var array
 	 */
 	protected $arrOptions = array();
+	
+	
+	/**
+	 * A list of fields we do not want to show. This can be set by the product type class.
+	 */
+	protected $arrDisabledFields;
+	
+	
+	protected $objActiveRecord;
 
 
 	/**
@@ -92,6 +101,10 @@ class AttributeWizard extends Widget
 	 */
 	public function generate()
 	{
+		$this->import('Database');
+		$this->objActiveRecord = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE id=?")->execute($this->currentRecord);
+		$this->arrDisabledFields = $GLOBALS['ISO_PRODUCT'][$this->objActiveRecord->type]['disabledFields'];
+		
 		$this->arrOptions = $this->getOptions();
 		
 		$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/html/isotope.js';
@@ -292,7 +305,7 @@ class AttributeWizard extends Widget
 				
 		foreach( $arrDca as $field => $arrData )
 		{
-			if (is_array($arrData['attributes']) && strlen($arrData['attributes']['legend']))
+			if (is_array($arrData['attributes']) && strlen($arrData['attributes']['legend']) && (!is_array($this->arrDisabledFields) || !in_array($field, $this->arrDisabledFields)))
 			{
 				$arrAttributes[$arrData['attributes']['legend']][] = array
 				(

@@ -27,24 +27,20 @@
 
 
 /**
- * Backend modules
+ * Palettes
  */
-array_insert($GLOBALS['BE_MOD']['store'], 1, array
-(
-	'iso_dimensions' => array
-	(
-		'tables'		=> array('tl_product_dimensions', 'tl_product_dimension_prices'),
-		'icon'			=> 'system/modules/isotope_dimensions/html/icon-dimensions.png',
-	),
-));
+$GLOBALS['TL_DCA']['tl_product_types']['palettes']['dimension']	= '{name_legend},name,type,description;{language_legend:hide},languages;{attributes_legend},dimensions,attributes;{download_legend:hide},downloads';
 
 
 /**
- * Product types
+ * Fields
  */
-$GLOBALS['ISO_PRODUCT']['dimension'] = array
+$GLOBALS['TL_DCA']['tl_product_types']['fields']['dimensions']	= array
 (
-	'class'				=> 'DimensionProduct',
-	'disabledFields'	=> array('price', 'price_override'),
+	'label'				=> &$GLOBALS['TL_LANG']['tl_product_types']['dimensions'],
+	'exclude'			=> true,
+	'inputType'			=> 'select',
+	'foreignKey'		=> 'tl_product_dimensions.name',
+	'eval'				=> array('mandatory'=>true, 'includeBlankOption'=>true),
 );
 

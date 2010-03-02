@@ -104,8 +104,9 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 	'palettes' => array
 	(
 		'__selector__'				=> array('type'),
-		'default'					=> '{name_legend},name,type,description;{language_legend},languages;{attributes_legend},attributes;{download_legend:hide},downloads',
-		'variant'					=> '{name_legend},name,type,description;{language_legend},languages;{attributes_legend},attributes,variant_attributes;{download_legend:hide},downloads',
+		'default'					=> '{name_legend},name,type,description;{language_legend:hide},languages;{attributes_legend},attributes;{download_legend:hide},downloads',
+		'simple'					=> '{name_legend},name,type,description;{language_legend:hide},languages;{attributes_legend},attributes;{download_legend:hide},downloads',
+		'variant'					=> '{name_legend},name,type,description;{language_legend:hide},languages;{attributes_legend},attributes,variant_attributes;{download_legend:hide},downloads',
 	),
 
 	// Fields
@@ -124,8 +125,8 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 			'exclude'				=> true,
 			'inputType'				=> 'select',
 			'default'				=> 'default',
-			'options'				=> array_keys($GLOBALS['ISO_PRD']),
-			'reference'				=> &$GLOBALS['TL_LANG']['PRD'],
+			'options'				=> array_keys($GLOBALS['ISO_PRODUCT']),
+			'reference'				=> &$GLOBALS['TL_LANG']['ISO_PRODUCT'],
 			'eval'					=> array('mandatory'=>true, 'submitOnChange'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
 		),
 		'description' => array
