@@ -2,7 +2,6 @@
 .tl_mediamanager th, .tl_mediamanager td { padding: 2px 10px 0 0; }
 .tl_mediamanager input.tl_text_2 { width: 220px; }
 .tl_mediamanager textarea { height: 40px; width: 300px; }
-.tl_right_nowrap { vertical-align: top; padding-top:8px; }
 .mod_isoOrderDetails .info_container { float:left; width:200px; border: 1px dotted #ccc; padding: 10px; margin: 0 10px 10px 0; }
 .mod_isoOrderDetails .info_container h3 { margin-top: 0; margin-bottom: 5px }
 .mod_isoOrderDetails table { margin-top: 20px; border-top: 1px dotted #ccc; width: 100% }
