@@ -148,7 +148,7 @@ CREATE TABLE `tl_product_types` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `tstamp` int(10) unsigned NOT NULL default '0',
   `name` varchar(255) NOT NULL default '',
-  `class` varchar(32) NOT NULL default 'default',
+  `class` varchar(32) NOT NULL default 'simple',
   `description` text NULL,
   `attributes` blob NULL,
   `variant_attributes` blob NULL,
