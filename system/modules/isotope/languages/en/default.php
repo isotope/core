@@ -321,8 +321,8 @@ $GLOBALS['TL_LANG']['PAY']['authorizedotnet']	= array('Authorize.net', 'An Autho
 /**
  * Product types
  */
-$GLOBALS['TL_LANG']['PRD']['default']			= array('Regular Product', 'A regular product. Select this if nothing else matches.');
-$GLOBALS['TL_LANG']['PRD']['variant']			= array('Product with Variants', 'A product with variant data.');
+$GLOBALS['TL_LANG']['ISO_PRODUCT']['simple']	= array('Simple product', 'A regular product. Select this if nothing else matches.');
+$GLOBALS['TL_LANG']['ISO_PRODUCT']['variant']	= array('Product with variant data', 'A product with variant data.');
 
 
 /**

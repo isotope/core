@@ -229,8 +229,17 @@ $GLOBALS['ISO_PAY']['authorizedotnet']			= 'PaymentAuthorizeDotNet';
 /**
  * Product types
  */
-$GLOBALS['ISO_PRD']['default']					= 'IsotopeProduct';
-$GLOBALS['ISO_PRD']['variant']					= 'IsotopeProduct';
+$GLOBALS['ISO_PRODUCT'] = array
+(
+	'simple' => array
+	(
+		'class'	=> 'IsotopeProduct',
+	),
+	'variant' => array
+	(
+		'class'	=> 'IsotopeProduct',
+	),
+);
 
 
 /** 
