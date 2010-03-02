@@ -29,14 +29,14 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_product_types']['name']			= array('Product Type Name', '');
-$GLOBALS['TL_LANG']['tl_product_types']['type']			= array('Product Type Class', 'Please select a product type class. Different product type classes will handle products differently.');
-$GLOBALS['TL_LANG']['tl_product_types']['description']	= array('Product Type Description', '');
-$GLOBALS['TL_LANG']['tl_product_types']['attributes']	= array('Product Attributes', 'Select the collection of attributes that should be included for this product type.');
+$GLOBALS['TL_LANG']['tl_product_types']['name']					= array('Product Type Name', '');
+$GLOBALS['TL_LANG']['tl_product_types']['type']					= array('Product Type Class', 'Please select a product type class. Different product type classes will handle products differently.');
+$GLOBALS['TL_LANG']['tl_product_types']['description']			= array('Product Type Description', '');
+$GLOBALS['TL_LANG']['tl_product_types']['attributes']			= array('Product Attributes', 'Select the collection of attributes that should be included for this product type.');
 $GLOBALS['TL_LANG']['tl_product_types']['variant_attributes']	= array('Variant Product Attributes', 'Select the collection of variant attributes that should be included for this product type. Those that are not selected will be hidden from view and inherited from the parent product.');
-$GLOBALS['TL_LANG']['tl_product_types']['language']		= array('Main language', 'Select the main language these products will be of.');
-$GLOBALS['TL_LANG']['tl_product_types']['languages']	= array('Additional languages', 'Select the additional languages you want to add product data for.');
-$GLOBALS['TL_LANG']['tl_product_types']['downloads']	= array('Enable downloads', 'Check here if this product type has downloads.');
+$GLOBALS['TL_LANG']['tl_product_types']['language']				= array('Language', 'The language these products will be of.');
+$GLOBALS['TL_LANG']['tl_product_types']['languages']			= array('Additional languages', 'Select the additional languages you want to add product data for.');
+$GLOBALS['TL_LANG']['tl_product_types']['downloads']			= array('Enable downloads', 'Check here if this product type has downloads.');
 
 
 /**

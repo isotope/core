@@ -47,7 +47,6 @@ array_insert($GLOBALS['BE_MOD']['store'], 0, array
 		'stylesheet'				=> 'system/modules/isotope/html/backend.css',
 		'javascript'				=> 'system/modules/isotope/html/isotope.js',
 		'import'					=> array('tl_product_data', 'importAssets'),
-		'language'					=> array('tl_product_data', 'editLanguage'),
 	),
 	'orders' => array
 	(
