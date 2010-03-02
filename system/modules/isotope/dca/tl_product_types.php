@@ -103,10 +103,10 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'__selector__'				=> array('type'),
-		'default'					=> '{name_legend},name,type,description;{language_legend:hide},languages;{attributes_legend},attributes;{download_legend:hide},downloads',
-		'simple'					=> '{name_legend},name,type,description;{language_legend:hide},languages;{attributes_legend},attributes;{download_legend:hide},downloads',
-		'variant'					=> '{name_legend},name,type,description;{language_legend:hide},languages;{attributes_legend},attributes,variant_attributes;{download_legend:hide},downloads',
+		'__selector__'				=> array('class'),
+		'default'					=> '{name_legend},name,class,description;{language_legend:hide},languages;{attributes_legend},attributes;{download_legend:hide},downloads',
+		'simple'					=> '{name_legend},name,class,description;{language_legend:hide},languages;{attributes_legend},attributes;{download_legend:hide},downloads',
+		'variant'					=> '{name_legend},name,class,description;{language_legend:hide},languages;{attributes_legend},attributes,variant_attributes;{download_legend:hide},downloads',
 	),
 
 	// Fields
@@ -119,12 +119,12 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 			'inputType'				=> 'text',
 			'eval'					=> array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50')
 		),
-		'type' => array
+		'class' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_product_types']['type'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_product_types']['class'],
 			'exclude'				=> true,
 			'inputType'				=> 'select',
-			'default'				=> 'default',
+			'default'				=> 'simple',
 			'options'				=> array_keys($GLOBALS['ISO_PRODUCT']),
 			'reference'				=> &$GLOBALS['TL_LANG']['ISO_PRODUCT'],
 			'eval'					=> array('mandatory'=>true, 'submitOnChange'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),

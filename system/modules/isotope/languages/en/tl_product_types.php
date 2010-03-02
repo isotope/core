@@ -30,7 +30,7 @@
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_product_types']['name']					= array('Product Type Name', '');
-$GLOBALS['TL_LANG']['tl_product_types']['type']					= array('Product Type Class', 'Please select a product type class. Different product type classes will handle products differently.');
+$GLOBALS['TL_LANG']['tl_product_types']['class']				= array('Product Class', 'Please select a product class. Different product classes will handle products differently.');
 $GLOBALS['TL_LANG']['tl_product_types']['description']			= array('Product Type Description', '');
 $GLOBALS['TL_LANG']['tl_product_types']['attributes']			= array('Product Attributes', 'Select the collection of attributes that should be included for this product type.');
 $GLOBALS['TL_LANG']['tl_product_types']['variant_attributes']	= array('Variant Product Attributes', 'Select the collection of variant attributes that should be included for this product type. Those that are not selected will be hidden from view and inherited from the parent product.');

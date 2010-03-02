@@ -29,7 +29,7 @@
 /**
  * Palettes
  */
-$GLOBALS['TL_DCA']['tl_product_types']['palettes']['dimension']	= '{name_legend},name,type,description;{language_legend:hide},languages;{attributes_legend},dimensions,attributes;{download_legend:hide},downloads';
+$GLOBALS['TL_DCA']['tl_product_types']['palettes']['dimension']	= '{name_legend},name,class,description;{language_legend:hide},languages;{attributes_legend},dimensions,attributes;{download_legend:hide},downloads';
 
 
 /**
