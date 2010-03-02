@@ -356,8 +356,8 @@ class IsotopePOS extends Backend
 			$strInvoiceLogo = $objInvoiceLogo->invoiceLogo;
 		}
 
-		$objTemplate->logoImage = strlen($strInvoiceLogo) && file_exists(TL_ROOT . '/' . $strInvoiceLogo) ? $this->generateImage($strInvoiceLogo) : false;
-		
+		$objTemplate->logoImage = strlen($strInvoiceLogo) && file_exists(TL_ROOT . '/' . $strInvoiceLogo) ? str_replace('src="', 'src="/', $this->generateImage($strInvoiceLogo)) : false;
+				
 		$objTemplate->invoiceTitle = $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] . ' ' . $objOrder->id . ' - ' . date('m-d-Y g:i', $objOrder->tstamp);
 		
 		// Article reader
