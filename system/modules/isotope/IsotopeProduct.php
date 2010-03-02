@@ -59,10 +59,21 @@ class IsotopeProduct extends Model
 	/**
 	 * Construct the object
 	 */
-	public function __construct()
+	public function __construct($arrData)
 	{
 		parent::__construct();
 		$this->import('Isotope');
+		
+		$this->arrData = $arrData;
+		
+		$objType = $this->Database->prepare("SELECT * FROM tl_product_types WHERE id=?")->execute($this->arrData['type']);
+		$this->arrAttributes = deserialize($objType->attributes, true);
+		
+		// Cache downloads for this product
+		if ($objType->downloads)
+		{
+			$this->arrDownloads = $this->Database->prepare("SELECT * FROM tl_product_downloads WHERE pid=?")->execute($this->arrData['id'])->fetchAllAssoc();
+		}
 	}
 	
 	
@@ -98,9 +109,9 @@ class IsotopeProduct extends Model
 				// Initialize attribute
 				if (!isset($this->arrCache[$strKey]))
 				{
-					if (isset($GLOBALS['TL_DCA']['tl_product_data']['fields'][$strKey]))
+					if (isset($GLOBALS['TL_DCA'][$this->strTable]['fields'][$strKey]))
 					{
-						switch( $GLOBALS['TL_DCA']['tl_product_data']['fields'][$strKey]['inputType'] )
+						switch( $GLOBALS['TL_DCA'][$this->strTable]['fields'][$strKey]['inputType'] )
 						{
 							case 'mediaManager':
 								$varValue = array();
@@ -248,29 +259,8 @@ class IsotopeProduct extends Model
 	 */
 	public function findBy($strRefField, $varRefId)
 	{
-		if (!parent::findBy($strRefField, $varRefId))
-			return false;
-		
-		if (!$this->arrData['published'] || (strlen($this->arrData['start']) && $this->arrData['start'] > time()) || (strlen($this->arrData['stop']) && $this->arrData['stop'] < time()))
-			return false;
-		
-		$objType = $this->Database->prepare("SELECT * FROM tl_product_types WHERE id=?")->execute($this->arrData['type']);
-		
-		if (!$objType->numRows)
-			return false;
-		
-		$this->arrAttributes = deserialize($objType->attributes);
-		
-		if (!is_array($this->arrAttributes) || !count($this->arrAttributes))
-			return false;
-		
-		// Cache downloads for this product
-		if ($objType->downloads)
-		{
-			$this->arrDownloads = $this->Database->prepare("SELECT * FROM tl_product_downloads WHERE pid=?")->execute($this->arrData['id'])->fetchAllAssoc();
-		}
-		
-		return true;
+		throw new Exception("findBy() is prohibited on IsotopeProduct, you must __construct() with table data.");
+		return false;
 	}
 	
 	
@@ -328,7 +318,7 @@ class IsotopeProduct extends Model
 	{
 		$strPriceField = $this->Isotope->Store->priceField;
 				
-		$objVariant = $this->Database->prepare("SELECT id, sku, weight, " . $strPriceField . ", " . $strVariantFields . ", images FROM tl_product_data WHERE id=?")->limit(1)->execute($intId);
+		$objVariant = $this->Database->prepare("SELECT id, sku, weight, " . $strPriceField . ", " . $strVariantFields . ", images FROM " . $this->strTable . " WHERE id=?")->limit(1)->execute($intId);
 			
 		if(!$objVariant->numRows)
 			return;

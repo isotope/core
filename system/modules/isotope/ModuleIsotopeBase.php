@@ -1133,38 +1133,51 @@ abstract class ModuleIsotopeBase extends Module
 	 */
 	protected function getProduct($intId)
 	{
-		$objProduct = new IsotopeProduct();
+		$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_product_types WHERE tl_product_data.type=tl_product_types.id) AS type_class FROM tl_product_data WHERE id=?")
+										 ->limit(1)
+										 ->executeUncached($intId);
+									 
+		$strClass = $GLOBALS['ISO_PRODUCT'][$objProductData->type_class]['class'];
 		
-		if (!$objProduct->findBy('id', $intId))
-		{						
+		if (!$this->classFileExists($strClass))
+		{
 			return null;
 		}
+									
+		$objProduct = new $strClass($objProductData->row());
 		
 		$objProduct->reader_jumpTo = $this->iso_reader_jumpTo;
 			
 		return $objProduct;
 	}
+	
 	
 	/**
 	 * Shortcut for a single product by alias (from url?)
 	 */
 	protected function getProductByAlias($strAlias)
 	{
-		$objProduct = new IsotopeProduct();
+		$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_product_types WHERE tl_product_data.type=tl_product_types.id) AS type_class FROM tl_product_data WHERE alias=?")
+										 ->limit(1)
+										 ->executeUncached($strAlias);
+									 
+		$strClass = $GLOBALS['ISO_PRODUCT'][$objProductData->type_class]['class'];
 		
-		if (!$objProduct->findBy('alias', $strAlias))
+		if (!$this->classFileExists($strClass))
+		{
 			return null;
-			
+		}
+									
+		$objProduct = new $strClass($objProductData->row());
+		
 		$objProduct->reader_jumpTo = $this->iso_reader_jumpTo;
 			
 		return $objProduct;
 	}
 	
+	
 	/**
-	 * Retrieve product data.
-	 *
-	 * - Deserialize all data
-	 * - Empty attribtues which are not enabled on the product type
+	 * Retrieve multiple products by ID.
 	 */
 	protected function getProducts($arrIds)
 	{
@@ -1175,14 +1188,10 @@ abstract class ModuleIsotopeBase extends Module
 		
 		foreach( $arrIds as $intId )
 		{
-			$objProduct = new IsotopeProduct();
+			$objProduct = $this->getProduct($intId);
 		
-			if (!$objProduct->findBy('id', $intId))
-				continue;
-				
-			$objProduct->reader_jumpTo = $this->iso_reader_jumpTo;
-				
-			$arrProducts[] = $objProduct;
+			if (is_object($objProduct))
+				$arrProducts[] = $objProduct;
 		}
 		
 		return $arrProducts;
@@ -1194,7 +1203,6 @@ abstract class ModuleIsotopeBase extends Module
 	 */
 	public function generateProduct($objProduct, $strTemplate, $arrData=array(), $strFormId='', $intParentProductId = 0)
 	{
-		
 		$objTemplate = new FrontendTemplate($strTemplate);
 
 		$objTemplate->setData($arrData);

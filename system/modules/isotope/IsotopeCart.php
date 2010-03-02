@@ -944,15 +944,19 @@ class IsotopeCart extends Model
 	 */
 	protected function getProduct($intId)
 	{
-		$objProduct = new IsotopeProduct();
+		$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_product_types WHERE tl_product_data.type=tl_product_types.id) AS type_class FROM tl_product_data WHERE id=?")
+										 ->limit(1)
+										 ->executeUncached($intId);
+									 
+		$strClass = $GLOBALS['ISO_PRODUCT'][$objProductData->type_class]['class'];
 		
-		if (!$objProduct->findBy('id', $intId))
-		{						
+		if (!$this->classFileExists($strClass))
+		{
 			return null;
 		}
+									
+		$objProduct = new $strClass($objProductData->row());
 		
-		$objProduct->reader_jumpTo = $this->iso_reader_jumpTo;
-			
 		return $objProduct;
 	}
 
