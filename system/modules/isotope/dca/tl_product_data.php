@@ -742,7 +742,7 @@ class tl_product_data extends Backend
 		
 		$arrProductTypes = array();
 
-		$objProductTypes = $this->Database->execute("SELECT id,name FROM tl_product_types WHERE pid=0" . ($this->User->isAdmin ? '' : (" AND id IN (".implode(',', $arrTypes).")")) . " ORDER BY sorting");
+		$objProductTypes = $this->Database->execute("SELECT id,name FROM tl_product_types" . ($this->User->isAdmin ? '' : (" WHERE id IN (".implode(',', $arrTypes).")")) . " ORDER BY name");
 
 		while($objProductTypes->next())
 		{
