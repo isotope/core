@@ -77,6 +77,13 @@ $GLOBALS['TL_LANG']['ERR']['noAddressBookEntries'] = 'You have no address book e
 /**
  * Miscellaneous
  */
+$GLOBALS['TL_LANG']['MSC']['labelLanguage']			= 'Language';
+$GLOBALS['TL_LANG']['MSC']['editLanguage']			= 'Edit';
+$GLOBALS['TL_LANG']['MSC']['deleteLanguage']		= 'Delete';
+$GLOBALS['TL_LANG']['MSC']['defaultLanguage']		= 'Generic';
+$GLOBALS['TL_LANG']['MSC']['editingLanguage']		= 'ATTENTION: You are editing language-specific data!';
+$GLOBALS['TL_LANG']['MSC']['deleteLanguageConfirm']	= 'Are you sure you want to delete this language? There is no undo!';
+
 $GLOBALS['TL_LANG']['MSC']['ajaxLoadingMessage'] = 'Loading...';
 $GLOBALS['TL_LANG']['MSC']['scalingImageWidth'] = '1200';
 $GLOBALS['TL_LANG']['MSC']['scalingImageHeight'] = '1200'; 
@@ -351,3 +358,4 @@ $GLOBALS['ISO_WGT']['gram'] 	= 'grams';
 $GLOBALS['ISO_WGT']['kg']		= 'kilograms';
 $GLOBALS['ISO_WGT']['oz'] 		= 'ounces';
 $GLOBALS['ISO_WGT']['lbs']		= 'pounds';
+

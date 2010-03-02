@@ -34,9 +34,10 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 	'config' => array
 	(
 		'label'                       => &$GLOBALS['TL_LANG']['MOD']['product_manager'][0],
-		'dataContainer'               => 'ProductData',
-		'enableVersioning'            => false,
+		'dataContainer'               => 'MultilingualTable',
 		'ctable'					  => array('tl_product_downloads', 'tl_product_categories'),
+		'ltable'					  => 'tl_product_types.languages',
+		'lref'						  => 'type',
 		'onload_callback'			  => array
 		(
 			array('tl_product_data', 'checkPermission'),
@@ -201,7 +202,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			'search'				=> true,
 			'inputType'				=> 'text',
 			'eval'					=> array('mandatory'=>true, 'tl_class'=>'clr long'),
-			'attributes'			=> array('legend'=>'general_legend', 'fixed'=>true),
+			'attributes'			=> array('legend'=>'general_legend', 'multilingual'=>true, 'fixed'=>true),
 		),
 		'teaser' => array
 		(
@@ -209,7 +210,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			'search'				=> true,
 			'inputType'				=> 'textarea',
 			'eval'					=> array('style'=>'height:80px'),
-			'attributes'			=> array('legend'=>'general_legend'),
+			'attributes'			=> array('legend'=>'general_legend', 'multilingual'=>true),
 		),
 		'description' => array
 		(
@@ -217,7 +218,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			'search'				=> true,
 			'inputType'				=> 'textarea',
 			'eval'					=> array('mandatory'=>true, 'rte'=>'tinyMCE'),
-			'attributes'			=> array('legend'=>'general_legend'),
+			'attributes'			=> array('legend'=>'general_legend', 'multilingual'=>true),
 		),
 		'price' => array
 		(
@@ -674,8 +675,6 @@ class tl_product_data extends Backend
 			}
 		}
 		
-		$strButtons = $this->languageButtons($row);
-		
 		if ($row['pid'] > 0)
 		{
 			return sprintf('<div class="iso_product"><strong>%s</strong></div>', $this->getVariantValues($row));
@@ -724,7 +723,7 @@ class tl_product_data extends Backend
 	
 	
 	/**
-	 * Returns all allowed product types as array, hide language sub-ids.
+	 * Returns all allowed product types as array.
 	 *
 	 * @access public
 	 * @param object DataContainer $dc
@@ -741,7 +740,6 @@ class tl_product_data extends Backend
 		}
 		
 		$arrProductTypes = array();
-
 		$objProductTypes = $this->Database->execute("SELECT id,name FROM tl_product_types" . ($this->User->isAdmin ? '' : (" WHERE id IN (".implode(',', $arrTypes).")")) . " ORDER BY name");
 
 		while($objProductTypes->next())
@@ -1171,53 +1169,6 @@ class tl_product_data extends Backend
 	{
 		$root = func_get_arg(7);
 		return ($this->User->isAdmin || (in_array($row['type'], $this->User->iso_product_types) && $this->User->isAllowed(3, $row) && !in_array($row['id'], $root))) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
-	}
-
-	
-	/**
-	 * Return a list of language buttons for editing language-specific product data.
-	 */
-	public function languageButtons($row)
-	{
-		$objType = $this->Database->prepare("SELECT * FROM tl_product_types WHERE id=?")->limit(1)->execute($row['type']);
-		
-		$arrLanguages = deserialize($objType->languages);
-		
-		if (is_array($arrLanguages) && count($arrLanguages))
-		{
-			$strBuffer = '<br />';
-			foreach( $arrLanguages as $language )
-			{
-				$strBuffer .= '<a href="' . $this->addToUrl('key=language&language='.$language.'&id='.$row['id']) . '"><img src="system/modules/isotope/html/languages/' . $language . '.gif" alt="" /></a>';
-			}
-			
-			return $strBuffer;
-		}
-		
-		return '';
-	}
-	
-	
-	/**
-	 * Button link for editing a language. Will check if the language product exists, otherwise create it and redirect to the edit page.
-	 */
-	public function editLanguage()
-	{
-		$intId = $this->Input->get('id');
-		$strLanguage = $this->Input->get('language');
-		
-		$objProduct = $this->Database->prepare("SELECT * FROM tl_product_data WHERE (id=? OR pid=?) AND language=?")->execute($intId, $intId, $strLanguage);
-		
-		if (!$objProduct->numRows)
-		{
-			$intId = $this->Database->prepare("INSERT INTO tl_product_data (pid,tstamp,language) VALUES (?,?,?)")->execute($intId, time(), $strLanguage)->insertId;
-		}
-		else
-		{
-			$intId = $objProduct->id;
-		}
-		
-		$this->redirect('typolight/main.php?do=product_manager&act=edit&id=' . $intId);
 	}
 }
 
