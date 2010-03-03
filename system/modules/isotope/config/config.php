@@ -225,6 +225,10 @@ $GLOBALS['ISO_PAY']['paypalpayflowpro']			= 'PaymentPaypalPayflowPro';
 $GLOBALS['ISO_PAY']['postfinance']				= 'PaymentPostfinance';
 $GLOBALS['ISO_PAY']['authorizedotnet']			= 'PaymentAuthorizeDotNet';
 
+/** 
+ * Order Statuses
+ */
+$GLOBALS['ISO_ORDER'] = array('pending','processing','shipped','complete','on_hold', 'cancelled');
 
 /**
  * Product types

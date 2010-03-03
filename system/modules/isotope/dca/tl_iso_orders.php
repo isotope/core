@@ -124,8 +124,8 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 			'label'                 => &$GLOBALS['TL_LANG']['tl_iso_orders']['status'],
 			'filter'                => true,
 			'inputType'             => 'select',
-			'options'         		=> array('pending','processing','shipped','complete','on_hold', 'cancelled'),
-			'reference'         	=> &$GLOBALS['TL_LANG']['MSC']['order_status_labels'],
+			'options'         		=> $GLOBALS['ISO_ORDER'],
+			'reference'         	=> &$GLOBALS['TL_LANG']['ORDER'],
 		),
 		'shippingTotal' => array
 		(
