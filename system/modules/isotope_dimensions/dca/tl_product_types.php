@@ -29,18 +29,5 @@
 /**
  * Palettes
  */
-$GLOBALS['TL_DCA']['tl_product_types']['palettes']['dimension']	= '{name_legend},name,class,description;{language_legend:hide},languages;{attributes_legend},dimensions,attributes;{download_legend:hide},downloads';
-
-
-/**
- * Fields
- */
-$GLOBALS['TL_DCA']['tl_product_types']['fields']['dimensions']	= array
-(
-	'label'				=> &$GLOBALS['TL_LANG']['tl_product_types']['dimensions'],
-	'exclude'			=> true,
-	'inputType'			=> 'select',
-	'foreignKey'		=> 'tl_product_dimensions.name',
-	'eval'				=> array('mandatory'=>true, 'includeBlankOption'=>true),
-);
+$GLOBALS['TL_DCA']['tl_product_types']['palettes']['dimension']	= '{name_legend},name,class,description;{language_legend:hide},languages;{attributes_legend},attributes;{download_legend:hide},downloads';
 

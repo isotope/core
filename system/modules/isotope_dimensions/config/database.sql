@@ -39,14 +39,3 @@ CREATE TABLE `tl_product_dimension_prices` (
   KEY `pid` (`pid`),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-
--- --------------------------------------------------------
-
--- 
--- Table `tl_product_types`
--- 
-
-CREATE TABLE `tl_product_types` (
-  `dimensions` int(10) unsigned NOT NULL default '0',
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
