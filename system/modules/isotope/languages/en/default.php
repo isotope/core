@@ -191,13 +191,13 @@ $GLOBALS['TL_LANG']['MSC']['iso_card_name_title'] = 'Name on Credit Card';
 
 
 // Order status options
-$GLOBALS['TL_LANG']['MSC']['order_status_labels']['pending']	= 'Pending';
-$GLOBALS['TL_LANG']['MSC']['order_status_labels']['processing']	= 'Processing';
-$GLOBALS['TL_LANG']['MSC']['order_status_labels']['shipped']	= 'Shipped';
-$GLOBALS['TL_LANG']['MSC']['order_status_labels']['complete']	= 'Complete';
-$GLOBALS['TL_LANG']['MSC']['order_status_labels']['on_hold']	= 'On Hold';
-$GLOBALS['TL_LANG']['MSC']['order_status_labels']['cancelled']	= 'Cancelled';
-$GLOBALS['TL_LANG']['MSC']['order_status_labels']['test'] 		= 'Test Transaction';
+$GLOBALS['TL_LANG']['ORDER']['pending']		= 'Pending';
+$GLOBALS['TL_LANG']['ORDER']['processing']	= 'Processing';
+$GLOBALS['TL_LANG']['ORDER']['shipped']		= 'Shipped';
+$GLOBALS['TL_LANG']['ORDER']['complete']	= 'Complete';
+$GLOBALS['TL_LANG']['ORDER']['on_hold']		= 'On Hold';
+$GLOBALS['TL_LANG']['ORDER']['cancelled']	= 'Cancelled';
+$GLOBALS['TL_LANG']['ORDER']['test'] 		= 'Test Transaction';
 
 // Payment status options
 $GLOBALS['TL_LANG']['MSC']['payment_status_labels']['pending']		= 'Pending';
