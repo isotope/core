@@ -1040,7 +1040,7 @@ abstract class ModuleIsotopeBase extends Module
 		$strOptionValues = join(',', $arrOptionFields);
 						
 		//get the selected variant values;
-		$objData = $this->Database->prepare("SELECT " . $strOptionValues . " FROM tl_product_data WHERE id=?")
+		$objData = $this->Database->prepare("SELECT " . $strOptionValues . " FROM tl_product_data WHERE id=? AND published='1'")
 								  ->execute($varValue);
 		
 		if($objData->numRows < 1)
