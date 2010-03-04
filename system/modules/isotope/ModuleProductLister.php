@@ -584,7 +584,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 		//$strParams = (count($arrParams) ? implode(",", $arrParams) : NULL);
 		
 		//echo "SELECT p.* FROM tl_product_categories c, tl_product_data p WHERE p.id=c.pid" . ($this->strFilterSQL ? " AND (" . $this->strFilterSQL . ")" : "") . " AND c.page_id IN (" . implode(',', $this->arrCategories) . ")" . ($this->strSearchSQL ? " AND (" . $this->strSearchSQL . ")" : "") . ($this->strOrderBySQL ? " ORDER BY " . $this->strOrderBySQL : "");
-		$objProductIds = $this->Database->prepare("SELECT p.* FROM tl_product_categories c, tl_product_data p WHERE p.id=c.pid" . ($this->strFilterSQL ? " AND (" . $this->strFilterSQL . ")" : "") . " AND c.page_id IN (" . implode(',', $this->arrCategories) . ")" . ($this->strSearchSQL ? " AND (" . $this->strSearchSQL . ")" : "") . ($this->strOrderBySQL ? " ORDER BY " . $this->strOrderBySQL : ""));
+		$objProductIds = $this->Database->prepare("SELECT DISTINCT p.* FROM tl_product_categories c, tl_product_data p WHERE p.id=c.pid" . ($this->strFilterSQL ? " AND (" . $this->strFilterSQL . ")" : "") . " AND c.page_id IN (" . implode(',', $this->arrCategories) . ")" . ($this->strSearchSQL ? " AND (" . $this->strSearchSQL . ")" : "") . ($this->strOrderBySQL ? " ORDER BY " . $this->strOrderBySQL : ""));
 		
 		// Add pagination
 		if ($this->perPage > 0)
