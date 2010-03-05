@@ -83,7 +83,6 @@ abstract class ModuleIsotopeBase extends Module
 			}
 			
 			// Load isotope javascript class
-			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/html/isotope.js';
 			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/html/isotope_frontend.js';
 			
 			// Make sure field data is available

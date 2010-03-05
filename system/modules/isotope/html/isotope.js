@@ -6,20 +6,7 @@
  
  
 var Isotope = 
-{
-	toggleAddressFields: function(el, id)
-	{
-		if (el.value == '0' && el.checked)
-		{
-			$(id).setStyle('display', 'block');
-		}
-		else
-		{
-			$(id).setStyle('display', 'none');
-		}
-	},
-	
-	
+{		
 	/**
 	 * Media Manager
 	 * @param object
