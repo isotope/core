@@ -71,7 +71,7 @@ class ModuleOrderHistory extends ModuleIsotopeBase
 		}
 		
 		$this->import('Isotope');
-		$this->Isotope->overrideStore($this->store_id);
+		$this->Isotope->overrideStore($objOrders->store_id);
 		
 		$arrPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->limit(1)->execute($this->jumpTo)->fetchAssoc();
 		
