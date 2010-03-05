@@ -1034,6 +1034,20 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			if (!is_array($arrData))
 				continue;
 			
+			if($strAddressField == 'shipping_address')
+			{
+				//switch off these checkboxes for shipping address, we only need them once.
+				switch($field)
+				{
+					case 'isDefaultBilling':
+					case 'isDefaultShipping':
+						continue 2;
+						break;
+					default:
+						break;				
+				}
+			}
+			
 			$strClass = $GLOBALS['TL_FFL'][$arrData['inputType']];
 			
 			// Continue if the class is not defined
