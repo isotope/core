@@ -68,13 +68,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 				'href'                => 'key=import',
 				'class'               => 'header_import_assets',
 				'attributes'          => 'onclick="Backend.getScrollOffset();"'
-			),
-			'toggleNodes' => array
-			(
-				'label'               => &$GLOBALS['TL_LANG']['MSC']['toggleNodes'],
-				'href'                => 'ptg=all',
-				'class'               => 'header_toggle'
-			),
+			)
 		),
 		'operations' => array
 		(
@@ -870,7 +864,7 @@ class tl_product_data extends Backend
 	/**
 	 * Import images and other media file for products
 	 */
-	public function importAssets($dc)
+	public function importAssets($dc, $arrNewImages = array())
 	{
 		$objTree = new FileTree($this->prepareForWidget($GLOBALS['TL_DCA']['tl_product_data']['fields']['source'], 'source', null, 'source', 'tl_product_data'));
 		
@@ -889,20 +883,23 @@ class tl_product_data extends Backend
 			}
 			
 			$arrDelete = array();
-			$objProducts = $this->Database->execute("SELECT * FROM tl_product_data");
+			$objProducts = $this->Database->execute("SELECT * FROM tl_product_data WHERE pid=0");
 			
 			
 			while( $objProducts->next() )
-			{
+			{		
+				
 				$arrImages = deserialize($objProducts->images);
+				
 				if (!is_array($arrImages))
 					$arrImages = array();
 				
 				$strPattern = '@^(' . $objProducts->alias . '|' . standardize($objProducts->alias) . '|' . $objProducts->sku . '|' . standardize($objProducts->sku) . ')@i';
 				$arrMatches = preg_grep($strPattern, $arrFiles);
-				
+
 				if (count($arrMatches))
 				{
+				
 					$arrNewImages = array();
 					
 					foreach( $arrMatches as $file )
@@ -953,9 +950,11 @@ class tl_product_data extends Backend
 							$arrDelete[] = $strFile;
 							
 							$_SESSION['TL_CONFIRM'][] = sprintf('Imported file %s for product "%s"', $pathinfo['filename'] . '.' . $pathinfo['extension'], $objProducts->name);
+							
 						}
 						
 						$this->Database->prepare("UPDATE tl_product_data SET images=? WHERE id=?")->execute(serialize($arrImages), $objProducts->id);
+				
 					}
 				}
 			}
