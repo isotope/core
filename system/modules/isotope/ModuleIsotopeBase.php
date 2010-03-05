@@ -706,9 +706,11 @@ abstract class ModuleIsotopeBase extends Module
 			}
 
 			$arrData['eval']['required'] = $arrData['eval']['mandatory'] ? true : false;
-	
-			$objWidget = new $strClass($this->prepareForWidget($arrData, $strField));
 			
+			//$GLOBALS['TL_LANG']['MSC']['emptySelectOptionLabel']));
+			
+			$objWidget = new $strClass($this->prepareForWidget($arrData, $strField));
+						
 			$objWidget->storeValues = true;
 			$objWidget->tableless = true;
 			$objWidget->name .= "[" . $intProductId . "]";
@@ -717,7 +719,7 @@ abstract class ModuleIsotopeBase extends Module
 			// Validate input
 			if ($this->Input->post('FORM_SUBMIT') == $strFormId)
 			{
-				$GLOBALS['TL_LANG']['ERR']['mandatory'] = 'Please select an option.';
+				$GLOBALS['TL_LANG']['ERR']['mandatory'] = $GLOBALS['TL_LANG']['ERR']['mandatoryOption'];
 				
 				$objWidget->validate();
 				$varValue = $objWidget->value;
@@ -978,7 +980,7 @@ abstract class ModuleIsotopeBase extends Module
 					
 				$arrData['inputType'] 	= $strType;
 				$arrData['default'] 	= '';
-				$arrData['options']     = $arrOptions;
+				$arrData['options']     = array_merge(array(''=>&$GLOBALS['TL_LANG']['MSC']['emptySelectOptionLabel']), $arrOptions);
 				
 				if($arrAttributeData['type']=='checkbox') $arrData['eval']['prompt'] = $arrAttributeData['name'];
 				//$arrData['reference']   = $arrOptions;
@@ -1009,6 +1011,9 @@ abstract class ModuleIsotopeBase extends Module
 		}
 		
 		$arrOptionValues = $objData->fetchAllAssoc();
+
+		//include blank option, manual label override
+		$arrOptions[''] = $GLOBALS['TL_LANG']['MSC']['emptySelectOptionLabel'];
 
 		foreach($arrOptionValues as $option)
 		{
@@ -1083,6 +1088,8 @@ abstract class ModuleIsotopeBase extends Module
 				{
 					return array();
 				}
+				
+				
 				
 				while($objOptions->next())
 				{
@@ -1249,9 +1256,7 @@ abstract class ModuleIsotopeBase extends Module
 							$arrEnabledOptions[] = $attribute;	
 																	
 							$arrData = $this->getDCATemplate($arrAttributeData);	//Grab the skeleton DCA info for widget generation
-
-							$arrData['eval']['includeBlankOption'] = true;
-
+																					
 							$arrProductOptions[] = array
 							(
 								'name'			=> $attribute,
@@ -1356,7 +1361,7 @@ abstract class ModuleIsotopeBase extends Module
 	            'description'  => &$GLOBALS['TL_LANG']['tl_product_data']['product_options'],
 	            'inputType'    => 'select',          
 	            'options'    => $this->getSubproductOptionValues(($intParentProductId ? $intParentProductId : $objProduct->id), $arrVariantOptionFields),
-	            'eval'      => array('includeBlankOption'=>true,'mandatory'=>true)
+	            'eval'      => array('mandatory'=>true)
 	        );
        
           //$arrData = $this->getDCATemplate($arrAttributeData);  //Grab the skeleton DCA info for widget generation
