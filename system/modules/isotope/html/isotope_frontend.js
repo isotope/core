@@ -22,11 +22,13 @@ var IsotopeFrontend =
 	{	
 		var productForm = $('productForm');
 		
+		var variantsDiv = $('variants_container');
+		
 		var ctrlProductId = $('ctrl_product_id');
 		
 		var arrVariants = new Array;
 		
-		arrVariants = productForm.getElements('select');
+		arrVariants = variantsDiv.getElements('select');
 		
 		arrVariants.each(function(item, index) {
 		

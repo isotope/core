@@ -57,6 +57,7 @@ $GLOBALS['TL_LANG']['ERR']['orderNotFound']				= 'The requested order was not fo
 $GLOBALS['TL_LANG']['ERR']['missingCurrencyFormat']		= 'Currency formatting not found';
 $GLOBALS['TL_LANG']['ERR']['searchNotEnabled'] = 'Search functionality is not enabled!';
 $GLOBALS['TL_LANG']['ERR']['isoLoginRequired'] = 'You must be logged in to checkout.';
+$GLOBALS['TL_LANG']['ERR']['mandatoryOption'] = 'Please select an option.';
 
 $GLOBALS['TL_LANG']['MSC']['missingGoogleAnalyticsExtension'] = 'E-commerce tracking for Google Analytics has a dependency you have not installed. Please install the "Google Analytics" extension by Andreas Schempp to take advantage of google analytics e-commerce tracking. It is available through the extension repository or online from www.typolight.org';
 
@@ -86,6 +87,7 @@ $GLOBALS['TL_LANG']['MSC']['deleteLanguageConfirm']	= 'Are you sure you want to 
 $GLOBALS['TL_LANG']['MSC']['undefinedLanguage']		= 'undefined';
 
 $GLOBALS['TL_LANG']['MSC']['ajaxLoadingMessage'] = 'Loading...';
+$GLOBALS['TL_LANG']['MSC']['emptySelectOptionLabel'] = 'Please select...';
 $GLOBALS['TL_LANG']['MSC']['scalingImageWidth'] = '1200';
 $GLOBALS['TL_LANG']['MSC']['scalingImageHeight'] = '1200'; 
 $GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline']		= 'Order no %s / %s';
