@@ -59,6 +59,8 @@ $GLOBALS['TL_LANG']['ERR']['searchNotEnabled'] = 'Search functionality is not en
 $GLOBALS['TL_LANG']['ERR']['isoLoginRequired'] = 'You must be logged in to checkout.';
 $GLOBALS['TL_LANG']['ERR']['mandatoryOption'] = 'Please select an option.';
 
+$GLOBALS['TL_LANG']['ERR']['parentProductNotFound'] = 'The parent product id %s does not exist!';
+
 $GLOBALS['TL_LANG']['MSC']['missingGoogleAnalyticsExtension'] = 'E-commerce tracking for Google Analytics has a dependency you have not installed. Please install the "Google Analytics" extension by Andreas Schempp to take advantage of google analytics e-commerce tracking. It is available through the extension repository or online from www.typolight.org';
 
 //Checkout Errors

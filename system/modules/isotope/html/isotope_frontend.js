@@ -46,7 +46,7 @@ var IsotopeFrontend =
 						//direct update of elements with html that might need replacing, such as price, description, etc.
 						for(var key in objProduct)
 						{					
-							var currElement = document.id('product_' + key);
+							var currElement = document.id('ajax_' + key);
 												
 							if(currElement)
 							{
