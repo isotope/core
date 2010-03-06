@@ -1384,8 +1384,7 @@ abstract class ModuleIsotopeBase extends Module
 		   		$objTemplate->hasVariants = false;
 		   }           
         }
-		
-		
+			
 
 		$objTemplate->raw = $objProduct->getData();
 		$objTemplate->href_reader = $objProduct->href_reader;

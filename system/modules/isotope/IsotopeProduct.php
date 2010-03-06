@@ -66,6 +66,12 @@ class IsotopeProduct extends Model
 		
 		$this->arrData = $arrData;
 		
+		//We don't need this in the front end...
+		if(TL_MODE=='FE')
+		{
+			unset($this->arrData['variants_wizard']);		
+		}
+			
 		$objType = $this->Database->prepare("SELECT * FROM tl_product_types WHERE id=?")->execute($this->arrData['type']);
 		$this->arrAttributes = deserialize($objType->attributes, true);
 		
@@ -74,6 +80,31 @@ class IsotopeProduct extends Model
 		{
 			$this->arrDownloads = $this->Database->prepare("SELECT * FROM tl_product_downloads WHERE pid=?")->execute($this->arrData['id'])->fetchAllAssoc();
 		}
+		
+		if($this->hasVariants)
+		{
+					
+			$objProduct = $this->Database->prepare("SELECT MIN(" . $this->Isotope->Store->priceField . ") AS low_price FROM tl_product_data WHERE pid=?")
+										  ->execute($this->id);
+										  
+			$this->low_price = $this->Isotope->calculatePrice($objProduct->low_price, $this->arrData['tax_class']);
+		}
+		else
+		{					
+			$this->low_price = $this->Isotope->calculatePrice($this->arrData[$this->Isotope->Store->priceField], $this->arrData['tax_class']);
+		}
+		
+		if($this->hasVariants)
+		{
+			$objProduct = $this->Database->prepare("SELECT MAX(" . $this->Isotope->Store->priceField . ") AS high_price FROM tl_product_data WHERE pid=?")
+									  	 ->execute($this->id);
+											  
+			$this->high_price = $this->Isotope->calculatePrice($objProduct->high_price, $this->arrData['tax_class']);
+		}
+		else
+		{
+			$this->high_price = $this->Isotope->calculatePrice($this->arrData[$this->Isotope->Store->priceField], $this->arrData['tax_class']);
+		}		
 	}
 	
 	
@@ -100,30 +131,8 @@ class IsotopeProduct extends Model
 				return ($this->quantity_requested ? $this->quantity_requested : 1) * $this->price;
 			
 			case 'low_price':
-				if($this->hasVariants)
-				{
-					
-					$objProduct = $this->Database->prepare("SELECT MIN(" . $this->Isotope->Store->priceField . ") AS low_price FROM tl_product_data WHERE pid=?")
-												  ->execute($this->id);
-												  
-					return $this->Isotope->calculatePrice($objProduct->low_price, $this->arrData['tax_class']);
-				}
-				else
-				{					
-					return $this->Isotope->calculatePrice($this->arrData[$this->Isotope->Store->priceField], $this->arrData['tax_class']);
-				}
 			case 'high_price':
-				if($this->hasVariants)
-				{
-					$objProduct = $this->Database->prepare("SELECT MAX(" . $this->Isotope->Store->priceField . ") AS high_price FROM tl_product_data WHERE pid=?")
-												  ->execute($this->id);
-												  
-					return $this->Isotope->calculatePrice($objProduct->high_price, $this->arrData['tax_class']);
-				}
-				else
-				{
-					return $this->Isotope->calculatePrice($this->arrData[$this->Isotope->Store->priceField], $this->arrData['tax_class']);
-				}		
+				return $this->Isotope->calculatePrice($this->arrData[$strKey], $this->arrData['tax_class']);
 			
 			case 'hasDownloads':
 				return count($this->arrDownloads) ? true : false;
@@ -184,7 +193,7 @@ class IsotopeProduct extends Model
 						case 'formatted_price':
 							$varValue = $this->Isotope->formatPriceWithCurrency($this->price);
 							break;
-						case 'formatted_low_price':
+						case 'formatted_low_price':							
 							$varValue = $this->Isotope->formatPriceWithCurrency($this->low_price);
 							break;
 						case 'formatted_high_price':
@@ -239,18 +248,15 @@ class IsotopeProduct extends Model
 				break;
 			case 'sku':
 			case 'name':
+			case 'low_price':
+			case 'high_price':
 				$this->arrData[$strKey] = $varValue;
 				break;
 			
 			case 'price':
 				$this->arrData[$this->Isotope->Store->priceField] = $varValue;
 				break;
-			case 'low_price':
-				$this->arrData['low_price']	= $varValue;
-				break;
-			case 'high_price':
-				$this->arrData['high_price'] = $varValue;
-				break;	
+			
 			case 'price_override':
 				$this->arrData[$this->Isotope->Store->overridePriceField] = $varValue;
 				break;
@@ -285,6 +291,7 @@ class IsotopeProduct extends Model
 		$this->import('Session');
 		$this->import('Database');
 		$this->import('Isotope');
+	
 	}
 	
 	
