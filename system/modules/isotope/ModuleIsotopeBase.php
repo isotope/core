@@ -1393,6 +1393,9 @@ abstract class ModuleIsotopeBase extends Module
 		$objTemplate->label_detail = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
 		
 		$objTemplate->price = $objProduct->formatted_price;
+		$objTemplate->low_price = $objProduct->formatted_low_price;
+		$objTemplate->high_price = $objProduct->formatted_high_price;
+		$objTemplate->priceRangeLabel = $GLOBALS['TL_LANG']['MSC']['priceRangeLabel'];
 		$objTemplate->options = $arrProductOptions;	
 		$objTemplate->hasOptions = (count($arrProductOptions) || count($arrVariantWidget) ? true : false);
 		$objTemplate->variantList = implode(',', $arrVariantOptionFields);
