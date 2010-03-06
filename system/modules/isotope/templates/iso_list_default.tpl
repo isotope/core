@@ -8,7 +8,7 @@
 <p class="sku"><?php echo $this->sku; ?></p><?php endif; if ($this->teaser): ?>
 <p class="teaser"><?php echo $this->teaser; ?></p><?php endif; ?>
 
-<p class="price"><?php echo $this->price; ?></p>
+<p class="price"><?php echo (($this->raw['low_price'] <= $this->raw['price'] && $this->raw['high_price'] > $this->raw['price']) ? $this->priceRangeLabel . ' ' . $this->low_price : $this->price); ?></p>
 <p class="details"><a href="<?php echo $this->href_reader; ?>"><?php echo $this->label_detail; ?></a></p>
 
 <?php if($this->buttons): ?>
