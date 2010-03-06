@@ -1,6 +1,6 @@
 <input type="hidden" id="ctrl_product_id" name="product_id" value="<?php echo $this->raw['id']; ?>" />
 
-<h2 id="product_name"><?php echo $this->name; ?></h2>
+<h2 id="name"><?php echo $this->name; ?></h2>
 
 
 <?php if ($this->hasImage): ?>
@@ -36,7 +36,7 @@
 <div class="description"><?php echo $this->description; ?></div><?php endif; ?>
 
 <?php //if(!$this->hasVariants): ?>
-<div id="product_price" class="price">
+<div id="price" class="price">
 	<?php if($this->editablePrice): ?>
     	<label for="<?php echo $this->price['name']; ?>"><?php echo $this->price['description']; ?> </label><?php echo $this->price['html']; ?>
     <?php else: ?>
