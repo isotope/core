@@ -490,37 +490,40 @@ class IsotopeCart extends Model
 	{		
 		$arrAllOptionValues = array();
 		$arrOptionValues = array();
-		$arrVariantOptions = array();
-				
+		$arrVariantOptions = array();	
+		
 		if($this->Input->post('product_variants'))
-		{			
-			$objVariant = $this->getProduct($this->Input->post('product_variants'));
+		{						
+			$arrProduct = $this->Input->post('product_variants');
 			
-			$arrOptions = $objVariant->getAttributes();
-			
-			
-			$objProduct->setVariant($this->Input->post('product_variants'), $this->Input->post('variant_options'));	
-			
-			$arrVariantOptions = explode(',', $this->Input->post('variant_options'));
-			
-			//cycle through each product object's set variant option.
-			foreach($arrVariantOptions as $option)
-			{
-				$strValue = $arrOptions[$option];
+			foreach($arrProduct as $k=>$v)
+			{			
+				$objVariant = $this->getProduct((int)$v);
 				
-				$strName = $this->getAttributeName($option);
+				$arrAttributes = $objVariant->getAttributes();
+								
+				$objProduct->setVariant($this->Input->post('product_variants'), $this->Input->post('variant_options'));	
 				
-				$arrVariantOptionValues[$option] = array
-				(
-					'name'		=> ($strName ? $strName : $option),
-					'values'	=> array($strValue)
-				);
+				$arrVariantOptions = explode(',', $this->Input->post('variant_options'));
+				
+				//cycle through each product object's set variant option.
+				foreach($arrVariantOptions as $option)
+				{
+					$strValue = $arrAttributes[$option];
+					
+					$strName = $this->getAttributeName($option);
+					
+					$arrVariantOptionValues[$option] = array
+					(
+						'name'		=> ($strName ? $strName : $option),
+						'values'	=> array($strValue)
+					);
+				}
 			}
-
 			//$arrAllOptionValues = array_merge(deserialize($this->getProductOptionValues($this->Input->post('product_options'))), $arrVariantOptionValues);
 		
 		}
-		
+				
 		if($this->Input->post('product_options'))
 		{
 			
@@ -541,7 +544,7 @@ class IsotopeCart extends Model
 		{
 			$strAllOptionValues = serialize($arrAllOptionValues);
 		}
-				
+						
 		$arrSet = array
 		(
 			'pid'					=> $this->id,
@@ -949,15 +952,70 @@ class IsotopeCart extends Model
 										 ->executeUncached($intId);
 									 
 		$strClass = $GLOBALS['ISO_PRODUCT'][$objProductData->type_class]['class'];
-		
+
 		if (!$this->classFileExists($strClass))
-		{
-			return null;
+		{			
+			return NULL;
 		}
-									
-		$objProduct = new $strClass($objProductData->row());
+	
+		$arrAttributes = $objProductData->row();
 		
+		//Before we can instatiate a product, we have to be sure we have a full complement of data required.  Variants alter certain values 
+		//but do not copy all values from the other 
+		
+		if($objProductData->pid!=0)
+		{
+			$objParentProductData = $this->Database->prepare("SELECT * FROM tl_product_data WHERE id=?")
+												   ->limit(1)
+												   ->executeUncached($objProductData->pid);
+			
+			if(!$objParentProductData->numRows)
+			{
+				throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['parentProductNotFound'], $objProductData->pid));
+			}
+			
+			foreach($arrAttributes as $k=>$v)
+			{
+				if(!$v)
+				{
+					$arrAttributes[$k] = $objParentProductData->$k;
+				}
+			}
+		}
+					
+		$objProduct = new $strClass($arrAttributes);
+
 		return $objProduct;
+	}
+	
+			/**
+	 * Return true if a class file exists
+	 * @param string
+	 * @param boolean
+	 */
+	public function classFileExists($strClass, $blnNoCache=false)
+	{
+		if (!$blnNoCache && isset($this->arrCache[$strClass]))
+		{
+			return $this->arrCache[$strClass];
+		}
+
+		$this->import('Config'); // see ticket #152
+		$this->arrCache[$strClass] = false;
+
+		foreach ($this->Config->getActiveModules() as $strModule)
+		{			
+			$strFile = sprintf('%s/system/modules/%s/%s.php', TL_ROOT, $strModule, $strClass);
+		
+	
+			if (file_exists($strFile))
+			{			
+				$this->arrCache[$strClass] = true;
+				break;
+			}
+		}
+		
+		return $this->arrCache[$strClass];
 	}
 
 }

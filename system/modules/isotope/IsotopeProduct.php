@@ -286,7 +286,7 @@ class IsotopeProduct extends Model
 	{
 		$arrData = array();
 		
-		$objAttributeStatus = $this->Database->prepare("SELECT field_name FROM tl_product_attributes WHERE field_name IN(" . implode(",", $this->arrAttributes) . ") AND disabled='1'");
+		$objAttributeStatus = $this->Database->prepare("SELECT field_name FROM tl_product_attributes WHERE field_name IN(" . implode(",", $this->arrAttributes) . ") AND disabled!='1'");
 		
 		if(!$objAttributeStatus->numRows)
 		{
@@ -299,9 +299,7 @@ class IsotopeProduct extends Model
 				unset($this->arrAttributes[$objAttributeStatus->field_name]);
 			}
 		}
-		
-		
-		
+				
 		foreach( $arrAttributes as $attribute )
 		{
 			$arrData[$attribute] = $this->$attribute;
