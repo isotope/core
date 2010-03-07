@@ -161,7 +161,7 @@ var IsotopeFrontend =
 			
 			var qString = item.get('href').toString();
 			
-			var pageNum = gup('page',qString);
+			var pageNum = IsotopeFrontend.gup('page',qString);
 			
 			item.set('href','#');			
 			
