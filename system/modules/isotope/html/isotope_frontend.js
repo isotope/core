@@ -20,80 +20,83 @@ var IsotopeFrontend =
 	
 	loadProductBinders: function(mId)
 	{	
-		var productForm = $('productForm');
+		var productForm = document.id('productForm');
 		
-		var variantsDiv = $('variants_container');
+		var variantsDiv = document.id('variants_container');
 		
-		var ctrlProductId = $('ctrl_product_id');
+		var ctrlProductId = document.id('ctrl_product_id');
 		
 		var arrVariants = new Array;
 		
-		arrVariants = variantsDiv.getElements('select');
-		
-		arrVariants.each(function(item, index) {
-		
-			item.addEvent('change', function(event) {
-				event.stop();
-										
-				var request = new Request.JSON({
-					url: 'ajax.php',
-					method: 'get',
-					onRequest: IsotopeFrontend.showLoader(),
-					onComplete: function(objProduct) {
-						
-						IsotopeFrontend.hideLoader();
-				
-						//direct update of elements with html that might need replacing, such as price, description, etc.
-						for(var key in objProduct)
-						{					
-							var currElement = document.id('ajax_' + key);
-												
-							if(currElement)
-							{
-								currElement.set('html', objProduct[key]);		
-							}
-						}
-						
-						var imagesHtml = new String();
-						
-						var image_gallery = document.id('image_gallery');
-						
-						if(image_gallery)
-						{
-							image_gallery.set('html', '');		
-						}
-						//image update handler
-						objProduct.images.each(function(item, index){
+		if(variantsDiv)
+		{
+			arrVariants = variantsDiv.getElements('select');
+			
+			arrVariants.each(function(item, index) {
+			
+				item.addEvent('change', function(event) {
+					event.stop();
+											
+					var request = new Request.JSON({
+						url: 'ajax.php',
+						method: 'get',
+						onRequest: IsotopeFrontend.showLoader(),
+						onComplete: function(objProduct) {
 							
-							switch(index)
-							{
-								case 0:	
-									var image_main = document.id('image_main');
-									
-									if(image_main)
-									{			
-										image_main.set('html', IsotopeFrontend.replaceImage(item, 'thumbnail'));							
-									}
-									break;
-								default:							
-									imagesHtml += IsotopeFrontend.replaceImage(item, 'gallery');							
-									break;
-							}				
-							
-							if(imagesHtml.length>0)
-							{
-								var image_gallery = document.id('image_gallery');
-								
-								if(image_gallery)
+							IsotopeFrontend.hideLoader();
+					
+							//direct update of elements with html that might need replacing, such as price, description, etc.
+							for(var key in objProduct)
+							{					
+								var currElement = document.id('ajax_' + key);
+													
+								if(currElement)
 								{
-									image_gallery.set('html', imagesHtml);
+									currElement.set('html', objProduct[key]);		
 								}
 							}
-						});
-					}
-				}).send('action=fmd&' + 'id=' + mId + '&variant=' + item.value);
-			});
-		});	
+							
+							var imagesHtml = new String();
+							
+							var image_gallery = document.id('image_gallery');
+							
+							if(image_gallery)
+							{
+								image_gallery.set('html', '');		
+							}
+							//image update handler
+							objProduct.images.each(function(item, index){
+								
+								switch(index)
+								{
+									case 0:	
+										var image_main = document.id('image_main');
+										
+										if(image_main)
+										{			
+											image_main.set('html', IsotopeFrontend.replaceImage(item, 'thumbnail'));							
+										}
+										break;
+									default:							
+										imagesHtml += IsotopeFrontend.replaceImage(item, 'gallery');							
+										break;
+								}				
+								
+								if(imagesHtml.length>0)
+								{
+									var image_gallery = document.id('image_gallery');
+									
+									if(image_gallery)
+									{
+										image_gallery.set('html', imagesHtml);
+									}
+								}
+							});
+						}
+					}).send('action=fmd&' + 'id=' + mId + '&variant=' + item.value);
+				});
+			});	
+		}
 		
 	},
 	
