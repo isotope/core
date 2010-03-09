@@ -27,31 +27,9 @@
 
 
 /**
- * Backend modules
+ * Fields
  */
-array_insert($GLOBALS['BE_MOD']['store'], 1, array
-(
-	'iso_dimensions' => array
-	(
-		'tables'		=> array('tl_product_dimensions', 'tl_product_dimension_prices'),
-		'icon'			=> 'system/modules/isotope_dimensions/html/icon-dimensions.png',
-	),
-));
-
-
-/**
- * Product types
- */
-$GLOBALS['ISO_PRODUCT']['dimension'] = array
-(
-	'class'				=> 'DimensionProduct',
-	'disabledFields'	=> array('price', 'price_override'),
-);
-
-$GLOBALS['ISO_PRODUCT']['simple']['disabledFields'][] = 'dimensions';
-$GLOBALS['ISO_PRODUCT']['simple']['disabledFields'][] = 'dimensions_min';
-$GLOBALS['ISO_PRODUCT']['simple']['disabledFields'][] = 'dimensions_max';
-$GLOBALS['ISO_PRODUCT']['variant']['disabledFields'][] = 'dimensions';
-$GLOBALS['ISO_PRODUCT']['variant']['disabledFields'][] = 'dimensions_min';
-$GLOBALS['ISO_PRODUCT']['variant']['disabledFields'][] = 'dimensions_max';
+$GLOBALS['TL_LANG']['tl_product_data']['dimensions']		= array('Flächenpreise', 'Wählen Sie die Preisliste für diesen Artikel.');
+$GLOBALS['TL_LANG']['tl_product_data']['dimensions_min']	= array('Minimale Breite und Höhe', 'Die minimale Grösse welche bestellt werden muss.');
+$GLOBALS['TL_LANG']['tl_product_data']['dimensions_max']	= array('Maximale Breite und Höhe', 'Die maximale Grösse welche bestellt werden muss.');
 

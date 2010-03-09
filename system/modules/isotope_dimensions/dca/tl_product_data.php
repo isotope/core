@@ -27,31 +27,30 @@
 
 
 /**
- * Backend modules
+ * Fields
  */
-array_insert($GLOBALS['BE_MOD']['store'], 1, array
+$GLOBALS['TL_DCA']['tl_product_data']['fields']['dimensions'] = array
 (
-	'iso_dimensions' => array
-	(
-		'tables'		=> array('tl_product_dimensions', 'tl_product_dimension_prices'),
-		'icon'			=> 'system/modules/isotope_dimensions/html/icon-dimensions.png',
-	),
-));
-
-
-/**
- * Product types
- */
-$GLOBALS['ISO_PRODUCT']['dimension'] = array
-(
-	'class'				=> 'DimensionProduct',
-	'disabledFields'	=> array('price', 'price_override'),
+	'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['dimensions'],
+	'inputType'				=> 'select',
+	'foreignKey'			=> 'tl_product_dimensions.name',
+	'eval'					=> array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'clr'),
+	'attributes'			=> array('legend'=>'pricing_legend'),
 );
 
-$GLOBALS['ISO_PRODUCT']['simple']['disabledFields'][] = 'dimensions';
-$GLOBALS['ISO_PRODUCT']['simple']['disabledFields'][] = 'dimensions_min';
-$GLOBALS['ISO_PRODUCT']['simple']['disabledFields'][] = 'dimensions_max';
-$GLOBALS['ISO_PRODUCT']['variant']['disabledFields'][] = 'dimensions';
-$GLOBALS['ISO_PRODUCT']['variant']['disabledFields'][] = 'dimensions_min';
-$GLOBALS['ISO_PRODUCT']['variant']['disabledFields'][] = 'dimensions_max';
+$GLOBALS['TL_DCA']['tl_product_data']['fields']['dimensions_min'] = array
+(
+	'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['dimensions_min'],
+	'inputType'				=> 'text',
+	'eval'					=> array('mandatory'=>true, 'multiple'=>true, 'size'=>2, 'rgxp'=>'digits', 'tl_class'=>'w50'),
+	'attributes'			=> array('legend'=>'pricing_legend'),
+);
+
+$GLOBALS['TL_DCA']['tl_product_data']['fields']['dimensions_max'] = array
+(
+	'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['dimensions_max'],
+	'inputType'				=> 'text',
+	'eval'					=> array('mandatory'=>true, 'multiple'=>true, 'size'=>2, 'rgxp'=>'digits', 'tl_class'=>'w50'),
+	'attributes'			=> array('legend'=>'pricing_legend'),
+);
 
