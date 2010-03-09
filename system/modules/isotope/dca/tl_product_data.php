@@ -434,10 +434,6 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 );
 
 
-$objPC = new ProductCatalog();
-$objPC->loadProductCatalogDCA();
-
-
 class tl_product_data extends Backend
 {
 

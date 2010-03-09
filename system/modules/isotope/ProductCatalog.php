@@ -81,8 +81,11 @@ class ProductCatalog extends Backend
 	/**
 	 * Initialize the tl_product_data DCA
 	 */	
-	public function loadProductCatalogDCA()
-	{		
+	public function loadProductCatalogDCA($strTable)
+	{
+		if ($strTable != 'tl_product_data')
+			return;
+			
 		//Check for any missing standard attributes and build a list which can then be added into the table tl_product_data.		
 		foreach($GLOBALS['ISO_ATTR'] as $arrSet)
 		{
