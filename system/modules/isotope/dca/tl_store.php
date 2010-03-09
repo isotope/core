@@ -48,12 +48,13 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		'sorting' => array
 		(
 			'mode'                    => 1,
-			'fields'                  => array('store_configuration_name')
+			'fields'                  => array('store_configuration_name'),
+			'flag'					  => 1,
 		),
 		'label' => array
 		(
 			'fields'                  => array('store_configuration_name'),
-			'format'                  => '%s'
+			'format'                  => '%s',
 		),
 		'global_operations' => array
 		(
@@ -62,7 +63,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 				'label'               => &$GLOBALS['TL_LANG']['MSC']['all'],
 				'href'                => 'act=select',
 				'class'               => 'header_edit_all',
-				'attributes'          => 'onclick="Backend.getScrollOffset();"'
+				'attributes'          => 'onclick="Backend.getScrollOffset();"',
 			)
 		),
 		'operations' => array
@@ -71,26 +72,26 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_store']['edit'],
 				'href'                => 'act=edit',
-				'icon'                => 'edit.gif'
+				'icon'                => 'edit.gif',
 			),
 			'copy' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_store']['copy'],
 				'href'                => 'act=copy',
-				'icon'                => 'copy.gif'
+				'icon'                => 'copy.gif',
 			),
 			'delete' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_store']['delete'],
 				'href'                => 'act=delete',
 				'icon'                => 'delete.gif',
-				'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
+				'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"',
 			),
 			'show' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_store']['show'],
 				'href'                => 'act=show',
-				'icon'                => 'show.gif'
+				'icon'                => 'show.gif',
 			)
 		)
 	),
@@ -98,7 +99,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{name_legend},store_configuration_name,label;{address_legend:hide},firstname,lastname,company,street_1,street_2,street_3,postal,city,subdivision,country,emailShipping,phone,shipping_countries,billing_countries,shipping_fields,billing_fields;{config_legend},weightUnit,cookie_duration,isDefaultStore,enableGoogleAnalytics;{price_legend},priceField,priceOverrideField,priceCalculateFactor,priceCalculateMode,priceRoundPrecision,priceRoundIncrement;{currency_legend},currency,currencySymbol,currencyFormat,currencyPosition;{redirect_legend},cartJumpTo,checkoutJumpTo;{invoice_legend},invoiceLogo;{images_legend},root_asset_import_path,missing_image_placeholder,gallery_image_width,gallery_image_height,thumbnail_image_width,thumbnail_image_height,medium_image_width,medium_image_height,large_image_width,large_image_height'
+		'default'                     => '{name_legend},store_configuration_name,label;{address_legend:hide},firstname,lastname,company,street_1,street_2,street_3,postal,city,subdivision,country,emailShipping,phone,shipping_countries,billing_countries,shipping_fields,billing_fields;{config_legend},weightUnit,cookie_duration,isDefaultStore,enableGoogleAnalytics;{price_legend},priceField,priceOverrideField,priceCalculateFactor,priceCalculateMode,priceRoundPrecision,priceRoundIncrement;{currency_legend},currency,currencySymbol,currencyFormat,currencyPosition;{redirect_legend},cartJumpTo,checkoutJumpTo;{invoice_legend},invoiceLogo;{images_legend},root_asset_import_path,missing_image_placeholder,gallery_image_width,gallery_image_height,thumbnail_image_width,thumbnail_image_height,medium_image_width,medium_image_height,large_image_width,large_image_height',
 	),
 
 	// Fields
@@ -230,7 +231,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['shipping_countries'],
 			'exclude'                 => true,
 			'inputType'               => 'select',
-			'default'                 => array_keys($this->getCountries()),
+//			'default'                 => array_keys($this->getCountries()),
 			'options'                 => $this->getCountries(),
 			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'size'=>8, 'tl_class'=>'w50'),
 		),
@@ -247,7 +248,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['billing_countries'],
 			'exclude'                 => true,
 			'inputType'               => 'select',
-			'default'                 => array_keys($this->getCountries()),
+//			'default'                 => array_keys($this->getCountries()),
 			'options'                 => $this->getCountries(),
 			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'size'=>8, 'tl_class'=>'w50 w50h'),
 		),
@@ -263,7 +264,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		(
 			'label'                   => array($GLOBALS['TL_LANG']['tl_store']['enableGoogleAnalytics'][0], (!file_exists(TL_ROOT . '/system/modules/googleanalytics/GoogleAnalytics.php') ? $GLOBALS['TL_LANG']['MSC']['missingGoogleAnalyticsExtension'] : $GLOBALS['TL_LANG']['tl_store']['enableGoogleAnalytics'][0])),
 			'exclude'                 => true,
-			'inputType'               => 'checkbox'
+			'inputType'               => 'checkbox',
 		),
 		'cookie_duration' => array
 		(
@@ -271,7 +272,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'exclude'                 => true,
 			'default'				  => 30,
 			'inputType'               => 'text',
-			'eval'                    => array('rgxp'=>'digit', 'maxlength'=>4, 'tl_class'=>'w50 w50h')
+			'eval'                    => array('rgxp'=>'digit', 'maxlength'=>4, 'tl_class'=>'w50 w50h'),
 		),
 		'isDefaultStore' => array
 		(
@@ -292,7 +293,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['invoiceLogo'],
 			'exclude'                 => true,
 			'inputType'               => 'fileTree',
-			'eval'                    => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions' => 'jpg,jpeg,gif,png,tif,tiff')
+			'eval'                    => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions' => 'jpg,jpeg,gif,png,tif,tiff'),
 		),
 		'gallery_image_width' => array
 		(
@@ -300,14 +301,14 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'exclude'                 => true,
 			'default'				  => 50,
 			'inputType'               => 'text',
-			'eval'                    => array('rgxp'=>'digit', 'mandatory'=>true, 'maxlength'=>10, 'tl_class'=>'w50')
+			'eval'                    => array('rgxp'=>'digit', 'mandatory'=>true, 'maxlength'=>10, 'tl_class'=>'w50'),
 		),
 		'gallery_image_height' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['gallery_image_height'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('rgxp'=>'digit', 'maxlength'=>10, 'tl_class'=>'w50')
+			'eval'                    => array('rgxp'=>'digit', 'maxlength'=>10, 'tl_class'=>'w50'),
 		), 
 		'thumbnail_image_width' => array
 		(
@@ -315,14 +316,14 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'exclude'                 => true,
 			'default'				  => 100,
 			'inputType'               => 'text',
-			'eval'                    => array('rgxp'=>'digit', 'mandatory'=>true, 'maxlength'=>10, 'tl_class'=>'w50')
+			'eval'                    => array('rgxp'=>'digit', 'mandatory'=>true, 'maxlength'=>10, 'tl_class'=>'w50'),
 		),
 		'thumbnail_image_height' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['thumbnail_image_height'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('rgxp'=>'digit', 'maxlength'=>10, 'tl_class'=>'w50')
+			'eval'                    => array('rgxp'=>'digit', 'maxlength'=>10, 'tl_class'=>'w50'),
 		),
 		'medium_image_width' => array
 		(
@@ -330,14 +331,14 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'exclude'                 => true,
 			'default'				  => 200,
 			'inputType'               => 'text',
-			'eval'                    => array('rgxp'=>'digit', 'mandatory'=>true, 'maxlength'=>10, 'tl_class'=>'w50')
+			'eval'                    => array('rgxp'=>'digit', 'mandatory'=>true, 'maxlength'=>10, 'tl_class'=>'w50'),
 		),
 		'medium_image_height' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['medium_image_height'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('rgxp'=>'digit', 'maxlength'=>10, 'tl_class'=>'w50')
+			'eval'                    => array('rgxp'=>'digit', 'maxlength'=>10, 'tl_class'=>'w50'),
 		),
 		'large_image_width' => array
 		(
@@ -345,7 +346,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'exclude'                 => true,
 			'default'				  => 400,
 			'inputType'               => 'text',
-			'eval'                    => array('rgxp'=>'digit', 'mandatory'=>true, 'maxlength'=>10, 'tl_class'=>'w50')
+			'eval'                    => array('rgxp'=>'digit', 'mandatory'=>true, 'maxlength'=>10, 'tl_class'=>'w50'),
 		),
 		'large_image_height' => array
 		(
