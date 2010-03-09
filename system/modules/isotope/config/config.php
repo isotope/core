@@ -146,6 +146,7 @@ $GLOBALS['TL_HOOKS']['getMappingAttributes'][]		= array('ProductCatalog','genera
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][]			= array('IsotopeFrontend', 'replaceIsotopeTags');
 $GLOBALS['TL_HOOKS']['executePostActions'][]		= array('ProductOptionWizard', 'executePostActions');
 $GLOBALS['TL_HOOKS']['generatePage'][]				= array('Isotope','generatePage');
+$GLOBALS['TL_HOOKS']['loadDataContainer'][]			= array('ProductCatalog', 'loadProductCatalogDCA');
 
 //$GLOBALS['TL_HOOKS']['googleTracking'][] 			= array('ModuleIsotopeCheckout', 'googleTracking');
 
