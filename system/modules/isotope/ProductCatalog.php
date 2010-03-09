@@ -354,10 +354,10 @@ class ProductCatalog extends Backend
 			$GLOBALS['TL_DCA']['tl_product_data']['palettes']['__selector__'] = array_merge($GLOBALS['TL_DCA']['tl_product_data']['palettes']['__selector__'], $arrAdditionalSelectors);
 		}
 		
-		if($this->Input->get('id') && $this->Input->get('do')=='product_manager' && !$this->Input->get('mode'))
+		if($this->Input->get('id') && $this->Input->get('do')=='product_manager' && !$this->Input->get('mode') && $this->Input->get('table') != 'tl_product_categories')
 		{
 			//Check and update to load the palette
-			$objProductType = $this->Database->prepare("SELECT d.type AS selfType, (SELECT type FROM tl_product_data p WHERE p.id=d.pid AND d.pid!=0) AS parentType FROM tl_product_data d  WHERE d.id=?")
+			$objProductType = $this->Database->prepare("SELECT d.type AS selfType, (SELECT type FROM tl_product_data p WHERE p.id=d.pid AND d.pid!=0) AS parentType FROM tl_product_data d WHERE d.id=?")
 											 ->limit(1)
 											 ->execute($this->Input->get('id'));
 			
