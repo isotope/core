@@ -106,7 +106,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 			$objScriptTemplate = new FrontendTemplate('js_products');
 			$objScriptTemplate->ajaxParams = $strAjaxParams;	
 			$objScriptTemplate->mId = $this->id;
-			$objScriptTemplate->productJson = $this->jsonEncode($arrAttributes);
+			$objScriptTemplate->productJson = json_encode($arrAttributes);
 			
 			$GLOBALS['TL_MOOTOOLS'][] = $objScriptTemplate->parse();
 		}
@@ -208,7 +208,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 			$arrAttributes = $this->getInheritedAttributes($objProduct);	
 		}
 				
-		echo $this->jsonEncode($arrAttributes);
+		echo json_encode($arrAttributes);
 
 	}	
 
