@@ -86,7 +86,9 @@ class ModuleProductLister extends ModuleIsotopeBase
 	 * Generate module
 	 */
 	protected function compile()
-	{		
+	{	
+		global $objPage;
+			
 		if($this->getRequestData('clear'))
 		{
 			$arrFilters = array();
@@ -119,7 +121,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 		    }
 		}
 				
-		$objProductIds = $this->Database->prepare("SELECT DISTINCT p.* FROM tl_product_categories c, tl_product_data p WHERE p.id=c.pid" . ($this->strFilterSQL ? " AND (" . $this->strFilterSQL . ")" : "") . " AND c.page_id IN (" . implode(',', $this->arrCategories) . ")" . ($this->strSearchSQL ? " AND (" . $this->strSearchSQL . ")" : "") . ($this->strOrderBySQL ? " ORDER BY " . $this->strOrderBySQL : ""));
+		$objProductIds = $this->Database->prepare("SELECT DISTINCT p.* FROM tl_product_categories c, tl_product_data p WHERE p.id=c.pid AND published='1'" . ($this->strFilterSQL ? " AND (" . $this->strFilterSQL . ")" : "") . " AND c.page_id IN (" . implode(',', $this->arrCategories) . ")" . ($this->strSearchSQL ? " AND (" . $this->strSearchSQL . ")" : "") . ($this->strOrderBySQL ? " ORDER BY " . $this->strOrderBySQL : ""));
 		
 		
 		
@@ -178,7 +180,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 				'raw'		=> $objProduct,
 				'clear'	    => ($this->iso_list_format=='grid' && $blnSetClear ? true : false),
 				'class'		=> ('product' . ($i == 0 ? ' product_first' : '')),
-				'html'		=> $this->generateProduct($objProduct, $this->iso_list_layout, $arrTemplateData),
+				'html'		=> $this->generateProduct($objProduct, $this->iso_list_layout, $arrTemplateData, $this->strFormId),
 			);
 
 
@@ -214,13 +216,15 @@ class ModuleProductLister extends ModuleIsotopeBase
 		if(!$this->iso_disableFilterAjax)
 		{
 		
-			$objScriptTemplate = new FrontendTemplate('js_products');
+			$objScriptTemplate = new FrontendTemplate('js_lister');
+	
+			$objScriptTemplate->ajaxParams = 'id=' . $this->id . '&pid=' . $objPage->id . '&rid=' . $objPage->rootId;
+		
+			$GLOBALS['TL_MOOTOOLS'][] = $objScriptTemplate->parse();
 
-			$objScriptTemplate->mId = $this->id;			
 
-			$this->Template->script = $objScriptTemplate->parse();
 		}
-
+		
 		$this->Template->action = ampersand($this->Environment->request, true);
 		$this->Template->formId = $this->strFormId;
 		$this->Template->buttons = $arrButtons;
@@ -522,11 +526,11 @@ class ModuleProductLister extends ModuleIsotopeBase
 			$arrFilters = array();
 		} 
 		else
-		{
-		
+		{			
 			//get the default params
 			$arrFilters = array('for'=>$this->Input->get('for'),'per_page'=>$this->Input->get('per_page'),'page'=>$this->Input->get('page'),'order_by'=>$this->Input->get('order_by'));	
-
+			
+			
 			/*$arrFilterFields = implode(',', $this->Input->get('filters'));	//get the names of filters we are using
 	
 			foreach($arrFilterFields as $field)
@@ -561,7 +565,6 @@ class ModuleProductLister extends ModuleIsotopeBase
 	 */
 	protected function generateAJAXListing($arrFilters)
 	{	
-						
 		$objTemplateName = $this->Database->prepare("SELECT iso_list_layout FROM tl_module WHERE id=?")
 									  ->limit(1)
 									  ->execute($this->id);
@@ -642,7 +645,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 				'raw'		=> $objProduct,
 				'clear'	    => ($this->iso_list_format=='grid' && $blnSetClear ? true : false),
 				'class'		=> ('product' . ($i == 0 ? ' product_first' : '')),
-				'html'		=> $this->generateProduct($objProduct, $this->iso_list_layout, $arrTemplateData),
+				'html'		=> $this->generateProduct($objProduct, $this->iso_list_layout, $arrTemplateData, $this->strFormId),
 
 			);
 
@@ -658,11 +661,10 @@ class ModuleProductLister extends ModuleIsotopeBase
 		
 		if(!$this->iso_disableFilterAjax)
 		{
-			$objScriptTemplate = new FrontendTemplate('js_products');
-
-			$objScriptTemplate->mId = $this->id;			
-
-			$this->Template->script = $objScriptTemplate->parse();
+			$objScriptTemplate = new FrontendTemplate('js_lister');
+			
+			$objScriptTemplate->ajaxParams = 'id=' . $this->id . '&pid=' . $this->Input->get('pId') . '&rid=' . $this->Input->get('rId');
+			$GLOBALS['TL_MOOTOOLS'][] = $objScriptTemplate->parse();
 		}
 		
 		$objTemplate->action = $this->Environment->base;

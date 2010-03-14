@@ -884,13 +884,25 @@ class tl_product_data extends Backend
 			
 			while( $objProducts->next() )
 			{		
-				
+				$arrImageNames  = array();
 				$arrImages = deserialize($objProducts->images);
-				
+	
 				if (!is_array($arrImages))
+				{
 					$arrImages = array();
+				}
+				else
+				{
+					foreach($arrImages as $row)
+					{
+						if($row['src'])
+						{
+							$arrImageNames[] = $row['src'];
+						}
+					}	
+				}
 				
-				$strPattern = '@^(' . $objProducts->alias . '|' . standardize($objProducts->alias) . '|' . $objProducts->sku . '|' . standardize($objProducts->sku) . ')@i';
+				$strPattern = '@^(' . $objProducts->alias . '|' . standardize($objProducts->alias) . '|' . $objProducts->sku . '|' . standardize($objProducts->sku) . (count($arrImageNames) ? '|' . implode('|', $arrImageNames) : '') . ')@i';
 				$arrMatches = preg_grep($strPattern, $arrFiles);
 
 				if (count($arrMatches))

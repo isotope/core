@@ -26,8 +26,25 @@ var IsotopeFrontend =
 		
 		var ctrlProductId = document.id('ctrl_product_id');
 		
-		var arrVariants = new Array;
+		var image_gallery = document.id('image_gallery');
 		
+		var arrVariants = new Array;
+				
+		if(image_gallery)
+		{						
+			var imageElements = image_gallery.getElements('a');
+						
+			imageElements.each(function(item, index) {
+				item.addEvent('click', function(event){
+					event.stop();
+					
+					var mainImage = document.id('image_main');
+					
+					mainImage.set('html', IsotopeFrontend.replaceImage(item, 'medium'));					
+				});
+			});
+		}
+				
 		if(variantsDiv)
 		{
 			arrVariants = variantsDiv.getElements('select');
@@ -44,7 +61,7 @@ var IsotopeFrontend =
 						onComplete: function(objProduct) {
 							
 							IsotopeFrontend.hideLoader();
-					
+							
 							//direct update of elements with html that might need replacing, such as price, description, etc.
 							for(var key in objProduct)
 							{					
@@ -56,46 +73,66 @@ var IsotopeFrontend =
 								}
 							}
 							
-							var imagesHtml = new String();
-							
-							var image_gallery = document.id('image_gallery');
-							
-							if(image_gallery)
-							{
-								image_gallery.set('html', '');		
-							}
-							//image update handler
-							objProduct.images.each(function(item, index){
-								
-								switch(index)
-								{
-									case 0:	
-										var image_main = document.id('image_main');
-										
-										if(image_main)
-										{			
-											image_main.set('html', IsotopeFrontend.replaceImage(item, 'thumbnail'));							
-										}
-										break;
-									default:							
-										imagesHtml += IsotopeFrontend.replaceImage(item, 'gallery');							
-										break;
-								}				
-								
-								if(imagesHtml.length>0)
-								{
-									var image_gallery = document.id('image_gallery');
-									
-									if(image_gallery)
-									{
-										image_gallery.set('html', imagesHtml);
-									}
-								}
-							});
+							IsotopeFrontend.loadGallery(objProduct);
 						}
 					}).send('action=fmd&' + 'id=' + mId + '&variant=' + item.value);
 				});
 			});	
+		}
+		
+	},
+	
+	loadGallery: function(objProduct)
+	{			
+		var imagesHtml = new String();
+		
+		if(objProduct.images)
+		{				
+			var image_main = document.id('image_main');
+			
+			//image update handler
+			objProduct.images.each(function(item, index){
+								
+				switch(index)
+				{
+					case 0:												
+						if(image_main)
+						{			
+							image_main.set('html', IsotopeFrontend.replaceImage(item, 'medium', true));							
+						}
+						break;										
+				}				
+			
+				imagesHtml += IsotopeFrontend.replaceImage(item, 'gallery');
+				
+				if(imagesHtml.length>0)
+				{
+					var image_gallery = document.id('image_gallery');
+					
+					if(image_gallery)
+					{
+						image_gallery.set('html', imagesHtml);
+					}
+									
+				}
+			});
+		
+		}
+		
+		var image_gallery = document.id('image_gallery');
+		
+		if(image_gallery)
+		{
+			images = image_gallery.getElements('img');
+			
+			images.each(function(item, index){
+				item.addEvent('click', function(event){
+						event.stop();
+																			
+						image_main.set('html', IsotopeFrontend.replaceImage(objProduct.images[index], 'medium', true));					
+					
+				});
+			});
 		}
 		
 	},
@@ -156,37 +193,29 @@ var IsotopeFrontend =
 		return results[1];
 	},
 	
-	modifyPagination: function(ajaxParams)
-	{
-		var paginationLinks = $$('div.pagination ul li').getChildren('a');
-				
-		paginationLinks.each(function(item, index){
+	replaceImage: function(image, thumbnailType, isMain)
+	{			
+		if( isMain==null)
+			isMain=false;
 			
-			var qString = item.get('href').toString();
-			
-			var pageNum = IsotopeFrontend.gup('page',qString);
-			
-			item.set('href','#');			
-			
-			item.addEvent('click', function(event) {
-				event.stop();
-				var req = new Request({
-					method: 'get',
-					url: 'ajax.php',
-					urlencoded: true,
-					data: ajaxParams + IsotopeFrontend.getQueryString($('ctrl_per_page').get('value')) + IsotopeFrontend.setPage(pageNum),
-					onRequest: IsotopeFrontend.showLoader(),
-					onSuccess: function(responseText, responseXML) { IsotopeFrontend.insertProductList(responseText); IsotopeFrontend.hideLoader(); }
-				}).send();
-			});		
-					
-		});
+		var sizeType = thumbnailType+'_size';
+		
+		if(isMain)
+			return html = "<a href=\"" + image['large'] + "\" title=\"" + image['alt'] + "\" rel=\"lightbox\"><img src=\"" + image[thumbnailType] + "\" alt=\"" + image['alt'] + "\"" + image[sizeType] + " \/><\/a>\n";
+		else	
+			return html = "<img src=\"" + image[thumbnailType] + "\" alt=\"" + image['alt'] + "\"" + image[sizeType] + "/>\n";
+
 	},
-	
+
 	insertProductList: function(html)
-	{
-		$('product_list').set('html', html);
-		IsotopeFrontend.modifyPagination();	
+	{		
+		var productList = document.id('product_list');
+			
+		if(productList)
+		{
+			productList.set('html', html);	
+		}
+		
 	},
 	
 	getQueryString: function(perPage)
@@ -194,20 +223,6 @@ var IsotopeFrontend =
 		var keyword = $('ctrl_for').get('value').toString();
 		
 		return '&order_by=' + $('ctrl_order_by').get('value') + '&for=' + keyword.replace('%', '') + '&per_page=' + perPage;		
-	},
-	
-	setPage: function(i)
-	{
-		return '&page=' + i;	
-	},
-	
-	replaceImage: function(image, thumbnailType)
-	{				
-		var sizeType = thumbnailType+'_size';
-		
-		return html = "<a href=\"" + image['large'] + "\" title=\"" + image['desc'] + "\" rel=\"lightbox\"><img src=\"" + image[thumbnailType] + "\" alt=\"" + image['alt'] + "\"" + image[sizeType] + "/><\/a>\n";
-		
 	}
-	
 	
 };

@@ -1226,13 +1226,15 @@ abstract class ModuleIsotopeBase extends Module
 					if (is_array($varValue) && count($varValue))
 					{
 						$objTemplate->hasImage = true;
-						$objTemplate->mainImage = array_shift($varValue);
 						
-						if (count($varValue))
-						{
-							$objTemplate->hasGallery = true;
-							$objTemplate->gallery = $varValue;
-						}
+						//$objTemplate->mainImage = array_shift($varValue);
+						$objTemplate->mainImage = $varValue[0];
+						
+						//if (count($varValue))
+						//{
+						$objTemplate->hasGallery = true;
+						$objTemplate->gallery = $varValue;
+						//}
 					}
 					break;
 					
@@ -1407,33 +1409,41 @@ abstract class ModuleIsotopeBase extends Module
 	
 	public function jsonEncode($arrJSON, $skipBracket = false)
 	{
+		//provide pre PHP 5.2 functionality that formats the array into a JSON-happy data structure.			
+		if(!function_exists('json_encode'))
+		{
 		
+			foreach($arrJSON as $k=>$v)
+			{								
+				$strReturn = (is_numeric($k) ? NULL : '"' . $k . '":');
+							
+				if(is_array($v) && count($v) > 1)
+				{			
+					$arrReturn[] = (!$skipBracket ? "[{" : NULL) . $this->jsonEncode($v, true) . (!$skipBracket ? "}]" : NULL);
+					
+					$strChars = (!$skipBracket ? ',' : '},{');
+					
+					$strReturn .= implode($strChars, $arrReturn);
+				}
+				elseif(is_array($v) && count($v)==1)
+				{
+					$strReturn .= '[' . (!is_null($v[0]) ? '"' . str_replace("/", "\/", $v[0]) . '"' : 'null') . ']';
+				}
+				else
+				{
+					$strReturn .= (!is_null($v) ? '"' . str_replace("/", "\/", $v) . '"' : 'null');
+				}
+					
+				$arrReturnString[] =  $strReturn;
+			}
+		
+			return implode($strChars, $arrReturnString);
+		}
+		else
+		{
+			return json_encode($arrJSON);
+		}
 
-		foreach($arrJSON as $k=>$v)
-		{								
-			$strReturn = (is_numeric($k) ? NULL : '"' . $k . '":');
-						
-			if(is_array($v) && count($v) > 1)
-			{			
-				$arrReturn[] = (!$skipBracket ? "[{" : NULL) . $this->jsonEncode($v, true) . (!$skipBracket ? "}]" : NULL);
-				
-				$strChars = (!$skipBracket ? ',' : '},{');
-				
-				$strReturn .= implode($strChars, $arrReturn);
-			}
-			elseif(is_array($v) && count($v)==1)
-			{
-				$strReturn .= '[' . (!is_null($v[0]) ? '"' . str_replace("/", "\/", $v[0]) . '"' : 'null') . ']';
-			}
-			else
-			{
-				$strReturn .= (!is_null($v) ? '"' . str_replace("/", "\/", $v) . '"' : 'null');
-			}
-				
-			$arrReturnString[] =  $strReturn;
-		}	
-		
-		return implode($strChars, $arrReturnString);
 		
 	}
 	

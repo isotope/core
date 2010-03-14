@@ -85,20 +85,6 @@ class ModuleProductReader extends ModuleIsotopeBase
 	
 		$arrCleanUrl = explode('?', $this->Environment->request);
 	
-		if(!$this->iso_disableFilterAjax)
-		{
-			$arrAjaxParams[] = 'id='. $this->id;
-	
-			$strAjaxParams = implode("&", $arrAjaxParams);	//build the ajax params
-	
-			$objScriptTemplate = new FrontendTemplate('js_products');
-			$objScriptTemplate->ajaxParams = $strAjaxParams;	
-			$objScriptTemplate->mId = $this->id;
-			$this->Template->script = $objScriptTemplate->parse();
-		}
-			
-
-
 		$objProduct = $this->getProductByAlias($this->Input->get('product'));
 			
 		if (!$objProduct)
@@ -107,6 +93,22 @@ class ModuleProductReader extends ModuleIsotopeBase
 			$this->Template->type = 'empty';
 			$this->Template->message = $GLOBALS['TL_LANG']['MSC']['invalidProductInformation'];
 			return;
+		}
+		
+		if(!$this->iso_disableFilterAjax)
+		{
+			$arrAttributes = $this->getInheritedAttributes($objProduct);
+			
+			$arrAjaxParams[] = 'id='. $this->id;
+	
+			$strAjaxParams = implode("&", $arrAjaxParams);	//build the ajax params
+			
+			$objScriptTemplate = new FrontendTemplate('js_products');
+			$objScriptTemplate->ajaxParams = $strAjaxParams;	
+			$objScriptTemplate->mId = $this->id;
+			$objScriptTemplate->productJson = $this->jsonEncode($arrAttributes);
+			
+			$GLOBALS['TL_MOOTOOLS'][] = $objScriptTemplate->parse();
 		}
 		
 		// Buttons
@@ -202,48 +204,51 @@ class ModuleProductReader extends ModuleIsotopeBase
 		else
 		{
 			$objProduct = $this->getProduct((integer)$this->Input->get('variant'));
-
-			if($objProduct->pid)
-			{
-				$objParentProduct = $this->getProduct($objProduct->pid);
-				
-				$arrParentAttributes = $objParentProduct->getAttributes();
-				
-				unset($arrParentAttributes['images']);	//clear the image array
-			}
-				
-			$arrAttributes = $objProduct->getAttributes();
-				
-			unset($arrAttributes['variants_wizard']);		
 			
-			foreach($arrAttributes as $k=>$v)
-			{
-
-				if(!$v)
-					$arrAttributes[$k] = $arrParentAttributes[$k];				
-			
-				switch($k)
-				{
-					case $this->Isotope->Store->priceField:
-						$arrAttributes[$k] = $this->Isotope->formatPriceWithCurrency($v);
-						break;
-					
-				}
+			$arrAttributes = $this->getInheritedAttributes($objProduct);	
+		}
 				
-			}		
-		}
-		
-		//provide pre PHP 5.2 functionality that formats the array into a JSON-happy data structure.			
-		if(!function_exists('json_encode'))
-		{
-			echo $this->jsonEncode($arrAttributes);
-		}
-		else
-		{
-			echo json_encode($arrAttributes);
-		}
+		echo $this->jsonEncode($arrAttributes);
 
 	}	
+
+	public function getInheritedAttributes($objProduct)
+	{
+		$arrAttributes = $objProduct->getAttributes();
+		
+		if($objProduct->pid)
+		{
+			$objParentProduct = $this->getProduct($objProduct->pid);
+			
+			$arrParentAttributes = $objParentProduct->getAttributes();
+			
+			//unset($arrParentAttributes['images']);	//clear the image array
+		}
+			
+		$arrAttributes = $objProduct->getAttributes();
+			
+		unset($arrAttributes['variants_wizard']);		
+		
+		foreach($arrAttributes as $k=>$v)
+		{
+			if(!$v)
+			{				
+				$arrAttributes[$k] = $arrParentAttributes[$k];				
+			}
+			
+			switch($k)
+			{
+				case $this->Isotope->Store->priceField:
+					$arrAttributes[$k] = $this->Isotope->formatPriceWithCurrency($v);
+					break;
+				
+			}
+			
+		}	
+		
+		return $arrAttributes;	
+		
+	}
 
 	public function getImages($intProductId)
 	{

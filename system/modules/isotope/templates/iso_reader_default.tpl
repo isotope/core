@@ -4,7 +4,7 @@
 
 
 <?php if ($this->hasImage): ?>
-<div id="image_main" class="image_container main_image"><a href="<?php echo $this->mainImage['large']; ?>" title="<?php echo $this->mainImage['desc']; ?>" rel="lightbox"><img src="<?php echo $this->mainImage['thumbnail']; ?>" alt="<?php echo $this->mainImage['alt']; ?>"<?php echo $this->mainImage['thumbnail_size']; ?> /></a></div>
+<div id="image_main" class="image_container main_image"><a href="<?php echo $this->mainImage['large']; ?>" title="<?php echo $this->mainImage['desc']; ?>" rel="lightbox"><img src="<?php echo $this->mainImage['medium']; ?>" alt="<?php echo $this->mainImage['alt']; ?>"<?php echo $this->mainImage['medium_size']; ?> /></a></div>
 <?php endif; ?>
 <?php if ($this->variant_widget): ?>
 <div id="variants_container" class="variants">
@@ -26,7 +26,7 @@
 <?php if ($this->hasGallery): ?>
 <div id="image_gallery">
 <?php foreach( $this->gallery as $image ): ?>
-<div class="image_container gallery"><a href="<?php echo $image['large']; ?>" title="<?php echo $image['desc']; ?>" rel="lightbox"><img src="<?php echo $image['gallery']; ?>" alt="<?php echo $image['alt']; ?>"<?php echo $image['gallery_size']; ?> /></a></div>
+<div class="image_container gallery"><img src="<?php echo $image['gallery']; ?>" alt="<?php echo $image['alt']; ?>"<?php echo $image['gallery_size']; ?> /></div>
 <?php endforeach; ?>
 </div>
 <?php endif; ?>
@@ -36,7 +36,7 @@
 <div class="description"><?php echo $this->description; ?></div><?php endif; ?>
 
 <?php //if(!$this->hasVariants): ?>
-<div id="price" class="price">
+<div id="ajax_price" class="price">
 	<?php if($this->editablePrice): ?>
     	<label for="<?php echo $this->price['name']; ?>"><?php echo $this->price['description']; ?> </label><?php echo $this->price['html']; ?>
     <?php else: ?>

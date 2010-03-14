@@ -2,7 +2,10 @@
 
 window.addEvent('domready', function() {
 	
-	IsotopeFrontend.loadProductBinders('<?php echo $this->mId; ?>');
 	
+	IsotopeFrontend.loadGallery(<?php echo $this->productJson; ?>);
+	
+	IsotopeFrontend.loadProductBinders('<?php echo $this->mId; ?>');
+
 });
 </script>
