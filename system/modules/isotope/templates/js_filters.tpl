@@ -1,4 +1,5 @@
 <script language="javascript" type="text/javascript">
+
 window.addEvent('domready', function() {
 			
 		var mId = '<?php echo $this->mId; ?>';
