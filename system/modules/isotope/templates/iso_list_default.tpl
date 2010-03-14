@@ -5,11 +5,11 @@
 <?php endif; ?>
 
 <?php if ($this->sku): ?>
-<p class="sku"><?php echo $this->sku; ?></p><?php endif; if ($this->teaser): ?>
-<p class="teaser"><?php echo $this->teaser; ?></p><?php endif; ?>
+<div class="sku"><?php echo $this->sku; ?></div><?php endif; if ($this->teaser): ?>
+<div class="teaser"><?php echo $this->teaser; ?></div><?php endif; ?>
 
-<p class="price"><?php echo (($this->raw['low_price'] <= $this->raw['price'] && $this->raw['high_price'] > $this->raw['price']) ? $this->priceRangeLabel . ' ' . $this->low_price : $this->price); ?></p>
-<p class="details"><a href="<?php echo $this->href_reader; ?>"><?php echo $this->label_detail; ?></a></p>
+<div class="price"><?php echo ($this->raw['high_price'] > $this->raw['low_price'] ? $this->priceRangeLabel . ' ' . $this->low_price : $this->price); ?></div>
+<div class="details"><a href="<?php echo $this->href_reader; ?>"><?php echo $this->label_detail; ?></a></div>
 
 <?php if($this->buttons): ?>
 <div class="submit_container">

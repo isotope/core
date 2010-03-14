@@ -184,6 +184,7 @@ class IsotopeProduct extends Model
 										}
 									}
 								}
+								
 								break;
 						}
 					}

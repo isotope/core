@@ -168,7 +168,7 @@ class ModuleFilters extends ModuleIsotopeBase
 			$objScriptTemplate->orderBy = $arrOrderByOptions;			
 			$objScriptTemplate->ajaxParams = $strAjaxParams;			
 			$objScriptTemplate->mId = $arrListingModules[0];		
-			$this->Template->script = $objScriptTemplate->parse();
+			$GLOBALS['TL_MOOTOOLS'][] = $objScriptTemplate->parse();
 		}
 		
 		$this->Template->searchable = $this->iso_enableSearch;
