@@ -754,7 +754,21 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	protected function writeOrder($blnCheckout=false)
 	{
 		$strUniqueId = uniqid($this->Isotope->Store->orderPrefix, true);
-	
+		
+		$arrSurcharges = array();
+		
+		foreach( $this->Cart->getSurcharges() as $arrSurcharge )
+		{
+			$arrSurcharges[] = array
+			(
+				'label'			=> $arrSurcharge['label'],
+				'price'			=> $arrSurcharge['price'],
+				'total_price'	=> $arrSurcharge['total_price'],
+				'tax_id'		=> $arrSurcharge['tax_id'],
+			);
+		}
+
+		
 		$arrSet = array
 		(
 			'pid'					=> (FE_USER_LOGGED_IN ? $this->User->id : 0),
@@ -769,7 +783,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			'taxTotal'	 			=> $this->Cart->taxTotal,
 			'shippingTotal'			=> $this->Cart->shippingTotal,
 			'grandTotal'			=> $this->Cart->grandTotal,
-			'surcharges'			=> $this->Cart->getSurcharges(),
+			'surcharges'			=> $arrSurcharges,
 			'checkout_info'			=> $this->getCheckoutInfo(),
 			
 			'status'				=> ($blnCheckout ? $this->Cart->Payment->new_order_status : ''),
