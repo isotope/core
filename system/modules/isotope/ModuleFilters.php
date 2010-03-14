@@ -122,7 +122,7 @@ class ModuleFilters extends ModuleIsotopeBase
 	
 		$arrCleanUrl = explode('?', $this->Environment->request);
 	
-	if(!$this->iso_disableFilterAjax)
+		if(!$this->iso_disableFilterAjax)
 		{
 			$arrAjaxParams[] = 'id=' . $arrListingModules[0];
 			
@@ -270,4 +270,6 @@ class ModuleFilters extends ModuleIsotopeBase
 	
 		return $arrPerPageOptions;
 	}
+	
+	
 }

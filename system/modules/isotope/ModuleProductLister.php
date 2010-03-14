@@ -658,15 +658,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 		{
 			$arrBuffer[count($arrBuffer)-1]['class'] .= ' product_last';
 		}
-		
-		if(!$this->iso_disableFilterAjax)
-		{
-			$objScriptTemplate = new FrontendTemplate('js_lister');
-			
-			$objScriptTemplate->ajaxParams = 'id=' . $this->id . '&pid=' . $this->Input->get('pId') . '&rid=' . $this->Input->get('rId');
-			$GLOBALS['TL_MOOTOOLS'][] = $objScriptTemplate->parse();
-		}
-		
+
 		$objTemplate->action = $this->Environment->base;
 		$objTemplate->formId = $this->strFormId;
 		$objTemplate->buttons = $arrButtons;

@@ -22,7 +22,7 @@
 						urlencoded: true,
 						data: 'action=fmd&' + ajaxParams + IsotopeFrontend.getQueryString($('ctrl_per_page').get('value')) + IsotopeFrontend_Lister.setPage(pageNum),
 						onRequest: IsotopeFrontend.showLoader(),
-						onSuccess: function(responseText, responseXML) { IsotopeFrontend.insertProductList(responseText); IsotopeFrontend_Lister.modifyPagination('<?php echo $this->mId; ?>', '<?php echo $this->pageId; ?>', '<?php echo $this->rootId; ?>'); IsotopeFrontend.hideLoader(); }
+						onSuccess: function(responseText, responseXML) { IsotopeFrontend.insertProductList(responseText); IsotopeFrontend_Lister.modifyPagination(ajaxParams); IsotopeFrontend.hideLoader(); }
 					}).send();
 				});		
 						
