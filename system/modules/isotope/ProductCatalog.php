@@ -780,8 +780,7 @@ class ProductCatalog extends Backend
 	
 	public function renameColumn($varValue, DataContainer $dc)
 	{
-		
-		$varValue = strtolower($this->mysqlStandardize($varValue));
+		$varValue = standardize($varValue);
 		
 		if (!preg_match('/^[a-z_][a-z\d_]*$/i', $varValue))
 		{
@@ -961,24 +960,7 @@ class ProductCatalog extends Backend
 
 		return $varValue;
 	}
-	
-	
-	/**
-	 * Standardize an attribute title to valid mysql field characters and case
-	 *
-	 * @param string
-	 * @return string
-	 */
-	public static function mysqlStandardize($strName)
-	{
-		$varValue = utf8_romanize($strName);
-		
-		$varValue = preg_replace('/[^a-zA-Z0-9 _-]+/i', '', $varValue);
-		$varValue = preg_replace('/ +/i', '_', $varValue);
-		
-		return $varValue;
-	}
-	
+
 	
 	/**
 	 * Wrapper for the Product-Filter Collection associative table logic.  Grabs all necessary values in order to update the PFC table.
