@@ -73,6 +73,8 @@ $GLOBALS['TL_LANG']['tl_product_attributes']['rgxpOptions']['alnum']	= 'Numbers 
 $GLOBALS['TL_LANG']['tl_product_attributes']['rgxpOptions']['extnd']	= 'All standard characters except: #&()/>=<';
 $GLOBALS['TL_LANG']['tl_product_attributes']['rgxpOptions']['email']	= 'Valid email address';
 $GLOBALS['TL_LANG']['tl_product_attributes']['rgxpOptions']['url']		= 'Valid html link';
+$GLOBALS['TL_LANG']['tl_product_attributes']['opValue']					= 'Value';
+$GLOBALS['TL_LANG']['tl_product_attributes']['opLabel']					= 'Label';
 $GLOBALS['TL_LANG']['tl_product_attributes']['opDefault']				= 'Default';
 $GLOBALS['TL_LANG']['tl_product_attributes']['opGroup']					= 'Group';
 
