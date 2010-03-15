@@ -583,8 +583,6 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		$strFields = '';
 		$strHidden = '';
 
-//		$this->getMaxFileSize();
-
 		// Get all form fields
 		$objFields = $this->Database->prepare("SELECT * FROM tl_form_field WHERE pid=? ORDER BY sorting")
 									->execute($objForm->id);

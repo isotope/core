@@ -35,19 +35,11 @@ abstract class ModuleIsotopeBase extends Module
 	 */
 	private static $arrUrlCache = array();
 	
-	
 	/**
 	 * Template
 	 * @var string
 	 */
 	protected $strPriceTemplate = 'stpl_price';
-	
-	/**
-	 * Price String Override Template
-	 * @var string
-	 */
-	protected $strPriceOverrideTemplate = 'stpl_price_override';
-	
  
 	/**
 	 * product options array
@@ -109,36 +101,34 @@ abstract class ModuleIsotopeBase extends Module
 		
 		foreach($arrButtonData as $buttonProperties)
 		{									
-				if(!strlen($buttonProperties['button_template']))
+			if(!strlen($buttonProperties['button_template']))
+			{
+				throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['missingButtonTemplate'], $buttonProperties['button_template']));
+			}
+			else
+			{
+				$objTemplate = new FrontendTemplate($buttonProperties['button_template']); //creating one base template object and cloning for specific products
+			}
+			
+			$objTemplate->buttonType = 'link';
+			$objTemplate->isAjaxEnabledButton = false;	
+			$objTemplate->buttonLabelOrImage = $buttonProperties['button_label'];
+			
+			//Get list of product ids for the current button
+			
+			if($buttonProperties['params'])
+			{
+				$arrProductIds = array_keys($buttonProperties['params']);
+				
+				foreach($arrProductIds as $productId)
 				{
-					throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['missingButtonTemplate'], $buttonProperties['button_template']));
-				}else{
-					$objTemplate = new FrontendTemplate($buttonProperties['button_template']); //creating one base template object and cloning for specific products
+					//Get the current product Id's params & process
+					$objTemplate->buttonId = $buttonProperties['button_id'] . $productId;
+					$objTemplate->actionTitle = sprintf($buttonProperties['action_string'], $buttonProperties['params'][$productId]['name']);
+					$objTemplate->actionLink = $this->generateActionLinkString($buttonProperties['button_type'], $productId, $buttonProperties['params'][$productId], $pageId);
+					$arrButtonHTML[$buttonProperties['button_type']][$productId] = $objTemplate->parse();
 				}
-				
-				$objTemplate->buttonType = 'link';
-				$objTemplate->isAjaxEnabledButton = false;	
-				$objTemplate->buttonLabelOrImage = $buttonProperties['button_label'];
-				
-				//Get list of product ids for the current button
-				
-				if($buttonProperties['params'])
-				{
-				
-					$arrProductIds = array_keys($buttonProperties['params']);
-					
-					foreach($arrProductIds as $productId)
-					{
-								
-						//Get the current product Id's params & process
-						$objTemplate->buttonId = $buttonProperties['button_id'] . $productId;
-						$objTemplate->actionTitle = sprintf($buttonProperties['action_string'], $buttonProperties['params'][$productId]['name']);
-						$objTemplate->actionLink = $this->generateActionLinkString($buttonProperties['button_type'], $productId, $buttonProperties['params'][$productId], $pageId);
-						$arrButtonHTML[$buttonProperties['button_type']][$productId] = $objTemplate->parse();
-						
-						
-					}
-				}
+			}
 		}	
 			
 			/*		
@@ -152,8 +142,8 @@ abstract class ModuleIsotopeBase extends Module
 
 			Button Model Properties Not yet used - END
 		*/	
-			return $arrButtonHTML;
 
+		return $arrButtonHTML;
 	}
 	
 	/**
@@ -176,14 +166,15 @@ abstract class ModuleIsotopeBase extends Module
 					$strCacheKeyParams .= $k . '_' . $v . '_';
 					$strParams .= $k . '/' . $v . '/';
 				}
-			}else{
+			}
+			else
+			{
 					$strCacheKeyParams .= $k . '_' . $v . '_';
 					$strParams .= $k . '/' . $v . '/';
 			}
 		}
 
 		$strParams .= 'id/' . $intProductId;
-		
 		$strCacheKey = 'id_' . $intProductId . '_' . $strCacheKeyParams . $arrProduct['tstamp'];
 
 
@@ -208,38 +199,6 @@ abstract class ModuleIsotopeBase extends Module
 		self::$arrUrlCache[$strCacheKey] = $strUrl;
 
 		return self::$arrUrlCache[$strCacheKey];
-	
-	}
-	
-	
-	/**
-	 * Generate the required buttons for a products within the current store configuration
-	 * @param integer
-	 * @return string
-	 */
-	public function generateButtonsWidget($intStoreConfigurationId, $strFormTemplate, $strButtonTemplate)
-	{
-		//Get the form template
-		$objTemplate = new FrontendTemplate($strFormTemplate);
-		
-		//Get the button template
-		$objButtonTemplate = new FrontendTemplate($strButtonTemplate);
-		
-		$objButtonTemplate->buttonClickEvent = '.submit(); return false;';
-		//$objButtonTemplate->buttonId = '';
-		$objButtonTemplate->buttonLabel = '';
-		$objButtonTemplate->buttonTabIndex = '';
-		
-		$objTemplate->action = '';
-		$objTemplate->formId = '';
-		$objTemplate->method = '';
-		$objTemplate->enctype = '';
-		$objTemplate->attributes = '';
-		$objTemplate->formSubmit  = ''; //(unique form value)
-		$objTemplate->hidden  = ''; //(collection of hidden fields)
-		$objTemplate->buttons  = ''; //(collection of buttons)
-	
-		return $strHTML;
 	}
 	
 			
@@ -263,9 +222,7 @@ abstract class ModuleIsotopeBase extends Module
 		$strUrl = ampersand($this->Environment->request, ENCODE_AMPERSANDS);
 
 		// Get target page
-		$objJump = $this->Database->prepare("SELECT id, alias FROM tl_page WHERE id=?")
-								  ->limit(1)
-								  ->execute($intJumpTo);
+		$objJump = $this->Database->prepare("SELECT id, alias FROM tl_page WHERE id=?")->limit(1)->execute($intJumpTo);
 	
 		if ($objJump->numRows > 0)
 		{
@@ -273,7 +230,6 @@ abstract class ModuleIsotopeBase extends Module
 		}
 		else
 		{
-			
 			$strUrl = ampersand($this->generateFrontendUrl(array('id'=>$objPage->id, 'alias'=>$objPage->alias), '/details/product/' . $arrProduct['alias']));
 		}
 
@@ -293,50 +249,9 @@ abstract class ModuleIsotopeBase extends Module
 	 */
 	protected function generateProductLink($strLink, $arrProduct, $intJumpTo, $strProductIdKey = 'id', $blnAddArchive=false)
 	{
-
-		// Internal link
 		return 	$this->generateProductUrl($arrProduct, $intJumpTo, $strProductIdKey, $blnAddArchive);
 	}
-	
-	/**
-	 * Sort out protected archives
-	 * @param array
-	 * @return array
-	 */
-	protected function sortOutProtected($arrArchives)
-	{
-		if (BE_USER_LOGGED_IN)
-		{
-			return $arrArchives;
-		}
-
-		$this->import('FrontendUser', 'User');
-		$objArchive = $this->Database->execute("SELECT id, protected, groups FROM tl_news_archive WHERE id IN(" . implode(',', $arrArchives) . ")");
-		$arrArchives = array();
-
-		while ($objArchive->next())
-		{
-			if ($objArchive->protected)
-			{
-				$groups = deserialize($objArchive->groups, true);
-
-				if (!is_array($this->User->groups) || count($this->User->groups) < 1 || !is_array($groups) || count($groups) < 1)
-				{
-					continue;
-				}
-
-				if (count(array_intersect($groups, $this->User->groups)) < 1)
-				{
-					continue;
-				}
-			}
-
-			$arrArchives[] = $objArchive->id;
-		}
-
-		return $arrArchives;
-	}
-	
+		
 	
 	protected function generatePrice($fltPrice, $strTemplate='stpl_price')
 	{
@@ -347,190 +262,6 @@ abstract class ModuleIsotopeBase extends Module
 		return $objTemplate->parse();
 	}
 	
-	
-	/**
-	 * Get the final price including related price rules
-	 *
-	 */
-	protected function getFinalPrice($intProductId)
-	{
-		$objProductPrice = $this->Database->prepare("SELECT price FROM tl_product_data WHERE id=?")
-										  ->limit(1)
-										  ->execute($intProductId);
-		
-		if($objProductPrice->numRows < 1)
-		{
-			return '';
-		}
-		
-		return $objProductPrice->price;
-	}
-	
-	/**
-	 * Get any messages relevant to a particular product
-	 *
-	 * @param integer
-	 * @param string
-	 * return array
-	 */
-	protected function getProductMessages($intProductId)
-	{
-		return array();
-	
-	}
-	
-	protected function getRootAssetImportPath($intStoreId)
-	{
-		$objPath = $this->Database->prepare("SELECT root_asset_import_path FROM tl_store WHERE id=?")
-										  ->limit(1)
-										  ->execute($intStoreId);
-		
-		if($objPath->numRows < 1)
-		{
-			return '';
-		}
-		
-		$strFilePath = $objPath->root_asset_import_path;
-	
-	
-		return $strFilePath;
-		
-	}
-	
-	
-	/**
-	 * Generate a Teaser text that terminates at the end of the closest sentence to the teaser length value.
-	 *
-	 * @param mixed
-	 * @param object
-	 * @return string
-	 */
-	protected function generateTeaser($varValue, $intLength=0)
-	{
-		if($intLength == 0 || empty($intLength))
-		{
-			$intLength = 300;
-		}
-		
-		$string = substr($varValue, 0, $intLength);
-		
-		
-		if(!strpos($string, "."))
-		{
-			//Get the position of the first period after the first X number of characters
-			$intFirstPeriod = strpos($varValue, ".", $intLength);
-			
-			$intFirstPeriod++;
-			
-			$string = substr($varValue, 0, $intFirstPeriod);
-		}
-			
-		$char = strtolower(strlen($string));
-								
-		while ($char > 0)
-		{
-			if ($string{$char} == ".")
-			{
-				break;
-			}else{
-			
-				$char = $char - 1;
-			}
-		}
-		
-		$char++;
-		$string = substr($string, 0, $char); 
-		
-		return $string;
-	}
-	
-	
-	/**
-	 * Clean a query string of any invalid characters to prevent XSS attacks, etc.
-	 *
-	 * @param string
-	 * @return string
-	 */
-	protected function sanitizeQueryString($strValue) 
-	{  
-    	return ereg_replace("[^A-Za-z0-9-]", "", $strValue);  
-	}  
-	
-	protected function verifyFilter($key, $value)
-	{
-		
-		$objSampleData = $this->Database->prepare("SELECT " . $key . " FROM tl_product_data WHERE " . $key . " IS NOT NULL")
-										->limit(1)
-										->execute();
-				
-		if(!is_int($objSampleData->$key) && !is_string($value))
-		{
-			return false;
-		}elseif(!is_int((int)$value)){
-			return false;
-		}
-				
-		return true;
-	}
-	
-	public function getFilterData($intAttributeId, $strAttributeType)
-	{
-		//global $objPage;
-		$objAttributeData = $this->Database->prepare("SELECT name, option_list, use_alternate_source, list_source_table, list_source_field FROM tl_product_attributes WHERE id=? AND is_filterable='1' AND (type='select' OR type='checkbox')")
-									  ->limit(1)
-									  ->execute($intAttributeId);
-		
-		
-		if($objAttributeData->numRows < 1)
-		{
-			return '';
-		}
-		
-		if($objAttributeData->use_alternate_source==1)
-		{
-			$objLinkData = $this->Database->prepare("SELECT id, " . $objAttributeData->list_source_field . " FROM " . $objAttributeData->list_source_table)
-										  ->execute();
-			
-			if($objLinkData->numRows < 1)
-			{
-				return array();
-			}
-			
-			$arrLinkValues = $objLinkData->fetchAllAssoc();
-			
-			$filter_name = $objAttributeData->list_source_field;
-						
-			foreach($arrLinkValues as $value)
-			{
-				$arrLinkData[] = array
-				(
-					'value'		=> $value[$objAttributeData->id],
-					'label'		=> $value[$objAttributeData->list_source_field]
-				);
-			
-			}
-			
-		}
-		else
-		{
-			$arrLinkValues = deserialize($objAttributeData->option_list);
-			
-			$filter_name = standardize($objAttributeData->name);
-			
-			foreach($arrLinkValues as $value)
-			{
-				$arrLinkData[] = array
-				(
-					'value'		=> $value['value'],
-					'label'		=> $value['label']
-				);
-			
-			}
-		}
-		
-		return $arrLinkData;
-			
-	}
 	
 	/**
 	 *	getFilterListData - Grab a list of values and labels for a filter by attribute Id and by a list of eligible values.  If the array is empty, grab all values. 
@@ -549,10 +280,11 @@ abstract class ModuleIsotopeBase extends Module
 									  ->limit(1)
 									  ->execute($intAttributeId);
 									  
-		if($objAttributeData->numRows < 1)
+		if(!$objAttributeData->numRows)
 		{
 			return array();
 		}
+		
 		$arrListData[] = array
 		(
 			'value'		=> NULL,
@@ -584,11 +316,9 @@ abstract class ModuleIsotopeBase extends Module
 						'label'		=> $value[$objAttributeData->list_source_field]
 					);
 				}
-				
-			}else{
-				
-							
-				
+			}
+			else
+			{
 				foreach($arrLinkValues as $value)
 				{
 					if(in_array($value['id'], $arrValues))
@@ -600,31 +330,27 @@ abstract class ModuleIsotopeBase extends Module
 						);
 					}			
 				}
-				
 			}
-				
-		}else{
-					
+		}
+		else
+		{
 			$arrLinkValues = deserialize($objAttributeData->option_list);
 			
 			if($blnGrabAll)
 			{
 				foreach($arrLinkValues as $value)
 				{
-				
 					$arrListData[] = array
 					(			
 						'value'		=> $value['value'],
 						'label'		=> $value['label']
 					);
-
 				}
-									
-			}else{
-				
+			}
+			else
+			{
 				foreach($arrLinkValues as $value)
 				{
-					
 					if(in_array($value['value'], $arrValues))
 					{
 						$arrListData[] = array
@@ -632,22 +358,14 @@ abstract class ModuleIsotopeBase extends Module
 							'value'		=> $value['value'],
 							'label'		=> $value['label']
 						);
-					
 					}
-	
 				}
-							
 			}
-			
-			
 		}
 		
 		usort($arrListData, array($this, "sortArrayAsc"));
 		
-	
 		return $arrListData;
-	
-	
 	}
 	
 	protected function sortArrayAsc($a, $b)
@@ -658,11 +376,9 @@ abstract class ModuleIsotopeBase extends Module
 	
 	protected function getCookieTimeWindow($intStoreId)
 	{
-		$objCookieTimeWindow = $this->Database->prepare("SELECT cookie_duration FROM tl_store WHERE id=?")	
-											  ->limit(1)
-											  ->execute($intStoreId);
+		$objCookieTimeWindow = $this->Database->prepare("SELECT cookie_duration FROM tl_store WHERE id=?")->limit(1)->execute($intStoreId);
 		
-		if($objCookieTimeWindow->numRows < 1)
+		if (!$objCookieTimeWindow->numRows)
 		{
 			return 0;
 		}
@@ -682,6 +398,7 @@ abstract class ModuleIsotopeBase extends Module
 	{
 		return strlen($this->Input->post($strKey)) ? $this->Input->post($strKey) : $this->Input->get($strKey);
 	}
+	
 	
 	/** 
 	 * Return a widget object based on a product attribute's properties
@@ -755,7 +472,8 @@ abstract class ModuleIsotopeBase extends Module
 						{
 							$hideVariants = true;
 						}
-						break;			
+						break;
+									
 					default:
 						$this->arrProductOptionsData[] = $this->getProductOptionValues($strField, $arrData['inputType'], $varValue); 
 						break;
@@ -772,7 +490,7 @@ abstract class ModuleIsotopeBase extends Module
 		
 		//$varSave = is_array($varValue) ? serialize($varValue) : $varValue;
 		
-		if(!$hideVariants)
+		if (!$hideVariants)
 		{
 			$temp .= $objWidget->parse() . '<br />';
 			return $temp;
@@ -819,8 +537,9 @@ abstract class ModuleIsotopeBase extends Module
 							break;
 						}
 					}
-				}				
+				}
 				break;
+				
 			default:
 				//these values are not by reference - they were directly entered.  
 				if(is_array($varValue))
@@ -848,79 +567,7 @@ abstract class ModuleIsotopeBase extends Module
 		return $arrValues;
 	}
 	
-	/**
-	 * Get the maximum file size that is allowed for file uploads
-	 * @return string
-	 */
-	protected function getMaxFileSize()
-	{
-		return $GLOBALS['TL_CONFIG']['maxFileSize'];
-		//$this->Template->maxFileSize = $GLOBALS['TL_CONFIG']['maxFileSize'];
-
-		/*$objMaxSize = $this->Database->prepare("SELECT MAX(maxlength) AS maxlength FROM tl_form_field WHERE pid=? AND type=? AND maxlength>?")
-									 ->execute($this->id, 'upload', 0);
-
-		if ($objMaxSize->maxlength > 0)
-		{
-			$this->Template->maxFileSize = $objMaxSize->maxlength;
-		}*/
-	}
 	
-	/**
-	 * Validate product option widgets
-	 * @param array $arrOptions
-	 * @return void
-	 */
-	protected function validateOptionValues($arrOptions, $currFormId, $blnProductVariants = false, $intPid = 0)
-	{
-		if(count($arrOptions) < 1)
-		{
-			return;
-		}
-		
-		if(!$blnProductVariants)
-		{
-			foreach($arrOptions as $option)
-			{
-				$arrAttributeData = $GLOBALS['TL_DCA']['tl_product_data']['fields'][$option]['attributes'];
-				
-				if($arrAttributeData['is_customer_defined'])
-				{
-					$arrOptionFields[] = $k;
-
-					$this->generateProductOptionWidget($option, $GLOBALS['TL_DCA']['tl_product_data']['fields'][$option], $objProduct->id, $currFormId);
-	
-				}
-																
-			}	
-		}
-		else
-		{
-		
-			if($intPid>0)
-			{
-		
-				//Create a special widget that combines all option value combos that are enabled.
-				$arrData = array
-				(
-					'name'			=> 'subproducts',
-					'description'	=> &$GLOBALS['TL_LANG']['tl_product_data']['product_options'],
-					'inputType'		=> 'select',					
-					'options'		=> $arrSubproductOptions,
-					'eval'			=> array('mandatory'=>true)
-				);
-
-				$product['options'][] = array
-				(
-					'name'			=> $k,
-					'description'	=> $arrAttributeData['description'],									
-					'html'			=> $this->generateProductOptionWidget('product_variants', $arrData, $objProduct->id, $currFormId, $arrOptions)
-				);	
-			}
-		}	
-	}
-
-
 	protected function getSubproductOptionValues($intPid, $arrOptionList)
 	{
 		if (!is_array($arrOptionList) || !count($arrOptionList))
@@ -983,7 +630,6 @@ abstract class ModuleIsotopeBase extends Module
 		{
 			foreach($row as $k=>$v)
 			{
-			
 				$arrAttributeData = $GLOBALS['TL_DCA']['tl_product_data']['fields'][$k]['attributes'];
 					
 				$arrOptionData[] = array
@@ -997,11 +643,11 @@ abstract class ModuleIsotopeBase extends Module
 		return $arrOptionData;
 	}
 	
+	
 	protected function getOptionList($arrAttributeData)
 	{
 		if($arrAttributeData['use_alternate_source']==1)
 		{
-			
 			if(strlen($arrAttributeData['list_source_table']) > 0 && strlen($arrAttributeData['list_source_field']) > 0)
 			{
 				//$strForeignKey = $arrAttributeData['list_source_table'] . '.' . $arrAttributeData['list_source_field'];
@@ -1154,7 +800,6 @@ abstract class ModuleIsotopeBase extends Module
 																					
 							$arrProductOptions[$attribute] = $this->generateProductOptionWidget($attribute, $GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute], $objProduct->id, $strFormId);
 						}
-						
 					}
 					else
 					{						
@@ -1176,15 +821,12 @@ abstract class ModuleIsotopeBase extends Module
 									}
 									else
 									{
-									
 										$objTemplate->$attribute = array
 										(
 											'id'	=> $varValue,
-											'raw'	=> $objData->fetchAssoc()
-										);										
-									
-									}									
-									
+											'raw'	=> $objData->fetchAssoc(),
+										);
+									}
 								}
 								else
 								{
@@ -1242,8 +884,8 @@ abstract class ModuleIsotopeBase extends Module
 
 		if($blnIsMergedOptionSet && count($arrVariantOptionFields))
 		{
-			
  			$objTemplate->hasVariants = true;
+ 			
 			//Create a special widget that combins all option value combos that are enabled.
 			$arrData = array
 			(
@@ -1252,26 +894,26 @@ abstract class ModuleIsotopeBase extends Module
 	            'inputType'    => 'select',          
 	            'options'    => $this->getSubproductOptionValues(($intParentProductId ? $intParentProductId : $objProduct->id), $arrVariantOptionFields),
 	            'eval'      => array('mandatory'=>true)
-	        );
+			);
        
-		  $arrAttributeData = $GLOBALS['TL_DCA']['tl_product_data']['fields'][$k]['attributes'];
+			$arrAttributeData = $GLOBALS['TL_DCA']['tl_product_data']['fields'][$k]['attributes'];
 
-		  $strHtml = $this->generateProductOptionWidget('product_variants', $arrData, $objProduct->id, $strFormId, $arrVariantOptionFields);
+			$strHtml = $this->generateProductOptionWidget('product_variants', $arrData, $objProduct->id, $strFormId, $arrVariantOptionFields);
 	
-		  if(strlen($strHtml) && $arrData['options'])
-		  {
-			  $arrVariantWidget = array
-			  (
-				'name'      => $k,
-				'description'  => $GLOBALS['TL_LANG']['MSC']['labelProductVariants'],                  
-				'html'		=> $strHtml 
-				//'html'      => $this->generateProductOptionWidget('product_variants', $arrData, $this->strFormId, $arrVariantOptionFields)
-			  ); 
-		   }
-		   else
-		   {
-		   		$objTemplate->hasVariants = false;
-		   }           
+			if(strlen($strHtml) && $arrData['options'])
+			{
+				$arrVariantWidget = array
+				(
+					'name'      => $k,
+					'description'  => $GLOBALS['TL_LANG']['MSC']['labelProductVariants'],                  
+					'html'		=> $strHtml 
+					//'html'      => $this->generateProductOptionWidget('product_variants', $arrData, $this->strFormId, $arrVariantOptionFields)
+				); 
+			}
+			else
+			{
+				$objTemplate->hasVariants = false;
+			}           
         }
 			
 
@@ -1293,48 +935,5 @@ abstract class ModuleIsotopeBase extends Module
 		
 		return $objTemplate->parse();
 	}
-	
-	public function jsonEncode($arrJSON, $skipBracket = false)
-	{
-		//provide pre PHP 5.2 functionality that formats the array into a JSON-happy data structure.			
-		if(!function_exists('json_encode'))
-		{
-		
-			foreach($arrJSON as $k=>$v)
-			{								
-				$strReturn = (is_numeric($k) ? NULL : '"' . $k . '":');
-							
-				if(is_array($v) && count($v) > 1)
-				{			
-					$arrReturn[] = (!$skipBracket ? "[{" : NULL) . $this->jsonEncode($v, true) . (!$skipBracket ? "}]" : NULL);
-					
-					$strChars = (!$skipBracket ? ',' : '},{');
-					
-					$strReturn .= implode($strChars, $arrReturn);
-				}
-				elseif(is_array($v) && count($v)==1)
-				{
-					$strReturn .= '[' . (!is_null($v[0]) ? '"' . str_replace("/", "\/", $v[0]) . '"' : 'null') . ']';
-				}
-				else
-				{
-					$strReturn .= (!is_null($v) ? '"' . str_replace("/", "\/", $v) . '"' : 'null');
-				}
-					
-				$arrReturnString[] =  $strReturn;
-			}
-		
-			return implode($strChars, $arrReturnString);
-		}
-		else
-		{
-			return json_encode($arrJSON);
-		}
-
-		
-	}
-	
-
-
 }
 
