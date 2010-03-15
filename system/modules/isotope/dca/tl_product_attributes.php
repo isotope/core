@@ -39,7 +39,6 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 		'onload_callback'             => array
 		(
 //			array('tl_product_attributes', 'loadAttributes'),
-			array('tl_product_attributes', 'checkPermission'),
 		),
 		'onsubmit_callback'			  => array
 		(
@@ -394,32 +393,6 @@ class tl_product_attributes extends Backend
 	}
 */
 	
-	
-	public function checkPermission($dc)
-	{
-		if ($this->Input->get('act') == 'edit')
-		{
-			$objAttribute = $this->Database->prepare("SELECT * FROM tl_product_attributes WHERE id=?")->limit(1)->execute($dc->id);
-			
-			if ($objAttribute->numRows)
-			{
-				$blnMandatory = false;
-				
-				foreach( $GLOBALS['ISO_ATTR'] as $attr )
-				{
-					if ($attr['field_name'] == $objAttribute->field_name)
-					{
-						$blnMandatory = true;
-					}
-				}
-				
-				if ($blnMandatory)
-				{
-					$GLOBALS['TL_DCA']['tl_product_attributes']['fields']['field_name']['eval']['style'] = 'background-color: #fee;" readonly="readonly';
-				}
-			}
-		}
-	}
 		
 	
 	/**

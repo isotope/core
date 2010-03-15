@@ -345,34 +345,3 @@ $GLOBALS['ISO_CHECKOUT_STEPS'] = array
 
 $GLOBALS['ISO_ATTR_TYPES'] = array('text','integer','decimal','longtext','datetime','select','checkbox','options','file','media');
 
-/**
- * These fields are default fields required to get the store and default templates working
- * We must improve behavious because currently we cannot rename a field (eg. to german) or it would break!
- */
-$GLOBALS['ISO_ATTR'] = array
-(
-	// Shipping Class		
-	array
-	( 
-		'pid'						=> 0,
-		'tstamp'					=> time(),
-		'type'						=> 'decimal',
-		'field_name'				=> 'shipping_class',
-		'legend'					=> 'shipping_legend',
-		'name'						=> 'Shipping Class',
-		'description'				=> 'Left blank, the default shipping option will be applied.',
-		'attr_use_mode'				=> 'fixed',
-		'is_customer_defined'		=> 0,
-		'is_visible_on_front'		=> 0,
-		'is_required'				=> 0,
-		'is_filterable'				=> 0,
-		'is_searchable'				=> 0,
-		'is_used_for_price_rules'	=> 1,
-		'is_multiple_select'		=> 0,
-		'use_rich_text_editor'		=> 0,
-		'is_user_defined'			=> 0,
-		'is_listing_field'			=> 0,
-		'delete_locked'				=> 1
-	),
-);
-
