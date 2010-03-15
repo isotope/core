@@ -35,41 +35,12 @@ class ProductCatalog extends Backend
 		
 		$this->import('Isotope');
 	}
-
-	protected $sqlDef = array
-	(
-		'integer'		=> "int(10) NULL default NULL",
-		'decimal'		=> "double NULL default NULL",
-		'text'			=> "varchar(255) NOT NULL default ''",
-		'textarea'		=> "text NULL",
-		'datetime'		=> "int(10) unsigned NOT NULL default '0'",
-		'select'		=> "varchar(255) NOT NULL default ''",
-		'checkbox'		=> "char(1) NOT NULL default ''",
-		'options'		=> "text NULL",
-		'file'			=> "text NULL",
-		'media'			=> "blob NULL",
-	);
 	
 	protected $arrForm = array();
 	protected $arrTypes = array('text','password','textarea','select','radio','checkbox','upload', 'hidden');
 	protected $arrList = array ('tstamp','pages','new_import'/*,'add_audio_file','add_video_file'*/);	//Basic required fields
 	protected $arrData = array();
 	protected $arrSelectors = array();
-	
-	protected $systemColumns = array('id', 'pid', 'sorting', 'tstamp');
-	
-	protected $modifyColumnStatement = "ALTER TABLE tl_product_data MODIFY %s %s";
-
-	/*		    `audio_source` varchar(32) NOT NULL default '',
-  			`audio_jumpTo` text NULL,
-  			`audio_url` varchar(255) NOT NULL default '',
-			`video_source` varchar(32) NOT NULL default '',
-  			`video_jumpTo` varchar(255) NOT NULL default '',
-  			`video_url` text NULL,
-			`add_audio_file` char(1) NOT NULL default '0',
-			`add_video_file` char(1) NOT NULL default '0',
-			`option_collection` text NULL,
-	*/
 
 	
 	/**
@@ -751,27 +722,6 @@ class ProductCatalog extends Backend
 		}
 					
 		return $arrOptions;
-	}
-	
-	public function changeFieldType(DataContainer $dc)
-	{
-		
-		$objField = $this->Database->prepare("SELECT * FROM tl_product_attributes WHERE id=?")
-								   ->limit(1)
-								   ->execute($dc->id);
-		
-		if(!$objField->numRows)
-		{
-			throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['missingAttribute'], $dc->id));
-		}
-		
-		if($objField->type!=$this->Input->post('type'))
-		{
-			$statement = sprintf($this->modifyColumnStatement, $this->Input->post('field_name'), $this->sqlDef[$this->Input->post('type')]);
-		}
-		
-		if (strlen($statement))
-			$this->Database->execute($statement);
 	}
 	
 	
