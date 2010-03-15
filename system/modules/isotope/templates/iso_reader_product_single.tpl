@@ -71,16 +71,13 @@
 	      <h3 class="productOptions"><?php echo $this->productOptionsLabel; ?></h3>
 	      <?php if (!$this->tableless): ?>
 			<table cellspacing="0" cellpadding="0" summary="Form fields">
-				<?php foreach($product['options'] as $option): ?>
-		        	<?php echo $option['html']; ?>
-		        <?php endforeach; ?>
+				<?php implode("\n", $product['options']); ?>
 			</table>
 		  <?php else: ?>
 		  	<ul id="optionList" class="optionList">
-			<?php foreach($product['options'] as $option): ?>
-	        	<li id="option_<?php echo $option['name']; ?>" class="option">
-	        		<h4><?php echo $option['description']; ?></h4>
-	        		<?php echo $option['html']; ?>
+			<?php foreach($product['options'] as $name => $option): ?>
+	        	<li id="option_<?php echo $name; ?>" class="option">
+	        		<?php echo $option; ?>
 	        	</li>
 	        <?php endforeach; ?>
 		  	</ul>

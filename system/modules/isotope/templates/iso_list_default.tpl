@@ -22,9 +22,7 @@
 <?php if($this->options): ?>
 <input type="hidden" name="product_options" value="<?php echo $this->optionList; ?>" />
 <div class="options">
-<?php foreach($this->options as $option): ?>
-	<?php echo $option['html']; ?>
-<?php endforeach; ?>
+<?php echo implode("\n", $this->options); ?>
 </div>
 <?php endif; ?>
 <?php if ($this->useQuantity): ?>

@@ -17,9 +17,7 @@
 <?php if($this->options): ?>
 <div id="options_container" class="options">
 <input type="hidden" name="product_options" value="<?php echo $this->optionList; ?>" /><div class="options">
-<?php foreach($this->options as $option): ?>
-	<label for="<?php echo $option['name']; ?>"><?php echo $option['description']; ?> </label><?php echo $option['html']; ?>
-<?php endforeach; ?>
+<?php echo implode("\n", $this->options); ?>
 </div>
 <?php endif; ?>
 
