@@ -351,10 +351,14 @@ $GLOBALS['ISO_ATTR'] = array
 	),
 	'integer' => array
 	(
+		'frontend'	=> 'text',
+		'backend'	=> 'text',
 		'sql'		=> "int(10) NULL default NULL",
 	),
 	'decimal' => array
 	(
+		'frontend'	=> 'text',
+		'backend'	=> 'text',
 		'sql'		=> "double NULL default NULL",
 	),
 	'textarea' => array
@@ -363,10 +367,13 @@ $GLOBALS['ISO_ATTR'] = array
 	),
 	'datetime' => array
 	(
+		'frontend'	=> 'text',
+		'backend'	=> 'text',
 		'sql'		=> "int(10) unsigned NOT NULL default '0'",
 	),
 	'select' => array
 	(
+		'backend'	=> 'optionDataWizard',
 		'sql'		=> "varchar(255) NOT NULL default ''",
 	),
 	'checkbox' => array
@@ -375,14 +382,20 @@ $GLOBALS['ISO_ATTR'] = array
 	),
 	'options' => array
 	(
+		'frontend'	=> 'radio',
+		'backend'	=> 'radio',
 		'sql'		=> "text NULL",
 	),
 	'file' => array
 	(
+		'frontend'	=> 'mediaManager',
+		'backend'	=> 'mediaManager',
 		'sql'		=> "text NULL",
 	),
 	'media' => array
 	(
+		'frontend'	=> 'mediaManager',
+		'backend'	=> 'mediaManager',
 		'sql'		=> "blob NULL",
 	),
 );

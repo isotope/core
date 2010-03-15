@@ -65,19 +65,12 @@ class ProductCatalog extends Backend
 			if ($field['rgxp']) $eval['rgxp'] = $field['rgxp'];
 			if ($field['multiple']) $eval['multiple'] = $field['multiple'];
 			
-			$inputType = $objAttributes->type;
-	
+			$inputType = (TL_MODE == 'BE' && $GLOBALS['ISO_ATTR'][$objAttributes->type]['backend']) ? $GLOBALS['ISO_ATTR'][$objAttributes->type]['backend'] : (TL_MODE == 'FE' && $GLOBALS['ISO_ATTR'][$objAttributes->type]['frontend']) ? $GLOBALS['ISO_ATTR'][$objAttributes->type]['frontend'] : $objAttributes->type;
 			
 			// check for options lookup 
 			switch ($objAttributes->type)
 			{
-				case 'integer':
-				case 'decimal':
-					$inputType = 'text';
-					break;
-					
 				case 'datetime':
-					$inputType = 'text';
 					$eval['rgxp'] = 'date';
 					$eval['datepicker'] = $this->getDatePickerString();
 					break;
@@ -95,14 +88,12 @@ class ProductCatalog extends Backend
 
 				case 'file':
 				case 'media':
-					$inputType = 'mediaManager';
 					$eval['cols'] = 4;
 					//if($field['show_files']) $eval['files'] = true;
 					//$eval['fieldType'] = 'radio';
 					break;
 					
 				case 'options':
-					$inputType = 'radio';
 					$eval['multiple'] = false;
 					if($field['use_alternate_source']==1)
 					{
