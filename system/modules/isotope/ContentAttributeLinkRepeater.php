@@ -79,13 +79,12 @@ class ContentAttributeLinkRepeater extends ContentElement
 			
 			}
 			
-		}else{
-		
-			$this->import('ProductCatalog');
-			
+		}
+		else
+		{
 			$arrLinkValues = deserialize($objAttributeData->option_list);
 			
-			$filter_name = strtolower($this->ProductCatalog->mysqlStandardize($objAttributeData->name));
+			$filter_name = standardize($objAttributeData->name);
 			
 			foreach($arrLinkValues as $value)
 			{
