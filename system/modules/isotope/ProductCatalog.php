@@ -97,10 +97,11 @@ class ProductCatalog extends Backend
 			if ($field['is_required']) $eval['mandatory'] = 'true';
 			if ($field['rgxp']) $eval['rgxp'] = $field['rgxp'];
 			if ($field['multiple']) $eval['multiple'] = $field['multiple'];
+			
+			$inputType = $objAttributes->type;
 	
 			
 			// check for options lookup 
-			$inputType = '';
 			switch ($objAttributes->type)
 			{
 				case 'integer':
@@ -115,13 +116,10 @@ class ProductCatalog extends Backend
 					break;
 					
 				case 'text':
-					$inputType = 'text';
 					$eval['tl_class'] = 'long';
 					break;
 			
 				case 'textarea':
-					$inputType = 'textarea';
-					
 					if($field['use_rich_text_editor'])
 					{
 						$eval['rte'] = 'tinyMCE';
@@ -170,10 +168,6 @@ class ProductCatalog extends Backend
 					break;
 					
 				case 'select':
-					$inputType = 'select';
-					
-					//$inputType = 'productOptionsWizard';
-					
 					if($field['use_alternate_source']==1)
 					{
 						if(strlen($field['list_source_table']) > 0 && strlen($field['list_source_field']) > 0)
@@ -200,10 +194,6 @@ class ProductCatalog extends Backend
 							}											
 						}
 					}	
-					break;
-					
-				default:
-					$inputType = $field['type'];
 					break;
 			}
 			
@@ -233,10 +223,6 @@ class ProductCatalog extends Backend
 				'filter'         	=> $filter,
 				'eval'				=> $eval,
 				'attributes'		=> $field,
-				'load_callback'		=> array
-				(
-					array('ProductCatalog','loadField')
-				),
 				'save_callback'		=> array
 				(
 					array('ProductCatalog','saveField')
@@ -528,21 +514,6 @@ class ProductCatalog extends Backend
 	
 	//}
 	
-	public function loadField($varValue, DataContainer $dc)
-	{
-		// HOOK: loadField callback
-		if (array_key_exists('loadField', $GLOBALS['TL_HOOKS']) && is_array($GLOBALS['TL_HOOKS']['loadField']))
-		{
-			foreach ($GLOBALS['TL_HOOKS']['loadField'] as $callback)
-			{
-				$this->import($callback[0]);
-				$this->$callback[0]->$callback[1]($varValue, $dc);
-			}
-		}
-
-		return $varValue;
-	}
-	
 	public function saveField($varValue, DataContainer $dc)
 	{
 		$objAttribute = $this->Database->prepare("SELECT * FROM tl_product_attributes WHERE field_name=?")
@@ -557,23 +528,6 @@ class ProductCatalog extends Backend
 		if($objAttribute->is_filterable)
 		{
 			$this->saveFilterValuesToCategories($varValue, $dc);
-		}
-		
-		//if($objAttribute->is_order_by_enabled)
-				
-		//if($objAttribute->is_searchable)
-		
-		//if($objAttribute->is_used_for_price_rules)
-		
-			
-		// HOOK: loadField callback
-		if (array_key_exists('saveField', $GLOBALS['TL_HOOKS']) && is_array($GLOBALS['TL_HOOKS']['saveField']))
-		{
-			foreach ($GLOBALS['TL_HOOKS']['saveField'] as $callback)
-			{
-				$this->import($callback[0]);
-				$varValue = $this->$callback[0]->$callback[1]($varValue, $dc);
-			}
 		}
 		
 		return $varValue;
