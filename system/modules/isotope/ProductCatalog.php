@@ -184,21 +184,24 @@ class ProductCatalog extends Backend
 							$strForeignKey = $field['list_source_table'] . '.' . $field['list_source_field'];
 						
 						}
-					}else{
-					
+					}
+					else
+					{
 						$arrValues = array();
 						$arrOptionsList = deserialize($field['option_list']);
 						
-						
-						foreach ($arrOptionsList as $arrOptions)
+						if (is_array($arrOptionsList) && count($arrOptionsList))
 						{
-							/*if ($arrOptions['default'])
+							foreach ($arrOptionsList as $arrOptions)
 							{
-								//grab as selected value
-							}*/
-							
-							$arrValues[$arrOptions['value']] = $arrOptions['label'];
-						}											
+								/*if ($arrOptions['default'])
+								{
+									//grab as selected value
+								}*/
+								
+								$arrValues[$arrOptions['value']] = $arrOptions['label'];
+							}
+						}
 						
 					}
 
