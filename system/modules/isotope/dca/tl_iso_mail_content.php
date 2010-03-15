@@ -99,7 +99,7 @@ $GLOBALS['TL_DCA']['tl_iso_mail_content'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{settings_legend},language,fallback;{content_legend},subject,html,text,textOnly',
+		'default' => '{settings_legend},language,fallback;{content_legend},subject,html,text,textOnly,attachments'
 	),
 
 	// Fields
