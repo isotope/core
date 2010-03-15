@@ -59,6 +59,9 @@ class IsotopeRunonce extends Frontend
 		// Checkout method has been renamed from "login" to "member" to prevent a problem with palette of the login module
 		$this->Database->execute("UPDATE tl_module SET iso_checkout_method='member' WHERE iso_checkout_method='login'");
 		
+		// Renamed attribute types
+		$this->Database->execute("UPDATE tl_product_attributes SET type='textarea' WHERE type='longtext'");
+		
 		// Drop fields that are now part of the default DCA
 		$this->Database->execute("DELETE FROM tl_product_attributes WHERE field_name='alias'");
 		$this->Database->execute("DELETE FROM tl_product_attributes WHERE field_name='visibility'");
