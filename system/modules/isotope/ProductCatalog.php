@@ -63,8 +63,6 @@ class ProductCatalog extends Backend
 	protected $modifyColumnStatement = "ALTER TABLE tl_product_data MODIFY %s %s";
 	
 	protected $createColumnStatement = "ALTER TABLE tl_product_data ADD %s %s";
-	
-	protected $dropColumnStatement = "ALTER TABLE tl_product_data DROP COLUMN %s";
 
 	/*		    `audio_source` varchar(32) NOT NULL default '',
   			`audio_jumpTo` text NULL,
