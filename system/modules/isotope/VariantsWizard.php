@@ -661,7 +661,7 @@ class VariantsWizard extends Widget
 				
 		$strEditableAttributes = implode(',', $arrAttr);
 
-			$objSubProducts = $this->Database->prepare("SELECT id, " . $this->strAttributes . "," . $strEditableAttributes .", published FROM tl_product_data WHERE pid=?")
+			$objSubProducts = $this->Database->prepare("SELECT id, " . $this->strAttributes . "," . $strEditableAttributes .", published FROM tl_product_data WHERE pid=? ORDER BY sorting")
 										 ->execute($intPid);
 							 
 		//$arrSubProducts[] = array('id'=>0, 'published'=>0, 'attribute_values'=>array(), 'sku'=>'', 'price'=>0, 'unit' => '#', 'weight' => '0', 'qty' => 0);

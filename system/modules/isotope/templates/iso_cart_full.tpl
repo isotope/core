@@ -34,7 +34,7 @@
 		<td class="col_2 quantity"><input name="quantity[<?php echo $product['cart_item_id']; ?>]" size="3" type="text" class="text" value="<?php echo $product['quantity']; ?>" maxlength="3" /></td>
    		<td class="col_3 price"><?php echo $product['price']; ?></td>
     	<td class="col_4 price total"><?php echo $product['total_price']; ?></td>
-    	<td class="col_5 col_last remove"><a href="<?php echo $product['remove_link']; ?>" title="<?php echo $product['remove_link_title']; ?>" class="remove">Remove</a></td>
+    	<td class="col_5 col_last remove"><a href="<?php echo $product['remove_link']; ?>" title="<?php echo $product['remove_link_title']; ?>" class="remove"><?php echo $product['remove_link_text']; ?></a></td>
 	</tr>
 <?php endforeach; ?>
 </tbody>
@@ -43,7 +43,7 @@
 <div class="submit_container">
 	<button type="submit" class="submit update"><span><?php echo $GLOBALS['TL_LANG']['MSC']['updateCartBT']; ?></span></button>
 	<?php if ($this->continueShopping): ?><a class="continue" href="<?php echo $this->continueShopping; ?>"><span><?php echo $GLOBALS['TL_LANG']['MSC']['continueShoppingBT']; ?></span></a><?php endif; ?>
-	<a class="checkout" href="<?php echo $this->checkoutJumpTo; ?>"><span><?php echo $GLOBALS['TL_LANG']['MSC']['checkoutBT']; ?></span></a>
+	<a class="checkout" href="<?php echo $this->checkoutJumpTo; ?>"><span><?php echo $this->checkoutJumpToLabel; ?></span></a>
 </div>
 </form>
 

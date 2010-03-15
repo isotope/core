@@ -34,7 +34,7 @@ $GLOBALS['TL_LANG']['tl_iso_mail_content']['subject']		= array('Betreff', 'Geben
 $GLOBALS['TL_LANG']['tl_iso_mail_content']['text']			= array('Text-Inhalt', 'Geben Sie den Text der Nachricht ein. Verwenden Sie ');
 $GLOBALS['TL_LANG']['tl_iso_mail_content']['textOnly']		= array('Als Text senden', 'Diese Nachricht als reinen Text ohne HTML-Inhalt versenden.');
 $GLOBALS['TL_LANG']['tl_iso_mail_content']['html']			= array('HTML-Inhalt', 'Geben Sie den formatierten Inhalt ein.');
-
+$GLOBALS['TL_LANG']['tl_iso_mail_content']['attachments']	= array('Dateianhänge', 'Wählen Sie hier Dateien aus, welche im Anhang der E-Mail mitgesendet werden sollen.');
 
 /**
  * Buttons

@@ -43,6 +43,7 @@ $GLOBALS['TL_LANG']['ERR']['orderNotFound']				= 'Die gewünschte Bestellung wur
 /**
  * Miscellaneous
  */
+$GLOBALS['TL_LANG']['MSC']['removeProductLinkText'] = 'entfernen';
 $GLOBALS['TL_LANG']['MSC']['checkoutBT']				= 'Proceed to Checkout';
 $GLOBALS['TL_LANG']['MSC']['continueShoppingBT']		= 'Continue shopping';
 $GLOBALS['TL_LANG']['MSC']['updateCartBT']				= 'Update Cart';

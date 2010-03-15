@@ -733,6 +733,7 @@ CREATE TABLE `tl_iso_mail_content` (
   `text` text NULL,
   `textOnly` varchar(1) NOT NULL default '',
   `html` text NULL,
+  `attachments` blob NULL,
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

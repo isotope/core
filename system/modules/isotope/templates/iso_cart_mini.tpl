@@ -11,7 +11,7 @@
 <?php else: ?>
 <?php foreach($this->products as $product): ?>
 	<div class="product">
-		<div class="removeButton"><a href="<?php echo $product['remove_link']; ?>" title="<?php echo $product['remove_link_title']; ?>">Remove</a></div>
+		<div class="removeButton"><a href="<?php echo $product['remove_link']; ?>" title="<?php echo $product['remove_link_title']; ?>"><?php echo $product['remove_link_text']; ?></a></div>
         <div class="productName"><?php echo $product['name']; ?></div>
 		<div class="info">
         	<?php if($this->showOptions && $product['product_options']): ?>
@@ -30,7 +30,7 @@
 	</div>
 <?php endforeach; ?>
     <div class="subtotal"><span class="label"><?php echo $this->subTotalLabel; ?></span> <?php echo $this->subTotalPrice; ?></div>	
-	<div class="checkout"><a class="button dark" href="<?php echo $this->checkoutJumpTo; ?>">Proceed to Checkout</a></div>
+	<div class="checkout"><a class="button dark" href="<?php echo $this->checkoutJumpTo; ?>"><?php echo $this->checkoutJumpToLabel; ?></a></div>
 <div class="clearBoth"></div>	
 <?php endif; ?>
 </div>

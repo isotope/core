@@ -716,6 +716,18 @@ class Isotope extends Controller
 			}
 		}
 		
+		$attachments = deserialize($objMail->attachments);
+	   	if(is_array($attachments) && count($attachments) > 0)
+		{
+			foreach($attachments as $attachment)
+			{
+				if(file_exists(TL_ROOT . '/' . $attachment))
+				{
+					$objEmail->attachFile(TL_ROOT . '/' . $attachment);
+				}
+			}
+		}
+		
 		$objEmail->sendTo($strRecipient);
 	}
 	

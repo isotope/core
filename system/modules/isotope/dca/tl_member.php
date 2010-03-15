@@ -94,7 +94,7 @@ class tl_member_isotope_extended extends Backend
 				'firstname'		=> $objAddress->firstname,
 				'lastname'		=> $objAddress->lastname,
 				'company'		=> $objAddress->company,
-				'street'		=> $objAddress->street,
+				'street_1'		=> $objAddress->street,
 				'postal'		=> $objAddress->postal,
 				'city'			=> $objAddress->city,
 				'subdivision'	=> $objAddress->state,

@@ -349,7 +349,7 @@ class tl_iso_orders extends Backend
 		
 		$fltGrandTotal = (float)$varValue + $objTotals->subTotal + $objTotals->taxTotal;
 		
-		$this->Database->prepare("UPDATE tl_iso_orders SET grandTotal=?")->execute($fltGrandTotal);
+		$this->Database->prepare("UPDATE tl_iso_orders SET grandTotal=?, shippingTotal=? WHERE id=?")->execute($fltGrandTotal, $varValue, $dc->id);
 		
 		return $varValue;
 	}  

@@ -111,6 +111,7 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 				'cart_item_id'		=> $objProduct->cart_id,
 				'product_options'	=> $objProduct->product_options,
 				'remove_link'		=> $this->generateFrontendUrl($objPage->row(), '/action/remove/id/'.$objProduct->cart_id.'/referer/'.base64_encode($this->Environment->request)),
+				'remove_link_text'  => $GLOBALS['TL_LANG']['MSC']['removeProductLinkText'],
 				'remove_link_title' => sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $objProduct->name),
 				'class'				=> 'row_' . $i . ($i%2 ? ' even' : ' odd') . ($i==0 ? ' row_first' : ''),
 			));
@@ -132,6 +133,7 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 		$objTemplate->action = $this->Environment->request;
 		$objTemplate->products = $arrProductData;
 		$objTemplate->cartJumpTo = $this->generateFrontendUrl($this->Database->prepare("SELECT id,alias FROM tl_page WHERE id=?")->execute($this->iso_cart_jumpTo)->fetchAssoc());
+		$objTemplate->checkoutJumpToLabel = $GLOBALS['TL_LANG']['MSC']['checkoutBT'];
 		$objTemplate->checkoutJumpTo = $this->generateFrontendUrl($this->Database->prepare("SELECT id,alias FROM tl_page WHERE id=?")->execute($this->iso_checkout_jumpTo)->fetchAssoc());
 		$objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
 		$objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
