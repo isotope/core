@@ -343,5 +343,5 @@ $GLOBALS['ISO_CHECKOUT_STEPS'] = array
 	),
 );
 
-$GLOBALS['ISO_ATTR_TYPES'] = array('text','integer','decimal','longtext','datetime','select','checkbox','options','file','media');
+$GLOBALS['ISO_ATTR'] = array('text','integer','decimal','longtext','datetime','select','checkbox','options','file','media');
 

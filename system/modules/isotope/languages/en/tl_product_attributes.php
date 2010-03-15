@@ -71,20 +71,6 @@ $GLOBALS['TL_LANG']['tl_product_attributes']['add_to_product_variants'] = array(
 /**
  * Reference
  */
-$GLOBALS['TL_LANG']['tl_product_attributes']['text'] = 'Text (up to 255 characters)';
-$GLOBALS['TL_LANG']['tl_product_attributes']['integer'] = 'Integer/Whole Numbers';
-$GLOBALS['TL_LANG']['tl_product_attributes']['decimal'] = 'Decimal';
-//$GLOBALS['TL_LANG']['tl_product_attributes']['shorttext'] = 'Short Text (up to 128 characters)';
-$GLOBALS['TL_LANG']['tl_product_attributes']['longtext'] = 'Long Text (more than 255 characters)';
-$GLOBALS['TL_LANG']['tl_product_attributes']['datetime'] = 'Date/Time value';
-$GLOBALS['TL_LANG']['tl_product_attributes']['select'] = 'Select List';
-$GLOBALS['TL_LANG']['tl_product_attributes']['checkbox'] = 'Checkbox';
-$GLOBALS['TL_LANG']['tl_product_attributes']['options'] = 'Option List';
-$GLOBALS['TL_LANG']['tl_product_attributes']['file'] = 'File Attachment';
-$GLOBALS['TL_LANG']['tl_product_attributes']['media'] = 'Media (Images, Movies, Mp3s, etc.)';
-$GLOBALS['TL_LANG']['tl_product_attributes']['label'] = 'Label/Fixed Display';
-$GLOBALS['TL_LANG']['tl_product_attributes']['input'] = 'Accept Input From Customer';
-
 $GLOBALS['TL_LANG']['tl_product_attributes']['rgxpOptions']['alnum'] = 'Numbers and Letters Only';
 $GLOBALS['TL_LANG']['tl_product_attributes']['rgxpOptions']['extnd'] = 'All standard characters except: #&()/>=<';
 $GLOBALS['TL_LANG']['tl_product_attributes']['rgxpOptions']['email'] = 'Valid email address';
