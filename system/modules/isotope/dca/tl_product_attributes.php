@@ -100,7 +100,7 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 		/*'shorttext'               	=> '{general_legend},name,description,field_name;{type_legend},type,legend;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{use_mode_legend},is_customer_defined;{validation_legend},is_required;{search_filters_legend},is_searchable,is_order_by_enabled;rgxp',*/
 		'integer'					=> '{general_legend},name,description,field_name;{type_legend},type,legend;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{use_mode_legend},is_customer_defined;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled,is_used_for_price_rules',
 		'decimal'					=> '{general_legend},name,description,field_name;{type_legend},type,legend;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;is_customer_defined;is_required,is_filterable,is_order_by_enabled,is_used_for_price_rules,is_listing_field',
-		'longtext'					=> '{general_legend},name,description,field_name,use_rich_text_editor;{type_legend},type,legend;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{use_mode_legend},is_customer_defined;{validation_legend},is_required;{search_filters_legend},is_searchable,is_order_by_enabled;rgxp',
+		'textarea'					=> '{general_legend},name,description,field_name,use_rich_text_editor;{type_legend},type,legend;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{use_mode_legend},is_customer_defined;{validation_legend},is_required;{search_filters_legend},is_searchable,is_order_by_enabled;rgxp',
 		'datetime'					=> '{general_legend},name,description,field_name;{type_legend},type,legend;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{validation_legend},is_required;{search_filters_legend},is_order_by_enabled',
 		'select'				=> '{general_legend},name,description,field_name;{type_legend},type,legend;{options_legend},option_list,use_alternate_source;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{use_mode_legend},is_customer_defined,is_multiple_select;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled',
 		/*'boolean'					=> '{general_legend},name,description,field_name;{type_legend},type,legend;{visibility_legend},is_listing_field,is_visible_on_front,is_hidden_on_backend,disabled;{use_mode_legend},is_customer_defined,is_multiple_select;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled',*/
@@ -116,7 +116,7 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
     // Subpalettes
     'subpalettes' => array
     (
-       'use_alternate_source'		=> 'list_source_table,list_source_field',
+		'use_alternate_source'		=> 'list_source_table,list_source_field',
     	'is_customer_defined'		=> 'add_to_product_variants'
     ),
 

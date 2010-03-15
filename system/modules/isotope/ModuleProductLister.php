@@ -347,7 +347,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 				break;
 			
 			case 'text':
-			case 'longtext':
+			case 'textarea':
 			
 				return array('ASC' => $GLOBALS['TL_LANG']['MSC']['a_to_z'], 'DESC' => $GLOBALS['TL_LANG']['MSC']['z_to_a']);
 				break;
