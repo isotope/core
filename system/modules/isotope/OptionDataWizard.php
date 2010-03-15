@@ -149,7 +149,7 @@ class OptionDataWizard extends Widget
     <tr>
       <td><input type="text" id="'.$this->strId.'_value_'.$i.'" class="tl_text_2" value="'.specialchars($this->arrOptions[$i]['value']).'" disabled="disabled" /></td>
       <td><input type="text" name="'.$strName.'[label]" id="'.$this->strId.'_label_'.$i.'" class="tl_text_2" value="'.specialchars((strlen($this->varValue[$this->arrOptions[$i]['value']]['label']) ? $this->varValue[$this->arrOptions[$i]['value']]['label'] : $this->arrOptions[$i]['label'])).'" /></td>
-      <td><input type="text" name="'.$strName.'[price]" id="'.$this->strId.'_price_'.$i.'" class="tl_text_2" value="'.specialchars($this->varValue[$this->arrOptions[$i]['value']]['price']).'"'.(specialchars($this->arrOptions[$i]['group'] ? ' disabled="disabled"' : '')).' /></td>
+      <td>' . ($this->arrOptions[$i]['group'] ? '' : ('<input type="text" name="'.$strName.'[price]" id="'.$this->strId.'_price_'.$i.'" class="tl_text_2" value="'.specialchars($this->varValue[$this->arrOptions[$i]['value']]['price']).'" />')) . '</td>
       <td><input type="checkbox" name="'.$strName.'[disable]" id="'.$this->strId.'_disable_'.$i.'" class="fw_checkbox" value="1"'.($this->varValue[$this->arrOptions[$i]['value']]['disable'] ? ' checked="checked"' : '').' /> <label for="'.$this->strId.'_disable_'.$i.'">'.$GLOBALS['TL_LANG'][$this->strTable]['opDisable'].'</label></td>';
 			
 			$return .= '
