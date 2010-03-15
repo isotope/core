@@ -694,91 +694,90 @@ abstract class ModuleIsotopeBase extends Module
 	 */
 	public function generateProductOptionWidget($strField, $arrData = array(), $intProductId = 0, $strFormId = '', $arrOptionFields = array(), $blnUseTable = false)
 	{
-			$hideVariants = false;
+		$hideVariants = false;
+		
+		$strClass = $GLOBALS['TL_FFL'][$arrData['inputType']];
+									
+		// Continue if the class is not defined
+		if (!$this->classFileExists($strClass))// || !$arrData['eval']['isoEditable'])
+		{
+			return false;	
+		}
+
+		$arrData['eval']['required'] = $arrData['eval']['mandatory'] ? true : false;
+		
+		//$GLOBALS['TL_LANG']['MSC']['emptySelectOptionLabel']));
+		
+		$objWidget = new $strClass($this->prepareForWidget($arrData, $strField));
+					
+		$objWidget->storeValues = true;
+		$objWidget->tableless = true;
+		$objWidget->name .= "[" . $intProductId . "]";
+		$objWidget->id .= "_" . $intProductId;
+		
+		// Validate input
+		if ($this->Input->post('FORM_SUBMIT') == $strFormId)
+		{
+			$GLOBALS['TL_LANG']['ERR']['mandatory'] = $GLOBALS['TL_LANG']['ERR']['mandatoryOption'];
 			
-			$strClass = $GLOBALS['TL_FFL'][$arrData['inputType']];
-										
-			// Continue if the class is not defined
-			if (!$this->classFileExists($strClass))// || !$arrData['eval']['isoEditable'])
+			$objWidget->validate();
+			$varValue = $objWidget->value;
+			$objWidget->value = NULL;
+			
+			// Convert date formats into timestamps
+			if (strlen($varValue) && in_array($arrData['eval']['rgxp'], array('date', 'time', 'datim')))
 			{
-				
-				return false;	
+				$objDate = new Date($varValue, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
+				$varValue = $objDate->tstamp;
 			}
 
-			$arrData['eval']['required'] = $arrData['eval']['mandatory'] ? true : false;
-			
-			//$GLOBALS['TL_LANG']['MSC']['emptySelectOptionLabel']));
-			
-			$objWidget = new $strClass($this->prepareForWidget($arrData, $strField));
+			if ($objWidget->hasErrors())
+			{
+				$this->doNotSubmit = true;					
+			}
+
+			// Store current value
+			elseif ($objWidget->submitInput())
+			{
+				$_SESSION['FORM_DATA'][$strField] = $varValue;
+				//Store this options value to the productOptionsData array which is then serialized and stored for the given product that is being added to the cart.
+				
+				//Has to collect this data differently - product variant data relies upon actual values specified for the given product ID, where as simple options
+				//only rely upon predefined option lists and what ones were actually selected.
+				switch($strField)
+				{					
+					case 'product_variants':
+						if(count($arrOptionFields))
+						{
+							$this->arrProductOptionsData = $this->getSubproductValues($varValue, $arrOptionFields);	//field is implied							
+						}
 						
-			$objWidget->storeValues = true;
-			$objWidget->tableless = true;
-			$objWidget->name .= "[" . $intProductId . "]";
-			$objWidget->id .= "_" . $intProductId;
-			
-			// Validate input
-			if ($this->Input->post('FORM_SUBMIT') == $strFormId)
-			{
-				$GLOBALS['TL_LANG']['ERR']['mandatory'] = $GLOBALS['TL_LANG']['ERR']['mandatoryOption'];
-				
-				$objWidget->validate();
-				$varValue = $objWidget->value;
-				$objWidget->value = NULL;
-				
-				// Convert date formats into timestamps
-				if (strlen($varValue) && in_array($arrData['eval']['rgxp'], array('date', 'time', 'datim')))
-				{
-					$objDate = new Date($varValue, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
-					$varValue = $objDate->tstamp;
-				}
-	
-				if ($objWidget->hasErrors())
-				{
-					$this->doNotSubmit = true;					
-				}
-	
-				// Store current value
-				elseif ($objWidget->submitInput())
-				{
-					$_SESSION['FORM_DATA'][$strField] = $varValue;
-					//Store this options value to the productOptionsData array which is then serialized and stored for the given product that is being added to the cart.
-					
-					//Has to collect this data differently - product variant data relies upon actual values specified for the given product ID, where as simple options
-					//only rely upon predefined option lists and what ones were actually selected.
-					switch($strField)
-					{					
-						case 'product_variants':
-							if(count($arrOptionFields))
-							{
-								$this->arrProductOptionsData = $this->getSubproductValues($varValue, $arrOptionFields);	//field is implied							
-							}
+						if(!count($this->arrProductOptionsData))
+						{
+							$hideVariants = true;
+						}
+						break;			
+					default:
+						$this->arrProductOptionsData[] = $this->getProductOptionValues($strField, $arrData['inputType'], $varValue); 
+						break;
+				}			
+			}
+		}
+		
+		if ($objWidget instanceof uploadable)
+		{
+			$this->hasUpload = true;
+		}
 							
-							if(!count($this->arrProductOptionsData))
-							{
-								$hideVariants = true;
-							}
-							break;			
-						default:
-							$this->arrProductOptionsData[] = $this->getProductOptionValues($strField, $arrData['inputType'], $varValue); 
-							break;
-					}			
-				}
-			}
-			
-			if ($objWidget instanceof uploadable)
-			{
-				$this->hasUpload = true;
-			}
-								
-			//$_SESSION['FORM_DATA'][$strField] = $varValue;
-			
-			//$varSave = is_array($varValue) ? serialize($varValue) : $varValue;
-			
-			if(!$hideVariants)
-			{
-				$temp .= $objWidget->parse() . '<br />';
-				return $temp;
-			}
+		//$_SESSION['FORM_DATA'][$strField] = $varValue;
+		
+		//$varSave = is_array($varValue) ? serialize($varValue) : $varValue;
+		
+		if(!$hideVariants)
+		{
+			$temp .= $objWidget->parse() . '<br />';
+			return $temp;
+		}
 	}
 	
 	
@@ -1117,18 +1116,7 @@ abstract class ModuleIsotopeBase extends Module
 	 */
 	protected function getProductAttributeData($strFieldName)
 	{		
-		
-		$objAttributeData = $this->Database->prepare("SELECT * FROM tl_product_attributes WHERE field_name=?")
-										   ->limit(1)
-										   ->execute($strFieldName);
-
-		if($objAttributeData->numRows < 1)
-		{
-			
-			return array();
-		}
-		
-		return $objAttributeData->fetchAssoc();
+		return $GLOBALS['TL_DCA']['tl_product_data']['fields'][$strFieldName]['attributes'];
 	}
 	
 	
@@ -1242,7 +1230,6 @@ abstract class ModuleIsotopeBase extends Module
 									
 					if($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['is_customer_defined'])
 					{						
-						
 						$objTemplate->hasOptions = true;
 						
 						
@@ -1335,7 +1322,7 @@ abstract class ModuleIsotopeBase extends Module
 								}
 								break;
 								
-							case 'longtext':
+							case 'textarea':
 								$objTemplate->$attribute = $GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['use_rich_text_editor'] ? $varValue : nl2br($varValue);
 								break;
 																																		

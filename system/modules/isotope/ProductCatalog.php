@@ -41,7 +41,7 @@ class ProductCatalog extends Backend
 		'integer'		=> "int(10) NULL default NULL",
 		'decimal'		=> "double NULL default NULL",
 		'text'			=> "varchar(255) NOT NULL default ''",
-		'longtext'		=> "text NULL",
+		'textarea'		=> "text NULL",
 		'datetime'		=> "int(10) unsigned NOT NULL default '0'",
 		'select'		=> "varchar(255) NOT NULL default ''",
 		'checkbox'		=> "char(1) NOT NULL default ''",
@@ -85,12 +85,14 @@ class ProductCatalog extends Backend
 			return;
 		
 		// FIXME: should we exclude "globally disabled" fields?
-		$arrFields = $this->Database->execute("SELECT * FROM tl_product_attributes")->fetchAllAssoc();
+		$objAttributes = $this->Database->execute("SELECT * FROM tl_product_attributes");
 		
 		
 		// add DCA for form fields
-		foreach ($arrFields as $field) 
+		while ( $objAttributes->next() )
 		{
+			$field = $objAttributes->row();
+			
 			$eval = array();
 			if ($field['is_required']) $eval['mandatory'] = 'true';
 			if ($field['rgxp']) $eval['rgxp'] = $field['rgxp'];
@@ -99,7 +101,7 @@ class ProductCatalog extends Backend
 			
 			// check for options lookup 
 			$inputType = '';
-			switch ($field['type'])
+			switch ($objAttributes->type)
 			{
 				case 'integer':
 				case 'decimal':
@@ -117,7 +119,7 @@ class ProductCatalog extends Backend
 					$eval['tl_class'] = 'long';
 					break;
 			
-				case 'longtext':
+				case 'textarea':
 					$inputType = 'textarea';
 					
 					if($field['use_rich_text_editor'])
@@ -198,9 +200,6 @@ class ProductCatalog extends Backend
 							}											
 						}
 					}	
-		
-					//optional?
-					$eval['includeBlankOption'] = true;
 					break;
 					
 				default:
