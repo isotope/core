@@ -184,6 +184,7 @@ CREATE TABLE `tl_product_attributes` (
   `is_order_by_enabled` char(1) NOT NULL default '',
   `is_used_for_price_rules` char(1) NOT NULL default '',
   `is_multiple_select` char(1) NOT NULL default '',
+  `multilingual` char(1) NOT NULL default '',
   `add_to_product_variants` char(1) NOT NULL default '',
   `invisible` char(1) NOT NULL default '',
   `inputType` varchar(64) NOT NULL default '',

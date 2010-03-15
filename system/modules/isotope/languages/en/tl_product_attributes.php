@@ -50,6 +50,7 @@ $GLOBALS['TL_LANG']['tl_product_attributes']['field_size']				= array('Field Siz
 $GLOBALS['TL_LANG']['tl_product_attributes']['storeTable']				= array('Storage Table','What table does this attribute produce a field for?');
 $GLOBALS['TL_LANG']['tl_product_attributes']['is_listing_field']		= array('Used as a Listing Field','Is this field to be displayed in the product listing?');
 $GLOBALS['TL_LANG']['tl_product_attributes']['is_order_by_enabled']		= array('Add to "Order By" option list','This field will be sortable in the listing module provided the attribute is visible to customers.');
+$GLOBALS['TL_LANG']['tl_product_attributes']['multilingual']			= array('Multilingual', 'Check here if this field should be translated.');
 $GLOBALS['TL_LANG']['tl_product_attributes']['rgxp']					= array('Check Field Values', 'Ensure user input is valid based on a rule you select.');
 $GLOBALS['TL_LANG']['tl_product_attributes']['list_source_table']		= array('List Source Table','the table selected will be used to populate the list using the ID value of this table');
 $GLOBALS['TL_LANG']['tl_product_attributes']['list_source_field']		= array('List Source Field','this field will be the label for each value that comes from the list source table.');
