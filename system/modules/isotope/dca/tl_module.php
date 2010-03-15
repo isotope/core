@@ -30,7 +30,7 @@
  */
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][]			= 'iso_checkout_method';
 
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductLister']			= '{title_legend},name,headline,type;{display_legend},perPage,columns,iso_list_format,iso_show_teaser;{config_legend},iso_use_quantity,iso_category_scope,iso_jump_first,iso_listingSortField,iso_listingSortDirection,new_products_time_window,featured_products;{redirect_legend},iso_reader_jumpTo;{template_legend:hide},iso_list_layout;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductLister']			= '{title_legend},name,headline,type;{display_legend},perPage,columns,iso_list_format,iso_show_teaser;{config_legend},iso_use_quantity,iso_category_scope,iso_jump_first,iso_listingSortField,iso_listingSortDirection,new_products_time_window;{redirect_legend},iso_reader_jumpTo;{template_legend:hide},iso_list_layout;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductReader']			= '{title_legend},name,headline,type;{config_legend},iso_use_quantity,iso_disableFilterAjax;{template_legend:hide},iso_reader_layout;guests,protected;align,space,cssID';
 
@@ -181,15 +181,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['columns'] = array
 	'inputType'               => 'text',
 	'eval'                    => array('rgxp'=>'digit', 'mandatory'=>false, 'maxlength'=>255,'tl_class'=>'w50')
 );
-
-$GLOBALS['TL_DCA']['tl_module']['fields']['featured_products'] = array
-(
-	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['featured_products'],
-	'exclude'                 => true,
-	'inputType'               => 'checkbox',
-	'eval'					  => array('multiple'=>false, 'tl_class'=>'w50 m12')
-);
-
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['listing_filters'] = array
 (
