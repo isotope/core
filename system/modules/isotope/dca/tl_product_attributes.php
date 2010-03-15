@@ -464,7 +464,7 @@ class tl_product_attributes extends Backend
 	{
 		$objAttribute = $this->Database->prepare("SELECT * FROM tl_product_attributes WHERE id=?")->execute($dc->id);
 		
-		if ($objAttribute->type != $dc->activeRecord->type && strlen($dc->activeRecord->type) && strlen($GLOBALS['ISO_ATTR'][$dc->activeRecord->type]['sql']))
+		if ($objAttribute->type != $dc->activeRecord->type && strlen($dc->activeRecord->type) && strlen($GLOBALS['ISO_ATTR'][$dc->activeRecord->type]['sql']) && $this->Database->fieldExists($dc->activeRecord->type, 'tl_product_data'))
 		{
 			$this->Database->execute(sprintf("ALTER TABLE tl_product_data MODIFY %s %s", $objAttribute->field_name, $GLOBALS['ISO_ATTR'][$dc->activeRecord->type]['sql']));
 		}
