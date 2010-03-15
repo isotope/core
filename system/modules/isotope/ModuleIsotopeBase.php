@@ -387,7 +387,6 @@ abstract class ModuleIsotopeBase extends Module
 	}
 	
 	
-
 	/**
 	 * determine the form's action method.
 	 * @access protected
@@ -415,14 +414,23 @@ abstract class ModuleIsotopeBase extends Module
 		$strClass = $GLOBALS['TL_FFL'][$arrData['inputType']];
 									
 		// Continue if the class is not defined
-		if (!$this->classFileExists($strClass))// || !$arrData['eval']['isoEditable'])
+		if (!$this->classFileExists($strClass))
 		{
-			return false;	
+			return '';
 		}
 
 		$arrData['eval']['required'] = $arrData['eval']['mandatory'] ? true : false;
 		
 		//$GLOBALS['TL_LANG']['MSC']['emptySelectOptionLabel']));
+		
+		if (is_array($GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['callback']) && count($GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['callback']))
+		{
+			foreach( $GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['callback'] as $callback )
+			{
+				$this->import($callback[0]);
+				$arrData = $this->{$callback[0]}->{$callback[1]}($arrData, $arrData['attributes'], $intProductId);
+			}
+		}
 		
 		$objWidget = new $strClass($this->prepareForWidget($arrData, $strField));
 					
