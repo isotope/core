@@ -343,5 +343,47 @@ $GLOBALS['ISO_CHECKOUT_STEPS'] = array
 	),
 );
 
-$GLOBALS['ISO_ATTR'] = array('text','integer','decimal','textarea','datetime','select','checkbox','options','file','media');
+$GLOBALS['ISO_ATTR'] = array
+(
+	'text' => array
+	(
+		'sql'		=> "varchar(255) NOT NULL default ''",
+	),
+	'integer' => array
+	(
+		'sql'		=> "int(10) NULL default NULL",
+	),
+	'decimal' => array
+	(
+		'sql'		=> "double NULL default NULL",
+	),
+	'textarea' => array
+	(
+		'sql'		=> "text NULL",
+	),
+	'datetime' => array
+	(
+		'sql'		=> "int(10) unsigned NOT NULL default '0'",
+	),
+	'select' => array
+	(
+		'sql'		=> "varchar(255) NOT NULL default ''",
+	),
+	'checkbox' => array
+	(
+		'sql'		=> "char(1) NOT NULL default ''",
+	),
+	'options' => array
+	(
+		'sql'		=> "text NULL",
+	),
+	'file' => array
+	(
+		'sql'		=> "text NULL",
+	),
+	'media' => array
+	(
+		'sql'		=> "blob NULL",
+	),
+);
 
