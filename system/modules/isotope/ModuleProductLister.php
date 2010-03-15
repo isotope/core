@@ -37,8 +37,6 @@ class ModuleProductLister extends ModuleIsotopeBase
 	
 	protected $strFormId = 'iso_product_list';
 
-	protected $strPriceOverrideTemplate = 'stpl_price_override';
-
 	protected $strOrderBySQL = 'sorting';
 	
 	protected $strFilterSQL;
