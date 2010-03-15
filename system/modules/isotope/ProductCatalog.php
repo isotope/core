@@ -65,7 +65,7 @@ class ProductCatalog extends Backend
 			if ($field['rgxp']) $eval['rgxp'] = $field['rgxp'];
 			if ($field['multiple']) $eval['multiple'] = $field['multiple'];
 			
-			$inputType = (TL_MODE == 'BE' && $GLOBALS['ISO_ATTR'][$objAttributes->type]['backend']) ? $GLOBALS['ISO_ATTR'][$objAttributes->type]['backend'] : (TL_MODE == 'FE' && $GLOBALS['ISO_ATTR'][$objAttributes->type]['frontend']) ? $GLOBALS['ISO_ATTR'][$objAttributes->type]['frontend'] : $objAttributes->type;
+			$inputType = (TL_MODE == 'BE' && strlen($GLOBALS['ISO_ATTR'][$objAttributes->type]['backend'])) ? $GLOBALS['ISO_ATTR'][$objAttributes->type]['backend'] : ((TL_MODE == 'FE' && strlen($GLOBALS['ISO_ATTR'][$objAttributes->type]['frontend'])) ? $GLOBALS['ISO_ATTR'][$objAttributes->type]['frontend'] : $objAttributes->type);
 			
 			// check for options lookup 
 			switch ($objAttributes->type)
