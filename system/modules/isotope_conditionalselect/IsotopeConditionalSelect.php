@@ -29,8 +29,14 @@
 class IsotopeConditionalSelect extends Backend
 {
 	
-	public function mergeData($arrData, $arrAttributes)
+	public function mergeData($arrData, $arrAttributes, $intProduct=false)
 	{
+		if ($intProduct)
+		{
+			$arrData['eval']['conditionField'] = $arrAttributes['conditionField'] . '_' . $intProduct;
+			return $arrData;
+		}
+		
 		$arrData['eval']['conditionField'] = $arrAttributes['conditionField'];
 		
 		$arrValues = array();
