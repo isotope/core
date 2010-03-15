@@ -887,10 +887,8 @@ abstract class ModuleIsotopeBase extends Module
 				if($arrAttributeData['is_customer_defined'])
 				{
 					$arrOptionFields[] = $k;
-							
-					$arrData = $this->getDCATemplate($arrAttributeData);	//Grab the skeleton DCA info for widget generation
-																	
-					$this->generateProductOptionWidget($option, $arrData, $objProduct->id, $currFormId);
+
+					$this->generateProductOptionWidget($option, $GLOBALS['TL_DCA']['tl_product_data']['fields'][$option], $objProduct->id, $currFormId);
 	
 				}
 																
@@ -911,9 +909,7 @@ abstract class ModuleIsotopeBase extends Module
 					'options'		=> $arrSubproductOptions,
 					'eval'			=> array('mandatory'=>true)
 				);
-				
-				//$arrData = $this->getDCATemplate($arrAttributeData);	//Grab the skeleton DCA info for widget generation
-	
+
 				$product['options'][] = array
 				(
 					'name'			=> $k,
@@ -923,74 +919,7 @@ abstract class ModuleIsotopeBase extends Module
 			}
 		}	
 	}
-	
-	protected function getDCATemplate($arrAttributeData)
-	{
-		$arrData['label'] 	= $arrAttributeData['description'];
-		$arrData['prompt'] 	= $arrAttributeData['name'];
-		$arrData['eval']['mandatory'] = $arrAttributeData['is_required'] ? true : false;
 
-		switch($arrAttributeData['type'])
-		{
-			case 'text':
-			case 'decimal':
-			case 'integer':
-		
-				$arrData['inputType'] = 'text';
-				$arrData['eval']['collectionsize'] = 1; //$arrAttributeData['text_collection_rows'];
-				$arrData['eval']['prompt'] = $arrAttributeData['name'];
-				$arrData['eval']['maxlength'] = 255;
-				break;
-			/*case 'select':
-				$arrGroups = $this->getSelectList($arrAttributeData);
-				$arrData['inputType'] 	= 'select';
-				$arrData['default'] 	= '';
-				$arrData['options']     = $arrAttributeData['option_list'];
-				//$arrData['reference']   = $arrGroups['label'];
-				var_dump($arrData['options']);
-				break;				*/
-			
-			case 'options':
-			case 'select':
-			case 'checkbox':
-				$arrAttributeData['type']=='options' ? $strType = 'radio' : $strType = $arrAttributeData['type'];
-				
-				//$arrOptions = $this->getOptionList($arrAttributeData);	//TODO - needs to be replaced to load option values from enabled subproducts.
-				
-				//START HERE - either grab from products themselves or else from variant_data serialized values... this would be quicker, but reliable?
-				//$arrOptions = $this->getSubproductOptionValues($arrAttributeData['name'], array());
-				if($arrAttributeData['use_alternate_source'])
-				{
-					$arrOptionList = '';
-				
-				
-				}
-				else
-				{
-					$arrOptionList = deserialize($arrAttributeData['option_list']);
-				}	
-				
-				foreach($arrOptionList as $row)
-				{
-					$arrOptions[$row['value']] = $row['label'];
-				}
-					
-				$arrData['inputType'] 	= $strType;
-				$arrData['default'] 	= '';
-				$arrData['options']     = array_merge(array(''=>&$GLOBALS['TL_LANG']['MSC']['emptySelectOptionLabel']), $arrOptions);
-				
-				if($arrAttributeData['type']=='checkbox') $arrData['eval']['prompt'] = $arrAttributeData['name'];
-				//$arrData['reference']   = $arrOptions;
-	
-				break;
-			default:
-				break;		
-		
-		}
-		
-		return $arrData;
-	
-	}
 
 	protected function getSubproductOptionValues($intPid, $arrOptionList)
 	{
@@ -1037,7 +966,6 @@ abstract class ModuleIsotopeBase extends Module
 	 */
 	protected function getSubproductValues($varValue, $arrOptionFields)
 	{
-			
 		$strOptionValues = join(',', $arrOptionFields);
 						
 		//get the selected variant values;
@@ -1223,15 +1151,8 @@ abstract class ModuleIsotopeBase extends Module
 							$arrAttributeData = $GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes'];
 							
 							$arrEnabledOptions[] = $attribute;	
-																	
-							$arrData = $this->getDCATemplate($arrAttributeData);	//Grab the skeleton DCA info for widget generation
 																					
-							$arrProductOptions[] = array
-							(
-								'name'			=> $attribute,
-								'description'	=> (strlen($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['description']) ? $GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['description'] : $GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['name']),									
-								'html'			=> $this->generateProductOptionWidget($attribute, $arrData, $objProduct->id, $strFormId)
-							);										
+							$arrProductOptions[$attribute] = $this->generateProductOptionWidget($attribute, $GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute], $objProduct->id, $strFormId);
 						}
 						
 					}
@@ -1333,7 +1254,6 @@ abstract class ModuleIsotopeBase extends Module
 	            'eval'      => array('mandatory'=>true)
 	        );
        
-          //$arrData = $this->getDCATemplate($arrAttributeData);  //Grab the skeleton DCA info for widget generation
 		  $arrAttributeData = $GLOBALS['TL_DCA']['tl_product_data']['fields'][$k]['attributes'];
 
 		  $strHtml = $this->generateProductOptionWidget('product_variants', $arrData, $objProduct->id, $strFormId, $arrVariantOptionFields);
