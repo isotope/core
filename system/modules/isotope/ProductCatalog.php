@@ -140,6 +140,15 @@ class ProductCatalog extends Backend
 				}
 			}
 			
+			if (is_array($GLOBALS['ISO_ATTR'][$objAttributes->type]['callback']) && count($GLOBALS['ISO_ATTR'][$objAttributes->type]['callback']))
+			{
+				foreach( $GLOBALS['ISO_ATTR'][$objAttributes->type]['callback'] as $callback )
+				{
+					$this->import($callback[0]);
+					$arrData = $this->{$callback[0]}->{$callback[1]}($arrData, $objAttributes->row());
+				}
+			}
+			
 			$GLOBALS['TL_DCA']['tl_product_data']['fields'][$objAttributes->field_name] = $arrData;
 		}
 		
