@@ -40,10 +40,6 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 		(
 			array('ProductCatalog','changeFieldType')
 		),
-		'ondelete_callback'			  => array
-		(
-			array('tl_product_attributes', 'checkFieldLock')
-		),
 	),
 	
 	// List
@@ -78,6 +74,13 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 				'label'               => &$GLOBALS['TL_LANG']['tl_product_attributes']['edit'],
 				'href'                => 'act=edit',
 				'icon'                => 'edit.gif'
+			),
+			'delete' => array
+			(
+				'label'					=> &$GLOBALS['TL_LANG']['tl_product_attributes']['delete'],
+				'href'					=> 'act=delete',
+				'icon'					=> 'delete.gif',
+				'attributes'			=> 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
 			),
 			'show' => array
 			(
@@ -357,33 +360,7 @@ class tl_product_attributes extends Backend
 		return $arrGroups;
 	}
 	
-	
-	/**
-	 * checkFieldLock function.
-	 * 
-	 * @access public
-	 * @param object DataContainer $dc
-	 * @return void
-	 */
-	public function checkFieldLock(DataContainer $dc)
-	{
-		$objDeleteLock = $this->Database->prepare("SELECT delete_locked FROM tl_product_attributes WHERE id=?")
-										->limit(1)
-										->execute($dc->id);
-		
-		if($objDeleteLock->numRows < 1)
-		{
-			return; 
-		}
-		
-		if($objDeleteLock->delete_locked=='1')
-		{
-			$_SESSION['TL_ERROR'][] = $GLOBALS['TL_LANG']['ERR']['deleteLocked'];
-			$this->reload();
-		}
-	}
-	
-	
+
 	/**
 	 * getTables function.
 	 * 
@@ -432,6 +409,15 @@ class tl_product_attributes extends Backend
 			
             return array_map(create_function('$x', 'return $x["name"];'), $fields);
         }
-    }	
+    }
+    
+    
+    public function deleteAttribute($dc)
+    {
+    	if ($this->Database->fieldExists($dc->activeRecord->fieldName, 'tl_product_data'))
+    	{
+    		$this->Database->executeUncached("ALTER TABLE tl_product_data DROP COLUMN " . $dc->activeRecord->fieldName);
+    	}
+    }
 }
 
