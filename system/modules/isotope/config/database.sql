@@ -91,7 +91,6 @@ CREATE TABLE `tl_product_data` (
   `option_set_source` varchar(64) NOT NULL default '',
   `option_sets` int(10) unsigned NOT NULL default '0',
   `option_set_title` varchar(255) NOT NULL default '',
-  `variants_wizard` text NULL,
 
   `published` char(1) NOT NULL default '',
   `start` varchar(10) NOT NULL default '',
