@@ -255,53 +255,6 @@ class ProductCatalog extends Backend
 				$GLOBALS['TL_DCA']['tl_product_data']['fields'][$field['field_name']]['foreignKey'] = $strForeignKey;
 				$strForeignKey = "";
 			}
-						
-			
-			if (!empty($field['load_callback']))
-			{
-				$arrCallbackSet = explode(',',$field['load_callback']);
-
-				if(is_array($arrCallbackSet))
-				{
-					foreach($arrCallbackSet as $callback)
-					{
-						$arrCallbacks[] = explode(".", $callback);
-					}
-																		
-					$GLOBALS['TL_DCA']['tl_product_data']['fields'][$field['field_name']]['load_callback'] = $arrCallbacks;
-					
-				}
-				else
-				{
-					$GLOBALS['TL_DCA']['tl_product_data']['fields'][$field['field_name']]['load_callback'] = array(
-						explode(".", $field['load_callback'])
-					);
-				}
-			}
-			
-			if (!empty($field['save_callback']))
-			{
-				$arrCallbackSet = explode(',',$field['save_callback']);
-								
-				if(is_array($arrCallbackSet))
-				{
-					$arrCallbacks = array(); // reset the callback array
-					foreach($arrCallbackSet as $callback)
-					{
-						$arrCallbacks[] = explode(".", $callback);
-					}
-																		
-					$GLOBALS['TL_DCA']['tl_product_data']['fields'][$field['field_name']]['save_callback'] = $arrCallbacks;
-					
-				}
-				else
-				{
-					$GLOBALS['TL_DCA']['tl_product_data']['fields'][$field['field_name']]['save_callback'] = array(
-						explode(".", $field['save_callback'])
-					);
-				}
-					
-			}
 		}
 		
 		
