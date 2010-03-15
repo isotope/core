@@ -51,8 +51,6 @@ $GLOBALS['TL_LANG']['tl_product_attributes']['storeTable'] = array('Storage Tabl
 $GLOBALS['TL_LANG']['tl_product_attributes']['is_listing_field'] = array('Used as a Listing Field','Is this field to be displayed in the product listing?');
 $GLOBALS['TL_LANG']['tl_product_attributes']['is_order_by_enabled'] = array('Add to "Order By" option list','This field will be sortable in the listing module provided the attribute is visible to customers.');
 $GLOBALS['TL_LANG']['tl_product_attributes']['rgxp'] = array('Check Field Values', 'Ensure user input is valid based on a rule you select.');
-$GLOBALS['TL_LANG']['tl_product_attributes']['load_callback'] = array('Load Callback Functions', 'Enter one or more functions separated by commas in the ClassName.functionName format, for example MyClassName.myFunctionName,MySecondClassName.mySecondFunctionName');
-$GLOBALS['TL_LANG']['tl_product_attributes']['save_callback'] = array('Save Callback Functions', 'Enter one or more functions separated by commas in the ClassName.functionName format, for example MyClassName.myFunctionName,MySecondClassName.mySecondFunctionName');
 $GLOBALS['TL_LANG']['tl_product_attributes']['list_source_table'] = array('List Source Table','the table selected will be used to populate the list using the ID value of this table');
 $GLOBALS['TL_LANG']['tl_product_attributes']['list_source_field'] = array('List Source Field','this field will be the label for each value that comes from the list source table.');
 $GLOBALS['TL_LANG']['tl_product_attributes']['use_alternate_source'] = array('Alternate List Source','Check this if you would like to use a database table as the data source.');
@@ -97,5 +95,4 @@ $GLOBALS['TL_LANG']['tl_product_attributes']['visibility_legend'] = 'Visibility 
 $GLOBALS['TL_LANG']['tl_product_attributes']['use_mode_legend'] = 'Use Mode';
 $GLOBALS['TL_LANG']['tl_product_attributes']['search_filters_legend'] = 'Search & Filtering Settings';
 $GLOBALS['TL_LANG']['tl_product_attributes']['validation_legend'] = 'Validation Settings';
-$GLOBALS['TL_LANG']['tl_product_attributes']['developer_tools_legend'] = 'Developer Tools';
 

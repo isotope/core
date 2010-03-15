@@ -197,8 +197,6 @@ CREATE TABLE `tl_product_attributes` (
   `text_collection_rows` varchar(255) NOT NULL default '',
   `delete_locked` char(1) NOT NULL default '',
   `rgxp` varchar(255) NOT NULL default '',
-  `load_callback` text NULL,
-  `save_callback` text NULL,
   `field_name` varchar(255) NOT NULL default '',
   `disabled` char(1) NOT NULL default '',
   PRIMARY KEY  (`id`),
