@@ -42,7 +42,7 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 		),
 		'onsubmit_callback'			  => array
 		(
-			array('ProductCatalog', 'changeFieldType')
+			array('tl_product_attributes', 'modifyColumn')
 		),
 		'ondelete_callback'			  => array
 		(
@@ -434,6 +434,12 @@ class tl_product_attributes extends Backend
     {
     	$varValue = standardize($varValue);
     	
+    	if (in_array($varValue, array('id', 'pid', 'sorting', 'tstamp')))
+    	{
+    		throw new Exception($GLOBALS['TL_LANG']['ERR']['systemColumn'], $varValue);
+    		return '';
+    	}
+    	
     	if (strlen($varValue) && !$this->Database->fieldExists($varValue, 'tl_product_data'))
     	{
     		$strType = strlen($GLOBALS['ISO_ATTR'][$this->Input->post('type')]['sql']) ? $this->Input->post('type') : 'text';
@@ -446,5 +452,16 @@ class tl_product_attributes extends Backend
     	
     	return $varValue;
     }
+    
+    
+	public function modifyColumn($dc)
+	{
+		$objAttribute = $this->Database->prepare("SELECT * FROM tl_product_attributes WHERE id=?")->execute($dc->id);
+		
+		if ($objAttribute->type != $dc->activeRecord->type && strlen($dc->activeRecord->type) && strlen($GLOBALS['ISO_ATTR'][$dc->activeRecord->type]['sql']))
+		{
+			$this->Database->execute(sprintf("ALTER TABLE tl_product_data MODIFY %s %s", $objAttribute->field_name, $GLOBALS['ISO_ATTR'][$dc->activeRecord->type]['sql']));
+		}
+	}
 }
 
