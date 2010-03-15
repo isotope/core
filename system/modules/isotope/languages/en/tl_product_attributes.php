@@ -85,8 +85,9 @@ $GLOBALS['TL_LANG']['tl_product_attributes']['opGroup']					= 'Group';
 $GLOBALS['TL_LANG']['tl_product_attributes']['new']    					= array('New Attribute', 'Create a new attribute.');
 $GLOBALS['TL_LANG']['tl_product_attributes']['edit']   					= array('Edit Attribute', 'Edit attribute ID %s.');
 $GLOBALS['TL_LANG']['tl_product_attributes']['copy']   					= array('Copy Attribute', 'Copy attribute ID %s.');
-$GLOBALS['TL_LANG']['tl_product_attributes']['delete'] 					= array('Delete Attribute', 'Delete attribute ID %s. Database field is not dropped, you need to manually update the database using the install tool or repository manager.');
+$GLOBALS['TL_LANG']['tl_product_attributes']['delete'] 					= array('Delete Attribute', 'Delete attribute ID %s. The database column is not dropped, you need to manually update the database using the install tool or repository manager.');
 $GLOBALS['TL_LANG']['tl_product_attributes']['show']   					= array('Show Attribute Details', 'Show details for attribute ID %s.');
+$GLOBALS['TL_LANG']['tl_product_attributes']['deleteConfirm'] 			= 'Do you really want to delete ID %s. Database field is not dropped, you need to manually update the database using the install tool or repository manager.';
 
 
 /**
