@@ -56,13 +56,9 @@ class ProductCatalog extends Backend
 	protected $arrData = array();
 	protected $arrSelectors = array();
 	
-	protected $systemColumns = array('id', 'pid', 'sorting', 'tstamp', 'alias', 'published');
-	
-	protected $renameColumnStatement = "ALTER TABLE tl_product_data CHANGE COLUMN %s %s %s";
+	protected $systemColumns = array('id', 'pid', 'sorting', 'tstamp');
 	
 	protected $modifyColumnStatement = "ALTER TABLE tl_product_data MODIFY %s %s";
-	
-	protected $createColumnStatement = "ALTER TABLE tl_product_data ADD %s %s";
 
 	/*		    `audio_source` varchar(32) NOT NULL default '',
   			`audio_jumpTo` text NULL,
@@ -778,82 +774,6 @@ class ProductCatalog extends Backend
 			$this->Database->execute($statement);
 	}
 	
-	public function renameColumn($varValue, DataContainer $dc)
-	{
-		$varValue = standardize($varValue);
-		
-		if (!preg_match('/^[a-z_][a-z\d_]*$/i', $varValue))
-		{
-			throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['invalidColumnName'], $varValue));
-		}
-		if (in_array($varValue, $this->systemColumns))
-		{
-			throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['systemColumn'], $varValue));
-		}
-		
-		//Get pertinent field data.
-		$objField = $this->Database->prepare("SELECT id, type, field_name FROM tl_product_attributes WHERE id=?")
-								   ->limit(1)
-								   ->execute($dc->id);
-			
-		// check duplicate form_field name
-		$objItems = $this->Database->prepare("SELECT id FROM tl_product_attributes WHERE pid=? AND id<>? AND name=?")
-								   ->execute($objField->pid, $objField->id, $varValue);
-		
-		if ($objItems->numRows)
-		{
-			throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['columnExists'], $varValue));
-		}
-		
-
-		$fieldType = $objField->type ? $objField->type : 'text';
-		$fieldName = $objField->field_name;
-		
-	//	$this->loadDataContainer('tl_product_data');
-		
-		//see if this field already exists in the core DCA.  if so only create a record in product attributes to extend it.
-		/*if(!array_key_exists($varValue, $GLOBALS['TL_DCA']['tl_product_data']['fields']))
-		{		
-			$this->import('IsotopeDatabase');
-			$this->IsotopeDatabase->update($fieldName, $this->sqlDef[$fieldType]);
-			
-			if ($this->Database->fieldExists($fieldName, 'tl_product_data'))
-			{
-				if ($objField->field_name != $varValue)
-				{
-					$statement = sprintf($this->renameColumnStatement, $fieldName, $varValue, $this->sqlDef[$fieldType]);
-				}
-			}
-			else
-			{
-				$statement = sprintf($this->createColumnStatement, $varValue, $this->sqlDef[$fieldType]);
-			}
-		}*/
-		
-		if ($this->Database->fieldExists($fieldName, 'tl_product_data'))
-		{
-			if ($objField->field_name != $varValue)
-			{
-				$statement = sprintf($this->renameColumnStatement, $fieldName, $varValue, $this->sqlDef[$fieldType]);
-			}
-			
-		}
-		else
-		{
-			$statement = sprintf($this->createColumnStatement, $varValue, $this->sqlDef[$fieldType]);
-		}
-
-				
-		if (strlen($statement))
-			$this->Database->execute($statement);
-		
-		//Create the field name for quick reference in code.
-//		$this->Database->prepare("UPDATE tl_product_attributes SET field_name='" . $varValue . "' WHERE id=?")
-//					   ->execute($dc->id);
-		
-		return $varValue;
-	}
-	
 	
 	/** 
 	 * Get the next sorting value if it exists for a given table.
@@ -873,35 +793,6 @@ class ProductCatalog extends Backend
 		}
 		
 		return 0;
-	}
-
-
-	public function changeColumn($varValue, DataContainer $dc)
-	{
-		$objField = $this->Database->prepare("SELECT id, type, name FROM tl_product_attributes WHERE id=?")
-				->limit(1)
-				->execute($dc->id);
-						
-		if ($objField->numRows == 0)
-		{
-				return $varValue;
-		}
-	
-		$fieldName = $objField->name;
-		$fieldType = $objField->type;
-		
-		if ($varValue != $fieldType)
-		{
-			if ($varValue != $fieldType)
-			{
-				$this->Database->execute(sprintf($this->createColumnStatement, $fieldName, $this->sqlDefColumn[$varValue]));
-				
-				$this->import('IsotopeDatabase');
-				$this->IsotopeDatabase->update($fieldName, $this->sqlDef[$fieldType]);
-			}
-		}
-		
-		return $varValue;
 	}
 
 	

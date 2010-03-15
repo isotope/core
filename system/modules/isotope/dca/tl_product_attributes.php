@@ -36,9 +36,17 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 	(
 		'dataContainer'               => 'Table',
 		'enableVersioning'            => true,
+		'onload_callback'			  => array
+		(
+			array('tl_product_attributes', 'disableFieldName'),
+		),
 		'onsubmit_callback'			  => array
 		(
-			array('ProductCatalog','changeFieldType')
+			array('ProductCatalog', 'changeFieldType')
+		),
+		'ondelete_callback'			  => array
+		(
+			array('tl_product_attributes', 'deleteAttribute'),
 		),
 	),
 	
@@ -133,17 +141,17 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['field_name'],
 			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>30, 'unique'=>true, 'doNotSaveEmpty'=>true, 'tl_class'=>'w50'),
 			'save_callback'			  => array
 			(
-				array('ProductCatalog','renameColumn'),
-			)
+				array('tl_product_attributes', 'createColumn'),
+			),
 		),
 		'type' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['type'],
 			'inputType'               => 'select',
-			'options'				  => &$GLOBALS['ISO_ATTR'],
+			'options'				  => array_keys($GLOBALS['ISO_ATTR']),
 			'reference'				  => &$GLOBALS['TL_LANG']['ATTR'],
 			'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true, 'tl_class'=>'w50'),
 		),
@@ -400,10 +408,43 @@ class tl_product_attributes extends Backend
     
     public function deleteAttribute($dc)
     {
-    	if ($this->Database->fieldExists($dc->activeRecord->fieldName, 'tl_product_data'))
+    	$objAttribute = $this->Database->prepare("SELECT * FROM tl_product_attributes WHERE id=?")->execute($dc->id);
+    	
+    	if ($this->Database->fieldExists($objAttribute->field_name, 'tl_product_data'))
     	{
-    		$this->Database->executeUncached("ALTER TABLE tl_product_data DROP COLUMN " . $dc->activeRecord->fieldName);
+			$this->import('IsotopeDatabase');
+			$this->IsotopeDatabase->delete($objAttribute->field_name);
     	}
+    }
+    
+    
+    public function disableFieldName($dc)
+    {
+    	$objAttribute = $this->Database->prepare("SELECT * FROM tl_product_attributes WHERE id=?")->execute($dc->id);
+    	
+    	if (strlen($objAttribute->field_name))
+    	{
+    		$GLOBALS['TL_DCA']['tl_product_attributes']['fields']['field_name']['eval']['disabled'] = true;
+    		$GLOBALS['TL_DCA']['tl_product_attributes']['fields']['field_name']['eval']['mandatory'] = false;
+    	}
+    }
+    
+    
+    public function createColumn($varValue, $dc)
+    {
+    	$varValue = standardize($varValue);
+    	
+    	if (strlen($varValue) && !$this->Database->fieldExists($varValue, 'tl_product_data'))
+    	{
+    		$strType = strlen($GLOBALS['ISO_ATTR'][$this->Input->post('type')]['sql']) ? $this->Input->post('type') : 'text';
+    		
+    		$this->Database->execute(sprintf("ALTER TABLE tl_product_data ADD %s %s", $varValue, $GLOBALS['ISO_ATTR'][$strType]['sql']));
+    		
+    		$this->import('IsotopeDatabase');
+			$this->IsotopeDatabase->add($varValue, $GLOBALS['ISO_ATTR'][$strType]['sql']);
+    	}
+    	
+    	return $varValue;
     }
 }
 
