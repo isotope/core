@@ -92,6 +92,12 @@ $GLOBALS['TL_LANG']['tl_product_data']['external'] = array('External file', 'Spe
 $GLOBALS['TL_LANG']['tl_product_data']['opAttribute'] = 'Product Attribute';
 $GLOBALS['TL_LANG']['tl_product_data']['opValueSets'] = 'Option Values';
 
+$GLOBALS['TL_LANG']['tl_product_data']['opValue']		= 'Value';
+$GLOBALS['TL_LANG']['tl_product_data']['opLabel']		= 'Label';
+$GLOBALS['TL_LANG']['tl_product_data']['opPrice']		= 'Price (Surcharge)';
+$GLOBALS['TL_LANG']['tl_product_data']['opDisable']		= 'Disable';
+
+
 $GLOBALS['TL_LANG']['tl_product_data']['mmSrc'] = 'Image';
 $GLOBALS['TL_LANG']['tl_product_data']['mmAlt'] = 'Alternate text';
 $GLOBALS['TL_LANG']['tl_product_data']['mmDesc'] = 'Description';

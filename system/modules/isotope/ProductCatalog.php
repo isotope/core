@@ -36,8 +36,6 @@ class ProductCatalog extends Backend
 		$this->import('Isotope');
 	}
 	
-	protected $arrForm = array();
-	protected $arrTypes = array('text','password','textarea','select','radio','checkbox','upload', 'hidden');
 	protected $arrList = array ('tstamp','pages','new_import'/*,'add_audio_file','add_video_file'*/);	//Basic required fields
 	protected $arrData = array();
 	protected $arrSelectors = array();
@@ -58,105 +56,76 @@ class ProductCatalog extends Backend
 		// add DCA for form fields
 		while ( $objAttributes->next() )
 		{
-			$field = $objAttributes->row();
+			$arrData = array
+			(
+				'label'				=> array($objAttributes->name, $objAttributes->description),
+				'inputType'			=> ((TL_MODE == 'BE' && strlen($GLOBALS['ISO_ATTR'][$objAttributes->type]['backend'])) ? $GLOBALS['ISO_ATTR'][$objAttributes->type]['backend'] : ((TL_MODE == 'FE' && strlen($GLOBALS['ISO_ATTR'][$objAttributes->type]['frontend'])) ? $GLOBALS['ISO_ATTR'][$objAttributes->type]['frontend'] : $objAttributes->type)),
+				'attributes'		=> $objAttributes->row(),
+				'save_callback'		=> array
+				(
+					array('ProductCatalog','saveField'),
+				),
+			);
 			
-			$eval = array();
-			if ($field['is_required']) $eval['mandatory'] = 'true';
-			if ($field['rgxp']) $eval['rgxp'] = $field['rgxp'];
-			if ($field['multiple']) $eval['multiple'] = $field['multiple'];
-			
-			$inputType = (TL_MODE == 'BE' && strlen($GLOBALS['ISO_ATTR'][$objAttributes->type]['backend'])) ? $GLOBALS['ISO_ATTR'][$objAttributes->type]['backend'] : ((TL_MODE == 'FE' && strlen($GLOBALS['ISO_ATTR'][$objAttributes->type]['frontend'])) ? $GLOBALS['ISO_ATTR'][$objAttributes->type]['frontend'] : $objAttributes->type);
+			if ($objAttributes->is_required) $arrData['eval']['mandatory'] = 'true';
+			if ($objAttributes->rgxp) $arrData['eval']['rgxp'] = $objAttributes->rgxp;
+			if ($objAttributes->multiple) $arrData['eval']['multiple'] = $objAttributes->multiple;
 			
 			// check for options lookup 
 			switch ($objAttributes->type)
 			{
 				case 'datetime':
-					$eval['rgxp'] = 'date';
-					$eval['datepicker'] = $this->getDatePickerString();
+					$arrData['eval']['rgxp'] = 'date';
+					$arrData['eval']['datepicker'] = $this->getDatePickerString();
 					break;
 					
 				case 'text':
-					$eval['tl_class'] = 'long';
+					$arrData['eval']['tl_class'] = 'long';
 					break;
 			
 				case 'textarea':
-					if($field['use_rich_text_editor'])
+					if($objAttributes->use_rich_text_editor)
 					{
-						$eval['rte'] = 'tinyMCE';
+						$arrData['eval']['rte'] = 'tinyMCE';
 					}
 					break;
 
 				case 'file':
 				case 'media':
-					$eval['cols'] = 4;
-					//if($field['show_files']) $eval['files'] = true;
-					//$eval['fieldType'] = 'radio';
+					$arrData['eval']['cols'] = 4;
+					//if($objAttributes->show_files) $arrData['eval']['files'] = true;
+					//$arrData['eval']['fieldType'] = 'radio';
 					break;
 					
 				case 'options':
-					$eval['multiple'] = false;
-					if($field['use_alternate_source']==1)
+				case 'select':
+					$arrData['eval']['multiple'] = $objAttributes->type == 'options' ? false : $arrData['eval']['multiple'];
+					if ($objAttributes->use_alternate_source && strlen($objAttributes->list_source_table) > 0 && strlen($objAttributes->list_source_field) > 0)
 					{
-						if(strlen($field['list_source_table']) > 0 && strlen($field['list_source_field']) > 0)
-						{
-							$strForeignKey = $field['list_source_table'] . '.' . $field['list_source_field'];
-						
-						}
+						$strForeignKey = $objAttributes->list_source_table . '.' . $objAttributes->list_source_field;
 					}
 					else
 					{
 						$arrValues = array();
-						$arrOptionsList = deserialize($field['option_list']);
+						$arrOptionsList = deserialize($objAttributes->option_list);
 						
 						if (is_array($arrOptionsList) && count($arrOptionsList))
 						{
 							foreach ($arrOptionsList as $arrOptions)
 							{
-								/*if ($arrOptions['default'])
-								{
-									//grab as selected value
-								}*/
-								
 								$arrValues[$arrOptions['value']] = $arrOptions['label'];
 							}
+							
+							$arrData['options'] = array_keys($arrValues);
+							$arrData['reference'] = $arrValues;
 						}
-						
 					}
 
-					break;
-					
-				case 'select':
-					if($field['use_alternate_source']==1)
-					{
-						if(strlen($field['list_source_table']) > 0 && strlen($field['list_source_field']) > 0)
-						{
-							$strForeignKey = $field['list_source_table'] . '.' . $field['list_source_field'];
-						
-						}
-					}
-					else
-					{
-						$arrValues = array();
-						$arrOptionsList = deserialize($field['option_list']);
-						
-						if(sizeof($arrOptionsList))
-						{												
-							foreach ($arrOptionsList as $option)
-							{
-								/*if ($arrOptions['default'])
-								{
-									grab as selected value;
-								}*/
-								
-								$arrValues[$option['value']] = $option['label'];
-							}											
-						}
-					}	
 					break;
 			}
 			
 			
-			if ($field['add_to_product_variants'])
+			if ($objAttributes->add_to_product_variants)
 			{
 				if($this->Input->get('id') && $this->Input->get('do')=='product_manager')
 				{
@@ -166,38 +135,12 @@ class ProductCatalog extends Backend
 					
 					if($objPid->numRows && $objPid->pid>0)
 					{
-						$inputType = 'text';
+						$arrData['inputType'] = 'text';
 					}
 				}
 			}
 			
-			$filter = ($this->arrForm['useFilter'] && $this->arrForm['filterField'] == $field['field_name']);
-
-			$GLOBALS['TL_DCA']['tl_product_data']['fields'][$field['field_name']] = array
-			(
-				'label'				=> array($field['name'], $field['description']),
-				'inputType'			=> $inputType,
-				'search'			=> !$filter,
-				'filter'         	=> $filter,
-				'eval'				=> $eval,
-				'attributes'		=> $field,
-				'save_callback'		=> array
-				(
-					array('ProductCatalog','saveField')
-				)
-			);
-			
-			if (strlen($field['option_list']) && count($arrValues)) 
-			{				
-				$GLOBALS['TL_DCA']['tl_product_data']['fields'][$field['field_name']]['options'] = array_keys($arrValues);
-				$GLOBALS['TL_DCA']['tl_product_data']['fields'][$field['field_name']]['reference'] = $arrValues;
-			}
-			
-			if(strlen($strForeignKey) && $field['type'] == 'select')
-			{
-				$GLOBALS['TL_DCA']['tl_product_data']['fields'][$field['field_name']]['foreignKey'] = $strForeignKey;
-				$strForeignKey = "";
-			}
+			$GLOBALS['TL_DCA']['tl_product_data']['fields'][$objAttributes->field_name] = $arrData;
 		}
 		
 		

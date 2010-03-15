@@ -171,7 +171,7 @@ CREATE TABLE `tl_product_attributes` (
   `description` varchar(255) NOT NULL default '',
   `type` varchar(64) NOT NULL default '',
   `legend` varchar(255) NOT NULL default '',
-  `option_list` text NULL,
+  `option_list` blob NULL,
   `show_files` int(1) NOT NULL default '0',
   `attr_use_mode` varchar(10) NOT NULL default 'fixed',
   `attr_default_value` varchar(255) NOT NULL default '',
