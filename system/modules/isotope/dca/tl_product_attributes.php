@@ -36,10 +36,6 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 	(
 		'dataContainer'               => 'Table',
 		'enableVersioning'            => true,
-		'onload_callback'             => array
-		(
-//			array('tl_product_attributes', 'loadAttributes'),
-		),
 		'onsubmit_callback'			  => array
 		(
 			array('ProductCatalog','changeFieldType')
@@ -140,8 +136,9 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['type'],
 			'inputType'               => 'select',
+			'options'				  => &$GLOBALS['ISO_ATTR'],
+			'reference'				  => &$GLOBALS['TL_LANG']['ATTR'],
 			'eval'                    => array('mandatory'=>true,'includeBlankOption'=>true,'submitOnChange'=>true),
-			'options_callback'		  => array('tl_product_attributes','getAttributeTypes')
 		),
 		'legend' => array
 		(
@@ -359,41 +356,7 @@ class tl_product_attributes extends Backend
 		
 		return $arrGroups;
 	}
-
-
-	/**
-	 * Returns all allowed page types as array.
-	 * 
-	 * @todo returns string in case of error, should return array
-	 *
-	 * @access public
-	 * @param object DataContainer $dc
-	 * @return array
-	 */
-	public function getAttributeTypes(DataContainer $dc)
-	{
-		$arrOptions = array();
-
-		foreach($GLOBALS['ISO_ATTR_TYPES'] as $type)
-		{
-			$arrOptions[$type] = $GLOBALS['TL_LANG']['tl_product_attributes'][$type];		
-		}
-		
-		return $arrOptions;
-	}
 	
-
-/*
-	public function loadAttributes(DataContainer $dc)
-	{
-		$this->loadDataContainer('tl_product_data');
-		$this->import('ProductCatalog');
-		
-		$this->ProductCatalog->loadProductCatalogDCA('tl_product_data');
-	}
-*/
-	
-		
 	
 	/**
 	 * checkFieldLock function.
