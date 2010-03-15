@@ -98,6 +98,7 @@ class VariantsWizard extends Widget
 		$arrColumns = array();
 		
 		$this->import('Database');
+	
 		//$this->loadDataContainer('tl_product_data');
 		$this->loadLanguageFile('tl_product_data');
 		
@@ -258,7 +259,7 @@ class VariantsWizard extends Widget
 		    	{
 		    		case 'id':
 		    		case 'key':
-		    		//case 'published':
+		    		case 'published':
 		    			continue;
 		    			break;		
 					default:
@@ -300,7 +301,7 @@ class VariantsWizard extends Widget
 							continue;
 							break;
 						case 'price':
-							$return .= '<td align="center"><div style="float: left; padding-right:5px;">' . $value[0] . '</div> <div style="float: left; width: 20px;">$' .$value[1] . '</div></td>';
+							$return .= '<td align="center"><div style="float: left; padding-right:5px;">' . $value[0] . '</div> <div style="float: left; width: 20px;">' . $this->Isotope->formatPriceWithCurrency($value[1]) . '</div></td>';
 							break;
 						case 'weight':
 							$return .= '<td align="center"><div style="float: left; padding-right:5px;">' . $value[0] . '</div> <div style="float: left; style="width: 20px;">' . $value[1] . '</div></td>';
