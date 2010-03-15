@@ -162,9 +162,10 @@ $GLOBALS['TL_HOOKS']['isoCheckoutSurcharge'][] = array('IsotopeCart', 'getPaymen
 /**
  * Backend form fields
  */
-$GLOBALS['BE_FFL']['mediaManager'] = 'MediaManager';
-$GLOBALS['BE_FFL']['variantsWizard'] = 'VariantsWizard';
-$GLOBALS['BE_FFL']['attributeWizard'] = 'AttributeWizard';
+$GLOBALS['BE_FFL']['mediaManager']		= 'MediaManager';
+$GLOBALS['BE_FFL']['variantsWizard']	= 'VariantsWizard';
+$GLOBALS['BE_FFL']['attributeWizard']	= 'AttributeWizard';
+$GLOBALS['BE_FFL']['optionDataWizard']	= 'OptionDataWizard';
 
 
 /**
@@ -230,6 +231,7 @@ $GLOBALS['ISO_PAY']['authorizedotnet']			= 'PaymentAuthorizeDotNet';
  * Order Statuses
  */
 $GLOBALS['ISO_ORDER'] = array('pending','processing','shipped','complete','on_hold', 'cancelled');
+
 
 /**
  * Product types
@@ -374,7 +376,7 @@ $GLOBALS['ISO_ATTR'] = array
 	'select' => array
 	(
 		'backend'	=> 'optionDataWizard',
-		'sql'		=> "varchar(255) NOT NULL default ''",
+		'sql'		=> "blob NULL",
 	),
 	'checkbox' => array
 	(
@@ -384,7 +386,7 @@ $GLOBALS['ISO_ATTR'] = array
 	(
 		'frontend'	=> 'radio',
 		'backend'	=> 'radio',
-		'sql'		=> "text NULL",
+		'sql'		=> "blob NULL",
 	),
 	'file' => array
 	(
