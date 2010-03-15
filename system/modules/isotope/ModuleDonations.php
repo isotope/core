@@ -136,7 +136,7 @@ class ModuleDonations extends ModuleIsotopeBase
 	
 	private function generateWishListWidget()
 	{
-		$arrAttributeData = $this->getProductAttributeData('wish_list');
+		$arrAttributeData = $GLOBALS['TL_DCA']['tl_product_data']['fields']['wish_list']['attributes'];
 		
 		$arrOptionList = deserialize($arrAttributeData['option_list']);
 
@@ -158,7 +158,7 @@ class ModuleDonations extends ModuleIsotopeBase
 
 	private function generateCommentsWidget()
 	{
-		$arrAttributeData = $this->getProductAttributeData('donation_comments');
+		$arrAttributeData = $GLOBALS['TL_DCA']['tl_product_data']['fields']['donation_comments']['attributes'];
 	
 		$arrData = array
 		(
@@ -186,33 +186,7 @@ class ModuleDonations extends ModuleIsotopeBase
 		$objWidget->required = true;
 		
 		return $objWidget;
-	}
-
-		
-
-	/**
-	 * Get attribute data and do something with it based on the properties of the attribute.
-	 *
-	 * @param string
-	 * @param integer
-	 * @return array
-	 *
-	 */
-	protected function getProductAttributeData($strFieldName)
-	{		
-		
-		$objAttributeData = $this->Database->prepare("SELECT * FROM tl_product_attributes WHERE field_name=?")
-										   ->limit(1)
-										   ->execute($strFieldName);
-
-		if($objAttributeData->numRows < 1)
-		{			
-			return array();
-		}
-		
-		return $objAttributeData->fetchAssoc();
-	}
-	
+	}	
 	
 	
 	/**

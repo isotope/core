@@ -783,8 +783,7 @@ abstract class ModuleIsotopeBase extends Module
 	
 	protected function getProductOptionValues($strField, $inputType, $varValue)
 	{	
-		
-		$arrAttributeData = $this->getProductAttributeData($strField); //1 will eventually be irrelevant but for now just going with it...
+		$arrAttributeData = $GLOBALS['TL_DCA']['tl_product_data']['fields'][$strField]['attributes']; //1 will eventually be irrelevant but for now just going with it...
 		
 		switch($inputType)
 		{
@@ -883,7 +882,7 @@ abstract class ModuleIsotopeBase extends Module
 		{
 			foreach($arrOptions as $option)
 			{
-				$arrAttributeData = $this->getProductAttributeData($option);
+				$arrAttributeData = $GLOBALS['TL_DCA']['tl_product_data']['fields'][$option]['attributes'];
 				
 				if($arrAttributeData['is_customer_defined'])
 				{
@@ -1057,7 +1056,7 @@ abstract class ModuleIsotopeBase extends Module
 			foreach($row as $k=>$v)
 			{
 			
-				$arrAttributeData = $this->getProductAttributeData($k);
+				$arrAttributeData = $GLOBALS['TL_DCA']['tl_product_data']['fields'][$k]['attributes'];
 					
 				$arrOptionData[] = array
 				(
@@ -1068,7 +1067,6 @@ abstract class ModuleIsotopeBase extends Module
 		}
 		
 		return $arrOptionData;
-	
 	}
 	
 	protected function getOptionList($arrAttributeData)
@@ -1079,15 +1077,12 @@ abstract class ModuleIsotopeBase extends Module
 			if(strlen($arrAttributeData['list_source_table']) > 0 && strlen($arrAttributeData['list_source_field']) > 0)
 			{
 				//$strForeignKey = $arrAttributeData['list_source_table'] . '.' . $arrAttributeData['list_source_field'];
-				$objOptions = $this->Database->prepare("SELECT id, " . $arrAttributeData['list_source_field'] . " FROM " . $arrAttributeData['list_source_table'])
-											 ->execute();
+				$objOptions = $this->Database->execute("SELECT id, " . $arrAttributeData['list_source_field'] . " FROM " . $arrAttributeData['list_source_table']);
 				
 				if(!$objOptions->numRows)
 				{
 					return array();
 				}
-				
-				
 				
 				while($objOptions->next())
 				{
@@ -1098,27 +1093,14 @@ abstract class ModuleIsotopeBase extends Module
 					);
 				}
 			}
-		}else{
+		}
+		else
+		{
 			$arrValues = deserialize($arrAttributeData['option_list']);
 		}
 		
 		return $arrValues;
 	}
-	
-	/**
-	 * Get attribute data and do something with it based on the properties of the attribute.
-	 *
-	 * @param string
-	 * @param integer
-	 * @return array
-	 *
-	 */
-	protected function getProductAttributeData($strFieldName)
-	{		
-		return $GLOBALS['TL_DCA']['tl_product_data']['fields'][$strFieldName]['attributes'];
-	}
-	
-	
 	
 	
 	/**
@@ -1231,7 +1213,6 @@ abstract class ModuleIsotopeBase extends Module
 					{						
 						$objTemplate->hasOptions = true;
 						
-						
 						if($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['add_to_product_variants'])
 						{					
 							$blnIsMergedOptionSet = true;
@@ -1239,7 +1220,7 @@ abstract class ModuleIsotopeBase extends Module
 						}
 						else
 						{
-							$arrAttributeData = $this->getProductAttributeData($attribute);
+							$arrAttributeData = $GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes'];
 							
 							$arrEnabledOptions[] = $attribute;	
 																	
@@ -1353,7 +1334,7 @@ abstract class ModuleIsotopeBase extends Module
 	        );
        
           //$arrData = $this->getDCATemplate($arrAttributeData);  //Grab the skeleton DCA info for widget generation
-		  $arrAttributeData = $this->getProductAttributeData($k);
+		  $arrAttributeData = $GLOBALS['TL_DCA']['tl_product_data']['fields'][$k]['attributes'];
 
 		  $strHtml = $this->generateProductOptionWidget('product_variants', $arrData, $objProduct->id, $strFormId, $arrVariantOptionFields);
 	

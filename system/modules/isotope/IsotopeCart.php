@@ -600,7 +600,7 @@ class IsotopeCart extends Model
 		{	
 			$varOptionValues = array();
 			
-			$arrAttributeData = $this->getProductAttributeData($option); //1 will eventually be irrelevant but for now just going with it...
+			$arrAttributeData = $GLOBALS['TL_DCA']['tl_product_data']['fields'][$option]['attributes']; //1 will eventually be irrelevant but for now just going with it...
 			
 			$varValue = $this->Input->post($option);
 			
@@ -689,20 +689,6 @@ class IsotopeCart extends Model
 		}
 	
 		return $arrValues;
-	}
-
-
-	protected function getProductAttributeData($strFieldName)
-	{		
-		
-		$objAttributeData = $this->Database->prepare("SELECT * FROM tl_product_attributes WHERE field_name=?")->limit(1)->execute($strFieldName);
-
-		if (!$objAttributeData->numRows)
-		{
-			return array();
-		}
-		
-		return $objAttributeData->fetchAssoc();
 	}
 
 
