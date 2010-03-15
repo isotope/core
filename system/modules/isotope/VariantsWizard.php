@@ -133,13 +133,16 @@ class VariantsWizard extends Widget
 		foreach($this->arrEditableAttributes as $attribute)
 		{
 			$strAttributeTextBoxes .= $this->renderTextBox('values', $attribute['field_name'], $attribute['name']) . '<br />';
-			$this->strAttributes .= ',' . $attribute['field_name'];
+			
+			if($this->Input->post('FORM_SUBMIT') == 'tl_product_data' && $this->Input->post($attribute['field_name']))
+				$this->strAttributes .= ',' . $attribute['field_name'];
 		}
 
 		// STEP 4: Build array of value for matrices once "generate subproducts" is clicked.
 
 		if($this->Input->post('FORM_SUBMIT') == "tl_product_data")
 		{	
+			
 			if($this->Input->post('values'))
 			{
 				$arrValues = $this->Input->post('values');
@@ -174,7 +177,7 @@ class VariantsWizard extends Widget
 			{
 				foreach($arrEnabled as $k=>$v)
 				{
-					$arrInputValues[$v]['published'] = '1';
+					$arrInputValues[$k]['published'] = $v;
 				}
 			}
 			
@@ -255,7 +258,7 @@ class VariantsWizard extends Widget
 		    	{
 		    		case 'id':
 		    		case 'key':
-		    		case 'published':
+		    		//case 'published':
 		    			continue;
 		    			break;		
 					default:
@@ -401,22 +404,41 @@ class VariantsWizard extends Widget
 						break;
 					case 'price':
 					case 'weight':
-						$row[$k] = $this->calculateValue($v, $k);
+						if($v)
+						{
+							$row[$k] = $this->calculateValue($v, $k);
+						}
+						else
+						{						
+							$row[$k] = $this->getStoredValue($row['id'], $k);
+						}
 						break;
 				}
 			}
 			
 						
 			
-			$this->Database->prepare("UPDATE tl_product_data SET price=?, weight=?, sku=?, published=?, stock_quantity=? WHERE id=?")->execute($row['price'], $row['weight'], $this->Input->post('sku') . '-' . $row['sku'], $row['published'], $row['stock_quantity'], $intId);
+			$this->Database->prepare("UPDATE tl_product_data SET price=?, weight=?, sku=?, published=?, stock_quantity=? WHERE id=?")->execute($row['price'], $row['weight'], $this->Input->post('sku') . $row['sku'], $row['published'], $row['stock_quantity'], $intId);
 			
 			
 		}
-			
-
+					
 		//NOTE SET values to nULL, not zero!		
 		//var_dump($arrData);
 		//exit;
+	}
+	
+	protected function getStoredValue($intId, $strField)
+	{
+		$objData = $this->Database->prepare("SELECT " . $strField . " FROM tl_product_data WHERE id=?")
+								  ->executeUncached($intId);
+		
+		if(!$objData->numRows)
+		{
+			return null;
+		}
+		
+		return $objData->$strField;
 	}
 	
 	protected function calculateValue($strValueInfo, $key, $intRoundTo = 2)
@@ -515,18 +537,6 @@ class VariantsWizard extends Widget
 				$arrSet = $this->getAllPossibilities($arrRows);
 		
 				asort($arrSet);
-				//$arrSet = $this->getAllPossibilities($arrRows);
-										
-				//NOT SURE HOW WE'RE STORING THIS QUITE YET!
-				switch($this->Input->post('option_set_source'))
-				{
-					case 'new_option_set':
-						//$this->createOptionSet($this->Input->post('option_set_title'), $arrSet);
-						break;
-					case 'existing_option_set':
-						//$this->updateOptionSet($this->Input->post('option_sets'), $arrSet);
-						break;
-				}
 				
 				return $arrSet;
 			}
@@ -566,12 +576,12 @@ class VariantsWizard extends Widget
 			$intProductType = $objProductType->type;
 		}
 		
-		
+	
 		foreach($arrSetFinal as $row)
 		{
 						
-			$arrValues = array((integer)$intProductType, (integer)$intId, time(), '', 0, 0, 0);	//starting row values
-						
+			$arrValues = array((integer)$intProductType, (integer)$intId, time(), '', 0, 0, 0);	//starting row values		
+				
 			$arrRowCombinations[] = array_merge($arrValues, $row);
 			
 			$i++;
@@ -585,9 +595,12 @@ class VariantsWizard extends Widget
 		
 		$strValues = join('\'),(\'', $arrValueSets);
 		
+		$arrAttributes = explode(',', $this->strAttributes);
 		
+		$i = 0;
 		
-		$strSQL = "INSERT INTO tl_product_data (" . $this->strAttributes . ")VALUES('" . $strValues . "')";
+				
+		$strSQL = "INSERT INTO tl_product_data (" . implode(',', $arrAttributes) . ")VALUES('" . $strValues . "')";
 
 					
 		$this->Database->prepare($strSQL)->execute();
@@ -595,7 +608,22 @@ class VariantsWizard extends Widget
 
 	protected function getVariantData($intId)
 	{
-		$objData = $this->Database->prepare("SELECT variants_wizard FROM tl_product_data WHERE id=?")
+		$arrAttr = array();
+		
+		foreach($this->arrEditableAttributes as $row)
+		{
+			foreach($row as $k=>$v)
+			{
+				if($k=='field_name')
+				{
+					$arrAttr[] = $v;
+				}
+			}
+		}
+						
+		$strEditableAttributes = implode(',', $arrAttr);
+			
+		$objData = $this->Database->prepare("SELECT id," . $this->strAttributes . ',' . $strEditableAttributes ." FROM tl_product_data WHERE pid=?")
 								  ->limit(1)
 								  ->execute($intId);
 		
@@ -604,29 +632,45 @@ class VariantsWizard extends Widget
 			return null;
 		}
 		
-		$strData = $objData->variants_wizard;
-		
-		return deserialize($strData); 
+		$arrData = $objData->fetchAllAssoc();
+
+		return $arrData;
 	}
 	
 	
-	public function getSubProducts($intPid, $arrEditableAttributes = array(), $arrVariantData = array())
+	public function getSubProducts($intPid, $arrEditableAttributes = array())
 	{
 			
 		$arrSubProductData = array();
+		
+		$arrAttr = array();
+		
 		//STEP 5: Get all subproducts from DB
-		$objSubProducts = $this->Database->prepare("SELECT id, " . $this->strAttributes . " FROM tl_product_data WHERE pid=?")
+		foreach($arrEditableAttributes as $row)
+		{
+			foreach($row as $k=>$v)
+			{
+				if($k=='field_name')
+				{
+
+					$arrAttr[] = $v;
+				}
+			}
+		}
+				
+		$strEditableAttributes = implode(',', $arrAttr);
+
+			$objSubProducts = $this->Database->prepare("SELECT id, " . $this->strAttributes . "," . $strEditableAttributes .", published FROM tl_product_data WHERE pid=?")
 										 ->execute($intPid);
-										 
+							 
 		//$arrSubProducts[] = array('id'=>0, 'published'=>0, 'attribute_values'=>array(), 'sku'=>'', 'price'=>0, 'unit' => '#', 'weight' => '0', 'qty' => 0);
 		
 		if($objSubProducts->numRows < 1)
 		{
+
 			return array();
 		}else{
-		
-			$arrSubProducts = $objSubProducts->fetchAllAssoc();
-			
+					
 			//Collect the values for each of the given customer defined attributes
 			foreach($arrEditableAttributes as $attributeKey)
 			{
@@ -636,34 +680,34 @@ class VariantsWizard extends Widget
 		}
 					
 	
-		foreach($arrSubProducts as $row)
+		while($objSubProducts->next())
 		{
 			$arrAttributeValues = array();
 			
 			foreach($arrAttributes as $attribute)
 			{
-				$arrAttributeValues[] = $row[$attribute];
+				$arrAttributeValues[] = $objSubProducts->$attribute;
 			}
+
+			$blnEnabled = ($objSubProducts->published ? ($blnTrackQuantity ? (($objSubProducts->stock_quantity < 1 && !$blnAllowBackorder) ? 0 : 1) : 1) : 0);
 			
-			$blnEnabled = ($row['published'] ? ($blnTrackQuantity ? (($row['stock_quantity'] < 1 && !$blnAllowBackorder) ? 0 : 1) : 1) : 0);
+			$intCheckboxValue = $objSubProducts->published;
 			
-			$intCheckboxValue = (is_array($arrVariantData) && in_array($row['id'], $arrVariantData['published']) ? $row['id'] : 0);
-			$strSkuValue = (is_array($arrVariantData) ? $arrVariantData['sku'][$row['id']] : '');
-			$strPriceValue = (is_array($arrVariantData) ? $arrVariantData['price'][$row['id']] : '');
-			$strWeightValue = (is_array($arrVariantData) ? $arrVariantData['weight'][$row['id']] : '');
-			
+			//TODO: Store change values for price, weight.
+			//$strPriceValue = (is_array($arrVariantData) ? $arrVariantData['price'][$row['id']] : '');
+			//$strWeightValue = (is_array($arrVariantData) ? $arrVariantData['weight'][$row['id']] : '');
 			
 			$arrSubProductData[] = array
 			(
-				'id'					=> $row['id'],
+				'id'					=> $objSubProducts->id,
 				'key'					=> '',//$arrAttributeValues['key'],
-				'published'			=> array($this->renderMatrixCheckBox('sub_published', $row['id'], $intCheckboxValue)),
+				'published'				=> array($this->renderMatrixCheckBox('sub_published', $objSubProducts->id, $objSubProducts->published)),
 				'values'				=> array(join(',', $arrAttributeValues)),
-				'sku'					=> array($this->renderMatrixTextBox('sub_sku', $row['id'], $strSkuValue, 60)),
-				'price'					=> array($this->renderMatrixTextBox('sub_price', $row['id'], $strPriceValue, 60), $row['price']),
-				'weight'				=> array($this->renderMatrixTextBox('sub_weight', $row['id'], $strWeightValue, 60), $row['weight']),
-				'stock_quantity'		=> array($this->renderMatrixTextBox('sub_stock_quantity', $row['id'], $row['stock_quantity'])),
-				'buttons'				=> $this->generateButtons('variants_wizard', $row['id'])
+				'sku'					=> array($this->renderMatrixTextBox('sub_sku', $objSubProducts->id, $objSubProducts->sku, 60)),
+				'price'					=> array($this->renderMatrixTextBox('sub_price', $objSubProducts->id, $strPriceValue, 60), $objSubProducts->price),
+				'weight'				=> array($this->renderMatrixTextBox('sub_weight', $objSubProducts->id, $strWeightValue, 60), $objSubProducts->weight),
+				'stock_quantity'		=> array($this->renderMatrixTextBox('sub_stock_quantity', $objSubProducts->id, $objSubProducts->stock_quantity)),
+				'buttons'				=> $this->generateButtons('variants_wizard', $objSubProducts->id)
 			);
 		}
 			
@@ -680,41 +724,7 @@ class VariantsWizard extends Widget
 		return $return;		
 	}
 	
-	/**
-	 * load the option set from the selected value (an existing option set)
-	 * @param integer $intId
-	 * @return array $arrData
-	 */
-	public function loadOptionSet($intId)
-	{
-		// STEP 6: get attribute values from 
-		$objAttributeValues = $this->Database->prepare("SELECT attribute_collection FROM tl_product_option_sets WHERE id=?")
-											 ->execute($intId);
-											 
-		if($objAttributeValues->numRows < 1)
-		{
-			return array();	//None found, empty option set.
-		}
 
-		//this needs no filtering because these are only attributes that are known to be customer defined.
-		/*
-			structure: array('attribute_name1' => array('value1','value2','value3'...), 'attribute_name2' => array('value1','value2'...));
-		*/
-		$arrData = deserialize($objAttributeValues->attribute_collection);
-		
-		return $arrData;
-	}
-	
-	/**
-	 * Create a new option set 
-	 *
-	 *
-	 */
-	public function createOptionSet($varValue, DataContainer $dc)
-	{
-				
-	
-	}
 	
 	protected function getProductTypeData($intId)
 	{
@@ -774,13 +784,13 @@ class VariantsWizard extends Widget
 	protected function renderMatrixCheckBox($strName, $intId, $strValue, $intLength=15)
 	{
 		
-		return sprintf('<input type="checkbox" name="%s[]" id="opt_%s_%s" class="tl_checkbox" value="%s" onfocus="Backend.getScrollOffset();"  style="width: %spx;" %s />',
-						$strName,
+		return sprintf('<input type="checkbox" name="%s[%s]" id="opt_%s_%s" class="tl_checkbox" value="1" onfocus="Backend.getScrollOffset();"  style="width: %spx;" %s />',
 						$strName,
 						$intId,
+						$strName,
 						$intId,
 						$intLength,
-						($strValue==$intId ? 'checked' : '')					
+						($strValue=='1' ? 'checked' : '')					
 						);
 	}
 	

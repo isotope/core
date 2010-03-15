@@ -23,7 +23,7 @@
 </div>
 <?php endif; ?>
 
-<?php if ($this->hasGallery): ?>
+<?php if (count($this->gallery)>1): ?>
 <div id="image_gallery">
 <?php foreach( $this->gallery as $image ): ?>
 <div class="image_container gallery"><img src="<?php echo $image['gallery']; ?>" alt="<?php echo $image['alt']; ?>"<?php echo $image['gallery_size']; ?> /></div>
