@@ -85,44 +85,6 @@ class ProductCatalog extends Backend
 	{
 		if ($strTable != 'tl_product_data')
 			return;
-			
-		//Check for any missing standard attributes and build a list which can then be added into the table tl_product_data.		
-		foreach($GLOBALS['ISO_ATTR'] as $arrSet)
-		{
-			if(!$this->Database->fieldExists($arrSet['field_name'], 'tl_product_data'))
-			{
-				$arrDefaultColumns[$arrSet['type']] = $arrSet['field_name'];
-			}
-								
-			$objAttributeExists = $this->Database->prepare("SELECT COUNT(*) AS count FROM tl_product_attributes WHERE field_name=?")
-													   ->limit(1)
-													   ->execute($arrSet['field_name']);
-			
-			if($objAttributeExists->count < 1)
-			{
-				$arrAttributesToInsert[] = $arrSet;
-			}
-		}
-			
-		if(sizeof($arrDefaultColumns))
-		{
-			foreach($arrDefaultColumns as $k=>$v)
-			{
-				$this->addDefaultAttribute($v, $k);
-			}
-		}
-		
-		if(sizeof($arrAttributesToInsert))
-		{		
-			$sorting = $this->getNextSortValue('tl_product_attributes');
-			
-			foreach($arrAttributesToInsert as $row)
-			{			
-				$this->insertAttributeRecord($row, $sorting);
-			
-				$sorting+=128;
-			}
-		}
 		
 		// FIXME: should we exclude "globally disabled" fields?
 		$arrFields = $this->Database->execute("SELECT * FROM tl_product_attributes")->fetchAllAssoc();
@@ -989,51 +951,6 @@ class ProductCatalog extends Backend
 		return $varValue;
 	}
 	
-	
-	/** 
-	 * Add a default attribute to the tl_product_data table from a source other than normal editing operations, for example, the ISO_ATTR global array
-	 *
-	 * @access public
-	 * @param variant $varValue
-	 * @param object $dc
-	 * @param string $fieldType
-	 * @return $varValue;
-	 */
-	public function addDefaultAttribute($varValue, $fieldType)
-	{
-		if (!preg_match('/^[a-z_][a-z\d_]*$/i', $varValue))
-		{
-			throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['invalidColumnName'], $varValue));
-		}
-		
-		if (in_array($varValue, $this->systemColumns))
-		{
-			throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['systemColumn'], $varValue));
-		}
-		
-		$statement = sprintf($this->createColumnStatement, $varValue, $this->sqlDef[$fieldType]);
-		
-		$this->import('IsotopeDatabase');
-		$this->IsotopeDatabase->update($fieldName, $this->sqlDef[$fieldType]);
-				
-		$this->Database->execute($statement);
-		
-		return $varValue;
-	}
-	
-	/** 
-	 * Insert a new attribute record from a source other than normal table operations (for example, from default attributes defined in ISO_ATTR global array
-	 *
-	 * @access public
-	 * @param array $arrSet
-	 * @param integer $intSorting
-	 * @return void;
-	 */
-	public function insertAttributeRecord($arrSet)
-	{
-		$this->Database->prepare("INSERT INTO tl_product_attributes %s")->set($arrSet)->execute();
-	}
-
 	
 	/** 
 	 * Get the next sorting value if it exists for a given table.
