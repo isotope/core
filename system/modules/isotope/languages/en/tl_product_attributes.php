@@ -69,10 +69,12 @@ $GLOBALS['TL_LANG']['tl_product_attributes']['add_to_product_variants'] = array(
 /**
  * Reference
  */
-$GLOBALS['TL_LANG']['tl_product_attributes']['rgxpOptions']['alnum'] = 'Numbers and Letters Only';
-$GLOBALS['TL_LANG']['tl_product_attributes']['rgxpOptions']['extnd'] = 'All standard characters except: #&()/>=<';
-$GLOBALS['TL_LANG']['tl_product_attributes']['rgxpOptions']['email'] = 'Valid email address';
-$GLOBALS['TL_LANG']['tl_product_attributes']['rgxpOptions']['url'] = 'Valid html link';
+$GLOBALS['TL_LANG']['tl_product_attributes']['rgxpOptions']['alnum']	= 'Numbers and Letters Only';
+$GLOBALS['TL_LANG']['tl_product_attributes']['rgxpOptions']['extnd']	= 'All standard characters except: #&()/>=<';
+$GLOBALS['TL_LANG']['tl_product_attributes']['rgxpOptions']['email']	= 'Valid email address';
+$GLOBALS['TL_LANG']['tl_product_attributes']['rgxpOptions']['url']		= 'Valid html link';
+$GLOBALS['TL_LANG']['tl_product_attributes']['opDefault']				= 'Default';
+$GLOBALS['TL_LANG']['tl_product_attributes']['opGroup']					= 'Group';
 
 
 /**
