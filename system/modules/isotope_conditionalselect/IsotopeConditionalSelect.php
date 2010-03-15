@@ -44,13 +44,19 @@ class IsotopeConditionalSelect extends Backend
 		
 		if (is_array($arrOptionsList) && count($arrOptionsList))
 		{
+			$strGroup = '';
 			foreach ($arrOptionsList as $arrOptions)
 			{
-				$arrValues[$arrOptions['value']] = $arrOptions['label'];
+				if ($arrOptions['group'])
+				{
+					$strGroup = $arrOptions['value'];
+					continue;
+				}
+				
+				$arrValues[$strGroup][$arrOptions['value']] = $arrOptions['label'];
 			}
 			
-			$arrData['options'] = array_keys($arrValues);
-			$arrData['reference'] = $arrValues;
+			$arrData['options'] = $arrValues;
 		}
 		
 		return $arrData;
