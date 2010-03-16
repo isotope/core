@@ -111,7 +111,7 @@ $GLOBALS['TL_DCA']['tl_tax_rate'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{name_legend},name,label;{location_legend},address,country,subdivision,postal;amount;store,rate,stop',
+		'default'                     => '{name_legend},name,label;{rate_legend},rate;{location_legend},address,country,subdivision,postal;{condition_legend},amount;{config_legend},store,stop',
 	),
 
 
