@@ -33,15 +33,13 @@
 <div class="sku"><?php echo $this->sku; ?></div><?php endif; if ($this->description): ?>
 <div class="description"><?php echo $this->description; ?></div><?php endif; ?>
 
-<?php //if(!$this->hasVariants): ?>
 <div id="ajax_price" class="price">
 	<?php if($this->editablePrice): ?>
     	<label for="<?php echo $this->price['name']; ?>"><?php echo $this->price['description']; ?> </label><?php echo $this->price['html']; ?>
     <?php else: ?>
-    	<?php echo $this->price; ?></div>
+    	<?php echo $this->price; ?>
 	<?php endif; ?>
-<?php //endif; ?>
-
+</div>
 <?php if($this->buttons): ?>
 <div class="submit_container">
 <?php if ($this->useQuantity): ?>

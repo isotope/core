@@ -6,9 +6,7 @@
 <?php endif; ?>
 
 <div class="productWrapper">
-<?php if(!sizeof($this->products)): ?>
-<div class="empty"><?php echo $this->noItemsInCart; ?></div>
-<?php else: ?>
+<?php if(count($this->products)): ?>
 <?php foreach($this->products as $product): ?>
 	<div class="product">
 		<div class="removeButton"><a href="<?php echo $product['remove_link']; ?>" title="<?php echo $product['remove_link_title']; ?>"><?php echo $product['remove_link_text']; ?></a></div>
@@ -28,9 +26,12 @@
 		</div>
 	<div class="clearBoth"></div>
 	</div>
-<?php endforeach; ?>
     <div class="subtotal"><span class="label"><?php echo $this->subTotalLabel; ?></span> <?php echo $this->subTotalPrice; ?></div>	
+    <div class="cart"><a class="button" href="<?php echo $this->cartJumpTo; ?>"><span><?php echo $this->cartLabel; ?></span></a></div>
 	<div class="checkout"><a class="button dark" href="<?php echo $this->checkoutJumpTo; ?>"><?php echo $this->checkoutJumpToLabel; ?></a></div>
+<?php endforeach; ?>
+<?php else: ?>
+<div class="empty"><?php echo $this->message; ?></div>
 <div class="clearBoth"></div>	
 <?php endif; ?>
 </div>

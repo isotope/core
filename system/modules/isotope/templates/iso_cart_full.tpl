@@ -15,6 +15,7 @@
 	
 </tfoot>
 <tbody>
+<?php if(count($this->products)): ?>
 <?php foreach($this->products as $product): ?>
     <tr class="<?php echo $product['class']; ?>">
 		<td class="col_0 col_first image"><a href="<?php echo $product['link']; ?>" title="<?php echo $product['name']; ?>"><img src="<?php echo $product['image']['gallery']; ?>" alt="<?php echo $product['image']['alt']; ?>" class="thumbnail"<?php echo $product['image']['gallery_size']; ?> /></a></td>
@@ -36,15 +37,24 @@
     	<td class="col_4 price total"><?php echo $product['total_price']; ?></td>
     	<td class="col_5 col_last remove"><a href="<?php echo $product['remove_link']; ?>" title="<?php echo $product['remove_link_title']; ?>" class="remove"><?php echo $product['remove_link_text']; ?></a></td>
 	</tr>
-<?php endforeach; ?>
-</tbody>
+    </tbody>
 </table>
 </div>
+<?php endforeach; ?>
 <div class="submit_container">
 	<button type="submit" class="submit update"><span><?php echo $GLOBALS['TL_LANG']['MSC']['updateCartBT']; ?></span></button>
-	<?php if ($this->continueShopping): ?><a class="continue" href="<?php echo $this->continueShopping; ?>"><span><?php echo $GLOBALS['TL_LANG']['MSC']['continueShoppingBT']; ?></span></a><?php endif; ?>
+	<a class="continue" href="<?php echo $this->continueShoppingLink; ?>"><span><?php echo $this->continueShoppingLabel; ?></span></a>
 	<a class="checkout" href="<?php echo $this->checkoutJumpTo; ?>"><span><?php echo $this->checkoutJumpToLabel; ?></span></a>
 </div>
+<?php else: ?>
+<tr>
+	<td colspan="4" class="empty"><?php echo $this->message; ?></td>
+</tr>
+<tr>
+	<td colspan="4"><a class="continue" href="<?php echo $this->continueShoppingLink; ?>"><span><?php echo $this->continueShoppingLabel; ?></span></a></td>
+</tr>
+</tbody>
+</table>
+<?php endif; ?>
 </form>
-
 </div>
