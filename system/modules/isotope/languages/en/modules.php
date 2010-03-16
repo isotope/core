@@ -34,7 +34,7 @@ $GLOBALS['TL_LANG']['MOD']['product_manager']			= array('Product management','')
 $GLOBALS['TL_LANG']['MOD']['orders']					= array('Orders', '');
 $GLOBALS['TL_LANG']['MOD']['iso_statistics']			= array('Statistics', '');
 $GLOBALS['TL_LANG']['MOD']['isotope']					= array('Store configuration','');
-
+$GLOBALS['TL_LANG']['MOD']['iso_dimensions']			= array('Product Dimensions','');
 
 /**														
  * Frontend modules									
@@ -51,8 +51,8 @@ $GLOBALS['TL_LANG']['FMD']['isoGiftRegistryResults']	= array('Isotope Gift Regis
 $GLOBALS['TL_LANG']['FMD']['isoGiftRegistryReader']		= array('Isotope Gift Registry Reader', 'Allow store customers to view existing Gift Registries');
 $GLOBALS['TL_LANG']['FMD']['isoGiftRegistry']			= array('Isotope Gift Registry','Allow customers to set up, manage or shop from already created Gift Registries.');
 $GLOBALS['TL_LANG']['FMD']['isoAddressBook']			= array('Isotope Address Book','Allow customers to manage their address book.');
-$GLOBALS['TL_LANG']['FMD']['isoOrderHistory']			= array('Order History', '');
-$GLOBALS['TL_LANG']['FMD']['isoOrderDetails']			= array('Order Details', '');
+$GLOBALS['TL_LANG']['FMD']['isoOrderHistory']			= array('Order History', 'Order lister that allows customers to view their order history');
+$GLOBALS['TL_LANG']['FMD']['isoOrderDetails']			= array('Order Details', 'Order reader that allows customers to view order history details');
 $GLOBALS['TL_LANG']['FMD']['isoStoreSwitcher']			= array('Store Switcher', 'Switch between store configuration to change currency and other settings.');
 $GLOBALS['TL_LANG']['FMD']['isoDonationsModule']		= array('Donations', 'Adds a special form to allow donations to be made.');
 
@@ -64,12 +64,12 @@ $GLOBALS['TL_LANG']['ISO']['config_module']				= 'Isotope eCommerce configuratio
 $GLOBALS['TL_LANG']['IMD']['checkout']					= 'Checkout Flow';
 $GLOBALS['TL_LANG']['IMD']['product']					= 'Products';
 $GLOBALS['TL_LANG']['IMD']['config']					= 'General settings';
-$GLOBALS['TL_LANG']['IMD']['shipping']					= array('Shipping methods','');
-$GLOBALS['TL_LANG']['IMD']['payment']					= array('Payment methods','');
-$GLOBALS['TL_LANG']['IMD']['tax_class']					= array('Tax classes','Set up tax classes.');
-$GLOBALS['TL_LANG']['IMD']['tax_rate']					= array('Tax rates','Set up tax rates.');
-$GLOBALS['TL_LANG']['IMD']['attribute_manager']			= array('Attribute manager','');
-$GLOBALS['TL_LANG']['IMD']['product_type_manager']		= array('Product type manager','');
-$GLOBALS['TL_LANG']['IMD']['iso_mail']					= array('E-Mail manager','');
-$GLOBALS['TL_LANG']['IMD']['store_configuration']		= array('Store configuration','');
+$GLOBALS['TL_LANG']['IMD']['shipping']					= array('Shipping methods','Set up Shipping Methods such as UPS, USPS, DHL, etc.');
+$GLOBALS['TL_LANG']['IMD']['payment']					= array('Payment methods','Set up Payment Methods such as Authorize.net, PayPal Pro, and more.');
+$GLOBALS['TL_LANG']['IMD']['tax_class']					= array('Tax classes','Set up Tax classes, which contain sets of Tax rates.');
+$GLOBALS['TL_LANG']['IMD']['tax_rate']					= array('Tax rates','Set up tax rates based on things like shipping/billing location and order total.');
+$GLOBALS['TL_LANG']['IMD']['attribute_manager']			= array('Attribute manager','Manage and create product attributes such as size, color, etc.');
+$GLOBALS['TL_LANG']['IMD']['product_type_manager']		= array('Product type manager','Manage and create Product types from sets of Product attributes.');
+$GLOBALS['TL_LANG']['IMD']['iso_mail']					= array('E-Mail manager','Customize Admin and Customer Notification Emails.');
+$GLOBALS['TL_LANG']['IMD']['store_configuration']		= array('Store configuration','Configure general settings for this store.');
 
