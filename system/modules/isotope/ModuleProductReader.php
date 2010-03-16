@@ -144,6 +144,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 		
 		if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && !$this->doNotSubmit) // && $this->Input->post('product_id') == $objProduct->id)
 		{			
+
 			foreach( $arrButtons as $button => $data )
 			{
 				if (strlen($this->Input->post($button)))

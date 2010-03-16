@@ -14,6 +14,3 @@
 </form>
 
 </div>
-<?php if($this->script): ?>
-<?php echo $this->script; ?>
-<?php endif; ?>

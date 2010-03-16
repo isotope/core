@@ -138,6 +138,7 @@ $GLOBALS['TL_LANG']['MSC']['actualPrice'] = 'Actual Price';
 $GLOBALS['TL_LANG']['MSC']['noPaymentModules'] = 'No payment options are currently available';
 $GLOBALS['TL_LANG']['MSC']['noShippingModules'] = 'No shipping options are currently available.';
 
+$GLOBALS['TL_LANG']['MSSC']['cartBT']					= 'Cart';
 $GLOBALS['TL_LANG']['MSC']['checkoutBT']				= 'Proceed to Checkout';
 $GLOBALS['TL_LANG']['MSC']['continueShoppingBT']		= 'Continue shopping';
 $GLOBALS['TL_LANG']['MSC']['updateCartBT']				= 'Update Cart';

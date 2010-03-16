@@ -5,9 +5,7 @@
 <<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
 <?php endif; ?>
 
-<?php if(!count($this->products)): ?>
-<div class="empty"><?php echo $this->noItemsInCart; ?></div>
-<?php else: ?>
+<?php if(count($this->products)): ?>
 <table class="productWrapper">
 	<tfoot>
 		<tr class="subtotal">
@@ -23,11 +21,14 @@
 			<td class="price"><?php echo $product['total_price']; ?></td>
 		</tr>
 <?php endforeach; ?>
+<?php else: ?>
+		<tr class="subtotal">
+			<td class="empty"><?php echo $this->message; ?></td>
+        </tr>
+<?php endif; ?>
 	</tbody>
 </table>
-<a class="checkout" style="float:right" href="<?php echo $this->checkoutJumpTo; ?>"><span>Proceed to Checkout</span></a>
-<a class="cart" href="<?php echo $this->cartJumpTo; ?>"><span>Cart</span></a>
-<?php endif; ?>
-
+<a class="checkout" style="float:right" href="<?php echo $this->checkoutJumpTo; ?>"><span><?php echo $this->checkoutJumpToLabel; ?></span></a>
+<a class="cart" href="<?php echo $this->cartJumpTo; ?>"><span><?php echo $this->cartLabel; ?></span></a>
 </div>
 <!-- indexer::start -->
