@@ -67,10 +67,11 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 		
 		if (!count($arrProducts))
 		{
-			$this->Template = new FrontendTemplate('mod_message');
-			$this->Template->type = 'empty';
-			$this->Template->message = $GLOBALS['TL_LANG']['MSC']['noItemsInCart'];
-			return;
+		   $this->Template = new FrontendTemplate($this->iso_cart_layout);
+		   $this->Template->type = 'empty';
+		   $this->Template->message = $GLOBALS['TL_LANG']['MSC']['noItemsInCart'];
+		   $this->Template->products = array();
+		   return;
 		}
 		
 		$objTemplate = new FrontendTemplate($this->iso_cart_layout);
