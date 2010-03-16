@@ -28,11 +28,16 @@
 /**
  * Fields
  */
+$GLOBALS['TL_LANG']['tl_tax_rate']['name']			= array('Tax Rate Name','Enter a name for your tax rate.');
+$GLOBALS['TL_LANG']['tl_tax_rate']['label']			= array('Tax Rate Label','This label will be used on the front-end in the checkout process.');
+$GLOBALS['TL_LANG']['tl_tax_rate']['address']		= array('Address to Use for Calculation', 'Select which address this rate should use to apply its calculation.');
 $GLOBALS['TL_LANG']['tl_tax_rate']['country']		= array('Country', 'Select a country this tax class applies to.');
 $GLOBALS['TL_LANG']['tl_tax_rate']['subdivision']	= array('State/Region', 'Select a state or region this tax class applies to.');
-$GLOBALS['TL_LANG']['tl_tax_rate']['postal']		= array('Postal Code', 'Specify a postal code this tax class applies to.');
+$GLOBALS['TL_LANG']['tl_tax_rate']['postal']		= array('Postal Code Range', 'Specify a postal code rage this tax class applies to. (Ex: 10000 - 20000)');
+$GLOBALS['TL_LANG']['tl_tax_rate']['amount']		= array('Subtotal Amount Restriction', 'Optional: Restrict this tax rate to specific subtotal amount (such as for a luxury tax.)');
 $GLOBALS['TL_LANG']['tl_tax_rate']['rate']			= array('Tax Rate', 'A rate in percent this tax is set at.');
 $GLOBALS['TL_LANG']['tl_tax_rate']['store'] 		= array('Store', 'Select the store that the tax rate applies to.');
+$GLOBALS['TL_LANG']['tl_tax_rate']['stop'] 		= array('Stop Calculations on Trigger?', 'Stop other calculations if this tax rate is triggered.');
 
 
 /**
@@ -44,3 +49,17 @@ $GLOBALS['TL_LANG']['tl_tax_rate']['copy']			= array('Copy tax rate', 'Copy tax 
 $GLOBALS['TL_LANG']['tl_tax_rate']['delete']		= array('Delete tax rate', 'Delete tax rate ID %s');
 $GLOBALS['TL_LANG']['tl_tax_rate']['show']			= array('Order Details', 'Show details of tax rate ID %s');
 
+/**
+ * Reference
+ */
+$GLOBALS['TL_LANG']['tl_tax_rate']['billing']		= 'Billing Address';
+$GLOBALS['TL_LANG']['tl_tax_rate']['shipping']		= 'Shipping Address';
+
+/**
+ * Legends
+ */
+$GLOBALS['TL_LANG']['tl_tax_rate']['name_legend']		= 'Name Legend';
+$GLOBALS['TL_LANG']['tl_tax_rate']['rate_legend']		= 'Rate Legend';
+$GLOBALS['TL_LANG']['tl_tax_rate']['location_legend']	= 'Location Legend';
+$GLOBALS['TL_LANG']['tl_tax_rate']['condition_legend']	= 'Conditions Legend';
+$GLOBALS['TL_LANG']['tl_tax_rate']['config_legend']		= 'Configuration Legend';
