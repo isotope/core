@@ -624,7 +624,7 @@ class VariantsWizard extends Widget
 						
 		$strEditableAttributes = implode(',', $arrAttr);
 			
-		$objData = $this->Database->prepare("SELECT id," . $this->strAttributes . ',' . $strEditableAttributes ." FROM tl_product_data WHERE pid=?")
+		$objData = $this->Database->prepare("SELECT id," . $this->strAttributes . ',' . $strEditableAttributes .", published FROM tl_product_data WHERE pid=?")
 								  ->limit(1)
 								  ->execute($intId);
 		
