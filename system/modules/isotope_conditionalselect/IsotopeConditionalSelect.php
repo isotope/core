@@ -29,11 +29,20 @@
 class IsotopeConditionalSelect extends Backend
 {
 	
-	public function mergeData($arrData, $arrAttributes, $intProduct=false)
+	public function mergeData($arrData, $arrAttributes, &$objWidget=null, &$objProduct=null)
 	{
-		if ($intProduct)
+		if (is_object($objProduct))
 		{
-			$arrData['eval']['conditionField'] = $arrAttributes['conditionField'] . '_' . $intProduct;
+			$arrData['eval']['conditionField'] = $arrAttributes['conditionField'] . '_' . $objProduct->id;
+			
+			if (is_object($objWidget))
+			{
+				$objWidget->conditionField .= '_' . $objProduct->id;
+				
+				$this->import('Isotope');
+				$this->Isotope->mergeOptionData($arrData, $arrAttributes, $objWidget, $objProduct);
+			}
+			
 			return $arrData;
 		}
 		
