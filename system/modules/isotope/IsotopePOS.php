@@ -327,9 +327,9 @@ class IsotopePOS extends Backend
 	
 	protected function generateContent($objOrder)
 	{				
-		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE uniqid=?")->limit(1)->execute($objOrder->uniqid);
+		$objOrderData = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE uniqid=?")->limit(1)->execute($objOrder->uniqid);
 		
-		if (!$objOrder->numRows)
+		if (!$objOrderData->numRows)
 		{
 			$objTemplate = new FrontendTemplate('mod_message');
 			$objTemplate->type = 'error';
@@ -339,15 +339,15 @@ class IsotopePOS extends Backend
 		
 		$objTemplate = new BackendTemplate($this->strTemplate);
 				
-		$objTemplate->setData($objOrder->row());
+		$objTemplate->setData($objOrderData->row());
 		
 		$this->import('Isotope');
-		$this->Isotope->overrideStore($objOrder->store_id);
+		$this->Isotope->overrideStore($objOrderData->store_id);
 		
 		// Invoice Logo
 		$objInvoiceLogo = $this->Database->prepare("SELECT invoiceLogo FROM tl_store WHERE id=?")
 										 ->limit(1)
-										 ->execute($objOrder->store_id);
+										 ->execute($objOrderData->store_id);
 		
 		if($objInvoiceLogo->numRows < 1)
 		{
@@ -358,14 +358,14 @@ class IsotopePOS extends Backend
 
 		$objTemplate->logoImage = strlen($strInvoiceLogo) && file_exists(TL_ROOT . '/' . $strInvoiceLogo) ? str_replace('src="', 'src="/', $this->generateImage($strInvoiceLogo)) : false;
 				
-		$objTemplate->invoiceTitle = $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] . ' ' . $objOrder->id . ' - ' . date('m-d-Y g:i', $objOrder->tstamp);
+		$objTemplate->invoiceTitle = $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] . ' ' . $objOrderData->id . ' - ' . date('m-d-Y g:i', $objOrderData->tstamp);
 		
 		// Article reader
 		$arrPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->limit(1)->execute($this->jumpTo)->fetchAssoc();
 		
 		$arrAllDownloads = array();
 		$arrItems = array();
-		$objItems = $this->Database->prepare("SELECT p.*, o.*, t.downloads AS downloads_allowed, (SELECT COUNT(*) FROM tl_iso_order_downloads d WHERE d.pid=o.id) AS has_downloads FROM tl_iso_order_items o LEFT OUTER JOIN tl_product_data p ON o.product_id=p.id LEFT OUTER JOIN tl_product_types t ON p.type=t.id WHERE o.pid=?")->execute($objOrder->id);
+		$objItems = $this->Database->prepare("SELECT p.*, o.*, t.downloads AS downloads_allowed, (SELECT COUNT(*) FROM tl_iso_order_downloads d WHERE d.pid=o.id) AS has_downloads FROM tl_iso_order_items o LEFT OUTER JOIN tl_product_data p ON o.product_id=p.id LEFT OUTER JOIN tl_product_types t ON p.type=t.id WHERE o.pid=?")->execute($objOrderData->id);
 		
 		
 		while( $objItems->next() )
@@ -422,25 +422,25 @@ class IsotopePOS extends Backend
 		}
 		
 		
-		$objTemplate->info = deserialize($objOrder->checkout_info);
+		$objTemplate->info = deserialize($objOrderData->checkout_info);
 		$objTemplate->items = $arrItems;
 		$objTemplate->downloads = $arrAllDownloads;
 		$objTemplate->downloadsLabel = $GLOBALS['TL_LANG']['MSC']['downloadsLabel'];
 		
-		$objTemplate->raw = $objOrder->row();
+		$objTemplate->raw = $objOrderData->row();
 		
-		$objTemplate->date = $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $objOrder->date);
-		$objTemplate->time = $this->parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $objOrder->date);
-		$objTemplate->datim = $this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $objOrder->date);
+		$objTemplate->date = $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $objOrderData->date);
+		$objTemplate->time = $this->parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $objOrderData->date);
+		$objTemplate->datim = $this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $objOrderData->date);
 		$objTemplate->datimLabel = $GLOBALS['TL_LANG']['MSC']['datimLabel'];
 		
-		$objTemplate->subTotalPrice = $this->Isotope->formatPriceWithCurrency($objOrder->subTotal);
-		$objTemplate->grandTotal = $this->Isotope->formatPriceWithCurrency($objOrder->grandTotal);
+		$objTemplate->subTotalPrice = $this->Isotope->formatPriceWithCurrency($objOrderData->subTotal);
+		$objTemplate->grandTotal = $this->Isotope->formatPriceWithCurrency($objOrderData->grandTotal);
 		$objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
 		$objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
 		
 		$arrSurcharges = array();
-		foreach( deserialize($objOrder->surcharges) as $arrSurcharge )
+		foreach( deserialize($objOrderData->surcharges) as $arrSurcharge )
 		{
 			$arrSurcharges[] = array
 			(
@@ -454,10 +454,10 @@ class IsotopePOS extends Backend
 		$objTemplate->surcharges = $arrSurcharges;
 		
 		$objTemplate->billing_label = $GLOBALS['TL_LANG']['ISO']['billing_address'];
-		$objTemplate->billing_address = $this->Isotope->generateAddressString(deserialize($objOrder->billing_address), $this->Isotope->Store->billing_fields);
-		if (strlen($objOrder->shipping_method))
+		$objTemplate->billing_address = $this->Isotope->generateAddressString(deserialize($objOrderData->billing_address), $this->Isotope->Store->billing_fields);
+		if (strlen($objOrderData->shipping_method))
 		{
-			$arrShippingAddress = deserialize($objOrder->shipping_address);
+			$arrShippingAddress = deserialize($objOrderData->shipping_address);
 			if (!is_array($arrShippingAddress) || $arrShippingAddress['id'] == -1)
 			{
 				$objTemplate->has_shipping = false;
