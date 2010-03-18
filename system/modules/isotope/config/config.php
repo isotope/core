@@ -377,6 +377,7 @@ $GLOBALS['ISO_ATTR'] = array
 	(
 		'backend'	=> 'optionDataWizard',
 		'sql'		=> "blob NULL",
+		'callback'	=> array(array('Isotope', 'mergeOptionData')),
 	),
 	'checkbox' => array
 	(
