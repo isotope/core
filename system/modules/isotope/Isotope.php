@@ -178,7 +178,6 @@ class Isotope extends Controller
 		$objDefaultStore->first();	//grab the first store in the list if none are set as default
 		
 		return $objDefaultStore->id;
-		
 	}
 
 
@@ -435,19 +434,14 @@ class Isotope extends Controller
 		);
 	
 		
-		$this->Database->prepare('INSERT INTO tl_address_book %s')
-					   ->set($arrSet)
-					   ->execute();
-					   
+		$this->Database->prepare('INSERT INTO tl_address_book %s')->set($arrSet)->execute();
 		$this->Database->prepare("UPDATE tl_member SET disable=0 WHERE id=?")->execute($intId);
 	}
 	
 
 	public function getProductPrice($intProductId)
 	{
-		$objPrice = $this->Database->prepare("SELECT price FROM tl_product_data WHERE id=?")
-										->limit(1)
-										->execute($intProductId);
+		$objPrice = $this->Database->prepare("SELECT price FROM tl_product_data WHERE id=?")->limit(1)->execute($intProductId);
 		
 		if($objPrice->numRows < 1)
 		{
@@ -455,12 +449,14 @@ class Isotope extends Controller
 		}
 		
 		return $objPrice->price;
-	
 	}
 	
+	
+	/**
+	 * @todo: clean up all getAddress stuff...	
+	 */
 	public function getAddress($strStep = 'billing')
 	{	
-		//TODO - clean up all getAddress stuff...	
 		if($strStep=='shipping' && !FE_USER_LOGGED_IN && $_SESSION['FORM_DATA']['shipping_address']==-1)
 		{
 			$strStep = 'billing';
@@ -523,9 +519,7 @@ class Isotope extends Controller
 	
 	public function loadAddressById($intAddressId, $strStep)
     {
-        $objAddress = $this->Database->prepare("SELECT * FROM tl_address_book WHERE id=?")
-									->limit(1)
-									->execute($intAddressId);
+        $objAddress = $this->Database->prepare("SELECT * FROM tl_address_book WHERE id=?")->limit(1)->execute($intAddressId);
 	
 		if($objAddress->numRows < 1)
 		{
@@ -732,25 +726,6 @@ class Isotope extends Controller
 	}
 	
 	
-	/**
-	 * Apply some sort of rule to a given product attribute
-	 * @access public
-	 * @param integer $intProductId
-	 * @param string $strAttribute
-	 * @param variant $varValue
-	 *
-	 * @return void
-	 */
-	public function applyProductRule($objProduct)
-	{
-		/*
-		$objProduct = $this->Cart->getProducts($intProductId);
-		
-		*/
-	
-	}
-	
-	
 	/** 
 	 * Get the next sorting value if it exists for a given table.
 	 * 
@@ -774,7 +749,6 @@ class Isotope extends Controller
 	
 	public function generatePage(Database_Result $objPage, Database_Result $objLayout, PageRegular $objPage)
 	{
-		
 		$objTemplate = new FrontendTemplate('ajax_load_overlay');
 		
 		$strImagePath = "system/themes/default/images/loading.gif";	//TODO: set in module.
@@ -789,6 +763,6 @@ class Isotope extends Controller
 	/**
 	 * Required by Model class
 	 */	
-	public function getImage($image, $width, $height, $mode='proportional', $target=null) { if(VERSION=='2.8'){ return parent::getImage($image, $width, $height, $mode, $target); }else{ return parent::getImage($image, $width, $height, $target); } }
+	public function getImage($image, $width, $height, $mode='proportional', $target=null) { return parent::getImage($image, $width, $height, $mode, $target); }
 	public function generateFrontendUrl($arrRow, $strParams='') { return parent::generateFrontendUrl($arrRow, $strParams); }
 }
