@@ -42,7 +42,6 @@ class ModuleFilters extends ModuleIsotopeBase
 	 */
 	public function generate()
 	{
-		
 		if (TL_MODE == 'BE')
 		{
 			$objTemplate = new BackendTemplate('be_wildcard');
@@ -189,6 +188,7 @@ class ModuleFilters extends ModuleIsotopeBase
 		$this->Template->clearLabel = $GLOBALS['TL_LANG']['MSC']['clearFilters'];
 	}
 	
+	
 	private function getOrderByOptions($arrAttributes)
 	{		
 		$arrOptions[''] = '-';
@@ -204,6 +204,7 @@ class ModuleFilters extends ModuleIsotopeBase
 		
 		return $arrOptions;
 	}
+	
 	
 	public function getOrderByFields($arrFieldIds)
 	{
@@ -228,48 +229,21 @@ class ModuleFilters extends ModuleIsotopeBase
 		return $arrAttributeData;
 	}
 	
+	
 	private function generateSortingDirections($strType)
 	{
 		switch($strType)
 		{
 			case 'integer':
 			case 'decimal':
-			
 				return array('ASC' => $GLOBALS['TL_LANG']['MSC']['low_to_high'], 'DESC' => $GLOBALS['TL_LANG']['MSC']['high_to_low']);
-				break;
 			
 			case 'text':
-			
 				return array('ASC' => $GLOBALS['TL_LANG']['MSC']['a_to_z'], 'DESC' => $GLOBALS['TL_LANG']['MSC']['z_to_a']);
-				break;
-			case 'datetime':
 				
+			case 'datetime':
 				return array('ASC' => $GLOBALS['TL_LANG']['MSC']['old_to_new'], 'DESC' => $GLOBALS['TL_LANG']['MSC']['new_to_old']);
-				break;
-			default:
-				return;
-				break;
 		}
-	
 	}
-	
-	/**
-	 *	Calculate the per-page options based on the number of product columns specified.  The first option is always * 4 rows
-	 *  for example, 5 wide * 4 rows = default option of 20 per page.
-	 *
-	 *	@param integer
-	 *	@return array
-	 */
-	private function getPerPageOptions($intColumns, $intRows = 4)
-	{
-		$arrPerPageOptions[] = ($intColumns * $intRows) * 1;
-		$arrPerPageOptions[] = ($intColumns * $intRows) * 2;
-		$arrPerPageOptions[] = ($intColumns * $intRows) * 3;
-		$arrPerPageOptions[] = ($intColumns * $intRows) * 5;
-		$arrPerPageOptions[] = ($intColumns * $intRows) * 10;
-	
-		return $arrPerPageOptions;
-	}
-	
-	
 }
+

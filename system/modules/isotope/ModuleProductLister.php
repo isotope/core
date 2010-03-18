@@ -122,11 +122,9 @@ class ModuleProductLister extends ModuleIsotopeBase
 		$objProductIds = $this->Database->prepare("SELECT DISTINCT p.* FROM tl_product_categories c, tl_product_data p WHERE p.id=c.pid AND published='1'" . ($this->strFilterSQL ? " AND (" . $this->strFilterSQL . ")" : "") . " AND c.page_id IN (" . implode(',', $this->arrCategories) . ")" . ($this->strSearchSQL ? " AND (" . $this->strSearchSQL . ")" : "") . ($this->strOrderBySQL ? " ORDER BY " . $this->strOrderBySQL : ""));
 		
 		
-		
 		// Add pagination
 		if ($this->perPage > 0)
 		{
-			
 			$total = $objProductIds->execute($this->arrParams)->numRows;
 			$page = $this->getRequestData('page') ? $this->getRequestData('page') : 1;
 			$offset = ($page - 1) * $this->perPage;
@@ -181,7 +179,6 @@ class ModuleProductLister extends ModuleIsotopeBase
 				'html'		=> $this->generateProduct($objProduct, $this->iso_list_layout, $arrTemplateData, $this->strFormId),
 			);
 
-
 			if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && !$this->doNotSubmit)
 			{
 				foreach( $arrButtons as $button => $data )
@@ -202,7 +199,6 @@ class ModuleProductLister extends ModuleIsotopeBase
 			}	
 			
 			$blnSetClear = (($i+1) % $this->columns==0 ? true : false);
-
 		}
 	
 		// Add "product_last" css class
@@ -213,174 +209,19 @@ class ModuleProductLister extends ModuleIsotopeBase
 
 		if(!$this->iso_disableFilterAjax)
 		{
-		
 			$objScriptTemplate = new FrontendTemplate('js_lister');
 	
 			$objScriptTemplate->ajaxParams = 'id=' . $this->id . '&pid=' . $objPage->id . '&rid=' . $objPage->rootId;
 		
 			$GLOBALS['TL_MOOTOOLS'][] = $objScriptTemplate->parse();
-
-
 		}
 		
 		$this->Template->action = ampersand($this->Environment->request, true);
 		$this->Template->formId = $this->strFormId;
 		$this->Template->buttons = $arrButtons;
 		$this->Template->products = $arrBuffer;
-			
-}
-	
-	
-	/**
-	 *  Get listing filter data from the cache (tl_filter_values_to_categories)
-	 *
-	 *  @param integer
-	 *  @param integer
-	 *  @param boolean
-	 *  @return array
-	 */
-	private function getListingFilterData($intAttributeId, $arrClauses = array(), $blnUseCache = true)
-	{
-		$objListingFilterData = $this->Database->prepare("SELECT value_collection FROM tl_filter_values_to_categories WHERE attribute_id=? AND pid IN (" . implode($this->arrCategories) . ")")->execute($intAttributeId);
-			
-		if($objListingFilterData->numRows < 1)
-		{
-			return array();
-		}
-						
-		$arrListingFilterData = $objListingFilterData->fetchEach('value_collection');
-		
-				
-		foreach($arrListingFilterData as $listingDataCollection)
-		{
-			$arrValuesReturned = deserialize($listingDataCollection); 
-						
-			foreach($arrValuesReturned as $value)
-			{	
-				$arrValues[] = $value;
-			}
-		}
-		
-		$arrUniqueValues = array_unique($arrValues);
-				
-		$arrRefinedValues = $this->getFilterListData($intAttributeId, $arrUniqueValues);
-				
-		return $arrRefinedValues;
 	}
 	
-	
-	
-	/**
-	 *	Calculate the per-page options based on the number of product columns specified.  The first option is always * 4 rows
-	 *  for example, 5 wide * 4 rows = default option of 20 per page.
-	 *
-	 *	@param integer
-	 *	@return array
-	 */
-	private function getPerPageOptions($intColumns)
-	{
-		//
-		$arrPerPageOptions[] = ($intColumns * 4) * 1;
-		$arrPerPageOptions[] = ($intColumns * 4) * 2;
-		$arrPerPageOptions[] = ($intColumns * 4) * 3;
-		$arrPerPageOptions[] = ($intColumns * 4) * 5;
-		$arrPerPageOptions[] = ($intColumns * 4) * 10;
-	
-		return $arrPerPageOptions;
-	}
-	/**
-	 * Future feature - allows admin to display a message within a template to appear if an announcement is to be made for example, a promotion for a certain category - this could be used to display that promotion easily.
-	 * 
-	 * @param string
-	 * @return string (formatted html)
-	 *
-	 */
-	private function getAdditionalMessages($intPageId)
-	{
-		
-		return;
-	
-	}
-	
-	private function getOrderByOptions()
-	{
-		$objOrderByAttributes = $this->Database->prepare("SELECT name, field_name, type FROM tl_product_attributes WHERE is_visible_on_front=? AND is_order_by_enabled=?")
-											   ->execute(1, 1);
-	
-		if($objOrderByAttributes->numRows < 1)
-		{
-			return array();
-		}
-		
-		$arrAttributes = $objOrderByAttributes->fetchAllAssoc();
-		
-		foreach($arrAttributes as $attribute)
-		{
-			$arrSortingDirections = $this->generateSortingDirections($attribute['type']);
-			
-			$arrOptions[] = array
-			(
-				'value'		=> $attribute['field_name'] . '-ASC',
-				'label'		=> $attribute['name'] . ' ' . $arrSortingDirections['ASC']
-			);
-			
-			$arrOptions[] = array
-			(
-				'value'		=> $attribute['field_name'] . '-DESC',
-				'label'		=> $attribute['name'] . ' ' . $arrSortingDirections['DESC']
-			);
-		}
-		
-		return $arrOptions;
-	}
-	
-	private function generateSortingDirections($strType)
-	{
-		switch($strType)
-		{
-			case 'integer':
-			case 'decimal':
-			
-				return array('ASC' => $GLOBALS['TL_LANG']['MSC']['low_to_high'], 'DESC' => $GLOBALS['TL_LANG']['MSC']['high_to_low']);
-				break;
-			
-			case 'text':
-			case 'textarea':
-			
-				return array('ASC' => $GLOBALS['TL_LANG']['MSC']['a_to_z'], 'DESC' => $GLOBALS['TL_LANG']['MSC']['z_to_a']);
-				break;
-			case 'datetime':
-				
-				return array('ASC' => $GLOBALS['TL_LANG']['MSC']['old_to_new'], 'DESC' => $GLOBALS['TL_LANG']['MSC']['new_to_old']);
-				break;
-			default:
-				return;
-				break;
-		}
-	
-	}
-	
-	/* NOTE - THIS FUNCTION IS DUPED IN SEVERAL PLACES (CART, REGISTRY)*/
-	// FIXME
-	protected function userRegistryExists($strUserId)
-	{
-		return false;
-		
-		$strClause = $this->determineUserIdType($strUserId);
-						
-		$objUserCart = $this->Database->prepare("SELECT id FROM tl_cart WHERE cart_type_id=? AND " . $strClause)
-									  ->limit(1)
-									  ->execute(2);	//again this will vary later.
-		
-		if($objUserCart->numRows > 0)
-		{
-			return true;
-			
-		}
-				
-		return false;
-	
-	}
 	
 	protected function setFilterSQL($arrFilters)
 	{
@@ -396,17 +237,19 @@ class ModuleProductLister extends ModuleIsotopeBase
 			{
 				switch($filter)
 				{
-					
 					case 'order_by':
 						$arrOrderByClauses[] = explode('-', $value);
 						break;
+						
 					case 'per_page':
 						//prepare per-page limit
 						$this->perPage = $value;
 						break;
+						
 					case 'page':
 						$this->currentPage = $value;
 						break;
+						
 					case 'for':
 						//prepare clause for text search. TODO:  need to add filter for each std. search field plus any additional user-defined.
 						$arrSearchFields = array('name','description');
@@ -416,6 +259,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 							$arrSearchClauses[] = $this->addFilter($value, $field, 'search');
 						}
 						break;
+						
 					default:
 						$arrFilterClauses[] = $this->addFilter($value, $filter, 'filter');
 						break;
@@ -443,7 +287,6 @@ class ModuleProductLister extends ModuleIsotopeBase
 
 		if(count($arrOrderByClauses[0]))
 		{
-					
 			foreach($arrOrderByClauses as $row)
 			{
 				$arrOrderBySQL[] = implode(" ", $row);
@@ -460,6 +303,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 						case 'price':		//Workaround to deal with price field being VARCHAR... check on this with Andreas... should be field type decimal.
 							$arrOrderBySQLWithParentTable[] = "CAST(p." . $arrRow[0] . " AS decimal) " . $arrRow[1];
 							break;
+							
 						default:
 							$arrOrderBySQLWithParentTable[] = "p." . $row;
 							break;
@@ -472,8 +316,8 @@ class ModuleProductLister extends ModuleIsotopeBase
 		
 		$this->strFilterSQL = (count($arrFilterChunks) ? implode(" AND ", $arrFilterChunks) : NULL);
 		$this->strSearchSQL = (count($arrSearchChunks) ? implode(" OR ", $arrSearchChunks) : NULL);
-
 	}
+	
 	
 	protected function setCategories($strScope, $intRootId = 0, $intPageId = 0)
 	{
@@ -504,7 +348,6 @@ class ModuleProductLister extends ModuleIsotopeBase
 		
 		foreach($arrCategories as $row)
 		{
-		
 			if(!$row)
 			{
 				unset($arrCategories[$i]);
@@ -516,9 +359,9 @@ class ModuleProductLister extends ModuleIsotopeBase
 		return $arrCategories;
 	}
 	
+	
 	public function generateAjax()
 	{
-		
 		if($this->Input->get('clear'))
 		{
 			$arrFilters = array();
@@ -538,7 +381,6 @@ class ModuleProductLister extends ModuleIsotopeBase
 					$arrFilters[$field] = $this->Input->get($field);
 				}
 			}*/	
-			
 		}
 
 		if(!count($arrFilters['order_by']))
@@ -546,10 +388,9 @@ class ModuleProductLister extends ModuleIsotopeBase
 			if($this->iso_listingSortField)
 			{
 				$arrFilters = array('order_by' => ($this->iso_listingSortField.'-'.$this->iso_listingSortDirection));
-	            	}
+			}
 		}
 		
-
 		$strHtml = $this->generateAJAXListing($arrFilters);
 
 		return $strHtml;
@@ -584,7 +425,6 @@ class ModuleProductLister extends ModuleIsotopeBase
 		
 		//$strParams = (count($arrParams) ? implode(",", $arrParams) : NULL);
 		
-		//echo "SELECT p.* FROM tl_product_categories c, tl_product_data p WHERE p.id=c.pid" . ($this->strFilterSQL ? " AND (" . $this->strFilterSQL . ")" : "") . " AND c.page_id IN (" . implode(',', $this->arrCategories) . ")" . ($this->strSearchSQL ? " AND (" . $this->strSearchSQL . ")" : "") . ($this->strOrderBySQL ? " ORDER BY " . $this->strOrderBySQL : "");
 		$objProductIds = $this->Database->prepare("SELECT DISTINCT p.* FROM tl_product_categories c, tl_product_data p WHERE p.id=c.pid" . ($this->strFilterSQL ? " AND (" . $this->strFilterSQL . ")" : "") . " AND c.page_id IN (" . implode(',', $this->arrCategories) . ")" . ($this->strSearchSQL ? " AND (" . $this->strSearchSQL . ")" : "") . ($this->strOrderBySQL ? " ORDER BY " . $this->strOrderBySQL : ""));
 		
 		// Add pagination
@@ -637,7 +477,6 @@ class ModuleProductLister extends ModuleIsotopeBase
 		
 		foreach( $arrProducts as $i => $objProduct )
 		{			
-		
 			$arrBuffer[] = array
 			(
 				'raw'		=> $objProduct,
@@ -648,7 +487,6 @@ class ModuleProductLister extends ModuleIsotopeBase
 			);
 
 			$blnSetClear = (($i+1) % $this->columns==0 ? true : false);
-
 		}
 		
 		// Add "product_last" css class
@@ -664,6 +502,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 		
 		return $objTemplate->parse();
 	}
+	
 	
 	/** 
 	 * Gather SQL clause components to be added into the sql query for pulling product data
@@ -698,5 +537,5 @@ class ModuleProductLister extends ModuleIsotopeBase
 		
 		return $arrReturn;
 	}
-	
 }
+
