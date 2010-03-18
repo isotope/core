@@ -104,11 +104,11 @@ $GLOBALS['TL_DCA']['tl_shipping_modules'] = array
 	'palettes' => array
 	(
 		'__selector__'					=> array('type', 'protected'),
-		'default'						=> '{title_legend},type,name,label,note;{configuration_legend},countries,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-		'order_total'					=> '{title_legend},type,name,label,note;{configuration_legend},price;countries,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-		'flat'							=> '{title_legend},type,name,label,note;price,flatCalculation,surcharge_field;{configuration_legend},countries,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-		'ups'							=> '{title_legend},type,name,label,note;{ups_legend},ups_enabledService,ups_accessKey,ups_developersKey,ups_userName,ups_password;{configuration_legend},countries,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-		'usps'							=> '{title_legend},type,name,label,note;{usps_legend},usps_enabledService,usps_userName;{configuration_legend},countries,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled'
+		'default'						=> '{title_legend},type,name,label,note;{price_legend},price,tax_class;{configuration_legend},countries,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+		'order_total'					=> '{title_legend},type,name,label,note;{price_legend},price,tax_class;{configuration_legend},countries,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+		'flat'							=> '{title_legend},type,name,label,note;{price_legend},price,flatCalculation,tax_class,surcharge_field;{configuration_legend},countries,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+		'ups'							=> '{title_legend},type,name,label,note;{price_legend},tax_class;{ups_legend},ups_enabledService,ups_accessKey,ups_developersKey,ups_userName,ups_password;{configuration_legend},countries,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+		'usps'							=> '{title_legend},type,name,label,note;{price_legend},tax_class;{usps_legend},usps_enabledService,usps_userName;{configuration_legend},countries,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled'
 	),
 	
 	// Subpalettes
@@ -120,14 +120,6 @@ $GLOBALS['TL_DCA']['tl_shipping_modules'] = array
 	// Fields
 	'fields' => array
 	(
-		'name' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_modules']['name'],
-			'exclude'                 => true,
-			'search'                  => true,
-			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255)
-		),
 		'type' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_modules']['type'],
@@ -135,17 +127,25 @@ $GLOBALS['TL_DCA']['tl_shipping_modules'] = array
 			'exclude'                 => true,
 			'filter'                  => true,
 			'inputType'               => 'select',
-			'default'				  => 'order_total',
+			'default'				  => 'flat',
 			'options_callback'        => array('tl_shipping_modules', 'getModules'),
 			'reference'               => &$GLOBALS['TL_LANG']['SHIP'],
-			'eval'                    => array('helpwizard'=>true, 'submitOnChange'=>true)
+			'eval'                    => array('helpwizard'=>true, 'submitOnChange'=>true, 'tl_class'=>'clr')
+		),
+		'name' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_modules']['name'],
+			'exclude'                 => true,
+			'search'                  => true,
+			'inputType'               => 'text',
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50')
 		),
 		'label' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_modules']['label'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>255, 'mandatory'=>true),
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
 		),
 		'note' => array
 		(
@@ -153,6 +153,15 @@ $GLOBALS['TL_DCA']['tl_shipping_modules'] = array
 			'exclude'                 => true,
 			'inputType'               => 'textarea',
 			'eval'                    => array('rte'=>'tinyMCE', 'decodeEntities'=>true),
+		),
+		'tax_class' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_shipping_modules']['tax_class'],
+			'filter'				=> true,
+			'inputType'				=> 'select',
+			'foreignKey'			=> 'tl_tax_class.name',
+			'attributes'			=> array('legend'=>'tax_legend'),
+			'eval'					=> array('includeBlankOption'=>true),
 		),
 		'ups_enabledService' => array
 		(

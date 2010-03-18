@@ -115,9 +115,8 @@ abstract class Shipping extends Frontend
 				break;
 				
 			case 'price':
-				return $this->Isotope->calculatePrice($this->arrData['price']);
+				return $this->Isotope->calculatePrice($this->arrData['price'], $this->arrData['tax_class']);
 				break;
-	
 		}
 		
 		return $this->arrData[$strKey];
@@ -147,16 +146,6 @@ abstract class Shipping extends Frontend
 	 * @return void
 	 */
 	public function processPostSale() {}
-	
-	/**
-	 * 
-	 * This function is used to calculate shipping rates based on values specific to the current order.  For example, order total.
-	 *
-	 * @abstract
-	 * @access public
-	 * @return void
-	 */
-	public function calculateShippingRate() {}
 	
 
 	/**

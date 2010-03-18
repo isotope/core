@@ -708,7 +708,7 @@ class IsotopeCart extends Model
 				'label'			=> ($GLOBALS['TL_LANG']['MSC']['shippingLabel'] . ' (' . $this->Shipping->label . ')'),
 				'price'			=> '&nbsp;',
 				'total_price'	=> $this->Shipping->price,
-				'tax_class'		=> 0,
+				'tax_class'		=> $this->Shipping->tax_class,
 				'add_tax'		=> false,
 			);
 		}
@@ -727,15 +727,22 @@ class IsotopeCart extends Model
 	 */
 	public function getPaymentSurcharge($arrSurcharges)
 	{
+		if ($this->hasPayment && $this->Payment->price > 0)
+		{
+			$arrSurcharges[] = array
+			(
+				'label'			=> ($GLOBALS['TL_LANG']['MSC']['paymentLabel'] . ' (' . $this->Payment->label . ')'),
+				'price'			=> '&nbsp;',
+				'total_price'	=> $this->Payment->price,
+				'tax_class'		=> $this->Payment->tax_class,
+				'add_tax'		=> false,
+			);
+		}
+		
 		return $arrSurcharges;
 	}
 	
-	
-	
-	
-	
-	
-	
+		
 	public function getSurcharges()
 	{
 		if (!is_array($this->arrSurcharges))
