@@ -32,6 +32,7 @@ $GLOBALS['TL_LANG']['tl_shipping_modules']['name']				= array('Shipping Method N
 $GLOBALS['TL_LANG']['tl_shipping_modules']['type']				= array('Shipping Method Type', '');
 $GLOBALS['TL_LANG']['tl_shipping_modules']['price']				= array('Price', '');
 $GLOBALS['TL_LANG']['tl_shipping_modules']['note']				= array('Shipping Method Notes', 'These will be displayed on the front end in association with this shipping option.');
+$GLOBALS['TL_LANG']['tl_shipping_modules']['tax_class']			= array('Tax Class', '');
 $GLOBALS['TL_LANG']['tl_shipping_modules']['label']				= array('Label', 'This is displayed on the front end in association with the shipping option.');
 $GLOBALS['TL_LANG']['tl_shipping_modules']['flatCalculation']	= array('Flat calculation', '');
 $GLOBALS['TL_LANG']['tl_shipping_modules']['countries']			= array('Countries', 'Select the countries this shipping method applies to.');

@@ -34,6 +34,8 @@ $GLOBALS['TL_LANG']['tl_payment_modules']['type']					= array('Type of Payment G
 $GLOBALS['TL_LANG']['tl_payment_modules']['name']					= array('Payment Method Name', 'Enter a name for this payment method. This will only be used in the backend.');
 $GLOBALS['TL_LANG']['tl_payment_modules']['label']					= array('Payment Method Label', 'The label will be shown to customers on checkout.');
 $GLOBALS['TL_LANG']['tl_payment_modules']['note']					= array('Payment Note', 'This note can be sent in confirmation mails (##payment_note##).');
+$GLOBALS['TL_LANG']['tl_payment_modules']['price']				= array('Price', '');
+$GLOBALS['TL_LANG']['tl_payment_modules']['tax_class']				= array('Tax Class', '');
 $GLOBALS['TL_LANG']['tl_payment_modules']['new_order_status']		= array('Status for new orders', 'Choose a matching status for new orders.');
 $GLOBALS['TL_LANG']['tl_payment_modules']['postsale_mail']			= array('Email Template for status changes', 'Select an email template to notify store administrator on payment status changes.');
 $GLOBALS['TL_LANG']['tl_payment_modules']['minimum_total']			= array('Minimum total', 'Enter a number greater zero to exclude this payment method for lower priced orders.');
@@ -108,6 +110,7 @@ $GLOBALS['TL_LANG']['tl_payment_modules']['paypalpro_legend']	= 'PayPal Website 
 $GLOBALS['TL_LANG']['tl_payment_modules']['payflowpro_legend']  = 'PayPal Payflow Pro Configuration';
 $GLOBALS['TL_LANG']['tl_payment_modules']['postfinance_legend']	= 'Postfinance Configuration';
 $GLOBALS['TL_LANG']['tl_payment_modules']['authorize_legend']	= 'Authorize.net Configuration';
+$GLOBALS['TL_LANG']['tl_payment_modules']['price_legend']		= 'Price';
 $GLOBALS['TL_LANG']['tl_payment_modules']['enabled_legend']		= 'Module Enabling Details';
 
 

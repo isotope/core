@@ -123,10 +123,13 @@ abstract class Payment extends Frontend
 					
 				return true;
 				break;
-			
-			default:
-				return $this->arrData[$strKey];
+				
+			case 'price':
+				return $this->Isotope->calculatePrice($this->arrData['price'], $this->arrData['tax_class']);
+				break;
 		}
+		
+		return $this->arrData[$strKey];
 	}
 	
 	
