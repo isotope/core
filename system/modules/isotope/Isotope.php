@@ -760,6 +760,43 @@ class Isotope extends Controller
 	
 	}
 	
+	
+	/**
+	 * Merge the OptionDataWizard and OptionWizard data.
+	 * This is a callback for attributes (eg. select menu).
+	 */
+	public function mergeOptionData($arrData, $arrAttributes, &$objWidget=null, &$objProduct=null)
+	{
+		if (TL_MODE != 'FE' || !$objProduct || !$objWidget)
+			return $arrData;
+			
+		$arrOptionData = $objProduct->{$objWidget->name};
+		
+		if (is_array($arrOptionData))
+		{
+			$arrOptions = array();
+			
+			foreach( deserialize($arrAttributes['option_list'], true) as $option )
+			{
+				if (!is_array($arrOptionData[$option['value']]) || !$arrOptionData[$option['value']]['disable'])
+				{
+					$arrOptions[] = array
+					(
+						'label'		=> (strlen($arrOptionData[$option['value']]['label']) ? $arrOptionData[$option['value']]['label'] : $option['label']),
+						'value'		=> $option['value'],
+						'default'	=> $option['default'],
+						'group'		=> $option['group'],
+					);
+				}
+			}
+			
+			$objWidget->options = $arrOptions;
+		}
+		
+		return $arrData;
+	}
+	
+	
 	/**
 	 * Required by Model class
 	 */	

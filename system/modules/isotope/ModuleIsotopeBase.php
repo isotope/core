@@ -407,7 +407,7 @@ abstract class ModuleIsotopeBase extends Module
 	 * @param boolean $blnUseTable
 	 * @return string
 	 */
-	public function generateProductOptionWidget($strField, $arrData = array(), $intProductId = 0, $strFormId = '', $arrOptionFields = array(), $blnUseTable = false)
+	public function generateProductOptionWidget($strField, $arrData, $objProduct, $strFormId = '', $arrOptionFields = array(), $blnUseTable = false)
 	{
 		$hideVariants = false;
 		
@@ -423,21 +423,21 @@ abstract class ModuleIsotopeBase extends Module
 		
 		//$GLOBALS['TL_LANG']['MSC']['emptySelectOptionLabel']));
 		
+		$objWidget = new $strClass($this->prepareForWidget($arrData, $strField));
+		
 		if (is_array($GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['callback']) && count($GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['callback']))
 		{
 			foreach( $GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['callback'] as $callback )
 			{
 				$this->import($callback[0]);
-				$arrData = $this->{$callback[0]}->{$callback[1]}($arrData, $arrData['attributes'], $intProductId);
+				$arrData = $this->{$callback[0]}->{$callback[1]}($arrData, $arrData['attributes'], $objWidget, $objProduct);
 			}
 		}
-		
-		$objWidget = new $strClass($this->prepareForWidget($arrData, $strField));
 					
 		$objWidget->storeValues = true;
 		$objWidget->tableless = true;
-		$objWidget->name .= "[" . $intProductId . "]";
-		$objWidget->id .= "_" . $intProductId;
+		$objWidget->name .= "[" . $objProduct->id . "]";
+		$objWidget->id .= "_" . $objProduct->id;
 		
 		// Validate input
 		if ($this->Input->post('FORM_SUBMIT') == $strFormId)
@@ -806,7 +806,7 @@ abstract class ModuleIsotopeBase extends Module
 							
 							$arrEnabledOptions[] = $attribute;	
 																					
-							$arrProductOptions[$attribute] = $this->generateProductOptionWidget($attribute, $GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute], $objProduct->id, $strFormId);
+							$arrProductOptions[$attribute] = $this->generateProductOptionWidget($attribute, $GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute], $objProduct, $strFormId);
 						}
 					}
 					else
@@ -906,7 +906,7 @@ abstract class ModuleIsotopeBase extends Module
        
 			$arrAttributeData = $GLOBALS['TL_DCA']['tl_product_data']['fields'][$k]['attributes'];
 
-			$strHtml = $this->generateProductOptionWidget('product_variants', $arrData, $objProduct->id, $strFormId, $arrVariantOptionFields);
+			$strHtml = $this->generateProductOptionWidget('product_variants', $arrData, $objProduct, $strFormId, $arrVariantOptionFields);
 	
 			if(strlen($strHtml) && $arrData['options'])
 			{
@@ -915,7 +915,6 @@ abstract class ModuleIsotopeBase extends Module
 					'name'      => $k,
 					'description'  => $GLOBALS['TL_LANG']['MSC']['labelProductVariants'],                  
 					'html'		=> $strHtml 
-					//'html'      => $this->generateProductOptionWidget('product_variants', $arrData, $this->strFormId, $arrVariantOptionFields)
 				); 
 			}
 			else
