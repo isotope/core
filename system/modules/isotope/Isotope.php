@@ -782,7 +782,7 @@ class Isotope extends Controller
 				{
 					$arrOptions[] = array
 					(
-						'label'		=> (strlen($arrOptionData[$option['value']]['label']) ? $arrOptionData[$option['value']]['label'] : $option['label']),
+						'label'		=> ((strlen($arrOptionData[$option['value']]['label']) && !$arrOptionData[$option['value']]['inherit']) ? $arrOptionData[$option['value']]['label'] : $option['label']),
 						'value'		=> $option['value'],
 						'default'	=> $option['default'],
 						'group'		=> $option['group'],
