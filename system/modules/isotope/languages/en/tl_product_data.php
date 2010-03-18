@@ -96,6 +96,7 @@ $GLOBALS['TL_LANG']['tl_product_data']['opValue']		= 'Value';
 $GLOBALS['TL_LANG']['tl_product_data']['opLabel']		= 'Label';
 $GLOBALS['TL_LANG']['tl_product_data']['opPrice']		= 'Price (Surcharge)';
 $GLOBALS['TL_LANG']['tl_product_data']['opDisable']		= 'Disable';
+$GLOBALS['TL_LANG']['tl_product_data']['opInherit']		= 'Inherit label';
 
 
 $GLOBALS['TL_LANG']['tl_product_data']['mmSrc'] = 'Image';
