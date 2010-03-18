@@ -82,69 +82,10 @@ abstract class ModuleIsotopeBase extends Module
 			{
 				$this->loadDataContainer('tl_product_data');
 				$this->loadLanguageFile('tl_product_data');
-				
 			}
 		}
 	}
-	
-		
-	
-	/**
-	 * Generate a button for a given function such as add to cart buttons
-	 * @param array
-	 * @param string
-	 * @return array
-	 */
-	protected function generateButtons($arrButtonData, $pageId, $strReturnUrl = NULL)
-	{
-		//$arrButtonTypes = array_keys($arrButtonData);
-		
-		foreach($arrButtonData as $buttonProperties)
-		{									
-			if(!strlen($buttonProperties['button_template']))
-			{
-				throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['missingButtonTemplate'], $buttonProperties['button_template']));
-			}
-			else
-			{
-				$objTemplate = new FrontendTemplate($buttonProperties['button_template']); //creating one base template object and cloning for specific products
-			}
-			
-			$objTemplate->buttonType = 'link';
-			$objTemplate->isAjaxEnabledButton = false;	
-			$objTemplate->buttonLabelOrImage = $buttonProperties['button_label'];
-			
-			//Get list of product ids for the current button
-			
-			if($buttonProperties['params'])
-			{
-				$arrProductIds = array_keys($buttonProperties['params']);
-				
-				foreach($arrProductIds as $productId)
-				{
-					//Get the current product Id's params & process
-					$objTemplate->buttonId = $buttonProperties['button_id'] . $productId;
-					$objTemplate->actionTitle = sprintf($buttonProperties['action_string'], $buttonProperties['params'][$productId]['name']);
-					$objTemplate->actionLink = $this->generateActionLinkString($buttonProperties['button_type'], $productId, $buttonProperties['params'][$productId], $pageId);
-					$arrButtonHTML[$buttonProperties['button_type']][$productId] = $objTemplate->parse();
-				}
-			}
-		}	
-			
-			/*		
-			Button Model Properties Not yet used - BEGIN
 
-			--------------
-			$objTemplate->buttonName = '';						//prefix "button_", NOT USED YET
-			$objTemplate->buttonTabIndex = 0;						//tab index (optional)
-			$objTemplate->buttonClickEvent = '';					//click event to invoke the button's script.  May be to an AJAX handler or just to a form submit.
-			--------------
-
-			Button Model Properties Not yet used - END
-		*/	
-
-		return $arrButtonHTML;
-	}
 	
 	/**
 	 * Generate a link string for various actions such as adding a product to the cart, removing from, or updating.
@@ -506,7 +447,6 @@ abstract class ModuleIsotopeBase extends Module
 	}
 	
 	
-	
 	protected function getProductOptionValues($strField, $inputType, $varValue)
 	{	
 		$arrAttributeData = $GLOBALS['TL_DCA']['tl_product_data']['fields'][$strField]['attributes']; //1 will eventually be irrelevant but for now just going with it...
@@ -790,7 +730,6 @@ abstract class ModuleIsotopeBase extends Module
 					break;
 					
 				default:
-									
 					if($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['is_customer_defined'])
 					{						
 						$objTemplate->hasOptions = true;

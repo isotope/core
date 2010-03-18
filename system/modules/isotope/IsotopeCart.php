@@ -526,9 +526,7 @@ class IsotopeCart extends Model
 				
 		if($this->Input->post('product_options'))
 		{
-			
 			$arrOptionValues = deserialize($this->getProductOptionValues($this->Input->post('product_options')));
-
 		}
 		
 		if(count($arrVariantOptionValues))
@@ -570,6 +568,7 @@ class IsotopeCart extends Model
 		$this->Database->prepare("DELETE FROM tl_cart_items WHERE id=?")->execute($intId);					   
 	}
 	
+	
 	public function getAttributeName($strField)
 	{
 		$objName = $this->Database->prepare("SELECT name FROM tl_product_attributes WHERE field_name=?")
@@ -583,6 +582,7 @@ class IsotopeCart extends Model
 		
 		return $objName->name;
 	}
+	
 	
 	/** 
 	 * Need to grab the corresponding data from the subproduct if product_variants is being called!
@@ -671,7 +671,6 @@ class IsotopeCart extends Model
 		
 		return serialize($arrValues);
 	}
-	
 	
 	
 	protected function getOptionList($arrAttributeData)
@@ -912,30 +911,6 @@ class IsotopeCart extends Model
 	
 	
 	/**
-	 * Check if a product has any options associated with it.
-	 * 
-	 * @todo use cache data
-	 * @access public
-	 * @param int $intProductId
-	 * @return bool
-	 */
-	public function hasOptions($intProductId)
-	{
-		$objProductOptions = $this->Database->prepare("SELECT product_options FROM tl_cart_items WHERE pid=? AND product_id=?")
-							   ->limit(1)
-							   ->execute($this->id, $intProductId);
-		
-		$arrOptions = deserialize($objProductOptions->product_options);
-		
-		if(is_array($arrOptions) && strlen(implode('',$arrOptions)))
-		{	
-			return true;
-		}
-		
-		return false;
-	}
-	
-	/**
 	 * Shortcut for a single product by ID
 	 */
 	protected function getProduct($intId)
@@ -981,7 +956,8 @@ class IsotopeCart extends Model
 		return $objProduct;
 	}
 	
-			/**
+	
+	/**
 	 * Return true if a class file exists
 	 * @param string
 	 * @param boolean

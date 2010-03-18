@@ -136,22 +136,17 @@ class ModuleProductReader extends ModuleIsotopeBase
 		
 		$this->Template->action = ampersand($this->Environment->request, true);
 		$this->Template->formId = $this->strFormId;
-
-
-
 		$this->Template->product = $this->generateProduct($objProduct, $this->iso_reader_layout, $arrTemplateData, $this->strFormId, $intParentProductId);	
 				
 		
 		if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && !$this->doNotSubmit) // && $this->Input->post('product_id') == $objProduct->id)
 		{			
-
 			foreach( $arrButtons as $button => $data )
 			{
 				if (strlen($this->Input->post($button)))
 				{
 					if (is_array($data['callback']) && count($data['callback']) == 2)
 					{
-					
 						$this->import($data['callback'][0]);
 						$this->{$data['callback'][0]}->{$data['callback'][1]}($objProduct, $this);
 					}
@@ -169,26 +164,24 @@ class ModuleProductReader extends ModuleIsotopeBase
 	private function cleanForMeta($strText, $limit)
 	{
 		$string = strip_tags($strText);
-		
 		$break="."; 
-		
 		$pad=".";
 		
 		
 		// return with no change if string is shorter than $limit  
-		if(strlen($string) <= $limit) return $string; 
+		if (strlen($string) <= $limit)
+			return $string; 
 		
 		// is $break present between $limit and the end of the string?  
-		if(false !== ($breakpoint = strpos($string, $break, $limit))) 
+		if (false !== ($breakpoint = strpos($string, $break, $limit))) 
 		{ 
-			if($breakpoint < strlen($string) - 1) 
+			if ($breakpoint < strlen($string) - 1) 
 			{ 
 				$string = substr($string, 0, $breakpoint) . $pad; 
 			} 
 		} 
 		
 		return $string; 
-		
 	}
 	
 	
@@ -210,7 +203,6 @@ class ModuleProductReader extends ModuleIsotopeBase
 		}
 				
 		echo json_encode($arrAttributes);
-
 	}	
 
 	public function getInheritedAttributes($objProduct)
@@ -242,7 +234,6 @@ class ModuleProductReader extends ModuleIsotopeBase
 				case $this->Isotope->Store->priceField:
 					$arrAttributes[$k] = $this->Isotope->formatPriceWithCurrency($v);
 					break;
-				
 			}
 			
 		}	
@@ -263,7 +254,6 @@ class ModuleProductReader extends ModuleIsotopeBase
 		}
 		
 		return deserialize($objImages->images);
-	
 	}
 
 }

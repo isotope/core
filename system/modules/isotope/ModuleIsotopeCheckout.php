@@ -152,7 +152,6 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			$strBuffer = '';
 			foreach( $arrCallbacks as $callback )
 			{
-				
 				if ($callback[0] == 'ModuleIsotopeCheckout')
 				{
 					$strBuffer .= $this->{$callback[1]}();
@@ -944,7 +943,6 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 					'value'	=> 0,
 					'label' => &$GLOBALS['TL_LANG']['differentShippingAddress'],
 				);
-
 				break;
 				
 			case 'billing_address':
@@ -1109,7 +1107,6 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		{
 			$this->Cart->$strAddressField = $_SESSION['CHECKOUT_DATA'][$strAddressField];
 		}
-	
 		
 		return $objTemplate->parse();	
 	}
@@ -1156,6 +1153,10 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		return $this->arrCheckoutInfo;
 	}
 	
+	
+	/**
+	 * @todo implement google analytics using Yoans module
+	 */
 	public function googleTracking()
 	{
 		if(!$this->Isotope->Store->enableGoogleAnalytics || $this->Input->get('step')!='complete' || !file_exists(TL_ROOT . '/system/modules/googleanalytics/GoogleAnalytics.php'))
@@ -1198,32 +1199,34 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 		return $objTemplate->parse();
 	}
 	
+	
 	private function getProductVariantValue($arrProducts)
 	{
 		$objVariantAttributes = $this->Database->prepare("SELECT name, field_name FROM tl_product_attributes WHERE add_to_product_variants=?")
 									  				->execute(1);
-			if(!$objVariantAttributes->numRows)
-			{
-				return '';
-			}
+									  				
+		if(!$objVariantAttributes->numRows)
+		{
+			return '';
+		}
+		
+		while($objVariantAttributes->next())
+		{
+			$strField = $objVariantAttributes->field_name;
 			
-			while($objVariantAttributes->next())
+			foreach($arrProducts as $objProduct)
 			{
-				$strField = $objVariantAttributes->field_name;
-				
-				foreach($arrProducts as $objProduct)
+				if(property_exists($objProduct, $strField))
 				{
-					if(property_exists($objProduct, $strField))
+					if($row[$strField])
 					{
-						if($row[$strField])
-						{
-							$arrReturn[$objProduct->id]['variants'][] = $row[$strField];
-						}
+						$arrReturn[$objProduct->id]['variants'][] = $row[$strField];
 					}
 				}
 			}
-			
-			return $arrReturn;
+		}
+		
+		return $arrReturn;
 	}
 }
 
