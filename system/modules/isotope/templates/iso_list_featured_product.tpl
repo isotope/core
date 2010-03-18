@@ -12,7 +12,7 @@
     </div>
     <!-- END PAGER-->
 
-    <div class="clearBoth"></div>
+    <div class="clear">&nbsp;</div>
   </div>
   <!-- END HEADER-->
   <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx START PRODUCT LISTING -->
@@ -46,17 +46,17 @@
                   	</div>
                   <?php endif; ?>
                 </div>
-                <div class="clearBoth"></div>
+                <div class="clear">&nbsp;</div>
             </div>
             <!-- END PRODUCT-->
         <?php if($i == $this->columnLimit): ?>
             <?php $i=0; ?>
-            <div class="clearBoth divider"></div>
+            <div class="clear divider">&nbsp;</div>
         <?php endif; ?>
         <?php $i++; ?>
       <?php endforeach; ?>
   <?php endif; ?>
-  <div class="clearBoth"></div>
+  <div class="clear">&nbsp;</div>
   </div>
   <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx END PRODUCT LISTING -->
   <!-- START FOOTER-->
@@ -69,7 +69,7 @@
       </div>
     </div>
     <!-- END PAGER-->
-    <div class="clearBoth"></div>
+    <div class="clear">&nbsp;</div>
   </div>
   <!-- END FOOTER-->
 </div>

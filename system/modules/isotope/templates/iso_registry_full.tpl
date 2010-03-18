@@ -31,11 +31,11 @@
         	<div class="col productTotals">
         		                <?php echo $product['add_link']; ?>
             </div>       
-            <div class="clearBoth"></div>
+            <div class="clear">&nbsp;</div>
 		</div>
         <!-- END PRODUCT-->
     <div class="horizontalLine"></div>
-    <div class="clearBoth"></div>
+    <div class="clear">&nbsp;</div>
 	<?php endforeach; ?>
 	
 <?php endif; ?>
