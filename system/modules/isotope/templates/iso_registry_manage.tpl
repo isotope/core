@@ -51,7 +51,7 @@
        				       			
        		</div>
        		    
-            <div class="clearBoth"></div>
+            <div class="clear">&nbsp;</div>
 		</div>
         <!-- END PRODUCT-->
         <div class="divider"></div>   

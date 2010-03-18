@@ -24,7 +24,7 @@
 			<?php endif; ?>
 			<div class="price">Qty x <?php echo $product['quantity']; ?> = <span class="total"><?php echo $product['total_price']; ?></span></div>
 		</div>
-	<div class="clearBoth"></div>
+	<div class="clear">&nbsp;</div>
 	</div>
     <div class="subtotal"><span class="label"><?php echo $this->subTotalLabel; ?></span> <?php echo $this->subTotalPrice; ?></div>	
     <div class="cart"><a class="button" href="<?php echo $this->cartJumpTo; ?>"><span><?php echo $this->cartLabel; ?></span></a></div>
@@ -32,7 +32,7 @@
 <?php endforeach; ?>
 <?php else: ?>
 <div class="empty"><?php echo $this->message; ?></div>
-<div class="clearBoth"></div>	
+<div class="clear">&nbsp;</div>	
 <?php endif; ?>
 </div>
 

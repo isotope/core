@@ -61,7 +61,7 @@
 	      <div class="pricing">
 	        <p class="productPrice"><?php echo $product['price_string']; ?></p>
 	        <p class="sku"><?php echo $product['sku']; ?></p>
-	        <div class="clearBoth"></div>
+	        <div class="clear">&nbsp;</div>
 	      </div>
 	      <?php if(strlen($this->embeddedMedia) > 0): ?>
 	      <div class="media"><?php echo $this->embeddedMedia; ?></div>
@@ -82,7 +82,7 @@
 	        <?php endforeach; ?>
 		  	</ul>
 		  <?php endif; ?>
-		  <div class="clearBoth"></div>
+		  <div class="clear">&nbsp;</div>
 		  </div>
 		  <?php endif; ?>	        
 	        <?php if($this->useQuantity): ?>
@@ -133,7 +133,7 @@
 	      <div class="additionalInformation">
 	      
 	      </div>
-	      	<div class="clearBoth"></div>
+	      	<div class="clear">&nbsp;</div>
 	      </div>
 		</form>
     </div>

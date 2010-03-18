@@ -416,8 +416,8 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 										 $objModule->id,
 	 									 $objModule->label,
 	 									 $this->Isotope->formatPriceWithCurrency($objModule->price), 
-	 									 ($objModule->note ? '<div class="clearBoth"></div><br /><div class="shippingNote"><strong>Note:</strong><br />' . $objModule->note . '</div>' : ''),
-	 									 ($objModule->getShippingOptions($objModule->id) ? '<div class="clearBoth"></div><br /><div class="shippingOptions"><strong>Options:</strong><br />' . $objModule->getShippingOptions($objModule->id) . '</div>' : ''));
+	 									 ($objModule->note ? '<div class="clear">&nbsp;</div><br /><div class="shippingNote"><strong>Note:</strong><br />' . $objModule->note . '</div>' : ''),
+	 									 ($objModule->getShippingOptions($objModule->id) ? '<div class="clear">&nbsp;</div><br /><div class="shippingOptions"><strong>Options:</strong><br />' . $objModule->getShippingOptions($objModule->id) . '</div>' : ''));
 	 									 
 	 			$objLastModule = $objModule;
 			}

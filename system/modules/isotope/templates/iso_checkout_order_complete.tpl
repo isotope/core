@@ -42,11 +42,11 @@
 	    	<?php endif; ?>-->
             <div class="tax"><span class="label"><?php echo $this->taxLabel; ?></span> <?php echo $this->taxTotal; ?></div>
 	    	<div class="grandTotal"><span class="label"><?php echo $this->grandTotalLabel; ?></span> <?php echo $this->grandTotalPrice; ?></div>
-	    	<div class="clearBoth"></div>
+	    	<div class="clear">&nbsp;</div>
 	    </div>
 	
 	</div>
-	<div class="clearBoth"></div>
+	<div class="clear">&nbsp;</div>
 	<div class="billing_address">
 		<h2>Billing Address</h2>
 		<?php echo nl2br($this->billingAddress); ?>
@@ -55,8 +55,8 @@
 		<h2>Shipping Address</h2>
 		<?php echo nl2br($this->shippingAddress); ?>
 	</div>
-	<div class="clearBoth"></div>
+	<div class="clear">&nbsp;</div>
 	<div class="shipping_method"><strong>Shipping Method:</strong> <?php echo $this->shippingMethod; ?></div>
 	<div class="payment_method"><strong>Payment Method:</strong> <?php echo $this->paymentMethod; ?></div>
-	<div class="clearBoth"></div>	
+	<div class="clear">&nbsp;</div>	
 </div>
