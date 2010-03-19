@@ -276,32 +276,7 @@ class AttributeWizard extends Widget
 		$this->loadLanguageFile('tl_product_data');
 		
 		$arrAttributes = array();
-		$arrDca = $GLOBALS['TL_DCA']['tl_product_data']['fields'];
-		
-		$objOptions = $this->Database->prepare("SELECT field_name FROM tl_product_attributes WHERE disabled='1'")
-									 ->execute();
-		
-		if(!$objOptions->numRows)
-		{
-			//'option_set_source','option_sets','option_set_title'
-			
-			//hide product variants
-			unset($arrDca['product_variants']);
-			unset($arrDca['']);
-			unset($arrDca['']);		
-		}
-
-		$arrFields = $objOptions->fetchEach('field_name');
-		
-		foreach($arrDca as $k=>$v)
-		{
-			if(in_array($k, $arrFields))
-			{
-				unset($arrDca[$k]);
-			}	
-		}
-
-	
+		$arrDca = $GLOBALS['TL_DCA']['tl_product_data']['fields'];	
 				
 		foreach( $arrDca as $field => $arrData )
 		{
