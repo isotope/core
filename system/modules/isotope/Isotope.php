@@ -73,7 +73,6 @@ class Isotope extends Controller
 	}
 	
 	
-	
 	/**
 	 * Instantiate a database driver object and return it (Factory)
 	 *
@@ -190,7 +189,6 @@ class Isotope extends Controller
 	 */
 	private function getStoreConfigFromParent($intPageId)
 	{
-	
 		$objStoreConfiguration = $this->Database->prepare("SELECT pid, isotopeStoreConfig FROM tl_page WHERE id=?")
 												->execute($intPageId);
 												
@@ -438,19 +436,6 @@ class Isotope extends Controller
 		$this->Database->prepare("UPDATE tl_member SET disable=0 WHERE id=?")->execute($intId);
 	}
 	
-
-	public function getProductPrice($intProductId)
-	{
-		$objPrice = $this->Database->prepare("SELECT price FROM tl_product_data WHERE id=?")->limit(1)->execute($intProductId);
-		
-		if($objPrice->numRows < 1)
-		{
-			return false;
-		}
-		
-		return $objPrice->price;
-	}
-	
 	
 	/**
 	 * @todo: clean up all getAddress stuff...	
@@ -513,38 +498,6 @@ class Isotope extends Controller
 		}
 				
 		return $arrAddress;
-	}
-
-	
-	
-	public function loadAddressById($intAddressId, $strStep)
-    {
-        $objAddress = $this->Database->prepare("SELECT * FROM tl_address_book WHERE id=?")->limit(1)->execute($intAddressId);
-	
-		if($objAddress->numRows < 1)
-		{
-			return $GLOBALS['TL_LANG']['MSC']['ERR']['specifyBillingAddress'];
-		}
-		
-		$arrAddress = $objAddress->fetchAssoc();
-		
-		$strEmail = (strlen($arrAddress['email']) ? $arrAddress['email'] : $this->User->email);
-		$strPhone = (strlen($arrAddress['phone']) ? $arrAddress['phone'] : $this->User->phone);
-		
-		$_SESSION['FORM_DATA'][$strStep . '_information_company'] = $arrAddress['company'];
-		$_SESSION['FORM_DATA'][$strStep . '_information_firstname'] = $arrAddress['firstname'];
-		$_SESSION['FORM_DATA'][$strStep . '_information_lastname'] = $arrAddress['lastname'];
-		$_SESSION['FORM_DATA'][$strStep . '_information_street_1'] = $arrAddress['street_1'];
-		$_SESSION['FORM_DATA'][$strStep . '_information_street_2'] = $arrAddress['street_2'];
-		$_SESSION['FORM_DATA'][$strStep . '_information_street_3'] = $arrAddress['street_3'];
-		$_SESSION['FORM_DATA'][$strStep . '_information_city'] = $arrAddress['city'];
-		$_SESSION['FORM_DATA'][$strStep . '_information_subdivision'] = $arrAddress['subdivision'];
-		$_SESSION['FORM_DATA'][$strStep . '_information_postal'] = $arrAddress['postal'];
-		$_SESSION['FORM_DATA'][$strStep . '_information_country'] = $arrAddress['country'];			
-		$_SESSION['FORM_DATA'][$strStep . '_information_email'] = $strEmail;
-		$_SESSION['FORM_DATA'][$strStep . '_information_phone'] = $strPhone;
-
-        return true;
 	}
 	
 	
@@ -724,28 +677,7 @@ class Isotope extends Controller
 		
 		$objEmail->sendTo($strRecipient);
 	}
-	
-	
-	/** 
-	 * Get the next sorting value if it exists for a given table.
-	 * 
-	 * @access public
-	 * @param string $strTable
-	 * @return integer;
-	 */
-	public function getNextSortValue($strTable)
-	{
-		if($this->Database->fieldExists('sorting', $strTable))
-		{
-			$objSorting = $this->Database->prepare("SELECT MAX(sorting) as maxSort FROM " . $strTable)
-										 ->execute();
-			
-			return $objSorting->maxSort + 128;
-		}
-		
-		return 0;
-	}
-	
+
 	
 	public function generatePage(Database_Result $objPage, Database_Result $objLayout, PageRegular $objPage)
 	{
@@ -803,3 +735,4 @@ class Isotope extends Controller
 	public function getImage($image, $width, $height, $mode='proportional', $target=null) { return parent::getImage($image, $width, $height, $mode, $target); }
 	public function generateFrontendUrl($arrRow, $strParams='') { return parent::generateFrontendUrl($arrRow, $strParams); }
 }
+

@@ -312,41 +312,6 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['source'],
 			'eval'                    => array('mandatory'=>true, 'required'=>true, 'fieldType'=>'radio'),
 		),
-				
-		/*
-		'create_variations' => array
-		(
-			'label'					  => &$GLOBALS['TL_LANG']['tl_product_data']['create_variations'],
-			'inputType'				  => 'checkbox',
-			'eval'					  => array('submitOnChange'=>true)		
-		),*/
-		/*'option_set_source' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['option_set_source'],
-			'default'                 => 'new_option_set',
-			'inputType'               => 'radio',
-			//'options'                 => array('existing_option_set', 'new_option_set'),
-			'reference'               => &$GLOBALS['TL_LANG']['tl_product_data'],
-			'eval'                    => array('submitOnChange'=>true),	//, 'helpwizard'=>true)
-			'attributes'			  => array('legend'=>'options_legend'),
-			'options_callback'		  => array('ProductCatalog','getOptionSets')
-		),
-		'option_sets' => array
-		(
-			'label'					  =>  &$GLOBALS['TL_LANG']['tl_product_data']['option_sets'],
-			'inputType'				  => 'select',
-			'eval'					  => array('includeBlankOption'=>true, 'submitOnChange'=>true),
-			'attributes'			  => array('legend'=>'options_legend'),
-			'options_callback'		  => array('ProductCatalog','getProductOptionSets')
-		),
-		'option_set_title' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['option_set_title'],
-			'search'                  => true,
-			'inputType'               => 'text',
-			'eval'                    => array('rgxp'=>'extnd', 'maxlength'=>255),
-			'attributes'			  => array('legend'=>'options_legend')
-		),*/
 		'variants_wizard' => array
 		(
 			'label'					  => &$GLOBALS['TL_LANG']['tl_product_data']['variants_wizard'],
@@ -354,82 +319,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			'eval'					  => array('mandatory'=>false, 'enableDelete'=>false),
 			'attributes'			  => array('legend'=>'options_legend'),
 			'explanation'			  => 'variantsWizard'
-		),/*
-		'add_audio_file' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['add_audio_file'],
-			'default'				  => 'internal',
-			'filter'                  => false,
-			'inputType'               => 'checkbox',
-			'eval'                    => array('submitOnChange'=>true)
 		),
-		'add_video_file' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['add_video_file'],
-			'default'				  => 'internal',
-			'filter'                  => false,
-			'inputType'               => 'checkbox',
-			'eval'                    => array('submitOnChange'=>true)
-		),
-		'audio_source' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['audio_source'],
-			'default'                 => 'internal',
-			'filter'                  => false,
-			'inputType'               => 'radio',
-			'options'                 => array('internal', 'external'),
-			'reference'               => &$GLOBALS['TL_LANG']['tl_product_data'],
-			'eval'                    => array('helpwizard'=>true)
-		),
-		'audio_jumpTo' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['audio_jumpTo'],
-			'inputType'               => 'fileTree',
-			'eval'                    => array('fieldType'=>'radio', 'files'=>true, 'helpwizard'=>true)
-		),
-		'audio_url' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['audio_url'],
-			'search'                  => true,
-			'inputType'               => 'text',
-			'eval'                    => array('decodeEntities'=>true, 'maxlength'=>255)
-		),
-		'video_source' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['video_source'],
-			'default'                 => 'internal',
-			'filter'                  => false,
-			'inputType'               => 'radio',
-			'options'                 => array('internal', 'external'),
-			'reference'               => &$GLOBALS['TL_LANG']['tl_product_data'],
-			'eval'                    => array('helpwizard'=>true)
-		),
-		'video_jumpTo' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['video_jumpTo'],
-			'inputType'               => 'fileTree',
-			'eval'                    => array('fieldType'=>'radio', 'files'=>true, 'helpwizard'=>true)
-		),
-		'video_url' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_data']['video_url'],
-			'search'                  => true,
-			'inputType'               => 'text',
-			'eval'                    => array('decodeEntities'=>true, 'maxlength'=>255)
-		),
-		'option_collection' => array
-		(
-			'label'					  => &$GLOBALS['TL_LANG']['tl_product_data']['option_collection'],
-			'inputType'				  => 'productOptionWizard',
-			'load_callback'			  => array
-			(
-				array('ProductCatalog','loadProductOptions')
-			),
-			'save_callback'			  => array
-			(
-				array('ProductCatalog','saveProductOptions')
-			)
-		),*/
 	),
 );
 
