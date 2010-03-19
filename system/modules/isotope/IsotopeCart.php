@@ -481,13 +481,14 @@ class IsotopeCart extends Model
 	/**
 	 * Callback for add_to_cart button
 	 *
-	 * @todo	fetch data of custom fields
 	 * @access	public
 	 * @param	object
 	 * @return	void
 	 */
+	//! @todo fetch data of custom fields
+	//! @todo $objModule is always defined, rework to use it and make sure the module config field is in palettes
 	public function addProduct($objProduct, $objModule=null)
-	{		
+	{
 		$arrAllOptionValues = array();
 		$arrOptionValues = array();
 		$arrVariantOptions = array();	
@@ -560,6 +561,9 @@ class IsotopeCart extends Model
 		{
 			$this->Database->prepare("INSERT INTO tl_cart_items %s")->set($arrSet)->execute();
 		}
+		
+		//! @todo redirect to cart if checked in module config
+		$this->reload();
 	}
 	
 	

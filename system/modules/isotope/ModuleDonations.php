@@ -34,6 +34,8 @@ class ModuleDonations extends ModuleIsotopeBase
 	protected $strTemplate = 'mod_donations';
 
 	protected $strFormId = 'iso_donations';
+	
+	
 	/**
 	 * Display a wildcard in the back end
 	 * @return string
@@ -84,9 +86,8 @@ class ModuleDonations extends ModuleIsotopeBase
 				{				
 					$this->doNotSubmit = true;
 				}
-	
-						
 			}
+			
 			$arrOptions[] = $objWidget->name;
 			$this->Template->fields .= $objWidget->parse() . '<br /><br />';
 		}

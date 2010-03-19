@@ -1,4 +1,7 @@
-<input type="hidden" id="ctrl_product_id" name="product_id" value="<?php echo $this->raw['id']; ?>" />
+
+<form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>" method="post" enctype="<?php echo $this->enctype; ?>">
+<div class="formbody">
+<input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formSubmit; ?>" />
 
 <h2 id="name"><?php echo $this->name; ?></h2>
 
@@ -48,8 +51,10 @@
 </div>
 <?php endif; ?>
 <?php foreach( $this->buttons as $name => $button ): ?>
-	<button type="submit" class="submit <?php echo $name; ?>" name="<?php echo $name; ?>" value="1"><?php echo $button['label']; ?></button>
-    
+	<input type="submit" class="submit <?php echo $name; ?>" name="<?php echo $name; ?>" value="<?php echo $button['label']; ?>">
 <?php endforeach; ?>
 </div>
 <?php endif; ?>
+
+</div>
+</form>

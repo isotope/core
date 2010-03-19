@@ -727,5 +727,16 @@ class Isotope extends Controller
 		
 		return $arrData;
 	}
+	
+	
+	/**
+	 * Callback for isoButton Hook.
+	 */
+	public function addToCartButton($arrButtons)
+	{
+		$arrButtons['add_to_cart'] = array('label'=>$GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'], 'callback'=>array('IsotopeCart', 'addProduct'));
+		
+		return $arrButtons;
+	}
 }
 

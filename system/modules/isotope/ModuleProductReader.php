@@ -35,8 +35,6 @@ class ModuleProductReader extends ModuleIsotopeBase
 	 */
 	protected $strTemplate = 'mod_productreader';
 	
-	protected $strFormId = 'iso_product_reader';
-	
 
 	/**
 	 * Display a wildcard in the back end
@@ -110,56 +108,13 @@ class ModuleProductReader extends ModuleIsotopeBase
 			
 			$GLOBALS['TL_MOOTOOLS'][] = $objScriptTemplate->parse();
 		}
-		
-		// Buttons
-		$arrButtons = array
-		(
-			'add_to_cart'		=> array('label'=>$GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'], 'callback'=>array('IsotopeCart', 'addProduct')),
-		);
-		
-		if (isset($GLOBALS['TL_HOOKS']['isoReaderButtons']) && is_array($GLOBALS['TL_HOOKS']['isoReaderButtons']))
-		{
-			foreach ($GLOBALS['TL_HOOKS']['isoReaderButtons'] as $callback)
-			{
-				$this->import($callback[0]);
-				$arrButtons = $this->$callback[0]->$callback[1]($arrButtons);
-			}
-		}
-						
-		$arrTemplateData = array
-		(
-			'buttons'		=> $arrButtons,
-			'quantityLabel'	=> $GLOBALS['TL_LANG']['MSC']['quantity'],
-			'useQuantity'	=> $this->iso_use_quantity,
-		);		
-		
-		
-		$this->Template->action = ampersand($this->Environment->request, true);
-		$this->Template->formId = $this->strFormId;
-		$this->Template->product = $objProduct->generate($this->iso_reader_layout, $arrTemplateData, $this->strFormId, $intParentProductId);	
-				
-		
-		if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && !$this->doNotSubmit) // && $this->Input->post('product_id') == $objProduct->id)
-		{			
-			foreach( $arrButtons as $button => $data )
-			{
-				if (strlen($this->Input->post($button)))
-				{
-					if (is_array($data['callback']) && count($data['callback']) == 2)
-					{
-						$this->import($data['callback'][0]);
-						$this->{$data['callback'][0]}->{$data['callback'][1]}($objProduct, $this);
-					}
-					break;
-				}
-			}
-			
-			$this->reload();
-		}
 
+
+		$this->Template->product = $objProduct->generate($this->iso_reader_layout, $this);
 		$objPage->title .= ' - ' . $objProduct->name;
 		$objPage->description .= $this->cleanForMeta($objProduct->description, 200);
 	}		
+	
 	
 	private function cleanForMeta($strText, $limit)
 	{

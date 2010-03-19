@@ -1,3 +1,7 @@
+<form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>" method="post" enctype="<?php echo $this->enctype; ?>">
+<div class="formbody">
+<input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formSubmit; ?>" />
+
 <h3><a href="<?php echo $this->href_reader; ?>"><?php echo $this->name; ?></a></h3>
 
 <?php if ($this->hasImage): ?>
@@ -31,7 +35,10 @@
 </div>
 <?php endif; ?>
 <?php foreach( $this->buttons as $name => $button ): ?>
-	<button type="submit" class="submit <?php echo $name; ?>" id="<?php echo $name . '_' . $this->raw['id']; ?>" name="<?php echo $name; ?>[<?php echo $this->raw['id']; ?>]" value="<?php echo $this->raw['id']; ?>"><?php echo $button['label']; ?></button>
+	<input type="submit" class="submit <?php echo $name; ?>" name="<?php echo $name; ?>" value="<?php echo $button['label']; ?>">
 <?php endforeach; ?>
 </div>
 <?php endif; ?>
+
+</div>
+</form>

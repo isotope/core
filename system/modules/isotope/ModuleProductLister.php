@@ -34,8 +34,6 @@ class ModuleProductLister extends ModuleIsotopeBase
 	 * @var string
 	 */
 	protected $strTemplate = 'mod_productlist';
-	
-	protected $strFormId = 'iso_product_list';
 
 	protected $strOrderBySQL = 'sorting';
 	
@@ -145,59 +143,16 @@ class ModuleProductLister extends ModuleIsotopeBase
 			return;
 		}
 		
-		// Buttons
-		$arrButtons = array
-		(
-			'add_to_cart'		=> array('label'=>$GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'], 'callback'=>array('IsotopeCart', 'addProduct')),
-		);
-		
-		if (isset($GLOBALS['TL_HOOKS']['isoListButtons']) && is_array($GLOBALS['TL_HOOKS']['isoReaderButtons']))
-		{
-			foreach ($GLOBALS['TL_HOOKS']['isoListButtons'] as $callback)
-			{
-				$this->import($callback[0]);
-				$arrButtons = $this->$callback[0]->$callback[1]($arrButtons);
-			}
-		}
-		
-		$arrTemplateData = array
-		(
-			'buttons'		=> $arrButtons,
-			'quantityLabel'	=> $GLOBALS['TL_LANG']['MSC']['quantity'],
-			'useQuantity'	=> $this->iso_use_quantity,
-		);
-		
 		$arrBuffer = array();
 		
 		foreach( $arrProducts as $i => $objProduct )
 		{
-			//! @todo do we need the raw product in template array?
 			$arrBuffer[] = array
 			(
-				'raw'		=> $objProduct,
 				'clear'	    => ($this->iso_list_format=='grid' && $blnSetClear ? true : false),
 				'class'		=> ('product' . ($i == 0 ? ' product_first' : '')),
-				'html'		=> $objProduct->generate($this->iso_list_layout, $arrTemplateData, $this->strFormId),
+				'html'		=> $objProduct->generate($this->iso_list_layout, $this),
 			);
-
-			if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && !$this->doNotSubmit)
-			{
-				foreach( $arrButtons as $button => $data )
-				{
-					if (strlen($this->Input->post($button)))
-					{
-						if (is_array($data['callback']) && count($data['callback']) == 2)
-						{
-							$this->import($data['callback'][0]);
-							$this->{$data['callback'][0]}->{$data['callback'][1]}($objProduct, $this);
-						}
-						
-						break;
-					}
-				}
-				
-				$this->reload();
-			}	
 			
 			$blnSetClear = (($i+1) % $this->columns==0 ? true : false);
 		}
@@ -217,9 +172,6 @@ class ModuleProductLister extends ModuleIsotopeBase
 			$GLOBALS['TL_MOOTOOLS'][] = $objScriptTemplate->parse();
 		}
 		
-		$this->Template->action = ampersand($this->Environment->request, true);
-		$this->Template->formId = $this->strFormId;
-		$this->Template->buttons = $arrButtons;
 		$this->Template->products = $arrBuffer;
 	}
 	
@@ -450,42 +402,16 @@ class ModuleProductLister extends ModuleIsotopeBase
 			$objTemplate->message = $GLOBALS['TL_LANG']['MSC']['noProducts'];
 			return;
 		}
-		
-		// Buttons
-		$arrButtons = array
-		(
-			'add_to_cart'		=> array('label'=>$GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'], 'callback'=>array('IsotopeCart', 'addProduct')),
-		);
-		
-		if (isset($GLOBALS['TL_HOOKS']['isoListButtons']) && is_array($GLOBALS['TL_HOOKS']['isoReaderButtons']))
-		{
-			foreach ($GLOBALS['TL_HOOKS']['isoListButtons'] as $callback)
-			{
-				$this->import($callback[0]);
-				$arrButtons = $this->$callback[0]->$callback[1]($arrButtons);
-			}
-		}
-		
-		
-		$arrTemplateData = array
-		(
-			'buttons'		=> $arrButtons,
-			'quantityLabel'	=> $GLOBALS['TL_LANG']['MSC']['quantity'],
-			'useQuantity'	=> $this->iso_use_quantity,
-		);
-		
+			
 		$arrBuffer = array();
 		
 		foreach( $arrProducts as $i => $objProduct )
 		{
-			//! @todo do we need the raw product in template?
 			$arrBuffer[] = array
 			(
-				'raw'		=> $objProduct,
 				'clear'	    => ($this->iso_list_format=='grid' && $blnSetClear ? true : false),
 				'class'		=> ('product' . ($i == 0 ? ' product_first' : '')),
-				'html'		=> $objProduct->generate($this->iso_list_layout, $arrTemplateData, $this->strFormId),
-
+				'html'		=> $objProduct->generate($this->iso_list_layout, $this),
 			);
 
 			$blnSetClear = (($i+1) % $this->columns==0 ? true : false);
@@ -497,9 +423,6 @@ class ModuleProductLister extends ModuleIsotopeBase
 			$arrBuffer[count($arrBuffer)-1]['class'] .= ' product_last';
 		}
 
-		$objTemplate->action = $this->Environment->base;
-		$objTemplate->formId = $this->strFormId;
-		$objTemplate->buttons = $arrButtons;
 		$objTemplate->products = $arrBuffer;
 		
 		return $objTemplate->parse();
