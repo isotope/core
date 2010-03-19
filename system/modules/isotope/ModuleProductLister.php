@@ -170,13 +170,14 @@ class ModuleProductLister extends ModuleIsotopeBase
 		$arrBuffer = array();
 		
 		foreach( $arrProducts as $i => $objProduct )
-		{	
+		{
+			//! @todo do we need the raw product in template array?
 			$arrBuffer[] = array
 			(
 				'raw'		=> $objProduct,
 				'clear'	    => ($this->iso_list_format=='grid' && $blnSetClear ? true : false),
 				'class'		=> ('product' . ($i == 0 ? ' product_first' : '')),
-				'html'		=> $this->generateProduct($objProduct, $this->iso_list_layout, $arrTemplateData, $this->strFormId),
+				'html'		=> $objProduct->generate($this->iso_list_layout, $arrTemplateData, $this->strFormId),
 			);
 
 			if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && !$this->doNotSubmit)
@@ -476,13 +477,14 @@ class ModuleProductLister extends ModuleIsotopeBase
 		$arrBuffer = array();
 		
 		foreach( $arrProducts as $i => $objProduct )
-		{			
+		{
+			//! @todo do we need the raw product in template?
 			$arrBuffer[] = array
 			(
 				'raw'		=> $objProduct,
 				'clear'	    => ($this->iso_list_format=='grid' && $blnSetClear ? true : false),
 				'class'		=> ('product' . ($i == 0 ? ' product_first' : '')),
-				'html'		=> $this->generateProduct($objProduct, $this->iso_list_layout, $arrTemplateData, $this->strFormId),
+				'html'		=> $objProduct->generate($this->iso_list_layout, $arrTemplateData, $this->strFormId),
 
 			);
 
