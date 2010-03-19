@@ -56,7 +56,6 @@ $GLOBALS['TL_LANG']['tl_product_attributes']['list_source_table']		= array('List
 $GLOBALS['TL_LANG']['tl_product_attributes']['list_source_field']		= array('List Source Field','this field will be the label for each value that comes from the list source table.');
 $GLOBALS['TL_LANG']['tl_product_attributes']['use_alternate_source']	= array('Alternate List Source','Check this if you would like to use a database table as the data source.');
 $GLOBALS['TL_LANG']['tl_product_attributes']['text_collection_rows']	= array('Number of Text Box Rows','Number of text box controls to provide the customer for leaving additional text information related to the product purchase.');
-$GLOBALS['TL_LANG']['tl_product_attributes']['disabled']				= array('Global Disable','Disabled this attribute completely.');
 
 $GLOBALS['TL_LANG']['tl_product_attributes']['template_key']			= 'Template Key: ';
 $GLOBALS['TL_LANG']['tl_product_attributes']['template_visibility_title']	= 'Available In The Following Templates: ';

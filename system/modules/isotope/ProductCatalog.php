@@ -48,7 +48,6 @@ class ProductCatalog extends Backend
 		if ($strTable != 'tl_product_data')
 			return;
 		
-		// FIXME: should we exclude "globally disabled" fields?
 		$objAttributes = $this->Database->execute("SELECT * FROM tl_product_attributes");
 		
 		
