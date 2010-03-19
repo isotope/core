@@ -20,11 +20,7 @@ var IsotopeFrontend =
 	
 	loadProductBinders: function(mId)
 	{	
-		var productForm = document.id('productForm');
-		
 		var variantsDiv = document.id('variants_container');
-		
-		var ctrlProductId = document.id('ctrl_product_id');
 		
 		var image_gallery = document.id('image_gallery');
 		
