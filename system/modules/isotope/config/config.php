@@ -142,7 +142,6 @@ $GLOBALS['ISO_MOD'] = array
  * Hooks
  */
 $GLOBALS['TL_HOOKS']['createNewUser'][]				= array('Isotope','createNewUser');
-$GLOBALS['TL_HOOKS']['getMappingAttributes'][]		= array('ProductCatalog','generateMappingAttributeList');
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][]			= array('IsotopeFrontend', 'replaceIsotopeTags');
 $GLOBALS['TL_HOOKS']['executePostActions'][]		= array('ProductOptionWizard', 'executePostActions');
 $GLOBALS['TL_HOOKS']['generatePage'][]				= array('Isotope','generatePage');

@@ -29,16 +29,15 @@
 class ProductCatalog extends Backend
 {
 
+	protected $arrSelectors = array();
+
+
 	public function __construct()
 	{	
 		parent::__construct();
 		
 		$this->import('Isotope');
 	}
-	
-	protected $arrList = array ('tstamp','pages','new_import'/*,'add_audio_file','add_video_file'*/);	//Basic required fields
-	protected $arrData = array();
-	protected $arrSelectors = array();
 
 	
 	/**
@@ -200,229 +199,7 @@ class ProductCatalog extends Backend
 		return $objProductType->type;
 		
 	}
-
 	
-	protected function getProductOptionSets()
-	{
-		$intPid = $this->getProductType($this->Input->get('id'));
-	
-		$objSets = $this->Database->prepare("SELECT id, title FROM tl_product_option_sets WHERE pid=?")
-								  ->execute($intPid);
-		
-		if($objSets->numRows < 1)
-		{
-			return array();	
-		}
-		
-		$arrSets = $objSets->fetchAllAssoc();
-				
-		foreach($arrSets as $row)
-		{
-			$arrReturn[$row['id']] = $row['title'];
-		}
-		
-		return $arrReturn;
-	}
-	
-	
-	public function loadProductOptions($varValue, DataContainer $dc)
-	{
-		$strOptionSetValue = $this->Input->post('option_set_mode');
-						
-		switch($strOptionSetValue)
-		{
-			case 'new_option_set':
-				$strOptionSetName = $this->Input->post('option_set_name');
-				$arrValues = $this->Input->post('values');
-				
-				if(!sizeof($arrValues))
-				{
-					return $varValue;
-				}
-				else
-				{
-					foreach($arrValues as $key=>$attribute)
-					{
-						$arrAttributes[$key] = explode(',', trim($attribute));
-					}
-				}
-				break;
-				
-			case 'existing_option_set':
-				$strOptionSetId = $this->Input->post('option_sets');
-				
-				$arrSubProducts = $this->loadSubproducts($strOptionSetId);
-				
-				break;		
-		}
-			
-		
-
-		//$
-				
-		//** Data structure example **//
-		/*
-			array(2) {
-			  [0]=>			/// ROWS
-			  array(2) {	
-			    [0]=>
-			    string(2) "17"	//the select at 0, 0
-			    [1]=>
-			    string(2) "18"  //the select at 0, 1
-			  }
-			  [1]=>
-			  array(2) {
-			    [0]=>
-			    string(2) "17"	//the select at 1, 0
-			    [1]=>
-			    string(2) "18"  //the select at 1, 1
-			  }
-			}
-			
-			array(2) {
-			  [0]=>
-			  array(2) {
-			    [0]=>
-			    string(3) "red" 	//the value at 0, 0
-			    [1]=>
-			    string(5) "small"	//the value at 0, 1
-			  }
-			  [1]=>
-			  array(2) {
-			    [0]=>
-			    string(3) "red"		//the value at 1, 0
-			    [1]=>
-			    string(6) "medium"  //the value at 1, 1
-			  }
-			}
-		
-			and we will transform this into the following structure...
-			
-			array(2) { 			// Number of total rows
-				
-				[0] =>
-				array(2) {
-					[0] => array(2)
-					{
-						'attribute'		=> string(2) "17",
-						'value'			=> string(3) "red"
-					},
-					[1] => array(2)
-					{
-						'attribute'		=> string(2) "18",
-						'value'			=> string(5) "small"					
-					}
-				},
-				[1] =>
-				array(2) {
-					[0] => array(2)
-					{
-						'attribute'		=> string(2) "17",
-						'value'			=> string(3) "red"
-					},
-					[1] => array(2)
-					{
-						'attribute'		=> string(2) "18",
-						'value'			=> string(6) "medium"					
-					}
-				
-				}
-			
-			}
-		
-		
-		$arrAttributes = deserialize($varValue);	//because the first thing that happens is this, on save.	
-		$arrValues = $this->Input->post($dc->field . '_values'); 
-	
-		$arrCompositeValues = array();
-	
-		for($x=0; $x<sizeof($arrAttributes); $x++)
-		{
-			
-			for($y=0; $y<sizeof($arrValues); $y++)
-			{	
-				
-					
-					$arrAttributeValuePairs[] = array
-					(
-						'x'				=> $x,
-						'y'				=> $y,
-						'attribute'		=> $arrAttributes[$x][$y],
-						'value'			=> $arrValues[$x][$y]					
-					);						
-					
-			}		
-		
-		}
-		
-		return serialize($arrAttributeValuePairs);*/
-		
-	}
-	
-	/*public function loadProductOptions($varValue, DataContainer $dc)
-	{
-		$arrAttributeValuePairs = deserialize($varValue);
-		
-		$arrAttributes = array();
-		$arrValues = array();
-		
-		if(sizeof($arrAttributeValuePairs)<1)
-		{
-			return;
-		}
-		
-		foreach($arrAttributeValuePairs as $row)
-		{
-			
-				$x = (integer)$row['x'];
-				$y = (integer)$row['y'];
-				
-				$arrAttributes[$x][$y] = $row['attribute'];
-				
-				$arrValues[$x][$y] = $row['value'];*/
-				
-				/*
-				$varValue[$valuePair['x']] = array
-				(
-					$valuePair['x']			=>	$valuePair[$valuePair['x']][$valuePair['attribute']],
-					$valuePair['x']+1		=>	$valuePair[$valuePair['x']+1][$valuePair['attribute']]
-				);
-				
-				$arrValues[$row['x']] = array
-				(
-					$row['x']		=>	$valuePair[$row['x']]['value'],
-					$row['x']+1		=>  $valuePair[$row['x']+1]['value']
-				);*/
-		
-		//}	
-			//$_SESSION['FORM_DATA'][$dc->field . '_values'] = $arrValues;
-			//$_SESSION['FORM_DATA'][$dc->field] = $arrAttributes;
-			
-			//serialize($_SESSION['FORM_DATA'][$dc->field.'_values']);
-			//
-			//$varValue = $arrAttributes;
-			//return $arrAttributes;
-			
-			/*array(2) {
-			  [0]=>			/// ROWS
-			  array(2) {	
-			    [0]=>
-			    string(2) "17"	//the select at 0, 0
-			    [1]=>
-			    string(2) "18"  //the select at 0, 1
-			  }
-			  [1]=>
-			  array(2) {
-			    [0]=>
-			    string(2) "17"	//the select at 1, 0
-			    [1]=>
-			    string(2) "18"  //the select at 1, 1
-			  }
-			}*/
-			
-	
-	
-	//}
 	
 	public function saveField($varValue, DataContainer $dc)
 	{
@@ -446,7 +223,6 @@ class ProductCatalog extends Backend
 	
 	protected function getProductTypePalettes()
 	{
-		
 		$objProductTypes = $this->Database->prepare("SELECT * FROM tl_product_types")->execute();
 		
 		if (!$objProductTypes->numRows)
@@ -483,7 +259,6 @@ class ProductCatalog extends Backend
 			
 			if(is_array($arrFieldCollection) && count($arrFieldCollection) > 0)
 			{
-				
 				$objHiddenAttributes = $this->Database->execute("SELECT field_name FROM tl_product_attributes WHERE is_hidden_on_backend='1'");
 						
 				if($objHiddenAttributes->numRows > 0)
@@ -536,7 +311,6 @@ class ProductCatalog extends Backend
 
 			if(count($arrExtraFields))
 			{
-				
 				foreach($arrExtraFields as $extrafield)
 				{				
 					if(is_array($arrPalette[$strAppendToLegend]) && !in_array($extrafield, $arrPalette[$strAppendToLegend]))
@@ -558,9 +332,7 @@ class ProductCatalog extends Backend
 				}
 			}*/
 						
-						
-			$arrPalette[$arrAttributes['legend']][] = $field;			
-
+			$arrPalette[$arrAttributes['legend']][] = $field;
 		}
 		
 		/*		
@@ -580,172 +352,7 @@ class ProductCatalog extends Backend
 		return implode(';', $arrLegends);
 	}
 	
-	public function getOptionSets()
-	{
-		//step 1: get the current product type
 		
-		
-		//step 2: drop in the options relevant to the current palette type.  These options must change values because of the extra palettes generated for the radio widget
-		$strCurrentPaletteType = $this->getCurrentPalette($this->Input->get('id'));
-		
-		$arrChoices[$strCurrentPaletteType . '_existing_option_set'] = &$GLOBALS['TL_LANG']['tl_product_data']['existing_option_set'];
-		$arrChoices[$strCurrentPaletteType . '_new_option_set'] = &$GLOBALS['TL_LANG']['tl_product_data']['new_option_set'];		
-		
-		return $arrChoices;
-	}
-	
-	public function getCurrentPalette($intId)
-	{
-		$objCurrentPalette = $this->Database->prepare("SELECT type FROM tl_product_data WHERE id=?")
-											->limit(1)
-											->execute($intId);
-		
-		if($objCurrentPalette->numRows < 1)
-		{
-			return '';
-		}
-		
-		return $objCurrentPalette->type;
-	}
-	
-	protected function prepareCategories($varValue, DataContainer $dc)
-	{
-		if(is_null($varValue) || strlen(trim($varValue)) < 1)
-		{
-			return '';
-		}
-		//Potentially the delimiter could be different.  May want to try and figure it out autommatically.
-		if(!is_array(deserialize($varValue)))
-		{
-			if(strpos($varValue, ','))
-			{
-				$arrPages = explode(',', $varValue);
-				if(sizeof($arrPages) < 1 || strlen($arrPages[0])<1)
-				{
-					return '';
-				}
-			}
-			else
-			{
-				$arrPages[] = $varValue;	//singular value
-			}
-			
-			$arrPages = serialize($arrPages);
-			
-			return $arrPages;
-		}
-		
-		return $varValue;
-		
-	}
-
-	
-	public function generateMappingAttributeList()
-	{
-		$arrOptions = array();
-		$arrAttributes = array();
-		
-		$objAttributes = $this->Database->prepare("SELECT field_name FROM tl_product_attributes WHERE pid=?")
-										->execute($set['id']);
-								
-		if($objAttributes->numRows < 1)
-		{
-			return false;
-		}
-				
-		$arrAttributes = $objAttributes->fetchAllAssoc();
-			
-		foreach($arrAttributes as $attribute)
-		{						
-			$arrOptions[] = array
-			(
-				'value' => $attribute['field_name'],
-				'label' => $attribute['name']
-			);
-		}
-					
-		return $arrOptions;
-	}
-	
-	
-	/** 
-	 * Get the next sorting value if it exists for a given table.
-	 * 
-	 * @access public
-	 * @param string $strTable
-	 * @return integer;
-	 */
-	public function getNextSortValue($strTable)
-	{
-		if($this->Database->fieldExists('sorting', $strTable))
-		{
-			$objSorting = $this->Database->prepare("SELECT MAX(sorting) as maxSort FROM " . $strTable)
-										 ->execute();
-			
-			return $objSorting->maxSort + 128;
-		}
-		
-		return 0;
-	}
-
-	
-	/**
-	 * Autogenerate an article sku if it has not been set yet
-	 * @param mixed
-	 * @param object
-	 * @return string
-	 */
-	public function generateSKU($varValue, DataContainer $dc, $id=0)
-	{
-		//For import needs, this is an override of the current record ID because when importing we're
-		//not utlizing the DataContainer.  We should separate these functions with an intermediary function so that this logic
-		//which is repeated across various other functions can be fed just an integer value instead of the more specific
-		//DataContainer and its corresponding values.
-		if($id!=0)
-		{
-			$intId = $id;
-		}else{
-			$intId = $dc->id;
-		}
-		
-		$autoAlias = true;
-
-		// Generate alias if there is none
-		if (!strlen($varValue))
-		{
-			$objProductName = $this->Database->prepare("SELECT id, new_import, name, sku FROM tl_product_data WHERE id=?")
-									   ->limit(1)
-									   ->execute($intId);
-
-			$autoAlias = true;
-			
-			if($objProductName->new_import!=1)
-			{
-				if(!strlen($objProductName->sku))
-				{
-					$varValue = standardize($objProductName->product_name);
-				}
-			}
-		}
-
-		$objAlias = $this->Database->prepare("SELECT id FROM tl_product_data WHERE id=? OR sku=?")
-								   ->execute($intId, $varValue);
-
-		// Check whether the page alias exists
-		if ($objAlias->numRows > 1)
-		{
-			if (!$autoAlias)
-			{
-				throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['aliasExists'], $varValue));
-			}
-
-			$varValue .= '_' . $intId;
-		}
-
-		return $varValue;
-	}
-
-	
 	/**
 	 * Wrapper for the Product-Filter Collection associative table logic.  Grabs all necessary values in order to update the PFC table.
 	 *
@@ -759,6 +366,7 @@ class ProductCatalog extends Backend
 		{
 			return $varValue;
 		}
+		
 		//For import needs, this is an override of the current record ID because when importing we're
 		//not utlizing the DataContainer.  We should separate these functions with an intermediary function so that this logic
 		//which is repeated across various other functions can be fed just an integer value instead of the more specific
@@ -827,16 +435,13 @@ class ProductCatalog extends Backend
 	 */
 	private function updateFilterValuesToCategories($arrPageList, $arrAllPageInfo, DataContainer $dc, $attributeID, $varCurrValue)
 	{		
-		
 		if(sizeof($arrPageList) < 1)
 		{
-			
 			$arrPageList[] = 0;
 		}
 		
 		if(empty($varCurrValue) || (is_int($varCurrValue) && $varCurrValue==0))
 		{
-			
 			return;
 		}
 		
@@ -845,7 +450,6 @@ class ProductCatalog extends Backend
 		//Check Existing records first to avoid duplicate entries
 		$objPFCInfo = $this->Database->prepare("SELECT id, pid, attribute_id, value_collection FROM tl_filter_values_to_categories WHERE pid IN (" . join(",", $arrPageList) . ") AND attribute_id=?")
 									->execute($attributeID);
-		
 		
 		if($objPFCInfo->numRows < 1)
 		{
@@ -865,7 +469,6 @@ class ProductCatalog extends Backend
 			}
 			
 			return;
-						
 		}
 		
 		
@@ -882,7 +485,6 @@ class ProductCatalog extends Backend
 		
 		
 		// For each existing page that DID in the past have this product ID associated with it, but NOW the submitted list does not include that page id, remove it
-		
 		foreach($arrAllPageInfo as $page)
 		{
 			$arrExistingValues = array();
@@ -904,49 +506,46 @@ class ProductCatalog extends Backend
 										
 					//If we find that the product id submitted does, in fact exist in the existing product collection for this page, then we remove it.
 				
-						//Do any other products in this category share the filter value?  If not then we can safely remove it
-						$objProductsAssociatedWithFilterValue = $this->Database->prepare("SELECT id, pages FROM tl_product_data WHERE " . $dc->field . "=?")->execute($varCurrValue);
+					//Do any other products in this category share the filter value?  If not then we can safely remove it
+					$objProductsAssociatedWithFilterValue = $this->Database->prepare("SELECT id, pages FROM tl_product_data WHERE " . $dc->field . "=?")->execute($varCurrValue);
+					
+											
+					if($objProductsAssociatedWithFilterValue->numRows < 1)	//if there are no occurrences of this filter value in any product, then ok.
+					{
+						unset($arrExistingValues[$key]);
+					}
+					else
+					{
+						$arrOtherProductsPages = $objProductsAssociatedWithFilterValue->fetchEach('pages');	
+													
+						$blnPreserveFilterValue = false;		//reset every row.  if we end up false at the end we need to unset.
 						
-												
-						if($objProductsAssociatedWithFilterValue->numRows < 1)	//if there are no occurrences of this filter value in any product, then ok.
-						{
-							unset($arrExistingValues[$key]);
-						}else{
-						
-							$arrOtherProductsPages = $objProductsAssociatedWithFilterValue->fetchEach('pages');	
-														
-							$blnPreserveFilterValue = false;		//reset every row.  if we end up false at the end we need to unset.
+						foreach($arrOtherProductsPages as $pageRow)
+						{	
+							$rowInfo = deserialize($pageRow);
 							
-							foreach($arrOtherProductsPages as $pageRow)
-							{	
-								$rowInfo = deserialize($pageRow);
-								
-								foreach($arrPageList as $currPage)
-								{				
-									if(in_array($currPage, $rowInfo))
-									{
-								
-										$blnPreserveFilterValue = true;
-										break;
-									}
-								
+							foreach($arrPageList as $currPage)
+							{				
+								if(in_array($currPage, $rowInfo))
+								{
+									$blnPreserveFilterValue = true;
+									break;
 								}
 							}
-							
-							if(!$blnPreserveFilterValue) //if this filter value is used by any other product in any of the categories associated
-							{	
-								//with the given product, then we cannot remove the filter value from the record.							
-								unset($arrExistingValues[$key]);
-							}
-						}						
-						
-						if(is_array($arrExistingValues) && sizeof($arrExistingValues)>0)
-						{
-	
-							 $this->Database->prepare("UPDATE tl_filter_values_to_categories SET value_collection=? WHERE pid=? AND attribute_id=?")
-									   		->execute(serialize($arrExistingValues), $page['pid'], $attributeID);
 						}
-
+						
+						if(!$blnPreserveFilterValue) //if this filter value is used by any other product in any of the categories associated
+						{	
+							//with the given product, then we cannot remove the filter value from the record.							
+							unset($arrExistingValues[$key]);
+						}
+					}						
+					
+					if(is_array($arrExistingValues) && sizeof($arrExistingValues)>0)
+					{
+						 $this->Database->prepare("UPDATE tl_filter_values_to_categories SET value_collection=? WHERE pid=? AND attribute_id=?")
+								   		->execute(serialize($arrExistingValues), $page['pid'], $attributeID);
+					}
 				}
 
 			
@@ -980,8 +579,8 @@ class ProductCatalog extends Backend
 		
 		
 		}
-		//New Pages to add that aren't in the current collection
 		
+		//New Pages to add that aren't in the current collection
 		foreach($arrPageList as $intPageNum)
 		{	
 			if(!in_array((int)$intPageNum, $arrExistingPages))
@@ -1000,111 +599,7 @@ class ProductCatalog extends Backend
 				
 				$this->Database->prepare("INSERT INTO tl_filter_values_to_categories %s")->set($arrSet)->execute();
 			}
-		}			
-				
-		return;
+		}
 	}
-	
-	private function generateTitle($strFormat, $values)
-	{
-		$fields = $GLOBALS['TL_DCA']['tl_product_data']['list']['label']['fields'];
-		preg_match_all('/{{([^}]+)}}/', $strFormat, $matches);
-		//$strFormat = '';
-		foreach ($matches[1] as $match)
-		{
-			$params = split('::', $match);
-			$fieldConf = $GLOBALS['TL_DCA']['tl_product_data']['fields'][$params[0]];
-			if ($fieldConf)
-			{	
-				$replace = $values[$params[0]];
-				if ($params[1])
-				{
-					switch ($fieldConf['eval']['isotope']['type'])
-					{
-						case 'file':
-								if ($fieldConf['eval']['isotope']['showImage'])
-								{ 
-									$replace = $this->generateThumbnail($replace, $params[1], $fieldConf['label'][0]);
-								}
-								break;
-
-						case 'checkbox':
-								// only use image if checkbox == true
-								$replace = ($replace ? $this->generateThumbnail($replace, $params[1], $fieldConf['label'][0]) : '');
-								break;
-
-						default:;
-
-					}					
-				}
-				$strFormat = str_replace('{{'.$match.'}}', $replace, $strFormat);
-			}
-		}
-		
-		return $strFormat;
-	}
-
-
-	private function generateThumbnail($value, $query, $label)
-	{
-		// parse query parameters if set
-		parse_str($query, $params);
-		$src = $params['src'] ? $params['src'] :  $value;
-
-		if (strpos($src, '/') === false)
-		{
-			$src = sprintf('system/themes/%s/images/%s', $this->getTheme(), $src);
-		}
-
-		if (!file_exists(TL_ROOT.'/'.$src))
-		{
-			return '';
-		}
-
-		//$size = getimagesize(TL_ROOT.'/'.$src);
-		return '<img src="' . $this->getImage($src, $params['w'], $params['h']) . '" alt="'.specialchars($label).'" />';
-
-	}
-
-	
-/*
-	public function importAlternateSourceToCollection($varValue, DataContainer $dc)
-	{
-		$objTableField = $this->Database->prepare("SELECT list_source_table FROM tl_product_attributes WHERE id=?")
-										->execute($dc->id);
-		
-		
-		
-		if($objTableField->numRows < 1)
-		{
-			return $varValue;
-		}
-		
-		$objAlternateSourceData = $this->Database->prepare("SELECT id, " . $varValue . " FROM " . $objTableField->list_source_table)
-												 ->execute();
-												 
-		if($objAlternateSourceData->numRows < 1)
-		{
-			return $varValue;
-		}
-		
-		$arrAlternateSourceData = $objAlternateSourceData->fetchAllAssoc();
-		
-		foreach($arrAlternateSourceData as $row)
-		{
-			$arrCollection[] = array
-			(
-				'value'	=> $row['id'],
-				'label'	=> $row[$varValue]
-			);
-		}
-				
-						
-		$this->Database->prepare("UPDATE tl_product_attributes SET option_list=?, use_alternate_source=0 WHERE id=?")->execute(serialize($arrCollection), $dc->id);
-	
-		return $varValue;
-	}
-*/
-		
 }
 
