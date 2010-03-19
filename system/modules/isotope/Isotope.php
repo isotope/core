@@ -727,12 +727,5 @@ class Isotope extends Controller
 		
 		return $arrData;
 	}
-	
-	
-	/**
-	 * Required by Model class
-	 */	
-	public function getImage($image, $width, $height, $mode='proportional', $target=null) { return parent::getImage($image, $width, $height, $mode, $target); }
-	public function generateFrontendUrl($arrRow, $strParams='') { return parent::generateFrontendUrl($arrRow, $strParams); }
 }
 

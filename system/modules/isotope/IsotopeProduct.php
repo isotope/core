@@ -166,7 +166,7 @@ class IsotopeProduct extends Controller
 
 												foreach( array('large', 'medium', 'thumbnail', 'gallery') as $size )
 												{
-													$strImage = $this->Isotope->getImage($strFile, $this->Isotope->Store->{$size . '_image_width'}, $this->Isotope->Store->{$size . '_image_height'});
+													$strImage = $this->getImage($strFile, $this->Isotope->Store->{$size . '_image_width'}, $this->Isotope->Store->{$size . '_image_height'});
 													$arrSize = @getimagesize(TL_ROOT . '/' . $strImage);
 
 													$file[$size] = $strImage;
@@ -210,7 +210,7 @@ class IsotopeProduct extends Controller
 							{
 								foreach( array('large', 'medium', 'thumbnail', 'gallery') as $size )
 								{
-									$strImage = $this->Isotope->getImage($this->Isotope->Store->missing_image_placeholder, $this->Isotope->Store->{$size . '_image_width'}, $this->Isotope->Store->{$size . '_image_height'});
+									$strImage = $this->getImage($this->Isotope->Store->missing_image_placeholder, $this->Isotope->Store->{$size . '_image_width'}, $this->Isotope->Store->{$size . '_image_height'});
 									$arrSize = @getimagesize(TL_ROOT . '/' . $strImage);
 
 									$file[$size] = $strImage;
@@ -242,7 +242,7 @@ class IsotopeProduct extends Controller
 		switch( $strKey )
 		{
 			case 'reader_jumpTo':
-				$this->arrData['href_reader'] = $this->Isotope->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($varValue)->fetchAssoc(), '/product/' . $this->arrData['alias']);
+				$this->arrData['href_reader'] = $this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($varValue)->fetchAssoc(), '/product/' . $this->arrData['alias']);
 				break;
 				
 			case 'reader_jumpTo_Override':
