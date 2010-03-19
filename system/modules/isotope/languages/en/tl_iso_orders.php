@@ -49,6 +49,11 @@ $GLOBALS['TL_LANG']['tl_iso_orders']['cc_exp'] = array('Expiration','The expirat
  */
 $GLOBALS['TL_LANG']['tl_iso_orders']['shipping_method_labels']['ups_ground'] = 'UPS Ground';
 
+$GLOBALS['TL_LANG']['tl_iso_orders']['opLabel']					= 'Surcharge';
+$GLOBALS['TL_LANG']['tl_iso_orders']['opPrice']					= 'Price';
+$GLOBALS['TL_LANG']['tl_iso_orders']['opTaxClass']				= 'Tax Class';
+$GLOBALS['TL_LANG']['tl_iso_orders']['opAddTax']				= 'Add Tax?';
+
 
 /**
  * Additional Operations
