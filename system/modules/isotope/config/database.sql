@@ -54,6 +54,7 @@ CREATE TABLE `tl_module` (
   `iso_donationProduct` int(10) unsigned NOT NULL default '0',
   `iso_listingSortField` varchar(255) NOT NULL default '',
   `iso_listingSortDirection` varchar(8) NOT NULL default '',
+  `iso_buttons` blob NULL,
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 

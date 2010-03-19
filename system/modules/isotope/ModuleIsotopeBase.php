@@ -73,7 +73,7 @@ abstract class ModuleIsotopeBase extends Module
 			}
 		}
 	}
-
+	
 	
 	/**
 	 * Generate a link string for various actions such as adding a product to the cart, removing from, or updating.

@@ -67,6 +67,9 @@ $GLOBALS['TL_LANG']['tl_module']['iso_checkout_jumpTo']			= array('Checkout Jump
 $GLOBALS['TL_LANG']['tl_module']['iso_donationProduct']			= array('Donation Product','Select a product to be used for donations.');
 $GLOBALS['TL_LANG']['tl_module']['iso_listingSortField'] 		= array('Initial sorting field','Select a sorting field to sort the listing by on first page load.');
 $GLOBALS['TL_LANG']['tl_module']['iso_listingSortDirection'] 	= array('Initial sorting direction','Select a initial sorting direction.');
+$GLOBALS['TL_LANG']['tl_module']['iso_buttons']					= array('Buttons', 'Select the buttons you want to show.');
+
+
 /**
  * References
  */
@@ -80,6 +83,7 @@ $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['current_category']		
 
 $GLOBALS['TL_LANG']['tl_module']['sortingDirection']['ASC'] 	= "Low to High/A to Z";
 $GLOBALS['TL_LANG']['tl_module']['sortingDirection']['DESC'] 	= "High to Low/Z to A";
+
 
 /**
  * Legends

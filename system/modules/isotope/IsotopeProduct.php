@@ -413,11 +413,11 @@ class IsotopeProduct extends Controller
 	/**
 	 * Generate a product template
 	 */
-	public function generate($strTemplate, $arrData=array(), $strFormId='', $intParentProductId = 0)
+	public function generate($strTemplate, &$objModule, $intParentProductId = 0)
 	{
 		$objTemplate = new FrontendTemplate($strTemplate);
 
-		$objTemplate->setData($arrData);
+//		$objTemplate->setData($arrData);
 		
 		$arrEnabledOptions = array();
 		$arrVariantOptionFields = array();
@@ -458,7 +458,7 @@ class IsotopeProduct extends Controller
 						{
 							$arrAttributeData = $GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes'];
 							$arrEnabledOptions[] = $attribute;	
-							$arrProductOptions[$attribute] = $this->generateProductOptionWidget($attribute, $GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute], $strFormId);
+							$arrProductOptions[$attribute] = $this->generateProductOptionWidget($attribute, $GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]);
 						}
 					}
 					else
@@ -545,7 +545,7 @@ class IsotopeProduct extends Controller
 		{
  			$objTemplate->hasVariants = true;
  			
-			//Create a special widget that combins all option value combos that are enabled.
+			// Create a special widget that combines all option value combos that are enabled.
 			$arrData = array
 			(
 	            'name'			=> 'subproducts',
@@ -557,7 +557,7 @@ class IsotopeProduct extends Controller
        
 			$arrAttributeData = $GLOBALS['TL_DCA']['tl_product_data']['fields'][$k]['attributes'];
 
-			$strHtml = $this->generateProductOptionWidget('product_variants', $arrData, $strFormId, $arrVariantOptionFields);
+			$strHtml = $this->generateProductOptionWidget('product_variants', $arrData, $arrVariantOptionFields);
 	
 			if(strlen($strHtml) && $arrData['options'])
 			{
@@ -573,6 +573,42 @@ class IsotopeProduct extends Controller
 				$objTemplate->hasVariants = false;
 			}
         }
+        
+        
+        // Buttons
+		$arrButtons = array();
+		if (isset($GLOBALS['TL_HOOKS']['isoButtons']) && is_array($GLOBALS['TL_HOOKS']['isoButtons']))
+		{
+			foreach ($GLOBALS['TL_HOOKS']['isoButtons'] as $callback)
+			{
+				$this->import($callback[0]);
+				$arrButtons = $this->$callback[0]->$callback[1]($arrButtons);
+			}
+			
+			$arrButtons = array_intersect_key($arrButtons, array_flip(deserialize($objModule->iso_buttons, true)));
+		}
+		
+		
+		if ($this->Input->post('FORM_SUBMIT') == 'iso_product_'.$this->id && !$this->doNotSubmit)
+		{			
+			foreach( $arrButtons as $button => $data )
+			{
+				if (strlen($this->Input->post($button)))
+				{
+					if (is_array($data['callback']) && count($data['callback']) == 2)
+					{
+						$this->import($data['callback'][0]);
+						$this->{$data['callback'][0]}->{$data['callback'][1]}($this, $objModule);
+					}
+					break;
+				}
+			}
+		}
+		
+		
+		$objTemplate->buttons = $arrButtons;
+		$objTemplate->quantityLabel = $GLOBALS['TL_LANG']['MSC']['quantity'];
+		$objTemplate->useQuantity = $objModule->iso_use_quantity;
 			
 
 		$objTemplate->raw = $this->arrData;
@@ -591,6 +627,11 @@ class IsotopeProduct extends Controller
 				
 		$objTemplate->optionList = implode(',', $arrEnabledOptions);
 		
+		$objTemplate->enctype = $this->hasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
+		$objTemplate->formId = 'iso_product_'.$this->id;
+		$objTemplate->action = ampersand($this->Environment->request, true);
+		$objTemplate->formSubmit = 'iso_product_'.$this->id;
+		
 		return $objTemplate->parse();
 	}
 	
@@ -603,7 +644,7 @@ class IsotopeProduct extends Controller
 	 * @param boolean $blnUseTable
 	 * @return string
 	 */
-	protected function generateProductOptionWidget($strField, $arrData, $strFormId = '', $arrOptionFields = array(), $blnUseTable = false)
+	protected function generateProductOptionWidget($strField, $arrData, $arrOptionFields = array(), $blnUseTable = false)
 	{
 		$hideVariants = false;
 		
@@ -636,7 +677,7 @@ class IsotopeProduct extends Controller
 		$objWidget->id .= "_" . $this->id;
 		
 		// Validate input
-		if ($this->Input->post('FORM_SUBMIT') == $strFormId)
+		if ($this->Input->post('FORM_SUBMIT') == 'iso_product_'.$this->id)
 		{
 			$GLOBALS['TL_LANG']['ERR']['mandatory'] = $GLOBALS['TL_LANG']['ERR']['mandatoryOption'];
 			

@@ -30,9 +30,9 @@
  */
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][]			= 'iso_checkout_method';
 
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductLister']			= '{title_legend},name,headline,type;{display_legend},perPage,columns,iso_list_format,iso_show_teaser;{config_legend},iso_use_quantity,iso_category_scope,iso_jump_first,iso_listingSortField,iso_listingSortDirection,new_products_time_window;{redirect_legend},iso_reader_jumpTo;{template_legend:hide},iso_list_layout;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductLister']			= '{title_legend},name,headline,type;{display_legend},perPage,columns,iso_list_format,iso_show_teaser;{config_legend},iso_use_quantity,iso_category_scope,iso_jump_first,iso_listingSortField,iso_listingSortDirection,new_products_time_window;{redirect_legend},iso_reader_jumpTo;{template_legend:hide},iso_list_layout,iso_buttons;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductReader']			= '{title_legend},name,headline,type;{config_legend},iso_use_quantity,iso_disableFilterAjax;{template_legend:hide},iso_reader_layout;guests,protected;align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['isoProductReader']			= '{title_legend},name,headline,type;{config_legend},iso_use_quantity,iso_disableFilterAjax;{template_legend:hide},iso_reader_layout,iso_buttons;guests,protected;align,space,cssID';
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['isoDonationsModule']			= '{title_legend},name,headline,type;{config_legend},iso_donationProduct;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 
@@ -427,6 +427,16 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_listingSortDirection'] = array
 	'inputType'               => 'select',
 	'options'				  => array('DESC','ASC'),
 	'reference'				  => &$GLOBALS['TL_LANG']['tl_module']['sortingDirection']
+);
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_buttons'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_buttons'],
+	'exclude'                 => true,
+	'inputType'               => 'checkboxWizard',
+	'default'				  => array('add_to_cart'),
+	'options_callback'		  => array('tl_module_isotope', 'getButtons'),
+	'eval'					  => array('multiple'=>true, 'tl_class'=>'clr'),
 );
 
 
@@ -876,4 +886,28 @@ class tl_module_isotope extends Backend
 
 		return $arrModules;
 	}
+	
+	
+	public function getButtons()
+	{
+		$arrOptions = array();
+		$arrButtons = array();
+		
+		if (isset($GLOBALS['TL_HOOKS']['isoButtons']) && is_array($GLOBALS['TL_HOOKS']['isoButtons']))
+		{
+			foreach ($GLOBALS['TL_HOOKS']['isoButtons'] as $callback)
+			{
+				$this->import($callback[0]);
+				$arrButtons = $this->$callback[0]->$callback[1]($arrButtons);
+			}
+		}
+		
+		foreach( $arrButtons as $button => $data )
+		{
+			$arrOptions[$button] = $data['label'];
+		}
+		
+		return $arrOptions;
+	}
 }
+
