@@ -26,10 +26,10 @@
 		</div>
 	<div class="clear">&nbsp;</div>
 	</div>
+<?php endforeach; ?>
     <div class="subtotal"><span class="label"><?php echo $this->subTotalLabel; ?></span> <?php echo $this->subTotalPrice; ?></div>	
     <div class="cart"><a class="button" href="<?php echo $this->cartJumpTo; ?>"><span><?php echo $this->cartLabel; ?></span></a></div>
 	<div class="checkout"><a class="button dark" href="<?php echo $this->checkoutJumpTo; ?>"><?php echo $this->checkoutJumpToLabel; ?></a></div>
-<?php endforeach; ?>
 <?php else: ?>
 <div class="empty"><?php echo $this->message; ?></div>
 <div class="clear">&nbsp;</div>	

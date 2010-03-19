@@ -37,10 +37,10 @@
     	<td class="col_4 price total"><?php echo $product['total_price']; ?></td>
     	<td class="col_5 col_last remove"><a href="<?php echo $product['remove_link']; ?>" title="<?php echo $product['remove_link_title']; ?>" class="remove"><?php echo $product['remove_link_text']; ?></a></td>
 	</tr>
+<?php endforeach; ?>
     </tbody>
 </table>
 </div>
-<?php endforeach; ?>
 <div class="submit_container">
 	<button type="submit" class="submit update"><span><?php echo $GLOBALS['TL_LANG']['MSC']['updateCartBT']; ?></span></button>
 	<a class="continue" href="<?php echo $this->continueShoppingLink; ?>"><span><?php echo $this->continueShoppingLabel; ?></span></a>
