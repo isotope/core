@@ -25,7 +25,7 @@
  */
 
 
-class IsotopeProduct extends Model
+class IsotopeProduct extends Controller
 {
 
 	/**
@@ -33,6 +33,12 @@ class IsotopeProduct extends Model
 	 * @var string
 	 */
 	protected $strTable = 'tl_product_data';
+	
+	/**
+	 * Data array
+	 * @var array
+	 */
+	protected $arrData = array();
 
 	/**
 	 * Attributes assigned to this product
@@ -291,17 +297,6 @@ class IsotopeProduct extends Model
 
 
 	/**
-	 * Find a record by its reference field and return true if it has been found
-	 * @param  int
-	 * @return boolean
-	 */
-	public function findBy($strRefField, $varRefId)
-	{
-		throw new Exception("findBy() is prohibited on IsotopeProduct, you must __construct() with table data.");
-		return false;
-	}
-
-	/**
 	 * @todo this is really a bad function name!
 	 */
 	public function getFirstChild($intId)
@@ -309,6 +304,16 @@ class IsotopeProduct extends Model
 		$objChild = $this->Database->prepare("SELECT id FROM tl_product_data WHERE pid=?")->execute($intId);
 
 		return (!$objChild->numRows ? false : true);
+	}
+	
+	
+	/**
+	 * Return the current record as associative array
+	 * @return array
+	 */
+	public function getData()
+	{
+		return $this->arrData;
 	}
 
 
