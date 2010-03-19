@@ -177,7 +177,6 @@ class IsotopeCart extends Model
 					break;
 					
 				case 'totalWeight':
-				
 					$arrProducts = $this->getProducts();
 					
 					foreach($arrProducts as $objProduct)
@@ -194,7 +193,6 @@ class IsotopeCart extends Model
 					return is_object($this->Payment) ? true : false;
 					
 				case 'billingAddress':
-			
 					if ($this->arrCache['billingAddress_id'] > 0)
 					{
 						$objAddress = $this->Database->prepare("SELECT * FROM tl_address_book WHERE id=?")->limit(1)->execute($this->arrCache['billingAddress_id']);
@@ -221,7 +219,6 @@ class IsotopeCart extends Model
 					return array('country' => $this->Isotope->Store->country);
 					
 				case 'shippingAddress':
-				
 					if ($this->arrCache['shippingAddress_id'] == -1)
 					{							
 						return array_merge($this->billingAddress, array('id' => -1));
@@ -708,7 +705,7 @@ class IsotopeCart extends Model
 				'price'			=> '&nbsp;',
 				'total_price'	=> $this->Shipping->price,
 				'tax_class'		=> $this->Shipping->tax_class,
-				'add_tax'		=> false,
+				'add_tax'		=> ($this->Shipping->tax_class ? true : false),
 			);
 		}
 		
@@ -734,7 +731,7 @@ class IsotopeCart extends Model
 				'price'			=> '&nbsp;',
 				'total_price'	=> $this->Payment->price,
 				'tax_class'		=> $this->Payment->tax_class,
-				'add_tax'		=> false,
+				'add_tax'		=> ($this->Payment->tax_class ? true : false),
 			);
 		}
 		
@@ -744,68 +741,68 @@ class IsotopeCart extends Model
 		
 	public function getSurcharges()
 	{
-		if (!is_array($this->arrSurcharges))
+		$arrPreTax = $arrPostTax = $arrTaxes = array();
+		$arrProducts = $this->getProducts();
+		
+		foreach( $arrProducts as $pid => $objProduct )
 		{
-			$arrPreTax = $arrPostTax = $arrTaxes = array();
-			$arrProducts = $this->getProducts();
+			$arrTaxIds = array();
+			$arrTax = $this->Isotope->calculateTax($objProduct->tax_class, $objProduct->total_price);
 			
-			foreach( $arrProducts as $pid => $objProduct )
+			if (is_array($arrTax))
 			{
-				$arrTaxIds = array();
-				$arrTax = $this->Isotope->calculateTax($objProduct->tax_class, $objProduct->total_price);
-				
-				if (is_array($arrTax))
+				foreach ($arrTax as $k => $tax)
 				{
-					foreach ($arrTax as $k => $tax)
+					if (array_key_exists($k, $arrTaxes))
 					{
-						if (array_key_exists($k, $arrTaxes))
-						{
-							$arrTaxes[$k]['total_price'] += $tax['total_price'];
-							
-							if (is_numeric($arrTaxes[$k]['price']) && is_numeric($tax['price']))
-							{
-								$arrTaxes[$k]['price'] += $tax['price'];
-							}
-						}
-						else
-						{
-							$arrTaxes[$k] = $tax;
-						}
+						$arrTaxes[$k]['total_price'] += $tax['total_price'];
 						
-						$arrTaxes[$k]['tax_id'] = array_search($k, array_keys($arrTaxes)) + 1;
-						$arrTaxIds[] = array_search($k, array_keys($arrTaxes)) + 1;
+						if (is_numeric($arrTaxes[$k]['price']) && is_numeric($tax['price']))
+						{
+							$arrTaxes[$k]['price'] += $tax['price'];
+						}
 					}
-				}
-				
-				$this->arrProducts[$pid]->tax_id = implode(',', $arrTaxIds);
-			}
-			
-			$arrSurcharges = array();
-			if (isset($GLOBALS['TL_HOOKS']['isoCheckoutSurcharge']) && is_array($GLOBALS['TL_HOOKS']['isoCheckoutSurcharge']))
-			{
-				foreach ($GLOBALS['TL_HOOKS']['isoCheckoutSurcharge'] as $callback)
-				{
-					$this->import($callback[0]);
-					$arrSurcharges = $this->{$callback[0]}->{$callback[1]}($arrSurcharges);
+					else
+					{
+						$arrTaxes[$k] = $tax;
+					}
+					
+					$arrTaxes[$k]['tax_id'] = array_search($k, array_keys($arrTaxes)) + 1;
+					$arrTaxIds[] = array_search($k, array_keys($arrTaxes)) + 1;
 				}
 			}
 			
-			foreach( $arrSurcharges as $arrSurcharge )
+			$this->arrProducts[$pid]->tax_id = implode(',', $arrTaxIds);
+		}
+		
+		$arrSurcharges = array();
+		if (isset($GLOBALS['TL_HOOKS']['isoCheckoutSurcharge']) && is_array($GLOBALS['TL_HOOKS']['isoCheckoutSurcharge']))
+		{
+			foreach ($GLOBALS['TL_HOOKS']['isoCheckoutSurcharge'] as $callback)
 			{
-				if ($arrSurcharge['tax_class'] > 0)
-				{
-					$arrPreTax[] = $arrSurcharge;
-				}
-				else
-				{
-					$arrPostTax[] = $arrSurcharge;
-				}
+				$this->import($callback[0]);
+				$arrSurcharges = $this->{$callback[0]}->{$callback[1]}($arrSurcharges);
 			}
-			
-			foreach( $arrPreTax as $arrSurcharge )
+		}
+		
+		foreach( $arrSurcharges as $arrSurcharge )
+		{
+			if ($arrSurcharge['tax_class'] > 0)
 			{
-				$arrTax = $this->Isotope->calculateTax($arrSurcharge['tax_class'], $arrSurcharge['total_price'], $arrSurcharge['add_tax']);
-				
+				$arrPreTax[] = $arrSurcharge;
+			}
+			else
+			{
+				$arrPostTax[] = $arrSurcharge;
+			}
+		}
+		
+		foreach( $arrPreTax as $arrSurcharge )
+		{
+			$arrTax = $this->Isotope->calculateTax($arrSurcharge['tax_class'], $arrSurcharge['total_price'], $arrSurcharge['add_tax']);
+			
+			if (is_array($arrTax))
+			{
 				foreach ($arrTax as $k => $tax)
 				{
 					if (array_key_exists($k, $arrTaxes))
@@ -825,11 +822,9 @@ class IsotopeCart extends Model
 					$arrTaxes[$k]['tax_id'] = array_search($k, array_keys($arrTaxes)) + 1;
 				}
 			}
-			
-			$this->arrSurcharges = array_merge($arrPreTax, $arrTaxes, $arrPostTax);
 		}
 		
-		return $this->arrSurcharges;
+		return array_merge($arrPreTax, $arrTaxes, $arrPostTax);
 	}
 	
 	

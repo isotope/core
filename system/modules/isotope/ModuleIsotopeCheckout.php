@@ -1154,9 +1154,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	}
 	
 	
-	/**
-	 * @todo implement google analytics using Yoans module
-	 */
+	//!@todo implement google analytics using Yoans module
 	public function googleTracking()
 	{
 		if(!$this->Isotope->Store->enableGoogleAnalytics || $this->Input->get('step')!='complete' || !file_exists(TL_ROOT . '/system/modules/googleanalytics/GoogleAnalytics.php'))

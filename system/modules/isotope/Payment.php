@@ -90,6 +90,8 @@ abstract class Payment extends Frontend
 	 */
 	public function __get($strKey)
 	{
+		$this->import('Isotope');
+		
 		switch( $strKey )
 		{
 			case 'available':
