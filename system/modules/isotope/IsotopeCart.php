@@ -216,13 +216,9 @@ class IsotopeCart extends Model
 							
 						// Return the default user data, but ID should be 0 to know that it is a custom/new address
 						return array_merge($this->User->getData(), array('id'=>0));
-					}
-					else
-					{
-						return $_SESSION['CHECKOUT_DATA']['billing_address'];
 					}					
 					
-					return $this->arrCache['billingAddress_data'];
+					return array('country' => $this->Isotope->Store->country);
 					
 				case 'shippingAddress':
 				
