@@ -69,6 +69,7 @@ class IsotopeProduct extends Controller
 	public function __construct($arrData)
 	{
 		parent::__construct();
+		$this->import('Database');
 		$this->import('Isotope');
 
 		$this->arrData = $arrData;
