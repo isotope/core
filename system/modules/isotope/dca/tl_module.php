@@ -452,7 +452,7 @@ class tl_module_isotope extends Backend
 	{
 		$arrReturn = array();
 		
-		$objData = $this->Database->prepare("SELECT name, field_name FROM tl_product_attributes WHERE is_order_by_enabled='1' AND disabled!='1'")
+		$objData = $this->Database->prepare("SELECT name, field_name FROM tl_product_attributes WHERE is_order_by_enabled='1'")
 								  ->execute();
 		
 		if(!$objData->numRows)
