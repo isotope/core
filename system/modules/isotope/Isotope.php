@@ -181,7 +181,7 @@ class Isotope extends Controller
 
 
 	/** 
-	 * Recursively look for a store set in a give page. Continue looking at parent pages until one is found or else
+	 * Recursively look for a store set in a given page. Continue looking at parent pages until one is found or else
 	 * revert to default store otherwise specified.
 	 *
 	 * @param integer $intPageId

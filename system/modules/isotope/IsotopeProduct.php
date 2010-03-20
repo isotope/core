@@ -86,13 +86,7 @@ class IsotopeProduct extends Controller
 		$this->import('Database');
 		$this->import('Isotope');
 
-		$this->arrData = $arrData;
-
-		//We don't need this in the front end...
-		if(TL_MODE=='FE')
-		{
-			unset($this->arrData['variants_wizard']);
-		}
+		$this->arrData = $arrData;		
 
 		$objType = $this->Database->prepare("SELECT * FROM tl_product_types WHERE id=?")->execute($this->arrData['type']);
 		$this->arrAttributes = deserialize($objType->attributes, true);
@@ -291,7 +285,7 @@ class IsotopeProduct extends Controller
 	public function __sleep()
 	{
 		//clean up product object - remove non-essential data to reduce table size.
-		unset($this->arrData['description'], $this->arrData['variants_wizard'], $this->arrData['teaser']);
+		unset($this->arrData['description'], $this->arrData['teaser']);
 
 		return array('arrAttributes', 'arrDownloads', 'arrData');
 	}
