@@ -165,7 +165,7 @@ $GLOBALS['BE_FFL']['mediaManager']		= 'MediaManager';
 $GLOBALS['BE_FFL']['variantsWizard']	= 'VariantsWizard';
 $GLOBALS['BE_FFL']['attributeWizard']	= 'AttributeWizard';
 $GLOBALS['BE_FFL']['optionDataWizard']	= 'OptionDataWizard';
-
+$GLOBALS['BE_FFL']['surchargeWizard']	= 'SurchargeWizard';
 
 /**
  * Frontend modules

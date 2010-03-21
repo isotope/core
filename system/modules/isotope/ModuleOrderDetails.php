@@ -156,17 +156,21 @@ class ModuleOrderDetails extends ModuleIsotopeBase
 		$this->Template->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
 		
 		$arrSurcharges = array();
-		foreach( deserialize($objOrder->surcharges) as $arrSurcharge )
-		{
-			$arrSurcharges[] = array
-			(
-				'label'			=> $arrSurcharge['label'],
-				'price'			=> $this->Isotope->formatPriceWithCurrency($arrSurcharge['price']),
-				'total_price'	=> $this->Isotope->formatPriceWithCurrency($arrSurcharge['total_price']),
-				'tax_id'		=> $arrSurcharge['tax_id'],
-			);
-		}
 		
+		if(is_array($objOrder->surcharges))
+		{
+			foreach( deserialize($objOrder->surcharges) as $arrSurcharge )
+			{
+				$arrSurcharges[] = array
+				(
+					'label'			=> $arrSurcharge['label'],
+					'price'			=> $this->Isotope->formatPriceWithCurrency($arrSurcharge['price']),
+					'total_price'	=> $this->Isotope->formatPriceWithCurrency($arrSurcharge['total_price']),
+					'tax_id'		=> $arrSurcharge['tax_id'],
+				);
+			}
+		}
+				
 		$this->Template->surcharges = $arrSurcharges;
 		
 		$this->Template->billing_label = $GLOBALS['TL_LANG']['ISO']['billing_address'];

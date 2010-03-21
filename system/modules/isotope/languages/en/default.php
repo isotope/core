@@ -48,6 +48,7 @@ $GLOBALS['TL_LANG']['ERR']['missingCurrencyFormat']		= 'Currency formatting not 
 $GLOBALS['TL_LANG']['ERR']['searchNotEnabled'] = 'Search functionality is not enabled!';
 $GLOBALS['TL_LANG']['ERR']['isoLoginRequired'] = 'You must be logged in to checkout.';
 $GLOBALS['TL_LANG']['ERR']['mandatoryOption'] = 'Please select an option.';
+$GLOBALS['TL_LANG']['ERR']['noAddressData'] = 'Address data is required to calculate taxes!';
 
 $GLOBALS['TL_LANG']['ERR']['parentProductNotFound'] = 'The parent product id %s does not exist!';
 
