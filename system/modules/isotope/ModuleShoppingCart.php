@@ -128,6 +128,18 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 			$arrProductData[count($arrProductData)-1]['class'] .= ' row_last';
 		}
 		
+		$arrSurcharges = array();
+ 		
+		foreach( $this->Cart->getSurcharges() as $arrSurcharge )
+		{
+			$arrSurcharges[] = array
+			(
+			   'label' => 			$arrSurcharge['label'],
+			   'price' => 			$this->Isotope->formatPriceWithCurrency($arrSurcharge['price']),
+			   'total_price' => 	$this->Isotope->formatPriceWithCurrency($arrSurcharge['total_price']),
+			   'tax_id' => 			$arrSurcharge['tax_id'],
+			);
+		 }
 		
 		$objTemplate->formId = 'iso_cart_update';
 		$objTemplate->formSubmit = 'iso_cart_update';
@@ -142,6 +154,7 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 		$objTemplate->subTotalPrice = $this->generatePrice($this->Cart->subTotal, 'stpl_total_price');
 		$objTemplate->grandTotalPrice = $this->generatePrice($this->Cart->subTotal, 'stpl_total_price');
 		$objTemplate->showOptions = false;	//TODO make a module option.
+		$objTemplate->surcharges = $arrSurcharges;
 		
 		$this->Template->cart = $objTemplate->parse();
 	}

@@ -474,6 +474,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				(
 					'headline'	=> $GLOBALS['TL_LANG']['ISO']['payment_method'],
 					'info'		=> $this->Cart->Payment->checkoutReview(),
+					'note'        => $this->Cart->Payment->note,
 					'edit'		=> $this->addToUrl('step=payment'),
 				),
 			);

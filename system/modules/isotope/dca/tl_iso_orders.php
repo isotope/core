@@ -113,7 +113,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{general_legend},status,shippingTotal;{details_legend},details',
+		'default'                     => '{general_legend},status,surcharges;{details_legend},details',
 	),
 	
 	// Fields
@@ -127,18 +127,14 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 			'options'         		=> $GLOBALS['ISO_ORDER'],
 			'reference'         	=> &$GLOBALS['TL_LANG']['ORDER'],
 		),
-		'shippingTotal' => array
+		'surcharges' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['shippingTotal'],
-			'exclude'                 => true,
-			'search'                  => true,
-			'sorting'                 => true,
-			'flag'                    => 1,
-			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>255),
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['surcharges'],
+			'inputType'				=> 'surchargeWizard',
+			'eval'					=> array('enabledFunctions'=>array('copy','delete')),
 			'save_callback'			=> array
 			(
-				array('tl_iso_orders','saveShippingTotal')
+				array('tl_iso_orders','saveSurcharges')
 			)
 		),
 		'details' => array
@@ -243,7 +239,55 @@ class tl_iso_orders extends Backend
 		parent::__construct();
 		
 		$this->import('Isotope');
+		$this->import('IsotopeTax','Tax');
+	
 	}
+	
+	
+	public function saveSurcharges($varValue, DataContainer $dc)
+	{	
+		$fltTaxTotal = 0.00;
+		
+		$arrTaxables = array();
+	
+		$arrSurcharges = deserialize($varValue);
+
+		$arrAddresses['shippingAddress'] = deserialize($dc->activeRecord->shipping_address);
+		$arrAddresses['billingAddress'] = deserialize($dc->activeRecord->billing_address);
+		
+		foreach($arrSurcharges as $surcharge)
+		{			
+			if($surcharge['tax_class']>0 && $surcharge['add_tax'])
+			{
+				$arrTaxables[] = $surcharge;
+			}
+		}
+		
+		foreach( $arrTaxables as $arrSurcharge )
+		{
+			$arrTax = array();
+			
+			$arrTax = $this->Tax->calculateTax($arrSurcharge['tax_class'], $arrSurcharge['price'], $arrSurcharge['add_tax'], $arrAddresses);
+			
+			foreach($arrTax as $tax)
+			{				
+				$fltTaxTotal += $tax['total_price'];
+			} 
+		}	
+		
+		foreach($arrSurcharges as $row)
+		{
+				$arrSurchargePrices[] = $row['price'];
+		}
+		
+		//step 2: adjust order totals
+		$fltGrandTotal = $dc->activeRecord->subTotal + array_sum($arrSurchargePrices) + $fltTaxTotal;
+		
+		$this->Database->prepare("UPDATE tl_iso_orders SET grandTotal=? WHERE id=?")->execute($fltGrandTotal, $dc->id);
+	
+	}
+	
+	
 	
 	
 	/**

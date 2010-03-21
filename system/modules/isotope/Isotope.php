@@ -638,7 +638,9 @@ class Isotope extends Controller
 				$objTemplate->css = $css;
 	
 				// Parse template
-				$objParsedTemplate = $objTemplate->parse();
+				//$objParsedTemplate = $objTemplate->parse();
+				$objParsedTemplate = $this->parseSimpleTokens($objTemplate->parse(),$arrData);
+				
 				// Replace insert tags in the template itself
 				$objEmail->html = $this->replaceInsertTags($objParsedTemplate);
 				$objEmail->imageDir = TL_ROOT . '/';

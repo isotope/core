@@ -33,6 +33,7 @@ $GLOBALS['TL_LANG']['tl_iso_orders']['order_tax'] = array('Tax Cost','');
 $GLOBALS['TL_LANG']['tl_iso_orders']['shippingTotal'] = array('Shipping Cost','');
 $GLOBALS['TL_LANG']['tl_iso_orders']['shipping_method'] = array('Shipping Method','');
 $GLOBALS['TL_LANG']['tl_iso_orders']['status'] = array('Order Status','');
+$GLOBALS['TL_LANG']['tl_iso_orders']['surcharges'] = array('Surcharges','');
 $GLOBALS['TL_LANG']['tl_iso_orders']['shipping_address_id'] = array('Shipping Address','');
 $GLOBALS['TL_LANG']['tl_iso_orders']['billing_address_id'] = array('Billing Address','');
 $GLOBALS['TL_LANG']['tl_iso_orders']['order_comments'] = array('Comments','');
@@ -49,7 +50,7 @@ $GLOBALS['TL_LANG']['tl_iso_orders']['cc_exp'] = array('Expiration','The expirat
  */
 $GLOBALS['TL_LANG']['tl_iso_orders']['shipping_method_labels']['ups_ground'] = 'UPS Ground';
 
-$GLOBALS['TL_LANG']['tl_iso_orders']['opLabel']					= 'Surcharge';
+$GLOBALS['TL_LANG']['tl_iso_orders']['opLabel']					= 'Name of Surcharge';
 $GLOBALS['TL_LANG']['tl_iso_orders']['opPrice']					= 'Price';
 $GLOBALS['TL_LANG']['tl_iso_orders']['opTaxClass']				= 'Tax Class';
 $GLOBALS['TL_LANG']['tl_iso_orders']['opAddTax']				= 'Add Tax?';
