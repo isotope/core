@@ -161,7 +161,16 @@ class IsotopeCart extends Model
 					break;
 					
 				case 'grandTotal':
-					return ($this->subTotal + $this->taxTotal + $this->shippingTotal);
+					$intTotal = $this->calculateTotal($this->getProducts());;
+					$arrSurcharges = $this->getSurcharges();
+					
+					foreach( $arrSurcharges as $arrSurcharge )
+					{
+						if ($arrSurcharge['add'] !== false)
+							$intTotal += $arrSurcharge['total_price'];
+					}
+					
+					return $intTotal;
 					
 				case 'requiresShipping':
 					$this->arrCache[$strKey] = false;
