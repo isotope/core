@@ -15,11 +15,11 @@
 <?php if ($this->variant_widget): ?>
 	<label for="<?php echo $this->variant_widget['name']; ?>"><?php echo $this->variant_widget['description']; ?> </label><?php echo $this->variant_widget['html']; ?>
 <?php endif; ?>
-<?php endif; ?>
 </div>
+<?php endif; ?>
 <?php if($this->options): ?>
 <div id="options_container" class="options">
-<input type="hidden" name="product_options" value="<?php echo $this->optionList; ?>" /><div class="options">
+<input type="hidden" name="product_options" value="<?php echo $this->optionList; ?>" />
 <?php echo implode("\n", $this->options); ?>
 </div>
 <?php endif; ?>
