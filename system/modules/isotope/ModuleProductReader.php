@@ -109,8 +109,7 @@ class ModuleProductReader extends ModuleIsotopeBase
 			$GLOBALS['TL_MOOTOOLS'][] = $objScriptTemplate->parse();
 		}
 
-
-		$this->Template->product = $objProduct->generate($this->iso_reader_layout, $this);
+		$this->Template->product = $objProduct->generate((strlen($this->iso_reader_layout) ? $this->iso_reader_layout : $objProduct->reader_template), $this);
 		$objPage->title .= ' - ' . $objProduct->name;
 		$objPage->description .= $this->cleanForMeta($objProduct->description, 200);
 	}		

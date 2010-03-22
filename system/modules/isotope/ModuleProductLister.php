@@ -151,7 +151,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 			(
 				'clear'	    => ($this->iso_list_format=='grid' && $blnSetClear ? true : false),
 				'class'		=> ('product' . ($i == 0 ? ' product_first' : '')),
-				'html'		=> $objProduct->generate($this->iso_list_layout, $this),
+				'html'		=> $objProduct->generate((strlen($this->iso_list_layout) ? $this->iso_list_layout : $objProduct->list_template), $this),
 			);
 			
 			$blnSetClear = (($i+1) % $this->columns==0 ? true : false);
@@ -411,7 +411,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 			(
 				'clear'	    => ($this->iso_list_format=='grid' && $blnSetClear ? true : false),
 				'class'		=> ('product' . ($i == 0 ? ' product_first' : '')),
-				'html'		=> $objProduct->generate($this->iso_list_layout, $this),
+				'html'		=> $objProduct->generate((strlen($this->iso_list_layout) ? $this->iso_list_layout : $objProduct->list_template), $this),
 			);
 
 			$blnSetClear = (($i+1) % $this->columns==0 ? true : false);

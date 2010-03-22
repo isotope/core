@@ -104,9 +104,9 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 	'palettes' => array
 	(
 		'__selector__'				=> array('class'),
-		'default'					=> '{name_legend},name,class,description;{language_legend:hide},languages;{attributes_legend},attributes;{download_legend:hide},downloads',
-		'simple'					=> '{name_legend},name,class,description;{language_legend:hide},languages;{attributes_legend},attributes;{download_legend:hide},downloads',
-		'variant'					=> '{name_legend},name,class,description;{language_legend:hide},languages;{attributes_legend},attributes,variant_attributes;{download_legend:hide},downloads',
+		'default'					=> '{name_legend},name,class,description;{template_legend},list_template,reader_template;{language_legend:hide},languages;{attributes_legend},attributes;{download_legend:hide},downloads',
+		'simple'					=> '{name_legend},name,class,description;{template_legend},list_template,reader_template;{language_legend:hide},languages;{attributes_legend},attributes;{download_legend:hide},downloads',
+		'variant'					=> '{name_legend},name,class,description;{template_legend},list_template,reader_template;{language_legend:hide},languages;{attributes_legend},attributes,variant_attributes;{download_legend:hide},downloads',
 	),
 
 	// Fields
@@ -128,6 +128,22 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 			'options'				=> array_keys($GLOBALS['ISO_PRODUCT']),
 			'reference'				=> &$GLOBALS['TL_LANG']['ISO_PRODUCT'],
 			'eval'					=> array('mandatory'=>true, 'submitOnChange'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
+		),
+		'list_template' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_product_types']['list_template'],
+			'inputType'				=> 'select',
+			'default'				=> 'iso_list_default',
+			'options'				=> $this->getTemplateGroup('iso_list_'),
+			'eval'					=> array('mandatory'=>true, 'tl_class'=>'w50'),
+		),
+		'reader_template' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_product_types']['reader_template'],
+			'inputType'				=> 'select',
+			'default'				=> 'iso_reader_default',
+			'options'				=> $this->getTemplateGroup('iso_reader_'),
+			'eval'					=> array('mandatory'=>true, 'tl_class'=>'w50'),
 		),
 		'description' => array
 		(

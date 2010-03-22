@@ -72,7 +72,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_list_layout'] = array
 	'default'                 => 'iso_list_productlist',
 	'exclude'                 => true,
 	'inputType'               => 'select',
-	'options'                 => $this->getTemplateGroup('iso_list_')
+	'options'                 => $this->getTemplateGroup('iso_list_'),
+	'eval'					  => array('includeBlankOption'=>true),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_jump_first'] = array
@@ -108,7 +109,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_reader_layout'] = array
 	'default'                 => 'iso_reader_default',
 	'exclude'                 => true,
 	'inputType'               => 'select',
-	'options'                 => $this->getTemplateGroup('iso_reader_')
+	'options'                 => $this->getTemplateGroup('iso_reader_'),
+	'eval'					  => array('includeBlankOption'=>true),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_reader_jumpTo'] = array

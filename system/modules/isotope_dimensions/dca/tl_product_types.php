@@ -29,5 +29,5 @@
 /**
  * Palettes
  */
-$GLOBALS['TL_DCA']['tl_product_types']['palettes']['dimension']	= '{name_legend},name,class,description;{language_legend:hide},languages;{attributes_legend},attributes;{download_legend:hide},downloads';
+$GLOBALS['TL_DCA']['tl_product_types']['palettes']['dimension']	= '{name_legend},name,class,description;{template_legend},list_template,reader_template;{language_legend:hide},languages;{attributes_legend},attributes;{download_legend:hide},downloads';
 
