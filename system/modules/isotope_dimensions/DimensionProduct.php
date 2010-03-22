@@ -28,5 +28,103 @@
 
 class DimensionProduct extends IsotopeProduct
 {
+	
+	/**
+	 * Construct the object
+	 */
+	public function __construct($arrData)
+	{
+		parent::__construct($arrData);
+		
+		$objDimensions = $this->Database->prepare("SELECT MIN(price) AS low_price, MAX(price) AS high_price FROM tl_product_dimension_prices WHERE pid=?")
+										->execute($this->dimensions);
+
+		$this->low_price = $this->Isotope->calculatePrice($objDimensions->low_price, $this->arrData['tax_class']);
+		$this->high_price = $this->Isotope->calculatePrice($objDimensions->high_price, $this->arrData['tax_class']);
+	}
+	
+	
+	/**
+	 * Get a property
+	 * @return mixed
+	 */
+	public function __get($strKey)
+	{
+		switch( $strKey )
+		{
+			case 'price':
+			case 'price_override':
+				$intPrice = 0;
+				$arrMin = deserialize($this->arrData['dimensions_min']);
+				$arrMax = deserialize($this->arrData['dimensions_max']);
+				if ($this->arrData['dimension_x'] >= $arrMin[0] && $this->arrData['dimension_x'] <= $arrMax[0] && $this->arrData['dimension_y'] >= $arrMin[1] && $this->arrData['dimension_y'] <= $arrMax[1])
+				{
+					$objPrice = $this->Database->prepare("SELECT * FROM tl_product_dimension_prices WHERE pid=? AND dimension_x >= ? AND dimension_y >= ? ORDER BY dimension_x, dimension_y")->limit(1)->execute($this->arrData['dimensions'], $this->arrData['dimension_x'], $this->arrData['dimension_y']);
+					
+					if ($objPrice->numRows)
+					{
+						$intPrice = $objPrice->price;
+					}
+				}
+				
+				if (!$intPrice)
+				{
+					$objPrice = $this->Database->prepare("SELECT * FROM tl_product_dimension_prices WHERE pid=? AND dimension_x >= ? AND dimension_y >= ? ORDER BY dimension_x, dimension_y")->limit(1)->execute($this->arrData['dimensions'], $arrMin[0], $arrMin[1]);
+					
+					$intPrice = $objPrice->price;
+				}
+				
+				return $this->Isotope->calculatePrice($intPrice, $this->arrData['tax_class']);
+				break;
+		}
+		
+		return parent::__get($strKey);
+	}
+	
+	
+	/**
+	 * Set a property
+	 */
+	public function __set($strKey, $varValue)
+	{
+		switch( $strKey )
+		{
+			case 'dimension_x':
+			case 'dimension_y':
+				$this->arrData[$strKey] = $varValue;
+				break;
+				
+			default:
+				parent::__set($strKey, $varValue);
+		}
+	}
+	
+	/**
+	 * Return all attributes for this product
+	 */
+	public function getAttributes()
+	{
+		$arrData = parent::getAttributes();
+		
+		$arrData['dimension_x'] = intval($this->arrData['dimension_x']);
+		$arrData['dimension_y'] = intval($this->arrData['dimension_y']);
+		
+		$GLOBALS['TL_DCA']['tl_product_data']['fields']['dimension_x'] = array
+		(
+			'label'					=> array('Breite'),
+			'inputType'				=> 'text',
+			'eval'					=> array('mandatory'=>true),
+			'attributes'			=> array('is_customer_defined'	=> true),		);
+		
+		$GLOBALS['TL_DCA']['tl_product_data']['fields']['dimension_y'] = array
+		(
+			'label'					=> array('Höhe'),
+			'inputType'				=> 'text',
+			'eval'					=> array('mandatory'=>true),
+			'attributes'			=> array('is_customer_defined'	=> true),
+		);
+			
+		return $arrData;
+	}
 }
 
