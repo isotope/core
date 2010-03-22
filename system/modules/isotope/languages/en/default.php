@@ -129,6 +129,7 @@ $GLOBALS['TL_LANG']['MSC']['noItemsInCart'] = 'There are no items in your cart';
 $GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'] = 'Remove %s from your cart';
 $GLOBALS['TL_LANG']['MSC']['subTotalLabel'] = 'Order Subtotal: ';
 $GLOBALS['TL_LANG']['MSC']['shippingLabel'] = 'Shipping';
+$GLOBALS['TL_LANG']['MSC']['paymentLabel'] = 'Payment';
 $GLOBALS['TL_LANG']['MSC']['taxLabel'] = '%s Tax: ';
 $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'] = 'Order Total: ';
 $GLOBALS['TL_LANG']['MSC']['shippingOptionsLabel'] = 'Selected Shipping Options: ';
