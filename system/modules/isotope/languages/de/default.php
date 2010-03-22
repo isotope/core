@@ -69,6 +69,7 @@ $GLOBALS['TL_LANG']['MSC']['confirmOrder']	= 'Bestellen';
 $GLOBALS['TL_LANG']['MSC']['subTotalLabel'] = 'Zwischensumme';
 $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'] = 'Gesamttotal';
 $GLOBALS['TL_LANG']['MSC']['shippingLabel'] = 'Versandkosten';
+$GLOBALS['TL_LANG']['MSC']['paymentLabel'] = 'Zahlungskosten';
 $GLOBALS['TL_LANG']['MSC']['taxLabel'] = 'Enthaltene MwSt: ';
 
 $GLOBALS['TL_LANG']['MSC']['noPaymentModules'] = 'Zur Zeit sind keine Zahlungsoptionen verfügbar.';
