@@ -632,17 +632,12 @@ class Isotope extends Controller
 				$objTemplate = new FrontendTemplate((strlen($objMail->template) ? $objMail->template : 'mail_default'));
 	
 				$objTemplate->title = $objMail->subject;
-				$html = $this->replaceInsertTags($objMail->html);
-				$objTemplate->body = $this->parseSimpleTokens($html, $arrData);
+				$objTemplate->body = $objMail->html;
 				$objTemplate->charset = $GLOBALS['TL_CONFIG']['characterSet'];
 				$objTemplate->css = $css;
 	
 				// Parse template
-				//$objParsedTemplate = $objTemplate->parse();
-				$objParsedTemplate = $this->parseSimpleTokens($objTemplate->parse(),$arrData);
-				
-				// Replace insert tags in the template itself
-				$objEmail->html = $this->replaceInsertTags($objParsedTemplate);
+				$objEmail->html = $this->parseSimpleTokens($this->replaceInsertTags($objParsedTemplate), $arrData);
 				$objEmail->imageDir = TL_ROOT . '/';
 			}
 		}
