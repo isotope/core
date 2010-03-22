@@ -156,8 +156,11 @@ class ModuleOrderDetails extends ModuleIsotopeBase
 		$this->Template->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
 		
 		$arrSurcharges = array();
-		$objOrder->surcharges = deserialize($objOrder->surcharges);
-		if (is_array($objOrder->surcharges) && count($objOrder->surcharges))
+
+		if(is_array( deserialize($objOrder->surcharges) ))
+			$arrSurcharges = deserialize($objOrder->surcharges);
+		
+		if (is_array($arrSurcharges) && count($arrSurcharges))
 		{
 			foreach( $objOrder->surcharges as $arrSurcharge )
 			{
