@@ -60,11 +60,6 @@ class ModuleProductReader extends ModuleIsotopeBase
 		{
 			return '';
 		}
-
-		if (!strlen($this->iso_reader_layout))
-		{
-			$this->iso_reader_layout = 'iso_reader_default';
-		}
 		
 		global $objPage;
 		
