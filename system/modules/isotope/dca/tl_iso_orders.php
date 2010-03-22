@@ -146,82 +146,6 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 			'flag'                    => 8,
 			'eval'                    => array('rgxp'=>'date'),
 		),
-		/*,
-		'shippingTotal' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['shippingTotal'],
-			'exclude'                 => true,
-			'search'                  => true,
-			'sorting'                 => true,
-			'flag'                    => 1,
-			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>255),
-			'load_callback'			=> array
-			(
-				array('tl_iso_orders','loadShippingTotal')
-			),
-			'save_callback'			=> array
-			(
-				array('tl_iso_orders','saveShippingTotal')
-			)
-		),
-		'subTotal' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['subTotal'],
-			'exclude'                 => true,
-			'search'                  => true,
-			'sorting'                 => true,
-			'flag'                    => 1,
-			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>255)
-		),
-		'taxTotal' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['taxTotal'],
-			'exclude'                 => true,
-			'search'                  => true,
-			'sorting'                 => true,
-			'flag'                    => 1,
-			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>255)
-		),
-		'shipping_method' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['shipping_method'],
-			'exclude'                 => true,
-			'search'                  => true,
-			'sorting'                 => true,
-			'inputType'               => 'select',
-			'options'         => array('ups_ground'),
-			'eval'                    => array('includeBlankOption'=>true),
-			'reference'         => &$GLOBALS['TL_LANG']['tl_iso_orders']['shipping_method_labels']
-		),
-		'order_comments' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['order_comments'],
-			'exclude'                 => true,
-			'search'                  => true,
-			'sorting'                 => true,
-			'flag'                    => 1,
-			'inputType'               => 'textarea',
-			'eval'            => array('isoEditable'=>true, 'isoCheckoutGroups'=>array('payment_method'))
-		),
-		'gift_message' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['gift_message'],
-			'exclude'                 => true,
-			'search'                  => true,
-			'sorting'                 => true,
-			'flag'                    => 1,
-			'inputType'               => 'textarea',
-			'eval'            => array('isoEditable'=>true, 'isoCheckoutGroups'=>array('payment_method'))
-		),
-		'gift_wrap' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_orders']['gift_wrap'],
-			'exclude'                 => true,
-			'inputType'               => 'checkbox'
-		)*/
 	)
 );
 
@@ -239,8 +163,6 @@ class tl_iso_orders extends Backend
 		parent::__construct();
 		
 		$this->import('Isotope');
-		$this->import('IsotopeTax','Tax');
-	
 	}
 	
 	
@@ -252,8 +174,8 @@ class tl_iso_orders extends Backend
 	
 		$arrSurcharges = deserialize($varValue);
 
-		$arrAddresses['shippingAddress'] = deserialize($dc->activeRecord->shipping_address);
-		$arrAddresses['billingAddress'] = deserialize($dc->activeRecord->billing_address);
+		$arrAddresses['shipping'] = deserialize($dc->activeRecord->shipping_address);
+		$arrAddresses['billing'] = deserialize($dc->activeRecord->billing_address);
 		
 		foreach($arrSurcharges as $surcharge)
 		{			
@@ -267,7 +189,7 @@ class tl_iso_orders extends Backend
 		{
 			$arrTax = array();
 			
-			$arrTax = $this->Tax->calculateTax($arrSurcharge['tax_class'], $arrSurcharge['price'], $arrSurcharge['add_tax'], $arrAddresses);
+			$arrTax = $this->Isotope->calculateTax($arrSurcharge['tax_class'], $arrSurcharge['price'], $arrSurcharge['add_tax'], $arrAddresses);
 			
 			foreach($arrTax as $tax)
 			{				
@@ -277,14 +199,13 @@ class tl_iso_orders extends Backend
 		
 		foreach($arrSurcharges as $row)
 		{
-				$arrSurchargePrices[] = $row['price'];
+			$arrSurchargePrices[] = $row['price'];
 		}
 		
 		//step 2: adjust order totals
 		$fltGrandTotal = $dc->activeRecord->subTotal + array_sum($arrSurchargePrices) + $fltTaxTotal;
 		
 		$this->Database->prepare("UPDATE tl_iso_orders SET grandTotal=? WHERE id=?")->execute($fltGrandTotal, $dc->id);
-	
 	}
 	
 	

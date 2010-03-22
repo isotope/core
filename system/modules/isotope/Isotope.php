@@ -255,9 +255,13 @@ class Isotope extends Controller
 	/**
 	 * Calculate tax for a certain tax class, based on the current user information 
 	 */
-	public function calculateTax($intTaxClass, $fltPrice, $blnAdd=true)
+	public function calculateTax($intTaxClass, $fltPrice, $blnAdd=true, $arrAddresses=null)
 	{
-		$this->import('IsotopeCart', 'Cart');
+		if (!is_array($arrAddresses))
+		{
+			$this->import('IsotopeCart', 'Cart');
+			$arrAddresses = array('billing'=>$this->Cart->billingAddress, 'shipping'=>$this->Cart->shippingAddress);
+		}
 		
 		$objTaxClass = $this->Database->prepare("SELECT * FROM tl_tax_class WHERE id=?")->limit(1)->execute($intTaxClass);
 		
@@ -282,7 +286,7 @@ class Isotope extends Controller
 				$fltTax = floatval($arrTaxRate['value']);
 			}
 			
-			if (!$this->Cart->useTaxRate($objIncludes, $fltPrice))
+			if (!$this->useTaxRate($objIncludes, $fltPrice, $arrAddresses))
 			{
 				$fltPrice -= $fltTax;
 			}
@@ -311,7 +315,7 @@ class Isotope extends Controller
 		
 		while( $objRates->next() )
 		{
-			if ($this->Cart->useTaxRate($objRates, $fltPrice))
+			if ($this->useTaxRate($objRates, $fltPrice, $arrAddresses))
 			{
 				$arrTaxRate = deserialize($objRates->rate);
 				
@@ -340,6 +344,59 @@ class Isotope extends Controller
 		}
 		
 		return $arrTaxes;
+	}
+	
+	
+	public function useTaxRate($objRate, $fltPrice, $arrAddresses)
+	{
+		$objRate->address = deserialize($objRate->address);
+		
+		if (is_array($objRate->address) && count($objRate->address))
+		{
+			foreach( $arrAddresses as $name => $arrAddress )
+			{
+				if (!in_array($name, $objRate->address))
+					continue;
+				
+				if (strlen($objRate->country) && $objRate->country != $arrAddress['country'])
+					return false;
+					
+				if (strlen($objRate->subdivision) && $objRate->subdivision != $arrAddress['subdivision'])
+					return false;
+					
+				$arrPostal = deserialize($objRate->postal);
+				if (is_array($arrPostal) && count($arrPostal) && strlen($arrPostal[0]))
+				{
+					if (strlen($arrPostal[1]))
+					{
+						if ($arrPostal[0] > $arrAddress['postal'] || $arrPostal[1] < $arrAddress['postal'])
+							return false;
+					}
+					else
+					{
+						if ($arrPostal[0] != $arrAddress['postal'])
+							return false;
+					}
+				}
+				
+				$arrPrice = deserialize($objRate->amount);
+				if (is_array($arrPrice) && count($arrPrice) && strlen($arrPrice[0]))
+				{
+					if (strlen($arrPrice[1]))
+					{
+						if ($arrPrice[0] > $fltPrice || $arrPrice[1] < $fltPrice)
+							return false;
+					}
+					else
+					{
+						if ($arrPrice[0] != $fltPrice)
+							return false;
+					}
+				}
+			}
+		}
+			
+		return true;
 	}
 	
 
@@ -437,9 +494,7 @@ class Isotope extends Controller
 	}
 	
 	
-	/**
-	 * @todo: clean up all getAddress stuff...	
-	 */
+	//!@todo: clean up all getAddress stuff...	
 	public function getAddress($strStep = 'billing')
 	{	
 		if($strStep=='shipping' && !FE_USER_LOGGED_IN && $_SESSION['FORM_DATA']['shipping_address']==-1)
