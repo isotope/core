@@ -24,6 +24,7 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
+
 class ModuleIsotopeCheckout extends ModuleIsotopeBase
 {
 
@@ -474,7 +475,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				(
 					'headline'	=> $GLOBALS['TL_LANG']['ISO']['payment_method'],
 					'info'		=> $this->Cart->Payment->checkoutReview(),
-					'note'        => $this->Cart->Payment->note,
+					'note'		=> $this->Cart->Payment->note,
 					'edit'		=> $this->addToUrl('step=payment'),
 				),
 			);
@@ -746,9 +747,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 	}
 
 	
-	/**
-	 * @todo Guest cannot be found in tl_user, emailCustomer() will fail
-	 */
+	//!@todo Guest cannot be found in tl_user, emailCustomer() will fail
 	protected function writeOrder($blnCheckout=false)
 	{
 		$strUniqueId = uniqid($this->Isotope->Store->orderPrefix, true);
@@ -1040,6 +1039,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 					case 'isDefaultShipping':
 						continue 2;
 						break;
+						
 					default:
 						break;				
 				}
