@@ -129,15 +129,14 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 		}
 		
 		$arrSurcharges = array();
- 		
 		foreach( $this->Cart->getSurcharges() as $arrSurcharge )
 		{
 			$arrSurcharges[] = array
 			(
-			   'label' => 			$arrSurcharge['label'],
-			   'price' => 			$this->Isotope->formatPriceWithCurrency($arrSurcharge['price']),
-			   'total_price' => 	$this->Isotope->formatPriceWithCurrency($arrSurcharge['total_price']),
-			   'tax_id' => 			$arrSurcharge['tax_id'],
+			   'label'				=> $arrSurcharge['label'],
+			   'price'				=> $this->Isotope->formatPriceWithCurrency($arrSurcharge['price']),
+			   'total_price'		=> $this->Isotope->formatPriceWithCurrency($arrSurcharge['total_price']),
+			   'tax_id'				=> $arrSurcharge['tax_id'],
 			);
 		 }
 		
@@ -153,7 +152,7 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 		$objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
 		$objTemplate->subTotalPrice = $this->generatePrice($this->Cart->subTotal, 'stpl_total_price');
 		$objTemplate->grandTotalPrice = $this->generatePrice($this->Cart->subTotal, 'stpl_total_price');
-		$objTemplate->showOptions = false;	//TODO make a module option.
+		$objTemplate->showOptions = false;	//!@todo make a module option.
 		$objTemplate->surcharges = $arrSurcharges;
 		
 		$this->Template->cart = $objTemplate->parse();
