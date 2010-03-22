@@ -356,20 +356,7 @@ class ModuleProductLister extends ModuleIsotopeBase
 	 * @return string
 	 */
 	protected function generateAJAXListing($arrFilters)
-	{	
-		$objTemplateName = $this->Database->prepare("SELECT iso_list_layout FROM tl_module WHERE id=?")
-									  ->limit(1)
-									  ->execute($this->id);
-	
-		if($objTemplateName->numRows)
-		{
-			$strTemplate = $objTemplateName->iso_list_layout;
-		}
-		else
-		{
-			$strTemplate = $this->iso_list_layout;
-		}
-		
+	{
 		$objTemplate = new FrontendTemplate($this->strTemplate);
 		
 		$this->arrCategories = $this->setCategories($this->iso_category_scope, $this->getRequestData('rid'), $this->getRequestData('pid'));		
