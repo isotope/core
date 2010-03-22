@@ -665,7 +665,6 @@ class IsotopeProduct extends Controller
 			
 			$objWidget->validate();
 			$varValue = $objWidget->value;
-			$objWidget->value = NULL;
 			
 			// Convert date formats into timestamps
 			if (strlen($varValue) && in_array($arrData['eval']['rgxp'], array('date', 'time', 'datim')))
@@ -682,7 +681,7 @@ class IsotopeProduct extends Controller
 			// Store current value
 			elseif ($objWidget->submitInput())
 			{
-				$_SESSION['FORM_DATA'][$strField] = $varValue;
+				$this->arrData[$strField] = $varValue;
 				//Store this options value to the productOptionsData array which is then serialized and stored for the given product that is being added to the cart.
 				
 				//Has to collect this data differently - product variant data relies upon actual values specified for the given product ID, where as simple options
@@ -712,10 +711,6 @@ class IsotopeProduct extends Controller
 		{
 			$this->hasUpload = true;
 		}
-							
-		//$_SESSION['FORM_DATA'][$strField] = $varValue;
-		
-		//$varSave = is_array($varValue) ? serialize($varValue) : $varValue;
 		
 		if (!$hideVariants)
 		{
