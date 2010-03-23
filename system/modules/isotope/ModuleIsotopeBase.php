@@ -35,18 +35,6 @@ abstract class ModuleIsotopeBase extends Module
 	 */
 	private static $arrUrlCache = array();
 	
-	/**
-	 * Template
-	 * @var string
-	 */
-	protected $strPriceTemplate = 'stpl_price';
-	
-	/**
-	 * for widgets, don't submit if certain validation(s) fail
-	 * @var boolean;
-	 */
-	protected $doNotSubmit = false;
-	
 	
 	public function __construct(Database_Result $objModule, $strColumn='main')
 	{
