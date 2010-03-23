@@ -64,9 +64,9 @@ class IsotopeProduct extends Controller
 	
 	/**
 	 * product options array
-	 * @todo this seems not to be in use... it is only filled, never used.
 	 * @var array
 	 */
+	//!@todo this seems not to be in use... it is only filled, never used.
 	protected $arrProductOptionsData = array();
 		
 	/**
@@ -75,6 +75,12 @@ class IsotopeProduct extends Controller
 	 * @var boolean
 	 */
 	protected $hasUpload = false;
+	
+	/**
+	 * for widgets, don't submit if certain validation(s) fail
+	 * @var boolean
+	 */
+	protected $doNotSubmit = false;
 
 
 	/**
@@ -289,7 +295,7 @@ class IsotopeProduct extends Controller
 		//clean up product object - remove non-essential data to reduce table size.
 		unset($this->arrData['description'], $this->arrData['teaser']);
 
-		return array('arrAttributes', 'arrDownloads', 'arrData');
+		return array('arrAttributes', 'arrDownloads', 'arrData', 'arrOptions');
 	}
 
 
@@ -307,9 +313,7 @@ class IsotopeProduct extends Controller
 	}
 
 
-	/**
-	 * @todo this is really a bad function name!
-	 */
+	//!@todo this is really a bad function name!
 	public function getFirstChild($intId)
 	{
 		$objChild = $this->Database->prepare("SELECT id FROM tl_product_data WHERE pid=?")->execute($intId);
@@ -330,9 +334,8 @@ class IsotopeProduct extends Controller
 
 	/**
 	 * Return all downloads for this product
-	 *
-	 * @todo: Confirm that files are available, possibly on __wakeup() ?
 	 */
+	//!@todo: Confirm that files are available, possibly on __wakeup() ?
 	public function getDownloads()
 	{
 		return $this->arrDownloads;
@@ -619,7 +622,8 @@ class IsotopeProduct extends Controller
 	
 	
 	/** 
-	 * Return a widget object based on a product attribute's properties
+	 * Return a widget object based on a product attribute's properties.
+	 *
 	 * @access protected
 	 * @param string $strField
 	 * @param array $arrData
@@ -681,7 +685,8 @@ class IsotopeProduct extends Controller
 			// Store current value
 			elseif ($objWidget->submitInput())
 			{
-				$this->arrData[$strField] = $varValue;
+				$this->arrOptions[$strField] = $varValue;
+				
 				//Store this options value to the productOptionsData array which is then serialized and stored for the given product that is being added to the cart.
 				
 				//Has to collect this data differently - product variant data relies upon actual values specified for the given product ID, where as simple options
@@ -759,7 +764,8 @@ class IsotopeProduct extends Controller
 
 
 	/*
-	 * Get the option value data for cart item elaboration
+	 * Get the option value data for cart item elaboration.
+	 *
 	 * @param variant $varValue
 	 * @param array $arrOptionFields
 	 * @return array

@@ -106,7 +106,7 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 				'id'				=> $objProduct->id,
 				'image'				=> $objProduct->images[0],
 				'link'				=> $objProduct->href_reader,
-				'price'				=> $this->generatePrice($objProduct->price, $this->strPriceTemplate),
+				'price'				=> $this->generatePrice($objProduct->price),
 				'total_price'		=> $this->generatePrice($objProduct->total_price),
 				'quantity'			=> $objProduct->quantity_requested,
 				'cart_item_id'		=> $objProduct->cart_id,

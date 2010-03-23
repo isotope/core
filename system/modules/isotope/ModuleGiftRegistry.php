@@ -345,7 +345,7 @@ class ModuleGiftRegistry extends ModuleIsotopeBase
 				'image'				=> $GLOBALS['TL_CONFIG']['isotope_upload_path'] . '/' . $GLOBALS['TL_CONFIG']['isotope_base_path'] . '/' . substr($row['alias'], 0, 1) . '/' . $row['alias'] . '/' . $GLOBALS['TL_LANG']['MSC']['imagesFolder'] . '/' . $GLOBALS['TL_LANG']['MSC']['thumbnail_images_folder'] . '/' . $row['images'],
 				'name'				=> $row['name'],
 				'link'				=> $this->generateProductLink($row['alias'], $row, $this->Store->productReaderJumpTo, $row['attribute_set_id'], 'id'),
-				'price'				=> $this->generatePrice($row['price'], $this->strPriceTemplate),
+				'price'				=> $this->generatePrice($row['price']),
 				'total_price'		=> $this->generatePrice($intTotalPrice, 'stpl_total_price'),
 				'quantity'			=> $row['quantity_requested'],
 				'remove_link'		=> $this->generateActionLinkString('remove_from_registry', $row['id'], array('attribute_set_id'=>$row['attribute_set_id'],'quantity'=>0), $objPage->id),

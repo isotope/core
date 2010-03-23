@@ -36,13 +36,13 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 
 	protected $strStepTemplateBaseName = 'iso_checkout_';
 	
-	public $doNotSubmit = false;
-	
 	protected $strCurrentStep;
 	
 	protected $arrCheckoutInfo;
 	
 	protected $strFormId = 'iso_mod_checkout';
+	
+	public $doNotSubmit = false;
 
 
 	/**
@@ -83,7 +83,6 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			$this->Template->message = $GLOBALS['TL_LANG']['MSC']['noItemsInCart'];
 			return;
 		}
-
 
 		// Redirect to login page if not logged in
 		if($this->iso_checkout_method == 'member' && !FE_USER_LOGGED_IN)
@@ -715,7 +714,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				'total_price'		=> $objProduct->formatted_total_price,
 				'quantity'			=> $objProduct->quantity_requested,
 				'tax_id'			=> $objProduct->tax_id,
-				'product_options'	=> $objProduct->product_options
+				'product_options'	=> $objProduct->product_options,
 			));
 		}
 		

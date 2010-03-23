@@ -35,6 +35,12 @@ class ModuleDonations extends ModuleIsotopeBase
 
 	protected $strFormId = 'iso_donations';
 	
+	/**
+	 * for widgets, don't submit if certain validation(s) fail
+	 * @var boolean;
+	 */
+	protected $doNotSubmit = false;
+	
 	
 	/**
 	 * Display a wildcard in the back end
