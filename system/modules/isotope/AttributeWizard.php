@@ -71,9 +71,11 @@ class AttributeWizard extends Widget
 			case 'mandatory':
 				$this->arrConfiguration['mandatory'] = $varValue ? true : false;
 				break;
-			case 'noDisable':
-				$this->arrConfiguration['noDisable'] = $varValue ? true : false;
+				
+			case 'variants':
+				$this->arrConfiguration[$strKey] = $varValue ? true : false;
 				break;
+				
 			default:
 				parent::__set($strKey, $varValue);
 				break;
@@ -240,7 +242,7 @@ class AttributeWizard extends Widget
 	protected function generateCheckbox($arrOption, $strGroup, $strButtons)
 	{
 		
-		if (!$this->noDisable && $arrOption['disabled'])
+		if (!$this->variants && $arrOption['disabled'])
 		{
 			return sprintf('<span><input type="hidden" name="%s" value="%s"%s /><input id="opt_%s" type="checkbox" class="tl_checkbox" disabled="disabled" checked="checked" /> %s <label for="opt_%s">%s</label></span>',
 							$this->strName . '[]',
@@ -266,8 +268,6 @@ class AttributeWizard extends Widget
 	
 	/**
 	 * Return attributes as associative array with legends as keys
-	 *
-	 * @todo: exclude disabled attributes?
 	 */
 	protected function getOptions()
 	{
@@ -282,6 +282,10 @@ class AttributeWizard extends Widget
 		{
 			if (is_array($arrData['attributes']) && strlen($arrData['attributes']['legend']) && (!is_array($this->arrDisabledFields) || !in_array($field, $this->arrDisabledFields)))
 			{
+				// Variant options are not available
+				if ($this->variants && ($arrData['attributes']['add_to_product_variants'] || $arrData['attributes']['inherit']))
+					continue;
+					
 				$arrAttributes[$arrData['attributes']['legend']][] = array
 				(
 					'label'		=> (strlen($arrData['label'][0]) ? $arrData['label'][0] : $field),

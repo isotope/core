@@ -103,10 +103,15 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'__selector__'				=> array('class'),
+		'__selector__'				=> array('class', 'variants'),
 		'default'					=> '{name_legend},name,class,description;{template_legend},list_template,reader_template;{language_legend:hide},languages;{attributes_legend},attributes;{download_legend:hide},downloads',
-		'simple'					=> '{name_legend},name,class,description;{template_legend},list_template,reader_template;{language_legend:hide},languages;{attributes_legend},attributes;{download_legend:hide},downloads',
-		'variant'					=> '{name_legend},name,class,description;{template_legend},list_template,reader_template;{language_legend:hide},languages;{attributes_legend},attributes,variant_attributes;{download_legend:hide},downloads',
+		'regular'					=> '{name_legend},name,class,description;{template_legend},list_template,reader_template;{language_legend:hide},languages;{attributes_legend},attributes,variants;{download_legend:hide},downloads',
+	),
+	
+	// Subpalettes
+	'subpalettes' => array
+	(
+		'variants'					=> 'variant_attributes',
 	),
 
 	// Fields
@@ -124,7 +129,7 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_product_types']['class'],
 			'exclude'				=> true,
 			'inputType'				=> 'select',
-			'default'				=> 'simple',
+			'default'				=> 'regular',
 			'options'				=> array_keys($GLOBALS['ISO_PRODUCT']),
 			'reference'				=> &$GLOBALS['TL_LANG']['ISO_PRODUCT'],
 			'eval'					=> array('mandatory'=>true, 'submitOnChange'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
@@ -160,12 +165,19 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 			'inputType'				=> 'attributeWizard',
 			'eval'					=> array('mandatory'=>true),
 		),
+		'variants' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_product_types']['variants'],
+			'exclude'				=> true,
+			'inputType'				=> 'checkbox',
+			'eval'					=> array('tl_class'=>'clr', 'submitOnChange'=>true),
+		),
         'variant_attributes' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_product_types']['variant_attributes'],
 			'exclude'				=> true,
 			'inputType'				=> 'attributeWizard',
-			'eval'					=> array('noDisable'=>true),
+			'eval'					=> array('variants'=>true),
 		),
 		'downloads' => array
 		(

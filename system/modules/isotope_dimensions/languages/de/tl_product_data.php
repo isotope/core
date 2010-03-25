@@ -32,4 +32,6 @@
 $GLOBALS['TL_LANG']['tl_product_data']['dimensions']		= array('Flächenpreise', 'Wählen Sie die Preisliste für diesen Artikel.');
 $GLOBALS['TL_LANG']['tl_product_data']['dimensions_min']	= array('Minimale Breite und Höhe', 'Die minimale Grösse welche bestellt werden muss.');
 $GLOBALS['TL_LANG']['tl_product_data']['dimensions_max']	= array('Maximale Breite und Höhe', 'Die maximale Grösse welche bestellt werden muss.');
+$GLOBALS['TL_LANG']['tl_product_data']['dimension_x']		= array('Breite');
+$GLOBALS['TL_LANG']['tl_product_data']['dimension_y']		= array('Höhe');
 

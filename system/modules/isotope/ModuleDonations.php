@@ -126,7 +126,6 @@ class ModuleDonations extends ModuleIsotopeBase
 			
 			//Manually cobble together a product
 			$objProduct->price = $this->Input->post('donation_amount');
-			$objProduct->product_options = ($strOptionValues ? $strOptionValues : NULL);
 			$objProduct->reader_jumpTo_Override = $this->Environment->request;
 			$this->Cart->addProduct($objProduct);
 			$this->reload();

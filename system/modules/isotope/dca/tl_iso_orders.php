@@ -25,6 +25,10 @@
  */
 
 
+$this->loadDataContainer('tl_product_data');
+$this->loadLanguageFile('tl_product_data');
+
+
 /**
  * Table tl_iso_orders
  */
@@ -36,7 +40,6 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 	(
 		'dataContainer'               => 'Table',
 		'enableVersioning'            => false,
-		'ctable'					  => array('tl_iso_order_items'),
 		'closed'            		  => true,
 		'onload_callback' 			  => array
 		(
@@ -90,13 +93,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 				'label'               => &$GLOBALS['TL_LANG']['tl_iso_orders']['show'],
 				'href'                => 'act=show',
 				'icon'                => 'show.gif'
-			)/*,
-			'edit_order' => array
-			(
-				'label'         => &$GLOBALS['TL_LANG']['tl_iso_orders']['edit_order'],
-				'href'          => 'table=tl_iso_order_items',
-				'icon'          => 'system/modules/isotope/html/edit_order.png'      
-			)*/,
+			),
 			'print_order' => array
 			(
 				'label'			=> &$GLOBALS['TL_LANG']['tl_iso_orders']['print_order'],
@@ -344,6 +341,7 @@ class tl_iso_orders extends Backend
 	
 		while( $objProducts->next() )
 		{
+			// Do not use the TYPOlight function deserialize() cause it handles arrays not objects
 			$objProduct = unserialize($objProducts->product_data);
 			
 			$fltProductTotal = (int)$objProducts->quantity_sold * (float)$objProducts->price;      

@@ -49,8 +49,7 @@ $GLOBALS['TL_LANG']['ERR']['searchNotEnabled'] = 'Search functionality is not en
 $GLOBALS['TL_LANG']['ERR']['isoLoginRequired'] = 'You must be logged in to checkout.';
 $GLOBALS['TL_LANG']['ERR']['mandatoryOption'] = 'Please select an option.';
 $GLOBALS['TL_LANG']['ERR']['noAddressData'] = 'Address data is required to calculate taxes!';
-
-$GLOBALS['TL_LANG']['ERR']['parentProductNotFound'] = 'The parent product id %s does not exist!';
+$GLOBALS['TL_LANG']['ERR']['variantDuplicate'] = 'A variant with this attributes is already available. Please select another combination.';
 
 $GLOBALS['TL_LANG']['MSC']['missingGoogleAnalyticsExtension'] = 'E-commerce tracking for Google Analytics has a dependency you have not installed. Please install the "Google Analytics" extension by Andreas Schempp to take advantage of google analytics e-commerce tracking. It is available through the extension repository or online from www.typolight.org';
 
@@ -102,6 +101,7 @@ $GLOBALS['TL_LANG']['MSC']['searchTerms'] = 'Keywords';
 $GLOBALS['TL_LANG']['MSC']['search'] = 'Search';
 $GLOBALS['TL_LANG']['MSC']['clearFilters'] = 'Clear Filters';
 
+$GLOBALS['TL_LANG']['MSC']['buttonLabel']['update'] = 'Update';
 $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'] = 'Add To Cart';
 $GLOBALS['TL_LANG']['MSC']['buttonActionString']['add_to_cart'] = 'Add product %s to your cart';
 		
@@ -319,8 +319,7 @@ $GLOBALS['TL_LANG']['PAY']['authorizedotnet']	= array('Authorize.net', 'An Autho
 /**
  * Product types
  */
-$GLOBALS['TL_LANG']['ISO_PRODUCT']['simple']	= array('Simple product', 'A regular product. Select this if nothing else matches.');
-$GLOBALS['TL_LANG']['ISO_PRODUCT']['variant']	= array('Product with variant data', 'A product with variant data.');
+$GLOBALS['TL_LANG']['ISO_PRODUCT']['regular']	= array('Regular product', 'A default product. Select this if nothing else matches.');
 
 
 /**

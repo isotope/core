@@ -52,6 +52,8 @@ class IsotopeRunonce extends Frontend
 		$this->updateAttributes();
 		$this->updateProductCategories();
 		$this->updateStoreConfigurations();
+		$this->updateProductOptions();
+		$this->refreshDatabaseFile();
 		
 		if($this->Database->tableExists('tl_product_attribute_types'))
 			$this->Database->execute("DROP TABLE tl_product_attribute_types");
@@ -200,6 +202,52 @@ class IsotopeRunonce extends Frontend
 			$this->Database->execute("ALTER TABLE tl_store CHANGE COLUMN address_fields shipping_fields blob NULL");
 			$this->Database->execute("ALTER TABLE tl_store ADD COLUMN billing_fields blob NULL");
 			$this->Database->prepare("UPDATE tl_store SET billing_fields=shipping_fields");
+		}
+	}
+	
+	
+	private function updateProductOptions()
+	{
+		if ($this->Database->fieldExists('product_options', 'tl_iso_order_items'))
+		{
+			$objItems = $this->Database->execute("SELECT * FROM tl_iso_order_items");
+			
+			while( $objItems->next() )
+			{
+				$arrOld = deserialize($objItems->product_options);
+				
+				if (is_array($arrOld) && count($arrOld))
+				{
+					$arrOptions = array();
+					$objProduct = unserialize($objItems->product_data);
+					
+					foreach( $arrOld as $name => $value )
+					{
+						$arrOptions[$name] = $value['values'][0];
+					}
+					
+					$objProduct->setOptions($arrOptions);
+					
+					$this->Database->prepare("UPDATE tl_iso_order_items SET product_data=?, product_options='' WHERE id=?")->execute(serialize($objProduct), $objItems->id);
+				}
+			}
+		}
+	}
+	
+	
+	/**
+	 * Regenerate the database.sql to include custom attributes.
+	 * This info might have been lost when updating the file via FTP.
+	 */
+	private function refreshDatabaseFile()
+	{
+		$this->import('IsotopeDatabase');
+		
+		$objAttributes = $this->Database->execute("SELECT * FROM tl_product_attributes");
+		
+		while( $objAttributes->next() )
+		{
+			$this->IsotopeDatabase->add($objAttributes->field_name, $GLOBALS['ISO_ATTR'][$objAttributes->type]['sql']);
 		}
 	}
 }

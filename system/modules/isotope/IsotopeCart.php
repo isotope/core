@@ -350,48 +350,35 @@ class IsotopeCart extends Model
 		// Temporary cart available, move to this cart. Must be after creating a new cart!
  		if (FE_USER_LOGGED_IN && strlen($this->strHash))
  		{
- 			$objCartData = $this->Database->prepare("SELECT ci.* FROM tl_cart c INNER JOIN tl_cart_items ci ON c.id=ci.pid WHERE c.session=? AND c.cart_type_id=?")->execute($this->strHash, $this->intType);
+ 			$objOldItems = $this->Database->prepare("SELECT ci.* FROM tl_cart c INNER JOIN tl_cart_items ci ON c.id=ci.pid WHERE c.session=? AND c.cart_type_id=?")->execute($this->strHash, $this->intType);
 										  
-			while( $objCartData->next() )
+			while( $objOldItems->next() )
 			{
-				$objExistingMemberCartData = $this->Database->prepare("SELECT * FROM tl_cart_items WHERE product_id=? AND pid=?")->limit(1)->execute($objCartData->product_id, $this->id);
+				$objNewItems = $this->Database->prepare("SELECT * FROM tl_cart_items WHERE product_id=? AND pid=?")->limit(1)->execute($objOldItems->product_id, $this->id);
 									
-				//Nothing existing in member's cart, just add items to it.		 
-				if($objExistingMemberCartData->numRows < 1)
+				// Nothing existing in member's cart, just move items to it.		 
+				if (!$objNewItems->numRows)
 				{
-					$this->Database->prepare("UPDATE tl_cart_items SET pid=? WHERE id=?")->execute($this->id, $objCartData->id);					
-				
+					$this->Database->prepare("UPDATE tl_cart_items SET pid=? WHERE id=?")->execute($this->id, $objOldItems->id);
 				}
 				else
 				{
-					// Do something to cart data when merging products into a member cart.  Good for applying rules.
-					if (isset($GLOBALS['TL_HOOKS']['isoOnCartMerge']) && is_array($GLOBALS['TL_HOOKS']['isoOnCartMerge']))
+					while( $objNewItems->next() )
 					{
-						foreach ($GLOBALS['TL_HOOKS']['isoOnCartMerge'] as $callback)
+						// Do not use the TYPOlight function deserialize() cause it handles arrays not objects
+						$objOldProduct = unserialize($objOldItems->product_data);
+						$objNewProduct = unserialize($objNewItems->product_data);
+						
+						if ($objOldProduct == $objNewProduct)
 						{
-							$this->import($callback[0]);
-							$objCartData = $this->{$callback[0]}->{$callback[1]}($objCartData);
+							$this->Database->prepare("UPDATE tl_cart_items SET quantity_requested=(quantity_requested+" . $objOldItems->quantity_requested . ") WHERE product_id=? AND pid=?")
+										   ->execute($objOldItems->product_id, $this->id);
+										   
+							$this->Database->prepare("DELETE FROM tl_cart_items WHERE id=?")->execute($objOldItems->id);
 						}
-					}
-
-					while( $objExistingMemberCartData->next() )
-					{
-						// Only sum quantity if two products with same ids have no product options.
-						if($objExistingMemberCartData->numRows > 0)
-						{
-							if(sizeof(deserialize($objExistingMemberCartData->product_options))<1 && sizeof(deserialize($objCartData->product_options))<1)
-							{
-								$this->Database->prepare("UPDATE tl_cart_items SET quantity_requested=(quantity_requested+" . $objCartData->quantity_requested . ") WHERE product_id=? AND pid=?")
-											   ->execute($objCartData->product_id, $this->id);							
-							}else{
-								$this->Database->prepare("UPDATE tl_cart_items SET pid=? WHERE id=?")->execute($this->id, $objCartData->id);
-							}				   
-							//$this->Database->prepare("DELETE FROM tl_cart_items WHERE id=?")->execute($objCartData->id);
-						}						
-						// Simply move item to this cart
 						else
 						{
-							$this->Database->prepare("UPDATE tl_cart_items SET pid=? WHERE id=?")->execute($this->id, $objCartData->id);
+							$this->Database->prepare("UPDATE tl_cart_items SET pid=? WHERE id=?")->execute($this->id, $objOldItems->id);
 						}
 					}
 				}
@@ -461,7 +448,6 @@ class IsotopeCart extends Model
 				$objProduct = unserialize($objProducts->product_data);
 								
 				$objProduct->quantity_requested = $objProducts->quantity_requested;
-				$objProduct->product_options = deserialize($objProducts->product_options);
 				$objProduct->cart_id = $objProducts->id;
 	
 				$this->arrProducts[] = $objProduct;
@@ -490,74 +476,19 @@ class IsotopeCart extends Model
 	//!@todo $objModule is always defined, rework to use it and make sure the module config field is in palettes
 	public function addProduct($objProduct, $objModule=null)
 	{
-		$arrAllOptionValues = array();
-		$arrOptionValues = array();
-		$arrVariantOptions = array();	
-		
-		if($this->Input->post('product_variants'))
-		{						
-			$arrProduct = $this->Input->post('product_variants');
-			
-			foreach($arrProduct as $k=>$v)
-			{			
-				$objVariant = $this->getProduct((int)$v);
-				
-				$arrAttributes = $objVariant->getAttributes();
-								
-				$objProduct->setVariant($this->Input->post('product_variants'), $this->Input->post('variant_options'));	
-				
-				$arrVariantOptions = explode(',', $this->Input->post('variant_options'));
-				
-				//cycle through each product object's set variant option.
-				foreach($arrVariantOptions as $option)
-				{
-					$strValue = $arrAttributes[$option];
-					
-					$strName = $this->getAttributeName($option);
-					
-					$arrVariantOptionValues[$option] = array
-					(
-						'name'		=> ($strName ? $strName : $option),
-						'values'	=> array($strValue)
-					);
-				}
-			}
-			//$arrAllOptionValues = array_merge(deserialize($this->getProductOptionValues($this->Input->post('product_options'))), $arrVariantOptionValues);
-		}
-				
-		if($this->Input->post('product_options'))
-		{
-			$arrOptionValues = deserialize($this->getProductOptionValues($this->Input->post('product_options')));
-		}
-		
-		if(count($arrVariantOptionValues))
-		{
-			$arrAllOptionValues = array_merge($arrOptionValues, $arrVariantOptionValues);
-		}
-		else
-		{
-			$arrAllOptionValues = $arrOptionValues;
-		}
-		
-		if(count($arrAllOptionValues))
-		{
-			$strAllOptionValues = serialize($arrAllOptionValues);
-		}
-						
 		$arrSet = array
 		(
 			'pid'					=> $this->id,
 			'tstamp'				=> time(),
 			'quantity_requested'	=> ((is_object($objModule) && $objModule->iso_use_quantity && intval($this->Input->post('quantity_requested')) > 0) ? intval($this->Input->post('quantity_requested')) : 1),
-			'price'					=> $objProduct->price,	//NOTE: Won't reference the variable unless $ precedes curly brackets!
+			'price'					=> $objProduct->price,	//!NOTE: Won't reference the variable unless $ precedes curly brackets!
 			'price_override'		=> $objProduct->price_override,
 			'href_reader'			=> $objProduct->href_reader,
-			'product_id'			=> ($objProduct->subId ? $objProduct->subId : $objProduct->id),
+			'product_id'			=> $objProduct->id,
 			'product_data'			=> serialize($objProduct),
-			'product_options'		=> ($strAllOptionValues ? $strAllOptionValues : NULL) 
 		);
 
-		if (!$this->Database->prepare("UPDATE tl_cart_items SET tstamp=?, quantity_requested=quantity_requested+" . $arrSet['quantity_requested'] . " WHERE pid=? AND product_id=? AND product_data=? AND product_options=?")->execute($arrSet['tstamp'], $this->id, $arrSet['product_id'], $arrSet['product_data'], $arrSet['product_options'])->affectedRows)
+		if (!$this->Database->prepare("UPDATE tl_cart_items SET tstamp=?, quantity_requested=quantity_requested+" . $arrSet['quantity_requested'] . " WHERE pid=? AND product_id=? AND product_data=?")->execute($arrSet['tstamp'], $this->id, $arrSet['product_id'], $arrSet['product_data'])->affectedRows)
 		{
 			$this->Database->prepare("INSERT INTO tl_cart_items %s")->set($arrSet)->execute();
 		}
@@ -587,113 +518,6 @@ class IsotopeCart extends Model
 		return $objName->name;
 	}
 	
-	
-	/** 
-	 * Need to grab the corresponding data from the subproduct if product_variants is being called!
-	 */
-	public function getProductOptionValues($strProductOptions)
-	{			
-		if (!strlen($strProductOptions))
-			return '';
-		
-		$arrValues = array();
-			
-		$arrProductOptions = explode(',', $strProductOptions);
-		
-		foreach($arrProductOptions as $option)
-		{	
-			$varOptionValues = array();
-			
-			$arrAttributeData = $GLOBALS['TL_DCA']['tl_product_data']['fields'][$option]['attributes']; //1 will eventually be irrelevant but for now just going with it...
-			
-			$varValue = $this->Input->post($option);
-			
-			switch($arrAttributeData['type'])
-			{
-				case 'radio':
-				case 'checkbox':
-				case 'select':
-					
-					//get the actual labels, not the key reference values.
-					$arrOptions = $this->getOptionList($arrAttributeData);
-					
-					if(is_array($varValue))
-					{
-						foreach($varValue as $value)
-						{
-							foreach($arrOptions as $optionRow)
-							{
-								if($optionRow['value']==$value)
-								{
-									$varOptionValues[] = $optionRow['label'];
-									break;
-								}
-							}
-						}	
-					}
-					else
-					{
-						foreach($arrOptions as $optionRow)
-						{
-							if($optionRow['value']==$varValue)
-							{
-								$varOptionValues[] = $optionRow['label'];
-								break;
-							}
-						}
-					}				
-					break;
-					
-				default:
-					//these values are not by reference - they were directly entered.  
-					if (is_array($varValue))
-					{
-						foreach($varValue as $value)
-						{
-							$varOptionValues[] = $value;
-						}
-					}
-					else
-					{
-						if($varValue)
-						{
-							$varOptionValues[] = $varValue;
-						}
-					}
-					break;
-			}		
-			
-			if(sizeof($varOptionValues))
-			{
-				$arrValues[$option] = array
-				(
-					'name'		=> $arrAttributeData['name'],
-					'values'	=> $varOptionValues			
-				);
-			}
-		}
-		
-		return serialize($arrValues);
-	}
-	
-	
-	protected function getOptionList($arrAttributeData)
-	{
-		if ($arrAttributeData['use_alternate_source']==1)
-		{
-			if(strlen($arrAttributeData['list_source_table']) > 0 && strlen($arrAttributeData['list_source_field']) > 0)
-			{
-				$strForeignKey = $arrAttributeData['list_source_table'] . '.' . $arrAttributeData['list_source_field'];
-			}
-		}
-		else
-		{
-			$arrValues = deserialize($arrAttributeData['option_list']);
-		}
-	
-		return $arrValues;
-	}
-
 
 	/**
 	 * Hook-callback for isoCheckoutSurcharge. Accesses the shipping module to get a shipping surcharge.
@@ -860,84 +684,5 @@ class IsotopeCart extends Model
 		
 		return (float)$fltTotal + (float)$taxPriceAdjustment;
 	}
-	
-	
-	/**
-	 * Shortcut for a single product by ID
-	 */
-	protected function getProduct($intId)
-	{
-		$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_product_types WHERE tl_product_data.type=tl_product_types.id) AS type_class FROM tl_product_data WHERE id=?")
-										 ->limit(1)
-										 ->executeUncached($intId);
-									 
-		$strClass = $GLOBALS['ISO_PRODUCT'][$objProductData->type_class]['class'];
-
-		if (!$this->classFileExists($strClass))
-		{			
-			return NULL;
-		}
-	
-		$arrAttributes = $objProductData->row();
-		
-		//Before we can instatiate a product, we have to be sure we have a full complement of data required.  Variants alter certain values 
-		//but do not copy all values from the other 
-		
-		if($objProductData->pid!=0)
-		{
-			$objParentProductData = $this->Database->prepare("SELECT * FROM tl_product_data WHERE id=?")
-												   ->limit(1)
-												   ->executeUncached($objProductData->pid);
-			
-			if(!$objParentProductData->numRows)
-			{
-				throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['parentProductNotFound'], $objProductData->pid));
-			}
-			
-			foreach($arrAttributes as $k=>$v)
-			{
-				if(!$v)
-				{
-					$arrAttributes[$k] = $objParentProductData->$k;
-				}
-			}
-		}
-					
-		$objProduct = new $strClass($arrAttributes);
-
-		return $objProduct;
-	}
-	
-	
-	/**
-	 * Return true if a class file exists
-	 * @param string
-	 * @param boolean
-	 */
-	public function classFileExists($strClass, $blnNoCache=false)
-	{
-		if (!$blnNoCache && isset($this->arrCache[$strClass]))
-		{
-			return $this->arrCache[$strClass];
-		}
-
-		$this->import('Config'); // see ticket #152
-		$this->arrCache[$strClass] = false;
-
-		foreach ($this->Config->getActiveModules() as $strModule)
-		{			
-			$strFile = sprintf('%s/system/modules/%s/%s.php', TL_ROOT, $strModule, $strClass);
-		
-	
-			if (file_exists($strFile))
-			{			
-				$this->arrCache[$strClass] = true;
-				break;
-			}
-		}
-		
-		return $this->arrCache[$strClass];
-	}
-
 }
 

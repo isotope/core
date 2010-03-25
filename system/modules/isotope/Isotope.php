@@ -749,32 +749,48 @@ class Isotope extends Controller
 	 * Merge the OptionDataWizard and OptionWizard data.
 	 * This is a callback for attributes (eg. select menu).
 	 */
-	public function mergeOptionData($arrData, $arrAttributes, &$objWidget=null, &$objProduct=null)
+	public function mergeOptionData($strField, $arrData, &$objProduct=null)
 	{
-		if (TL_MODE != 'FE' || !$objProduct || !$objWidget)
+		if (TL_MODE != 'FE' || !is_object($objProduct))
 			return $arrData;
 			
-		$arrOptionData = $objProduct->{$objWidget->name};
+		$arrProductData = $objProduct->getData();
+		$arrOptionData = $arrProductData[$strField];
 		
 		if (is_array($arrOptionData))
 		{
-			$arrOptions = array();
-			
-			foreach( deserialize($arrAttributes['option_list'], true) as $option )
+			foreach( $arrData['options'] as $k => $v )
 			{
-				if (!is_array($arrOptionData[$option['value']]) || !$arrOptionData[$option['value']]['disable'])
+				if (is_array($v))
 				{
-					$arrOptions[] = array
-					(
-						'label'		=> ((strlen($arrOptionData[$option['value']]['label']) && !$arrOptionData[$option['value']]['inherit']) ? $arrOptionData[$option['value']]['label'] : $option['label']),
-						'value'		=> $option['value'],
-						'default'	=> $option['default'],
-						'group'		=> $option['group'],
-					);
+					foreach( $v as $kk => $vv )
+					{
+						if ($arrOptionData[$kk]['disable'])
+						{
+							unset($arrData['options'][$k][$kk]);
+							continue(2);
+						}
+					}
+					
+					if (strlen($arrOptionData[$kk]['label']) && !$arrOptionData[$kk]['inherit'])
+					{
+						$arrData['options'][$k][$kk] = $arrOptionData[$kk]['label'];
+					}
+				}
+				else
+				{
+					if ($arrOptionData[$k]['disable'])
+					{
+						unset($arrData['options'][$k]);
+						continue;
+					}
+					
+					if (strlen($arrOptionData[$k]['label']) && !$arrOptionData[$k]['inherit'])
+					{
+						$arrData['options'][$k] = $arrOptionData[$k]['label'];
+					}
 				}
 			}
-			
-			$objWidget->options = $arrOptions;
 		}
 		
 		return $arrData;
@@ -784,8 +800,9 @@ class Isotope extends Controller
 	/**
 	 * Callback for isoButton Hook.
 	 */
-	public function addToCartButton($arrButtons)
+	public function defaultButtons($arrButtons)
 	{
+		$arrButtons['update'] = array('label'=>$GLOBALS['TL_LANG']['MSC']['buttonLabel']['update']);
 		$arrButtons['add_to_cart'] = array('label'=>$GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'], 'callback'=>array('IsotopeCart', 'addProduct'));
 		
 		return $arrButtons;

@@ -145,7 +145,7 @@ $GLOBALS['TL_HOOKS']['createNewUser'][]				= array('Isotope','createNewUser');
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][]			= array('IsotopeFrontend', 'replaceIsotopeTags');
 $GLOBALS['TL_HOOKS']['generatePage'][]				= array('Isotope','generatePage');
 $GLOBALS['TL_HOOKS']['loadDataContainer'][]			= array('ProductCatalog', 'loadProductCatalogDCA');
-$GLOBALS['TL_HOOKS']['isoButtons'][]				= array('Isotope', 'addToCartButton');
+$GLOBALS['TL_HOOKS']['isoButtons'][]				= array('Isotope', 'defaultButtons');
 //$GLOBALS['TL_HOOKS']['googleTracking'][] 			= array('ModuleIsotopeCheckout', 'googleTracking');
 
 
@@ -161,10 +161,10 @@ $GLOBALS['TL_HOOKS']['isoCheckoutSurcharge'][] = array('IsotopeCart', 'getPaymen
  * Backend form fields
  */
 $GLOBALS['BE_FFL']['mediaManager']		= 'MediaManager';
-$GLOBALS['BE_FFL']['variantsWizard']	= 'VariantsWizard';
 $GLOBALS['BE_FFL']['attributeWizard']	= 'AttributeWizard';
 $GLOBALS['BE_FFL']['optionDataWizard']	= 'OptionDataWizard';
 $GLOBALS['BE_FFL']['surchargeWizard']	= 'SurchargeWizard';
+$GLOBALS['BE_FFL']['variantWizard']		= 'VariantWizard';
 
 /**
  * Frontend modules
@@ -236,11 +236,7 @@ $GLOBALS['ISO_ORDER'] = array('pending','processing','shipped','complete','on_ho
  */
 $GLOBALS['ISO_PRODUCT'] = array
 (
-	'simple' => array
-	(
-		'class'	=> 'IsotopeProduct',
-	),
-	'variant' => array
+	'regular' => array
 	(
 		'class'	=> 'IsotopeProduct',
 	),

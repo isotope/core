@@ -370,6 +370,7 @@ class IsotopePOS extends Backend
 		
 		while( $objItems->next() )
 		{
+			// Do not use the TYPOlight function deserialize() cause it handles arrays not objects
 			$objProduct = unserialize($objItems->product_data);
 			
 			if (!is_object($objProduct))
@@ -410,12 +411,12 @@ class IsotopePOS extends Backend
 			$arrItems[] = array
 			(
 				'raw'				=> $objItems->row(),
-				'product_options' 	=> deserialize($objItems->product_options),
+				'product_options' 	=> $objProduct->getOptions(),
 				'downloads'			=> (is_array($arrDownloads) ? $arrDownloads : array()),
 				'name'				=> $objProduct->name,
 				'quantity'			=> $objItems->quantity_sold,
-				'price'				=> $this->Isotope->formatPriceWithCurrency($objProduct->price),
-				'total'				=> $this->Isotope->formatPriceWithCurrency(($objProduct->price * $objItems->quantity_sold)),
+				'price'				=> $this->Isotope->formatPriceWithCurrency($objItems->price),
+				'total'				=> $this->Isotope->formatPriceWithCurrency(($objItems->price * $objItems->quantity_sold)),
 				'href'				=> ($this->jumpTo ? $this->generateFrontendUrl($arrPage, '/product/'.$objItems->alias) : ''),
 				'tax_id'			=> $objProduct->tax_id,
 			);
@@ -482,6 +483,7 @@ class IsotopePOS extends Backend
 		
 		while( $objItems->next() )
 		{
+			// Do not use the TYPOlight function deserialize() cause it handles arrays not objects
 			$objProduct = unserialize($objItems->product_data);
 			
 			if (!is_object($objProduct))
@@ -525,8 +527,8 @@ class IsotopePOS extends Backend
 				'downloads'		=> (is_array($arrDownloads) ? $arrDownloads : array()),
 				'name'			=> $objProduct->name,
 				'quantity'		=> $objItems->quantity_sold,
-				'price'			=> $this->Isotope->formatPriceWithCurrency($objProduct->price),
-				'total'			=> $this->Isotope->formatPriceWithCurrency(($objProduct->price * $objItems->quantity_sold)),
+				'price'			=> $this->Isotope->formatPriceWithCurrency($objItems->price),
+				'total'			=> $this->Isotope->formatPriceWithCurrency(($objItems->price * $objItems->quantity_sold)),
 				'href'			=> ($this->jumpTo ? $this->generateFrontendUrl($arrPage, '/product/'.$objItems->alias) : ''),
 				'tax_id'		=> $objProduct->tax_id,
 			);
@@ -557,7 +559,7 @@ class IsotopePOS extends Backend
 		return $strAddress;
 	}
 
-	  /**
+  /**
    * getProducts function.
    * 
    * @access protected
@@ -589,11 +591,10 @@ class IsotopePOS extends Backend
     	
       $arrProductLists[] = array
       (
-
           'id'        => $productData['product_id'], 
           'quantity'      => $productData['quantity_requested'],
 		  'price'		=> $productData['price'],
-		  'options'		=> deserialize($productData['product_options'])
+		  'options'		=> deserialize($productData['product_options']) //!@todo this is not working, this field has been dropped!
       );
     }
       

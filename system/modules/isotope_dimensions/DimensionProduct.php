@@ -30,21 +30,6 @@ class DimensionProduct extends IsotopeProduct
 {
 	
 	/**
-	 * Construct the object
-	 */
-	public function __construct($arrData)
-	{
-		parent::__construct($arrData);
-		
-		$objDimensions = $this->Database->prepare("SELECT MIN(price) AS low_price, MAX(price) AS high_price FROM tl_product_dimension_prices WHERE pid=?")
-										->execute($this->dimensions);
-
-		$this->low_price = $this->Isotope->calculatePrice($objDimensions->low_price, $this->arrData['tax_class']);
-		$this->high_price = $this->Isotope->calculatePrice($objDimensions->high_price, $this->arrData['tax_class']);
-	}
-	
-	
-	/**
 	 * Get a property
 	 * @return mixed
 	 */
@@ -57,9 +42,9 @@ class DimensionProduct extends IsotopeProduct
 				$intPrice = 0;
 				$arrMin = deserialize($this->arrData['dimensions_min']);
 				$arrMax = deserialize($this->arrData['dimensions_max']);
-				if ($this->arrData['dimension_x'] >= $arrMin[0] && $this->arrData['dimension_x'] <= $arrMax[0] && $this->arrData['dimension_y'] >= $arrMin[1] && $this->arrData['dimension_y'] <= $arrMax[1])
+				if ($this->arrOptions['dimension_x'] >= $arrMin[0] && $this->arrOptions['dimension_x'] <= $arrMax[0] && $this->arrOptions['dimension_y'] >= $arrMin[1] && $this->arrOptions['dimension_y'] <= $arrMax[1])
 				{
-					$objPrice = $this->Database->prepare("SELECT * FROM tl_product_dimension_prices WHERE pid=? AND dimension_x >= ? AND dimension_y >= ? ORDER BY dimension_x, dimension_y")->limit(1)->execute($this->arrData['dimensions'], $this->arrData['dimension_x'], $this->arrData['dimension_y']);
+					$objPrice = $this->Database->prepare("SELECT * FROM tl_product_dimension_prices WHERE pid=? AND dimension_x >= ? AND dimension_y >= ? ORDER BY dimension_x, dimension_y")->limit(1)->execute($this->arrData['dimensions'], $this->arrOptions['dimension_x'], $this->arrOptions['dimension_y']);
 					
 					if ($objPrice->numRows)
 					{
@@ -111,14 +96,14 @@ class DimensionProduct extends IsotopeProduct
 		
 		$GLOBALS['TL_DCA']['tl_product_data']['fields']['dimension_x'] = array
 		(
-			'label'					=> array('Breite'),
+			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['dimension_x'],
 			'inputType'				=> 'text',
 			'eval'					=> array('mandatory'=>true),
 			'attributes'			=> array('is_customer_defined'	=> true),		);
 		
 		$GLOBALS['TL_DCA']['tl_product_data']['fields']['dimension_y'] = array
 		(
-			'label'					=> array('Höhe'),
+			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['dimension_y'],
 			'inputType'				=> 'text',
 			'eval'					=> array('mandatory'=>true),
 			'attributes'			=> array('is_customer_defined'	=> true),

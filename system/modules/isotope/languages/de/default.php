@@ -53,6 +53,7 @@ $GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline']		= 'Bestellung Nr. %s vom %s'
 $GLOBALS['TL_LANG']['MSC']['downloadsLabel']			= 'Verfügbare downloads';
 
 $GLOBALS['TL_LANG']['MSC']['order_conditions'] = 'AGB akzeptieren';
+$GLOBALS['TL_LANG']['MSC']['buttonLabel']['update'] = 'Aktualisieren';
 $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'] = 'Bestellen';
 $GLOBALS['TL_LANG']['MSC']['buttonActionString']['add_to_cart'] = '%s bestellen';
 $GLOBALS['TL_LANG']['MSC']['labelSortBy'] = 'Sortieren nach';

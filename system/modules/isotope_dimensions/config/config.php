@@ -48,10 +48,7 @@ $GLOBALS['ISO_PRODUCT']['dimension'] = array
 	'disabledFields'	=> array('price', 'price_override'),
 );
 
-$GLOBALS['ISO_PRODUCT']['simple']['disabledFields'][] = 'dimensions';
-$GLOBALS['ISO_PRODUCT']['simple']['disabledFields'][] = 'dimensions_min';
-$GLOBALS['ISO_PRODUCT']['simple']['disabledFields'][] = 'dimensions_max';
-$GLOBALS['ISO_PRODUCT']['variant']['disabledFields'][] = 'dimensions';
-$GLOBALS['ISO_PRODUCT']['variant']['disabledFields'][] = 'dimensions_min';
-$GLOBALS['ISO_PRODUCT']['variant']['disabledFields'][] = 'dimensions_max';
+$GLOBALS['ISO_PRODUCT']['regular']['disabledFields'][] = 'dimensions';
+$GLOBALS['ISO_PRODUCT']['regular']['disabledFields'][] = 'dimensions_min';
+$GLOBALS['ISO_PRODUCT']['regular']['disabledFields'][] = 'dimensions_max';
 

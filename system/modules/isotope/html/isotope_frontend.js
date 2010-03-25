@@ -222,3 +222,59 @@ var IsotopeFrontend =
 	}
 	
 };
+
+
+var IsotopeProduct = new Class(
+{
+	Binds: ['refresh'],
+	
+	initialize: function(module, product, attributes)
+	{
+		this.form = document.id(('iso_product_'+product)).set('send',
+		{
+			url: ('ajax.php?action=fmd&id='+module+'&product='+product),
+			link: 'cancel',
+			onRequest: function()
+			{
+				IsotopeFrontend.showLoader();
+			},
+			onSuccess: function(txt, xml)
+			{
+				IsotopeFrontend.hideLoader();
+				
+				JSON.decode(txt).each( function(option)
+				{
+					var oldEl = document.id(option.id);
+					
+					if (oldEl)
+					{
+						var newEl = new Element('div').set('html', option.html).getFirst(('#'+option.id));
+						
+						if (newEl)
+						{
+							newEl.cloneEvents(oldEl).replaces(oldEl);
+						}
+					}
+				});
+			},
+			onFailure: function()
+			{
+				IsotopeFrontend.hideLoader();
+			}
+		});
+		
+		attributes.each( function(el,index)
+		{
+			if ($(el))
+			{
+				$(el).addEvent('change', this.refresh);
+			}
+		}.bind(this));
+	},
+	
+	refresh: function(event)
+	{
+		this.form.send();
+	}
+});
+
