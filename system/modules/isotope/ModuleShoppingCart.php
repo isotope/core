@@ -110,7 +110,7 @@ class ModuleShoppingCart extends ModuleIsotopeBase
 				'total_price'		=> $this->generatePrice($objProduct->total_price),
 				'quantity'			=> $objProduct->quantity_requested,
 				'cart_item_id'		=> $objProduct->cart_id,
-				'product_options'	=> $objProduct->product_options,
+				'product_options'	=> $objProduct->getOptions(),
 				'remove_link'		=> $this->generateFrontendUrl($objPage->row(), '/action/remove/id/'.$objProduct->cart_id.'/referer/'.base64_encode($this->Environment->request)),
 				'remove_link_text'  => $GLOBALS['TL_LANG']['MSC']['removeProductLinkText'],
 				'remove_link_title' => sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $objProduct->name),

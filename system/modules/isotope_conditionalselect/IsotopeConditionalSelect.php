@@ -29,46 +29,12 @@
 class IsotopeConditionalSelect extends Backend
 {
 	
-	public function mergeData($arrData, $arrAttributes, &$objWidget=null, &$objProduct=null)
+	public function mergeData($strField, $arrData, &$objProduct=null)
 	{
-		if (is_object($objProduct))
-		{
-			$arrData['eval']['conditionField'] = $arrAttributes['conditionField'] . '_' . $objProduct->id;
-			
-			if (is_object($objWidget))
-			{
-				$objWidget->conditionField .= '_' . $objProduct->id;
-				
-				$this->import('Isotope');
-				$this->Isotope->mergeOptionData($arrData, $arrAttributes, $objWidget, $objProduct);
-			}
-			
-			return $arrData;
-		}
+		$arrData['eval']['conditionField'] = $arrData['attributes']['conditionField'] . (is_object($objProduct) ? '_'.$objProduct->id : '');
 		
-		$arrData['eval']['conditionField'] = $arrAttributes['conditionField'];
-		
-		$arrValues = array();
-		$arrOptionsList = deserialize($arrAttributes['option_list']);
-		
-		if (is_array($arrOptionsList) && count($arrOptionsList))
-		{
-			$strGroup = '';
-			foreach ($arrOptionsList as $arrOptions)
-			{
-				if ($arrOptions['group'])
-				{
-					$strGroup = $arrOptions['value'];
-					continue;
-				}
-				
-				$arrValues[$strGroup][$arrOptions['value']] = $arrOptions['label'];
-			}
-			
-			$arrData['options'] = $arrValues;
-		}
-		
-		return $arrData;
+		$this->import('Isotope');
+		return $this->Isotope->mergeOptionData($strField, $arrData, $objProduct);
 	}
 	
 	

@@ -419,6 +419,7 @@ class PayflowProPOS extends Backend
 		
 		while( $objItems->next() )
 		{
+			// Do not use the TYPOlight function deserialize() cause it handles arrays not objects
 			$objProduct = unserialize($objItems->product_data);
 			
 			if (!is_object($objProduct))
@@ -459,7 +460,7 @@ class PayflowProPOS extends Backend
 			$arrItems[] = array
 			(
 				'raw'				=> $objItems->row(),
-				'product_options' 	=> deserialize($objItems->product_options),
+				'product_options' 	=> $objProduct->getOptions(),
 				'downloads'			=> (is_array($arrDownloads) ? $arrDownloads : array()),
 				'name'				=> $objProduct->name,
 				'quantity'			=> $objItems->quantity_sold,
@@ -531,6 +532,7 @@ class PayflowProPOS extends Backend
 		
 		while( $objItems->next() )
 		{
+			// Do not use the TYPOlight function deserialize() cause it handles arrays not objects
 			$objProduct = unserialize($objItems->product_data);
 			
 			if (!is_object($objProduct))
@@ -606,85 +608,77 @@ class PayflowProPOS extends Backend
 		return $strAddress;
 	}
 
-	  /**
-   * getProducts function.
-   * 
-   * @access protected
-   * @param integer $intSourceCartId
-   * @return string
-   */
-  protected function getProducts($intSourceCartId, $store_id = null)
-  {
-  	if($store_id)
-  	{
-		$this->Isotope->overrideStore($store_id);	//Which store it was ordered from is important, not what the default backend store is.
+	/**
+	* getProducts function.
+	* 
+	* @access protected
+	* @param integer $intSourceCartId
+	* @return string
+	*/
+	//!@todo this function should be rewritten to use the product object
+	protected function getProducts($intSourceCartId, $store_id = null)
+	{
+		if($store_id)
+		{
+			$this->Isotope->overrideStore($store_id);	//Which store it was ordered from is important, not what the default backend store is.
+		}
+		
+		$objItems = $this->Database->prepare("SELECT * FROM tl_cart_items WHERE pid=?")->execute($intSourceCartId);
+		
+		if (!$objItems->numRows)
+		{
+			return '';
+		}
+		
+		$arrProductLists = array();
+		
+		while( $objItems->next()  )
+		{
+			// Do not use the TYPOlight function deserialize() cause it handles arrays not objects
+			$objProduct = unserialize($objItems->product_data);
+
+			$arrProductLists[] = array
+			(
+				'id'		=> $objProduct->id, 
+				'quantity'	=> $objItems->quantity_requested,
+				'price'		=> $objItems->price,
+				'options'	=> $objProduct->getOptions(),
+			);
+		}
+		
+		foreach($arrProductLists as $productList)
+		{         
+			$fltProductTotal = 0.00;
+			
+			$objProductExtendedData = $this->Database->prepare("SELECT name, sku FROM tl_product_data WHERE id=?")->limit(1)->execute($productList['id']);
+			
+			if($objProductExtendedData->numRows < 1)
+			{
+				continue;
+			}   
+			
+			$fltProductTotal = (int)$productList['quantity'] * (float)$productList['price']; 
+			
+			$fltProductPrice = (float)$productList['price'];
+			
+			$strProductData .= $objProductExtendedData->name . ' - ' . $this->Isotope->formatPriceWithCurrency($fltProductPrice) . ' x ' . $productList['quantity'] . ' = ' . $this->Isotope->formatPriceWithCurrency($fltProductTotal) . '<br />';
+			
+			
+			
+			$arrAllProducts[] = array
+			(
+				'name'			=> $objProductExtendedData->name,
+				'sku'			=> $objProductExtendedData->sku,
+				'price'			=> $this->Isotope->formatPriceWithCurrency($fltProductPrice),
+				'quantity'		=> (int)$productList['quantity'],
+				//'tax'			=> number_format($fltProductTax, 2),
+				'subtotal'		=> $this->Isotope->formatPriceWithCurrency($fltProductTotal),
+				'options'		=> $this->getOptionsHTML($productList['options'])
+			);
+		}
+		
+		return $arrAllProducts;
 	}
-	
-    $arrProductData = array();
-    
-    $objProductData = $this->Database->prepare("SELECT * FROM tl_cart_items WHERE pid=?")
-                     ->execute($intSourceCartId);
-    
-    if($objProductData->numRows < 1)
-    {
-      return '';
-    }
-    
-    $arrProductData = $objProductData->fetchAllAssoc();
-   
-    
-    foreach($arrProductData as $productData)
-    {
-    	
-      $arrProductLists[] = array
-      (
-
-          'id'        => $productData['product_id'], 
-          'quantity'      => $productData['quantity_requested'],
-		  'price'		=> $productData['price'],
-		  'options'		=> deserialize($productData['product_options'])
-      );
-    }
-      
-    foreach($arrProductLists as $productList)
-    {         
-
-      $fltProductTotal = 0.00;
-      
-                  
-      $objProductExtendedData = $this->Database->prepare("SELECT name, sku FROM tl_product_data WHERE id=?")
-					      					   ->limit(1)
-					                           ->execute($productList['id']);
-                  
-      if($objProductExtendedData->numRows < 1)
-      {
-        continue;
-      }   
-           
-      $fltProductTotal = (int)$productList['quantity'] * (float)$productList['price']; 
-      
-      $fltProductPrice = (float)$productList['price'];
-      
-      $strProductData .= $objProductExtendedData->name . ' - ' . $this->Isotope->formatPriceWithCurrency($fltProductPrice) . ' x ' . $productList['quantity'] . ' = ' . $this->Isotope->formatPriceWithCurrency($fltProductTotal) . '<br />';
-        
-        
-        
-        $arrAllProducts[] = array
-				(
-					'name'			=> $objProductExtendedData->name,
-					'sku'			=> $objProductExtendedData->sku,
-					'price'			=> $this->Isotope->formatPriceWithCurrency($fltProductPrice),
-					'quantity'		=> (int)$productList['quantity'],
-					//'tax'			=> number_format($fltProductTax, 2),
-					'subtotal'		=> $this->Isotope->formatPriceWithCurrency($fltProductTotal),
-					'options'		=> $this->getOptionsHTML($productList['options'])
-					
-				); 	
- 
-    }
-        	
-    return $arrAllProducts;
-  }
 
 	
 	

@@ -10,10 +10,10 @@
 <tr>
 	<td>
 		<?php echo $objProduct->name; ?>
-		<?php if(is_array($objProduct->product_options) && count($objProduct->product_options)): ?>
+		<?php $options = $objProduct->getOptions(); if(is_array($options) && count($options)): ?>
 		<div class="optionswrapper">
 			<ul class="productOptions">
-			<?php foreach($objProduct->product_options as $option): ?>
+			<?php foreach($options as $option): ?>
 				<li><strong><?php echo $option['name']; ?>:</strong> <?php echo implode(', ', $option['values']); ?></li>
 			<?php endforeach; ?>
 			</ul>

@@ -17,14 +17,7 @@
 
 <?php if($this->buttons): ?>
 <div class="submit_container">
-<?php if ($this->variant_widget): ?>
-<div class="variants">
-<input type="hidden" name="variant_options" value="<?php echo $this->variantList; ?>" />
-<label for="<?php echo $this->variant_widget['name']; ?>"><?php echo $this->variant_widget['description']; ?> </label><?php echo $this->variant_widget['html']; ?>
-</div>
-<?php endif; ?>
-<?php if($this->options): ?>
-<input type="hidden" name="product_options" value="<?php echo $this->optionList; ?>" />
+<?php if($this->hasOptions): ?>
 <div class="options">
 <?php echo implode("\n", $this->options); ?>
 </div>

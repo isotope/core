@@ -50,37 +50,13 @@ $GLOBALS['TL_LANG']['tl_product_data']['price_override']		= array('Price overrid
 $GLOBALS['TL_LANG']['tl_product_data']['option_set_source']		= array('Option Set Source','Use an existing option set or create a new one');
 $GLOBALS['TL_LANG']['tl_product_data']['option_sets']			= array('Option Sets','Select an existing Option Set');
 $GLOBALS['TL_LANG']['tl_product_data']['option_set_title']		= array('Option Set Title','Name your new option set. The combination of values for each attribute will be stored and used to produce a new collection of empty subproducts.');
-$GLOBALS['TL_LANG']['tl_product_data']['variants_wizard']		= array('Product variants','Configure product variants');
 $GLOBALS['TL_LANG']['tl_product_data']['stock_enabled']			= array('Enabled inventory tracking','Please choose whether or not you would like to track inventory.');
 $GLOBALS['TL_LANG']['tl_product_data']['max_order_quantity']	= array('Maximum order quantity','Specify a maximum amount of product that can be purchased in a single order.');
 $GLOBALS['TL_LANG']['tl_product_data']['start']					= array('Start date','Do not show this product before the date specified.');
 $GLOBALS['TL_LANG']['tl_product_data']['stop']					= array('Stop date','Do not show this product after the date specified.');
+$GLOBALS['TL_LANG']['tl_product_data']['variant_attributes']	= array('Variant setup', 'Please select the combination of values for this variant.');
 
 $GLOBALS['TL_LANG']['tl_product_data']['enabled'] = 'Enabled';
-
-/*
-$GLOBALS['TL_LANG']['tl_product_data']['optionSetTitle'] = array('New Option Set','Create a new option set');
-$GLOBALS['TL_LANG']['tl_product_data']['optionSetSelect'] = array('Option Set','Select an existing option set');
-$GLOBALS['TL_LANG']['tl_product_data']['useOrCreateOptionSet'] = array('Option Set Mode','');
-*/
-/*
-$GLOBALS['TL_LANG']['tl_product_data']['values']			= 'Option Values';
-//$GLOBALS['TL_LANG']['tl_product_data']['sku']				= 'SKU';
-$GLOBALS['TL_LANG']['tl_product_data']['price']	= 'Price Change';
-$GLOBALS['TL_LANG']['tl_product_data']['weight']	= 'Weight Change';
-$GLOBALS['TL_LANG']['tl_product_data']['quantity']		= 'Quantity';
-*/
-/*
-$GLOBALS['TL_LANG']['tl_product_data']['audio_source'] = array('Audio File Source', 'Link to an internal or external media source instead of the default page.');
-$GLOBALS['TL_LANG']['tl_product_data']['audio_jumpTo'] = array('Select Internal File', 'Please select the page to which visitors will be redirected.');
-$GLOBALS['TL_LANG']['tl_product_data']['audio_url'] = array('Specify External File','Paste a media link here (for example, a Youtube video URL)');
-$GLOBALS['TL_LANG']['tl_product_data']['video_source'] = array('Video File Source', 'Link to an internal or external media source instead of the default page.');
-$GLOBALS['TL_LANG']['tl_product_data']['video_jumpTo'] = array('Select Internal File', 'Please select the page to which visitors will be redirected.');
-$GLOBALS['TL_LANG']['tl_product_data']['video_url'] = array('Specify External File','Paste a media link here (for example, a Youtube video URL)');
-$GLOBALS['TL_LANG']['tl_product_data']['option_collection'] = array('Product Option Wizard','Create extra product option combinations.');
-$GLOBALS['TL_LANG']['tl_product_data']['add_audio_file'] = array('Add Audio File','Add an audio file to this product');
-$GLOBALS['TL_LANG']['tl_product_data']['add_video_file'] = array('Add Video File','Add a video file to this product');
-*/
 
 
 /**
@@ -123,13 +99,14 @@ $GLOBALS['TL_LANG']['tl_product_data']['import']		= array('Import assets', 'Impo
 /** 
  * Legends
  */
-$GLOBALS['TL_LANG']['tl_product_data']['general_legend'] = "General Settings";
-$GLOBALS['TL_LANG']['tl_product_data']['pricing_legend'] = "Pricing Settings";
-$GLOBALS['TL_LANG']['tl_product_data']['inventory_legend'] = 'Inventory Settings';
-$GLOBALS['TL_LANG']['tl_product_data']['shipping_legend'] = 'Shipping Settings';
-$GLOBALS['TL_LANG']['tl_product_data']['tax_legend'] = 'Tax Settings';
-$GLOBALS['TL_LANG']['tl_product_data']['options_legend'] = 'Product Options Settings';
-$GLOBALS['TL_LANG']['tl_product_data']['tax_legend'] = 'Tax Settings';
-$GLOBALS['TL_LANG']['tl_product_data']['media_legend'] = 'Media Management';
-$GLOBALS['TL_LANG']['tl_product_data']['publish_legend'] = 'Publishing';
+$GLOBALS['TL_LANG']['tl_product_data']['general_legend']	= "General Settings";
+$GLOBALS['TL_LANG']['tl_product_data']['pricing_legend']	= "Pricing Settings";
+$GLOBALS['TL_LANG']['tl_product_data']['inventory_legend']	= 'Inventory Settings';
+$GLOBALS['TL_LANG']['tl_product_data']['shipping_legend']	= 'Shipping Settings';
+$GLOBALS['TL_LANG']['tl_product_data']['tax_legend']		= 'Tax Settings';
+$GLOBALS['TL_LANG']['tl_product_data']['options_legend']	= 'Product Options Settings';
+$GLOBALS['TL_LANG']['tl_product_data']['tax_legend']		= 'Tax Settings';
+$GLOBALS['TL_LANG']['tl_product_data']['media_legend']		= 'Media Management';
+$GLOBALS['TL_LANG']['tl_product_data']['publish_legend']	= 'Publishing';
+$GLOBALS['TL_LANG']['tl_product_data']['variant_legend']	= 'Product variant setup';
 

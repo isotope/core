@@ -67,6 +67,18 @@ class ModuleProductReader extends ModuleIsotopeBase
 
 		return parent::generate();
 	}
+	
+	
+	public function generateAjax()
+	{		
+		$objProduct = $this->getProduct($this->Input->get('product'));
+		
+		if ($objProduct)
+		{
+			return $objProduct->generateAjax();
+		}
+	}	
+
 
 
 	/**
@@ -134,26 +146,6 @@ class ModuleProductReader extends ModuleIsotopeBase
 	}
 	
 	
-	/** 
-	 * TODO - Switch to JSON to allow flexibility to grab and return structured data for use in various elements on the product reader page in a single call
-	 */
-	public function generateAjax()
-	{		
-		if(!$this->Input->get('variant'))
-		{
-			$objProduct = $this->getProductByAlias($this->Input->get('product'));
-			$arrAttributes = $objProduct->getAttributes();
-		}
-		else
-		{
-			$objProduct = $this->getProduct((integer)$this->Input->get('variant'));
-			
-			$arrAttributes = $this->getInheritedAttributes($objProduct);	
-		}
-				
-		echo json_encode($arrAttributes);
-	}	
-
 	public function getInheritedAttributes($objProduct)
 	{
 		$arrAttributes = $objProduct->getAttributes();
@@ -168,8 +160,6 @@ class ModuleProductReader extends ModuleIsotopeBase
 		}
 			
 		$arrAttributes = $objProduct->getAttributes();
-			
-		unset($arrAttributes['variants_wizard']);		
 		
 		foreach($arrAttributes as $k=>$v)
 		{

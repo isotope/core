@@ -714,7 +714,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				'total_price'		=> $objProduct->formatted_total_price,
 				'quantity'			=> $objProduct->quantity_requested,
 				'tax_id'			=> $objProduct->tax_id,
-				'product_options'	=> $objProduct->product_options,
+				'product_options'	=> $objProduct->getOptions(),
 			));
 		}
 		
@@ -878,7 +878,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 				'product_id'		=> $objProduct->id,
 				'quantity_sold'		=> $objProduct->quantity_requested,
 				'price'				=> $objProduct->price,
-				'product_options'	=> $objProduct->product_options,
+				'product_options'	=> $objProduct->getOptions(),
 				'product_data'		=> serialize($objProduct),
 			);
 			

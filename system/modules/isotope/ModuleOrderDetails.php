@@ -85,6 +85,7 @@ class ModuleOrderDetails extends ModuleIsotopeBase
 		
 		while( $objItems->next() )
 		{
+			// Do not use the TYPOlight function deserialize() cause it handles arrays not objects
 			$objProduct = unserialize($objItems->product_data);
 			
 			if (!is_object($objProduct))
@@ -126,10 +127,10 @@ class ModuleOrderDetails extends ModuleIsotopeBase
 			(
 				'raw'				=> $objItems->row(),
 				'name'				=> $objProduct->name,
-				'product_options'	=> deserialize($objItems->product_options),
+				'product_options'	=> $objProduct->getOptions(),
 				'quantity'			=> $objItems->quantity_sold,
-				'price'				=> $this->Isotope->formatPriceWithCurrency($objProduct->price),
-				'total'				=> $this->Isotope->formatPriceWithCurrency(($objProduct->price * $objItems->quantity_sold)),
+				'price'				=> $this->Isotope->formatPriceWithCurrency($objItems->price),
+				'total'				=> $this->Isotope->formatPriceWithCurrency(($objItems->price * $objItems->quantity_sold)),
 				'href'				=> ($this->jumpTo ? $this->generateFrontendUrl($arrPage, '/product/'.$objItems->alias) : ''),
 				'tax_id'			=> $objProduct->tax_id,
 				'downloads'			=> (is_array($arrDownloads) ? $arrDownloads : array()),

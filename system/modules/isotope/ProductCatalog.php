@@ -65,7 +65,7 @@ class ProductCatalog extends Backend
 				),
 			);
 			
-			if ($objAttributes->is_required) $arrData['eval']['mandatory'] = 'true';
+			if ($objAttributes->is_required) $arrData['eval']['mandatory'] = true;
 			if ($objAttributes->rgxp) $arrData['eval']['rgxp'] = $objAttributes->rgxp;
 			if ($objAttributes->multiple) $arrData['eval']['multiple'] = $objAttributes->multiple;
 			
@@ -95,47 +95,46 @@ class ProductCatalog extends Backend
 					//$arrData['eval']['fieldType'] = 'radio';
 					break;
 					
-				case 'options':
-				case 'select':
+				default:
 					$arrData['eval']['multiple'] = $objAttributes->type == 'options' ? false : $arrData['eval']['multiple'];
 					if ($objAttributes->use_alternate_source && strlen($objAttributes->list_source_table) > 0 && strlen($objAttributes->list_source_field) > 0)
 					{
-						$strForeignKey = $objAttributes->list_source_table . '.' . $objAttributes->list_source_field;
+						$arrData['foreignKey'] = $objAttributes->list_source_table . '.' . $objAttributes->list_source_field;
 					}
 					else
 					{
-						$arrValues = array();
-						$arrOptionsList = deserialize($objAttributes->option_list);
+						$arrData['options'] = array();
+						$arrOptions = deserialize($objAttributes->option_list);
 						
-						if (is_array($arrOptionsList) && count($arrOptionsList))
+						if (is_array($arrOptions) && count($arrOptions))
 						{
-							foreach ($arrOptionsList as $arrOptions)
+							$strGroup = '';
+							foreach ($arrOptions as $option)
 							{
-								$arrValues[$arrOptions['value']] = $arrOptions['label'];
+								if (!strlen($option['value']))
+								{
+									$arrData['eval']['includeBlankOption'] = true;
+									$arrData['eval']['blankOptionLabel'] = $option['label'];
+									continue;
+								}
+								elseif ($option['group'])
+								{
+									$strGroup = $option['value'];
+									continue;
+								}
+								
+								if (strlen($strGroup))
+								{
+									$arrData['options'][$strGroup][$option['value']] = $option['label'];
+								}
+								else
+								{
+									$arrData['options'][$option['value']] = $option['label'];
+								}
 							}
-							
-							$arrData['options'] = array_keys($arrValues);
-							$arrData['reference'] = $arrValues;
 						}
 					}
-
 					break;
-			}
-			
-			
-			if ($objAttributes->add_to_product_variants)
-			{
-				if($this->Input->get('id') && $this->Input->get('do')=='product_manager')
-				{
-					$objPid = $this->Database->prepare("SELECT pid FROM tl_product_data WHERE id=?")
-											 ->limit(1)
-											 ->execute($this->Input->get('id'));
-					
-					if($objPid->numRows && $objPid->pid>0)
-					{
-						$arrData['inputType'] = 'text';
-					}
-				}
 			}
 			
 			if (is_array($GLOBALS['ISO_ATTR'][$objAttributes->type]['callback']) && count($GLOBALS['ISO_ATTR'][$objAttributes->type]['callback']))
@@ -143,7 +142,7 @@ class ProductCatalog extends Backend
 				foreach( $GLOBALS['ISO_ATTR'][$objAttributes->type]['callback'] as $callback )
 				{
 					$this->import($callback[0]);
-					$arrData = $this->{$callback[0]}->{$callback[1]}($arrData, $objAttributes->row());
+					$arrData = $this->{$callback[0]}->{$callback[1]}($objAttributes->field_name, $arrData);
 				}
 			}
 			
@@ -151,52 +150,26 @@ class ProductCatalog extends Backend
 		}
 		
 		
-		// Add palettes
-		$arrProductTypePalettes = $this->getProductTypePalettes();
-
-		if(count($arrProductTypePalettes))
+		if(strlen($this->Input->get('id')) && $this->Input->get('do') == 'product_manager' && (!strlen($this->Input->get('table')) || $this->Input->get('table') == 'tl_product_data'))
 		{
-			$GLOBALS['TL_DCA']['tl_product_data']['palettes'] = $GLOBALS['TL_DCA']['tl_product_data']['palettes'] + $arrProductTypePalettes;
-				
-			$arrAdditionalSelectors = $this->arrSelectors;
-		
-			$GLOBALS['TL_DCA']['tl_product_data']['palettes']['__selector__'] = array_merge($GLOBALS['TL_DCA']['tl_product_data']['palettes']['__selector__'], $arrAdditionalSelectors);
-		}
-		
-		if($this->Input->get('id') && $this->Input->get('do')=='product_manager' && !$this->Input->get('mode') && $this->Input->get('table') != 'tl_product_categories')
-		{
-			//Check and update to load the palette
-			$objProductType = $this->Database->prepare("SELECT d.type AS selfType, (SELECT type FROM tl_product_data p WHERE p.id=d.pid AND d.pid!=0) AS parentType FROM tl_product_data d WHERE d.id=?")
-											 ->limit(1)
-											 ->execute($this->Input->get('id'));
+			$objProduct = $this->Database->prepare("SELECT id, pid, language, type, (SELECT attributes FROM tl_product_types WHERE id=tl_product_data.type) AS attributes, (SELECT variant_attributes FROM tl_product_types WHERE id=tl_product_data.type) AS variant_attributes FROM tl_product_data WHERE id=?")->limit(1)->execute($this->Input->get('id'));
 			
-			if(!$objProductType->numRows || $objProductType->selfType==0)
+			if ($objProduct->pid > 0)
 			{
-			
-				//set the type for the subproduct
-				$this->Database->prepare("UPDATE tl_product_data SET type=" . $objProductType->parentType . " WHERE id=?")
-							   ->set($arrSet)
-							   ->execute($this->Input->get('id'));
-	
+				$objParent = $this->Database->prepare("SELECT * FROm tl_product_data WHERE id=?")->limit(1)->execute($objProduct->pid);
+				
+				if ($objProduct->type != $objParent->type)
+				{
+					$this->Database->prepare("UPDATE tl_product_data p1 SET type=(SELECT type FROM (SELECT * FROM tl_product_data) AS p2 WHERE p1.pid=p2.id) WHERE p1.id=?")->execute($this->Input->get('id'));
+					$this->reload();
+				}
 			}
+			
+			// Add palettes
+			$GLOBALS['TL_DCA']['tl_product_data']['palettes'][$objProduct->type] = $this->buildPaletteString($objProduct);
+			$GLOBALS['TL_DCA']['tl_product_data']['palettes']['__selector__'] = array_merge($GLOBALS['TL_DCA']['tl_product_data']['palettes']['__selector__'], $this->arrSelectors);
 		}
 				
-	}
-	
-	
-	protected function getProductType($intProductId)
-	{
-		$objProductType = $this->Database->prepare("SELECT type FROM tl_product_data WHERE id=?")
-										 ->limit(1)
-										 ->execute($intProductId);
-		
-		if($objProductType->numRows < 1)
-		{
-			throw new Exception('no product type returned for this product!');	//TODO: Add to language array
-		}		
-		
-		return $objProductType->type;
-		
 	}
 	
 	
@@ -218,129 +191,54 @@ class ProductCatalog extends Backend
 		
 		return $varValue;
 	}
-
 	
-	protected function getProductTypePalettes()
+	
+	private function buildPaletteString($objProduct)
 	{
-		$objProductTypes = $this->Database->prepare("SELECT * FROM tl_product_types")->execute();
+		$arrPalette = array();
 		
-		if (!$objProductTypes->numRows)
+		// Variant
+		if ($objProduct->pid > 0)
 		{
-			return array();
-		}
-		
-		while($objProductTypes->next())
-		{
-			$arrFieldCollection = array();
-			$strAttributes = "";
+			$arrFields = array('');
+			$arrAttributes = deserialize($objProduct->attributes);
+			$arrPalette['variant_legend'][] = 'variant_attributes';
 			
-			$objPid = $this->Database->prepare("SELECT pid FROM tl_product_data WHERE id=?")
-									 ->limit(1)
-									 ->execute($this->Input->get('id'));
-			
-			if(!$objPid->numRows)
+			if (is_array($arrAttributes) && count($arrAttributes))
 			{
-				$strAttributeField = 'attributes';
-			}
-			else
-			{
-				if($objPid->pid!=0)
+				foreach( $arrAttributes as $attribute )
 				{
-					$strAttributeField = 'variant_attributes';
-				}
-				else
-				{
-					$strAttributeField = 'attributes';
-				}
-			}
-						
-			$arrFieldCollection = deserialize($objProductTypes->$strAttributeField);
-			
-			if(is_array($arrFieldCollection) && count($arrFieldCollection) > 0)
-			{
-				$objHiddenAttributes = $this->Database->execute("SELECT field_name FROM tl_product_attributes WHERE is_hidden_on_backend='1'");
-						
-				if($objHiddenAttributes->numRows > 0)
-				{				
-					while($objHiddenAttributes->next())
+					if ($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['add_to_product_variants'])
 					{
-						$i = 0;
-						
-						foreach($arrFieldCollection as $field)
-						{
-							if($field==$objHiddenAttributes->field_name && $strAttributeField=='attributes')
-							{
-								unset($arrFieldCollection[$i]);
-							}
-							
-							$i++;
-						}
+						$arrFields[] = $attribute;
+						$GLOBALS['TL_DCA']['tl_product_data']['fields']['variant_attributes']['options'][] = $attribute;
 					}
 				}
-								
-				$strAttributes = $this->buildPaletteString($arrFieldCollection);
-				
-				$arrPalettes[$objProductTypes->id] = $strAttributes;					
 			}
+			
+			$arrFields = array_diff(deserialize($objProduct->variant_attributes, true), $arrFields);
 		}
-
-		return $arrPalettes;
-	}
-	
-	
-	private function buildPaletteString($arrFields, $strAppendToLegend = '', $arrExtraFields = array())
-	{
-		if (!is_array($arrFields) || !count($arrFields))
-			return '';
-		
-		$arrPalette = array();
-	
-		foreach( $arrFields as $field )
+		else
 		{
-			// Field does not exist
-			if (!is_array($GLOBALS['TL_DCA']['tl_product_data']['fields'][$field]))
-				continue;
-				
-			$arrAttributes = $GLOBALS['TL_DCA']['tl_product_data']['fields'][$field]['attributes'];
-	
-			/*if($arrAttributes['legend'] == 'options_legend' && (!is_array($arrPalette[$arrAttributes['legend']]) || !in_array('option_set_source', $arrPalette[$arrAttributes['legend']])))
-			{
-				$arrPalette[$arrAttributes['legend']][] = 'option_set_source';
-			}*/
-
-			if(count($arrExtraFields))
-			{
-				foreach($arrExtraFields as $extrafield)
-				{				
-					if(is_array($arrPalette[$strAppendToLegend]) && !in_array($extrafield, $arrPalette[$strAppendToLegend]))
-						$arrPalette[$strAppendToLegend][] = $extrafield;
-				}
-			}
-
-			//To do - detemine if product can support variants.  This would be determined by any customer defined attributes being a part of the given palette or not.
-			/*if($arrAttributes['legend'] == 'options_legend' && !in_array('options_set_source', $arrPalette[$arrAttributes['legend']]))
-			{
-				if(!in_array('option_set_source', $this->arrSelectors))
-				{
-					$this->arrSelectors[] = 'option_set_source';
-				}
-								
-				if(!in_array('option_set_source', $arrPalette[$arrAttributes['legend']]))
-				{
-					$arrPalette[$arrAttributes['legend']][] = 'option_set_source';
-				}
-			}*/
-						
-			$arrPalette[$arrAttributes['legend']][] = $field;
+			$arrFields = deserialize($objProduct->attributes);
 		}
 		
-		/*		
-		if(!in_array('option_set_source', $this->arrSelectors))
+		if (is_array($arrFields) && count($arrFields))
 		{
-			$this->arrSelectors[] = 'option_set_source';
-		}
-		*/
+			foreach( $arrFields as $field )
+			{
+				// Field is not an attribute
+				if (!is_array($GLOBALS['TL_DCA']['tl_product_data']['fields'][$field]) || !strlen($GLOBALS['TL_DCA']['tl_product_data']['fields'][$field]['attributes']['legend']))
+					continue;
+					
+				// Field cannot be edited in variant
+				if ($objProduct->pid > 0 && $GLOBALS['TL_DCA']['tl_product_data']['fields'][$field]['attributes']['inherit'])
+					continue;
 
+				$arrPalette[$GLOBALS['TL_DCA']['tl_product_data']['fields'][$field]['attributes']['legend']][] = $field;
+			}
+		}
+		
 		//Build
 		$arrLegends = array();
 		foreach($arrPalette as $legend=>$fields)
