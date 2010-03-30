@@ -27,12 +27,19 @@
 
 
 /**
+ * Backend form fields
+ */
+$GLOBALS['BE_FFL']['imageselect'] = 'FormImageSelect';
+
+
+/**
  * Isotope attribute types
  */
-$GLOBALS['ISO_ATTR']['conditionalselect'] = array
+$GLOBALS['ISO_ATTR']['imageselect'] = array
 (
+	'class'		=> 'FormImageSelect',
 	'backend'	=> 'optionDataWizard',
 	'sql'		=> "blob NULL",
-	'callback'	=> array(array('IsotopeConditionalSelect', 'mergeData')),
+	'callback'	=> array(array('IsotopeImageSelect', 'mergeData')),
 );
 

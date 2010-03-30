@@ -29,10 +29,5 @@
 /**
  * Isotope attribute types
  */
-$GLOBALS['ISO_ATTR']['conditionalselect'] = array
-(
-	'backend'	=> 'optionDataWizard',
-	'sql'		=> "blob NULL",
-	'callback'	=> array(array('IsotopeConditionalSelect', 'mergeData')),
-);
+$GLOBALS['TL_LANG']['ATTR']['imageselect'] = 'Auswahl eines Bildes';
 
