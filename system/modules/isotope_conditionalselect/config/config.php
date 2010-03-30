@@ -26,6 +26,9 @@
  */
 
 
+/**
+ * Isotope attribute types
+ */
 $GLOBALS['ISO_ATTR']['conditionalselect'] = array
 (
 	'backend'	=> 'optionDataWizard',

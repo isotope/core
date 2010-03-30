@@ -603,7 +603,7 @@ class IsotopeProduct extends Controller
 	protected function generateProductOptionWidget($strField, $blnAjax=false)
 	{
 		$arrData = $GLOBALS['TL_DCA']['tl_product_data']['fields'][$strField];
-		$strClass = $GLOBALS['TL_FFL'][$arrData['inputType']];
+		$strClass = strlen($GLOBALS['ISO_ATTR'][$arrData['inputType']]['class']) ? $GLOBALS['ISO_ATTR'][$arrData['inputType']]['class'] : $GLOBALS['TL_FFL'][$arrData['inputType']];
 									
 		// Continue if the class is not defined
 		if (!$this->classFileExists($strClass))
