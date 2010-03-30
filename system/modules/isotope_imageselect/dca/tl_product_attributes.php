@@ -29,7 +29,7 @@
 /**
  * Palettes
  */
-$GLOBALS['TL_DCA']['tl_product_attributes']['palettes']['imageselect'] = '{attribute_legend},name,field_name,type,legend,description;{options_legend},imageSource,size,sortBy;{visibility_legend},is_listing_field,is_visible_on_front;{use_mode_legend},multilingual,is_customer_defined,is_multiple_select;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled';
+$GLOBALS['TL_DCA']['tl_product_attributes']['palettes']['imageselect'] = '{attribute_legend},name,field_name,type,legend,description;{options_legend},imageSource,size,sortBy;{visibility_legend},is_listing_field,is_visible_on_front;{use_mode_legend},multilingual,is_customer_defined,add_to_product_variants,is_multiple_select;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled';
 
 
 /**

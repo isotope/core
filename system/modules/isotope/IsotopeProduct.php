@@ -329,8 +329,13 @@ class IsotopeProduct extends Controller
 	}
 
 
-	public function getOptions()
+	public function getOptions($blnRaw=false)
 	{
+		if ($blnRaw)
+		{
+			return $this->arrOptions;
+		}
+		
 		$arrOptions = array();
 		
 		foreach( $this->arrOptions as $name => $value )
