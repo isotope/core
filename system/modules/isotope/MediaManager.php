@@ -74,7 +74,7 @@ class MediaManager extends Widget implements uploadable
 		
 		// No file specified
 		if (!isset($_FILES[$this->strName]) || empty($_FILES[$this->strName]['name']))
-		{
+		{			
 			if ($this->mandatory)
 			{
 				$this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['mandatory'], $this->strLabel));
@@ -91,7 +91,7 @@ class MediaManager extends Widget implements uploadable
 
 		// File was not uploaded
 		if (!is_uploaded_file($file['tmp_name']))
-		{
+		{			
 			if (in_array($file['error'], array(1, 2)))
 			{
 				$this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['filesize'], $maxlength_kb));
@@ -110,7 +110,7 @@ class MediaManager extends Widget implements uploadable
 
 		// File is too big
 		if ($GLOBALS['TL_CONFIG']['maxFileSize'] > 0 && $file['size'] > $GLOBALS['TL_CONFIG']['maxFileSize'])
-		{
+		{			
 			$this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['filesize'], $maxlength_kb));
 			$this->log('File "'.$file['name'].'" exceeds the maximum file size of '.$maxlength_kb.' kB', 'FormFileUpload validate()', TL_ERROR);
 
@@ -123,7 +123,7 @@ class MediaManager extends Widget implements uploadable
 
 		// File type is not allowed
 		if (!in_array(strtolower($pathinfo['extension']), $uploadTypes))
-		{
+		{			
 			$this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['filetype'], $pathinfo['extension']));
 			$this->log('File type "'.$pathinfo['extension'].'" is not allowed to be uploaded ('.$file['name'].')', 'FormFileUpload validate()', TL_ERROR);
 
@@ -135,7 +135,7 @@ class MediaManager extends Widget implements uploadable
 		{
 		
 			// Image exceeds maximum image width
-			if ($arrImageSize[0] > $GLOBALS['TL_CONFIG']['imageWidth'] || $arrImageSize[0] > 1200)
+			if ($arrImageSize[0] > (integer)$GLOBALS['TL_LANG']['MSC']['scalingImageWidth'])
 			{
 				$this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['filewidth'], $file['name'], $GLOBALS['TL_LANG']['MSC']['scalingImageWidth']));
 				$this->log('File "'.$file['name'].'" exceeds the maximum image width of '.$GLOBALS['TL_LANG']['MSC']['scalingImageWidth'].' pixels', 'FormFileUpload validate()', TL_ERROR);
@@ -145,7 +145,7 @@ class MediaManager extends Widget implements uploadable
 			}
 
 			// Image exceeds maximum image height
-			if ($arrImageSize[1] > $GLOBALS['TL_CONFIG']['imageHeight'] || $arrImageSize[1] > 1200)
+			if ($arrImageSize[1] > (integer)$GLOBALS['TL_LANG']['MSC']['scalingImageHeight'])
 			{
 				$this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['fileheight'], $file['name'], $GLOBALS['TL_LANG']['MSC']['scalingImageHeight']));
 				$this->log('File "'.$file['name'].'" exceeds the maximum image height of '.$GLOBALS['TL_LANG']['MSC']['scalingImageHeight'].' pixels', 'FormFileUpload validate()', TL_ERROR);
@@ -157,18 +157,18 @@ class MediaManager extends Widget implements uploadable
 
 		// Store file in the isotope folder
 		if (!$this->hasErrors())
-		{
+		{			
 			$this->import('Files');
 			$this->import('Database');
 			
 			$pathinfo = pathinfo($file['name']);
-			
+		
 			// Make sure directory exists
-			$this->Files->mkdir('isotope/' . substr($pathinfo['filename'], 0, 1) . '/');
+			$this->Files->mkdir('isotope/' . substr($pathinfo['basename'], 0, 1) . '/');
 			
-			$strCacheName = $pathinfo['filename'] . '-' . substr(md5_file($file['tmp_name']), 0, 8) . '.' . $pathinfo['extension'];
+			$strCacheName = $pathinfo['basename'] . '-' . substr(md5_file($file['tmp_name']), 0, 8) . '.' . $pathinfo['extension'];
 			
-			$this->Files->move_uploaded_file($file['tmp_name'], 'isotope/' . substr($pathinfo['filename'], 0, 1) . '/' . $strCacheName);
+			$this->Files->move_uploaded_file($file['tmp_name'], 'isotope/' . substr($pathinfo['basename'], 0, 1) . '/' . $strCacheName);
 			
 			if (!is_array($this->varValue))
 			{
@@ -248,10 +248,11 @@ class MediaManager extends Widget implements uploadable
 		for ($i=0; $i<count($this->varValue); $i++)
 		{
 			$strImage = 'isotope/' . substr($this->varValue[$i]['src'], 0, 1) . '/' . $this->varValue[$i]['src'];
-			
+
 			if (!is_file(TL_ROOT . '/' . $strImage))
+			{								
 				continue;
-			
+			}
 			$return .= '
   <tr>
     <td><input type="hidden" name="' . $this->strName . '['.$i.'][src]" value="' . $this->varValue[$i]['src'] . '" /><a href="' . $strImage . '" rel="lightbox"><img src="' . $this->getImage($strImage, 50, 50) . '" alt="' . $this->varValue[$i]['src'] . '" /></a></td>
