@@ -65,8 +65,9 @@ class DC_MultilingualTable extends DC_Table
 		$return = '';
 		$this->values[] = $this->intId;
 		$this->procedure[] = 'id=?';
+		$this->blnCreateNewVersion = false;
 		$this->blnEditLanguage = false;
-
+		
 		// Get current record
 		$objRow = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE id=?")
 								 ->limit(1)
@@ -79,7 +80,7 @@ class DC_MultilingualTable extends DC_Table
 			$this->redirect('typolight/main.php?act=error');
 		}
 		
-		// 
+		// ID of a language record is not allowed
 		elseif (strlen($objRow->language))
 		{
 			$this->log('Cannot edit language record ID "'.$this->intId.'" of table "'.$this->strTable.'"!', 'DC_MultilingualTable edit()', TL_ERROR);
@@ -134,6 +135,38 @@ class DC_MultilingualTable extends DC_Table
 				$this->procedure = array('pid=?', 'language=?');
 				$this->blnEditLanguage = true;
 			}
+		}
+		
+		$this->createInitialVersion($this->strTable, $this->objActiveRecord->id);
+
+		// Change version
+		if ($GLOBALS['TL_DCA'][$this->strTable]['config']['enableVersioning'] && $this->Input->post('FORM_SUBMIT') == 'tl_version' && strlen($this->Input->post('version')))
+		{
+			$objData = $this->Database->prepare("SELECT * FROM tl_version WHERE fromTable=? AND pid=? AND version=?")
+									  ->limit(1)
+									  ->execute($this->strTable, $this->objActiveRecord->id, $this->Input->post('version'));
+
+			if ($objData->numRows)
+			{
+				$data = deserialize($objData->data);
+
+				if (is_array($data))
+				{
+					$this->Database->prepare("UPDATE " . $objData->fromTable . " %s WHERE id=?")
+								   ->set($data)
+								   ->execute($this->objActiveRecord->id);
+
+					$this->Database->prepare("UPDATE tl_version SET active='' WHERE pid=?")
+								   ->execute($this->objActiveRecord->id);
+
+					$this->Database->prepare("UPDATE tl_version SET active=1 WHERE pid=? AND version=?")
+								   ->execute($this->objActiveRecord->id, $this->Input->post('version'));
+
+					$this->log(sprintf('Version %s of record ID %s (table %s) has been restored', $this->Input->post('version'), $this->objActiveRecord->id, $this->strTable), 'DC_Table edit()', TL_GENERAL);
+				}
+			}
+
+			$this->reload();
 		}
 		
 
@@ -276,6 +309,35 @@ class DC_MultilingualTable extends DC_Table
 			}
 		}
 		
+		$version = '';
+
+		// Check versions
+		if ($GLOBALS['TL_DCA'][$this->strTable]['config']['enableVersioning'])
+		{
+			$objVersion = $this->Database->prepare("SELECT tstamp, version, username, active FROM tl_version WHERE fromTable=? AND pid=? ORDER BY version DESC")
+									     ->execute($this->strTable, $this->objActiveRecord->id);
+
+			if ($objVersion->numRows > 1)
+			{
+				$versions = '';
+
+				while ($objVersion->next())
+				{
+					$versions .= '
+  <option value="'.$objVersion->version.'"'.($objVersion->active ? ' selected="selected"' : '').'>'.$GLOBALS['TL_LANG']['MSC']['version'].' '.$objVersion->version.' ('.$this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $objVersion->tstamp).') '.$objVersion->username.'</option>';
+				}
+
+				$version = '<form action="'.ampersand($this->Environment->request, true).'" id="tl_version" class="tl_form" method="post" style="float:right;margin-left:20px">
+<div class="tl_formbody">
+<input type="hidden" name="FORM_SUBMIT" value="tl_version" />
+<select name="version" class="tl_select">'.$versions.'
+</select>
+<input type="submit" name="showVersion" id="showVersion" class="tl_submit" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['restore']).'" />
+</div>
+</form>';
+			}
+		}
+		
 		// Check languages
 		if (is_array($this->arrLanguages) && count($this->arrLanguages))
 		{
@@ -295,10 +357,7 @@ class DC_MultilingualTable extends DC_Table
 				$languages .= '<option value="' . $language . '">' . $arrLanguageLabels[$language] . (in_array($language, $arrAvailableLanguages) ? '' : ' ('.$GLOBALS['TL_LANG']['MSC']['undefinedLanguage'].')') . '</option>';
 			}
 			
-			$language = '
-<div class="tl_version_panel tl_panel">
-
-<form action="'.ampersand($this->Environment->request, true).'" id="tl_language" class="tl_form" method="post">
+			$version .= '<form action="'.ampersand($this->Environment->request, true).'" id="tl_language" class="tl_form" method="post">
 <div class="tl_formbody">
 <input type="hidden" name="FORM_SUBMIT" value="tl_language" />
 <strong>' . $GLOBALS['TL_LANG']['MSC']['labelLanguage'] . ':</strong>
@@ -308,7 +367,15 @@ class DC_MultilingualTable extends DC_Table
 <input type="submit" name="editLanguage" class="tl_submit" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['editLanguage']).'" />
 <input type="submit" name="deleteLanguage" class="tl_submit" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['deleteLanguage']).'" onclick="return confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteLanguageConfirm'] . '\')" />
 </div>
-</form>
+</form>';
+		}
+		
+		if (strlen($version))
+		{
+			$version = '
+<div class="tl_version_panel tl_panel">
+
+'.$version.'
 
 </div>';
 		}
@@ -331,7 +398,7 @@ class DC_MultilingualTable extends DC_Table
 </form>';
 
 		// Begin the form (-> DO NOT CHANGE THIS ORDER -> this way the onsubmit attribute of the form can be changed by a field)
-		$return = $language . '
+		$return = $version . '
 <div id="tl_buttons">
 <a href="'.$this->getReferer(true).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'" accesskey="b" onclick="Backend.getScrollOffset();">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
 </div>
@@ -359,6 +426,13 @@ class DC_MultilingualTable extends DC_Table
 					$this->import($callback[0]);
 					$this->$callback[0]->$callback[1]($this);
 				}
+			}
+			
+			// Save current version
+			if ($this->blnCreateNewVersion && $this->Input->post('SUBMIT_TYPE') != 'auto')
+			{
+				$this->createNewVersion($this->strTable, $this->objActiveRecord->id);
+				$this->log(sprintf('A new version of %s ID %s has been created', $this->strTable, $this->objActiveRecord->id), 'DC_Table edit()', TL_GENERAL);
 			}
 
 			// Set current timestamp (-> DO NOT CHANGE ORDER version - timestamp)
