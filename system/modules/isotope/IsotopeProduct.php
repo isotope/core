@@ -118,6 +118,8 @@ class IsotopeProduct extends Controller
 			$this->low_price = $this->Isotope->calculatePrice($this->arrData[$this->Isotope->Store->priceField], $this->arrData['tax_class']);
 			$this->high_price = $this->Isotope->calculatePrice($this->arrData[$this->Isotope->Store->priceField], $this->arrData['tax_class']);
 		}
+		
+		$this->loadLanguage();
 	}
 
 
@@ -841,10 +843,42 @@ class IsotopeProduct extends Controller
 					$this->arrData[$attribute] = $objVariant->$attribute;
 					unset($this->arrCache[$attribute]);
 				}
+				
+				$this->loadLanguage();
 			}
 			else
 			{
 				$this->doNotSubmit = true;
+			}
+		}
+	}
+	
+	
+	protected function loadLanguage()
+	{
+		// This should never happen, but make sure, or we might fetch the master product record.
+		if (!strlen($GLOBALS['TL_LANGUAGE']))
+			return;
+			
+		$intId = $this->arrData['id'];
+		$arrAttributes = $this->arrAttributes;
+		
+		if (strlen($this->arrData['vid']))
+		{
+			$intId = $this->arrData['vid'];
+			$arrAttributes = $this->arrVariantAttributes;
+		}
+		
+		$objLanguage = $this->Database->prepare("SELECT * FROM tl_product_data WHERE pid=? AND language=?")->limit(1)->execute($intId, $GLOBALS['TL_LANGUAGE']);
+		
+		if ($objLanguage->numRows)
+		{
+			foreach( $arrAttributes as $attribute )
+			{
+				if ($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['multilingual'])
+				{
+					$this->arrData[$attribute] = $objLanguage->$attribute;
+				}
 			}
 		}
 	}
