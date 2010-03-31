@@ -36,6 +36,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 	(
 		'label'                       => &$GLOBALS['TL_LANG']['MOD']['product_manager'][0],
 		'dataContainer'               => 'MultilingualTable',
+		'enableVersioning'			  => true,
 		'ctable'					  => array('tl_product_downloads', 'tl_product_categories'),
 		'ltable'					  => 'tl_product_types.languages',
 		'lref'						  => 'type',
