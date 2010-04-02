@@ -104,7 +104,7 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 	'palettes' => array
 	(
 		'__selector__'				=> array('class', 'variants'),
-		'default'					=> '{name_legend},name,class,description;{template_legend},list_template,reader_template;{language_legend:hide},languages;{attributes_legend},attributes;{download_legend:hide},downloads',
+		'default'					=> '{name_legend},name,class,description;{template_legend},list_template,reader_template;{language_legend:hide},languages;{attributes_legend},attributes,variants;{download_legend:hide},downloads',
 		'regular'					=> '{name_legend},name,class,description;{template_legend},list_template,reader_template;{language_legend:hide},languages;{attributes_legend},attributes,variants;{download_legend:hide},downloads',
 	),
 	
