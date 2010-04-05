@@ -109,7 +109,7 @@ class AttributeWizard extends Widget
 		
 		$this->arrOptions = $this->getOptions();
 		
-		$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/html/isotope.js';
+		$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/html/backend.js';
 		
 		$arrButtons = array('up', 'down');
 		$strCommand = 'cmd_' . $this->strField;
