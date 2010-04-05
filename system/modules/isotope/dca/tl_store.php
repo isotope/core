@@ -498,7 +498,6 @@ class tl_store extends Backend
 	/**
 	 * Get all checkout fields in tl_store.
 	 * 
-	 * @todo check if we need to use param "isoEditable"
 	 * @access public
 	 * @param object $dc
 	 * @return array
@@ -512,7 +511,7 @@ class tl_store extends Backend
 		
 		foreach( $GLOBALS['TL_DCA']['tl_address_book']['fields'] as $strField => $arrData )
 		{
-			if ($arrData['eval']['isoEditable'])
+			if ($arrData['eval']['feEditable'])
 			{
 				$arrFields[$strField] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $strField;
 			}

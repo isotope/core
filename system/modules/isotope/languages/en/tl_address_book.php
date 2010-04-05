@@ -55,6 +55,15 @@ $GLOBALS['TL_LANG']['tl_address_book']['default_legend']  = 'Default address';
 
 
 /**
+ * Reference
+ */
+$GLOBALS['TL_LANG']['tl_address_book']['personalData']   = 'Personal data';
+$GLOBALS['TL_LANG']['tl_address_book']['addressDetails'] = 'Address details';
+$GLOBALS['TL_LANG']['tl_address_book']['contactDetails'] = 'Contact details';
+$GLOBALS['TL_LANG']['tl_address_book']['loginDetails']   = 'Default address';
+
+
+/**
  * Buttons
  */
 $GLOBALS['TL_LANG']['tl_address_book']['new']    = array('New address', 'Create a new address');

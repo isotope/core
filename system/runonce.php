@@ -350,6 +350,7 @@ class IsotopeRunonce extends Frontend
 			'mod_productlist'			=> 'mod_iso_productlist',
 			'mod_productreader'			=> 'mod_iso_productreader',
 			'mod_storeswitcher'			=> 'mod_iso_storeswitcher',
+			'iso_address_book_list'		=> 'mod_iso_addressbook',
 		);
 		
 		$this->import('Files');
