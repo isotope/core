@@ -49,7 +49,6 @@ $GLOBALS['TL_LANG']['FMD']['iso_addressbook']			= array('Isotope Address Book','
 $GLOBALS['TL_LANG']['FMD']['iso_orderhistory']			= array('Order History', 'Order lister that allows customers to view their order history');
 $GLOBALS['TL_LANG']['FMD']['iso_orderdetails']			= array('Order Details', 'Order reader that allows customers to view order history details');
 $GLOBALS['TL_LANG']['FMD']['iso_storeswitcher']			= array('Store Switcher', 'Switch between store configuration to change currency and other settings.');
-$GLOBALS['TL_LANG']['FMD']['isoDonationsModule']		= array('Donations', 'Adds a special form to allow donations to be made.');
 
 
 /**
