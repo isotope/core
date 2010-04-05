@@ -39,13 +39,13 @@ $GLOBALS['TL_LANG']['MOD']['iso_dimensions']			= array('Product Dimensions','');
 /**														
  * Frontend modules									
  */
-$GLOBALS['TL_LANG']['FMD']['isotope']					= 'Isotope Online-Shop';
-$GLOBALS['TL_LANG']['FMD']['iso_productfilter']			= array('Isotope Filter Module', 'Define individual filters for Isotope such as category trees and product attribute filters.');
-$GLOBALS['TL_LANG']['FMD']['iso_productlist']			= array('Isotope Product Lister', 'General Listing module.  Can be used to list products or values of attributes. May be combined with other modules (i.e. the Filter Module) to provide further drill-down capabilities.');
-$GLOBALS['TL_LANG']['FMD']['iso_productreader']			= array('Isotope Product Reader', 'Product reader module.  This is used to display product details.');
-$GLOBALS['TL_LANG']['FMD']['iso_cart']					= array('Isotope Shopping Cart', 'A fully-featured shopping cart module.  Box or Full Display can be set by template selection.');
-$GLOBALS['TL_LANG']['FMD']['iso_checkout']				= array('Isotope Checkout Module', 'Allow store customers to complete their transactions.');
-$GLOBALS['TL_LANG']['FMD']['iso_addressbook']			= array('Isotope Address Book','Allow customers to manage their address book.');
+$GLOBALS['TL_LANG']['FMD']['isotope']					= 'Isotope eCommerce';
+$GLOBALS['TL_LANG']['FMD']['iso_productfilter']			= array('Product Filter', 'Define individual filters for Isotope such as category trees and product attribute filters.');
+$GLOBALS['TL_LANG']['FMD']['iso_productlist']			= array('Product List', 'General Listing module.  Can be used to list products or values of attributes. May be combined with other modules (i.e. the Filter Module) to provide further drill-down capabilities.');
+$GLOBALS['TL_LANG']['FMD']['iso_productreader']			= array('Product Reader', 'Product reader module.  This is used to display product details.');
+$GLOBALS['TL_LANG']['FMD']['iso_cart']					= array('Shopping Cart', 'A fully-featured shopping cart module.  Box or Full Display can be set by template selection.');
+$GLOBALS['TL_LANG']['FMD']['iso_checkout']				= array('Checkout', 'Allow store customers to complete their transactions.');
+$GLOBALS['TL_LANG']['FMD']['iso_addressbook']			= array('Address Book','Allow customers to manage their address book.');
 $GLOBALS['TL_LANG']['FMD']['iso_orderhistory']			= array('Order History', 'Order lister that allows customers to view their order history');
 $GLOBALS['TL_LANG']['FMD']['iso_orderdetails']			= array('Order Details', 'Order reader that allows customers to view order history details');
 $GLOBALS['TL_LANG']['FMD']['iso_storeswitcher']			= array('Store Switcher', 'Switch between store configuration to change currency and other settings.');
