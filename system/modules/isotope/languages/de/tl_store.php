@@ -31,22 +31,12 @@
 $GLOBALS['TL_LANG']['tl_store']['store_configuration_name']			= array('Name der Shop-Konfiguration', '');
 $GLOBALS['TL_LANG']['tl_store']['cookie_duration']					= array('Vorhaltetage der Warenkorb-Informationen', 'Artikel und deren Informationen werden für nicht registrierte Besucher diese Anzahl Tage gespeichert. Ein Wert 0 bedeutet nach dem verlassen der Seite geht der Warenkorb verloren. Der Warenkorb wird für registrierte Mitglieder immer gespeichert.');
 $GLOBALS['TL_LANG']['tl_store']['missing_image_placeholder']		= array('Platzhalter-Bild für Produkte', 'Dieses Bild wird verwendet wenn für ein Produkt kein Bild vorhanden ist.');
-$GLOBALS['TL_LANG']['tl_store']['thumbnail_image_width']			= array('Breite für Vorschaubild', 'In Pixel.');
-$GLOBALS['TL_LANG']['tl_store']['thumbnail_image_height']			= array('Höhe für Vorschaubild', 'In Pixel.');
-$GLOBALS['TL_LANG']['tl_store']['medium_image_width']				= array('Breite für mittleres Bild', 'In Pixel.');
-$GLOBALS['TL_LANG']['tl_store']['medium_image_height']				= array('Höhe für mittleres Bild', 'In Pixel.');
-$GLOBALS['TL_LANG']['tl_store']['large_image_width']				= array('Breite für grosses Bild', 'In Pixel.');
-$GLOBALS['TL_LANG']['tl_store']['large_image_height']				= array('Höhe für grosses Bild', 'In Pixel.');
 $GLOBALS['TL_LANG']['tl_store']['currency']							= array('Währung', 'Wählen Sie eine Währung für diesen Shop.');
 $GLOBALS['TL_LANG']['tl_store']['currencySymbol']					= array('Währungssymbol verwenden', 'Das Währungssymbol verwenden ($, €) falls möglich.');
 $GLOBALS['TL_LANG']['tl_store']['currencyPosition']					= array('Position der Währungsbezeichung/-symbol', 'Wählen Sie ob die Währung links oder rechts des Preises angezeigt werden soll.');
 $GLOBALS['TL_LANG']['tl_store']['currencyFormat']					= array('Währungsformat', 'Wählen Sie eine Formatierung für Preise.');
-
 $GLOBALS['TL_LANG']['tl_store']['countries']						= array('Länder', 'Wählen Sie die Länder welche bei der Bestellung zur Verfügung stehen.');
 $GLOBALS['TL_LANG']['tl_store']['address_fields']					= array('Adressfelder', 'Wählen Sie die Felder welche bei einer neue Adresse ausgefüllt werden können.');
-
-$GLOBALS['TL_LANG']['tl_store']['gallery_image_width']				= array('Breite für Galerie-Vorschaubild', 'In Pixel.');
-$GLOBALS['TL_LANG']['tl_store']['gallery_image_height']				= array('Höhe für Galerie-Vorschaubild', 'In Pixel.');
 
 
 /**

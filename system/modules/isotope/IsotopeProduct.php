@@ -176,18 +176,17 @@ class IsotopeProduct extends Controller
 
 											if ($objFile->isGdImage)
 											{
-												$file['is_image'] = true;
-
-												foreach( array('large', 'medium', 'thumbnail', 'gallery') as $size )
+												foreach( array('large', 'medium', 'thumbnail', 'gallery') as $type )
 												{
-													$strImage = $this->getImage($strFile, $this->Isotope->Store->{$size . '_image_width'}, $this->Isotope->Store->{$size . '_image_height'});
+													$size = $this->Isotope->Store->{$type . '_size'};
+													$strImage = $this->getImage($strFile, $size[0], $size[1], $size[2]);
 													$arrSize = @getimagesize(TL_ROOT . '/' . $strImage);
 
-													$file[$size] = $strImage;
+													$file[$type] = $strImage;
 
 													if (is_array($arrSize) && strlen($arrSize[3]))
 													{
-														$file[$size . '_size'] = $arrSize[3];
+														$file[$type . '_size'] = $arrSize[3];
 													}
 												}
 
@@ -222,16 +221,17 @@ class IsotopeProduct extends Controller
 							// No image available, add default image
 							if (!count($varValue) && is_file(TL_ROOT . '/' . $this->Isotope->Store->missing_image_placeholder))
 							{
-								foreach( array('large', 'medium', 'thumbnail', 'gallery') as $size )
+								foreach( array('large', 'medium', 'thumbnail', 'gallery') as $type )
 								{
-									$strImage = $this->getImage($this->Isotope->Store->missing_image_placeholder, $this->Isotope->Store->{$size . '_image_width'}, $this->Isotope->Store->{$size . '_image_height'});
+									$size = $this->Isotope->Store->{$type . '_size'};
+									$strImage = $this->getImage($this->Isotope->Store->missing_image_placeholder, $size[0], $size[1], $size[2]);
 									$arrSize = @getimagesize(TL_ROOT . '/' . $strImage);
 
-									$file[$size] = $strImage;
+									$file[$type] = $strImage;
 
 									if (is_array($arrSize) && strlen($arrSize[3]))
 									{
-										$file[$size . '_size'] = $arrSize[3];
+										$file[$type . '_size'] = $arrSize[3];
 									}
 								}
 

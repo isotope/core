@@ -32,12 +32,6 @@ $GLOBALS['TL_LANG']['tl_store']['store_configuration_name']			= array('Store Con
 $GLOBALS['TL_LANG']['tl_store']['label']							= array('Label', 'The label is used in frontend, e.g. for store switcher.');
 $GLOBALS['TL_LANG']['tl_store']['cookie_duration']					= array('Duration (in days) of Shopping Cart Information', 'Items and their related information will be retrievable for this many days for non-registered members.  A value of 0 means after the session, the items are removed. For registered members cart data is always remembered.');
 $GLOBALS['TL_LANG']['tl_store']['missing_image_placeholder']		= array('Missing Image Placeholder', 'This image will be used if an image file cannot be found or none are associated with a product.');
-$GLOBALS['TL_LANG']['tl_store']['thumbnail_image_width']			= array('Thumbnail Standard Width', 'In pixels.');
-$GLOBALS['TL_LANG']['tl_store']['thumbnail_image_height']			= array('Thumbnail Standard Height', 'In pixels.');
-$GLOBALS['TL_LANG']['tl_store']['medium_image_width']				= array('Medium Standard Width', 'In pixels.');
-$GLOBALS['TL_LANG']['tl_store']['medium_image_height']				= array('Medium Standard Height', 'In pixels.');
-$GLOBALS['TL_LANG']['tl_store']['large_image_width']				= array('Large Standard Width', 'In pixels.');
-$GLOBALS['TL_LANG']['tl_store']['large_image_height']				= array('Large Standard Height', 'In pixels.');
 $GLOBALS['TL_LANG']['tl_store']['priceField']						= array('Price Field', 'Select a field that is the price field for this store.');
 $GLOBALS['TL_LANG']['tl_store']['priceOverrideField']				= array('Override Price Field', 'Select a field that is the override price field for this store.');
 $GLOBALS['TL_LANG']['tl_store']['priceCalculateFactor']				= array('Price factor', 'Defaults should be 1. You can use this to convert between multiple currencies.');
@@ -48,8 +42,6 @@ $GLOBALS['TL_LANG']['tl_store']['currency']							= array('Currency', 'Please se
 $GLOBALS['TL_LANG']['tl_store']['currencySymbol']					= array('Use currency symbol', 'Use a currency symbol ($, €) if available.');
 $GLOBALS['TL_LANG']['tl_store']['currencyPosition']					= array('Position of currency code/symbol', 'Select if you want to show currency on the left or right side of the price.');
 $GLOBALS['TL_LANG']['tl_store']['currencyFormat']					= array('Currency formatting', 'Choose a formatting for prices.');
-$GLOBALS['TL_LANG']['tl_store']['gallery_image_width']				= array('Gallery Thumbnail Standard Width', 'In pixels.');
-$GLOBALS['TL_LANG']['tl_store']['gallery_image_height']				= array('Gallery Thumbnail Standard Height', 'In pixels.');
 $GLOBALS['TL_LANG']['tl_store']['invoiceLogo']						= array('Invoice Logo','Select a logo to show up on the invoices for this store.');
 $GLOBALS['TL_LANG']['tl_store']['isDefaultStore']					= array('Set as default store','Set this as the default store for back-end currency formatting and other locale-specific information.');
 $GLOBALS['TL_LANG']['tl_store']['firstname']   						= array('First name', 'Please enter the first name (if applicable).');
@@ -70,6 +62,11 @@ $GLOBALS['TL_LANG']['tl_store']['billing_countries']				= array('Billing countri
 $GLOBALS['TL_LANG']['tl_store']['billing_fields']					= array('Billing address fields', 'Select the fields for a new billing address when checking out.');
 $GLOBALS['TL_LANG']['tl_store']['weightUnit']						= array('Weight unit of measurement','Specify the unit of measurement for weight (LBS or KGS)');
 $GLOBALS['TL_LANG']['tl_store']['enableGoogleAnalytics']			= array('Enable Google Analytics e-commerce tracking','Add Google Analytics e-commerce tracking. Please note you will also have to enable e-commerce tracking in your Google Analytics account.');
+$GLOBALS['TL_LANG']['tl_store']['gallery_size']						= array('Gallery image size', 'In pixels.');
+$GLOBALS['TL_LANG']['tl_store']['thumbnail_size']					= array('Thumbnail image size', 'In pixels.');
+$GLOBALS['TL_LANG']['tl_store']['medium_size']						= array('Medium image size', 'In pixels.');
+$GLOBALS['TL_LANG']['tl_store']['large_size']						= array('Large image size', 'In pixels.');
+
 
 /**
  * Reference
