@@ -251,10 +251,6 @@ class tl_iso_orders extends Backend
 					catch (Exception $e) {}
 
 			}
-			
-			
-						
-			
 		}
 		
 		return $strButtons;
@@ -322,59 +318,6 @@ class tl_iso_orders extends Backend
 		$this->Input->setGet('uid', $row['uniqid']);
 		$objModule = new ModuleOrderDetails($this->Database->execute("SELECT * FROM tl_module WHERE type='isoOrderDetails'"));
 		return $objModule->generate(true);
-	}
-	
-	
-	/**
-	* getProducts function.
-	* 
-	* @access protected
-	* @param integer 
-	* @return string
-	*/
-	protected function getProducts($intOrderId)
-	{
-		$objProducts = $this->Database->prepare("SELECT * FROM tl_iso_order_items WHERE pid=?")->execute($intOrderId);
-		
-		if (!$objProducts->numRows)
-			return '';
-	
-		while( $objProducts->next() )
-		{
-			// Do not use the TYPOlight function deserialize() cause it handles arrays not objects
-			$objProduct = unserialize($objProducts->product_data);
-			
-			$fltProductTotal = (int)$objProducts->quantity_sold * (float)$objProducts->price;      
-			
-			$strProductData .= '<tr><td>' . $objProduct->name;
-			
-			$arrOptions = deserialize(deserialize($objProducts->product_options));
-			
-			if(is_array($arrOptions) && count($arrOptions))
-			{
-				$strProductData .= '<ul>';
-
-				foreach($arrOptions as $rowData)
-				{       
-					$arrValues = deserialize($rowData['values']);
-					
-					$strProductData .= '	<li>' . $rowData['name'] . ': ';
-					$strProductData .= implode(', ', $arrValues);
-					$strProductData .= '    </li>';
-				}
-				
-				$strProductData .= '</ul>';
-			}
-			
-			$strProductData .= '</td>';
-			
-			$strProductData .= '<td>' . $objProducts->quantity_sold . '</td><td>' . $this->Isotope->formatPriceWithCurrency($objProducts->price) . '</td><td>' . $this->Isotope->formatPriceWithCurrency($fltProductTotal) . '</td>';
-			
-			$strProductData .= '</tr>';
-			
-		}
-		
-		return $strProductData;
 	}
 	
 
