@@ -29,7 +29,7 @@
 class ModuleIsotopeOrderDetails extends ModuleIsotope
 {
 
-	protected $strTemplate = 'mod_orderdetails';
+	protected $strTemplate = 'mod_iso_orderdetails';
 	
 	
 	public function generate($blnBackend=false)

@@ -33,7 +33,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 	 * Template
 	 * @var string
 	 */
-	protected $strTemplate = 'mod_shopping_cart';
+	protected $strTemplate = 'mod_iso_cart';
 
 	
 	/**
@@ -45,7 +45,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 		if (TL_MODE == 'BE')
 		{
 			$objTemplate = new BackendTemplate('be_wildcard');
-			$objTemplate->wildcard = '### ISOTOPE SHOPPING CART ###';
+			$objTemplate->wildcard = '### ISOTOPE CART ###';
 			$objTemplate->title = $this->headline;
 			$objTemplate->id = $this->id;
 			$objTemplate->link = $this->name;

@@ -33,7 +33,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 	 * Template
 	 * @var string
 	 */
-	protected $strTemplate = 'mod_filters';
+	protected $strTemplate = 'mod_iso_productfilter';
 
 	protected $strFormId = 'iso_filters';
 	

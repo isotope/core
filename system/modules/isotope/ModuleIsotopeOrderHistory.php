@@ -29,7 +29,7 @@
 class ModuleIsotopeOrderHistory extends ModuleIsotope
 {
 
-	protected $strTemplate = 'mod_orderhistory';
+	protected $strTemplate = 'mod_iso_orderhistory';
 	
 	
 	public function generate()
