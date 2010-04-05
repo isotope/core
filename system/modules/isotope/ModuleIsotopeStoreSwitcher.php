@@ -25,11 +25,19 @@
  */
 
 
-class ModuleStoreSwitcher extends ModuleIsotope
+class ModuleIsotopeStoreSwitcher extends ModuleIsotope
 {
+	
+	/**
+	 * Module template
+	 * @var string
+	 */
 	protected $strTemplate = 'mod_storeswitcher';
 	
 	
+	/**
+	 * Generate the module
+	 */
 	public function generate()
 	{
 		if (TL_MODE == 'BE')
@@ -64,6 +72,9 @@ class ModuleStoreSwitcher extends ModuleIsotope
 	}
 	
 	
+	/**
+	 * Compile the module
+	 */
 	protected function compile()
 	{
 		$this->import('Isotope');
