@@ -730,20 +730,6 @@ class Isotope extends Controller
 		
 		$objEmail->sendTo($strRecipient);
 	}
-
-	
-	public function generatePage(Database_Result $objPage, Database_Result $objLayout, PageRegular $objPage)
-	{
-		$objTemplate = new FrontendTemplate('ajax_load_overlay');
-		
-		$strImagePath = "system/themes/default/images/loading.gif";	//TODO: set in module.
-		
-		$objTemplate->ajaxLoadingMessage = $GLOBALS['TL_LANG']['MSC']['ajaxLoadingMessage'];
-		$objTemplate->ajaxLoadingImage = $this->generateImage($strImagePath);
-		
-		$objPage->Template->header .= $objTemplate->parse();	
-	
-	}
 	
 	
 	/**
