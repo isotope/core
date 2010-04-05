@@ -25,7 +25,7 @@
  */
 
 
-class ModuleStoreSwitcher extends ModuleIsotopeBase
+class ModuleStoreSwitcher extends ModuleIsotope
 {
 	protected $strTemplate = 'mod_storeswitcher';
 	

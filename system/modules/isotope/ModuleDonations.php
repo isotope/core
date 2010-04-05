@@ -25,7 +25,7 @@
  */
 
 
-class ModuleDonations extends ModuleIsotopeBase
+class ModuleDonations extends ModuleIsotope
 {
 	/**
 	 * Template

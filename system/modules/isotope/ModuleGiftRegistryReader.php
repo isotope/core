@@ -25,7 +25,7 @@
  */
 
 
-class ModuleGiftRegistryReader extends ModuleIsotopeBase
+class ModuleGiftRegistryReader extends ModuleIsotope
 {
 
 	/**

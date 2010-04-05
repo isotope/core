@@ -25,7 +25,7 @@
  */
 
 
-class ModuleOrderHistory extends ModuleIsotopeBase
+class ModuleOrderHistory extends ModuleIsotope
 {
 
 	protected $strTemplate = 'mod_orderhistory';
