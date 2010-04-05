@@ -19,10 +19,10 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Fred Bliss 2010
+ * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
- * @filesource
  */
 
 
