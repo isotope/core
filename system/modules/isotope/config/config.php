@@ -185,12 +185,6 @@ $GLOBALS['FE_MOD']['isotope'] = array
 
 
 /** 
- * Form fields
- */
-$GLOBALS['TL_FFL']['textCollection'] = 'FormTextCollectionField';
-
-
-/** 
  * Weight conversation
  */
 $GLOBALS['ISO_WGT'] = array
