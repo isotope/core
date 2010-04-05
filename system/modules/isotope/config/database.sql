@@ -1,4 +1,4 @@
-- **********************************************************
+-- **********************************************************
 -- *                                                        *
 -- * IMPORTANT NOTE                                         *
 -- *                                                        *
@@ -17,9 +17,6 @@ CREATE TABLE `tl_module` (
   `iso_reader_layout` varchar(64) NOT NULL default '',
   `iso_reader_jumpTo` int(10) unsigned NOT NULL default '0',
   `iso_cart_layout` varchar(64) NOT NULL default '',
-  `iso_registry_layout` varchar(64) NOT NULL default '',
-  `iso_registry_results` varchar(64) NOT NULL default '',
-  `iso_registry_reader` varchar(64) NOT NULL default '',
   `iso_checkout_method` varchar(10) NOT NULL default '',
   `iso_login_jumpTo` int(10) unsigned NOT NULL default '0',
   `iso_payment_modules` blob NULL,
@@ -522,25 +519,6 @@ CREATE TABLE `tl_shipping_options` (
   `dest_regions` blob NULL,
   `enabled` char(1) NOT NULL default '',
   PRIMARY KEY  (`id`),
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-
--- --------------------------------------------------------
-
--- 
--- Table `tl_registry`
--- pid == cartID
---
-
-CREATE TABLE `tl_registry` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `pid` int(10) unsigned NOT NULL default '0',
-  `tstamp` int(10) unsigned NOT NULL default '0',
-  `name` varchar(255) NOT NULL default '',
-  `description` varchar(255) NOT NULL default '',
-  `date` int(10) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
