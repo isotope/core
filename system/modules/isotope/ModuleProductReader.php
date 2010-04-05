@@ -26,7 +26,7 @@
  */
 
 
-class ModuleProductReader extends ModuleIsotopeBase
+class ModuleProductReader extends ModuleIsotope
 {
 
 	/**

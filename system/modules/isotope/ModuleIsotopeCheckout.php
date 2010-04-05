@@ -25,7 +25,7 @@
  */
 
 
-class ModuleIsotopeCheckout extends ModuleIsotopeBase
+class ModuleIsotopeCheckout extends ModuleIsotope
 {
 
 	/**

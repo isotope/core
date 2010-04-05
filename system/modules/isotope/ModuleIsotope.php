@@ -26,7 +26,7 @@
  */
 
 
-abstract class ModuleIsotopeBase extends Module
+abstract class ModuleIsotope extends Module
 {
 
 	/**
