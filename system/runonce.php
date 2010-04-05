@@ -53,6 +53,7 @@ class IsotopeRunonce extends Frontend
 		$this->updateProductCategories();
 		$this->updateStoreConfigurations();
 		$this->updateProductOptions();
+		$this->updateImageSizes();
 		$this->refreshDatabaseFile();
 		
 		if($this->Database->tableExists('tl_product_attribute_types'))
@@ -230,6 +231,77 @@ class IsotopeRunonce extends Frontend
 					
 					$this->Database->prepare("UPDATE tl_iso_order_items SET product_data=?, product_options='' WHERE id=?")->execute(serialize($objProduct), $objItems->id);
 				}
+			}
+		}
+	}
+	
+	
+	private function updateImageSizes()
+	{
+		$arrUpdate = array();
+		
+		if ($this->Database->fieldExists('gallery_image_width', 'tl_store') && $this->Database->fieldExists('gallery_image_height', 'tl_store'))
+		{
+			if (!$this->Database->fieldExists('gallery_size', 'tl_store'))
+			{
+				$this->Database->execute("ALTER TABLE tl_store ADD COLUMN gallery_size varchar(64) NOT NULL default ''");
+			}
+			
+			$arrUpdate[] = 'gallery';
+		}
+		
+		if ($this->Database->fieldExists('thumbnail_image_width', 'tl_store') && $this->Database->fieldExists('thumbnail_image_height', 'tl_store'))
+		{
+			if (!$this->Database->fieldExists('thumbnail_size', 'tl_store'))
+			{
+				$this->Database->execute("ALTER TABLE tl_store ADD COLUMN thumbnail_size varchar(64) NOT NULL default ''");
+			}
+			
+			$arrUpdate[] = 'thumbnail';
+		}
+		
+		if ($this->Database->fieldExists('medium_image_width', 'tl_store') && $this->Database->fieldExists('medium_image_height', 'tl_store'))
+		{
+			if (!$this->Database->fieldExists('medium_size', 'tl_store'))
+			{
+				$this->Database->execute("ALTER TABLE tl_store ADD COLUMN medium_size varchar(64) NOT NULL default ''");
+			}
+			
+			$arrUpdate[] = 'medium';
+		}
+		
+		if ($this->Database->fieldExists('large_image_width', 'tl_store') && $this->Database->fieldExists('large_image_height', 'tl_store'))
+		{
+			if (!$this->Database->fieldExists('large_size', 'tl_store'))
+			{
+				$this->Database->execute("ALTER TABLE tl_store ADD COLUMN large_size varchar(64) NOT NULL default ''");
+			}
+			
+			$arrUpdate[] = 'large';
+		}
+		
+		
+		if (count($arrUpdate))
+		{
+			$objStores = $this->Database->execute("SELECT * FROM tl_store");
+			
+			while( $objStores->next() )
+			{
+				$arrSet = array();
+				
+				foreach( $arrUpdate as $size )
+				{
+					$arrSet[$size.'_size'] = serialize(array($objStores->{$size.'_image_width'}, $objStores->{$size.'_image_height'}, 'crop'));
+				}
+				
+				$this->Database->prepare("UPDATE tl_store %s WHERE id=?")->set($arrSet)->execute($objStores->id);
+			}
+			
+			foreach( $arrUpdate as $size )
+			{
+				// Do not use multiple DROP COLUMN in one ALTER TABLE. It is supported by MySQL, but not standard SQL92
+				$this->Database->execute("ALTER TABLE tl_store DROP COLUMN ".$size."_image_width");
+				$this->Database->execute("ALTER TABLE tl_store DROP COLUMN ".$size."_image_height");
 			}
 		}
 	}

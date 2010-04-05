@@ -99,7 +99,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{name_legend},store_configuration_name,label;{address_legend:hide},firstname,lastname,company,street_1,street_2,street_3,postal,city,subdivision,country,emailShipping,phone,shipping_countries,billing_countries,shipping_fields,billing_fields;{config_legend},weightUnit,cookie_duration,isDefaultStore,enableGoogleAnalytics;{price_legend},priceField,priceOverrideField,priceCalculateFactor,priceCalculateMode,priceRoundPrecision,priceRoundIncrement;{currency_legend},currency,currencySymbol,currencyFormat,currencyPosition;{redirect_legend},cartJumpTo,checkoutJumpTo;{invoice_legend},invoiceLogo;{images_legend},missing_image_placeholder,gallery_image_width,gallery_image_height,thumbnail_image_width,thumbnail_image_height,medium_image_width,medium_image_height,large_image_width,large_image_height',
+		'default'                     => '{name_legend},store_configuration_name,label;{address_legend:hide},firstname,lastname,company,street_1,street_2,street_3,postal,city,subdivision,country,emailShipping,phone,shipping_countries,billing_countries,shipping_fields,billing_fields;{config_legend},weightUnit,cookie_duration,isDefaultStore,enableGoogleAnalytics;{price_legend},priceField,priceOverrideField,priceCalculateFactor,priceCalculateMode,priceRoundPrecision,priceRoundIncrement;{currency_legend},currency,currencySymbol,currencyFormat,currencyPosition;{redirect_legend},cartJumpTo,checkoutJumpTo;{invoice_legend},invoiceLogo;{images_legend},missing_image_placeholder,gallery_size,thumbnail_size,medium_size,large_size',
 	),
 
 	// Fields
@@ -295,65 +295,41 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'inputType'               => 'fileTree',
 			'eval'                    => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions' => 'jpg,jpeg,gif,png,tif,tiff'),
 		),
-		'gallery_image_width' => array
+		'gallery_size'				  => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['gallery_image_width'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['gallery_size'],
 			'exclude'                 => true,
-			'default'				  => 50,
-			'inputType'               => 'text',
-			'eval'                    => array('rgxp'=>'digit', 'mandatory'=>true, 'maxlength'=>10, 'tl_class'=>'w50'),
+			'inputType'               => 'imageSize',
+			'options'                 => array('crop', 'proportional', 'box'),
+			'reference'               => &$GLOBALS['TL_LANG']['MSC'],
+			'eval'                    => array('rgxp'=>'digit', 'nospace'=>true, 'tl_class'=>'w50'),
 		),
-		'gallery_image_height' => array
+		'thumbnail_size'				  => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['gallery_image_height'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['thumbnail_size'],
 			'exclude'                 => true,
-			'inputType'               => 'text',
-			'eval'                    => array('rgxp'=>'digit', 'maxlength'=>10, 'tl_class'=>'w50'),
-		), 
-		'thumbnail_image_width' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['thumbnail_image_width'],
-			'exclude'                 => true,
-			'default'				  => 100,
-			'inputType'               => 'text',
-			'eval'                    => array('rgxp'=>'digit', 'mandatory'=>true, 'maxlength'=>10, 'tl_class'=>'w50'),
+			'inputType'               => 'imageSize',
+			'options'                 => array('crop', 'proportional', 'box'),
+			'reference'               => &$GLOBALS['TL_LANG']['MSC'],
+			'eval'                    => array('rgxp'=>'digit', 'nospace'=>true, 'tl_class'=>'w50'),
 		),
-		'thumbnail_image_height' => array
+		'medium_size'				  => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['thumbnail_image_height'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['medium_size'],
 			'exclude'                 => true,
-			'inputType'               => 'text',
-			'eval'                    => array('rgxp'=>'digit', 'maxlength'=>10, 'tl_class'=>'w50'),
+			'inputType'               => 'imageSize',
+			'options'                 => array('crop', 'proportional', 'box'),
+			'reference'               => &$GLOBALS['TL_LANG']['MSC'],
+			'eval'                    => array('rgxp'=>'digit', 'nospace'=>true, 'tl_class'=>'w50'),
 		),
-		'medium_image_width' => array
+		'large_size'				  => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['medium_image_width'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['large_size'],
 			'exclude'                 => true,
-			'default'				  => 200,
-			'inputType'               => 'text',
-			'eval'                    => array('rgxp'=>'digit', 'mandatory'=>true, 'maxlength'=>10, 'tl_class'=>'w50'),
-		),
-		'medium_image_height' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['medium_image_height'],
-			'exclude'                 => true,
-			'inputType'               => 'text',
-			'eval'                    => array('rgxp'=>'digit', 'maxlength'=>10, 'tl_class'=>'w50'),
-		),
-		'large_image_width' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['large_image_width'],
-			'exclude'                 => true,
-			'default'				  => 400,
-			'inputType'               => 'text',
-			'eval'                    => array('rgxp'=>'digit', 'mandatory'=>true, 'maxlength'=>10, 'tl_class'=>'w50'),
-		),
-		'large_image_height' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['large_image_height'],
-			'exclude'                 => true,
-			'inputType'               => 'text',
-			'eval'                    => array('rgxp'=>'digit', 'maxlength'=>10, 'tl_class'=>'w50'),
+			'inputType'               => 'imageSize',
+			'options'                 => array('crop', 'proportional', 'box'),
+			'reference'               => &$GLOBALS['TL_LANG']['MSC'],
+			'eval'                    => array('rgxp'=>'digit', 'nospace'=>true, 'tl_class'=>'w50'),
 		),
 		'priceField' => array
 		(
