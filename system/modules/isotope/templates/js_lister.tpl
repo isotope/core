@@ -10,7 +10,7 @@
 				
 				var qString = item.get('href').toString();
 	
-				var pageNum = IsotopeFrontend.gup('page',qString);
+				var pageNum = Isotope.gup('page',qString);
 										
 				item.set('href','#');			
 				
@@ -20,9 +20,9 @@
 						method: 'get',
 						url: 'ajax.php',
 						urlencoded: true,
-						data: 'action=fmd&' + ajaxParams + IsotopeFrontend.getQueryString($('ctrl_per_page').get('value')) + IsotopeFrontend_Lister.setPage(pageNum),
-						onRequest: IsotopeFrontend.showLoader(),
-						onSuccess: function(responseText, responseXML) { IsotopeFrontend.insertProductList(responseText); IsotopeFrontend_Lister.modifyPagination(ajaxParams); IsotopeFrontend.hideLoader(); }
+						data: 'action=fmd&' + ajaxParams + Isotope.getQueryString($('ctrl_per_page').get('value')) + IsotopeFrontend_Lister.setPage(pageNum),
+						onRequest: Isotope.displayBox('Loading data …'),
+						onSuccess: function(responseText, responseXML) { Isotope.insertProductList(responseText); IsotopeFrontend_Lister.modifyPagination(ajaxParams); Isotope.hideBox(); }
 					}).send();
 				});		
 						

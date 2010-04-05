@@ -25,9 +25,9 @@ window.addEvent('domready', function() {
 				method: 'get',
 				url: 'ajax.php',
 				urlencoded: true,
-				data: 'action=fmd&' + ajaxParams + IsotopeFrontend.getQueryString(intPerPage) + '&clear=1',
-				onRequest: IsotopeFrontend.showLoader(),
-				onSuccess: function(responseText, responseXML) { IsotopeFrontend.insertProductList(responseText); IsotopeFrontend.hideLoader(); IsotopeFrontend_Lister.modifyPagination(ajaxParams); }
+				data: 'action=fmd&' + ajaxParams + Isotope.getQueryString(intPerPage) + '&clear=1',
+				onRequest: Isotope.displayBox('Loading data …'),
+				onSuccess: function(responseText, responseXML) { Isotope.insertProductList(responseText); Isotope.hideBox(); IsotopeFrontend_Lister.modifyPagination(ajaxParams); }
 			}).send();		
 		});
 	
@@ -39,9 +39,9 @@ window.addEvent('domready', function() {
 				 method: 'get',
 				 url: 'ajax.php',
 				 urlencoded: true,
-				 data: 'action=fmd&' + ajaxParams + IsotopeFrontend.getQueryString($('ctrl_per_page').get('value')),
-				 onRequest: IsotopeFrontend.showLoader(),
-				 onSuccess: function(responseText, responseXML) { IsotopeFrontend.insertProductList(responseText); IsotopeFrontend.hideLoader(); IsotopeFrontend.loadProductBinders(mId); IsotopeFrontend_Lister.modifyPagination(ajaxParams); }
+				 data: 'action=fmd&' + ajaxParams + Isotope.getQueryString($('ctrl_per_page').get('value')),
+				 onRequest: Isotope.displayBox('Loading data …'),
+				 onSuccess: function(responseText, responseXML) { Isotope.insertProductList(responseText); Isotope.hideBox(); Isotope.loadProductBinders(mId); IsotopeFrontend_Lister.modifyPagination(ajaxParams); }
 			 }).send();
 			
 		 });
@@ -56,9 +56,9 @@ window.addEvent('domready', function() {
 				 method: 'get',
 				 url: 'ajax.php',
 				 urlencoded: true,
-				 data: 'action=fmd&' + ajaxParams + IsotopeFrontend.getQueryString($('ctrl_per_page').get('value')),
-				 onRequest: IsotopeFrontend.showLoader(),
-				 onSuccess: function(responseText, responseXML) { IsotopeFrontend.insertProductList(responseText); IsotopeFrontend.hideLoader(); IsotopeFrontend.loadProductBinders(mId); IsotopeFrontend_Lister.modifyPagination(ajaxParams); }
+				 data: 'action=fmd&' + ajaxParams + Isotope.getQueryString($('ctrl_per_page').get('value')),
+				 onRequest: Isotope.displayBox('Loading data …'),
+				 onSuccess: function(responseText, responseXML) { Isotope.insertProductList(responseText); Isotope.hideBox(); Isotope.loadProductBinders(mId); IsotopeFrontend_Lister.modifyPagination(ajaxParams); }
 			 }).send();
 			
 		 });
@@ -73,9 +73,9 @@ window.addEvent('domready', function() {
 					 method: 'get',
 					 url: 'ajax.php',
 					 urlencoded: true,
-					 data: 'action=fmd&' + ajaxParams + IsotopeFrontend.getQueryString($('ctrl_per_page').get('value')),
-					 onRequest: IsotopeFrontend.showLoader(),
-					 onSuccess: function(responseText, responseXML) { IsotopeFrontend.insertProductList(responseText); IsotopeFrontend.hideLoader(); IsotopeFrontend.loadProductBinders(mId); IsotopeFrontend_Lister.modifyPagination(ajaxParams); }
+					 data: 'action=fmd&' + ajaxParams + Isotope.getQueryString($('ctrl_per_page').get('value')),
+					 onRequest: Isotope.displayBox('Loading data …'),
+					 onSuccess: function(responseText, responseXML) { Isotope.insertProductList(responseText); Isotope.hideBox(); Isotope.loadProductBinders(mId); IsotopeFrontend_Lister.modifyPagination(ajaxParams); }
 				 }).send();
 			 }
 		 });
@@ -89,9 +89,9 @@ window.addEvent('domready', function() {
 				 method: 'get',
 				 url: 'ajax.php',
 				 urlencoded: true,
-				 data: 'action=fmd&' + ajaxParams + IsotopeFrontend.getQueryString($('ctrl_per_page').get('value')),
-				 onRequest: IsotopeFrontend.showLoader(),
-				 onSuccess: function(responseText, responseXML) { IsotopeFrontend.insertProductList(responseText); IsotopeFrontend.hideLoader(); IsotopeFrontend.loadProductBinders(mId); IsotopeFrontend_Lister.modifyPagination(ajaxParams); }
+				 data: 'action=fmd&' + ajaxParams + Isotope.getQueryString($('ctrl_per_page').get('value')),
+				 onRequest: Isotope.displayBox('Loading data …'),
+				 onSuccess: function(responseText, responseXML) { Isotope.insertProductList(responseText); Isotope.hideBox(); Isotope.loadProductBinders(mId); IsotopeFrontend_Lister.modifyPagination(ajaxParams); }
 			 }).send();
 			
 		 });

@@ -969,7 +969,7 @@ class ModuleIsotopeCheckout extends ModuleIsotopeBase
 			$objWidget = new $strClass($arrData);
 			$objWidget->options = $arrOptions;
 			$objWidget->value = $intDefaultValue;
-			$objWidget->onclick = "IsotopeFrontend.toggleAddressFields(this, '" . $field . "_new');";
+			$objWidget->onclick = "Isotope.toggleAddressFields(this, '" . $field . "_new');";
 			$objWidget->storeValues = true;
 
 			// Validate input
