@@ -26,7 +26,7 @@
  */
  
  
-class PaymentAuthorizeDotNet extends Payment
+class PaymentAuthorizeDotNet extends IsotopePayment
 {
 		
 	public function __get($strKey)

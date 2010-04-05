@@ -30,7 +30,7 @@
  * 
  * @extends Payment
  */
-class PaymentPostfinance extends Payment
+class PaymentPostfinance extends IsotopePayment
 {
 
 	/**

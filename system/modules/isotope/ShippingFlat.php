@@ -25,7 +25,7 @@
  */
  
 
-class ShippingFlat extends Shipping
+class ShippingFlat extends IsotopeShipping
 {
 
 	/**

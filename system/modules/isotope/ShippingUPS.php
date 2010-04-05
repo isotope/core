@@ -25,7 +25,7 @@
  */
  
 
-class ShippingUPS extends Shipping
+class ShippingUPS extends IsotopeShipping
 {
 	protected $shipping_options = array();
 

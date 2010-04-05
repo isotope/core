@@ -30,7 +30,7 @@
  * 
  * @extends Payment
  */
-class PaymentPaypalPro extends Payment
+class PaymentPaypalPro extends IsotopePayment
 {
 
 	/**

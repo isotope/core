@@ -25,7 +25,7 @@
  */
  
 
-class ShippingOrderTotal extends Shipping
+class ShippingOrderTotal extends IsotopeShipping
 {
 	protected $shipping_options = array();
 

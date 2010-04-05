@@ -30,7 +30,7 @@
  * 
  * @extends Payment
  */
-class PaymentCash extends Payment
+class PaymentCash extends IsotopePayment
 {
 	
 	/**
