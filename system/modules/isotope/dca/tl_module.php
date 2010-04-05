@@ -35,8 +35,6 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productlist']			= '{title_legen
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productreader']		= '{title_legend},name,headline,type;{config_legend},iso_use_quantity,iso_disableFilterAjax;{template_legend:hide},iso_reader_layout,iso_buttons;guests,protected;align,space,cssID';
 
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoDonationsModule']		= '{title_legend},name,headline,type;{config_legend},iso_donationProduct;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
-
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_cart']					= '{title_legend},name,headline,type;{config_legend},iso_forward_cart;{redirect_legend},iso_cart_jumpTo,iso_checkout_jumpTo;{template_legend},iso_cart_layout;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_addressbook']			= '{title_legend},name,headline,type;align,space,cssID';
 
@@ -366,17 +364,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_checkout_jumpTo'] = array
 	'eval'                    => array('fieldType'=>'radio', 'helpwizard'=>true)
 );
 
-
-$GLOBALS['TL_DCA']['tl_module']['fields']['iso_donationProduct'] = array
-(
-	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_donationProduct'],
-	'exclude'                 => true,
-	'inputType'               => 'select',
-	'eval'					  => array('includeBlankOption'=>true, 'mandatory'=>true),
-	'options_callback'        => array('tl_module_isotope','getDonationProducts')
-);
-
-
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_listingSortField'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_listingSortField'],
@@ -433,25 +420,6 @@ class tl_module_isotope extends Backend
 		}
 		
 		return $arrReturn;
-	}
-
-	public function getDonationProducts()
-	{
-		$objProducts = $this->Database->prepare("SELECT id, name FROM tl_product_data WHERE alias LIKE ?")
-									  ->execute('%donation%');
-		
-		if(!$objProducts->numRows)
-		{
-			return array();
-		}
-		
-		while($objProducts->next())
-		{
-			$arrReturn[$objProducts->id] = $objProducts->name;
-		}
-		
-		return $arrReturn;
-		
 	}
 	
 	/**

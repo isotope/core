@@ -62,7 +62,6 @@ $GLOBALS['TL_LANG']['tl_module']['iso_enableSearch']			= array('Enable search','
 $GLOBALS['TL_LANG']['tl_module']['iso_disableFilterAjax']		= array('Disable AJAX/JSON','Please check this if you would prefer not to use the AJAX/JSON functionality.');
 $GLOBALS['TL_LANG']['tl_module']['iso_cart_jumpTo']				= array('Shopping Cart Jump to page', 'This setting defines to which page a user will be redirected when requesting a full shopping cart view.');
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_jumpTo']			= array('Checkout Jump to page', 'This setting defines to which page a user will be redirected when completing their transaction.');
-$GLOBALS['TL_LANG']['tl_module']['iso_donationProduct']			= array('Donation Product','Select a product to be used for donations.');
 $GLOBALS['TL_LANG']['tl_module']['iso_listingSortField'] 		= array('Initial sorting field','Select a sorting field to sort the listing by on first page load.');
 $GLOBALS['TL_LANG']['tl_module']['iso_listingSortDirection'] 	= array('Initial sorting direction','Select a initial sorting direction.');
 $GLOBALS['TL_LANG']['tl_module']['iso_buttons']					= array('Buttons', 'Select the buttons you want to show.');

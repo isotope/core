@@ -48,7 +48,6 @@ CREATE TABLE `tl_module` (
   `iso_cart_jumpTo` int(10) unsigned NOT NULL default '0',
   `iso_checkout_jumpTo` int(10) unsigned NOT NULL default '0',
   `orderCompleteJumpTo` int(10) unsigned NOT NULL default '0',
-  `iso_donationProduct` int(10) unsigned NOT NULL default '0',
   `iso_listingSortField` varchar(255) NOT NULL default '',
   `iso_listingSortDirection` varchar(8) NOT NULL default '',
   `iso_buttons` blob NULL,

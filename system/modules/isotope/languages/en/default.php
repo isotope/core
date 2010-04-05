@@ -149,9 +149,6 @@ $GLOBALS['TL_LANG']['MSC']['updateCartBT']				= 'Update Cart';
 $GLOBALS['TL_LANG']['MSC']['orderStatusHeadline']		= 'Order Status: %s';
 
 
-$GLOBALS['TL_LANG']['MSC']['labelDonations']			= 'Pledge a gift of';
-$GLOBALS['TL_LANG']['MSC']['addDonation']				= 'Donate';
-
 //Addresses
 $GLOBALS['TL_LANG']['addressBookLabel'] = 'Addresses';
 $GLOBALS['TL_LANG']['editAddressLabel'] = 'Edit';
