@@ -1014,9 +1014,10 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	 * Generate the current step widgets.
 	 * strResourceTable is used either to load a DCA or else to gather settings related to a given DCA.
 	 */
+	//!@todo <table...> was in a template, but I don't get why we need to define the table here?
 	protected function getCurrentStepWidgets($strResourceTable, $strAddressField)
 	{
-		$objTemplate = new FrontendTemplate('fields_insert');
+		$strBuffer = '';
 		
 		$this->loadLanguageFile($strResourceTable);
 		$this->loadDataContainer($strResourceTable);
@@ -1095,7 +1096,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				}
 			}
 
-			$objTemplate->fields .= $objWidget->parse();
+			$strBuffer .= $objWidget->parse();
 		}
 		
 		if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && !$this->doNotSubmit && is_array($arrAddress) && count($arrAddress))
@@ -1109,7 +1110,9 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			$this->Cart->$strAddressField = $_SESSION['CHECKOUT_DATA'][$strAddressField];
 		}
 		
-		return $objTemplate->parse();	
+		return '<table cellspacing="0" cellpadding="0" summary="Form fields">
+' . $strBuffer . '
+</table>';
 	}
 	
 	
