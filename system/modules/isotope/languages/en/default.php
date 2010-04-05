@@ -152,17 +152,6 @@ $GLOBALS['TL_LANG']['MSC']['orderStatusHeadline']		= 'Order Status: %s';
 $GLOBALS['TL_LANG']['MSC']['labelDonations']			= 'Pledge a gift of';
 $GLOBALS['TL_LANG']['MSC']['addDonation']				= 'Donate';
 
-//Registry language entries 
-$GLOBALS['TL_LANG']['MSC']['registry']['lastname'] = 'Search by Last Name:';
-$GLOBALS['TL_LANG']['MSC']['registry']['datestr'] = 'Enter Date of Event:';
-$GLOBALS['TL_LANG']['MSC']['registry']['registrySearch'] = 'Search Gift Registries';
-$GLOBALS['TL_LANG']['MSC']['registry']['registryManage'] = 'Save Your Gift Registry';
-$GLOBALS['TL_LANG']['MSC']['registry']['emptyField'] = 'Please fill in both fields';
-$GLOBALS['TL_LANG']['MSC']['registry']['noItemsInRegistry'] = 'There are no items in this registry available for purchase.';
-$GLOBALS['TL_LANG']['MSC']['registry']['noresultsText'] = 'There are no registries matching your search: %s';
-$GLOBALS['TL_LANG']['MSC']['registry']['sResults'] = '%s gift registries were found for %s on or around %s';
-$GLOBALS['TL_LANG']['MSC']['notAvailableOnline'] = 'Call for Price';
-
 //Addresses
 $GLOBALS['TL_LANG']['addressBookLabel'] = 'Addresses';
 $GLOBALS['TL_LANG']['editAddressLabel'] = 'Edit';

@@ -183,10 +183,6 @@ $GLOBALS['FE_MOD']['isotope'] = array
 	'iso_storeswitcher'			=> 'ModuleIsotopeStoreSwitcher',
 	'iso_addressbook'			=> 'ModuleAddressBook',
 	'isoDonationsModule'		=> 'ModuleDonations',
-	'isoGiftRegistryManager'	=> 'ModuleGiftRegistry',
-	'isoGiftRegistrySearch'		=> 'ModuleGiftRegistrySearch',
-	'isoGiftRegistryResults'	=> 'ModuleGiftRegistryResults',
-	'isoGiftRegistryReader'		=> 'ModuleGiftRegistryReader',
 );
 
 

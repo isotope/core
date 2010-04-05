@@ -40,14 +40,6 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['isoDonationsModule']		= '{title_leg
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_cart']					= '{title_legend},name,headline,type;{config_legend},iso_forward_cart;{redirect_legend},iso_cart_jumpTo,iso_checkout_jumpTo;{template_legend},iso_cart_layout;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_addressbook']			= '{title_legend},name,headline,type;align,space,cssID';
 
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryManager']	= '{title_legend},name,headline,type;iso_registry_layout;guests,protected;align,space,cssID';
-
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistrySearch']	= '{title_legend},name,headline,type;jumpTo;guests,protected;align,space,cssID';
-
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryResults']	= '{title_legend},name,headline,type;jumpTo;iso_registry_results;perPage;guests,protected;align,space,cssID';
-
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryReader']	= '{title_legend},name,headline,type;iso_registry_reader,iso_cart_jumpTo;guests,protected;align,space,cssID';
-
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_checkoutmember']			= '{title_legend},name,headline,type;{config_legend},iso_checkout_method,iso_payment_modules,iso_shipping_modules,iso_order_conditions;{redirect_legend},iso_forward_review,orderCompleteJumpTo,iso_login_jumpTo;{template_legend},iso_mail_customer,iso_mail_admin,iso_sales_email;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_checkoutguest']			= '{title_legend},name,headline,type;{config_legend},iso_checkout_method,iso_payment_modules,iso_shipping_modules,iso_order_conditions;{redirect_legend},iso_forward_review,orderCompleteJumpTo;{template_legend},iso_mail_customer,iso_mail_admin,iso_sales_email;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
@@ -138,33 +130,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_cart_layout'] = array
 	'exclude'                 => true,
 	'inputType'               => 'select',
 	'options'                 => $this->getTemplateGroup('iso_cart_')
-);
-
-$GLOBALS['TL_DCA']['tl_module']['fields']['iso_registry_layout'] = array
-(
-	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_registry_layout'],
-	'default'                 => 'iso_registry_manage',
-	'exclude'                 => true,
-	'inputType'               => 'select',
-	'options'                 => $this->getTemplateGroup('iso_registry_manage')
-);
-
-$GLOBALS['TL_DCA']['tl_module']['fields']['iso_registry_reader'] = array
-(
-	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_registry_reader'],
-	'default'                 => 'iso_registry_full',
-	'exclude'                 => true,
-	'inputType'               => 'select',
-	'options'                 => $this->getTemplateGroup('iso_registry_full')
-);
-
-$GLOBALS['TL_DCA']['tl_module']['fields']['iso_registry_results'] = array
-(
-	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_registry_results_lister'],
-	'default'                 => 'iso_registry_searchlister',
-	'exclude'                 => true,
-	'inputType'               => 'select',
-	'options'                 => $this->getTemplateGroup('iso_registry_search')
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['new_products_time_window'] = array
