@@ -72,7 +72,7 @@ class SurchargeWizard extends Widget
 	 */
 	public function generate()
 	{
-		$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/html/isotope.js';
+		$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/html/backend.js';
 				
 		$this->import('Database');
 

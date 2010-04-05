@@ -191,7 +191,7 @@ class MediaManager extends Widget implements uploadable
 		$GLOBALS['TL_CSS'][] = 'plugins/slimbox/css/slimbox.css';
 		$GLOBALS['TL_CSS'][] = 'system/modules/isotope/html/backend.css';
 		$GLOBALS['TL_JAVASCRIPT'][] = 'plugins/slimbox/js/slimbox.js';
-		$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/html/isotope.js';
+		$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/html/backend.js';
 
 		
 		$arrButtons = array('up', 'down', 'delete');
