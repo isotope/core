@@ -40,20 +40,20 @@ $GLOBALS['TL_LANG']['MOD']['iso_dimensions']			= array('Product Dimensions','');
  * Frontend modules									
  */
 $GLOBALS['TL_LANG']['FMD']['isotope']					= 'Isotope Online-Shop';
-$GLOBALS['TL_LANG']['FMD']['isoFilterModule']			= array('Isotope Filter Module', 'Define individual filters for Isotope such as category trees and product attribute filters.');
-$GLOBALS['TL_LANG']['FMD']['isoProductLister']			= array('Isotope Product Lister', 'General Listing module.  Can be used to list products or values of attributes. May be combined with other modules (i.e. the Filter Module) to provide further drill-down capabilities.');
-$GLOBALS['TL_LANG']['FMD']['isoProductReader']			= array('Isotope Product Reader', 'Product reader module.  This is used to display product details.');
-$GLOBALS['TL_LANG']['FMD']['isoShoppingCart']			= array('Isotope Shopping Cart', 'A fully-featured shopping cart module.  Box or Full Display can be set by template selection.');
-$GLOBALS['TL_LANG']['FMD']['isoCheckout']				= array('Isotope Checkout Module', 'Allow store customers to complete their transactions.');
+$GLOBALS['TL_LANG']['FMD']['iso_productfilter']			= array('Isotope Filter Module', 'Define individual filters for Isotope such as category trees and product attribute filters.');
+$GLOBALS['TL_LANG']['FMD']['iso_productlist']			= array('Isotope Product Lister', 'General Listing module.  Can be used to list products or values of attributes. May be combined with other modules (i.e. the Filter Module) to provide further drill-down capabilities.');
+$GLOBALS['TL_LANG']['FMD']['iso_productreader']			= array('Isotope Product Reader', 'Product reader module.  This is used to display product details.');
+$GLOBALS['TL_LANG']['FMD']['iso_cart']					= array('Isotope Shopping Cart', 'A fully-featured shopping cart module.  Box or Full Display can be set by template selection.');
+$GLOBALS['TL_LANG']['FMD']['iso_checkout']				= array('Isotope Checkout Module', 'Allow store customers to complete their transactions.');
 $GLOBALS['TL_LANG']['FMD']['isoGiftRegistryManager']	= array('Isotope Gift Registry Manager', 'A fully-featured gift registry module.  Allows users to create and manage their own gift registries.');
 $GLOBALS['TL_LANG']['FMD']['isoGiftRegistrySearch']		= array('Isotope Gift Registry Search', 'Allow store customers to search for existing Gift Registries');
 $GLOBALS['TL_LANG']['FMD']['isoGiftRegistryResults']	= array('Isotope Gift Registry Search Results', 'Allow store customers to search for existing Gift Registries');
 $GLOBALS['TL_LANG']['FMD']['isoGiftRegistryReader']		= array('Isotope Gift Registry Reader', 'Allow store customers to view existing Gift Registries');
 $GLOBALS['TL_LANG']['FMD']['isoGiftRegistry']			= array('Isotope Gift Registry','Allow customers to set up, manage or shop from already created Gift Registries.');
-$GLOBALS['TL_LANG']['FMD']['isoAddressBook']			= array('Isotope Address Book','Allow customers to manage their address book.');
-$GLOBALS['TL_LANG']['FMD']['isoOrderHistory']			= array('Order History', 'Order lister that allows customers to view their order history');
-$GLOBALS['TL_LANG']['FMD']['isoOrderDetails']			= array('Order Details', 'Order reader that allows customers to view order history details');
-$GLOBALS['TL_LANG']['FMD']['isoStoreSwitcher']			= array('Store Switcher', 'Switch between store configuration to change currency and other settings.');
+$GLOBALS['TL_LANG']['FMD']['iso_addressbook']			= array('Isotope Address Book','Allow customers to manage their address book.');
+$GLOBALS['TL_LANG']['FMD']['iso_orderhistory']			= array('Order History', 'Order lister that allows customers to view their order history');
+$GLOBALS['TL_LANG']['FMD']['iso_orderdetails']			= array('Order Details', 'Order reader that allows customers to view order history details');
+$GLOBALS['TL_LANG']['FMD']['iso_storeswitcher']			= array('Store Switcher', 'Switch between store configuration to change currency and other settings.');
 $GLOBALS['TL_LANG']['FMD']['isoDonationsModule']		= array('Donations', 'Adds a special form to allow donations to be made.');
 
 

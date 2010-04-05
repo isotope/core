@@ -87,7 +87,7 @@ class IsotopePOS extends Backend
 		
 		
 		$this->Input->setGet('uid', $arrOrderInfo['uniqid']);
-		$objModule = new ModuleIsotopeOrderDetails($this->Database->execute("SELECT * FROM tl_module WHERE type='isoOrderDetails'"));
+		$objModule = new ModuleIsotopeOrderDetails($this->Database->execute("SELECT * FROM tl_module WHERE type='iso_orderdetails'"));
 		
 		$strOrderDetails = $objModule->generate(true);
 		

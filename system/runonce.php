@@ -54,6 +54,7 @@ class IsotopeRunonce extends Frontend
 		$this->updateStoreConfigurations();
 		$this->updateProductOptions();
 		$this->updateImageSizes();
+		$this->updateFrontendModules();
 		$this->refreshDatabaseFile();
 		
 		if($this->Database->tableExists('tl_product_attribute_types'))
@@ -302,6 +303,36 @@ class IsotopeRunonce extends Frontend
 				// Do not use multiple DROP COLUMN in one ALTER TABLE. It is supported by MySQL, but not standard SQL92
 				$this->Database->execute("ALTER TABLE tl_store DROP COLUMN ".$size."_image_width");
 				$this->Database->execute("ALTER TABLE tl_store DROP COLUMN ".$size."_image_height");
+			}
+		}
+	}
+	
+	
+	private function updateFrontendModules()
+	{
+		$arrUpdate = array
+		(
+			'isoProductLister'			=> 'iso_productlist',
+			'isoProductReader'			=> 'iso_productreader',
+			'isoShoppingCart'			=> 'iso_cart',
+			'isoCheckout'				=> 'iso_checkout',
+			'isoFilterModule'			=> 'iso_productfilter',
+			'isoOrderHistory'			=> 'iso_orderhistory',
+			'isoOrderDetails'			=> 'iso_orderdetails',
+			'isoStoreSwitcher'			=> 'iso_storeswitcher',
+			'isoAddressBook'			=> 'iso_addressbook',
+		);
+		
+		foreach( $arrUpdate as $old => $new )
+		{
+			$objModules = $this->Database->prepare("SELECT * FROM tl_module WHERE type=?")->execute($old);
+			
+			while( $objModules->next() )
+			{
+				$cssID = deserialize($objModules->cssID, true);
+				$cssID[1] = trim($cssID[1] . ' mod_' . $old);
+				
+				$this->Database->prepare("UPDATE tl_module SET type=?, cssID=? WHERE id=?")->execute($new, serialize($cssID), $objModules->id);
 			}
 		}
 	}

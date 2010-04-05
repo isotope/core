@@ -317,7 +317,7 @@ class tl_iso_orders extends Backend
 	protected function getOrderDescription($row)
 	{
 		$this->Input->setGet('uid', $row['uniqid']);
-		$objModule = new ModuleIsotopeOrderDetails($this->Database->execute("SELECT * FROM tl_module WHERE type='isoOrderDetails'"));
+		$objModule = new ModuleIsotopeOrderDetails($this->Database->execute("SELECT * FROM tl_module WHERE type='iso_orderdetails'"));
 		return $objModule->generate(true);
 	}
 	

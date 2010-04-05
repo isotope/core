@@ -173,20 +173,20 @@ $GLOBALS['BE_FFL']['variantWizard']		= 'VariantWizard';
  */
 $GLOBALS['FE_MOD']['isotope'] = array
 (
-	'isoProductLister'			=> 'ModuleIsotopeProductList',
-	'isoProductReader'			=> 'ModuleIsotopeProductReader',
-	'isoShoppingCart'			=> 'ModuleIsotopeCart',
-	'isoCheckout'				=> 'ModuleIsotopeCheckout',
-	'isoFilterModule'			=> 'ModuleIsotopeProductFilters',
+	'iso_productlist'			=> 'ModuleIsotopeProductList',
+	'iso_productreader'			=> 'ModuleIsotopeProductReader',
+	'iso_cart'					=> 'ModuleIsotopeCart',
+	'iso_checkout'				=> 'ModuleIsotopeCheckout',
+	'iso_productfilter'			=> 'ModuleIsotopeProductFilter',
+	'iso_orderhistory'			=> 'ModuleIsotopeOrderHistory',
+	'iso_orderdetails'			=> 'ModuleIsotopeOrderDetails',
+	'iso_storeswitcher'			=> 'ModuleIsotopeStoreSwitcher',
+	'iso_addressbook'			=> 'ModuleAddressBook',
+	'isoDonationsModule'		=> 'ModuleDonations',
 	'isoGiftRegistryManager'	=> 'ModuleGiftRegistry',
 	'isoGiftRegistrySearch'		=> 'ModuleGiftRegistrySearch',
 	'isoGiftRegistryResults'	=> 'ModuleGiftRegistryResults',
 	'isoGiftRegistryReader'		=> 'ModuleGiftRegistryReader',
-	'isoAddressBook'			=> 'ModuleAddressBook',
-	'isoOrderHistory'			=> 'ModuleIsotopeOrderHistory',
-	'isoOrderDetails'			=> 'ModuleIsotopeOrderDetails',
-	'isoStoreSwitcher'			=> 'ModuleIsotopeStoreSwitcher',
-	'isoDonationsModule'		=> 'ModuleDonations',
 );
 
 
