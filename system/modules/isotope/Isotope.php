@@ -807,5 +807,52 @@ class Isotope extends Controller
 		
 		return $arrButtons;
 	}
+	
+	
+	/**
+	 * Replaces Isotope-specific InsertTags in Frontend.
+	 * 
+	 * @access public
+	 * @param string $strTag
+	 * @return mixed
+	 */
+	public function replaceIsotopeTags($strTag)
+	{
+		$arrTag = trimsplit('::', $strTag);
+		
+		if (count($arrTag) == 2 && $arrTag[0] == 'isotope')
+		{
+			switch( $arrTag[1] )
+			{
+				case 'cart_items';
+					return $this->Cart->items;
+					break;
+					
+				case 'cart_products';
+					return $this->Cart->products;
+					break;
+					
+				case 'cart_items_label';
+					$intCount = $this->Cart->items;
+					if (!$intCount)
+						return '';
+					
+					return $intCount == 1 ? ('('.$GLOBALS['TL_LANG']['ISO']['productSingle'].')') : sprintf(('('.$GLOBALS['TL_LANG']['ISO']['productMultiple'].')'), $intCount);
+					break;
+					
+				case 'cart_products_label';
+					$intCount = $this->Cart->products;
+					if (!$intCount)
+						return '';
+					
+					return $intCount == 1 ? ('('.$GLOBALS['TL_LANG']['ISO']['productSingle'].')') : sprintf(('('.$GLOBALS['TL_LANG']['ISO']['productMultiple'].')'), $intCount);
+					break;
+			}
+			
+			return '';
+		}
+		
+		return false;
+	}
 }
 
