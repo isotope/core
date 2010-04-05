@@ -361,5 +361,53 @@ class tl_iso_orders extends Backend
 	{
 		return str_replace('</head>', '<link rel="stylesheet" type="text/css" href="system/modules/isotope/html/print.css" media="print" />' . "\n</head>", $strBuffer);
 	}
+	
+	
+	public function exportOrderEmails(DataContainer $dc)
+	{
+		if ($this->Input->get('key') != 'export_emails')
+		{
+			return '';
+		}
+		
+		$objOrders = $this->Database->execute("SELECT billing_address FROM tl_iso_orders");
+		
+		if(!$objOrders->numRows)
+		{			    		
+			return '<p class="tl_gerror">No orders found.</p>';
+		}
+
+		while($objOrders->next())
+		{
+			$arrBillingData = deserialize($objOrders->billing_address);
+			
+			if($arrBillingData['email'])
+			{
+				$arrExport[] = $arrBillingData['firstname'] . ' ' . $arrBillingData['lastname'] . ' <' . $arrBillingData['email'] . '>';
+			}
+		}
+
+		if(count($arrExport))
+		{
+			header('Content-Type: application/csv');
+			header('Content-Transfer-Encoding: binary');
+			header('Content-Disposition: attachment; filename="isotope_order_emails_export_' . time() .'.csv"');
+			header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+			header('Pragma: public');
+			header('Expires: 0');
+	
+			$output = '';
+			
+			foreach ($arrExport as $export) 
+			{
+				$output .= '"' . $export . '"' . "\n";
+			}
+	
+			echo $output;
+			exit;
+		}
+		
+		return;
+	}
 }
 
