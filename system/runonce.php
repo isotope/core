@@ -361,6 +361,22 @@ class IsotopeRunonce extends Frontend
 				$this->Files->rename('templates/' . $old . '.tpl', 'templates/' . $new . '.tpl');
 			}
 		}
+		
+		
+		// Move old templates to root folder, they might be in use
+		$arrUpdate = array
+		(
+			'iso_list_featured_product',
+			'iso_reader_product_single',
+		);
+		
+		foreach( $arrUpdate as $file )
+		{
+			if (file_exists(TL_ROOT . '/system/modules/isotope/templates/' . $file . '.tpl') && !file_exists(TL_ROOT . '/templates/' . $file . '.tpl'))
+			{
+				$this->Files->rename('system/modules/isotope/templates/' . $file . '.tpl', 'templates/' . $file . '.tpl');
+			}
+		}
 	}
 	
 	
