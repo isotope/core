@@ -1049,7 +1049,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			$strClass = $GLOBALS['TL_FFL'][$arrData['inputType']];
 			
 			// Continue if the class is not defined
-			if (!$this->classFileExists($strClass) || !$arrData['eval']['isoEditable'])
+			if (!$this->classFileExists($strClass) || !$arrData['eval']['feEditable'])
 				continue;
 			
 			// Special field "country"

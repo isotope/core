@@ -180,7 +180,7 @@ $GLOBALS['FE_MOD']['isotope'] = array
 	'iso_orderhistory'			=> 'ModuleIsotopeOrderHistory',
 	'iso_orderdetails'			=> 'ModuleIsotopeOrderDetails',
 	'iso_storeswitcher'			=> 'ModuleIsotopeStoreSwitcher',
-	'iso_addressbook'			=> 'ModuleAddressBook',
+	'iso_addressbook'			=> 'ModuleIsotopeAddressBook',
 );
 
 
