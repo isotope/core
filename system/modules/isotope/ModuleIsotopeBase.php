@@ -50,8 +50,9 @@ abstract class ModuleIsotopeBase extends Module
 				$this->import('FrontendUser', 'User');
 			}
 			
-			// Load isotope javascript class
-			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/html/isotope_frontend.js';
+			// Load Isotope javascript and css
+			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/html/isotope.js';
+			$GLOBALS['TL_CSS'][] = 'system/modules/isotope/html/isotope.css';
 			
 			// Make sure field data is available
 			if (!is_array($GLOBALS['TL_DCA']['tl_product_data']['fields']))

@@ -3,9 +3,9 @@
 window.addEvent('domready', function() {
 	
 	
-	IsotopeFrontend.loadGallery(<?php echo $this->productJson; ?>);
+	Isotope.loadGallery(<?php echo $this->productJson; ?>);
 	
-	IsotopeFrontend.loadProductBinders('<?php echo $this->mId; ?>');
+	Isotope.loadProductBinders('<?php echo $this->mId; ?>');
 
 });
 </script>

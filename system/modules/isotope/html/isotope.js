@@ -1,540 +1,160 @@
 /**
  * @copyright  Winans Creative 2009
+ * @author     Fred Bliss <fredrbliss@gmail.com>
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
  
- 
-var Isotope = 
-{		
-	/**
-	 * Media Manager
-	 * @param object
-	 * @param string
-	 * @param string
-	 */
-	mediaManager: function(el, command, id)
-	{
-		var table = $(id);
-		var tbody = table.getFirst().getNext();
-		var parent = $(el).getParent('tr');
-		var rows = tbody.getChildren();
-
-		Backend.getScrollOffset();
-
-		switch (command)
-		{
-			case 'up':
-				parent.getPrevious() ? parent.injectBefore(parent.getPrevious()) : parent.injectInside(tbody);
-				break;
-
-			case 'down':
-				parent.getNext() ? parent.injectAfter(parent.getNext()) : parent.injectBefore(tbody.getFirst());
-				break;
-
-			case 'delete':
-				parent.destroy();
-				break;
-		}
-
-		rows = tbody.getChildren();
-
-		for (var i=0; i<rows.length; i++)
-		{
-			var childs = rows[i].getChildren();
-
-			for (var j=0; j<childs.length; j++)
-			{
-				var first = childs[j].getFirst();
-
-				if (first.type == 'hidden' || first.type == 'textarea')
-				{
-					first.name = first.name.replace(/\[[0-9]+\]/ig, '[' + i + ']');
-				}
-			}
-		}
-	},
-	
-	/**
-	 * Attribute wizard
-	 * @param object
-	 * @param string
-	 * @param string
-	 */
-	attributeWizard: function(el, command, id)
-	{
-		var container = $(id);
-		var parent = $(el).getParent();
-
-		Backend.getScrollOffset();
-
-		switch (command)
-		{
-			case 'up':
-				if (!parent.getPrevious() || parent.getPrevious().hasClass('fixed'))
-				{
-					parent.injectInside(container);
-				}
-				else
-				{
-					parent.injectBefore(parent.getPrevious());
-				}
-				break;
-
-			case 'down':
-				if (parent.getNext())
-				{
-					parent.injectAfter(parent.getNext());
-				}
-				else
-				{
-					var fel = container.getFirst();
-
-					if (fel.hasClass('fixed'))
-					{
-						fel = fel.getNext();
-					}
-
-					parent.injectBefore(fel);
-				}
-				break;
-
-		}
-	},
-	
-		/**
-	 * Module wizard
-	 * @param object
-	 * @param string
-	 * @param string
-	 */
-	surchargeWizard: function(el, command, id)
-	{
-		var table = $(id);
-		var tbody = table.getFirst().getNext();
-		var parent = $(el).getParent('tr');
-		var rows = tbody.getChildren();
-
-		Backend.getScrollOffset();
-
-		switch (command)
-		{
-			case 'copy':
-				var tr = new Element('tr');
-				var childs = parent.getChildren();
-
-				for (var i=0; i<childs.length; i++)
-				{
-					var next = childs[i].clone(true).injectInside(tr);
-					next.getFirst().value = childs[i].getFirst().value;
-				}
-
-				tr.injectAfter(parent);
-				break;
-
-			case 'up':
-				parent.getPrevious() ? parent.injectBefore(parent.getPrevious()) : parent.injectInside(tbody);
-				break;
-
-			case 'down':
-				parent.getNext() ? parent.injectAfter(parent.getNext()) : parent.injectBefore(tbody.getFirst());
-				break;
-
-			case 'delete':
-				(rows.length > 1) ? parent.destroy() : null;
-				break;
-		}
-
-		rows = tbody.getChildren();
-
-		for (var i=0; i<rows.length; i++)
-		{
-			var childs = rows[i].getChildren();
-
-			for (var j=0; j<childs.length; j++)
-			{
-				var first = childs[j].getFirst();
-
-				if (first.type == 'select-one' || first.type == 'text' || first.type == 'checkbox')
-				{
-					first.name = first.name.replace(/\[[0-9]+\]/ig, '[' + i + ']');
-				}
-			}
-		}
-	}, 
-	
-	/**
-	 * Toggle checkbox group
-	 * @param object
-	 * @param string
-	 */
-	toggleCheckboxGroup: function(el, id)
-	{
-		var cls = $(el).className;
-		var status = $(el).checked ? 'checked' : '';
-
-		if (cls == 'tl_checkbox')
-		{
-			$$('#' + id + ' .tl_checkbox').each(function(checkbox)
-			{
-				if (!checkbox.disabled)
-					checkbox.checked = status;
-			});
-		}
-		else if (cls == 'tl_tree_checkbox')
-		{
-			$$('#' + id + ' .parent .tl_tree_checkbox').each(function(checkbox)
-			{
-				if (!checkbox.disabled)
-					checkbox.checked = status;
-			});
-		}
-
-		Backend.getScrollOffset();
-	},
-	
-	/**
-	 * Add the interactive help
-	 */
-	addInteractiveHelp: function()
-	{
-		$$('a.tl_tip').each(function(el)
-		{
-			if (el.retrieve('complete'))
-			{
-				return;
-			}
-
-			el.addEvent('mouseover', function()
-			{
-				el.timo = setTimeout(function()
-				{
-					var box = $('tl_helpBox');
-
-					if (!box)
-					{
-						box = new Element('div').setProperty('id', 'tl_helpBox').injectInside($(document.body));
-					}
-
-					var scroll = el.getTop();
-
-					box.set('html', el.get('longdesc'));
-					box.setStyle('display', 'block');
-					box.setStyle('top', (scroll + 18) + 'px');
-				}, 1000);
-			});
-
-			el.addEvent('mouseout', function()
-			{
-				var box = $('tl_helpBox');
-
-				if (box)
-				{
-					box.setStyle('display', 'none');
-				}
-
-				clearTimeout(el.timo);
-			});
-
-			el.store('complete', true);
-		});
-	}
-};
-
-
-window.addEvent('domready', function()
+var Isotope =
 {
-	Isotope.addInteractiveHelp();
-});
-
-
-/**
- * Class AjaxRequestIsotope
- *
- * Provide methods to handle ajax-related tasks for Isotope back end widgets.
- * @copyright  Winans Creative 2009
- * @author     Fred Bliss <fred@winanscreative.com>
- * @license    http://opensource.org/licenses/lgpl-3.0.html
- */
- 
-var ProductsOptionWizard =
-{
-		/**
-	 * Table wizard
-	 * @param object
-	 * @param string
-	 * @param string
-	 */
-	tableWizard: function(el, command, id, name)
-	{			
-		var table = $(id);
-		var tbody = table.getFirst();
-		var rows = tbody.getChildren();
-		var parentTd = $(el).getParent();
-		var parentTr = parentTd.getParent();
-		var cols = parentTr.getChildren();
-		var index = 0;
+	toggleAddressFields: function(el, id)
+	{
+		if (el.value == '0' && el.checked)
+		{
+			$(id).setStyle('display', 'block');
+		}
+		else
+		{
+			$(id).setStyle('display', 'none');
+		}
+	},
+	
+	loadProductBinders: function(mId)
+	{	
+		var variantsDiv = document.id('variants_container');
 		
-		for (var i=0; i<cols.length; i++)
-		{
-			if (cols[i] == parentTd)
-			{
+		var image_gallery = document.id('image_gallery');
+		
+		var arrVariants = new Array;
 				
-				break;
-			}
-
-			index++;
+		if(image_gallery)
+		{						
+			var imageElements = image_gallery.getElements('a');
+						
+			imageElements.each(function(item, index) {
+				item.addEvent('click', function(event){
+					event.stop();
+					
+					var mainImage = document.id('image_main');
+					
+					mainImage.set('html', Isotope.replaceImage(item, 'medium'));					
+				});
+			});
 		}
-
-		ProductsOptionWizard.getScrollOffset();
-
-		switch (command)
+				
+		if(variantsDiv)
 		{
-			case 'rcopy':
-				var tr = new Element('tr');
-				var childs = parentTr.getChildren();
-
-				for (var i=0; i<childs.length; i++)
-				{
-					var next = childs[i].clone(true, true).injectInside(tr);	//inject cell and contents
-					//var selected = childs[i].getFirst().value;
-					next.getFirst().value = childs[i].getFirst().value;
-					next.getFirst().value = '-';
-					
-					/*
-					if(current.options[current.selectedIndex].value!='-')
-					{
-						current.remove(current.selectedIndex);
-					}*/
-					
-					//var next.getFirst()
-					var current = next.getChildren()[index];
+			arrVariants = variantsDiv.getElements('select');
+			
+			arrVariants.each(function(item, index) {
+			
+				item.addEvent('change', function(event) {
+					event.stop();
 											
-					var haystack = current.id;
-					
-					//current.name = current.id.replace(/\[[0-9]+\][[0-9]+\]/ig, '[' + (i-1) + '][' + j + ']');
-					
-					//var next2 = current.getFirst();
-					
-					//next2.name = next2.name.replace(/\[[0-9]+\][[0-9]+\]/ig, '[' + (i-1) + '][' + j + ']');
-
-					
-					if(haystack.indexOf('value') !== -1)
-					{
-						//destroy the existing value div so we can create a new one.
-						current.destroy();						
-					}
-				
-					//var next2 = current.getFirst(); -- how to refer to the next child element, the select box
-																												
-					
-				}
-
-				tr.injectAfter(parentTr);
-				break;
-
-			case 'rdelete':
-				(rows.length > 2) ? parentTr.destroy() : null;
-				break;
-
-			case 'ccopy':
-				for (var i=0; i<rows.length; i++)
-				{
-					var current = rows[i].getChildren()[index];
-					var next = current.clone(true, true).injectAfter(current);
-										
-					next.getFirst().value = current.getFirst().value;
-					
-					var current = next.getChildren()[index];
-														
-					if(current.type== 'select-one' && current.id)
-					{
-						if(current.options[current.selectedIndex].value!='-')
-						{
-							current.remove(current.selectedIndex);
-						}
-						
-						next = current.getNext();
-						
-						var haystack = next.id;
-						
-						if(haystack.indexOf('value') !== -1)
-						{
-							next.destroy();						
-						}
-						
-					}
-				}
-				break;
-
-			case 'cdelete':
-				if (cols.length > 2)
-				{
-					/*for (var i=0; i<rows.length; i++)
-					{
-						var current = rows[i].getChildren()[index];
-						var next = current.clone(true, true).injectAfter(current);
-										
-						next.getFirst().value = current.getFirst().value;
-					
-						var current = next.getChildren()[index];
-														
-						if(current.type== 'select-one' && current.id)
-						{
-							if(current.options[current.selectedIndex].value!='-')
-							{
-								current.add(current.selectedIndex);
+					var request = new Request.JSON({
+						url: 'ajax.php',
+						method: 'get',
+						onRequest: Isotope.displayBox('Loading data …'),
+						onComplete: function(objProduct) {
+							
+							Isotope.hideBox();
+							
+							//direct update of elements with html that might need replacing, such as price, description, etc.
+							for(var key in objProduct)
+							{					
+								var currElement = document.id('ajax_' + key);
+													
+								if(currElement)
+								{
+									currElement.set('html', objProduct[key]);		
+								}
 							}
+							
+							Isotope.loadGallery(objProduct);
 						}
-						
-						next = current.getNext();
-					}*/
+					}).send('action=fmd&' + 'id=' + mId + '&variant=' + item.value);
+				});
+			});	
+		}
+		
+	},
+	
+	loadGallery: function(objProduct)
+	{			
+		var imagesHtml = new String();
+		
+		if(objProduct.images)
+		{				
+			var image_main = document.id('image_main');
+			
+			//image update handler
+			objProduct.images.each(function(item, index){
+								
+				switch(index)
+				{
+					case 0:												
+						if(image_main)
+						{			
+							image_main.set('html', Isotope.replaceImage(item, 'medium', true));							
+						}
+						break;										
+				}				
+			
+				imagesHtml += Isotope.replaceImage(item, 'gallery');
+				
+				if(imagesHtml.length>0)
+				{
+					var image_gallery = document.id('image_gallery');
 					
-					for(var i=0; i<rows.length; i++)
+					if(image_gallery)
 					{
-						rows[i].getChildren()[index].destroy();
+						image_gallery.set('html', imagesHtml);
 					}
+									
 				}
-				break;
+			});
+		
 		}
-
-		rows = tbody.getChildren();
-	
-		for (var i=0; i<rows.length; i++)
+		
+		var image_gallery = document.id('image_gallery');
+		
+		if(image_gallery)
 		{
-			var childs = rows[i].getChildren();
+			images = image_gallery.getElements('img');
+			
+			images.each(function(item, index){
+				item.addEvent('click', function(event){
+						event.stop();
+																			
+						image_main.set('html', Isotope.replaceImage(objProduct.images[index], 'medium', true));					
 					
-			for (var j=0; j<childs.length; j++)
-			{
-				var first = childs[j].getFirst();
-						
-				if (first && first.type == 'select-one')
-				{
-									
-					first.name = first.name.replace(/\[[0-9]+\][[0-9]+\]/ig, '[' + (i-1) + '][' + j + ']');
-				}
-				
-				/*
-				if (first && first.id == 'value_div')
-				{
-					first.name = first.name.replace(/\[[0-9]+\][[0-9]+\]/ig, '[' + (i-1) + '][' + j + ']');				
-				}*/
-				
-			}
+				});
+			});
 		}
-
-		ProductsOptionWizard.tableWizardResize();
+		
 	},
 	
-	getOptionValues: function(el, id, name)
-	{
-		el.blur();	
-		
-		var item_value = el.value; 
-				
-		var re1='.*?';	// Non-greedy match on filler
-     	var re2='(\\d+)';	// Integer Number 1
-        var re3='.*?';	// Non-greedy match on filler
-        var re4='(\\d+)';	// Integer Number 2
-
-        var p = new RegExp(re1+re2+re3+re4,["i"]);
-        var m = p.exec(el.name);
-      
-      	if (m != null)
-      	{
-          var xcoord=m[1];
-          var ycoord=m[2];
-   		}
-		
-				
-		new Request(
-		{
-			url: window.location.href,
-			data: 'isAjax=1&action=addPOAttributeValues&aid=' + item_value + '&parent=' + name + '&r=' + xcoord + '&c=' + ycoord,
-			onStateChange: ProductsOptionWizard.displayBox('Loading data ...'),			
-			onComplete: function(txt, xml)
-			{
-									
-				var currDiv= $('value_div[' + xcoord + '][' + ycoord + ']');
-				
-				if($defined(currDiv))
-				{
-					currDiv.destroy();
-				}
-									
-				div = new Element('div');
-				div.setProperty('id','value_div[' + xcoord + '][' + ycoord + ']');
-				div.setProperty('name',id + '_values[' + xcoord + '][' + ycoord + ']');
-				div.set('html',txt);
-				
-				div.injectAfter(el);
-										
-				
-				ProductsOptionWizard.hideBox();
-   			}
-		}).send();
-
-		return false;	
-	},
 	
-	/*
-	 * Resize table wizard fields on focus
-	 */
-	tableWizardResize: function()
-	{
-		$$('.tl_tablewizard textarea').each(function(el)
-		{
-			el.set('morph', { duration: 200 });
-
-			el.addEvent('focus', function()
-			{
-				el.setStyle('position', 'absolute');
-				el.morph(
-				{
-					'height': '166px',
-					'width': '356px',
-					'margin-top': '-50px',
-					'margin-left': '-107px'
-				});
-				el.setStyle('z-index', '1');
-			});
-
-			el.addEvent('blur', function()
-			{
-				el.setStyle('z-index', '0');
-				el.morph(
-				{
-					'height': '66px',
-					'width': '142px',
-					'margin-top': '1px',
-					'margin-left': '0'
-				});
-				setTimeout(function() { el.setStyle('position', ''); }, 250);
-			});
-		});
-	},
-
-
 	/**
 	 * Display a "loading data" message
 	 * @param string
 	 */
 	displayBox: function(message)
 	{
-		var box = $('tl_ajaxBox');
-		var overlay = $('tl_ajaxOverlay');
+		var box = $('iso_ajaxBox');
+		var overlay = $('iso_ajaxOverlay');
 
 		if (!overlay)
 		{
-			overlay = new Element('div').setProperty('id', 'tl_ajaxOverlay').injectInside($(document.body));
+			overlay = new Element('div').setProperty('id', 'iso_ajaxOverlay').injectInside($(document.body));
 		}
 
 		if (!box)
 		{
-			box = new Element('div').setProperty('id', 'tl_ajaxBox').injectInside($(document.body));
+			box = new Element('div').setProperty('id', 'iso_ajaxBox').injectInside($(document.body));
 		}
 
-		var scroll = window.getScrollTop();
+		var scroll = window.getScroll().y;
 		if (Browser.Engine.trident && Browser.Engine.version < 5) { var sel = $$('select'); for (var i=0; i<sel.length; i++) { sel[i].setStyle('visibility', 'hidden'); } }
 
 		overlay.setStyle('display', 'block');
@@ -551,8 +171,8 @@ var ProductsOptionWizard =
 	 */
 	hideBox: function()
 	{
-		var box = $('tl_ajaxBox');
-		var overlay = $('tl_ajaxOverlay');
+		var box = $('iso_ajaxBox');
+		var overlay = $('iso_ajaxOverlay');
 
 		if (overlay)
 		{
@@ -565,14 +185,112 @@ var ProductsOptionWizard =
 			if (Browser.Engine.trident && Browser.Engine.version < 5) { var sel = $$('select'); for (var i=0; i<sel.length; i++) { sel[i].setStyle('visibility', 'visible'); } }
 		}
 	},
-
-
-	/**
-	 * Get current scroll offset and store it in a cookie
-	 */
-	getScrollOffset: function()
+	
+	
+	gup: function( name, url )
 	{
-		document.cookie = "BE_PAGE_OFFSET=" + window.getScrollTop() + "; path=/";
+	  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+	  var regexS = "[\\?&]"+name+"=([^&#]*)";
+	  var regex = new RegExp( regexS );
+	  var results = regex.exec( url );
+	  if( results == null )
+		return "";
+	  else
+		return results[1];
+	},
+	
+	replaceImage: function(image, thumbnailType, isMain)
+	{			
+		if( isMain==null)
+			isMain=false;
+			
+		var sizeType = thumbnailType+'_size';
+		
+		if(isMain)
+			return html = "<a href=\"" + image['large'] + "\" title=\"" + image['alt'] + "\" rel=\"lightbox\"><img src=\"" + image[thumbnailType] + "\" alt=\"" + image['alt'] + "\"" + image[sizeType] + " \/><\/a>\n";
+		else	
+			return html = "<img src=\"" + image[thumbnailType] + "\" alt=\"" + image['alt'] + "\"" + image[sizeType] + "/>\n";
+
+	},
+
+	insertProductList: function(html)
+	{		
+		var productList = document.id('product_list');
+			
+		if(productList)
+		{
+			productList.set('html', html);	
+		}
+		
+	},
+	
+	getQueryString: function(perPage)
+	{
+		var keyword = $('ctrl_for').get('value').toString();
+		
+		return '&order_by=' + $('ctrl_order_by').get('value') + '&for=' + keyword.replace('%', '') + '&per_page=' + perPage;		
 	}
-}
+	
+};
+
+
+var IsotopeProduct = new Class(
+{
+	Implements: Options,
+	Binds: ['refresh'],
+	options: {
+		loadMessage: 'Loading product data …'
+	},
+	
+	initialize: function(module, product, attributes, options)
+	{
+		this.setOptions(options);
+		
+		this.form = document.id(('iso_product_'+product)).set('send',
+		{
+			url: ('ajax.php?action=fmd&id='+module+'&product='+product),
+			link: 'cancel',
+			onRequest: function()
+			{
+				Isotope.displayBox(this.options.loadMessage);
+			}.bind(this),
+			onSuccess: function(txt, xml)
+			{
+				Isotope.hideBox();
+				
+				JSON.decode(txt).each( function(option)
+				{
+					var oldEl = document.id(option.id);
+					
+					if (oldEl)
+					{
+						var newEl = new Element('div').set('html', option.html).getFirst(('#'+option.id));
+						
+						if (newEl)
+						{
+							newEl.cloneEvents(oldEl).replaces(oldEl);
+						}
+					}
+				});
+			},
+			onFailure: function()
+			{
+				Isotope.hideBox();
+			}
+		});
+		
+		attributes.each( function(el,index)
+		{
+			if ($(el))
+			{
+				$(el).addEvent('change', this.refresh);
+			}
+		}.bind(this));
+	},
+	
+	refresh: function(event)
+	{
+		this.form.send();
+	}
+});
 
