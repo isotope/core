@@ -25,7 +25,7 @@
  */
  
 
-class ShippingCollection extends Shipping
+class ShippingCollection extends IsotopeShipping
 {
 	protected $shipping_options = array();
 	

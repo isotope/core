@@ -28,7 +28,7 @@
 /**
  * Parent class for all shipping gateway modules
  */
-abstract class Shipping extends Frontend
+abstract class IsotopeShipping extends Frontend
 {
 
 	/**
@@ -46,6 +46,7 @@ abstract class Shipping extends Frontend
 	 * @var array
 	 */
 	protected $arrData = array();
+	
 	
 	/**
 	 * Initialize the object
@@ -89,7 +90,6 @@ abstract class Shipping extends Frontend
 		switch( $strKey )
 		{
 			case 'available':
-				
 				if (($this->guests && FE_USER_LOGGED_IN) || ($this->protected && !FE_USER_LOGGED_IN))
 				{			
 					return false;
@@ -149,7 +149,6 @@ abstract class Shipping extends Frontend
 	
 
 	/**
-	 *
 	 * This function is used to gather any addition shipping options that might be available specific to the current customer or order.  For example, expedited shipping based on 		 * customer location.
 	 * 
 	 * @abstract

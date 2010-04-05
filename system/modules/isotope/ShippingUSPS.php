@@ -25,7 +25,7 @@
  */
  
 
-class ShippingUSPS extends Shipping
+class ShippingUSPS extends IsotopeShipping
 {
 	protected $shipping_options = array();
 

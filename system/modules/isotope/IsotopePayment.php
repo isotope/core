@@ -28,7 +28,7 @@
 /**
  * Parent class for all payment gateway modules
  */
-abstract class Payment extends Frontend
+abstract class IsotopePayment extends Frontend
 {
 
 	/**
