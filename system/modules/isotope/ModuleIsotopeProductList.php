@@ -33,7 +33,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 	 * Template
 	 * @var string
 	 */
-	protected $strTemplate = 'mod_productlist';
+	protected $strTemplate = 'mod_iso_productlist';
 
 	protected $strOrderBySQL = 'sorting';
 	

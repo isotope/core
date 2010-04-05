@@ -55,6 +55,7 @@ class IsotopeRunonce extends Frontend
 		$this->updateProductOptions();
 		$this->updateImageSizes();
 		$this->updateFrontendModules();
+		$this->updateFrontendTemplates();
 		$this->refreshDatabaseFile();
 		
 		if($this->Database->tableExists('tl_product_attribute_types'))
@@ -333,6 +334,31 @@ class IsotopeRunonce extends Frontend
 				$cssID[1] = trim($cssID[1] . ' mod_' . $old);
 				
 				$this->Database->prepare("UPDATE tl_module SET type=?, cssID=? WHERE id=?")->execute($new, serialize($cssID), $objModules->id);
+			}
+		}
+	}
+	
+	
+	private function updateFrontendTemplates()
+	{
+		$arrUpdate = array
+		(
+			'mod_shopping_cart'			=> 'mod_iso_cart',
+			'mod_filters'				=> 'mod_iso_productfilter',
+			'mod_orderdetails'			=> 'mod_iso_orderdetails',
+			'mod_orderhistory'			=> 'mod_iso_orderhistory',
+			'mod_productlist'			=> 'mod_iso_productlist',
+			'mod_productreader'			=> 'mod_iso_productreader',
+			'mod_storeswitcher'			=> 'mod_iso_storeswitcher',
+		);
+		
+		$this->import('Files');
+		
+		foreach( $arrUpdate as $old => $new )
+		{
+			if (file_exists(TL_ROOT . '/templates/' . $old . '.tpl') && !file_exists(TL_ROOT . '/templates/' . $new . '.tpl'))
+			{
+				$this->Files->rename('templates/' . $old . '.tpl', 'templates/' . $new . '.tpl');
 			}
 		}
 	}

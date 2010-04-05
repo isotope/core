@@ -1,1 +1,0 @@
-<embed type="application/x-shockwave-flash" src="<?php echo $this->; ?>&amp;autoplay=1" style="" id="" name="" bgcolor="#ffffff" quality="high" autoplay="true" wmode="transparent" width="<?php echo $this->width; ?>" height="<?php echo $this->height; ?>">

@@ -33,7 +33,7 @@ class ModuleIsotopeProductReader extends ModuleIsotope
 	 * Template
 	 * @var string
 	 */
-	protected $strTemplate = 'mod_productreader';
+	protected $strTemplate = 'mod_iso_productreader';
 	
 
 	/**

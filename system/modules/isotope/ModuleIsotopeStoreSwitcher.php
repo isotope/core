@@ -33,7 +33,7 @@ class ModuleIsotopeStoreSwitcher extends ModuleIsotope
 	 * Module template
 	 * @var string
 	 */
-	protected $strTemplate = 'mod_storeswitcher';
+	protected $strTemplate = 'mod_iso_storeswitcher';
 	
 	
 	/**
