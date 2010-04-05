@@ -166,25 +166,26 @@ $GLOBALS['BE_FFL']['optionDataWizard']	= 'OptionDataWizard';
 $GLOBALS['BE_FFL']['surchargeWizard']	= 'SurchargeWizard';
 $GLOBALS['BE_FFL']['variantWizard']		= 'VariantWizard';
 
+
 /**
  * Frontend modules
  */
 $GLOBALS['FE_MOD']['isotope'] = array
 (
-	'isoFilterModule'			=> 'ModuleFilters',
-	'isoProductLister'			=> 'ModuleProductLister',
-	'isoProductReader'			=> 'ModuleProductReader',
-	'isoShoppingCart'			=> 'ModuleShoppingCart',
+	'isoProductLister'			=> 'ModuleIsotopeProductList',
+	'isoProductReader'			=> 'ModuleIsotopeProductReader',
+	'isoShoppingCart'			=> 'ModuleIsotopeCart',
 	'isoCheckout'				=> 'ModuleIsotopeCheckout',
+	'isoFilterModule'			=> 'ModuleIsotopeProductFilters',
 	'isoGiftRegistryManager'	=> 'ModuleGiftRegistry',
 	'isoGiftRegistrySearch'		=> 'ModuleGiftRegistrySearch',
 	'isoGiftRegistryResults'	=> 'ModuleGiftRegistryResults',
 	'isoGiftRegistryReader'		=> 'ModuleGiftRegistryReader',
 	'isoAddressBook'			=> 'ModuleAddressBook',
-	'isoOrderHistory'			=> 'ModuleOrderHistory',
-	'isoOrderDetails'			=> 'ModuleOrderDetails',
-	'isoStoreSwitcher'			=> 'ModuleStoreSwitcher',
-	'isoDonationsModule'		=> 'ModuleDonations'
+	'isoOrderHistory'			=> 'ModuleIsotopeOrderHistory',
+	'isoOrderDetails'			=> 'ModuleIsotopeOrderDetails',
+	'isoStoreSwitcher'			=> 'ModuleIsotopeStoreSwitcher',
+	'isoDonationsModule'		=> 'ModuleDonations',
 );
 
 
@@ -225,6 +226,7 @@ $GLOBALS['ISO_PAY']['paypalpayflowpro']			= 'PaymentPaypalPayflowPro';
 $GLOBALS['ISO_PAY']['postfinance']				= 'PaymentPostfinance';
 $GLOBALS['ISO_PAY']['authorizedotnet']			= 'PaymentAuthorizeDotNet';
 
+
 /** 
  * Order Statuses
  */
@@ -255,40 +257,6 @@ $GLOBALS['ISO_ORDERS']['operations']['paypalpayflowpro'] = 'PayflowProPOS';
  */
 $GLOBALS['ISO_MSC']['tl_product_data']['groups_ordering'] = array
 ('general_legend','pricing_legend','inventory_legend','shipping_legend','tax_legend','options_legend','media_legend','publish_legend');
-
-
-/**
- * Handle Collections
- */
-/*$GLOBALS['FE_MOD']['isoLister']['TPL_COLL']['listing'] = array(
-	'sortByOptions'			 => array
-	(
-		'url'				 => '',
-		'label' 			 => ''
-	),
-	'products'				 => array
-	(
-		'thumbnail_image'	 => '',
-		'name'		 => '',
-		'link'		 => '',
-		'teaser'	 => '',
-		'price_string'		 => '',
-	),
-	'buttons'			 	 => array
-	(
-		'button_class'		 => '',
-		'button_object'		 => ''
-	),
-	'labelPagerSectionTitle' => $GLOBALS['TL_LANG']['MSC']['labelPagerSectionTitle'],
-	'labelSortBy'			 => $GLOBALS['TL_LANG']['MSC']['labelSortBy'],
-	'pagination'			 => ''
-);
-
-
-$GLOBALS['FE_MOD']['isoLister']['TPL_COLL']['generic_listing'] = array(
-	'value'					=> '',
-	'label'					=> ''
-);*/
 
 	
 /**

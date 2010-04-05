@@ -26,7 +26,7 @@
  */
 
 
-class ModuleShoppingCart extends ModuleIsotope
+class ModuleIsotopeCart extends ModuleIsotope
 {
 
 	/**

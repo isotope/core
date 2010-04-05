@@ -86,7 +86,7 @@ class PayflowProPOS extends Backend
 		
 		
 		$this->Input->setGet('uid', $arrOrderInfo['uniqid']);
-		$objModule = new ModuleOrderDetails($this->Database->execute("SELECT * FROM tl_module WHERE type='isoOrderDetails'"));
+		$objModule = new ModuleIsotopeOrderDetails($this->Database->execute("SELECT * FROM tl_module WHERE type='isoOrderDetails'"));
 		
 		$strOrderDetails = $objModule->generate(true);
 		

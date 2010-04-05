@@ -25,7 +25,7 @@
  */
 
 
-class ModuleFilters extends ModuleIsotope
+class ModuleIsotopeProductFilters extends ModuleIsotope
 {
 
 	/**

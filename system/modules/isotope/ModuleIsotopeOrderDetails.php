@@ -25,7 +25,7 @@
  */
 
 
-class ModuleOrderDetails extends ModuleIsotope
+class ModuleIsotopeOrderDetails extends ModuleIsotope
 {
 
 	protected $strTemplate = 'mod_orderdetails';
