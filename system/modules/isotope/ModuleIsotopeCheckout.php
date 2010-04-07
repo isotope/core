@@ -880,7 +880,6 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				'product_id'		=> $objProduct->id,
 				'quantity_sold'		=> $objProduct->quantity_requested,
 				'price'				=> $objProduct->price,
-				'product_options'	=> $objProduct->getOptions(),
 				'product_data'		=> serialize($objProduct),
 			);
 			
