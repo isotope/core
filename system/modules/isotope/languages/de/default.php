@@ -46,9 +46,9 @@ $GLOBALS['TL_LANG']['ERR']['orderNotFound']				= 'Die gewünschte Bestellung wur
  */
 $GLOBALS['TL_LANG']['MSC']['priceRangeLabel'] = 'ab';
 $GLOBALS['TL_LANG']['MSC']['removeProductLinkText'] = 'entfernen';
-$GLOBALS['TL_LANG']['MSC']['checkoutBT']				= 'Proceed to Checkout';
-$GLOBALS['TL_LANG']['MSC']['continueShoppingBT']		= 'Continue shopping';
-$GLOBALS['TL_LANG']['MSC']['updateCartBT']				= 'Update Cart';
+$GLOBALS['TL_LANG']['MSC']['checkoutBT']				= 'Zur Kasse';
+$GLOBALS['TL_LANG']['MSC']['continueShoppingBT']		= 'weiter einkaufen';
+$GLOBALS['TL_LANG']['MSC']['updateCartBT']				= 'Warenkorb aktualisieren';
 
 $GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline']		= 'Bestellung Nr. %s vom %s';
 $GLOBALS['TL_LANG']['MSC']['downloadsLabel']			= 'Verfügbare downloads';
@@ -77,6 +77,9 @@ $GLOBALS['TL_LANG']['MSC']['taxLabel'] = 'Enthaltene MwSt: ';
 
 $GLOBALS['TL_LANG']['MSC']['noPaymentModules'] = 'Zur Zeit sind keine Zahlungsoptionen verfügbar.';
 $GLOBALS['TL_LANG']['MSC']['noShippingModules'] = 'Leider können die Produkte zur Zeit nicht in Ihr Land geliefert werden. Bitte wählen Sie eine andere Lieferadresse oder nur Artikel die nicht versendet werden müssen (z.B. Download-Artikel).';
+
+$GLOBALS['TL_LANG']['ISO']['shipping_method_missing'] = 'Bitte wählen Sie eine Versandmethode.';
+$GLOBALS['TL_LANG']['ISO']['payment_method_missing'] = 'Bitte wählen Sie eine Zahlungsart.';
 
 //Invoice language Entries
 $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] = 'Bestellung';
