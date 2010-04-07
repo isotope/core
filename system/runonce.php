@@ -334,6 +334,16 @@ class IsotopeRunonce extends Frontend
 				$cssID[1] = trim($cssID[1] . ' mod_' . $old);
 				
 				$this->Database->prepare("UPDATE tl_module SET type=?, cssID=? WHERE id=?")->execute($new, serialize($cssID), $objModules->id);
+				
+				$objContents = $this->Database->prepare("SELECT * FROM tl_content WHERE type='module' AND module=?")->execute($objModules->id);
+			
+				while( $objContents->next() )
+				{
+					$cssID = deserialize($objContents->cssID, true);
+					$cssID[1] = trim($cssID[1] . ' mod_' . $old);
+					
+					$this->Database->prepare("UPDATE tl_content SET cssID=? WHERE id=?")->execute(serialize($cssID), $objContents->id);
+				}
 			}
 		}
 	}
