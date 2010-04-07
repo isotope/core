@@ -419,7 +419,7 @@ class ProductCatalog extends Backend
 						
 						foreach($arrOtherProductsPages as $pageRow)
 						{	
-							$rowInfo = deserialize($pageRow);
+							$rowInfo = deserialize($pageRow, true);
 							
 							foreach($arrPageList as $currPage)
 							{				
