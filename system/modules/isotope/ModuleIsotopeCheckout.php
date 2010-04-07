@@ -817,6 +817,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				'taxTotal'					=> $this->Isotope->formatPriceWithCurrency($this->Cart->taxTotal),
 				'taxTotalWithShipping'		=> $this->Isotope->formatPriceWithCurrency($this->Cart->taxTotalWithShipping),
 				'shippingPrice'				=> $this->Isotope->formatPriceWithCurrency($fltShippingTotal),
+				'paymentPrice'				=> $this->Isotope->formatPriceWithCurrency($this->Cart->Payment->price),
 				'grandTotal'				=> $this->Isotope->formatPriceWithCurrency($this->Cart->grandTotal),
 				'cart_text'					=> $this->Cart->getProducts('iso_products_text'),
 				'cart_html'					=> $this->Cart->getProducts('iso_products_html'),

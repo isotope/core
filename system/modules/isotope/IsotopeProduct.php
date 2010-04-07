@@ -710,7 +710,7 @@ class IsotopeProduct extends Controller
 			$this->hasUpload = true;
 		}
 		
-		return $objWidget->parse() . '<br />';
+		return $objWidget->parse();
 	}
 	
 	
