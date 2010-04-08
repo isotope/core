@@ -14,6 +14,7 @@
 <?php echo $product['html']; ?>
 </div>
 <?php endforeach; ?>
+</div>
 
 <?php echo $this->pagination; ?>
 
