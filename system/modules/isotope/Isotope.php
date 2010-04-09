@@ -783,6 +783,14 @@ class Isotope extends Controller
 		return $arrData;
 	}
 	
+	public function mergeConditionalOptionData($strField, $arrData, &$objProduct=null)
+	{
+		$arrData['eval']['disableAjax'] = true;
+		$arrData['eval']['conditionField'] = $arrData['attributes']['conditionField'] . (is_object($objProduct) ? '_'.$objProduct->id : '');
+
+		return $this->mergeOptionData($strField, $arrData, $objProduct);
+	}
+	
 	
 	/**
 	 * Callback for isoButton Hook.

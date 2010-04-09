@@ -349,18 +349,18 @@ $GLOBALS['ISO_WGT']['lbs']		= 'pounds';
 /**
  * Attributes
  */
-$GLOBALS['TL_LANG']['ATTR']['text']		= 'Text (up to 255 characters)';
-$GLOBALS['TL_LANG']['ATTR']['integer']	= 'Integer/Whole Numbers';
-$GLOBALS['TL_LANG']['ATTR']['decimal']	= 'Decimal';
-//$GLOBALS['TL_LANG']['tl_product_attributes']['shorttext'] = 'Short Text (up to 128 characters)';
-$GLOBALS['TL_LANG']['ATTR']['textarea']	= 'Long Text (more than 255 characters)';
-$GLOBALS['TL_LANG']['ATTR']['datetime']	= 'Date/Time value';
-$GLOBALS['TL_LANG']['ATTR']['select']	= 'Select List';
-$GLOBALS['TL_LANG']['ATTR']['checkbox']	= 'Checkbox';
-$GLOBALS['TL_LANG']['ATTR']['options']	= 'Option List';
-$GLOBALS['TL_LANG']['ATTR']['file']		= 'File Attachment';
-$GLOBALS['TL_LANG']['ATTR']['media']	= 'Media (Images, Movies, Mp3s, etc.)';
-$GLOBALS['TL_LANG']['ATTR']['label']	= 'Label/Fixed Display';
-$GLOBALS['TL_LANG']['ATTR']['input']	= 'Accept Input From Customer';
+$GLOBALS['TL_LANG']['ATTR']['text']					= 'Text (up to 255 characters)';
+$GLOBALS['TL_LANG']['ATTR']['integer']				= 'Integer/Whole Numbers';
+$GLOBALS['TL_LANG']['ATTR']['decimal']				= 'Decimal';
+$GLOBALS['TL_LANG']['ATTR']['textarea']				= 'Long Text (more than 255 characters)';
+$GLOBALS['TL_LANG']['ATTR']['datetime']				= 'Date/Time value';
+$GLOBALS['TL_LANG']['ATTR']['select']				= 'Select List';
+$GLOBALS['TL_LANG']['ATTR']['checkbox']				= 'Checkbox';
+$GLOBALS['TL_LANG']['ATTR']['options']				= 'Option List';
+$GLOBALS['TL_LANG']['ATTR']['file']					= 'File Attachment';
+$GLOBALS['TL_LANG']['ATTR']['media']				= 'Media (Images, Movies, Mp3s, etc.)';
+$GLOBALS['TL_LANG']['ATTR']['label']				= 'Label/Fixed Display';
+$GLOBALS['TL_LANG']['ATTR']['input']				= 'Accept Input From Customer';
+$GLOBALS['TL_LANG']['ATTR']['conditionalselect']	= 'Conditional Select Menu';
 
 
