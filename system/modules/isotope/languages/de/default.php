@@ -171,3 +171,10 @@ $GLOBALS['TL_LANG']['CUR']['USD'] = 'USD - US Dollar';
 $GLOBALS['TL_LANG']['CUR']['EUR'] = 'EUR - Euro';
 $GLOBALS['TL_LANG']['CUR']['CHF'] = 'CHF - Schweizer Franken';
 
+
+/**
+ * Isotope attribute types
+ */
+$GLOBALS['TL_LANG']['ATTR']['conditionalselect'] = 'Abhängiges Select-Menü';
+
+

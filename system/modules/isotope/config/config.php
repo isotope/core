@@ -330,6 +330,12 @@ $GLOBALS['ISO_ATTR'] = array
 		'sql'		=> "blob NULL",
 		'callback'	=> array(array('Isotope', 'mergeOptionData')),
 	),
+	'conditionalselect' => array
+	(
+		'backend'	=> 'optionDataWizard',
+		'sql'		=> "blob NULL",
+		'callback'	=> array(array('Isotope', 'mergeConditionalOptionData')),
+	),
 	'checkbox' => array
 	(
 		'sql'		=> "char(1) NOT NULL default ''",

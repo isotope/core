@@ -272,6 +272,9 @@ var IsotopeProduct = new Class(
 						}
 					}
 				});
+				
+				// Update conditionalselect
+				window.fireEvent('ajaxready');
 			},
 			onFailure: function()
 			{

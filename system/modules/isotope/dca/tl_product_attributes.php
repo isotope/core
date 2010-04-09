@@ -111,11 +111,12 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 		'textarea'					=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},is_listing_field,is_visible_on_front;{use_mode_legend},multilingual,use_rich_text_editor,is_customer_defined;{validation_legend},is_required;{search_filters_legend},is_searchable,is_order_by_enabled;rgxp',
 		'datetime'					=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},multilingual,is_listing_field,is_visible_on_front;{validation_legend},is_required;{search_filters_legend},is_order_by_enabled',
 		'select'					=> '{attribute_legend},name,field_name,type,legend,description;{options_legend},option_list,use_alternate_source;{visibility_legend},is_listing_field,is_visible_on_front;{use_mode_legend},multilingual,is_customer_defined,add_to_product_variants,is_multiple_select;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled',
+		'conditionalselect'			=> '{attribute_legend},name,field_name,type,legend,description;{options_legend},option_list,conditionField;{visibility_legend},is_listing_field,is_visible_on_front;{use_mode_legend},multilingual,is_customer_defined,is_multiple_select;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled',
 		'options'					=> '{attribute_legend},name,field_name,type,legend,description;{options_legend},option_list,{visibility_legend},is_listing_field,is_visible_on_front;{use_mode_legend},multilingual,is_customer_defined,add_to_product_variants,is_multiple_select;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled',
 		'fileattach'				=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},is_listing_field,is_visible_on_front;{use_mode_legend},multilingual,is_customer_defined;{validation_legend},is_required',
 		'filetree'					=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},is_listing_field,is_visible_on_front;{use_mode_legend},multilingual,is_customer_defined,is_multiple_select,show_files;{validation_legend},is_required,{search_filters_legend},is_filterable',
 		'media'						=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},is_listing_field,is_visible_on_front;{use_mode_legend},multilingual,show_files;{validation_legend},is_required',
-		'checkbox'					=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},is_listing_field,is_visible_on_front;{use_mode_legend},multilingual,is_customer_defined;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled'
+		'checkbox'					=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},is_listing_field,is_visible_on_front;{use_mode_legend},multilingual,is_customer_defined;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled',
     ),
 
     // Subpalettes
@@ -316,6 +317,13 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 			'eval'				 	  => array('includeBlankOption'=>true),
 			'reference'				  => &$GLOBALS['TL_LANG']['tl_product_attributes']['rgxpOptions']	
 		),
+		'conditionField' => array
+		(
+			'label'					  => &$GLOBALS['TL_LANG']['tl_product_attributes']['conditionField'],
+			'inputType'				  => 'select',
+			'options_callback'		  => array('tl_product_attributes', 'getConditionFields'),
+			'eval'					  => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'clr'),
+		),
 	)
 );
 
@@ -452,6 +460,27 @@ class tl_product_attributes extends Backend
 		{
 			$this->Database->execute(sprintf("ALTER TABLE tl_product_data MODIFY %s %s", $objAttribute->field_name, $GLOBALS['ISO_ATTR'][$dc->activeRecord->type]['sql']));
 		}
+	}
+	
+	
+	/**
+	 * Returns an array of select-fields in the same form
+	 */
+	public function getConditionFields($dc)
+	{
+		$this->loadDataContainer('tl_product_data');
+		
+		$arrFields = array();
+											
+		foreach( $GLOBALS['TL_DCA']['tl_product_data']['fields'] as $field => $arrData )
+		{
+			if ($arrData['inputType'] == 'select' || $arrData['inputType'] == 'optionDataWizard')
+			{
+				$arrFields[$field] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
+			}
+		}
+		
+		return $arrFields;
 	}
 }
 

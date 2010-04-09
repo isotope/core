@@ -32,4 +32,5 @@
 $GLOBALS['TL_LANG']['tl_product_attributes']['name']			= array('Name', 'Geben Sie einen Namen für dieses Artikelmerkmal ein.');
 $GLOBALS['TL_LANG']['tl_product_attributes']['field_name']		= array('Interner Name', 'Der interne Feldname entspricht dem Datenbank-Feld und muss eindeutig sein.');
 $GLOBALS['TL_LANG']['tl_product_attributes']['type']			= array('Typ', 'Wählen Sie einen Attribut-Typ.');
+$GLOBALS['TL_LANG']['tl_product_attributes']['conditionField'] = array('Übergeordnetes Feld', 'Bitte wählen Sie das übergeornete Feld, welches vom Typ "Select-Menü" sein muss. Damit die Relation funktioniert, definieren Sie die Optionen des übergeordneten Feldes als Gruppe des abhängigen Select-Menüs.');
 

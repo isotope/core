@@ -385,6 +385,7 @@ class IsotopeProduct extends Controller
 		$objTemplate = new FrontendTemplate($strTemplate);
 		
 		$arrProductOptions = array();
+		$arrAjaxOptions = array();
 		$arrAttributes = $this->getAttributes();
 		
 		foreach( $arrAttributes as $attribute => $varValue )
@@ -412,6 +413,11 @@ class IsotopeProduct extends Controller
 					{
 						$objTemplate->hasOptions = true;
 						$arrProductOptions[$attribute] = $this->generateProductOptionWidget($attribute);
+						
+						if (!$GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['eval']['disableAjax'])
+						{
+							$arrAjaxOptions[] = $attribute;
+						}
 					}
 					else
 					{						
@@ -475,7 +481,7 @@ class IsotopeProduct extends Controller
 		$objTemplate->action = ampersand($this->Environment->request, true);
 		$objTemplate->formSubmit = 'iso_product_'.$this->id;
 		
-		$GLOBALS['TL_MOOTOOLS'][] = "<script type=\"text/javascript\">new IsotopeProduct('" . $objModule->id . "', '" . $this->id . "', ['ctrl_" . implode("_".$this->id."', 'ctrl_", array_keys($arrProductOptions)) . "_".$this->id."']);</script>";
+		$GLOBALS['TL_MOOTOOLS'][] = "<script type=\"text/javascript\">new IsotopeProduct('" . $objModule->id . "', '" . $this->id . "', ['ctrl_" . implode("_".$this->id."', 'ctrl_", $arrAjaxOptions) . "_".$this->id."']);</script>";
 		
 		return $objTemplate->parse();
 	}
@@ -491,7 +497,7 @@ class IsotopeProduct extends Controller
 	
 		foreach( $arrAttributes as $attribute => $varValue )
 		{
-			if ($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['is_customer_defined'] || $GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['add_to_product_variants'])
+			if (($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['is_customer_defined'] || $GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['add_to_product_variants']) && !$GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['eval']['disableAjax'])
 			{
 				$arrOptions[] = array
 				(

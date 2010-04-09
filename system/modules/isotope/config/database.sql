@@ -197,6 +197,7 @@ CREATE TABLE `tl_product_attributes` (
   `delete_locked` char(1) NOT NULL default '',
   `rgxp` varchar(255) NOT NULL default '',
   `field_name` varchar(30) NOT NULL default '',
+  `conditionField` varchar(30) NOT NULL default '',
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
