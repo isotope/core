@@ -47,7 +47,8 @@ array_insert($GLOBALS['BE_MOD']['store'], 0, array
 		'icon'						=> 'system/modules/isotope/html/icon-products.gif',
 		'stylesheet'				=> 'system/modules/isotope/html/backend.css',
 		'javascript'				=> 'system/modules/isotope/html/backend.js',
-		'import'					=> array('tl_product_data', 'importAssets')
+		'import'					=> array('tl_product_data', 'importAssets'),
+		'link'						=> array('tl_product_data', 'linkProductsToCategories')
 	),
 	'orders' => array
 	(
