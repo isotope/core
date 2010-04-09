@@ -95,6 +95,7 @@ $GLOBALS['TL_LANG']['tl_product_data']['cut']			= array('Move product', 'Move pr
 $GLOBALS['TL_LANG']['tl_product_data']['delete']		= array('Delete product', 'Delete product ID %s');
 $GLOBALS['TL_LANG']['tl_product_data']['show']			= array('Product details', 'Show details of product ID %s');
 $GLOBALS['TL_LANG']['tl_product_data']['import']		= array('Import assets', 'Import images and other media from a folder');
+$GLOBALS['TL_LANG']['tl_product_data']['link']			= array('Link Products to Categories', 'Link products to categories');
 
 
 /** 

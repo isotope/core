@@ -70,6 +70,13 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 				'href'                => 'key=import',
 				'class'               => 'header_import_assets',
 				'attributes'          => 'onclick="Backend.getScrollOffset();"'
+			),
+			'link'	=> array
+			(
+				'label'				  => &$GLOBALS['TL_LANG']['tl_product_data']['link'],
+				'href'				  => 'key=link',
+				'class'				  => 'header_product_category_link',
+				'attributes'		  => 'onclick="Backend.getScrollOffset();"'
 			)
 		),
 		'operations' => array
@@ -724,6 +731,49 @@ class tl_product_data extends Backend
 		return $varValue;
 	}
 	
+	/**
+	 * Save page ids to tl_product_categories table. This allows to retrieve all products associated to a page.
+	 */
+	public function linkProductsToCategories($dc)
+	{
+		$objProducts = $this->Database->prepare("SELECT id, pages FROM tl_product_data")
+									  ->execute();
+		
+		if(!$objProducts->numRows)
+		{
+			return '';
+		}
+		
+		while($objProducts->next())
+		{
+			$arrProducts[$objProducts->id] = deserialize($objProducts->pages);
+		}
+		
+		foreach($arrProducts as $k=>$v)
+		{
+			
+			if (is_array($v) && count($v))
+			{
+				
+				$time = time();
+				$this->Database->prepare("DELETE FROM tl_product_categories WHERE pid=? AND page_id NOT IN (" . implode(',', $v) . ")")->execute($k);
+				$objPages = $this->Database->prepare("SELECT page_id FROM tl_product_categories WHERE pid=?")->execute($k);
+				$arrIds = array_diff($v, $objPages->fetchEach('page_id'));
+				
+				foreach( $arrIds as $id )
+				{
+					$intSorting = $this->Database->prepare("SELECT sorting FROM tl_product_categories WHERE page_id=? ORDER BY sorting DESC")->limit(1)->execute($id)->sorting;
+					$intSorting += 128;
+					$this->Database->prepare("INSERT INTO tl_product_categories (pid,tstamp,page_id,sorting) VALUES (?,?,?,?)")->execute($k, $time, $id, $intSorting);
+				}
+			}
+			else
+			{
+				$this->Database->prepare("DELETE FROM tl_product_categories WHERE pid=?")->execute($k);
+			}
+		}
+		
+	}
 	
 	/**
 	 * Import images and other media file for products
