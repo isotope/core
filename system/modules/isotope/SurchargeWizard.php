@@ -77,10 +77,10 @@ class SurchargeWizard extends Widget
 		$this->import('Database');
 
 		//allows us to set which buttons can be enabled for this widget.
-		foreach($this->enabledFunctions as $v)
+		/*foreach($this->enabledFunctions as $v)
 		{
 			$arrButtons[] = $v;
-		}
+		}*/
 		
 		$strCommand = 'cmd_' . $this->strField;
 
@@ -129,7 +129,7 @@ class SurchargeWizard extends Widget
 		// Make sure there is at least an empty array
 		if (!is_array($this->varValue) || !$this->varValue[0])
 		{
-			$this->varValue = array('');
+			//$this->varValue = array('');
 		}
 		else
 		{
@@ -155,49 +155,88 @@ class SurchargeWizard extends Widget
 
 		// Add label and return wizard
 		$return .= '<table cellspacing="0" cellpadding="0" class="tl_optionwizard" id="ctrl_'.$this->strId.'" summary="Surcharge wizard">
-  <thead>
-  <tr>
-     <th>'.$GLOBALS['TL_LANG'][$this->strTable]['opLabel'].'</th>
-     <th>'.$GLOBALS['TL_LANG'][$this->strTable]['opPrice'].'</th>
-     <th>'.$GLOBALS['TL_LANG'][$this->strTable]['opTaxClass'].'</th>
-     <th>'.$GLOBALS['TL_LANG'][$this->strTable]['opAddTax'].'</th>
-     <th>&nbsp;</th>
-  </tr>
-  </thead>
-  <tbody>';
+  <thead>';
+  		
+		if(is_array($this->varValue) && count($this->varValue))
+  		{
+  			$return .= '<tr>
+					 <th><strong>'.$GLOBALS['TL_LANG'][$this->strTable]['opLabel'].'</strong></th>
+					 <th><strong>'.$GLOBALS['TL_LANG'][$this->strTable]['opPrice'].'</strong></th>
+					 <th><strong>'.$GLOBALS['TL_LANG'][$this->strTable]['opTaxClass'].'</strong></th>
+					 <th>&nbsp;</th>
+				    </tr>
+				</thead>
+		  <tbody>';
 	
-		// Add rows
-		for ($i=0; $i<count($this->varValue); $i++)
-		{
-			$return .= '<tr>';
-			$return .= '	<td><input type="text" name="'.$this->strId.'['.$i.'][label]" id="'.$this->strId.'_label_'.$i.'" class="tl_text_2" value="'.specialchars($this->varValue[$i]['label']).'" /></td>';
-			$return .= '	<td><input type="text" name="'.$this->strId.'['.$i.'][price]" id="'.$this->strId.'_price_'.$i.'" class="tl_text_3" value="'.specialchars($this->varValue[$i]['price']).'" /></td>';
-			$options = '';
-
-			$options = '<option value=""'.$this->optionSelected(NULL,$this->varValue[$i]['tax_class']).'>-</option>';
-			// Add Tax Classes
-			foreach ($arrTaxClasses as $v)
+			// Add rows
+			for ($i=0; $i<count($this->varValue); $i++)
 			{
-				$options .= '<option value="'.specialchars($v['id']).'"'.$this->optionSelected($v['id'], $this->varValue[$i]['tax_class']).'>'.$v['name'].'</option>';
-			}
-
-			$return .= '
-
-    <td><select name="'.$this->strId.'['.$i.'][tax_class]" class="tl_select_2" onfocus="Backend.getScrollOffset();">'.$options.'</select></td>';
-			
-			$return .= '
-    <td><input type="checkbox" name="'.$this->strId.'['.$i.'][add_tax]" class="tl_checkbox" value="1" onfocus="Backend.getScrollOffset();" ' . ($this->varValue[$i]['add_tax'] ? 'checked' : '') . ' /></td>
-    <td>';
+				$arrRow = array();
+				$arrRow = $this->varValue[$i];
+				$blnEditable = false;
+				
+				if(is_array($arrRow))
+				{
+					//if(array_key_exists('editable', $arrRow))
+					//	if($arrRow['editable'])
+							$blnEditable = true;
+				}
+				else
+				{
+					continue;
+				}
+				
+				$return .= '<tr>';
+				$return .= '	<td>'.$this->varValue[$i]['label'].'<input type="hidden" name="'.$this->strId.'['.$i.'][label]" id="'.$this->strId.'_label_'.$i.'" value="'.$this->varValue[$i]['label'].'" /></td>';
+				$return .= '	<td>'.($blnEditable ? '<input type="text" name="'.$this->strId.'['.$i.'][total_price]" id="'.$this->strId.'_total_price_'.$i.'" class="tl_text_3" value="'.specialchars(round($this->varValue[$i]['total_price'], 2)).'" />' : round($this->varValue[$i]['total_price'], 2)) . '</td>';
+				$options = '';
 	
-			foreach ($arrButtons as $button)
-			{
-				$return .= '<a href="'.$this->addToUrl('&amp;'.$strCommand.'='.$button.'&amp;cid='.$i.'&amp;id='.$this->currentRecord).'" title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable]['wz_'.$button]).'" onclick="Isotope.surchargeWizard(this, \''.$button.'\',  \'ctrl_'.$this->strId.'\'); return false;">'.$this->generateImage($button.'.gif', $GLOBALS['TL_LANG'][$this->strTable]['wz_'.$button], 'class="tl_listwizard_img"').'</a> ';
+				$options = '<option value=""'.$this->optionSelected(NULL,$this->varValue[$i]['tax_class']).'>-</option>';
+				// Add Tax Classes
+				foreach ($arrTaxClasses as $v)
+				{
+					$options .= '<option value="'.specialchars($v['id']).'"'.$this->optionSelected($v['id'], $this->varValue[$i]['tax_class']).'>'.$v['name'].'</option>';
+					if($v['id']==$this->varValue[$i]['tax_class'])
+					{
+						$strTaxLabel = $v['name'];
+					}
+				}
+	
+				$return .= '
+	
+		<td>'.($blnEditable ? '<select name="'.$this->strId.'['.$i.'][tax_class]" class="tl_select_2" onfocus="Backend.getScrollOffset();">'.$options.'</select>' : $strTaxLabel).'</td>';
+				
+				$return .= '<td>';
+				
+				if(is_array($arrButtons))
+				{
+					foreach ($arrButtons as $button)
+					{
+						$return .= '<a href="'.$this->addToUrl('&amp;'.$strCommand.'='.$button.'&amp;cid='.$i.'&amp;id='.$this->currentRecord).'" title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable]['wz_'.$button]).'" onclick="Isotope.surchargeWizard(this, \''.$button.'\',  \'ctrl_'.$this->strId.'\'); return false;">'.$this->generateImage($button.'.gif', $GLOBALS['TL_LANG'][$this->strTable]['wz_'.$button], 'class="tl_listwizard_img"').'</a> ';
+					}
+				}
+				else
+				{
+					$return .= '&nbsp;';
+				}
+				
+				$return .= '</td>
+	  </tr>';
 			}
-
-			$return .= '</td>
-  </tr>';
 		}
-
+		else
+		{
+				$return .= '	<tr>
+									<th>&nbsp;</th>
+								</tr>
+							</thead>
+						    <tbody>
+								<tr>
+									<td>' . $GLOBALS['TL_LANG']['MSC']['noSurcharges'] .'</td>
+								</tr>
+							';
+		}
+		
 		return $return.'
   </tbody>
   </table>';
