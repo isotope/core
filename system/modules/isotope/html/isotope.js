@@ -54,7 +54,7 @@ var Isotope =
 					var request = new Request.JSON({
 						url: 'ajax.php',
 						method: 'get',
-						onRequest: Isotope.displayBox('Loading data ...'),
+						onRequest: Isotope.displayBox('Loading data …'),
 						onComplete: function(objProduct) {
 							
 							Isotope.hideBox();
