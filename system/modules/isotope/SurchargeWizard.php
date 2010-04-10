@@ -177,9 +177,7 @@ class SurchargeWizard extends Widget
 				
 				if(is_array($arrRow))
 				{
-					//if(array_key_exists('editable', $arrRow))
-					//	if($arrRow['editable'])
-							$blnEditable = true;
+					$blnEditable = true;
 				}
 				else
 				{

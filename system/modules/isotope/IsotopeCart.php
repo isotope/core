@@ -537,7 +537,7 @@ class IsotopeCart extends Model
 				'price'			=> '&nbsp;',
 				'total_price'	=> $this->Shipping->price,
 				'tax_class'		=> $this->Shipping->tax_class,
-				'add_tax'		=> ($this->Shipping->tax_class ? true : false)
+				'add_tax'		=> ($this->Shipping->tax_class ? true : false),
 			);
 		}
 		
@@ -564,7 +564,6 @@ class IsotopeCart extends Model
 				'total_price'	=> $this->Payment->price,
 				'tax_class'		=> $this->Payment->tax_class,
 				'add_tax'		=> ($this->Payment->tax_class ? true : false),
-				'editable'		=> true	//todo: find a better way!
 			);
 		}
 		
