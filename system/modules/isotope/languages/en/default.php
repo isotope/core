@@ -53,8 +53,6 @@ $GLOBALS['TL_LANG']['ERR']['mandatoryOption'] = 'Please select an option.';
 $GLOBALS['TL_LANG']['ERR']['noAddressData'] = 'Address data is required to calculate taxes!';
 $GLOBALS['TL_LANG']['ERR']['variantDuplicate'] = 'A variant with this attributes is already available. Please select another combination.';
 
-$GLOBALS['TL_LANG']['MSC']['missingGoogleAnalyticsExtension'] = 'E-commerce tracking for Google Analytics has a dependency you have not installed. Please install the "Google Analytics" extension by Andreas Schempp to take advantage of google analytics e-commerce tracking. It is available through the extension repository or online from www.typolight.org';
-
 //Checkout Errors
 $GLOBALS['TL_LANG']['ERR']['specifyBillingAddress'] = 'A billing address was not fuond.  Please specify a billing address.';
 $GLOBALS['TL_LANG']['ERR']['cc_num']				= 'Please provide a valid credit card number.';
