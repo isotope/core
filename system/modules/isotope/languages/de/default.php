@@ -28,7 +28,6 @@
 
 /**
  * Content Elements
- *
  */
 $GLOBALS['TL_LANG']['CTE']['attributeLinkRepeater']   = array('Artikelmerkmal-Filter Auflistung', 'Dieses Element generiert eine Sammlung von Links eines Artikelmerkmal-Filters.');
 
@@ -44,6 +43,16 @@ $GLOBALS['TL_LANG']['ERR']['orderNotFound']				= 'Die gewünschte Bestellung wur
 /**
  * Miscellaneous
  */
+$GLOBALS['TL_LANG']['MSC']['labelLanguage']			= 'Sprache';
+$GLOBALS['TL_LANG']['MSC']['editLanguage']			= 'Bearbeiten';
+$GLOBALS['TL_LANG']['MSC']['deleteLanguage']		= 'Löschen';
+$GLOBALS['TL_LANG']['MSC']['defaultLanguage']		= 'Fallback';
+$GLOBALS['TL_LANG']['MSC']['editingLanguage']		= 'ACHTUNG: Sie bearbeiten die sprachspezifischen Daten diese Produkts!';
+$GLOBALS['TL_LANG']['MSC']['deleteLanguageConfirm']	= 'Soll diese Sprache wirklich gelöscht werden? Hierfür gibt es keine Rückgängig-Funktion!';
+$GLOBALS['TL_LANG']['MSC']['undefinedLanguage']		= 'undefiniert';
+
+
+
 $GLOBALS['TL_LANG']['MSC']['priceRangeLabel'] = 'ab';
 $GLOBALS['TL_LANG']['MSC']['removeProductLinkText'] = 'entfernen';
 $GLOBALS['TL_LANG']['MSC']['checkoutBT']				= 'Zur Kasse';
