@@ -36,13 +36,9 @@ $GLOBALS['TL_DCA']['tl_product_categories'] = array
 	'config' => array
 	(
 		'dataContainer'					=> 'TablePageId',
-		'enableVersioning'				=> true,
 		'ptable'						=> 'tl_page',
 		'closed'						=> true,
-		'onload_callback' => array
-		(
-			array('tl_product_categories', 'checkVersion'),
-		),
+		'notEditable'					=> true,
 	),
 
 	// List
@@ -52,7 +48,6 @@ $GLOBALS['TL_DCA']['tl_product_categories'] = array
 		(
 			'mode'						=> 4,
 			'fields'					=> array('sorting'),
-//			'flag'						=> 1,
 			'headerFields'				=> array('title', 'type'),
 			'child_record_callback'		=> array('tl_product_categories', 'listRows')
 		),
@@ -64,7 +59,7 @@ $GLOBALS['TL_DCA']['tl_product_categories'] = array
 				'href'					=> 'act=select',
 				'class'					=> 'header_edit_all',
 				'attributes'			=> 'onclick="Backend.getScrollOffset();"'
-			)
+			),
 		),
 		'operations' => array
 		(
@@ -77,45 +72,9 @@ $GLOBALS['TL_DCA']['tl_product_categories'] = array
 			),
 		)
 	),
-
-	// Palettes
-	'palettes' => array
-	(
-		'default'						=> '{name_legend},name;{publish_legend},published,start,stop',
-	),
-
-	// Fields
-	'fields' => array
-	(
-		'name' => array
-		(
-			'label'						=> &$GLOBALS['TL_LANG']['tl_product_categories']['name'],
-			'exclude'					=> true,
-			'inputType'					=> 'text',
-			'eval'						=> array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
-		),
-		'published' => array
-		(
-			'exclude'					=> true,
-			'label'						=> &$GLOBALS['TL_LANG']['tl_product_categories']['published'],
-			'inputType'					=> 'checkbox',
-			'eval'						=> array('doNotCopy'=>true),
-		),
-		'start' => array
-		(
-			'exclude'					=> true,
-			'label'						=> &$GLOBALS['TL_LANG']['tl_product_categories']['start'],
-			'inputType'					=> 'text',
-			'eval'						=> array('rgxp'=>'date', 'datepicker'=>$this->getDatePickerString(), 'tl_class'=>'w50 wizard'),
-		),
-		'stop' => array
-		(
-			'exclude'					=> true,
-			'label'						=> &$GLOBALS['TL_LANG']['tl_product_categories']['stop'],
-			'inputType'					=> 'text',
-			'eval'						=> array('rgxp'=>'date', 'datepicker'=>$this->getDatePickerString(), 'tl_class'=>'w50 wizard'),
-		),
-	)
+	
+	// Fields Array must not be empty or we get a foreach error.
+	'fields' => array()
 );
 
 
@@ -131,15 +90,7 @@ class tl_product_categories extends Backend
 		$objProduct = $this->Database->prepare("SELECT * FROM tl_product_data WHERE id=?")->limit(1)->execute($row['pid']);
 		
 		$this->import('tl_product_data');
-		return '<div class="cte_type" style="margin-top: -23px;margin-bottom:-8px">'.$this->tl_product_data->getRowLabel($objProduct->row()).'</div>';
-	}
-	
-	public function checkVersion()
-	{
-		if (version_compare(VERSION . '.' . BUILD, '2.7.5', '<='))
-		{
-			unset($GLOBALS['TL_DCA']['tl_product_categories']['list']['global_operations']['all']);
-		}
+		return '<div style="margin-top: -' . ($this->Input->get('act')=='select' ? 15 : 20) . 'px; margin-bottom:-8px">'.$this->tl_product_data->getRowLabel($objProduct->row()).'</div>';
 	}
 }
 
