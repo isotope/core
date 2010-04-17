@@ -263,7 +263,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		),
 		'enableGoogleAnalytics' => array
 		(
-			'label'                   => array($GLOBALS['TL_LANG']['tl_store']['enableGoogleAnalytics'][0], (!file_exists(TL_ROOT . '/system/modules/googleanalytics/GoogleAnalytics.php') ? $GLOBALS['TL_LANG']['MSC']['missingGoogleAnalyticsExtension'] : $GLOBALS['TL_LANG']['tl_store']['enableGoogleAnalytics'][0])),
+			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['enableGoogleAnalytics'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
 		),
@@ -448,6 +448,11 @@ class tl_store extends Backend
 	
 	public function checkPermission($dc)
 	{
+		if (!in_array('googleanalytics', $this->Config->getActiveModules()))
+		{
+			unset($GLOBALS['TL_DCA']['tl_store']['fields']['enableGoogleAnalytics']);
+		}
+		
 		$this->import('BackendUser', 'User');
 		
 		if ($this->User->isAdmin)
