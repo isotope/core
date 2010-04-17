@@ -137,7 +137,7 @@ class DC_MultilingualTable extends DC_Table
 			}
 		}
 		
-		$this->createNewVersion($this->strTable, $this->objActiveRecord->id);
+		$this->createInitialVersion($this->strTable, $this->objActiveRecord->id);
 
 		// Change version
 		if ($GLOBALS['TL_DCA'][$this->strTable]['config']['enableVersioning'] && $this->Input->post('FORM_SUBMIT') == 'tl_version' && strlen($this->Input->post('version')))
