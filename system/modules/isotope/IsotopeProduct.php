@@ -70,14 +70,13 @@ class IsotopeProduct extends Controller
 	protected $arrCache = array();
 		
 	/**
-	 * for widgets, helps determine the encoding type for a form
-	 * @todo this seems not to be in use... it is only filled, never used.
+	 * for option widgets, helps determine the encoding type for a form
 	 * @var boolean
 	 */
 	protected $hasUpload = false;
 	
 	/**
-	 * for widgets, don't submit if certain validation(s) fail
+	 * for option widgets, don't submit if certain validation(s) fail
 	 * @var boolean
 	 */
 	protected $doNotSubmit = false;
@@ -291,7 +290,7 @@ class IsotopeProduct extends Controller
 	 */
 	public function __sleep()
 	{
-		//clean up product object - remove non-essential data to reduce table size.
+		//!@todo clean up product object - remove non-essential data to reduce table size.
 		unset($this->arrData['description'], $this->arrData['teaser']);
 
 		return array('arrAttributes', 'arrVariantAttributes', 'arrDownloads', 'arrData', 'arrOptions');
@@ -313,7 +312,7 @@ class IsotopeProduct extends Controller
 
 	
 	/**
-	 * Return the current record as associative array
+	 * Return the current data as associative array
 	 * @return array
 	 */
 	public function getData()
@@ -332,6 +331,10 @@ class IsotopeProduct extends Controller
 	}
 
 
+	/**
+	 * Return all options, either the raw array or prepared for product listing
+	 */
+	//!@todo I dislike the listing approach, we might find a better solution
 	public function getOptions($blnRaw=false)
 	{
 		if ($blnRaw)
@@ -487,6 +490,9 @@ class IsotopeProduct extends Controller
 	}
 	
 	
+	/**
+	 * Generate the product data on ajax update
+	 */
 	public function generateAjax()
 	{
 		$this->validateVariant();
@@ -608,11 +614,6 @@ class IsotopeProduct extends Controller
 	
 	/** 
 	 * Return a widget object based on a product attribute's properties.
-	 *
-	 * @access protected
-	 * @param string $strField
-	 * @param array $arrData
-	 * @return string
 	 */
 	protected function generateProductOptionWidget($strField, $blnAjax=false)
 	{
@@ -720,6 +721,10 @@ class IsotopeProduct extends Controller
 	}
 	
 	
+	/**
+	 * Parse options for cart/checkout listing
+	 */
+	//!@todo I dislike the listing approach, we might find a better solution
 	protected function getProductOptionValues($strField, $inputType, $varValue)
 	{	
 		$arrData = $GLOBALS['TL_DCA']['tl_product_data']['fields'][$strField];
@@ -821,6 +826,9 @@ class IsotopeProduct extends Controller
 	}
 	
 	
+	/**
+	 * Load data of a product variant if the options match one
+	 */
 	protected function validateVariant()
 	{
 		if (!is_array($this->arrVariantAttributes))
@@ -861,6 +869,9 @@ class IsotopeProduct extends Controller
 	}
 	
 	
+	/**
+	 * Load the language data for a product/variant if found based on the current page language
+	 */
 	protected function loadLanguage()
 	{
 		// This should never happen, but make sure, or we might fetch the master product record.
