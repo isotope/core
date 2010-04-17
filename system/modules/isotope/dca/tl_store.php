@@ -100,7 +100,15 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{name_legend},name,label;{address_legend:hide},firstname,lastname,company,street_1,street_2,street_3,postal,city,subdivision,country,emailShipping,phone,shipping_countries,billing_countries,shipping_fields,billing_fields;{config_legend},weightUnit,cookie_duration,isDefaultStore,enableGoogleAnalytics;{price_legend},priceField,priceOverrideField,priceCalculateFactor,priceCalculateMode,priceRoundPrecision,priceRoundIncrement;{currency_legend},currency,currencySymbol,currencyFormat,currencyPosition;{redirect_legend},cartJumpTo,checkoutJumpTo;{invoice_legend},invoiceLogo;{images_legend},missing_image_placeholder,gallery_size,thumbnail_size,medium_size,large_size',
+		'default'                     => '
+			{name_legend},name,label,isDefaultStore;
+			{address_legend:hide},firstname,lastname,company,street_1,street_2,street_3,postal,city,subdivision,country,emailShipping,phone;
+			{config_legend},shipping_countries,billing_countries,shipping_fields,billing_fields,weightUnit,cookie_duration,enableGoogleAnalytics;
+			{price_legend},priceField,priceOverrideField,priceCalculateFactor,priceCalculateMode,priceRoundPrecision,priceRoundIncrement;
+			{currency_legend},currency,currencySymbol,currencyFormat,currencyPosition;
+			{redirect_legend},cartJumpTo,checkoutJumpTo;
+			{invoice_legend},invoiceLogo;
+			{images_legend},missing_image_placeholder,gallery_size,thumbnail_size,medium_size,large_size',
 	),
 
 	// Fields
@@ -111,7 +119,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['name'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('rgxp'=>'alnum', 'mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
+			'eval'                    => array('mandatory'=>true, 'unique'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
 		),
 		'label' => array
 		(
@@ -119,6 +127,13 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255, 'tl_class'=>'w50'),
+		),
+		'isDefaultStore' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['isDefaultStore'],
+			'exclude'                 => true,
+			'inputType'               => 'checkbox',
+			'eval'						=> array('doNotCopy'=>true, 'fallback'=>true, 'tl_class'=>'w50'),
 		),
 		'firstname' => array
 		(
@@ -274,13 +289,6 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'default'				  => 30,
 			'inputType'               => 'text',
 			'eval'                    => array('rgxp'=>'digit', 'maxlength'=>4, 'tl_class'=>'w50 w50h'),
-		),
-		'isDefaultStore' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['isDefaultStore'],
-			'exclude'                 => true,
-			'inputType'               => 'checkbox',
-			'eval'						=> array('doNotCopy'=>true, 'fallback'=>true, 'tl_class'=>'w50 m12'),
 		),
 		'missing_image_placeholder' => array
 		(
