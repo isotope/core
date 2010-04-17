@@ -88,7 +88,7 @@ class ModuleIsotopeStoreSwitcher extends ModuleIsotope
 		{
 			$arrStores[] = array
 			(
-				'label'		=> (strlen($objStores->label) ? $objStores->label : $objStores->store_configuration_name),
+				'label'		=> (strlen($objStores->label) ? $objStores->label : $objStores->name),
 				'class'		=> ($c==0 ? 'first' : ''),
 				'active'	=> ($this->Isotope->Store->id == $objStores->id ? true : false),
 				'href'		=> ($this->Environment->request . (strpos($this->Environment->request, '?')===false ? '?' : '&amp;') . 'store=' . $objStores->id),

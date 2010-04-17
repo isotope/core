@@ -162,7 +162,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['store_id'] = array
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['store_id'],
 	'exclude'                 => true,
 	'inputType'               => 'select',
-	'foreignKey'			  => 'tl_store.store_configuration_name',
+	'foreignKey'			  => 'tl_store.name',
 	'eval'					  => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50'),
 );
 
@@ -171,7 +171,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['store_ids'] = array
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['store_ids'],
 	'exclude'                 => true,
 	'inputType'               => 'checkboxWizard',
-	'foreignKey'			  => 'tl_store.store_configuration_name',
+	'foreignKey'			  => 'tl_store.name',
 	'eval'					  => array('multiple'=>true, 'mandatory'=>true, 'tl_class'=>'clr'),
 );
 

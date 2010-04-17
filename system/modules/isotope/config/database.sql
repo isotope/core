@@ -213,7 +213,7 @@ CREATE TABLE `tl_store` (
   `pid` int(10) unsigned NOT NULL default '0',
   `sorting` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
-  `store_configuration_name` varchar(255) NOT NULL default '',
+  `name` varchar(255) NOT NULL default '',
   `label` varchar(255) NOT NULL default '',
   `missing_image_placeholder` varchar(255) NOT NULL default '',
   `cookie_duration` int(10) unsigned NOT NULL default '0',

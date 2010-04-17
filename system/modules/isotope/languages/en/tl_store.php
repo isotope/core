@@ -29,7 +29,7 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_store']['store_configuration_name']			= array('Store Configuration Name', '');
+$GLOBALS['TL_LANG']['tl_store']['name']								= array('Store Configuration Name', '');
 $GLOBALS['TL_LANG']['tl_store']['label']							= array('Label', 'The label is used in frontend, e.g. for store switcher.');
 $GLOBALS['TL_LANG']['tl_store']['cookie_duration']					= array('Duration (in days) of Shopping Cart Information', 'Items and their related information will be retrievable for this many days for non-registered members.  A value of 0 means after the session, the items are removed. For registered members cart data is always remembered.');
 $GLOBALS['TL_LANG']['tl_store']['missing_image_placeholder']		= array('Missing Image Placeholder', 'This image will be used if an image file cannot be found or none are associated with a product.');

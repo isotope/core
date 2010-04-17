@@ -49,7 +49,7 @@ $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_stores'] = array
 	'label'                   => &$GLOBALS['TL_LANG']['tl_user_group']['iso_stores'],
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
-	'foreignKey'			  => 'tl_store.store_configuration_name',
+	'foreignKey'			  => 'tl_store.name',
 	'eval'                    => array('multiple'=>true),
 );
 

@@ -49,12 +49,12 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		'sorting' => array
 		(
 			'mode'                    => 1,
-			'fields'                  => array('store_configuration_name'),
+			'fields'                  => array('name'),
 			'flag'					  => 1,
 		),
 		'label' => array
 		(
-			'fields'                  => array('store_configuration_name'),
+			'fields'                  => array('name'),
 			'format'                  => '%s',
 		),
 		'global_operations' => array
@@ -100,15 +100,15 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{name_legend},store_configuration_name,label;{address_legend:hide},firstname,lastname,company,street_1,street_2,street_3,postal,city,subdivision,country,emailShipping,phone,shipping_countries,billing_countries,shipping_fields,billing_fields;{config_legend},weightUnit,cookie_duration,isDefaultStore,enableGoogleAnalytics;{price_legend},priceField,priceOverrideField,priceCalculateFactor,priceCalculateMode,priceRoundPrecision,priceRoundIncrement;{currency_legend},currency,currencySymbol,currencyFormat,currencyPosition;{redirect_legend},cartJumpTo,checkoutJumpTo;{invoice_legend},invoiceLogo;{images_legend},missing_image_placeholder,gallery_size,thumbnail_size,medium_size,large_size',
+		'default'                     => '{name_legend},name,label;{address_legend:hide},firstname,lastname,company,street_1,street_2,street_3,postal,city,subdivision,country,emailShipping,phone,shipping_countries,billing_countries,shipping_fields,billing_fields;{config_legend},weightUnit,cookie_duration,isDefaultStore,enableGoogleAnalytics;{price_legend},priceField,priceOverrideField,priceCalculateFactor,priceCalculateMode,priceRoundPrecision,priceRoundIncrement;{currency_legend},currency,currencySymbol,currencyFormat,currencyPosition;{redirect_legend},cartJumpTo,checkoutJumpTo;{invoice_legend},invoiceLogo;{images_legend},missing_image_placeholder,gallery_size,thumbnail_size,medium_size,large_size',
 	),
 
 	// Fields
 	'fields' => array
 	(
-		'store_configuration_name' => array
+		'name' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['store_configuration_name'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['name'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('rgxp'=>'alnum', 'mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),

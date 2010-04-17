@@ -92,6 +92,12 @@ class IsotopeRunonce extends Frontend
 	
 	private function renameFields()
 	{
+		// tl_store.store_configuration_name has been renamed to tl_store.name
+		if ($this->Database->fieldExists('store_configuration_name', 'tl_store'))
+		{
+			$this->Database->execute("ALTER TABLE tl_store CHANGE COLUMN store_configuration_name name varchar(255) NOT NULL default ''");
+		}
+		
 		// tl_store.gallery_thumbnail_image_width has been renamed to tl_store.gallery_image_width
 		if ($this->Database->fieldExists('gallery_thumbnail_image_width', 'tl_store'))
 		{

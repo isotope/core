@@ -355,7 +355,7 @@ $GLOBALS['ISO_ATTR'] = array
 	),
 	'media' => array
 	(
-		'frontend'	=> 'mediaManager',
+		'class'		=> 'IsotopeGallery',
 		'backend'	=> 'mediaManager',
 		'sql'		=> "blob NULL",
 	),

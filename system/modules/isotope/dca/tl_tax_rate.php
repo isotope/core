@@ -166,7 +166,7 @@ $GLOBALS['TL_DCA']['tl_tax_rate'] = array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['store'],
 			'inputType'               => 'select',
-			'foreignKey'			  => 'tl_store.store_configuration_name',
+			'foreignKey'			  => 'tl_store.name',
 			'eval'                    => array('includeBlankOption'=>true, 'submitOnChange'=>true),
 		),
 		'rate' => array

@@ -1189,7 +1189,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		}
 		
 		$objTemplate->id = $intOrderId;
-		$objTemplate->storeName = $this->Isotope->Store->store_configuration_name;
+		$objTemplate->storeName = $this->Isotope->Store->name;
 		$objTemplate->grandTotal = $this->Cart->grandTotal;
 		$objTemplate->tax = $this->Cart->taxTotal;
 		$objTemplate->shipping = $this->Cart->shippingTotal;
