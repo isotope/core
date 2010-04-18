@@ -82,7 +82,7 @@ class VariantWizard extends Widget
 		$this->import('Database');
 		
 		$arrOptions = array();
-		$arrValue = deserialize($this->getPost($this->strName));
+		$arrValue = deserialize($this->getPost($this->strName), true);
 		
 		foreach( $arrValue as $k => $v )
 		{
