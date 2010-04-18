@@ -327,7 +327,7 @@ class DC_MultilingualTable extends DC_Table
   <option value="'.$objVersion->version.'"'.($objVersion->active ? ' selected="selected"' : '').'>'.$GLOBALS['TL_LANG']['MSC']['version'].' '.$objVersion->version.' ('.$this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $objVersion->tstamp).') '.$objVersion->username.'</option>';
 				}
 
-				$version = '<form action="'.ampersand($this->Environment->request, true).'" id="tl_version" class="tl_form" method="post" style="float:right;margin-left:20px">
+				$version = '<form action="'.ampersand($this->Environment->request, true).'" id="tl_version" class="tl_form" method="post" style="float:right;">
 <div class="tl_formbody">
 <input type="hidden" name="FORM_SUBMIT" value="tl_version" />
 <select name="version" class="tl_select">'.$versions.'
@@ -357,7 +357,7 @@ class DC_MultilingualTable extends DC_Table
 				$languages .= '<option value="' . $language . '">' . $arrLanguageLabels[$language] . (in_array($language, $arrAvailableLanguages) ? '' : ' ('.$GLOBALS['TL_LANG']['MSC']['undefinedLanguage'].')') . '</option>';
 			}
 			
-			$version .= '<form action="'.ampersand($this->Environment->request, true).'" id="tl_language" class="tl_form" method="post">
+			$version .= '<form action="'.ampersand($this->Environment->request, true).'" id="tl_language" class="tl_form" method="post" style="float:left;margin-left:20px;">
 <div class="tl_formbody">
 <input type="hidden" name="FORM_SUBMIT" value="tl_language" />
 <strong>' . $GLOBALS['TL_LANG']['MSC']['labelLanguage'] . ':</strong>
@@ -373,10 +373,10 @@ class DC_MultilingualTable extends DC_Table
 		if (strlen($version))
 		{
 			$version = '
-<div class="tl_version_panel tl_panel">
+<div class="tl_version_panel">
 
 '.$version.'
-
+<div class="clear"></div>
 </div>';
 		}
 
