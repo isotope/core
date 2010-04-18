@@ -153,7 +153,7 @@ $GLOBALS['TL_DCA']['tl_tax_rate'] = array
 			'sorting'                 => true,
 			'inputType'               => 'conditionalselect',
 			'options'				  => $GLOBALS['TL_LANG']['DIV'],
-			'eval'                    => array('conditionField'=>'country', 'tl_class'=>'w50'),
+			'eval'                    => array('conditionField'=>'country', 'includeBlankOption'=>true, 'tl_class'=>'w50'),
 		),
 		'postal' => array
 		(
