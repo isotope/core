@@ -79,10 +79,16 @@ class VariantWizard extends Widget
 	 */
 	public function validate()
 	{
+		// This widget has no data...
+		$this->varValue = '';
+		
 		$this->import('Database');
 		
 		$arrOptions = array();
-		$arrValue = deserialize($this->getPost($this->strName), true);
+		$arrValue = deserialize($this->getPost($this->strName));
+		
+		if (!is_array($arrValue))
+			return;
 		
 		foreach( $arrValue as $k => $v )
 		{
@@ -107,8 +113,6 @@ class VariantWizard extends Widget
 			
 			$this->Database->prepare("UPDATE tl_product_data %s WHERE id=?")->set($arrOptions)->execute($this->currentRecord);
 		}
-		
-		$this->varValue = '';
 	}
 
 
