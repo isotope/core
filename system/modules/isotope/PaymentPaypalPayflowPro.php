@@ -74,6 +74,8 @@ class PaymentPaypalPayflowPro extends IsotopePayment
 			case 'diners':
 				$strCardType = 'Diners';
 				break;
+			case 'maestro':
+				$strCardType = 'Maestro';
 		}
 		
 		
@@ -85,7 +87,7 @@ class PaymentPaypalPayflowPro extends IsotopePayment
 		(			
 			'USER'					=> $this->payflowpro_user,
 			'VENDOR'				=> $this->payflowpro_vendor,
-			'PARTNER'				=> 'PayPal',
+			'PARTNER'				=> $this->payflowpro_partner,
 			'PWD'					=> $this->payflowpro_password,
 			'TENDER'				=> 'C', //Can also be a paypal account.  need to build this in.
 			'TRXTYPE'				=> 'S', //$this->payflowpro_transType, //  S = Sale transaction, A = Authorisation, C = Credit, D = Delayed Capture, V = Void  
@@ -107,6 +109,15 @@ class PaymentPaypalPayflowPro extends IsotopePayment
 		if($this->requireCCV)
 		{
 			$arrData['CVV2'] = $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_ccv'];
+		}
+		
+		if($this->Isotope->Store->country=='UK')
+		{
+			if($this->Cart->billingAddress['country']=='UK' && ($_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_type']=='maestro' || $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_type']=='solo')
+			{
+				$arrData['STARTDATE'] = $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_start_date'];
+				$arrData['ISSUENUMBER'] = $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_issue_number'];
+			}
 		}
 
 		$arrData['CLIENTIP'] = $this->Environment->ip;
@@ -215,6 +226,23 @@ class PaymentPaypalPayflowPro extends IsotopePayment
 				'eval'			=> array('mandatory'=>true, 'tableless'=>true)						
 			),
 		);
+		
+		if($this->Isotope->Store->country=='UK' && (array_key_exists('maestro', $arrCCTypes) || array_key_exists('solo', $arrCCTypes)))
+		{
+			$arrFields['cc_start_date'] = array
+			(
+				'label'			=> &$GLOBALS['TL_LANG']['ISO']['cc_start_date'],
+				'inputType'		=> 'text',
+				'eval'			=> array('tableless'=>true)			
+			);
+			
+			$arrFields['cc_issue_number'] = array
+			(
+				'label'			=> &$GLOBALS['TL_LANG']['ISO']['cc_issue_number'],
+				'inputType'		=> 'text',
+				'eval'			=> array('maxlength'=>2,'tableless'=>true)
+			);
+		}
 				
 		foreach( $arrFields as $field => $arrData )
 		{
@@ -293,7 +321,7 @@ class PaymentPaypalPayflowPro extends IsotopePayment
 	
 	public function getAllowedCCTypes()
 	{
-		return array('mc', 'visa', 'amex', 'discover', 'jcb', 'diners');				
+		return array('mc', 'visa', 'amex', 'discover', 'jcb', 'diners','maestro','solo');				
 	}
 	
 }
