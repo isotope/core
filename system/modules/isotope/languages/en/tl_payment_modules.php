@@ -50,6 +50,7 @@ $GLOBALS['TL_LANG']['tl_payment_modules']['paypalpro_apiSignature'] = array('Pay
 $GLOBALS['TL_LANG']['tl_payment_modules']['paypalpro_transType']	= array('Paypal Website Payments Pro transaction type','Please select a transaction type.');
 $GLOBALS['TL_LANG']['tl_payment_modules']['payflowpro_user']  = array('Paypal Payflow Pro username','');
 $GLOBALS['TL_LANG']['tl_payment_modules']['payflowpro_vendor']  = array('Paypal Payflow Pro vendor','An alphanumeric string of about 10 characters.');
+$GLOBALS['TL_LANG']['tl_payment_modules']['payflowpro_partner']  = array('Paypal Payflow Pro partner','Case-sensitive!  Usual partner Ids are either "PayPal" or "PayPalUK".');
 $GLOBALS['TL_LANG']['tl_payment_modules']['payflowpro_password'] = array('Paypal Payflow Pro api password','An alphanumeric string of about 11 characters');
 $GLOBALS['TL_LANG']['tl_payment_modules']['payflowpro_transType']	= array('Paypal Payflow Pro transaction type','Please select a transaction type.');
 $GLOBALS['TL_LANG']['tl_payment_modules']['button']					= array('Checkout button', 'You can show a custom checkout button instead of the default one.');
