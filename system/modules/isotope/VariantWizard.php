@@ -88,7 +88,10 @@ class VariantWizard extends Widget
 		$arrValue = deserialize($this->getPost($this->strName));
 		
 		if (!is_array($arrValue))
+		{
+			$this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['mandatory'], $this->strLabel));
 			return;
+		}
 		
 		foreach( $arrValue as $k => $v )
 		{
@@ -122,6 +125,11 @@ class VariantWizard extends Widget
 	 */
 	public function generate()
 	{
+		if (!is_array($this->arrOptions) || !count($this->arrOptions))
+		{
+			return '';
+		}
+		
 		$this->import('Database');
 		$objVariant = $this->Database->prepare("SELECT * FROM tl_product_data WHERE id=?")->limit(1)->execute($this->currentRecord);
 		
