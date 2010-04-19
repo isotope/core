@@ -227,7 +227,7 @@ class PaymentPaypalPayflowPro extends IsotopePayment
 			),
 		);
 		
-		if($this->Isotope->Store->country=='UK' && (array_key_exists('maestro', $arrCCTypes) || array_key_exists('solo', $arrCCTypes)))
+		if($this->Isotope->Store->country=='UK' && (in_array('maestro', $arrCCTypes) || in_array('solo', $arrCCTypes)))
 		{
 			$arrFields['cc_start_date'] = array
 			(

@@ -231,11 +231,13 @@ $GLOBALS['TL_LANG']['ISO']['payment_method']				= 'Payment Method';
 $GLOBALS['TL_LANG']['ISO']['order_conditions']				= 'Order Conditions';
 $GLOBALS['TL_LANG']['ISO']['order_review']					= 'Order Review';
 $GLOBALS['TL_LANG']['ISO']['changeCheckoutInfo']			= 'Change';
-$GLOBALS['TL_LANG']['ISO']['cc_num']						= 'Credit Card Number';
-$GLOBALS['TL_LANG']['ISO']['cc_type']						= 'Credit Card Type';
-$GLOBALS['TL_LANG']['ISO']['cc_exp']						= 'Credit Card Expiration (mm/yy)';
-$GLOBALS['TL_LANG']['ISO']['cc_ccv']						= 'CCV Number (3 or 4 digit code)';
-$GLOBALS['TL_LANG']['ISO']['cc_exp_paypal']					= 'Credit Card Expiration (mm/yyyy)';
+$GLOBALS['TL_LANG']['ISO']['cc_num']						= 'Credit card number';
+$GLOBALS['TL_LANG']['ISO']['cc_type']						= 'Credit card type';
+$GLOBALS['TL_LANG']['ISO']['cc_exp']						= 'Credit card expiration (mm/yy)';
+$GLOBALS['TL_LANG']['ISO']['cc_ccv']						= 'CCV number (3 or 4 digit code)';
+$GLOBALS['TL_LANG']['ISO']['cc_exp_paypal']					= 'Credit card expiration (mm/yyyy)';
+$GLOBALS['TL_LANG']['ISO']['cc_issue_number']				= 'Credit card issue number, 2 digits (required for Maestro and Solo cards).';
+$GLOBALS['TL_LANG']['ISO']['cc_start_date']					= 'Credit card start date (required for Maestro and Solo cards).';
 $GLOBALS['TL_LANG']['ISO']['pay_with_paypal']				= array('Pay with PayPal', 'You will be redirected to the PayPal payment website. If you are not automatically redirected, please click on the "Pay now" button.', 'Pay now');
 
 
