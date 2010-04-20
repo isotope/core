@@ -35,7 +35,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 	 */
 	protected $strTemplate = 'mod_iso_productlist';
 
-	protected $strOrderBySQL = 'sorting';
+	protected $strOrderBySQL = 'c.sorting';
 	
 	protected $strFilterSQL;
 	
@@ -108,7 +108,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			$this->setFilterSQL($arrFilters);
 		}
 
-		if($this->strOrderBySQL=='sorting')
+		if($this->strOrderBySQL=='c.sorting')
 		{
 
 			if($this->iso_listingSortField)
