@@ -79,8 +79,8 @@ $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['parent_and_first_chi
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['parent_and_all_children']	= 'Current Category and All Child Categories';
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['current_category']			= 'Current Category Only';
 
-$GLOBALS['TL_LANG']['tl_module']['sortingDirection']['ASC'] 	= "Low to High/A to Z";
-$GLOBALS['TL_LANG']['tl_module']['sortingDirection']['DESC'] 	= "High to Low/Z to A";
+$GLOBALS['TL_LANG']['tl_module']['sortingDirection']['ASC'] 	= "ASC";
+$GLOBALS['TL_LANG']['tl_module']['sortingDirection']['DESC'] 	= "DESC";
 
 
 /**

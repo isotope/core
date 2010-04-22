@@ -74,24 +74,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 
 		$this->loadLanguageFile('tl_product_data');
 		
-		if(count($arrOrderByFieldIds))
-		{
-			$arrOrderByFields = $this->getOrderByFields($arrOrderByFieldIds);
-		}
-		
-		$arrOrderByFields[] = array
-		(
-			'type'			=> 'text',
-			'field_name'	=> 'name',
-			'label'			=> $GLOBALS['TL_LANG']['tl_product_data']['name'][0]
-		);
-		
-		$arrOrderByFields[] = array
-		(
-			'type'			=> 'decimal',
-			'field_name'	=> 'price',
-			'label'			=> $GLOBALS['TL_LANG']['tl_product_data']['price'][0]
-		);
+		$arrOrderByFields = $this->getOrderByFields($arrOrderByFieldIds);
 		
 		$arrSearchFields = array('name','description');
 		
@@ -142,11 +125,11 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		$this->Template->searchable = $this->iso_enableSearch;
 		$this->Template->perPage = $this->iso_enableLimit;
 		$this->Template->limit = $arrLimit;
-		$this->Template->filters = $arrFilters;	
+		$this->Template->filters = $arrFilters;
 		$this->Template->action = $this->Environment->request;
 		$this->Template->baseUrl = $arrCleanUrl[0];
 		$this->Template->orderBy = $arrOrderByOptions;
-		$this->Template->order_by = $this->getRequestData('order_by');
+		$this->Template->order_by = ($this->getRequestData('order_by')) ? $this->getRequestData('order_by') : $this->getListingModuleSorting($arrListingModule);
 		$this->Template->per_page = ($this->getRequestData('per_page') ? $this->getRequestData('per_page') : $strPerPageDefault);
 		$this->Template->page = ($this->getRequestData('page') ? $this->getRequestData('page') : 1);
 		$this->Template->for = $this->getRequestData('for');
@@ -177,23 +160,41 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 	
 	public function getOrderByFields($arrFieldIds)
 	{
-		foreach($arrFieldIds as $field)
+		if($arrFieldIds)
 		{
-			$objAttribute = $this->Database->prepare("SELECT name, type, field_name FROM tl_product_attributes WHERE id=?")
-						       ->limit(1)
-						       ->execute($field);
-			if(!$objAttribute->numRows)
+			foreach($arrFieldIds as $field)
 			{
-				continue;
+				$objAttribute = $this->Database->prepare("SELECT name, type, field_name FROM tl_product_attributes WHERE id=?")
+							       ->limit(1)
+							       ->execute($field);
+				if(!$objAttribute->numRows)
+				{
+					continue;
+				}
+				
+				$arrAttributeData[] = array
+				(
+					'type'			=> $objAttribute->type,
+					'field_name'    => $objAttribute->field_name,
+					'label'			=> $objAttribute->name
+				);
 			}
-			
-			$arrAttributeData[] = array
-			(
-				'type'			=> $objAttribute->type,
-				'field_name'    => $objAttribute->field_name,
-				'label'			=> $objAttribute->name
-			);
 		}
+		//Add default name field
+		$arrAttributeData[] = array
+		(
+			'type'			=> 'text',
+			'field_name'	=> 'name',
+			'label'			=> $GLOBALS['TL_LANG']['tl_product_data']['name'][0]
+		);
+		//Add default price field
+		$arrAttributeData[] = array
+		(
+			'type'			=> 'decimal',
+			'field_name'	=> 'price',
+			'label'			=> $GLOBALS['TL_LANG']['tl_product_data']['price'][0]
+		);
+		
 
 		return $arrAttributeData;
 	}
@@ -220,6 +221,30 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 			}
 		
 		return $intLimit ;
+	}
+	
+	/** 
+	 * Get the initial sorting field and direction from corresponding listing module
+	 *
+	 * @param array $arrListingModule
+	 * @return string
+	 */
+	private function getListingModuleSorting($arrListingModule)
+	{
+			$objSorting = $this->Database->prepare("SELECT iso_listingSortField, iso_listingSortDirection FROM tl_module WHERE id=?")
+						       ->limit(1)
+						       ->execute($arrListingModule[0]);
+						       
+			if(!$objSorting->numRows)
+			{
+				return;
+			}
+			if(strlen($objSorting->iso_listingSortField))
+			{
+				$strSorting = $objSorting->iso_listingSortField . '-' . $objSorting->iso_listingSortDirection;
+			}
+		
+		return $strSorting;
 	}
 	
 	private function generateSortingDirections($strType)

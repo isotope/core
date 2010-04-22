@@ -395,15 +395,13 @@ class tl_module_isotope extends Backend
 		$objData = $this->Database->prepare("SELECT name, field_name FROM tl_product_attributes WHERE is_order_by_enabled='1'")
 								  ->execute();
 		
-		if(!$objData->numRows)
-		{
-			return array();
-		}
-		
 		while($objData->next())
 		{
 			$arrReturn[$objData->field_name] = $objData->name;
 		}
+		$this->loadLanguageFile('tl_product_data');
+		$arrReturn['name'] = $GLOBALS['TL_LANG']['tl_product_data']['name'][0];
+		$arrReturn['price'] = $GLOBALS['TL_LANG']['tl_product_data']['price'][0];
 		
 		return $arrReturn;
 	}
