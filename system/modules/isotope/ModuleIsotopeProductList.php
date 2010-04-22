@@ -162,16 +162,8 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		{
 			$arrBuffer[count($arrBuffer)-1]['class'] .= ' product_last';
 		}
-
-		if(!$this->iso_disableFilterAjax)
-		{
-			$objScriptTemplate = new FrontendTemplate('js_lister');
-	
-			$objScriptTemplate->ajaxParams = 'id=' . $this->id . '&pid=' . $objPage->id . '&rid=' . $objPage->rootId;
 		
-			$GLOBALS['TL_MOOTOOLS'][] = $objScriptTemplate->parse();
-		}
-		
+		$this->Template->listformat = $this->iso_list_format;
 		$this->Template->products = $arrBuffer;
 	}
 	
@@ -312,110 +304,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		return $arrCategories;
 	}
 	
-	
-	public function generateAjax()
-	{
-		if($this->Input->get('clear'))
-		{
-			$arrFilters = array();
-		} 
-		else
-		{			
-			//get the default params
-			$arrFilters = array('for'=>$this->Input->get('for'),'per_page'=>$this->Input->get('per_page'),'page'=>$this->Input->get('page'),'order_by'=>$this->Input->get('order_by'));	
-			
-			
-			/*$arrFilterFields = implode(',', $this->Input->get('filters'));	//get the names of filters we are using
-	
-			foreach($arrFilterFields as $field)
-			{
-				if($this->Input->get($field))
-				{
-					$arrFilters[$field] = $this->Input->get($field);
-				}
-			}*/	
-		}
-
-		if(!count($arrFilters['order_by']))
-		{	
-			if($this->iso_listingSortField)
-			{
-				$arrFilters = array('order_by' => ($this->iso_listingSortField.'-'.$this->iso_listingSortDirection));
-			}
-		}
 		
-		$strHtml = $this->generateAJAXListing($arrFilters);
-
-		return $strHtml;
-	}
-
-
-	/**
-	 * Generate the listing template in html to update the listing results
-	 * @var array $arrFilters
-	 * @return string
-	 */
-	protected function generateAJAXListing($arrFilters)
-	{
-		$objTemplate = new FrontendTemplate($this->strTemplate);
-		
-		$this->arrCategories = $this->setCategories($this->iso_category_scope, $this->getRequestData('rid'), $this->getRequestData('pid'));		
-		
-		$this->setFilterSQL($arrFilters);
-		
-		//$strParams = (count($arrParams) ? implode(",", $arrParams) : NULL);
-		
-		$objProductIds = $this->Database->prepare("SELECT DISTINCT p.* FROM tl_product_categories c, tl_product_data p WHERE p.id=c.pid" . ($this->strFilterSQL ? " AND (" . $this->strFilterSQL . ")" : "") . " AND c.page_id IN (" . implode(',', $this->arrCategories) . ")" . ($this->strSearchSQL ? " AND (" . $this->strSearchSQL . ")" : "") . ($this->strOrderBySQL ? " ORDER BY " . $this->strOrderBySQL : ""));
-		
-		// Add pagination
-		if ($this->perPage > 0)
-		{
-			$total = $objProductIds->execute($this->arrParams)->numRows;
-			$page = $this->currentPage ? $this->currentPage : 1;
-			$offset = ($page - 1) * $this->perPage;
-
-			$objPagination = new Pagination($total, $this->perPage);
-			$objTemplate->pagination = $objPagination->generate("\n  ");
-			
-			$objProductIds->limit($this->perPage, $offset);
-		}
-		
-		$arrProducts = $this->getProducts($objProductIds->execute($this->arrParams)->fetchEach('id'));
-			
-		if (!is_array($arrProducts) || !count($arrProducts))
-		{
-			$objTemplate = new FrontendTemplate('mod_message');
-			$objTemplate->type = 'empty';
-			$objTemplate->message = $GLOBALS['TL_LANG']['MSC']['noProducts'];
-			return;
-		}
-			
-		$arrBuffer = array();
-		
-		foreach( $arrProducts as $i => $objProduct )
-		{
-			$arrBuffer[] = array
-			(
-				'clear'	    => ($this->iso_list_format=='grid' && $blnSetClear ? true : false),
-				'class'		=> ('product' . ($i == 0 ? ' product_first' : '')),
-				'html'		=> $objProduct->generate((strlen($this->iso_list_layout) ? $this->iso_list_layout : $objProduct->list_template), $this),
-			);
-
-			$blnSetClear = (($i+1) % $this->columns==0 ? true : false);
-		}
-		
-		// Add "product_last" css class
-		if (count($arrBuffer))
-		{
-			$arrBuffer[count($arrBuffer)-1]['class'] .= ' product_last';
-		}
-
-		$objTemplate->products = $arrBuffer;
-		
-		return $objTemplate->parse();
-	}
-	
-	
 	/** 
 	 * Gather SQL clause components to be added into the sql query for pulling product data
 	 *

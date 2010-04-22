@@ -109,7 +109,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		}
 		
 		
-		if (!$this->iso_forward_review && !strlen($this->Input->get('step')))
+		if (!strlen($this->Input->get('step')))
 		{
 			$this->redirectToNextStep();
 		}

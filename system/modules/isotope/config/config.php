@@ -186,9 +186,9 @@ $GLOBALS['FE_MOD']['isotope'] = array
 
 
 /** 
- * Weight conversation
+ * Weight conversion
  */
-$GLOBALS['ISO_WGT'] = array
+$GLOBALS['TL_LANG']['ISO_WGT'] = array
 (
 	'gram' 	=> 1,
 	'kg' 	=> 1000,

@@ -1,11 +1,8 @@
-<script language="javascript" type="text/javascript">
-
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
 window.addEvent('domready', function() {
-	
-	
 	Isotope.loadGallery(<?php echo $this->productJson; ?>);
-	
 	Isotope.loadProductBinders('<?php echo $this->mId; ?>');
-
 });
+//--><!]]>
 </script>

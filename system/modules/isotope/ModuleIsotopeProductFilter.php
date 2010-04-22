@@ -68,7 +68,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		$arrFilterFields = deserialize($this->iso_filterFields);
 		$arrOrderByFieldIds = deserialize($this->iso_orderByFields);
 		$arrSearchFields = deserialize($this->iso_searchFields);
-		$arrListingModules = deserialize($this->iso_listingModules);
+		$arrListingModule = deserialize($this->iso_listingModule);
 		
 		$arrLimit = array();	
 
@@ -112,65 +112,33 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		if($arrOrderByFields)
 		{
 			$arrOrderByOptions = $this->getOrderByOptions($arrOrderByFields);
-		}
+		}		
 		
+		//Set the default per page limit if one exists from the listing module, 
+		//and also add it to the default array if it not there already
+		$strPerPageDefault = '';
 		if($this->iso_enableLimit)
 		{
-			//Generate the limits per page... used to be derived from the number of columns in grid format, but not in list format.  For now, just a standard list.
-			$arrLimit = array(3,10,20,50,100,200);
+			//Generate the limits per page... used to be derived from the number of columns in grid format, but not in list format.  For now, just a standard array.
+			$arrLimit = $GLOBALS['TL_LANG']['MSC']['perPageOptions'];
+			if($arrListingModule)
+			{
+				$intModuleLimit = $this->getListingModuleLimit($arrListingModule);
+				if($intModuleLimit)
+				{
+					$strPerPageDefault = $intModuleLimit;
+					if(!in_array($intModuleLimit,$arrLimit))
+					{
+						array_push($arrLimit,$intModuleLimit);
+						//Sort the array
+						sort($arrLimit);
+					}
+				}
+			}		
 		}	
 	
 		$arrCleanUrl = explode('?', $this->Environment->request);
-	
-		if(!$this->iso_disableFilterAjax)
-		{
-			$arrAjaxParams[] = 'id=' . $arrListingModules[0];
 			
-			if($this->getRequestData('per_page'))
-			{
-				$arrAjaxParams[] = 'per_page=' . $this->getRequestData('per_page');
-			}
-			
-			if($this->getRequestData('page'))
-			{
-				$arrAjaxParams[] = 'page='.$this->getRequestData('page');
-			}
-			
-			if($this->getRequestData('order_by'))
-			{
-				$arrAjaxParams[] = 'order_by='.$this->getRequestData('order_by');
-			}
-			
-			if($this->getRequestData('for'))
-			{
-				$arrAjaxParams[] = 'for='.$this->getRequestData('for');
-			}
-			
-			$arrAjaxParams[] = 'rid='.$objPage->rootId;
-			$arrAjaxParams[] = 'pid='.$objPage->id;
-			
-			if(count($arrFilterFields))
-			{
-				foreach($arrFilterFields as $filter)
-				{
-					if($this->getRequestData($filter))
-					{
-						$arrAjaxParams[] = $filter .'='. $this->getRequestData($filter);
-					}
-				}
-			}
-			
-			$strAjaxParams = implode('&', $arrAjaxParams);	//build the ajax params
-	
-			$objScriptTemplate = new FrontendTemplate('js_filters');
-			$objScriptTemplate->searchable = $this->iso_enableSearch;
-			$objScriptTemplate->perPage = $this->iso_enableLimit;
-			$objScriptTemplate->orderBy = $arrOrderByOptions;			
-			$objScriptTemplate->ajaxParams = $strAjaxParams;			
-			$objScriptTemplate->mId = $arrListingModules[0];		
-			$GLOBALS['TL_MOOTOOLS'][] = $objScriptTemplate->parse();
-		}
-		
 		$this->Template->searchable = $this->iso_enableSearch;
 		$this->Template->perPage = $this->iso_enableLimit;
 		$this->Template->limit = $arrLimit;
@@ -179,7 +147,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		$this->Template->baseUrl = $arrCleanUrl[0];
 		$this->Template->orderBy = $arrOrderByOptions;
 		$this->Template->order_by = $this->getRequestData('order_by');
-		$this->Template->per_page = ($this->getRequestData('per_page') ? $this->getRequestData('per_page') : '');
+		$this->Template->per_page = ($this->getRequestData('per_page') ? $this->getRequestData('per_page') : $strPerPageDefault);
 		$this->Template->page = ($this->getRequestData('page') ? $this->getRequestData('page') : 1);
 		$this->Template->for = $this->getRequestData('for');
 		$this->Template->perPageLabel = $GLOBALS['TL_LANG']['MSC']['perPage'];
@@ -230,6 +198,29 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		return $arrAttributeData;
 	}
 	
+	/** 
+	 * Get the per page option limits from corresponding listing module
+	 *
+	 * @param array $arrListingModule
+	 * @return integer
+	 */
+	private function getListingModuleLimit($arrListingModule)
+	{
+			$objLimit = $this->Database->prepare("SELECT perPage FROM tl_module WHERE id=?")
+						       ->limit(1)
+						       ->execute($arrListingModule[0]);
+						       
+			if(!$objLimit->numRows)
+			{
+				return;
+			}
+			if($objLimit->perPage > 0)
+			{
+				$intLimit = $objLimit->perPage;
+			}
+		
+		return $intLimit ;
+	}
 	
 	private function generateSortingDirections($strType)
 	{
