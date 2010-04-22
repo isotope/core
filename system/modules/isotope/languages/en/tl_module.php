@@ -58,7 +58,7 @@ $GLOBALS['TL_LANG']['tl_module']['iso_filterFields']			= array('Enabled filters'
 $GLOBALS['TL_LANG']['tl_module']['iso_orderByFields']			= array('Enabled order by fields','Please select orderable fields to enable.');
 $GLOBALS['TL_LANG']['tl_module']['iso_searchFields']			= array('Enabled search fields','Please select search fields to enable.');
 $GLOBALS['TL_LANG']['tl_module']['iso_enableLimit']				= array('Enable per-page limiting','Allow the user to select the number of records to show per page.');
-$GLOBALS['TL_LANG']['tl_module']['iso_listingModules']			= array('Listing modules','Please choose one or more listing modules this filter module will work with.');
+$GLOBALS['TL_LANG']['tl_module']['iso_listingModule']			= array('Listing module','Please choose a listing module this filter module will work with.');
 $GLOBALS['TL_LANG']['tl_module']['iso_enableSearch']			= array('Enable search','Please check this if you would like to enable product search.');
 $GLOBALS['TL_LANG']['tl_module']['iso_disableFilterAjax']		= array('Disable AJAX/JSON','Please check this if you would prefer not to use the AJAX/JSON functionality.');
 $GLOBALS['TL_LANG']['tl_module']['iso_cart_jumpTo']				= array('Shopping Cart Jump to page', 'This setting defines to which page a user will be redirected when requesting a full shopping cart view.');
@@ -66,7 +66,6 @@ $GLOBALS['TL_LANG']['tl_module']['iso_checkout_jumpTo']			= array('Checkout Jump
 $GLOBALS['TL_LANG']['tl_module']['iso_listingSortField'] 		= array('Initial sorting field','Select a sorting field to sort the listing by on first page load.');
 $GLOBALS['TL_LANG']['tl_module']['iso_listingSortDirection'] 	= array('Initial sorting direction','Select a initial sorting direction.');
 $GLOBALS['TL_LANG']['tl_module']['iso_buttons']					= array('Buttons', 'Select the buttons you want to show.');
-$GLOBALS['TL_LANG']['tl_module']['iso_forward_review']			= array('Forward to Completed order jump to page', 'Check to use the selected summary jump-to page rather than the default final order summary template. Useful for pairing with Order Details Module.');
 
 
 /**

@@ -98,6 +98,7 @@ $GLOBALS['TL_LANG']['MSC']['searchFieldsLabel'] = 'Search Fields: ';
 $GLOBALS['TL_LANG']['MSC']['order_conditions'] = 'I agree to the terms & conditions';
 $GLOBALS['TL_LANG']['MSC']['downloadCount'] = '%s download(s)';
 $GLOBALS['TL_LANG']['MSC']['perPage'] = 'Products Per Page';
+$GLOBALS['TL_LANG']['MSC']['perPageOptions'] = array(3,10,20,50,100,200);
 $GLOBALS['TL_LANG']['MSC']['searchTerms'] = 'Keywords';
 $GLOBALS['TL_LANG']['MSC']['search'] = 'Search';
 $GLOBALS['TL_LANG']['MSC']['clearFilters'] = 'Clear Filters';
@@ -253,28 +254,28 @@ $GLOBALS['TL_LANG']['SHIP']['usps']				= array('USPS Live Rates and Service ship
 /** 
  * USPS-specific response rate codes
  */
-$GLOBALS['ISO']['MSC']['USPS']['DOMESTIC']['RRC']['FIRST CLASS'] = '0';
-$GLOBALS['ISO']['MSC']['USPS']['DOMESTIC']['RRC']['PRIORITY'] = '1';
-$GLOBALS['ISO']['MSC']['USPS']['DOMESTIC']['RRC']['EXPRESS HFP'] = '2';
-$GLOBALS['ISO']['MSC']['USPS']['DOMESTIC']['RRC']['EXPRESS'] = '3';
-$GLOBALS['ISO']['MSC']['USPS']['DOMESTIC']['RRC']['PARCEL'] = '4';
-$GLOBALS['ISO']['MSC']['USPS']['DOMESTIC']['RRC']['EXPRESS SH'] = '23';
-$GLOBALS['ISO']['MSC']['USPS']['DOMESTIC']['RRC']['BPM'] = '5';
-$GLOBALS['ISO']['MSC']['USPS']['DOMESTIC']['RRC']['MEDIA'] = '6';
-$GLOBALS['ISO']['MSC']['USPS']['DOMESTIC']['RRC']['LIBRARY'] = '7';
+$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['DOMESTIC']['RRC']['FIRST CLASS'] = '0';
+$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['DOMESTIC']['RRC']['PRIORITY'] = '1';
+$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['DOMESTIC']['RRC']['EXPRESS HFP'] = '2';
+$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['DOMESTIC']['RRC']['EXPRESS'] = '3';
+$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['DOMESTIC']['RRC']['PARCEL'] = '4';
+$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['DOMESTIC']['RRC']['EXPRESS SH'] = '23';
+$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['DOMESTIC']['RRC']['BPM'] = '5';
+$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['DOMESTIC']['RRC']['MEDIA'] = '6';
+$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['DOMESTIC']['RRC']['LIBRARY'] = '7';
 
-/*$GLOBALS['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC']['EXPRESS'] = '1';
-$GLOBALS['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC']['PRIORITY'] = '2';
-$GLOBALS['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';
-$GLOBALS['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';
-$GLOBALS['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';
-$GLOBALS['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';
-$GLOBALS['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';
-$GLOBALS['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';
-$GLOBALS['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';
-$GLOBALS['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';
-$GLOBALS['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';
-$GLOBALS['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';*/
+/*$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC']['EXPRESS'] = '1';
+$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC']['PRIORITY'] = '2';
+$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';
+$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';
+$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';
+$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';
+$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';
+$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';
+$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';
+$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';
+$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';
+$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';*/
 
 //INTERNATIONAL
 /*1Express Mail International
@@ -341,10 +342,10 @@ $GLOBALS['TL_LANG']['CUR_SYMBOL']['GBP'] = '£';
 /** 
  * Weight Units 
  */
-$GLOBALS['ISO_WGT']['gram'] 	= 'grams';
-$GLOBALS['ISO_WGT']['kg']		= 'kilograms';
-$GLOBALS['ISO_WGT']['oz'] 		= 'ounces';
-$GLOBALS['ISO_WGT']['lbs']		= 'pounds';
+$GLOBALS['TL_LANG']['ISO_WGT']['gram'] 	= 'grams';
+$GLOBALS['TL_LANG']['ISO_WGT']['kg']		= 'kilograms';
+$GLOBALS['TL_LANG']['ISO_WGT']['oz'] 		= 'ounces';
+$GLOBALS['TL_LANG']['ISO_WGT']['lbs']		= 'pounds';
 
 
 /**

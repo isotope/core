@@ -188,7 +188,7 @@ class ShippingUSPS extends IsotopeShipping
 			
 			
 			//echo '<pre>'; print_r($params); echo'</pre>'; // Uncomment to see xml tags  
-			$fltPrice = $params['RATEV3RESPONSE']['1ST'][$GLOBALS['ISO']['MSC']['USPS'][$this->strShippingMode]['RRC'][$this->usps_enabledService]]['RATE'];  
+			$fltPrice = $params['RATEV3RESPONSE']['1ST'][$GLOBALS['TL_LANG']['ISO']['MSC']['USPS'][$this->strShippingMode]['RRC'][$this->usps_enabledService]]['RATE'];  
 			$_SESSION['CHECKOUT_DATA']['shipping']['modules'][$this->id]['price'] = $fltPrice;
 		}
 		

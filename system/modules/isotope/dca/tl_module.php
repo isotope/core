@@ -37,11 +37,11 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productreader']		= '{title_lege
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_cart']					= '{title_legend},name,headline,type;{config_legend},iso_forward_cart;{redirect_legend},iso_cart_jumpTo,iso_checkout_jumpTo;{template_legend},iso_cart_layout;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 
-$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_checkoutmember']			= '{title_legend},name,headline,type;{config_legend},iso_checkout_method,iso_payment_modules,iso_shipping_modules,iso_order_conditions;{redirect_legend},iso_forward_review,orderCompleteJumpTo,iso_login_jumpTo;{template_legend},iso_mail_customer,iso_mail_admin,iso_sales_email;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_checkoutmember']			= '{title_legend},name,headline,type;{config_legend},iso_checkout_method,iso_payment_modules,iso_shipping_modules,iso_order_conditions;{redirect_legend},orderCompleteJumpTo,iso_login_jumpTo;{template_legend},iso_mail_customer,iso_mail_admin,iso_sales_email;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 
-$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_checkoutguest']			= '{title_legend},name,headline,type;{config_legend},iso_checkout_method,iso_payment_modules,iso_shipping_modules,iso_order_conditions;{redirect_legend},iso_forward_review,orderCompleteJumpTo;{template_legend},iso_mail_customer,iso_mail_admin,iso_sales_email;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_checkoutguest']			= '{title_legend},name,headline,type;{config_legend},iso_checkout_method,iso_payment_modules,iso_shipping_modules,iso_order_conditions;{redirect_legend},orderCompleteJumpTo;{template_legend},iso_mail_customer,iso_mail_admin,iso_sales_email;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 
-$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_checkoutboth']			= '{title_legend},name,headline,type;{config_legend},iso_checkout_method,iso_payment_modules,iso_shipping_modules,iso_order_conditions;{redirect_legend},iso_forward_review,orderCompleteJumpTo;{template_legend},iso_login_jumpTo,iso_mail_customer,iso_mail_admin,iso_sales_email;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_checkoutboth']			= '{title_legend},name,headline,type;{config_legend},iso_checkout_method,iso_payment_modules,iso_shipping_modules,iso_order_conditions;{redirect_legend},orderCompleteJumpTo;{template_legend},iso_login_jumpTo,iso_mail_customer,iso_mail_admin,iso_sales_email;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_orderhistory']			= '{title_legend},name,headline,type;{config_legend},store_ids;{redirect_legend},jumpTo;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 
@@ -49,7 +49,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_orderdetails']			= '{title_lege
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_storeswitcher']		= '{title_legend},name,headline,type;{config_legend},store_ids;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 
-$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productfilter']		= '{title_legend},name,headline,type;{config_legend},iso_listingModules,iso_enableLimit,iso_enableSearch,iso_disableFilterAjax,iso_filterFields,iso_orderByFields,iso_searchFields;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productfilter']		= '{title_legend},name,headline,type;{config_legend},iso_listingModule,iso_enableLimit,iso_enableSearch,iso_filterFields,iso_orderByFields,iso_searchFields;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_addressbook']			= '{title_legend},name,headline,type;{redirect_legend},jumpTo;{template_legend},memberTpl,tableless;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
@@ -209,13 +209,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_forward_cart'] = array
 	'inputType'               => 'checkbox'
 );
 
-$GLOBALS['TL_DCA']['tl_module']['fields']['iso_forward_review'] = array
-(
-	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_forward_review'],
-	'exclude'                 => true,
-	'inputType'               => 'checkbox'
-);
-
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_mail_customer'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_mail_customer'],
@@ -284,7 +277,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_filterFields'] = array
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_filterFields'],
 	'exclude'                 => true,
 	'inputType'               => 'checkboxWizard',
-	'eval'					  => array('multiple'=>true),
+	'eval'					  => array('multiple'=>true, 'tl_class'=>'clr'),
 	'options_callback'		  => array('tl_module_isotope','getFilterFields')
 );
 
@@ -310,7 +303,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_enableLimit'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_enableLimit'],
 	'exclude'                 => true,
-	'inputType'               => 'checkbox'
+	'inputType'               => 'checkbox',
+	'eval'					  => array('tl_class'=>'w50')
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_filter_layout'] = array
@@ -322,26 +316,17 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_filter_layout'] = array
 	'options'                 => $this->getTemplateGroup('iso_filters_')
 );
 
-$GLOBALS['TL_DCA']['tl_module']['fields']['iso_listingModules'] = array
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_listingModule'] = array
 (
-	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_listingModules'],
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_listingModule'],
 	'exclude'                 => true,
-	'inputType'               => 'checkbox',
-	'eval'					  => array('multiple'=>true),
+	'inputType'               => 'radio',
 	'options_callback'		  => array('tl_module_isotope','getListingModules')
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_enableSearch'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_enableSearch'],
-	'exclude'                 => true,
-	'inputType'               => 'checkbox',
-	'eval'					  => array('tl_class'=>'w50')
-);
-
-$GLOBALS['TL_DCA']['tl_module']['fields']['iso_disableFilterAjax'] = array
-(
-	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_disableFilterAjax'],
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
 	'eval'					  => array('tl_class'=>'w50')
