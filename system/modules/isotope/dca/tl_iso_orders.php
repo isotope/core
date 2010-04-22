@@ -367,7 +367,7 @@ class tl_iso_orders extends Backend
 		
 		if(!$objOrders->numRows)
 		{			    		
-			return '<p class="tl_gerror">No orders found.</p>';
+			return '<div id="tl_buttons"><a href="javascript:history.go(-1)" class="header_back" title="Go back" accesskey="b" onclick="Backend.getScrollOffset();">Go back</a></div><p class="tl_gerror">'. $GLOBALS['TL_LANG']['MSC']['noOrders'] .'</p>';
 		}
 
 		while($objOrders->next())
@@ -398,6 +398,9 @@ class tl_iso_orders extends Backend
 	
 			echo $output;
 			exit;
+		} else
+		{
+			return '<div id="tl_buttons"><a href="javascript:history.go(-1)" class="header_back" title="Go back" accesskey="b" onclick="Backend.getScrollOffset();">Go back</a></div><p class="tl_gerror">'. $GLOBALS['TL_LANG']['MSC']['noEmails'] .'</p>';
 		}
 		
 		return;

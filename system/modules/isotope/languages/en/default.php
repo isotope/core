@@ -141,6 +141,8 @@ $GLOBALS['TL_LANG']['MSC']['selectItemPrompt'] = "(select)";
 $GLOBALS['TL_LANG']['MSC']['actualPrice'] = 'Actual Price';
 $GLOBALS['TL_LANG']['MSC']['noPaymentModules'] = 'No payment options are currently available';
 $GLOBALS['TL_LANG']['MSC']['noShippingModules'] = 'No shipping options are currently available.';
+$GLOBALS['TL_LANG']['MSC']['noOrders'] = 'No orders found.';
+$GLOBALS['TL_LANG']['MSC']['noEmails'] = 'No emails found.';
 
 $GLOBALS['TL_LANG']['MSC']['cartBT']					= 'Shopping Cart';
 $GLOBALS['TL_LANG']['MSC']['checkoutBT']				= 'Proceed to Checkout';
