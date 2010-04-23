@@ -26,6 +26,51 @@
  */
  
 
+/** 
+ * USPS-specific response rate codes
+ */
+$GLOBALS['TL_LANG']['ISO_USPS']['DOMESTIC']['RRC']['FIRST CLASS'] = '0';
+$GLOBALS['TL_LANG']['ISO_USPS']['DOMESTIC']['RRC']['PRIORITY'] = '1';
+$GLOBALS['TL_LANG']['ISO_USPS']['DOMESTIC']['RRC']['EXPRESS HFP'] = '2';
+$GLOBALS['TL_LANG']['ISO_USPS']['DOMESTIC']['RRC']['EXPRESS'] = '3';
+$GLOBALS['TL_LANG']['ISO_USPS']['DOMESTIC']['RRC']['PARCEL'] = '4';
+$GLOBALS['TL_LANG']['ISO_USPS']['DOMESTIC']['RRC']['EXPRESS SH'] = '23';
+$GLOBALS['TL_LANG']['ISO_USPS']['DOMESTIC']['RRC']['BPM'] = '5';
+$GLOBALS['TL_LANG']['ISO_USPS']['DOMESTIC']['RRC']['MEDIA'] = '6';
+$GLOBALS['TL_LANG']['ISO_USPS']['DOMESTIC']['RRC']['LIBRARY'] = '7';
+
+/*$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC']['EXPRESS'] = '1';
+$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC']['PRIORITY'] = '2';
+$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';
+$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';
+$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';
+$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';
+$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';
+$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';
+$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';
+$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';
+$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';
+$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';*/
+
+//INTERNATIONAL
+/*1Express Mail International
+2Priority Mail International
+4Global Express Guaranteed (Document and Non-document)
+5Global Express Guaranteed Document  cx6Global Express Guaranteed Non-Document Rectangular shape
+7Global Express Guaranteed Non-Document Non-Rectangular
+8Priority Mail Flat Rate Envelope
+9Priority Mail Flat Rate Box
+10Express Mail International Flat Rate Envelope
+11Priority Mail Large Flat Rate Box
+12Global Express Guaranteed Envelope
+13First Class Mail International Letters
+14First Class Mail International Flats
+15First Class Mail International Parcels
+16Priority Mail Small Flat Rate Box
+21PostCards
+*/
+
+
 class ShippingUSPS extends IsotopeShipping
 {
 	protected $shipping_options = array();
@@ -188,7 +233,7 @@ class ShippingUSPS extends IsotopeShipping
 			
 			
 			//echo '<pre>'; print_r($params); echo'</pre>'; // Uncomment to see xml tags  
-			$fltPrice = $params['RATEV3RESPONSE']['1ST'][$GLOBALS['TL_LANG']['ISO']['MSC']['USPS'][$this->strShippingMode]['RRC'][$this->usps_enabledService]]['RATE'];  
+			$fltPrice = $params['RATEV3RESPONSE']['1ST'][$GLOBALS['ISO_USPS'][$this->strShippingMode]['RRC'][$this->usps_enabledService]]['RATE'];  
 			$_SESSION['CHECKOUT_DATA']['shipping']['modules'][$this->id]['price'] = $fltPrice;
 		}
 		
