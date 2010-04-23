@@ -81,8 +81,6 @@ if ($_GET['do'] == 'isotope' && strlen($_GET['table']))
 	unset($GLOBALS['BE_MOD']['store']['isotope']['callback']);
 }
 
-
-
 // Isotope Modules
 $GLOBALS['ISO_MOD'] = array
 (
@@ -204,6 +202,10 @@ $GLOBALS['ISO_PAY']['paypalpayflowpro']			= 'PaymentPaypalPayflowPro';
 $GLOBALS['ISO_PAY']['postfinance']				= 'PaymentPostfinance';
 $GLOBALS['ISO_PAY']['authorizedotnet']			= 'PaymentAuthorizeDotNet';
 
+/** 
+ * Per page defaults
+ */
+$GLOBALS['ISO_PERPAGE'] = array(8,12,32,64);
 
 /** 
  * Order Statuses

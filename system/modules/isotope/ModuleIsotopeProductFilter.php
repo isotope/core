@@ -104,11 +104,12 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		if($this->iso_enableLimit)
 		{
 			//Generate the limits per page... used to be derived from the number of columns in grid format, but not in list format.  For now, just a standard array.
-			$arrLimit = $GLOBALS['TL_LANG']['MSC']['perPageOptions'];
+			$arrLimit = $GLOBALS['ISO_PERPAGE'];
 			
 			if ($this->iso_listingModule)
 			{
 				$intModuleLimit = intval($objListingModule->perPage);
+				
 				if($intModuleLimit > 0)
 				{
 					$strPerPageDefault = $intModuleLimit;

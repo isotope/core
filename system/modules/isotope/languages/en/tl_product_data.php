@@ -59,7 +59,7 @@ $GLOBALS['TL_LANG']['tl_product_data']['variant_attributes']	= array('Variant se
 
 $GLOBALS['TL_LANG']['tl_product_data']['enabled'] = 'Enabled';
 
-
+$GLOBALS['TL_LANG']['tl_product_data']['batch_size']			= array('Batch size','Select the number of records you would like to process at a time.  If the page times out, reduce the number.');
 /**
  * Reference
  */
@@ -74,7 +74,6 @@ $GLOBALS['TL_LANG']['tl_product_data']['opLabel']		= 'Label';
 $GLOBALS['TL_LANG']['tl_product_data']['opPrice']		= 'Price (Surcharge)';
 $GLOBALS['TL_LANG']['tl_product_data']['opDisable']		= 'Disable';
 $GLOBALS['TL_LANG']['tl_product_data']['opInherit']		= 'Inherit label';
-
 
 $GLOBALS['TL_LANG']['tl_product_data']['mmSrc'] = 'Image';
 $GLOBALS['TL_LANG']['tl_product_data']['mmAlt'] = 'Alternate text';

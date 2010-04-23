@@ -44,6 +44,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		(
 			array('tl_product_data', 'checkPermission'),
 			array('tl_product_data', 'addBreadcrumb'),
+			array('tl_product_data', 'generatePageAssociations')
 		),
 	),
 	
@@ -736,6 +737,11 @@ class tl_product_data extends Backend
 	 */
 	public function linkProductsToCategories($dc)
 	{
+		if(!$this->User->isAdmin)
+		{
+			return '';
+		}
+		
 		$objProducts = $this->Database->prepare("SELECT id, pages FROM tl_product_data")
 									  ->execute();
 		
@@ -775,6 +781,55 @@ class tl_product_data extends Backend
 		
 	}
 	
+	public function generatePageAssociations()
+	{
+		if(!$this->Input->get('generateAssoc'))
+		{
+			return;
+		}
+		
+		$arrCategoryData = array();	
+		$arrData = array();
+		$arrUpdates = array();
+		
+		$objCategoryData = $this->Database->prepare("SELECT * FROM tl_product_categories")
+										 ->execute();
+	
+		if(!$objCategoryData->numRows)
+		{
+			return;
+		}
+		
+		$arrCategoryData = $objCategoryData->fetchAllAssoc();
+		
+		foreach($arrCategoryData as $row)
+		{
+			
+			$arrData[$row['pid']][] = array('pid'=>$row['pid'], 'page_id'=>$row['page_id']);			
+		}
+				
+		foreach($arrData as $row)
+		{		
+			$arrValues = array();
+			
+			$intPid = $row[0]['pid'];
+								
+			foreach($row as $data)
+			{
+				$arrValues[] = $data['page_id'];
+			}
+			
+			$this->Database->execute("UPDATE tl_product_data SET pages='" . serialize($arrValues) . "' WHERE id='" . $intPid . "'");
+		}
+
+		/*if(count($arrUpdates))
+		{		
+			
+			implode(';', $arrUpdates));
+		}*/
+		
+	}
+	
 	/**
 	 * Import images and other media file for products
 	 */
@@ -782,10 +837,15 @@ class tl_product_data extends Backend
 	{
 		$objTree = new FileTree($this->prepareForWidget($GLOBALS['TL_DCA']['tl_product_data']['fields']['source'], 'source', null, 'source', 'tl_product_data'));
 		
+		$intCurrentBatch = 0;
+		
 		// Import assets
 		if ($this->Input->post('FORM_SUBMIT') == 'tl_product_data_import' && strlen($this->Input->post('source')))
 		{
 			$this->import('Files');
+			
+			//$intLimit = (integer)$this->Input->post('batch_size');
+			//$intCurrentBatch = ($this->Input->get('current_batch') ? (integer)$this->Input->get('current_batch') : $intCurrentBatch);
 			
 			$strPath = $this->Input->post('source');
 			$arrFiles = scan(TL_ROOT . '/' . $strPath);
@@ -797,11 +857,12 @@ class tl_product_data extends Backend
 			}
 			
 			$arrDelete = array();
-			$objProducts = $this->Database->execute("SELECT * FROM tl_product_data WHERE pid=0");
-			
+			$objProducts = $this->Database->prepare("SELECT * FROM tl_product_data WHERE pid=0")										 
+										  ->execute();
 			
 			while( $objProducts->next() )
-			{		
+			{			
+				
 				$arrImageNames  = array();
 				$arrImages = deserialize($objProducts->images);
 	
@@ -819,8 +880,9 @@ class tl_product_data extends Backend
 						}
 					}	
 				}
+
+				$strPattern = '@^(' . ($objProducts->alias ?  '|' . standardize($objProducts->alias) : '') . ($objProducts->sku ? '|' . $objProducts->sku : '') .($objProducts->sku ? '|' . standardize($objProducts->sku) : '') . (count($arrImageNames) ? '|' . implode('|', $arrImageNames) : '') . ')@i';
 				
-				$strPattern = '@^(' . $objProducts->alias . '|' . standardize($objProducts->alias) . '|' . $objProducts->sku . '|' . standardize($objProducts->sku) . (count($arrImageNames) ? '|' . implode('|', $arrImageNames) : '') . ')@i';
 				$arrMatches = preg_grep($strPattern, $arrFiles);
 
 				if (count($arrMatches))
@@ -829,7 +891,7 @@ class tl_product_data extends Backend
 					$arrNewImages = array();
 					
 					foreach( $arrMatches as $file )
-					{
+					{					
 						if (is_dir(TL_ROOT . '/' . $strPath . '/' . $file))
 						{
 							$arrSubfiles = scan(TL_ROOT . '/' . $strPath . '/' . $file);
@@ -859,7 +921,7 @@ class tl_product_data extends Backend
 							}
 						}
 					}
-					
+										
 					if (count($arrNewImages))
 					{
 						foreach( $arrNewImages as $strFile )
@@ -880,11 +942,11 @@ class tl_product_data extends Backend
 						}
 						
 						$this->Database->prepare("UPDATE tl_product_data SET images=? WHERE id=?")->execute(serialize($arrImages), $objProducts->id);
-				
+
 					}
 				}
 			}
-			
+						
 			if (count($arrDelete))
 			{
 				$arrDelete = array_unique($arrDelete);
@@ -898,8 +960,10 @@ class tl_product_data extends Backend
 			$this->reload();
 		}
 
+		//$arrBatchValues = array(25,50,100,200);
+
 		// Return form
-		return '
+		$strReturn = '
 <div id="tl_buttons">
 <a href="'.ampersand(str_replace('&key=import', '', $this->Environment->request)).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
 </div>
@@ -908,9 +972,18 @@ class tl_product_data extends Backend
 
 <form action="'.ampersand($this->Environment->request, true).'" id="tl_product_data_import" class="tl_form" method="post">
 <div class="tl_formbody_edit">
-<input type="hidden" name="FORM_SUBMIT" value="tl_product_data_import" />
-
-<div class="tl_tbox block">
+<input type="hidden" name="FORM_SUBMIT" value="tl_product_data_import" />';
+		/*$strReturn .= '<div class="tl_tbox block">
+  <h3><label for="batch_size">'.$GLOBALS['TL_LANG']['tl_product_data']['batch_size'][0].'</label></h3> <select name="batch_size"><option value=""'.($this->Input->post('batch_size') ? ' selected' : '').'>-</option>';*/
+		/*  foreach($arrBatchValues as $value)
+		  {
+				$strReturn .= '<option value="'.$value.'"'.($this->Input->post('batch_size')==$value ? ' selected' : '').'>'.$value.'</option>';
+		  }
+		$strReturn .= '</select>';
+		$strReturn .= (strlen($GLOBALS['TL_LANG']['tl_product_data']['batch_size'][1]) ? '
+		  <p class="tl_help">'.$GLOBALS['TL_LANG']['tl_product_data']['batch_size'][1].'</p>' : '').'</div>';*/
+		  
+		return $strReturn . '<div class="tl_tbox block">
   <h3><label for="source">'.$GLOBALS['TL_LANG']['tl_product_data']['source'][0].'</label> <a href="typolight/files.php" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['fileManager']) . '" onclick="Backend.getScrollOffset(); this.blur(); Backend.openWindow(this, 750, 500); return false;">' . $this->generateImage('filemanager.gif', $GLOBALS['TL_LANG']['MSC']['fileManager'], 'style="vertical-align:text-bottom;"') . '</a></h3>'.$objTree->generate().(strlen($GLOBALS['TL_LANG']['tl_product_data']['source'][1]) ? '
   <p class="tl_help">'.$GLOBALS['TL_LANG']['tl_product_data']['source'][1].'</p>' : '').'
 </div>
