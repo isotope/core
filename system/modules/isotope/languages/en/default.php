@@ -251,49 +251,6 @@ $GLOBALS['TL_LANG']['SHIP']['flat']				= array('Flat-price shipping');
 $GLOBALS['TL_LANG']['SHIP']['ups']				= array('UPS Live Rates and Service shipping');
 $GLOBALS['TL_LANG']['SHIP']['usps']				= array('USPS Live Rates and Service shipping');
 
-/** 
- * USPS-specific response rate codes
- */
-$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['DOMESTIC']['RRC']['FIRST CLASS'] = '0';
-$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['DOMESTIC']['RRC']['PRIORITY'] = '1';
-$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['DOMESTIC']['RRC']['EXPRESS HFP'] = '2';
-$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['DOMESTIC']['RRC']['EXPRESS'] = '3';
-$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['DOMESTIC']['RRC']['PARCEL'] = '4';
-$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['DOMESTIC']['RRC']['EXPRESS SH'] = '23';
-$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['DOMESTIC']['RRC']['BPM'] = '5';
-$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['DOMESTIC']['RRC']['MEDIA'] = '6';
-$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['DOMESTIC']['RRC']['LIBRARY'] = '7';
-
-/*$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC']['EXPRESS'] = '1';
-$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC']['PRIORITY'] = '2';
-$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';
-$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';
-$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';
-$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';
-$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';
-$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';
-$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';
-$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';
-$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';
-$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';*/
-
-//INTERNATIONAL
-/*1Express Mail International
-2Priority Mail International
-4Global Express Guaranteed (Document and Non-document)
-5Global Express Guaranteed Document  cx6Global Express Guaranteed Non-Document Rectangular shape
-7Global Express Guaranteed Non-Document Non-Rectangular
-8Priority Mail Flat Rate Envelope
-9Priority Mail Flat Rate Box
-10Express Mail International Flat Rate Envelope
-11Priority Mail Large Flat Rate Box
-12Global Express Guaranteed Envelope
-13First Class Mail International Letters
-14First Class Mail International Flats
-15First Class Mail International Parcels
-16Priority Mail Small Flat Rate Box
-21PostCards
-*/
 
 /**
  * Payment modules
