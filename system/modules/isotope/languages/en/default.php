@@ -296,14 +296,6 @@ $GLOBALS['TL_LANG']['CUR_SYMBOL']['USD'] = '$';
 $GLOBALS['TL_LANG']['CUR_SYMBOL']['EUR'] = '€';
 $GLOBALS['TL_LANG']['CUR_SYMBOL']['GBP'] = '£';
 
-/** 
- * Weight Units 
- */
-$GLOBALS['TL_LANG']['ISO_WGT']['gram'] 	= 'grams';
-$GLOBALS['TL_LANG']['ISO_WGT']['kg']		= 'kilograms';
-$GLOBALS['TL_LANG']['ISO_WGT']['oz'] 		= 'ounces';
-$GLOBALS['TL_LANG']['ISO_WGT']['lbs']		= 'pounds';
-
 
 /**
  * Attributes
