@@ -37,11 +37,11 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productreader']		= '{title_lege
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_cart']					= '{title_legend},name,headline,type;{config_legend},iso_forward_cart;{redirect_legend},iso_cart_jumpTo,iso_checkout_jumpTo;{template_legend},iso_cart_layout;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 
-$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_checkoutmember']			= '{title_legend},name,headline,type;{config_legend},iso_checkout_method,iso_payment_modules,iso_shipping_modules,iso_order_conditions;{redirect_legend},orderCompleteJumpTo,iso_login_jumpTo;{template_legend},iso_mail_customer,iso_mail_admin,iso_sales_email;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_checkoutmember']			= '{title_legend},name,headline,type;{config_legend},iso_checkout_method,iso_payment_modules,iso_shipping_modules,iso_order_conditions;{redirect_legend},iso_forward_review,orderCompleteJumpTo,iso_login_jumpTo;{template_legend},iso_mail_customer,iso_mail_admin,iso_sales_email;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 
-$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_checkoutguest']			= '{title_legend},name,headline,type;{config_legend},iso_checkout_method,iso_payment_modules,iso_shipping_modules,iso_order_conditions;{redirect_legend},orderCompleteJumpTo;{template_legend},iso_mail_customer,iso_mail_admin,iso_sales_email;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_checkoutguest']			= '{title_legend},name,headline,type;{config_legend},iso_checkout_method,iso_payment_modules,iso_shipping_modules,iso_order_conditions;{redirect_legend},iso_forward_review,orderCompleteJumpTo;{template_legend},iso_mail_customer,iso_mail_admin,iso_sales_email;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 
-$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_checkoutboth']			= '{title_legend},name,headline,type;{config_legend},iso_checkout_method,iso_payment_modules,iso_shipping_modules,iso_order_conditions;{redirect_legend},orderCompleteJumpTo;{template_legend},iso_login_jumpTo,iso_mail_customer,iso_mail_admin,iso_sales_email;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_checkoutboth']			= '{title_legend},name,headline,type;{config_legend},iso_checkout_method,iso_payment_modules,iso_shipping_modules,iso_order_conditions;{redirect_legend},iso_forward_review,orderCompleteJumpTo;{template_legend},iso_login_jumpTo,iso_mail_customer,iso_mail_admin,iso_sales_email;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_orderhistory']			= '{title_legend},name,headline,type;{config_legend},store_ids;{redirect_legend},jumpTo;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 
@@ -49,7 +49,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_orderdetails']			= '{title_lege
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_storeswitcher']		= '{title_legend},name,headline,type;{config_legend},store_ids;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 
-$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productfilter']		= '{title_legend},name,headline,type;{config_legend},iso_listingModule,iso_enableLimit,iso_enableSearch,iso_filterFields,iso_orderByFields,iso_searchFields;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productfilter']		= '{title_legend},name,headline,type;{config_legend},iso_listingModule,iso_enableLimit,iso_enableSearch,iso_disableFilterAjax,iso_filterFields,iso_orderByFields,iso_searchFields;{protected_legend:hide},guests,protected;{expert_legend:hide},align,space,cssID';
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_addressbook']			= '{title_legend},name,headline,type;{redirect_legend},jumpTo;{template_legend},memberTpl,tableless;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
@@ -154,7 +154,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['listing_filters'] = array
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
 	'eval'					  => array('multiple'=>true,'tl_class'=>'m12 clr'),
-//	'options_callback'		  => array('tl_module_isotope','getFilters')
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['store_id'] = array
@@ -205,6 +204,13 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['orderCompleteJumpTo'] = array
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_forward_cart'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_forward_cart'],
+	'exclude'                 => true,
+	'inputType'               => 'checkbox'
+);
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_forward_review'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_forward_review'],
 	'exclude'                 => true,
 	'inputType'               => 'checkbox'
 );
@@ -304,7 +310,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_enableLimit'] = array
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_enableLimit'],
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
-	'eval'					  => array('tl_class'=>'w50')
+	'eval'					  => array('tl_class'=>'w50'),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_filter_layout'] = array
@@ -380,126 +386,100 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_buttons'] = array
 );
 
 
-/**
- * tl_module_isotope class.
- * 
- * @extends Backend
- */
 class tl_module_isotope extends Backend
 {
 
 	public function getSortableAttributes()
 	{
-		$arrReturn = array();
-		
-		$objData = $this->Database->prepare("SELECT name, field_name FROM tl_product_attributes WHERE is_order_by_enabled='1'")
-								  ->execute();
-		
-		while($objData->next())
+		if (!is_array($GLOBALS['TL_DCA']['tl_product_data']))
 		{
-			$arrReturn[$objData->field_name] = $objData->name;
+			$this->loadDataContainer('tl_product_data');
+			$this->loadLanguageFile('tl_product_data');
 		}
-		$this->loadLanguageFile('tl_product_data');
-		$arrReturn['name'] = $GLOBALS['TL_LANG']['tl_product_data']['name'][0];
-		$arrReturn['price'] = $GLOBALS['TL_LANG']['tl_product_data']['price'][0];
 		
-		return $arrReturn;
+		$arrAttributes = array();
+		
+		foreach( $GLOBALS['TL_DCA']['tl_product_data']['fields'] as $field => $arrData )
+		{
+			if ($arrData['attributes']['is_order_by_enabled'])
+			{
+				$arrAttributes[$field] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
+			}
+		}
+				
+		return $arrAttributes;
 	}
 	
 	/**
-	 * getFilters function.
-	 * 
-	 * @todo Returns an error string but should be an array
+	 * getFilterFields function.
 	 *
 	 * @access public
 	 * @return array
 	 */
 	public function getFilterFields()
 	{
-		
-		
-		$objFilters = $this->Database->prepare("SELECT id, name FROM tl_product_attributes WHERE is_filterable=?")
-									 ->execute(1);
-									 
-		if($objFilters->numRows < 1)
+		if (!is_array($GLOBALS['TL_DCA']['tl_product_data']))
 		{
-			return $GLOBALS['TL_LANG']['MSC']['noResult'];
+			$this->loadDataContainer('tl_product_data');
+			$this->loadLanguageFile('tl_product_data');
 		}
 		
-		$arrFilters = $objFilters->fetchAllAssoc();
+		$arrAttributes = array();
 		
-		foreach($arrFilters as $filter)
+		foreach( $GLOBALS['TL_DCA']['tl_product_data']['fields'] as $field => $arrData )
 		{
-						
-			$arrOptionGroups[$filter['id']] = $filter['name'];
-		
+			if ($arrData['attributes']['is_filterable'])
+			{
+				$arrAttributes[$arrData['attributes']['id']] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
+			}
 		}
-		
-		return $arrOptionGroups;
+				
+		return $arrAttributes;
 	}
 	
-	/**
-	 * getFilters function.
-	 * 
-	 * @todo Returns an error string but should be an array
-	 *
-	 * @access public
-	 * @return array
-	 */
+
+	//!@todo does almost the same as getSortableAttributes, why do we need both?
 	public function getSortByFields()
 	{
-		
-		
-		$objFilters = $this->Database->prepare("SELECT id, name FROM tl_product_attributes WHERE is_order_by_enabled=?")
-									 ->execute(1);
-									 
-		if($objFilters->numRows < 1)
+		if (!is_array($GLOBALS['TL_DCA']['tl_product_data']))
 		{
-			return $GLOBALS['TL_LANG']['MSC']['noResult'];
+			$this->loadDataContainer('tl_product_data');
+			$this->loadLanguageFile('tl_product_data');
 		}
 		
-		$arrFilters = $objFilters->fetchAllAssoc();
+		$arrAttributes = array();
 		
-		foreach($arrFilters as $filter)
+		foreach( $GLOBALS['TL_DCA']['tl_product_data']['fields'] as $field => $arrData )
 		{
-						
-			$arrOptionGroups[$filter['id']] = $filter['name'];
-		
+			if ($arrData['attributes']['is_order_by_enabled'])
+			{
+				$arrAttributes[$arrData['attributes']['id']] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
+			}
 		}
-		
-		return $arrOptionGroups;
+				
+		return $arrAttributes;
 	}
-	
-	/**
-	 * getFilters function.
-	 * 
-	 * @todo Returns an error string but should be an array
-	 *
-	 * @access public
-	 * @return array
-	 */
+
+
 	public function getSearchFields()
 	{
-		
-		
-		$objFilters = $this->Database->prepare("SELECT id, name FROM tl_product_attributes WHERE is_searchable=? AND type='text'")
-									 ->execute(1);
-									 
-		if($objFilters->numRows < 1)
+		if (!is_array($GLOBALS['TL_DCA']['tl_product_data']))
 		{
-			return $GLOBALS['TL_LANG']['MSC']['noResult'];
+			$this->loadDataContainer('tl_product_data');
+			$this->loadLanguageFile('tl_product_data');
 		}
 		
-		$arrFilters = $objFilters->fetchAllAssoc();
+		$arrAttributes = array();
 		
-		foreach($arrFilters as $filter)
+		foreach( $GLOBALS['TL_DCA']['tl_product_data']['fields'] as $field => $arrData )
 		{
-						
-			$arrOptionGroups[$filter['id']] = $filter['name'];
-		
+			if ($arrData['attributes']['is_searchable'])
+			{
+				$arrAttributes[$arrData['attributes']['id']] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
+			}
 		}
-		
-		return $arrOptionGroups;
+				
+		return $arrAttributes;
 	}
 	
 	

@@ -182,7 +182,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			'search'				=> true,
 			'inputType'				=> 'text',
 			'eval'					=> array('mandatory'=>true, 'tl_class'=>'clr long'),
-			'attributes'			=> array('legend'=>'general_legend', 'multilingual'=>true, 'fixed'=>true),
+			'attributes'			=> array('legend'=>'general_legend', 'multilingual'=>true, 'fixed'=>true, 'is_order_by_enabled'=>true),
 		),
 		'teaser' => array
 		(
@@ -205,7 +205,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['price'],
 			'inputType'				=> 'text',
 			'eval'					=> array('mandatory'=>true, 'maxlength'=>255, 'rgxp'=>'digits', 'tl_class'=>'w50'),
-			'attributes'			=> array('legend'=>'pricing_legend'),
+			'attributes'			=> array('legend'=>'pricing_legend', 'is_order_by_enabled'=>true),
 		),
 		'price_override' => array
 		(
