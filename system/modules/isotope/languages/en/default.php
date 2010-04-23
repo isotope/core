@@ -98,7 +98,6 @@ $GLOBALS['TL_LANG']['MSC']['searchFieldsLabel'] = 'Search Fields: ';
 $GLOBALS['TL_LANG']['MSC']['order_conditions'] = 'I agree to the terms & conditions';
 $GLOBALS['TL_LANG']['MSC']['downloadCount'] = '%s download(s)';
 $GLOBALS['TL_LANG']['MSC']['perPage'] = 'Products Per Page';
-$GLOBALS['TL_LANG']['MSC']['perPageOptions'] = array(3,10,20,50,100,200);
 $GLOBALS['TL_LANG']['MSC']['searchTerms'] = 'Keywords';
 $GLOBALS['TL_LANG']['MSC']['search'] = 'Search';
 $GLOBALS['TL_LANG']['MSC']['clearFilters'] = 'Clear Filters';
@@ -141,8 +140,7 @@ $GLOBALS['TL_LANG']['MSC']['selectItemPrompt'] = "(select)";
 $GLOBALS['TL_LANG']['MSC']['actualPrice'] = 'Actual Price';
 $GLOBALS['TL_LANG']['MSC']['noPaymentModules'] = 'No payment options are currently available';
 $GLOBALS['TL_LANG']['MSC']['noShippingModules'] = 'No shipping options are currently available.';
-$GLOBALS['TL_LANG']['MSC']['noOrders'] = 'No orders found.';
-$GLOBALS['TL_LANG']['MSC']['noEmails'] = 'No emails found.';
+$GLOBALS['TL_LANG']['MSC']['noOrderEmails'] = 'No orders emails found.';
 
 $GLOBALS['TL_LANG']['MSC']['cartBT']					= 'Shopping Cart';
 $GLOBALS['TL_LANG']['MSC']['checkoutBT']				= 'Proceed to Checkout';
