@@ -61,6 +61,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 	/**
 	 * Compile module
 	 */
+	//!@todo generate() should confirm that data is set and hide otherwise
 	protected function compile()
 	{
 		global $objPage;
@@ -68,7 +69,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		$arrFilterFields = deserialize($this->iso_filterFields);
 		$arrOrderByFieldIds = deserialize($this->iso_orderByFields);
 		$arrSearchFields = deserialize($this->iso_searchFields);
-		$arrListingModule = deserialize($this->iso_listingModule);
+		$objListingModule = $this->Database->prepare("SELECT * FROM tl_module WHERE id=?")->limit(1)->execute($this->iso_listingModule);
 		
 		$arrLimit = array();	
 
@@ -104,10 +105,11 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		{
 			//Generate the limits per page... used to be derived from the number of columns in grid format, but not in list format.  For now, just a standard array.
 			$arrLimit = $GLOBALS['TL_LANG']['MSC']['perPageOptions'];
-			if($arrListingModule)
+			
+			if ($this->iso_listingModule)
 			{
-				$intModuleLimit = $this->getListingModuleLimit($arrListingModule);
-				if($intModuleLimit)
+				$intModuleLimit = intval($objListingModule->perPage);
+				if($intModuleLimit > 0)
 				{
 					$strPerPageDefault = $intModuleLimit;
 					if(!in_array($intModuleLimit,$arrLimit))
@@ -129,7 +131,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		$this->Template->action = $this->Environment->request;
 		$this->Template->baseUrl = $arrCleanUrl[0];
 		$this->Template->orderBy = $arrOrderByOptions;
-		$this->Template->order_by = ($this->getRequestData('order_by')) ? $this->getRequestData('order_by') : $this->getListingModuleSorting($arrListingModule);
+		$this->Template->order_by = ($this->getRequestData('order_by')) ? $this->getRequestData('order_by') : $this->getListingModuleSorting($objListingModule);
 		$this->Template->per_page = ($this->getRequestData('per_page') ? $this->getRequestData('per_page') : $strPerPageDefault);
 		$this->Template->page = ($this->getRequestData('page') ? $this->getRequestData('page') : 1);
 		$this->Template->for = $this->getRequestData('for');
@@ -199,50 +201,42 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		return $arrAttributeData;
 	}
 	
-	/** 
+	
+	/**
 	 * Get the per page option limits from corresponding listing module
 	 *
-	 * @param array $arrListingModule
+	 * @param int $intListingModule
 	 * @return integer
 	 */
-	private function getListingModuleLimit($arrListingModule)
+	private function getListingModuleLimit($intListingModule)
 	{
-			$objLimit = $this->Database->prepare("SELECT perPage FROM tl_module WHERE id=?")
-						       ->limit(1)
-						       ->execute($arrListingModule[0]);
-						       
-			if(!$objLimit->numRows)
-			{
-				return;
-			}
-			if($objLimit->perPage > 0)
-			{
-				$intLimit = $objLimit->perPage;
-			}
+		$objLimit = $this->Database->prepare("SELECT perPage FROM tl_module WHERE id=?")->limit(1)->execute($intListingModule);
+					       
+		if(!$objLimit->numRows)
+		{
+			return;
+		}
 		
+		if($objLimit->perPage > 0)
+		{
+			$intLimit = $objLimit->perPage;
+		}
+	
 		return $intLimit ;
 	}
 	
+	
 	/** 
 	 * Get the initial sorting field and direction from corresponding listing module
-	 *
-	 * @param array $arrListingModule
-	 * @return string
 	 */
-	private function getListingModuleSorting($arrListingModule)
+	private function getListingModuleSorting($objModule)
 	{
-			$objSorting = $this->Database->prepare("SELECT iso_listingSortField, iso_listingSortDirection FROM tl_module WHERE id=?")
-						       ->limit(1)
-						       ->execute($arrListingModule[0]);
-						       
-			if(!$objSorting->numRows)
-			{
-				return;
-			}
-			if(strlen($objSorting->iso_listingSortField))
-			{
-				$strSorting = $objSorting->iso_listingSortField . '-' . $objSorting->iso_listingSortDirection;
-			}
+		$strSorting = '';
+		
+		if(strlen($objModule->iso_listingSortField))
+		{
+			$strSorting = $objModule->iso_listingSortField . '-' . $objModule->iso_listingSortDirection;
+		}
 		
 		return $strSorting;
 	}
