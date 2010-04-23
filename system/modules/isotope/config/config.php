@@ -185,18 +185,6 @@ $GLOBALS['FE_MOD']['isotope'] = array
 );
 
 
-/** 
- * Weight conversion
- */
-$GLOBALS['TL_LANG']['ISO_WGT'] = array
-(
-	'gram' 	=> 1,
-	'kg' 	=> 1000,
-	'oz' 	=> 28.35,
-	'lbs' 	=> 453.6,
-);
-
-
 /**
  * Shipping modules
  */
