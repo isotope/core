@@ -66,6 +66,7 @@ $GLOBALS['TL_LANG']['tl_module']['iso_checkout_jumpTo']			= array('Checkout Jump
 $GLOBALS['TL_LANG']['tl_module']['iso_listingSortField'] 		= array('Initial sorting field','Select a sorting field to sort the listing by on first page load.');
 $GLOBALS['TL_LANG']['tl_module']['iso_listingSortDirection'] 	= array('Initial sorting direction','Select a initial sorting direction.');
 $GLOBALS['TL_LANG']['tl_module']['iso_buttons']					= array('Buttons', 'Select the buttons you want to show.');
+$GLOBALS['TL_LANG']['tl_module']['iso_forward_review']			= array('Forward to review page', 'Forward the user to the review page if no data is required on any step.');
 
 
 /**
