@@ -356,6 +356,7 @@ class tl_iso_orders extends Backend
 	}
 	
 	
+	//!@todo orders should be sorted, but by ID or date? also might want to respect user filter/search
 	public function exportOrderEmails(DataContainer $dc)
 	{
 		if ($this->Input->get('key') != 'export_emails')
@@ -363,47 +364,44 @@ class tl_iso_orders extends Backend
 			return '';
 		}
 		
+		$arrExport = array();
 		$objOrders = $this->Database->execute("SELECT billing_address FROM tl_iso_orders");
-		
-		if(!$objOrders->numRows)
-		{			    		
-			return '<div id="tl_buttons"><a href="javascript:history.go(-1)" class="header_back" title="Go back" accesskey="b" onclick="Backend.getScrollOffset();">Go back</a></div><p class="tl_gerror">'. $GLOBALS['TL_LANG']['MSC']['noOrders'] .'</p>';
-		}
 
-		while($objOrders->next())
+		while( $objOrders->next() )
 		{
-			$arrBillingData = deserialize($objOrders->billing_address);
+			$arrAddress = deserialize($objOrders->billing_address);
 			
-			if($arrBillingData['email'])
+			if ($arrAddress['email'])
 			{
-				$arrExport[] = $arrBillingData['firstname'] . ' ' . $arrBillingData['lastname'] . ' <' . $arrBillingData['email'] . '>';
+				$arrExport[] = $arrAddress['firstname'] . ' ' . $arrAddress['lastname'] . ' <' . $arrAddress['email'] . '>';
 			}
 		}
-
-		if(count($arrExport))
-		{
-			header('Content-Type: application/csv');
-			header('Content-Transfer-Encoding: binary');
-			header('Content-Disposition: attachment; filename="isotope_order_emails_export_' . time() .'.csv"');
-			header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-			header('Pragma: public');
-			header('Expires: 0');
-	
-			$output = '';
-			
-			foreach ($arrExport as $export) 
-			{
-				$output .= '"' . $export . '"' . "\n";
-			}
-	
-			echo $output;
-			exit;
-		} else
-		{
-			return '<div id="tl_buttons"><a href="javascript:history.go(-1)" class="header_back" title="Go back" accesskey="b" onclick="Backend.getScrollOffset();">Go back</a></div><p class="tl_gerror">'. $GLOBALS['TL_LANG']['MSC']['noEmails'] .'</p>';
-		}
 		
-		return;
+		if (!count($arrExport))
+		{
+			return '
+<div id="tl_buttons">
+<a href="'.ampersand(str_replace('&key=export_emails', '', $this->Environment->request)).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
+</div>
+<p class="tl_gerror">'. $GLOBALS['TL_LANG']['MSC']['noOrderEmails'] .'</p>';
+		}
+
+		header('Content-Type: application/csv');
+		header('Content-Transfer-Encoding: binary');
+		header('Content-Disposition: attachment; filename="isotope_order_emails_export_' . time() .'.csv"');
+		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+		header('Pragma: public');
+		header('Expires: 0');
+
+		$output = '';
+		
+		foreach ($arrExport as $export) 
+		{
+			$output .= '"' . $export . '"' . "\n";
+		}
+
+		echo $output;
+		exit;
 	}
 }
 
