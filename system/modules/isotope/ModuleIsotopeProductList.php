@@ -78,6 +78,17 @@ class ModuleIsotopeProductList extends ModuleIsotope
 	}
 	
 	
+	public function generateAjax()
+	{		
+		$objProduct = $this->getProduct($this->Input->get('product'));
+		
+		if ($objProduct)
+		{
+			return $objProduct->generateAjax();
+		}
+	}
+	
+	
 	/**
 	 * Generate module
 	 */
