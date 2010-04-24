@@ -228,12 +228,14 @@ class MediaManager extends Widget implements uploadable
 						$this->strName,
 						$this->strId,
 						(strlen($this->strClass) ? ' ' . $this->strClass : ''));
+						
+		$return = '<div id="ctrl_' . $this->strId . '">';
 
 		if (!is_array($this->varValue) || !count($this->varValue))
-			return '<div id="ctrl_' . $this->strId . '">' . $GLOBALS['TL_LANG']['MSC']['mmNoImagesUploaded'] . '</div>' . $upload;
+			return $return . $GLOBALS['TL_LANG']['MSC']['mmNoImagesUploaded'] . $upload . '</div>';
 
 		// Add label and return wizard
-		$return = '<table cellspacing="0" cellpadding="0" id="ctrl_'.$this->strId.'" class="tl_mediamanager" summary="Media Manager">
+		$return .= '<table cellspacing="0" cellpadding="0" class="tl_mediamanager" summary="Media Manager">
   <thead>
   <tr>
     <td>'.$GLOBALS['TL_LANG'][$this->strTable]['mmSrc'].'</td>
@@ -271,7 +273,7 @@ class MediaManager extends Widget implements uploadable
 
 		return $return.'
   </tbody>
-  </table>' . $upload;
+  </table>' . $upload . '</div>';
 	}
 }
 

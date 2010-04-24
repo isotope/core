@@ -251,28 +251,46 @@ var Isotope =
 			
 			if (el)
 			{
-				var headline = el.getParent('div').getFirst('h3');
-				if (headline)
+				var parent = el.getParent('div').getFirst('h3');
+				
+				if (!parent && el.get('class').test(/tl_checkbox_single_container/))
 				{
-					headline.addClass('inherit');
-					
-					var check = $('ctrl_inherit').getFirst(('input[value='+name+']'));
-					
-					check.setStyle('float', 'right').inject(headline);
-					$('ctrl_inherit').getFirst(('label[for='+check.get('id')+']')).setStyles({'float':'right','padding-right':'5px', 'font-weight':'normal'}).set('text', label).inject(headline);
+					parent = el;
 				}
-				else if (el.get('class').test(/tl_checkbox_single_container/))
+				
+				if (!parent)
 				{
-					el.addClass('inherit');
+					injectError = true;
+					return;
+				}
+				
+				parent.addClass('inherit');
 					
-					var check = $('ctrl_inherit').getFirst(('input[value='+name+']'));
+				var check = $('ctrl_inherit').getFirst(('input[value='+name+']'));
+				
+				check.setStyle('float', 'right').inject(parent);
+				$('ctrl_inherit').getFirst(('label[for='+check.get('id')+']')).setStyles({'float':'right','padding-right':'5px', 'font-weight':'normal'}).set('text', label).inject(parent);
+				
+				check.addEvent('change', function(event) {
+					var element = $(('ctrl_'+event.target.get('value')));
 					
-					check.setStyle('float', 'right').inject(el);
-					$('ctrl_inherit').getFirst(('label[for='+check.get('id')+']')).setStyles({'float':'right','padding-right':'5px', 'font-weight':'normal'}).set('text', label).inject(el);
+					if (element.get('class').test(/tl_checkbox_single_container/))
+					{
+						element.getFirst('input').disabled = event.target.checked;
+					}
+					else
+					{
+						element.setStyle('display', (event.target.checked ? 'none' : 'block'));
+					}
+				});
+				
+				if (el.get('class').test(/tl_checkbox_single_container/))
+				{
+					el.getFirst('input').disabled = check.checked;
 				}
 				else
 				{
-					injectError = true;
+					el.setStyle('display', (check.checked ? 'none' : 'block'));
 				}
 			}
 		});
