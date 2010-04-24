@@ -286,7 +286,7 @@ var Isotope =
 				
 				if (el.get('class').test(/tl_checkbox_single_container/))
 				{
-					el.getFirst('input').disabled = check.checked;
+					el.getFirst('input').readonly = check.checked;
 				}
 				else
 				{
