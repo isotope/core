@@ -164,6 +164,7 @@ $GLOBALS['BE_FFL']['attributeWizard']	= 'AttributeWizard';
 $GLOBALS['BE_FFL']['optionDataWizard']	= 'OptionDataWizard';
 $GLOBALS['BE_FFL']['surchargeWizard']	= 'SurchargeWizard';
 $GLOBALS['BE_FFL']['variantWizard']		= 'VariantWizard';
+$GLOBALS['BE_FFL']['inheritCheckbox']	= 'InheritCheckBox';
 
 
 /**

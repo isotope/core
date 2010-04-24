@@ -31,6 +31,7 @@
  */
 $GLOBALS['TL_DCA']['tl_product_data'] = array
 (
+
 	// Config
 	'config' => array
 	(
@@ -111,6 +112,15 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 				'href'                => 'act=show',
 				'icon'                => 'show.gif'
 			),
+/*
+			'related' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['related'],
+				'href'                => 'table=tl_product_related',
+				'icon'                => 'system/modules/isotope/html/icon-related.png',
+				'button_callback'	  => array('tl_product_data', 'relatedButton'),
+			),
+*/
 			'downloads' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['downloads'],
@@ -158,6 +168,12 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			(
 				array('tl_product_data','saveProductCategories'),
 			),
+		),
+		'inherit' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['inherit'],
+			'inputType'				=> 'inheritCheckbox',
+			'eval'					=> array('multiple'=>true),
 		),
 		'alias' => array
 		(

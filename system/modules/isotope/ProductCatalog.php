@@ -195,6 +195,7 @@ class ProductCatalog extends Backend
 	
 	private function buildPaletteString($objProduct)
 	{
+		$arrInherit = array();
 		$arrPalette = array();
 		
 		// Variant
@@ -202,7 +203,7 @@ class ProductCatalog extends Backend
 		{
 			$arrFields = array('');
 			$arrAttributes = deserialize($objProduct->attributes);
-			$arrPalette['variant_legend'][] = 'variant_attributes';
+			$arrPalette['variant_legend'][] = 'variant_attributes,inherit';
 			
 			if (is_array($arrAttributes) && count($arrAttributes))
 			{
@@ -236,6 +237,7 @@ class ProductCatalog extends Backend
 					continue;
 
 				$arrPalette[$GLOBALS['TL_DCA']['tl_product_data']['fields'][$field]['attributes']['legend']][] = $field;
+				$arrInherit[$field] = strlen($GLOBALS['TL_DCA']['tl_product_data']['fields'][$field]['label'][0]) ? $GLOBALS['TL_DCA']['tl_product_data']['fields'][$field]['label'][0] : $field;
 			}
 		}
 		
@@ -245,6 +247,9 @@ class ProductCatalog extends Backend
 		{
 			$arrLegends[] = '{' . $legend . '},' . implode(',', $fields);
 		}
+		
+		// Set inherit options
+		$GLOBALS['TL_DCA']['tl_product_data']['fields']['inherit']['options'] = $arrInherit;
 
 		return implode(';', $arrLegends);
 	}

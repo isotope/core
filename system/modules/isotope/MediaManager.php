@@ -230,7 +230,7 @@ class MediaManager extends Widget implements uploadable
 						(strlen($this->strClass) ? ' ' . $this->strClass : ''));
 
 		if (!is_array($this->varValue) || !count($this->varValue))
-			return $GLOBALS['TL_LANG']['MSC']['mmNoImagesUploaded'] . $upload;
+			return '<div id="ctrl_' . $this->strId . '">' . $GLOBALS['TL_LANG']['MSC']['mmNoImagesUploaded'] . '</div>' . $upload;
 
 		// Add label and return wizard
 		$return = '<table cellspacing="0" cellpadding="0" id="ctrl_'.$this->strId.'" class="tl_mediamanager" summary="Media Manager">
