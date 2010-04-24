@@ -145,7 +145,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 		$objTemplate->action = $this->Environment->request;
 		$objTemplate->products = $arrProductData;
 		$objTemplate->cartJumpTo = $this->generateFrontendUrl($this->Database->prepare("SELECT id,alias FROM tl_page WHERE id=?")->execute($this->iso_cart_jumpTo)->fetchAssoc());
-		$objTemplate->cartLabel = $GLOBALS['TL_LANG']['MSSC']['cartBT'];
+		$objTemplate->cartLabel = $GLOBALS['TL_LANG']['MSC']['cartBT'];
 		$objTemplate->checkoutJumpToLabel = $GLOBALS['TL_LANG']['MSC']['checkoutBT'];
 		$objTemplate->checkoutJumpTo = $this->generateFrontendUrl($this->Database->prepare("SELECT id,alias FROM tl_page WHERE id=?")->execute($this->iso_checkout_jumpTo)->fetchAssoc());
 		$objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
