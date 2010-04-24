@@ -222,7 +222,7 @@ class MediaManager extends Widget implements uploadable
 			$this->redirect(preg_replace('/&(amp;)?cid=[^&]*/i', '', preg_replace('/&(amp;)?' . preg_quote($strCommand, '/') . '=[^&]*/i', '', $this->Environment->request)));
 		}
 
-		$upload = sprintf('<h3><label for="ctrl_%s"_upload>%s</label></h3><p><input type="file" name="%s" id="ctrl_%s_upload" class="upload%s" /></p>',
+		$upload = sprintf('<h3><label for="ctrl_%s_upload">%s</label></h3><p><input type="file" name="%s" id="ctrl_%s_upload" class="upload%s" /></p>',
 						$this->strId,
 						$GLOBALS['TL_LANG']['MSC']['mmUploadImage'],
 						$this->strName,
