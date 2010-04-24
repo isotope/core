@@ -15,3 +15,5 @@
 .tl_left a { float: left; }
 .iso_product { margin-top: 2px; margin-left: 22px; margin-bottom: 2px; width: 530px }
 .iso_product a { float: none; }
+h3.inherit,
+.tl_checkbox_single_container.inherit { background-color: #f8f8f8; padding: 2px 2px 2px 0; margin: 14px 0 1px 0 }

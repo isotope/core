@@ -68,6 +68,7 @@ CREATE TABLE `tl_product_data` (
   `type` int(10) unsigned NOT NULL default '0',
   `language` varchar(2) NOT NULL default '',
   `pages` blob NULL,
+  `inherit` blob NULL,
   `alias` varchar(128) NOT NULL default '',
   `sku` varchar(128) NOT NULL default '',
   `name` varchar(255) NOT NULL default '',
