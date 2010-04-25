@@ -93,6 +93,8 @@ $GLOBALS['TL_LANG']['tl_product_data']['copy']			= array('Copy product', 'Copy p
 $GLOBALS['TL_LANG']['tl_product_data']['cut']			= array('Move product', 'Move product ID %s');
 $GLOBALS['TL_LANG']['tl_product_data']['delete']		= array('Delete product', 'Delete product ID %s');
 $GLOBALS['TL_LANG']['tl_product_data']['show']			= array('Product details', 'Show details of product ID %s');
+$GLOBALS['TL_LANG']['tl_product_data']['related']		= array('Related products', 'Manage related products for product ID %s');
+$GLOBALS['TL_LANG']['tl_product_data']['generate']		= array('Generate variants', 'Generate variants for product ID %s');
 $GLOBALS['TL_LANG']['tl_product_data']['import']		= array('Import assets', 'Import images and other media from a folder');
 $GLOBALS['TL_LANG']['tl_product_data']['link']			= array('Link Products to Categories', 'Link products to categories');
 

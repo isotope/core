@@ -156,7 +156,7 @@ class ProductCatalog extends Backend
 			
 			if ($objProduct->pid > 0)
 			{
-				$objParent = $this->Database->prepare("SELECT * FROm tl_product_data WHERE id=?")->limit(1)->execute($objProduct->pid);
+				$objParent = $this->Database->prepare("SELECT * FROM tl_product_data WHERE id=?")->limit(1)->execute($objProduct->pid);
 				
 				if ($objProduct->type != $objParent->type)
 				{
