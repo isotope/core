@@ -33,7 +33,6 @@ $GLOBALS['TL_LANG']['tl_product_data']['pages']					= array('Categories','Select
 $GLOBALS['TL_LANG']['tl_product_data']['type']					= array('Product Type','Product types are defined in the Product Type Manager.');
 $GLOBALS['TL_LANG']['tl_product_data']['alias']					= array('Alias', '');
 $GLOBALS['TL_LANG']['tl_product_data']['name']					= array('Name', '');
-$GLOBALS['TL_LANG']['tl_product_data']['type']					= array('Type', '');
 $GLOBALS['TL_LANG']['tl_product_data']['sku']					= array('SKU', '');
 $GLOBALS['TL_LANG']['tl_product_data']['weight']				= array('Weight', '');
 $GLOBALS['TL_LANG']['tl_product_data']['stock_quantity']		= array('Quantity', '');
@@ -56,6 +55,7 @@ $GLOBALS['TL_LANG']['tl_product_data']['max_order_quantity']	= array('Maximum or
 $GLOBALS['TL_LANG']['tl_product_data']['start']					= array('Start date','Do not show this product before the date specified.');
 $GLOBALS['TL_LANG']['tl_product_data']['stop']					= array('Stop date','Do not show this product after the date specified.');
 $GLOBALS['TL_LANG']['tl_product_data']['variant_attributes']	= array('Variant setup', 'Please select the combination of values for this variant.');
+$GLOBALS['TL_LANG']['tl_product_data']['inherit']				= array('Inherited attributes', 'Check the fields you want to inherit from base product.');
 
 $GLOBALS['TL_LANG']['tl_product_data']['enabled'] = 'Enabled';
 

@@ -64,6 +64,7 @@ $GLOBALS['TL_LANG']['IMD']['tax_class']					= array('Tax classes','Set up Tax cl
 $GLOBALS['TL_LANG']['IMD']['tax_rate']					= array('Tax rates','Set up tax rates based on things like shipping/billing location and order total.');
 $GLOBALS['TL_LANG']['IMD']['attribute_manager']			= array('Attribute manager','Manage and create product attributes such as size, color, etc.');
 $GLOBALS['TL_LANG']['IMD']['product_type_manager']		= array('Product type manager','Manage and create Product types from sets of Product attributes.');
+$GLOBALS['TL_LANG']['IMD']['related_categories']		= array('Related categories', 'Define categories for product relations.');
 $GLOBALS['TL_LANG']['IMD']['iso_mail']					= array('E-Mail manager','Customize Admin and Customer Notification Emails.');
 $GLOBALS['TL_LANG']['IMD']['store_configuration']		= array('Store configuration','Configure general settings for this store.');
 
