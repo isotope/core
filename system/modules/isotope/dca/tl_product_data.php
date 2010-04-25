@@ -66,13 +66,6 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		),
 		'global_operations' => array
 		(
-			'generate' => array
-			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['generate'],
-//				'href'                => 'act=paste&amp;key=generate',
-				'class'               => 'header_generate_variants',
-				'attributes'          => 'onclick="Backend.getScrollOffset();"'
-			),
 			'import' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['import'],
@@ -124,7 +117,14 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['related'],
 				'href'                => 'table=tl_related_products',
 				'icon'                => 'system/modules/isotope/html/icon-related.png',
-				'button_callback'	  => array('tl_product_data', 'relatedButton'),
+				'button_callback'	  => array('tl_product_data', 'productOnlyButton'),
+			),
+			'generate' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['generate'],
+				'href'                => 'key=generate',
+				'icon'				  => 'system/modules/isotope/html/icon-generate.png',
+				'button_callback'	  => array('tl_product_data', 'productOnlyButton'),
 			),
 			'downloads' => array
 			(
@@ -858,7 +858,110 @@ class tl_product_data extends Backend
 	 */
 	public function generateVariants($dc)
 	{
+		$objProduct = $this->Database->prepare("SELECT id, pid, language, type, (SELECT attributes FROM tl_product_types WHERE id=tl_product_data.type) AS attributes, (SELECT variant_attributes FROM tl_product_types WHERE id=tl_product_data.type) AS variant_attributes FROM tl_product_data WHERE id=?")->limit(1)->execute($dc->id);
 		
+		$doNotSubmit = false;
+		$strBuffer = '';
+		$arrOptions = array();
+		$arrAttributes = deserialize($objProduct->attributes);
+		
+		if (is_array($arrAttributes) && count($arrAttributes))
+		{
+			foreach( $arrAttributes as $attribute )
+			{
+				if ($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['add_to_product_variants'])
+				{
+					$GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['eval']['multiple'] = true;
+					$GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['eval']['mandatory'] = true;
+					
+					$objWidget = new CheckBox($this->prepareForWidget($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute], $attribute));
+					
+					if ($this->Input->post('FORM_SUBMIT') == 'tl_product_generate')
+					{
+						$objWidget->validate();
+						
+						if ($objWidget->hasErrors())
+						{
+							$doNotSubmit = true;
+						}
+						else
+						{
+							$arrOptions[$attribute] = $objWidget->value;
+						}
+					}
+					
+					$strBuffer .= $objWidget->parse();
+				}
+			}
+			
+			if ($this->Input->post('FORM_SUBMIT') == 'tl_product_generate' && !$doNotSubmit)
+			{
+				$time = time();
+				$arrCombinations = array();
+				
+				foreach( $arrOptions as $name => $options )
+				{
+					$arrTemp = $arrCombinations;
+					$arrCombinations = array();
+					
+					foreach( $options as $option )
+					{
+						if (!count($arrTemp))
+						{
+							$arrCombinations[][$name] = $option;
+							continue;
+						}
+						
+						foreach( $arrTemp as $temp )
+						{
+							$temp[$name] = $option;
+							$arrCombinations[] = $temp;
+						}
+					}
+				}
+				
+				foreach( $arrCombinations as $combination )
+				{
+					$objVariant = $this->Database->prepare("SELECT * FROM tl_product_data WHERE pid=? AND " . implode('=? AND ', array_keys($combination)) . "=?")
+												 ->execute(array_merge(array($objProduct->id), $combination));
+
+					if (!$objVariant->numRows)
+					{
+						$this->Database->prepare("INSERT INTO tl_product_data (tstamp,pid,inherit,type," . implode(',', array_keys($combination)) . ") VALUES (?,?,?,?" . str_repeat(',?', count($combination)) . ")")
+									   ->execute(array_merge(array($time, $objProduct->id, $objProduct->variant_attributes, $objProduct->type), $combination));
+					}
+				}
+				
+				$this->redirect(str_replace('&key=generate', '', $this->Environment->request));
+			}
+		}
+		
+		// Return form
+		return '
+<div id="tl_buttons">
+<a href="'.ampersand(str_replace('&key=import', '', $this->Environment->request)).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
+</div>
+
+<h2 class="sub_headline">'.sprintf($GLOBALS['TL_LANG']['tl_product_data']['generate'][1], $dc->id).'</h2>'.$this->getMessages().'
+
+<form action="'.ampersand($this->Environment->request, true).'" id="tl_product_generate" class="tl_form" method="post">
+<div class="tl_formbody_edit">
+<input type="hidden" name="FORM_SUBMIT" value="tl_product_generate" />
+
+<div class="tl_tbox block">
+' . $strBuffer . '
+</div>
+
+</div>
+
+<div class="tl_formbody_submit">
+
+<div class="tl_submit_container">
+  <input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['tl_product_data']['generate'][0]).'" />
+</div>
+
+</div>
+</form>';
 	}
 	
 	
@@ -1033,7 +1136,10 @@ class tl_product_data extends Backend
 	}
 	
 	
-	public function relatedButton($row, $href, $label, $title, $icon, $attributes)
+	/**
+	 * Use as callback for buttons which are not available on variants
+	 */
+	public function productOnlyButton($row, $href, $label, $title, $icon, $attributes)
 	{
 		if ($row['pid'] > 0)
 			return '';
