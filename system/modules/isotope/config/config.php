@@ -188,6 +188,7 @@ $GLOBALS['FE_MOD']['isotope'] = array
 	'iso_orderdetails'			=> 'ModuleIsotopeOrderDetails',
 	'iso_storeswitcher'			=> 'ModuleIsotopeStoreSwitcher',
 	'iso_addressbook'			=> 'ModuleIsotopeAddressBook',
+	'iso_relatedproducts'		=> 'ModuleIsotopeRelatedProducts',
 );
 
 
@@ -268,6 +269,7 @@ $GLOBALS['ISO_NUM']["10000.00"]		= array(2, '.', "");
 $GLOBALS['ISO_NUM']["10,000.00"]	= array(2, '.', ",");
 $GLOBALS['ISO_NUM']["10.000,00"]	= array(2, ',', ".");
 $GLOBALS['ISO_NUM']["10'000.00"]	= array(2, '.', "'");
+
 
 
 /**
