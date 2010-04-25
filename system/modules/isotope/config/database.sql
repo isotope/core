@@ -701,6 +701,44 @@ CREATE TABLE `tl_iso_mail_content` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
+-- --------------------------------------------------------
+
+-- 
+-- Table `tl_related_categories`
+-- 
+
+CREATE TABLE `tl_related_categories` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `pid` int(10) unsigned NOT NULL default '0',
+  `sorting` int(10) unsigned NOT NULL default '0',
+  `tstamp` int(10) unsigned NOT NULL default '0',
+  `name` varchar(255) NOT NULL default '',
+  `label` varchar(255) NOT NULL default '',
+  `jumpTo` int(10) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  KEY `pid` (`pid`),
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Table `tl_related_products`
+-- 
+
+CREATE TABLE `tl_related_products` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `pid` int(10) unsigned NOT NULL default '0',
+  `sorting` int(10) unsigned NOT NULL default '0',
+  `tstamp` int(10) unsigned NOT NULL default '0',
+  `category` int(10) unsigned NOT NULL default '0',
+  `products` blob NULL,
+  PRIMARY KEY  (`id`),
+  KEY `pid` (`pid`),
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+
 -- PRODUCT ATTRIBUTES START --
 -- PRODUCT ATTRIBUTES STOP --
 

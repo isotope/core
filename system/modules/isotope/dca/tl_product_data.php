@@ -66,6 +66,13 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		),
 		'global_operations' => array
 		(
+			'generate' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['generate'],
+//				'href'                => 'act=paste&amp;key=generate',
+				'class'               => 'header_generate_variants',
+				'attributes'          => 'onclick="Backend.getScrollOffset();"'
+			),
 			'import' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['import'],
@@ -112,15 +119,13 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 				'href'                => 'act=show',
 				'icon'                => 'show.gif'
 			),
-/*
 			'related' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['related'],
-				'href'                => 'table=tl_product_related',
+				'href'                => 'table=tl_related_products',
 				'icon'                => 'system/modules/isotope/html/icon-related.png',
 				'button_callback'	  => array('tl_product_data', 'relatedButton'),
 			),
-*/
 			'downloads' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['downloads'],
@@ -153,6 +158,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			'filter'				=> true,
 			'inputType'				=> 'select',
 			'options_callback'		=> array('tl_product_data', 'getProductTypes'),
+			'foreignKey'			=> (strlen($this->Input->get('table')) ? 'tl_product_types.name' : ''),
 			'eval'					=> array('mandatory'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true),
 			'attributes'			=> array('legend'=>'general_legend', 'fixed'=>true, 'inherit'=>true),
 		),
@@ -846,6 +852,16 @@ class tl_product_data extends Backend
 		
 	}
 	
+	
+	/**
+	 * Generate all combination of product attributes
+	 */
+	public function generateVariants($dc)
+	{
+		
+	}
+	
+	
 	/**
 	 * Import images and other media file for products
 	 */
@@ -1014,6 +1030,15 @@ class tl_product_data extends Backend
 
 </div>
 </form>';
+	}
+	
+	
+	public function relatedButton($row, $href, $label, $title, $icon, $attributes)
+	{
+		if ($row['pid'] > 0)
+			return '';
+		
+		return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
 	}
 
 	

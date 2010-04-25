@@ -43,10 +43,11 @@ array_insert($GLOBALS['BE_MOD']['store'], 0, array
 (
 	'product_manager' => array
 	(
-		'tables'					=> array('tl_product_data', 'tl_product_downloads', 'tl_product_categories'),
+		'tables'					=> array('tl_product_data', 'tl_product_categories', 'tl_product_downloads', 'tl_related_products'),
 		'icon'						=> 'system/modules/isotope/html/icon-products.gif',
 		'stylesheet'				=> 'system/modules/isotope/html/backend.css',
 		'javascript'				=> 'system/modules/isotope/html/backend.js',
+		'generate'					=> array('tl_product_data', 'generateVariants'),
 		'import'					=> array('tl_product_data', 'importAssets'),
 		'link'						=> array('tl_product_data', 'linkProductsToCategories')
 	),
@@ -67,7 +68,7 @@ array_insert($GLOBALS['BE_MOD']['store'], 0, array
 	'isotope' => array
 	(
 		'callback'					=> 'ModuleIsotopeConfig',
-		'tables'					=> array('tl_store', 'tl_shipping_modules', 'tl_shipping_options', 'tl_payment_modules', 'tl_payment_options', 'tl_tax_class', 'tl_tax_rate', 'tl_product_types', 'tl_product_attributes', 'tl_iso_mail', 'tl_iso_mail_content'),
+		'tables'					=> array('tl_store', 'tl_shipping_modules', 'tl_shipping_options', 'tl_payment_modules', 'tl_payment_options', 'tl_tax_class', 'tl_tax_rate', 'tl_product_types', 'tl_product_attributes', 'tl_related_categories', 'tl_iso_mail', 'tl_iso_mail_content'),
 		'icon'						=> 'system/modules/isotope/html/icon-store.gif',
 		'stylesheet'				=> 'system/modules/isotope/html/backend.css',
 	),
@@ -119,6 +120,11 @@ $GLOBALS['ISO_MOD'] = array
 			'tables'					=> array('tl_product_attributes'),
 			'icon'						=> 'system/modules/isotope/html/icon-attributes.gif',
 		),
+		'related_categories' => array
+		(
+			'tables'					=> array('tl_related_categories'),
+			'icon'						=> 'system/modules/isotope/html/icon-related.png',
+		),
 	),
 	'config' => array
 	(
@@ -165,6 +171,7 @@ $GLOBALS['BE_FFL']['optionDataWizard']	= 'OptionDataWizard';
 $GLOBALS['BE_FFL']['surchargeWizard']	= 'SurchargeWizard';
 $GLOBALS['BE_FFL']['variantWizard']		= 'VariantWizard';
 $GLOBALS['BE_FFL']['inheritCheckbox']	= 'InheritCheckBox';
+$GLOBALS['BE_FFL']['productsWizard']	= 'ProductsWizard';
 
 
 /**
