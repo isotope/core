@@ -107,7 +107,7 @@ class IsotopeProduct extends Controller
 
 		if (is_array($this->arrVariantAttributes))
 		{
-			$objProduct = $this->Database->prepare("SELECT MIN(" . $this->Isotope->Store->priceField . ") AS low_price, MAX(" . $this->Isotope->Store->priceField . ") AS high_price FROM tl_product_data WHERE pid=?")
+			$objProduct = $this->Database->prepare("SELECT MIN(" . $this->Isotope->Store->priceField . ") AS low_price, MAX(" . $this->Isotope->Store->priceField . ") AS high_price FROM tl_product_data WHERE pid=? AND published='1'")
 										 ->execute($this->id);
 
 			$this->low_price = $this->Isotope->calculatePrice($objProduct->low_price, $this->arrData['tax_class']);
@@ -846,20 +846,25 @@ class IsotopeProduct extends Controller
 		
 		if (count($arrOptions))
 		{
-			$objVariant = $this->Database->prepare("SELECT * FROM tl_product_data WHERE pid=? AND " . implode("=? AND ", array_keys($arrOptions)) . "=?")->execute(array_merge(array($this->id), $arrOptions));
+			$objVariant = $this->Database->prepare("SELECT * FROM tl_product_data WHERE pid=? AND published='1' AND language='' AND " . implode("=? AND ", array_keys($arrOptions)) . "=?")->execute(array_merge(array($this->id), $arrOptions));
 			
 			// Must match 1 variant, must not match multiple
 			if ($objVariant->numRows == 1)
 			{
+				$arrInherit = deserialize($objVariant->inherit, true);
+
 				$this->arrData['vid'] = $objVariant->id;
 				
 				foreach( $this->arrVariantAttributes as $attribute )
 				{
+					if (in_array($attribute, $arrInherit))
+						continue;
+						
 					$this->arrData[$attribute] = $objVariant->$attribute;
 					unset($this->arrCache[$attribute]);
 				}
 				
-				$this->loadLanguage();
+				$this->loadLanguage($arrInherit);
 			}
 			else
 			{
@@ -872,7 +877,7 @@ class IsotopeProduct extends Controller
 	/**
 	 * Load the language data for a product/variant if found based on the current page language
 	 */
-	protected function loadLanguage()
+	protected function loadLanguage($arrIgnore=array())
 	{
 		// This should never happen, but make sure, or we might fetch the master product record.
 		if (!strlen($GLOBALS['TL_LANGUAGE']))
@@ -893,6 +898,9 @@ class IsotopeProduct extends Controller
 		{
 			foreach( $arrAttributes as $attribute )
 			{
+				if (in_array($attribute, $arrIgnore))
+					continue;
+					
 				if ($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['multilingual'])
 				{
 					$this->arrData[$attribute] = $objLanguage->$attribute;
