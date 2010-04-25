@@ -237,7 +237,11 @@ class ProductCatalog extends Backend
 					continue;
 
 				$arrPalette[$GLOBALS['TL_DCA']['tl_product_data']['fields'][$field]['attributes']['legend']][] = $field;
-				$arrInherit[$field] = strlen($GLOBALS['TL_DCA']['tl_product_data']['fields'][$field]['label'][0]) ? $GLOBALS['TL_DCA']['tl_product_data']['fields'][$field]['label'][0] : $field;
+				
+				if ($field != 'published')
+				{
+					$arrInherit[$field] = strlen($GLOBALS['TL_DCA']['tl_product_data']['fields'][$field]['label'][0]) ? $GLOBALS['TL_DCA']['tl_product_data']['fields'][$field]['label'][0] : $field;
+				}
 			}
 		}
 		
