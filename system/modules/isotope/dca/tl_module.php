@@ -53,6 +53,8 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productfilter']		= '{title_lege
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_addressbook']			= '{title_legend},name,headline,type;{redirect_legend},jumpTo;{template_legend},memberTpl,tableless;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_relatedproducts']		= '{title_legend},name,headline,type;{config_legend},iso_related_categories,perPage;{template_legend:hide},iso_list_layout,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+
 
 /**
  * Fields
@@ -383,6 +385,15 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_buttons'] = array
 	'default'				  => array('add_to_cart'),
 	'options_callback'		  => array('tl_module_isotope', 'getButtons'),
 	'eval'					  => array('multiple'=>true, 'tl_class'=>'clr'),
+);
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_related_categories'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_related_categories'],
+	'exclude'                 => true,
+	'inputType'               => 'checkboxWizard',
+	'foreignKey'			  => 'tl_related_categories.name',
+	'eval'					  => array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'clr'),
 );
 
 

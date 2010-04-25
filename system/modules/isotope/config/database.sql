@@ -51,6 +51,7 @@ CREATE TABLE `tl_module` (
   `iso_listingSortField` varchar(255) NOT NULL default '',
   `iso_listingSortDirection` varchar(8) NOT NULL default '',
   `iso_buttons` blob NULL,
+  `iso_related_categories` blob NULL,
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
