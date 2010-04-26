@@ -36,7 +36,6 @@ $GLOBALS['TL_DCA']['tl_related_categories'] = array
 	'config' => array
 	(
 		'dataContainer'					=> 'Table',
-		'label'							=> &$GLOBALS['TL_LANG']['IMD']['related_categories'][0],
 		'enableVersioning'				=> true,
 	),
 
@@ -45,11 +44,9 @@ $GLOBALS['TL_DCA']['tl_related_categories'] = array
 	(
 		'sorting' => array
 		(
-			'mode'						=> 5,
-			'fields'					=> array('sorting'),
+			'mode'						=> 1,
+			'fields'					=> array('name'),
 			'flag'						=> 1,
-			'paste_button_callback'		=> array('tl_related_categories', 'pasteCategory'),
-			'icon'						=> 'system/modules/isotope/html/icon-related.png',
 		),
 		'label' => array
 		(
@@ -77,15 +74,8 @@ $GLOBALS['TL_DCA']['tl_related_categories'] = array
 			'copy' => array
 			(
 				'label'					=> &$GLOBALS['TL_LANG']['tl_related_categories']['copy'],
-				'href'					=> 'act=paste&amp;mode=copy',
+				'href'					=> 'act=copy',
 				'icon'					=> 'copy.gif'
-			),
-			'cut' => array
-			(
-				'label'					=> &$GLOBALS['TL_LANG']['tl_related_categories']['cut'],
-				'href'					=> 'act=paste&amp;mode=cut',
-				'icon'					=> 'cut.gif',
-				'attributes'			=> 'onclick="Backend.getScrollOffset();"'
 			),
 			'delete' => array
 			(
@@ -135,23 +125,4 @@ $GLOBALS['TL_DCA']['tl_related_categories'] = array
 		),
 	)
 );
-
-
-class tl_related_categories extends Backend
-{
-
-	public function pasteCategory(DataContainer $dc, $row, $table, $cr, $arrClipboard=false)
-	{
-		$imagePasteAfter = $this->generateImage('pasteafter.gif', sprintf($GLOBALS['TL_LANG'][$dc->table]['pasteafter'][1], $row['id']));
-		$imagePasteInto = $this->generateImage('pasteinto.gif', sprintf($GLOBALS['TL_LANG'][$dc->table]['pasteinto'][1], $row['id']));
-
-		if ($row['id'] == 0)
-		{
-			return '<a href="'.$this->addToUrl('act='.$arrClipboard['mode'].'&mode=2&pid='.$row['id'].'&id='.$arrClipboard['id']).'" title="'.specialchars(sprintf($GLOBALS['TL_LANG'][$dc->table]['pasteinto'][1], $row['id'])).'" onclick="Backend.getScrollOffset();">'.$imagePasteInto.'</a> ';
-		}
-
-		return (($arrClipboard['mode'] == 'cut' && $arrClipboard['id'] == $row['id']) || $cr) ? $this->generateImage('pasteafter_.gif').' ' : '<a href="'.$this->addToUrl('act='.$arrClipboard['mode'].'&mode=1&pid='.$row['id'].'&id='.$arrClipboard['id']).'" title="'.specialchars(sprintf($GLOBALS['TL_LANG'][$dc->table]['pasteafter'][1], $row['id'])).'" onclick="Backend.getScrollOffset();">'.$imagePasteAfter.'</a> ';
-	}
-
-}
 
