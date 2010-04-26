@@ -353,12 +353,12 @@ class tl_product_data extends Backend
 								  ->limit(1)
 								  ->execute($row['type']);
 
-		if (!$objType->downloads)
+		if (!$objType->downloads || $row['pid'] > 0)
 			return '';
 			
 		$objDownloads = $this->Database->prepare("SELECT COUNT(*) AS total FROM tl_product_downloads WHERE pid=?")->execute($row['id']);
 			
-		return '<p style="padding-top:8px"><a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).' '.sprintf($GLOBALS['TL_LANG']['MSC']['downloadCount'], $objDownloads->total).'</a></p>';
+		return '<div style="padding:2px 0"><a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).' '.sprintf($GLOBALS['TL_LANG']['MSC']['downloadCount'], $objDownloads->total).'</a></div>';
 	}
 	
 	

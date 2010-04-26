@@ -13,6 +13,7 @@
 .mod_iso_orderdetails tfoot td { text-align: right; padding: 5px 5px 0 5px; }
 .w50h { height: auto; }
 .tl_left a { float: left; }
+.tl_listing .tl_right { height: auto; text-align: right }
 .iso_product { margin-top: 2px; margin-left: 22px; margin-bottom: 2px; width: 530px }
 .iso_product a { float: none; }
 h3.inherit,
