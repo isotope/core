@@ -72,7 +72,7 @@ class PaymentPaypal extends IsotopePayment
 		}
 		
 		// Reload page every 5 seconds and check if payment was successful
-		$GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="5,' . $this->Environment->url . '/' . $this->Environment->request . '">';
+		$GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="5,' . $this->Environment-base . $this->Environment->request . '">';
 		
 		$objTemplate = new FrontendTemplate('mod_message');
 		$objTemplate->type = 'processing';
@@ -198,8 +198,8 @@ class PaymentPaypal extends IsotopePayment
 <input type="hidden" name="no_note" value="1">
 <input type="hidden" name="currency_code" value="' . $this->Isotope->Store->currency . '">
 <input type="hidden" name="button_subtype" value="services">
-<input type="hidden" name="return" value="' . $this->Environment->url . '/' . $this->addToUrl('step=complete') . '">
-<input type="hidden" name="cancel_return" value="' . $this->Environment->url . '/' . $this->addToUrl('step=failed') . '">
+<input type="hidden" name="return" value="' . $this->Environment->base . $this->addToUrl('step=complete') . '">
+<input type="hidden" name="cancel_return" value="' . $this->Environment->base . $this->addToUrl('step=failed') . '">
 <input type="hidden" name="rm" value="1">
 <input type="hidden" name="invoice" value="' . $objOrder->order_id . '">
 
