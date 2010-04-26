@@ -30,7 +30,7 @@
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_related_products']['category']			= array('Category', 'Select a category.');
-$GLOBALS['TL_LANG']['tl_related_products']['products']			= array('Products', 'Select the products for this category.');
+$GLOBALS['TL_LANG']['tl_related_products']['products']			= array('Products', 'Search for your products by keywords (found in name, alias, sku or description) and add products by checking the checkbox.');
 
 
 /**
@@ -51,5 +51,6 @@ $GLOBALS['TL_LANG']['tl_related_products']['pastenew']			= array('Add new at the
 /**
  * Legends
  */
-$GLOBALS['TL_LANG']['tl_related_products']['category_legend']	= 'Related category';
+$GLOBALS['TL_LANG']['tl_related_products']['category_legend']	= 'Category';
+$GLOBALS['TL_LANG']['tl_related_products']['products_legend']	= 'Related products';
 
