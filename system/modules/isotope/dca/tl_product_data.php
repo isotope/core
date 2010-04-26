@@ -117,14 +117,14 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['related'],
 				'href'                => 'table=tl_related_products',
 				'icon'                => 'system/modules/isotope/html/icon-related.png',
-				'button_callback'	  => array('tl_product_data', 'productOnlyButton'),
+				'button_callback'	  => array('tl_product_data', 'relatedButton'),
 			),
 			'generate' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['generate'],
 				'href'                => 'key=generate',
 				'icon'				  => 'system/modules/isotope/html/icon-generate.png',
-				'button_callback'	  => array('tl_product_data', 'productOnlyButton'),
+				'button_callback'	  => array('tl_product_data', 'generateButton'),
 			),
 			'downloads' => array
 			(
@@ -1137,11 +1137,30 @@ class tl_product_data extends Backend
 	
 	
 	/**
-	 * Use as callback for buttons which are not available on variants
+	 * Hide "related" button for variants
 	 */
-	public function productOnlyButton($row, $href, $label, $title, $icon, $attributes)
+	public function relatedButton($row, $href, $label, $title, $icon, $attributes)
 	{
 		if ($row['pid'] > 0)
+			return '';
+		
+		return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
+	}
+	
+	
+	/**
+	 * Hide generate button for variants and product types without variant support
+	 */
+	public function generateButton($row, $href, $label, $title, $icon, $attributes)
+	{
+		if ($row['pid'] > 0)
+			return '';
+			
+		$objType = $this->Database->prepare("SELECT * FROM tl_product_types WHERE id=?")
+								  ->limit(1)
+								  ->execute($row['type']);
+								  
+		if (!$objType->variants)
 			return '';
 		
 		return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
