@@ -72,7 +72,7 @@ class PaymentPaypal extends IsotopePayment
 		}
 		
 		// Reload page every 5 seconds and check if payment was successful
-		$GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="5,' . $this->Environment-base . $this->Environment->request . '">';
+		$GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="5,' . $this->Environment->base . $this->Environment->request . '">';
 		
 		$objTemplate = new FrontendTemplate('mod_message');
 		$objTemplate->type = 'processing';
