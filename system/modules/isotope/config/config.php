@@ -48,6 +48,7 @@ array_insert($GLOBALS['BE_MOD']['store'], 0, array
 		'stylesheet'				=> 'system/modules/isotope/html/backend.css',
 		'javascript'				=> 'system/modules/isotope/html/backend.js',
 		'generate'					=> array('tl_product_data', 'generateVariants'),
+		'quick_edit'				=> array('tl_product_data', 'quickEditVariants'),
 		'import'					=> array('tl_product_data', 'importAssets'),
 		'link'						=> array('tl_product_data', 'linkProductsToCategories')
 	),

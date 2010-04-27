@@ -82,7 +82,7 @@ $GLOBALS['TL_LANG']['tl_product_data']['mmDesc'] = 'Description';
 $GLOBALS['TL_LANG']['tl_product_data']['existing_option_set'] = 'Select an existing product option set';
 $GLOBALS['TL_LANG']['tl_product_data']['new_option_set'] = 'Create a new product option set';
 
-
+$GLOBALS['TL_LANG']['tl_product_data']['variantValuesLabel'] = 'Variant';
 /**
  * Buttons
  */
@@ -97,6 +97,7 @@ $GLOBALS['TL_LANG']['tl_product_data']['related']		= array('Related products', '
 $GLOBALS['TL_LANG']['tl_product_data']['generate']		= array('Generate variants', 'Generate variants for product ID %s');
 $GLOBALS['TL_LANG']['tl_product_data']['import']		= array('Import assets', 'Import images and other media from a folder');
 $GLOBALS['TL_LANG']['tl_product_data']['link']			= array('Link Products to Categories', 'Link products to categories');
+$GLOBALS['TL_LANG']['tl_product_data']['quick_edit']	= array('Quick-edit variants', 'Quick-edit variants for product ID %s');
 
 
 /** 
