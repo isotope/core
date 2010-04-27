@@ -112,6 +112,13 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 				'href'                => 'act=show',
 				'icon'                => 'show.gif'
 			),
+			'quick_edit' => array
+			(
+				'label'				  => &$GLOBALS['TL_LANG']['tl_product_data']['quick_edit'],
+				'href'				  => 'key=quick_edit',
+				'icon'				  => 'system/modules/isotope/html/icon-quick_edit.png',
+				'button_callback'	  => array('tl_product_data', 'quickEditButton')
+			),
 			'related' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['related'],
@@ -256,7 +263,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['stock_quantity'],
 			'inputType'				=> 'text',
-			'eval'					=> array('mandatory'=>true, 'rgxp'=>'digits', 'disabled'=>'disabled', 'tl_class'=>'w50'),
+			'eval'					=> array(/*'mandatory'=>true, */'rgxp'=>'digits', 'disabled'=>'disabled', 'tl_class'=>'w50'),
 		),
 		'stock_oversell' => array
 		(
@@ -803,6 +810,9 @@ class tl_product_data extends Backend
 		
 	}
 	
+	/** 
+	 * Repair associations between products and categories
+	 */
 	public function generatePageAssociations()
 	{
 		if(!$this->Input->get('generateAssoc'))
@@ -965,6 +975,135 @@ class tl_product_data extends Backend
 	}
 	
 	
+	/**
+	 * Quickly edit the most common product variant data
+	 */
+	public function quickEditVariants($dc)
+	{
+		$objProduct = $this->Database->prepare("SELECT id, pid, language, type, (SELECT attributes FROM tl_product_types WHERE id=tl_product_data.type) AS attributes, (SELECT variant_attributes FROM tl_product_types WHERE id=tl_product_data.type) AS variant_attributes FROM tl_product_data WHERE id=?")->limit(1)->execute($dc->id);
+		
+		$arrFields = array();
+		$arrAttributes = deserialize($objProduct->attributes);
+		
+		if (is_array($arrAttributes) && count($arrAttributes))
+		{
+			foreach( $arrAttributes as $attribute )
+			{
+				if ($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['add_to_product_variants'])
+				{
+					$arrFields[] = $attribute;
+				}
+			}
+		}
+
+		$objVariants = $this->Database->prepare("SELECT * FROM tl_product_data WHERE pid=? AND language=''")->execute($dc->id);
+		$strBuffer .= '<div id="tl_buttons">
+<a href="'.ampersand(str_replace('&key=quick_edit&id=2', '', $this->Environment->request)).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
+</div>
+
+<h2 class="sub_headline">'.sprintf($GLOBALS['TL_LANG']['tl_product_data']['quick_edit'][1], $dc->id).'</h2>'.$this->getMessages().'
+
+<form action="'.ampersand($this->Environment->request, true).'" id="tl_product_quick_edit" class="tl_form" method="post">
+<div class="tl_formbody_edit">
+<input type="hidden" name="FORM_SUBMIT" value="tl_product_quick_edit" />
+
+<div class="tl_tbox block">
+<table width="100%" border="0" cellpadding="5" cellspacing="0" summary="">
+<thead>
+<th>' . $GLOBALS['TL_LANG']['tl_product_data']['variantValuesLabel'] . '</th>
+<th>'.$GLOBALS['TL_LANG']['tl_product_data']['sku'][0].'</th>
+<th>'.$GLOBALS['TL_LANG']['tl_product_data']['price'][0].'</th>
+<th>'.$GLOBALS['TL_LANG']['tl_product_data']['weight'][0].'</th>
+<th>'.$GLOBALS['TL_LANG']['tl_product_data']['stock_quantity'][0].'</th>
+<th><img src="system/themes/default/images/published.gif" width="16" height="16" alt="' . $GLOBALS['TL_LANG']['tl_product_data']['published'][0].'" /></th>
+</thead>';		
+		
+		$arrFields = array_flip($arrFields);
+				
+		while($objVariants->next())
+		{
+			$doNotSubmit = false;
+			$arrSet = array();
+			
+			$arrPublished[$objVariants->id] = $objVariants->published;
+			
+			$arrWidgets['sku'] = new TextField($this->prepareForWidget($GLOBALS['TL_DCA']['tl_product_data']['fields']['sku'], 'sku[' . $objVariants->id . ']', $objVariants->sku));
+			
+			$arrWidgets['price'] = new TextField($this->prepareForWidget($GLOBALS['TL_DCA']['tl_product_data']['fields']['price'], 'price[' . $objVariants->id . ']', $objVariants->price));
+			
+			$arrWidgets['weight'] = new TextField($this->prepareForWidget($GLOBALS['TL_DCA']['tl_product_data']['fields']['weight'], 'weight[' . $objVariants->id . ']', $objVariants->weight));
+			
+			$arrWidgets['stock_quantity'] = new TextField($this->prepareForWidget($GLOBALS['TL_DCA']['tl_product_data']['fields']['stock_quantity'], 'stock_quantity[' . $objVariants->id . ']', $objVariants->stock_quantity));
+			
+
+			foreach($arrWidgets as $key=>$objWidget)
+			{
+								
+				switch($key)
+				{
+					case 'sku':
+						$objWidget->class = 'tl_text_2';
+						break;
+					default:
+						$objWidget->class = 'tl_text_3';
+						break;
+				}
+			
+				if ($this->Input->post('FORM_SUBMIT') == 'tl_product_quick_edit')
+				{
+					$objWidget->validate();
+					
+					if ($objWidget->hasErrors())
+					{						
+						$doNotSubmit = true;
+					}
+					else
+					{												
+						$arrSet[$key] = $objWidget->value;
+					}
+				}
+			}
+			
+			
+			if($this->Input->post('FORM_SUBMIT') == 'tl_product_quick_edit' && !$doNotSubmit)
+			{				
+				$arrPublished = $this->Input->post('published');
+							
+				$arrSet['published'] = ($arrPublished[$objVariants->id] ? $arrPublished[$objVariants->id] : '');
+		
+				$this->Database->prepare("UPDATE tl_product_data %s WHERE id=?")
+							   ->set($arrSet)
+							   ->execute($objVariants->id);
+			}
+			
+			$strBuffer .= '
+<tr>
+	<td>'.implode(', ', array_intersect_key($objVariants->row(), $arrFields)).'</td>
+	<td>'.$arrWidgets['sku']->generate().'</td>
+	<td>'.$arrWidgets['price']->generate().'</td>
+	<td>'.$arrWidgets['weight']->generate().'</td>
+	<td>'.$arrWidgets['stock_quantity']->generate().'</td>
+	<td><input type="checkbox" name="published['.$objVariants->id.']" value="1"'.($arrPublished[$objVariants->id] ? ' checked="checked"' : '').' class="tl_checkbox" /></td>
+<tr>';
+		
+		}		
+		
+		return $strBuffer . '
+</table>
+</div>
+
+</div>
+
+<div class="tl_formbody_submit">
+
+<div class="tl_submit_container">
+  <input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['tl_product_data']['quick_edit'][0]).'" />
+</div>
+
+</div>
+</form>';		
+		
+	}
 	/**
 	 * Import images and other media file for products
 	 */
@@ -1166,6 +1305,23 @@ class tl_product_data extends Backend
 		return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
 	}
 
+	/**
+	 * Hide generate button for variants and product types without variant support
+	 */
+	public function quickEditButton($row, $href, $label, $title, $icon, $attributes)
+	{
+		if ($row['pid'] > 0)
+			return '';
+			
+		$objType = $this->Database->prepare("SELECT * FROM tl_product_types WHERE id=?")
+								  ->limit(1)
+								  ->execute($row['type']);
+								  
+		if (!$objType->variants)
+			return '';
+		
+		return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
+	}
 	
 	/**
 	 * Return the edit page button
