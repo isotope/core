@@ -113,7 +113,7 @@ class PaymentPaypalPayflowPro extends IsotopePayment
 		
 		if($this->Isotope->Store->country=='UK')
 		{
-			if($this->Cart->billingAddress['country']=='UK' && ($_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_type']=='maestro' || $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_type']=='solo')
+			if($this->Cart->billingAddress['country']=='UK' && ($_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_type']=='maestro' || $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_type']=='solo'))
 			{
 				$arrData['STARTDATE'] = $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_start_date'];
 				$arrData['ISSUENUMBER'] = $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_issue_number'];
