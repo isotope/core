@@ -123,6 +123,8 @@ class ShippingUPS extends IsotopeShipping
 		{
 			case 'price':
 				$this->import('IsotopeCart', 'Cart');
+				
+				$arrSubDivisionShipping = explode(',',$this->Cart->shippingAddress['subdivision']);
 						
 				$arrDestination = array
 				(
@@ -133,10 +135,12 @@ class ShippingUPS extends IsotopeShipping
 					'street2'		=> $this->Cart->shippingAddress['street_2'],
 					'street3'		=> $this->Cart->shippingAddress['street_3'],
 					'city'			=> $this->Cart->shippingAddress['city'],
-					'state'			=> $this->Cart->shippingAddress['subdivision'],
+					'state'			=> $arrSubDivisionShipping[1],
 					'zip'			=> $this->Cart->shippingAddress['postal'],
 					'country'		=> $this->Cart->shippingAddress['country']
 				);
+
+				$arrSubDivisionStore = explode(',',$this->Isotope->Store->subdivision);
 
 				$arrOrigin = array
 				(
@@ -147,7 +151,7 @@ class ShippingUPS extends IsotopeShipping
 					'street2'		=> $this->Isotope->Store->street_2,
 					'street3'		=> $this->Isotope->Store->street_3,
 					'city'			=> $this->Isotope->Store->city,
-					'state'			=> $this->Isotope->Store->subdivision,
+					'state'			=> $arrSubDivisionStore[1],
 					'zip'			=> $this->Isotope->Store->postal,
 					'country'		=> $this->Isotope->Store->country
 				);
