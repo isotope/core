@@ -88,7 +88,16 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['edit'],
 				'href'                => 'act=edit',
 				'icon'                => 'edit.gif',
-				'button_callback'     => array('tl_product_data', 'editProduct')
+				'button_callback'     => array('tl_product_data', 'editProduct'),
+				'attributes'          => 'class="contextmenu"'
+			),
+			'quick_edit' => array
+			(
+				'label'				  => &$GLOBALS['TL_LANG']['tl_product_data']['quick_edit'],
+				'href'				  => 'key=quick_edit',
+				'icon'				  => 'system/modules/isotope/html/icon-quick_edit.png',
+				'button_callback'	  => array('tl_product_data', 'quickEditButton'),
+				'attributes'          => 'class="edit-header"'
 			),
 			'copy' => array
 			(
@@ -112,12 +121,12 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 				'href'                => 'act=show',
 				'icon'                => 'show.gif'
 			),
-			'quick_edit' => array
+			'generate' => array
 			(
-				'label'				  => &$GLOBALS['TL_LANG']['tl_product_data']['quick_edit'],
-				'href'				  => 'key=quick_edit',
-				'icon'				  => 'system/modules/isotope/html/icon-quick_edit.png',
-				'button_callback'	  => array('tl_product_data', 'quickEditButton')
+				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['generate'],
+				'href'                => 'key=generate',
+				'icon'				  => 'system/modules/isotope/html/icon-generate.png',
+				'button_callback'	  => array('tl_product_data', 'generateButton'),
 			),
 			'related' => array
 			(
@@ -125,13 +134,6 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 				'href'                => 'table=tl_related_products',
 				'icon'                => 'system/modules/isotope/html/icon-related.png',
 				'button_callback'	  => array('tl_product_data', 'relatedButton'),
-			),
-			'generate' => array
-			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['generate'],
-				'href'                => 'key=generate',
-				'icon'				  => 'system/modules/isotope/html/icon-generate.png',
-				'button_callback'	  => array('tl_product_data', 'generateButton'),
 			),
 			'downloads' => array
 			(
@@ -998,7 +1000,7 @@ class tl_product_data extends Backend
 
 		$objVariants = $this->Database->prepare("SELECT * FROM tl_product_data WHERE pid=? AND language=''")->execute($dc->id);
 		$strBuffer .= '<div id="tl_buttons">
-<a href="'.ampersand(str_replace('&key=quick_edit&id=2', '', $this->Environment->request)).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
+<a href="'.ampersand(str_replace('&key=quick_edit', '', $this->Environment->request)).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
 </div>
 
 <h2 class="sub_headline">'.sprintf($GLOBALS['TL_LANG']['tl_product_data']['quick_edit'][1], $dc->id).'</h2>'.$this->getMessages().'
@@ -1019,6 +1021,7 @@ class tl_product_data extends Backend
 </thead>';		
 		
 		$arrFields = array_flip($arrFields);
+		$globalDoNotSubmit = false;
 				
 		while($objVariants->next())
 		{
@@ -1056,6 +1059,7 @@ class tl_product_data extends Backend
 					if ($objWidget->hasErrors())
 					{						
 						$doNotSubmit = true;
+						$globalDoNotSubmit = true;
 					}
 					else
 					{												
@@ -1086,7 +1090,19 @@ class tl_product_data extends Backend
 	<td><input type="checkbox" name="published['.$objVariants->id.']" value="1"'.($arrPublished[$objVariants->id] ? ' checked="checked"' : '').' class="tl_checkbox" /></td>
 <tr>';
 		
-		}		
+		}
+		
+		if ($this->Input->post('FORM_SUBMIT') == 'tl_product_quick_edit' && !$globalDoNotSubmit)
+		{
+			if (strlen($this->Input->post('saveNclose')))
+			{
+				$this->redirect(str_replace('&key=quick_edit', '', $this->Environment->request));
+			}
+			else
+			{
+				$this->reload();
+			}
+		}
 		
 		return $strBuffer . '
 </table>
@@ -1097,7 +1113,8 @@ class tl_product_data extends Backend
 <div class="tl_formbody_submit">
 
 <div class="tl_submit_container">
-  <input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['tl_product_data']['quick_edit'][0]).'" />
+  <input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['save']).'" />
+  <input type="submit" name="saveNclose" id="saveNclose" class="tl_submit" accesskey="c" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['saveNclose']).'" />
 </div>
 
 </div>
