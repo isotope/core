@@ -712,7 +712,6 @@ CREATE TABLE `tl_related_categories` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `tstamp` int(10) unsigned NOT NULL default '0',
   `name` varchar(255) NOT NULL default '',
-  `label` varchar(255) NOT NULL default '',
   `jumpTo` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

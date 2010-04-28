@@ -96,7 +96,7 @@ $GLOBALS['TL_DCA']['tl_related_categories'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'						=> '{name_legend},name,label;{redirect_legend},jumpTo',
+		'default'						=> '{name_legend},name;{redirect_legend},jumpTo',
 	),
 
 	// Fields
@@ -107,14 +107,7 @@ $GLOBALS['TL_DCA']['tl_related_categories'] = array
 			'label'						=> &$GLOBALS['TL_LANG']['tl_related_categories']['name'],
 			'exclude'					=> true,
 			'inputType'					=> 'text',
-			'eval'						=> array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
-		),
-		'label' => array
-		(
-			'label'						=> &$GLOBALS['TL_LANG']['tl_related_categories']['label'],
-			'exclude'					=> true,
-			'inputType'					=> 'text',
-			'eval'						=> array('maxlength'=>255, 'tl_class'=>'w50'),
+			'eval'						=> array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'long'),
 		),
 		'jumpTo' => array
 		(
