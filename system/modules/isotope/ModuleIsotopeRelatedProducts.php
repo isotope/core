@@ -69,6 +69,7 @@ class ModuleIsotopeRelatedProducts extends ModuleIsotope
 									 ->limit(1)
 									 ->execute($this->Input->get('product'));
 		
+		$arrJumpTo = array();
 		$objCategories = $this->Database->prepare("SELECT * FROM tl_related_products WHERE pid=? AND category IN (" . implode(',', $this->iso_related_categories) . ") ORDER BY id=" . implode(' DESC, id=', $this->iso_related_categories) . " DESC")->execute($objProduct->id);
 		
 		while( $objCategories->next() )
@@ -78,6 +79,11 @@ class ModuleIsotopeRelatedProducts extends ModuleIsotope
 			if (is_array($ids) && count($ids))
 			{
 				$arrIds = array_unique(array_merge($arrIds, $ids));
+				
+				if ($objCategories->jumpTo)
+				{
+					$arrJumpTo = array_merge(array_fill_keys(array_map('strval', $ids), $objCategories->jumpTo), $arrJumpTo);
+				}
 			}
 		}
 		
@@ -103,10 +109,12 @@ class ModuleIsotopeRelatedProducts extends ModuleIsotope
 			return;
 		}
 		
+		global $objPage;
 		$arrBuffer = array();
 		
 		foreach( $arrProducts as $i => $objProduct )
 		{
+			$objProduct->reader_jumpTo = $arrJumpTo[$objProduct->id] ? $arrJumpTo[$objProduct->id] : $objPage->id;
 			$arrBuffer[] = array
 			(
 				'class'		=> (($i%2 ? 'even' : 'odd') . ($i == 0 ? ' product_first' : '')),
