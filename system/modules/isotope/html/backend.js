@@ -356,11 +356,71 @@ var Isotope =
 		{
 			$(('ctrl_'+name)).send();
 		});
+	},
+	
+	initializeToolsMenu: function()
+	{
+		if (!$$('#tl_buttons .isotope-tools'))
+			return;
+			
+		$$('#tl_buttons .header_isotope_tools').setStyle('display', 'inline');
+		
+		var tools = $$('#tl_buttons .isotope-tools').clone();
+		
+		var buttons = [];
+		var nodes = $('tl_buttons').childNodes;
+		for( var i=0; i<nodes.length; i++ )
+		{
+			if (nodes[i].hasClass && nodes[i].hasClass('isotope-tools'))
+			{
+				buttons.erase(buttons[i-1]);
+				break;
+			}
+			
+			if (nodes[i].clone)
+			{
+				buttons.push(nodes[i].clone());
+			}
+			else
+			{
+				buttons.push(nodes[i]);
+			}
+		}
+		
+		$('tl_buttons').empty().adopt(buttons);
+		
+		var div = new Element('div',
+		{
+			'id': 'isotopetoolsmenu',
+			'styles': {
+				'top': ($$('a.header_isotope_tools')[0].getPosition().y + 22)
+			}
+		}).adopt(tools);
+		
+		div.inject($(document.body));
+		div.setStyle('left', $$('a.header_isotope_tools')[0].getPosition().x - 7);
+		
+		// Add trigger to tools buttons
+		$$('a.header_isotope_tools').addEvent('contextmenu', function(e)
+		{
+			$('isotopetoolsmenu').setStyle('display', 'block');
+			return false;
+		}).addEvent('click', function(e)
+		{
+			$('isotopetoolsmenu').setStyle('display', 'block');
+			return false;
+		});
+
+		// Hide context menu 
+		$(document.body).addEvent('click', function()
+		{
+			$('isotopetoolsmenu').setStyle('display', 'none');
+		});
 	}
 };
-
 
 window.addEvent('domready', function()
 {
 	Isotope.addInteractiveHelp();
+	Isotope.initializeToolsMenu();
 });
