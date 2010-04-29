@@ -340,6 +340,14 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_enableSearch'] = array
 	'eval'					  => array('tl_class'=>'w50')
 );
 
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_disableFilterAjax'] = array
+(
+  'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_disableFilterAjax'],
+  'exclude'                 => true,
+  'inputType'               => 'checkbox',
+  'eval'            => array('tl_class'=>'w50')
+);
+
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_cart_jumpTo'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_cart_jumpTo'],
