@@ -362,3 +362,10 @@ $GLOBALS['ISO_ATTR'] = array
 	),
 );
 
+
+/**
+ * URL Keywords for FolderURL extension
+ */
+$GLOBALS['URL_KEYWORDS'][] = 'product';
+$GLOBALS['URL_KEYWORDS'][] = 'step';
+
