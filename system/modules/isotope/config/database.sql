@@ -202,8 +202,6 @@ CREATE TABLE `tl_store` (
   `label` varchar(255) NOT NULL default '',
   `missing_image_placeholder` varchar(255) NOT NULL default '',
   `cookie_duration` int(10) unsigned NOT NULL default '0',
-  `priceField` varchar(64) NOT NULL default '',
-  `priceOverrideField` varchar(64) NOT NULL default '',
   `priceCalculateFactor` varchar(10) NOT NULL default '',
   `priceCalculateMode` varchar(3) NOT NULL default '',
   `priceRoundPrecision` int(1) unsigned NOT NULL default '2',

@@ -104,7 +104,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			{name_legend},name,label,isDefaultStore;
 			{address_legend:hide},firstname,lastname,company,street_1,street_2,street_3,postal,city,subdivision,country,emailShipping,phone;
 			{config_legend},shipping_countries,billing_countries,shipping_fields,billing_fields,weightUnit,cookie_duration,enableGoogleAnalytics;
-			{price_legend},priceField,priceOverrideField,priceCalculateFactor,priceCalculateMode,priceRoundPrecision,priceRoundIncrement;
+			{price_legend},priceCalculateFactor,priceCalculateMode,priceRoundPrecision,priceRoundIncrement;
 			{currency_legend},currency,currencySymbol,currencyFormat,currencyPosition;
 			{redirect_legend},cartJumpTo,checkoutJumpTo;
 			{invoice_legend},invoiceLogo;
@@ -340,24 +340,6 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'reference'               => &$GLOBALS['TL_LANG']['MSC'],
 			'eval'                    => array('rgxp'=>'digit', 'nospace'=>true, 'tl_class'=>'w50'),
 		),
-		'priceField' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['priceField'],
-			'exclude'                 => true,
-			'default'				  => 'price',
-			'inputType'               => 'select',
-			'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
-			'options_callback'		  => array('tl_store', 'getPriceFields'),
-		),
-		'priceOverrideField' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['priceOverrideField'],
-			'exclude'                 => true,
-			'default'				  => 'price_override',
-			'inputType'               => 'select',
-			'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
-			'options_callback'		  => array('tl_store', 'getPriceFields'),
-		),
 		'priceCalculateFactor' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['priceCalculateFactor'],
@@ -479,32 +461,6 @@ class tl_store extends Backend
 		{
 			$this->redirect('typolight/main.php?act=error');
 		}
-	}
-	
-
-	/**
-	 * Return all fields that are price fields.
-	 */
-	public function getPriceFields()
-	{
-		// Make sure field data is available
-		if (!is_array($GLOBALS['TL_DCA']['tl_product_data']['fields']))
-		{
-			$this->loadDataContainer('tl_product_data');
-			$this->loadLanguageFile('tl_product_data');
-		}
-		
-		$arrPricingFields = array();
-		
-		foreach( $GLOBALS['TL_DCA']['tl_product_data']['fields'] as $field => $arrData )
-		{
-			if (is_array($arrData['attributes']) && $arrData['attributes']['legend'] == 'pricing_legend')
-			{
-				$arrPricingFields[$field] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
-			}
-		}
-		
-		return $arrPricingFields;
 	}
 	
 	

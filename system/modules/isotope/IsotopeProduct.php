@@ -107,7 +107,7 @@ class IsotopeProduct extends Controller
 
 		if (is_array($this->arrVariantAttributes))
 		{
-			$objProduct = $this->Database->prepare("SELECT MIN(" . $this->Isotope->Store->priceField . ") AS low_price, MAX(" . $this->Isotope->Store->priceField . ") AS high_price FROM tl_product_data WHERE pid=? AND published='1'")
+			$objProduct = $this->Database->prepare("SELECT MIN(price) AS low_price, MAX(price) AS high_price FROM tl_product_data WHERE pid=? AND published='1'")
 										 ->execute($this->id);
 
 			$this->low_price = $this->Isotope->calculatePrice($objProduct->low_price, $this->arrData['tax_class']);
@@ -115,8 +115,8 @@ class IsotopeProduct extends Controller
 		}
 		else
 		{
-			$this->low_price = $this->Isotope->calculatePrice($this->arrData[$this->Isotope->Store->priceField], $this->arrData['tax_class']);
-			$this->high_price = $this->Isotope->calculatePrice($this->arrData[$this->Isotope->Store->priceField], $this->arrData['tax_class']);
+			$this->low_price = $this->Isotope->calculatePrice($this->arrData['price'], $this->arrData['tax_class']);
+			$this->high_price = $this->Isotope->calculatePrice($this->arrData['price'], $this->arrData['tax_class']);
 		}
 		
 		$this->loadLanguage();
@@ -137,10 +137,10 @@ class IsotopeProduct extends Controller
 				return $this->arrData[$strKey];
 
 			case 'price':
-				return $this->Isotope->calculatePrice($this->arrData[$this->Isotope->Store->priceField], $this->arrData['tax_class']);
+				return $this->Isotope->calculatePrice($this->arrData['price'], $this->arrData['tax_class']);
 
 			case 'price_override':
-				return ($this->arrData[$this->Isotope->Store->priceOverrideField] ? $this->arrData[$this->Isotope->Store->priceOverrideField] : '');
+				return ($this->arrData['price_override'] ? $this->arrData['price_override'] : '');
 
 			case 'total_price':
 				return ($this->quantity_requested ? $this->quantity_requested : 1) * $this->price;
@@ -268,14 +268,6 @@ class IsotopeProduct extends Controller
 			case 'low_price':
 			case 'high_price':
 				$this->arrData[$strKey] = $varValue;
-				break;
-
-			case 'price':
-				$this->arrData[$this->Isotope->Store->priceField] = $varValue;
-				break;
-
-			case 'price_override':
-				$this->arrData[$this->Isotope->Store->overridePriceField] = $varValue;
 				break;
 
 			default:

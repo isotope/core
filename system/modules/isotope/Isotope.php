@@ -165,8 +165,6 @@ class Isotope extends Controller
 					'sorting'				    => 0,
 					'store_configuration_name'  => 'Default Store Configuration',
 					'cookie_duration'			=> 30,
-					'priceField'				=> 'price',
-					'priceOverrideField'		=> 'price_override'
 				);
 				
 				$this->Database->prepare("INSERT INTO tl_store %s")
