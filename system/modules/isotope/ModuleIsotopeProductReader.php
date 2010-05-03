@@ -170,7 +170,7 @@ class ModuleIsotopeProductReader extends ModuleIsotope
 			
 			switch($k)
 			{
-				case $this->Isotope->Store->priceField:
+				case 'price':
 					$arrAttributes[$k] = $this->Isotope->formatPriceWithCurrency($v);
 					break;
 			}
