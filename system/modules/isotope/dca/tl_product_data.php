@@ -882,7 +882,7 @@ class tl_product_data extends Backend
 		$doNotSubmit = false;
 		$strBuffer = '';
 		$arrOptions = array();
-		$arrAttributes = deserialize($objProduct->attributes);
+		
 		
 		if (is_array($arrAttributes) && count($arrAttributes))
 		{
@@ -989,10 +989,13 @@ class tl_product_data extends Backend
 	 */
 	public function quickEditVariants($dc)
 	{
+		$arrQuickEditFields = array('sku','price','weight','stock_quantity');
+
 		$objProduct = $this->Database->prepare("SELECT id, pid, language, type, (SELECT attributes FROM tl_product_types WHERE id=tl_product_data.type) AS attributes, (SELECT variant_attributes FROM tl_product_types WHERE id=tl_product_data.type) AS variant_attributes FROM tl_product_data WHERE id=?")->limit(1)->execute($dc->id);
 		
 		$arrFields = array();
 		$arrAttributes = deserialize($objProduct->attributes);
+		$arrVarAttributes = deserialize($objProduct->variant_attributes);
 		
 		if (is_array($arrAttributes) && count($arrAttributes))
 		{
@@ -1019,12 +1022,17 @@ class tl_product_data extends Backend
 <div class="tl_tbox block">
 <table width="100%" border="0" cellpadding="5" cellspacing="0" summary="">
 <thead>
-<th>' . $GLOBALS['TL_LANG']['tl_product_data']['variantValuesLabel'] . '</th>
-<th>'.$GLOBALS['TL_LANG']['tl_product_data']['sku'][0].'</th>
-<th>'.$GLOBALS['TL_LANG']['tl_product_data']['price'][0].'</th>
-<th>'.$GLOBALS['TL_LANG']['tl_product_data']['weight'][0].'</th>
-<th>'.$GLOBALS['TL_LANG']['tl_product_data']['stock_quantity'][0].'</th>
-<th><img src="system/themes/default/images/published.gif" width="16" height="16" alt="' . $GLOBALS['TL_LANG']['tl_product_data']['published'][0].'" /></th>
+<th align="center">' . $GLOBALS['TL_LANG']['tl_product_data']['variantValuesLabel'] . '</th>';
+
+foreach($arrQuickEditFields as $field)
+{
+	if(in_array($field, $arrVarAttributes))
+	{
+		$strBuffer .= '<th align="center">'.$GLOBALS['TL_LANG']['tl_product_data'][$field][0].'</th>';
+	}
+}
+
+$strBuffer .= '<th align="center"><img src="system/themes/default/images/published.gif" width="16" height="16" alt="' . $GLOBALS['TL_LANG']['tl_product_data']['published'][0].'" /></th>
 </thead>';		
 		
 		$arrFields = array_flip($arrFields);
@@ -1037,6 +1045,14 @@ class tl_product_data extends Backend
 			
 			$arrPublished[$objVariants->id] = $objVariants->published;
 			
+			foreach($arrQuickEditFields as $field)
+			{
+				if(in_array($field, $arrVarAttributes))
+				{
+					$arrWidgets[$field] = new TextField($this->prepareForWidget($GLOBALS['TL_DCA']['tl_product_data']['fields'][$field], $field.'[' . $objVariants->id .']', $objVariants->{$field}));
+				}
+			}
+			/*
 			$arrWidgets['sku'] = new TextField($this->prepareForWidget($GLOBALS['TL_DCA']['tl_product_data']['fields']['sku'], 'sku[' . $objVariants->id . ']', $objVariants->sku));
 			
 			$arrWidgets['price'] = new TextField($this->prepareForWidget($GLOBALS['TL_DCA']['tl_product_data']['fields']['price'], 'price[' . $objVariants->id . ']', $objVariants->price));
@@ -1044,7 +1060,7 @@ class tl_product_data extends Backend
 			$arrWidgets['weight'] = new TextField($this->prepareForWidget($GLOBALS['TL_DCA']['tl_product_data']['fields']['weight'], 'weight[' . $objVariants->id . ']', $objVariants->weight));
 			
 			$arrWidgets['stock_quantity'] = new TextField($this->prepareForWidget($GLOBALS['TL_DCA']['tl_product_data']['fields']['stock_quantity'], 'stock_quantity[' . $objVariants->id . ']', $objVariants->stock_quantity));
-			
+			*/
 
 			foreach($arrWidgets as $key=>$objWidget)
 			{
@@ -1089,12 +1105,21 @@ class tl_product_data extends Backend
 			
 			$strBuffer .= '
 <tr>
-	<td>'.implode(', ', array_intersect_key($objVariants->row(), $arrFields)).'</td>
-	<td>'.$arrWidgets['sku']->generate().'</td>
+	<td align="center">'.implode(', ', array_intersect_key($objVariants->row(), $arrFields)).'</td>';
+	foreach($arrQuickEditFields as $field)
+	{
+		if(in_array($field, $arrVarAttributes))
+		{
+			$strBuffer .= '<td align="center">'.$arrWidgets[$field]->generate().'</td>';
+		}
+	}
+	/*
+	'<td>'.$arrWidgets['sku']->generate().'</td>
 	<td>'.$arrWidgets['price']->generate().'</td>
 	<td>'.$arrWidgets['weight']->generate().'</td>
-	<td>'.$arrWidgets['stock_quantity']->generate().'</td>
-	<td><input type="checkbox" name="published['.$objVariants->id.']" value="1"'.($arrPublished[$objVariants->id] ? ' checked="checked"' : '').' class="tl_checkbox" /></td>
+	<td>'.$arrWidgets['stock_quantity']->generate().'</td>*/
+	
+	$strBuffer .= '<td align="center"><input type="checkbox" name="published['.$objVariants->id.']" value="1"'.($arrPublished[$objVariants->id] ? ' checked="checked"' : '').' class="tl_checkbox" /></td>
 <tr>';
 		
 		}
