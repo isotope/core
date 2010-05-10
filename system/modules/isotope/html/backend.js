@@ -360,7 +360,7 @@ var Isotope =
 	
 	initializeToolsMenu: function()
 	{
-		if (!$$('#tl_buttons .isotope-tools'))
+		if ($$('#tl_buttons .isotope-tools').length < 1)
 			return;
 			
 		$$('#tl_buttons .header_isotope_tools').setStyle('display', 'inline');
