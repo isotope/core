@@ -36,9 +36,9 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 	'config' => array
 	(
 		'dataContainer'				=> 'Table',
-		'notEditable'				=> false,
 		'switchToEdit'				=> true,
 		'enableVersioning'			=> true,
+		'closed'					=> true,
 		'onload_callback'			=> array
 		(
 			array('tl_product_types', 'checkPermission'),
@@ -62,7 +62,20 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 		),
 		'global_operations' => array
 		(
-
+			'back' => array
+			(
+				'label'					=> &$GLOBALS['TL_LANG']['MSC']['backBT'],
+				'href'					=> 'table=',
+				'class'					=> 'header_back',
+				'attributes'			=> 'onclick="Backend.getScrollOffset();"',
+			),
+			'new' => array
+			(
+				'label'					=> &$GLOBALS['TL_LANG']['tl_product_types']['new'],
+				'href'					=> 'act=create',
+				'class'					=> 'header_new',
+				'attributes'			=> 'onclick="Backend.getScrollOffset();"',
+			),
 			'all' => array
 			(
 				'label'				=> &$GLOBALS['TL_LANG']['MSC']['all'],
@@ -215,6 +228,11 @@ class tl_product_types extends Backend
 	 */
 	public function checkPermission()
 	{
+		if (strlen($this->Input->get('act')))
+		{
+			$GLOBALS['TL_DCA']['tl_product_types']['config']['closed'] = false;
+		}
+		
 		$this->import('BackendUser', 'User');
 
 		if ($this->User->isAdmin)

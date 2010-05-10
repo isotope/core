@@ -37,6 +37,11 @@ $GLOBALS['TL_DCA']['tl_related_categories'] = array
 	(
 		'dataContainer'					=> 'Table',
 		'enableVersioning'				=> true,
+		'closed'						=> true,
+		'onload_callback' => array
+		(
+			array('tl_related_categories', 'checkPermission'),
+		),
 	),
 
 	// List
@@ -55,6 +60,20 @@ $GLOBALS['TL_DCA']['tl_related_categories'] = array
 		),
 		'global_operations' => array
 		(
+			'back' => array
+			(
+				'label'					=> &$GLOBALS['TL_LANG']['MSC']['backBT'],
+				'href'					=> 'table=',
+				'class'					=> 'header_back',
+				'attributes'			=> 'onclick="Backend.getScrollOffset();"',
+			),
+			'new' => array
+			(
+				'label'					=> &$GLOBALS['TL_LANG']['tl_related_categories']['new'],
+				'href'					=> 'act=create',
+				'class'					=> 'header_new',
+				'attributes'			=> 'onclick="Backend.getScrollOffset();"',
+			),
 			'all' => array
 			(
 				'label'					=> &$GLOBALS['TL_LANG']['MSC']['all'],
@@ -118,4 +137,17 @@ $GLOBALS['TL_DCA']['tl_related_categories'] = array
 		),
 	)
 );
+
+
+class tl_related_categories extends Backend
+{
+	
+	public function checkPermission($dc)
+	{
+		if (strlen($this->Input->get('act')))
+		{
+			$GLOBALS['TL_DCA']['tl_related_categories']['config']['closed'] = false;
+		}
+	}
+}
 

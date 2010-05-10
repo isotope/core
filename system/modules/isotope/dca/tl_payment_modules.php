@@ -38,8 +38,10 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 		'dataContainer'               => 'Table',
 		'ctable'                      => array('tl_payment_options'),
 		'enableVersioning'            => true,
+		'closed'						=> true,
 		'onload_callback'			  => array
 		(
+			array('tl_payment_modules', 'checkPermission'),
 			array('tl_payment_modules', 'loadShippingModules'),
 		),
 	),
@@ -63,6 +65,20 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 		),
 		'global_operations' => array
 		(
+			'back' => array
+			(
+				'label'					=> &$GLOBALS['TL_LANG']['MSC']['backBT'],
+				'href'					=> 'table=',
+				'class'					=> 'header_back',
+				'attributes'			=> 'onclick="Backend.getScrollOffset();"',
+			),
+			'new' => array
+			(
+				'label'					=> &$GLOBALS['TL_LANG']['tl_payment_modules']['new'],
+				'href'					=> 'act=create',
+				'class'					=> 'header_new',
+				'attributes'			=> 'onclick="Backend.getScrollOffset();"',
+			),
 			'all' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['MSC']['all'],
@@ -411,6 +427,15 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
  */
 class tl_payment_modules extends Backend
 {
+	
+	public function checkPermission($dc)
+	{
+		if (strlen($this->Input->get('act')))
+		{
+			$GLOBALS['TL_DCA']['tl_payment_modules']['config']['closed'] = false;
+		}
+	}
+
 
 	/**
 	 * Return a string of more buttons for the current payment module.

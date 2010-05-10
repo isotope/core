@@ -37,6 +37,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 	(
 		'dataContainer'               => 'Table',
 		'enableVersioning'            => true,
+		'closed'					  => true,
 		'onload_callback' => array
 		(
 			array('tl_store', 'checkPermission'),
@@ -59,6 +60,20 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		),
 		'global_operations' => array
 		(
+			'back' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['MSC']['backBT'],
+				'href'                => 'table=',
+				'class'               => 'header_back',
+				'attributes'          => 'onclick="Backend.getScrollOffset();"',
+			),
+			'new' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_store']['new'],
+				'href'                => 'act=create',
+				'class'               => 'header_new',
+				'attributes'          => 'onclick="Backend.getScrollOffset();"',
+			),
 			'all' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['MSC']['all'],
@@ -445,6 +460,11 @@ class tl_store extends Backend
 		if (!in_array('googleanalytics', $this->Config->getActiveModules()))
 		{
 			unset($GLOBALS['TL_DCA']['tl_store']['fields']['enableGoogleAnalytics']);
+		}
+		
+		if (strlen($this->Input->get('act')))
+		{
+			$GLOBALS['TL_DCA']['tl_store']['config']['closed'] = false;
 		}
 		
 		$this->import('BackendUser', 'User');

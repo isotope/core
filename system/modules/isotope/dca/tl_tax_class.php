@@ -36,7 +36,12 @@ $GLOBALS['TL_DCA']['tl_tax_class'] = array
 	'config' => array
 	(
 		'dataContainer'               => 'Table',
-		'enableVersioning'            => true
+		'enableVersioning'            => true,
+		'closed'					  => true,
+		'onload_callback' => array
+		(
+			array('tl_tax_class', 'checkPermission'),
+		),
 	),
 
 	// List
@@ -57,6 +62,20 @@ $GLOBALS['TL_DCA']['tl_tax_class'] = array
 		),
 		'global_operations' => array
 		(
+			'back' => array
+			(
+				'label'					=> &$GLOBALS['TL_LANG']['MSC']['backBT'],
+				'href'					=> 'table=',
+				'class'					=> 'header_back',
+				'attributes'			=> 'onclick="Backend.getScrollOffset();"',
+			),
+			'new' => array
+			(
+				'label'					=> &$GLOBALS['TL_LANG']['tl_tax_class']['new'],
+				'href'					=> 'act=create',
+				'class'					=> 'header_new',
+				'attributes'			=> 'onclick="Backend.getScrollOffset();"',
+			),
 			'all' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['MSC']['all'],
@@ -138,6 +157,15 @@ $GLOBALS['TL_DCA']['tl_tax_class'] = array
 
 class tl_tax_class extends Backend
 {
+	
+	public function checkPermission($dc)
+	{
+		if (strlen($this->Input->get('act')))
+		{
+			$GLOBALS['TL_DCA']['tl_tax_class']['config']['closed'] = false;
+		}
+	}
+	
 	
 	public function getTaxRates()
 	{

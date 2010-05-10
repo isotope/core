@@ -37,8 +37,10 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 	(
 		'dataContainer'               => 'Table',
 		'enableVersioning'            => true,
+		'closed'					  => true,
 		'onload_callback'			  => array
 		(
+			array('tl_product_attributes', 'checkPermission'),
 			array('tl_product_attributes', 'disableFieldName'),
 		),
 		'onsubmit_callback'			  => array
@@ -68,6 +70,20 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 		),
 		'global_operations' => array
 		(
+			'back' => array
+			(
+				'label'					=> &$GLOBALS['TL_LANG']['MSC']['backBT'],
+				'href'					=> 'table=',
+				'class'					=> 'header_back',
+				'attributes'			=> 'onclick="Backend.getScrollOffset();"',
+			),
+			'new' => array
+			(
+				'label'					=> &$GLOBALS['TL_LANG']['tl_product_attributes']['new'],
+				'href'					=> 'act=create',
+				'class'					=> 'header_new',
+				'attributes'			=> 'onclick="Backend.getScrollOffset();"',
+			),
 			'all' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['MSC']['all'],
@@ -336,6 +352,15 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 class tl_product_attributes extends Backend
 {
 
+	public function checkPermission($dc)
+	{
+		if (strlen($this->Input->get('act')))
+		{
+			$GLOBALS['TL_DCA']['tl_product_attributes']['config']['closed'] = false;
+		}
+	}
+	
+	
 	public function getLegends()
 	{
 		$this->loadLanguageFile('tl_product_data');
