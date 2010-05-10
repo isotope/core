@@ -371,10 +371,13 @@ var Isotope =
 		var nodes = $('tl_buttons').childNodes;
 		for( var i=0; i<nodes.length; i++ )
 		{
+			if (!nodes[i])
+				continue;
+				
 			if (nodes[i].hasClass && nodes[i].hasClass('isotope-tools'))
 			{
-				buttons.erase(buttons[i-1]);
-				break;
+				i++;
+				continue;
 			}
 			
 			if (nodes[i].clone)
@@ -386,6 +389,9 @@ var Isotope =
 				buttons.push(nodes[i]);
 			}
 		}
+		
+		if (!buttons[buttons.length-1].clone)
+			buttons.erase(buttons[buttons.length-1]);
 		
 		$('tl_buttons').empty().adopt(buttons);
 		
