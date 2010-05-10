@@ -158,21 +158,10 @@ class Isotope extends Controller
 		{
 			if (TL_MODE == 'BE')
 			{
-				$arrSet = array
-				(
-					'pid'						=> 0,
-					'tstamp'					=> time(),
-					'sorting'				    => 0,
-					'store_configuration_name'  => 'Default Store Configuration',
-					'cookie_duration'			=> 30,
-				);
+				$_SESSION['TL_ERROR'] = array($GLOBALS['TL_LANG']['ERR']['noStoreConfigurationSet']);
 				
-				$this->Database->prepare("INSERT INTO tl_store %s")
-							   ->set(arrSet)
-							   ->execute();
-							   
-			//	$this->log($GLOBALS['TL_LANG']['ERR']['noStoreConfigurationSet'], 'Isotope getDefaultStore', TL_ERROR);
-				//$this->redirect('typolight/main.php?act=error');
+				if ($this->Input->get('do') != 'isotope')
+					$this->redirect('typolight/main.php?do=isotope&table=tl_store&act=create');
 			}
 			else
 			{
