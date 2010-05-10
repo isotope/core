@@ -57,3 +57,8 @@ h3.inherit,
 	padding-bottom: 1px;
 	vertical-align: middle;
 }
+
+#tl_product_quick_edit th
+{
+	text-align: left;
+}
