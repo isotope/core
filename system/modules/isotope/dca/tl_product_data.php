@@ -908,7 +908,7 @@ class tl_product_data extends Backend
 		$doNotSubmit = false;
 		$strBuffer = '';
 		$arrOptions = array();
-		
+		$arrAttributes = deserialize($objProduct->attributes);
 		
 		if (is_array($arrAttributes) && count($arrAttributes))
 		{
