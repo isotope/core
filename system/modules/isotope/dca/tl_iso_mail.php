@@ -36,8 +36,13 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
 	'config' => array
 	(
 		'dataContainer'               => 'Table',
+		'enableVersioning'            => true,
+		'closed'					  => true,
 		'ctables'                     => array('tl_iso_mail_content'),
-		'enableVersioning'            => true
+		'onload_callback' => array
+		(
+			array('tl_iso_mail', 'checkPermission'),
+		),
 	),
 
 	// List
@@ -57,6 +62,20 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
 		),
 		'global_operations' => array
 		(
+			'back' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['MSC']['backBT'],
+				'href'                => 'table=',
+				'class'               => 'header_back',
+				'attributes'          => 'onclick="Backend.getScrollOffset();"',
+			),
+			'new' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_mail']['new'],
+				'href'                => 'act=create',
+				'class'               => 'header_new',
+				'attributes'          => 'onclick="Backend.getScrollOffset();"',
+			),
 			'all' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['MSC']['all'],
@@ -157,4 +176,17 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
 		)
 	)
 );
+
+
+class tl_iso_mail extends Backend
+{
+	
+	public function checkPermission($dc)
+	{
+		if (strlen($this->Input->get('act')))
+		{
+			$GLOBALS['TL_DCA']['tl_iso_mail']['config']['closed'] = false;
+		}
+	}
+}
 

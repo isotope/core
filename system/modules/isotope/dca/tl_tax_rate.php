@@ -41,8 +41,10 @@ $GLOBALS['TL_DCA']['tl_tax_rate'] = array
 	(
 		'dataContainer'               => 'Table',
 		'enableVersioning'            => true,
+		'closed'					  => true,
 		'onload_callback'			  => array
 		(
+			array('tl_tax_rate', 'checkPermission'),
 			array('tl_tax_rate', 'addCurrencyRate'),
 		),
 	),
@@ -64,6 +66,20 @@ $GLOBALS['TL_DCA']['tl_tax_rate'] = array
 		),
 		'global_operations' => array
 		(
+			'back' => array
+			(
+				'label'					=> &$GLOBALS['TL_LANG']['MSC']['backBT'],
+				'href'					=> 'table=',
+				'class'					=> 'header_back',
+				'attributes'			=> 'onclick="Backend.getScrollOffset();"',
+			),
+			'new' => array
+			(
+				'label'					=> &$GLOBALS['TL_LANG']['tl_tax_rate']['new'],
+				'href'					=> 'act=create',
+				'class'					=> 'header_new',
+				'attributes'			=> 'onclick="Backend.getScrollOffset();"',
+			),
 			'all' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['MSC']['all'],
@@ -196,17 +212,18 @@ $GLOBALS['TL_DCA']['tl_tax_rate'] = array
 );
 
 
-/**
- * Class tl_tax_rate
- *
- * Provide miscellaneous methods that are used by the data configuration array.
- * @copyright  Leo Feyer 2005
- * @author     Leo Feyer <leo@typolight.org>
- * @package    Controller
- */
 class tl_tax_rate extends Backend
 {
 
+	public function checkPermission($dc)
+	{
+		if (strlen($this->Input->get('act')))
+		{
+			$GLOBALS['TL_DCA']['tl_tax_rate']['config']['closed'] = false;
+		}
+	}
+	
+	
 	public function getSubdivisions(DataContainer $dc)
 	{
 		$objTaxRate = $this->Database->prepare("SELECT country FROM tl_tax_rate WHERE id=?")->limit(1)->execute($dc->id);
