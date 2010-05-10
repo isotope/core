@@ -27,7 +27,7 @@
 
 
 /**
- * Table tl_product_data
+ * Table tl_product_data 
  */
 $GLOBALS['TL_DCA']['tl_product_data'] = array
 (

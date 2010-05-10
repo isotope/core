@@ -88,7 +88,8 @@ $GLOBALS['TL_LANG']['tl_product_data']['variantValuesLabel'] = 'Variant';
 /**
  * Buttons
  */
-$GLOBALS['TL_LANG']['tl_product_data']['new']			= array('New product', 'Create new product.');
+$GLOBALS['TL_LANG']['tl_product_data']['new_product']	= array('New product', 'Create new product.');
+$GLOBALS['TL_LANG']['tl_product_data']['new_variant']	= array('New variant', 'Add new variant to a given product.');
 $GLOBALS['TL_LANG']['tl_product_data']['edit']			= array('Edit product', 'Edit product ID %s');
 $GLOBALS['TL_LANG']['tl_product_data']['quick_edit']	= array('Quick-edit variants', 'Quick-edit variants for product ID %s');
 $GLOBALS['TL_LANG']['tl_product_data']['downloads']		= array('Downloads', 'Edit downloads for product ID %s');
