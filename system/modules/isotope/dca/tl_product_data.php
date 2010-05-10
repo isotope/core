@@ -38,6 +38,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		'label'                       => &$GLOBALS['TL_LANG']['MOD']['product_manager'][0],
 		'dataContainer'               => 'MultilingualTable',
 		'enableVersioning'			  => true,
+		'closed'					  => true,
 		'ctable'					  => array('tl_product_downloads', 'tl_product_categories'),
 		'ltable'					  => 'tl_product_types.languages',
 		'lref'						  => 'type',
@@ -66,6 +67,20 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		),
 		'global_operations' => array
 		(
+			'new_product' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['new_product'],
+				'href'                => 'act=create',
+				'class'				  => 'header_new',
+				'attributes'          => 'onclick="Backend.getScrollOffset();"',
+			),
+			'new_variant' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['new_variant'],
+				'href'                => 'act=paste&mode=create',
+				'class'				  => 'header_new',
+				'attributes'          => 'onclick="Backend.getScrollOffset();"',
+			),
 			'tools' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['tools'],
@@ -383,6 +398,17 @@ class tl_product_data extends Backend
 	 */
 	public function checkPermission($dc)
 	{
+		if (strlen($this->Input->get('act')) && $this->Input->get('mode') != 'create')
+		{
+			$GLOBALS['TL_DCA']['tl_product_data']['config']['closed'] = false;
+		}
+
+		// Hide "add variant" button if no products with variants enabled exist
+		if (!$this->Database->execute("SELECT * FROM tl_product_data LEFT JOIN tl_product_types ON tl_product_data.type=tl_product_types.id WHERE tl_product_types.variants='1'")->numRows)
+		{
+			unset($GLOBALS['TL_DCA']['tl_product_data']['list']['global_operations']['new_variant']);
+		}
+		
 		//$this->import('BackendUser', 'User');
 				
 		/*if ($this->User->isAdmin)
@@ -1473,7 +1499,7 @@ $strBuffer .= '<th align="center"><img src="system/themes/default/images/publish
 */
 
 		// Disable buttons for variants
-		if ($row['id'] > 0 && $row['pid'] > 0)
+		if ($row['id'] == 0 || ($row['id'] > 0 && $row['pid'] > 0))
 		{
 			return '';
 		}
