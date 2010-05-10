@@ -26,6 +26,10 @@
  */
 
 
+// Load country sub-divisions
+$this->loadLanguageFile('subdivisions');
+
+
 /**
  * Table tl_shipping_options
  */
@@ -220,9 +224,9 @@ $GLOBALS['TL_DCA']['tl_shipping_options'] = array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['dest_regions'],
 			'exclude'                 => true,
-			'inputType'               => 'select',
-			'eval'                    => array('multiple'=>true, 'size'=>8),
-			'options_callback'		  => array('tl_shipping_options','getAllowedRegions')
+			'inputType'               => 'conditionalselect',
+			'options'				  => $GLOBALS['TL_LANG']['DIV'],
+			'eval'                    => array('multiple'=>true, 'size'=>8, 'conditionField'=>'dest_countries'),
 		)
 	)
 );
@@ -318,19 +322,6 @@ class tl_shipping_options extends Backend
 		return $arrCountryData;
 	
 	}
-	
-
-	/** 
-	 * Get allowed regions for a given country
-	 *
-	 * @access public
-	 * @return array
-	 */
-	public function getAllowedRegions()
-	{
-		return array();
-	}
-
 		
 	
 	/**
