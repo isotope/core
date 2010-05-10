@@ -1048,17 +1048,17 @@ class tl_product_data extends Backend
 <div class="tl_tbox block">
 <table width="100%" border="0" cellpadding="5" cellspacing="0" summary="">
 <thead>
-<th align="center">' . $GLOBALS['TL_LANG']['tl_product_data']['variantValuesLabel'] . '</th>';
+<th>' . $GLOBALS['TL_LANG']['tl_product_data']['variantValuesLabel'] . '</th>';
 
-foreach($arrQuickEditFields as $field)
-{
-	if(in_array($field, $arrVarAttributes))
-	{
-		$strBuffer .= '<th align="center">'.$GLOBALS['TL_LANG']['tl_product_data'][$field][0].'</th>';
-	}
-}
+		foreach($arrQuickEditFields as $field)
+		{
+			if(in_array($field, $arrVarAttributes))
+			{
+				$strBuffer .= '<th>'.$GLOBALS['TL_LANG']['tl_product_data'][$field][0].'</th>';
+			}
+		}
 
-$strBuffer .= '<th align="center"><img src="system/themes/default/images/published.gif" width="16" height="16" alt="' . $GLOBALS['TL_LANG']['tl_product_data']['published'][0].'" /></th>
+$strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="16" height="16" alt="' . $GLOBALS['TL_LANG']['tl_product_data']['published'][0].'" /></th>
 </thead>';		
 		
 		$arrFields = array_flip($arrFields);
@@ -1066,6 +1066,7 @@ $strBuffer .= '<th align="center"><img src="system/themes/default/images/publish
 				
 		while($objVariants->next())
 		{
+			$arrWidgets = array();
 			$doNotSubmit = false;
 			$arrSet = array();
 			
@@ -1131,12 +1132,12 @@ $strBuffer .= '<th align="center"><img src="system/themes/default/images/publish
 			
 			$strBuffer .= '
 <tr>
-	<td align="center">'.implode(', ', array_intersect_key($objVariants->row(), $arrFields)).'</td>';
+	<td>'.implode(', ', array_intersect_key($objVariants->row(), $arrFields)).'</td>';
 	foreach($arrQuickEditFields as $field)
 	{
 		if(in_array($field, $arrVarAttributes))
 		{
-			$strBuffer .= '<td align="center">'.$arrWidgets[$field]->generate().'</td>';
+			$strBuffer .= '<td>'.$arrWidgets[$field]->generate().'</td>';
 		}
 	}
 	/*
@@ -1145,7 +1146,7 @@ $strBuffer .= '<th align="center"><img src="system/themes/default/images/publish
 	<td>'.$arrWidgets['weight']->generate().'</td>
 	<td>'.$arrWidgets['stock_quantity']->generate().'</td>*/
 	
-	$strBuffer .= '<td align="center"><input type="checkbox" name="published['.$objVariants->id.']" value="1"'.($arrPublished[$objVariants->id] ? ' checked="checked"' : '').' class="tl_checkbox" /></td>
+	$strBuffer .= '<td><input type="checkbox" name="published['.$objVariants->id.']" value="1"'.($arrPublished[$objVariants->id] ? ' checked="checked"' : '').' class="tl_checkbox" /></td>
 <tr>';
 		
 		}
