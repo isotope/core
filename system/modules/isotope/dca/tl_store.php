@@ -107,7 +107,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			{price_legend},priceCalculateFactor,priceCalculateMode,priceRoundPrecision,priceRoundIncrement;
 			{currency_legend},currency,currencySymbol,currencyFormat,currencyPosition;
 			{redirect_legend},cartJumpTo,checkoutJumpTo;
-			{invoice_legend},invoiceLogo;
+			{invoice_legend:hide},invoiceLogo;
 			{images_legend},missing_image_placeholder,gallery_size,thumbnail_size,medium_size,large_size',
 	),
 
@@ -309,6 +309,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['gallery_size'],
 			'exclude'                 => true,
 			'inputType'               => 'imageSize',
+			'default'				  => array(50,50),
 			'options'                 => array('crop', 'proportional', 'box'),
 			'reference'               => &$GLOBALS['TL_LANG']['MSC'],
 			'eval'                    => array('rgxp'=>'digit', 'nospace'=>true, 'tl_class'=>'w50'),
@@ -318,6 +319,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['thumbnail_size'],
 			'exclude'                 => true,
 			'inputType'               => 'imageSize',
+			'default'				  => array(100,100),
 			'options'                 => array('crop', 'proportional', 'box'),
 			'reference'               => &$GLOBALS['TL_LANG']['MSC'],
 			'eval'                    => array('rgxp'=>'digit', 'nospace'=>true, 'tl_class'=>'w50'),
@@ -327,6 +329,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['medium_size'],
 			'exclude'                 => true,
 			'inputType'               => 'imageSize',
+			'default'				  => array(200,200),
 			'options'                 => array('crop', 'proportional', 'box'),
 			'reference'               => &$GLOBALS['TL_LANG']['MSC'],
 			'eval'                    => array('rgxp'=>'digit', 'nospace'=>true, 'tl_class'=>'w50'),
@@ -336,6 +339,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['large_size'],
 			'exclude'                 => true,
 			'inputType'               => 'imageSize',
+			'default'				  => array(500,500),
 			'options'                 => array('crop', 'proportional', 'box'),
 			'reference'               => &$GLOBALS['TL_LANG']['MSC'],
 			'eval'                    => array('rgxp'=>'digit', 'nospace'=>true, 'tl_class'=>'w50'),
