@@ -106,15 +106,15 @@ $GLOBALS['ISO_MOD'] = array
 	),
 	'checkout' => array
 	(
-		'shipping' => array
-		(
-				'tables'				=> array('tl_shipping_modules','tl_shipping_options'),
-				'icon'					=> 'system/modules/isotope/html/icon-shipping.gif',
-		),
 		'payment' => array
 		(
 			'tables'					=> array('tl_payment_modules', 'tl_payment_options'),
 			'icon'						=> 'system/modules/isotope/html/icon-payment.png',
+		),
+		'shipping' => array
+		(
+				'tables'				=> array('tl_shipping_modules','tl_shipping_options'),
+				'icon'					=> 'system/modules/isotope/html/icon-shipping.gif',
 		),
 		'tax_class' => array
 		(
