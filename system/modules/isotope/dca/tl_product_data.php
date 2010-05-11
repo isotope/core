@@ -36,7 +36,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 	'config' => array
 	(
 		'label'                       => &$GLOBALS['TL_LANG']['MOD']['product_manager'][0],
-		'dataContainer'               => 'MultilingualTable',
+		'dataContainer'               => 'ProductData',
 		'enableVersioning'			  => true,
 		'closed'					  => true,
 		'ctable'					  => array('tl_product_downloads', 'tl_product_categories'),
@@ -56,6 +56,9 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		'sorting' => array
 		(
 			'mode'                    => 5,
+			'fields'				  => array('name'),
+			'flag'					  => 1,
+			'panelLayout'			  => 'filter;sort,search,limit',
 			'icon'                    => 'system/modules/isotope/html/icon-products.gif',
 			'paste_button_callback'   => array('tl_product_data', 'pasteProduct'),
 		),
@@ -215,6 +218,8 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		'alias' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['alias'],
+			'search'				=> true,
+			'sorting'				=> true,
 			'inputType'				=> 'text',
 			'eval'					=> array('rgxp'=>'alnum', 'doNotCopy'=>true, 'spaceToUnderscore'=>true, 'maxlength'=>128, 'tl_class'=>'w50'),
 			'attributes'			=> array('legend'=>'general_legend', 'fixed'=>true, 'inherit'=>true),
@@ -226,6 +231,8 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		'sku' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['sku'],
+			'search'				=> true,
+			'sorting'				=> true,
 			'inputType'				=> 'text',
 			'eval'					=> array('maxlength'=>128, 'tl_class'=>'w50'),
 			'attributes'			=> array('mandatory'=>true, 'legend'=>'general_legend'),
@@ -234,6 +241,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['name'],
 			'search'				=> true,
+			'sorting'				=> true,
 			'inputType'				=> 'text',
 			'eval'					=> array('mandatory'=>true, 'tl_class'=>'clr long'),
 			'attributes'			=> array('legend'=>'general_legend', 'multilingual'=>true, 'fixed'=>true, 'is_order_by_enabled'=>true),
@@ -257,6 +265,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		'price' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['price'],
+			'sorting'				=> true,
 			'inputType'				=> 'text',
 			'eval'					=> array('mandatory'=>true, 'maxlength'=>255, 'rgxp'=>'digits', 'tl_class'=>'w50'),
 			'attributes'			=> array('legend'=>'pricing_legend', 'is_order_by_enabled'=>true),
@@ -278,7 +287,6 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		'stock_enabled' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['stock_enabled'],
-			'filter'				=> true,
 			'inputType'				=> 'checkbox',
 			'eval'					=> array('submitOnChange'=>true, 'tl_class'=>'clr'),
 			'attributes'			=> array('legend'=>'inventory_legend'),
@@ -305,7 +313,6 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		'shipping_exempt' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['shipping_exempt'],
-			'filter'				=> true,
 			'inputType'				=> 'checkbox',
 			'eval'					=> array('tl_class'=>'w50'),
 			'attributes'			=> array('legend'=>'shipping_legend'),
@@ -313,7 +320,6 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		'tax_class' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['tax_class'],
-			'filter'				=> true,
 			'inputType'				=> 'select',
 			'foreignKey'			=> 'tl_tax_class.name',
 			'attributes'			=> array('legend'=>'tax_legend'),
