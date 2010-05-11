@@ -591,7 +591,7 @@ window.addEvent(\'domready\', function()
 			$return .= $this->treeView();
 
 			// Add another panel at the end of the page
-			if (strpos($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['panelLayout'], 'limit') !== false && ($strLimit = $this->limitMenu(true)) != false)
+			if (count($this->root) && strpos($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['panelLayout'], 'limit') !== false && ($strLimit = $this->limitMenu(true)) != false)
 			{
 				$return .= '
 
