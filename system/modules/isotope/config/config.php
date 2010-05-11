@@ -86,6 +86,24 @@ if ($_GET['do'] == 'isotope' && strlen($_GET['table']))
 // Isotope Modules
 $GLOBALS['ISO_MOD'] = array
 (
+	'product' => array
+	(
+		'product_type_manager' => array
+		(
+			'tables'					=> array('tl_product_types'),
+			'icon'						=> 'system/modules/isotope/html/icon-types.gif'
+		),
+		'attribute_manager' => array
+		(
+			'tables'					=> array('tl_product_attributes'),
+			'icon'						=> 'system/modules/isotope/html/icon-attributes.gif',
+		),
+		'related_categories' => array
+		(
+			'tables'					=> array('tl_related_categories'),
+			'icon'						=> 'system/modules/isotope/html/icon-related.png',
+		),
+	),
 	'checkout' => array
 	(
 		'shipping' => array
@@ -107,24 +125,6 @@ $GLOBALS['ISO_MOD'] = array
 		(
 			'tables'					=> array('tl_tax_rate'),
 			'icon'						=> 'system/modules/isotope/html/icon-taxrate.gif',
-		),
-	),
-	'product' => array
-	(
-		'product_type_manager' => array
-		(
-			'tables'					=> array('tl_product_types'),
-			'icon'						=> 'system/modules/isotope/html/icon-types.gif'
-		),
-		'attribute_manager' => array
-		(
-			'tables'					=> array('tl_product_attributes'),
-			'icon'						=> 'system/modules/isotope/html/icon-attributes.gif',
-		),
-		'related_categories' => array
-		(
-			'tables'					=> array('tl_related_categories'),
-			'icon'						=> 'system/modules/isotope/html/icon-related.png',
 		),
 	),
 	'config' => array
