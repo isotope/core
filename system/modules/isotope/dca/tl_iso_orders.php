@@ -56,7 +56,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 			'mode'                    => 2,
 			'fields'                  => array('date DESC'),
 			'flag'                    => 1,
-			'panelLayout'             => 'filter,search,limit'
+			'panelLayout'             => 'filter;sort,search,limit'
 		),
 		'label' => array
 		(
@@ -117,13 +117,30 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 	// Fields
 	'fields' => array
 	(
+		'id' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['id'],
+			'search'				=> true,
+		),
 		'status' => array
 		(
 			'label'                 => &$GLOBALS['TL_LANG']['tl_iso_orders']['status'],
 			'filter'                => true,
+			'sorting'				=> true,
 			'inputType'             => 'select',
 			'options'         		=> $GLOBALS['ISO_ORDER'],
 			'reference'         	=> &$GLOBALS['TL_LANG']['ORDER'],
+		),
+		'date' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['date'],
+			'flag'					=> 8,
+			'eval'					=> array('rgxp'=>'date'),
+		),
+		'billing_address' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['billing_address'],
+			'search'				=> true,
 		),
 		'surcharges' => array
 		(
@@ -136,12 +153,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 		),
 		'details' => array
 		(
-			'input_field_callback'    => array('tl_iso_orders', 'showDetails'),
-		),
-		'date' => array
-		(
-			'flag'                    => 8,
-			'eval'                    => array('rgxp'=>'date'),
+			'input_field_callback'	=> array('tl_iso_orders', 'showDetails'),
 		),
 	)
 );
@@ -285,10 +297,15 @@ class tl_iso_orders extends Backend
 	*/
 	public function getOrderLabel($row, $label)
 	{
+		$this->Isotope->overrideStore($row['store_id']);
+		$strBillingAddress = $this->Isotope->generateAddressString(deserialize($row['billing_address']), $this->Isotope->Store->billing_fields);
+		
 		return '
-		<div class="limit_height' . (!$GLOBALS['TL_CONFIG']['doNotCollapse'] ? ' h110' : '') . ' block">
-		' . $this->getOrderDescription($row) . '
-		</div>  </div>';
+<div style="float:left; width:40px">#' . $row['id'] . '</div>
+<div style="float:left; width:130px;">' . $this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $row['date']) . '</div>
+<div style="float:left; width:180px">' . substr($strBillingAddress, 0, strpos($strBillingAddress, '<br />')) . '</div>
+<div style="float:left; width:80px; text-align:right; padding-right:20px">' . $this->Isotope->formatPriceWithCurrency($row['grandTotal']) . '</div>
+<div style="float: left; width:100px">' . $GLOBALS['TL_LANG']['ORDER'][$row['status']] . '</div>';
 	}
 	
 	
