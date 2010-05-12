@@ -65,7 +65,14 @@ class Isotope extends Controller
 		
 		if (strlen($_SESSION['isotope']['store_id']))
 		{
-			$this->overrideStore($_SESSION['isotope']['store_id']);
+			try
+			{
+				$this->overrideStore($_SESSION['isotope']['store_id']);
+			}
+			catch (Exception $e)
+			{
+				$this->resetStore($blnForceDefault);
+			}
 		}
 		else
 		{
