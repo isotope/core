@@ -113,8 +113,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['edit'],
 				'href'                => 'act=edit',
 				'icon'                => 'edit.gif',
-				'button_callback'     => array('tl_product_data', 'editProduct'),
-				'attributes'          => 'class="contextmenu"'
+				'attributes'          => 'class="contextmenu"',
 			),
 			'quick_edit' => array
 			(
@@ -138,7 +137,6 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 				'href'                => 'act=delete',
 				'icon'                => 'delete.gif',
 				'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"',
-				'button_callback'     => array('tl_product_data', 'deleteProduct')
 			),
 			'show' => array
 			(
@@ -386,11 +384,14 @@ class tl_product_data extends Backend
 	 */
 	public function downloadsButton($row, $href, $label, $title, $icon, $attributes)
 	{
+		if ($row['pid'] > 0)
+			return '';
+			
 		$objType = $this->Database->prepare("SELECT * FROM tl_product_types WHERE id=?")
 								  ->limit(1)
 								  ->execute($row['type']);
 
-		if (!$objType->downloads || $row['pid'] > 0)
+		if (!$objType->downloads)
 			return '';
 			
 		$objDownloads = $this->Database->prepare("SELECT COUNT(*) AS total FROM tl_product_downloads WHERE pid=?")->execute($row['id']);
@@ -415,51 +416,15 @@ class tl_product_data extends Backend
 			unset($GLOBALS['TL_DCA']['tl_product_data']['list']['global_operations']['new_variant']);
 		}
 		
-		//$this->import('BackendUser', 'User');
+		$this->import('BackendUser', 'User');
 				
-		/*if ($this->User->isAdmin)
-		{			
-		
-			$objPid = $this->Database->prepare("SELECT pid FROM tl_product_data WHERE id=?")
-									 ->limit(1)
-									 ->execute($dc->id);
-			
-			if(!$objPid->numRows)
-			{
-				$intPid = 0;
-			}
-			else
-			{
-				$intPid = $objPid->pid;
-			}
-			
-			$arrProducts = $this->Database->execute("SELECT id FROM tl_product_data WHERE pid=" . $intPid)->fetchEach('id');
-		
-			if (!is_array($arrProducts) || !count($arrProducts))
-			{
-				$arrProducts = array(0);
-			}
-			
-			$GLOBALS['TL_DCA']['tl_product_data']['list']['sorting']['root'] = $arrProducts;
-			
-			if (strlen($this->Input->get('id')) && !in_array($this->Input->get('id'), $arrProducts))
-			{
-				$this->redirect('typolight/main.php?act=error');
-			}
-			
-			// Add access rights to new pages
-			if ($this->Input->get('act') == 'create')
-			{
-				$GLOBALS['TL_DCA']['tl_page']['fields']['includeChmod']['default'] = 1;
-			}
-		}
-		else
-		{		
+		if (!$this->User->isAdmin)
+		{
 			$arrTypes = is_array($this->User->iso_product_types) ? $this->User->iso_product_types : array(0);
 			
 			$arrProducts = $this->Database->execute("SELECT id FROM tl_product_data WHERE pid=0 AND type IN ('','" . implode("','", $arrTypes) . "')")->fetchEach('id');
 			
-			if (!is_array($arrProducts) || !count($arrProducts))
+			if (!count($arrProducts))
 			{
 				$arrProducts = array(0);
 			}
@@ -470,18 +435,7 @@ class tl_product_data extends Backend
 			{
 				$this->redirect('typolight/main.php?act=error');
 			}
-		}*/
-		
-/*
-		$objProducts = $this->Database->execute("SELECT id FROM tl_product_data WHERE pid=0");
-		
-		echo $objProducts->numRows;
-		
-		if ($objProducts->numRows)
-		{
-			$GLOBALS['TL_DCA']['tl_product_data']['list']['sorting']['root'] = $objProducts->fetchEach('id');
 		}
-*/
 	}
 	
 	
@@ -1387,6 +1341,7 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 		return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
 	}
 
+
 	/**
 	 * Hide generate button for variants and product types without variant support
 	 */
@@ -1405,48 +1360,15 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 		return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
 	}
 	
-	/**
-	 * Return the edit page button
-	 * @param array
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @return string
-	 */
-	public function editProduct($row, $href, $label, $title, $icon, $attributes)
-	{
-		$objParentType = $this->Database->prepare("SELECT type FROM tl_product_data WHERE pid=? OR id=?")
-										->limit(1)
-										->execute($row['id'], $row['id']);
-		
-		if(!$objParentType->numRows)
-		{
-			return '';
-		}
-		
-		return ($this->User->isAdmin || (in_array($objParentType->type, $this->User->iso_product_types))) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
-	
-	}
-
 
 	/**
 	 * Return the copy page button
-	 * @param array
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @return string
 	 */
 	public function copyProduct($row, $href, $label, $title, $icon, $attributes, $table)
 	{
-		if ($GLOBALS['TL_DCA'][$table]['config']['closed'])
+		if ($row['pid'] == 0)
 		{
-			return '';
+			$href = 'act=copy';
 		}
 
 		return ($this->User->isAdmin || (in_array($row['type'], $this->User->iso_product_types))) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
@@ -1456,12 +1378,6 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 
 	/**
 	 * Return the paste page button
-	 * @param object
-	 * @param array
-	 * @param string
-	 * @param boolean
-	 * @param array
-	 * @return string
 	 */
 	public function pasteProduct(DataContainer $dc, $row, $table, $cr, $arrClipboard=false)
 	{
@@ -1472,38 +1388,6 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 		{
 			$disablePI = true;
 		}
-
-//!@todo check permission for products
-/*
-		// Check permissions if the user is not an administrator
-		if (!$this->User->isAdmin)
-		{
-			// Disable "paste into" button if there is no permission 2 for the current page
-			if (!$disablePI && $row['pid']>0)
-			{
-				$disablePI = true;
-			}
-
-			$objProduct = $this->Database->prepare("SELECT * FROM " . $table . " WHERE id=?")
-									  ->limit(1)
-									  ->execute($row['pid']);
-
-			// Disable "paste after" button if there is no permission 2 for the parent page
-			if (!$disablePA && $objProduct->numRows)
-			{
-				if (!$this->User->isAllowed(2, $objProduct->fetchAssoc()))
-				{
-					$disablePA = true;
-				}
-			}
-
-			// Disable "paste after" button if the parent page is a root page and the user is not an administrator
-			if (!$disablePA && ($row['pid'] < 1 || in_array($row['id'], $dc->rootIds)))
-			{
-				$disablePA = true;
-			}
-		}
-*/
 
 		// Disable buttons for variants
 		if ($row['id'] == 0 || ($row['id'] > 0 && $row['pid'] > 0))
@@ -1526,17 +1410,6 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 		$imagePasteInto = $this->generateImage('pasteinto.gif', sprintf($GLOBALS['TL_LANG'][$table]['pasteinto'][1], $row['id']), 'class="blink"');
 
 		return ($disablePI ? $this->generateImage('pasteinto_.gif', '', 'class="blink"').' ' : '<a href="'.$this->addToUrl('act='.$arrClipboard['mode'].'&amp;mode=2&amp;pid='.$row['id'].(!is_array($arrClipboard['id']) ? '&amp;id='.$arrClipboard['id'] : '')).'" title="'.specialchars(sprintf($GLOBALS['TL_LANG'][$table]['pasteinto'][1], $row['id'])).'" onclick="Backend.getScrollOffset();">'.$imagePasteInto.'</a> ');
-	}
-
-
-	/**
-	 * Return the delete product button
-	 */
-	//!@todo make sure this is correct (isAllowed should only be used for pages).
-	public function deleteProduct($row, $href, $label, $title, $icon, $attributes)
-	{
-		$root = func_get_arg(7);
-		return ($this->User->isAdmin || (in_array($row['type'], $this->User->iso_product_types) && $this->User->isAllowed(3, $row) && !in_array($row['id'], $root))) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
 	}
 }
 
