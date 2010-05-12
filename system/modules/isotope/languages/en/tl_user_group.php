@@ -29,12 +29,13 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_user']['iso_product_types']		= array('Product types', 'Users can only see and edit products and product types you enable.');
-$GLOBALS['TL_LANG']['tl_user']['iso_stores']			= array('Store configurations', 'Users can see orders from these stores.');
+$GLOBALS['TL_LANG']['tl_user_group']['iso_product_types']	= array('Product types', 'Users can only see and edit products and product types you enable.');
+$GLOBALS['TL_LANG']['tl_user_group']['iso_stores']			= array('Store configurations', 'Users can see orders from these stores.');
+$GLOBALS['TL_LANG']['tl_user_group']['iso_modules']			= array('Isotope modules', 'Select which store configuration modules user of this group can access.');
 
 
 /**
  * Legends
  */
-$GLOBALS['TL_LANG']['tl_user']['isotope_legend']		= 'Isotope eCommerce';
+$GLOBALS['TL_LANG']['tl_user_group']['isotope_legend']		= 'Isotope eCommerce';
 
