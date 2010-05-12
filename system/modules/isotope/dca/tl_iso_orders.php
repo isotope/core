@@ -117,10 +117,11 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 	// Fields
 	'fields' => array
 	(
-		'id' => array
+		'order_id' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['id'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['order_id'],
 			'search'				=> true,
+			'sorting'				=> true,
 		),
 		'status' => array
 		(
@@ -135,6 +136,8 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['date'],
 			'flag'					=> 8,
+			'filter'				=> true,
+			'sorting'				=> true,
 			'eval'					=> array('rgxp'=>'date'),
 		),
 		'billing_address' => array
@@ -301,7 +304,7 @@ class tl_iso_orders extends Backend
 		$strBillingAddress = $this->Isotope->generateAddressString(deserialize($row['billing_address']), $this->Isotope->Store->billing_fields);
 		
 		return '
-<div style="float:left; width:40px">#' . $row['id'] . '</div>
+<div style="float:left; width:40px">' . $row['order_id'] . '</div>
 <div style="float:left; width:130px;">' . $this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $row['date']) . '</div>
 <div style="float:left; width:180px">' . substr($strBillingAddress, 0, strpos($strBillingAddress, '<br />')) . '</div>
 <div style="float:left; width:80px; text-align:right; padding-right:20px">' . $this->Isotope->formatPriceWithCurrency($row['grandTotal']) . '</div>
