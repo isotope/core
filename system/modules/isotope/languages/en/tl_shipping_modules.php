@@ -37,6 +37,7 @@ $GLOBALS['TL_LANG']['tl_shipping_modules']['tax_class']			= array('Tax Class', '
 $GLOBALS['TL_LANG']['tl_shipping_modules']['label']				= array('Label', 'This is displayed on the front end in association with the shipping option.');
 $GLOBALS['TL_LANG']['tl_shipping_modules']['flatCalculation']	= array('Flat calculation', '');
 $GLOBALS['TL_LANG']['tl_shipping_modules']['countries']			= array('Countries', 'Select the countries this shipping method applies to.');
+$GLOBALS['TL_LANG']['tl_shipping_modules']['subdivisions']	= array('State/Regions', 'Select the states or regions this shipping method applies to.');
 $GLOBALS['TL_LANG']['tl_shipping_modules']['minimum_total']		= array('Minimum total', '');
 $GLOBALS['TL_LANG']['tl_shipping_modules']['maximum_total']		= array('Maximum total', '');
 $GLOBALS['TL_LANG']['tl_shipping_modules']['surcharge_field']	= array('Shipping Surcharge', 'Please specify a surcharge (for example, a fuel surcharge on all orders) to be applied for this shipping method, if any.');
