@@ -456,6 +456,7 @@ CREATE TABLE `tl_shipping_modules` (
   `note` text NULL,
   `tax_class` int(10) unsigned NOT NULL default '0',
   `countries` blob NULL,
+  `subdivisions` blob NULL,
   `minimum_total` int(10) NOT NULL default '0',
   `maximum_total` int(10) NOT NULL default '0',
   `price` float NOT NULL default '0',

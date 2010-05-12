@@ -25,7 +25,8 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
-
+$this->loadLanguageFile('subdivisions');
+		
 /**
  * Table tl_shipping_modules
  */
@@ -124,11 +125,11 @@ $GLOBALS['TL_DCA']['tl_shipping_modules'] = array
 	'palettes' => array
 	(
 		'__selector__'					=> array('type', 'protected'),
-		'default'						=> '{title_legend},type,name,label,note;{price_legend},price,tax_class;{configuration_legend},countries,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-		'order_total'					=> '{title_legend},type,name,label,note;{price_legend},price,tax_class;{configuration_legend},countries,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-		'flat'							=> '{title_legend},type,name,label,note;{price_legend},price,flatCalculation,tax_class,surcharge_field;{configuration_legend},countries,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-		'ups'							=> '{title_legend},type,name,label,note;{price_legend},tax_class;{ups_legend},ups_enabledService,ups_accessKey,ups_developersKey,ups_userName,ups_password;{configuration_legend},countries,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-		'usps'							=> '{title_legend},type,name,label,note;{price_legend},tax_class;{usps_legend},usps_enabledService,usps_userName;{configuration_legend},countries,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled'
+		'default'						=> '{title_legend},type,name,label,note;{price_legend},price,tax_class;{configuration_legend},countries,subdivisions,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+		'order_total'					=> '{title_legend},type,name,label,note;{price_legend},price,tax_class;{configuration_legend},countries,subdivisions,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+		'flat'							=> '{title_legend},type,name,label,note;{price_legend},price,flatCalculation,tax_class,surcharge_field;{configuration_legend},countries,subdivisions,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+		'ups'							=> '{title_legend},type,name,label,note;{price_legend},tax_class;{ups_legend},ups_enabledService,ups_accessKey,ups_developersKey,ups_userName,ups_password;{configuration_legend},countries,subdivisions,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+		'usps'							=> '{title_legend},type,name,label,note;{price_legend},tax_class;{usps_legend},usps_enabledService,usps_userName;{configuration_legend},countries,subdivisions,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled'
 	),
 	
 	// Subpalettes
@@ -246,7 +247,16 @@ $GLOBALS['TL_DCA']['tl_shipping_modules'] = array
 			'inputType'               => 'select',
 			'default'                 => array_keys($this->getCountries()),
 			'options'                 => $this->getCountries(),
-			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'size'=>8),
+			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'size'=>8, 'tl_class'=>'clr'),
+		),
+		'subdivisions' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_modules']['subdivisions'],
+			'exclude'                 => true,
+			'sorting'                 => true,
+			'inputType'               => 'conditionalselect',
+			'eval'                    => array('multiple'=>true, 'conditionField'=>'countries', 'includeBlankOption'=>true, 'tl_class'=>'clr'),
+			'options_callback'		  => array('tl_shipping_modules','getSubdivisions')
 		),
 		'minimum_total' => array
 		(
@@ -333,6 +343,33 @@ class tl_shipping_modules extends Backend
 		}
 	}
 	
+	public function getSubdivisions(DataContainer $dc)
+	{
+		$this->loadLanguageFile('subdivisions');
+		
+		$arrReturn = array();
+		
+		$objSubdivisions = $this->Database->prepare("SELECT countries FROM tl_shipping_modules WHERE id=?")->limit(1)->execute($dc->id);
+	
+		if(!$objSubdivisions->numRows || !strlen($objSubdivisions->countries))
+			return array();
+		
+		$arrCountries = deserialize($objSubdivisions->countries);
+
+		foreach($arrCountries as $country)
+		{
+			if(array_key_exists($country, $GLOBALS['TL_LANG']['DIV']))
+			{				
+				foreach($GLOBALS['TL_LANG']['DIV'][$country] as $k=>$v)
+				{
+					$arrReturn[$country][$k] = $v;
+				}
+		
+			}
+		}		
+			
+		return $arrReturn;
+	}
 	
 	/**
 	 * Return a string of more buttons for the current shipping module.
