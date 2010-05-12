@@ -541,6 +541,11 @@ window.addEvent(\'domready\', function()
 		$return = '';
 		$this->limit = '';
 		$this->bid = 'tl_buttons';
+		
+		if (is_array($this->root) && !count($this->root))
+		{
+			$this->root = array(0);
+		}
 
 		// Clean up old tl_undo and tl_log entries
 		if ($this->strTable == 'tl_undo' && strlen($GLOBALS['TL_CONFIG']['undoPeriod']))
@@ -572,28 +577,19 @@ window.addEvent(\'domready\', function()
 			$this->Session->set('CLIPBOARD', $arrClipboard);
 		}
 
-/*
-		if ($this->treeView)
+		if ($this->Input->get('table') && $GLOBALS['TL_DCA'][$this->strTable]['config']['ptable'] && $this->Database->fieldExists('pid', $this->strTable))
 		{
-			$return .= $this->treeView();
+			$this->procedure[] = 'pid=?';
+			$this->values[] = CURRENT_ID;
 		}
 
-		else
+		$return .= $this->panel();
+		$return .= $this->treeView();
+
+		// Add another panel at the end of the page
+		if ($this->root && strpos($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['panelLayout'], 'limit') !== false && ($strLimit = $this->limitMenu(true)) != false)
 		{
-*/
-			if ($this->Input->get('table') && $GLOBALS['TL_DCA'][$this->strTable]['config']['ptable'] && $this->Database->fieldExists('pid', $this->strTable))
-			{
-				$this->procedure[] = 'pid=?';
-				$this->values[] = CURRENT_ID;
-			}
-
-			$return .= $this->panel();
-			$return .= $this->treeView();
-
-			// Add another panel at the end of the page
-			if (count($this->root) && strpos($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['panelLayout'], 'limit') !== false && ($strLimit = $this->limitMenu(true)) != false)
-			{
-				$return .= '
+			$return .= '
 
 <form action="'.ampersand($this->Environment->request, true).'" class="tl_form" method="post">
 <div class="tl_formbody">
@@ -612,7 +608,6 @@ window.addEvent(\'domready\', function()
 </div>
 </form>
 ';
-//			}
 		}
 
 		// Store the current IDs
@@ -692,11 +687,15 @@ window.addEvent(\'domready\', function()
 			$arrLimit = explode(',', $this->limit);
 			$objRowStmt->limit($arrLimit[1], $arrLimit[0]);
 		}
-
-		$this->root = $objRowStmt->execute($this->values)->fetchEach('id');
-		$this->bid = strlen($return) ? $this->bid : 'tl_buttons';
-
 		
+		$objIds = $objRowStmt->execute($this->values);
+
+		if ($objIds->numRows)
+		{
+			$this->root = $objIds->fetchEach('id');
+		}
+		
+		$this->bid = strlen($return) ? $this->bid : 'tl_buttons';
 		
 		// Get session data and toggle nodes
 		if ($this->Input->get('ptg') == 'all')
