@@ -52,7 +52,7 @@ $GLOBALS['TL_LANG']['MSC']['deleteLanguageConfirm']	= 'Soll diese Sprache wirkli
 $GLOBALS['TL_LANG']['MSC']['undefinedLanguage']		= 'undefiniert';
 
 
-
+$GLOBALS['TL_LANG']['MSC']['quantity'] = 'Anzahl';
 $GLOBALS['TL_LANG']['MSC']['priceRangeLabel'] = 'ab';
 $GLOBALS['TL_LANG']['MSC']['removeProductLinkText'] = 'entfernen';
 $GLOBALS['TL_LANG']['MSC']['checkoutBT']				= 'Zur Kasse';
