@@ -29,23 +29,26 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_iso_orders']['order_subtotal']		= array('Subtotal','');
-$GLOBALS['TL_LANG']['tl_iso_orders']['order_tax']			= array('Umsatzsteuer-Betrag','');
-$GLOBALS['TL_LANG']['tl_iso_orders']['order_shipping_cost']	= array('Versandkosten','');
-$GLOBALS['TL_LANG']['tl_iso_orders']['shipping_method']		= array('Versandart','');
-$GLOBALS['TL_LANG']['tl_iso_orders']['status']				= array('Bestellstatus','');
-$GLOBALS['TL_LANG']['tl_iso_orders']['shipping_address_id']	= array('Versandadresse','');
-$GLOBALS['TL_LANG']['tl_iso_orders']['billing_address_id']	= array('Rechnungsadresse','');
-$GLOBALS['TL_LANG']['tl_iso_orders']['order_comments']		= array('Kommentare','');
-$GLOBALS['TL_LANG']['tl_iso_orders']['gift_message']		= array('Geschenknachricht','');
-$GLOBALS['TL_LANG']['tl_iso_orders']['gift_wrap']			= array('Geschenkverpackung','');
+$GLOBALS['TL_LANG']['tl_iso_orders']['order_id']			= array('Bestellnummer');
+$GLOBALS['TL_LANG']['tl_iso_orders']['date']				= array('Datum');
+$GLOBALS['TL_LANG']['tl_iso_orders']['status']				= array('Bestellstatus');
+$GLOBALS['TL_LANG']['tl_iso_orders']['shipping_address']	= array('Versandadresse');
+$GLOBALS['TL_LANG']['tl_iso_orders']['billing_address']		= array('Rechnungsadresse');
+
+$GLOBALS['TL_LANG']['tl_iso_orders']['order_subtotal']		= array('Subtotal');
+$GLOBALS['TL_LANG']['tl_iso_orders']['order_tax']			= array('Umsatzsteuer-Betrag');
+$GLOBALS['TL_LANG']['tl_iso_orders']['order_shipping_cost']	= array('Versandkosten');
+$GLOBALS['TL_LANG']['tl_iso_orders']['shipping_method']		= array('Versandart');
+$GLOBALS['TL_LANG']['tl_iso_orders']['order_comments']		= array('Kommentare');
+$GLOBALS['TL_LANG']['tl_iso_orders']['gift_message']		= array('Geschenknachricht');
+$GLOBALS['TL_LANG']['tl_iso_orders']['gift_wrap']			= array('Geschenkverpackung');
 
 
 
 /**
  * Additional Operations
  */
-$GLOBALS['TL_LANG']['tl_iso_orders']['print_order'] = array('Bestellung drucken','Eine Rechnung für diese Bestellung drucken');
+$GLOBALS['TL_LANG']['tl_iso_orders']['print_order'] = array('Bestellung drucken', 'Eine Rechnung für diese Bestellung drucken');
 
 
 /**

@@ -29,21 +29,21 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_iso_orders']['order_subtotal'] = array('Subtotal','');
-$GLOBALS['TL_LANG']['tl_iso_orders']['order_tax'] = array('Tax Cost','');
-$GLOBALS['TL_LANG']['tl_iso_orders']['shippingTotal'] = array('Shipping Cost','');
-$GLOBALS['TL_LANG']['tl_iso_orders']['shipping_method'] = array('Shipping Method','');
-$GLOBALS['TL_LANG']['tl_iso_orders']['status'] = array('Order Status','');
-$GLOBALS['TL_LANG']['tl_iso_orders']['surcharges'] = array('Surcharges','');
-$GLOBALS['TL_LANG']['tl_iso_orders']['shipping_address_id'] = array('Shipping Address','');
-$GLOBALS['TL_LANG']['tl_iso_orders']['billing_address_id'] = array('Billing Address','');
-$GLOBALS['TL_LANG']['tl_iso_orders']['order_comments'] = array('Comments','');
-$GLOBALS['TL_LANG']['tl_iso_orders']['gift_message'] = array('Gift Message','');
-$GLOBALS['TL_LANG']['tl_iso_orders']['gift_wrap'] = array('Gift Wrap','');
-$GLOBALS['TL_LANG']['tl_iso_orders']['cc_num'] = array('Card Number','The credit card number');
-$GLOBALS['TL_LANG']['tl_iso_orders']['cc_cvv'] = array('CCV Number','3 or 4-digit Credit Card Verification Number');
-$GLOBALS['TL_LANG']['tl_iso_orders']['cc_type'] = array('Card Type','The type of credit card.');
-$GLOBALS['TL_LANG']['tl_iso_orders']['cc_exp'] = array('Expiration','The expiration date of the credit card');
+$GLOBALS['TL_LANG']['tl_iso_orders']['order_id']			= array('Order ID');
+$GLOBALS['TL_LANG']['tl_iso_orders']['date']				= array('Date');
+$GLOBALS['TL_LANG']['tl_iso_orders']['status']				= array('Order Status');
+$GLOBALS['TL_LANG']['tl_iso_orders']['shipping_address']	= array('Shipping Address');
+$GLOBALS['TL_LANG']['tl_iso_orders']['billing_address']		= array('Billing Address');
+
+$GLOBALS['TL_LANG']['tl_iso_orders']['order_subtotal'] = array('Subtotal');
+$GLOBALS['TL_LANG']['tl_iso_orders']['order_tax'] = array('Tax Cost');
+$GLOBALS['TL_LANG']['tl_iso_orders']['shippingTotal'] = array('Shipping Cost');
+$GLOBALS['TL_LANG']['tl_iso_orders']['shipping_method'] = array('Shipping Method');
+$GLOBALS['TL_LANG']['tl_iso_orders']['surcharges'] = array('Surcharges');
+$GLOBALS['TL_LANG']['tl_iso_orders']['cc_num'] = array('Card Number', 'The credit card number');
+$GLOBALS['TL_LANG']['tl_iso_orders']['cc_cvv'] = array('CCV Number', '3 or 4-digit Credit Card Verification Number');
+$GLOBALS['TL_LANG']['tl_iso_orders']['cc_type'] = array('Card Type', 'The type of credit card.');
+$GLOBALS['TL_LANG']['tl_iso_orders']['cc_exp'] = array('Expiration', 'The expiration date of the credit card');
 
 
 /**
@@ -60,8 +60,8 @@ $GLOBALS['TL_LANG']['tl_iso_orders']['opAddTax']				= 'Add Tax?';
 /**
  * Additional Operations
  */
-$GLOBALS['TL_LANG']['tl_iso_orders']['authorize_process_payment'] = array('Authorizet.net Point-of-sale Terminal','Conduct a transaction using the Authorize.net point-of-sale terminal');
-$GLOBALS['TL_LANG']['tl_iso_orders']['print_order'] = array('Print this order','Print an invoice for the current order');
+$GLOBALS['TL_LANG']['tl_iso_orders']['authorize_process_payment'] = array('Authorizet.net Point-of-sale Terminal', 'Conduct a transaction using the Authorize.net point-of-sale terminal');
+$GLOBALS['TL_LANG']['tl_iso_orders']['print_order'] = array('Print this order', 'Print an invoice for the current order');
 $GLOBALS['TL_LANG']['tl_iso_orders']['export_emails'] = 'Export Order Emails';
 
 /**
