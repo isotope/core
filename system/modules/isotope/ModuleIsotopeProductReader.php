@@ -117,7 +117,7 @@ class ModuleIsotopeProductReader extends ModuleIsotope
 		}
 
 		$this->Template->product = $objProduct->generate((strlen($this->iso_reader_layout) ? $this->iso_reader_layout : $objProduct->reader_template), $this);
-		$objPage->title .= ' - ' . $objProduct->name;
+		$objPage->pageTitle = $objProduct->name;
 		$objPage->description .= $this->cleanForMeta($objProduct->description, 200);
 	}		
 	
