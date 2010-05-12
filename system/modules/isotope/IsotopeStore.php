@@ -72,8 +72,6 @@ class IsotopeStore extends Model
 		{
 			throw new Exception('No store configuration available');
 		}
-	
-		$_SESSION['isotope']['isGuest'] = FE_USER_LOGGED_IN ? false : true;
 	}
 }
 
