@@ -164,11 +164,11 @@ class MediaManager extends Widget implements uploadable
 			$pathinfo = pathinfo($file['name']);
 		
 			// Make sure directory exists
-			$this->Files->mkdir('isotope/' . substr($pathinfo['basename'], 0, 1) . '/');
+			$this->Files->mkdir('isotope/' . strtolower(substr($pathinfo['filename'], 0, 1)) . '/');
 			
-			$strCacheName = $pathinfo['basename'] . '-' . substr(md5_file($file['tmp_name']), 0, 8) . '.' . $pathinfo['extension'];
+			$strCacheName = $pathinfo['filename'] . '-' . substr(md5_file($file['tmp_name']), 0, 8) . '.' . $pathinfo['extension'];
 			
-			$this->Files->move_uploaded_file($file['tmp_name'], 'isotope/' . substr($pathinfo['basename'], 0, 1) . '/' . $strCacheName);
+			$this->Files->move_uploaded_file($file['tmp_name'], 'isotope/' . strtolower(substr($pathinfo['filename'], 0, 1)) . '/' . $strCacheName);
 			
 			if (!is_array($this->varValue))
 			{
@@ -248,10 +248,10 @@ class MediaManager extends Widget implements uploadable
 		// Add input fields
 		for ($i=0; $i<count($this->varValue); $i++)
 		{
-			$strImage = 'isotope/' . substr($this->varValue[$i]['src'], 0, 1) . '/' . $this->varValue[$i]['src'];
+			$strImage = 'isotope/' . strtolower(substr($this->varValue[$i]['src'], 0, 1)) . '/' . $this->varValue[$i]['src'];
 
 			if (!is_file(TL_ROOT . '/' . $strImage))
-			{								
+			{
 				continue;
 			}
 			$return .= '
