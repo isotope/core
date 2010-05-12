@@ -55,7 +55,7 @@ $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_stores'] = array
 
 $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_modules'] = array
 (
-	'label'                   => &$GLOBALS['TL_LANG']['tl_user']['iso_modules'],
+	'label'                   => &$GLOBALS['TL_LANG']['tl_user_group']['iso_modules'],
 	'exclude'                 => true,
 	'filter'                  => true,
 	'inputType'               => 'checkbox',
