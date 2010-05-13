@@ -177,6 +177,7 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_product_types']['attributes'],
 			'exclude'				=> true,
 			'inputType'				=> 'attributeWizard',
+			'default'				=> array('type', 'pages', 'alias', 'sku', 'name', 'teaser', 'description', 'price', 'tax_class', 'images', 'published'),
 			'eval'					=> array('mandatory'=>true),
 		),
 		'variants' => array
