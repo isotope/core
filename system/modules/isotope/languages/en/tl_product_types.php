@@ -55,6 +55,7 @@ $GLOBALS['TL_LANG']['tl_product_types']['show']   				= array('product type deta
  * Legends
  */
 $GLOBALS['TL_LANG']['tl_product_types']['name_legend']			= 'Product type settings';
+$GLOBALS['TL_LANG']['tl_product_types']['template_legend']		= 'Templates';
 $GLOBALS['TL_LANG']['tl_product_types']['language_legend']		= 'Multilingual settings';
 $GLOBALS['TL_LANG']['tl_product_types']['attributes_legend']	= 'Product attributes';
 $GLOBALS['TL_LANG']['tl_product_types']['download_legend']		= 'Downloads';
