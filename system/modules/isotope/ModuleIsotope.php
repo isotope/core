@@ -322,6 +322,8 @@ abstract class ModuleIsotope extends Module
 	 */
 	protected function getProduct($intId)
 	{
+		global $objPage;
+		
 		$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_product_types WHERE tl_product_data.type=tl_product_types.id) AS type_class FROM tl_product_data WHERE id=?")
 										 ->limit(1)
 										 ->executeUncached($intId);
@@ -335,7 +337,7 @@ abstract class ModuleIsotope extends Module
 									
 		$objProduct = new $strClass($objProductData->row());
 		
-		$objProduct->reader_jumpTo = $this->iso_reader_jumpTo;
+		$objProduct->reader_jumpTo = $this->iso_reader_jumpTo ? $this->iso_reader_jumpTo : $objPage->id;
 			
 		return $objProduct;
 	}
@@ -346,6 +348,8 @@ abstract class ModuleIsotope extends Module
 	 */
 	protected function getProductByAlias($strAlias)
 	{
+		global $objPage;
+		
 		$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_product_types WHERE tl_product_data.type=tl_product_types.id) AS type_class FROM tl_product_data WHERE alias=?")
 										 ->limit(1)
 										 ->executeUncached($strAlias);
@@ -359,7 +363,7 @@ abstract class ModuleIsotope extends Module
 									
 		$objProduct = new $strClass($objProductData->row());
 		
-		$objProduct->reader_jumpTo = $this->iso_reader_jumpTo;
+		$objProduct->reader_jumpTo = $this->iso_reader_jumpTo ? $this->iso_reader_jumpTo : $objPage->id;
 			
 		return $objProduct;
 	}
