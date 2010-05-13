@@ -121,18 +121,18 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
     (
         '__selector__'				=> array('type', 'use_alternate_source'),
 		'default'					=> '{attribute_legend},name,field_name,type,legend,description;',
-		'text'                     	=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},is_listing_field,is_visible_on_front;{use_mode_legend},multilingual,is_customer_defined;{validation_legend},is_required;{search_filters_legend},is_searchable,is_order_by_enabled;rgxp',
-		'integer'					=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},is_listing_field,is_visible_on_front;{use_mode_legend},multilingual,is_customer_defined;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled,is_used_for_price_rules',
-		'decimal'					=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},is_listing_field,is_visible_on_front;multilingual,is_customer_defined;is_required,is_filterable,is_order_by_enabled,is_used_for_price_rules',
-		'textarea'					=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},is_listing_field,is_visible_on_front;{use_mode_legend},multilingual,use_rich_text_editor,is_customer_defined;{validation_legend},is_required;{search_filters_legend},is_searchable,is_order_by_enabled;rgxp',
-		'datetime'					=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},multilingual,is_listing_field,is_visible_on_front;{validation_legend},is_required;{search_filters_legend},is_order_by_enabled',
-		'select'					=> '{attribute_legend},name,field_name,type,legend,description;{options_legend},option_list,use_alternate_source;{visibility_legend},is_listing_field,is_visible_on_front;{use_mode_legend},multilingual,is_customer_defined,add_to_product_variants,is_multiple_select;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled',
-		'conditionalselect'			=> '{attribute_legend},name,field_name,type,legend,description;{options_legend},option_list,conditionField;{visibility_legend},is_listing_field,is_visible_on_front;{use_mode_legend},multilingual,is_customer_defined,is_multiple_select;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled',
-		'options'					=> '{attribute_legend},name,field_name,type,legend,description;{options_legend},option_list,{visibility_legend},is_listing_field,is_visible_on_front;{use_mode_legend},multilingual,is_customer_defined,add_to_product_variants,is_multiple_select;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled',
-		'fileattach'				=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},is_listing_field,is_visible_on_front;{use_mode_legend},multilingual,is_customer_defined;{validation_legend},is_required',
-		'filetree'					=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},is_listing_field,is_visible_on_front;{use_mode_legend},multilingual,is_customer_defined,is_multiple_select,show_files;{validation_legend},is_required,{search_filters_legend},is_filterable',
-		'media'						=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},is_listing_field,is_visible_on_front;{use_mode_legend},multilingual,show_files;{validation_legend},is_required',
-		'checkbox'					=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},is_listing_field,is_visible_on_front;{use_mode_legend},multilingual,is_customer_defined;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled',
+		'text'                     	=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},is_visible_on_front;{use_mode_legend},multilingual,is_customer_defined;{validation_legend},is_required;{search_filters_legend},is_searchable,is_order_by_enabled;rgxp',
+		'integer'					=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},is_visible_on_front;{use_mode_legend},multilingual,is_customer_defined;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled',
+		'decimal'					=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},is_visible_on_front;multilingual,is_customer_defined;is_required,is_filterable,is_order_by_enabled',
+		'textarea'					=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},is_visible_on_front;{use_mode_legend},multilingual,use_rich_text_editor,is_customer_defined;{validation_legend},is_required;{search_filters_legend},is_searchable,is_order_by_enabled;rgxp',
+		'datetime'					=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},multilingual,is_visible_on_front;{validation_legend},is_required;{search_filters_legend},is_order_by_enabled',
+		'select'					=> '{attribute_legend},name,field_name,type,legend,description;{options_legend},option_list,use_alternate_source;{visibility_legend},is_visible_on_front;{use_mode_legend},multilingual,is_customer_defined,add_to_product_variants,is_multiple_select;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled',
+		'conditionalselect'			=> '{attribute_legend},name,field_name,type,legend,description;{options_legend},option_list,conditionField;{visibility_legend},is_visible_on_front;{use_mode_legend},multilingual,is_customer_defined,is_multiple_select;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled',
+		'options'					=> '{attribute_legend},name,field_name,type,legend,description;{options_legend},option_list,{visibility_legend},is_visible_on_front;{use_mode_legend},multilingual,is_customer_defined,add_to_product_variants,is_multiple_select;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled',
+		'fileattach'				=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},is_visible_on_front;{use_mode_legend},multilingual,is_customer_defined;{validation_legend},is_required',
+		'filetree'					=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},is_visible_on_front;{use_mode_legend},multilingual,is_customer_defined,is_multiple_select,show_files;{validation_legend},is_required,{search_filters_legend},is_filterable',
+		'media'						=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},is_visible_on_front;{use_mode_legend},multilingual,show_files;{validation_legend},is_required',
+		'checkbox'					=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},is_visible_on_front;{use_mode_legend},multilingual,is_customer_defined;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled',
     ),
 
     // Subpalettes
@@ -222,13 +222,6 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 				array('tl_product_attributes','validateInput')
 			)
 		),
-		'text_collection_rows' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['text_collection_rows'],
-			'exclude'                 => true,
-			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>255, 'rgxp'=>'digit')	
-		),
 		'is_customer_defined' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['is_customer_defined'],
@@ -236,6 +229,7 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 			'inputType'               => 'checkbox',
 			'eval'					  => array('submitOnChange'=>true)
 		),
+		//!@todo check if we need this field
 		'is_visible_on_front' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['is_visible_on_front'],
@@ -267,12 +261,6 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 			'exclude'                 => true,
 			'inputType'               => 'checkbox'
 		),
-		'is_used_for_price_rules' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['is_used_for_price_rules'],
-			'exclude'                 => true,
-			'inputType'               => 'checkbox'
-		),
 		'is_multiple_select' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['is_multiple_select'],
@@ -284,12 +272,6 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 			'label'					  => &$GLOBALS['TL_LANG']['tl_product_attributes']['use_rich_text_editor'],
 			'exclude'				  => true,
 			'inputType'				  => 'checkbox'
-		),
-		'is_listing_field' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['is_listing_field'],
-			'exclude'                 => true,
-			'inputType'               => 'checkbox'
 		),
 		'multilingual' => array
 		(
