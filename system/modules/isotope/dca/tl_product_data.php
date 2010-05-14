@@ -676,7 +676,7 @@ class tl_product_data extends Backend
 						$arrHelp[] = $objPages->title;
 					}
 					
-					$arrPages[$intPage]['help'] = implode(' , ', $arrHelp);
+					$arrPages[$intPage]['help'] = implode(' » ', $arrHelp);
 				}
 			}
 			
