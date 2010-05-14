@@ -58,7 +58,12 @@ abstract class IsotopeShipping extends Frontend
 	public function __construct($arrRow)
 	{
 		parent::__construct();
-
+		
+		$this->import('Isotope');
+		
+		if(TL_MODE=='FE')
+			$this->import('IsotopeCart', 'Cart');
+		
 		$this->arrData = $arrRow;
 	}
 	
@@ -84,9 +89,7 @@ abstract class IsotopeShipping extends Frontend
 	 * @return mixed
 	 */
 	public function __get($strKey)
-	{
-		$this->import('Isotope');
-		$this->import('IsotopeCart', 'Cart');
+	{		
 		
 		switch( $strKey )
 		{

@@ -121,9 +121,7 @@ class ShippingUPS extends IsotopeShipping
 		
 		switch( $strKey )
 		{
-			case 'price':
-				$this->import('IsotopeCart', 'Cart');
-				
+			case 'price':				
 				$arrSubDivisionShipping = explode(',',$this->Cart->shippingAddress['subdivision']);
 						
 				$arrDestination = array

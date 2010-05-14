@@ -41,7 +41,6 @@ class ShippingFlat extends IsotopeShipping
 		switch( $strKey )
 		{
 			case 'price':
-				$this->import('IsotopeCart', 'Cart');
 				switch( $this->flatCalculation )
 				{
 					case 'perProduct':

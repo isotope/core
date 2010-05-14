@@ -389,7 +389,7 @@ class tl_shipping_modules extends Backend
 		try 
 		{
 			$objModule = new $strClass($arrRow);
-			return $objModule->moduleOperations($arrRow['id']);
+			return $objModule->moduleOperations();
 		}
 		catch (Exception $e) {}
 		

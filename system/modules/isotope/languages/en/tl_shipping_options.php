@@ -33,25 +33,19 @@
 $GLOBALS['TL_LANG']['tl_shipping_options']['name'] 				= array('Name', 'A brief description of the rate. Used on frontend output.');
 $GLOBALS['TL_LANG']['tl_shipping_options']['rate'] 				= array('Rate', 'The shipping rate in currency format.');
 $GLOBALS['TL_LANG']['tl_shipping_options']['description']		= array('Description', 'A rate description can be used to communicate how the rate is calculated to the customer.');
-$GLOBALS['TL_LANG']['tl_shipping_options']['limit_type']		= array('Limit Type','Lower Limit will only apply to numbers exceeding the value specified., Upper limit will only apply to numbers that do not exceed the value specified.');
-$GLOBALS['TL_LANG']['tl_shipping_options']['limit_value']		= array('Limit Value','A positive integer greater than or equal to 0.');
-$GLOBALS['TL_LANG']['tl_shipping_options']['dest_postalcodes']	= array('Destination Postal Codes', 'Postal/zip codes that apply to this rate. If none, will apply to all based upon allowed countries.');
-$GLOBALS['TL_LANG']['tl_shipping_options']['dest_countries'] 	= array('Destination Countries', 'Countries that apply to this rate. If none, will apply to all based upon allowed countries.');
-$GLOBALS['TL_LANG']['tl_shipping_options']['dest_regions'] 		= array('Destination Regions', 'Regions that apply to this rate. If none, will apply to all based upon allowed countries.');
-$GLOBALS['TL_LANG']['tl_shipping_options']['groups']			= array('Member Groups','Restrict this shipping option to certain member groups.');
-$GLOBALS['TL_LANG']['tl_shipping_options']['option_type']		= array('Type of shipping option','This determines extra shipping module functionality.');
-$GLOBALS['TL_LANG']['tl_shipping_options']['override']			= array('Override Other Price Rules','Should this rule override base price rules?');$GLOBALS['TL_LANG']['tl_shipping_options']['override_rule']		= array('Overrided Rule','Select a rule to be overwritten.');
-$GLOBALS['TL_LANG']['tl_shipping_options']['override_message']   = array('Override Message','Communicate a special message in conjunction with this shipping rate.');
-$GLOBALS['TL_LANG']['tl_shipping_options']['mandatory']			= array('Required','Is this option mandatory?  If so it will automatically tack on the surcharge value if specific regional/country-based conditions are met.');
+$GLOBALS['TL_LANG']['tl_shipping_options']['minimum_total']		= array('Minimum total', '');
+$GLOBALS['TL_LANG']['tl_shipping_options']['maximum_total']		= array('Maximum total', '');
 
 
 /**
  * Reference
  */
-$GLOBALS['TL_LANG']['tl_shipping_options']['types']['ot_tier'] 		= 'Order Total-Based Tier';
-$GLOBALS['TL_LANG']['tl_shipping_options']['types']['surcharge'] 	= 'Surcharge';
-$GLOBALS['TL_LANG']['tl_shipping_options']['limit']['lower'] 		= 'Lower Limit';
-$GLOBALS['TL_LANG']['tl_shipping_options']['limit']['upper'] 		= 'Upper Limit';
+
+/** 
+ * Legends
+ */
+$GLOBALS['TL_LANG']['tl_shipping_options']['configuration_legend'] = "General configuration";
+$GLOBALS['TL_LANG']['tl_shipping_options']['general_legend'] = "General information";
 
 
 /**

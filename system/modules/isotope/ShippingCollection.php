@@ -56,8 +56,7 @@ class ShippingCollection extends IsotopeShipping
 	public function calculateShippingRate($intPid, $fltCartSubTotal)
 	{
 		$this->import('FrontendUser','User');
-		$this->import('Isotope');
-		
+
 		$arrUserGroups = deserialize($this->User->groups);
 		
 		$arrShippingAddress = $this->Isotope->getAddress('shipping'); //Tax calculated based on billing address.
@@ -392,7 +391,7 @@ class ShippingCollection extends IsotopeShipping
 		return deserialize($objCountries->countries);
 	}
 
-	public function moduleOperations($intId)
+	public function moduleOperations()
 	{
 		/*$this->import('BackendUser', 'User');
 	
@@ -401,7 +400,7 @@ class ShippingCollection extends IsotopeShipping
 			return '';
 		}*/
 	
-		return '<a href="'.$this->Environment->request.'&amp;table=tl_shipping_options&amp;id=' . $intId . '" title="'.specialchars($title).'"'.$attributes.'>test</a>'; //'.$this->generateImage('tablewizard.gif', 'rates table').'</a> ';
+		return '<a href="'.str_replace('tl_shipping_modules','tl_shipping_options',$this->Environment->request).'&amp;id=' . $this->Input->get('id') . '" title="'.specialchars($title).'"'.$attributes.'>test</a>'; //'.$this->generateImage('tablewizard.gif', 'rates table').'</a> ';
 
 	}
 	

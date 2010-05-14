@@ -260,6 +260,20 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			'eval'					=> array('mandatory'=>true, 'rte'=>'tinyMCE'),
 			'attributes'			=> array('legend'=>'general_legend', 'multilingual'=>true),
 		),
+		'description_meta' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['description_meta'],
+			'search'				=> true,
+			'inputType'				=> 'textarea',
+			'attributes'			=> array('legend'=>'meta_legend', 'multilingual'=>true),
+		),
+		'keywords_meta' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['keywords_meta'],
+			'search'				=> true,
+			'inputType'				=> 'textarea',
+			'attributes'			=> array('legend'=>'meta_legend', 'multilingual'=>true),
+		),
 		'price' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['price'],
