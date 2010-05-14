@@ -158,14 +158,13 @@ class Isotope extends Controller
 	 */
 	protected function getDefaultStore()
 	{
-		$objDefaultStore = $this->Database->prepare("SELECT id, isDefaultStore FROM tl_store")
-											  ->execute(1);
+		$objDefaultStore = $this->Database->execute("SELECT id FROM tl_store WHERE isDefaultStore='1'");
 											  			
 		if($objDefaultStore->numRows < 1)
 		{
 			if (TL_MODE == 'BE')
 			{
-				$_SESSION['TL_ERROR'] = array($GLOBALS['TL_LANG']['ERR']['noStoreConfigurationSet']);
+				$_SESSION['TL_ERROR'] = array($GLOBALS['TL_LANG']['ERR']['noDefaultStoreConfiguration']);
 				
 				if ($this->Input->get('do') != 'isotope')
 					$this->redirect('typolight/main.php?do=isotope&table=tl_store&act=create');

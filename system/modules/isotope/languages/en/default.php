@@ -40,7 +40,8 @@ $GLOBALS['TL_LANG']['ERR']['missingButtonTemplate'] = 'You must specify a templa
 $GLOBALS['TL_LANG']['ERR']['noStoreIdFound'] = 'No store id was found associated with this module!';
 
 $GLOBALS['TL_LANG']['ERR']['order_conditions'] = 'You must accept the terms & conditions to continue';
-$GLOBALS['TL_LANG']['ERR']['noStoreConfigurationSet'] = 'Please create a store configuration';
+$GLOBALS['TL_LANG']['ERR']['noStoreConfigurationSet'] = 'No store configuration available';
+$GLOBALS['TL_LANG']['ERR']['noDefaultStoreConfiguration'] = 'Please create a default store configuration.';
 
 $GLOBALS['TL_LANG']['ERR']['productNameMissing'] = '<no product name found>';
 $GLOBALS['TL_LANG']['ERR']['noSubProducts'] = 'no sub-products found';
