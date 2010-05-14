@@ -107,18 +107,11 @@ $GLOBALS['TL_DCA']['tl_shipping_options'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'__selector__'				  => array('option_type'),
-		'default'                     => 'name,description;option_type;',
-		'ot_tier'					  => 'name,description;option_type;rate;limit_type,limit_value;groups;dest_countries,dest_regions,dest_postalcodes',
-		'surcharge'					  => 'name,description;option_type;mandatory;rate;groups;dest_countries,dest_regions,dest_postalcodes'
+		'__selector__'				  => array(''),
+		'default'                     => '{general_legend},name,description;{configuration_legend},rate,minimum_total,maximum_total;',
 		
 	),
 	
-	'subpalettes' => array
-	(
-		'override'					  => 'override_message'	
-	),
-
 	// Fields
 	'fields' => array
 	(
@@ -136,62 +129,19 @@ $GLOBALS['TL_DCA']['tl_shipping_options'] = array
 			'inputType'               => 'textarea',
 			'eval'                    => array('maxlength'=>255)
 		),
-		'option_type' => array
+		'minimum_total' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['option_type'],
-			'default'                 => 'ot_tier',
-			'exclude'                 => true,
-			'filter'                  => true,
-			'inputType'               => 'select',
-//			'options'				  => array_keys($GLOBALS['TL_LANG']['tl_shipping_options']['types']),
-			'reference'               => &$GLOBALS['TL_LANG']['tl_shipping_options']['types'],
-			'eval'                    => array('helpwizard'=>true, 'submitOnChange'=>true)
-		),
-		'limit_type' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['limit_type'],
-			'exclude'                 => true,
-			'inputType'               => 'select',
-//			'options'				  => array_keys($GLOBALS['TL_LANG']['tl_shipping_options']['limit']),
-			'eval'                    => array('mandatory'=>true,'includeBlankOption'=>true),
-			'reference'				  => $GLOBALS['TL_LANG']['tl_shipping_options']['limit']
-		),
-		'limit_value' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['limit_value'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['minimum_total'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('rgxp'=>digit)
+			'eval'                    => array('maxlength'=>255, 'rgxp'=>'digit'),
 		),
-		'override' => array
+		'maximum_total' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['override'],
-			'exclude'                 => true,
-			'inputType'               => 'checkbox',
-			'eval'					  => array('submitOnChange'=>true)
-		),
-		'override_rule' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['override_rule'],
-			'exclude'                 => true,
-			'inputType'               => 'select',
-			//'eval'                    => array('multiple'=>true, 'size'=>8),
-			'options_callback'		  => array('tl_shipping_options','getExistingRules')
-		),
-		'override_message' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['override_message'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['maximum_total'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>255)
-		),
-		'groups' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['groups'],
-			'exclude'                 => true,
-			'inputType'               => 'checkbox',
-			'foreignKey'              => 'tl_member_group.name',
-			'eval'                    => array('multiple'=>true)
+			'eval'                    => array('maxlength'=>255, 'rgxp'=>'digit'),
 		),
 		'rate' => array
 		(
@@ -199,34 +149,6 @@ $GLOBALS['TL_DCA']['tl_shipping_options'] = array
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'rgxp'=>digit)
-		),
-		'mandatory' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['mandatory'],
-			'exclude'                 => true,
-			'inputType'               => 'checkbox'
-		),
-		'dest_postalcodes' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['dest_postalcodes'],
-			'exclude'                 => true,
-			'inputType'               => 'textarea'
-		),
-		'dest_countries' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['dest_countries'],
-			'exclude'                 => true,
-			'inputType'               => 'select',
-			'eval'                    => array('multiple'=>true, 'size'=>8),
-			'options_callback'		  => array('tl_shipping_options','getAllowedCountries')
-		),
-		'dest_regions' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['dest_regions'],
-			'exclude'                 => true,
-			'inputType'               => 'conditionalselect',
-			'options'				  => $GLOBALS['TL_LANG']['DIV'],
-			'eval'                    => array('multiple'=>true, 'size'=>8, 'conditionField'=>'dest_countries'),
 		)
 	)
 );

@@ -117,8 +117,11 @@ class ModuleIsotopeProductReader extends ModuleIsotope
 		}
 
 		$this->Template->product = $objProduct->generate((strlen($this->iso_reader_layout) ? $this->iso_reader_layout : $objProduct->reader_template), $this);
+
 		$objPage->pageTitle = $objProduct->name;
-		$objPage->description .= $this->cleanForMeta($objProduct->description, 200);
+	/* can't see these properties in the page object... */
+		$GLOBALS['TL_KEYWORDS'] .= $objProduct->keywords_meta; ($objProduct->keywords_meta ? $this->cleanForMeta($objProduct->keywords_meta, 200) : '');
+		$objPage->description .= ($objProduct->description_meta ? str_replace(array("\n", "\r", '"'), array(' ' , '', ''), $this->cleanForMeta($objProduct->description_meta, 200)) : str_replace(array("\n", "\r", '"'), array(' ' , '', ''), $this->cleanForMeta($objProduct->description, 200))); 
 	}		
 	
 	

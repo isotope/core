@@ -112,9 +112,7 @@ class ShippingUSPS extends IsotopeShipping
 		
 		switch( $strKey )
 		{
-			case 'price':
-				$this->import('IsotopeCart', 'Cart');
-						
+			case 'price':						
 				/*$arrDestination = array
 				(
 					'name'			=> $this->Cart->shippingAddress['firstname'] . ' ' . $this->Cart->shippingAddress['lastname'],

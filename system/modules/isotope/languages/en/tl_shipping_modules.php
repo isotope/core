@@ -64,6 +64,7 @@ $GLOBALS['TL_LANG']['tl_shipping_modules']['expert_legend'] = "Expert settings";
 $GLOBALS['TL_LANG']['tl_shipping_modules']['enabled_legend'] = "Enabled settings";
 $GLOBALS['TL_LANG']['tl_shipping_modules']['ups_legend'] = "UPS API settings";
 $GLOBALS['TL_LANG']['tl_shipping_modules']['usps_legend'] = "USPS API settings";
+$GLOBALS['TL_LANG']['tl_shipping_modules']['price_legend'] = "Pricing threshold and tax class applicability";
 
 /**
  * Buttons

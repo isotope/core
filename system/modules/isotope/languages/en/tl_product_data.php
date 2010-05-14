@@ -38,6 +38,8 @@ $GLOBALS['TL_LANG']['tl_product_data']['weight']				= array('Weight', '');
 $GLOBALS['TL_LANG']['tl_product_data']['stock_quantity']		= array('Quantity', '');
 $GLOBALS['TL_LANG']['tl_product_data']['teaser']				= array('Teaser', '');
 $GLOBALS['TL_LANG']['tl_product_data']['description']			= array('Description', '');
+$GLOBALS['TL_LANG']['tl_product_data']['description_meta']		= array('Meta description','');
+$GLOBALS['TL_LANG']['tl_product_data']['keywords_meta']			= array('Meta keywords','');
 $GLOBALS['TL_LANG']['tl_product_data']['shipping_exempt']		= array('Exempt from shipping', 'Check if item is not a shipped item (such as downloadable products).');
 $GLOBALS['TL_LANG']['tl_product_data']['tax_class']				= array('Tax Class', '');
 $GLOBALS['TL_LANG']['tl_product_data']['images']				= array('Images', '');
@@ -108,6 +110,7 @@ $GLOBALS['TL_LANG']['tl_product_data']['link']			= array('Link Products to Categ
  * Legends
  */
 $GLOBALS['TL_LANG']['tl_product_data']['general_legend']	= "General Settings";
+$GLOBALS['TL_LANG']['tl_product_data']['meta_legend']	= 'Meta data';
 $GLOBALS['TL_LANG']['tl_product_data']['pricing_legend']	= "Pricing Settings";
 $GLOBALS['TL_LANG']['tl_product_data']['inventory_legend']	= 'Inventory Settings';
 $GLOBALS['TL_LANG']['tl_product_data']['shipping_legend']	= 'Shipping Settings';
