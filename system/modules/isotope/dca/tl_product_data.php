@@ -350,7 +350,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			'filter'				=> true,
 			'inputType'				=> 'checkbox',
 			'eval'					=> array('doNotCopy'=>true),
-			'attributes'			=> array('legend'=>'publish_legend', 'fixed'=>true),
+			'attributes'			=> array('legend'=>'publish_legend', 'fixed'=>true, 'variant_fixed'=>true),
 		),
 		'start' => array
 		(

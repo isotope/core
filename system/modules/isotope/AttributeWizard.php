@@ -243,7 +243,7 @@ class AttributeWizard extends Widget
 	protected function generateCheckbox($arrOption, $strGroup, $strButtons)
 	{
 		
-		if (!$this->variants && $arrOption['disabled'])
+		if ($arrOption['disabled'])
 		{
 			return sprintf('<span><input type="hidden" name="%s" value="%s"%s /><input id="opt_%s" type="checkbox" class="tl_checkbox" disabled="disabled" checked="checked" /> %s <label for="opt_%s">%s</label></span>',
 							$this->strName . '[]',
@@ -291,7 +291,7 @@ class AttributeWizard extends Widget
 				(
 					'label'		=> (strlen($arrData['label'][0]) ? $arrData['label'][0] : $field),
 					'value'		=> $field,
-					'disabled'	=> $arrData['attributes']['fixed'],
+					'disabled'	=> ($this->variants ? $arrData['attributes']['variant_fixed'] : $arrData['attributes']['fixed']),
 				);
 			}
 		}
