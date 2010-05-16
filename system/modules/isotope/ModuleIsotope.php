@@ -303,18 +303,6 @@ abstract class ModuleIsotope extends Module
 				
 		return $objCookieTimeWindow->cookie_duration;
 	}
-	
-	
-	/**
-	 * determine the form's action method.
-	 * @access protected
-	 * @param string $strKey
-	 * @return string
-	 */
-	protected function getRequestData($strKey)
-	{
-		return strlen($this->Input->post($strKey)) ? $this->Input->post($strKey) : $this->Input->get($strKey);
-	}
 		
 	
 	/**

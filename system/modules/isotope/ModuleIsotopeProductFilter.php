@@ -132,10 +132,10 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		$this->Template->action = $this->Environment->request;
 		$this->Template->baseUrl = $arrCleanUrl[0];
 		$this->Template->orderBy = $arrOrderByOptions;
-		$this->Template->order_by = ($this->getRequestData('order_by')) ? $this->getRequestData('order_by') : $this->getListingModuleSorting($objListingModule);
-		$this->Template->per_page = ($this->getRequestData('per_page') ? $this->getRequestData('per_page') : $strPerPageDefault);
-		$this->Template->page = ($this->getRequestData('page') ? $this->getRequestData('page') : 1);
-		$this->Template->for = $this->getRequestData('for');
+		$this->Template->order_by = ($this->Input->get('order_by')) ? $this->Input->get('order_by') : $this->getListingModuleSorting($objListingModule);
+		$this->Template->per_page = ($this->Input->get('per_page') ? $this->Input->get('per_page') : $strPerPageDefault);
+		$this->Template->page = ($this->Input->get('page') ? $this->Input->get('page') : 1);
+		$this->Template->for = $this->Input->get('for');
 		$this->Template->perPageLabel = $GLOBALS['TL_LANG']['MSC']['perPage'];
 		$this->Template->keywordsLabel = $GLOBALS['TL_LANG']['MSC']['searchTerms'];
 		$this->Template->searchLabel = $GLOBALS['TL_LANG']['MSC']['search'];

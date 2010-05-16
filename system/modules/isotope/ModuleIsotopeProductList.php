@@ -96,13 +96,13 @@ class ModuleIsotopeProductList extends ModuleIsotope
 	{	
 		global $objPage;
 			
-		if($this->getRequestData('clear'))
+		if($this->Input->get('clear'))
 		{
 			$arrFilters = array();
 		}
 		else
 		{
-			$arrFilters = array('for'=>$this->getRequestData('for'),'per_page'=>$this->getRequestData('per_page'),'page'=>$this->getRequestData('page'),'order_by'=>$this->getRequestData('order_by'));	
+			$arrFilters = array('for'=>$this->Input->get('for'),'per_page'=>$this->Input->get('per_page'),'page'=>$this->Input->get('page'),'order_by'=>$this->Input->get('order_by'));	
 		
 			/*$arrFilterFields = implode(',', $this->Input->get('filters'));	//get the names of filters we are using
 	
@@ -114,7 +114,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 				}
 			}*/
 						
-			$this->perPage = ($this->getRequestData('per_page') ? $this->getRequestData('per_page') : $this->perPage);
+			$this->perPage = ($this->Input->get('per_page') ? $this->Input->get('per_page') : $this->perPage);
 							
 			$this->setFilterSQL($arrFilters);
 		}
@@ -135,7 +135,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		if ($this->perPage > 0)
 		{
 			$total = $objProductIds->execute($this->arrParams)->numRows;
-			$page = $this->getRequestData('page') ? $this->getRequestData('page') : 1;
+			$page = $this->Input->get('page') ? $this->Input->get('page') : 1;
 			$offset = ($page - 1) * $this->perPage;
 
 			$objPagination = new Pagination($total, $this->perPage);
