@@ -55,8 +55,8 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		),
 		'label' => array
 		(
-			'fields'                  => array('name'),
-			'format'                  => '%s',
+			'fields'                  => array('name', 'isDefaultStore'),
+			'format'                  => '%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>',
 		),
 		'global_operations' => array
 		(
