@@ -281,22 +281,6 @@ $GLOBALS['TL_LANG']['CCT']['jcb']				= 'JCB';
 $GLOBALS['TL_LANG']['CCT']['diners']			= 'Diner\'s Club';
 $GLOBALS['TL_LANG']['CCT']['enroute']			= 'EnRoute';
 
-/**
- * Currencies
- */
-$GLOBALS['TL_LANG']['CUR']['USD'] = 'USD - US Dollar';
-$GLOBALS['TL_LANG']['CUR']['EUR'] = 'EUR - Euro';
-$GLOBALS['TL_LANG']['CUR']['CHF'] = 'CHF - Swiss Franc';
-$GLOBALS['TL_LANG']['CUR']['GBP'] = 'GBP - Pound Sterling';
-
-
-/**
- * Currency symbols
- */
-$GLOBALS['TL_LANG']['CUR_SYMBOL']['USD'] = '$';
-$GLOBALS['TL_LANG']['CUR_SYMBOL']['EUR'] = '€';
-$GLOBALS['TL_LANG']['CUR_SYMBOL']['GBP'] = '£';
-
 
 /**
  * Attributes
@@ -315,4 +299,185 @@ $GLOBALS['TL_LANG']['ATTR']['label']				= 'Label/Fixed Display';
 $GLOBALS['TL_LANG']['ATTR']['input']				= 'Accept Input From Customer';
 $GLOBALS['TL_LANG']['ATTR']['conditionalselect']	= 'Conditional Select Menu';
 
+
+/**
+ * Currencies
+ */
+$GLOBALS['TL_LANG']['CUR']['AED'] = 'AED - United Arab Emirates Dirham';
+$GLOBALS['TL_LANG']['CUR']['AFA'] = 'AFA - Afghani';
+$GLOBALS['TL_LANG']['CUR']['ALL'] = 'ALL - Lek';
+$GLOBALS['TL_LANG']['CUR']['AMD'] = 'AMD - Dram';
+$GLOBALS['TL_LANG']['CUR']['ANG'] = 'ANG - Netherlands Antilles Guilder';
+$GLOBALS['TL_LANG']['CUR']['AOA'] = 'AOA - Kwanza';
+$GLOBALS['TL_LANG']['CUR']['ARA'] = 'ARA - Austral';
+$GLOBALS['TL_LANG']['CUR']['ARP'] = 'ARP - Argentinian Peso';
+$GLOBALS['TL_LANG']['CUR']['ARS'] = 'ARS - Argentinian Nuevo Peso';
+$GLOBALS['TL_LANG']['CUR']['AUD'] = 'AUD - Australian Dollar';
+$GLOBALS['TL_LANG']['CUR']['AWG'] = 'AWG - Aruban Guilder';
+$GLOBALS['TL_LANG']['CUR']['AZM'] = 'AZM - Azerbaijani Manat';
+$GLOBALS['TL_LANG']['CUR']['BAM'] = 'BAM - Convertible Mark';
+$GLOBALS['TL_LANG']['CUR']['BBD'] = 'BBD - Barbados Dollar';
+$GLOBALS['TL_LANG']['CUR']['BDT'] = 'BDT - Taka';
+$GLOBALS['TL_LANG']['CUR']['BGL'] = 'BGL - Lev';
+$GLOBALS['TL_LANG']['CUR']['BHD'] = 'BHD - Bahraini Dinar';
+$GLOBALS['TL_LANG']['CUR']['BIF'] = 'BIF - Burundi Franc';
+$GLOBALS['TL_LANG']['CUR']['BMD'] = 'BMD - Bermudian Dollar';
+$GLOBALS['TL_LANG']['CUR']['BND'] = 'BND - Brunei Dollar';
+$GLOBALS['TL_LANG']['CUR']['BOB'] = 'BOB - Boliviano';
+$GLOBALS['TL_LANG']['CUR']['BOP'] = 'BOP - Bolivian Peso';
+$GLOBALS['TL_LANG']['CUR']['BRC'] = 'BRC - Cruzeiro';
+$GLOBALS['TL_LANG']['CUR']['BRL'] = 'BRL - Real';
+$GLOBALS['TL_LANG']['CUR']['BSD'] = 'BSD - Bahamian Dollar';
+$GLOBALS['TL_LANG']['CUR']['BTN'] = 'BTN - Ngultrum';
+$GLOBALS['TL_LANG']['CUR']['BWP'] = 'BWP - Pula';
+$GLOBALS['TL_LANG']['CUR']['BYR'] = 'BYR - Belarussian Rouble';
+$GLOBALS['TL_LANG']['CUR']['BZD'] = 'BZD - Belize Dollar';
+$GLOBALS['TL_LANG']['CUR']['CAD'] = 'CAD - Canadian Dollar';
+$GLOBALS['TL_LANG']['CUR']['CDZ'] = 'CDZ - New Zaïre';
+$GLOBALS['TL_LANG']['CUR']['CHF'] = 'CHF - Swiss Franc';
+$GLOBALS['TL_LANG']['CUR']['CLF'] = 'CLF - Unidades de Fomento';
+$GLOBALS['TL_LANG']['CUR']['CLP'] = 'CLP - Chilean Peso';
+$GLOBALS['TL_LANG']['CUR']['CNY'] = 'CNY - Yuan Renminbi';
+$GLOBALS['TL_LANG']['CUR']['COP'] = 'COP - Colombian Peso';
+$GLOBALS['TL_LANG']['CUR']['CRC'] = 'CRC - Costa Rican Colón';
+$GLOBALS['TL_LANG']['CUR']['CSD'] = 'CSD - Serbian Dinar';
+$GLOBALS['TL_LANG']['CUR']['CUP'] = 'CUP - Cuban Peso';
+$GLOBALS['TL_LANG']['CUR']['CVE'] = 'CVE - Escudo Caboverdiano';
+$GLOBALS['TL_LANG']['CUR']['CZK'] = 'CZK - Czech Koruna';
+$GLOBALS['TL_LANG']['CUR']['DJF'] = 'DJF - Djibouti Franc';
+$GLOBALS['TL_LANG']['CUR']['DKK'] = 'DKK - Danish Krone';
+$GLOBALS['TL_LANG']['CUR']['DOP'] = 'DOP - Dominican Republic Peso';
+$GLOBALS['TL_LANG']['CUR']['DZD'] = 'DZD - Algerian Dinar';
+$GLOBALS['TL_LANG']['CUR']['ECS'] = 'ECS - Sucre (no longer in use)';
+$GLOBALS['TL_LANG']['CUR']['EEK'] = 'EEK - Kroon';
+$GLOBALS['TL_LANG']['CUR']['EGP'] = 'EGP - Egyptian Pound';
+$GLOBALS['TL_LANG']['CUR']['ERN'] = 'ERN - Eritrean Nakfa';
+$GLOBALS['TL_LANG']['CUR']['ETB'] = 'ETB - Ethiopian Birr';
+$GLOBALS['TL_LANG']['CUR']['EUR'] = 'EUR - Euro';
+$GLOBALS['TL_LANG']['CUR']['FJD'] = 'FJD - Fiji Dollar';
+$GLOBALS['TL_LANG']['CUR']['FKP'] = 'FKP - Falkland Pound';
+$GLOBALS['TL_LANG']['CUR']['GBP'] = 'GBP - Pound Sterling';
+$GLOBALS['TL_LANG']['CUR']['GEL'] = 'GEL - Lari';
+$GLOBALS['TL_LANG']['CUR']['GHC'] = 'GHC - Cedi';
+$GLOBALS['TL_LANG']['CUR']['GIP'] = 'GIP - Gibraltar Pound';
+$GLOBALS['TL_LANG']['CUR']['GMD'] = 'GMD - Dalasi';
+$GLOBALS['TL_LANG']['CUR']['GNS'] = 'GNS - Syli (also known as Guinea Franc)';
+$GLOBALS['TL_LANG']['CUR']['GQE'] = 'GQE - Ekwele';
+$GLOBALS['TL_LANG']['CUR']['GTQ'] = 'GTQ - Quetzal';
+$GLOBALS['TL_LANG']['CUR']['GWP'] = 'GWP - Guinea-Bissau Peso';
+$GLOBALS['TL_LANG']['CUR']['GYD'] = 'GYD - Guyana Dollar';
+$GLOBALS['TL_LANG']['CUR']['HKD'] = 'HKD - Hong Kong Dollar';
+$GLOBALS['TL_LANG']['CUR']['HNL'] = 'HNL - Lempira';
+$GLOBALS['TL_LANG']['CUR']['HRD'] = 'HRD - Croatian Dinar';
+$GLOBALS['TL_LANG']['CUR']['HRK'] = 'HRK - Croatian Kuna';
+$GLOBALS['TL_LANG']['CUR']['HTG'] = 'HTG - Gourde';
+$GLOBALS['TL_LANG']['CUR']['HUF'] = 'HUF - Forint';
+$GLOBALS['TL_LANG']['CUR']['IDR'] = 'IDR - Rupiah';
+$GLOBALS['TL_LANG']['CUR']['ILS'] = 'ILS - Shekel';
+$GLOBALS['TL_LANG']['CUR']['INR'] = 'INR - Indian Rupee';
+$GLOBALS['TL_LANG']['CUR']['IQD'] = 'IQD - Iraqi Dinar';
+$GLOBALS['TL_LANG']['CUR']['IRR'] = 'IRR - Iranian Rial';
+$GLOBALS['TL_LANG']['CUR']['ISK'] = 'ISK - Icelandic Króna';
+$GLOBALS['TL_LANG']['CUR']['JMD'] = 'JMD - Jamaican Dollar';
+$GLOBALS['TL_LANG']['CUR']['JOD'] = 'JOD - Jordanian Dinar';
+$GLOBALS['TL_LANG']['CUR']['JPY'] = 'JPY - Yen';
+$GLOBALS['TL_LANG']['CUR']['KES'] = 'KES - Kenyan Shilling';
+$GLOBALS['TL_LANG']['CUR']['KGS'] = 'KGS - Kyrgyzstani Som';
+$GLOBALS['TL_LANG']['CUR']['KHR'] = 'KHR - Riel';
+$GLOBALS['TL_LANG']['CUR']['KMF'] = 'KMF - Comorian Franc';
+$GLOBALS['TL_LANG']['CUR']['KPW'] = 'KPW - Democratic People\'s Republic of Korean Won';
+$GLOBALS['TL_LANG']['CUR']['KRW'] = 'KRW - Republic of Korean Won';
+$GLOBALS['TL_LANG']['CUR']['KWD'] = 'KWD - Kuwaiti Dinar';
+$GLOBALS['TL_LANG']['CUR']['KYD'] = 'KYD - Cayman Islands Dollar';
+$GLOBALS['TL_LANG']['CUR']['KZT'] = 'KZT - Tenge';
+$GLOBALS['TL_LANG']['CUR']['LAK'] = 'LAK - Kip';
+$GLOBALS['TL_LANG']['CUR']['LBP'] = 'LBP - Lebanese Pound';
+$GLOBALS['TL_LANG']['CUR']['LKR'] = 'LKR - Sri Lankan Rupee';
+$GLOBALS['TL_LANG']['CUR']['LRD'] = 'LRD - Liberian Dollar';
+$GLOBALS['TL_LANG']['CUR']['LSL'] = 'LSL - Loti';
+$GLOBALS['TL_LANG']['CUR']['LSM'] = 'LSM - Maloti';
+$GLOBALS['TL_LANG']['CUR']['LTL'] = 'LTL - Litas';
+$GLOBALS['TL_LANG']['CUR']['LVL'] = 'LVL - Lats';
+$GLOBALS['TL_LANG']['CUR']['LYD'] = 'LYD - Libyan Dinar';
+$GLOBALS['TL_LANG']['CUR']['MAD'] = 'MAD - Moroccan Dirham';
+$GLOBALS['TL_LANG']['CUR']['MDL'] = 'MDL - Moldavian Leu';
+$GLOBALS['TL_LANG']['CUR']['MGF'] = 'MGF - Malagasy Franc';
+$GLOBALS['TL_LANG']['CUR']['MKD'] = 'MKD - Macedonian Dinar';
+$GLOBALS['TL_LANG']['CUR']['MLF'] = 'MLF - Malian Franc';
+$GLOBALS['TL_LANG']['CUR']['MMK'] = 'MMK - Kyat';
+$GLOBALS['TL_LANG']['CUR']['MNT'] = 'MNT - Tugrik';
+$GLOBALS['TL_LANG']['CUR']['MOP'] = 'MOP - Pataca';
+$GLOBALS['TL_LANG']['CUR']['MRO'] = 'MRO - Ouguiya';
+$GLOBALS['TL_LANG']['CUR']['MUR'] = 'MUR - Mauritius Rupee';
+$GLOBALS['TL_LANG']['CUR']['MVR'] = 'MVR - Rufiyaa';
+$GLOBALS['TL_LANG']['CUR']['MWK'] = 'MWK - Malawian Kwacha';
+$GLOBALS['TL_LANG']['CUR']['MYR'] = 'MYR - Ringgit (also known as Malaysian Dollar)';
+$GLOBALS['TL_LANG']['CUR']['MZM'] = 'MZM - Metical';
+$GLOBALS['TL_LANG']['CUR']['NAD'] = 'NAD - Namibia Dollar';
+$GLOBALS['TL_LANG']['CUR']['NGN'] = 'NGN - Naira';
+$GLOBALS['TL_LANG']['CUR']['NIC'] = 'NIC - Córdoba';
+$GLOBALS['TL_LANG']['CUR']['NOK'] = 'NOK - Norwegian Krone';
+$GLOBALS['TL_LANG']['CUR']['NPR'] = 'NPR - Nepalese Rupee';
+$GLOBALS['TL_LANG']['CUR']['NZD'] = 'NZD - New Zealand Dollar';
+$GLOBALS['TL_LANG']['CUR']['OMR'] = 'OMR - Omani Rial';
+$GLOBALS['TL_LANG']['CUR']['PAB'] = 'PAB - Balboa';
+$GLOBALS['TL_LANG']['CUR']['PEI'] = 'PEI - Inti';
+$GLOBALS['TL_LANG']['CUR']['PEN'] = 'PEN - New Sol';
+$GLOBALS['TL_LANG']['CUR']['PGK'] = 'PGK - Kina';
+$GLOBALS['TL_LANG']['CUR']['PHP'] = 'PHP - Philippines Peso';
+$GLOBALS['TL_LANG']['CUR']['PKR'] = 'PKR - Pakistani Rupee';
+$GLOBALS['TL_LANG']['CUR']['PLN'] = 'PLN - New Zloty';
+$GLOBALS['TL_LANG']['CUR']['PYG'] = 'PYG - Guarani';
+$GLOBALS['TL_LANG']['CUR']['QAR'] = 'QAR - Qatari Riyal';
+$GLOBALS['TL_LANG']['CUR']['ROL'] = 'ROL - Romanian Leu';
+$GLOBALS['TL_LANG']['CUR']['RUB'] = 'RUB - Russian Federation Rouble';
+$GLOBALS['TL_LANG']['CUR']['RWF'] = 'RWF - Rwandan Franc';
+$GLOBALS['TL_LANG']['CUR']['SAR'] = 'SAR - Saudi Riyal';
+$GLOBALS['TL_LANG']['CUR']['SBD'] = 'SBD - Solomon Islands Dollar';
+$GLOBALS['TL_LANG']['CUR']['SCR'] = 'SCR - Seychelles Rupee';
+$GLOBALS['TL_LANG']['CUR']['SDG'] = 'SDG - Sudanese Pound';
+$GLOBALS['TL_LANG']['CUR']['SEK'] = 'SEK - Swedish Krona';
+$GLOBALS['TL_LANG']['CUR']['SGD'] = 'SGD - Singapore Dollar';
+$GLOBALS['TL_LANG']['CUR']['SHP'] = 'SHP - St Helena Pound';
+$GLOBALS['TL_LANG']['CUR']['SLL'] = 'SLL - Leone';
+$GLOBALS['TL_LANG']['CUR']['SOS'] = 'SOS - Somali Shilling';
+$GLOBALS['TL_LANG']['CUR']['SRG'] = 'SRG - Surinam Guilder';
+$GLOBALS['TL_LANG']['CUR']['STD'] = 'STD - Dobra';
+$GLOBALS['TL_LANG']['CUR']['SUR'] = 'SUR - Union of Soviet Socialist Republics Rouble';
+$GLOBALS['TL_LANG']['CUR']['SYP'] = 'SYP - Syrian Pound';
+$GLOBALS['TL_LANG']['CUR']['SZL'] = 'SZL - Lilangeni';
+$GLOBALS['TL_LANG']['CUR']['THB'] = 'THB - Baht';
+$GLOBALS['TL_LANG']['CUR']['TJR'] = 'TJR - Tajik Rouble';
+$GLOBALS['TL_LANG']['CUR']['TMM'] = 'TMM - Turkmenistani Manat';
+$GLOBALS['TL_LANG']['CUR']['TND'] = 'TND - Tunisian Dinar';
+$GLOBALS['TL_LANG']['CUR']['TOP'] = 'TOP - Pa\'anga';
+$GLOBALS['TL_LANG']['CUR']['TPE'] = 'TPE - Timorian Escudo';
+$GLOBALS['TL_LANG']['CUR']['TRY'] = 'TRY - New Turkish Lira';
+$GLOBALS['TL_LANG']['CUR']['TTD'] = 'TTD - Trinidad and Tobago Dollar';
+$GLOBALS['TL_LANG']['CUR']['TWD'] = 'TWD - Taiwan Dollar';
+$GLOBALS['TL_LANG']['CUR']['TZS'] = 'TZS - Tanzanian Shilling';
+$GLOBALS['TL_LANG']['CUR']['UAH'] = 'UAH - Hryvna';
+$GLOBALS['TL_LANG']['CUR']['UAK'] = 'UAK - Karbovanet';
+$GLOBALS['TL_LANG']['CUR']['UGS'] = 'UGS - Ugandan Shilling';
+$GLOBALS['TL_LANG']['CUR']['USD'] = 'USD - United States Dollar';
+$GLOBALS['TL_LANG']['CUR']['UYU'] = 'UYU - Uruguayan Peso';
+$GLOBALS['TL_LANG']['CUR']['UZS'] = 'UZS - Uzbekistani Som';
+$GLOBALS['TL_LANG']['CUR']['VEF'] = 'VEF - Bolivar Fuerte';
+$GLOBALS['TL_LANG']['CUR']['VND'] = 'VND - Viet Nam Dông';
+$GLOBALS['TL_LANG']['CUR']['VUV'] = 'VUV - Vatu';
+$GLOBALS['TL_LANG']['CUR']['WST'] = 'WST - Tala';
+$GLOBALS['TL_LANG']['CUR']['YDD'] = 'YDD - South Yemeni Dinar';
+$GLOBALS['TL_LANG']['CUR']['YER'] = 'YER - Yemeni Riyal';
+$GLOBALS['TL_LANG']['CUR']['ZAR'] = 'ZAR - Rand';
+$GLOBALS['TL_LANG']['CUR']['ZMK'] = 'ZMK - Zambian Kwacha';
+$GLOBALS['TL_LANG']['CUR']['ZWD'] = 'ZWD - Zimbabwe Dollar';
+
+
+/**
+ * Currency symbols
+ */
+$GLOBALS['TL_LANG']['CUR_SYMBOL']['USD'] = '$';
+$GLOBALS['TL_LANG']['CUR_SYMBOL']['EUR'] = '€';
+$GLOBALS['TL_LANG']['CUR_SYMBOL']['GBP'] = '£';
+$GLOBALS['TL_LANG']['CUR_SYMBOL']['JPY'] = '¥';
 
