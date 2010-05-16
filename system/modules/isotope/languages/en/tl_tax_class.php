@@ -29,7 +29,10 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_tax_class']['name'] = array('Tax Class Name', 'Give this tax class a name that explains what it is used for.');
+$GLOBALS['TL_LANG']['tl_tax_class']['name']		= array('Name', 'Give this tax class a name that explains what it is used for.');
+$GLOBALS['TL_LANG']['tl_tax_class']['includes']	= array('Includes tax', 'Select if prices of products with this tax class contain a tax rate. This tax rate will be subtracted from product price if it does not match.');
+$GLOBALS['TL_LANG']['tl_tax_class']['label']	= array('Include label', 'A label for orders to present for subtracted taxes (if included tax does not match). Default tax rate label will be used if this is blank.');
+$GLOBALS['TL_LANG']['tl_tax_class']['rates']	= array('Apply tax rates', 'Add these tax rates to products with this tax class.');
 
 
 /**
@@ -46,4 +49,5 @@ $GLOBALS['TL_LANG']['tl_tax_class']['show']   = array('Order Details', 'Show det
  * Legends
  */
 $GLOBALS['TL_LANG']['tl_tax_class']['name_legend']	= 'Name';
+$GLOBALS['TL_LANG']['tl_tax_class']['rates_legend']	= 'Tax rates';
 
