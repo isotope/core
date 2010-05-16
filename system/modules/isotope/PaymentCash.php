@@ -42,7 +42,7 @@ class PaymentCash extends IsotopePayment
 	 */
 	public function statusOptions()
 	{
-		return array('pending', 'processing', 'shipped', 'complete', 'on_hold');
+		return array('pending', 'processing', 'complete', 'on_hold');
 	}
 	
 	

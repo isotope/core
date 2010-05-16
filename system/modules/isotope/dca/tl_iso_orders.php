@@ -111,7 +111,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{general_legend},status,surcharges;{details_legend},details',
+		'default'                     => '{status_legend},status,date_payed,date_shipped;{details_legend},details',
 	),
 	
 	// Fields
@@ -138,7 +138,19 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 			'flag'					=> 8,
 			'filter'				=> true,
 			'sorting'				=> true,
-			'eval'					=> array('rgxp'=>'date'),
+			'eval'					=> array('rgxp'=>'date', 'tl_class'=>'clr'),
+		),
+		'date_payed' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['date_payed'],
+			'inputType'				=> 'text',
+			'eval'					=> array('rgxp'=>'date', 'datepicker'=>$this->getDatePickerString(), 'tl_class'=>'w50 wizard'),
+		),
+		'date_shipped' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['date_shipped'],
+			'inputType'				=> 'text',
+			'eval'					=> array('rgxp'=>'date', 'datepicker'=>$this->getDatePickerString(), 'tl_class'=>'w50 wizard'),
 		),
 		'billing_address' => array
 		(

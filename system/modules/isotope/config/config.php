@@ -220,7 +220,7 @@ $GLOBALS['ISO_PERPAGE'] = array(8,12,32,64);
 /** 
  * Order Statuses
  */
-$GLOBALS['ISO_ORDER'] = array('pending','processing','shipped','complete','on_hold', 'cancelled');
+$GLOBALS['ISO_ORDER'] = array('pending', 'processing', 'complete', 'on_hold', 'cancelled');
 
 
 /**

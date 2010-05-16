@@ -151,10 +151,9 @@ abstract class IsotopePayment extends Frontend
 	/**
 	 * Return a list of order status options.
 	 *
-	 * Allowed return values are:
+	 * Allowed return values are ($GLOBALS['ISO_ORDER']):
 	 * - pending
 	 * - processing
-	 * - shipped
 	 * - complete
 	 * - on_hold
 	 * - cancelled
