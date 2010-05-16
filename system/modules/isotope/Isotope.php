@@ -65,14 +65,7 @@ class Isotope extends Controller
 		
 		if (strlen($_SESSION['isotope']['store_id']))
 		{
-			try
-			{
-				$this->overrideStore($_SESSION['isotope']['store_id']);
-			}
-			catch (Exception $e)
-			{
-				$this->resetStore($blnForceDefault);
-			}
+			$this->overrideStore($_SESSION['isotope']['store_id']);
 		}
 		else
 		{
@@ -147,7 +140,15 @@ class Isotope extends Controller
 	 */
 	public function overrideStore($intStoreId)
     {
-    	$this->Store = new IsotopeStore($intStoreId);
+    	try
+		{
+			$objStore = new IsotopeStore($intStoreId);
+			$this->Store = $objStore;
+		}
+		catch (Exception $e)
+		{
+			$this->resetStore($blnForceDefault);
+		}
 	}
 	
 	
