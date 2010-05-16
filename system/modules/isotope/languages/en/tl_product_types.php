@@ -29,8 +29,9 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_product_types']['name']					= array('Product Type Name', '');
+$GLOBALS['TL_LANG']['tl_product_types']['name']					= array('Name', 'Please enter a name for this product type.');
 $GLOBALS['TL_LANG']['tl_product_types']['class']				= array('Product Class', 'Please select a product class. Different product classes will handle products differently.');
+$GLOBALS['TL_LANG']['tl_product_types']['fallback']				= array('Default', 'Check here if this is the default product type.');
 $GLOBALS['TL_LANG']['tl_product_types']['list_template']		= array('Listing Template', 'Select a template for product listing.');
 $GLOBALS['TL_LANG']['tl_product_types']['reader_template']		= array('Reader Template', 'Select a template for product details.');
 $GLOBALS['TL_LANG']['tl_product_types']['description']			= array('Product Type Description', '');

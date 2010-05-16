@@ -118,8 +118,8 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 	'palettes' => array
 	(
 		'__selector__'				=> array('class', 'variants'),
-		'default'					=> '{name_legend},name,class,description;{template_legend},list_template,reader_template;{language_legend:hide},languages;{attributes_legend},attributes,variants;{download_legend:hide},downloads',
-		'regular'					=> '{name_legend},name,class,description;{template_legend},list_template,reader_template;{language_legend:hide},languages;{attributes_legend},attributes,variants;{download_legend:hide},downloads',
+		'default'					=> '{name_legend},name,class,fallback;{description_legend:hide},description;{template_legend},list_template,reader_template;{language_legend:hide},languages;{attributes_legend},attributes,variants;{download_legend:hide},downloads',
+		'regular'					=> '{name_legend},name,class,fallback;{description_legend:hide},description;{template_legend},list_template,reader_template;{language_legend:hide},languages;{attributes_legend},attributes,variants;{download_legend:hide},downloads',
 	),
 	
 	// Subpalettes
@@ -147,6 +147,13 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 			'options'				=> array_keys($GLOBALS['ISO_PRODUCT']),
 			'reference'				=> &$GLOBALS['TL_LANG']['ISO_PRODUCT'],
 			'eval'					=> array('mandatory'=>true, 'submitOnChange'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
+		),
+		'fallback' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_product_types']['fallback'],
+			'exclude'				=> true,
+			'inputType'				=> 'checkbox',
+			'eval'					=> array('fallback'=>true, 'tl_class'=>'w50'),
 		),
 		'list_template' => array
 		(
@@ -177,7 +184,7 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_product_types']['attributes'],
 			'exclude'				=> true,
 			'inputType'				=> 'attributeWizard',
-			'default'				=> array('type', 'pages', 'alias', 'sku', 'name', 'teaser', 'description', 'keywords_meta', 'description_meta', 'price', 'tax_class', 'images', 'published'),
+			'default'				=> array('type', 'pages', 'alias', 'sku', 'name', 'teaser', 'description', 'price', 'tax_class', 'images', 'published'),
 			'eval'					=> array('mandatory'=>true),
 		),
 		'variants' => array
