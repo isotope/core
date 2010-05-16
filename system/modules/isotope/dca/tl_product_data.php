@@ -46,7 +46,8 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		(
 			array('tl_product_data', 'checkPermission'),
 			array('tl_product_data', 'addBreadcrumb'),
-			array('tl_product_data', 'generatePageAssociations')
+			array('tl_product_data', 'buildPaletteString'),
+			array('tl_product_data', 'generatePageAssociations'),
 		),
 	),
 	
@@ -172,7 +173,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 	'palettes' => array
 	(
 		'__selector__'				=> array('type', 'stock_enabled'),
-		'default'					=> '{general_legend},type,alias',
+		'default'					=> '{general_legend},type',
 	),
 	
 	// Subpalettes
@@ -191,7 +192,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			'inputType'				=> 'select',
 			'options_callback'		=> array('tl_product_data', 'getProductTypes'),
 			'foreignKey'			=> (strlen($this->Input->get('table')) ? 'tl_product_types.name' : ''),
-			'eval'					=> array('mandatory'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true),
+			'eval'					=> array('mandatory'=>true, 'submitOnChange'=>true),
 			'attributes'			=> array('legend'=>'general_legend', 'fixed'=>true, 'inherit'=>true),
 		),
 		'pages' => array
@@ -1424,6 +1425,96 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 		$imagePasteInto = $this->generateImage('pasteinto.gif', sprintf($GLOBALS['TL_LANG'][$table]['pasteinto'][1], $row['id']), 'class="blink"');
 
 		return ($disablePI ? $this->generateImage('pasteinto_.gif', '', 'class="blink"').' ' : '<a href="'.$this->addToUrl('act='.$arrClipboard['mode'].'&amp;mode=2&amp;pid='.$row['id'].(!is_array($arrClipboard['id']) ? '&amp;id='.$arrClipboard['id'] : '')).'" title="'.specialchars(sprintf($GLOBALS['TL_LANG'][$table]['pasteinto'][1], $row['id'])).'" onclick="Backend.getScrollOffset();">'.$imagePasteInto.'</a> ');
+	}
+	
+	
+	/**
+	 * Build palette for the current product type / variant
+	 */
+	public function buildPaletteString($dc)
+	{
+		if (!strlen($this->Input->get('act')) && !strlen($this->Input->get('key')))
+			return;
+			
+		// Set default product type
+		$GLOBALS['TL_DCA']['tl_product_data']['fields']['type']['default'] = $this->Database->execute("SELECT id FROM tl_product_types WHERE fallback='1'")->id;
+		
+		// Load the current product
+		$objProduct = $this->Database->prepare("SELECT id, pid, language, type, (SELECT attributes FROM tl_product_types WHERE id=tl_product_data.type) AS attributes, (SELECT variant_attributes FROM tl_product_types WHERE id=tl_product_data.type) AS variant_attributes FROM tl_product_data WHERE id=?")->limit(1)->execute($dc->id);
+			
+		if ($objProduct->pid > 0)
+		{
+			$objParent = $this->Database->prepare("SELECT * FROM tl_product_data WHERE id=?")->limit(1)->execute($objProduct->pid);
+			
+			if ($objProduct->type != $objParent->type)
+			{
+				$this->Database->prepare("UPDATE tl_product_data p1 SET type=(SELECT type FROM (SELECT * FROM tl_product_data) AS p2 WHERE p1.pid=p2.id) WHERE p1.id=?")->execute($this->Input->get('id'));
+				$this->reload();
+			}
+		}
+		
+		$arrInherit = array();
+		$arrPalette = array();
+		
+		// Variant
+		if ($objProduct->pid > 0)
+		{
+			$arrFields = array('');
+			$arrAttributes = deserialize($objProduct->attributes);
+			$arrPalette['variant_legend'][] = 'variant_attributes,inherit';
+			
+			if (is_array($arrAttributes) && count($arrAttributes))
+			{
+				foreach( $arrAttributes as $attribute )
+				{
+					if ($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['add_to_product_variants'])
+					{
+						$arrFields[] = $attribute;
+						$GLOBALS['TL_DCA']['tl_product_data']['fields']['variant_attributes']['options'][] = $attribute;
+					}
+				}
+			}
+			
+			$arrFields = array_diff(deserialize($objProduct->variant_attributes, true), $arrFields);
+		}
+		else
+		{
+			$arrFields = deserialize($objProduct->attributes);
+		}
+		
+		if (is_array($arrFields) && count($arrFields))
+		{
+			foreach( $arrFields as $field )
+			{
+				// Field is not an attribute
+				if (!is_array($GLOBALS['TL_DCA']['tl_product_data']['fields'][$field]) || !strlen($GLOBALS['TL_DCA']['tl_product_data']['fields'][$field]['attributes']['legend']))
+					continue;
+					
+				// Field cannot be edited in variant
+				if ($objProduct->pid > 0 && $GLOBALS['TL_DCA']['tl_product_data']['fields'][$field]['attributes']['inherit'])
+					continue;
+
+				$arrPalette[$GLOBALS['TL_DCA']['tl_product_data']['fields'][$field]['attributes']['legend']][] = $field;
+				
+				if ($field != 'published')
+				{
+					$arrInherit[$field] = strlen($GLOBALS['TL_DCA']['tl_product_data']['fields'][$field]['label'][0]) ? $GLOBALS['TL_DCA']['tl_product_data']['fields'][$field]['label'][0] : $field;
+				}
+			}
+		}
+		
+		//Build
+		$arrLegends = array();
+		foreach($arrPalette as $legend=>$fields)
+		{
+			$arrLegends[] = '{' . $legend . '},' . implode(',', $fields);
+		}
+		
+		// Set inherit options
+		$GLOBALS['TL_DCA']['tl_product_data']['fields']['inherit']['options'] = $arrInherit;
+
+		// Add palettes
+		$GLOBALS['TL_DCA']['tl_product_data']['palettes'][$objProduct->type] = implode(';', $arrLegends);
 	}
 }
 
