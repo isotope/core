@@ -34,10 +34,10 @@ $GLOBALS['TL_LANG']['tl_product_types']['class']				= array('Product Class', 'Pl
 $GLOBALS['TL_LANG']['tl_product_types']['fallback']				= array('Default', 'Check here if this is the default product type.');
 $GLOBALS['TL_LANG']['tl_product_types']['list_template']		= array('Listing Template', 'Select a template for product listing.');
 $GLOBALS['TL_LANG']['tl_product_types']['reader_template']		= array('Reader Template', 'Select a template for product details.');
-$GLOBALS['TL_LANG']['tl_product_types']['description']			= array('Product Type Description', '');
-$GLOBALS['TL_LANG']['tl_product_types']['attributes']			= array('Product Attributes', 'Select the collection of attributes that should be included for this product type.');
+$GLOBALS['TL_LANG']['tl_product_types']['description']			= array('Description', 'A hint to product managers what this product type is for.');
+$GLOBALS['TL_LANG']['tl_product_types']['attributes']			= array('Attributes', 'Select the collection of attributes that should be included for this product type.');
 $GLOBALS['TL_LANG']['tl_product_types']['variants']				= array('Enable variants', 'Check here if this product type has variants.');
-$GLOBALS['TL_LANG']['tl_product_types']['variant_attributes']	= array('Variant Product Attributes', 'Select the collection of variant attributes that should be included for this product type. Those that are not selected will be hidden from view and inherited from the parent product.');
+$GLOBALS['TL_LANG']['tl_product_types']['variant_attributes']	= array('Variant attributes', 'Select the collection of variant attributes that should be included for this product type. Those that are not selected will be hidden from view and inherited from the parent product.');
 $GLOBALS['TL_LANG']['tl_product_types']['languages']			= array('Additional languages', 'Select the additional languages you want to add product data for. If you remove a language, the product data is not dropped but no longer used.');
 $GLOBALS['TL_LANG']['tl_product_types']['downloads']			= array('Enable downloads', 'Check here if this product type has downloads.');
 
@@ -56,6 +56,7 @@ $GLOBALS['TL_LANG']['tl_product_types']['show']   				= array('product type deta
  * Legends
  */
 $GLOBALS['TL_LANG']['tl_product_types']['name_legend']			= 'Product type settings';
+$GLOBALS['TL_LANG']['tl_product_types']['description_legend']	= 'Description';
 $GLOBALS['TL_LANG']['tl_product_types']['template_legend']		= 'Templates';
 $GLOBALS['TL_LANG']['tl_product_types']['language_legend']		= 'Multilingual settings';
 $GLOBALS['TL_LANG']['tl_product_types']['attributes_legend']	= 'Product attributes';
