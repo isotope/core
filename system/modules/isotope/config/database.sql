@@ -507,7 +507,11 @@ CREATE TABLE `tl_iso_orders` (
   `pid` int(10) unsigned NOT NULL default '0',
   `sorting` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
-  `date` int(10) unsigned NOT NULL default '0',  
+  `date` int(10) unsigned NOT NULL default '0',
+  `date_payed` varchar(10) NOT NULL default '',
+  `date_shipped` varchar(10) NOT NULL default '',
+  `status` varchar(32) NOT NULL default '',
+  
   `order_id` varchar(14) NOT NULL default '',
   `uniqid` varchar(27) NOT NULL default '',
   
@@ -515,7 +519,6 @@ CREATE TABLE `tl_iso_orders` (
   `cart_id` int(10) unsigned NOT NULL default '0',
   `source_cart_id` int(10) unsigned NOT NULL default '0',
   `language` varchar(2) NOT NULL default '',
-  `status` varchar(32) NOT NULL default '',
   `shipping_address` blob NULL,
   `billing_address` blob NULL,
   `checkout_info` blob NULL,

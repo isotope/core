@@ -35,6 +35,18 @@ class PaymentPaypal extends IsotopePayment
 {
 
 	/**
+	 * Return a list of status options.
+	 * 
+	 * @access public
+	 * @return array
+	 */
+	public function statusOptions()
+	{
+		return array('pending', 'processing', 'complete', 'on_hold');
+	}
+	
+	
+	/**
 	 * processPayment function.
 	 * 
 	 * @access public
@@ -121,15 +133,16 @@ class PaymentPaypal extends IsotopePayment
 			
 			
 			$arrData = $objOrder->row();
-			$arrData['old_payment_status'] = $GLOBALS['TL_LANG']['MSC']['payment_status_labels'][$arrPayment['status']];
+			$arrData['old_payment_status'] = $arrPayment['status'];
 			
 			$arrPayment['status'] = $this->Input->post('payment_status');
-			$arrData['new_payment_status'] = $GLOBALS['TL_LANG']['MSC']['payment_status_labels'][$arrPayment['status']];
+			$arrData['new_payment_status'] = $arrPayment['status'];
 			
-			// array('pending','processing','shipped','complete','on_hold', 'cancelled'),
+			// array('pending','processing','complete','on_hold', 'cancelled'),
 			switch( $arrPayment['status'] )
 			{
 				case 'Completed':
+					$this->Database->execute("UPDATE tl_iso_orders SET date_payed=" . time() . " WHERE id=" . $objOrder->id);
 					break;
 					
 				case 'Canceled_Reversal':
@@ -137,7 +150,8 @@ class PaymentPaypal extends IsotopePayment
 				case 'Expired':
 				case 'Failed':
 				case 'Voided':
-					$this->Database->prepare("UPDATE tl_iso_orders SET status=? WHERE id=?")->execute('cancelled', $objOrder->id);
+					$this->Database->execute("UPDATE tl_iso_orders SET date_payed='' WHERE id=" . $objOrder->id);
+					$this->Database->execute("UPDATE tl_iso_orders SET status='on_hold' WHERE status='complete' AND id=" . $objOrder->id);
 					break;
 					
 				case 'In-Progress':

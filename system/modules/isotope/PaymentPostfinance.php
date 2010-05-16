@@ -85,7 +85,7 @@ class PaymentPostfinance extends IsotopePayment
 		
 		
 		$arrData = $objOrder->row();
-		$arrData['old_payment_status'] = $GLOBALS['TL_LANG']['MSC']['payment_status_labels'][$arrSet['payment_data']['status']];
+		$arrData['old_payment_status'] = $arrSet['payment_data']['status'];
 		
 		
 		switch( $this->getRequestData('STATUS') )
@@ -127,7 +127,7 @@ class PaymentPostfinance extends IsotopePayment
 		
 		$this->Database->prepare("UPDATE tl_iso_orders %s WHERE id=?")->set($arrSet)->execute($objOrder->id);
 		
-		$arrData['new_payment_status'] = $GLOBALS['TL_LANG']['MSC']['payment_status_labels'][$arrSet['payment_data']['status']];
+		$arrData['new_payment_status'] = $arrSet['payment_data']['status'];
 		
 		if ($this->postsale_mail)
 		{

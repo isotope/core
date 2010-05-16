@@ -53,7 +53,7 @@ class IsotopeRunonce extends Frontend
 		$this->updateAttributes();
 		$this->updateProductCategories();
 		$this->updateStoreConfigurations();
-		$this->updateProductOptions();
+		$this->updateOrders();
 		$this->updateImageSizes();
 		$this->updateFrontendModules();
 		$this->updateFrontendTemplates();
@@ -216,7 +216,7 @@ class IsotopeRunonce extends Frontend
 	}
 	
 	
-	private function updateProductOptions()
+	private function updateOrders()
 	{
 		if ($this->Database->fieldExists('product_options', 'tl_iso_order_items'))
 		{
@@ -242,6 +242,8 @@ class IsotopeRunonce extends Frontend
 				}
 			}
 		}
+		
+		$this->Database->execute("UPDATE tl_iso_orders SET date_shipped=date, status='processing' WHERE status='shipped'");
 	}
 	
 	

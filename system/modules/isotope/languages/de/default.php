@@ -111,10 +111,9 @@ $GLOBALS['TL_LANG']['MSC']['iso_card_name_title'] = 'Name auf Kreditkarte';
 // Order Status
 $GLOBALS['TL_LANG']['MSC']['order_status_labels']['pending']		= 'Offen';
 $GLOBALS['TL_LANG']['MSC']['order_status_labels']['processing']		= 'In Verarbeitung';
-$GLOBALS['TL_LANG']['MSC']['order_status_labels']['shipped']		= 'Versendet';
 $GLOBALS['TL_LANG']['MSC']['order_status_labels']['complete']		= 'Erledigt';
 $GLOBALS['TL_LANG']['MSC']['order_status_labels']['on_hold']		= 'Wartend';
-$GLOBALS['TL_LANG']['MSC']['order_status_labels']['cancelled']		= 'Abgebrochen';
+$GLOBALS['TL_LANG']['MSC']['order_status_labels']['cancelled']		= 'Storniert';
 
 // Payment Status
 $GLOBALS['TL_LANG']['MSC']['payment_status_labels']['pending']		= 'Offen';

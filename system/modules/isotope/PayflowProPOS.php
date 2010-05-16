@@ -200,7 +200,7 @@ class PayflowProPOS extends Backend
 <a href="'.$this->getReferer(ENCODE_AMPERSANDS).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
 </div>
 ';
-		$return .= '<h2 class="sub_headline">' . $GLOBALS['TL_LANG']['PAY']['authorizedotnet'][0] . (!$arrPaymentInfo['x_trans_id'] || $arrPaymentInfo['x_trans_id']=="0" ? ' - ' . $GLOBALS['TL_LANG']['MSC']['order_status_labels']['test'] : '') . '</h2>';
+		$return .= '<h2 class="sub_headline">' . $GLOBALS['TL_LANG']['PAY']['authorizedotnet'][0] . (!$arrPaymentInfo['x_trans_id'] || $arrPaymentInfo['x_trans_id']=="0" ? ' - ' . 'Test Transaction' : '') . '</h2>';
 		$return .= '<div style="padding:10px;">';
 		$return .= $strOrderDetails;
 		$return .= '</div>';

@@ -180,21 +180,9 @@ $GLOBALS['TL_LANG']['MSC']['iso_card_name_title'] = 'Name on Credit Card';
 // Order status options
 $GLOBALS['TL_LANG']['ORDER']['pending']		= 'Pending';
 $GLOBALS['TL_LANG']['ORDER']['processing']	= 'Processing';
-$GLOBALS['TL_LANG']['ORDER']['shipped']		= 'Shipped';
 $GLOBALS['TL_LANG']['ORDER']['complete']	= 'Complete';
 $GLOBALS['TL_LANG']['ORDER']['on_hold']		= 'On Hold';
 $GLOBALS['TL_LANG']['ORDER']['cancelled']	= 'Cancelled';
-$GLOBALS['TL_LANG']['ORDER']['test'] 		= 'Test Transaction';
-
-// Payment status options
-$GLOBALS['TL_LANG']['MSC']['payment_status_labels']['pending']		= 'Pending';
-$GLOBALS['TL_LANG']['MSC']['payment_status_labels']['processing']	= 'Processing';
-$GLOBALS['TL_LANG']['MSC']['payment_status_labels']['paid']			= 'Paid';
-$GLOBALS['TL_LANG']['MSC']['payment_status_labels']['failed']		= 'Failed';
-$GLOBALS['TL_LANG']['MSC']['payment_status_labels']['cancelled']	= 'Cancelled';
-
-//Shipping language entries
-$GLOBALS['TL_LANG']['MSC']['noItemsEligibleForShipping'] = 'This order consists solely of items that are not shipped.';
 
 
 $GLOBALS['TL_LANG']['MSC']['low_to_high'] = 'lo to hi';
