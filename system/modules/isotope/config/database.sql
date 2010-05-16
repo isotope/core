@@ -44,7 +44,6 @@ CREATE TABLE `tl_module` (
   `iso_enableLimit` char(1) NOT NULL default '',
   `iso_listingModule` int(10) NOT NULL default '0',
   `iso_enableSearch` char(1) NOT NULL default '',
-  `iso_disableFilterAjax` char(1) NOT NULL default '',
   `iso_cart_jumpTo` int(10) unsigned NOT NULL default '0',
   `iso_checkout_jumpTo` int(10) unsigned NOT NULL default '0',
   `orderCompleteJumpTo` int(10) unsigned NOT NULL default '0',

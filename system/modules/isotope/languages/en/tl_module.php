@@ -60,7 +60,6 @@ $GLOBALS['TL_LANG']['tl_module']['iso_searchFields']			= array('Enabled search f
 $GLOBALS['TL_LANG']['tl_module']['iso_enableLimit']				= array('Enable per-page limiting','Allow the user to select the number of records to show per page.');
 $GLOBALS['TL_LANG']['tl_module']['iso_listingModule']			= array('Listing module','Please choose a listing module this filter module will work with.');
 $GLOBALS['TL_LANG']['tl_module']['iso_enableSearch']			= array('Enable search','Please check this if you would like to enable product search.');
-$GLOBALS['TL_LANG']['tl_module']['iso_disableFilterAjax']		= array('Disable AJAX/JSON','Please check this if you would prefer not to use the AJAX/JSON functionality.');
 $GLOBALS['TL_LANG']['tl_module']['iso_cart_jumpTo']				= array('Shopping Cart Jump to page', 'This setting defines to which page a user will be redirected when requesting a full shopping cart view.');
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_jumpTo']			= array('Checkout Jump to page', 'This setting defines to which page a user will be redirected when completing their transaction.');
 $GLOBALS['TL_LANG']['tl_module']['iso_listingSortField'] 		= array('Initial sorting field','Select a sorting field to sort the listing by on first page load.');

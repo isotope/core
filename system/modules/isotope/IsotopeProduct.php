@@ -151,6 +151,23 @@ class IsotopeProduct extends Controller
 
 			case 'hasDownloads':
 				return count($this->arrDownloads) ? true : false;
+				
+			case 'description_meta':
+				$strDescription = strlen($this->arrData['description_meta'] ? $this->arrData['description_meta'] : $this->arrData['teaser']);
+				$strDescription = strlen($strDescription ? $strDescription : $this->arrData['description']);
+				$strDescription = str_replace(array("\n", "\r", '"'), array(' ' , '', ''), strip_tags($strDescription));
+				
+				// shorten description to ~200 chars, respect sentences
+				if (strlen($strDescription) > 200 && ($pos = utf8_strpos($strText, '.', $limit)) !== false) 
+				{ 
+					if ($pos < utf8_strlen($strDescription) - 1) 
+					{ 
+						$strText = utf8_substr($strDescription, 0, $pos+1); 
+					} 
+				} 
+				
+				return $strDescription; 
+				break;
 
 			default:
 				// Initialize attribute

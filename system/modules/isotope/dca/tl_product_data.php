@@ -266,14 +266,14 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['description_meta'],
 			'search'				=> true,
 			'inputType'				=> 'textarea',
-			'attributes'			=> array('legend'=>'meta_legend', 'multilingual'=>true),
+			'attributes'			=> array('legend'=>'meta_legend', 'multilingual'=>true, 'maxlength'=>200),
 		),
 		'keywords_meta' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['keywords_meta'],
 			'search'				=> true,
 			'inputType'				=> 'textarea',
-			'attributes'			=> array('legend'=>'meta_legend', 'multilingual'=>true),
+			'attributes'			=> array('legend'=>'meta_legend', 'multilingual'=>true, 'maxlength'=>200),
 		),
 		'price' => array
 		(

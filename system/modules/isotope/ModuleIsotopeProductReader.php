@@ -77,8 +77,9 @@ class ModuleIsotopeProductReader extends ModuleIsotope
 		{
 			return $objProduct->generateAjax();
 		}
+		
+		return '';
 	}	
-
 
 
 	/**
@@ -86,10 +87,6 @@ class ModuleIsotopeProductReader extends ModuleIsotope
 	 */
 	protected function compile()
 	{
-		global $objPage;
-	
-		$arrCleanUrl = explode('?', $this->Environment->request);
-	
 		$objProduct = $this->getProductByAlias($this->Input->get('product'));
 			
 		if (!$objProduct)
@@ -100,103 +97,14 @@ class ModuleIsotopeProductReader extends ModuleIsotope
 			return;
 		}
 		
-		if(!$this->iso_disableFilterAjax)
-		{
-			$arrAttributes = $this->getInheritedAttributes($objProduct);
-			
-			$arrAjaxParams[] = 'id='. $this->id;
-	
-			$strAjaxParams = implode("&", $arrAjaxParams);	//build the ajax params
-			
-			$objScriptTemplate = new FrontendTemplate('js_products');
-			$objScriptTemplate->ajaxParams = $strAjaxParams;	
-			$objScriptTemplate->mId = $this->id;
-			$objScriptTemplate->productJson = json_encode($arrAttributes);
-			
-			$GLOBALS['TL_MOOTOOLS'][] = $objScriptTemplate->parse();
-		}
-
 		$this->Template->product = $objProduct->generate((strlen($this->iso_reader_layout) ? $this->iso_reader_layout : $objProduct->reader_template), $this);
-
+		
+		global $objPage;
+		
 		$objPage->pageTitle = $objProduct->name;
-	/* can't see these properties in the page object... */
-		$GLOBALS['TL_KEYWORDS'] .= $objProduct->keywords_meta; ($objProduct->keywords_meta ? $this->cleanForMeta($objProduct->keywords_meta, 200) : '');
-		$objPage->description .= ($objProduct->description_meta ? str_replace(array("\n", "\r", '"'), array(' ' , '', ''), $this->cleanForMeta($objProduct->description_meta, 200)) : str_replace(array("\n", "\r", '"'), array(' ' , '', ''), $this->cleanForMeta($objProduct->description, 200))); 
-	}		
-	
-	
-	private function cleanForMeta($strText, $limit)
-	{
-		$string = strip_tags($strText);
-		$break="."; 
-		$pad=".";
+		$objPage->description .= $objProduct->description_meta;
 		
-		
-		// return with no change if string is shorter than $limit  
-		if (strlen($string) <= $limit)
-			return $string; 
-		
-		// is $break present between $limit and the end of the string?  
-		if (false !== ($breakpoint = strpos($string, $break, $limit))) 
-		{ 
-			if ($breakpoint < strlen($string) - 1) 
-			{ 
-				$string = substr($string, 0, $breakpoint) . $pad; 
-			} 
-		} 
-		
-		return $string; 
+		$GLOBALS['TL_KEYWORDS'] .= $objProduct->keywords_meta;
 	}
-	
-	
-	public function getInheritedAttributes($objProduct)
-	{
-		$arrAttributes = $objProduct->getAttributes();
-		
-		if($objProduct->pid)
-		{
-			$objParentProduct = $this->getProduct($objProduct->pid);
-			
-			$arrParentAttributes = $objParentProduct->getAttributes();
-			
-			//unset($arrParentAttributes['images']);	//clear the image array
-		}
-			
-		$arrAttributes = $objProduct->getAttributes();
-		
-		foreach($arrAttributes as $k=>$v)
-		{
-			if(!$v)
-			{				
-				$arrAttributes[$k] = $arrParentAttributes[$k];				
-			}
-			
-			switch($k)
-			{
-				case 'price':
-					$arrAttributes[$k] = $this->Isotope->formatPriceWithCurrency($v);
-					break;
-			}
-			
-		}	
-		
-		return $arrAttributes;	
-		
-	}
-
-	public function getImages($intProductId)
-	{
-		$objImages = $this->Database->prepare("SELECT images FROM tl_product_data WHERE id=?")
-								   ->limit(1)
-								   ->execute($intProductId);
-		
-		if(!$objImages->numRows)
-		{
-			return array();
-		}
-		
-		return deserialize($objImages->images);
-	}
-
 }
 
