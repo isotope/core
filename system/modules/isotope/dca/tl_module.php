@@ -31,7 +31,7 @@
  */
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][]			= 'iso_checkout_method';
 
-$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productlist']			= '{title_legend},name,headline,type;{display_legend},perPage,columns,iso_list_format,iso_show_teaser;{config_legend},iso_use_quantity,iso_category_scope,iso_jump_first,iso_listingSortField,iso_listingSortDirection,new_products_time_window;{redirect_legend},iso_reader_jumpTo;{template_legend:hide},iso_list_layout,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productlist']			= '{title_legend},name,headline,type;{display_legend},perPage,columns,iso_list_format;{config_legend},iso_use_quantity,iso_category_scope,iso_jump_first,iso_listingSortField,iso_listingSortDirection,new_products_time_window;{redirect_legend},iso_reader_jumpTo;{template_legend:hide},iso_list_layout,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productreader']		= '{title_legend},name,headline,type;{config_legend},iso_use_quantity;{template_legend:hide},iso_reader_layout,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
@@ -251,14 +251,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_order_conditions'] = array
 	'eval'                    => array('includeBlankOption'=>true)
 );
 
-$GLOBALS['TL_DCA']['tl_module']['fields']['iso_show_teaser'] = array
-(
-	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_show_teaser'],
-	'exclude'                 => true,
-	'inputType'               => 'checkbox',
-	'eval'					  => array('tl_class'=>'w50 m12')
-);
-
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_list_format'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_list_format'],
@@ -277,7 +269,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_category_scope'] = array
 	'options'				  => array('global', 'parent_and_first_child','parent_and_all_children', 'current_category'),
 	'reference'				  => &$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref'],
 );
-
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_filterFields'] = array
 (
