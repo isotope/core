@@ -972,6 +972,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			$objWidget->value = $intDefaultValue;
 			$objWidget->onclick = "Isotope.toggleAddressFields(this, '" . $field . "_new');";
 			$objWidget->storeValues = true;
+			$objWidget->tableless = true;
 
 			// Validate input
 			if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && strlen($this->Input->post($field)))
@@ -1030,21 +1031,6 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			
 			if (!is_array($arrData))
 				continue;
-			
-			if($strAddressField == 'shipping_address')
-			{
-				//switch off these checkboxes for shipping address, we only need them once.
-				switch($field)
-				{
-					case 'isDefaultBilling':
-					case 'isDefaultShipping':
-						continue 2;
-						break;
-						
-					default:
-						break;				
-				}
-			}
 			
 			$strClass = $GLOBALS['TL_FFL'][$arrData['inputType']];
 			
