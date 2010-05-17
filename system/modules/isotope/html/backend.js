@@ -407,11 +407,7 @@ var Isotope =
 		div.setStyle('left', $$('a.header_isotope_tools')[0].getPosition().x - 7);
 		
 		// Add trigger to tools buttons
-		$$('a.header_isotope_tools').addEvent('contextmenu', function(e)
-		{
-			$('isotopetoolsmenu').setStyle('display', 'block');
-			return false;
-		}).addEvent('click', function(e)
+		$$('a.header_isotope_tools').addEvent('click', function(e)
 		{
 			$('isotopetoolsmenu').setStyle('display', 'block');
 			return false;
@@ -422,6 +418,59 @@ var Isotope =
 		{
 			$('isotopetoolsmenu').setStyle('display', 'none');
 		});
+	},
+	
+	initializeToolsButton: function()
+	{
+		// Hide the tool buttons
+		$$('#tl_listing .isotope-tools').each(function(el)
+		{
+			el.addClass('invisible');
+		});
+
+		// Add trigger to edit buttons
+		$$('a.isotope-contextmenu').each(function(el)
+		{
+			if (el.getNext('a.isotope-tools'))
+			{
+				el.removeClass('invisible').addEvent('click', function(e)
+				{
+					if ($defined($('isotope-contextmenu')))
+					{
+						$('isotope-contextmenu').destroy();
+					}
+	
+					var div = new Element('div',
+					{
+						'id': 'isotope-contextmenu',
+						'styles': {
+							'top': (el.getPosition().y + 22),
+							'display': 'block'
+						}
+					});
+					
+					el.getAllNext('a.isotope-tools').each( function(el2)
+					{
+						var im2 = el2.getFirst('img');
+						div.set('html', (div.get('html')+'<a href="'+ el2.href +'" title="'+ el2.title +'">'+ el2.get('html') +' '+ im2.alt +'</a>'));
+					});
+					
+					div.inject($(document.body));
+					div.setStyle('left', el.getPosition().x - (div.getSize().x / 2));
+					
+					return false;
+				});
+			}
+		});
+
+		// Hide context menu 
+		$(document.body).addEvent('click', function()
+		{
+			if ($defined($('isotope-contextmenu')))
+			{
+				$('isotope-contextmenu').destroy();
+			}
+		});
 	}
 };
 
@@ -429,4 +478,6 @@ window.addEvent('domready', function()
 {
 	Isotope.addInteractiveHelp();
 	Isotope.initializeToolsMenu();
+	Isotope.initializeToolsButton();
 });
+

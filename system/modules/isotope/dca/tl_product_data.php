@@ -114,15 +114,6 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['edit'],
 				'href'                => 'act=edit',
 				'icon'                => 'edit.gif',
-				'attributes'          => 'class="contextmenu"',
-			),
-			'quick_edit' => array
-			(
-				'label'				  => &$GLOBALS['TL_LANG']['tl_product_data']['quick_edit'],
-				'href'				  => 'key=quick_edit',
-				'icon'				  => 'system/modules/isotope/html/icon-quick_edit.png',
-				'button_callback'	  => array('tl_product_data', 'quickEditButton'),
-				'attributes'          => 'class="edit-header"'
 			),
 			'copy' => array
 			(
@@ -145,12 +136,27 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 				'href'                => 'act=show',
 				'icon'                => 'show.gif'
 			),
+			'tools' => array
+			(
+				'label'				  => &$GLOBALS['TL_LANG']['tl_product_data']['tools'],
+				'icon'				  => 'system/modules/isotope/html/tools.png',
+				'attributes'          => 'class="invisible isotope-contextmenu"'
+			),
+			'quick_edit' => array
+			(
+				'label'				  => &$GLOBALS['TL_LANG']['tl_product_data']['quick_edit'],
+				'href'				  => 'key=quick_edit',
+				'icon'				  => 'system/modules/isotope/html/icon-quick_edit.png',
+				'button_callback'	  => array('tl_product_data', 'quickEditButton'),
+				'attributes'          => 'class="isotope-tools"',
+			),
 			'generate' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['generate'],
 				'href'                => 'key=generate',
 				'icon'				  => 'system/modules/isotope/html/icon-generate.png',
 				'button_callback'	  => array('tl_product_data', 'generateButton'),
+				'attributes'          => 'class="isotope-tools"',
 			),
 			'related' => array
 			(
@@ -158,6 +164,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 				'href'                => 'table=tl_related_products',
 				'icon'                => 'system/modules/isotope/html/icon-related.png',
 				'button_callback'	  => array('tl_product_data', 'relatedButton'),
+				'attributes'          => 'class="isotope-tools"',
 			),
 			'downloads' => array
 			(

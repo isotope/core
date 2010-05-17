@@ -31,7 +31,8 @@ h3.inherit,
 	padding-right: 20px;
 }
 
-#isotopetoolsmenu
+#isotopetoolsmenu,
+#isotope-contextmenu
 {
 	display:none;
 	position:absolute;
@@ -44,7 +45,8 @@ h3.inherit,
 	border-radius:4px;
 }
 
-#isotopetoolsmenu a
+#isotopetoolsmenu a,
+#isotope-contextmenu a
 {
 	display:block;
 	line-height: 1;
@@ -52,7 +54,8 @@ h3.inherit,
 	white-space: nowrap;
 }
 
-#isotopetoolsmenu img
+#isotopetoolsmenu img,
+#isotope-contextmenu img
 {
 	padding-bottom: 1px;
 	vertical-align: middle;
