@@ -45,7 +45,7 @@ class ProductsWizard extends Widget
 	 * Products
 	 * @var array
 	 */
-	protected $arrProducts = array();
+	protected $arrProducts = false;
 
 
 	/**
@@ -125,7 +125,7 @@ class ProductsWizard extends Widget
 		// User has javascript disabled an clicked on link
 		if ($this->Input->get('noajax'))
 		{
-			$strProducts .= $this->listProducts($this->Database->execute("SELECT * FROM tl_product_data WHERE pid=0 ORDER BY id=" . implode('DESC, id=', $arrIds) . " DESC, name"));
+			$strProducts = $this->listProducts($this->Database->execute("SELECT * FROM tl_product_data WHERE pid=0 ORDER BY id=" . implode('DESC, id=', $arrIds) . " DESC, name"));
 		}
 		else
 		{
