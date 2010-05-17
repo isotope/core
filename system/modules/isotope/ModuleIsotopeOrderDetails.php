@@ -127,6 +127,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 			$arrItems[] = array
 			(
 				'raw'				=> $objItems->row(),
+				'sku'				=> $objProduct->sku,
 				'name'				=> $objProduct->name,
 				'product_options'	=> $objProduct->getOptions(),
 				'quantity'			=> $objItems->quantity_sold,
