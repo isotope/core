@@ -77,9 +77,6 @@ class ModuleIsotopeAddressBook extends Module
 			return '';
 		}
 		
-		$this->arrFields[] = 'isDefaultBilling';
-		$this->arrFields[] = 'isDefaultShipping';
-		
 		$GLOBALS['TL_CSS'][] = 'system/modules/isotope/html/isotope.css';
 
 		return parent::generate();
