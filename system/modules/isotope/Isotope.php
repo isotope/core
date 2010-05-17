@@ -96,10 +96,8 @@ class Isotope extends Controller
 	 * @access public
 	 * @return void
 	 */
-	public function resetStore($blnForceDefault = false)
+	public function resetStore($blnForceDefault=false)
 	{
-		global $objPage;
-	
 		if($blnForceDefault)
 		{
 			$this->intDefaultStore = $this->getDefaultStore();
@@ -108,12 +106,13 @@ class Isotope extends Controller
 		{	
 			if($objPage->isotopeStoreConfig)
 			{
-				//Assign
 				$this->intDefaultStore = $objPage->isotopeStoreConfig;
 			}
 			else
 			{
-				if($objPage->pid<1)
+				global $objPage;
+				
+				if(!$objPage->pid)
 				{
 					$this->intDefaultStore = $this->getDefaultStore();
 				}
@@ -124,11 +123,8 @@ class Isotope extends Controller
 				}
 			}
 		}
-		
-		if ($this->intDefaultStore)
-		{
-			$this->Store = new IsotopeStore($this->intDefaultStore);
-		}
+
+		$this->Store = new IsotopeStore($this->intDefaultStore);
 	}
 	
 	
@@ -147,7 +143,7 @@ class Isotope extends Controller
 		}
 		catch (Exception $e)
 		{
-			$this->resetStore($blnForceDefault);
+			$this->resetStore((TL_MODE=='BE' ? true : false));
 		}
 	}
 	
@@ -159,9 +155,9 @@ class Isotope extends Controller
 	 */
 	protected function getDefaultStore()
 	{
-		$objDefaultStore = $this->Database->execute("SELECT id FROM tl_store WHERE isDefaultStore='1'");
+		$objStore = $this->Database->execute("SELECT id FROM tl_store WHERE isDefaultStore='1'");
 											  			
-		if($objDefaultStore->numRows < 1)
+		if(!$objStore->numRows)
 		{
 			if (TL_MODE == 'BE')
 			{
@@ -176,17 +172,7 @@ class Isotope extends Controller
 			}
 		}
 		
-		while($objDefaultStore->next())
-		{
-			if($objDefaultStore->isDefaultStore)
-			{
-				return $objDefaultStore->id;
-			}
-		}	
-		
-		$objDefaultStore->first();	//grab the first store in the list if none are set as default
-		
-		return $objDefaultStore->id;
+		return $objStore->id;
 	}
 
 
@@ -199,26 +185,18 @@ class Isotope extends Controller
 	 */
 	private function getStoreConfigFromParent($intPageId)
 	{
-		$objStoreConfiguration = $this->Database->prepare("SELECT pid, isotopeStoreConfig FROM tl_page WHERE id=?")
-												->execute($intPageId);
+		$objPage = $this->Database->prepare("SELECT pid, isotopeStoreConfig FROM tl_page WHERE id=?")->execute($intPageId);
 												
-		if($objStoreConfig->numRows < 1)
+		if($objPage->isotopeStoreConfig > 0)
 		{
-			return $this->getDefaultStore();
+			return $objPage->isotopeStoreConfig;
+		}
+		elseif($objPage->pid > 0)
+		{
+			return $this->getStoreConfigFromParent($objPage->pid);
 		}
 		
-		if($objStoreConfiguration->isotopeStoreConfig)
-		{
-			return $objStoreConfiguration->isotopeStoreConfig;
-		}
-		elseif($objStoreConfiguration->pid<1)
-		{
-			return $this->getDefaultStore();
-		}
-		else
-		{
-			return $this->getStoreConfigFromParent($objStoreConfiguration->pid);
-		}
+		return $this->getDefaultStore();
 	}
 	
 	
