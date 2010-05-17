@@ -36,12 +36,6 @@ class Isotope extends Controller
 	protected static $objInstance;
 	
 	
-	/**
-	 * ID of the default store
-	 */
-	protected $intDefaultStore;
-	
-	
 	public $Store;
 	public $Cart;
 	
@@ -100,13 +94,13 @@ class Isotope extends Controller
 	{
 		if($blnForceDefault)
 		{
-			$this->intDefaultStore = $this->getDefaultStore();
+			$intStore = $this->getDefaultStore();
 		}
 		else
 		{	
 			if($objPage->isotopeStoreConfig)
 			{
-				$this->intDefaultStore = $objPage->isotopeStoreConfig;
+				$intStore = $objPage->isotopeStoreConfig;
 			}
 			else
 			{
@@ -114,17 +108,34 @@ class Isotope extends Controller
 				
 				if(!$objPage->pid)
 				{
-					$this->intDefaultStore = $this->getDefaultStore();
+					$intStore = $this->getDefaultStore();
 				}
 				else
 				{
 					//Find (recursive look at parents)
-					$this->intDefaultStore = $this->getStoreConfigFromParent($objPage->id);
+					$intStore = $this->getStoreConfigFromParent($objPage->id);
 				}
 			}
 		}
 
-		$this->Store = new IsotopeStore($this->intDefaultStore);
+		if(!$intStore)
+		{
+			if (TL_MODE == 'BE')
+			{
+				$_SESSION['TL_ERROR'] = array($GLOBALS['TL_LANG']['ERR']['noDefaultStoreConfiguration']);
+				
+				if ($this->Input->get('do') != 'isotope')
+					$this->redirect('typolight/main.php?do=isotope&table=tl_store&act=create');
+			}
+			else
+			{
+				throw new Exception($GLOBALS['TL_LANG']['ERR']['noStoreConfigurationSet']);
+			}
+			
+			return;
+		}
+		
+		$this->Store = new IsotopeStore($intStore);
 	}
 	
 	
@@ -155,24 +166,7 @@ class Isotope extends Controller
 	 */
 	protected function getDefaultStore()
 	{
-		$objStore = $this->Database->execute("SELECT id FROM tl_store WHERE isDefaultStore='1'");
-											  			
-		if(!$objStore->numRows)
-		{
-			if (TL_MODE == 'BE')
-			{
-				$_SESSION['TL_ERROR'] = array($GLOBALS['TL_LANG']['ERR']['noDefaultStoreConfiguration']);
-				
-				if ($this->Input->get('do') != 'isotope')
-					$this->redirect('typolight/main.php?do=isotope&table=tl_store&act=create');
-			}
-			else
-			{
-				throw new Exception($GLOBALS['TL_LANG']['ERR']['noStoreConfigurationSet']);
-			}
-		}
-		
-		return $objStore->id;
+		return $this->Database->execute("SELECT id FROM tl_store WHERE isDefaultStore='1'")->id;
 	}
 
 
