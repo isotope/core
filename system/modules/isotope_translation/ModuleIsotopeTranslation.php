@@ -54,6 +54,7 @@ class ModuleIsotopeTranslation extends BackendModule
 			(
 				'module'	=> $this->Input->post('module'),
 				'file'		=> $this->Input->post('file'),
+				'svn_diff'	=> ($this->Input->post('svn_diff') ? true : false),
 			);
 			
 			$this->Session->appendData($arrFilter);
@@ -66,7 +67,6 @@ class ModuleIsotopeTranslation extends BackendModule
 		
 		
 		$this->Template->headline = $GLOBALS['TL_LANG']['MSC']['translationSelect'];
-		$this->Template->class = 'tl_info';
 		$this->Template->action = ampersand($this->Environment->request);
 		$this->Template->slabel = $GLOBALS['TL_LANG']['MSC']['save'];
 		
@@ -128,7 +128,7 @@ class ModuleIsotopeTranslation extends BackendModule
  *
  * PHP version 5
  * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
- * @author     Automated Translation Tool
+ * @author     Isotope Automated Translation Tool
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
@@ -159,15 +159,39 @@ class ModuleIsotopeTranslation extends BackendModule
 			$this->Template->translation = $this->parseFile(TL_ROOT . '/system/modules/' . $arrSession['module']. '/languages/' . $this->User->translation . '/' . $arrSession['file']);
 			$this->Template->headline = sprintf($GLOBALS['TL_LANG']['MSC']['translationEdit'], $arrSession['file'], $arrSession['module']);
 			
-			if (!is_array($this->Template->translation) || !is_array($this->Template->source))
+			if (!is_array($this->Template->source))
+			{
+				$this->Template->edit = false;
+				$this->Template->error = $GLOBALS['TL_LANG']['MSC']['translationErrorSource'];
+				$this->Template->headline = $this->Template->source . '<div style="white-space:pre;overflow:scroll;font-family:Courier New"><br /><br />' . str_replace("\t", '    ', htmlspecialchars(file_get_contents(TL_ROOT . '/system/modules/' . $arrSession['module']. '/languages/en/' . $arrSession['file']), ENT_COMPAT, 'UTF-8')) . '</div>';
+			}
+			elseif (!is_array($this->Template->translation))
 			{
 				$this->Template->edit = false;
 				$this->Template->error = $GLOBALS['TL_LANG']['MSC']['translationError'];
-				$this->Template->headline = (is_array($this->Template->translation) ? $this->Template->source : $this->Template->translation);
-				$this->Template->class = 'tl_error';
+				$this->Template->headline = $this->Template->translation . '<div style="white-space:pre;overflow:scroll;font-family:Courier New"><br /><br />' . str_replace("\t", '    ', htmlspecialchars(file_get_contents(TL_ROOT . '/system/modules/' . $arrSession['module']. '/languages/' . $this->User->translation . '/' . $arrSession['file']), ENT_COMPAT, 'UTF-8')) . '</div>';
+			}
+			elseif ($arrSession['svn_diff'])
+			{
+				$objRequest = new Request();
+				$objRequest->send('http://winans.svn.beanstalkapp.com/isotope/trunk/system/modules/' . $arrSession['module']. '/languages/' . $this->User->translation . '/' . $arrSession['file']);
+				
+				if ($objRequest->code != 200)
+				{
+					$this->Template->diff = 'HTTP Error ' . $objRequest->code;
+					$this->Template->error = $GLOBALS['TL_LANG']['MSC']['translationSVNError'];
+				}
+				else
+				{
+					$data = explode("\n", $objRequest->response);
+					$this->Template->diff = $this->parse($data);
+				}
+				
+				$this->Template->diff_headline = sprintf($GLOBALS['TL_LANG']['MSC']['translationDiffHeadline'], $arrSession['module'], $this->User->translation, $arrSession['file']);
 			}
 		}
-		
+
+		$this->Template->svn_diff = $arrSession['svn_diff'];
 		$this->Template->modules = $arrModules;
 		$this->Template->moduleClass = strlen($arrSession['module']) ? ' active' : '';
 		$this->Template->files = $arrFiles;
@@ -186,6 +210,11 @@ class ModuleIsotopeTranslation extends BackendModule
 		
 		$data = file($strFile);
 		
+		return $this->parse($data);
+	}
+	
+	private function parse($data)
+	{
 		foreach ($data as $i => $line)
 		{
 			// Unset comments and empty lines
@@ -238,6 +267,68 @@ class ModuleIsotopeTranslation extends BackendModule
 		}
 		
 		return $return;
+	}
+	
+	
+	
+	/*
+		Paul's Simple Diff Algorithm v 0.1
+		(C) Paul Butler 2007 <http://www.paulbutler.org/>
+		May be used and distributed under the zlib/libpng license.
+		
+		This code is intended for learning purposes; it was written with short
+		code taking priority over performance. It could be used in a practical
+		application, but there are a few ways it could be optimized.
+		
+		Given two arrays, the function diff will return an array of the changes.
+		I won't describe the format of the array, but it will be obvious
+		if you use print_r() on the result of a diff on some test data.
+		
+		htmlDiff is a wrapper for the diff command, it takes two strings and
+		returns the differences in HTML. The tags used are <ins> and <del>,
+		which can easily be styled with CSS.  
+	*/
+
+	function diff($old, $new)
+	{
+		foreach($old as $oindex => $ovalue)
+		{
+			$nkeys = array_keys($new, $ovalue);
+			foreach($nkeys as $nindex)
+			{
+				$matrix[$oindex][$nindex] = isset($matrix[$oindex - 1][$nindex - 1]) ? $matrix[$oindex - 1][$nindex - 1] + 1 : 1;
+				
+				if($matrix[$oindex][$nindex] > $maxlen)
+				{
+					$maxlen = $matrix[$oindex][$nindex];
+					$omax = $oindex + 1 - $maxlen;
+					$nmax = $nindex + 1 - $maxlen;
+				}
+			}	
+		}
+		
+		if($maxlen == 0)
+			return array(array('d'=>$old, 'i'=>$new));
+			
+		return array_merge(
+			diff(array_slice($old, 0, $omax), array_slice($new, 0, $nmax)),
+			array_slice($new, $nmax, $maxlen),
+			diff(array_slice($old, $omax + $maxlen), array_slice($new, $nmax + $maxlen)));
+	}
+	
+	function htmlDiff($old, $new)
+	{
+		$diff = diff(explode(' ', $old), explode(' ', $new));
+		
+		foreach($diff as $k)
+		{
+			if(is_array($k))
+				$ret .= (!empty($k['d'])?"<del>".implode(' ',$k['d'])."</del> ":'').
+					(!empty($k['i'])?"<ins>".implode(' ',$k['i'])."</ins> ":'');
+			else $ret .= $k . ' ';
+		}
+		
+		return $ret;
 	}
 }
 

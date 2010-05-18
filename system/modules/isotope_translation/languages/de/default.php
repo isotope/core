@@ -29,8 +29,11 @@
 /**
  * Miscellaneous
  */
-$GLOBALS['TL_LANG']['MSC']['translationSaved']	= 'Ihre Änderungen wurden gespeichert';
-$GLOBALS['TL_LANG']['MSC']['translationEdit']	= 'Datei %s aus Modul "%s" bearbeiten';
-$GLOBALS['TL_LANG']['MSC']['translationSelect']	= 'Bitte wählen Sie ein Modul und eine Datei.';
-$GLOBALS['TL_LANG']['MSC']['translationError']	= 'Die Quell- oder Zieldatei konnte nicht verarbeitet werden.';
+$GLOBALS['TL_LANG']['MSC']['translationSaved']			= 'Ihre Änderungen wurden gespeichert';
+$GLOBALS['TL_LANG']['MSC']['translationEdit']			= 'Datei %s aus Modul "%s" bearbeiten';
+$GLOBALS['TL_LANG']['MSC']['translationSelect']			= 'Bitte wählen Sie ein Modul und eine Datei.';
+$GLOBALS['TL_LANG']['MSC']['translationError']			= 'Die Zieldatei konnte nicht verarbeitet werden.';
+$GLOBALS['TL_LANG']['MSC']['translationErrorSource']	= 'Die Quelldatei konnte nicht verarbeitet werden.';
+$GLOBALS['TL_LANG']['MSC']['translationDiffHeadline']	= 'Änderungen an "%s/languages/%s/%s" zwischen lokal und Isotope SVN.';
+$GLOBALS['TL_LANG']['MSC']['translationSVNError']		= 'Fehler beim Auslesen der Datei vom SVN.';
 
