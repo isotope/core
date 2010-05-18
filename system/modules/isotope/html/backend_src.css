@@ -43,7 +43,7 @@
 .header_product_category_link
 {
 	padding:2px 0px 3px 20px;
-	background-image:url("link.gif");
+	background-image:url("refresh.png");
 	background-position:left center;
 	background-repeat:no-repeat;
 }
@@ -209,7 +209,6 @@ h3.inherit,
 #isotope-contextmenu a
 {
 	display:block;
-	line-height: 1;
 	padding-top: 3px;
 	white-space: nowrap;
 }
