@@ -1,6 +1,6 @@
 .header_isotope_tools{background-image:url(tools.png);background-position:left center;background-repeat:no-repeat;padding:2px 0 3px 20px}
 .header_import_assets{background-image:url(assets.gif);background-position:left center;background-repeat:no-repeat;padding:2px 0 3px 20px}
-.header_product_category_link{background-image:url(link.gif);background-position:left center;background-repeat:no-repeat;padding:2px 0 3px 20px}
+.header_product_category_link{background-image:url(refresh.png);background-position:left center;background-repeat:no-repeat;padding:2px 0 3px 20px}
 .tl_mediamanager th,.tl_mediamanager td{padding:2px 10px 0 0}
 .tl_mediamanager input.tl_text_2{width:220px}
 .tl_mediamanager textarea{height:40px;width:300px}
@@ -25,6 +25,6 @@ h3.inherit,.tl_checkbox_single_container.inherit{background-color:#f8f8f8;margin
 .tl_productswizard .jserror td{border:2px solid red;background-color:#FAEEEE}
 .tl_productswizard .search input.tl_text{background-position:318px 2px;background-repeat:no-repeat;padding-right:20px}
 #isotopetoolsmenu,#isotope-contextmenu{display:none;position:absolute;z-index:99999999;background-color:#fff;border:1px solid #ccc;-moz-border-radius:4px;-webkit-border-radius:4px;border-radius:4px;padding:3px 6px}
-#isotopetoolsmenu a,#isotope-contextmenu a{display:block;line-height:1;padding-top:3px;white-space:nowrap}
+#isotopetoolsmenu a,#isotope-contextmenu a{display:block;padding-top:3px;white-space:nowrap}
 #isotopetoolsmenu img,#isotope-contextmenu img{padding-bottom:1px;vertical-align:middle}
 #tl_product_quick_edit th{text-align:left}
