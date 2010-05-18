@@ -243,9 +243,9 @@ class IsotopeRunonce extends Frontend
 			}
 		}
 		
-		if (!$this->Database->fieldExists('date_shipped', 'tl_iso_order_items'))
+		if (!$this->Database->fieldExists('date_shipped', 'tl_iso_orders'))
 		{
-			$this->Database->executeUncached("ALERT TABLE tl_iso_order_items ADD COLUMN date_shipped varchar(10) NOT NULL default ''");
+			$this->Database->executeUncached("ALERT TABLE tl_iso_orders ADD COLUMN date_shipped varchar(10) NOT NULL default ''");
 		}
 		
 		$this->Database->executeUncached("UPDATE tl_iso_orders SET date_shipped=date, status='processing' WHERE status='shipped'");
