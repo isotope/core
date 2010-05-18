@@ -49,6 +49,10 @@ abstract class IsotopeShipping extends Frontend
 	protected $arrData = array();
 	
 	
+	protected $Isotope;
+	protected $Cart;
+	
+	
 	/**
 	 * Initialize the object
 	 *
