@@ -60,33 +60,33 @@ class IsotopeRunonce extends Frontend
 		$this->refreshDatabaseFile();
 		
 		if($this->Database->tableExists('tl_product_attribute_types'))
-			$this->Database->execute("DROP TABLE tl_product_attribute_types");
+			$this->Database->executeUncached("DROP TABLE tl_product_attribute_types");
 			
 		// Checkout method has been renamed from "login" to "member" to prevent a problem with palette of the login module
-		$this->Database->execute("UPDATE tl_module SET iso_checkout_method='member' WHERE iso_checkout_method='login'");
+		$this->Database->executeUncached("UPDATE tl_module SET iso_checkout_method='member' WHERE iso_checkout_method='login'");
 		
 		// Renamed attribute types
-		$this->Database->execute("UPDATE tl_product_attributes SET type='textarea' WHERE type='longtext'");
+		$this->Database->executeUncached("UPDATE tl_product_attributes SET type='textarea' WHERE type='longtext'");
 		
 		// Drop fields that are now part of the default DCA
-		$this->Database->execute("DELETE FROM tl_product_attributes WHERE field_name='alias'");
-		$this->Database->execute("DELETE FROM tl_product_attributes WHERE field_name='visibility'");
-		$this->Database->execute("DELETE FROM tl_product_attributes WHERE field_name='name'");
-		$this->Database->execute("DELETE FROM tl_product_attributes WHERE field_name='teaser'");
-		$this->Database->execute("DELETE FROM tl_product_attributes WHERE field_name='description'");
-		$this->Database->execute("DELETE FROM tl_product_attributes WHERE field_name='tax_class'");
-		$this->Database->execute("DELETE FROM tl_product_attributes WHERE field_name='main_image'");
-		$this->Database->execute("DELETE FROM tl_product_attributes WHERE field_name='sku'");
-		$this->Database->execute("DELETE FROM tl_product_attributes WHERE field_name='quantity'");
-		$this->Database->execute("DELETE FROM tl_product_attributes WHERE field_name='shipping_exempt'");
-		$this->Database->execute("DELETE FROM tl_product_attributes WHERE field_name='price'");
-		$this->Database->execute("DELETE FROM tl_product_attributes WHERE field_name='price_override'");
-		$this->Database->execute("DELETE FROM tl_product_attributes WHERE field_name='use_price_override'");
-		$this->Database->execute("DELETE FROM tl_product_attributes WHERE field_name='weight'");
+		$this->Database->executeUncached("DELETE FROM tl_product_attributes WHERE field_name='alias'");
+		$this->Database->executeUncached("DELETE FROM tl_product_attributes WHERE field_name='visibility'");
+		$this->Database->executeUncached("DELETE FROM tl_product_attributes WHERE field_name='name'");
+		$this->Database->executeUncached("DELETE FROM tl_product_attributes WHERE field_name='teaser'");
+		$this->Database->executeUncached("DELETE FROM tl_product_attributes WHERE field_name='description'");
+		$this->Database->executeUncached("DELETE FROM tl_product_attributes WHERE field_name='tax_class'");
+		$this->Database->executeUncached("DELETE FROM tl_product_attributes WHERE field_name='main_image'");
+		$this->Database->executeUncached("DELETE FROM tl_product_attributes WHERE field_name='sku'");
+		$this->Database->executeUncached("DELETE FROM tl_product_attributes WHERE field_name='quantity'");
+		$this->Database->executeUncached("DELETE FROM tl_product_attributes WHERE field_name='shipping_exempt'");
+		$this->Database->executeUncached("DELETE FROM tl_product_attributes WHERE field_name='price'");
+		$this->Database->executeUncached("DELETE FROM tl_product_attributes WHERE field_name='price_override'");
+		$this->Database->executeUncached("DELETE FROM tl_product_attributes WHERE field_name='use_price_override'");
+		$this->Database->executeUncached("DELETE FROM tl_product_attributes WHERE field_name='weight'");
 		
 		// Because configuration has been changed to objects, we cannot use the existing cart data
-		$this->Database->prepare("TRUNCATE TABLE tl_cart_items");
-		$this->Database->prepare("TRUNCATE TABLE tl_cart");
+		$this->Database->executeUncached("TRUNCATE TABLE tl_cart_items");
+		$this->Database->executeUncached("TRUNCATE TABLE tl_cart");
 	}
 	
 	
@@ -95,63 +95,63 @@ class IsotopeRunonce extends Frontend
 		// tl_store.store_configuration_name has been renamed to tl_store.name
 		if ($this->Database->fieldExists('store_configuration_name', 'tl_store'))
 		{
-			$this->Database->execute("ALTER TABLE tl_store CHANGE COLUMN store_configuration_name name varchar(255) NOT NULL default ''");
+			$this->Database->executeUncached("ALTER TABLE tl_store CHANGE COLUMN store_configuration_name name varchar(255) NOT NULL default ''");
 		}
 		
 		// tl_store.gallery_thumbnail_image_width has been renamed to tl_store.gallery_image_width
 		if ($this->Database->fieldExists('gallery_thumbnail_image_width', 'tl_store'))
 		{
-			$this->Database->execute("ALTER TABLE tl_store CHANGE COLUMN gallery_thumbnail_image_width gallery_image_width int(10) unsigned NOT NULL default '0'");
+			$this->Database->executeUncached("ALTER TABLE tl_store CHANGE COLUMN gallery_thumbnail_image_width gallery_image_width int(10) unsigned NOT NULL default '0'");
 		}
 		
 		// tl_store.gallery_thumbnail_image_height has been renamed to tl_store.gallery_image_height
 		if ($this->Database->fieldExists('gallery_thumbnail_image_height', 'tl_store'))
 		{
-			$this->Database->execute("ALTER TABLE tl_store CHANGE COLUMN gallery_thumbnail_image_height gallery_image_height int(10) unsigned NOT NULL default '0'");
+			$this->Database->executeUncached("ALTER TABLE tl_store CHANGE COLUMN gallery_thumbnail_image_height gallery_image_height int(10) unsigned NOT NULL default '0'");
 		}
 		
 		// tl_product_data.visiblity has been renamed to tl_product_data.published
 		if ($this->Database->fieldExists('visibility', 'tl_product_data'))
 		{
-			$this->Database->execute("ALTER TABLE tl_product_data CHANGE COLUMN visibility published char(1) NOT NULL default ''");
+			$this->Database->executeUncached("ALTER TABLE tl_product_data CHANGE COLUMN visibility published char(1) NOT NULL default ''");
 		}
 		
 		// tl_product_attributes.fieldGroup has been renamed to tl_product_attributes.legend
 		if ($this->Database->fieldExists('fieldGroup', 'tl_product_attributes'))
 		{
-			$this->Database->execute("ALTER TABLE tl_product_attributes CHANGE COLUMN fieldGroup legend varchar(255) NOT NULL default ''");
+			$this->Database->executeUncached("ALTER TABLE tl_product_attributes CHANGE COLUMN fieldGroup legend varchar(255) NOT NULL default ''");
 		}
 		
 		// tl_product_date.main_image has been renamed to tl_product_data.images
 		if ($this->Database->fieldExists('main_image', 'tl_product_data'))
 		{
-			$this->Database->execute("ALTER TABLE tl_product_data CHANGE COLUMN main_image images blob NULL");
+			$this->Database->executeUncached("ALTER TABLE tl_product_data CHANGE COLUMN main_image images blob NULL");
 		}
 		
 		// tl_address_book.state has been renamed to tl_address_book.subdivision
 		if ($this->Database->fieldExists('state', 'tl_address_book') && !$this->Database->fieldExists('subdivision', 'tl_address_book'))
 		{
-			$this->Database->execute("ALTER TABLE tl_address_book CHANGE COLUMN state subdivision varchar(10) NOT NULL default ''");
+			$this->Database->executeUncached("ALTER TABLE tl_address_book CHANGE COLUMN state subdivision varchar(10) NOT NULL default ''");
 		}
 		
 		// tl_store.state has been renamed to tl_store.subdivision
 		if ($this->Database->fieldExists('state', 'tl_store') && !$this->Database->fieldExists('subdivision', 'tl_store'))
 		{
-			$this->Database->execute("ALTER TABLE tl_store CHANGE COLUMN state subdivision varchar(10) NOT NULL default ''");
+			$this->Database->executeUncached("ALTER TABLE tl_store CHANGE COLUMN state subdivision varchar(10) NOT NULL default ''");
 		}
 		
 		// tl_store.street has been renamed to tl_store.street_1
 		if ($this->Database->fieldExists('street', 'tl_store') && !$this->Database->fieldExists('street_1', 'tl_store'))
 		{
-			$this->Database->execute("ALTER TABLE tl_store CHANGE COLUMN street street_1 varchar(255) NOT NULL default ''");
+			$this->Database->executeUncached("ALTER TABLE tl_store CHANGE COLUMN street street_1 varchar(255) NOT NULL default ''");
 		}
 		
 		// tl_address_book.street has been renamed to tl_address_book.street_1
 		if ($this->Database->fieldExists('street', 'tl_address_book') && !$this->Database->fieldExists('street_1','tl_address_book'))
 		{
-			$this->Database->execute("ALTER TABLE tl_address_book CHANGE COLUMN street street_1 varchar(255) NOT NULL default ''");
-			$this->Database->execute("ALTER TABLE tl_store CHANGE COLUMN street street_1 varchar(255) NOT NULL default ''");
-			$objStores = $this->Database->execute("SELECT * FROM tl_store");
+			$this->Database->executeUncached("ALTER TABLE tl_address_book CHANGE COLUMN street street_1 varchar(255) NOT NULL default ''");
+			$this->Database->executeUncached("ALTER TABLE tl_store CHANGE COLUMN street street_1 varchar(255) NOT NULL default ''");
+			$objStores = $this->Database->executeUncached("SELECT * FROM tl_store");
 			
 			while( $objStores->next() )
 			{
@@ -182,7 +182,7 @@ class IsotopeRunonce extends Frontend
 		$arrFields = $this->Database->listFields('tl_product_attributes');
 		foreach( $arrFields as $field )
 		{
-			$this->Database->execute("UPDATE tl_product_attributes SET " . $field['name'] . "='' WHERE " . $field['name'] . "='0'");
+			$this->Database->executeUncached("UPDATE tl_product_attributes SET " . $field['name'] . "='' WHERE " . $field['name'] . "='0'");
 		}
 	}
 	
@@ -190,11 +190,11 @@ class IsotopeRunonce extends Frontend
 	{
 		if ($this->Database->tableExists('tl_product_to_category'))
 		{
-			$this->Database->execute("CREATE TABLE IF NOT EXISTS `tl_product_categories` (`id` int(10) unsigned NOT NULL auto_increment,`pid` int(10) unsigned NOT NULL default '0',`tstamp` int(10) unsigned NOT NULL default '0',`page_id` int(10) unsigned NOT NULL default '0',PRIMARY KEY  (`id`),KEY `pid` (`pid`)) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+			$this->Database->executeUncached("CREATE TABLE IF NOT EXISTS `tl_product_categories` (`id` int(10) unsigned NOT NULL auto_increment,`pid` int(10) unsigned NOT NULL default '0',`tstamp` int(10) unsigned NOT NULL default '0',`page_id` int(10) unsigned NOT NULL default '0',PRIMARY KEY  (`id`),KEY `pid` (`pid`)) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 			
-			$this->Database->execute("INSERT INTO tl_product_categories (pid,tstamp,page_id) (SELECT product_id AS pid, tstamp, pid AS page_id FROM tl_product_to_category)");
+			$this->Database->executeUncached("INSERT INTO tl_product_categories (pid,tstamp,page_id) (SELECT product_id AS pid, tstamp, pid AS page_id FROM tl_product_to_category)");
 			
-			$this->Database->execute("DROP TABLE tl_product_to_category");
+			$this->Database->executeUncached("DROP TABLE tl_product_to_category");
 		}
 	}
 	
@@ -202,15 +202,15 @@ class IsotopeRunonce extends Frontend
 	{
 		if ($this->Database->fieldExists('countries', 'tl_store') && !$this->Database->fieldExists('shipping_countries','tl_store'))
 		{
-			$this->Database->execute("ALTER TABLE tl_store CHANGE COLUMN countries shipping_countries blob NULL");
-			$this->Database->execute("ALTER TABLE tl_store ADD COLUMN billing_countries blob NULL");
+			$this->Database->executeUncached("ALTER TABLE tl_store CHANGE COLUMN countries shipping_countries blob NULL");
+			$this->Database->executeUncached("ALTER TABLE tl_store ADD COLUMN billing_countries blob NULL");
 			$this->Database->prepare("UPDATE tl_store SET billing_countries=shipping_countries");
 		}
 		
 		if ($this->Database->fieldExists('address_fields', 'tl_store') && !$this->Database->fieldExists('shipping_fields','tl_store'))
 		{
-			$this->Database->execute("ALTER TABLE tl_store CHANGE COLUMN address_fields shipping_fields blob NULL");
-			$this->Database->execute("ALTER TABLE tl_store ADD COLUMN billing_fields blob NULL");
+			$this->Database->executeUncached("ALTER TABLE tl_store CHANGE COLUMN address_fields shipping_fields blob NULL");
+			$this->Database->executeUncached("ALTER TABLE tl_store ADD COLUMN billing_fields blob NULL");
 			$this->Database->prepare("UPDATE tl_store SET billing_fields=shipping_fields");
 		}
 	}
@@ -220,7 +220,7 @@ class IsotopeRunonce extends Frontend
 	{
 		if ($this->Database->fieldExists('product_options', 'tl_iso_order_items'))
 		{
-			$objItems = $this->Database->execute("SELECT * FROM tl_iso_order_items");
+			$objItems = $this->Database->executeUncached("SELECT * FROM tl_iso_order_items");
 			
 			while( $objItems->next() )
 			{
@@ -243,7 +243,12 @@ class IsotopeRunonce extends Frontend
 			}
 		}
 		
-		$this->Database->execute("UPDATE tl_iso_orders SET date_shipped=date, status='processing' WHERE status='shipped'");
+		if (!$this->Database->fieldExists('date_shipped', 'tl_iso_order_items'))
+		{
+			$this->Database->executeUncached("ALERT TABLE tl_iso_order_items ADD COLUMN date_shipped varchar(10) NOT NULL default ''");
+		}
+		
+		$this->Database->executeUncached("UPDATE tl_iso_orders SET date_shipped=date, status='processing' WHERE status='shipped'");
 	}
 	
 	
@@ -255,7 +260,7 @@ class IsotopeRunonce extends Frontend
 		{
 			if (!$this->Database->fieldExists('gallery_size', 'tl_store'))
 			{
-				$this->Database->execute("ALTER TABLE tl_store ADD COLUMN gallery_size varchar(64) NOT NULL default ''");
+				$this->Database->executeUncached("ALTER TABLE tl_store ADD COLUMN gallery_size varchar(64) NOT NULL default ''");
 			}
 			
 			$arrUpdate[] = 'gallery';
@@ -265,7 +270,7 @@ class IsotopeRunonce extends Frontend
 		{
 			if (!$this->Database->fieldExists('thumbnail_size', 'tl_store'))
 			{
-				$this->Database->execute("ALTER TABLE tl_store ADD COLUMN thumbnail_size varchar(64) NOT NULL default ''");
+				$this->Database->executeUncached("ALTER TABLE tl_store ADD COLUMN thumbnail_size varchar(64) NOT NULL default ''");
 			}
 			
 			$arrUpdate[] = 'thumbnail';
@@ -275,7 +280,7 @@ class IsotopeRunonce extends Frontend
 		{
 			if (!$this->Database->fieldExists('medium_size', 'tl_store'))
 			{
-				$this->Database->execute("ALTER TABLE tl_store ADD COLUMN medium_size varchar(64) NOT NULL default ''");
+				$this->Database->executeUncached("ALTER TABLE tl_store ADD COLUMN medium_size varchar(64) NOT NULL default ''");
 			}
 			
 			$arrUpdate[] = 'medium';
@@ -285,7 +290,7 @@ class IsotopeRunonce extends Frontend
 		{
 			if (!$this->Database->fieldExists('large_size', 'tl_store'))
 			{
-				$this->Database->execute("ALTER TABLE tl_store ADD COLUMN large_size varchar(64) NOT NULL default ''");
+				$this->Database->executeUncached("ALTER TABLE tl_store ADD COLUMN large_size varchar(64) NOT NULL default ''");
 			}
 			
 			$arrUpdate[] = 'large';
@@ -294,7 +299,7 @@ class IsotopeRunonce extends Frontend
 		
 		if (count($arrUpdate))
 		{
-			$objStores = $this->Database->execute("SELECT * FROM tl_store");
+			$objStores = $this->Database->executeUncached("SELECT * FROM tl_store");
 			
 			while( $objStores->next() )
 			{
@@ -311,8 +316,8 @@ class IsotopeRunonce extends Frontend
 			foreach( $arrUpdate as $size )
 			{
 				// Do not use multiple DROP COLUMN in one ALTER TABLE. It is supported by MySQL, but not standard SQL92
-				$this->Database->execute("ALTER TABLE tl_store DROP COLUMN ".$size."_image_width");
-				$this->Database->execute("ALTER TABLE tl_store DROP COLUMN ".$size."_image_height");
+				$this->Database->executeUncached("ALTER TABLE tl_store DROP COLUMN ".$size."_image_width");
+				$this->Database->executeUncached("ALTER TABLE tl_store DROP COLUMN ".$size."_image_height");
 			}
 		}
 	}
