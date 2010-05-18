@@ -9,6 +9,9 @@
 </div>
 
 <div class="tl_filter tl_subpanel">
+
+<input id="ctrl_svn_diff" name="svn_diff" type="checkbox" value="1"<?php if($this->svn_diff) echo ' checked="checked"'; ?> /> <label for="ctrl_svn_diff">Enable online SVN diff</label> &nbsp;&nbsp;
+
 <select name="module" id="module" class="tl_select<?php echo $this->moduleClass; ?>" onChange="document.tl_select_translation.submit();">
   <option value="">Modul</option>
 <?php foreach( $this->modules as $module ): ?>
@@ -22,6 +25,7 @@
 	<option value="<?php echo $file['value']; ?>"<?php echo $file['default'] ? ' selected="selected"' : ''; ?>><?php echo $file['label']; ?></option>
 <?php endforeach; ?>
 </select>
+
 </div>
 
 <div class="clear"></div>
@@ -30,13 +34,12 @@
 </div>
 </form>
 
-
-<div class="tl_listing_container">
 <?php if(strlen($this->edit)): ?>
-
-<form action="<?php echo $this->action; ?>" method="post">
-	<h2 class="sub_headline"><?php echo $this->headline; ?></h2>
+<div id="tl_buttons">&nbsp;</div>
+<h2 class="sub_headline"><?php echo $this->headline; ?></h2>
 <?php echo $this->getMessages() . '<br />'; ?>
+<form action="<?php echo $this->action; ?>" method="post">
+<div class="tl_listing_container" style="margin-top:0">
 <div class="formbody">
 <input type="hidden" name="FORM_SUBMIT" value="isotope_translation" />
 
@@ -44,10 +47,28 @@
 
 	<?php foreach ( $this->source as $key => $value): ?>
   	  <tr onmouseover="Theme.hoverRow(this, 1);" onmouseout="Theme.hoverRow(this, 0);">
-	    <td class="tl_file_list" style="width: 50%"><?php echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?></td>
-	    <td class="tl_file_list" style="width: 50%">= <input type="text" name="<?php echo standardize($key); ?>" class="tl_text" value="<?php echo str_replace('"', '&quot;', $this->translation[$key]); ?>" onfocus="Backend.getScrollOffset();" /></td>
+	    <td class="tl_file_list" style="width: 49%"><?php echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?></td>
+	    <td class="tl_file_list" style="width: 2%">=</td>
+	    <td class="tl_file_list" style="width: 49%;white-space:pre"><input type="text" name="<?php echo standardize($key); ?>" class="tl_text" value="<?php echo str_replace('"', '&quot;', $this->translation[$key]); ?>" onfocus="Backend.getScrollOffset();" /> <a title="<?php echo $key; ?>"><img src="system/themes/default/images/show.gif" alt="" /></a></td>
 	  </tr>
 	<?php endforeach; ?> 
+	
+<?php if( $this->svn_diff && is_array($this->diff) ): $blnHeadline=false; ?>
+<?php foreach( $this->diff as $key => $value ): if($this->translation[$key] != $this->diff[$key]): if(!$blnHeadline): $blnHeadline=true; ?>
+      <tr><td colspan="3" style="padding-top: 50px;"><h2><?php echo $this->diff_headline; ?></h2></td></tr><?php endif; ?>
+  	  <tr onmouseover="Theme.hoverRow(this, 1);" onmouseout="Theme.hoverRow(this, 0);">
+	    <td class="tl_file_list" style="width: 49%"><?php echo $this->diff[$key]; ?></td>
+	    <td class="tl_file_list" style="width: 2%">=</td>
+	    <td class="tl_file_list" style="width: 49%"><?php echo $this->translation[$key]; /*htmlspecialchars($value, ENT_COMPAT, 'UTF-8');*/ ?></td>
+	  </tr>
+<?php endif; endforeach; ?>
+<?php elseif($this->svn_diff && is_string($this->diff)): ?>
+<tr><td colspan="3" style="padding-top: 50px;">
+	<h2><?php echo $this->diff_headline; ?></h2>
+	<p class="tl_error"><?php echo $this->error; ?></p>
+	<p class="tl_info"><?php echo $this->diff; ?></p>
+</td></tr>
+<?php endif; ?>
 	
 </table>
 
@@ -56,10 +77,12 @@
 
 <div class="tl_formbody_submit">
 <div class="tl_submit_container"><input type="submit" name="save" id="save" class="tl_submit" alt="save all changes" accesskey="s" value="<?php echo $this->slabel; ?>" /></div>
+</div>
 </form>
-
-<?php else: ?><?php if ($this->error): ?>
+<?php else: ?>
+<div class="tl_listing_container">
+<?php if ($this->error): ?>
 <p class="tl_error"><?php echo $this->error; ?></p><?php endif; ?>
 <p class="tl_info"><?php echo $this->headline; ?></p>
-<?php endif; ?>
 </div>
+<?php endif; ?>
