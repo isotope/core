@@ -56,5 +56,6 @@
 </tbody>
 </table>
 <?php endif; ?>
+</div>
 </form>
 </div>
