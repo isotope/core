@@ -959,7 +959,7 @@ class tl_product_data extends Backend
 					}
 				}
 				
-				$this->redirect(str_replace('&key=generate', '', $this->Environment->request));
+				$this->redirect(str_replace('&key=generate', '&key=quick_edit', $this->Environment->request));
 			}
 		}
 		
@@ -1503,7 +1503,7 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 
 				$arrPalette[$GLOBALS['TL_DCA']['tl_product_data']['fields'][$field]['attributes']['legend']][] = $field;
 				
-				if ($field != 'published')
+				if (!in_array($field, array('sku','price','weight','stock_quantity','published')))
 				{
 					$arrInherit[$field] = strlen($GLOBALS['TL_DCA']['tl_product_data']['fields'][$field]['label'][0]) ? $GLOBALS['TL_DCA']['tl_product_data']['fields'][$field]['label'][0] : $field;
 				}
