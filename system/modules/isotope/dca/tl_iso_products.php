@@ -40,7 +40,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'enableVersioning'			  => true,
 		'closed'					  => true,
 		'ctable'					  => array('tl_iso_downloads', 'tl_iso_product_categories'),
-		'ltable'					  => 'tl_product_types.languages',
+		'ltable'					  => 'tl_iso_producttypes.languages',
 		'lref'						  => 'type',
 		'onload_callback'			  => array
 		(
@@ -198,7 +198,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'filter'				=> true,
 			'inputType'				=> 'select',
 			'options_callback'		=> array('tl_iso_products', 'getProductTypes'),
-			'foreignKey'			=> (strlen($this->Input->get('table')) ? 'tl_product_types.name' : ''),
+			'foreignKey'			=> (strlen($this->Input->get('table')) ? 'tl_iso_producttypes.name' : ''),
 			'eval'					=> array('mandatory'=>true, 'submitOnChange'=>true),
 			'attributes'			=> array('legend'=>'general_legend', 'fixed'=>true, 'inherit'=>true),
 		),
@@ -409,7 +409,7 @@ class tl_iso_products extends Backend
 		if ($row['pid'] > 0)
 			return '';
 			
-		$objType = $this->Database->prepare("SELECT * FROM tl_product_types WHERE id=?")
+		$objType = $this->Database->prepare("SELECT * FROM tl_iso_producttypes WHERE id=?")
 								  ->limit(1)
 								  ->execute($row['type']);
 
@@ -433,7 +433,7 @@ class tl_iso_products extends Backend
 		}
 
 		// Hide "add variant" button if no products with variants enabled exist
-		if (!$this->Database->execute("SELECT * FROM tl_iso_products LEFT JOIN tl_product_types ON tl_iso_products.type=tl_product_types.id WHERE tl_product_types.variants='1'")->numRows)
+		if (!$this->Database->execute("SELECT * FROM tl_iso_products LEFT JOIN tl_iso_producttypes ON tl_iso_products.type=tl_iso_producttypes.id WHERE tl_iso_producttypes.variants='1'")->numRows)
 		{
 			unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_variant']);
 		}
@@ -652,7 +652,7 @@ class tl_iso_products extends Backend
 		}
 		
 		$arrProductTypes = array();
-		$objProductTypes = $this->Database->execute("SELECT id,name FROM tl_product_types" . ($this->User->isAdmin ? '' : (" WHERE id IN (".implode(',', $arrTypes).")")) . " ORDER BY name");
+		$objProductTypes = $this->Database->execute("SELECT id,name FROM tl_iso_producttypes" . ($this->User->isAdmin ? '' : (" WHERE id IN (".implode(',', $arrTypes).")")) . " ORDER BY name");
 
 		while($objProductTypes->next())
 		{
@@ -885,7 +885,7 @@ class tl_iso_products extends Backend
 	 */
 	public function generateVariants($dc)
 	{
-		$objProduct = $this->Database->prepare("SELECT id, pid, language, type, (SELECT attributes FROM tl_product_types WHERE id=tl_iso_products.type) AS attributes, (SELECT variant_attributes FROM tl_product_types WHERE id=tl_iso_products.type) AS variant_attributes FROM tl_iso_products WHERE id=?")->limit(1)->execute($dc->id);
+		$objProduct = $this->Database->prepare("SELECT id, pid, language, type, (SELECT attributes FROM tl_iso_producttypes WHERE id=tl_iso_products.type) AS attributes, (SELECT variant_attributes FROM tl_iso_producttypes WHERE id=tl_iso_products.type) AS variant_attributes FROM tl_iso_products WHERE id=?")->limit(1)->execute($dc->id);
 		
 		$doNotSubmit = false;
 		$strBuffer = '';
@@ -999,7 +999,7 @@ class tl_iso_products extends Backend
 	{
 		$arrQuickEditFields = array('sku','price','weight','stock_quantity');
 
-		$objProduct = $this->Database->prepare("SELECT id, pid, language, type, (SELECT attributes FROM tl_product_types WHERE id=tl_iso_products.type) AS attributes, (SELECT variant_attributes FROM tl_product_types WHERE id=tl_iso_products.type) AS variant_attributes FROM tl_iso_products WHERE id=?")->limit(1)->execute($dc->id);
+		$objProduct = $this->Database->prepare("SELECT id, pid, language, type, (SELECT attributes FROM tl_iso_producttypes WHERE id=tl_iso_products.type) AS attributes, (SELECT variant_attributes FROM tl_iso_producttypes WHERE id=tl_iso_products.type) AS variant_attributes FROM tl_iso_products WHERE id=?")->limit(1)->execute($dc->id);
 		
 		$arrFields = array();
 		$arrAttributes = deserialize($objProduct->attributes);
@@ -1353,7 +1353,7 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 		if ($row['pid'] > 0)
 			return '';
 			
-		$objType = $this->Database->prepare("SELECT * FROM tl_product_types WHERE id=?")
+		$objType = $this->Database->prepare("SELECT * FROM tl_iso_producttypes WHERE id=?")
 								  ->limit(1)
 								  ->execute($row['type']);
 								  
@@ -1372,7 +1372,7 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 		if ($row['pid'] > 0)
 			return '';
 			
-		$objType = $this->Database->prepare("SELECT * FROM tl_product_types WHERE id=?")
+		$objType = $this->Database->prepare("SELECT * FROM tl_iso_producttypes WHERE id=?")
 								  ->limit(1)
 								  ->execute($row['type']);
 								  
@@ -1420,7 +1420,7 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 		// Disable "paste into" button for products without variant data
 		elseif ($row['id'] > 0)
 		{
-			$objType = $this->Database->prepare("SELECT * FROM tl_product_types WHERE id=?")->execute($row['type']);
+			$objType = $this->Database->prepare("SELECT * FROM tl_iso_producttypes WHERE id=?")->execute($row['type']);
 			
 			if (!$objType->variants)
 			{
@@ -1444,10 +1444,10 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 			return;
 			
 		// Set default product type
-		$GLOBALS['TL_DCA']['tl_iso_products']['fields']['type']['default'] = $this->Database->execute("SELECT id FROM tl_product_types WHERE fallback='1'")->id;
+		$GLOBALS['TL_DCA']['tl_iso_products']['fields']['type']['default'] = $this->Database->execute("SELECT id FROM tl_iso_producttypes WHERE fallback='1'")->id;
 		
 		// Load the current product
-		$objProduct = $this->Database->prepare("SELECT id, pid, language, type, (SELECT attributes FROM tl_product_types WHERE id=tl_iso_products.type) AS attributes, (SELECT variant_attributes FROM tl_product_types WHERE id=tl_iso_products.type) AS variant_attributes FROM tl_iso_products WHERE id=?")->limit(1)->execute($dc->id);
+		$objProduct = $this->Database->prepare("SELECT id, pid, language, type, (SELECT attributes FROM tl_iso_producttypes WHERE id=tl_iso_products.type) AS attributes, (SELECT variant_attributes FROM tl_iso_producttypes WHERE id=tl_iso_products.type) AS variant_attributes FROM tl_iso_products WHERE id=?")->limit(1)->execute($dc->id);
 			
 		if ($objProduct->pid > 0)
 		{

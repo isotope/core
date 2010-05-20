@@ -94,6 +94,7 @@ class IsotopeRunonce extends Frontend
 	private function renameTables()
 	{
 		if ($this->Database->tableExists('tl_product_data')) $this->Database->executeUncached("ALTER TABLE tl_product_data RENAME tl_iso_products");
+		if ($this->Database->tableExists('tl_product_types')) $this->Database->executeUncached("ALTER TABLE tl_product_types RENAME tl_iso_producttypes");
 		if ($this->Database->tableExists('tl_product_attributes')) $this->Database->executeUncached("ALTER TABLE tl_product_attributes RENAME tl_iso_attributes");
 		if ($this->Database->tableExists('tl_product_downloads')) $this->Database->executeUncached("ALTER TABLE tl_product_downloads RENAME tl_iso_downloads");
 		if ($this->Database->tableExists('tl_product_categories')) $this->Database->executeUncached("ALTER TABLE tl_product_categories RENAME tl_iso_product_categories");

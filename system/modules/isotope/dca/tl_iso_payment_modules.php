@@ -251,7 +251,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['product_types'],
 			'exclude'                 => true,
 			'inputType'               => 'select',
-			'foreignKey'			  => 'tl_product_types.name',
+			'foreignKey'			  => 'tl_iso_producttypes.name',
 			'eval'                    => array('multiple'=>true, 'size'=>8, 'tl_class'=>'clr'),
 		),
 		'paypal_account' => array

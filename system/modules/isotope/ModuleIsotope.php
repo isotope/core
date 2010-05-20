@@ -312,7 +312,7 @@ abstract class ModuleIsotope extends Module
 	{
 		global $objPage;
 		
-		$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_product_types WHERE tl_iso_products.type=tl_product_types.id) AS type_class FROM tl_iso_products WHERE id=?")
+		$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS type_class FROM tl_iso_products WHERE id=?")
 										 ->limit(1)
 										 ->executeUncached($intId);
 									 
@@ -338,7 +338,7 @@ abstract class ModuleIsotope extends Module
 	{
 		global $objPage;
 		
-		$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_product_types WHERE tl_iso_products.type=tl_product_types.id) AS type_class FROM tl_iso_products WHERE alias=?")
+		$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS type_class FROM tl_iso_products WHERE alias=?")
 										 ->limit(1)
 										 ->executeUncached($strAlias);
 									 
