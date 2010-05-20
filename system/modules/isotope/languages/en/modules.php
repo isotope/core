@@ -29,12 +29,12 @@
 /**
  * Backend Modules
  */
-$GLOBALS['TL_LANG']['MOD']['store']						= 'Isotope eCommerce';
-$GLOBALS['TL_LANG']['MOD']['product_manager']			= array('Product management','');
-$GLOBALS['TL_LANG']['MOD']['orders']					= array('Orders', '');
+$GLOBALS['TL_LANG']['MOD']['isotope']					= 'Isotope eCommerce';
+$GLOBALS['TL_LANG']['MOD']['iso_products']				= array('Product management','');
+$GLOBALS['TL_LANG']['MOD']['iso_orders']				= array('Orders', '');
 $GLOBALS['TL_LANG']['MOD']['iso_statistics']			= array('Statistics', '');
-$GLOBALS['TL_LANG']['MOD']['isotope']					= array('Store configuration','');
-$GLOBALS['TL_LANG']['MOD']['iso_dimensions']			= array('Product Dimensions','');
+$GLOBALS['TL_LANG']['MOD']['iso_setup']					= array('Store configuration','');
+
 
 /**														
  * Frontend modules									

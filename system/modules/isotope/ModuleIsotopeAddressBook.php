@@ -172,7 +172,6 @@ class ModuleIsotopeAddressBook extends Module
 		$this->Template->editAddressLabel = $GLOBALS['TL_LANG']['editAddressLabel'];
 		$this->Template->deleteAddressLabel = $GLOBALS['TL_LANG']['deleteAddressLabel'];
 		$this->Template->addresses = $arrAddresses;
-		$this->Template->isotopeBase = $GLOBALS['TL_CONFIG']['isotope_upload_path'];
 		$this->Template->addNewAddress = ampersand($this->generateFrontendUrl($arrPage, '/act/create'));
 	}
 	
