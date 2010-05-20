@@ -27,9 +27,9 @@
 
 
 /**
- * Table tl_related_categories
+ * Table tl_iso_related_categories
  */
-$GLOBALS['TL_DCA']['tl_related_categories'] = array
+$GLOBALS['TL_DCA']['tl_iso_related_categories'] = array
 (
 
 	// Config
@@ -40,7 +40,7 @@ $GLOBALS['TL_DCA']['tl_related_categories'] = array
 		'closed'						=> true,
 		'onload_callback' => array
 		(
-			array('tl_related_categories', 'checkPermission'),
+			array('tl_iso_related_categories', 'checkPermission'),
 		),
 	),
 
@@ -69,7 +69,7 @@ $GLOBALS['TL_DCA']['tl_related_categories'] = array
 			),
 			'new' => array
 			(
-				'label'					=> &$GLOBALS['TL_LANG']['tl_related_categories']['new'],
+				'label'					=> &$GLOBALS['TL_LANG']['tl_iso_related_categories']['new'],
 				'href'					=> 'act=create',
 				'class'					=> 'header_new',
 				'attributes'			=> 'onclick="Backend.getScrollOffset();"',
@@ -86,26 +86,26 @@ $GLOBALS['TL_DCA']['tl_related_categories'] = array
 		(
 			'edit' => array
 			(
-				'label'					=> &$GLOBALS['TL_LANG']['tl_related_categories']['edit'],
+				'label'					=> &$GLOBALS['TL_LANG']['tl_iso_related_categories']['edit'],
 				'href'					=> 'act=edit',
 				'icon'					=> 'edit.gif'
 			),
 			'copy' => array
 			(
-				'label'					=> &$GLOBALS['TL_LANG']['tl_related_categories']['copy'],
+				'label'					=> &$GLOBALS['TL_LANG']['tl_iso_related_categories']['copy'],
 				'href'					=> 'act=copy',
 				'icon'					=> 'copy.gif'
 			),
 			'delete' => array
 			(
-				'label'					=> &$GLOBALS['TL_LANG']['tl_related_categories']['delete'],
+				'label'					=> &$GLOBALS['TL_LANG']['tl_iso_related_categories']['delete'],
 				'href'					=> 'act=delete',
 				'icon'					=> 'delete.gif',
 				'attributes'			=> 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
 			),
 			'show' => array
 			(
-				'label'					=> &$GLOBALS['TL_LANG']['tl_related_categories']['show'],
+				'label'					=> &$GLOBALS['TL_LANG']['tl_iso_related_categories']['show'],
 				'href'					=> 'act=show',
 				'icon'					=> 'show.gif'
 			),
@@ -123,14 +123,14 @@ $GLOBALS['TL_DCA']['tl_related_categories'] = array
 	(
 		'name' => array
 		(
-			'label'						=> &$GLOBALS['TL_LANG']['tl_related_categories']['name'],
+			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_related_categories']['name'],
 			'exclude'					=> true,
 			'inputType'					=> 'text',
 			'eval'						=> array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'long'),
 		),
 		'jumpTo' => array
 		(
-			'label'						=> &$GLOBALS['TL_LANG']['tl_related_categories']['jumpTo'],
+			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_related_categories']['jumpTo'],
 			'exclude'					=> true,
 			'inputType'					=> 'pageTree',
 			'eval'						=> array('fieldType'=>'radio'),
@@ -139,14 +139,14 @@ $GLOBALS['TL_DCA']['tl_related_categories'] = array
 );
 
 
-class tl_related_categories extends Backend
+class tl_iso_related_categories extends Backend
 {
 	
 	public function checkPermission($dc)
 	{
 		if (strlen($this->Input->get('act')))
 		{
-			$GLOBALS['TL_DCA']['tl_related_categories']['config']['closed'] = false;
+			$GLOBALS['TL_DCA']['tl_iso_related_categories']['config']['closed'] = false;
 		}
 	}
 }

@@ -161,7 +161,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'related' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_iso_products']['related'],
-				'href'                => 'table=tl_related_products',
+				'href'                => 'table=tl_iso_related_products',
 				'icon'                => 'system/modules/isotope/html/icon-related.png',
 				'button_callback'	  => array('tl_iso_products', 'relatedButton'),
 				'attributes'          => 'class="isotope-tools"',

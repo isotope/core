@@ -27,9 +27,9 @@
 
 
 /**
- * Table tl_related_products
+ * Table tl_iso_related_products
  */
-$GLOBALS['TL_DCA']['tl_related_products'] = array
+$GLOBALS['TL_DCA']['tl_iso_related_products'] = array
 (
 
 	// Config
@@ -40,7 +40,7 @@ $GLOBALS['TL_DCA']['tl_related_products'] = array
 		'ptable'						=> 'tl_iso_products',
 		'onload_callback' => array
 		(
-			array('tl_related_products', 'initDCA')
+			array('tl_iso_related_products', 'initDCA')
 		),
 	),
 
@@ -54,7 +54,7 @@ $GLOBALS['TL_DCA']['tl_related_products'] = array
 			'flag'						=> 1,
 //			'panelLayout'				=> 'filter;search,limit',
 			'headerFields'				=> array('type', 'name', 'alias', 'sku'),
-			'child_record_callback'		=> array('tl_related_products', 'listRows')
+			'child_record_callback'		=> array('tl_iso_related_products', 'listRows')
 		),
 		'global_operations' => array
 		(
@@ -70,33 +70,33 @@ $GLOBALS['TL_DCA']['tl_related_products'] = array
 		(
 			'edit' => array
 			(
-				'label'					=> &$GLOBALS['TL_LANG']['tl_related_products']['edit'],
+				'label'					=> &$GLOBALS['TL_LANG']['tl_iso_related_products']['edit'],
 				'href'					=> 'act=edit',
 				'icon'					=> 'edit.gif'
 			),
 			'copy' => array
 			(
-				'label'					=> &$GLOBALS['TL_LANG']['tl_related_products']['copy'],
+				'label'					=> &$GLOBALS['TL_LANG']['tl_iso_related_products']['copy'],
 				'href'					=> 'act=paste&amp;mode=copy',
 				'icon'					=> 'copy.gif'
 			),
 			'cut' => array
 			(
-				'label'					=> &$GLOBALS['TL_LANG']['tl_related_products']['cut'],
+				'label'					=> &$GLOBALS['TL_LANG']['tl_iso_related_products']['cut'],
 				'href'					=> 'act=paste&amp;mode=cut',
 				'icon'					=> 'cut.gif',
 				'attributes'			=> 'onclick="Backend.getScrollOffset();"'
 			),
 			'delete' => array
 			(
-				'label'					=> &$GLOBALS['TL_LANG']['tl_related_products']['delete'],
+				'label'					=> &$GLOBALS['TL_LANG']['tl_iso_related_products']['delete'],
 				'href'					=> 'act=delete',
 				'icon'					=> 'delete.gif',
 				'attributes'			=> 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
 			),
 			'show' => array
 			(
-				'label'					=> &$GLOBALS['TL_LANG']['tl_related_products']['show'],
+				'label'					=> &$GLOBALS['TL_LANG']['tl_iso_related_products']['show'],
 				'href'					=> 'act=show',
 				'icon'					=> 'show.gif'
 			),
@@ -114,15 +114,15 @@ $GLOBALS['TL_DCA']['tl_related_products'] = array
 	(
 		'category' => array
 		(
-			'label'						=> &$GLOBALS['TL_LANG']['tl_related_products']['category'],
+			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_related_products']['category'],
 			'exclude'					=> true,
 			'inputType'					=> 'select',
-			'foreignKey'				=> 'tl_related_categories.name',
+			'foreignKey'				=> 'tl_iso_related_categories.name',
 			'eval'						=> array('mandatory'=>true, 'includeBlankOption'=>true),
 		),
 		'products' => array
 		(
-			'label'						=> &$GLOBALS['TL_LANG']['tl_related_products']['products'],
+			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_related_products']['products'],
 			'exclude'					=> true,
 			'inputType'					=> 'productsWizard',
 			'eval'						=> array('mandatory'=>true, 'tl_class'=>'clr'),
@@ -131,7 +131,7 @@ $GLOBALS['TL_DCA']['tl_related_products'] = array
 );
 
 
-class tl_related_products extends Backend
+class tl_iso_related_products extends Backend
 {
 
 	/**
@@ -142,10 +142,10 @@ class tl_related_products extends Backend
 	 */
 	public function listRows($row)
 	{
-		$strCategory = $this->Database->prepare("SELECT * FROM tl_related_categories WHERE id=?")->execute($row['category'])->name;
+		$strCategory = $this->Database->prepare("SELECT * FROM tl_iso_related_categories WHERE id=?")->execute($row['category'])->name;
 		
 		$strBuffer = '
-<div class="cte_type" style="color:#666966"><strong>' . $GLOBALS['TL_LANG']['tl_related_products']['category'][0] . ':</strong> ' . $strCategory . '</div>';
+<div class="cte_type" style="color:#666966"><strong>' . $GLOBALS['TL_LANG']['tl_iso_related_products']['category'][0] . ':</strong> ' . $strCategory . '</div>';
 		
 		$arrProducts = deserialize($row['products']);
 		if (is_array($arrProducts) && count($arrProducts))
@@ -169,7 +169,7 @@ class tl_related_products extends Backend
 	public function initDCA($dc)
 	{
 		$arrCategories = array();
-		$objCategories = $this->Database->prepare("SELECT * FROM tl_related_categories WHERE id NOT IN (SELECT category FROM tl_related_products WHERE pid=" . (strlen($this->Input->get('act')) ? "(SELECT pid FROM tl_related_products WHERE id=?) AND id!=?" : '?') . ")")
+		$objCategories = $this->Database->prepare("SELECT * FROM tl_iso_related_categories WHERE id NOT IN (SELECT category FROM tl_iso_related_products WHERE pid=" . (strlen($this->Input->get('act')) ? "(SELECT pid FROM tl_iso_related_products WHERE id=?) AND id!=?" : '?') . ")")
 										->execute($dc->id, $dc->id);
 										
 		while( $objCategories->next() )
@@ -179,14 +179,14 @@ class tl_related_products extends Backend
 		
 		if (!count($arrCategories))
 		{
-			$GLOBALS['TL_DCA']['tl_related_products']['config']['closed'] = true;
+			$GLOBALS['TL_DCA']['tl_iso_related_products']['config']['closed'] = true;
 		}
 
 		if ($this->Input->get('act') == 'edit')
 		{
-			unset($GLOBALS['TL_DCA']['tl_related_products']['fields']['category']['foreignKey']);
-			$GLOBALS['TL_DCA']['tl_related_products']['fields']['category']['options'] = $arrCategories;
-			$GLOBALS['TL_DCA']['tl_related_products']['fields']['products']['eval']['products'] = $this->Database->prepare("SELECT id FROM tl_iso_products WHERE pid=0 AND id!=(SELECT pid FROM tl_related_products WHERE id=?)")->execute($dc->id)->fetchEach('id');
+			unset($GLOBALS['TL_DCA']['tl_iso_related_products']['fields']['category']['foreignKey']);
+			$GLOBALS['TL_DCA']['tl_iso_related_products']['fields']['category']['options'] = $arrCategories;
+			$GLOBALS['TL_DCA']['tl_iso_related_products']['fields']['products']['eval']['products'] = $this->Database->prepare("SELECT id FROM tl_iso_products WHERE pid=0 AND id!=(SELECT pid FROM tl_iso_related_products WHERE id=?)")->execute($dc->id)->fetchEach('id');
 		}
 	}
 }

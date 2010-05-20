@@ -694,10 +694,10 @@ CREATE TABLE `tl_iso_mail_content` (
 -- --------------------------------------------------------
 
 -- 
--- Table `tl_related_categories`
+-- Table `tl_iso_related_categories`
 -- 
 
-CREATE TABLE `tl_related_categories` (
+CREATE TABLE `tl_iso_related_categories` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `tstamp` int(10) unsigned NOT NULL default '0',
   `name` varchar(255) NOT NULL default '',
@@ -709,10 +709,10 @@ CREATE TABLE `tl_related_categories` (
 -- --------------------------------------------------------
 
 -- 
--- Table `tl_related_products`
+-- Table `tl_iso_related_products`
 -- 
 
-CREATE TABLE `tl_related_products` (
+CREATE TABLE `tl_iso_related_products` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
   `sorting` int(10) unsigned NOT NULL default '0',
