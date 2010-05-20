@@ -159,6 +159,11 @@
 	padding: 0;
 }
 
+.iso_product p span
+{
+	font-weight: normal;
+}
+
 .iso_product a
 {
 	float: none;

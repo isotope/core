@@ -18,6 +18,7 @@
 .iso_product{margin-top:2px;margin-left:22px;margin-bottom:2px;width:530px}
 .iso_product .thumbnail{padding-right:5px;float:left;width:34px;height:34px}
 .iso_product p{font-weight:bold;margin:0 0 5px 0;padding:0}
+.iso_product p span{font-weight:normal}
 .iso_product a{float:none;margin-top:0}
 h3.inherit,.tl_checkbox_single_container.inherit{background-color:#f8f8f8;margin:14px 0 1px;padding:2px 2px 2px 0}
 .tl_productswizard{width:100%}
