@@ -38,11 +38,11 @@ class ProductCatalog extends Backend
 
 	
 	/**
-	 * Initialize the tl_product_data DCA
+	 * Initialize the tl_iso_products DCA
 	 */	
 	public function loadProductCatalogDCA($strTable)
 	{
-		if ($strTable != 'tl_product_data')
+		if ($strTable != 'tl_iso_products')
 			return;
 		
 		$objAttributes = $this->Database->execute("SELECT * FROM tl_product_attributes");
@@ -143,7 +143,7 @@ class ProductCatalog extends Backend
 				}
 			}
 			
-			$GLOBALS['TL_DCA']['tl_product_data']['fields'][$objAttributes->field_name] = $arrData;
+			$GLOBALS['TL_DCA']['tl_iso_products']['fields'][$objAttributes->field_name] = $arrData;
 		}				
 	}
 	
@@ -218,7 +218,7 @@ class ProductCatalog extends Backend
 		}
 			
 		//Get the value submitted for this particular attribute
-		$objRecordValues = $this->Database->prepare("SELECT pages, " . $dc->field . " FROM tl_product_data WHERE id=?")
+		$objRecordValues = $this->Database->prepare("SELECT pages, " . $dc->field . " FROM tl_iso_products WHERE id=?")
 													->limit(1)
 													->execute($dc->id);
 		if($objRecordValues->numRows < 1)
@@ -322,7 +322,7 @@ class ProductCatalog extends Backend
 					//If we find that the product id submitted does, in fact exist in the existing product collection for this page, then we remove it.
 				
 					//Do any other products in this category share the filter value?  If not then we can safely remove it
-					$objProductsAssociatedWithFilterValue = $this->Database->prepare("SELECT id, pages FROM tl_product_data WHERE " . $dc->field . "=?")->execute($varCurrValue);
+					$objProductsAssociatedWithFilterValue = $this->Database->prepare("SELECT id, pages FROM tl_iso_products WHERE " . $dc->field . "=?")->execute($varCurrValue);
 					
 											
 					if($objProductsAssociatedWithFilterValue->numRows < 1)	//if there are no occurrences of this filter value in any product, then ok.

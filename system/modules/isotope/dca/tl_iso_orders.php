@@ -26,8 +26,8 @@
  */
 
 
-$this->loadDataContainer('tl_product_data');
-$this->loadLanguageFile('tl_product_data');
+$this->loadDataContainer('tl_iso_products');
+$this->loadLanguageFile('tl_iso_products');
 
 
 /**

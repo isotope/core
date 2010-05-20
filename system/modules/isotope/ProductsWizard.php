@@ -113,7 +113,7 @@ class ProductsWizard extends Widget
 	 */
 	public function generate()
 	{
-		$this->loadLanguageFile('tl_product_data');
+		$this->loadLanguageFile('tl_iso_products');
 		
 		$arrIds = deserialize($this->varValue);
 		
@@ -125,11 +125,11 @@ class ProductsWizard extends Widget
 		// User has javascript disabled an clicked on link
 		if ($this->Input->get('noajax'))
 		{
-			$strProducts = $this->listProducts($this->Database->execute("SELECT * FROM tl_product_data WHERE pid=0 ORDER BY id=" . implode('DESC, id=', $arrIds) . " DESC, name"));
+			$strProducts = $this->listProducts($this->Database->execute("SELECT * FROM tl_iso_products WHERE pid=0 ORDER BY id=" . implode('DESC, id=', $arrIds) . " DESC, name"));
 		}
 		else
 		{
-			$strProducts = $this->listProducts($this->Database->execute("SELECT * FROM tl_product_data WHERE pid=0 AND id IN (" . implode(',', $arrIds) . ")"));
+			$strProducts = $this->listProducts($this->Database->execute("SELECT * FROM tl_iso_products WHERE pid=0 AND id IN (" . implode(',', $arrIds) . ")"));
 			
 			$strProducts .= '
     <tr class="jserror">
@@ -146,9 +146,9 @@ class ProductsWizard extends Widget
   <thead>
     <tr>
       <th class="head_0 col_first">&nbsp;</th>
-  	  <th class="head_1">' . $GLOBALS['TL_LANG']['tl_product_data']['type'][0] . '</th>
-  	  <th class="head_2">' . $GLOBALS['TL_LANG']['tl_product_data']['name'][0] . '</th>
-  	  <th class="head_3 col_last">' . $GLOBALS['TL_LANG']['tl_product_data']['sku'][0] . '</th>
+  	  <th class="head_1">' . $GLOBALS['TL_LANG']['tl_iso_products']['type'][0] . '</th>
+  	  <th class="head_2">' . $GLOBALS['TL_LANG']['tl_iso_products']['name'][0] . '</th>
+  	  <th class="head_3 col_last">' . $GLOBALS['TL_LANG']['tl_iso_products']['sku'][0] . '</th>
     </tr>
   </thead>
   <tbody>
@@ -194,7 +194,7 @@ window.addEvent('domready', function() {
 			$strFilter = ") AND id NOT IN (" . implode(',', $arrProducts);
 		}
 		
-		$objProducts = $this->Database->prepare("SELECT * FROM tl_product_data WHERE pid=0 AND (" . implode(' OR ', $arrProcedures) . $strFilter . ")")
+		$objProducts = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE pid=0 AND (" . implode(' OR ', $arrProcedures) . $strFilter . ")")
 									  ->execute($arrValues);
 									  
 		$strBuffer = $this->listProducts($objProducts, true);

@@ -27,9 +27,9 @@
 
 
 /**
- * Table tl_product_data 
+ * Table tl_iso_products 
  */
-$GLOBALS['TL_DCA']['tl_product_data'] = array
+$GLOBALS['TL_DCA']['tl_iso_products'] = array
 (
 
 	// Config
@@ -44,10 +44,10 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		'lref'						  => 'type',
 		'onload_callback'			  => array
 		(
-			array('tl_product_data', 'checkPermission'),
-			array('tl_product_data', 'addBreadcrumb'),
-			array('tl_product_data', 'buildPaletteString'),
-			array('tl_product_data', 'generatePageAssociations'),
+			array('tl_iso_products', 'checkPermission'),
+			array('tl_iso_products', 'addBreadcrumb'),
+			array('tl_iso_products', 'buildPaletteString'),
+			array('tl_iso_products', 'generatePageAssociations'),
 		),
 	),
 	
@@ -61,47 +61,47 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			'flag'					  => 1,
 			'panelLayout'			  => 'filter;sort,search,limit',
 			'icon'                    => 'system/modules/isotope/html/icon-products.gif',
-			'paste_button_callback'   => array('tl_product_data', 'pasteProduct'),
+			'paste_button_callback'   => array('tl_iso_products', 'pasteProduct'),
 		),
 		'label' => array
 		(
 			'fields'                  => array('name'),
 			'format'                  => '%s',
-			'label_callback'		  => array('tl_product_data', 'getRowLabel'),
+			'label_callback'		  => array('tl_iso_products', 'getRowLabel'),
 		),
 		'global_operations' => array
 		(
 			'new_product' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['new_product'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_products']['new_product'],
 				'href'                => 'act=create',
 				'class'				  => 'header_new',
 				'attributes'          => 'onclick="Backend.getScrollOffset();"',
 			),
 			'new_variant' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['new_variant'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_products']['new_variant'],
 				'href'                => 'act=paste&mode=create',
 				'class'				  => 'header_new',
 				'attributes'          => 'onclick="Backend.getScrollOffset();"',
 			),
 			'tools' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['tools'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_products']['tools'],
 				'href'                => '',
 				'class'               => 'header_isotope_tools',
 				'attributes'          => 'onclick="Backend.getScrollOffset();" style="display:none"'
 			),
 			'import' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['import'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_products']['import'],
 				'href'                => 'key=import',
 				'class'               => 'header_import_assets isotope-tools',
 				'attributes'          => 'onclick="Backend.getScrollOffset();"'
 			),
 			'link'	=> array
 			(
-				'label'				  => &$GLOBALS['TL_LANG']['tl_product_data']['link'],
+				'label'				  => &$GLOBALS['TL_LANG']['tl_iso_products']['link'],
 				'href'				  => 'key=link',
 				'class'				  => 'header_product_category_link isotope-tools',
 				'attributes'		  => 'onclick="Backend.getScrollOffset();"'
@@ -111,67 +111,67 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		(
 			'edit' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['edit'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_products']['edit'],
 				'href'                => 'act=edit',
 				'icon'                => 'edit.gif',
 			),
 			'copy' => array
 			(
-				'label'				  => &$GLOBALS['TL_LANG']['tl_product_data']['copy'],
+				'label'				  => &$GLOBALS['TL_LANG']['tl_iso_products']['copy'],
 				'href'                => 'act=paste&amp;mode=copy&amp;childs=1',
 				'icon'                => 'copy.gif',
 				'attributes'          => 'onclick="Backend.getScrollOffset();"',
-				'button_callback'     => array('tl_product_data', 'copyProduct')
+				'button_callback'     => array('tl_iso_products', 'copyProduct')
 			),
 			'delete' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['delete'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_products']['delete'],
 				'href'                => 'act=delete',
 				'icon'                => 'delete.gif',
 				'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"',
 			),
 			'show' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['show'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_products']['show'],
 				'href'                => 'act=show',
 				'icon'                => 'show.gif'
 			),
 			'tools' => array
 			(
-				'label'				  => &$GLOBALS['TL_LANG']['tl_product_data']['tools'],
+				'label'				  => &$GLOBALS['TL_LANG']['tl_iso_products']['tools'],
 				'icon'				  => 'system/modules/isotope/html/tools.png',
 				'attributes'          => 'class="invisible isotope-contextmenu"'
 			),
 			'quick_edit' => array
 			(
-				'label'				  => &$GLOBALS['TL_LANG']['tl_product_data']['quick_edit'],
+				'label'				  => &$GLOBALS['TL_LANG']['tl_iso_products']['quick_edit'],
 				'href'				  => 'key=quick_edit',
 				'icon'				  => 'system/modules/isotope/html/icon-quick_edit.png',
-				'button_callback'	  => array('tl_product_data', 'quickEditButton'),
+				'button_callback'	  => array('tl_iso_products', 'quickEditButton'),
 				'attributes'          => 'class="isotope-tools"',
 			),
 			'generate' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['generate'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_products']['generate'],
 				'href'                => 'key=generate',
 				'icon'				  => 'system/modules/isotope/html/icon-generate.png',
-				'button_callback'	  => array('tl_product_data', 'generateButton'),
+				'button_callback'	  => array('tl_iso_products', 'generateButton'),
 				'attributes'          => 'class="isotope-tools"',
 			),
 			'related' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['related'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_products']['related'],
 				'href'                => 'table=tl_related_products',
 				'icon'                => 'system/modules/isotope/html/icon-related.png',
-				'button_callback'	  => array('tl_product_data', 'relatedButton'),
+				'button_callback'	  => array('tl_iso_products', 'relatedButton'),
 				'attributes'          => 'class="isotope-tools"',
 			),
 			'downloads' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_product_data']['downloads'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_products']['downloads'],
 				'href'                => 'table=tl_product_downloads',
 				'icon'                => 'system/modules/isotope/html/attach.png',
-				'button_callback'	  => array('tl_product_data', 'downloadsButton'),
+				'button_callback'	  => array('tl_iso_products', 'downloadsButton'),
 			),
 		),
 	),
@@ -194,17 +194,17 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 	(
 		'type' => array
 		(
-			'label'					=>  &$GLOBALS['TL_LANG']['tl_product_data']['type'],
+			'label'					=>  &$GLOBALS['TL_LANG']['tl_iso_products']['type'],
 			'filter'				=> true,
 			'inputType'				=> 'select',
-			'options_callback'		=> array('tl_product_data', 'getProductTypes'),
+			'options_callback'		=> array('tl_iso_products', 'getProductTypes'),
 			'foreignKey'			=> (strlen($this->Input->get('table')) ? 'tl_product_types.name' : ''),
 			'eval'					=> array('mandatory'=>true, 'submitOnChange'=>true),
 			'attributes'			=> array('legend'=>'general_legend', 'fixed'=>true, 'inherit'=>true),
 		),
 		'pages' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['pages'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['pages'],
 			'filter'				=> true,
 			'inputType'				=> 'pageTree',
 			'foreignKey'			=> 'tl_page.title',
@@ -212,18 +212,18 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			'attributes'			=> array('legend'=>'general_legend', 'fixed'=>true, 'inherit'=>true),
 			'save_callback'			=> array
 			(
-				array('tl_product_data','saveProductCategories'),
+				array('tl_iso_products','saveProductCategories'),
 			),
 		),
 		'inherit' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['inherit'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['inherit'],
 			'inputType'				=> 'inheritCheckbox',
 			'eval'					=> array('multiple'=>true),
 		),
 		'alias' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['alias'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['alias'],
 			'search'				=> true,
 			'sorting'				=> true,
 			'inputType'				=> 'text',
@@ -231,12 +231,12 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 			'attributes'			=> array('legend'=>'general_legend', 'fixed'=>true, 'inherit'=>true),
 			'save_callback' => array
 			(
-				array('tl_product_data', 'generateAlias'),
+				array('tl_iso_products', 'generateAlias'),
 			)
 		),
 		'sku' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['sku'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['sku'],
 			'search'				=> true,
 			'sorting'				=> true,
 			'inputType'				=> 'text',
@@ -245,7 +245,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		),
 		'name' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['name'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['name'],
 			'search'				=> true,
 			'sorting'				=> true,
 			'inputType'				=> 'text',
@@ -254,7 +254,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		),
 		'teaser' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['teaser'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['teaser'],
 			'search'				=> true,
 			'inputType'				=> 'textarea',
 			'eval'					=> array('style'=>'height:80px'),
@@ -262,7 +262,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		),
 		'description' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['description'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['description'],
 			'search'				=> true,
 			'inputType'				=> 'textarea',
 			'eval'					=> array('mandatory'=>true, 'rte'=>'tinyMCE'),
@@ -270,21 +270,21 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		),
 		'description_meta' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['description_meta'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['description_meta'],
 			'search'				=> true,
 			'inputType'				=> 'textarea',
 			'attributes'			=> array('legend'=>'meta_legend', 'multilingual'=>true, 'maxlength'=>200),
 		),
 		'keywords_meta' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['keywords_meta'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['keywords_meta'],
 			'search'				=> true,
 			'inputType'				=> 'textarea',
 			'attributes'			=> array('legend'=>'meta_legend', 'multilingual'=>true, 'maxlength'=>200),
 		),
 		'price' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['price'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['price'],
 			'sorting'				=> true,
 			'inputType'				=> 'text',
 			'eval'					=> array('mandatory'=>true, 'maxlength'=>255, 'rgxp'=>'digits', 'tl_class'=>'w50'),
@@ -292,54 +292,54 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		),
 		'price_override' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['price_override'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['price_override'],
 			'inputType'				=> 'text',
 			'eval'					=> array('maxlength'=>255, 'tl_class'=>'w50'),
 			'attributes'			=> array('legend'=>'pricing_legend'),
 		),
 		'max_order_quantity' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['max_order_quantity'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['max_order_quantity'],
 			'inputType'				=> 'text',
 			'eval'					=> array('rgxp'=>'digits', 'disabled'=>'disabled'),
 			'attributes'			=> array('legend'=>'inventory_legend'),
 		),
 		'stock_enabled' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['stock_enabled'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['stock_enabled'],
 			'inputType'				=> 'checkbox',
 			'eval'					=> array('submitOnChange'=>true, 'tl_class'=>'clr'),
 			'attributes'			=> array('legend'=>'inventory_legend'),
 		),
 		'stock_quantity' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['stock_quantity'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['stock_quantity'],
 			'inputType'				=> 'text',
 			'eval'					=> array(/*'mandatory'=>true, */'rgxp'=>'digits', 'disabled'=>'disabled', 'tl_class'=>'w50'),
 		),
 		'stock_oversell' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['stock_oversell'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['stock_oversell'],
 			'inputType'				=> 'checkbox',
 			'eval'					=> array('tl_class'=>'w50 m12'),
 		),
 		'weight' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['weight'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['weight'],
 			'inputType'				=> 'text',
 			'eval'					=> array('rgxp'=>'digits', 'disabled'=>'disabled', 'tl_class'=>'w50'),
 			'attributes'			=> array('legend'=>'shipping_legend'),
 		),
 		'shipping_exempt' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['shipping_exempt'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['shipping_exempt'],
 			'inputType'				=> 'checkbox',
 			'eval'					=> array('tl_class'=>'w50'),
 			'attributes'			=> array('legend'=>'shipping_legend'),
 		),
 		'tax_class' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['tax_class'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['tax_class'],
 			'inputType'				=> 'select',
 			'foreignKey'			=> 'tl_tax_class.name',
 			'attributes'			=> array('legend'=>'tax_legend'),
@@ -347,13 +347,13 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		),
 		'images' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['images'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['images'],
 			'inputType'				=> 'mediaManager',
 			'attributes'			=> array('legend'=>'media_legend', 'fixed'=>true),
 		),
 		'published' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['published'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['published'],
 			'filter'				=> true,
 			'inputType'				=> 'checkbox',
 			'eval'					=> array('doNotCopy'=>true),
@@ -361,26 +361,26 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 		),
 		'start' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['start'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['start'],
 			'inputType'				=> 'text',
 			'eval'					=> array('rgxp'=>'date', 'datepicker'=>$this->getDatePickerString(), 'tl_class'=>'w50 wizard'),
 			'attributes'			=> array('legend'=>'publish_legend'),
 		),
 		'stop' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['stop'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['stop'],
 			'inputType'				=> 'text',
 			'eval'					=> array('rgxp'=>'date', 'datepicker'=>$this->getDatePickerString(), 'tl_class'=>'w50 wizard'),
 			'attributes'			=> array('legend'=>'publish_legend'),
 		),
 		'source' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['source'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['source'],
 			'eval'					=> array('mandatory'=>true, 'required'=>true, 'fieldType'=>'radio'),
 		),
 		'variant_attributes' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['variant_attributes'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['variant_attributes'],
 			'inputType'				=> 'variantWizard',
 			'options'				=> array(),
 			'eval'					=> array('doNotSaveEmpty'=>true),
@@ -389,7 +389,7 @@ $GLOBALS['TL_DCA']['tl_product_data'] = array
 );
 
 
-class tl_product_data extends Backend
+class tl_iso_products extends Backend
 {
 
 	public function __construct()
@@ -429,13 +429,13 @@ class tl_product_data extends Backend
 	{
 		if (strlen($this->Input->get('act')) && $this->Input->get('mode') != 'create')
 		{
-			$GLOBALS['TL_DCA']['tl_product_data']['config']['closed'] = false;
+			$GLOBALS['TL_DCA']['tl_iso_products']['config']['closed'] = false;
 		}
 
 		// Hide "add variant" button if no products with variants enabled exist
-		if (!$this->Database->execute("SELECT * FROM tl_product_data LEFT JOIN tl_product_types ON tl_product_data.type=tl_product_types.id WHERE tl_product_types.variants='1'")->numRows)
+		if (!$this->Database->execute("SELECT * FROM tl_iso_products LEFT JOIN tl_product_types ON tl_iso_products.type=tl_product_types.id WHERE tl_product_types.variants='1'")->numRows)
 		{
-			unset($GLOBALS['TL_DCA']['tl_product_data']['list']['global_operations']['new_variant']);
+			unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_variant']);
 		}
 		
 		$this->import('BackendUser', 'User');
@@ -444,14 +444,14 @@ class tl_product_data extends Backend
 		{
 			$arrTypes = is_array($this->User->iso_product_types) ? $this->User->iso_product_types : array(0);
 			
-			$arrProducts = $this->Database->execute("SELECT id FROM tl_product_data WHERE pid=0 AND type IN ('','" . implode("','", $arrTypes) . "')")->fetchEach('id');
+			$arrProducts = $this->Database->execute("SELECT id FROM tl_iso_products WHERE pid=0 AND type IN ('','" . implode("','", $arrTypes) . "')")->fetchEach('id');
 			
 			if (!count($arrProducts))
 			{
 				$arrProducts = array(0);
 			}
 			
-			$GLOBALS['TL_DCA']['tl_product_data']['list']['sorting']['root'] = $arrProducts;
+			$GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'] = $arrProducts;
 			
 			if (strlen($this->Input->get('id')) && !in_array($this->Input->get('id'), $arrProducts))
 			{
@@ -545,11 +545,11 @@ class tl_product_data extends Backend
 		$objProducts = $this->Database->execute("SELECT pid FROM tl_product_categories WHERE page_id IN (" . implode(',', $arrNodes) . ")");
 		if ($objProducts->numRows)
 		{
-			$GLOBALS['TL_DCA']['tl_product_data']['list']['sorting']['root'] = $objProducts->fetchEach('pid');
+			$GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'] = $objProducts->fetchEach('pid');
 		}
 		else
 		{
-			$GLOBALS['TL_DCA']['tl_product_data']['list']['sorting']['root'] = array(0);
+			$GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'] = array(0);
 		}
 
 		// Add root link
@@ -557,7 +557,7 @@ class tl_product_data extends Backend
 		$arrLinks = array_reverse($arrLinks);
 
 		// Insert breadcrumb menu
-		$GLOBALS['TL_DCA']['tl_product_data']['list']['sorting']['breadcrumb'] .= '
+		$GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['breadcrumb'] .= '
 
 <ul id="tl_breadcrumb">
   <li>' . implode(' &gt; </li><li>', $arrLinks) . '</li>
@@ -592,7 +592,7 @@ class tl_product_data extends Backend
 			return sprintf('<div class="iso_product">%s</div>', $this->getVariantValues($row));
 		}
 		
-		return '<div class="iso_product"><strong>' . $row['name'] . '</strong><div>' . ($row['pid']==0 ? '<em>' . $GLOBALS['TL_LANG']['tl_product_data']['pages'][0] .': ' . $this->getCategoryList(deserialize($row['pages'])) . '</em>' : '') . '</div></div> ';
+		return '<div class="iso_product"><strong>' . $row['name'] . '</strong><div>' . ($row['pid']==0 ? '<em>' . $GLOBALS['TL_LANG']['tl_iso_products']['pages'][0] .': ' . $this->getCategoryList(deserialize($row['pages'])) . '</em>' : '') . '</div></div> ';
 	}
 	
 	public function getVariantValues($row)
@@ -723,7 +723,7 @@ class tl_product_data extends Backend
 		// Generate alias if there is none
 		if (!strlen($varValue))
 		{
-			$objProduct = $this->Database->prepare("SELECT sku, name FROM tl_product_data WHERE id=?")
+			$objProduct = $this->Database->prepare("SELECT sku, name FROM tl_iso_products WHERE id=?")
 										 ->limit(1)
 										 ->execute($dc->id);
 
@@ -731,7 +731,7 @@ class tl_product_data extends Backend
 			$varValue = strlen($objProduct->name) ? standardize($objProduct->name) : standardize($objProduct->sku);
 		}
 
-		$objAlias = $this->Database->prepare("SELECT id FROM tl_product_data WHERE id=? OR alias=?")
+		$objAlias = $this->Database->prepare("SELECT id FROM tl_iso_products WHERE id=? OR alias=?")
 								   ->execute($dc->id, $varValue);
 
 		// Check whether the page alias exists
@@ -788,7 +788,7 @@ class tl_product_data extends Backend
 			return '';
 		}
 		
-		$objProducts = $this->Database->prepare("SELECT id, pages FROM tl_product_data")
+		$objProducts = $this->Database->prepare("SELECT id, pages FROM tl_iso_products")
 									  ->execute();
 		
 		if(!$objProducts->numRows)
@@ -868,7 +868,7 @@ class tl_product_data extends Backend
 				$arrValues[] = $data['page_id'];
 			}
 			
-			$this->Database->execute("UPDATE tl_product_data SET pages='" . serialize($arrValues) . "' WHERE id='" . $intPid . "'");
+			$this->Database->execute("UPDATE tl_iso_products SET pages='" . serialize($arrValues) . "' WHERE id='" . $intPid . "'");
 		}
 
 		/*if(count($arrUpdates))
@@ -885,7 +885,7 @@ class tl_product_data extends Backend
 	 */
 	public function generateVariants($dc)
 	{
-		$objProduct = $this->Database->prepare("SELECT id, pid, language, type, (SELECT attributes FROM tl_product_types WHERE id=tl_product_data.type) AS attributes, (SELECT variant_attributes FROM tl_product_types WHERE id=tl_product_data.type) AS variant_attributes FROM tl_product_data WHERE id=?")->limit(1)->execute($dc->id);
+		$objProduct = $this->Database->prepare("SELECT id, pid, language, type, (SELECT attributes FROM tl_product_types WHERE id=tl_iso_products.type) AS attributes, (SELECT variant_attributes FROM tl_product_types WHERE id=tl_iso_products.type) AS variant_attributes FROM tl_iso_products WHERE id=?")->limit(1)->execute($dc->id);
 		
 		$doNotSubmit = false;
 		$strBuffer = '';
@@ -896,12 +896,12 @@ class tl_product_data extends Backend
 		{
 			foreach( $arrAttributes as $attribute )
 			{
-				if ($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['add_to_product_variants'])
+				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['add_to_product_variants'])
 				{
-					$GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['eval']['multiple'] = true;
-					$GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['eval']['mandatory'] = true;
+					$GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['eval']['multiple'] = true;
+					$GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['eval']['mandatory'] = true;
 					
-					$objWidget = new CheckBox($this->prepareForWidget($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute], $attribute));
+					$objWidget = new CheckBox($this->prepareForWidget($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute], $attribute));
 					
 					if ($this->Input->post('FORM_SUBMIT') == 'tl_product_generate')
 					{
@@ -949,12 +949,12 @@ class tl_product_data extends Backend
 				
 				foreach( $arrCombinations as $combination )
 				{
-					$objVariant = $this->Database->prepare("SELECT * FROM tl_product_data WHERE pid=? AND " . implode('=? AND ', array_keys($combination)) . "=?")
+					$objVariant = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE pid=? AND " . implode('=? AND ', array_keys($combination)) . "=?")
 												 ->execute(array_merge(array($objProduct->id), $combination));
 
 					if (!$objVariant->numRows)
 					{
-						$this->Database->prepare("INSERT INTO tl_product_data (tstamp,pid,inherit,type," . implode(',', array_keys($combination)) . ") VALUES (?,?,?,?" . str_repeat(',?', count($combination)) . ")")
+						$this->Database->prepare("INSERT INTO tl_iso_products (tstamp,pid,inherit,type," . implode(',', array_keys($combination)) . ") VALUES (?,?,?,?" . str_repeat(',?', count($combination)) . ")")
 									   ->execute(array_merge(array($time, $objProduct->id, $objProduct->variant_attributes, $objProduct->type), $combination));
 					}
 				}
@@ -969,7 +969,7 @@ class tl_product_data extends Backend
 <a href="'.ampersand(str_replace('&key=generate', '', $this->Environment->request)).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
 </div>
 
-<h2 class="sub_headline">'.sprintf($GLOBALS['TL_LANG']['tl_product_data']['generate'][1], $dc->id).'</h2>'.$this->getMessages().'
+<h2 class="sub_headline">'.sprintf($GLOBALS['TL_LANG']['tl_iso_products']['generate'][1], $dc->id).'</h2>'.$this->getMessages().'
 
 <form action="'.ampersand($this->Environment->request, true).'" id="tl_product_generate" class="tl_form" method="post">
 <div class="tl_formbody_edit">
@@ -984,7 +984,7 @@ class tl_product_data extends Backend
 <div class="tl_formbody_submit">
 
 <div class="tl_submit_container">
-  <input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['tl_product_data']['generate'][0]).'" />
+  <input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['tl_iso_products']['generate'][0]).'" />
 </div>
 
 </div>
@@ -999,7 +999,7 @@ class tl_product_data extends Backend
 	{
 		$arrQuickEditFields = array('sku','price','weight','stock_quantity');
 
-		$objProduct = $this->Database->prepare("SELECT id, pid, language, type, (SELECT attributes FROM tl_product_types WHERE id=tl_product_data.type) AS attributes, (SELECT variant_attributes FROM tl_product_types WHERE id=tl_product_data.type) AS variant_attributes FROM tl_product_data WHERE id=?")->limit(1)->execute($dc->id);
+		$objProduct = $this->Database->prepare("SELECT id, pid, language, type, (SELECT attributes FROM tl_product_types WHERE id=tl_iso_products.type) AS attributes, (SELECT variant_attributes FROM tl_product_types WHERE id=tl_iso_products.type) AS variant_attributes FROM tl_iso_products WHERE id=?")->limit(1)->execute($dc->id);
 		
 		$arrFields = array();
 		$arrAttributes = deserialize($objProduct->attributes);
@@ -1009,19 +1009,19 @@ class tl_product_data extends Backend
 		{
 			foreach( $arrAttributes as $attribute )
 			{
-				if ($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['add_to_product_variants'])
+				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['add_to_product_variants'])
 				{
 					$arrFields[] = $attribute;
 				}
 			}
 		}
 
-		$objVariants = $this->Database->prepare("SELECT * FROM tl_product_data WHERE pid=? AND language=''")->execute($dc->id);
+		$objVariants = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE pid=? AND language=''")->execute($dc->id);
 		$strBuffer .= '<div id="tl_buttons">
 <a href="'.ampersand(str_replace('&key=quick_edit', '', $this->Environment->request)).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
 </div>
 
-<h2 class="sub_headline">'.sprintf($GLOBALS['TL_LANG']['tl_product_data']['quick_edit'][1], $dc->id).'</h2>'.$this->getMessages().'
+<h2 class="sub_headline">'.sprintf($GLOBALS['TL_LANG']['tl_iso_products']['quick_edit'][1], $dc->id).'</h2>'.$this->getMessages().'
 
 <form action="'.ampersand($this->Environment->request, true).'" id="tl_product_quick_edit" class="tl_form" method="post">
 <div class="tl_formbody_edit">
@@ -1030,17 +1030,17 @@ class tl_product_data extends Backend
 <div class="tl_tbox block">
 <table width="100%" border="0" cellpadding="5" cellspacing="0" summary="">
 <thead>
-<th>' . $GLOBALS['TL_LANG']['tl_product_data']['variantValuesLabel'] . '</th>';
+<th>' . $GLOBALS['TL_LANG']['tl_iso_products']['variantValuesLabel'] . '</th>';
 
 		foreach($arrQuickEditFields as $field)
 		{
 			if(in_array($field, $arrVarAttributes))
 			{
-				$strBuffer .= '<th>'.$GLOBALS['TL_LANG']['tl_product_data'][$field][0].'</th>';
+				$strBuffer .= '<th>'.$GLOBALS['TL_LANG']['tl_iso_products'][$field][0].'</th>';
 			}
 		}
 
-$strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="16" height="16" alt="' . $GLOBALS['TL_LANG']['tl_product_data']['published'][0].'" /></th>
+$strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="16" height="16" alt="' . $GLOBALS['TL_LANG']['tl_iso_products']['published'][0].'" /></th>
 </thead>';		
 		
 		$arrFields = array_flip($arrFields);
@@ -1058,17 +1058,17 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 			{
 				if(in_array($field, $arrVarAttributes))
 				{
-					$arrWidgets[$field] = new TextField($this->prepareForWidget($GLOBALS['TL_DCA']['tl_product_data']['fields'][$field], $field.'[' . $objVariants->id .']', $objVariants->{$field}));
+					$arrWidgets[$field] = new TextField($this->prepareForWidget($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field], $field.'[' . $objVariants->id .']', $objVariants->{$field}));
 				}
 			}
 			/*
-			$arrWidgets['sku'] = new TextField($this->prepareForWidget($GLOBALS['TL_DCA']['tl_product_data']['fields']['sku'], 'sku[' . $objVariants->id . ']', $objVariants->sku));
+			$arrWidgets['sku'] = new TextField($this->prepareForWidget($GLOBALS['TL_DCA']['tl_iso_products']['fields']['sku'], 'sku[' . $objVariants->id . ']', $objVariants->sku));
 			
-			$arrWidgets['price'] = new TextField($this->prepareForWidget($GLOBALS['TL_DCA']['tl_product_data']['fields']['price'], 'price[' . $objVariants->id . ']', $objVariants->price));
+			$arrWidgets['price'] = new TextField($this->prepareForWidget($GLOBALS['TL_DCA']['tl_iso_products']['fields']['price'], 'price[' . $objVariants->id . ']', $objVariants->price));
 			
-			$arrWidgets['weight'] = new TextField($this->prepareForWidget($GLOBALS['TL_DCA']['tl_product_data']['fields']['weight'], 'weight[' . $objVariants->id . ']', $objVariants->weight));
+			$arrWidgets['weight'] = new TextField($this->prepareForWidget($GLOBALS['TL_DCA']['tl_iso_products']['fields']['weight'], 'weight[' . $objVariants->id . ']', $objVariants->weight));
 			
-			$arrWidgets['stock_quantity'] = new TextField($this->prepareForWidget($GLOBALS['TL_DCA']['tl_product_data']['fields']['stock_quantity'], 'stock_quantity[' . $objVariants->id . ']', $objVariants->stock_quantity));
+			$arrWidgets['stock_quantity'] = new TextField($this->prepareForWidget($GLOBALS['TL_DCA']['tl_iso_products']['fields']['stock_quantity'], 'stock_quantity[' . $objVariants->id . ']', $objVariants->stock_quantity));
 			*/
 
 			foreach($arrWidgets as $key=>$objWidget)
@@ -1107,7 +1107,7 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 							
 				$arrSet['published'] = ($arrPublished[$objVariants->id] ? $arrPublished[$objVariants->id] : '');
 		
-				$this->Database->prepare("UPDATE tl_product_data %s WHERE id=?")
+				$this->Database->prepare("UPDATE tl_iso_products %s WHERE id=?")
 							   ->set($arrSet)
 							   ->execute($objVariants->id);
 			}
@@ -1167,12 +1167,12 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 	 */
 	public function importAssets($dc, $arrNewImages = array())
 	{
-		$objTree = new FileTree($this->prepareForWidget($GLOBALS['TL_DCA']['tl_product_data']['fields']['source'], 'source', null, 'source', 'tl_product_data'));
+		$objTree = new FileTree($this->prepareForWidget($GLOBALS['TL_DCA']['tl_iso_products']['fields']['source'], 'source', null, 'source', 'tl_iso_products'));
 		
 		$intCurrentBatch = 0;
 		
 		// Import assets
-		if ($this->Input->post('FORM_SUBMIT') == 'tl_product_data_import' && strlen($this->Input->post('source')))
+		if ($this->Input->post('FORM_SUBMIT') == 'tl_iso_products_import' && strlen($this->Input->post('source')))
 		{
 			$this->import('Files');
 			
@@ -1189,7 +1189,7 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 			}
 			
 			$arrDelete = array();
-			$objProducts = $this->Database->prepare("SELECT * FROM tl_product_data WHERE pid=0")										 
+			$objProducts = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE pid=0")										 
 										  ->execute();
 			
 			while( $objProducts->next() )
@@ -1273,7 +1273,7 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 							
 						}
 						
-						$this->Database->prepare("UPDATE tl_product_data SET images=? WHERE id=?")->execute(serialize($arrImages), $objProducts->id);
+						$this->Database->prepare("UPDATE tl_iso_products SET images=? WHERE id=?")->execute(serialize($arrImages), $objProducts->id);
 
 					}
 				}
@@ -1300,24 +1300,24 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 <a href="'.ampersand(str_replace('&key=import', '', $this->Environment->request)).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
 </div>
 
-<h2 class="sub_headline">'.$GLOBALS['TL_LANG']['tl_product_data']['import'][1].'</h2>'.$this->getMessages().'
+<h2 class="sub_headline">'.$GLOBALS['TL_LANG']['tl_iso_products']['import'][1].'</h2>'.$this->getMessages().'
 
-<form action="'.ampersand($this->Environment->request, true).'" id="tl_product_data_import" class="tl_form" method="post">
+<form action="'.ampersand($this->Environment->request, true).'" id="tl_iso_products_import" class="tl_form" method="post">
 <div class="tl_formbody_edit">
-<input type="hidden" name="FORM_SUBMIT" value="tl_product_data_import" />';
+<input type="hidden" name="FORM_SUBMIT" value="tl_iso_products_import" />';
 		/*$strReturn .= '<div class="tl_tbox block">
-  <h3><label for="batch_size">'.$GLOBALS['TL_LANG']['tl_product_data']['batch_size'][0].'</label></h3> <select name="batch_size"><option value=""'.($this->Input->post('batch_size') ? ' selected' : '').'>-</option>';*/
+  <h3><label for="batch_size">'.$GLOBALS['TL_LANG']['tl_iso_products']['batch_size'][0].'</label></h3> <select name="batch_size"><option value=""'.($this->Input->post('batch_size') ? ' selected' : '').'>-</option>';*/
 		/*  foreach($arrBatchValues as $value)
 		  {
 				$strReturn .= '<option value="'.$value.'"'.($this->Input->post('batch_size')==$value ? ' selected' : '').'>'.$value.'</option>';
 		  }
 		$strReturn .= '</select>';
-		$strReturn .= (strlen($GLOBALS['TL_LANG']['tl_product_data']['batch_size'][1]) ? '
-		  <p class="tl_help">'.$GLOBALS['TL_LANG']['tl_product_data']['batch_size'][1].'</p>' : '').'</div>';*/
+		$strReturn .= (strlen($GLOBALS['TL_LANG']['tl_iso_products']['batch_size'][1]) ? '
+		  <p class="tl_help">'.$GLOBALS['TL_LANG']['tl_iso_products']['batch_size'][1].'</p>' : '').'</div>';*/
 		  
 		return $strReturn . '<div class="tl_tbox block">
-  <h3><label for="source">'.$GLOBALS['TL_LANG']['tl_product_data']['source'][0].'</label> <a href="typolight/files.php" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['fileManager']) . '" onclick="Backend.getScrollOffset(); this.blur(); Backend.openWindow(this, 750, 500); return false;">' . $this->generateImage('filemanager.gif', $GLOBALS['TL_LANG']['MSC']['fileManager'], 'style="vertical-align:text-bottom;"') . '</a></h3>'.$objTree->generate().(strlen($GLOBALS['TL_LANG']['tl_product_data']['source'][1]) ? '
-  <p class="tl_help">'.$GLOBALS['TL_LANG']['tl_product_data']['source'][1].'</p>' : '').'
+  <h3><label for="source">'.$GLOBALS['TL_LANG']['tl_iso_products']['source'][0].'</label> <a href="typolight/files.php" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['fileManager']) . '" onclick="Backend.getScrollOffset(); this.blur(); Backend.openWindow(this, 750, 500); return false;">' . $this->generateImage('filemanager.gif', $GLOBALS['TL_LANG']['MSC']['fileManager'], 'style="vertical-align:text-bottom;"') . '</a></h3>'.$objTree->generate().(strlen($GLOBALS['TL_LANG']['tl_iso_products']['source'][1]) ? '
+  <p class="tl_help">'.$GLOBALS['TL_LANG']['tl_iso_products']['source'][1].'</p>' : '').'
 </div>
 
 </div>
@@ -1325,7 +1325,7 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 <div class="tl_formbody_submit">
 
 <div class="tl_submit_container">
-<input type="submit" name="save" id="save" class="tl_submit" alt="import product assets" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['tl_product_data']['import'][0]).'" />
+<input type="submit" name="save" id="save" class="tl_submit" alt="import product assets" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['tl_iso_products']['import'][0]).'" />
 </div>
 
 </div>
@@ -1444,18 +1444,18 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 			return;
 			
 		// Set default product type
-		$GLOBALS['TL_DCA']['tl_product_data']['fields']['type']['default'] = $this->Database->execute("SELECT id FROM tl_product_types WHERE fallback='1'")->id;
+		$GLOBALS['TL_DCA']['tl_iso_products']['fields']['type']['default'] = $this->Database->execute("SELECT id FROM tl_product_types WHERE fallback='1'")->id;
 		
 		// Load the current product
-		$objProduct = $this->Database->prepare("SELECT id, pid, language, type, (SELECT attributes FROM tl_product_types WHERE id=tl_product_data.type) AS attributes, (SELECT variant_attributes FROM tl_product_types WHERE id=tl_product_data.type) AS variant_attributes FROM tl_product_data WHERE id=?")->limit(1)->execute($dc->id);
+		$objProduct = $this->Database->prepare("SELECT id, pid, language, type, (SELECT attributes FROM tl_product_types WHERE id=tl_iso_products.type) AS attributes, (SELECT variant_attributes FROM tl_product_types WHERE id=tl_iso_products.type) AS variant_attributes FROM tl_iso_products WHERE id=?")->limit(1)->execute($dc->id);
 			
 		if ($objProduct->pid > 0)
 		{
-			$objParent = $this->Database->prepare("SELECT * FROM tl_product_data WHERE id=?")->limit(1)->execute($objProduct->pid);
+			$objParent = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE id=?")->limit(1)->execute($objProduct->pid);
 			
 			if ($objProduct->type != $objParent->type)
 			{
-				$this->Database->prepare("UPDATE tl_product_data p1 SET type=(SELECT type FROM (SELECT * FROM tl_product_data) AS p2 WHERE p1.pid=p2.id) WHERE p1.id=?")->execute($this->Input->get('id'));
+				$this->Database->prepare("UPDATE tl_iso_products p1 SET type=(SELECT type FROM (SELECT * FROM tl_iso_products) AS p2 WHERE p1.pid=p2.id) WHERE p1.id=?")->execute($this->Input->get('id'));
 				$this->reload();
 			}
 		}
@@ -1474,10 +1474,10 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 			{
 				foreach( $arrAttributes as $attribute )
 				{
-					if ($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['add_to_product_variants'])
+					if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['add_to_product_variants'])
 					{
 						$arrFields[] = $attribute;
-						$GLOBALS['TL_DCA']['tl_product_data']['fields']['variant_attributes']['options'][] = $attribute;
+						$GLOBALS['TL_DCA']['tl_iso_products']['fields']['variant_attributes']['options'][] = $attribute;
 					}
 				}
 			}
@@ -1494,18 +1494,18 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 			foreach( $arrFields as $field )
 			{
 				// Field is not an attribute
-				if (!is_array($GLOBALS['TL_DCA']['tl_product_data']['fields'][$field]) || !strlen($GLOBALS['TL_DCA']['tl_product_data']['fields'][$field]['attributes']['legend']))
+				if (!is_array($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]) || !strlen($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['attributes']['legend']))
 					continue;
 					
 				// Field cannot be edited in variant
-				if ($objProduct->pid > 0 && $GLOBALS['TL_DCA']['tl_product_data']['fields'][$field]['attributes']['inherit'])
+				if ($objProduct->pid > 0 && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['attributes']['inherit'])
 					continue;
 
-				$arrPalette[$GLOBALS['TL_DCA']['tl_product_data']['fields'][$field]['attributes']['legend']][] = $field;
+				$arrPalette[$GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['attributes']['legend']][] = $field;
 				
 				if (!in_array($field, array('sku','price','weight','stock_quantity','published')))
 				{
-					$arrInherit[$field] = strlen($GLOBALS['TL_DCA']['tl_product_data']['fields'][$field]['label'][0]) ? $GLOBALS['TL_DCA']['tl_product_data']['fields'][$field]['label'][0] : $field;
+					$arrInherit[$field] = strlen($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['label'][0]) ? $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['label'][0] : $field;
 				}
 			}
 		}
@@ -1518,10 +1518,10 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 		}
 		
 		// Set inherit options
-		$GLOBALS['TL_DCA']['tl_product_data']['fields']['inherit']['options'] = $arrInherit;
+		$GLOBALS['TL_DCA']['tl_iso_products']['fields']['inherit']['options'] = $arrInherit;
 
 		// Add palettes
-		$GLOBALS['TL_DCA']['tl_product_data']['palettes'][$objProduct->type] = implode(';', $arrLegends);
+		$GLOBALS['TL_DCA']['tl_iso_products']['palettes'][$objProduct->type] = implode(';', $arrLegends);
 	}
 }
 

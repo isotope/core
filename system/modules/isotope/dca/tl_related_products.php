@@ -37,7 +37,7 @@ $GLOBALS['TL_DCA']['tl_related_products'] = array
 	(
 		'dataContainer'					=> 'Table',
 		'enableVersioning'				=> true,
-		'ptable'						=> 'tl_product_data',
+		'ptable'						=> 'tl_iso_products',
 		'onload_callback' => array
 		(
 			array('tl_related_products', 'initDCA')
@@ -152,7 +152,7 @@ class tl_related_products extends Backend
 		{
 			$strBuffer .= '<div class="limit_height' . (!$GLOBALS['TL_CONFIG']['doNotCollapse'] ? ' h0' : '') . ' block"><ul>';
 			
-			$objProducts = $this->Database->execute("SELECT * FROM tl_product_data WHERE id IN (" . implode(',', $arrProducts) . ") ORDER BY name");
+			$objProducts = $this->Database->execute("SELECT * FROM tl_iso_products WHERE id IN (" . implode(',', $arrProducts) . ") ORDER BY name");
 			
 			while( $objProducts->next() )
 			{
@@ -186,7 +186,7 @@ class tl_related_products extends Backend
 		{
 			unset($GLOBALS['TL_DCA']['tl_related_products']['fields']['category']['foreignKey']);
 			$GLOBALS['TL_DCA']['tl_related_products']['fields']['category']['options'] = $arrCategories;
-			$GLOBALS['TL_DCA']['tl_related_products']['fields']['products']['eval']['products'] = $this->Database->prepare("SELECT id FROM tl_product_data WHERE pid=0 AND id!=(SELECT pid FROM tl_related_products WHERE id=?)")->execute($dc->id)->fetchEach('id');
+			$GLOBALS['TL_DCA']['tl_related_products']['fields']['products']['eval']['products'] = $this->Database->prepare("SELECT id FROM tl_iso_products WHERE pid=0 AND id!=(SELECT pid FROM tl_related_products WHERE id=?)")->execute($dc->id)->fetchEach('id');
 		}
 	}
 }

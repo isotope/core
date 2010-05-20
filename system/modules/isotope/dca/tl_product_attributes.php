@@ -26,7 +26,7 @@
  */
 
 
-$this->loadLanguageFile('tl_product_data');
+$this->loadLanguageFile('tl_iso_products');
 
 
 /**
@@ -175,8 +175,8 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['legend'],
 			'inputType'               => 'select',
-			'options'				  => &$GLOBALS['ISO_MSC']['tl_product_data']['groups_ordering'],
-			'reference'				  => &$GLOBALS['TL_LANG']['tl_product_data'],
+			'options'				  => &$GLOBALS['ISO_MSC']['tl_iso_products']['groups_ordering'],
+			'reference'				  => &$GLOBALS['TL_LANG']['tl_iso_products'],
 			'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
 		),
 		'description' => array
@@ -402,7 +402,7 @@ class tl_product_attributes extends Backend
     {
     	$objAttribute = $this->Database->prepare("SELECT * FROM tl_product_attributes WHERE id=?")->execute($dc->id);
     	
-    	if ($this->Database->fieldExists($objAttribute->field_name, 'tl_product_data'))
+    	if ($this->Database->fieldExists($objAttribute->field_name, 'tl_iso_products'))
     	{
 			$this->import('IsotopeDatabase');
 			$this->IsotopeDatabase->delete($objAttribute->field_name);
@@ -432,11 +432,11 @@ class tl_product_attributes extends Backend
     		return '';
     	}
     	
-    	if (strlen($varValue) && !$this->Database->fieldExists($varValue, 'tl_product_data'))
+    	if (strlen($varValue) && !$this->Database->fieldExists($varValue, 'tl_iso_products'))
     	{
     		$strType = strlen($GLOBALS['ISO_ATTR'][$this->Input->post('type')]['sql']) ? $this->Input->post('type') : 'text';
     		
-    		$this->Database->execute(sprintf("ALTER TABLE tl_product_data ADD %s %s", $varValue, $GLOBALS['ISO_ATTR'][$strType]['sql']));
+    		$this->Database->execute(sprintf("ALTER TABLE tl_iso_products ADD %s %s", $varValue, $GLOBALS['ISO_ATTR'][$strType]['sql']));
     		
     		$this->import('IsotopeDatabase');
 			$this->IsotopeDatabase->add($varValue, $GLOBALS['ISO_ATTR'][$strType]['sql']);
@@ -450,9 +450,9 @@ class tl_product_attributes extends Backend
 	{
 		$objAttribute = $this->Database->prepare("SELECT * FROM tl_product_attributes WHERE id=?")->execute($dc->id);
 		
-		if ($objAttribute->type != $dc->activeRecord->type && strlen($dc->activeRecord->type) && strlen($GLOBALS['ISO_ATTR'][$dc->activeRecord->type]['sql']) && $this->Database->fieldExists($dc->activeRecord->type, 'tl_product_data'))
+		if ($objAttribute->type != $dc->activeRecord->type && strlen($dc->activeRecord->type) && strlen($GLOBALS['ISO_ATTR'][$dc->activeRecord->type]['sql']) && $this->Database->fieldExists($dc->activeRecord->type, 'tl_iso_products'))
 		{
-			$this->Database->execute(sprintf("ALTER TABLE tl_product_data MODIFY %s %s", $objAttribute->field_name, $GLOBALS['ISO_ATTR'][$dc->activeRecord->type]['sql']));
+			$this->Database->execute(sprintf("ALTER TABLE tl_iso_products MODIFY %s %s", $objAttribute->field_name, $GLOBALS['ISO_ATTR'][$dc->activeRecord->type]['sql']));
 		}
 	}
 	
@@ -462,11 +462,11 @@ class tl_product_attributes extends Backend
 	 */
 	public function getConditionFields($dc)
 	{
-		$this->loadDataContainer('tl_product_data');
+		$this->loadDataContainer('tl_iso_products');
 		
 		$arrFields = array();
 											
-		foreach( $GLOBALS['TL_DCA']['tl_product_data']['fields'] as $field => $arrData )
+		foreach( $GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData )
 		{
 			if ($arrData['inputType'] == 'select' || $arrData['inputType'] == 'optionDataWizard')
 			{

@@ -70,9 +70,9 @@ class ShippingFlat extends IsotopeShipping
 		foreach( $arrProducts as $objProduct )
 		{
 			// Exclude this product if table does not have this field
-			if ($this->Database->fieldExists($this->surcharge_field, 'tl_product_data'))
+			if ($this->Database->fieldExists($this->surcharge_field, 'tl_iso_products'))
 			{
-				$strSurcharge = $this->Database->prepare("SELECT * FROM tl_product_data WHERE id=?")
+				$strSurcharge = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE id=?")
 											   ->limit(1)
 											   ->execute($product['id'])
 											   ->{$this->surcharge_field};
