@@ -28,6 +28,22 @@
 
 class InheritCheckBox extends CheckBox
 {
+	
+	/**
+	 * Disable mandatory validation for inherited attributes
+	 */
+	public function validate()
+	{
+		parent::validate();
+		
+		if (is_array($this->varValue) && count($this->varValue))
+		{
+			foreach( $this->varValue as $field )
+			{
+				$GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['eval']['mandatory'] = false;
+			}
+		}
+	}
 
 	/**
 	 * Generate the widget and return it as string
