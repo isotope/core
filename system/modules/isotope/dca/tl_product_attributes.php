@@ -26,6 +26,9 @@
  */
 
 
+$this->loadLanguageFile('tl_product_data');
+
+
 /**
  * Table tl_product_attributes 
  */
@@ -172,7 +175,8 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['legend'],
 			'inputType'               => 'select',
-			'options_callback'		  => array('tl_product_attributes','getLegends'),
+			'options'				  => &$GLOBALS['ISO_MSC']['tl_product_data']['groups_ordering'],
+			'reference'				  => &$GLOBALS['TL_LANG']['tl_product_data'],
 			'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
 		),
 		'description' => array
@@ -341,24 +345,7 @@ class tl_product_attributes extends Backend
 			$GLOBALS['TL_DCA']['tl_product_attributes']['config']['closed'] = false;
 		}
 	}
-	
-	
-	public function getLegends()
-	{
-		$this->loadLanguageFile('tl_product_data');
 		
-		foreach($GLOBALS['TL_LANG']['tl_product_data'] as $k=>$v)
-		{
-			if(preg_match('(_legend)', $k))
-			{
-				$arrGroups[$k] = $v;			
-			}
-		
-		}
-		
-		return $arrGroups;
-	}
-	
 
 	/**
 	 * getTables function.
