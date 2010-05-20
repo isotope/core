@@ -205,7 +205,7 @@ class IsotopeCart extends Model
 				case 'billingAddress':
 					if ($this->arrCache['billingAddress_id'] > 0)
 					{
-						$objAddress = $this->Database->prepare("SELECT * FROM tl_address_book WHERE id=?")->limit(1)->execute($this->arrCache['billingAddress_id']);
+						$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE id=?")->limit(1)->execute($this->arrCache['billingAddress_id']);
 						
 						if ($objAddress->numRows)
 							return $objAddress->fetchAssoc();
@@ -217,7 +217,7 @@ class IsotopeCart extends Model
 								
 					if (FE_USER_LOGGED_IN)
 					{					
-						$objAddress = $this->Database->prepare("SELECT * FROM tl_address_book WHERE pid=? AND isDefaultBilling='1'")->limit(1)->execute($this->User->id);
+						$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE pid=? AND isDefaultBilling='1'")->limit(1)->execute($this->User->id);
 						
 						if ($objAddress->numRows)
 							return $objAddress->fetchAssoc();
@@ -236,7 +236,7 @@ class IsotopeCart extends Model
 						
 					if ($this->arrCache['shippingAddress_id'] > 0)
 					{
-						$objAddress = $this->Database->prepare("SELECT * FROM tl_address_book WHERE id=?")->limit(1)->execute($this->arrCache['shippingAddress_id']);
+						$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE id=?")->limit(1)->execute($this->arrCache['shippingAddress_id']);
 						
 						if ($objAddress->numRows)
 							return $objAddress->fetchAssoc();
@@ -249,7 +249,7 @@ class IsotopeCart extends Model
 
 					if (FE_USER_LOGGED_IN)
 					{
-						$objAddress = $this->Database->prepare("SELECT * FROM tl_address_book WHERE pid=? AND isDefaultShipping='1'")->limit(1)->execute($this->User->id);
+						$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE pid=? AND isDefaultShipping='1'")->limit(1)->execute($this->User->id);
 						
 						if ($objAddress->numRows)
 							return $objAddress->fetchAssoc();

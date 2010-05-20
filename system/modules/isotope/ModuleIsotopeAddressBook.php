@@ -88,13 +88,13 @@ class ModuleIsotopeAddressBook extends Module
 	 */
 	protected function compile()
 	{
-		$this->loadLanguageFile('tl_address_book');
-		$this->loadDataContainer('tl_address_book');
+		$this->loadLanguageFile('tl_iso_addresses');
+		$this->loadDataContainer('tl_iso_addresses');
 
 		// Call onload_callback (e.g. to check permissions)
-		if (is_array($GLOBALS['TL_DCA']['tl_address_book']['config']['onload_callback']))
+		if (is_array($GLOBALS['TL_DCA']['tl_iso_addresses']['config']['onload_callback']))
 		{
-			foreach ($GLOBALS['TL_DCA']['tl_address_book']['config']['onload_callback'] as $callback)
+			foreach ($GLOBALS['TL_DCA']['tl_iso_addresses']['config']['onload_callback'] as $callback)
 			{
 				if (is_array($callback))
 				{
@@ -141,7 +141,7 @@ class ModuleIsotopeAddressBook extends Module
 		$arrAddresses = array();
 		$arrPage = array('id'=>$objPage->id, 'alias'=>$objPage->alias);
 
-		$objAddresses = $this->Database->prepare("SELECT * FROM tl_address_book WHERE pid=?")->execute($this->User->id);
+		$objAddresses = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE pid=?")->execute($this->User->id);
 
 		while( $objAddresses->next() )
 		{
@@ -202,13 +202,13 @@ class ModuleIsotopeAddressBook extends Module
 		$row = 0;
 		
 		// No need to check: if the address does not exist, fields will be empty and a new address will be created
-		$objAddress = $this->Database->prepare("SELECT * FROM tl_address_book WHERE id=? AND pid=?")->limit(1)->execute($intAddressId, $this->User->id);		
+		$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE id=? AND pid=?")->limit(1)->execute($intAddressId, $this->User->id);		
 		
 		
 		// Build form
 		foreach ($this->arrFields as $field)
 		{
-			$arrData = &$GLOBALS['TL_DCA']['tl_address_book']['fields'][$field];
+			$arrData = &$GLOBALS['TL_DCA']['tl_iso_addresses']['fields'][$field];
 
 			// Map checkboxWizard to regular checkbox widget
 			if ($arrData['inputType'] == 'checkboxWizard')
@@ -235,7 +235,7 @@ class ModuleIsotopeAddressBook extends Module
 			$objWidget->rowClass = 'row_'.$row . (($row == 0) ? ' row_first' : '') . ((($row % 2) == 0) ? ' even' : ' odd');
 
 			// Validate input
-			if ($this->Input->post('FORM_SUBMIT') == 'tl_address_book_' . $this->id)
+			if ($this->Input->post('FORM_SUBMIT') == 'tl_iso_addresses_' . $this->id)
 			{
 				$objWidget->validate();
 				$varValue = $objWidget->value;
@@ -282,7 +282,7 @@ class ModuleIsotopeAddressBook extends Module
 					// Save field
 					if ($objAddress->id > 0)
 					{
-						$this->Database->prepare("UPDATE tl_address_book SET " . $field . "=? WHERE id=?")
+						$this->Database->prepare("UPDATE tl_iso_addresses SET " . $field . "=? WHERE id=?")
 									   ->execute($varSave, $this->User->id);
 					}
 					else
@@ -307,20 +307,20 @@ class ModuleIsotopeAddressBook extends Module
 		$this->Template->hasError = $doNotSubmit;
 
 		// Redirect or reload if there was no error
-		if ($this->Input->post('FORM_SUBMIT') == 'tl_address_book_' . $this->id && !$doNotSubmit)
+		if ($this->Input->post('FORM_SUBMIT') == 'tl_iso_addresses_' . $this->id && !$doNotSubmit)
 		{
 			if (!$objAddress->id)
 			{
 				$arrSet['pid'] = $this->User->id;
 				$arrSet['tstamp'] = time();
 				
-				$objAddress->id = $this->Database->prepare("INSERT INTO tl_address_book %s")->set($arrSet)->execute()->insertId;
+				$objAddress->id = $this->Database->prepare("INSERT INTO tl_iso_addresses %s")->set($arrSet)->execute()->insertId;
 			}
 			
 			// Call onsubmit_callback
-			if (is_array($GLOBALS['TL_DCA']['tl_address_book']['config']['onsubmit_callback']))
+			if (is_array($GLOBALS['TL_DCA']['tl_iso_addresses']['config']['onsubmit_callback']))
 			{
-				foreach ($GLOBALS['TL_DCA']['tl_address_book']['config']['onsubmit_callback'] as $callback)
+				foreach ($GLOBALS['TL_DCA']['tl_iso_addresses']['config']['onsubmit_callback'] as $callback)
 				{
 					if (is_array($callback))
 					{
@@ -334,10 +334,10 @@ class ModuleIsotopeAddressBook extends Module
 			$this->redirect($this->generateFrontendUrl(array('id'=>$objPage->id, 'alias'=>$objPage->alias)));
 		}
 
-		$this->Template->addressDetails = $GLOBALS['TL_LANG']['tl_address_book']['addressDetails'];
-		$this->Template->contactDetails = $GLOBALS['TL_LANG']['tl_address_book']['contactDetails'];
-		$this->Template->personalData = $GLOBALS['TL_LANG']['tl_address_book']['personalData'];
-		$this->Template->loginDetails = $GLOBALS['TL_LANG']['tl_address_book']['loginDetails'];
+		$this->Template->addressDetails = $GLOBALS['TL_LANG']['tl_iso_addresses']['addressDetails'];
+		$this->Template->contactDetails = $GLOBALS['TL_LANG']['tl_iso_addresses']['contactDetails'];
+		$this->Template->personalData = $GLOBALS['TL_LANG']['tl_iso_addresses']['personalData'];
+		$this->Template->loginDetails = $GLOBALS['TL_LANG']['tl_iso_addresses']['loginDetails'];
 
 		// Add groups
 		foreach ($arrFields as $k=>$v)
@@ -345,7 +345,7 @@ class ModuleIsotopeAddressBook extends Module
 			$this->Template->$k = $v;
 		}
 
-		$this->Template->formId = 'tl_address_book_' . $this->id;
+		$this->Template->formId = 'tl_iso_addresses_' . $this->id;
 		$this->Template->slabel = specialchars($GLOBALS['TL_LANG']['MSC']['saveData']);
 		$this->Template->action = ampersand($this->Environment->request, true);
 		$this->Template->enctype = $hasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
@@ -358,7 +358,7 @@ class ModuleIsotopeAddressBook extends Module
 	 */
 	protected function delete($intAddressId)
 	{
-		$this->Database->prepare("DELETE FROM tl_address_book WHERE id=? AND pid=?")
+		$this->Database->prepare("DELETE FROM tl_iso_addresses WHERE id=? AND pid=?")
 					   ->execute($intAddressId, $this->User->id);
 
 		$this->redirect(ampersand($this->Environment->base . ltrim($_SESSION['FE_DATA']['referer']['current'], '/')));

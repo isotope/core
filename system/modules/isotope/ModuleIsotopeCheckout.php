@@ -911,7 +911,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		
 		if (FE_USER_LOGGED_IN)
 		{
-			$objAddress = $this->Database->prepare("SELECT * FROM tl_address_book WHERE pid=? ORDER BY isDefaultBilling DESC, isDefaultShipping DESC")->execute($this->User->id);
+			$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE pid=? ORDER BY isDefaultBilling DESC, isDefaultShipping DESC")->execute($this->User->id);
 			
 			while( $objAddress->next() )
 			{
@@ -1004,7 +1004,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		
 		
 		$strBuffer .= '<div id="' . $field . '_new" class="address_new"' . (((!FE_USER_LOGGED_IN && $field == 'billing_address') || $objWidget->value == 0) ? '>' : ' style="display:none">');
-		$strBuffer .= '<span>' . $this->getCurrentStepWidgets('tl_address_book', $field) . '</span>';
+		$strBuffer .= '<span>' . $this->getCurrentStepWidgets('tl_iso_addresses', $field) . '</span>';
 		$strBuffer .= '</div>';
 		
 		return $strBuffer;

@@ -31,9 +31,9 @@ $this->loadLanguageFile('subdivisions');
 
 
 /**
- * Table tl_address_book
+ * Table tl_iso_addresses
  */
-$GLOBALS['TL_DCA']['tl_address_book'] = array
+$GLOBALS['TL_DCA']['tl_iso_addresses'] = array
 (
 
 	// Config
@@ -43,11 +43,11 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 		'dataContainer'               => 'Table',
 		'onload_callback'			  => array
 		(
-			array('tl_address_book', 'copyInitialAddress')
+			array('tl_iso_addresses', 'copyInitialAddress')
 		),
 		'onsubmit_callback' => array
 		(
-			array('tl_address_book', 'updateDefaultAddress'),
+			array('tl_iso_addresses', 'updateDefaultAddress'),
 		)
 	),
 
@@ -60,7 +60,7 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 			'headerFields'			  => array('firstname','lastname', 'username'),
 			'flag'                    => 1,
 			'panelLayout'             => 'filter;sort,search,limit',
-			'child_record_callback'   => array('tl_address_book','renderLabel')
+			'child_record_callback'   => array('tl_iso_addresses','renderLabel')
 		),
 		'global_operations' => array
 		(
@@ -76,26 +76,26 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 		(
 			'edit' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_address_book']['edit'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_addresses']['edit'],
 				'href'                => 'act=edit',
 				'icon'                => 'edit.gif'
 			),
 			'copy' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_address_book']['copy'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_addresses']['copy'],
 				'href'                => 'act=copy',
 				'icon'                => 'copy.gif'
 			),
 			'delete' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_address_book']['delete'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_addresses']['delete'],
 				'href'                => 'act=delete',
 				'icon'                => 'delete.gif',
 				'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
 			),
 			'show' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_address_book']['show'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_addresses']['show'],
 				'href'                => 'act=show',
 				'icon'                => 'show.gif'
 			)
@@ -113,7 +113,7 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 	(
 		'firstname' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_address_book']['firstname'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_addresses']['firstname'],
 			'exclude'                 => true,
 			'search'                  => true,
 			'sorting'                 => true,
@@ -123,7 +123,7 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 		),
 		'lastname' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_address_book']['lastname'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_addresses']['lastname'],
 			'exclude'                 => true,
 			'search'                  => true,
 			'sorting'                 => true,
@@ -133,7 +133,7 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 		),
 		'company' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_address_book']['company'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_addresses']['company'],
 			'exclude'                 => true,
 			'search'                  => true,
 			'sorting'                 => true,
@@ -143,7 +143,7 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 		),
 		'street_1' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_address_book']['street_1'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_addresses']['street_1'],
 			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'text',
@@ -151,7 +151,7 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 		),
 		'street_2' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_address_book']['street_2'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_addresses']['street_2'],
 			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'text',
@@ -159,7 +159,7 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 		),
 		'street_3' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_address_book']['street_3'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_addresses']['street_3'],
 			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'text',
@@ -167,7 +167,7 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 		),
 		'postal' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_address_book']['postal'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_addresses']['postal'],
 			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'text',
@@ -175,7 +175,7 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 		),
 		'city' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_address_book']['city'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_addresses']['city'],
 			'exclude'                 => true,
 			'filter'                  => true,
 			'search'                  => true,
@@ -185,7 +185,7 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 		),
 		'subdivision' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_address_book']['subdivision'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_addresses']['subdivision'],
 			'exclude'                 => true,
 			'sorting'                 => true,
 			'inputType'               => 'conditionalselect',
@@ -194,7 +194,7 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 		),
 		'country' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_address_book']['country'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_addresses']['country'],
 			'exclude'                 => true,
 			'filter'                  => true,
 			'sorting'                 => true,
@@ -204,7 +204,7 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 		),
 		'phone' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_address_book']['phone'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_addresses']['phone'],
 			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'text',
@@ -212,7 +212,7 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 		),
 		'email' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_address_book']['email'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_addresses']['email'],
 			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'text',
@@ -220,14 +220,14 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 		),
 		'isDefaultBilling' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_address_book']['isDefaultBilling'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_addresses']['isDefaultBilling'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
 			'eval'					  => array('feEditable'=>true, 'feGroup'=>'login', 'tl_class'=>'w50')
 		),
 		'isDefaultShipping' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_address_book']['isDefaultShipping'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_addresses']['isDefaultShipping'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
 			'eval'					  => array('feEditable'=>true, 'feGroup'=>'login', 'tl_class'=>'w50')
@@ -237,11 +237,11 @@ $GLOBALS['TL_DCA']['tl_address_book'] = array
 
 
 /**
- * tl_address_book class.
+ * tl_iso_addresses class.
  * 
  * @extends Backend
  */
-class tl_address_book extends Backend
+class tl_iso_addresses extends Backend
 {
 
 	public function renderLabel($arrAddress)
@@ -273,7 +273,7 @@ class tl_address_book extends Backend
 			$intId = $dc->id;
 		}
 		
-		$objAddressInfo = $this->Database->prepare("SELECT COUNT(*) as count FROM tl_address_book WHERE pid=?")
+		$objAddressInfo = $this->Database->prepare("SELECT COUNT(*) as count FROM tl_iso_addresses WHERE pid=?")
 										 ->execute($intId);
 												 
 		if($objAddressInfo->numRows < 1)
@@ -304,7 +304,7 @@ class tl_address_book extends Backend
 			
 			);
 			
-			$this->Database->prepare('INSERT INTO tl_address_book %s')
+			$this->Database->prepare('INSERT INTO tl_iso_addresses %s')
 						   ->set($arrSet)
 						   ->execute();
 		}
@@ -318,21 +318,21 @@ class tl_address_book extends Backend
 	{
 		$intId = TL_MODE == 'FE' ? $this->Input->get('id') : $dc->id;
 		
-		$objAddress = $this->Database->prepare("SELECT * FROM tl_address_book WHERE id=?")->limit(1)->execute($intId);
+		$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE id=?")->limit(1)->execute($intId);
 		
 		if (!$objAddress->numRows)
 			return;
 		
 		if ($this->Input->post('isDefaultBilling'))
 		{
-			$this->Database->prepare("UPDATE tl_address_book SET isDefaultBilling='' WHERE pid=?")->execute($objAddress->pid);
-			$this->Database->prepare("UPDATE tl_address_book SET isDefaultBilling='1' WHERE id=?")->execute($objAddress->id);
+			$this->Database->prepare("UPDATE tl_iso_addresses SET isDefaultBilling='' WHERE pid=?")->execute($objAddress->pid);
+			$this->Database->prepare("UPDATE tl_iso_addresses SET isDefaultBilling='1' WHERE id=?")->execute($objAddress->id);
 		}
 		
 		if ($this->Input->post('isDefaultShipping'))
 		{
-			$this->Database->prepare("UPDATE tl_address_book SET isDefaultShipping='' WHERE pid=?")->execute($objAddress->pid);
-			$this->Database->prepare("UPDATE tl_address_book SET isDefaultShipping='1' WHERE id=?")->execute($objAddress->id);
+			$this->Database->prepare("UPDATE tl_iso_addresses SET isDefaultShipping='' WHERE pid=?")->execute($objAddress->pid);
+			$this->Database->prepare("UPDATE tl_iso_addresses SET isDefaultShipping='1' WHERE id=?")->execute($objAddress->id);
 		}
 	}
 }

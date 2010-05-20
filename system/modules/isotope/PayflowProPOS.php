@@ -714,7 +714,7 @@ class PayflowProPOS extends Backend
 	{
 		$intPid = $this->getPid($intId, 'tl_iso_orders');
 	
-		$objAddress = $this->Database->prepare("SELECT * FROM tl_address_book WHERE id=? and pid=?")
+		$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE id=? and pid=?")
 									 ->limit(1)
 									 ->execute($varValue, $intPid);
 		

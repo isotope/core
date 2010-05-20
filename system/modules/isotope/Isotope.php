@@ -471,7 +471,7 @@ class Isotope extends Controller
 		);
 	
 		
-		$this->Database->prepare('INSERT INTO tl_address_book %s')->set($arrSet)->execute();
+		$this->Database->prepare('INSERT INTO tl_iso_addresses %s')->set($arrSet)->execute();
 		$this->Database->prepare("UPDATE tl_member SET disable=0 WHERE id=?")->execute($intId);
 	}
 	
@@ -520,7 +520,7 @@ class Isotope extends Controller
 		}
 		else
 		{
-			$objAddress = $this->Database->prepare("SELECT * FROM tl_address_book WHERE id=?")
+			$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE id=?")
 												->limit(1)
 												->execute($intAddressId);
 		
