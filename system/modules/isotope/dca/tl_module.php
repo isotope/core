@@ -626,7 +626,7 @@ class tl_module_isotope extends Backend
 	/**
 	 * getFilterValues function.
 	 * 
-	 * @todo Returns an error string but should be an array
+	 * @todo Use tl_iso_products DCA not tl_iso_attributes table
 	 *
 	 * @access private
 	 * @param integer $intAttributeID
@@ -711,8 +711,6 @@ class tl_module_isotope extends Backend
 	/**
 	 * getShippingModules function.
 	 * 
-	 * @todo Returns an error string but should be an array
-	 *
 	 * @access public
 	 * @return array
 	 */
