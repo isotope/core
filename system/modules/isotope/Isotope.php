@@ -795,5 +795,18 @@ class Isotope extends Controller
 		
 		return false;
 	}
+	
+	
+	/**
+	 * Intermediat-Function to allow DCA class to be loaded.
+	 */
+	public function loadDataContainer($strTable)
+	{
+		if ($strTable == 'tl_iso_products')
+		{
+			$this->import('tl_iso_products');
+			$this->tl_iso_products->loadProductsDCA();
+		}
+	}
 }
 
