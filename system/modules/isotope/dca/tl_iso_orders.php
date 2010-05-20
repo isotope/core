@@ -312,8 +312,8 @@ class tl_iso_orders extends Backend
 	*/
 	public function getOrderLabel($row, $label)
 	{
-		$this->Isotope->overrideStore($row['store_id']);
-		$strBillingAddress = $this->Isotope->generateAddressString(deserialize($row['billing_address']), $this->Isotope->Store->billing_fields);
+		$this->Isotope->overrideConfig($row['config_id']);
+		$strBillingAddress = $this->Isotope->generateAddressString(deserialize($row['billing_address']), $this->Isotope->Config->billing_fields);
 		
 		return '
 <div style="float:left; width:40px">' . $row['order_id'] . '</div>
@@ -358,12 +358,12 @@ class tl_iso_orders extends Backend
 	{
 		$this->import('BackendUser', 'User');
 		
-		$arrStores = $this->User->iso_stores;
+		$arrConfigs = $this->User->iso_configs;
 		
-		if (!is_array($arrStores) || !count($arrStores))
-			$arrStores = array(0);
+		if (!is_array($arrConfigs) || !count($arrConfigs))
+			$arrConfigs = array(0);
 		
-		$objOrders = $this->Database->execute("SELECT * FROM tl_iso_orders WHERE status!=''" . ($this->User->isAdmin ? '' : " AND store_id IN (".implode(',', $arrStores).")"));
+		$objOrders = $this->Database->execute("SELECT * FROM tl_iso_orders WHERE status!=''" . ($this->User->isAdmin ? '' : " AND config_id IN (".implode(',', $arrConfigs).")"));
 		
 		$arrIds = $objOrders->fetchEach('id');
 		

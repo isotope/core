@@ -77,8 +77,6 @@ class ModuleGiftRegistry extends ModuleIsotope
 		$this->strUserId = $this->getCustomerId();
 		
 		$this->intCartId = $this->userRegistryExists($this->strUserId);
-		
-//		$this->arrJumpToValues = $this->getStoreJumpToValues($this->store_id);	//Deafult keys are "product_reader", "shopping_cart", and "checkout"
 	
 		if(!$this->intCartId)
 		{
@@ -219,7 +217,7 @@ class ModuleGiftRegistry extends ModuleIsotope
 		//if the user is taxed by state, then grab the user's tax based on their given state
 		//if the user is taxed by postal code, then grab the user's tax based on their postal code.
 		//Of course, you can stack one or more tax rules as well.
-		//$arrTaxRules = $this->getTaxRules($this->store_id, $arrUserTaxData);
+		//$arrTaxRules = $this->getTaxRules($this->iso_config_id, $arrUserTaxData);
 		
 		if(!sizeof($arrProductData))
 		{
@@ -282,9 +280,9 @@ class ModuleGiftRegistry extends ModuleIsotope
 			if(!strlen($this->Input->cookie($this->strCartCookie)))	
 			{	
 				//problem #1 - not retrieving the cookie!
-				$intCookieDuration = $this->getCookieTimeWindow($this->store_id);
+				$intCookieDuration = $this->getCookieTimeWindow($this->iso_config_id);
 						
-				$this->strCartHash = sha1(session_id().$this->strIp.$this->store_id.$this->strCartCookie);
+				$this->strCartHash = sha1(session_id().$this->strIp.$this->iso_config_id.$this->strCartCookie);
 				
 				setcookie($this->strCartCookie, $this->strCartHash, (time() + ($intCookieDuration * 86400)),  $GLOBALS['TL_CONFIG']['websitePath']);
 				
@@ -345,7 +343,7 @@ class ModuleGiftRegistry extends ModuleIsotope
 				'id'		=> $row['id'],
 				'image'				=> 'isotope/' . substr($row['alias'], 0, 1) . '/' . $row['alias'] . '/' . $GLOBALS['TL_LANG']['MSC']['imagesFolder'] . '/' . $GLOBALS['TL_LANG']['MSC']['thumbnail_images_folder'] . '/' . $row['images'],
 				'name'				=> $row['name'],
-				'link'				=> $this->generateProductLink($row['alias'], $row, $this->Store->productReaderJumpTo, $row['attribute_set_id'], 'id'),
+				'link'				=> $this->generateProductLink($row['alias'], $row, $this->Isotope->Config->productReaderJumpTo, $row['attribute_set_id'], 'id'),
 				'price'				=> $this->generatePrice($row['price']),
 				'total_price'		=> $this->generatePrice($intTotalPrice, 'stpl_total_price'),
 				'quantity'			=> $row['quantity_requested'],
@@ -628,7 +626,7 @@ class ModuleGiftRegistry extends ModuleIsotope
 			'session'					=> (!FE_USER_LOGGED_IN ? $strUserId : ''),
 			'last_visit'				=> $time,
 			//'source_cart_id'			=> $intSourceCartId,
-			'store_id'					=> $this->store_id	
+			'config_id'					=> $this->iso_config_id,	
 		);
 		
 		
@@ -738,7 +736,7 @@ class ModuleGiftRegistry extends ModuleIsotope
 	//!@todo THIS IS WRONG!
 	protected function getCookieTimeWindow($intStoreId)
 	{
-		$objCookieTimeWindow = $this->Database->prepare("SELECT cookie_duration FROM tl_store WHERE id=?")->limit(1)->execute($intStoreId);
+		$objCookieTimeWindow = $this->Database->prepare("SELECT cookie_duration FROM tl_iso_config WHERE id=?")->limit(1)->execute($intStoreId);
 		
 		if (!$objCookieTimeWindow->numRows)
 		{

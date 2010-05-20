@@ -27,9 +27,9 @@
 
 
 /**
- * Table tl_store 
+ * Table tl_iso_config 
  */
-$GLOBALS['TL_DCA']['tl_store'] = array
+$GLOBALS['TL_DCA']['tl_iso_config'] = array
 (
 
 	// Config
@@ -40,7 +40,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		'closed'					  => true,
 		'onload_callback' => array
 		(
-			array('tl_store', 'checkPermission'),
+			array('tl_iso_config', 'checkPermission'),
 		),
 	),
 
@@ -55,7 +55,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		),
 		'label' => array
 		(
-			'fields'                  => array('name', 'isDefaultStore'),
+			'fields'                  => array('name', 'fallback'),
 			'format'                  => '%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>',
 		),
 		'global_operations' => array
@@ -69,7 +69,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			),
 			'new' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_store']['new'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_config']['new'],
 				'href'                => 'act=create',
 				'class'               => 'header_new',
 				'attributes'          => 'onclick="Backend.getScrollOffset();"',
@@ -86,26 +86,26 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		(
 			'edit' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_store']['edit'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_config']['edit'],
 				'href'                => 'act=edit',
 				'icon'                => 'edit.gif',
 			),
 			'copy' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_store']['copy'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_config']['copy'],
 				'href'                => 'act=copy',
 				'icon'                => 'copy.gif',
 			),
 			'delete' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_store']['delete'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_config']['delete'],
 				'href'                => 'act=delete',
 				'icon'                => 'delete.gif',
 				'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"',
 			),
 			'show' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_store']['show'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_config']['show'],
 				'href'                => 'act=show',
 				'icon'                => 'show.gif',
 			)
@@ -116,7 +116,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 	'palettes' => array
 	(
 		'default'                     => '
-			{name_legend},name,label,isDefaultStore;
+			{name_legend},name,label,fallback;
 			{address_legend:hide},firstname,lastname,company,street_1,street_2,street_3,postal,city,subdivision,country,emailShipping,phone;
 			{config_legend},shipping_countries,billing_countries,shipping_fields,billing_fields,weightUnit,orderPrefix,cookie_duration,enableGoogleAnalytics;
 			{price_legend},priceCalculateFactor,priceCalculateMode,priceRoundPrecision,priceRoundIncrement;
@@ -131,28 +131,28 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 	(
 		'name' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['name'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['name'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'unique'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
 		),
 		'label' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['label'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['label'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255, 'tl_class'=>'w50'),
 		),
-		'isDefaultStore' => array
+		'fallback' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['isDefaultStore'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['fallback'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
 			'eval'						=> array('doNotCopy'=>true, 'fallback'=>true, 'tl_class'=>'w50'),
 		),
 		'firstname' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['firstname'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['firstname'],
 			'exclude'                 => true,
 			'search'                  => true,
 			'sorting'                 => true,
@@ -162,7 +162,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		),
 		'lastname' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['lastname'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['lastname'],
 			'exclude'                 => true,
 			'search'                  => true,
 			'sorting'                 => true,
@@ -172,7 +172,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		),
 		'company' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['company'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['company'],
 			'exclude'                 => true,
 			'search'                  => true,
 			'sorting'                 => true,
@@ -182,7 +182,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		),
 		'street_1' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['street_1'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['street_1'],
 			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'text',
@@ -190,7 +190,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		),
 		'street_2' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['street_2'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['street_2'],
 			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'text',
@@ -198,7 +198,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		),
 		'street_3' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['street_3'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['street_3'],
 			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'text',
@@ -206,7 +206,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		),
 		'postal' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['postal'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['postal'],
 			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'text',
@@ -214,7 +214,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		),
 		'city' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['city'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['city'],
 			'exclude'                 => true,
 			'filter'                  => true,
 			'search'                  => true,
@@ -224,7 +224,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		),
 		'subdivision' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['subdivision'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['subdivision'],
 			'exclude'                 => true,
 			'sorting'                 => true,
 			'inputType'               => 'text',
@@ -232,7 +232,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		),
 		'country' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['country'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['country'],
 			'exclude'                 => true,
 			'filter'                  => true,
 			'sorting'                 => true,
@@ -243,7 +243,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		),
 		'phone' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['phone'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['phone'],
 			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'text',
@@ -251,7 +251,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		),
 		'emailShipping' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['emailShipping'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['emailShipping'],
 			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'text',
@@ -259,7 +259,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		),
 		'shipping_countries' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['shipping_countries'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['shipping_countries'],
 			'exclude'                 => true,
 			'inputType'               => 'select',
 //			'default'                 => array_keys($this->getCountries()),
@@ -268,15 +268,15 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		),
 		'shipping_fields' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['shipping_fields'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['shipping_fields'],
 			'exclude'                 => true,
 			'inputType'               => 'checkboxWizard',
-			'options_callback'		  => array('tl_store', 'getAddressFields'),
+			'options_callback'		  => array('tl_iso_config', 'getAddressFields'),
 			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'w50 w50h'),
 		),
 		'billing_countries' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['billing_countries'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['billing_countries'],
 			'exclude'                 => true,
 			'inputType'               => 'select',
 //			'default'                 => array_keys($this->getCountries()),
@@ -285,21 +285,21 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		),
 		'billing_fields' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['billing_fields'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['billing_fields'],
 			'exclude'                 => true,
 			'inputType'               => 'checkboxWizard',
-			'options_callback'		  => array('tl_store', 'getAddressFields'),
+			'options_callback'		  => array('tl_iso_config', 'getAddressFields'),
 			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'w50 w50h'),
 		),
 		'enableGoogleAnalytics' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['enableGoogleAnalytics'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['enableGoogleAnalytics'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
 		),
 		'cookie_duration' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['cookie_duration'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['cookie_duration'],
 			'exclude'                 => true,
 			'default'				  => 30,
 			'inputType'               => 'text',
@@ -307,21 +307,21 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		),
 		'missing_image_placeholder' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['missing_image_placeholder'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['missing_image_placeholder'],
 			'exclude'                 => true,
 			'inputType'               => 'fileTree',
 			'eval'                    => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions' => 'jpg,jpeg,gif,png,tif,tiff', 'tl_class'=>'clr'),
 		),
 		'invoiceLogo' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['invoiceLogo'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['invoiceLogo'],
 			'exclude'                 => true,
 			'inputType'               => 'fileTree',
 			'eval'                    => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions' => 'jpg,jpeg,gif,png,tif,tiff'),
 		),
 		'gallery_size'				  => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['gallery_size'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['gallery_size'],
 			'exclude'                 => true,
 			'inputType'               => 'imageSize',
 			'default'				  => array(50,50),
@@ -331,7 +331,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		),
 		'thumbnail_size'				  => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['thumbnail_size'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['thumbnail_size'],
 			'exclude'                 => true,
 			'inputType'               => 'imageSize',
 			'default'				  => array(100,100),
@@ -341,7 +341,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		),
 		'medium_size'				  => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['medium_size'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['medium_size'],
 			'exclude'                 => true,
 			'inputType'               => 'imageSize',
 			'default'				  => array(200,200),
@@ -351,7 +351,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		),
 		'large_size'				  => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['large_size'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['large_size'],
 			'exclude'                 => true,
 			'inputType'               => 'imageSize',
 			'default'				  => array(500,500),
@@ -361,7 +361,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		),
 		'priceCalculateFactor' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['priceCalculateFactor'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['priceCalculateFactor'],
 			'exclude'                 => true,
 			'default'				  => 1,
 			'inputType'               => 'text',
@@ -369,17 +369,17 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		),
 		'priceCalculateMode' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['priceCalculateMode'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['priceCalculateMode'],
 			'exclude'                 => true,
 			'default'				  => 'mul',
 			'inputType'               => 'radio',
 			'options'				  => array('mul', 'div'),
-			'reference'				  => &$GLOBALS['TL_LANG']['tl_store'],
+			'reference'				  => &$GLOBALS['TL_LANG']['tl_iso_config'],
 			'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
 		),
 		'priceRoundPrecision' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['priceRoundPrecision'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['priceRoundPrecision'],
 			'exclude'                 => true,
 			'default'				  => '2',
 			'inputType'               => 'text',
@@ -387,7 +387,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		),
 		'priceRoundIncrement' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['priceRoundIncrement'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['priceRoundIncrement'],
 			'exclude'                 => true,
 			'inputType'               => 'select',
 			'options'				  => array('0.01', '0.05'),
@@ -395,7 +395,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		),
 		'currency' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['currency'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['currency'],
 			'exclude'                 => true,
 			'inputType'               => 'select',
 			'options'				  => &$GLOBALS['TL_LANG']['CUR'],
@@ -403,24 +403,24 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		),
 		'currencySymbol' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['currencySymbol'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['currencySymbol'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
 			'eval'					  => array('tl_class'=>'w50 m12'),
 		),
 		'currencyPosition' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['currencyPosition'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['currencyPosition'],
 			'exclude'                 => true,
 			'inputType'               => 'radio',
 			'default'				  => 'left',
 			'options'				  => array('left', 'right'),
-			'reference'				  => &$GLOBALS['TL_LANG']['tl_store'],
+			'reference'				  => &$GLOBALS['TL_LANG']['tl_iso_config'],
 			'eval'					  => array('tl_class'=>'w50'),
 		),
 		'currencyFormat' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['currencyFormat'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['currencyFormat'],
 			'exclude'                 => true,
 			'inputType'               => 'select',
 			'options'				  => array_keys($GLOBALS['ISO_NUM']),
@@ -428,19 +428,19 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		),
 		'orderPrefix' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['orderPrefix'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['orderPrefix'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>4, 'tl_class'=>'w50'),
 		),
 		'weightUnit' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['weightUnit'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['weightUnit'],
 			'exclude'                 => true,
 			'filter'                  => true,
 			'sorting'                 => true,
 			'inputType'               => 'select',
-			'options'                 => $GLOBALS['TL_LANG']['tl_store']['weightUnits'],
+			'options'                 => $GLOBALS['TL_LANG']['tl_iso_config']['weightUnits'],
 			'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
 		),
 	)
@@ -448,23 +448,23 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 
 
 /**
- * tl_store class.
+ * tl_iso_config class.
  * 
  * @extends Backend
  */
-class tl_store extends Backend
+class tl_iso_config extends Backend
 {
 	
 	public function checkPermission($dc)
 	{
 		if (!in_array('googleanalytics', $this->Config->getActiveModules()))
 		{
-			unset($GLOBALS['TL_DCA']['tl_store']['fields']['enableGoogleAnalytics']);
+			unset($GLOBALS['TL_DCA']['tl_iso_config']['fields']['enableGoogleAnalytics']);
 		}
 		
 		if (strlen($this->Input->get('act')))
 		{
-			$GLOBALS['TL_DCA']['tl_store']['config']['closed'] = false;
+			$GLOBALS['TL_DCA']['tl_iso_config']['config']['closed'] = false;
 		}
 		
 		$this->import('BackendUser', 'User');
@@ -472,16 +472,16 @@ class tl_store extends Backend
 		if ($this->User->isAdmin)
 			return;
 			
-		$arrStores = $this->User->iso_stores;
+		$arrConfigs = $this->User->iso_configs;
 		
-		if (!is_array($arrStores) || !count($arrStores))
+		if (!is_array($arrConfigs) || !count($arrConfigs))
 		{
-			$arrStores = array(0);
+			$arrConfigs = array(0);
 		}
 		
-		$GLOBALS['TL_DCA']['tl_store']['list']['sorting']['root'] = $arrStores;
+		$GLOBALS['TL_DCA']['tl_iso_config']['list']['sorting']['root'] = $arrConfigs;
 		
-		if (strlen($this->Input->get('id')) && !in_array($this->Input->get('id'), $arrStores))
+		if (strlen($this->Input->get('id')) && !in_array($this->Input->get('id'), $arrConfigs))
 		{
 			$this->redirect('typolight/main.php?act=error');
 		}
@@ -489,7 +489,7 @@ class tl_store extends Backend
 	
 	
 	/**
-	 * Get all checkout fields in tl_store.
+	 * Get all checkout fields in tl_iso_config.
 	 * 
 	 * @access public
 	 * @param object $dc

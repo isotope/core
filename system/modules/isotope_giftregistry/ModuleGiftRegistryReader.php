@@ -63,7 +63,6 @@ class ModuleGiftRegistryReader extends ModuleIsotope
 		//GET SOME INITIAL VALUES
 		
 		$this->intCartId = $this->Input->get('cartid');
-//		$this->arrJumpToValues = $this->getStoreJumpToValues($this->store_id);	//Deafult keys are "product_reader", "shopping_cart", and "checkout"
 
 		
 		return parent::generate();
@@ -133,13 +132,13 @@ class ModuleGiftRegistryReader extends ModuleIsotope
 				'id'		=> $row['id'],
 				'image'				=> 'isotope/' . substr($row['alias'], 0, 1) . '/' . $row['alias'] . '/' . $GLOBALS['TL_LANG']['MSC']['imagesFolder'] . '/' . $GLOBALS['TL_LANG']['MSC']['thumbnail_images_folder'] . '/' . $row['images'],
 				'name'				=> $row['name'],
-				'link'				=> $this->generateProductLink($row['alias'], $row, $this->Store->productReaderJumpTo, $row['attribute_set_id'], 'id'),
+				'link'				=> $this->generateProductLink($row['alias'], $row, $this->Isotope->Config->productReaderJumpTo, $row['attribute_set_id'], 'id'),
 				'price'				=> $this->generatePrice($row['price']),
 				'total_price'		=> $this->generatePrice($intTotalPrice, 'stpl_total_price'),
 				'quantity'			=> $row['quantity_requested'],
 				'quantity_remaining'=> $row['quantity_requested'] - $row['quantity_sold'],
 				'source_cart_id'	=> $this->intCartId,
-				'add_link'			=> ($row['available_online']=='1' ? '<a href="' . $this->generateActionLinkString('add_to_cart', $row['id'], array('aset_id'=>$row['attribute_set_id'],'quantity_requested'=>1, 'source_cart_id'=>$this->intCartId), $this->Store->cartJumpTo) . '">' . $this->generateImage('system/modules/isotope/html/addToCart.gif') . '</a>' : $GLOBALS['TL_LANG']['MSC']['notAvailableOnline']),
+				'add_link'			=> ($row['available_online']=='1' ? '<a href="' . $this->generateActionLinkString('add_to_cart', $row['id'], array('aset_id'=>$row['attribute_set_id'],'quantity_requested'=>1, 'source_cart_id'=>$this->intCartId), $this->Isotope->Config->cartJumpTo) . '">' . $this->generateImage('system/modules/isotope/html/addToCart.gif') . '</a>' : $GLOBALS['TL_LANG']['MSC']['notAvailableOnline']),
 				'add_link_title' 	=> "Add To Cart"
 			
 			);

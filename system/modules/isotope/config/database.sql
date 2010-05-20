@@ -24,8 +24,8 @@ CREATE TABLE `tl_module` (
   `new_products_time_window` int(10) unsigned NOT NULL default '0',
   `filter_module` text NULL,
   `columns` int(10) unsigned NOT NULL default '0',
-  `store_id` int(10) unsigned NOT NULL default '0',
-  `store_ids` blob NULL,
+  `iso_config_id` int(10) unsigned NOT NULL default '0',
+  `iso_config_ids` blob NULL,
   `iso_jump_first` char(1) NOT NULL default '',
   `iso_forward_cart` char(1) NOT NULL default '',
   `iso_forward_review` char(1) NOT NULL default '',
@@ -187,10 +187,10 @@ CREATE TABLE `tl_iso_attributes` (
 -- --------------------------------------------------------
 
 -- 
--- Table `tl_store`
+-- Table `tl_iso_config`
 -- 
 
-CREATE TABLE `tl_store` (
+CREATE TABLE `tl_iso_config` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
   `sorting` int(10) unsigned NOT NULL default '0',
@@ -209,7 +209,7 @@ CREATE TABLE `tl_store` (
   `currencyFormat` varchar(20) NOT NULL default '',
   `orderPrefix` varchar(4) NOT NULL default '',
   `invoiceLogo` text NULL,
-  `isDefaultStore` char(1) NOT NULL default '',
+  `fallback` char(1) NOT NULL default '',
   `company` varchar(255) NOT NULL default '',
   `firstname` varchar(255) NOT NULL default '',
   `lastname` varchar(255) NOT NULL default '',
@@ -310,7 +310,7 @@ CREATE TABLE `tl_cart` (
   `session` blob NULL,
   `last_visit` int(10) unsigned NOT NULL default '0',
   `source_cart_id` int(10) unsigned NOT NULL default '0',
-  `store_id` int(10) unsigned NOT NULL default '0',
+  `config_id` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -340,8 +340,6 @@ CREATE TABLE `tl_cart_items` (
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-
--- tl_cart_rules: (we will do this later, but here's what I had) id, moduleID, customerGroup, storeID
 
 -- --------------------------------------------------------
 
@@ -514,7 +512,7 @@ CREATE TABLE `tl_iso_orders` (
   `order_id` varchar(14) NOT NULL default '',
   `uniqid` varchar(27) NOT NULL default '',
   
-  `store_id` int(10) unsigned NOT NULL default '0',
+  `config_id` int(10) unsigned NOT NULL default '0',
   `cart_id` int(10) unsigned NOT NULL default '0',
   `source_cart_id` int(10) unsigned NOT NULL default '0',
   `language` varchar(2) NOT NULL default '',
@@ -613,7 +611,7 @@ CREATE TABLE `tl_iso_tax_rate` (
   `country` varchar(2) NOT NULL default '',
   `subdivision` varchar(10) NOT NULL default '',
   `postal` varchar(255) NOT NULL default '',
-  `store` int(10) unsigned NOT NULL default '0',
+  `config` int(10) unsigned NOT NULL default '0',
   `rate` varchar(255) NOT NULL default '',
   `address` blob NULL,
   `amount` varchar(255) NOT NULL default '',
@@ -631,7 +629,7 @@ CREATE TABLE `tl_iso_tax_rate` (
 
 CREATE TABLE `tl_user` (
  `iso_product_types` blob NULL,
- `iso_stores` blob NULL,
+ `iso_configs` blob NULL,
  `iso_modules` blob NULL,
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -644,7 +642,7 @@ CREATE TABLE `tl_user` (
 
 CREATE TABLE `tl_user_group` (
  `iso_product_types` blob NULL,
- `iso_stores` blob NULL,
+ `iso_configs` blob NULL,
  `iso_modules` blob NULL,
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 

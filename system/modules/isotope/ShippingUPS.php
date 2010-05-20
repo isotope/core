@@ -138,20 +138,20 @@ class ShippingUPS extends IsotopeShipping
 					'country'		=> $this->Cart->shippingAddress['country']
 				);
 
-				$arrSubDivisionStore = explode(',',$this->Isotope->Store->subdivision);
+				$arrSubDivisionStore = explode(',',$this->Isotope->Config->subdivision);
 
 				$arrOrigin = array
 				(
-					'name'			=> $this->Isotope->Store->firstname . ' ' . $this->Isotope->Store->lastname,
-					'phone'			=> $this->Isotope->Store->phone,
-					'company'		=> $this->Isotope->Store->company,
-					'street'		=> $this->Isotope->Store->street_1,
-					'street2'		=> $this->Isotope->Store->street_2,
-					'street3'		=> $this->Isotope->Store->street_3,
-					'city'			=> $this->Isotope->Store->city,
+					'name'			=> $this->Isotope->Config->firstname . ' ' . $this->Isotope->Config->lastname,
+					'phone'			=> $this->Isotope->Config->phone,
+					'company'		=> $this->Isotope->Config->company,
+					'street'		=> $this->Isotope->Config->street_1,
+					'street2'		=> $this->Isotope->Config->street_2,
+					'street3'		=> $this->Isotope->Config->street_3,
+					'city'			=> $this->Isotope->Config->city,
 					'state'			=> $arrSubDivisionStore[1],
-					'zip'			=> $this->Isotope->Store->postal,
-					'country'		=> $this->Isotope->Store->country
+					'zip'			=> $this->Isotope->Config->postal,
+					'country'		=> $this->Isotope->Config->country
 				);
 											
 				$arrShipment['service'] = ((integer)$this->ups_enabledService < 10 ? "0" . $this->ups_enabledService : $this->ups_enabledService);		//Ground for now
@@ -163,7 +163,7 @@ class ShippingUPS extends IsotopeShipping
 					'description'	=> '' 
 				);
 				
-				$strWeightUnit = $this->Isotope->Store->weightUnit;
+				$strWeightUnit = $this->Isotope->Config->weightUnit;
 				
 				$fltWeight = $this->Cart->totalWeight;
 					

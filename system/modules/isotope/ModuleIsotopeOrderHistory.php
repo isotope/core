@@ -47,9 +47,9 @@ class ModuleIsotopeOrderHistory extends ModuleIsotope
 			return $objTemplate->parse();
 		}
 		
-		$this->store_ids = deserialize($this->store_ids);
+		$this->iso_config_ids = deserialize($this->iso_config_ids);
 		
-		if (!FE_USER_LOGGED_IN || !is_array($this->store_ids) || !count($this->store_ids))
+		if (!FE_USER_LOGGED_IN || !is_array($this->iso_config_ids) || !count($this->iso_config_ids))
 			return '';
 		
 		$this->import('FrontendUser', 'User');
@@ -60,7 +60,7 @@ class ModuleIsotopeOrderHistory extends ModuleIsotope
 	
 	protected function compile()
 	{
-		$objOrders = $this->Database->prepare("SELECT *, (SELECT COUNT(*) FROM tl_iso_order_items WHERE pid=tl_iso_orders.id) AS items FROM tl_iso_orders WHERE status!='' AND pid=? AND store_id IN (" . implode(',', $this->store_ids) . ") ORDER BY date DESC")->execute($this->User->id);
+		$objOrders = $this->Database->prepare("SELECT *, (SELECT COUNT(*) FROM tl_iso_order_items WHERE pid=tl_iso_orders.id) AS items FROM tl_iso_orders WHERE status!='' AND pid=? AND config_id IN (" . implode(',', $this->iso_config_ids) . ") ORDER BY date DESC")->execute($this->User->id);
 		
 		// No orders found, just display an "empty" message
 		if (!$objOrders->numRows)
@@ -72,7 +72,7 @@ class ModuleIsotopeOrderHistory extends ModuleIsotope
 		}
 		
 		$this->import('Isotope');
-		$this->Isotope->overrideStore($objOrders->store_id);
+		$this->Isotope->overrideConfig($objOrders->config_id);
 		
 		$arrPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->limit(1)->execute($this->jumpTo)->fetchAssoc();
 		

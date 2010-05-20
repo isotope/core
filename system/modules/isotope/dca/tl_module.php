@@ -43,11 +43,11 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_checkoutguest']			= '{title_leg
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_checkoutboth']			= '{title_legend},name,headline,type;{config_legend},iso_checkout_method,iso_payment_modules,iso_shipping_modules,iso_order_conditions;{redirect_legend},iso_forward_review,orderCompleteJumpTo;{template_legend},iso_login_jumpTo,iso_mail_customer,iso_mail_admin,iso_sales_email;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
-$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_orderhistory']			= '{title_legend},name,headline,type;{config_legend},store_ids;{redirect_legend},jumpTo;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_orderhistory']			= '{title_legend},name,headline,type;{config_legend},iso_config_ids;{redirect_legend},jumpTo;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_orderdetails']			= '{title_legend},name,headline,type;{redirect_legend},jumpTo;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
-$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_storeswitcher']		= '{title_legend},name,headline,type;{config_legend},store_ids;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_configswitcher']		= '{title_legend},name,headline,type;{config_legend},iso_config_ids;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productfilter']		= '{title_legend},name,headline,type;{config_legend},iso_listingModule,iso_enableLimit,iso_enableSearch,iso_filterFields,iso_orderByFields,iso_searchFields;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
@@ -157,21 +157,21 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['listing_filters'] = array
 	'eval'					  => array('multiple'=>true,'tl_class'=>'m12 clr'),
 );
 
-$GLOBALS['TL_DCA']['tl_module']['fields']['store_id'] = array
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_config_id'] = array
 (
-	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['store_id'],
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_config_id'],
 	'exclude'                 => true,
 	'inputType'               => 'select',
-	'foreignKey'			  => 'tl_store.name',
+	'foreignKey'			  => 'tl_iso_config.name',
 	'eval'					  => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50'),
 );
 
-$GLOBALS['TL_DCA']['tl_module']['fields']['store_ids'] = array
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_config_ids'] = array
 (
-	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['store_ids'],
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_config_ids'],
 	'exclude'                 => true,
 	'inputType'               => 'checkboxWizard',
-	'foreignKey'			  => 'tl_store.name',
+	'foreignKey'			  => 'tl_iso_config.name',
 	'eval'					  => array('multiple'=>true, 'mandatory'=>true, 'tl_class'=>'clr'),
 );
 
@@ -481,210 +481,6 @@ class tl_module_isotope extends Backend
 		}
 				
 		return $arrAttributes;
-	}
-	
-	
-	/**
-	 * refineFilterData function.
-	 * 
-	 * @access public
-	 * @param mixed $varValue
-	 * @param object DataContainer $dc
-	 * @return string
-	 */
-	public function refineFilterData($varValue, DataContainer $dc)
-	{
-		$arrValues = deserialize($varValue);
-		
-		//Get attribute basic data
-		foreach($arrValues as $value)
-		{
-			$objAttributeData = $this->Database->prepare("SELECT field_name FROM tl_iso_attributes WHERE id=?")
-										   		->limit(1)
-										   		->execute($value);
-		
-			if($objAttributeData->numRows < 1)
-			{
-				return '';	
-			}
-		
-			$objAttributeData->first();
-		
-			$strAttributeFieldName = $objAttributeData->field_name;
-					
-			$arrFilterValues = $this->getFilterValues($value);
-						
-			$objOptionValuesInUse = $this->Database->prepare("SELECT DISTINCT " . $strAttributeFieldName . " FROM tl_iso_products")
-									 		   ->execute();
-								
-			if($objOptionValuesInUse->numRows < 1)
-			{
-				return '';
-			} 
-		
-			$arrOptionValuesInUse = $objOptionValuesInUse->fetchEach($strAttributeFieldName);
-
-			$i = 0;
-
-			$intCurrSorting = 128;
-			
-						
-			foreach($arrFilterValues as $listValue)
-			{
-				
-				if(!in_array($listValue['value'], $arrOptionValuesInUse))
-				{
-					unset($arrFilterValues[$i]);
-				}else{		
-					$arrPages = $this->getAssociatedPagesByListValue($listValue, $strAttributeFieldName);
-						
-					$arrSet[] = array
-					(
-						'id'			=> "''",
-						'pid'			=> $value,
-						'sorting' 		=> $intCurrSorting,
-						'tstamp'		=> time(),
-						'value'			=> "'" . mysql_escape_string($listValue['value']) . "'",
-						'label'			=> "'" . mysql_escape_string($listValue['label']) . "'",
-						'pages'			=> "'" . serialize($arrPages) . "'"		
-					);
-				}
-				
-				$i++;
-				$intCurrSorting+=128;
-			
-			}
-			
-					
-			//Reset the current attribute's list cache, if any
-			$this->Database->prepare("DELETE FROM tl_list_cache WHERE pid=?")->execute($value);
-		
-			//Break apart the standard SET array into multiple row insert sql statement	
-			foreach($arrSet as $currSet)
-			{
-				$arrInsertRows[] = implode(",", $currSet);
-			}
-			
-			$strInsertRows = join("),(", $arrInsertRows);
-			
-			$strInsertRows = "(" . $strInsertRows . ")";
-			
-			//Add the list values to the list cache.
-			//echo $strInsertRows;
-			
-			$this->Database->prepare("INSERT INTO tl_list_cache (id, pid, sorting, tstamp, value, label, pages) VALUES " . $strInsertRows)->execute();
-			
-		}
-
-		return $varValue;
-	}
-	
-	
-	/**
-	 * getAssociatedPagesByListValue function.
-	 * 
-	 * @access private
-	 * @param integer $intListValue
-	 * @param string $strStoreTable
-	 * @param string $strAttributeFieldName
-	 * @return array
-	 */
-	private function getAssociatedPagesByListValue($intListValue, $strAttributeFieldName)
-	{
-		$objPages = $this->Database->prepare("SELECT pages FROM tl_iso_products WHERE " . $strAttributeFieldName . "=?")
-								   ->execute($intListValue);
-								   
-		if($objPages->numRows < 1)
-		{
-			return array();
-		}
-	
-		$arrRawSerializedPages = $objPages->fetchEach('pages');
-				
-		$arrRawPagesCurr = array();
-		$arrRawPages = array();
-				
-		foreach($arrRawSerializedPages as $pageCollection)
-		{
-			$arrRawPagesCurr = deserialize($pageCollection);
-			
-			foreach($arrRawPagesCurr as $pageVal)
-			{
-				$arrRawPages[] = $pageVal;
-			}
-			
-			$arrRawPagesCurr = array();
-		}
-		
-				
-		$arrPages = array_unique($arrRawPages);
-			
-		return $arrPages;
-	}
-	
-	
-	/**
-	 * getFilterValues function.
-	 * 
-	 * @todo Use tl_iso_products DCA not tl_iso_attributes table
-	 *
-	 * @access private
-	 * @param integer $intAttributeID
-	 * @return array
-	 */
-	private function getFilterValues($intAttributeID)
-	{
-		$objAttributeData = $this->Database->prepare("SELECT name, option_list, use_alternate_source, list_source_table, list_source_field, field_name FROM tl_iso_attributes WHERE id=? AND is_filterable='1' AND (type='select' OR type='checkbox')")
-									  ->limit(1)
-									  ->execute($intAttributeID);
-		
-		if($objAttributeData->numRows < 1)
-		{
-			return '';
-		}
-		
-		if($objAttributeData->use_alternate_source==1)
-		{
-			$objLinkData = $this->Database->prepare("SELECT id, " . $objAttributeData->list_source_field . " FROM " . $objAttributeData->list_source_table)
-										  ->execute();
-						
-			if($objLinkData->numRows < 1)
-			{
-				return array();
-			}
-			
-			$arrLinkValues = $objLinkData->fetchAllAssoc();
-			
-			$filter_name = $objAttributeData->list_source_field;
-						
-			foreach($arrLinkValues as $value)
-			{
-				$arrValues[] = array
-				(
-					'value'		=> $value[$objAttributeData->id],
-					'label'		=> $value[$objAttributeData->list_source_field]
-				);
-			
-			}
-		}
-		else
-		{
-			$arrLinkValues = deserialize($objAttributeData->option_list);
-			
-			$filter_name = $objAttributeData->field_name;
-			
-			foreach($arrLinkValues as $value)
-			{
-				$arrValues[] = array
-				(
-					'value'		=> $value['value'],
-					'label'		=> $value['label']
-				);
-			
-			}
-		}
-		
-		return $arrValues;
 	}
 	
 	

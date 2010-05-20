@@ -128,7 +128,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{name_legend},name,label;{rate_legend},rate;{location_legend},address,country,subdivision,postal;{condition_legend},amount;{config_legend},store,stop',
+		'default'                     => '{name_legend},name,label;{rate_legend},rate;{location_legend},address,country,subdivision,postal;{condition_legend},amount;{config_legend},config,stop',
 	),
 
 
@@ -178,11 +178,11 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
 			'inputType'               => 'text',
 			'eval'                    => array('multiple'=>true, 'size'=>2, 'maxlength'=>10, 'rgxp'=>'digits', 'tl_class'=>'w50'),
 		),
-		'store' => array
+		'config' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['store'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['config'],
 			'inputType'               => 'select',
-			'foreignKey'			  => 'tl_store.name',
+			'foreignKey'			  => 'tl_iso_config.name',
 			'eval'                    => array('includeBlankOption'=>true, 'submitOnChange'=>true),
 		),
 		'rate' => array
@@ -246,10 +246,10 @@ class tl_iso_tax_rate extends Backend
 	{
 		$arrRate = deserialize($row['rate']);
 		
-		if ($row['store'] && !$arrRate['unit'])
+		if ($row['config'] && !$arrRate['unit'])
 		{
 			$this->import('Isotope');
-			$this->Isotope->overrideStore($row['store']);
+			$this->Isotope->overrideConfig($row['config']);
 			
 			$strRate = $this->Isotope->formatPriceWithCurrency($arrRate['value']);
 		}
@@ -264,11 +264,11 @@ class tl_iso_tax_rate extends Backend
 	
 	public function addCurrencyRate($dc)
 	{
-		$objStore = $this->Database->prepare("SELECT tl_store.* FROM tl_iso_tax_rate LEFT OUTER JOIN tl_store ON tl_store.id=tl_iso_tax_rate.store WHERE tl_iso_tax_rate.id=?")->execute($dc->id);
+		$objConfig = $this->Database->prepare("SELECT tl_iso_config.* FROM tl_iso_tax_rate LEFT OUTER JOIN tl_iso_config ON tl_iso_config.id=tl_iso_tax_rate.config WHERE tl_iso_tax_rate.id=?")->execute($dc->id);
 		
-		if ($objStore->currency)
+		if ($objConfig->currency)
 		{
-			$GLOBALS['TL_DCA']['tl_iso_tax_rate']['fields']['rate']['options'][''] = $objStore->currency;
+			$GLOBALS['TL_DCA']['tl_iso_tax_rate']['fields']['rate']['options'][''] = $objConfig->currency;
 		}
 	}
 }

@@ -37,7 +37,6 @@ $GLOBALS['TL_LANG']['CTE']['attributeLinkRepeater']   = array('Attribute Filter 
  */
 $GLOBALS['TL_LANG']['ERR']['systemColumn'] = 'Name `%s` is reserved for system use. Please choose different name.';
 $GLOBALS['TL_LANG']['ERR']['missingButtonTemplate'] = 'You must specify a template for the button "%s".';
-$GLOBALS['TL_LANG']['ERR']['noStoreIdFound'] = 'No store id was found associated with this module!';
 
 $GLOBALS['TL_LANG']['ERR']['order_conditions'] = 'You must accept the terms & conditions to continue';
 $GLOBALS['TL_LANG']['ERR']['noStoreConfigurationSet'] = 'No store configuration available';

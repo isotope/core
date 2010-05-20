@@ -226,7 +226,7 @@ class IsotopeCart extends Model
 						return array_merge($this->User->getData(), array('id'=>0));
 					}					
 					
-					return array('country' => $this->Isotope->Store->country);
+					return array('country' => $this->Isotope->Config->country);
 					
 				case 'shippingAddress':
 					if ($this->arrCache['shippingAddress_id'] == -1)
@@ -302,7 +302,7 @@ class IsotopeCart extends Model
 	/**
 	 * Load current cart
 	 */
-	//!@todo why do we need store_id in tl_cart?
+	//!@todo why do we need config_id in tl_cart?
 	public function __construct()
 	{
 		parent::__construct();
@@ -316,9 +316,9 @@ class IsotopeCart extends Model
 		{	
 			if(!strlen($this->strHash))	
 			{	
-				$this->strHash = sha1(session_id() . (!$GLOBALS['TL_CONFIG']['disableIpCheck'] ? $this->Environment->ip : '') . $this->Isotope->Store->id . $this->strCookie);
+				$this->strHash = sha1(session_id() . (!$GLOBALS['TL_CONFIG']['disableIpCheck'] ? $this->Environment->ip : '') . $this->Isotope->Config->id . $this->strCookie);
 				
-				$this->setCookie($this->strCookie, $this->strHash, $this->Isotope->Store->cookie_timeout,  $GLOBALS['TL_CONFIG']['websitePath']);
+				$this->setCookie($this->strCookie, $this->strHash, $this->Isotope->Config->cookie_timeout,  $GLOBALS['TL_CONFIG']['websitePath']);
 			}
 
 			$this->findBy('session', $this->strHash);
@@ -339,7 +339,7 @@ class IsotopeCart extends Model
 				'tstamp'		=> time(),
 				'last_visit'	=> time(),
 				'cart_type_id'	=> $this->intType,
-				'store_id'		=> $this->Isotope->Store->id,
+				'config_id'		=> $this->Isotope->Config->id,
 			));
 			
 			if (!$this->findBy('id', $this->save(true)))

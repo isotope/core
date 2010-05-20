@@ -30,7 +30,7 @@
  * Frontend modules									
  */
 $GLOBALS['TL_LANG']['FMD']['isoGiftRegistryManager']	= array('Isotope Gift Registry Manager', 'A fully-featured gift registry module.  Allows users to create and manage their own gift registries.');
-$GLOBALS['TL_LANG']['FMD']['isoGiftRegistrySearch']		= array('Isotope Gift Registry Search', 'Allow store customers to search for existing Gift Registries');
-$GLOBALS['TL_LANG']['FMD']['isoGiftRegistryResults']	= array('Isotope Gift Registry Search Results', 'Allow store customers to search for existing Gift Registries');
-$GLOBALS['TL_LANG']['FMD']['isoGiftRegistryReader']		= array('Isotope Gift Registry Reader', 'Allow store customers to view existing Gift Registries');
+$GLOBALS['TL_LANG']['FMD']['isoGiftRegistrySearch']		= array('Isotope Gift Registry Search', 'Allow customers to search for existing Gift Registries');
+$GLOBALS['TL_LANG']['FMD']['isoGiftRegistryResults']	= array('Isotope Gift Registry Search Results', 'Allow customers to search for existing Gift Registries');
+$GLOBALS['TL_LANG']['FMD']['isoGiftRegistryReader']		= array('Isotope Gift Registry Reader', 'Allow customers to view existing Gift Registries');
 $GLOBALS['TL_LANG']['FMD']['isoGiftRegistry']			= array('Isotope Gift Registry','Allow customers to set up, manage or shop from already created Gift Registries.');

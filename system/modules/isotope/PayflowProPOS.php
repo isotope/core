@@ -249,7 +249,7 @@ class PayflowProPOS extends Backend
 //		$arrOrderInfo = $objOrderInfo->fetchAssoc();
 		
 		
-		//Store ID MUST be set prior to importing the Isotope or IsotopeStore libraries!
+		//Store ID MUST be set prior to importing the Isotope or IsotopeConfig libraries!
 				
 		//$this->fltOrderTotal = (float)$arrOrderInfo['subTotal'] + (float)$arrOrderInfo['taxTotal'] + (float)$arrOrderInfo['shippingTotal'];
 		
@@ -369,7 +369,7 @@ class PayflowProPOS extends Backend
 		$pdf->lastPage();
 		$pdf->Output(standardize(ampersand($strInvoiceTitle, false)) . '.pdf', 'D');
 		
-		$this->Isotope->resetStore(true); 	//Set store back to default.
+		$this->Isotope->resetConfig(true); 	//Set store back to default.
 		
 		ob_end_clean();
 		exit;	
@@ -392,12 +392,12 @@ class PayflowProPOS extends Backend
 		$objTemplate->setData($objOrder->row());
 		
 		$this->import('Isotope');
-		$this->Isotope->overrideStore($objOrder->store_id);
+		$this->Isotope->overrideConfig($objOrder->config_id);
 		
 		// Invoice Logo
-		$objInvoiceLogo = $this->Database->prepare("SELECT invoiceLogo FROM tl_store WHERE id=?")
+		$objInvoiceLogo = $this->Database->prepare("SELECT invoiceLogo FROM tl_iso_config WHERE id=?")
 										 ->limit(1)
-										 ->execute($objOrder->store_id);
+										 ->execute($objOrder->config_id);
 		
 		if($objInvoiceLogo->numRows < 1)
 		{
@@ -505,7 +505,7 @@ class PayflowProPOS extends Backend
 		$objTemplate->surcharges = $arrSurcharges;
 		
 		$objTemplate->billing_label = $GLOBALS['TL_LANG']['ISO']['billing_address'];
-		$objTemplate->billing_address = $this->Isotope->generateAddressString(deserialize($objOrder->billing_address), $this->Isotope->Store->billing_fields);
+		$objTemplate->billing_address = $this->Isotope->generateAddressString(deserialize($objOrder->billing_address), $this->Isotope->Config->billing_fields);
 		if (strlen($objOrder->shipping_method))
 		{
 			$arrShippingAddress = deserialize($objOrder->shipping_address);
@@ -518,7 +518,7 @@ class PayflowProPOS extends Backend
 			{
 				$objTemplate->has_shipping = true;
 				$objTemplate->shipping_label = $GLOBALS['TL_LANG']['ISO']['shipping_address'];
-				$objTemplate->shipping_address = $this->Isotope->generateAddressString($arrShippingAddress, $this->Isotope->Store->shipping_fields);
+				$objTemplate->shipping_address = $this->Isotope->generateAddressString($arrShippingAddress, $this->Isotope->Config->shipping_fields);
 			}
 		}
 		
@@ -617,11 +617,11 @@ class PayflowProPOS extends Backend
 	* @return string
 	*/
 	//!@todo this function should be rewritten to use the product object
-	protected function getProducts($intSourceCartId, $store_id = null)
+	protected function getProducts($intSourceCartId, $config_id = null)
 	{
-		if($store_id)
+		if($config_id)
 		{
-			$this->Isotope->overrideStore($store_id);	//Which store it was ordered from is important, not what the default backend store is.
+			$this->Isotope->overrideConfig($config_id);	//Which store it was ordered from is important, not what the default backend store is.
 		}
 		
 		$objItems = $this->Database->prepare("SELECT * FROM tl_cart_items WHERE pid=?")->execute($intSourceCartId);

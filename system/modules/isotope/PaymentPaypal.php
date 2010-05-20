@@ -168,7 +168,7 @@ class PaymentPaypal extends IsotopePayment
 			if ($this->postsale_mail)
 			{
 				$this->Import('Isotope');
-				$this->Isotope->overrideStore($objOrder->store_id);
+				$this->Isotope->overrideConfig($objOrder->config_id);
 				$this->Isotope->sendMail($this->postsale_mail, $GLOBALS['TL_ADMIN_EMAIL'], $GLOBALS['TL_LANGUAGE'], $arrData);
 			}
 			
@@ -210,7 +210,7 @@ class PaymentPaypal extends IsotopePayment
 <input type="hidden" name="shipping" value="' . $this->Cart->shippingTotal . '">
 <input type="hidden" name="no_shipping" value="1">
 <input type="hidden" name="no_note" value="1">
-<input type="hidden" name="currency_code" value="' . $this->Isotope->Store->currency . '">
+<input type="hidden" name="currency_code" value="' . $this->Isotope->Config->currency . '">
 <input type="hidden" name="button_subtype" value="services">
 <input type="hidden" name="return" value="' . $this->Environment->base . $this->addToUrl('step=complete') . '">
 <input type="hidden" name="cancel_return" value="' . $this->Environment->base . $this->addToUrl('step=failed') . '">

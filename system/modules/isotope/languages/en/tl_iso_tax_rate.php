@@ -37,8 +37,8 @@ $GLOBALS['TL_LANG']['tl_iso_tax_rate']['subdivision']	= array('State/Region', 'S
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['postal']		= array('Postal Code Range', 'Specify a postal code rage this tax class applies to. (Ex: 10000 - 20000)');
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['amount']		= array('Subtotal Amount Restriction', 'Optional: Restrict this tax rate to specific subtotal amount (such as for a luxury tax.)');
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['rate']			= array('Tax Rate', 'A rate in percent this tax is set at.');
-$GLOBALS['TL_LANG']['tl_iso_tax_rate']['store'] 		= array('Store', 'Select the store that the tax rate applies to.');
-$GLOBALS['TL_LANG']['tl_iso_tax_rate']['stop'] 		= array('Stop Calculations on Trigger?', 'Stop other calculations if this tax rate is triggered.');
+$GLOBALS['TL_LANG']['tl_iso_tax_rate']['config'] 		= array('Store configuration', 'Select the store configuration that the tax rate applies to.');
+$GLOBALS['TL_LANG']['tl_iso_tax_rate']['stop'] 			= array('Stop Calculations on Trigger?', 'Stop other calculations if this tax rate is triggered.');
 
 
 /**

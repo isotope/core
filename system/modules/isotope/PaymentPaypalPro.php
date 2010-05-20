@@ -99,7 +99,7 @@ class PaymentPaypalPro extends IsotopePayment
 			'STATE'					=> $arrBillingSubdivision[1],
 			'COUNTRYCODE'			=> strtoupper($this->Cart->billingAddress['country']),
 			'ZIP'					=> $this->Cart->billingAddress['postal'],
-			'CURRENCYCODE'			=> $this->Isotope->Store->currency,
+			'CURRENCYCODE'			=> $this->Isotope->Config->currency,
 			'ITEMAMT'				=> $this->Cart->subTotal,
 			'SHIPPINGAMT'			=> $this->Cart->shippingTotal,
 			'HANDLINGAMT'			=> 0,	//TODO: support handling charges
@@ -177,7 +177,7 @@ class PaymentPaypalPro extends IsotopePayment
 			$this->Error['VERSION']			= @$this->Response['VERSION'];
 			$this->Error['BUILD']			= @$this->Response['BUILD'];*/
 			
-			// TODO: Error codes for AVSCODE and CVV@MATCH
+			//!@todo: Error codes for AVSCODE and CVV@MATCH
 			/*
 			$this->_error				= true;
 			$this->_error_ack			= $this->Response['ACK'];
@@ -196,7 +196,7 @@ class PaymentPaypalPro extends IsotopePayment
 			
 			$_SESSION['CHECKOUT_DATA']['payment'][$this->id]['error'] = $arrResponse['L_LONGMESSAGE0'];
 
-			//TODO: store the reason for a failure for later in case the payment info can be corrected.
+			//!@todo: store the reason for a failure for later in case the payment info can be corrected.
 			
 			$this->redirect($this->addToUrl('step=payment'));
 		}			

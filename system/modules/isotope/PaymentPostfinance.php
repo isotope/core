@@ -132,7 +132,7 @@ class PaymentPostfinance extends IsotopePayment
 		if ($this->postsale_mail)
 		{
 			$this->Import('Isotope');
-			$this->Isotope->overrideStore($objOrder->store_id);
+			$this->Isotope->overrideConfig($objOrder->config_id);
 			$this->Isotope->sendMail($this->postsale_mail, $GLOBALS['TL_ADMIN_EMAIL'], $GLOBALS['TL_LANGUAGE'], $arrData);
 		}
 	}
@@ -162,8 +162,8 @@ class PaymentPostfinance extends IsotopePayment
 		$arrData = array
 		(
 			'PSPID'			=> $this->postfinance_pspid,
-			'currency'		=> $this->Isotope->Store->currency,
-			'SHASign'		=> sha1($objOrder->order_id . ($this->Cart->grandTotal * 100) . $this->Isotope->Store->currency . $this->postfinance_pspid . $this->postfinance_secret),
+			'currency'		=> $this->Isotope->Config->currency,
+			'SHASign'		=> sha1($objOrder->order_id . ($this->Cart->grandTotal * 100) . $this->Isotope->Config->currency . $this->postfinance_pspid . $this->postfinance_secret),
 		);
 		
 		$this->Database->prepare("UPDATE tl_iso_orders SET payment_data=? WHERE id=?")->execute(serialize($arrData), $objOrder->id);

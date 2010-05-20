@@ -46,7 +46,7 @@ class IsotopeRunonce extends Frontend
 	public function run()
 	{
 		// Cancel if shop has not yet been installed
-		if (!$this->Database->tableExists('tl_store'))
+		if (!$this->Database->tableExists('tl_store') && !$this->Database->tableExists('tl_iso_config'))
 			return;
 			
 		$this->renameTables();
@@ -106,27 +106,28 @@ class IsotopeRunonce extends Frontend
 		if ($this->Database->tableExists('tl_related_categories')) $this->Database->executeUncached("ALTER TABLE tl_related_categories RENAME tl_iso_related_categories");
 		if ($this->Database->tableExists('tl_related_products')) $this->Database->executeUncached("ALTER TABLE tl_related_products RENAME tl_iso_related_products");
 		if ($this->Database->tableExists('tl_address_book')) $this->Database->executeUncached("ALTER TABLE tl_address_book RENAME tl_iso_addresses");
+		if ($this->Database->tableExists('tl_store')) $this->Database->executeUncached("ALTER TABLE tl_store RENAME tl_iso_config");
 	}
 	
 	
 	private function renameFields()
 	{
-		// tl_store.store_configuration_name has been renamed to tl_store.name
-		if ($this->Database->fieldExists('store_configuration_name', 'tl_store'))
+		// tl_iso_config.store_configuration_name has been renamed to tl_iso_config.name
+		if ($this->Database->fieldExists('store_configuration_name', 'tl_iso_config'))
 		{
-			$this->Database->executeUncached("ALTER TABLE tl_store CHANGE COLUMN store_configuration_name name varchar(255) NOT NULL default ''");
+			$this->Database->executeUncached("ALTER TABLE tl_iso_config CHANGE COLUMN store_configuration_name name varchar(255) NOT NULL default ''");
 		}
 		
-		// tl_store.gallery_thumbnail_image_width has been renamed to tl_store.gallery_image_width
-		if ($this->Database->fieldExists('gallery_thumbnail_image_width', 'tl_store'))
+		// tl_iso_config.gallery_thumbnail_image_width has been renamed to tl_iso_config.gallery_image_width
+		if ($this->Database->fieldExists('gallery_thumbnail_image_width', 'tl_iso_config'))
 		{
-			$this->Database->executeUncached("ALTER TABLE tl_store CHANGE COLUMN gallery_thumbnail_image_width gallery_image_width int(10) unsigned NOT NULL default '0'");
+			$this->Database->executeUncached("ALTER TABLE tl_iso_config CHANGE COLUMN gallery_thumbnail_image_width gallery_image_width int(10) unsigned NOT NULL default '0'");
 		}
 		
-		// tl_store.gallery_thumbnail_image_height has been renamed to tl_store.gallery_image_height
-		if ($this->Database->fieldExists('gallery_thumbnail_image_height', 'tl_store'))
+		// tl_iso_config.gallery_thumbnail_image_height has been renamed to tl_iso_config.gallery_image_height
+		if ($this->Database->fieldExists('gallery_thumbnail_image_height', 'tl_iso_config'))
 		{
-			$this->Database->executeUncached("ALTER TABLE tl_store CHANGE COLUMN gallery_thumbnail_image_height gallery_image_height int(10) unsigned NOT NULL default '0'");
+			$this->Database->executeUncached("ALTER TABLE tl_iso_config CHANGE COLUMN gallery_thumbnail_image_height gallery_image_height int(10) unsigned NOT NULL default '0'");
 		}
 		
 		// tl_iso_products.visiblity has been renamed to tl_iso_products.published
@@ -135,7 +136,7 @@ class IsotopeRunonce extends Frontend
 			$this->Database->executeUncached("ALTER TABLE tl_iso_products CHANGE COLUMN visibility published char(1) NOT NULL default ''");
 		}
 		
-		// tl_product_date.main_image has been renamed to tl_iso_products.images
+		// tl_product_data.main_image has been renamed to tl_iso_products.images
 		if ($this->Database->fieldExists('main_image', 'tl_iso_products'))
 		{
 			$this->Database->executeUncached("ALTER TABLE tl_iso_products CHANGE COLUMN main_image images blob NULL");
@@ -153,24 +154,66 @@ class IsotopeRunonce extends Frontend
 			$this->Database->executeUncached("ALTER TABLE tl_iso_addresses CHANGE COLUMN state subdivision varchar(10) NOT NULL default ''");
 		}
 		
-		// tl_store.state has been renamed to tl_store.subdivision
-		if ($this->Database->fieldExists('state', 'tl_store') && !$this->Database->fieldExists('subdivision', 'tl_store'))
+		// tl_iso_config.state has been renamed to tl_iso_config.subdivision
+		if ($this->Database->fieldExists('state', 'tl_iso_config') && !$this->Database->fieldExists('subdivision', 'tl_iso_config'))
 		{
-			$this->Database->executeUncached("ALTER TABLE tl_store CHANGE COLUMN state subdivision varchar(10) NOT NULL default ''");
+			$this->Database->executeUncached("ALTER TABLE tl_iso_config CHANGE COLUMN state subdivision varchar(10) NOT NULL default ''");
 		}
 		
-		// tl_store.street has been renamed to tl_store.street_1
-		if ($this->Database->fieldExists('street', 'tl_store') && !$this->Database->fieldExists('street_1', 'tl_store'))
+		// tl_iso_config.street has been renamed to tl_iso_config.street_1
+		if ($this->Database->fieldExists('street', 'tl_iso_config') && !$this->Database->fieldExists('street_1', 'tl_iso_config'))
 		{
-			$this->Database->executeUncached("ALTER TABLE tl_store CHANGE COLUMN street street_1 varchar(255) NOT NULL default ''");
+			$this->Database->executeUncached("ALTER TABLE tl_iso_config CHANGE COLUMN street street_1 varchar(255) NOT NULL default ''");
+		}
+		
+		// tl_module.store_id has been renamed to tl_module.iso_config_id
+		if ($this->Database->fieldExists('store_id', 'tl_module') && !$this->Database->fieldExists('iso_config_id', 'tl_module'))
+		{
+			$this->Database->executeUncached("ALTER TABLE tl_module CHANGE COLUMN store_id iso_config_id int(10) unsigned NOT NULL default '0'");
+		}
+		
+		// tl_module.store_ids has been renamed to tl_module.iso_config_ids
+		if ($this->Database->fieldExists('store_ids', 'tl_module') && !$this->Database->fieldExists('iso_config_ids', 'tl_module'))
+		{
+			$this->Database->executeUncached("ALTER TABLE tl_module CHANGE COLUMN store_ids iso_config_ids blob NULL");
+		}
+		
+		// tl_cart.store_id has been renamed to tl_cart.config_id
+		if ($this->Database->fieldExists('store_id', 'tl_cart') && !$this->Database->fieldExists('config_id', 'tl_cart'))
+		{
+			$this->Database->executeUncached("ALTER TABLE tl_cart CHANGE COLUMN store_id config_id int(10) unsigned NOT NULL default '0'");
+		}
+		
+		// tl_iso_orders.store_id has been renamed to tl_iso_orders.config_id
+		if ($this->Database->fieldExists('store_id', 'tl_iso_orders') && !$this->Database->fieldExists('config_id', 'tl_iso_orders'))
+		{
+			$this->Database->executeUncached("ALTER TABLE tl_iso_orders CHANGE COLUMN store_id config_id int(10) unsigned NOT NULL default '0'");
+		}
+		
+		// tl_iso_config.isDefaultStore has been renamed to tl_iso_config.fallback
+		if ($this->Database->fieldExists('isDefaultStore', 'tl_iso_config') && !$this->Database->fieldExists('fallback', 'tl_iso_config'))
+		{
+			$this->Database->executeUncached("ALTER TABLE tl_iso_config CHANGE COLUMN isDefaultStore fallback char(1) NOT NULL default ''");
+		}
+		
+		// tl_user.iso_stores has been renamed to tl_user.iso_configs
+		if ($this->Database->fieldExists('iso_stores', 'tl_user') && !$this->Database->fieldExists('iso_configs', 'tl_user'))
+		{
+			$this->Database->executeUncached("ALTER TABLE tl_user CHANGE COLUMN iso_stores iso_configs blob NULL");
+		}
+		
+		// tl_user_group.iso_stores has been renamed to tl_user_group.iso_configs
+		if ($this->Database->fieldExists('iso_stores', 'tl_user_group') && !$this->Database->fieldExists('iso_configs', 'tl_user_group'))
+		{
+			$this->Database->executeUncached("ALTER TABLE tl_user_group CHANGE COLUMN iso_stores iso_configs blob NULL");
 		}
 		
 		// tl_iso_addresses.street has been renamed to tl_iso_addresses.street_1
 		if ($this->Database->fieldExists('street', 'tl_iso_addresses') && !$this->Database->fieldExists('street_1','tl_iso_addresses'))
 		{
 			$this->Database->executeUncached("ALTER TABLE tl_iso_addresses CHANGE COLUMN street street_1 varchar(255) NOT NULL default ''");
-			$this->Database->executeUncached("ALTER TABLE tl_store CHANGE COLUMN street street_1 varchar(255) NOT NULL default ''");
-			$objStores = $this->Database->executeUncached("SELECT * FROM tl_store");
+			$this->Database->executeUncached("ALTER TABLE tl_iso_config CHANGE COLUMN street street_1 varchar(255) NOT NULL default ''");
+			$objStores = $this->Database->executeUncached("SELECT * FROM tl_iso_config");
 			
 			while( $objStores->next() )
 			{
@@ -187,7 +230,7 @@ class IsotopeRunonce extends Frontend
 					$arrShipping[$k] = 'street_1';
 				}
 				
-				$this->Database->prepare("UPDATE tl_store SET shipping_fields=?, billing_fields=? WHERE id=?")->execute(serialize($arrShipping), serialize($arrBilling), $objStores->id);
+				$this->Database->prepare("UPDATE tl_iso_config SET shipping_fields=?, billing_fields=? WHERE id=?")->execute(serialize($arrShipping), serialize($arrBilling), $objStores->id);
 			}
 		}
 	}
@@ -219,18 +262,18 @@ class IsotopeRunonce extends Frontend
 	
 	private function updateStoreConfigurations()
 	{
-		if ($this->Database->fieldExists('countries', 'tl_store') && !$this->Database->fieldExists('shipping_countries','tl_store'))
+		if ($this->Database->fieldExists('countries', 'tl_iso_config') && !$this->Database->fieldExists('shipping_countries','tl_iso_config'))
 		{
-			$this->Database->executeUncached("ALTER TABLE tl_store CHANGE COLUMN countries shipping_countries blob NULL");
-			$this->Database->executeUncached("ALTER TABLE tl_store ADD COLUMN billing_countries blob NULL");
-			$this->Database->prepare("UPDATE tl_store SET billing_countries=shipping_countries");
+			$this->Database->executeUncached("ALTER TABLE tl_iso_config CHANGE COLUMN countries shipping_countries blob NULL");
+			$this->Database->executeUncached("ALTER TABLE tl_iso_config ADD COLUMN billing_countries blob NULL");
+			$this->Database->prepare("UPDATE tl_iso_config SET billing_countries=shipping_countries");
 		}
 		
-		if ($this->Database->fieldExists('address_fields', 'tl_store') && !$this->Database->fieldExists('shipping_fields','tl_store'))
+		if ($this->Database->fieldExists('address_fields', 'tl_iso_config') && !$this->Database->fieldExists('shipping_fields','tl_iso_config'))
 		{
-			$this->Database->executeUncached("ALTER TABLE tl_store CHANGE COLUMN address_fields shipping_fields blob NULL");
-			$this->Database->executeUncached("ALTER TABLE tl_store ADD COLUMN billing_fields blob NULL");
-			$this->Database->prepare("UPDATE tl_store SET billing_fields=shipping_fields");
+			$this->Database->executeUncached("ALTER TABLE tl_iso_config CHANGE COLUMN address_fields shipping_fields blob NULL");
+			$this->Database->executeUncached("ALTER TABLE tl_iso_config ADD COLUMN billing_fields blob NULL");
+			$this->Database->prepare("UPDATE tl_iso_config SET billing_fields=shipping_fields");
 		}
 	}
 	
@@ -275,41 +318,41 @@ class IsotopeRunonce extends Frontend
 	{
 		$arrUpdate = array();
 		
-		if ($this->Database->fieldExists('gallery_image_width', 'tl_store') && $this->Database->fieldExists('gallery_image_height', 'tl_store'))
+		if ($this->Database->fieldExists('gallery_image_width', 'tl_iso_config') && $this->Database->fieldExists('gallery_image_height', 'tl_iso_config'))
 		{
-			if (!$this->Database->fieldExists('gallery_size', 'tl_store'))
+			if (!$this->Database->fieldExists('gallery_size', 'tl_iso_config'))
 			{
-				$this->Database->executeUncached("ALTER TABLE tl_store ADD COLUMN gallery_size varchar(64) NOT NULL default ''");
+				$this->Database->executeUncached("ALTER TABLE tl_iso_config ADD COLUMN gallery_size varchar(64) NOT NULL default ''");
 			}
 			
 			$arrUpdate[] = 'gallery';
 		}
 		
-		if ($this->Database->fieldExists('thumbnail_image_width', 'tl_store') && $this->Database->fieldExists('thumbnail_image_height', 'tl_store'))
+		if ($this->Database->fieldExists('thumbnail_image_width', 'tl_iso_config') && $this->Database->fieldExists('thumbnail_image_height', 'tl_iso_config'))
 		{
-			if (!$this->Database->fieldExists('thumbnail_size', 'tl_store'))
+			if (!$this->Database->fieldExists('thumbnail_size', 'tl_iso_config'))
 			{
-				$this->Database->executeUncached("ALTER TABLE tl_store ADD COLUMN thumbnail_size varchar(64) NOT NULL default ''");
+				$this->Database->executeUncached("ALTER TABLE tl_iso_config ADD COLUMN thumbnail_size varchar(64) NOT NULL default ''");
 			}
 			
 			$arrUpdate[] = 'thumbnail';
 		}
 		
-		if ($this->Database->fieldExists('medium_image_width', 'tl_store') && $this->Database->fieldExists('medium_image_height', 'tl_store'))
+		if ($this->Database->fieldExists('medium_image_width', 'tl_iso_config') && $this->Database->fieldExists('medium_image_height', 'tl_iso_config'))
 		{
-			if (!$this->Database->fieldExists('medium_size', 'tl_store'))
+			if (!$this->Database->fieldExists('medium_size', 'tl_iso_config'))
 			{
-				$this->Database->executeUncached("ALTER TABLE tl_store ADD COLUMN medium_size varchar(64) NOT NULL default ''");
+				$this->Database->executeUncached("ALTER TABLE tl_iso_config ADD COLUMN medium_size varchar(64) NOT NULL default ''");
 			}
 			
 			$arrUpdate[] = 'medium';
 		}
 		
-		if ($this->Database->fieldExists('large_image_width', 'tl_store') && $this->Database->fieldExists('large_image_height', 'tl_store'))
+		if ($this->Database->fieldExists('large_image_width', 'tl_iso_config') && $this->Database->fieldExists('large_image_height', 'tl_iso_config'))
 		{
-			if (!$this->Database->fieldExists('large_size', 'tl_store'))
+			if (!$this->Database->fieldExists('large_size', 'tl_iso_config'))
 			{
-				$this->Database->executeUncached("ALTER TABLE tl_store ADD COLUMN large_size varchar(64) NOT NULL default ''");
+				$this->Database->executeUncached("ALTER TABLE tl_iso_config ADD COLUMN large_size varchar(64) NOT NULL default ''");
 			}
 			
 			$arrUpdate[] = 'large';
@@ -318,7 +361,7 @@ class IsotopeRunonce extends Frontend
 		
 		if (count($arrUpdate))
 		{
-			$objStores = $this->Database->executeUncached("SELECT * FROM tl_store");
+			$objStores = $this->Database->executeUncached("SELECT * FROM tl_iso_config");
 			
 			while( $objStores->next() )
 			{
@@ -329,14 +372,14 @@ class IsotopeRunonce extends Frontend
 					$arrSet[$size.'_size'] = serialize(array($objStores->{$size.'_image_width'}, $objStores->{$size.'_image_height'}, 'crop'));
 				}
 				
-				$this->Database->prepare("UPDATE tl_store %s WHERE id=?")->set($arrSet)->execute($objStores->id);
+				$this->Database->prepare("UPDATE tl_iso_config %s WHERE id=?")->set($arrSet)->execute($objStores->id);
 			}
 			
 			foreach( $arrUpdate as $size )
 			{
 				// Do not use multiple DROP COLUMN in one ALTER TABLE. It is supported by MySQL, but not standard SQL92
-				$this->Database->executeUncached("ALTER TABLE tl_store DROP COLUMN ".$size."_image_width");
-				$this->Database->executeUncached("ALTER TABLE tl_store DROP COLUMN ".$size."_image_height");
+				$this->Database->executeUncached("ALTER TABLE tl_iso_config DROP COLUMN ".$size."_image_width");
+				$this->Database->executeUncached("ALTER TABLE tl_iso_config DROP COLUMN ".$size."_image_height");
 			}
 		}
 	}
@@ -355,6 +398,7 @@ class IsotopeRunonce extends Frontend
 			'isoOrderDetails'			=> 'iso_orderdetails',
 			'isoStoreSwitcher'			=> 'iso_storeswitcher',
 			'isoAddressBook'			=> 'iso_addressbook',
+			'iso_storeswitcher'			=> 'iso_configswitcher',
 		);
 		
 		foreach( $arrUpdate as $old => $new )
@@ -394,6 +438,7 @@ class IsotopeRunonce extends Frontend
 			'mod_productreader'			=> 'mod_iso_productreader',
 			'mod_storeswitcher'			=> 'mod_iso_storeswitcher',
 			'iso_address_book_list'		=> 'mod_iso_addressbook',
+			'mod_iso_storeswitcher'		=> 'mod_iso_configswitcher',
 		);
 		
 		$this->import('Files');

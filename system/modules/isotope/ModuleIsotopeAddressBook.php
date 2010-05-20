@@ -69,7 +69,7 @@ class ModuleIsotopeAddressBook extends Module
 		$this->import('Isotope');
 		$this->import('FrontendUser', 'User');
 
-		$this->arrFields = array_unique(array_merge(deserialize($this->Isotope->Store->billing_fields, true), deserialize($this->Isotope->Store->shipping_fields, true)));
+		$this->arrFields = array_unique(array_merge(deserialize($this->Isotope->Config->billing_fields, true), deserialize($this->Isotope->Config->shipping_fields, true)));
 
 		// Return if there are not editable fields
 		if (!count($this->arrFields) || (count($this->arrFields) == 1 && $this->arrFields[0] == ''))

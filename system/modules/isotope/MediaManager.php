@@ -155,7 +155,7 @@ class MediaManager extends Widget implements uploadable
 			}
 		}
 
-		// Store file in the isotope folder
+		// Save file in the isotope folder
 		if (!$this->hasErrors())
 		{			
 			$this->import('Files');

@@ -320,7 +320,7 @@ class IsotopePOS extends Backend
 		$pdf->lastPage();
 		$pdf->Output(standardize(ampersand($strInvoiceTitle, false)) . '.pdf', 'D');
 		
-		$this->Isotope->resetStore(true); 	//Set store back to default.
+		$this->Isotope->resetConfig(true); 	//Set store back to default.
 		
 		ob_end_clean();
 		exit;	
@@ -343,12 +343,12 @@ class IsotopePOS extends Backend
 		$objTemplate->setData($objOrderData->row());
 		
 		$this->import('Isotope');
-		$this->Isotope->overrideStore($objOrderData->store_id);
+		$this->Isotope->overrideConfig($objOrderData->config_id);
 		
 		// Invoice Logo
-		$objInvoiceLogo = $this->Database->prepare("SELECT invoiceLogo FROM tl_store WHERE id=?")
+		$objInvoiceLogo = $this->Database->prepare("SELECT invoiceLogo FROM tl_iso_config WHERE id=?")
 										 ->limit(1)
-										 ->execute($objOrderData->store_id);
+										 ->execute($objOrderData->config_id);
 		
 		if($objInvoiceLogo->numRows < 1)
 		{
@@ -456,7 +456,7 @@ class IsotopePOS extends Backend
 		$objTemplate->surcharges = $arrSurcharges;
 		
 		$objTemplate->billing_label = $GLOBALS['TL_LANG']['ISO']['billing_address'];
-		$objTemplate->billing_address = $this->Isotope->generateAddressString(deserialize($objOrderData->billing_address), $this->Isotope->Store->billing_fields);
+		$objTemplate->billing_address = $this->Isotope->generateAddressString(deserialize($objOrderData->billing_address), $this->Isotope->Config->billing_fields);
 		if (strlen($objOrderData->shipping_method))
 		{
 			$arrShippingAddress = deserialize($objOrderData->shipping_address);
@@ -469,7 +469,7 @@ class IsotopePOS extends Backend
 			{
 				$objTemplate->has_shipping = true;
 				$objTemplate->shipping_label = $GLOBALS['TL_LANG']['ISO']['shipping_address'];
-				$objTemplate->shipping_address = $this->Isotope->generateAddressString($arrShippingAddress, $this->Isotope->Store->shipping_fields);
+				$objTemplate->shipping_address = $this->Isotope->generateAddressString($arrShippingAddress, $this->Isotope->Config->shipping_fields);
 			}
 		}
 		
