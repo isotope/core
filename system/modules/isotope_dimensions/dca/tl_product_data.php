@@ -29,26 +29,26 @@
 /**
  * Fields
  */
-$GLOBALS['TL_DCA']['tl_product_data']['fields']['dimensions'] = array
+$GLOBALS['TL_DCA']['tl_iso_products']['fields']['dimensions'] = array
 (
-	'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['dimensions'],
+	'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['dimensions'],
 	'inputType'				=> 'select',
 	'foreignKey'			=> 'tl_product_dimensions.name',
 	'eval'					=> array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'clr'),
 	'attributes'			=> array('legend'=>'pricing_legend'),
 );
 
-$GLOBALS['TL_DCA']['tl_product_data']['fields']['dimensions_min'] = array
+$GLOBALS['TL_DCA']['tl_iso_products']['fields']['dimensions_min'] = array
 (
-	'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['dimensions_min'],
+	'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['dimensions_min'],
 	'inputType'				=> 'text',
 	'eval'					=> array('mandatory'=>true, 'multiple'=>true, 'size'=>2, 'rgxp'=>'digits', 'tl_class'=>'w50'),
 	'attributes'			=> array('legend'=>'pricing_legend'),
 );
 
-$GLOBALS['TL_DCA']['tl_product_data']['fields']['dimensions_max'] = array
+$GLOBALS['TL_DCA']['tl_iso_products']['fields']['dimensions_max'] = array
 (
-	'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['dimensions_max'],
+	'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['dimensions_max'],
 	'inputType'				=> 'text',
 	'eval'					=> array('mandatory'=>true, 'multiple'=>true, 'size'=>2, 'rgxp'=>'digits', 'tl_class'=>'w50'),
 	'attributes'			=> array('legend'=>'pricing_legend'),

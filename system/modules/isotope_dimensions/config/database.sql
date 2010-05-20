@@ -42,10 +42,10 @@ CREATE TABLE `tl_product_dimension_prices` (
 -- --------------------------------------------------------
 
 -- 
--- Table `tl_product_data`
+-- Table `tl_iso_products`
 -- 
 
-CREATE TABLE `tl_product_data` (
+CREATE TABLE `tl_iso_products` (
   `dimensions` int(10) unsigned NOT NULL default '0',
   `dimensions_min` blob NULL,
   `dimensions_max` blob NULL,

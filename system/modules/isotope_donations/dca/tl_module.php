@@ -50,7 +50,7 @@ class tl_module_isotope_donations extends Backend
 
 	public function getDonationProducts()
 	{
-		$objProducts = $this->Database->prepare("SELECT id, name FROM tl_product_data WHERE alias LIKE ?")
+		$objProducts = $this->Database->prepare("SELECT id, name FROM tl_iso_products WHERE alias LIKE ?")
 									  ->execute('%donation%');
 		
 		if(!$objProducts->numRows)

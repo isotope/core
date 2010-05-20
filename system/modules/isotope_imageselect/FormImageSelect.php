@@ -100,7 +100,7 @@ class FormImageSelect extends Widget
 	 */
 	public function generate()
 	{
-		$arrImages = $GLOBALS['TL_DCA']['tl_product_data']['fields'][$this->strName]['images'];
+		$arrImages = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$this->strName]['images'];
 		
 		$strOptions = '';
 

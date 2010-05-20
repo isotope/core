@@ -125,13 +125,13 @@ class IsotopeImageSelect extends Frontend
 			
 			foreach( $objProduct->getOptions(true) as $name => $value )
 			{
-				if ($GLOBALS['TL_DCA']['tl_product_data']['fields'][$name]['attributes']['add_to_product_variants'])
+				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$name]['attributes']['add_to_product_variants'])
 				{
 					$arrSearch[$name] = $value;
 				}
 			}
 			
-			$arrOptions = $this->Database->prepare("SELECT " . $strField . " FROM tl_product_data WHERE language='' AND published='1' AND " . implode("=? AND ", array_keys($arrSearch)) . "=? GROUP BY " . $strField)->execute($arrSearch)->fetchEach($strField);
+			$arrOptions = $this->Database->prepare("SELECT " . $strField . " FROM tl_iso_products WHERE language='' AND published='1' AND " . implode("=? AND ", array_keys($arrSearch)) . "=? GROUP BY " . $strField)->execute($arrSearch)->fetchEach($strField);
 			
 			foreach( $arrData['options'] as $k => $v )
 			{

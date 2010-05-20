@@ -143,7 +143,7 @@ class ModuleDonations extends ModuleIsotope
 	
 	private function generateWishListWidget()
 	{
-		$arrAttributeData = $GLOBALS['TL_DCA']['tl_product_data']['fields']['wish_list']['attributes'];
+		$arrAttributeData = $GLOBALS['TL_DCA']['tl_iso_products']['fields']['wish_list']['attributes'];
 		
 		$arrOptionList = deserialize($arrAttributeData['option_list']);
 
@@ -165,7 +165,7 @@ class ModuleDonations extends ModuleIsotope
 
 	private function generateCommentsWidget()
 	{
-		$arrAttributeData = $GLOBALS['TL_DCA']['tl_product_data']['fields']['donation_comments']['attributes'];
+		$arrAttributeData = $GLOBALS['TL_DCA']['tl_iso_products']['fields']['donation_comments']['attributes'];
 	
 		$arrData = array
 		(
@@ -201,7 +201,7 @@ class ModuleDonations extends ModuleIsotope
 	 */
 	protected function getProduct($intId)
 	{
-		$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_product_types WHERE tl_product_data.type=tl_product_types.id) AS type_class FROM tl_product_data WHERE id=?")
+		$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_product_types WHERE tl_iso_products.type=tl_product_types.id) AS type_class FROM tl_iso_products WHERE id=?")
 										 ->limit(1)
 										 ->executeUncached($intId);
 									 

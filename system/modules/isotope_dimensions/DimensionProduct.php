@@ -94,16 +94,16 @@ class DimensionProduct extends IsotopeProduct
 		$arrData['dimension_x'] = intval($this->arrData['dimension_x']);
 		$arrData['dimension_y'] = intval($this->arrData['dimension_y']);
 		
-		$GLOBALS['TL_DCA']['tl_product_data']['fields']['dimension_x'] = array
+		$GLOBALS['TL_DCA']['tl_iso_products']['fields']['dimension_x'] = array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['dimension_x'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['dimension_x'],
 			'inputType'				=> 'text',
 			'eval'					=> array('mandatory'=>true),
 			'attributes'			=> array('is_customer_defined'	=> true),		);
 		
-		$GLOBALS['TL_DCA']['tl_product_data']['fields']['dimension_y'] = array
+		$GLOBALS['TL_DCA']['tl_iso_products']['fields']['dimension_y'] = array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_product_data']['dimension_y'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['dimension_y'],
 			'inputType'				=> 'text',
 			'eval'					=> array('mandatory'=>true),
 			'attributes'			=> array('is_customer_defined'	=> true),
