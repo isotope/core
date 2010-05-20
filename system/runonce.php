@@ -110,22 +110,27 @@ class IsotopeRunonce extends Frontend
 			$this->Database->executeUncached("ALTER TABLE tl_store CHANGE COLUMN gallery_thumbnail_image_height gallery_image_height int(10) unsigned NOT NULL default '0'");
 		}
 		
-		// tl_product_data.visiblity has been renamed to tl_product_data.published
-		if ($this->Database->fieldExists('visibility', 'tl_product_data'))
+		if ($this->Database->tableExists('tl_product_data'))
 		{
-			$this->Database->executeUncached("ALTER TABLE tl_product_data CHANGE COLUMN visibility published char(1) NOT NULL default ''");
+			// tl_product_data.visiblity has been renamed to tl_product_data.published
+			if ($this->Database->fieldExists('visibility', 'tl_product_data'))
+			{
+				$this->Database->executeUncached("ALTER TABLE tl_product_data CHANGE COLUMN visibility published char(1) NOT NULL default ''");
+			}
+			
+			// tl_product_date.main_image has been renamed to tl_product_data.images
+			if ($this->Database->fieldExists('main_image', 'tl_product_data'))
+			{
+				$this->Database->executeUncached("ALTER TABLE tl_product_data CHANGE COLUMN main_image images blob NULL");
+			}
+			
+			$this->Database->executeUncached("ALTER TABLE tl_product_data RENAME tl_iso_products");
 		}
 		
 		// tl_product_attributes.fieldGroup has been renamed to tl_product_attributes.legend
 		if ($this->Database->fieldExists('fieldGroup', 'tl_product_attributes'))
 		{
 			$this->Database->executeUncached("ALTER TABLE tl_product_attributes CHANGE COLUMN fieldGroup legend varchar(255) NOT NULL default ''");
-		}
-		
-		// tl_product_date.main_image has been renamed to tl_product_data.images
-		if ($this->Database->fieldExists('main_image', 'tl_product_data'))
-		{
-			$this->Database->executeUncached("ALTER TABLE tl_product_data CHANGE COLUMN main_image images blob NULL");
 		}
 		
 		// tl_address_book.state has been renamed to tl_address_book.subdivision
