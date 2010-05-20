@@ -31,9 +31,9 @@ $this->loadLanguageFile('subdivisions');
 
 
 /**
- * Table tl_tax_rate
+ * Table tl_iso_tax_rate
  */
-$GLOBALS['TL_DCA']['tl_tax_rate'] = array
+$GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
 (
 
 	// Config
@@ -44,8 +44,8 @@ $GLOBALS['TL_DCA']['tl_tax_rate'] = array
 		'closed'					  => true,
 		'onload_callback'			  => array
 		(
-			array('tl_tax_rate', 'checkPermission'),
-			array('tl_tax_rate', 'addCurrencyRate'),
+			array('tl_iso_tax_rate', 'checkPermission'),
+			array('tl_iso_tax_rate', 'addCurrencyRate'),
 		),
 	),
 
@@ -62,7 +62,7 @@ $GLOBALS['TL_DCA']['tl_tax_rate'] = array
 		(
 			'fields'				  => array('name'),
 			'format'				  => '%s',
-			'label_callback'		  => array('tl_tax_rate', 'listRow'),
+			'label_callback'		  => array('tl_iso_tax_rate', 'listRow'),
 		),
 		'global_operations' => array
 		(
@@ -75,7 +75,7 @@ $GLOBALS['TL_DCA']['tl_tax_rate'] = array
 			),
 			'new' => array
 			(
-				'label'					=> &$GLOBALS['TL_LANG']['tl_tax_rate']['new'],
+				'label'					=> &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['new'],
 				'href'					=> 'act=create',
 				'class'					=> 'header_new',
 				'attributes'			=> 'onclick="Backend.getScrollOffset();"',
@@ -92,33 +92,33 @@ $GLOBALS['TL_DCA']['tl_tax_rate'] = array
 		(
 			'edit' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_tax_rate']['edit'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['edit'],
 				'href'                => 'act=edit',
 				'icon'                => 'edit.gif'
 			),
 			'copy' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_tax_rate']['copy'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['copy'],
 				'href'                => 'act=copy',
 				'icon'                => 'copy.gif'
 			),
 			'cut' => array
 			(
-				'label'					=> &$GLOBALS['TL_LANG']['tl_tax_rate']['cut'],
+				'label'					=> &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['cut'],
 				'href'					=> 'act=paste&amp;mode=cut',
 				'icon'					=> 'cut.gif',
 				'attributes'			=> 'onclick="Backend.getScrollOffset();"'
 			),
 			'delete' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_tax_rate']['delete'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['delete'],
 				'href'                => 'act=delete',
 				'icon'                => 'delete.gif',
 				'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
 			),
 			'show' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_tax_rate']['show'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['show'],
 				'href'                => 'act=show',
 				'icon'                => 'show.gif'
 			)
@@ -137,34 +137,34 @@ $GLOBALS['TL_DCA']['tl_tax_rate'] = array
 	(
 		'name' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['name'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['name'],
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255, 'mandatory'=>true, 'tl_class'=>'w50'),
 		),
 		'label' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['label'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['label'],
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255, 'mandatory'=>true, 'tl_class'=>'w50'),
 		),
 		'address' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['address'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['address'],
 			'inputType'               => 'checkbox',
 			'options'				  => array('billing', 'shipping'),
-			'reference'				  => &$GLOBALS['TL_LANG']['tl_tax_rate'],
+			'reference'				  => &$GLOBALS['TL_LANG']['tl_iso_tax_rate'],
 			'eval'                    => array('mandatory'=>true, 'multiple'=>true)
 		),
 		'country' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['country'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['country'],
 			'inputType'               => 'select',
 			'options'                 => $this->getCountries(),
 			'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50')
 		),
 		'subdivision' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['subdivision'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['subdivision'],
 			'exclude'                 => true,
 			'sorting'                 => true,
 			'inputType'               => 'conditionalselect',
@@ -173,60 +173,60 @@ $GLOBALS['TL_DCA']['tl_tax_rate'] = array
 		),
 		'postal' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['postal'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['postal'],
 			'flag'                    => 1,
 			'inputType'               => 'text',
 			'eval'                    => array('multiple'=>true, 'size'=>2, 'maxlength'=>10, 'rgxp'=>'digits', 'tl_class'=>'w50'),
 		),
 		'store' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['store'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['store'],
 			'inputType'               => 'select',
 			'foreignKey'			  => 'tl_store.name',
 			'eval'                    => array('includeBlankOption'=>true, 'submitOnChange'=>true),
 		),
 		'rate' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['rate'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['rate'],
 			'inputType'               => 'inputUnit',
 			'options'				  => array('%'=>'%'),
 			'eval'                    => array('maxlength'=>255, 'rgxp'=>'digits')
 		),
 		'amount' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_rate']['amount'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['amount'],
 			'inputType'               => 'text',
 			'eval'                    => array('multiple'=>true, 'size'=>2, 'maxlength'=>10, 'rgxp'=>'digits', 'tl_class'=>'w50'),
 		),
 		'compound' => array
 		(
-			'label'						=> &$GLOBALS['TL_LANG']['tl_tax_rate']['compound'],
+			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['compound'],
 			'inputType'					=> 'checkbox',
 		),
 		'stop' => array
 		(
-			'label'						=> &$GLOBALS['TL_LANG']['tl_tax_rate']['stop'],
+			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['stop'],
 			'inputType'					=> 'checkbox',
 		),
 	)
 );
 
 
-class tl_tax_rate extends Backend
+class tl_iso_tax_rate extends Backend
 {
 
 	public function checkPermission($dc)
 	{
 		if (strlen($this->Input->get('act')))
 		{
-			$GLOBALS['TL_DCA']['tl_tax_rate']['config']['closed'] = false;
+			$GLOBALS['TL_DCA']['tl_iso_tax_rate']['config']['closed'] = false;
 		}
 	}
 	
 	
 	public function getSubdivisions(DataContainer $dc)
 	{
-		$objTaxRate = $this->Database->prepare("SELECT country FROM tl_tax_rate WHERE id=?")->limit(1)->execute($dc->id);
+		$objTaxRate = $this->Database->prepare("SELECT country FROM tl_iso_tax_rate WHERE id=?")->limit(1)->execute($dc->id);
 	
 		if(!$objTaxRate->numRows || !strlen($objTaxRate->country))
 			return array();
@@ -264,11 +264,11 @@ class tl_tax_rate extends Backend
 	
 	public function addCurrencyRate($dc)
 	{
-		$objStore = $this->Database->prepare("SELECT tl_store.* FROM tl_tax_rate LEFT OUTER JOIN tl_store ON tl_store.id=tl_tax_rate.store WHERE tl_tax_rate.id=?")->execute($dc->id);
+		$objStore = $this->Database->prepare("SELECT tl_store.* FROM tl_iso_tax_rate LEFT OUTER JOIN tl_store ON tl_store.id=tl_iso_tax_rate.store WHERE tl_iso_tax_rate.id=?")->execute($dc->id);
 		
 		if ($objStore->currency)
 		{
-			$GLOBALS['TL_DCA']['tl_tax_rate']['fields']['rate']['options'][''] = $objStore->currency;
+			$GLOBALS['TL_DCA']['tl_iso_tax_rate']['fields']['rate']['options'][''] = $objStore->currency;
 		}
 	}
 }

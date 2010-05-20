@@ -341,7 +341,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['tax_class'],
 			'inputType'				=> 'select',
-			'foreignKey'			=> 'tl_tax_class.name',
+			'foreignKey'			=> 'tl_iso_tax_class.name',
 			'attributes'			=> array('legend'=>'tax_legend'),
 			'eval'					=> array('includeBlankOption'=>true),
 		),

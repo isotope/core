@@ -585,10 +585,10 @@ CREATE TABLE `tl_iso_order_downloads` (
 -- --------------------------------------------------------
 
 -- 
--- Table `tl_tax_class`
+-- Table `tl_iso_tax_class`
 --
 
-CREATE TABLE `tl_tax_class` (
+CREATE TABLE `tl_iso_tax_class` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `tstamp` int(10) unsigned NOT NULL default '0',
   `name` varchar(255) NOT NULL default '',
@@ -602,10 +602,10 @@ CREATE TABLE `tl_tax_class` (
 -- --------------------------------------------------------
 
 -- 
--- Table `tl_tax_rate`
+-- Table `tl_iso_tax_rate`
 --
 
-CREATE TABLE `tl_tax_rate` (
+CREATE TABLE `tl_iso_tax_rate` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `tstamp` int(10) unsigned NOT NULL default '0',
   `name` varchar(255) NOT NULL default '',

@@ -180,7 +180,7 @@ $GLOBALS['TL_DCA']['tl_shipping_modules'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_shipping_modules']['tax_class'],
 			'filter'				=> true,
 			'inputType'				=> 'select',
-			'foreignKey'			=> 'tl_tax_class.name',
+			'foreignKey'			=> 'tl_iso_tax_class.name',
 			'attributes'			=> array('legend'=>'tax_legend'),
 			'eval'					=> array('includeBlankOption'=>true),
 		),
