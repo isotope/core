@@ -245,8 +245,7 @@ $GLOBALS['ISO_ORDERS']['operations']['paypalpayflowpro'] = 'PayflowProPOS';
 /** 
  * Miscellaneous Isotope-specific settings
  */
-$GLOBALS['ISO_MSC']['tl_product_data']['groups_ordering'] = array
-('general_legend','pricing_legend','inventory_legend','shipping_legend','tax_legend','options_legend','media_legend','publish_legend');
+$GLOBALS['ISO_MSC']['tl_product_data']['groups_ordering'] = array('general_legend', 'meta_legend', 'pricing_legend', 'inventory_legend', 'shipping_legend', 'tax_legend', 'options_legend', 'media_legend', 'publish_legend');
 
 	
 /**
