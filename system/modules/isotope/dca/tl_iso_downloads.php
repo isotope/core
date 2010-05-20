@@ -27,9 +27,9 @@
 
 
 /**
- * Table tl_product_downloads
+ * Table tl_iso_downloads
  */
-$GLOBALS['TL_DCA']['tl_product_downloads'] = array
+$GLOBALS['TL_DCA']['tl_iso_downloads'] = array
 (
 
 	// Config
@@ -50,7 +50,7 @@ $GLOBALS['TL_DCA']['tl_product_downloads'] = array
 			'flag'						=> 1,
 			'panelLayout'				=> 'filter;search,limit',
 			'headerFields'				=> array('name', 'alias', 'sku'),
-			'child_record_callback'		=> array('tl_product_downloads', 'listRows')
+			'child_record_callback'		=> array('tl_iso_downloads', 'listRows')
 		),
 		'label' => array
 		(
@@ -71,26 +71,26 @@ $GLOBALS['TL_DCA']['tl_product_downloads'] = array
 		(
 			'edit' => array
 			(
-				'label'					=> &$GLOBALS['TL_LANG']['tl_product_downloads']['edit'],
+				'label'					=> &$GLOBALS['TL_LANG']['tl_iso_downloads']['edit'],
 				'href'					=> 'act=edit',
 				'icon'					=> 'edit.gif'
 			),
 			'copy' => array
 			(
-				'label'					=> &$GLOBALS['TL_LANG']['tl_product_downloads']['copy'],
+				'label'					=> &$GLOBALS['TL_LANG']['tl_iso_downloads']['copy'],
 				'href'					=> 'act=copy',
 				'icon'					=> 'copy.gif'
 			),
 			'delete' => array
 			(
-				'label'					=> &$GLOBALS['TL_LANG']['tl_product_downloads']['delete'],
+				'label'					=> &$GLOBALS['TL_LANG']['tl_iso_downloads']['delete'],
 				'href'					=> 'act=delete',
 				'icon'					=> 'delete.gif',
 				'attributes'			=> 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
 			),
 			'show' => array
 			(
-				'label'					=> &$GLOBALS['TL_LANG']['tl_product_downloads']['show'],
+				'label'					=> &$GLOBALS['TL_LANG']['tl_iso_downloads']['show'],
 				'href'					=> 'act=show',
 				'icon'					=> 'show.gif'
 			),
@@ -108,28 +108,28 @@ $GLOBALS['TL_DCA']['tl_product_downloads'] = array
 	(
 		'singleSRC' => array
 		(
-			'label'						=> &$GLOBALS['TL_LANG']['tl_product_downloads']['singleSRC'],
+			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_downloads']['singleSRC'],
 			'exclude'					=> true,
 			'inputType'					=> 'fileTree',
 			'eval'						=> array('mandatory'=>true, 'fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>$GLOBALS['TL_CONFIG']['allowedDownload']),
 		),
 		'title' => array
 		(
-			'label'						=> &$GLOBALS['TL_LANG']['tl_product_downloads']['title'],
+			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_downloads']['title'],
 			'exclude'					=> true,
 			'inputType'					=> 'text',
 			'eval'						=> array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'long'),
 		),
 		'description' => array
 		(
-			'label'						=> &$GLOBALS['TL_LANG']['tl_product_downloads']['description'],
+			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_downloads']['description'],
 			'exclude'					=> true,
 			'inputType'					=> 'textarea',
 			'eval'						=> array('rte'=>'tinyMCE'),
 		),
 		'downloads_allowed' => array
 		(
-			'label'						=> &$GLOBALS['TL_LANG']['tl_product_downloads']['downloads_allowed'],
+			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_downloads']['downloads_allowed'],
 			'exclude'					=> true,
 			'inputType'					=> 'text',
 			'eval'						=> array('mandatory'=>true, 'maxlength'=>5, 'rgxp'=>'digits', 'tl_class'=>'w50'),
@@ -138,7 +138,7 @@ $GLOBALS['TL_DCA']['tl_product_downloads'] = array
 );
 
 
-class tl_product_downloads extends Backend
+class tl_iso_downloads extends Backend
 {
 
 	/**

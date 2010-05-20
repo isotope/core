@@ -429,7 +429,7 @@ class PayflowProPOS extends Backend
 			if ($objItems->downloads_allowed/* && $objItems->has_downlaods > 0*/)
 			{
 				$arrDownloads = array();
-				$objDownloads = $this->Database->prepare("SELECT p.*, o.* FROM tl_iso_order_downloads o LEFT OUTER JOIN tl_product_downloads p ON o.download_id=p.id WHERE o.pid=?")->execute($objItems->id);
+				$objDownloads = $this->Database->prepare("SELECT p.*, o.* FROM tl_iso_order_downloads o LEFT OUTER JOIN tl_iso_downloads p ON o.download_id=p.id WHERE o.pid=?")->execute($objItems->id);
 				
 				while( $objDownloads->next() )
 				{
@@ -542,7 +542,7 @@ class PayflowProPOS extends Backend
 			if ($objItems->downloads_allowed/* && $objItems->has_downlaods > 0*/)
 			{
 				$arrDownloads = array();
-				$objDownloads = $this->Database->prepare("SELECT p.*, o.* FROM tl_iso_order_downloads o LEFT OUTER JOIN tl_product_downloads p ON o.download_id=p.id WHERE o.pid=?")->execute($objItems->id);
+				$objDownloads = $this->Database->prepare("SELECT p.*, o.* FROM tl_iso_order_downloads o LEFT OUTER JOIN tl_iso_downloads p ON o.download_id=p.id WHERE o.pid=?")->execute($objItems->id);
 				
 				while( $objDownloads->next() )
 				{

@@ -885,7 +885,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			
 			$itemId = $this->Database->prepare("INSERT INTO tl_iso_order_items %s")->set($arrSet)->execute()->insertId;
 			
-			$objDownloads = $this->Database->prepare("SELECT * FROM tl_product_downloads WHERE pid=?")->execute($objProduct->id);
+			$objDownloads = $this->Database->prepare("SELECT * FROM tl_iso_downloads WHERE pid=?")->execute($objProduct->id);
 			
 			while( $objDownloads->next() )
 			{

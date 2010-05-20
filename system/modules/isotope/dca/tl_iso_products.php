@@ -39,7 +39,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'dataContainer'               => 'ProductData',
 		'enableVersioning'			  => true,
 		'closed'					  => true,
-		'ctable'					  => array('tl_product_downloads', 'tl_product_categories'),
+		'ctable'					  => array('tl_iso_downloads', 'tl_product_categories'),
 		'ltable'					  => 'tl_product_types.languages',
 		'lref'						  => 'type',
 		'onload_callback'			  => array
@@ -169,7 +169,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'downloads' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_iso_products']['downloads'],
-				'href'                => 'table=tl_product_downloads',
+				'href'                => 'table=tl_iso_downloads',
 				'icon'                => 'system/modules/isotope/html/attach.png',
 				'button_callback'	  => array('tl_iso_products', 'downloadsButton'),
 			),
@@ -416,7 +416,7 @@ class tl_iso_products extends Backend
 		if (!$objType->downloads)
 			return '';
 			
-		$objDownloads = $this->Database->prepare("SELECT COUNT(*) AS total FROM tl_product_downloads WHERE pid=?")->execute($row['id']);
+		$objDownloads = $this->Database->prepare("SELECT COUNT(*) AS total FROM tl_iso_downloads WHERE pid=?")->execute($row['id']);
 			
 		return '<div style="padding:2px 0"><a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).' '.sprintf($GLOBALS['TL_LANG']['MSC']['downloadCount'], $objDownloads->total).'</a></div>';
 	}
