@@ -382,7 +382,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_related_categories'] = array
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_related_categories'],
 	'exclude'                 => true,
 	'inputType'               => 'checkboxWizard',
-	'foreignKey'			  => 'tl_related_categories.name',
+	'foreignKey'			  => 'tl_iso_related_categories.name',
 	'eval'					  => array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'clr'),
 );
 

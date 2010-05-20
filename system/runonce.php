@@ -102,6 +102,8 @@ class IsotopeRunonce extends Frontend
 		if ($this->Database->tableExists('tl_payment_modules')) $this->Database->executeUncached("ALTER TABLE tl_payment_modules RENAME tl_iso_payment_modules");
 		if ($this->Database->tableExists('tl_shipping_modules')) $this->Database->executeUncached("ALTER TABLE tl_shipping_modules RENAME tl_iso_shipping_modules");
 		if ($this->Database->tableExists('tl_shipping_options')) $this->Database->executeUncached("ALTER TABLE tl_shipping_options RENAME tl_iso_shipping_options");
+		if ($this->Database->tableExists('tl_related_categories')) $this->Database->executeUncached("ALTER TABLE tl_related_categories RENAME tl_iso_related_categories");
+		if ($this->Database->tableExists('tl_related_products')) $this->Database->executeUncached("ALTER TABLE tl_related_products RENAME tl_iso_related_products");
 	}
 	
 	

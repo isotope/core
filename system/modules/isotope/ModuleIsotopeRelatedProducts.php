@@ -70,7 +70,7 @@ class ModuleIsotopeRelatedProducts extends ModuleIsotope
 									 ->execute($this->Input->get('product'));
 		
 		$arrJumpTo = array();
-		$objCategories = $this->Database->prepare("SELECT * FROM tl_related_products WHERE pid=? AND category IN (" . implode(',', $this->iso_related_categories) . ") ORDER BY id=" . implode(' DESC, id=', $this->iso_related_categories) . " DESC")->execute($objProduct->id);
+		$objCategories = $this->Database->prepare("SELECT * FROM tl_iso_related_products WHERE pid=? AND category IN (" . implode(',', $this->iso_related_categories) . ") ORDER BY id=" . implode(' DESC, id=', $this->iso_related_categories) . " DESC")->execute($objProduct->id);
 		
 		while( $objCategories->next() )
 		{
