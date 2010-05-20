@@ -27,9 +27,9 @@
 
 
 /**
- * Table tl_payment_modules 
+ * Table tl_iso_payment_modules 
  */
-$GLOBALS['TL_DCA']['tl_payment_modules'] = array
+$GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 (
 
 	// Config
@@ -41,8 +41,8 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 		'closed'						=> true,
 		'onload_callback'			  => array
 		(
-			array('tl_payment_modules', 'checkPermission'),
-			array('tl_payment_modules', 'loadShippingModules'),
+			array('tl_iso_payment_modules', 'checkPermission'),
+			array('tl_iso_payment_modules', 'loadShippingModules'),
 		),
 	),
 
@@ -60,7 +60,7 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 		(
 			'fields'                  => array('name', 'type'),
 			'format'                  => '%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>',
-			'label_callback'		  => array('tl_payment_modules', 'addIcon'),
+			'label_callback'		  => array('tl_iso_payment_modules', 'addIcon'),
 
 		),
 		'global_operations' => array
@@ -74,7 +74,7 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 			),
 			'new' => array
 			(
-				'label'					=> &$GLOBALS['TL_LANG']['tl_payment_modules']['new'],
+				'label'					=> &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['new'],
 				'href'					=> 'act=create',
 				'class'					=> 'header_new',
 				'attributes'			=> 'onclick="Backend.getScrollOffset();"',
@@ -91,32 +91,32 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 		(
 			'edit' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_payment_modules']['edit'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['edit'],
 				'href'                => 'act=edit',
 				'icon'                => 'edit.gif'
 			),
 			'copy' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_payment_modules']['copy'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['copy'],
 				'href'                => 'act=copy',
 				'icon'                => 'copy.gif'
 			),
 			'delete' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_payment_modules']['delete'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['delete'],
 				'href'                => 'act=delete',
 				'icon'                => 'delete.gif',
 				'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
 			),
 			'show' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_payment_modules']['show'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['show'],
 				'href'                => 'act=show',
 				'icon'                => 'show.gif'
 			),
 			'buttons' => array
 			(
-				'button_callback'     => array('tl_payment_modules', 'moduleOperations'),
+				'button_callback'     => array('tl_iso_payment_modules', 'moduleOperations'),
 			)
 		)
 	),
@@ -139,19 +139,19 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 	(
 		'type' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['type'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['type'],
 			'default'                 => 'cc',
 			'exclude'                 => true,
 			'filter'                  => true,
 			'inputType'               => 'select',
 			'default'				  => 'cash',
-			'options_callback'        => array('tl_payment_modules', 'getModules'),
+			'options_callback'        => array('tl_iso_payment_modules', 'getModules'),
 			'reference'               => &$GLOBALS['TL_LANG']['PAY'],
 			'eval'                    => array('helpwizard'=>true, 'submitOnChange'=>true)
 		),
 		'name' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['name'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['name'],
 			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'text',
@@ -159,38 +159,38 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 		),
 		'label' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['label'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['label'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255, 'mandatory'=>true, 'tl_class'=>'w50'),
 		),
 		'note' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['note'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['note'],
 			'exclude'                 => true,
 			'inputType'               => 'textarea',
 			'eval'                    => array('rte'=>'tinyMCE'),
 		),
 		'new_order_status' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['new_order_status'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['new_order_status'],
 			'exclude'                 => true,
 			'inputType'               => 'select',
 			'default'                 => 'pending',
-			'options_callback'        => array('tl_payment_modules', 'getOrderStatus'),
+			'options_callback'        => array('tl_iso_payment_modules', 'getOrderStatus'),
 			'reference'               => &$GLOBALS['TL_LANG']['MSC']['order_status_labels'],
 			'eval'                    => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'clr'),
 		),
 		'price' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['price'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['price'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>10, 'rgxp'=>'digit', 'tl_class'=>'w50'),
 		),
 		'tax_class' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_payment_modules']['tax_class'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['tax_class'],
 			'filter'				=> true,
 			'inputType'				=> 'select',
 			'foreignKey'			=> 'tl_iso_tax_class.name',
@@ -199,16 +199,16 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 		),
 		'allowed_cc_types' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['allowed_cc_types'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['allowed_cc_types'],
 			'exclude'                 => true,
 			'filter'                  => true,
 			'inputType'               => 'checkbox',
 			'eval'					  => array('multiple'=>true, 'tl_class'=>'clr'),
-			'options_callback'		  => array('tl_payment_modules', 'getAllowedCCTypes') 
+			'options_callback'		  => array('tl_iso_payment_modules', 'getAllowedCCTypes') 
 		),
 		'postsale_mail' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['postsale_mail'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['postsale_mail'],
 			'exclude'                 => true,
 			'inputType'               => 'select',
 			'foreignKey'              => 'tl_iso_mail.name',
@@ -216,7 +216,7 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 		),
 		'minimum_total' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['minimum_total'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['minimum_total'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'default'                 => 0,
@@ -224,7 +224,7 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 		),
 		'maximum_total' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['maximum_total'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['maximum_total'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'default'                 => 0,
@@ -232,7 +232,7 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 		),
 		'countries' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['countries'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['countries'],
 			'exclude'                 => true,
 			'inputType'               => 'select',
 			'default'                 => array_keys($this->getCountries()),
@@ -241,14 +241,14 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 		),
 		'shipping_modules' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['shipping_modules'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['shipping_modules'],
 			'exclude'                 => true,
 			'inputType'               => 'select',
 			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'size'=>8, 'tl_class'=>'clr'),
 		),
 		'product_types' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['product_types'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['product_types'],
 			'exclude'                 => true,
 			'inputType'               => 'select',
 			'foreignKey'			  => 'tl_product_types.name',
@@ -256,42 +256,42 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 		),
 		'paypal_account' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['paypal_account'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['paypal_account'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'rgxp'=>'email', 'tl_class'=>'w50'),
 		),
 		'paypal_business' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['paypal_business'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['paypal_business'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
 		),
 		'paypalpro_apiUserName' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['paypalpro_apiUserName'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['paypalpro_apiUserName'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
 		),
 		'paypalpro_apiPassword' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['paypalpro_apiPassword'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['paypalpro_apiPassword'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'hideInput'=>true),
 		),
 		'paypalpro_apiSignature' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['paypalpro_apiSignature'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['paypalpro_apiSignature'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
 		),
 		'paypalpro_transType' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['paypalpro_transType'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['paypalpro_transType'],
 			'exclude'                 => true,
 			'default'				  => 'Sale',
 			'inputType'               => 'select',
@@ -301,35 +301,35 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 		),
 		'payflowpro_user' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['payflowpro_user'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_user'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
 		),
 		'payflowpro_vendor' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['payflowpro_vendor'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_vendor'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
 		),
 		'payflowpro_partner' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['payflowpro_partner'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_partner'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
 		),
 		'payflowpro_password' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['payflowpro_password'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_password'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'hideInput'=>true),
 		),
 		'payflowpro_transType' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['payflowpro_transType'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_transType'],
 			'exclude'                 => true,
 			'default'				  => 'Sale',
 			'inputType'               => 'select',
@@ -339,21 +339,21 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 		),
 		'postfinance_pspid' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['postfinance_pspid'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['postfinance_pspid'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
 		),
 		'postfinance_secret' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['postfinance_secret'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['postfinance_secret'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255, 'tl_class'=>'w50'),
 		),
 		'postfinance_method' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['postfinance_method'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['postfinance_method'],
 			'exclude'                 => true,
 			'inputType'               => 'select',
 			'default'                 => 'POST',
@@ -362,21 +362,21 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 		),
 		'authorize_login' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['authorize_login'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['authorize_login'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255)
 		),
 		'authorize_trans_key' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['authorize_trans_key'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['authorize_trans_key'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255)
 		),
 		'authorize_trans_type' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['authorize_trans_type'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['authorize_trans_type'],
 			'exclude'                 => true,
 			'default'				  => 'AUTH_CAPTURE',
 			'inputType'               => 'select',
@@ -386,33 +386,33 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 		),
 		'authorize_delimiter' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['authorize_delimiter'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['authorize_delimiter'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>1)
 		),		
 		'requireCCV' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['requireCCV'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['requireCCV'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
 		),
 		'button' => array
 		(
-			'label'					  => &$GLOBALS['TL_LANG']['tl_payment_modules']['button'],
+			'label'					  => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['button'],
 			'exclude'				  => true,
 			'inputType'				  => 'fileTree',
 			'eval'					  => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>'jpg,jpeg,png,gif'),
 		),
 		'debug' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['debug'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['debug'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
 		),		
 		'enabled' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_payment_modules']['enabled'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['enabled'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
 		)
@@ -421,18 +421,18 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
   
 
 /**
- * tl_payment_modules class.
+ * tl_iso_payment_modules class.
  * 
  * @extends Backend
  */
-class tl_payment_modules extends Backend
+class tl_iso_payment_modules extends Backend
 {
 	
 	public function checkPermission($dc)
 	{
 		if (strlen($this->Input->get('act')))
 		{
-			$GLOBALS['TL_DCA']['tl_payment_modules']['config']['closed'] = false;
+			$GLOBALS['TL_DCA']['tl_iso_payment_modules']['config']['closed'] = false;
 		}
 	}
 
@@ -464,7 +464,7 @@ class tl_payment_modules extends Backend
 	
 	public function getAllowedCCTypes(DataContainer $dc)
 	{
-		$objModuleType = $this->Database->prepare("SELECT * FROM tl_payment_modules WHERE id=?")->limit(1)->execute($dc->id);
+		$objModuleType = $this->Database->prepare("SELECT * FROM tl_iso_payment_modules WHERE id=?")->limit(1)->execute($dc->id);
 		
 		if(!$objModuleType->numRows)
 			return array();
@@ -487,7 +487,7 @@ class tl_payment_modules extends Backend
 	
 	public function getOrderStatus($dc)
 	{
-		$objModule = $this->Database->prepare("SELECT * FROM tl_payment_modules WHERE id=?")->limit(1)->execute($dc->id);
+		$objModule = $this->Database->prepare("SELECT * FROM tl_iso_payment_modules WHERE id=?")->limit(1)->execute($dc->id);
 		
 		$strClass = $GLOBALS['ISO_PAY'][$objModule->type];
 
@@ -536,7 +536,7 @@ class tl_payment_modules extends Backend
 	 */
 	public function loadShippingModules($dc)
 	{
-		$arrModules = array(0=>$GLOBALS['TL_LANG']['tl_payment_modules']['no_shipping']);
+		$arrModules = array(0=>$GLOBALS['TL_LANG']['tl_iso_payment_modules']['no_shipping']);
 		
 		$objShippings = $this->Database->execute("SELECT * FROM tl_shipping_modules ORDER BY name");
 		
@@ -545,8 +545,8 @@ class tl_payment_modules extends Backend
 			$arrModules[$objShippings->id] = $objShippings->name;
 		}
 		
-		$GLOBALS['TL_DCA']['tl_payment_modules']['fields']['shipping_modules']['options'] = array_keys($arrModules);
-		$GLOBALS['TL_DCA']['tl_payment_modules']['fields']['shipping_modules']['reference'] = $arrModules;
+		$GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['shipping_modules']['options'] = array_keys($arrModules);
+		$GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['shipping_modules']['reference'] = $arrModules;
 	}
 	
 	

@@ -375,10 +375,10 @@ CREATE TABLE `tl_address_book` (
 -- --------------------------------------------------------
 
 -- 
--- Table `tl_payment_modules`
+-- Table `tl_iso_payment_modules`
 -- 
 
-CREATE TABLE `tl_payment_modules` (
+CREATE TABLE `tl_iso_payment_modules` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `tstamp` int(10) unsigned NOT NULL default '0',
   `name` varchar(255) NOT NULL default '',

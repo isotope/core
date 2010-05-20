@@ -276,7 +276,7 @@ class tl_iso_orders extends Backend
 			
 			$arrCheckoutData = deserialize($objPaymentMethod->checkout_data);
 			
-			$objPaymentType = $this->Database->prepare("SELECT type FROM tl_payment_modules WHERE id=?")
+			$objPaymentType = $this->Database->prepare("SELECT type FROM tl_iso_payment_modules WHERE id=?")
 											 ->limit(1)
 											 ->execute($arrCheckoutData['payment_method_id']);
 						

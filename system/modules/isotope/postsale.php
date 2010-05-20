@@ -73,7 +73,7 @@ class PostSale extends Frontend
 		switch( $strMod )
 		{
 			case 'pay':
-				$objModule = $this->Database->prepare("SELECT * FROM tl_payment_modules WHERE id=?")->limit(1)->execute($strId);
+				$objModule = $this->Database->prepare("SELECT * FROM tl_iso_payment_modules WHERE id=?")->limit(1)->execute($strId);
 				break;
 				
 			case 'ship':
