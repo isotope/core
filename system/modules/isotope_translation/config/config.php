@@ -26,7 +26,7 @@
  */
 
 
-$GLOBALS['BE_MOD']['store']['translation'] = array
+$GLOBALS['BE_MOD']['isotope']['translation'] = array
 (
 	'callback'	=> 'ModuleIsotopeTranslation',
 	'icon'		=> 'system/modules/isotope_translation/html/translation.png',
