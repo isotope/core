@@ -84,13 +84,13 @@ class tl_product_categories extends Backend
 
 	public function listRows($row)
 	{
-		$this->loadDataContainer('tl_product_data');
-		$this->loadLanguageFile('tl_product_data');
+		$this->loadDataContainer('tl_iso_products');
+		$this->loadLanguageFile('tl_iso_products');
 		
-		$objProduct = $this->Database->prepare("SELECT * FROM tl_product_data WHERE id=?")->limit(1)->execute($row['pid']);
+		$objProduct = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE id=?")->limit(1)->execute($row['pid']);
 		
-		$this->import('tl_product_data');
-		return '<div style="margin-top: -' . ($this->Input->get('act')=='select' ? 15 : 20) . 'px; margin-bottom:-8px">'.$this->tl_product_data->getRowLabel($objProduct->row()).'</div>';
+		$this->import('tl_iso_products');
+		return '<div style="margin-top: -' . ($this->Input->get('act')=='select' ? 15 : 20) . 'px; margin-bottom:-8px">'.$this->tl_iso_products->getRowLabel($objProduct->row()).'</div>';
 	}
 }
 

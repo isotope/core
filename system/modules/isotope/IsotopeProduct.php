@@ -33,7 +33,7 @@ class IsotopeProduct extends Controller
 	 * Name of the current table
 	 * @var string
 	 */
-	protected $strTable = 'tl_product_data';
+	protected $strTable = 'tl_iso_products';
 	
 	/**
 	 * Data array
@@ -107,7 +107,7 @@ class IsotopeProduct extends Controller
 
 		if (is_array($this->arrVariantAttributes))
 		{
-			$objProduct = $this->Database->prepare("SELECT MIN(price) AS low_price, MAX(price) AS high_price FROM tl_product_data WHERE pid=? AND published='1'")
+			$objProduct = $this->Database->prepare("SELECT MIN(price) AS low_price, MAX(price) AS high_price FROM tl_iso_products WHERE pid=? AND published='1'")
 										 ->execute($this->id);
 
 			$this->low_price = $this->Isotope->calculatePrice($objProduct->low_price, $this->arrData['tax_class']);
@@ -355,7 +355,7 @@ class IsotopeProduct extends Controller
 		
 		foreach( $this->arrOptions as $name => $value )
 		{
-			$arrOptions[] = $this->getProductOptionValues($name, $GLOBALS['TL_DCA']['tl_product_data']['fields'][$name]['inputType'], $value);
+			$arrOptions[] = $this->getProductOptionValues($name, $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$name]['inputType'], $value);
 		}
 		
 		return $arrOptions;
@@ -421,12 +421,12 @@ class IsotopeProduct extends Controller
 					break;
 					
 				default:
-					if ($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['is_customer_defined'] || $GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['add_to_product_variants'])
+					if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['is_customer_defined'] || $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['add_to_product_variants'])
 					{
 						$objTemplate->hasOptions = true;
 						$arrProductOptions[$attribute] = $this->generateProductOptionWidget($attribute);
 						
-						if (!$GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['eval']['disableAjax'])
+						if (!$GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['eval']['disableAjax'])
 						{
 							$arrAjaxOptions[] = $attribute;
 						}
@@ -512,7 +512,7 @@ class IsotopeProduct extends Controller
 	
 		foreach( $arrAttributes as $attribute => $varValue )
 		{
-			if (($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['is_customer_defined'] || $GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['add_to_product_variants']) && !$GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['eval']['disableAjax'])
+			if (($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['is_customer_defined'] || $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['add_to_product_variants']) && !$GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['eval']['disableAjax'])
 			{
 				$arrOptions[] = array
 				(
@@ -544,14 +544,14 @@ class IsotopeProduct extends Controller
 	{
 		$strBuffer = '';
 		
-		switch($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['type'])
+		switch($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['type'])
 		{
 			case 'select':
 			case 'radio':
 			case 'checkbox':
-				if($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['use_alternate_source'])
+				if($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['use_alternate_source'])
 				{																											
-					$objData = $this->Database->prepare("SELECT * FROM " . $GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['list_source_table'] . " WHERE id=?")
+					$objData = $this->Database->prepare("SELECT * FROM " . $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['list_source_table'] . " WHERE id=?")
 											  ->limit(1)									 
 											  ->execute($varValue);
 					
@@ -572,11 +572,11 @@ class IsotopeProduct extends Controller
 				else
 				{
 					//check for a related label to go with the value.
-					$arrOptions = deserialize($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['option_list']);
+					$arrOptions = deserialize($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['option_list']);
 					$varValues = deserialize($varValue);
 					$arrLabels = array();
 					
-					if($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['is_visible_on_front'])
+					if($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['is_visible_on_front'])
 					{
 						foreach($arrOptions as $option)
 						{
@@ -605,11 +605,11 @@ class IsotopeProduct extends Controller
 				break;
 				
 			case 'textarea':
-				$strBuffer = $GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['use_rich_text_editor'] ? $varValue : nl2br($varValue);
+				$strBuffer = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['use_rich_text_editor'] ? $varValue : nl2br($varValue);
 				break;
 																														
 			default:
-				if(!isset($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['is_visible_on_front']) || $GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['is_visible_on_front'])
+				if(!isset($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['is_visible_on_front']) || $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['is_visible_on_front'])
 				{
 					//just direct render
 					$strBuffer = $varValue;
@@ -626,7 +626,7 @@ class IsotopeProduct extends Controller
 	 */
 	protected function generateProductOptionWidget($strField, $blnAjax=false)
 	{
-		$arrData = $GLOBALS['TL_DCA']['tl_product_data']['fields'][$strField];
+		$arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strField];
 		$strClass = strlen($GLOBALS['ISO_ATTR'][$arrData['inputType']]['class']) ? $GLOBALS['ISO_ATTR'][$arrData['inputType']]['class'] : $GLOBALS['TL_FFL'][$arrData['inputType']];
 									
 		// Continue if the class is not defined
@@ -645,13 +645,13 @@ class IsotopeProduct extends Controller
 			
 			foreach( $this->arrOptions as $name => $value )
 			{
-				if ($GLOBALS['TL_DCA']['tl_product_data']['fields'][$name]['attributes']['add_to_product_variants'])
+				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$name]['attributes']['add_to_product_variants'])
 				{
 					$arrSearch[$name] = $value;
 				}
 			}
 			
-			$arrOptions = $this->Database->prepare("SELECT " . $strField . " FROM tl_product_data WHERE language='' AND published='1' AND " . implode("=? AND ", array_keys($arrSearch)) . "=? GROUP BY " . $strField)->execute($arrSearch)->fetchEach($strField);
+			$arrOptions = $this->Database->prepare("SELECT " . $strField . " FROM tl_iso_products WHERE language='' AND published='1' AND " . implode("=? AND ", array_keys($arrSearch)) . "=? GROUP BY " . $strField)->execute($arrSearch)->fetchEach($strField);
 			
 			foreach( $arrData['options'] as $k => $v )
 			{
@@ -736,7 +736,7 @@ class IsotopeProduct extends Controller
 	//!@todo I dislike the listing approach, we might find a better solution
 	protected function getProductOptionValues($strField, $inputType, $varValue)
 	{	
-		$arrData = $GLOBALS['TL_DCA']['tl_product_data']['fields'][$strField];
+		$arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strField];
 		
 		switch($inputType)
 		{
@@ -847,7 +847,7 @@ class IsotopeProduct extends Controller
 		
 		foreach( $this->arrAttributes as $attribute )
 		{
-			if ($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['add_to_product_variants'])
+			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['add_to_product_variants'])
 			{
 				$arrOptions[$attribute] = $this->Input->post($attribute);
 			}
@@ -855,7 +855,7 @@ class IsotopeProduct extends Controller
 		
 		if (count($arrOptions))
 		{
-			$objVariant = $this->Database->prepare("SELECT * FROM tl_product_data WHERE pid=? AND published='1' AND language='' AND " . implode("=? AND ", array_keys($arrOptions)) . "=?")->execute(array_merge(array($this->id), $arrOptions));
+			$objVariant = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE pid=? AND published='1' AND language='' AND " . implode("=? AND ", array_keys($arrOptions)) . "=?")->execute(array_merge(array($this->id), $arrOptions));
 			
 			// Must match 1 variant, must not match multiple
 			if ($objVariant->numRows == 1)
@@ -901,7 +901,7 @@ class IsotopeProduct extends Controller
 			$arrAttributes = $this->arrVariantAttributes;
 		}
 		
-		$objLanguage = $this->Database->prepare("SELECT * FROM tl_product_data WHERE pid=? AND language=?")->limit(1)->execute($intId, $GLOBALS['TL_LANGUAGE']);
+		$objLanguage = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE pid=? AND language=?")->limit(1)->execute($intId, $GLOBALS['TL_LANGUAGE']);
 		
 		if ($objLanguage->numRows)
 		{
@@ -910,7 +910,7 @@ class IsotopeProduct extends Controller
 				if (in_array($attribute, $arrIgnore))
 					continue;
 					
-				if ($GLOBALS['TL_DCA']['tl_product_data']['fields'][$attribute]['attributes']['multilingual'])
+				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['multilingual'])
 				{
 					$this->arrData[$attribute] = $objLanguage->$attribute;
 				}

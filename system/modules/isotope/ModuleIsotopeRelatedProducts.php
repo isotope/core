@@ -65,7 +65,7 @@ class ModuleIsotopeRelatedProducts extends ModuleIsotope
 	protected function compile()
 	{
 		$arrIds = array(0);
-		$objProduct = $this->Database->prepare("SELECT *, (SELECT class FROM tl_product_types WHERE tl_product_data.type=tl_product_types.id) AS type_class FROM tl_product_data WHERE alias=?")
+		$objProduct = $this->Database->prepare("SELECT *, (SELECT class FROM tl_product_types WHERE tl_iso_products.type=tl_product_types.id) AS type_class FROM tl_iso_products WHERE alias=?")
 									 ->limit(1)
 									 ->execute($this->Input->get('product'));
 		
@@ -87,7 +87,7 @@ class ModuleIsotopeRelatedProducts extends ModuleIsotope
 			}
 		}
 		
-		$objProductIds = $this->Database->prepare("SELECT * FROM tl_product_data WHERE published='1' AND id IN (" . implode(',', $arrIds) . ")");
+		$objProductIds = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE published='1' AND id IN (" . implode(',', $arrIds) . ")");
 		
 		// Add pagination
 		if ($this->perPage > 0)

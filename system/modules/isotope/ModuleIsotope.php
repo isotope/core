@@ -55,10 +55,10 @@ abstract class ModuleIsotope extends Module
 			$GLOBALS['TL_CSS'][] = 'system/modules/isotope/html/isotope.css';
 			
 			// Make sure field data is available
-			if (!is_array($GLOBALS['TL_DCA']['tl_product_data']['fields']))
+			if (!is_array($GLOBALS['TL_DCA']['tl_iso_products']['fields']))
 			{
-				$this->loadDataContainer('tl_product_data');
-				$this->loadLanguageFile('tl_product_data');
+				$this->loadDataContainer('tl_iso_products');
+				$this->loadLanguageFile('tl_iso_products');
 			}
 		}
 	}
@@ -312,7 +312,7 @@ abstract class ModuleIsotope extends Module
 	{
 		global $objPage;
 		
-		$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_product_types WHERE tl_product_data.type=tl_product_types.id) AS type_class FROM tl_product_data WHERE id=?")
+		$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_product_types WHERE tl_iso_products.type=tl_product_types.id) AS type_class FROM tl_iso_products WHERE id=?")
 										 ->limit(1)
 										 ->executeUncached($intId);
 									 
@@ -338,7 +338,7 @@ abstract class ModuleIsotope extends Module
 	{
 		global $objPage;
 		
-		$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_product_types WHERE tl_product_data.type=tl_product_types.id) AS type_class FROM tl_product_data WHERE alias=?")
+		$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_product_types WHERE tl_iso_products.type=tl_product_types.id) AS type_class FROM tl_iso_products WHERE alias=?")
 										 ->limit(1)
 										 ->executeUncached($strAlias);
 									 

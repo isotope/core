@@ -392,15 +392,15 @@ class tl_module_isotope extends Backend
 
 	public function getSortableAttributes()
 	{
-		if (!is_array($GLOBALS['TL_DCA']['tl_product_data']))
+		if (!is_array($GLOBALS['TL_DCA']['tl_iso_products']))
 		{
-			$this->loadDataContainer('tl_product_data');
-			$this->loadLanguageFile('tl_product_data');
+			$this->loadDataContainer('tl_iso_products');
+			$this->loadLanguageFile('tl_iso_products');
 		}
 		
 		$arrAttributes = array();
 		
-		foreach( $GLOBALS['TL_DCA']['tl_product_data']['fields'] as $field => $arrData )
+		foreach( $GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData )
 		{
 			if ($arrData['attributes']['is_order_by_enabled'])
 			{
@@ -419,15 +419,15 @@ class tl_module_isotope extends Backend
 	 */
 	public function getFilterFields()
 	{
-		if (!is_array($GLOBALS['TL_DCA']['tl_product_data']))
+		if (!is_array($GLOBALS['TL_DCA']['tl_iso_products']))
 		{
-			$this->loadDataContainer('tl_product_data');
-			$this->loadLanguageFile('tl_product_data');
+			$this->loadDataContainer('tl_iso_products');
+			$this->loadLanguageFile('tl_iso_products');
 		}
 		
 		$arrAttributes = array();
 		
-		foreach( $GLOBALS['TL_DCA']['tl_product_data']['fields'] as $field => $arrData )
+		foreach( $GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData )
 		{
 			if ($arrData['attributes']['is_filterable'])
 			{
@@ -442,15 +442,15 @@ class tl_module_isotope extends Backend
 	//!@todo does almost the same as getSortableAttributes, why do we need both?
 	public function getSortByFields()
 	{
-		if (!is_array($GLOBALS['TL_DCA']['tl_product_data']))
+		if (!is_array($GLOBALS['TL_DCA']['tl_iso_products']))
 		{
-			$this->loadDataContainer('tl_product_data');
-			$this->loadLanguageFile('tl_product_data');
+			$this->loadDataContainer('tl_iso_products');
+			$this->loadLanguageFile('tl_iso_products');
 		}
 		
 		$arrAttributes = array();
 		
-		foreach( $GLOBALS['TL_DCA']['tl_product_data']['fields'] as $field => $arrData )
+		foreach( $GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData )
 		{
 			if ($arrData['attributes']['is_order_by_enabled'])
 			{
@@ -464,15 +464,15 @@ class tl_module_isotope extends Backend
 
 	public function getSearchFields()
 	{
-		if (!is_array($GLOBALS['TL_DCA']['tl_product_data']))
+		if (!is_array($GLOBALS['TL_DCA']['tl_iso_products']))
 		{
-			$this->loadDataContainer('tl_product_data');
-			$this->loadLanguageFile('tl_product_data');
+			$this->loadDataContainer('tl_iso_products');
+			$this->loadLanguageFile('tl_iso_products');
 		}
 		
 		$arrAttributes = array();
 		
-		foreach( $GLOBALS['TL_DCA']['tl_product_data']['fields'] as $field => $arrData )
+		foreach( $GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData )
 		{
 			if ($arrData['attributes']['is_searchable'])
 			{
@@ -514,7 +514,7 @@ class tl_module_isotope extends Backend
 					
 			$arrFilterValues = $this->getFilterValues($value);
 						
-			$objOptionValuesInUse = $this->Database->prepare("SELECT DISTINCT " . $strAttributeFieldName . " FROM tl_product_data")
+			$objOptionValuesInUse = $this->Database->prepare("SELECT DISTINCT " . $strAttributeFieldName . " FROM tl_iso_products")
 									 		   ->execute();
 								
 			if($objOptionValuesInUse->numRows < 1)
@@ -591,7 +591,7 @@ class tl_module_isotope extends Backend
 	 */
 	private function getAssociatedPagesByListValue($intListValue, $strAttributeFieldName)
 	{
-		$objPages = $this->Database->prepare("SELECT pages FROM tl_product_data WHERE " . $strAttributeFieldName . "=?")
+		$objPages = $this->Database->prepare("SELECT pages FROM tl_iso_products WHERE " . $strAttributeFieldName . "=?")
 								   ->execute($intListValue);
 								   
 		if($objPages->numRows < 1)

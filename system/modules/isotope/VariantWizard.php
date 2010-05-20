@@ -103,7 +103,7 @@ class VariantWizard extends Widget
 			$arrOptions[$k] = $v;
 		}
 		
-		$objVariant = $this->Database->prepare("SELECT * FROM tl_product_data WHERE " . implode('=? AND ', array_keys($arrOptions)) . "=? AND id!=? AND pid=(SELECT pid FROM tl_product_data WHERE id=?)")->execute(array_merge($arrOptions, array($this->currentRecord, $this->currentRecord)));
+		$objVariant = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE " . implode('=? AND ', array_keys($arrOptions)) . "=? AND id!=? AND pid=(SELECT pid FROM tl_iso_products WHERE id=?)")->execute(array_merge($arrOptions, array($this->currentRecord, $this->currentRecord)));
 		
 		if ($objVariant->numRows)
 		{
@@ -114,7 +114,7 @@ class VariantWizard extends Widget
 		{
 			$arrOptions['tstamp'] = time();
 			
-			$this->Database->prepare("UPDATE tl_product_data %s WHERE id=?")->set($arrOptions)->execute($this->currentRecord);
+			$this->Database->prepare("UPDATE tl_iso_products %s WHERE id=?")->set($arrOptions)->execute($this->currentRecord);
 		}
 	}
 
@@ -131,7 +131,7 @@ class VariantWizard extends Widget
 		}
 		
 		$this->import('Database');
-		$objVariant = $this->Database->prepare("SELECT * FROM tl_product_data WHERE id=?")->limit(1)->execute($this->currentRecord);
+		$objVariant = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE id=?")->limit(1)->execute($this->currentRecord);
 		
 		// Begin table
 		$return = '<table cellspacing="0" cellpadding="0" class="tl_variantwizard" id="ctrl_'.$this->strId.'" summary="Variant wizard">
@@ -140,7 +140,7 @@ class VariantWizard extends Widget
 		// Add fields
 		foreach ($this->arrOptions as $option)
 		{
-			$arrData = $GLOBALS['TL_DCA']['tl_product_data']['fields'][$option['value']];
+			$arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$option['value']];
 				
 			$objWidget = new SelectMenu($this->prepareForWidget($arrData, $this->strId.'['.$option['value'].']', $objVariant->{$option['value']}));
 			

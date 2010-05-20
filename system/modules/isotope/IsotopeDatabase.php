@@ -135,7 +135,7 @@ class IsotopeDatabase
 		}
 
 		$strFile  = trim($this->strTop) . "\n\n";
-		$strFile .= "-- PRODUCT ATTRIBUTES START --\nCREATE TABLE `tl_product_data` (\n";
+		$strFile .= "-- PRODUCT ATTRIBUTES START --\nCREATE TABLE `tl_iso_products` (\n";
 
 		foreach ($this->arrData as $k=>$v)
 		{

@@ -64,7 +64,7 @@ class OptionDataWizard extends Widget
 				break;
 				
 			case 'options':
-				$this->arrOptions = deserialize($GLOBALS['TL_DCA']['tl_product_data']['fields'][$this->strName]['attributes']['option_list']);
+				$this->arrOptions = deserialize($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$this->strName]['attributes']['option_list']);
 				
 				if (!is_array($this->arrOptions))
 				{

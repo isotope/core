@@ -43,14 +43,14 @@ array_insert($GLOBALS['BE_MOD']['store'], 0, array
 (
 	'product_manager' => array
 	(
-		'tables'					=> array('tl_product_data', 'tl_product_categories', 'tl_product_downloads', 'tl_related_products'),
+		'tables'					=> array('tl_iso_products', 'tl_product_categories', 'tl_product_downloads', 'tl_related_products'),
 		'icon'						=> 'system/modules/isotope/html/icon-products.gif',
 		'stylesheet'				=> 'system/modules/isotope/html/backend.css',
 		'javascript'				=> 'system/modules/isotope/html/backend.js',
-		'generate'					=> array('tl_product_data', 'generateVariants'),
-		'quick_edit'				=> array('tl_product_data', 'quickEditVariants'),
-		'import'					=> array('tl_product_data', 'importAssets'),
-		'link'						=> array('tl_product_data', 'linkProductsToCategories')
+		'generate'					=> array('tl_iso_products', 'generateVariants'),
+		'quick_edit'				=> array('tl_iso_products', 'quickEditVariants'),
+		'import'					=> array('tl_iso_products', 'importAssets'),
+		'link'						=> array('tl_iso_products', 'linkProductsToCategories')
 	),
 	'orders' => array
 	(
@@ -245,7 +245,7 @@ $GLOBALS['ISO_ORDERS']['operations']['paypalpayflowpro'] = 'PayflowProPOS';
 /** 
  * Miscellaneous Isotope-specific settings
  */
-$GLOBALS['ISO_MSC']['tl_product_data']['groups_ordering'] = array('general_legend', 'meta_legend', 'pricing_legend', 'inventory_legend', 'shipping_legend', 'tax_legend', 'options_legend', 'media_legend', 'publish_legend');
+$GLOBALS['ISO_MSC']['tl_iso_products']['groups_ordering'] = array('general_legend', 'meta_legend', 'pricing_legend', 'inventory_legend', 'shipping_legend', 'tax_legend', 'options_legend', 'media_legend', 'publish_legend');
 
 	
 /**

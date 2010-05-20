@@ -194,7 +194,7 @@ class AttributeWizard extends Widget
 				$display = 'block';
 			}
 
-			$arrOptions[] = '<div class="checkbox_toggler' . ($blnFirst ? '_first' : '') . '"><a href="' . $this->addToUrl('cbc=' . $id) . '" onclick="AjaxRequest.toggleCheckboxGroup(this, \'' . $id . '\'); Backend.getScrollOffset(); return false;"><img src="system/themes/' . $this->getTheme() . '/images/' . $img . '.gif" alt="toggle checkbox group" /></a>' . $GLOBALS['TL_LANG']['tl_product_data'][$i] .	'</div><div id="' . $id . '" class="checkbox_options" style="display:' . $display . ';"><span class="fixed"><input type="checkbox" id="check_all_' . $id . '" class="tl_checkbox" onclick="Isotope.toggleCheckboxGroup(this, \'' . $id . '\')" /> <label for="check_all_' . $id . '" style="color:#a6a6a6;"><em>' . $GLOBALS['TL_LANG']['MSC']['selectAll'] . '</em></label></span>';
+			$arrOptions[] = '<div class="checkbox_toggler' . ($blnFirst ? '_first' : '') . '"><a href="' . $this->addToUrl('cbc=' . $id) . '" onclick="AjaxRequest.toggleCheckboxGroup(this, \'' . $id . '\'); Backend.getScrollOffset(); return false;"><img src="system/themes/' . $this->getTheme() . '/images/' . $img . '.gif" alt="toggle checkbox group" /></a>' . $GLOBALS['TL_LANG']['tl_iso_products'][$i] .	'</div><div id="' . $id . '" class="checkbox_options" style="display:' . $display . ';"><span class="fixed"><input type="checkbox" id="check_all_' . $id . '" class="tl_checkbox" onclick="Isotope.toggleCheckboxGroup(this, \'' . $id . '\')" /> <label for="check_all_' . $id . '" style="color:#a6a6a6;"><em>' . $GLOBALS['TL_LANG']['MSC']['selectAll'] . '</em></label></span>';
 
 			foreach ($arrOptionGroup as $arrOption)
 			{
@@ -273,11 +273,11 @@ class AttributeWizard extends Widget
 	protected function getOptions()
 	{
 		$this->import('Database');
-		$this->loadDataContainer('tl_product_data');
-		$this->loadLanguageFile('tl_product_data');
+		$this->loadDataContainer('tl_iso_products');
+		$this->loadLanguageFile('tl_iso_products');
 		
 		$arrAttributes = array();
-		$arrDca = $GLOBALS['TL_DCA']['tl_product_data']['fields'];	
+		$arrDca = $GLOBALS['TL_DCA']['tl_iso_products']['fields'];	
 				
 		foreach( $arrDca as $field => $arrData )
 		{
@@ -296,7 +296,7 @@ class AttributeWizard extends Widget
 			}
 		}
 		
-		uksort($arrAttributes, create_function('$a,$b', 'return (array_search($a, $GLOBALS["ISO_MSC"]["tl_product_data"]["groups_ordering"]) > array_search($b, $GLOBALS["ISO_MSC"]["tl_product_data"]["groups_ordering"])) ? 1 : -1;'));
+		uksort($arrAttributes, create_function('$a,$b', 'return (array_search($a, $GLOBALS["ISO_MSC"]["tl_iso_products"]["groups_ordering"]) > array_search($b, $GLOBALS["ISO_MSC"]["tl_iso_products"]["groups_ordering"])) ? 1 : -1;'));
 				
 		return $arrAttributes;
 	}

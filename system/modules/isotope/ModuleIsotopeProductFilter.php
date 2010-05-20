@@ -73,7 +73,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		
 		$arrLimit = array();	
 
-		$this->loadLanguageFile('tl_product_data');
+		$this->loadLanguageFile('tl_iso_products');
 		
 		$arrOrderByFields = $this->getOrderByFields($arrOrderByFieldIds);
 		
@@ -188,14 +188,14 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		(
 			'type'			=> 'text',
 			'field_name'	=> 'name',
-			'label'			=> $GLOBALS['TL_LANG']['tl_product_data']['name'][0]
+			'label'			=> $GLOBALS['TL_LANG']['tl_iso_products']['name'][0]
 		);
 		//Add default price field
 		$arrAttributeData[] = array
 		(
 			'type'			=> 'decimal',
 			'field_name'	=> 'price',
-			'label'			=> $GLOBALS['TL_LANG']['tl_product_data']['price'][0]
+			'label'			=> $GLOBALS['TL_LANG']['tl_iso_products']['price'][0]
 		);
 		
 

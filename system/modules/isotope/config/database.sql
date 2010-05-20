@@ -56,10 +56,10 @@ CREATE TABLE `tl_module` (
 -- --------------------------------------------------------
 
 -- 
--- Table `tl_product_data`
+-- Table `tl_iso_products`
 --
 
-CREATE TABLE `tl_product_data` (
+CREATE TABLE `tl_iso_products` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',

@@ -37,7 +37,7 @@ $GLOBALS['TL_DCA']['tl_product_downloads'] = array
 	(
 		'dataContainer'					=> 'Table',
 		'enableVersioning'				=> true,
-		'ptable'						=> 'tl_product_data',
+		'ptable'						=> 'tl_iso_products',
 	),
 
 	// List
