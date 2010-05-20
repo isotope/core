@@ -60,7 +60,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 		),
 		'label' => array
 		(
-			'fields'                  => array('grandTotal'),
+			'fields'                  => array('order_id'),
 			'label'                   => '%s',
 			'label_callback'          => array('tl_iso_orders', 'getOrderLabel')
 		),

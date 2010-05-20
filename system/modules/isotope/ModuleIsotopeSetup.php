@@ -26,10 +26,10 @@
  */
 
 
-class ModuleIsotopeConfig extends BackendModule
+class ModuleIsotopeSetup extends BackendModule
 {
 
-	protected $strTemplate = 'be_iso_config';
+	protected $strTemplate = 'be_iso_setup';
 	
 	
 	protected function compile()
