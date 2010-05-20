@@ -415,7 +415,7 @@ class PayflowProPOS extends Backend
 		
 		$arrAllDownloads = array();
 		$arrItems = array();
-		$objItems = $this->Database->prepare("SELECT p.*, o.*, t.downloads AS downloads_allowed, (SELECT COUNT(*) FROM tl_iso_order_downloads d WHERE d.pid=o.id) AS has_downloads FROM tl_iso_order_items o LEFT OUTER JOIN tl_iso_products p ON o.product_id=p.id LEFT OUTER JOIN tl_product_types t ON p.type=t.id WHERE o.pid=?")->execute($objOrder->id);
+		$objItems = $this->Database->prepare("SELECT p.*, o.*, t.downloads AS downloads_allowed, (SELECT COUNT(*) FROM tl_iso_order_downloads d WHERE d.pid=o.id) AS has_downloads FROM tl_iso_order_items o LEFT OUTER JOIN tl_iso_products p ON o.product_id=p.id LEFT OUTER JOIN tl_iso_producttypes t ON p.type=t.id WHERE o.pid=?")->execute($objOrder->id);
 		
 		
 		while( $objItems->next() )
@@ -528,7 +528,7 @@ class PayflowProPOS extends Backend
 	protected function getItems($intOrderId)
 	{
 		$arrItems = array();
-		$objItems = $this->Database->prepare("SELECT p.*, o.*, t.downloads AS downloads_allowed, (SELECT COUNT(*) FROM tl_iso_order_downloads d WHERE d.pid=o.id) AS has_downloads FROM tl_iso_order_items o LEFT OUTER JOIN tl_iso_products p ON o.product_id=p.id LEFT OUTER JOIN tl_product_types t ON p.type=t.id WHERE o.pid=?")->execute($intOrderId);
+		$objItems = $this->Database->prepare("SELECT p.*, o.*, t.downloads AS downloads_allowed, (SELECT COUNT(*) FROM tl_iso_order_downloads d WHERE d.pid=o.id) AS has_downloads FROM tl_iso_order_items o LEFT OUTER JOIN tl_iso_products p ON o.product_id=p.id LEFT OUTER JOIN tl_iso_producttypes t ON p.type=t.id WHERE o.pid=?")->execute($intOrderId);
 		
 		
 		while( $objItems->next() )

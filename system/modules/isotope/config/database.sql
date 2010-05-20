@@ -120,10 +120,10 @@ CREATE TABLE `tl_iso_downloads` (
 -- --------------------------------------------------------
 
 -- 
--- Table `tl_product_types`
+-- Table `tl_iso_producttypes`
 --
 
-CREATE TABLE `tl_product_types` (
+CREATE TABLE `tl_iso_producttypes` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `tstamp` int(10) unsigned NOT NULL default '0',
   `name` varchar(255) NOT NULL default '',

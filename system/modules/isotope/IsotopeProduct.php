@@ -93,7 +93,7 @@ class IsotopeProduct extends Controller
 
 		$this->arrData = $arrData;		
 
-		$objType = $this->Database->prepare("SELECT * FROM tl_product_types WHERE id=?")->execute($this->arrData['type']);
+		$objType = $this->Database->prepare("SELECT * FROM tl_iso_producttypes WHERE id=?")->execute($this->arrData['type']);
 		$this->arrAttributes = deserialize($objType->attributes, true);
 		$this->arrCache['list_template'] = $objType->list_template;
 		$this->arrCache['reader_template'] = $objType->reader_template;

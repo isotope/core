@@ -65,7 +65,7 @@ class ModuleIsotopeRelatedProducts extends ModuleIsotope
 	protected function compile()
 	{
 		$arrIds = array(0);
-		$objProduct = $this->Database->prepare("SELECT *, (SELECT class FROM tl_product_types WHERE tl_iso_products.type=tl_product_types.id) AS type_class FROM tl_iso_products WHERE alias=?")
+		$objProduct = $this->Database->prepare("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS type_class FROM tl_iso_products WHERE alias=?")
 									 ->limit(1)
 									 ->execute($this->Input->get('product'));
 		

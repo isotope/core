@@ -219,7 +219,7 @@ window.addEvent('domready', function() {
 			$strProducts .= '
     <tr class="' . ($c%2 ? 'even' : 'odd') . ($c==0 ? ' row_first' : '') . ($blnAjax ? ' found' : '') . '">
       <td class="col_0 col_first"><input type="checkbox" class="checkbox" name="' . $this->strId . '[]" value="' . $objProducts->id . '"' . ($blnAjax ? '' : ' checked="checked"') . ' /></td>
-      <td class="col_1">' . $this->Database->prepare("SELECT name FROM tl_product_types WHERE id=?")->execute($objProducts->type)->name . '</td>
+      <td class="col_1">' . $this->Database->prepare("SELECT name FROM tl_iso_producttypes WHERE id=?")->execute($objProducts->type)->name . '</td>
       <td class="col_2">' . $objProducts->name . '</td>
       <td class="col_3 col_last">' . $objProducts->sku . '</td>
     </tr>';

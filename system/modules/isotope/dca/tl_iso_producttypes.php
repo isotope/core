@@ -27,9 +27,9 @@
 
 
 /**
- * Table tl_product_types
+ * Table tl_iso_producttypes
  */
-$GLOBALS['TL_DCA']['tl_product_types'] = array
+$GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
 (
 
 	// Config
@@ -41,7 +41,7 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 		'closed'					=> true,
 		'onload_callback'			=> array
 		(
-			array('tl_product_types', 'checkPermission'),
+			array('tl_iso_producttypes', 'checkPermission'),
 		),
 	),
 
@@ -71,7 +71,7 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 			),
 			'new' => array
 			(
-				'label'					=> &$GLOBALS['TL_LANG']['tl_product_types']['new'],
+				'label'					=> &$GLOBALS['TL_LANG']['tl_iso_producttypes']['new'],
 				'href'					=> 'act=create',
 				'class'					=> 'header_new',
 				'attributes'			=> 'onclick="Backend.getScrollOffset();"',
@@ -88,26 +88,26 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 		(
 			'edit' => array
 			(
-				'label'				=> &$GLOBALS['TL_LANG']['tl_product_types']['edit'],
+				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_producttypes']['edit'],
 				'href'				=> 'act=edit',
 				'icon'				=> 'edit.gif',
 			),
 			'copy' => array
 			(
-				'label'				=> &$GLOBALS['TL_LANG']['tl_product_types']['copy'],
+				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_producttypes']['copy'],
 				'href'				=> 'act=copy',
 				'icon'				=> 'copy.gif',
 			),
 			'delete' => array
 			(
-				'label'				=> &$GLOBALS['TL_LANG']['tl_product_types']['delete'],
+				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_producttypes']['delete'],
 				'href'				=> 'act=delete',
 				'icon'				=> 'delete.gif',
 				'attributes'		=> 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"',
 			),
 			'show' => array
 			(
-				'label'				=> &$GLOBALS['TL_LANG']['tl_product_types']['show'],
+				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_producttypes']['show'],
 				'href'				=> 'act=show',
 				'icon'				=> 'show.gif'
 			)
@@ -133,14 +133,14 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 	(
 		'name' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_product_types']['name'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_producttypes']['name'],
 			'exclude'				=> true,
 			'inputType'				=> 'text',
 			'eval'					=> array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50')
 		),
 		'class' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_product_types']['class'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_producttypes']['class'],
 			'exclude'				=> true,
 			'inputType'				=> 'select',
 			'default'				=> 'regular',
@@ -150,14 +150,14 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 		),
 		'fallback' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_product_types']['fallback'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_producttypes']['fallback'],
 			'exclude'				=> true,
 			'inputType'				=> 'checkbox',
 			'eval'					=> array('fallback'=>true, 'tl_class'=>'w50'),
 		),
 		'list_template' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_product_types']['list_template'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_producttypes']['list_template'],
 			'inputType'				=> 'select',
 			'default'				=> 'iso_list_default',
 			'options'				=> $this->getTemplateGroup('iso_list_'),
@@ -165,7 +165,7 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 		),
 		'reader_template' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_product_types']['reader_template'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_producttypes']['reader_template'],
 			'inputType'				=> 'select',
 			'default'				=> 'iso_reader_default',
 			'options'				=> $this->getTemplateGroup('iso_reader_'),
@@ -173,7 +173,7 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 		),
 		'description' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_product_types']['description'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_producttypes']['description'],
 			'exclude'				=> true,
 			'inputType'				=> 'textarea',
 			'eval'					=> array('style'=>'height:80px'),
@@ -181,7 +181,7 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 		),
         'attributes' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_product_types']['attributes'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_producttypes']['attributes'],
 			'exclude'				=> true,
 			'inputType'				=> 'attributeWizard',
 			'default'				=> array('type', 'pages', 'alias', 'sku', 'name', 'teaser', 'description', 'price', 'tax_class', 'images', 'published'),
@@ -189,28 +189,28 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 		),
 		'variants' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_product_types']['variants'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_producttypes']['variants'],
 			'exclude'				=> true,
 			'inputType'				=> 'checkbox',
 			'eval'					=> array('tl_class'=>'clr', 'submitOnChange'=>true),
 		),
         'variant_attributes' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_product_types']['variant_attributes'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_producttypes']['variant_attributes'],
 			'exclude'				=> true,
 			'inputType'				=> 'attributeWizard',
 			'eval'					=> array('variants'=>true),
 		),
 		'downloads' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_product_types']['downloads'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_producttypes']['downloads'],
 			'exclude'				=> true,
 			'inputType'				=> 'checkbox',
 			'eval'					=> array(),
 		),
 		'languages' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_product_types']['languages'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_producttypes']['languages'],
 			'exclude'				=> true,
 			'inputType'				=> 'select',
 			'options'				=> $this->getLanguages(),
@@ -221,15 +221,15 @@ $GLOBALS['TL_DCA']['tl_product_types'] = array
 
 
 /**
- * tl_product_types class.
+ * tl_iso_producttypes class.
  *
  * @extends Backend
  */
-class tl_product_types extends Backend
+class tl_iso_producttypes extends Backend
 {
 
 	/**
-	 * Check permissions to edit table tl_product_types.
+	 * Check permissions to edit table tl_iso_producttypes.
 	 *
 	 * @access public
 	 * @return void
@@ -238,7 +238,7 @@ class tl_product_types extends Backend
 	{
 		if (strlen($this->Input->get('act')))
 		{
-			$GLOBALS['TL_DCA']['tl_product_types']['config']['closed'] = false;
+			$GLOBALS['TL_DCA']['tl_iso_producttypes']['config']['closed'] = false;
 		}
 		
 		$this->import('BackendUser', 'User');
@@ -254,8 +254,8 @@ class tl_product_types extends Backend
 			$this->User->iso_product_types = array(0);
 		}
 
-		$GLOBALS['TL_DCA']['tl_product_types']['config']['closed'] = true;
-		$GLOBALS['TL_DCA']['tl_product_types']['list']['sorting']['root'] = $this->User->iso_product_types;
+		$GLOBALS['TL_DCA']['tl_iso_producttypes']['config']['closed'] = true;
+		$GLOBALS['TL_DCA']['tl_iso_producttypes']['list']['sorting']['root'] = $this->User->iso_product_types;
 
 		// Check current action
 		switch ($this->Input->get('act'))
@@ -268,7 +268,7 @@ class tl_product_types extends Backend
 			case 'show':
 				if (!in_array($this->Input->get('id'), $this->User->iso_product_types))
 				{
-					$this->log('Not enough permissions to '.$this->Input->get('act').' product type ID "'.$this->Input->get('id').'"', 'tl_product_types checkPermission', 5);
+					$this->log('Not enough permissions to '.$this->Input->get('act').' product type ID "'.$this->Input->get('id').'"', 'tl_iso_producttypes checkPermission', 5);
 					$this->redirect('typolight/main.php?act=error');
 				}
 				break;
@@ -282,7 +282,7 @@ class tl_product_types extends Backend
 			default:
 				if (strlen($this->Input->get('act')))
 				{
-					$this->log('Not enough permissions to '.$this->Input->get('act').' product types', 'tl_product_types checkPermission', 5);
+					$this->log('Not enough permissions to '.$this->Input->get('act').' product types', 'tl_iso_producttypes checkPermission', 5);
 					$this->redirect('typolight/main.php?act=error');
 				}
 				break;

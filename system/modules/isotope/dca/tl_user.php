@@ -41,7 +41,7 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_product_types'] = array
 	'label'                   => &$GLOBALS['TL_LANG']['tl_user']['iso_product_types'],
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
-	'foreignKey'			  => 'tl_product_types.name',
+	'foreignKey'			  => 'tl_iso_producttypes.name',
 	'eval'                    => array('multiple'=>true),
 );
 
