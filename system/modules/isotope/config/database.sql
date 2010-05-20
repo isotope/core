@@ -240,10 +240,10 @@ CREATE TABLE `tl_store` (
 -- --------------------------------------------------------
 
 --
--- Table `tl_product_categories`
+-- Table `tl_iso_product_categories`
 --	
 
-CREATE TABLE `tl_product_categories` (
+CREATE TABLE `tl_iso_product_categories` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
   `sorting` int(10) unsigned NOT NULL default '0',

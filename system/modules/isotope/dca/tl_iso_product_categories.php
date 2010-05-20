@@ -27,9 +27,9 @@
 
 
 /**
- * Table tl_product_categories
+ * Table tl_iso_product_categories
  */
-$GLOBALS['TL_DCA']['tl_product_categories'] = array
+$GLOBALS['TL_DCA']['tl_iso_product_categories'] = array
 (
 
 	// Config
@@ -49,7 +49,7 @@ $GLOBALS['TL_DCA']['tl_product_categories'] = array
 			'mode'						=> 4,
 			'fields'					=> array('sorting'),
 			'headerFields'				=> array('title', 'type'),
-			'child_record_callback'		=> array('tl_product_categories', 'listRows')
+			'child_record_callback'		=> array('tl_iso_product_categories', 'listRows')
 		),
 		'global_operations' => array
 		(
@@ -65,7 +65,7 @@ $GLOBALS['TL_DCA']['tl_product_categories'] = array
 		(
 			'cut' => array
 			(
-				'label'					=> &$GLOBALS['TL_LANG']['tl_product_categories']['cut'],
+				'label'					=> &$GLOBALS['TL_LANG']['tl_iso_product_categories']['cut'],
 				'href'					=> 'act=paste&amp;mode=cut',
 				'icon'					=> 'cut.gif',
 				'attributes'			=> 'onclick="Backend.getScrollOffset();"'
@@ -79,7 +79,7 @@ $GLOBALS['TL_DCA']['tl_product_categories'] = array
 
 
 
-class tl_product_categories extends Backend
+class tl_iso_product_categories extends Backend
 {
 
 	public function listRows($row)
