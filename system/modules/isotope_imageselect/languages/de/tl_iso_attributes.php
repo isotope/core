@@ -29,17 +29,17 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_product_attributes']['imageSource'] = array('Bilder-Quelle', 'Wählen Sie den Ordner mit Bildern. Sie können einzelne Bilder pro Produkt wieder entfernen.');
-$GLOBALS['TL_LANG']['tl_product_attributes']['sortBy']		= array('Sortieren nach', 'Bitte wählen Sie eine Sortierreihenfolge aus.');
-$GLOBALS['TL_LANG']['tl_product_attributes']['size']		= array('Bildbreite und Bildhöhe', 'Hier können Sie die Abmessungen der Bilder und den Skalierungsmodus festlegen.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['imageSource'] = array('Bilder-Quelle', 'Wählen Sie den Ordner mit Bildern. Sie können einzelne Bilder pro Produkt wieder entfernen.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['sortBy']		= array('Sortieren nach', 'Bitte wählen Sie eine Sortierreihenfolge aus.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['size']		= array('Bildbreite und Bildhöhe', 'Hier können Sie die Abmessungen der Bilder und den Skalierungsmodus festlegen.');
 
 
 /**
  * References
  */
-$GLOBALS['TL_LANG']['tl_product_attributes']['name_asc']	= 'Dateiname (aufsteigend)';
-$GLOBALS['TL_LANG']['tl_product_attributes']['name_desc']	= 'Dateiname (absteigend)';
-$GLOBALS['TL_LANG']['tl_product_attributes']['date_asc']	= 'Datum (aufsteigend)';
-$GLOBALS['TL_LANG']['tl_product_attributes']['date_desc']	= 'Datum (absteigend)';
-$GLOBALS['TL_LANG']['tl_product_attributes']['meta']		= 'Meta Datei (meta.txt)';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['name_asc']	= 'Dateiname (aufsteigend)';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['name_desc']	= 'Dateiname (absteigend)';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['date_asc']	= 'Datum (aufsteigend)';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['date_desc']	= 'Datum (absteigend)';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['meta']		= 'Meta Datei (meta.txt)';
 

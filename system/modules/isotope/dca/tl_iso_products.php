@@ -597,7 +597,7 @@ class tl_iso_products extends Backend
 	
 	public function getVariantValues($row)
 	{	
-		$objVariantAttributes = $this->Database->prepare("SELECT name, field_name FROM tl_product_attributes WHERE add_to_product_variants=?")
+		$objVariantAttributes = $this->Database->prepare("SELECT name, field_name FROM tl_iso_attributes WHERE add_to_product_variants=?")
 								  				->execute(1);
 		if(!$objVariantAttributes->numRows)
 		{

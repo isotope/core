@@ -29,17 +29,17 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_product_attributes']['imageSource'] = array('Image source', 'Please select the folder to load images from. You can remove certain images per product/variant.');
-$GLOBALS['TL_LANG']['tl_product_attributes']['size']		= array('Image width and height', 'Here you can set the image dimensions and the resize mode.');
-$GLOBALS['TL_LANG']['tl_product_attributes']['sortBy']		= array('Order by', 'Please choose the sort order.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['imageSource'] = array('Image source', 'Please select the folder to load images from. You can remove certain images per product/variant.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['size']		= array('Image width and height', 'Here you can set the image dimensions and the resize mode.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['sortBy']		= array('Order by', 'Please choose the sort order.');
 
 
 /**
  * References
  */
-$GLOBALS['TL_LANG']['tl_product_attributes']['name_asc']	= 'File name (ascending)';
-$GLOBALS['TL_LANG']['tl_product_attributes']['name_desc']	= 'File name (descending)';
-$GLOBALS['TL_LANG']['tl_product_attributes']['date_asc']	= 'Date (ascending)';
-$GLOBALS['TL_LANG']['tl_product_attributes']['date_desc']	= 'Date (descending)';
-$GLOBALS['TL_LANG']['tl_product_attributes']['meta']		= 'Meta file (meta.txt)';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['name_asc']	= 'File name (ascending)';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['name_desc']	= 'File name (descending)';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['date_asc']	= 'Date (ascending)';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['date_desc']	= 'Date (descending)';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['meta']		= 'Meta file (meta.txt)';
 

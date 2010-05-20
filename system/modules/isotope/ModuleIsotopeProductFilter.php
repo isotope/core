@@ -167,7 +167,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		{
 			foreach($arrFieldIds as $field)
 			{
-				$objAttribute = $this->Database->prepare("SELECT name, type, field_name FROM tl_product_attributes WHERE id=?")
+				$objAttribute = $this->Database->prepare("SELECT name, type, field_name FROM tl_iso_attributes WHERE id=?")
 							       ->limit(1)
 							       ->execute($field);
 				if(!$objAttribute->numRows)

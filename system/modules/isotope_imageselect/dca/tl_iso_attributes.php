@@ -29,34 +29,34 @@
 /**
  * Palettes
  */
-$GLOBALS['TL_DCA']['tl_product_attributes']['palettes']['imageselect'] = '{attribute_legend},name,field_name,type,legend,description;{options_legend},imageSource,size,sortBy;{visibility_legend},is_listing_field,is_visible_on_front;{use_mode_legend},multilingual,is_customer_defined,add_to_product_variants,is_multiple_select;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled';
+$GLOBALS['TL_DCA']['tl_iso_attributes']['palettes']['imageselect'] = '{attribute_legend},name,field_name,type,legend,description;{options_legend},imageSource,size,sortBy;{visibility_legend},is_listing_field,is_visible_on_front;{use_mode_legend},multilingual,is_customer_defined,add_to_product_variants,is_multiple_select;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled';
 
 
 /**
  * Fields
  */
-$GLOBALS['TL_DCA']['tl_product_attributes']['fields']['imageSource'] = array
+$GLOBALS['TL_DCA']['tl_iso_attributes']['fields']['imageSource'] = array
 (
-	'label'					=> &$GLOBALS['TL_LANG']['tl_product_attributes']['imageSource'],
+	'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['imageSource'],
 	'inputType'				=> 'fileTree',
 	'eval'					=> array('fieldType'=>'radio', 'mandatory'=>true, 'tl_class'=>'clr'),
 );
 
-$GLOBALS['TL_DCA']['tl_product_attributes']['fields']['size'] = array
+$GLOBALS['TL_DCA']['tl_iso_attributes']['fields']['size'] = array
 (
-	'label'					=> &$GLOBALS['TL_LANG']['tl_product_attributes']['size'],
+	'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['size'],
 	'inputType'				=> 'imageSize',
 	'options'				=> array('crop', 'proportional', 'box'),
 	'reference'				=> &$GLOBALS['TL_LANG']['MSC'],
 	'eval'					=> array('rgxp'=>'digit', 'nospace'=>true, 'tl_class'=>'w50'),
 );
 
-$GLOBALS['TL_DCA']['tl_product_attributes']['fields']['sortBy'] = array
+$GLOBALS['TL_DCA']['tl_iso_attributes']['fields']['sortBy'] = array
 (
-	'label'					=> &$GLOBALS['TL_LANG']['tl_product_attributes']['sortBy'],
+	'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['sortBy'],
 	'inputType'				=> 'select',
 	'options'				=> array('name_asc', 'name_desc', 'date_asc', 'date_desc', 'meta'),
-	'reference'				=> &$GLOBALS['TL_LANG']['tl_product_attributes'],
+	'reference'				=> &$GLOBALS['TL_LANG']['tl_iso_attributes'],
 	'eval'					=> array('tl_class'=>'w50')
 );
 
