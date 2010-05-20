@@ -63,7 +63,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
 	),*/
 	'iso_setup' => array
 	(
-		'callback'					=> 'ModuleIsotopeConfig',
+		'callback'					=> 'ModuleIsotopeSetup',
 		'tables'					=> array('tl_iso_config', 'tl_iso_shipping_modules', 'tl_iso_shipping_options', 'tl_iso_payment_modules', 'tl_payment_options', 'tl_iso_tax_class', 'tl_iso_tax_rate', 'tl_iso_producttypes', 'tl_iso_attributes', 'tl_iso_related_categories', 'tl_iso_mail', 'tl_iso_mail_content'),
 		'icon'						=> 'system/modules/isotope/html/icon-isotope.png',
 		'stylesheet'				=> 'system/modules/isotope/html/backend.css',
