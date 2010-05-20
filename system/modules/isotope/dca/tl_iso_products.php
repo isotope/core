@@ -90,21 +90,28 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'label'               => &$GLOBALS['TL_LANG']['tl_iso_products']['tools'],
 				'href'                => '',
 				'class'               => 'header_isotope_tools',
-				'attributes'          => 'onclick="Backend.getScrollOffset();" style="display:none"'
+				'attributes'          => 'onclick="Backend.getScrollOffset();" style="display:none"',
+			),
+			'toggleNodes' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['MSC']['toggleNodes'],
+				'href'                => 'ptg=all',
+				'class'               => 'header_toggle isotope-tools',
+				'attributes'          => 'onclick="Backend.getScrollOffset();"',
 			),
 			'import' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_iso_products']['import'],
 				'href'                => 'key=import',
 				'class'               => 'header_import_assets isotope-tools',
-				'attributes'          => 'onclick="Backend.getScrollOffset();"'
+				'attributes'          => 'onclick="Backend.getScrollOffset();"',
 			),
 			'link'	=> array
 			(
 				'label'				  => &$GLOBALS['TL_LANG']['tl_iso_products']['link'],
 				'href'				  => 'key=link',
 				'class'				  => 'header_product_category_link isotope-tools',
-				'attributes'		  => 'onclick="Backend.getScrollOffset();"'
+				'attributes'		  => 'onclick="Backend.getScrollOffset();"',
 			)
 		),
 		'operations' => array
