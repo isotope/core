@@ -538,7 +538,7 @@ class tl_iso_payment_modules extends Backend
 	{
 		$arrModules = array(0=>$GLOBALS['TL_LANG']['tl_iso_payment_modules']['no_shipping']);
 		
-		$objShippings = $this->Database->execute("SELECT * FROM tl_shipping_modules ORDER BY name");
+		$objShippings = $this->Database->execute("SELECT * FROM tl_iso_shipping_modules ORDER BY name");
 		
 		while( $objShippings->next() )
 		{

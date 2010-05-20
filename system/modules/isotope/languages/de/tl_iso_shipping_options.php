@@ -30,8 +30,8 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_shipping_options']['description']		= array('Beschreibung', 'Eine Kurzbeschreibung der Versandkosten-Regel. Wird im Frontend angezeigt.');
-$GLOBALS['TL_LANG']['tl_shipping_options']['rate']				= array('Kosten', 'Der Preis in der aktiven Währung.');
+$GLOBALS['TL_LANG']['tl_iso_shipping_options']['description']		= array('Beschreibung', 'Eine Kurzbeschreibung der Versandkosten-Regel. Wird im Frontend angezeigt.');
+$GLOBALS['TL_LANG']['tl_iso_shipping_options']['rate']				= array('Kosten', 'Der Preis in der aktiven Währung.');
 
 
 /**
@@ -42,9 +42,9 @@ $GLOBALS['TL_LANG']['tl_shipping_options']['rate']				= array('Kosten', 'Der Pre
 /**
  * Buttons
  */
-$GLOBALS['TL_LANG']['tl_shipping_options']['new']    = array('Neue Versandkosten', 'Neue Versandkosten-Regel erstellen');
-$GLOBALS['TL_LANG']['tl_shipping_options']['edit']   = array('Versandkosten bearbeiten', 'Versandkosten-Regel ID %s bearbeiten');
-$GLOBALS['TL_LANG']['tl_shipping_options']['copy']   = array('Versandkosten duplizieren', 'Versandkosten-Regel ID %s duplizieren');
-$GLOBALS['TL_LANG']['tl_shipping_options']['delete'] = array('Versandkosten löschen', 'Versandkosten-Regel ID %s löschen');
-$GLOBALS['TL_LANG']['tl_shipping_options']['show']   = array('Versandkosten-Details', 'Details der Versandkosten-Regel ID %s anzeigen');
+$GLOBALS['TL_LANG']['tl_iso_shipping_options']['new']    = array('Neue Versandkosten', 'Neue Versandkosten-Regel erstellen');
+$GLOBALS['TL_LANG']['tl_iso_shipping_options']['edit']   = array('Versandkosten bearbeiten', 'Versandkosten-Regel ID %s bearbeiten');
+$GLOBALS['TL_LANG']['tl_iso_shipping_options']['copy']   = array('Versandkosten duplizieren', 'Versandkosten-Regel ID %s duplizieren');
+$GLOBALS['TL_LANG']['tl_iso_shipping_options']['delete'] = array('Versandkosten löschen', 'Versandkosten-Regel ID %s löschen');
+$GLOBALS['TL_LANG']['tl_iso_shipping_options']['show']   = array('Versandkosten-Details', 'Details der Versandkosten-Regel ID %s anzeigen');
 

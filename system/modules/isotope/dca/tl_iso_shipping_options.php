@@ -31,16 +31,16 @@ $this->loadLanguageFile('subdivisions');
 
 
 /**
- * Table tl_shipping_options
+ * Table tl_iso_shipping_options
  */
-$GLOBALS['TL_DCA']['tl_shipping_options'] = array
+$GLOBALS['TL_DCA']['tl_iso_shipping_options'] = array
 (
 
 	// Config
 	'config' => array
 	(
 		'dataContainer'               => 'Table',
-		'ptable'					  => 'tl_shipping_modules',
+		'ptable'					  => 'tl_iso_shipping_modules',
 		'enableVersioning'            => true
 	),
 
@@ -53,7 +53,7 @@ $GLOBALS['TL_DCA']['tl_shipping_options'] = array
 			'fields'                  => array('name'),
 			'panelLayout'             => 'sort,filter;search,limit',
 			'headerFields'            => array('name', 'tstamp'),
-			'child_record_callback'   => array('tl_shipping_options', 'listrates')
+			'child_record_callback'   => array('tl_iso_shipping_options', 'listrates')
 		),
 		'global_operations' => array
 		(
@@ -69,13 +69,13 @@ $GLOBALS['TL_DCA']['tl_shipping_options'] = array
 		(
 			'edit' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_shipping_options']['edit'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_shipping_options']['edit'],
 				'href'                => 'act=edit',
 				'icon'                => 'edit.gif'
 			),
 			'copy' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_shipping_options']['copy'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_shipping_options']['copy'],
 				'href'                => 'act=paste&amp;mode=copy',
 				'icon'                => 'copy.gif',
 				'attributes'          => 'onclick="Backend.getScrollOffset();"'
@@ -83,21 +83,21 @@ $GLOBALS['TL_DCA']['tl_shipping_options'] = array
 			),
 			'cut' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_shipping_options']['cut'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_shipping_options']['cut'],
 				'href'                => 'act=paste&amp;mode=cut',
 				'icon'                => 'cut.gif',
 				'attributes'          => 'onclick="Backend.getScrollOffset();"'
 			),
 			'delete' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_shipping_options']['delete'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_shipping_options']['delete'],
 				'href'                => 'act=delete',
 				'icon'                => 'delete.gif',
 				'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
 			),
 			'show' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_shipping_options']['show'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_shipping_options']['show'],
 				'href'                => 'act=show',
 				'icon'                => 'show.gif'
 			)
@@ -117,35 +117,35 @@ $GLOBALS['TL_DCA']['tl_shipping_options'] = array
 	(
 		'name' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['name'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_shipping_options']['name'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255)
 		),
 		'description' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['description'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_shipping_options']['description'],
 			'exclude'                 => true,
 			'inputType'               => 'textarea',
 			'eval'                    => array('maxlength'=>255)
 		),
 		'minimum_total' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['minimum_total'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_shipping_options']['minimum_total'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255, 'rgxp'=>'digit'),
 		),
 		'maximum_total' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['maximum_total'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_shipping_options']['maximum_total'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255, 'rgxp'=>'digit'),
 		),
 		'rate' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_shipping_options']['rate'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_shipping_options']['rate'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'rgxp'=>digit)
@@ -155,11 +155,11 @@ $GLOBALS['TL_DCA']['tl_shipping_options'] = array
 
 
 /**
- * tl_shipping_options class.
+ * tl_iso_shipping_options class.
  * 
  * @extends Backend
  */
-class tl_shipping_options extends Backend
+class tl_iso_shipping_options extends Backend
 {
 
 	/**
@@ -176,7 +176,7 @@ class tl_shipping_options extends Backend
 	
 	public function getExistingRules(DataContainer $dc)
 	{
-		$objPid = $this->Database->prepare("SELECT pid FROM tl_shipping_options WHERE id=?")
+		$objPid = $this->Database->prepare("SELECT pid FROM tl_iso_shipping_options WHERE id=?")
 								 ->limit(1)
 								 ->execute($dc->id);
 		if($objPid->numRows < 1)
@@ -186,7 +186,7 @@ class tl_shipping_options extends Backend
 		
 		$intPid = $objPid->pid;	
 								 
-		$objRules = $this->Database->prepare("SELECT id, name FROM tl_shipping_options WHERE pid=?")
+		$objRules = $this->Database->prepare("SELECT id, name FROM tl_iso_shipping_options WHERE pid=?")
 								   ->execute($intPid);
 	
 		if($objRules->numRows < 1)
@@ -205,7 +205,7 @@ class tl_shipping_options extends Backend
 	public function getAllowedCountries(DataContainer $dc)
 	{
 				
-		$objPid = $this->Database->prepare("SELECT pid FROM tl_shipping_options WHERE id=?")
+		$objPid = $this->Database->prepare("SELECT pid FROM tl_iso_shipping_options WHERE id=?")
 								 ->limit(1)
 								 ->execute($dc->id);
 		
@@ -216,7 +216,7 @@ class tl_shipping_options extends Backend
 		
 		$intPid = $objPid->pid;
 		
-		$objModuleAllowedCountries = $this->Database->prepare("SELECT countries FROM tl_shipping_modules WHERE id=?")
+		$objModuleAllowedCountries = $this->Database->prepare("SELECT countries FROM tl_iso_shipping_modules WHERE id=?")
 													->limit(1)
 													->execute($intPid);
 		
@@ -259,7 +259,7 @@ class tl_shipping_options extends Backend
 		return '
 <div class="cte_type ' . $key . '"><strong>' . $arrRow['name'] . '</strong></div>
 <div class="limit_height' . (!$GLOBALS['TL_CONFIG']['doNotCollapse'] ? ' h52' : '') . ' block">
-'. $GLOBALS['TL_LANG']['tl_shipping_options']['option_type'][0] . ': ' . $GLOBALS['TL_LANG']['tl_shipping_options']['types'][$arrRow['option_type']] . '<br /><br />' . $arrRow['rate'] .' for '. $arrRow['upper_limit'] . ' based on ' . $arrRow['dest_country'] .', '. $arrRow['dest_region'] . ', ' . $arrRow['dest_zip'] . '</div>' . "\n";
+'. $GLOBALS['TL_LANG']['tl_iso_shipping_options']['option_type'][0] . ': ' . $GLOBALS['TL_LANG']['tl_iso_shipping_options']['types'][$arrRow['option_type']] . '<br /><br />' . $arrRow['rate'] .' for '. $arrRow['upper_limit'] . ' based on ' . $arrRow['dest_country'] .', '. $arrRow['dest_region'] . ', ' . $arrRow['dest_zip'] . '</div>' . "\n";
 	}
 }
 

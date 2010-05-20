@@ -73,7 +73,7 @@ class ShippingOrderTotal extends IsotopeShipping
 	{
 		$arrOptionInfo = split('_', $strOptionName);
 	
-		$objRateLabel = $this->Database->prepare("SELECT name FROM tl_shipping_options WHERE pid=? AND id=?")
+		$objRateLabel = $this->Database->prepare("SELECT name FROM tl_iso_shipping_options WHERE pid=? AND id=?")
 									   ->limit(1)
 									   ->execute($arrOptionInfo[2], $arrOptionInfo[3]);
 		
@@ -88,7 +88,7 @@ class ShippingOrderTotal extends IsotopeShipping
 	
 	public function calculateShippingRate($intPid, $fltCartSubTotal)
 	{			
-		$objRates = $this->Database->prepare("SELECT * FROM tl_shipping_options WHERE pid=?")
+		$objRates = $this->Database->prepare("SELECT * FROM tl_iso_shipping_options WHERE pid=?")
 								   ->execute($intPid);
 		
 		if($objRates->numRows < 1)
@@ -158,7 +158,7 @@ class ShippingOrderTotal extends IsotopeShipping
 			return '';
 		}*/
 	
-		return '<a href="'.str_replace('tl_shipping_modules','tl_shipping_options',$this->Environment->request).'&amp;id=' . $this->id . '" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage('tablewizard.gif', 'rates table').'</a>'; //'.$this->generateImage('tablewizard.gif', 'rates table').'</a> ';
+		return '<a href="'.str_replace('tl_iso_shipping_modules','tl_iso_shipping_options',$this->Environment->request).'&amp;id=' . $this->id . '" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage('tablewizard.gif', 'rates table').'</a>'; //'.$this->generateImage('tablewizard.gif', 'rates table').'</a> ';
 
 	}
 	
