@@ -193,7 +193,7 @@ $GLOBALS['TL_DCA']['tl_payment_modules'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_payment_modules']['tax_class'],
 			'filter'				=> true,
 			'inputType'				=> 'select',
-			'foreignKey'			=> 'tl_tax_class.name',
+			'foreignKey'			=> 'tl_iso_tax_class.name',
 			'attributes'			=> array('legend'=>'tax_legend'),
 			'eval'					=> array('includeBlankOption'=>true, 'tl_class'=>'w50'),
 		),

@@ -245,13 +245,13 @@ class Isotope extends Controller
 			$arrAddresses = array('billing'=>$this->Cart->billingAddress, 'shipping'=>$this->Cart->shippingAddress);
 		}
 		
-		$objTaxClass = $this->Database->prepare("SELECT * FROM tl_tax_class WHERE id=?")->limit(1)->execute($intTaxClass);
+		$objTaxClass = $this->Database->prepare("SELECT * FROM tl_iso_tax_class WHERE id=?")->limit(1)->execute($intTaxClass);
 		
 		if (!$objTaxClass->numRows)
 			return $fltPrice;
 			
 		$arrTaxes = array();
-		$objIncludes = $this->Database->prepare("SELECT * FROM tl_tax_rate WHERE id=?")->limit(1)->execute($objTaxClass->includes);
+		$objIncludes = $this->Database->prepare("SELECT * FROM tl_iso_tax_rate WHERE id=?")->limit(1)->execute($objTaxClass->includes);
 		
 		if ($objIncludes->numRows)
 		{
@@ -293,7 +293,7 @@ class Isotope extends Controller
 		if (!is_array($arrRates) || !count($arrRates))
 			return $arrTaxes;
 		
-		$objRates = $this->Database->execute("SELECT * FROM tl_tax_rate WHERE id IN (" . implode(',', $arrRates) . ") ORDER BY id=" . implode(" DESC, id=", $arrRates) . " DESC");
+		$objRates = $this->Database->execute("SELECT * FROM tl_iso_tax_rate WHERE id IN (" . implode(',', $arrRates) . ") ORDER BY id=" . implode(" DESC, id=", $arrRates) . " DESC");
 		
 		while( $objRates->next() )
 		{

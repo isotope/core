@@ -108,7 +108,7 @@ class SurchargeWizard extends Widget
 			}
 		}
 		
-		$objTaxClasses = $this->Database->execute("SELECT id, name FROM tl_tax_class");
+		$objTaxClasses = $this->Database->execute("SELECT id, name FROM tl_iso_tax_class");
 		
 		if($objTaxClasses->numRows)
 		{

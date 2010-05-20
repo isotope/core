@@ -69,7 +69,7 @@ array_insert($GLOBALS['BE_MOD']['store'], 0, array
 	'isotope' => array
 	(
 		'callback'					=> 'ModuleIsotopeConfig',
-		'tables'					=> array('tl_store', 'tl_shipping_modules', 'tl_shipping_options', 'tl_payment_modules', 'tl_payment_options', 'tl_tax_class', 'tl_tax_rate', 'tl_product_types', 'tl_iso_attributes', 'tl_related_categories', 'tl_iso_mail', 'tl_iso_mail_content'),
+		'tables'					=> array('tl_store', 'tl_shipping_modules', 'tl_shipping_options', 'tl_payment_modules', 'tl_payment_options', 'tl_iso_tax_class', 'tl_iso_tax_rate', 'tl_product_types', 'tl_iso_attributes', 'tl_related_categories', 'tl_iso_mail', 'tl_iso_mail_content'),
 		'icon'						=> 'system/modules/isotope/html/icon-store.gif',
 		'stylesheet'				=> 'system/modules/isotope/html/backend.css',
 	),
@@ -118,12 +118,12 @@ $GLOBALS['ISO_MOD'] = array
 		),
 		'tax_class' => array
 		(
-			'tables'					=> array('tl_tax_class'),
+			'tables'					=> array('tl_iso_tax_class'),
 			'icon'						=> 'system/modules/isotope/html/icon-taxclass.gif',
 		),
 		'tax_rate' => array
 		(
-			'tables'					=> array('tl_tax_rate'),
+			'tables'					=> array('tl_iso_tax_rate'),
 			'icon'						=> 'system/modules/isotope/html/icon-taxrate.gif',
 		),
 	),

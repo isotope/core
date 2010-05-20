@@ -27,9 +27,9 @@
 
 
 /**
- * Table tl_tax_class
+ * Table tl_iso_tax_class
  */
-$GLOBALS['TL_DCA']['tl_tax_class'] = array
+$GLOBALS['TL_DCA']['tl_iso_tax_class'] = array
 (
 
 	// Config
@@ -40,7 +40,7 @@ $GLOBALS['TL_DCA']['tl_tax_class'] = array
 		'closed'					  => true,
 		'onload_callback' => array
 		(
-			array('tl_tax_class', 'checkPermission'),
+			array('tl_iso_tax_class', 'checkPermission'),
 		),
 	),
 
@@ -71,7 +71,7 @@ $GLOBALS['TL_DCA']['tl_tax_class'] = array
 			),
 			'new' => array
 			(
-				'label'					=> &$GLOBALS['TL_LANG']['tl_tax_class']['new'],
+				'label'					=> &$GLOBALS['TL_LANG']['tl_iso_tax_class']['new'],
 				'href'					=> 'act=create',
 				'class'					=> 'header_new',
 				'attributes'			=> 'onclick="Backend.getScrollOffset();"',
@@ -88,26 +88,26 @@ $GLOBALS['TL_DCA']['tl_tax_class'] = array
 		(
 			'edit' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_tax_class']['edit'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_tax_class']['edit'],
 				'href'                => 'act=edit',
 				'icon'                => 'edit.gif'
 			),
 			'copy' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_tax_class']['copy'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_tax_class']['copy'],
 				'href'                => 'act=copy',
 				'icon'                => 'copy.gif'
 			),
 			'delete' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_tax_class']['delete'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_tax_class']['delete'],
 				'href'                => 'act=delete',
 				'icon'                => 'delete.gif',
 				'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
 			),
 			'show' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_tax_class']['show'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_tax_class']['show'],
 				'href'                => 'act=show',
 				'icon'                => 'show.gif'
 			)
@@ -125,44 +125,44 @@ $GLOBALS['TL_DCA']['tl_tax_class'] = array
 	(
 		'name' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_class']['name'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_class']['name'],
 			'search'                  => true,
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255, 'mandatory'=>true, 'tl_class'=>'long'),
 		),
 		'includes' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_class']['includes'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_class']['includes'],
 			'inputType'               => 'select',
-			'options_callback'		  => array('tl_tax_class', 'getTaxRates'),
+			'options_callback'		  => array('tl_iso_tax_class', 'getTaxRates'),
 			'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
 		),
 		'label' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_class']['label'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_class']['label'],
 			'search'                  => true,
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255, 'tl_class'=>'w50'),
 		),
 		'rates' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_tax_class']['rates'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_class']['rates'],
 			'inputType'               => 'checkboxWizard',
-			'options_callback'		  => array('tl_tax_class', 'getTaxRates'),
+			'options_callback'		  => array('tl_iso_tax_class', 'getTaxRates'),
 			'eval'                    => array('multiple'=>true, 'tl_class'=>'clr'),
 		),
 	)
 );
 
 
-class tl_tax_class extends Backend
+class tl_iso_tax_class extends Backend
 {
 	
 	public function checkPermission($dc)
 	{
 		if (strlen($this->Input->get('act')))
 		{
-			$GLOBALS['TL_DCA']['tl_tax_class']['config']['closed'] = false;
+			$GLOBALS['TL_DCA']['tl_iso_tax_class']['config']['closed'] = false;
 		}
 	}
 	
@@ -172,7 +172,7 @@ class tl_tax_class extends Backend
 		$arrCountries = $this->getCountries();
 		$arrRates = array();
 		
-		$objRates = $this->Database->execute("SELECT * FROM tl_tax_rate ORDER BY country, name");
+		$objRates = $this->Database->execute("SELECT * FROM tl_iso_tax_rate ORDER BY country, name");
 		
 		while( $objRates->next() )
 		{
