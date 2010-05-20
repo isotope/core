@@ -346,10 +346,10 @@ CREATE TABLE `tl_cart_items` (
 -- --------------------------------------------------------
 
 -- 
--- Table `tl_address_book`
+-- Table `tl_iso_addresses`
 -- 
 
-CREATE TABLE `tl_address_book` (
+CREATE TABLE `tl_iso_addresses` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',

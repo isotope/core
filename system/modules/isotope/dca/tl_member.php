@@ -29,7 +29,7 @@
 /**
  * Configuration
  */
-$GLOBALS['TL_DCA']['tl_member']['config']['ctable'][] = 'tl_address_book';
+$GLOBALS['TL_DCA']['tl_member']['config']['ctable'][] = 'tl_iso_addresses';
 $GLOBALS['TL_DCA']['tl_member']['config']['onsubmit_callback'][] = array('tl_member_isotope_extended','copyInitialAddress');
 	
 $GLOBALS['TL_DCA']['tl_member']['fields']['country']['eval']['mandatory'] = true;		
@@ -41,7 +41,7 @@ $GLOBALS['TL_DCA']['tl_member']['fields']['phone']['eval']['rgxp'] = null;
 $GLOBALS['TL_DCA']['tl_member']['list']['operations']['address_book'] = array
 (
 	'label'               => &$GLOBALS['TL_LANG']['tl_member']['address_book'],
-	'href'                => 'table=tl_address_book',
+	'href'                => 'table=tl_iso_addresses',
 	'icon'                => 'system/modules/isotope/html/icon-addressbook.gif',
 );
 
@@ -73,7 +73,7 @@ class tl_member_isotope_extended extends Backend
 	 */
 	public function copyInitialAddress(DataContainer $dc)
 	{
-		$objAddressInfo = $this->Database->prepare("SELECT COUNT(*) as count FROM tl_address_book WHERE pid=?")
+		$objAddressInfo = $this->Database->prepare("SELECT COUNT(*) as count FROM tl_iso_addresses WHERE pid=?")
 										 ->execute($dc->id);
 										 
 		if($objAddressInfo->count < 1)
@@ -106,7 +106,7 @@ class tl_member_isotope_extended extends Backend
 			
 			);
 
-			$this->Database->prepare('INSERT INTO tl_address_book %s')
+			$this->Database->prepare('INSERT INTO tl_iso_addresses %s')
 						   ->set($arrSet)
 						   ->execute();
 		}

@@ -105,6 +105,7 @@ class IsotopeRunonce extends Frontend
 		if ($this->Database->tableExists('tl_shipping_options')) $this->Database->executeUncached("ALTER TABLE tl_shipping_options RENAME tl_iso_shipping_options");
 		if ($this->Database->tableExists('tl_related_categories')) $this->Database->executeUncached("ALTER TABLE tl_related_categories RENAME tl_iso_related_categories");
 		if ($this->Database->tableExists('tl_related_products')) $this->Database->executeUncached("ALTER TABLE tl_related_products RENAME tl_iso_related_products");
+		if ($this->Database->tableExists('tl_address_book')) $this->Database->executeUncached("ALTER TABLE tl_address_book RENAME tl_iso_addresses");
 	}
 	
 	
@@ -146,10 +147,10 @@ class IsotopeRunonce extends Frontend
 			$this->Database->executeUncached("ALTER TABLE tl_iso_attributes CHANGE COLUMN fieldGroup legend varchar(255) NOT NULL default ''");
 		}
 		
-		// tl_address_book.state has been renamed to tl_address_book.subdivision
-		if ($this->Database->fieldExists('state', 'tl_address_book') && !$this->Database->fieldExists('subdivision', 'tl_address_book'))
+		// tl_iso_addresses.state has been renamed to tl_iso_addresses.subdivision
+		if ($this->Database->fieldExists('state', 'tl_iso_addresses') && !$this->Database->fieldExists('subdivision', 'tl_iso_addresses'))
 		{
-			$this->Database->executeUncached("ALTER TABLE tl_address_book CHANGE COLUMN state subdivision varchar(10) NOT NULL default ''");
+			$this->Database->executeUncached("ALTER TABLE tl_iso_addresses CHANGE COLUMN state subdivision varchar(10) NOT NULL default ''");
 		}
 		
 		// tl_store.state has been renamed to tl_store.subdivision
@@ -164,10 +165,10 @@ class IsotopeRunonce extends Frontend
 			$this->Database->executeUncached("ALTER TABLE tl_store CHANGE COLUMN street street_1 varchar(255) NOT NULL default ''");
 		}
 		
-		// tl_address_book.street has been renamed to tl_address_book.street_1
-		if ($this->Database->fieldExists('street', 'tl_address_book') && !$this->Database->fieldExists('street_1','tl_address_book'))
+		// tl_iso_addresses.street has been renamed to tl_iso_addresses.street_1
+		if ($this->Database->fieldExists('street', 'tl_iso_addresses') && !$this->Database->fieldExists('street_1','tl_iso_addresses'))
 		{
-			$this->Database->executeUncached("ALTER TABLE tl_address_book CHANGE COLUMN street street_1 varchar(255) NOT NULL default ''");
+			$this->Database->executeUncached("ALTER TABLE tl_iso_addresses CHANGE COLUMN street street_1 varchar(255) NOT NULL default ''");
 			$this->Database->executeUncached("ALTER TABLE tl_store CHANGE COLUMN street street_1 varchar(255) NOT NULL default ''");
 			$objStores = $this->Database->executeUncached("SELECT * FROM tl_store");
 			

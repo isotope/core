@@ -75,7 +75,7 @@ array_insert($GLOBALS['BE_MOD']['store'], 0, array
 	),
 ));
 
-$GLOBALS['BE_MOD']['accounts']['member']['tables'][] = 'tl_address_book';
+$GLOBALS['BE_MOD']['accounts']['member']['tables'][] = 'tl_iso_addresses';
 
 // Callback is only used for overview screen
 if ($_GET['do'] == 'isotope' && strlen($_GET['table']))

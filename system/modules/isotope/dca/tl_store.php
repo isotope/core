@@ -499,10 +499,10 @@ class tl_store extends Backend
 	{
 		$arrFields = array();
 		
-		$this->loadLanguageFile('tl_address_book');
-		$this->loadDataContainer('tl_address_book');
+		$this->loadLanguageFile('tl_iso_addresses');
+		$this->loadDataContainer('tl_iso_addresses');
 		
-		foreach( $GLOBALS['TL_DCA']['tl_address_book']['fields'] as $strField => $arrData )
+		foreach( $GLOBALS['TL_DCA']['tl_iso_addresses']['fields'] as $strField => $arrData )
 		{
 			if ($arrData['eval']['feEditable'])
 			{
