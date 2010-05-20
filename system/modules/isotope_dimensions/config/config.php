@@ -29,7 +29,7 @@
 /**
  * Backend modules
  */
-array_insert($GLOBALS['BE_MOD']['store'], 1, array
+array_insert($GLOBALS['BE_MOD']['isotope'], 1, array
 (
 	'iso_dimensions' => array
 	(
