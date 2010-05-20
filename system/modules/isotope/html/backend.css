@@ -13,10 +13,12 @@
 .mod_iso_orderdetails .price{text-align:right}
 .mod_iso_orderdetails tfoot td{text-align:right;padding:5px 5px 0}
 .w50h{height:auto}
-.tl_left a{float:left}
+.tl_left a{float:left;margin-top:10px}
 .tl_listing .tl_right{height:auto;text-align:right}
 .iso_product{margin-top:2px;margin-left:22px;margin-bottom:2px;width:530px}
-.iso_product a{float:none}
+.iso_product .thumbnail{padding-right:5px;float:left;width:34px;height:34px}
+.iso_product p{font-weight:bold;margin:0 0 5px 0;padding:0}
+.iso_product a{float:none;margin-top:0}
 h3.inherit,.tl_checkbox_single_container.inherit{background-color:#f8f8f8;margin:14px 0 1px;padding:2px 2px 2px 0}
 .tl_productswizard{width:100%}
 .tl_productswizard th{text-align:left;padding:5px}

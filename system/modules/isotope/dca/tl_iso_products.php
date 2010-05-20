@@ -130,6 +130,13 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'icon'                => 'delete.gif',
 				'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"',
 			),
+			'toggle' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_products']['toggle'],
+				'icon'                => 'visible.gif',
+				'attributes'          => 'onclick="Backend.getScrollOffset(); return AjaxRequest.toggleVisibility(this, %s);"',
+				'button_callback'     => array('tl_iso_products', 'toggleIcon')
+			),
 			'show' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_iso_products']['show'],
@@ -140,7 +147,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			(
 				'label'				  => &$GLOBALS['TL_LANG']['tl_iso_products']['tools'],
 				'icon'				  => 'system/modules/isotope/html/tools.png',
-				'attributes'          => 'class="invisible isotope-contextmenu"'
+				'attributes'          => 'class="invisible isotope-contextmenu"',
 			),
 			'quick_edit' => array
 			(
@@ -425,7 +432,7 @@ class tl_iso_products extends Backend
 	/**
 	 * Only list product types a user is allowed to see.
 	 */
-	public function checkPermission($dc)
+	public function checkPermission()
 	{
 		if (strlen($this->Input->get('act')) && $this->Input->get('mode') != 'create')
 		{
@@ -571,28 +578,28 @@ class tl_iso_products extends Backend
 	public function getRowLabel($row, $label = '')
 	{
 		$arrImages = deserialize($row['images']);
-		$thumbnail = '';
+		$thumbnail = '&nbsp;';
 		
 		if (is_array($arrImages) && count($arrImages))
 		{
 			foreach( $arrImages as $image )
 			{
-				$strImage = 'isotope/' . substr($image['src'], 0, 1) . '/' . $image['src'];
+				$strImage = 'isotope/' . strtolower(substr($image['src'], 0, 1)) . '/' . $image['src'];
 				
 				if (!is_file(TL_ROOT . '/' . $strImage))
 					continue;
 					
-				$thumbnail = sprintf('<img src="%s" alt="%s" align="left" style="padding-right: 8px;" />', $this->getImage($strImage, 50, 50), $image['alt']);
+				$thumbnail = sprintf('<img src="%s" alt="%s" align="left" />', $this->getImage($strImage, 34, 34, 'proportional'), $image['alt']);
 				break;
 			}
 		}
 		
 		if ($row['pid'] > 0)
 		{
-			return sprintf('<div class="iso_product">%s</div>', $this->getVariantValues($row));
+			return sprintf('<div class="iso_product"><div class="thumbnail">'.$thumbnail.'</div>%s</div>', $this->getVariantValues($row));
 		}
 		
-		return '<div class="iso_product"><strong>' . $row['name'] . '</strong><div>' . ($row['pid']==0 ? '<em>' . $GLOBALS['TL_LANG']['tl_iso_products']['pages'][0] .': ' . $this->getCategoryList(deserialize($row['pages'])) . '</em>' : '') . '</div></div> ';
+		return '<div class="iso_product"><div class="thumbnail">'.$thumbnail.'</div><p>' . $row['name'] . '</p><div>' . ($row['pid']==0 ? '<em>' . $this->getCategoryList(deserialize($row['pages'])) . '</em>' : '') . '</div></div> ';
 	}
 	
 	public function getVariantValues($row)
@@ -706,7 +713,7 @@ class tl_iso_products extends Backend
 			$arrCategories[] = '<a class="tl_tip" longdesc="' . $arrPages[$intPage]['help'] . '" href="' . $this->addToUrl('table=tl_iso_product_categories&id='.$intPage) . '">' . $arrPages[$intPage]['title'] . '</a>';
 		}
 		
-		return implode(', ', $arrCategories);
+		return $GLOBALS['TL_LANG']['tl_iso_products']['pages'][0] . ': ' . implode(', ', $arrCategories);
 	}
 	
 	
@@ -1393,7 +1400,7 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 			$href = 'act=copy';
 		}
 
-		return ($this->User->isAdmin || (in_array($row['type'], $this->User->iso_product_types))) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
+		return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
 	}
 
 
@@ -1433,6 +1440,85 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 
 		return ($disablePI ? $this->generateImage('pasteinto_.gif', '', 'class="blink"').' ' : '<a href="'.$this->addToUrl('act='.$arrClipboard['mode'].'&amp;mode=2&amp;pid='.$row['id'].(!is_array($arrClipboard['id']) ? '&amp;id='.$arrClipboard['id'] : '')).'" title="'.specialchars(sprintf($GLOBALS['TL_LANG'][$table]['pasteinto'][1], $row['id'])).'" onclick="Backend.getScrollOffset();">'.$imagePasteInto.'</a> ');
 	}
+	
+	
+	/**
+	 * Return the "toggle visibility" button
+	 * @param array
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @return string
+	 */
+	public function toggleIcon($row, $href, $label, $title, $icon, $attributes)
+	{
+		if (strlen($this->Input->get('tid')))
+		{
+			$this->toggleVisibility($this->Input->get('tid'), ($this->Input->get('state') == 1));
+			$this->redirect($this->getReferer());
+		}
+
+		// Check permissions AFTER checking the tid, so hacking attempts are logged
+		if (!$this->User->isAdmin && !$this->User->hasAccess('tl_iso_products::published', 'alexf'))
+		{
+			return '';
+		}
+
+		$href .= '&amp;tid='.$row['id'].'&amp;state='.($row['published'] ? '' : 1);
+
+		if (!$row['published'])
+		{
+			$icon = 'invisible.gif';
+		}		
+
+		$objProduct = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE id=?")
+									 ->limit(1)
+									 ->execute($row['id']);
+
+		return '<a href="'.$this->addToUrl($href).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
+	}
+	
+	
+	/**
+	 * Disable/enable a user group
+	 * @param integer
+	 * @param boolean
+	 */
+	public function toggleVisibility($intId, $blnVisible)
+	{
+		// Check permissions to edit
+		$this->Input->setGet('id', $intId);
+		$this->Input->setGet('act', 'toggle');
+		$this->checkPermission();
+
+		// Check permissions to publish
+		if (!$this->User->isAdmin && !$this->User->hasAccess('tl_iso_products::published', 'alexf'))
+		{
+			$this->log('Not enough permissions to publish/unpublish product ID "'.$intId.'"', 'tl_iso_products toggleVisibility', TL_ERROR);
+			$this->redirect('typolight/main.php?act=error');
+		}
+
+		$this->createInitialVersion('tl_iso_products', $intId);
+	
+		// Trigger the save_callback
+		if (is_array($GLOBALS['TL_DCA']['tl_iso_products']['fields']['published']['save_callback']))
+		{
+			foreach ($GLOBALS['TL_DCA']['tl_iso_products']['fields']['published']['save_callback'] as $callback)
+			{
+				$this->import($callback[0]);
+				$blnVisible = $this->$callback[0]->$callback[1]($blnVisible, $this);
+			}
+		}
+
+		// Update the database
+		$this->Database->prepare("UPDATE tl_iso_products SET published='" . ($blnVisible ? 1 : '') . "' WHERE id=?")
+					   ->execute($intId);
+
+		$this->createNewVersion('tl_iso_products', $intId);
+	}
+
 	
 	
 	/**

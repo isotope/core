@@ -127,6 +127,7 @@
 .tl_left a
 {
 	float: left;
+	margin-top: 10px;
 }
 
 .tl_listing .tl_right
@@ -143,9 +144,25 @@
 	width: 530px
 }
 
+.iso_product .thumbnail
+{
+	padding-right: 5px;
+	float: left;
+	width: 34px;
+	height: 34px;
+}
+
+.iso_product p
+{
+	font-weight: bold;
+	margin: 0 0 5px 0;
+	padding: 0;
+}
+
 .iso_product a
 {
 	float: none;
+	margin-top: 0;
 }
 
 h3.inherit,
