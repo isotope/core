@@ -305,10 +305,6 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 			'inputType'               => 'select',
 			'eval'                    => array('includeBlankOption'=>true,'submitOnChange'=>true),
 			'options_callback'		  => array('tl_iso_attributes','getFields'),
-			'save_callback'			  => array
-			(
-//				array('ProductCatalog','importAlternateSourceToCollection')
-			)
 		),
 		'rgxp' => array
 		(
