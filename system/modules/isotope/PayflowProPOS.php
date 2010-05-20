@@ -98,7 +98,7 @@ class PayflowProPOS extends Backend
 		
 		
 		//Get the authorize.net configuration data			
-		$objAIMConfig = $this->Database->prepare("SELECT * FROM tl_payment_modules WHERE type=?")
+		$objAIMConfig = $this->Database->prepare("SELECT * FROM tl_iso_payment_modules WHERE type=?")
 														->execute('authorizedotnet');
 		if($objAIMConfig->numRows < 1)
 		{

@@ -697,7 +697,7 @@ class tl_module_isotope extends Backend
 	public function getPaymentModules()
 	{
 		$arrPaymentModules = array();
-		$objPaymentModules = $this->Database->execute("SELECT * FROM tl_payment_modules");
+		$objPaymentModules = $this->Database->execute("SELECT * FROM tl_iso_payment_modules");
 		
 		while( $objPaymentModules->next() )
 		{

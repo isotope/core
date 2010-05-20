@@ -69,7 +69,7 @@ array_insert($GLOBALS['BE_MOD']['store'], 0, array
 	'isotope' => array
 	(
 		'callback'					=> 'ModuleIsotopeConfig',
-		'tables'					=> array('tl_store', 'tl_shipping_modules', 'tl_shipping_options', 'tl_payment_modules', 'tl_payment_options', 'tl_iso_tax_class', 'tl_iso_tax_rate', 'tl_product_types', 'tl_iso_attributes', 'tl_related_categories', 'tl_iso_mail', 'tl_iso_mail_content'),
+		'tables'					=> array('tl_store', 'tl_shipping_modules', 'tl_shipping_options', 'tl_iso_payment_modules', 'tl_payment_options', 'tl_iso_tax_class', 'tl_iso_tax_rate', 'tl_product_types', 'tl_iso_attributes', 'tl_related_categories', 'tl_iso_mail', 'tl_iso_mail_content'),
 		'icon'						=> 'system/modules/isotope/html/icon-store.gif',
 		'stylesheet'				=> 'system/modules/isotope/html/backend.css',
 	),
@@ -108,7 +108,7 @@ $GLOBALS['ISO_MOD'] = array
 	(
 		'payment' => array
 		(
-			'tables'					=> array('tl_payment_modules', 'tl_payment_options'),
+			'tables'					=> array('tl_iso_payment_modules', 'tl_payment_options'),
 			'icon'						=> 'system/modules/isotope/html/icon-payment.png',
 		),
 		'shipping' => array
