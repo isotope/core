@@ -118,7 +118,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 		'default'                     => '
 			{name_legend},name,label,isDefaultStore;
 			{address_legend:hide},firstname,lastname,company,street_1,street_2,street_3,postal,city,subdivision,country,emailShipping,phone;
-			{config_legend},shipping_countries,billing_countries,shipping_fields,billing_fields,weightUnit,cookie_duration,enableGoogleAnalytics;
+			{config_legend},shipping_countries,billing_countries,shipping_fields,billing_fields,weightUnit,orderPrefix,cookie_duration,enableGoogleAnalytics;
 			{price_legend},priceCalculateFactor,priceCalculateMode,priceRoundPrecision,priceRoundIncrement;
 			{currency_legend},currency,currencySymbol,currencyFormat,currencyPosition;
 			{redirect_legend},cartJumpTo,checkoutJumpTo;
@@ -431,7 +431,7 @@ $GLOBALS['TL_DCA']['tl_store'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_store']['orderPrefix'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>4),
+			'eval'                    => array('maxlength'=>4, 'tl_class'=>'w50'),
 		),
 		'weightUnit' => array
 		(
