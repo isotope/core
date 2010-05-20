@@ -441,41 +441,6 @@ class Isotope extends Controller
 	}
 	
 	
-	/**
-	 * Auto-Login new user and copy address to address book.
-	 * 
-	 * @todo allow user to choose auto-activation (in store config?)
-	 * @access public
-	 * @param int $intId
-	 * @param array $arrData
-	 * @return void
-	 */
-	public function createNewUser($intId, $arrData)
-	{
-		$arrSet = array
-		(
-			'pid'				=> $intId,
-			'tstamp'			=> $arrData['tstamp'],
-			'firstname'			=> strval($arrData['firstname']),
-			'lastname'			=> strval($arrData['lastname']),
-			'company'			=> strval($arrData['company']),
-			'street_1'			=> strval($arrData['street']),
-			'postal'			=> strval($arrData['postal']),
-			'city'				=> strval($arrData['city']),
-			'subdivision'		=> strval($arrData['state']),
-			'country'			=> strval($arrData['country']),
-			'phone'				=> strval($arrData['phone']),
-			'email'				=> strval($arrData['email']),
-			'isDefaultBilling'	=> '1',
-			'isDefaultShipping' => '',
-		);
-	
-		
-		$this->Database->prepare('INSERT INTO tl_iso_addresses %s')->set($arrSet)->execute();
-		$this->Database->prepare("UPDATE tl_member SET disable=0 WHERE id=?")->execute($intId);
-	}
-	
-	
 	//!@todo: clean up all getAddress stuff...	
 	public function getAddress($strStep = 'billing')
 	{	
