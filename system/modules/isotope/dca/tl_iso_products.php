@@ -35,7 +35,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 	// Config
 	'config' => array
 	(
-		'label'                       => &$GLOBALS['TL_LANG']['MOD']['product_manager'][0],
+		'label'                       => &$GLOBALS['TL_LANG']['MOD']['iso_products'][0],
 		'dataContainer'               => 'ProductData',
 		'enableVersioning'			  => true,
 		'closed'					  => true,
