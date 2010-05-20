@@ -29,11 +29,11 @@
 /**
  * Extension folder
  */
-$GLOBALS['TL_LANG']['MOD']['isotope_dimensions']	= array('Isotope eCommerce: Flächenpreise', '');
+$GLOBALS['TL_LANG']['MOD']['isotope_dimensions']	= array('Isotope eCommerce: Product Dimensions', '');
 
 
 /**
  * Backend modules
  */
-$GLOBALS['TL_LANG']['MOD']['iso_dimensions']		= array('Flächenpreise', '');
+$GLOBALS['TL_LANG']['MOD']['iso_dimensions']		= array('Product Dimensions', '');
 

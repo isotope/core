@@ -26,22 +26,17 @@
  */
 
 
-// Default settings, can be overwritten in localconfig.php
-$GLOBALS['TL_CONFIG']['isotope_root'] = TL_ROOT . '/isotope';
-$GLOBALS['TL_CONFIG']['isotope_upload_path'] = 'isotope';
-
-
 /**
  * Backend modules
  */
-if (!is_array($GLOBALS['BE_MOD']['store']))
+if (!is_array($GLOBALS['BE_MOD']['isotope']))
 {
-	array_insert($GLOBALS['BE_MOD'], 1, array('store' => array()));
+	array_insert($GLOBALS['BE_MOD'], 1, array('isotope' => array()));
 }
  
-array_insert($GLOBALS['BE_MOD']['store'], 0, array
+array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
 (
-	'product_manager' => array
+	'iso_products' => array
 	(
 		'tables'					=> array('tl_iso_products', 'tl_iso_product_categories', 'tl_iso_downloads', 'tl_iso_related_products'),
 		'icon'						=> 'system/modules/isotope/html/icon-products.gif',
@@ -52,7 +47,7 @@ array_insert($GLOBALS['BE_MOD']['store'], 0, array
 		'import'					=> array('tl_iso_products', 'importAssets'),
 		'link'						=> array('tl_iso_products', 'linkProductsToCategories')
 	),
-	'orders' => array
+	'iso_orders' => array
 	(
 		'tables'					=> array('tl_iso_orders', 'tl_iso_order_items'),
 		'icon'						=> 'system/modules/isotope/html/icon-orders.gif',
@@ -66,7 +61,7 @@ array_insert($GLOBALS['BE_MOD']['store'], 0, array
 		'callback'					=> 'ModuleIsotopeStatistics',
 		'icon'						=> 'system/modules/isotope/html/icon-statistics.gif',
 	),*/
-	'isotope' => array
+	'iso_setup' => array
 	(
 		'callback'					=> 'ModuleIsotopeConfig',
 		'tables'					=> array('tl_store', 'tl_iso_shipping_modules', 'tl_iso_shipping_options', 'tl_iso_payment_modules', 'tl_payment_options', 'tl_iso_tax_class', 'tl_iso_tax_rate', 'tl_iso_producttypes', 'tl_iso_attributes', 'tl_iso_related_categories', 'tl_iso_mail', 'tl_iso_mail_content'),
@@ -78,9 +73,9 @@ array_insert($GLOBALS['BE_MOD']['store'], 0, array
 $GLOBALS['BE_MOD']['accounts']['member']['tables'][] = 'tl_iso_addresses';
 
 // Callback is only used for overview screen
-if ($_GET['do'] == 'isotope' && strlen($_GET['table']))
+if ($_GET['do'] == 'iso_setup' && strlen($_GET['table']))
 {
-	unset($GLOBALS['BE_MOD']['store']['isotope']['callback']);
+	unset($GLOBALS['BE_MOD']['isotope']['iso_setup']['callback']);
 }
 
 // Isotope Modules

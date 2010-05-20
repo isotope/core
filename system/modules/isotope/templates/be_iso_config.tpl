@@ -10,7 +10,7 @@
 <?php foreach ($arrModules as $strModule=>$arrModule): ?>
 
 <div class="tl_module_desc">
-<h3><a href="<?php echo $this->script; ?>?do=isotope&table=<?php echo $strModule; ?>" class="navigation <?php echo $strModule; ?>"<?php if ($arrModule['icon']): ?> style="background-image:url('<?php echo $arrModule['icon']; ?>')"<?php endif; ?>><?php echo $arrModule['name']; ?></a></h3>
+<h3><a href="<?php echo $this->script; ?>?do=iso_setup&table=<?php echo $strModule; ?>" class="navigation <?php echo $strModule; ?>"<?php if ($arrModule['icon']): ?> style="background-image:url('<?php echo $arrModule['icon']; ?>')"<?php endif; ?>><?php echo $arrModule['name']; ?></a></h3>
 <?php echo $arrModule['description']; ?> 
 </div>
 <?php endforeach; endforeach; ?>
