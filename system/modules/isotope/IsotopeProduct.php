@@ -102,7 +102,7 @@ class IsotopeProduct extends Controller
 		// Cache downloads for this product
 		if ($objType->downloads)
 		{
-			$this->arrDownloads = $this->Database->prepare("SELECT * FROM tl_product_downloads WHERE pid=?")->execute($this->arrData['id'])->fetchAllAssoc();
+			$this->arrDownloads = $this->Database->prepare("SELECT * FROM tl_iso_downloads WHERE pid=?")->execute($this->arrData['id'])->fetchAllAssoc();
 		}
 
 		if (is_array($this->arrVariantAttributes))

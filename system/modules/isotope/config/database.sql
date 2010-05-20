@@ -101,10 +101,10 @@ CREATE TABLE `tl_iso_products` (
 -- --------------------------------------------------------
 
 -- 
--- Table `tl_product_downloads`
+-- Table `tl_iso_downloads`
 --
 
-CREATE TABLE `tl_product_downloads` (
+CREATE TABLE `tl_iso_downloads` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
