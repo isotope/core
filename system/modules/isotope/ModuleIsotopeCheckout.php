@@ -194,7 +194,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			if ($strBuffer === true)
 			{
 				$strUniqueId = $this->writeOrder(true);
-				$this->redirect($this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($this->orderCompleteJumpTo)->fetchAssoc(), '/uid/'.$strUniqueId));
+				$this->redirect($this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($this->orderCompleteJumpTo)->fetchAssoc()) . '?uid='.$strUniqueId);
 			}
 			else
 			{

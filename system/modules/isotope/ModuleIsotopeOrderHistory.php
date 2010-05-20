@@ -88,7 +88,7 @@ class ModuleIsotopeOrderHistory extends ModuleIsotope
 				'items'			=> $objOrders->items,
 				'grandTotal'	=> $this->Isotope->formatPriceWithCurrency($objOrders->grandTotal),
 				'status'		=> $GLOBALS['TL_LANG']['MSC']['order_status_labels'][$objOrders->status],
-				'link'			=> ($this->jumpTo ? $this->generateFrontendUrl($arrPage, '/uid/' . $objOrders->uniqid) : ''),
+				'link'			=> ($this->jumpTo ? ($this->generateFrontendUrl($arrPage) . '?uid=' . $objOrders->uniqid) : ''),
 			);
 		}
 		
