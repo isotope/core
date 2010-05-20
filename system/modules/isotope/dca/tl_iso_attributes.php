@@ -30,9 +30,9 @@ $this->loadLanguageFile('tl_iso_products');
 
 
 /**
- * Table tl_product_attributes 
+ * Table tl_iso_attributes 
  */
-$GLOBALS['TL_DCA']['tl_product_attributes'] = array
+$GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 (
 
 	// Config
@@ -43,16 +43,16 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 		'closed'					  => true,
 		'onload_callback'			  => array
 		(
-			array('tl_product_attributes', 'checkPermission'),
-			array('tl_product_attributes', 'disableFieldName'),
+			array('tl_iso_attributes', 'checkPermission'),
+			array('tl_iso_attributes', 'disableFieldName'),
 		),
 		'onsubmit_callback'			  => array
 		(
-			array('tl_product_attributes', 'modifyColumn')
+			array('tl_iso_attributes', 'modifyColumn')
 		),
 		'ondelete_callback'			  => array
 		(
-			array('tl_product_attributes', 'deleteAttribute'),
+			array('tl_iso_attributes', 'deleteAttribute'),
 		),
 	),
 	
@@ -82,7 +82,7 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 			),
 			'new' => array
 			(
-				'label'					=> &$GLOBALS['TL_LANG']['tl_product_attributes']['new'],
+				'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['new'],
 				'href'					=> 'act=create',
 				'class'					=> 'header_new',
 				'attributes'			=> 'onclick="Backend.getScrollOffset();"',
@@ -99,20 +99,20 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 		(
 			'edit' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_product_attributes']['edit'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_attributes']['edit'],
 				'href'                => 'act=edit',
 				'icon'                => 'edit.gif'
 			),
 			'delete' => array
 			(
-				'label'					=> &$GLOBALS['TL_LANG']['tl_product_attributes']['delete'],
+				'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['delete'],
 				'href'					=> 'act=delete',
 				'icon'					=> 'delete.gif',
-				'attributes'			=> 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['tl_product_attributes']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
+				'attributes'			=> 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['tl_iso_attributes']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
 			),
 			'show' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_product_attributes']['show'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_attributes']['show'],
 				'href'                => 'act=show',
 				'icon'                => 'show.gif'
 			)
@@ -149,23 +149,23 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 	(
 		'name' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['name'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_attributes']['name'],
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
 		),
 		'field_name' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['field_name'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_attributes']['field_name'],
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>30, 'unique'=>true, 'doNotSaveEmpty'=>true, 'tl_class'=>'w50'),
 			'save_callback'			  => array
 			(
-				array('tl_product_attributes', 'createColumn'),
+				array('tl_iso_attributes', 'createColumn'),
 			),
 		),
 		'type' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['type'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_attributes']['type'],
 			'inputType'               => 'select',
 			'options'				  => array_keys($GLOBALS['ISO_ATTR']),
 			'reference'				  => &$GLOBALS['TL_LANG']['ATTR'],
@@ -173,7 +173,7 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 		),
 		'legend' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['legend'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_attributes']['legend'],
 			'inputType'               => 'select',
 			'options'				  => &$GLOBALS['ISO_MSC']['tl_iso_products']['groups_ordering'],
 			'reference'				  => &$GLOBALS['TL_LANG']['tl_iso_products'],
@@ -181,33 +181,33 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 		),
 		'description' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['description'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_attributes']['description'],
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255, 'tl_class'=>'clr long'),
 		),
 		'option_list' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['option_list'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_attributes']['option_list'],
 			'exclude'                 => true,
 			'inputType'               => 'optionWizard'
 		),
 		'show_files' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['show_files'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_attributes']['show_files'],
 			'exclude'                 => true,
 			'default'				  => 0,
 			'inputType'               => 'checkbox'
 		),
 		'add_to_product_variants' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['add_to_product_variants'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_attributes']['add_to_product_variants'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox'
 		)
 		/*,
 		'attr_use_mode' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['attr_use_mode'],	//Is customer defined will determine what to do - whether to show just 
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_attributes']['attr_use_mode'],	//Is customer defined will determine what to do - whether to show just 
 																									//a label or a form control
 			'exclude'                 => true,
 			'default'				  => 'label',
@@ -217,18 +217,18 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 		)*/,
 		'attr_default_value' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['attr_default_value'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_attributes']['attr_default_value'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255),
 			'save_callback'			  => array
 			(
-				array('tl_product_attributes','validateInput')
+				array('tl_iso_attributes','validateInput')
 			)
 		),
 		'is_customer_defined' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['is_customer_defined'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_attributes']['is_customer_defined'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
 			'eval'					  => array('submitOnChange'=>true)
@@ -236,75 +236,75 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 		//!@todo check if we need this field
 		'is_visible_on_front' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['is_visible_on_front'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_attributes']['is_visible_on_front'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox'
 		),
 		'is_required' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['is_required'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_attributes']['is_required'],
 			'exclude'                 => true,
 			'default'				  => 0,
 			'inputType'               => 'checkbox'
 		),
 		'is_filterable' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['is_filterable'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_attributes']['is_filterable'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox'
 		),
 		'is_searchable' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['is_searchable'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_attributes']['is_searchable'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox'
 		),
 		'is_order_by_enabled' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['is_order_by_enabled'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_attributes']['is_order_by_enabled'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox'
 		),
 		'is_multiple_select' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['is_multiple_select'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_attributes']['is_multiple_select'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox'
 		),
 		'use_rich_text_editor' => array
 		(
-			'label'					  => &$GLOBALS['TL_LANG']['tl_product_attributes']['use_rich_text_editor'],
+			'label'					  => &$GLOBALS['TL_LANG']['tl_iso_attributes']['use_rich_text_editor'],
 			'exclude'				  => true,
 			'inputType'				  => 'checkbox'
 		),
 		'multilingual' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['multilingual'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_attributes']['multilingual'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
 		),
 		'use_alternate_source' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['use_alternate_source'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_attributes']['use_alternate_source'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
 			'eval'					  => array('submitOnChange'=>true)
 		),
 		'list_source_table' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['list_source_table'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_attributes']['list_source_table'],
 			'exclude'                 => true,
 			'inputType'               => 'select',
 			'eval'                    => array('includeBlankOption'=>true,'submitOnChange'=>true),
-			'options_callback'		  => array('tl_product_attributes','getTables')
+			'options_callback'		  => array('tl_iso_attributes','getTables')
 		),
 		'list_source_field' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_product_attributes']['list_source_field'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_attributes']['list_source_field'],
 			'exclude'                 => true,
 			'inputType'               => 'select',
 			'eval'                    => array('includeBlankOption'=>true,'submitOnChange'=>true),
-			'options_callback'		  => array('tl_product_attributes','getFields'),
+			'options_callback'		  => array('tl_iso_attributes','getFields'),
 			'save_callback'			  => array
 			(
 //				array('ProductCatalog','importAlternateSourceToCollection')
@@ -312,18 +312,18 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 		),
 		'rgxp' => array
 		(
-			'label'					  =>  &$GLOBALS['TL_LANG']['tl_product_attributes']['rgxp'],
+			'label'					  =>  &$GLOBALS['TL_LANG']['tl_iso_attributes']['rgxp'],
 			'exclude'				  => true,
 			'inputType'				  => 'select',
 			'options'				  => array('alnum','extnd','email','url'),
 			'eval'				 	  => array('includeBlankOption'=>true),
-			'reference'				  => &$GLOBALS['TL_LANG']['tl_product_attributes']['rgxpOptions']	
+			'reference'				  => &$GLOBALS['TL_LANG']['tl_iso_attributes']['rgxpOptions']	
 		),
 		'conditionField' => array
 		(
-			'label'					  => &$GLOBALS['TL_LANG']['tl_product_attributes']['conditionField'],
+			'label'					  => &$GLOBALS['TL_LANG']['tl_iso_attributes']['conditionField'],
 			'inputType'				  => 'select',
-			'options_callback'		  => array('tl_product_attributes', 'getConditionFields'),
+			'options_callback'		  => array('tl_iso_attributes', 'getConditionFields'),
 			'eval'					  => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'clr'),
 		),
 	)
@@ -331,18 +331,18 @@ $GLOBALS['TL_DCA']['tl_product_attributes'] = array
 
 
 /**
- * tl_product_attributes class.
+ * tl_iso_attributes class.
  * 
  * @extends Backend
  */
-class tl_product_attributes extends Backend
+class tl_iso_attributes extends Backend
 {
 
 	public function checkPermission($dc)
 	{
 		if (strlen($this->Input->get('act')))
 		{
-			$GLOBALS['TL_DCA']['tl_product_attributes']['config']['closed'] = false;
+			$GLOBALS['TL_DCA']['tl_iso_attributes']['config']['closed'] = false;
 		}
 	}
 		
@@ -385,7 +385,7 @@ class tl_product_attributes extends Backend
 	 */
 	public function getFields(DataContainer $dc)
     {
-        $objTable = $this->Database->prepare("SELECT list_source_table FROM tl_product_attributes WHERE id=?")
+        $objTable = $this->Database->prepare("SELECT list_source_table FROM tl_iso_attributes WHERE id=?")
 								   ->limit(1)
 								   ->execute($dc->id);
          
@@ -400,7 +400,7 @@ class tl_product_attributes extends Backend
     
     public function deleteAttribute($dc)
     {
-    	$objAttribute = $this->Database->prepare("SELECT * FROM tl_product_attributes WHERE id=?")->execute($dc->id);
+    	$objAttribute = $this->Database->prepare("SELECT * FROM tl_iso_attributes WHERE id=?")->execute($dc->id);
     	
     	if ($this->Database->fieldExists($objAttribute->field_name, 'tl_iso_products'))
     	{
@@ -412,12 +412,12 @@ class tl_product_attributes extends Backend
     
     public function disableFieldName($dc)
     {
-    	$objAttribute = $this->Database->prepare("SELECT * FROM tl_product_attributes WHERE id=?")->execute($dc->id);
+    	$objAttribute = $this->Database->prepare("SELECT * FROM tl_iso_attributes WHERE id=?")->execute($dc->id);
     	
     	if (strlen($objAttribute->field_name))
     	{
-    		$GLOBALS['TL_DCA']['tl_product_attributes']['fields']['field_name']['eval']['disabled'] = true;
-    		$GLOBALS['TL_DCA']['tl_product_attributes']['fields']['field_name']['eval']['mandatory'] = false;
+    		$GLOBALS['TL_DCA']['tl_iso_attributes']['fields']['field_name']['eval']['disabled'] = true;
+    		$GLOBALS['TL_DCA']['tl_iso_attributes']['fields']['field_name']['eval']['mandatory'] = false;
     	}
     }
     
@@ -448,7 +448,7 @@ class tl_product_attributes extends Backend
     
 	public function modifyColumn($dc)
 	{
-		$objAttribute = $this->Database->prepare("SELECT * FROM tl_product_attributes WHERE id=?")->execute($dc->id);
+		$objAttribute = $this->Database->prepare("SELECT * FROM tl_iso_attributes WHERE id=?")->execute($dc->id);
 		
 		if ($objAttribute->type != $dc->activeRecord->type && strlen($dc->activeRecord->type) && strlen($GLOBALS['ISO_ATTR'][$dc->activeRecord->type]['sql']) && $this->Database->fieldExists($dc->activeRecord->type, 'tl_iso_products'))
 		{

@@ -49,6 +49,7 @@ class IsotopeRunonce extends Frontend
 		if (!$this->Database->tableExists('tl_store'))
 			return;
 			
+		$this->renameTables();
 		$this->renameFields();
 		$this->updateAttributes();
 		$this->updateProductCategories();
@@ -66,27 +67,34 @@ class IsotopeRunonce extends Frontend
 		$this->Database->executeUncached("UPDATE tl_module SET iso_checkout_method='member' WHERE iso_checkout_method='login'");
 		
 		// Renamed attribute types
-		$this->Database->executeUncached("UPDATE tl_product_attributes SET type='textarea' WHERE type='longtext'");
+		$this->Database->executeUncached("UPDATE tl_iso_attributes SET type='textarea' WHERE type='longtext'");
 		
 		// Drop fields that are now part of the default DCA
-		$this->Database->executeUncached("DELETE FROM tl_product_attributes WHERE field_name='alias'");
-		$this->Database->executeUncached("DELETE FROM tl_product_attributes WHERE field_name='visibility'");
-		$this->Database->executeUncached("DELETE FROM tl_product_attributes WHERE field_name='name'");
-		$this->Database->executeUncached("DELETE FROM tl_product_attributes WHERE field_name='teaser'");
-		$this->Database->executeUncached("DELETE FROM tl_product_attributes WHERE field_name='description'");
-		$this->Database->executeUncached("DELETE FROM tl_product_attributes WHERE field_name='tax_class'");
-		$this->Database->executeUncached("DELETE FROM tl_product_attributes WHERE field_name='main_image'");
-		$this->Database->executeUncached("DELETE FROM tl_product_attributes WHERE field_name='sku'");
-		$this->Database->executeUncached("DELETE FROM tl_product_attributes WHERE field_name='quantity'");
-		$this->Database->executeUncached("DELETE FROM tl_product_attributes WHERE field_name='shipping_exempt'");
-		$this->Database->executeUncached("DELETE FROM tl_product_attributes WHERE field_name='price'");
-		$this->Database->executeUncached("DELETE FROM tl_product_attributes WHERE field_name='price_override'");
-		$this->Database->executeUncached("DELETE FROM tl_product_attributes WHERE field_name='use_price_override'");
-		$this->Database->executeUncached("DELETE FROM tl_product_attributes WHERE field_name='weight'");
+		$this->Database->executeUncached("DELETE FROM tl_iso_attributes WHERE field_name='alias'");
+		$this->Database->executeUncached("DELETE FROM tl_iso_attributes WHERE field_name='visibility'");
+		$this->Database->executeUncached("DELETE FROM tl_iso_attributes WHERE field_name='name'");
+		$this->Database->executeUncached("DELETE FROM tl_iso_attributes WHERE field_name='teaser'");
+		$this->Database->executeUncached("DELETE FROM tl_iso_attributes WHERE field_name='description'");
+		$this->Database->executeUncached("DELETE FROM tl_iso_attributes WHERE field_name='tax_class'");
+		$this->Database->executeUncached("DELETE FROM tl_iso_attributes WHERE field_name='main_image'");
+		$this->Database->executeUncached("DELETE FROM tl_iso_attributes WHERE field_name='sku'");
+		$this->Database->executeUncached("DELETE FROM tl_iso_attributes WHERE field_name='quantity'");
+		$this->Database->executeUncached("DELETE FROM tl_iso_attributes WHERE field_name='shipping_exempt'");
+		$this->Database->executeUncached("DELETE FROM tl_iso_attributes WHERE field_name='price'");
+		$this->Database->executeUncached("DELETE FROM tl_iso_attributes WHERE field_name='price_override'");
+		$this->Database->executeUncached("DELETE FROM tl_iso_attributes WHERE field_name='use_price_override'");
+		$this->Database->executeUncached("DELETE FROM tl_iso_attributes WHERE field_name='weight'");
 		
 		// Because configuration has been changed to objects, we cannot use the existing cart data
 		$this->Database->executeUncached("TRUNCATE TABLE tl_cart_items");
 		$this->Database->executeUncached("TRUNCATE TABLE tl_cart");
+	}
+	
+	
+	private function renameTables()
+	{
+		if ($this->Database->tableExists('tl_product_data')) $this->Database->executeUncached("ALTER TABLE tl_product_data RENAME tl_iso_products");
+		if ($this->Database->tableExists('tl_product_attributes')) $this->Database->executeUncached("ALTER TABLE tl_product_attributes RENAME tl_iso_attributes");
 	}
 	
 	
@@ -110,27 +118,22 @@ class IsotopeRunonce extends Frontend
 			$this->Database->executeUncached("ALTER TABLE tl_store CHANGE COLUMN gallery_thumbnail_image_height gallery_image_height int(10) unsigned NOT NULL default '0'");
 		}
 		
-		if ($this->Database->tableExists('tl_product_data'))
+		// tl_iso_products.visiblity has been renamed to tl_iso_products.published
+		if ($this->Database->fieldExists('visibility', 'tl_iso_products'))
 		{
-			// tl_product_data.visiblity has been renamed to tl_product_data.published
-			if ($this->Database->fieldExists('visibility', 'tl_product_data'))
-			{
-				$this->Database->executeUncached("ALTER TABLE tl_product_data CHANGE COLUMN visibility published char(1) NOT NULL default ''");
-			}
-			
-			// tl_product_date.main_image has been renamed to tl_product_data.images
-			if ($this->Database->fieldExists('main_image', 'tl_product_data'))
-			{
-				$this->Database->executeUncached("ALTER TABLE tl_product_data CHANGE COLUMN main_image images blob NULL");
-			}
-			
-			$this->Database->executeUncached("ALTER TABLE tl_product_data RENAME tl_iso_products");
+			$this->Database->executeUncached("ALTER TABLE tl_iso_products CHANGE COLUMN visibility published char(1) NOT NULL default ''");
 		}
 		
-		// tl_product_attributes.fieldGroup has been renamed to tl_product_attributes.legend
-		if ($this->Database->fieldExists('fieldGroup', 'tl_product_attributes'))
+		// tl_product_date.main_image has been renamed to tl_iso_products.images
+		if ($this->Database->fieldExists('main_image', 'tl_iso_products'))
 		{
-			$this->Database->executeUncached("ALTER TABLE tl_product_attributes CHANGE COLUMN fieldGroup legend varchar(255) NOT NULL default ''");
+			$this->Database->executeUncached("ALTER TABLE tl_iso_products CHANGE COLUMN main_image images blob NULL");
+		}
+		
+		// tl_iso_attributes.fieldGroup has been renamed to tl_iso_attributes.legend
+		if ($this->Database->fieldExists('fieldGroup', 'tl_iso_attributes'))
+		{
+			$this->Database->executeUncached("ALTER TABLE tl_iso_attributes CHANGE COLUMN fieldGroup legend varchar(255) NOT NULL default ''");
 		}
 		
 		// tl_address_book.state has been renamed to tl_address_book.subdivision
@@ -184,10 +187,10 @@ class IsotopeRunonce extends Frontend
 	 */
 	private function updateAttributes()
 	{
-		$arrFields = $this->Database->listFields('tl_product_attributes');
+		$arrFields = $this->Database->listFields('tl_iso_attributes');
 		foreach( $arrFields as $field )
 		{
-			$this->Database->executeUncached("UPDATE tl_product_attributes SET " . $field['name'] . "='' WHERE " . $field['name'] . "='0'");
+			$this->Database->executeUncached("UPDATE tl_iso_attributes SET " . $field['name'] . "='' WHERE " . $field['name'] . "='0'");
 		}
 	}
 	
@@ -418,7 +421,7 @@ class IsotopeRunonce extends Frontend
 	{
 		$this->import('IsotopeDatabase');
 		
-		$objAttributes = $this->Database->execute("SELECT * FROM tl_product_attributes");
+		$objAttributes = $this->Database->execute("SELECT * FROM tl_iso_attributes");
 		
 		while( $objAttributes->next() )
 		{

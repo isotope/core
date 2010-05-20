@@ -499,7 +499,7 @@ class tl_module_isotope extends Backend
 		//Get attribute basic data
 		foreach($arrValues as $value)
 		{
-			$objAttributeData = $this->Database->prepare("SELECT field_name FROM tl_product_attributes WHERE id=?")
+			$objAttributeData = $this->Database->prepare("SELECT field_name FROM tl_iso_attributes WHERE id=?")
 										   		->limit(1)
 										   		->execute($value);
 		
@@ -634,7 +634,7 @@ class tl_module_isotope extends Backend
 	 */
 	private function getFilterValues($intAttributeID)
 	{
-		$objAttributeData = $this->Database->prepare("SELECT name, option_list, use_alternate_source, list_source_table, list_source_field, field_name FROM tl_product_attributes WHERE id=? AND is_filterable='1' AND (type='select' OR type='checkbox')")
+		$objAttributeData = $this->Database->prepare("SELECT name, option_list, use_alternate_source, list_source_table, list_source_field, field_name FROM tl_iso_attributes WHERE id=? AND is_filterable='1' AND (type='select' OR type='checkbox')")
 									  ->limit(1)
 									  ->execute($intAttributeID);
 		

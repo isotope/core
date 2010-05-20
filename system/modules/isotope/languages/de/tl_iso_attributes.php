@@ -29,10 +29,10 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_product_attributes']['name']			= array('Name', 'Geben Sie einen Namen für dieses Artikelmerkmal ein.');
-$GLOBALS['TL_LANG']['tl_product_attributes']['field_name']		= array('Interner Name', 'Der interne Feldname entspricht dem Datenbank-Feld und muss eindeutig sein.');
-$GLOBALS['TL_LANG']['tl_product_attributes']['type']			= array('Typ', 'Wählen Sie einen Attribut-Typ.');
-$GLOBALS['TL_LANG']['tl_product_attributes']['multilingual']	= array('Mehrsprachig', 'Wählen Sie ob dieses Attribut in andere Sprachen übersetzt werden muss (z.B. Textfelder).');
-$GLOBALS['TL_LANG']['tl_product_attributes']['add_to_product_variants']	= array('Für Varianten verwenden', 'Klicken Sie hier wenn dieses Attribut für die Konfiguration von Produktvarianten verwendet wird.');
-$GLOBALS['TL_LANG']['tl_product_attributes']['conditionField'] = array('Übergeordnetes Feld', 'Bitte wählen Sie das übergeornete Feld, welches vom Typ "Select-Menü" sein muss. Damit die Relation funktioniert, definieren Sie die Optionen des übergeordneten Feldes als Gruppe des abhängigen Select-Menüs.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['name']			= array('Name', 'Geben Sie einen Namen für dieses Artikelmerkmal ein.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['field_name']		= array('Interner Name', 'Der interne Feldname entspricht dem Datenbank-Feld und muss eindeutig sein.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['type']			= array('Typ', 'Wählen Sie einen Attribut-Typ.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['multilingual']	= array('Mehrsprachig', 'Wählen Sie ob dieses Attribut in andere Sprachen übersetzt werden muss (z.B. Textfelder).');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['add_to_product_variants']	= array('Für Varianten verwenden', 'Klicken Sie hier wenn dieses Attribut für die Konfiguration von Produktvarianten verwendet wird.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['conditionField'] = array('Übergeordnetes Feld', 'Bitte wählen Sie das übergeornete Feld, welches vom Typ "Select-Menü" sein muss. Damit die Relation funktioniert, definieren Sie die Optionen des übergeordneten Feldes als Gruppe des abhängigen Select-Menüs.');
 

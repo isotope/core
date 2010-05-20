@@ -45,7 +45,7 @@ class ProductCatalog extends Backend
 		if ($strTable != 'tl_iso_products')
 			return;
 		
-		$objAttributes = $this->Database->execute("SELECT * FROM tl_product_attributes");
+		$objAttributes = $this->Database->execute("SELECT * FROM tl_iso_attributes");
 		
 		
 		// add DCA for form fields
@@ -150,7 +150,7 @@ class ProductCatalog extends Backend
 	
 	public function saveField($varValue, DataContainer $dc)
 	{
-		$objAttribute = $this->Database->prepare("SELECT * FROM tl_product_attributes WHERE field_name=?")
+		$objAttribute = $this->Database->prepare("SELECT * FROM tl_iso_attributes WHERE field_name=?")
 									   ->limit(1)
 									   ->execute($dc->field);
 		
@@ -196,7 +196,7 @@ class ProductCatalog extends Backend
 		}
 						
 		//Get the current attribute set		
-		$objAttributeID = $this->Database->prepare("SELECT id FROM tl_product_attributes WHERE field_name=?")
+		$objAttributeID = $this->Database->prepare("SELECT id FROM tl_iso_attributes WHERE field_name=?")
 										 ->limit(1)
 										 ->execute($dc->field);
 		

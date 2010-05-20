@@ -73,7 +73,7 @@ class PageFilters extends Backend
 		
 		$intAttributeSet = $objAttributeSet->iso_attribute_set;
 		
-		$objFilters = $this->Database->prepare("SELECT id, name FROM tl_product_attributes WHERE is_filterable=? AND pid=?")
+		$objFilters = $this->Database->prepare("SELECT id, name FROM tl_iso_attributes WHERE is_filterable=? AND pid=?")
 									 ->execute(1, (int)$intAttributeSet);
 		
 		if($objFilters->numRows < 1)

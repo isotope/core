@@ -144,10 +144,10 @@ CREATE TABLE `tl_product_types` (
 -- --------------------------------------------------------
 
 --
--- Table `tl_product_attributes`
+-- Table `tl_iso_attributes`
 --
 
-CREATE TABLE `tl_product_attributes` (
+CREATE TABLE `tl_iso_attributes` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',

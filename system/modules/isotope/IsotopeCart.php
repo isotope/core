@@ -507,7 +507,7 @@ class IsotopeCart extends Model
 	
 	public function getAttributeName($strField)
 	{
-		$objName = $this->Database->prepare("SELECT name FROM tl_product_attributes WHERE field_name=?")
+		$objName = $this->Database->prepare("SELECT name FROM tl_iso_attributes WHERE field_name=?")
 								  ->limit(1)
 								  ->execute($strField);
 		

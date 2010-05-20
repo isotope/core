@@ -43,7 +43,7 @@ class ContentAttributeLinkRepeater extends ContentElement
 	{
 		
 		//global $objPage;
-		$objAttributeData = $this->Database->prepare("SELECT name, option_list, use_alternate_source, list_source_table, list_source_field FROM tl_product_attributes WHERE id=? AND is_filterable='1' AND (type='select' OR type='checkbox')")
+		$objAttributeData = $this->Database->prepare("SELECT name, option_list, use_alternate_source, list_source_table, list_source_field FROM tl_iso_attributes WHERE id=? AND is_filterable='1' AND (type='select' OR type='checkbox')")
 									  ->limit(1)
 									  ->execute($this->iso_filters);
 		
