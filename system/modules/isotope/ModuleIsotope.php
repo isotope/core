@@ -290,19 +290,6 @@ abstract class ModuleIsotope extends Module
 	{
 		return strcasecmp($a['label'], $b['label']);
 	}
-	
-	
-	protected function getCookieTimeWindow($intStoreId)
-	{
-		$objCookieTimeWindow = $this->Database->prepare("SELECT cookie_duration FROM tl_store WHERE id=?")->limit(1)->execute($intStoreId);
-		
-		if (!$objCookieTimeWindow->numRows)
-		{
-			return 0;
-		}
-				
-		return $objCookieTimeWindow->cookie_duration;
-	}
 		
 	
 	/**
