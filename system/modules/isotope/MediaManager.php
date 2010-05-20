@@ -256,7 +256,7 @@ class MediaManager extends Widget implements uploadable
 			}
 			$return .= '
   <tr>
-    <td><input type="hidden" name="' . $this->strName . '['.$i.'][src]" value="' . $this->varValue[$i]['src'] . '" /><a href="' . $strImage . '" rel="lightbox"><img src="' . $this->getImage($strImage, 50, 50) . '" alt="' . $this->varValue[$i]['src'] . '" /></a></td>
+    <td><input type="hidden" name="' . $this->strName . '['.$i.'][src]" value="' . $this->varValue[$i]['src'] . '" /><a href="' . $strImage . '" rel="lightbox"><img src="' . $this->getImage($strImage, 50, 50, 'box') . '" alt="' . $this->varValue[$i]['src'] . '" /></a></td>
     <td><input type="text" class="tl_text_2" name="' . $this->strName . '['.$i.'][alt]" value="' . $this->varValue[$i]['alt'] . '" /></td>
     <td><textarea name="' . $this->strName . '['.$i.'][desc]" cols="40" rows="3" class="tl_textarea">' . $this->varValue[$i]['desc'] . '</textarea></td>
     <td>';
