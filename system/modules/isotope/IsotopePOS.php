@@ -630,7 +630,7 @@ class IsotopePOS extends Backend
 	
 	protected function generateShippingInfoString($intShippingRateId)
 	{
-		$objShippingMethod = $this->Database->prepare("SELECT s.name, sr.description FROM tl_shipping_modules s INNER JOIN tl_shipping_options sr ON s.id=sr.pid  WHERE sr.id=?")
+		$objShippingMethod = $this->Database->prepare("SELECT s.name, sr.description FROM tl_iso_shipping_modules s INNER JOIN tl_iso_shipping_options sr ON s.id=sr.pid  WHERE sr.id=?")
 											->limit(1)
 											->execute($intShippingRateId);
 		

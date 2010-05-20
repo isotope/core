@@ -442,10 +442,10 @@ CREATE TABLE `tl_payment_options` (
 -- --------------------------------------------------------
 
 -- 
--- Table `tl_shipping_modules`
+-- Table `tl_iso_shipping_modules`
 -- 
 
-CREATE TABLE `tl_shipping_modules` (
+CREATE TABLE `tl_iso_shipping_modules` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `tstamp` int(10) unsigned NOT NULL default '0',
   `name` varchar(255) NOT NULL default '',
@@ -478,10 +478,10 @@ CREATE TABLE `tl_shipping_modules` (
 -- --------------------------------------------------------
 
 -- 
--- Table `tl_shipping_options`
+-- Table `tl_iso_shipping_options`
 -- 
 
-CREATE TABLE `tl_shipping_options` (
+CREATE TABLE `tl_iso_shipping_options` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',

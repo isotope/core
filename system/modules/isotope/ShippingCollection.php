@@ -61,7 +61,7 @@ class ShippingCollection extends IsotopeShipping
 		
 		$arrShippingAddress = $this->Isotope->getAddress('shipping'); //Tax calculated based on billing address.
 				
-		$objRates = $this->Database->prepare("SELECT * FROM tl_shipping_options WHERE pid=?")
+		$objRates = $this->Database->prepare("SELECT * FROM tl_iso_shipping_options WHERE pid=?")
 								   ->execute($intPid);
 		
 		if($objRates->numRows < 1)
@@ -343,7 +343,7 @@ class ShippingCollection extends IsotopeShipping
 	{
 		$strOptions = is_array($this->shipping_options) && sizeof($this->shipping_options)>0 ? join(',', $this->shipping_options) : 0;
 		
-		$objShippingModule = $this->Database->prepare("SELECT sm.*, so.* FROM tl_shipping_modules sm INNER JOIN tl_shipping_options so ON so.pid=sm.id WHERE sm.id=? && so.id IN(" . $strOptions . ") AND so.mandatory!='1'")
+		$objShippingModule = $this->Database->prepare("SELECT sm.*, so.* FROM tl_iso_shipping_modules sm INNER JOIN tl_iso_shipping_options so ON so.pid=sm.id WHERE sm.id=? && so.id IN(" . $strOptions . ") AND so.mandatory!='1'")
 											->execute($intModuleId);
 		
 		if($objShippingModule->numRows < 1)
@@ -379,7 +379,7 @@ class ShippingCollection extends IsotopeShipping
 	
 	protected function getShippingModuleCountries($intModuleId)
 	{
-		$objCountries = $this->Database->prepare("SELECT countries FROM tl_shipping_modules WHERE id=?")
+		$objCountries = $this->Database->prepare("SELECT countries FROM tl_iso_shipping_modules WHERE id=?")
 									   ->limit(1)
 									   ->execute($intModuleId);
 		
@@ -400,7 +400,7 @@ class ShippingCollection extends IsotopeShipping
 			return '';
 		}*/
 	
-		return '<a href="'.str_replace('tl_shipping_modules','tl_shipping_options',$this->Environment->request).'&amp;id=' . $this->Input->get('id') . '" title="'.specialchars($title).'"'.$attributes.'>test</a>'; //'.$this->generateImage('tablewizard.gif', 'rates table').'</a> ';
+		return '<a href="'.str_replace('tl_iso_shipping_modules','tl_iso_shipping_options',$this->Environment->request).'&amp;id=' . $this->Input->get('id') . '" title="'.specialchars($title).'"'.$attributes.'>test</a>'; //'.$this->generateImage('tablewizard.gif', 'rates table').'</a> ';
 
 	}
 	

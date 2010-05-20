@@ -69,7 +69,7 @@ array_insert($GLOBALS['BE_MOD']['store'], 0, array
 	'isotope' => array
 	(
 		'callback'					=> 'ModuleIsotopeConfig',
-		'tables'					=> array('tl_store', 'tl_shipping_modules', 'tl_shipping_options', 'tl_iso_payment_modules', 'tl_payment_options', 'tl_iso_tax_class', 'tl_iso_tax_rate', 'tl_product_types', 'tl_iso_attributes', 'tl_related_categories', 'tl_iso_mail', 'tl_iso_mail_content'),
+		'tables'					=> array('tl_store', 'tl_iso_shipping_modules', 'tl_iso_shipping_options', 'tl_iso_payment_modules', 'tl_payment_options', 'tl_iso_tax_class', 'tl_iso_tax_rate', 'tl_product_types', 'tl_iso_attributes', 'tl_related_categories', 'tl_iso_mail', 'tl_iso_mail_content'),
 		'icon'						=> 'system/modules/isotope/html/icon-store.gif',
 		'stylesheet'				=> 'system/modules/isotope/html/backend.css',
 	),
@@ -113,7 +113,7 @@ $GLOBALS['ISO_MOD'] = array
 		),
 		'shipping' => array
 		(
-				'tables'				=> array('tl_shipping_modules','tl_shipping_options'),
+				'tables'				=> array('tl_iso_shipping_modules','tl_iso_shipping_options'),
 				'icon'					=> 'system/modules/isotope/html/icon-shipping.gif',
 		),
 		'tax_class' => array

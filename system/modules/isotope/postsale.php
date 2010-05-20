@@ -77,7 +77,7 @@ class PostSale extends Frontend
 				break;
 				
 			case 'ship':
-				$objModule = $this->Database->prepare("SELECT * FROM tl_shipping_modules WHERE id=?")->limit(1)->execute($strId);
+				$objModule = $this->Database->prepare("SELECT * FROM tl_iso_shipping_modules WHERE id=?")->limit(1)->execute($strId);
 				break;
 		}
 

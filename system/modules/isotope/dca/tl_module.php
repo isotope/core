@@ -719,7 +719,7 @@ class tl_module_isotope extends Backend
 	public function getShippingModules()
 	{
 		$arrModules = array();
-		$objModules = $this->Database->execute("SELECT * FROM tl_shipping_modules WHERE enabled=1");
+		$objModules = $this->Database->execute("SELECT * FROM tl_iso_shipping_modules WHERE enabled=1");
 		
 		while( $objModules->next() )
 		{
