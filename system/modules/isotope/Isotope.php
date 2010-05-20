@@ -36,7 +36,7 @@ class Isotope extends Controller
 	protected static $objInstance;
 	
 	
-	public $Store;
+	public $Config;
 	public $Cart;
 	
 	
@@ -57,13 +57,13 @@ class Isotope extends Controller
 		
 		$blnForceDefault = (TL_MODE=='BE' ? true : false);
 		
-		if (strlen($_SESSION['isotope']['store_id']))
+		if (strlen($_SESSION['ISOTOPE']['config_id']))
 		{
-			$this->overrideStore($_SESSION['isotope']['store_id']);
+			$this->overrideConfig($_SESSION['ISOTOPE']['config_id']);
 		}
 		else
 		{
-			$this->resetStore($blnForceDefault);
+			$this->resetConfig($blnForceDefault);
 		}
 	}
 	
@@ -85,22 +85,22 @@ class Isotope extends Controller
 
 	
 	/**
-	 * Set the default store
+	 * Set the default store config
 	 *
 	 * @access public
 	 * @return void
 	 */
-	public function resetStore($blnForceDefault=false)
+	public function resetConfig($blnForceDefault=false)
 	{
 		if($blnForceDefault)
 		{
-			$intStore = $this->getDefaultStore();
+			$intConfig = $this->getDefaultConfig();
 		}
 		else
 		{	
 			if($objPage->isotopeStoreConfig)
 			{
-				$intStore = $objPage->isotopeStoreConfig;
+				$intConfig = $objPage->isotopeStoreConfig;
 			}
 			else
 			{
@@ -108,24 +108,24 @@ class Isotope extends Controller
 				
 				if(!$objPage->pid)
 				{
-					$intStore = $this->getDefaultStore();
+					$intConfig = $this->getDefaultConfig();
 				}
 				else
 				{
 					//Find (recursive look at parents)
-					$intStore = $this->getStoreConfigFromParent($objPage->id);
+					$intConfig = $this->getConfigFromParent($objPage->id);
 				}
 			}
 		}
 
-		if(!$intStore)
+		if(!$intConfig)
 		{
 			if (TL_MODE == 'BE')
 			{
 				$_SESSION['TL_ERROR'] = array($GLOBALS['TL_LANG']['ERR']['noDefaultStoreConfiguration']);
 				
 				if ($this->Input->get('do') != 'isotope')
-					$this->redirect('typolight/main.php?do=isotope&table=tl_store&act=create');
+					$this->redirect('typolight/main.php?do=iso_setup&table=tl_iso_config&act=create');
 			}
 			else
 			{
@@ -135,62 +135,54 @@ class Isotope extends Controller
 			return;
 		}
 		
-		$this->Store = new IsotopeStore($intStore);
+		$this->Config = new IsotopeConfig($intConfig);
 	}
 	
 	
 	/** 
-	 * Manual override of the store
-	 * 
-	 * @param integer $intStoreId;
-	 * @return void
+	 * Manual override of the store configuration
 	 */
-	public function overrideStore($intStoreId)
+	public function overrideConfig($intConfig)
     {
     	try
 		{
-			$objStore = new IsotopeStore($intStoreId);
-			$this->Store = $objStore;
+			$objConfig = new IsotopeConfig($intConfig);
+			$this->Config = $objConfig;
 		}
 		catch (Exception $e)
 		{
-			$this->resetStore((TL_MODE=='BE' ? true : false));
+			$this->resetConfig((TL_MODE=='BE' ? true : false));
 		}
 	}
 	
 	
 	/** 
-	 * Get a default store - either one indicated as default in records or else the first record available.
-	 *
-	 * return integer (store id)
+	 * Get a default store config - either one indicated as default in records or else the first record available.
 	 */
-	protected function getDefaultStore()
+	protected function getDefaultConfig()
 	{
-		return $this->Database->execute("SELECT id FROM tl_store WHERE isDefaultStore='1'")->id;
+		return $this->Database->execute("SELECT id FROM tl_iso_config WHERE fallback='1'")->id;
 	}
 
 
 	/** 
-	 * Recursively look for a store set in a given page. Continue looking at parent pages until one is found or else
+	 * Recursively look for a config set in a given page. Continue looking at parent pages until one is found or else
 	 * revert to default store otherwise specified.
-	 *
-	 * @param integer $intPageId
-	 * @return integer (store id)
 	 */
-	private function getStoreConfigFromParent($intPageId)
+	private function getConfigFromParent($intPageId)
 	{
 		$objPage = $this->Database->prepare("SELECT pid, isotopeStoreConfig FROM tl_page WHERE id=?")->execute($intPageId);
-												
+		
 		if($objPage->isotopeStoreConfig > 0)
 		{
 			return $objPage->isotopeStoreConfig;
 		}
 		elseif($objPage->pid > 0)
 		{
-			return $this->getStoreConfigFromParent($objPage->pid);
+			return $this->getConfigFromParent($objPage->pid);
 		}
 		
-		return $this->getDefaultStore();
+		return $this->getDefaultConfig();
 	}
 	
 	
@@ -203,16 +195,16 @@ class Isotope extends Controller
 		if (!is_numeric($fltPrice))
 			return $fltPrice;
 			
-		if ($this->Store->priceMultiplier != 1)
+		if ($this->Config->priceMultiplier != 1)
 		{
-			switch ($this->Store->priceCalculateMode)
+			switch ($this->Config->priceCalculateMode)
 			{
 				case 'mul':
-					$fltPrice = $fltPrice * $this->Store->priceCalculateFactor;
+					$fltPrice = $fltPrice * $this->Config->priceCalculateFactor;
 					break;
 					
 				case 'div':
-					$fltPrice = $fltPrice / $this->Store->priceCalculateFactor;
+					$fltPrice = $fltPrice / $this->Config->priceCalculateFactor;
 					break;
 			}
 		}
@@ -223,12 +215,12 @@ class Isotope extends Controller
 			$fltPrice = $this->calculateTax($intTaxClass, $fltPrice, false);
 		}
 		
-		if ($this->Store->priceRoundIncrement == '0.05')
+		if ($this->Config->priceRoundIncrement == '0.05')
 		{
 			$fltPrice = (round(20*$fltPrice))/20;
 		}
 		
-		$fltPrice = round($fltPrice, $this->Store->priceRoundPrecision);
+		$fltPrice = round($fltPrice, $this->Config->priceRoundPrecision);
 		
 		return $fltPrice;
 	}
@@ -383,7 +375,7 @@ class Isotope extends Controller
 	
 
 	/**
-	 * Format given price according to store settings.
+	 * Format given price according to store config settings.
 	 * 
 	 * @access public
 	 * @param float $fltPrice
@@ -395,7 +387,7 @@ class Isotope extends Controller
 		if (!is_numeric($fltPrice))
 			return $fltPrice;
 			
-		$arrFormat = $GLOBALS['ISO_NUM'][$this->Store->currencyFormat];
+		$arrFormat = $GLOBALS['ISO_NUM'][$this->Config->currencyFormat];
 		
 		if (!is_array($arrFormat) || !count($arrFormat) == 3)
 			return $fltPrice;
@@ -405,7 +397,7 @@ class Isotope extends Controller
 	
 	
 	/**
-	 * Format given price according to store settings, including currency representation.
+	 * Format given price according to store config settings, including currency representation.
 	 * 
 	 * @access public
 	 * @param float $fltPrice
@@ -419,20 +411,20 @@ class Isotope extends Controller
 		if (!is_numeric($fltPrice))
 			return $fltPrice;
 			
-		$strCurrency = (strlen($strCurrencyCode) ? $strCurrencyCode : $this->Store->currency);
+		$strCurrency = (strlen($strCurrencyCode) ? $strCurrencyCode : $this->Config->currency);
 		
 		$strPrice = $this->formatPrice($fltPrice);
 		
-		if ($this->Store->currencySymbol && strlen($GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency]))
+		if ($this->Config->currencySymbol && strlen($GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency]))
 		{
 			$strCurrency = ($blnHtml ? '<span class="currency">' : '') . $GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency] . ($blnHtml ? '</span>' : '');
 		}
 		else
 		{
-			$strCurrency = ($this->Store->currencyPosition == 'right' ? ' ' : '') . ($blnHtml ? '<span class="currency">' : '') . $strCurrency . ($blnHtml ? '</span>' : '') . ($this->Store->currencyPosition == 'left' ? ' ' : '');
+			$strCurrency = ($this->Config->currencyPosition == 'right' ? ' ' : '') . ($blnHtml ? '<span class="currency">' : '') . $strCurrency . ($blnHtml ? '</span>' : '') . ($this->Config->currencyPosition == 'left' ? ' ' : '');
 		}
 		
-		if ($this->Store->currencyPosition == 'right')
+		if ($this->Config->currencyPosition == 'right')
 		{
 			return $strPrice . $strCurrency;
 		}
@@ -517,13 +509,13 @@ class Isotope extends Controller
 			
 		if (!is_array($arrFields))
 		{
-			$arrFields = $this->Store->billing_fields;
+			$arrFields = $this->Config->billing_fields;
 		}
 		
 		// We need a country to format the address, user default country if none is available
 		if (!strlen($arrAddress['country']))
 		{
-			$arrAddress['country'] = $this->Store->country;
+			$arrAddress['country'] = $this->Config->country;
 		}
 		
 		$arrCountries = $this->getCountries();

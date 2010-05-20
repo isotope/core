@@ -29,8 +29,8 @@
 /**
  * Palettes
  */
-$GLOBALS['TL_DCA']['tl_user']['palettes']['extend'] = str_replace('{account_legend}', '{isotope_legend},iso_product_types,iso_stores,iso_modules;{account_legend}', $GLOBALS['TL_DCA']['tl_user']['palettes']['extend']);
-$GLOBALS['TL_DCA']['tl_user']['palettes']['custom'] = str_replace('{account_legend}', '{isotope_legend},iso_product_types,iso_stores,iso_modules;{account_legend}', $GLOBALS['TL_DCA']['tl_user']['palettes']['custom']);
+$GLOBALS['TL_DCA']['tl_user']['palettes']['extend'] = str_replace('{account_legend}', '{isotope_legend},iso_product_types,iso_configs,iso_modules;{account_legend}', $GLOBALS['TL_DCA']['tl_user']['palettes']['extend']);
+$GLOBALS['TL_DCA']['tl_user']['palettes']['custom'] = str_replace('{account_legend}', '{isotope_legend},iso_product_types,iso_configs,iso_modules;{account_legend}', $GLOBALS['TL_DCA']['tl_user']['palettes']['custom']);
 
 
 /**
@@ -45,12 +45,12 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_product_types'] = array
 	'eval'                    => array('multiple'=>true),
 );
 
-$GLOBALS['TL_DCA']['tl_user']['fields']['iso_stores'] = array
+$GLOBALS['TL_DCA']['tl_user']['fields']['iso_configs'] = array
 (
-	'label'                   => &$GLOBALS['TL_LANG']['tl_user']['iso_stores'],
+	'label'                   => &$GLOBALS['TL_LANG']['tl_user']['iso_configs'],
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
-	'foreignKey'			  => 'tl_store.name',
+	'foreignKey'			  => 'tl_iso_config.name',
 	'eval'                    => array('multiple'=>true),
 );
 

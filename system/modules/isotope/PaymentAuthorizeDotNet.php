@@ -110,7 +110,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 		}
 	
 	
-		//FIXME?? - This just doesn't seem like a good way to handle this info...
+		//!@todo: - This just doesn't seem like a good way to handle this info...
 		
 		//Save Auth.net-specific data
 	
@@ -144,7 +144,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 			default:
 				$_SESSION['CHECKOUT_DATA']['payment'][$this->id]['error'] = $arrResponses['reason'];
 				
-				//TODO: store the reason for a failure for later in case the payment info can be corrected.
+				//!@todo: store the reason for a failure for later in case the payment info can be corrected.
 				
 				$this->redirect($this->addToUrl('step=payment'));
 				break;

@@ -195,7 +195,7 @@ class IsotopeProduct extends Controller
 											{
 												foreach( array('large', 'medium', 'thumbnail', 'gallery') as $type )
 												{
-													$size = $this->Isotope->Store->{$type . '_size'};
+													$size = $this->Isotope->Config->{$type . '_size'};
 													$strImage = $this->getImage($strFile, $size[0], $size[1], $size[2]);
 													$arrSize = @getimagesize(TL_ROOT . '/' . $strImage);
 
@@ -236,12 +236,12 @@ class IsotopeProduct extends Controller
 
 						case 'images':
 							// No image available, add default image
-							if (!count($varValue) && is_file(TL_ROOT . '/' . $this->Isotope->Store->missing_image_placeholder))
+							if (!count($varValue) && is_file(TL_ROOT . '/' . $this->Isotope->Config->missing_image_placeholder))
 							{
 								foreach( array('large', 'medium', 'thumbnail', 'gallery') as $type )
 								{
-									$size = $this->Isotope->Store->{$type . '_size'};
-									$strImage = $this->getImage($this->Isotope->Store->missing_image_placeholder, $size[0], $size[1], $size[2]);
+									$size = $this->Isotope->Config->{$type . '_size'};
+									$strImage = $this->getImage($this->Isotope->Config->missing_image_placeholder, $size[0], $size[1], $size[2]);
 									$arrSize = @getimagesize(TL_ROOT . '/' . $strImage);
 
 									$file[$type] = $strImage;

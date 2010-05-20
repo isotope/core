@@ -29,7 +29,7 @@
 /**
  * Palettes
  */
-$GLOBALS['TL_DCA']['tl_user_group']['palettes']['default'] = str_replace('{alexf_legend}', '{isotope_legend},iso_product_types,iso_stores,iso_modules;{alexf_legend}', $GLOBALS['TL_DCA']['tl_user_group']['palettes']['default']);
+$GLOBALS['TL_DCA']['tl_user_group']['palettes']['default'] = str_replace('{alexf_legend}', '{isotope_legend},iso_product_types,iso_configs,iso_modules;{alexf_legend}', $GLOBALS['TL_DCA']['tl_user_group']['palettes']['default']);
 
 
 /**
@@ -44,12 +44,12 @@ $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_product_types'] = array
 	'eval'                    => array('multiple'=>true),
 );
 
-$GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_stores'] = array
+$GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_configs'] = array
 (
-	'label'                   => &$GLOBALS['TL_LANG']['tl_user_group']['iso_stores'],
+	'label'                   => &$GLOBALS['TL_LANG']['tl_user_group']['iso_configs'],
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
-	'foreignKey'			  => 'tl_store.name',
+	'foreignKey'			  => 'tl_iso_config.name',
 	'eval'                    => array('multiple'=>true),
 );
 

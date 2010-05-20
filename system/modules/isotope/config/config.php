@@ -64,8 +64,8 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
 	'iso_setup' => array
 	(
 		'callback'					=> 'ModuleIsotopeConfig',
-		'tables'					=> array('tl_store', 'tl_iso_shipping_modules', 'tl_iso_shipping_options', 'tl_iso_payment_modules', 'tl_payment_options', 'tl_iso_tax_class', 'tl_iso_tax_rate', 'tl_iso_producttypes', 'tl_iso_attributes', 'tl_iso_related_categories', 'tl_iso_mail', 'tl_iso_mail_content'),
-		'icon'						=> 'system/modules/isotope/html/icon-store.gif',
+		'tables'					=> array('tl_iso_config', 'tl_iso_shipping_modules', 'tl_iso_shipping_options', 'tl_iso_payment_modules', 'tl_payment_options', 'tl_iso_tax_class', 'tl_iso_tax_rate', 'tl_iso_producttypes', 'tl_iso_attributes', 'tl_iso_related_categories', 'tl_iso_mail', 'tl_iso_mail_content'),
+		'icon'						=> 'system/modules/isotope/html/icon-isotope.png',
 		'stylesheet'				=> 'system/modules/isotope/html/backend.css',
 	),
 ));
@@ -83,12 +83,12 @@ $GLOBALS['ISO_MOD'] = array
 (
 	'product' => array
 	(
-		'product_type_manager' => array
+		'producttypes' => array
 		(
 			'tables'					=> array('tl_iso_producttypes'),
 			'icon'						=> 'system/modules/isotope/html/icon-types.gif'
 		),
-		'attribute_manager' => array
+		'attributes' => array
 		(
 			'tables'					=> array('tl_iso_attributes'),
 			'icon'						=> 'system/modules/isotope/html/icon-attributes.gif',
@@ -129,11 +129,10 @@ $GLOBALS['ISO_MOD'] = array
 			'tables'					=> array('tl_iso_mail', 'tl_iso_mail_content'),
 			'icon'						=> 'system/modules/isotope/html/icon-mail.gif',
 		),
-		'store_configuration' => array
+		'configs' => array
 		(
-			'callback'					=> 'ModuleIsotopeConfig',
-			'tables'					=> array('tl_store'),
-			'icon'						=> 'system/modules/isotope/html/icon-store.gif',
+			'tables'					=> array('tl_iso_config'),
+			'icon'						=> 'system/modules/isotope/html/icon-isotope.png',
 		),
 	)
 );
@@ -181,7 +180,7 @@ $GLOBALS['FE_MOD']['isotope'] = array
 	'iso_productfilter'			=> 'ModuleIsotopeProductFilter',
 	'iso_orderhistory'			=> 'ModuleIsotopeOrderHistory',
 	'iso_orderdetails'			=> 'ModuleIsotopeOrderDetails',
-	'iso_storeswitcher'			=> 'ModuleIsotopeStoreSwitcher',
+	'iso_configswitcher'		=> 'ModuleIsotopeConfigSwitcher',
 	'iso_addressbook'			=> 'ModuleIsotopeAddressBook',
 	'iso_relatedproducts'		=> 'ModuleIsotopeRelatedProducts',
 );
@@ -251,7 +250,7 @@ $GLOBALS['TL_CTE']['links']['attributeLinkRepeater'] = 'ContentAttributeLinkRepe
 /** 
  * Permissions are access settings for user and groups (fields in tl_user and tl_user_group)
  */
-$GLOBALS['TL_PERMISSIONS'][] = 'iso_stores';
+$GLOBALS['TL_PERMISSIONS'][] = 'iso_configs';
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_product_types';
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_modules';
 

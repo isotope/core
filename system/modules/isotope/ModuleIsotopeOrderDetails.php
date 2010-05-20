@@ -74,7 +74,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 		$this->Template->setData($objOrder->row());
 		
 		$this->import('Isotope');
-		$this->Isotope->overrideStore($objOrder->store_id);
+		$this->Isotope->overrideConfig($objOrder->config_id);
 		
 		// Article reader
 		$arrPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->limit(1)->execute($this->jumpTo)->fetchAssoc();
@@ -177,7 +177,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 		$this->Template->surcharges = $arrSurcharges;
 		
 		$this->Template->billing_label = $GLOBALS['TL_LANG']['ISO']['billing_address'];
-		$this->Template->billing_address = $this->Isotope->generateAddressString(deserialize($objOrder->billing_address), $this->Isotope->Store->billing_fields);
+		$this->Template->billing_address = $this->Isotope->generateAddressString(deserialize($objOrder->billing_address), $this->Isotope->Config->billing_fields);
 		
 		if (strlen($objOrder->shipping_method))
 		{
@@ -191,7 +191,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 			{
 				$this->Template->has_shipping = true;
 				$this->Template->shipping_label = $GLOBALS['TL_LANG']['ISO']['shipping_address'];
-				$this->Template->shipping_address = $this->Isotope->generateAddressString($arrShippingAddress, $this->Isotope->Store->shipping_fields);
+				$this->Template->shipping_address = $this->Isotope->generateAddressString($arrShippingAddress, $this->Isotope->Config->shipping_fields);
 			}
 		}
 	}

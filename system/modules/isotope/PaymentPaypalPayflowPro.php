@@ -95,7 +95,7 @@ class PaymentPaypalPayflowPro extends IsotopePayment
 			'EXPDATE'				=> $strExpDate,
 			'NAME'					=> $strCardType,
 			'AMT'					=> $this->Cart->grandTotal,
-			'CURRENCY'				=> $this->Isotope->Store->currency,
+			'CURRENCY'				=> $this->Isotope->Config->currency,
       		'COMMENT1'				=> '',	//TODO: Provide space for order comments.
 			'FIRSTNAME'				=> $this->Cart->billingAddress['firstname'],
 			'LASTNAME'				=> $this->Cart->billingAddress['lastname'],
@@ -111,7 +111,7 @@ class PaymentPaypalPayflowPro extends IsotopePayment
 			$arrData['CVV2'] = $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_ccv'];
 		}
 		
-		if($this->Isotope->Store->country=='UK')
+		if($this->Isotope->Config->country=='UK')
 		{
 			if($this->Cart->billingAddress['country']=='UK' && ($_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_type']=='maestro' || $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_type']=='solo'))
 			{
@@ -227,7 +227,7 @@ class PaymentPaypalPayflowPro extends IsotopePayment
 			),
 		);
 		
-		if($this->Isotope->Store->country=='UK' && (in_array('maestro', $arrCCTypes) || in_array('solo', $arrCCTypes)))
+		if($this->Isotope->Config->country=='UK' && (in_array('maestro', $arrCCTypes) || in_array('solo', $arrCCTypes)))
 		{
 			$arrFields['cc_start_date'] = array
 			(

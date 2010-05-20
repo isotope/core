@@ -26,14 +26,14 @@
  */
 
 
-class ModuleIsotopeStoreSwitcher extends ModuleIsotope
+class ModuleIsotopeConfigSwitcher extends ModuleIsotope
 {
 	
 	/**
 	 * Module template
 	 * @var string
 	 */
-	protected $strTemplate = 'mod_iso_storeswitcher';
+	protected $strTemplate = 'mod_iso_configswitcher';
 	
 	
 	/**
@@ -45,7 +45,7 @@ class ModuleIsotopeStoreSwitcher extends ModuleIsotope
 		{
 			$objTemplate = new BackendTemplate('be_wildcard');
 
-			$objTemplate->wildcard = '### ISOTOPE STORE SWICHER ###';
+			$objTemplate->wildcard = '### ISOTOPE STORE CONFIG SWICHER ###';
 			$objTemplate->title = $this->headline;
 			$objTemplate->id = $this->id;
 			$objTemplate->link = $this->name;
@@ -54,19 +54,19 @@ class ModuleIsotopeStoreSwitcher extends ModuleIsotope
 			return $objTemplate->parse();
 		}
 		
-		$this->store_ids = deserialize($this->store_ids);
+		$this->iso_config_ids = deserialize($this->iso_config_ids);
 		
-		if (!is_array($this->store_ids) || !count($this->store_ids))
+		if (!is_array($this->iso_config_ids) || !count($this->iso_config_ids))
 			return '';
 			
-		if (strlen($this->Input->get('store')))
+		if (strlen($this->Input->get('config')))
 		{
-			if (in_array($this->Input->get('store'), $this->store_ids))
+			if (in_array($this->Input->get('config'), $this->iso_config_ids))
 			{
-				$_SESSION['isotope']['store_id'] = $this->Input->get('store');
+				$_SESSION['ISOTOPE']['config_id'] = $this->Input->get('config');
 			}
 			
-			$this->redirect(preg_replace(('@[?|&]store='.$this->Input->get('store').'@'), '', $this->Environment->request));
+			$this->redirect(preg_replace(('@[?|&]config='.$this->Input->get('config').'@'), '', $this->Environment->request));
 		}
 		
 		return parent::generate();
@@ -80,26 +80,26 @@ class ModuleIsotopeStoreSwitcher extends ModuleIsotope
 	{
 		$this->import('Isotope');
 		
-		$arrStores = array();
-		$objStores = $this->Database->execute("SELECT * FROM tl_store WHERE id IN (" . implode(',', $this->store_ids) . ")");
+		$arrConfigs = array();
+		$objConfigs = $this->Database->execute("SELECT * FROM tl_iso_config WHERE id IN (" . implode(',', $this->iso_config_ids) . ")");
 		
 		$c=0;
-		while( $objStores->next() )
+		while( $objConfigs->next() )
 		{
-			$arrStores[] = array
+			$arrConfigs[] = array
 			(
-				'label'		=> (strlen($objStores->label) ? $objStores->label : $objStores->name),
+				'label'		=> (strlen($objConfigs->label) ? $objConfigs->label : $objConfigs->name),
 				'class'		=> ($c==0 ? 'first' : ''),
-				'active'	=> ($this->Isotope->Store->id == $objStores->id ? true : false),
-				'href'		=> ($this->Environment->request . (strpos($this->Environment->request, '?')===false ? '?' : '&amp;') . 'store=' . $objStores->id),
+				'active'	=> ($this->Isotope->Config->id == $objConfigs->id ? true : false),
+				'href'		=> ($this->Environment->request . (strpos($this->Environment->request, '?')===false ? '?' : '&amp;') . 'config=' . $objConfigs->id),
 			);
 			
 			$c++;
 		}
 		
-		$arrStores[count($arrStores)-1]['class'] = trim($arrStores[count($arrStores)-1]['class'] . ' last');
+		$arrConfigs[count($arrConfigs)-1]['class'] = trim($arrConfigs[count($arrConfigs)-1]['class'] . ' last');
 		
-		$this->Template->stores = $arrStores;
+		$this->Template->configs = $arrConfigs;
 	}
 }
 

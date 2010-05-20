@@ -43,7 +43,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['isotopeStoreConfig'] = array
 	'label'                   => &$GLOBALS['TL_LANG']['tl_page']['isotopeStoreConfig'],
 	'exclude'                 => true,
 	'inputType'               => 'select',
-	'foreignKey'			  => 'tl_store.name',
+	'foreignKey'			  => 'tl_iso_config.name',
 	'eval'                    => array('includeBlankOption'=>true)
 );
 

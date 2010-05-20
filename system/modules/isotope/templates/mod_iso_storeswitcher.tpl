@@ -7,10 +7,10 @@
 <?php endif; ?>
 
 <ul>
-<?php foreach( $this->stores as $store ): if ($store['active']): ?>
-	<li class="<?php echo trim('active ' . $store['class']); ?>"><span class="active"><?php echo $store['label']; ?></span></li>
+<?php foreach( $this->configs as $config ): if ($config['active']): ?>
+	<li class="<?php echo trim('active ' . $config['class']); ?>"><span class="active"><?php echo $config['label']; ?></span></li>
 <?php else: ?>
-	<li<?php if(strlen($store['class'])): ?> class="<?php echo $store['class']; ?>"<?php endif; ?>><a href="<?php echo $store['href']; ?>"><?php echo $store['label']; ?></a></li>
+	<li<?php if(strlen($config['class'])): ?> class="<?php echo $config['class']; ?>"<?php endif; ?>><a href="<?php echo $config['href']; ?>"><?php echo $config['label']; ?></a></li>
 <?php endif; endforeach; ?>
 </ul>
 

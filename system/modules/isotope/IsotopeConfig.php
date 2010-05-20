@@ -26,14 +26,14 @@
  */
  
 
-class IsotopeStore extends Model
+class IsotopeConfig extends Model
 {
 	
 	/**
 	 * Name of the current table
 	 * @var string
 	 */
-	protected $strTable = 'tl_store';
+	protected $strTable = 'tl_iso_config';
 	
 	
 	/**
@@ -64,11 +64,11 @@ class IsotopeStore extends Model
 	 * @access public
 	 * @return void
 	 */
-	public function __construct($storeId)
+	public function __construct($intConfig)
 	{
 		parent::__construct();
 		
-		if (!$this->findBy('id', $storeId))
+		if (!$this->findBy('id', $intConfig))
 		{
 			throw new Exception('No store configuration available');
 		}

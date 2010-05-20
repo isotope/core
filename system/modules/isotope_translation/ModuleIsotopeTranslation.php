@@ -223,7 +223,7 @@ class ModuleIsotopeTranslation extends BackendModule
 				continue;
 			}
 			
-			// Store Language Variable
+			// Save language variable
 			if(preg_match('@\$GLOBALS(\[.*?\])*@', $line, $match))
 			{
 				$table = $match[0];
