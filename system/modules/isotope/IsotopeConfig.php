@@ -73,5 +73,14 @@ class IsotopeConfig extends Model
 			throw new Exception('No store configuration available');
 		}
 	}
+	
+	
+	/**
+	 * Transparently map calls to core config class, because Isotope->Config has the same name.
+	 */
+	public function __call($name, $arguments)
+	{
+		return call_user_func_array(array($this->Config, $name), $arguments);
+	}
 }
 
