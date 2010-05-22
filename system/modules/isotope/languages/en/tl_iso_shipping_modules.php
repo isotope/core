@@ -59,12 +59,14 @@ $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['usps_userName']     	= array('US
  *
  */
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['title_legend'] = "Title and type";
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['note_legend'] = "Shipping note";
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['configuration_legend'] = "General configuration";
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['expert_legend'] = "Expert settings";
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['enabled_legend'] = "Enabled settings";
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_legend'] = "UPS API settings";
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['usps_legend'] = "USPS API settings";
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['price_legend'] = "Pricing threshold and tax class applicability";
+
 
 /**
  * Buttons
@@ -106,4 +108,5 @@ $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['usps_service']['EXPRESS HFP']			
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['usps_service']['EXPRESS HFP COMMERCIAL']		= 'USPS Express Hold For Pickup Commercial';
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['usps_service']['BPM'] 							= 'USPS Bound Printed Matter';
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['usps_service']['MEDIA'] 						= 'USPS Media Mail';
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['usps_service']['LIBRARY']						= 'USPS Library Mail';  
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['usps_service']['LIBRARY']						= 'USPS Library Mail';
+

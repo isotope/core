@@ -125,11 +125,11 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
 	'palettes' => array
 	(
 		'__selector__'					=> array('type', 'protected'),
-		'default'						=> '{title_legend},type,name,label,note;{price_legend},price,tax_class;{configuration_legend},countries,subdivisions,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-		'order_total'					=> '{title_legend},type,name,label,note;{price_legend},price,tax_class;{configuration_legend},countries,subdivisions,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-		'flat'							=> '{title_legend},type,name,label,note;{price_legend},price,flatCalculation,tax_class,surcharge_field;{configuration_legend},countries,subdivisions,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-		'ups'							=> '{title_legend},type,name,label,note;{price_legend},tax_class;{ups_legend},ups_enabledService,ups_accessKey,ups_developersKey,ups_userName,ups_password;{configuration_legend},countries,subdivisions,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-		'usps'							=> '{title_legend},type,name,label,note;{price_legend},tax_class;{usps_legend},usps_enabledService,usps_userName;{configuration_legend},countries,subdivisions,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled'
+		'default'						=> '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},price,tax_class;{configuration_legend},countries,subdivisions,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+		'order_total'					=> '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},price,tax_class;{configuration_legend},countries,subdivisions,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+		'flat'							=> '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},price,flatCalculation,tax_class,surcharge_field;{configuration_legend},countries,subdivisions,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+		'ups'							=> '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},tax_class;{ups_legend},ups_enabledService,ups_accessKey,ups_developersKey,ups_userName,ups_password;{configuration_legend},countries,subdivisions,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+		'usps'							=> '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},tax_class;{usps_legend},usps_enabledService,usps_userName;{configuration_legend},countries,subdivisions,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled'
 	),
 	
 	// Subpalettes
@@ -174,15 +174,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
 			'exclude'                 => true,
 			'inputType'               => 'textarea',
 			'eval'                    => array('rte'=>'tinyMCE', 'decodeEntities'=>true),
-		),
-		'tax_class' => array
-		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['tax_class'],
-			'filter'				=> true,
-			'inputType'				=> 'select',
-			'foreignKey'			=> 'tl_iso_tax_class.name',
-			'attributes'			=> array('legend'=>'tax_legend'),
-			'eval'					=> array('includeBlankOption'=>true),
 		),
 		'ups_enabledService' => array
 		(
@@ -247,7 +238,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
 			'inputType'               => 'select',
 			'default'                 => array_keys($this->getCountries()),
 			'options'                 => $this->getCountries(),
-			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'size'=>8, 'tl_class'=>'clr'),
+			'eval'                    => array('multiple'=>true, 'size'=>8, 'includeBlankOption'=>true, 'tl_class'=>'w50 w50h'),
 		),
 		'subdivisions' => array
 		(
@@ -255,29 +246,38 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
 			'exclude'                 => true,
 			'sorting'                 => true,
 			'inputType'               => 'conditionalselect',
-			'eval'                    => array('multiple'=>true, 'conditionField'=>'countries', 'includeBlankOption'=>true, 'tl_class'=>'clr'),
-			'options_callback'		  => array('tl_iso_shipping_modules','getSubdivisions')
+			'options'				  => &$GLOBALS['TL_LANG']['DIV'],
+			'eval'                    => array('multiple'=>true, 'size'=>8, 'conditionField'=>'countries', 'includeBlankOption'=>true, 'tl_class'=>'w50 w50h'),
 		),
 		'minimum_total' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['minimum_total'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>255, 'rgxp'=>'digit'),
+			'eval'                    => array('maxlength'=>255, 'rgxp'=>'digit', 'tl_class'=>'w50'),
 		),
 		'maximum_total' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['maximum_total'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>255, 'rgxp'=>'digit'),
+			'eval'                    => array('maxlength'=>255, 'rgxp'=>'digit', 'tl_class'=>'w50'),
 		),
 		'price' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['price'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>10, 'rgxp'=>'digit'),
+			'eval'                    => array('maxlength'=>10, 'rgxp'=>'digit', 'tl_class'=>'w50'),
+		),
+		'tax_class' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['tax_class'],
+			'filter'				=> true,
+			'inputType'				=> 'select',
+			'foreignKey'			=> 'tl_iso_tax_class.name',
+			'attributes'			=> array('legend'=>'tax_legend'),
+			'eval'					=> array('includeBlankOption'=>true, 'tl_class'=>'w50'),
 		),
 		'flatCalculation' => array
 		(
@@ -341,34 +341,6 @@ class tl_iso_shipping_modules extends Backend
 		{
 			$GLOBALS['TL_DCA']['tl_iso_shipping_modules']['config']['closed'] = false;
 		}
-	}
-	
-	public function getSubdivisions(DataContainer $dc)
-	{
-		$this->loadLanguageFile('subdivisions');
-		
-		$arrReturn = array();
-		
-		$objSubdivisions = $this->Database->prepare("SELECT countries FROM tl_iso_shipping_modules WHERE id=?")->limit(1)->execute($dc->id);
-	
-		if(!$objSubdivisions->numRows || !strlen($objSubdivisions->countries))
-			return array();
-		
-		$arrCountries = deserialize($objSubdivisions->countries);
-
-		foreach($arrCountries as $country)
-		{
-			if(array_key_exists($country, $GLOBALS['TL_LANG']['DIV']))
-			{				
-				foreach($GLOBALS['TL_LANG']['DIV'][$country] as $k=>$v)
-				{
-					$arrReturn[$country][$k] = $v;
-				}
-		
-			}
-		}		
-			
-		return $arrReturn;
 	}
 	
 	/**
