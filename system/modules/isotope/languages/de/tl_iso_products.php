@@ -46,8 +46,8 @@ $GLOBALS['TL_LANG']['tl_iso_products']['published']				= array('Produkt veröffe
 /**
  * Buttons
  */
-$GLOBALS['TL_LANG']['tl_iso_products']['new_product']			= array('Neues Produkt', 'Ein Produkt hinzufügen');
-$GLOBALS['TL_LANG']['tl_iso_products']['new_variant']			= array('Neue Variante', 'Variante zu einem Produkt hinzufügen.');
+$GLOBALS['TL_LANG']['tl_iso_products']['new_product']			= array('Neues Produkt', 'Ein neues Produkt erstellen');
+$GLOBALS['TL_LANG']['tl_iso_products']['new_variant']			= array('Variante hinzufügen', 'Eine weitere Variante zu einem Produkt hinzufügen');
 $GLOBALS['TL_LANG']['tl_iso_products']['edit']					= array('Produkt bearbeiten', 'Produkt ID %s bearbeiten');
 $GLOBALS['TL_LANG']['tl_iso_products']['copy']					= array('Produkt duplizieren', 'Produkt ID %s duplizieren');
 $GLOBALS['TL_LANG']['tl_iso_products']['delete']				= array('Produkt löschen', 'Produkt ID %s löschen');
