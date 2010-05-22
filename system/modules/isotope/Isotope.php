@@ -54,16 +54,14 @@ class Isotope extends Controller
 		parent::__construct();
 		$this->import('Database');
 		$this->import('FrontendUser', 'User');
-		
-		$blnForceDefault = (TL_MODE=='BE' ? true : false);
-		
+
 		if (strlen($_SESSION['ISOTOPE']['config_id']))
 		{
 			$this->overrideConfig($_SESSION['ISOTOPE']['config_id']);
 		}
 		else
 		{
-			$this->resetConfig($blnForceDefault);
+			$this->resetConfig();
 		}
 	}
 	
@@ -86,36 +84,21 @@ class Isotope extends Controller
 	
 	/**
 	 * Set the default store config
-	 *
-	 * @access public
-	 * @return void
 	 */
-	public function resetConfig($blnForceDefault=false)
+	public function resetConfig()
 	{
-		if($blnForceDefault)
+		$intConfig = null;
+		
+		if(TL_MODE == 'FE')
 		{
-			$intConfig = $this->getDefaultConfig();
+			global $objPage;
+			
+			$intConfig = $this->Database->prepare("SELECT iso_config FROM tl_page WHERE id=?")->execute($objPage->rootId)->iso_config;
 		}
-		else
-		{	
-			if($objPage->isotopeStoreConfig)
-			{
-				$intConfig = $objPage->isotopeStoreConfig;
-			}
-			else
-			{
-				global $objPage;
-				
-				if(!$objPage->pid)
-				{
-					$intConfig = $this->getDefaultConfig();
-				}
-				else
-				{
-					//Find (recursive look at parents)
-					$intConfig = $this->getConfigFromParent($objPage->id);
-				}
-			}
+		
+		if (!$intConfig)
+		{
+			$intConfig = $this->Database->execute("SELECT id FROM tl_iso_config WHERE fallback='1'")->id;
 		}
 
 		if(!$intConfig)
@@ -124,7 +107,7 @@ class Isotope extends Controller
 			{
 				$_SESSION['TL_ERROR'] = array($GLOBALS['TL_LANG']['ERR']['noDefaultStoreConfiguration']);
 				
-				if ($this->Input->get('do') != 'isotope')
+				if ($this->Input->get('do') != 'iso_setup')
 					$this->redirect('typolight/main.php?do=iso_setup&table=tl_iso_config&act=create');
 			}
 			else
@@ -151,40 +134,10 @@ class Isotope extends Controller
 		}
 		catch (Exception $e)
 		{
-			$this->resetConfig((TL_MODE=='BE' ? true : false));
+			$this->resetConfig();
 		}
-	}
-	
-	
-	/** 
-	 * Get a default store config - either one indicated as default in records or else the first record available.
-	 */
-	protected function getDefaultConfig()
-	{
-		return $this->Database->execute("SELECT id FROM tl_iso_config WHERE fallback='1'")->id;
 	}
 
-
-	/** 
-	 * Recursively look for a config set in a given page. Continue looking at parent pages until one is found or else
-	 * revert to default store otherwise specified.
-	 */
-	private function getConfigFromParent($intPageId)
-	{
-		$objPage = $this->Database->prepare("SELECT pid, isotopeStoreConfig FROM tl_page WHERE id=?")->execute($intPageId);
-		
-		if($objPage->isotopeStoreConfig > 0)
-		{
-			return $objPage->isotopeStoreConfig;
-		}
-		elseif($objPage->pid > 0)
-		{
-			return $this->getConfigFromParent($objPage->pid);
-		}
-		
-		return $this->getDefaultConfig();
-	}
-	
 	
 	/**
 	 * Calculate price in foreign currencies.

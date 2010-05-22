@@ -208,6 +208,12 @@ class IsotopeRunonce extends Frontend
 			$this->Database->executeUncached("ALTER TABLE tl_user_group CHANGE COLUMN iso_stores iso_configs blob NULL");
 		}
 		
+		// tl_page.isotopeStoreConfig has been renamed to tl_page.iso_config
+		if ($this->Database->fieldExists('isotopeStoreConfig', 'tl_page') && !$this->Database->fieldExists('iso_config', 'tl_page'))
+		{
+			$this->Database->executeUncached("ALTER TABLE tl_page CHANGE COLUMN isotopeStoreConfig iso_config int(10) unsigned NOT NULL default '0'");
+		}
+		
 		// tl_iso_addresses.street has been renamed to tl_iso_addresses.street_1
 		if ($this->Database->fieldExists('street', 'tl_iso_addresses') && !$this->Database->fieldExists('street_1','tl_iso_addresses'))
 		{
