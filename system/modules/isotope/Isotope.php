@@ -276,6 +276,9 @@ class Isotope extends Controller
 	
 	public function useTaxRate($objRate, $fltPrice, $arrAddresses)
 	{
+		if ($objRate->config > 0 && $objRate->config != $this->Config->id)
+			return false;
+			
 		$objRate->address = deserialize($objRate->address);
 		
 		if (is_array($objRate->address) && count($objRate->address))
