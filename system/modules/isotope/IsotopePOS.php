@@ -106,7 +106,7 @@ class IsotopePOS extends Backend
 		}
 			
 		//Code specific to Authorize.net!
-		$objTemplate = new BackendTemplate('mod_pos_terminal');
+		$objTemplate = new BackendTemplate('be_pos_terminal');
 									
 		if($objAIMConfig->numRows > 0)
 		{
@@ -121,7 +121,7 @@ class IsotopePOS extends Backend
 		}
 
 
-		if ($this->Input->post('FORM_SUBMIT') == 'mod_pos_terminal' && $arrPaymentInfo['x_trans_id']!=="0")
+		if ($this->Input->post('FORM_SUBMIT') == 'be_pos_terminal' && $arrPaymentInfo['x_trans_id']!=="0")
 		{
 			
 				
@@ -191,7 +191,7 @@ class IsotopePOS extends Backend
 		
 		//$objTemplate->x_cust_id;
 		
-		$objTemplate->formId = 'mod_pos_terminal';
+		$objTemplate->formId = 'be_pos_terminal';
 	
 		$objTemplate->slabel = specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']);
 		$return = '<input type="hidden" name="FORM_SUBMIT" value="' . $objTemplate->formId . '" />';

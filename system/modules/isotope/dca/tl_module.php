@@ -247,7 +247,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_order_conditions'] = array
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions'],
 	'exclude'                 => true,
 	'inputType'               => 'select',
-	'options_callback'        => array('tl_module_isotope', 'getForms'),
+	'foreignKey'			  => 'tl_form.title',
 	'eval'                    => array('includeBlankOption'=>true)
 );
 
@@ -411,6 +411,7 @@ class tl_module_isotope extends Backend
 		return $arrAttributes;
 	}
 	
+	
 	/**
 	 * getFilterFields function.
 	 *
@@ -542,25 +543,7 @@ class tl_module_isotope extends Backend
 		
 		return $arrListingModules;
 	}
-
-	/**
-	 * Get all forms and return them as array
-	 * @param object
-	 * @return array
-	 */
-	public function getForms(DataContainer $dc)
-	{
-		$arrForms = array();
-		$objForms = $this->Database->execute("SELECT * FROM tl_form ORDER BY title");
-
-		while ($objForms->next())
-		{
-			$arrForms[$objForms->id] = $objForms->title;
-		}
-
-		return $arrForms;
-	}
-
+	
 
 	/**
 	 * getLoginModuleList function.
