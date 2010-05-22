@@ -30,10 +30,7 @@
  * Configuration
  */
 $GLOBALS['TL_DCA']['tl_member']['config']['ctable'][] = 'tl_iso_addresses';
-$GLOBALS['TL_DCA']['tl_member']['config']['onsubmit_callback'][] = array('tl_member_isotope_extended','copyInitialAddress');
-	
-$GLOBALS['TL_DCA']['tl_member']['fields']['country']['eval']['mandatory'] = true;		
-$GLOBALS['TL_DCA']['tl_member']['fields']['phone']['eval']['rgxp'] = null;
+
 
 /**
  * Operations
@@ -47,69 +44,7 @@ $GLOBALS['TL_DCA']['tl_member']['list']['operations']['address_book'] = array
 
 
 /**
- * Field settings
+ * Fields
  */
-$GLOBALS['TL_DCA']['tl_member']['fields']['firstname']['eval']['mandatory'] = true;
-$GLOBALS['TL_DCA']['tl_member']['fields']['lastname']['eval']['mandatory'] = true;
-$GLOBALS['TL_DCA']['tl_member']['fields']['street']['eval']['mandatory'] = true;
-$GLOBALS['TL_DCA']['tl_member']['fields']['postal']['eval']['mandatory'] = true;
-$GLOBALS['TL_DCA']['tl_member']['fields']['city']['eval']['mandatory'] = true;
-$GLOBALS['TL_DCA']['tl_member']['fields']['state']['eval']['mandatory'] = true;
-
-
-/**
- * tl_member_isotope_extended class.
- * 
- * @extends Backend
- */
-class tl_member_isotope_extended extends Backend
-{
-	/**
-	 * copyInitialAddress function.
-	 * 
-	 * @access public
-	 * @param object DataContainer $dc
-	 * @return void
-	 */
-	public function copyInitialAddress(DataContainer $dc)
-	{
-		$objAddressInfo = $this->Database->prepare("SELECT COUNT(*) as count FROM tl_iso_addresses WHERE pid=?")
-										 ->execute($dc->id);
-										 
-		if($objAddressInfo->count < 1)
-		{
-			$objAddress = $this->Database->prepare("SELECT * FROM tl_member WHERE id=?")
-													  ->limit(1)
-													  ->execute($dc->id);
-			
-			if($objAddress->numRows < 1)
-			{
-				return;
-			}			
-										  
-			//copy the address as it exists from the tl_member table.
-			$arrSet = array
-			(
-				'pid'			=> $this->Input->get('id'),
-				'tstamp'		=> $objAddress->tstamp,
-				'firstname'		=> $objAddress->firstname,
-				'lastname'		=> $objAddress->lastname,
-				'company'		=> $objAddress->company,
-				'street_1'		=> $objAddress->street,
-				'postal'		=> $objAddress->postal,
-				'city'			=> $objAddress->city,
-				'subdivision'	=> $objAddress->state,
-				'country'		=> $objAddress->country,
-				'phone'			=> $objAddress->phone,
-				'isDefaultBilling'	=> '1',
-				'isDefaultShipping' => '1'
-			
-			);
-
-			$this->Database->prepare('INSERT INTO tl_iso_addresses %s')
-						   ->set($arrSet)
-						   ->execute();
-		}
-	}
-}
+$GLOBALS['TL_DCA']['tl_member']['fields']['country']['eval']['mandatory'] = true;		
 
