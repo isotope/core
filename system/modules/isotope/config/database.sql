@@ -278,7 +278,7 @@ CREATE TABLE `tl_filter_values_to_categories` (
 -- 
 
 CREATE TABLE `tl_page` (
-  `isotopeStoreConfig` int(10) unsigned NOT NULL default '0',
+  `iso_config` int(10) unsigned NOT NULL default '0',
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 

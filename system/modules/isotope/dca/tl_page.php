@@ -29,24 +29,18 @@
 /**
  * Palettes
  */
-$GLOBALS['TL_DCA']['tl_page']['palettes']['root'] .= ';{isotope_legend},isotopeStoreConfig';
-$GLOBALS['TL_DCA']['tl_page']['palettes']['default'] .= ';{isotope_legend},isotopeStoreConfig';
-$GLOBALS['TL_DCA']['tl_page']['palettes']['regular'] .= ';{isotope_legend},isotopeStoreConfig';
+$GLOBALS['TL_DCA']['tl_page']['palettes']['root'] = str_replace(';{publish_legend}', ';{isotope_legend},iso_config;{publish_legend}', $GLOBALS['TL_DCA']['tl_page']['palettes']['root']);
+
 
 /**
  * Fields
  */
-
-
-$GLOBALS['TL_DCA']['tl_page']['fields']['isotopeStoreConfig'] = array
+$GLOBALS['TL_DCA']['tl_page']['fields']['iso_config'] = array
 (
-	'label'                   => &$GLOBALS['TL_LANG']['tl_page']['isotopeStoreConfig'],
+	'label'                   => &$GLOBALS['TL_LANG']['tl_page']['iso_config'],
 	'exclude'                 => true,
 	'inputType'               => 'select',
 	'foreignKey'			  => 'tl_iso_config.name',
-	'eval'                    => array('includeBlankOption'=>true)
+	'eval'                    => array('includeBlankOption'=>true),
 );
-
-
-
 

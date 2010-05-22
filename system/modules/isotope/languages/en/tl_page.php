@@ -29,7 +29,11 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_page']['isotopeStoreConfig'] = array('Isotope Store Configuration','');
+$GLOBALS['TL_LANG']['tl_page']['iso_config'] = array('Store Configuration', 'Select a store configuration for this page structure.');
 
-$GLOBALS['TL_LANG']['tl_page']['isotope_legend'] = 'Isotope E-commerce Settings';
+
+/**
+ * Legends
+ */
+$GLOBALS['TL_LANG']['tl_page']['isotope_legend'] = 'Isotope eCommerce';
 
