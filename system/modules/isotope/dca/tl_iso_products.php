@@ -310,7 +310,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'inputType'				=> 'text',
 			'eval'					=> array('maxlength'=>255, 'tl_class'=>'w50'),
 			'attributes'			=> array('legend'=>'pricing_legend'),
-		),
+		),/*
 		'max_order_quantity' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['max_order_quantity'],
@@ -329,7 +329,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['stock_quantity'],
 			'inputType'				=> 'text',
-			'eval'					=> array(/*'mandatory'=>true, */'rgxp'=>'digits', 'disabled'=>'disabled', 'tl_class'=>'w50'),
+			'eval'					=> array('mandatory'=>true, 'rgxp'=>'digits', 'disabled'=>'disabled', 'tl_class'=>'w50'),
 		),
 		'stock_oversell' => array
 		(
@@ -343,7 +343,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'inputType'				=> 'text',
 			'eval'					=> array('rgxp'=>'digits', 'disabled'=>'disabled', 'tl_class'=>'w50'),
 			'attributes'			=> array('legend'=>'shipping_legend'),
-		),
+		),*/
 		'shipping_exempt' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['shipping_exempt'],
