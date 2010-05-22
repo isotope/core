@@ -25,7 +25,14 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
+
+/**
+ * Load required DCA and language files
+ */
+$this->loadDataContainer('tl_iso_products');
+$this->loadLanguageFile('tl_iso_products');
 $this->loadLanguageFile('subdivisions');
+
 		
 /**
  * Table tl_iso_shipping_modules
@@ -127,7 +134,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
 		'__selector__'					=> array('type', 'protected'),
 		'default'						=> '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},price,tax_class;{configuration_legend},countries,subdivisions,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
 		'order_total'					=> '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},price,tax_class;{configuration_legend},countries,subdivisions,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-		'flat'							=> '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},price,flatCalculation,tax_class,surcharge_field;{configuration_legend},countries,subdivisions,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+		'flat'							=> '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},price,tax_class,flatCalculation,surcharge_field;{configuration_legend},countries,subdivisions,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
 		'ups'							=> '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},tax_class;{ups_legend},ups_enabledService,ups_accessKey,ups_developersKey,ups_userName,ups_password;{configuration_legend},countries,subdivisions,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
 		'usps'							=> '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},tax_class;{usps_legend},usps_enabledService,usps_userName;{configuration_legend},countries,subdivisions,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled'
 	),
@@ -286,13 +293,16 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
 			'inputType'               => 'select',
 			'options'                 => array('flat', 'perProduct', 'perItem'),
 			'reference'               => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules'],
+			'eval'                    => array('tl_class'=>'w50'),
 		),
 		'surcharge_field' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['surcharge_field'],
 			'exclude'                 => true,
-			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>255),
+			'inputType'               => 'select',
+			'options'				  => array_keys($GLOBALS['TL_DCA']['tl_iso_products']['fields']),
+			'reference'				  => &$GLOBALS['TL_LANG']['tl_iso_products'],
+			'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
 		),
 		'guests' => array
 		(

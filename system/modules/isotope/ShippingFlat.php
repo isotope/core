@@ -69,22 +69,13 @@ class ShippingFlat extends IsotopeShipping
 		
 		foreach( $arrProducts as $objProduct )
 		{
-			// Exclude this product if table does not have this field
-			if ($this->Database->fieldExists($this->surcharge_field, 'tl_iso_products'))
+			if ($this->flatCalculation == 'perItem')
 			{
-				$strSurcharge = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE id=?")
-											   ->limit(1)
-											   ->execute($product['id'])
-											   ->{$this->surcharge_field};
-											   
-				if ($this->flatCalculation == 'perItem')
-				{
-					$intSurcharge += ($product['quantity_requested'] * floatval($strSurcharge));
-				}
-				else
-				{
-					$intSurcharge += floatval($strSurcharge);
-				}
+				$intSurcharge += ($product['quantity_requested'] * floatval($objProduct->{$this->surcharge_field}));
+			}
+			else
+			{
+				$intSurcharge += floatval($strSurcharge);
 			}
 		}
 		
