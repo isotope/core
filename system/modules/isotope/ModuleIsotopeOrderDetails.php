@@ -99,8 +99,10 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 				
 				while( $objDownloads->next() )
 				{
+					$blnDownloadable = (($objOrder->status == 'complete' || intval($objOrder->date_payed) >= time()) && ($objDownloads->downloads_allowed == 0 || $objDownloads->downloads_remaining > 0)) ? true : false;
+					
 					// Send file to the browser
-					if (strlen($this->Input->get('file')) && $this->Input->get('file') == $objDownloads->id && ($objDownloads->downloads_allowed == 0 || $objDownloads->downloads_remaining > 0))
+					if (strlen($this->Input->get('file')) && $this->Input->get('file') == $objDownloads->id && $blnDownloadable)
 					{
 						if ($objDownloads->downloads_remaining > 0 && !$this->backend)
 						{
@@ -116,7 +118,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 						'title'			=> $objDownloads->title,
 						'href'			=> (TL_MODE == 'FE' ? ($this->generateFrontendUrl($objPage->row()) . '?uid=' . $this->Input->get('uid') . '&amp;file=' . $objDownloads->id) : ''),
 						'remaining'		=> ($objDownloads->downloads_allowed > 0 ? sprintf('<br />%s Downloads verbleibend', intval($objDownloads->downloads_remaining)) : ''),
-						'downloadable'	=> ((($objOrder->status == 'complete' || intval($objOrder->date_payed) >= time()) && ($objDownloads->downloads_allowed == 0 || $objDownloads->downloads_remaining > 0)) ? true : false),
+						'downloadable'	=> $blnDownloadable,
 					);
 					
 					$arrDownloads[] = $arrDownload;
