@@ -228,37 +228,6 @@ class ShippingUPS extends IsotopeShipping
 		return $fltPrice;
 	}
 	
-	protected function calculateSurcharge()
-	{
-		if (!strlen($this->surcharge_field))
-			return 0;
-			
-		$intSurcharge = 0;
-		$arrProducts = $this->Cart->getProducts();
-		
-		foreach( $arrProducts as $objProduct )
-		{
-			// Exclude this product if table does not have this field
-			if ($this->Database->fieldExists($this->surcharge_field, 'tl_iso_products'))
-			{
-				$strSurcharge = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE id=?")
-											   ->limit(1)
-											   ->execute($product['id'])
-											   ->{$this->surcharge_field};
-											   
-				if ($this->flatCalculation == 'perItem')
-				{
-					$intSurcharge += ($product['quantity_requested'] * floatval($strSurcharge));
-				}
-				else
-				{
-					$intSurcharge += floatval($strSurcharge);
-				}
-			}
-		}
-		
-		return $intSurcharge;
-	}
 	
 	/**
 	 * Builds the XML used to make the request
