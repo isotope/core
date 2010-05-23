@@ -1,0 +1,1 @@
+<span class="price"><?php echo $this->currency . $this->price; ?></span>
