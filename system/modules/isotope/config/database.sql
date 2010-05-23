@@ -359,7 +359,7 @@ CREATE TABLE `tl_iso_addresses` (
   `street_3` varchar(255) NOT NULL default '',
   `postal` varchar(32) NOT NULL default '',
   `city` varchar(255) NOT NULL default '',
-  `subdivision` varchar(64) NOT NULL default '',
+  `subdivision` varchar(10) NOT NULL default '',
   `country` varchar(32) NOT NULL default '',
   `phone` varchar(64) NOT NULL default '',
   `email` varchar(255) NOT NULL default '',

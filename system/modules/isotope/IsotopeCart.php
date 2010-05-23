@@ -85,6 +85,8 @@ class IsotopeCart extends Model
 	 */
 	public $Payment;
 	
+	protected $Isotope;
+	
 	
 	/**
 	 * Prevent cloning of the object (Singleton)
@@ -121,8 +123,6 @@ class IsotopeCart extends Model
 		{
 			return $this->arrData[$strKey];
 		}
-		
-		$this->import('Isotope');
 		
 		// Add to cache if not available
 		if (!array_key_exists($strKey, $this->arrCache))
@@ -218,15 +218,16 @@ class IsotopeCart extends Model
 					if (FE_USER_LOGGED_IN)
 					{					
 						$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE pid=? AND isDefaultBilling='1'")->limit(1)->execute($this->User->id);
-						
+
 						if ($objAddress->numRows)
 							return $objAddress->fetchAssoc();
 							
 						// Return the default user data, but ID should be 0 to know that it is a custom/new address
-						return array_merge($this->User->getData(), array('id'=>0));
+						// Trying to guess subdivision by country and state
+						return array_merge($this->User->getData(), array('id'=>0, 'subdivision'=>strtoupper($this->User->country . '-' . $this->User->state)));
 					}					
 					
-					return array('country' => $this->Isotope->Config->country);
+					return array('postal'=>$this->Isotope->Config->postal, 'subdivision'=>$this->Isotope->Config->subdivision, 'country' => $this->Isotope->Config->country);
 					
 				case 'shippingAddress':
 					if ($this->arrCache['shippingAddress_id'] == -1)
@@ -573,8 +574,6 @@ class IsotopeCart extends Model
 		
 	public function getSurcharges()
 	{
-		$this->import('Isotope');
-		
 		$arrPreTax = $arrPostTax = $arrTaxes = array();
 		$arrProducts = $this->getProducts();
 		

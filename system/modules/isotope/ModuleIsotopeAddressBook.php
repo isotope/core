@@ -281,8 +281,8 @@ class ModuleIsotopeAddressBook extends Module
 					// Save field
 					if ($objAddress->id > 0)
 					{
-						$this->Database->prepare("UPDATE tl_iso_addresses SET " . $field . "=? WHERE id=?")
-									   ->execute($varSave, $this->User->id);
+						$this->Database->prepare("UPDATE tl_iso_addresses SET " . $field . "=? WHERE pid=? AND id=?")
+									   ->execute($varSave, $this->User->id, $objAddress->id);
 					}
 					else
 					{
@@ -360,7 +360,7 @@ class ModuleIsotopeAddressBook extends Module
 		$this->Database->prepare("DELETE FROM tl_iso_addresses WHERE id=? AND pid=?")
 					   ->execute($intAddressId, $this->User->id);
 
-		$this->redirect(ampersand($this->Environment->base . ltrim($_SESSION['FE_DATA']['referer']['current'], '/')));
+		$this->redirect(ampersand($this->Environment->url . ltrim($_SESSION['FE_DATA']['referer']['current'], '/')));
 	}
 }
 

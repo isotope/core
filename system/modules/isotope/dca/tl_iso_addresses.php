@@ -190,7 +190,7 @@ $GLOBALS['TL_DCA']['tl_iso_addresses'] = array
 			'sorting'                 => true,
 			'inputType'               => 'conditionalselect',
 			'options'				  => $GLOBALS['TL_LANG']['DIV'],
-			'eval'                    => array('feEditable'=>true, 'feGroup'=>'address', 'conditionField'=>'country', 'tl_class'=>'w50'),
+			'eval'                    => array('feEditable'=>true, 'feGroup'=>'address', 'conditionField'=>'country', 'includeBlankOption'=>true, 'tl_class'=>'w50'),
 		),
 		'country' => array
 		(

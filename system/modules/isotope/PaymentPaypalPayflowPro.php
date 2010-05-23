@@ -265,12 +265,6 @@ class PaymentPaypalPayflowPro extends IsotopePayment
 				{
 					$objCheckoutModule->doNotSubmit = true;
 				}
-			
-				
-			}
-			elseif ($objWidget->mandatory && !strlen($objWidget->value))
-			{
-				$objCheckoutModule->doNotSubmit = true;
 			}
 			
 			$strBuffer .= $objWidget->parse();
@@ -307,6 +301,7 @@ class PaymentPaypalPayflowPro extends IsotopePayment
 		
 		return $strBuffer;
 	}
+	
 	
 	public function checkoutReview()
 	{
