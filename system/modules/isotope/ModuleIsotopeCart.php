@@ -71,6 +71,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 		   $this->Template->type = 'empty';
 		   $this->Template->message = $GLOBALS['TL_LANG']['MSC']['noItemsInCart'];
 		   $this->Template->products = array();
+		   $this->Template->surcharges = array();
 		   return;
 		}
 		
@@ -108,6 +109,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 				'link'				=> $objProduct->href_reader,
 				'price'				=> $this->generatePrice($objProduct->price),
 				'total_price'		=> $this->generatePrice($objProduct->total_price),
+				'tax_id'			=> $objProduct->tax_id,
 				'quantity'			=> $objProduct->quantity_requested,
 				'cart_item_id'		=> $objProduct->cart_id,
 				'product_options'	=> $objProduct->getOptions(),
@@ -138,7 +140,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 			   'total_price'		=> $this->Isotope->formatPriceWithCurrency($arrSurcharge['total_price']),
 			   'tax_id'				=> $arrSurcharge['tax_id'],
 			);
-		 }
+		}
 		
 		$objTemplate->formId = 'iso_cart_update';
 		$objTemplate->formSubmit = 'iso_cart_update';

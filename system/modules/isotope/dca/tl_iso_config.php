@@ -26,6 +26,9 @@
  */
 
 
+$this->loadLanguageFile('subdivisions');
+
+
 /**
  * Table tl_iso_config 
  */
@@ -227,8 +230,9 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['subdivision'],
 			'exclude'                 => true,
 			'sorting'                 => true,
-			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>64, 'tl_class'=>'w50'),
+			'inputType'               => 'conditionalselect',
+			'options'				  => &$GLOBALS['TL_LANG']['DIV'],
+			'eval'                    => array('conditionField'=>'country', 'includeBlankOption'=>true, 'tl_class'=>'w50'),
 		),
 		'country' => array
 		(
