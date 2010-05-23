@@ -1121,27 +1121,26 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 				$arrPrices = $this->Input->post('price');
 							
 				$arrSet['published'] = ($arrPublished[$objVariants->id] ? $arrPublished[$objVariants->id] : '');
-				
-				//Inherit field must be updated if the price is set.
-				if($arrPrices[$objVariants->id])
+												
+				//Inherit field must be updated if any inherited attribute is set.
+				$arrInheritedFields = deserialize($objVariants->inherit);							
+					
+				$i=0;
+					
+				foreach($arrInheritedFields as $value)
 				{
-					$arrInherit = deserialize($objVariants->inherit);							
-					
-					$i=0;
-					
-					foreach($arrInherit as $value)
+					if($this->Input->post($value))
 					{
-						if($value=='price')
-						{
-							unset($arrInherit[$i]);
-						}
-					
-						$i++;
+						unset($arrInheritedFields[$i]);
 					}
-					
-					$arrSet['inherit'] = serialize($arrInherit);
-				}
 				
+					$i++;
+				}
+					
+				//update the inerit field	
+				$arrSet['inherit'] = (count($arrInheritedFields) ? serialize($arrInheritedFields) : '');
+				
+								
 				$this->Database->prepare("UPDATE tl_iso_products %s WHERE id=?")
 							   ->set($arrSet)
 							   ->execute($objVariants->id);
