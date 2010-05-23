@@ -1118,12 +1118,40 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 			if($this->Input->post('FORM_SUBMIT') == 'tl_product_quick_edit' && !$doNotSubmit)
 			{				
 				$arrPublished = $this->Input->post('published');
+				$arrPrices = $this->Input->post('price');
 							
 				$arrSet['published'] = ($arrPublished[$objVariants->id] ? $arrPublished[$objVariants->id] : '');
-		
+				
+				//Inherit field must be updated if the price is set.
+				if($arrPrices[$objVariants->id])
+				{
+					$arrInherit = deserialize($objVariants->inherit);							
+					
+					$i=0;
+					
+					foreach($arrInherit as $value)
+					{
+						if($value=='price')
+						{
+							unset($arrInherit[$i]);
+						}
+					
+						$i++;
+					}
+					
+					$arrSet['inherit'] = serialize($arrInherit);
+				}
+				
 				$this->Database->prepare("UPDATE tl_iso_products %s WHERE id=?")
 							   ->set($arrSet)
 							   ->execute($objVariants->id);
+			
+				
+				$objVariant = $this->Database->prepare("SELECT inherit FROM tl_iso_products WHERE id=?")
+											 ->limit(1)
+											 ->execute($objVariants->id);
+				
+				
 			}
 			
 			$strBuffer .= '
