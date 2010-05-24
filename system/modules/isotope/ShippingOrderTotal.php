@@ -97,32 +97,29 @@ class ShippingOrderTotal extends IsotopeShipping
 		}
 	
 		$arrData = $objRates->fetchAllAssoc();
-		
-					
+				
 		//get the basic rate - calculate it based on group '0' first, which is the default, then any group NOT 0.
 		foreach($arrData as $row)
 		{		
 			//determine value ranges
-			foreach($row as $k=>$v)
-			{										
-				switch($k)
+			if((float)$row['minimum_total']>0 && $fltCartSubTotal>=(float)$row['minimum_total'])
+			{
+				if($fltCartSubTotal<=(float)$row['maximum_total'] || $row['maximum_total']==0)
 				{
-					case ('minimum_total' && $v>0 && $fltSubTotal>=$v):
-						$arrEligibleRates[] = $row['rate'];
-						break;
-					case ('maximum_total' && $v>0 && $fltSubTotal<=$v):
-						$arrEligibleRates[] = $row['rate'];
-						break;
-					default:
-						break;				
+					$fltRate = $row['rate'];
 				}
-			}				
+			}
+			elseif((float)$row['maximum_total']>0 && $fltCartSubTotal<=(float)$row['maximum_total'])
+			{
+				if($fltCartSubTotal>=(float)$row['minimum_total'])
+				{
+					$fltRate = $row['rate'];
+				}
+			}
+							
 		}
-		
 				
-		$fltShippingTotal = min($arrEligibleRates);
-				
-		return $fltShippingTotal;
+		return $fltRate;
 		
 	}
 
