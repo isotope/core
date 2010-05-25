@@ -284,6 +284,7 @@ class IsotopeProduct extends Controller
 			case 'name':
 			case 'low_price':
 			case 'high_price':
+			case 'price':
 				$this->arrData[$strKey] = $varValue;
 				break;
 
@@ -460,6 +461,16 @@ class IsotopeProduct extends Controller
 			{
 				if (strlen($this->Input->post($button)))
 				{
+					//for price rules. Currently this will merely call a wrapper with a hook in it :D
+					$arrReturn = $this->applyPriceRules($this, $button);
+					
+					if(count($arrReturn))
+					{
+						$this->price = $arrReturn[0];
+						$this->rules_applied = $arrReturn[1];
+					}
+								
+								
 					if (is_array($data['callback']) && count($data['callback']) == 2)
 					{
 						$this->import($data['callback'][0]);
@@ -508,7 +519,31 @@ class IsotopeProduct extends Controller
 		return $objTemplate->parse();
 	}
 	
-	
+	/** 
+	 * Apply price rules when a product is added to the cart
+	 * Currently a wrapper for a hook, until rules management is built.
+	 * 
+	 * @param object
+	 * @param string
+	 * @access public
+	 * @return array
+	 */
+	public function applyPriceRules($objProduct, $strButton)
+	{
+		if(is_array($GLOBALS['TL_HOOKS']['isoCartPriceRules']) && count($GLOBALS['TL_HOOKS']['isoCartPriceRules']))
+		{
+			foreach($GLOBALS['TL_HOOKS']['isoCartPriceRules'] as $callback)
+			{									
+				$this->import($callback[0]);
+				
+				$arrReturn = $this->$callback[0]->$callback[1]($objProduct, $strButton);
+			
+			}
+		}	
+		
+		return $arrReturn;	
+	}
+
 	/**
 	 * Generate the product data on ajax update
 	 */
