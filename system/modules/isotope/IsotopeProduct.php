@@ -82,6 +82,7 @@ class IsotopeProduct extends Controller
 	protected $doNotSubmit = false;
 
 
+	
 	/**
 	 * Construct the object
 	 */
@@ -119,6 +120,16 @@ class IsotopeProduct extends Controller
 			$this->high_price = $this->Isotope->calculatePrice($this->arrData['price'], $this->arrData['tax_class']);
 		}
 		
+		//Apply any applicable price rules.
+		$arrReturn = $this->applyPriceRules($this);
+		
+		if(count($arrReturn))
+		{
+			$this->arrData['original_price'] = $this->arrData['price'];
+			$this->price = $arrReturn[0];
+			$this->arrData['rules_applied'] = $arrReturn[1];
+		}
+		
 		$this->loadLanguage();
 	}
 
@@ -135,10 +146,11 @@ class IsotopeProduct extends Controller
 			case 'pid':
 			case 'href_reader':
 				return $this->arrData[$strKey];
-
+			case 'originalPrice':
+				return $this->Isotope->calculatePrice($this->arrData['original_price'], $this->arrData['tax_class']);
 			case 'price':
 				return $this->Isotope->calculatePrice($this->arrData['price'], $this->arrData['tax_class']);
-
+			
 			case 'price_override':
 				return ($this->arrData['price_override'] ? $this->arrData['price_override'] : '');
 
@@ -221,7 +233,9 @@ class IsotopeProduct extends Controller
 						case 'formatted_price':
 							$varValue = $this->Isotope->formatPriceWithCurrency($this->price);
 							break;
-							
+						case 'formatted_original_price':
+							$varValue = $this->Isotope->formatPriceWithCurrency($this->originalPrice);
+							break;	
 						case 'formatted_low_price':
 							$varValue = $this->Isotope->formatPriceWithCurrency($this->low_price);
 							break;
@@ -285,6 +299,7 @@ class IsotopeProduct extends Controller
 			case 'low_price':
 			case 'high_price':
 			case 'price':
+			case 'original_price':
 				$this->arrData[$strKey] = $varValue;
 				break;
 
@@ -460,17 +475,7 @@ class IsotopeProduct extends Controller
 			foreach( $arrButtons as $button => $data )
 			{
 				if (strlen($this->Input->post($button)))
-				{
-					//for price rules. Currently this will merely call a wrapper with a hook in it :D
-					$arrReturn = $this->applyPriceRules($this, $button);
-					
-					if(count($arrReturn))
-					{
-						$this->price = $arrReturn[0];
-						$this->rules_applied = $arrReturn[1];
-					}
-								
-								
+				{									
 					if (is_array($data['callback']) && count($data['callback']) == 2)
 					{
 						$this->import($data['callback'][0]);
@@ -492,6 +497,7 @@ class IsotopeProduct extends Controller
 		
 		$objTemplate->label_detail = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
 		
+		$objTemplate->originalPrice = $this->formatted_original_price;
 		$objTemplate->price = $this->formatted_price;
 		$objTemplate->low_price = $this->formatted_low_price;
 		$objTemplate->high_price = $this->formatted_high_price;
@@ -506,29 +512,11 @@ class IsotopeProduct extends Controller
 		
 		$GLOBALS['TL_MOOTOOLS'][] = "<script type=\"text/javascript\">new IsotopeProduct('" . $objModule->id . "', '" . $this->id . "', ['ctrl_" . implode("_".$this->id."', 'ctrl_", $arrAjaxOptions) . "_".$this->id."']);</script>";
 		
-		// HOOK for altering product data before output
-		if (isset($GLOBALS['TL_HOOKS']['iso_generateProduct']) && is_array($GLOBALS['TL_HOOKS']['iso_generateProduct']))
-		{
-			foreach ($GLOBALS['TL_HOOKS']['iso_generateProduct'] as $callback)
-			{
-				$this->import($callback[0]);
-				$objTemplate = $this->$callback[0]->$callback[1]($objTemplate, $this);
-			}
-		}
-		
 		return $objTemplate->parse();
 	}
 	
-	/** 
-	 * Apply price rules when a product is added to the cart
-	 * Currently a wrapper for a hook, until rules management is built.
-	 * 
-	 * @param object
-	 * @param string
-	 * @access public
-	 * @return array
-	 */
-	public function applyPriceRules($objProduct, $strButton)
+	
+	public function applyPriceRules($objProduct)
 	{
 		if(is_array($GLOBALS['TL_HOOKS']['isoCartPriceRules']) && count($GLOBALS['TL_HOOKS']['isoCartPriceRules']))
 		{
@@ -536,14 +524,14 @@ class IsotopeProduct extends Controller
 			{									
 				$this->import($callback[0]);
 				
-				$arrReturn = $this->$callback[0]->$callback[1]($objProduct, $strButton);
+				$arrReturn = $this->$callback[0]->$callback[1]($objProduct);
 			
 			}
 		}	
 		
 		return $arrReturn;	
 	}
-
+	
 	/**
 	 * Generate the product data on ajax update
 	 */
@@ -580,16 +568,6 @@ class IsotopeProduct extends Controller
         	'id'	=> 'ajax_price',
         	'html'	=> ('<div id="ajax_price">'.$this->formatted_price.'</div>'),
         );
-        
-        // HOOK for altering product data before output
-		if (isset($GLOBALS['TL_HOOKS']['iso_generateAjaxProduct']) && is_array($GLOBALS['TL_HOOKS']['iso_generateAjaxProduct']))
-		{
-			foreach ($GLOBALS['TL_HOOKS']['iso_generateAjaxProduct'] as $callback)
-			{
-				$this->import($callback[0]);
-				$arrOptions = $this->$callback[0]->$callback[1]($arrOptions, $this);
-			}
-		}
         
         return $arrOptions;
 	}
@@ -973,4 +951,3 @@ class IsotopeProduct extends Controller
 		}
 	}
 }
-
