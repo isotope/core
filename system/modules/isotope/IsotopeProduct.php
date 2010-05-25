@@ -512,6 +512,16 @@ class IsotopeProduct extends Controller
 		
 		$GLOBALS['TL_MOOTOOLS'][] = "<script type=\"text/javascript\">new IsotopeProduct('" . $objModule->id . "', '" . $this->id . "', ['ctrl_" . implode("_".$this->id."', 'ctrl_", $arrAjaxOptions) . "_".$this->id."']);</script>";
 		
+		// HOOK for altering product data before output
+		if (isset($GLOBALS['TL_HOOKS']['iso_generateProduct']) && is_array($GLOBALS['TL_HOOKS']['iso_generateProduct']))
+		{
+			  foreach ($GLOBALS['TL_HOOKS']['iso_generateProduct'] as $callback)
+			  {
+				$this->import($callback[0]);
+				$objTemplate = $this->$callback[0]->$callback[1]($objTemplate, $this);
+			  }
+		}
+		
 		return $objTemplate->parse();
 	}
 	
@@ -569,6 +579,16 @@ class IsotopeProduct extends Controller
         	'html'	=> ('<div id="ajax_price">'.$this->formatted_price.'</div>'),
         );
         
+		    // HOOK for altering product data before output
+		if (isset($GLOBALS['TL_HOOKS']['iso_generateAjaxProduct']) && is_array($GLOBALS['TL_HOOKS']['iso_generateAjaxProduct']))
+		{
+			  foreach ($GLOBALS['TL_HOOKS']['iso_generateAjaxProduct'] as $callback)
+			  {
+				$this->import($callback[0]);
+				$arrOptions = $this->$callback[0]->$callback[1]($arrOptions, $this);
+			  }
+	    }
+
         return $arrOptions;
 	}
 	
