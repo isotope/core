@@ -1,0 +1,12 @@
+===========================
+Isotope eCommerce Changelog
+===========================
+
+Version 
+------------------------------
+- Added: Hooks for altering product before output
+- Fixed: 
+
+Version 0.1.0 stable (2010-05-23)
+------------------------------
+- Initial stable release
