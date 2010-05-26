@@ -461,7 +461,8 @@ class IsotopeCart extends Model
 								
 				$objProduct->quantity_requested = $objProducts->quantity_requested;
 				$objProduct->cart_id = $objProducts->id;
-							
+				$objProduct->reader_jumpTo_Override = $objProducts->href_reader;			
+			
 				if($objProduct->price==0)
 					$objProduct->price = $objProducts->price;
 				$objProduct->options = deserialize($objProducts->product_options);
