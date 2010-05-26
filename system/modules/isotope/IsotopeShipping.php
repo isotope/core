@@ -114,6 +114,9 @@ abstract class IsotopeShipping extends Frontend
 				if (($this->minimum_total > 0 && $this->minimum_total > $this->Cart->subTotal) || ($this->minimum_total > 0 && $this->maximum_total < $this->Cart->subTotal))				
 					return false;
 				
+				$arrSubdivisions = array();
+				$arrCountries = array();
+				
 				$arrCountries = deserialize($this->countries);
 				$arrSubdivisions = deserialize($this->subdivisions);
 				
