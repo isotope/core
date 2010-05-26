@@ -120,7 +120,6 @@ class IsotopeProduct extends Controller
 			$this->high_price = $this->Isotope->calculatePrice($this->arrData['price'], $this->arrData['tax_class']);
 		}
 		
-		//Apply any applicable price rules.
 		$arrReturn = $this->applyPriceRules($this);
 		
 		if(count($arrReturn))
@@ -145,6 +144,7 @@ class IsotopeProduct extends Controller
 			case 'id':
 			case 'pid':
 			case 'href_reader':
+			case 'options':
 				return $this->arrData[$strKey];
 			case 'originalPrice':
 				return $this->Isotope->calculatePrice($this->arrData['original_price'], $this->arrData['tax_class']);
@@ -300,6 +300,8 @@ class IsotopeProduct extends Controller
 			case 'high_price':
 			case 'price':
 			case 'original_price':
+			case 'rules_applied':
+			case 'options':
 				$this->arrData[$strKey] = $varValue;
 				break;
 
@@ -521,7 +523,7 @@ class IsotopeProduct extends Controller
 				$objTemplate = $this->$callback[0]->$callback[1]($objTemplate, $this);
 			  }
 		}
-		
+
 		return $objTemplate->parse();
 	}
 	
@@ -579,16 +581,6 @@ class IsotopeProduct extends Controller
         	'html'	=> ('<div id="ajax_price">'.$this->formatted_price.'</div>'),
         );
         
-		    // HOOK for altering product data before output
-		if (isset($GLOBALS['TL_HOOKS']['iso_generateAjaxProduct']) && is_array($GLOBALS['TL_HOOKS']['iso_generateAjaxProduct']))
-		{
-			  foreach ($GLOBALS['TL_HOOKS']['iso_generateAjaxProduct'] as $callback)
-			  {
-				$this->import($callback[0]);
-				$arrOptions = $this->$callback[0]->$callback[1]($arrOptions, $this);
-			  }
-	    }
-
         return $arrOptions;
 	}
 	
@@ -909,7 +901,7 @@ class IsotopeProduct extends Controller
 		if (count($arrOptions))
 		{
 			$objVariant = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE pid=? AND published='1' AND language='' AND " . implode("=? AND ", array_keys($arrOptions)) . "=?")->execute(array_merge(array($this->id), $arrOptions));
-			
+							
 			// Must match 1 variant, must not match multiple
 			if ($objVariant->numRows == 1)
 			{
@@ -921,8 +913,28 @@ class IsotopeProduct extends Controller
 				{
 					if (in_array($attribute, $arrInherit))
 						continue;
-						
-					$this->arrData[$attribute] = $objVariant->$attribute;
+					
+					switch($attribute)
+					{
+						case 'price':
+							$arrReturn = $this->applyPriceRules($objVariant);
+		
+							if(count($arrReturn))
+							{
+								$this->arrData['original_price'] = $this->arrData[$attribute];
+								$this->arrData[$attribute] = $arrReturn[0];
+								$this->arrData['rules_applied'] = $arrReturn[1];
+							}
+							else
+							{
+								$this->arrData[$attribute] = $objVariant->$attribute;
+							}
+							break;
+						default:
+							$this->arrData[$attribute] = $objVariant->$attribute;
+							break;
+					}
+											
 					unset($this->arrCache[$attribute]);
 				}
 				
@@ -971,3 +983,4 @@ class IsotopeProduct extends Controller
 		}
 	}
 }
+

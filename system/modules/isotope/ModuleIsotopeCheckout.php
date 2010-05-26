@@ -702,17 +702,19 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		$objTemplate->message = $GLOBALS['TL_LANG']['ISO']['order_review_message'];
 				
 		$arrProductData = array();
-		$arrProducts = $this->Cart->getProducts();
+		$arrProducts = $this->Cart->getItems();
 		
-		foreach( $arrProducts as $objProduct )
-		{
+		foreach( $arrProducts as $product )
+		{			
+			$objProduct = unserialize($product['product_data']);
+		
 			$arrProductData[] = array_merge($objProduct->getAttributes(), array
 			(
 				'id'				=> $objProduct->id,
 				'image'				=> $objProduct->images[0],
 				'link'				=> $objProduct->href_reader,
-				'price'				=> $objProduct->formatted_price,
-				'total_price'		=> $objProduct->formatted_total_price,
+				'price'				=> $this->Isotope->formatPriceWithCurrency($product['price']),
+				'total_price'		=> $this->Isotope->formatPriceWithCurrency(($product['price']*$product['quantity_requested'])),
 				'quantity'			=> $objProduct->quantity_requested,
 				'tax_id'			=> $objProduct->tax_id,
 				'product_options'	=> $objProduct->getOptions(),
@@ -819,8 +821,8 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				'shippingPrice'				=> $this->Isotope->formatPriceWithCurrency($fltShippingTotal),
 				'paymentPrice'				=> $this->Isotope->formatPriceWithCurrency($this->Cart->Payment->price),
 				'grandTotal'				=> $this->Isotope->formatPriceWithCurrency($this->Cart->grandTotal),
-				'cart_text'					=> $this->Cart->getProducts('iso_products_text'),
-				'cart_html'					=> $this->Cart->getProducts('iso_products_html'),
+				'cart_text'					=> $this->Cart->getItems('iso_products_text'),
+				'cart_html'					=> $this->Cart->getItems('iso_products_html'),
 				'billing_address'			=> $strBillingAddress,
 				'billing_address_text'		=> str_replace('<br />', "\n", $strBillingAddress),
 				'shipping_address'			=> $strShippingAddress,
@@ -869,17 +871,19 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	 */
 	protected function copyCartItems($intOrderId)
 	{
-		$arrProducts = $this->Cart->getProducts();
+		$arrProducts = $this->Cart->getItems();
 		
-		foreach( $arrProducts as $objProduct )
+		foreach( $arrProducts as $product )
 		{
+			$objProduct = unserialize($product['product_data']);
+			
 			$arrSet = array
 			(
 				'pid'				=> $intOrderId,
 				'tstamp'			=> time(),
-				'product_id'		=> $objProduct->id,
-				'quantity_sold'		=> $objProduct->quantity_requested,
-				'price'				=> $objProduct->price,
+				'product_id'		=> $product['product_id'],
+				'quantity_sold'		=> $product['quantity_requested'],
+				'price'				=> $product['price'],
 				'product_data'		=> serialize($objProduct),
 			);
 			
@@ -1156,12 +1160,14 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		
 		$arrState = explode(',', $this->Cart->billingAddress['subdivision']);
 		
-		$arrProducts = $this->Cart->getProducts();
+		$arrProducts = $this->Cart->getItems();
 		
 		$arrVariantValues = $this->getProductVariantValues($arrProducts);
 			
-		foreach($arrProducts as $objProduct)
+		foreach($arrProducts as $product)
 		{
+			$objProduct = unserialize($product['product_data']);
+			
 			$strVariant = (is_array($arrVariantValues[$objProduct->id]['variants']) ? implode(' ', $arrVariantValues[$objProduct->id]['variants']) : ''); 
 			
 			$arrItems[] = array
@@ -1169,8 +1175,8 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				'sku'		=> $objProduct->sku,
 				'name'		=> $objProduct->name,
 				'variant'	=> $strVariant,
-				'price'		=> $objProduct->price,
-				'quantity'	=> $objProduct->quantity_requested
+				'price'		=> $product['price'],
+				'quantity'	=> $product['quantity_requested']
 			);
 		}
 		
