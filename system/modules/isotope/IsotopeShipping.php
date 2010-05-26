@@ -120,10 +120,10 @@ abstract class IsotopeShipping extends Frontend
 				$arrCountries = deserialize($this->countries);
 				$arrSubdivisions = deserialize($this->subdivisions);
 				
-				if(count($arrCountries) && !in_array($this->Cart->shippingAddress['country'], $arrCountries))
+				if(is_array($arrCountries) && count($arrCountries) && !in_array($this->Cart->shippingAddress['country'], $arrCountries))
 					return false;
 				
-				if(count($arrSubdivisions) && !in_array($this->Cart->shippingAddress['subdivision'], $arrSubdivisions))
+				if(is_array($arrSubdivisions) && count($arrSubdivisions) && !in_array($this->Cart->shippingAddress['subdivision'], $arrSubdivisions))
 					return false;
 								
 				return true;
