@@ -120,7 +120,7 @@ abstract class IsotopeShipping extends Frontend
 				if(count($arrCountries) && !in_array($this->Cart->shippingAddress['country'], $arrCountries))
 					return false;
 				
-				if(count($arrSubdivisions) && !in_array($this->Cart->shippingAddress['subdivision'], $arrSubdivisions))
+				if($this->Cart->shippingAddress['subdivision'] && count($arrSubdivisions) && !in_array($this->Cart->shippingAddress['subdivision'], $arrSubdivisions))
 					return false;
 								
 				return true;
