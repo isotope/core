@@ -5,7 +5,7 @@ Isotope eCommerce Changelog
 Version 
 ------------------------------
 - Added: Hooks for altering product before output
-- Fixed: 
+- Fixed: Countries and shipping methods for payment modules are no longer mandatory
 
 Version 0.1.0 stable (2010-05-23)
 ------------------------------
