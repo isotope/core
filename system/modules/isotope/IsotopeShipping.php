@@ -99,30 +99,31 @@ abstract class IsotopeShipping extends Frontend
 		{
 			case 'available':
 				if (($this->guests && FE_USER_LOGGED_IN) || ($this->protected && !FE_USER_LOGGED_IN))
-				{			
+				{
 					return false;
 				}
 				
 				if ($this->protected)
-				{					
+				{
 					$this->import('FrontendUser', 'User');
 					$arrGroups = deserialize($this->groups);
 					if (!is_array($arrGroups) || !count($arrGroups) || !count(array_intersect($arrGroups, $this->User->groups)))
 						return false;
 				}
 				
-				if (($this->minimum_total > 0 && $this->minimum_total > $this->Cart->subTotal) || ($this->minimum_total > 0 && $this->maximum_total < $this->Cart->subTotal))				
+				if (($this->minimum_total > 0 && $this->minimum_total > $this->Cart->subTotal) || ($this->minimum_total > 0 && $this->maximum_total < $this->Cart->subTotal))
 					return false;
 		
 				$arrCountries = deserialize($this->countries);
+				
+				if(is_array($arrCountries) && count($arrCountries) && !in_array($this->Cart->shippingAddress['country'], $arrCountries))
+					return false;
+					
 				$arrSubdivisions = deserialize($this->subdivisions);
 				
-				if(count($arrCountries) && !in_array($this->Cart->shippingAddress['country'], $arrCountries))
+				if(is_array($arrSubdivisions) && count($arrSubdivisions) && !in_array($this->Cart->shippingAddress['subdivision'], $arrSubdivisions))
 					return false;
 				
-				if($this->Cart->shippingAddress['subdivision'] && count($arrSubdivisions) && !in_array($this->Cart->shippingAddress['subdivision'], $arrSubdivisions))
-					return false;
-								
 				return true;
 				break;
 				
