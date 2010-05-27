@@ -746,7 +746,7 @@ class Isotope extends Controller
 	
 	
 	/**
-	 * Intermediat-Function to allow DCA class to be loaded.
+	 * Intermediate-Function to allow DCA class to be loaded.
 	 */
 	public function loadDataContainer($strTable)
 	{
@@ -754,6 +754,101 @@ class Isotope extends Controller
 		{
 			$this->import('tl_iso_products');
 			$this->tl_iso_products->loadProductsDCA();
+		}
+	}
+	
+	
+	/**
+	 * Standardize and calculate the total of multiple weights.
+	 *
+	 * It's probably faster in theory to convert only the total to the final unit, and not each product weight.
+	 * However, we might loose precision, not sure about that.
+	 * Based on formulas found at http://jumk.de/calc/gewicht.shtml
+	 */
+	public function calculateWeight($arrWeights, $strUnit)
+	{
+		if (!is_array($arrWeights) || !count($arrWeights))
+			return 0;
+			
+		$fltWeight = 0;
+
+		foreach( $arrWeights as $weight )
+		{
+			$fltWeight += $this->convertWeight(floatval($weight['value']), $weight['unit'], 'kg');
+		}
+		
+		return $this->convertWeight($fltWeight, 'kg', $strUnit);
+	}
+	
+	
+	/**
+	 * Convert weight units.
+	 * Supported source/target units: mg, g, kg, t, ct, oz, lb, st, grain
+	 */
+	public function convertWeight($fltWeight, $strSourceUnit, $strTargetUnit)
+	{
+		switch( $strSourceUnit )
+		{
+			case 'mg':
+				return $this->convertUnit(($fltWeight / 1000000), 'kg', $strTargetUnit);
+				
+			case 'g':
+				return $this->convertUnit(($fltWeight / 1000), 'kg', $strTargetUnit);
+				
+			case 'kg':
+				switch( $strTargetUnit )
+				{
+					case 'mg':
+						return $fltWeight * 1000000;
+						
+					case 'g':
+						return $fltWeight * 1000;
+						
+					case 'kg':
+						return $fltWeight;
+						
+					case 't':
+						return $fltWeight / 1000;
+						
+					case 'ct':
+						return $fltWeight * 5000;
+						
+					case 'oz':
+						return $fltWeight / 28.35 * 1000;
+						
+					case 'lb':
+						return $fltWeight / 0.45359243;
+						
+					case 'st':
+						return $fltWeight / 6.35029318;
+					
+					case 'grain':
+						return $fltWeight / 64.79891 * 1000000;
+						
+					default:
+						throw new Exception('Unknown target weight unit "' . $strTargetUnit . '"');
+				}
+				
+			case 't':
+				return $this->convertUnit(($fltWeight * 1000), 'kg', $strTargetUnit);
+				
+			case 'ct':
+				return $this->convertUnit(($fltWeight / 5000), 'kg', $strTargetUnit);
+				
+			case 'oz':
+				return $this->convertUnit(($fltWeight * 28.35 / 1000), 'kg', $strTargetUnit);
+				
+			case 'lb':
+				return $this->convertUnit(($fltWeight * 0.45359243), 'kg', $strTargetUnit);
+				
+			case 'st':
+				return $this->convertUnit(($fltWeight * 6.35029318), 'kg', $strTargetUnit);
+
+			case 'grain':
+				return $this->convertUnit(($fltWeight * 64.79891 / 1000000), 'kg', $strTargetUnit);
+				
+			default:
+				throw new Exception('Unknown source weight unit "' . $strSourceUnit . '"');
 		}
 	}
 }
