@@ -178,8 +178,16 @@ class tl_iso_shipping_options extends Backend
 	{
 		if ($this->Input->get('act') == 'create')
 			return;
-			
-		$objModule = $this->Database->execute("SELECT m.* FROM tl_iso_shipping_modules m, tl_iso_shipping_options o WHERE o.pid=m.id AND o.id=".$dc->id);
+		
+		if (!strlen($this->Input->get('act')) && !strlen($this->Input->get('key')))
+		{
+			$objModule = $this->Database->execute("SELECT * FROM tl_iso_shipping_modules WHERE id=".$dc->id);
+		}
+		else
+		{
+			$objModule = $this->Database->execute("SELECT m.* FROM tl_iso_shipping_modules m, tl_iso_shipping_options o WHERE o.pid=m.id AND o.id=".$dc->id);
+		}
+		
 		$strClass = $GLOBALS['ISO_SHIP'][$objModule->type];
 		
 		if ($this->classFileExists($strClass))
@@ -193,7 +201,7 @@ class tl_iso_shipping_options extends Backend
 	/**
 	 * Get a formatted listing for this row from shipping module class.
 	 */
-	public function listRow($arrRow)
+	public function listRow($row)
 	{
 		if (!is_object($this->Shipping))
 			return '';
