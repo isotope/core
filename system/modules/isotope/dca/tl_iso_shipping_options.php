@@ -111,7 +111,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_options'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '',
+		'default'                     => '{general_legend},name',
 		
 	),
 	
@@ -193,7 +193,7 @@ class tl_iso_shipping_options extends Backend
 		if ($this->classFileExists($strClass))
 		{
 			$this->Shipping = new $strClass($objModule->row());
-			$GLOBALS['TL_DCA']['tl_iso_shipping_options']['palettes']['default'] = $this->Shipping->moduleOptionsPalette();
+			$this->Shipping->moduleOptionsLoad();
 		}
 	}
 	
