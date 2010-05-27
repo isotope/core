@@ -36,6 +36,7 @@ $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['note']				= array('Shipping Meth
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['tax_class']			= array('Tax Class', '');
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['label']				= array('Label', 'This is displayed on the front end in association with the shipping option.');
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['flatCalculation']	= array('Flat calculation', '');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['weight_unit']		= array('Weight unit', 'The unit you will enter weight rules.');
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['countries']			= array('Countries', 'Select the countries this shipping method applies to. If you don\'t select anything, the shipping method will be applied to all countries.');
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['subdivisions']	= array('State/Regions', 'Select the states/regions this shipping method applies to. If you don\'t select anything, the shipping method will be applied to all states/regions.');
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['minimum_total']		= array('Minimum total', '');
@@ -58,25 +59,25 @@ $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['usps_userName']     	= array('US
  * Legends 
  *
  */
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['title_legend'] = "Title and type";
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['note_legend'] = "Shipping note";
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['configuration_legend'] = "General configuration";
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['expert_legend'] = "Expert settings";
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['enabled_legend'] = "Enabled settings";
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_legend'] = "UPS API settings";
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['usps_legend'] = "USPS API settings";
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['price_legend'] = "Pricing threshold and tax class applicability";
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['title_legend']		= 'Title and type';
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['note_legend']		= 'Shipping note';
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['config_legend']		= 'Configuration';
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['expert_legend']		= 'Expert settings';
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['enabled_legend']	= 'Enabled settings';
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_legend']		= 'UPS API settings';
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['usps_legend']		= 'USPS API settings';
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['price_legend']		= 'Pricing threshold and tax class applicability';
 
 
 /**
  * Buttons
  */
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['new']    = array('New shipping method', 'Create a New shipping method');
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['edit']   = array('Edit shipping', 'Edit shipping method ID %s');
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['copy']   = array('Copy shipping', 'Copy shipping method ID %s');
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['delete'] = array('Delete shipping', 'Delete shipping method ID %s');
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['show']   = array('shipping Details', 'Show details of shipping method ID %s');
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['shipping_rates']   = array('Edit Rules', 'Edit the shipping rates');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['new']				= array('New shipping method', 'Create a New shipping method');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['edit']				= array('Edit shipping', 'Edit shipping method ID %s');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['copy']				= array('Copy shipping', 'Copy shipping method ID %s');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['delete']			= array('Delete shipping', 'Delete shipping method ID %s');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['show']				= array('shipping Details', 'Show details of shipping method ID %s');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['shipping_rates']	= array('Edit Rules', 'Edit the shipping rates');
 
 
 /**

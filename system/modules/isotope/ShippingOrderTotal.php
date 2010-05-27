@@ -149,7 +149,7 @@ class ShippingOrderTotal extends IsotopeShipping
 	 */
 	public function moduleOptionsLoad()
 	{
-		$GLOBALS['TL_DCA']['tl_iso_shipping_options']['palettes']['default'] = '{general_legend},name,description;{configuration_legend},rate,minimum_total,maximum_total';
+		$GLOBALS['TL_DCA']['tl_iso_shipping_options']['palettes']['default'] = '{general_legend},name,description;{config_legend},rate,minimum_total,maximum_total';
 	}
 	
 	

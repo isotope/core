@@ -189,8 +189,9 @@ $GLOBALS['FE_MOD']['isotope'] = array
 /**
  * Shipping modules
  */
-$GLOBALS['ISO_SHIP']['order_total']	 = 'ShippingOrderTotal';
 $GLOBALS['ISO_SHIP']['flat']		 = 'ShippingFlat';
+$GLOBALS['ISO_SHIP']['order_total']	 = 'ShippingOrderTotal';
+$GLOBALS['ISO_SHIP']['weight_total'] = 'ShippingWeightTotal';
 $GLOBALS['ISO_SHIP']['ups']			 = 'ShippingUPS';
 $GLOBALS['ISO_SHIP']['usps']		 = 'ShippingUSPS';
 

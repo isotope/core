@@ -4,9 +4,12 @@ Isotope eCommerce Changelog
 
 Version 
 ------------------------------
+- Added: Product weight field and weight units
+- Added: Shipping module for price based on product weight
 - Added: Hooks for altering product before output
 - Fixed: Countries and shipping methods for payment modules are no longer mandatory
-- Fixed: Subdivisions for shipping modules are now working correctly
+- Fixed: Subdivisions for shipping modules should now work correctly
+- Fixed: Tax was not applied to flat price shipping
 
 Version 0.1.0 stable (2010-05-23)
 ------------------------------
