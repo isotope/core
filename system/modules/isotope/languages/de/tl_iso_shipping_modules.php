@@ -32,7 +32,7 @@
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['name']				= array('Name der Versandart', '');
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['price']				= array('Preis', '');
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['flatCalculation']	= array('Berechnung Pauschalpreis', '');
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['countries']			= array('Länder', 'Wählen Sie die Länder für welche diese Versandoption zur Verfügung steht.');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['countries']			= array('Länder', 'Wählen Sie die Länder für welche diese Versandoption zur Verfügung steht. Wenn Sie kein Land wählen, gilt die Versandart für alle Länder.');
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['minimum_total']		= array('Minimaler Bestellwert', 'Wenn dieser Wert unterschritten wird, steht diese Versandoption nicht zur Verfügung.');
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['maximum_total']		= array('Maximaler Bestellwert', 'Wenn dieser Wert überschritten wird, steht diese Versandoption nicht zur Verfügung.');
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['enabled']			= array('Aktiv', 'Wählen Sie ob dieses Modul für den Shop verfügbar ist.');

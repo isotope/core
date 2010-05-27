@@ -245,7 +245,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
 			'inputType'               => 'select',
 			'default'                 => array_keys($this->getCountries()),
 			'options'                 => $this->getCountries(),
-			'eval'                    => array('multiple'=>true, 'size'=>8, 'includeBlankOption'=>true, 'tl_class'=>'w50 w50h'),
+			'eval'                    => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50 w50h'),
 		),
 		'subdivisions' => array
 		(
@@ -254,7 +254,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
 			'sorting'                 => true,
 			'inputType'               => 'conditionalselect',
 			'options'				  => &$GLOBALS['TL_LANG']['DIV'],
-			'eval'                    => array('multiple'=>true, 'size'=>8, 'conditionField'=>'countries', 'includeBlankOption'=>true, 'tl_class'=>'w50 w50h'),
+			'eval'                    => array('multiple'=>true, 'size'=>8, 'conditionField'=>'countries', 'tl_class'=>'w50 w50h'),
 		),
 		'minimum_total' => array
 		(
