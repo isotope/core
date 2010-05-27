@@ -149,6 +149,30 @@ abstract class IsotopeShipping extends Frontend
 	
 	
 	/**
+	 * Return a palette for module options in backend
+	 * 
+	 * @access public
+	 * @return string
+	 */
+	public function moduleOptionsPalette()
+	{
+		return '{general_legend},name';
+	}
+	
+	
+	/**
+	 * List module options in backend
+	 * 
+	 * @access public
+	 * @return string
+	 */
+	public function moduleOptionsList($row)
+	{
+		return $row['name'];
+	}
+	
+	
+	/**
 	 * Process post-sale requests. Does nothing by default.
 	 *
 	 * This function can be called from the postsale.php file when the shipping server is requestion/posting a status change.

@@ -136,16 +136,35 @@ class ShippingOrderTotal extends IsotopeShipping
 		
 	public function moduleOperations()
 	{
-		/*$this->import('BackendUser', 'User');
-	
-		if (!$this->User->isAdmin)
-		{
-			return '';
-		}*/
-	
-		return '<a href="'.str_replace('tl_iso_shipping_modules','tl_iso_shipping_options',$this->Environment->request).'&amp;id=' . $this->id . '" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage('tablewizard.gif', 'rates table').'</a>'; //'.$this->generateImage('tablewizard.gif', 'rates table').'</a> ';
+		return '<a href="'.str_replace('tl_iso_shipping_modules','tl_iso_shipping_options',$this->Environment->request).'&amp;id=' . $this->id . '" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage('tablewizard.gif', 'rates table').'</a>';
 
 	}
 	
+	
+	/**
+	 * Return a palette for module options in backend
+	 * 
+	 * @access public
+	 * @return string
+	 */
+	public function moduleOptionsPalette()
+	{
+		return '{general_legend},name,description;{configuration_legend},rate,minimum_total,maximum_total';
+	}
+	
+	
+	/**
+	 * List module options in backend
+	 * 
+	 * @access public
+	 * @return string
+	 */
+	public function moduleOptionsList($row)
+	{
+		return '
+<div class="cte_type ' . $key . '"><strong>' . $row['name'] . '</strong></div>
+<div class="limit_height' . (!$GLOBALS['TL_CONFIG']['doNotCollapse'] ? ' h52' : '') . ' block">
+'. $GLOBALS['TL_LANG']['tl_iso_shipping_options']['option_type'][0] . ': ' . $GLOBALS['TL_LANG']['tl_iso_shipping_options']['types'][$row['option_type']] . '<br /><br />' . $row['rate'] .' for '. $row['upper_limit'] . ' based on ' . $row['dest_country'] .', '. $row['dest_region'] . ', ' . $row['dest_zip'] . '</div>' . "\n";
+	}
 }
 
