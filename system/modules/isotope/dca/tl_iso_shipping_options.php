@@ -41,7 +41,11 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_options'] = array
 	(
 		'dataContainer'               => 'Table',
 		'ptable'					  => 'tl_iso_shipping_modules',
-		'enableVersioning'            => true
+		'enableVersioning'            => true,
+		'onload_callback'			  => array
+		(
+			array('tl_iso_shipping_options', 'getModulePalette'),
+		),
 	),
 
 	// List
@@ -53,7 +57,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_options'] = array
 			'fields'                  => array('name'),
 			'panelLayout'             => 'sort,filter;search,limit',
 			'headerFields'            => array('name', 'type'),
-			'child_record_callback'   => array('tl_iso_shipping_options', 'listrates')
+			'child_record_callback'   => array('tl_iso_shipping_options', 'listRow')
 		),
 		'global_operations' => array
 		(
@@ -107,8 +111,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_options'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'__selector__'				  => array(''),
-		'default'                     => '{general_legend},name,description;{configuration_legend},rate,minimum_total,maximum_total;',
+		'default'                     => '',
 		
 	),
 	
@@ -163,103 +166,39 @@ class tl_iso_shipping_options extends Backend
 {
 
 	/**
-	 * Import the back end user object.
-	 * 
-	 * @access public
-	 * @return void
+	 * The current shipping class. Instantiated by the onload callback.
 	 */
-	public function __construct()
-	{
-		parent::__construct();
-		$this->import('BackendUser', 'User');
-	}
-	
-	public function getExistingRules(DataContainer $dc)
-	{
-		$objPid = $this->Database->prepare("SELECT pid FROM tl_iso_shipping_options WHERE id=?")
-								 ->limit(1)
-								 ->execute($dc->id);
-		if($objPid->numRows < 1)
-		{
-			return array();
-		}
-		
-		$intPid = $objPid->pid;	
-								 
-		$objRules = $this->Database->prepare("SELECT id, name FROM tl_iso_shipping_options WHERE pid=?")
-								   ->execute($intPid);
-	
-		if($objRules->numRows < 1)
-		{
-			return array();
-		}
-		
-		while($objRules->next())
-		{
-			$arrRules[$objRules->id] = $objRules->name;
-		}
-		
-		return $arrRules;
-	}
-	
-	public function getAllowedCountries(DataContainer $dc)
-	{
-				
-		$objPid = $this->Database->prepare("SELECT pid FROM tl_iso_shipping_options WHERE id=?")
-								 ->limit(1)
-								 ->execute($dc->id);
-		
-		if($objPid->numRows < 1)
-		{
-			return array();
-		}
-		
-		$intPid = $objPid->pid;
-		
-		$objModuleAllowedCountries = $this->Database->prepare("SELECT countries FROM tl_iso_shipping_modules WHERE id=?")
-													->limit(1)
-													->execute($intPid);
-		
-		if($objModuleAllowedCountries->numRows < 1)
-		{
-			return array();
-		}
-		
-		$arrCountries = $objModuleAllowedCountries->fetchEach('countries');
+	protected $Shipping;
 
-		if(sizeof($arrCountries)<1)
-		{
-			return $this->getCountries();
-		}
-		
-		$arrCountryKeys = deserialize($arrCountries[0]);
-		
-		$arrCountryLabels = $this->getCountries();
-		
-		foreach($arrCountryKeys as $country)
-		{
-			$arrCountryData[$country] = $arrCountryLabels[$country];
-		}
-		
-		return $arrCountryData;
-	
-	}
-		
 	
 	/**
-	 * Add the type of input field.
-	 * 
-	 * @access public
-	 * @param array $arrRow
-	 * @return string
-	 */
-	public function listrates($arrRow)
+	 * Instantiate the shipping module and set the palette.
+	 */	
+	public function getModulePalette($dc)
 	{
+		if ($this->Input->get('act') == 'create')
+			return;
+			
+		$objModule = $this->Database->execute("SELECT m.* FROM tl_iso_shipping_modules m, tl_iso_shipping_options o WHERE o.pid=m.id AND o.id=".$dc->id);
+		$strClass = $GLOBALS['ISO_SHIP'][$objModule->type];
 		
-		return '
-<div class="cte_type ' . $key . '"><strong>' . $arrRow['name'] . '</strong></div>
-<div class="limit_height' . (!$GLOBALS['TL_CONFIG']['doNotCollapse'] ? ' h52' : '') . ' block">
-'. $GLOBALS['TL_LANG']['tl_iso_shipping_options']['option_type'][0] . ': ' . $GLOBALS['TL_LANG']['tl_iso_shipping_options']['types'][$arrRow['option_type']] . '<br /><br />' . $arrRow['rate'] .' for '. $arrRow['upper_limit'] . ' based on ' . $arrRow['dest_country'] .', '. $arrRow['dest_region'] . ', ' . $arrRow['dest_zip'] . '</div>' . "\n";
+		if ($this->classFileExists($strClass))
+		{
+			$this->Shipping = new $strClass($objModule->row());
+			$GLOBALS['TL_DCA']['tl_iso_shipping_options']['palettes']['default'] = $this->Shipping->moduleOptionsPalette();
+		}
+	}
+	
+	
+	/**
+	 * Get a formatted listing for this row from shipping module class.
+	 */
+	public function listRow($arrRow)
+	{
+		if (!is_object($this->Shipping))
+			return '';
+		
+		return $this->Shipping->moduleOptionsList($row);
 	}
 }
 
