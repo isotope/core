@@ -30,18 +30,6 @@ class ShippingOrderTotal extends IsotopeShipping
 {
 	protected $shipping_options = array();
 
-	/**
-	 * Initialize the object
-	 *
-	 * @access public
-	 * @param array $arrRow
-	 */
-	public function __construct($arrRow)
-	{
-		parent::__construct($arrRow);
-					
-		$this->arrData = $arrRow;
-	}
 	
 	/**
 	 * Return an object property
