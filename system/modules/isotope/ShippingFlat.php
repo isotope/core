@@ -44,13 +44,13 @@ class ShippingFlat extends IsotopeShipping
 				switch( $this->flatCalculation )
 				{
 					case 'perProduct':
-						return $this->Isotope->calculatePrice(($this->arrData['price'] * $this->Cart->products) + $this->calculateSurcharge());
+						return $this->Isotope->calculatePrice((($this->arrData['price'] * $this->Cart->products) + $this->calculateSurcharge()), $this->arrData['tax_class']);
 						
 					case 'perItem':
-						return $this->Isotope->calculatePrice(($this->arrData['price'] * $this->Cart->items) + $this->calculateSurcharge());
+						return $this->Isotope->calculatePrice((($this->arrData['price'] * $this->Cart->items) + $this->calculateSurcharge()), $this->arrData['tax_class']);
 						
 					default:
-						return $this->Isotope->calculatePrice($this->arrData['price'] + $this->calculateSurcharge());
+						return $this->Isotope->calculatePrice(($this->arrData['price'] + $this->calculateSurcharge()), $this->arrData['tax_class']);
 				}
 				break;
 		}
