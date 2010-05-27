@@ -142,14 +142,14 @@ class ShippingOrderTotal extends IsotopeShipping
 	
 	
 	/**
-	 * Return a palette for module options in backend
+	 * Initialize the module options DCA in backend
 	 * 
 	 * @access public
 	 * @return string
 	 */
-	public function moduleOptionsPalette()
+	public function moduleOptionsLoad()
 	{
-		return '{general_legend},name,description;{configuration_legend},rate,minimum_total,maximum_total';
+		$GLOBALS['TL_DCA']['tl_iso_shipping_options']['palettes']['default'] = '{general_legend},name,description;{configuration_legend},rate,minimum_total,maximum_total';
 	}
 	
 	

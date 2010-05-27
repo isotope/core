@@ -149,15 +149,12 @@ abstract class IsotopeShipping extends Frontend
 	
 	
 	/**
-	 * Return a palette for module options in backend
+	 * Initialize the module options DCA in backend
 	 * 
 	 * @access public
 	 * @return string
 	 */
-	public function moduleOptionsPalette()
-	{
-		return '{general_legend},name';
-	}
+	public function moduleOptionsLoad() {}
 	
 	
 	/**
