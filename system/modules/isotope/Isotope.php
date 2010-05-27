@@ -774,7 +774,10 @@ class Isotope extends Controller
 
 		foreach( $arrWeights as $weight )
 		{
-			$fltWeight += $this->convertWeight(floatval($weight['value']), $weight['unit'], 'kg');
+			if (is_array($weight) && $weight['value'] > 0 && strlen($weight['unit']))
+			{
+				$fltWeight += $this->convertWeight(floatval($weight['value']), $weight['unit'], 'kg');
+			}
 		}
 		
 		return $this->convertWeight($fltWeight, 'kg', $strUnit);

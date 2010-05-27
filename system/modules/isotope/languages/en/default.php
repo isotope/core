@@ -233,9 +233,10 @@ $GLOBALS['TL_LANG']['ISO']['pay_with_paypal']				= array('Pay with PayPal', 'You
 /**
  * Shipping modules
  */
-$GLOBALS['TL_LANG']['SHIP']['collection']		= array('Collection');
-$GLOBALS['TL_LANG']['SHIP']['order_total']		= array('Order total-based shipping');
 $GLOBALS['TL_LANG']['SHIP']['flat']				= array('Flat-price shipping');
+$GLOBALS['TL_LANG']['SHIP']['weight_total']		= array('Weight total-based shipping');
+$GLOBALS['TL_LANG']['SHIP']['order_total']		= array('Order total-based shipping');
+$GLOBALS['TL_LANG']['SHIP']['collection']		= array('Collection');
 $GLOBALS['TL_LANG']['SHIP']['ups']				= array('UPS Live Rates and Service shipping');
 $GLOBALS['TL_LANG']['SHIP']['usps']				= array('USPS Live Rates and Service shipping');
 
