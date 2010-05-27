@@ -80,17 +80,10 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_options'] = array
 			'copy' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_iso_shipping_options']['copy'],
-				'href'                => 'act=paste&amp;mode=copy',
+				'href'                => 'act=copy',
 				'icon'                => 'copy.gif',
 				'attributes'          => 'onclick="Backend.getScrollOffset();"'
 
-			),
-			'cut' => array
-			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_iso_shipping_options']['cut'],
-				'href'                => 'act=paste&amp;mode=cut',
-				'icon'                => 'cut.gif',
-				'attributes'          => 'onclick="Backend.getScrollOffset();"'
 			),
 			'delete' => array
 			(
