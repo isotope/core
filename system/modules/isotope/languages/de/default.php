@@ -163,6 +163,21 @@ $GLOBALS['TL_LANG']['PAY']['paypal']			= array('PayPal Standard Checkout', 'Dies
 $GLOBALS['TL_LANG']['PAY']['postfinance']		= array('Postfinance (Schweizerische Post)');
 
 
+/**
+ * Weight Units
+ * http://jumk.de/calc/gewicht.shtml
+ */
+$GLOBALS['TL_LANG']['WGT']['mg']					= array('Milligramm (mg)', 'Ein Milligramm entspricht dem 1\'000\'000ten Teil eines Kilogramms.');
+$GLOBALS['TL_LANG']['WGT']['g']						= array('Gramm (g)', 'Ein Gramm entspricht dem 1000ten Teil eines Kilogramms.');
+$GLOBALS['TL_LANG']['WGT']['kg']					= array('Kilogramm (kg)', 'Ursprünglich war ein Kilogramm die Masse eines Liters Wasser bei 3,98°C. Das entspricht etwas mehr als der heute übliche Definition von einem Kilogramm. Heute bildet das Urkilogramm den weltweit einzigen Referenzwert für die Maßeinheit Kilogramm. Das Urkilogramm lagert in einem Tresor im Internationalen Büros für Maß und Gewicht in Paris.');
+$GLOBALS['TL_LANG']['WGT']['t']						= array('Tonnen (t)', 'Eine Tonne entspricht 1000 Kilogramm.');
+$GLOBALS['TL_LANG']['WGT']['ct']					= array('Karat (ct)', 'Das metrische Karat ist in Deutschland die Einheit der Masse von Edelsteinen. Ein metrisches Karat entspricht 0,2g.');
+$GLOBALS['TL_LANG']['WGT']['oz']					= array('Unze (oz)', 'Eine gewöhnliche Unze wird heute in England noch häufig bei Lebensmittel genutzt. Eine Unze beträgt 28,35g.');
+$GLOBALS['TL_LANG']['WGT']['lb']					= array('Pfund (lb)', 'Das Pfund (avoirdupois pound) ist eine in England und den USA noch gängige Maßeinheit. Es beträgt 0,45359243 kg. Es gibt noch mehrere andere Pfundeinheiten, darunter die metrische mit 500 Gramm.');
+$GLOBALS['TL_LANG']['WGT']['st']					= array('Stone (st)', 'Ein Stone ist eine nicht SI-konforme Einheit der Masse. In Ländern, in denen britisches Englisch gesprochen wird, wird heute noch Stone zur Angabe des Gewichts verwendet. Ein Stone beträgt 6,35029318 kg');
+$GLOBALS['TL_LANG']['WGT']['grain']					= array('Grain', 'Ein Grain ist die kleinste, klassische, englische Gewichtseinheit. Ein Grain entspricht 64,79891 Milligramm. Heute wird diese Einheit nur noch für die Treibladung von Munition verwendet.');
+
+
 //Address Book language entries
 $GLOBALS['TL_LANG']['addressBookLabel'] = 'Adressen';
 $GLOBALS['TL_LANG']['editAddressLabel'] = 'Bearbeiten';

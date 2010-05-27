@@ -82,6 +82,7 @@ CREATE TABLE `tl_iso_products` (
   `stock_quantity` int(10) unsigned NOT NULL default '0',
   `stock_oversell` char(1) NOT NULL default '',
   `weight` decimal(9,3) unsigned NOT NULL default '0.000',
+  `shipping_weight` varchar(255) NOT NULL default '',
   `shipping_exempt` char(1) NOT NULL default '',
   `tax_class` int(10) unsigned NOT NULL default '0',
 

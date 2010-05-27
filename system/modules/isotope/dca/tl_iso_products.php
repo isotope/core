@@ -344,6 +344,16 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'eval'					=> array('rgxp'=>'digits', 'disabled'=>'disabled', 'tl_class'=>'w50'),
 			'attributes'			=> array('legend'=>'shipping_legend'),
 		),*/
+		'shipping_weight' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['shipping_weight'],
+			'inputType'				=> 'inputUnit',
+			'default'				=> 'kg',
+			'options'				=> array('mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'),
+			'reference'				=> &$GLOBALS['TL_LANG']['WGT'],
+			'eval'					=> array('rgxp'=>'digits', 'tl_class'=>'w50', 'helpwizard'=>&$GLOBALS['TL_LANG']['WGT']),
+			'attributes'			=> array('legend'=>'shipping_legend'),
+		),
 		'shipping_exempt' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['shipping_exempt'],

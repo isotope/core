@@ -260,13 +260,28 @@ $GLOBALS['TL_LANG']['ISO_PRODUCT']['regular']	= array('Regular product', 'A defa
 /**
  * Credit card types
  */
-$GLOBALS['TL_LANG']['CCT']['mc']				= 'MasterCard';
-$GLOBALS['TL_LANG']['CCT']['visa']				= 'Visa';
-$GLOBALS['TL_LANG']['CCT']['amex']				= 'American Express';
-$GLOBALS['TL_LANG']['CCT']['discover']			= 'Discover';
-$GLOBALS['TL_LANG']['CCT']['jcb']				= 'JCB';
-$GLOBALS['TL_LANG']['CCT']['diners']			= 'Diner\'s Club';
-$GLOBALS['TL_LANG']['CCT']['enroute']			= 'EnRoute';
+$GLOBALS['TL_LANG']['CCT']['mc']					= 'MasterCard';
+$GLOBALS['TL_LANG']['CCT']['visa']					= 'Visa';
+$GLOBALS['TL_LANG']['CCT']['amex']					= 'American Express';
+$GLOBALS['TL_LANG']['CCT']['discover']				= 'Discover';
+$GLOBALS['TL_LANG']['CCT']['jcb']					= 'JCB';
+$GLOBALS['TL_LANG']['CCT']['diners']				= 'Diner\'s Club';
+$GLOBALS['TL_LANG']['CCT']['enroute']				= 'EnRoute';
+
+
+/**
+ * Weight Units
+ * http://www.metric-conversions.org/weight/weight-conversions.htm
+ */
+$GLOBALS['TL_LANG']['WGT']['mg']					= array('Milligram (mg)', 'A unit of mass equal to one-thousandth of a gram.');
+$GLOBALS['TL_LANG']['WGT']['g']						= array('Gram (g)', 'A metric unit of weight equal to one thousandth of a kilogram.');
+$GLOBALS['TL_LANG']['WGT']['kg']					= array('Kilogram (kg)', 'One kilogram is equivalent to 1,000 grams or 2.2 pounds; the mass of a liter of water.');
+$GLOBALS['TL_LANG']['WGT']['t']						= array('Metric Ton (t)', 'A unit of weight equal to 1,000 kilograms, or 2,204.6 pounds.');
+$GLOBALS['TL_LANG']['WGT']['ct']					= array('Carats (ct)', 'A measure of weight used for gemstones. One carat is equal to 1/5 of a gram (200 milligrams). Note that karat with a "K" is a measure of the purity of a gold alloy.');
+$GLOBALS['TL_LANG']['WGT']['oz']					= array('Ounce (oz)', 'A unit of weight equal to one sixteenth of a pound or 28.35 grams.');
+$GLOBALS['TL_LANG']['WGT']['lb']					= array('Pound (lb)', 'A unit of mass equal to 16 ounces');
+$GLOBALS['TL_LANG']['WGT']['st']					= array('Stone (st)', 'A British measurement of mass that equals fourteen pounds.');
+$GLOBALS['TL_LANG']['WGT']['grain']					= array('Grain', '1/7000 pound; equals a troy grain or 64.799 milligrams.');
 
 
 /**
