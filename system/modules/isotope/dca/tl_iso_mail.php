@@ -38,6 +38,7 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
 		'dataContainer'               => 'Table',
 		'enableVersioning'            => true,
 		'closed'					  => true,
+		'switchToEdit'				  => true,
 		'ctables'                     => array('tl_iso_mail_content'),
 		'onload_callback' => array
 		(
