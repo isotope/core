@@ -39,8 +39,9 @@ $GLOBALS['TL_LANG']['ISO_USPS']['DOMESTIC']['RRC']['BPM'] = '5';
 $GLOBALS['TL_LANG']['ISO_USPS']['DOMESTIC']['RRC']['MEDIA'] = '6';
 $GLOBALS['TL_LANG']['ISO_USPS']['DOMESTIC']['RRC']['LIBRARY'] = '7';
 
-/*$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC']['EXPRESS'] = '1';
-$GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC']['PRIORITY'] = '2';
+$GLOBALS['TL_LANG']['ISO_USPS']['INTERNATIONAL']['RRC']['EXPRESS'] = '1';
+$GLOBALS['TL_LANG']['ISO_USPS']['INTERNATIONAL']['RRC']['PRIORITY'] = '2';
+/*
 $GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';
 $GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';
 $GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';
@@ -87,6 +88,12 @@ class ShippingUSPS extends IsotopeShipping
 	 */
 	protected $strDestinationZip;
 	
+	/** 
+	 * Destination country
+	 * string
+	 */
+	protected $strDestinationCountry;
+	
 	
 	protected $strShippingMode;
 	
@@ -129,23 +136,29 @@ class ShippingUSPS extends IsotopeShipping
 
 				/*$arrOrigin = array
 				(
-					'name'			=> $this->Isotope->Config->firstname . ' ' . $this->Isotope->Config->lastname,
-					'phone'			=> $this->Isotope->Config->phone,
-					'company'		=> $this->Isotope->Config->company,
-					'street'		=> $this->Isotope->Config->street_1,
-					'street2'		=> $this->Isotope->Config->street_2,
-					'street3'		=> $this->Isotope->Config->street_3,
-					'city'			=> $this->Isotope->Config->city,
-					'state'			=> $this->Isotope->Config->state,
-					'zip'			=> $this->Isotope->Config->postal,
-					'country'		=> $this->Isotope->Config->country
+					'name'			=> $this->Isotope->Store->firstname . ' ' . $this->Isotope->Store->lastname,
+					'phone'			=> $this->Isotope->Store->phone,
+					'company'		=> $this->Isotope->Store->company,
+					'street'		=> $this->Isotope->Store->street_1,
+					'street2'		=> $this->Isotope->Store->street_2,
+					'street3'		=> $this->Isotope->Store->street_3,
+					'city'			=> $this->Isotope->Store->city,
+					'state'			=> $this->Isotope->Store->state,
+					'zip'			=> $this->Isotope->Store->postal,
+					'country'		=> $this->Isotope->Store->country
 				);*/
-			
-				$this->strOriginZip = $this->Isotope->Config->postal;
-				$this->strDestinationZip = $this->Cart->shippingAddress['postal'];
-				$this->strShippingMode = $this->getShippingMode($this->Cart->shippingAddress['country']);
 				
-				if($this->Cart->shippingAddress['country']!='us')
+				$arrCountries = $this->getCountries();
+				$destCountryText = $arrCountries[$this->Cart->shippingAddress['country']];
+			
+				$this->strOriginZip = $this->Isotope->Store->postal;
+				$this->strDestinationZip = $this->Cart->shippingAddress['postal'];
+				$this->strDestinationCountry = $this->Cart->shippingAddress['country'];
+				$this->strDestinationCountryText = ($this->Cart->shippingAddress['country']=='uk') ? 'Great Britain' : $destCountryText;
+				$this->strShippingMode = $this->getShippingMode($this->Cart->shippingAddress['country']);
+				$this->blnDomestic = ($this->Cart->shippingAddress['country']!='us' ? false : true);
+				
+				if(!$this->blnDomestic)
 				{
 					$this->strAPIMode = 'IntlRate';
 				}
@@ -180,6 +193,10 @@ class ShippingUSPS extends IsotopeShipping
 			 $userName = $this->usps_userName; // Your USPS Username  
 			 $orig_zip = $this->strOriginZip; // Zipcode you are shipping FROM  
 			 $dest_zip = $this->strDestinationZip; // Zipcode you are shipping TO 
+			 $dest_country = $this->strDestinationCountry;  // Country you are shipping TO
+			 $dest_countryText = $this->strDestinationCountryText;
+			 $shipMode = $this->strShippingMode;
+			 $blnDomestic = $this->blnDomestic;
 			  
 			 $url = "http://production.shippingapis.com/ShippingAPI.dll";  
 			 $ch = curl_init();  
@@ -192,8 +209,14 @@ class ShippingUSPS extends IsotopeShipping
 			 // parameters to post  
 			 curl_setopt($ch, CURLOPT_POST, 1);  
 			
-			 $data = "API=" . $this->strAPIMode . "&XML=<RateV3Request USERID=\"" . $userName . "\"><Package ID=\"1ST\"><Service>" . $this->usps_enabledService . "</Service><ZipOrigination>" . $orig_zip . "</ZipOrigination><ZipDestination>" . $dest_zip . "</ZipDestination><Pounds>" . $this->arrWeightData['pounds'] . "</Pounds><Ounces>" . $this->arrWeightData['ounces'] . "</Ounces><Size>REGULAR</Size><Machinable>TRUE</Machinable></Package></RateV3Request>";  
-	
+			 if(!$blnDomestic) //INTERNATIONAL SHIPPING
+			 {
+			 	$data = "API=" . $this->strAPIMode . "&XML=<" . $this->strAPIMode . "Request USERID=\"" . $userName . "\"><Package ID=\"1ST\"><Pounds>" . $this->arrWeightData['pounds'] . "</Pounds><Ounces>" . $this->arrWeightData['ounces'] . "</Ounces><MailType>Package</MailType><Country>". $dest_countryText  ."</Country></Package></" . $this->strAPIMode . "Request>";  
+			 }else
+			 {
+			 	$data = "API=" . $this->strAPIMode . "&XML=<" . $this->strAPIMode . "Request USERID=\"" . $userName . "\"><Package ID=\"1ST\"><Service>" . $this->usps_enabledService . "</Service><ZipOrigination>" . $orig_zip . "</ZipOrigination><ZipDestination>" . $dest_zip . "</ZipDestination><Pounds>" . $this->arrWeightData['pounds'] . "</Pounds><Ounces>" . $this->arrWeightData['ounces'] . "</Ounces><Size>REGULAR</Size><Machinable>TRUE</Machinable></Package></" . $this->strAPIMode . "Request>";  
+			 }
+			 									
 			// send the POST values to USPS  
 			curl_setopt($ch, CURLOPT_POSTFIELDS,$data);  
 			  
@@ -201,7 +224,7 @@ class ShippingUSPS extends IsotopeShipping
 			
 			$data = strstr($result, '<?');  
 							
-			// echo '<!-- '. $data. ' -->'; // Uncomment to show XML in comments  
+			 //echo '<!-- '. $data. ' -->'; // Uncomment to show XML in comments  
 			$xml_parser = xml_parser_create();  
 			xml_parse_into_struct($xml_parser, $data, $vals, $index);  
 			xml_parser_free($xml_parser);  
@@ -229,9 +252,13 @@ class ShippingUSPS extends IsotopeShipping
 			
 			curl_close($ch);  
 			
+			//Need to uppercase the strAPImode
+			$strAPItext = strtoupper($this->strAPIMode) . 'RESPONSE';
 			
 			//echo '<pre>'; print_r($params); echo'</pre>'; // Uncomment to see xml tags  
-			$fltPrice = $params['RATEV3RESPONSE']['1ST'][$GLOBALS['ISO_USPS'][$this->strShippingMode]['RRC'][$this->usps_enabledService]]['RATE'];  
+			
+			$strRate = ($blnDomestic ? 'RATE' : 'POSTAGE');		
+			$fltPrice = $params[strtoupper($this->strAPIMode) . 'RESPONSE']['1ST'][$GLOBALS['TL_LANG']['ISO_USPS'][$shipMode]['RRC'][$this->usps_enabledService]][$strRate];  
 			$_SESSION['CHECKOUT_DATA']['shipping']['modules'][$this->id]['price'] = $fltPrice;
 		}
 		
