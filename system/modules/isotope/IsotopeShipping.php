@@ -122,7 +122,7 @@ abstract class IsotopeShipping extends Frontend
 				$arrSubdivisions = deserialize($this->subdivisions);
 				$blnHasSubdivision = is_array($GLOBALS['TL_LANG']['DIV'][$this->Cart->shippingAddress['country']]);
 				
-				if(is_array($arrSubdivisions) && count($arrSubdivisions) && !in_array($this->Cart->shippingAddress['subdivision'], $arrSubdivisions))
+				if(is_array($arrSubdivisions) && count($arrSubdivisions) && !in_array($this->Cart->shippingAddress['subdivision'], $arrSubdivisions) && $blnHasSubdivision)
 					return false;
 				
 				return true;
