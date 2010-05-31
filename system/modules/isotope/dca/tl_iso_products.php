@@ -1656,6 +1656,8 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 				),
 			);
 			
+			if ($objAttributes->is_be_filterable) $arrData['filter'] = true;
+			if ($objAttributes->is_be_searchable) $arrData['search'] = true;
 			if ($objAttributes->is_required) $arrData['eval']['mandatory'] = true;
 			if ($objAttributes->rgxp) $arrData['eval']['rgxp'] = $objAttributes->rgxp;
 			if ($objAttributes->multiple) $arrData['eval']['multiple'] = $objAttributes->multiple;

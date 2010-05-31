@@ -68,7 +68,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		
 		$arrFilterFields = deserialize($this->iso_filterFields);
 		$arrOrderByFieldIds = deserialize($this->iso_orderByFields);
-		$arrSearchFields = deserialize($this->iso_searchFields);
+		$arrSearchFieldIds = deserialize($this->iso_searchFields);
 		$objListingModule = $this->Database->prepare("SELECT * FROM tl_module WHERE id=?")->limit(1)->execute($this->iso_listingModule);
 		
 		$arrLimit = array();	
@@ -77,7 +77,19 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		
 		$arrOrderByFields = $this->getOrderByFields($arrOrderByFieldIds);
 		
-		$arrSearchFields = array('name','description');
+		//$arrSearchFields = array('name','description');
+		
+		if(count($arrSearchFieldIds))
+		{
+			foreach($arrSearchFieldIds as $field)
+			{
+				$arrAttributeData = $this->getProductAttributeData($field);
+				$arrSearchFieldNames[] = $arrAttributeData['field_name'];
+			}
+			$arrSearchFieldNames[] = 'name';
+			$arrSearchFieldNames[] = 'description';
+			
+		}
 		
 		if(count($arrFilterFields))
 		{
@@ -85,9 +97,15 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 			{
 					
 				//Render as a select widget, for now.  Perhaps make flexible in the future.
+				/* Added by Blair */
+				$objWidget = $this->generateSelectWidget($field);
+				$arrAttributeData = $this->getProductAttributeData($field);
+				$arrFieldNames[] = $arrAttributeData['field_name'];
+				/* End added by Blair */
+				
 				$arrFilters[] = array
 				(
-					'html'		=> ''	//render filter widget
+					'html'		=> $objWidget->parse()	//render filter widget
 				);
 			}
 		}
@@ -129,6 +147,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		$this->Template->perPage = $this->iso_enableLimit;
 		$this->Template->limit = $arrLimit;
 		$this->Template->filters = $arrFilters;
+		$this->Template->filterFields = implode(',',$arrFieldNames);
 		$this->Template->action = $this->Environment->request;
 		$this->Template->baseUrl = $arrCleanUrl[0];
 		$this->Template->orderBy = $arrOrderByOptions;
@@ -242,6 +261,12 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		return $strSorting;
 	}
 	
+	/** 
+	 * Generates sorting directions based upon data type
+	 * @access private
+	 * @param string $strType
+	 * @return array
+	 */
 	private function generateSortingDirections($strType)
 	{
 		switch($strType)
@@ -256,6 +281,57 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 			case 'datetime':
 				return array('ASC' => $GLOBALS['TL_LANG']['MSC']['old_to_new'], 'DESC' => $GLOBALS['TL_LANG']['MSC']['new_to_old']);
 		}
+	}
+	
+	/** 
+	 *  Just to clean up main code, wrapped a reused piece of code in this function
+	 * @access private
+	 * @param integer $intFieldID
+	 * @return object
+	 */
+	private function generateSelectWidget($intFieldID)
+	{		
+		
+		$arrAttributeData = $this->getProductAttributeData($intFieldID);
+		
+		$arrOptionList = deserialize($arrAttributeData['option_list']);
+		
+		array_unshift($arrOptionList, array('value'=>'','label'=>'-'));
+		
+		$arrData = array
+		(
+			'label'			=> array($arrAttributeData['name'],$arrAttributeData['name']),
+			'inputType'		=> 'select',
+			'eval'			=> array('includeBlankOption'=>false)
+		);
+		
+		$objWidget = new FormSelectMenu($this->prepareForWidget($arrData, $arrAttributeData['field_name'], $this->Input->get($arrAttributeData['field_name'])));
+		
+		$objWidget->options = $arrOptionList;
+	
+		return $objWidget;
+	}
+	
+	/**
+	 * Get attribute data and do something with it based on the properties of the attribute.
+	 *
+	 * @access private
+	 * @param integer
+	 * @return array
+	 */
+	private function getProductAttributeData($intFieldID)
+	{		
+		
+		$objAttributeData = $this->Database->prepare("SELECT * FROM tl_iso_attributes WHERE id=?")
+										   ->limit(1)
+										   ->execute($intFieldID);
+
+		if($objAttributeData->numRows < 1)
+		{			
+			return array();
+		}
+		
+		return $objAttributeData->fetchAssoc();
 	}
 }
 

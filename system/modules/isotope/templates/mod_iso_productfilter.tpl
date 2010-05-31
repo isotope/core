@@ -30,9 +30,9 @@
                 </div>
             <?php endif; ?>
             <?php if($this->filters): ?>
-            
+                <input type="hidden" name="filters" value="<?php echo $this->filterFields; ?>" />
                 <?php foreach($this->filters as $filter): ?>
-                <?php 	echo $filter['html']; ?>
+                <?php  echo $filter['html']; ?>
                 <?php endforeach; ?>
             <?php endif; ?>
             <?php if ($this->searchable): ?>

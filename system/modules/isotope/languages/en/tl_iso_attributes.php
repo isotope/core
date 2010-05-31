@@ -41,8 +41,8 @@ $GLOBALS['TL_LANG']['tl_iso_attributes']['attr_default_value']		= array('Default
 $GLOBALS['TL_LANG']['tl_iso_attributes']['is_visible_on_front']		= array('Visible to Customers','Is this attribute shown to customers?');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['is_customer_defined']		= array('Defined by Customer','Is this value defined by the customer?');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['is_required']				= array('Required','Is this attribute required?');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['is_filterable']			= array('Filterable','Can this attribute be used in a filter?');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['is_searchable']			= array('Searchable','Should the search engine look in this field for search terms?');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['is_filterable']   		= array('Frontend Filterable','Can this attribute be used in a frontend filter?');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['is_searchable']   		= array('Frontend Searchable','Should the search engine look in this field for search terms?');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['is_multiple_select']		= array('Allow Multiple Selections','Stores multiple selections instead of single ones.');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['use_rich_text_editor']	= array('Use Full HTML Editor','Allows you to include html in your description.');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['field_size']				= array('Field Size','How many characters should this field accommodate? Leave blank for unlimited.');
@@ -61,8 +61,8 @@ $GLOBALS['TL_LANG']['tl_iso_attributes']['template_visibility_title']	= 'Availab
 $GLOBALS['TL_LANG']['tl_iso_attributes']['listing_enabled']			= 'Product Lister Template';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['reader_enabled']			= 'Product Reader Template';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['add_to_product_variants']	= array('Add to product variants wizard','If selected, this attribute will be added to the product variants wizard for use as a product variant option.');
-
-
+$GLOBALS['TL_LANG']['tl_iso_attributes']['is_be_filterable']   		= array('Backend Filterable','Can this attribute be used in a backend filter?');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['is_be_searchable']   		= array('Backend Searchable','Should the search engine look in this field for search terms?');
 
 /**
  * Reference

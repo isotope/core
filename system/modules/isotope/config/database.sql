@@ -167,6 +167,8 @@ CREATE TABLE `tl_iso_attributes` (
   `is_searchable` char(1) NOT NULL default '',
   `is_order_by_enabled` char(1) NOT NULL default '',
   `is_multiple_select` char(1) NOT NULL default '',
+  `is_be_filterable` char(1) NOT NULL default '',
+  `is_be_searchable` char(1) NOT NULL default '',
   `multilingual` char(1) NOT NULL default '',
   `add_to_product_variants` char(1) NOT NULL default '',
   `invisible` char(1) NOT NULL default '',

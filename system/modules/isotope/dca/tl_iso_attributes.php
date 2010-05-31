@@ -124,12 +124,12 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
     (
         '__selector__'				=> array('type', 'use_alternate_source'),
 		'default'					=> '{attribute_legend},name,field_name,type,legend,description;',
-		'text'                     	=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},is_visible_on_front;{use_mode_legend},multilingual,is_customer_defined;{validation_legend},is_required,rgxp;{search_filters_legend},is_searchable,is_order_by_enabled',
+		'text'                     	=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},is_visible_on_front;{use_mode_legend},multilingual,is_customer_defined;{validation_legend},is_required,rgxp;{search_filters_legend},is_searchable,is_order_by_enabled,is_be_searchable',
 		'integer'					=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},is_visible_on_front;{use_mode_legend},is_customer_defined;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled',
 		'decimal'					=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},is_visible_on_front;is_customer_defined;is_required,is_filterable,is_order_by_enabled',
-		'textarea'					=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},is_visible_on_front;{use_mode_legend},multilingual,use_rich_text_editor,is_customer_defined;{validation_legend},is_required,rgxp;{search_filters_legend},is_searchable,is_order_by_enabled',
+		'textarea'					=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},is_visible_on_front;{use_mode_legend},multilingual,use_rich_text_editor,is_customer_defined;{validation_legend},is_required,rgxp;{search_filters_legend},is_searchable,is_order_by_enabled,is_be_searchable',
 		'datetime'					=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},is_visible_on_front;{validation_legend},is_required;{search_filters_legend},is_order_by_enabled',
-		'select'					=> '{attribute_legend},name,field_name,type,legend,description;{options_legend},option_list,use_alternate_source;{visibility_legend},is_visible_on_front;{use_mode_legend},is_customer_defined,add_to_product_variants,is_multiple_select;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled',
+		'select'					=> '{attribute_legend},name,field_name,type,legend,description;{options_legend},option_list,use_alternate_source;{visibility_legend},is_visible_on_front;{use_mode_legend},is_customer_defined,add_to_product_variants,is_multiple_select;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled,is_be_filterable',
 		'conditionalselect'			=> '{attribute_legend},name,field_name,type,legend,description;{options_legend},option_list,conditionField;{visibility_legend},is_visible_on_front;{use_mode_legend},is_customer_defined,is_multiple_select;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled',
 		'options'					=> '{attribute_legend},name,field_name,type,legend,description;{options_legend},option_list,{visibility_legend},is_visible_on_front;{use_mode_legend},is_customer_defined,add_to_product_variants,is_multiple_select;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled',
 		'fileattach'				=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},is_visible_on_front;{use_mode_legend},is_customer_defined;{validation_legend},is_required',
@@ -203,18 +203,19 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_attributes']['add_to_product_variants'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox'
-		)
-		/*,
-		'attr_use_mode' => array
+		),
+		'is_be_searchable' => array
+	    (
+		   	'label'                   => &$GLOBALS['TL_LANG']['tl_iso_attributes']['is_be_searchable'],
+		   	'exclude'                 => true,
+		   	'inputType'               => 'checkbox'
+		),
+		'is_be_filterable' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_attributes']['attr_use_mode'],	//Is customer defined will determine what to do - whether to show just 
-																									//a label or a form control
-			'exclude'                 => true,
-			'default'				  => 'label',
-			'inputType'               => 'select',
-			'options'				  => array('label','input'),
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'submitOnChange'=>true)
-		)*/,
+		   	'label'                   => &$GLOBALS['TL_LANG']['tl_iso_attributes']['is_be_filterable'],
+		   	'exclude'                 => true,
+		   	'inputType'               => 'checkbox',
+		),
 		'attr_default_value' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_attributes']['attr_default_value'],
