@@ -444,7 +444,7 @@ class IsotopeProduct extends Controller
 						$objTemplate->hasOptions = true;
 						$arrProductOptions[$attribute] = $this->generateProductOptionWidget($attribute);
 						
-						if (!$GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['eval']['disableAjax'])
+						if (!$GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['eval']['disableAjax'] && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['add_to_product_variants'])
 						{
 							$arrAjaxOptions[] = $attribute;
 						}
