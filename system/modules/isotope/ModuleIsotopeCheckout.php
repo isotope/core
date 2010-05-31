@@ -702,7 +702,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		$objTemplate->message = $GLOBALS['TL_LANG']['ISO']['order_review_message'];
 				
 		$arrProductData = array();
-		$arrProducts = $this->Cart->getItems();
+		$arrProducts = $this->Cart->getProducts();
 		
 		foreach( $arrProducts as $product )
 		{			
@@ -821,8 +821,8 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				'shippingPrice'				=> $this->Isotope->formatPriceWithCurrency($fltShippingTotal),
 				'paymentPrice'				=> $this->Isotope->formatPriceWithCurrency($this->Cart->Payment->price),
 				'grandTotal'				=> $this->Isotope->formatPriceWithCurrency($this->Cart->grandTotal),
-				'cart_text'					=> $this->Cart->getItems('iso_products_text'),
-				'cart_html'					=> $this->Cart->getItems('iso_products_html'),
+				'cart_text'					=> $this->Cart->getProducts('iso_products_text'),
+				'cart_html'					=> $this->Cart->getProducts('iso_products_html'),
 				'billing_address'			=> $strBillingAddress,
 				'billing_address_text'		=> str_replace('<br />', "\n", $strBillingAddress),
 				'shipping_address'			=> $strShippingAddress,
@@ -871,7 +871,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	 */
 	protected function copyCartItems($intOrderId)
 	{
-		$arrProducts = $this->Cart->getItems();
+		$arrProducts = $this->Cart->getProducts();
 		
 		foreach( $arrProducts as $product )
 		{
@@ -1160,7 +1160,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		
 		$arrState = explode(',', $this->Cart->billingAddress['subdivision']);
 		
-		$arrProducts = $this->Cart->getItems();
+		$arrProducts = $this->Cart->getProducts();
 		
 		$arrVariantValues = $this->getProductVariantValues($arrProducts);
 			
