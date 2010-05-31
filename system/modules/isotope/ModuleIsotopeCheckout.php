@@ -704,17 +704,17 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		$arrProductData = array();
 		$arrProducts = $this->Cart->getProducts();
 		
-		foreach( $arrProducts as $product )
+		foreach( $arrProducts as $i=>$objProduct )
 		{			
-			$objProduct = unserialize($product['product_data']);
+			//$objProduct = unserialize($product['product_data']);
 		
 			$arrProductData[] = array_merge($objProduct->getAttributes(), array
 			(
 				'id'				=> $objProduct->id,
 				'image'				=> $objProduct->images[0],
 				'link'				=> $objProduct->href_reader,
-				'price'				=> $this->Isotope->formatPriceWithCurrency($product['price']),
-				'total_price'		=> $this->Isotope->formatPriceWithCurrency(($product['price']*$product['quantity_requested'])),
+				'price'				=> $this->Isotope->formatPriceWithCurrency($objProduct->price),
+				'total_price'		=> $this->Isotope->formatPriceWithCurrency(($objProduct->price*$objProduct->quantity_requested)),
 				'quantity'			=> $objProduct->quantity_requested,
 				'tax_id'			=> $objProduct->tax_id,
 				'product_options'	=> $objProduct->getOptions(),
@@ -873,17 +873,15 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	{
 		$arrProducts = $this->Cart->getProducts();
 		
-		foreach( $arrProducts as $product )
-		{
-			$objProduct = unserialize($product['product_data']);
-			
+		foreach( $arrProducts as $i=>$objProduct )
+		{						
 			$arrSet = array
 			(
 				'pid'				=> $intOrderId,
 				'tstamp'			=> time(),
-				'product_id'		=> $product['product_id'],
-				'quantity_sold'		=> $product['quantity_requested'],
-				'price'				=> $product['price'],
+				'product_id'		=> $objProduct->id,
+				'quantity_sold'		=> $objProduct->quantity_requested,
+				'price'				=> $objProduct->price,
 				'product_data'		=> serialize($objProduct),
 			);
 			
@@ -1164,9 +1162,8 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		
 		$arrVariantValues = $this->getProductVariantValues($arrProducts);
 			
-		foreach($arrProducts as $product)
+		foreach($arrProducts as $i=>$objProduct)
 		{
-			$objProduct = unserialize($product['product_data']);
 			
 			$strVariant = (is_array($arrVariantValues[$objProduct->id]['variants']) ? implode(' ', $arrVariantValues[$objProduct->id]['variants']) : ''); 
 			
@@ -1175,8 +1172,8 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				'sku'		=> $objProduct->sku,
 				'name'		=> $objProduct->name,
 				'variant'	=> $strVariant,
-				'price'		=> $product['price'],
-				'quantity'	=> $product['quantity_requested']
+				'price'		=> $objProduct->price,
+				'quantity'	=> $objProduct->quantity_requested
 			);
 		}
 		
