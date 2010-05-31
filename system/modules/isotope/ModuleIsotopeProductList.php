@@ -104,7 +104,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		{
 			$arrFilters = array('for'=>$this->Input->get('for'),'per_page'=>$this->Input->get('per_page'),'page'=>$this->Input->get('page'),'order_by'=>$this->Input->get('order_by'));	
 		
-			/*$arrFilterFields = implode(',', $this->Input->get('filters'));	//get the names of filters we are using
+			$arrFilterFields = explode(',', $this->Input->get('filters'));	//get the names of filters we are using
 	
 			foreach($arrFilterFields as $field)
 			{
@@ -112,7 +112,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 				{
 					$arrFilters[$field] = $this->Input->get($field);
 				}
-			}*/
+			}
 						
 			$this->perPage = ($this->Input->get('per_page') ? $this->Input->get('per_page') : $this->perPage);
 							
@@ -208,8 +208,8 @@ class ModuleIsotopeProductList extends ModuleIsotope
 						
 					case 'for':
 						//prepare clause for text search. TODO:  need to add filter for each std. search field plus any additional user-defined.
-						$arrSearchFields = array('name','description');
-						
+						$arrSearchFields = $this->getSearchFields();
+												
 						foreach($arrSearchFields as $field)
 						{
 							$arrSearchClauses[] = $this->addFilter($value, $field, 'search');
@@ -349,5 +349,38 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		
 		return $arrReturn;
 	}
+	
+		/** 
+	 * Get the search fields used by any corresponding filter - add defaults plus user defined
+	 *
+	 * @return array
+	 */
+	protected function getSearchFields()
+	{
+		$arrSearchFields = array('name','description');
+		
+		$objFilter = $this->Database->prepare("SELECT * FROM tl_module WHERE type='iso_productfilter' AND iso_listingModule=?")
+										   ->execute($this->id);
+			
+		if($objFilter->numRows > 0)
+		{	
+			$arrFieldData = deserialize($objFilter->iso_searchFields);
+			
+			foreach($arrFieldData as $intFieldID)
+			{
+				$objAttributeData = $this->Database->prepare("SELECT * FROM tl_iso_attributes WHERE id=?")
+												   ->limit(1)
+												   ->execute($intFieldID);
+		
+				if($objAttributeData->numRows < 1)
+				{			
+					continue;
+				}
+				$arrSearchFields[] = $objAttributeData->field_name;
+			}
+		}
+		return $arrSearchFields;
+	}
+
 }
 
