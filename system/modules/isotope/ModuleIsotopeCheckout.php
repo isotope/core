@@ -585,7 +585,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		$strHidden = '';
 
 		// Get all form fields
-		$objFields = $this->Database->prepare("SELECT * FROM tl_form_field WHERE pid=? ORDER BY sorting")
+		$objFields = $this->Database->prepare("SELECT * FROM tl_form_field WHERE pid=? AND invisible='' ORDER BY sorting")
 									->execute($objForm->id);
 
 		$row = 0;

@@ -9,6 +9,7 @@ Version 0.1.1 stable (2010-??-??)
 - Fixed: Tax was not applied to flat price shipping
 - Fixed: Final price for paypal standard payment module did not include taxes
 - Fixed: Latest order did not appear in order history module
+- Fixed: Checkout condition form did show invisible fields
 - Fixed old image size message (Ticket #119)
 - Fixed a bug with minimum/maximum order total calculation.
 
