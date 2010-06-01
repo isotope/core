@@ -111,7 +111,7 @@ abstract class IsotopeShipping extends Frontend
 						return false;
 				}
 				
-				if (($this->minimum_total > 0 && $this->minimum_total > $this->Cart->subTotal) || ($this->minimum_total > 0 && $this->maximum_total < $this->Cart->subTotal))
+				if (($this->minimum_total > 0 && $this->minimum_total > $this->Cart->subTotal) || ($this->maximum_total > 0 && $this->maximum_total < $this->Cart->subTotal))
 					return false;
 		
 				$arrCountries = deserialize($this->countries);
@@ -120,7 +120,7 @@ abstract class IsotopeShipping extends Frontend
 					return false;
 					
 				$arrSubdivisions = deserialize($this->subdivisions);
-				$blnHasSubdivision = is_array($GLOBALS['TL_LANG']['DIV'][$this->Cart->shippingAddress['country']]);
+				$blnHasSubdivision = is_array($GLOBALS['TL_LANG']['DIV'][$this->Cart->shippingAddress['country']]);	//!@todo this should be dropped with Contao 2.9 as all countries "should" have subdivisions
 				
 				if(is_array($arrSubdivisions) && count($arrSubdivisions) && !in_array($this->Cart->shippingAddress['subdivision'], $arrSubdivisions) && $blnHasSubdivision)
 					return false;
