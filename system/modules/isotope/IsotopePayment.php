@@ -49,6 +49,10 @@ abstract class IsotopePayment extends Frontend
 	protected $arrData = array();
 	
 	
+	protected $Isotope;
+	protected $Cart;
+	
+	
 	/**
 	 * Initialize the object
 	 *
@@ -58,6 +62,11 @@ abstract class IsotopePayment extends Frontend
 	public function __construct($arrRow)
 	{
 		parent::__construct();
+		
+		$this->import('Isotope');
+		
+		if (TL_MODE == 'FE')
+			$this->import('IsotopeCart', 'Cart');
 
 		$arrRow['allowed_cc_types'] = deserialize($arrRow['allowed_cc_types']);
 		if (is_array($arrRow['allowed_cc_types']))
@@ -91,16 +100,13 @@ abstract class IsotopePayment extends Frontend
 	 */
 	public function __get($strKey)
 	{
-		$this->import('Isotope');
+		
 		
 		switch( $strKey )
 		{
 			case 'available':
-			
 				if (!$this->enabled && !BE_USER_LOGGED_IN)
 					return false;
-				
-				$this->import('IsotopeCart', 'Cart');
 				
 				if (($this->minimum_total > 0 && $this->minimum_total > $this->Cart->subTotal) || ($this->maximum_total > 0 && $this->maximum_total < $this->Cart->subTotal))
 					return false;
