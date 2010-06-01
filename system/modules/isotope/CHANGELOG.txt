@@ -6,11 +6,9 @@ Version 0.2.0
 ------------------------------
 - Added: Product weight field and weight units
 - Added: Shipping module for price based on product weight
-- Added: Hooks for altering product before output
-- Added: "payment_id" field to tl_iso_orders to track payment method
-- Added: "shipping_id" field to tl_iso_orders to track payment method
-- Added: saving of payment_id and shipping_id data in ModuleIsotopeCheckout
 - Added: New payment module for ePay (www.epay.eu)
+- Added: Hooks for altering product before output
+- Added: Payment and and shipping module can now provide additional info for each order (trough a button/operation)
 
 Version 0.1.1 stable (2010-??-??)
 ------------------------------
