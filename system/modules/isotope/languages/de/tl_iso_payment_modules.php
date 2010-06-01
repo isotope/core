@@ -65,8 +65,6 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['show']		= array('Zahlungsartdetai
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['type_legend']		= 'Name & Typ';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['note_legend']		= 'Bestellhinweis';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['config_legend']		= 'Allgemeine Einstellungen';
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['paypal_legend']		= 'PayPal-Konfiguration';
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['postfinance_legend']	= 'Postfinance-Konfiguration';
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['authorize_legend']	= 'Authorize.net Konfiguration';
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['gateway_legend']		= 'Konfiguration des Zahlungsanbieters';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['enabled_legend']		= 'Modul-Aktivierung';
 
