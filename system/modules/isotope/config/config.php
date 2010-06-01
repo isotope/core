@@ -55,6 +55,8 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
 		'export_emails'     		=> array('tl_iso_orders', 'exportOrderEmails'),
 		'authorize_process_payment'	=> array('IsotopePOS', 'getPOSInterface'),
 		'print_order'				=> array('IsotopePOS','printInvoice'),
+		'payment'					=> array('tl_iso_orders', 'paymentInterface'),
+		'shipping'					=> array('tl_iso_orders', 'shippingInterface'),
 	),/*
 	'iso_statistics' => array
 	(
