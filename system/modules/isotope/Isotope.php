@@ -679,7 +679,7 @@ class Isotope extends Controller
 	
 	public function mergeConditionalOptionData($strField, $arrData, &$objProduct=null)
 	{
-		$arrData['eval']['disableAjax'] = true;
+		$arrData['attributes']['add_to_product_variants'] = false;
 		$arrData['eval']['conditionField'] = $arrData['attributes']['conditionField'] . (is_object($objProduct) ? '_'.$objProduct->id : '');
 
 		return $this->mergeOptionData($strField, $arrData, $objProduct);
