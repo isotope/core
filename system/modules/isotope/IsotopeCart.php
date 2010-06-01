@@ -109,6 +109,19 @@ class IsotopeCart extends Model
 	}
 	
 	
+	public function __construct()
+	{
+		parent::__construct();
+		
+		$this->import('Isotope');
+		
+		if (TL_MODE == 'FE')
+		{
+			$this->initializeCart();
+		}
+	}
+	
+	
 	/**
 	 * Return cart data. All data is cached for speed improvement.
 	 * 
@@ -304,18 +317,14 @@ class IsotopeCart extends Model
 	 * Load current cart
 	 */
 	//!@todo why do we need config_id in tl_cart?
-	public function __construct()
+	public function initializeCart()
 	{
-		parent::__construct();
-		
-		$this->import('Isotope');
-		
 		$this->strHash = $this->Input->cookie($this->strCookie);
 		
 		//  Check to see if the user is logged in.
 		if (!FE_USER_LOGGED_IN)
 		{	
-			if(!strlen($this->strHash))	
+			if (!strlen($this->strHash))	
 			{	
 				$this->strHash = sha1(session_id() . (!$GLOBALS['TL_CONFIG']['disableIpCheck'] ? $this->Environment->ip : '') . $this->Isotope->Config->id . $this->strCookie);
 				
@@ -340,7 +349,6 @@ class IsotopeCart extends Model
 				'tstamp'		=> time(),
 				'last_visit'	=> time(),
 				'cart_type_id'	=> $this->intType,
-				'config_id'		=> $this->Isotope->Config->id,
 			));
 			
 			if (!$this->findBy('id', $this->save(true)))
