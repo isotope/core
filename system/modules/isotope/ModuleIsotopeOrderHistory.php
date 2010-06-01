@@ -60,7 +60,7 @@ class ModuleIsotopeOrderHistory extends ModuleIsotope
 	
 	protected function compile()
 	{
-		$objOrders = $this->Database->prepare("SELECT *, (SELECT COUNT(*) FROM tl_iso_order_items WHERE pid=tl_iso_orders.id) AS items FROM tl_iso_orders WHERE status!='' AND pid=? AND config_id IN (" . implode(',', $this->iso_config_ids) . ") ORDER BY date DESC")->execute($this->User->id);
+		$objOrders = $this->Database->execute("SELECT *, (SELECT COUNT(*) FROM tl_iso_order_items WHERE pid=tl_iso_orders.id) AS items FROM tl_iso_orders WHERE status!='' AND pid=".$this->User->id." AND config_id IN (" . implode(',', $this->iso_config_ids) . ") ORDER BY date DESC");
 		
 		// No orders found, just display an "empty" message
 		if (!$objOrders->numRows)
@@ -72,13 +72,17 @@ class ModuleIsotopeOrderHistory extends ModuleIsotope
 		}
 		
 		$this->import('Isotope');
-		$this->Isotope->overrideConfig($objOrders->config_id);
-		
-		$arrPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->limit(1)->execute($this->jumpTo)->fetchAssoc();
 		
 		$arrOrders = array();
+		$arrPage = $this->Database->execute("SELECT * FROM tl_page WHERE id=".$this->jumpTo)->fetchAssoc();
+		
 		while( $objOrders->next() )
 		{
+			if ($this->Isotope->Config->id != $objOrders->config_id)
+			{
+				$this->Isotope->overrideConfig($objOrders->config_id);
+			}
+			
 			$arrOrders[] = array
 			(
 				'raw'			=> $objOrders->row(),
@@ -93,7 +97,6 @@ class ModuleIsotopeOrderHistory extends ModuleIsotope
 		}
 		
 		$this->Template->orders = $arrOrders;
-		
 		$this->Template->dateLabel = $GLOBALS['TL_LANG']['MSC']['iso_order_date'];
 		$this->Template->statusLabel = $GLOBALS['TL_LANG']['MSC']['iso_order_status'];
 		$this->Template->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
