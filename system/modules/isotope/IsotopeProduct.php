@@ -82,7 +82,6 @@ class IsotopeProduct extends Controller
 	protected $doNotSubmit = false;
 
 
-	
 	/**
 	 * Construct the object
 	 */
@@ -124,8 +123,9 @@ class IsotopeProduct extends Controller
 		
 		if(count($arrReturn))
 		{
+			//!@todo original_price is empty if no return array is given
 			$this->arrData['original_price'] = $this->arrData['price'];
-			$this->price = $arrReturn[0];
+			$this->arrData['price'] = $arrReturn[0];
 			$this->arrData['rules_applied'] = $arrReturn[1];
 		}
 		
@@ -144,10 +144,11 @@ class IsotopeProduct extends Controller
 			case 'id':
 			case 'pid':
 			case 'href_reader':
-			case 'options':
 				return $this->arrData[$strKey];
+				
 			case 'originalPrice':
 				return $this->Isotope->calculatePrice($this->arrData['original_price'], $this->arrData['tax_class']);
+				
 			case 'price':
 				return $this->Isotope->calculatePrice($this->arrData['price'], $this->arrData['tax_class']);
 			
@@ -233,9 +234,11 @@ class IsotopeProduct extends Controller
 						case 'formatted_price':
 							$varValue = $this->Isotope->formatPriceWithCurrency($this->price);
 							break;
+							
 						case 'formatted_original_price':
 							$varValue = $this->Isotope->formatPriceWithCurrency($this->originalPrice);
-							break;	
+							break;
+							
 						case 'formatted_low_price':
 							$varValue = $this->Isotope->formatPriceWithCurrency($this->low_price);
 							break;
@@ -298,10 +301,6 @@ class IsotopeProduct extends Controller
 			case 'name':
 			case 'low_price':
 			case 'high_price':
-			case 'price':
-			case 'original_price':
-			case 'rules_applied':
-			case 'options':
 				$this->arrData[$strKey] = $varValue;
 				break;
 
@@ -381,11 +380,13 @@ class IsotopeProduct extends Controller
 	
 	
 	/**
-	 * A bad function, but it is required to update old tl_iso_order_items.product_options data
+	 * Set options data and validate variant
 	 */
 	public function setOptions($arrOptions)
 	{
 		$this->arrOptions = $arrOptions;
+		
+		$this->validateVariant();
 	}
 
 
@@ -444,7 +445,7 @@ class IsotopeProduct extends Controller
 						$objTemplate->hasOptions = true;
 						$arrProductOptions[$attribute] = $this->generateProductOptionWidget($attribute);
 						
-						if (!$GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['eval']['disableAjax'] && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['add_to_product_variants'])
+						if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['add_to_product_variants'])
 						{
 							$arrAjaxOptions[] = $attribute;
 						}
@@ -477,7 +478,7 @@ class IsotopeProduct extends Controller
 			foreach( $arrButtons as $button => $data )
 			{
 				if (strlen($this->Input->post($button)))
-				{									
+				{
 					if (is_array($data['callback']) && count($data['callback']) == 2)
 					{
 						$this->import($data['callback'][0]);
@@ -537,7 +538,6 @@ class IsotopeProduct extends Controller
 				$this->import($callback[0]);
 				
 				$arrReturn = $this->$callback[0]->$callback[1]($objProduct);
-			
 			}
 		}	
 		
@@ -580,6 +580,16 @@ class IsotopeProduct extends Controller
         	'id'	=> 'ajax_price',
         	'html'	=> ('<div id="ajax_price">'.$this->formatted_price.'</div>'),
         );
+        
+        // HOOK for altering product data before output
+		if (isset($GLOBALS['TL_HOOKS']['iso_generateAjaxProduct']) && is_array($GLOBALS['TL_HOOKS']['iso_generateAjaxProduct']))
+		{
+			foreach ($GLOBALS['TL_HOOKS']['iso_generateAjaxProduct'] as $callback)
+			{
+				$this->import($callback[0]);
+				$arrOptions = $this->$callback[0]->$callback[1]($arrOptions, $this);
+			}
+		}
         
         return $arrOptions;
 	}
@@ -901,7 +911,7 @@ class IsotopeProduct extends Controller
 		if (count($arrOptions))
 		{
 			$objVariant = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE pid=? AND published='1' AND language='' AND " . implode("=? AND ", array_keys($arrOptions)) . "=?")->execute(array_merge(array($this->id), $arrOptions));
-							
+			
 			// Must match 1 variant, must not match multiple
 			if ($objVariant->numRows == 1)
 			{
@@ -922,7 +932,7 @@ class IsotopeProduct extends Controller
 							if(count($arrReturn))
 							{
 								$this->arrData['original_price'] = $this->arrData[$attribute];
-								$this->arrData[$attribute] = $arrReturn[0];
+								$this->arrData['price'] = $arrReturn[0];
 								$this->arrData['rules_applied'] = $arrReturn[1];
 							}
 							else
@@ -930,6 +940,7 @@ class IsotopeProduct extends Controller
 								$this->arrData[$attribute] = $objVariant->$attribute;
 							}
 							break;
+							
 						default:
 							$this->arrData[$attribute] = $objVariant->$attribute;
 							break;

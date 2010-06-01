@@ -370,9 +370,7 @@ class IsotopeCart extends Model
 						// Do not use the TYPOlight function deserialize() cause it handles arrays not objects
 						$objOldProduct = unserialize($objOldItems->product_data);
 						$objNewProduct = unserialize($objNewItems->product_data);
-						
-						
-												
+
 						if ($objOldProduct == $objNewProduct)
 						{
 							$this->Database->prepare("UPDATE tl_cart_items SET quantity_requested=(quantity_requested+" . $objOldItems->quantity_requested . ") WHERE product_id=? AND pid=?")
@@ -387,8 +385,7 @@ class IsotopeCart extends Model
 					}
 				}
 			}
-			
-						
+
 			// Delete cookie
 			$this->setCookie($this->strCookie, '', (time() - 3600), $GLOBALS['TL_CONFIG']['websitePath']);
 			
@@ -449,11 +446,7 @@ class IsotopeCart extends Model
 	
 			while( $objProducts->next() )
 			{
-				// Do not use the TYPOlight function deserialize() cause it handles arrays not objects
-				//$objProduct = unserialize($objProducts->product_data);
-				$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS type_class FROM tl_iso_products WHERE id=?")
-										 ->limit(1)
-										 ->executeUncached($objProducts->product_id);
+				$objProductData = $this->Database->execute("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS type_class FROM tl_iso_products WHERE id=".$objProducts->product_id);
 									 
 				$strClass = $GLOBALS['ISO_PRODUCT'][$objProductData->type_class]['class'];
 																			
@@ -465,7 +458,9 @@ class IsotopeCart extends Model
 			
 				if($objProduct->price==0)
 					$objProduct->price = $objProducts->price;
-				$objProduct->options = deserialize($objProducts->product_options);
+					
+				$objProduct->setOptions(deserialize($objProducts->product_options));
+				
 				$this->arrProducts[] = $objProduct;
 			}
 		}
@@ -491,8 +486,7 @@ class IsotopeCart extends Model
 	//!@todo fetch data of custom fields
 	//!@todo $objModule is always defined, rework to use it and make sure the module config field is in palettes
 	public function addProduct($objProduct, $objModule=null)
-	{				
-		
+	{
 		$arrSet = array
 		(
 			'pid'					=> $this->id,
@@ -503,7 +497,7 @@ class IsotopeCart extends Model
 			'href_reader'			=> $objProduct->href_reader,
 			'product_id'			=> $objProduct->id,
 			'product_data'			=> serialize($objProduct),
-			'product_options'		=> $objProduct->getOptions(),
+			'product_options'		=> $objProduct->getOptions(true),
 			'rules_applied'			=> (is_array($objProduct->rules_applied) ? serialize($objProduct->rules_applied) : '')
 		);
 
