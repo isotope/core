@@ -525,6 +525,8 @@ CREATE TABLE `tl_iso_orders` (
   
   `config_id` int(10) unsigned NOT NULL default '0',
   `cart_id` int(10) unsigned NOT NULL default '0',
+  `payment_id` int(10) unsigned NOT NULL default '0',
+  `shipping_id` int(10) unsigned NOT NULL default '0',
   `source_cart_id` int(10) unsigned NOT NULL default '0',
   `language` varchar(2) NOT NULL default '',
   `shipping_address` blob NULL,
@@ -569,6 +571,8 @@ CREATE TABLE `tl_iso_order_items` (
   `product_data` blob NULL,
   `product_status` varchar(255) NOT NULL default '',
   `status` varchar(255) NOT NULL default '',
+  `product_options` blob NULL,
+  `rules_applied` blob NULL,
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
