@@ -760,8 +760,8 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			'uniqid'				=> $strUniqueId,
 			'config_id'				=> $this->Isotope->Config->id,
 			'cart_id'				=> $this->Cart->id,
-			//'source_cart_id'		=> $this->Cart->id,
-			
+			'shipping_id'			=> ($this->Cart->hasShipping ? $this->Cart->Shipping->id : 0),
+			'payment_id'			=> ($this->Cart->hasPayment ? $this->Cart->Payment->id : 0),
 			'subTotal'				=> $this->Cart->subTotal,		// + ($this->Input->post('gift_wrap') ? 10 : 0),		
 			'taxTotal'	 			=> $this->Cart->taxTotal,
 			'shippingTotal'			=> $this->Cart->shippingTotal,
@@ -770,6 +770,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			'checkout_info'			=> $this->getCheckoutInfo(),
 			
 			'status'				=> ($blnCheckout ? $this->Cart->Payment->new_order_status : ''),
+			
 			'language'				=> $GLOBALS['TL_LANGUAGE'],
 			'billing_address'		=> serialize($this->Cart->billingAddress),
 			'shipping_address'		=> serialize($this->Cart->shippingAddress),
