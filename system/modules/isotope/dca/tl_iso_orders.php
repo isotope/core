@@ -95,6 +95,18 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 				'href'                => 'act=show',
 				'icon'                => 'show.gif'
 			),
+			'payment' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_orders']['payment'],
+				'href'                => 'key=payment',
+				'icon'                => 'system/modules/isotope/html/icon-payment.png',
+			),
+			'shipping' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_orders']['shipping'],
+				'href'                => 'key=shipping',
+				'icon'                => 'system/modules/isotope/html/icon-shipping.gif',
+			),
 			'print_order' => array
 			(
 				'label'			=> &$GLOBALS['TL_LANG']['tl_iso_orders']['print_order'],
@@ -256,11 +268,11 @@ class tl_iso_orders extends Backend
 	/**
 	 * Return a string of more buttons for the orders module.
 	 * 
-	 * @todo Collect additional buttons from shipping modules.
 	 * @access public
 	 * @param array $arrRow
 	 * @return string
 	 */
+	//!@todo I don't think we need that...
 	public function moduleOperations($arrRow)
 	{
 		foreach($GLOBALS['ISO_ORDERS']['operations'] as $k=>$v)
@@ -434,6 +446,40 @@ class tl_iso_orders extends Backend
 
 		echo $output;
 		exit;
+	}
+	
+	
+	public function paymentInterface($dc)
+	{
+		$objPayment = $this->Database->execute("SELECT p.* FROM tl_iso_payment_modules p, tl_iso_orders o WHERE p.id=o.payment_id AND o.id=".$dc->id);
+		
+		$strClass = $GLOBALS['ISO_PAY'][$objPayment->type];
+		
+		if (!$objPayment->numRows || !strlen($strClass) || !$this->classFileExists($strClass))
+		{
+			return '<p class="tl_gerror">'.$GLOBALS['TL_LANG']['ISO']['backendPaymentNotFound'].'</p>';
+		}
+		
+		$objModule = new $strClass($objPayment->row());
+		
+		return $objModule->backendInterface($dc->id);
+	}
+	
+	
+	public function shippingInterface($dc)
+	{
+		$objShipping = $this->Database->execute("SELECT p.* FROM tl_iso_shipping_modules p, tl_iso_orders o WHERE p.id=o.shipping_id AND o.id=".$dc->id);
+		
+		$strClass = $GLOBALS['ISO_SHIP'][$objShipping->type];
+		
+		if (!$objShipping->numRows || !strlen($strClass) || !$this->classFileExists($strClass))
+		{
+			return '<p class="tl_gerror">'.$GLOBALS['TL_LANG']['ISO']['backendShippingNotFound'].'</p>';
+		}
+		
+		$objModule = new $strClass($objShipping->row());
+		
+		return $objModule->backendInterface($dc->id);
 	}
 }
 

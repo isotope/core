@@ -171,6 +171,32 @@ abstract class IsotopeShipping extends Frontend
 	
 	
 	/**
+	 * Return information or advanced features in the backend.
+	 *
+	 * Use this function to present advanced features or basic shipping information for an order in the backend.
+	 *
+	 * @access public
+	 * @param  int		Order ID
+	 * @return string
+	 */
+	public function backendInterface($orderId)
+	{
+		return '
+<div id="tl_buttons">
+<a href="'.ampersand(str_replace('&key=shipping', '', $this->Environment->request)).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
+</div>
+
+<h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['TL_LANG']['SHIP'][$this->type][0] . ')' . '</h2>
+
+<div class="tl_formbody_edit">
+<div class="tl_tbox block">
+<p class="tl_info">' . $GLOBALS['TL_LANG']['ISO']['backendShippingNoInfo'] . '</p>
+</div>
+</div>';
+	}
+	
+	
+	/**
 	 * Process post-sale requests. Does nothing by default.
 	 *
 	 * This function can be called from the postsale.php file when the shipping server is requestion/posting a status change.
