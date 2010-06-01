@@ -845,9 +845,23 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			}
 			
 			$this->log('New order ID ' . $orderId . ' has been placed', 'ModuleIsotopeCheckout writeOrder()', TL_ACCESS);
+			
 			$salesEmail = $this->iso_sales_email ? $this->iso_sales_email : $GLOBALS['TL_ADMIN_EMAIL'];
-			$this->Isotope->sendMail($this->iso_mail_admin, $salesEmail, $GLOBALS['TL_LANGUAGE'], $arrData);
-			$this->Isotope->sendMail($this->iso_mail_customer, $this->Cart->billingAddress['email'], $GLOBALS['TL_LANGUAGE'], $arrData);
+			$customerMail = strlen($this->Cart->billingAddress['email']) ? $this->Cart->billingAddress['email'] : (strlen($this->Cart->shippingAddress['email']) ? $this->Cart->shippingAddress['email'] : (FE_USER_LOGGED_IN ? $this->User->email : ''));
+			
+			if ($this->iso_mail_admin && strlen($salesEmail))
+			{
+				$this->Isotope->sendMail($this->iso_mail_admin, $salesEmail, $GLOBALS['TL_LANGUAGE'], $arrData);
+			}
+			
+			if ($this->iso_mail_customer && strlen($customerMail))
+			{
+				$this->Isotope->sendMail($this->iso_mail_customer, $customerMail, $GLOBALS['TL_LANGUAGE'], $arrData);
+			}
+			else
+			{
+				$this->log('Unable to send customer confirmation for order ID '.$orderId, 'ModuleIsotopeCheckout writeOrder', TL_ERROR);
+			}
 			
 			$this->copyCartItems($orderId);
 			

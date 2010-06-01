@@ -4,6 +4,7 @@ Isotope eCommerce Changelog
 
 Version 0.1.1 stable (2010-??-??)
 ------------------------------
+- Customer email is now sent to member email if no email in address book
 - Fixed: Countries and shipping methods for payment modules are no longer mandatory
 - Fixed: Subdivisions for shipping modules should now work correctly
 - Fixed: Tax was not applied to flat price shipping
