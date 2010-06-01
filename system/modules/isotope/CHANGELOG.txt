@@ -1,0 +1,16 @@
+===========================
+Isotope eCommerce Changelog
+===========================
+
+Version 0.1.1 stable (2010-??-??)
+------------------------------
+- Fixed: Countries and shipping methods for payment modules are no longer mandatory
+- Fixed: Subdivisions for shipping modules should now work correctly
+- Fixed: Tax was not applied to flat price shipping
+- Fixed bug where the latest order did not appear in order history.
+- Fixed old image size message (Ticket #119)
+- Fixed a bug with minimum/maximum order total calculation.
+
+Version 0.1.0 stable (2010-05-23)
+------------------------------
+- Initial stable release

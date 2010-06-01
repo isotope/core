@@ -235,16 +235,15 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['countries'],
 			'exclude'                 => true,
 			'inputType'               => 'select',
-			'default'                 => array_keys($this->getCountries()),
 			'options'                 => $this->getCountries(),
-			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'size'=>8, 'tl_class'=>'clr'),
+			'eval'                    => array('multiple'=>true, 'size'=>8, 'tl_class'=>'clr'),
 		),
 		'shipping_modules' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['shipping_modules'],
 			'exclude'                 => true,
 			'inputType'               => 'select',
-			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'size'=>8, 'tl_class'=>'clr'),
+			'eval'                    => array('multiple'=>true, 'size'=>8, 'tl_class'=>'clr'),
 		),
 		'product_types' => array
 		(
