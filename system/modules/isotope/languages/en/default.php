@@ -248,6 +248,8 @@ $GLOBALS['TL_LANG']['PAY']['paypalpro']			= array('PayPal Website Payments Pro',
 $GLOBALS['TL_LANG']['PAY']['paypalpayflowpro']	= array('PayPal Payflow Pro', 'The PayPal Payflow module is a full service credit card gateway, a more robust solution for most e-commerce sites.');
 $GLOBALS['TL_LANG']['PAY']['postfinance']		= array('Postfinance', 'Payment gateway for the swiss post payment system that supports various card types. The store will be instantly notified about successfull transactions.');
 $GLOBALS['TL_LANG']['PAY']['authorizedotnet']	= array('Authorize.net', 'An Authorize.net payment gateway.');
+$GLOBALS['TL_LANG']['PAY']['epay_standard']		= array('ePay Standard Payment Window', 'See <a href="http://www.epay.eu/"'.LINK_NEW_WINDOW.'">www.epay.eu</a> for more information about ePay.');
+
 
 
 /**

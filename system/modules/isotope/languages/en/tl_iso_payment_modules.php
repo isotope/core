@@ -33,7 +33,7 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['type']					= array('Type of Payme
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['name']					= array('Payment Method Name', 'Enter a name for this payment method. This will only be used in the backend.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['label']					= array('Payment Method Label', 'The label will be shown to customers on checkout.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['note']					= array('Payment Note', 'This note can be sent in confirmation mails (##payment_note##).');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['price']				= array('Price', '');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['price']					= array('Price', '');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['tax_class']				= array('Tax Class', '');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['new_order_status']		= array('Status for new orders', 'Choose a matching status for new orders.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['postsale_mail']			= array('Email Template for status changes', 'Select an email template to notify store administrator on payment status changes.');
@@ -48,11 +48,13 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['paypalpro_apiUserName']  = array(
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['paypalpro_apiPassword']  = array('Paypal Website Payments Pro password','An alphanumeric string similar in format to this: QFZCWN5HZM8VBG7Q');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['paypalpro_apiSignature'] = array('Paypal Website Payments Pro api signature','An alphanumeric string similar in format to this: A-IzJhZZjhg29XQ2qnhapuwxIDzyAZQ92FRP5dqBzVesOkzbdUONzmOU');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['paypalpro_transType']	= array('Paypal Website Payments Pro transaction type','Please select a transaction type.');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_user']  = array('Paypal Payflow Pro username','');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_vendor']  = array('Paypal Payflow Pro vendor','An alphanumeric string of about 10 characters.');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_partner']  = array('Paypal Payflow Pro partner','Case-sensitive!  Usual partner Ids are either "PayPal" or "PayPalUK".');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_password'] = array('Paypal Payflow Pro api password','An alphanumeric string of about 11 characters');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_user']		= array('Paypal Payflow Pro username','');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_vendor']		= array('Paypal Payflow Pro vendor','An alphanumeric string of about 10 characters.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_partner']		= array('Paypal Payflow Pro partner','Case-sensitive!  Usual partner Ids are either "PayPal" or "PayPalUK".');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_password']	= array('Paypal Payflow Pro api password','An alphanumeric string of about 11 characters');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_transType']	= array('Paypal Payflow Pro transaction type','Please select a transaction type.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['epay_merchantnumber']	= array('Merchant number', 'The unique merchant number created in ePay. This merchant number is to be found in your contract with PBS.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['epay_secretkey']			= array('Secret key', 'The secret key set up in your ePay configuration.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['button']					= array('Checkout button', 'You can show a custom checkout button instead of the default one.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['requireCCV'] 			= array('Require Card Code Verification (CCV) Number','Choose this option if you would like to increase transaction security by requiring the card code verification number.');
 
@@ -105,11 +107,7 @@ $GLOBALS['TL_LANG']['tl_payment_module']['paypalpro_transTypes']['V'] = 'Void';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['type_legend']		= 'Name & Type';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['note_legend']		= 'Additional Notes';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['config_legend']		= 'General Configuration';
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['paypal_legend']		= 'PayPal IPN Configuration';
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['paypalpro_legend']	= 'PayPal Website Payments Pro Configuration';
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_legend']  = 'PayPal Payflow Pro Configuration';
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['postfinance_legend']	= 'Postfinance Configuration';
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['authorize_legend']	= 'Authorize.net Configuration';
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['gateway_legend']		= 'Payment Gateway Configuration';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['price_legend']		= 'Price';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['enabled_legend']		= 'Module Enabling Details';
 
@@ -117,9 +115,9 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['enabled_legend']		= 'Module Enabl
 /**
  * Buttons
  */
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['new']    = array('New payment method', 'Create a New payment method');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['edit']   = array('Edit payment method', 'Edit payment method ID %s');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['copy']   = array('Copy payment method', 'Copy payment method ID %s');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['delete'] = array('Delete payment method', 'Delete payment method ID %s');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['show']   = array('Payment Method Details', 'Show details of payment method ID %s');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['new']				= array('New payment method', 'Create a New payment method');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['edit']   			= array('Edit payment method', 'Edit payment method ID %s');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['copy']   			= array('Copy payment method', 'Copy payment method ID %s');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['delete'] 			= array('Delete payment method', 'Delete payment method ID %s');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['show']   			= array('Payment Method Details', 'Show details of payment method ID %s');
 
