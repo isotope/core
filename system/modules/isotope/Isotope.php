@@ -476,7 +476,7 @@ class Isotope extends Controller
 		
 		$arrCountries = $this->getCountries();
 		
-		$strFormat = $GLOBALS['TL_LANG']['ISO_ADR'][$arrAddress['country']];
+		$strFormat = $GLOBALS['ISO_ADR'][$arrAddress['country']];
 		$arrAddress['country'] = $arrCountries[$arrAddress['country']];
 	
 		$arrSearch = $arrReplace = array();
