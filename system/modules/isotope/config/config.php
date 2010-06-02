@@ -234,8 +234,7 @@ $GLOBALS['ISO_PRODUCT'] = array
 /** 
  * Order module additional operations
  */
-$GLOBALS['ISO_ORDERS']['operations']['authorizedotnet'] = 'IsotopePOS';
-$GLOBALS['ISO_ORDERS']['operations']['paypalpayflowpro'] = 'PayflowProPOS';
+//$GLOBALS['ISO_ORDERS']['operations']['modulekey'] = 'ModuleClass';
 
 
 /** 
