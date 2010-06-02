@@ -245,7 +245,9 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 	}
 	
 	public function backendInterface($intOrderId)
-	{				
+	{	
+		
+			
 		$objOrderInfo = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE id=?")
 										   ->limit(1)
 										   ->execute($intOrderId);
@@ -325,9 +327,9 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 						
 			$objTemplate->fields = $this->generateResponseString($arrResponses, $arrReponseLabels);
 			
-			$objTemplate->headline = $this->generateModuleHeadline($arrResponses['transaction-status']) . ' - ' . $this->strReason;
+			//$objTemplate->headline = $arrResponses['transaction-status'] . ' - ' . $this->strReason;
 			
-			$arrPaymentInfo['authorize_response'] = $arrResponses['transaction-status'];
+			$strResponse = '<p class="tl_info">' . $arrPaymentInfo['authorize_response'] . ' - ' . $arrResponses['transaction-status'] . '</p>';
 			
 			switch($arrResponses['transaction-status'])
 			{
@@ -336,20 +338,20 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 					$strPaymentInfo = serialize($arrPaymentInfo);
 					
 					$this->Database->prepare("UPDATE tl_iso_orders SET status='processing', payment_data=? WHERE id=?")
-								   ->execute($strPaymentInfo, $this->intOrderId);
+								   ->execute($strPaymentInfo, $intOrderId);
 					break;
 				default:
 					$arrPaymentInfo['authorize_reason'] = $arrResponses['reason'];
 					$strPaymentInfo = serialize($arrPaymentInfo);
 					
 					$this->Database->prepare("UPDATE tl_iso_orders SET status='on_hold', payment_data=? WHERE id=?")
-								   ->execute($strPaymentInfo, $this->intOrderId);					
+								   ->execute($strPaymentInfo, $intOrderId);					
 					break;
 			
 			}
 			
 			$objTemplate->isConfirmation = true;
-			
+	
 			//$objTemplate->showPrintLink = true;
 		}
 		
@@ -361,29 +363,28 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 		$objTemplate->formId = 'be_pos_terminal';
 	
 		$objTemplate->slabel = specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']);
-		$return = '<input type="hidden" name="FORM_SUBMIT" value="' . $objTemplate->formId . '" />';
-		$return .= '<div id="tl_buttons">
-
-<a href="'.$this->getReferer(ENCODE_AMPERSANDS).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
+		
+		$return = '<div id="tl_buttons">
+<input type="hidden" name="FORM_SUBMIT" value="' . $objTemplate->formId . '" />
+<a href="'.ampersand(str_replace('&key=payment', '', $this->Environment->request)).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
 </div>
-';
-		$return .= '<h2 class="sub_headline">' . $GLOBALS['TL_LANG']['PAY']['authorizedotnet'][0] . (!$arrPaymentInfo['x_trans_id'] || $arrPaymentInfo['x_trans_id']=="0" ? ' - ' . 'Test Transaction' : '') . '</h2>';
-		$return .= '<div style="padding:10px;">';
-		$return .= $strOrderDetails;
-		$return .= '</div>';
- 
-		//<h2>Cart Contents:</h2><div style="border: solid 1px #cccccc; margin: 10px; padding: 10px;">' . $strProductList . '</div></div></div>';
+<h2 class="sub_headline">' . $GLOBALS['TL_LANG']['PAY']['authorizedotnet'][0] . (!$arrPaymentInfo['x_trans_id'] || $arrPaymentInfo['x_trans_id']=="0" ? ' - ' . 'Test Transaction' : '') . '</h2>
+<div class="tl_formbody_edit">
+<div class="tl_tbox block">';
+$return .= ($strResponse ? $strResponse : '');
+$return .= $strOrderDetails;
+$return .= '</div></div>';
 		if($arrOrderInfo['status']=='pending'){
-			//$return .= $objTemplate->fields;
 			$return .= '<div class="tl_formbody_submit"><div class="tl_submit_container">';
-			$return .= '<input type="submit" class="submit" value="' . $objTemplate->slabel . '" /></div></td>';
-			$return .= '</div></div>';
+			$return .= '<input type="submit" class="submit" value="' . $objTemplate->slabel . '" /></div></div>';
 		}
 					
 		$objTemplate->orderReview = $return;
 		$objTemplate->action = $action;
 		$objTemplate->rowLast = 'row_' . (count($this->editable) + 1) . ((($i % 2) == 0) ? ' odd' : ' even');
 						
+		
+		
 		return $objTemplate->parse();
 	}
 	
@@ -429,7 +430,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 							continue;
 						}
 						
-						$value = $this->addAlert($v); //. "<br /><a href=\"" . $this->session['infoPage'] . "\"><strong>Click here to review and correct your order</strong></a>";
+						//$value = $this->addAlert($v); //. "<br /><a href=\"" . $this->session['infoPage'] . "\"><strong>Click here to review and correct your order</strong></a>";
 						$this->strReason = $value;
 					case 'grand-total':
 						$value = $v;
