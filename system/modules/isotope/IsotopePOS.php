@@ -67,160 +67,13 @@ class IsotopePOS extends Backend
 		if ($this->User->isAdmin)
 		{
 			$strOperations = '&nbsp;<a href="'.$this->Environment->request.'&amp;key=authorize_process_payment&amp;id=' . $intId . '" title="'.specialchars($GLOBALS['TL_LANG']['tl_iso_orders']['authorize_process_payment'][0]).'"'.$attributes.'><img src="system/modules/isotope/html/money.png" border="0" alt="' . specialchars($GLOBALS['TL_LANG']['tl_iso_orders']['authorize_process_payment'][0]) . '" /></a>';
-		} 
-			
-		$strOperations .= '&nbsp;<a href="'.$this->Environment->request.'&amp;key=print_order&amp;id=' . $intId . '" title="'.specialchars($GLOBALS['TL_LANG']['tl_iso_orders']['print_order'][0]).'"'.$attributes.'><img src="system/modules/isotope/html/printer.png" border="0" alt="'.specialchars($GLOBALS['TL_LANG']['tl_iso_orders']['print_order'][0]).'" /></a>';
+		}	
+		//$strOperations .= '&nbsp;<a href="'.$this->Environment->request.'&amp;key=print_order&amp;id=' . $intId . '" title="'.specialchars($GLOBALS['TL_LANG']['tl_iso_orders']['print_order'][0]).'"'.$attributes.'><img src="system/modules/isotope/html/printer.png" border="0" alt="'.specialchars($GLOBALS['TL_LANG']['tl_iso_orders']['print_order'][0]).'" /></a>';
 		
 		return $strOperations;
 
 	}
-	
-	public function getPOSInterface(DataContainer $objDc)
-	{			
-		$this->intOrderId = $objDc->id;
-		
-		$objOrderInfo = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE id=?")
-										   ->limit(1)
-										   ->execute($objDc->id);
-				
-		$arrOrderInfo = $objOrderInfo->fetchAssoc();
-		
-		
-		$this->Input->setGet('uid', $arrOrderInfo['uniqid']);
-		$objModule = new ModuleIsotopeOrderDetails($this->Database->execute("SELECT * FROM tl_module WHERE type='iso_orderdetails'"));
-		
-		$strOrderDetails = $objModule->generate(true);
-		
-							
-		$arrPaymentInfo = deserialize($arrOrderInfo['payment_data']);
-		
-		$this->fltOrderTotal = $arrOrderInfo['grandTotal'];
-		
-		
-		//Get the authorize.net configuration data			
-		$objAIMConfig = $this->Database->prepare("SELECT * FROM tl_iso_payment_modules WHERE type=?")
-														->execute('authorizedotnet');
-		if($objAIMConfig->numRows < 1)
-		{
-			return '<i>' . $GLOBALS['TL_LANG']['MSC']['noPaymentModules'] . '</i>';
-		}
 			
-		//Code specific to Authorize.net!
-		$objTemplate = new BackendTemplate('be_pos_terminal');
-									
-		if($objAIMConfig->numRows > 0)
-		{
-			
-			$delimResponse = "TRUE";
-			$delimChar = $objAIMConfig->authorize_delimiter;
-			$loginID = $objAIMConfig->authorize_login;
-			$transKey = $objAIMConfig->authorize_trans_key;
-			$transType = 'PRIOR_AUTH_CAPTURE'; //$objAIMConfig->authorize_trans_type;
-			$status = ($objAIMConfig->debug ? "TRUE" : "FALSE");
-			$strMode = ($objAIMConfig->debug ? "test" : "secure");
-		}
-
-
-		if ($this->Input->post('FORM_SUBMIT') == 'be_pos_terminal' && $arrPaymentInfo['x_trans_id']!=="0")
-		{
-			
-				
-			$authnet_values = array
-			(
-				"x_version"							=> '3.1',
-				"x_login"							=> $loginID,
-				"x_tran_key"						=> $transKey,
-				"x_type"							=> $transType,
-				"x_trans_id"						=> $arrPaymentInfo['x_trans_id'],
-				"x_amount"							=> number_format($this->fltOrderTotal, 2),
-				"x_delim_data"						=> 'TRUE',
-				"x_delim_char"						=> ',',
-				"x_encap_char"						=> '"',
-				"x_relay_response"					=> 'FALSE'
-			
-			);
-			
-						
-			foreach( $authnet_values as $key => $value ) $fields .= "$key=" . urlencode( $value ) . "&";
-
-			$fieldsFinal = rtrim($fields, '&');
-						
-			$objRequest = new Request();
-			
-			$objRequest->send('https://secure.authorize.net/gateway/transact.dll', $fieldsFinal, 'post');
-		
-			$arrResponses = $this->handleResponse($objRequest->response);
-								
-			foreach(array_keys($arrResponses) as $key)
-			{
-				$arrReponseLabels[strtolower(standardize($key))] = $key;
-			}
-						
-			$objTemplate->fields = $this->generateResponseString($arrResponses, $arrReponseLabels);
-			
-			$objTemplate->headline = $this->generateModuleHeadline($arrResponses['transaction-status']) . ' - ' . $this->strReason;
-			
-			$arrPaymentInfo['authorize_response'] = $arrResponses['transaction-status'];
-			
-			switch($arrResponses['transaction-status'])
-			{
-				case 'Approved':		
-					$arrPaymentInfo['authorization_code'] = $arrResponses['authorization-code'];			
-					$strPaymentInfo = serialize($arrPaymentInfo);
-					
-					$this->Database->prepare("UPDATE tl_iso_orders SET status='processing', payment_data=? WHERE id=?")
-								   ->execute($strPaymentInfo, $this->intOrderId);
-					break;
-				default:
-					$arrPaymentInfo['authorize_reason'] = $arrResponses['reason'];
-					$strPaymentInfo = serialize($arrPaymentInfo);
-					
-					$this->Database->prepare("UPDATE tl_iso_orders SET status='on_hold', payment_data=? WHERE id=?")
-								   ->execute($strPaymentInfo, $this->intOrderId);					
-					break;
-			
-			}
-			
-			$objTemplate->isConfirmation = true;
-			
-			//$objTemplate->showPrintLink = true;
-		}
-		
-			
-		$action = ampersand($this->Environment->request, ENCODE_AMPERSANDS);
-		
-		//$objTemplate->x_cust_id;
-		
-		$objTemplate->formId = 'be_pos_terminal';
-	
-		$objTemplate->slabel = specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']);
-		$return = '<input type="hidden" name="FORM_SUBMIT" value="' . $objTemplate->formId . '" />';
-		$return .= '<div id="tl_buttons">
-
-<a href="'.$this->getReferer(ENCODE_AMPERSANDS).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
-</div>
-';
-		$return .= '<h2 class="sub_headline">' . $GLOBALS['TL_LANG']['PAY']['authorizedotnet'][0] . (!$arrPaymentInfo['x_trans_id'] || $arrPaymentInfo['x_trans_id']=="0" ? ' - ' . 'Test Transaction' : '') . '</h2>';
-		$return .= '<div style="padding:10px;">';
-		$return .= $strOrderDetails;
-		$return .= '</div>';
- 
-		//<h2>Cart Contents:</h2><div style="border: solid 1px #cccccc; margin: 10px; padding: 10px;">' . $strProductList . '</div></div></div>';
-		if($arrOrderInfo['status']=='pending'){
-			//$return .= $objTemplate->fields;
-			$return .= '<div class="tl_formbody_submit"><div class="tl_submit_container">';
-			$return .= '<input type="submit" class="submit" value="' . $objTemplate->slabel . '" /></div></td>';
-			$return .= '</div></div>';
-		}
-					
-		$objTemplate->orderReview = $return;
-		$objTemplate->action = $action;
-		$objTemplate->rowLast = 'row_' . (count($this->editable) + 1) . ((($i % 2) == 0) ? ' odd' : ' even');
-						
-		return $objTemplate->parse();
-	
-	}
-	
 	public function cleanCreditCardData($varCCNum, $intOrderId)
 	{
 		
@@ -366,13 +219,24 @@ class IsotopePOS extends Backend
 		
 		$arrAllDownloads = array();
 		$arrItems = array();
-		$objItems = $this->Database->prepare("SELECT p.*, o.*, t.downloads AS downloads_allowed, (SELECT COUNT(*) FROM tl_iso_order_downloads d WHERE d.pid=o.id) AS has_downloads FROM tl_iso_order_items o LEFT OUTER JOIN tl_iso_products p ON o.product_id=p.id LEFT OUTER JOIN tl_iso_producttypes t ON p.type=t.id WHERE o.pid=?")->execute($objOrderData->id);
+		$objItems = $this->Database->prepare("SELECT p.*, o.*, t.downloads AS downloads_allowed, t.class AS type_class, (SELECT COUNT(*) FROM tl_iso_order_downloads d WHERE d.pid=o.id) AS has_downloads FROM tl_iso_order_items o LEFT OUTER JOIN tl_iso_products p ON o.product_id=p.id LEFT OUTER JOIN tl_iso_producttypes t ON p.type=t.id WHERE o.pid=?")->execute($objOrderData->id);
 		
 		
 		while( $objItems->next() )
 		{
 			// Do not use the TYPOlight function deserialize() cause it handles arrays not objects
-			$objProduct = unserialize($objItems->product_data);
+			$strClass = $GLOBALS['ISO_PRODUCT'][$objItems->type_class]['class'];
+																			
+			$objProduct = new $strClass($objItems->row());
+							
+			$objProduct->quantity_requested = $objItems->quantity_sold;
+			$objProduct->cart_id = $objItems->id;
+			$objProduct->getOptions(true);
+			//$objProduct->reader_jumpTo_Override = $objProducts->href_reader;			
+		
+			if($objProduct->price==0)
+				$objProduct->price = $objItems->price;
+			
 			
 			if (!is_object($objProduct))
 				continue;
@@ -412,7 +276,7 @@ class IsotopePOS extends Backend
 			$arrItems[] = array
 			(
 				'raw'				=> $objItems->row(),
-				'product_options' 	=> $objProduct->getOptions(),
+				'product_options' 	=> deserialize($objItems->product_options),
 				'downloads'			=> (is_array($arrDownloads) ? $arrDownloads : array()),
 				'name'				=> $objProduct->name,
 				'quantity'			=> $objItems->quantity_sold,
@@ -485,7 +349,17 @@ class IsotopePOS extends Backend
 		while( $objItems->next() )
 		{
 			// Do not use the TYPOlight function deserialize() cause it handles arrays not objects
-			$objProduct = unserialize($objItems->product_data);
+			$strClass = $GLOBALS['ISO_PRODUCT'][$objItems->type_class]['class'];
+																			
+			$objProduct = new $strClass($objItems->row());
+							
+			$objProduct->quantity_requested = $objItems->quantity_sold;
+			$objProduct->cart_id = $objItems->id;
+			//$objProduct->reader_jumpTo_Override = $objProducts->href_reader;			
+		
+			if($objProduct->price==0)
+				$objProduct->price = $objItems->price;
+			$objProduct->options = deserialize($objItems->product_options);
 			
 			if (!is_object($objProduct))
 				continue;

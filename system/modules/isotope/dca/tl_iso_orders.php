@@ -262,9 +262,7 @@ class tl_iso_orders extends Backend
 		return serialize($arrSurchargePrices);
 	}
 	
-	
-	
-	
+		
 	/**
 	 * Return a string of more buttons for the orders module.
 	 * 
@@ -275,25 +273,16 @@ class tl_iso_orders extends Backend
 	//!@todo I don't think we need that...
 	public function moduleOperations($arrRow)
 	{
+		
 		foreach($GLOBALS['ISO_ORDERS']['operations'] as $k=>$v)
 		{
-			$objPaymentMethod = $this->Database->prepare("SELECT checkout_info FROM tl_iso_orders WHERE id=?")
-											   ->limit(1)
-											   ->execute($arrRow['id']);
-											   
-			if(!$objPaymentMethod->numRows)
-			{
-				return '';
-			}
 			
-			$arrCheckoutData = deserialize($objPaymentMethod->checkout_data);
 			
 			$objPaymentType = $this->Database->prepare("SELECT type FROM tl_iso_payment_modules WHERE id=?")
 											 ->limit(1)
-											 ->execute($arrCheckoutData['payment_method_id']);
-						
-			
-			if($objPaymentType->numRows && $objPaymentType['type']==$k)
+											 ->execute($arrRow['payment_id']);
+		
+			if($objPaymentType->numRows && $objPaymentType->type==$k)
 			{				
 					$strClass = $v;
 	

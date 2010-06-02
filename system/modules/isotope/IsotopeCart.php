@@ -229,7 +229,9 @@ class IsotopeCart extends Model
 					}
 								
 					if (FE_USER_LOGGED_IN)
-					{					
+					{	
+						$this->import('FrontendUser','User');		
+						
 						$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE pid=? AND isDefaultBilling='1'")->limit(1)->execute($this->User->id);
 
 						if ($objAddress->numRows)
@@ -318,7 +320,7 @@ class IsotopeCart extends Model
 	 */
 	//!@todo why do we need config_id in tl_cart?
 	public function initializeCart()
-	{
+	{								
 		$this->strHash = $this->Input->cookie($this->strCookie);
 		
 		//  Check to see if the user is logged in.
