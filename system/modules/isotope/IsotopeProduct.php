@@ -672,7 +672,7 @@ class IsotopeProduct extends Controller
 				break;
 		}
 		
-		return '<div id="' . $attribute . '_' . $this->id . '" class="' . $attribute . '">' . $strBuffer . '</div>';
+		return '<span id="' . $attribute . '_' . $this->id . '" class="' . $attribute . '">' . $strBuffer . '</span>';
 	}
 	
 	
