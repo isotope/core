@@ -29,7 +29,7 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_iso_mail']['name']			= array('Name', 'Please enter a name fro the email. Used as a reference in the system.');
+$GLOBALS['TL_LANG']['tl_iso_mail']['name']			= array('Name', 'Please enter a name for the email. Used as a reference in the system.');
 $GLOBALS['TL_LANG']['tl_iso_mail']['senderName']	= array('Sender Name', 'Enter the name of the sender.');
 $GLOBALS['TL_LANG']['tl_iso_mail']['sender']		= array('Sender Email', 'Enter the e-mail address of the sender. The recipient will reply to this address.');
 $GLOBALS['TL_LANG']['tl_iso_mail']['cc']			= array('Send a CC to', 'Recipients that should receive a carbon copy of the mail. Separate multiple addresses with a comma.');
