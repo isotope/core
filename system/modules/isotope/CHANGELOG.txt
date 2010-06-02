@@ -23,6 +23,7 @@ Version 0.1.1 stable (2010-??-??)
 - Fixed: Bug with minimum/maximum order total calculation.
 - Fixed: Disabled deprecated product storage in checkout module - now copies only product options to order items table.
 - Fixed: Null object bug in IsotopeCart
+- Fixed wrong template name for config switcher module
 
 Version 0.1.0 stable (2010-05-23)
 ------------------------------
