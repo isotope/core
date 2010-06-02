@@ -136,22 +136,22 @@ class ShippingUSPS extends IsotopeShipping
 
 				/*$arrOrigin = array
 				(
-					'name'			=> $this->Isotope->Store->firstname . ' ' . $this->Isotope->Store->lastname,
-					'phone'			=> $this->Isotope->Store->phone,
-					'company'		=> $this->Isotope->Store->company,
-					'street'		=> $this->Isotope->Store->street_1,
-					'street2'		=> $this->Isotope->Store->street_2,
-					'street3'		=> $this->Isotope->Store->street_3,
-					'city'			=> $this->Isotope->Store->city,
-					'state'			=> $this->Isotope->Store->state,
-					'zip'			=> $this->Isotope->Store->postal,
-					'country'		=> $this->Isotope->Store->country
+					'name'			=> $this->Isotope->Config->firstname . ' ' . $this->Isotope->Config->lastname,
+					'phone'			=> $this->Isotope->Config->phone,
+					'company'		=> $this->Isotope->Config->company,
+					'street'		=> $this->Isotope->Config->street_1,
+					'street2'		=> $this->Isotope->Config->street_2,
+					'street3'		=> $this->Isotope->Config->street_3,
+					'city'			=> $this->Isotope->Config->city,
+					'state'			=> $this->Isotope->Config->state,
+					'zip'			=> $this->Isotope->Config->postal,
+					'country'		=> $this->Isotope->Config->country
 				);*/
 				
 				$arrCountries = $this->getCountries();
 				$destCountryText = $arrCountries[$this->Cart->shippingAddress['country']];
 			
-				$this->strOriginZip = $this->Isotope->Store->postal;
+				$this->strOriginZip = $this->Isotope->Config->postal;
 				$this->strDestinationZip = $this->Cart->shippingAddress['postal'];
 				$this->strDestinationCountry = $this->Cart->shippingAddress['country'];
 				$this->strDestinationCountryText = ($this->Cart->shippingAddress['country']=='uk') ? 'Great Britain' : $destCountryText;
