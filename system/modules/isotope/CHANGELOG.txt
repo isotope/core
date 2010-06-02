@@ -13,6 +13,7 @@ Version 0.1.1 stable (2010-??-??)
 - Fixed: Checkout condition form did show invisible fields
 - Fixed old image size message (Ticket #119)
 - Fixed a bug with minimum/maximum order total calculation.
+- Fixed wrong template name for config switcher module
 
 Version 0.1.0 stable (2010-05-23)
 ------------------------------
