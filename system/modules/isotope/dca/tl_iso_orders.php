@@ -273,6 +273,10 @@ class tl_iso_orders extends Backend
 	//!@todo I don't think we need that...
 	public function moduleOperations($arrRow)
 	{
+		if(!count($GLOBALS['ISO_ORDERS']['operations']))
+		{
+			return;
+		}
 		
 		foreach($GLOBALS['ISO_ORDERS']['operations'] as $k=>$v)
 		{

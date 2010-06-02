@@ -58,22 +58,7 @@ class IsotopePOS extends Backend
 		$this->import('Isotope');
 	
 	}
-	
-	public function moduleOperations($intId)
-	{
-		
-		$this->import('BackendUser', 'User');
-	
-		if ($this->User->isAdmin)
-		{
-			$strOperations = '&nbsp;<a href="'.$this->Environment->request.'&amp;key=authorize_process_payment&amp;id=' . $intId . '" title="'.specialchars($GLOBALS['TL_LANG']['tl_iso_orders']['authorize_process_payment'][0]).'"'.$attributes.'><img src="system/modules/isotope/html/money.png" border="0" alt="' . specialchars($GLOBALS['TL_LANG']['tl_iso_orders']['authorize_process_payment'][0]) . '" /></a>';
-		}	
-		//$strOperations .= '&nbsp;<a href="'.$this->Environment->request.'&amp;key=print_order&amp;id=' . $intId . '" title="'.specialchars($GLOBALS['TL_LANG']['tl_iso_orders']['print_order'][0]).'"'.$attributes.'><img src="system/modules/isotope/html/printer.png" border="0" alt="'.specialchars($GLOBALS['TL_LANG']['tl_iso_orders']['print_order'][0]).'" /></a>';
-		
-		return $strOperations;
-
-	}
-			
+					
 	public function cleanCreditCardData($varCCNum, $intOrderId)
 	{
 		
