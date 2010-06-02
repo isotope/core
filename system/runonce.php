@@ -52,7 +52,6 @@ class IsotopeRunonce extends Frontend
 		$this->renameTables();
 		$this->renameFields();
 		$this->updateAttributes();
-		$this->saveProductCategories();
 		$this->updateProductCategories();
 		$this->updateStoreConfigurations();
 		$this->updateOrders();
@@ -261,41 +260,6 @@ class IsotopeRunonce extends Frontend
 		}
 	}
 	
-	/**
-	 * Save page ids to tl_product_categories table. This allows to retrieve all products associated to a page.
-	 */
-	private function saveProductCategories()
-	{
-		$objProductCategories = $this->Database->prepare("SELECT id, pages FROM tl_product_data WHERE pid='0'")
-											   ->execute();
-		
-		if($objProductCategories->numRows)
-		{
-			while($objProductCategories->next())
-			{		
-				$arrIds = deserialize($objProductCategories->pages);
-													   
-				if (is_array($arrIds) && count($arrIds))
-				{
-					$time = time();
-					$this->Database->prepare("DELETE FROM tl_product_categories WHERE pid=? AND page_id NOT IN (" . implode(',', $arrIds) . ")")->execute($objProductCategories->id);
-					$objPages = $this->Database->prepare("SELECT page_id FROM tl_product_categories WHERE pid=?")->execute($objProductCategories->id);
-					$arrIds = array_diff($arrIds, $objPages->fetchEach('page_id'));
-					
-					foreach( $arrIds as $id )
-					{
-						$intSorting = $this->Database->prepare("SELECT sorting FROM tl_product_categories WHERE page_id=? ORDER BY sorting DESC")->limit(1)->execute($id)->sorting;
-						$intSorting += 128;
-						$this->Database->prepare("INSERT INTO tl_product_categories (pid,tstamp,page_id,sorting) VALUES (?,?,?,?)")->execute($objProductCategories->id, $time, $id, $intSorting);
-					}
-				}
-				else
-				{
-					$this->Database->prepare("DELETE FROM tl_product_categories WHERE pid=?")->execute($objProductCategories->id);
-				}
-			}
-		}
-	}
 	
 	private function updateProductCategories()
 	{
