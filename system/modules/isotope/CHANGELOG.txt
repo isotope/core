@@ -19,8 +19,10 @@ Version 0.1.1 stable (2010-??-??)
 - Fixed: Final price for paypal standard payment module did not include taxes
 - Fixed: Latest order did not appear in order history module
 - Fixed: Checkout condition form did show invisible fields
-- Fixed old image size message (Ticket #119)
-- Fixed a bug with minimum/maximum order total calculation.
+- Fixed: old image size message (Ticket #119)
+- Fixed: Bug with minimum/maximum order total calculation.
+- Fixed: Disabled deprecated product storage in checkout module - now copies only product options to order items table.
+- Fixed: Null object bug in IsotopeCart
 
 Version 0.1.0 stable (2010-05-23)
 ------------------------------

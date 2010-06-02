@@ -895,7 +895,8 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				'product_id'		=> $objProduct->id,
 				'quantity_sold'		=> $objProduct->quantity_requested,
 				'price'				=> $objProduct->price,
-				'product_data'		=> serialize($objProduct),
+				'product_options'	=> serialize($objProduct->getOptions(true)),
+				//'product_data'		=> serialize($objProduct),
 			);
 			
 			$itemId = $this->Database->prepare("INSERT INTO tl_iso_order_items %s")->set($arrSet)->execute()->insertId;

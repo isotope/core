@@ -62,15 +62,17 @@ $GLOBALS['TL_LANG']['tl_iso_orders']['opAddTax']				= 'Add Tax?';
 /**
  * Buttons
  */
-$GLOBALS['TL_LANG']['tl_iso_orders']['new']				= array('New Order', 'Create a New order');
-$GLOBALS['TL_LANG']['tl_iso_orders']['edit']			= array('Edit Order', 'Edit order ID %s');
-$GLOBALS['TL_LANG']['tl_iso_orders']['copy']			= array('Copy Order', 'Copy order ID %s');
-$GLOBALS['TL_LANG']['tl_iso_orders']['delete']			= array('Delete Order', 'Delete order ID %s');
-$GLOBALS['TL_LANG']['tl_iso_orders']['show']			= array('Order Details', 'Show details of order ID %s');
-$GLOBALS['TL_LANG']['tl_iso_orders']['edit_order']		= array('Edit Order', 'Edit order items, add or remove products.');
-$GLOBALS['TL_LANG']['tl_iso_orders']['print_order']		= array('Print this order', 'Print an invoice for the current order');
-$GLOBALS['TL_LANG']['tl_iso_orders']['export_emails']	= 'Export Order Emails';
+$GLOBALS['TL_LANG']['tl_iso_orders']['new']					= array('New Order', 'Create a New order');
+$GLOBALS['TL_LANG']['tl_iso_orders']['edit']				= array('Edit Order', 'Edit order ID %s');
+$GLOBALS['TL_LANG']['tl_iso_orders']['copy']				= array('Copy Order', 'Copy order ID %s');
+$GLOBALS['TL_LANG']['tl_iso_orders']['delete']				= array('Delete Order', 'Delete order ID %s');
+$GLOBALS['TL_LANG']['tl_iso_orders']['show']				= array('Order Details', 'Show details of order ID %s');
+$GLOBALS['TL_LANG']['tl_iso_orders']['edit_order']			= array('Edit Order', 'Edit order items, add or remove products.');
+$GLOBALS['TL_LANG']['tl_iso_orders']['edit_order_items']	= array('Edit Order Items', 'Edit items for order ID %s');
+$GLOBALS['TL_LANG']['tl_iso_orders']['print_order']			= array('Print this order', 'Print an invoice for the current order');
 $GLOBALS['TL_LANG']['tl_iso_orders']['authorize_process_payment'] = array('Authorizet.net Point-of-sale Terminal', 'Conduct a transaction using the Authorize.net point-of-sale terminal');
+
+$GLOBALS['TL_LANG']['tl_iso_orders']['export_emails']		= 'Export Order Emails';
 
 /** 
  * Legends
