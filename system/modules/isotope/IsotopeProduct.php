@@ -301,6 +301,7 @@ class IsotopeProduct extends Controller
 			case 'name':
 			case 'low_price':
 			case 'high_price':
+			case 'price':
 				$this->arrData[$strKey] = $varValue;
 				break;
 
