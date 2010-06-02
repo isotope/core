@@ -260,7 +260,6 @@ class IsotopeRunonce extends Frontend
 		}
 	}
 	
-	
 	private function updateProductCategories()
 	{
 		if ($this->Database->tableExists('tl_product_to_category'))
@@ -293,6 +292,7 @@ class IsotopeRunonce extends Frontend
 	
 	private function updateOrders()
 	{
+/*
 		if ($this->Database->fieldExists('product_options', 'tl_iso_order_items'))
 		{
 			$objItems = $this->Database->executeUncached("SELECT * FROM tl_iso_order_items");
@@ -317,6 +317,7 @@ class IsotopeRunonce extends Frontend
 				}
 			}
 		}
+*/
 		
 		if (!$this->Database->fieldExists('date_shipped', 'tl_iso_orders'))
 		{
