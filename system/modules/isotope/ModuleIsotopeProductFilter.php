@@ -98,7 +98,9 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 					
 				//Render as a select widget, for now.  Perhaps make flexible in the future.
 				/* Added by Blair */
-				$objWidget = $this->generateSelectWidget($field);
+				if(!$objWidget = $this->generateSelectWidget($field))
+					break;
+					
 				$arrAttributeData = $this->getProductAttributeData($field);
 				$arrFieldNames[] = $arrAttributeData['field_name'];
 				/* End added by Blair */
@@ -147,7 +149,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		$this->Template->perPage = $this->iso_enableLimit;
 		$this->Template->limit = $arrLimit;
 		$this->Template->filters = $arrFilters;
-		$this->Template->filterFields = implode(',',$arrFieldNames);
+		$this->Template->filterFields = (count($arrFieldNames) ? implode(',',$arrFieldNames) : array());
 		$this->Template->action = $this->Environment->request;
 		$this->Template->baseUrl = $arrCleanUrl[0];
 		$this->Template->orderBy = $arrOrderByOptions;
@@ -296,8 +298,13 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		
 		$arrOptionList = deserialize($arrAttributeData['option_list']);
 		
-		array_unshift($arrOptionList, array('value'=>'','label'=>'-'));
+		if(!is_array($arrOptionList) || !count($arrOptionList))
+		{
+			return false;
+		}		
 		
+		array_unshift($arrOptionList, array('value'=>'','label'=>'-'));
+	
 		$arrData = array
 		(
 			'label'			=> array($arrAttributeData['name'],$arrAttributeData['name']),
@@ -310,6 +317,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		$objWidget->options = $arrOptionList;
 	
 		return $objWidget;
+
 	}
 	
 	/**
