@@ -115,6 +115,11 @@ class IsotopeCart extends Model
 		
 		$this->import('Isotope');
 		
+		if (FE_USER_LOGGED_IN)
+		{
+			$this->import('FrontendUser', 'User');
+		}
+		
 		if (TL_MODE == 'FE')
 		{
 			$this->initializeCart();
@@ -230,8 +235,6 @@ class IsotopeCart extends Model
 								
 					if (FE_USER_LOGGED_IN)
 					{	
-						$this->import('FrontendUser','User');		
-						
 						$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE pid=? AND isDefaultBilling='1'")->limit(1)->execute($this->User->id);
 
 						if ($objAddress->numRows)
@@ -337,7 +340,6 @@ class IsotopeCart extends Model
 		}
 		else
 		{
-			$this->import('FrontendUser', 'User');
 	 		$this->findBy('pid', $this->User->id);
 		}
 				
