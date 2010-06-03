@@ -363,12 +363,12 @@ class IsotopeProduct extends Controller
 	 */
 	//!@todo I dislike the listing approach, we might find a better solution
 	public function getOptions($blnRaw=false)
-	{				
+	{
 		if ($blnRaw)
 		{
 			return $this->arrOptions;
 		}
-				
+		
 		$arrOptions = array();
 		
 		foreach( $this->arrOptions as $name => $value )
@@ -383,7 +383,7 @@ class IsotopeProduct extends Controller
 	/**
 	 * Set options data and validate variant
 	 */
-	public function setOptions($arrOptions)
+	public function setOptions(array $arrOptions)
 	{
 		$this->arrOptions = $arrOptions;
 		
