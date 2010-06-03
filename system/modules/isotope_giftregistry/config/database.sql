@@ -36,3 +36,15 @@ CREATE TABLE `tl_registry` (
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tl_cart_items`
+-- pid = cart id.
+--
+
+CREATE TABLE `tl_cart_items` (
+  `quantity_sold` int(10) unsigned NOT NULL default '0',
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
