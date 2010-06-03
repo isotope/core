@@ -220,6 +220,18 @@ class IsotopeRunonce extends Frontend
 			$this->Database->executeUncached("ALTER TABLE tl_page CHANGE COLUMN isotopeStoreConfig iso_config int(10) unsigned NOT NULL default '0'");
 		}
 		
+		// tl_cart_items.quantity_requested has been renamed to tl_cart_items.product_quantity
+		if ($this->Database->fieldExists('quantity_requested', 'tl_cart_items') && !$this->Database->fieldExists('product_quantity', 'tl_cart_items'))
+		{
+			$this->Database->executeUncached("ALTER TABLE tl_cart_items CHANGE COLUMN quantity_requested product_quantity int(10) unsigned NOT NULL default '0'");
+		}
+		
+		// tl_iso_order_items.quantity_sold has been renamed to tl_iso_order_items.product_quantity
+		if ($this->Database->fieldExists('quantity_sold', 'tl_iso_order_items') && !$this->Database->fieldExists('product_quantity', 'tl_iso_order_items'))
+		{
+			$this->Database->executeUncached("ALTER TABLE tl_iso_order_items CHANGE COLUMN quantity_sold product_quantity int(10) unsigned NOT NULL default '0'");
+		}
+		
 		// tl_iso_addresses.street has been renamed to tl_iso_addresses.street_1
 		if ($this->Database->fieldExists('street', 'tl_iso_addresses') && !$this->Database->fieldExists('street_1','tl_iso_addresses'))
 		{

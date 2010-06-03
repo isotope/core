@@ -147,9 +147,8 @@ class PaymentPostfinance extends IsotopePayment
 	public function checkoutForm()
 	{
 		$this->import('Isotope');
-		$this->import('IsotopeCart', 'Cart');
 		
-		$objOrder = $this->Database->prepare("SELECT order_id FROM tl_iso_orders WHERE cart_id=?")->execute($this->Cart->id);
+		$objOrder = $this->Database->prepare("SELECT order_id FROM tl_iso_orders WHERE cart_id=?")->execute($this->Isotope->Cart->id);
 		$arrAddress = $this->Isotope->getAddress('billing');
 		
 		$strAction = 'https://e-payment.postfinance.ch/ncol/prod/orderstandard.asp';
@@ -163,7 +162,7 @@ class PaymentPostfinance extends IsotopePayment
 		(
 			'PSPID'			=> $this->postfinance_pspid,
 			'currency'		=> $this->Isotope->Config->currency,
-			'SHASign'		=> sha1($objOrder->order_id . ($this->Cart->grandTotal * 100) . $this->Isotope->Config->currency . $this->postfinance_pspid . $this->postfinance_secret),
+			'SHASign'		=> sha1($objOrder->order_id . ($this->Isotope->Cart->grandTotal * 100) . $this->Isotope->Config->currency . $this->postfinance_pspid . $this->postfinance_secret),
 		);
 		
 		$this->Database->prepare("UPDATE tl_iso_orders SET payment_data=? WHERE id=?")->execute(serialize($arrData), $objOrder->id);
@@ -172,7 +171,7 @@ class PaymentPostfinance extends IsotopePayment
 <form method="post" action="' . $strAction . '">
 <input type="hidden" name="PSPID" value="' . $this->postfinance_pspid . '">
 <input type="hidden" name="orderID" value="' . $objOrder->order_id . '">
-<input type="hidden" name="amount" value="' . ($this->Cart->grandTotal * 100) . '">
+<input type="hidden" name="amount" value="' . ($this->Isotope->Cart->grandTotal * 100) . '">
 <input type="hidden" name="currency" value="' . $arrData['currency'] . '">
 <input type="hidden" name="language" value="' . $GLOBALS['TL_LANGUAGE'] . '_' . strtoupper($GLOBALS['TL_LANGUAGE']) . '">
 <input type="hidden" name="EMAIL" value="' . $arrAddress['email'] . '">

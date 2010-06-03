@@ -48,9 +48,11 @@ abstract class IsotopeShipping extends Frontend
 	 */
 	protected $arrData = array();
 	
-	
+	/**
+	 * Isotope object
+	 * @var object
+	 */
 	protected $Isotope;
-	protected $Cart;
 	
 	
 	/**
@@ -64,9 +66,6 @@ abstract class IsotopeShipping extends Frontend
 		parent::__construct();
 		
 		$this->import('Isotope');
-		
-		if(TL_MODE=='FE')
-			$this->import('IsotopeCart', 'Cart');
 		
 		$this->arrData = $arrRow;
 	}
@@ -111,18 +110,18 @@ abstract class IsotopeShipping extends Frontend
 						return false;
 				}
 				
-				if (($this->minimum_total > 0 && $this->minimum_total > $this->Cart->subTotal) || ($this->maximum_total > 0 && $this->maximum_total < $this->Cart->subTotal))
+				if (($this->minimum_total > 0 && $this->minimum_total > $this->Isotope->Cart->subTotal) || ($this->maximum_total > 0 && $this->maximum_total < $this->Isotope->Cart->subTotal))
 					return false;
 		
 				$arrCountries = deserialize($this->countries);
 				
-				if(is_array($arrCountries) && count($arrCountries) && !in_array($this->Cart->shippingAddress['country'], $arrCountries))
+				if(is_array($arrCountries) && count($arrCountries) && !in_array($this->Isotope->Cart->shippingAddress['country'], $arrCountries))
 					return false;
 					
 				$arrSubdivisions = deserialize($this->subdivisions);
-				$blnHasSubdivision = is_array($GLOBALS['TL_LANG']['DIV'][$this->Cart->shippingAddress['country']]);	//!@todo this should be dropped with Contao 2.9 as all countries "should" have subdivisions
+				$blnHasSubdivision = is_array($GLOBALS['TL_LANG']['DIV'][$this->Isotope->Cart->shippingAddress['country']]);	//!@todo this should be dropped with Contao 2.9 as all countries "should" have subdivisions
 				
-				if(is_array($arrSubdivisions) && count($arrSubdivisions) && !in_array($this->Cart->shippingAddress['subdivision'], $arrSubdivisions) && $blnHasSubdivision)
+				if(is_array($arrSubdivisions) && count($arrSubdivisions) && !in_array($this->Isotope->Cart->shippingAddress['subdivision'], $arrSubdivisions) && $blnHasSubdivision)
 					return false;
 				
 				return true;

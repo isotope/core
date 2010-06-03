@@ -63,7 +63,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 	 */
 	protected function compile()
 	{
-		$arrProducts = $this->Cart->getProducts();
+		$arrProducts = $this->Isotope->Cart->getProducts();
 		
 		if (!count($arrProducts))
 		{
@@ -98,7 +98,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 				}
 				else
 				{
-					$this->Database->prepare("UPDATE tl_cart_items SET quantity_requested=? WHERE id=?")->execute($arrQuantity[$objProduct->cart_id], $objProduct->cart_id);
+					$this->Database->prepare("UPDATE tl_cart_items SET product_quantity=? WHERE id=?")->execute($arrQuantity[$objProduct->cart_id], $objProduct->cart_id);
 				}
 			}
 			
@@ -131,7 +131,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 		}
 		
 		$arrSurcharges = array();
-		foreach( $this->Cart->getSurcharges() as $arrSurcharge )
+		foreach( $this->Isotope->Cart->getSurcharges() as $arrSurcharge )
 		{
 			$arrSurcharges[] = array
 			(
@@ -152,8 +152,8 @@ class ModuleIsotopeCart extends ModuleIsotope
 		$objTemplate->checkoutJumpTo = $this->generateFrontendUrl($this->Database->prepare("SELECT id,alias FROM tl_page WHERE id=?")->execute($this->iso_checkout_jumpTo)->fetchAssoc());
 		$objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
 		$objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
-		$objTemplate->subTotalPrice = $this->generatePrice($this->Cart->subTotal, 'stpl_total_price');
-		$objTemplate->grandTotalPrice = $this->generatePrice($this->Cart->subTotal, 'stpl_total_price');
+		$objTemplate->subTotalPrice = $this->generatePrice($this->Isotope->Cart->subTotal, 'stpl_total_price');
+		$objTemplate->grandTotalPrice = $this->generatePrice($this->Isotope->Cart->subTotal, 'stpl_total_price');
 		$objTemplate->showOptions = false;	//!@todo make a module option.
 		$objTemplate->surcharges = $arrSurcharges;
 		

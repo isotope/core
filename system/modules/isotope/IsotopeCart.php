@@ -26,15 +26,9 @@
  */
  
  
-class IsotopeCart extends Model
+class IsotopeCart extends IsotopeProductCollection
 {
 	
-	/**
-	 * Current object instance (Singleton)
-	 * @var object
-	 */
-	protected static $objInstance;
-
 	/**
 	 * Cookie hash value
 	 * @var string
@@ -48,11 +42,11 @@ class IsotopeCart extends Model
 	protected $strTable = 'tl_cart';
 	
 	/**
-	 * Cart type. Example: can be "2" for gift registry.
-	 * @var int
+	 * Name of the child table
+	 * @var string
 	 */
-	protected $intType = 1;
-	
+	protected $ctable = 'tl_cart_items';
+		
 	/**
 	 * Name of the temporary cart cookie
 	 * @var string
@@ -64,12 +58,6 @@ class IsotopeCart extends Model
 	 * @var array
 	 */
 	protected $arrCache = array();
-	
-	/**
-	 * Cache all products for speed improvements
-	 * @var array
-	 */
-	protected $arrProducts;
 	
 	protected $arrSurcharges;
 	
@@ -85,44 +73,14 @@ class IsotopeCart extends Model
 	 */
 	public $Payment;
 	
-	protected $Isotope;
-	
-	
-	/**
-	 * Prevent cloning of the object (Singleton)
-	 */
-	final private function __clone() {}
-	
-	
-	/**
-	 * Return the current object instance (Singleton)
-	 * @return object
-	 */
-	public static function getInstance()
-	{
-		if (!is_object(self::$objInstance))
-		{
-			self::$objInstance = new IsotopeCart();
-		}
-
-		return self::$objInstance;
-	}
-	
 	
 	public function __construct()
 	{
 		parent::__construct();
 		
-		$this->import('Isotope');
-		
 		if (FE_USER_LOGGED_IN)
 		{
 			$this->import('FrontendUser', 'User');
-		}
-		
-		if (TL_MODE == 'FE')
-		{
-			$this->initializeCart();
 		}
 	}
 	
@@ -147,12 +105,20 @@ class IsotopeCart extends Model
 		{
 			switch( $strKey )
 			{
+				case 'table':
+					return $this->strTable;
+					break;
+					
+				case 'ctable':
+					return  $this->ctable;
+					break;
+				
 				case 'items':
-					$this->arrCache[$strKey] = $this->Database->prepare("SELECT SUM(quantity_requested) AS items FROM tl_cart_items LEFT OUTER JOIN tl_cart ON tl_cart_items.pid=tl_cart.id WHERE tl_cart_items.pid=? AND tl_cart.cart_type_id=?")->execute($this->id, $this->intType)->items;
+					$this->arrCache[$strKey] = $this->Database->prepare("SELECT SUM(product_quantity) AS items FROM tl_cart_items LEFT OUTER JOIN tl_cart ON tl_cart_items.pid=tl_cart.id WHERE tl_cart_items.pid=?")->execute($this->id)->items;
 					break;
 					
 				case 'products':
-					$this->arrCache[$strKey] = $this->Database->prepare("SELECT COUNT(*) AS items FROM tl_cart_items LEFT OUTER JOIN tl_cart ON tl_cart_items.pid=tl_cart.id WHERE tl_cart_items.pid=? AND tl_cart.cart_type_id=?")->execute($this->id, $this->intType)->items;
+					$this->arrCache[$strKey] = $this->Database->prepare("SELECT COUNT(*) AS items FROM tl_cart_items LEFT OUTER JOIN tl_cart ON tl_cart_items.pid=tl_cart.id WHERE tl_cart_items.pid=?")->execute($this->id)->items;
 					break;
 					
 				case 'subTotal':
@@ -321,9 +287,8 @@ class IsotopeCart extends Model
 	/**
 	 * Load current cart
 	 */
-	//!@todo why do we need config_id in tl_cart?
 	public function initializeCart()
-	{								
+	{
 		$this->strHash = $this->Input->cookie($this->strCookie);
 		
 		//  Check to see if the user is logged in.
@@ -352,7 +317,6 @@ class IsotopeCart extends Model
 				'session'		=> $this->strHash,
 				'tstamp'		=> time(),
 				'last_visit'	=> time(),
-				'cart_type_id'	=> $this->intType,
 			));
 			
 			if (!$this->findBy('id', $this->save(true)))
@@ -364,129 +328,18 @@ class IsotopeCart extends Model
 		// Temporary cart available, move to this cart. Must be after creating a new cart!
  		if (FE_USER_LOGGED_IN && strlen($this->strHash))
  		{
- 			$objOldItems = $this->Database->prepare("SELECT ci.* FROM tl_cart c INNER JOIN tl_cart_items ci ON c.id=ci.pid WHERE c.session=? AND c.cart_type_id=?")->execute($this->strHash, $this->intType);
-										  
-			while( $objOldItems->next() )
+			$objCart = new IsotopeCart();
+			if ($objCart->findBy('session', $this->strHash))
 			{
-				$objNewItems = $this->Database->prepare("SELECT * FROM tl_cart_items WHERE product_id=? AND pid=?")->limit(1)->execute($objOldItems->product_id, $this->id);
-									
-				// Nothing existing in member's cart, just move items to it.		 
-				if (!$objNewItems->numRows)
-				{
-					$this->Database->prepare("UPDATE tl_cart_items SET pid=? WHERE id=?")->execute($this->id, $objOldItems->id);
-				}
-				else
-				{
-					while( $objNewItems->next() )
-					{
-						// Do not use the TYPOlight function deserialize() cause it handles arrays not objects
-						$objOldProduct = unserialize($objOldItems->product_data);
-						$objNewProduct = unserialize($objNewItems->product_data);
-
-						if ($objOldProduct == $objNewProduct)
-						{
-							$this->Database->prepare("UPDATE tl_cart_items SET quantity_requested=(quantity_requested+" . $objOldItems->quantity_requested . ") WHERE product_id=? AND pid=?")
-										   ->execute($objOldItems->product_id, $this->id);
-										   
-							$this->Database->prepare("DELETE FROM tl_cart_items WHERE id=?")->execute($objOldItems->id);
-						}
-						else
-						{
-							$this->Database->prepare("UPDATE tl_cart_items SET pid=? WHERE id=?")->execute($this->id, $objOldItems->id);
-						}
-					}
-				}
+				$this->transferFromCollection($objCart, false);
+				$objCart->delete();
 			}
-
+			
 			// Delete cookie
 			$this->setCookie($this->strCookie, '', (time() - 3600), $GLOBALS['TL_CONFIG']['websitePath']);
-			
-			// Delete cart
-			$this->Database->prepare("DELETE FROM tl_cart WHERE session=? AND pid=0")->execute($this->strHash);
  		}
 	}
-	
-	
-	/**
-	 * Find a record by its reference field and return true if it has been found. Include cart type id.
-	 * @param  int
-	 * @return boolean
-	 */
-	public function findBy($strRefField, $varRefId)
-	{
-		$this->blnRecordExists = false;
-		$this->strRefField = $strRefField;
-		$this->varRefId = $varRefId;
-
-		$resResult = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE " . $this->strRefField . "=? AND cart_type_id=?")->execute($this->varRefId, $this->intType);
-
-		if ($resResult->numRows == 1)
-		{
-			$this->arrData = $resResult->fetchAssoc();
-			$this->blnRecordExists = true;
-
-			return true;
-		}
-
-		return false;
-	}
-	
-	
-	/**
-	 * Also delete cart items when dropping this cart.
-	 */
-	public function delete()
-	{
-		$this->Database->prepare("DELETE FROM tl_cart_items WHERE pid=?")->execute($this->id);
 		
-		return parent::delete();
-	}
-	
-
-	/**
-	 * Fetch products from database.
-	 * 
-	 * @access public
-	 * @return array
-	 */
-	public function getProducts($strTemplate='')
-	{
-		if (!is_array($this->arrProducts))
-		{
-			$this->arrProducts = array();
-			$objProducts = $this->Database->prepare("SELECT * FROM tl_cart_items WHERE pid=?")->execute($this->id);
-	
-			while( $objProducts->next() )
-			{
-				$objProductData = $this->Database->execute("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS type_class FROM tl_iso_products WHERE id=".$objProducts->product_id);
-									 
-				$strClass = $GLOBALS['ISO_PRODUCT'][$objProductData->type_class]['class'];
-																			
-				$objProduct = new $strClass($objProductData->row());
-								
-				$objProduct->quantity_requested = $objProducts->quantity_requested;
-				$objProduct->cart_id = $objProducts->id;
-				$objProduct->reader_jumpTo_Override = $objProducts->href_reader;			
-			
-				if($objProduct->price==0)
-					$objProduct->price = $objProducts->price;
-					
-				$objProduct->setOptions(deserialize($objProducts->product_options, true));
-				
-				$this->arrProducts[] = $objProduct;
-			}
-		}
-		
-		if (strlen($strTemplate))
-		{
-			$objTemplate = new FrontendTemplate($strTemplate);
-			$objTemplate->products = $this->arrProducts;
-			return $objTemplate->parse();
-		}
-
-		return $this->arrProducts;
-	}
-	
 	
 	/**
 	 * Callback for add_to_cart button
@@ -495,51 +348,14 @@ class IsotopeCart extends Model
 	 * @param	object
 	 * @return	void
 	 */
-	//!@todo fetch data of custom fields
 	//!@todo $objModule is always defined, rework to use it and make sure the module config field is in palettes
-	public function addProduct($objProduct, $objModule=null)
+	public function addToCart($objProduct, $objModule=null)
 	{
-		$arrSet = array
-		(
-			'pid'					=> $this->id,
-			'tstamp'				=> time(),
-			'quantity_requested'	=> ((is_object($objModule) && $objModule->iso_use_quantity && intval($this->Input->post('quantity_requested')) > 0) ? intval($this->Input->post('quantity_requested')) : 1),
-			'price'					=> $objProduct->price,	//!NOTE: Won't reference the variable unless $ precedes curly brackets!
-			'href_reader'			=> $objProduct->href_reader,
-			'product_id'			=> $objProduct->id,
-			'product_data'			=> serialize($objProduct),
-			'product_options'		=> $objProduct->getOptions(true),
-			'rules_applied'			=> (is_array($objProduct->rules_applied) ? serialize($objProduct->rules_applied) : '')
-		);
-
-		if (!$this->Database->prepare("UPDATE tl_cart_items SET tstamp=?, quantity_requested=quantity_requested+" . $arrSet['quantity_requested'] . " WHERE pid=? AND product_id=? AND product_data=?")->execute($arrSet['tstamp'], $this->id, $arrSet['product_id'], $arrSet['product_data'])->affectedRows)
-		{
-			$this->Database->prepare("INSERT INTO tl_cart_items %s")->set($arrSet)->execute();
-		}
+		$this->import('Isotope');
+		$this->Isotope->Cart->addProduct($objProduct, ((is_object($objModule) && $objModule->iso_use_quantity && intval($this->Input->post('quantity_requested')) > 0) ? intval($this->Input->post('quantity_requested')) : 1));
 		
 		//!@todo redirect to cart if checked in module config
 		$this->reload();
-	}
-	
-	
-	public function deleteProduct($intId)
-	{
-		$this->Database->prepare("DELETE FROM tl_cart_items WHERE id=?")->execute($intId);					   
-	}
-	
-	
-	public function getAttributeName($strField)
-	{
-		$objName = $this->Database->prepare("SELECT name FROM tl_iso_attributes WHERE field_name=?")
-								  ->limit(1)
-								  ->execute($strField);
-		
-		if(!$objName->numRows)
-		{
-			return false;
-		}
-		
-		return $objName->name;
 	}
 	
 
@@ -552,15 +368,17 @@ class IsotopeCart extends Model
 	 */
 	public function getShippingSurcharge($arrSurcharges)
 	{
-		if ($this->hasShipping && $this->Shipping->price > 0)
+		$this->import('Isotope');
+		
+		if ($this->Isotope->Cart->hasShipping && $this->Isotope->Cart->Shipping->price > 0)
 		{
 			$arrSurcharges[] = array
 			(
-				'label'			=> ($GLOBALS['TL_LANG']['MSC']['shippingLabel'] . ' (' . $this->Shipping->label . ')'),
+				'label'			=> ($GLOBALS['TL_LANG']['MSC']['shippingLabel'] . ' (' . $this->Isotope->Cart->Shipping->label . ')'),
 				'price'			=> '&nbsp;',
-				'total_price'	=> $this->Shipping->price,
-				'tax_class'		=> $this->Shipping->tax_class,
-				'add_tax'		=> ($this->Shipping->tax_class ? true : false),
+				'total_price'	=> $this->Isotope->Cart->Shipping->price,
+				'tax_class'		=> $this->Isotope->Cart->Shipping->tax_class,
+				'add_tax'		=> ($this->Isotope->Cart->Shipping->tax_class ? true : false),
 			);
 		}
 		
@@ -578,15 +396,17 @@ class IsotopeCart extends Model
 	 */
 	public function getPaymentSurcharge($arrSurcharges)
 	{
-		if ($this->hasPayment && $this->Payment->price > 0)
+		$this->import('Isotope');
+		
+		if ($this->Isotope->Cart->hasPayment && $this->Isotope->Cart->Payment->price > 0)
 		{
 			$arrSurcharges[] = array
 			(
-				'label'			=> ($GLOBALS['TL_LANG']['MSC']['paymentLabel'] . ' (' . $this->Payment->label . ')'),
+				'label'			=> ($GLOBALS['TL_LANG']['MSC']['paymentLabel'] . ' (' . $this->Isotope->Cart->Payment->label . ')'),
 				'price'			=> '&nbsp;',
-				'total_price'	=> $this->Payment->price,
-				'tax_class'		=> $this->Payment->tax_class,
-				'add_tax'		=> ($this->Payment->tax_class ? true : false),
+				'total_price'	=> $this->Isotope->Cart->Payment->price,
+				'tax_class'		=> $this->Isotope->Cart->Payment->tax_class,
+				'add_tax'		=> ($this->Isotope->Cart->Payment->tax_class ? true : false),
 			);
 		}
 		
@@ -596,6 +416,8 @@ class IsotopeCart extends Model
 		
 	public function getSurcharges()
 	{
+		$this->import('Isotope');
+		
 		$arrPreTax = $arrPostTax = $arrTaxes = array();
 		$arrProducts = $this->getProducts();
 		

@@ -122,20 +122,20 @@ class ShippingUPS extends IsotopeShipping
 		switch( $strKey )
 		{
 			case 'price':				
-				$arrSubDivisionShipping = explode(',',$this->Cart->shippingAddress['subdivision']);
+				$arrSubDivisionShipping = explode(',',$this->Isotope->Cart->shippingAddress['subdivision']);
 						
 				$arrDestination = array
 				(
-					'name'			=> $this->Cart->shippingAddress['firstname'] . ' ' . $this->Cart->shippingAddress['lastname'],
-					'phone'			=> $this->Cart->shippingAddress['phone'],
-					'company'		=> $this->Cart->shippingAddress['company'],
-					'street'		=> $this->Cart->shippingAddress['street_1'],
-					'street2'		=> $this->Cart->shippingAddress['street_2'],
-					'street3'		=> $this->Cart->shippingAddress['street_3'],
-					'city'			=> $this->Cart->shippingAddress['city'],
+					'name'			=> $this->Isotope->Cart->shippingAddress['firstname'] . ' ' . $this->Isotope->Cart->shippingAddress['lastname'],
+					'phone'			=> $this->Isotope->Cart->shippingAddress['phone'],
+					'company'		=> $this->Isotope->Cart->shippingAddress['company'],
+					'street'		=> $this->Isotope->Cart->shippingAddress['street_1'],
+					'street2'		=> $this->Isotope->Cart->shippingAddress['street_2'],
+					'street3'		=> $this->Isotope->Cart->shippingAddress['street_3'],
+					'city'			=> $this->Isotope->Cart->shippingAddress['city'],
 					'state'			=> $arrSubDivisionShipping[1],
-					'zip'			=> $this->Cart->shippingAddress['postal'],
-					'country'		=> $this->Cart->shippingAddress['country']
+					'zip'			=> $this->Isotope->Cart->shippingAddress['postal'],
+					'country'		=> $this->Isotope->Cart->shippingAddress['country']
 				);
 
 				$arrSubDivisionStore = explode(',',$this->Isotope->Config->subdivision);
@@ -165,7 +165,7 @@ class ShippingUPS extends IsotopeShipping
 				
 				$strWeightUnit = $this->Isotope->Config->weightUnit;
 				
-				$fltWeight = $this->Cart->totalWeight;
+				$fltWeight = $this->Isotope->Cart->totalWeight;
 					
 				$arrShipment['packages'][] = array
 				(					

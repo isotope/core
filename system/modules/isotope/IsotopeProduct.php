@@ -81,6 +81,12 @@ class IsotopeProduct extends Controller
 	 */
 	protected $doNotSubmit = false;
 
+	/**
+	 * Isotope object
+	 * @var object
+	 */
+	protected $Isotope;
+	
 
 	/**
 	 * Construct the object

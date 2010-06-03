@@ -91,7 +91,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 																			
 			$objProduct = new $strClass($objItems->row());
 							
-			$objProduct->quantity_requested = $objItems->quantity_sold;
+			$objProduct->quantity_requested = $objItems->product_quantity;
 			$objProduct->cart_id = $objItems->id;
 			//$objProduct->reader_jumpTo_Override = $objProducts->href_reader;			
 		
@@ -145,9 +145,9 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 				'sku'				=> $objProduct->sku,
 				'name'				=> $objProduct->name,
 				'product_options'	=> $objProduct->getOptions(),
-				'quantity'			=> $objItems->quantity_sold,
+				'quantity'			=> $objItems->product_quantity,
 				'price'				=> $this->Isotope->formatPriceWithCurrency($objItems->price),
-				'total'				=> $this->Isotope->formatPriceWithCurrency(($objItems->price * $objItems->quantity_sold)),
+				'total'				=> $this->Isotope->formatPriceWithCurrency(($objItems->price * $objItems->product_quantity)),
 				'href'				=> ($this->jumpTo ? $this->generateFrontendUrl($arrPage, '/product/'.$objItems->alias) : ''),
 				'tax_id'			=> $objProduct->tax_id,
 				'downloads'			=> (is_array($arrDownloads) ? $arrDownloads : array()),

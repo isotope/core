@@ -54,9 +54,7 @@ class PaymentPaypal extends IsotopePayment
 	 */
 	public function processPayment()
 	{
-		$this->import('IsotopeCart', 'Cart');
-		
-		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=? AND status!='cancelled'")->limit(1)->execute($this->Cart->id);
+		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=? AND status!='cancelled'")->limit(1)->execute($this->Isotope->Cart->id);
 		
 		$arrData = deserialize($objOrder->payment_data, true);
 		
@@ -193,9 +191,8 @@ class PaymentPaypal extends IsotopePayment
 	public function checkoutForm()
 	{
 		$this->import('Isotope');
-		$this->import('IsotopeCart', 'Cart');
 		
-		$objOrder = $this->Database->prepare("SELECT order_id FROM tl_iso_orders WHERE cart_id=?")->execute($this->Cart->id);
+		$objOrder = $this->Database->prepare("SELECT order_id FROM tl_iso_orders WHERE cart_id=?")->execute($this->Isotope->Cart->id);
 		
 		return '
 <h2>' . $GLOBALS['TL_LANG']['ISO']['pay_with_paypal'][0] . '</h2>
@@ -206,7 +203,7 @@ class PaymentPaypal extends IsotopePayment
 <input type="hidden" name="business" value="' . $this->paypal_account . '">
 <input type="hidden" name="lc" value="' . strtoupper($GLOBALS['TL_LANGUAGE']) . '">
 <input type="hidden" name="item_name" value="' . $this->paypal_business . '"/>
-<input type="hidden" name="amount" value="' . $this->Cart->grandTotal . '"/>
+<input type="hidden" name="amount" value="' . $this->Isotope->Cart->grandTotal . '"/>
 <input type="hidden" name="no_shipping" value="1">
 <input type="hidden" name="no_note" value="1">
 <input type="hidden" name="currency_code" value="' . $this->Isotope->Config->currency . '">
@@ -217,15 +214,15 @@ class PaymentPaypal extends IsotopePayment
 <input type="hidden" name="invoice" value="' . $objOrder->order_id . '">
 
 <input type="hidden" name="address_override" value="1">
-<input type="hidden" name="first_name" value="' . $this->Cart->billingAddress['firstname'] . '">
-<input type="hidden" name="last_name" value="' . $this->Cart->billingAddress['lastname'] . '">
-<input type="hidden" name="address1" value="' . $this->Cart->billingAddress['street_1'] . '">
-<input type="hidden" name="address2" value="' . $this->Cart->billingAddress['street_2'] . '">
-<input type="hidden" name="zip" value="' . $this->Cart->billingAddress['postal'] . '">
-<input type="hidden" name="city" value="' . $this->Cart->billingAddress['city'] . '">
-<input type="hidden" name="country" value="' . strtoupper($this->Cart->billingAddress['country']) . '">
-<input type="hidden" name="email" value="' . $this->Cart->billingAddress['email'] . '">
-<input type="hidden" name="night_phone_c" value="' . $this->Cart->billingAddress['phone'] . '">
+<input type="hidden" name="first_name" value="' . $this->Isotope->Cart->billingAddress['firstname'] . '">
+<input type="hidden" name="last_name" value="' . $this->Isotope->Cart->billingAddress['lastname'] . '">
+<input type="hidden" name="address1" value="' . $this->Isotope->Cart->billingAddress['street_1'] . '">
+<input type="hidden" name="address2" value="' . $this->Isotope->Cart->billingAddress['street_2'] . '">
+<input type="hidden" name="zip" value="' . $this->Isotope->Cart->billingAddress['postal'] . '">
+<input type="hidden" name="city" value="' . $this->Isotope->Cart->billingAddress['city'] . '">
+<input type="hidden" name="country" value="' . strtoupper($this->Isotope->Cart->billingAddress['country']) . '">
+<input type="hidden" name="email" value="' . $this->Isotope->Cart->billingAddress['email'] . '">
+<input type="hidden" name="night_phone_c" value="' . $this->Isotope->Cart$this->Isotope->Cart->billingAddress['phone'] . '">
 
 <input type="hidden" name="notify_url" value="' . $this->Environment->base . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id . '">
 <input type="hidden" name="bn" value="PP-BuyNowBF:btn_paynowCC_LG.gif:NonHosted">

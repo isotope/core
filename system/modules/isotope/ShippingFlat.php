@@ -44,10 +44,10 @@ class ShippingFlat extends IsotopeShipping
 				switch( $this->flatCalculation )
 				{
 					case 'perProduct':
-						return $this->Isotope->calculatePrice((($this->arrData['price'] * $this->Cart->products) + $this->calculateSurcharge()), $this->arrData['tax_class']);
+						return $this->Isotope->calculatePrice((($this->arrData['price'] * $this->Isotope->Cart->products) + $this->calculateSurcharge()), $this->arrData['tax_class']);
 						
 					case 'perItem':
-						return $this->Isotope->calculatePrice((($this->arrData['price'] * $this->Cart->items) + $this->calculateSurcharge()), $this->arrData['tax_class']);
+						return $this->Isotope->calculatePrice((($this->arrData['price'] * $this->Isotope->Cart->items) + $this->calculateSurcharge()), $this->arrData['tax_class']);
 						
 					default:
 						return $this->Isotope->calculatePrice(($this->arrData['price'] + $this->calculateSurcharge()), $this->arrData['tax_class']);
@@ -65,13 +65,13 @@ class ShippingFlat extends IsotopeShipping
 			return 0;
 			
 		$intSurcharge = 0;
-		$arrProducts = $this->Cart->getProducts();
+		$arrProducts = $this->Isotope->Cart->getProducts();
 		
 		foreach( $arrProducts as $objProduct )
 		{
 			if ($this->flatCalculation == 'perItem')
 			{
-				$intSurcharge += ($product['quantity_requested'] * floatval($objProduct->{$this->surcharge_field}));
+				$intSurcharge += ($objProduct->quantity_requested * floatval($objProduct->{$this->surcharge_field}));
 			}
 			else
 			{

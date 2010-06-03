@@ -43,7 +43,7 @@ class ShippingOrderTotal extends IsotopeShipping
 		switch( $strKey )
 		{
 			case 'price':
-				$fltEligibleSubTotal = $this->getAdjustedSubTotal($this->Cart->subTotal);
+				$fltEligibleSubTotal = $this->getAdjustedSubTotal($this->Isotope->Cart->subTotal);
 		
 				if($fltEligibleSubTotal<=0)
 				{
@@ -119,7 +119,7 @@ class ShippingOrderTotal extends IsotopeShipping
 	public function getAdjustedSubTotal($fltSubtotal)
 	{
 		
-		$arrProducts = $this->Cart->getProducts();
+		$arrProducts = $this->Isotope->Cart->getProducts();
 		
 		foreach($arrProducts as $objProduct)
 		{

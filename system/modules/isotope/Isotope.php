@@ -54,6 +54,12 @@ class Isotope extends Controller
 		parent::__construct();
 		$this->import('Database');
 		$this->import('FrontendUser', 'User');
+		
+		if (TL_MODE == 'FE')
+		{
+			$this->Cart = new IsotopeCart();
+			$this->Cart->initializeCart();
+		}
 
 		if (strlen($_SESSION['ISOTOPE']['config_id']))
 		{
@@ -186,7 +192,6 @@ class Isotope extends Controller
 	{
 		if (!is_array($arrAddresses))
 		{
-			$this->import('IsotopeCart', 'Cart');
 			$arrAddresses = array('billing'=>$this->Cart->billingAddress, 'shipping'=>$this->Cart->shippingAddress);
 		}
 		
@@ -692,7 +697,7 @@ class Isotope extends Controller
 	public function defaultButtons($arrButtons)
 	{
 		$arrButtons['update'] = array('label'=>$GLOBALS['TL_LANG']['MSC']['buttonLabel']['update']);
-		$arrButtons['add_to_cart'] = array('label'=>$GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'], 'callback'=>array('IsotopeCart', 'addProduct'));
+		$arrButtons['add_to_cart'] = array('label'=>$GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'], 'callback'=>array('IsotopeCart', 'addToCart'));
 		
 		return $arrButtons;
 	}
