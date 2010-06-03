@@ -222,7 +222,7 @@ class IsotopePOS extends Backend
 			if($objProduct->price==0)
 				$objProduct->price = $objItems->price;
 			
-			$arrOptions = deserialize($objItems->product_options);
+			$arrOptions = deserialize($objItems->product_options, true);
 			
 			$objProduct->setOptions($arrOptions);
 			
@@ -347,7 +347,7 @@ class IsotopePOS extends Backend
 		
 			if($objProduct->price==0)
 				$objProduct->price = $objItems->price;
-			$objProduct->options = deserialize($objItems->product_options);
+			$objProduct->options = deserialize($objItems->product_options, true);
 			
 			if (!is_object($objProduct))
 				continue;

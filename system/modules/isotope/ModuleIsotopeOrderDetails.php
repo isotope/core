@@ -98,7 +98,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 			if($objProduct->price==0)
 				$objProduct->price = $objItems->price;
 			
-			$arrOptions = deserialize($objItems->product_options);
+			$arrOptions = deserialize($objItems->product_options, true);
 			
 			$objProduct->setOptions($arrOptions);
 							

@@ -471,7 +471,7 @@ class IsotopeCart extends Model
 				if($objProduct->price==0)
 					$objProduct->price = $objProducts->price;
 					
-				$objProduct->setOptions(deserialize($objProducts->product_options));
+				$objProduct->setOptions(deserialize($objProducts->product_options, true));
 				
 				$this->arrProducts[] = $objProduct;
 			}
