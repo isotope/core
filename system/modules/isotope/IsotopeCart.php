@@ -505,7 +505,6 @@ class IsotopeCart extends Model
 			'tstamp'				=> time(),
 			'quantity_requested'	=> ((is_object($objModule) && $objModule->iso_use_quantity && intval($this->Input->post('quantity_requested')) > 0) ? intval($this->Input->post('quantity_requested')) : 1),
 			'price'					=> $objProduct->price,	//!NOTE: Won't reference the variable unless $ precedes curly brackets!
-			'price_override'		=> $objProduct->price_override,
 			'href_reader'			=> $objProduct->href_reader,
 			'product_id'			=> $objProduct->id,
 			'product_data'			=> serialize($objProduct),
