@@ -277,5 +277,56 @@ class ModuleGiftRegistryReader extends ModuleIsotope
 
 		return $arrRegData;
 	}
+	
+	
+	/**
+	 * Generate a URL and return it as string
+	 * @param object
+	 * @param boolean
+	 * @return string
+	 */
+	protected function generateProductUrl($arrProduct, $intJumpTo, $strProductIdKey = 'id', $blnAddArchive=false)
+	{
+		global $objPage;
+		$strCacheKey = $strProductIdKey . '_' . $arrProduct[$strProductIdKey] . '_' . $arrProduct['tstamp'];
+
+		// Load URL from cache
+		if (array_key_exists($strCacheKey, self::$arrUrlCache))
+		{
+			return self::$arrUrlCache[$strCacheKey];
+		}
+
+		$strUrl = ampersand($this->Environment->request, ENCODE_AMPERSANDS);
+
+		// Get target page
+		$objJump = $this->Database->prepare("SELECT id, alias FROM tl_page WHERE id=?")->limit(1)->execute($intJumpTo);
+	
+		if ($objJump->numRows > 0)
+		{
+			$strUrl = ampersand($this->generateFrontendUrl($objJump->fetchAssoc(), '/product/' . $arrProduct['alias']));
+		}
+		else
+		{
+			$strUrl = ampersand($this->generateFrontendUrl(array('id'=>$objPage->id, 'alias'=>$objPage->alias), '/details/product/' . $arrProduct['alias']));
+		}
+
+		self::$arrUrlCache[$strCacheKey] = $strUrl;
+			
+		return self::$arrUrlCache[$strCacheKey];
+	}
+
+	
+
+	/**
+	 * Generate a link and return it as string
+	 * @param string
+	 * @param object
+	 * @param boolean
+	 * @return string
+	 */
+	protected function generateProductLink($strLink, $arrProduct, $intJumpTo, $strProductIdKey = 'id', $blnAddArchive=false)
+	{
+		return 	$this->generateProductUrl($arrProduct, $intJumpTo, $strProductIdKey, $blnAddArchive);
+	}
 }
 
