@@ -216,12 +216,15 @@ class IsotopePOS extends Backend
 							
 			$objProduct->quantity_requested = $objItems->quantity_sold;
 			$objProduct->cart_id = $objItems->id;
-			$objProduct->getOptions(true);
+			
 			//$objProduct->reader_jumpTo_Override = $objProducts->href_reader;			
 		
 			if($objProduct->price==0)
 				$objProduct->price = $objItems->price;
 			
+			$arrOptions = deserialize($objItems->product_options);
+			
+			$objProduct->setOptions($arrOptions);
 			
 			if (!is_object($objProduct))
 				continue;
@@ -257,11 +260,11 @@ class IsotopePOS extends Backend
 					$arrAllDownloads[] = $arrDownload;
 				}
 			}
-			
+		
 			$arrItems[] = array
 			(
 				'raw'				=> $objItems->row(),
-				'product_options' 	=> deserialize($objItems->product_options),
+				'product_options' 	=> $objProduct->getOptions(),
 				'downloads'			=> (is_array($arrDownloads) ? $arrDownloads : array()),
 				'name'				=> $objProduct->name,
 				'quantity'			=> $objItems->quantity_sold,
@@ -272,7 +275,7 @@ class IsotopePOS extends Backend
 			);
 		}
 		
-		
+	
 		$objTemplate->info = deserialize($objOrderData->checkout_info);
 		$objTemplate->items = $arrItems;
 		$objTemplate->downloads = $arrAllDownloads;

@@ -81,14 +81,27 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 		
 		$arrAllDownloads = array();
 		$arrItems = array();
-		$objItems = $this->Database->prepare("SELECT p.*, o.*, t.downloads AS downloads_allowed, (SELECT COUNT(*) FROM tl_iso_order_downloads d WHERE d.pid=o.id) AS has_downloads FROM tl_iso_order_items o LEFT OUTER JOIN tl_iso_products p ON o.product_id=p.id LEFT OUTER JOIN tl_iso_producttypes t ON p.type=t.id WHERE o.pid=?")->execute($objOrder->id);
+		$objItems = $this->Database->prepare("SELECT p.*, o.*, t.downloads AS downloads_allowed, t.class AS type_class, (SELECT COUNT(*) FROM tl_iso_order_downloads d WHERE d.pid=o.id) AS has_downloads FROM tl_iso_order_items o LEFT OUTER JOIN tl_iso_products p ON o.product_id=p.id LEFT OUTER JOIN tl_iso_producttypes t ON p.type=t.id WHERE o.pid=?")->execute($objOrder->id);
 		
-		
+	
 		while( $objItems->next() )
 		{
 			// Do not use the TYPOlight function deserialize() cause it handles arrays not objects
-			$objProduct = unserialize($objItems->product_data);
+			$strClass = $GLOBALS['ISO_PRODUCT'][$objItems->type_class]['class'];
+																			
+			$objProduct = new $strClass($objItems->row());
+							
+			$objProduct->quantity_requested = $objItems->quantity_sold;
+			$objProduct->cart_id = $objItems->id;
+			//$objProduct->reader_jumpTo_Override = $objProducts->href_reader;			
+		
+			if($objProduct->price==0)
+				$objProduct->price = $objItems->price;
 			
+			$arrOptions = deserialize($objItems->product_options);
+			
+			$objProduct->setOptions($arrOptions);
+							
 			if (!is_object($objProduct))
 				continue;
 			
@@ -125,7 +138,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 					$arrAllDownloads[] = $arrDownload;
 				}
 			}
-			
+						
 			$arrItems[] = array
 			(
 				'raw'				=> $objItems->row(),
