@@ -42,9 +42,8 @@ class ShippingCollection extends IsotopeShipping
 		switch( $strKey )
 		{
 			case 'price':
-				//$this->import('IsotopeCart', 'Cart');
 				return 0;
-				//return $this->Isotope->calculatePrice($this->calculateShippingRate($this->id, $this->Cart->subTotal));
+				//return $this->Isotope->calculatePrice($this->calculateShippingRate($this->id, $this->Isotope->Cart->subTotal));
 				break;
 					
 		}
@@ -147,13 +146,13 @@ class ShippingCollection extends IsotopeShipping
 							switch($v)
 							{
 								case 'lower':
-									if($fltLimit!=0 && ((float)$this->Cart->subTotal > (float)$fltLimit))
+									if($fltLimit!=0 && ((float)$this->Isotope->Cart->subTotal > (float)$fltLimit))
 									{	
 										$arrEligibleRates[] = $rate['rate_info']['rate'];						
 									}
 									break;
 								case 'upper':						
-									if($fltLimit!=0 && ((float)$fltLimit) >= (float)$this->Cart->subTotal)
+									if($fltLimit!=0 && ((float)$fltLimit) >= (float)$this->Isotope->Cart->subTotal)
 									{
 										$arrEligibleRates[] = $rate['rate_info']['rate'];
 									}
@@ -204,14 +203,14 @@ class ShippingCollection extends IsotopeShipping
 									{
 										case 'lower':
 											
-											if($fltLimit!=0 && ((float)$this->Cart->subTotal >= (float)$fltLimit))
+											if($fltLimit!=0 && ((float)$this->Isotope->Cart->subTotal >= (float)$fltLimit))
 											{	
 												$arrEligibleRates[] = $rate['rate_info']['rate'];
 											}
 											break;
 										case 'upper':
 																							
-											if($fltLimit!=0 && ((float)$fltLimit >= (float)$this->Cart->subTotal))
+											if($fltLimit!=0 && ((float)$fltLimit >= (float)$this->Isotope->Cart->subTotal))
 											{
 												$arrEligibleRates[] = $rate['rate_info']['rate'];
 											}

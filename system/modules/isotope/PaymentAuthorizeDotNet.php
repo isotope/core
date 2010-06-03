@@ -56,12 +56,10 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 	 */
 	public function processPayment()
 	{
-		$this->import('IsotopeCart', 'Cart');
-		
 		$fields = '';
 		
 		// Get the current order, review page will create the data
-		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->execute($this->Cart->id);
+		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->execute($this->Isotope->Cart->id);
 		
 		// for Authorize.net - this would be where to handle logging response information from the server.
 		$authnet_values = array
@@ -78,14 +76,14 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 			"x_card_num"						=> $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_num'],
 			"x_exp_date"						=> $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_exp'],
 			"x_description"						=> "Order Number " . $objOrder->order_id,
-			"x_amount"							=> $this->Cart->grandTotal,
-			"x_first_name"						=> $this->Cart->billingAddress['firstname'],
-			"x_last_name"						=> $this->Cart->billingAddress['lastname'],
-			"x_address"							=> $this->Cart->billingAddress['street_1']."\n".$this->Cart->billingAddress['street_2']."\n".$this->Cart->billingAddress['street_3'],
-			"x_city"							=> $this->Cart->billingAddress['city'],
-			"x_state"							=> $this->Cart->billingAddress['subdivision'],
-			"x_zip"								=> $this->Cart->billingAddress['postal'],
-			"x_company"							=> $this->Cart->billingAddress['company'],
+			"x_amount"							=> $this->Isotope->Cart->grandTotal,
+			"x_first_name"						=> $this->Isotope->Cart->billingAddress['firstname'],
+			"x_last_name"						=> $this->Isotope->Cart->billingAddress['lastname'],
+			"x_address"							=> $this->Isotope->Cart->billingAddress['street_1']."\n".$this->Isotope->Cart->billingAddress['street_2']."\n".$this->Isotope->Cart->billingAddress['street_3'],
+			"x_city"							=> $this->Isotope->Cart->billingAddress['city'],
+			"x_state"							=> $this->Isotope->Cart->billingAddress['subdivision'],
+			"x_zip"								=> $this->Isotope->Cart->billingAddress['postal'],
+			"x_company"							=> $this->Isotope->Cart->billingAddress['company'],
 			"x_email_customer"					=> "FALSE"
 		);
 
@@ -127,8 +125,6 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 				{
 					$strTransactionId = '0';
 				}
-				
-				$this->import('IsotopeCart','Cart');
 				
 				$strCCNum = rtrim($this->Input->post('cc_num'));
 							

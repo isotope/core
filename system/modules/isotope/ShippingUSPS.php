@@ -122,16 +122,16 @@ class ShippingUSPS extends IsotopeShipping
 			case 'price':						
 				/*$arrDestination = array
 				(
-					'name'			=> $this->Cart->shippingAddress['firstname'] . ' ' . $this->Cart->shippingAddress['lastname'],
-					'phone'			=> $this->Cart->shippingAddress['phone'],
-					'company'		=> $this->Cart->shippingAddress['company'],
-					'street'		=> $this->Cart->shippingAddress['street_1'],
-					'street2'		=> $this->Cart->shippingAddress['street_2'],
-					'street3'		=> $this->Cart->shippingAddress['street_3'],
-					'city'			=> $this->Cart->shippingAddress['city'],
-					'state'			=> $this->Cart->shippingAddress['subdivision'],
-					'zip'			=> $this->Cart->shippingAddress['postal'],
-					'country'		=> $this->Cart->shippingAddress['country']
+					'name'			=> $this->Isotope->Cart->shippingAddress['firstname'] . ' ' . $this->Isotope->Cart->shippingAddress['lastname'],
+					'phone'			=> $this->Isotope->Cart->shippingAddress['phone'],
+					'company'		=> $this->Isotope->Cart->shippingAddress['company'],
+					'street'		=> $this->Isotope->Cart->shippingAddress['street_1'],
+					'street2'		=> $this->Isotope->Cart->shippingAddress['street_2'],
+					'street3'		=> $this->Isotope->Cart->shippingAddress['street_3'],
+					'city'			=> $this->Isotope->Cart->shippingAddress['city'],
+					'state'			=> $this->Isotope->Cart->shippingAddress['subdivision'],
+					'zip'			=> $this->Isotope->Cart->shippingAddress['postal'],
+					'country'		=> $this->Isotope->Cart->shippingAddress['country']
 				);*/
 
 				/*$arrOrigin = array
@@ -149,21 +149,21 @@ class ShippingUSPS extends IsotopeShipping
 				);*/
 				
 				$arrCountries = $this->getCountries();
-				$destCountryText = $arrCountries[$this->Cart->shippingAddress['country']];
+				$destCountryText = $arrCountries[$this->Isotope->Cart->shippingAddress['country']];
 			
 				$this->strOriginZip = $this->Isotope->Config->postal;
-				$this->strDestinationZip = $this->Cart->shippingAddress['postal'];
-				$this->strDestinationCountry = $this->Cart->shippingAddress['country'];
-				$this->strDestinationCountryText = ($this->Cart->shippingAddress['country']=='uk') ? 'Great Britain' : $destCountryText;
-				$this->strShippingMode = $this->getShippingMode($this->Cart->shippingAddress['country']);
-				$this->blnDomestic = ($this->Cart->shippingAddress['country']!='us' ? false : true);
+				$this->strDestinationZip = $this->Isotope->Cart->shippingAddress['postal'];
+				$this->strDestinationCountry = $this->Isotope->Cart->shippingAddress['country'];
+				$this->strDestinationCountryText = ($this->Isotope->Cart->shippingAddress['country']=='uk') ? 'Great Britain' : $destCountryText;
+				$this->strShippingMode = $this->getShippingMode($this->Isotope->Cart->shippingAddress['country']);
+				$this->blnDomestic = ($this->Isotope->Cart->shippingAddress['country']!='us' ? false : true);
 				
 				if(!$this->blnDomestic)
 				{
 					$this->strAPIMode = 'IntlRate';
 				}
 															
-				$fltWeight = $this->Cart->totalWeight;
+				$fltWeight = $this->Isotope->Cart->totalWeight;
 				
 				$arrWeight = explode('.', (string)$fltWeight);
 

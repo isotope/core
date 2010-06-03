@@ -49,8 +49,11 @@ abstract class IsotopePayment extends Frontend
 	protected $arrData = array();
 	
 	
+	/**
+	 * Isotope object
+	 * @var object
+	 */
 	protected $Isotope;
-	protected $Cart;
 	
 	
 	/**
@@ -64,9 +67,6 @@ abstract class IsotopePayment extends Frontend
 		parent::__construct();
 		
 		$this->import('Isotope');
-		
-		if (TL_MODE == 'FE')
-			$this->import('IsotopeCart', 'Cart');
 
 		$arrRow['allowed_cc_types'] = deserialize($arrRow['allowed_cc_types']);
 		if (is_array($arrRow['allowed_cc_types']))
@@ -108,21 +108,21 @@ abstract class IsotopePayment extends Frontend
 				if (!$this->enabled && !BE_USER_LOGGED_IN)
 					return false;
 				
-				if (($this->minimum_total > 0 && $this->minimum_total > $this->Cart->subTotal) || ($this->maximum_total > 0 && $this->maximum_total < $this->Cart->subTotal))
+				if (($this->minimum_total > 0 && $this->minimum_total > $this->Isotope->Cart->subTotal) || ($this->maximum_total > 0 && $this->maximum_total < $this->Isotope->Cart->subTotal))
 					return false;
 					
 				$arrCountries = deserialize($this->countries);
-				if(is_array($arrCountries) && count($arrCountries) && !in_array($this->Cart->billingAddress['country'], $arrCountries))
+				if(is_array($arrCountries) && count($arrCountries) && !in_array($this->Isotope->Cart->billingAddress['country'], $arrCountries))
 					return false;
 					
 				$arrShippings = deserialize($this->shipping_modules);
-				if (is_array($arrShippings) && count($arrShippings) && ((!$this->Cart->hasShipping && !in_array(0, $arrShippings)) || ($this->Cart->hasShipping && !in_array($this->Cart->Shipping->id, $arrShippings))))
+				if (is_array($arrShippings) && count($arrShippings) && ((!$this->Isotope->Cart->hasShipping && !in_array(0, $arrShippings)) || ($this->Isotope->Cart->hasShipping && !in_array($this->Isotope->Cart->Shipping->id, $arrShippings))))
 					return false;
 					
 				$arrTypes = deserialize($this->product_types);
 				if (is_array($arrTypes) && count($arrTypes))
 				{
-					$arrProducts = $this->Cart->getProducts();
+					$arrProducts = $this->Isotope->Cart->getProducts();
 					foreach( $arrProducts as $objProduct )
 					{
 						if (!in_array($objProduct->type, $arrTypes))

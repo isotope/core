@@ -64,7 +64,7 @@ class ShippingWeightTotal extends IsotopeShipping
 	protected function getOptions()
 	{
 		$arrWeights = array();
-		$arrProducts = $this->Cart->getProducts();
+		$arrProducts = $this->Isotope->Cart->getProducts();
 		
 		foreach( $arrProducts as $objProduct )
 		{

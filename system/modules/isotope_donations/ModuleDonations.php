@@ -121,14 +121,12 @@ class ModuleDonations extends ModuleIsotope
 	
 		if($this->Input->post('FORM_SUBMIT') == $this->strFormId && !$this->doNotSubmit)
 		{
-			$this->import('IsotopeCart','Cart');
-									
 			$objProduct = $this->getProduct($this->iso_donationProduct);
 			
 			//Manually cobble together a product
 			$objProduct->price = $this->Input->post('donation_amount');
 			$objProduct->reader_jumpTo_Override = $this->Environment->request;
-			$this->Cart->addProduct($objProduct);
+			$this->Isotope->Cart->addToCart($objProduct);
 			$this->reload();
 		}
 		

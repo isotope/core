@@ -26,7 +26,7 @@
  */
 
 $GLOBALS['TL_LANG']['tl_iso_orders']['price']				= array('Price','');
-$GLOBALS['TL_LANG']['tl_iso_orders']['quantity_sold']		= array('Quantity','');
+$GLOBALS['TL_LANG']['tl_iso_orders']['product_quantity']	= array('Quantity','');
 $GLOBALS['TL_LANG']['tl_iso_orders']['item_total']			= array('Total','');
 
 $GLOBALS['TL_LANG']['tl_iso_orders']['edit_items']			= array('Edit Order Items', 'Edit items for order ID %s');

@@ -42,15 +42,14 @@ class PaymentPaypalPro extends IsotopePayment
 	 */
 	public function processPayment()
 	{
-		$this->import('IsotopeCart', 'Cart');
 		$this->import('Isotope');
 		
-		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=? AND status!='cancelled'")->limit(1)->execute($this->Cart->id);
+		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=? AND status!='cancelled'")->limit(1)->execute($this->Isotope->Cart->id);
 		
 		$arrPaymentData = deserialize($objOrder->payment_data);
 		
-		$arrBillingSubdivision = explode('-', $this->Cart->billingAddress['subdivision']);
-		$arrShippingSubdivision = explode('-', $this->Cart->shippingAddress['subdivision']); 
+		$arrBillingSubdivision = explode('-', $this->Isotope->Cart->billingAddress['subdivision']);
+		$arrShippingSubdivision = explode('-', $this->Isotope->Cart->shippingAddress['subdivision']); 
 		
 		$strExp = str_replace('/','',$_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_exp']);
 		
@@ -86,28 +85,28 @@ class PaymentPaypalPro extends IsotopePayment
 			'SIGNATURE'				=> ($this->debug ? 'A-IzJhZZjhg29XQ2qnhapuwxIDzyAZQ92FRP5dqBzVesOkzbdUONzmOU' : $this->paypalpro_apiSignature),
 			'PAYMENTACTION'			=> $this->paypalpro_transType,
 			'IPADDRESS'				=> $this->Environment->ip,
-			'AMT'					=> $this->Cart->grandTotal,
+			'AMT'					=> $this->Isotope->Cart->grandTotal,
 			'RETURNFMFDETAILS'		=> ($this->debug ? 1 : 0),
 			'CREDITCARDTYPE'		=> $strCardType,
 			'ACCT'					=> $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_num'],
 			'EXPDATE'				=> $strExp,
-			'FIRSTNAME'				=> $this->Cart->billingAddress['firstname'],
-			'LASTNAME'				=> $this->Cart->billingAddress['lastname'],
-			'STREET'				=> $this->Cart->billingAddress['street_1'],
-			'STREET2'				=> $this->Cart->billingAddress['street_2']."\n".$this->Cart->billingAddress['street_3'],
-			'CITY'					=> $this->Cart->billingAddress['city'],
+			'FIRSTNAME'				=> $this->Isotope->Cart->billingAddress['firstname'],
+			'LASTNAME'				=> $this->Isotope->Cart->billingAddress['lastname'],
+			'STREET'				=> $this->Isotope->Cart->billingAddress['street_1'],
+			'STREET2'				=> $this->Isotope->Cart->billingAddress['street_2']."\n".$this->Isotope->Cart->billingAddress['street_3'],
+			'CITY'					=> $this->Isotope->Cart->billingAddress['city'],
 			'STATE'					=> $arrBillingSubdivision[1],
-			'COUNTRYCODE'			=> strtoupper($this->Cart->billingAddress['country']),
-			'ZIP'					=> $this->Cart->billingAddress['postal'],
+			'COUNTRYCODE'			=> strtoupper($this->Isotope->Cart->billingAddress['country']),
+			'ZIP'					=> $this->Isotope->Cart->billingAddress['postal'],
 			'CURRENCYCODE'			=> $this->Isotope->Config->currency,
-			'ITEMAMT'				=> $this->Cart->subTotal,
-			'SHIPPINGAMT'			=> $this->Cart->shippingTotal,
+			'ITEMAMT'				=> $this->Isotope->Cart->subTotal,
+			'SHIPPINGAMT'			=> $this->Isotope->Cart->shippingTotal,
 			'HANDLINGAMT'			=> 0,	//TODO: support handling charges
-			'TAXAMT'				=> $this->Cart->taxTotal,
+			'TAXAMT'				=> $this->Isotope->Cart->taxTotal,
 			'DESC'					=> "Order Number " . $objOrder->order_id,
 			'INVNUM'				=> $objOrder->id . '-' . time(),
-			'EMAIL'					=> $this->Cart->billingAddress['email'],
-			'PHONENUM'				=> $this->Cart->billingAddress['phone'],
+			'EMAIL'					=> $this->Isotope->Cart->billingAddress['email'],
+			'PHONENUM'				=> $this->Isotope->Cart->billingAddress['phone'],
 			
 			
 		);	

@@ -42,15 +42,14 @@ class PaymentPaypalPayflowPro extends IsotopePayment
 	 */
 	public function processPayment()
 	{
-		$this->import('IsotopeCart', 'Cart');
 		$this->import('Isotope');
 		
-		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=? AND status!='cancelled'")->limit(1)->execute($this->Cart->id);
+		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=? AND status!='cancelled'")->limit(1)->execute($this->Isotope->Cart->id);
 		
 		$arrPaymentData = deserialize($objOrder->payment_data);
 		
-		$arrBillingSubdivision = explode('-', $this->Cart->billingAddress['subdivision']);
-		$arrShippingSubdivision = explode('-', $this->Cart->shippingAddress['subdivision']); 
+		$arrBillingSubdivision = explode('-', $this->Isotope->Cart->billingAddress['subdivision']);
+		$arrShippingSubdivision = explode('-', $this->Isotope->Cart->shippingAddress['subdivision']); 
 		
 		//$strExp = str_replace('/','',$_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_exp']);
 		
@@ -94,16 +93,16 @@ class PaymentPaypalPayflowPro extends IsotopePayment
 			'ACCT'					=> $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_num'],
 			'EXPDATE'				=> $strExpDate,
 			'NAME'					=> $strCardType,
-			'AMT'					=> $this->Cart->grandTotal,
+			'AMT'					=> $this->Isotope->Cart->grandTotal,
 			'CURRENCY'				=> $this->Isotope->Config->currency,
       		'COMMENT1'				=> '',	//TODO: Provide space for order comments.
-			'FIRSTNAME'				=> $this->Cart->billingAddress['firstname'],
-			'LASTNAME'				=> $this->Cart->billingAddress['lastname'],
-			'STREET'				=> $this->Cart->billingAddress['street_1']."\n".$this->Cart->billingAddress['street_2']."\n".$this->Cart->billingAddress['street_3'],
-			'CITY'					=> $this->Cart->billingAddress['city'],
+			'FIRSTNAME'				=> $this->Isotope->Cart->billingAddress['firstname'],
+			'LASTNAME'				=> $this->Isotope->Cart->billingAddress['lastname'],
+			'STREET'				=> $this->Isotope->Cart->billingAddress['street_1']."\n".$this->Isotope->Cart->billingAddress['street_2']."\n".$this->Isotope->Cart->billingAddress['street_3'],
+			'CITY'					=> $this->Isotope->Cart->billingAddress['city'],
 			'STATE'					=> $arrBillingSubdivision[1],
-			'ZIP'					=> $this->Cart->billingAddress['postal'],
-			'COUNTRY'				=> strtoupper($this->Cart->billingAddress['country']),
+			'ZIP'					=> $this->Isotope->Cart->billingAddress['postal'],
+			'COUNTRY'				=> strtoupper($this->Isotope->Cart->billingAddress['country']),
 		);
 		
 		if($this->requireCCV)
@@ -113,7 +112,7 @@ class PaymentPaypalPayflowPro extends IsotopePayment
 		
 		if($this->Isotope->Config->country=='UK')
 		{
-			if($this->Cart->billingAddress['country']=='UK' && ($_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_type']=='maestro' || $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_type']=='solo'))
+			if($this->Isotope->Cart->billingAddress['country']=='UK' && ($_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_type']=='maestro' || $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_type']=='solo'))
 			{
 				$arrData['STARTDATE'] = $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_start_date'];
 				$arrData['ISSUENUMBER'] = $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_issue_number'];
@@ -132,7 +131,7 @@ class PaymentPaypalPayflowPro extends IsotopePayment
 			$arrNVP[] .= $k . '=' . $v;
 		}
 					 
-		$tempstr = $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_num'] . $this->Cart->grandTotal . date('YmdGis') . "1";
+		$tempstr = $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_num'] . $this->Isotope->Cart$this->Isotope->Cart->grandTotal . date('YmdGis') . "1";
       	
       	$request_id = md5($tempstr);
       	

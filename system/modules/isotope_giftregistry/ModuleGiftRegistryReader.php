@@ -136,7 +136,7 @@ class ModuleGiftRegistryReader extends ModuleIsotope
 				'price'				=> $this->generatePrice($row['price']),
 				'total_price'		=> $this->generatePrice($intTotalPrice, 'stpl_total_price'),
 				'quantity'			=> $row['quantity_requested'],
-				'quantity_remaining'=> $row['quantity_requested'] - $row['quantity_sold'],
+				'quantity_remaining'=> $row['quantity_requested'] - $row['product_quantity'],
 				'source_cart_id'	=> $this->intCartId,
 				'add_link'			=> ($row['available_online']=='1' ? '<a href="' . $this->generateActionLinkString('add_to_cart', $row['id'], array('aset_id'=>$row['attribute_set_id'],'quantity_requested'=>1, 'source_cart_id'=>$this->intCartId), $this->Isotope->Config->cartJumpTo) . '">' . $this->generateImage('system/modules/isotope/html/addToCart.gif') . '</a>' : $GLOBALS['TL_LANG']['MSC']['notAvailableOnline']),
 				'add_link_title' 	=> "Add To Cart"

@@ -464,9 +464,9 @@ class PayflowProPOS extends Backend
 				'product_options' 	=> $objProduct->getOptions(),
 				'downloads'			=> (is_array($arrDownloads) ? $arrDownloads : array()),
 				'name'				=> $objProduct->name,
-				'quantity'			=> $objItems->quantity_sold,
+				'quantity'			=> $objItems->product_quantity,
 				'price'				=> $this->Isotope->formatPriceWithCurrency($objProduct->price),
-				'total'				=> $this->Isotope->formatPriceWithCurrency(($objProduct->price * $objItems->quantity_sold)),
+				'total'				=> $this->Isotope->formatPriceWithCurrency(($objProduct->price * $objItems->product_quantity)),
 				'href'				=> ($this->jumpTo ? $this->generateFrontendUrl($arrPage, '/product/'.$objItems->alias) : ''),
 				'tax_id'			=> $objProduct->tax_id,
 			);
@@ -576,9 +576,9 @@ class PayflowProPOS extends Backend
 				'raw'			=> $objItems->row(),
 				'downloads'		=> (is_array($arrDownloads) ? $arrDownloads : array()),
 				'name'			=> $objProduct->name,
-				'quantity'		=> $objItems->quantity_sold,
+				'quantity'		=> $objItems->product_quantity,
 				'price'			=> $this->Isotope->formatPriceWithCurrency($objProduct->price),
-				'total'			=> $this->Isotope->formatPriceWithCurrency(($objProduct->price * $objItems->quantity_sold)),
+				'total'			=> $this->Isotope->formatPriceWithCurrency(($objProduct->price * $objItems->product_quantity)),
 				'href'			=> ($this->jumpTo ? $this->generateFrontendUrl($arrPage, '/product/'.$objItems->alias) : ''),
 				'tax_id'		=> $objProduct->tax_id,
 			);
@@ -641,7 +641,7 @@ class PayflowProPOS extends Backend
 			$arrProductLists[] = array
 			(
 				'id'		=> $objProduct->id, 
-				'quantity'	=> $objItems->quantity_requested,
+				'quantity'	=> $objItems->product_quantity,
 				'price'		=> $objItems->price,
 				'options'	=> $objProduct->getOptions(),
 			);

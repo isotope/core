@@ -49,7 +49,6 @@ abstract class ModuleIsotope extends Module
 		if (TL_MODE == 'FE')
 		{	
 			$this->import('Isotope');
-			$this->import('IsotopeCart', 'Cart');
 			
 			if (FE_USER_LOGGED_IN)
 			{

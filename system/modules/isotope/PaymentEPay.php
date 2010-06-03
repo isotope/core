@@ -76,9 +76,7 @@ class PaymentEPay extends IsotopePayment
 	{
 		return true;
 /*
-		$this->import('IsotopeCart', 'Cart');
-		
-		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=? AND status!='cancelled'")->limit(1)->execute($this->Cart->id);
+		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=? AND status!='cancelled'")->limit(1)->execute($this->Isotope->Cart->id);
 		
 		$arrData = deserialize($objOrder->payment_data, true);
 		
@@ -218,9 +216,8 @@ class PaymentEPay extends IsotopePayment
 	public function checkoutForm()
 	{
 		$this->import('Isotope');
-		$this->import('IsotopeCart', 'Cart');
 		
-		$objOrder = $this->Database->prepare("SELECT order_id FROM tl_iso_orders WHERE cart_id=?")->execute($this->Cart->id);
+		$objOrder = $this->Database->prepare("SELECT order_id FROM tl_iso_orders WHERE cart_id=?")->execute($this->Isotope->Cart->id);
 		
 		return '
 <h2>' . $GLOBALS['TL_LANG']['ISO']['pay_with_epay'][0] . '</h2>
@@ -231,7 +228,7 @@ class PaymentEPay extends IsotopePayment
 <input type="hidden" name="merchantnumber" value="' . $this->epay_merchantnumber . '">
 <input type="hidden" name="orderid" value="' . $objOrder->order_id . '">
 <input type="hidden" name="currency" value="' . $this->arrLanguages[$GLOBALS['TL_LANGUAGE']] . '">
-<input type="hidden" name="amount" value="' . $this->Cart->grandTotal . '">
+<input type="hidden" name="amount" value="' . $this->Isotope->Cart->grandTotal . '">
 
 <input type="hidden" name="accepturl" value="' . $this->Environment->base . $this->addToUrl('step=complete') . '">
 <input type="hidden" name="declineurl" value="' . $this->Environment->base . $this->addToUrl('step=failed') . '">

@@ -43,10 +43,10 @@ class tl_iso_order_edit extends Backend
 	 */
     public function editOrderItems($dc)
 	{
-		$objItems = $this->Database->prepare("SELECT id, pid, price, quantity_sold, (SELECT name FROM tl_iso_products WHERE tl_iso_products.id=tl_iso_order_items.product_id) AS product_name FROM tl_iso_order_items WHERE pid=?")->limit(1)->execute($dc->id);
+		$objItems = $this->Database->prepare("SELECT id, pid, price, product_quantity, (SELECT name FROM tl_iso_products WHERE tl_iso_products.id=tl_iso_order_items.product_id) AS product_name FROM tl_iso_order_items WHERE pid=?")->limit(1)->execute($dc->id);
 		
 		$arrFields = array();
-		$arrEditFields = array('price','quantity_sold');
+		$arrEditFields = array('price','product_quantity');
 			
 		$strBuffer .= '<div id="tl_buttons">
 <a href="'.ampersand(str_replace('&key=edit_items', '', $this->Environment->request)).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
@@ -64,7 +64,7 @@ class tl_iso_order_edit extends Backend
 <th align="center">' . $GLOBALS['TL_LANG']['tl_iso_products']['name'][0] . '</th>
 <th align="center">'.$GLOBALS['TL_LANG']['tl_iso_orders']['price'][0].'</th>
 <th>&nbsp;</th>
-<th align="center">'.$GLOBALS['TL_LANG']['tl_iso_orders']['quantity_sold'][0].'</th>
+<th align="center">'.$GLOBALS['TL_LANG']['tl_iso_orders']['product_quantity'][0].'</th>
 <th align="center">'.$GLOBALS['TL_LANG']['tl_iso_orders']['item_total'][0].'</th>';
 
 //$strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="16" height="16" alt="' . $GLOBALS['TL_LANG']['tl_iso_products']['published'][0].'" /></th></thead>';		
@@ -98,7 +98,7 @@ class tl_iso_order_edit extends Backend
 				switch($key)
 				{
 					case 'price':
-					case 'quantity_sold':
+					case 'product_quantity':
 						$objWidget->class = 'tl_text_4';
 						break;
 					default:
