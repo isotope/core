@@ -363,12 +363,7 @@ class IsotopeProduct extends Controller
 	 */
 	//!@todo I dislike the listing approach, we might find a better solution
 	public function getOptions($blnRaw=false)
-	{
-		if(!is_array($this->arrOptions))
-		{
-			return array();
-		}
-		
+	{				
 		if ($blnRaw)
 		{
 			return $this->arrOptions;
