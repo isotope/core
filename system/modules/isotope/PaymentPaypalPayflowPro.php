@@ -131,7 +131,7 @@ class PaymentPaypalPayflowPro extends IsotopePayment
 			$arrNVP[] .= $k . '=' . $v;
 		}
 					 
-		$tempstr = $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_num'] . $this->Isotope->Cart$this->Isotope->Cart->grandTotal . date('YmdGis') . "1";
+		$tempstr = $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_num'] . $this->Isotope->Cart . $this->Isotope->Cart->grandTotal . date('YmdGis') . "1";
       	
       	$request_id = md5($tempstr);
       	
