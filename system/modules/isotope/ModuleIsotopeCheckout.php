@@ -864,58 +864,19 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				$this->log('Unable to send customer confirmation for order ID '.$orderId, 'ModuleIsotopeCheckout writeOrder', TL_ERROR);
 			}
 			
-			$this->copyCartItems($orderId);
+			$objOrder = new IsotopeOrder();
 			
-			$this->Isotope->Cart->delete();
+			if ($objOrder->findBy('id', $orderId))
+			{
+				$objOrder->transferFromCollection($this->Isotope->Cart);
+				$this->Isotope->Cart->delete();
+			}
+			
 			unset($_SESSION['CHECKOUT_DATA']);
 			unset($_SESSION['ISOTOPE']);
 		}
 		
 		return $strUniqueId;
-	}
-	
-	
-	/** 
-	 * Copy items from the cart and place in the order items reference table. Also stores product downloads.
-	 *
-	 * @param integer $intCartId
-	 * @param integer $intOrderId
-	 * @return void
-	 */
-	protected function copyCartItems($intOrderId)
-	{
-		$arrProducts = $this->Isotope->Cart->getProducts();
-		
-		foreach( $arrProducts as $objProduct )
-		{
-			$arrSet = array
-			(
-				'pid'				=> $intOrderId,
-				'tstamp'			=> time(),
-				'product_id'		=> $objProduct->id,
-				'product_quantity'	=> $objProduct->quantity_requested,
-				'price'				=> $objProduct->price,
-				'product_options'	=> serialize($objProduct->getOptions(true)),
-				//'product_data'		=> serialize($objProduct),
-			);
-			
-			$itemId = $this->Database->prepare("INSERT INTO tl_iso_order_items %s")->set($arrSet)->execute()->insertId;
-			
-			$objDownloads = $this->Database->prepare("SELECT * FROM tl_iso_downloads WHERE pid=?")->execute($objProduct->id);
-			
-			while( $objDownloads->next() )
-			{
-				$arrSet = array
-				(
-					'pid'					=> $itemId,
-					'tstamp'				=> time(),
-					'download_id'			=> $objDownloads->id,
-					'downloads_remaining'	=> ($objDownloads->downloads_allowed > 0 ? $objDownloads->downloads_allowed : ''),
-				);
-				
-				$this->Database->prepare("INSERT INTO tl_iso_order_downloads %s")->set($arrSet)->execute();
-			}
-		}
 	}
 	
 		

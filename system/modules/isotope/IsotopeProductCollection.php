@@ -156,6 +156,8 @@ abstract class IsotopeProductCollection extends Model
 		if ($objItem->numRows)
 		{
 			$this->Database->query("UPDATE {$this->ctable} SET product_quantity=(product_quantity+$intQuantity) WHERE id={$objItem->id}");
+			
+			return $objItems->id;
 		}
 		else
 		{
@@ -173,7 +175,7 @@ abstract class IsotopeProductCollection extends Model
 				'rules_applied'			=> (is_array($objProduct->rules_applied) ? serialize($objProduct->rules_applied) : '')
 			);
 			
-			$this->Database->prepare("INSERT INTO {$this->ctable} %s")->set($arrSet)->executeUncached();
+			return $this->Database->prepare("INSERT INTO {$this->ctable} %s")->set($arrSet)->executeUncached()->insertId;
 		}
 	}
 	
@@ -190,8 +192,10 @@ abstract class IsotopeProductCollection extends Model
 	public function transferFromCollection(IsotopeProductCollection $objCollection, $blnDuplicate=true)
 	{
 		if (!$this->blnRecordExists)
-			return false;
+			return array();
 			
+		$time = time();
+		$arrIds = array();
 	 	$objOldItems = $this->Database->execute("SELECT * FROM {$objCollection->ctable} WHERE pid={$objCollection->id}");
 									  
 		while( $objOldItems->next() )
@@ -201,19 +205,21 @@ abstract class IsotopeProductCollection extends Model
 			// Product exists in target table. Increase amount.
 			if ($objNewItems->numRows)
 			{
-				$this->Database->query("UPDATE {$this->ctable} SET product_quantity=(product_quantity+{$objOldItems->product_quantity}) WHERE id={$objNewItems->id}");
+				$this->Database->query("UPDATE {$this->ctable} SET tstamp=$time AND product_quantity=(product_quantity+{$objOldItems->product_quantity}) WHERE id={$objNewItems->id}");
+				$arrIds[] = $objNewItems->id;
 			}
 								
 			// Product does not exist in this collection, we don't duplicate and are on the same table. Simply change parent id.
 			elseif (!$objNewItems->numRows && !$blnDuplicate && $this->ctable == $objCollection->ctable)
 			{
-				$this->Database->query("UPDATE {$this->ctable} SET pid={$this->id} WHERE id={$objOldItems->id}");
+				$this->Database->query("UPDATE {$this->ctable} SET tstamp=$time AND pid={$this->id} WHERE id={$objOldItems->id}");
+				$arrIds[] = $objOldItems->id;
 			}
 			
 			// Duplicate all existing rows to target table
 			else
 			{
-				$arrSet = array('pid'=>$this->id);
+				$arrSet = array('pid'=>$this->id, 'tstamp'=>$time);
 				
 				foreach( $objOldItems->row() as $k=>$v )
 				{
@@ -226,11 +232,11 @@ abstract class IsotopeProductCollection extends Model
 					}
 				}
 				
-				$this->Database->prepare("INSERT INTO {$this->ctable} %s")->set($arrSet)->executeUncached();
+				$arrIds[] = $this->Database->prepare("INSERT INTO {$this->ctable} %s")->set($arrSet)->executeUncached()->insertId;
 			}
 		}
 		
-		return $objOldItems->numRows;
+		return $arrIds;
 	}
 }
 
