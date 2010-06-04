@@ -67,5 +67,28 @@ class IsotopeOrder extends IsotopeProductCollection
 			}
 		}
 	}
+	
+	
+	/**
+	 * Remove downloads when removing a product
+	 */
+	public function deleteProduct($intId)
+	{
+		$this->Database->query("DELETE FROM tl_iso_order_downloads WHERE pid=$intId");
+		
+		return parent::deleteProuct($intId);
+	}
+
+	
+	/**
+	 * Also delete downloads when deleting this order.
+	 */
+	public function delete()
+	{
+		$this->Database->query("DELETE FROM tl_iso_order_downloads WHERE pid IN (SELECT id FROM {$this->ctable} WHERE pid={$this->id})");
+		
+		return parent::delete();
+	}
+
 }
 
