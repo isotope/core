@@ -747,12 +747,23 @@ class tl_iso_products extends Backend
 		// Generate alias if there is none
 		if (!strlen($varValue))
 		{
-			$objProduct = $this->Database->prepare("SELECT sku, name FROM tl_iso_products WHERE id=?")
-										 ->limit(1)
-										 ->execute($dc->id);
-
 			$autoAlias = true;
-			$varValue = strlen($objProduct->name) ? standardize($objProduct->name) : standardize($objProduct->sku);
+			$varValue = standardize($this->Input->post('name'));
+			
+			if (!strlen($varValue))
+			{
+				$varValue = standardize($this->Input->post('sku'));
+			}
+			
+			if (!strlen($varValue))
+			{
+				$varValue = strlen($dc->activeRecord->name) ? standardize($dc->activeRecord->name) : standardize($dc->activeRecord->sku);
+			}
+			
+			if (!strlen($varValue))
+			{
+				$varValue = $dc->id;
+			}
 		}
 
 		$objAlias = $this->Database->prepare("SELECT id FROM tl_iso_products WHERE id=? OR alias=?")
