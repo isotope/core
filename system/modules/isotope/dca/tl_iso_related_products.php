@@ -50,9 +50,9 @@ $GLOBALS['TL_DCA']['tl_iso_related_products'] = array
 		'sorting' => array
 		(
 			'mode'						=> 4,
-			'fields'					=> array('sorting'),
+			'fields'					=> array('category'),
 			'flag'						=> 1,
-//			'panelLayout'				=> 'filter;search,limit',
+			'panelLayout'				=> 'filter,limit',
 			'headerFields'				=> array('type', 'name', 'alias', 'sku'),
 			'child_record_callback'		=> array('tl_iso_related_products', 'listRows')
 		),
@@ -77,15 +77,8 @@ $GLOBALS['TL_DCA']['tl_iso_related_products'] = array
 			'copy' => array
 			(
 				'label'					=> &$GLOBALS['TL_LANG']['tl_iso_related_products']['copy'],
-				'href'					=> 'act=paste&amp;mode=copy',
+				'href'					=> 'act=copy',
 				'icon'					=> 'copy.gif'
-			),
-			'cut' => array
-			(
-				'label'					=> &$GLOBALS['TL_LANG']['tl_iso_related_products']['cut'],
-				'href'					=> 'act=paste&amp;mode=cut',
-				'icon'					=> 'cut.gif',
-				'attributes'			=> 'onclick="Backend.getScrollOffset();"'
 			),
 			'delete' => array
 			(
@@ -116,6 +109,7 @@ $GLOBALS['TL_DCA']['tl_iso_related_products'] = array
 		(
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_related_products']['category'],
 			'exclude'					=> true,
+			'filter'					=> true,
 			'inputType'					=> 'select',
 			'foreignKey'				=> 'tl_iso_related_categories.name',
 			'eval'						=> array('mandatory'=>true, 'includeBlankOption'=>true),
