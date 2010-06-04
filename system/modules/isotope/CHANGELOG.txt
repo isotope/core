@@ -14,6 +14,7 @@ Version 0.1.1 stable (2010-??-??)
 - Fixed old image size message (Ticket #119)
 - Fixed a bug with minimum/maximum order total calculation.
 - Fixed wrong template name for config switcher module
+- Fixed product alias not generated correctly when alias field is before name (Ticket #123)
 
 Version 0.1.0 stable (2010-05-23)
 ------------------------------
