@@ -200,7 +200,7 @@ abstract class IsotopeProductCollection extends Model
 									  
 		while( $objOldItems->next() )
 		{
-			$objNewItems = $this->Database->execute("SELECT * FROM {$this->ctable} WHERE pid={$this->id} AND product_id={$objOldItems->product_id} AND product_options={$objOldItems->product_options}");
+			$objNewItems = $this->Database->execute("SELECT * FROM {$this->ctable} WHERE pid={$this->id} AND product_id={$objOldItems->product_id} AND product_options='{$objOldItems->product_options}'");
 			
 			// Product exists in target table. Increase amount.
 			if ($objNewItems->numRows)
