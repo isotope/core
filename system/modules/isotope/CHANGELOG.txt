@@ -9,6 +9,8 @@ Version 0.2.0
 - Added: New payment module for ePay (www.epay.eu)
 - Added: Hooks for altering product before output
 - Added: Payment and and shipping module can now provide additional info for each order (trough a button/operation)
+- Added limit panel to tl_iso_product_categories (Ticket #132)
+- Fixed: Null array bug in ModuleIsotopeProductFilter
 
 Version 0.1.1 stable (2010-??-??)
 ------------------------------
@@ -24,7 +26,7 @@ Version 0.1.1 stable (2010-??-??)
 - Fixed: Disabled deprecated product storage in checkout module - now copies only product options to order items table.
 - Fixed: Null object bug in IsotopeCart
 - Fixed: wrong template name for config switcher module
-- Fixed: Null array bug in ModuleIsotopeProductFilter
+- Fixed product alias not generated correctly when alias field is before name (Ticket #123)
 
 Version 0.1.0 stable (2010-05-23)
 ------------------------------
