@@ -48,6 +48,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_categories'] = array
 		(
 			'mode'						=> 4,
 			'fields'					=> array('sorting'),
+			'panelLayout'				=> 'limit',
 			'headerFields'				=> array('title', 'type'),
 			'child_record_callback'		=> array('tl_iso_product_categories', 'listRows')
 		),
