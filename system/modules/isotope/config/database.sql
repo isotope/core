@@ -197,7 +197,6 @@ CREATE TABLE `tl_iso_attributes` (
 CREATE TABLE `tl_iso_config` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
-  `sorting` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
   `name` varchar(255) NOT NULL default '',
   `label` varchar(255) NOT NULL default '',
@@ -308,7 +307,6 @@ CREATE TABLE `tl_content` (
 CREATE TABLE `tl_cart` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
-  `sorting` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
   `session` blob NULL,
   `last_visit` int(10) unsigned NOT NULL default '0',
@@ -328,7 +326,6 @@ CREATE TABLE `tl_cart` (
 CREATE TABLE `tl_cart_items` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
-  `sorting` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
   `product_id` int(10) unsigned NOT NULL default '0',
   `product_sku` varchar(128) NOT NULL default '',
@@ -510,7 +507,6 @@ CREATE TABLE `tl_iso_shipping_options` (
 CREATE TABLE `tl_iso_orders` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
-  `sorting` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
   `date` int(10) unsigned NOT NULL default '0',
   `date_payed` varchar(10) NOT NULL default '',
@@ -724,7 +720,6 @@ CREATE TABLE `tl_iso_related_categories` (
 CREATE TABLE `tl_iso_related_products` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
-  `sorting` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
   `category` int(10) unsigned NOT NULL default '0',
   `products` blob NULL,
