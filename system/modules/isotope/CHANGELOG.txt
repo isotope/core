@@ -29,6 +29,7 @@ Version 0.1.1 (2010-06-06)
 - Fixed product alias not generated correctly when alias field is before name (Ticket #123)
 - Fixed template bug in iso_cart_full (Ticket #129)
 - Fixed problem with checkout in Internet Explorer 6 (Ticket #128)
+- Fixed missing price calculation function in Order Total shipping (Ticket #112)
 
 Version 0.1.0 stable (2010-05-23)
 ------------------------------
