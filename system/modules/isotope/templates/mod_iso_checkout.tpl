@@ -30,8 +30,8 @@
 <div class="clear">&nbsp;</div>
 <?php if ($this->showPrevious || $this->showNext): ?>
 	<div class="submit_container">
-		<?php if ($this->showPrevious): ?><button type="submit" class="submit previous button" name="previousStep" value="1"><?php echo $this->previousLabel; ?></button><?php endif; if ($this->showNext): ?>
-		<button type="submit" class="submit <?php echo $this->nextClass; ?> button" name="nextStep" value="1"><?php echo $this->nextLabel; ?></button><?php endif; ?>
+		<?php if ($this->showPrevious): ?><input type="submit" class="submit previous button" name="previousStep" value="<?php echo $this->previousLabel; ?>" /><?php endif; if ($this->showNext): ?>
+		<input type="submit" class="submit <?php echo $this->nextClass; ?> button" name="nextStep" value="<?php echo $this->nextLabel; ?>" /><?php endif; ?>
 	</div>
 <?php endif; ?>
 </form>
