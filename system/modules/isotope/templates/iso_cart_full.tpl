@@ -74,7 +74,7 @@
 </tr>
 </tbody>
 </table>
-<?php endif; ?>
 </div>
+<?php endif; ?>
 </form>
 </div>
