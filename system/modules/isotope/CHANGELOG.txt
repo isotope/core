@@ -2,7 +2,7 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 0.2.0
+Version 0.2.0 beta1
 ------------------------------
 - Added: Product weight field and weight units
 - Added: Shipping module for price based on product weight
@@ -11,8 +11,10 @@ Version 0.2.0
 - Added: Payment and and shipping module can now provide additional info for each order (trough a button/operation)
 - Added limit panel to tl_iso_product_categories (Ticket #132)
 - Fixed: Null array bug in ModuleIsotopeProductFilter
+- Fixed: Null object bug in IsotopeCart
+- Fixed: Disabled deprecated product storage in checkout module - now copies only product options to order items table.
 
-Version 0.1.1 stable (2010-??-??)
+Version 0.1.1 (2010-06-06)
 ------------------------------
 - Customer email is now sent to member email if no email in address book
 - Fixed: Countries and shipping methods for payment modules are no longer mandatory
@@ -21,12 +23,12 @@ Version 0.1.1 stable (2010-??-??)
 - Fixed: Final price for paypal standard payment module did not include taxes
 - Fixed: Latest order did not appear in order history module
 - Fixed: Checkout condition form did show invisible fields
-- Fixed: old image size message (Ticket #119)
 - Fixed: Bug with minimum/maximum order total calculation.
-- Fixed: Disabled deprecated product storage in checkout module - now copies only product options to order items table.
-- Fixed: Null object bug in IsotopeCart
-- Fixed: wrong template name for config switcher module
+- Fixed old image size message (Ticket #119)
+- Fixed wrong template name for config switcher module
 - Fixed product alias not generated correctly when alias field is before name (Ticket #123)
+- Fixed template bug in iso_cart_full (Ticket #129)
+- Fixed problem with checkout in Internet Explorer 6 (Ticket #128)
 
 Version 0.1.0 stable (2010-05-23)
 ------------------------------
