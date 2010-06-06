@@ -44,10 +44,6 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['shipping_modules']		= array('Ship
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['product_types']			= array('Product types', 'You can restrict this payment method to certain product types. If the cart contains a product type you have not selected, the payment module is not available.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['paypal_account']			= array('PayPal Account', 'Enter your paypal account (email address).');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['paypal_business']		= array('Article name', 'The PayPal checkout screen will show this one-liner for order items.');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['paypalpro_apiUserName']  = array('Paypal Website Payments Pro username','');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['paypalpro_apiPassword']  = array('Paypal Website Payments Pro password','An alphanumeric string similar in format to this: QFZCWN5HZM8VBG7Q');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['paypalpro_apiSignature'] = array('Paypal Website Payments Pro api signature','An alphanumeric string similar in format to this: A-IzJhZZjhg29XQ2qnhapuwxIDzyAZQ92FRP5dqBzVesOkzbdUONzmOU');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['paypalpro_transType']	= array('Paypal Website Payments Pro transaction type','Please select a transaction type.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_user']		= array('Paypal Payflow Pro username','');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_vendor']		= array('Paypal Payflow Pro vendor','An alphanumeric string of about 10 characters.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_partner']		= array('Paypal Payflow Pro partner','Case-sensitive!  Usual partner Ids are either "PayPal" or "PayPalUK".');
@@ -90,17 +86,10 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['CREDIT'] 				= array('Credit', 'T
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['VOID']					= array('Void', 'This transaction is an action on a previous transaction and is used to cancel the previous transaction and ensure it does not get sent for settlement. It can be done on any type of transaction (i.e., CREDIT, AUTH_CAPTURE, CAPTURE_ONLY, and AUTH_ONLY). The transaction will be accepted by the gateway if the following conditions are met: <ul><li>The transaction is submitted with the ID of the transaction that has to be voided.</li><li>The gateway has a record of the transaction referenced by the ID.</li><li>The transaction has not been sent for settlement.</li></ul>');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['PRIOR_AUTH_CAPTURE']	= array('Prior Authorization and Capture', 'This transaction is used to request settlement for a transaction that was previously submitted as an AUTH_ONLY. The gateway will accept this transaction and initiate settlement if the following conditions are met: <ul> <li>The transaction is submitted with the ID of the original authorization-only transaction, which needs to be settled.</li> <li>The transaction ID is valid and the system has a record of the original authorization-only transaction being submitted.</li> <li>The original transaction referred to is not already settled or expired or errored.</li><li>The amount being requested for settlement in this transaction is less than or equal to the original authorized amount.</li></ul>If no amount is submitted in this transaction, the gateway will initiate settlement for the amount of the originally authorized transaction. <em>Note: If extended line item, tax, freight, and/or duty information was submitted with the original transaction, adjusted information may be submitted in the event that the transaction amount changed. If no adjusted line item, tax, freight, and/or duty information is submitted, the information submitted with the original transaction will apply.</em>');
 
-//Paypal website payments pro
-$GLOBALS['TL_LANG']['tl_payment_module']['paypalpro_transTypes']['Sale'] = 'Complete Sale'; 
-$GLOBALS['TL_LANG']['tl_payment_module']['paypalpro_transTypes']['Authorization'] = 'Authorize Only';
+//Paypal Payflow Pro
+$GLOBALS['TL_LANG']['tl_payment_module']['payflowpro_transTypes']['Sale'] = 'Authorization and Capture'; 
+$GLOBALS['TL_LANG']['tl_payment_module']['payflowpro_transTypes']['Authorization'] = 'Authorize Only';
 
-//Paypal payflow pro
-$GLOBALS['TL_LANG']['tl_payment_module']['paypalpro_transTypes']['S'] = 'Sale'; 
-$GLOBALS['TL_LANG']['tl_payment_module']['paypalpro_transTypes']['A'] = 'Authorization'; 
-$GLOBALS['TL_LANG']['tl_payment_module']['paypalpro_transTypes']['C'] = 'Credit'; 
-$GLOBALS['TL_LANG']['tl_payment_module']['paypalpro_transTypes']['D'] = 'Delayed Capture'; 
-$GLOBALS['TL_LANG']['tl_payment_module']['paypalpro_transTypes']['V'] = 'Void'; 
-//S = Sale transaction, A = Authorisation, C = Credit, D = Delayed Capture, V = Void
 /**
  * Legends
  */
