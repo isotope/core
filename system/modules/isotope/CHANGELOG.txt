@@ -12,6 +12,7 @@ Version 0.1.1 stable (2010-06-06)
 - Fixed: Latest order did not appear in order history module
 - Fixed: Checkout condition form did show invisible fields
 - Fixed: Bug with minimum/maximum order total calculation.
+- Fixed: missing price calculation function in Order Total shipping (Ticket #112)
 - Fixed old image size message (Ticket #119)
 - Fixed wrong template name for config switcher module
 - Fixed product alias not generated correctly when alias field is before name (Ticket #123)
