@@ -13,6 +13,7 @@ Version 0.2.0 beta1
 - Fixed: Null array bug in ModuleIsotopeProductFilter
 - Fixed: Null object bug in IsotopeCart
 - Fixed: Disabled deprecated product storage in checkout module - now copies only product options to order items table.
+- Removed: Paypal Website Payments Pro option - use Paypal Payflow Pro or Paypal Standard
 
 Version 0.1.1 (2010-06-06)
 ------------------------------
@@ -30,7 +31,6 @@ Version 0.1.1 (2010-06-06)
 - Fixed: template bug in iso_cart_full (Ticket #129)
 - Fixed: problem with checkout in Internet Explorer 6 (Ticket #128)
 - Fixed: missing price calculation function in Order Total shipping (Ticket #112)
-- Removed: Paypal Website Payments Pro option - use Paypal Payflow Pro or Paypal Standard
 
 Version 0.1.0 stable (2010-05-23)
 ------------------------------
