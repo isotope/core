@@ -128,7 +128,6 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 		'default'				=> '{type_legend},type,name',
 		'cash'					=> '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{price_legend:hide},price,tax_class;{enabled_legend},enabled',
 		'paypal'				=> '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,postsale_mail,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},paypal_account,paypal_business;{price_legend:hide},price,tax_class;{template_legend},button;{enabled_legend},debug,enabled',
-		'paypalpro'				=> '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,allowed_cc_types,requireCCV,postsale_mail,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},paypalpro_apiUserName,paypalpro_apiPassword,paypalpro_apiSignature,paypalpro_transType;{price_legend:hide},price,tax_class;{template_legend},button;{enabled_legend},debug,enabled',
 		'paypalpayflowpro'		=> '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,allowed_cc_types,requireCCV,postsale_mail,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},payflowpro_user,payflowpro_vendor,payflowpro_partner,payflowpro_password,payflowpro_transType;{price_legend:hide},price,tax_class;{template_legend},button;{enabled_legend},debug,enabled',
 		'postfinance'			=> '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,postsale_mail,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},postfinance_pspid,postfinance_secret,postfinance_method;{price_legend:hide},price,tax_class;{enabled_legend},debug,enabled',
 		'authorizedotnet'		=> '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,allowed_cc_types,requireCCV,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},authorize_login,authorize_trans_key,authorize_trans_type,authorize_delimiter;{price_legend:hide},price,tax_class;{enabled_legend},debug,enabled',
@@ -267,37 +266,6 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
-		),
-		'paypalpro_apiUserName' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['paypalpro_apiUserName'],
-			'exclude'                 => true,
-			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
-		),
-		'paypalpro_apiPassword' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['paypalpro_apiPassword'],
-			'exclude'                 => true,
-			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'hideInput'=>true),
-		),
-		'paypalpro_apiSignature' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['paypalpro_apiSignature'],
-			'exclude'                 => true,
-			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
-		),
-		'paypalpro_transType' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['paypalpro_transType'],
-			'exclude'                 => true,
-			'default'				  => 'Sale',
-			'inputType'               => 'select',
-			'options'				  => array('S','A','D',),
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
-			'reference'				  => &$GLOBALS['TL_LANG']['tl_payment_module']['paypalpro_transTypes']
 		),
 		'payflowpro_user' => array
 		(

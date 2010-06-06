@@ -27,6 +27,7 @@ CREATE TABLE `tl_module` (
   `iso_config_id` int(10) unsigned NOT NULL default '0',
   `iso_config_ids` blob NULL,
   `iso_jump_first` char(1) NOT NULL default '',
+  `iso_add_product_jumpTo` int(10) unsigned NOT NULL default '0',
   `iso_forward_cart` char(1) NOT NULL default '',
   `iso_forward_review` char(1) NOT NULL default '',
   `iso_mail_customer` int(10) unsigned NOT NULL default '0',
@@ -311,6 +312,8 @@ CREATE TABLE `tl_cart` (
   `session` blob NULL,
   `last_visit` int(10) unsigned NOT NULL default '0',
   `source_cart_id` int(10) unsigned NOT NULL default '0',
+  `cart_type_id` int(10) unsigned NOT NULL default '0',
+  `config_id` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -394,10 +397,6 @@ CREATE TABLE `tl_iso_payment_modules` (
   `postsale_mail` int(10) unsigned NOT NULL default '0',
   `paypal_account` varchar(255) NOT NULL default '',
   `paypal_business` varchar(255) NOT NULL default '',
-  `paypalpro_apiUserName` varchar(255) NOT NULL default '',
-  `paypalpro_apiPassword` varchar(255) NOT NULL default '',
-  `paypalpro_apiSignature` varchar(255) NOT NULL default '',
-  `paypalpro_transType` varchar(64) NOT NULL default '',
   `payflowpro_user` varchar(255) NOT NULL default '',
   `payflowpro_vendor` varchar(255) NOT NULL default '',
   `payflowpro_password` varchar(255) NOT NULL default '',
