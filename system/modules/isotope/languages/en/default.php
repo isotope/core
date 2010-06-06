@@ -248,7 +248,6 @@ $GLOBALS['TL_LANG']['SHIP']['usps']				= array('USPS Live Rates and Service ship
  */
 $GLOBALS['TL_LANG']['PAY']['cash']				= array('Cash', 'Use this for all offline processed payment.');
 $GLOBALS['TL_LANG']['PAY']['paypal']			= array('PayPal Standard Checkout', 'This PayPal module supports IPN (Instant Payment Notifications).');
-$GLOBALS['TL_LANG']['PAY']['paypalpro']			= array('PayPal Website Payments Pro', 'This PayPal module is a full service credit card gateway using Paypals own Website Payments Pro gateway.  Recommended only for low-traffic situations with no transactions over $10,000.');
 $GLOBALS['TL_LANG']['PAY']['paypalpayflowpro']	= array('PayPal Payflow Pro', 'The PayPal Payflow module is a full service credit card gateway, a more robust solution for most e-commerce sites.');
 $GLOBALS['TL_LANG']['PAY']['postfinance']		= array('Postfinance', 'Payment gateway for the swiss post payment system that supports various card types. The store will be instantly notified about successfull transactions.');
 $GLOBALS['TL_LANG']['PAY']['authorizedotnet']	= array('Authorize.net', 'An Authorize.net payment gateway.');

@@ -45,6 +45,8 @@ $GLOBALS['TL_LANG']['tl_module']['iso_shipping_modules']		= array('Shipping meth
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method']			= array('Checkout method','Choose your checkout method.');
 $GLOBALS['TL_LANG']['tl_module']['iso_order_conditions']		= array('Order conditions form','Choose a custom form that is used to display your order terms and conditions (optional).');
 $GLOBALS['TL_LANG']['tl_module']['orderCompleteJumpTo']			= array('Completed order jump to page','Select a page the customer will be referred to after their order is complete.');
+$GLOBALS['TL_LANG']['tl_module']['iso_add_product_jumpTo']		= array('Add product redirect','Select a page the customer will be redirected to when adding a product to the cart.');
+
 $GLOBALS['TL_LANG']['tl_module']['iso_jump_first']				= array('Redirect to first product', 'Check here if users are redirected to the first product of the list.');
 $GLOBALS['TL_LANG']['tl_module']['iso_forward_cart']			= array('Forward to cart', 'Forward to cart page when adding a product.');
 $GLOBALS['TL_LANG']['tl_module']['iso_mail_customer']			= array('Customer notification email','Select the Iotope Email used to send to customers when they place an order');
