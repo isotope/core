@@ -719,6 +719,7 @@ CREATE TABLE `tl_iso_related_products` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
+  `sorting` int(10) unsigned NOT NULL default '0',
   `category` int(10) unsigned NOT NULL default '0',
   `products` blob NULL,
   PRIMARY KEY  (`id`),
