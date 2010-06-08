@@ -591,30 +591,27 @@ class IsotopeProduct extends Controller
 					$varValues = deserialize($varValue);
 					$arrLabels = array();
 					
-					if($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['is_visible_on_front'])
+					foreach($arrOptions as $option)
 					{
-						foreach($arrOptions as $option)
+						if(is_array($varValues))
 						{
-							if(is_array($varValues))
+							if(in_array($option['value'], $varValues))
 							{
-								if(in_array($option['value'], $varValues))
-								{
-									$arrLabels[] = $option['label'];
-								}
-							}
-							else
-							{	
-								if($option['value']===$v)
-								{
-									$arrLabels[] = $option['label'];
-								}
+								$arrLabels[] = $option['label'];
 							}
 						}
-						
-						if($arrLabels)
-						{									
-							$strBuffer = join(',', $arrLabels); 
+						else
+						{	
+							if($option['value']===$v)
+							{
+								$arrLabels[] = $option['label'];
+							}
 						}
+					}
+					
+					if($arrLabels)
+					{									
+						$strBuffer = join(',', $arrLabels); 
 					}
 				}
 				break;
@@ -624,11 +621,7 @@ class IsotopeProduct extends Controller
 				break;
 																																		
 			default:
-				if(!isset($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['is_visible_on_front']) || $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['is_visible_on_front'])
-				{
-					//just direct render
-					$strBuffer = $varValue;
-				}
+				$strBuffer = $varValue;
 				break;
 		}
 		

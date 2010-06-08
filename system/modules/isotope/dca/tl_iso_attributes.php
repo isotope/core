@@ -124,18 +124,18 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
     (
         '__selector__'				=> array('type', 'use_alternate_source'),
 		'default'					=> '{attribute_legend},name,field_name,type,legend,description;',
-		'text'                     	=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},is_visible_on_front;{use_mode_legend},multilingual,is_customer_defined;{validation_legend},is_required,rgxp;{search_filters_legend},is_searchable,is_order_by_enabled,is_be_searchable',
-		'integer'					=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},is_visible_on_front;{use_mode_legend},is_customer_defined;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled',
-		'decimal'					=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},is_visible_on_front;is_customer_defined;is_required,is_filterable,is_order_by_enabled',
-		'textarea'					=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},is_visible_on_front;{use_mode_legend},multilingual,use_rich_text_editor,is_customer_defined;{validation_legend},is_required,rgxp;{search_filters_legend},is_searchable,is_order_by_enabled,is_be_searchable',
-		'datetime'					=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},is_visible_on_front;{validation_legend},is_required;{search_filters_legend},is_order_by_enabled',
-		'select'					=> '{attribute_legend},name,field_name,type,legend,description;{options_legend},option_list,use_alternate_source;{visibility_legend},is_visible_on_front;{use_mode_legend},is_customer_defined,add_to_product_variants,is_multiple_select;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled,is_be_filterable',
-		'conditionalselect'			=> '{attribute_legend},name,field_name,type,legend,description;{options_legend},option_list,conditionField;{visibility_legend},is_visible_on_front;{use_mode_legend},is_customer_defined,is_multiple_select;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled',
-		'options'					=> '{attribute_legend},name,field_name,type,legend,description;{options_legend},option_list,{visibility_legend},is_visible_on_front;{use_mode_legend},is_customer_defined,add_to_product_variants,is_multiple_select;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled',
-		'fileattach'				=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},is_visible_on_front;{use_mode_legend},is_customer_defined;{validation_legend},is_required',
-		'filetree'					=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},is_visible_on_front;{use_mode_legend},is_customer_defined,is_multiple_select,show_files;{validation_legend},is_required,{search_filters_legend},is_filterable',
-		'media'						=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},is_visible_on_front;{use_mode_legend},show_files;{validation_legend},is_required',
-		'checkbox'					=> '{attribute_legend},name,field_name,type,legend,description;{visibility_legend},is_visible_on_front;{use_mode_legend},is_customer_defined;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled',
+		'text'                     	=> '{attribute_legend},name,field_name,type,legend,description;{use_mode_legend},multilingual,is_customer_defined;{validation_legend},is_required,rgxp;{search_filters_legend},is_searchable,is_order_by_enabled,is_be_searchable',
+		'integer'					=> '{attribute_legend},name,field_name,type,legend,description;{use_mode_legend},is_customer_defined;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled',
+		'decimal'					=> '{attribute_legend},name,field_name,type,legend,description;is_customer_defined;is_required,is_filterable,is_order_by_enabled',
+		'textarea'					=> '{attribute_legend},name,field_name,type,legend,description;{use_mode_legend},multilingual,use_rich_text_editor,is_customer_defined;{validation_legend},is_required,rgxp;{search_filters_legend},is_searchable,is_order_by_enabled,is_be_searchable',
+		'datetime'					=> '{attribute_legend},name,field_name,type,legend,description;{validation_legend},is_required;{search_filters_legend},is_order_by_enabled',
+		'select'					=> '{attribute_legend},name,field_name,type,legend,description;{options_legend},option_list,use_alternate_source;{use_mode_legend},is_customer_defined,add_to_product_variants,is_multiple_select;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled,is_be_filterable',
+		'conditionalselect'			=> '{attribute_legend},name,field_name,type,legend,description;{options_legend},option_list,conditionField;{use_mode_legend},is_customer_defined,is_multiple_select;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled',
+		'options'					=> '{attribute_legend},name,field_name,type,legend,description;{options_legend},option_list;{use_mode_legend},is_customer_defined,add_to_product_variants,is_multiple_select;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled',
+		'fileattach'				=> '{attribute_legend},name,field_name,type,legend,description;{use_mode_legend},is_customer_defined;{validation_legend},is_required',
+		'filetree'					=> '{attribute_legend},name,field_name,type,legend,description;{use_mode_legend},is_customer_defined,is_multiple_select,show_files;{validation_legend},is_required,{search_filters_legend},is_filterable',
+		'media'						=> '{attribute_legend},name,field_name,type,legend,description;{use_mode_legend},show_files;{validation_legend},is_required',
+		'checkbox'					=> '{attribute_legend},name,field_name,type,legend,description;{use_mode_legend},is_customer_defined;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled',
     ),
 
     // Subpalettes
@@ -233,13 +233,6 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
 			'eval'					  => array('submitOnChange'=>true)
-		),
-		//!@todo check if we need this field
-		'is_visible_on_front' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_attributes']['is_visible_on_front'],
-			'exclude'                 => true,
-			'inputType'               => 'checkbox'
 		),
 		'is_required' => array
 		(

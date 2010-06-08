@@ -38,7 +38,6 @@ $GLOBALS['TL_LANG']['tl_iso_attributes']['option_list']				= array('Options', 'P
 $GLOBALS['TL_LANG']['tl_iso_attributes']['show_files']				= array('Show Files','If checked, users will be able to select individual files, if false, they may only select folders.');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['attr_use_mode']			= array('Attribute Use Mode','');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['attr_default_value']		= array('Default Value','Set a default value for this attribute which can be overridden later.');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['is_visible_on_front']		= array('Visible to Customers','Is this attribute shown to customers?');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['is_customer_defined']		= array('Defined by Customer','Is this value defined by the customer?');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['is_required']				= array('Required','Is this attribute required?');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['is_filterable']   		= array('Frontend Filterable','Can this attribute be used in a frontend filter?');
@@ -93,7 +92,6 @@ $GLOBALS['TL_LANG']['tl_iso_attributes']['deleteConfirm'] 			= 'Do you really wa
  */
 $GLOBALS['TL_LANG']['tl_iso_attributes']['attribute_legend']		= 'Attribut name & type';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['options_legend']			= 'Option Collection Data';
-$GLOBALS['TL_LANG']['tl_iso_attributes']['visibility_legend']		= 'Visibility Settings';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['use_mode_legend']			= 'Use Mode';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['search_filters_legend']	= 'Search & Filtering Settings';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['validation_legend']		= 'Validation Settings';
