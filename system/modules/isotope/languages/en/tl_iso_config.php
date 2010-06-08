@@ -62,6 +62,7 @@ $GLOBALS['TL_LANG']['tl_iso_config']['billing_countries']				= array('Billing co
 $GLOBALS['TL_LANG']['tl_iso_config']['billing_fields']					= array('Billing address fields', 'Select the fields for a new billing address when checking out.');
 $GLOBALS['TL_LANG']['tl_iso_config']['weightUnit']						= array('Weight unit of measurement','Specify the unit of measurement for weight (LBS or KGS)');
 $GLOBALS['TL_LANG']['tl_iso_config']['enableGoogleAnalytics']			= array('Enable Google Analytics e-commerce tracking','Add Google Analytics e-commerce tracking. Please note you will also have to enable e-commerce tracking in your Google Analytics account.');
+$GLOBALS['TL_LANG']['tl_iso_config']['gallery']							= array('Product image gallery', 'Different image galleries can be developed to present media files in a custom style.');
 $GLOBALS['TL_LANG']['tl_iso_config']['gallery_size']					= array('Gallery image size', 'In pixels.');
 $GLOBALS['TL_LANG']['tl_iso_config']['thumbnail_size']					= array('Thumbnail image size', 'In pixels.');
 $GLOBALS['TL_LANG']['tl_iso_config']['medium_size']						= array('Medium image size', 'In pixels.');

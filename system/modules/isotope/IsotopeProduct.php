@@ -197,41 +197,12 @@ class IsotopeProduct extends Controller
 						switch( $GLOBALS['TL_DCA'][$this->strTable]['fields'][$strKey]['inputType'] )
 						{
 							case 'mediaManager':
-								$varValue = array();
-								$arrImages = deserialize($this->arrData[$strKey]);
-
-								if(is_array($arrImages) && count($arrImages))
-								{
-									foreach( $arrImages as $k => $file )
-									{
-										$strFile = 'isotope/' . substr($file['src'], 0, 1) . '/' . $file['src'];
-
-										if (is_file(TL_ROOT . '/' . $strFile))
-										{
-											$objFile = new File($strFile);
-
-											if ($objFile->isGdImage)
-											{
-												foreach( array('large', 'medium', 'thumbnail', 'gallery') as $type )
-												{
-													$size = $this->Isotope->Config->{$type . '_size'};
-													$strImage = $this->getImage($strFile, $size[0], $size[1], $size[2]);
-													$arrSize = @getimagesize(TL_ROOT . '/' . $strImage);
-
-													$file[$type] = $strImage;
-
-													if (is_array($arrSize) && strlen($arrSize[3]))
-													{
-														$file[$type . '_size'] = $arrSize[3];
-													}
-												}
-
-												$varValue[] = $file;
-											}
-										}
-									}
-								}
-								break;
+								$strClass = $GLOBALS['ISO_GAL'][(strlen($GLOBALS['TL_DCA'][$this->strTable]['fields'][$strKey]['attributes']['gallery']) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$strKey]['attributes']['gallery'] : $this->Isotope->Config->gallery)];
+								
+								if (!strlen($strClass) || !$this->classFileExists($strClass))
+									$strClass = 'IsotopeGallery';
+									
+								$varValue = new $strClass($strKey.'_'.$this->id, deserialize($this->arrData[$strKey]));
 						}
 					}
 
@@ -255,28 +226,6 @@ class IsotopeProduct extends Controller
 							
 						case 'formatted_total_price':
 							$varValue = $this->Isotope->formatPriceWithCurrency($this->total_price);
-							break;
-
-						case 'images':
-							// No image available, add default image
-							if (!count($varValue) && is_file(TL_ROOT . '/' . $this->Isotope->Config->missing_image_placeholder))
-							{
-								foreach( array('large', 'medium', 'thumbnail', 'gallery') as $type )
-								{
-									$size = $this->Isotope->Config->{$type . '_size'};
-									$strImage = $this->getImage($this->Isotope->Config->missing_image_placeholder, $size[0], $size[1], $size[2]);
-									$arrSize = @getimagesize(TL_ROOT . '/' . $strImage);
-
-									$file[$type] = $strImage;
-
-									if (is_array($arrSize) && strlen($arrSize[3]))
-									{
-										$file[$type . '_size'] = $arrSize[3];
-									}
-								}
-
-								$varValue[] = $file;
-							}
 							break;
 					}
 
@@ -428,40 +377,19 @@ class IsotopeProduct extends Controller
 		
 		foreach( $arrAttributes as $attribute => $varValue )
 		{
-			switch( $attribute )
+			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['is_customer_defined'] || $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['add_to_product_variants'])
 			{
-				case 'images':
-					if (is_array($varValue) && count($varValue))
-					{
-						$objTemplate->hasImage = true;
-						
-						//$objTemplate->mainImage = array_shift($varValue);
-						$objTemplate->mainImage = $varValue[0];
-						
-						//if (count($varValue))
-						//{
-						$objTemplate->hasGallery = true;
-						$objTemplate->gallery = $varValue;
-						//}
-					}
-					break;
-					
-				default:
-					if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['is_customer_defined'] || $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['add_to_product_variants'])
-					{
-						$objTemplate->hasOptions = true;
-						$arrProductOptions[$attribute] = $this->generateProductOptionWidget($attribute);
-						
-						if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['add_to_product_variants'])
-						{
-							$arrAjaxOptions[] = $attribute;
-						}
-					}
-					else
-					{						
-						$objTemplate->$attribute = $this->generateAttribute($attribute, $varValue);
-					}
-					break;
+				$objTemplate->hasOptions = true;
+				$arrProductOptions[$attribute] = $this->generateProductOptionWidget($attribute);
+				
+				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['add_to_product_variants'])
+				{
+					$arrAjaxOptions[] = $attribute;
+				}
+			}
+			else
+			{
+				$objTemplate->$attribute = $this->generateAttribute($attribute, $varValue);
 			}
         }
         
@@ -561,10 +489,9 @@ class IsotopeProduct extends Controller
 		$arrOptions = array();
 		$arrAttributes = $this->getAttributes();
 		
-	
 		foreach( $arrAttributes as $attribute => $varValue )
 		{
-			if (($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['is_customer_defined'] || $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['add_to_product_variants']) && !$GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['eval']['disableAjax'])
+			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['add_to_product_variants'])
 			{
 				$arrOptions[] = array
 				(
@@ -574,11 +501,33 @@ class IsotopeProduct extends Controller
 			}
 			elseif (is_array($this->arrVariantAttributes) && in_array($attribute, $this->arrVariantAttributes))
 			{
-				$arrOptions[] = array
-				(
-					'id'		=> ($attribute . '_' . $this->id),
-					'html'		=> $this->generateAttribute($attribute, $varValue),
-				);
+				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['inputType'] == 'mediaManager')
+				{
+					$objGallery = $this->$attribute;
+					
+					foreach( array('large', 'medium', 'thumbnail') as $type )
+					{
+						$arrOptions[] = array
+						(
+							'id'		=> ($attribute . '_' . $this->id . '_' . $type . 'size'),
+							'html'		=> $objGallery->generateMainImage($type),
+						);
+					}
+					
+					$arrOptions[] = array
+					(
+						'id'		=> ($attribute . '_' . $this->id . '_gallery'),
+						'html'		=> $objGallery->generateGallery(),
+					);
+				}
+				else
+				{
+					$arrOptions[] = array
+					(
+						'id'		=> ($attribute . '_' . $this->id),
+						'html'		=> $this->generateAttribute($attribute, $varValue),
+					);
+				}
 			}
         }
         
@@ -606,8 +555,12 @@ class IsotopeProduct extends Controller
 	{
 		$strBuffer = '';
 		
-		switch($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['type'])
+		switch($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['inputType'])
 		{
+			case 'mediaManager':
+				return $this->$attribute;
+				break;
+
 			case 'select':
 			case 'radio':
 			case 'checkbox':
@@ -669,7 +622,7 @@ class IsotopeProduct extends Controller
 			case 'textarea':
 				$strBuffer = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['use_rich_text_editor'] ? $varValue : nl2br($varValue);
 				break;
-																														
+																																		
 			default:
 				if(!isset($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['is_visible_on_front']) || $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['is_visible_on_front'])
 				{

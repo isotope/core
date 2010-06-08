@@ -208,15 +208,11 @@ $GLOBALS['ISO_PAY']['postfinance']				= 'PaymentPostfinance';
 $GLOBALS['ISO_PAY']['authorizedotnet']			= 'PaymentAuthorizeDotNet';
 $GLOBALS['ISO_PAY']['epay_standard']			= 'PaymentEPay';
 
-/** 
- * Per page defaults
- */
-$GLOBALS['ISO_PERPAGE'] = array(8,12,32,64);
 
-/** 
- * Order Statuses
+/**
+ * Galleries
  */
-$GLOBALS['ISO_ORDER'] = array('pending', 'processing', 'complete', 'on_hold', 'cancelled');
+$GLOBALS['ISO_GAL']['default']					= 'IsotopeGallery';
 
 
 /**
@@ -229,6 +225,17 @@ $GLOBALS['ISO_PRODUCT'] = array
 		'class'	=> 'IsotopeProduct',
 	),
 );
+
+
+/** 
+ * Per page defaults
+ */
+$GLOBALS['ISO_PERPAGE'] = array(8,12,32,64);
+
+/** 
+ * Order Statuses
+ */
+$GLOBALS['ISO_ORDER'] = array('pending', 'processing', 'complete', 'on_hold', 'cancelled');
 
 
 /** 

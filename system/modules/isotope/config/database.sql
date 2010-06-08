@@ -231,6 +231,7 @@ CREATE TABLE `tl_iso_config` (
   `emailShipping` varchar(255) NOT NULL default '',
   `weightUnit` varchar(10) NOT NULL default '',
   `enableGoogleAnalytics` char(1) NOT NULL default '',
+  `gallery` varchar(64) NOT NULL default '',
   `thumbnail_size` varchar(64) NOT NULL default '',
   `gallery_size` varchar(64) NOT NULL default '',
   `medium_size` varchar(64) NOT NULL default '',
