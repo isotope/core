@@ -15,6 +15,7 @@ Version 0.2.0 beta1
 - Fixed: Null array bug in ModuleIsotopeProductFilter
 - Fixed: Null object bug in IsotopeCart
 - Fixed: Disabled deprecated product storage in checkout module - now copies only product options to order items table.
+- Fixed: Changed all price fields to use decimal(12,2) (payment gateways require 2 digit precision)
 - Removed: Paypal Website Payments Pro option - use Paypal Payflow Pro or Paypal Standard
 
 Version 0.1.1 (2010-06-06)
