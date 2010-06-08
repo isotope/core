@@ -106,7 +106,8 @@ class AttributeWizard extends Widget
 	{
 		$this->import('Database');
 		$this->objActiveRecord = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE id=?")->execute($this->currentRecord);
-		$this->arrDisabledFields = $GLOBALS['ISO_PRODUCT'][$this->objActiveRecord->type]['disabledFields'];
+		
+		$this->arrDisabledFields = $GLOBALS['ISO_PRODUCT'][$this->objActiveRecord->class]['disabledFields'];
 		
 		$this->arrOptions = $this->getOptions();
 		
@@ -278,7 +279,7 @@ class AttributeWizard extends Widget
 		
 		$arrAttributes = array();
 		$arrDca = $GLOBALS['TL_DCA']['tl_iso_products']['fields'];	
-				
+			
 		foreach( $arrDca as $field => $arrData )
 		{
 			if (is_array($arrData['attributes']) && strlen($arrData['attributes']['legend']) && (!is_array($this->arrDisabledFields) || !in_array($field, $this->arrDisabledFields)))
