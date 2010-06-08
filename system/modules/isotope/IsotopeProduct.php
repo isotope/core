@@ -591,20 +591,23 @@ class IsotopeProduct extends Controller
 					$varValues = deserialize($varValue);
 					$arrLabels = array();
 					
-					foreach($arrOptions as $option)
+					if (is_array($arrOptions) && count($arrOptions))
 					{
-						if(is_array($varValues))
+						foreach($arrOptions as $option)
 						{
-							if(in_array($option['value'], $varValues))
+							if(is_array($varValues))
 							{
-								$arrLabels[] = $option['label'];
+								if(in_array($option['value'], $varValues))
+								{
+									$arrLabels[] = $option['label'];
+								}
 							}
-						}
-						else
-						{	
-							if($option['value']===$v)
-							{
-								$arrLabels[] = $option['label'];
+							else
+							{	
+								if($option['value']===$v)
+								{
+									$arrLabels[] = $option['label'];
+								}
 							}
 						}
 					}
