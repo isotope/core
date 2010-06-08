@@ -254,6 +254,11 @@ $GLOBALS['TL_LANG']['PAY']['authorizedotnet']	= array('Authorize.net', 'An Autho
 $GLOBALS['TL_LANG']['PAY']['epay_standard']		= array('ePay Standard Payment Window', 'See <a href="http://www.epay.eu/"'.LINK_NEW_WINDOW.'">www.epay.eu</a> for more information about ePay.');
 
 
+/**
+ * Galleries
+ */
+$GLOBALS['TL_LANG']['GAL']['default']			= array('Default gallery (Lightbox/Mediabox)', 'Uses the lightbox/mediabox for full size images. Make sure you select the appropriate moo_ template in your page layout configuration.');
+
 
 /**
  * Product types

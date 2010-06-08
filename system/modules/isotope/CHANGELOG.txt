@@ -4,12 +4,14 @@ Isotope eCommerce Changelog
 
 Version 0.2.0 beta1
 ------------------------------
+- New IsotopeGallery class for creating custom image galleries
 - Added: Product weight field and weight units
 - Added: Shipping module for price based on product weight
 - Added: New payment module for ePay (www.epay.eu)
 - Added: Hooks for altering product before output
 - Added: Payment and and shipping module can now provide additional info for each order (trough a button/operation)
 - Added limit panel to tl_iso_product_categories (Ticket #132)
+- Fixed: Images are now updated when selecting a product variant
 - Fixed: Null array bug in ModuleIsotopeProductFilter
 - Fixed: Null object bug in IsotopeCart
 - Fixed: Disabled deprecated product storage in checkout module - now copies only product options to order items table.

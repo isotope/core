@@ -126,7 +126,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			{currency_legend},currency,currencySymbol,currencyFormat,currencyPosition;
 			{redirect_legend},cartJumpTo,checkoutJumpTo;
 			{invoice_legend:hide},invoiceLogo;
-			{images_legend},missing_image_placeholder,gallery_size,thumbnail_size,medium_size,large_size',
+			{images_legend},gallery,missing_image_placeholder,gallery_size,thumbnail_size,medium_size,large_size',
 	),
 
 	// Fields
@@ -322,6 +322,16 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'exclude'                 => true,
 			'inputType'               => 'fileTree',
 			'eval'                    => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions' => 'jpg,jpeg,gif,png,tif,tiff'),
+		),
+		'gallery' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['gallery'],
+			'exclude'                 => true,
+			'inputType'               => 'select',
+			'default'				  => 'default',
+			'options'				  => array_keys($GLOBALS['ISO_GAL']),
+			'reference'				  => &$GLOBALS['TL_LANG']['GAL'],
+			'eval'                    => array('mandatory'=>true, 'tl_class'=>'clr', 'helpwizard'=>true),
 		),
 		'gallery_size'				  => array
 		(
