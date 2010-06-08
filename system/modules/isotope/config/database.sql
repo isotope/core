@@ -162,7 +162,6 @@ CREATE TABLE `tl_iso_attributes` (
   `attr_use_mode` varchar(10) NOT NULL default 'fixed',
   `attr_default_value` varchar(255) NOT NULL default '',
   `is_customer_defined` char(1) NOT NULL default '',
-  `is_visible_on_front` char(1) NOT NULL default '',
   `is_required` char(1) NOT NULL default '',
   `is_filterable` char(1) NOT NULL default '',
   `is_searchable` char(1) NOT NULL default '',
