@@ -140,6 +140,10 @@ class IsotopeGallery extends Frontend
 	{
 		switch( $strKey )
 		{
+			case 'main_image':
+				return reset($this->arrFiles);
+				break;
+
 			default:
 				return $this->arrData[$strKey];
 		}

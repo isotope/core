@@ -105,7 +105,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 			$arrProductData[] = array_merge($objProduct->getAttributes(), array
 			(
 				'id'				=> $objProduct->id,
-				'image'				=> $objProduct->images->generateMainImage('thumbnail'),
+				'image'				=> $objProduct->images->main_image,
 				'link'				=> $objProduct->href_reader,
 				'price'				=> $this->generatePrice($objProduct->price),
 				'total_price'		=> $this->generatePrice($objProduct->total_price),
