@@ -130,7 +130,7 @@ class ModuleGiftRegistryResults extends Module
 			$queryNameLike = "%" . $strLastname;
 			
 			// Query for results			
-			$arrRegistriesQuerystr = "SELECT r.id, r.name, r.date, m.firstname, m.lastname, c.id FROM tl_registry r, tl_member m, tl_cart c WHERE r.pid = c.id AND c.pid = m.id AND c.cart_type_id=? AND ( m.lastname LIKE ? OR r.name LIKE ?" . $dateQuery . ")";
+			$arrRegistriesQuerystr = "SELECT r.id, r.name, r.date, m.firstname, m.lastname, c.id FROM tl_registry r, tl_member m, tl_iso_cart c WHERE r.pid = c.id AND c.pid = m.id AND c.cart_type_id=? AND ( m.lastname LIKE ? OR r.name LIKE ?" . $dateQuery . ")";
 
 			$objRegQuery = $this->Database->prepare($arrRegistriesQuerystr)
 					   						->execute(2,$queryNameLike,$queryNameLike);

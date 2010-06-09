@@ -158,7 +158,7 @@ class ModuleGiftRegistryReader extends ModuleIsotope
 	protected function getRegistryProducts()
 	{		
 
-		$objCartData = $this->Database->prepare("SELECT ci.* FROM tl_cart c INNER JOIN tl_cart_items ci ON c.id=ci.pid WHERE ci.pid=? AND c.cart_type_id=?")
+		$objCartData = $this->Database->prepare("SELECT ci.* FROM tl_iso_cart c INNER JOIN tl_iso_cart_items ci ON c.id=ci.pid WHERE ci.pid=? AND c.cart_type_id=?")
 										  ->execute($this->intCartId, 2);
 		
 										  
@@ -265,7 +265,7 @@ class ModuleGiftRegistryReader extends ModuleIsotope
 	protected function getRegistryData($cartID)
 	{
 		// Query for results			
-		$arrRegDataQuerystr = "SELECT r.name, r.date, r.description, m.firstname, m.lastname FROM tl_registry r, tl_member m, tl_cart c WHERE c.id=? AND r.pid = c.id AND c.pid = m.id AND c.cart_type_id =?";
+		$arrRegDataQuerystr = "SELECT r.name, r.date, r.description, m.firstname, m.lastname FROM tl_registry r, tl_member m, tl_iso_cart c WHERE c.id=? AND r.pid = c.id AND c.pid = m.id AND c.cart_type_id =?";
 
 		$objRegDataQuery = $this->Database->prepare($arrRegDataQuerystr)
 				   						->execute($cartID,2);

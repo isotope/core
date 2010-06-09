@@ -41,10 +41,21 @@ CREATE TABLE `tl_registry` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tl_cart_items`
+-- Table `tl_iso_cart`
+--
+
+CREATE TABLE `tl_iso_cart` (
+  `source_cart_id` int(10) unsigned NOT NULL default '0',
+  `cart_type_id` int(10) unsigned NOT NULL default '0',
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tl_iso_cart_items`
 -- pid = cart id.
 --
 
-CREATE TABLE `tl_cart_items` (
+CREATE TABLE `tl_iso_cart_items` (
   `quantity_sold` int(10) unsigned NOT NULL default '0',
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

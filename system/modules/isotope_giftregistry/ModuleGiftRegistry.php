@@ -471,7 +471,7 @@ class ModuleGiftRegistry extends ModuleIsotope
 		}*/		
 		
 		//do not query by cart id as it won't ever be stored past session, we only need the session value from the cookie to pull the right cart for the job.
-		$objCartData = $this->Database->prepare("SELECT ci.* FROM tl_cart c INNER JOIN tl_cart_items ci ON c.id=ci.pid WHERE ci.pid=? AND c.cart_type_id=? AND c." . $strFieldClause)
+		$objCartData = $this->Database->prepare("SELECT ci.* FROM tl_iso_cart c INNER JOIN tl_iso_cart_items ci ON c.id=ci.pid WHERE ci.pid=? AND c.cart_type_id=? AND c." . $strFieldClause)
 										  ->execute($this->intCartId, 2);
 										  
 		if($objCartData->numRows < 1)
@@ -534,7 +534,7 @@ class ModuleGiftRegistry extends ModuleIsotope
 	{
 		$strClause = $this->determineUserIdType($strUserId);
 						
-		$objUserCart = $this->Database->prepare("SELECT id FROM tl_cart WHERE cart_type_id=? AND " . $strClause)
+		$objUserCart = $this->Database->prepare("SELECT id FROM tl_iso_cart WHERE cart_type_id=? AND " . $strClause)
 									  ->limit(1)
 									  ->execute(2);	//again this will vary later.
 		
@@ -600,12 +600,12 @@ class ModuleGiftRegistry extends ModuleIsotope
 					//'options'		=> serialize($arrProductOptions)
 				);
 								
-				$objCartItem = $this->Database->prepare("INSERT INTO tl_cart_items %s")->set($arrSet)->execute();
+				$objCartItem = $this->Database->prepare("INSERT INTO tl_iso_cart_items %s")->set($arrSet)->execute();
 				
 				break;
 				
 			case 'update':
-				$this->Database->prepare("UPDATE tl_cart_items SET quantity_requested=(quantity_requested+" . $intQuantity . ") WHERE product_id=? AND attribute_set_id=? AND pid=?")
+				$this->Database->prepare("UPDATE tl_iso_cart_items SET quantity_requested=(quantity_requested+" . $intQuantity . ") WHERE product_id=? AND attribute_set_id=? AND pid=?")
 							   ->execute($intProductId, $intAttributeSetId, $this->intCartId);
 				break;
 			default:
@@ -630,7 +630,7 @@ class ModuleGiftRegistry extends ModuleIsotope
 		);
 		
 		
-		$objCart = $this->Database->prepare("INSERT INTO tl_cart %s")->set($arrSet)->execute();
+		$objCart = $this->Database->prepare("INSERT INTO tl_iso_cart %s")->set($arrSet)->execute();
 		
 		// ************BOF GIFT REGISTRY SPECIFIC****************
 		$arrRegValues = array
@@ -662,7 +662,7 @@ class ModuleGiftRegistry extends ModuleIsotope
 		//Prepare & execute the query.
 		if($intQuantity==0)
 		{
-			$strQuery = "DELETE FROM tl_cart_items WHERE product_id=? AND attribute_set_id=? AND pid=?";
+			$strQuery = "DELETE FROM tl_iso_cart_items WHERE product_id=? AND attribute_set_id=? AND pid=?";
 
 		}else{
 			if($blnOverwriteQty)
@@ -672,7 +672,7 @@ class ModuleGiftRegistry extends ModuleIsotope
 				$strClause = "(quantity_requested+" . $intQuantity . ")";
 			}
 			
-			$strQuery = "UPDATE tl_cart_items SET quantity_requested=$strClause WHERE product_id=? AND attribute_set_id=? AND pid=?";			
+			$strQuery = "UPDATE tl_iso_cart_items SET quantity_requested=$strClause WHERE product_id=? AND attribute_set_id=? AND pid=?";			
 			
 		}
 				
@@ -713,7 +713,7 @@ class ModuleGiftRegistry extends ModuleIsotope
 		//$session['isotope']['registry_data'][] = array(<product keys and values>);
 		
 		//query for the product id for the given cart, product and attribute set.
-		$objproductExistsInRegistry = $this->Database->prepare("SELECT COUNT(*) as count FROM tl_cart_items WHERE product_id=? AND pid=? AND attribute_set_id=?")
+		$objproductExistsInRegistry = $this->Database->prepare("SELECT COUNT(*) as count FROM tl_iso_cart_items WHERE product_id=? AND pid=? AND attribute_set_id=?")
 												 ->limit(1)
 												 ->execute($intProductId, $intCartId, $intAttributeSetId);
 	

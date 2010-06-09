@@ -39,13 +39,13 @@ class IsotopeCart extends IsotopeProductCollection
 	 * Name of the current table
 	 * @var string
 	 */
-	protected $strTable = 'tl_cart';
+	protected $strTable = 'tl_iso_cart';
 	
 	/**
 	 * Name of the child table
 	 * @var string
 	 */
-	protected $ctable = 'tl_cart_items';
+	protected $ctable = 'tl_iso_cart_items';
 		
 	/**
 	 * Name of the temporary cart cookie
@@ -114,11 +114,11 @@ class IsotopeCart extends IsotopeProductCollection
 					break;
 				
 				case 'items':
-					$this->arrCache[$strKey] = $this->Database->prepare("SELECT SUM(product_quantity) AS items FROM tl_cart_items LEFT OUTER JOIN tl_cart ON tl_cart_items.pid=tl_cart.id WHERE tl_cart_items.pid=?")->execute($this->id)->items;
+					$this->arrCache[$strKey] = $this->Database->prepare("SELECT SUM(product_quantity) AS items FROM {$this->ctable} i LEFT OUTER JOIN {$this->strTable} c ON i.pid=c.id WHERE i.pid=?")->execute($this->id)->items;
 					break;
 					
 				case 'products':
-					$this->arrCache[$strKey] = $this->Database->prepare("SELECT COUNT(*) AS items FROM tl_cart_items LEFT OUTER JOIN tl_cart ON tl_cart_items.pid=tl_cart.id WHERE tl_cart_items.pid=?")->execute($this->id)->items;
+					$this->arrCache[$strKey] = $this->Database->prepare("SELECT COUNT(*) AS items FROM {$this->ctable} i LEFT OUTER JOIN {$this->strTable} c ON i.pid=c.id WHERE i.pid=?")->execute($this->id)->items;
 					break;
 					
 				case 'subTotal':

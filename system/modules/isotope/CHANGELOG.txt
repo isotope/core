@@ -16,6 +16,7 @@ Version 0.2.0 beta1
 - Fixed: Null object bug in IsotopeCart
 - Fixed: Disabled deprecated product storage in checkout module - now copies only product options to order items table.
 - Fixed: Changed all price fields to use decimal(12,2) (payment gateways require 2 digit precision)
+- Fixed: Table naming is not consistent, renamed tl_cart,tl_cart_items to tl_iso_cart,tl_iso_cart_items (Ticket #117)
 - Removed: Paypal Website Payments Pro option - use Paypal Payflow Pro or Paypal Standard
 
 Version 0.1.2 (2010-??-??)

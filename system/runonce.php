@@ -86,8 +86,8 @@ class IsotopeRunonce extends Frontend
 		$this->Database->executeUncached("DELETE FROM tl_iso_attributes WHERE field_name='weight'");
 		
 		// Because configuration has been changed to objects, we cannot use the existing cart data
-		$this->Database->executeUncached("TRUNCATE TABLE tl_cart_items");
-		$this->Database->executeUncached("TRUNCATE TABLE tl_cart");
+		$this->Database->executeUncached("TRUNCATE TABLE tl_iso_cart_items");
+		$this->Database->executeUncached("TRUNCATE TABLE tl_iso_cart");
 	}
 	
 	
@@ -107,6 +107,8 @@ class IsotopeRunonce extends Frontend
 		if ($this->Database->tableExists('tl_related_products')) $this->Database->executeUncached("ALTER TABLE tl_related_products RENAME tl_iso_related_products");
 		if ($this->Database->tableExists('tl_address_book')) $this->Database->executeUncached("ALTER TABLE tl_address_book RENAME tl_iso_addresses");
 		if ($this->Database->tableExists('tl_store')) $this->Database->executeUncached("ALTER TABLE tl_store RENAME tl_iso_config");
+		if ($this->Database->tableExists('tl_cart')) $this->Database->executeUncached("ALTER TABLE tl_cart RENAME tl_iso_cart");
+		if ($this->Database->tableExists('tl_cart_items')) $this->Database->executeUncached("ALTER TABLE tl_cart_items RENAME tl_iso_cart_items");
 	}
 	
 	
@@ -178,10 +180,10 @@ class IsotopeRunonce extends Frontend
 			$this->Database->executeUncached("ALTER TABLE tl_module CHANGE COLUMN store_ids iso_config_ids blob NULL");
 		}
 		
-		// tl_cart.store_id has been renamed to tl_cart.config_id
-		if ($this->Database->fieldExists('store_id', 'tl_cart') && !$this->Database->fieldExists('config_id', 'tl_cart'))
+		// tl_iso_cart.store_id has been renamed to tl_iso_cart.config_id
+		if ($this->Database->fieldExists('store_id', 'tl_iso_cart') && !$this->Database->fieldExists('config_id', 'tl_iso_cart'))
 		{
-			$this->Database->executeUncached("ALTER TABLE tl_cart CHANGE COLUMN store_id config_id int(10) unsigned NOT NULL default '0'");
+			$this->Database->executeUncached("ALTER TABLE tl_iso_cart CHANGE COLUMN store_id config_id int(10) unsigned NOT NULL default '0'");
 		}
 		
 		// tl_iso_orders.store_id has been renamed to tl_iso_orders.config_id
@@ -220,10 +222,10 @@ class IsotopeRunonce extends Frontend
 			$this->Database->executeUncached("ALTER TABLE tl_page CHANGE COLUMN isotopeStoreConfig iso_config int(10) unsigned NOT NULL default '0'");
 		}
 		
-		// tl_cart_items.quantity_requested has been renamed to tl_cart_items.product_quantity
-		if ($this->Database->fieldExists('quantity_requested', 'tl_cart_items') && !$this->Database->fieldExists('product_quantity', 'tl_cart_items'))
+		// tl_iso_cart_items.quantity_requested has been renamed to tl_iso_cart_items.product_quantity
+		if ($this->Database->fieldExists('quantity_requested', 'tl_iso_cart_items') && !$this->Database->fieldExists('product_quantity', 'tl_iso_cart_items'))
 		{
-			$this->Database->executeUncached("ALTER TABLE tl_cart_items CHANGE COLUMN quantity_requested product_quantity int(10) unsigned NOT NULL default '0'");
+			$this->Database->executeUncached("ALTER TABLE tl_iso_cart_items CHANGE COLUMN quantity_requested product_quantity int(10) unsigned NOT NULL default '0'");
 		}
 		
 		// tl_iso_order_items.quantity_sold has been renamed to tl_iso_order_items.product_quantity

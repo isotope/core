@@ -624,7 +624,7 @@ class PayflowProPOS extends Backend
 			$this->Isotope->overrideConfig($config_id);	//Which store it was ordered from is important, not what the default backend store is.
 		}
 		
-		$objItems = $this->Database->prepare("SELECT * FROM tl_cart_items WHERE pid=?")->execute($intSourceCartId);
+		$objItems = $this->Database->prepare("SELECT * FROM tl_iso_cart_items WHERE pid=?")->execute($intSourceCartId);
 		
 		if (!$objItems->numRows)
 		{
