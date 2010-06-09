@@ -43,7 +43,7 @@ class PaymentEPay extends IsotopePayment
 		switch( $strKey )
 		{
 			case 'available':
-				if (!in_array($this->Isotope->Config->currency, $this->arrCurrencies))
+				if (!array_key_exists($this->Isotope->Config->currency, $this->arrCurrencies))
 					return false;
 					
 				return parent::__get($strKey);
@@ -74,150 +74,40 @@ class PaymentEPay extends IsotopePayment
 	 */
 	public function processPayment()
 	{
-		return true;
-/*
 		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=? AND status!='cancelled'")->limit(1)->execute($this->Isotope->Cart->id);
+		$intTotal = str_replace('.', '', $this->Isotope->Cart->grandTotal);
 		
-		$arrData = deserialize($objOrder->payment_data, true);
-		
-		if (strlen($arrData['status']) && $arrData['status'] == 'Completed')
+		// Check basic order data
+		if ($this->Input->get('orderid') == $objOrder->id && $this->Input->get('cur') == $this->arrCurrencies[$this->Isotope->Config->currency] && $this->Input->get('amount') == $intTotal)
 		{
-			unset($_SESSION['PAYPAL_TIMEOUT']);
-			return true;
+			// Validate MD5 secret key
+			if (md5($intTotal . $objOrder->id . $this->Input->get('tid') . $this->epay_secretkey) == $this->Input->get('eKey'))
+			{
+				return true;
+			}
 		}
 		
-		if (!isset($_SESSION['PAYPAL_TIMEOUT']))
-		{
-			$_SESSION['PAYPAL_TIMEOUT'] = 60;
-		}
-		else
-		{
-			$_SESSION['PAYPAL_TIMEOUT'] = $_SESSION['PAYPAL_TIMEOUT'] - 5;
-		}
-		
-		if ($_SESSION['PAYPAL_TIMEOUT'] === 0)
-		{
-			$objTemplate = new FrontendTemplate('mod_message');
-			$objTemplate->type = 'error';
-			$objTemplate->message = $GLOBALS['TL_LANG']['MSC']['paypal_processing_failed'];
-			return $objTemplate->parse();
-		}
-		
-		// Reload page every 5 seconds and check if payment was successful
-		$GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="5,' . $this->Environment->base . $this->Environment->request . '">';
+		$this->log('Invalid payment data received.', 'PaymentEPay processPayment()', TL_ERROR);
 		
 		$objTemplate = new FrontendTemplate('mod_message');
-		$objTemplate->type = 'processing';
-		$objTemplate->message = $GLOBALS['TL_LANG']['MSC']['paypal_processing'];
+		$objTemplate->type = 'error';
+		$objTemplate->message = $GLOBALS['TL_LANG']['MSC']['payment_processing_failed'];
 		return $objTemplate->parse();
-*/
 	}
 	
 	
 	/**
-	 * Process PayPal Instant Payment Notifications (IPN)
-	 *
-	 * @access public
-	 * @return void
-	 */
-	public function processPostSale() 
-	{
-/*
-		$arrData = array();
-		foreach( $_POST as $k => $v )
-		{
-			$arrData[] = $k . '=' . $v;
-		}
-
-		$objRequest = new Request();
-		$objRequest->send(('https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr?cmd=_notify-validate'), implode('&', $arrData), 'post');
-		
-		if ($objRequest->response == 'VERIFIED' && $this->Input->post('receiver_email') == $this->paypal_account)
-		{
-			$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE order_id=?")->limit(1)->execute($this->Input->post('invoice'));
-		
-			if (!$objOrder->numRows)
-			{
-				$this->log('Order ID "' . $this->Input->post('invoice') . '" not found', 'PaymentPaypal processPostSale()', TL_ERROR);
-				return;
-			}
-
-			// Set the current system to the language when the user placed the order.
-			// This will result in correct e-mails and payment description.
-			$GLOBALS['TL_LANGUAGE'] = $objOrder->language;
-			$this->loadLanguageFile('default');
-			
-			// Load / initialize data
-			$arrPayment = deserialize($objOrder->payment_data, true);
-			
-			// Store request data in order for future references
-			$arrPayment['POSTSALE'][] = $_POST;
-			
-			
-			$arrData = $objOrder->row();
-			$arrData['old_payment_status'] = $arrPayment['status'];
-			
-			$arrPayment['status'] = $this->Input->post('payment_status');
-			$arrData['new_payment_status'] = $arrPayment['status'];
-			
-			// array('pending','processing','complete','on_hold', 'cancelled'),
-			switch( $arrPayment['status'] )
-			{
-				case 'Completed':
-					$this->Database->execute("UPDATE tl_iso_orders SET date_payed=" . time() . " WHERE id=" . $objOrder->id);
-					break;
-					
-				case 'Canceled_Reversal':
-				case 'Denied':
-				case 'Expired':
-				case 'Failed':
-				case 'Voided':
-					$this->Database->execute("UPDATE tl_iso_orders SET date_payed='' WHERE id=" . $objOrder->id);
-					$this->Database->execute("UPDATE tl_iso_orders SET status='on_hold' WHERE status='complete' AND id=" . $objOrder->id);
-					break;
-					
-				case 'In-Progress':
-				case 'Partially_Refunded':
-				case 'Pending':
-				case 'Processed':
-				case 'Refunded':
-				case 'Reversed':
-					break;
-			}
-			
-			$this->Database->prepare("UPDATE tl_iso_orders SET payment_data=? WHERE id=?")->execute(serialize($arrPayment), $objOrder->id);
-			
-			if ($this->postsale_mail)
-			{
-				$this->Import('Isotope');
-				$this->Isotope->overrideConfig($objOrder->config_id);
-				$this->Isotope->sendMail($this->postsale_mail, $GLOBALS['TL_ADMIN_EMAIL'], $GLOBALS['TL_LANGUAGE'], $arrData);
-			}
-			
-			$this->log('PayPal IPN: data accepted ' . print_r($_POST, true), 'PaymentPaypal processPostSale()', TL_GENERAL);
-		}
-		else
-		{
-			$this->log('PayPal IPN: data rejected (' . $objRequest->response . ') ' . print_r($_POST, true), 'PaymentPaypal processPostSale()', TL_GENERAL);
-		}
-		
-		header('HTTP/1.1 200 OK');
-		exit;
-*/
-	}
-	
-	
-	/**
-	 * Return the PayPal form.
+	 * Return the payment form.
 	 * 
 	 * @access public
 	 * @return string
 	 */
 	public function checkoutForm()
 	{
-		$this->import('Isotope');
+		global $objPage;
 		
-		$objOrder = $this->Database->prepare("SELECT order_id FROM tl_iso_orders WHERE cart_id=?")->execute($this->Isotope->Cart->id);
+		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=? AND status!='cancelled'")->limit(1)->execute($this->Isotope->Cart->id);
+		$intTotal = str_replace('.', '', $this->Isotope->Cart->grandTotal);
 		
 		return '
 <h2>' . $GLOBALS['TL_LANG']['ISO']['pay_with_epay'][0] . '</h2>
@@ -226,23 +116,22 @@ class PaymentEPay extends IsotopePayment
 
 <input type="hidden" name="language" value="' . (in_array($GLOBALS['TL_LANGUAGE'], $this->arrLanguages) ? $this->arrLanguages[$GLOBALS['TL_LANGUAGE']] : 2) . '">
 <input type="hidden" name="merchantnumber" value="' . $this->epay_merchantnumber . '">
-<input type="hidden" name="orderid" value="' . $objOrder->order_id . '">
-<input type="hidden" name="currency" value="' . $this->arrLanguages[$GLOBALS['TL_LANGUAGE']] . '">
-<input type="hidden" name="amount" value="' . $this->Isotope->Cart->grandTotal . '">
+<input type="hidden" name="orderid" value="' . $objOrder->id . '">
+<input type="hidden" name="currency" value="' . $this->arrCurrencies[$this->Isotope->Config->currency] . '">
+<input type="hidden" name="amount" value="' . $intTotal . '">
 
-<input type="hidden" name="accepturl" value="' . $this->Environment->base . $this->addToUrl('step=complete') . '">
-<input type="hidden" name="declineurl" value="' . $this->Environment->base . $this->addToUrl('step=failed') . '">
-<input type="hidden" name="callbackurl" value="' . $this->Environment->base . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id . '">
+<input type="hidden" name="accepturl" value="' . $this->Environment->base . $this->generateFrontendUrl($objPage->row(), '/step/complete') . '">
+<input type="hidden" name="declineurl" value="' . $this->Environment->base . $this->generateFrontendUrl($objPage->row(), '/step/failed') . '">
 
-<input type="hidden" name="instantcapture" value="">
-<input type="hidden" name="ordretext" value="">
-<input type="hidden" name="md5key" value="">
+<input type="hidden" name="instantcapture" value="1">
+<input type="hidden" name="md5key" value="' . md5($this->arrCurrencies[$this->Isotope->Config->currency] . $intTotal . $objOrder->id . $this->epay_secretkey) . '">
 <input type="hidden" name="cardtype" value="0">
 <input type="hidden" name="windowstate" value="2">
 <input type="hidden" name="use3D" value="1">
 
-</form>
+<input type="submit" value="' . $GLOBALS['TL_LANG']['ISO']['pay_with_epay'][2] . '" />
 
+</form>
 <script type="text/javascript">
 <!--//--><![CDATA[//><!--
 $(\'payment_form\').submit();

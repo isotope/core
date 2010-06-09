@@ -747,7 +747,6 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	}
 
 	
-	//!@todo Guest cannot be found in tl_user, emailCustomer() will fail
 	protected function writeOrder($blnCheckout=false)
 	{
 		$strUniqueId = uniqid($this->Isotope->Config->orderPrefix, true);
@@ -784,40 +783,40 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		{
 			$objOrder = $this->Database->prepare("INSERT INTO tl_iso_orders %s")
 									   ->set($arrSet)
-									   ->execute();
+									   ->executeUncached();
+									   
+			$this->Database->prepare("UPDATE tl_iso_orders SET order_id=? WHERE id=?")->execute(($this->Isotope->Config->orderPrefix . $orderId), $orderId);
 									   
 			$orderId = $objOrder->insertId;
 		}
 		else
 		{
-			$this->Database->prepare("UPDATE tl_iso_orders %s WHERE id=?")
+			$this->Database->prepare("UPDATE tl_iso_orders %s WHERE id=".$objOrder->id)
 						   ->set($arrSet)
-						   ->execute($objOrder->id);
+						   ->executeUncached();
 						   
 			$orderId = $objOrder->id;
 		}
-		
-		$this->Database->prepare("UPDATE tl_iso_orders SET order_id=? WHERE id=?")->execute(($this->Isotope->Config->orderPrefix . $orderId), $orderId);
-		
-							
-		$fltShippingTotal = (float)$this->Isotope->Cart->Shipping->price + (float)$this->Isotope->Cart->Shipping->optionsPrice;
 		
 		if ($blnCheckout)
 		{
 			$strBillingAddress = $this->Isotope->generateAddressString($this->Isotope->Cart->billingAddress, $this->Isotope->Config->billing_fields);
 			$strShippingAddress = $this->Isotope->Cart->shippingAddress['id'] == -1 ? $GLOBALS['TL_LANG']['useBillingAddress'] : $this->Isotope->generateAddressString($this->Isotope->Cart->shippingAddress, $this->Isotope->Config->shipping_fields);
+			
+			$salesEmail = $this->iso_sales_email ? $this->iso_sales_email : $GLOBALS['TL_ADMIN_EMAIL'];
+			$customerMail = strlen($this->Isotope->Cart->billingAddress['email']) ? $this->Isotope->Cart->billingAddress['email'] : (strlen($this->Isotope->Cart->shippingAddress['email']) ? $this->Isotope->Cart->shippingAddress['email'] : (FE_USER_LOGGED_IN ? $this->User->email : ''));
 
 			$arrData = array
 			(
 				'order_id'					=> ($this->Isotope->Config->orderPrefix . $orderId),
 				'customer_name'				=> ($this->Isotope->Cart->billingAddress['firstname'] . ' ' . $this->Isotope->Cart->billingAddress['lastname']),
-				'customer_email'			=> $this->Isotope->Cart->billingAddress['email'],
+				'customer_email'			=> $customerMail,
 				'items'						=> $this->Isotope->Cart->items,
 				'products'					=> $this->Isotope->Cart->products,
 				'subTotal'					=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->subTotal),
 				'taxTotal'					=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->taxTotal),
 				'taxTotalWithShipping'		=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->taxTotalWithShipping),
-				'shippingPrice'				=> $this->Isotope->formatPriceWithCurrency($fltShippingTotal),
+				'shippingPrice'				=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->Shipping->price),
 				'paymentPrice'				=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->Payment->price),
 				'grandTotal'				=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->grandTotal),
 				'cart_text'					=> $this->Isotope->Cart->getProducts('iso_products_text'),
@@ -846,9 +845,6 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			}
 			
 			$this->log('New order ID ' . $orderId . ' has been placed', 'ModuleIsotopeCheckout writeOrder()', TL_ACCESS);
-			
-			$salesEmail = $this->iso_sales_email ? $this->iso_sales_email : $GLOBALS['TL_ADMIN_EMAIL'];
-			$customerMail = strlen($this->Isotope->Cart->billingAddress['email']) ? $this->Isotope->Cart->billingAddress['email'] : (strlen($this->Isotope->Cart->shippingAddress['email']) ? $this->Isotope->Cart->shippingAddress['email'] : (FE_USER_LOGGED_IN ? $this->User->email : ''));
 			
 			if ($this->iso_mail_admin && strlen($salesEmail))
 			{
