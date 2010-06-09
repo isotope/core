@@ -613,48 +613,26 @@ class tl_iso_products extends Backend
 		
 		if ($row['pid'] > 0)
 		{
-			return sprintf('<div class="iso_product"><div class="thumbnail">'.$thumbnail.'</div>%s</div>', $this->getVariantValues($row));
+			$strBuffer = '<div class="iso_product"><div class="thumbnail">'.$thumbnail.'</div><ul>';
+			
+			$objProductType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id=".$row['type']);
+			
+			$arrAttributes = deserialize($objProductType->attributes, true);
+		
+			foreach( $arrAttributes as $id => $attribute )
+			{
+				$arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute];
+				
+				if ($arrData['attributes']['add_to_product_variants'])
+				{
+					$strBuffer .= '<li><strong>' . $arrData['label'][0] . ':</strong> ' . $row[$attribute] . '</li>';
+				}
+			}
+			
+			return $strBuffer . '</ul></div>';
 		}
 		
 		return '<div class="iso_product"><div class="thumbnail">'.$thumbnail.'</div><p>' . $row['name'] . (strlen($row['sku']) ? '<span style="color:#b3b3b3; padding-left:3px;">['.$row['sku'].']</span>' : '') . '</p><div>' . ($row['pid']==0 ? '<em>' . $this->getCategoryList(deserialize($row['pages'])) . '</em>' : '') . '</div></div> ';
-	}
-	
-	public function getVariantValues($row)
-	{	
-		$objVariantAttributes = $this->Database->prepare("SELECT name, field_name FROM tl_iso_attributes WHERE add_to_product_variants=?")
-								  				->execute(1);
-		if(!$objVariantAttributes->numRows)
-		{
-			return '';
-		}
-		
-		while($objVariantAttributes->next())
-		{
-			$strField = $objVariantAttributes->field_name;
-			
-			if(array_key_exists($strField, $row))
-			{
-				$arrVariantValues[] = array
-				(
-					'label'		=> $objVariantAttributes->name,
-					'value'		=> $row[$strField]
-				);
-			}
-		}
-
-		if(count($arrVariantValues))
-		{
-			$strReturn = '<ul>';
-			
-				foreach($arrVariantValues as $record)
-				{
-					$strReturn .= '<li><strong>' . $record['label'] . ':</strong> ' . $record['value'] . '</li>';
-				}		
-			
-			$strReturn .= '</ul>';			
-		}
-		
-		return $strReturn;
 	}
 	
 	
