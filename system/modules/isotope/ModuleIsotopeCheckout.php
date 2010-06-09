@@ -709,7 +709,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			$arrProductData[] = array_merge($objProduct->getAttributes(), array
 			(
 				'id'				=> $objProduct->id,
-				'image'				=> $objProduct->images[0],
+				'image'				=> $objProduct->images->main_image,
 				'link'				=> $objProduct->href_reader,
 				'price'				=> $objProduct->formatted_price,
 				'total_price'		=> $objProduct->formatted_total_price,
