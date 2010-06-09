@@ -310,6 +310,14 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'inputType'				=> 'text',
 			'eval'					=> array('maxlength'=>255, 'tl_class'=>'w50'),
 			'attributes'			=> array('legend'=>'pricing_legend'),
+		),
+		'tax_class' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['tax_class'],
+			'inputType'				=> 'select',
+			'foreignKey'			=> 'tl_iso_tax_class.name',
+			'attributes'			=> array('legend'=>'pricing_legend'),
+			'eval'					=> array('includeBlankOption'=>true),
 		),/*
 		'max_order_quantity' => array
 		(
@@ -360,14 +368,6 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'inputType'				=> 'checkbox',
 			'eval'					=> array('tl_class'=>'w50'),
 			'attributes'			=> array('legend'=>'shipping_legend'),
-		),
-		'tax_class' => array
-		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['tax_class'],
-			'inputType'				=> 'select',
-			'foreignKey'			=> 'tl_iso_tax_class.name',
-			'attributes'			=> array('legend'=>'tax_legend'),
-			'eval'					=> array('includeBlankOption'=>true),
 		),
 		'images' => array
 		(

@@ -247,7 +247,7 @@ $GLOBALS['ISO_ORDER'] = array('pending', 'processing', 'complete', 'on_hold', 'c
 /** 
  * Miscellaneous Isotope-specific settings
  */
-$GLOBALS['ISO_MSC']['tl_iso_products']['groups_ordering'] = array('general_legend', 'meta_legend', 'pricing_legend', 'inventory_legend', 'shipping_legend', 'tax_legend', 'options_legend', 'media_legend', 'publish_legend');
+$GLOBALS['ISO_MSC']['tl_iso_products']['groups_ordering'] = array('general_legend', 'meta_legend', 'pricing_legend', 'inventory_legend', 'shipping_legend', 'options_legend', 'media_legend', 'publish_legend');
 
 	
 /**
