@@ -300,18 +300,15 @@ CREATE TABLE `tl_content` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tl_cart`
--- pid = user_id which is 0 if not tied to registered user
+-- Table `tl_iso_cart`
 --
 
-CREATE TABLE `tl_cart` (
+CREATE TABLE `tl_iso_cart` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
   `session` blob NULL,
   `last_visit` int(10) unsigned NOT NULL default '0',
-  `source_cart_id` int(10) unsigned NOT NULL default '0',
-  `cart_type_id` int(10) unsigned NOT NULL default '0',
   `config_id` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
@@ -321,11 +318,10 @@ CREATE TABLE `tl_cart` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tl_cart_items`
--- pid = cart id.
+-- Table `tl_iso_cart_items`
 --
 
-CREATE TABLE `tl_cart_items` (
+CREATE TABLE `tl_iso_cart_items` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
