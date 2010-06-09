@@ -77,7 +77,7 @@ class PaymentPaypal extends IsotopePayment
 		{
 			$objTemplate = new FrontendTemplate('mod_message');
 			$objTemplate->type = 'error';
-			$objTemplate->message = $GLOBALS['TL_LANG']['MSC']['paypal_processing_failed'];
+			$objTemplate->message = $GLOBALS['TL_LANG']['MSC']['payment_processing_failed'];
 			return $objTemplate->parse();
 		}
 		
@@ -86,7 +86,7 @@ class PaymentPaypal extends IsotopePayment
 		
 		$objTemplate = new FrontendTemplate('mod_message');
 		$objTemplate->type = 'processing';
-		$objTemplate->message = $GLOBALS['TL_LANG']['MSC']['paypal_processing'];
+		$objTemplate->message = $GLOBALS['TL_LANG']['MSC']['payment_processing'];
 		return $objTemplate->parse();
 	}
 	

@@ -100,8 +100,6 @@ abstract class IsotopePayment extends Frontend
 	 */
 	public function __get($strKey)
 	{
-		
-		
 		switch( $strKey )
 		{
 			case 'available':

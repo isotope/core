@@ -84,8 +84,8 @@ $GLOBALS['TL_LANG']['MSC']['ajaxLoadingMessage'] = 'Loading...';
 $GLOBALS['TL_LANG']['MSC']['emptySelectOptionLabel'] = 'Please select...';
 $GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline']		= 'Order no %s / %s';
 $GLOBALS['TL_LANG']['MSC']['downloadsLabel']			= 'Your downloadable products';
-$GLOBALS['TL_LANG']['MSC']['paypal_processing'] = 'Your PayPal payment is being processed. Please be patient...';
-$GLOBALS['TL_LANG']['MSC']['paypal_processing_failed'] = 'Your PayPal payment could not be processed.';
+$GLOBALS['TL_LANG']['MSC']['payment_processing'] = 'Your payment is being processed. Please be patient...';
+$GLOBALS['TL_LANG']['MSC']['payment_processing_failed'] = 'Your payment could not be processed.';
 $GLOBALS['TL_LANG']['MSC']['authorizedotnet_process_failed'] = 'Your payment count not be processed.<br /><br />Reason: %s';
 $GLOBALS['TL_LANG']['MSC']['detailLabel'] = 'View Details';
 $GLOBALS['TL_LANG']['MSC']['mmNoImagesUploaded'] = 'No images uploaded.';
@@ -226,6 +226,7 @@ $GLOBALS['TL_LANG']['ISO']['cc_exp_paypal']					= 'Credit card expiration (mm/yy
 $GLOBALS['TL_LANG']['ISO']['cc_issue_number']				= 'Credit card issue number, 2 digits (required for Maestro and Solo cards).';
 $GLOBALS['TL_LANG']['ISO']['cc_start_date']					= 'Credit card start date (required for Maestro and Solo cards).';
 $GLOBALS['TL_LANG']['ISO']['pay_with_paypal']				= array('Pay with PayPal', 'You will be redirected to the PayPal payment website. If you are not automatically redirected, please click on the "Pay now" button.', 'Pay now');
+$GLOBALS['TL_LANG']['ISO']['pay_with_epay']					= array('Pay with ePay', 'You will be redirected to the ePay payment website. If you are not automatically redirected, please click on the "Pay now" button.', 'Pay now');
 $GLOBALS['TL_LANG']['ISO']['backendPaymentNotFound']		= 'Payment module not found!.';
 $GLOBALS['TL_LANG']['ISO']['backendShippingNotFound']		= 'Shipping module not found!';
 $GLOBALS['TL_LANG']['ISO']['backendPaymentNoInfo']			= 'This payment module does not provide additional information.';
@@ -251,7 +252,7 @@ $GLOBALS['TL_LANG']['PAY']['paypal']			= array('PayPal Standard Checkout', 'This
 $GLOBALS['TL_LANG']['PAY']['paypalpayflowpro']	= array('PayPal Payflow Pro', 'The PayPal Payflow module is a full service credit card gateway, a more robust solution for most e-commerce sites.');
 $GLOBALS['TL_LANG']['PAY']['postfinance']		= array('Postfinance', 'Payment gateway for the swiss post payment system that supports various card types. The store will be instantly notified about successfull transactions.');
 $GLOBALS['TL_LANG']['PAY']['authorizedotnet']	= array('Authorize.net', 'An Authorize.net payment gateway.');
-$GLOBALS['TL_LANG']['PAY']['epay_standard']		= array('ePay Standard Payment Window', 'See <a href="http://www.epay.eu/"'.LINK_NEW_WINDOW.'">www.epay.eu</a> for more information about ePay.');
+$GLOBALS['TL_LANG']['PAY']['epay_standard']		= array('ePay Standard Payment', 'See <a href="http://www.epay.eu/" onclick="window.open(this.href); return false">www.epay.eu</a> for more information about ePay.');
 
 
 /**
