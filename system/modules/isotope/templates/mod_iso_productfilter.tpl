@@ -10,6 +10,7 @@
             <?php if($this->orderBy): ?>
             
                 <div class="filter_order_by">
+                    <label for="order_by"><?php echo $this->orderByLabel; ?></label>
                     <select name="order_by" id="ctrl_order_by" class="select" onchange="filterForm.submit();">
                     <?php 	foreach($this->orderBy as $value=>$label): ?>
                     <option value="<?php echo $value; ?>"<?php echo ($value==$this->order_by ? " selected" : "") ?>><?php echo $label; ?></option>
@@ -20,7 +21,7 @@
             <?php if ($this->perPage): ?>
             
                 <div class="filter_per_page">
-                <label for="ctrl_per_page" class="invisible"><?php echo $this->perPageLabel; ?></label>
+                <label for="per_page"><?php echo $this->perPageLabel; ?></label>
                 <select name="per_page" id="ctrl_per_page" class="select" onchange="filterForm.submit();">
                   <option value=""<?php echo (!$this->per_page ? " selected" : ""); ?>>-</option>
                 <?php foreach($this->limit as $row): ?>
@@ -38,13 +39,13 @@
             <?php if ($this->searchable): ?>
             
                 <div class="filter_search">
-                <label for="ctrl_for" class="invisible"><?php echo $this->keywordsLabel; ?></label>
+                <label for="ctrl_for"><?php echo $this->keywordsLabel; ?></label>
                 <input type="text" name="for" id="ctrl_for" class="text" value="<?php echo $this->for; ?>" />
                 </div>
             <?php endif; ?>
             
             <div class="submit_container">
-                <button type="submit" name="search" id="ctrl_search"><?php echo $this->submitLabel; ?></button>
+                <button type="submit" name="search" id="ctrl_search"><?php echo $this->searchLabel; ?></button>
             </div>
         </form>
         <div class="clear_filters">
