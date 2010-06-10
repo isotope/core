@@ -303,7 +303,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 			return false;
 		}		
 		
-		array_unshift($arrOptionList, array('value'=>'','label'=>'-'));
+		array_unshift($arrOptionList, array('value'=>'','label'=>&$GLOBALS['TL_LANG']['MSC']['blankSelectOptionLabel']));
 	
 		$arrData = array
 		(
