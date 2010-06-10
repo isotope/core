@@ -76,7 +76,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 			"x_card_num"						=> $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_num'],
 			"x_exp_date"						=> $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_exp'],
 			"x_description"						=> "Order Number " . $objOrder->order_id,
-			"x_amount"							=> $this->Isotope->Cart->grandTotal,
+			"x_amount"							=> round($this->Isotope->Cart->grandTotal,2),
 			"x_first_name"						=> $this->Isotope->Cart->billingAddress['firstname'],
 			"x_last_name"						=> $this->Isotope->Cart->billingAddress['lastname'],
 			"x_address"							=> $this->Isotope->Cart->billingAddress['street_1']."\n".$this->Isotope->Cart->billingAddress['street_2']."\n".$this->Isotope->Cart->billingAddress['street_3'],
