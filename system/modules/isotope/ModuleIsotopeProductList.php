@@ -70,7 +70,9 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		global $objPage;
 		
 		$this->arrCategories = $this->setCategories($this->iso_category_scope, $objPage->rootId, $objPage->id);	
-	
+
+		$this->iso_product_add_jumpTo = (!$this->iso_product_add_jumpTo ? $objPage->id : $this->iso_product_add_jumpTo);
+
 		if (!count($this->arrCategories))
 			return '';
 
@@ -359,6 +361,8 @@ class ModuleIsotopeProductList extends ModuleIsotope
 	{
 		$arrSearchFields = array('name','description');
 		
+		$arrFieldData = array();
+		
 		$objFilter = $this->Database->prepare("SELECT * FROM tl_module WHERE type='iso_productfilter' AND iso_listingModule=?")
 										   ->execute($this->id);
 			
@@ -366,17 +370,20 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		{	
 			$arrFieldData = deserialize($objFilter->iso_searchFields);
 			
-			foreach($arrFieldData as $intFieldID)
+			if(is_array($arrFieldData) && count($arrFieldData))
 			{
-				$objAttributeData = $this->Database->prepare("SELECT * FROM tl_iso_attributes WHERE id=?")
-												   ->limit(1)
-												   ->execute($intFieldID);
-		
-				if($objAttributeData->numRows < 1)
-				{			
-					continue;
+				foreach($arrFieldData as $intFieldID)
+				{
+					$objAttributeData = $this->Database->prepare("SELECT * FROM tl_iso_attributes WHERE id=?")
+													   ->limit(1)
+													   ->execute($intFieldID);
+			
+					if($objAttributeData->numRows < 1)
+					{			
+						continue;
+					}
+					$arrSearchFields[] = $objAttributeData->field_name;
 				}
-				$arrSearchFields[] = $objAttributeData->field_name;
 			}
 		}
 		return $arrSearchFields;
