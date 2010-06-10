@@ -107,7 +107,7 @@ class PaymentEPay extends IsotopePayment
 		global $objPage;
 		
 		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=? AND status!='cancelled'")->limit(1)->execute($this->Isotope->Cart->id);
-		$intTotal = str_replace('.', '', $this->Isotope->Cart->grandTotal);
+		$intTotal = round($this->Isotope->Cart->grandTotal, 2) * 100;
 		
 		return '
 <h2>' . $GLOBALS['TL_LANG']['ISO']['pay_with_epay'][0] . '</h2>

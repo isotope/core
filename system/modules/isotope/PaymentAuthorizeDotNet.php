@@ -76,7 +76,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 			"x_card_num"						=> $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_num'],
 			"x_exp_date"						=> $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_exp'],
 			"x_description"						=> "Order Number " . $objOrder->order_id,
-			"x_amount"							=> round($this->Isotope->Cart->grandTotal,2),
+			"x_amount"							=> round($this->Isotope->Cart->grandTotal, 2),
 			"x_first_name"						=> $this->Isotope->Cart->billingAddress['firstname'],
 			"x_last_name"						=> $this->Isotope->Cart->billingAddress['lastname'],
 			"x_address"							=> $this->Isotope->Cart->billingAddress['street_1']."\n".$this->Isotope->Cart->billingAddress['street_2']."\n".$this->Isotope->Cart->billingAddress['street_3'],
@@ -288,8 +288,6 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 
 		if ($this->Input->post('FORM_SUBMIT') == 'be_pos_terminal' && $arrPaymentInfo['x_trans_id']!=="0")
 		{
-			
-				
 			$authnet_values = array
 			(
 				"x_version"							=> '3.1',
@@ -297,30 +295,31 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 				"x_tran_key"						=> $transKey,
 				"x_type"							=> $transType,
 				"x_trans_id"						=> $arrPaymentInfo['x_trans_id'],
-				"x_amount"							=> number_format($this->fltOrderTotal, 2),
+				"x_amount"							=> round($this->fltOrderTotal, 2),
 				"x_delim_data"						=> 'TRUE',
 				"x_delim_char"						=> ',',
 				"x_encap_char"						=> '"',
 				"x_relay_response"					=> 'FALSE'
-			
 			);
 			
-						
-			foreach( $authnet_values as $key => $value ) $fields .= "$key=" . urlencode( $value ) . "&";
+			foreach( $authnet_values as $key => $value )
+			{
+				$fields .= "$key=" . urlencode( $value ) . "&";
+			}
 
 			$fieldsFinal = rtrim($fields, '&');
-						
+			
 			$objRequest = new Request();
 			
 			$objRequest->send('https://secure.authorize.net/gateway/transact.dll', $fieldsFinal, 'post');
-		
+			
 			$arrResponses = $this->handleResponse($objRequest->response);
-								
+			
 			foreach(array_keys($arrResponses) as $key)
 			{
 				$arrReponseLabels[strtolower(standardize($key))] = $key;
 			}
-						
+			
 			$objTemplate->fields = $this->generateResponseString($arrResponses, $arrReponseLabels);
 			
 			//$objTemplate->headline = $arrResponses['transaction-status'] . ' - ' . $this->strReason;
@@ -329,7 +328,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 			
 			switch($arrResponses['transaction-status'])
 			{
-				case 'Approved':		
+				case 'Approved':
 					$arrPaymentInfo['authorization_code'] = $arrResponses['authorization-code'];			
 					$strPaymentInfo = serialize($arrPaymentInfo);
 					
