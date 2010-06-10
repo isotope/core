@@ -94,7 +94,7 @@ class PaymentPaypalPayflowPro extends IsotopePayment
 			'ACCT'					=> $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_num'],
 			'EXPDATE'				=> $strExpDate,
 			'NAME'					=> $strCardType,
-			'AMT'					=> $this->Cart->grandTotal,
+			'AMT'					=> round($this->Cart->grandTotal, 2),
 			'CURRENCY'				=> $this->Isotope->Config->currency,
       		'COMMENT1'				=> '',	//TODO: Provide space for order comments.
 			'FIRSTNAME'				=> $this->Cart->billingAddress['firstname'],
