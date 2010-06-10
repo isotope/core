@@ -90,7 +90,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 			$arrSearchFieldNames[] = 'description';
 			
 		}
-		
+	
 		if(count($arrFilterFields))
 		{
 			foreach($arrFilterFields as $field)
@@ -117,7 +117,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		{
 			$arrOrderByOptions = $this->getOrderByOptions($arrOrderByFields);
 		}		
-		
+	
 		//Set the default per page limit if one exists from the listing module, 
 		//and also add it to the default array if it not there already
 		$strPerPageDefault = '';
@@ -157,11 +157,11 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		$this->Template->per_page = ($this->Input->get('per_page') ? $this->Input->get('per_page') : $strPerPageDefault);
 		$this->Template->page = ($this->Input->get('page') ? $this->Input->get('page') : 1);
 		$this->Template->for = $this->Input->get('for');
-		$this->Template->perPageLabel = $GLOBALS['TL_LANG']['MSC']['perPage'];
-		$this->Template->keywordsLabel = $GLOBALS['TL_LANG']['MSC']['searchTerms'];
-		$this->Template->searchLabel = $GLOBALS['TL_LANG']['MSC']['search'];
-		$this->Template->submitLabel = $GLOBALS['TL_LANG']['MSC']['labelSubmit'];
-		$this->Template->clearLabel = $GLOBALS['TL_LANG']['MSC']['clearFilters'];
+		$this->Template->orderByLabel = $GLOBALS['TL_LANG']['MSC']['orderByLabel'];
+		$this->Template->perPageLabel = $GLOBALS['TL_LANG']['MSC']['perPageLabel'];
+		$this->Template->keywordsLabel = $GLOBALS['TL_LANG']['MSC']['searchTermsLabel'];
+		$this->Template->searchLabel = $GLOBALS['TL_LANG']['MSC']['searchLabel'];
+		$this->Template->clearLabel = $GLOBALS['TL_LANG']['MSC']['clearFiltersLabel'];
 	}
 	
 	
@@ -295,7 +295,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 	{		
 		
 		$arrAttributeData = $this->getProductAttributeData($intFieldID);
-		
+	
 		$arrOptionList = deserialize($arrAttributeData['option_list']);
 		
 		if(!is_array($arrOptionList) || !count($arrOptionList))
@@ -311,7 +311,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 			'inputType'		=> 'select',
 			'eval'			=> array('includeBlankOption'=>false)
 		);
-		
+
 		$objWidget = new FormSelectMenu($this->prepareForWidget($arrData, $arrAttributeData['field_name'], $this->Input->get($arrAttributeData['field_name'])));
 		
 		$objWidget->options = $arrOptionList;
