@@ -171,7 +171,7 @@ class PaymentPostfinance extends IsotopePayment
 <form method="post" action="' . $strAction . '">
 <input type="hidden" name="PSPID" value="' . $this->postfinance_pspid . '">
 <input type="hidden" name="orderID" value="' . $objOrder->order_id . '">
-<input type="hidden" name="amount" value="' . ($this->Isotope->Cart->grandTotal * 100) . '">
+<input type="hidden" name="amount" value="' . (round($this->Isotope->Cart->grandTotal, 2) * 100) . '">
 <input type="hidden" name="currency" value="' . $arrData['currency'] . '">
 <input type="hidden" name="language" value="' . $GLOBALS['TL_LANGUAGE'] . '_' . strtoupper($GLOBALS['TL_LANGUAGE']) . '">
 <input type="hidden" name="EMAIL" value="' . $arrAddress['email'] . '">

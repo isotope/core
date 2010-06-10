@@ -203,7 +203,7 @@ class PaymentPaypal extends IsotopePayment
 <input type="hidden" name="business" value="' . $this->paypal_account . '">
 <input type="hidden" name="lc" value="' . strtoupper($GLOBALS['TL_LANGUAGE']) . '">
 <input type="hidden" name="item_name" value="' . $this->paypal_business . '"/>
-<input type="hidden" name="amount" value="' . round($this->Isotope->Cart->grandTotal,2) . '"/>
+<input type="hidden" name="amount" value="' . round($this->Isotope->Cart->grandTotal, 2) . '"/>
 <input type="hidden" name="no_shipping" value="1">
 <input type="hidden" name="no_note" value="1">
 <input type="hidden" name="currency_code" value="' . $this->Isotope->Config->currency . '">

@@ -121,14 +121,20 @@ class IsotopeCart extends IsotopeProductCollection
 					$this->arrCache[$strKey] = $this->Database->prepare("SELECT COUNT(*) AS items FROM {$this->ctable} i LEFT OUTER JOIN {$this->strTable} c ON i.pid=c.id WHERE i.pid=?")->execute($this->id)->items;
 					break;
 					
-				case 'subTotal':
-					return $this->calculateTotal($this->getProducts());
+				case 'subTotal':	
+					$fltTotal = 0;
+					
+					foreach($this->getProducts() as $objProduct)
+					{
+						$fltTotal += ((float)$objProduct->price * (int)$objProduct->quantity_requested);
+					}
+					
+					return $fltTotal;
 					
 				case 'taxTotal':
 					$intTaxTotal = 0;
-					$arrSurcharges = $this->getSurcharges();
 					
-					foreach( $arrSurcharges as $arrSurcharge )
+					foreach( $this->getSurcharges() as $arrSurcharge )
 					{
 						if ($arrSurcharge['add'])
 							$intTaxTotal += $arrSurcharge['total_price'];
@@ -146,16 +152,15 @@ class IsotopeCart extends IsotopeProductCollection
 					break;
 					
 				case 'grandTotal':
-					$intTotal = $this->calculateTotal($this->getProducts());;
-					$arrSurcharges = $this->getSurcharges();
+					$fltTotal = $this->subTotal;
 					
-					foreach( $arrSurcharges as $arrSurcharge )
+					foreach( $this->getSurcharges() as $arrSurcharge )
 					{
 						if ($arrSurcharge['add'] !== false)
-							$intTotal += $arrSurcharge['total_price'];
+							$fltTotal += $arrSurcharge['total_price'];
 					}
 					
-					return $intTotal;
+					return $fltTotal;
 					
 				case 'requiresShipping':
 					$this->arrCache[$strKey] = false;
@@ -502,31 +507,6 @@ class IsotopeCart extends IsotopeProductCollection
 		}
 		
 		return array_merge($arrPreTax, $arrTaxes, $arrPostTax);
-	}
-	
-	
-	/**
-	 * Calculate total price for products.
-	 * 
-	 * @access protected
-	 * @param array $arrProductData
-	 * @return float
-	 */
-	protected function calculateTotal($arrProducts)
-	{
-		if (!is_array($arrProducts) || !count($arrProducts))
-			return 0;
-			
-		$fltTotal = 0;
-		
-		foreach($arrProducts as $objProduct)
-		{
-			$fltTotal += ((float)$objProduct->price * (int)$objProduct->quantity_requested);
-		}
-			
-		$taxPriceAdjustment = 0; // $this->getTax($floatSubTotalPrice, $arrTaxRules, 'MULTIPLY');
-		
-		return (float)$fltTotal + (float)$taxPriceAdjustment;
 	}
 }
 
