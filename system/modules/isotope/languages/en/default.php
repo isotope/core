@@ -89,6 +89,7 @@ $GLOBALS['TL_LANG']['MSC']['quantity'] = 'Quantity';
 $GLOBALS['TL_LANG']['MSC']['order_conditions'] = 'I agree to the terms & conditions';
 $GLOBALS['TL_LANG']['MSC']['downloadCount'] = '%s download(s)';
 
+$GLOBALS['TL_LANG']['MSC']['defaultSearchText'] = 'search products';
 $GLOBALS['TL_LANG']['MSC']['blankSelectOptionLabel'] = '-';
 $GLOBALS['TL_LANG']['MSC']['emptySelectOptionLabel'] = 'Please select...';
 $GLOBALS['TL_LANG']['MSC']['downloadsLabel']			= 'Your downloadable products';

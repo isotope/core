@@ -157,6 +157,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		$this->Template->per_page = ($this->Input->get('per_page') ? $this->Input->get('per_page') : $strPerPageDefault);
 		$this->Template->page = ($this->Input->get('page') ? $this->Input->get('page') : 1);
 		$this->Template->for = $this->Input->get('for');
+		$this->Template->defaultSearchText = $GLOBALS['TL_LANG']['MSC']['defaultSearchText'];
 		$this->Template->orderByLabel = $GLOBALS['TL_LANG']['MSC']['orderByLabel'];
 		$this->Template->perPageLabel = $GLOBALS['TL_LANG']['MSC']['perPageLabel'];
 		$this->Template->keywordsLabel = $GLOBALS['TL_LANG']['MSC']['searchTermsLabel'];

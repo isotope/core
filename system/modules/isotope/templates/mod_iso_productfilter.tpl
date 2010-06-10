@@ -37,10 +37,10 @@
                 <?php endforeach; ?>
             <?php endif; ?>
             <?php if ($this->searchable): ?>
-            
                 <div class="filter_search">
                 <label for="ctrl_for"><?php echo $this->keywordsLabel; ?></label>
-                <input type="text" name="for" id="ctrl_for" class="text" value="<?php echo $this->for; ?>" />
+                <noscript><input type="text" name="for" id="ctrl_for" class="text" value="<?php echo $this->for; ?>" /></noscript>
+                <input type="text" name="for" id="ctrl_for" class="text" value="<?php echo ($this->for ? $this->for : $this->defaultSearchText); ?>" onblur="if (this.value=='') { this.value='<?php echo $this->defaultSearchText; ?>'; }" onfocus="if (this.value=='<?php echo $this->defaultSearchText; ?>') { this.value=''; this.select(); }" />
                 </div>
             <?php endif; ?>
             
