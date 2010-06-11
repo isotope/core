@@ -153,7 +153,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 		$objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
 		$objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
 		$objTemplate->subTotalPrice = $this->generatePrice($this->Cart->subTotal, 'stpl_total_price');
-		$objTemplate->grandTotalPrice = $this->generatePrice($this->Cart->subTotal, 'stpl_total_price');
+		$objTemplate->grandTotalPrice = $this->generatePrice($this->Cart->grandTotal, 'stpl_price');
 		$objTemplate->showOptions = false;	//!@todo make a module option.
 		$objTemplate->surcharges = $arrSurcharges;
 		
