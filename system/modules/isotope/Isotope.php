@@ -366,7 +366,7 @@ class Isotope extends Controller
 	 * @param bool $blnHtml. (default: false)
 	 * @return string
 	 */
-	public function formatPriceWithCurrency($fltPrice, $strCurrencyCode = null, $blnHtml=false)
+	public function formatPriceWithCurrency($fltPrice, $blnHtml=true, $strCurrencyCode = null)
 	{
 		// If price or override price is a string
 		if (!is_numeric($fltPrice))

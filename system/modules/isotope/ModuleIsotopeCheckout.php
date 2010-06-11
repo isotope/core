@@ -740,8 +740,8 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		$objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
 		$objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
 		
-		$objTemplate->subTotalPrice = $this->generatePrice($this->Isotope->Cart->subTotal);
-		$objTemplate->grandTotalPrice = $this->generatePrice($this->Isotope->Cart->grandTotal, 'stpl_total_price');
+		$objTemplate->subTotalPrice = $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->subTotal);
+		$objTemplate->grandTotalPrice = $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->grandTotal);
 		
 		return $objTemplate->parse();
 	}

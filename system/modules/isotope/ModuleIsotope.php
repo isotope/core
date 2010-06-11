@@ -67,16 +67,6 @@ abstract class ModuleIsotope extends Module
 			}
 		}
 	}
-		
-	
-	protected function generatePrice($fltPrice, $strTemplate='stpl_price')
-	{
-		$objTemplate = new FrontendTemplate($strTemplate);
-		
-		$objTemplate->price = $this->Isotope->formatPriceWithCurrency($fltPrice, null, true);
-		
-		return $objTemplate->parse();
-	}
 			
 	
 	/**

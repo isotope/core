@@ -251,7 +251,7 @@ class tl_iso_tax_rate extends Backend
 			$this->import('Isotope');
 			$this->Isotope->overrideConfig($row['config']);
 			
-			$strRate = $this->Isotope->formatPriceWithCurrency($arrRate['value']);
+			$strRate = $this->Isotope->formatPriceWithCurrency($arrRate['value'], false);
 		}
 		else
 		{
