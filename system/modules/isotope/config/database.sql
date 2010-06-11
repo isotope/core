@@ -114,6 +114,7 @@ CREATE TABLE `tl_iso_downloads` (
   `title` varchar(255) NOT NULL default '',
   `description` text NULL,
   `downloads_allowed` int(5) unsigned NOT NULL default '0',
+  `archive` int(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -139,6 +140,7 @@ CREATE TABLE `tl_iso_producttypes` (
   `variant_attributes` blob NULL,
   `downloads` char(1) NOT NULL default '',
   `languages` blob NULL,
+  `archive` int(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -236,6 +238,7 @@ CREATE TABLE `tl_iso_config` (
   `gallery_size` varchar(64) NOT NULL default '',
   `medium_size` varchar(64) NOT NULL default '',
   `large_size` varchar(64) NOT NULL default '',
+  `archive` int(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -414,6 +417,7 @@ CREATE TABLE `tl_iso_payment_modules` (
   `button` varchar(255) NOT NULL default '',
   `debug` char(1) NOT NULL default '',
   `enabled` char(1) NOT NULL default '',
+  `archive` int(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -466,6 +470,7 @@ CREATE TABLE `tl_iso_shipping_modules` (
   `ups_enabledService` varchar(255) NOT NULL default '',
   `usps_userName` varchar(255) NOT NULL default '',
   `usps_enabledService` varchar(255) NOT NULL default '',
+  `archive` int(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -595,6 +600,7 @@ CREATE TABLE `tl_iso_tax_class` (
   `label` varchar(255) NOT NULL default '',
   `includes` int(10) unsigned NOT NULL default '0',
   `rates` blob NULL,
+  `archive` int(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 

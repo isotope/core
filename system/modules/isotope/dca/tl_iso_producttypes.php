@@ -43,6 +43,10 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
 		(
 			array('tl_iso_producttypes', 'checkPermission'),
 		),
+		'ondelete_callback'			  =>
+		(
+			array('tl_iso_producttypes', 'archiveRecord'),
+		),
 	),
 
 	// List
@@ -243,19 +247,25 @@ class tl_iso_producttypes extends Backend
 		
 		$this->import('BackendUser', 'User');
 
+		// Hide archived (sold and deleted) product types
 		if ($this->User->isAdmin)
 		{
-			return;
+			$arrProductTypes = $this->Database->execute("SELECT id FROM tl_iso_producttypes WHERE archive<2")->fetchEach('id');
 		}
-
-		// Set root IDs
-		if (!is_array($this->User->iso_product_types) || count($this->User->iso_product_types) < 1)
+		else
 		{
-			$this->User->iso_product_types = array(0);
+			$arrTypes = is_array($this->User->iso_product_types) ? $this->User->iso_product_types : array(0);
+			$arrProductTypes = $this->Database->execute("SELECT id FROM tl_iso_producttypes WHERE id IN ('','" . implode("','", $arrTypes) . "') AND archive<2")->fetchEach('id');
+		}
+		
+		// Set root IDs
+		if (!count($arrProductTypes))
+		{
+			$arrProductTypes = array(0);
 		}
 
 		$GLOBALS['TL_DCA']['tl_iso_producttypes']['config']['closed'] = true;
-		$GLOBALS['TL_DCA']['tl_iso_producttypes']['list']['sorting']['root'] = $this->User->iso_product_types;
+		$GLOBALS['TL_DCA']['tl_iso_producttypes']['list']['sorting']['root'] = $arrProductTypes;
 
 		// Check current action
 		switch ($this->Input->get('act'))
@@ -266,27 +276,35 @@ class tl_iso_producttypes extends Backend
 
 			case 'edit':
 			case 'show':
-				if (!in_array($this->Input->get('id'), $this->User->iso_product_types))
+				if (!in_array($this->Input->get('id'), $arrProductTypes))
 				{
-					$this->log('Not enough permissions to '.$this->Input->get('act').' product type ID "'.$this->Input->get('id').'"', 'tl_iso_producttypes checkPermission', 5);
+					$this->log('Not enough permissions to '.$this->Input->get('act').' product type ID "'.$this->Input->get('id').'"', 'tl_iso_producttypes checkPermission()', TL_ACCESS);
 					$this->redirect('typolight/main.php?act=error');
 				}
 				break;
 
 			case 'editAll':
 				$session = $this->Session->getData();
-				$session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $this->User->iso_product_types);
+				$session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $arrProductTypes);
 				$this->Session->setData($session);
 				break;
 
 			default:
 				if (strlen($this->Input->get('act')))
 				{
-					$this->log('Not enough permissions to '.$this->Input->get('act').' product types', 'tl_iso_producttypes checkPermission', 5);
+					$this->log('Not enough permissions to '.$this->Input->get('act').' product types', 'tl_iso_producttypes checkPermission()', TL_ACCESS);
 					$this->redirect('typolight/main.php?act=error');
 				}
 				break;
 		}
+	}
+	
+	
+	/**
+	 * Record is deleted, archive if necessary
+	 */
+	public function archiveRecord($dc)
+	{
 	}
 }
 

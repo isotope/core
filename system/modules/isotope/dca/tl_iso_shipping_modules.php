@@ -52,6 +52,10 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
 		(
 			array('tl_iso_shipping_modules', 'checkPermission'),
 		),
+		'ondelete_callback'			  =>
+		(
+			array('tl_iso_shipping_modules', 'archiveRecord'),
+		),
 	),
 
 	// List
@@ -361,7 +365,58 @@ class tl_iso_shipping_modules extends Backend
 		{
 			$GLOBALS['TL_DCA']['tl_iso_shipping_modules']['config']['closed'] = false;
 		}
+		
+		// Hide archived (used and deleted) modules
+		$arrModules = $this->Database->execute("SELECT id FROM tl_iso_shipping_modules WHERE archive<2")->fetchEach('id');
+		
+		if (!count($arrModules))
+		{
+			$arrModules = array(0);
+		}
+
+		$GLOBALS['TL_DCA']['tl_iso_shipping_modules']['config']['closed'] = true;
+		$GLOBALS['TL_DCA']['tl_iso_shipping_modules']['list']['sorting']['root'] = $arrModules;
+
+		// Check current action
+		switch ($this->Input->get('act'))
+		{
+			case 'select':
+				// Allow
+				break;
+
+			case 'edit':
+			case 'show':
+				if (!in_array($this->Input->get('id'), $arrModules))
+				{
+					$this->log('Not enough permissions to '.$this->Input->get('act').' config ID "'.$this->Input->get('id').'"', 'tl_iso_shipping_modules checkPermission()', TL_ACCESS);
+					$this->redirect('typolight/main.php?act=error');
+				}
+				break;
+
+			case 'editAll':
+				$session = $this->Session->getData();
+				$session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $arrModules);
+				$this->Session->setData($session);
+				break;
+
+			default:
+				if (strlen($this->Input->get('act')))
+				{
+					$this->log('Not enough permissions to '.$this->Input->get('act').' store configs', 'tl_iso_shipping_modules checkPermission()', TL_ACCESS);
+					$this->redirect('typolight/main.php?act=error');
+				}
+				break;
+		}
 	}
+	
+	
+	/**
+	 * Record is deleted, archive if necessary
+	 */
+	public function archiveRecord($dc)
+	{
+	}
+	
 	
 	/**
 	 * Return a string of more buttons for the current shipping module.
