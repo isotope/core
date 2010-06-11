@@ -42,6 +42,10 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = array
 		(
 			array('tl_iso_tax_class', 'checkPermission'),
 		),
+		'ondelete_callback'			  =>
+		(
+			array('tl_iso_tax_class', 'archiveRecord'),
+		),
 	),
 
 	// List
@@ -164,6 +168,56 @@ class tl_iso_tax_class extends Backend
 		{
 			$GLOBALS['TL_DCA']['tl_iso_tax_class']['config']['closed'] = false;
 		}
+		
+		// Hide archived (used and deleted) tax classes
+		$arrModules = $this->Database->execute("SELECT id FROM tl_iso_tax_class WHERE archive<2")->fetchEach('id');
+		
+		if (!count($arrModules))
+		{
+			$arrModules = array(0);
+		}
+
+		$GLOBALS['TL_DCA']['tl_iso_tax_class']['config']['closed'] = true;
+		$GLOBALS['TL_DCA']['tl_iso_tax_class']['list']['sorting']['root'] = $arrModules;
+
+		// Check current action
+		switch ($this->Input->get('act'))
+		{
+			case 'select':
+				// Allow
+				break;
+
+			case 'edit':
+			case 'show':
+				if (!in_array($this->Input->get('id'), $arrModules))
+				{
+					$this->log('Not enough permissions to '.$this->Input->get('act').' config ID "'.$this->Input->get('id').'"', 'tl_iso_tax_class checkPermission()', TL_ACCESS);
+					$this->redirect('typolight/main.php?act=error');
+				}
+				break;
+
+			case 'editAll':
+				$session = $this->Session->getData();
+				$session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $arrModules);
+				$this->Session->setData($session);
+				break;
+
+			default:
+				if (strlen($this->Input->get('act')))
+				{
+					$this->log('Not enough permissions to '.$this->Input->get('act').' store configs', 'tl_iso_tax_class checkPermission()', TL_ACCESS);
+					$this->redirect('typolight/main.php?act=error');
+				}
+				break;
+		}
+	}
+	
+	
+	/**
+	 * Record is deleted, archive if necessary
+	 */
+	public function archiveRecord($dc)
+	{
 	}
 	
 	

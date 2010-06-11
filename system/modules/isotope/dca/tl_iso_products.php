@@ -463,24 +463,29 @@ class tl_iso_products extends Backend
 		}
 		
 		$this->import('BackendUser', 'User');
-				
-		if (!$this->User->isAdmin)
+		
+		// Hide archived (sold and deleted) products
+		if ($this->User->isAdmin)
+		{
+			$arrProducts = $this->Database->execute("SELECT id FROM tl_iso_products WHERE pid=0 AND archive<2")->fetchEach('id');
+		}
+		else
 		{
 			$arrTypes = is_array($this->User->iso_product_types) ? $this->User->iso_product_types : array(0);
-			
-			$arrProducts = $this->Database->execute("SELECT id FROM tl_iso_products WHERE pid=0 AND type IN ('','" . implode("','", $arrTypes) . "')")->fetchEach('id');
-			
-			if (!count($arrProducts))
-			{
-				$arrProducts = array(0);
-			}
-			
-			$GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'] = $arrProducts;
-			
-			if (strlen($this->Input->get('id')) && !in_array($this->Input->get('id'), $arrProducts))
-			{
-				$this->redirect('typolight/main.php?act=error');
-			}
+			$arrProducts = $this->Database->execute("SELECT id FROM tl_iso_products WHERE pid=0 AND type IN ('','" . implode("','", $arrTypes) . "') AND archive<2")->fetchEach('id');
+		}
+		
+		if (!count($arrProducts))
+		{
+			$arrProducts = array(0);
+		}
+		
+		$GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'] = $arrProducts;
+		
+		if (strlen($this->Input->get('id')) && !in_array($this->Input->get('id'), $arrProducts))
+		{
+			$this->log('Cannot access product ID '.$this->Input->get('id'), 'tl_iso_products checkPermission()', TL_ACCESS);
+			$this->redirect('typolight/main.php?act=error');
 		}
 	}
 	

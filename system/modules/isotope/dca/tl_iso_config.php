@@ -45,6 +45,10 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 		(
 			array('tl_iso_config', 'checkPermission'),
 		),
+		'ondelete_callback'			  =>
+		(
+			array('tl_iso_config', 'archiveRecord'),
+		),
 	),
 
 	// List
@@ -483,22 +487,67 @@ class tl_iso_config extends Backend
 		
 		$this->import('BackendUser', 'User');
 		
+		// Hide archived (used and deleted) configs
 		if ($this->User->isAdmin)
-			return;
+		{
+			$arrConfigs = $this->Database->execute("SELECT id FROM tl_iso_config WHERE archive<2")->fetchEach('id');
+		}
+		else
+		{
+			if (!is_array($this->User->iso_configs) || !count($this->User->iso_configs))
+			{
+				$this->User->iso_configs = array(0);
+			}
 			
-		$arrConfigs = $this->User->iso_configs;
+			$arrConfigs = $this->Database->execute("SELECT id FROM tl_iso_config WHERE id IN ('','" . implode("','", $this->User->iso_configs) . "') AND archive<2")->fetchEach('id');
+		}
 		
-		if (!is_array($arrConfigs) || !count($arrConfigs))
+		if (!count($arrConfigs))
 		{
 			$arrConfigs = array(0);
 		}
-		
+
+		$GLOBALS['TL_DCA']['tl_iso_config']['config']['closed'] = true;
 		$GLOBALS['TL_DCA']['tl_iso_config']['list']['sorting']['root'] = $arrConfigs;
-		
-		if (strlen($this->Input->get('id')) && !in_array($this->Input->get('id'), $arrConfigs))
+
+		// Check current action
+		switch ($this->Input->get('act'))
 		{
-			$this->redirect('typolight/main.php?act=error');
+			case 'select':
+				// Allow
+				break;
+
+			case 'edit':
+			case 'show':
+				if (!in_array($this->Input->get('id'), $arrConfigs))
+				{
+					$this->log('Not enough permissions to '.$this->Input->get('act').' config ID "'.$this->Input->get('id').'"', 'tl_iso_config checkPermission()', TL_ACCESS);
+					$this->redirect('typolight/main.php?act=error');
+				}
+				break;
+
+			case 'editAll':
+				$session = $this->Session->getData();
+				$session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $arrConfigs);
+				$this->Session->setData($session);
+				break;
+
+			default:
+				if (strlen($this->Input->get('act')))
+				{
+					$this->log('Not enough permissions to '.$this->Input->get('act').' store configs', 'tl_iso_config checkPermission()', TL_ACCESS);
+					$this->redirect('typolight/main.php?act=error');
+				}
+				break;
 		}
+	}
+	
+	
+	/**
+	 * Record is deleted, archive if necessary
+	 */
+	public function archiveRecord($dc)
+	{
 	}
 	
 	
