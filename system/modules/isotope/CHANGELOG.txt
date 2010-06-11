@@ -23,6 +23,7 @@ Version 0.1.2 (2010-??-??)
 ------------------------------
 - Fixed: Backend variant listing showed unassigned attributes (Ticket #135)
 - Fixed problem with payment modules accepting only two digit floating point precision (Ticket #136)
+- Fixed wrong grand total price in cart module (Ticket #137)
 - Moved product tax class field to pricing legend (Ticket #134)
 
 Version 0.1.1 (2010-06-06)
