@@ -250,9 +250,9 @@ class ModuleGiftRegistry extends ModuleIsotope
 		$this->Template->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
 		$this->Template->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
 		$this->Template->taxLabel = sprintf($GLOBALS['TL_LANG']['MSC']['taxLabel'], 'Sales');
-		$this->Template->taxTotal = $this->generatePrice($taxPriceAdjustment);
-		$this->Template->subTotalPrice = $this->generatePrice($floatSubTotalPrice, 'stpl_total_price');
-		$this->Template->grandTotalPrice = $this->generatePrice($floatGrandTotalPrice, 'stpl_total_price');
+		$this->Template->taxTotal = $this->Isotope->formatPriceWithCurrency($taxPriceAdjustment);
+		$this->Template->subTotalPrice = $this->Isotope->formatPriceWithCurrency($floatSubTotalPrice);
+		$this->Template->grandTotalPrice = $this->Isotope->formatPriceWithCurrency($floatGrandTotalPrice);
 		$this->Template->noItemsInRegistry = $GLOBALS['TL_LANG']['MSC']['registry']['noItemsInRegistry'];
 		$this->Template->registryTitle = $arrRegData['name'];
 		$this->Template->registryDate = $arrRegData['date'];
@@ -344,8 +344,8 @@ class ModuleGiftRegistry extends ModuleIsotope
 				'image'				=> 'isotope/' . substr($row['alias'], 0, 1) . '/' . $row['alias'] . '/' . $GLOBALS['TL_LANG']['MSC']['imagesFolder'] . '/' . $GLOBALS['TL_LANG']['MSC']['thumbnail_images_folder'] . '/' . $row['images'],
 				'name'				=> $row['name'],
 				'link'				=> $this->generateProductLink($row['alias'], $row, $this->Isotope->Config->productReaderJumpTo, $row['attribute_set_id'], 'id'),
-				'price'				=> $this->generatePrice($row['price']),
-				'total_price'		=> $this->generatePrice($intTotalPrice, 'stpl_total_price'),
+				'price'				=> $this->Isotope->formatPriceWithCurrency($row['price']),
+				'total_price'		=> $this->Isotope->formatPriceWithCurrency($intTotalPrice),
 				'quantity'			=> $row['quantity_requested'],
 				'remove_link'		=> $this->generateActionLinkString('remove_from_registry', $row['id'], array('attribute_set_id'=>$row['attribute_set_id'],'quantity'=>0), $objPage->id),
 				'remove_link_title' => sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $row['name'])

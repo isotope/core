@@ -466,7 +466,7 @@ class PayflowProPOS extends Backend
 				'name'				=> $objProduct->name,
 				'quantity'			=> $objItems->product_quantity,
 				'price'				=> $this->Isotope->formatPriceWithCurrency($objProduct->price),
-				'total'				=> $this->Isotope->formatPriceWithCurrency(($objProduct->price * $objItems->product_quantity)),
+				'total'				=> $this->Isotope->formatPriceWithCurrency($objProduct->total_price),
 				'href'				=> ($this->jumpTo ? $this->generateFrontendUrl($arrPage, '/product/'.$objItems->alias) : ''),
 				'tax_id'			=> $objProduct->tax_id,
 			);
@@ -578,7 +578,7 @@ class PayflowProPOS extends Backend
 				'name'			=> $objProduct->name,
 				'quantity'		=> $objItems->product_quantity,
 				'price'			=> $this->Isotope->formatPriceWithCurrency($objProduct->price),
-				'total'			=> $this->Isotope->formatPriceWithCurrency(($objProduct->price * $objItems->product_quantity)),
+				'total'			=> $this->Isotope->formatPriceWithCurrency($objProduct->total_price),
 				'href'			=> ($this->jumpTo ? $this->generateFrontendUrl($arrPage, '/product/'.$objItems->alias) : ''),
 				'tax_id'		=> $objProduct->tax_id,
 			);
@@ -662,7 +662,7 @@ class PayflowProPOS extends Backend
 			
 			$fltProductPrice = (float)$productList['price'];
 			
-			$strProductData .= $objProductExtendedData->name . ' - ' . $this->Isotope->formatPriceWithCurrency($fltProductPrice) . ' x ' . $productList['quantity'] . ' = ' . $this->Isotope->formatPriceWithCurrency($fltProductTotal) . '<br />';
+			$strProductData .= $objProductExtendedData->name . ' - ' . $this->Isotope->formatPriceWithCurrency($fltProductPrice, false) . ' x ' . $productList['quantity'] . ' = ' . $this->Isotope->formatPriceWithCurrency($fltProductTotal, false) . '<br />';
 			
 			
 			
@@ -670,10 +670,10 @@ class PayflowProPOS extends Backend
 			(
 				'name'			=> $objProductExtendedData->name,
 				'sku'			=> $objProductExtendedData->sku,
-				'price'			=> $this->Isotope->formatPriceWithCurrency($fltProductPrice),
+				'price'			=> $this->Isotope->formatPriceWithCurrency($fltProductPrice, false),
 				'quantity'		=> (int)$productList['quantity'],
 				//'tax'			=> number_format($fltProductTax, 2),
-				'subtotal'		=> $this->Isotope->formatPriceWithCurrency($fltProductTotal),
+				'subtotal'		=> $this->Isotope->formatPriceWithCurrency($fltProductTotal, false),
 				'options'		=> $this->getOptionsHTML($productList['options'])
 			);
 		}

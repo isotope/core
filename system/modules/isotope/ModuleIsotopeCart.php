@@ -107,8 +107,8 @@ class ModuleIsotopeCart extends ModuleIsotope
 				'id'				=> $objProduct->id,
 				'image'				=> $objProduct->images->main_image,
 				'link'				=> $objProduct->href_reader,
-				'price'				=> $this->generatePrice($objProduct->price),
-				'total_price'		=> $this->generatePrice($objProduct->total_price),
+				'price'				=> $this->Isotope->formatPriceWithCurrency($objProduct->price),
+				'total_price'		=> $this->Isotope->formatPriceWithCurrency($objProduct->total_price),
 				'tax_id'			=> $objProduct->tax_id,
 				'quantity'			=> $objProduct->quantity_requested,
 				'cart_item_id'		=> $objProduct->cart_id,
@@ -152,8 +152,8 @@ class ModuleIsotopeCart extends ModuleIsotope
 		$objTemplate->checkoutJumpTo = $this->generateFrontendUrl($this->Database->prepare("SELECT id,alias FROM tl_page WHERE id=?")->execute($this->iso_checkout_jumpTo)->fetchAssoc());
 		$objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
 		$objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
-		$objTemplate->subTotalPrice = $this->generatePrice($this->Isotope->Cart->subTotal, 'stpl_total_price');
-		$objTemplate->grandTotalPrice = $this->generatePrice($this->Isotope->Cart->grandTotal, 'stpl_price');
+		$objTemplate->subTotalPrice = $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->subTotal);
+		$objTemplate->grandTotalPrice = $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->grandTotal);
 		$objTemplate->showOptions = false;	//!@todo make a module option.
 		$objTemplate->surcharges = $arrSurcharges;
 		

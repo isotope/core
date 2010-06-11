@@ -179,7 +179,7 @@ class tl_product_dimension_prices extends Backend
 			$strStartStop = ' <span style="color:#b3b3b3; padding-left:3px;">[' . sprintf($GLOBALS['TL_LANG']['tl_product_dimension_prices']['labelStop'], $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $row['stop'])) . ']</span>';
 		}
 
-		return sprintf('<div class="list_icon" style="margin-top:-20px; margin-bottom:-8px; background-image:url(\'system/themes/%s/images/%s.gif\');">%s x %s: %s%s</div>', $this->getTheme(), $image, round($row['dimension_x'], 3), round($row['dimension_y'], 3), $this->Isotope->formatPriceWithCurrency($row['price']), $strStartStop);
+		return sprintf('<div class="list_icon" style="margin-top:-20px; margin-bottom:-8px; background-image:url(\'system/themes/%s/images/%s.gif\');">%s x %s: %s%s</div>', $this->getTheme(), $image, round($row['dimension_x'], 3), round($row['dimension_y'], 3), $this->Isotope->formatPriceWithCurrency($row['price'], false), $strStartStop);
 	}
 }
 

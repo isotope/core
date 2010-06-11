@@ -44,7 +44,6 @@
 				<ul class="productOptions">
 				<?php foreach($product['product_options'] as $option): ?>
 					<li><strong><?php echo $option['name']; ?>:</strong> <?php echo implode(', ', $option['values']); ?></li>
-				<!--<div class="option"><span class="optionname">OPTION:</span> PRODUCT OPTION</div>-->
 				<?php endforeach; ?>
 				</ul>
 			</div>
@@ -62,15 +61,11 @@
 </div>
 <div class="submit_container">
 	<button type="submit" class="submit update"><span><?php echo $GLOBALS['TL_LANG']['MSC']['updateCartBT']; ?></span></button>
-	<a class="continue" href="<?php echo $this->continueShoppingLink; ?>"><span><?php echo $this->continueShoppingLabel; ?></span></a>
 	<a class="checkout" href="<?php echo $this->checkoutJumpTo; ?>"><span><?php echo $this->checkoutJumpToLabel; ?></span></a>
 </div>
 <?php else: ?>
 <tr>
 	<td colspan="4" class="empty"><?php echo $this->message; ?></td>
-</tr>
-<tr>
-	<td colspan="4"><a class="continue" href="<?php echo $this->continueShoppingLink; ?>"><span><?php echo $this->continueShoppingLabel; ?></span></a></td>
 </tr>
 </tbody>
 </table>
