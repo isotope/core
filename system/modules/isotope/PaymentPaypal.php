@@ -235,7 +235,9 @@ class PaymentPaypal extends IsotopePayment
 
 <script type="text/javascript">
 <!--//--><![CDATA[//><!--
-$(\'payment_form\').submit();
+window.addEvent( \'domready\' , function() {
+  $(\'payment_form\').submit();
+});
 //--><!]]>
 </script>';
 	}
