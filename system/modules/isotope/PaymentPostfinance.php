@@ -168,7 +168,7 @@ class PaymentPostfinance extends IsotopePayment
 		$this->Database->prepare("UPDATE tl_iso_orders SET payment_data=? WHERE id=?")->execute(serialize($arrData), $objOrder->id);
 		
 		return '
-<form method="post" action="' . $strAction . '">
+<form method="post" id="payment_form" action="' . $strAction . '">
 <input type="hidden" name="PSPID" value="' . $this->postfinance_pspid . '">
 <input type="hidden" name="orderID" value="' . $objOrder->order_id . '">
 <input type="hidden" name="amount" value="' . (round($this->Isotope->Cart->grandTotal, 2) * 100) . '">
@@ -189,7 +189,13 @@ class PaymentPostfinance extends IsotopePayment
 <input type="hidden" name="paramplus" value="mod=pay&id=' . $this->id . '">
 <input type="submit" value="Bezahlen">
 </form>
-';
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+window.addEvent( \'domready\' , function() {
+  $(\'payment_form\').submit();
+});
+//--><!]]>
+</script>';
 	}
 	
 	
