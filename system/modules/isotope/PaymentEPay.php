@@ -134,7 +134,9 @@ class PaymentEPay extends IsotopePayment
 </form>
 <script type="text/javascript">
 <!--//--><![CDATA[//><!--
-$(\'payment_form\').submit();
+window.addEvent( \'domready\' , function() {
+  $(\'payment_form\').submit();
+});
 //--><!]]>
 </script>';
 	}
