@@ -132,7 +132,7 @@ $GLOBALS['TL_DCA']['tl_iso_downloads'] = array
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_downloads']['downloads_allowed'],
 			'exclude'					=> true,
 			'inputType'					=> 'text',
-			'eval'						=> array('mandatory'=>true, 'maxlength'=>5, 'rgxp'=>'digits', 'tl_class'=>'w50'),
+			'eval'						=> array('mandatory'=>true, 'maxlength'=>5, 'rgxp'=>'digit', 'tl_class'=>'w50'),
 		),
 	)
 );

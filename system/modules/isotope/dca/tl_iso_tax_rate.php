@@ -176,7 +176,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['postal'],
 			'flag'                    => 1,
 			'inputType'               => 'text',
-			'eval'                    => array('multiple'=>true, 'size'=>2, 'maxlength'=>10, 'rgxp'=>'digits', 'tl_class'=>'w50'),
+			'eval'                    => array('multiple'=>true, 'size'=>2, 'maxlength'=>10, 'rgxp'=>'digit', 'tl_class'=>'w50'),
 		),
 		'config' => array
 		(
@@ -190,13 +190,13 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['rate'],
 			'inputType'               => 'inputUnit',
 			'options'				  => array('%'=>'%'),
-			'eval'                    => array('maxlength'=>255, 'rgxp'=>'digits')
+			'eval'                    => array('maxlength'=>255, 'rgxp'=>'digit')
 		),
 		'amount' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['amount'],
 			'inputType'               => 'text',
-			'eval'                    => array('multiple'=>true, 'size'=>2, 'maxlength'=>10, 'rgxp'=>'digits', 'tl_class'=>'w50'),
+			'eval'                    => array('multiple'=>true, 'size'=>2, 'maxlength'=>10, 'rgxp'=>'digit', 'tl_class'=>'w50'),
 		),
 		'compound' => array
 		(
