@@ -859,5 +859,22 @@ class Isotope extends Controller
 				throw new Exception('Unknown source weight unit "' . $strSourceUnit . '"');
 		}
 	}
+	
+	
+	public function validateRegexp($strRegexp, $varValue, Widget $objWidget)
+	{
+		switch( $strRegexp )
+		{
+			case 'price':
+				if (!preg_match('/^[\d \.-]*$/', $varValue))
+				{
+					$objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR']['digit'], $objWidget->label));
+				}
+				return true;
+				break;
+		}
+		
+		return false;
+	}
 }
 

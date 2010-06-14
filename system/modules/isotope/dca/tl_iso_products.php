@@ -301,7 +301,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['price'],
 			'sorting'				=> true,
 			'inputType'				=> 'text',
-			'eval'					=> array('mandatory'=>true, 'maxlength'=>255, 'rgxp'=>'digits', 'tl_class'=>'w50'),
+			'eval'					=> array('mandatory'=>true, 'maxlength'=>255, 'rgxp'=>'price', 'tl_class'=>'w50'),
 			'attributes'			=> array('legend'=>'pricing_legend', 'is_order_by_enabled'=>true),
 		),
 		'price_override' => array
@@ -323,7 +323,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['max_order_quantity'],
 			'inputType'				=> 'text',
-			'eval'					=> array('rgxp'=>'digits', 'disabled'=>'disabled'),
+			'eval'					=> array('rgxp'=>'digit', 'disabled'=>'disabled'),
 			'attributes'			=> array('legend'=>'inventory_legend'),
 		),
 		'stock_enabled' => array
@@ -337,7 +337,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['stock_quantity'],
 			'inputType'				=> 'text',
-			'eval'					=> array('mandatory'=>true, 'rgxp'=>'digits', 'disabled'=>'disabled', 'tl_class'=>'w50'),
+			'eval'					=> array('mandatory'=>true, 'rgxp'=>'digit', 'disabled'=>'disabled', 'tl_class'=>'w50'),
 		),
 		'stock_oversell' => array
 		(
@@ -349,7 +349,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['weight'],
 			'inputType'				=> 'text',
-			'eval'					=> array('rgxp'=>'digits', 'disabled'=>'disabled', 'tl_class'=>'w50'),
+			'eval'					=> array('rgxp'=>'digit', 'disabled'=>'disabled', 'tl_class'=>'w50'),
 			'attributes'			=> array('legend'=>'shipping_legend'),
 		),*/
 		'shipping_weight' => array
@@ -359,7 +359,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'default'				=> 'kg',
 			'options'				=> array('mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'),
 			'reference'				=> &$GLOBALS['TL_LANG']['WGT'],
-			'eval'					=> array('rgxp'=>'digits', 'tl_class'=>'w50', 'helpwizard'=>&$GLOBALS['TL_LANG']['WGT']),
+			'eval'					=> array('rgxp'=>'digit', 'tl_class'=>'w50', 'helpwizard'=>&$GLOBALS['TL_LANG']['WGT']),
 			'attributes'			=> array('legend'=>'shipping_legend'),
 		),
 		'shipping_exempt' => array
@@ -1623,9 +1623,6 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 		// Add palettes
 		$GLOBALS['TL_DCA']['tl_iso_products']['palettes'][$objProduct->type] = implode(';', $arrLegends);
 	}
-	
-	
-	
 	
 	
 	/**
