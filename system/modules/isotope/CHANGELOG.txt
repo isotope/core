@@ -8,6 +8,7 @@ Version 0.1.2 (2010-??-??)
 - Fixed problem with payment modules accepting only two digit floating point precision (Ticket #136)
 - Fixed wrong grand total price in cart module (Ticket #137)
 - Fixed variant price in cart not correct
+- Fixed a possible bug with attributes not available in the template
 - Moved product tax class field to pricing legend (Ticket #134)
 - Now using domready event to submit payment checkout forms (Ticket #145)
 
