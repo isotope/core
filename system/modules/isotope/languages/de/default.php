@@ -53,7 +53,7 @@ $GLOBALS['TL_LANG']['MSC']['undefinedLanguage']		= 'undefiniert';
 
 
 $GLOBALS['TL_LANG']['MSC']['quantity'] = 'Anzahl';
-$GLOBALS['TL_LANG']['MSC']['priceRangeLabel'] = 'ab';
+$GLOBALS['TL_LANG']['MSC']['priceRangeLabel'] = 'ab %s';
 $GLOBALS['TL_LANG']['MSC']['removeProductLinkText'] = 'entfernen';
 $GLOBALS['TL_LANG']['MSC']['checkoutBT']				= 'Zur Kasse';
 $GLOBALS['TL_LANG']['MSC']['continueShoppingBT']		= 'weiter einkaufen';

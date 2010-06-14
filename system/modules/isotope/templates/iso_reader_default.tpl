@@ -3,7 +3,7 @@
 <div class="formbody">
 <input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formSubmit; ?>" />
 
-<h2 id="name"><?php echo $this->name; ?></h2>
+<h2><?php echo $this->name; ?></h2>
 
 <?php echo $this->images->generateMainImage('medium'); ?>
 <?php if($this->hasOptions): ?>
@@ -17,19 +17,13 @@
 <?php if ($this->sku): ?>
 <div class="sku"><?php echo $this->sku; ?></div><?php endif; if ($this->description): ?>
 <div class="description"><?php echo $this->description; ?></div><?php endif; ?>
+<div class="price"><?php echo $this->price; ?></div>
 
-<div id="ajax_price" class="price">
-	<?php if($this->editablePrice): ?>
-    	<label for="<?php echo $this->price['name']; ?>"><?php echo $this->price['description']; ?> </label><?php echo $this->price['html']; ?>
-    <?php else: ?>
-    	<?php echo $this->price; ?>
-	<?php endif; ?>
-</div>
 <?php if($this->buttons): ?>
 <div class="submit_container">
 <?php if ($this->useQuantity): ?>
 <div class="quantity_container">
-<label for="quantity_requested"><?php echo $this->quantityLabel; ?>:</label> <input type="text" class="text quantity_requested" name="quantity_requested" value="1" size="3" onblur="if (this.value=='') { this.value='1'; }" onfocus="if (this.value=='1') { this.value=''; }" />
+<label for="quantity_requested"><?php echo $this->quantityLabel; ?>:</label> <input type="text" class="text" name="quantity_requested" value="1" size="3" onblur="if (this.value=='') { this.value='1'; }" onfocus="if (this.value=='1') { this.value=''; }" />
 </div>
 <?php endif; ?>
 <?php foreach( $this->buttons as $name => $button ): ?>
