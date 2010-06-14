@@ -383,7 +383,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'exclude'                 => true,
 			'default'				  => 1,
 			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>10, 'rgxp'=>'digits', 'tl_class'=>'w50'),
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>10, 'rgxp'=>'digit', 'tl_class'=>'w50'),
 		),
 		'priceCalculateMode' => array
 		(
@@ -401,7 +401,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'exclude'                 => true,
 			'default'				  => '2',
 			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>1, 'rgpx'=>'digits', 'tl_class'=>'w50'),
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>1, 'rgpx'=>'digit', 'tl_class'=>'w50'),
 		),
 		'priceRoundIncrement' => array
 		(
