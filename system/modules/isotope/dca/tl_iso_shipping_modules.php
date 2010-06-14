@@ -52,7 +52,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
 		(
 			array('tl_iso_shipping_modules', 'checkPermission'),
 		),
-		'ondelete_callback'			  =>
+		'ondelete_callback'			  => array
 		(
 			array('tl_iso_shipping_modules', 'archiveRecord'),
 		),

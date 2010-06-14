@@ -44,7 +44,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 			array('tl_iso_payment_modules', 'checkPermission'),
 			array('tl_iso_payment_modules', 'loadShippingModules'),
 		),
-		'ondelete_callback'			  =>
+		'ondelete_callback'			  => array
 		(
 			array('tl_iso_payment_modules', 'archiveRecord'),
 		),

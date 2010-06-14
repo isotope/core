@@ -43,7 +43,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
 		(
 			array('tl_iso_producttypes', 'checkPermission'),
 		),
-		'ondelete_callback'			  =>
+		'ondelete_callback'			  => array
 		(
 			array('tl_iso_producttypes', 'archiveRecord'),
 		),
