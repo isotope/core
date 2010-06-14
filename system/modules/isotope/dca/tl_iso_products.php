@@ -449,7 +449,7 @@ class tl_iso_products extends Backend
 	/**
 	 * Only list product types a user is allowed to see.
 	 */
-	public function checkPermission()
+	public function checkPermission($dc)
 	{
 		if (strlen($this->Input->get('act')) && $this->Input->get('mode') != 'create')
 		{
@@ -467,12 +467,12 @@ class tl_iso_products extends Backend
 		// Hide archived (sold and deleted) products
 		if ($this->User->isAdmin)
 		{
-			$arrProducts = $this->Database->execute("SELECT id FROM tl_iso_products WHERE pid=0 AND archive<2")->fetchEach('id');
+			$arrProducts = $this->Database->execute("SELECT id FROM tl_iso_products WHERE archive<2")->fetchEach('id');
 		}
 		else
 		{
 			$arrTypes = is_array($this->User->iso_product_types) ? $this->User->iso_product_types : array(0);
-			$arrProducts = $this->Database->execute("SELECT id FROM tl_iso_products WHERE pid=0 AND type IN ('','" . implode("','", $arrTypes) . "') AND archive<2")->fetchEach('id');
+			$arrProducts = $this->Database->execute("SELECT id FROM tl_iso_products WHERE type IN ('','" . implode("','", $arrTypes) . "') AND archive<2")->fetchEach('id');
 		}
 		
 		if (!count($arrProducts))
