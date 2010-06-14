@@ -42,7 +42,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = array
 		(
 			array('tl_iso_tax_class', 'checkPermission'),
 		),
-		'ondelete_callback'			  =>
+		'ondelete_callback'			  => array
 		(
 			array('tl_iso_tax_class', 'archiveRecord'),
 		),
