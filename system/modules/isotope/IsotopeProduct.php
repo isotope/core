@@ -849,7 +849,7 @@ class IsotopeProduct extends Controller
 		{
 			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['add_to_product_variants'])
 			{
-				$arrOptions[$attribute] = $this->Input->post($attribute);
+				$arrOptions[$attribute] = ($this->Input->post('FORM_SUBMIT') == 'iso_product_'.$this->id) ? $this->Input->post($attribute) : $this->arrOptions[$attribute];
 			}
 		}
 		
