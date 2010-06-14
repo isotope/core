@@ -99,7 +99,7 @@ class IsotopeProduct extends Controller
 
 		$this->arrData = $arrData;		
 
-		$objType = $this->Database->prepare("SELECT * FROM tl_iso_producttypes WHERE id=?")->execute($this->arrData['type']);
+		$objType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id=".$this->arrData['type']);
 		$this->arrAttributes = deserialize($objType->attributes, true);
 		$this->arrCache['list_template'] = $objType->list_template;
 		$this->arrCache['reader_template'] = $objType->reader_template;
@@ -108,13 +108,12 @@ class IsotopeProduct extends Controller
 		// Cache downloads for this product
 		if ($objType->downloads)
 		{
-			$this->arrDownloads = $this->Database->prepare("SELECT * FROM tl_iso_downloads WHERE pid=?")->execute($this->arrData['id'])->fetchAllAssoc();
+			$this->arrDownloads = $this->Database->execute("SELECT * FROM tl_iso_downloads WHERE pid=".$this->arrData['id'])->fetchAllAssoc();
 		}
 
-		if (is_array($this->arrVariantAttributes))
+		if ($objType->variants)
 		{
-			$objProduct = $this->Database->prepare("SELECT MIN(price) AS low_price, MAX(price) AS high_price FROM tl_iso_products WHERE pid=? AND published='1'")
-										 ->execute($this->id);
+			$objProduct = $this->Database->execute("SELECT MIN(price) AS low_price, MAX(price) AS high_price FROM tl_iso_products WHERE pid={$this->id} AND published='1'");
 
 			$this->low_price = $this->Isotope->calculatePrice($objProduct->low_price, $this->arrData['tax_class']);
 			$this->high_price = $this->Isotope->calculatePrice($objProduct->high_price, $this->arrData['tax_class']);
@@ -352,8 +351,9 @@ class IsotopeProduct extends Controller
 	public function getAttributes()
 	{
 		$arrData = array();
+		$arrAttributes = array_unique(array_merge($this->arrAttributes, $this->arrVariantAttributes));
 
-		foreach( $this->arrAttributes as $attribute )
+		foreach( $arrAttributes as $attribute )
 		{
 			$arrData[$attribute] = $this->$attribute;
 		}
@@ -505,7 +505,7 @@ class IsotopeProduct extends Controller
 				{
 					$objGallery = $this->$attribute;
 					
-					foreach( array('large', 'medium', 'thumbnail') as $type )
+					foreach( array('large', 'medium', 'thumbnail', 'gallery') as $type )
 					{
 						$arrOptions[] = array
 						(
@@ -656,7 +656,7 @@ class IsotopeProduct extends Controller
 			
 			foreach( $this->arrOptions as $name => $value )
 			{
-				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$name]['attributes']['add_to_product_variants'])
+				if ($name != $strField && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$name]['attributes']['add_to_product_variants'] && strlen($value))
 				{
 					$arrSearch[$name] = $value;
 				}
@@ -853,14 +853,15 @@ class IsotopeProduct extends Controller
 	{
 		if (!is_array($this->arrVariantAttributes))
 			return;
-			
-		$arrOptions = array();
 		
+		$arrOptions = array();
+
 		foreach( $this->arrAttributes as $attribute )
 		{
 			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['add_to_product_variants'])
 			{
-				$arrOptions[$attribute] = $this->Input->post($attribute);
+				$this->generateProductOptionWidget($attribute);
+				$arrOptions[$attribute] = $this->arrOptions[$attribute];
 			}
 		}
 		
