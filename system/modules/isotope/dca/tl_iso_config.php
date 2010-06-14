@@ -45,7 +45,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 		(
 			array('tl_iso_config', 'checkPermission'),
 		),
-		'ondelete_callback'			  =>
+		'ondelete_callback'			  => array
 		(
 			array('tl_iso_config', 'archiveRecord'),
 		),
