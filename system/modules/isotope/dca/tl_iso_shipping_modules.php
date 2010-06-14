@@ -266,21 +266,21 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['minimum_total'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>255, 'rgxp'=>'digit', 'tl_class'=>'w50'),
+			'eval'                    => array('maxlength'=>255, 'rgxp'=>'price', 'tl_class'=>'w50'),
 		),
 		'maximum_total' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['maximum_total'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>255, 'rgxp'=>'digit', 'tl_class'=>'w50'),
+			'eval'                    => array('maxlength'=>255, 'rgxp'=>'price', 'tl_class'=>'w50'),
 		),
 		'price' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['price'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>10, 'rgxp'=>'digit', 'tl_class'=>'w50'),
+			'eval'                    => array('maxlength'=>10, 'rgxp'=>'price', 'tl_class'=>'w50'),
 		),
 		'tax_class' => array
 		(
