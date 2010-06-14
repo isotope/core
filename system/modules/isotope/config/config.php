@@ -146,6 +146,7 @@ $GLOBALS['ISO_MOD'] = array
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][]			= array('Isotope', 'replaceIsotopeTags');
 $GLOBALS['TL_HOOKS']['loadDataContainer'][]			= array('Isotope', 'loadDataContainer');
 $GLOBALS['TL_HOOKS']['isoButtons'][]				= array('Isotope', 'defaultButtons');
+$GLOBALS['TL_HOOKS']['addCustomRegexp'][]			= array('Isotope', 'validateRegexp');
 //$GLOBALS['TL_HOOKS']['googleTracking'][] 			= array('ModuleIsotopeCheckout', 'googleTracking');
 
 
