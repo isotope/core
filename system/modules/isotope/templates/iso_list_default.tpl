@@ -10,7 +10,7 @@
 <div class="sku"><?php echo $this->sku; ?></div><?php endif; if ($this->teaser): ?>
 <div class="teaser"><?php echo $this->teaser; ?></div><?php endif; ?>
 
-<div class="price"><?php echo ($this->raw['high_price'] > $this->raw['low_price'] ? $this->priceRangeLabel . ' ' . $this->low_price : $this->price); ?></div>
+<div class="price"><?php echo $this->price; ?></div>
 <div class="details"><a href="<?php echo $this->href_reader; ?>"><?php echo $this->label_detail; ?></a></div>
 
 <?php if($this->buttons): ?>
@@ -22,7 +22,7 @@
 <?php endif; ?>
 <?php if ($this->useQuantity): ?>
 <div class="quantity_container">
-<label for="quantity_requested"><?php echo $this->quantityLabel; ?>:</label> <input type="text" class="text quantity_requested" name="quantity_requested" value="1" size="3" onblur="if (this.value=='') { this.value='1'; }" onfocus="if (this.value=='1') { this.value=''; }" />
+<label for="quantity_requested"><?php echo $this->quantityLabel; ?>:</label> <input type="text" class="text" name="quantity_requested" value="1" size="3" onblur="if (this.value=='') { this.value='1'; }" onfocus="if (this.value=='1') { this.value=''; }" />
 </div>
 <?php endif; ?>
 <?php foreach( $this->buttons as $name => $button ): ?>

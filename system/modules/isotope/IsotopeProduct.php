@@ -40,6 +40,12 @@ class IsotopeProduct extends Controller
 	 * @var array
 	 */
 	protected $arrData = array();
+	
+	/**
+	 * Product type
+	 * @var array
+	 */
+	protected $arrType;
 
 	/**
 	 * Attributes assigned to this product type
@@ -99,29 +105,27 @@ class IsotopeProduct extends Controller
 
 		$this->arrData = $arrData;		
 
-		$objType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id=".$this->arrData['type']);
-		$this->arrAttributes = deserialize($objType->attributes, true);
-		$this->arrCache['list_template'] = $objType->list_template;
-		$this->arrCache['reader_template'] = $objType->reader_template;
-		$this->arrVariantAttributes = $objType->variants ? deserialize($objType->variant_attributes) : false;
+		$this->arrType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id=".$this->arrData['type'])->fetchAssoc();
+		$this->arrAttributes = deserialize($this->arrType['attributes'], true);
+		$this->arrCache['list_template'] = $this->arrType['list_template'];
+		$this->arrCache['reader_template'] = $this->arrType['reader_template'];
+		$this->arrVariantAttributes = $this->arrType['variants'] ? deserialize($this->arrType['variant_attributes']) : array();
 
 		// Cache downloads for this product
-		if ($objType->downloads)
+		if ($this->arrType['downloads'])
 		{
 			$this->arrDownloads = $this->Database->execute("SELECT * FROM tl_iso_downloads WHERE pid=".$this->arrData['id'])->fetchAllAssoc();
 		}
-
-		if ($objType->variants)
+		
+		// Find lowest price
+		if ($this->arrType['variants'] && in_array('price', $this->arrVariantAttributes))
 		{
-			$objProduct = $this->Database->execute("SELECT MIN(price) AS low_price, MAX(price) AS high_price FROM tl_iso_products WHERE pid={$this->id} AND published='1'");
+			$objProduct = $this->Database->execute("SELECT MIN(price) AS low_price, MAX(price) AS high_price FROM tl_iso_products WHERE pid={$this->id} AND published='1' AND language=''");
 
-			$this->low_price = $this->Isotope->calculatePrice($objProduct->low_price, $this->arrData['tax_class']);
-			$this->high_price = $this->Isotope->calculatePrice($objProduct->high_price, $this->arrData['tax_class']);
-		}
-		else
-		{
-			$this->low_price = $this->Isotope->calculatePrice($this->arrData['price'], $this->arrData['tax_class']);
-			$this->high_price = $this->Isotope->calculatePrice($this->arrData['price'], $this->arrData['tax_class']);
+			if ($objProduct->low_price < $objProduct->high_price)
+			{
+				$this->arrCache['low_price'] = $objProduct->low_price;
+			}
 		}
 		
 		$arrReturn = $this->applyPriceRules($this);
@@ -155,6 +159,11 @@ class IsotopeProduct extends Controller
 				return $this->Isotope->calculatePrice($this->arrData['original_price'], $this->arrData['tax_class']);
 				
 			case 'price':
+				if ($this->arrType['variants'] && !$this->arrData['vid'] && $this->arrCache['low_price'])
+				{
+					return $this->Isotope->calculatePrice($this->arrCache['low_price'], $this->arrData['tax_class']);
+				}
+				
 				return $this->Isotope->calculatePrice($this->arrData['price'], $this->arrData['tax_class']);
 			
 			case 'price_override':
@@ -162,10 +171,6 @@ class IsotopeProduct extends Controller
 
 			case 'total_price':
 				return ($this->quantity_requested ? $this->quantity_requested : 1) * $this->price;
-
-			case 'low_price':
-			case 'high_price':
-				return $this->Isotope->calculatePrice($this->arrData[$strKey], $this->arrData['tax_class']);
 
 			case 'hasDownloads':
 				return count($this->arrDownloads) ? true : false;
@@ -215,14 +220,6 @@ class IsotopeProduct extends Controller
 							$varValue = $this->Isotope->formatPriceWithCurrency($this->originalPrice);
 							break;
 							
-						case 'formatted_low_price':
-							$varValue = $this->Isotope->formatPriceWithCurrency($this->low_price);
-							break;
-							
-						case 'formatted_high_price':
-							$varValue = $this->Isotope->formatPriceWithCurrency($this->high_price);
-							break;
-							
 						case 'formatted_total_price':
 							$varValue = $this->Isotope->formatPriceWithCurrency($this->total_price);
 							break;
@@ -253,8 +250,6 @@ class IsotopeProduct extends Controller
 				
 			case 'sku':
 			case 'name':
-			case 'low_price':
-			case 'high_price':
 			case 'price':
 				$this->arrData[$strKey] = $varValue;
 				break;
@@ -410,10 +405,6 @@ class IsotopeProduct extends Controller
 		$objTemplate->label_detail = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
 		
 		$objTemplate->originalPrice = $this->formatted_original_price;
-		$objTemplate->price = $this->formatted_price;
-		$objTemplate->low_price = $this->formatted_low_price;
-		$objTemplate->high_price = $this->formatted_high_price;
-		$objTemplate->priceRangeLabel = $GLOBALS['TL_LANG']['MSC']['priceRangeLabel'];
 		$objTemplate->options = $arrProductOptions;	
 		$objTemplate->hasOptions = count($arrProductOptions) ? true : false;
 		
@@ -422,7 +413,7 @@ class IsotopeProduct extends Controller
 		$objTemplate->action = ampersand($this->Environment->request, true);
 		$objTemplate->formSubmit = 'iso_product_'.$this->id;
 		
-		$GLOBALS['TL_MOOTOOLS'][] = "<script type=\"text/javascript\">new IsotopeProduct('" . $objModule->id . "', '" . $this->id . "', ['ctrl_" . implode("_".$this->id."', 'ctrl_", $arrAjaxOptions) . "_".$this->id."']);</script>";
+		$GLOBALS['TL_MOOTOOLS'][] = "<script type=\"text/javascript\">new IsotopeProduct('" . $objModule->id . "', '" . $this->id . "', ['ctrl_" . implode("_".$this->id."', 'ctrl_", $arrAjaxOptions) . "_".$this->id."'], {language: '" . $GLOBALS['TL_LANGUAGE'] . "'});</script>";
 		
 		// HOOK for altering product data before output
 		if (isset($GLOBALS['TL_HOOKS']['iso_generateProduct']) && is_array($GLOBALS['TL_HOOKS']['iso_generateProduct']))
@@ -460,6 +451,32 @@ class IsotopeProduct extends Controller
 	{
 		$this->validateVariant();
 		
+		// Find lowest price
+		if ($this->arrType['variants'] && in_array('price', $this->arrVariantAttributes))
+		{
+			$arrSearch = array();
+			foreach( $this->arrOptions as $k => $v )
+			{
+				if (strlen($v))
+				{
+					$arrSearch[$k] = $v;
+				}
+			}
+
+			$objProduct = $this->Database->prepare("SELECT MIN(price) AS low_price, MAX(price) AS high_price FROM tl_iso_products WHERE pid={$this->id} AND published='1' AND language=''" . (count($arrSearch) ? " AND " . implode("=? AND ", array_keys($arrSearch)) . "=?" : ''))->execute($arrSearch);
+			
+			
+			if ($objProduct->low_price < $objProduct->high_price)
+			{
+				$this->arrCache['low_price'] = $objProduct->low_price;
+			}
+			else
+			{
+				unset($this->arrCache['low_price']);
+				$this->arrData['price'] = $objProduct->low_price;
+			}
+		}
+		
 		$arrOptions = array();
 		$arrAttributes = $this->getAttributes();
 		
@@ -473,7 +490,7 @@ class IsotopeProduct extends Controller
 					'html'		=> $this->generateProductOptionWidget($attribute, true),
 				);
 			}
-			elseif (is_array($this->arrVariantAttributes) && in_array($attribute, $this->arrVariantAttributes))
+			elseif (in_array($attribute, $this->arrVariantAttributes))
 			{
 				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['inputType'] == 'mediaManager')
 				{
@@ -504,12 +521,6 @@ class IsotopeProduct extends Controller
 				}
 			}
         }
-        
-        $arrOptions[] = array
-        (
-        	'id'	=> 'ajax_price',
-        	'html'	=> ('<div id="ajax_price">'.$this->formatted_price.'</div>'),
-        );
         
         // HOOK for altering product data before output
 		if (isset($GLOBALS['TL_HOOKS']['iso_generateAjaxProduct']) && is_array($GLOBALS['TL_HOOKS']['iso_generateAjaxProduct']))
@@ -598,11 +609,34 @@ class IsotopeProduct extends Controller
 				break;
 																																		
 			default:
-				$strBuffer = $varValue;
+				switch( $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['eval']['rgxp'] )
+				{
+					case 'price':
+						if ($attribute == 'price' && $this->arrType['variants'] && !$this->arrData['vid'] && $this->arrCache['low_price'])
+						{
+							$strBuffer = sprintf($GLOBALS['TL_LANG']['MSC']['priceRangeLabel'], $this->Isotope->formatPriceWithCurrency($varValue));
+						}
+						else
+						{
+							$strBuffer = $this->Isotope->formatPriceWithCurrency($varValue);
+						}
+						break;
+						
+					default:
+						$strBuffer = $varValue;
+						break;
+				}
 				break;
 		}
 		
-		return '<span id="' . $attribute . '_' . $this->id . '" class="' . $attribute . '">' . $strBuffer . '</span>';
+		if (in_array($attribute, $this->arrVariantAttributes))
+		{
+			return '<span id="' . $attribute . '_' . $this->id . '">' . $strBuffer . '</span>';
+		}
+		else
+		{
+			return $strBuffer;
+		}
 	}
 	
 	
@@ -825,11 +859,11 @@ class IsotopeProduct extends Controller
 	 */
 	protected function validateVariant()
 	{
-		if (!is_array($this->arrVariantAttributes))
+		if (!$this->arrType['variants'])
 			return;
 		
 		$arrOptions = array();
-
+		
 		foreach( $this->arrAttributes as $attribute )
 		{
 			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['add_to_product_variants'])
@@ -841,7 +875,7 @@ class IsotopeProduct extends Controller
 		
 		if (count($arrOptions))
 		{
-			$objVariant = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE pid=? AND published='1' AND language='' AND " . implode("=? AND ", array_keys($arrOptions)) . "=?")->execute(array_merge(array($this->id), $arrOptions));
+			$objVariant = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE pid={$this->id} AND published='1' AND language='' AND " . implode("=? AND ", array_keys($arrOptions)) . "=?")->execute($arrOptions);
 			
 			// Must match 1 variant, must not match multiple
 			if ($objVariant->numRows == 1)
@@ -854,7 +888,7 @@ class IsotopeProduct extends Controller
 				{
 					if (in_array($attribute, $arrInherit))
 						continue;
-					
+											
 					switch($attribute)
 					{
 						case 'price':
