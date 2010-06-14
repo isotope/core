@@ -265,32 +265,6 @@ class IsotopeProduct extends Controller
 
 	}
 
-
-	/**
-	 * Destroy unnessessary data when serializing
-	 */
-	public function __sleep()
-	{
-		//!@todo clean up product object - remove non-essential data to reduce table size.
-		unset($this->arrData['description'], $this->arrData['teaser']);
-
-		return array('arrAttributes', 'arrVariantAttributes', 'arrDownloads', 'arrData', 'arrOptions');
-	}
-
-
-	/**
-	 * Make sure required data is available
-	 */
-	public function __wakeup()
-	{
-		$this->import('Config');
-		$this->import('Input');
-		$this->import('Environment');
-		$this->import('Session');
-		$this->import('Database');
-		$this->import('Isotope');
-	}
-
 	
 	/**
 	 * Return the current data as associative array
