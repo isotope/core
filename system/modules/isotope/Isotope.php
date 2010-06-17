@@ -54,12 +54,6 @@ class Isotope extends Controller
 		parent::__construct();
 		$this->import('Database');
 		$this->import('FrontendUser', 'User');
-		
-		if (TL_MODE == 'FE')
-		{
-			$this->Cart = new IsotopeCart();
-			$this->Cart->initializeCart();
-		}
 
 		if (strlen($_SESSION['ISOTOPE']['config_id']))
 		{
@@ -68,6 +62,12 @@ class Isotope extends Controller
 		else
 		{
 			$this->resetConfig();
+		}
+		
+		if (TL_MODE == 'FE')
+		{
+			$this->Cart = new IsotopeCart();
+			$this->Cart->initializeCart($this->Config->id, $this->Config->cookie_timeout);
 		}
 	}
 	
