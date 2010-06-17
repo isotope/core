@@ -214,7 +214,9 @@ class IsotopeCart extends IsotopeProductCollection
 						// Return the default user data, but ID should be 0 to know that it is a custom/new address
 						// Trying to guess subdivision by country and state
 						return array_merge($this->User->getData(), array('id'=>0, 'subdivision'=>strtoupper($this->User->country . '-' . $this->User->state)));
-					}					
+					}
+					
+					$this->import('Isotope');
 					
 					return array('postal'=>$this->Isotope->Config->postal, 'subdivision'=>$this->Isotope->Config->subdivision, 'country' => $this->Isotope->Config->country);
 					
@@ -292,7 +294,7 @@ class IsotopeCart extends IsotopeProductCollection
 	/**
 	 * Load current cart
 	 */
-	public function initializeCart()
+	public function initializeCart($intConfig, $intCookieTimeout)
 	{
 		$this->strHash = $this->Input->cookie($this->strCookie);
 		
@@ -301,9 +303,9 @@ class IsotopeCart extends IsotopeProductCollection
 		{	
 			if (!strlen($this->strHash))	
 			{	
-				$this->strHash = sha1(session_id() . (!$GLOBALS['TL_CONFIG']['disableIpCheck'] ? $this->Environment->ip : '') . $this->Isotope->Config->id . $this->strCookie);
+				$this->strHash = sha1(session_id() . (!$GLOBALS['TL_CONFIG']['disableIpCheck'] ? $this->Environment->ip : '') . $intConfig . $this->strCookie);
 				
-				$this->setCookie($this->strCookie, $this->strHash, $this->Isotope->Config->cookie_timeout,  $GLOBALS['TL_CONFIG']['websitePath']);
+				$this->setCookie($this->strCookie, $this->strHash, $intCookieTimeout,  $GLOBALS['TL_CONFIG']['websitePath']);
 			}
 
 			$this->findBy('session', $this->strHash);
