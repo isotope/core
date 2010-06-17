@@ -212,7 +212,7 @@ abstract class IsotopeProductCollection extends Model
 			// Product does not exist in this collection, we don't duplicate and are on the same table. Simply change parent id.
 			elseif (!$objNewItems->numRows && !$blnDuplicate && $this->ctable == $objCollection->ctable)
 			{
-				$this->Database->query("UPDATE {$this->ctable} SET tstamp=$time AND pid={$this->id} WHERE id={$objOldItems->id}");
+				$this->Database->query("UPDATE {$this->ctable} SET tstamp=$time, pid={$this->id} WHERE id={$objOldItems->id}");
 				$arrIds[] = $objOldItems->id;
 			}
 			
