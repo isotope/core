@@ -34,8 +34,6 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	 * @var string
 	 */
 	protected $strTemplate = 'mod_iso_checkout';
-
-	protected $strStepTemplateBaseName = 'iso_checkout_';
 	
 	protected $strCurrentStep;
 	
@@ -322,7 +320,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			);
 		}
 		
-		$objTemplate = new FrontendTemplate($this->strStepTemplateBaseName . 'billing_address');
+		$objTemplate = new FrontendTemplate('iso_checkout_billing_address');
 		
 		$objTemplate->headline = $GLOBALS['TL_LANG']['ISO']['billing_address'];
 		$objTemplate->message = (FE_USER_LOGGED_IN ? $GLOBALS['TL_LANG']['ISO']['billing_address_message'] : $GLOBALS['TL_LANG']['ISO']['billing_address_guest_message']);
@@ -353,7 +351,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			);
 		}
 			
-		$objTemplate = new FrontendTemplate($this->strStepTemplateBaseName . 'shipping_address');
+		$objTemplate = new FrontendTemplate('iso_checkout_shipping_address');
 		
 		$objTemplate->headline = $GLOBALS['TL_LANG']['ISO']['shipping_address'];
 		$objTemplate->message = $GLOBALS['TL_LANG']['ISO']['shipping_address_message'];
@@ -426,7 +424,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			}
 		}
 		
-		$objTemplate = new FrontendTemplate($this->strStepTemplateBaseName . 'shipping_method');
+		$objTemplate = new FrontendTemplate('iso_checkout_shipping_method');
 				
 		if(!count($arrModules))
 		{			
@@ -533,7 +531,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			}
 		}
 		
-		$objTemplate = new FrontendTemplate($this->strStepTemplateBaseName . 'payment_method');
+		$objTemplate = new FrontendTemplate('iso_checkout_payment_method');
 		
 		if(!count($arrModules))
 		{
@@ -693,7 +691,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	
 	protected function getOrderReviewInterface()
 	{
-		$objTemplate = new FrontendTemplate($this->strStepTemplateBaseName . 'order_review');
+		$objTemplate = new FrontendTemplate('iso_checkout_order_review');
 		
 		$objTemplate->headline = $GLOBALS['TL_LANG']['ISO']['order_review'];
 		$objTemplate->message = $GLOBALS['TL_LANG']['ISO']['order_review_message'];
