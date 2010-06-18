@@ -183,6 +183,8 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				$this->redirect($this->addToUrl('step=complete'));
 			}
 			
+			$this->writeOrder(false);
+			
 			$this->Template->showForm = false;
 			$this->doNotSubmit = true;
 		}
@@ -689,13 +691,8 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	}
 	
 	
-	protected function getOrderReviewInterface($blnWriteOrder=true)
+	protected function getOrderReviewInterface()
 	{
-		if ($blnWriteOrder)
-		{
-			$this->writeOrder(false);
-		}
-		
 		$objTemplate = new FrontendTemplate($this->strStepTemplateBaseName . 'order_review');
 		
 		$objTemplate->headline = $GLOBALS['TL_LANG']['ISO']['order_review'];
