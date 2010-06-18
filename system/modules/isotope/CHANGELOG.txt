@@ -10,7 +10,8 @@ Version 0.2.0 beta1
 - Added: New payment module for ePay (www.epay.eu)
 - Added: Hooks for altering product before output
 - Added: Payment and and shipping module can now provide additional info for each order (trough a button/operation)
-- Added limit panel to tl_iso_product_categories (Ticket #132)
+- Added: Limit panel to tl_iso_product_categories (Ticket #132)
+- Added: Jumpto page support when adding product to cart (Ticket #72)
 - Fixed: Images are now updated when selecting a product variant
 - Fixed: Null array bug in ModuleIsotopeProductFilter
 - Fixed: Null object bug in IsotopeCart
