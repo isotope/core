@@ -61,12 +61,12 @@ $GLOBALS['TL_LANG']['tl_module']['iso_listingModule']			= array('Listing module'
 $GLOBALS['TL_LANG']['tl_module']['iso_enableSearch']			= array('Enable search','Please check this if you would like to enable product search.');
 $GLOBALS['TL_LANG']['tl_module']['iso_cart_jumpTo']				= array('Shopping Cart Jump to page', 'This setting defines to which page a user will be redirected when requesting a full shopping cart view.');
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_jumpTo']			= array('Checkout Jump to page', 'This setting defines to which page a user will be redirected when completing their transaction.');
+$GLOBALS['TL_LANG']['tl_module']['iso_addProductJumpTo']		= array('Add product jump to page', 'This setting defines to which page a user will be redirected when adding a product to the cart, if other than the current page.');
 $GLOBALS['TL_LANG']['tl_module']['iso_listingSortField'] 		= array('Initial sorting field','Select a sorting field to sort the listing by on first page load.');
 $GLOBALS['TL_LANG']['tl_module']['iso_listingSortDirection'] 	= array('Initial sorting direction','Select a initial sorting direction.');
 $GLOBALS['TL_LANG']['tl_module']['iso_buttons']					= array('Buttons', 'Select the buttons you want to show.');
 $GLOBALS['TL_LANG']['tl_module']['iso_forward_review']			= array('Forward to review page', 'Forward the user to the review page if no data is required on any step.');
 $GLOBALS['TL_LANG']['tl_module']['iso_related_categories']		= array('Related categories', 'Select the categories to show products of.');
-
 
 /**
  * References
