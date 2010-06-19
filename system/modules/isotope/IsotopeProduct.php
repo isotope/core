@@ -213,15 +213,15 @@ class IsotopeProduct extends Controller
 					switch( $strKey )
 					{
 						case 'formatted_price':
-							$varValue = $this->Isotope->formatPriceWithCurrency($this->price);
+							$varValue = $this->Isotope->formatPriceWithCurrency($this->price, false);
 							break;
 							
 						case 'formatted_original_price':
-							$varValue = $this->Isotope->formatPriceWithCurrency($this->originalPrice);
+							$varValue = $this->Isotope->formatPriceWithCurrency($this->originalPrice, false);
 							break;
 							
 						case 'formatted_total_price':
-							$varValue = $this->Isotope->formatPriceWithCurrency($this->total_price);
+							$varValue = $this->Isotope->formatPriceWithCurrency($this->total_price, false);
 							break;
 					}
 
