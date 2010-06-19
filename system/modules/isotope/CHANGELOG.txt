@@ -5,6 +5,7 @@ Isotope eCommerce Changelog
 Version 0.2.0 beta1
 ------------------------------
 - New IsotopeGallery class for creating custom image galleries
+- Checkout condition data is now available in order confirmation mail (Ticket #103)
 - Added: Product weight field and weight units
 - Added: Shipping module for price based on product weight
 - Added: New payment module for ePay (www.epay.eu)
