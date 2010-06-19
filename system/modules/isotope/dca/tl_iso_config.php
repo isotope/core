@@ -128,7 +128,6 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			{config_legend},shipping_countries,billing_countries,shipping_fields,billing_fields,weightUnit,orderPrefix,cookie_duration,enableGoogleAnalytics;
 			{price_legend},priceCalculateFactor,priceCalculateMode,priceRoundPrecision,priceRoundIncrement;
 			{currency_legend},currency,currencySymbol,currencyFormat,currencyPosition;
-			{redirect_legend},cartJumpTo,checkoutJumpTo;
 			{invoice_legend:hide},invoiceLogo;
 			{images_legend},gallery,missing_image_placeholder,gallery_size,thumbnail_size,medium_size,large_size',
 	),
