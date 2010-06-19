@@ -46,7 +46,6 @@ $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method']			= array('Checkout meth
 $GLOBALS['TL_LANG']['tl_module']['iso_order_conditions']		= array('Order conditions form','Choose a custom form that is used to display your order terms and conditions (optional).');
 $GLOBALS['TL_LANG']['tl_module']['orderCompleteJumpTo']			= array('Completed order jump to page','Select a page the customer will be referred to after their order is complete.');
 $GLOBALS['TL_LANG']['tl_module']['iso_jump_first']				= array('Redirect to first product', 'Check here if users are redirected to the first product of the list.');
-$GLOBALS['TL_LANG']['tl_module']['iso_forward_cart']			= array('Forward to cart', 'Forward to cart page when adding a product.');
 $GLOBALS['TL_LANG']['tl_module']['iso_mail_customer']			= array('Customer notification email','Select the Iotope Email used to send to customers when they place an order');
 $GLOBALS['TL_LANG']['tl_module']['iso_mail_admin']				= array('Sales admin notification email','Select the Iotope Email used to send to a sales admin when a customers places an order');
 $GLOBALS['TL_LANG']['tl_module']['iso_sales_email']				= array('Sales admin email address','Enter an email address other than the default System Admin for store notifications to be sent to.');
