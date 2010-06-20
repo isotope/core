@@ -22,7 +22,7 @@ Version 0.2.0 beta1
 - Removed: Paypal Website Payments Pro option - use Paypal Payflow Pro or Paypal Standard
 - Removed generatePrice() function, stpl_price and stpl_total_price templates. Now using formatPriceWithCurrency
 
-Version 0.1.2 (2010-??-??)
+Version 0.1.2 (2010-06-20)
 ------------------------------
 - Fixed: Backend variant listing showed unassigned attributes (Ticket #135)
 - Fixed problem with payment modules accepting only two digit floating point precision (Ticket #136)
@@ -31,6 +31,7 @@ Version 0.1.2 (2010-??-??)
 - Fixed a possible bug with attributes not available in the template
 - Moved product tax class field to pricing legend (Ticket #134)
 - Now using domready event to submit payment checkout forms (Ticket #145)
+- Fixed multiple label issues (Ticket #78, Ticket #148, Ticket #150)
 
 Version 0.1.1 (2010-06-06)
 ------------------------------
