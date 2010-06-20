@@ -493,6 +493,10 @@ class IsotopeRunonce extends Frontend
 		
 		while( $objAttributes->next() )
 		{
+			// Skip empty lines
+			if (!strlen($objAttributes->field_name) || !strlen($GLOBALS['ISO_ATTR'][$objAttributes->type]['sql']))
+				continue;
+				
 			$this->IsotopeDatabase->add($objAttributes->field_name, $GLOBALS['ISO_ATTR'][$objAttributes->type]['sql']);
 		}
 	}
