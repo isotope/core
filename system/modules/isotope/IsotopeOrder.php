@@ -152,7 +152,7 @@ class IsotopeOrder extends IsotopeProductCollection
 		{
 			$objPayment = $this->Database->query("SELECT * FROM tl_iso_payment_modules WHERE id=" . $this->payment_id);
 								
-			$strClass = $GLOBALS['ISO_SHIP'][$objPayment->type];
+			$strClass = $GLOBALS['ISO_PAY'][$objPayment->type];
 													
 			$this->Payment = new $strClass($objPayment->row());
 		}
