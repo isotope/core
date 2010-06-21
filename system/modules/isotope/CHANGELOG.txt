@@ -5,6 +5,7 @@ Isotope eCommerce Changelog
 Version 0.1.2 (2010-??-??)
 ------------------------------
 - Fixed: InsertTags could output HTML in meta description
+- Fixed: Status labels were not available in order history
 
 Version 0.1.2 (2010-06-20)
 ------------------------------

@@ -91,7 +91,7 @@ class ModuleIsotopeOrderHistory extends ModuleIsotope
 				'datime'		=> $this->parseDate($GLOBALS['TL_CONFIG']['datimeFormat'], $objOrders->date),
 				'items'			=> $objOrders->items,
 				'grandTotal'	=> $this->Isotope->formatPriceWithCurrency($objOrders->grandTotal),
-				'status'		=> $GLOBALS['TL_LANG']['MSC']['order_status_labels'][$objOrders->status],
+				'status'		=> $GLOBALS['TL_LANG']['ORDER'][$objOrders->status],
 				'link'			=> ($this->jumpTo ? ($this->generateFrontendUrl($arrPage) . '?uid=' . $objOrders->uniqid) : ''),
 			);
 		}
