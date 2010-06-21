@@ -22,6 +22,10 @@ Version 0.2.0 beta1
 - Removed: Paypal Website Payments Pro option - use Paypal Payflow Pro or Paypal Standard
 - Removed generatePrice() function, stpl_price and stpl_total_price templates. Now using formatPriceWithCurrency
 
+Version 0.1.2 (2010-??-??)
+------------------------------
+- Fixed: InsertTags could output HTML in meta description
+
 Version 0.1.2 (2010-06-20)
 ------------------------------
 - Fixed: Backend variant listing showed unassigned attributes (Ticket #135)
