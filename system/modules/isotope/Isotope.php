@@ -38,7 +38,7 @@ class Isotope extends Controller
 	
 	public $Config;
 	public $Cart;
-	
+	public $Order;
 	
 	/**
 	 * Prevent cloning of the object (Singleton)
@@ -64,11 +64,8 @@ class Isotope extends Controller
 			$this->resetConfig();
 		}
 		
-		if (TL_MODE == 'FE')
-		{
-			$this->Cart = new IsotopeCart();
-			$this->Cart->initializeCart($this->Config->id, $this->Config->cookie_timeout);
-		}
+		$this->Cart = new IsotopeCart();
+		$this->Cart->initializeCart($this->Config->id, $this->Config->cookie_timeout);
 	}
 	
 	

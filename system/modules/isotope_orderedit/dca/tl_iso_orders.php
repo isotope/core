@@ -43,7 +43,7 @@ class tl_iso_order_edit extends Backend
 	 */
     public function editOrderItems($dc)
 	{
-		$objItems = $this->Database->prepare("SELECT id, pid, price, product_quantity, (SELECT name FROM tl_iso_products WHERE tl_iso_products.id=tl_iso_order_items.product_id) AS product_name FROM tl_iso_order_items WHERE pid=?")->limit(1)->execute($dc->id);
+		$objItems = $this->Database->prepare("SELECT id, pid, price, product_quantity, (SELECT name FROM tl_iso_products WHERE tl_iso_products.id=tl_iso_order_items.product_id) AS product_name FROM tl_iso_order_items WHERE pid=?")->execute($dc->id);
 		
 		$arrFields = array();
 		$arrEditFields = array('price','product_quantity');
@@ -54,9 +54,9 @@ class tl_iso_order_edit extends Backend
 
 <h2 class="sub_headline">'.sprintf($GLOBALS['TL_LANG']['tl_iso_products']['quick_edit'][1], $dc->id).'</h2>'.$this->getMessages().'
 
-<form action="'.ampersand($this->Environment->request, true).'" id="tl_order_item_edit" class="tl_form" method="post">
+<form action="'.ampersand($this->Environment->request, true).'" id="tl_iso_order_item_edit" class="tl_form" method="post">
 <div class="tl_formbody_edit">
-<input type="hidden" name="FORM_SUBMIT" value="tl_order_item_edit" />
+<input type="hidden" name="FORM_SUBMIT" value="tl_iso_order_item_edit" />
 
 <div class="tl_tbox block">
 <table width="100%" border="0" cellpadding="5" cellspacing="0" summary="">
@@ -77,7 +77,7 @@ class tl_iso_order_edit extends Backend
 			$arrWidgets = array();
 			$doNotSubmit = false;
 			$arrSet = array();
-									
+			$arrSet['id'] = $objItems->id;						
 			foreach($arrEditFields as $field)
 			{
 				$arrWidgets[$field] = new TextField($this->prepareForWidget($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field], $field.'[' . $objItems->id .']', $objItems->{$field}));
@@ -106,7 +106,7 @@ class tl_iso_order_edit extends Backend
 						break;
 				}
 			
-				if ($this->Input->post('FORM_SUBMIT') == 'tl_order_item_edit')
+				if ($this->Input->post('FORM_SUBMIT') == 'tl_iso_order_item_edit')
 				{
 					$objWidget->validate();
 					
@@ -121,11 +121,13 @@ class tl_iso_order_edit extends Backend
 					}
 				}
 			}
-			
-			
-			if($this->Input->post('FORM_SUBMIT') == 'tl_order_item_edit' && !$doNotSubmit)
-			{				
-				
+						
+			if($this->Input->post('FORM_SUBMIT') == 'tl_iso_order_item_edit' && !$doNotSubmit)
+			{	
+				//update the values for each 
+				$this->Database->prepare("UPDATE tl_iso_order_items %s WHERE id=?")
+							   ->set($arrSet)
+							   ->execute($arrSet['id']);
 			}
 			
 			$strBuffer .= '
@@ -138,18 +140,40 @@ class tl_iso_order_edit extends Backend
 		$strBuffer .= ($i==1 ? '<td align="center">x</td><td align="center">'.$arrWidgets[$field]->generate().'</td><td align="center">'.$objItems->price*$objItems->{$field}.'</td>' : '<td align="center">' . $arrWidgets[$field]->generate().'</td>');
 		$i++;
 	}
-	/*
-	'<td>'.$arrWidgets['sku']->generate().'</td>
-	<td>'.$arrWidgets['price']->generate().'</td>
-	<td>'.$arrWidgets['weight']->generate().'</td>
-	<td>'.$arrWidgets['stock_quantity']->generate().'</td>*/	
+	
+	$strBuffer .= '</tr>';
+		
 		}	 // end $objItems->next()
 		
-		if ($this->Input->post('FORM_SUBMIT') == 'tl_order_item_edit' && !$globalDoNotSubmit)
+		if ($this->Input->post('FORM_SUBMIT') == 'tl_iso_order_item_edit' && !$globalDoNotSubmit)
 		{
+			$objOrder = new IsotopeOrder();
+						
+			if ($objOrder->findBy('id', $dc->id))
+			{				
+				$objOrder->initializeOrder();	//Currently used to instantiate the payment & shipping objects
+			
+				$this->import('Isotope');
+				
+				$this->Isotope->Order = $objOrder;	//Todo - separate Cart from backend order.
+			
+				$arrSet = array
+				(
+					'subTotal'		=> $this->Isotope->Order->subTotal,
+					'taxTotal'		=> $this->Isotope->Order->taxTotal,
+					'shippingTotal' => $this->Isotope->Order->shippingTotal,
+					'surcharges'	=> $this->Isotope->Order->getSurcharges(),
+					'grandTotal'	=> $this->Isotope->Order->grandTotal
+				);
+			
+				$this->Database->prepare("UPDATE tl_iso_orders %s WHERE id=?")
+							   ->set($arrSet)
+							   ->execute($dc->id);				
+			}
+				
 			if (strlen($this->Input->post('saveNclose')))
 			{
-				$this->redirect(str_replace('&key=item_edit', '', $this->Environment->request));
+				$this->redirect(str_replace('&key=edit_items', '', $this->Environment->request));
 			}
 			else
 			{

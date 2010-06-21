@@ -13,6 +13,8 @@ Version 0.2.0 beta1
 - Added: Payment and and shipping module can now provide additional info for each order (trough a button/operation)
 - Added: Limit panel to tl_iso_product_categories (Ticket #132)
 - Added: Jumpto page support when adding product to cart (Ticket #72)
+- Added: Support to use Shipping & Payment surcharge recalculation for order editing in the back end
+- Fixed: reference to a undeclared deprecated method in PaymentAuthorizeDotNet
 - Fixed: Images are now updated when selecting a product variant
 - Fixed: Null array bug in ModuleIsotopeProductFilter
 - Fixed: Null object bug in IsotopeCart
