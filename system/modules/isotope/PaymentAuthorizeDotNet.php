@@ -56,10 +56,12 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 	 */
 	public function processPayment()
 	{
+		$this->import('IsotopeCart', 'Cart');
+		
 		$fields = '';
 		
 		// Get the current order, review page will create the data
-		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->execute($this->Isotope->Cart->id);
+		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->execute($this->Cart->id);
 		
 		// for Authorize.net - this would be where to handle logging response information from the server.
 		$authnet_values = array
@@ -76,14 +78,14 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 			"x_card_num"						=> $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_num'],
 			"x_exp_date"						=> $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_exp'],
 			"x_description"						=> "Order Number " . $objOrder->order_id,
-			"x_amount"							=> round($this->Isotope->Cart->grandTotal, 2),
-			"x_first_name"						=> $this->Isotope->Cart->billingAddress['firstname'],
-			"x_last_name"						=> $this->Isotope->Cart->billingAddress['lastname'],
-			"x_address"							=> $this->Isotope->Cart->billingAddress['street_1']."\n".$this->Isotope->Cart->billingAddress['street_2']."\n".$this->Isotope->Cart->billingAddress['street_3'],
-			"x_city"							=> $this->Isotope->Cart->billingAddress['city'],
-			"x_state"							=> $this->Isotope->Cart->billingAddress['subdivision'],
-			"x_zip"								=> $this->Isotope->Cart->billingAddress['postal'],
-			"x_company"							=> $this->Isotope->Cart->billingAddress['company'],
+			"x_amount"							=> $this->Cart->grandTotal,
+			"x_first_name"						=> $this->Cart->billingAddress['firstname'],
+			"x_last_name"						=> $this->Cart->billingAddress['lastname'],
+			"x_address"							=> $this->Cart->billingAddress['street_1']."\n".$this->Cart->billingAddress['street_2']."\n".$this->Cart->billingAddress['street_3'],
+			"x_city"							=> $this->Cart->billingAddress['city'],
+			"x_state"							=> $this->Cart->billingAddress['subdivision'],
+			"x_zip"								=> $this->Cart->billingAddress['postal'],
+			"x_company"							=> $this->Cart->billingAddress['company'],
 			"x_email_customer"					=> "FALSE"
 		);
 
@@ -125,6 +127,8 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 				{
 					$strTransactionId = '0';
 				}
+				
+				$this->import('IsotopeCart','Cart');
 				
 				$strCCNum = rtrim($this->Input->post('cc_num'));
 							
@@ -288,6 +292,8 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 
 		if ($this->Input->post('FORM_SUBMIT') == 'be_pos_terminal' && $arrPaymentInfo['x_trans_id']!=="0")
 		{
+			
+				
 			$authnet_values = array
 			(
 				"x_version"							=> '3.1',
@@ -295,31 +301,30 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 				"x_tran_key"						=> $transKey,
 				"x_type"							=> $transType,
 				"x_trans_id"						=> $arrPaymentInfo['x_trans_id'],
-				"x_amount"							=> round($this->fltOrderTotal, 2),
+				"x_amount"							=> number_format($this->fltOrderTotal, 2),
 				"x_delim_data"						=> 'TRUE',
 				"x_delim_char"						=> ',',
 				"x_encap_char"						=> '"',
 				"x_relay_response"					=> 'FALSE'
+			
 			);
 			
-			foreach( $authnet_values as $key => $value )
-			{
-				$fields .= "$key=" . urlencode( $value ) . "&";
-			}
+						
+			foreach( $authnet_values as $key => $value ) $fields .= "$key=" . urlencode( $value ) . "&";
 
 			$fieldsFinal = rtrim($fields, '&');
-			
+						
 			$objRequest = new Request();
 			
 			$objRequest->send('https://secure.authorize.net/gateway/transact.dll', $fieldsFinal, 'post');
-			
+		
 			$arrResponses = $this->handleResponse($objRequest->response);
-			
+								
 			foreach(array_keys($arrResponses) as $key)
 			{
 				$arrReponseLabels[strtolower(standardize($key))] = $key;
 			}
-			
+						
 			$objTemplate->fields = $this->generateResponseString($arrResponses, $arrReponseLabels);
 			
 			//$objTemplate->headline = $arrResponses['transaction-status'] . ' - ' . $this->strReason;
@@ -328,7 +333,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 			
 			switch($arrResponses['transaction-status'])
 			{
-				case 'Approved':
+				case 'Approved':		
 					$arrPaymentInfo['authorization_code'] = $arrResponses['authorization-code'];			
 					$strPaymentInfo = serialize($arrPaymentInfo);
 					
@@ -411,7 +416,8 @@ $return .= '</div></div>';
 						{
 							case "Declined":
 							case "Error":
-								$value = $this->addAlert($v); 
+								//$value = $this->addAlert($v); 
+								
 								$showReason = true;
 								break;
 							default:
@@ -447,8 +453,8 @@ $return .= '</div></div>';
 		
 		$i=1;
 		
-		$arrFieldsToDisplay = array(1, 4, 7, 9, 10, 11, 14, 15, 16, 17, 18, 19, 20, 22, 23, 24);	//Dynamic Later
-		
+		$arrFieldsToDisplay = array(1, 2, 3, 4, 7, 9, 10, 11, 14, 15, 16, 17, 18, 19, 20, 22, 23, 24, 47);	//Dynamic Later
+	
 		foreach($arrResponseString as $currResponseString)
 		{
 				if(empty($currResponseString)){
