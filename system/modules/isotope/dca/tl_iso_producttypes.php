@@ -264,17 +264,14 @@ class tl_iso_producttypes extends Backend
 			$arrProductTypes = array(0);
 		}
 
-		$GLOBALS['TL_DCA']['tl_iso_producttypes']['config']['closed'] = true;
 		$GLOBALS['TL_DCA']['tl_iso_producttypes']['list']['sorting']['root'] = $arrProductTypes;
 
 		// Check current action
 		switch ($this->Input->get('act'))
 		{
-			case 'select':
-				// Allow
-				break;
-
 			case 'edit':
+			case 'copy':
+			case 'delete':
 			case 'show':
 				if (!in_array($this->Input->get('id'), $arrProductTypes))
 				{
@@ -284,17 +281,11 @@ class tl_iso_producttypes extends Backend
 				break;
 
 			case 'editAll':
+			case 'copyAll':
+			case 'deleteAll':
 				$session = $this->Session->getData();
 				$session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $arrProductTypes);
 				$this->Session->setData($session);
-				break;
-
-			default:
-				if (strlen($this->Input->get('act')))
-				{
-					$this->log('Not enough permissions to '.$this->Input->get('act').' product types', 'tl_iso_producttypes checkPermission()', TL_ACCESS);
-					$this->redirect('typolight/main.php?act=error');
-				}
 				break;
 		}
 	}
