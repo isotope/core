@@ -280,7 +280,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'search'				=> true,
 			'inputType'				=> 'textarea',
 			'eval'					=> array('mandatory'=>true, 'rte'=>'tinyMCE'),
-			'attributes'			=> array('legend'=>'general_legend', 'multilingual'=>true),
+			'attributes'			=> array('legend'=>'general_legend', 'multilingual'=>true, 'use_rich_text_editor'=>true),
 		),
 		'description_meta' => array
 		(
