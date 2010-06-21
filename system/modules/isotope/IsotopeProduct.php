@@ -155,6 +155,7 @@ class IsotopeProduct extends Controller
 			case 'description_meta':
 				$strDescription = strlen($this->arrData['description_meta']) ? $this->arrData['description_meta'] : $this->arrData['teaser'];
 				$strDescription = strlen($strDescription) ? $strDescription : $this->arrData['description'];
+				$strDescription = $this->replaceInsertTags($strDescription);
 				$strDescription = str_replace(array("\n", "\r", '"'), array(' ' , '', ''), strip_tags($strDescription));
 				
 				// shorten description to ~200 chars, respect sentences
