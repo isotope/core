@@ -630,7 +630,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			
 		if ($blnReview)
 		{
-			if (!$this->doNotSubmit)
+			if (!$this->doNotSubmit && is_array($_SESSION['FORM_CONDITION']))
 			{
 				foreach( $_SESSION['FORM_CONDITION'] as $name => $value )
 				{
@@ -751,7 +751,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 		$this->Template->enctype = $hasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
 		
-		if (!$this->doNotSubmit)
+		if (!$this->doNotSubmit && is_array($_SESSION['FORM_CONDITION']))
 		{
 			foreach( $_SESSION['FORM_CONDITION'] as $name => $value )
 			{
