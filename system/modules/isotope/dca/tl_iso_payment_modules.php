@@ -182,7 +182,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 			'inputType'               => 'select',
 			'default'                 => 'pending',
 			'options_callback'        => array('tl_iso_payment_modules', 'getOrderStatus'),
-			'reference'               => &$GLOBALS['TL_LANG']['MSC']['order_status_labels'],
+			'reference'               => &$GLOBALS['TL_LANG']['ORDER'],
 			'eval'                    => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'clr'),
 		),
 		'price' => array
