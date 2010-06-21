@@ -121,7 +121,7 @@ abstract class IsotopeProductCollection extends Model
 				$objProduct->cart_id = $objItems->id;
 				$objProduct->reader_jumpTo_Override = $objItems->href_reader;
 				
-				if($objProduct->price==0)
+				if($objProduct->price==0 || TL_MODE=='BE')
 					$objProduct->price = $objItems->price;
 				
 				$objProduct->setOptions(deserialize($objItems->product_options, true));
