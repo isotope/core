@@ -17,7 +17,7 @@ window.addEvent('domready', function() {
 			if ($(('payment_data_'+event.target.value)))
 				$(('payment_data_'+event.target.value)).setStyle('display', 'block');
 		});
-		if (el.checked) {
+		if (el.checked && $(('payment_data_'+el.value))) {
 			$(('payment_data_'+el.value)).setStyle('display', 'block');
 		}
 	});
