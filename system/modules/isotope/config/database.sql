@@ -27,7 +27,6 @@ CREATE TABLE `tl_module` (
   `iso_config_id` int(10) unsigned NOT NULL default '0',
   `iso_config_ids` blob NULL,
   `iso_jump_first` char(1) NOT NULL default '',
-  `iso_forward_cart` char(1) NOT NULL default '',
   `iso_forward_review` char(1) NOT NULL default '',
   `iso_mail_customer` int(10) unsigned NOT NULL default '0',
   `iso_mail_admin` int(10) unsigned NOT NULL default '0',
