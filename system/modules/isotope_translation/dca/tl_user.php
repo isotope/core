@@ -29,7 +29,10 @@
 /**
  * Palettes
  */
-$GLOBALS['TL_DCA']['tl_user']['palettes']['default'] = str_replace('admin', 'admin,translation', $GLOBALS['TL_DCA']['tl_user']['palettes']['default']);
+$GLOBALS['TL_DCA']['tl_user']['palettes']['extend'] = str_replace('admin', 'admin,translation', $GLOBALS['TL_DCA']['tl_user']['palettes']['extend']);
+$GLOBALS['TL_DCA']['tl_user']['palettes']['group'] = str_replace('admin', 'admin,translation', $GLOBALS['TL_DCA']['tl_user']['palettes']['group']);
+$GLOBALS['TL_DCA']['tl_user']['palettes']['extend'] = str_replace('admin', 'admin,translation', $GLOBALS['TL_DCA']['tl_user']['palettes']['extend']);
+$GLOBALS['TL_DCA']['tl_user']['palettes']['custom'] = str_replace('admin', 'admin,translation', $GLOBALS['TL_DCA']['tl_user']['palettes']['custom']);
 $GLOBALS['TL_DCA']['tl_user']['palettes']['admin'] = str_replace('admin', 'admin,translation', $GLOBALS['TL_DCA']['tl_user']['palettes']['admin']);
 
 
