@@ -111,15 +111,15 @@ class ModuleIsotopeAddressBook extends Module
 				return $this->edit();
 
 			case 'edit':
-				if (strlen($this->Input->get('id')))
+				if (strlen($this->Input->get('address')))
 				{
-					return $this->edit($this->Input->get('id'));
+					return $this->edit($this->Input->get('address'));
 				}
 								
 			case 'delete':
-				if (strlen($this->Input->get('id')))
+				if (strlen($this->Input->get('address')))
 				{
-					return $this->delete($this->Input->get('id'));
+					return $this->delete($this->Input->get('address'));
 				}
 				
 			default:
@@ -139,9 +139,9 @@ class ModuleIsotopeAddressBook extends Module
 		
 		$i = 0;
 		$arrAddresses = array();
-		$arrPage = array('id'=>$objPage->id, 'alias'=>$objPage->alias);
+		$strUrl = $this->generateFrontendUrl($objPage->row()) . ($GLOBALS['TL_CONFIG']['disableAlias'] ? '&' : '?');
 
-		$objAddresses = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE pid=?")->execute($this->User->id);
+		$objAddresses = $this->Database->execute("SELECT * FROM tl_iso_addresses WHERE pid={$this->User->id}");
 
 		while( $objAddresses->next() )
 		{
@@ -150,8 +150,8 @@ class ModuleIsotopeAddressBook extends Module
 				'id'			=> $objAddresses->id,
 				'class'			=> (($i%2 ? 'even' : 'odd') . ($i==0 ? ' first' : '')),
 				'text'			=> $this->Isotope->generateAddressString($objAddresses->row()),
-				'edit_url'		=> ampersand($this->generateFrontendUrl($arrPage, '/act/edit/id/' . $objAddresses->id)),
-				'delete_url'	=> ampersand($this->generateFrontendUrl($arrPage, '/act/delete/id/' . $objAddresses->id)),
+				'edit_url'		=> ampersand($strUrl . 'act=edit&address=' . $objAddresses->id),
+				'delete_url'	=> ampersand($strUrl . 'act=delete&address=' . $objAddresses->id),
 			);
 			
 			$i++;
@@ -172,7 +172,7 @@ class ModuleIsotopeAddressBook extends Module
 		$this->Template->editAddressLabel = $GLOBALS['TL_LANG']['editAddressLabel'];
 		$this->Template->deleteAddressLabel = $GLOBALS['TL_LANG']['deleteAddressLabel'];
 		$this->Template->addresses = $arrAddresses;
-		$this->Template->addNewAddress = ampersand($this->generateFrontendUrl($arrPage, '/act/create'));
+		$this->Template->addNewAddress = ampersand($strUrl . 'act=create');;
 	}
 	
 	
@@ -201,7 +201,7 @@ class ModuleIsotopeAddressBook extends Module
 		$row = 0;
 		
 		// No need to check: if the address does not exist, fields will be empty and a new address will be created
-		$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE id=? AND pid=?")->limit(1)->execute($intAddressId, $this->User->id);		
+		$objAddress = $this->Database->execute("SELECT * FROM tl_iso_addresses WHERE id=$intAddressId AND pid={$this->User->id}");
 		
 		
 		// Build form
@@ -281,8 +281,7 @@ class ModuleIsotopeAddressBook extends Module
 					// Save field
 					if ($objAddress->id > 0)
 					{
-						$this->Database->prepare("UPDATE tl_iso_addresses SET " . $field . "=? WHERE pid=? AND id=?")
-									   ->execute($varSave, $this->User->id, $objAddress->id);
+						$this->Database->prepare("UPDATE tl_iso_addresses SET " . $field . "=? WHERE pid={$this->User->id} AND id={$objAddress->id}")->executeUncached($varSave);
 					}
 					else
 					{
@@ -357,10 +356,11 @@ class ModuleIsotopeAddressBook extends Module
 	 */
 	protected function delete($intAddressId)
 	{
-		$this->Database->prepare("DELETE FROM tl_iso_addresses WHERE id=? AND pid=?")
-					   ->execute($intAddressId, $this->User->id);
+		global $objPage;
+		
+		$this->Database->query("DELETE FROM tl_iso_addresses WHERE id=$intAddressId AND pid={$this->User->id}");
 
-		$this->redirect(ampersand($this->Environment->url . ltrim($_SESSION['FE_DATA']['referer']['current'], '/')));
+		$this->redirect($this->generateFrontendUrl($objPage->row()));
 	}
 }
 
