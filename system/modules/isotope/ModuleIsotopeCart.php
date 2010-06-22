@@ -67,38 +67,38 @@ class ModuleIsotopeCart extends ModuleIsotope
 		
 		if (!count($arrProducts))
 		{
-		   $this->Template = new FrontendTemplate($this->iso_cart_layout);
+		   $this->Template = new FrontendTemplate('mod_message');
 		   $this->Template->type = 'empty';
 		   $this->Template->message = $GLOBALS['TL_LANG']['MSC']['noItemsInCart'];
-		   $this->Template->products = array();
-		   $this->Template->surcharges = array();
 		   return;
 		}
 		
 		$objTemplate = new FrontendTemplate($this->iso_cart_layout);
 		
 		global $objPage;
+		$strUrl = $this->generateFrontendUrl($objPage->row());
+		
 		$blnReload = false;
 		$arrQuantity = $this->Input->post('quantity');
 		$arrProductData = array();
 		
 		foreach( $arrProducts as $i => $objProduct )
 		{
-			if ($this->Input->get('action') == 'remove' && $this->Input->get('id') == $objProduct->cart_id)
+			if ($this->Input->get('remove') == $objProduct->cart_id)
 			{
-				$this->Database->prepare("DELETE FROM tl_cart_items WHERE id=?")->execute($objProduct->cart_id);
-				$this->redirect((strlen($this->Input->get('referer')) ? base64_decode($this->Input->get('referer', true)) : $this->generateFrontendUrl($objPage->row())));
+				$this->Database->query("DELETE FROM tl_cart_items WHERE id={$objProduct->cart_id}");
+				$this->redirect((strlen($this->Input->get('referer')) ? base64_decode($this->Input->get('referer', true)) : $strUrl));
 			}
 			elseif ($this->Input->post('FORM_SUBMIT') == 'iso_cart_update' && is_array($arrQuantity) && $objProduct->cart_id)
 			{
 				$blnReload = true;
 				if (!$arrQuantity[$objProduct->cart_id])
 				{
-					$this->Database->prepare("DELETE FROM tl_cart_items WHERE id=?")->execute($objProduct->cart_id);
+					$this->Database->query("DELETE FROM tl_cart_items WHERE id={$objProduct->cart_id}");
 				}
 				else
 				{
-					$this->Database->prepare("UPDATE tl_cart_items SET quantity_requested=? WHERE id=?")->execute($arrQuantity[$objProduct->cart_id], $objProduct->cart_id);
+					$this->Database->prepare("UPDATE tl_cart_items SET quantity_requested=? WHERE id={$objProduct->cart_id}")->executeUncached($arrQuantity[$objProduct->cart_id]);
 				}
 			}
 			
@@ -113,7 +113,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 				'quantity'			=> $objProduct->quantity_requested,
 				'cart_item_id'		=> $objProduct->cart_id,
 				'product_options'	=> $objProduct->getOptions(),
-				'remove_link'		=> ($this->generateFrontendUrl($objPage->row()) . '?action=remove&amp;id='.$objProduct->cart_id.'&amp;referer='.base64_encode($this->Environment->request)),
+				'remove_link'		=> ampersand($strUrl . ($GLOBALS['TL_CONFIG']['disableAlias'] ? '&' : '?') . 'remove='.$objProduct->cart_id.'&referer='.base64_encode($this->Environment->request)),
 				'remove_link_text'  => $GLOBALS['TL_LANG']['MSC']['removeProductLinkText'],
 				'remove_link_title' => sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $objProduct->name),
 				'class'				=> 'row_' . $i . ($i%2 ? ' even' : ' odd') . ($i==0 ? ' row_first' : ''),
@@ -146,10 +146,10 @@ class ModuleIsotopeCart extends ModuleIsotope
 		$objTemplate->formSubmit = 'iso_cart_update';
 		$objTemplate->action = $this->Environment->request;
 		$objTemplate->products = $arrProductData;
-		$objTemplate->cartJumpTo = $this->generateFrontendUrl($this->Database->prepare("SELECT id,alias FROM tl_page WHERE id=?")->execute($this->iso_cart_jumpTo)->fetchAssoc());
+		$objTemplate->cartJumpTo = $this->generateFrontendUrl($this->Database->execute("SELECT * FROM tl_page WHERE id={$this->iso_cart_jumpTo}")->fetchAssoc());
 		$objTemplate->cartLabel = $GLOBALS['TL_LANG']['MSC']['cartBT'];
 		$objTemplate->checkoutJumpToLabel = $GLOBALS['TL_LANG']['MSC']['checkoutBT'];
-		$objTemplate->checkoutJumpTo = $this->generateFrontendUrl($this->Database->prepare("SELECT id,alias FROM tl_page WHERE id=?")->execute($this->iso_checkout_jumpTo)->fetchAssoc());
+		$objTemplate->checkoutJumpTo = $this->generateFrontendUrl($this->Database->execute("SELECT * FROM tl_page WHERE id={$this->iso_checkout_jumpTo}")->fetchAssoc());
 		$objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
 		$objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
 		$objTemplate->subTotalPrice = $this->generatePrice($this->Cart->subTotal, 'stpl_total_price');
