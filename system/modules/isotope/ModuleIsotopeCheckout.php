@@ -215,6 +215,8 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				
 			if ($strBuffer === true)
 			{
+				unset($_SESSION['FORM_DATA']);
+				unset($_SESSION['FILES']);
 				$strUniqueId = $this->writeOrder(true);
 				$this->redirect($this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($this->orderCompleteJumpTo)->fetchAssoc()) . '?uid='.$strUniqueId);
 			}
@@ -630,11 +632,22 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			
 		if ($blnReview)
 		{
-			if (!$this->doNotSubmit && is_array($_SESSION['FORM_CONDITION']))
+			if (!$this->doNotSubmit)
 			{
-				foreach( $_SESSION['FORM_CONDITION'] as $name => $value )
+				if (is_array($_SESSION['FORM_DATA']))
 				{
-					$this->arrOrderData['condition_'.$name] = $value;
+					foreach( $_SESSION['FORM_DATA'] as $name => $value )
+					{
+						$this->arrOrderData['form_'.$name] = $value;
+					}
+				}
+				
+				if (is_array($_SESSION['FILES']))
+				{
+					foreach( $_SESSION['FILES'] as $name => $file )
+					{
+						$this->arrOrderData['form_'.$name] = $this->Environment->base . str_replace(TL_ROOT . '/', '', dirname($file['tmp_name'])) . '/' . rawurlencode($file['name']);
+					}
 				}
 			}
 			
@@ -719,7 +732,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				// Store current value in the session
 				elseif ($objWidget->submitInput())
 				{
-					$_SESSION['FORM_CONDITION'][$objFields->name] = $objWidget->value;
+					$_SESSION['FORM_DATA'][$objFields->name] = $objWidget->value;
 				}
 
 				unset($_POST[$objFields->name]);
@@ -751,11 +764,22 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 		$this->Template->enctype = $hasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
 		
-		if (!$this->doNotSubmit && is_array($_SESSION['FORM_CONDITION']))
+		if (!$this->doNotSubmit)
 		{
-			foreach( $_SESSION['FORM_CONDITION'] as $name => $value )
+			if (is_array($_SESSION['FORM_DATA']))
 			{
-				$this->arrOrderData['condition_'.$name] = $value;
+				foreach( $_SESSION['FORM_DATA'] as $name => $value )
+				{
+					$this->arrOrderData['form_'.$name] = $value;
+				}
+			}
+			
+			if (is_array($_SESSION['FILES']))
+			{
+				foreach( $_SESSION['FILES'] as $name => $file )
+				{
+					$this->arrOrderData['form_'.$name] = $this->Environment->base . str_replace(TL_ROOT . '/', '', dirname($file['tmp_name'])) . '/' . rawurlencode($file['name']);
+				}
 			}
 		}
 

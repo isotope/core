@@ -46,6 +46,6 @@ $GLOBALS['TL_LANG']['XPL']['isoMailTokens'] = array
 	array('##payment_note##<br />##payment_note_text##', 'Note the chosen payment method message (also known as plain text available).'),
 	array('##billing_firstname##<br />##billing_lastname##<br />...', 'Individual fields of the billing address.'),
 	array('##shipping_firstname##<br />##shipping_lastname##<br />...', 'Individual fields of the shipping address.'),
-	array('##condition_...##', 'Retrieve condition form data. Use the prefix "condition_" and the field\'s name.'),
+	array('##form_...##', 'Retrieve condition form data. Use the prefix "form_" and the field\'s name.'),
 );
 
