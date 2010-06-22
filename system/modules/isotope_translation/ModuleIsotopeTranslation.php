@@ -131,7 +131,7 @@ class ModuleIsotopeTranslation extends BackendModule
  *
  * PHP version 5
  * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
- * @author     Isotope Automated Translation Tool
+ * @author     " . $this->User->name . " <" . $this->User->email . ">
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
