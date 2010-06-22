@@ -162,10 +162,10 @@ class tl_iso_order_edit extends Backend
 					'subTotal'		=> $this->Isotope->Order->subTotal,
 					'taxTotal'		=> $this->Isotope->Order->taxTotal,
 					'shippingTotal' => $this->Isotope->Order->shippingTotal,
-					'surcharges'	=> $this->Isotope->Order->getSurcharges(),
+					'surcharges'	=> serialize($this->Isotope->Order->getSurcharges()),
 					'grandTotal'	=> $this->Isotope->Order->grandTotal
 				);
-			
+				
 				$this->Database->prepare("UPDATE tl_iso_orders %s WHERE id=?")
 							   ->set($arrSet)
 							   ->execute($dc->id);				

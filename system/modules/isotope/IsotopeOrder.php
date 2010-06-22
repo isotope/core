@@ -88,7 +88,7 @@ class IsotopeOrder extends IsotopeProductCollection
 						$intTaxTotal += $arrSurcharge['total_price'];
 				}
 				
-				$this->arrCache[$strKey] = $intTaxTotal;
+				return $intTaxTotal;
 				break;
 				
 			case 'taxTotalWithShipping':
@@ -103,7 +103,7 @@ class IsotopeOrder extends IsotopeProductCollection
 				break;
 			case 'shippingTotal':
 				//instantiate shipping to reclaculate...
-				if($this->shipping_id)
+				if($this->arrData['shipping_id'])
 				{					
 					$fltPrice = (float)$this->Shipping->price;
 				}
@@ -112,7 +112,7 @@ class IsotopeOrder extends IsotopeProductCollection
 					$fltPrice = 0.00;
 				}
 				
-				$this->arrCache[$strKey] = $fltPrice;
+				return $fltPrice;
 				break;
 				
 			case 'grandTotal':
@@ -217,8 +217,8 @@ class IsotopeOrder extends IsotopeProductCollection
 		foreach( $arrProducts as $pid => $objProduct )
 		{						
 			$arrTaxIds = array();
-			$arrTax = $this->Isotope->calculateTax($objProduct->tax_class, $objProduct->total_price);
-			
+			$arrTax = $this->calculateTax($objProduct->tax_class, $objProduct->total_price);
+	
 			if (is_array($arrTax))
 			{
 				foreach ($arrTax as $k => $tax)
@@ -244,7 +244,7 @@ class IsotopeOrder extends IsotopeProductCollection
 			
 			$this->arrProducts[$pid]->tax_id = implode(',', $arrTaxIds);
 		}
-		
+
 		$arrSurcharges = array();
 		
 		$arrSurcharges = $this->getShippingSurcharge($arrSurcharges);
@@ -264,7 +264,8 @@ class IsotopeOrder extends IsotopeProductCollection
 		
 		foreach( $arrPreTax as $arrSurcharge )
 		{
-			$arrTax = $this->Isotope->calculateTax($arrSurcharge['tax_class'], $arrSurcharge['total_price'], $arrSurcharge['add_tax']);
+						
+			$arrTax = $this->calculateTax($arrSurcharge['tax_class'], $arrSurcharge['total_price'], $arrSurcharge['add_tax']);
 			
 			if (is_array($arrTax))
 			{
@@ -364,6 +365,154 @@ class IsotopeOrder extends IsotopeProductCollection
 		$taxPriceAdjustment = 0; // $this->getTax($floatSubTotalPrice, $arrTaxRules, 'MULTIPLY');
 		
 		return (float)$fltTotal + (float)$taxPriceAdjustment;
+	}
+	
+		/**
+	 * Calculate tax for a certain tax class, based on the current user information 
+	 */
+	public function calculateTax($intTaxClass, $fltPrice, $blnAdd=true, $arrAddresses=null)
+	{
+		if (!is_array($arrAddresses))
+		{
+			$arrAddresses = array('billing'=>deserialize($this->arrData['billing_address']), 'shipping'=>deserialize($this->arrData['shipping_address']));
+		}
+		
+		$objTaxClass = $this->Database->prepare("SELECT * FROM tl_iso_tax_class WHERE id=?")->limit(1)->execute($intTaxClass);
+		
+		if (!$objTaxClass->numRows)
+			return $fltPrice;
+			
+		$arrTaxes = array();
+		$objIncludes = $this->Database->prepare("SELECT * FROM tl_iso_tax_rate WHERE id=?")->limit(1)->execute($objTaxClass->includes);
+		
+		if ($objIncludes->numRows)
+		{
+			$arrTaxRate = deserialize($objIncludes->rate);
+			
+			// final price / (1 + (tax / 100)
+			if (strlen($arrTaxRate['unit']))
+			{
+				$fltTax = $fltPrice - ($fltPrice / (1 + (floatval($arrTaxRate['value']) / 100)));
+			}
+			// Full amount
+			else
+			{
+				$fltTax = floatval($arrTaxRate['value']);
+			}
+			
+			if (!$this->useTaxRate($objIncludes, $fltPrice, $arrAddresses))
+			{
+				$fltPrice -= $fltTax;
+			}
+			else
+			{
+				$arrTaxes[$objTaxClass->id.'_'.$objIncludes->id] = array
+				(
+					'label'			=> (strlen($objTaxClass->label) ? $objTaxClass->label : $objIncludes->label),
+					'price'			=> $arrTaxRate['value'] . $arrTaxRate['unit'],
+					'total_price'	=> $fltTax,
+					'add'			=> false,
+				);
+			}
+		}
+
+		if (!$blnAdd)
+		{
+			return $fltPrice;
+		}
+		
+		$arrRates = deserialize($objTaxClass->rates);
+		if (!is_array($arrRates) || !count($arrRates))
+			return $arrTaxes;
+		
+		$objRates = $this->Database->execute("SELECT * FROM tl_iso_tax_rate WHERE id IN (" . implode(',', $arrRates) . ") ORDER BY id=" . implode(" DESC, id=", $arrRates) . " DESC");
+		
+		while( $objRates->next() )
+		{
+			if ($this->useTaxRate($objRates, $fltPrice, $arrAddresses))
+			{
+				$arrTaxRate = deserialize($objRates->rate);
+				
+				// final price * (1 + (tax / 100)
+				if (strlen($arrTaxRate['unit']))
+				{
+					$fltTax = ($fltPrice * (1 + (floatval($arrTaxRate['value']) / 100))) - $fltPrice;
+				}
+				// Full amount
+				else
+				{
+					$fltTax = floatval($arrTaxRate['value']);
+				}
+				
+				$arrTaxes[$objRates->id] = array
+				(
+					'label'			=> $objRates->label,
+					'price'			=> $arrTaxRate['value'] . $arrTaxRate['unit'],
+					'total_price'	=> $fltTax,
+					'add'			=> true,
+				);
+				
+				if ($objRates->stop)
+					break;
+			}
+		}
+		
+		return $arrTaxes;
+	}
+	
+	public function useTaxRate($objRate, $fltPrice, $arrAddresses)
+	{
+		if ($objRate->config > 0 && $objRate->config != $this->Config->id)
+			return false;
+			
+		$objRate->address = deserialize($objRate->address);
+		
+		if (is_array($objRate->address) && count($objRate->address))
+		{
+			foreach( $arrAddresses as $name => $arrAddress )
+			{
+				if (!in_array($name, $objRate->address))
+					continue;
+				
+				if (strlen($objRate->country) && $objRate->country != $arrAddress['country'])
+					return false;
+					
+				if (strlen($objRate->subdivision) && $objRate->subdivision != $arrAddress['subdivision'])
+					return false;
+					
+				$arrPostal = deserialize($objRate->postal);
+				if (is_array($arrPostal) && count($arrPostal) && strlen($arrPostal[0]))
+				{
+					if (strlen($arrPostal[1]))
+					{
+						if ($arrPostal[0] > $arrAddress['postal'] || $arrPostal[1] < $arrAddress['postal'])
+							return false;
+					}
+					else
+					{
+						if ($arrPostal[0] != $arrAddress['postal'])
+							return false;
+					}
+				}
+				
+				$arrPrice = deserialize($objRate->amount);
+				if (is_array($arrPrice) && count($arrPrice) && strlen($arrPrice[0]))
+				{
+					if (strlen($arrPrice[1]))
+					{
+						if ($arrPrice[0] > $fltPrice || $arrPrice[1] < $fltPrice)
+							return false;
+					}
+					else
+					{
+						if ($arrPrice[0] != $fltPrice)
+							return false;
+					}
+				}
+			}
+		}
+			
+		return true;
 	}
 	
 }
