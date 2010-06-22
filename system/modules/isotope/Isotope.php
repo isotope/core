@@ -795,10 +795,10 @@ class Isotope extends Controller
 		switch( $strSourceUnit )
 		{
 			case 'mg':
-				return $this->convertUnit(($fltWeight / 1000000), 'kg', $strTargetUnit);
+				return $this->convertWeight(($fltWeight / 1000000), 'kg', $strTargetUnit);
 				
 			case 'g':
-				return $this->convertUnit(($fltWeight / 1000), 'kg', $strTargetUnit);
+				return $this->convertWeight(($fltWeight / 1000), 'kg', $strTargetUnit);
 				
 			case 'kg':
 				switch( $strTargetUnit )
@@ -835,22 +835,22 @@ class Isotope extends Controller
 				}
 				
 			case 't':
-				return $this->convertUnit(($fltWeight * 1000), 'kg', $strTargetUnit);
+				return $this->convertWeight(($fltWeight * 1000), 'kg', $strTargetUnit);
 				
 			case 'ct':
-				return $this->convertUnit(($fltWeight / 5000), 'kg', $strTargetUnit);
+				return $this->convertWeight(($fltWeight / 5000), 'kg', $strTargetUnit);
 				
 			case 'oz':
-				return $this->convertUnit(($fltWeight * 28.35 / 1000), 'kg', $strTargetUnit);
+				return $this->convertWeight(($fltWeight * 28.35 / 1000), 'kg', $strTargetUnit);
 				
 			case 'lb':
-				return $this->convertUnit(($fltWeight * 0.45359243), 'kg', $strTargetUnit);
+				return $this->convertWeight(($fltWeight * 0.45359243), 'kg', $strTargetUnit);
 				
 			case 'st':
-				return $this->convertUnit(($fltWeight * 6.35029318), 'kg', $strTargetUnit);
+				return $this->convertWeight(($fltWeight * 6.35029318), 'kg', $strTargetUnit);
 
 			case 'grain':
-				return $this->convertUnit(($fltWeight * 64.79891 / 1000000), 'kg', $strTargetUnit);
+				return $this->convertWeight(($fltWeight * 64.79891 / 1000000), 'kg', $strTargetUnit);
 				
 			default:
 				throw new Exception('Unknown source weight unit "' . $strSourceUnit . '"');

@@ -359,7 +359,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'default'				=> 'kg',
 			'options'				=> array('mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'),
 			'reference'				=> &$GLOBALS['TL_LANG']['WGT'],
-			'eval'					=> array('rgxp'=>'digit', 'tl_class'=>'w50', 'helpwizard'=>&$GLOBALS['TL_LANG']['WGT']),
+			'eval'					=> array('rgxp'=>'digit', 'tl_class'=>'w50 wizard', 'helpwizard'=>&$GLOBALS['TL_LANG']['WGT']),
 			'attributes'			=> array('legend'=>'shipping_legend'),
 		),
 		'shipping_exempt' => array
@@ -1015,7 +1015,7 @@ class tl_iso_products extends Backend
 	 */
 	public function quickEditVariants($dc)
 	{
-		$arrQuickEditFields = array('sku','price','weight','stock_quantity');
+		$arrQuickEditFields = array('sku', 'price', 'shipping_weight', 'stock_quantity');
 
 		$objProduct = $this->Database->prepare("SELECT id, pid, language, type, (SELECT attributes FROM tl_iso_producttypes WHERE id=tl_iso_products.type) AS attributes, (SELECT variant_attributes FROM tl_iso_producttypes WHERE id=tl_iso_products.type) AS variant_attributes FROM tl_iso_products WHERE id=?")->limit(1)->execute($dc->id);
 		
@@ -1076,18 +1076,10 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 			{
 				if(in_array($field, $arrVarAttributes))
 				{
-					$arrWidgets[$field] = new TextField($this->prepareForWidget($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field], $field.'[' . $objVariants->id .']', $objVariants->{$field}));
+					$strClass = $GLOBALS['BE_FFL'][$GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['inputType']];
+					$arrWidgets[$field] = new $strClass($this->prepareForWidget($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field], $field.'[' . $objVariants->id .']', $objVariants->{$field}));
 				}
 			}
-			/*
-			$arrWidgets['sku'] = new TextField($this->prepareForWidget($GLOBALS['TL_DCA']['tl_iso_products']['fields']['sku'], 'sku[' . $objVariants->id . ']', $objVariants->sku));
-			
-			$arrWidgets['price'] = new TextField($this->prepareForWidget($GLOBALS['TL_DCA']['tl_iso_products']['fields']['price'], 'price[' . $objVariants->id . ']', $objVariants->price));
-			
-			$arrWidgets['weight'] = new TextField($this->prepareForWidget($GLOBALS['TL_DCA']['tl_iso_products']['fields']['weight'], 'weight[' . $objVariants->id . ']', $objVariants->weight));
-			
-			$arrWidgets['stock_quantity'] = new TextField($this->prepareForWidget($GLOBALS['TL_DCA']['tl_iso_products']['fields']['stock_quantity'], 'stock_quantity[' . $objVariants->id . ']', $objVariants->stock_quantity));
-			*/
 
 			foreach($arrWidgets as $key=>$objWidget)
 			{
@@ -1097,6 +1089,11 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 					case 'sku':
 						$objWidget->class = 'tl_text_2';
 						break;
+						
+					case 'shipping_weight':
+						$objWidget->class = 'tl_text_trbl';
+						break;
+						
 					default:
 						$objWidget->class = 'tl_text_3';
 						break;
@@ -1143,11 +1140,6 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 			$strBuffer .= '<td>'.$arrWidgets[$field]->generate().'</td>';
 		}
 	}
-	/*
-	'<td>'.$arrWidgets['sku']->generate().'</td>
-	<td>'.$arrWidgets['price']->generate().'</td>
-	<td>'.$arrWidgets['weight']->generate().'</td>
-	<td>'.$arrWidgets['stock_quantity']->generate().'</td>*/
 	
 	$strBuffer .= '<td><input type="checkbox" name="published['.$objVariants->id.']" value="1"'.($arrPublished[$objVariants->id] ? ' checked="checked"' : '').' class="tl_checkbox" /></td>
 <tr>';
@@ -1603,7 +1595,7 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 
 				$arrPalette[$GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['attributes']['legend']][] = $field;
 				
-				if (!in_array($field, array('sku','price','weight','stock_quantity','published')))
+				if (!in_array($field, array('sku','price','shipping_weight','stock_quantity','published')))
 				{
 					$arrInherit[$field] = strlen($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['label'][0]) ? $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['label'][0] : $field;
 				}
