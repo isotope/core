@@ -45,7 +45,7 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['translation'] = array
 (
 	'label'		=> &$GLOBALS['TL_LANG']['tl_user']['translation'],
 	'inputType'	=> 'select',
-	'options'	=> $this->getBackendLanguages(),
+	'options'	=> $this->getLanguages(),
 	'eval'		=> array('includeBlankOption'=>true, 'tl_class'=>'w50'),
 );
 
