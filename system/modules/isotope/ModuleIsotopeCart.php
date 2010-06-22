@@ -86,7 +86,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 		{
 			if ($this->Input->get('remove') == $objProduct->cart_id)
 			{
-				$this->Database->query("DELETE FROM tl_cart_items WHERE id={$objProduct->cart_id}");
+				$this->Database->query("DELETE FROM tl_iso_cart_items WHERE id={$objProduct->cart_id}");
 				$this->redirect((strlen($this->Input->get('referer')) ? base64_decode($this->Input->get('referer', true)) : $strUrl));
 			}
 			elseif ($this->Input->post('FORM_SUBMIT') == 'iso_cart_update' && is_array($arrQuantity) && $objProduct->cart_id)
@@ -94,11 +94,11 @@ class ModuleIsotopeCart extends ModuleIsotope
 				$blnReload = true;
 				if (!$arrQuantity[$objProduct->cart_id])
 				{
-					$this->Database->query("DELETE FROM tl_cart_items WHERE id={$objProduct->cart_id}");
+					$this->Database->query("DELETE FROM tl_iso_cart_items WHERE id={$objProduct->cart_id}");
 				}
 				else
 				{
-					$this->Database->prepare("UPDATE tl_cart_items SET quantity_requested=? WHERE id={$objProduct->cart_id}")->executeUncached($arrQuantity[$objProduct->cart_id]);
+					$this->Database->prepare("UPDATE tl_iso_cart_items SET quantity_requested=? WHERE id={$objProduct->cart_id}")->executeUncached($arrQuantity[$objProduct->cart_id]);
 				}
 			}
 			
