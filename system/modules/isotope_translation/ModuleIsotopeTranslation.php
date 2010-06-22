@@ -95,6 +95,9 @@ class ModuleIsotopeTranslation extends BackendModule
 		
 			foreach ($arrFileSearch as $file)
 			{
+				if (in_array($file, array('countries.php')))
+					continue;
+					
 				$arrFiles[] = array('value'=>$file, 'label'=>$file, 'default'=>($arrSession['file'] == $file ? true : false));
 			}	
 		}
