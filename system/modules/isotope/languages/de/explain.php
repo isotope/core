@@ -46,6 +46,6 @@ $GLOBALS['TL_LANG']['XPL']['isoMailTokens'] = array
 	array('##payment_note##<br />##payment_note_text##', 'Hinweismeldung der gewählten Zahlungsart (auch als Nur-Text abrufbar).'),
 	array('##billing_firstname##<br />##billing_lastname##<br />...', 'Einzelne Felder der Rechnungsadresse.'),
 	array('##shipping_firstname##<br />##shipping_lastname##<br />...', 'Einzelne Felder der Versandadresse.'),
-	array('##condition_...##', 'Verwenden Sie den Präfix "condition_" und den Feldnamen, um Daten aus dem Formular der Bestellbestätigung zu verwenden.'),
+	array('##form_...##', 'Verwenden Sie den Präfix "form_" und den Feldnamen, um Daten aus dem Formular der Bestellbestätigung zu verwenden.'),
 );
 
