@@ -344,7 +344,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 					$arrPaymentInfo['authorize_reason'] = $arrResponses['reason'];
 					$strPaymentInfo = serialize($arrPaymentInfo);
 					
-					$this->Database->prepare("UPDATE tl_iso_orders SET status='on_hold', payment_data=? WHERE id=?")
+					$this->Database->prepare("UPDATE tl_iso_orders SET status='on_hold', authnet_reason=? WHERE id=?")
 								   ->execute($strPaymentInfo, $intOrderId);					
 					break;
 			
