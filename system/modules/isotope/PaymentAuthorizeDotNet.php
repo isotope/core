@@ -200,11 +200,12 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 				continue;
 			}
 
-			$objWidget = new $strClass($this->prepareForWidget($arrData, 'payment['.$this->id.']['.$field.']'));
+			$objWidget = new $strClass($this->prepareForWidget($arrData, 'payment['.$this->id.']['.$field.']', ($_SESSION['CHECKOUT_DATA']['payment'][$this->id]['error'] ? '' : $_SESSION['CHECKOUT_DATA']['payment'][$this->id][$field])));
 			
 			// Validate input
 			if ($this->Input->post('FORM_SUBMIT') == 'iso_mod_checkout_payment' && $arrPayment['module'] == $this->id)
 			{
+				
 				$objWidget->validate();
 				
 				if ($objWidget->hasErrors())
