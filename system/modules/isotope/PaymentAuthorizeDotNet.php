@@ -56,12 +56,13 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 	 */
 	public function processPayment()
 	{
-		$this->import('IsotopeCart', 'Cart');
+		
+		$this->import('Isotope');
 		
 		$fields = '';
 		
 		// Get the current order, review page will create the data
-		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->execute($this->Cart->id);
+		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->execute($this->Isotope->Cart->id);
 		
 		// for Authorize.net - this would be where to handle logging response information from the server.
 		$authnet_values = array
@@ -77,15 +78,15 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 			"x_tran_key"						=> $this->authorize_trans_key,
 			"x_card_num"						=> $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_num'],
 			"x_exp_date"						=> $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_exp'],
-			"x_description"						=> "Order Number " . $objOrder->order_id,
-			"x_amount"							=> $this->Cart->grandTotal,
-			"x_first_name"						=> $this->Cart->billingAddress['firstname'],
-			"x_last_name"						=> $this->Cart->billingAddress['lastname'],
-			"x_address"							=> $this->Cart->billingAddress['street_1']."\n".$this->Cart->billingAddress['street_2']."\n".$this->Cart->billingAddress['street_3'],
-			"x_city"							=> $this->Cart->billingAddress['city'],
-			"x_state"							=> $this->Cart->billingAddress['subdivision'],
-			"x_zip"								=> $this->Cart->billingAddress['postal'],
-			"x_company"							=> $this->Cart->billingAddress['company'],
+			"x_description"						=> "Order Number " . $objOrder->id,
+			"x_amount"							=> $this->Isotope->Cart->grandTotal,
+			"x_first_name"						=> $this->Isotope->Cart->billingAddress['firstname'],
+			"x_last_name"						=> $this->Isotope->Cart->billingAddress['lastname'],
+			"x_address"							=> $this->Isotope->Cart->billingAddress['street_1']."\n".$this->Isotope->Cart->billingAddress['street_2']."\n".$this->Isotope->Cart->billingAddress['street_3'],
+			"x_city"							=> $this->Isotope->Cart->billingAddress['city'],
+			"x_state"							=> $this->Isotope->Cart->billingAddress['subdivision'],
+			"x_zip"								=> $this->Isotope->Cart->billingAddress['postal'],
+			"x_company"							=> $this->Isotope->Cart->billingAddress['company'],
 			"x_email_customer"					=> "FALSE"
 		);
 
@@ -199,7 +200,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 				continue;
 			}
 
-			$objWidget = new $strClass($this->prepareForWidget($arrData, 'payment['.$this->id.']['.$field.']', $_SESSION['CHECKOUT_DATA']['payment'][$this->id][$field]));
+			$objWidget = new $strClass($this->prepareForWidget($arrData, 'payment['.$this->id.']['.$field.']'));
 			
 			// Validate input
 			if ($this->Input->post('FORM_SUBMIT') == 'iso_mod_checkout_payment' && $arrPayment['module'] == $this->id)
@@ -264,8 +265,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 		$arrPaymentInfo = deserialize($arrOrderInfo['payment_data']);
 		
 		$this->fltOrderTotal = $arrOrderInfo['grandTotal'];
-		
-		
+				
 		//Get the authorize.net configuration data			
 		$objAIMConfig = $this->Database->prepare("SELECT * FROM tl_iso_payment_modules WHERE type=?")
 														->execute('authorizedotnet');
@@ -284,7 +284,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 			$delimChar = $objAIMConfig->authorize_delimiter;
 			$loginID = $objAIMConfig->authorize_login;
 			$transKey = $objAIMConfig->authorize_trans_key;
-			$transType = 'PRIOR_AUTH_CAPTURE'; //$objAIMConfig->authorize_trans_type;
+			$transType = ($objAIMConfig->authorize_trans_type=='HOLD_FOR_ADJUST' ? 'AUTH_CAPTURE' : 'PRIOR_AUTH_CAPTURE');
 			$status = ($objAIMConfig->debug ? "TRUE" : "FALSE");
 			$strMode = ($objAIMConfig->debug ? "test" : "secure");
 		}
@@ -293,23 +293,29 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 		if ($this->Input->post('FORM_SUBMIT') == 'be_pos_terminal' && $arrPaymentInfo['x_trans_id']!=="0")
 		{
 			
+			switch($transType)
+			{
+				case 'PRIOR_AUTH_CAPTURE':
+					$authnet_values = array
+					(
+						"x_version"							=> '3.1',
+						"x_login"							=> $loginID,
+						"x_tran_key"						=> $transKey,
+						"x_type"							=> $transType,
+						"x_trans_id"						=> $arrPaymentInfo['x_trans_id'],
+						"x_amount"							=> number_format($this->fltOrderTotal, 2),
+						"x_delim_data"						=> 'TRUE',
+						"x_delim_char"						=> ',',
+						"x_encap_char"						=> '"',
+						"x_relay_response"					=> 'FALSE'
+					
+					);
+					break;
+				case 'AUTH_CAPTURE':
 				
-			$authnet_values = array
-			(
-				"x_version"							=> '3.1',
-				"x_login"							=> $loginID,
-				"x_tran_key"						=> $transKey,
-				"x_type"							=> $transType,
-				"x_trans_id"						=> $arrPaymentInfo['x_trans_id'],
-				"x_amount"							=> number_format($this->fltOrderTotal, 2),
-				"x_delim_data"						=> 'TRUE',
-				"x_delim_char"						=> ',',
-				"x_encap_char"						=> '"',
-				"x_relay_response"					=> 'FALSE'
-			
-			);
-			
-						
+					break;
+			}
+
 			foreach( $authnet_values as $key => $value ) $fields .= "$key=" . urlencode( $value ) . "&";
 
 			$fieldsFinal = rtrim($fields, '&');

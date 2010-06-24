@@ -16,6 +16,8 @@ Version 0.2.0 beta1
 - Added: Support to use Shipping & Payment surcharge recalculation for order editing in the back end
 - Fixed: fixed overwriting of authorize payment information used for delayed capture upon non-successful transaction
 - Fixed: reference to a undeclared deprecated method in PaymentAuthorizeDotNet
+- Fixed: reference to the cart in Authorize.net - $this->Cart now referred to as $this->Isotope->Cart
+- Fixed: removed SESSION storage of cc data in checkout
 - Fixed: Images are now updated when selecting a product variant
 - Fixed: Null array bug in ModuleIsotopeProductFilter
 - Fixed: Null object bug in IsotopeCart
