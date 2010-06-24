@@ -354,7 +354,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 			'inputType'               => 'select',
 			'options'				  => array('AUTH_CAPTURE', 'AUTH_ONLY'),
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
-			'reference'				  => $GLOBALS['TL_LANG']['tl_iso_payment_modules']['authnet_modes']
+			'reference'				  => $GLOBALS['TL_LANG']['ISO_PAY']['authorizedotnet']['modes']
 		),
 		'authorize_delimiter' => array
 		(
