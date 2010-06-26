@@ -61,6 +61,14 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 		
 		$fields = '';
 		
+		
+		$arrSet['cart_id'] = $this->Isotope->Cart->id;
+		
+		
+		$this->Database->prepare("INSERT INTO tl_iso_orders %s")
+					   ->set($arrSet)
+					   ->execute();
+
 		// Get the current order, review page will create the data
 		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->execute($this->Isotope->Cart->id);
 		
@@ -110,7 +118,6 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 			$arrReponseLabels[strtolower(standardize($key))] = $key;
 		}
 	
-	
 		//!@todo: - This just doesn't seem like a good way to handle this info...
 		
 		//Save Auth.net-specific data
@@ -129,16 +136,18 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 					$strTransactionId = '0';
 				}
 				
-				$this->import('IsotopeCart','Cart');
-				
-				$strCCNum = rtrim($this->Input->post('cc_num'));
+				$strCCNum = rtrim($_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_num']);
 							
 				$arrPaymentData['x_trans_id'] = $strTransactionId;
 				
 				$arrPaymentData['cc-last-four'] = substr($strCCNum, strlen($strCCNum) - 4, 4);
 
-				$this->Database->prepare("UPDATE tl_iso_orders SET payment_data=? WHERE id=?")->execute(serialize($arrPaymentData), $objOrder->id);
+				$strPaymentData = serialize($arrPaymentData);
+
+				$this->Database->prepare("UPDATE tl_iso_orders SET payment_data=? WHERE id=?")->execute($strPaymentData, $objOrder->id);
 				
+				$objValue = $this->Database->query("SELECT payment_data FROM tl_iso_orders WHERE id=".$objOrder->id);
+						
 				return true;
 				break;
 				
@@ -200,7 +209,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 				continue;
 			}
 
-			$objWidget = new $strClass($this->prepareForWidget($arrData, 'payment['.$this->id.']['.$field.']', ($_SESSION['CHECKOUT_DATA']['payment'][$this->id]['error'] ? '' : $_SESSION['CHECKOUT_DATA']['payment'][$this->id][$field])));
+			$objWidget = new $strClass($this->prepareForWidget($arrData, 'payment['.$this->id.']['.$field.']', $_SESSION['CHECKOUT_DATA']['payment'][$this->id][$field]));
 			
 			// Validate input
 			if ($this->Input->post('FORM_SUBMIT') == 'iso_mod_checkout_payment' && $arrPayment['module'] == $this->id)
@@ -263,7 +272,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 		$strOrderDetails = $objModule->generate(true);
 		
 							
-		$arrPaymentInfo = deserialize($arrOrderInfo['payment_data']);
+		$arrPaymentInfo = deserialize($arrOrderInfo['payment_data'], true);
 		
 		$this->fltOrderTotal = $arrOrderInfo['grandTotal'];
 				
@@ -285,7 +294,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 			$delimChar = $objAIMConfig->authorize_delimiter;
 			$loginID = $objAIMConfig->authorize_login;
 			$transKey = $objAIMConfig->authorize_trans_key;
-			$transType = ($objAIMConfig->authorize_trans_type=='HOLD_FOR_ADJUST' ? 'AUTH_CAPTURE' : 'PRIOR_AUTH_CAPTURE');
+			$transType = 'PRIOR_AUTH_CAPTURE';
 			$status = ($objAIMConfig->debug ? "TRUE" : "FALSE");
 			$strMode = ($objAIMConfig->debug ? "test" : "secure");
 		}
@@ -294,28 +303,21 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 		if ($this->Input->post('FORM_SUBMIT') == 'be_pos_terminal' && $arrPaymentInfo['x_trans_id']!=="0")
 		{
 			
-			switch($transType)
-			{
-				case 'PRIOR_AUTH_CAPTURE':
-					$authnet_values = array
-					(
-						"x_version"							=> '3.1',
-						"x_login"							=> $loginID,
-						"x_tran_key"						=> $transKey,
-						"x_type"							=> $transType,
-						"x_trans_id"						=> $arrPaymentInfo['x_trans_id'],
-						"x_amount"							=> number_format($this->fltOrderTotal, 2),
-						"x_delim_data"						=> 'TRUE',
-						"x_delim_char"						=> ',',
-						"x_encap_char"						=> '"',
-						"x_relay_response"					=> 'FALSE'
-					
-					);
-					break;
-				case 'AUTH_CAPTURE':
-				
-					break;
-			}
+			$authnet_values = array
+			(
+				"x_version"							=> '3.1',
+				"x_login"							=> $loginID,
+				"x_tran_key"						=> $transKey,
+				"x_type"							=> $transType,
+				"x_trans_id"						=> $arrPaymentInfo['x_trans_id'],
+				"x_amount"							=> number_format($this->fltOrderTotal, 2),
+				"x_delim_data"						=> 'TRUE',
+				"x_delim_char"						=> ',',
+				"x_encap_char"						=> '"',
+				"x_relay_response"					=> 'FALSE'
+			
+			);
+			
 
 			foreach( $authnet_values as $key => $value ) $fields .= "$key=" . urlencode( $value ) . "&";
 
@@ -563,7 +565,9 @@ $return .= '</div></div>';
 							$ftitle = "Email";
 							$fval = $pstr_trimmed;
 							break;
-							
+						case 47:
+							$ftitle = "Amount";
+							$fval = $pstr_trimmed;	
 						default:
 							break;
 					}
