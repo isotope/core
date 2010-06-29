@@ -26,6 +26,7 @@ Version 0.2.0 beta1
 - Fixed: Table naming is not consistent, renamed tl_cart,tl_cart_items to tl_iso_cart,tl_iso_cart_items (Ticket #117)
 - Removed: Paypal Website Payments Pro option - use Paypal Payflow Pro or Paypal Standard
 - Removed generatePrice() function, stpl_price and stpl_total_price templates. Now using formatPriceWithCurrency
+- Removed taxTotalWithShipping simple token
 
 Version 0.1.3 (2010-??-??)
 ------------------------------
