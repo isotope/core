@@ -33,7 +33,6 @@ $GLOBALS['TL_LANG']['XPL']['isoMailTokens'] = array
 	array('##products##', 'Products in cart'),
 	array('##subTotal##', 'Subtotal of order'),
 	array('##taxTotal##', 'Total of tax (excluding shipping)'),
-	array('##taxTotalWithShipping##', 'Total tax (including shipping)'),
 	array('##shippingPrice##', 'Shipping Price Total'),
 	array('##grandTotal##', 'Grand Total'),
 	array('##cart_text##', 'List of products in text format'),

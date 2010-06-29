@@ -907,7 +907,6 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				'products'					=> $this->Isotope->Cart->products,
 				'subTotal'					=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->subTotal, false),
 				'taxTotal'					=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->taxTotal, false),
-				'taxTotalWithShipping'		=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->taxTotalWithShipping, false),
 				'shippingPrice'				=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->Shipping->price, false),
 				'paymentPrice'				=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->Payment->price, false),
 				'grandTotal'				=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->grandTotal, false),

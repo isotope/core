@@ -33,7 +33,6 @@ $GLOBALS['TL_LANG']['XPL']['isoMailTokens'] = array
 	array('##products##', 'Anzahl Produkte im Warenkorb'),
 	array('##subTotal##', 'Subtotal der Bestellung'),
 	array('##taxTotal##', 'Total der Mehrwertsteuer (ohne Versandkosten)'),
-	array('##taxTotalWithShipping##', 'Total der Mehrwertsteuer (inkl. Versandkosten)'),
 	array('##shippingPrice##', 'Total der Versandkosten'),
 	array('##grandTotal##', 'Gesamttotal der Bestellung'),
 	array('##cart_text##', 'Liste der bestellten Artikel im Text-Format'),
