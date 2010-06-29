@@ -119,7 +119,7 @@ $GLOBALS['TL_DCA']['tl_iso_related_products'] = array
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_related_products']['products'],
 			'exclude'					=> true,
 			'inputType'					=> 'productsWizard',
-			'eval'						=> array('mandatory'=>true, 'tl_class'=>'clr'),
+			'eval'						=> array('mandatory'=>false, 'tl_class'=>'clr'),
 		),
 	)
 );
