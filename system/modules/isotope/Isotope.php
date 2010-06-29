@@ -697,7 +697,7 @@ class Isotope extends Controller
 	public function defaultButtons($arrButtons)
 	{
 		$arrButtons['update'] = array('label'=>$GLOBALS['TL_LANG']['MSC']['buttonLabel']['update']);
-		$arrButtons['add_to_cart'] = array('label'=>$GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'], 'callback'=>array('IsotopeCart', 'addToCart'));
+		$arrButtons['add_to_cart'] = array('label'=>$GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'], 'callback'=>array('IsotopeFrontend', 'addToCart'));
 		
 		return $arrButtons;
 	}

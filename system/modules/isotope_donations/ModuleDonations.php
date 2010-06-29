@@ -126,7 +126,10 @@ class ModuleDonations extends ModuleIsotope
 			//Manually cobble together a product
 			$objProduct->price = $this->Input->post('donation_amount');
 			$objProduct->reader_jumpTo_Override = $this->Environment->request;
-			$this->Isotope->Cart->addToCart($objProduct);
+			
+			$this->import('IsotopeFrontend');
+			
+			$this->IsotopeFrontend->addToCart($objProduct);
 			$this->reload();
 		}
 		
