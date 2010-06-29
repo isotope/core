@@ -56,18 +56,9 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 	 */
 	public function processPayment()
 	{
-		
 		$this->import('Isotope');
 		
 		$fields = '';
-		
-		
-		$arrSet['cart_id'] = $this->Isotope->Cart->id;
-		
-		
-		$this->Database->prepare("INSERT INTO tl_iso_orders %s")
-					   ->set($arrSet)
-					   ->execute();
 
 		// Get the current order, review page will create the data
 		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->execute($this->Isotope->Cart->id);
@@ -86,7 +77,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 			"x_tran_key"						=> $this->authorize_trans_key,
 			"x_card_num"						=> $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_num'],
 			"x_exp_date"						=> $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_exp'],
-			"x_description"						=> "Order Number " . $objOrder->id,
+			"x_description"						=> "Order Number " . $objOrder->order_id,
 			"x_amount"							=> $this->Isotope->Cart->grandTotal,
 			"x_first_name"						=> $this->Isotope->Cart->billingAddress['firstname'],
 			"x_last_name"						=> $this->Isotope->Cart->billingAddress['lastname'],
@@ -142,11 +133,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 				
 				$arrPaymentData['cc-last-four'] = substr($strCCNum, strlen($strCCNum) - 4, 4);
 
-				$strPaymentData = serialize($arrPaymentData);
-
-				$this->Database->prepare("UPDATE tl_iso_orders SET payment_data=? WHERE id=?")->execute($strPaymentData, $objOrder->id);
-				
-				$objValue = $this->Database->query("SELECT payment_data FROM tl_iso_orders WHERE id=".$objOrder->id);
+				$this->Database->prepare("UPDATE tl_iso_orders SET payment_data=? WHERE id={$objOrder->id}")->executeUncached(serialize($arrPaymentData));
 						
 				return true;
 				break;

@@ -196,14 +196,14 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		
 		if ($this->strCurrentStep == 'process')
 		{
+			$this->writeOrder(false);
+			
 			$strBuffer = $this->Isotope->Cart->hasPayment ? $this->Isotope->Cart->Payment->checkoutForm() : false;
 			
 			if ($strBuffer === false)
 			{
 				$this->redirect($this->addToUrl('step=complete'));
 			}
-			
-			$this->writeOrder(false);
 			
 			$this->Template->showForm = false;
 			$this->doNotSubmit = true;
