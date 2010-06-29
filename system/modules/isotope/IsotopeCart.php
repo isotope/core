@@ -346,30 +346,6 @@ class IsotopeCart extends IsotopeProductCollection
 			$this->setCookie($this->strCookie, '', (time() - 3600), $GLOBALS['TL_CONFIG']['websitePath']);
  		}
 	}
-		
-	
-	/**
-	 * Callback for add_to_cart button
-	 *
-	 * @access	public
-	 * @param	object
-	 * @return	void
-	 */
-	//!@todo $objModule is always defined, rework to use it and make sure the module config field is in palettes
-	public function addToCart($objProduct, $objModule=null)
-	{		
-		$this->import('Isotope');
-		$this->Isotope->Cart->addProduct($objProduct, ((is_object($objModule) && $objModule->iso_use_quantity && intval($this->Input->post('quantity_requested')) > 0) ? intval($this->Input->post('quantity_requested')) : 1));
-		
-		if($objModule->iso_addProductJumpTo)
-		{
-			$this->redirect($this->generateFrontendUrlFromId($objModule->iso_addProductJumpTo));
-		}
-		else
-		{
-			$this->reload();
-		}
-	}
 	
 
 	/**
@@ -515,64 +491,6 @@ class IsotopeCart extends IsotopeProductCollection
 		}
 		
 		return array_merge($arrPreTax, $arrTaxes, $arrPostTax);
-	}
-
-	
-	public function generateFrontendUrlFromId($intPageId)
-	{
-		$objNextPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=? OR alias=?")
-									  ->limit(1)
-									  ->execute((is_numeric($intPageId) ? $intPageId : 0), $intPageId);
-
-		if ($objNextPage->numRows < 1)
-		{
-			break;
-		}
-		else
-		{
-			return $this->generateFrontendUrl($objNextPage->row());
-		}
-	}
-	
-	/**
-	 * Generate an URL from a tl_page record depending on the current rewriteURL setting and return it
-	 * @param array
-	 * @param string
-	 * @return string
-	 */
-	protected function generateFrontendUrl($arrRow, $strParams='')
-	{
-	
-		$strUrl = ($GLOBALS['TL_CONFIG']['rewriteURL'] ? '' : 'index.php/') . (strlen($arrRow['alias']) ? $arrRow['alias'] : $arrRow['id']) . $strParams . $GLOBALS['TL_CONFIG']['urlSuffix'];
-
-		if ($GLOBALS['TL_CONFIG']['disableAlias'])
-		{
-			$strRequest = '';
-
-			if ($strParams)
-			{
-				$arrChunks = explode('/', preg_replace('@^/@', '', $strParams));
-
-				for ($i=0; $i<count($arrChunks); $i=($i+2))
-				{
-					$strRequest .= sprintf('&%s=%s', $arrChunks[$i], $arrChunks[($i+1)]);
-				}
-			}
-
-			$strUrl = 'index.php?id=' . $arrRow['id'] . $strRequest;
-		}
-
-		// HOOK: add custom logic
-		if (isset($GLOBALS['TL_HOOKS']['generateFrontendUrl']) && is_array($GLOBALS['TL_HOOKS']['generateFrontendUrl']))
-		{
-			foreach ($GLOBALS['TL_HOOKS']['generateFrontendUrl'] as $callback)
-			{
-				$this->import($callback[0]);
-				$strUrl = $this->$callback[0]->$callback[1]($arrRow, $strParams, $strUrl);
-			}
-		}
-
-		return $strUrl;
 	}
 }
 
