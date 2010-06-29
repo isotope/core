@@ -40,124 +40,27 @@ class IsotopeOrder extends IsotopeProductCollection
 	 * @var string
 	 */
 	protected $ctable = 'tl_iso_order_items';
-	
-	/**
-	 * Cache get requests to improve speed. Cart data cannot change without reload...
-	 * @var array
-	 */
-	protected $arrCache = array();
-	
-	/**
-	 * Shipping object if shipping module is set in session
-	 * @var object
-	 */
-	public $Shipping;
-	
-	/**
-	 * Payment object if payment module is set in session
-	 * @var object
-	 */
-	public $Payment;
 
 				
 	public function __get($strKey)
 	{
 		switch($strKey)
 		{
-			case 'table':
-				return $this->strTable;
-				break;
-				
-			case 'ctable':
-				return  $this->ctable;
-				break;
 			case 'surcharges':
-				return $this->arrData['surcharges'] ? deserialize($this->arrData['surcharges']) : array();		
-				break;
-			case 'subTotal':
-				
-				return $this->calculateTotal($this->getProducts());
-				
-			case 'taxTotal':
-				$intTaxTotal = 0;
-				$arrSurcharges = $this->getSurcharges();
-				
-				foreach( $arrSurcharges as $arrSurcharge )
-				{
-					if ($arrSurcharge['add'])
-						$intTaxTotal += $arrSurcharge['total_price'];
-				}
-				
-				return $intTaxTotal;
+				return $this->arrData['surcharges'] ? deserialize($this->arrData['surcharges']) : array();
 				break;
 				
-			case 'taxTotalWithShipping':
-				$this->arrCache[$strKey] =  $this->taxTotal + $this->shippingTotal;
-				break;
-			
-			case 'hasShipping':
-				return (is_object($this->Shipping) ? true : false);
-				break;
-			case 'hasPayment':
-				return (is_object($this->Payment) ? true : false);
-				break;
-			case 'shippingTotal':
-				//instantiate shipping to reclaculate...
-				if($this->arrData['shipping_id'])
-				{					
-					$fltPrice = (float)$this->Shipping->price;
-				}
-				else
-				{
-					$fltPrice = 0.00;
-				}
-				
-				return $fltPrice;
-				break;
-				
-			case 'grandTotal':
-				$intTotal = $this->calculateTotal($this->getProducts());
-				$arrSurcharges = $this->getSurcharges();
-				
-				foreach( $arrSurcharges as $arrSurcharge )
-				{
-					if ($arrSurcharge['add'] !== false)
-						$intTotal += $arrSurcharge['total_price'];
-				}				
-				return $intTotal;
-								
 			case 'billingAddress':
 				return deserialize($this->arrData['billing_address'], true);
 				
 			case 'shippingAddress':
 				return deserialize($this->arrData['shipping_address'], true);
+				
 			default:
-				return $this->arrData[$strKey];
-		
+				return parent::__get($strKey);
 		}
 	}
 	
-	public function initializeOrder()
-	{
-		if($this->arrData['shipping_id'])
-		{		
-			$objShipping = $this->Database->query("SELECT * FROM tl_iso_shipping_modules WHERE id=" . $this->shipping_id);
-									
-			$strClass = $GLOBALS['ISO_SHIP'][$objShipping->type];
-													
-			$this->Shipping = new $strClass($objShipping->row());
-		}
-		
-		if($this->arrData['payment_id'])
-		{
-			$objPayment = $this->Database->query("SELECT * FROM tl_iso_payment_modules WHERE id=" . $this->payment_id);
-								
-			$strClass = $GLOBALS['ISO_PAY'][$objPayment->type];
-													
-			$this->Payment = new $strClass($objPayment->row());
-		}
-	
-	}
 	
 	/**
 	 * Add downloads to this order
@@ -183,6 +86,54 @@ class IsotopeOrder extends IsotopeProductCollection
 				$this->Database->prepare("INSERT INTO tl_iso_order_downloads %s")->set($arrSet)->executeUncached();
 			}
 		}
+	}
+	
+	
+	/**
+	 * Find a record by its reference field and return true if it has been found
+	 * @param  int
+	 * @return boolean
+	 */
+	public function findBy($strRefField, $varRefId)
+	{
+		if (parent::findBy($strRefField, $varRefId))
+		{
+			$this->Shipping = null;
+			$this->Payment = null;
+			
+			$objPayment = $this->Database->execute("SELECT * FROM tl_iso_payment_modules WHERE id=" . $this->payment_id);
+			
+			if ($objPayment->numRows)
+			{
+				$strClass = $GLOBALS['ISO_PAY'][$objPayment->type];
+				
+				try
+				{
+					$this->Payment = new $strClass($objPayment->row());
+				}
+				catch (Exception $e) {}
+			}
+			
+			if ($this->shipping_id > 0)
+			{		
+				$objShipping = $this->Database->execute("SELECT * FROM tl_iso_shipping_modules WHERE id=" . $this->shipping_id);
+				
+				if ($objShipping->numRows)
+				{
+					$strClass = $GLOBALS['ISO_SHIP'][$objShipping->type];
+					
+					try
+					{
+						$this->Shipping = new $strClass($objShipping->row());
+					}
+					catch (Exception $e) {}
+				}
+			}
+			
+			return true;
+		}
+		
+		return false;
 	}
 	
 	
@@ -343,31 +294,8 @@ class IsotopeOrder extends IsotopeProductCollection
 		return $arrSurcharges;
 	}
 	
-	/**
-	 * Calculate total price for products.
-	 * 
-	 * @access protected
-	 * @param array $arrProductData
-	 * @return float
-	 */
-	protected function calculateTotal($arrProducts)
-	{		
-		if (!is_array($arrProducts) || !count($arrProducts))
-			return 0;
-			
-		$fltTotal = 0;
-		
-		foreach($arrProducts as $objProduct)
-		{
-			$fltTotal += ((float)$objProduct->price * (int)$objProduct->quantity_requested);
-		}
-			
-		$taxPriceAdjustment = 0; // $this->getTax($floatSubTotalPrice, $arrTaxRules, 'MULTIPLY');
-		
-		return (float)$fltTotal + (float)$taxPriceAdjustment;
-	}
 	
-		/**
+	/**
 	 * Calculate tax for a certain tax class, based on the current user information 
 	 */
 	public function calculateTax($intTaxClass, $fltPrice, $blnAdd=true, $arrAddresses=null)

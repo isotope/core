@@ -54,24 +54,13 @@ class IsotopeCart extends IsotopeProductCollection
 	protected $strCookie = 'ISOTOPE_TEMP_CART';
 	
 	/**
-	 * Cache get requests to improve speed. Cart data cannot change without reload...
+	 * Cache cart data
 	 * @var array
 	 */
 	protected $arrCache = array();
 	
+	
 	protected $arrSurcharges;
-	
-	/**
-	 * Shipping object if shipping module is set in session
-	 * @var object
-	 */
-	public $Shipping;
-	
-	/**
-	 * Payment object if payment module is set in session
-	 * @var object
-	 */
-	public $Payment;
 	
 	
 	public function __construct()
@@ -94,164 +83,79 @@ class IsotopeCart extends IsotopeProductCollection
 	 */
 	public function __get($strKey)
 	{
-		// Return from database result
-		if (array_key_exists($strKey, $this->arrData))
-		{
-			return $this->arrData[$strKey];
-		}
-		
-		// Add to cache if not available
-		if (!array_key_exists($strKey, $this->arrCache))
-		{
-			switch( $strKey )
-			{
-				case 'table':
-					return $this->strTable;
-					break;
-					
-				case 'ctable':
-					return  $this->ctable;
-					break;
+		switch( $strKey )
+		{				
+			case 'totalWeight':
+				$arrProducts = $this->getProducts();
 				
-				case 'items':
-					$this->arrCache[$strKey] = $this->Database->prepare("SELECT SUM(product_quantity) AS items FROM {$this->ctable} i LEFT OUTER JOIN {$this->strTable} c ON i.pid=c.id WHERE i.pid=?")->execute($this->id)->items;
-					break;
-					
-				case 'products':
-					$this->arrCache[$strKey] = $this->Database->prepare("SELECT COUNT(*) AS items FROM {$this->ctable} i LEFT OUTER JOIN {$this->strTable} c ON i.pid=c.id WHERE i.pid=?")->execute($this->id)->items;
-					break;
-					
-				case 'subTotal':	
-					$fltTotal = 0;
-					
-					foreach($this->getProducts() as $objProduct)
-					{
-						$fltTotal += ((float)$objProduct->price * (int)$objProduct->quantity_requested);
-					}
-					
-					return $fltTotal;
-					
-				case 'taxTotal':
-					$intTaxTotal = 0;
-					
-					foreach( $this->getSurcharges() as $arrSurcharge )
-					{
-						if ($arrSurcharge['add'])
-							$intTaxTotal += $arrSurcharge['total_price'];
-					}
-					
-					$this->arrCache[$strKey] = $intTaxTotal;
-					break;
-					
-				case 'taxTotalWithShipping':
-					$this->arrCache[$strKey] =  $this->taxTotal + $this->shippingTotal;
-					break;
+				foreach($arrProducts as $objProduct)
+				{						
+					$fltShippingWeight += $objProduct->weight * $objProduct->quantity_requested;
+				}
+									
+				return $fltShippingWeight;
 				
-				case 'shippingTotal':
-					$this->arrCache[$strKey] = $this->hasShipping ? (float)$this->Shipping->price : 0.00;
-					break;
+			case 'billingAddress':
+				if ($this->arrCache['billingAddress_id'] > 0)
+				{
+					$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE id=?")->limit(1)->execute($this->arrCache['billingAddress_id']);
 					
-				case 'grandTotal':
-					$fltTotal = $this->subTotal;
-					
-					foreach( $this->getSurcharges() as $arrSurcharge )
-					{
-						if ($arrSurcharge['add'] !== false)
-							$fltTotal += $arrSurcharge['total_price'];
-					}
-					
-					return $fltTotal;
-					
-				case 'requiresShipping':
-					$this->arrCache[$strKey] = false;
-					$arrProducts = $this->getProducts();
-					foreach( $arrProducts as $objProduct )
-					{
-						if (!$objProduct->shipping_exempt)
-						{
-							$this->arrCache[$strKey] = true;
-							break;
-						}
-					}
-					break;
-					
-				case 'totalWeight':
-					$arrProducts = $this->getProducts();
-					
-					foreach($arrProducts as $objProduct)
-					{						
-						$fltShippingWeight += $objProduct->weight * $objProduct->quantity_requested;
-					}
-										
-					return $fltShippingWeight;
-					
-				case 'hasShipping':
-					return is_object($this->Shipping) ? true : false;
-					
-				case 'hasPayment':
-					return is_object($this->Payment) ? true : false;
-					
-				case 'billingAddress':
-					if ($this->arrCache['billingAddress_id'] > 0)
-					{
-						$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE id=?")->limit(1)->execute($this->arrCache['billingAddress_id']);
-						
-						if ($objAddress->numRows)
-							return $objAddress->fetchAssoc();
-					}
-					elseif ($this->arrCache['billingAddress_id'] === 0 && is_array($this->arrCache['billingAddress_data']))
-					{
-						return $this->arrCache['billingAddress_data'];
-					}
-								
-					if (FE_USER_LOGGED_IN)
-					{	
-						$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE pid=? AND isDefaultBilling='1'")->limit(1)->execute($this->User->id);
-
-						if ($objAddress->numRows)
-							return $objAddress->fetchAssoc();
+					if ($objAddress->numRows)
+						return $objAddress->fetchAssoc();
+				}
+				elseif ($this->arrCache['billingAddress_id'] === 0 && is_array($this->arrCache['billingAddress_data']))
+				{
+					return $this->arrCache['billingAddress_data'];
+				}
 							
-						// Return the default user data, but ID should be 0 to know that it is a custom/new address
-						// Trying to guess subdivision by country and state
-						return array_merge($this->User->getData(), array('id'=>0, 'subdivision'=>strtoupper($this->User->country . '-' . $this->User->state)));
-					}
-					
-					$this->import('Isotope');
-					
-					return array('postal'=>$this->Isotope->Config->postal, 'subdivision'=>$this->Isotope->Config->subdivision, 'country' => $this->Isotope->Config->country);
-					
-				case 'shippingAddress':
-					if ($this->arrCache['shippingAddress_id'] == -1)
-					{							
-						return array_merge($this->billingAddress, array('id' => -1));
-					}
-						
-					if ($this->arrCache['shippingAddress_id'] > 0)
-					{
-						$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE id=?")->limit(1)->execute($this->arrCache['shippingAddress_id']);
-						
-						if ($objAddress->numRows)
-							return $objAddress->fetchAssoc();
-					}
-					
-					if ($this->arrCache['shippingAddress_id'] == 0 && count($this->arrCache['shippingAddress_data']))
-					{
-						return $this->arrCache['shippingAddress_data'];
-					}
+				if (FE_USER_LOGGED_IN)
+				{	
+					$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE pid=? AND isDefaultBilling='1'")->limit(1)->execute($this->User->id);
 
-					if (FE_USER_LOGGED_IN)
-					{
-						$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE pid=? AND isDefaultShipping='1'")->limit(1)->execute($this->User->id);
+					if ($objAddress->numRows)
+						return $objAddress->fetchAssoc();
 						
-						if ($objAddress->numRows)
-							return $objAddress->fetchAssoc();
-					}
+					// Return the default user data, but ID should be 0 to know that it is a custom/new address
+					// Trying to guess subdivision by country and state
+					return array_merge($this->User->getData(), array('id'=>0, 'subdivision'=>strtoupper($this->User->country . '-' . $this->User->state)));
+				}
+				
+				$this->import('Isotope');
+				
+				return array('postal'=>$this->Isotope->Config->postal, 'subdivision'=>$this->Isotope->Config->subdivision, 'country' => $this->Isotope->Config->country);
+				
+			case 'shippingAddress':
+				if ($this->arrCache['shippingAddress_id'] == -1)
+				{							
+					return array_merge($this->billingAddress, array('id' => -1));
+				}
 					
-					return array_merge((is_array($this->billingAddress) ? $this->billingAddress : array()), array('id' => -1));
-			}
+				if ($this->arrCache['shippingAddress_id'] > 0)
+				{
+					$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE id=?")->limit(1)->execute($this->arrCache['shippingAddress_id']);
+					
+					if ($objAddress->numRows)
+						return $objAddress->fetchAssoc();
+				}
+				
+				if ($this->arrCache['shippingAddress_id'] == 0 && count($this->arrCache['shippingAddress_data']))
+				{
+					return $this->arrCache['shippingAddress_data'];
+				}
+
+				if (FE_USER_LOGGED_IN)
+				{
+					$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE pid=? AND isDefaultShipping='1'")->limit(1)->execute($this->User->id);
+					
+					if ($objAddress->numRows)
+						return $objAddress->fetchAssoc();
+				}
+				
+				return array_merge((is_array($this->billingAddress) ? $this->billingAddress : array()), array('id' => -1));
+				
+			default:
+				return parent::__get($strKey);
 		}
-		
-		return $this->arrCache[$strKey];
 	}
 	
 	
