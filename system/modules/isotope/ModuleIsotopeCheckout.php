@@ -881,8 +881,8 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 									   ->set($arrSet)
 									   ->executeUncached()
 									   ->insertId;
-						
-			$this->Database->prepare("UPDATE tl_iso_orders SET order_id=? WHERE id=?")->execute(($this->Isotope->Config->orderPrefix .  $orderId->insertId),  $orderId->insertId);
+									   
+			$this->Database->prepare("UPDATE tl_iso_orders SET order_id=? WHERE id=?")->execute(($this->Isotope->Config->orderPrefix . $orderId), $orderId);
 		}
 		else
 		{
