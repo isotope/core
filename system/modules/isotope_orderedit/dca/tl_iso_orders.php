@@ -34,6 +34,13 @@ $GLOBALS['TL_DCA']['tl_iso_orders']['list']['operations']['edit_items'] = array
 
 class tl_iso_order_edit extends Backend
 {
+	
+	/**
+	 * Isotope object
+	 * @var object
+	 */
+	protected $Isotope;
+	
 
 	/** 
 	 * Provides an interface to edit order items
@@ -150,9 +157,7 @@ class tl_iso_order_edit extends Backend
 			$objOrder = new IsotopeOrder();
 						
 			if ($objOrder->findBy('id', $dc->id))
-			{				
-				$objOrder->initializeOrder();	//Currently used to instantiate the payment & shipping objects
-			
+			{
 				$this->import('Isotope');
 				
 				$this->Isotope->Order = $objOrder;	//Todo - separate Cart from backend order.

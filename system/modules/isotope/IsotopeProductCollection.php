@@ -42,9 +42,22 @@ abstract class IsotopeProductCollection extends Model
 	protected $arrProducts;
 	
 	/**
-	 * Imported singletons
+	 * Isotope object
+	 * @var object
 	 */
 	protected $Isotope;
+	
+	/**
+	 * Shipping object if shipping module is set in product collection
+	 * @var object
+	 */
+	public $Shipping;
+	
+	/**
+	 * Payment object if payment module is set in product collection
+	 * @var object
+	 */
+	public $Payment;
 	
 	
 	public function __construct()
@@ -71,6 +84,70 @@ abstract class IsotopeProductCollection extends Model
 			case 'ctable':
 				return  $this->ctable;
 				break;
+				
+			case 'hasPayment':
+				return (is_object($this->Payment) ? true : false);
+				break;
+			
+			case 'hasShipping':
+				return (is_object($this->Shipping) ? true : false);
+				break;
+				
+			case 'requiresShipping':
+				foreach( $this->getProducts() as $objProduct )
+				{
+					if (!$objProduct->shipping_exempt)
+					{
+						return true;
+					}
+				}
+				return false;
+				break;
+				
+			case 'shippingTotal':
+				$this->hasShipping ? (float)$this->Shipping->price : 0.00;
+				break;
+				
+			case 'items':
+				return $this->Database->execute("SELECT SUM(product_quantity) AS items FROM {$this->ctable} i LEFT OUTER JOIN {$this->strTable} c ON i.pid=c.id WHERE i.pid={$this->id}")->items;
+				break;
+					
+			case 'products':
+				return $this->Database->execute("SELECT COUNT(*) AS items FROM {$this->ctable} i LEFT OUTER JOIN {$this->strTable} c ON i.pid=c.id WHERE i.pid={$this->id}")->items;
+				break;
+				
+			case 'subTotal':	
+				$fltTotal = 0;
+				
+				foreach($this->getProducts() as $objProduct)
+				{
+					$fltTotal += ((float)$objProduct->price * (int)$objProduct->quantity_requested);
+				}
+				
+				return $fltTotal;
+				
+			case 'taxTotal':
+				$intTaxTotal = 0;
+				
+				foreach( $this->getSurcharges() as $arrSurcharge )
+				{
+					if ($arrSurcharge['add'])
+						$intTaxTotal += $arrSurcharge['total_price'];
+				}
+				
+				return $intTaxTotal;
+				break;
+				
+			case 'grandTotal':
+				$fltTotal = $this->subTotal;
+				
+				foreach( $this->getSurcharges() as $arrSurcharge )
+				{
+					if ($arrSurcharge['add'] !== false)
+						$fltTotal += $arrSurcharge['total_price'];
+				}
+				
+				return $fltTotal;
 				
 			default:
 				return parent::__get($strKey);
@@ -238,5 +315,11 @@ abstract class IsotopeProductCollection extends Model
 		
 		return $arrIds;
 	}
+	
+	
+	/**
+	 * Must be implemented by child class
+	 */
+	abstract protected function getSurcharges();
 }
 
