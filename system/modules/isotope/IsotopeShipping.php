@@ -54,7 +54,6 @@ abstract class IsotopeShipping extends Frontend
 	 */
 	protected $Isotope;
 	
-	protected $Order;
 	
 	/**
 	 * Initialize the object
@@ -65,7 +64,6 @@ abstract class IsotopeShipping extends Frontend
 	public function __construct($arrRow)
 	{
 		parent::__construct();
-		
 		
 		$this->import('Isotope');
 		
