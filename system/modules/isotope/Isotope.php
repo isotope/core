@@ -573,23 +573,20 @@ class Isotope extends Controller
 			$css .= '</style>' . "\n";
 		}
 		
+		// Add HTML content
 		if (!$objMail->textOnly && strlen($objMail->html))
 		{
-			// Add HTML content
-			if (!$objMail->sendText)
-			{
-				// Get mail template
-				$objTemplate = new FrontendTemplate((strlen($objMail->template) ? $objMail->template : 'mail_default'));
-	
-				$objTemplate->title = $objMail->subject;
-				$objTemplate->body = $objMail->html;
-				$objTemplate->charset = $GLOBALS['TL_CONFIG']['characterSet'];
-				$objTemplate->css = $css;
-	
-				// Parse template
-				$objEmail->html = $this->parseSimpleTokens($this->replaceInsertTags($objTemplate->parse()), $arrData);
-				$objEmail->imageDir = TL_ROOT . '/';
-			}
+			// Get mail template
+			$objTemplate = new FrontendTemplate((strlen($objMail->template) ? $objMail->template : 'mail_default'));
+
+			$objTemplate->title = $objMail->subject;
+			$objTemplate->body = $objMail->html;
+			$objTemplate->charset = $GLOBALS['TL_CONFIG']['characterSet'];
+			$objTemplate->css = $css;
+
+			// Parse template
+			$objEmail->html = $this->parseSimpleTokens($this->replaceInsertTags($objTemplate->parse()), $arrData);
+			$objEmail->imageDir = TL_ROOT . '/';
 		}
 		
 		if (strlen($objMail->cc))
