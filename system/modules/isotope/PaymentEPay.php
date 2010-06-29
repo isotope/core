@@ -75,7 +75,7 @@ class PaymentEPay extends IsotopePayment
 	public function processPayment()
 	{
 		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=? AND status!='cancelled'")->limit(1)->execute($this->Isotope->Cart->id);
-		$intTotal = str_replace('.', '', $this->Isotope->Cart->grandTotal);
+		$intTotal = $this->Isotope->Cart->grandTotal * 100;
 		
 		// Check basic order data
 		if ($this->Input->get('orderid') == $objOrder->id && $this->Input->get('cur') == $this->arrCurrencies[$this->Isotope->Config->currency] && $this->Input->get('amount') == $intTotal)
