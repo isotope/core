@@ -85,9 +85,9 @@ class IsotopeRunonce extends Frontend
 		$this->Database->executeUncached("DELETE FROM tl_iso_attributes WHERE field_name='use_price_override'");
 		$this->Database->executeUncached("DELETE FROM tl_iso_attributes WHERE field_name='weight'");
 		
-		// Because configuration has been changed to objects, we cannot use the existing cart data
-		$this->Database->executeUncached("TRUNCATE TABLE tl_iso_cart_items");
-		$this->Database->executeUncached("TRUNCATE TABLE tl_iso_cart");
+		// Because configuration has been changed, we cannot use the existing cart data
+		$this->Database->executeUncached("DELETE FROM tl_iso_cart_items");
+		$this->Database->executeUncached("DELETE FROM tl_iso_cart");
 	}
 	
 	
