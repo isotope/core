@@ -98,7 +98,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 				}
 				else
 				{
-					$this->Database->prepare("UPDATE tl_iso_cart_items SET quantity_requested=? WHERE id={$objProduct->cart_id}")->executeUncached($arrQuantity[$objProduct->cart_id]);
+					$this->Database->prepare("UPDATE tl_iso_cart_items SET product_quantity=? WHERE id={$objProduct->cart_id}")->executeUncached($arrQuantity[$objProduct->cart_id]);
 				}
 			}
 			
