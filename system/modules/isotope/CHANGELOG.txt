@@ -9,6 +9,7 @@ Version 0.1.3 (2010-??-??)
 - Fixed: sending email as text only did not work
 - Fixed multiple URL problems in address book module
 - Fixed multiple URL and template problems in shopping cart module
+- Fixed bug in runonce.php, must not use TRUNCATE to empty cart table
 
 Version 0.1.2 (2010-06-20)
 ------------------------------
