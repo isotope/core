@@ -35,8 +35,8 @@ var Isotope =
 	 */
 	mediaManager: function(el, command, id)
 	{
-		var table = $(id);
-		var tbody = table.getFirst().getNext();
+		var table = $(id).getFirst('table');
+		var tbody = table.getFirst('tbody');
 		var parent = $(el).getParent('tr');
 		var rows = tbody.getChildren();
 
@@ -67,7 +67,7 @@ var Isotope =
 			{
 				var first = childs[j].getFirst();
 
-				if (first.type == 'hidden' || first.type == 'textarea')
+				if (first.type == 'hidden' || first.type == 'text' || first.type == 'textarea')
 				{
 					first.name = first.name.replace(/\[[0-9]+\]/ig, '[' + i + ']');
 				}
