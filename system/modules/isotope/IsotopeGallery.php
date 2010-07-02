@@ -165,12 +165,19 @@ class IsotopeGallery extends Frontend
 	public function generateMainImage($strType='medium')
 	{
 		if (!count($this->arrFiles))
-			return '<span id="' . $this->name . '_' . $strType . '"> </span>';
+			return '<span id="' . $this->name . '_' . $strType . 'size"> </span>';
 			
 		$arrFile = reset($this->arrFiles);
 		
 		$this->injectAjax();
-		return '<span id="' . $this->name . '_' . $strType . 'size"><div class="image_container"><a href="' . $arrFile['large'] . '" title="' . $arrFile['desc'] . '" rel="lightbox"><img src="' . $arrFile[$strType] . '" alt="' . $arrFile['alt'] . '"' . $arrFile[$strType.'_size'] . ' /></a></div></span>';
+		
+		$objTemplate = new FrontendTemplate('iso_gallery_default');
+			
+		$objTemplate->setData($arrFile);
+		$objTemplate->type = $strType;
+		$objTemplate->href_reader = $this->href_reader;
+		
+		return '<span id="' . $this->name . '_' . $strType . 'size">'.$objTemplate->parse().'</span>';
 	}
 	
 	
@@ -185,7 +192,13 @@ class IsotopeGallery extends Frontend
 		
 		while( $arrFile = next($this->arrFiles) )
 		{
-			$strGallery .= '<div class="image_container"><a href="' . $arrFile['large'] . '" title="' . $arrFile['desc'] . '" rel="lightbox"><img src="' . $arrFile['gallery'] . '" alt="' . $arrFile['alt'] . '"' . $arrFile['gallery_size'] . ' /></a></div>';
+			$objTemplate = new FrontendTemplate('iso_gallery_default');
+			
+			$objTemplate->setData($arrFile);
+			$objTemplate->type = 'gallery';
+			$objTemplate->href_reader = $this->href_reader;
+			
+			$strGallery .= $objTemplate->parse();
 		}
 		
 		$this->injectAjax();
