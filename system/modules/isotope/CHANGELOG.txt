@@ -14,6 +14,9 @@ Version 0.2.0 beta1
 - Added: Limit panel to tl_iso_product_categories (Ticket #132)
 - Added: Jumpto page support when adding product to cart (Ticket #72)
 - Added: Support to use Shipping & Payment surcharge recalculation for order editing in the back end
+- Added: RGXP support for text widgets to be used in variant wizard
+- Added: RGXP logic to the row label callback for tl_iso_products
+- Added: RGXP logic to base class IsotopeProduct to handle variant options other than selects.
 - Fixed: fixed overwriting of authorize payment information used for delayed capture upon non-successful transaction
 - Fixed: reference to a undeclared deprecated method in PaymentAuthorizeDotNet
 - Fixed: reference to the cart in Authorize.net - $this->Cart now referred to as $this->Isotope->Cart
@@ -33,11 +36,9 @@ Version 0.1.3 (2010-??-??)
 - Fixed: InsertTags could output HTML in meta description
 - Fixed: Status labels were not available in order history
 - Fixed: sending email as text only did not work
-- Fixed: multiple URL problems in address book module
-- Fixed: multiple URL and template problems in shopping cart module
-- Added: RGXP support for text widgets to be used in variant wizard
-- Added: RGXP logic to the row label callback for tl_iso_products
-- Added: RGXP logic to base class IsotopeProduct to handle variant options other than selects.
+- Fixed: Javascript sorting of images did not work
+- Fixed multiple URL problems in address book module
+- Fixed multiple URL and template problems in shopping cart module
 - Fixed bug in runonce.php, must not use TRUNCATE to empty cart table
 
 Version 0.1.2 (2010-06-20)
