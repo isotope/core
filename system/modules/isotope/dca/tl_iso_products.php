@@ -622,24 +622,97 @@ class tl_iso_products extends Backend
 			
 			$objProductType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id=".$row['type']);
 			
-			$arrAttributes = deserialize($objProductType->attributes, true);
-		
-			foreach( $arrAttributes as $id => $attribute )
+			$fields = deserialize($objProductType->attributes, true);
+			
+			foreach( $fields as $i )
 			{
-				$arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute];
-				
-				if ($arrData['attributes']['add_to_product_variants'])
+				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$i]['attributes']['add_to_product_variants'])
 				{
-					switch($arrData['eval']['rgxp'])
+					// Format value (based on DC_Table::show(), Contao 2.9.0)
+					$value = deserialize($row[$i]);
+				
+					// Get field value
+					if (strlen($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$i]['foreignKey']))
 					{
-						case 'date':
-						case 'time':
-						case 'datim':
-							$row[$attribute] = $this->parseDate($GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'].'Format'], $row[$attribute]);
-							break;
+						$temp = array();
+						$chunks = explode('.', $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$i]['foreignKey']);
+		
+						foreach ((array) $value as $v)
+						{
+							$objKey = $this->Database->prepare("SELECT " . $chunks[1] . " AS value FROM " . $chunks[0] . " WHERE id=?")
+													 ->limit(1)
+													 ->execute($v);
+		
+							if ($objKey->numRows)
+							{
+								$temp[] = $objKey->value;
+							}
+						}
+		
+						$row[$i] = implode(', ', $temp);
 					}
-					
-					$strBuffer .= '<li><strong>' . $arrData['label'][0] . ':</strong> ' . $row[$attribute] . '</li>';
+		
+					elseif (is_array($value))
+					{
+						foreach ($value as $kk=>$vv)
+						{
+							if (is_array($vv))
+							{
+								$vals = array_values($vv);
+								$value[$kk] = $vals[0].' ('.$vals[1].')';
+							}
+						}
+		
+						$row[$i] = implode(', ', $value);
+					}
+		
+					elseif ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$i]['eval']['rgxp'] == 'date')
+					{
+						$row[$i] = $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $value);
+					}
+		
+					elseif ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$i]['eval']['rgxp'] == 'time')
+					{
+						$row[$i] = $this->parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $value);
+					}
+		
+					elseif ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$i]['eval']['rgxp'] == 'datim' || in_array($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$i]['flag'], array(5, 6, 7, 8, 9, 10)) || $i == 'tstamp')
+					{
+						$row[$i] = $this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $value);
+					}
+		
+					elseif ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$i]['inputType'] == 'checkbox' && !$GLOBALS['TL_DCA']['tl_iso_products']['fields'][$i]['eval']['multiple'])
+					{
+						$row[$i] = strlen($value) ? $GLOBALS['TL_LANG']['MSC']['yes'] : $GLOBALS['TL_LANG']['MSC']['no'];
+					}
+		
+					elseif ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$i]['inputType'] == 'textarea' && ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$i]['eval']['allowHtml'] || $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$i]['eval']['preserveTags']))
+					{
+						$row[$i] = specialchars($value);
+					}
+		
+					elseif (is_array($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$i]['reference']))
+					{
+						$row[$i] = isset($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$i]['reference'][$row[$i]]) ? ((is_array($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$i]['reference'][$row[$i]])) ? $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$i]['reference'][$row[$i]][0] : $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$i]['reference'][$row[$i]]) : $row[$i];
+					}
+		
+					// Label
+					if (count($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$i]['label']))
+					{
+						$label = is_array($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$i]['label']) ? $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$i]['label'][0] : $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$i]['label'];
+					}
+		
+					else
+					{
+						$label = is_array($GLOBALS['TL_LANG']['MSC'][$i]) ? $GLOBALS['TL_LANG']['MSC'][$i][0] : $GLOBALS['TL_LANG']['MSC'][$i];
+					}
+		
+					if (!strlen($label))
+					{
+						$label = $i;
+					}
+
+					$strBuffer .= '<li><strong>' . $label . ':</strong> ' . $row[$i] . '</li>';
 				}
 			}
 			
@@ -923,14 +996,12 @@ class tl_iso_products extends Backend
 		{
 			foreach( $arrAttributes as $attribute )
 			{
-
 				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['add_to_product_variants'])
 				{
 					$GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['eval']['mandatory'] = true;					
 					$GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['eval']['multiple'] = true;
 	
 					$objWidget = new CheckBox($this->prepareForWidget($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute], $attribute));						
-					break;
 
 					if ($this->Input->post('FORM_SUBMIT') == 'tl_product_generate')
 					{
