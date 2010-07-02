@@ -52,6 +52,7 @@ $GLOBALS['TL_LANG']['ERR']['isoLoginRequired'] = 'You must be logged in to check
 $GLOBALS['TL_LANG']['ERR']['mandatoryOption'] = 'Please select an option.';
 $GLOBALS['TL_LANG']['ERR']['noAddressData'] = 'Address data is required to calculate taxes!';
 $GLOBALS['TL_LANG']['ERR']['variantDuplicate'] = 'A variant with this attributes is already available. Please select another combination.';
+$GLOBALS['TL_LANG']['ERR']['breadcrumbEmpty']			= 'The filtered category is empty, all products are now showing.';
 
 //Checkout Errors
 $GLOBALS['TL_LANG']['ERR']['specifyBillingAddress'] = 'A billing address was not fuond.  Please specify a billing address.';

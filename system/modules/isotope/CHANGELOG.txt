@@ -8,6 +8,7 @@ Version 0.1.3 (2010-??-??)
 - Fixed: Status labels were not available in order history
 - Fixed: sending email as text only did not work
 - Fixed: Javascript sorting of images did not work
+- Fixed: No products and no breadcrumb show up if filtered page does not have a product (Ticket #115)
 - Fixed multiple URL problems in address book module
 - Fixed multiple URL and template problems in shopping cart module
 - Fixed bug in runonce.php, must not use TRUNCATE to empty cart table
