@@ -86,8 +86,8 @@ class IsotopeRunonce extends Frontend
 		$this->Database->executeUncached("DELETE FROM tl_iso_attributes WHERE field_name='weight'");
 		
 		// Because configuration has been changed, we cannot use the existing cart data
-		$this->Database->executeUncached("DELETE FROM tl_iso_cart_items");
-		$this->Database->executeUncached("DELETE FROM tl_iso_cart");
+		$this->Database->executeUncached("DELETE FROM tl_cart_items");
+		$this->Database->executeUncached("DELETE FROM tl_cart");
 	}
 	
 	
