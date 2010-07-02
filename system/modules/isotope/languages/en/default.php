@@ -42,16 +42,17 @@ $GLOBALS['TL_LANG']['ERR']['order_conditions'] = 'You must accept the terms & co
 $GLOBALS['TL_LANG']['ERR']['noStoreConfigurationSet'] = 'No store configuration available';
 $GLOBALS['TL_LANG']['ERR']['noDefaultStoreConfiguration'] = 'Please create a default store configuration.';
 
-$GLOBALS['TL_LANG']['ERR']['productNameMissing'] = '<no product name found>';
-$GLOBALS['TL_LANG']['ERR']['noSubProducts'] = 'no sub-products found';
+$GLOBALS['TL_LANG']['ERR']['productNameMissing']		= '<no product name found>';
+$GLOBALS['TL_LANG']['ERR']['noSubProducts']				= 'no sub-products found';
 $GLOBALS['TL_LANG']['ERR']['emptyOrderHistory']			= 'You have not yet placed any orders.';
 $GLOBALS['TL_LANG']['ERR']['orderNotFound']				= 'The requested order was not found.';
 $GLOBALS['TL_LANG']['ERR']['missingCurrencyFormat']		= 'Currency formatting not found';
-$GLOBALS['TL_LANG']['ERR']['searchNotEnabled'] = 'Search functionality is not enabled!';
-$GLOBALS['TL_LANG']['ERR']['isoLoginRequired'] = 'You must be logged in to checkout.';
-$GLOBALS['TL_LANG']['ERR']['mandatoryOption'] = 'Please select an option.';
-$GLOBALS['TL_LANG']['ERR']['noAddressData'] = 'Address data is required to calculate taxes!';
-$GLOBALS['TL_LANG']['ERR']['variantDuplicate'] = 'A variant with this attributes is already available. Please select another combination.';
+$GLOBALS['TL_LANG']['ERR']['searchNotEnabled']			= 'Search functionality is not enabled!';
+$GLOBALS['TL_LANG']['ERR']['isoLoginRequired']			= 'You must be logged in to checkout.';
+$GLOBALS['TL_LANG']['ERR']['mandatoryOption']			= 'Please select an option.';
+$GLOBALS['TL_LANG']['ERR']['noAddressData']				= 'Address data is required to calculate taxes!';
+$GLOBALS['TL_LANG']['ERR']['variantDuplicate']			= 'A variant with this attributes is already available. Please select another combination.';
+$GLOBALS['TL_LANG']['ERR']['breadcrumbEmpty']			= 'The filtered category is empty, all products are now showing.';
 
 //Checkout Errors
 $GLOBALS['TL_LANG']['ERR']['specifyBillingAddress'] = 'A billing address was not fuond.  Please specify a billing address.';

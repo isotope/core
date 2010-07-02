@@ -578,7 +578,11 @@ class tl_iso_products extends Backend
 		}
 		else
 		{
-			$GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'] = array(0);
+			$berror = '
+
+<ul id="tl_breadcrumb">
+  <li>' . $GLOBALS['TL_LANG']['ERR']['breadcrumbEmpty'] . '</li>
+</ul>';
 		}
 
 		// Add root link
@@ -586,11 +590,11 @@ class tl_iso_products extends Backend
 		$arrLinks = array_reverse($arrLinks);
 
 		// Insert breadcrumb menu
-		$GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['breadcrumb'] .= '
+		$GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['breadcrumb'] = '
 
 <ul id="tl_breadcrumb">
   <li>' . implode(' &gt; </li><li>', $arrLinks) . '</li>
-</ul>';
+</ul>'.$berror;
 	}
 	
 	
