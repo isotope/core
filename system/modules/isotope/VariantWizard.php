@@ -95,6 +95,18 @@ class VariantWizard extends Widget
 		
 		foreach( $arrValue as $k => $v )
 		{
+			$arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$k];
+			//convert to timestamp if necessary
+			switch($arrData['eval']['rgxp'])
+			{
+				case 'date':
+				case 'time':
+				case 'datim':
+					$objDate = new Date($v, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
+					$v = $objDate->tstamp;
+					break;
+			}				
+			
 			if (!strlen($v))
 			{
 				$this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['mandatory'], $this->strLabel));
@@ -140,14 +152,36 @@ class VariantWizard extends Widget
 		// Add fields
 		foreach ($this->arrOptions as $option)
 		{
+			$datepicker = '';
+			
 			$arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$option['value']];
-				
-			$objWidget = new SelectMenu($this->prepareForWidget($arrData, $this->strId.'['.$option['value'].']', $objVariant->{$option['value']}));
+			
+			switch($arrData['inputType'])
+			{
+				case 'text':	
+					$objWidget = new TextField($this->prepareForWidget($arrData, $this->strId.'['.$option['value'].']', $objVariant->{$option['value']}));
+					if ($arrData['eval']['datepicker'])
+					{	
+						$objWidget->id = str_replace('[', '_', $objWidget->id);
+						$objWidget->id = str_replace(']', '_', $objWidget->id);		
+										
+						$datepicker = '
+			  <script type="text/javascript">
+			  <!--//--><![CDATA[//><!--
+			  window.addEvent(\'domready\', function() { ' . sprintf($arrData['eval']['datepicker'], 'ctrl_' . $objWidget->id) . ' });
+			  //--><!]]>
+			  </script>';
+					}
+					break;
+				default:
+					$objWidget = new SelectMenu($this->prepareForWidget($arrData, $this->strId.'['.$option['value'].']', $objVariant->{$option['value']}));
+					break;
+			}
 			
 			$return .= '
     <tr>
       <td>' . $objWidget->generateLabel() . '&nbsp;</td>
-      <td>' . $objWidget->generate().'</td>
+      <td>' . $objWidget->generate().$datepicker.'&nbsp;</td>
     </tr>';
 		}
 
