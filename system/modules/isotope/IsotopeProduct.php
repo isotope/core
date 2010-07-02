@@ -647,8 +647,45 @@ class IsotopeProduct extends Controller
 	protected function generateProductOptionWidget($strField, $blnAjax=false)
 	{
 		$arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strField];
+		
+		$arrAttributes = $this->getAttributes();
+		
+		foreach($arrAttributes as $attribute=>$value)
+		{
+			if($this->Input->post($attribute) && $attribute!=$strField)
+			{
+				$strSelectedOptionsClause .= " AND " . $attribute . "='".$this->Input->post($attribute)."'";		
+			}
+		}
+		
+		//Override text set with date pickers to select widgets so they may select an eligible date.
+		if($arrData['inputType']=='text' && $arrData['attributes']['add_to_product_variants'])
+		{
+			$arrData['inputType'] = 'select';
+			
+			//build a list of options from the various selectable values
+			$objOptions = $this->Database->query("SELECT " . $strField . " FROM tl_iso_products WHERE pid=".$this->arrData['id'].$strSelectedOptionsClause);
+			
+			while($objOptions->next())
+			{
+				$varValue = $objOptions->{$strField};
+			
+				if($arrData['eval']['rgxp'])
+				{				
+					$varValue = $this->parseDate($GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'].'Format'], $varValue);	
+	
+				}
+				
+				$arrData['options'][$objOptions->{$strField}] = $varValue;
+		
+			}
+		
+			$blnTextOptions = true;
+			
+		}
+		
 		$strClass = strlen($GLOBALS['ISO_ATTR'][$arrData['inputType']]['class']) ? $GLOBALS['ISO_ATTR'][$arrData['inputType']]['class'] : $GLOBALS['TL_FFL'][$arrData['inputType']];
-									
+											
 		// Continue if the class is not defined
 		if (!$this->classFileExists($strClass))
 		{
@@ -663,14 +700,30 @@ class IsotopeProduct extends Controller
 			$arrData['eval']['includeBlankOption'] = true;
 			$arrSearch = array('pid'=>$this->arrData['id']);
 			
-			foreach( $this->arrOptions as $name => $value )
-			{
-				if ($name != $strField && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$name]['attributes']['add_to_product_variants'] && strlen($value))
+			if($blnTextOptions)
+			{				
+				
+				foreach($arrData['options'] as $name=>$value)
 				{
-					$arrSearch[$name] = $value;
+					if ($name != $strField && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$name]['attributes']['add_to_product_variants'] && strlen($value))
+					{						
+						$arrSearch[$name] = $value;
+					}
+				}
+			
+			}
+			else
+			{			
+				foreach( $this->arrOptions as $name => $value )
+				{
+					if ($name != $strField && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$name]['attributes']['add_to_product_variants'] && strlen($value))
+					{
+						$arrSearch[$name] = $value;
+					}
 				}
 			}
 			
+				
 			$arrOptions = $this->Database->prepare("SELECT " . $strField . " FROM tl_iso_products WHERE language='' AND published='1' AND " . implode("=? AND ", array_keys($arrSearch)) . "=? GROUP BY " . $strField)->execute($arrSearch)->fetchEach($strField);
 			
 			foreach( $arrData['options'] as $k => $v )
@@ -805,6 +858,11 @@ class IsotopeProduct extends Controller
 				}
 				else
 				{
+					if($arrData['eval']['rgxp'])
+					{
+						$varValue = $this->parseDate($GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'].'Format'], $varValue);
+					}
+					
 					$varOptionValues[] = $varValue;
 				}
 				
@@ -859,7 +917,7 @@ class IsotopeProduct extends Controller
 	 * Load data of a product variant if the options match one
 	 */
 	protected function validateVariant()
-	{
+	{		
 		if (!$this->arrType['variants'])
 			return;
 		
@@ -889,7 +947,7 @@ class IsotopeProduct extends Controller
 				{
 					if (in_array($attribute, $arrInherit))
 						continue;
-											
+										
 					switch($attribute)
 					{
 						case 'price':

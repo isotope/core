@@ -62,7 +62,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_relatedproducts']		= '{title_le
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_list_layout'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_list_layout'],
-	'default'                 => 'iso_list_productlist',
+	'default'                 => 'iso_list_default',
 	'exclude'                 => true,
 	'inputType'               => 'select',
 	'options'                 => $this->getTemplateGroup('iso_list_'),

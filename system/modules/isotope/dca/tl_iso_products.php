@@ -630,6 +630,15 @@ class tl_iso_products extends Backend
 				
 				if ($arrData['attributes']['add_to_product_variants'])
 				{
+					switch($arrData['eval']['rgxp'])
+					{
+						case 'date':
+						case 'time':
+						case 'datim':
+							$row[$attribute] = $this->parseDate($GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'].'Format'], $row[$attribute]);
+							break;
+					}
+					
 					$strBuffer .= '<li><strong>' . $arrData['label'][0] . ':</strong> ' . $row[$attribute] . '</li>';
 				}
 			}
@@ -914,13 +923,15 @@ class tl_iso_products extends Backend
 		{
 			foreach( $arrAttributes as $attribute )
 			{
+
 				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['add_to_product_variants'])
 				{
+					$GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['eval']['mandatory'] = true;					
 					$GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['eval']['multiple'] = true;
-					$GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['eval']['mandatory'] = true;
-					
-					$objWidget = new CheckBox($this->prepareForWidget($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute], $attribute));
-					
+	
+					$objWidget = new CheckBox($this->prepareForWidget($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute], $attribute));						
+					break;
+
 					if ($this->Input->post('FORM_SUBMIT') == 'tl_product_generate')
 					{
 						$objWidget->validate();
