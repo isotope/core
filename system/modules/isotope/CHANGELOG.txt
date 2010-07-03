@@ -27,6 +27,8 @@ Version 0.2.0 beta1
 - Fixed: Disabled deprecated product storage in checkout module - now copies only product options to order items table.
 - Fixed: Changed all price fields to use decimal(12,2) (payment gateways require 2 digit precision)
 - Fixed: Table naming is not consistent, renamed tl_cart,tl_cart_items to tl_iso_cart,tl_iso_cart_items (Ticket #117)
+- Fixed: Paypal expiration dates now separate select widgets to ensure proper date format (Ticket #162)
+- Fixed: Authorize.net expiration dates now separate select widgets to ensure proper date format
 - Removed: Paypal Website Payments Pro option - use Paypal Payflow Pro or Paypal Standard
 - Removed generatePrice() function, stpl_price and stpl_total_price templates. Now using formatPriceWithCurrency
 - Removed taxTotalWithShipping simple token
