@@ -54,6 +54,8 @@ $GLOBALS['TL_LANG']['ERR']['noAddressData']				= 'Address data is required to ca
 $GLOBALS['TL_LANG']['ERR']['variantDuplicate']			= 'A variant with this attributes is already available. Please select another combination.';
 $GLOBALS['TL_LANG']['ERR']['breadcrumbEmpty']			= 'The filtered category is empty, all products are now showing.';
 
+$GLOBALS['TL_LANG']['ERR']['discountFactors'] = 'Please enter whole numbers or decimals signed with -, and optionally with a percentage.';
+$GLOBALS['TL_LANG']['ERR']['generalFactors'] = 'Please enter whole numbers or decimals, optionally signed with + or -, and optionally with a percentage.';
 //Checkout Errors
 $GLOBALS['TL_LANG']['ERR']['specifyBillingAddress'] = 'A billing address was not fuond.  Please specify a billing address.';
 $GLOBALS['TL_LANG']['ERR']['cc_num']				= 'Please provide a valid credit card number.';
@@ -223,9 +225,10 @@ $GLOBALS['TL_LANG']['ISO']['order_review']					= 'Order Review';
 $GLOBALS['TL_LANG']['ISO']['changeCheckoutInfo']			= 'Change';
 $GLOBALS['TL_LANG']['ISO']['cc_num']						= 'Credit card number';
 $GLOBALS['TL_LANG']['ISO']['cc_type']						= 'Credit card type';
-$GLOBALS['TL_LANG']['ISO']['cc_exp']						= 'Credit card expiration (mm/yy)';
 $GLOBALS['TL_LANG']['ISO']['cc_ccv']						= 'CCV number (3 or 4 digit code)';
 $GLOBALS['TL_LANG']['ISO']['cc_exp_paypal']					= 'Credit card expiration (mm/yyyy)';
+$GLOBALS['TL_LANG']['ISO']['cc_exp_month']					= 'Expiration month';
+$GLOBALS['TL_LANG']['ISO']['cc_exp_year']					= 'Expiration year';
 $GLOBALS['TL_LANG']['ISO']['cc_issue_number']				= 'Credit card issue number, 2 digits (required for Maestro and Solo cards).';
 $GLOBALS['TL_LANG']['ISO']['cc_start_date']					= 'Credit card start date (required for Maestro and Solo cards).';
 $GLOBALS['TL_LANG']['ISO']['pay_with_paypal']				= array('Pay with PayPal', 'You will be redirected to the PayPal payment website. If you are not automatically redirected, please click on the "Pay now" button.', 'Pay now');
@@ -234,7 +237,6 @@ $GLOBALS['TL_LANG']['ISO']['backendPaymentNotFound']		= 'Payment module not foun
 $GLOBALS['TL_LANG']['ISO']['backendShippingNotFound']		= 'Shipping module not found!';
 $GLOBALS['TL_LANG']['ISO']['backendPaymentNoInfo']			= 'This payment module does not provide additional information.';
 $GLOBALS['TL_LANG']['ISO']['backendShippingNoInfo']			= 'This shipping module does not provide additional information.';
-
 
 /**
  * Shipping modules

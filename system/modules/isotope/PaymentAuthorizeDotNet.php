@@ -76,7 +76,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 			"x_method"							=> "CC",
 			"x_tran_key"						=> $this->authorize_trans_key,
 			"x_card_num"						=> $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_num'],
-			"x_exp_date"						=> $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_exp'],
+			"x_exp_date"						=> ($_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_exp_month'].$_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_exp_year']),
 			"x_description"						=> "Order Number " . $objOrder->order_id,
 			"x_amount"							=> $this->Isotope->Cart->grandTotal,
 			"x_first_name"						=> $this->Isotope->Cart->billingAddress['firstname'],
@@ -156,15 +156,21 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 		$arrPayment = $this->Input->post('payment');
 		$arrCCTypes = deserialize($this->allowed_cc_types);
 		
+		$intStartYear = (integer)date('y', time()); //2-digit year
+		
+		for($i=0;$i<=7;$i++)
+			$arrYears[] = (string)$intStartYear+1;
+
+		
 		$arrFields = array
 		(
-			'cc_num' => array
+			'cc_num' 			=> array
 			(
 				'label'			=> &$GLOBALS['TL_LANG']['ISO']['cc_num'],
 				'inputType'		=> 'text',
 				'eval'			=> array('mandatory'=>true, 'rgxp'=>'digit', 'tableless'=>true),
 			),
-			'cc_type' => array
+			'cc_type' 			=> array
 			(
 				'label'			=> &$GLOBALS['TL_LANG']['ISO']['cc_type'],
 				'inputType'		=> 'select',
@@ -172,11 +178,19 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 				'eval'			=> array('mandatory'=>true, 'rgxp'=>'digit', 'tableless'=>true),
 				'reference'		=> &$GLOBALS['TL_LANG']['CCT'],
 			),
-			'cc_exp' => array
+			'cc_exp_month' => array
 			(
-				'label'			=> &$GLOBALS['TL_LANG']['ISO']['cc_exp'],
-				'inputType'		=> 'text',
-				'eval'			=> array('mandatory'=>true, 'tableless'=>true),
+				'label'			=> &$GLOBALS['TL_LANG']['ISO']['cc_exp_month'],
+				'inputType'		=> 'select',
+				'options'		=> array('01','02','03','04','05','06','07','08','09','10','11','12'),
+				'eval'			=> array('mandatory'=>true, 'tableless'=>true, 'includeBlankOption'=>true)
+			),
+			'cc_exp_year'  => array
+			(
+				'label'			=> &$GLOBALS['TL_LANG']['ISO']['cc_exp_year'],
+				'inputType'		=> 'select',
+				'options'		=> $arrYears,
+				'eval'			=> array('mandatory'=>true, 'tableless'=>true, 'includeBlankOption'=>true)
 			),
 			'cc_ccv' => array
 			(

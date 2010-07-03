@@ -76,11 +76,6 @@ class PaymentPaypalPayflowPro extends IsotopePayment
 			case 'maestro':
 				$strCardType = 'Maestro';
 		}
-		
-		
-		$arrExpDate = explode('/', $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_exp']);
-		
-		$strExpDate = $arrExpDate[0] . substr($arrExpDate[1], 2, 2);
 	
 		$arrData = array
 		(			
@@ -91,7 +86,7 @@ class PaymentPaypalPayflowPro extends IsotopePayment
 			'TENDER'				=> 'C', //Can also be a paypal account.  need to build this in.
 			'TRXTYPE'				=> 'S', //$this->payflowpro_transType, //  S = Sale transaction, A = Authorisation, C = Credit, D = Delayed Capture, V = Void  
 			'ACCT'					=> $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_num'],
-			'EXPDATE'				=> $strExpDate,
+			'EXPDATE'				=> ($_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_exp_month'].$_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_exp_year']),
 			'NAME'					=> $strCardType,
 			'AMT'					=> round($this->Isotope->Cart->grandTotal, 2),
 			'CURRENCY'				=> $this->Isotope->Config->currency,
@@ -103,6 +98,7 @@ class PaymentPaypalPayflowPro extends IsotopePayment
 			'STATE'					=> $arrBillingSubdivision[1],
 			'ZIP'					=> $this->Isotope->Cart->billingAddress['postal'],
 			'COUNTRY'				=> strtoupper($this->Isotope->Cart->billingAddress['country']),
+			'NOTIFYURL'				=> ($this->Environment->base . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id)
 		);
 		
 		if($this->requireCCV)
@@ -128,7 +124,7 @@ class PaymentPaypalPayflowPro extends IsotopePayment
 		
 		foreach($arrData as $k=>$v)
 		{
-			$arrNVP[] .= $k . '=' . $v;
+			$arrNVP[] .= $k . '['. strlen($v) . ']=' . $v;
 		}
 					 
 		$tempstr = $_SESSION['CHECKOUT_DATA']['payment'][$this->id]['cc_num'] . $this->Isotope->Cart->grandTotal . date('YmdGis') . "1";
@@ -178,6 +174,7 @@ class PaymentPaypalPayflowPro extends IsotopePayment
 			
 	}
 	
+	
 	public function urlEncodeVars($v)
 	{
 		return urlencode($v);
@@ -196,6 +193,11 @@ class PaymentPaypalPayflowPro extends IsotopePayment
 		$arrPayment = $this->Input->post('payment');
 		$arrCCTypes = deserialize($this->allowed_cc_types);
 		
+		$intStartYear = (integer)date('Y', time());	//Requires 4-digit year
+		
+		for($i=0;$i<=9;$i++)
+			$arrYears[] = (string)$intStartYear+i;
+		
 		$arrFields = array
 		(
 			'cc_num' => array
@@ -212,11 +214,19 @@ class PaymentPaypalPayflowPro extends IsotopePayment
 				'eval'			=> array('mandatory'=>true, 'rgxp'=>'digit', 'tableless'=>true),
 				'reference'		=> &$GLOBALS['TL_LANG']['CCT'],
 			),
-			'cc_exp' => array
+			'cc_exp_month' => array
 			(
-				'label'			=> &$GLOBALS['TL_LANG']['ISO']['cc_exp_paypal'],
-				'inputType'		=> 'text',
-				'eval'			=> array('mandatory'=>true, 'tableless'=>true),
+				'label'			=> &$GLOBALS['TL_LANG']['ISO']['cc_exp_month'],
+				'inputType'		=> 'select',
+				'options'		=> array('01','02','03','04','05','06','07','08','09','10','11','12'),
+				'eval'			=> array('mandatory'=>true, 'tableless'=>true, 'includeBlankOption'=>true)
+			),
+			'cc_exp_year'  => array
+			(
+				'label'			=> &$GLOBALS['TL_LANG']['ISO']['cc_exp_year'],
+				'inputType'		=> 'select',
+				'options'		=> $arrYears,
+				'eval'			=> array('mandatory'=>true, 'tableless'=>true, 'includeBlankOption'=>true)
 			),
 			'cc_ccv' => array
 			(
