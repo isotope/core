@@ -54,7 +54,7 @@ class PaymentPaypal extends IsotopePayment
 	 */
 	public function processPayment()
 	{
-		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=? AND status!='cancelled'")->limit(1)->execute($this->Isotope->Cart->id);
+		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->execute($this->Isotope->Cart->id);
 		
 		$arrData = deserialize($objOrder->payment_data, true);
 		
