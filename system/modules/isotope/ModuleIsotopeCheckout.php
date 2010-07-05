@@ -873,7 +873,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		);
 				
 		
-		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=? AND status!='cancelled'")->limit(1)->execute($this->Isotope->Cart->id);
+		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->execute($this->Isotope->Cart->id);
 	
 		if (!$objOrder->numRows)
 		{

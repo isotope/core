@@ -44,7 +44,7 @@ class PaymentPaypalPayflowPro extends IsotopePayment
 	{
 		$this->import('Isotope');
 		
-		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=? AND status!='cancelled'")->limit(1)->execute($this->Isotope->Cart->id);
+		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->execute($this->Isotope->Cart->id);
 		
 		$arrPaymentData = deserialize($objOrder->payment_data);
 		

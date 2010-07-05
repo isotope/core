@@ -94,7 +94,7 @@ class PaymentPostfinance extends IsotopePayment
 			case 6:
 			case 7:
 				$arrSet['payment_data']['status'] = 'cancelled';
-				$arrSet['status'] = 'cancelled';
+				$arrSet['status'] = 'on_hold';
 				break;
 				
 			case 2:			// acquirer declines the authorization more than the maximum permissible number of times
