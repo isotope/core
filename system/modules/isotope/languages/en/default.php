@@ -55,13 +55,14 @@ $GLOBALS['TL_LANG']['ERR']['variantDuplicate'] = 'A variant with this attributes
 $GLOBALS['TL_LANG']['ERR']['breadcrumbEmpty']			= 'The filtered category is empty, all products are now showing.';
 
 //Checkout Errors
-$GLOBALS['TL_LANG']['ERR']['specifyBillingAddress'] = 'A billing address was not fuond.  Please specify a billing address.';
-$GLOBALS['TL_LANG']['ERR']['cc_num']				= 'Please provide a valid credit card number.';
-$GLOBALS['TL_LANG']['ERR']['cc_type']				= 'Please select a credit card type.';
-$GLOBALS['TL_LANG']['ERR']['cc_exp']				= 'Please provide a credit card expiration date in the mm/yy format.';
-$GLOBALS['TL_LANG']['ERR']['cc_ccv']				= 'Please provide a card code verification number (3 or 4 digits found on the front or back of the card).';
-$GLOBALS['TL_LANG']['ERR']['cc_match']				= 'Your credit card number does not match the selected credit card type.';
-$GLOBALS['TL_LANG']['ERR']['cc_exp_paypal']			= 'Please provide a credit card expiration date in the mm/yyyy format.';
+$GLOBALS['TL_LANG']['ERR']['orderFailed']				= 'Checkout failed. Please try again or choose another payment method.';
+$GLOBALS['TL_LANG']['ERR']['specifyBillingAddress'] 	= 'A billing address was not fuond.  Please specify a billing address.';
+$GLOBALS['TL_LANG']['ERR']['cc_num']					= 'Please provide a valid credit card number.';
+$GLOBALS['TL_LANG']['ERR']['cc_type']					= 'Please select a credit card type.';
+$GLOBALS['TL_LANG']['ERR']['cc_exp']					= 'Please provide a credit card expiration date in the mm/yy format.';
+$GLOBALS['TL_LANG']['ERR']['cc_ccv']					= 'Please provide a card code verification number (3 or 4 digits found on the front or back of the card).';
+$GLOBALS['TL_LANG']['ERR']['cc_match']					= 'Your credit card number does not match the selected credit card type.';
+$GLOBALS['TL_LANG']['ERR']['cc_exp_paypal']				= 'Please provide a credit card expiration date in the mm/yyyy format.';
 
 //Address Book Errors
 $GLOBALS['TL_LANG']['ERR']['addressDoesNotExist'] = 'This address does not exist in your address book.';
@@ -87,7 +88,7 @@ $GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline']		= 'Order no %s / %s';
 $GLOBALS['TL_LANG']['MSC']['downloadsLabel']			= 'Your downloadable products';
 $GLOBALS['TL_LANG']['MSC']['paypal_processing'] = 'Your PayPal payment is being processed. Please be patient...';
 $GLOBALS['TL_LANG']['MSC']['paypal_processing_failed'] = 'Your PayPal payment could not be processed.';
-$GLOBALS['TL_LANG']['MSC']['authorizedotnet_process_failed'] = 'Your payment count not be processed.<br /><br />Reason: %s';
+$GLOBALS['TL_LANG']['MSC']['authorizedotnet_process_failed'] = 'Your payment could not be processed.<br /><br />Reason: %s';
 $GLOBALS['TL_LANG']['MSC']['detailLabel'] = 'View Details';
 $GLOBALS['TL_LANG']['MSC']['mmNoImagesUploaded'] = 'No images uploaded.';
 $GLOBALS['TL_LANG']['MSC']['mmUploadImage'] = 'Upload additional image';
