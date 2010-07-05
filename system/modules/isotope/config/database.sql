@@ -311,7 +311,6 @@ CREATE TABLE `tl_iso_cart` (
   `pid` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
   `session` blob NULL,
-  `last_visit` int(10) unsigned NOT NULL default '0',
   `config_id` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
