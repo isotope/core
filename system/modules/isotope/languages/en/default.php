@@ -54,9 +54,11 @@ $GLOBALS['TL_LANG']['ERR']['noAddressData']				= 'Address data is required to ca
 $GLOBALS['TL_LANG']['ERR']['variantDuplicate']			= 'A variant with this attributes is already available. Please select another combination.';
 $GLOBALS['TL_LANG']['ERR']['breadcrumbEmpty']			= 'The filtered category is empty, all products are now showing.';
 
-$GLOBALS['TL_LANG']['ERR']['discountFactors'] = 'Please enter whole numbers or decimals signed with -, and optionally with a percentage.';
-$GLOBALS['TL_LANG']['ERR']['generalFactors'] = 'Please enter whole numbers or decimals, optionally signed with + or -, and optionally with a percentage.';
+$GLOBALS['TL_LANG']['ERR']['discountFactors']			= 'Please enter whole numbers or decimals signed with -, and optionally with a percentage.';
+$GLOBALS['TL_LANG']['ERR']['generalFactors']			= 'Please enter whole numbers or decimals, optionally signed with + or -, and optionally with a percentage.';
+
 //Checkout Errors
+$GLOBALS['TL_LANG']['ERR']['orderFailed']			= 'Checkout failed. Please try again or choose another payment method.';
 $GLOBALS['TL_LANG']['ERR']['specifyBillingAddress'] = 'A billing address was not fuond.  Please specify a billing address.';
 $GLOBALS['TL_LANG']['ERR']['cc_num']				= 'Please provide a valid credit card number.';
 $GLOBALS['TL_LANG']['ERR']['cc_type']				= 'Please select a credit card type.';
@@ -85,7 +87,7 @@ $GLOBALS['TL_LANG']['MSC']['ajaxLoadingMessage'] = 'Loading...';
 $GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline']		= 'Order no %s / %s';
 $GLOBALS['TL_LANG']['MSC']['payment_processing'] = 'Your payment is being processed. Please be patient...';
 $GLOBALS['TL_LANG']['MSC']['payment_processing_failed'] = 'Your payment could not be processed.';
-$GLOBALS['TL_LANG']['MSC']['authorizedotnet_process_failed'] = 'Your payment count not be processed.<br /><br />Reason: %s';
+$GLOBALS['TL_LANG']['MSC']['authorizedotnet_process_failed'] = 'Your payment could not be processed.<br /><br />Reason: %s';
 $GLOBALS['TL_LANG']['MSC']['mmNoImagesUploaded'] = 'No images uploaded.';
 $GLOBALS['TL_LANG']['MSC']['mmUploadImage'] = 'Upload additional image';
 $GLOBALS['TL_LANG']['MSC']['quantity'] = 'Quantity';
