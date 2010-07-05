@@ -87,12 +87,9 @@ class PaymentEPay extends IsotopePayment
 			}
 		}
 		
+		global $objPage;
 		$this->log('Invalid payment data received.', 'PaymentEPay processPayment()', TL_ERROR);
-		
-		$objTemplate = new FrontendTemplate('mod_message');
-		$objTemplate->type = 'error';
-		$objTemplate->message = $GLOBALS['TL_LANG']['MSC']['payment_processing_failed'];
-		return $objTemplate->parse();
+		$this->redirect($this->generateFrontendUrl($objPage->row(), '/step/failed'));
 	}
 	
 	

@@ -86,7 +86,6 @@ $GLOBALS['TL_LANG']['MSC']['noSurcharges']			= 'No surcharges have been found.';
 $GLOBALS['TL_LANG']['MSC']['ajaxLoadingMessage'] = 'Loading...';
 $GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline']		= 'Order no %s / %s';
 $GLOBALS['TL_LANG']['MSC']['payment_processing'] = 'Your payment is being processed. Please be patient...';
-$GLOBALS['TL_LANG']['MSC']['payment_processing_failed'] = 'Your payment could not be processed.';
 $GLOBALS['TL_LANG']['MSC']['authorizedotnet_process_failed'] = 'Your payment could not be processed.<br /><br />Reason: %s';
 $GLOBALS['TL_LANG']['MSC']['mmNoImagesUploaded'] = 'No images uploaded.';
 $GLOBALS['TL_LANG']['MSC']['mmUploadImage'] = 'Upload additional image';
