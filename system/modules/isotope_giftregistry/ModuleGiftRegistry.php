@@ -622,10 +622,7 @@ class ModuleGiftRegistry extends ModuleIsotope
 		(
 			'pid'						=> (FE_USER_LOGGED_IN ? $strUserId : '0'),
 			'tstamp'					=> $time,
-			'cart_type_id'				=> 2,	//needs to vary later for other cart types!
 			'session'					=> (!FE_USER_LOGGED_IN ? $strUserId : ''),
-			'last_visit'				=> $time,
-			//'source_cart_id'			=> $intSourceCartId,
 			'config_id'					=> $this->iso_config_id,	
 		);
 		
