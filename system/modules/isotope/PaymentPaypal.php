@@ -75,10 +75,9 @@ class PaymentPaypal extends IsotopePayment
 		
 		if ($_SESSION['PAYPAL_TIMEOUT'] === 0)
 		{
-			$objTemplate = new FrontendTemplate('mod_message');
-			$objTemplate->type = 'error';
-			$objTemplate->message = $GLOBALS['TL_LANG']['MSC']['payment_processing_failed'];
-			return $objTemplate->parse();
+			global $objPage;
+			$this->log('Payment could not be processed.', 'PaymentPaypal processPayment()', TL_ERROR);
+			$this->redirect($this->generateFrontendUrl($objPage->row(), '/step/failed'));
 		}
 		
 		// Reload page every 5 seconds and check if payment was successful
