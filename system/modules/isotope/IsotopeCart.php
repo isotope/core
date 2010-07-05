@@ -227,7 +227,6 @@ class IsotopeCart extends IsotopeProductCollection
 				'pid'			=> ($this->User->id ? $this->User->id : 0),
 				'session'		=> $this->strHash,
 				'tstamp'		=> time(),
-				'last_visit'	=> time(),
 			));
 			
 			if (!$this->findBy('id', $this->save(true)))
