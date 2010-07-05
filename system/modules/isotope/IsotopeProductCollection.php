@@ -105,7 +105,7 @@ abstract class IsotopeProductCollection extends Model
 				break;
 				
 			case 'shippingTotal':
-				$this->hasShipping ? (float)$this->Shipping->price : 0.00;
+				return $this->hasShipping ? (float)$this->Shipping->price : 0.00;
 				break;
 				
 			case 'items':
