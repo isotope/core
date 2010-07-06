@@ -113,7 +113,7 @@ class Isotope extends Controller
 			{
 				$_SESSION['TL_ERROR'] = array($GLOBALS['TL_LANG']['ERR']['noDefaultStoreConfiguration']);
 				
-				if ($this->Input->get('do') != 'iso_setup')
+				if ($this->Input->get('do') == 'iso_products')
 					$this->redirect('typolight/main.php?do=iso_setup&table=tl_iso_config&act=create');
 			}
 			else
@@ -470,7 +470,7 @@ class Isotope extends Controller
 			
 		if (!is_array($arrFields))
 		{
-			$arrFields = $this->Config->billing_fields;
+			$arrFields = deserialize($this->Config->billing_fields, true);
 		}
 		
 		// We need a country to format the address, user default country if none is available
