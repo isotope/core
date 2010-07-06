@@ -321,63 +321,6 @@ var Isotope =
 		}
 	},
 	
-	productWizard: function(name)
-	{
-		$$(('#ctrl_'+name+' .jserror')).setStyle('display', 'none');
-		$$(('#ctrl_'+name+' .search')).setStyle('display', 'table-row');
-		
-		$$(('#ctrl_'+name+' tbody tr')).each( function(row)
-		{
-			var check = row.getElement('input[type=checkbox]');
-			if (check)
-			{
-				check.addEvent('change', function(event)
-				{
-					event.target.getParent('tr').destroy();
-					$(('ctrl_'+name)).send();
-				});
-			}
-		});
-		
-		$(('ctrl_'+name)).set('send',
-		{
-			url: ('ajax.php?action=ffl&id='+name),
-			link: 'cancel',
-			onRequest: function() {
-				$$(('#ctrl_'+name+' .search input.tl_text')).setStyle('background-image', 'url(system/modules/isotope/html/loading.gif)');
-			},
-			onSuccess: function(responseText, responseXML)
-			{
-				$$(('#ctrl_'+name+' .search input.tl_text')).setStyle('background-image', 'none');
-				$$(('#ctrl_'+name+' tr.found')).each( function(el)
-				{
-					el.destroy();
-				});
-			
-				var rows = Elements.from(responseText, false);
-				$$(('#ctrl_'+name+' tbody')).adopt(rows);
-				rows.each( function(row)
-				{
-					row.getElement('input[type=checkbox]').addEvent('change', function(event)
-					{
-						if (event.target.checked)
-						{
-							event.target.getParent('tr').removeClass('found').inject($$(('#ctrl_'+name+' tr.search'))[0], 'before');
-						}
-						else
-						{
-							event.target.getParent('tr').destroy();
-							$(('ctrl_'+name)).send();
-						}
-					});
-				});
-			}
-		}).addEvent('keyup', function(event)
-		{
-			$(('ctrl_'+name)).send();
-		});
-	},
-	
 	initializeToolsMenu: function()
 	{
 		if ($$('#tl_buttons .isotope-tools').length < 1)
