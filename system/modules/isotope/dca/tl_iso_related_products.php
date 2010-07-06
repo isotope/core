@@ -118,8 +118,17 @@ $GLOBALS['TL_DCA']['tl_iso_related_products'] = array
 		(
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_related_products']['products'],
 			'exclude'					=> true,
-			'inputType'					=> 'productsWizard',
-			'eval'						=> array('mandatory'=>true, 'tl_class'=>'clr'),
+			'inputType'					=> 'tableLookup',
+			'eval' => array
+			(
+				'mandatory'				=> true,
+				'tl_class'				=> 'clr',
+				'foreignTable'			=> 'tl_iso_products',
+				'listFields'			=> array('type'=>'(SELECT name FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id)', 'name', 'sku'),
+				'searchFields'			=> array('name', 'alias', 'sku', 'description'),
+				'sqlWhere'				=> 'pid=0',
+				'searchLabel'			=> 'Search products',
+			),
 		),
 	)
 );
@@ -180,7 +189,7 @@ class tl_iso_related_products extends Backend
 		{
 			unset($GLOBALS['TL_DCA']['tl_iso_related_products']['fields']['category']['foreignKey']);
 			$GLOBALS['TL_DCA']['tl_iso_related_products']['fields']['category']['options'] = $arrCategories;
-			$GLOBALS['TL_DCA']['tl_iso_related_products']['fields']['products']['eval']['products'] = $this->Database->prepare("SELECT id FROM tl_iso_products WHERE pid=0 AND id!=(SELECT pid FROM tl_iso_related_products WHERE id=?)")->execute($dc->id)->fetchEach('id');
+			$GLOBALS['TL_DCA']['tl_iso_related_products']['fields']['products']['eval']['allowedIds'] = $this->Database->prepare("SELECT id FROM tl_iso_products WHERE pid=0 AND id!=(SELECT pid FROM tl_iso_related_products WHERE id=?)")->execute($dc->id)->fetchEach('id');
 		}
 	}
 }

@@ -1,0 +1,6 @@
+.tl_tablelookupwizard{width:100%}
+.tl_tablelookupwizard th{text-align:left;padding:5px}
+.tl_tablelookupwizard td{padding:5px}
+.tl_tablelookupwizard .col_first{width:20px}
+.tl_tablelookupwizard .jserror td{border:2px solid red;background-color:#FAEEEE}
+.tl_tablelookupwizard .search input.tl_text{background-position:318px 2px;background-repeat:no-repeat;padding-right:20px}
