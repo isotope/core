@@ -1057,7 +1057,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		
 		
 		$strBuffer .= '<div id="' . $field . '_new" class="address_new"' . (((!FE_USER_LOGGED_IN && $field == 'billing_address') || $objWidget->value == 0) ? '>' : ' style="display:none">');
-		$strBuffer .= '<span>' . $this->getCurrentStepWidgets('tl_iso_addresses', $field) . '</span>';
+		$strBuffer .= '<span>' . $this->generateAddressWidgets($field) . '</span>';
 		$strBuffer .= '</div>';
 		
 		return $strBuffer;
@@ -1069,18 +1069,19 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	 * strResourceTable is used either to load a DCA or else to gather settings related to a given DCA.
 	 */
 	//!@todo <table...> was in a template, but I don't get why we need to define the table here?
-	protected function getCurrentStepWidgets($strResourceTable, $strAddressField)
+	protected function generateAddressWidgets($strAddressType)
 	{
 		$strBuffer = '';
 		
-		$this->loadLanguageFile($strResourceTable);
-		$this->loadDataContainer($strResourceTable);
+		$this->loadLanguageFile('tl_iso_addresses');
+		$this->loadDataContainer('tl_iso_addresses');
 		
-		$arrFields = ($strAddressField == 'billing_address' ? $this->Isotope->Config->billing_fields : $this->Isotope->Config->shipping_fields);
+		$arrFields = ($strAddressType == 'billing_address' ? $this->Isotope->Config->billing_fields : $this->Isotope->Config->shipping_fields);
+		$arrDefault = $this->Isotope->Cart->$strAddressType;
 		
 		foreach( $arrFields as $field )
 		{
-			$arrData = $GLOBALS['TL_DCA'][$strResourceTable]['fields'][$field];
+			$arrData = $GLOBALS['TL_DCA']['tl_iso_addresses']['fields'][$field];
 			
 			if (!is_array($arrData))
 				continue;
@@ -1094,22 +1095,24 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			// Special field "country"
 			if ($field == 'country')
 			{
-				$arrCountries = ($strAddressField == 'billing_address' ? $this->Isotope->Config->billing_countries : $this->Isotope->Config->shipping_countries);
+				$arrCountries = ($strAddressType == 'billing_address' ? $this->Isotope->Config->billing_countries : $this->Isotope->Config->shipping_countries);
 				$arrData['options'] = array_intersect_key($arrData['options'], array_flip($arrCountries));
 				$arrData['default'] = $this->Isotope->Config->country;
 			}
+			
+			// Special field type "conditionalselect"
 			if (strlen($arrData['eval']['conditionField']))
 			{
-				$arrData['eval']['conditionField'] = $strAddressField . '_' . $arrData['eval']['conditionField'];
+				$arrData['eval']['conditionField'] = $strAddressType . '_' . $arrData['eval']['conditionField'];
 			}
 			
-			$objWidget = new $strClass($this->prepareForWidget($arrData, $strAddressField . '_' . $field, (strlen($_SESSION['CHECKOUT_DATA'][$strAddressField][$field]) ? $_SESSION['CHECKOUT_DATA'][$strAddressField][$field] : (strlen($this->User->$field) ? $this->User->$field : $arrData['default']))));
+			$objWidget = new $strClass($this->prepareForWidget($arrData, $strAddressType . '_' . $field, (strlen($_SESSION['CHECKOUT_DATA'][$strAddressType][$field]) ? $_SESSION['CHECKOUT_DATA'][$strAddressType][$field] : $arrDefault[$field])));
 			
 			$objWidget->storeValues = true;
 			$objWidget->rowClass = 'row_'.$i . (($i == 0) ? ' row_first' : '') . ((($i % 2) == 0) ? ' even' : ' odd');
 			
 			// Validate input
-			if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && ($this->Input->post($strAddressField) === '0' || !$this->Input->post($strAddressField)))
+			if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && ($this->Input->post($strAddressType) === '0' || !$this->Input->post($strAddressType)))
 			{
 				$objWidget->validate();
 				
@@ -1141,12 +1144,12 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && !$this->doNotSubmit && is_array($arrAddress) && count($arrAddress))
 		{
 			$arrAddress['id'] = 0;
-			$_SESSION['CHECKOUT_DATA'][$strAddressField] = $arrAddress;		
+			$_SESSION['CHECKOUT_DATA'][$strAddressType] = $arrAddress;		
 		}
 
-		if (is_array($_SESSION['CHECKOUT_DATA'][$strAddressField]) && $_SESSION['CHECKOUT_DATA'][$strAddressField]['id'] === 0)
+		if (is_array($_SESSION['CHECKOUT_DATA'][$strAddressType]) && $_SESSION['CHECKOUT_DATA'][$strAddressType]['id'] === 0)
 		{
-			$this->Isotope->Cart->$strAddressField = $_SESSION['CHECKOUT_DATA'][$strAddressField];
+			$this->Isotope->Cart->$strAddressType = $_SESSION['CHECKOUT_DATA'][$strAddressType];
 		}
 		
 		return '<table cellspacing="0" cellpadding="0" summary="Form fields">
