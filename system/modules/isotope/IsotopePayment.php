@@ -114,7 +114,7 @@ abstract class IsotopePayment extends Frontend
 					return false;
 					
 				$arrShippings = deserialize($this->shipping_modules);
-				if (is_array($arrShippings) && count($arrShippings) && ((!$this->Isotope->Cart->hasShipping && !in_array(0, $arrShippings)) || ($this->Isotope->Cart->hasShipping && !in_array($this->Isotope->Cart->Shipping->id, $arrShippings))))
+				if (is_array($arrShippings) && count($arrShippings) && ((!$this->Isotope->Cart->hasShipping && !in_array(-1, $arrShippings)) || ($this->Isotope->Cart->hasShipping && !in_array($this->Isotope->Cart->Shipping->id, $arrShippings))))
 					return false;
 					
 				$arrTypes = deserialize($this->product_types);

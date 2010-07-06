@@ -51,7 +51,6 @@ class IsotopeRunonce extends Frontend
 			
 		$this->renameTables();
 		$this->renameFields();
-		$this->updateAttributes();
 		$this->updateProductCategories();
 		$this->updateStoreConfigurations();
 		$this->updateOrders();
@@ -259,20 +258,22 @@ class IsotopeRunonce extends Frontend
 				$this->Database->prepare("UPDATE tl_iso_config SET shipping_fields=?, billing_fields=? WHERE id=?")->execute(serialize($arrShipping), serialize($arrBilling), $objStores->id);
 			}
 		}
-	}
-	
-	
-	/**
-	 * Checkboxes should be '' not '0'
-	 */
-	private function updateAttributes()
-	{
-		$arrFields = $this->Database->listFields('tl_iso_attributes');
-		foreach( $arrFields as $field )
+		
+		// "Orders without shipping" has been changed from value "0" to "-1"
+		$objPayments = $this->Database->execute("SELECT * FROM tl_iso_payment_modules WHERE shipping_modules!=''");
+		while( $objPayments->next() )
 		{
-			$this->Database->executeUncached("UPDATE tl_iso_attributes SET " . $field['name'] . "='' WHERE " . $field['name'] . "='0'");
+			$arrShipping = deserialize($objPayments->shipping_modules);
+			
+			if (is_array($arrShipping) && in_array(0, $arrShipping))
+			{
+				unset($arrShipping[array_search(0, $arrShipping)]);
+				$arrShipping[] = -1;
+				$this->Database->query("UPDATE tl_iso_payment_modules SET shipping_modules='" . serialize($arrShipping) . "' WHERE id={$objPayments->id}");
+			}
 		}
 	}
+	
 	
 	private function updateProductCategories()
 	{
@@ -285,6 +286,7 @@ class IsotopeRunonce extends Frontend
 			$this->Database->executeUncached("DROP TABLE tl_product_to_category");
 		}
 	}
+	
 	
 	private function updateStoreConfigurations()
 	{
