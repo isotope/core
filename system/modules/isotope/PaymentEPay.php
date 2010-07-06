@@ -111,7 +111,7 @@ class PaymentEPay extends IsotopePayment
 <p class="message">' . $GLOBALS['TL_LANG']['ISO']['pay_with_epay'][1] . '</p>
 <form id="payment_form" action="https://ssl.ditonlinebetalingssystem.dk/popup/default.asp" method="post">
 
-<input type="hidden" name="language" value="' . (in_array($GLOBALS['TL_LANGUAGE'], $this->arrLanguages) ? $this->arrLanguages[$GLOBALS['TL_LANGUAGE']] : 2) . '">
+<input type="hidden" name="language" value="' . (array_key_exists($GLOBALS['TL_LANGUAGE'], $this->arrLanguages) ? $this->arrLanguages[$GLOBALS['TL_LANGUAGE']] : 2) . '">
 <input type="hidden" name="merchantnumber" value="' . $this->epay_merchantnumber . '">
 <input type="hidden" name="orderid" value="' . $objOrder->id . '">
 <input type="hidden" name="currency" value="' . $this->arrCurrencies[$this->Isotope->Config->currency] . '">
