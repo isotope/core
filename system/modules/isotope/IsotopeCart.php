@@ -95,6 +95,7 @@ class IsotopeCart extends IsotopeProductCollection
 									
 				return $fltShippingWeight;
 				
+			case 'billing_address':
 			case 'billingAddress':
 				if ($this->arrCache['billingAddress_id'] > 0)
 				{
@@ -107,6 +108,8 @@ class IsotopeCart extends IsotopeProductCollection
 				{
 					return $this->arrCache['billingAddress_data'];
 				}
+				
+				$this->import('Isotope');
 							
 				if (FE_USER_LOGGED_IN)
 				{	
@@ -114,16 +117,15 @@ class IsotopeCart extends IsotopeProductCollection
 
 					if ($objAddress->numRows)
 						return $objAddress->fetchAssoc();
-						
+
 					// Return the default user data, but ID should be 0 to know that it is a custom/new address
 					// Trying to guess subdivision by country and state
-					return array_merge($this->User->getData(), array('id'=>0, 'subdivision'=>strtoupper($this->User->country . '-' . $this->User->state)));
+					return array_intersect_key(array_merge($this->User->getData(), array('id'=>0, 'street_1'=>$this->User->street, 'subdivision'=>strtoupper($this->User->country . '-' . $this->User->state))), array_flip($this->Isotope->Config->billing_fields));
 				}
-				
-				$this->import('Isotope');
 				
 				return array('postal'=>$this->Isotope->Config->postal, 'subdivision'=>$this->Isotope->Config->subdivision, 'country' => $this->Isotope->Config->country);
 				
+			case 'shipping_address':
 			case 'shippingAddress':
 				if ($this->arrCache['shippingAddress_id'] == -1)
 				{							
