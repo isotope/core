@@ -87,7 +87,7 @@ var Isotope =
 			box.setStyle('display', 'none');
 			if (Browser.Engine.trident && Browser.Engine.version < 5) { var sel = $$('select'); for (var i=0; i<sel.length; i++) { sel[i].setStyle('visibility', 'visible'); } }
 		}
-	},
+	}
 };
 
 
