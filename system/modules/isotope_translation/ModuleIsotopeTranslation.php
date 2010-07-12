@@ -216,6 +216,7 @@ class ModuleIsotopeTranslation extends BackendModule
 		return $this->parse($data);
 	}
 	
+	
 	private function parse($data)
 	{
 		foreach ($data as $i => $line)
@@ -238,11 +239,11 @@ class ModuleIsotopeTranslation extends BackendModule
 			
 			if(preg_match("@\=[ \t]*'(.*?(?<!\\\\))'@", $line, $match))
 			{
-				$return[$table] = $match[1];
+				$return[$table] = str_replace("\'", "'", $match[1]);
 			}
 			elseif(preg_match('@\=[ \t]*"(.*?(?<!\\\\))"@', $line, $match))
 			{	
-				$return[$table] = $match[1];
+				$return[$table] = str_replace("\'", "'", $match[1]);
 			}
 			
 			elseif(preg_match('@\=[ \t]*array\((.*?)\)[ \t]*;@', $line, $match))
@@ -263,7 +264,7 @@ class ModuleIsotopeTranslation extends BackendModule
 					
 					if (strlen($var))
 					{
-						$return[$table . "[".$key."]"] = $var;
+						$return[$table . "[".$key."]"] = str_replace("\'", "'", $var);
 					}
 				}
 			}
@@ -274,24 +275,23 @@ class ModuleIsotopeTranslation extends BackendModule
 	
 	
 	
-	/*
-		Paul's Simple Diff Algorithm v 0.1
-		(C) Paul Butler 2007 <http://www.paulbutler.org/>
-		May be used and distributed under the zlib/libpng license.
-		
-		This code is intended for learning purposes; it was written with short
-		code taking priority over performance. It could be used in a practical
-		application, but there are a few ways it could be optimized.
-		
-		Given two arrays, the function diff will return an array of the changes.
-		I won't describe the format of the array, but it will be obvious
-		if you use print_r() on the result of a diff on some test data.
-		
-		htmlDiff is a wrapper for the diff command, it takes two strings and
-		returns the differences in HTML. The tags used are <ins> and <del>,
-		which can easily be styled with CSS.  
-	*/
-
+	/**
+	 * Paul's Simple Diff Algorithm v 0.1
+	 * (C) Paul Butler 2007 <http://www.paulbutler.org/>
+	 * May be used and distributed under the zlib/libpng license.
+	 * 
+	 * This code is intended for learning purposes; it was written with short
+	 * code taking priority over performance. It could be used in a practical
+	 * application, but there are a few ways it could be optimized.
+	 * 
+	 * Given two arrays, the function diff will return an array of the changes.
+	 * I won't describe the format of the array, but it will be obvious
+	 * if you use print_r() on the result of a diff on some test data.
+	 * 
+	 * htmlDiff is a wrapper for the diff command, it takes two strings and
+	 * returns the differences in HTML. The tags used are <ins> and <del>,
+	 * which can easily be styled with CSS.  
+	 **/
 	function diff($old, $new)
 	{
 		foreach($old as $oindex => $ovalue)
