@@ -69,6 +69,141 @@ class IsotopePOS extends Backend
 	
 	}
 	
+	public function printInvoicesInterface()
+	{		
+		$strMessage = '';
+		
+		$strReturn = '
+<div id="tl_buttons">
+<a href="'.ampersand(str_replace('&key=print_invoices', '', $this->Environment->request)).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
+</div>
+
+<h2 class="sub_headline">'.$GLOBALS['TL_LANG']['tl_iso_orders']['print_invoices'][0].'</h2>
+<form action="'.$this->Environment->request.'"  id="tl_print_invoices" class="tl_form" method="post">
+<input type="hidden" name="FORM_SUBMIT" value="tl_print_invoices" />
+<div class="tl_formbody_edit">
+<div class="tl_tbox block">';
+					
+		$objWidget = new SelectMenu($this->prepareForWidget($GLOBALS['TL_DCA']['tl_iso_orders']['fields']['status'], 'status'));
+	
+		if($this->Input->post('FORM_SUBMIT')=='tl_print_invoices')
+		{					
+			$varValue = $this->Input->post('status');
+			
+			$objOrders = $this->Database->query("SELECT id FROM tl_iso_orders WHERE status='$varValue'");		
+				
+			if($objOrders->numRows)
+			{
+				$this->printInvoices($objOrders->fetchEach('id'));
+			}
+			else
+			{
+				$strMessage = '<div class="tl_error">'.$GLOBALS['TL_LANG']['MSC']['noOrders'].'</div>';
+			}
+		}	
+	
+		return $strReturn .$objWidget->parse().$strMessage.'</div>
+</div>
+<div class="tl_formbody_submit">
+<div class="tl_submit_container">
+<input type="submit" name="print_invoices" id="ctrl_print_invoices" value="'.$GLOBALS['TL_LANG']['MSC']['labelSubmit'].'" />
+</div>
+</div>
+</form>
+</div>';
+	}
+	
+	public function printInvoices($arrIds = array())
+	{		
+		if(!count($arrIds))
+			return;
+	
+		// Include library
+		require_once(TL_ROOT . '/system/config/tcpdf.php');
+		require_once(TL_ROOT . '/plugins/tcpdf/tcpdf.php'); 
+		
+		//Initial PDF setup
+		$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true); 
+	
+		// Set document information
+		$pdf->SetCreator(PDF_CREATOR);
+		$pdf->SetAuthor(PDF_AUTHOR);
+		$pdf->SetTitle($objInvoice->title);
+		$pdf->SetSubject($objInvoice->title);
+		$pdf->SetKeywords($objInvoice->keywords);
+	
+		// Remove default header/footer
+		$pdf->setPrintHeader(false);
+		$pdf->setPrintFooter(false);
+	
+		// Set margins
+		$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+	
+		// Set auto page breaks
+		$pdf->SetAutoPageBreak(true, PDF_MARGIN_BOTTOM);
+	
+		// Set image scale factor
+		$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO); 
+	
+		// Set some language-dependent strings
+		$pdf->setLanguageArray($l); 
+	
+		// Initialize document and add a page
+		$pdf->AliasNbPages();
+		//$pdf->AddPage();
+	
+		// TCPDF configuration
+		$l['a_meta_dir'] = 'ltr';
+		$l['a_meta_charset'] = $GLOBALS['TL_CONFIG']['characterSet'];
+		$l['a_meta_language'] = $GLOBALS['TL_LANGUAGE'];
+		$l['w_page'] = "page";
+			
+		// Set font
+		$pdf->SetFont(PDF_FONT_NAME_MAIN, "", PDF_FONT_SIZE_MAIN);
+				
+		$strIds = implode(',', $arrIds);
+						
+		$objOrders = $this->Database->query("SELECT * FROM tl_iso_orders WHERE id IN($strIds)");
+		
+		while($objOrders->next())
+		{
+			$pdf->AddPage();
+			$strArticle = '';
+						
+			$arrLinks = array();
+			
+			$arrChunks = array();
+			
+			$strArticle .= $this->generateContent($objOrders->uniqid);
+
+			// Remove form elements
+			$strArticle = preg_replace('/<form.*<\/form>/Us', '', $strArticle);
+			$strArticle = preg_replace('/\?pdf=[0-9]*/i', '', $strArticle);
+
+			preg_match_all('/<pre.*<\/pre>/Us', $strArticle, $arrChunks);
+		
+			foreach ($arrChunks[0] as $strChunk)
+			{
+				$strArticle = str_replace($strChunk, str_replace("\n", '<br />', $strChunk), $strArticle);
+			}
+				
+			// Remove linebreaks and tabs
+			$strArticle = str_replace(array("\n", "\t"), '', $strArticle);
+			$strArticle = preg_replace('/<span style="text-decoration: ?underline;?">(.*)<\/span>/Us', '<u>$1</u>', $strArticle);
+	
+			// Write the HTML content
+			$pdf->writeHTML($strArticle, true, 0, true, 0);				
+			
+		}	
+		
+		// Close and output PDF document
+		$pdf->lastPage();
+		$pdf->Output(standardize(ampersand($strInvoiceTitle, false)) . '.pdf', 'D');
+		$this->Isotope->resetConfig(true); 	//Set store back to default.
+		
+		ob_end_clean();
+		exit;	
+	}
 	
 	public function printInvoice(DataContainer $objDc)
 	{
@@ -94,7 +229,7 @@ class IsotopePOS extends Backend
 
 		$arrChunks = array();
 		
-		$strArticle .= $this->generateContent($objOrder);
+		$strArticle .= $this->generateContent($objOrder->uniqid);
 
 		preg_match_all('/<pre.*<\/pre>/Us', $strArticle, $arrChunks);
 
@@ -164,9 +299,9 @@ class IsotopePOS extends Backend
 		exit;	
 	}
 	
-	protected function generateContent($objOrder)
+	protected function generateContent($varId)
 	{				
-		$objOrderData = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE uniqid=?")->limit(1)->execute($objOrder->uniqid);
+		$objOrderData = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE uniqid=?")->limit(1)->execute($varId);
 		
 		if (!$objOrderData->numRows)
 		{
