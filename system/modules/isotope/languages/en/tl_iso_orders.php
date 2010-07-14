@@ -71,8 +71,10 @@ $GLOBALS['TL_LANG']['tl_iso_orders']['edit_order']			= array('Edit Order', 'Edit
 $GLOBALS['TL_LANG']['tl_iso_orders']['edit_order_items']	= array('Edit Order Items', 'Edit items for order ID %s');
 $GLOBALS['TL_LANG']['tl_iso_orders']['print_order']			= array('Print this order', 'Print an invoice for the current order');
 $GLOBALS['TL_LANG']['tl_iso_orders']['authorize_process_payment'] = array('Authorizet.net Point-of-sale Terminal', 'Conduct a transaction using the Authorize.net point-of-sale terminal');
+$GLOBALS['TL_LANG']['tl_iso_orders']['tools']				= array('Tools', 'More options for order management.');
+$GLOBALS['TL_LANG']['tl_iso_orders']['export_emails']		= array('Export Order Emails','Export all emails for those who have ordered.');
+$GLOBALS['TL_LANG']['tl_iso_orders']['print_invoices']		= array('Print Invoices','Print one or more invoices into a single document of a certain order status.');
 
-$GLOBALS['TL_LANG']['tl_iso_orders']['export_emails']		= 'Export Order Emails';
 
 /** 
  * Legends

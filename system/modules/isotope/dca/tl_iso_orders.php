@@ -66,11 +66,25 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 		),
 		'global_operations' => array
 		(
+			'tools' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_orders']['tools'],
+				'href'                => '',
+				'class'               => 'header_isotope_tools',
+				'attributes'          => 'onclick="Backend.getScrollOffset();" style="display:none"',
+			),
 			'export_emails' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_iso_orders']['export_emails'],
 				'href'                => 'key=export_emails',
-				'class'               => 'header_css_import',
+				'class'               => 'header_export_emails isotope-tools',
+				'attributes'          => 'onclick="Backend.getScrollOffset();"'
+			),
+			'print_invoices' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_orders']['print_invoices'],
+				'href'                => 'key=print_invoices',
+				'class'               => 'header_print_invoices isotope-tools',
 				'attributes'          => 'onclick="Backend.getScrollOffset();"'
 			)
 		),
@@ -306,6 +320,29 @@ class tl_iso_orders extends Backend
 		return $strButtons;
 	}
 	
+	/** 
+	 * Return a string of more buttons for the global operations of an orders module.
+	 *
+	 * @access public
+	 * @param array $arrRow
+	 * @return string
+	 */
+	public function globalOperations($dc)
+	{
+		if(!count($GLOBALS['ISO_ORDERS']['global_operations']))
+		{
+			return;
+		}
+		
+		foreach($GLOBALS['ISO_ORDERS']['global_operations'] as $callback)
+		{
+			$this->import($callback[0]);
+			
+			$strButtons.= $this->$callback[0]->$callback[1]();
+				
+		}
+	
+	}
 	
 	/**
 	* getOrderLabel function.
@@ -474,5 +511,6 @@ class tl_iso_orders extends Backend
 		
 		return $objModule->backendInterface($dc->id);
 	}
+	
 }
 
