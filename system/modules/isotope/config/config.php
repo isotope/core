@@ -52,10 +52,19 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
 		'tables'					=> array('tl_iso_orders', 'tl_iso_order_items'),
 		'icon'						=> 'system/modules/isotope/html/icon-orders.gif',
 		'stylesheet'				=> 'system/modules/isotope/html/backend.css',
+		'javascript'				=> 'system/modules/isotope/html/backend.js',
 		'export_emails'     		=> array('tl_iso_orders', 'exportOrderEmails'),
 		'print_order'				=> array('IsotopePOS','printInvoice'),
+		'print_invoices'			=> array('IsotopePOS','printInvoicesInterface'),
 		'payment'					=> array('tl_iso_orders', 'paymentInterface'),
 		'shipping'					=> array('tl_iso_orders', 'shippingInterface'),
+	),
+	'iso_coupons' => array
+	(
+		'tables'					=> array('tl_iso_coupon', 'tl_iso_coupon_usage'), //'tl_iso_coupon_codes'),
+		'stylesheet'				=> 'system/modules/isotope/html/backend_src.css',
+		'javsacript'				=> 'system/modules/isotope/html/backend_src.js',
+		'icon'						=> 'system/modules/isotope/html/coupons.png'
 	),/*
 	'iso_statistics' => array
 	(
@@ -65,7 +74,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
 	'iso_setup' => array
 	(
 		'callback'					=> 'ModuleIsotopeSetup',
-		'tables'					=> array('tl_iso_config', 'tl_iso_shipping_modules', 'tl_iso_shipping_options', 'tl_iso_payment_modules', 'tl_payment_options', 'tl_iso_tax_class', 'tl_iso_tax_rate', 'tl_iso_producttypes', 'tl_iso_attributes', 'tl_iso_related_categories', 'tl_iso_mail', 'tl_iso_mail_content'),
+		'tables'					=> array('tl_iso_config', 'tl_iso_shipping_modules', 'tl_iso_shipping_options', 'tl_iso_payment_modules', 'tl_payment_options', 'tl_iso_tax_class', 'tl_iso_tax_rate', 'tl_iso_producttypes', 'tl_iso_attributes', 'tl_iso_related_categories', 'tl_iso_coupon', 'tl_iso_mail', 'tl_iso_mail_content'),
 		'icon'						=> 'system/modules/isotope/html/icon-isotope.png',
 		'stylesheet'				=> 'system/modules/isotope/html/backend.css',
 	),
@@ -167,6 +176,7 @@ $GLOBALS['BE_FFL']['optionDataWizard']	= 'OptionDataWizard';
 $GLOBALS['BE_FFL']['surchargeWizard']	= 'SurchargeWizard';
 $GLOBALS['BE_FFL']['variantWizard']		= 'VariantWizard';
 $GLOBALS['BE_FFL']['inheritCheckbox']	= 'InheritCheckBox';
+$GLOBALS['BE_FFL']['membersWizard']		= 'MembersWizard';
 
 
 /**
@@ -243,7 +253,6 @@ $GLOBALS['ISO_ORDER'] = array('pending', 'processing', 'complete', 'on_hold', 'c
  */
 //$GLOBALS['ISO_ORDERS']['operations']['modulekey'] = 'ModuleClass';
 
-
 /** 
  * Miscellaneous Isotope-specific settings
  */
@@ -295,7 +304,8 @@ $GLOBALS['ISO_CHECKOUT_STEPS'] = array
 	'review' => array
 	(
 		array('ModuleIsotopeCheckout', 'getOrderReviewInterface'),
-		array('ModuleIsotopeCheckout', 'getOrderConditionsInterface'),
+		array('ModuleIsotopeCheckout', 'getCouponsInterface'),
+		array('ModuleIsotopeCheckout', 'getOrderConditionsInterface')
 	),
 );
 
