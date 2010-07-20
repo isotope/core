@@ -322,16 +322,19 @@ class ModuleIsotopeCart extends ModuleIsotope
 		$strCouponIds = implode(',', $arrCouponIds);
 		
 		//gather all usage data for the coupons we have returned.. if a coupon is for non-members, then this query by default is checking usage in terms of global use  		//of the coupon rather that per user as we haven't a way to verify usage for a non-member.  
-		$objMemberUses = $this->Database->executeUncached("SELECT *, COUNT(id) AS customerUses FROM tl_iso_coupon_usage WHERE pid IN($strCouponIds) AND member_id={$this->User->id}");
-		
-		if($objMemberUses->numRows)		
+		if(FE_USER_LOGGED_IN)
 		{
-			while($objMemberUses->next());
+			$objMemberUses = $this->Database->executeUncached("SELECT *, COUNT(id) AS customerUses FROM tl_iso_coupon_usage WHERE pid IN($strCouponIds) AND member_id={$this->User->id}");
+			
+			if($objMemberUses->numRows)		
 			{
-				$arrMemberUsesByCoupon[$objMemberUses->pid] = $objMemberUses->row();
+				while($objMemberUses->next());
+				{
+					$arrMemberUsesByCoupon[$objMemberUses->pid] = $objMemberUses->row();
+				}
 			}
 		}
-		
+					
 		foreach($arrProducts as $i => $objProduct)
 		{						
 			$arrProduct['pages'] = $objProduct->pages;
