@@ -129,13 +129,14 @@ class IsotopeProduct extends Controller
 		}
 		
 		$arrReturn = $this->applyPriceRules($this);
+
+		$this->arrData['original_price'] = $this->arrData['price'];
 		
 		if(count($arrReturn))
 		{
 			//!@todo original_price is empty if no return array is given
-			$this->arrData['original_price'] = $this->arrData['price'];
 			$this->arrData['price'] = $arrReturn[0];
-			$this->arrData['rules_applied'] = $arrReturn[1];
+			$this->arrData['rules'] = $arrReturn[1];
 		}
 		
 		$this->loadLanguage();
@@ -152,10 +153,11 @@ class IsotopeProduct extends Controller
 		{
 			case 'id':
 			case 'pid':
-			case 'href_reader':
+			case 'href_reader':					
 				return $this->arrData[$strKey];
-				
-			case 'originalPrice':
+			case 'categories':
+				return deserialize($this->arrData[$strKey], true);	
+			case 'original_price':
 				return $this->Isotope->calculatePrice($this->arrData['original_price'], $this->arrData['tax_class']);
 				
 			case 'price':
@@ -164,8 +166,7 @@ class IsotopeProduct extends Controller
 					return $this->Isotope->calculatePrice($this->arrCache['low_price'], $this->arrData['tax_class']);
 				}
 				
-				return $this->Isotope->calculatePrice($this->arrData['price'], $this->arrData['tax_class']);
-			
+				return $this->Isotope->calculatePrice($this->arrData['price'], $this->arrData['tax_class']);		
 			case 'price_override':
 				return ($this->arrData['price_override'] ? $this->arrData['price_override'] : '');
 
@@ -219,7 +220,7 @@ class IsotopeProduct extends Controller
 							break;
 							
 						case 'formatted_original_price':
-							$varValue = $this->Isotope->formatPriceWithCurrency($this->originalPrice, false);
+							$varValue = $this->Isotope->formatPriceWithCurrency($this->original_price, false);
 							break;
 							
 						case 'formatted_total_price':
@@ -453,8 +454,8 @@ class IsotopeProduct extends Controller
 	{
 		$this->validateVariant();
 		
-		// Find lowest price
-		if ($this->arrType['variants'] && in_array('price', $this->arrVariantAttributes))
+		// Find lowest price	@WHY???   
+			/*if ($this->arrType['variants'] && in_array('price', $this->arrVariantAttributes))
 		{
 			$arrSearch = array();
 			foreach( $this->arrOptions as $k => $v )
@@ -464,7 +465,8 @@ class IsotopeProduct extends Controller
 					$arrSearch[$k] = $v;
 				}
 			}
-
+			
+		
 			$objProduct = $this->Database->prepare("SELECT MIN(price) AS low_price, MAX(price) AS high_price FROM tl_iso_products WHERE pid={$this->id} AND published='1' AND language=''" . (count($arrSearch) ? " AND " . implode("=? AND ", array_keys($arrSearch)) . "=?" : ''))->execute($arrSearch);
 			
 			
@@ -475,9 +477,10 @@ class IsotopeProduct extends Controller
 			else
 			{
 				unset($this->arrCache['low_price']);
-				$this->arrData['price'] = $objProduct->low_price;
+				$this->arrData['price'] = $objProduct->price;
 			}
-		}
+			
+		}*/
 		
 		$arrOptions = array();
 		$arrAttributes = $this->getAttributes();
@@ -799,14 +802,28 @@ class IsotopeProduct extends Controller
 				//these values are not by reference - they were directly entered.  
 				if(is_array($varValue))
 				{
-					foreach($varValue as $value)
-					{
-						$varOptionValues[] = $value;
-					}
+				  foreach($varValue as $value)
+				  {
+					$varOptionValues[] = $value;
+				  }
 				}
 				else
 				{
-					$varOptionValues[] = $varValue;
+				  if($arrData['eval']['rgxp'])
+				  {
+				  	switch($arrData['eval']['rgxp'])
+					{
+						case 'date':
+						case 'time':
+						case 'datim':
+							$varValue = $this->parseDate($GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'].'Format'], $varValue);
+				  			break;
+						default:
+							break;
+					}
+				  }
+				  
+				  $varOptionValues[] = $varValue;
 				}
 				
 				break;
@@ -900,7 +917,7 @@ class IsotopeProduct extends Controller
 							{
 								$this->arrData['original_price'] = $this->arrData[$attribute];
 								$this->arrData['price'] = $arrReturn[0];
-								$this->arrData['rules_applied'] = $arrReturn[1];
+								$this->arrData['rules'] = $arrReturn[1];
 							}
 							else
 							{

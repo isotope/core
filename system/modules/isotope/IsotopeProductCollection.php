@@ -41,6 +41,12 @@ abstract class IsotopeProductCollection extends Model
 	 */
 	protected $arrProducts;
 	
+	/** 
+	 * Cache all coupons for speed improvements
+	 * @var array
+	 */
+	protected $arrCoupons;
+	
 	/**
 	 * Isotope object
 	 * @var object
@@ -92,7 +98,6 @@ abstract class IsotopeProductCollection extends Model
 			case 'hasShipping':
 				return (is_object($this->Shipping) ? true : false);
 				break;
-				
 			case 'requiresShipping':
 				foreach( $this->getProducts() as $objProduct )
 				{
@@ -180,8 +185,26 @@ abstract class IsotopeProductCollection extends Model
 			$objItems = $this->Database->prepare("SELECT * FROM " . $this->ctable . " WHERE pid=?")->execute($this->id);
 	
 			while( $objItems->next() )
-			{
-				$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS product_class FROM tl_iso_products WHERE pid={$objItems->product_id} OR id={$objItems->product_id} ORDER BY pid ASC")->limit(1)->execute();
+			{	
+				//we can possibly simplify this if we have access to a the product's PID but as we're dealing with cart items, we don't by default.			
+				$objVariantData = $this->Database->query("SELECT * FROM tl_iso_products WHERE id={$objItems->product_id}");
+								
+				$intProductId = ($objVariantData->pid ? $objVariantData->pid : $objVariantData->id);
+				
+				$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS product_class FROM tl_iso_products WHERE id={$intProductId} ORDER BY pid ASC")->limit(1)->execute();
+			
+				//since this only pulls a variant with incomplete data we need to start with the parent product and then pull the child data in.
+				if($objVariantData->numRows)
+				{
+					$arrVariantData = $objVariantData->row();
+				
+					//merge the product data
+					foreach($arrVariantData as $k=>$v)
+					{						
+						if($v)
+							$objProductData->$k = $v;
+					}
+				}
 				
 				$strClass = $GLOBALS['ISO_PRODUCT'][$objProductData->product_class]['class'];
 				
@@ -193,16 +216,45 @@ abstract class IsotopeProductCollection extends Model
 				{
 					$objProduct = new IsotopeProduct(array('id'=>$objItems->product_id, 'sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price));
 				}
+			
+				$arrRules = array();
+				$arrCoupons = array();
 				
+				if($objItems->rules)
+				{
+					$arrRuleData = deserialize($objItems->coupons, true);
+					
+					foreach($arrRuleData as $rule)
+					{
+						$arrRules[] = deserialize($rule, true);
+					}
+
+				}
+				
+				
+				
+				if($objItems->coupons)
+				{							
+					$arrCouponData = deserialize($objItems->coupons, true);
+					
+					foreach($arrCouponData as $coupon)
+					{
+						$arrCoupons[] = deserialize($coupon, true);	
+					}
+				}	
+				
+				$objProduct->rules = $arrRules;
+				$objProduct->coupons = $arrCoupons;
+												
 				$objProduct->quantity_requested = $objItems->product_quantity;
 				$objProduct->cart_id = $objItems->id;
 				$objProduct->reader_jumpTo_Override = $objItems->href_reader;
 				
-				if($objProduct->price==0 || TL_MODE=='BE')
+				if($objProduct->price!==$objItems->price)
 					$objProduct->price = $objItems->price;
 				
 				$objProduct->setOptions(deserialize($objItems->product_options, true));
-				
+			
 				$this->arrProducts[] = $objProduct;
 			}
 		}
@@ -217,6 +269,27 @@ abstract class IsotopeProductCollection extends Model
 		return $this->arrProducts;
 	}
 	
+	/**
+	 * Fetch products from database.
+	 * 
+	 * @access public
+	 * @return array
+	 */
+	public function getCoupons()
+	{
+		if (!is_array($this->arrCoupons) || $blnNoCache)
+		{
+			$this->arrCoupons = array();
+			$objItems = $this->Database->prepare("SELECT coupons FROM " . $this->ctable . " WHERE pid=?")->execute($this->id);
+	
+			while( $objItems->next() )
+			{
+				$this->arrCoupons[] = deserialize($objItems->coupons, true);
+			}
+		}
+		
+		return $this->arrCoupons;
+	}
 	
 	/**
 	 * Add a product to the collection
@@ -228,7 +301,7 @@ abstract class IsotopeProductCollection extends Model
 	 */
 	public function addProduct(IsotopeProduct $objProduct, $intQuantity)
 	{
-		$objItem = $this->Database->execute("SELECT * FROM {$this->ctable} WHERE pid={$this->id} AND product_id={$objProduct->id} AND product_options='".serialize($objProduct->getOptions(true))."'");
+		$objItem = $this->Database->prepare("SELECT * FROM {$this->ctable} WHERE pid={$this->id} AND (product_options='".serialize($objProduct->getOptions(true))."' AND id={$objProduct->id})")->limit(1)->execute();
 		
 		if ($objItem->numRows)
 		{
@@ -242,18 +315,43 @@ abstract class IsotopeProductCollection extends Model
 			(
 				'pid'					=> $this->id,
 				'tstamp'				=> time(),
-				'product_id'			=> $objProduct->id,
+				'product_id'			=> ($objProduct->vid ? $objProduct->vid : $objProduct->id),
 				'product_sku'			=> $objProduct->sku,
 				'product_name'			=> $objProduct->name,
 				'product_options'		=> $objProduct->getOptions(true),
 				'product_quantity'		=> $intQuantity,
 				'price'					=> $objProduct->price,
 				'href_reader'			=> $objProduct->href_reader,
-				'rules_applied'			=> (is_array($objProduct->rules_applied) ? serialize($objProduct->rules_applied) : '')
+				'rules'					=> (is_array($objProduct->rules) ? serialize($objProduct->rules) : ''),
+				'coupons'				=> (is_array($objProduct->coupons) ? serialize($objProduct->coupons) : '')
+
 			);
 			
 			return $this->Database->prepare("INSERT INTO {$this->ctable} %s")->set($arrSet)->executeUncached()->insertId;
 		}
+	}
+	
+	/**
+	 * update a product in the collection
+	 *
+	 * @access	public
+	 * @param	object	The product object
+	 * @param   array The property(ies) to adjust
+	 * @return	int		ID of database record added/updated
+	 */
+	public function updateProduct(IsotopeProduct $objProduct, $arrSet)
+	{
+		$objItem = $this->Database->execute("SELECT * FROM {$this->ctable} WHERE pid={$this->id} AND product_id={$objProduct->id} AND product_options='".serialize($objProduct->getOptions(true))."'");
+		
+		if ($objItem->numRows)
+		{
+			$this->Database->prepare("UPDATE {$this->ctable} %s WHERE pid={$this->id} AND product_id={$objProduct->id} AND product_options='".serialize($objProduct->getOptions(true))."'")
+						   ->set($arrSet)
+						   ->executeUncached();
+			
+			return $objItem->id;
+		}
+		 return false;
 	}
 	
 	

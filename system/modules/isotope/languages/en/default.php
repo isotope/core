@@ -54,7 +54,8 @@ $GLOBALS['TL_LANG']['ERR']['noAddressData']				= 'Address data is required to ca
 $GLOBALS['TL_LANG']['ERR']['variantDuplicate']			= 'A variant with this attributes is already available. Please select another combination.';
 $GLOBALS['TL_LANG']['ERR']['breadcrumbEmpty']			= 'The filtered category is empty, all products are now showing.';
 
-$GLOBALS['TL_LANG']['ERR']['discountFactors']			= 'Please enter whole numbers or decimals signed with -, and optionally with a percentage.';
+$GLOBALS['TL_LANG']['ERR']['invalidCoupon']				= 'Invalid coupon';
+$GLOBALS['TL_LANG']['ERR']['discountFactors']			= 'Please enter whole numbers or decimals, optionally with a percentage.';
 $GLOBALS['TL_LANG']['ERR']['generalFactors']			= 'Please enter whole numbers or decimals, optionally signed with + or -, and optionally with a percentage.';
 
 //Checkout Errors
@@ -145,6 +146,11 @@ $GLOBALS['TL_LANG']['MSC']['actualPrice'] = 'Actual Price';
 $GLOBALS['TL_LANG']['MSC']['noPaymentModules'] = 'No payment options are currently available';
 $GLOBALS['TL_LANG']['MSC']['noShippingModules'] = 'No shipping options are currently available.';
 $GLOBALS['TL_LANG']['MSC']['noOrderEmails'] = 'No orders emails found.';
+$GLOBALS['TL_LANG']['MSC']['noOrders'] = 'No orders found.';
+
+$GLOBALS['TL_LANG']['ISO']['couponsInputLabel'] = 'Promotional code';
+$GLOBALS['TL_LANG']['ISO']['couponsHeadline'] = 'Apply Promotional Codes';
+$GLOBALS['TL_LANG']['ISO']['couponsSubmitLabel'] = 'Apply';
 
 $GLOBALS['TL_LANG']['MSC']['cartBT']					= 'Shopping Cart';
 $GLOBALS['TL_LANG']['MSC']['checkoutBT']				= 'Proceed to Checkout';
@@ -283,7 +289,20 @@ $GLOBALS['TL_LANG']['CCT']['discover']				= 'Discover';
 $GLOBALS['TL_LANG']['CCT']['jcb']					= 'JCB';
 $GLOBALS['TL_LANG']['CCT']['diners']				= 'Diner\'s Club';
 $GLOBALS['TL_LANG']['CCT']['enroute']				= 'EnRoute';
-
+$GLOBALS['TL_LANG']['CCT']['carte_blanche']			= 'Carte Blanche';
+$GLOBALS['TL_LANG']['CCT']['jal']					= 'JAL';
+$GLOBALS['TL_LANG']['CCT']['maestro']				= 'Maestro UK';
+$GLOBALS['TL_LANG']['CCT']['delta']					= 'Delta';
+$GLOBALS['TL_LANG']['CCT']['solo']					= 'Solo';
+$GLOBALS['TL_LANG']['CCT']['visa_electron']			= 'Visa Electron';
+$GLOBALS['TL_LANG']['CCT']['dankort']				= 'Dankort';
+$GLOBALS['TL_LANG']['CCT']['laser']					= 'Laser';
+$GLOBALS['TL_LANG']['CCT']['carte_bleue']			= 'Carte Bleue';
+$GLOBALS['TL_LANG']['CCT']['carta_si']				= 'Carta Si';
+$GLOBALS['TL_LANG']['CCT']['enc_acct_num']			= 'Encoded Account Number';
+$GLOBALS['TL_LANG']['CCT']['uatp']					= 'Universal Air Travel Program';
+$GLOBALS['TL_LANG']['CCT']['maestro_intl']			= 'Maestro International';
+$GLOBALS['TL_LANG']['CCT']['ge_money_uk']			= 'GE Money UK';
 
 /**
  * Weight Units
