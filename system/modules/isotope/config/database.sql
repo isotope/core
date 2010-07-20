@@ -50,6 +50,7 @@ CREATE TABLE `tl_module` (
   `iso_listingSortDirection` varchar(8) NOT NULL default '',
   `iso_buttons` blob NULL,
   `iso_related_categories` blob NULL,
+  `iso_enableCoupons` char(1) NOT NULL default '',
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
@@ -334,7 +335,8 @@ CREATE TABLE `tl_iso_cart_items` (
   `product_quantity` int(10) unsigned NOT NULL default '0',
   `price` decimal(12,2) NOT NULL default '0.00',
   `href_reader` varchar(255) NOT NULL default '',
-  `rules_applied` blob NULL,
+  `rules` blob NULL,
+  `coupons` blob NULL,
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -408,6 +410,9 @@ CREATE TABLE `tl_iso_payment_modules` (
   `authorize_trans_type` varchar(32) NOT NULL default '',
   `authorize_relay_response` char(1) NOT NULL default '',
   `authorize_email_customer` char(1) NOT NULL default '',
+  `cybersource_login` varchar(255) NOT NULL default '',
+  `cybersource_trans_key` varchar(255) NOT NULL default '',
+  `cybersource_trans_type` varchar(32) NOT NULL default '',
   `epay_merchantnumber` varchar(7) NOT NULL default '',
   `epay_secretkey` varchar(255) NOT NULL default '',
   `requireCCV` char(1) NOT NULL default '',
@@ -530,7 +535,6 @@ CREATE TABLE `tl_iso_orders` (
   `taxTotal` decimal(12,2) NOT NULL default '0.00',
   `shippingTotal` decimal(12,2) NOT NULL default '0.00',
   `grandTotal` decimal(12,2) NOT NULL default '0.00',
-  
   `cc_num` varchar(64) NOT NULL default '',
   `cc_type` varchar(32) NOT NULL default '',
   `cc_exp` varchar(16) NOT NULL default '',
@@ -541,6 +545,7 @@ CREATE TABLE `tl_iso_orders` (
   `gift_message` text NULL,
   `gift_wrap` char(1) NOT NULL default '', 
   `currency` varchar(4) NOT NULL default '',
+  `notes` text NULL,
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -562,7 +567,8 @@ CREATE TABLE `tl_iso_order_items` (
   `product_options` blob NULL,
   `product_quantity` int(10) unsigned NOT NULL default '0',
   `price` decimal(12,2) NOT NULL default '0.00',
-  `rules_applied` blob NULL,
+  `rules` blob NULL,
+  `coupons` blob NULL,
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -725,6 +731,86 @@ CREATE TABLE `tl_iso_related_products` (
   `products` blob NULL,
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`),
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Table `tl_iso_coupon`
+-- 
+
+CREATE TABLE `tl_iso_coupon` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `pid` int(10) unsigned NOT NULL default '0',
+  `tstamp` int(10) unsigned NOT NULL default '0',
+  `type` varchar(255) NOT NULL default '',
+  `title` varchar(255) NOT NULL default '',
+  `description` text NULL,
+  `discount` varchar(255) NOT NULL default '',
+  `code` varchar(255) NOT NULL default '',
+  `codePrefix` char(1) NOT NULL default '',
+  `numUses` blob NULL,
+  `minSubTotal` decimal(12,2) NOT NULL default '0.00',
+  `minCartQuantity` int(10) unsigned NOT NULL default '0',
+  `maxCartQuantity` int(10) unsigned NOT NULL default '0',
+  `minItemQuantity` int(10) unsigned NOT NULL default '0',
+  `maxItemQuantity` int(10) unsigned NOT NULL default '0',
+  `startDate` int(10) unsigned NOT NULL default '0',
+  `endDate` int(10) unsigned NOT NULL default '0',
+  `memberRestrictions` varchar(255) NOT NULL default '',
+  `productRestrictions` varchar(255) NOT NULL default '',
+  `couponRestrictions` varchar(255) NOT NULL default '',
+  `members` blob NULL,
+  `groups` blob NULL,
+  `coupons` blob NULL,
+  `countries` blob NULL,
+  `subdivisions` blob NULL,
+  `pages` blob NULL,
+  `productTypes` blob NULL,
+  `products` blob NULL,
+  `paymentModules` blob NULL,
+  `shippingModules` blob NULL,
+  `enabled` char(1) NOT NULL default '',
+  PRIMARY KEY  (`id`),
+  KEY `pid` (`pid`),  
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Table `tl_iso_coupon_usage`
+-- 
+
+CREATE TABLE `tl_iso_coupon_usage` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `pid` int(10) unsigned NOT NULL default '0',
+  `tstamp` int(10) unsigned NOT NULL default '0',
+  `member_id` int(10) unsigned NOT NULL default '0',
+  `object_id` int(10) unsigned NOT NULL default '0',
+  `cart_id` int(10) unsigned NOT NULL default '0',
+  `order_id` int(10) unsigned NOT NULL default '0',
+  `product_id` int(10) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  KEY `pid` (`pid`),  
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Table `tl_iso_coupon_codes`
+-- 
+
+CREATE TABLE `tl_iso_coupon_codes` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `pid` int(10) unsigned NOT NULL default '0',
+  `tstamp` int(10) unsigned NOT NULL default '0',
+  `member_id` int(10) unsigned NOT NULL default '0',
+  `code` varchar(255) NOT NULL default '',
+  PRIMARY KEY  (`id`),
+  KEY `pid` (`pid`),  
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 

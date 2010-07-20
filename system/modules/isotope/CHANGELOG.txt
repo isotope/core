@@ -17,6 +17,7 @@ Version 0.2.0 beta1
 - Added: RGXP support for text widgets to be used in variant wizard
 - Added: RGXP logic to the row label callback for tl_iso_products
 - Added: RGXP logic to base class IsotopeProduct to handle variant options other than selects.
+- Added: Coupon management (cart only, products only at the moment... cart/order level coupons, shipping & payment coupons soon.
 - Fixed: fixed overwriting of authorize payment information used for delayed capture upon non-successful transaction
 - Fixed: reference to a undeclared deprecated method in PaymentAuthorizeDotNet
 - Fixed: reference to the cart in Authorize.net - $this->Cart now referred to as $this->Isotope->Cart

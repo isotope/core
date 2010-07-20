@@ -201,6 +201,7 @@ class IsotopeOrder extends IsotopeProductCollection
 		$arrSurcharges = $this->getShippingSurcharge($arrSurcharges);
 		$arrSurcharges = $this->getPaymentSurcharge($arrSurcharges);
 		
+		
 		foreach( $arrSurcharges as $arrSurcharge )
 		{
 			if ($arrSurcharge['tax_class'] > 0)
@@ -293,7 +294,7 @@ class IsotopeOrder extends IsotopeProductCollection
 		
 		return $arrSurcharges;
 	}
-	
+
 	
 	/**
 	 * Calculate tax for a certain tax class, based on the current user information 

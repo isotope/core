@@ -49,7 +49,7 @@
 			<?php endif; ?>
 		</td>
 		<td class="col_2 quantity"><input name="quantity[<?php echo $product['cart_item_id']; ?>]" size="3" type="text" class="text" value="<?php echo $product['quantity']; ?>" maxlength="3" /></td>
-   		<td class="col_3 price"><?php echo $product['price']; ?></td>
+   		<td class="col_3 price"><?php echo (!count($product['coupons']) ? $product['original_price'] : '<s>'.$product['original_price'].'</s><br />'.$product['price']); ?></td>
     	<td class="col_4 price total"><?php echo $product['total_price']; ?></td>
     	<td class="col_5 tax"><?php echo $product['tax_id']; ?></td>
     	<td class="col_6 col_last remove"><a href="<?php echo $product['remove_link']; ?>" title="<?php echo $product['remove_link_title']; ?>" class="remove"><?php echo $product['remove_link_text']; ?></a></td>
@@ -59,8 +59,11 @@
 </table>
 </div>
 <div class="submit_container">
-	<button type="submit" class="submit update"><span><?php echo $GLOBALS['TL_LANG']['MSC']['updateCartBT']; ?></span></button>
+	<input type="submit" class="submit update" name="update_cart" id="ctrl_update_cart" value="<?php echo $GLOBALS['TL_LANG']['MSC']['updateCartBT']; ?>" />
 	<a class="checkout" href="<?php echo $this->checkoutJumpTo; ?>"><span><?php echo $this->checkoutJumpToLabel; ?></span></a>
 </div>
 </form>
+<?php if($this->couponsForm): ?>
+<?php echo $this->couponsForm; ?>
+<?php endif; ?>
 </div>

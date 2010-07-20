@@ -869,6 +869,20 @@ class Isotope extends Controller
 				}
 				return true;
 				break;
+			case 'discountFactors':
+				if(!preg_match('/^\d+(\.\d{1,2})?%?$/', $varValue))
+				{															
+					$objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR'][$strRegexp], $objWidget->label));
+				}
+				return true;
+				break;
+			case 'generalFactors':
+				if(!preg_match('/^[-+]?\d+(\.\d{1,2})?%?$/', $varValue))
+				{															
+					$objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR'][$strRegexp], $objWidget->label));
+				}
+				return true;
+				break;
 		}
 		
 		return false;
