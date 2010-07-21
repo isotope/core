@@ -319,31 +319,8 @@ class tl_iso_orders extends Backend
 		
 		return $strButtons;
 	}
-	
-	/** 
-	 * Return a string of more buttons for the global operations of an orders module.
-	 *
-	 * @access public
-	 * @param array $arrRow
-	 * @return string
-	 */
-	public function globalOperations($dc)
-	{
-		if(!count($GLOBALS['ISO_ORDERS']['global_operations']))
-		{
-			return;
-		}
+
 		
-		foreach($GLOBALS['ISO_ORDERS']['global_operations'] as $callback)
-		{
-			$this->import($callback[0]);
-			
-			$strButtons.= $this->$callback[0]->$callback[1]();
-				
-		}
-	
-	}
-	
 	/**
 	* getOrderLabel function.
 	* 
