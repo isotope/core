@@ -18,6 +18,9 @@ Version 0.2.0 beta1
 - Added: RGXP logic to the row label callback for tl_iso_products
 - Added: RGXP logic to base class IsotopeProduct to handle variant options other than selects.
 - Added: Coupon management (cart only, products only at the moment... cart/order level coupons, shipping & payment coupons soon.
+- Added: Batch invoice printing, by status
+- Added: Consolidation of order management global operations into a tools menu
+- Added: Backend order notes field
 - Fixed: fixed overwriting of authorize payment information used for delayed capture upon non-successful transaction
 - Fixed: reference to a undeclared deprecated method in PaymentAuthorizeDotNet
 - Fixed: reference to the cart in Authorize.net - $this->Cart now referred to as $this->Isotope->Cart
@@ -35,7 +38,7 @@ Version 0.2.0 beta1
 - Removed generatePrice() function, stpl_price and stpl_total_price templates. Now using formatPriceWithCurrency
 - Removed taxTotalWithShipping simple token
 
-Version 0.1.3 (2010-??-??)
+Version 0.1.3 (2010-07-05)
 ------------------------------
 - Fixed: InsertTags could output HTML in meta description
 - Fixed: Status labels were not available in order history
@@ -46,9 +49,6 @@ Version 0.1.3 (2010-??-??)
 - Fixed multiple URL and template problems in shopping cart module
 - Fixed bug in runonce.php, must not use TRUNCATE to empty cart table
 - Fixed: Invoice title not showing up in iso_invoice.tpl if no logo image set
-- Added: Batch invoice printing, by status
-- Added: Consolidation of order management global operations into a tools menu
-- Added: Backend order notes field
 
 Version 0.1.2 (2010-06-20)
 ------------------------------
