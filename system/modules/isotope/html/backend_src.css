@@ -64,15 +64,6 @@
 	background-repeat:no-repeat;
 }
 
-.header_aim_batch_settlement
-{
-	padding:2px 0px 3px 20px;
-	background-image:url("batch.png");
-	background-position:left center;
-	background-repeat:no-repeat;
-}
-
-
 .tl_mediamanager th,
 .tl_mediamanager td
 {

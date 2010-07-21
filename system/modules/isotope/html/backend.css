@@ -3,7 +3,6 @@
 .header_product_category_link{background-image:url(refresh.png);background-position:left center;background-repeat:no-repeat;padding:2px 0 3px 20px}
 .header_export_emails{padding:2px 0px 3px 20px;background-image:url("export.png");background-position:left center;background-repeat:no-repeat;}
 .header_print_invoices{padding:2px 0px 3px 20px;background-image:url("printer.png");background-position:left center;background-repeat:no-repeat;}
-.header_aim_batch_settlement{padding:2px 0px 3px 20px;background-image:url("batch.png");background-position:left center;background-repeat:no-repeat;}
 .tl_mediamanager th,.tl_mediamanager td{padding:2px 10px 0 0}
 .tl_mediamanager input.tl_text_2{width:220px}
 .tl_mediamanager textarea{height:40px;width:300px}
