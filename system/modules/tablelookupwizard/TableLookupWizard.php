@@ -55,9 +55,10 @@ class TableLookupWizard extends Widget
 	public function __construct($arrAttributes=false)
 	{
 		$this->strId = $arrAttributes['id'];
-		$_SESSION['AJAX-FFL'][$this->strId] = array('type'=>'tableLookup');
 		
 		parent::__construct($arrAttributes);
+		
+		$_SESSION['AJAX-FFL'][$this->strId]['type'] = 'tableLookup';
 		
 		$this->import('Database');
 	}
@@ -73,7 +74,10 @@ class TableLookupWizard extends Widget
 	 */
 	public function __set($strKey, $varValue)
 	{
-		$_SESSION['AJAX-FFL'][$this->strId][$strKey] = $varValue;
+		if (!is_object($varValue))
+		{
+			$_SESSION['AJAX-FFL'][$this->strId][$strKey] = $varValue;
+		}
 		
 		switch ($strKey)
 		{
