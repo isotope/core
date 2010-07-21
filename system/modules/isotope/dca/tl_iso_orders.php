@@ -137,7 +137,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{status_legend},status,date_payed,date_shipped;{details_legend},details',
+		'default'                     => '{status_legend},status,date_payed,date_shipped;{details_legend},details,notes',
 	),
 	
 	// Fields
@@ -196,6 +196,12 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 		(
 			'input_field_callback'	=> array('tl_iso_orders', 'showDetails'),
 		),
+		'notes' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['notes'],
+			'inputType'				=> 'textarea',
+			'eval'					=> array('style'=>'height:80px;')
+		)
 	)
 );
 
