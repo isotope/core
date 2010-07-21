@@ -313,6 +313,7 @@ CREATE TABLE `tl_iso_cart` (
   `tstamp` int(10) unsigned NOT NULL default '0',
   `session` blob NULL,
   `config_id` int(10) unsigned NOT NULL default '0',
+  `coupons` blob NULL,
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -410,9 +411,6 @@ CREATE TABLE `tl_iso_payment_modules` (
   `authorize_trans_type` varchar(32) NOT NULL default '',
   `authorize_relay_response` char(1) NOT NULL default '',
   `authorize_email_customer` char(1) NOT NULL default '',
-  `cybersource_login` varchar(255) NOT NULL default '',
-  `cybersource_trans_key` varchar(255) NOT NULL default '',
-  `cybersource_trans_type` varchar(32) NOT NULL default '',
   `epay_merchantnumber` varchar(7) NOT NULL default '',
   `epay_secretkey` varchar(255) NOT NULL default '',
   `requireCCV` char(1) NOT NULL default '',
