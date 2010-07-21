@@ -48,6 +48,7 @@ Version 0.1.3 (2010-??-??)
 - Fixed: Invoice title not showing up in iso_invoice.tpl if no logo image set
 - Added: Batch invoice printing, by status
 - Added: Consolidation of order management global operations into a tools menu
+- Added: Backend order notes field
 
 Version 0.1.2 (2010-06-20)
 ------------------------------
