@@ -1,15 +1,10 @@
 <div id="invoice" style="margin:18px; padding:0px; font-size: 62.5%; font-family: Arial, Helvetica, sans-serif; width:800px; border:solid 1px #000000; padding-left25px; padding-right:25px;">
 	<table id="header" cellpadding="5" cellspacing="0" border="0" width="100%">
-		<?php if($this->logoImage): ?>
         <tr>
-		<td id="logo"><?php echo $this->logoImage; ?></td>
+        <?php if($this->logoImage): ?>
+		<td id="logo"><?php echo $this->logoImage; ?></td><?php endif; ?>
 		<td style="text-align:right;"><p style="font-size:1.2em; margin-top:0px; margin-bottom:10px; padding:0px;"><?php echo $this->invoiceTitle; ?></p></td>
 		</tr>
-		<?php else: ?>
-        <tr>
-		<td style="text-align:right;"><p style="font-size:1.2em; margin-top:0px; margin-bottom:10px; padding:0px;"><?php echo $this->invoiceTitle; ?></p></td>
-		</tr>
-        <?php endif; ?>
 	</table>
 		
 	<h2><?php echo $this->orderDetailsHeadline; ?></h2>
