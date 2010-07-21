@@ -46,7 +46,7 @@ $GLOBALS['TL_LANG']['tl_iso_orders']['cc_num'] = array('Card Number', 'The credi
 $GLOBALS['TL_LANG']['tl_iso_orders']['cc_cvv'] = array('CCV Number', '3 or 4-digit Credit Card Verification Number');
 $GLOBALS['TL_LANG']['tl_iso_orders']['cc_type'] = array('Card Type', 'The type of credit card.');
 $GLOBALS['TL_LANG']['tl_iso_orders']['cc_exp'] = array('Expiration', 'The expiration date of the credit card');
-
+$GLOBALS['TL_LANG']['tl_iso_orders']['notes'] = array('Order notes','If you would like to convey information to other backend users, please do so here.');
 
 /**
  * Reference
