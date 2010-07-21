@@ -86,24 +86,15 @@ class IsotopeCart extends IsotopeProductCollection
 		switch( $strKey )
 		{				
 			case 'totalWeight':
-			case 'totalQuantity':
 				$arrProducts = $this->getProducts();
-				switch($strKey)
-				{
-					case 'totalWeight':
-						foreach($arrProducts as $objProduct)
-						{						
-							$varValue += $objProduct->weight * $objProduct->quantity_requested;
-						}
-						break;
-					case 'totalQuantity':
-						foreach($arrProducts as $objProduct)
-						{						
-							$varValue += $objProduct->quantity_requested;
-						}
-						break;
-				}			
-				return $varValue;
+				
+				foreach($arrProducts as $objProduct)
+				{						
+					$fltShippingWeight += $objProduct->weight * $objProduct->quantity_requested;
+				}
+									
+				return $fltShippingWeight;
+				
 			case 'billing_address':
 			case 'billingAddress':
 				if ($this->arrCache['billingAddress_id'] > 0)
@@ -323,47 +314,33 @@ class IsotopeCart extends IsotopeProductCollection
 	 * @param array
 	 * @return array
 	 */
-	/*public function getCouponSurcharges($arrSurcharges)
+	public function getCouponSurcharges($arrSurcharges)
 	{
 		$this->import('Isotope');
 		
-		$arrCoupons = $this->Isotope->Cart->getCoupons();
-						
-		return $arrCoupons;
-	}*/
-	
-	/** 
-	 * Hook-callback for rules @TODO - determine if needed
-	 *
-	 * @access public
-	 * @param array
-	 * @return array
-	 */
-	/*public function getRulesSurcharges($arrSurcharges)
-	{
-		$this->import('Isotope');
+		$objCoupons = $this->Database->query("SELECT coupons FROM tl_iso_cart WHERE id={$this->id}");
 		
-		$arrRules = $this->Isotope->Cart->getRules();
+		if(!$objCoupons->numRows)
+			return $arrSurcharges;
 		
-		if (count($arrRules))
+		$arrCoupons = deserialize($objCoupons->coupons, true);
+		
+		foreach($arrCoupons as $coupon)
 		{
-			foreach($arrRules as $rule)
-			{
-				$arrSurcharges[] = array
-				(
-					'label'			=> $rule['title'],
-					'price'			=> $rule['price'],
-					'total_price'	=> $rule['price'],
-					'tax_class'		=> '',//$voucher['tax_class'],
-					'add_tax'		=> false //($voucher['tax_class'] ? true : false)
-				);
-			}
+			$arrSurcharges[] = array
+			(
+				'label'			=> $coupon['title'],
+				'price'			=> $coupon['price'],
+				'total_price'	=> $coupon['total_price'],
+				'tax_class'		=> 0,
+				'add_tax'		=> false,
+			);
 		}
-		
+						
 		return $arrSurcharges;
-	}*/
-
+	}
 		
+	
 	public function getSurcharges()
 	{
 		$this->import('Isotope');
