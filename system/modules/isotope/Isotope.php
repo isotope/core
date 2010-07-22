@@ -146,13 +146,23 @@ class Isotope extends Controller
 
 	
 	/**
-	 * Calculate price in foreign currencies.
+	 * Calculate price trough hook and foreign prices.
 	 */
-	public function calculatePrice($fltPrice, $intTaxClass=0)
+	public function calculatePrice($fltPrice, $intTaxClass=0, $strField='', $objSource=null)
 	{
 		// If price or override price is a string
 		if (!is_numeric($fltPrice))
 			return $fltPrice;
+			
+		// HOOK for altering prices
+		if (isset($GLOBALS['TL_HOOKS']['iso_calculatePrice']) && is_array($GLOBALS['TL_HOOKS']['iso_calculatePrice']))
+		{
+			foreach ($GLOBALS['TL_HOOKS']['iso_calculatePrice'] as $callback)
+			{
+				$this->import($callback[0]);
+				$fltPrice = $this->$callback[0]->$callback[1]($fltPrice, $intTaxClass, $strField, $objSource);
+			}
+		}
 			
 		if ($this->Config->priceMultiplier != 1)
 		{
@@ -869,14 +879,8 @@ class Isotope extends Controller
 				}
 				return true;
 				break;
-			case 'discountFactors':
-				if(!preg_match('/^\d+(\.\d{1,2})?%?$/', $varValue))
-				{															
-					$objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR'][$strRegexp], $objWidget->label));
-				}
-				return true;
-				break;
-			case 'generalFactors':
+				
+			case 'calc':
 				if(!preg_match('/^[-+]?\d+(\.\d{1,2})?%?$/', $varValue))
 				{															
 					$objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR'][$strRegexp], $objWidget->label));
