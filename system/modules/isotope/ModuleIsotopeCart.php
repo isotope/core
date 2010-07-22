@@ -148,7 +148,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 			);
 		}
 				
-		// HOOK for altering prices
+		// HOOK for adding additional forms into the template
 		if (isset($GLOBALS['TL_HOOKS']['iso_compileCart']) && is_array($GLOBALS['TL_HOOKS']['iso_compileCart']))
 		{
 			foreach ($GLOBALS['TL_HOOKS']['iso_compileCart'] as $name => $callback)
