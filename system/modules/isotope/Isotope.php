@@ -148,7 +148,7 @@ class Isotope extends Controller
 	/**
 	 * Calculate price trough hook and foreign prices.
 	 */
-	public function calculatePrice($fltPrice, $intTaxClass=0, $strField='', $objSource=null)
+	public function calculatePrice($fltPrice, &$objSource, $strField, $intTaxClass=0)
 	{
 		// If price or override price is a string
 		if (!is_numeric($fltPrice))
@@ -160,7 +160,7 @@ class Isotope extends Controller
 			foreach ($GLOBALS['TL_HOOKS']['iso_calculatePrice'] as $callback)
 			{
 				$this->import($callback[0]);
-				$fltPrice = $this->$callback[0]->$callback[1]($fltPrice, $intTaxClass, $strField, $objSource);
+				$fltPrice = $this->$callback[0]->$callback[1]($fltPrice, $objSource, $strField, $intTaxClass);
 			}
 		}
 			
