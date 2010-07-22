@@ -43,7 +43,7 @@ class ShippingCollection extends IsotopeShipping
 		{
 			case 'price':
 				return 0;
-				//return $this->Isotope->calculatePrice($this->calculateShippingRate($this->id, $this->Isotope->Cart->subTotal));
+				//return $this->Isotope->calculatePrice($this->calculateShippingRate($this->id, $this, 'price', $this->Isotope->Cart->subTotal));
 				break;
 					
 		}

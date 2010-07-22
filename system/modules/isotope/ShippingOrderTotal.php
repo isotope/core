@@ -51,7 +51,7 @@ class ShippingOrderTotal extends IsotopeShipping
 					return 0.00;
 				}
 				
-				return $this->Isotope->calculatePrice($this->calculateShippingRate($this->id, $fltEligibleSubTotal), $this->arrData['tax_class']);
+				return $this->Isotope->calculatePrice($this->calculateShippingRate($this->id, $fltEligibleSubTotal), $this, 'price', $this->arrData['tax_class']);
 				break;
 		}
 		

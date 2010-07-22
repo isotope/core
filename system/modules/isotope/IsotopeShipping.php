@@ -128,7 +128,7 @@ abstract class IsotopeShipping extends Frontend
 				break;
 				
 			case 'price':
-				return $this->Isotope->calculatePrice($this->arrData['price'], $this->arrData['tax_class']);
+				return $this->Isotope->calculatePrice($this->arrData['price'], $this, 'price', $this->arrData['tax_class']);
 				break;
 		}
 		

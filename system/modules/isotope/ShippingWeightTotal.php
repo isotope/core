@@ -53,7 +53,7 @@ class ShippingWeightTotal extends IsotopeShipping
 				
 			case 'price':
 				$objOptions = $this->getOptions();
-				return $this->Isotope->calculatePrice($objOptions->rate, $this->arrData['tax_class']);
+				return $this->Isotope->calculatePrice($objOptions->rate, $this, 'price', $this->arrData['tax_class']);
 				
 			default:
 				return parent::__get($strKey);
