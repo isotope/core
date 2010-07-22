@@ -158,12 +158,12 @@ class IsotopeProduct extends Controller
 			case 'categories':
 				return deserialize($this->arrData[$strKey], true);	
 			case 'original_price':
-				return $this->Isotope->calculatePrice($this->arrData['price'], $this, 'price', $this->arrData['tax_class']);
+				return $this->Isotope->calculatePrice($this->arrData['original_price'], $this, 'original_price', $this->arrData['tax_class']);
 				
 			case 'price':
 				if ($this->arrType['variants'] && !$this->arrData['vid'] && $this->arrCache['low_price'])
 				{
-					return $this->Isotope->calculatePrice($this->arrData['price'], $this, 'price', $this->arrData['tax_class']);
+					return $this->Isotope->calculatePrice($this->arrCache['low_price'], $this, 'low_price', $this->arrData['tax_class']);
 				}
 				
 				return $this->Isotope->calculatePrice($this->arrData['price'], $this, 'price', $this->arrData['tax_class']);		
