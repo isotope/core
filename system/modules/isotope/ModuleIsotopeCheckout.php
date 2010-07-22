@@ -1014,6 +1014,16 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				break;
 		}
 	
+		// HOOK: add custom addresses, such as from a stored gift registry ******** ADDED BY BLAIR
+		if (isset($GLOBALS['TL_HOOKS']['addCustomAddress']) && is_array($GLOBALS['TL_HOOKS']['addCustomAddress']))
+		{
+			foreach ($GLOBALS['TL_HOOKS']['addCustomAddress'] as $callback)
+			{
+				$this->import($callback[0]);
+				$arrOptions = $this->$callback[0]->$callback[1]($arrOptions, $field, $this);
+			}
+		}	
+	
 		if (count($arrOptions))
 		{
 			$strClass = $GLOBALS['TL_FFL']['radio'];
