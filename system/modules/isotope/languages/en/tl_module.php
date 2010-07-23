@@ -66,7 +66,6 @@ $GLOBALS['TL_LANG']['tl_module']['iso_listingSortDirection'] 	= array('Initial s
 $GLOBALS['TL_LANG']['tl_module']['iso_buttons']					= array('Buttons', 'Select the buttons you want to show.');
 $GLOBALS['TL_LANG']['tl_module']['iso_forward_review']			= array('Forward to review page', 'Forward the user to the review page if no data is required on any step.');
 $GLOBALS['TL_LANG']['tl_module']['iso_related_categories']		= array('Related categories', 'Select the categories to show products of.');
-$GLOBALS['TL_LANG']['tl_module']['iso_enableCoupons']			= array('Enable coupons','Enable coupons for this checkout module.');
 /**
  * References
  */

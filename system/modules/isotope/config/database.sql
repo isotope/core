@@ -50,7 +50,6 @@ CREATE TABLE `tl_module` (
   `iso_listingSortDirection` varchar(8) NOT NULL default '',
   `iso_buttons` blob NULL,
   `iso_related_categories` blob NULL,
-  `iso_enableCoupons` char(1) NOT NULL default '',
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
