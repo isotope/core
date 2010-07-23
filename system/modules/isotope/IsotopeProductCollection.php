@@ -269,27 +269,6 @@ abstract class IsotopeProductCollection extends Model
 		return $this->arrProducts;
 	}
 	
-	/**
-	 * Fetch products from database.
-	 * 
-	 * @access public
-	 * @return array
-	 */
-	public function getCoupons()
-	{
-		if (!is_array($this->arrCoupons) || $blnNoCache)
-		{
-			$this->arrCoupons = array();
-			$objItems = $this->Database->prepare("SELECT coupons FROM " . $this->ctable . " WHERE pid=?")->execute($this->id);
-	
-			while( $objItems->next() )
-			{
-				$this->arrCoupons[] = deserialize($objItems->coupons, true);
-			}
-		}
-		
-		return $this->arrCoupons;
-	}
 	
 	/**
 	 * Add a product to the collection
@@ -321,10 +300,7 @@ abstract class IsotopeProductCollection extends Model
 				'product_options'		=> $objProduct->getOptions(true),
 				'product_quantity'		=> $intQuantity,
 				'price'					=> $objProduct->price,
-				'href_reader'			=> $objProduct->href_reader,
-				'rules'					=> (is_array($objProduct->rules) ? serialize($objProduct->rules) : ''),
-				'coupons'				=> (is_array($objProduct->coupons) ? serialize($objProduct->coupons) : '')
-
+				'href_reader'			=> $objProduct->href_reader
 			);
 			
 			return $this->Database->prepare("INSERT INTO {$this->ctable} %s")->set($arrSet)->executeUncached()->insertId;

@@ -34,7 +34,6 @@ $GLOBALS['TL_LANG']['MOD']['iso_products']				= array('Product management','');
 $GLOBALS['TL_LANG']['MOD']['iso_orders']				= array('Orders', '');
 $GLOBALS['TL_LANG']['MOD']['iso_statistics']			= array('Statistics', '');
 $GLOBALS['TL_LANG']['MOD']['iso_setup']					= array('Store configuration','');
-$GLOBALS['TL_LANG']['MOD']['iso_coupons']				= array('Coupons', '');
 
 /**														
  * Frontend modules									
