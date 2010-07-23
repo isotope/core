@@ -87,8 +87,6 @@ class ModuleIsotopeCart extends ModuleIsotope
 			if ($this->Input->get('remove') == $objProduct->cart_id)
 			{
 				$this->Database->query("DELETE FROM tl_iso_cart_items WHERE id={$objProduct->cart_id}");
-				//@TODO: doesn't cover order discounts... they won't be removable for now.
-				$this->Database->query("DELETE FROM tl_iso_coupon_usage WHERE object_id={$objProduct->cart_id} AND cart_id={$this->Isotope->Cart->id}");
 				$this->redirect((strlen($this->Input->get('referer')) ? base64_decode($this->Input->get('referer', true)) : $strUrl));
 			}
 			elseif ($this->Input->post('FORM_SUBMIT') == 'iso_cart_update' && is_array($arrQuantity) && $objProduct->cart_id)
@@ -117,8 +115,6 @@ class ModuleIsotopeCart extends ModuleIsotope
 				'quantity'			=> $objProduct->quantity_requested,
 				'cart_item_id'		=> $objProduct->cart_id,
 				'product_options'	=> $objProduct->getOptions(),
-				'rules'				=> $objProduct->rules,
-				'coupons'			=> $objProduct->coupons,
 				'remove_link'		=> ampersand($strUrl . ($GLOBALS['TL_CONFIG']['disableAlias'] ? '&' : '?') . 'remove='.$objProduct->cart_id.'&referer='.base64_encode($this->Environment->request)),
 				'remove_link_text'  => $GLOBALS['TL_LANG']['MSC']['removeProductLinkText'],
 				'remove_link_title' => sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $objProduct->name),

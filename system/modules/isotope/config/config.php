@@ -58,13 +58,6 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
 		'print_invoices'			=> array('IsotopePOS','printInvoicesInterface'),
 		'payment'					=> array('tl_iso_orders', 'paymentInterface'),
 		'shipping'					=> array('tl_iso_orders', 'shippingInterface'),
-	),
-	'iso_coupons' => array
-	(
-		'tables'					=> array('tl_iso_coupon', 'tl_iso_coupon_usage'), //'tl_iso_coupon_codes'),
-		'stylesheet'				=> 'system/modules/isotope/html/backend_src.css',
-		'javsacript'				=> 'system/modules/isotope/html/backend_src.js',
-		'icon'						=> 'system/modules/isotope/html/coupons.png'
 	),/*
 	'iso_statistics' => array
 	(
