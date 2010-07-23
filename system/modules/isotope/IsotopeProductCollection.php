@@ -40,13 +40,7 @@ abstract class IsotopeProductCollection extends Model
 	 * @var array
 	 */
 	protected $arrProducts;
-	
-	/** 
-	 * Cache all coupons for speed improvements
-	 * @var array
-	 */
-	protected $arrCoupons;
-	
+		
 	/**
 	 * Isotope object
 	 * @var object
@@ -216,35 +210,6 @@ abstract class IsotopeProductCollection extends Model
 				{
 					$objProduct = new IsotopeProduct(array('id'=>$objItems->product_id, 'sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price));
 				}
-			
-				$arrRules = array();
-				$arrCoupons = array();
-				
-				if($objItems->rules)
-				{
-					$arrRuleData = deserialize($objItems->coupons, true);
-					
-					foreach($arrRuleData as $rule)
-					{
-						$arrRules[] = deserialize($rule, true);
-					}
-
-				}
-				
-				
-				
-				if($objItems->coupons)
-				{							
-					$arrCouponData = deserialize($objItems->coupons, true);
-					
-					foreach($arrCouponData as $coupon)
-					{
-						$arrCoupons[] = deserialize($coupon, true);	
-					}
-				}	
-				
-				$objProduct->rules = $arrRules;
-				$objProduct->coupons = $arrCoupons;
 												
 				$objProduct->quantity_requested = $objItems->product_quantity;
 				$objProduct->cart_id = $objItems->id;
