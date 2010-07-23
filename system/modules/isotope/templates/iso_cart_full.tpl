@@ -63,7 +63,9 @@
 	<a class="checkout" href="<?php echo $this->checkoutJumpTo; ?>"><span><?php echo $this->checkoutJumpToLabel; ?></span></a>
 </div>
 </form>
-<?php if($this->couponsForm): ?>
-<?php echo $this->couponsForm; ?>
+<?php if($this->forms): ?>
+<?php foreach($this->forms as $form): ?>
+<?php echo $form; ?>
+<?php endforeach; ?>
 <?php endif; ?>
 </div>
