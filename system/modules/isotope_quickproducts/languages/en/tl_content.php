@@ -22,26 +22,19 @@
  * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Blair Winans <blair@winanscreative.com>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
 /**
- * Frontend modules
+ * Fields
  */
-$GLOBALS['FE_MOD']['isotope']['iso_registry_manager']	= 'ModuleGiftRegistryManager';
-$GLOBALS['FE_MOD']['isotope']['iso_registry_search']	= 'ModuleGiftRegistrySearch';
-$GLOBALS['FE_MOD']['isotope']['iso_registry_reader']	= 'ModuleGiftRegistryReader';
 
-
+$GLOBALS['TL_LANG']['tl_content']['productsAlias'] 		= array('Products', 'Search for your products by keywords (found in name, alias, sku or description) and add products by checking the checkbox.');
+$GLOBALS['TL_LANG']['tl_content']['iso_reader_jumpTo']	= array('Product reader jump to page', 'This setting defines to which page a user will be redirected when clicking a product for more info.');
+$GLOBALS['TL_LANG']['tl_content']['iso_list_layout']	= array('Product list template', 'Please choose a list layout. You can add custom list layouts to folder <em>templates</em>. List template files start with <em>iso_list_</em> and require file extension <em>.tpl</em>.');
 /**
- * Hook for additional buttons
+ * Legends
  */
-$GLOBALS['TL_HOOKS']['isoButtons'][]	= array('IsotopeRegistryFrontend', 'registryButton');
-$GLOBALS['TL_HOOKS']['isoButtons'][]	= array('IsotopeRegistryFrontend', 'registryCartButton');
-
-
-/**
- * Hook for adding additional checkout addresses
- */
-$GLOBALS['TL_HOOKS']['addCustomAddress'][] = array('IsotopeRegistryFrontend', 'registryAddress');
+$GLOBALS['TL_LANG']['tl_content']['config_legend']    = 'Configuration settings';

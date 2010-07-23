@@ -20,28 +20,13 @@
  *
  * PHP version 5
  * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
+ * @author	   Blair Wianns <blair@winanscreative.com>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
-
-/**
- * Frontend modules
+/** 
+ * Content elements
  */
-$GLOBALS['FE_MOD']['isotope']['iso_registry_manager']	= 'ModuleGiftRegistryManager';
-$GLOBALS['FE_MOD']['isotope']['iso_registry_search']	= 'ModuleGiftRegistrySearch';
-$GLOBALS['FE_MOD']['isotope']['iso_registry_reader']	= 'ModuleGiftRegistryReader';
-
-
-/**
- * Hook for additional buttons
- */
-$GLOBALS['TL_HOOKS']['isoButtons'][]	= array('IsotopeRegistryFrontend', 'registryButton');
-$GLOBALS['TL_HOOKS']['isoButtons'][]	= array('IsotopeRegistryFrontend', 'registryCartButton');
-
-
-/**
- * Hook for adding additional checkout addresses
- */
-$GLOBALS['TL_HOOKS']['addCustomAddress'][] = array('IsotopeRegistryFrontend', 'registryAddress');
+$GLOBALS['TL_CTE']['includes']['iso_quickproducts'] = 'ContentIsotopeQuickProducts';
