@@ -127,18 +127,9 @@ class IsotopeProduct extends Controller
 				$this->arrCache['low_price'] = $objProduct->low_price;
 			}
 		}
-		
-		$arrReturn = $this->applyPriceRules($this);
-
+				
 		$this->arrData['original_price'] = $this->arrData['price'];
-		
-		if(count($arrReturn))
-		{
-			//!@todo original_price is empty if no return array is given
-			$this->arrData['price'] = $arrReturn[0];
-			$this->arrData['rules'] = $arrReturn[1];
-		}
-		
+				
 		$this->loadLanguage();
 	}
 
@@ -407,7 +398,7 @@ class IsotopeProduct extends Controller
 		
 		$objTemplate->label_detail = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
 		
-		$objTemplate->originalPrice = $this->formatted_original_price;
+		$objTemplate->original_price = $this->formatted_original_price;
 		$objTemplate->options = $arrProductOptions;	
 		$objTemplate->hasOptions = count($arrProductOptions) ? true : false;
 		
