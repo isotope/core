@@ -1,0 +1,22 @@
+#tl_import div
+{
+	margin: 0px;
+}
+
+#tl_header
+{
+	padding:20px;
+	font-weight: bold;
+	font-size: 2em;
+}
+#tl_import .tl_info,#tl_import .tl_confirm
+{
+	margin:0 20px;
+}
+
+#tl_header.spin
+{
+		background: url('ajax-loader.gif') center center no-repeat;
+}
+
+#tl_import td.arrow{padding:6px 0 8px 36px;background:url("../../../themes/default/images/current.gif") no-repeat left center;}
