@@ -29,8 +29,20 @@
 /**
  * Frontend modules
  */
-$GLOBALS['FE_MOD']['isotope']['isoGiftRegistryManager']	= 'ModuleGiftRegistry';
-$GLOBALS['FE_MOD']['isotope']['isoGiftRegistrySearch']	= 'ModuleGiftRegistrySearch';
-$GLOBALS['FE_MOD']['isotope']['isoGiftRegistryResults']	= 'ModuleGiftRegistryResults';
-$GLOBALS['FE_MOD']['isotope']['isoGiftRegistryReader']	= 'ModuleGiftRegistryReader';
+$GLOBALS['FE_MOD']['isotope']['iso_registry_manager']	= 'ModuleGiftRegistryManager';
+$GLOBALS['FE_MOD']['isotope']['iso_registry_search']	= 'ModuleGiftRegistrySearch';
+$GLOBALS['FE_MOD']['isotope']['iso_registry_results']	= 'ModuleGiftRegistryResults';
+$GLOBALS['FE_MOD']['isotope']['iso_registry_reader']	= 'ModuleGiftRegistryReader';
 
+
+/**
+ * Hook for additional buttons
+ */
+$GLOBALS['TL_HOOKS']['isoButtons'][]	= array('IsotopeRegistryFrontend', 'registryButton');
+$GLOBALS['TL_HOOKS']['isoButtons'][]	= array('IsotopeRegistryFrontend', 'registryCartButton');
+
+
+/**
+ * Hook for adding additional checkout addresses
+ */
+$GLOBALS['TL_HOOKS']['addCustomAddress'][] = array('IsotopeRegistryFrontend', 'registryAddress');

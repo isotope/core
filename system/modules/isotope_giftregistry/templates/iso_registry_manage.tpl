@@ -1,68 +1,50 @@
-<div class="iso_registry_manage iso_cart_full">
 
-<?php if ($this->headline): ?>
-<<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
-<?php endif; ?>
+<div class="registry_full">
 
-<form action="<?php echo $this->registryJumpTo; ?>" method="post" name="registry_manage">
-<input type="hidden" name="action" value="update_registry"  />
+<div class="info">
+<h2><?php echo $this->registryTitle; ?></h2>
+<table cellpadding="10" cellspacing="0" summary="Gift Registry Info"><tr>
+<td><strong><?php echo $this->name; ?><br /><?php echo $this->second_party_name; ?></strong></td>
+<td><?php echo date("m/d/Y",$this->date); ?></td>
+<td><?php echo $this->event_type; ?></td>
+<td><a class="edit" href="<?php echo $this->editLink; ?>"><span><?php echo $this->editText; ?></span></a></td>
+</tr><tr><td colspan="4"><p><?php echo $this->description; ?></p></td>
+</tr></table>
+</div>
 
-<h2>Registry Title: <input name="registry_title" size="30" type="text" value="<?php echo $this->registryTitle; ?>" /></h2>
-<p class="regdate">Registry Event Date:<br />
-	<input name="registry_date" size="30" type="text" value="<?php echo date('m/d/Y', $this->registryDate); ?>" />
-</p>
-<p class="descr"> Registry Description:<br />
-	<textarea name="registry_desc" rows="4" columns="20"><?php echo $this->registryDescription; ?></textarea>
-</p>
-
-<div class="productWrapper">
-<?php if(!sizeof($this->products)): ?>
-	<div class="noItems"><?php echo $this->noItemsInRegistry; ?></div>
-<?php else: ?>
-
+<form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>" method="post">
+<div class="formbody">
+<input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formSubmit; ?>" />
+<table cellpadding="0" cellspacing="0" summary="Gift Registry">
+<tbody>
 <?php foreach($this->products as $product): ?>
-		<!-- BEGIN PRODUCT-->
-        <div class="product">
-        
-        <!--IF USER IS LOGGED IN-->
-        <?php if(USERISLOGGEDIN): ?>
-        	<div class="col removeButton"><a href="<?php echo $product['remove_link']; ?>" title="<?php echo $product['remove_link_title']; ?>">x</a> Remove</div>
-        <?php endif; ?>
-       	<!--END IF USER IS LOGGED IN-->
-        	
-   			<div class="col productImg"><a href="<?php echo $product['link']; ?>" title="<?php echo $product['name']; ?>"><img src="<?php echo $product['image'] ?>" alt="<?php echo $product['name']; ?>" border="0" class="thumbnail" /></a></div>
-       		
-       		<div class="col productInfo">
-       				<h3 class="productName"><a href="<?php echo $product['link']; ?>" title="<?php echo $product['name']; ?>"><?php echo $product['name']; ?></a></h3>
-       				<!--<div class="optionswrapper">
-       					<?php //foreach($this->cart_options as $option): ?>
-							<div class="option"><span class="optionname">OPTION:</span> PRODUCT OPTION</div>
-						<?php //endforeach; ?>
-       				</div>-->
-       		</div>
-       		
-       		<div class="col productQtyRequested">
-       			<p class="price"><?php echo $product['price']; ?></p>
-       			
-       			
-       			<p class="qtyRequested">Quantity Requested: 
-       			
-       				<input name="product_qty_<?php echo $product['id']; ?>" type="text" size="3" value="<?php echo $product['quantity']; ?>" />
-       				       			
-       		</div>
-       		    
-            <div class="clear">&nbsp;</div>
-		</div>
-        <!-- END PRODUCT-->
-        <div class="divider"></div>   
-	<?php endforeach; ?>
-<?php endif; ?>
-
-	</div>
-	<div class="registryButtons">
-		<div class="submit_container"><a href="javascript:document.registry_manage.submit();" onclick="document.registry_manage.submit();return false;"><?php echo $this->submitlabel; ?></a></div>
-	</div>
-	
-	</form>
-	
+    <tr class="<?php echo $product['class']; ?>">
+		<td class="col_0 col_first image"><a href="<?php echo $product['link']; ?>" title="<?php echo $product['name']; ?>"><img src="<?php echo $product['image']['gallery']; ?>" alt="<?php echo $product['image']['alt']; ?>" class="thumbnail"<?php echo $product['image']['gallery_size']; ?> /></a></td>
+   		<td class="col_1 name">
+   			<a href="<?php echo $product['link']; ?>" title="<?php echo $product['name']; ?>"><?php echo $product['name']; ?></a>
+			<?php if($product['product_options']): ?>
+			<div class="optionswrapper">
+				<ul class="productOptions">
+				<?php foreach($product['product_options'] as $option): ?>
+					<li><strong><?php echo $option['name']; ?>:</strong> <?php echo implode(', ', $option['values']); ?></li>
+				<?php endforeach; ?>
+				</ul>
+			</div>
+			<?php endif; ?>
+		</td>
+		<td class="col_2 quantity"><input name="quantity[<?php echo $product['registry_item_id']; ?>]" size="3" type="text" class="text" value="<?php echo $product['quantity']; ?>" maxlength="3" /></td>
+   		<td class="col_3 price"><?php echo $product['price']; ?></td>
+    	<td class="col_4 price total"><?php echo $product['total_price']; ?></td>
+    	<td class="col_5 tax"><?php echo $product['tax_id']; ?></td>
+    	<td class="col_6 col_last remove"><a href="<?php echo $product['remove_link']; ?>" title="<?php echo $product['remove_link_title']; ?>" class="remove"><?php echo $product['remove_link_text']; ?></a></td>
+	</tr>
+<?php endforeach; ?>
+    </tbody>
+</table>
+</div>
+<div class="submit_container">
+	<input type="submit" class="submit update" value="<?php echo $GLOBALS['TL_LANG']['MSC']['updateRegistryBT']; ?>" />
+	<a class="continue" href="<?php echo $this->continueJumpTo; ?>"><span><?php echo $this->continueJumpToLabel; ?></span></a>
+</div>
+</form>
 </div>

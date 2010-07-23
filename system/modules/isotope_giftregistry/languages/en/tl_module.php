@@ -32,4 +32,5 @@
 $GLOBALS['TL_LANG']['tl_module']['iso_registry_layout']			= array('Gift registry manager template', 'Please choose a gift registry layout. You can add custom layouts to folder <em>templates</em>. Registry template files start with <em>iso_registry_</em> and require file extension <em>.tpl</em>.');
 $GLOBALS['TL_LANG']['tl_module']['iso_registry_results']		= array('Gift registry search results template', 'Please choose a gift registry search results layout. You can add custom layouts to folder <em>templates</em>. Registry template files start with <em>iso_registry_search</em> and require file extension <em>.tpl</em>.');
 $GLOBALS['TL_LANG']['tl_module']['iso_registry_reader']			= array('Gift registry reader template', 'Please choose a registry reader layout. You can add custom layouts to folder <em>templates</em>. Registry template files start with <em>iso_registry_full</em> and require file extension <em>.tpl</em>.');
+$GLOBALS['TL_LANG']['tl_module']['iso_registry_jumpTo']		= array('Gift Registry jump to page', 'This setting defines to which page a user will be redirected when adding a product to their registry, if other than the current page.');
 

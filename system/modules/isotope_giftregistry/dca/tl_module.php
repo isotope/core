@@ -29,10 +29,13 @@
 /**
  * Palettes
  */
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryManager']	= '{title_legend},name,headline,type;iso_registry_layout;guests,protected;align,space,cssID';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistrySearch']	= '{title_legend},name,headline,type;jumpTo;guests,protected;align,space,cssID';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryResults']	= '{title_legend},name,headline,type;jumpTo;iso_registry_results;perPage;guests,protected;align,space,cssID';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['isoGiftRegistryReader']	= '{title_legend},name,headline,type;iso_registry_reader,iso_cart_jumpTo;guests,protected;align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_registry_manager']	= '{title_legend},name,headline,type;iso_registry_layout;guests,protected;align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_registry_search']	= '{title_legend},name,headline,type;jumpTo;guests,protected;align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_registry_reader']	= '{title_legend},name,headline,type;iso_list_layout,iso_cart_jumpTo,iso_buttons,iso_use_quantity;guests,protected;align,space,cssID';
+
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productlist'] = str_replace('iso_addProductJumpTo','iso_addProductJumpTo,iso_registry_jumpTo',$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productlist']);
+
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productreader'] = str_replace('iso_addProductJumpTo','iso_addProductJumpTo,iso_registry_jumpTo',$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productreader']);
 
 
 /**
@@ -63,5 +66,14 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_registry_results'] = array
 	'exclude'                 => true,
 	'inputType'               => 'select',
 	'options'                 => $this->getTemplateGroup('iso_registry_search')
+);
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_registry_jumpTo'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_registry_jumpTo'],
+	'exclude'                 => true,
+	'inputType'               => 'pageTree',
+	'explanation'             => 'jumpTo',
+	'eval'                    => array('fieldType'=>'radio')
 );
 

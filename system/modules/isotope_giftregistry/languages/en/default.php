@@ -29,13 +29,25 @@
 /**
  * Registry language entries 
  */
-$GLOBALS['TL_LANG']['MSC']['registry']['lastname'] = 'Search by Last Name:';
-$GLOBALS['TL_LANG']['MSC']['registry']['datestr'] = 'Enter Date of Event:';
-$GLOBALS['TL_LANG']['MSC']['registry']['registrySearch'] = 'Search Gift Registries';
-$GLOBALS['TL_LANG']['MSC']['registry']['registryManage'] = 'Save Your Gift Registry';
-$GLOBALS['TL_LANG']['MSC']['registry']['emptyField'] = 'Please fill in both fields';
-$GLOBALS['TL_LANG']['MSC']['registry']['noItemsInRegistry'] = 'There are no items in this registry available for purchase.';
-$GLOBALS['TL_LANG']['MSC']['registry']['noresultsText'] = 'There are no registries matching your search: %s';
-$GLOBALS['TL_LANG']['MSC']['registry']['sResults'] = '%s gift registries were found for %s on or around %s';
+$GLOBALS['TL_LANG']['MSC']['lastname'] = 'Search by Last Name:';
+$GLOBALS['TL_LANG']['MSC']['datestr'] = 'Enter Date of Event:';
+$GLOBALS['TL_LANG']['MSC']['registryEditText'] = 'Edit Your Gift Registry Details';
+$GLOBALS['TL_LANG']['MSC']['registryTitle'] = 'Your Gift Registry';
+$GLOBALS['TL_LANG']['MSC']['registryOwnerTitle'] = 'Gift Registry for %s';
+$GLOBALS['TL_LANG']['MSC']['registrySearch'] = 'Search Gift Registries';
+$GLOBALS['TL_LANG']['MSC']['registryManage'] = 'Save Your Gift Registry';
+$GLOBALS['TL_LANG']['MSC']['registrySearch'] = 'Search Gift Registries';
+$GLOBALS['TL_LANG']['MSC']['emptyField'] = 'Please fill in both fields';
+$GLOBALS['TL_LANG']['MSC']['noItemsInRegistry'] = 'There are no items in this registry available for purchase.';
+$GLOBALS['TL_LANG']['MSC']['noresultsText'] = 'There are no registries matching your search: %s';
+$GLOBALS['TL_LANG']['MSC']['sResults'] = '%s gift registries were found for %s on or around %s';
 $GLOBALS['TL_LANG']['MSC']['notAvailableOnline'] = 'Call for Price';
+$GLOBALS['TL_LANG']['MSC']['updateRegistryBT'] = 'Update Quantities';
+$GLOBALS['TL_LANG']['MSC']['rResults'] = 'Results %s - %s of %s for <strong>%s</strong>';
+$GLOBALS['TL_LANG']['MSC']['lastNameLabel'] = 'Last Name:';
+$GLOBALS['TL_LANG']['MSC']['dateLabel'] = 'Date:';
+$GLOBALS['TL_LANG']['MSC']['searchregistryLabel'] = 'Search Gift Registries';
+$GLOBALS['TL_LANG']['MSC']['shipToRegistry'] = '<strong>Ship to Registry Owner:</strong>';
 
+$GLOBALS['TL_LANG']['MSC']['buttonLabel']['registry'] = 'Add To Registry';
+$GLOBALS['TL_LANG']['MSC']['buttonLabel']['registryCart'] = 'Add To My Cart';
