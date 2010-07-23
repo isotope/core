@@ -307,40 +307,7 @@ class IsotopeCart extends IsotopeProductCollection
 		return $arrSurcharges;
 	}
 	
-	/** 
-	 * Hook-callback for coupons @TODO - determine if needed
-	 * 
-	 * @access public
-	 * @param array
-	 * @return array
-	 */
-	public function getCouponSurcharges($arrSurcharges)
-	{
-		$this->import('Isotope');
 		
-		$objCoupons = $this->Database->query("SELECT coupons FROM tl_iso_cart WHERE id={$this->id}");
-		
-		if(!$objCoupons->numRows)
-			return $arrSurcharges;
-		
-		$arrCoupons = deserialize($objCoupons->coupons, true);
-		
-		foreach($arrCoupons as $coupon)
-		{
-			$arrSurcharges[] = array
-			(
-				'label'			=> $coupon['title'],
-				'price'			=> $coupon['price'],
-				'total_price'	=> $coupon['total_price'],
-				'tax_class'		=> 0,
-				'add_tax'		=> false,
-			);
-		}
-						
-		return $arrSurcharges;
-	}
-		
-	
 	public function getSurcharges()
 	{
 		$this->import('Isotope');
