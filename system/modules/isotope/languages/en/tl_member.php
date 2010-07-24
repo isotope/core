@@ -30,3 +30,4 @@
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_member']['address_book']       = array('Address Book', 'Manage this address book.');
+

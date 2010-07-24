@@ -98,7 +98,6 @@ class ModuleIsotopeCart extends ModuleIsotope
 				}
 				else
 				{
-					
 					$this->Database->prepare("UPDATE tl_iso_cart_items SET product_quantity=? WHERE id={$objProduct->cart_id}")->executeUncached($arrQuantity[$objProduct->cart_id]);
 				}
 			}
@@ -159,7 +158,6 @@ class ModuleIsotopeCart extends ModuleIsotope
 			}
 		}			
 		
-			
 		$objTemplate->formId = 'iso_cart_update';
 		$objTemplate->formSubmit = 'iso_cart_update';
 		$objTemplate->action = $this->Environment->request;
@@ -179,6 +177,5 @@ class ModuleIsotopeCart extends ModuleIsotope
 
 		$this->Template->cart = $objTemplate->parse();
 	}
-	
 }
 
