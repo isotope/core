@@ -146,8 +146,10 @@ class IsotopeProduct extends Controller
 			case 'pid':
 			case 'href_reader':					
 				return $this->arrData[$strKey];
+				
 			case 'categories':
-				return deserialize($this->arrData[$strKey], true);	
+				return deserialize($this->arrData[$strKey], true);
+				
 			case 'original_price':
 				return $this->Isotope->calculatePrice($this->arrData['original_price'], $this, 'original_price', $this->arrData['tax_class']);
 				
@@ -790,31 +792,23 @@ class IsotopeProduct extends Controller
 				break;
 				
 			default:
+			
 				//these values are not by reference - they were directly entered.  
-				if(is_array($varValue))
+				if (is_array($varValue))
 				{
-				  foreach($varValue as $value)
-				  {
-					$varOptionValues[] = $value;
-				  }
+					foreach($varValue as $value)
+					{
+						$varOptionValues[] = $value;
+					}
 				}
 				else
 				{
-				  if($arrData['eval']['rgxp'])
-				  {
-				  	switch($arrData['eval']['rgxp'])
+					if (strlen($varValue) && in_array($arrData['eval']['rgxp'], array('date', 'time', 'datim')))
 					{
-						case 'date':
-						case 'time':
-						case 'datim':
-							$varValue = $this->parseDate($GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'].'Format'], $varValue);
-				  			break;
-						default:
-							break;
+						$varValue = $this->parseDate($GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'].'Format'], $varValue);
 					}
-				  }
 				  
-				  $varOptionValues[] = $varValue;
+					$varOptionValues[] = $varValue;
 				}
 				
 				break;
