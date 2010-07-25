@@ -40,7 +40,7 @@ abstract class IsotopeProductCollection extends Model
 	 * @var array
 	 */
 	protected $arrProducts;
-		
+	
 	/**
 	 * Isotope object
 	 * @var object
@@ -92,6 +92,7 @@ abstract class IsotopeProductCollection extends Model
 			case 'hasShipping':
 				return (is_object($this->Shipping) ? true : false);
 				break;
+				
 			case 'requiresShipping':
 				foreach( $this->getProducts() as $objProduct )
 				{
@@ -152,7 +153,7 @@ abstract class IsotopeProductCollection extends Model
 				return parent::__get($strKey);
 		}
 	}
-		
+	
 	
 	/**
 	 * Also delete child table records when dropping this collection.
@@ -180,13 +181,13 @@ abstract class IsotopeProductCollection extends Model
 	
 			while( $objItems->next() )
 			{	
-				//we can possibly simplify this if we have access to a the product's PID but as we're dealing with cart items, we don't by default.			
+				//we can possibly simplify this if we have access to a the product's PID but as we're dealing with cart items, we don't by default.
 				$objVariantData = $this->Database->query("SELECT * FROM tl_iso_products WHERE id={$objItems->product_id}");
-								
+				
 				$intProductId = ($objVariantData->pid ? $objVariantData->pid : $objVariantData->id);
 				
 				$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS product_class FROM tl_iso_products WHERE id={$intProductId} ORDER BY pid ASC")->limit(1)->execute();
-			
+				
 				//since this only pulls a variant with incomplete data we need to start with the parent product and then pull the child data in.
 				if($objVariantData->numRows)
 				{
@@ -194,7 +195,7 @@ abstract class IsotopeProductCollection extends Model
 				
 					//merge the product data
 					foreach($arrVariantData as $k=>$v)
-					{						
+					{
 						if($v)
 							$objProductData->$k = $v;
 					}
@@ -210,7 +211,7 @@ abstract class IsotopeProductCollection extends Model
 				{
 					$objProduct = new IsotopeProduct(array('id'=>$objItems->product_id, 'sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price));
 				}
-												
+				
 				$objProduct->quantity_requested = $objItems->product_quantity;
 				$objProduct->cart_id = $objItems->id;
 				$objProduct->reader_jumpTo_Override = $objItems->href_reader;
@@ -313,7 +314,7 @@ abstract class IsotopeProductCollection extends Model
 		$time = time();
 		$arrIds = array();
 	 	$objOldItems = $this->Database->execute("SELECT * FROM {$objCollection->ctable} WHERE pid={$objCollection->id}");
-									  
+		
 		while( $objOldItems->next() )
 		{
 			$objNewItems = $this->Database->execute("SELECT * FROM {$this->ctable} WHERE pid={$this->id} AND product_id={$objOldItems->product_id} AND product_options='{$objOldItems->product_options}'");
@@ -321,10 +322,10 @@ abstract class IsotopeProductCollection extends Model
 			// Product exists in target table. Increase amount.
 			if ($objNewItems->numRows)
 			{
-				$this->Database->query("UPDATE {$this->ctable} SET tstamp=$time AND product_quantity=(product_quantity+{$objOldItems->product_quantity}) WHERE id={$objNewItems->id}");
+				$this->Database->query("UPDATE {$this->ctable} SET tstamp=$time, product_quantity=(product_quantity+{$objOldItems->product_quantity}) WHERE id={$objNewItems->id}");
 				$arrIds[] = $objNewItems->id;
 			}
-								
+			
 			// Product does not exist in this collection, we don't duplicate and are on the same table. Simply change parent id.
 			elseif (!$objNewItems->numRows && !$blnDuplicate && $this->ctable == $objCollection->ctable)
 			{

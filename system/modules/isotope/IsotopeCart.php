@@ -227,7 +227,7 @@ class IsotopeCart extends IsotopeProductCollection
 			$this->setData(array
 			(
 				'pid'			=> ($this->User->id ? $this->User->id : 0),
-				'session'		=> $this->strHash,
+				'session'		=> ($this->User->id ? '' : $this->strHash),
 				'tstamp'		=> time(),
 			));
 			
