@@ -53,7 +53,7 @@ class IsotopeFrontend extends Frontend
 	 */
 	//!@todo $objModule is always defined, rework to use it and make sure the module config field is in palettes
 	public function addToCart($objProduct, $objModule=null)
-	{		
+	{
 		$this->Isotope->Cart->addProduct($objProduct, ((is_object($objModule) && $objModule->iso_use_quantity && intval($this->Input->post('quantity_requested')) > 0) ? intval($this->Input->post('quantity_requested')) : 1));
 		
 		$this->jumpToOrReload($objModule->iso_addProductJumpTo);
