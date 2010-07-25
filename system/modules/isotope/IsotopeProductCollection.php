@@ -180,27 +180,9 @@ abstract class IsotopeProductCollection extends Model
 			$objItems = $this->Database->prepare("SELECT * FROM " . $this->ctable . " WHERE pid=?")->execute($this->id);
 	
 			while( $objItems->next() )
-			{	
-				//we can possibly simplify this if we have access to a the product's PID but as we're dealing with cart items, we don't by default.
-				$objVariantData = $this->Database->query("SELECT * FROM tl_iso_products WHERE id={$objItems->product_id}");
-				
-				$intProductId = ($objVariantData->pid ? $objVariantData->pid : $objVariantData->id);
-				
-				$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS product_class FROM tl_iso_products WHERE id={$intProductId} ORDER BY pid ASC")->limit(1)->execute();
-				
-				//since this only pulls a variant with incomplete data we need to start with the parent product and then pull the child data in.
-				if($objVariantData->numRows)
-				{
-					$arrVariantData = $objVariantData->row();
-				
-					//merge the product data
-					foreach($arrVariantData as $k=>$v)
-					{
-						if($v)
-							$objProductData->$k = $v;
-					}
-				}
-				
+			{
+				$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS product_class FROM tl_iso_products WHERE pid={$objItems->product_id} OR id={$objItems->product_id}")->limit(1)->execute();
+								
 				$strClass = $GLOBALS['ISO_PRODUCT'][$objProductData->product_class]['class'];
 				
 				try
@@ -216,6 +198,7 @@ abstract class IsotopeProductCollection extends Model
 				$objProduct->cart_id = $objItems->id;
 				$objProduct->reader_jumpTo_Override = $objItems->href_reader;
 				
+				//!is this correct?
 				if($objProduct->price!==$objItems->price)
 					$objProduct->price = $objItems->price;
 				
@@ -246,7 +229,7 @@ abstract class IsotopeProductCollection extends Model
 	 */
 	public function addProduct(IsotopeProduct $objProduct, $intQuantity)
 	{
-		$objItem = $this->Database->prepare("SELECT * FROM {$this->ctable} WHERE pid={$this->id} AND (product_options='".serialize($objProduct->getOptions(true))."' AND id={$objProduct->id})")->limit(1)->execute();
+		$objItem = $this->Database->prepare("SELECT * FROM {$this->ctable} WHERE pid={$this->id} AND product_id={$objProduct->id} AND product_options='".serialize($objProduct->getOptions(true))."'")->limit(1)->execute();
 		
 		if ($objItem->numRows)
 		{
@@ -260,7 +243,7 @@ abstract class IsotopeProductCollection extends Model
 			(
 				'pid'					=> $this->id,
 				'tstamp'				=> time(),
-				'product_id'			=> ($objProduct->vid ? $objProduct->vid : $objProduct->id),
+				'product_id'			=> $objProduct->id,
 				'product_sku'			=> $objProduct->sku,
 				'product_name'			=> $objProduct->name,
 				'product_options'		=> $objProduct->getOptions(true),

@@ -102,25 +102,46 @@ class IsotopeProduct extends Controller
 		parent::__construct();
 		$this->import('Database');
 		$this->import('Isotope');
-
-		$this->arrData = $arrData;		
+		
+		if ($arrData['pid'] > 0)
+		{
+			$this->arrData = $this->Database->execute("SELECT * FROM tl_iso_products WHERE id={$arrData['pid']}")->fetchAssoc();
+			$this->loadVariantData($arrData);
+		}
+		else
+		{
+			$this->arrData = $arrData;
+		}
 
 		$this->arrType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id=".$this->arrData['type'])->fetchAssoc();
 		$this->arrAttributes = deserialize($this->arrType['attributes'], true);
 		$this->arrCache['list_template'] = $this->arrType['list_template'];
 		$this->arrCache['reader_template'] = $this->arrType['reader_template'];
 		$this->arrVariantAttributes = $this->arrType['variants'] ? deserialize($this->arrType['variant_attributes']) : array();
+		
+		// Options are not set, load from variant
+		if ($this->arrData['pid'] > 0)
+		{
+			foreach( $this->arrAttributes as $attribute )
+			{
+				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['add_to_product_variants'])
+				{
+					$this->arrOptions[$attribute] = $this->arrData[$attribute];
+				}
+			}
+		}
 
 		// Cache downloads for this product
+		//!@todo now takes data from variant...
 		if ($this->arrType['downloads'])
 		{
-			$this->arrDownloads = $this->Database->execute("SELECT * FROM tl_iso_downloads WHERE pid=".$this->arrData['id'])->fetchAllAssoc();
+			$this->arrDownloads = $this->Database->execute("SELECT * FROM tl_iso_downloads WHERE pid=".($this->arrData['pid'] ? $this->arrData['pid'] : $this->arrData['id']))->fetchAllAssoc();
 		}
 		
 		// Find lowest price
 		if ($this->arrType['variants'] && in_array('price', $this->arrVariantAttributes))
 		{
-			$objProduct = $this->Database->execute("SELECT MIN(price) AS low_price, MAX(price) AS high_price FROM tl_iso_products WHERE pid={$this->id} AND published='1' AND language=''");
+			$objProduct = $this->Database->execute("SELECT MIN(price) AS low_price, MAX(price) AS high_price FROM tl_iso_products WHERE pid=" . ($this->arrData['pid'] ? $this->arrData['pid'] : $this->arrData['id']) . " AND published='1' AND language=''");
 
 			if ($objProduct->low_price < $objProduct->high_price)
 			{
@@ -154,7 +175,7 @@ class IsotopeProduct extends Controller
 				return $this->Isotope->calculatePrice($this->arrData['original_price'], $this, 'original_price', $this->arrData['tax_class']);
 				
 			case 'price':
-				if ($this->arrType['variants'] && !$this->arrData['vid'] && $this->arrCache['low_price'])
+				if ($this->arrType['variants'] && $this->arrData['pid'] == 0 && $this->arrCache['low_price'])
 				{
 					return $this->Isotope->calculatePrice($this->arrCache['low_price'], $this, 'low_price', $this->arrData['tax_class']);
 				}
@@ -305,7 +326,7 @@ class IsotopeProduct extends Controller
 	public function setOptions(array $arrOptions)
 	{
 		$this->arrOptions = $arrOptions;
-		
+
 		$this->validateVariant();
 	}
 
@@ -358,7 +379,6 @@ class IsotopeProduct extends Controller
 			}
         }
         
-        
         // Buttons
 		$arrButtons = array();
 		if (isset($GLOBALS['TL_HOOKS']['isoButtons']) && is_array($GLOBALS['TL_HOOKS']['isoButtons']))
@@ -372,8 +392,7 @@ class IsotopeProduct extends Controller
 			$arrButtons = array_intersect_key($arrButtons, array_flip(deserialize($objModule->iso_buttons, true)));
 		}
 		
-		
-		if ($this->Input->post('FORM_SUBMIT') == 'iso_product_'.$this->id && !$this->doNotSubmit)
+		if ($this->Input->post('FORM_SUBMIT') == 'iso_product_'.($this->pid ? $this->pid : $this->id) && !$this->doNotSubmit)
 		{			
 			foreach( $arrButtons as $button => $data )
 			{
@@ -405,11 +424,11 @@ class IsotopeProduct extends Controller
 		$objTemplate->hasOptions = count($arrProductOptions) ? true : false;
 		
 		$objTemplate->enctype = $this->hasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
-		$objTemplate->formId = 'iso_product_'.$this->id;
+		$objTemplate->formId = 'iso_product_'.($this->pid ? $this->pid : $this->id);
 		$objTemplate->action = ampersand($this->Environment->request, true);
-		$objTemplate->formSubmit = 'iso_product_'.$this->id;
+		$objTemplate->formSubmit = 'iso_product_'.($this->pid ? $this->pid : $this->id);
 		
-		$GLOBALS['TL_MOOTOOLS'][] = "<script type=\"text/javascript\">new IsotopeProduct('" . $objModule->id . "', '" . $this->id . "', ['ctrl_" . implode("_".$this->id."', 'ctrl_", $arrAjaxOptions) . "_".$this->id."'], {language: '" . $GLOBALS['TL_LANGUAGE'] . "'});</script>";
+		$GLOBALS['TL_MOOTOOLS'][] = "<script type=\"text/javascript\">new IsotopeProduct('" . $objModule->id . "', '" . ($this->pid ? $this->pid : $this->id) . "', ['ctrl_" . implode("_".($this->pid ? $this->pid : $this->id)."', 'ctrl_", $arrAjaxOptions) . "_".($this->pid ? $this->pid : $this->id)."'], {language: '" . $GLOBALS['TL_LANGUAGE'] . "'});</script>";
 		
 		// HOOK for altering product data before output
 		if (isset($GLOBALS['TL_HOOKS']['iso_generateProduct']) && is_array($GLOBALS['TL_HOOKS']['iso_generateProduct']))
@@ -425,7 +444,8 @@ class IsotopeProduct extends Controller
 	}
 	
 	
-	public function applyPriceRules($objProduct)
+/*
+	public function applyPriceRules($arrProductData)
 	{
 		if(is_array($GLOBALS['TL_HOOKS']['isoCartPriceRules']) && count($GLOBALS['TL_HOOKS']['isoCartPriceRules']))
 		{
@@ -433,12 +453,13 @@ class IsotopeProduct extends Controller
 			{									
 				$this->import($callback[0]);
 				
-				$arrReturn = $this->$callback[0]->$callback[1]($objProduct);
+				$arrReturn = $this->$callback[0]->$callback[1]($arrProductData);
 			}
 		}	
 		
 		return $arrReturn;	
 	}
+*/
 	
 	/**
 	 * Generate the product data on ajax update
@@ -484,7 +505,7 @@ class IsotopeProduct extends Controller
 			{
 				$arrOptions[] = array
 				(
-					'id'		=> ('ctrl_' . $attribute . '_' . $this->id),
+					'id'		=> ('ctrl_' . $attribute . '_' . ($this->pid ? $this->pid : $this->id)),
 					'html'		=> $this->generateProductOptionWidget($attribute, true),
 				);
 			}
@@ -498,14 +519,14 @@ class IsotopeProduct extends Controller
 					{
 						$arrOptions[] = array
 						(
-							'id'		=> ($attribute . '_' . $this->id . '_' . $type . 'size'),
+							'id'		=> ($attribute . '_' . ($this->pid ? $this->pid : $this->id) . '_' . $type . 'size'),
 							'html'		=> $objGallery->generateMainImage($type),
 						);
 					}
 					
 					$arrOptions[] = array
 					(
-						'id'		=> ($attribute . '_' . $this->id . '_gallery'),
+						'id'		=> ($attribute . '_' . ($this->pid ? $this->pid : $this->id) . '_gallery'),
 						'html'		=> $objGallery->generateGallery(),
 					);
 				}
@@ -513,7 +534,7 @@ class IsotopeProduct extends Controller
 				{
 					$arrOptions[] = array
 					(
-						'id'		=> ($attribute . '_' . $this->id),
+						'id'		=> ($attribute . '_' . ($this->pid ? $this->pid : $this->id)),
 						'html'		=> $this->generateAttribute($attribute, $varValue),
 					);
 				}
@@ -610,7 +631,7 @@ class IsotopeProduct extends Controller
 				switch( $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['eval']['rgxp'] )
 				{
 					case 'price':
-						if ($attribute == 'price' && $this->arrType['variants'] && !$this->arrData['vid'] && $this->arrCache['low_price'])
+						if ($attribute == 'price' && $this->arrType['variants'] && $this->arrData['pid'] == 0 && $this->arrCache['low_price'])
 						{
 							$strBuffer = sprintf($GLOBALS['TL_LANG']['MSC']['priceRangeLabel'], $this->Isotope->formatPriceWithCurrency($varValue));
 						}
@@ -629,7 +650,7 @@ class IsotopeProduct extends Controller
 		
 		if (in_array($attribute, $this->arrVariantAttributes))
 		{
-			return '<span id="' . $attribute . '_' . $this->id . '">' . $strBuffer . '</span>';
+			return '<span id="' . $attribute . '_' . ($this->pid ? $this->pid : $this->id) . '">' . $strBuffer . '</span>';
 		}
 		else
 		{
@@ -658,7 +679,7 @@ class IsotopeProduct extends Controller
 		if ($arrData['attributes']['add_to_product_variants'] && is_array($arrData['options']))
 		{
 			$arrData['eval']['includeBlankOption'] = true;
-			$arrSearch = array('pid'=>$this->arrData['id']);
+			$arrSearch = array('pid'=>($this->pid ? $this->pid : $this->id));
 			
 			foreach( $this->arrOptions as $name => $value )
 			{
@@ -710,10 +731,10 @@ class IsotopeProduct extends Controller
 					
 		$objWidget->storeValues = true;
 		$objWidget->tableless = true;
-		$objWidget->id .= "_" . $this->id;
+		$objWidget->id .= "_" . ($this->pid ? $this->pid : $this->id);
 		
 		// Validate input
-		if ($this->Input->post('FORM_SUBMIT') == 'iso_product_'.$this->id)
+		if ($this->Input->post('FORM_SUBMIT') == 'iso_product_'.($this->pid ? $this->pid : $this->id))
 		{
 			$objWidget->validate();
 
@@ -879,52 +900,63 @@ class IsotopeProduct extends Controller
 		
 		if (count($arrOptions))
 		{
-			$objVariant = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE pid={$this->id} AND published='1' AND language='' AND " . implode("=? AND ", array_keys($arrOptions)) . "=?")->execute($arrOptions);
+			$objVariant = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE pid=" . ($this->pid ? $this->pid : $this->id) . " AND published='1' AND language='' AND " . implode("=? AND ", array_keys($arrOptions)) . "=?")->execute($arrOptions);
+			
+			// Variant already loaded
+			if ($objVariant->id == $this->id)
+				return;
 			
 			// Must match 1 variant, must not match multiple
 			if ($objVariant->numRows == 1)
 			{
-				$arrInherit = deserialize($objVariant->inherit, true);
-
-				$this->arrData['vid'] = $objVariant->id;
-				
-				foreach( $this->arrVariantAttributes as $attribute )
-				{
-					if (in_array($attribute, $arrInherit))
-						continue;
-											
-					switch($attribute)
-					{
-						case 'price':
-							$arrReturn = $this->applyPriceRules($objVariant);
-		
-							if(count($arrReturn))
-							{
-								$this->arrData['original_price'] = $this->arrData[$attribute];
-								$this->arrData['price'] = $arrReturn[0];
-								$this->arrData['rules'] = $arrReturn[1];
-							}
-							else
-							{
-								$this->arrData[$attribute] = $objVariant->$attribute;
-							}
-							break;
-							
-						default:
-							$this->arrData[$attribute] = $objVariant->$attribute;
-							break;
-					}
-											
-					unset($this->arrCache[$attribute]);
-				}
-				
-				$this->loadLanguage($arrInherit);
+				$this->loadVariantData($objVariant->row(), false);
 			}
 			else
 			{
 				$this->doNotSubmit = true;
 			}
 		}
+	}
+	
+	
+	protected function loadVariantData($arrData)
+	{
+		$arrInherit = deserialize($arrData['inherit'], true);
+
+		$this->arrData['id'] = $arrData['id'];
+		$this->arrData['pid'] = $arrData['pid'];
+		
+		foreach( $this->arrVariantAttributes as $attribute )
+		{
+			if (in_array($attribute, $arrInherit))
+				continue;
+									
+//			switch($attribute)
+//			{
+//				case 'price':
+//					$arrReturn = $this->applyPriceRules($arrData);
+//
+//					if(count($arrReturn))
+//					{
+//						$this->arrData['original_price'] = $this->arrData[$attribute];
+//						$this->arrData['price'] = $arrReturn[0];
+//						$this->arrData['rules'] = $arrReturn[1];
+//					}
+//					else
+//					{
+//						$this->arrData[$attribute] = $arrData[$attribute];
+//					}
+//					break;
+//					
+//				default:
+					$this->arrData[$attribute] = $arrData[$attribute];
+//					break;
+//			}
+									
+			unset($this->arrCache[$attribute]);
+		}
+		
+		$this->loadLanguage($arrInherit);
 	}
 	
 	
@@ -937,16 +969,14 @@ class IsotopeProduct extends Controller
 		if (!strlen($GLOBALS['TL_LANGUAGE']))
 			return;
 			
-		$intId = $this->arrData['id'];
 		$arrAttributes = $this->arrAttributes;
 		
-		if (strlen($this->arrData['vid']))
+		if ($this->arrData['pid'] > 0)
 		{
-			$intId = $this->arrData['vid'];
 			$arrAttributes = $this->arrVariantAttributes;
 		}
 		
-		$objLanguage = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE pid=? AND language=?")->limit(1)->execute($intId, $GLOBALS['TL_LANGUAGE']);
+		$objLanguage = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE pid={$this->id} AND language=?")->limit(1)->execute($GLOBALS['TL_LANGUAGE']);
 		
 		if ($objLanguage->numRows)
 		{
