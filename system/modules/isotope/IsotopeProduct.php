@@ -444,23 +444,6 @@ class IsotopeProduct extends Controller
 	}
 	
 	
-/*
-	public function applyPriceRules($arrProductData)
-	{
-		if(is_array($GLOBALS['TL_HOOKS']['isoCartPriceRules']) && count($GLOBALS['TL_HOOKS']['isoCartPriceRules']))
-		{
-			foreach($GLOBALS['TL_HOOKS']['isoCartPriceRules'] as $callback)
-			{									
-				$this->import($callback[0]);
-				
-				$arrReturn = $this->$callback[0]->$callback[1]($arrProductData);
-			}
-		}	
-		
-		return $arrReturn;	
-	}
-*/
-	
 	/**
 	 * Generate the product data on ajax update
 	 */
@@ -930,29 +913,8 @@ class IsotopeProduct extends Controller
 		{
 			if (in_array($attribute, $arrInherit))
 				continue;
-									
-//			switch($attribute)
-//			{
-//				case 'price':
-//					$arrReturn = $this->applyPriceRules($arrData);
-//
-//					if(count($arrReturn))
-//					{
-//						$this->arrData['original_price'] = $this->arrData[$attribute];
-//						$this->arrData['price'] = $arrReturn[0];
-//						$this->arrData['rules'] = $arrReturn[1];
-//					}
-//					else
-//					{
-//						$this->arrData[$attribute] = $arrData[$attribute];
-//					}
-//					break;
-//					
-//				default:
-					$this->arrData[$attribute] = $arrData[$attribute];
-//					break;
-//			}
-									
+
+			$this->arrData[$attribute] = $arrData[$attribute];
 			unset($this->arrCache[$attribute]);
 		}
 		
@@ -993,3 +955,4 @@ class IsotopeProduct extends Controller
 		}
 	}
 }
+
