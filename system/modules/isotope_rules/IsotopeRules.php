@@ -115,51 +115,35 @@ class IsotopeRules extends Controller
 	/** 
 	 * get any rule pricing
 	 */
-	public function getRules($arrObjects, $objSource)
+	public function getRules($arrObjects = array(), $objSource = NULL)
 	{
+		if(!count($arrObjects))
+			return $arrObjects;
+						
 		$arrReturn = array();
 		$arrData = array();
-		
+				
 		if($objSource instanceof IsotopeProductCollection)	//@TODO Make space for additional custom class rule eligibility hooking
+		{
 			$arrObjects[] = $objSource;
-					
+		}
+
 		$arrData = $this->getEligibleRules($arrObjects, 'rules');
-		
-		if(!count($arrData))
-			return array();
 			
-		$arrAppliedRuleData = $this->applyRules($arrData);
+		if(!count($arrData))
+			return $arrObjects;
+			
+		return $this->applyRules($arrObjects,$arrData);
 		
-		foreach($arrObject
 	}
 	
-	/** 
-	 * calculatePrice hook callback for items
-	 * allows us to reflect the application of a rule upon a product price
-	 * @access public
-	 * @param float $fltPrice
-	 * @param object $objSource
-	 * @param string $strField
-	 * @param integer $intTaxClass
-	 * @return float $fltReturn
-	 */
-	/*public function calculateItemPrice($fltPrice, $objSource, $strField, $intTaxClass)
-	{		
-		if($objSource instanceof IsotopeProduct) //var set to indicate these do not reside within the cart and therefore aren't being double checked.)
-		{
-			switch($strField)
-			{
-				case 'price':
-					$arrProducts[] = $objSource;	//Get the current product
-					$arrData = $this->getEligibleRules($arrProducts, 'rules');
-					return $this->applyRules($arrData);
-					break;
-				default:
-					return $fltPrice;
-			}
-		}
-	}*/
 	
+	/** 
+	 * Upon adding to cart, we need to somehow store the rule so it can be cached & recalled.
+	 * @access public
+	 * @param object $objProduct
+	 * @param object $objModule
+	 */
 	/*public function addToCart($objProduct, $objModule=null)
 	{
 		$arrProducts[] = $objProduct;	//Get the current product
@@ -179,7 +163,7 @@ class IsotopeRules extends Controller
 	 */ 
 	protected function getEligibleRules($arrObjects, $strQueryMode = '')
 	{							
-		if(!count($arrProducts))
+		if(!count($arrObjects))
 			return '';
 		
 		$intToday = time();
@@ -212,7 +196,7 @@ class IsotopeRules extends Controller
 									
 		//determine eligibility for the current shopper. //restrictions either null or not matching
 		$objCoupons = $this->Database->executeUncached("SELECT c.*, (SELECT COUNT(u.id) AS couponUses FROM tl_iso_rule_usage u WHERE u.pid=c.id) AS uses FROM tl_iso_rule c WHERE c.enabled='1'".$strCouponsClause);
-		
+	
 		if(!$objCoupons->numRows)
 			return '';
 						
@@ -238,28 +222,26 @@ class IsotopeRules extends Controller
 				}
 			}
 		}
-					
+				
 		foreach($arrObjects as $i => $object)
-		{			
-			$strParentClass = get_parent_class($object);
-			
-			switch($strParentClass)
+		{
+			if($object instanceof IsotopeProduct)
 			{
-			
-				case 'IsotopeProduct':
 					$arrObject['pages'] = $object->pages;
 					$arrObject['productTypes'] = $object->type;
 					$arrObject['products'] = $object->id;
-					$object->container_id = $object->cart_id; //necessary to check the usage table by product collection class id (for example, cart id)
+					$intObjectId = $object->cart_id; //necessary to check the usage table by product collection class id (for example, cart id)
 					$object->coupons = array();	//@TODO: get coupons for this item from the container or else reinstate the coupons field for items.
-					break;
-				case 'IsotopeProductCollection':
-					$object->container_id=$object->id; //necessary to check the usage table by product collection class id (for example, cart id)
+			}
+			elseif($object instanceof IsotopeProductCollection)
+			{
+					$intObjectId=$object->id; //necessary to check the usage table by product collection class id (for example, cart id)
 					$arrObject = array(); //this is only necessary for product-level rules.
-					break;
-				default:
+			}
+			else
+			{
 					//@TODO: HOOK THIS for other unanticipated classes that don't fit the two we provide for?
-					break(2);
+					break;
 			}
 			
 			$arrCustomerMatrix = array_merge($arrCustomer, $arrObject);		
@@ -279,7 +261,7 @@ class IsotopeRules extends Controller
 								if(FE_USER_LOGGED_IN)
 								{																		
 									//if the number of customer uses exceeds this coupon in total, or the current product has already had the coupon applied to it...					
-									if($arrUses['value'] <= $arrMemberUsesByCoupon[$row['id']]['customerUses'] || $object->container_id==$arrMemberUsesByCoupon[$row['id']]['object_id'])
+									if($arrUses['value'] <= $arrMemberUsesByCoupon[$row['id']]['customerUses'] || $intObjectId==$arrMemberUsesByCoupon[$row['id']]['object_id'])
 									{	
 										break(2);	//don't allow
 									}
@@ -370,32 +352,27 @@ class IsotopeRules extends Controller
 											
 				if(count($arrRestrictions))
 				{														
-						$blnLoopBreak = false;									
-						foreach($arrRestrictions as $k=>$v) //check each field in the coupon row
-						{											
-							if(is_array($arrCustomerMatrix[$k]) && is_array($v))	//mismatch! break to next row.
-							{										
-								$cRow[$k] = array_map('strval', $arrCustomerMatrix[$k]);
-								$v = array_map('strval', $v);
-																
-								if(!count(array_intersect($arrCustomerMatrix[$k], $v)))																				
-									$blnLoopBreak = true;
-							}
-							elseif(!in_array($arrCustomerMatrix[$k], $v))
-							{
+					$blnLoopBreak = false;									
+					foreach($arrRestrictions as $k=>$v) //check each field in the coupon row
+					{											
+						if(is_array($arrCustomerMatrix[$k]) && is_array($v))	//mismatch! break to next row.
+						{										
+							$cRow[$k] = array_map('strval', $arrCustomerMatrix[$k]);
+							$v = array_map('strval', $v);
+															
+							if(!count(array_intersect($arrCustomerMatrix[$k], $v)))																				
 								$blnLoopBreak = true;
-							}									
-							
-							if($blnLoopBreak)
-								break(2);
 						}
+						elseif(!in_array($arrCustomerMatrix[$k], $v))
+						{
+							$blnLoopBreak = true;
+						}									
 						
-						$arrReturn[$row['id']] = array
-						(
-							'coupon'		=> $row,
-							'object'		=> $object	//assumes only product right now
-						);
+						if($blnLoopBreak)
+							break(2);
+					}
 					
+					$arrReturn[get_class($object)][$intObjectId][] = $row;
 				}
 			} 	//end coupons loop
 		}	//end products loop
@@ -416,7 +393,7 @@ class IsotopeRules extends Controller
 	 * @param array $arrData
 	 * @return boolean
 	 */
-	protected function applyRules($arrData,$strCodes='')
+	protected function applyRules($arrObjects,$arrData,$strCodes='')
 	{		
 		$arrAppliedRules = array();
 		$arrUsedCodes = array();
@@ -427,70 +404,78 @@ class IsotopeRules extends Controller
 
 		$arrUsedCodes = array();
 
-		foreach($arrData as $row)
-		{	
-			//if we have codes and they don't match, skip this rule, also if they are already applied, skip them.  The rest of the code
-			//can safely assume valid coupon usage and simply apply them.
-			if(count($arrCodes) && (!in_array($row['coupon']['code'], $arrCodes) || in_array($row['coupon']['code'], $arrUsedCodes)))
+		foreach($arrObjects as $i=>$object)
+		{
+			$arrRules = array();
+			
+			$intObjectId = $object->id;
+			
+			if($object instanceof IsotopeProduct)
+				$intObjectId = $object->cart_id;
+			
+			if(!count($arrData[get_class($object)][$intObjectId]))
+				continue;
+
+			foreach($arrData[get_class($object)][$intObjectId] as $rule)
 			{
+				if(count($arrCodes) && (!in_array($rule['code'], $arrCodes) || in_array($rule['code'], $arrUsedCodes)))
+				{
+							continue;
+				}
+				elseif(count($arrCodes))
+				{
+					//add to used codes as it will be used now.
+					$arrUsedCodes[] = $rule['code'];
+				}
+				
+				$blnPercentage = strpos($rule['discount'], '%');
+					
+				switch($rule['type'])
+				{ 
+					case 'product':					
+						if($blnPercentage)
+						{	
+							$intValue = (float)rtrim($rule['discount'], '%') / 100;	
+							$fltChange = ($object->price * $intValue);
+						}
+						else
+						{
+							$fltChange = (float)$rule['discount'];
+						}										
+						break;
+					case 'product_collection':
+						if($blnPercentage)
+						{	
+							$fltValue = (float)rtrim($rule['discount'], '%') / 100;	
+							
+							$fltChange = $object->subTotal * $fltValue;
+						}
+						else
+						{
+							$fltChange = (float)$rule['discount'];
+						}																
+						break;
+					default:
 						continue;
-			}
-			elseif(count($arrCodes))
-			{
-				//add to used codes as it will be used now.
-				$arrUsedCodes[] = $row['coupon']['code'];
-			}
-										
-			$blnPercentage = strpos($row['coupon']['discount'], '%');
-					
-			switch($row['coupon']['type'])
-			{ 
-				case 'product':					
-					if($blnPercentage)
-					{	
-						$intValue = (float)rtrim($row['coupon']['discount'], '%') / 100;	
-						$fltChange = ($row['object']->price * $intValue);
-					}
-					else
-					{
-						$fltChange = (float)$row['coupon']['discount'];
-					}
+				}
 				
-					$arrCouponData['object_id']		= $row['object']->cart_id;
-					$arrCouponData['total_price']	= $row['object']->price - $fltChange;
-					
-					//simply update the price on the existing product as-is
-					$arrUpdate['price'] = $row['product']->price - $fltChange;
-					$arrUpdate['coupons'][] = serialize($arrCouponData);
-					
-					//yes, we need to reflect this coupon in the cart, arrCache will be used to preserve the discount info, when hitting "calculatePrice"
-					//$varReturn = $this->Isotope->Cart->updateProduct($row['product'], $arrUpdate);
-					break;
-				case 'product_collection':
-					if($blnPercentage)
-					{	
-						$fltValue = (float)rtrim($row['coupon']['discount'], '%') / 100;	
-						
-						$fltChange = $this->Isotope->Cart->subTotal * $fltValue;
-					}
-					else
-					{
-						$fltChange = (float)$row['coupon']['discount'];
-					}	
-														
-					break;
-			}
+				$arrRules[] = array
+				(
+					'label'			=> $rule['title'],
+					'price'			=> ($blnPercentage ? $rule['discount'] : $this->Isotope->formatPriceWithCurrency($rule['discount'])),
+					'total_price'	=> $this->Isotope->formatPriceWithCurrency($fltChange,false)
+				);
+								
+			}	//end coupons for this particular object
+			
+			if(count($arrRules))
+				$object->prices = $arrRules;
 				
-			$arrRules[$row['object']->id]['rules'][] = array
-			(
-				'label'			=> $row['coupon']['title'],
-				'price'			=> ($blnPercentage ? $row['coupon']['discount'] : $this->Isotope->formatPriceWithCurrency($row['coupon']['discount'])),
-				'total_price'	=> $this->Isotope->formatPriceWithCurrency($fltChange,false),
-			);										
+			$arrFinalObjects[] = $object;
+		
+		}	//end objects
 			
-		}  //end $arrData foreach
-			
-		return $arrRules;
+		return $arrFinalObjects;
 	}
 	
 	/** 
@@ -511,7 +496,7 @@ class IsotopeRules extends Controller
 				{
 					//update the usage table 
 					$arrSet['tstamp'] 		= time();
-					$arrSet['pid'] 			= $row['coupon']['id'];
+					$arrSet['pid'] 			= $row['rule']['id'];
 					$arrSet['member_id'] 	= (FE_USER_LOGGED_IN ? $this->User->id : 0);
 					$arrSet['object_type']	= 
 					$arrSet['object_id'] 	= $row['object']['id'];
