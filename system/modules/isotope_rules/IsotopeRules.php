@@ -81,12 +81,12 @@ class IsotopeRules extends Controller
 	{		
 		$arrProducts = $this->Isotope->Cart->getProducts();	
 		
-		$arrData = $this->getEligibleRules($arrProducts,'rules');	//returns a collection of rules and their respective products that are associated.
+		$arrData = $this->getEligibleRules($arrProducts,'coupons');	//returns a collection of rules and their respective products that are associated.
 		
 		if(!count($arrData))
 			return '';
 					
-		if($this->Input->post('FORM_SUBMIT')=='iso_cart_rules')
+		if($this->Input->post('FORM_SUBMIT')=='iso_cart_coupons')
 		{			
 			if($this->Input->post('code'))
 			{
@@ -100,13 +100,13 @@ class IsotopeRules extends Controller
 		$objTemplate = new FrontendTemplate('iso_coupons');
 		
 		$objTemplate->action = $this->Environment->request;
-		$objTemplate->formId = 'iso_cart_rules';
-		$objTemplate->formSubmit = 'iso_cart_rules';
+		$objTemplate->formId = 'iso_cart_coupons';
+		$objTemplate->formSubmit = 'iso_cart_coupons';
 		$objTemplate->headline = $GLOBALS['TL_LANG']['ISO']['couponsHeadline'];
 		$objTemplate->message = NULL;
 		$objTemplate->inputLabel = $GLOBALS['TL_LANG']['ISO']['couponsInputLabel'];
 		$objTemplate->sLabel = $GLOBALS['TL_LANG']['ISO']['couponsSubmitLabel'];
-		$objTemplate->error = ($blnResult ? $GLOBALS['TL_LANG']['ERR']['invalidRule'] : NULL);
+		$objTemplate->error = ($blnResult ? $GLOBALS['TL_LANG']['ERR']['invalidCoupon'] : NULL);
 	
 		return $objTemplate->parse();
 	}
@@ -144,15 +144,17 @@ class IsotopeRules extends Controller
 	 * @param object $objProduct
 	 * @param object $objModule
 	 */
-	/*public function addToCart($objProduct, $objModule=null)
-	{
+	public function addToCart($objProduct, $objModule=null)
+	{		
 		$arrProducts[] = $objProduct;	//Get the current product
 		$arrData = $this->getEligibleRules($arrProducts, 'rules');
+		var_dump($arrData);
+		exit;
+		$arrProducts = $this->applyRules($arrProducts, $arrData);
 		
-		$arrAppliedRules = $this->applyRules($arrData);
-		
-		$this->saveRules($arrAppliedRules);	//session save by default	
-	}*/
+		$this->saveRules($arrAppliedRules, $arrProducts);	//session save by default	
+	
+	}
 	
 	/** 
 	 * check eligibility for products
@@ -470,6 +472,7 @@ class IsotopeRules extends Controller
 				
 				$arrRules[] = array
 				(
+					'id'			=> $rule['id'],
 					'label'			=> $rule['title'],
 					'price'			=> ($blnPercentage ? $rule['discount'] : $this->Isotope->formatPriceWithCurrency($rule['discount'])),
 					'total_price'	=> $this->Isotope->formatPriceWithCurrency($fltChange,false)
@@ -493,7 +496,7 @@ class IsotopeRules extends Controller
 	 * @param array $arrData
 	 * @param string $strContainer
 	 */
-	private function saveRules($arrData = array(), $arrObjects, $strContainer = '')
+	private function saveRules($arrObjects, $strContainer = '')
 	{
 		if(!count($arrData))
 			return;
@@ -501,15 +504,15 @@ class IsotopeRules extends Controller
 		switch($strContainer)
 		{
 			case 'table':
-				foreach($arrProducts as $i=>$o
-				foreach($arrData as $row)
+				//save usage once coupons have been validated. (MOVE TO 
+				foreach($arrObjects as $object)
 				{
 					//update the usage table 
 					$arrSet['tstamp'] 		= time();
 					$arrSet['pid'] 			= $row['rule']['id'];
 					$arrSet['member_id'] 	= (FE_USER_LOGGED_IN ? $this->User->id : 0);
 					//$arrSet['object_type']	= 
-					$arrSet['object_id'] 	= ($row['object']['id'];
+					//$arrSet['object_id'] 	= $row['object']['id'];
 					
 					$this->Database->prepare("INSERT INTO tl_iso_rule_usage %s")
 								   ->set($arrSet)
@@ -517,9 +520,15 @@ class IsotopeRules extends Controller
 				}
 				break;
 			default:
-				foreach($arrData as $rule)
+				foreach($arrObjects as $object)
 				{
-					$_SESSION['CHECKOUT_DATA']['rules'][] = $rule;
+					foreach($object->prices as $row)
+					{
+						$arrRules[get_class($object)][$object->id][] = $row;
+					}
+					var_dump($arrRules);
+					exit;
+					$_SESSION['CHECKOUT_DATA']['rules'] = $arrRules;
 				}
 				break;
 		}
