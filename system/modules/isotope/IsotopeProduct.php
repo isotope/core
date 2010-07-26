@@ -408,7 +408,7 @@ class IsotopeProduct extends Controller
 			}
 		}
 		
-		
+		$objTemplate->prices = $this->prices;
 		$objTemplate->buttons = $arrButtons;
 		$objTemplate->quantityLabel = $GLOBALS['TL_LANG']['MSC']['quantity'];
 		$objTemplate->useQuantity = $objModule->iso_use_quantity;
@@ -442,6 +442,7 @@ class IsotopeProduct extends Controller
 
 		return $objTemplate->parse();
 	}
+
 	
 	
 	/**

@@ -158,6 +158,16 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		
 		$arrBuffer = array();
 		
+		if (count($arrProducts) && isset($GLOBALS['TL_HOOKS']['iso_getProductUpdates']) && is_array($GLOBALS['TL_HOOKS']['iso_getProductUpdates']))
+		{
+			foreach ($GLOBALS['TL_HOOKS']['iso_getProductUpdates'] as $callback)
+			{				
+				$this->import($callback[0]);
+				$arrProducts = $this->$callback[0]->$callback[1]($arrProducts, $this);
+			}
+		}
+		
+		
 		foreach( $arrProducts as $i => $objProduct )
 		{
 			$arrBuffer[] = array
@@ -170,6 +180,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			$blnSetClear = (($i+1) % $this->columns==0 ? true : false);
 		}
 	
+		
 		// Add "product_last" css class
 		if (count($arrBuffer))
 		{
