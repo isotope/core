@@ -77,7 +77,7 @@ class IsotopeRules extends Controller
 	 * @param object $objModule
 	 * @return string
 	 */
-	public function getForm($objModule)
+	public function getCouponForm($objModule)
 	{		
 		$arrProducts = $this->Isotope->Cart->getProducts();	
 		
@@ -395,7 +395,6 @@ class IsotopeRules extends Controller
 	 */
 	protected function applyRules($arrObjects,$arrData,$strCodes='')
 	{		
-		$arrAppliedRules = array();
 		$arrUsedCodes = array();
 		$arrCodes = array();
 					
