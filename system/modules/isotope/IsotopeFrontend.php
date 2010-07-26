@@ -56,6 +56,16 @@ class IsotopeFrontend extends Frontend
 	{
 		$this->Isotope->Cart->addProduct($objProduct, ((is_object($objModule) && $objModule->iso_use_quantity && intval($this->Input->post('quantity_requested')) > 0) ? intval($this->Input->post('quantity_requested')) : 1));
 		
+		// HOOK for adding additional functionality to the addToCart operation
+		if (isset($GLOBALS['TL_HOOKS']['iso_addToCart']) && is_array($GLOBALS['TL_HOOKS']['iso_addToCart']))
+		{
+			foreach ($GLOBALS['TL_HOOKS']['iso_addToCart'] as $callback)
+			{
+				$this->import($callback[0]);
+				$this->$callback[0]->$callback[1]($objProduct, $objModule);
+			}
+		}
+		
 		$this->jumpToOrReload($objModule->iso_addProductJumpTo);
 	}
 }

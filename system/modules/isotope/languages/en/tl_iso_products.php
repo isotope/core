@@ -49,6 +49,7 @@ $GLOBALS['TL_LANG']['tl_iso_products']['source']				= array('Source folder', 'Pl
 
 
 $GLOBALS['TL_LANG']['tl_iso_products']['price']					= array('Price', '');
+$GLOBALS['TL_LANG']['tl_iso_products']['original_price']		= array('List Price', '');
 $GLOBALS['TL_LANG']['tl_iso_products']['price_override']		= array('Price override', '');
 $GLOBALS['TL_LANG']['tl_iso_products']['option_set_source']		= array('Option Set Source','Use an existing option set or create a new one');
 $GLOBALS['TL_LANG']['tl_iso_products']['option_sets']			= array('Option Sets','Select an existing Option Set');

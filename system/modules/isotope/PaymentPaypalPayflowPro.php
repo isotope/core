@@ -196,7 +196,7 @@ class PaymentPaypalPayflowPro extends IsotopePayment
 		$intStartYear = (integer)date('Y', time());	//Requires 4-digit year
 		
 		for($i=0;$i<=9;$i++)
-			$arrYears[] = (string)$intStartYear+i;
+			$arrYears[] = (string)$intStartYear+$i;
 		
 		$arrFields = array
 		(
