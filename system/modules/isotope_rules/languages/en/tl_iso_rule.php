@@ -8,22 +8,21 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- *
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Leo Feyer 2005-2010
- * @author     Leo Feyer <http://www.typolight.org>
- * @package    Faq
- * @license    LGPL
- * @filesource
+ * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
+ * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ * @author     Andreas Schempp <andreas@schempp.ch>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
@@ -65,6 +64,8 @@ $GLOBALS['TL_LANG']['tl_iso_rule']['subdivisions']			= array('States & Provinces
 $GLOBALS['TL_LANG']['tl_iso_rule']['paymentModules']		= array('Payment Modules','Select payment modules this rule is restricted to.  If none, all are eligible.');
 $GLOBALS['TL_LANG']['tl_iso_rule']['shippingModules']		= array('Shipping Modules','Select shipping modules this rule is restricted to.  If none, all are eligible.');
 $GLOBALS['TL_LANG']['tl_iso_rule']['enabled']				= array('Enabled','Please select whether this rule is currently enabled or not.');
+
+
 /**
  * Legends
  */
@@ -72,6 +73,7 @@ $GLOBALS['TL_LANG']['tl_iso_rule']['general_legend']			= 'General Information';
 $GLOBALS['TL_LANG']['tl_iso_rule']['type_legend']				= 'Rule Type';
 $GLOBALS['TL_LANG']['tl_iso_rule']['restriction_legend']		= 'Rule Restrictions'; 
 $GLOBALS['TL_LANG']['tl_iso_rule']['enabled_legend']			= 'Module Enabling Details';
+
 
 /**
  * Reference
@@ -98,12 +100,9 @@ $GLOBALS['TL_LANG']['tl_iso_rule']['numUses']['store']						= 'Per store';
 /**
  * Buttons
  */
-
 $GLOBALS['TL_LANG']['tl_iso_rule']['new']        = array('New rule', 'Create a new rule');
-$GLOBALS['TL_LANG']['tl_iso_rule']['show']       = array('Rule details', 'Show the details of rule ID %s');
 $GLOBALS['TL_LANG']['tl_iso_rule']['edit']       = array('Edit rule', 'Edit rule ID %s');
-$GLOBALS['TL_LANG']['tl_iso_rule']['editheader'] = array('Edit rule settings', 'Edit the settings of rule ID %s');
 $GLOBALS['TL_LANG']['tl_iso_rule']['copy']       = array('Duplicate rule', 'Duplicate rule ID %s');
 $GLOBALS['TL_LANG']['tl_iso_rule']['delete']     = array('Delete rule', 'Delete rule ID %s');
+$GLOBALS['TL_LANG']['tl_iso_rule']['show']       = array('Rule details', 'Show the details of rule ID %s');
 
-?>
