@@ -65,12 +65,8 @@ class ModuleIsotopeRelatedProducts extends ModuleIsotope
 	protected function compile()
 	{
 		$arrIds = array(0);
-		$objProduct = $this->Database->prepare("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS type_class FROM tl_iso_products WHERE alias=?")
-									 ->limit(1)
-									 ->execute($this->Input->get('product'));
-		
 		$arrJumpTo = array();
-		$objCategories = $this->Database->prepare("SELECT * FROM tl_iso_related_products WHERE pid=? AND category IN (" . implode(',', $this->iso_related_categories) . ") ORDER BY id=" . implode(' DESC, id=', $this->iso_related_categories) . " DESC")->execute($objProduct->id);
+		$objCategories = $this->Database->prepare("SELECT * FROM tl_iso_related_products WHERE pid IN (SELECT id FROM tl_iso_products WHERE alias=?) AND category IN (" . implode(',', $this->iso_related_categories) . ") ORDER BY id=" . implode(' DESC, id=', $this->iso_related_categories) . " DESC")->execute($this->Input->get('product'), $objProduct->id);
 		
 		while( $objCategories->next() )
 		{
