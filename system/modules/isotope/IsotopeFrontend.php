@@ -51,10 +51,9 @@ class IsotopeFrontend extends Frontend
 	 * @param	object
 	 * @return	void
 	 */
-	//!@todo $objModule is always defined, rework to use it and make sure the module config field is in palettes
 	public function addToCart($objProduct, $objModule=null)
 	{
-		$this->Isotope->Cart->addProduct($objProduct, ((is_object($objModule) && $objModule->iso_use_quantity && intval($this->Input->post('quantity_requested')) > 0) ? intval($this->Input->post('quantity_requested')) : 1));
+		$intQuantity = ($objModule->iso_use_quantity && intval($this->Input->post('quantity_requested')) > 0) ? intval($this->Input->post('quantity_requested')) : 1;
 		
 		// HOOK for adding additional functionality to the addToCart operation
 		if (isset($GLOBALS['TL_HOOKS']['iso_addToCart']) && is_array($GLOBALS['TL_HOOKS']['iso_addToCart']))
@@ -62,8 +61,13 @@ class IsotopeFrontend extends Frontend
 			foreach ($GLOBALS['TL_HOOKS']['iso_addToCart'] as $callback)
 			{
 				$this->import($callback[0]);
-				$this->$callback[0]->$callback[1]($objProduct, $objModule);
+				$intQuantity = $this->$callback[0]->$callback[1]($objProduct, $intQuantity, $objModule);
 			}
+		}
+		
+		if ($intQuantity > 0)
+		{
+			$this->Isotope->Cart->addProduct($objProduct, $intQuantity);
 		}
 		
 		$this->jumpToOrReload($objModule->iso_addProductJumpTo);

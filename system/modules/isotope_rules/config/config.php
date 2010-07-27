@@ -36,18 +36,21 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
 		'tables'					=> array('tl_iso_rule', 'tl_iso_rule_usage'), //'tl_iso_rule_codes'),
 		'stylesheet'				=> 'system/modules/isotope/html/backend.css',
 		'javsacript'				=> 'system/modules/isotope/html/backend.js',
-		'icon'						=> 'system/modules/isotope/html/coupons.png'
-	) 
+		'icon'						=> 'system/modules/isotope_rules/html/coupons.png'
+	),
 ));
+
 
 /** 
  * Checkout Steps
  */
-array_insert($GLOBALS['ISO_CHECKOUT_STEPS']['review'], 0, array('IsotopeRules','verifyCoupons'));
+array_insert($GLOBALS['ISO_CHECKOUT_STEPS']['review'], 0, array('IsotopeRules', 'verifyCoupons'));
+
 
 /** 
  * Hooks
  */
-$GLOBALS['TL_HOOKS']['iso_getProductUpdates'][] 	= array('IsotopeRules','getRules');
-$GLOBALS['TL_HOOKS']['iso_addToCart'][]				= array('IsotopeRules','addToCart');
-$GLOBALS['TL_HOOKS']['iso_compileCart']['rules'] 	= array('IsotopeRules','getCouponForm');
+$GLOBALS['TL_HOOKS']['iso_getProductUpdates'][] 	= array('IsotopeRules', 'getRules');
+$GLOBALS['TL_HOOKS']['iso_addToCart'][]				= array('IsotopeRules', 'addToCart');
+$GLOBALS['TL_HOOKS']['iso_compileCart']['rules'] 	= array('IsotopeRules', 'getCouponForm');
+

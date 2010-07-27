@@ -31,6 +31,11 @@
  */
 $GLOBALS['TL_LANG']['ERR']['invalidCoupon']				= 'Invalid coupon';
 
-$GLOBALS['TL_LANG']['ISO']['couponsInputLabel'] = 'Promotional code';
-$GLOBALS['TL_LANG']['ISO']['couponsHeadline'] = 'Apply Promotional Codes';
-$GLOBALS['TL_LANG']['ISO']['couponsSubmitLabel'] = 'Apply';
+
+/**
+ * Isotope
+ */
+$GLOBALS['TL_LANG']['ISO']['couponsInputLabel']			= 'Promotional code';
+$GLOBALS['TL_LANG']['ISO']['couponsHeadline']			= 'Apply Promotional Codes';
+$GLOBALS['TL_LANG']['ISO']['couponsSubmitLabel']		= 'Apply';
+

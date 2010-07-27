@@ -21,6 +21,7 @@
  * PHP version 5
  * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
@@ -54,6 +55,7 @@ class IsotopeRules extends Controller
 		$this->import('FrontendUser','User');
 		$this->import('Isotope');
 	}
+	
 	
 	/**
 	 * Instantiate a database driver object and return it (Factory)
@@ -123,7 +125,7 @@ class IsotopeRules extends Controller
 		$arrReturn = array();
 		$arrData = array();
 				
-		if($objSource instanceof IsotopeProductCollection)	//@TODO Make space for additional custom class rule eligibility hooking
+		if($objSource instanceof IsotopeProductCollection)	//!@todo: Make space for additional custom class rule eligibility hooking
 		{
 			$arrObjects[] = $objSource;
 		}
@@ -144,7 +146,7 @@ class IsotopeRules extends Controller
 	 * @param object $objProduct
 	 * @param object $objModule
 	 */
-	public function addToCart($objProduct, $objModule=null)
+	public function addToCart($objProduct, $intQuantity, $objModule=null)
 	{		
 		$arrProducts[] = $objProduct;	//Get the current product
 		$arrData = $this->getEligibleRules($arrProducts, 'rules');
@@ -152,8 +154,10 @@ class IsotopeRules extends Controller
 		$arrProducts = $this->applyRules($arrProducts, $arrData);
 		
 		$this->saveRules($arrProducts);	//session save by default	
-	
+		
+		return $intQuantity;
 	}
+	
 	
 	/** 
 	 * check eligibility for products
@@ -189,9 +193,9 @@ class IsotopeRules extends Controller
 			case 'coupons':
 				$strRulesClause = " AND enableCode='1'";
 				break;
+				
 			case 'rules':
 				$strRulesClause = " AND enableCode=''";
-			default:
 				break;
 		}
 									
@@ -232,7 +236,7 @@ class IsotopeRules extends Controller
 					$arrObject['productTypes'] = $object->type;
 					$arrObject['products'] = $object->id;
 					$intObjectId = $object->id; //necessary to check the usage table by product collection class id (for example, cart id)
-					$object->coupons = array();	//@TODO: get rules for this item from the container or else reinstate the rules field for items.
+					$object->coupons = array();	//!@todo: get rules for this item from the container or else reinstate the rules field for items.
 			}
 			elseif($object instanceof IsotopeProductCollection)
 			{
@@ -241,7 +245,7 @@ class IsotopeRules extends Controller
 			}
 			else
 			{
-					//@TODO: HOOK THIS for other unanticipated classes that don't fit the two we provide for?
+					//!@todo: HOOK THIS for other unanticipated classes that don't fit the two we provide for?
 					break;
 			}
 			
@@ -355,7 +359,7 @@ class IsotopeRules extends Controller
 							break(2);
 						break;
 					default:
-						//@TODO: Hook for additional types of rule-eligible objects
+						//!@todo: Hook for additional types of rule-eligible objects
 						break;
 				}
 											
@@ -402,8 +406,8 @@ class IsotopeRules extends Controller
 	 * @param string $strCodes
 	 * @param array $arrData
 	 * @return boolean
-	 * @TODO: include an option for caching rules that are applied to items in the cart
 	 */
+	//!@todo: include an option for caching rules that are applied to items in the cart
 	protected function applyRules($arrObjects,$arrData,$strCodes='')
 	{		
 		$arrUsedCodes = array();
@@ -465,7 +469,7 @@ class IsotopeRules extends Controller
 						}																
 						break;
 					default:
-						//@TODO: Hook for other types of coupons
+						//!@todo: Hook for other types of coupons
 						continue;
 				}
 				
@@ -497,7 +501,6 @@ class IsotopeRules extends Controller
 	 */
 	private function saveRules($arrObjects, $strContainer = '')
 	{
-		
 		if(!count($arrObjects))
 			return;
 		
@@ -519,6 +522,7 @@ class IsotopeRules extends Controller
 								   ->execute();
 				}
 				break;
+				
 			default:
 				foreach($arrObjects as $object)
 				{
@@ -532,8 +536,8 @@ class IsotopeRules extends Controller
 				$this->Database->query("UPDATE tl_iso_cart SET coupons='".$strRules."' WHERE id={$this->Isotope->Cart->id}");
 				break;
 		}
-		
 	}
+	
 	
 	/** 
 	 * Verify that our rules are still in fact, valid just before payment is completed.
@@ -552,12 +556,13 @@ class IsotopeRules extends Controller
 	
 	
 	/** 
-	 * Hook-callback for rules @TODO - determine if needed
+	 * Hook-callback for rules
 	 * 
 	 * @access public
 	 * @param array
 	 * @return array
 	 */
+	//!@todo: determine if needed
 	public function getRulesSurcharges($arrSurcharges)
 	{
 		$objRules = $this->Database->query("SELECT rules FROM tl_iso_cart WHERE id={$this->id}");
@@ -582,3 +587,4 @@ class IsotopeRules extends Controller
 		return $arrSurcharges;
 	}
 }
+
