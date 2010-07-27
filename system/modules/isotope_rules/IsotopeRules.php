@@ -148,11 +148,10 @@ class IsotopeRules extends Controller
 	{		
 		$arrProducts[] = $objProduct;	//Get the current product
 		$arrData = $this->getEligibleRules($arrProducts, 'rules');
-		var_dump($arrData);
-		exit;
+		
 		$arrProducts = $this->applyRules($arrProducts, $arrData);
 		
-		$this->saveRules($arrAppliedRules, $arrProducts);	//session save by default	
+		$this->saveRules($arrProducts);	//session save by default	
 	
 	}
 	
@@ -498,7 +497,8 @@ class IsotopeRules extends Controller
 	 */
 	private function saveRules($arrObjects, $strContainer = '')
 	{
-		if(!count($arrData))
+		
+		if(!count($arrObjects))
 			return;
 		
 		switch($strContainer)
@@ -524,14 +524,15 @@ class IsotopeRules extends Controller
 				{
 					foreach($object->prices as $row)
 					{
-						$arrRules[get_class($object)][$object->id][] = $row;
+						$arrRules[get_class($object)][$object->id][] = $row['id'];
 					}
-					var_dump($arrRules);
-					exit;
-					$_SESSION['CHECKOUT_DATA']['rules'] = $arrRules;
 				}
+				
+				//$_SESSION['CHECKOUT_DATA']['rules'] = $arrRules;	//alternately, store to cart "coupons" field.
+				$this->Database->query("UPDATE tl_iso_cart SET coupons='".$strRules."' WHERE id={$this->Isotope->Cart->id}");
 				break;
 		}
+		
 	}
 	
 	/** 
