@@ -81,13 +81,17 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 		
 		$arrAllDownloads = array();
 		$arrItems = array();
-		$objItems = $this->Database->prepare("SELECT p.*, o.*, t.downloads AS downloads_allowed, t.class AS type_class, (SELECT COUNT(*) FROM tl_iso_order_downloads d WHERE d.pid=o.id) AS has_downloads FROM tl_iso_order_items o LEFT OUTER JOIN tl_iso_products p ON o.product_id=p.id LEFT OUTER JOIN tl_iso_producttypes t ON p.type=t.id WHERE o.pid=?")->execute($objOrder->id);
+		$objItems = $this->Database->prepare("SELECT p.*, o.*, t.downloads AS downloads_allowed, t.class AS product_class, (SELECT COUNT(*) FROM tl_iso_order_downloads d WHERE d.pid=o.id) AS has_downloads FROM tl_iso_order_items o LEFT OUTER JOIN tl_iso_products p ON o.product_id=p.id LEFT OUTER JOIN tl_iso_producttypes t ON p.type=t.id WHERE o.pid=?")->execute($objOrder->id);
 		
 	
 		while( $objItems->next() )
 		{
-			// Do not use the TYPOlight function deserialize() cause it handles arrays not objects
-			$strClass = $GLOBALS['ISO_PRODUCT'][$objItems->type_class]['class'];
+			$strClass = $GLOBALS['ISO_PRODUCT'][$objItems->product_class]['class'];
+				
+			if (!$this->classFileExists($strClass))
+			{
+				$strClass = 'IsotopeProduct';
+			}
 																			
 			$objProduct = new $strClass($objItems->row());
 							

@@ -119,11 +119,11 @@ class ContentIsotopeQuickProducts extends ContentElement
 	 */
 	protected function getProduct($intId)
 	{
-		$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS type_class FROM tl_iso_products WHERE id=?")
+		$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS product_class FROM tl_iso_products WHERE id=?")
 										 ->limit(1)
 										 ->executeUncached($intId);
 									 
-		$strClass = $GLOBALS['ISO_PRODUCT'][$objProductData->type_class]['class'];
+		$strClass = $GLOBALS['ISO_PRODUCT'][$objProductData->product_class]['class'];
 		
 		if (!$this->classFileExists($strClass))
 		{
@@ -136,7 +136,5 @@ class ContentIsotopeQuickProducts extends ContentElement
 			
 		return $objProduct;
 	}
-	
-	
 }
 

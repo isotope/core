@@ -69,3 +69,4 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['iso_list_layout'] = array
 	'options'                 => (version_compare(VERSION.BUILD, '2.9.0', '>=')) ? $this->getTemplateGroup('iso_list_', $dc->activeRecord->pid) : $this->getTemplateGroup('iso_list_'),
 	'eval'					  => array('includeBlankOption'=>true),
 );
+
