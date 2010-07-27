@@ -158,7 +158,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		
 		$arrBuffer = array();
 		
-		if (count($arrProducts) && isset($GLOBALS['TL_HOOKS']['iso_getProductUpdates']) && is_array($GLOBALS['TL_HOOKS']['iso_getProductUpdates']))
+		if (isset($GLOBALS['TL_HOOKS']['iso_getProductUpdates']) && is_array($GLOBALS['TL_HOOKS']['iso_getProductUpdates']))
 		{
 			foreach ($GLOBALS['TL_HOOKS']['iso_getProductUpdates'] as $callback)
 			{				

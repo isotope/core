@@ -82,6 +82,15 @@ class ModuleIsotopeCart extends ModuleIsotope
 		$arrQuantity = $this->Input->post('quantity');
 		$arrProductData = array();
 		
+		if (count($arrProducts) && isset($GLOBALS['TL_HOOKS']['iso_getProductUpdates']) && is_array($GLOBALS['TL_HOOKS']['iso_getProductUpdates']))
+		{
+			foreach ($GLOBALS['TL_HOOKS']['iso_getProductUpdates'] as $callback)
+			{				
+				$this->import($callback[0]);
+				$arrProducts = $this->$callback[0]->$callback[1]($arrProducts, $this);
+			}
+		}
+		
 		foreach( $arrProducts as $i => $objProduct )
 		{
 			if ($this->Input->get('remove') == $objProduct->cart_id)

@@ -97,12 +97,13 @@ class ModuleIsotopeProductReader extends ModuleIsotope
 			return;
 		}
 		
-		if (count($arrProducts) && isset($GLOBALS['TL_HOOKS']['iso_getProductUpdates']) && is_array($GLOBALS['TL_HOOKS']['iso_getProductUpdates']))
+		if (isset($GLOBALS['TL_HOOKS']['iso_getProductUpdates']) && is_array($GLOBALS['TL_HOOKS']['iso_getProductUpdates']))
 		{
 			foreach ($GLOBALS['TL_HOOKS']['iso_getProductUpdates'] as $callback)
 			{
 				$this->import($callback[0]);
 				$arrProducts = $this->$callback[0]->$callback[1](array($objProduct), $this);
+				$objProduct = $arrProducts[0];
 			}
 		}
 		
