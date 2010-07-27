@@ -244,12 +244,6 @@ $GLOBALS['ISO_PERPAGE'] = array(8,12,32,64);
  */
 $GLOBALS['ISO_ORDER'] = array('pending', 'processing', 'complete', 'on_hold', 'cancelled');
 
-
-/** 
- * Miscellaneous Isotope-specific settings
- */
-$GLOBALS['ISO_MSC']['tl_iso_products']['groups_ordering'] = array('general_legend', 'meta_legend', 'pricing_legend', 'inventory_legend', 'shipping_legend', 'options_legend', 'media_legend', 'publish_legend');
-
 	
 /**
  * Content elements
