@@ -69,12 +69,26 @@ class ModuleIsotopeProductList extends ModuleIsotope
 
 		global $objPage;
 		
-		$this->arrCategories = $this->setCategories($this->iso_category_scope, $objPage->rootId, $objPage->id);	
-
-		$this->iso_product_add_jumpTo = (!$this->iso_product_add_jumpTo ? $objPage->id : $this->iso_product_add_jumpTo);
-
-		if (!count($this->arrCategories))
-			return '';
+	 	// Determine category scope
+		switch($this->iso_category_scope)
+		{
+			case 'global':
+				$this->arrCategories = array_merge($this->getChildRecords($objPage->rootId, 'tl_page', true), array($objPage->rootId));
+				break;
+				
+			case 'parent_and_first_child':
+				$this->arrCategories = array_merge($this->Database->execute("SELECT id FROM tl_page WHERE pid={$objPage->id}")->fetchEach('id'), array($objPage->id));
+				break;
+				
+			case 'parent_and_all_children':
+				$this->arrCategories = array_merge($this->getChildRecords($objPage->id, 'tl_page', true), array($objPage->id));				
+				break;
+				
+			default:
+			case 'current_category':
+				$this->arrCategories = array($objPage->id);
+				break;		
+		}
 
 		return parent::generate();
 	}
@@ -180,7 +194,6 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			$blnSetClear = (($i+1) % $this->columns==0 ? true : false);
 		}
 	
-		
 		// Add "product_last" css class
 		if (count($arrBuffer))
 		{
@@ -220,7 +233,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 						break;
 						
 					case 'for':
-						//prepare clause for text search. TODO:  need to add filter for each std. search field plus any additional user-defined.
+						//prepare clause for text search. //!@todo:  need to add filter for each std. search field plus any additional user-defined.
 						$arrSearchFields = $this->getSearchFields();
 												
 						foreach($arrSearchFields as $field)
@@ -287,47 +300,6 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		$this->strSearchSQL = (count($arrSearchChunks) ? implode(" OR ", $arrSearchChunks) : NULL);
 	}
 	
-	
-	protected function setCategories($strScope, $intRootId = 0, $intPageId = 0)
-	{
-		$arrCategories = array();
-		
-		//Determine category scope
-		switch($strScope)
-		{
-			case 'global':
-				 $arrCategories = array_merge($this->getChildRecords($intRootId, 'tl_page'), array($intRootId));
-				break;
-				
-			case 'parent_and_first_child':
-				$arrCategories = array_merge($this->Database->prepare("SELECT id FROM tl_page WHERE pid=?")->execute($intPageId)->fetchEach('id'), array($intPageId));
-				break;
-				
-			case 'parent_and_all_children':
-				$arrCategories = array_merge($this->getChildRecords($intPageId, 'tl_page'), array($intPageId));				
-				break;
-				
-			default:
-			case 'current_category':
-				$arrCategories = array($intPageId);
-				break;		
-		}
-		
-		$i = 0;
-		
-		foreach($arrCategories as $row)
-		{
-			if(!$row)
-			{
-				unset($arrCategories[$i]);
-			}
-			
-			$i++;
-		}
-		
-		return $arrCategories;
-	}
-	
 		
 	/** 
 	 * Gather SQL clause components to be added into the sql query for pulling product data
@@ -363,11 +335,13 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		return $arrReturn;
 	}
 	
-		/** 
+	
+	/** 
 	 * Get the search fields used by any corresponding filter - add defaults plus user defined
 	 *
 	 * @return array
 	 */
+	//!@todo: I don't know where exactly, but this should use the DCA not tl_iso_attributes
 	protected function getSearchFields()
 	{
 		$arrSearchFields = array('name','description');
