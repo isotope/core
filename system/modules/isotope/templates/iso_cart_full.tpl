@@ -63,5 +63,5 @@
 	<a class="checkout" href="<?php echo $this->checkoutJumpTo; ?>"><span><?php echo $this->checkoutJumpToLabel; ?></span></a>
 </div>
 </form>
-<?php if(count($this->forms)) implode("\n", $this->forms); ?>
+<?php if(count($this->forms)) echo implode("\n", $this->forms); ?>
 </div>
