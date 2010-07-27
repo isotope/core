@@ -312,7 +312,7 @@ CREATE TABLE `tl_iso_cart` (
   `tstamp` int(10) unsigned NOT NULL default '0',
   `session` varchar(64) NOT NULL default '',
   `config_id` int(10) unsigned NOT NULL default '0',
-  `coupons` blob NULL,
+  `rules` blob NULL,
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -335,7 +335,6 @@ CREATE TABLE `tl_iso_cart_items` (
   `product_quantity` int(10) unsigned NOT NULL default '0',
   `price` decimal(12,2) NOT NULL default '0.00',
   `href_reader` varchar(255) NOT NULL default '',
-  `rules` blob NULL,
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
