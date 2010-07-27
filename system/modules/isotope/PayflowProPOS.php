@@ -415,17 +415,20 @@ class PayflowProPOS extends Backend
 		
 		$arrAllDownloads = array();
 		$arrItems = array();
-		$objItems = $this->Database->prepare("SELECT p.*, o.*, t.downloads AS downloads_allowed, (SELECT COUNT(*) FROM tl_iso_order_downloads d WHERE d.pid=o.id) AS has_downloads FROM tl_iso_order_items o LEFT OUTER JOIN tl_iso_products p ON o.product_id=p.id LEFT OUTER JOIN tl_iso_producttypes t ON p.type=t.id WHERE o.pid=?")->execute($objOrder->id);
+		$objItems = $this->Database->prepare("SELECT p.*, o.*, t.downloads AS downloads_allowed, t.class AS product_class, (SELECT COUNT(*) FROM tl_iso_order_downloads d WHERE d.pid=o.id) AS has_downloads FROM tl_iso_order_items o LEFT OUTER JOIN tl_iso_products p ON o.product_id=p.id LEFT OUTER JOIN tl_iso_producttypes t ON p.type=t.id WHERE o.pid=?")->execute($objOrder->id);
 		
 		
 		while( $objItems->next() )
 		{
-			// Do not use the TYPOlight function deserialize() cause it handles arrays not objects
-			$objProduct = unserialize($objItems->product_data);
-			
-			if (!is_object($objProduct))
-				continue;
-			
+			$strClass = $GLOBALS['ISO_PRODUCT'][$objItems->product_class]['class'];
+				
+			if (!$this->classFileExists($strClass))
+			{
+				$strClass = 'IsotopeProduct';
+			}
+																			
+			$objProduct = new $strClass($objItems->row());
+						
 			if ($objItems->downloads_allowed/* && $objItems->has_downlaods > 0*/)
 			{
 				$arrDownloads = array();
@@ -533,11 +536,14 @@ class PayflowProPOS extends Backend
 		
 		while( $objItems->next() )
 		{
-			// Do not use the TYPOlight function deserialize() cause it handles arrays not objects
-			$objProduct = unserialize($objItems->product_data);
-			
-			if (!is_object($objProduct))
-				continue;
+			$strClass = $GLOBALS['ISO_PRODUCT'][$objItems->product_class]['class'];
+				
+			if (!$this->classFileExists($strClass))
+			{
+				$strClass = 'IsotopeProduct';
+			}
+																			
+			$objProduct = new $strClass($objItems->row());
 			
 			if ($objItems->downloads_allowed/* && $objItems->has_downlaods > 0*/)
 			{
@@ -624,7 +630,7 @@ class PayflowProPOS extends Backend
 			$this->Isotope->overrideConfig($config_id);	//Which store it was ordered from is important, not what the default backend store is.
 		}
 		
-		$objItems = $this->Database->prepare("SELECT * FROM tl_iso_cart_items WHERE pid=?")->execute($intSourceCartId);
+		$objItems = $this->Database->prepare("SELECT p.*, o.*, t.class AS product_class FROM tl_iso_cart_items o LEFT JOIN tl_iso_products p ON p.id=o.product_id LEFT OUTER JOIN tl_iso_producttypes t ON p.type=t.id WHERE o.pid=?")->execute($intSourceCartId);
 		
 		if (!$objItems->numRows)
 		{
@@ -635,8 +641,14 @@ class PayflowProPOS extends Backend
 		
 		while( $objItems->next()  )
 		{
-			// Do not use the TYPOlight function deserialize() cause it handles arrays not objects
-			$objProduct = unserialize($objItems->product_data);
+			$strClass = $GLOBALS['ISO_PRODUCT'][$objItems->product_class]['class'];
+				
+			if (!$this->classFileExists($strClass))
+			{
+				$strClass = 'IsotopeProduct';
+			}
+																			
+			$objProduct = new $strClass($objItems->row());
 
 			$arrProductLists[] = array
 			(
