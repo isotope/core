@@ -62,7 +62,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 	 * Generate module
 	 */
 	protected function compile()
-	{
+	{				
 		$arrProducts = $this->Isotope->Cart->getProducts();
 		
 		if (!count($arrProducts))
@@ -96,6 +96,17 @@ class ModuleIsotopeCart extends ModuleIsotope
 			if ($this->Input->get('remove') == $objProduct->cart_id)
 			{
 				$this->Database->query("DELETE FROM tl_iso_cart_items WHERE id={$objProduct->cart_id}");
+				
+				// HOOK for adding additional functionality when a product is removed from the cart
+				if (isset($GLOBALS['TL_HOOKS']['iso_removeFromCart']) && is_array($GLOBALS['TL_HOOKS']['iso_removeFromCart']))
+				{
+					foreach ($GLOBALS['TL_HOOKS']['iso_removeFromCart'] as $callback)
+					{
+						$this->import($callback[0]);
+						$this->$callback[0]->$callback[1]($objProduct->id, $this);
+					}
+				}
+				
 				$this->redirect((strlen($this->Input->get('referer')) ? base64_decode($this->Input->get('referer', true)) : $strUrl));
 			}
 			elseif ($this->Input->post('FORM_SUBMIT') == 'iso_cart_update' && is_array($arrQuantity) && $objProduct->cart_id)
@@ -131,7 +142,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 		}
 
 		if ($blnReload)
-		{
+		{			
 			$this->reload();
 		}
 		
@@ -141,8 +152,9 @@ class ModuleIsotopeCart extends ModuleIsotope
 		}
 		
 		$arrSurcharges = array();
+		
 		foreach( $this->Isotope->Cart->getSurcharges() as $arrSurcharge )
-		{
+		{			
 			$arrSurcharges[] = array
 			(
 			   'label'				=> $arrSurcharge['label'],
@@ -151,7 +163,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 			   'tax_id'				=> $arrSurcharge['tax_id'],
 			);
 		}
-				
+					
 		// HOOK for adding additional forms into the template
 		if (isset($GLOBALS['TL_HOOKS']['iso_compileCart']) && is_array($GLOBALS['TL_HOOKS']['iso_compileCart']))
 		{
@@ -164,6 +176,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 				{
 				 	$arrForms[$name] = $strForm;
 				}
+				
 			}
 		}			
 		
