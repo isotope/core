@@ -212,7 +212,7 @@ class IsotopeRules extends Controller
 	protected function getEligibleRules($arrObjects, $strQueryMode = '')
 	{							
 		if(!count($arrObjects))
-			return '';
+			return array();
 		
 		$intToday = time();
 		
@@ -246,7 +246,7 @@ class IsotopeRules extends Controller
 		$objRules = $this->Database->executeUncached("SELECT c.*, (SELECT COUNT(u.id) AS ruleUses FROM tl_iso_rule_usage u WHERE u.pid=c.id) AS uses FROM tl_iso_rule c WHERE c.enabled='1'".$strRulesClause);
 	
 		if(!$objRules->numRows)
-			return '';
+			return array();
 						
 		$arrRuleIds = array();
 		$arrMemberUsesByRule = array();
@@ -463,13 +463,13 @@ class IsotopeRules extends Controller
 			$arrCodes = explode(',', $strCodes);
 
 		$arrUsedCodes = array();
-
+		
 		foreach($arrObjects as $i=>$object)
 		{
 			$arrRules = array();
 
 			$intObjectId = $object->id;	
-						
+			
 			if(!count($arrData[get_class($object)][$intObjectId]))
 				continue;
 			
