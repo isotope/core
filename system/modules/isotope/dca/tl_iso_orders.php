@@ -143,11 +143,25 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 	// Fields
 	'fields' => array
 	(
+		'id' => array
+		(
+			'eval'					=> array('doNotShow'=>true),
+		),
+		'pid' => array
+		(
+			'eval'					=> array('doNotShow'=>true),
+		),
+
 		'order_id' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['order_id'],
 			'search'				=> true,
 			'sorting'				=> true,
+		),
+		'uniqid' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['uniqid'],
+			'search'				=> true,
 		),
 		'status' => array
 		(
