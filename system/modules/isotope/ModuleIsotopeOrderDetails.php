@@ -61,9 +61,9 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 	{
 		global $objPage;
 		
-		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE uniqid=?")->limit(1)->execute($this->Input->get('uid'));
+		$objOrder = new IsotopeOrder();
 		
-		if (!$objOrder->numRows)
+		if (!$objOrder->findBy('uniqid', $this->Input->get('uid')))
 		{
 			$this->Template = new FrontendTemplate('mod_message');
 			$this->Template->type = 'error';
@@ -71,136 +71,107 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 			return;
 		}
 		
-		$this->Template->setData($objOrder->row());
+		$arrOrder = $objOrder->getData();
+		$this->Template->setData($arrOrder);
 		
 		$this->import('Isotope');
-		$this->Isotope->overrideConfig($objOrder->config_id);
+		$this->Isotope->overrideConfig($arrOrder['config_id']);
 		
 		// Article reader
 		$arrPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->limit(1)->execute($this->jumpTo)->fetchAssoc();
 		
 		$arrAllDownloads = array();
 		$arrItems = array();
-		$objItems = $this->Database->prepare("SELECT p.*, o.*, t.downloads AS downloads_allowed, t.class AS product_class, (SELECT COUNT(*) FROM tl_iso_order_downloads d WHERE d.pid=o.id) AS has_downloads FROM tl_iso_order_items o LEFT OUTER JOIN tl_iso_products p ON o.product_id=p.id LEFT OUTER JOIN tl_iso_producttypes t ON p.type=t.id WHERE o.pid=?")->execute($objOrder->id);
-		
-	
-		while( $objItems->next() )
+		$arrProducts = $objOrder->getProducts();
+
+		foreach( $arrProducts as $objProduct )
 		{
-			$strClass = $GLOBALS['ISO_PRODUCT'][$objItems->product_class]['class'];
-				
-			if (!$this->classFileExists($strClass))
+			$arrDownloads = array();
+			$objDownloads = $this->Database->prepare("SELECT p.*, o.* FROM tl_iso_order_downloads o LEFT OUTER JOIN tl_iso_downloads p ON o.download_id=p.id WHERE o.pid=?")->execute($objProduct->cart_id);
+
+			while( $objDownloads->next() )
 			{
-				$strClass = 'IsotopeProduct';
-			}
-																			
-			$objProduct = new $strClass($objItems->row());
-							
-			$objProduct->quantity_requested = $objItems->product_quantity;
-			$objProduct->cart_id = $objItems->id;
-			//$objProduct->reader_jumpTo_Override = $objProducts->href_reader;			
-		
-			if($objProduct->price==0)
-				$objProduct->price = $objItems->price;
-			
-			$arrOptions = deserialize($objItems->product_options, true);
-			
-			$objProduct->setOptions($arrOptions);
-							
-			if (!is_object($objProduct))
-				continue;
-			
-			if ($objItems->downloads_allowed/* && $objItems->has_downlaods > 0*/)
-			{
-				$arrDownloads = array();
-				$objDownloads = $this->Database->prepare("SELECT p.*, o.* FROM tl_iso_order_downloads o LEFT OUTER JOIN tl_iso_downloads p ON o.download_id=p.id WHERE o.pid=?")->execute($objItems->id);
+				$blnDownloadable = (($arrOrder['status'] == 'complete' || intval($arrOrder['date_payed']) >= time()) && ($objDownloads->downloads_allowed == 0 || $objDownloads->downloads_remaining > 0)) ? true : false;
 				
-				while( $objDownloads->next() )
+				// Send file to the browser
+				if (strlen($this->Input->get('file')) && $this->Input->get('file') == $objDownloads->id && $blnDownloadable)
 				{
-					$blnDownloadable = (($objOrder->status == 'complete' || intval($objOrder->date_payed) >= time()) && ($objDownloads->downloads_allowed == 0 || $objDownloads->downloads_remaining > 0)) ? true : false;
-					
-					// Send file to the browser
-					if (strlen($this->Input->get('file')) && $this->Input->get('file') == $objDownloads->id && $blnDownloadable)
+					if (!$this->backend)
 					{
-						if ($objDownloads->downloads_remaining > 0 && !$this->backend)
-						{
-							$this->Database->prepare("UPDATE tl_iso_order_downloads SET downloads_remaining=? WHERE id=?")->execute(($objDownloads->downloads_remaining-1), $objDownloads->id);
-						}
-						
-						$this->sendFileToBrowser($objDownloads->singleSRC);
+						$this->Database->prepare("UPDATE tl_iso_order_downloads SET downloads_remaining=? WHERE id=?")->execute(($objDownloads->downloads_remaining-1), $objDownloads->id);
 					}
 					
-					$arrDownload = array
-					(
-						'raw'			=> $objDownloads->row(),
-						'title'			=> $objDownloads->title,
-						'href'			=> (TL_MODE == 'FE' ? ($this->generateFrontendUrl($objPage->row()) . '?uid=' . $this->Input->get('uid') . '&amp;file=' . $objDownloads->id) : ''),
-						'remaining'		=> ($objDownloads->downloads_allowed > 0 ? sprintf('<br />%s Downloads verbleibend', intval($objDownloads->downloads_remaining)) : ''),
-						'downloadable'	=> $blnDownloadable,
-					);
-					
-					$arrDownloads[] = $arrDownload;
-					$arrAllDownloads[] = $arrDownload;
+					$this->sendFileToBrowser($objDownloads->singleSRC);
 				}
+				
+				$arrDownload = array
+				(
+					'raw'			=> $objDownloads->row(),
+					'title'			=> $objDownloads->title,
+					'href'			=> (TL_MODE == 'FE' ? ($this->generateFrontendUrl($objPage->row()) . '?uid=' . $this->Input->get('uid') . '&amp;file=' . $objDownloads->id) : ''),
+					'remaining'		=> ($objDownloads->downloads_allowed > 0 ? sprintf('<br />%s Downloads verbleibend', intval($objDownloads->downloads_remaining)) : ''),
+					'downloadable'	=> $blnDownloadable,
+				);
+				
+				$arrDownloads[] = $arrDownload;
+				$arrAllDownloads[] = $arrDownload;
 			}
 						
 			$arrItems[] = array
 			(
-				'raw'				=> $objItems->row(),
+				'raw'				=> $objProduct->getData(),
 				'sku'				=> $objProduct->sku,
 				'name'				=> $objProduct->name,
 				'product_options'	=> $objProduct->getOptions(),
-				'quantity'			=> $objItems->product_quantity,
-				'price'				=> $this->Isotope->formatPriceWithCurrency($objItems->price),
-				'total'				=> $this->Isotope->formatPriceWithCurrency(($objItems->price * $objItems->product_quantity)),
-				'href'				=> ($this->jumpTo ? $this->generateFrontendUrl($arrPage, '/product/'.$objItems->alias) : ''),
+				'quantity'			=> $objProduct->quantity_requested,
+				'price'				=> $this->Isotope->formatPriceWithCurrency($objProduct->price),
+				'total'				=> $this->Isotope->formatPriceWithCurrency(($objProduct->price * $objProduct->quantity_requested)),
+				'href'				=> ($this->jumpTo ? $this->generateFrontendUrl($arrPage, '/product/'.$objProduct->alias) : ''),
 				'tax_id'			=> $objProduct->tax_id,
-				'downloads'			=> (is_array($arrDownloads) ? $arrDownloads : array()),
+				'downloads'			=> $arrDownloads,
 			);
 		}
 		
-		
-		$this->Template->info = deserialize($objOrder->checkout_info);
+		$this->Template->info = deserialize($arrOrder['checkout_info'], true);
 		$this->Template->items = $arrItems;
 		$this->Template->downloads = $arrAllDownloads;
 		$this->Template->downloadsLabel = $GLOBALS['TL_LANG']['MSC']['downloadsLabel'];
 		
-		$this->Template->raw = $objOrder->row();
+		$this->Template->raw = $arrOrder;
 		
-		$this->Template->date = $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $objOrder->date);
-		$this->Template->time = $this->parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $objOrder->date);
-		$this->Template->datim = $this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $objOrder->date);
-		$this->Template->orderDetailsHeadline = sprintf($GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline'], $objOrder->order_id, $this->Template->datim);
-		$this->Template->orderStatus = sprintf($GLOBALS['TL_LANG']['MSC']['orderStatusHeadline'], $GLOBALS['TL_LANG']['ORDER'][$objOrder->status]);
-		$this->Template->orderStatusKey = $objOrder->status;
-		$this->Template->subTotalPrice = $this->Isotope->formatPriceWithCurrency($objOrder->subTotal);
-		$this->Template->grandTotal = $this->Isotope->formatPriceWithCurrency($objOrder->grandTotal);
+		$this->Template->date = $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $arrOrder['date']);
+		$this->Template->time = $this->parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $arrOrder['date']);
+		$this->Template->datim = $this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $arrOrder['date']);
+		$this->Template->orderDetailsHeadline = sprintf($GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline'], $arrOrder['order_id'], $this->Template->datim);
+		$this->Template->orderStatus = sprintf($GLOBALS['TL_LANG']['MSC']['orderStatusHeadline'], $GLOBALS['TL_LANG']['ORDER'][$arrOrder['status']]);
+		$this->Template->orderStatusKey = $arrOrder['status'];
+		$this->Template->subTotalPrice = $this->Isotope->formatPriceWithCurrency($arrOrder['subTotal']);
+		$this->Template->grandTotal = $this->Isotope->formatPriceWithCurrency($arrOrder['grandTotal']);
 		$this->Template->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
 		$this->Template->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
 		
-		$arrSurcharges = array();
-		$objOrder->surcharges = deserialize($objOrder->surcharges);
-		if (is_array($objOrder->surcharges) && count($objOrder->surcharges))
+		$arrSurcharges = deserialize($arrOrder['surcharges']);
+		if (is_array($arrSurcharges) && count($arrSurcharges))
 		{
-			foreach( $objOrder->surcharges as $arrSurcharge )
+			foreach( $arrSurcharges as $k => $arrSurcharge )
 			{
-				$arrSurcharges[] = array
-				(
-					'label'			=> $arrSurcharge['label'],
-					'price'			=> $this->Isotope->formatPriceWithCurrency($arrSurcharge['price']),
-					'total_price'	=> $this->Isotope->formatPriceWithCurrency($arrSurcharge['total_price']),
-					'tax_id'		=> $arrSurcharge['tax_id'],
-				);
+				$arrSurcharges[$k]['price']			= $this->Isotope->formatPriceWithCurrency($arrSurcharge['price']);
+				$arrSurcharges[$k]['total_price']	= $this->Isotope->formatPriceWithCurrency($arrSurcharge['total_price']);
 			}
+		}
+		else
+		{
+			$arrSurcharges = array();
 		}
 				
 		$this->Template->surcharges = $arrSurcharges;
 		
 		$this->Template->billing_label = $GLOBALS['TL_LANG']['ISO']['billing_address'];
-		$this->Template->billing_address = $this->Isotope->generateAddressString(deserialize($objOrder->billing_address), $this->Isotope->Config->billing_fields);
+		$this->Template->billing_address = $this->Isotope->generateAddressString(deserialize($arrOrder['billing_address']), $this->Isotope->Config->billing_fields);
 		
-		if (strlen($objOrder->shipping_method))
+		if (strlen($arrOrder['shipping_method']))
 		{
-			$arrShippingAddress = deserialize($objOrder->shipping_address);
+			$arrShippingAddress = deserialize($arrOrder['shipping_address']);
 			if (!is_array($arrShippingAddress) || $arrShippingAddress['id'] == -1)
 			{
 				$this->Template->has_shipping = false;
