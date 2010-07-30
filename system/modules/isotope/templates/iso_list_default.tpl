@@ -11,10 +11,10 @@
 <div class="teaser"><?php echo $this->teaser; ?></div><?php endif; ?>
 
 <div class="price"><?php echo $this->price; ?></div>
-<?php if($this->prices): ?>
+<?php if($this->rules): ?>
 <div class="priceGroup">
 <dl>
-<?php foreach($this->prices as $k=>$v): ?>
+<?php foreach($this->rules as $k=>$v): ?>
 <dd class="<?php echo $k; ?>"><?php echo $v['label'] . ': ' . $v['total_price'] .($v['price'] ? ' (Save '.$v['price'].')':''); ?></dd>
 <?php endforeach; ?> 
 </dl>
