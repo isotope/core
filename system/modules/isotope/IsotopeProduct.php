@@ -313,7 +313,7 @@ class IsotopeProduct extends Controller
 		
 		foreach( $this->arrOptions as $name => $value )
 		{
-			$arrOptions[] = $this->getProductOptionValues($name, $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$name]['inputType'], $value);
+			$arrOptions[] = $this->getProductOptionValues($name, $value);
 		}
 		
 		return $arrOptions;
@@ -756,11 +756,11 @@ class IsotopeProduct extends Controller
 	 * Parse options for cart/checkout listing
 	 */
 	//!@todo I dislike the listing approach, we might find a better solution
-	protected function getProductOptionValues($strField, $inputType, $varValue)
+	protected function getProductOptionValues($strField, $varValue)
 	{	
 		$arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strField];
 		
-		switch($inputType)
+		switch($arrData['inputType'])
 		{
 			case 'radio':
 			case 'checkbox':
