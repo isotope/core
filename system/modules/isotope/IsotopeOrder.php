@@ -140,11 +140,14 @@ class IsotopeOrder extends IsotopeProductCollection
 	/**
 	 * Remove downloads when removing a product
 	 */
-	public function deleteProduct($intId)
+	public function deleteProduct(IsotopeProduct $objProduct)
 	{
-		$this->Database->query("DELETE FROM tl_iso_order_downloads WHERE pid=$intId");
+		if (parent::deleteProduct($objProduct))
+		{
+			$this->Database->query("DELETE FROM tl_iso_order_downloads WHERE pid={$objProduct->cart_id}");
+		}
 		
-		return parent::deleteProduct($intId);
+		return false;
 	}
 
 	

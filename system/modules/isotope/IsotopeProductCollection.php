@@ -157,12 +157,33 @@ abstract class IsotopeProductCollection extends Model
 	
 	/**
 	 * Also delete child table records when dropping this collection.
+	 *
+	 * @access public
+	 * @return int
 	 */
 	public function delete()
 	{
-		$this->Database->prepare("DELETE FROM " . $this->ctable . " WHERE pid=?")->execute($this->id);
+		// HOOK for adding additional functionality when deleting a collection
+		if (isset($GLOBALS['TL_HOOKS']['iso_deleteCollection']) && is_array($GLOBALS['TL_HOOKS']['iso_deleteCollection']))
+		{
+			foreach ($GLOBALS['TL_HOOKS']['iso_deleteCollection'] as $callback)
+			{
+				$this->import($callback[0]);
+				$blnRemove = $this->$callback[0]->$callback[1]($this);
+				
+				if ($blnRemove === false)
+					return 0;
+			}
+		}
 		
-		return parent::delete();
+		$intAffectedRows = parent::delete();
+		
+		if ($intAffectedRows > 0)
+		{
+			$this->Database->prepare("DELETE FROM " . $this->ctable . " WHERE pid=?")->execute($this->id);
+		}
+		
+		return $intAffectedRows;
 	}
 	
 
@@ -229,6 +250,19 @@ abstract class IsotopeProductCollection extends Model
 	 */
 	public function addProduct(IsotopeProduct $objProduct, $intQuantity)
 	{
+		// HOOK for adding additional functionality when adding product to collection
+		if (isset($GLOBALS['TL_HOOKS']['iso_addProductToCollection']) && is_array($GLOBALS['TL_HOOKS']['iso_addProductToCollection']))
+		{
+			foreach ($GLOBALS['TL_HOOKS']['iso_addProductToCollection'] as $callback)
+			{
+				$this->import($callback[0]);
+				$intQuantity = $this->$callback[0]->$callback[1]($objProduct, $intQuantity, $this);
+			}
+		}
+		
+		if ($intQuantity == 0)
+			return false;
+		
 		$objItem = $this->Database->prepare("SELECT * FROM {$this->ctable} WHERE pid={$this->id} AND product_id={$objProduct->id} AND product_options='".serialize($objProduct->getOptions(true))."'")->limit(1)->execute();
 		
 		if ($objItem->numRows)
@@ -256,6 +290,7 @@ abstract class IsotopeProductCollection extends Model
 		}
 	}
 	
+	
 	/**
 	 * update a product in the collection
 	 *
@@ -266,29 +301,68 @@ abstract class IsotopeProductCollection extends Model
 	 */
 	public function updateProduct(IsotopeProduct $objProduct, $arrSet)
 	{
-		$objItem = $this->Database->execute("SELECT * FROM {$this->ctable} WHERE pid={$this->id} AND product_id={$objProduct->id} AND product_options='".serialize($objProduct->getOptions(true))."'");
-		
-		if ($objItem->numRows)
-		{
-			$this->Database->prepare("UPDATE {$this->ctable} %s WHERE pid={$this->id} AND product_id={$objProduct->id} AND product_options='".serialize($objProduct->getOptions(true))."'")
-						   ->set($arrSet)
-						   ->executeUncached();
+		if (!$objProduct->cart_id)
+			return false;
 			
-			return $objItem->id;
+		// Quantity set to 0, delete product
+		if (isset($arrSet['product_quantity']) && $arrSet['product_quantity'] == 0)
+		{
+			return $this->deleteProduct($objProduct);
 		}
-		 return false;
+		
+		// HOOK for adding additional functionality when updating a product in the collection
+		if (isset($GLOBALS['TL_HOOKS']['iso_updateProductInCollection']) && is_array($GLOBALS['TL_HOOKS']['iso_updateProductInCollection']))
+		{
+			foreach ($GLOBALS['TL_HOOKS']['iso_updateProductInCollection'] as $callback)
+			{
+				$this->import($callback[0]);
+				$arrSet = $this->$callback[0]->$callback[1]($objProduct, $arrSet, $this);
+				
+				if (is_array($arrSet) && !count($arrSet))
+					return false;
+			}
+		}
+		
+		$intAffectedRows = $this->Database->prepare("UPDATE {$this->ctable} %s WHERE id={$objProduct->cart_id}")
+										  ->set($arrSet)
+										  ->executeUncached()
+										  ->affectedRows;
+		
+		if ($intAffectedRows > 0)
+			return true;
+		
+		return false;
 	}
 	
 	
-	public function deleteProduct($intId)
+	public function deleteProduct(IsotopeProduct $objProduct)
 	{
-		$this->Database->query("DELETE FROM {$this->ctable} WHERE id=$intId");
+		if (!$objProduct->cart_id)
+			return false;
+			
+		// HOOK for adding additional functionality when a product is removed from the collection
+		if (isset($GLOBALS['TL_HOOKS']['iso_deleteProductFromCollection']) && is_array($GLOBALS['TL_HOOKS']['iso_deleteProductFromCollection']))
+		{
+			foreach ($GLOBALS['TL_HOOKS']['iso_deleteProductFromCollection'] as $callback)
+			{
+				$this->import($callback[0]);
+				$blnRemove = $this->$callback[0]->$callback[1]($objProduct, $this);
+				
+				if ($blnRemove === false)
+					return false;
+			}
+		}
+				
+		$this->Database->query("DELETE FROM {$this->ctable} WHERE id={$objProduct->cart_id}");
+		
+		return true;
 	}
 	
 	
 	/**
 	 * Transfer products from another collection to this one (eg. Cart to Order)
 	 */
+	//!todo: implement addToCollection (and removeFromCollection) hooks!
 	public function transferFromCollection(IsotopeProductCollection $objCollection, $blnDuplicate=true)
 	{
 		if (!$this->blnRecordExists)
