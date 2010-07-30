@@ -181,14 +181,17 @@ class IsotopeRules extends Controller
 	 * @param object $objProduct
 	 * @param object $objModule
 	 */
-	public function addToCart($objProduct, $intQuantity, $objModule=null)
-	{		
-		$arrProducts[] = $objProduct;	//Get the current product
-		$arrData = $this->getEligibleRules($arrProducts, 'rules');
-		
-		$arrProducts = $this->applyRules($arrProducts, $arrData);
-		
-		$this->saveRules($arrProducts);	//session save by default	
+	public function addToCart($objProduct, $intQuantity, $objCollection)
+	{
+		if ($objCollection instanceof IsotopeCart)
+		{
+			$arrProducts[] = $objProduct;	//Get the current product
+			$arrData = $this->getEligibleRules($arrProducts, 'rules');
+			
+			$arrProducts = $this->applyRules($arrProducts, $arrData);
+			
+			$this->saveRules($arrProducts);	//session save by default
+		}
 		
 		return $intQuantity;
 	}
