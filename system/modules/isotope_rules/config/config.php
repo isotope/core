@@ -44,7 +44,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
 /** 
  * Checkout Steps
  */
-array_insert($GLOBALS['ISO_CHECKOUT_STEPS']['review'], 0, array('IsotopeRules', 'verifyCoupons'));
+array_insert($GLOBALS['ISO_CHECKOUT_STEPS']['review'], 0, array(array('IsotopeRules', 'verifyRules')));
 
 
 /** 
