@@ -29,10 +29,11 @@
 /**
  * Fields
  */
+$GLOBALS['TL_LANG']['tl_iso_orders']['order_id']			= array('Order ID');
+$GLOBALS['TL_LANG']['tl_iso_orders']['uniqid']				= array('Unique ID');
 $GLOBALS['TL_LANG']['tl_iso_orders']['status']				= array('Order Status', 'Select the status of this order.');
 $GLOBALS['TL_LANG']['tl_iso_orders']['date_payed']			= array('Payment date', 'Enter a date when this order has been paid.');
 $GLOBALS['TL_LANG']['tl_iso_orders']['date_shipped']		= array('Shipped date', 'Enter a date when this order has been shipped.');
-$GLOBALS['TL_LANG']['tl_iso_orders']['order_id']			= array('Order ID');
 $GLOBALS['TL_LANG']['tl_iso_orders']['date']				= array('Date');
 $GLOBALS['TL_LANG']['tl_iso_orders']['shipping_address']	= array('Shipping Address');
 $GLOBALS['TL_LANG']['tl_iso_orders']['billing_address']		= array('Billing Address');
