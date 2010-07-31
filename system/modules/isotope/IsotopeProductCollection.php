@@ -235,7 +235,7 @@ abstract class IsotopeProductCollection extends Model
 			$objTemplate->products = $this->arrProducts;
 			return $objTemplate->parse();
 		}
-
+				
 		return $this->arrProducts;
 	}
 	
@@ -286,7 +286,19 @@ abstract class IsotopeProductCollection extends Model
 				'href_reader'			=> $objProduct->href_reader
 			);
 			
-			return $this->Database->prepare("INSERT INTO {$this->ctable} %s")->set($arrSet)->executeUncached()->insertId;
+			$intInsertId = $this->Database->prepare("INSERT INTO {$this->ctable} %s")->set($arrSet)->executeUncached()->insertId;
+
+			if (isset($GLOBALS['TL_HOOKS']['iso_getProductCollectionInsertId']) && is_array($GLOBALS['TL_HOOKS']['iso_getProductCollectionInsertId']))
+			{
+				foreach ($GLOBALS['TL_HOOKS']['iso_getProductCollectionInsertId'] as $callback)
+				{
+					$this->import($callback[0]);
+					$this->$callback[0]->$callback[1]($objProduct, $intInsertId, $this);
+				}
+			}
+			
+			return $intInsertId;
+			
 		}
 	}
 	
