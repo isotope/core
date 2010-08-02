@@ -274,6 +274,7 @@ class AttributeWizard extends Widget
 	protected function getOptions()
 	{
 		$this->import('Database');
+		$this->loadDataContainer('tl_iso_attributes');
 		$this->loadDataContainer('tl_iso_products');
 		$this->loadLanguageFile('tl_iso_products');
 		
@@ -297,7 +298,7 @@ class AttributeWizard extends Widget
 			}
 		}
 		
-		uksort($arrAttributes, create_function('$a,$b', 'return (array_search($a, $GLOBALS["ISO_MSC"]["tl_iso_products"]["groups_ordering"]) > array_search($b, $GLOBALS["ISO_MSC"]["tl_iso_products"]["groups_ordering"])) ? 1 : -1;'));
+		uksort($arrAttributes, create_function('$a,$b', 'return (array_search($a, $GLOBALS["TL_DCA"]["tl_iso_attributes"]["fields"]["legend"]["options"]) > array_search($b, $GLOBALS["TL_DCA"]["tl_iso_attributes"]["fields"]["legend"]["options"])) ? 1 : -1;'));
 				
 		return $arrAttributes;
 	}
