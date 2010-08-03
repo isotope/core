@@ -54,6 +54,9 @@ class IsotopeRules extends Controller
 		$this->import('Database');
 		$this->import('FrontendUser','User');
 		$this->import('Isotope');
+		
+		$arrRulesData = deserialize($this->Database->query("SELECT rules FROM tl_iso_cart WHERE id={$this->Isotope->Cart->id}")->fetchAssoc(), true);
+		$this->Isotope->Cart->rules = deserialize($arrRulesData['rules'], true);
 	}
 	
 	
@@ -72,6 +75,87 @@ class IsotopeRules extends Controller
 		return self::$objInstance;
 	}
 	
+		
+	/** 
+	 * get rules whenever IsotopeProductCollection::getProducts is called.
+	 */
+	public function getRules($arrObjects = array(), $objSource = NULL)
+	{		
+		if(!count($arrObjects))
+			return $arrObjects;
+	
+		$arrData = array();
+			
+		if($objSource instanceof IsotopeProductCollection)
+		{
+			//in this case we need the cart rules in addition to the product rules, and that also means we need to actually show the rules as items
+			//as well as calculate the grandTotal correctly.
+			$arrObjects[] = $objSource;
+		}
+						
+		$arrData = $this->getEligibleRules($arrObjects, 'rules');	//allows us to grab all eligible rules skipping coupons.
+	
+		if(!count($arrData))
+			return $arrObjects;
+				
+		$arrObjects = $this->applyRules($arrObjects,$arrData);
+		
+		array_pop($arrObjects);	//remove the cart from the objects returned.
+				
+	}
+	
+	/**
+	 * append rules to the template object if they exist (cached)
+	 * @access public
+	 * @param object $objTemplate
+	 * @param object $objProduct
+	 * @return object $objTemplate
+	 */
+	public function updateTemplate($objTemplate, $objProduct)
+	{
+				
+		if(count($objProduct->rules))
+		{
+			foreach($objProduct->rules as $rule)
+			{
+				$shift = pow(10, 2);
+				$fltTotalPrice = -1*round((floor($rule['total_price'] * $shift) / $shift),2);
+								
+				$arrRules[] = array(
+					'label'			=> $rule['label'],
+					'price'			=> $rule['price'],
+					'total_price'	=> $fltTotalPrice
+				);
+			
+			}
+		}
+				
+		$objTemplate->rules = $arrRules;
+		
+		return $objTemplate;
+		
+	}
+	
+	
+	/** 
+	 * load cached rules.  We'll just skip eligibility and application and instead directly load the rule data and reflect the information for each item.
+	 * @access public
+	 * @param array $arrObjects
+	 * @param array $arrCachedRules
+	 * @return array $arrObjects
+	 */
+	public function loadAppliedRules($arrObjects)
+	{
+				
+		foreach($arrObjects as $object)
+		{
+			$arrRules = deserialize($object->rules, true);
+									
+			$arrReturn[] = $arrRules;
+		}
+		
+		return $arrReturn;
+	}
 	
 	/** 
 	 * Returns a rule form if needed
@@ -82,12 +166,10 @@ class IsotopeRules extends Controller
 	public function getCouponForm($objModule)
 	{		
 		$arrObjects = $this->Isotope->Cart->getProducts();	
-				
-		$arrObjects[] = $this->Isotope->Cart;
-
-		$arrObjects = $this->loadCachedRules($arrObjects, deserialize($this->Isotope->Cart->rules, true));
-
-		$arrData = $this->getEligibleRules($arrObjects, true, 'coupons');	//returns a collection of rules and their respective products that are associated.
+		
+		$arrData = $this->getEligibleRules($arrObjects, 'coupons');	//returns a collection of rules and their respective products that are associated.
+		
+		$arrObjects = $this->applyRules($arrObjects,$arrData);
 		
 		if(!count($arrData))
 			return '';
@@ -96,9 +178,9 @@ class IsotopeRules extends Controller
 		{			
 			if($this->Input->post('code'))
 			{
-				$arrObjects = $this->displayRules($arrObjects, $arrData, true, $this->Input->post('code'));
+				$arrObjects = $this->applyRules($arrObjects, $arrData, true, $this->Input->post('code'));
 				
-				$this->saveRules($arrObjects);
+				$this->saveRules($arrObjects, 'tl_iso_cart_items');
 			}
 		}
 					
@@ -117,76 +199,34 @@ class IsotopeRules extends Controller
 		return $objTemplate->parse();
 	}
 	
-	
 	/** 
-	 * get any rule pricing
-	 */
-	public function getRules($arrObjects = array(), $objSource = NULL)
-	{		
-		if(!count($arrObjects))
-			return $arrObjects;
-		
-		$blnCartItems = false;
-		$arrReturn = array();
-		$arrData = array();
-				
-		if($objSource instanceof IsotopeProductCollection)	//!@todo: Make space for additional custom class rule eligibility hooking
-		{
-			$arrObjects[] = $objSource;
-			$blnCartItems = true;
-		}
-
-		$arrData = $this->getEligibleRules($arrObjects, $blnCartItems, 'rules');
-			
-		if(!count($arrData))
-			return $arrObjects;
-			
-		$arrObjects = $this->displayRules($arrObjects,$arrData);
-		
-		return $arrObjects;
-		
-	}
-	
-	public function updateTemplate($objTemplate, $objProduct)
-	{
-		$objTemplate->rules = $objProduct->rules;
-		
-		return $objTemplate;
-		
-	}
-	
-	
-	/** 
-	 * load cached rules.  We'll just skip eligibility and application and instead directly load the rule data and reflect the information for each item.
+	 * Upon adding to cart, we need to somehow store the rule so it can be cached & recalled.
 	 * @access public
-	 * @param array $arrObjects
-	 * @param array $arrCachedRules
-	 * @return array $arrObjects
+	 * @param object $objProduct
+	 * @param object $objModule
 	 */
-	public function loadCachedRules($arrObjects, $arrCachedRules)
-	{
-		if(!count($arrCachedRules))
-			return $arrObjects;
-			
-		foreach($arrObjects as $object)
+	public function addToCollection($objProduct, $arrSet, $intInsertId, $objModule=null)
+	{			
+		foreach($arrSet as $k=>$v)
 		{
-			if(count($arrCachedRules[get_class($object)][$object->id]))
+			switch($k)
 			{
-				$object->rules = $arrCachedRules[get_class($object)][$object->id];
-
-				//calculate the price with rules applied
-				foreach($arrCachedRules[get_class($object)][$object->id] as $rule)
-				{
-					$object->price += $rule['total_price'];
-				}
-			}
-			
-			$arrReturn[] = $object;
+				case 'quantity_requested':
+					$objProduct->product_quantity = $v;
+					break;
+				default;
+					$objProduct->$k = $v;
+					break;
+			}	
 		}
+
+		$objProduct->cart_id = $intInsertId;				
+				
+		$arrProduct = $this->applyRules(array($objProduct), $objProduct->rules, true);
+		$this->saveRules($arrProduct[0], 'tl_iso_cart_items');
 		
-		return $arrReturn;
+		return $intQuantity;
 	}
-	
 	
 	/** 
 	 * Upon adding to cart, we need to somehow store the rule so it can be cached & recalled.
@@ -194,43 +234,36 @@ class IsotopeRules extends Controller
 	 * @param object $objProduct
 	 * @param object $objModule
 	 */
-	public function addToCollection($objProduct, $intInsertId, $objModule=null)
-	{		
-		$objProduct->cart_id = $intInsertId;
-					
-		$arrObjects[] = $objProduct;
-
-		$arrData = $this->getEligibleRules($arrObjects, true, 'rules');
-		
-		$arrObjects = $this->displayRules($arrObjects, $arrData, true);
-		
-		$this->saveRules($arrObjects, true);	//session save by default	
-		
-		return $intQuantity;
-	}
-	
-	public function removeFromCart($objProduct, $objModule=null)
-	{
-		$arrAppliedRules = deserialize($objModule->rules, true);
-		
-		if(count($arrAppliedRules))
+	public function updateProductInCollection($objProduct, $arrSet, $objModule=null)
+	{			
+		foreach($arrSet as $k=>$v)
 		{
-			if(count($arrAppliedRules[get_class($objProduct)][$objProduct->cart_id]))
+			switch($k)
 			{
-				$i=0;
-				
-				foreach($arrAppliedRules[get_class($objProduct)][$objProduct->cart_id] as $rule)
-				{
-					unset($arrAppliedRules[get_class($objProduct)][$objProduct->cart_id][$i]);
-					$i++;
-				}
-			}
+				case 'quantity_requested':
+					$objProduct->product_quantity = $v;
+					break;
+				default;
+					$objProduct->$k = $v;
+					break;
+			}	
 		}
+	
+		$arrProduct = $this->applyRules(array($objProduct), $objProduct->rules, true);				
 		
-		$objModule->rules = $arrAppliedRules;
+		$this->saveRules($arrProduct[0], 'tl_iso_cart_items');
+			
+		return $arrSet;
 	}
 	
-	
+
+	/** 
+	 * See what is already applied, in case we need to exclude certain rules.  May not be necessary
+	 * @access protected
+	 * @object $object
+	 * @array $arrRules
+	 * @return array (maybe should just reutrn rule id??
+	 */
 	protected function findAppliedRules($object, $arrRules)
 	{
 		$intObjectId = $object->id;
@@ -251,8 +284,9 @@ class IsotopeRules extends Controller
 	 * @param string $strQueryMode
 	 * @return array $arrReturn
 	 */ 
-	protected function getEligibleRules($arrObjects, $blnCartItem = false, $strQueryMode = '')
-	{							
+	protected function getEligibleRules($arrObjects, $strQueryMode = '', $blnCartItem = false)
+	{				
+					
 		if(!count($arrObjects))
 			return array();
 		
@@ -335,11 +369,10 @@ class IsotopeRules extends Controller
 					break;
 			}
 			
-			if($this->Isotope->Cart->rules)
-				$object->rules = $this->findAppliedRules($object, deserialize($this->Isotope->Cart->rules, true));	//!@todo: get rules for this item from the container or else reinstate the rules field for items.
+			//$object->rules = $this->findAppliedRules($object, deserialize($object->rules, true));	//!@todo: get rules for this item from the container or else reinstate the rules field for items.
 			
 			$arrCustomerMatrix = array_merge($arrCustomer, $arrObject);		
-					
+			
 			foreach($arrRules as $row)
 			{				
 				//Check existing usage
@@ -371,15 +404,7 @@ class IsotopeRules extends Controller
 								break;				
 						}
 					}
-				}
-				
-				if($row['collectionTypeRestrictions'])
-				{
-					$arrCollectionTypes = deserialize($row['collectionTypes']);
-					
-					if($object instanceof IsotopeProductCollection || !in_array(get_class($object), $arrCollectionTypes))
-						break;
-				}
+				}			
 				
 				if($row['dateRestrictions'])
 				{
@@ -408,7 +433,7 @@ class IsotopeRules extends Controller
 					default:
 						break;
 				}
-				
+			
 								
 				//Usage didn't stop us, let's further check for member restrictions
 				switch($row['memberRestrictions'])
@@ -425,7 +450,7 @@ class IsotopeRules extends Controller
 				switch($row['type'])
 				{
 					case 'product':
-						if($row['minItemQuantity'] && $row['minItemQuantity'] > $object->quantity_requested)
+						if($row['minItemQuantity'] && $row['minItemQuantity'] > $object->product_quantity)
 							break(2);
 												
 						switch($row['productRestrictions'])
@@ -439,19 +464,28 @@ class IsotopeRules extends Controller
 							default:
 								break;			
 						}
-						
+						break;
 					case 'product_collection':
 						if($row['minSubTotal']>0 && $object->subTotal > $row['minSubTotal'])
 							break(2);
 						
 						if($row['minCartQuantity']>0 && $object->totalQuantity > $row['minCartQuantity'])
 							break(2);
+							
+						if($row['collectionTypeRestrictions'])
+						{
+							$arrCollectionTypes = deserialize($row['collectionTypes'], true);
+							
+							if($object instanceof IsotopeProductCollection || !in_array(get_class($object), $arrCollectionTypes))
+								break(2);
+						}
+						
 						break;
 					default:
 						//!@todo: Hook for additional types of rule-eligible objects
 						break;
 				}
-								
+				
 				if(count($arrRestrictions))
 				{														
 					$blnLoopBreak = false;									
@@ -499,7 +533,7 @@ class IsotopeRules extends Controller
 	 * @return boolean
 	 */
 	//!@todo: include an option for caching rules that are applied to items in the cart
-	protected function displayRules($arrObjects,$arrData,$blnCartItem=false,$strCodes='')
+	protected function applyRules($arrObjects,$arrData,$blnCartItem=false,$strCodes='')
 	{		
 		$arrUsedCodes = array();
 		$arrCodes = array();
@@ -511,7 +545,8 @@ class IsotopeRules extends Controller
 		$arrUsedCodes = array();
 
 		foreach($arrObjects as $i=>$object)
-		{
+		{			
+			
 			$arrRules = array();
 			
 			$intObjectId = $object->id;	
@@ -528,8 +563,8 @@ class IsotopeRules extends Controller
 			}
 									
 			foreach($arrData[get_class($object)][$intObjectId] as $rule)
-			{		
-				
+			{	
+
 				if(count($arrCodes) && (!in_array($rule['code'], $arrCodes) || in_array($rule['id'], $arrAppliedRules)))
 				{
 					continue;
@@ -540,32 +575,21 @@ class IsotopeRules extends Controller
 					$arrAppliedRules[] = $rule['id'];
 				}
 				
-				$blnPercentage = strpos($rule['discount'], '%');
+				$intQuantity = 1;
 				
+				if($object->quantity_requested)
+					$intQuantity = $object->quantity_requested;
+				
+				if($object->product_quantity)
+					$intQuantity = $object->product_quantity;
+					
 				switch($rule['type'])
 				{ 
 					case 'product':					
-						if($blnPercentage)
-						{	
-							$intValue = (float)rtrim($rule['discount'], '%') / 100;	
-							$fltChange = round(($object->price * $intValue), 2);
-						}
-						else
-						{
-							$fltChange = round((float)$rule['discount'], 2);
-						}										
+						$fltChange = $this->calculateRuleTotal($object->price, $intQuantity, $rule['discount']);							
 						break;
 					case 'product_collection':
-						if($blnPercentage)
-						{	
-							$fltValue = (float)rtrim($rule['discount'], '%') / 100;	
-							
-							$fltChange = round(($object->subTotal * $fltValue), 2);
-						}
-						else
-						{
-							$fltChange = round((float)$rule['discount'], 2);
-						}																
+						$fltChange = $this->calculateRuleTotal($object->subTotal, 1, $rule['discount']);
 						break;
 					default:
 						//!@todo: Hook for other types of coupons
@@ -592,43 +616,26 @@ class IsotopeRules extends Controller
 		return $arrFinalObjects;
 	}
 	
-	/** 
-	 * surcharge callback to tally each rule as a line item for total discounts
-	 * @access public
-	 * @param array $arrSurcharges
-	 * @return array $arrSurcharges
-	 */
-	public function calculateRuleTotals($arrSurcharges)
+	protected function calculateRuleTotal($fltFieldValue, $intQuantity = 1, $varRuleDiscount = 0)
 	{
-		$arrObjects = $this->Isotope->Cart->getProducts();
-				
-		$arrData = deserialize($this->Isotope->Cart->rules, true);
+		$blnPercentage = strpos($varRuleDiscount, '%');
 		
-		if(!count($arrData))
-			return array();
-			
-		foreach($arrObjects as $object)
-		{			
-			$intObjectId = $object->id;
-			
-			if($object instanceof IsotopeProduct)
-				$intObjectId = (integer)$object->cart_id;
-						
-			if(count($arrData[get_class($object)][$intObjectId]))
-			{	
+		if($blnPercentage)
+		{	
+			$fltValue = -1*(float)rtrim($varRuleDiscount, '%') / 100;
 				
-				foreach($arrData[get_class($object)][$intObjectId] as $rule)
-				{
-			
-					$arrTotals[$rule['id']]['label'] 		= $rule['label'];
-					$arrTotals[$rule['id']]['price'] 		= $rule['price'];
-					$arrTotals[$rule['id']]['total_price'] 	+= $rule['total_price'];					
-				}								
-			}
-		}	
-				
-		return $arrTotals;
+			$fltChange = (round($fltFieldValue *100, 2) / 100 ) * $intQuantity * $fltValue;
+		
+		}
+		else
+		{
+			$fltChange = $varRuleDiscount;
+		}
+		
+		return $fltChange;			
+	
 	}
+	
 	
 	/** 
 	 * Save the currently used rules either to the session or else to the usage table in the case of confirmed rules.
@@ -636,19 +643,16 @@ class IsotopeRules extends Controller
 	 * @param array $arrData
 	 * @param string $strContainer
 	 */
-	private function saveRules($arrObjects, $blnCartItem = false, $strContainer = '')
+	private function saveRules($object, $strTable)
 	{		
-		if(!count($arrObjects))
-			return;
 		
 		switch($strContainer)
 		{
-			case 'table':
+			case 'tl_iso_rule_usage':
 				//save usage once coupons have been validated. (MOVE TO 
-				foreach($arrObjects as $object)
-				{
+				
 					//update the usage table 
-					$arrSet['tstamp'] 		= time();
+					/*$arrSet['tstamp'] 		= time();
 					$arrSet['pid'] 			= $row['rule']['id'];
 					$arrSet['member_id'] 	= (FE_USER_LOGGED_IN ? $this->User->id : 0);
 					//$arrSet['object_type']	= 
@@ -657,33 +661,109 @@ class IsotopeRules extends Controller
 					$this->Database->prepare("INSERT INTO tl_iso_rule_usage %s")
 								   ->set($arrSet)
 								   ->execute();
-				}
+				*/
 				break;
 				
 			default:
-				$arrRules = deserialize($this->Isotope->Cart->rules, true);
-				
-				foreach($arrObjects as $object)
-				{
-					foreach($object->rules as $row)
-					{						
-						$intObjectId = $object->id;
-						
-						if($object instanceof IsotopeProduct && $blnCartItem)
-							$intObjectId = $object->cart_id;
 							
-						$arrRules[get_class($object)][$intObjectId][] = $row;
-					}
+				$intObjectId = $object->id;
+			
+				if($object instanceof IsotopeProduct)
+				{
+					$intObjectId = $object->cart_id;
 				}
 				
+				$arrRules = array('rules'=>$object->rules);
+				
 				//$_SESSION['CHECKOUT_DATA']['rules'] = $arrRules;	//alternately, store to cart "coupons" field.
-				$this->Database->prepare("UPDATE tl_iso_cart %s WHERE id=?")
-							   ->set(array('rules'=>$arrRules))
-							   ->executeUncached($this->Isotope->Cart->id);
+				$this->Database->prepare("UPDATE $strTable %s WHERE id=?")
+							   ->set($arrRules)
+							   ->executeUncached($intObjectId);
 				break;
+				
 		}
 	}
 	
+	/** 
+	 * surcharge callback to tally each rule as a line item for total discounts
+	 * @access public
+	 * @param array $arrSurcharges
+	 * @return array $arrSurcharges
+	 */
+	public function calculateRuleTotals($arrSurcharges)
+	{
+		$arrTotals = array();
+		$arrObjects = $this->Isotope->Cart->getProducts();
+		
+		if(!count($arrObjects))
+			return $arrTotals;
+						
+		foreach($arrObjects as $object)
+		{				
+			$arrRules = deserialize($object->rules, true);
+			
+			if(!count($arrRules))
+				continue;
+				
+			foreach($arrRules as $rule)
+			{
+				$shift = pow(10, 2);
+				$fltTotalPrice = -1*round((floor($rule['total_price'] * $shift) / $shift),2);								
+				
+				$arrTotals[$rule['id']]['label'] 		= $rule['label'];
+				$arrTotals[$rule['id']]['price'] 		= $rule['price'];
+				$arrTotals[$rule['id']]['total_price'] 	+= $fltTotalPrice;			
+							
+			}
+		}			
+				
+		return $arrTotals;
+	}
+	
+		
+	/** 
+	 * Hook-callback for rules
+	 * 
+	 * @access public
+	 * @param array
+	 * @return array
+	 */
+	//!@todo: determine if needed
+	public function getSurcharges($objSource, $arrSurcharges)
+	{		
+		$arrProducts = $objSource->getProducts();
+		
+		if(!count($arrProducts))
+			return $arrSurcharges;
+	
+		//first get product rules, then get cart rules.  figure out how to lump rules together so that we may calculate total discounts accurately where
+		//products share rules.
+		foreach($arrProducts as $object)
+		{
+			$arrRules = deserialize($object->rules, true);
+	
+			if(!count($arrRules))
+				continue;
+				
+			foreach($arrRules as $rule)
+			{
+				$shift = pow(10, 2);
+				$fltTotalPrice = -1*round((floor($rule['total_price'] * $shift) / $shift),2);
+						
+				$arrSurcharges[] = array
+				(
+					'label'			=> $rule['label'],
+					'price'			=> $rule['price'],
+					'total_price'	=> $fltTotalPrice,
+					'tax_class'		=> 0,
+					'add_tax'		=> false,
+				);
+			}
+				
+		}
+				
+		return $arrSurcharges;
+	}
 	
 	/** 
 	 * Verify that our rules are still in fact, valid just before payment is completed.
@@ -693,43 +773,10 @@ class IsotopeRules extends Controller
 	public function verifyRules()
 	{
 		$arrProducts = $this->Isotope->Cart->getProducts();
-	
-		$arrData = $this->getEligibleRules($arrProducts, true);	//returns a collection of rules and their respective products that are associated.
-		
+			
 		if(count($arrData))
-			$this->saveRules($arrData, false, 'table');
+			$this->saveRules($arrProducts, 'tl_iso_rules_usage');
 	}
 	
-	
-	/** 
-	 * Hook-callback for rules
-	 * 
-	 * @access public
-	 * @param array
-	 * @return array
-	 */
-	//!@todo: determine if needed
-	public function getRulesSurcharges($arrSurcharges)
-	{
-		$objRules = $this->Database->query("SELECT rules FROM tl_iso_cart WHERE id={$this->id}");
-		
-		if(!$objRules->numRows)
-			return $arrSurcharges;
-		
-		$arrRules = deserialize($objRules->rules, true);
-		
-		foreach($arrRules as $rule)
-		{
-			$arrSurcharges[] = array
-			(
-				'label'			=> $rule['title'],
-				'price'			=> $rule['price'],
-				'total_price'	=> $rule['total_price'],
-				'tax_class'		=> 0,
-				'add_tax'		=> false,
-			);
-		}
-						
-		return $arrSurcharges;
-	}
+
 }

@@ -102,8 +102,7 @@ class ModuleIsotopeProductReader extends ModuleIsotope
 			foreach ($GLOBALS['TL_HOOKS']['iso_getProductUpdates'] as $callback)
 			{
 				$this->import($callback[0]);
-				$arrProducts = $this->$callback[0]->$callback[1](array($objProduct), $this);
-				$objProduct = $arrProducts[0];
+				$this->$callback[0]->$callback[1](array($objProduct), $this);
 			}
 		}
 		
