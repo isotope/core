@@ -60,7 +60,7 @@ class IsotopeCart extends IsotopeProductCollection
 	protected $arrCache = array();
 	
 	
-	protected $arrSurcharges;
+	//protected $arrSurcharges;
 	
 	
 	public function __construct()
@@ -71,6 +71,7 @@ class IsotopeCart extends IsotopeProductCollection
 		{
 			$this->import('FrontendUser', 'User');
 		}
+		
 	}
 	
 	
@@ -94,7 +95,7 @@ class IsotopeCart extends IsotopeProductCollection
 				}
 									
 				return $fltShippingWeight;
-				
+						
 			case 'billing_address':
 			case 'billingAddress':
 				if ($this->arrCache['billingAddress_id'] > 0)
@@ -154,6 +155,7 @@ class IsotopeCart extends IsotopeProductCollection
 				}
 				
 				return array_merge((is_array($this->billingAddress) ? $this->billingAddress : array()), array('id' => -1));
+			
 				
 			default:
 				return parent::__get($strKey);
@@ -250,6 +252,7 @@ class IsotopeCart extends IsotopeProductCollection
 			// Delete cookie
 			$this->setCookie($this->strCookie, '', (time() - 3600), $GLOBALS['TL_CONFIG']['websitePath']);
  		}
+
 	}
 	
 
@@ -314,7 +317,7 @@ class IsotopeCart extends IsotopeProductCollection
 		
 		$arrPreTax = $arrPostTax = $arrTaxes = array();
 		$arrProducts = $this->getProducts();
-		
+	
 		foreach( $arrProducts as $pid => $objProduct )
 		{
 			$arrTaxIds = array();
@@ -394,7 +397,7 @@ class IsotopeCart extends IsotopeProductCollection
 				}
 			}
 		}
-		
+	
 		return array_merge($arrPreTax, $arrTaxes, $arrPostTax);
 	}
 }

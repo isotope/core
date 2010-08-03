@@ -97,3 +97,23 @@ CREATE TABLE `tl_iso_rule_codes` (
 CREATE TABLE `tl_module` (
   `iso_enableCoupons` char(1) NOT NULL default '',
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table `tl_iso_cart`
+--
+
+CREATE TABLE `tl_iso_cart` (
+  `rules` blob NULL,
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+-- 
+-- Table `tl_iso_products`
+-- 
+
+CREATE TABLE `tl_iso_products` (
+  `rules` blob NULL,
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;

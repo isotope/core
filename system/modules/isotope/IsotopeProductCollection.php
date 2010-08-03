@@ -84,7 +84,7 @@ abstract class IsotopeProductCollection extends Model
 			case 'ctable':
 				return  $this->ctable;
 				break;
-				
+							
 			case 'hasPayment':
 				return (is_object($this->Payment) ? true : false);
 				break;
@@ -141,14 +141,26 @@ abstract class IsotopeProductCollection extends Model
 			case 'grandTotal':
 				$fltTotal = $this->subTotal;
 				
-				foreach( $this->getSurcharges() as $arrSurcharge )
+				//HOOK: To grab additional factors to produce a grand total value.
+				if (isset($GLOBALS['TL_HOOKS']['iso_getSurcharges']) && is_array($GLOBALS['TL_HOOKS']['iso_getSurcharges']))
 				{
-					if ($arrSurcharge['add'] !== false)
-						$fltTotal += $arrSurcharge['total_price'];
+					foreach ($GLOBALS['TL_HOOKS']['iso_getSurcharges'] as $callback)
+					{
+						$this->import($callback[0]);
+						$arrSurcharges = $this->$callback[0]->$callback[1]($this, $arrSurcharges);
+						
+					}
 				}
-				
-				return $fltTotal;
-				
+						
+				if(count($arrSurcharges))
+				{
+					foreach($arrSurcharges as $arrSurcharge)
+					{
+						$fltTotal += $arrSurcharge['total_price'];
+					}
+				}
+											
+				return $fltTotal;				
 			default:
 				return parent::__get($strKey);
 		}
@@ -229,6 +241,15 @@ abstract class IsotopeProductCollection extends Model
 			}
 		}
 		
+		if (isset($GLOBALS['TL_HOOKS']['iso_getProductUpdates']) && is_array($GLOBALS['TL_HOOKS']['iso_getProductUpdates']))
+		{
+			foreach ($GLOBALS['TL_HOOKS']['iso_getProductUpdates'] as $callback)
+			{				
+				$this->import($callback[0]);
+				$this->$callback[0]->$callback[1]($this->arrProducts, $this);
+			}
+		}
+		
 		if (strlen($strTemplate))
 		{
 			$objTemplate = new FrontendTemplate($strTemplate);
@@ -293,7 +314,7 @@ abstract class IsotopeProductCollection extends Model
 				foreach ($GLOBALS['TL_HOOKS']['iso_getProductCollectionInsertId'] as $callback)
 				{
 					$this->import($callback[0]);
-					$this->$callback[0]->$callback[1]($objProduct, $intInsertId, $this);
+					$this->$callback[0]->$callback[1]($objProduct, $arrSet, $intInsertId, $this);
 				}
 			}
 			
@@ -429,6 +450,6 @@ abstract class IsotopeProductCollection extends Model
 	/**
 	 * Must be implemented by child class
 	 */
-	abstract protected function getSurcharges();
+	abstract public function getSurcharges();
 }
 

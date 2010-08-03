@@ -312,7 +312,6 @@ CREATE TABLE `tl_iso_cart` (
   `tstamp` int(10) unsigned NOT NULL default '0',
   `session` varchar(64) NOT NULL default '',
   `config_id` int(10) unsigned NOT NULL default '0',
-  `rules` blob NULL,
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
