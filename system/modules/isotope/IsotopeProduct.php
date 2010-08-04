@@ -165,7 +165,7 @@ class IsotopeProduct extends Controller
 		{
 			case 'id':
 			case 'pid':
-			case 'href_reader':					
+			case 'href_reader':
 				return $this->arrData[$strKey];
 				
 			case 'categories':
@@ -180,7 +180,8 @@ class IsotopeProduct extends Controller
 					return $this->Isotope->calculatePrice($this->arrCache['low_price'], $this, 'low_price', $this->arrData['tax_class']);
 				}
 				
-				return $this->Isotope->calculatePrice($this->arrData['price'], $this, 'price', $this->arrData['tax_class']);		
+				return $this->Isotope->calculatePrice($this->arrData['price'], $this, 'price', $this->arrData['tax_class']);
+				
 			case 'price_override':
 				return ($this->arrData['price_override'] ? $this->arrData['price_override'] : '');
 
@@ -199,9 +200,9 @@ class IsotopeProduct extends Controller
 				// shorten description to ~200 chars, respect sentences
 				if (strlen($strDescription) > 200 && ($pos = utf8_strpos($strText, '.', $limit)) !== false) 
 				{ 
-					if ($pos < utf8_strlen($strDescription) - 1) 
+					if ($pos < utf8_strlen($strDescription) - 1)
 					{ 
-						$strText = utf8_substr($strDescription, 0, $pos+1); 
+						$strText = utf8_substr($strDescription, 0, $pos+1);
 					} 
 				} 
 				
@@ -628,7 +629,7 @@ class IsotopeProduct extends Controller
 			foreach ($GLOBALS['TL_HOOKS']['iso_generateAttribute'] as $callback)
 			{
 				$this->import($callback[0]);
-				$strBuffer = $this->$callback[0]->$callback[1]($attribute, $varValue, $strBuffer);
+				$strBuffer = $this->$callback[0]->$callback[1]($attribute, $varValue, $strBuffer, $this);
 			}
 		}
 		
