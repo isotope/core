@@ -11,15 +11,6 @@
 <div class="teaser"><?php echo $this->teaser; ?></div><?php endif; ?>
 
 <div class="price"><?php echo $this->price; ?></div>
-<?php if($this->rules): ?>
-<div class="priceGroup">
-<dl>
-<?php foreach($this->rules as $k=>$v): ?>
-<dd class="<?php echo $k; ?>"><?php echo $v['label'] . ': ' . $v['total_price'] .($v['price'] ? ' (Save '.$v['price'].')':''); ?></dd>
-<?php endforeach; ?> 
-</dl>
-</div>
-<?php endif; ?>
 <div class="details"><a href="<?php echo $this->href_reader; ?>"><?php echo $this->label_detail; ?></a></div>
 
 <?php if($this->buttons): ?>
