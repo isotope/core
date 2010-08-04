@@ -26,25 +26,25 @@
  */
 
 
-$GLOBALS['TL_LANG']['XPL']['isoMailTokens'] = array
-(
-	array('##order_id##', 'Unique number for this order'),
-	array('##items##', 'Number of items in cart'),
-	array('##products##', 'Products in cart'),
-	array('##subTotal##', 'Subtotal of order'),
-	array('##taxTotal##', 'Total of tax (excluding shipping)'),
-	array('##shippingPrice##', 'Shipping Price Total'),
-	array('##grandTotal##', 'Grand Total'),
-	array('##cart_text##', 'List of products in text format'),
-	array('##cart_html##', 'List of products in HTML format'),
-	array('##billing_address##<br />##billing_address_text##', 'Invoice address as HTML or plain text <br /> (also known as HTML with &lt;br /&gt; available)'),
-	array('##shipping_address##<br />##shipping_address_text##', 'Shipping address as HTML or plain text<br />(also known as HTML with &lt;br /&gt; available)'),
-	array('##shipping_method##', 'Name of shipping method (as entered in the backend)'),
-	array('##shipping_note##<br />##shipping_note_text##', 'Note the chosen shipping method message (also known as plain text available).'),
-	array('##payment_method##', 'Name of payment method (as entered in the backend)'),
-	array('##payment_note##<br />##payment_note_text##', 'Note the chosen payment method message (also known as plain text available).'),
-	array('##billing_firstname##<br />##billing_lastname##<br />...', 'Individual fields of the billing address.'),
-	array('##shipping_firstname##<br />##shipping_lastname##<br />...', 'Individual fields of the shipping address.'),
-	array('##form_...##', 'Retrieve condition form data. Use the prefix "form_" and the field\'s name.'),
-);
+/**
+ * Help Wizard explanations
+ */
+$GLOBALS['TL_LANG']['XPL']['isoMailTokens'][] = array('##order_id##', 'Unique number for this order');
+$GLOBALS['TL_LANG']['XPL']['isoMailTokens'][] = array('##items##', 'Number of items in cart');
+$GLOBALS['TL_LANG']['XPL']['isoMailTokens'][] = array('##products##', 'Products in cart');
+$GLOBALS['TL_LANG']['XPL']['isoMailTokens'][] = array('##subTotal##', 'Subtotal of order');
+$GLOBALS['TL_LANG']['XPL']['isoMailTokens'][] = array('##taxTotal##', 'Total of tax (excluding shipping)');
+$GLOBALS['TL_LANG']['XPL']['isoMailTokens'][] = array('##shippingPrice##', 'Shipping Price Total');
+$GLOBALS['TL_LANG']['XPL']['isoMailTokens'][] = array('##grandTotal##', 'Grand Total');
+$GLOBALS['TL_LANG']['XPL']['isoMailTokens'][] = array('##cart_text##', 'List of products in text format');
+$GLOBALS['TL_LANG']['XPL']['isoMailTokens'][] = array('##cart_html##', 'List of products in HTML format');
+$GLOBALS['TL_LANG']['XPL']['isoMailTokens'][] = array('##billing_address##<br />##billing_address_text##', 'Invoice address as HTML or plain text.');
+$GLOBALS['TL_LANG']['XPL']['isoMailTokens'][] = array('##shipping_address##<br />##shipping_address_text##', 'Shipping address as HTML or plain text.');
+$GLOBALS['TL_LANG']['XPL']['isoMailTokens'][] = array('##shipping_method##', 'Name of shipping method (as entered in the backend)');
+$GLOBALS['TL_LANG']['XPL']['isoMailTokens'][] = array('##shipping_note##<br />##shipping_note_text##', 'Note the chosen shipping method message (also known as plain text available).');
+$GLOBALS['TL_LANG']['XPL']['isoMailTokens'][] = array('##payment_method##', 'Name of payment method (as entered in the backend)');
+$GLOBALS['TL_LANG']['XPL']['isoMailTokens'][] = array('##payment_note##<br />##payment_note_text##', 'Note the chosen payment method message (also as plain text available).');
+$GLOBALS['TL_LANG']['XPL']['isoMailTokens'][] = array('##billing_firstname##<br />##billing_lastname##<br />...', 'Individual fields of the billing address.');
+$GLOBALS['TL_LANG']['XPL']['isoMailTokens'][] = array('##shipping_firstname##<br />##shipping_lastname##<br />...', 'Individual fields of the shipping address.');
+$GLOBALS['TL_LANG']['XPL']['isoMailTokens'][] = array('##form_...##', 'Retrieve condition form data. Use the prefix "form_" and the field\'s name.');
 
