@@ -541,98 +541,99 @@ class IsotopeProduct extends Controller
 	
 	protected function generateAttribute($attribute, $varValue)
 	{
-		$strBuffer = '';
+		$strBuffer = $varValue;
+		$arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute];
 		
-		switch($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['inputType'])
+		if ($arrData['inputType'] == 'mediaManager')
 		{
-			case 'mediaManager':
-				return $this->$attribute;
-				break;
-
-			case 'select':
-			case 'radio':
-			case 'checkbox':
-				if($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['use_alternate_source'])
-				{																											
-					$objData = $this->Database->prepare("SELECT * FROM " . $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['list_source_table'] . " WHERE id=?")
-											  ->limit(1)									 
-											  ->execute($varValue);
-					
-					if(!$objData->numRows)
-					{										
-						$strBuffer = $varValue;
-					}
-					else
-					{
-						//!@todo this is not going to work, whats this?
-						$strBuffer = array
-						(
-							'id'	=> $varValue,
-							'raw'	=> $objData->fetchAssoc(),
-						);
-					}
-				}
-				else
-				{
-					//check for a related label to go with the value.
-					$arrOptions = deserialize($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['option_list']);
-					$varValues = deserialize($varValue);
-					$arrLabels = array();
-					
-					if (is_array($arrOptions) && count($arrOptions))
-					{
-						foreach($arrOptions as $option)
-						{
-							if(is_array($varValues))
-							{
-								if(in_array($option['value'], $varValues))
-								{
-									$arrLabels[] = $option['label'];
-								}
-							}
-							else
-							{	
-								if($option['value']===$v)
-								{
-									$arrLabels[] = $option['label'];
-								}
-							}
-						}
-					}
-					
-					if($arrLabels)
-					{									
-						$strBuffer = join(',', $arrLabels); 
-					}
-				}
-				break;
+			// Return the IsotopeGallery object
+			return $this->$attribute;
+		}
+		elseif (in_array($arrData['inputType'], array('select', 'radio', 'checkbox')))
+		{
+			if($arrData['attributes']['use_alternate_source'])
+			{																											
+				$objData = $this->Database->prepare("SELECT * FROM " . $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['list_source_table'] . " WHERE id=?")
+										  ->limit(1)									 
+										  ->execute($varValue);
 				
-			case 'textarea':
-				$strBuffer = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['use_rich_text_editor'] ? $varValue : nl2br($varValue);
-				break;
-																																		
-			default:
-				switch( $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['eval']['rgxp'] )
+				if ($objData->numRows)
 				{
-					case 'price':
-						if ($attribute == 'price' && $this->arrType['variants'] && $this->arrData['pid'] == 0 && $this->arrCache['low_price'])
+					//!@todo this is not going to work, whats this?
+					$strBuffer = array
+					(
+						'id'	=> $varValue,
+						'raw'	=> $objData->fetchAssoc(),
+					);
+				}
+			}
+			else
+			{
+				//check for a related label to go with the value.
+				$arrOptions = deserialize($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['option_list']);
+				$varValues = deserialize($varValue);
+				$arrLabels = array();
+				
+				if (is_array($arrOptions) && count($arrOptions))
+				{
+					foreach($arrOptions as $option)
+					{
+						if(is_array($varValues))
 						{
-							$strBuffer = sprintf($GLOBALS['TL_LANG']['MSC']['priceRangeLabel'], $this->Isotope->formatPriceWithCurrency($varValue));
+							if(in_array($option['value'], $varValues))
+							{
+								$arrLabels[] = $option['label'];
+							}
 						}
 						else
-						{
-							$strBuffer = $this->Isotope->formatPriceWithCurrency($varValue);
+						{	
+							if($option['value']===$v)
+							{
+								$arrLabels[] = $option['label'];
+							}
 						}
-						break;
-						
-					default:
-						$strBuffer = $varValue;
-						break;
+					}
 				}
-				break;
+				
+				if($arrLabels)
+				{									
+					$strBuffer = join(',', $arrLabels); 
+				}
+			}
+		}
+		elseif ($arrData['inputType'] == 'textarea' && $arrData['eval']['rte'] != '')				
+		{
+			$strBuffer = nl2br($varValue);
+		}
+		elseif ($attribute == 'price')																																		
+		{
+			if ($this->arrType['variants'] && $this->arrData['pid'] == 0 && $this->arrCache['low_price'])
+			{
+				$strBuffer = sprintf($GLOBALS['TL_LANG']['MSC']['priceRangeLabel'], $this->Isotope->formatPriceWithCurrency($varValue));
+			}
+			else
+			{
+				$strBuffer = $this->Isotope->formatPriceWithCurrency($varValue);
+			}
+			
+			if ($varValue != $this->original_price)
+			{
+				$strBuffer = '<div class="original_price"><strike>' . $this->formatted_original_price . '</strike></div><div class="price">' . $strBuffer . '</div>';
+			}
 		}
 		
-		if (in_array($attribute, $this->arrVariantAttributes))
+		// Allow for custom attribute types to modify their output.
+		if (isset($GLOBALS['TL_HOOKS']['iso_generateAttribute']) && is_array($GLOBALS['TL_HOOKS']['iso_generateAttribute']))
+		{
+			foreach ($GLOBALS['TL_HOOKS']['iso_generateAttribute'] as $callback)
+			{
+				$this->import($callback[0]);
+				$strBuffer = $this->$callback[0]->$callback[1]($attribute, $varValue, $strBuffer);
+			}
+		}
+		
+		// Apply <span> to variant attributes so we can replace it with javascript/ajax
+		if ($this->arrType['variants'] && in_array($attribute, $this->arrVariantAttributes))
 		{
 			return '<span id="' . $attribute . '_' . ($this->pid ? $this->pid : $this->id) . '">' . $strBuffer . '</span>';
 		}
