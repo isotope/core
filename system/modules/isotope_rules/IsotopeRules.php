@@ -541,9 +541,11 @@ class IsotopeRules extends Controller
 	 * @param array
 	 * @return array
 	 */
-	public function getSurcharges($objSource, $arrSurcharges)
-	{		
-		$arrProducts = $objSource->getProducts();
+	public function getSurcharges($arrSurcharges)
+	{
+		$this->import('Isotope');
+		
+		$arrProducts = $this->Isotope->Cart->getProducts();
 		
 		if(!count($arrProducts))
 			return $arrSurcharges;
