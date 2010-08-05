@@ -127,10 +127,10 @@ CREATE TABLE `tl_iso_cart` (
 -- --------------------------------------------------------
 
 -- 
--- Table `tl_iso_products`
+-- Table `tl_iso_cart_items`
 -- 
 
-CREATE TABLE `tl_iso_products` (
+CREATE TABLE `tl_iso_cart_items` (
   `rules` blob NULL,
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
