@@ -54,9 +54,25 @@ CREATE TABLE `tl_iso_rule` (
   KEY `pid` (`pid`),  
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
  
- 
 --- --------------------------------------------------------
- 
+
+-- 
+-- Table `tl_iso_rule_restrictions`
+-- 
+
+CREATE TABLE `tl_iso_rule_restrictions` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `pid` int(10) unsigned NOT NULL default '0',
+  `tstamp` int(10) unsigned NOT NULL default '0',
+  `type` varchar(32) NOT NULL default '',
+  `object_id` int(10) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  KEY `pid` (`pid`),
+  KEY `type` (`type`, `object_id`),
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
 --- 
 --- Table `tl_iso_rule_usage`
 --- 
@@ -117,3 +133,4 @@ CREATE TABLE `tl_iso_cart` (
 CREATE TABLE `tl_iso_products` (
   `rules` blob NULL,
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
