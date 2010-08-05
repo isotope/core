@@ -345,8 +345,16 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
             'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rule']['rules'],
             'exclude'					=> true,
 			'inputType'					=> 'checkbox',
-			'eval'						=> array('multiple'=>true, 'mandatory'=>true),
-			'options_callback'			=> array('tl_iso_rule','getCoupons')
+			'options_callback'			=> array('tl_iso_rule', 'getCoupons'),
+			'eval'						=> array('multiple'=>true, 'mandatory'=>true, 'doNotSaveEmpty'=>true),
+			'load_callback' => array
+			(
+				array('tl_iso_rule', 'loadRestrictions'),
+			),
+			'save_callback' => array
+			(
+				array('tl_iso_rule', 'saveRestrictions'),
+			),
         ),
 		'groups' => array
         (
@@ -354,7 +362,15 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
             'exclude'					=> true,
 			'inputType'					=> 'checkboxWizard',
 			'foreignKey'				=> 'tl_member_group.name',
-			'eval'						=> array('multiple'=>true)
+			'eval'						=> array('multiple'=>true, 'doNotSaveEmpty'=>true),
+			'load_callback' => array
+			(
+				array('tl_iso_rule', 'loadRestrictions'),
+			),
+			'save_callback' => array
+			(
+				array('tl_iso_rule', 'saveRestrictions'),
+			),
         ),
         'productTypes' => array
         (
@@ -362,7 +378,15 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
             'exclude'					=> true,
 			'inputType'					=> 'checkboxWizard',
 			'foreignKey'				=> 'tl_iso_producttypes.name',
-			'eval'						=> array('multiple'=>true)
+			'eval'						=> array('multiple'=>true, 'doNotSaveEmpty'=>true),
+			'load_callback' => array
+			(
+				array('tl_iso_rule', 'loadRestrictions'),
+			),
+			'save_callback' => array
+			(
+				array('tl_iso_rule', 'saveRestrictions'),
+			),
         ),
        'pages' => array
 		(
@@ -370,7 +394,15 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
 			'exclude'					=> true,
 			'inputType'					=> 'pageTree',
 			'foreignKey'				=> 'tl_page.title',
-			'eval'						=> array('multiple'=>true, 'fieldType'=>'checkbox')
+			'eval'						=> array('multiple'=>true, 'fieldType'=>'checkbox', 'doNotSaveEmpty'=>true),
+			'load_callback' => array
+			(
+				array('tl_iso_rule', 'loadRestrictions'),
+			),
+			'save_callback' => array
+			(
+				array('tl_iso_rule', 'saveRestrictions'),
+			),
 		),
 		'products' 	=> array
 		(
@@ -380,12 +412,21 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
 			'eval' => array
 			(
 				'mandatory'				=> true,
+				'doNotSaveEmpty'		=> true,
 				'tl_class'				=> 'clr',
 				'foreignTable'			=> 'tl_iso_products',
 				'listFields'			=> array('type'=>'(SELECT name FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id)', 'name', 'sku'),
 				'searchFields'			=> array('name', 'alias', 'sku', 'description'),
 				'sqlWhere'				=> 'pid=0',
 				'searchLabel'			=> 'Search products',
+			),
+			'load_callback' => array
+			(
+				array('tl_iso_rule', 'loadRestrictions'),
+			),
+			'save_callback' => array
+			(
+				array('tl_iso_rule', 'saveRestrictions'),
 			),
 		),		
 		'members' => array
@@ -396,12 +437,21 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
 			'eval' => array
 			(
 				'mandatory'				=> true,
+				'doNotSaveEmpty'		=> true,
 				'tl_class'				=> 'clr',
 				'foreignTable'			=> 'tl_member',
 				'listFields'			=> array('firstname', 'lastname', 'username','email'),
 				'searchFields'			=> array('firstname', 'lastname', 'username','email'),
 				'sqlWhere'				=> '',
 				'searchLabel'			=> 'Search members',
+			),
+			'load_callback' => array
+			(
+				array('tl_iso_rule', 'loadRestrictions'),
+			),
+			'save_callback' => array
+			(
+				array('tl_iso_rule', 'saveRestrictions'),
 			),
         ),	
 		'countries' => array
@@ -495,45 +545,46 @@ class tl_iso_rule extends Backend
 
 
 	/**
-	 * Only list product types a user is allowed to see.
+	 * Load rule restrictions from linked table
 	 */
-	/*public function checkPermission($dc)
+	public function loadRestrictions($varValue, $dc)
 	{
-		if (strlen($this->Input->get('act')) && $this->Input->get('mode') != 'create')
-		{
-			$GLOBALS['TL_DCA']['tl_iso_products']['config']['closed'] = false;
-		}
-
-		// Hide "add variant" button if no products with variants enabled exist
-		if (!$this->Database->execute("SELECT * FROM tl_iso_products LEFT JOIN tl_iso_producttypes ON tl_iso_products.type=tl_iso_producttypes.id WHERE tl_iso_producttypes.variants='1'")->numRows)
-		{
-			unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_variant']);
-		}
+		return $this->Database->execute("SELECT object_id FROM tl_iso_rule_restrictions WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}'")->fetchEach('object_id');
+	}
+	
+	
+	/**
+	 * Save rule restrictions to linked table. Only update what necessary to prevent the IDs from increasing on every save_callback
+	 */
+	public function saveRestrictions($varValue, $dc)
+	{
+		$arrNew = deserialize($varValue);
 		
-		$this->import('BackendUser', 'User');
-		
-		// Hide archived (sold and deleted) products
-		if ($this->User->isAdmin)
+		if (!is_array($arrNew) || !count($arrNew))
 		{
-			$arrProducts = $this->Database->execute("SELECT id FROM tl_iso_products WHERE archive<2")->fetchEach('id');
+			$this->Database->query("DELETE FROM tl_iso_rule_restrications WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}'");
 		}
 		else
 		{
-			$arrTypes = is_array($this->User->iso_product_types) ? $this->User->iso_product_types : array(0);
-			$arrProducts = $this->Database->execute("SELECT id FROM tl_iso_products WHERE type IN ('','" . implode("','", $arrTypes) . "') AND archive<2")->fetchEach('id');
+			$arrOld = $this->Database->execute("SELECT object_id FROM tl_iso_rule_restrictions WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}'")->fetchEach('object_id');
+			
+			$arrInsert = array_diff($arrNew, $arrOld);
+			$arrDelete = array_diff($arrOld, $arrNew);
+			
+			if (count($arrDelete))
+			{
+				$this->Database->query("DELETE FROM tl_iso_rule_restrictions WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}' AND object_id IN (" . implode(',', $arrDelete) . ")");
+			}
+			
+			if (count($arrInsert))
+			{
+				$time = time();
+				$this->Database->query("INSERT INTO tl_iso_rule_restrictions (pid,tstamp,type,object_id) VALUES ({$dc->id}, $time, '{$dc->field}', " . implode("), ({$dc->id}, $time, '{$dc->field}', ", $arrInsert) . ")");
+			}
 		}
 		
-		if (!count($arrProducts))
-		{
-			$arrProducts = array(0);
-		}
-		
-		$GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'] = $arrProducts;
-		
-		if (strlen($this->Input->get('id')) && !in_array($this->Input->get('id'), $arrProducts))
-		{
-			$this->log('Cannot access product ID '.$this->Input->get('id'), 'tl_iso_products checkPermission()', TL_ACCESS);
-			$this->redirect('typolight/main.php?act=error');
-		}
-	}*/
+		//!@todo drop the serialized data and return '' here.
+		return $varValue;
+	}
 }
+
