@@ -55,7 +55,8 @@ array_insert($GLOBALS['ISO_CHECKOUT_STEPS']['review'], 0, array(array('IsotopeRu
 $GLOBALS['TL_HOOKS']['iso_getProductUpdates'][] 			= array('IsotopeRules', 'getRules'); 
 
 //used to display the extra rules data in the product template
-$GLOBALS['TL_HOOKS']['iso_generateProduct'][]				= array('IsotopeRules', 'updateTemplate');
+$GLOBALS['TL_HOOKS']['iso_generateAttribute'][]				= array('IsotopeRules', 'updatePrice');
+//$GLOBALS['TL_HOOKS']['iso_generateAjaxProduct'][]			= array('IsotopeRules', 'updateVariantPrice');
 
 //called to retrieve the cart item id for caching this rule
 $GLOBALS['TL_HOOKS']['iso_getProductCollectionInsertId'][] 	= array('IsotopeRules', 'addToCollection');
