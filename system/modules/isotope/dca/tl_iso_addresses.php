@@ -58,6 +58,7 @@ $GLOBALS['TL_DCA']['tl_iso_addresses'] = array
 		(
 			'mode'                    => 4,
 			'headerFields'			  => array('firstname','lastname', 'username'),
+			'disableGrouping'		  => true,
 			'flag'                    => 1,
 			'panelLayout'             => 'filter;sort,search,limit',
 			'child_record_callback'   => array('tl_iso_addresses','renderLabel')
