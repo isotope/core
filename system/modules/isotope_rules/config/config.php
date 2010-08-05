@@ -65,7 +65,7 @@ $GLOBALS['TL_HOOKS']['iso_getProductCollectionInsertId'][] 	= array('IsotopeRule
 $GLOBALS['TL_HOOKS']['iso_updateProductInCollection'][] 	= array('IsotopeRules', 'updateProductInCollection');
 
 //used to reflect the discounts in total for the cart
-$GLOBALS['TL_HOOKS']['iso_getSurcharges'][]				= array('IsotopeRules', 'getSurcharges');
+$GLOBALS['TL_HOOKS']['isoCheckoutSurcharge'][]				= array('IsotopeRules', 'getSurcharges');
 
 //used to retrieve a coupon form, if a valid coupon or coupons are available
 $GLOBALS['TL_HOOKS']['iso_compileCart']['rules'] 			= array('IsotopeRules', 'getCouponForm');

@@ -94,7 +94,8 @@ abstract class IsotopeProductCollection extends Model
 				break;
 				
 			case 'requiresShipping':
-				foreach( $this->getProducts() as $objProduct )
+				$arrProducts = $this->getProducts();
+				foreach( $arrProducts as $objProduct )
 				{
 					if (!$objProduct->shipping_exempt)
 					{
@@ -119,17 +120,20 @@ abstract class IsotopeProductCollection extends Model
 			case 'subTotal':	
 				$fltTotal = 0;
 				
-				foreach($this->getProducts() as $objProduct)
+				$arrProducts = $this->getProducts();
+				foreach( $arrProducts as $objProduct )
 				{
 					$fltTotal += ((float)$objProduct->price * (int)$objProduct->quantity_requested);
 				}
 				
 				return $fltTotal;
+				break;
 				
 			case 'taxTotal':
 				$intTaxTotal = 0;
 				
-				foreach( $this->getSurcharges() as $arrSurcharge )
+				$arrSurcharges = $this->getSurcharges();
+				foreach( $arrSurcharges as $arrSurcharge )
 				{
 					if ($arrSurcharge['add'])
 						$intTaxTotal += $arrSurcharge['total_price'];
@@ -141,28 +145,19 @@ abstract class IsotopeProductCollection extends Model
 			case 'grandTotal':
 				$fltTotal = $this->subTotal;
 				
-				//HOOK: To grab additional factors to produce a grand total value.
-				if (isset($GLOBALS['TL_HOOKS']['iso_getSurcharges']) && is_array($GLOBALS['TL_HOOKS']['iso_getSurcharges']))
+				$arrSurcharges = $this->getSurcharges();
+				foreach( $arrSurcharges as $arrSurcharge )
 				{
-					foreach ($GLOBALS['TL_HOOKS']['iso_getSurcharges'] as $callback)
-					{
-						$this->import($callback[0]);
-						$arrSurcharges = $this->$callback[0]->$callback[1]($this, $arrSurcharges);
-						
-					}
-				}
-						
-				if(count($arrSurcharges))
-				{
-					foreach($arrSurcharges as $arrSurcharge)
-					{
+					if ($arrSurcharge['add'] !== false)
 						$fltTotal += $arrSurcharge['total_price'];
-					}
 				}
-											
-				return $fltTotal;				
+				
+				return $fltTotal;
+				break;
+								
 			default:
 				return parent::__get($strKey);
+				break;
 		}
 	}
 	
