@@ -96,7 +96,7 @@ class IsotopeRules extends Controller
 		if(!count($arrData))
 			return $arrObjects;
 				
-		$this->applyRules($arrObjects,$arrData);
+		$this->applyRules($arrObjects, $arrData);
 		
 		array_pop($arrObjects);	//remove the cart from the objects returned.
 				
@@ -350,7 +350,7 @@ class IsotopeRules extends Controller
 	 * @return boolean
 	 */
 	//!@todo: include an option for caching rules that are applied to items in the cart
-	protected function applyRules($arrObjects,$arrData,$blnCartItem=false,$strCodes='',$objModule=NULL)
+	protected function applyRules($arrObjects, $arrData, $blnCartItem=false, $strCodes='', $objModule=NULL)
 	{		
 		$arrUsedCodes = array();
 		$arrCodes = array();
@@ -637,7 +637,7 @@ class IsotopeRules extends Controller
 		$objRules = $this->Database->executeUncached("SELECT c.*, (SELECT COUNT(u.id) AS ruleUses FROM tl_iso_rule_usage u WHERE u.pid=c.id) AS uses FROM tl_iso_rule c WHERE c.enabled='1'".$strRulesClause);
 	
 		if(!$objRules->numRows)
-			return '';
+			return array();
 						
 		$arrRuleIds = array();
 		$arrMemberUsesByRule = array();
