@@ -86,20 +86,18 @@ class IsotopeRules extends Controller
 			
 		if($objSource instanceof IsotopeProductCollection)
 		{
-			//in this case we need the cart rules in addition to the product rules, and that also means we need to actually show the rules as items
-			//as well as calculate the grandTotal correctly.
-			$arrObjects[] = $objSource;
+			$arrObjects = array($objSource);
+			$arrData = $this->getEligibleRules($arrObjects, 'product_collection');	//allows us to grab all eligible rules skipping coupons.
 		}
-						
-		$arrData = $this->getEligibleRules($arrObjects, 'rules');	//allows us to grab all eligible rules skipping coupons.
+		else
+		{				
+			$arrData = $this->getEligibleRules($arrObjects, 'products');	//allows us to grab all eligible rules skipping coupons.
+		}
 	
 		if(!count($arrData))
 			return $arrObjects;
 				
-		$this->applyRules($arrObjects, $arrData);
-		
-		array_pop($arrObjects);	//remove the cart from the objects returned.
-				
+		$this->applyRules($arrObjects, $arrData);				
 	}
 	
 	/**
@@ -117,7 +115,7 @@ class IsotopeRules extends Controller
 		if($objProduct->pid && !count($objProduct->rules))
 		{
 			//get parent rules
-			$arrData = $this->getEligibleRules(array($objProduct), 'rules');
+			$arrData = $this->getEligibleRules(array($objProduct), 'products');
 		
 			$this->applyRules(array($objProduct), $arrData);
 		}
@@ -133,7 +131,7 @@ class IsotopeRules extends Controller
 							
 			}
 						
-			return 'Was: <strike>'.$this->Isotope->formatPriceWithCurrency($objProduct->price,false).'</strike><br />Your Price: '.$this->Isotope->formatPriceWithCurrency($varNewValue,false);
+			return 'Was: <strike>'.$strBuffer.'</strike><br />Your Price: '.$this->Isotope->formatPriceWithCurrency($varNewValue,false);
 		}
 		else
 		{
@@ -196,7 +194,7 @@ class IsotopeRules extends Controller
 		{			
 			if($this->Input->post('code'))
 			{					
-				$arrData = $this->getEligibleRules($arrObjects, '', true);	//we need to pull this again as we are refiguring everything.
+				$arrData = $this->getEligibleRules($arrObjects, 'coupons', true);	//we need to pull this again as we are refiguring everything.
 				
 				$this->applyRules($arrObjects, $arrData, true, $this->Input->post('code'));
 															
@@ -253,14 +251,14 @@ class IsotopeRules extends Controller
 
 		$objProduct->cart_id = $intInsertId;				
 
-		$arrData = $this->getEligibleRules(array($objProduct), 'rules', true);	//we need to pull this again as we are refiguring everything.
+		$arrData = $this->getEligibleRules(array($objProduct), 'products', true);	//we need to pull this again as we are refiguring everything.
 				
 		$arrObjects = $this->applyRules(array($objProduct), $arrData, true);
 		
 		foreach($arrObjects as $object)
 		{
 			if($object instanceof IsotopeProduct)
-			{													
+			{														
 				$this->saveRules($object, 'tl_iso_cart_items');
 			}
 			elseif($object instanceof IsotopeProductCollection)
@@ -271,6 +269,8 @@ class IsotopeRules extends Controller
 		
 		return $intQuantity;
 	}
+	
+	
 	
 	/** 
 	 * Upon adding to cart, we need to somehow store the rule so it can be cached & recalled.
@@ -495,6 +495,19 @@ class IsotopeRules extends Controller
 		}
 	}
 	
+	public function calculateProductRulePrice($objProduct, $intQuantity, $objSource = NULL)
+	{
+		if(count($objProduct->rules))
+		{
+			foreach($objProduct->rules as $rule)
+			{			
+					$objProduct->price += -1*$this->calculateRuleTotal($objProduct->price, $intQuantity, $rule['price']);
+			}
+		}
+				
+		return $intQuantity;
+	}
+	
 	/** 
 	 * surcharge callback to tally each rule as a line item for total discounts
 	 * @access public
@@ -626,12 +639,14 @@ class IsotopeRules extends Controller
 		
 		switch($strQueryMode)
 		{
+			case 'products':
+				$strRulesClause = " AND type='product' AND enableCode=''";
+				break;
+			case 'product_collection': 
+				$strRulesClause = " AND type='product_collection' AND enableCode=''";
+				break;	
 			case 'coupons':
 				$strRulesClause = " AND enableCode='1'";
-				break;
-				
-			case 'rules':
-				$strRulesClause = " AND enableCode=''";
 				break;
 		}
 									

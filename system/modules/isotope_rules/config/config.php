@@ -56,21 +56,11 @@ $GLOBALS['TL_HOOKS']['iso_getProductUpdates'][] 			= array('IsotopeRules', 'getR
 
 //used to display the extra rules data in the product template
 $GLOBALS['TL_HOOKS']['iso_generateAttribute'][]				= array('IsotopeRules', 'updatePrice');
-//$GLOBALS['TL_HOOKS']['iso_generateAjaxProduct'][]			= array('IsotopeRules', 'updateVariantPrice');
 
-//called to retrieve the cart item id for caching this rule
-$GLOBALS['TL_HOOKS']['iso_getProductCollectionInsertId'][] 	= array('IsotopeRules', 'addToCollection');
-
-//used to recalculate the total discount, for example, if a product quantity changes
-$GLOBALS['TL_HOOKS']['iso_updateProductInCollection'][] 	= array('IsotopeRules', 'updateProductInCollection');
-
-//used to reflect the discounts in total for the cart
-$GLOBALS['TL_HOOKS']['isoCheckoutSurcharge'][]				= array('IsotopeRules', 'getSurcharges');
+$GLOBALS['TL_HOOKS']['iso_addProductToCollection'][]		= array('IsotopeRules', 'calculateProductRulePrice');
 
 //used to retrieve a coupon form, if a valid coupon or coupons are available
 $GLOBALS['TL_HOOKS']['iso_compileCart']['rules'] 			= array('IsotopeRules', 'getCouponForm');
 
 //used to grab the surcharge data and display it in the cart (separate from actually updating the grand total
-$GLOBALS['TL_HOOKS']['isoCheckoutSurcharge'][]				= array('IsotopeRules', 'calculateRuleTotals');
-
-//$GLOBALS['TL_HOOKS']['iso_removeFromCart'][]				= array('IsotopeRules', 'removeFromCart');
+$GLOBALS['TL_HOOKS']['isoCheckoutSurcharge'][]				= array('IsotopeRules', 'getSurcharges');
