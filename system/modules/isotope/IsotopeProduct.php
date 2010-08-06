@@ -129,6 +129,8 @@ class IsotopeProduct extends Controller
 					$this->arrOptions[$attribute] = $this->arrData[$attribute];
 				}
 			}
+			$this->arrAttributes[] = 'original_price';
+			$this->arrOptions['original_price'] = $this->arrData['original_price'];
 		}
 
 		// Cache downloads for this product
@@ -409,7 +411,6 @@ class IsotopeProduct extends Controller
 			}
 		}
 		
-		$objTemplate->prices = $this->prices;
 		$objTemplate->buttons = $arrButtons;
 		$objTemplate->quantityLabel = $GLOBALS['TL_LANG']['MSC']['quantity'];
 		$objTemplate->useQuantity = $objModule->iso_use_quantity;
@@ -535,7 +536,7 @@ class IsotopeProduct extends Controller
 				$arrOptions = $this->$callback[0]->$callback[1]($arrOptions, $this);
 			}
 		}
-        
+     
         return $arrOptions;
 	}
 	
