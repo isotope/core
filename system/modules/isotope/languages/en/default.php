@@ -54,7 +54,6 @@ $GLOBALS['TL_LANG']['ERR']['noAddressData']				= 'Address data is required to ca
 $GLOBALS['TL_LANG']['ERR']['variantDuplicate']			= 'A variant with this attributes is already available. Please select another combination.';
 $GLOBALS['TL_LANG']['ERR']['breadcrumbEmpty']			= 'The filtered category is empty, all products are now showing.';
 
-$GLOBALS['TL_LANG']['ERR']['invalidCoupon']				= 'Invalid coupon';
 $GLOBALS['TL_LANG']['ERR']['calc']						= 'Please enter whole numbers or decimals signed with + or - and optionally with a percentage.';
 //Checkout Errors
 $GLOBALS['TL_LANG']['ERR']['orderFailed']			= 'Checkout failed. Please try again or choose another payment method.';
