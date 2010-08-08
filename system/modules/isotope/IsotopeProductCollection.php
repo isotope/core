@@ -36,6 +36,11 @@ abstract class IsotopeProductCollection extends Model
 	protected $ctable;
 	
 	/**
+	 * Define if data should be threaded as "locked", eg. not apply discount rules to product prices
+	 */
+	protected $blnLocked = false;
+	
+	/**
 	 * Cache all products for speed improvements
 	 * @var array
 	 */
@@ -63,6 +68,27 @@ abstract class IsotopeProductCollection extends Model
 	public function __construct()
 	{
 		parent::__construct();
+		
+		// Do not use __destruct, because Database object might be destructed first (see http://dev.contao.org/issues/2236)
+		if (!$this->blnLocked)
+		{
+			register_shutdown_function(array($this, 'updatePrices'));
+		}
+	}
+	
+	
+	/**
+	 * Update database with latest product prices
+	 */
+	public function updatePrices()
+	{
+		if (is_array($this->arrProducts) && count($this->arrProducts))
+		{
+			foreach( $this->arrProducts as $objProduct )
+			{
+				$this->Database->execute("UPDATE {$this->ctable} SET price='{$objProduct->price}' WHERE id={$objProduct->cart_id}");
+			}
+		}
 	}
 	
 	
@@ -215,11 +241,11 @@ abstract class IsotopeProductCollection extends Model
 				
 				try
 				{
-					$objProduct = new $strClass($objProductData->row());
+					$objProduct = new $strClass($objProductData->row(), $this->blnLocked);
 				}
 				catch (Exception $e)
 				{
-					$objProduct = new IsotopeProduct(array('id'=>$objItems->product_id, 'sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price));
+					$objProduct = new IsotopeProduct(array('id'=>$objItems->product_id, 'sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price), $this->blnLocked);
 				}
 				
 				$objProduct->quantity_requested = $objItems->product_quantity;

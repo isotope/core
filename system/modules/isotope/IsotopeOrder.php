@@ -40,6 +40,11 @@ class IsotopeOrder extends IsotopeProductCollection
 	 * @var string
 	 */
 	protected $ctable = 'tl_iso_order_items';
+	
+	/**
+	 * Lock products from apply rule prices
+	 */
+	protected $blnLocked = true;
 
 				
 	public function __get($strKey)

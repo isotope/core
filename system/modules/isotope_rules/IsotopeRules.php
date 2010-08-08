@@ -882,7 +882,7 @@ class IsotopeRules extends Controller
 	
 	public function calculatePrice($fltPrice, $objSource, $strField, $intTaxClass)
 	{
-		if ($objSource instanceof IsotopeProduct && $strField != 'original_price')
+		if ($objSource instanceof IsotopeProduct && ($strField == 'price' || $strField == 'low_price'))
 		{
 			$arrProcedures = array("type='product'", "enabled='1'");
 			
@@ -905,7 +905,7 @@ class IsotopeRules extends Controller
 								OR (productRestrictions='products' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='products' AND object_id={$objSource->id})>0)
 								OR (productRestrictions='pages' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='pages' AND object_id IN (SELECT page_id FROM tl_iso_product_categories WHERE pid={$objSource->id})))";
 			
-			// Fetch rules
+			// Fetch and process rules
 			$objRules = $this->Database->execute("SELECT * FROM tl_iso_rules r WHERE " . implode(' AND ', $arrProcedures) . " ORDER BY sorting");
 			
 			while( $objRules->next() )
