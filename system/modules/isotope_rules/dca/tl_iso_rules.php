@@ -47,9 +47,9 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 	(
 		'sorting' => array
 		(
-			'mode'						=> 2,
-			'flag'						=> 1,
-			'panelLayout'				=> 'filter;sort,search,limit'
+			'fields'					=> array('type', 'title'),
+			'mode'						=> 1,
+			'panelLayout'				=> 'filter;search,limit'
 		),
 		'label'	  => array
 		(
@@ -136,7 +136,6 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
             'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['title'],
             'exclude'					=> true,
             'search'					=> true,
-            'sorting'					=> true,
             'flag'						=> 1,
             'inputType'					=> 'text',
             'eval'						=> array('mandatory'=>true, 'maxlength'=>255)
@@ -191,7 +190,6 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
             'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['minSubTotal'],
             'exclude'					=> true,
             'search'					=> true,
-            'sorting'					=> true,
             'flag'						=> 1,
             'inputType'					=> 'text',
             'eval'						=> array('rgxp'=>'digit', 'maxlength'=>255)
@@ -201,7 +199,6 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
             'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['minCartQuantity'],
             'exclude'					=> true,
             'search'					=> true,
-            'sorting'					=> true,
             'flag'						=> 1,
             'inputType'					=> 'text',
             'eval'						=> array('rgxp'=>'digit', 'maxlength'=>255)
@@ -211,7 +208,6 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
             'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['maxCartQuantity'],
             'exclude'					=> true,
             'search'					=> true,
-            'sorting'					=> true,
             'flag'						=> 1,
             'inputType'					=> 'text',
             'eval'						=> array('rgxp'=>'digit', 'maxlength'=>255)
@@ -221,7 +217,6 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
             'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['minItemQuantity'],
             'exclude'					=> true,
             'search'					=> true,
-            'sorting'					=> true,
             'flag'						=> 1,
             'inputType'					=> 'text',
             'eval'						=> array('rgxp'=>'digit', 'maxlength'=>255)
@@ -231,7 +226,6 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
             'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['maxItemQuantity'],
             'exclude'					=> true,
             'search'					=> true,
-            'sorting'					=> true,
             'flag'						=> 1,
             'inputType'					=> 'text',
             'eval'						=> array('rgxp'=>'digit', 'maxlength'=>255)
@@ -520,8 +514,7 @@ class tl_iso_rules extends Backend
 			}
 		}
 		
-		//!@todo drop the serialized data and return '' here.
-		return $varValue;
+		return '';
 	}
 }
 
