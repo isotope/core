@@ -38,7 +38,6 @@ class DimensionProduct extends IsotopeProduct
 		switch( $strKey )
 		{
 			case 'price':
-			case 'price_override':
 				$intPrice = 0;
 				$arrMin = deserialize($this->arrData['dimensions_min']);
 				$arrMax = deserialize($this->arrData['dimensions_max']);
@@ -59,7 +58,7 @@ class DimensionProduct extends IsotopeProduct
 					$intPrice = $objPrice->price;
 				}
 				
-				return $this->Isotope->calculatePrice($intPrice, $this->arrData['tax_class']);
+				return $this->Isotope->calculatePrice($intPrice, $this, 'price', $this->arrData['tax_class']);
 				break;
 		}
 		

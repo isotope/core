@@ -45,7 +45,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 1, array
 $GLOBALS['ISO_PRODUCT']['dimension'] = array
 (
 	'class'				=> 'DimensionProduct',
-	'disabledFields'	=> array('price', 'price_override'),
+	'disabledFields'	=> array('price'),
 );
 
 $GLOBALS['ISO_PRODUCT']['regular']['disabledFields'][] = 'dimensions';

@@ -76,7 +76,6 @@ CREATE TABLE `tl_iso_products` (
   `keywords_meta` text NULL,
   `description_meta` text NULL,
   `price` decimal(12,2) NOT NULL default '0.00',
-  `price_override` varchar(255) NOT NULL default '',
   `max_order_quantity` int(10) unsigned NOT NULL default '0',
   `stock_enabled` char(1) NOT NULL default '',
   `stock_quantity` int(10) unsigned NOT NULL default '0',

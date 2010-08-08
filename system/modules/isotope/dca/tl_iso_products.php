@@ -304,13 +304,6 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'eval'					=> array('mandatory'=>true, 'maxlength'=>255, 'rgxp'=>'price', 'tl_class'=>'w50'),
 			'attributes'			=> array('legend'=>'pricing_legend', 'is_order_by_enabled'=>true),
 		),
-		'price_override' => array
-		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['price_override'],
-			'inputType'				=> 'text',
-			'eval'					=> array('maxlength'=>255, 'tl_class'=>'w50'),
-			'attributes'			=> array('legend'=>'pricing_legend'),
-		),
 		'tax_class' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['tax_class'],

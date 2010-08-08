@@ -43,19 +43,13 @@ class ShippingOrderTotal extends IsotopeShipping
 		switch( $strKey )
 		{
 			case 'price':
-							
 				$fltEligibleSubTotal = $this->getAdjustedSubTotal((TL_MODE=='FE' ? $this->Isotope->Cart->subTotal : $this->Isotope->Order->subTotal));
 
-				if($fltEligibleSubTotal<=0)
-				{
-					return 0.00;
-				}
+				return $fltEligibleSubTotal <= 0 ? 0.00 : $this->Isotope->calculatePrice($this->calculateShippingRate($this->id, $fltEligibleSubTotal), $this, 'price', $this->arrData['tax_class']);
 				
-				return $this->Isotope->calculatePrice($this->calculateShippingRate($this->id, $fltEligibleSubTotal), $this, 'price', $this->arrData['tax_class']);
-				break;
+			default:
+				return parent::__get($strKey);
 		}
-		
-		return parent::__get($strKey);
 	}
 	
 	/* protected function getRateLabel($strOptionName)
