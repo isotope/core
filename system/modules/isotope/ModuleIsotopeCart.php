@@ -102,7 +102,6 @@ class ModuleIsotopeCart extends ModuleIsotope
 				'link'				=> $objProduct->href_reader,
 				'price'				=> $this->Isotope->formatPriceWithCurrency($objProduct->price),
 				'total_price'		=> $this->Isotope->formatPriceWithCurrency($objProduct->total_price),
-				'original_price'	=> $this->Isotope->formatPriceWithCurrency($objProduct->original_price),
 				'tax_id'			=> $objProduct->tax_id,
 				'quantity'			=> $objProduct->quantity_requested,
 				'cart_item_id'		=> $objProduct->cart_id,

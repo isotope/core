@@ -97,7 +97,6 @@ class RegistryProduct extends IsotopeProduct
 		
 		$objTemplate->label_detail = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
 		
-		$objTemplate->originalPrice = $this->formatted_original_price;
 		$objTemplate->options = $arrProductOptions;	
 		$objTemplate->hasOptions = count($arrProductOptions) ? true : false;
 		

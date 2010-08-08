@@ -284,10 +284,9 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			'default'					=> 'none',
 			'exclude'					=> true,
 			'filter'					=> true,
-			'options'					=> array('none','groups','members'),
+			'options'					=> array('none', 'groups', 'members'),
 			'eval'						=> array('submitOnChange'=>true),
 			'reference'					=> &$GLOBALS['TL_LANG']['tl_iso_rules']['memberRestrictions']
-		
 		),
         'productRestrictions' => array
 		(
@@ -296,10 +295,9 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			'default'					=> 'none',
 			'exclude'					=> true,
 			'filter'					=> true,
-			'options'					=> array('none','producttypes','pages','products'),
+			'options'					=> array('none', 'producttypes', 'pages', 'products'),
 			'eval'						=> array('submitOnChange'=>true),
 			'reference'					=> &$GLOBALS['TL_LANG']['tl_iso_rules']['productRestrictions']
-		
 		),
         'ruleRestrictions' => array
 		(
@@ -308,10 +306,9 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			'default'					=> 'none',
 			'exclude'					=> true,
 			'filter'					=> true,
-			'options'					=> array('none','all','rules'),
+			'options'					=> array('none', 'all', 'rules'),
 			'eval'						=> array('submitOnChange'=>true),
 			'reference'					=> &$GLOBALS['TL_LANG']['tl_iso_rules']['ruleRestrictions']
-		
 		),
 		'rules' => array
         (

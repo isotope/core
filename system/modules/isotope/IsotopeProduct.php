@@ -129,8 +129,6 @@ class IsotopeProduct extends Controller
 					$this->arrOptions[$attribute] = $this->arrData[$attribute];
 				}
 			}
-			$this->arrAttributes[] = 'original_price';
-			$this->arrOptions['original_price'] = $this->arrData['original_price'];
 		}
 
 		// Cache downloads for this product
@@ -418,7 +416,6 @@ class IsotopeProduct extends Controller
 		
 		$objTemplate->label_detail = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
 		
-		$objTemplate->original_price = $this->formatted_original_price;
 		$objTemplate->options = $arrProductOptions;	
 		$objTemplate->hasOptions = count($arrProductOptions) ? true : false;
 		
@@ -613,11 +610,11 @@ class IsotopeProduct extends Controller
 			else
 			{
 				$strBuffer = $this->Isotope->formatPriceWithCurrency($varValue);
-			}
-			
-			if ($varValue != $this->original_price)
-			{
-				$strBuffer = '<div class="original_price"><strike>' . $this->formatted_original_price . '</strike></div><div class="price">' . $strBuffer . '</div>';
+				
+				if ($varValue != $this->original_price)
+				{
+					$strBuffer = '<div class="original_price"><strike>' . $this->formatted_original_price . '</strike></div><div class="price">' . $strBuffer . '</div>';
+				}
 			}
 		}
 		
@@ -909,6 +906,7 @@ class IsotopeProduct extends Controller
 
 		$this->arrData['id'] = $arrData['id'];
 		$this->arrData['pid'] = $arrData['pid'];
+		$this->arrData['original_price'] = $arrData['price'];
 		
 		foreach( $this->arrVariantAttributes as $attribute )
 		{
