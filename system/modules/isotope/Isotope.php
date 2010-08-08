@@ -881,9 +881,9 @@ class Isotope extends Controller
 				break;
 				
 			case 'calc':
-				if(!preg_match('/^[-+]?\d+(\.\d{1,2})?%?$/', $varValue))
+				if(!preg_match('/^[-+]\d+(\.\d{1,2})?%?$/', $varValue))
 				{															
-					$objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR'][$strRegexp], $objWidget->label));
+					$objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR']['calc'], $objWidget->label));
 				}
 				return true;
 				break;
