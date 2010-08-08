@@ -184,9 +184,6 @@ class IsotopeProduct extends Controller
 				
 				return $this->Isotope->calculatePrice($this->arrData['price'], $this, 'price', $this->arrData['tax_class']);
 				
-			case 'price_override':
-				return ($this->arrData['price_override'] ? $this->arrData['price_override'] : '');
-
 			case 'total_price':
 				return ($this->quantity_requested ? $this->quantity_requested : 1) * $this->price;
 
