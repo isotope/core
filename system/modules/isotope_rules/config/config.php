@@ -64,3 +64,4 @@ $GLOBALS['TL_HOOKS']['iso_compileCart']['rules'] 			= array('IsotopeRules', 'get
 
 //used to grab the surcharge data and display it in the cart (separate from actually updating the grand total
 $GLOBALS['TL_HOOKS']['isoCheckoutSurcharge'][]				= array('IsotopeRules', 'getSurcharges');
+
