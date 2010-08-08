@@ -86,6 +86,11 @@ class IsotopeProduct extends Controller
 	 * @var boolean
 	 */
 	protected $doNotSubmit = false;
+	
+	/**
+	 * Lock products from changes and don't calculate prices
+	 */
+	protected $blnLocked = false;
 
 	/**
 	 * Isotope object
@@ -97,11 +102,13 @@ class IsotopeProduct extends Controller
 	/**
 	 * Construct the object
 	 */
-	public function __construct($arrData)
+	public function __construct($arrData, $blnLocked=false)
 	{
 		parent::__construct();
 		$this->import('Database');
 		$this->import('Isotope');
+		
+		$this->blnLocked = $blnLocked;
 		
 		if ($arrData['pid'] > 0)
 		{
@@ -172,15 +179,15 @@ class IsotopeProduct extends Controller
 				return deserialize($this->arrData[$strKey], true);
 				
 			case 'original_price':
-				return $this->Isotope->calculatePrice($this->arrData['original_price'], $this, 'original_price', $this->arrData['tax_class']);
+				return $this->blnLocked ? $this->arrData['original_price'] : $this->Isotope->calculatePrice($this->arrData['original_price'], $this, 'original_price', $this->arrData['tax_class']);
 				
 			case 'price':
 				if ($this->arrType['variants'] && $this->arrData['pid'] == 0 && $this->arrCache['low_price'])
 				{
-					return $this->Isotope->calculatePrice($this->arrCache['low_price'], $this, 'low_price', $this->arrData['tax_class']);
+					return $this->blnLocked ? $this->arrData['low_price'] : $this->Isotope->calculatePrice($this->arrCache['low_price'], $this, 'low_price', $this->arrData['tax_class']);
 				}
 				
-				return $this->Isotope->calculatePrice($this->arrData['price'], $this, 'price', $this->arrData['tax_class']);
+				return $this->blnLocked ? $this->arrData['price'] : $this->Isotope->calculatePrice($this->arrData['price'], $this, 'price', $this->arrData['tax_class']);
 				
 			case 'total_price':
 				return ($this->quantity_requested ? $this->quantity_requested : 1) * $this->price;
