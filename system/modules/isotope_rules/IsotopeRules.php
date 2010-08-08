@@ -929,9 +929,11 @@ class IsotopeRules extends Controller
 		
 		while( $objRules->next() )
 		{
+			$fltPrice = $this->calculateProductTotal($arrRule, $arrProducts);
+			
 			if (strpos($objRules->discount, '%') !== false)
 			{
-				$fltDiscount = 100 + rtrim($objRules->discount, '%');
+				$fltDiscount = rtrim($objRules->discount, '%');
 				$fltPrice = $fltPrice / 100 * $fltDiscount;
 			}
 			else
