@@ -33,7 +33,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
 (
 	'iso_rules' => array
 	(
-		'tables'					=> array('tl_iso_rule', 'tl_iso_rule_usage'), //'tl_iso_rule_codes'),
+		'tables'					=> array('tl_iso_rules', 'tl_iso_rule_usage'), //'tl_iso_rule_codes'),
 		'stylesheet'				=> 'system/modules/isotope/html/backend.css',
 		'javsacript'				=> 'system/modules/isotope/html/backend.js',
 		'icon'						=> 'system/modules/isotope_rules/html/coupons.png'
