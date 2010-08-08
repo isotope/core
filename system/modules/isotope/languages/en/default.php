@@ -55,9 +55,7 @@ $GLOBALS['TL_LANG']['ERR']['variantDuplicate']			= 'A variant with this attribut
 $GLOBALS['TL_LANG']['ERR']['breadcrumbEmpty']			= 'The filtered category is empty, all products are now showing.';
 
 $GLOBALS['TL_LANG']['ERR']['invalidCoupon']				= 'Invalid coupon';
-$GLOBALS['TL_LANG']['ERR']['discountFactors']			= 'Please enter whole numbers or decimals, optionally with a percentage.';
-$GLOBALS['TL_LANG']['ERR']['generalFactors']			= 'Please enter whole numbers or decimals, optionally signed with + or -, and optionally with a percentage.';
-
+$GLOBALS['TL_LANG']['ERR']['calc']						= 'Please enter whole numbers or decimals signed with + or - and optionally with a percentage.';
 //Checkout Errors
 $GLOBALS['TL_LANG']['ERR']['orderFailed']			= 'Checkout failed. Please try again or choose another payment method.';
 $GLOBALS['TL_LANG']['ERR']['specifyBillingAddress'] = 'A billing address was not fuond.  Please specify a billing address.';
