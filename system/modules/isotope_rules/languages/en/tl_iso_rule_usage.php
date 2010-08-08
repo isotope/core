@@ -33,15 +33,3 @@ $GLOBALS['TL_LANG']['tl_iso_rule_usage']['member']          	= array('Member', '
 $GLOBALS['TL_LANG']['tl_iso_rule_usage']['order']         	= array('Order', 'The order this rule was applied to.');
 $GLOBALS['TL_LANG']['tl_iso_rule_usage']['product']			= array('Product','The product this rule was applied to.');
 
-
-/**
- * Buttons
- */
-/*
-$GLOBALS['TL_LANG']['tl_faq_category']['new']        = array('New category', 'Create a new category');
-$GLOBALS['TL_LANG']['tl_faq_category']['show']       = array('Category details', 'Show the details of category ID %s');
-$GLOBALS['TL_LANG']['tl_faq_category']['edit']       = array('Edit category', 'Edit category ID %s');
-$GLOBALS['TL_LANG']['tl_faq_category']['editheader'] = array('Edit category settings', 'Edit the settings of category ID %s');
-$GLOBALS['TL_LANG']['tl_faq_category']['copy']       = array('Duplicate category', 'Duplicate category ID %s');
-$GLOBALS['TL_LANG']['tl_faq_category']['delete']     = array('Delete category', 'Delete category ID %s');
-*/

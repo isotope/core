@@ -603,7 +603,7 @@ class IsotopeRules extends Controller
 		$arrProducts = $this->Isotope->Cart->getProducts();
 			
 		if(count($arrData))
-			$this->saveRules($arrProducts, 'tl_iso_rules_usage');
+			$this->saveRules($arrProducts, 'tl_iso_rule_usage');
 	}
 	
 	
@@ -651,7 +651,7 @@ class IsotopeRules extends Controller
 		}
 									
 		//determine eligibility for the current shopper. //restrictions either null or not matching
-		$objRules = $this->Database->executeUncached("SELECT c.*, (SELECT COUNT(u.id) AS ruleUses FROM tl_iso_rule_usage u WHERE u.pid=c.id) AS uses FROM tl_iso_rule c WHERE c.enabled='1'".$strRulesClause);
+		$objRules = $this->Database->executeUncached("SELECT c.*, (SELECT COUNT(u.id) AS ruleUses FROM tl_iso_rule_usage u WHERE u.pid=c.id) AS uses FROM tl_iso_rules c WHERE c.enabled='1'".$strRulesClause);
 	
 		if(!$objRules->numRows)
 			return array();

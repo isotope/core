@@ -9,10 +9,10 @@
 
 
 ---
---- Table `tl_iso_rule`
+--- Table `tl_iso_rules`
 ---
 
-CREATE TABLE `tl_iso_rule` (
+CREATE TABLE `tl_iso_rules` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
