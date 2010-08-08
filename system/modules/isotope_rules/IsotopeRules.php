@@ -81,23 +81,23 @@ class IsotopeRules extends Controller
 	{		
 		if(!count($arrObjects))
 			return $arrObjects;
-	
+		
 		$arrData = array();
-			
+		
 		if($objSource instanceof IsotopeProductCollection)
 		{
 			$arrObjects = array($objSource);
 			$arrData = $this->getEligibleRules($arrObjects, 'cart');	//allows us to grab all eligible rules skipping coupons.
 		}
 		else
-		{				
+		{
 			$arrData = $this->getEligibleRules($arrObjects, 'products');	//allows us to grab all eligible rules skipping coupons.
 		}
 	
 		if(!count($arrData))
 			return $arrObjects;
-				
-		$this->applyRules($arrObjects, $arrData);				
+		
+		$this->applyRules($arrObjects, $arrData);
 	}
 	
 	
@@ -120,7 +120,7 @@ class IsotopeRules extends Controller
 		
 			$this->applyRules(array($objProduct), $arrData);
 		}
-				
+		
 		if(count($objProduct->rules))
 		{
 			$varNewValue = $varValue;
@@ -129,9 +129,9 @@ class IsotopeRules extends Controller
 			{
 				$shift = pow(10, 2);
 				$varNewValue += (-1*round((floor($rule['total_price'] * $shift) / $shift),2));
-							
+				
 			}
-						
+			
 			return 'Was: <strike>'.$strBuffer.'</strike><br />Your Price: '.$this->Isotope->formatPriceWithCurrency($varNewValue,false);
 		}
 		else
@@ -166,7 +166,7 @@ class IsotopeRules extends Controller
 		}
 
 		foreach($arrObjects as $object)
-		{										
+		{
 			$intObjectId = ($object instanceof IsotopeProduct ? $object->cart_id : $object->id);
 			
 			$object->rules = $arrRulesById[$intObjectId];
@@ -181,7 +181,7 @@ class IsotopeRules extends Controller
 	 * @return string
 	 */
 	public function getCouponForm($objModule)
-	{		
+	{
 		$arrObjects = $this->Isotope->Cart->getProducts();	
 		
 		$arrObjects[] = $this->Isotope->Cart;
@@ -194,15 +194,15 @@ class IsotopeRules extends Controller
 		if($this->Input->post('FORM_SUBMIT')=='iso_cart_coupons')
 		{			
 			if($this->Input->post('code'))
-			{					
+			{
 				$arrData = $this->getEligibleRules($arrObjects, 'coupons', true);	//we need to pull this again as we are refiguring everything.
 				
 				$this->applyRules($arrObjects, $arrData, true, $this->Input->post('code'));
-															
+				
 				foreach($arrObjects as $object)
 				{
 					if($object instanceof IsotopeProduct)
-					{													
+					{
 						$this->saveRules($object, 'tl_iso_cart_items');
 					}
 					elseif($object instanceof IsotopeProductCollection)
@@ -250,16 +250,16 @@ class IsotopeRules extends Controller
 			}	
 		}
 
-		$objProduct->cart_id = $intInsertId;				
+		$objProduct->cart_id = $intInsertId;
 
 		$arrData = $this->getEligibleRules(array($objProduct), 'products', true);	//we need to pull this again as we are refiguring everything.
-				
+		
 		$arrObjects = $this->applyRules(array($objProduct), $arrData, true);
 		
 		foreach($arrObjects as $object)
 		{
 			if($object instanceof IsotopeProduct)
-			{														
+			{
 				$this->saveRules($object, 'tl_iso_cart_items');
 			}
 			elseif($object instanceof IsotopeProductCollection)
@@ -288,6 +288,7 @@ class IsotopeRules extends Controller
 				case 'quantity_requested':
 					$objProduct->product_quantity = $v;
 					break;
+					
 				default;
 					$objProduct->$k = $v;
 					break;
@@ -303,12 +304,12 @@ class IsotopeRules extends Controller
 		
 		$objProduct->rules = array_merge($arrExistingRules, $arrData);
 			
-		$arrProducts = $this->applyRules(array($objProduct), $objProduct->rules, true);				
+		$arrProducts = $this->applyRules(array($objProduct), $objProduct->rules, true);
 		
 		foreach($arrProducts as $object)
 		{
 			if($object instanceof IsotopeProduct)
-			{													
+			{
 				$this->saveRules($object, 'tl_iso_cart_items');
 			}
 			elseif($object instanceof IsotopeProductCollection)
@@ -316,7 +317,7 @@ class IsotopeRules extends Controller
 				$this->saveRules($object, $object->table);
 			}
 		}
-			
+		
 		return $arrSet;
 	}
 	
@@ -356,7 +357,7 @@ class IsotopeRules extends Controller
 		$arrUsedCodes = array();
 		$arrCodes = array();
 		$arrAppliedRules = array();
-					
+		
 		if($strCodes)
 			$arrCodes = explode(',', $strCodes);
 
@@ -370,7 +371,7 @@ class IsotopeRules extends Controller
 			$intObjectId = $object->id;	
 			
 			if($object instanceof IsotopeProduct && $blnCartItem)
-				$intObjectId = $object->cart_id;						
+				$intObjectId = $object->cart_id;
 						
 			if(!count($arrData[get_class($object)][$intObjectId]))
 			{
@@ -382,7 +383,7 @@ class IsotopeRules extends Controller
 			{	
 				
 				if(($rule['enableCode'] && (count($arrCodes) && in_array($rule['id'], $arrAppliedRules)) || (count($arrCodes) && !in_array($rule['code'], $arrCodes))))
-				{						
+				{
 					continue;
 				}
 				
@@ -398,11 +399,11 @@ class IsotopeRules extends Controller
 									
 				switch($rule['type'])
 				{ 
-					case 'product':					
-						$fltChange = $this->calculateRuleTotal($object->price, $intQuantity, $rule['discount']);							
+					case 'product':
+						$fltChange = $this->calculateRuleTotal($object->price, $intQuantity, $rule['discount']);
 						break;
 						
-					case 'cart':	
+					case 'cart':
 						$fltChange = $this->calculateRuleTotal($object->subTotal, $intQuantity, $rule['discount']);
 						break;
 						
@@ -418,9 +419,9 @@ class IsotopeRules extends Controller
 					'price'			=> $rule['discount'],
 					'total_price'	=> $fltChange
 				);
-											
+				
 			}	//end rules for this particular object
-							
+			
 			if(count($arrRules))
 				$object->rules = $arrRules;
 			
@@ -430,6 +431,7 @@ class IsotopeRules extends Controller
 			
 		return $arrFinalObjects;
 	}
+	
 	
 	protected function calculateRuleTotal($fltFieldValue, $intQuantity = 1, $varRuleDiscount = 0)
 	{
@@ -447,9 +449,10 @@ class IsotopeRules extends Controller
 			$fltChange = $varRuleDiscount;
 		}
 		
-		return $fltChange;			
+		return $fltChange;
 	
 	}
+	
 	
 	/** 
 	 * Save the currently used rules either to the session or else to the usage table in the case of confirmed rules.
@@ -498,12 +501,13 @@ class IsotopeRules extends Controller
 		}
 	}
 	
+	
 	public function calculateProductRulePrice($objProduct, $intQuantity, $objSource = NULL)
 	{
 		if(count($objProduct->rules))
 		{
 			foreach($objProduct->rules as $rule)
-			{			
+			{
 					$objProduct->price += -1*$this->calculateRuleTotal($objProduct->price, $intQuantity, $rule['price']);
 			}
 		}
@@ -526,9 +530,9 @@ class IsotopeRules extends Controller
 			return $arrTotals;
 
 		$this->loadRules($arrObjects, 'tl_iso_cart_items');
-					
+		
 		foreach($arrObjects as $object)
-		{				
+		{
 			$arrRules = deserialize($object->rules, true);
 			
 			if(!count($arrRules))
@@ -537,11 +541,11 @@ class IsotopeRules extends Controller
 			foreach($arrRules as $rule)
 			{
 				$shift = pow(10, 2);
-				$fltTotalPrice = -1*round((floor($rule['total_price'] * $shift) / $shift),2);								
+				$fltTotalPrice = -1*round((floor($rule['total_price'] * $shift) / $shift),2);
 				
 				$arrTotals[$rule['id']]['label'] 		= $rule['label'];
 				$arrTotals[$rule['id']]['price'] 		= $rule['price'];
-				$arrTotals[$rule['id']]['total_price'] 	+= $fltTotalPrice;			
+				$arrTotals[$rule['id']]['total_price'] 	+= $fltTotalPrice;
 							
 			}
 		}			
@@ -592,11 +596,12 @@ class IsotopeRules extends Controller
 			}
 				
 		}
-			
+		
 		return $arrSurcharges;
 	}
 	
-	/** 
+	
+	/**
 	 * Verify that our rules are still in fact, valid just before payment is completed.
 	 * @access public
 	 * @param object $objModule
@@ -604,13 +609,13 @@ class IsotopeRules extends Controller
 	public function verifyRules()
 	{
 		$arrProducts = $this->Isotope->Cart->getProducts();
-			
+		
 		if(count($arrData))
 			$this->saveRules($arrProducts, 'tl_iso_rule_usage');
 	}
 	
 	
-		/** 
+	/** 
 	 * check eligibility for products
 	 * @access protected
 	 * @param array $arrProducts
@@ -618,8 +623,7 @@ class IsotopeRules extends Controller
 	 * @return array $arrReturn
 	 */ 
 	protected function getEligibleRules($arrObjects, $strQueryMode = '', $blnCartItem = false)
-	{				
-					
+	{
 		if(!count($arrObjects))
 			return array();
 		
@@ -660,7 +664,7 @@ class IsotopeRules extends Controller
 	
 		if(!$objRules->numRows)
 			return array();
-						
+		
 		$arrRuleIds = array();
 		$arrMemberUsesByRule = array();
 		
@@ -675,7 +679,7 @@ class IsotopeRules extends Controller
 		{
 			$objMemberUses = $this->Database->executeUncached("SELECT *, COUNT(id) AS customerUses FROM tl_iso_rule_usage WHERE pid IN($strRuleIds) AND member_id={$this->User->id}");
 			
-			if($objMemberUses->numRows)		
+			if($objMemberUses->numRows)
 			{
 				while($objMemberUses->next());
 				{
@@ -705,11 +709,11 @@ class IsotopeRules extends Controller
 					//!@todo: HOOK THIS for other unanticipated classes that don't fit the two we provide for?
 					break;
 			}
-						
-			$arrCustomerMatrix = array_merge($arrCustomer, $arrObject);		
+			
+			$arrCustomerMatrix = array_merge($arrCustomer, $arrObject);
 			
 			foreach($arrRules as $row)
-			{				
+			{
 				//Check existing usage
 				if($row['uses'])
 				{
@@ -721,25 +725,27 @@ class IsotopeRules extends Controller
 						{
 							case 'customer':
 								if(FE_USER_LOGGED_IN)
-								{																		
-									//if the number of customer uses exceeds this rule in total, or the current product has already had the rule applied to it...					
+								{
+									//if the number of customer uses exceeds this rule in total, or the current product has already had the rule applied to it...
 									if($arrUses['value'] <= $arrMemberUsesByRule[$row['id']]['customerUses'] || $intObjectId==$arrMemberUsesByRule[$row['id']]['object_id'])
-									{											
+									{
 										break(2);	//don't allow
-									}
-								}							
+									
+								}
 								break;
+								
 							case 'store':
 								if($arrUses['value'] <= $row['uses'])
 								{
 									break(2);	//don't allow
-								}							
-								break;	
+								}
+								break;
+								
 							default:
-								break;				
+								break;
 						}
 					}
-				}			
+				}
 				
 				if($row['dateRestrictions'])
 				{
@@ -748,11 +754,10 @@ class IsotopeRules extends Controller
 				}
 				
 				//check time, will be verified again later.	fix
-				
 				if($row['timeRestrictions'])
 				{
 					if($row['startTime'] > time() || $row['endTime'] < time())
-						break;				
+						break;
 				}
 				
 				//exclusion of other rules, all or certain ones
@@ -768,8 +773,8 @@ class IsotopeRules extends Controller
 					default:
 						break;
 				}
-			
-								
+				
+				
 				//Usage didn't stop us, let's further check for member restrictions
 				switch($row['memberRestrictions'])
 				{
@@ -779,7 +784,7 @@ class IsotopeRules extends Controller
 							$arrRestrictions[$row['memberRestrictions']] = deserialize($row[$row['memberRestrictions']]);
 						break;
 					default:
-						break;			
+						break;
 				}
 				
 				switch($row['type'])
@@ -787,7 +792,7 @@ class IsotopeRules extends Controller
 					case 'product':
 						if($row['minItemQuantity'] && $row['minItemQuantity'] > $object->product_quantity)
 							break(2);
-												
+						
 						switch($row['productRestrictions'])
 						{
 							case 'producttypes':
@@ -795,9 +800,9 @@ class IsotopeRules extends Controller
 							case 'products':
 								if($row[$row['productRestrictions']])
 									$arrRestrictions[$row['productRestrictions']] = deserialize($row[$row['productRestrictions']]);
-								break;				
+								break;
 							default:
-								break;			
+								break;
 						}
 						break;
 						
@@ -819,22 +824,22 @@ class IsotopeRules extends Controller
 				}
 				
 				if(count($arrRestrictions))
-				{														
-					$blnLoopBreak = false;									
+				{
+					$blnLoopBreak = false;
 					foreach($arrRestrictions as $k=>$v) //check each field in the rule row
-					{											
+					{
 						if(is_array($arrCustomerMatrix[$k]) && is_array($v))	//mismatch! break to next row.
-						{										
+						{
 							$cRow[$k] = array_map('strval', $arrCustomerMatrix[$k]);
 							$v = array_map('strval', $v);
-															
-							if(!count(array_intersect($arrCustomerMatrix[$k], $v)))																				
+							
+							if(!count(array_intersect($arrCustomerMatrix[$k], $v)))
 								$blnLoopBreak = true;
 						}
 						elseif(!in_array($arrCustomerMatrix[$k], $v))
 						{
 							$blnLoopBreak = true;
-						}									
+						}
 						
 						if($blnLoopBreak)
 							break(2);
@@ -854,5 +859,5 @@ class IsotopeRules extends Controller
 		//return an array of eligible rules to each item in the cart.
 		return $arrReturn;
 	}
-
 }
+
