@@ -230,11 +230,6 @@ $GLOBALS['ISO_PRODUCT'] = array
 
 
 /** 
- * Product Collection types - this array is used for binding rules to specific product collections
- */
-$GLOBALS['ISO_PRODUCTCOLLECTION'][] = 'IsotopeCart';
- 
-/** 
  * Per page defaults
  */
 $GLOBALS['ISO_PERPAGE'] = array(8,12,32,64);

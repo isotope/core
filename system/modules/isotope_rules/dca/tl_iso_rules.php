@@ -38,12 +38,8 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 	'config' => array
 	(
 		'dataContainer'					=> 'Table',
-		'ctables'						=> array('tl_iso_rule_usage'),
+		'ctable'						=> array('tl_iso_rule_usage'),
 		'enableVersioning'				=> false,
-		/*'onload_callback' => array
-		(
-		//	array('tl_iso_rules', 'checkPermission')
-		)*/
 	),
 	
 	// List
@@ -59,7 +55,6 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 		(
 			'fields'					=> array('title', 'code'),
 			'label'						=> '%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>',
-			//'label_callback'          => array('tl_iso_rules', 'getCouponLabel')
 		),
 		'global_operations' => array
 		(
@@ -104,10 +99,10 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'__selector__'			=> array('type','collectionTypeRestrictions','memberRestrictions','productRestrictions','ruleRestrictions','enableCode','dateRestrictions','timeRestrictions'),
+		'__selector__'			=> array('type', 'enableCode', 'memberRestrictions', 'productRestrictions', 'ruleRestrictions', 'dateRestrictions', 'timeRestrictions'),
 		'default'				=> '{type_legend},type',
 		'product'				=> '{type_legend},type,title,description;{general_legend},discount,enableCode;{restriction_legend},numUses,dateRestrictions,timeRestrictions,ruleRestrictions,memberRestrictions,productRestrictions;{enabled_legend},enabled',
-		'product_collection'	=> '{type_legend},type,title,description;{general_legend},discount,enableCode;{restriction_legend},numUses,collectionTypeRestrictions,dateRestrictions,timeRestrictions,minSubTotal,minCartQuantity,maxCartQuantity,ruleRestrictions,memberRestrictions;{enabled_legend},enabled'
+		'cart'					=> '{type_legend},type,title,description;{general_legend},discount,enableCode;{restriction_legend},numUses,dateRestrictions,timeRestrictions,minSubTotal,minCartQuantity,maxCartQuantity,ruleRestrictions,memberRestrictions;{enabled_legend},enabled'
 	),
 	'subpalettes' => array
 	(
@@ -120,7 +115,6 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 		'ruleRestrictions_rules'			=> 'rules',
 		'dateRestrictions'					=> 'startDate,endDate',
 		'timeRestrictions'					=> 'startTime,endTime',	
-		'collectionTypeRestrictions'		=> 'collectionType'
 	),
 	
 	// Fields
@@ -131,20 +125,11 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['type'],
 			'exclude'					=> true,
 			'filter'					=> true,
+			'default'					=> 'product',
 			'inputType'					=> 'select',
-			'options'					=> array('product','product_collection'),
-			'eval'						=> array('includeBlankOption'=>true,'mandatory'=>true,'submitOnChange'=>true),
-			'reference'					=> &$GLOBALS['TL_LANG']['tl_iso_rules']['type']
-			
-		),
-		'collectionType' => array
-		(
-			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['collectionType'],
-			'exclude'					=> true,
-			'inputType'					=> 'checkbox',
-			'options'					=> &$GLOBALS['ISO_PRODUCTCOLLECTION'],
-			'eval'						=> array('multiple'=>true,'mandatory'=>true),
-			'reference'					=> &$GLOBALS['TL_LANG']['ISO_PRODUCTCOLLECTION']
+			'options'					=> array('product', 'cart'),
+			'reference'					=> &$GLOBALS['TL_LANG']['tl_iso_rules']['type'],
+			'eval'						=> array('mandatory'=>true, 'submitOnChange'=>true),
 		),
 		'title' => array
         (
@@ -171,7 +156,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			'exclude'					=> true,
 			'search'					=> true,
 			'inputType'					=> 'text',
-			'eval'						=> array('mandatory'=>true,'rgxp'=>'calc')
+			'eval'						=> array('mandatory'=>true, 'rgxp'=>'calc')
 		),
 		'enableCode' => array
 		(
@@ -286,12 +271,6 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 				array('tl_iso_rules', 'setEmptyEndTime')
 			)
 		),
-		'collectionTypeRestrictions'	=> array
-		(
-			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['collectionTypeRestrictions'],
-			'inputType'					=> 'checkbox',
-			'eval'						=> array('submitOnChange'=>true)
-		),
 		'dateRestrictions' => array
 		(
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['dateRestrictions'],
@@ -345,7 +324,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
             'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['rules'],
             'exclude'					=> true,
 			'inputType'					=> 'checkbox',
-			'options_callback'			=> array('tl_iso_rules', 'getCoupons'),
+			'options_callback'			=> array('tl_iso_rules', 'getRules'),
 			'eval'						=> array('multiple'=>true, 'mandatory'=>true, 'doNotSaveEmpty'=>true),
 			'load_callback' => array
 			(
@@ -467,31 +446,21 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 
 class tl_iso_rules extends Backend
 {
-	public function __construct()
-	{
-		parent::__construct();
-		
-		$this->import('BackendUser','User');
-		$this->import('Isotope');
-	}
 	
-	public function getCoupons()
+	/**
+	 * Return an array of enabled rules but not the active one.
+	 */
+	public function getRules($dc)
 	{
-		$objCoupons = $this->Database->query("SELECT id, title FROM tl_iso_rules WHERE enabled='1'");
+		$arrRules = array();
+		$objRules = $this->Database->execute("SELECT * FROM tl_iso_rules WHERE enabled='1' AND id!={$dc->id}");
 		
-		if(!$objCoupons->numRows)
-			return array();
-		
-		while($objCoupons->next())
+		while( $objRules->next() )
 		{
-			if($objCoupons->id==$this->Input->get('id'))
-				continue;
-				
-			$arrReturn[$objCoupons->id] = $objCoupons->title;
+			$arrRules[$objRules->id] = $objRules->title;
 		}
 		
-		return $arrReturn;
-	
+		return $arrRules;
 	}
 	
 	

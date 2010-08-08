@@ -31,7 +31,6 @@
  */
 $GLOBALS['TL_LANG']['tl_iso_rules']['title']          		= array('Title', 'Please enter the rule title.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['type']					= array('Type','Please choose the type of rule.');
-$GLOBALS['TL_LANG']['tl_iso_rules']['collectionType']		= array('Collection (Cart) type','Please select the type of product collection object to restrict this rule to.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['description']       	= array('Description', 'Please enter the rule description.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['discount']				= array('Discount','Valid values are decimals or whole numbers, minus a numerical value or minus a percentage.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['enableCode']			= array('Enable coupon code','Require a code to be entered to invoke this rule, as a coupon.');
@@ -42,7 +41,6 @@ $GLOBALS['TL_LANG']['tl_iso_rules']['minCartQuantity']		= array('Minimum Cart Qu
 $GLOBALS['TL_LANG']['tl_iso_rules']['maxCartQuantity']		= array('Maximum Cart Quantity','Specify a maximum quantity of items in cart that this rule can be applied to.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['minItemQuantity']		= array('Minimum item quantity','Please specify a minimum quantity of a an item this rule applies to.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['maxItemQuantity']		= array('Maximum item quantity','Please specify a maximum quantity of a single item this rule applies to.');
-$GLOBALS['TL_LANG']['tl_iso_rules']['collectionTypeRestrictions']  	= array('Collection (Cart) type restrictions', 'Restrict a rule to apply only to a certain collection (cart) type.');
 
 $GLOBALS['TL_LANG']['tl_iso_rules']['ruleRestrictions']  	= array('Rule restrictions', 'Restrict a rule to be only usable alone or with certain rule.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['rules']     			= array('Rules', 'Select other rule this rule is usable with, or you may indicate that this rule is usable with no other rule.');
@@ -75,7 +73,8 @@ $GLOBALS['TL_LANG']['tl_iso_rules']['enabled_legend']			= 'Module Enabling Detai
  * Reference
  */
 $GLOBALS['TL_LANG']['tl_iso_rules']['type']['product']						= 'Product';
-$GLOBALS['TL_LANG']['tl_iso_rules']['type']['product_collection']			= 'Product Collection';
+$GLOBALS['TL_LANG']['tl_iso_rules']['type']['cart']							= 'Cart';
+
 $GLOBALS['TL_LANG']['tl_iso_rules']['memberRestrictions']['none']			= 'No restrictions';
 $GLOBALS['TL_LANG']['tl_iso_rules']['memberRestrictions']['groups']			= 'Specific groups';
 $GLOBALS['TL_LANG']['tl_iso_rules']['memberRestrictions']['members']		= 'Specific members';

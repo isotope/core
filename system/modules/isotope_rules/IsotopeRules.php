@@ -27,6 +27,7 @@
 
 class IsotopeRules extends Controller
 {
+
 	/**
 	 * Current object instance (Singleton)
 	 * @var object
@@ -54,7 +55,6 @@ class IsotopeRules extends Controller
 		$this->import('Database');
 		$this->import('FrontendUser','User');
 		$this->import('Isotope');
-		
 	}
 	
 	
@@ -87,7 +87,7 @@ class IsotopeRules extends Controller
 		if($objSource instanceof IsotopeProductCollection)
 		{
 			$arrObjects = array($objSource);
-			$arrData = $this->getEligibleRules($arrObjects, 'product_collection');	//allows us to grab all eligible rules skipping coupons.
+			$arrData = $this->getEligibleRules($arrObjects, 'cart');	//allows us to grab all eligible rules skipping coupons.
 		}
 		else
 		{				
@@ -99,6 +99,7 @@ class IsotopeRules extends Controller
 				
 		$this->applyRules($arrObjects, $arrData);				
 	}
+	
 	
 	/**
 	 * append rules to the template object if they exist (cached)
@@ -400,9 +401,11 @@ class IsotopeRules extends Controller
 					case 'product':					
 						$fltChange = $this->calculateRuleTotal($object->price, $intQuantity, $rule['discount']);							
 						break;
-					case 'product_collection':	
+						
+					case 'cart':	
 						$fltChange = $this->calculateRuleTotal($object->subTotal, $intQuantity, $rule['discount']);
 						break;
+						
 					default:
 						//!@todo: Hook for other types of coupons
 						continue;
@@ -642,9 +645,11 @@ class IsotopeRules extends Controller
 			case 'products':
 				$strRulesClause = " AND type='product' AND enableCode=''";
 				break;
-			case 'product_collection': 
-				$strRulesClause = " AND type='product_collection' AND enableCode=''";
-				break;	
+				
+			case 'cart': 
+				$strRulesClause = " AND type='cart' AND enableCode=''";
+				break;
+				
 			case 'coupons':
 				$strRulesClause = " AND enableCode='1'";
 				break;
@@ -795,22 +800,19 @@ class IsotopeRules extends Controller
 								break;			
 						}
 						break;
-					case 'product_collection':
+						
+					case 'cart':
+						if(!($object instanceof IsotopeCart))
+							break(2);
+								
 						if($row['minSubTotal']>0 && $object->subTotal > $row['minSubTotal'])
 							break(2);
 						
 						if($row['minCartQuantity']>0 && $object->totalQuantity > $row['minCartQuantity'])
 							break(2);
-							
-						if($row['collectionTypeRestrictions'])
-						{
-							$arrCollectionTypes = deserialize($row['collectionTypes'], true);
-							
-							if($object instanceof IsotopeProductCollection || !in_array(get_class($object), $arrCollectionTypes))
-								break(2);
-						}
 						
 						break;
+						
 					default:
 						//!@todo: Hook for additional types of rule-eligible objects
 						break;
