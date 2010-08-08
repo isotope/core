@@ -102,7 +102,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 		'__selector__'			=> array('type', 'enableCode', 'memberRestrictions', 'productRestrictions', 'ruleRestrictions', 'dateRestrictions', 'timeRestrictions'),
 		'default'				=> '{type_legend},type',
 		'product'				=> '{type_legend},type,title,description;{general_legend},discount,enableCode;{restriction_legend},numUses,dateRestrictions,timeRestrictions,ruleRestrictions,memberRestrictions,productRestrictions;{enabled_legend},enabled',
-		'cart'					=> '{type_legend},type,title,description;{general_legend},discount,enableCode;{restriction_legend},numUses,dateRestrictions,timeRestrictions,minSubTotal,minCartQuantity,maxCartQuantity,ruleRestrictions,memberRestrictions;{enabled_legend},enabled'
+		'cart'					=> '{type_legend},type,title,description;{general_legend},discount,enableCode;{restriction_legend},numUses,dateRestrictions,timeRestrictions,minSubTotal,minCartQuantity,maxCartQuantity,ruleRestrictions,memberRestrictions,productRestrictions;{enabled_legend},enabled'
 	),
 	'subpalettes' => array
 	(
