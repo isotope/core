@@ -110,16 +110,6 @@ CREATE TABLE `tl_module` (
 --
 
 CREATE TABLE `tl_iso_cart` (
-  `rules` blob NULL,
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
--- 
--- Table `tl_iso_cart_items`
--- 
-
-CREATE TABLE `tl_iso_cart_items` (
-  `rules` blob NULL,
+  `coupons` blob NULL,
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 

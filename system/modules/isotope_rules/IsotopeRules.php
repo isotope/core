@@ -51,9 +51,10 @@ class IsotopeRules extends Controller
 	 */
 	protected function __construct()
 	{
-		parent::__construct();	
+		parent::__construct();
+		
 		$this->import('Database');
-		$this->import('FrontendUser','User');
+		$this->import('FrontendUser', 'User');
 		$this->import('Isotope');
 	}
 	
@@ -174,60 +175,6 @@ class IsotopeRules extends Controller
 		}
 	}
 	
-	/** 
-	 * Returns a rule form if needed
-	 * @access public
-	 * @param object $objModule
-	 * @return string
-	 */
-	public function getCouponForm($objModule)
-	{
-		$arrObjects = $this->Isotope->Cart->getProducts();	
-		
-		$arrObjects[] = $this->Isotope->Cart;
-		
-		$arrData = $this->getEligibleRules($arrObjects, 'coupons', true);	//returns a collection of rules and their respective products that are associated.
-		
-		if(!count($arrData))
-			return '';
-					
-		if($this->Input->post('FORM_SUBMIT')=='iso_cart_coupons')
-		{			
-			if($this->Input->post('code'))
-			{
-				$arrData = $this->getEligibleRules($arrObjects, 'coupons', true);	//we need to pull this again as we are refiguring everything.
-				
-				$this->applyRules($arrObjects, $arrData, true, $this->Input->post('code'));
-				
-				foreach($arrObjects as $object)
-				{
-					if($object instanceof IsotopeProduct)
-					{
-						$this->saveRules($object, 'tl_iso_cart_items');
-					}
-					elseif($object instanceof IsotopeProductCollection)
-					{
-						$this->saveRules($object, $object->table);
-					}
-				}
-
-			}
-		}
-					
-		//build template
-		$objTemplate = new FrontendTemplate('iso_coupons');
-		
-		$objTemplate->action = $this->Environment->request;
-		$objTemplate->formId = 'iso_cart_coupons';
-		$objTemplate->formSubmit = 'iso_cart_coupons';
-		$objTemplate->headline = $GLOBALS['TL_LANG']['ISO']['couponsHeadline'];
-		$objTemplate->message = NULL;
-		$objTemplate->inputLabel = $GLOBALS['TL_LANG']['ISO']['couponsInputLabel'];
-		$objTemplate->sLabel = $GLOBALS['TL_LANG']['ISO']['couponsSubmitLabel'];
-		$objTemplate->error = ($blnResult ? $GLOBALS['TL_LANG']['ERR']['invalidCoupon'] : NULL);
-	
-		return $objTemplate->parse();
-	}
 	
 	/** 
 	 * Upon adding to cart, we need to somehow store the rule so it can be cached & recalled.
@@ -879,20 +826,21 @@ class IsotopeRules extends Controller
 	
 	
 	
-	
+	/**
+	 * Calculate the price for a product, applying rules and coupons
+	 */
 	public function calculatePrice($fltPrice, $objSource, $strField, $intTaxClass)
 	{
 		if ($objSource instanceof IsotopeProduct && ($strField == 'price' || $strField == 'low_price'))
 		{
 			$arrProcedures = array("type='product'", "enabled='1'");
-			
+						
 			// Member restrictions
 			if (FE_USER_LOGGED_IN)
 			{
-				$this->import('FrontendUser', 'User');
-				$arrProcedures[] = "memberRestrictions='none'
+				$arrProcedures[] = "(memberRestrictions='none'
 									OR (memberRestrictions='members' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='members' AND object_id={$this->User->id})>0)
-									" . (count($this->User->groups) ? " OR (memberRestrictions='groups' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='groups' AND object_id IN (" . implode(',', $this->User->groups) . "))>0)" : '');
+									" . (count($this->User->groups) ? " OR (memberRestrictions='groups' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='groups' AND object_id IN (" . implode(',', $this->User->groups) . "))>0)" : '') . ")";
 			}
 			else
 			{
@@ -900,10 +848,11 @@ class IsotopeRules extends Controller
 			}
 			
 			// Product restrictions
-			$arrProcedures[] = "productRestrictions='none'
+			$arrProcedures[] = "(productRestrictions='none'
 								OR (productRestrictions='producttypes' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='producttypes' AND object_id={$objSource->type})>0)
-								OR (productRestrictions='products' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='products' AND object_id={$objSource->id})>0)
-								OR (productRestrictions='pages' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='pages' AND object_id IN (SELECT page_id FROM tl_iso_product_categories WHERE pid={$objSource->id})))";
+								OR (productRestrictions='products' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='products' AND object_id=" . ($objSource->pid ? $objSource->pid : $objSource->id) . ")>0)
+								OR (productRestrictions='pages' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='pages' AND object_id IN (SELECT page_id FROM tl_iso_product_categories WHERE pid=" . ($objSource->pid ? $objSource->pid : $objSource->id) . "))))";
+			
 			
 			// Fetch and process rules
 			$objRules = $this->Database->execute("SELECT * FROM tl_iso_rules r WHERE " . implode(' AND ', $arrProcedures) . " ORDER BY sorting");
@@ -923,6 +872,132 @@ class IsotopeRules extends Controller
 		}
 		
 		return $fltPrice;
+	}
+	
+	
+	/** 
+	 * Returns a rule form if needed
+	 * @access public
+	 * @param object $objModule
+	 * @return string
+	 */
+	public function getCouponForm($objModule)
+	{
+		$strCoupon = $this->Input->get('coupon_'.$objModule->id);
+		
+		if ($strCoupon == '')
+			$strCoupon = $this->Input->get('coupon');
+		
+		if ($strCoupon != '')
+		{
+			$arrRule = $this->findCoupon($strCoupon, $this->Isotope->Cart->getProducts());
+			
+			if ($arrRule === false)
+			{
+				$_SESSION['COUPON_FAILED'][$objModule->id] = sprintf($GLOBALS['TL_LANG']['MSC']['couponInvalid'], $strCoupon);
+			}
+			else
+			{
+				$arrCoupons = is_array(deserialize($this->Isotope->Cart->coupons)) ? deserialize($this->Isotope->Cart->coupons) : array();
+				
+				if (in_array($strCoupon, $arrCoupons))
+				{
+					$_SESSION['COUPON_FAILED'][$objModule->id] = sprintf($GLOBALS['TL_LANG']['MSC']['couponDuplicate'], $strCoupon);
+				}
+				else
+				{
+					$arrCoupons[] = $arrRule['code'];
+					
+					$this->Database->query("UPDATE tl_iso_cart SET coupons='" . serialize($arrCoupons) . "' WHERE id={$this->Isotope->Cart->id}");
+					
+					$_SESSION['COUPON_SUCCESS'][$objModule->id] = sprintf($GLOBALS['TL_LANG']['MSC']['couponApplied'], $strCoupon);
+				}
+			}
+			
+			$this->redirect(preg_replace('@[?&]coupon(_[0-9]+)?=[^&]*@', '', $this->Environment->request));
+		}
+		
+		//build template
+		$objTemplate = new FrontendTemplate('iso_coupons');
+		
+		$objTemplate->id = $objModule->id;
+		$objTemplate->action = $this->Environment->request;
+		$objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['couponHeadline'];
+		$objTemplate->inputLabel = $GLOBALS['TL_LANG']['MSC']['couponLabel'];
+		$objTemplate->sLabel = $GLOBALS['TL_LANG']['MSC']['couponApply'];
+		
+		if ($_SESSION['COUPON_FAILED'][$objModule->id] != '')
+		{
+			$objTemplate->message = $_SESSION['COUPON_FAILED'][$objModule->id];
+			$objTemplate->mclass = 'failed';
+			unset($_SESSION['COUPON_FAILED']);
+		}
+		elseif ($_SESSION['COUPON_SUCCESS'][$objModule->id] != '')
+		{
+			$objTemplate->message = $_SESSION['COUPON_SUCCESS'][$objModule->id];
+			$objTemplate->mclass = 'success';
+			unset($_SESSION['COUPON_SUCCESS']);
+		}
+		
+		return $objTemplate->parse();
+	}
+	
+	
+	protected function findCoupon($strCode, $arrProducts)
+	{
+		$arrRule = false;
+		$objRules = $this->Database->prepare("SELECT * FROM tl_iso_rules WHERE enableCode='1' AND code=? AND enabled='1'")->execute($strCode);
+		
+		while( $objRules->next() )
+		{
+			// Member restrictions
+			if (($objRules->memberRestrictsion != 'none' && !FE_USER_LOGGED_IN)
+				|| ($objRules->memberRestrictions == 'members' && !$this->Database->execute("SELECT * FROM tl_iso_rule_restrictions WHERE pid={$objRules->id} AND type='members' AND object_id={$this->User->id}")->numRows)
+				|| ($objRules->memberRestrictions == 'groups' && count($this->User->groups) && !$this->Database->execute("SELECT * FROM tl_iso_rule_restrictions WHERE pid={$objRules->id} AND type='groups' AND object_id IN (" . implode(',', $this->User->groups) . ")")->numRows))
+			{
+				continue;
+			}
+
+			// Product restrictions
+			if ($objRules->productRestrictions == 'products')
+			{
+				$arrIds = array();
+				foreach( $arrProducts as $objProduct )
+				{
+					$arrIds[] = ($objProduct->pid ? $objProduct->pid : $objProduct->id);
+				}
+				
+				if (!$this->Database->execute("SELECT * FROM tl_iso_rule_restrictions WHERE pid={$objRules->id} AND type='products' AND object_id IN (" . implode(',', $arrIds) . ")")->numRows)
+					continue;
+			}
+			elseif ($objRules->productRestrictions == 'producttypes')
+			{
+				$arrIds = array();
+				foreach( $arrProducts as $objProduct )
+				{
+					$arrIds[] = $objProduct->type;
+				}
+				
+				if (!$this->Database->execute("SELECT * FROM tl_iso_rule_restrictions WHERE pid={$objRules->id} AND type='products' AND object_id IN (" . implode(',', $arrIds) . ")")->numRows)
+					continue;
+			}
+			elseif ($objRules->productRestrictions == 'pages')
+			{
+				$arrIds = array();
+				foreach( $arrProducts as $objProduct )
+				{
+					$arrIds[] = ($objProduct->pid ? $objProduct->pid : $objProduct->id);
+				}
+				
+				if (!$this->Database->execute("SELECT * FROM tl_iso_rule_restrictions WHERE pid={$objRules->id} AND type='products' AND object_id IN (SELECT page_id FROM tl_iso_product_categories WHERE pid IN (" . implode(',', $arrIds) . "))")->numRows)
+					continue;
+			}
+			
+			$arrRule = $objRules->row();
+			break;
+		}
+		
+		return $arrRule;
 	}
 }
 

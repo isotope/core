@@ -84,7 +84,7 @@ class IsotopeCart extends IsotopeProductCollection
 	public function __get($strKey)
 	{
 		switch( $strKey )
-		{				
+		{
 			case 'totalWeight':
 				$arrProducts = $this->getProducts();
 				
