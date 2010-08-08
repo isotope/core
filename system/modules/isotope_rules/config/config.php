@@ -69,4 +69,5 @@ $GLOBALS['TL_HOOKS']['isoCheckoutSurcharge'][]				= array('IsotopeRules', 'getSu
 
 $GLOBALS['TL_HOOKS']['iso_calculatePrice'][]				= array('IsotopeRules', 'calculatePrice');
 $GLOBALS['TL_HOOKS']['iso_compileCart'][] 					= array('IsotopeRules', 'getCouponForm');
+$GLOBALS['TL_HOOKS']['isoCheckoutSurcharge'][]				= array('IsotopeRules', 'getSurcharges');
 

@@ -508,44 +508,44 @@ class IsotopeRules extends Controller
 	 * @param array
 	 * @return array
 	 */
-	public function getSurcharges($arrSurcharges)
-	{
-		$this->import('Isotope');
-		
-		$arrProducts = $this->Isotope->Cart->getProducts();
-		
-		if(!count($arrProducts))
-			return $arrSurcharges;
-	
-		$this->loadRules($arrProducts, 'tl_iso_cart_items');
-		//first get product rules, then get cart rules.  figure out how to lump rules together so that we may calculate total discounts accurately where
-		//products share rules.
-		foreach($arrProducts as $object)
-		{
-			$arrRules = deserialize($object->rules, true);
-	
-			if(!count($arrRules))
-				continue;
-				
-			foreach($arrRules as $rule)
-			{
-				$shift = pow(10, 2);
-				$fltTotalPrice = -1*round((floor($rule['total_price'] * $shift) / $shift),2);
-						
-				$arrSurcharges[] = array
-				(
-					'label'			=> $rule['label'],
-					'price'			=> $rule['price'],
-					'total_price'	=> $fltTotalPrice,
-					'tax_class'		=> 0,
-					'add_tax'		=> false,
-				);
-			}
-				
-		}
-		
-		return $arrSurcharges;
-	}
+//	public function getSurcharges($arrSurcharges)
+//	{
+//		$this->import('Isotope');
+//		
+//		$arrProducts = $this->Isotope->Cart->getProducts();
+//		
+//		if(!count($arrProducts))
+//			return $arrSurcharges;
+//	
+//		$this->loadRules($arrProducts, 'tl_iso_cart_items');
+//		//first get product rules, then get cart rules.  figure out how to lump rules together so that we may calculate total discounts accurately where
+//		//products share rules.
+//		foreach($arrProducts as $object)
+//		{
+//			$arrRules = deserialize($object->rules, true);
+//	
+//			if(!count($arrRules))
+//				continue;
+//				
+//			foreach($arrRules as $rule)
+//			{
+//				$shift = pow(10, 2);
+//				$fltTotalPrice = -1*round((floor($rule['total_price'] * $shift) / $shift),2);
+//						
+//				$arrSurcharges[] = array
+//				(
+//					'label'			=> $rule['label'],
+//					'price'			=> $rule['price'],
+//					'total_price'	=> $fltTotalPrice,
+//					'tax_class'		=> 0,
+//					'add_tax'		=> false,
+//				);
+//			}
+//				
+//		}
+//		
+//		return $arrSurcharges;
+//	}
 	
 	
 	/**
@@ -826,6 +826,16 @@ class IsotopeRules extends Controller
 	
 	
 	
+	
+	
+		
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * Calculate the price for a product, applying rules and coupons
 	 */
@@ -876,6 +886,120 @@ class IsotopeRules extends Controller
 	
 	
 	/** 
+	 * Add cart rules to surcharges
+	 */
+	public function getSurcharges($arrSurcharges)
+	{
+		$arrProducts = $this->Isotope->Cart->getProducts();
+		
+		if (!count($arrProducts))
+			return $arrSurcharges;
+	
+		$arrProcedures = array("type='cart'", "enabled='1'", "enableCode=''");
+								
+		// Member restrictions
+		if (FE_USER_LOGGED_IN)
+		{
+			$arrProcedures[] = "(memberRestrictions='none'
+								OR (memberRestrictions='members' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='members' AND object_id={$this->User->id})>0)
+								" . (count($this->User->groups) ? " OR (memberRestrictions='groups' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='groups' AND object_id IN (" . implode(',', $this->User->groups) . "))>0)" : '') . ")";
+		}
+		else
+		{
+			$arrProcedures[] = "memberRestrictions='none'";
+		}
+		
+		// Product restrictions
+		$arrIds = array();
+		$arrTypes = array();
+		foreach( $arrProducts as $objProduct )
+		{
+			$arrIds[] = $objProduct->pid ? $objProduct->pid : $objProduct->id;
+			$arrTypes[] = $objProduct->type;
+		}
+		
+		$arrProcedures[] = "(productRestrictions='none'
+							OR (productRestrictions='producttypes' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='producttypes' AND object_id IN (" . implode(',', $arrTypes) . "))>0)
+							OR (productRestrictions='products' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='products' AND object_id IN (" . implode(',', $arrIds) . "))>0)
+							OR (productRestrictions='pages' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='pages' AND object_id IN (SELECT page_id FROM tl_iso_product_categories WHERE pid IN (" . implode(',', $arrIds) . ")))))";
+		
+		
+		// Fetch and process rules
+		$objRules = $this->Database->execute("SELECT * FROM tl_iso_rules r WHERE " . implode(' AND ', $arrProcedures) . " ORDER BY sorting");
+		
+		while( $objRules->next() )
+		{
+			if (strpos($objRules->discount, '%') !== false)
+			{
+				$fltDiscount = 100 + rtrim($objRules->discount, '%');
+				$fltPrice = $fltPrice / 100 * $fltDiscount;
+			}
+			else
+			{
+				$fltPrice = $fltPrice + $objRules->discount;
+			}
+			
+			$arrSurcharges[] = array
+			(
+				'label'			=> $objRules->title,
+				'price'			=> '',
+				'total_price'	=> $fltPrice,
+				'tax_class'		=> 0,
+				'add_tax'		=> true,
+			);
+		}
+		
+		$arrCoupons = deserialize($this->Isotope->Cart->coupons);
+		if (is_array($arrCoupons) && count($arrCoupons))
+		{
+			$arrDropped = array();
+			
+			foreach( $arrCoupons as $code )
+			{
+				$arrRule = $this->findCoupon($code, $arrProducts);
+				
+				if ($arrRule === false)
+				{
+					$arrDropped[] = $code;
+				}
+				else
+				{
+					$fltPrice = $this->calculateProductTotal($arrRule, $arrProducts);
+					
+					if (strpos($arrRule['discount'], '%') !== false)
+					{
+						$fltDiscount = rtrim($arrRule['discount'], '%');
+						$fltPrice = $fltPrice / 100 * $fltDiscount;
+					}
+					else
+					{
+						$fltPrice = $arrRule['discount'];
+					}
+					
+					$arrSurcharges[] = array
+					(
+						'label'			=> $arrRule['title'],
+						'price'			=> ($fltDiscount ? $fltDiscount.'%' : ''),
+						'total_price'	=> $fltPrice,
+						'tax_class'		=> 0,
+						'add_tax'		=> true,
+					);
+				}
+			}
+			
+			if (count($arrDropped))
+			{
+				//!@todo show dropped coupons
+				$arrCoupons = array_diff($arrCoupons, $arrDropped);
+				$this->Database->query("UPDATE tl_iso_cart SET coupons='" . serialize($arrCoupons) . "' WHERE id={$this->Isotope->Cart->id}");
+			}
+		}
+		
+		return $arrSurcharges;
+	}
+	
+	
+	/** 
 	 * Returns a rule form if needed
 	 * @access public
 	 * @param object $objModule
@@ -910,7 +1034,7 @@ class IsotopeRules extends Controller
 					
 					$this->Database->query("UPDATE tl_iso_cart SET coupons='" . serialize($arrCoupons) . "' WHERE id={$this->Isotope->Cart->id}");
 					
-					$_SESSION['COUPON_SUCCESS'][$objModule->id] = sprintf($GLOBALS['TL_LANG']['MSC']['couponApplied'], $strCoupon);
+					$_SESSION['COUPON_SUCCESS'][$objModule->id] = sprintf($GLOBALS['TL_LANG']['MSC']['couponApplied'], $arrRule['code']);
 				}
 			}
 			
@@ -943,6 +1067,9 @@ class IsotopeRules extends Controller
 	}
 	
 	
+	/**
+	 * Find coupon matching a code
+	 */
 	protected function findCoupon($strCode, $arrProducts)
 	{
 		$arrRule = false;
@@ -978,7 +1105,7 @@ class IsotopeRules extends Controller
 					$arrIds[] = $objProduct->type;
 				}
 				
-				if (!$this->Database->execute("SELECT * FROM tl_iso_rule_restrictions WHERE pid={$objRules->id} AND type='products' AND object_id IN (" . implode(',', $arrIds) . ")")->numRows)
+				if (!$this->Database->execute("SELECT * FROM tl_iso_rule_restrictions WHERE pid={$objRules->id} AND type='producttypes' AND object_id IN (" . implode(',', $arrIds) . ")")->numRows)
 					continue;
 			}
 			elseif ($objRules->productRestrictions == 'pages')
@@ -989,7 +1116,7 @@ class IsotopeRules extends Controller
 					$arrIds[] = ($objProduct->pid ? $objProduct->pid : $objProduct->id);
 				}
 				
-				if (!$this->Database->execute("SELECT * FROM tl_iso_rule_restrictions WHERE pid={$objRules->id} AND type='products' AND object_id IN (SELECT page_id FROM tl_iso_product_categories WHERE pid IN (" . implode(',', $arrIds) . "))")->numRows)
+				if (!$this->Database->execute("SELECT * FROM tl_iso_rule_restrictions WHERE pid={$objRules->id} AND type='pages' AND object_id IN (SELECT page_id FROM tl_iso_product_categories WHERE pid IN (" . implode(',', $arrIds) . "))")->numRows)
 					continue;
 			}
 			
@@ -998,6 +1125,39 @@ class IsotopeRules extends Controller
 		}
 		
 		return $arrRule;
+	}
+	
+	
+	/**
+	 * Calculate the total of all products to which apply a rule to
+	 */
+	protected function calculateProductTotal($arrRule, $arrProducts)
+	{
+		$fltPrice = 0;
+		
+		foreach( $arrProducts as $objProduct )
+		{
+			// Product restrictions
+			if ($arrRule['productRestrictions'] == 'products')
+			{
+				if (!$this->Database->execute("SELECT * FROM tl_iso_rule_restrictions WHERE pid={$arrRule['id']} AND type='products' AND object_id=" . ($objProduct->pid ? $objProduct->pid : $objProduct->id))->numRows)
+					continue;
+			}
+			elseif ($arrRule['productRestrictions'] == 'producttypes')
+			{
+				if (!$this->Database->execute("SELECT * FROM tl_iso_rule_restrictions WHERE pid={$arrRule['id']} AND type='producttypes' AND object_id=" . $objProduct->type)->numRows)
+					continue;
+			}
+			elseif ($arrRule['productRestrictions'] == 'pages')
+			{
+				if (!$this->Database->execute("SELECT * FROM tl_iso_rule_restrictions WHERE pid={$arrRule['id']} AND type='pages' AND object_id IN (SELECT page_id FROM tl_iso_product_categories WHERE pid=" . ($objProduct->pid ? $objProduct->pid : $objProduct->id) . ")")->numRows)
+					continue;
+			}
+			
+			$fltPrice += $objProduct->total_price;
+		}
+		
+		return $fltPrice;
 	}
 }
 
