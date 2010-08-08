@@ -686,7 +686,7 @@ class IsotopeRules extends Controller
 			if($object instanceof IsotopeProduct)
 			{
 					$arrObject['pages'] = $object->pages;
-					$arrObject['productTypes'] = $object->type;
+					$arrObject['producttypes'] = $object->type;
 					$arrObject['products'] = $object->id;
 					if($blnCartItem)
 						$intObjectId = $object->cart_id; //necessary to check the usage table by product collection class id (for example, cart id)
@@ -785,7 +785,7 @@ class IsotopeRules extends Controller
 												
 						switch($row['productRestrictions'])
 						{
-							case 'productTypes':
+							case 'producttypes':
 							case 'pages':
 							case 'products':
 								if($row[$row['productRestrictions']])

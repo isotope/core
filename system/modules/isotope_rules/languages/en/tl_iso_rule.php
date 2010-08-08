@@ -58,7 +58,7 @@ $GLOBALS['TL_LANG']['tl_iso_rule']['members']        		= array('Members', 'Selec
 $GLOBALS['TL_LANG']['tl_iso_rule']['groups']         		= array('Groups', 'Select groups this rule is restricted to.');
 $GLOBALS['TL_LANG']['tl_iso_rule']['pages']     			= array('Categories', 'Select categories this rule is restricted to.  If none, all are eligible.');
 $GLOBALS['TL_LANG']['tl_iso_rule']['products']				= array('Products','Select products this rule is restricted to. If none, all are eligible.');
-$GLOBALS['TL_LANG']['tl_iso_rule']['productTypes']			= array('Product Types','Select the product types this rule is restricted to. If none, all are eligible.');
+$GLOBALS['TL_LANG']['tl_iso_rule']['producttypes']			= array('Product Types','Select the product types this rule is restricted to. If none, all are eligible.');
 $GLOBALS['TL_LANG']['tl_iso_rule']['countries']				= array('Countries','Select countries this rule is restricted to.  If none, all are eligible.');
 $GLOBALS['TL_LANG']['tl_iso_rule']['subdivisions']			= array('States & Provinces','Select states or provinces within countries this rule is restricted to.  If none, all are eligible.');
 $GLOBALS['TL_LANG']['tl_iso_rule']['paymentModules']		= array('Payment Modules','Select payment modules this rule is restricted to.  If none, all are eligible.');
@@ -85,7 +85,7 @@ $GLOBALS['TL_LANG']['tl_iso_rule']['memberRestrictions']['groups']			= 'Specific
 $GLOBALS['TL_LANG']['tl_iso_rule']['memberRestrictions']['members']			= 'Specific members';
 
 $GLOBALS['TL_LANG']['tl_iso_rule']['productRestrictions']['none']			= 'No restrictions';
-$GLOBALS['TL_LANG']['tl_iso_rule']['productRestrictions']['productTypes']	= 'Product types';
+$GLOBALS['TL_LANG']['tl_iso_rule']['productRestrictions']['producttypes']	= 'Product types';
 $GLOBALS['TL_LANG']['tl_iso_rule']['productRestrictions']['pages']			= 'Specific categories';
 $GLOBALS['TL_LANG']['tl_iso_rule']['productRestrictions']['products']		= 'Specific products';
 

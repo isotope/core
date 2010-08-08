@@ -114,7 +114,7 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
 		'enableCode'						=> 'code',
 		'memberRestrictions_groups'			=> 'groups',
 		'memberRestrictions_members'		=> 'members',
-		'productRestrictions_productTypes'	=> 'productTypes,minItemQuantity', //,maxItemQuantity',
+		'productRestrictions_producttypes'	=> 'producttypes,minItemQuantity', //,maxItemQuantity',
 		'productRestrictions_pages'			=> 'pages,minItemQuantity', //,maxItemQuantity',
 		'productRestrictions_products'		=> 'products,minItemQuantity', //,maxItemQuantity',
 		'ruleRestrictions_rules'			=> 'rules',
@@ -323,7 +323,7 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
 			'default'					=> 'none',
 			'exclude'					=> true,
 			'filter'					=> true,
-			'options'					=> array('none','productTypes','pages','products'),
+			'options'					=> array('none','producttypes','pages','products'),
 			'eval'						=> array('submitOnChange'=>true),
 			'reference'					=> &$GLOBALS['TL_LANG']['tl_iso_rule']['productRestrictions']
 		
@@ -372,11 +372,11 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
 				array('tl_iso_rule', 'saveRestrictions'),
 			),
         ),
-        'productTypes' => array
+        'producttypes' => array
         (
-            'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rule']['productTypes'],
+            'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rule']['producttypes'],
             'exclude'					=> true,
-			'inputType'					=> 'checkboxWizard',
+			'inputType'					=> 'checkbox',
 			'foreignKey'				=> 'tl_iso_producttypes.name',
 			'eval'						=> array('multiple'=>true, 'doNotSaveEmpty'=>true),
 			'load_callback' => array
@@ -388,7 +388,7 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
 				array('tl_iso_rule', 'saveRestrictions'),
 			),
         ),
-       'pages' => array
+		'pages' => array
 		(
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rule']['pages'],
 			'exclude'					=> true,
@@ -453,38 +453,6 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
 			(
 				array('tl_iso_rule', 'saveRestrictions'),
 			),
-        ),	
-		'countries' => array
-		(
-			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rule']['countries'],
-			'exclude'					=> true,
-			'inputType'					=> 'select',
-			'options'					=> $this->getCountries(),
-			'eval'						=> array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50 w50h'),
-		),
-		'subdivisions' => array
-		(
-			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rule']['subdivisions'],
-			'exclude'					=> true,
-			'inputType'					=> 'conditionalselect',
-			'options'					=> &$GLOBALS['TL_LANG']['DIV'],
-			'eval'						=> array('multiple'=>true, 'size'=>8, 'conditionField'=>'countries', 'tl_class'=>'w50 w50h'),
-		),
-        'paymentModules' => array
-        (
-            'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rule']['paymentModules'],
-            'exclude'					=> true,
-			'inputType'					=> 'checkboxWizard',
-			'foreignKey'				=> 'tl_iso_payment_modules.name',
-			'eval'						=> array('multiple'=>true, 'tl_class'=>'clr'),
-        ),
-        'shippingModules' => array
-        (
-            'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rule']['shippingModules'],
-            'exclude'					=> true,
-			'inputType'					=> 'checkboxWizard',
-			'foreignKey'				=> 'tl_iso_shipping_modules.name',
-			'eval'						=> array('multiple'=>true),
         ),
 		'enabled'	=> array
 		(
@@ -562,7 +530,7 @@ class tl_iso_rule extends Backend
 		
 		if (!is_array($arrNew) || !count($arrNew))
 		{
-			$this->Database->query("DELETE FROM tl_iso_rule_restrications WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}'");
+			$this->Database->query("DELETE FROM tl_iso_rule_restrictions WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}'");
 		}
 		else
 		{
