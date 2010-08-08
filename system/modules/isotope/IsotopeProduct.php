@@ -157,14 +157,13 @@ class IsotopeProduct extends Controller
 			}
 		}
 		
+		$this->arrData['original_price'] = $this->arrData['price'];
 		$this->loadLanguage();
 		
 		if ($arrData['pid'] > 0)
 		{
 			$this->loadVariantData($arrData);
 		}
-				
-		$this->arrData['original_price'] = $this->arrData['price'];
 	}
 
 
@@ -927,6 +926,11 @@ class IsotopeProduct extends Controller
 			
 			$this->arrData[$attribute] = $arrData[$attribute];
 			unset($this->arrCache[$attribute]);
+		}
+		
+		if (in_array('price', $this->arrVariantAttributes))
+		{
+			$this->arrData['original_price'] = $this->arrData['price'];
 		}
 				
 		$this->loadLanguage($arrInherit);
