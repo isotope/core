@@ -47,9 +47,9 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 	(
 		'sorting' => array
 		(
-			'fields'					=> array('type', 'title'),
 			'mode'						=> 1,
-			'panelLayout'				=> 'filter;search,limit'
+			'panelLayout'				=> 'filter;search,limit',
+			'fields'					=> array('type', 'title'),
 		),
 		'label'	  => array
 		(
@@ -86,6 +86,13 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 				'href'					=> 'act=delete',
 				'icon'					=> 'delete.gif',
 				'attributes'			=> 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
+			),
+			'toggle' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_page']['toggle'],
+				'icon'                => 'visible.gif',
+				'attributes'          => 'onclick="Backend.getScrollOffset(); return AjaxRequest.toggleVisibility(this, %s);"',
+				'button_callback'     => array('tl_iso_rules', 'toggleIcon')
 			),
 			'show' => array
 			(
@@ -438,6 +445,13 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 class tl_iso_rules extends Backend
 {
 	
+	public function __construct()
+	{
+		parent::__construct();
+		
+		$this->import('BackendUser', 'User');
+	}
+	
 	/**
 	 * Return an array of enabled rules but not the active one.
 	 */
@@ -512,6 +526,80 @@ class tl_iso_rules extends Backend
 		}
 		
 		return '';
+	}
+	
+	
+	/**
+	 * Return the "toggle visibility" button
+	 * @param array
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @return string
+	 */
+	public function toggleIcon($row, $href, $label, $title, $icon, $attributes)
+	{
+		if (strlen($this->Input->get('tid')))
+		{
+			$this->toggleVisibility($this->Input->get('tid'), ($this->Input->get('state') == 1));
+			$this->redirect($this->getReferer());
+		}
+
+		// Check permissions AFTER checking the tid, so hacking attempts are logged
+		if (!$this->User->isAdmin && !$this->User->hasAccess('tl_iso_rules::enabled', 'alexf'))
+		{
+			return '';
+		}
+
+		$href .= '&amp;tid='.$row['id'].'&amp;state='.($row['enabled'] ? '' : 1);
+
+		if (!$row['enabled'])
+		{
+			$icon = 'invisible.gif';
+		}		
+
+		return '<a href="'.$this->addToUrl($href).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
+	}
+
+
+	/**
+	 * Disable/enable a user group
+	 * @param integer
+	 * @param boolean
+	 */
+	public function toggleVisibility($intId, $blnVisible)
+	{
+//		// Check permissions to edit
+//		$this->Input->setGet('id', $intId);
+//		$this->Input->setGet('act', 'toggle');
+//		$this->checkPermission();
+
+		// Check permissions to publish
+		if (!$this->User->isAdmin && !$this->User->hasAccess('tl_iso_rules::published', 'alexf'))
+		{
+			$this->log('Not enough permissions to enable/disable rule ID "'.$intId.'"', 'tl_iso_rules toggleVisibility', TL_ERROR);
+			$this->redirect('contao/main.php?act=error');
+		}
+
+//		$this->createInitialVersion('tl_iso_rules', $intId);
+	
+		// Trigger the save_callback
+		if (is_array($GLOBALS['TL_DCA']['tl_iso_rules']['fields']['enabled']['save_callback']))
+		{
+			foreach ($GLOBALS['TL_DCA']['tl_iso_rules']['fields']['enabled']['save_callback'] as $callback)
+			{
+				$this->import($callback[0]);
+				$blnVisible = $this->$callback[0]->$callback[1]($blnVisible, $this);
+			}
+		}
+
+		// Update the database
+		$this->Database->prepare("UPDATE tl_iso_rules SET tstamp=". time() .", enabled='" . ($blnVisible ? 1 : '') . "' WHERE id=?")
+					   ->execute($intId);
+
+//		$this->createNewVersion('tl_iso_rules', $intId);
 	}
 }
 
