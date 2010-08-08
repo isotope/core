@@ -730,6 +730,7 @@ class IsotopeRules extends Controller
 									if($arrUses['value'] <= $arrMemberUsesByRule[$row['id']]['customerUses'] || $intObjectId==$arrMemberUsesByRule[$row['id']]['object_id'])
 									{
 										break(2);	//don't allow
+									}
 									
 								}
 								break;
@@ -766,10 +767,12 @@ class IsotopeRules extends Controller
 					case 'all':
 						if(count($object->rules))
 							break(2);
+							
 					case 'rules':
 						$arrExcludedRules = deserialize($row['rules'], true);	//get specific rules for exclusion check
 						if(count($arrRules) && count($object->rules) && array_intersect($object->rules, $arrExcludedRules))
 							break(2);
+							
 					default:
 						break;
 				}
@@ -783,6 +786,7 @@ class IsotopeRules extends Controller
 						if($row[$row['memberRestrictions']])
 							$arrRestrictions[$row['memberRestrictions']] = deserialize($row[$row['memberRestrictions']]);
 						break;
+						
 					default:
 						break;
 				}
@@ -801,6 +805,7 @@ class IsotopeRules extends Controller
 								if($row[$row['productRestrictions']])
 									$arrRestrictions[$row['productRestrictions']] = deserialize($row[$row['productRestrictions']]);
 								break;
+								
 							default:
 								break;
 						}
@@ -858,6 +863,66 @@ class IsotopeRules extends Controller
 	
 		//return an array of eligible rules to each item in the cart.
 		return $arrReturn;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public function calculatePrice($fltPrice, $objSource, $strField, $intTaxClass)
+	{
+		if ($objSource instanceof IsotopeProduct && $strField != 'original_price')
+		{
+			$arrProcedures = array("type='product'", "enabled='1'");
+			
+			// Member restrictions
+			if (FE_USER_LOGGED_IN)
+			{
+				$this->import('FrontendUser', 'User');
+				$arrProcedures[] = "memberRestrictions='none'
+									OR (memberRestrictions='members' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='members' AND object_id={$this->User->id})>0)
+									" . (count($this->User->groups) ? " OR (memberRestrictions='groups' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='groups' AND object_id IN (" . implode(',', $this->User->groups) . "))>0)" : '');
+			}
+			else
+			{
+				$arrProcedures[] = "memberRestrictions='none'";
+			}
+			
+			// Product restrictions
+			$arrProcedures[] = "productRestrictions='none'
+								OR (productRestrictions='producttypes' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='producttypes' AND object_id={$objSource->type})>0)
+								OR (productRestrictions='products' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='products' AND object_id={$objSource->id})>0)
+								OR (productRestrictions='pages' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='pages' AND object_id IN (SELECT page_id FROM tl_iso_product_categories WHERE pid={$objSource->id})))";
+			
+			// Fetch rules
+			$objRules = $this->Database->execute("SELECT * FROM tl_iso_rules r WHERE " . implode(' AND ', $arrProcedures) . " ORDER BY sorting");
+			
+			while( $objRules->next() )
+			{
+				if (strpos($objRules->discount, '%') !== false)
+				{
+					$fltDiscount = 100 + rtrim($objRules->discount, '%');
+					$fltPrice = $fltPrice / 100 * $fltDiscount;
+				}
+				else
+				{
+					$fltPrice = $fltPrice + $objRules->discount;
+				}
+			}
+		}
+		
+		return $fltPrice;
 	}
 }
 

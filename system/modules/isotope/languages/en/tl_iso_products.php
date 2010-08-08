@@ -49,7 +49,6 @@ $GLOBALS['TL_LANG']['tl_iso_products']['source']				= array('Source folder', 'Pl
 
 
 $GLOBALS['TL_LANG']['tl_iso_products']['price']					= array('Price', '');
-$GLOBALS['TL_LANG']['tl_iso_products']['original_price']		= array('List Price', '');
 $GLOBALS['TL_LANG']['tl_iso_products']['option_set_source']		= array('Option Set Source','Use an existing option set or create a new one');
 $GLOBALS['TL_LANG']['tl_iso_products']['option_sets']			= array('Option Sets','Select an existing Option Set');
 $GLOBALS['TL_LANG']['tl_iso_products']['option_set_title']		= array('Option Set Title','Name your new option set. The combination of values for each attribute will be stored and used to produce a new collection of empty subproducts.');

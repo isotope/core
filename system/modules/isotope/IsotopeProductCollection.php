@@ -226,10 +226,6 @@ abstract class IsotopeProductCollection extends Model
 				$objProduct->cart_id = $objItems->id;
 				$objProduct->reader_jumpTo_Override = $objItems->href_reader;
 				
-				//!is this correct?
-				if($objProduct->price!==$objItems->price)
-					$objProduct->price = $objItems->price;
-				
 				$objProduct->setOptions(deserialize($objItems->product_options, true));
 			
 				$this->arrProducts[] = $objProduct;
@@ -393,74 +389,54 @@ abstract class IsotopeProductCollection extends Model
 	//!todo: implement addToCollection (and removeFromCollection) hooks!
 	public function transferFromCollection(IsotopeProductCollection $objCollection, $blnDuplicate=true)
 	{
-
 		if (!$this->blnRecordExists)
 			return array();
 			
 		$time = time();
 		$arrIds = array();
-	 				
-		$arrItems = $this->getCollectionProducts($objCollection);
-							
-		foreach($arrItems as $i=>$objProduct)
+	 	$objOldItems = $this->Database->execute("SELECT * FROM {$objCollection->ctable} WHERE pid={$objCollection->id}");
+		
+		while( $objOldItems->next() )
 		{
-			//$arrNewItems = $this->getCollectionProducts($this);
-			
-			$objNewItems = $this->Database->execute("SELECT * FROM {$this->ctable} WHERE pid={$this->id} AND product_id={$objProduct->id} AND product_options='{$objProduct->product_options}'");
+			$objNewItems = $this->Database->execute("SELECT * FROM {$this->ctable} WHERE pid={$this->id} AND product_id={$objOldItems->product_id} AND product_options='{$objOldItems->product_options}'");
 			
 			// Product exists in target table. Increase amount.
 			if ($objNewItems->numRows)
 			{
-				$this->Database->query("UPDATE {$this->ctable} SET tstamp=$time, product_quantity=(product_quantity+{$objProduct->product_quantity}) WHERE id={$objNewItems->id}");
+				$this->Database->query("UPDATE {$this->ctable} SET tstamp=$time, product_quantity=(product_quantity+{$objOldItems->product_quantity}) WHERE id={$objNewItems->id}");
 				$arrIds[] = $objNewItems->id;
 			}
+			
+			// Product does not exist in this collection, we don't duplicate and are on the same table. Simply change parent id.
+			elseif (!$objNewItems->numRows && !$blnDuplicate && $this->ctable == $objCollection->ctable)
+			{
+				$this->Database->query("UPDATE {$this->ctable} SET tstamp=$time, pid={$this->id} WHERE id={$objOldItems->id}");
+				$arrIds[] = $objOldItems->id;
+			}
+			
 			// Duplicate all existing rows to target table
 			else
 			{
-				$arrIds[] = $this->addProduct($objProduct, $objProduct->quantity_requested);
+				$arrSet = array('pid'=>$this->id, 'tstamp'=>$time);
+				
+				foreach( $objOldItems->row() as $k=>$v )
+				{
+					if (in_array($k, array('id', 'pid', 'tstamp')))
+						continue;
+						
+					if ($this->Database->fieldExists($k, $this->ctable))
+					{
+						$arrSet[$k] = $v;
+					}
+				}
+				
+				$arrIds[] = $this->Database->prepare("INSERT INTO {$this->ctable} %s")->set($arrSet)->executeUncached()->insertId;
 			}
 		}
-					
+		
 		return $arrIds;
 	}
 	
-	public function getCollectionProducts(IsotopeProductCollection $objCollection)
-	{
-		$arrProducts = array();
-		
-		$objItems = $this->Database->prepare("SELECT * FROM " . $objCollection->ctable . " WHERE pid=?")->execute($objCollection->id);
-	
-		while( $objItems->next() )
-		{					
-			
-			$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS product_class FROM tl_iso_products WHERE pid={$objItems->product_id} OR id={$objItems->product_id}")->limit(1)->execute();
-						
-			$strClass = $GLOBALS['ISO_PRODUCT'][$objProductData->product_class]['class'];
-		
-			try
-			{				
-				$objProduct = new $strClass($objProductData->row());
-			}
-			catch (Exception $e)
-			{				
-				$objProduct = new IsotopeProduct(array('id'=>$objItems->product_id, 'sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price));
-			}
-			
-			$objProduct->quantity_requested = $objItems->product_quantity;
-			$objProduct->cart_id = $objItems->id;
-			$objProduct->reader_jumpTo_Override = $objItems->href_reader;
-									
-			//!is this correct?
-			if($objProduct->price!==$objItems->price)
-				$objProduct->price = $objItems->price;
-			
-			$objProduct->setOptions(deserialize($objItems->product_options, true));
-		
-			$arrProducts[] = $objProduct;
-		}
-		
-		return $arrProducts;
-	}
 	
 	/**
 	 * Must be implemented by child class

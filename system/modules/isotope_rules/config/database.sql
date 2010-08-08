@@ -15,6 +15,7 @@
 CREATE TABLE `tl_iso_rules` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
+  `sorting` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
   `type` varchar(255) NOT NULL default '',
   `title` varchar(255) NOT NULL default '',
@@ -56,7 +57,7 @@ CREATE TABLE `tl_iso_rule_restrictions` (
   `object_id` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`, `type`),
-  KEY `type` (`type`, `object_id`),
+  KEY `type` (`type`, `object_id`, `pid`),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
