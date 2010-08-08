@@ -102,6 +102,7 @@ class IsotopeProduct extends Controller
 	/**
 	 * Construct the object
 	 */
+	//!@todo arrData['type'] is not available if recovering from non-existing product
 	public function __construct($arrData, $blnLocked=false)
 	{
 		parent::__construct();
@@ -113,11 +114,11 @@ class IsotopeProduct extends Controller
 		if ($arrData['pid'] > 0)
 		{
 			$this->arrData = $this->Database->execute("SELECT * FROM tl_iso_products WHERE id={$arrData['pid']}")->fetchAssoc();
-			$this->loadVariantData($arrData);
 		}
 		else
 		{
 			$this->arrData = $arrData;
+			
 		}
 
 		$this->arrType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id=".$this->arrData['type'])->fetchAssoc();
@@ -155,10 +156,15 @@ class IsotopeProduct extends Controller
 				$this->arrCache['low_price'] = $objProduct->low_price;
 			}
 		}
+		
+		$this->loadLanguage();
+		
+		if ($arrData['pid'] > 0)
+		{
+			$this->loadVariantData($arrData);
+		}
 				
 		$this->arrData['original_price'] = $this->arrData['price'];
-				
-		$this->loadLanguage();
 	}
 
 
@@ -913,17 +919,16 @@ class IsotopeProduct extends Controller
 
 		$this->arrData['id'] = $arrData['id'];
 		$this->arrData['pid'] = $arrData['pid'];
-		$this->arrData['original_price'] = $arrData['price'];
 		
 		foreach( $this->arrVariantAttributes as $attribute )
 		{
 			if (in_array($attribute, $arrInherit))
 				continue;
-
+			
 			$this->arrData[$attribute] = $arrData[$attribute];
 			unset($this->arrCache[$attribute]);
 		}
-		
+				
 		$this->loadLanguage($arrInherit);
 	}
 	
