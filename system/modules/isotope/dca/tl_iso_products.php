@@ -366,6 +366,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['images'],
 			'inputType'				=> 'mediaManager',
+			'eval'					=> array('extensions'=>'jpeg,jpg,png,gif'),
 			'attributes'			=> array('legend'=>'media_legend', 'fixed'=>true),
 		),
 		'published' => array
