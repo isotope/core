@@ -538,7 +538,7 @@ class IsotopeRules extends Controller
 //					'price'			=> $rule['price'],
 //					'total_price'	=> $fltTotalPrice,
 //					'tax_class'		=> 0,
-//					'add_tax'		=> false,
+//					'before_tax'	=> false,
 //				);
 //			}
 //				
@@ -929,26 +929,7 @@ class IsotopeRules extends Controller
 		
 		while( $objRules->next() )
 		{
-			$fltPrice = $this->calculateProductTotal($objRules->row(), $arrProducts);
-			
-			if (strpos($objRules->discount, '%') !== false)
-			{
-				$fltDiscount = rtrim($objRules->discount, '%');
-				$fltPrice = $fltPrice / 100 * $fltDiscount;
-			}
-			else
-			{
-				$fltPrice = $fltPrice + $objRules->discount;
-			}
-			
-			$arrSurcharges[] = array
-			(
-				'label'			=> $objRules->title,
-				'price'			=> ($fltDiscount ? $fltDiscount.'%' : ''),
-				'total_price'	=> $fltPrice,
-				'tax_class'		=> 0,
-				'add_tax'		=> true,
-			);
+			$arrSurcharges[] = $this->calculateProductSurcharge($objRules->row(), $arrProducts);
 		}
 		
 		$arrCoupons = deserialize($this->Isotope->Cart->coupons);
@@ -966,26 +947,7 @@ class IsotopeRules extends Controller
 				}
 				else
 				{
-					$fltPrice = $this->calculateProductTotal($arrRule, $arrProducts);
-					
-					if (strpos($arrRule['discount'], '%') !== false)
-					{
-						$fltDiscount = rtrim($arrRule['discount'], '%');
-						$fltPrice = $fltPrice / 100 * $fltDiscount;
-					}
-					else
-					{
-						$fltPrice = $arrRule['discount'];
-					}
-					
-					$arrSurcharges[] = array
-					(
-						'label'			=> $arrRule['title'],
-						'price'			=> ($fltDiscount ? $fltDiscount.'%' : ''),
-						'total_price'	=> $fltPrice,
-						'tax_class'		=> 0,
-						'add_tax'		=> true,
-					);
+					$arrSurcharges[] = $this->calculateProductSurcharge($arrRule, $arrProducts);
 				}
 			}
 			
@@ -1133,9 +1095,24 @@ class IsotopeRules extends Controller
 	/**
 	 * Calculate the total of all products to which apply a rule to
 	 */
-	protected function calculateProductTotal($arrRule, $arrProducts)
+	protected function calculateProductSurcharge($arrRule, $arrProducts)
 	{
-		$fltPrice = 0;
+		$blnDiscount = false;
+		if (strpos($arrRule['discount'], '%') !== false)
+		{
+			$blnDiscount = true;
+			$fltDiscount = rtrim($arrRule['discount'], '%');
+		}
+		
+		$arrSurcharge = array
+		(
+			'label'			=> $arrRule['title'],
+			'price'			=> ($blnDiscount ? $fltDiscount.'%' : ''),
+			'total_price'	=> 0,
+			'tax_class'		=> 0,
+			'before_tax'	=> true,
+			'products'		=> array(),
+		);
 		
 		foreach( $arrProducts as $objProduct )
 		{
@@ -1156,10 +1133,12 @@ class IsotopeRules extends Controller
 					continue;
 			}
 			
-			$fltPrice += $objProduct->total_price;
+			$fltPrice = $blnDiscount ? ($objProduct->total_price / 100 * $fltDiscount) : $arrRule['discount'];
+			$arrSurcharge['total_price'] += $fltPrice;
+			$arrSurcharge['products'][$objProduct->cart_id] = $fltPrice;
 		}
 		
-		return $fltPrice;
+		return $arrSurcharge;
 	}
 }
 
