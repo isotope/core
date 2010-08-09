@@ -106,8 +106,6 @@ class ModuleGiftRegistryReader extends ModuleIsotope
 				'quantity_sold'	=> $regInfo[0]['quantity_sold'],
 				'options'		=> deserialize($regInfo[0]['product_options'])
 			);
-			
-			$blnSetClear = (($i+1) % $this->columns==0 ? true : false);
 		}
 	
 		// Add "product_last" css class
