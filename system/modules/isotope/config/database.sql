@@ -209,6 +209,7 @@ CREATE TABLE `tl_iso_config` (
   `currencyPosition` varchar(5) NOT NULL default '',
   `currencyFormat` varchar(20) NOT NULL default '',
   `orderPrefix` varchar(4) NOT NULL default '',
+  `store_id` int(2) unsigned NOT NULL default '0',
   `invoiceLogo` text NULL,
   `fallback` char(1) NOT NULL default '',
   `company` varchar(255) NOT NULL default '',
@@ -308,7 +309,7 @@ CREATE TABLE `tl_iso_cart` (
   `pid` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
   `session` varchar(64) NOT NULL default '',
-  `config_id` int(10) unsigned NOT NULL default '0',
+  `store_id` int(2) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

@@ -200,7 +200,7 @@ class IsotopeCart extends IsotopeProductCollection
 	/**
 	 * Load current cart
 	 */
-	public function initializeCart($intConfig)
+	public function initializeCart($intConfig, $intStore)
 	{
 		$this->strHash = $this->Input->cookie($this->strCookie);
 		
@@ -214,32 +214,35 @@ class IsotopeCart extends IsotopeProductCollection
 				$this->setCookie($this->strCookie, $this->strHash, $GLOBALS['TL_CONFIG']['iso_cartTimeout'],  $GLOBALS['TL_CONFIG']['websitePath']);
 			}
 
-			$this->findBy('session', $this->strHash);
+			$objCart = $this->Database->execute("SELECT * FROM tl_iso_cart WHERE session='{$this->strHash}' AND store_id=$intStore");
 		}
 		else
 		{
-	 		$this->findBy('pid', $this->User->id);
+			$objCart = $this->Database->execute("SELECT * FROM tl_iso_cart WHERE pid={$this->User->id} AND store_id=$intStore");
 		}
 				
 		// Create new cart
-		if (!$this->blnRecordExists)
+		if ($objCart->numRows)
+		{
+			$this->setFromRow($objCart, $this->strTable, 'id');
+			
+			$time = time();
+			$this->Database->query("UPDATE tl_iso_cart SET tstamp=$time WHERE id={$this->id}");
+		}
+		else
 		{
 			$this->setData(array
 			(
 				'pid'			=> ($this->User->id ? $this->User->id : 0),
 				'session'		=> ($this->User->id ? '' : $this->strHash),
 				'tstamp'		=> time(),
+				'store_id'		=> $intStore,
 			));
 			
 			if (!$this->findBy('id', $this->save(true)))
 			{
 				throw new Exception('Unable to create shopping cart');
 			}
-		}
-		else
-		{
-			$time = time();
-			$this->Database->query("UPDATE tl_iso_cart SET tstamp=$time WHERE id={$this->id}");
 		}
 				
 		// Temporary cart available, move to this cart. Must be after creating a new cart!

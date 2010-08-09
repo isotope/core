@@ -184,13 +184,7 @@ class IsotopeRunonce extends Frontend
 		{
 			$this->Database->executeUncached("ALTER TABLE tl_module CHANGE COLUMN columns iso_cols int(1) unsigned NOT NULL default '1'");
 		}
-		
-		// tl_iso_cart.store_id has been renamed to tl_iso_cart.config_id
-		if ($this->Database->fieldExists('store_id', 'tl_iso_cart') && !$this->Database->fieldExists('config_id', 'tl_iso_cart'))
-		{
-			$this->Database->executeUncached("ALTER TABLE tl_iso_cart CHANGE COLUMN store_id config_id int(10) unsigned NOT NULL default '0'");
-		}
-		
+				
 		// tl_iso_orders.store_id has been renamed to tl_iso_orders.config_id
 		if ($this->Database->fieldExists('store_id', 'tl_iso_orders') && !$this->Database->fieldExists('config_id', 'tl_iso_orders'))
 		{
