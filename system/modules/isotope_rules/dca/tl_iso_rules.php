@@ -97,14 +97,15 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'__selector__'			=> array('type', 'enableCode', 'memberRestrictions', 'productRestrictions', 'ruleRestrictions'),
+		'__selector__'			=> array('type', 'enableCode', 'configRestrictions', 'memberRestrictions', 'productRestrictions', 'ruleRestrictions'),
 		'default'				=> '{basic_legend},type',
-		'product'				=> '{basic_legend},type,name,discount;{limit_legend:hide},limitPerMember,limitPerConfig;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},memberRestrictions,productRestrictions,ruleRestrictions;{enabled_legend},enabled',
-		'cart'					=> '{basic_legend},type,name,label,discount;{coupon_legend:hide},enableCode;{limit_legend:hide},limitPerMember,limitPerConfig;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},memberRestrictions,productRestrictions,minItemQuantity,maxItemQuantity,ruleRestrictions;{enabled_legend},enabled'
+		'product'				=> '{basic_legend},type,name,discount;{limit_legend:hide},limitPerMember,limitPerConfig;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},configRestrictions,memberRestrictions,productRestrictions,ruleRestrictions;{enabled_legend},enabled',
+		'cart'					=> '{basic_legend},type,name,label,discount;{coupon_legend:hide},enableCode;{limit_legend:hide},limitPerMember,limitPerConfig;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},configRestrictions,memberRestrictions,productRestrictions,minItemQuantity,maxItemQuantity,ruleRestrictions;{enabled_legend},enabled'
 	),
 	'subpalettes' => array
 	(
 		'enableCode'						=> 'code',
+		'configRestrictions'				=> 'configs',
 		'memberRestrictions_groups'			=> 'groups',
 		'memberRestrictions_members'		=> 'members',
 		'productRestrictions_producttypes'	=> 'producttypes',
@@ -209,6 +210,30 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			'inputType'					=> 'text',
 			'eval'						=> array('rgxp'=>'time', 'tl_class'=>'w50'),
 		),
+        'configRestrictions' => array
+		(
+			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['configRestrictions'],
+			'inputType'					=> 'checkbox',
+			'exclude'					=> true,
+			'filter'					=> true,
+			'eval'						=> array('submitOnChange'=>true, 'tl_class'=>'clr'),
+		),
+		'configs' => array
+        (
+            'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['configs'],
+            'exclude'					=> true,
+			'inputType'					=> 'checkbox',
+			'foreignKey'				=> 'tl_iso_config.name',
+			'eval'						=> array('mandatory'=>true, 'multiple'=>true, 'doNotSaveEmpty'=>true),
+			'load_callback' => array
+			(
+				array('tl_iso_rules', 'loadRestrictions'),
+			),
+			'save_callback' => array
+			(
+				array('tl_iso_rules', 'saveRestrictions'),
+			),
+        ),	
         'memberRestrictions' => array
 		(
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['memberRestrictions'],
@@ -224,9 +249,9 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
         (
             'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['groups'],
             'exclude'					=> true,
-			'inputType'					=> 'checkboxWizard',
+			'inputType'					=> 'checkbox',
 			'foreignKey'				=> 'tl_member_group.name',
-			'eval'						=> array('multiple'=>true, 'doNotSaveEmpty'=>true),
+			'eval'						=> array('mandatory'=>true, 'multiple'=>true, 'doNotSaveEmpty'=>true),
 			'load_callback' => array
 			(
 				array('tl_iso_rules', 'loadRestrictions'),
@@ -278,7 +303,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
             'exclude'					=> true,
 			'inputType'					=> 'checkbox',
 			'foreignKey'				=> 'tl_iso_producttypes.name',
-			'eval'						=> array('multiple'=>true, 'doNotSaveEmpty'=>true),
+			'eval'						=> array('mandatory'=>true, 'multiple'=>true, 'doNotSaveEmpty'=>true),
 			'load_callback' => array
 			(
 				array('tl_iso_rules', 'loadRestrictions'),
@@ -294,7 +319,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			'exclude'					=> true,
 			'inputType'					=> 'pageTree',
 			'foreignKey'				=> 'tl_page.title',
-			'eval'						=> array('multiple'=>true, 'fieldType'=>'checkbox', 'doNotSaveEmpty'=>true),
+			'eval'						=> array('mandatory'=>true, 'multiple'=>true, 'fieldType'=>'checkbox', 'doNotSaveEmpty'=>true),
 			'load_callback' => array
 			(
 				array('tl_iso_rules', 'loadRestrictions'),

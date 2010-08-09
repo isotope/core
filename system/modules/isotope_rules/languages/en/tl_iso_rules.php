@@ -46,13 +46,15 @@ $GLOBALS['TL_LANG']['tl_iso_rules']['startDate']      		= array('Start date', 'I
 $GLOBALS['TL_LANG']['tl_iso_rules']['endDate']        		= array('End date', 'If desired, please specify the date this rule will no longer be eligible on.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['protected']			= array('Protected','Further restrict the eligibility properties of this rule.');
 
-$GLOBALS['TL_LANG']['tl_iso_rules']['memberRestrictions']	= array('Member restrictions','Restrict a rule to certain groups or members');
-$GLOBALS['TL_LANG']['tl_iso_rules']['productRestrictions']	= array('Product restrictions','Restrict this rule to certain product types, categories, or to individual products.');
+$GLOBALS['TL_LANG']['tl_iso_rules']['configRestrictions']	= array('Store config restrictions', 'Restrict a rule to certain store configs.');
+$GLOBALS['TL_LANG']['tl_iso_rules']['configs']         		= array('Store configs', 'Select configs this rule is restricted to.');
+$GLOBALS['TL_LANG']['tl_iso_rules']['memberRestrictions']	= array('Member restrictions', 'Restrict a rule to certain groups or members.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['members']        		= array('Members', 'Select members this rule is restricted to.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['groups']         		= array('Groups', 'Select groups this rule is restricted to.');
-$GLOBALS['TL_LANG']['tl_iso_rules']['pages']     			= array('Categories', 'Select categories this rule is restricted to.  If none, all are eligible.');
-$GLOBALS['TL_LANG']['tl_iso_rules']['products']				= array('Products','Select products this rule is restricted to. If none, all are eligible.');
+$GLOBALS['TL_LANG']['tl_iso_rules']['productRestrictions']	= array('Product restrictions', 'Restrict this rule to certain product types, categories, or to individual products.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['producttypes']			= array('Product Types','Select the product types this rule is restricted to. If none, all are eligible.');
+$GLOBALS['TL_LANG']['tl_iso_rules']['products']				= array('Products','Select products this rule is restricted to. If none, all are eligible.');
+$GLOBALS['TL_LANG']['tl_iso_rules']['pages']     			= array('Categories', 'Select categories this rule is restricted to.  If none, all are eligible.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['enabled']				= array('Enabled','Please select whether this rule is currently enabled or not.');
 
 

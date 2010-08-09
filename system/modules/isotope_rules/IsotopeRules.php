@@ -316,6 +316,10 @@ class IsotopeRules extends Controller
 		}
 		
 		
+		// Store config restrictions
+		$arrProcedures[] = "(configRestrictions='' OR (configRestrictions='1' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='configs' AND object_id={$this->Isotope->Config->id})>0))";
+		
+		
 		// Member restrictions
 		if (FE_USER_LOGGED_IN)
 		{
