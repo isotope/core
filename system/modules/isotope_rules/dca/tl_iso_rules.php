@@ -99,8 +99,8 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 	(
 		'__selector__'			=> array('type', 'enableCode', 'memberRestrictions', 'productRestrictions', 'ruleRestrictions'),
 		'default'				=> '{basic_legend},type',
-		'product'				=> '{basic_legend},type,name,discount;{restriction_legend},numUses;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},memberRestrictions,productRestrictions,ruleRestrictions;{enabled_legend},enabled',
-		'cart'					=> '{basic_legend},type,name,label,discount;{coupon_legend:hide},enableCode;{restriction_legend},numUses;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},memberRestrictions,productRestrictions,minItemQuantity,maxItemQuantity,ruleRestrictions;{enabled_legend},enabled'
+		'product'				=> '{basic_legend},type,name,discount;{limit_legend:hide},limitPerMember,limitPerConfig;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},memberRestrictions,productRestrictions,ruleRestrictions;{enabled_legend},enabled',
+		'cart'					=> '{basic_legend},type,name,label,discount;{coupon_legend:hide},enableCode;{limit_legend:hide},limitPerMember,limitPerConfig;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},memberRestrictions,productRestrictions,minItemQuantity,maxItemQuantity,ruleRestrictions;{enabled_legend},enabled'
 	),
 	'subpalettes' => array
 	(
@@ -167,15 +167,19 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			'inputType'					=> 'text',
 			'eval'						=> array('mandatory'=>true, 'maxlength'=>255)
 		),
-		'numUses' => array
+		'limitPerMember' => array
         (
-            'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['numUses'],
+            'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['limitPerMember'],
             'exclude'					=> true,
-			'default'					=> 0,
-			'inputType'					=> 'inputUnit',
-			'options'					=> array('customer', 'store'),
-     		'reference'					=> &$GLOBALS['TL_LANG']['tl_iso_rules']['numUses'],
-            'eval'						=> array('mandatory'=>false, 'rgxp'=>'digit', 'maxlength'=>255),
+			'inputType'					=> 'text',
+            'eval'						=> array('rgxp'=>'digit', 'maxlength'=>10, 'tl_class'=>'w50'),
+	   	),
+	   	'limitPerConfig' => array
+        (
+            'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['limitPerConfig'],
+            'exclude'					=> true,
+			'inputType'					=> 'text',
+            'eval'						=> array('rgxp'=>'digit', 'maxlength'=>10, 'tl_class'=>'w50'),
 	   	),
 		'startDate' => array
 		(
