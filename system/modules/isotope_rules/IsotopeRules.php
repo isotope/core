@@ -83,6 +83,12 @@ class IsotopeRules extends Controller
 		if ($objSource instanceof IsotopeProduct && ($strField == 'price' || $strField == 'low_price'))
 		{
 			$arrProcedures = array("type='product'", "enabled='1'");
+			
+			// Date & Time restrictions
+			$arrProcedures[] = "(startDate='' OR FROM_UNIXTIME(startDate,GET_FORMAT(DATE,'INTERNAL')) <= FROM_UNIXTIME(UNIX_TIMESTAMP(),GET_FORMAT(DATE,'INTERNAL')))";
+			$arrProcedures[] = "(endDate='' OR FROM_UNIXTIME(endDate,GET_FORMAT(DATE,'INTERNAL')) >= FROM_UNIXTIME(UNIX_TIMESTAMP(),GET_FORMAT(DATE,'INTERNAL')))";
+			$arrProcedures[] = "(startTime='' OR FROM_UNIXTIME(startTime,GET_FORMAT(TIME,'INTERNAL')) <= FROM_UNIXTIME(UNIX_TIMESTAMP(),GET_FORMAT(TIME,'INTERNAL')))";
+			$arrProcedures[] = "(endTime='' OR FROM_UNIXTIME(endTime,GET_FORMAT(TIME,'INTERNAL')) >= FROM_UNIXTIME(UNIX_TIMESTAMP(),GET_FORMAT(TIME,'INTERNAL')))";
 						
 			// Member restrictions
 			if (FE_USER_LOGGED_IN)
@@ -135,7 +141,13 @@ class IsotopeRules extends Controller
 			return $arrSurcharges;
 	
 		$arrProcedures = array("type='cart'", "enabled='1'", "enableCode=''");
-								
+		
+		// Date & Time restrictions
+		$arrProcedures[] = "(startDate='' OR FROM_UNIXTIME(startDate,GET_FORMAT(DATE,'INTERNAL')) <= FROM_UNIXTIME(UNIX_TIMESTAMP(),GET_FORMAT(DATE,'INTERNAL')))";
+		$arrProcedures[] = "(endDate='' OR FROM_UNIXTIME(endDate,GET_FORMAT(DATE,'INTERNAL')) >= FROM_UNIXTIME(UNIX_TIMESTAMP(),GET_FORMAT(DATE,'INTERNAL')))";
+		$arrProcedures[] = "(startTime='' OR FROM_UNIXTIME(startTime,GET_FORMAT(TIME,'INTERNAL')) <= FROM_UNIXTIME(UNIX_TIMESTAMP(),GET_FORMAT(TIME,'INTERNAL')))";
+		$arrProcedures[] = "(endTime='' OR FROM_UNIXTIME(endTime,GET_FORMAT(TIME,'INTERNAL')) >= FROM_UNIXTIME(UNIX_TIMESTAMP(),GET_FORMAT(TIME,'INTERNAL')))";
+		
 		// Member restrictions
 		if (FE_USER_LOGGED_IN)
 		{
@@ -164,11 +176,11 @@ class IsotopeRules extends Controller
 		
 		
 		// Fetch and process rules
-		$objRules = $this->Database->execute("SELECT * FROM tl_iso_rules r WHERE " . implode(' AND ', $arrProcedures) . " ORDER BY sorting");
+		$objRules = $this->Database->execute("SELECT *, FROM_UNIXTIME(endTime,GET_FORMAT(TIME,'INTERNAL')) AS time FROM tl_iso_rules r WHERE " . implode(' AND ', $arrProcedures) . " ORDER BY sorting");
 		
 		while( $objRules->next() )
 		{
-			$arrSurcharge = $this->calculateProductSurcharge($objRules->row(), $arrProducts);
+			$arrSurcharge = $this->calculateProductSurcharge($objRules->row(), $arrProducts, false);
 			
 			if (is_array($arrSurcharge))
 				$arrSurcharges[] = $arrSurcharge;
@@ -189,7 +201,7 @@ class IsotopeRules extends Controller
 				}
 				else
 				{
-					$arrSurcharge = $this->calculateProductSurcharge($arrRule, $arrProducts);
+					$arrSurcharge = $this->calculateProductSurcharge($arrRule, $arrProducts, true);
 		
 					if (is_array($arrSurcharge))
 						$arrSurcharges[] = $arrSurcharge;
@@ -340,7 +352,7 @@ class IsotopeRules extends Controller
 	/**
 	 * Calculate the total of all products to which apply a rule to
 	 */
-	protected function calculateProductSurcharge($arrRule, $arrProducts)
+	protected function calculateProductSurcharge($arrRule, $arrProducts, $blnCheckProducts=true)
 	{
 		$blnDiscount = false;
 		if (strpos($arrRule['discount'], '%') !== false)
@@ -367,21 +379,25 @@ class IsotopeRules extends Controller
 				continue;
 			}
 			
-			// Product restrictions
-			if ($arrRule['productRestrictions'] == 'products')
+			// Regular rules have already been checked for this, only required for coupons
+			if ($blnCheckProducts)
 			{
-				if (!$this->Database->execute("SELECT * FROM tl_iso_rule_restrictions WHERE pid={$arrRule['id']} AND type='products' AND object_id=" . ($objProduct->pid ? $objProduct->pid : $objProduct->id))->numRows)
-					continue;
-			}
-			elseif ($arrRule['productRestrictions'] == 'producttypes')
-			{
-				if (!$this->Database->execute("SELECT * FROM tl_iso_rule_restrictions WHERE pid={$arrRule['id']} AND type='producttypes' AND object_id=" . $objProduct->type)->numRows)
-					continue;
-			}
-			elseif ($arrRule['productRestrictions'] == 'pages')
-			{
-				if (!$this->Database->execute("SELECT * FROM tl_iso_rule_restrictions WHERE pid={$arrRule['id']} AND type='pages' AND object_id IN (SELECT page_id FROM tl_iso_product_categories WHERE pid=" . ($objProduct->pid ? $objProduct->pid : $objProduct->id) . ")")->numRows)
-					continue;
+				// Product restrictions
+				if ($arrRule['productRestrictions'] == 'products')
+				{
+					if (!$this->Database->execute("SELECT * FROM tl_iso_rule_restrictions WHERE pid={$arrRule['id']} AND type='products' AND object_id=" . ($objProduct->pid ? $objProduct->pid : $objProduct->id))->numRows)
+						continue;
+				}
+				elseif ($arrRule['productRestrictions'] == 'producttypes')
+				{
+					if (!$this->Database->execute("SELECT * FROM tl_iso_rule_restrictions WHERE pid={$arrRule['id']} AND type='producttypes' AND object_id=" . $objProduct->type)->numRows)
+						continue;
+				}
+				elseif ($arrRule['productRestrictions'] == 'pages')
+				{
+					if (!$this->Database->execute("SELECT * FROM tl_iso_rule_restrictions WHERE pid={$arrRule['id']} AND type='pages' AND object_id IN (SELECT page_id FROM tl_iso_product_categories WHERE pid=" . ($objProduct->pid ? $objProduct->pid : $objProduct->id) . ")")->numRows)
+						continue;
+				}
 			}
 			
 			$fltPrice = $blnDiscount ? ($objProduct->total_price / 100 * $fltDiscount) : $arrRule['discount'];
