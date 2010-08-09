@@ -397,7 +397,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		
 		if (!$this->doNotSubmit)
 		{
-			$strShippingAddress = $this->Isotope->Cart->shippingAddress['id'] == -1 ? $GLOBALS['TL_LANG']['useBillingAddress'] : $this->Isotope->generateAddressString($this->Isotope->Cart->shippingAddress, $this->Isotope->Config->shipping_fields);
+			$strShippingAddress = $this->Isotope->Cart->shippingAddress['id'] == -1 ? $GLOBALS['TL_LANG']['MSC']['useBillingAddress'] : $this->Isotope->generateAddressString($this->Isotope->Cart->shippingAddress, $this->Isotope->Config->shipping_fields);
 			
 			$this->arrOrderData['shipping_address']			= $strShippingAddress;
 			$this->arrOrderData['shipping_address_text']	= str_replace('<br />', "\n", $strShippingAddress);
@@ -1006,13 +1006,13 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				array_insert($arrOptions, 0, array(array
 				(
 					'value'	=> -1,
-					'label' => &$GLOBALS['TL_LANG']['useBillingAddress'],
+					'label' => &$GLOBALS['TL_LANG']['MSC']['useBillingAddress'],
 				)));
 				
 				$arrOptions[] = array
 				(
 					'value'	=> 0,
-					'label' => &$GLOBALS['TL_LANG']['differentShippingAddress'],
+					'label' => &$GLOBALS['TL_LANG']['MSC']['differentShippingAddress'],
 				);
 				break;
 				
@@ -1026,7 +1026,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 					$arrOptions[] = array
 					(
 						'value'	=> 0,
-						'label' => &$GLOBALS['TL_LANG']['createNewAddressLabel'],
+						'label' => &$GLOBALS['TL_LANG']['MSC']['createNewAddressLabel'],
 					);
 				}
 				break;
