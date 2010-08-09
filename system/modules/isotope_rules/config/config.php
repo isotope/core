@@ -36,7 +36,8 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
 		'tables'					=> array('tl_iso_rules'),
 		'stylesheet'				=> 'system/modules/isotope/html/backend.css',
 		'javsacript'				=> 'system/modules/isotope/html/backend.js',
-		'icon'						=> 'system/modules/isotope_rules/html/coupons.png'
+		'icon'						=> 'system/modules/isotope_rules/html/coupons.png',
+		'delete'					=> array('IsotopeBackend', 'archiveRecord'),
 	),
 ));
 
@@ -44,7 +45,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
 /** 
  * Checkout Steps
  */
-//array_insert($GLOBALS['ISO_CHECKOUT_STEPS']['review'], 0, array(array('IsotopeRules', 'verifyRules')));
+array_insert($GLOBALS['ISO_CHECKOUT_STEPS']['review'], 0, array(array('IsotopeRules', 'cleanRuleUsages')));
 
 
 /** 
@@ -53,4 +54,5 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
 $GLOBALS['TL_HOOKS']['iso_calculatePrice'][]				= array('IsotopeRules', 'calculatePrice');
 $GLOBALS['TL_HOOKS']['iso_compileCart'][] 					= array('IsotopeRules', 'getCouponForm');
 $GLOBALS['TL_HOOKS']['isoCheckoutSurcharge'][]				= array('IsotopeRules', 'getSurcharges');
+$GLOBALS['TL_HOOKS']['iso_writeOrder'][]					= array('IsotopeRules', 'writeRuleUsages');
 
