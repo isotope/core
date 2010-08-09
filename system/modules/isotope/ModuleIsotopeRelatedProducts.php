@@ -116,8 +116,6 @@ class ModuleIsotopeRelatedProducts extends ModuleIsotope
 				'class'		=> (($i%2 ? 'even' : 'odd') . ($i == 0 ? ' product_first' : '')),
 				'html'		=> $objProduct->generate((strlen($this->iso_list_layout) ? $this->iso_list_layout : $objProduct->list_template), $this),
 			);
-			
-			$blnSetClear = (($i+1) % $this->columns==0 ? true : false);
 		}
 	
 		// Add "product_last" css class

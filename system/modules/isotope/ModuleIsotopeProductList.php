@@ -170,27 +170,28 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			return;
 		}
 		
-		$arrBuffer = array();		
-		
+		$arrBuffer = array();
+		$last = count($arrProducts) - 1;
+		$row = 0;
+		$rows = ceil(count($arrProducts) / $this->iso_cols) - 1;
 		foreach( $arrProducts as $i => $objProduct )
 		{
+			$blnClear = false;
+			
+			if ($i > 0 && $i % $this->iso_cols == 0)
+			{
+				$blnClear = true;
+				$row++;
+			}
+			
 			$arrBuffer[] = array
 			(
-				'clear'	    => ($this->iso_list_format=='grid' && $blnSetClear ? true : false),
-				'class'		=> ('product' . ($i == 0 ? ' product_first' : '')),
+				'clear'	    => (($this->iso_cols > 1 && $blnClear) ? true : false),
+				'class'		=> ('product' . ($i == 0 ? ' product_first' : '') . ($i == $last ? ' product_last' : '') . ($this->iso_cols > 1 ? ' row_'.$row . ($row == 0 ? ' row_first' : '') . ($row == $rows ? ' row_last' : '') : '')),
 				'html'		=> $objProduct->generate((strlen($this->iso_list_layout) ? $this->iso_list_layout : $objProduct->list_template), $this),
 			);
-			
-			$blnSetClear = (($i+1) % $this->columns==0 ? true : false);
-		}
-	
-		// Add "product_last" css class
-		if (count($arrBuffer))
-		{
-			$arrBuffer[count($arrBuffer)-1]['class'] .= ' product_last';
 		}
 		
-		$this->Template->listformat = $this->iso_list_format;
 		$this->Template->products = $arrBuffer;
 	}
 	
