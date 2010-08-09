@@ -31,10 +31,3 @@
  */
 $GLOBALS['TL_LANG']['MOD']['iso_rules'] 			= array('Rules & Coupons', '');
 
-
-/**
- * Product collections
- */
-//!@todo this should probably be in the core isotope module
-$GLOBALS['TL_LANG']['ISO_PRODUCTCOLLECTION']['IsotopeCart']		= 'Customer shopping cart';
-
