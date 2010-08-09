@@ -36,7 +36,6 @@ $GLOBALS['TL_LANG']['tl_iso_rules']['discount']				= array('Discount','Valid val
 $GLOBALS['TL_LANG']['tl_iso_rules']['enableCode']			= array('Enable coupon code','Require a code to be entered to invoke this rule, as a coupon.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['code']					= array('Rule (coupon) code','Please enter a code by which a customer will invoke this rule, as a coupon.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['numUses']       		= array('Number of uses', 'This will be used to see if the rule has already been redeemed.  If this is set to 0, it can be used unlimited times for each customer.');
-$GLOBALS['TL_LANG']['tl_iso_rules']['minSubTotal']			= array('Minimum Subtotal','Specify a minimum subtotal for items in cart that this rule can be applied to.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['minCartQuantity']		= array('Minimum Cart Quantity','Specify a minimum quantity of items in cart that this rule can be applied to.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['maxCartQuantity']		= array('Maximum Cart Quantity','Specify a maximum quantity of items in cart that this rule can be applied to.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['minItemQuantity']		= array('Minimum item quantity','Please specify a minimum quantity of a an item this rule applies to.');
