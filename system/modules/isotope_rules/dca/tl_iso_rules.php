@@ -106,10 +106,10 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'__selector__'			=> array('type', 'enableCode', 'memberRestrictions', 'productRestrictions', 'ruleRestrictions', 'dateRestrictions', 'timeRestrictions'),
+		'__selector__'			=> array('type', 'enableCode', 'memberRestrictions', 'productRestrictions', 'ruleRestrictions'),
 		'default'				=> '{basic_legend},type',
-		'product'				=> '{basic_legend},type,name,discount;{restriction_legend},numUses;{datim_legend:hide},dateRestrictions,timeRestrictions;{advanced_legend:hide},memberRestrictions,productRestrictions,ruleRestrictions;{enabled_legend},enabled',
-		'cart'					=> '{basic_legend},type,name,label,discount;{coupon_legend:hide},enableCode;{restriction_legend},numUses;{datim_legend:hide},dateRestrictions,timeRestrictions;{advanced_legend:hide},memberRestrictions,productRestrictions,minItemQuantity,maxItemQuantity,ruleRestrictions;{enabled_legend},enabled'
+		'product'				=> '{basic_legend},type,name,discount;{restriction_legend},numUses;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},memberRestrictions,productRestrictions,ruleRestrictions;{enabled_legend},enabled',
+		'cart'					=> '{basic_legend},type,name,label,discount;{coupon_legend:hide},enableCode;{restriction_legend},numUses;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},memberRestrictions,productRestrictions,minItemQuantity,maxItemQuantity,ruleRestrictions;{enabled_legend},enabled'
 	),
 	'subpalettes' => array
 	(
@@ -120,8 +120,6 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 		'productRestrictions_pages'			=> 'pages',
 		'productRestrictions_products'		=> 'products',
 		'ruleRestrictions_rules'			=> 'rules',
-		'dateRestrictions'					=> 'startDate,endDate',
-		'timeRestrictions'					=> 'startTime,endTime',	
 	),
 	
 	// Fields
@@ -175,7 +173,6 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['code'],
 			'exclude'					=> true,
 			'search'					=> true,
-			'flag'						=> 1,
 			'inputType'					=> 'text',
 			'eval'						=> array('mandatory'=>true, 'maxlength'=>255)
 		),
@@ -183,24 +180,16 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
         (
             'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['numUses'],
             'exclude'					=> true,
-            'flag'						=> 1,
 			'default'					=> 0,
 			'inputType'					=> 'inputUnit',
 			'options'					=> array('customer', 'store'),
      		'reference'					=> &$GLOBALS['TL_LANG']['tl_iso_rules']['numUses'],
             'eval'						=> array('mandatory'=>false, 'rgxp'=>'digit', 'maxlength'=>255),
 	   	),
-		'dateRestrictions' => array
-		(
-			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['dateRestrictions'],
-			'inputType'					=> 'checkbox',
-			'eval'						=> array('submitOnChange'=>true, 'tl_class'=>'clr')
-		),
 		'startDate' => array
 		(
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['startDate'],
 			'exclude'					=> true,
-			'flag'						=> 8,
 			'inputType'					=> 'text',
 			'eval'						=> array('rgxp'=>'date', 'datepicker'=>$this->getDatePickerString(), 'tl_class'=>'w50 wizard')
 		),
@@ -208,23 +197,15 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 		(
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['endDate'],
 			'exclude'					=> true,
-			'flag'						=> 8,
 			'inputType'					=> 'text',
 			'eval'						=> array('rgxp'=>'date', 'datepicker'=>$this->getDatePickerString(), 'tl_class'=>'w50 wizard')
-		),
-		'timeRestrictions' => array
-		(
-			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['timeRestrictions'],
-			'inputType'					=> 'checkbox',
-			'eval'						=> array('submitOnChange'=>true, 'tl_class'=>'clr')
 		),
 		'startTime' => array
 		(
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['startTime'],
 			'exclude'					=> true,
-			'flag'						=> 8,
 			'inputType'					=> 'text',
-			'eval'						=> array('rgxp'=>'time', 'mandatory'=>true, 'tl_class'=>'w50')
+			'eval'						=> array('rgxp'=>'time', 'tl_class'=>'w50')
 		),
 		'endTime' => array
 		(
@@ -232,10 +213,6 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			'exclude'					=> true,
 			'inputType'					=> 'text',
 			'eval'						=> array('rgxp'=>'time', 'tl_class'=>'w50'),
-			'save_callback' => array
-			(
-				array('tl_iso_rules', 'setEmptyEndTime')
-			)
 		),
         'memberRestrictions' => array
 		(
@@ -435,23 +412,6 @@ class tl_iso_rules extends Backend
 		return $arrRules;
 	}
 	
-	
-	/**
-	 * Automatically set the end time if not set
-	 * @param mixed
-	 * @param object
-	 * @return string
-	 */
-	public function setEmptyEndTime($varValue, DataContainer $dc)
-	{
-		if ($varValue == '')
-		{
-			$varValue = $dc->activeRecord->startTime;
-		}
-
-		return $varValue;
-	}
-
 
 	/**
 	 * Load rule restrictions from linked table
