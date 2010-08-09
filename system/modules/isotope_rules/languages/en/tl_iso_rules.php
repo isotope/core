@@ -29,9 +29,9 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_iso_rules']['title']          		= array('Title', 'Please enter the rule title.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['type']					= array('Type','Please choose the type of rule.');
-$GLOBALS['TL_LANG']['tl_iso_rules']['description']       	= array('Description', 'Please enter the rule description.');
+$GLOBALS['TL_LANG']['tl_iso_rules']['name']          		= array('Name', 'Please enter a name for this rule.');
+$GLOBALS['TL_LANG']['tl_iso_rules']['label']          		= array('Label', 'The label will be show in cart. If you do not enter a label, the name will be used.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['discount']				= array('Discount','Valid values are decimals or whole numbers, minus a numerical value or minus a percentage.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['enableCode']			= array('Enable coupon code','Require a code to be entered to invoke this rule, as a coupon.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['code']					= array('Rule (coupon) code','Please enter a code by which a customer will invoke this rule, as a coupon.');

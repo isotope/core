@@ -345,7 +345,7 @@ class IsotopeRules extends Controller
 		
 		$arrSurcharge = array
 		(
-			'label'			=> $arrRule['title'],
+			'label'			=> ($arrRule['label'] ? $arrRule['label'] : $arrRule['title']),
 			'price'			=> ($blnDiscount ? $fltDiscount.'%' : ''),
 			'total_price'	=> 0,
 			'tax_class'		=> 0,

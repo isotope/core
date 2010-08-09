@@ -49,11 +49,11 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 		(
 			'mode'						=> 1,
 			'panelLayout'				=> 'filter;search,limit',
-			'fields'					=> array('type', 'title'),
+			'fields'					=> array('type', 'name'),
 		),
 		'label'	  => array
 		(
-			'fields'					=> array('title', 'code'),
+			'fields'					=> array('name', 'code'),
 			'label'						=> '%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>',
 		),
 		'global_operations' => array
@@ -108,8 +108,8 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 	(
 		'__selector__'			=> array('type', 'enableCode', 'memberRestrictions', 'productRestrictions', 'ruleRestrictions', 'dateRestrictions', 'timeRestrictions'),
 		'default'				=> '{type_legend},type',
-		'product'				=> '{type_legend},type,title,description;{general_legend},discount;{restriction_legend},numUses,dateRestrictions,timeRestrictions,ruleRestrictions,memberRestrictions,productRestrictions;{enabled_legend},enabled',
-		'cart'					=> '{type_legend},type,title,description;{general_legend},discount,enableCode;{restriction_legend},numUses,dateRestrictions,timeRestrictions,minSubTotal,minCartQuantity,maxCartQuantity,ruleRestrictions,memberRestrictions,productRestrictions;{enabled_legend},enabled'
+		'product'				=> '{type_legend},type,name;{general_legend},discount;{restriction_legend},numUses,dateRestrictions,timeRestrictions,ruleRestrictions,memberRestrictions,productRestrictions;{enabled_legend},enabled',
+		'cart'					=> '{type_legend},type,name,label;{general_legend},discount,enableCode;{restriction_legend},numUses,dateRestrictions,timeRestrictions,minSubTotal,minCartQuantity,maxCartQuantity,ruleRestrictions,memberRestrictions,productRestrictions;{enabled_legend},enabled'
 	),
 	'subpalettes' => array
 	(
@@ -138,23 +138,21 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			'reference'					=> &$GLOBALS['TL_LANG']['tl_iso_rules']['type'],
 			'eval'						=> array('mandatory'=>true, 'submitOnChange'=>true),
 		),
-		'title' => array
+		'name' => array
         (
-            'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['title'],
+            'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['name'],
             'exclude'					=> true,
             'search'					=> true,
-            'flag'						=> 1,
             'inputType'					=> 'text',
-            'eval'						=> array('mandatory'=>true, 'maxlength'=>255)
+            'eval'						=> array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50')
         ),
-		'description' => array
+		'label' => array
         (
-            'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['description'],
+            'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['label'],
             'exclude'					=> true,
             'search'					=> true,
-            'flag'						=> 1,
-            'inputType'					=> 'textarea',
-			'eval'						=> array('style'=>'height:80px;')
+            'inputType'					=> 'text',
+            'eval'						=> array('maxlength'=>255, 'tl_class'=>'w50')
         ),
 		'discount' => array
 		(
@@ -181,7 +179,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			'inputType'					=> 'text',
 			'eval'						=> array('mandatory'=>true, 'maxlength'=>255)
 		),
-       'numUses' => array
+		'numUses' => array
         (
             'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['numUses'],
             'exclude'					=> true,
@@ -237,7 +235,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
             'inputType'					=> 'text',
             'eval'						=> array('rgxp'=>'digit', 'maxlength'=>255)
       	),
-       'startDate' => array
+		'startDate' => array
 		(
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['startDate'],
 			'exclude'					=> true,
@@ -462,7 +460,7 @@ class tl_iso_rules extends Backend
 		
 		while( $objRules->next() )
 		{
-			$arrRules[$objRules->id] = $objRules->title;
+			$arrRules[$objRules->id] = $objRules->name;
 		}
 		
 		return $arrRules;
