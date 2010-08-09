@@ -35,7 +35,8 @@ $GLOBALS['TL_LANG']['tl_iso_rules']['label']          		= array('Label', 'The la
 $GLOBALS['TL_LANG']['tl_iso_rules']['discount']				= array('Discount','Valid values are decimals or whole numbers, minus a numerical value or minus a percentage.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['enableCode']			= array('Enable coupon code','Require a code to be entered to invoke this rule, as a coupon.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['code']					= array('Rule (coupon) code','Please enter a code by which a customer will invoke this rule, as a coupon.');
-$GLOBALS['TL_LANG']['tl_iso_rules']['numUses']       		= array('Number of uses', 'This will be used to see if the rule has already been redeemed.  If this is set to 0, it can be used unlimited times for each customer.');
+$GLOBALS['TL_LANG']['tl_iso_rules']['limitPerMember']		= array('Uses per member', 'This will be used to see if the rule has already been redeemed.  If this is set to 0, it can be used unlimited times for each customer.');
+$GLOBALS['TL_LANG']['tl_iso_rules']['limitPerConfig']		= array('Uses per store config', 'This will be used to see if the rule has already been redeemed.  If this is set to 0, it can be used unlimited times for each store config.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['minItemQuantity']		= array('Minimum item quantity','Please specify a minimum quantity of a an item this rule applies to.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['maxItemQuantity']		= array('Maximum item quantity','Please specify a maximum quantity of a single item this rule applies to.');
 
@@ -60,6 +61,7 @@ $GLOBALS['TL_LANG']['tl_iso_rules']['enabled']				= array('Enabled','Please sele
  */
 $GLOBALS['TL_LANG']['tl_iso_rules']['basic_legend']				= 'Basic rule setup';
 $GLOBALS['TL_LANG']['tl_iso_rules']['coupon_legend']			= 'Coupon Code';
+$GLOBALS['TL_LANG']['tl_iso_rules']['limit_legend']				= 'Limit Uses';
 $GLOBALS['TL_LANG']['tl_iso_rules']['datim_legend']				= 'Date & Time Restrictions';
 $GLOBALS['TL_LANG']['tl_iso_rules']['advanced_legend']			= 'Advanced Restrictions';
 $GLOBALS['TL_LANG']['tl_iso_rules']['enabled_legend']			= 'Availability';
@@ -83,9 +85,6 @@ $GLOBALS['TL_LANG']['tl_iso_rules']['productRestrictions']['products']		= 'Speci
 $GLOBALS['TL_LANG']['tl_iso_rules']['ruleRestrictions']['all']				= 'Exclude all other rules';
 $GLOBALS['TL_LANG']['tl_iso_rules']['ruleRestrictions']['none']				= 'No rule exclusions';
 $GLOBALS['TL_LANG']['tl_iso_rules']['ruleRestrictions']['rules']			= 'Exclude certain rules';
-
-$GLOBALS['TL_LANG']['tl_iso_rules']['numUses']['customer']					= 'Per customer';
-$GLOBALS['TL_LANG']['tl_iso_rules']['numUses']['store']						= 'Per store';
 
 
 /**

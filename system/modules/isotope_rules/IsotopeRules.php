@@ -82,7 +82,7 @@ class IsotopeRules extends Controller
 	{
 		if ($objSource instanceof IsotopeProduct && ($strField == 'price' || $strField == 'low_price'))
 		{
-			$objRules = $this->findRules(array("type='product'"), array($objSource));
+			$objRules = $this->findRules(array("type='product'"), array(), array($objSource));
 			
 			while( $objRules->next() )
 			{
@@ -112,7 +112,7 @@ class IsotopeRules extends Controller
 		if (!count($arrProducts))
 			return $arrSurcharges;
 		
-		$objRules = $this->findRules(array("type='cart'", "enableCode=''"), $arrProducts);
+		$objRules = $this->findRules(array("type='cart'", "enableCode=''"), array(), $arrProducts);
 		
 		while( $objRules->next() )
 		{
@@ -237,7 +237,7 @@ class IsotopeRules extends Controller
 		if (!count($arrProducts))
 			return false;
 		
-		$objRules = $this->findRules(array("(type='product' OR (type='cart' AND enableCode=''))"), $arrProducts);
+		$objRules = $this->findRules(array("(type='product' OR (type='cart' AND enableCode=''))"), array(), $arrProducts);
 		$arrRules = $objRules->fetchEach('id');
 		
 		$arrCoupons = deserialize($this->Isotope->Cart->coupons);
@@ -270,7 +270,10 @@ class IsotopeRules extends Controller
 		{
 			$time = time();
 			$intMember = FE_USER_LOGGED_IN ? $this->User->id : 0;
+			
 			$this->Database->query("INSERT INTO tl_iso_rule_usage (pid,tstamp,order_id,config_id,member_id) VALUES (" . implode(", $time, $orderId, {$this->Isotope->Config->id}, $intMember), (", $arrRules) . ", $time, $orderId, {$this->Isotope->Config->id}, $intMember)");
+			
+			$this->Database->query("UPDATE tl_iso_rules SET archive=1 WHERE id IN (" . implode(',', $arrRules) . ")");
 		}
 		
 		return $blnCheckout;
@@ -290,17 +293,28 @@ class IsotopeRules extends Controller
 	/**
 	 * Fetch rules
 	 */
-	protected function findRules($arrProcedures, $arrProducts)
+	protected function findRules($arrProcedures, $arrValues, $arrProducts)
 	{
 		// Only enabled and not deleted/archived rules
 		$arrProcedures[] = "enabled='1'";
 		$arrProcedures[] = "archive<2";
+		
 		
 		// Date & Time restrictions
 		$arrProcedures[] = "(startDate='' OR FROM_UNIXTIME(startDate,GET_FORMAT(DATE,'INTERNAL')) <= FROM_UNIXTIME(UNIX_TIMESTAMP(),GET_FORMAT(DATE,'INTERNAL')))";
 		$arrProcedures[] = "(endDate='' OR FROM_UNIXTIME(endDate,GET_FORMAT(DATE,'INTERNAL')) >= FROM_UNIXTIME(UNIX_TIMESTAMP(),GET_FORMAT(DATE,'INTERNAL')))";
 		$arrProcedures[] = "(startTime='' OR FROM_UNIXTIME(startTime,GET_FORMAT(TIME,'INTERNAL')) <= FROM_UNIXTIME(UNIX_TIMESTAMP(),GET_FORMAT(TIME,'INTERNAL')))";
 		$arrProcedures[] = "(endTime='' OR FROM_UNIXTIME(endTime,GET_FORMAT(TIME,'INTERNAL')) >= FROM_UNIXTIME(UNIX_TIMESTAMP(),GET_FORMAT(TIME,'INTERNAL')))";
+		
+		
+		// Limits
+		$arrProcedures[] = "(limitPerConfig=0 OR limitPerConfig>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND config_id={$this->Isotope->Config->id}))";
+		
+		if (FE_USER_LOGGED_IN)
+		{
+			$arrProcedures[] = "(limitPerMember=0 OR limitPerMember>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND member_id={$this->User->id}))";
+		}
+		
 		
 		// Member restrictions
 		if (FE_USER_LOGGED_IN)
@@ -313,6 +327,7 @@ class IsotopeRules extends Controller
 		{
 			$arrProcedures[] = "memberRestrictions='none'";
 		}
+		
 		
 		// Product restrictions
 		$arrIds = array();
@@ -330,7 +345,7 @@ class IsotopeRules extends Controller
 		
 		
 		// Fetch and process rules
-		return $this->Database->execute("SELECT * FROM tl_iso_rules r WHERE " . implode(' AND ', $arrProcedures) . " ORDER BY sorting");
+		return $this->Database->prepare("SELECT * FROM tl_iso_rules r WHERE " . implode(' AND ', $arrProcedures) . " ORDER BY sorting")->execute($arrValues);
 	}
 	
 	
@@ -339,59 +354,8 @@ class IsotopeRules extends Controller
 	 */
 	protected function findCoupon($strCode, $arrProducts)
 	{
-		$arrRule = false;
-		$objRules = $this->Database->prepare("SELECT * FROM tl_iso_rules WHERE enableCode='1' AND code=? AND enabled='1'")->execute($strCode);
-		
-		while( $objRules->next() )
-		{
-			// Member restrictions
-			if (($objRules->memberRestrictsion != 'none' && !FE_USER_LOGGED_IN)
-				|| ($objRules->memberRestrictions == 'members' && !$this->Database->execute("SELECT * FROM tl_iso_rule_restrictions WHERE pid={$objRules->id} AND type='members' AND object_id={$this->User->id}")->numRows)
-				|| ($objRules->memberRestrictions == 'groups' && count($this->User->groups) && !$this->Database->execute("SELECT * FROM tl_iso_rule_restrictions WHERE pid={$objRules->id} AND type='groups' AND object_id IN (" . implode(',', $this->User->groups) . ")")->numRows))
-			{
-				continue;
-			}
-
-			// Product restrictions
-			if ($objRules->productRestrictions == 'products')
-			{
-				$arrIds = array();
-				foreach( $arrProducts as $objProduct )
-				{
-					$arrIds[] = ($objProduct->pid ? $objProduct->pid : $objProduct->id);
-				}
-				
-				if (!$this->Database->execute("SELECT * FROM tl_iso_rule_restrictions WHERE pid={$objRules->id} AND type='products' AND object_id IN (" . implode(',', $arrIds) . ")")->numRows)
-					continue;
-			}
-			elseif ($objRules->productRestrictions == 'producttypes')
-			{
-				$arrIds = array();
-				foreach( $arrProducts as $objProduct )
-				{
-					$arrIds[] = $objProduct->type;
-				}
-				
-				if (!$this->Database->execute("SELECT * FROM tl_iso_rule_restrictions WHERE pid={$objRules->id} AND type='producttypes' AND object_id IN (" . implode(',', $arrIds) . ")")->numRows)
-					continue;
-			}
-			elseif ($objRules->productRestrictions == 'pages')
-			{
-				$arrIds = array();
-				foreach( $arrProducts as $objProduct )
-				{
-					$arrIds[] = ($objProduct->pid ? $objProduct->pid : $objProduct->id);
-				}
-				
-				if (!$this->Database->execute("SELECT * FROM tl_iso_rule_restrictions WHERE pid={$objRules->id} AND type='pages' AND object_id IN (SELECT page_id FROM tl_iso_product_categories WHERE pid IN (" . implode(',', $arrIds) . "))")->numRows)
-					continue;
-			}
-			
-			$arrRule = $objRules->row();
-			break;
-		}
-		
-		return $arrRule;
+		$objRules = $this->findRules(array("type='cart'", "enableCode='1'", "code=?"), array($strCode), $arrProducts);
+		return $objRules->numRows ? $objRules->row() : false;
 	}
 	
 	
