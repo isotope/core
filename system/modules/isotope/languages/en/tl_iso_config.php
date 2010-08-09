@@ -32,6 +32,7 @@
 $GLOBALS['TL_LANG']['tl_iso_config']['name']							= array('Configuration Name', '');
 $GLOBALS['TL_LANG']['tl_iso_config']['label']							= array('Label', 'The label is used in frontend, e.g. for config switcher.');
 $GLOBALS['TL_LANG']['tl_iso_config']['orderPrefix']						= array('Order number prefix', 'You can add a prefix (eg. fiscal year) to the auto-incrementing order number.');
+$GLOBALS['TL_LANG']['tl_iso_config']['store_id']						= array('Store ID', 'Use different store IDs to group a set of store configurations. A user\'s cart will be shared across the same store IDs.');
 $GLOBALS['TL_LANG']['tl_iso_config']['missing_image_placeholder']		= array('Missing Image Placeholder', 'This image will be used if an image file cannot be found or none are associated with a product.');
 $GLOBALS['TL_LANG']['tl_iso_config']['priceCalculateFactor']			= array('Price factor', 'Defaults should be 1. You can use this to convert between multiple currencies.');
 $GLOBALS['TL_LANG']['tl_iso_config']['priceCalculateMode']				= array('Calculation mode', 'Divide or multiply using this factor.');
@@ -75,9 +76,9 @@ $GLOBALS['TL_LANG']['tl_iso_config']['left']							= 'To the left of price';
 $GLOBALS['TL_LANG']['tl_iso_config']['right']							= 'To the right of price';
 $GLOBALS['TL_LANG']['tl_iso_config']['div']								= 'Divide';
 $GLOBALS['TL_LANG']['tl_iso_config']['mul']								= 'Multiply';
-
 $GLOBALS['TL_LANG']['tl_iso_config']['weightUnits']['LBS']				= 'Pounds';
 $GLOBALS['TL_LANG']['tl_iso_config']['weightUnits']['KGS']				= 'Kilos';
+
 
 /**
  * Buttons
