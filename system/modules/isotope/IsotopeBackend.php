@@ -28,7 +28,16 @@
 
 class IsotopeBackend extends Backend
 {
-		
+	
+	/**
+	 * Disable the edit button for archived records
+	 */
+	public function disableArchivedRecord($row, $href, $label, $title, $icon, $attributes)
+	{
+		return $row['archive'] == 0 ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
+	}
+	
+	
 	/**
 	 * Hide archived records.
 	 */
@@ -39,6 +48,16 @@ class IsotopeBackend extends Backend
 		$arrRoot = $this->Database->execute("SELECT id FROM {$dc->table} WHERE archive<2" . ((is_array($arrRoot) && count($arrRoot)) ? " AND id IN (".implode(',', $arrRoot).")" : ''))->fetchEach('id');
 		
 		$GLOBALS['TL_DCA'][$dc->table]['list']['sorting']['root'] = count($arrRoot) ? $arrRoot : array(0);
+		
+		if ($this->Input->get('act') == 'edit')
+		{
+			$objRecord = $this->Database->execute("SELECT * FROM {$dc->table} WHERE id={$dc->id}");
+			
+			if ($objRecord->numRows && $objRecord->archive > 0)
+			{
+				$GLOBALS['TL_DCA'][$dc->table]['config']['notEditable'] = true;
+			}
+		}
 	}
 	
 	
