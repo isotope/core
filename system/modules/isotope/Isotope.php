@@ -67,7 +67,7 @@ class Isotope extends Controller
 		if (TL_MODE == 'FE')
 		{
 			$this->Cart = new IsotopeCart();
-			$this->Cart->initializeCart($this->Config->id, $this->Config->cookie_timeout);
+			$this->Cart->initializeCart($this->Config->id);
 		}
 	}
 	

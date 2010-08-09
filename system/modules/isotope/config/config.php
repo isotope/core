@@ -142,34 +142,6 @@ $GLOBALS['ISO_MOD'] = array
 
 
 /**
- * Hooks
- */
-$GLOBALS['TL_HOOKS']['loadDataContainer'][]			= array('Isotope', 'loadDataContainer');
-$GLOBALS['TL_HOOKS']['isoButtons'][]				= array('Isotope', 'defaultButtons');
-$GLOBALS['TL_HOOKS']['addCustomRegexp'][]			= array('Isotope', 'validateRegexp');
-$GLOBALS['TL_HOOKS']['replaceInsertTags'][]			= array('IsotopeFrontend', 'replaceIsotopeTags');
-//$GLOBALS['TL_HOOKS']['googleTracking'][] 			= array('ModuleIsotopeCheckout', 'googleTracking');
-
-
-/**
- * Checkout surcharge calculation callbacks
- */
-$GLOBALS['TL_HOOKS']['isoCheckoutSurcharge'][] = array('IsotopeCart', 'getShippingSurcharge');
-$GLOBALS['TL_HOOKS']['isoCheckoutSurcharge'][] = array('IsotopeCart', 'getPaymentSurcharge');
-
-
-/**
- * Backend form fields
- */
-$GLOBALS['BE_FFL']['mediaManager']		= 'MediaManager';
-$GLOBALS['BE_FFL']['attributeWizard']	= 'AttributeWizard';
-$GLOBALS['BE_FFL']['optionDataWizard']	= 'OptionDataWizard';
-$GLOBALS['BE_FFL']['surchargeWizard']	= 'SurchargeWizard';
-$GLOBALS['BE_FFL']['variantWizard']		= 'VariantWizard';
-$GLOBALS['BE_FFL']['inheritCheckbox']	= 'InheritCheckBox';
-
-
-/**
  * Frontend modules
  */
 $GLOBALS['FE_MOD']['isotope'] = array
@@ -185,6 +157,23 @@ $GLOBALS['FE_MOD']['isotope'] = array
 	'iso_addressbook'			=> 'ModuleIsotopeAddressBook',
 	'iso_relatedproducts'		=> 'ModuleIsotopeRelatedProducts',
 );
+
+
+/**
+ * Content elements
+ */
+$GLOBALS['TL_CTE']['links']['attributeLinkRepeater'] = 'ContentAttributeLinkRepeater';
+
+
+/**
+ * Backend form fields
+ */
+$GLOBALS['BE_FFL']['mediaManager']		= 'MediaManager';
+$GLOBALS['BE_FFL']['attributeWizard']	= 'AttributeWizard';
+$GLOBALS['BE_FFL']['optionDataWizard']	= 'OptionDataWizard';
+$GLOBALS['BE_FFL']['surchargeWizard']	= 'SurchargeWizard';
+$GLOBALS['BE_FFL']['variantWizard']		= 'VariantWizard';
+$GLOBALS['BE_FFL']['inheritCheckbox']	= 'InheritCheckBox';
 
 
 /**
@@ -232,18 +221,13 @@ $GLOBALS['ISO_PRODUCT'] = array
  */
 $GLOBALS['ISO_PERPAGE'] = array(8,12,32,64);
 
+
 /** 
  * Order Statuses
  */
 $GLOBALS['ISO_ORDER'] = array('pending', 'processing', 'complete', 'on_hold', 'cancelled');
 
 	
-/**
- * Content elements
- */
-$GLOBALS['TL_CTE']['links']['attributeLinkRepeater'] = 'ContentAttributeLinkRepeater';
-
-
 /** 
  * Permissions are access settings for user and groups (fields in tl_user and tl_user_group)
  */
@@ -260,6 +244,29 @@ $GLOBALS['ISO_NUM']["10,000.00"]	= array(2, '.', ",");
 $GLOBALS['ISO_NUM']["10.000,00"]	= array(2, ',', ".");
 $GLOBALS['ISO_NUM']["10'000.00"]	= array(2, '.', "'");
 
+
+/**
+ * Hooks
+ */
+$GLOBALS['TL_HOOKS']['loadDataContainer'][]			= array('Isotope', 'loadDataContainer');
+$GLOBALS['TL_HOOKS']['isoButtons'][]				= array('Isotope', 'defaultButtons');
+$GLOBALS['TL_HOOKS']['addCustomRegexp'][]			= array('Isotope', 'validateRegexp');
+$GLOBALS['TL_HOOKS']['replaceInsertTags'][]			= array('IsotopeFrontend', 'replaceIsotopeTags');
+//$GLOBALS['TL_HOOKS']['googleTracking'][] 			= array('ModuleIsotopeCheckout', 'googleTracking');
+
+
+/**
+ * Checkout surcharge calculation callbacks
+ */
+$GLOBALS['TL_HOOKS']['isoCheckoutSurcharge'][] = array('IsotopeCart', 'getShippingSurcharge');
+$GLOBALS['TL_HOOKS']['isoCheckoutSurcharge'][] = array('IsotopeCart', 'getPaymentSurcharge');
+
+
+/**
+ * Cron Jobs
+ */
+$GLOBALS['TL_CRON']['daily'][] = array('IsotopeAutomator', 'deleteOldCarts');
+$GLOBALS['TL_CRON']['daily'][] = array('IsotopeAutomator', 'deleteFailedOrders');
 
 
 /**
@@ -357,4 +364,10 @@ $GLOBALS['ISO_ATTR'] = array
  */
 $GLOBALS['URL_KEYWORDS'][] = 'product';
 $GLOBALS['URL_KEYWORDS'][] = 'step';
+
+
+/**
+ * Default configuration
+ */
+$GLOBALS['TL_CONFIG']['iso_cartTimeout'] = 2592000;
 

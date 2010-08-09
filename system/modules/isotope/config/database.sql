@@ -200,7 +200,6 @@ CREATE TABLE `tl_iso_config` (
   `name` varchar(255) NOT NULL default '',
   `label` varchar(255) NOT NULL default '',
   `missing_image_placeholder` varchar(255) NOT NULL default '',
-  `cookie_duration` int(10) unsigned NOT NULL default '0',
   `priceCalculateFactor` varchar(10) NOT NULL default '',
   `priceCalculateMode` varchar(3) NOT NULL default '',
   `priceRoundPrecision` int(1) unsigned NOT NULL default '2',

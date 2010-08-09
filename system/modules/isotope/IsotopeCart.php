@@ -200,7 +200,7 @@ class IsotopeCart extends IsotopeProductCollection
 	/**
 	 * Load current cart
 	 */
-	public function initializeCart($intConfig, $intCookieTimeout)
+	public function initializeCart($intConfig)
 	{
 		$this->strHash = $this->Input->cookie($this->strCookie);
 		
@@ -211,7 +211,7 @@ class IsotopeCart extends IsotopeProductCollection
 			{	
 				$this->strHash = sha1(session_id() . (!$GLOBALS['TL_CONFIG']['disableIpCheck'] ? $this->Environment->ip : '') . $intConfig . $this->strCookie);
 				
-				$this->setCookie($this->strCookie, $this->strHash, $intCookieTimeout,  $GLOBALS['TL_CONFIG']['websitePath']);
+				$this->setCookie($this->strCookie, $this->strHash, $GLOBALS['TL_CONFIG']['iso_cartTimeout'],  $GLOBALS['TL_CONFIG']['websitePath']);
 			}
 
 			$this->findBy('session', $this->strHash);
@@ -235,6 +235,11 @@ class IsotopeCart extends IsotopeProductCollection
 			{
 				throw new Exception('Unable to create shopping cart');
 			}
+		}
+		else
+		{
+			$time = time();
+			$this->Database->query("UPDATE tl_iso_cart SET tstamp=$time WHERE id={$this->id}");
 		}
 				
 		// Temporary cart available, move to this cart. Must be after creating a new cart!
