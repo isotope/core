@@ -89,7 +89,10 @@ class IsotopeRules extends Controller
 				if (strpos($objRules->discount, '%') !== false)
 				{
 					$fltDiscount = 100 + rtrim($objRules->discount, '%');
-					$fltPrice = $fltPrice / 100 * $fltDiscount;
+					$fltDiscount = $fltPrice - ($fltPrice / 100 * $fltDiscount);
+					$fltDiscount = $fltDiscount > 0 ? (floor($fltDiscount * 100) / 100) : (ceil($fltDiscount * 100) / 100);
+					
+					$fltPrice = $fltPrice - $fltDiscount;
 				}
 				else
 				{
