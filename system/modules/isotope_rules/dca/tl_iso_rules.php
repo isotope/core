@@ -35,7 +35,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 	'config' => array
 	(
 		'dataContainer'					=> 'Table',
-		'ctable'						=> array('tl_iso_rule_usage'),
+		'ctable'						=> array('tl_iso_rule_restrictions'),
 		'enableVersioning'				=> false,
 		'onload_callback' => array
 		(
@@ -63,7 +63,8 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			(
 				'label'					=> &$GLOBALS['TL_LANG']['tl_iso_rules']['edit'],
 				'href'					=> 'act=edit',
-				'icon'					=> 'edit.gif'
+				'icon'					=> 'edit.gif',
+				'button_callback'		=> array('IsotopeBackend', 'disableArchivedRecord'),
 			),
 			'copy' => array
 			(
@@ -83,7 +84,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 				'label'               => &$GLOBALS['TL_LANG']['tl_page']['toggle'],
 				'icon'                => 'visible.gif',
 				'attributes'          => 'onclick="Backend.getScrollOffset(); return AjaxRequest.toggleVisibility(this, %s);"',
-				'button_callback'     => array('tl_iso_rules', 'toggleIcon')
+				'button_callback'     => array('tl_iso_rules', 'toggleIcon'),
 			),
 			'show' => array
 			(
@@ -495,9 +496,9 @@ class tl_iso_rules extends Backend
 		}
 
 		// Check permissions AFTER checking the tid, so hacking attempts are logged
-		if (!$this->User->isAdmin && !$this->User->hasAccess('tl_iso_rules::enabled', 'alexf'))
+		if (!$this->User->isAdmin && !$this->User->hasAccess('tl_iso_rules::enabled', 'alexf') || $row['archive'] > 0)
 		{
-			return '';
+			return $this->generateImage($icon, $label).' ';
 		}
 
 		$href .= '&amp;tid='.$row['id'].'&amp;state='.($row['enabled'] ? '' : 1);
@@ -524,7 +525,7 @@ class tl_iso_rules extends Backend
 //		$this->checkPermission();
 
 		// Check permissions to publish
-		if (!$this->User->isAdmin && !$this->User->hasAccess('tl_iso_rules::published', 'alexf'))
+		if (!$this->User->isAdmin && !$this->User->hasAccess('tl_iso_rules::enabled', 'alexf'))
 		{
 			$this->log('Not enough permissions to enable/disable rule ID "'.$intId.'"', 'tl_iso_rules toggleVisibility', TL_ERROR);
 			$this->redirect('contao/main.php?act=error');
