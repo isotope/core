@@ -168,7 +168,10 @@ class IsotopeRules extends Controller
 		
 		while( $objRules->next() )
 		{
-			$arrSurcharges[] = $this->calculateProductSurcharge($objRules->row(), $arrProducts);
+			$arrSurcharge = $this->calculateProductSurcharge($objRules->row(), $arrProducts);
+			
+			if (is_array($arrSurcharge))
+				$arrSurcharges[] = $arrSurcharge;
 		}
 		
 		$arrCoupons = deserialize($this->Isotope->Cart->coupons);
@@ -186,7 +189,10 @@ class IsotopeRules extends Controller
 				}
 				else
 				{
-					$arrSurcharges[] = $this->calculateProductSurcharge($arrRule, $arrProducts);
+					$arrSurcharge = $this->calculateProductSurcharge($arrRule, $arrProducts);
+		
+					if (is_array($arrSurcharge))
+						$arrSurcharges[] = $arrSurcharge;
 				}
 			}
 			
@@ -355,6 +361,12 @@ class IsotopeRules extends Controller
 		
 		foreach( $arrProducts as $objProduct )
 		{
+			// Cart item quantity
+			if (($arrRule['minItemQuantity'] > 0 && $arrRule['minItemQuantity'] > $objProduct->quantity_requested) || ($arrRule['maxItemQuantity'] > 0 && $arrRule['maxItemQuantity'] < $objProduct->quantity_requested))
+			{
+				continue;
+			}
+			
 			// Product restrictions
 			if ($arrRule['productRestrictions'] == 'products')
 			{
@@ -379,7 +391,7 @@ class IsotopeRules extends Controller
 			$arrSurcharge['products'][$objProduct->cart_id] = $fltPrice;
 		}
 		
-		return $arrSurcharge;
+		return $arrSurcharge['total_price'] == 0 ? false: $arrSurcharge;
 	}
 }
 

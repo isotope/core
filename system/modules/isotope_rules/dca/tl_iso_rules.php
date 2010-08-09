@@ -107,18 +107,18 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 	'palettes' => array
 	(
 		'__selector__'			=> array('type', 'enableCode', 'memberRestrictions', 'productRestrictions', 'ruleRestrictions', 'dateRestrictions', 'timeRestrictions'),
-		'default'				=> '{type_legend},type',
-		'product'				=> '{type_legend},type,name;{general_legend},discount;{restriction_legend},numUses,dateRestrictions,timeRestrictions,ruleRestrictions,memberRestrictions,productRestrictions;{enabled_legend},enabled',
-		'cart'					=> '{type_legend},type,name,label;{general_legend},discount,enableCode;{restriction_legend},numUses,dateRestrictions,timeRestrictions,minCartQuantity,maxCartQuantity,ruleRestrictions,memberRestrictions,productRestrictions;{enabled_legend},enabled'
+		'default'				=> '{basic_legend},type',
+		'product'				=> '{basic_legend},type,name,discount;{restriction_legend},numUses;{datim_legend:hide},dateRestrictions,timeRestrictions;{advanced_legend:hide},memberRestrictions,productRestrictions,ruleRestrictions;{enabled_legend},enabled',
+		'cart'					=> '{basic_legend},type,name,label,discount;{coupon_legend:hide},enableCode;{restriction_legend},numUses;{datim_legend:hide},dateRestrictions,timeRestrictions;{advanced_legend:hide},memberRestrictions,productRestrictions,minItemQuantity,maxItemQuantity,ruleRestrictions;{enabled_legend},enabled'
 	),
 	'subpalettes' => array
 	(
 		'enableCode'						=> 'code',
 		'memberRestrictions_groups'			=> 'groups',
 		'memberRestrictions_members'		=> 'members',
-		'productRestrictions_producttypes'	=> 'producttypes,minItemQuantity', //,maxItemQuantity',
-		'productRestrictions_pages'			=> 'pages,minItemQuantity', //,maxItemQuantity',
-		'productRestrictions_products'		=> 'products,minItemQuantity', //,maxItemQuantity',
+		'productRestrictions_producttypes'	=> 'producttypes',
+		'productRestrictions_pages'			=> 'pages',
+		'productRestrictions_products'		=> 'products',
 		'ruleRestrictions_rules'			=> 'rules',
 		'dateRestrictions'					=> 'startDate,endDate',
 		'timeRestrictions'					=> 'startTime,endTime',	
@@ -160,7 +160,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			'exclude'					=> true,
 			'search'					=> true,
 			'inputType'					=> 'text',
-			'eval'						=> array('mandatory'=>true, 'rgxp'=>'calc')
+			'eval'						=> array('mandatory'=>true, 'rgxp'=>'calc', 'tl_class'=>'clr')
 		),
 		'enableCode' => array
 		(
@@ -186,51 +186,15 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
             'flag'						=> 1,
 			'default'					=> 0,
 			'inputType'					=> 'inputUnit',
-			'options'					=> array('customer','store'),
+			'options'					=> array('customer', 'store'),
+     		'reference'					=> &$GLOBALS['TL_LANG']['tl_iso_rules']['numUses'],
             'eval'						=> array('mandatory'=>false, 'rgxp'=>'digit', 'maxlength'=>255),
-     		'reference'					=> &$GLOBALS['TL_LANG']['tl_iso_rules']['numUses']
 	   	),
-	  	'minCartQuantity' => array
-      	(
-            'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['minCartQuantity'],
-            'exclude'					=> true,
-            'search'					=> true,
-            'flag'						=> 1,
-            'inputType'					=> 'text',
-            'eval'						=> array('rgxp'=>'digit', 'maxlength'=>255)
-      	),
-	  	'maxCartQuantity' => array
-      	(
-            'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['maxCartQuantity'],
-            'exclude'					=> true,
-            'search'					=> true,
-            'flag'						=> 1,
-            'inputType'					=> 'text',
-            'eval'						=> array('rgxp'=>'digit', 'maxlength'=>255)
-      	),
-	  	'minItemQuantity' => array
-      	(
-            'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['minItemQuantity'],
-            'exclude'					=> true,
-            'search'					=> true,
-            'flag'						=> 1,
-            'inputType'					=> 'text',
-            'eval'						=> array('rgxp'=>'digit', 'maxlength'=>255)
-      	),
-	  	'maxItemQuantity' => array
-      	(
-            'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['maxItemQuantity'],
-            'exclude'					=> true,
-            'search'					=> true,
-            'flag'						=> 1,
-            'inputType'					=> 'text',
-            'eval'						=> array('rgxp'=>'digit', 'maxlength'=>255)
-      	),
 		'dateRestrictions' => array
 		(
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['dateRestrictions'],
 			'inputType'					=> 'checkbox',
-			'eval'						=> array('submitOnChange'=>true)
+			'eval'						=> array('submitOnChange'=>true, 'tl_class'=>'clr')
 		),
 		'startDate' => array
 		(
@@ -252,7 +216,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 		(
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['timeRestrictions'],
 			'inputType'					=> 'checkbox',
-			'eval'						=> array('submitOnChange'=>true)
+			'eval'						=> array('submitOnChange'=>true, 'tl_class'=>'clr')
 		),
 		'startTime' => array
 		(
@@ -281,7 +245,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			'exclude'					=> true,
 			'filter'					=> true,
 			'options'					=> array('none', 'groups', 'members'),
-			'eval'						=> array('submitOnChange'=>true),
+			'eval'						=> array('submitOnChange'=>true, 'tl_class'=>'clr'),
 			'reference'					=> &$GLOBALS['TL_LANG']['tl_iso_rules']['memberRestrictions']
 		),
 		'groups' => array
@@ -333,7 +297,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			'exclude'					=> true,
 			'filter'					=> true,
 			'options'					=> array('none', 'producttypes', 'pages', 'products'),
-			'eval'						=> array('submitOnChange'=>true),
+			'eval'						=> array('submitOnChange'=>true, 'tl_class'=>'clr'),
 			'reference'					=> &$GLOBALS['TL_LANG']['tl_iso_rules']['productRestrictions']
 		),
         'producttypes' => array
@@ -393,6 +357,20 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 				array('tl_iso_rules', 'saveRestrictions'),
 			),
 		),
+	  	'minItemQuantity' => array
+      	(
+            'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['minItemQuantity'],
+            'exclude'					=> true,
+            'inputType'					=> 'text',
+            'eval'						=> array('maxlength'=>10, 'rgxp'=>'digit', 'tl_class'=>'w50')
+      	),
+	  	'maxItemQuantity' => array
+      	(
+            'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['maxItemQuantity'],
+            'exclude'					=> true,
+            'inputType'					=> 'text',
+            'eval'						=> array('maxlength'=>10, 'rgxp'=>'digit', 'tl_class'=>'w50')
+      	),
         'ruleRestrictions' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_rules']['ruleRestrictions'],
@@ -401,7 +379,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			'exclude'					=> true,
 			'filter'					=> true,
 			'options'					=> array('none', 'all', 'rules'),
-			'eval'						=> array('submitOnChange'=>true),
+			'eval'						=> array('submitOnChange'=>true, 'tl_class'=>'clr'),
 			'reference'					=> &$GLOBALS['TL_LANG']['tl_iso_rules']['ruleRestrictions']
 		),
 		'rules' => array

@@ -36,8 +36,6 @@ $GLOBALS['TL_LANG']['tl_iso_rules']['discount']				= array('Discount','Valid val
 $GLOBALS['TL_LANG']['tl_iso_rules']['enableCode']			= array('Enable coupon code','Require a code to be entered to invoke this rule, as a coupon.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['code']					= array('Rule (coupon) code','Please enter a code by which a customer will invoke this rule, as a coupon.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['numUses']       		= array('Number of uses', 'This will be used to see if the rule has already been redeemed.  If this is set to 0, it can be used unlimited times for each customer.');
-$GLOBALS['TL_LANG']['tl_iso_rules']['minCartQuantity']		= array('Minimum Cart Quantity','Specify a minimum quantity of items in cart that this rule can be applied to.');
-$GLOBALS['TL_LANG']['tl_iso_rules']['maxCartQuantity']		= array('Maximum Cart Quantity','Specify a maximum quantity of items in cart that this rule can be applied to.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['minItemQuantity']		= array('Minimum item quantity','Please specify a minimum quantity of a an item this rule applies to.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['maxItemQuantity']		= array('Maximum item quantity','Please specify a maximum quantity of a single item this rule applies to.');
 
@@ -62,10 +60,11 @@ $GLOBALS['TL_LANG']['tl_iso_rules']['enabled']				= array('Enabled','Please sele
 /**
  * Legends
  */
-$GLOBALS['TL_LANG']['tl_iso_rules']['general_legend']			= 'General Information';
-$GLOBALS['TL_LANG']['tl_iso_rules']['type_legend']				= 'Rule Type';
-$GLOBALS['TL_LANG']['tl_iso_rules']['restriction_legend']		= 'Rule Restrictions'; 
-$GLOBALS['TL_LANG']['tl_iso_rules']['enabled_legend']			= 'Module Enabling Details';
+$GLOBALS['TL_LANG']['tl_iso_rules']['basic_legend']				= 'Basic rule setup';
+$GLOBALS['TL_LANG']['tl_iso_rules']['coupon_legend']			= 'Coupon Code';
+$GLOBALS['TL_LANG']['tl_iso_rules']['datim_legend']				= 'Date & Time Restrictions';
+$GLOBALS['TL_LANG']['tl_iso_rules']['advanced_legend']			= 'Advanced Restrictions';
+$GLOBALS['TL_LANG']['tl_iso_rules']['enabled_legend']			= 'Availability';
 
 
 /**
@@ -94,7 +93,7 @@ $GLOBALS['TL_LANG']['tl_iso_rules']['numUses']['store']						= 'Per store';
 /**
  * Buttons
  */
-$GLOBALS['TL_LANG']['tl_iso_rules']['new']        = array('New rule', 'Create a new rule');
+$GLOBALS['TL_LANG']['tl_iso_rules']['new']        = array('Add rule', 'Create a new rule');
 $GLOBALS['TL_LANG']['tl_iso_rules']['edit']       = array('Edit rule', 'Edit rule ID %s');
 $GLOBALS['TL_LANG']['tl_iso_rules']['copy']       = array('Duplicate rule', 'Duplicate rule ID %s');
 $GLOBALS['TL_LANG']['tl_iso_rules']['delete']     = array('Delete rule', 'Delete rule ID %s');

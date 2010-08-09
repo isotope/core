@@ -24,8 +24,6 @@ CREATE TABLE `tl_iso_rules` (
   `enableCode` char(1) NOT NULL default '',
   `code` varchar(255) NOT NULL default '',
   `numUses` blob NULL,
-  `minCartQuantity` int(10) unsigned NOT NULL default '0',
-  `maxCartQuantity` int(10) unsigned NOT NULL default '0',
   `minItemQuantity` int(10) unsigned NOT NULL default '0',
   `maxItemQuantity` int(10) unsigned NOT NULL default '0',
   `startDate` int(10) unsigned NOT NULL default '0',
