@@ -120,7 +120,7 @@ class MediaManager extends Widget implements uploadable
 		}
 
 		$pathinfo = pathinfo($file['name']);
-		$uploadTypes = trimsplit(',', $GLOBALS['TL_CONFIG']['uploadTypes']);
+		$uploadTypes = trimsplit(',', $GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['extensions']);
 
 		// File type is not allowed
 		if (!in_array(strtolower($pathinfo['extension']), $uploadTypes))
