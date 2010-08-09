@@ -161,8 +161,8 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			$this->Template->message = strlen($this->Input->get('reason')) ? $this->Input->get('reason') : $GLOBALS['TL_LANG']['ERR']['orderFailed'];
 			$this->strCurrentStep = 'review';
 		}
-			
-	
+		
+		
 		// Run trough all steps until we find the current one or one reports failure
 		foreach( $GLOBALS['ISO_CHECKOUT_STEPS'] as $step => $arrCallbacks )
 		{
@@ -184,7 +184,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				}
 			
 				if ($this->doNotSubmit && $step != $this->strCurrentStep)
-				{			
+				{
 					$this->redirect($this->addToUrl('step=' . $step));
 				}
 			
@@ -218,6 +218,12 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				unset($_SESSION['FORM_DATA']);
 				unset($_SESSION['FILES']);
 				$strUniqueId = $this->writeOrder(true);
+				
+				if ($strUniqueId === false)
+				{
+					$this->redirect($this->addToUrl('step=failed'));
+				}
+				
 				$this->redirect($this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($this->orderCompleteJumpTo)->fetchAssoc()) . '?uid='.$strUniqueId);
 			}
 			else
@@ -878,9 +884,9 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		if (!$objOrder->numRows)
 		{
 			$orderId = $this->Database->prepare("INSERT INTO tl_iso_orders %s")
-									   ->set($arrSet)
-									   ->executeUncached()
-									   ->insertId;
+									  ->set($arrSet)
+									  ->executeUncached()
+									  ->insertId;
 									   
 			$this->Database->prepare("UPDATE tl_iso_orders SET order_id=? WHERE id=?")->execute(($this->Isotope->Config->orderPrefix . $orderId), $orderId);
 		}
@@ -891,6 +897,16 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 						   ->executeUncached();
 						   
 			$orderId = $objOrder->id;
+		}
+		
+		// HOOK: process checkout 
+		if (isset($GLOBALS['TL_HOOKS']['iso_writeOrder']) && is_array($GLOBALS['TL_HOOKS']['iso_writeOrder']))
+		{
+			foreach ($GLOBALS['TL_HOOKS']['iso_writeOrder'] as $callback)
+			{
+				$this->import($callback[0]);
+				$blnCheckout = $this->$callback[0]->$callback[1]($orderId, $blnCheckout, $this);
+			}
 		}
 		
 		if ($blnCheckout)
@@ -950,9 +966,11 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			
 			unset($_SESSION['CHECKOUT_DATA']);
 			unset($_SESSION['ISOTOPE']);
+			
+			return $strUniqueId;
 		}
 		
-		return $strUniqueId;
+		return false;
 	}
 	
 		
@@ -1022,7 +1040,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				$this->import($callback[0]);
 				$arrOptions = $this->$callback[0]->$callback[1]($arrOptions, $field, $this);
 			}
-		}	
+		}
 	
 		if (count($arrOptions))
 		{

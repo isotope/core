@@ -409,5 +409,26 @@ class IsotopeRules extends Controller
 		
 		return $arrSurcharge['total_price'] == 0 ? false: $arrSurcharge;
 	}
+	
+	
+	/**
+	 * Callback for iso_writeOrder Hook. Transfer active rules to usage table.
+	 */
+	public function writeRuleUsages($orderId, $blnCheckout, &$objModule)
+	{
+		//!@todo find and store rules
+		
+		return $blnCheckout;
+	}
+	
+	/**
+	 * Callback for checkout step "review". Remove rule usages if an order failed.
+	 */
+	public function cleanRuleUsages(&$objModule)
+	{
+		$this->Database->query("DELETE FROM tl_iso_rule_usage WHERE pid=(SELECT id FROM tl_iso_orders WHERE cart_id={$this->Isotope->Cart->id})");
+		
+		return '';
+	}
 }
 

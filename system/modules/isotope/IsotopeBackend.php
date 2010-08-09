@@ -26,10 +26,42 @@
  */
 
 
-/**
- * Fields
- */
-$GLOBALS['TL_LANG']['tl_iso_rule_usage']['member']          	= array('Member', 'The member who invoked this rule.');
-$GLOBALS['TL_LANG']['tl_iso_rule_usage']['order']         	= array('Order', 'The order this rule was applied to.');
-$GLOBALS['TL_LANG']['tl_iso_rule_usage']['product']			= array('Product','The product this rule was applied to.');
+class IsotopeBackend extends Backend
+{
+		
+	/**
+	 * Hide archived records.
+	 */
+	public function hideArchivedRecords($dc)
+	{
+		$arrRoot = $GLOBALS['TL_DCA'][$dc->table]['list']['sorting']['root'];
+		
+		$arrRoot = $this->Database->execute("SELECT id FROM {$dc->table} WHERE archive<2" . ((is_array($arrRoot) && count($arrRoot)) ? " AND id IN (".implode(',', $arrRoot).")" : ''))->fetchEach('id');
+		
+		$GLOBALS['TL_DCA'][$dc->table]['list']['sorting']['root'] = count($arrRoot) ? $arrRoot : array(0);
+	}
+	
+	
+	/**
+	 * Archive a database record.
+	 *
+	 * @access	public
+	 * @param	object
+	 * @return	void
+	 */
+	public function archiveRecord($dc)
+	{
+		$objRecord = $this->Database->execute("SELECT * FROM {$dc->table} WHERE id={$dc->id}");
+		
+		if ($objRecord->archive > 0)
+		{
+			$this->Database->execute("UPDATE {$dc->table} SET archive=2 WHERE id={$dc->id}");
+			$this->redirect($this->getReferer());
+		}
+		else
+		{
+			$this->redirect(str_replace('key=delete', 'act=delete', $this->Environment->request));
+		}
+	}
+}
 

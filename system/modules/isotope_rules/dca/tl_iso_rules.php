@@ -40,6 +40,10 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 		'dataContainer'					=> 'Table',
 		'ctable'						=> array('tl_iso_rule_usage'),
 		'enableVersioning'				=> false,
+		'onload_callback' => array
+		(
+			array('IsotopeBackend', 'hideArchivedRecords'),
+		),
 	),
 	
 	// List
@@ -55,16 +59,6 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 		(
 			'fields'					=> array('name', 'code'),
 			'label'						=> '%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>',
-		),
-		'global_operations' => array
-		(
-			'all' => array
-			(
-				'label'					=> &$GLOBALS['TL_LANG']['MSC']['all'],
-				'href'					=> 'act=select',
-				'class'					=> 'header_edit_all',
-				'attributes'			=> 'onclick="Backend.getScrollOffset();"'
-			)
 		),
 		'operations' => array
 		(
@@ -83,7 +77,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			'delete' => array
 			(
 				'label'					=> &$GLOBALS['TL_LANG']['tl_iso_rules']['delete'],
-				'href'					=> 'act=delete',
+				'href'					=> 'key=delete',
 				'icon'					=> 'delete.gif',
 				'attributes'			=> 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
 			),
