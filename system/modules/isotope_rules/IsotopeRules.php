@@ -107,12 +107,7 @@ class IsotopeRules extends Controller
 	 */
 	public function getSurcharges($arrSurcharges)
 	{
-		$arrProducts = $this->Isotope->Cart->getProducts();
-		
-		if (!count($arrProducts))
-			return $arrSurcharges;
-		
-		$objRules = $this->findRules(array("type='cart'", "enableCode=''"), array(), $arrProducts);
+		$objRules = $this->findRules(array("type='cart'", "enableCode=''"));
 		
 		while( $objRules->next() )
 		{
@@ -164,6 +159,7 @@ class IsotopeRules extends Controller
 	 */
 	public function getCouponForm($objModule)
 	{
+		$arrCoupons = is_array(deserialize($this->Isotope->Cart->coupons)) ? deserialize($this->Isotope->Cart->coupons) : array();
 		$strCoupon = $this->Input->get('coupon_'.$objModule->id);
 		
 		if ($strCoupon == '')
@@ -179,8 +175,6 @@ class IsotopeRules extends Controller
 			}
 			else
 			{
-				$arrCoupons = is_array(deserialize($this->Isotope->Cart->coupons)) ? deserialize($this->Isotope->Cart->coupons) : array();
-				
 				if (in_array($strCoupon, $arrCoupons))
 				{
 					$_SESSION['COUPON_FAILED'][$objModule->id] = sprintf($GLOBALS['TL_LANG']['MSC']['couponDuplicate'], $strCoupon);
@@ -197,6 +191,13 @@ class IsotopeRules extends Controller
 			
 			$this->redirect(preg_replace('@[?&]coupon(_[0-9]+)?=[^&]*@', '', $this->Environment->request));
 		}
+		
+		
+		$objRules = $this->findRules(array("type='cart'", "enableCode='1'"));
+		
+		if (!$objRules->numRows || !count(array_diff($objRules->fetchEach('code'), $arrCoupons)))
+			return '';
+		
 		
 		//build template
 		$objTemplate = new FrontendTemplate('iso_coupons');
@@ -231,13 +232,8 @@ class IsotopeRules extends Controller
 	{
 		if ($this->Input->get('step') != 'process')
 			return $blnCheckout;
-			
-		$arrProducts = $this->Isotope->Cart->getProducts();
 		
-		if (!count($arrProducts))
-			return false;
-		
-		$objRules = $this->findRules(array("(type='product' OR (type='cart' AND enableCode=''))"), array(), $arrProducts);
+		$objRules = $this->findRules(array("(type='product' OR (type='cart' AND enableCode=''))"));
 		$arrRules = $objRules->fetchEach('id');
 		
 		$arrCoupons = deserialize($this->Isotope->Cart->coupons);
@@ -247,7 +243,7 @@ class IsotopeRules extends Controller
 			
 			foreach( $arrCoupons as $code )
 			{
-				$arrRule = $this->findCoupon($code, $arrProducts);
+				$arrRule = $this->findCoupon($code);
 				
 				if ($arrRule === false)
 				{
@@ -293,8 +289,13 @@ class IsotopeRules extends Controller
 	/**
 	 * Fetch rules
 	 */
-	protected function findRules($arrProcedures, $arrValues, $arrProducts)
+	protected function findRules($arrProcedures, $arrValues=array(), $arrProducts=null)
 	{
+		if (!is_array($arrProducts))
+		{
+			$arrProducts = $this->Isotope->Cart->getProducts();
+		}
+		
 		// Only enabled and not deleted/archived rules
 		$arrProcedures[] = "enabled='1'";
 		$arrProcedures[] = "archive<2";
@@ -366,8 +367,10 @@ class IsotopeRules extends Controller
 	/**
 	 * Calculate the total of all products to which apply a rule to
 	 */
-	protected function calculateProductSurcharge($arrRule, $arrProducts, $blnCheckProducts=true)
+	protected function calculateProductSurcharge($arrRule, $blnCheckProducts=true)
 	{
+		$arrProducts = $this->Isotope->Cart->getProducts();
+		
 		$blnDiscount = false;
 		if (strpos($arrRule['discount'], '%') !== false)
 		{
