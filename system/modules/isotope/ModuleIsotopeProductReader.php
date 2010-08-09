@@ -96,16 +96,7 @@ class ModuleIsotopeProductReader extends ModuleIsotope
 			$this->Template->message = $GLOBALS['TL_LANG']['MSC']['invalidProductInformation'];
 			return;
 		}
-		
-		if (isset($GLOBALS['TL_HOOKS']['iso_getProductUpdates']) && is_array($GLOBALS['TL_HOOKS']['iso_getProductUpdates']))
-		{
-			foreach ($GLOBALS['TL_HOOKS']['iso_getProductUpdates'] as $callback)
-			{
-				$this->import($callback[0]);
-				$this->$callback[0]->$callback[1](array($objProduct), $this);
-			}
-		}
-		
+				
 		$this->Template->product = $objProduct->generate((strlen($this->iso_reader_layout) ? $this->iso_reader_layout : $objProduct->reader_template), $this);
 		
 		global $objPage;
