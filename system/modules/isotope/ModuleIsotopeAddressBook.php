@@ -167,10 +167,10 @@ class ModuleIsotopeAddressBook extends Module
 			$this->Template->message = $GLOBALS['TL_LANG']['ERR']['noAddressBookEntries'];
 		}
 		
-		$this->Template->addressLabel = $GLOBALS['TL_LANG']['addressBookLabel'];
+		$this->Template->addressLabel = $GLOBALS['TL_LANG']['MSC']['addressBookLabel'];
 		$this->Template->addNewAddressLabel= $GLOBALS['TL_LANG']['MSC']['createNewAddressLabel'];
-		$this->Template->editAddressLabel = $GLOBALS['TL_LANG']['editAddressLabel'];
-		$this->Template->deleteAddressLabel = $GLOBALS['TL_LANG']['deleteAddressLabel'];
+		$this->Template->editAddressLabel = $GLOBALS['TL_LANG']['MSC']['editAddressLabel'];
+		$this->Template->deleteAddressLabel = $GLOBALS['TL_LANG']['MSC']['deleteAddressLabel'];
 		$this->Template->addresses = $arrAddresses;
 		$this->Template->addNewAddress = ampersand($strUrl . 'act=create');
 	}
