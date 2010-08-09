@@ -151,9 +151,9 @@ $GLOBALS['TL_LANG']['MSC']['orderStatusHeadline'] = 'Bestell-Status: %s';
 $GLOBALS['TL_LANG']['addressBookLabel']         = 'Adressen';
 $GLOBALS['TL_LANG']['editAddressLabel']         = 'Bearbeiten';
 $GLOBALS['TL_LANG']['deleteAddressLabel']       = 'Löschen';
-$GLOBALS['TL_LANG']['createNewAddressLabel']    = 'Neue Adresse anlegen';
-$GLOBALS['TL_LANG']['useBillingAddress']        = 'Rechnungs-Adresse verwenden';
-$GLOBALS['TL_LANG']['differentShippingAddress'] = 'Abweichende Versand-Adresse';
+$GLOBALS['TL_LANG']['MSC']['createNewAddressLabel']    = 'Neue Adresse anlegen';
+$GLOBALS['TL_LANG']['MSC']['useBillingAddress']        = 'Rechnungs-Adresse verwenden';
+$GLOBALS['TL_LANG']['MSC']['differentShippingAddress'] = 'Abweichende Versand-Adresse';
 
 
 //Invoice language Entries

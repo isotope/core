@@ -157,13 +157,13 @@ $GLOBALS['TL_LANG']['MSC']['orderStatusHeadline']		= 'Order Status: %s';
 
 
 //Addresses
+$GLOBALS['TL_LANG']['MSC']['createNewAddressLabel'] = 'Create New Address';
+$GLOBALS['TL_LANG']['MSC']['useBillingAddress'] = 'Use billing address';
+$GLOBALS['TL_LANG']['MSC']['differentShippingAddress'] = 'Different shipping address';
+
 $GLOBALS['TL_LANG']['addressBookLabel'] = 'Addresses';
 $GLOBALS['TL_LANG']['editAddressLabel'] = 'Edit';
 $GLOBALS['TL_LANG']['deleteAddressLabel'] = 'Delete';
-$GLOBALS['TL_LANG']['createNewAddressLabel'] = 'Create New Address';
-$GLOBALS['TL_LANG']['useBillingAddress'] = 'Use billing address';
-$GLOBALS['TL_LANG']['differentShippingAddress'] = 'Different shipping address';
-
 
 //Invoice language Entries
 $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] = 'Invoice';
