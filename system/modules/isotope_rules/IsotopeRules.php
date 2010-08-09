@@ -82,35 +82,7 @@ class IsotopeRules extends Controller
 	{
 		if ($objSource instanceof IsotopeProduct && ($strField == 'price' || $strField == 'low_price'))
 		{
-			$arrProcedures = array("type='product'", "enabled='1'");
-			
-			// Date & Time restrictions
-			$arrProcedures[] = "(startDate='' OR FROM_UNIXTIME(startDate,GET_FORMAT(DATE,'INTERNAL')) <= FROM_UNIXTIME(UNIX_TIMESTAMP(),GET_FORMAT(DATE,'INTERNAL')))";
-			$arrProcedures[] = "(endDate='' OR FROM_UNIXTIME(endDate,GET_FORMAT(DATE,'INTERNAL')) >= FROM_UNIXTIME(UNIX_TIMESTAMP(),GET_FORMAT(DATE,'INTERNAL')))";
-			$arrProcedures[] = "(startTime='' OR FROM_UNIXTIME(startTime,GET_FORMAT(TIME,'INTERNAL')) <= FROM_UNIXTIME(UNIX_TIMESTAMP(),GET_FORMAT(TIME,'INTERNAL')))";
-			$arrProcedures[] = "(endTime='' OR FROM_UNIXTIME(endTime,GET_FORMAT(TIME,'INTERNAL')) >= FROM_UNIXTIME(UNIX_TIMESTAMP(),GET_FORMAT(TIME,'INTERNAL')))";
-						
-			// Member restrictions
-			if (FE_USER_LOGGED_IN)
-			{
-				$arrProcedures[] = "(memberRestrictions='none'
-									OR (memberRestrictions='members' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='members' AND object_id={$this->User->id})>0)
-									" . (count($this->User->groups) ? " OR (memberRestrictions='groups' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='groups' AND object_id IN (" . implode(',', $this->User->groups) . "))>0)" : '') . ")";
-			}
-			else
-			{
-				$arrProcedures[] = "memberRestrictions='none'";
-			}
-			
-			// Product restrictions
-			$arrProcedures[] = "(productRestrictions='none'
-								OR (productRestrictions='producttypes' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='producttypes' AND object_id={$objSource->type})>0)
-								OR (productRestrictions='products' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='products' AND object_id=" . ($objSource->pid ? $objSource->pid : $objSource->id) . ")>0)
-								OR (productRestrictions='pages' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='pages' AND object_id IN (SELECT page_id FROM tl_iso_product_categories WHERE pid=" . ($objSource->pid ? $objSource->pid : $objSource->id) . "))))";
-			
-			
-			// Fetch and process rules
-			$objRules = $this->Database->execute("SELECT * FROM tl_iso_rules r WHERE " . implode(' AND ', $arrProcedures) . " ORDER BY sorting");
+			$objRules = $this->findRules(array("type='product'"), array($objSource));
 			
 			while( $objRules->next() )
 			{
@@ -139,44 +111,8 @@ class IsotopeRules extends Controller
 		
 		if (!count($arrProducts))
 			return $arrSurcharges;
-	
-		$arrProcedures = array("type='cart'", "enabled='1'", "enableCode=''");
 		
-		// Date & Time restrictions
-		$arrProcedures[] = "(startDate='' OR FROM_UNIXTIME(startDate,GET_FORMAT(DATE,'INTERNAL')) <= FROM_UNIXTIME(UNIX_TIMESTAMP(),GET_FORMAT(DATE,'INTERNAL')))";
-		$arrProcedures[] = "(endDate='' OR FROM_UNIXTIME(endDate,GET_FORMAT(DATE,'INTERNAL')) >= FROM_UNIXTIME(UNIX_TIMESTAMP(),GET_FORMAT(DATE,'INTERNAL')))";
-		$arrProcedures[] = "(startTime='' OR FROM_UNIXTIME(startTime,GET_FORMAT(TIME,'INTERNAL')) <= FROM_UNIXTIME(UNIX_TIMESTAMP(),GET_FORMAT(TIME,'INTERNAL')))";
-		$arrProcedures[] = "(endTime='' OR FROM_UNIXTIME(endTime,GET_FORMAT(TIME,'INTERNAL')) >= FROM_UNIXTIME(UNIX_TIMESTAMP(),GET_FORMAT(TIME,'INTERNAL')))";
-		
-		// Member restrictions
-		if (FE_USER_LOGGED_IN)
-		{
-			$arrProcedures[] = "(memberRestrictions='none'
-								OR (memberRestrictions='members' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='members' AND object_id={$this->User->id})>0)
-								" . (count($this->User->groups) ? " OR (memberRestrictions='groups' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='groups' AND object_id IN (" . implode(',', $this->User->groups) . "))>0)" : '') . ")";
-		}
-		else
-		{
-			$arrProcedures[] = "memberRestrictions='none'";
-		}
-		
-		// Product restrictions
-		$arrIds = array();
-		$arrTypes = array();
-		foreach( $arrProducts as $objProduct )
-		{
-			$arrIds[] = $objProduct->pid ? $objProduct->pid : $objProduct->id;
-			$arrTypes[] = $objProduct->type;
-		}
-		
-		$arrProcedures[] = "(productRestrictions='none'
-							OR (productRestrictions='producttypes' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='producttypes' AND object_id IN (" . implode(',', $arrTypes) . "))>0)
-							OR (productRestrictions='products' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='products' AND object_id IN (" . implode(',', $arrIds) . "))>0)
-							OR (productRestrictions='pages' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='pages' AND object_id IN (SELECT page_id FROM tl_iso_product_categories WHERE pid IN (" . implode(',', $arrIds) . ")))))";
-		
-		
-		// Fetch and process rules
-		$objRules = $this->Database->execute("SELECT *, FROM_UNIXTIME(endTime,GET_FORMAT(TIME,'INTERNAL')) AS time FROM tl_iso_rules r WHERE " . implode(' AND ', $arrProcedures) . " ORDER BY sorting");
+		$objRules = $this->findRules(array("type='cart'", "enableCode=''"), $arrProducts);
 		
 		while( $objRules->next() )
 		{
@@ -285,6 +221,116 @@ class IsotopeRules extends Controller
 		}
 		
 		return $objTemplate->parse();
+	}
+	
+	
+	/**
+	 * Callback for iso_writeOrder Hook. Transfer active rules to usage table.
+	 */
+	public function writeRuleUsages($orderId, $blnCheckout, &$objModule)
+	{
+		if ($this->Input->get('step') != 'process')
+			return $blnCheckout;
+			
+		$arrProducts = $this->Isotope->Cart->getProducts();
+		
+		if (!count($arrProducts))
+			return false;
+		
+		$objRules = $this->findRules(array("(type='product' OR (type='cart' AND enableCode=''))"), $arrProducts);
+		$arrRules = $objRules->fetchEach('id');
+		
+		$arrCoupons = deserialize($this->Isotope->Cart->coupons);
+		if (is_array($arrCoupons) && count($arrCoupons))
+		{
+			$arrDropped = array();
+			
+			foreach( $arrCoupons as $code )
+			{
+				$arrRule = $this->findCoupon($code, $arrProducts);
+				
+				if ($arrRule === false)
+				{
+					$arrDropped[] = $code;
+				}
+				else
+				{
+					$arrRules[] = $arrRule['id'];
+				}
+			}
+			
+			if (count($arrDropped))
+			{
+				//!@todo show dropped coupons
+				return false;
+			}
+		}
+		
+		if (count($arrRules))
+		{
+			$time = time();
+			$intMember = FE_USER_LOGGED_IN ? $this->User->id : 0;
+			$this->Database->query("INSERT INTO tl_iso_rule_usage (pid,tstamp,order_id,config_id,member_id) VALUES (" . implode(", $time, $orderId, {$this->Isotope->Config->id}, $intMember), (", $arrRules) . ", $time, $orderId, {$this->Isotope->Config->id}, $intMember)");
+		}
+		
+		return $blnCheckout;
+	}
+	
+	/**
+	 * Callback for checkout step "review". Remove rule usages if an order failed.
+	 */
+	public function cleanRuleUsages(&$objModule)
+	{
+		$this->Database->query("DELETE FROM tl_iso_rule_usage WHERE pid=(SELECT id FROM tl_iso_orders WHERE cart_id={$this->Isotope->Cart->id})");
+		
+		return '';
+	}
+	
+	
+	/**
+	 * Fetch rules
+	 */
+	protected function findRules($arrProcedures, $arrProducts)
+	{
+		// Only enabled and not deleted/archived rules
+		$arrProcedures[] = "enabled='1'";
+		$arrProcedures[] = "archive<2";
+		
+		// Date & Time restrictions
+		$arrProcedures[] = "(startDate='' OR FROM_UNIXTIME(startDate,GET_FORMAT(DATE,'INTERNAL')) <= FROM_UNIXTIME(UNIX_TIMESTAMP(),GET_FORMAT(DATE,'INTERNAL')))";
+		$arrProcedures[] = "(endDate='' OR FROM_UNIXTIME(endDate,GET_FORMAT(DATE,'INTERNAL')) >= FROM_UNIXTIME(UNIX_TIMESTAMP(),GET_FORMAT(DATE,'INTERNAL')))";
+		$arrProcedures[] = "(startTime='' OR FROM_UNIXTIME(startTime,GET_FORMAT(TIME,'INTERNAL')) <= FROM_UNIXTIME(UNIX_TIMESTAMP(),GET_FORMAT(TIME,'INTERNAL')))";
+		$arrProcedures[] = "(endTime='' OR FROM_UNIXTIME(endTime,GET_FORMAT(TIME,'INTERNAL')) >= FROM_UNIXTIME(UNIX_TIMESTAMP(),GET_FORMAT(TIME,'INTERNAL')))";
+		
+		// Member restrictions
+		if (FE_USER_LOGGED_IN)
+		{
+			$arrProcedures[] = "(memberRestrictions='none'
+								OR (memberRestrictions='members' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='members' AND object_id={$this->User->id})>0)
+								" . (count($this->User->groups) ? " OR (memberRestrictions='groups' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='groups' AND object_id IN (" . implode(',', $this->User->groups) . "))>0)" : '') . ")";
+		}
+		else
+		{
+			$arrProcedures[] = "memberRestrictions='none'";
+		}
+		
+		// Product restrictions
+		$arrIds = array();
+		$arrTypes = array();
+		foreach( $arrProducts as $objProduct )
+		{
+			$arrIds[] = $objProduct->pid ? $objProduct->pid : $objProduct->id;
+			$arrTypes[] = $objProduct->type;
+		}
+		
+		$arrProcedures[] = "(productRestrictions='none'
+							OR (productRestrictions='producttypes' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='producttypes' AND object_id IN (" . implode(',', $arrTypes) . "))>0)
+							OR (productRestrictions='products' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='products' AND object_id IN (" . implode(',', $arrIds) . "))>0)
+							OR (productRestrictions='pages' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='pages' AND object_id IN (SELECT page_id FROM tl_iso_product_categories WHERE pid IN (" . implode(',', $arrIds) . ")))))";
+		
+		
+		// Fetch and process rules
+		return $this->Database->execute("SELECT * FROM tl_iso_rules r WHERE " . implode(' AND ', $arrProcedures) . " ORDER BY sorting");
 	}
 	
 	
@@ -408,27 +454,6 @@ class IsotopeRules extends Controller
 		}
 		
 		return $arrSurcharge['total_price'] == 0 ? false: $arrSurcharge;
-	}
-	
-	
-	/**
-	 * Callback for iso_writeOrder Hook. Transfer active rules to usage table.
-	 */
-	public function writeRuleUsages($orderId, $blnCheckout, &$objModule)
-	{
-		//!@todo find and store rules
-		
-		return $blnCheckout;
-	}
-	
-	/**
-	 * Callback for checkout step "review". Remove rule usages if an order failed.
-	 */
-	public function cleanRuleUsages(&$objModule)
-	{
-		$this->Database->query("DELETE FROM tl_iso_rule_usage WHERE pid=(SELECT id FROM tl_iso_orders WHERE cart_id={$this->Isotope->Cart->id})");
-		
-		return '';
 	}
 }
 
