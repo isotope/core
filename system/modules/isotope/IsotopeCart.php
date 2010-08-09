@@ -358,7 +358,7 @@ class IsotopeCart extends IsotopeProductCollection
 		
 		foreach( $arrSurcharges as $arrSurcharge )
 		{
-			if ($arrSurcharge['tax_class'] > 0)
+			if ($arrSurcharge['add_tax'])
 			{
 				$arrPreTax[] = $arrSurcharge;
 			}
@@ -370,6 +370,9 @@ class IsotopeCart extends IsotopeProductCollection
 		
 		foreach( $arrPreTax as $arrSurcharge )
 		{
+			if (!$arrSurcharge['tax_class'])
+				continue;
+				
 			$arrTax = $this->Isotope->calculateTax($arrSurcharge['tax_class'], $arrSurcharge['total_price'], $arrSurcharge['add_tax']);
 			
 			if (is_array($arrTax))

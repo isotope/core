@@ -929,7 +929,7 @@ class IsotopeRules extends Controller
 		
 		while( $objRules->next() )
 		{
-			$fltPrice = $this->calculateProductTotal($arrRule, $arrProducts);
+			$fltPrice = $this->calculateProductTotal($objRules->row(), $arrProducts);
 			
 			if (strpos($objRules->discount, '%') !== false)
 			{
@@ -944,7 +944,7 @@ class IsotopeRules extends Controller
 			$arrSurcharges[] = array
 			(
 				'label'			=> $objRules->title,
-				'price'			=> '',
+				'price'			=> ($fltDiscount ? $fltDiscount.'%' : ''),
 				'total_price'	=> $fltPrice,
 				'tax_class'		=> 0,
 				'add_tax'		=> true,
