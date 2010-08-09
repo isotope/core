@@ -373,6 +373,8 @@ class IsotopeRules extends Controller
 			}
 			
 			$fltPrice = $blnDiscount ? ($objProduct->total_price / 100 * $fltDiscount) : $arrRule['discount'];
+			$fltPrice = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
+			
 			$arrSurcharge['total_price'] += $fltPrice;
 			$arrSurcharge['products'][$objProduct->cart_id] = $fltPrice;
 		}
