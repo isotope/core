@@ -257,16 +257,7 @@ abstract class IsotopeProductCollection extends Model
 				$this->arrProducts[] = $objProduct;
 			}
 		}
-		
-		if (isset($GLOBALS['TL_HOOKS']['iso_getProductUpdates']) && is_array($GLOBALS['TL_HOOKS']['iso_getProductUpdates']))
-		{
-			foreach ($GLOBALS['TL_HOOKS']['iso_getProductUpdates'] as $callback)
-			{				
-				$this->import($callback[0]);
-				$this->$callback[0]->$callback[1]($this->arrProducts, $this);
-			}
-		}
-		
+				
 		if (strlen($strTemplate))
 		{
 			$objTemplate = new FrontendTemplate($strTemplate);
@@ -325,15 +316,6 @@ abstract class IsotopeProductCollection extends Model
 			);
 			
 			$intInsertId = $this->Database->prepare("INSERT INTO {$this->ctable} %s")->set($arrSet)->executeUncached()->insertId;
-
-			if (isset($GLOBALS['TL_HOOKS']['iso_getProductCollectionInsertId']) && is_array($GLOBALS['TL_HOOKS']['iso_getProductCollectionInsertId']))
-			{
-				foreach ($GLOBALS['TL_HOOKS']['iso_getProductCollectionInsertId'] as $callback)
-				{
-					$this->import($callback[0]);
-					$this->$callback[0]->$callback[1]($objProduct, $arrSet, $intInsertId, $this);
-				}
-			}
 			
 			return $intInsertId;
 			

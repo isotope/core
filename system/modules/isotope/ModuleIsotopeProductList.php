@@ -170,17 +170,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			return;
 		}
 		
-		$arrBuffer = array();
-		
-		if (isset($GLOBALS['TL_HOOKS']['iso_getProductUpdates']) && is_array($GLOBALS['TL_HOOKS']['iso_getProductUpdates']))
-		{
-			foreach ($GLOBALS['TL_HOOKS']['iso_getProductUpdates'] as $callback)
-			{				
-				$this->import($callback[0]);
-				$this->$callback[0]->$callback[1]($arrProducts, $this);
-			}
-		}
-		
+		$arrBuffer = array();		
 		
 		foreach( $arrProducts as $i => $objProduct )
 		{

@@ -50,23 +50,6 @@ array_insert($GLOBALS['ISO_CHECKOUT_STEPS']['review'], 0, array(array('IsotopeRu
 /** 
  * Hooks
  */
-/*
-//called whenever products are loaded for lister, reader or product collection
-$GLOBALS['TL_HOOKS']['iso_getProductUpdates'][] 			= array('IsotopeRules', 'getRules'); 
-
-//used to display the extra rules data in the product template
-$GLOBALS['TL_HOOKS']['iso_generateAttribute'][]				= array('IsotopeRules', 'updatePrice');
-
-$GLOBALS['TL_HOOKS']['iso_addProductToCollection'][]		= array('IsotopeRules', 'calculateProductRulePrice');
-
-// used to show a coupon form, if one or more valid coupons are available
-$GLOBALS['TL_HOOKS']['iso_compileCart'][] 					= array('IsotopeRules', 'getCouponForm');
-
-// used to grab the surcharge data and display it in the cart (separate from actually updating the grand total)
-$GLOBALS['TL_HOOKS']['isoCheckoutSurcharge'][]				= array('IsotopeRules', 'getSurcharges');
-*/
-
-
 $GLOBALS['TL_HOOKS']['iso_calculatePrice'][]				= array('IsotopeRules', 'calculatePrice');
 $GLOBALS['TL_HOOKS']['iso_compileCart'][] 					= array('IsotopeRules', 'getCouponForm');
 $GLOBALS['TL_HOOKS']['isoCheckoutSurcharge'][]				= array('IsotopeRules', 'getSurcharges');
