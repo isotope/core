@@ -255,7 +255,7 @@ class tl_iso_orders extends Backend
 		{			
 			if($surcharge['tax_class']>0)
 			{
-				$surcharge['add_tax'] = 1;
+				$surcharge['before_tax'] = 1;
 				$arrTaxables[] = $surcharge;
 			}
 		}
@@ -267,7 +267,7 @@ class tl_iso_orders extends Backend
 			//skip taxes.
 			if(strpos($arrSurcharge['price'], '%')!==0)
 			{
-				$arrTax = $this->Isotope->calculateTax($arrSurcharge['tax_class'], $arrSurcharge['total_price'], $arrSurcharge['add_tax'], $arrAddresses);
+				$arrTax = $this->Isotope->calculateTax($arrSurcharge['tax_class'], $arrSurcharge['total_price'], $arrSurcharge['before_tax'], $arrAddresses);
 			}	
 			
 			foreach($arrTax as $tax)

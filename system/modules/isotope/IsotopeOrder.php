@@ -225,7 +225,7 @@ class IsotopeOrder extends IsotopeProductCollection
 		foreach( $arrPreTax as $arrSurcharge )
 		{
 						
-			$arrTax = $this->calculateTax($arrSurcharge['tax_class'], $arrSurcharge['total_price'], $arrSurcharge['add_tax']);
+			$arrTax = $this->calculateTax($arrSurcharge['tax_class'], $arrSurcharge['total_price'], $arrSurcharge['before_tax']);
 			
 			if (is_array($arrTax))
 			{
@@ -270,7 +270,7 @@ class IsotopeOrder extends IsotopeProductCollection
 				'price'			=> '&nbsp;',
 				'total_price'	=> $this->Shipping->price,
 				'tax_class'		=> $this->Shipping->tax_class,
-				'add_tax'		=> ($this->Shipping->tax_class ? true : false),
+				'before_tax'	=> ($this->Shipping->tax_class ? true : false),
 			);
 		}
 		
@@ -296,7 +296,7 @@ class IsotopeOrder extends IsotopeProductCollection
 				'price'			=> '&nbsp;',
 				'total_price'	=> $this->Payment->price,
 				'tax_class'		=> $this->Payment->tax_class,
-				'add_tax'		=> ($this->Payment->tax_class ? true : false),
+				'before_tax'	=> ($this->Payment->tax_class ? true : false),
 			);
 		}
 		

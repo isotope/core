@@ -272,7 +272,7 @@ class IsotopeCart extends IsotopeProductCollection
 				'price'			=> '&nbsp;',
 				'total_price'	=> $this->Isotope->Cart->Shipping->price,
 				'tax_class'		=> $this->Isotope->Cart->Shipping->tax_class,
-				'add_tax'		=> ($this->Isotope->Cart->Shipping->tax_class ? true : false),
+				'before_tax'	=> ($this->Isotope->Cart->Shipping->tax_class ? true : false),
 			);
 		}
 		
@@ -300,7 +300,7 @@ class IsotopeCart extends IsotopeProductCollection
 				'price'			=> '&nbsp;',
 				'total_price'	=> $this->Isotope->Cart->Payment->price,
 				'tax_class'		=> $this->Isotope->Cart->Payment->tax_class,
-				'add_tax'		=> ($this->Isotope->Cart->Payment->tax_class ? true : false),
+				'before_tax'	=> ($this->Isotope->Cart->Payment->tax_class ? true : false),
 			);
 		}
 		
@@ -313,12 +313,43 @@ class IsotopeCart extends IsotopeProductCollection
 		$this->import('Isotope');
 		
 		$arrPreTax = $arrPostTax = $arrTaxes = array();
-		$arrProducts = $this->getProducts();
 		
+		$arrSurcharges = array();
+		if (isset($GLOBALS['TL_HOOKS']['isoCheckoutSurcharge']) && is_array($GLOBALS['TL_HOOKS']['isoCheckoutSurcharge']))
+		{
+			foreach ($GLOBALS['TL_HOOKS']['isoCheckoutSurcharge'] as $callback)
+			{
+				$this->import($callback[0]);
+				$arrSurcharges = $this->{$callback[0]}->{$callback[1]}($arrSurcharges);
+			}
+		}
+		
+		foreach( $arrSurcharges as $arrSurcharge )
+		{
+			if ($arrSurcharge['before_tax'])
+			{
+				$arrPreTax[] = $arrSurcharge;
+			}
+			else
+			{
+				$arrPostTax[] = $arrSurcharge;
+			}
+		}
+
+		$arrProducts = $this->getProducts();
 		foreach( $arrProducts as $pid => $objProduct )
 		{
+			$fltPrice = $objProduct->total_price;
+			foreach( $arrPreTax as $tax )
+			{
+				if (isset($tax['products'][$objProduct->cart_id]))
+				{
+					$fltPrice += $tax['products'][$objProduct->cart_id];
+				}
+			}
+			
 			$arrTaxIds = array();
-			$arrTax = $this->Isotope->calculateTax($objProduct->tax_class, $objProduct->total_price);
+			$arrTax = $this->Isotope->calculateTax($objProduct->tax_class, $fltPrice);
 			
 			if (is_array($arrTax))
 			{
@@ -346,34 +377,13 @@ class IsotopeCart extends IsotopeProductCollection
 			$this->arrProducts[$pid]->tax_id = implode(',', $arrTaxIds);
 		}
 		
-		$arrSurcharges = array();
-		if (isset($GLOBALS['TL_HOOKS']['isoCheckoutSurcharge']) && is_array($GLOBALS['TL_HOOKS']['isoCheckoutSurcharge']))
-		{
-			foreach ($GLOBALS['TL_HOOKS']['isoCheckoutSurcharge'] as $callback)
-			{
-				$this->import($callback[0]);
-				$arrSurcharges = $this->{$callback[0]}->{$callback[1]}($arrSurcharges);
-			}
-		}
-		
-		foreach( $arrSurcharges as $arrSurcharge )
-		{
-			if ($arrSurcharge['add_tax'])
-			{
-				$arrPreTax[] = $arrSurcharge;
-			}
-			else
-			{
-				$arrPostTax[] = $arrSurcharge;
-			}
-		}
 		
 		foreach( $arrPreTax as $arrSurcharge )
 		{
 			if (!$arrSurcharge['tax_class'])
 				continue;
 				
-			$arrTax = $this->Isotope->calculateTax($arrSurcharge['tax_class'], $arrSurcharge['total_price'], $arrSurcharge['add_tax']);
+			$arrTax = $this->Isotope->calculateTax($arrSurcharge['tax_class'], $arrSurcharge['total_price'], $arrSurcharge['before_tax']);
 			
 			if (is_array($arrTax))
 			{
