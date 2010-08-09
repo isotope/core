@@ -442,7 +442,7 @@ class tl_iso_products extends Backend
 	/**
 	 * Only list product types a user is allowed to see.
 	 */
-	public function checkPermission($dc)
+	public function checkPermission()
 	{
 		if (strlen($this->Input->get('act')) && $this->Input->get('mode') != 'create')
 		{
