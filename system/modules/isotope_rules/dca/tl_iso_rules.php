@@ -26,9 +26,6 @@
  */
 
 
-$this->loadLanguageFile('subdivisions');
-
-
 /**
  * Table tl_iso_rules
  */
