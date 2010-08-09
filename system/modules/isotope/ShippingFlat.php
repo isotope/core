@@ -75,7 +75,7 @@ class ShippingFlat extends IsotopeShipping
 			}
 			else
 			{
-				$intSurcharge += floatval($strSurcharge);
+				$intSurcharge += floatval($objProduct->{$this->surcharge_field});
 			}
 		}
 		
