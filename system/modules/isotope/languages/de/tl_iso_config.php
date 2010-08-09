@@ -32,7 +32,6 @@
 $GLOBALS['TL_LANG']['tl_iso_config']['name']						= array('Name der Shop-Konfiguration', 'Geben Sie einen eindeutigen Namen ein.');
 $GLOBALS['TL_LANG']['tl_iso_config']['label']						= array('Bezeichnung', 'Die Bezeichnung wird im Frontend z.B. für den Konfigurationswechsler verwendet.');
 $GLOBALS['TL_LANG']['tl_iso_config']['fallback']					= array('Standard-Konfiguration', 'Verwendet dies als Standardkonfiguration für die Anzeige im Backend.');
-$GLOBALS['TL_LANG']['tl_iso_config']['cookie_duration']				= array('Vorhaltetage der Warenkorb-Informationen', 'Artikel und deren Informationen werden für nicht registrierte Besucher diese Anzahl Tage gespeichert. Ein Wert 0 bedeutet nach dem verlassen der Seite geht der Warenkorb verloren. Der Warenkorb wird für registrierte Mitglieder immer gespeichert.');
 $GLOBALS['TL_LANG']['tl_iso_config']['missing_image_placeholder']	= array('Platzhalter-Bild für Produkte', 'Dieses Bild wird verwendet wenn für ein Produkt kein Bild vorhanden ist.');
 $GLOBALS['TL_LANG']['tl_iso_config']['priceCalculateFactor']		= array('Berechnungsfaktor', 'Standardmässig auf 1. Wählen Sie einen anderen Faktor für eine Umrechnung.');
 $GLOBALS['TL_LANG']['tl_iso_config']['priceCalculateMode']			= array('Berechnungsmodus', 'Preis dividieren oder multiplieren mit dem Faktor.');

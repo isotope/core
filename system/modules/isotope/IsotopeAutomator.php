@@ -26,52 +26,46 @@
  */
  
 
-class IsotopeConfig extends Model
+class IsotopeAutomator extends Controller
 {
 	
 	/**
-	 * Name of the current table
-	 * @var string
-	 */
-	protected $strTable = 'tl_iso_config';
-	
-	
-	/**
-	 * Return custom options or table row data.
-	 * 
-	 * @access public
-	 * @param mixed $strKey
-	 * @return mixed
-	 */
-	public function __get($strKey)
-	{
-		return deserialize(parent::__get($strKey));
-	}
-	
-	
-	/**
-	 * Fetch the current store configuration.
-	 * 
+	 * Remove carts that have not been accessed for a given number of days (depending on store config).
+	 *
 	 * @access public
 	 * @return void
 	 */
-	public function __construct($intConfig)
+	public function deleteOldCarts()
 	{
-		parent::__construct();
+		$this->import('Database');
 		
-		if (!$this->findBy('id', $intConfig))
+		$time = time() - $GLOBALS['TL_CONFIG']['iso_cartTimeout'];
+		$objCarts = $this->Database->execute("SELECT id FROM tl_iso_cart WHERE tstamp<$time");
+		
+		if ($objCarts->numRows)
 		{
-			throw new Exception('Store configuration not found');
+			$objCart = new IsotopeCart();
+			
+			foreach( $objCarts->fetchEach('id') as $id )
+			{
+				if ($objCart->findBy('id', $id))
+				{
+					$objCart->delete();
+				}
+			}
 		}
 	}
 	
 	
 	/**
-	 * Transparently map calls to core config class, because Isotope->Config has the same name.
+	 * Delete failed orders and restore rule usages
+	 *
+	 * @access public
+	 * @return void
 	 */
-	public function __call($name, $arguments)
+	public function deleteFailedOrders()
 	{
-		return call_user_func_array(array($this->Config, $name), $arguments);
+		//!@todo implement this!
 	}
 }
 

@@ -24,54 +24,10 @@
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
- 
 
-class IsotopeConfig extends Model
-{
-	
-	/**
-	 * Name of the current table
-	 * @var string
-	 */
-	protected $strTable = 'tl_iso_config';
-	
-	
-	/**
-	 * Return custom options or table row data.
-	 * 
-	 * @access public
-	 * @param mixed $strKey
-	 * @return mixed
-	 */
-	public function __get($strKey)
-	{
-		return deserialize(parent::__get($strKey));
-	}
-	
-	
-	/**
-	 * Fetch the current store configuration.
-	 * 
-	 * @access public
-	 * @return void
-	 */
-	public function __construct($intConfig)
-	{
-		parent::__construct();
-		
-		if (!$this->findBy('id', $intConfig))
-		{
-			throw new Exception('Store configuration not found');
-		}
-	}
-	
-	
-	/**
-	 * Transparently map calls to core config class, because Isotope->Config has the same name.
-	 */
-	public function __call($name, $arguments)
-	{
-		return call_user_func_array(array($this->Config, $name), $arguments);
-	}
-}
+
+/**
+ * Fields
+ */
+$GLOBALS['TL_LANG']['tl_settings']['iso_cartTimeout'] = array('Guest cart timeout', 'Here you can enter the maximum lifetime of a guest cart in seconds (30 days = 2592000 seconds).');
 

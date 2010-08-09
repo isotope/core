@@ -125,7 +125,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 		'default'                     => '
 			{name_legend},name,label,fallback;
 			{address_legend:hide},firstname,lastname,company,street_1,street_2,street_3,postal,city,subdivision,country,emailShipping,phone;
-			{config_legend},shipping_countries,billing_countries,shipping_fields,billing_fields,weightUnit,orderPrefix,cookie_duration,enableGoogleAnalytics;
+			{config_legend},shipping_countries,billing_countries,shipping_fields,billing_fields,weightUnit,orderPrefix,enableGoogleAnalytics;
 			{price_legend},priceCalculateFactor,priceCalculateMode,priceRoundPrecision,priceRoundIncrement;
 			{currency_legend},currency,currencySymbol,currencyFormat,currencyPosition;
 			{invoice_legend:hide},invoiceLogo;
@@ -303,14 +303,6 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['enableGoogleAnalytics'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
-		),
-		'cookie_duration' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['cookie_duration'],
-			'exclude'                 => true,
-			'default'				  => 30,
-			'inputType'               => 'text',
-			'eval'                    => array('rgxp'=>'digit', 'maxlength'=>4, 'tl_class'=>'w50 w50h'),
 		),
 		'missing_image_placeholder' => array
 		(
