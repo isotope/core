@@ -122,7 +122,6 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'__selector__'				  => array('enableWatermark'),
 		'default'                     => '
 			{name_legend},name,label,fallback;
 			{address_legend:hide},firstname,lastname,company,street_1,street_2,street_3,postal,city,subdivision,country,emailShipping,phone;
@@ -130,12 +129,9 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			{price_legend},priceCalculateFactor,priceCalculateMode,priceRoundPrecision,priceRoundIncrement;
 			{currency_legend},currency,currencySymbol,currencyFormat,currencyPosition;
 			{invoice_legend:hide},invoiceLogo;
-			{images_legend},gallery,missing_image_placeholder,gallery_size,thumbnail_size,medium_size,large_size,enableWatermark',
+			{images_legend},gallery,missing_image_placeholder,gallery_size,thumbnail_size,medium_size,large_size,medium_watermark,large_watermark,watermark_position',
 	),
-	'subpalettes' => array
-	(
-		'enableWatermark' => 'watermarkImage,watermarkSizes'
-	),
+
 	// Fields
 	'fields' => array
 	(
@@ -332,7 +328,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'reference'				  => &$GLOBALS['TL_LANG']['GAL'],
 			'eval'                    => array('mandatory'=>true, 'tl_class'=>'clr', 'helpwizard'=>true),
 		),
-		'gallery_size'				  => array
+		'gallery_size' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['gallery_size'],
 			'exclude'                 => true,
@@ -342,7 +338,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'reference'               => &$GLOBALS['TL_LANG']['MSC'],
 			'eval'                    => array('rgxp'=>'digit', 'nospace'=>true, 'tl_class'=>'w50'),
 		),
-		'thumbnail_size'				  => array
+		'thumbnail_size' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['thumbnail_size'],
 			'exclude'                 => true,
@@ -352,7 +348,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'reference'               => &$GLOBALS['TL_LANG']['MSC'],
 			'eval'                    => array('rgxp'=>'digit', 'nospace'=>true, 'tl_class'=>'w50'),
 		),
-		'medium_size'				  => array
+		'medium_size' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['medium_size'],
 			'exclude'                 => true,
@@ -362,7 +358,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'reference'               => &$GLOBALS['TL_LANG']['MSC'],
 			'eval'                    => array('rgxp'=>'digit', 'nospace'=>true, 'tl_class'=>'w50'),
 		),
-		'large_size'				  => array
+		'large_size' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['large_size'],
 			'exclude'                 => true,
@@ -371,6 +367,30 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'options'                 => array('crop', 'proportional', 'box'),
 			'reference'               => &$GLOBALS['TL_LANG']['MSC'],
 			'eval'                    => array('rgxp'=>'digit', 'nospace'=>true, 'tl_class'=>'w50'),
+		),
+		'medium_watermark' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['medium_watermark'],
+			'exclude'                 => true,
+			'inputType'               => 'fileTree',
+			'eval'                    => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>'jpg,jpeg,png,gif', 'tl_class'=>'clr'),
+		),
+		'large_watermark' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['large_watermark'],
+			'exclude'                 => true,
+			'inputType'               => 'fileTree',
+			'eval'                    => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>'jpg,jpeg,png,gif', 'tl_class'=>'clr'),
+		),
+		'watermark_position' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['watermark_position'],
+			'exclude'                 => true,
+			'default'				  => 'br',
+			'inputType'               => 'select',
+			'options'				  => array('tl', 'tc', 'tr', 'bl', 'bc', 'br', 'cc'),
+			'reference'				  => &$GLOBALS['TL_LANG']['tl_iso_config'],
+			'eval'                    => array('tl_class'=>'clr'),
 		),
 		'priceCalculateFactor' => array
 		(
@@ -463,29 +483,6 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'options'                 => $GLOBALS['TL_LANG']['tl_iso_config']['weightUnits'],
 			'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
 		),
-		'enableWatermark' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['enableWatermark'],
-			'exclude'                 => true,
-			'inputType'               => 'checkbox',
-			'eval'					  => array('submitOnChange'=>true)
-		),
-		'watermarkImage'	=> array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['watermarkImage'],
-			'exclude'                 => true,
-			'inputType'               => 'fileTree',
-			'eval'                    => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions' => 'png'),
-		),
-		'watermarkSizes' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['watermarkSizes'],
-			'exclude'                 => true,
-			'inputType'               => 'checkbox',
-			'options'				  => array('gallery','thumbnail','medium','large'),
-			'eval'					  => array('multiple'=>true),
-			'reference'				  => &$GLOBALS['TL_LANG']['tl_iso_config']['imageSizes']
-		)
 	)
 );
 

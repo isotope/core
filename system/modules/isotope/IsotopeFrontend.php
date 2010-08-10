@@ -107,5 +107,199 @@ class IsotopeFrontend extends Frontend
 		
 		return false;
 	}
+	
+	
+	/**
+	 * Apply a watermark to an image
+	 */
+	public function watermarkImage($image, $watermark, $position='br')
+	{
+		$image = urldecode($image);
+		
+		if (!is_file(TL_ROOT . '/' . $image) || !is_file(TL_ROOT . '/' . $watermark))
+		{
+			return $image;
+		}
+		
+		$objFile = new File($image);
+		
+		$strCacheName = 'system/html/' . $objFile->filename . '-' . substr(md5($watermark . '-' . $position . '-' . $objFile->mtime), 0, 8) . '.' . $objFile->extension;
+		
+		// Return the path of the new image if it exists already
+		if (file_exists(TL_ROOT . '/' . $strCacheName))
+		{
+			return $strCacheName;
+		}
+		
+		// HOOK: add custom logic
+		if (isset($GLOBALS['TL_HOOKS']['watermarkImage']) && is_array($GLOBALS['TL_HOOKS']['watermarkImage']))
+		{
+			foreach ($GLOBALS['TL_HOOKS']['watermarkImage'] as $callback)
+			{
+				$this->import($callback[0]);
+				$return = $this->$callback[0]->$callback[1]($image, $watermark);
+
+				if (is_string($return))
+				{
+					return $return;
+				}
+			}
+		}
+		
+		$arrGdinfo = gd_info();
+		$strGdVersion = preg_replace('/[^0-9\.]+/', '', $arrGdinfo['GD Version']);
+
+		// Load image
+		switch ($objFile->extension)
+		{
+			case 'gif':
+				if ($arrGdinfo['GIF Read Support'])
+				{
+					$strImage = imagecreatefromgif(TL_ROOT . '/' . $image);
+				}
+				break;
+
+			case 'jpg':
+			case 'jpeg':
+				if ($arrGdinfo['JPG Support'] || $arrGdinfo['JPEG Support'])
+				{
+					$strImage = imagecreatefromjpeg(TL_ROOT . '/' . $image);
+				}
+				break;
+
+			case 'png':
+				if ($arrGdinfo['PNG Support'])
+				{
+					$strImage = imagecreatefrompng(TL_ROOT . '/' . $image);
+				}
+				break;
+		}
+		
+		// Image could not be read
+		if (!$strImage)
+		{
+			return $image;
+		}
+		
+		// Load watermark
+		$objWatermark = new File($watermark);
+		switch ($objWatermark->extension)
+		{
+			case 'gif':
+				if ($arrGdinfo['GIF Read Support'])
+				{
+					$strWatermark = imagecreatefromgif(TL_ROOT . '/' . $watermark);
+				}
+				break;
+
+			case 'jpg':
+			case 'jpeg':
+				if ($arrGdinfo['JPG Support'] || $arrGdinfo['JPEG Support'])
+				{
+					$strWatermark = imagecreatefromjpeg(TL_ROOT . '/' . $watermark);
+				}
+				break;
+
+			case 'png':
+				if ($arrGdinfo['PNG Support'])
+				{
+					$strWatermark = imagecreatefrompng(TL_ROOT . '/' . $watermark);
+				}
+				break;
+		}
+		
+		// Image could not be read
+		if (!$strWatermark)
+		{
+			return $image;
+		}
+		
+		switch( $position )
+		{
+			case 'tl':
+				$x = 0;
+				$y = 0;
+				break;
+				
+			case 'tc':
+				$x = ($objFile->width/2) - ($objWatermark->width/2);
+				$y = 0;
+				break;
+				
+			case 'tr':
+				$x = $objFile->width - $objWatermark->width;
+				$y = 0;
+				break;
+				
+			case 'cc':
+				$x = ($objFile->width/2) - ($objWatermark->width/2);
+				$y = ($objFile->height/2) - ($objWatermark->height/2);
+				break;
+				
+			case 'bl':
+				$x = 0;
+				$y = $objFile->height - $objWatermark->height;
+				break;
+				
+			case 'bc':
+				$x = ($objFile->width/2) - ($objWatermark->width/2);
+				$y = $objFile->height - $objWatermark->height;
+				break;
+				
+			case 'br':
+			default:
+				$x = $objFile->width - $objWatermark->width;
+				$y = $objFile->height - $objWatermark->height;
+				break;
+		}
+		
+		imagecopy($strImage, $strWatermark, $x, $y, 0, 0, $objWatermark->width, $objWatermark->height);
+		
+		// Fallback to PNG if GIF ist not supported
+		if ($objFile->extension == 'gif' && !$arrGdinfo['GIF Create Support'])
+		{
+			$objFile->extension = 'png';
+		}
+
+		// Create the new image
+		switch ($objFile->extension)
+		{
+			case 'gif':
+				imagegif($strImage, TL_ROOT . '/' . $strCacheName);
+				break;
+
+			case 'jpg':
+			case 'jpeg':
+				imagejpeg($strImage, TL_ROOT . '/' . $strCacheName, (!$GLOBALS['TL_CONFIG']['jpgQuality'] ? 80 : $GLOBALS['TL_CONFIG']['jpgQuality']));
+				break;
+
+			case 'png':
+				imagepng($strImage, TL_ROOT . '/' . $strCacheName);
+				break;
+		}
+
+		// Destroy the temporary images
+		imagedestroy($strImage);
+		imagedestroy($strWatermark);
+
+		// Resize the original image
+		if ($target)
+		{
+			$this->import('Files');
+			$this->Files->rename($strCacheName, $target);
+
+			return $target;
+		}
+
+		// Set the file permissions when the Safe Mode Hack is used
+		if ($GLOBALS['TL_CONFIG']['useFTP'])
+		{
+			$this->import('Files');
+			$this->Files->chmod($strCacheName, 0644);
+		}
+
+		// Return the path to new image
+		return $strCacheName;
+	}
 }
 
