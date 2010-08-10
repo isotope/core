@@ -143,8 +143,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_options'] = array
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'rgxp'=>'price', 'tl_class'=>'w50'),
 		),
-		
-		
 		'weight_from' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_shipping_options']['weight_from'],

@@ -34,7 +34,6 @@ $GLOBALS['TL_LANG']['tl_iso_products']['type']					= array('Product Type','Produ
 $GLOBALS['TL_LANG']['tl_iso_products']['alias']					= array('Alias', '');
 $GLOBALS['TL_LANG']['tl_iso_products']['name']					= array('Name', '');
 $GLOBALS['TL_LANG']['tl_iso_products']['sku']					= array('SKU', '');
-$GLOBALS['TL_LANG']['tl_iso_products']['weight']				= array('Weight', '');
 $GLOBALS['TL_LANG']['tl_iso_products']['shipping_weight']		= array('Shipping weight', 'Please enter the shipping weight for this product. This can be used to calculate shipping cost.');
 $GLOBALS['TL_LANG']['tl_iso_products']['stock_quantity']		= array('Quantity', '');
 $GLOBALS['TL_LANG']['tl_iso_products']['teaser']				= array('Teaser', '');

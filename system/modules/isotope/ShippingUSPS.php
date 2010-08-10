@@ -163,7 +163,7 @@ class ShippingUSPS extends IsotopeShipping
 					$this->strAPIMode = 'IntlRate';
 				}
 															
-				$fltWeight = $this->Isotope->Cart->totalWeight;
+				$fltWeight = $this->Isotope->Cart->getShippingWeight('lb');
 				
 				$arrWeight = explode('.', (string)$fltWeight);
 

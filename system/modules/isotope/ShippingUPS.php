@@ -163,9 +163,7 @@ class ShippingUPS extends IsotopeShipping
 					'description'	=> '' 
 				);
 				
-				$strWeightUnit = $this->Isotope->Config->weightUnit;
-				
-				$fltWeight = $this->Isotope->Cart->totalWeight;
+				$fltWeight = $this->Isotope->Cart->getShippingWeight('lb');
 					
 				$arrShipment['packages'][] = array
 				(					
@@ -175,8 +173,8 @@ class ShippingUPS extends IsotopeShipping
 						'description'	=> ''
 					),
 					'description'	=> '',
-					'units'			=> $strWeightUnit,   //weight unit code, lbs or kgs.
-					'weight'		=> $fltWeight,	//shipment weight...  product field "weight" * "quantity_requested" 
+					'units'			=> 'LBS',
+					'weight'		=> ceil($fltWeight),
 					
 				);								
 							

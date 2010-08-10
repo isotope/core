@@ -78,21 +78,6 @@ abstract class IsotopeProductCollection extends Model
 	
 	
 	/**
-	 * Update database with latest product prices
-	 */
-	public function updatePrices()
-	{
-		if (is_array($this->arrProducts) && count($this->arrProducts))
-		{
-			foreach( $this->arrProducts as $objProduct )
-			{
-				$this->Database->execute("UPDATE {$this->ctable} SET price='{$objProduct->price}' WHERE id={$objProduct->cart_id}");
-			}
-		}
-	}
-	
-	
-	/**
 	 * Return data.
 	 * 
 	 * @access public
@@ -443,6 +428,43 @@ abstract class IsotopeProductCollection extends Model
 		}
 		
 		return $arrIds;
+	}
+	
+	
+	/**
+	 * Shutdown function to update database with latest product prices
+	 */
+	public function updatePrices()
+	{
+		if (is_array($this->arrProducts) && count($this->arrProducts))
+		{
+			foreach( $this->arrProducts as $objProduct )
+			{
+				$this->Database->execute("UPDATE {$this->ctable} SET price='{$objProduct->price}' WHERE id={$objProduct->cart_id}");
+			}
+		}
+	}
+	
+	
+	/**
+	 * Calculate the weight of all products in the cart in a specific weight unit
+	 */
+	public function getShippingWeight($unit)
+	{
+		$this->import('Isotope');
+		
+		$arrWeights = array();
+		$arrProducts = $this->getProducts();
+		
+		foreach( $arrProducts as $objProduct )
+		{
+			$arrWeight = deserialize($objProduct->shipping_weight, true);
+			$arrWeight['value'] = $objProduct->quantity_requested * floatval($arrWeight['value']);
+			
+			$arrWeights[] = $arrWeight;
+		}
+		
+		return $this->Isotope->calculateWeight($arrWeights, $unit);
 	}
 	
 	
