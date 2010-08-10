@@ -85,16 +85,6 @@ class IsotopeCart extends IsotopeProductCollection
 	{
 		switch( $strKey )
 		{
-			case 'totalWeight':
-				$arrProducts = $this->getProducts();
-				
-				foreach($arrProducts as $objProduct)
-				{						
-					$fltShippingWeight += $objProduct->weight * $objProduct->quantity_requested;
-				}
-									
-				return $fltShippingWeight;
-				
 			case 'billing_address':
 			case 'billingAddress':
 				if ($this->arrCache['billingAddress_id'] > 0)

@@ -337,13 +337,6 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['stock_oversell'],
 			'inputType'				=> 'checkbox',
 			'eval'					=> array('tl_class'=>'w50 m12'),
-		),
-		'weight' => array
-		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['weight'],
-			'inputType'				=> 'text',
-			'eval'					=> array('rgxp'=>'digit', 'disabled'=>'disabled', 'tl_class'=>'w50'),
-			'attributes'			=> array('legend'=>'shipping_legend'),
 		),*/
 		'shipping_weight' => array
 		(
@@ -1675,7 +1668,7 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 
 				$arrPalette[$GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['attributes']['legend']][] = $field;
 				
-				if (!in_array($field, array('sku','price','shipping_weight','stock_quantity','published')))
+				if (!in_array($field, array('sku', 'price', 'shipping_weight', 'stock_quantity', 'published')))
 				{
 					$arrInherit[$field] = strlen($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['label'][0]) ? $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['label'][0] : $field;
 				}
