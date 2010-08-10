@@ -67,7 +67,9 @@ $GLOBALS['TL_LANG']['tl_iso_config']['gallery_size']					= array('Gallery image 
 $GLOBALS['TL_LANG']['tl_iso_config']['thumbnail_size']					= array('Thumbnail image size', 'In pixels.');
 $GLOBALS['TL_LANG']['tl_iso_config']['medium_size']						= array('Medium image size', 'In pixels.');
 $GLOBALS['TL_LANG']['tl_iso_config']['large_size']						= array('Large image size', 'In pixels.');
-
+$GLOBALS['TL_LANG']['tl_iso_config']['enableWatermark']		= array('Enable watermarking','Watermark images for content protection.'); 
+$GLOBALS['TL_LANG']['tl_iso_config']['watermarkImage'] 		= array('Watermark image','Select an image to be used as a watermark.');
+$GLOBALS['TL_LANG']['tl_iso_config']['watermarkSizes']		= array('Watermark-enabled image sizes','Select image sizes that will show watermarks.');
 
 /**
  * Reference
@@ -76,6 +78,11 @@ $GLOBALS['TL_LANG']['tl_iso_config']['left']							= 'To the left of price';
 $GLOBALS['TL_LANG']['tl_iso_config']['right']							= 'To the right of price';
 $GLOBALS['TL_LANG']['tl_iso_config']['div']								= 'Divide';
 $GLOBALS['TL_LANG']['tl_iso_config']['mul']								= 'Multiply';
+$GLOBALS['TL_LANG']['tl_iso_config']['imageSizes']['gallery']			= "Gallery";
+$GLOBALS['TL_LANG']['tl_iso_config']['imageSizes']['thumbnail']			= "Thumbnail";
+$GLOBALS['TL_LANG']['tl_iso_config']['imageSizes']['medium']			= "Medium";
+$GLOBALS['TL_LANG']['tl_iso_config']['imageSizes']['large']				= "Large";
+
 $GLOBALS['TL_LANG']['tl_iso_config']['weightUnits']['LBS']				= 'Pounds';
 $GLOBALS['TL_LANG']['tl_iso_config']['weightUnits']['KGS']				= 'Kilos';
 

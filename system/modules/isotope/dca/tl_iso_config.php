@@ -122,6 +122,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 	// Palettes
 	'palettes' => array
 	(
+		'__selector__'				  => array('enableWatermark'),
 		'default'                     => '
 			{name_legend},name,label,fallback;
 			{address_legend:hide},firstname,lastname,company,street_1,street_2,street_3,postal,city,subdivision,country,emailShipping,phone;
@@ -129,9 +130,12 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			{price_legend},priceCalculateFactor,priceCalculateMode,priceRoundPrecision,priceRoundIncrement;
 			{currency_legend},currency,currencySymbol,currencyFormat,currencyPosition;
 			{invoice_legend:hide},invoiceLogo;
-			{images_legend},gallery,missing_image_placeholder,gallery_size,thumbnail_size,medium_size,large_size',
+			{images_legend},gallery,missing_image_placeholder,gallery_size,thumbnail_size,medium_size,large_size,enableWatermark',
 	),
-
+	'subpalettes' => array
+	(
+		'enableWatermark' => 'watermarkImage,watermarkSizes'
+	),
 	// Fields
 	'fields' => array
 	(
@@ -459,6 +463,29 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'options'                 => $GLOBALS['TL_LANG']['tl_iso_config']['weightUnits'],
 			'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
 		),
+		'enableWatermark' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['enableWatermark'],
+			'exclude'                 => true,
+			'inputType'               => 'checkbox',
+			'eval'					  => array('submitOnChange'=>true)
+		),
+		'watermarkImage'	=> array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['watermarkImage'],
+			'exclude'                 => true,
+			'inputType'               => 'fileTree',
+			'eval'                    => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions' => 'png'),
+		),
+		'watermarkSizes' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['watermarkSizes'],
+			'exclude'                 => true,
+			'inputType'               => 'checkbox',
+			'options'				  => array('gallery','thumbnail','medium','large'),
+			'eval'					  => array('multiple'=>true),
+			'reference'				  => &$GLOBALS['TL_LANG']['tl_iso_config']['imageSizes']
+		)
 	)
 );
 
