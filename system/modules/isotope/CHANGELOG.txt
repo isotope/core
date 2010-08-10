@@ -21,6 +21,7 @@ Version 0.2.0 beta1
 - Added: Batch invoice printing, by status
 - Added: Consolidation of order management global operations into a tools menu
 - Added: Backend order notes field
+- Added: Option to watermark medium and large images
 - Fixed: fixed overwriting of authorize payment information used for delayed capture upon non-successful transaction
 - Fixed: reference to a undeclared deprecated method in PaymentAuthorizeDotNet
 - Fixed: reference to the cart in Authorize.net - $this->Cart now referred to as $this->Isotope->Cart
