@@ -236,6 +236,9 @@ CREATE TABLE `tl_iso_config` (
   `medium_size` varchar(64) NOT NULL default '',
   `large_size` varchar(64) NOT NULL default '',
   `archive` int(1) unsigned NOT NULL default '0',
+  `enableWatermark` char(1) NOT NULL default '',
+  `watermarkImage` text NULL,
+  `watermarkSizes` blob NULL,
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
