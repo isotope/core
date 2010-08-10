@@ -1631,7 +1631,6 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 		// Variant
 		if ($objProduct->pid > 0)
 		{
-			$arrFields = array('');
 			$arrAttributes = deserialize($objProduct->attributes);
 			$arrPalette['variant_legend'][] = 'variant_attributes,inherit';
 			
@@ -1647,11 +1646,11 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 				}
 			}
 			
-			$arrFields = array_diff(deserialize($objProduct->variant_attributes, true), $arrFields);
+			$arrFields = deserialize($objProduct->variant_attributes, true);
 		}
 		else
 		{
-			$arrFields = deserialize($objProduct->attributes);
+			$arrFields = deserialize($objProduct->attributes, true);
 		}
 		
 		if (is_array($arrFields) && count($arrFields))
@@ -1660,6 +1659,10 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 			{
 				// Field is not an attribute
 				if (!is_array($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]) || !strlen($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['attributes']['legend']))
+					continue;
+				
+				// Do not show variant options
+				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['attributes']['add_to_product_variants'])
 					continue;
 					
 				// Field cannot be edited in variant
