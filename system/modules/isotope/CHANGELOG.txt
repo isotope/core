@@ -6,7 +6,6 @@ Version 0.2.0 beta1
 ------------------------------
 - Introducing IsotopeProductCollection, abstracting a collection of products (eg. cart, order, wishlist)
 - Introducing IsotopeGallery class for creating custom image galleries
-
 - Checkout condition data is now available in order confirmation mail (Ticket #103)
 - Added: Product weight field and weight units
 - Added: Shipping module for price based on product weight
