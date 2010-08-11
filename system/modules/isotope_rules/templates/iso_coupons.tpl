@@ -7,4 +7,5 @@
 <div class="formbody">
 <label for="ctrl_coupon_<?php echo $this->id; ?>"><?php echo $this->label; ?></label>
 <input type="text" name="coupon_<?php echo $this->id; ?>" id="ctrl_coupon_<?php echo $this->id; ?>" class="tl_text" /> <input type="submit" value="<?php echo $this->sLabel; ?>" />
+</div>
 </form>
