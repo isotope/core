@@ -158,6 +158,11 @@ class IsotopeProduct extends Controller
 		}
 		
 		$this->arrData['original_price'] = $this->arrData['price'];
+		
+		//we may need this in the template		
+		$this->arrAttributes[] = 'original_price';
+		$this->arrVariantAttributes[] = 'original_price';
+		
 		$this->loadLanguage();
 		
 		if ($arrData['pid'] > 0)
