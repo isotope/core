@@ -114,7 +114,7 @@ class IsotopeRules extends Controller
 		
 		while( $objRules->next() )
 		{
-			$arrSurcharge = $this->calculateProductSurcharge($objRules->row(), $arrProducts, false);
+			$arrSurcharge = $this->calculateProductSurcharge($objRules->row(), false);
 			
 			if (is_array($arrSurcharge))
 				$arrSurcharges[] = $arrSurcharge;
@@ -135,8 +135,9 @@ class IsotopeRules extends Controller
 				}
 				else
 				{
-					$arrSurcharge = $this->calculateProductSurcharge($arrRule, $arrProducts, true);
-		
+					//cart rules should total all eligible products for the cart discount and apply the discount to that amount rather than individual products.
+					$arrSurcharge = $this->calculateProductSurcharge($arrRule, true);
+						
 					if (is_array($arrSurcharge))
 						$arrSurcharges[] = $arrSurcharge;
 				}
@@ -420,13 +421,14 @@ class IsotopeRules extends Controller
 				}
 			}
 			
-			$fltPrice = $blnDiscount ? ($objProduct->total_price / 100 * $fltDiscount) : $arrRule['discount'];
-			$fltPrice = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
+			$fltTotalProductPrice += $objProduct->total_price;			
 			
-			$arrSurcharge['total_price'] += $fltPrice;
 			$arrSurcharge['products'][$objProduct->cart_id] = $fltPrice;
 		}
 		
+		$fltPrice = $blnDiscount ? ($fltTotalProductPrice / 100 * $fltDiscount) : $arrRule['discount'];
+		$arrSurcharge['total_price'] += $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
+			
 		return $arrSurcharge['total_price'] == 0 ? false: $arrSurcharge;
 	}
 }
