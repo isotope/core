@@ -39,7 +39,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 		'enableVersioning'				=> false,
 		'onload_callback' => array
 		(
-			array('IsotopeBackend', 'hideArchivedRecords'),
+//			array('IsotopeBackend', 'hideArchivedRecords'),
 		),
 	),
 	
@@ -98,10 +98,10 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'__selector__'			=> array('type', 'enableCode', 'configRestrictions', 'memberRestrictions', 'productRestrictions', 'ruleRestrictions'),
+		'__selector__'			=> array('type', 'enableCode', 'configRestrictions', 'memberRestrictions', 'productRestrictions'),
 		'default'				=> '{basic_legend},type',
-		'product'				=> '{basic_legend},type,name,discount;{limit_legend:hide},limitPerMember,limitPerConfig;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},configRestrictions,memberRestrictions,productRestrictions,ruleRestrictions;{enabled_legend},enabled',
-		'cart'					=> '{basic_legend},type,name,label,discount;{coupon_legend:hide},enableCode;{limit_legend:hide},limitPerMember,limitPerConfig;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},configRestrictions,memberRestrictions,productRestrictions,minItemQuantity,maxItemQuantity,ruleRestrictions;{enabled_legend},enabled'
+		'product'				=> '{basic_legend},type,name,discount;{limit_legend:hide},limitPerMember,limitPerConfig;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},configRestrictions,memberRestrictions,productRestrictions;{enabled_legend},enabled',
+		'cart'					=> '{basic_legend},type,name,label,discount,applyTo;{coupon_legend:hide},enableCode;{limit_legend:hide},limitPerMember,limitPerConfig;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},configRestrictions,memberRestrictions,productRestrictions,minItemQuantity,maxItemQuantity;{enabled_legend},enabled'
 	),
 	'subpalettes' => array
 	(
@@ -112,7 +112,6 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 		'productRestrictions_producttypes'	=> 'producttypes',
 		'productRestrictions_pages'			=> 'pages',
 		'productRestrictions_products'		=> 'products',
-		'ruleRestrictions_rules'			=> 'rules',
 	),
 	
 	// Fields
@@ -151,7 +150,17 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			'exclude'					=> true,
 			'search'					=> true,
 			'inputType'					=> 'text',
-			'eval'						=> array('mandatory'=>true, 'rgxp'=>'calc', 'tl_class'=>'clr')
+			'eval'						=> array('mandatory'=>true, 'maxlength'=>16, 'rgxp'=>'discount', 'tl_class'=>'w50')
+		),
+		'applyTo' => array
+		(
+			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['applyTo'],
+			'exclude'					=> true,
+			'default'					=> 'product',
+			'inputType'					=> 'select',
+			'options'					=> array('product', 'item', 'cart'),
+			'reference'					=> &$GLOBALS['TL_LANG']['tl_iso_rules']['applyTo'],
+			'eval'						=> array('mandatory'=>true, 'tl_class'=>'w50')
 		),
 		'enableCode' => array
 		(
@@ -369,33 +378,6 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
             'inputType'					=> 'text',
             'eval'						=> array('maxlength'=>10, 'rgxp'=>'digit', 'tl_class'=>'w50')
       	),
-        'ruleRestrictions' => array
-		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_rules']['ruleRestrictions'],
-			'inputType'					=> 'radio',
-			'default'					=> 'none',
-			'exclude'					=> true,
-			'filter'					=> true,
-			'options'					=> array('none', 'all', 'rules'),
-			'eval'						=> array('submitOnChange'=>true, 'tl_class'=>'clr'),
-			'reference'					=> &$GLOBALS['TL_LANG']['tl_iso_rules']['ruleRestrictions']
-		),
-		'rules' => array
-        (
-            'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['rules'],
-            'exclude'					=> true,
-			'inputType'					=> 'checkbox',
-			'options_callback'			=> array('tl_iso_rules', 'getRules'),
-			'eval'						=> array('multiple'=>true, 'mandatory'=>true, 'doNotSaveEmpty'=>true),
-			'load_callback' => array
-			(
-				array('tl_iso_rules', 'loadRestrictions'),
-			),
-			'save_callback' => array
-			(
-				array('tl_iso_rules', 'saveRestrictions'),
-			),
-        ),
 		'enabled'	=> array
 		(
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['enabled'],

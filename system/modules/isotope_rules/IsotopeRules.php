@@ -421,13 +421,36 @@ class IsotopeRules extends Controller
 				}
 			}
 			
-			$fltTotalProductPrice += $objProduct->total_price;			
-			
-			$arrSurcharge['products'][$objProduct->cart_id] = $fltPrice;
+			switch( $arrRule['applyTo'] )
+			{
+				case 'product':
+					$fltPrice = $blnDiscount ? ($objProduct->total_price / 100 * $fltDiscount) : $arrRule['discount'];
+					$fltPrice = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
+					
+					$arrSurcharge['total_price'] += $fltPrice;
+					$arrSurcharge['products'][$objProduct->cart_id] = $fltPrice;
+					break;
+					
+				case 'item':
+					$fltPrice = ($blnDiscount ? ($objProduct->price / 100 * $fltDiscount) : $arrRule['discount']) * $objProduct->quantity_requested;
+					$fltPrice = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
+					
+					$arrSurcharge['total_price'] += $fltPrice;
+					$arrSurcharge['products'][$objProduct->cart_id] = $fltPrice;
+					break;
+					
+				case 'cart':
+					$arrSurcharge['total_price'] += $objProduct->total_price;
+					break;
+			}
 		}
 		
-		$fltPrice = $blnDiscount ? ($fltTotalProductPrice / 100 * $fltDiscount) : $arrRule['discount'];
-		$arrSurcharge['total_price'] += $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
+		if ($arrRule['applyTo'] == 'cart')
+		{
+			$fltPrice = $blnDiscount ? ($arrSurcharge['total_price'] / 100 * $fltDiscount) : $arrRule['discount'];
+			$arrSurcharge['total_price'] = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
+			$arrSurcharge['before_tax'] = false;
+		}
 			
 		return $arrSurcharge['total_price'] == 0 ? false: $arrSurcharge;
 	}
