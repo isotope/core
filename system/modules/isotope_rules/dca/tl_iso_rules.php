@@ -39,7 +39,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 		'enableVersioning'				=> false,
 		'onload_callback' => array
 		(
-//			array('IsotopeBackend', 'hideArchivedRecords'),
+			array('IsotopeBackend', 'hideArchivedRecords'),
 		),
 	),
 	
