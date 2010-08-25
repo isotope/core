@@ -32,20 +32,18 @@
 $GLOBALS['TL_LANG']['tl_iso_rules']['type']					= array('Type','Please choose the type of rule.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['name']          		= array('Name', 'Please enter a name for this rule.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['label']          		= array('Label', 'The label will be show in cart. If you do not enter a label, the name will be used.');
-$GLOBALS['TL_LANG']['tl_iso_rules']['discount']				= array('Discount','Valid values are decimals or whole numbers, minus a numerical value or minus a percentage.');
+$GLOBALS['TL_LANG']['tl_iso_rules']['discount']				= array('Discount', 'Valid values are decimals or whole numbers, minus a numerical value or minus a percentage.');
+$GLOBALS['TL_LANG']['tl_iso_rules']['applyTo']				= array('Apply discount to', 'Select how the discount is applied.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['enableCode']			= array('Enable coupon code','Require a code to be entered to invoke this rule, as a coupon.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['code']					= array('Rule (coupon) code','Please enter a code by which a customer will invoke this rule, as a coupon.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['limitPerMember']		= array('Uses per member', 'This will be used to see if the rule has already been redeemed.  If this is set to 0, it can be used unlimited times for each customer.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['limitPerConfig']		= array('Uses per store config', 'This will be used to see if the rule has already been redeemed.  If this is set to 0, it can be used unlimited times for each store config.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['minItemQuantity']		= array('Minimum item quantity','Please specify a minimum quantity of a an item this rule applies to.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['maxItemQuantity']		= array('Maximum item quantity','Please specify a maximum quantity of a single item this rule applies to.');
-
-$GLOBALS['TL_LANG']['tl_iso_rules']['ruleRestrictions']  	= array('Rule restrictions', 'Restrict a rule to be only usable alone or with certain rule.');
-$GLOBALS['TL_LANG']['tl_iso_rules']['rules']     			= array('Rules', 'Select other rule this rule is usable with, or you may indicate that this rule is usable with no other rule.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['startDate']      		= array('Start date', 'If desired, please specify the date this rule will become eligible on.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['endDate']        		= array('End date', 'If desired, please specify the date this rule will no longer be eligible on.');
-$GLOBALS['TL_LANG']['tl_iso_rules']['protected']			= array('Protected','Further restrict the eligibility properties of this rule.');
-
+$GLOBALS['TL_LANG']['tl_iso_rules']['startTime']			= array('Start time','If desired, please specify the time this rule will become eligible at.');
+$GLOBALS['TL_LANG']['tl_iso_rules']['endTime']				= array('End time','If desired, please specify the time this rule will not longer be eligible at.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['configRestrictions']	= array('Store config restrictions', 'Restrict a rule to certain store configs.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['configs']         		= array('Store configs', 'Select configs this rule is restricted to.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['memberRestrictions']	= array('Member restrictions', 'Restrict a rule to certain groups or members.');
@@ -87,6 +85,10 @@ $GLOBALS['TL_LANG']['tl_iso_rules']['productRestrictions']['products']		= 'Speci
 $GLOBALS['TL_LANG']['tl_iso_rules']['ruleRestrictions']['all']				= 'Exclude all other rules';
 $GLOBALS['TL_LANG']['tl_iso_rules']['ruleRestrictions']['none']				= 'No rule exclusions';
 $GLOBALS['TL_LANG']['tl_iso_rules']['ruleRestrictions']['rules']			= 'Exclude certain rules';
+
+$GLOBALS['TL_LANG']['tl_iso_rules']['applyTo']['product']					= 'to each product';
+$GLOBALS['TL_LANG']['tl_iso_rules']['applyTo']['item']						= 'to each unit of a product';
+$GLOBALS['TL_LANG']['tl_iso_rules']['applyTo']['cart']						= 'to the cart subtotal';
 
 
 /**

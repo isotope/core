@@ -833,7 +833,7 @@ class Isotope extends Controller
 				return true;
 				break;
 				
-			case 'calc':
+			case 'discount':
 				if(!preg_match('/^[-+]\d+(\.\d{1,2})?%?$/', $varValue))
 				{															
 					$objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR']['calc'], $objWidget->label));
