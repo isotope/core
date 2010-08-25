@@ -44,6 +44,8 @@ $GLOBALS['TL_LANG']['tl_iso_rules']['ruleRestrictions']  	= array('Rule restrict
 $GLOBALS['TL_LANG']['tl_iso_rules']['rules']     			= array('Rules', 'Select other rule this rule is usable with, or you may indicate that this rule is usable with no other rule.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['startDate']      		= array('Start date', 'If desired, please specify the date this rule will become eligible on.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['endDate']        		= array('End date', 'If desired, please specify the date this rule will no longer be eligible on.');
+$GLOBALS['TL_LANG']['tl_iso_rules']['startTime']			= array('Start time','If desired, please specify the time this rule will become eligible at.');
+$GLOBALS['TL_LANG']['tl_iso_rules']['endTime']				= array('End time','If desired, please specify the time this rule will not longer be eligible at.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['protected']			= array('Protected','Further restrict the eligibility properties of this rule.');
 
 $GLOBALS['TL_LANG']['tl_iso_rules']['configRestrictions']	= array('Store config restrictions', 'Restrict a rule to certain store configs.');
