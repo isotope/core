@@ -341,7 +341,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'shipping_weight' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['shipping_weight'],
-			'inputType'				=> 'inputUnit',
+			'inputType'				=> 'timePeriod',
 			'default'				=> 'kg',
 			'options'				=> array('mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'),
 			'reference'				=> &$GLOBALS['TL_LANG']['WGT'],
