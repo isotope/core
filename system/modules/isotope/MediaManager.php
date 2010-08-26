@@ -244,7 +244,7 @@ class MediaManager extends Widget implements uploadable
   <thead>
   <tr>
     <td>'.$GLOBALS['TL_LANG'][$this->strTable]['mmSrc'].'</td>
-    <td>'.$GLOBALS['TL_LANG'][$this->strTable]['mmAlt'].'</td>
+    <td>'.$GLOBALS['TL_LANG'][$this->strTable]['mmAlt'].' / '.$GLOBALS['TL_LANG'][$this->strTable]['mmLink'].'</td>
     <td>'.$GLOBALS['TL_LANG'][$this->strTable]['mmDesc'].'</td>
     <td>&nbsp;</td>
   </tr>
@@ -263,7 +263,7 @@ class MediaManager extends Widget implements uploadable
 			$return .= '
   <tr>
     <td><input type="hidden" name="' . $this->strName . '['.$i.'][src]" value="' . $this->varValue[$i]['src'] . '" /><a href="' . $strImage . '" rel="lightbox"><img src="' . $this->getImage($strImage, 50, 50, 'box') . '" alt="' . $this->varValue[$i]['src'] . '" /></a></td>
-    <td><input type="text" class="tl_text_2" name="' . $this->strName . '['.$i.'][alt]" value="' . $this->varValue[$i]['alt'] . '" /></td>
+    <td><input type="text" class="tl_text_2" name="' . $this->strName . '['.$i.'][alt]" value="' . $this->varValue[$i]['alt'] . '" /><br /><input type="text" class="tl_text_2" name="' . $this->strName . '['.$i.'][link]" value="' . $this->varValue[$i]['link'] . '" /></td>
     <td><textarea name="' . $this->strName . '['.$i.'][desc]" cols="40" rows="3" class="tl_textarea">' . $this->varValue[$i]['desc'] . '</textarea></td>
     <td>';
 

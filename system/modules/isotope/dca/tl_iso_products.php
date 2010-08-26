@@ -345,7 +345,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'default'				=> 'kg',
 			'options'				=> array('mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'),
 			'reference'				=> &$GLOBALS['TL_LANG']['WGT'],
-			'eval'					=> array('rgxp'=>'digit', 'tl_class'=>'w50 wizard', 'helpwizard'=>&$GLOBALS['TL_LANG']['WGT']),
+			'eval'					=> array('rgxp'=>'digit', 'tl_class'=>'w50 wizard', 'helpwizard'=>true),
 			'attributes'			=> array('legend'=>'shipping_legend'),
 		),
 		'shipping_exempt' => array
@@ -359,7 +359,8 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['images'],
 			'inputType'				=> 'mediaManager',
-			'eval'					=> array('extensions'=>'jpeg,jpg,png,gif'),
+			'explanation'			=> 'mediaManager',
+			'eval'					=> array('extensions'=>'jpeg,jpg,png,gif', 'helpwizard'=>true),
 			'attributes'			=> array('legend'=>'media_legend', 'fixed'=>true),
 		),
 		'published' => array
