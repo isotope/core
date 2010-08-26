@@ -2,7 +2,11 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 0.2.0 beta1
+Version 0.2.beta2
+------------------------------
+- Fixed: Variant price should not show "From" when all variants have the same price
+
+Version 0.2.beta1 (2010-08-25)
 ------------------------------
 - Introducing IsotopeProductCollection, abstracting a collection of products (eg. cart, order, wishlist)
 - Introducing IsotopeGallery class for creating custom image galleries
