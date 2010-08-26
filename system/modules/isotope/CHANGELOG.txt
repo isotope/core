@@ -6,6 +6,7 @@ Version 0.2.beta2
 ------------------------------
 - Added: New "link target" field and help wizard to media manager
 - Fixed: Variant price should not show "From" when all variants have the same price
+- Fixed: Now using core widget TimePeriod for shipping weight which has a larger select menu.
 
 Version 0.2.beta1 (2010-08-25)
 ------------------------------
