@@ -149,11 +149,15 @@ class IsotopeProduct extends Controller
 		// Find lowest price
 		if ($this->arrType['variants'] && in_array('price', $this->arrVariantAttributes))
 		{
-			$objProduct = $this->Database->execute("SELECT MIN(price) AS low_price, MAX(price) AS high_price FROM tl_iso_products WHERE pid=" . ($this->arrData['pid'] ? $this->arrData['pid'] : $this->arrData['id']) . " AND published='1' AND language=''");
+			$objProduct = $this->Database->execute("SELECT MIN(price) AS low_price, MAX(price) AS high_price FROM tl_iso_products WHERE pid=" . ($this->arrData['pid'] ? $this->arrData['pid'] : $this->arrData['id']) . " AND published='1' AND language='' GROUP BY pid");
 
 			if ($objProduct->low_price < $objProduct->high_price)
 			{
 				$this->arrCache['low_price'] = $objProduct->low_price;
+			}
+			else
+			{
+				$this->arrData['price'] = $objProduct->low_price;
 			}
 		}
 		
