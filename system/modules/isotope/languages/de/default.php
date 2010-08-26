@@ -108,10 +108,7 @@ $GLOBALS['TL_LANG']['MSC']['labelPagerSectionTitle']    = 'Seite:';
 $GLOBALS['TL_LANG']['MSC']['labelOrderBy']              = 'Sortieren nach:';
 $GLOBALS['TL_LANG']['MSC']['noProducts']                = 'Zurzeit sind in dieser Kategorie keine Produkte vorhanden.';
 $GLOBALS['TL_LANG']['MSC']['invalidProductInformation'] = 'Das von Ihnen gewünschte Produkt ist leider nicht vorhanden oder wurde aus dem Shop entfernt. Für weitere Hilfe nehmen Sie bitte Kontakt mit uns auf.';
-$GLOBALS['TL_LANG']['MSC']['productDescriptionLabel']   = 'Beschreibung';
 
-$GLOBALS['TL_LANG']['MSC']['productDetailLabel']  = 'Details';
-$GLOBALS['TL_LANG']['MSC']['productMediaLabel']   = 'Audio und Video';
 $GLOBALS['TL_LANG']['MSC']['productOptionsLabel'] = 'Optionen';
 
 $GLOBALS['TL_LANG']['MSC']['previousStep']  = 'Zurück';

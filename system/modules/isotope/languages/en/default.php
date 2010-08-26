@@ -112,10 +112,7 @@ $GLOBALS['TL_LANG']['MSC']['orderByLabel'] = 'Order By:';
 $GLOBALS['TL_LANG']['MSC']['buttonActionString']['add_to_cart'] = 'Add product %s to your cart';
 $GLOBALS['TL_LANG']['MSC']['noProducts'] = 'No products have been found.';
 $GLOBALS['TL_LANG']['MSC']['invalidProductInformation'] = "We're sorry, the product information you have requested is not showing up in our store. For further assistance please contact us.";
-$GLOBALS['TL_LANG']['MSC']['productDescriptionLabel'] = 'Description';
 
-$GLOBALS['TL_LANG']['MSC']['productDetailLabel'] = 'Details';
-$GLOBALS['TL_LANG']['MSC']['productMediaLabel'] = 'Audio and Video';
 $GLOBALS['TL_LANG']['MSC']['productOptionsLabel'] = 'Options';
 
 $GLOBALS['TL_LANG']['MSC']['previousStep']	= 'Back';
