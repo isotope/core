@@ -183,6 +183,8 @@ class IsotopeGallery extends Frontend
 		$objTemplate->type = $strType;
 		$objTemplate->href_reader = $this->href_reader;
 		
+		list($objTemplate->link, $objTemplate->rel) = explode('|', $arrFile['link']);
+		
 		return '<span id="' . $this->name . '_' . $strType . 'size">'.$objTemplate->parse().'</span>';
 	}
 	
@@ -203,6 +205,8 @@ class IsotopeGallery extends Frontend
 			$objTemplate->setData($arrFile);
 			$objTemplate->type = 'gallery';
 			$objTemplate->href_reader = $this->href_reader;
+			
+			list($objTemplate->link, $objTemplate->rel) = explode('|', $arrFile['link']);
 			
 			$strGallery .= $objTemplate->parse();
 		}
