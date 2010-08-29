@@ -155,10 +155,31 @@ class IsotopeProduct extends Controller
 			{
 				$this->arrCache['low_price'] = $objProduct->low_price;
 			}
-			else
+			
+			//we will need this in the template potentially
+			$this->arrAttributes[] = 'original_price';
+			$this->arrVariantAttributes[] = 'original_price';
+			
+			if(isset($GLOBALS['TL_HOOKS']['iso_addAttributes']) && is_array($GLOBALS['TL_HOOKS']['iso_addAttributes']))
 			{
-				$this->arrData['price'] = $objProduct->low_price;
+				foreach ($GLOBALS['TL_HOOKS']['iso_addAttributes'] as $callback)
+				{
+					$this->import($callback[0]);
+					$this->arrAttributes[] = $this->$callback[0]->$callback[1]($this);
+				}
 			}
+			
+			if(isset($GLOBALS['TL_HOOKS']['iso_addVariantAttributes']) && is_array($GLOBALS['TL_HOOKS']['iso_addVariantAttributes']))
+			{
+				foreach ($GLOBALS['TL_HOOKS']['iso_addVariantAttributes'] as $callback)
+				{
+					$this->import($callback[0]);
+					$this->arrVariantAttributes[] = $this->$callback[0]->$callback[1]($this);
+				}
+			}
+			
+			$this->arrData['original_price'] = $this->arrData['price'];
+					
 		}
 		
 		$this->arrData['original_price'] = $this->arrData['price'];
@@ -919,7 +940,7 @@ class IsotopeProduct extends Controller
 	}
 	
 	
-	protected function loadVariantData($arrData)
+	public function loadVariantData($arrData)
 	{
 		$arrInherit = deserialize($arrData['inherit'], true);
 
