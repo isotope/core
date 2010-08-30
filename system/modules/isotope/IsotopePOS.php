@@ -355,7 +355,7 @@ class IsotopePOS extends Backend
 			$arrProduct['id'] = $objItems->product_id;
 			unset($arrProduct['pid']);
 																			
-			$objProduct = new $strClass($arrProduct);
+			$objProduct = new $strClass($arrProduct, true);
 							
 			$objProduct->quantity_requested = $objItems->product_quantity;
 			$objProduct->cart_id = $objItems->id;
