@@ -1598,7 +1598,6 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 
 		$this->createNewVersion('tl_iso_products', $intId);
 	}
-
 	
 	
 	/**
@@ -1610,7 +1609,7 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 			return;
 			
 		// Set default product type
-		$GLOBALS['TL_DCA']['tl_iso_products']['fields']['type']['default'] = $this->Database->execute("SELECT id FROM tl_iso_producttypes WHERE fallback='1'")->id;
+		$GLOBALS['TL_DCA']['tl_iso_products']['fields']['type']['default'] = $this->Database->execute("SELECT id FROM tl_iso_producttypes ORDER BY fallback DESC, name")->id;
 		
 		// Load the current product
 		$objProduct = $this->Database->prepare("SELECT id, pid, language, type, (SELECT attributes FROM tl_iso_producttypes WHERE id=tl_iso_products.type) AS attributes, (SELECT variant_attributes FROM tl_iso_producttypes WHERE id=tl_iso_products.type) AS variant_attributes FROM tl_iso_products WHERE id=?")->limit(1)->execute($dc->id);
