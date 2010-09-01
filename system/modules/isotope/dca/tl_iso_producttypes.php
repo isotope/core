@@ -31,19 +31,17 @@
  */
 $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
 (
-
 	// Config
 	'config' => array
 	(
 		'dataContainer'				=> 'Table',
-		'switchToEdit'				=> true,
 		'enableVersioning'			=> true,
 		'closed'					=> true,
-		'onload_callback'			=> array
+		'onload_callback' => array
 		(
 			array('tl_iso_producttypes', 'checkPermission'),
 		),
-		'ondelete_callback'			  => array
+		'ondelete_callback' => array
 		(
 			array('tl_iso_producttypes', 'archiveRecord'),
 		),
@@ -61,8 +59,8 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
 		),
 		'label' => array
 		(
-			'fields'				=> array('name'),
-			'format'				=> '%s',
+			'fields'				=> array('name', 'fallback'),
+			'format'				=> '%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>',
 		),
 		'global_operations' => array
 		(
