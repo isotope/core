@@ -63,7 +63,6 @@ $GLOBALS['TL_LANG']['ERR']['cc_type']				= 'Please select a credit card type.';
 $GLOBALS['TL_LANG']['ERR']['cc_exp']				= 'Please provide a credit card expiration date in the mm/yy format.';
 $GLOBALS['TL_LANG']['ERR']['cc_ccv']				= 'Please provide a card code verification number (3 or 4 digits found on the front or back of the card).';
 $GLOBALS['TL_LANG']['ERR']['cc_match']				= 'Your credit card number does not match the selected credit card type.';
-$GLOBALS['TL_LANG']['ERR']['cc_exp_paypal']			= 'Please provide a credit card expiration date in the mm/yyyy format.';
 
 //Address Book Errors
 $GLOBALS['TL_LANG']['ERR']['addressDoesNotExist'] = 'This address does not exist in your address book.';
@@ -227,17 +226,19 @@ $GLOBALS['TL_LANG']['ISO']['changeCheckoutInfo']			= 'Change';
 $GLOBALS['TL_LANG']['ISO']['cc_num']						= 'Credit card number';
 $GLOBALS['TL_LANG']['ISO']['cc_type']						= 'Credit card type';
 $GLOBALS['TL_LANG']['ISO']['cc_ccv']						= 'CCV number (3 or 4 digit code)';
-$GLOBALS['TL_LANG']['ISO']['cc_exp_paypal']					= 'Credit card expiration (mm/yyyy)';
+$GLOBALS['TL_LANG']['ISO']['cc_exp_paypal']					= 'Expiration date';
 $GLOBALS['TL_LANG']['ISO']['cc_exp_month']					= 'Expiration month';
 $GLOBALS['TL_LANG']['ISO']['cc_exp_year']					= 'Expiration year';
 $GLOBALS['TL_LANG']['ISO']['cc_issue_number']				= 'Credit card issue number, 2 digits (required for Maestro and Solo cards).';
 $GLOBALS['TL_LANG']['ISO']['cc_start_date']					= 'Credit card start date (required for Maestro and Solo cards).';
+$GLOBALS['TL_LANG']['MSC']['pay_with_cc']					= array('Processing payment', 'Please enter the required information to process your payment.', 'Pay now');
 $GLOBALS['TL_LANG']['ISO']['pay_with_paypal']				= array('Pay with PayPal', 'You will be redirected to the PayPal payment website. If you are not automatically redirected, please click on the "Pay now" button.', 'Pay now');
 $GLOBALS['TL_LANG']['ISO']['pay_with_epay']					= array('Pay with ePay', 'You will be redirected to the ePay payment website. If you are not automatically redirected, please click on the "Pay now" button.', 'Pay now');
 $GLOBALS['TL_LANG']['ISO']['backendPaymentNotFound']		= 'Payment module not found!';
 $GLOBALS['TL_LANG']['ISO']['backendShippingNotFound']		= 'Shipping module not found!';
 $GLOBALS['TL_LANG']['ISO']['backendPaymentNoInfo']			= 'This payment module does not provide additional information.';
 $GLOBALS['TL_LANG']['ISO']['backendShippingNoInfo']			= 'This shipping module does not provide additional information.';
+
 
 /**
  * Shipping modules
@@ -258,7 +259,8 @@ $GLOBALS['TL_LANG']['PAY']['paypal']			= array('PayPal Standard Checkout', 'This
 $GLOBALS['TL_LANG']['PAY']['paypalpayflowpro']	= array('PayPal Payflow Pro', 'The PayPal Payflow module is a full service credit card gateway, a more robust solution for most e-commerce sites.');
 $GLOBALS['TL_LANG']['PAY']['postfinance']		= array('Postfinance', 'Payment gateway for the swiss post payment system that supports various card types. The store will be instantly notified about successfull transactions.');
 $GLOBALS['TL_LANG']['PAY']['authorizedotnet']	= array('Authorize.net', 'An Authorize.net payment gateway.');
-$GLOBALS['TL_LANG']['PAY']['epay_standard']		= array('ePay Standard Payment', 'See <a href="http://www.epay.eu/" onclick="window.open(this.href); return false">www.epay.eu</a> for more information about ePay.');
+$GLOBALS['TL_LANG']['PAY']['epay_window']		= array('ePay Payment Window', 'See <a href="http://www.epay.eu/" onclick="window.open(this.href); return false">www.epay.eu</a> for more information about ePay.');
+$GLOBALS['TL_LANG']['PAY']['epay_form']			= array('ePay HTML Form', 'See <a href="http://www.epay.eu/" onclick="window.open(this.href); return false">www.epay.eu</a> for more information about ePay.');
 
 
 /**

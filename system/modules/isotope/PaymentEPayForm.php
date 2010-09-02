@@ -31,40 +31,8 @@
  * 
  * @extends Payment
  */
-class PaymentEPay extends IsotopePayment
-{
-
-	protected $arrLanguages = array('da'=>1, 'en'=>2, 'sv'=>3, 'no'=>4, 'kl'=>5, 'is'=>6, 'de'=>7, 'fi'=>8);
-	protected $arrCurrencies = array('AUD'=>036, 'CAD'=>124, 'DKK'=>208, 'HKD'=>344, 'ISK'=>352, 'JPY'=>392, 'MXN'=>484, 'NZD'=>554, 'NOK'=>578, 'SGD'=>702, 'ZAR'=>710, 'SEK'=>752, 'CHF'=>756, 'THB'=>764, 'GBP'=>826, 'USD'=>840, 'TRY'=>949, 'EUR'=>978, 'PLN'=>985);
-	
-	
-	public function __get($strKey)
-	{
-		switch( $strKey )
-		{
-			case 'available':
-				if (!array_key_exists($this->Isotope->Config->currency, $this->arrCurrencies))
-					return false;
-					
-				return parent::__get($strKey);
-				
-			default:
-				return parent::__get($strKey);
-		}
-	}
-	
-	
-	/**
-	 * Return a list of status options.
-	 * 
-	 * @access public
-	 * @return array
-	 */
-	public function statusOptions()
-	{
-		return array('pending', 'processing', 'complete', 'on_hold');
-	}
-	
+class PaymentEPayForm extends PaymentEPay
+{	
 	
 	/**
 	 * processPayment function.
@@ -78,7 +46,7 @@ class PaymentEPay extends IsotopePayment
 		$intTotal = $this->Isotope->Cart->grandTotal * 100;
 		
 		// Check basic order data
-		if ($this->Input->get('orderid') == $objOrder->id && $this->Input->get('cur') == $this->arrCurrencies[$this->Isotope->Config->currency] && $this->Input->get('amount') == $intTotal)
+		if ($this->Input->get('orderid') == $objOrder->id && $this->Input->get('cur') == $this->arrCurrencies[$this->Isotope->Config->currency] && $this->Input->get('amount') == (string)$intTotal)
 		{
 			// Validate MD5 secret key
 			if (md5($intTotal . $objOrder->id . $this->Input->get('tid') . $this->epay_secretkey) == $this->Input->get('eKey'))
@@ -88,8 +56,8 @@ class PaymentEPay extends IsotopePayment
 		}
 		
 		global $objPage;
-		$this->log('Invalid payment data received.', 'PaymentEPay processPayment()', TL_ERROR);
-		$this->redirect($this->generateFrontendUrl($objPage->row(), '/step/failed'));
+		$this->log('Invalid payment data received.', 'PaymentEPayForm processPayment()', TL_ERROR);
+		$this->redirect($this->generateFrontendUrl($objPage->row(), '/step/process'));
 	}
 	
 	
@@ -106,36 +74,67 @@ class PaymentEPay extends IsotopePayment
 		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->execute($this->Isotope->Cart->id);
 		$intTotal = round($this->Isotope->Cart->grandTotal, 2) * 100;
 		
-		return '
-<h2>' . $GLOBALS['TL_LANG']['MSC']['pay_with_epay'][0] . '</h2>
-<p class="message">' . $GLOBALS['TL_LANG']['MSC']['pay_with_epay'][1] . '</p>
-<form id="payment_form" action="https://ssl.ditonlinebetalingssystem.dk/popup/default.asp" method="post">
+		$strBuffer = '
+<h2>' . $GLOBALS['TL_LANG']['MSC']['pay_with_cc'][0] . '</h2>
+<p class="message">' . $GLOBALS['TL_LANG']['MSC']['pay_with_cc'][1] . '</p>' . 
+($this->Input->get('error') == '' ? '' : '<p class="error message">'.$GLOBALS['TL_LANG']['MSG']['epay'][$this->Input->get('error')].'</p>') . '
+<form id="payment_form" action="https://ssl.ditonlinebetalingssystem.dk/auth/default.aspx" method="post">
 
-<input type="hidden" name="language" value="' . (array_key_exists($GLOBALS['TL_LANGUAGE'], $this->arrLanguages) ? $this->arrLanguages[$GLOBALS['TL_LANGUAGE']] : 2) . '">
+<table cellspacing="0" cellpadding="0" summary="ePay Payment Form">
+	<tr class="cardno">
+		<td><label for="ctrl_cardno">' . $GLOBALS['TL_LANG']['ISO']['cc_num'] . '<label> <span class="mandatory">*</span></td>
+		<td><input type="text" class="text" id="ctrl_cardno" name="cardno" maxlength="19" autocomplete="off" /></td>
+	</tr>
+	<tr class="expdate">
+		<td><label for="ctrl_expmonth">' . $GLOBALS['TL_LANG']['ISO']['cc_exp_date'] . '</label> <span class="mandatory">*</span></td>
+		<td>
+			<select id="ctrl_expmonth" name="expmonth" class="select">';
+		
+		foreach( range(1, 12) as $month )
+		{
+			$month = str_pad($month, 2, '0', STR_PAD_LEFT);
+			$strBuffer .= '<option value="' . $month . '">' . $month . '</option>';
+		}
+		
+		$strBuffer .= '</select>&nbsp;<select id="ctrl_expyear" name="expyear" class="select">';
+		
+		for( $now=date('Y'), $year=$now; $year<=$now+12; $year++ )
+		{
+			$strBuffer .= '<option value="' . substr($year, -2) . '">' . $year . '</option>';
+		}
+		
+		$strBuffer .= '</select>
+		</td>
+	</tr>
+	<tr class="cvc">
+		<td><label for="ctrl_cvc">' . $GLOBALS['TL_LANG']['ISO']['cc_ccv'] . '</label></td>
+		<td><input type="text" class="text" name="cvc" id="ctrl_cvc" maxlength="4" autocomplete="off" /></td>
+	</tr>
+</table>
+
+
 <input type="hidden" name="merchantnumber" value="' . $this->epay_merchantnumber . '">
 <input type="hidden" name="orderid" value="' . $objOrder->id . '">
 <input type="hidden" name="currency" value="' . $this->arrCurrencies[$this->Isotope->Config->currency] . '">
 <input type="hidden" name="amount" value="' . $intTotal . '">
 
 <input type="hidden" name="accepturl" value="' . $this->Environment->base . $this->generateFrontendUrl($objPage->row(), '/step/complete') . '">
-<input type="hidden" name="declineurl" value="' . $this->Environment->base . $this->generateFrontendUrl($objPage->row(), '/step/failed') . '">
+<input type="hidden" name="declineurl" value="' . $this->Environment->base . $this->generateFrontendUrl($objPage->row(), '/step/process') . '">
 
+<input type="hidden" name="language" value="2">
 <input type="hidden" name="instantcapture" value="1">
 <input type="hidden" name="md5key" value="' . md5($this->arrCurrencies[$this->Isotope->Config->currency] . $intTotal . $objOrder->id . $this->epay_secretkey) . '">
 <input type="hidden" name="cardtype" value="0">
-<input type="hidden" name="windowstate" value="2">
 <input type="hidden" name="use3D" value="1">
 
-<input type="submit" class="submit button" value="' . $GLOBALS['TL_LANG']['MSC']['pay_with_epay'][2] . '" />
+<div class="submit_container">
+<input type="submit" class="submit button" value="' . $GLOBALS['TL_LANG']['MSC']['pay_with_cc'][2] . '" />
+<a class="button" href="' . $this->Environment->base . $this->generateFrontendUrl($objPage->row(), '/step/failed') . '">Cancel</a>
+</div>
 
-</form>
-<script type="text/javascript">
-<!--//--><![CDATA[//><!--
-window.addEvent( \'domready\' , function() {
-  $(\'payment_form\').submit();
-});
-//--><!]]>
-</script>';
+</form>';
+
+		return $strBuffer;
 	}
 }
 
