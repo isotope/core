@@ -35,7 +35,7 @@ class PaymentEPay extends IsotopePayment
 {
 
 	private $arrLanguages = array('da'=>1, 'en'=>2, 'sv'=>3, 'no'=>4, 'kl'=>5, 'is'=>6, 'de'=>7, 'fi'=>8);
-	private $arrCurrencies = array('DKK'=>208, 'EUR'=>978, 'USD'=>840, 'NOK'=>578, 'SEK'=>752, 'GBP'=>826);
+	private $arrCurrencies = array('AUD'=>036, 'CAD'=>124, 'DKK'=>208, 'HKD'=>344, 'ISK'=>352, 'JPY'=>392, 'MXN'=>484, 'NZD'=>554, 'NOK'=>578, 'SGD'=>702, 'ZAR'=>710, 'SEK'=>752, 'CHF'=>756, 'THB'=>764, 'GBP'=>826, 'USD'=>840, 'TRY'=>949, 'EUR'=>978, 'PLN'=>985);
 	
 	
 	public function __get($strKey)
