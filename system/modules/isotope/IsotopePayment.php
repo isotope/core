@@ -67,6 +67,7 @@ abstract class IsotopePayment extends Frontend
 		parent::__construct();
 		
 		$this->import('Isotope');
+		$this->loadLanguageFile('payment');
 
 		$arrRow['allowed_cc_types'] = deserialize($arrRow['allowed_cc_types']);
 		if (is_array($arrRow['allowed_cc_types']))
