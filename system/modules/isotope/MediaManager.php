@@ -162,17 +162,18 @@ class MediaManager extends Widget implements uploadable
 			$this->import('Database');
 			
 			$pathinfo = pathinfo($file['name']);
-			$uploadFolder = 'isotope/' . strtolower(substr($pathinfo['filename'], 0, 1));
-		
-			// Make sure directory exists
-			$this->Files->mkdir($uploadFolder);
 			
 			$strCacheName = standardize($pathinfo['filename']) . '.' . $pathinfo['extension'];
+			$uploadFolder = 'isotope/' . substr($strCacheName, 0, 1));
 			
 			if (is_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName) && md5_file($file['tmp_name']) != md5_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName))
 			{
 				$strCacheName = standardize($pathinfo['filename']) . '-' . substr(md5_file($file['tmp_name']), 0, 8) . '.' . $pathinfo['extension'];
+				$uploadFolder = 'isotope/' . substr($strCacheName, 0, 1));
 			}
+			
+			// Make sure directory exists
+			$this->Files->mkdir($uploadFolder);
 			
 			$this->Files->move_uploaded_file($file['tmp_name'], $uploadFolder . '/' . $strCacheName);
 			
