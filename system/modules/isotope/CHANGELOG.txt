@@ -12,6 +12,7 @@ Version 0.2.beta2
 - Fixed: Now using core widget TimePeriod for shipping weight which has a larger select menu.
 - Fixed: Printing order PDF throwed an exception
 - Fixed: Use first available product type if no default/fallback is set
+- Fixed: Problem with standardize function and wrong image folder (Ticket #201)
 
 Version 0.2.beta1 (2010-08-25)
 ------------------------------
