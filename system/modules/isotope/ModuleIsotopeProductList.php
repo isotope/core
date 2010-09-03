@@ -187,7 +187,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			$arrBuffer[] = array
 			(
 				'clear'	    => (($this->iso_cols > 1 && $blnClear) ? true : false),
-				'class'		=> ('product' . ($i == 0 ? ' product_first' : '') . ($i == $last ? ' product_last' : '') . ($this->iso_cols > 1 ? ' row_'.$row . ($row == 0 ? ' row_first' : '') . ($row == $rows ? ' row_last' : '') : '')),
+				'class'		=> ('product' . ($i%2 ? ' product_even' : ' product_odd') . ($i == 0 ? ' product_first' : '') . ($i == $last ? ' product_last' : '') . ($this->iso_cols > 1 ? ' row_'.$row . ($row%2 ? ' row_even' : ' row_odd') . ($row == 0 ? ' row_first' : '') . ($row == $rows ? ' row_last' : '') : '')),
 				'html'		=> $objProduct->generate((strlen($this->iso_list_layout) ? $this->iso_list_layout : $objProduct->list_template), $this),
 			);
 		}
