@@ -9,6 +9,7 @@ Version 0.2.beta2
 - Added: Support for 13 more currencies in ePay Standard payment module
 - Added: New payment module for ePay in-shop payment processing
 - Added: CSS class even/odd for product list
+- Added: Watermark option for gallery and thumbnail images
 - Fixed: Variant price should not show "From" when all variants have the same price
 - Fixed: Now using core widget TimePeriod for shipping weight which has a larger select menu.
 - Fixed: Printing order PDF throwed an exception

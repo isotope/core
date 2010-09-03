@@ -129,7 +129,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			{price_legend},priceCalculateFactor,priceCalculateMode,priceRoundPrecision,priceRoundIncrement;
 			{currency_legend},currency,currencySymbol,currencyFormat,currencyPosition;
 			{invoice_legend:hide},invoiceLogo;
-			{images_legend},gallery,missing_image_placeholder,gallery_size,thumbnail_size,medium_size,large_size,medium_watermark,large_watermark,watermark_position',
+			{images_legend},gallery,missing_image_placeholder,gallery_size,thumbnail_size,medium_size,large_size,gallery_watermark,thumbnail_watermark,medium_watermark,large_watermark,watermark_position',
 	),
 
 	// Fields
@@ -367,6 +367,20 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'options'                 => array('crop', 'proportional', 'box'),
 			'reference'               => &$GLOBALS['TL_LANG']['MSC'],
 			'eval'                    => array('rgxp'=>'digit', 'nospace'=>true, 'tl_class'=>'w50'),
+		),
+		'gallery_watermark' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['gallery_watermark'],
+			'exclude'                 => true,
+			'inputType'               => 'fileTree',
+			'eval'                    => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>'jpg,jpeg,png,gif', 'tl_class'=>'clr'),
+		),
+		'thumbnail_watermark' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['thumbnail_watermark'],
+			'exclude'                 => true,
+			'inputType'               => 'fileTree',
+			'eval'                    => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>'jpg,jpeg,png,gif', 'tl_class'=>'clr'),
 		),
 		'medium_watermark' => array
 		(
