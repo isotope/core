@@ -39,7 +39,6 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['minimum_total']			= array('Minima
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['maximum_total']			= array('Maximaler Betrag', 'Geben Sie ein Zahl grösser als 0 ein, wenn diese Zahlungsart nur bis einem gewissen Totalbetrag zur Verfügung steht.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['new_order_status']		= array('Status für neue Bestellungen', 'Wählen Sie einen zutreffenden Status für neue Bestellungen im System.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['paypal_account']			= array('PayPal-Konto', 'Die E-Mail Adresse des PayPal Kontos, auf welches die Zahlung empfangen werden soll.');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['paypal_business']		= array('Artikelbezeichnung', 'Diese Bezeichnung wird für Ihre Bestellung bei PayPal angezeigt.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['postsale_mail']			= array('E-Mail Vorlage für Statusänderungen', 'Wählen Sie eine E-Mail Vorlage wenn bei Statusänderungen der Systemadministrator benachrichtigt werden soll.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['postfinance_pspid']		= array('Postfinance PSPID', 'Die PSPID ist Ihr eindeutiger Erkennungsname im Postfinance-System.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['postfinance_secret']		= array('Postfinance Geheimschlüssel', 'Diese Daten werden zur Prüfung der Zahlungsübergabe verwendet (Punkt 3.2 in den technischen Einstellungen).');

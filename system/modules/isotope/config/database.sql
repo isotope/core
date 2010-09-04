@@ -394,7 +394,6 @@ CREATE TABLE `tl_iso_payment_modules` (
   `new_order_status` varchar(255) NOT NULL default '',
   `postsale_mail` int(10) unsigned NOT NULL default '0',
   `paypal_account` varchar(255) NOT NULL default '',
-  `paypal_business` varchar(255) NOT NULL default '',
   `payflowpro_user` varchar(255) NOT NULL default '',
   `payflowpro_vendor` varchar(255) NOT NULL default '',
   `payflowpro_password` varchar(255) NOT NULL default '',
