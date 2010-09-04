@@ -602,7 +602,7 @@ class IsotopeProduct extends Controller
 				}
 			}
 		}
-		elseif ($arrData['inputType'] == 'textarea' && $arrData['eval']['rte'] != '')				
+		elseif ($arrData['inputType'] == 'textarea' && $arrData['eval']['rte'] == '')				
 		{
 			$strBuffer = nl2br($varValue);
 		}
