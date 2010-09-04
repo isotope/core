@@ -16,6 +16,7 @@ Version 0.2.beta2
 - Fixed: Use first available product type if no default/fallback is set
 - Fixed: Problem with standardize function and wrong image folder (Ticket #201)
 - Fixed: Incorrect reference to bcc property of a mailing object (Ticket #206)
+- Fixed: All variant attributes are now mandatory
 
 Version 0.2.beta1 (2010-08-25)
 ------------------------------
