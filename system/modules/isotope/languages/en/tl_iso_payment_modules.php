@@ -43,7 +43,6 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['countries']				= array('Available
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['shipping_modules']		= array('Shipping methods', 'You can restrict this payment method to certain shipping methods (eg. Cash only when picking up).');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['product_types']			= array('Product types', 'You can restrict this payment method to certain product types. If the cart contains a product type you have not selected, the payment module is not available.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['paypal_account']			= array('PayPal Account', 'Enter your paypal account (email address).');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['paypal_business']		= array('Article name', 'The PayPal checkout screen will show this one-liner for order items.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_user']		= array('Paypal Payflow Pro username','');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_vendor']		= array('Paypal Payflow Pro vendor','An alphanumeric string of about 10 characters.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_partner']		= array('Paypal Payflow Pro partner','Case-sensitive!  Usual partner Ids are either "PayPal" or "PayPalUK".');

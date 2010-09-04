@@ -193,16 +193,48 @@ class PaymentPaypal extends IsotopePayment
 		
 		$objOrder = $this->Database->prepare("SELECT order_id FROM tl_iso_orders WHERE cart_id=?")->execute($this->Isotope->Cart->id);
 		
-		return '
+		$strBuffer = '
 <h2>' . $GLOBALS['TL_LANG']['ISO']['pay_with_paypal'][0] . '</h2>
 <p class="message">' . $GLOBALS['TL_LANG']['ISO']['pay_with_paypal'][1] . '</p>
 <form id="payment_form" action="https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr" method="post">
-<input type="hidden" name="cmd" value="_xclick">
+<input type="hidden" name="cmd" value="_cart">
+<input type="hidden" name="upload" value="1">
 <input type="hidden" name="charset" value="UTF-8">
 <input type="hidden" name="business" value="' . $this->paypal_account . '">
-<input type="hidden" name="lc" value="' . strtoupper($GLOBALS['TL_LANGUAGE']) . '">
-<input type="hidden" name="item_name" value="' . $this->paypal_business . '"/>
-<input type="hidden" name="amount" value="' . round($this->Isotope->Cart->grandTotal, 2) . '"/>
+<input type="hidden" name="lc" value="' . strtoupper($GLOBALS['TL_LANGUAGE']) . '">';
+
+		foreach( $this->Isotope->Cart->getProducts() as $objProduct )
+		{
+			$strOptions = '';
+			$arrOptions = $objProduct->getOptions();
+			
+			if (is_array($arrOptions) && count($arrOptions))
+			{
+				$options = array();
+				
+				foreach( $arrOptions as $option )
+				{
+					$options[] = $option['name'] . ': ' . implode(', ', $option['values']);
+				}
+				
+				$strOptions = ' ('.implode(', ', $options).')';
+			}
+			
+			$strBuffer .= '
+<input type="hidden" name="item_number_'.++$i.'" value="' . $objProduct->sku . '" />
+<input type="hidden" name="item_name_'.$i.'" value="' . $objProduct->name . $strOptions . '"/>
+<input type="hidden" name="amount_'.$i.'" value="' . $objProduct->price . '"/>
+<input type="hidden" name="quantity_'.$i.'" value="' . $objProduct->quantity_requested . '"/>';
+		}
+		
+		foreach( $this->Isotope->Cart->getSurcharges() as $arrSurcharge )
+		{
+			$strBuffer .= '
+<input type="hidden" name="item_name_'.++$i.'" value="' . $arrSurcharge['label'] . '"/>
+<input type="hidden" name="amount_'.$i.'" value="' . $arrSurcharge['total_price'] . '"/>';
+		}
+
+		$strBuffer .= '
 <input type="hidden" name="no_shipping" value="1">
 <input type="hidden" name="no_note" value="1">
 <input type="hidden" name="currency_code" value="' . $this->Isotope->Config->currency . '">
@@ -226,7 +258,6 @@ class PaymentPaypal extends IsotopePayment
 <input type="hidden" name="notify_url" value="' . $this->Environment->base . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id . '">
 <input type="hidden" name="bn" value="PP-BuyNowBF:btn_paynowCC_LG.gif:NonHosted">
 <input type="' . (strlen($this->button) ? 'image" src="'.$this->button.'" border="0"' : 'submit" value="'.specialchars($GLOBALS['TL_LANG']['ISO']['pay_with_paypal'][2]).'"') . ' alt="PayPal - The safer, easier way to pay online!">
-<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
 </form>
 
 <script type="text/javascript">
@@ -236,6 +267,8 @@ window.addEvent( \'domready\' , function() {
 });
 //--><!]]>
 </script>';
+	
+		return $strBuffer;
 	}
 }
 
