@@ -102,9 +102,9 @@ class ModuleIsotopeProductReader extends ModuleIsotope
 		global $objPage;
 		
 		$objPage->pageTitle = $objProduct->name;
-		$objPage->description .= $objProduct->description_meta;
+		$objPage->description = $this->prepareMetaDescription($objProduct->description_meta);
 		
-		$GLOBALS['TL_KEYWORDS'] .= $objProduct->keywords_meta;
+		$GLOBALS['TL_KEYWORDS'] .= (strlen($GLOBALS['TL_KEYWORDS']) ? ', ' : '') . $objProduct->keywords_meta;
 	}
 }
 
