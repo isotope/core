@@ -245,8 +245,29 @@ abstract class IsotopeProductCollection extends Model
 				
 		if (strlen($strTemplate))
 		{
+			$this->import('Isotope');
+			
 			$objTemplate = new FrontendTemplate($strTemplate);
+			
+			$arrSurcharges = array();
+			foreach( $this->getSurcharges() as $arrSurcharge )
+			{
+				$arrSurcharges[] = array
+				(
+					'label'				=> $arrSurcharge['label'],
+					'price'				=> $this->Isotope->formatPriceWithCurrency($arrSurcharge['price']),
+					'total_price'		=> $this->Isotope->formatPriceWithCurrency($arrSurcharge['total_price']),
+					'tax_id'			=> $arrSurcharge['tax_id'],
+				);
+			}
+			
 			$objTemplate->products = $this->arrProducts;
+			$objTemplate->surcharges = $arrSurcharges;
+			$objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
+			$objTemplate->subTotalPrice = $this->Isotope->formatPriceWithCurrency($this->subTotal, false);
+			$objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
+			$objTemplate->grandTotalPrice = $this->Isotope->formatPriceWithCurrency($this->grandTotal, false);
+			
 			return $objTemplate->parse();
 		}
 				
