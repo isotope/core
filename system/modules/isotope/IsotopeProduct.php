@@ -155,10 +155,10 @@ class IsotopeProduct extends Controller
 			{
 				$this->arrCache['low_price'] = $objProduct->low_price;
 			}
-			
-			//we will need this in the template potentially
-			$this->arrAttributes[] = 'original_price';
-			$this->arrVariantAttributes[] = 'original_price';
+			else
+			{
+				$this->arrData['price'] = $objProduct->low_price;
+			}
 			
 			if(isset($GLOBALS['TL_HOOKS']['iso_addAttributes']) && is_array($GLOBALS['TL_HOOKS']['iso_addAttributes']))
 			{
@@ -177,9 +177,6 @@ class IsotopeProduct extends Controller
 					$this->arrVariantAttributes[] = $this->$callback[0]->$callback[1]($this);
 				}
 			}
-			
-			$this->arrData['original_price'] = $this->arrData['price'];
-					
 		}
 		
 		$this->arrData['original_price'] = $this->arrData['price'];
@@ -229,21 +226,7 @@ class IsotopeProduct extends Controller
 				return count($this->arrDownloads) ? true : false;
 				
 			case 'description_meta':
-				$strDescription = strlen($this->arrData['description_meta']) ? $this->arrData['description_meta'] : $this->arrData['teaser'];
-				$strDescription = strlen($strDescription) ? $strDescription : $this->arrData['description'];
-				$strDescription = $this->replaceInsertTags($strDescription);
-				$strDescription = str_replace(array("\n", "\r", '"'), array(' ' , '', ''), strip_tags($strDescription));
-				
-				// shorten description to ~200 chars, respect sentences
-				if (strlen($strDescription) > 200 && ($pos = utf8_strpos($strText, '.', $limit)) !== false) 
-				{ 
-					if ($pos < utf8_strlen($strDescription) - 1)
-					{ 
-						$strText = utf8_substr($strDescription, 0, $pos+1);
-					} 
-				} 
-				
-				return $strDescription; 
+				return $this->arrData['description_meta'] != '' ? $this->arrData['description_meta'] : ($this->arrData['teaser'] != '' ? $this->arrData['teaser'] : $this->arrData['description']);
 				break;
 
 			default:
