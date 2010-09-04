@@ -184,9 +184,6 @@ class IsotopeProduct extends Controller
 			case 'href_reader':
 				return $this->arrData[$strKey];
 				
-			case 'categories':
-				return deserialize($this->arrData[$strKey], true);
-				
 			case 'original_price':
 				return $this->blnLocked ? $this->arrData['original_price'] : $this->Isotope->calculatePrice($this->arrData['original_price'], $this, 'original_price', $this->arrData['tax_class']);
 				
@@ -243,6 +240,9 @@ class IsotopeProduct extends Controller
 						case 'formatted_total_price':
 							$varValue = $this->Isotope->formatPriceWithCurrency($this->total_price, false);
 							break;
+							
+						case 'categories':
+							$this->arrCache[$strKey] = $this->Database->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid=" . ($this->pid ? $this->pid : $this->id) . " ORDER BY sorting")->fetchEach('page_id');
 					}
 
 					$this->arrCache[$strKey] = $varValue ? $varValue : deserialize($this->arrData[$strKey]);
