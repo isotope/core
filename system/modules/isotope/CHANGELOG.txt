@@ -11,6 +11,7 @@ Version 0.2.beta2
 - Added: CSS class even/odd for product list
 - Added: Watermark option for gallery and thumbnail images
 - Added: Addresses are added to address book on checkout (enable in checkout module) (Ticket #24)
+- Fixed: cart_html and cart_text now include subtotal, surcharges and grand total (Ticket #34)
 - Fixed: Variant price should not show "From" when all variants have the same price
 - Fixed: Now using core widget TimePeriod for shipping weight which has a larger select menu.
 - Fixed: Printing order PDF throwed an exception
