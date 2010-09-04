@@ -32,6 +32,7 @@ CREATE TABLE `tl_module` (
   `iso_mail_admin` int(10) unsigned NOT NULL default '0',
   `iso_sales_email` varchar(255) NOT NULL default '',
   `iso_order_conditions` int(10) unsigned NOT NULL default '0',
+  `iso_addToAddressbook` char(1) NOT NULL default '',
   `iso_category_scope` varchar(64) NOT NULL default '',
   `iso_use_quantity` char(1) NOT NULL default '',
   `iso_filter_layout` varchar(64) NOT NULL default '',

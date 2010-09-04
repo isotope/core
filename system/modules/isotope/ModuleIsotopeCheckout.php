@@ -851,13 +851,14 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	
 	protected function writeOrder($blnCheckout=false)
 	{
+		$time = time();
 		$strUniqueId = uniqid($this->Isotope->Config->orderPrefix, true);
 	
 		$arrSet = array
 		(
 			'pid'					=> (FE_USER_LOGGED_IN ? $this->User->id : 0),
-			'tstamp'				=> time(),
-			'date'					=> time(),
+			'tstamp'				=> $time,
+			'date'					=> $time,
 			'uniqid'				=> $strUniqueId,
 			'config_id'				=> $this->Isotope->Config->id,
 			'cart_id'				=> $this->Isotope->Cart->id,
@@ -966,6 +967,25 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			
 			unset($_SESSION['CHECKOUT_DATA']);
 			unset($_SESSION['ISOTOPE']);
+			
+			// Store address in address book
+			if ($this->iso_addToAddressbook && FE_USER_LOGGED_IN)
+			{
+				foreach( array('billing', 'shipping') as $address )
+				{
+					if ($arrData[$address.'_id'] == 0)
+					{
+						$arrAddress = array('pid'=>$this->User->id, 'tstamp'=>$time);
+						
+						foreach( $this->Isotope->Config->{$address.'_fields'} as $field )
+						{
+							$arrAddress[$field] = $arrData[$address.'_'.$field];
+						}
+						
+						$this->Database->prepare("INSERT INTO tl_iso_addresses %s")->set($arrAddress)->execute();
+					}
+				}
+			}
 			
 			return $strUniqueId;
 		}
