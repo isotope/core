@@ -41,10 +41,6 @@ $GLOBALS['TL_DCA']['tl_iso_addresses'] = array
 	(
 		'ptable'					  => 'tl_member',
 		'dataContainer'               => 'Table',
-		'onload_callback'			  => array
-		(
-			array('tl_iso_addresses', 'copyInitialAddress')
-		),
 		'onsubmit_callback' => array
 		(
 			array('tl_iso_addresses', 'updateDefaultAddress'),
@@ -252,65 +248,6 @@ class tl_iso_addresses extends Backend
 		return '<div style="margin-top:-15px">' . $this->Isotope->generateAddressString($arrAddress) . '</div>';
 	}
 	
-	/**
-	 * copyInitialAddress function.
-	 * 
-	 * @access public
-	 * @param object DataContainer $dc
-	 * @return void
-	 */
-	public function copyInitialAddress($dc=null)
-	{
-		if (TL_MODE == 'FE')
-		{
-			if (!FE_USER_LOGGED_IN)
-				return;
-				
-			$this->import('FrontendUser', 'User');
-			$intId = $this->User->id;
-		}
-		else
-		{
-			$intId = $dc->id;
-		}
-		
-		$objAddressInfo = $this->Database->prepare("SELECT COUNT(*) as count FROM tl_iso_addresses WHERE pid=?")
-										 ->execute($intId);
-												 
-		if($objAddressInfo->numRows < 1)
-		{
-			$objAddress = $this->Database->prepare("SELECT * FROM tl_member WHERE id=?")->limit(1)->execute($intId);
-			
-			if($objAddress->numRows < 1)
-			{
-				return;
-			}			
-										  
-			//copy the address as it exists from the tl_member table.
-			$arrSet = array
-			(
-				'pid'			=> $intId,
-				'tstamp'		=> $objAddress->tstamp,
-				'firstname'		=> $objAddress->firstname,
-				'lastname'		=> $objAddress->lastname,
-				'company'		=> $objAddress->company,
-				'street_1'		=> $objAddress->street,
-				'postal'		=> $objAddress->postal,
-				'city'			=> $objAddress->city,
-				'subdivision'	=> $objAddress->state,
-				'country'		=> $objAddress->country,
-				'phone'			=> $objAddress->phone,
-				'isDefaultBilling'	=> '1',
-				'isDefaultShipping' => '1',
-			
-			);
-			
-			$this->Database->prepare('INSERT INTO tl_iso_addresses %s')
-						   ->set($arrSet)
-						   ->execute();
-		}
-	}
-	
 	
 	/**
 	 * Make sure only one address is marked as default
@@ -326,14 +263,14 @@ class tl_iso_addresses extends Backend
 		
 		if ($this->Input->post('isDefaultBilling'))
 		{
-			$this->Database->prepare("UPDATE tl_iso_addresses SET isDefaultBilling='' WHERE pid=?")->execute($objAddress->pid);
-			$this->Database->prepare("UPDATE tl_iso_addresses SET isDefaultBilling='1' WHERE id=?")->execute($objAddress->id);
+			$this->Database->execute("UPDATE tl_iso_addresses SET isDefaultBilling='' WHERE pid={$objAddress->pid}");
+			$this->Database->execute("UPDATE tl_iso_addresses SET isDefaultBilling='1' WHERE id={$objAddress->id}");
 		}
 		
 		if ($this->Input->post('isDefaultShipping'))
 		{
-			$this->Database->prepare("UPDATE tl_iso_addresses SET isDefaultShipping='' WHERE pid=?")->execute($objAddress->pid);
-			$this->Database->prepare("UPDATE tl_iso_addresses SET isDefaultShipping='1' WHERE id=?")->execute($objAddress->id);
+			$this->Database->execute("UPDATE tl_iso_addresses SET isDefaultShipping='' WHERE pid={$objAddress->pid}");
+			$this->Database->execute("UPDATE tl_iso_addresses SET isDefaultShipping='1' WHERE id={$objAddress->id}");
 		}
 	}
 }
