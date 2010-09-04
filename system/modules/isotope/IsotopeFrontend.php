@@ -55,7 +55,7 @@ class IsotopeFrontend extends Frontend
 	{
 		$intQuantity = ($objModule->iso_use_quantity && intval($this->Input->post('quantity_requested')) > 0) ? intval($this->Input->post('quantity_requested')) : 1;
 		
-		if ($this->Isotope->Cart->addProduct($objProduct, $intQuantity))
+		if ($this->Isotope->Cart->addProduct($objProduct, $intQuantity) !== false)
 		{
 			$this->jumpToOrReload($objModule->iso_addProductJumpTo);
 		}

@@ -324,7 +324,6 @@ abstract class IsotopeProductCollection extends Model
 			$intInsertId = $this->Database->prepare("INSERT INTO {$this->ctable} %s")->set($arrSet)->executeUncached()->insertId;
 			
 			return $intInsertId;
-			
 		}
 	}
 	
