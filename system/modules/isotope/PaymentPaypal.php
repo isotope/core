@@ -107,7 +107,12 @@ class PaymentPaypal extends IsotopePayment
 		$objRequest = new Request();
 		$objRequest->send(('https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr?cmd=_notify-validate'), implode('&', $arrData), 'post');
 		
-		if ($objRequest->response == 'VERIFIED' && $this->Input->post('receiver_email') == $this->paypal_account)
+		if ($objRequest->hasError())
+		{
+			$this->log('Request Error: ' . $objRequest->error, 'PaymentPaypal processPostSale()', TL_ERROR);
+			exit;
+		}
+		elseif ($objRequest->response == 'VERIFIED' && $this->Input->post('receiver_email') == $this->paypal_account)
 		{
 			$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE order_id=?")->limit(1)->execute($this->Input->post('invoice'));
 		
