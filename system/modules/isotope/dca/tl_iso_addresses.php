@@ -245,7 +245,7 @@ class tl_iso_addresses extends Backend
 	{
 		$this->import('Isotope');
 		
-		return '<div style="margin-top:-15px">' . $this->Isotope->generateAddressString($arrAddress) . '</div>';
+		return $this->Isotope->generateAddressString($arrAddress);
 	}
 	
 	
