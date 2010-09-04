@@ -253,7 +253,7 @@ class PaymentPaypal extends IsotopePayment
 <input type="hidden" name="city" value="' . $this->Isotope->Cart->billingAddress['city'] . '">
 <input type="hidden" name="country" value="' . strtoupper($this->Isotope->Cart->billingAddress['country']) . '">
 <input type="hidden" name="email" value="' . $this->Isotope->Cart->billingAddress['email'] . '">
-<input type="hidden" name="night_phone_c" value="' . $this->Isotope->Cart->billingAddress['phone'] . '">
+<input type="hidden" name="night_phone_b" value="' . $this->Isotope->Cart->billingAddress['phone'] . '">
 
 <input type="hidden" name="notify_url" value="' . $this->Environment->base . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id . '">
 <input type="hidden" name="bn" value="PP-BuyNowBF:btn_paynowCC_LG.gif:NonHosted">
