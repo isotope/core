@@ -168,6 +168,11 @@
 	height: 34px;
 }
 
+.iso_product ul
+{
+	margin-left: 34px;
+}
+
 .iso_product p
 {
 	font-weight: bold;
