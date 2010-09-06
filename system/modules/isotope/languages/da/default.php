@@ -70,7 +70,6 @@ $GLOBALS['TL_LANG']['MSC']['mmNoImagesUploaded'] = 'Ingen billeder uploaded.';
 $GLOBALS['TL_LANG']['MSC']['mmUploadImage'] = 'Upload flere billeder';
 $GLOBALS['TL_LANG']['MSC']['quantity'] = 'Antal';
 $GLOBALS['TL_LANG']['MSC']['order_conditions'] = 'Jeg godkender salgs- og leveringsbetingelser';
-$GLOBALS['TL_LANG']['MSC']['downloadCount'] = '%s download(s)';
 $GLOBALS['TL_LANG']['MSC']['defaultSearchText'] = 'Søg produkter';
 $GLOBALS['TL_LANG']['MSC']['blankSelectOptionLabel'] = '-';
 $GLOBALS['TL_LANG']['MSC']['emptySelectOptionLabel'] = 'Vælg venlisgt...';

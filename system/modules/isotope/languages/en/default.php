@@ -88,7 +88,6 @@ $GLOBALS['TL_LANG']['MSC']['mmNoImagesUploaded'] = 'No images uploaded.';
 $GLOBALS['TL_LANG']['MSC']['mmUploadImage'] = 'Upload additional image';
 $GLOBALS['TL_LANG']['MSC']['quantity'] = 'Quantity';
 $GLOBALS['TL_LANG']['MSC']['order_conditions'] = 'I agree to the terms & conditions';
-$GLOBALS['TL_LANG']['MSC']['downloadCount'] = '%s download(s)';
 
 $GLOBALS['TL_LANG']['MSC']['defaultSearchText'] = 'search products';
 $GLOBALS['TL_LANG']['MSC']['blankSelectOptionLabel'] = '-';
