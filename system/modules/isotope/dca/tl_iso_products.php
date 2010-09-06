@@ -419,9 +419,6 @@ class tl_iso_products extends Backend
 	 */
 	public function downloadsButton($row, $href, $label, $title, $icon, $attributes)
 	{
-		if ($row['pid'] > 0)
-			return '';
-			
 		$objType = $this->Database->prepare("SELECT * FROM tl_iso_producttypes WHERE id=?")
 								  ->limit(1)
 								  ->execute($row['type']);

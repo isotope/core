@@ -140,10 +140,9 @@ class IsotopeProduct extends Controller
 		}
 
 		// Cache downloads for this product
-		//!@todo now takes data from variant...
 		if ($this->arrType['downloads'])
 		{
-			$this->arrDownloads = $this->Database->execute("SELECT * FROM tl_iso_downloads WHERE pid=".($this->arrData['pid'] ? $this->arrData['pid'] : $this->arrData['id']))->fetchAllAssoc();
+			$this->arrDownloads = $this->Database->execute("SELECT * FROM tl_iso_downloads WHERE pid={$this->arrData['id']}")->fetchAllAssoc();
 		}
 		
 		// Find lowest price
@@ -294,7 +293,7 @@ class IsotopeProduct extends Controller
 	/**
 	 * Return all downloads for this product
 	 */
-	//!@todo: Confirm that files are available, possibly on __wakeup() ?
+	//!@todo: Confirm that files are available
 	public function getDownloads()
 	{
 		return $this->arrDownloads;
@@ -925,7 +924,13 @@ class IsotopeProduct extends Controller
 		{
 			$this->arrData['original_price'] = $this->arrData['price'];
 		}
-				
+		
+		// Cache downloads for this product
+		if ($this->arrType['downloads'])
+		{
+			$this->arrDownloads = $this->Database->execute("SELECT * FROM tl_iso_downloads WHERE pid={$this->arrData['id']} OR pid={$this->arrData['pid']}")->fetchAllAssoc());
+		}
+		
 		$this->loadLanguage($arrInherit);
 	}
 	
