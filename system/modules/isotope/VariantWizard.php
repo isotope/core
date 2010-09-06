@@ -160,6 +160,7 @@ class VariantWizard extends Widget
 			{
 				case 'text':	
 					$objWidget = new TextField($this->prepareForWidget($arrData, $this->strId.'['.$option['value'].']', $objVariant->{$option['value']}));
+					
 					if ($arrData['eval']['datepicker'])
 					{	
 						$objWidget->id = str_replace('[', '_', $objWidget->id);
@@ -173,8 +174,17 @@ class VariantWizard extends Widget
 			  </script>';
 					}
 					break;
+					
 				default:
-					$objWidget = new SelectMenu($this->prepareForWidget($arrData, $this->strId.'['.$option['value'].']', $objVariant->{$option['value']}));
+					$arrField = $this->prepareForWidget($arrData, $this->strId.'['.$option['value'].']', $objVariant->{$option['value']});
+					
+					foreach( $arrField['options'] as $k => $v )
+					{
+						if ($v['value'] == '')
+							unset($arrField['options'][$k]);
+					}
+					
+					$objWidget = new SelectMenu($arrField);
 					break;
 			}
 			
