@@ -19,6 +19,7 @@ Version 0.2.beta2
 - Improved: Downloads is now a tools option (Ticket #116)
 - Improved: authnet_response and authnet_reason to generic transaction_response and transaction_response_code
 - Improved: Remove form errors when selecting a new product variant
+- Improved: Empty option labels are now taken as blankOptionLabel for variant select menus
 - Fixed: cart_html and cart_text now include subtotal, surcharges and grand total (Ticket #34)
 - Fixed: Variant price should not show "From" when all variants have the same price
 - Fixed: Now using core widget TimePeriod for shipping weight which has a larger select menu.

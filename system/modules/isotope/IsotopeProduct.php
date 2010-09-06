@@ -675,13 +675,16 @@ class IsotopeProduct extends Controller
 		{
 			return '';
 		}
-
+		
 		$arrData['eval']['mandatory'] = ($arrData['eval']['mandatory'] && !$blnAjax) ? true : false;
 		$arrData['eval']['required'] = $arrData['eval']['mandatory'];
 		
 		if ($arrData['attributes']['add_to_product_variants'] && is_array($arrData['options']))
 		{
 			$arrData['eval']['includeBlankOption'] = true;
+			
+			$arrField = $this->prepareForWidget($arrData, $strField);
+			
 			$arrSearch = array('pid'=>($this->pid ? $this->pid : $this->id));
 			
 			foreach( $this->arrOptions as $name => $value )
@@ -694,43 +697,29 @@ class IsotopeProduct extends Controller
 			
 			$arrOptions = $this->Database->prepare("SELECT " . $strField . " FROM tl_iso_products WHERE language='' AND published='1' AND " . implode("=? AND ", array_keys($arrSearch)) . "=? GROUP BY " . $strField)->execute($arrSearch)->fetchEach($strField);
 			
-			foreach( $arrData['options'] as $k => $v )
+			foreach( $arrField['options'] as $k => $option )
 			{
-				if (is_array($v))
+				if (!in_array($option['value'], $arrOptions) && !$option['group'] && $option['value'] != '')
 				{
-					foreach( $v as $kk => $vv )
-					{
-						if (!in_array($kk, $arrOptions))
-						{
-							unset($arrData['options'][$k][$kk]);
-						}
-					}
-					
-					if (!count($arrData['options'][$k]))
-					{
-						unset($arrData['options'][$k]);
-					}
-				}
-				else
-				{
-					if (!in_array($k, $arrOptions))
-					{
-						unset($arrData['options'][$k]);
-					}
+					unset($arrField['options'][$k]);
 				}
 			}
 		}
-		
-		if (is_array($GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['callback']) && count($GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['callback']))
+		else
 		{
-			foreach( $GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['callback'] as $callback )
+			if (is_array($GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['callback']) && count($GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['callback']))
 			{
-				$this->import($callback[0]);
-				$arrData = $this->{$callback[0]}->{$callback[1]}($strField, $arrData, $this);
+				foreach( $GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['callback'] as $callback )
+				{
+					$this->import($callback[0]);
+					$arrData = $this->{$callback[0]}->{$callback[1]}($strField, $arrData, $this);
+				}
 			}
+			
+			$arrField = $this->prepareForWidget($arrData, $strField);
 		}
 		
-		$objWidget = new $strClass($this->prepareForWidget($arrData, $strField));
+		$objWidget = new $strClass($arrField);
 					
 		$objWidget->storeValues = true;
 		$objWidget->tableless = true;
