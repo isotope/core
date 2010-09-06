@@ -439,7 +439,7 @@ class tl_iso_products extends Backend
 	{
 		$objType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id={$row['type']}");
 
-		if (!$objType->prices)
+		if (!$objType->downloads)
 			return '';
 			
 		$objDownloads = $this->Database->prepare("SELECT COUNT(*) AS total FROM tl_iso_downloads WHERE pid=?")->execute($row['id']);
