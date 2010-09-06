@@ -946,7 +946,7 @@ class IsotopeProduct extends Controller
 		// Cache downloads for this product
 		if ($this->arrType['downloads'])
 		{
-			$this->arrDownloads = $this->Database->execute("SELECT * FROM tl_iso_downloads WHERE pid={$this->arrData['id']} OR pid={$this->arrData['pid']}")->fetchAllAssoc());
+			$this->arrDownloads = $this->Database->execute("SELECT * FROM tl_iso_downloads WHERE pid={$this->arrData['id']} OR pid={$this->arrData['pid']}")->fetchAllAssoc();
 		}
 				
 		$this->loadLanguage($arrInherit);
