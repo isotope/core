@@ -186,6 +186,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'href'                => 'table=tl_iso_downloads',
 				'icon'                => 'system/modules/isotope/html/attach.png',
 				'button_callback'	  => array('tl_iso_products', 'downloadsButton'),
+				'attributes'          => 'class="isotope-tools"',
 			),
 		),
 	),
@@ -430,7 +431,7 @@ class tl_iso_products extends Backend
 			
 		$objDownloads = $this->Database->prepare("SELECT COUNT(*) AS total FROM tl_iso_downloads WHERE pid=?")->execute($row['id']);
 			
-		return '<div style="padding:2px 0"><a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).' '.sprintf($GLOBALS['TL_LANG']['MSC']['downloadCount'], $objDownloads->total).'</a></div>';
+		return '<div style="padding:2px 0"><a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).' '.$objDownloads->total.'</a></div>';
 	}
 	
 	

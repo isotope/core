@@ -94,7 +94,6 @@ $GLOBALS['TL_LANG']['MSC']['quantity']                       = 'Anzahl';
 $GLOBALS['TL_LANG']['MSC']['searchTextBoxLabel']             = 'Suchbegriff: ';
 $GLOBALS['TL_LANG']['MSC']['searchFieldsLabel']              = 'Suchfelder: ';
 $GLOBALS['TL_LANG']['MSC']['order_conditions']               = 'Ich akzeptiere die AGB';
-$GLOBALS['TL_LANG']['MSC']['downloadCount']                  = '%s Download(s)';
 $GLOBALS['TL_LANG']['MSC']['perPage']                        = 'Produkte pro Seite';
 $GLOBALS['TL_LANG']['MSC']['searchTerms']                    = 'Suchwörter';
 $GLOBALS['TL_LANG']['MSC']['search']                         = 'Suche';

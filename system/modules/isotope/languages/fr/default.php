@@ -71,7 +71,6 @@ $GLOBALS['TL_LANG']['MSC']['mmNoImagesUploaded'] = 'Pas d\'images téléchargée
 $GLOBALS['TL_LANG']['MSC']['mmUploadImage'] = 'Téléchargez une image supplémentaire';
 $GLOBALS['TL_LANG']['MSC']['quantity'] = 'Quantité';
 $GLOBALS['TL_LANG']['MSC']['order_conditions'] = 'J\'accepte les termes et conditions';
-$GLOBALS['TL_LANG']['MSC']['downloadCount'] = '%s téléchargements';
 $GLOBALS['TL_LANG']['MSC']['defaultSearchText'] = 'Produits à rechercher';
 $GLOBALS['TL_LANG']['MSC']['blankSelectOptionLabel'] = '-';
 $GLOBALS['TL_LANG']['MSC']['emptySelectOptionLabel'] = 'Prière de sélectionner';
