@@ -457,6 +457,11 @@ class tl_iso_products extends Backend
 
 		if (!$objType->prices)
 			return '';
+			
+		$arrAttributes = deserialize(($row['pid'] ? $objType->variant_attributes : $objType->attributes), true);
+		
+		if (!in_array('price', $arrAttributes))
+			return '';
 						
 		return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
 	}
