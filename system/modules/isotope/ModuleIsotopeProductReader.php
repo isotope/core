@@ -98,6 +98,8 @@ class ModuleIsotopeProductReader extends ModuleIsotope
 		}
 				
 		$this->Template->product = $objProduct->generate((strlen($this->iso_reader_layout) ? $this->iso_reader_layout : $objProduct->reader_template), $this);
+		$this->Template->referer = 'javascript:history.go(-1)';
+		$this->Template->back = $GLOBALS['TL_LANG']['MSC']['goBack'];
 		
 		global $objPage;
 		
