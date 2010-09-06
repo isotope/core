@@ -7,7 +7,7 @@
 
 <?php echo $this->images->generateMainImage('medium'); ?>
 <?php if($this->hasOptions): ?>
-<div id="options_container" class="options">
+<div class="options">
 <?php echo implode("\n", $this->options); ?>
 </div>
 <?php endif; ?>
