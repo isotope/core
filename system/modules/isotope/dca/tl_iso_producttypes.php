@@ -162,7 +162,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_producttypes']['prices'],
 			'exclude'				=> true,
 			'inputType'				=> 'checkbox',
-			'eval'					=> array('fallback'=>true, 'tl_class'=>'w50'),
+			'eval'					=> array('tl_class'=>'w50'),
 		),
 		'list_template' => array
 		(
