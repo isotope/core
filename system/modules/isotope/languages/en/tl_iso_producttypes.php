@@ -30,16 +30,17 @@
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['name']					= array('Name', 'Please enter a name for this product type.');
-$GLOBALS['TL_LANG']['tl_iso_producttypes']['class']				= array('Product Class', 'Please select a product class. Different product classes will handle products differently.');
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['class']					= array('Product Class', 'Please select a product class. Different product classes will handle products differently.');
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['fallback']				= array('Default', 'Check here if this is the default product type.');
-$GLOBALS['TL_LANG']['tl_iso_producttypes']['list_template']		= array('Listing Template', 'Select a template for product listing.');
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['prices']				= array('Advanced pricing', 'Allow to define multiple prices per product, eg. for different store configs, member groups or dates.');
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['list_template']			= array('Listing Template', 'Select a template for product listing.');
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['reader_template']		= array('Reader Template', 'Select a template for product details.');
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['description']			= array('Description', 'A hint to product managers what this product type is for.');
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['attributes']			= array('Attributes', 'Select the collection of attributes that should be included for this product type.');
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['variants']				= array('Enable variants', 'Check here if this product type has variants.');
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['variant_attributes']	= array('Variant attributes', 'Select the collection of variant attributes that should be included for this product type. Those that are not selected will be hidden from view and inherited from the parent product.');
-$GLOBALS['TL_LANG']['tl_iso_producttypes']['languages']			= array('Additional languages', 'Select the additional languages you want to add product data for. If you remove a language, the product data is not dropped but no longer used.');
-$GLOBALS['TL_LANG']['tl_iso_producttypes']['downloads']			= array('Enable downloads', 'Check here if this product type has downloads.');
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['languages']				= array('Additional languages', 'Select the additional languages you want to add product data for. If you remove a language, the product data is not dropped but no longer used.');
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['downloads']				= array('Enable downloads', 'Check here if this product type has downloads.');
 
 
 /**

@@ -101,6 +101,43 @@ CREATE TABLE `tl_iso_products` (
 -- --------------------------------------------------------
 
 -- 
+-- Table `tl_iso_prices`
+-- 
+
+CREATE TABLE `tl_iso_prices` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `pid` int(10) unsigned NOT NULL default '0',
+  `tstamp` int(10) unsigned NOT NULL default '0',
+  `config_id` int(10) unsigned NOT NULL default '0',
+  `tax_class` int(10) unsigned NOT NULL default '0',
+  `start` varchar(10) NOT NULL default '',
+  `stop` varchar(10) NOT NULL default '',
+  `archive` int(1) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  KEY `pid` (`pid`),
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Table `tl_iso_price_tiers`
+-- 
+
+CREATE TABLE `tl_iso_price_tiers` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `pid` int(10) unsigned NOT NULL default '0',
+  `tstamp` int(10) unsigned NOT NULL default '0',
+  `min` int(10) unsigned NOT NULL default '0',
+  `price` decimal(12,2) NOT NULL default '0.00',
+  PRIMARY KEY  (`id`),
+  KEY `pid` (`pid`),
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+-- --------------------------------------------------------
+
+-- 
 -- Table `tl_iso_downloads`
 --
 
@@ -130,6 +167,7 @@ CREATE TABLE `tl_iso_producttypes` (
   `name` varchar(255) NOT NULL default '',
   `class` varchar(32) NOT NULL default 'regular',
   `fallback` char(1) NOT NULL default '',
+  `prices` char(1) NOT NULL default '',
   `list_template` varchar(255) NOT NULL default '',
   `reader_template` varchar(255) NOT NULL default '',
   `description` text NULL,

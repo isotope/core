@@ -29,6 +29,7 @@
 /**
  * Fields
  */
+$GLOBALS['TL_LANG']['tl_iso_products']['id']					= array('Product ID');
 $GLOBALS['TL_LANG']['tl_iso_products']['pages']					= array('Categories','Select a category (page-based categories take advantage of TYPOlight pages features such as navigation automation, protection, templates, and full integration with content elements.');
 $GLOBALS['TL_LANG']['tl_iso_products']['type']					= array('Product Type','Product types are defined in the Product Type Manager.');
 $GLOBALS['TL_LANG']['tl_iso_products']['alias']					= array('Alias', '');
@@ -61,6 +62,8 @@ $GLOBALS['TL_LANG']['tl_iso_products']['inherit']				= array('Inherited attribut
 $GLOBALS['TL_LANG']['tl_iso_products']['enabled'] = 'Enabled';
 
 $GLOBALS['TL_LANG']['tl_iso_products']['batch_size']			= array('Batch size','Select the number of records you would like to process at a time.  If the page times out, reduce the number.');
+
+
 /**
  * Reference
  */
@@ -93,8 +96,6 @@ $GLOBALS['TL_LANG']['tl_iso_products']['variantValuesLabel'] = 'Variant';
 $GLOBALS['TL_LANG']['tl_iso_products']['new_product']	= array('New product', 'Create new product');
 $GLOBALS['TL_LANG']['tl_iso_products']['new_variant']	= array('Add variant', 'Add new variant to a given product');
 $GLOBALS['TL_LANG']['tl_iso_products']['edit']			= array('Edit product', 'Edit product ID %s');
-$GLOBALS['TL_LANG']['tl_iso_products']['quick_edit']	= array('Quick-edit variants', 'Quick-edit variants for product ID %s');
-$GLOBALS['TL_LANG']['tl_iso_products']['downloads']		= array('Downloads', 'Edit downloads for product ID %s');
 $GLOBALS['TL_LANG']['tl_iso_products']['copy']			= array('Copy product', 'Copy product ID %s');
 $GLOBALS['TL_LANG']['tl_iso_products']['cut']			= array('Move product', 'Move product ID %s');
 $GLOBALS['TL_LANG']['tl_iso_products']['delete']		= array('Delete product', 'Delete product ID %s');
@@ -104,13 +105,16 @@ $GLOBALS['TL_LANG']['tl_iso_products']['related']		= array('Related products', '
 $GLOBALS['TL_LANG']['tl_iso_products']['tools']			= array('Tools', 'More options for product management.');
 $GLOBALS['TL_LANG']['tl_iso_products']['import']		= array('Import assets', 'Import images and other media from a folder');
 $GLOBALS['TL_LANG']['tl_iso_products']['link']			= array('Link Products to Categories', 'Link products to categories');
+$GLOBALS['TL_LANG']['tl_iso_products']['quick_edit']	= array('Quick-edit variants', 'Quick-edit variants for product ID %s');
+$GLOBALS['TL_LANG']['tl_iso_products']['downloads']		= array('Downloads', 'Edit downloads for product ID %s');
+$GLOBALS['TL_LANG']['tl_iso_products']['prices']		= array('Manage prices', 'Manage prices for product ID %s');
 
 
 /** 
  * Legends
  */
 $GLOBALS['TL_LANG']['tl_iso_products']['general_legend']	= "General Settings";
-$GLOBALS['TL_LANG']['tl_iso_products']['meta_legend']	= 'Meta data';
+$GLOBALS['TL_LANG']['tl_iso_products']['meta_legend']		= 'Meta data';
 $GLOBALS['TL_LANG']['tl_iso_products']['pricing_legend']	= "Pricing Settings";
 $GLOBALS['TL_LANG']['tl_iso_products']['inventory_legend']	= 'Inventory Settings';
 $GLOBALS['TL_LANG']['tl_iso_products']['shipping_legend']	= 'Shipping Settings';

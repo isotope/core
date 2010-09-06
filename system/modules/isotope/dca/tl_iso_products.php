@@ -26,6 +26,9 @@
  */
 
 
+$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/MultiTextWizard/html/js/multitext.js';
+
+
 /**
  * Table tl_iso_products 
  */
@@ -39,7 +42,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'dataContainer'               => 'ProductData',
 		'enableVersioning'			  => true,
 		'closed'					  => true,
-		'ctable'					  => array('tl_iso_downloads', 'tl_iso_product_categories'),
+		'ctable'					  => array('tl_iso_downloads', 'tl_iso_product_categories', 'tl_iso_prices'),
 		'ltable'					  => 'tl_iso_producttypes.languages',
 		'lref'						  => 'type',
 		'onload_callback'			  => array
@@ -188,6 +191,14 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'button_callback'	  => array('tl_iso_products', 'downloadsButton'),
 				'attributes'          => 'class="isotope-tools"',
 			),
+			'prices' => array
+			(
+				'label'				  => &$GLOBALS['TL_LANG']['tl_iso_products']['prices'],
+				'href'				  => 'table=tl_iso_prices',
+				'icon'				  => 'system/modules/isotope/html/prices.png',
+				'button_callback'	  => array('tl_iso_products', 'pricesButton'),
+				'attributes'          => 'class="isotope-tools"',				
+			),
 		),
 	),
 	
@@ -304,6 +315,13 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'inputType'				=> 'text',
 			'eval'					=> array('mandatory'=>true, 'maxlength'=>255, 'rgxp'=>'price', 'tl_class'=>'w50'),
 			'attributes'			=> array('legend'=>'pricing_legend', 'is_order_by_enabled'=>true),
+		),
+		'prices' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['prices'],
+			'inputType'				=> 'dcaWizard',
+			'foreignTable'			=> 'tl_iso_prices',
+			'tableColumns'			=> array('config_id', 'member_group', 'start', 'stop'),
 		),
 		'tax_class' => array
 		(
@@ -422,16 +440,28 @@ class tl_iso_products extends Backend
 		if ($row['pid'] > 0)
 			return '';
 			
-		$objType = $this->Database->prepare("SELECT * FROM tl_iso_producttypes WHERE id=?")
-								  ->limit(1)
-								  ->execute($row['type']);
+		$objType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id={$row['type']}");
 
-		if (!$objType->downloads)
+		if (!$objType->prices)
 			return '';
 			
 		$objDownloads = $this->Database->prepare("SELECT COUNT(*) AS total FROM tl_iso_downloads WHERE pid=?")->execute($row['id']);
 			
 		return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).' '.$objDownloads->total.'</a> ';
+	}
+	
+	
+	/**
+	 * Show/hide the prices button
+	 */
+	public function pricesButton($row, $href, $label, $title, $icon, $attributes)
+	{
+		$objType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id={$row['type']}");
+
+		if (!$objType->prices)
+			return '';
+						
+		return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
 	}
 	
 	
@@ -1626,6 +1656,13 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 			}
 		}
 		
+		// Enable advanced prices
+		if ($objProduct->prices)
+		{
+			$GLOBALS['TL_DCA']['tl_iso_products']['fields']['prices']['attributes'] = $GLOBALS['TL_DCA']['tl_iso_products']['fields']['price']['attributes'];
+			$GLOBALS['TL_DCA']['tl_iso_products']['fields']['price'] = $GLOBALS['TL_DCA']['tl_iso_products']['fields']['prices'];
+		}
+		
 		$arrInherit = array();
 		$arrPalette = array();
 		
@@ -1679,7 +1716,7 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 			}
 		}
 		
-		//Build
+		// Build
 		$arrLegends = array();
 		foreach($arrPalette as $legend=>$fields)
 		{
