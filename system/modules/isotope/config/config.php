@@ -198,7 +198,7 @@ $GLOBALS['ISO_PAY']['postfinance']				= 'PaymentPostfinance';
 $GLOBALS['ISO_PAY']['authorizedotnet']			= 'PaymentAuthorizeDotNet';
 $GLOBALS['ISO_PAY']['epay_window']				= 'PaymentEPay';
 $GLOBALS['ISO_PAY']['epay_form']				= 'PaymentEPayForm';
-
+$GLOBALS['ISO_PAY']['cybersource']				= 'PaymentCybersource';
 
 /**
  * Galleries

@@ -27,8 +27,9 @@
  
  
 class PaymentAuthorizeDotNet extends IsotopePayment
-{
-		
+{		
+	
+	
 	public function __get($strKey)
 	{
 		switch( $strKey )
@@ -40,14 +41,12 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 					return true;
 				}
 				return false;
-				break;
-				
+				break;	
 			default:
 				return parent::__get($strKey);
 		}
 	}
-	
-		
+			
 	/**
 	 * Process payment on confirmation page.
 	 * 
@@ -112,6 +111,26 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 		//!@todo: - This just doesn't seem like a good way to handle this info...
 		
 		//Save Auth.net-specific data
+		/*$arrSet['transaction_response'] = $arrResponses['transaction-status'];
+		$arrSet['transaction_response_code'] = $arrResponses['response-reason-code'];
+						
+		switch($objReply->decision)
+		{
+			case 'Approved':
+				$arrPaymentData['cc-last-four'] = substr($strCCNum, strlen($strCCNum) - 4, 4);
+				$arrSet['payment_data'] = serialize($arrPaymentData['cc-last-four']);
+				break;
+			case 'ERROR':
+				$_SESSION['CHECKOUT_DATA']['payment'][$this->id]['error'] = $GLOBALS['TL_LANG']['CYB'][$objReply->reasonCode];
+				break;
+			case 'REJECT':
+				$_SESSION['CHECKOUT_DATA']['payment'][$this->id]['error'] = $GLOBALS['TL_LANG']['CYB'][$objReply->reasonCode];	
+				break;				
+		}*/
+	
+		$this->Database->prepare("UPDATE tl_iso_orders %s WHERE id={$objOrder->id}")
+					   ->set($arrSet)
+					   ->executeUncached();
 	
 		switch($arrResponses['transaction-status'])
 		{
@@ -149,8 +168,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 		
 	}
 		
-	
-	public function paymentForm($objCheckoutModule)
+	public function checkoutForm()
 	{
 		$strBuffer = '';
 		$arrPayment = $this->Input->post('payment');
@@ -253,7 +271,81 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 			unset($_SESSION['CHECKOUT_DATA']['payment'][$this->id]['error']);
 		}
 		
-		return $strBuffer;
+		
+	}
+	
+	public function paymentForm($objCheckoutModule)
+	{
+		
+	}
+	
+	public function capturePayment($intTransactionId, $fltOrderTotal)
+	{
+		
+		$authnet_values = array
+		(
+			"x_version"							=> '3.1',
+			"x_login"							=> $this->authorize_login,
+			"x_tran_key"						=> $this->authorize_trans_key,
+			"x_type"							=> $this->authorize_trans_type,
+			"x_trans_id"						=> $intTransactionId,
+			"x_amount"							=> number_format($fltOrderTotal, 2),
+			"x_delim_data"						=> 'TRUE',
+			"x_delim_char"						=> $this->authorize_delimiter,
+			"x_encap_char"						=> '"',
+			"x_relay_response"					=> 'FALSE'
+		
+		);
+		
+
+		foreach( $authnet_values as $key => $value ) $fields .= "$key=" . urlencode( $value ) . "&";
+
+		$fieldsFinal = rtrim($fields, '&');
+						
+		$objRequest = new Request();
+		
+		//$objRequest->send('https://secure.authorize.net/gateway/transact.dll', $fieldsFinal, 'post');
+		
+		$arrResponses = $this->handleResponse($objRequest->response);
+								
+		foreach(array_keys($arrResponses) as $key)
+		{
+			$arrReponseLabels[strtolower(standardize($key))] = $key;
+		}
+						
+		$objTemplate->fields = $this->generateResponseString($arrResponses, $arrReponseLabels);
+			
+		$strResponse = '<p class="tl_info">' . $arrPaymentInfo['authorize_response'] . ' - ' . $arrResponses['transaction-status'] . '</p>';
+			
+		switch($arrResponses['transaction-status'])
+		{
+			case 'Approved':
+				$this->status = $arrResponses['transaction-status'];		
+				$this->response = $arrPaymentInfo['authorize_response'];
+				
+				$arrPaymentInfo['authorization_code'] = $arrResponses['authorization-code'];			
+				$strPaymentInfo = serialize($arrPaymentInfo);
+				
+				$this->Database->prepare("UPDATE tl_iso_orders SET status='processing', payment_data=? WHERE id=?")
+							   ->execute($strPaymentInfo, $intOrderId);
+				
+				return 'processing';
+				
+				break;
+			default:
+				$arrPaymentInfo['authorize_reason'] = $arrResponses['reason'];
+				$strPaymentInfo = serialize($arrPaymentInfo);
+				
+				$this->Database->prepare("UPDATE tl_iso_orders SET status='on_hold', authnet_reason=? WHERE id=?")
+							   ->execute($strPaymentInfo, $intOrderId);	
+				
+				$this->status = $arrResponses['transaction-status'];			   				
+				$this->response = $arrPaymentInfo['authorize_response'];
+				$this->reason   = $arrResponses['reason']		
+				break;
+		
+		}
+	
 	}
 	
 	public function backendInterface($intOrderId)
@@ -491,7 +583,9 @@ $return .= '</div></div>';
 								$fval="Error";
 							}
 							break;
-						
+						case 3:	//response reason code.
+							$fval = $pstr_trimmed;
+							break;
 						case 4:
 							$ftitle = "Reason";
 							$fval = $pstr_trimmed;

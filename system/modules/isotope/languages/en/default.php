@@ -260,7 +260,7 @@ $GLOBALS['TL_LANG']['PAY']['postfinance']		= array('Postfinance', 'Payment gatew
 $GLOBALS['TL_LANG']['PAY']['authorizedotnet']	= array('Authorize.net', 'An Authorize.net payment gateway.');
 $GLOBALS['TL_LANG']['PAY']['epay_window']		= array('ePay Payment Window', 'See <a href="http://www.epay.eu/" onclick="window.open(this.href); return false">www.epay.eu</a> for more information about ePay.');
 $GLOBALS['TL_LANG']['PAY']['epay_form']			= array('ePay HTML Form', 'See <a href="http://www.epay.eu/" onclick="window.open(this.href); return false">www.epay.eu</a> for more information about ePay.');
-
+$GLOBALS['TL_LANG']['PAY']['cybersource']		= array('Cybersource','For Cybersource users. Uses the Simple Order API method.');
 
 /**
  * Galleries
