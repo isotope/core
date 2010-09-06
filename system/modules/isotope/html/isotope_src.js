@@ -133,6 +133,7 @@ var IsotopeProduct = new Class(
 				
 				// Update conditionalselect
 				window.fireEvent('ajaxready');
+				$$(('#iso_product_'+product+' p.error')).destroy();
 			},
 			onFailure: function()
 			{

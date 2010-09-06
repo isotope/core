@@ -16,6 +16,7 @@ Version 0.2.beta2
 - Improved: PayPal Standard now shows products on paypal page (Ticket #146)
 - Improved: Product reader now has a "back" link (Ticket #197)
 - Improved: Downloads is now a tools option (Ticket #116)
+- Improved: Remove form errors when selecting a new product variant
 - Fixed: cart_html and cart_text now include subtotal, surcharges and grand total (Ticket #34)
 - Fixed: Variant price should not show "From" when all variants have the same price
 - Fixed: Now using core widget TimePeriod for shipping weight which has a larger select menu.
