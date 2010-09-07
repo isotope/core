@@ -81,6 +81,17 @@
 	width: 300px;
 }
 
+.tl_imagewatermarkwizard th
+{
+	font-weight: normal;
+	text-align: left;
+}
+
+.tl_imagewatermarkwizard td
+{
+	padding-right: 4px;
+}
+
 .mod_iso_orderdetails .info_container
 {
 	float:left;

@@ -168,13 +168,14 @@ $GLOBALS['TL_CTE']['links']['attributeLinkRepeater'] = 'ContentAttributeLinkRepe
 /**
  * Backend form fields
  */
-$GLOBALS['BE_FFL']['mediaManager']		= 'MediaManager';
-$GLOBALS['BE_FFL']['attributeWizard']	= 'AttributeWizard';
-$GLOBALS['BE_FFL']['optionDataWizard']	= 'OptionDataWizard';
-$GLOBALS['BE_FFL']['surchargeWizard']	= 'SurchargeWizard';
-$GLOBALS['BE_FFL']['variantWizard']		= 'VariantWizard';
-$GLOBALS['BE_FFL']['inheritCheckbox']	= 'InheritCheckBox';
-$GLOBALS['BE_FFL']['timePeriod']		= 'TimePeriod'; // This widget belongs to the core, but if extension "calendar" is disable it wont be available without this
+$GLOBALS['BE_FFL']['mediaManager']			= 'MediaManager';
+$GLOBALS['BE_FFL']['attributeWizard']		= 'AttributeWizard';
+$GLOBALS['BE_FFL']['optionDataWizard']		= 'OptionDataWizard';
+$GLOBALS['BE_FFL']['surchargeWizard']		= 'SurchargeWizard';
+$GLOBALS['BE_FFL']['variantWizard']			= 'VariantWizard';
+$GLOBALS['BE_FFL']['inheritCheckbox']		= 'InheritCheckBox';
+$GLOBALS['BE_FFL']['imageWatermarkWizard']	= 'ImageWatermarkWizard';
+$GLOBALS['BE_FFL']['timePeriod']			= 'TimePeriod'; // This widget belongs to the core, but if extension "calendar" is disable it wont be available without this
 
 
 /**

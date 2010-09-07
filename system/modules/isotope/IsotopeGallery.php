@@ -85,24 +85,23 @@ class IsotopeGallery extends Frontend
 
 							if ($objFile->isGdImage)
 							{
-								foreach( array('large', 'medium', 'thumbnail', 'gallery') as $type )
+								foreach( $arrSizes as $size )
 								{
-									$size = $this->Isotope->Config->{$type . '_size'};
-									$strImage = $this->getImage($strFile, $size[0], $size[1], $size[2]);
+									$strImage = $this->getImage($strFile, $size['width'], $size['height'], $size['mode']);
 									
-									if ($strImage != $strFile && $this->Isotope->Config->{$type . '_watermark'} != '')
+									if ($strImage != $strFile && $size['watermark'] != '')
 									{
 										$this->import('IsotopeFrontend');
-										$strImage = $this->IsotopeFrontend->watermarkImage($strImage, $this->Isotope->Config->{$type . '_watermark'}, $this->Isotope->Config->watermark_position);
+										$strImage = $this->IsotopeFrontend->watermarkImage($strImage, $size['watermark'], $size['position']);
 									}
 									
 									$arrSize = @getimagesize(TL_ROOT . '/' . $strImage);
 									if (is_array($arrSize) && strlen($arrSize[3]))
 									{
-										$file[$type . '_size'] = $arrSize[3];
+										$file[$size['name'] . '_size'] = $arrSize[3];
 									}
 									
-									$file[$type] = $strImage;
+									$file[$size['name']] = $strImage;
 								}
 
 								$this->arrFiles[] = $file;
@@ -114,18 +113,17 @@ class IsotopeGallery extends Frontend
 				// No image available, add default image
 				if (!count($this->arrFiles) && is_file(TL_ROOT . '/' . $this->Isotope->Config->missing_image_placeholder))
 				{
-					foreach( array('large', 'medium', 'thumbnail', 'gallery') as $type )
+					foreach( $arrSizes as $size )
 					{
-						$size = $this->Isotope->Config->{$type . '_size'};
-						$strImage = $this->getImage($this->Isotope->Config->missing_image_placeholder, $size[0], $size[1], $size[2]);
+						$strImage = $this->getImage($this->Isotope->Config->missing_image_placeholder, $size['width'], $size['height'], $size['mode']);
 						
 						$arrSize = @getimagesize(TL_ROOT . '/' . $strImage);
 						if (is_array($arrSize) && strlen($arrSize[3]))
 						{
-							$file[$type . '_size'] = $arrSize[3];
+							$file[$size['name'] . '_size'] = $arrSize[3];
 						}
 						
-						$file[$type] = $strImage;
+						$file[$size['name']] = $strImage;
 					}
 
 					$this->arrFiles[] = $file;

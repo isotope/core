@@ -181,7 +181,66 @@ var Isotope =
 				}
 			}
 		}
-	}, 
+	},
+	
+	
+	/**
+	 * Image watermark wizard
+	 * @param object
+	 * @param string
+	 * @param string
+	 */
+	imageWatermarkWizard: function(el, command, id)
+	{
+		var table = $(id);
+		var tbody = table.getFirst().getNext();
+		var parent = $(el).getParent('tr');
+		var rows = tbody.getChildren();
+
+		Backend.getScrollOffset();
+
+		switch (command)
+		{
+			case 'copy':
+				var tr = new Element('tr');
+				var childs = parent.getChildren();
+
+				for (var i=0; i<childs.length; i++)
+				{
+					var next = childs[i].clone(true).injectInside(tr);
+					next.getFirst().value = childs[i].getFirst().value;
+				}
+
+				tr.injectAfter(parent);
+				break;
+
+			case 'delete':
+				(rows.length > 1) ? parent.destroy() : null;
+				break;
+		}
+
+		rows = tbody.getChildren();
+
+		for (var i=0; i<rows.length; i++)
+		{
+			var childs = rows[i].getChildren();
+
+			for (var j=0; j<childs.length; j++)
+			{
+				var first = childs[j].getFirst();
+
+				if (first.type == 'select-one')
+				{
+					first.name = first.name.replace(/\[[0-9]+\]/ig, '[' + i + ']');
+				}
+				else if (first.type == 'text' || first.type == 'checkbox')
+				{
+					first.name = first.name.replace(/\[[0-9]+\]/ig, '[' + i + ']')
+				}
+			}
+		}
+	},
+
 	
 	/**
 	 * Toggle checkbox group

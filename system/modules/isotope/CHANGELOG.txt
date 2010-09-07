@@ -9,7 +9,8 @@ Version 0.2.beta2
 - Added: Support for 13 more currencies in ePay Standard payment module
 - Added: New payment module for ePay in-shop payment processing
 - Added: CSS class even/odd for product list
-- Added: Watermark option for gallery and thumbnail images
+- Added: Define custom image sizes using a wizard
+- Added: Watermark option for all images
 - Added: Addresses are added to address book on checkout (enable in checkout module) (Ticket #24)
 - Added: Abstract class ContentIsotope to build content elements
 - Improved: Downloads can now be added to product variants (Ticket #116)
