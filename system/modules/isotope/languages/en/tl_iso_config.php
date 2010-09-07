@@ -62,15 +62,8 @@ $GLOBALS['TL_LANG']['tl_iso_config']['billing_countries']				= array('Billing co
 $GLOBALS['TL_LANG']['tl_iso_config']['billing_fields']					= array('Billing address fields', 'Select the fields for a new billing address when checking out.');
 $GLOBALS['TL_LANG']['tl_iso_config']['enableGoogleAnalytics']			= array('Enable Google Analytics e-commerce tracking','Add Google Analytics e-commerce tracking. Please note you will also have to enable e-commerce tracking in your Google Analytics account.');
 $GLOBALS['TL_LANG']['tl_iso_config']['gallery']							= array('Product image gallery', 'Different image galleries can be developed to present media files in a custom style.');
-$GLOBALS['TL_LANG']['tl_iso_config']['gallery_size']					= array('Gallery image size', 'In pixels.');
-$GLOBALS['TL_LANG']['tl_iso_config']['thumbnail_size']					= array('Thumbnail image size', 'In pixels.');
-$GLOBALS['TL_LANG']['tl_iso_config']['medium_size']						= array('Medium image size', 'In pixels.');
-$GLOBALS['TL_LANG']['tl_iso_config']['large_size']						= array('Large image size', 'In pixels.');
-$GLOBALS['TL_LANG']['tl_iso_config']['gallery_watermark']				= array('Gallery watermark image', 'Select an image to be used as a watermark for gallery images.');
-$GLOBALS['TL_LANG']['tl_iso_config']['thumbnail_watermark']				= array('Thumbnail watermark image', 'Select an image to be used as a watermark for thumbnail images.');
-$GLOBALS['TL_LANG']['tl_iso_config']['medium_watermark']				= array('Medium watermark image', 'Select an image to be used as a watermark for medium images.');
-$GLOBALS['TL_LANG']['tl_iso_config']['large_watermark']					= array('Large watermark image', 'Select an image to be used as a watermark for large images.');
-$GLOBALS['TL_LANG']['tl_iso_config']['watermark_position']				= array('Watermark position', 'Select the position you want the watermark to be on the imgae.');
+$GLOBALS['TL_LANG']['tl_iso_config']['imageSizes']						= array('Image sizes', 'You can create custom image sizes for use in your templates. The default sizes are "gallery", "thumbnail", "medium" and "large".');
+
 
 /**
  * Reference
@@ -80,13 +73,20 @@ $GLOBALS['TL_LANG']['tl_iso_config']['right']							= 'To the right of price';
 $GLOBALS['TL_LANG']['tl_iso_config']['div']								= 'Divide';
 $GLOBALS['TL_LANG']['tl_iso_config']['mul']								= 'Multiply';
 
-$GLOBALS['TL_LANG']['tl_iso_config']['tl']				= 'Top Left';
-$GLOBALS['TL_LANG']['tl_iso_config']['tc']				= 'Top';
-$GLOBALS['TL_LANG']['tl_iso_config']['tr']				= 'Top Right';
-$GLOBALS['TL_LANG']['tl_iso_config']['bl']				= 'Bottom Left';
-$GLOBALS['TL_LANG']['tl_iso_config']['bc']				= 'Bottom';
-$GLOBALS['TL_LANG']['tl_iso_config']['br']				= 'Bottom Right';
-$GLOBALS['TL_LANG']['tl_iso_config']['cc']				= 'Center';
+$GLOBALS['TL_LANG']['tl_iso_config']['tl']								= 'Top Left';
+$GLOBALS['TL_LANG']['tl_iso_config']['tc']								= 'Top';
+$GLOBALS['TL_LANG']['tl_iso_config']['tr']								= 'Top Right';
+$GLOBALS['TL_LANG']['tl_iso_config']['bl']								= 'Bottom Left';
+$GLOBALS['TL_LANG']['tl_iso_config']['bc']								= 'Bottom';
+$GLOBALS['TL_LANG']['tl_iso_config']['br']								= 'Bottom Right';
+$GLOBALS['TL_LANG']['tl_iso_config']['cc']								= 'Center';
+
+$GLOBALS['TL_LANG']['tl_iso_config']['iwName']							= 'Name';
+$GLOBALS['TL_LANG']['tl_iso_config']['iwWidth']							= 'Width';
+$GLOBALS['TL_LANG']['tl_iso_config']['iwHeight']						= 'Height';
+$GLOBALS['TL_LANG']['tl_iso_config']['iwMode']							= 'Mode';
+$GLOBALS['TL_LANG']['tl_iso_config']['iwWatermark']						= 'Watermark image';
+$GLOBALS['TL_LANG']['tl_iso_config']['iwPosition']						= 'Position';
 
 
 /**
