@@ -122,7 +122,13 @@ var IsotopeProduct = new Class(
 					
 					if (oldEl)
 					{
-						var newEl = new Element('div').set('html', option.html).getFirst(('#'+option.id));
+						var newEl = null;
+						var container = new Element('div').set('html', option.html).getElements('').each( function(child) {
+							if (child.get('id') == option.id)
+							{
+								newEl = child;
+							}
+						});
 						
 						if (newEl)
 						{
