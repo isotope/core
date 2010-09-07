@@ -606,13 +606,12 @@ class tl_iso_products extends Backend
 			}
 		}
 		
+		$objProductType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id=".$row['type']);
+		$fields = deserialize($objProductType->attributes, true);
+		
 		if ($row['pid'] > 0)
 		{
 			$strBuffer = '<div class="iso_product"><div class="thumbnail">'.$thumbnail.'</div><ul>';
-			
-			$objProductType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id=".$row['type']);
-			
-			$fields = deserialize($objProductType->attributes, true);
 			
 			foreach( $fields as $i )
 			{
@@ -709,7 +708,7 @@ class tl_iso_products extends Backend
 			return $strBuffer . '</ul></div>';
 		}
 		
-		return '<div class="iso_product"><div class="thumbnail">'.$thumbnail.'</div><p>' . $row['name'] . (strlen($row['sku']) ? '<span style="color:#b3b3b3; padding-left:3px;">['.$row['sku'].']</span>' : '') . '</p><div>' . ($row['pid']==0 ? '<em>' . $this->getCategoryList(deserialize($row['pages'])) . '</em>' : '') . '</div></div> ';
+		return '<div class="iso_product"><div class="thumbnail">'.$thumbnail.'</div><p>' . $row['name'] . (($row['sku'] != '' && in_array('sku', $fields)) ? '<span style="color:#b3b3b3; padding-left:3px;">['.$row['sku'].']</span>' : '') . '</p><div>' . ($row['pid']==0 ? '<em>' . $this->getCategoryList(deserialize($row['pages'])) . '</em>' : '') . '</div></div> ';
 	}
 	
 	
