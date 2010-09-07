@@ -991,7 +991,15 @@ class tl_iso_products extends Backend
 					$GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['eval']['mandatory'] = true;					
 					$GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['eval']['multiple'] = true;
 	
-					$objWidget = new CheckBox($this->prepareForWidget($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute], $attribute));						
+					$arrField = $this->prepareForWidget($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute], $attribute);
+					
+					foreach( $arrField['options'] as $k => $option )
+					{
+						if ($option['value'] == '')
+							unset($arrField['options'][$k]);
+					}
+	
+					$objWidget = new CheckBox($arrField);
 
 					if ($this->Input->post('FORM_SUBMIT') == 'tl_product_generate')
 					{
