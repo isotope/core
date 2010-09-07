@@ -78,15 +78,15 @@ class IsotopeFrontend extends Frontend
 			switch( $arrTag[1] )
 			{
 				case 'cart_items';
-					return $this->Cart->items;
+					return $this->Isotope->Cart->items;
 					break;
 					
 				case 'cart_products';
-					return $this->Cart->products;
+					return $this->Isotope->Cart->products;
 					break;
 					
 				case 'cart_items_label';
-					$intCount = $this->Cart->items;
+					$intCount = $this->Isotope->Cart->items;
 					if (!$intCount)
 						return '';
 					
@@ -94,7 +94,7 @@ class IsotopeFrontend extends Frontend
 					break;
 					
 				case 'cart_products_label';
-					$intCount = $this->Cart->products;
+					$intCount = $this->Isotope->Cart->products;
 					if (!$intCount)
 						return '';
 					
