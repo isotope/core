@@ -303,6 +303,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['enableGoogleAnalytics'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
+			'eval'					  => array('tl_class'=>'clr'),
 		),
 		'invoiceLogo' => array
 		(
