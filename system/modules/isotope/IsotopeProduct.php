@@ -127,6 +127,15 @@ class IsotopeProduct extends Controller
 		$this->arrCache['reader_template'] = $this->arrType['reader_template'];
 		$this->arrVariantAttributes = $this->arrType['variants'] ? deserialize($this->arrType['variant_attributes']) : array();
 		
+		// Remove attributes not in this product type
+		foreach( $this->arrData as $attribute => $value )
+		{
+			if (!in_array($attribute, $this->arrAttributes) && is_array($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']) && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['legend'] != '')
+			{
+				unset($this->arrData[$attribute]);
+			}
+		}
+		
 		// Options are not set, load from variant
 		if ($this->arrData['pid'] > 0)
 		{

@@ -641,13 +641,12 @@ class tl_iso_products extends Backend
 			}
 		}
 		
+		$objProductType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id=".$row['type']);
+		$fields = deserialize($objProductType->attributes, true);
+		
 		if ($row['pid'] > 0)
 		{
 			$strBuffer = '<div class="iso_product"><div class="thumbnail">'.$thumbnail.'</div><ul>';
-			
-			$objProductType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id=".$row['type']);
-			
-			$fields = deserialize($objProductType->attributes, true);
 			
 			foreach( $fields as $i )
 			{
@@ -744,7 +743,7 @@ class tl_iso_products extends Backend
 			return $strBuffer . '</ul></div>';
 		}
 		
-		return '<div class="iso_product"><div class="thumbnail">'.$thumbnail.'</div><p>' . $row['name'] . (strlen($row['sku']) ? '<span style="color:#b3b3b3; padding-left:3px;">['.$row['sku'].']</span>' : '') . '</p><div>' . ($row['pid']==0 ? '<em>' . $this->getCategoryList(deserialize($row['pages'])) . '</em>' : '') . '</div></div> ';
+		return '<div class="iso_product"><div class="thumbnail">'.$thumbnail.'</div><p>' . $row['name'] . (($row['sku'] != '' && in_array('sku', $fields)) ? '<span style="color:#b3b3b3; padding-left:3px;">['.$row['sku'].']</span>' : '') . '</p><div>' . ($row['pid']==0 ? '<em>' . $this->getCategoryList(deserialize($row['pages'])) . '</em>' : '') . '</div></div> ';
 	}
 	
 	
@@ -2067,11 +2066,10 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 				}
 
 			
-			//For each page record already in the table, we grab the product id list and modify it to include this product ID if it isn't existing in the product ID collection.
-			
+			// For each page record already in the table, we grab the product id list and modify it to include this product ID if it isn't existing in the product ID collection.
 			foreach($arrPFCInfo as $page)
 			{
-				//Each page record we start with a fresh products array to update the record.
+				// Each page record we start with a fresh products array to update the record.
 				$arrExistingValues = array();
 				
 				$arrExistingPages[] = $page['pid'];
@@ -2082,7 +2080,7 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 				{
 					if((int)$pageToBeUpdated==$page['pid'])	//If this page 
 					{
-						//If the product ID doesn't not already have an association to the current page, then add it to the list of product IDs for that page.
+						// If the product ID doesn't not already have an association to the current page, then add it to the list of product IDs for that page.
 						if(!in_array($varCurrValue, $arrExistingValues))
 						{
 							$arrExistingValues[] = $varCurrValue;	//add the product id in.
@@ -2098,7 +2096,7 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 		
 		}
 		
-		//New Pages to add that aren't in the current collection
+		// New Pages to add that aren't in the current collection
 		foreach($arrPageList as $intPageNum)
 		{	
 			if(!in_array((int)$intPageNum, $arrExistingPages))
