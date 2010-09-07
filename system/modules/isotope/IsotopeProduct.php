@@ -718,6 +718,7 @@ class IsotopeProduct extends Controller
 			
 			if (count($arrField['options']) == 2 && $arrField['options'][0]['value'] == '')
 			{
+				$this->arrOptions[$strField] = $arrField['options'][1]['value'];
 				$this->Input->setPost($strField, $arrField['options'][1]['value']);
 				
 				if (!$blnAjax)
