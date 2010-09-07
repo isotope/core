@@ -686,6 +686,18 @@ class IsotopeProduct extends Controller
 					unset($arrField['options'][$k]);
 				}
 			}
+			
+			$arrField['options'] = array_values($arrField['options']);
+			
+			if (count($arrField['options']) == 2 && $arrField['options'][0]['value'] == '')
+			{
+				$this->Input->setPost($strField, $arrField['options'][1]['value']);
+				
+				if (!$blnAjax)
+				{
+					return '';
+				}
+			}
 		}
 		else
 		{
@@ -867,7 +879,7 @@ class IsotopeProduct extends Controller
 		{
 			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['add_to_product_variants'])
 			{
-				$this->generateProductOptionWidget($attribute);
+				$this->generateProductOptionWidget($attribute, true);
 				$arrOptions[$attribute] = $this->arrOptions[$attribute];
 			}
 		}
