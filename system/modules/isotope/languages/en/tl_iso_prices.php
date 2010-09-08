@@ -31,7 +31,7 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_iso_prices']['price_tiers']		= array('Price Tiers', '');
+$GLOBALS['TL_LANG']['tl_iso_prices']['price_tiers']		= array('Price Tiers', 'Setup at least one price tier for "Quantity 1". You can enter discount prices if the user orders more than one product.');
 $GLOBALS['TL_LANG']['tl_iso_prices']['tax_class']		= array('Tax Class', 'Please select a tax class for this price.');
 $GLOBALS['TL_LANG']['tl_iso_prices']['config_id']		= array('Store configuration', 'Select a store configuration for this price.');
 $GLOBALS['TL_LANG']['tl_iso_prices']['member_group']	= array('Price group', 'Select a price group (member group) for this price.');
@@ -54,4 +54,11 @@ $GLOBALS['TL_LANG']['tl_iso_prices']['show']			= array('Price details', 'Show de
  */
 $GLOBALS['TL_LANG']['tl_iso_prices']['price_tier_columns']['min']	= 'Quantity (min)';
 $GLOBALS['TL_LANG']['tl_iso_prices']['price_tier_columns']['price']	= 'Price';
+
+
+/**
+ * Legends
+ */
+$GLOBALS['TL_LANG']['tl_iso_prices']['price_legend']	= 'Price';
+$GLOBALS['TL_LANG']['tl_iso_prices']['limit_legend']	= 'Limitations';
 
