@@ -118,7 +118,6 @@ class IsotopeProduct extends Controller
 		else
 		{
 			$this->arrData = $arrData;
-			
 		}
 
 		$this->arrType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id=".$this->arrData['type'])->fetchAssoc();
@@ -168,7 +167,7 @@ class IsotopeProduct extends Controller
 															WHERE pid IN
 															(
 																SELECT id
-																FROM tl_iso_prices
+																FROM (SELECT * FROM tl_iso_prices ORDER BY config_id DESC, member_group DESC, start DESC, stop DESC) AS p
 																WHERE
 																	(config_id={$this->Isotope->Config->id} OR config_id=0)
 																	AND (member_group=".(int)$this->User->price_group." OR member_group=0)
@@ -180,6 +179,7 @@ class IsotopeProduct extends Controller
 																		FROM tl_iso_products
 																		WHERE pid=" . ($this->arrData['pid'] ? $this->arrData['pid'] : $this->arrData['id']) . "
 																	)
+																GROUP BY pid
 															)
 															ORDER BY min ASC, price ASC LIMIT 1
 														) AS low_price,
@@ -189,7 +189,7 @@ class IsotopeProduct extends Controller
 															WHERE pid IN
 															(
 																SELECT id
-																FROM tl_iso_prices
+																FROM (SELECT * FROM tl_iso_prices ORDER BY config_id DESC, member_group DESC, start DESC, stop DESC) AS p
 																WHERE
 																	(config_id={$this->Isotope->Config->id} OR config_id=0)
 																	AND (member_group=".(int)$this->User->price_group." OR member_group=0)
@@ -201,6 +201,7 @@ class IsotopeProduct extends Controller
 																		FROM tl_iso_products
 																		WHERE pid=" . ($this->arrData['pid'] ? $this->arrData['pid'] : $this->arrData['id']) . "
 																	)
+																GROUP BY pid
 															)
 															ORDER BY min ASC, price DESC LIMIT 1
 														) AS high_price");
@@ -933,7 +934,7 @@ class IsotopeProduct extends Controller
 											FROM tl_iso_price_tiers
 											WHERE
 												min<={$this->quantity_requested}
-												AND pid IN
+												AND pid=
 												(
 													SELECT id
 													FROM tl_iso_prices
@@ -943,6 +944,8 @@ class IsotopeProduct extends Controller
 														AND (start='' OR start<$time)
 														AND (stop='' OR stop>$time)
 														AND pid={$this->id}
+													ORDER BY config_id DESC, member_group DESC, start DESC, stop DESC
+													LIMIT 1
 												)
 											ORDER BY min DESC LIMIT 1")->price;
 	}
