@@ -1129,9 +1129,9 @@ class tl_iso_products extends Backend
 	 */
 	public function quickEditVariants($dc)
 	{
-		$arrQuickEditFields = array('sku', 'price', 'shipping_weight', 'stock_quantity');
-
-		$objProduct = $this->Database->prepare("SELECT id, pid, language, type, (SELECT attributes FROM tl_iso_producttypes WHERE id=tl_iso_products.type) AS attributes, (SELECT variant_attributes FROM tl_iso_producttypes WHERE id=tl_iso_products.type) AS variant_attributes FROM tl_iso_products WHERE id=?")->limit(1)->execute($dc->id);
+		$objProduct = $this->Database->prepare("SELECT id, pid, language, type, (SELECT attributes FROM tl_iso_producttypes WHERE id=tl_iso_products.type) AS attributes, (SELECT variant_attributes FROM tl_iso_producttypes WHERE id=tl_iso_products.type) AS variant_attributes, (SELECT prices FROM tl_iso_producttypes WHERE id=tl_iso_products.type) AS prices FROM tl_iso_products WHERE id=?")->limit(1)->execute($dc->id);
+		
+		$arrQuickEditFields = $objProduct->prices ? array('sku', 'shipping_weight', 'stock_quantity') : array('sku', 'price', 'shipping_weight', 'stock_quantity');
 		
 		$arrFields = array();
 		$arrAttributes = deserialize($objProduct->attributes);
