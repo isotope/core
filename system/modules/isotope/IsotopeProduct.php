@@ -157,7 +157,58 @@ class IsotopeProduct extends Controller
 		// Find lowest price
 		if ($this->arrType['variants'] && in_array('price', $this->arrVariantAttributes))
 		{
-			$objProduct = $this->Database->execute("SELECT MIN(price) AS low_price, MAX(price) AS high_price FROM tl_iso_products WHERE pid=" . ($this->arrData['pid'] ? $this->arrData['pid'] : $this->arrData['id']) . " AND published='1' AND language='' GROUP BY pid");
+			if ($this->arrType['prices'])
+			{
+				$time = time();
+				
+				$objProduct = $this->Database->execute("SELECT
+														(
+															SELECT price
+															FROM tl_iso_price_tiers
+															WHERE pid IN
+															(
+																SELECT id
+																FROM tl_iso_prices
+																WHERE
+																	(config_id={$this->Isotope->Config->id} OR config_id=0)
+																	AND (member_group=".(int)$this->User->price_group." OR member_group=0)
+																	AND (start='' OR start<$time)
+																	AND (stop='' OR stop>$time)
+																	AND pid IN
+																	(
+																		SELECT id
+																		FROM tl_iso_products
+																		WHERE pid=" . ($this->arrData['pid'] ? $this->arrData['pid'] : $this->arrData['id']) . "
+																	)
+															)
+															ORDER BY min ASC, price ASC LIMIT 1
+														) AS low_price,
+														(
+															SELECT price
+															FROM tl_iso_price_tiers
+															WHERE pid IN
+															(
+																SELECT id
+																FROM tl_iso_prices
+																WHERE
+																	(config_id={$this->Isotope->Config->id} OR config_id=0)
+																	AND (member_group=".(int)$this->User->price_group." OR member_group=0)
+																	AND (start='' OR start<$time)
+																	AND (stop='' OR stop>$time)
+																	AND pid IN
+																	(
+																		SELECT id
+																		FROM tl_iso_products
+																		WHERE pid=" . ($this->arrData['pid'] ? $this->arrData['pid'] : $this->arrData['id']) . "
+																	)
+															)
+															ORDER BY min ASC, price DESC LIMIT 1
+														) AS high_price");
+			}
+			else
+			{
+				$objProduct = $this->Database->execute("SELECT MIN(price) AS low_price, MAX(price) AS high_price FROM tl_iso_products WHERE pid=" . ($this->arrData['pid'] ? $this->arrData['pid'] : $this->arrData['id']) . " AND published='1' AND language='' GROUP BY pid");
+			}
 
 			if ($objProduct->low_price < $objProduct->high_price)
 			{
@@ -187,7 +238,13 @@ class IsotopeProduct extends Controller
 			}
 		}
 		
-		$this->arrData['original_price'] = $this->arrData['price'];
+		
+		if (in_array('price', $this->arrAttributes))
+		{
+			$this->arrData['price'] = $this->findPrice();
+			$this->arrData['original_price'] = $this->arrData['price'];
+		}
+		
 		$this->loadLanguage();
 		
 		if ($arrData['pid'] > 0)
@@ -298,6 +355,11 @@ class IsotopeProduct extends Controller
 			case 'name':
 			case 'price':
 				$this->arrData[$strKey] = $varValue;
+				break;
+				
+			case 'quantity_requested':
+				$this->arrCache[$strKey] = $varValue;
+				$this->arrData['price'] = $this->findPrice();
 				break;
 
 			default:
@@ -858,6 +920,32 @@ class IsotopeProduct extends Controller
 		
 		return $arrValues;
 	}
+	
+	
+	protected function findPrice()
+	{
+		if (!$this->arrType['prices'])
+			return $this->arrData['price'];
+			
+		$time = time();
+			
+		return $this->Database->execute("SELECT price
+											FROM tl_iso_price_tiers
+											WHERE
+												min<={$this->quantity_requested}
+												AND pid IN
+												(
+													SELECT id
+													FROM tl_iso_prices
+													WHERE
+														(config_id={$this->Isotope->Config->id} OR config_id=0)
+														AND (member_group=".(int)$this->User->price_group." OR member_group=0)
+														AND (start='' OR start<$time)
+														AND (stop='' OR stop>$time)
+														AND pid={$this->id}
+												)
+											ORDER BY min DESC LIMIT 1")->price;
+	}
 
 
 	protected function getOptionList($arrAttributeData)
@@ -951,6 +1039,7 @@ class IsotopeProduct extends Controller
 		
 		if (in_array('price', $this->arrVariantAttributes))
 		{
+			$this->arrData['price'] = $this->findPrice();
 			$this->arrData['original_price'] = $this->arrData['price'];
 		}
 		
@@ -959,7 +1048,7 @@ class IsotopeProduct extends Controller
 		{
 			$this->arrDownloads = $this->Database->execute("SELECT * FROM tl_iso_downloads WHERE pid={$this->arrData['id']} OR pid={$this->arrData['pid']}")->fetchAllAssoc();
 		}
-				
+		
 		$this->loadLanguage($arrInherit);
 	}
 	
