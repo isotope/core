@@ -264,24 +264,6 @@ $GLOBALS['TL_LANG']['CCT']['enroute']  = 'EnRoute';
 
 
 /**
- * Attributes
- */
-$GLOBALS['TL_LANG']['ATTR']['text']              = 'Text (bis zu 255 Zeichen)';
-$GLOBALS['TL_LANG']['ATTR']['integer']           = 'Integer/Ganze Zahl';
-$GLOBALS['TL_LANG']['ATTR']['decimal']           = 'Dezimalzahl';
-$GLOBALS['TL_LANG']['ATTR']['textarea']          = 'Langer Text (mehr als 255 Zeichen)';
-$GLOBALS['TL_LANG']['ATTR']['datetime']          = 'Datum/Zeit';
-$GLOBALS['TL_LANG']['ATTR']['select']            = 'Auswahl-Liste';
-$GLOBALS['TL_LANG']['ATTR']['checkbox']          = 'Checkbox';
-$GLOBALS['TL_LANG']['ATTR']['options']           = 'Options-Liste';
-$GLOBALS['TL_LANG']['ATTR']['file']              = 'Dateianhang';
-$GLOBALS['TL_LANG']['ATTR']['media']             = 'Media (Bilder, Videos, MP3s, usw.)';
-$GLOBALS['TL_LANG']['ATTR']['label']             = 'Beschriftung/Nur Ansicht';
-$GLOBALS['TL_LANG']['ATTR']['input']             = 'Kundeneingabe erlauben';
-$GLOBALS['TL_LANG']['ATTR']['conditionalselect'] = 'Abhängiges Select-Menü';
-
-
-/**
  * Currencies
  * Quelle: http://publications.europa.eu/code/de/de-5000700.htm
  */
