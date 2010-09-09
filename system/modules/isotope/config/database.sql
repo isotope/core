@@ -442,7 +442,7 @@ CREATE TABLE `tl_iso_payment_modules` (
   `authorize_relay_response` char(1) NOT NULL default '',
   `authorize_email_customer` char(1) NOT NULL default '',
   `cybersource_merchant_id` varchar(255) NOT NULL default '',
-  `cybersource_trans_key` varchar(255) NOT NULL default '',
+  `cybersource_trans_key` text NULL,
   `cybersource_trans_type` varchar(32) NOT NULL default '',
   `epay_merchantnumber` varchar(7) NOT NULL default '',
   `epay_secretkey` varchar(255) NOT NULL default '',

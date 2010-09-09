@@ -28,7 +28,7 @@
  
 class PaymentCybersource extends IsotopePayment
 {		
-	private $arrCardTypes = array('visa'=>001,'mc'=>002,'amex'=>003,'discover'=>004,'diners'=>005,'carte_blanche'=>006,'jcb'=>007,'enroute'=>014,'jal'=>021,'maestro'=>024,'delta'=>031,'solo'=>032,'visa_electron'=>033,'dankort'=>034,'laser'=>035,'carte_bleue'=>036,'carta_si'=>037,'enc_acct_num'=>039,'uatp'=>040,'maestro_intl'=>042,'ge_money_uk'=>043);
+	private $arrCardTypes = array('visa'=>'001','mc'=>'002','amex'=>'003','discover'=>'004','diners'=>'005','carte_blanche'=>'006','jcb'=>'007','enroute'=>'014','jal'=>'021','maestro'=>'024','delta'=>'031','solo'=>'032','visa_electron'=>'033','dankort'=>'034','laser'=>'035','carte_bleue'=>'036','carta_si'=>'037','enc_acct_num'=>'039','uatp'=>'040','maestro_intl'=>'042','ge_money_uk'=>'043');
 
 	public function __get($strKey)
 	{
@@ -57,7 +57,7 @@ class PaymentCybersource extends IsotopePayment
 	 */
 	public function processPayment()
 	{
-		return true;		
+		return false;	
 	}
 		
 	public function checkoutForm()
@@ -70,20 +70,21 @@ class PaymentCybersource extends IsotopePayment
 		// Get the current order, review page will create the data
 		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->execute($this->Isotope->Cart->id);
 
+		$doNotSubmit = false;
 		$strBuffer = '';
+		
 		$arrPayment = $this->Input->post('payment');
 		$arrCCTypes = deserialize($this->allowed_cc_types);	//standard keys
 		
 		foreach($arrCCTypes as $type)
 		{
-			$arrAllowedCCTypes[] = $this->arrCardTypes[$type]; //numeric keys specific to Cybersource
+			$arrAllowedCCTypes[] = $this->arrCardTypes[$type]; //numeric keys specific to Cybersource, @TODO: merchant bank makes a difference!  
 		}
 		
-		$intStartYear = (integer)date('Y', time()); //2-digit year
+		$intStartYear = (integer)date('Y', time()); //4-digit year
 		
 		for($i=0;$i<=7;$i++)
-			$arrYears[] = (string)$intStartYear+1;
-
+			$arrYears[] = (string)$intStartYear+$i;
 		//card_accountNumber,card_cardType,card_expirationMonth,card_expirationYear,card_cvNumber
 		$arrFields = array
 		(
@@ -133,7 +134,7 @@ class PaymentCybersource extends IsotopePayment
 				continue;
 			}
 
-			$objWidget = new $strClass($this->prepareForWidget($arrData, 'payment['.$this->id.']['.$field.']', $_SESSION['CHECKOUT_DATA']['payment'][$this->id][$field]));
+			$objWidget = new $strClass($this->prepareForWidget($arrData, 'payment['.$field.']'));
 			
 			// Validate input
 			if ($this->Input->post('FORM_SUBMIT') == 'iso_mod_checkout_payment' && $arrPayment['module'] == $this->id)
@@ -143,12 +144,13 @@ class PaymentCybersource extends IsotopePayment
 				
 				if ($objWidget->hasErrors())
 				{
-					$objCheckoutModule->doNotSubmit = true;
+					$doNotSubmit = true;
 				}
 			}
-			elseif ($objWidget->mandatory && !strlen($objWidget->value))
+			elseif ($objWidget->mandatory && !strlen($arrPayment[$field]))
 			{
-				$objCheckoutModule->doNotSubmit = true;
+				
+				$doNotSubmit = true;
 			}
 						
 			$strBuffer .= $objWidget->parse();
@@ -161,13 +163,15 @@ class PaymentCybersource extends IsotopePayment
 		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->execute($this->Isotope->Cart->id);
 		$intTotal = round($this->Isotope->Cart->grandTotal, 2);
 		
-		$arrSubdivision = explode('-',$this->Isotope->Cart->billingaddress['subdivision']);
-		
-		if(!$objCheckoutModule->doNotSubmit && $this->Input->post('FORM_SUBMIT') == 'iso_mod_chekcout_payment')
-		{			
+		$arrSubdivision = explode('-',$this->Isotope->Cart->billingAddress['subdivision']);
+
+		if(!$doNotSubmit && $this->Input->post('FORM_SUBMIT') == 'payment_form')
+		{	
+						
 			try 
-			{
-				$objSoapClient = new CybersourceClient('https://ics2ws'.($this->debug ? 'test' : '').'.ic3.com/commerce/1.x/transactionProcessor/CyberSourceTransaction_1.26.wsdl', array());
+			{				
+				$objSoapClient = new CybersourceClient('https://ics2ws'.($this->debug ? 'test' : '').'.ic3.com/commerce/1.x/transactionProcessor/CyberSourceTransaction_1.26.wsdl', array(), $this->cybersource_merchant_id, $this->cybersource_trans_key);
+			
 			
 				/*
 				To see the functions and types that the SOAP extension can automatically
@@ -181,7 +185,7 @@ class PaymentCybersource extends IsotopePayment
 				$objRequest = new stdClass();
 			
 				$objRequest->merchantID = $this->cybersource_merchant_id;
-			
+				
 				// Before using this example, replace the generic value with your own.
 				$objRequest->merchantReferenceCode = $objOrder->id;
 			
@@ -198,35 +202,36 @@ class PaymentCybersource extends IsotopePayment
 				$objRequest->ccAuthService = $objCCAuthService;
 			
 				$objBillTo = new stdClass();
-				$objBillTo->firstName = $this->Isotope->Cart->billingaddress['firstname'];
-				$objBillTo->lastName = $this->Isotope->Cart->billingaddress['lastname'];
-				$objBillTo->street1 = $this->Isotope->Cart->billingaddress['street_1'];
-				$objBillTo->city = $this->Isotope->Cart->billingaddress['city'];
+				$objBillTo->firstName = $this->Isotope->Cart->billingAddress['firstname'];
+				$objBillTo->lastName = $this->Isotope->Cart->billingAddress['lastname'];
+				$objBillTo->street1 = $this->Isotope->Cart->billingAddress['street_1'];
+				$objBillTo->city = $this->Isotope->Cart->billingAddress['city'];
 				$objBillTo->state = $arrSubdivision[1];
-				$objBillTo->postalCode = $this->Isotope->Cart->billingaddress['postal'];
-				$objBillTo->country = $this->Isotope->Cart->billingaddress['country'];
-				$objBillTo->email = $this->Isotope->Cart->billingaddress['email'];
+				$objBillTo->postalCode = $this->Isotope->Cart->billingAddress['postal'];
+				$objBillTo->country = $this->Isotope->Cart->billingAddress['country'];
+				$objBillTo->email = $this->Isotope->Cart->billingAddress['email'];
 				$objBillTo->ipAddress = $this->Environment->ip;
 				$objRequest->billTo = $objBillTo;
 
 				$objCard = new stdClass();
-				$objCard->accountNumber = $this->Input->post('card_accountNumber');
-				$objCard->expirationMonth = $this->Input->post('card_expirationMonth');
-				$objCard->expirationYear = $this->Input->post('card_expirationYear');
+				$objCard->accountNumber = $arrPayment['card_accountNumber'];
+				$objCard->expirationMonth = $arrPayment['card_expirationMonth'];
+				$objCard->expirationYear = $arrPayment['card_expirationYear'];
 				
 				//if($this->requireCardType)
-				$objCard->cardType = $this->Input->post('card_cardType');
-				
+				$objCard->cardType = $arrPayment['card_cardType'];
+							
 				if($this->requireCCV)
-					$objCard->cvNumber = $this->Input->post('card_cvNumber');
+					$objCard->cvNumber = $arrPayment['card_cvNumber'];
 				
 				$objRequest->card = $objCard;
 			
 				$objPurchaseTotals = new stdClass();
 				$objPurchaseTotals->currency = $this->Isotope->Config->currency;
+				$objPurchaseTotals->grandTotalAmount = round($this->Isotope->Cart->grandTotal, 2);
 				$objRequest->purchaseTotals = $objPurchaseTotals;
 		
-				$arrProducts = $this->Isotope->Cart->getProducts();
+				/*$arrProducts = $this->Isotope->Cart->getProducts();
 	
 				foreach($arrProducts as $i=>$objProduct)
 				{
@@ -239,10 +244,10 @@ class PaymentCybersource extends IsotopePayment
 					$arrItems[] = $objItem;
 				}
 				
-				$objRequest->item = $arrItems;
-				
+				$objRequest->item = $arrItems;*/
+				//, $strLocation, $strAction, $strVersion, $strMerchantId, $strTransactionKey
 				$objReply = $objSoapClient->runTransaction($objRequest);
-				
+			
 				$arrSet['transaction_response'] = $objReply->decision;
 				$arrSet['transaction_response_code'] = $objReply->reasonCode;
 
@@ -257,15 +262,20 @@ class PaymentCybersource extends IsotopePayment
 						break;
 					case 'ERROR':
 						$_SESSION['CHECKOUT_DATA']['payment'][$this->id]['error'] = $GLOBALS['TL_LANG']['CYB'][$objReply->reasonCode];
+						$blnFail = true;
 						break;
 					case 'REJECT':
 						$_SESSION['CHECKOUT_DATA']['payment'][$this->id]['error'] = $GLOBALS['TL_LANG']['CYB'][$objReply->reasonCode];	
+						$blnFail = true;
 						break;				
 				}
 			
 				$this->Database->prepare("UPDATE tl_iso_orders %s WHERE id={$objOrder->id}")
 							   ->set($arrSet)
 							   ->executeUncached();
+			
+				if($blnFail)
+					return false;
 			} 
 			catch (SoapFault $exception) 
 			{
@@ -276,15 +286,16 @@ class PaymentCybersource extends IsotopePayment
 		
 		return '
 <h2>' . $this->label . '</h2>
-<form id="payment_form" action="'.$this->Environmnet->request.'" method="post">'
+<form id="payment_form" action="'.$this->Environment->request.'" method="post">
+<input type="hidden" name="FORM_SUBMIT" value="payment_form" />'
 .$strBuffer.'
 <input type="submit" value="' . specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']) . '" />
 </form>
 <script type="text/javascript">
 <!--//--><![CDATA[//><!--
-window.addEvent( \'domready\' , function() {
+/*window.addEvent( \'domready\' , function() {
   $(\'payment_form\').submit();
-});
+});*/
 //--><!]]>
 </script>';
 		

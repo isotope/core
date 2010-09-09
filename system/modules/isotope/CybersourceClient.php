@@ -26,18 +26,23 @@
 
 class CybersourceClient extends SoapClient 
 {
-
-   public function __construct($wsdl, $options = null) 
+   protected $merchantId;
+   
+   protected $transactionKey;
+   
+   public function __construct($wsdl, $options = null, $strMerchantId, $strTransactionKey) 
    {
      parent::__construct($wsdl, $options);
+   
+   	 $this->merchantId = $strMerchantId;
+	 $this->transactionKey = $strTransactionKey;
    }
 
 // This section inserts the UsernameToken information in the outgoing SOAP message.
-   protected function sendRequest($objRequest, $strLocation, $strAction, $strVersion, $strMerchantId, $strTransactionKey) 
-   {
-
-     $user = $strMerchantId;
-     $password = $strTransactionKey;
+   public function __doRequest($objRequest, $strLocation, $strAction, $strVersion) 
+   {	
+     $user = $this->merchantId;
+     $password = $this->transactionKey;
 
      $strSoapHeader = "<SOAP-ENV:Header xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:wsse=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd\"><wsse:Security SOAP-ENV:mustUnderstand=\"1\"><wsse:UsernameToken><wsse:Username>$user</wsse:Username><wsse:Password Type=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText\">$password</wsse:Password></wsse:UsernameToken></wsse:Security></SOAP-ENV:Header>";
 
@@ -53,13 +58,14 @@ class CybersourceClient extends SoapClient
 		$objRequestDOM->firstChild->insertBefore($node, $objRequestDOM->firstChild->firstChild);
 
         $objSOAPRequest = $objRequestDOM->saveXML();
+		
      } 
 	 catch (DOMException $e) 
 	 {	 	
      	die( 'Error adding UsernameToken: ' . $e->code);
      }
 
-     return parent::sendRequest($objSOAPRequest, $strLocation, $strAction, $strVersion);
+     return parent::__doRequest($objSOAPRequest, $strLocation, $strAction, $strVersion);
    }
 }
 

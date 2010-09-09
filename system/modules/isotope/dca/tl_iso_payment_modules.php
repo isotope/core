@@ -362,8 +362,8 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['cybersource_trans_key'],
 			'exclude'                 => true,
-			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255)
+			'inputType'               => 'textarea',
+			'eval'                    => array('mandatory'=>true, 'style'=>'height: 60px;')
 		),	
 		'cybersource_trans_type' => array
 		(
