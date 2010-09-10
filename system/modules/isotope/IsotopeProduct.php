@@ -589,12 +589,12 @@ class IsotopeProduct extends Controller
 				{
 					$objGallery = $this->$attribute;
 					
-					foreach( array('large', 'medium', 'thumbnail', 'gallery') as $type )
+					foreach( $this->Isotope->Config->imageSizes as $size )
 					{
 						$arrOptions[] = array
 						(
-							'id'		=> ($attribute . '_' . ($this->pid ? $this->pid : $this->id) . '_' . $type . 'size'),
-							'html'		=> $objGallery->generateMainImage($type),
+							'id'		=> ($attribute . '_' . ($this->pid ? $this->pid : $this->id) . '_' . $size['name'] . 'size'),
+							'html'		=> $objGallery->generateMainImage($size['name']),
 						);
 					}
 					
