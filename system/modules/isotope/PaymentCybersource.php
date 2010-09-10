@@ -260,12 +260,10 @@ class PaymentCybersource extends IsotopePayment
 						$arrPaymentData['cc_last_four'] = substr($strCCNum, strlen($strCCNum) - 4, 4);
 						$arrSet['payment_data'] = serialize($arrPaymentData);
 						break;
-					case 'ERROR':
-						$_SESSION['CHECKOUT_DATA']['payment'][$this->id]['error'] = $GLOBALS['TL_LANG']['CYB'][$objReply->reasonCode];
+					case 'ERROR':						
 						$blnFail = true;
 						break;
 					case 'REJECT':
-						$_SESSION['CHECKOUT_DATA']['payment'][$this->id]['error'] = $GLOBALS['TL_LANG']['CYB'][$objReply->reasonCode];	
 						$blnFail = true;
 						break;				
 				}
@@ -275,7 +273,14 @@ class PaymentCybersource extends IsotopePayment
 							   ->executeUncached();
 			
 				if($blnFail)
-					return false;
+				{
+					global $objPage;
+					$this->log('Invalid payment data received.', 'PaymentCybersource checkoutForm()', TL_ERROR);
+					$this->redirect($this->generateFrontendUrl($objPage->row(), '/step/process/error/'.$objReply->reasonCode));
+					$this->loadLanguageFile('cybersource');
+				}
+				
+				return true;
 			} 
 			catch (SoapFault $exception) 
 			{
@@ -283,10 +288,11 @@ class PaymentCybersource extends IsotopePayment
 				var_dump($exception);
 			}
 		}	
-		
+								
 		return '
-<h2>' . $this->label . '</h2>
-<form id="payment_form" action="'.$this->Environment->request.'" method="post">
+<h2>' . $this->label . '</h2>'.
+($this->Input->get('error') == '' ? '' : '<p class="error message">'.$GLOBALS['TL_LANG']['CYB'][$this->Input->get('error')].'</p>').
+'<form id="payment_form" action="'.$this->Environment->request.'" method="post">
 <input type="hidden" name="FORM_SUBMIT" value="payment_form" />'
 .$strBuffer.'
 <input type="submit" value="' . specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']) . '" />
