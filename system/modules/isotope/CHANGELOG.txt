@@ -20,6 +20,7 @@ Version 0.2.beta2
 - Improved: Remove form errors when selecting a new product variant
 - Improved: Empty option labels are now taken as blankOptionLabel for variant select menus
 - Improved: Variant products don't show select menus with only one option
+- Improved: Cart module now hides button withouth a target page (jump to cart/checkout)
 - Fixed: cart_html and cart_text now include subtotal, surcharges and grand total (Ticket #34)
 - Fixed: Variant price should not show "From" when all variants have the same price
 - Fixed: Now using core widget TimePeriod for shipping weight which has a larger select menu.

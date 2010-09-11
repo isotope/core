@@ -18,6 +18,7 @@
 <?php endforeach; ?>
 	</tbody>
 </table>
-<a class="checkout" style="float:right" href="<?php echo $this->checkoutJumpTo; ?>"><span><?php echo $this->checkoutJumpToLabel; ?></span></a>
-<a class="cart" href="<?php echo $this->cartJumpTo; ?>"><span><?php echo $this->cartLabel; ?></span></a>
+<?php if ($this->checkoutJumpTo): ?>
+<a class="checkout" style="float:right" href="<?php echo $this->checkoutJumpTo; ?>"><span><?php echo $this->checkoutJumpToLabel; ?></span></a><?php endif; if ($this->cartJumpTo): ?>
+<a class="cart" href="<?php echo $this->cartJumpTo; ?>"><span><?php echo $this->cartLabel; ?></span></a><?php endif; ?>
 </div>

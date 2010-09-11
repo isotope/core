@@ -59,8 +59,8 @@
 </table>
 </div>
 <div class="submit_container">
-	<input type="submit" class="submit update" name="update_cart" id="ctrl_update_cart" value="<?php echo $GLOBALS['TL_LANG']['MSC']['updateCartBT']; ?>" />
-	<a class="checkout" href="<?php echo $this->checkoutJumpTo; ?>"><span><?php echo $this->checkoutJumpToLabel; ?></span></a>
+	<input type="submit" class="submit update" name="update_cart" id="ctrl_update_cart" value="<?php echo $GLOBALS['TL_LANG']['MSC']['updateCartBT']; ?>" /><?php if ($this->checkoutJumpTo): ?>
+	<a class="checkout" href="<?php echo $this->checkoutJumpTo; ?>"><span><?php echo $this->checkoutJumpToLabel; ?></span></a><?php endif; ?>
 </div>
 </form>
 <?php if(count($this->forms)) echo implode("\n", $this->forms); ?>
