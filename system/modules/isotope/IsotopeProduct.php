@@ -332,7 +332,7 @@ class IsotopeProduct extends Controller
 					$this->arrCache[$strKey] = $varValue ? $varValue : deserialize($this->arrData[$strKey]);
 				}
 
-				return $this->arrCache[$strKey];
+				return $this->arrCache[$strKey] ? $this->arrCache[$strKey] : '';
 		}
 	}
 
@@ -541,35 +541,7 @@ class IsotopeProduct extends Controller
 	public function generateAjax()
 	{
 		$this->validateVariant();
-		
-		// Find lowest price	@WHY???   
-			/*if ($this->arrType['variants'] && in_array('price', $this->arrVariantAttributes))
-		{
-			$arrSearch = array();
-			foreach( $this->arrOptions as $k => $v )
-			{
-				if (strlen($v))
-				{
-					$arrSearch[$k] = $v;
-				}
-			}
-			
-		
-			$objProduct = $this->Database->prepare("SELECT MIN(price) AS low_price, MAX(price) AS high_price FROM tl_iso_products WHERE pid={$this->id} AND published='1' AND language=''" . (count($arrSearch) ? " AND " . implode("=? AND ", array_keys($arrSearch)) . "=?" : ''))->execute($arrSearch);
-			
-			
-			if ($objProduct->low_price < $objProduct->high_price)
-			{
-				$this->arrCache['low_price'] = $objProduct->low_price;
-			}
-			else
-			{
-				unset($this->arrCache['low_price']);
-				$this->arrData['price'] = $objProduct->price;
-			}
-			
-		}*/
-		
+				
 		$arrOptions = array();
 		$arrAttributes = $this->getAttributes();
 		
