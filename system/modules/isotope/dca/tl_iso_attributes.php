@@ -347,7 +347,7 @@ class tl_iso_attributes extends Backend
     {
 		$arrReturn = array();
 
-		$objTables = $this->Database->prepare("SHOW TABLES FROM " . $GLOBALS['TL_CONFIG']['dbDatabase'])->execute();
+		$objTables = $this->Database->query("SHOW TABLES FROM " . $GLOBALS['TL_CONFIG']['dbDatabase']);
 		
 		if($objTables->numRows > 0)
 		{
@@ -375,9 +375,7 @@ class tl_iso_attributes extends Backend
 	 */
 	public function getFields(DataContainer $dc)
     {
-        $objTable = $this->Database->prepare("SELECT list_source_table FROM tl_iso_attributes WHERE id=?")
-								   ->limit(1)
-								   ->execute($dc->id);
+        $objTable = $this->Database->execute("SELECT list_source_table FROM tl_iso_attributes WHERE id={$dc->id}");
          
         if ($objTable->numRows > 0 && $this->Database->tableExists($objTable->list_source_table))
         {
@@ -390,7 +388,7 @@ class tl_iso_attributes extends Backend
     
     public function deleteAttribute($dc)
     {
-    	$objAttribute = $this->Database->prepare("SELECT * FROM tl_iso_attributes WHERE id=?")->execute($dc->id);
+    	$objAttribute = $this->Database->execute("SELECT * FROM tl_iso_attributes WHERE id={$dc->id}");
     	
     	if ($this->Database->fieldExists($objAttribute->field_name, 'tl_iso_products'))
     	{
@@ -402,7 +400,7 @@ class tl_iso_attributes extends Backend
     
     public function disableFieldName($dc)
     {
-    	$objAttribute = $this->Database->prepare("SELECT * FROM tl_iso_attributes WHERE id=?")->execute($dc->id);
+    	$objAttribute = $this->Database->execute("SELECT * FROM tl_iso_attributes WHERE id={$dc->id}");
     	
     	if (strlen($objAttribute->field_name))
     	{
@@ -426,7 +424,7 @@ class tl_iso_attributes extends Backend
     	{
     		$strType = strlen($GLOBALS['ISO_ATTR'][$this->Input->post('type')]['sql']) ? $this->Input->post('type') : 'text';
     		
-    		$this->Database->execute(sprintf("ALTER TABLE tl_iso_products ADD %s %s", $varValue, $GLOBALS['ISO_ATTR'][$strType]['sql']));
+    		$this->Database->query(sprintf("ALTER TABLE tl_iso_products ADD %s %s", $varValue, $GLOBALS['ISO_ATTR'][$strType]['sql']));
     		
     		$this->import('IsotopeDatabase');
 			$this->IsotopeDatabase->add($varValue, $GLOBALS['ISO_ATTR'][$strType]['sql']);
@@ -442,7 +440,7 @@ class tl_iso_attributes extends Backend
 		
 		if ($objAttribute->type != $dc->activeRecord->type && strlen($dc->activeRecord->type) && strlen($GLOBALS['ISO_ATTR'][$dc->activeRecord->type]['sql']) && $this->Database->fieldExists($dc->activeRecord->field_name, 'tl_iso_products'))
 		{
-			$this->Database->execute(sprintf("ALTER TABLE tl_iso_products MODIFY %s %s", $dc->activeRecord->field_name, $GLOBALS['ISO_ATTR'][$dc->activeRecord->type]['sql']));
+			$this->Database->query(sprintf("ALTER TABLE tl_iso_products MODIFY %s %s", $dc->activeRecord->field_name, $GLOBALS['ISO_ATTR'][$dc->activeRecord->type]['sql']));
 		}
 	}
 	
