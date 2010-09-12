@@ -21,7 +21,6 @@ CREATE TABLE `tl_module` (
   `iso_login_jumpTo` int(10) unsigned NOT NULL default '0',
   `iso_payment_modules` blob NULL,
   `iso_shipping_modules` blob NULL,
-  `new_products_time_window` int(10) unsigned NOT NULL default '0',
   `filter_module` text NULL,
   `iso_cols` int(1) unsigned NOT NULL default '1',
   `iso_config_id` int(10) unsigned NOT NULL default '0',
