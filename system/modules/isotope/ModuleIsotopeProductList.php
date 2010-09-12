@@ -102,6 +102,8 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		{
 			return $objProduct->generateAjax();
 		}
+		
+		return '';
 	}
 	
 	
