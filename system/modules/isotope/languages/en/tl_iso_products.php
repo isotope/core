@@ -36,8 +36,6 @@ $GLOBALS['TL_LANG']['tl_iso_products']['alias']					= array('Alias', '');
 $GLOBALS['TL_LANG']['tl_iso_products']['name']					= array('Name', '');
 $GLOBALS['TL_LANG']['tl_iso_products']['sku']					= array('SKU', '');
 $GLOBALS['TL_LANG']['tl_iso_products']['shipping_weight']		= array('Shipping weight', 'Please enter the shipping weight for this product. This can be used to calculate shipping cost.');
-$GLOBALS['TL_LANG']['tl_iso_products']['stock_enabled']			= array('Track Quantity', '');
-$GLOBALS['TL_LANG']['tl_iso_products']['stock_quantity']		= array('Quantity', '');
 $GLOBALS['TL_LANG']['tl_iso_products']['teaser']				= array('Teaser', '');
 $GLOBALS['TL_LANG']['tl_iso_products']['description']			= array('Description', '');
 $GLOBALS['TL_LANG']['tl_iso_products']['description_meta']		= array('Meta description','');
@@ -53,8 +51,6 @@ $GLOBALS['TL_LANG']['tl_iso_products']['price']					= array('Price', '');
 $GLOBALS['TL_LANG']['tl_iso_products']['option_set_source']		= array('Option Set Source','Use an existing option set or create a new one');
 $GLOBALS['TL_LANG']['tl_iso_products']['option_sets']			= array('Option Sets','Select an existing Option Set');
 $GLOBALS['TL_LANG']['tl_iso_products']['option_set_title']		= array('Option Set Title','Name your new option set. The combination of values for each attribute will be stored and used to produce a new collection of empty subproducts.');
-$GLOBALS['TL_LANG']['tl_iso_products']['stock_enabled']			= array('Enabled inventory tracking','Please choose whether or not you would like to track inventory.');
-$GLOBALS['TL_LANG']['tl_iso_products']['max_order_quantity']	= array('Maximum order quantity','Specify a maximum amount of product that can be purchased in a single order.');
 $GLOBALS['TL_LANG']['tl_iso_products']['start']					= array('Start date','Do not show this product before the date specified.');
 $GLOBALS['TL_LANG']['tl_iso_products']['stop']					= array('Stop date','Do not show this product after the date specified.');
 $GLOBALS['TL_LANG']['tl_iso_products']['variant_attributes']	= array('Variant setup', 'Please select the combination of values for this variant.');
@@ -90,9 +86,6 @@ $GLOBALS['TL_LANG']['tl_iso_products']['new_option_set'] = 'Create a new product
 
 $GLOBALS['TL_LANG']['tl_iso_products']['variantValuesLabel'] = 'Variant';
 
-$GLOBALS['TL_LANG']['tl_iso_products']['warehouse_name']	= 'Warehouse';
-$GLOBALS['TL_LANG']['tl_iso_products']['quantity']			= 'Current Qty';
-$GLOBALS['TL_LANG']['tl_iso_products']['new_quantity']		= 'New Qty';
 
 /**
  * Buttons

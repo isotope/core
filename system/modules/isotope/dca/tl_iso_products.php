@@ -205,14 +205,8 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'__selector__'				=> array('type', 'stock_enabled'),
+		'__selector__'				=> array('type'),
 		'default'					=> '{general_legend},type',
-	),
-	
-	// Subpalettes
-	'subpalettes' => array
-	(
-		'stock_enabled'				=> 'stock_quantity,stock_oversell',
 	),
 	
 	// Fields
@@ -330,31 +324,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'foreignKey'			=> 'tl_iso_tax_class.name',
 			'attributes'			=> array('legend'=>'pricing_legend'),
 			'eval'					=> array('includeBlankOption'=>true),
-		),/*
-		'max_order_quantity' => array
-		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['max_order_quantity'],
-			'inputType'				=> 'text',
-			'eval'					=> array('rgxp'=>'digit', 'disabled'=>'disabled'),
-			'attributes'			=> array('legend'=>'inventory_legend'),
-		),*/
-		'stock_enabled' => array
-		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['stock_enabled'],
-			'inputType'				=> 'checkbox',
-			'eval'					=> array('submitOnChange'=>true, 'tl_class'=>'clr'),
-			'attributes'			=> array('legend'=>'inventory_legend'),
 		),
-		'stock_quantity' => array
-		(
-			'input_field_callback'	=> array('tl_iso_products','generateInventoryWizard')
-		),
-		/*'stock_oversell' => array
-		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['stock_oversell'],
-			'inputType'				=> 'checkbox',
-			'eval'					=> array('tl_class'=>'w50 m12'),
-		),*/
 		'shipping_weight' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['shipping_weight'],
@@ -1650,7 +1620,7 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 		$GLOBALS['TL_DCA']['tl_iso_products']['fields']['type']['default'] = $this->Database->execute("SELECT id FROM tl_iso_producttypes ORDER BY fallback DESC, name")->id;
 		
 		// Load the current product
-		$objProduct = $this->Database->prepare("SELECT id, pid, language, type, (SELECT attributes FROM tl_iso_producttypes WHERE id=tl_iso_products.type) AS attributes, (SELECT variant_attributes FROM tl_iso_producttypes WHERE id=tl_iso_products.type) AS variant_attributes, (SELECT prices FROM tl_iso_producttypes WHERE id=tl_iso_products.type) AS prices, (SELECT variants FROM tl_iso_producttypes WHERE id=tl_iso_products.type) AS variantsEnabled FROM tl_iso_products WHERE id=?")->limit(1)->execute($dc->id);
+		$objProduct = $this->Database->prepare("SELECT id, pid, language, type, (SELECT attributes FROM tl_iso_producttypes WHERE id=tl_iso_products.type) AS attributes, (SELECT variant_attributes FROM tl_iso_producttypes WHERE id=tl_iso_products.type) AS variant_attributes, (SELECT prices FROM tl_iso_producttypes WHERE id=tl_iso_products.type) AS prices FROM tl_iso_products WHERE id=?")->limit(1)->execute($dc->id);
 			
 		if ($objProduct->pid > 0)
 		{
@@ -1697,9 +1667,6 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 		{
 			$arrFields = deserialize($objProduct->attributes, true);
 		}
-		
-		if(($objProduct->variantsEnabled && $objProduct->pid > 0) || !$objProduct->variantsEnabled)
-			$arrFields[] = 'stock_enabled';	
 				
 		if (is_array($arrFields) && count($arrFields))
 		{
@@ -2117,90 +2084,6 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 				$this->Database->prepare("INSERT INTO tl_filter_values_to_categories %s")->set($arrSet)->execute();
 			}
 		}
-	}
-	
-	public function generateInventoryWizard(DataContainer $dc, $xlabel)
-	{
-		// Load language file for the foreign key table.	@TODO: only if file_exists==true;
-		$this->loadLanguageFile('tl_iso_warehouses');
-
-		$intId = $this->Input->get('id');
-				
-		$arrUnits = array();
-				
-		$return = $xlabel;
-		
-		$return .= '<table cellspacing="0" cellpadding="5" id="ctrl_'.$dc->field.'" class="tl_inventorywizard" summary="Inventory wizard">
-  <thead>
-  <tr>
-    <td>'.$GLOBALS['TL_LANG']['tl_iso_products']['warehouse_name'].'</td>
-    <td>'.$GLOBALS['TL_LANG']['tl_iso_products']['quantity'].'</td>
-    <td>'.$GLOBALS['TL_LANG']['tl_iso_products']['new_quantity'].'</td>
-  </tr>
-  </thead>
-  <tbody>';
-		
-		// Get current quantites from inventory
-		$objQty = $this->Database->query("SELECT id, name, (SELECT SUM(quantity) FROM tl_iso_inventory WHERE tl_iso_inventory.pid=tl_iso_warehouses.id AND tl_iso_inventory.product_id=$intId) AS total_quantity FROM tl_iso_warehouses");
-
-		if(!$objQty->numRows)
-		{
-			return '<em>'.$GLOBALS['TL_LANG']['MSC']['noWarehouses'].'</em>';
-		}
-		
-		while($objQty->next())
-		{
-			$arrQty[$objQty->id] = array
-			(
-				'warehouse_name'	=> $objQty->name,
-				'quantity'			=> $objQty->total_quantity				
-			);
-		}
-		
-		$return .= '<tbody>';
-		
-		foreach ($arrQty as $key=>$value)
-		{
-			$return .= '<tr>';
-			$return .= '	<td>';			
-			$return .= '<strong>'.$value['warehouse_name'].'</strong>';
-			$return .= '	</td>';
-			$return .= '	<td>';
-			$return .= $value['quantity'];
-			$return .= '	</td>';
-			$return .= '	<td>';
-			$return .= '<input type="text" name="'.$dc->field.'['.$key.']" id="ctrl_'.$dc->field.'" class="tl_text_4" value="0" onfocus="Backend.getScrollOffset();" />';
-			$return .= '	</td>';
-			$return .= '</tr>';
-		}
-		
-		$return .= '</tbody>';
-		
-		if($this->Input->post('FORM_SUBMIT')==$dc->table)
-		{
-			$arrInserts = array();
-			
-			$varValue = $this->Input->post($dc->field);
-
-			if(!is_array($varValue) || !count($varValue))
-				return $varValue;
-				
-			foreach($varValue as $i=>$value)
-			{
-				$arrInserts[] = '('.time().','.$i.','.$dc->id.','.$value.')';
-			
-			}
-			
-			if(!count($arrInserts))
-				return $varValue;
-				
-			$strInserts = implode(',', $arrInserts);
-			
-			$this->Database->query("INSERT INTO tl_iso_inventory (tstamp,pid,product_id,quantity)VALUES".$strInserts);
-		}
-		
-		return $return . '</table>';
-					
 	}
 }
 
