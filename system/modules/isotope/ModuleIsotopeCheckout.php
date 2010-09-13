@@ -1185,6 +1185,18 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 					$arrAddress[$field] = $varValue;
 				}
 			}
+			else
+			{
+				$this->Input->setPost($objWidget->name, $objWidget->value);
+				
+				$objValidator = clone $objWidget;
+				$objValidator->validate();
+				
+				if ($objValidator->hasErrors())
+				{
+					$this->doNotSubmit = true;
+				}
+			}
 
 			$strBuffer .= $objWidget->parse();
 		}

@@ -38,6 +38,7 @@ Version 0.2.beta2
 - Fixed: Cart insert tags did not work
 - Fixed: Wrong check for existing attribute (Ticket #218)
 - Fixed: Updated address formats for Contao 2.9 (especially Great Britain)
+- Fixed: Address was not checked when forwarding in checkout module
 
 Version 0.2.beta1 (2010-08-25)
 ------------------------------
