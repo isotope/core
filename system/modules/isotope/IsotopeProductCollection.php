@@ -320,12 +320,12 @@ abstract class IsotopeProductCollection extends Model
 			(
 				'pid'					=> $this->id,
 				'tstamp'				=> time(),
-				'product_id'			=> $objProduct->id,
-				'product_sku'			=> $objProduct->sku,
-				'product_name'			=> $objProduct->name,
+				'product_id'			=> (int)$objProduct->id,
+				'product_sku'			=> (string)$objProduct->sku,
+				'product_name'			=> (string)$objProduct->name,
 				'product_options'		=> $objProduct->getOptions(true),
-				'product_quantity'		=> $intQuantity,
-				'price'					=> $objProduct->price,
+				'product_quantity'		=> (int)$intQuantity,
+				'price'					=> (float)$objProduct->price,
 				'href_reader'			=> $objProduct->href_reader
 			);
 			
