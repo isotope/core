@@ -113,7 +113,7 @@ class ModuleIsotopeRelatedProducts extends ModuleIsotope
 			$objProduct->reader_jumpTo = $arrJumpTo[$objProduct->id] ? $arrJumpTo[$objProduct->id] : $objPage->id;
 			$arrBuffer[] = array
 			(
-				'class'		=> (($i%2 ? 'even' : 'odd') . ($i == 0 ? ' product_first' : '')),
+				'class'		=> 'product ' . (($i%2 ? ' even' : ' odd') . ($i == 0 ? ' product_first' : '')),
 				'html'		=> $objProduct->generate((strlen($this->iso_list_layout) ? $this->iso_list_layout : $objProduct->list_template), $this),
 			);
 		}
