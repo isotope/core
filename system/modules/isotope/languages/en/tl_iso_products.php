@@ -94,7 +94,6 @@ $GLOBALS['TL_LANG']['tl_iso_products']['generate']		= array('Generate variants',
 $GLOBALS['TL_LANG']['tl_iso_products']['related']		= array('Related products', 'Manage related products for product ID %s');
 $GLOBALS['TL_LANG']['tl_iso_products']['tools']			= array('Tools', 'More options for product management.');
 $GLOBALS['TL_LANG']['tl_iso_products']['import']		= array('Import assets', 'Import images and other media from a folder');
-$GLOBALS['TL_LANG']['tl_iso_products']['link']			= array('Link Products to Categories', 'Link products to categories');
 
 
 /** 

@@ -47,7 +47,6 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			array('tl_iso_products', 'checkPermission'),
 			array('tl_iso_products', 'addBreadcrumb'),
 			array('tl_iso_products', 'buildPaletteString'),
-			array('tl_iso_products', 'generatePageAssociations'),
 		),
 	),
 	
@@ -106,13 +105,6 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'class'               => 'header_import_assets isotope-tools',
 				'attributes'          => 'onclick="Backend.getScrollOffset();"',
 			),
-			'link'	=> array
-			(
-				'label'				  => &$GLOBALS['TL_LANG']['tl_iso_products']['link'],
-				'href'				  => 'key=link',
-				'class'				  => 'header_product_category_link isotope-tools',
-				'attributes'		  => 'onclick="Backend.getScrollOffset();"',
-			)
 		),
 		'operations' => array
 		(
@@ -219,9 +211,13 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'foreignKey'			=> 'tl_page.title',
 			'eval'					=> array('mandatory'=>false, 'multiple'=>true, 'fieldType'=>'checkbox'),
 			'attributes'			=> array('legend'=>'general_legend', 'fixed'=>true, 'inherit'=>true),
+			'load_callback'			=> array
+			(
+				array('tl_iso_products', 'loadProductCategories'),
+			),
 			'save_callback'			=> array
 			(
-				array('tl_iso_products','saveProductCategories'),
+				array('tl_iso_products', 'saveProductCategories'),
 			),
 		),
 		'inherit' => array
@@ -676,7 +672,7 @@ class tl_iso_products extends Backend
 			return $strBuffer . '</ul></div>';
 		}
 		
-		return '<div class="iso_product"><div class="thumbnail">'.$thumbnail.'</div><p>' . $row['name'] . (($row['sku'] != '' && in_array('sku', $fields)) ? '<span style="color:#b3b3b3; padding-left:3px;">['.$row['sku'].']</span>' : '') . '</p><div>' . ($row['pid']==0 ? '<em>' . $this->getCategoryList(deserialize($row['pages'])) . '</em>' : '') . '</div></div> ';
+		return '<div class="iso_product"><div class="thumbnail">'.$thumbnail.'</div><p>' . $row['name'] . (($row['sku'] != '' && in_array('sku', $fields)) ? '<span style="color:#b3b3b3; padding-left:3px;">['.$row['sku'].']</span>' : '') . '</p><div>' . ($row['pid']==0 ? '<em>' . $this->getCategoryList($row['id']) . '</em>' : '') . '</div></div> ';
 	}
 	
 	
@@ -715,41 +711,26 @@ class tl_iso_products extends Backend
 	 * @param mixed
 	 * @return string
 	 */
-	private function getCategoryList($varValue)
+	private function getCategoryList($intProduct)
 	{
-		$arrPages = array();
-		
-		if(!is_array($varValue) || !count($varValue))
-		{
-			return $GLOBALS['TL_LANG']['MSC']['noCategoriesAssociated'];
-		}
-				
 		$arrCategories = array();
 		
-		foreach( $varValue as $intPage )
+		foreach( $this->Database->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid=$intProduct")->fetchEach('page_id') as $intPage )
 		{
-			if (!$arrPages[$intPage])
+			$objPage = $this->getPageDetails($intPage);
+			$help = '';
+			
+			if (count($objPage->trail))
 			{
-				$objPage = $this->getPageDetails($intPage);
-				if(count($objPage->trail))
-				{
-					$arrPages[$intPage]['title'] = $objPage->title;
-								
-					$objPages = $this->Database->execute("SELECT * FROM tl_page WHERE id IN (" . implode(',', $objPage->trail) . ") ORDER BY id=" . implode(' DESC, id=', $objPage->trail) . " DESC");
-				
-								
-					$arrHelp = array();
-					while( $objPages->next() )
-					{
-						$arrHelp[] = $objPages->title;
-					}
-					
-					$arrPages[$intPage]['help'] = implode(' » ', $arrHelp);
-				}
+				$help = implode(' » ', $this->Database->execute("SELECT title FROM tl_page WHERE id IN (" . implode(',', $objPage->trail) . ") ORDER BY id=" . implode(' DESC, id=', $objPage->trail) . " DESC")->fetchEach('title'));
 			}
 			
-			
-			$arrCategories[] = '<a class="tl_tip" longdesc="' . $arrPages[$intPage]['help'] . '" href="' . $this->addToUrl('table=tl_iso_product_categories&id='.$intPage) . '">' . $arrPages[$intPage]['title'] . '</a>';
+			$arrCategories[] = '<a class="tl_tip" longdesc="' . $help . '" href="' . $this->addToUrl('table=tl_iso_product_categories&id='.$intPage) . '">' . $objPage->title . '</a>';
+		}
+		
+		if (!count($arrCategories))
+		{
+			return $GLOBALS['TL_LANG']['MSC']['noCategoriesAssociated'];
 		}
 		
 		return $GLOBALS['TL_LANG']['tl_iso_products']['pages'][0] . ': ' . implode(', ', $arrCategories);
@@ -807,6 +788,15 @@ class tl_iso_products extends Backend
 	
 	
 	/**
+	 * Load page ids from tl_iso_product_categories table.
+	 */
+	public function loadProductCategories($varValue, DataContainer $dc)
+	{
+		return $this->Database->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid={$dc->id}")->fetchEach('page_id');
+	}
+	
+	
+	/**
 	 * Save page ids to tl_iso_product_categories table. This allows to retrieve all products associated to a page.
 	 */
 	public function saveProductCategories($varValue, DataContainer $dc)
@@ -816,125 +806,23 @@ class tl_iso_products extends Backend
 		if (is_array($arrIds) && count($arrIds))
 		{
 			$time = time();
-			$this->Database->prepare("DELETE FROM tl_iso_product_categories WHERE pid=? AND page_id NOT IN (" . implode(',', $arrIds) . ")")->execute($dc->id);
-			$objPages = $this->Database->prepare("SELECT page_id FROM tl_iso_product_categories WHERE pid=?")->execute($dc->id);
+			$this->Database->query("DELETE FROM tl_iso_product_categories WHERE pid={$dc->id} AND page_id NOT IN (" . implode(',', $arrIds) . ")");
+			$objPages = $this->Database->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid={$dc->id}");
 			$arrIds = array_diff($arrIds, $objPages->fetchEach('page_id'));
 			
 			foreach( $arrIds as $id )
 			{
-				$intSorting = $this->Database->prepare("SELECT sorting FROM tl_iso_product_categories WHERE page_id=? ORDER BY sorting DESC")->limit(1)->execute($id)->sorting;
-				$intSorting += 128;
-				$this->Database->prepare("INSERT INTO tl_iso_product_categories (pid,tstamp,page_id,sorting) VALUES (?,?,?,?)")->execute($dc->id, $time, $id, $intSorting);
+				$this->Database->query("INSERT INTO tl_iso_product_categories (pid,tstamp,page_id,sorting) VALUES ({$dc->id}, $time, $id, (SELECT MAX(sorting) FROM tl_iso_product_categories WHERE page_id=$id)+128)");
 			}
 		}
 		else
 		{
-			$this->Database->prepare("DELETE FROM tl_iso_product_categories WHERE pid=?")->execute($dc->id);
+			$this->Database->query("DELETE FROM tl_iso_product_categories WHERE pid={$dc->id}");
 		}
 	
 		return $varValue;
 	}
-	
-	/**
-	 * Save page ids to tl_iso_product_categories table. This allows to retrieve all products associated to a page.
-	 */
-	public function linkProductsToCategories($dc)
-	{
-		if(!$this->User->isAdmin)
-		{
-			return '';
-		}
-		
-		$objProducts = $this->Database->prepare("SELECT id, pages FROM tl_iso_products")
-									  ->execute();
-		
-		if(!$objProducts->numRows)
-		{
-			return '';
-		}
-		
-		while($objProducts->next())
-		{
-			$arrProducts[$objProducts->id] = deserialize($objProducts->pages);
-		}
-		
-		foreach($arrProducts as $k=>$v)
-		{
-			
-			if (is_array($v) && count($v))
-			{
-				
-				$time = time();
-				$this->Database->prepare("DELETE FROM tl_iso_product_categories WHERE pid=? AND page_id NOT IN (" . implode(',', $v) . ")")->execute($k);
-				$objPages = $this->Database->prepare("SELECT page_id FROM tl_iso_product_categories WHERE pid=?")->execute($k);
-				$arrIds = array_diff($v, $objPages->fetchEach('page_id'));
-				
-				foreach( $arrIds as $id )
-				{
-					$intSorting = $this->Database->prepare("SELECT sorting FROM tl_iso_product_categories WHERE page_id=? ORDER BY sorting DESC")->limit(1)->execute($id)->sorting;
-					$intSorting += 128;
-					$this->Database->prepare("INSERT INTO tl_iso_product_categories (pid,tstamp,page_id,sorting) VALUES (?,?,?,?)")->execute($k, $time, $id, $intSorting);
-				}
-			}
-			else
-			{
-				$this->Database->prepare("DELETE FROM tl_iso_product_categories WHERE pid=?")->execute($k);
-			}
-		}
-		
-	}
-	
-	/** 
-	 * Repair associations between products and categories
-	 */
-	public function generatePageAssociations()
-	{
-		if(!$this->Input->get('generateAssoc'))
-		{
-			return;
-		}
-		
-		$arrCategoryData = array();	
-		$arrData = array();
-		$arrUpdates = array();
-		
-		$objCategoryData = $this->Database->prepare("SELECT * FROM tl_iso_product_categories")
-										 ->execute();
-	
-		if(!$objCategoryData->numRows)
-		{
-			return;
-		}
-		
-		$arrCategoryData = $objCategoryData->fetchAllAssoc();
-		
-		foreach($arrCategoryData as $row)
-		{
-			
-			$arrData[$row['pid']][] = array('pid'=>$row['pid'], 'page_id'=>$row['page_id']);			
-		}
-				
-		foreach($arrData as $row)
-		{		
-			$arrValues = array();
-			
-			$intPid = $row[0]['pid'];
-								
-			foreach($row as $data)
-			{
-				$arrValues[] = $data['page_id'];
-			}
-			
-			$this->Database->execute("UPDATE tl_iso_products SET pages='" . serialize($arrValues) . "' WHERE id='" . $intPid . "'");
-		}
 
-		/*if(count($arrUpdates))
-		{		
-			
-			implode(';', $arrUpdates));
-		}*/
-		
-	}
 	
 	
 	/**
