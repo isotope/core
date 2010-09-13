@@ -78,12 +78,6 @@ CREATE TABLE `tl_iso_products` (
   `shipping_weight` varchar(255) NOT NULL default '',
   `shipping_exempt` char(1) NOT NULL default '',
   `tax_class` int(10) unsigned NOT NULL default '0',
-
-  `new_import` char(1) NOT NULL default '',
-  `option_set_source` varchar(64) NOT NULL default '',
-  `option_sets` int(10) unsigned NOT NULL default '0',
-  `option_set_title` varchar(255) NOT NULL default '',
-
   `archive` int(1) unsigned NOT NULL default '0',
   `published` char(1) NOT NULL default '',
   `start` varchar(10) NOT NULL default '',
