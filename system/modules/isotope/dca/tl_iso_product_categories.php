@@ -39,6 +39,11 @@ $GLOBALS['TL_DCA']['tl_iso_product_categories'] = array
 		'ptable'						=> 'tl_page',
 		'closed'						=> true,
 		'notEditable'					=> true,
+		'onload_callback' => array
+		(
+			
+			array('tl_iso_product_categories', 'updateFilterData'),
+		),
 	),
 
 	// List
@@ -83,6 +88,11 @@ $GLOBALS['TL_DCA']['tl_iso_product_categories'] = array
 class tl_iso_product_categories extends Backend
 {
 
+	/**
+	 * List pages
+	 * @param  array
+	 * @return string
+	 */
 	public function listRows($row)
 	{
 		$this->loadDataContainer('tl_iso_products');
@@ -92,6 +102,23 @@ class tl_iso_product_categories extends Backend
 		
 		$this->import('tl_iso_products');
 		return '<div style="margin-top: -' . ($this->Input->get('act')=='select' ? 15 : 20) . 'px; margin-bottom:-8px">'.$this->tl_iso_products->getRowLabel($objProduct->row()).'</div>';
+	}
+	
+	
+	/** 
+	 * Repair associations between products and categories.
+	 * We need tl_iso_products.pages to filter for it.
+	 * @param  object
+	 * @return void
+	 */
+	public function updateFilterData(DataContainer $dc)
+	{
+		if ($this->Input->get('act') == '')
+		{
+			$arrCategories = $this->Database->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid={$dc->id}");
+			
+			$this->Database->query("UPDATE tl_iso_products SET pages='" . serialize($arrCategories) . "' WHERE id={$dc->id}");
+		}
 	}
 }
 

@@ -94,7 +94,6 @@ $GLOBALS['TL_LANG']['tl_iso_products']['generate']		= array('Generate variants',
 $GLOBALS['TL_LANG']['tl_iso_products']['related']		= array('Related products', 'Manage related products for product ID %s');
 $GLOBALS['TL_LANG']['tl_iso_products']['tools']			= array('Tools', 'More options for product management.');
 $GLOBALS['TL_LANG']['tl_iso_products']['import']		= array('Import assets', 'Import images and other media from a folder');
-$GLOBALS['TL_LANG']['tl_iso_products']['link']			= array('Link Products to Categories', 'Link products to categories');
 $GLOBALS['TL_LANG']['tl_iso_products']['quick_edit']	= array('Quick-edit variants', 'Quick-edit variants for product ID %s');
 $GLOBALS['TL_LANG']['tl_iso_products']['downloads']		= array('Downloads', 'Edit downloads for product ID %s');
 $GLOBALS['TL_LANG']['tl_iso_products']['prices']		= array('Manage prices', 'Manage prices for product ID %s');
