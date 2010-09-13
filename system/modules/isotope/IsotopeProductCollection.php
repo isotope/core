@@ -224,13 +224,13 @@ abstract class IsotopeProductCollection extends Model
 								
 				$strClass = $GLOBALS['ISO_PRODUCT'][$objProductData->product_class]['class'];
 				
-				if ($strClass == '' || !$this->classFileExists($strClass))
-				{
-					$objProduct = new IsotopeProduct(array('id'=>$objItems->product_id, 'sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price), $this->blnLocked);
-				}
-				else
+				try
 				{
 					$objProduct = new $strClass($objProductData->row(), $this->blnLocked);
+				}
+				catch (Exception $e)
+				{
+					$objProduct = new IsotopeProduct(array('id'=>$objItems->product_id, 'sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price), $this->blnLocked);
 				}
 				
 				// Remove product from collection if it is no longer available
