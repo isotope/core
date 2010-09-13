@@ -14,6 +14,7 @@ Version 0.2.beta2
 - Added: Addresses are added to address book on checkout (enable in checkout module) (Ticket #24)
 - Added: Abstract class ContentIsotope to build content elements
 - Added: Cybersource payment gateway
+- Added: Frontend modules now support theme templates
 - Improved: Downloads can now be added to product variants (Ticket #116)
 - Improved: PayPal Standard now shows products on paypal page (Ticket #146)
 - Improved: Product reader now has a "back" link (Ticket #197)

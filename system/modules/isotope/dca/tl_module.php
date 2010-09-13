@@ -61,12 +61,12 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_relatedproducts']		= '{title_le
  */
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_list_layout'] = array
 (
-	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_list_layout'],
-	'default'                 => 'iso_list_default',
-	'exclude'                 => true,
-	'inputType'               => 'select',
-	'options'                 => $this->getTemplateGroup('iso_list_'),
-	'eval'					  => array('includeBlankOption'=>true),
+	'label'						=> &$GLOBALS['TL_LANG']['tl_module']['iso_list_layout'],
+	'default'					=> 'iso_list_default',
+	'exclude'					=> true,
+	'inputType'					=> 'select',
+	'options_callback'			=> array('tl_module_isotope', 'getListTemplates'),
+	'eval'						=> array('includeBlankOption'=>true),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_jump_first'] = array
@@ -98,11 +98,11 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_checkout_method'] = array
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_reader_layout'] = array
 (
-	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_reader_layout'],
-	'exclude'                 => true,
-	'inputType'               => 'select',
-	'options'                 => $this->getTemplateGroup('iso_reader_'),
-	'eval'					  => array('includeBlankOption'=>true),
+	'label'						=> &$GLOBALS['TL_LANG']['tl_module']['iso_reader_layout'],
+	'exclude'					=> true,
+	'inputType'					=> 'select',
+	'options_callback'			=> array('tl_module_isotope', 'getReaderTemplates'),
+	'eval'						=> array('includeBlankOption'=>true),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_reader_jumpTo'] = array
@@ -134,11 +134,11 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_addProductJumpTo'] = array
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_cart_layout'] = array
 (
-	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_cart_layout'],
-	'default'                 => 'iso_reader_product_single',
-	'exclude'                 => true,
-	'inputType'               => 'select',
-	'options'                 => $this->getTemplateGroup('iso_cart_')
+	'label'						=> &$GLOBALS['TL_LANG']['tl_module']['iso_cart_layout'],
+	'default'					=> 'iso_reader_product_single',
+	'exclude'					=> true,
+	'inputType'					=> 'select',
+	'options_callback'			=> array('tl_module_isotope', 'getCartTemplates'),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_cols'] = array
@@ -299,11 +299,11 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_enableLimit'] = array
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_filter_layout'] = array
 (
-	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_filter_layout'],
-	'default'                 => 'iso_reader_product_single',
-	'exclude'                 => true,
-	'inputType'               => 'select',
-	'options'                 => $this->getTemplateGroup('iso_filters_')
+	'label'						=> &$GLOBALS['TL_LANG']['tl_module']['iso_filter_layout'],
+	'default'					=> 'iso_reader_product_single',
+	'exclude'					=> true,
+	'inputType'					=> 'select',
+	'options_callback'			=> array('tl_module_isotope', 'getFilterTemplates'),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_listingModule'] = array
@@ -577,6 +577,50 @@ class tl_module_isotope extends Backend
 		}
 		
 		return $arrOptions;
+	}
+	
+	
+	/**
+	 * Return list templates as array
+	 * @param object
+	 * @return array
+	 */
+	public function getListTemplates(DataContainer $dc)
+	{
+		return $this->getTemplateGroup('iso_list_', $dc->activeRecord->pid);
+	}
+	
+	
+	/**
+	 * Return reader templates as array
+	 * @param object
+	 * @return array
+	 */
+	public function getReaderTemplates(DataContainer $dc)
+	{
+		return $this->getTemplateGroup('iso_reader_', $dc->activeRecord->pid);
+	}
+	
+	
+	/**
+	 * Return cart templates as array
+	 * @param object
+	 * @return array
+	 */
+	public function getCartTemplates(DataContainer $dc)
+	{
+		return $this->getTemplateGroup('iso_cart_', $dc->activeRecord->pid);
+	}
+	
+	
+	/**
+	 * Return filter templates as array
+	 * @param object
+	 * @return array
+	 */
+	public function getFilterTemplates(DataContainer $dc)
+	{
+		return $this->getTemplateGroup('iso_filter_', $dc->activeRecord->pid);
 	}
 }
 
