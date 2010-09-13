@@ -67,12 +67,12 @@ abstract class ModuleIsotope extends Module
 			}
 		}
 	}
-			
+	
 	
 	/**
 	 * Shortcut for a single product by ID
 	 */
-	protected function getProduct($intId)
+	protected function getProduct($intId, $blnCheckAvailability=true)
 	{
 		global $objPage;
 		
@@ -82,15 +82,16 @@ abstract class ModuleIsotope extends Module
 									 
 		$strClass = $GLOBALS['ISO_PRODUCT'][$objProductData->product_class]['class'];
 		
-		if (!$this->classFileExists($strClass))
-		{
+		if ($strClass == '' || !$this->classFileExists($strClass))
 			return null;
-		}
-									
+		
 		$objProduct = new $strClass($objProductData->row());
 		
+		if ($blnCheckAvailability && !$objProduct->available)
+			return null;
+		
 		$objProduct->reader_jumpTo = $this->iso_reader_jumpTo ? $this->iso_reader_jumpTo : $objPage->id;
-			
+		
 		return $objProduct;
 	}
 	
@@ -98,25 +99,28 @@ abstract class ModuleIsotope extends Module
 	/**
 	 * Shortcut for a single product by alias (from url?)
 	 */
-	protected function getProductByAlias($strAlias)
+	protected function getProductByAlias($strAlias, $blnCheckAvailability=true)
 	{
 		global $objPage;
 		
 		$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS product_class FROM tl_iso_products WHERE pid=0 AND alias=?")
 										 ->limit(1)
 										 ->executeUncached($strAlias);
-									 
+		
 		$strClass = $GLOBALS['ISO_PRODUCT'][$objProductData->product_class]['class'];
 		
-		if (!$this->classFileExists($strClass))
+		if ($strClass == '' || !$this->classFileExists($strClass))
 		{
 			return null;
 		}
-									
+		
 		$objProduct = new $strClass($objProductData->row());
 		
+		if ($blnCheckAvailability && !$objProduct->available)
+			return null;
+		
 		$objProduct->reader_jumpTo = $this->iso_reader_jumpTo ? $this->iso_reader_jumpTo : $objPage->id;
-			
+		
 		return $objProduct;
 	}
 	
@@ -136,7 +140,9 @@ abstract class ModuleIsotope extends Module
 			$objProduct = $this->getProduct($intId);
 		
 			if (is_object($objProduct))
+			{
 				$arrProducts[] = $objProduct;
+			}
 		}
 		
 		return $arrProducts;

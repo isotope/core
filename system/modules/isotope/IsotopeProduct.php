@@ -242,7 +242,7 @@ class IsotopeProduct extends Controller
 		
 		if (in_array('price', $this->arrAttributes))
 		{
-			$this->arrData['price'] = $this->findPrice();
+			$this->findPrice();
 			$this->arrData['original_price'] = $this->arrData['price'];
 		}
 		
@@ -284,6 +284,27 @@ class IsotopeProduct extends Controller
 				
 			case 'quantity_requested':
 				return ($this->arrCache[$strKey] ? $this->arrCache[$strKey] : 1);
+				
+			case 'available':
+				if ($this->blnLocked)
+					return true;
+				
+				// Check if "advanced price" is available	
+				if ($this->arrType['prices'] && (($this->pid > 0 && in_array('price', $this->arrVariantAttributes)) || in_array('price', $this->arrAttributes)) && $this->arrData['price'] === null)
+					return false;
+				
+				// Check if the product is in any category in the current store (page tree)
+				if (TL_MODE == 'FE')
+				{
+					global $objPage;
+					$arrCategories = $this->getChildRecords($objPage->rootId, 'tl_page', true);
+					
+					if (!$this->Database->execute("SELECT COUNT(*) AS available FROM tl_iso_product_categories WHERE pid=" . ($this->pid ? $this->pid : $this->id) . " AND page_id IN (" . implode(',', $arrCategories) . ")")->available)
+						return false;
+				}
+					
+				return true;
+				break;
 
 			case 'hasDownloads':
 				return count($this->arrDownloads) ? true : false;
@@ -360,7 +381,7 @@ class IsotopeProduct extends Controller
 				
 			case 'quantity_requested':
 				$this->arrCache[$strKey] = $varValue;
-				$this->arrData['price'] = $this->findPrice();
+				$this->findPrice();
 				break;
 
 			default:
@@ -888,7 +909,7 @@ class IsotopeProduct extends Controller
 		$arrValues = array
 		(
 			'name'		=> $arrData['label'][0],
-			'values'	=> $varOptionValues			
+			'values'	=> $varOptionValues,
 		);
 		
 		return $arrValues;
@@ -898,15 +919,16 @@ class IsotopeProduct extends Controller
 	protected function findPrice()
 	{
 		if (!$this->arrType['prices'])
-			return $this->arrData['price'];
-			
+			return;
+		
 		$time = time();
-			
-		return $this->Database->execute("SELECT price
-											FROM tl_iso_price_tiers
+		
+		$objPrice = $this->Database->execute("SELECT price, tax_class
+											FROM tl_iso_price_tiers t
+											LEFT JOIN tl_iso_prices p ON t.pid=p.id
 											WHERE
 												min<={$this->quantity_requested}
-												AND pid=
+												AND t.pid=
 												(
 													SELECT id
 													FROM tl_iso_prices
@@ -919,7 +941,10 @@ class IsotopeProduct extends Controller
 													ORDER BY config_id DESC, member_group DESC, start DESC, stop DESC
 													LIMIT 1
 												)
-											ORDER BY min DESC LIMIT 1")->price;
+											ORDER BY min DESC LIMIT 1");
+											
+		$this->arrData['price'] = $objPrice->price;
+		$this->arrData['tax_class'] = $objPrice->tax_class;
 	}
 
 
@@ -1014,7 +1039,7 @@ class IsotopeProduct extends Controller
 		
 		if (in_array('price', $this->arrVariantAttributes))
 		{
-			$this->arrData['price'] = $this->findPrice();
+			$this->findPrice();
 			$this->arrData['original_price'] = $this->arrData['price'];
 		}
 		

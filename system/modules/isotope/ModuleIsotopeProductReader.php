@@ -71,7 +71,7 @@ class ModuleIsotopeProductReader extends ModuleIsotope
 	
 	public function generateAjax()
 	{		
-		$objProduct = $this->getProduct($this->Input->get('product'));
+		$objProduct = $this->getProduct($this->Input->get('product'), false);
 		
 		if ($objProduct)
 		{
