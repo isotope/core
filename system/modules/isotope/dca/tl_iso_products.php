@@ -194,14 +194,8 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'__selector__'				=> array('type', 'stock_enabled'),
+		'__selector__'				=> array('type'),
 		'default'					=> '{general_legend},type',
-	),
-	
-	// Subpalettes
-	'subpalettes' => array
-	(
-		'stock_enabled'				=> 'stock_quantity,stock_oversell',
 	),
 	
 	// Fields
@@ -312,33 +306,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'foreignKey'			=> 'tl_iso_tax_class.name',
 			'attributes'			=> array('legend'=>'pricing_legend'),
 			'eval'					=> array('includeBlankOption'=>true),
-		),/*
-		'max_order_quantity' => array
-		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['max_order_quantity'],
-			'inputType'				=> 'text',
-			'eval'					=> array('rgxp'=>'digit', 'disabled'=>'disabled'),
-			'attributes'			=> array('legend'=>'inventory_legend'),
 		),
-		'stock_enabled' => array
-		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['stock_enabled'],
-			'inputType'				=> 'checkbox',
-			'eval'					=> array('submitOnChange'=>true, 'tl_class'=>'clr'),
-			'attributes'			=> array('legend'=>'inventory_legend'),
-		),
-		'stock_quantity' => array
-		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['stock_quantity'],
-			'inputType'				=> 'text',
-			'eval'					=> array('mandatory'=>true, 'rgxp'=>'digit', 'disabled'=>'disabled', 'tl_class'=>'w50'),
-		),
-		'stock_oversell' => array
-		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['stock_oversell'],
-			'inputType'				=> 'checkbox',
-			'eval'					=> array('tl_class'=>'w50 m12'),
-		),*/
 		'shipping_weight' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['shipping_weight'],
