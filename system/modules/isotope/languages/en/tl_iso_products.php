@@ -39,28 +39,23 @@ $GLOBALS['TL_LANG']['tl_iso_products']['teaser']				= array('Teaser', '');
 $GLOBALS['TL_LANG']['tl_iso_products']['description']			= array('Description', '');
 $GLOBALS['TL_LANG']['tl_iso_products']['description_meta']		= array('Meta description','');
 $GLOBALS['TL_LANG']['tl_iso_products']['keywords_meta']			= array('Meta keywords','');
+$GLOBALS['TL_LANG']['tl_iso_products']['price']					= array('Price', '');
 $GLOBALS['TL_LANG']['tl_iso_products']['shipping_exempt']		= array('Exempt from shipping', 'Check if item is not a shipped item (such as downloadable products).');
 $GLOBALS['TL_LANG']['tl_iso_products']['tax_class']				= array('Tax Class', '');
 $GLOBALS['TL_LANG']['tl_iso_products']['images']				= array('Images', '');
 $GLOBALS['TL_LANG']['tl_iso_products']['published']				= array('Publish product', 'Click here to show this product on your website.');
-$GLOBALS['TL_LANG']['tl_iso_products']['source']				= array('Source folder', 'Please choose the folder where product assets are located.');
-
-
-$GLOBALS['TL_LANG']['tl_iso_products']['price']					= array('Price', '');
-$GLOBALS['TL_LANG']['tl_iso_products']['option_set_source']		= array('Option Set Source','Use an existing option set or create a new one');
-$GLOBALS['TL_LANG']['tl_iso_products']['option_sets']			= array('Option Sets','Select an existing Option Set');
-$GLOBALS['TL_LANG']['tl_iso_products']['option_set_title']		= array('Option Set Title','Name your new option set. The combination of values for each attribute will be stored and used to produce a new collection of empty subproducts.');
 $GLOBALS['TL_LANG']['tl_iso_products']['start']					= array('Start date','Do not show this product before the date specified.');
 $GLOBALS['TL_LANG']['tl_iso_products']['stop']					= array('Stop date','Do not show this product after the date specified.');
 $GLOBALS['TL_LANG']['tl_iso_products']['variant_attributes']	= array('Variant setup', 'Please select the combination of values for this variant.');
 $GLOBALS['TL_LANG']['tl_iso_products']['inherit']				= array('Inherited attributes', 'Check the fields you want to inherit from base product.');
 
-$GLOBALS['TL_LANG']['tl_iso_products']['enabled'] = 'Enabled';
 
-$GLOBALS['TL_LANG']['tl_iso_products']['batch_size']			= array('Batch size','Select the number of records you would like to process at a time.  If the page times out, reduce the number.');
 /**
  * Reference
  */
+$GLOBALS['TL_LANG']['tl_iso_products']['source']				= array('Source folder', 'Please choose the folder where product assets are located.');
+$GLOBALS['TL_LANG']['tl_iso_products']['batch_size']			= array('Batch size','Select the number of records you would like to process at a time.  If the page times out, reduce the number.');
+
 $GLOBALS['TL_LANG']['tl_iso_products']['internal'] = array('Internal file', 'Select a media file existing on the web server (flash or mp3 file).');
 $GLOBALS['TL_LANG']['tl_iso_products']['external'] = array('External file', 'Specify a video from an external source (such as Youtube).');
 
