@@ -172,16 +172,6 @@ class PaymentCybersource extends IsotopePayment
 			{				
 				$objSoapClient = new CybersourceClient('https://ics2ws'.($this->debug ? 'test' : '').'.ic3.com/commerce/1.x/transactionProcessor/CyberSourceTransaction_1.26.wsdl', array(), $this->cybersource_merchant_id, $this->cybersource_trans_key);
 			
-			
-				/*
-				To see the functions and types that the SOAP extension can automatically
-				generate from the WSDL file, uncomment this section:
-				$functions = $soapClient->__getFunctions();
-				print_r($functions);
-				$types = $soapClient->__getTypes();
-				print_r($types);
-				*/
-			
 				$objRequest = new stdClass();
 			
 				$objRequest->merchantID = $this->cybersource_merchant_id;
@@ -245,6 +235,7 @@ class PaymentCybersource extends IsotopePayment
 				}
 				
 				$objRequest->item = $arrItems;*/
+				
 				//, $strLocation, $strAction, $strVersion, $strMerchantId, $strTransactionKey
 				$objReply = $objSoapClient->runTransaction($objRequest);
 			
@@ -260,12 +251,9 @@ class PaymentCybersource extends IsotopePayment
 						$arrPaymentData['cc_last_four'] = substr($strCCNum, strlen($strCCNum) - 4, 4);
 						$arrSet['payment_data'] = serialize($arrPaymentData);
 						break;
-					case 'ERROR':						
+					default:						
 						$blnFail = true;
-						break;
-					case 'REJECT':
-						$blnFail = true;
-						break;				
+						break;			
 				}
 			
 				$this->Database->prepare("UPDATE tl_iso_orders %s WHERE id={$objOrder->id}")
@@ -296,14 +284,7 @@ class PaymentCybersource extends IsotopePayment
 <input type="hidden" name="FORM_SUBMIT" value="payment_form" />'
 .$strBuffer.'
 <input type="submit" value="' . specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']) . '" />
-</form>
-<script type="text/javascript">
-<!--//--><![CDATA[//><!--
-/*window.addEvent( \'domready\' , function() {
-  $(\'payment_form\').submit();
-});*/
-//--><!]]>
-</script>';
+</form>';
 		
 		
 	}
