@@ -27,7 +27,7 @@
  
  
 class PaymentAuthorizeDotNet extends IsotopePayment
-{		
+{
 	
 	
 	public function __get($strKey)
@@ -41,12 +41,14 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 					return true;
 				}
 				return false;
-				break;	
+				break;
+				
 			default:
 				return parent::__get($strKey);
 		}
 	}
-			
+	
+	
 	/**
 	 * Process payment on confirmation page.
 	 * 
@@ -55,13 +57,11 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 	 */
 	public function processPayment()
 	{
-		return false;		
+		return false;
 	}
 		
 	public function checkoutForm()
 	{
-		$this->import('Isotope');
-		$this->loadLanguageFile('authorizedotnet');
 		$strBuffer = '';
 		$arrPayment = $this->Input->post('payment');
 		$arrCCTypes = deserialize($this->allowed_cc_types);
@@ -244,7 +244,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 				
 		return '
 <h2>' . $this->label . '</h2>'.
-($this->Input->get('response_code') == '' ? '' : '<p class="error message">'.$GLOBALS['TL_LANG']['ADN'][$this->Input->get('response_type')][$this->Input->get('response_code')].(strlen($strError) ? $strError : '') . '</p>').
+($this->Input->get('response_code') == '' ? '' : '<p class="error message">'.$GLOBALS['TL_LANG']['MSG']['authorizedotnet'][$this->Input->get('response_type')][$this->Input->get('response_code')].(strlen($strError) ? $strError : '') . '</p>').
 '<form id="payment_form" action="'.$this->Environment->request.'" method="post">
 <input type="hidden" name="FORM_SUBMIT" value="payment_form" />'
 .$strBuffer.'
@@ -298,10 +298,10 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 		switch($arrResponses['transaction-status'])
 		{
 			case 'Approved':
-				$this->status = $arrResponses['transaction-status'];		
+				$this->status = $arrResponses['transaction-status'];
 				$this->response = $arrPaymentInfo['authorize_response'];
 				
-				$arrPaymentInfo['authorization_code'] = $arrResponses['authorization-code'];							
+				$arrPaymentInfo['authorization_code'] = $arrResponses['authorization-code'];
 				$arrSet['status'] = 'processing';
 				break;
 			default:
@@ -322,7 +322,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 		{
 			global $objPage;
 						
-			$this->status = $arrResponses['transaction-status'];			   				
+			$this->status = $arrResponses['transaction-status'];
 			$this->response = $arrPaymentInfo['authorize_response'];
 			$this->reason   = $arrResponses['reason'];
 				
@@ -421,7 +421,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 			switch($arrResponses['transaction-status'])
 			{
 				case 'Approved':		
-					$arrPaymentInfo['authorization_code'] = $arrResponses['authorization-code'];			
+					$arrPaymentInfo['authorization_code'] = $arrResponses['authorization-code'];
 					$strPaymentInfo = serialize($arrPaymentInfo);
 					
 					$this->Database->prepare("UPDATE tl_iso_orders SET status='processing', payment_data=? WHERE id=?")
@@ -432,7 +432,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 					$strPaymentInfo = serialize($arrPaymentInfo);
 					
 					$this->Database->prepare("UPDATE tl_iso_orders SET status='on_hold', authnet_reason=? WHERE id=?")
-								   ->execute($strPaymentInfo, $intOrderId);					
+								   ->execute($strPaymentInfo, $intOrderId);
 					break;
 			
 			}
@@ -668,7 +668,7 @@ $return .= '</div></div>';
 
 	public function getAllowedCCTypes()
 	{
-		return array('mc', 'visa', 'amex', 'discover', 'jcb', 'diners', 'enroute');				
+		return array('mc', 'visa', 'amex', 'discover', 'jcb', 'diners', 'enroute');
 	}
 }
 
