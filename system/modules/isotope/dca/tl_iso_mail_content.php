@@ -50,6 +50,7 @@ $GLOBALS['TL_DCA']['tl_iso_mail_content'] = array
 			'flag'                    => 1,
 			'panelLayout'             => 'filter;search,limit',
 			'headerFields'            => array('name', 'senderName', 'sender'),
+			'disableGrouping'		  => true,
 			'child_record_callback'   => array('tl_iso_mail_content', 'listRows'),
 		),
 		'label' => array
