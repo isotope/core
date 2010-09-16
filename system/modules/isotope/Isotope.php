@@ -114,7 +114,7 @@ class Isotope extends Controller
 				$_SESSION['TL_ERROR'] = array($GLOBALS['TL_LANG']['ERR']['noDefaultStoreConfiguration']);
 				
 				if ($this->Input->get('do') == 'iso_products')
-					$this->redirect('typolight/main.php?do=iso_setup&table=tl_iso_config&act=create');
+					$this->redirect($this->Environment->script.'?do=iso_setup&table=tl_iso_config&act=create');
 			}
 			else
 			{

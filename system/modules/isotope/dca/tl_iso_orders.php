@@ -416,7 +416,7 @@ class tl_iso_orders extends Backend
 			unset($GLOBALS['TL_DCA']['tl_iso_orderes']['list']['operations']['delete']);
 			
 			if ($this->Input->get('act') == 'delete' || (strlen($this->Input->get('id')) && !in_array($this->Input->get('id'), $arrIds)))
-				$this->redirect('typolight/main.php?act=error');
+				$this->redirect($this->Environment->script.'?act=error');
 		}
 	}
 

@@ -386,7 +386,7 @@ class tl_iso_shipping_modules extends Backend
 				if (!in_array($this->Input->get('id'), $arrModules))
 				{
 					$this->log('Not enough permissions to '.$this->Input->get('act').' shipping module ID "'.$this->Input->get('id').'"', 'tl_iso_shipping_modules checkPermission()', TL_ACCESS);
-					$this->redirect('typolight/main.php?act=error');
+					$this->redirect($this->Environment->script.'?act=error');
 				}
 				break;
 
