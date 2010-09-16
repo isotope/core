@@ -104,6 +104,10 @@ class IsotopeFrontend extends Frontend
 			
 			return '';
 		}
+		elseif ($arrTag[0] == 'isolabel')
+		{
+			return $this->Isotope->translateLabel($arrTag[1], $arrTag[2]);
+		}
 		
 		return false;
 	}
