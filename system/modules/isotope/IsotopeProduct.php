@@ -926,18 +926,13 @@ class IsotopeProduct extends Controller
 		// This should never happen, but make sure, or we might fetch the master product record.
 		if (!strlen($GLOBALS['TL_LANGUAGE']))
 			return;
-			
-		$arrAttributes = $this->arrAttributes;
-		
-		if ($this->arrData['pid'] > 0)
-		{
-			$arrAttributes = $this->arrVariantAttributes;
-		}
 		
 		$objLanguage = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE pid={$this->id} AND language=?")->limit(1)->execute($GLOBALS['TL_LANGUAGE']);
 		
 		if ($objLanguage->numRows)
 		{
+			$arrAttributes = $this->arrData['pid'] > 0 ? $this->arrAttributes : $this->arrVariantAttributes;
+			
 			foreach( $arrAttributes as $attribute )
 			{
 				if (in_array($attribute, $arrIgnore))
