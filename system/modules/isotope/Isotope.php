@@ -844,5 +844,21 @@ class Isotope extends Controller
 		
 		return false;
 	}
+	
+	
+	public function translateLabel($label, $language=false)
+	{
+		if (!in_array('isotope_translation', $this->Config->getActiveModules()))
+			return $label;
+			
+		if (!$language)
+		{
+			$language = $GLOBALS['TL_LANGUAGE'];
+		}
+		
+		$objLabel = $this->Database->prepare("SELECT * FROM tl_iso_labels WHERE label=? AND language=?")->limit(1)->execute($label, $language);
+		
+		return $objLabel->numRows ? $objLabel->replacement : $label;
+	}
 }
 

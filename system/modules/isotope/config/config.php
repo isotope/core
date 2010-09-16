@@ -57,12 +57,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
 		'print_invoices'			=> array('IsotopePOS','printInvoicesInterface'),
 		'payment'					=> array('tl_iso_orders', 'paymentInterface'),
 		'shipping'					=> array('tl_iso_orders', 'shippingInterface'),
-	),/*
-	'iso_statistics' => array
-	(
-		'callback'					=> 'ModuleIsotopeStatistics',
-		'icon'						=> 'system/modules/isotope/html/icon-statistics.gif',
-	),*/
+	),
 	'iso_setup' => array
 	(
 		'callback'					=> 'ModuleIsotopeSetup',
@@ -74,13 +69,10 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
 
 $GLOBALS['BE_MOD']['accounts']['member']['tables'][] = 'tl_iso_addresses';
 
-// Callback is only used for overview screen
-if ($_GET['do'] == 'iso_setup' && strlen($_GET['table']))
-{
-	unset($GLOBALS['BE_MOD']['isotope']['iso_setup']['callback']);
-}
 
-// Isotope Modules
+/**
+ * Isotope Modules
+ */
 $GLOBALS['ISO_MOD'] = array
 (
 	'product' => array
