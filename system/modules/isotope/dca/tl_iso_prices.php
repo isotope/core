@@ -181,7 +181,37 @@ class tl_iso_prices extends Backend
 
 	public function listRows($row)
 	{
-		return 'price';
+		$this->import('IsotopeBackend');
+		
+		$arrTiers = array();
+		$objTiers = $this->Database->execute("SELECT * FROM tl_iso_price_tiers WHERE pid={$row['id']}");
+		
+		while( $objTiers->next() )
+		{
+			$arrTiers[] = "{$objTiers->min}={$objTiers->price}";
+		}
+		
+		$arrInfo = array('<strong>'.$GLOBALS['TL_LANG']['tl_iso_prices']['price_tiers'][0].':</strong> ' . implode(', ', $arrTiers));
+		
+		foreach( $row as $name => $value )
+		{
+			switch( $name )
+			{
+				case 'id':
+				case 'pid':
+				case 'tstamp':
+					break;
+					
+				default:
+					if ($value != '' && $value > 0)
+					{
+						$arrInfo[] = '<strong>' . $this->IsotopeBackend->formatLabel('tl_iso_prices', $name) . '</strong>: ' . $this->IsotopeBackend->formatValue('tl_iso_prices', $name, $value);
+					}
+					break;
+			}
+		}
+		
+		return '<ul style="margin:0"><li>' . implode('</li><li>', $arrInfo) . '</li></ul>';
 	}
 	
 	
