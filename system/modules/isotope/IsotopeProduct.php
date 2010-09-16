@@ -328,6 +328,7 @@ class IsotopeProduct extends Controller
 									$strClass = 'IsotopeGallery';
 									
 								$varValue = new $strClass($strKey.'_'.($this->pid ? $this->pid : $this->id), deserialize($this->arrData[$strKey]));
+								$varValue->product_id = ($this->pid ? $this->pid : $this->id);
 								$varValue->href_reader = $this->href_reader;
 						}
 					}
