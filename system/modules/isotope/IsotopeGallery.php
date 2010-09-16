@@ -30,6 +30,12 @@ class IsotopeGallery extends Frontend
 {
 	
 	/**
+	 * Template
+	 * @var string
+	 */
+	protected $strTemplate = 'iso_gallery_default';
+	
+	/**
 	 * Data storage
 	 * @var array
 	 */
@@ -175,7 +181,7 @@ class IsotopeGallery extends Frontend
 		
 		$this->injectAjax();
 		
-		$objTemplate = new FrontendTemplate('iso_gallery_default');
+		$objTemplate = new FrontendTemplate($this->strTemplate);
 			
 		$objTemplate->setData($arrFile);
 		$objTemplate->type = $strType;
@@ -198,7 +204,7 @@ class IsotopeGallery extends Frontend
 		
 		while( $arrFile = next($this->arrFiles) )
 		{
-			$objTemplate = new FrontendTemplate('iso_gallery_default');
+			$objTemplate = new FrontendTemplate($this->strTemplate);
 			
 			$objTemplate->setData($arrFile);
 			$objTemplate->type = 'gallery';
