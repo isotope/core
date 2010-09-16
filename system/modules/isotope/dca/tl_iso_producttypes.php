@@ -237,6 +237,9 @@ class tl_iso_producttypes extends Backend
 	 */
 	public function checkPermission()
 	{
+		if ($this->Input->get('mod') != 'producttypes')
+			return;
+			
 		if (strlen($this->Input->get('act')))
 		{
 			$GLOBALS['TL_DCA']['tl_iso_producttypes']['config']['closed'] = false;
