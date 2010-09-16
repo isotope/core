@@ -29,7 +29,7 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['name']					= array('Name', 'Geben Sie einen Namen für dieses Modul ein. Dieser wird lediglich als interne Referenz verwendet.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['name']					= array('Name', 'Geben Sie einen Namen für dieses Modul ein.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['type']					= array('Zahlungsmodul', 'Wählen Sie eine der unterstützen Zahlungsmethoden.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['label']					= array('Bezeichnung', 'Dieser Text wird dem Kunden bei der Bestellung angezeigt.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['note']					= array('Hinweise', 'Die Hinweise können im Bestätigungs-Mail mitgesendet werden (##payment_note##).');

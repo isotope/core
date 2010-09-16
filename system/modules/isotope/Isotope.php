@@ -846,10 +846,25 @@ class Isotope extends Controller
 	}
 	
 	
-	public function translateLabel($label, $language=false)
+	/**
+	 * Translate a value using the tl_iso_label table
+	 * @param  mixed
+	 * @return mixed
+	 */
+	public function translate($label, $language=false)
 	{
 		if (!in_array('isotope_translation', $this->Config->getActiveModules()))
 			return $label;
+			
+		if (is_array($label))
+		{
+			foreach( $label as $k => $v )
+			{
+				$label[$k] = $this->translate($v, $language);
+			}
+			
+			return $label;
+		}
 			
 		if (!$language)
 		{

@@ -48,7 +48,6 @@ abstract class IsotopePayment extends Frontend
 	 */
 	protected $arrData = array();
 	
-	
 	/**
 	 * Isotope object
 	 * @var object
@@ -103,6 +102,10 @@ abstract class IsotopePayment extends Frontend
 	{
 		switch( $strKey )
 		{
+			case 'label':
+				return $this->Isotope->translate($this->arrData['label'] ? $this->arrData['label'] : $this->arrData['name']);
+				break;
+				
 			case 'available':
 				if (!$this->enabled && !BE_USER_LOGGED_IN)
 					return false;

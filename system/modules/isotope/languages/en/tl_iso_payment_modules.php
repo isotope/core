@@ -30,7 +30,7 @@
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['type']					= array('Type of Payment Gateway', 'Select a particular payment gateway (e.g. Authorize.net)');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['name']					= array('Payment Method Name', 'Enter a name for this payment method. This will only be used in the backend.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['name']					= array('Payment Method Name', 'Enter a name for this payment method.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['label']					= array('Payment Method Label', 'The label will be shown to customers on checkout.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['note']					= array('Payment Note', 'This note can be sent in confirmation mails (##payment_note##).');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['price']					= array('Price', '');

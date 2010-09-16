@@ -178,7 +178,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['label'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
+			'eval'                    => array('maxlength'=>255, 'tl_class'=>'w50'),
 		),
 		'note' => array
 		(

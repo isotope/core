@@ -797,6 +797,16 @@ class IsotopeProduct extends Controller
 			$arrField = $this->prepareForWidget($arrData, $strField);
 		}
 		
+		// Translate widget
+		$arrField['label'] = $this->Isotope->translate($arrField['label']);
+		if (is_array($arrField['options']))
+		{
+			foreach( $arrField['options'] as $i => $option )
+			{
+				$arrField['options'][$i]['label'] = $this->Isotope->translate($option['label']);
+			}
+		}
+		
 		$objWidget = new $strClass($arrField);
 					
 		$objWidget->storeValues = true;

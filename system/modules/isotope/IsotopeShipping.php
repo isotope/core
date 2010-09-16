@@ -93,9 +93,12 @@ abstract class IsotopeShipping extends Frontend
 	 */
 	public function __get($strKey)
 	{		
-		
 		switch( $strKey )
 		{
+			case 'label':
+				return $this->Isotope->translate($this->arrData['label'] ? $this->arrData['label'] : $this->arrData['name']);
+				break;
+				
 			case 'available':
 				if (($this->guests && FE_USER_LOGGED_IN) || ($this->protected && !FE_USER_LOGGED_IN))
 				{
