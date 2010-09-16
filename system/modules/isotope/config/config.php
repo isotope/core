@@ -131,6 +131,21 @@ $GLOBALS['ISO_MOD'] = array
 	)
 );
 
+// Enable tables in iso_setup
+if ($_GET['do'] == 'iso_setup')
+{
+	foreach ($GLOBALS['ISO_MOD'] as $strGroup=>$arrModules)
+	{
+		foreach ($arrModules as $strModule => $arrConfig)
+		{
+			if (is_array($arrConfig['tables']))
+			{
+				$GLOBALS['BE_MOD']['isotope']['iso_setup']['tables'] = array_merge($GLOBALS['BE_MOD']['isotope']['iso_setup']['tables'], $arrConfig['tables']);
+			}
+		}
+	}
+}
+
 
 /**
  * Frontend modules
