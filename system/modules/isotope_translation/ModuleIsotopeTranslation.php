@@ -44,7 +44,7 @@ class ModuleIsotopeTranslation extends BackendModule
 		$this->import('BackendUser', 'User');
 		
 		if (!strlen($this->User->translation))
-			$this->redirect('typolight/main.php?act=error');
+			$this->redirect($this->Environment->script.'?act=error');
 		
 		$this->import('Session');
 		

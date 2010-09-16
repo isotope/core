@@ -281,7 +281,7 @@ class tl_iso_producttypes extends Backend
 				if (!in_array($this->Input->get('id'), $arrProductTypes))
 				{
 					$this->log('Not enough permissions to '.$this->Input->get('act').' product type ID "'.$this->Input->get('id').'"', 'tl_iso_producttypes checkPermission()', TL_ACCESS);
-					$this->redirect('typolight/main.php?act=error');
+					$this->redirect($this->Environment->script.'?act=error');
 				}
 				break;
 

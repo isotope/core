@@ -470,7 +470,7 @@ class tl_iso_products extends Backend
 		if (strlen($this->Input->get('id')) && !in_array($this->Input->get('id'), $arrProducts))
 		{
 			$this->log('Cannot access product ID '.$this->Input->get('id'), 'tl_iso_products checkPermission()', TL_ACCESS);
-			$this->redirect('typolight/main.php?act=error');
+			$this->redirect($this->Environment->script.'?act=error');
 		}
 	}
 	
@@ -551,7 +551,7 @@ class tl_iso_products extends Backend
 			$this->Session->set('tl_page_node', 0);
 
 			$this->log('Page ID '.$intNode.' was not mounted', 'tl_page addBreadcrumb', TL_ERROR);
-			$this->redirect('typolight/main.php?act=error');
+			$this->redirect($this->Environment->script.'?act=error');
 		}
 
 		// Limit tree
@@ -1390,7 +1390,7 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 		if (!$this->User->isAdmin && !$this->User->hasAccess('tl_iso_products::published', 'alexf'))
 		{
 			$this->log('Not enough permissions to publish/unpublish product ID "'.$intId.'"', 'tl_iso_products toggleVisibility', TL_ERROR);
-			$this->redirect('typolight/main.php?act=error');
+			$this->redirect($this->Environment->script.'?act=error');
 		}
 
 		$this->createInitialVersion('tl_iso_products', $intId);
