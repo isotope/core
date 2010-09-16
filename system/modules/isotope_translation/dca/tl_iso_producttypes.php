@@ -20,16 +20,33 @@
  *
  * PHP version 5
  * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
+ * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Andreas Schempp <andreas@schempp.ch>
- * @author     Philipp Kaiblinger <philipp.kaiblinger@kaipo.at>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
- 
- 
+
+
 /**
- * Back end module
+ * Palettes
  */
-$GLOBALS['TL_LANG']['IMD']['translation']		= 'Multilingual Support';
-$GLOBALS['TL_LANG']['IMD']['iso_labels']		= array('Translate Labels', 'Various labels in Isotope eCommerce should be translated to support a multilingual shop. Few examples are payment module names and product attribute options. Using this tool you can translate the label to multiple languages. Most of the fields will show an autocomplete-list of available labels. Additionally, you can use the InsertTag {{isolabel::???}} to replace a label.');
-$GLOBALS['TL_LANG']['IMD']['iso_translation']	= array('Translate Core', 'This tool allows you to directly create and edit language files for all Isotope eCommerce extensions.<br />Use this tool with caution, it has not been fully tested!');
+foreach( $GLOBALS['TL_DCA']['tl_iso_producttypes']['palettes'] as $name => $palette )
+{
+	if ($name == '__selector__')
+		continue;
+	
+	$GLOBALS['TL_DCA']['tl_iso_producttypes']['palettes'][$name] = str_replace('{attributes_legend}', '{language_legend:hide},languages;{attributes_legend}', $palette);
+}
+
+
+/**
+ * Fields
+ */
+$GLOBALS['TL_DCA']['tl_iso_producttypes']['fields']['languages'] = array
+(
+	'label'					=> &$GLOBALS['TL_LANG']['tl_iso_producttypes']['languages'],
+	'exclude'				=> true,
+	'inputType'				=> 'select',
+	'options'				=> $this->getLanguages(),
+	'eval'					=> array('multiple'=>true),
+);
 

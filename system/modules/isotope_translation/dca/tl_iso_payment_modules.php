@@ -20,14 +20,15 @@
  *
  * PHP version 5
  * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
+ * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Andreas Schempp <andreas@schempp.ch>
- * @author     Philipp Kaiblinger <philipp.kaiblinger@kaipo.at>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
- 
- 
+
+
 /**
- * Back end module
+ * Fields
  */
-$GLOBALS['TL_LANG']['MOD']['translation']	= array('Übersetzungshilfe', 'Übersetzen Sie mit Hilfe dieses Moduls die Isotope-Erweiterungen in verschiedene Sprachen.');
+$GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['label']['inputType'] = 'autocomplete';
+$GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['label']['foreignKey'] = 'tl_iso_labels.label';
 

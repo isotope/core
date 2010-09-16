@@ -24,12 +24,28 @@
  * @author     Philipp Kaiblinger <philipp.kaiblinger@kaipo.at>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
- 
- 
+
+
 /**
- * Back end module
+ * Fields
  */
-$GLOBALS['TL_LANG']['IMD']['translation']		= 'Multilingual Support';
-$GLOBALS['TL_LANG']['IMD']['iso_labels']		= array('Translate Labels', 'Various labels in Isotope eCommerce should be translated to support a multilingual shop. Few examples are payment module names and product attribute options. Using this tool you can translate the label to multiple languages. Most of the fields will show an autocomplete-list of available labels. Additionally, you can use the InsertTag {{isolabel::???}} to replace a label.');
-$GLOBALS['TL_LANG']['IMD']['iso_translation']	= array('Translate Core', 'This tool allows you to directly create and edit language files for all Isotope eCommerce extensions.<br />Use this tool with caution, it has not been fully tested!');
+$GLOBALS['TL_LANG']['tl_iso_labels']['language']		= array('Language', 'Please select a language.');
+$GLOBALS['TL_LANG']['tl_iso_labels']['label']			= array('Label', 'Enter the source label.');
+$GLOBALS['TL_LANG']['tl_iso_labels']['replacement']		= array('Replacement', 'Enter the replacement in the specified language.');
+
+
+/**
+ * Buttons
+ */
+$GLOBALS['TL_LANG']['tl_iso_labels']['new']				= array('New label', 'Create a new label');
+$GLOBALS['TL_LANG']['tl_iso_labels']['edit']			= array('Edit label', 'Edit label ID %s');
+$GLOBALS['TL_LANG']['tl_iso_labels']['copy']			= array('Duplicate label', 'Duplicate label ID %s');
+$GLOBALS['TL_LANG']['tl_iso_labels']['delete']			= array('Delete label', 'Delete label ID %s');
+$GLOBALS['TL_LANG']['tl_iso_labels']['show']			= array('Label details', 'Show details of label ID %s');
+
+
+/**
+ * Legends
+ */
+$GLOBALS['TL_LANG']['tl_iso_labels']['label_legend']	= 'Label translation';
 

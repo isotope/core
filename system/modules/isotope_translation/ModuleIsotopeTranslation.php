@@ -35,17 +35,25 @@ class ModuleIsotopeTranslation extends BackendModule
 	 */
 	protected $strTemplate = 'be_isotope_translation';
 
+	
+	public function generate()
+	{
+		$this->import('BackendUser', 'User');
+		
+		if (!strlen($this->User->translation))
+		{
+			return '<p class="tl_gerror">You have no language assigned.</p>';
+		}
+		
+		return parent::generate();
+	}
+	
 
 	/**
 	 * Generate module
 	 */
 	protected function compile()
 	{
-		$this->import('BackendUser', 'User');
-		
-		if (!strlen($this->User->translation))
-			$this->redirect($this->Environment->script.'?act=error');
-		
 		$this->import('Session');
 		
 		if ($this->Input->post('FORM_SUBMIT') == 'tl_translation_filters')

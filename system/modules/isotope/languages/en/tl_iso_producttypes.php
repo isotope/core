@@ -39,7 +39,6 @@ $GLOBALS['TL_LANG']['tl_iso_producttypes']['description']			= array('Description
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['attributes']			= array('Attributes', 'Select the collection of attributes that should be included for this product type.');
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['variants']				= array('Enable variants', 'Check here if this product type has variants.');
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['variant_attributes']	= array('Variant attributes', 'Select the collection of variant attributes that should be included for this product type. Those that are not selected will be hidden from view and inherited from the parent product.');
-$GLOBALS['TL_LANG']['tl_iso_producttypes']['languages']				= array('Additional languages', 'Select the additional languages you want to add product data for. If you remove a language, the product data is not dropped but no longer used.');
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['downloads']				= array('Enable downloads', 'Check here if this product type has downloads.');
 
 

@@ -120,8 +120,8 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
 	'palettes' => array
 	(
 		'__selector__'				=> array('class', 'variants'),
-		'default'					=> '{name_legend},name,class,fallback,prices;{description_legend:hide},description;{template_legend},list_template,reader_template;{language_legend:hide},languages;{attributes_legend},attributes,variants;{download_legend:hide},downloads',
-		'regular'					=> '{name_legend},name,class,fallback,prices;{description_legend:hide},description;{template_legend},list_template,reader_template;{language_legend:hide},languages;{attributes_legend},attributes,variants;{download_legend:hide},downloads',
+		'default'					=> '{name_legend},name,class,fallback,prices;{description_legend:hide},description;{template_legend},list_template,reader_template;{attributes_legend},attributes,variants;{download_legend:hide},downloads',
+		'regular'					=> '{name_legend},name,class,fallback,prices;{description_legend:hide},description;{template_legend},list_template,reader_template;{attributes_legend},attributes,variants;{download_legend:hide},downloads',
 	),
 	
 	// Subpalettes
@@ -216,14 +216,6 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
 			'exclude'				=> true,
 			'inputType'				=> 'checkbox',
 			'eval'					=> array(),
-		),
-		'languages' => array
-		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_producttypes']['languages'],
-			'exclude'				=> true,
-			'inputType'				=> 'select',
-			'options'				=> $this->getLanguages(),
-			'eval'					=> array('multiple'=>true),
 		),
 	)
 );
