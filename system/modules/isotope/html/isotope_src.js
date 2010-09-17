@@ -104,56 +104,61 @@ var IsotopeProduct = new Class(
 	{
 		this.setOptions(options);
 		
-		this.form = document.id(('iso_product_'+product)).set('send',
-		{
-			url: ('ajax.php?action=fmd&id='+module+'&language='+this.options.language+'&product='+product),
-			link: 'cancel',
-			onRequest: function()
-			{
-				Isotope.displayBox(this.options.loadMessage);
-			}.bind(this),
-			onSuccess: function(txt, xml)
-			{
-				Isotope.hideBox();
-				
-				JSON.decode(txt).each( function(option)
-				{
-					var oldEl = document.id(option.id);
-					
-					if (oldEl)
-					{
-						var newEl = null;
-						var container = new Element('div').set('html', option.html).getElements('').each( function(child) {
-							if (child.get('id') == option.id)
-							{
-								newEl = child;
-							}
-						});
-						
-						if (newEl)
-						{
-							newEl.cloneEvents(oldEl).replaces(oldEl);
-						}
-					}
-				});
-				
-				// Update conditionalselect
-				window.fireEvent('ajaxready');
-				$$(('#iso_product_'+product+' p.error')).destroy();
-			},
-			onFailure: function()
-			{
-				Isotope.hideBox();
-			}
-		});
+		this.form = document.id(('iso_product_'+product));
 		
-		attributes.each( function(el,index)
+		if (this.form)
 		{
-			if ($(el))
+			this.form.set('send',
 			{
-				$(el).addEvent('change', this.refresh);
-			}
-		}.bind(this));
+				url: ('ajax.php?action=fmd&id='+module+'&language='+this.options.language+'&product='+product),
+				link: 'cancel',
+				onRequest: function()
+				{
+					Isotope.displayBox(this.options.loadMessage);
+				}.bind(this),
+				onSuccess: function(txt, xml)
+				{
+					Isotope.hideBox();
+					
+					JSON.decode(txt).each( function(option)
+					{
+						var oldEl = document.id(option.id);
+						
+						if (oldEl)
+						{
+							var newEl = null;
+							var container = new Element('div').set('html', option.html).getElements('').each( function(child) {
+								if (child.get('id') == option.id)
+								{
+									newEl = child;
+								}
+							});
+							
+							if (newEl)
+							{
+								newEl.cloneEvents(oldEl).replaces(oldEl);
+							}
+						}
+					});
+					
+					// Update conditionalselect
+					window.fireEvent('ajaxready');
+					$$(('#iso_product_'+product+' p.error')).destroy();
+				},
+				onFailure: function()
+				{
+					Isotope.hideBox();
+				}
+			});
+			
+			attributes.each( function(el,index)
+			{
+				if ($(el))
+				{
+					$(el).addEvent('change', this.refresh);
+				}
+			}.bind(this));
+		}
 	},
 	
 	refresh: function(event)
