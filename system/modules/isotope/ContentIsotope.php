@@ -61,12 +61,12 @@ abstract class ContentIsotope extends ContentElement
 			}
 		}
 	}
-			
+	
 	
 	/**
 	 * Shortcut for a single product by ID
 	 */
-	protected function getProduct($intId)
+	protected function getProduct($intId, $blnCheckAvailability=true)
 	{
 		global $objPage;
 		
@@ -83,6 +83,9 @@ abstract class ContentIsotope extends ContentElement
 									
 		$objProduct = new $strClass($objProductData->row());
 		
+		if ($blnCheckAvailability && !$objProduct->available)
+			return null;
+		
 		$objProduct->reader_jumpTo = $this->iso_reader_jumpTo ? $this->iso_reader_jumpTo : $objPage->id;
 			
 		return $objProduct;
@@ -92,7 +95,7 @@ abstract class ContentIsotope extends ContentElement
 	/**
 	 * Shortcut for a single product by alias (from url?)
 	 */
-	protected function getProductByAlias($strAlias)
+	protected function getProductByAlias($strAlias, $blnCheckAvailability=true)
 	{
 		global $objPage;
 		
@@ -106,8 +109,11 @@ abstract class ContentIsotope extends ContentElement
 		{
 			return null;
 		}
-									
+		
 		$objProduct = new $strClass($objProductData->row());
+		
+		if ($blnCheckAvailability && !$objProduct->available)
+			return null;
 		
 		$objProduct->reader_jumpTo = $this->iso_reader_jumpTo ? $this->iso_reader_jumpTo : $objPage->id;
 			
@@ -118,7 +124,7 @@ abstract class ContentIsotope extends ContentElement
 	/**
 	 * Retrieve multiple products by ID.
 	 */
-	protected function getProducts($arrIds)
+	protected function getProducts($arrIds, $blnCheckAvailability=true)
 	{
 		if (!is_array($arrIds) || !count($arrIds))
 			return array();
@@ -127,7 +133,7 @@ abstract class ContentIsotope extends ContentElement
 		
 		foreach( $arrIds as $intId )
 		{
-			$objProduct = $this->getProduct($intId);
+			$objProduct = $this->getProduct($intId, $blnCheckAvailability);
 		
 			if (is_object($objProduct))
 				$arrProducts[] = $objProduct;

@@ -126,7 +126,7 @@ abstract class ModuleIsotope extends Module
 	/**
 	 * Retrieve multiple products by ID.
 	 */
-	protected function getProducts($arrIds)
+	protected function getProducts($arrIds, $blnCheckAvailability=true)
 	{
 		if (!is_array($arrIds) || !count($arrIds))
 			return array();
@@ -135,7 +135,7 @@ abstract class ModuleIsotope extends Module
 		
 		foreach( $arrIds as $intId )
 		{
-			$objProduct = $this->getProduct($intId);
+			$objProduct = $this->getProduct($intId, $blnCheckAvailability);
 		
 			if (is_object($objProduct))
 			{

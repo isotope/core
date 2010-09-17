@@ -288,6 +288,9 @@ class IsotopeProduct extends Controller
 			case 'available':
 				if ($this->blnLocked)
 					return true;
+					
+				if (!$this->arrData['published'])
+					return false;
 				
 				// Check if "advanced price" is available	
 				if ($this->arrType['prices'] && (($this->pid > 0 && in_array('price', $this->arrVariantAttributes)) || in_array('price', $this->arrAttributes)) && $this->arrData['price'] === null)
