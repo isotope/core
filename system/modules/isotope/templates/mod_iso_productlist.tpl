@@ -4,7 +4,7 @@
 <<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
 <?php endif; ?>
 
-<div id="product_list">
+<div class="product_list">
 
 <?php foreach( $this->products as $product ): ?>
 <?php if($product['clear']): ?>
