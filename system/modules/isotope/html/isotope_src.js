@@ -87,6 +87,18 @@ var Isotope =
 			box.setStyle('display', 'none');
 			if (Browser.Engine.trident && Browser.Engine.version < 5) { var sel = $$('select'); for (var i=0; i<sel.length; i++) { sel[i].setStyle('visibility', 'visible'); } }
 		}
+	},
+	
+	inlineGallery: function(el, product_id)
+	{
+		$$(('#images_'+product_id+'_mediumsize img')).set('src', el.href);
+		
+		$$(('#images_'+product_id+'_gallery div, #images_'+product_id+'_gallery img')).removeClass('active');
+		
+		el.addClass('active');
+		el.getChildren().addClass('active');
+		
+		return false;
 	}
 };
 

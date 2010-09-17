@@ -36,6 +36,36 @@ class InlineGallery extends IsotopeGallery
 	protected $strTemplate = 'iso_gallery_inline';
 	
 	
+	/**
+	 * Generate gallery
+	 */
+	public function generateGallery()
+	{
+		$strGallery = '';
+		
+		foreach( $this->arrFiles as $i => $arrFile )
+		{
+			$objTemplate = new FrontendTemplate($this->strTemplate);
+			
+			$objTemplate->setData($arrFile);
+			$objTemplate->type = 'gallery';
+			$objTemplate->product_id = $this->product_id;
+			$objTemplate->href_reader = $this->href_reader;
+			
+			list($objTemplate->link, $objTemplate->rel) = explode('|', $arrFile['link']);
+			
+			if ($i == 0)
+			{
+				$objTemplate->class = 'active';
+			}
+			
+			$strGallery .= $objTemplate->parse();
+		}
+		
+		return '<span id="' . $this->name . '_gallery">' . $strGallery . '</span>';
+	}
+	
+	
 	protected function injectAjax()
 	{
 	}
