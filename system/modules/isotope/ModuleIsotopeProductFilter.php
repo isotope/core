@@ -46,7 +46,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		if (TL_MODE == 'BE')
 		{
 			$objTemplate = new BackendTemplate('be_wildcard');
-			$objTemplate->wildcard = '### ISOTOPE FILTER MODULE ###';
+			$objTemplate->wildcard = '### ISOTOPE ECOMMERCE: FILTER MODULE ###';
 			$objTemplate->title = $this->headline;
 			$objTemplate->id = $this->id;
 			$objTemplate->link = $this->name;

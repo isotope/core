@@ -52,7 +52,7 @@ class ModuleIsotopeAddressBook extends Module
 		{
 			$objTemplate = new BackendTemplate('be_wildcard');
 
-			$objTemplate->wildcard = '### ISOTOPE ADDRESS BOOK ###';
+			$objTemplate->wildcard = '### ISOTOPE ECOMMERCE: ADDRESS BOOK ###';
 			$objTemplate->title = $this->headline;
 			$objTemplate->id = $this->id;
 			$objTemplate->link = $this->name;

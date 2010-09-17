@@ -46,7 +46,7 @@ class ModuleIsotopeProductReader extends ModuleIsotope
 		{
 			$objTemplate = new BackendTemplate('be_wildcard');
 			
-			$objTemplate->wildcard = '### ISOTOPE PRODUCT READER ###';
+			$objTemplate->wildcard = '### ISOTOPE ECOMMERCE: PRODUCT READER ###';
 			$objTemplate->title = $this->headline;
 			$objTemplate->id = $this->id;
 			$objTemplate->link = $this->name;

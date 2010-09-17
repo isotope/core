@@ -41,7 +41,7 @@ class ModuleIsotopeRelatedProducts extends ModuleIsotope
 		{
 			$objTemplate = new BackendTemplate('be_wildcard');
 
-			$objTemplate->wildcard = '### RELATED PRODUCTS ###';
+			$objTemplate->wildcard = '### ISOTOPE ECOMMERCE: RELATED PRODUCTS ###';
 			$objTemplate->title = $this->headline;
 			$objTemplate->id = $this->id;
 			$objTemplate->link = $this->name;

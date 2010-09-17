@@ -38,7 +38,7 @@ class ModuleIsotopeOrderHistory extends ModuleIsotope
 		{
 			$objTemplate = new BackendTemplate('be_wildcard');
 
-			$objTemplate->wildcard = '### ISOTOPE ORDER HISTORY ###';
+			$objTemplate->wildcard = '### ISOTOPE ECOMMERCE: ORDER HISTORY ###';
 			$objTemplate->title = $this->headline;
 			$objTemplate->id = $this->id;
 			$objTemplate->link = $this->name;

@@ -58,7 +58,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		if (TL_MODE == 'BE')
 		{
 			$objTemplate = new BackendTemplate('be_wildcard');
-			$objTemplate->wildcard = '### ISOTOPE PRODUCT LIST ###';
+			$objTemplate->wildcard = '### ISOTOPE ECOMMERCE: PRODUCT LIST ###';
 			$objTemplate->title = $this->headline;
 			$objTemplate->id = $this->id;
 			$objTemplate->link = $this->name;

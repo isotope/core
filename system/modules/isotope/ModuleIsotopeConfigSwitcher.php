@@ -45,7 +45,7 @@ class ModuleIsotopeConfigSwitcher extends ModuleIsotope
 		{
 			$objTemplate = new BackendTemplate('be_wildcard');
 
-			$objTemplate->wildcard = '### ISOTOPE STORE CONFIG SWICHER ###';
+			$objTemplate->wildcard = '### ISOTOPE ECOMMERCE: STORE CONFIG SWICHER ###';
 			$objTemplate->title = $this->headline;
 			$objTemplate->id = $this->id;
 			$objTemplate->link = $this->name;
