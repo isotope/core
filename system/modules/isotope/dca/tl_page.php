@@ -41,6 +41,6 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['iso_config'] = array
 	'exclude'                 => true,
 	'inputType'               => 'select',
 	'foreignKey'			  => 'tl_iso_config.name',
-	'eval'                    => array('includeBlankOption'=>true),
+	'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
 );
 
