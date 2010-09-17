@@ -41,7 +41,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['iso_filters'] = array
 	'exclude'                 => true,
 	'inputType'               => 'select',
 	'eval'                    => array('includeBlankOption'=>true),
-	'options_callback'		  => array('PageFilters','getFilters')
+	'options_callback'		  => array('tl_content_isotope', 'getFilters'),
 );
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_reader_jumpTo'] = array
@@ -59,17 +59,12 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['iso_list_layout'] = array
 	'default'                 => 'iso_list_default',
 	'exclude'                 => true,
 	'inputType'               => 'select',
-	'options'                 => (version_compare(VERSION.BUILD, '2.9.0', '>=')) ? $this->getTemplateGroup('iso_list_', $dc->activeRecord->pid) : $this->getTemplateGroup('iso_list_'),
+	'options_callback'		  => array('tl_content_isotope', 'getListTemplates'),
 	'eval'					  => array('includeBlankOption'=>true),
 );
 
 
-/**
- * PageFilters class.
- * 
- * @extends Backend
- */
-class PageFilters extends Backend
+class tl_content_isotope extends Backend
 {
 	/**
 	 * getFilters function.
@@ -110,5 +105,28 @@ class PageFilters extends Backend
 	}
 
 
+	/**
+	 * Return all list templates as array
+	 * @param object
+	 * @return array
+	 */
+	public function getListTemplates(DataContainer $dc)
+	{
+		// Get the page ID
+		$objArticle = $this->Database->prepare("SELECT pid FROM tl_article WHERE id=?")
+									 ->limit(1)
+									 ->execute($dc->activeRecord->pid);
+
+		// Inherit the page settings
+		$objPage = $this->getPageDetails($objArticle->pid);
+
+		// Get the theme ID
+		$objLayout = $this->Database->prepare("SELECT pid FROM tl_layout WHERE id=?")
+									->limit(1)
+									->execute($objPage->layout);
+
+		// Return all gallery templates
+		return $this->getTemplateGroup('iso_list_', $objLayout->pid);
+	}
 }
 
