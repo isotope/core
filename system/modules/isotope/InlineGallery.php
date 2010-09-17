@@ -50,6 +50,7 @@ class InlineGallery extends IsotopeGallery
 			$objTemplate->setData($arrFile);
 			$objTemplate->mode = 'gallery';
 			$objTemplate->type = 'gallery';
+			$objTemplate->name = $this->name;
 			$objTemplate->product_id = $this->product_id;
 			$objTemplate->href_reader = $this->href_reader;
 			

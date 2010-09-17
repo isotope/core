@@ -186,6 +186,7 @@ class IsotopeGallery extends Frontend
 		$objTemplate->setData($arrFile);
 		$objTemplate->mode = 'main';
 		$objTemplate->type = $strType;
+		$objTemplate->name = $this->name;
 		$objTemplate->product_id = $this->product_id;
 		$objTemplate->href_reader = $this->href_reader;
 		
@@ -211,6 +212,7 @@ class IsotopeGallery extends Frontend
 			$objTemplate->setData($arrFile);
 			$objTemplate->mode = 'gallery';
 			$objTemplate->type = 'gallery';
+			$objTemplate->name = $this->name;
 			$objTemplate->product_id = $this->product_id;
 			$objTemplate->href_reader = $this->href_reader;
 			
