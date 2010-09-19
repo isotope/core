@@ -135,18 +135,6 @@ class IsotopeProduct extends Controller
 				unset($this->arrData[$attribute]);
 			}
 		}
-		
-		// Options are not set, load from variant
-		if ($this->arrData['pid'] > 0)
-		{
-			foreach( $this->arrAttributes as $attribute )
-			{
-				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['add_to_product_variants'])
-				{
-					$this->arrOptions[$attribute] = $this->arrData[$attribute];
-				}
-			}
-		}
 
 		// Cache downloads for this product
 		if ($this->arrType['downloads'])
@@ -338,8 +326,6 @@ class IsotopeProduct extends Controller
 	public function setOptions(array $arrOptions)
 	{
 		$this->arrOptions = $arrOptions;
-
-		$this->validateVariant();
 	}
 
 
@@ -891,7 +877,7 @@ class IsotopeProduct extends Controller
 	}
 	
 	
-	protected function loadVariantData($arrData)
+	protected function loadVariantData($arrData, $blnLoadLanguage=true)
 	{
 		$arrInherit = deserialize($arrData['inherit'], true);
 
@@ -912,13 +898,25 @@ class IsotopeProduct extends Controller
 			$this->arrData['original_price'] = $this->arrData['price'];
 		}
 		
+		// Load variant options
+		foreach( $this->arrAttributes as $attribute )
+		{
+			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['add_to_product_variants'])
+			{
+				$this->arrOptions[$attribute] = $arrData[$attribute];
+			}
+		}
+		
 		// Cache downloads for this product
 		if ($this->arrType['downloads'])
 		{
 			$this->arrDownloads = $this->Database->execute("SELECT * FROM tl_iso_downloads WHERE pid={$this->arrData['id']} OR pid={$this->arrData['pid']}")->fetchAllAssoc();
 		}
 		
-		$this->loadLanguage($arrInherit);
+		if ($blnLoadLanguage)
+		{
+			$this->loadLanguage($arrInherit);
+		}
 	}
 	
 	
