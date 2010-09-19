@@ -75,7 +75,7 @@ $GLOBALS['TL_LANG']['MSC']['defaultSearchText'] = 'Produits à rechercher';
 $GLOBALS['TL_LANG']['MSC']['blankSelectOptionLabel'] = '-';
 $GLOBALS['TL_LANG']['MSC']['emptySelectOptionLabel'] = 'Prière de sélectionner';
 $GLOBALS['TL_LANG']['MSC']['downloadsLabel'] = 'Vos produits téléchargeables';
-$GLOBALS['TL_LANG']['MSC']['priceRangeLabel'] = 'De %s';
+$GLOBALS['TL_LANG']['MSC']['priceRangeLabel'] = '<span class="from">De</span> %s';
 $GLOBALS['TL_LANG']['MSC']['detailLabel'] = 'Voire détails';
 $GLOBALS['TL_LANG']['MSC']['searchTextBoxLabel'] = 'Cherchez le terme:';
 $GLOBALS['TL_LANG']['MSC']['searchFieldsLabel'] = 'Champs de recherche:';

@@ -74,7 +74,7 @@ $GLOBALS['TL_LANG']['MSC']['defaultSearchText'] = 'Søg produkter';
 $GLOBALS['TL_LANG']['MSC']['blankSelectOptionLabel'] = '-';
 $GLOBALS['TL_LANG']['MSC']['emptySelectOptionLabel'] = 'Vælg venlisgt...';
 $GLOBALS['TL_LANG']['MSC']['downloadsLabel'] = 'Dine produkter til download';
-$GLOBALS['TL_LANG']['MSC']['priceRangeLabel'] = 'Fra %s';
+$GLOBALS['TL_LANG']['MSC']['priceRangeLabel'] = '<span class="from">Fra</span> %s';
 $GLOBALS['TL_LANG']['MSC']['detailLabel'] = 'Se detaljer';
 $GLOBALS['TL_LANG']['MSC']['searchTextBoxLabel'] = 'Søg beskrivelse:';
 $GLOBALS['TL_LANG']['MSC']['searchFieldsLabel'] = 'Søg felter:';
