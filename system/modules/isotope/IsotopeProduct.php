@@ -877,7 +877,7 @@ class IsotopeProduct extends Controller
 	}
 	
 	
-	protected function loadVariantData($arrData, $blnLoadLanguage=true)
+	protected function loadVariantData($arrData)
 	{
 		$arrInherit = deserialize($arrData['inherit'], true);
 
@@ -913,10 +913,7 @@ class IsotopeProduct extends Controller
 			$this->arrDownloads = $this->Database->execute("SELECT * FROM tl_iso_downloads WHERE pid={$this->arrData['id']} OR pid={$this->arrData['pid']}")->fetchAllAssoc();
 		}
 		
-		if ($blnLoadLanguage)
-		{
-			$this->loadLanguage($arrInherit);
-		}
+		$this->loadLanguage($arrInherit);
 	}
 	
 	
