@@ -645,7 +645,10 @@ class IsotopeProduct extends Controller
 		
 		if ($arrData['attributes']['add_to_product_variants'] && is_array($arrData['options']))
 		{
-			$arrData['eval']['includeBlankOption'] = true;
+			if ($arrData['inputType'] == 'select')
+			{
+				$arrData['eval']['includeBlankOption'] = true;
+			}
 			
 			$arrField = $this->prepareForWidget($arrData, $strField);
 			
