@@ -79,7 +79,7 @@ $GLOBALS['TL_LANG']['MSC']['deleteLanguageConfirm'] = 'Soll diese Sprache wirkli
 $GLOBALS['TL_LANG']['MSC']['undefinedLanguage']     = 'undefiniert';
 $GLOBALS['TL_LANG']['MSC']['noSurcharges']          = 'Es wurden keine Aufpreise gefunden.';
 
-$GLOBALS['TL_LANG']['MSC']['priceRangeLabel']                = 'Ab %s';
+$GLOBALS['TL_LANG']['MSC']['priceRangeLabel']                = '<span class="from">Ab</span> %s';
 $GLOBALS['TL_LANG']['MSC']['ajaxLoadingMessage']             = 'Lade...';
 $GLOBALS['TL_LANG']['MSC']['emptySelectOptionLabel']         = 'Bitte auswählen...';
 $GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline']           = 'Bestellung Nr. %s vom %s';
