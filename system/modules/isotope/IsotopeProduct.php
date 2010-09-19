@@ -1081,7 +1081,7 @@ class IsotopeProduct extends Controller
 		
 		if ($objLanguage->numRows)
 		{
-			$arrAttributes = $this->arrData['pid'] > 0 ? $this->arrAttributes : $this->arrVariantAttributes;
+			$arrAttributes = $this->arrData['pid'] > 0 ? $this->arrVariantAttributes : $this->arrAttributes;
 			
 			foreach( $arrAttributes as $attribute )
 			{
