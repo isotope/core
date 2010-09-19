@@ -1,4 +1,4 @@
-<form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>" method="post" enctype="<?php echo $this->enctype; ?>">
+<form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>" name="<?php echo rand(); ?>" method="post" enctype="<?php echo $this->enctype; ?>">
 <div class="formbody">
 <input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formSubmit; ?>" />
 
