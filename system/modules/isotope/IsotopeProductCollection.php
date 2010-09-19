@@ -231,6 +231,7 @@ abstract class IsotopeProductCollection extends Model
 				catch (Exception $e)
 				{
 					$objProduct = new IsotopeProduct(array('id'=>$objItems->product_id, 'sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price), $this->blnLocked);
+					$objProduct->setOptions(deserialize($objItems->product_options, true));
 				}
 				
 				// Remove product from collection if it is no longer available
@@ -244,8 +245,6 @@ abstract class IsotopeProductCollection extends Model
 				$objProduct->quantity_requested = $objItems->product_quantity;
 				$objProduct->cart_id = $objItems->id;
 				$objProduct->reader_jumpTo_Override = $objItems->href_reader;
-				
-				$objProduct->setOptions(deserialize($objItems->product_options, true));
 			
 				$this->arrProducts[] = $objProduct;
 			}

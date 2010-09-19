@@ -134,18 +134,6 @@ class IsotopeProduct extends Controller
 				unset($this->arrData[$attribute]);
 			}
 		}
-		
-		// Options are not set, load from variant
-		if ($this->arrData['pid'] > 0)
-		{
-			foreach( $this->arrAttributes as $attribute )
-			{
-				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['add_to_product_variants'])
-				{
-					$this->arrOptions[$attribute] = $this->arrData[$attribute];
-				}
-			}
-		}
 
 		// Cache downloads for this product
 		if ($this->arrType['downloads'])
@@ -443,8 +431,6 @@ class IsotopeProduct extends Controller
 	public function setOptions(array $arrOptions)
 	{
 		$this->arrOptions = $arrOptions;
-
-		$this->validateVariant();
 	}
 
 
@@ -1058,6 +1044,15 @@ class IsotopeProduct extends Controller
 		{
 			$this->findPrice();
 			$this->arrData['original_price'] = $this->arrData['price'];
+		}
+		
+		// Load variant options
+		foreach( $this->arrAttributes as $attribute )
+		{
+			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['add_to_product_variants'])
+			{
+				$this->arrOptions[$attribute] = $arrData[$attribute];
+			}
 		}
 		
 		// Cache downloads for this product
