@@ -83,7 +83,7 @@ class IsotopeGallery extends Frontend
 				{
 					foreach( $varValue as $k => $file )
 					{
-						$strFile = 'isotope/' . substr($file['src'], 0, 1) . '/' . $file['src'];
+						$strFile = 'isotope/' . strtolower(substr($file['src'], 0, 1)) . '/' . $file['src'];
 
 						if (is_file(TL_ROOT . '/' . $strFile))
 						{
