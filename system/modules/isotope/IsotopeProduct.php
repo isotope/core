@@ -64,6 +64,11 @@ class IsotopeProduct extends Controller
 	 * @var array
 	 */
 	protected $arrOptions = array();
+	
+	/**
+	 * Product Options of all variants
+	 */
+	protected $arrVariantOptions = array();
 
 	/**
 	 * Downloads for this product
@@ -134,7 +139,32 @@ class IsotopeProduct extends Controller
 				unset($this->arrData[$attribute]);
 			}
 		}
-
+		
+		
+		// Find all possible variant options
+		$objVariant = clone $this;
+		$objVariants = $this->Database->execute("SELECT * FROM tl_iso_products WHERE pid={$this->arrData['id']} AND language=''");
+		while( $objVariants->next() )
+		{
+			$objVariant->loadVariantData($objVariants->row(), false);
+			
+			if ($objVariant->available)
+			{
+				$arrOptions = $objVariant->getOptions(true);
+				
+				$this->arrVariantOptions['variants'][] = $arrOptions;
+				
+				foreach( $arrOptions as $attribute => $value )
+				{
+					if (!in_array($value, (array)$this->arrVariantOptions['attributes'][$attribute]))
+					{
+						$this->arrVariantOptions['attributes'][$attribute][] = $value;
+					}
+				}
+			}
+		}
+		
+		
 		// Cache downloads for this product
 		if ($this->arrType['downloads'])
 		{
@@ -285,9 +315,9 @@ class IsotopeProduct extends Controller
 					return false;
 				
 				// Check if the product is in any category in the current store (page tree)
-				if (TL_MODE == 'FE')
+				global $objPage;
+				if (TL_MODE == 'FE' && is_object($objPage))
 				{
-					global $objPage;
 					$arrCategories = $this->getChildRecords($objPage->rootId, 'tl_page', true);
 					
 					if (!$this->Database->execute("SELECT COUNT(*) AS available FROM tl_iso_product_categories WHERE pid=" . ($this->pid ? $this->pid : $this->id) . " AND page_id IN (" . implode(',', $arrCategories) . ")")->available)
@@ -358,7 +388,20 @@ class IsotopeProduct extends Controller
 		switch( $strKey )
 		{
 			case 'reader_jumpTo':
-				$this->arrData['href_reader'] = $this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($varValue)->fetchAssoc(), '/product/' . $this->arrData['alias']);
+				$strUrl = $this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($varValue)->fetchAssoc(), '/product/' . $this->arrData['alias']);
+				
+				if ($this->arrData['pid'] > 0)
+				{
+					$arrOptions = array();
+					foreach( $this->arrOptions as $k => $v )
+					{
+						$arrOptions[] = $k . '=' . urlencode($v);
+					}
+					
+					$strUrl .= (strpos('?', $strUrl) === false ? '?' : '&amp;') . implode('&amp;', $arrOptions);
+				}
+				
+				$this->arrData['href_reader'] = $strUrl;
 				break;
 				
 			case 'reader_jumpTo_Override':
@@ -447,6 +490,8 @@ class IsotopeProduct extends Controller
 	public function generate($strTemplate, &$objModule)
 	{
 		$this->validateVariant();
+		
+		$this->arrOptions = array();
 		
 		$objTemplate = new FrontendTemplate($strTemplate);
 		
@@ -545,6 +590,8 @@ class IsotopeProduct extends Controller
 				
 		$arrOptions = array();
 		$arrAttributes = $this->getAttributes();
+		
+		$this->arrOptions = array();
 		
 		foreach( $arrAttributes as $attribute => $varValue )
 		{
@@ -726,43 +773,63 @@ class IsotopeProduct extends Controller
 		
 		if ($arrData['attributes']['add_to_product_variants'] && is_array($arrData['options']))
 		{
+			if (count($this->arrVariantOptions['attributes'][$strField]) == 1)
+			{
+				$this->arrOptions[$strField] = $this->arrVariantOptions['attributes'][$strField][0];
+				$this->Input->setPost($strField, $this->arrVariantOptions['attributes'][$strField][0]);
+				
+				if (!$blnAjax)
+				{
+					return '';
+				}
+			}
+			
 			if ($arrData['inputType'] == 'select')
 			{
 				$arrData['eval']['includeBlankOption'] = true;
 			}
 			
 			$arrField = $this->prepareForWidget($arrData, $strField);
-			
-			$arrSearch = array('pid'=>($this->pid ? $this->pid : $this->id));
-			
-			foreach( $this->arrOptions as $name => $value )
-			{
-				if ($name != $strField && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$name]['attributes']['add_to_product_variants'] && strlen($value))
-				{
-					$arrSearch[$name] = $value;
-				}
-			}
-			
-			$arrOptions = $this->Database->prepare("SELECT " . $strField . " FROM tl_iso_products WHERE language='' AND published='1' AND " . implode("=? AND ", array_keys($arrSearch)) . "=? GROUP BY " . $strField)->execute($arrSearch)->fetchEach($strField);
-			
+						
 			foreach( $arrField['options'] as $k => $option )
 			{
-				if (!in_array($option['value'], $arrOptions) && !$option['group'] && $option['value'] != '')
+				if (!$option['group'] && $option['value'] != '')
 				{
-					unset($arrField['options'][$k]);
+					if (!in_array($option['value'], $this->arrVariantOptions['attributes'][$strField]))
+					{
+						unset($arrField['options'][$k]);
+					}
+					else
+					{
+						$blnValid = false;
+						
+						foreach( $this->arrVariantOptions['variants'] as $arrVariant )
+						{
+							if ($arrVariant[$strField] == $option['value'] && count($this->arrOptions) == count(array_intersect_assoc($this->arrOptions, $arrVariant)))
+							{
+								$blnValid = true;
+							}
+						}
+						
+						if (!$blnValid)
+						{
+							unset($arrField['options'][$k]);
+						}
+					}
 				}
 			}
 			
 			$arrField['options'] = array_values($arrField['options']);
 			
-			if (count($arrField['options']) == 2 && $arrField['options'][0]['value'] == '')
+			if ($this->Input->get($strField) != '' && $this->Input->post('FORM_SUBMIT') != 'iso_product_'.($this->pid ? $this->pid : $this->id))
 			{
-				$this->arrOptions[$strField] = $arrField['options'][1]['value'];
-				$this->Input->setPost($strField, $arrField['options'][1]['value']);
-				
-				if (!$blnAjax)
+				if (in_array($this->Input->get($strField), $this->arrVariantOptions['attributes'][$strField]))
 				{
-					return '';
+					$this->Input->setPost($strField, $this->Input->get($strField));
+				}
+				else
+				{
+					$this->Input->setGet($strField, '');
 				}
 			}
 		}
@@ -797,7 +864,7 @@ class IsotopeProduct extends Controller
 		$objWidget->id .= "_" . ($this->pid ? $this->pid : $this->id);
 		
 		// Validate input
-		if ($this->Input->post('FORM_SUBMIT') == 'iso_product_'.($this->pid ? $this->pid : $this->id))
+		if ($this->Input->post('FORM_SUBMIT') == 'iso_product_'.($this->pid ? $this->pid : $this->id) || $this->Input->get($strField) != '')
 		{
 			$objWidget->validate();
 
@@ -818,7 +885,10 @@ class IsotopeProduct extends Controller
 					$varValue = $objDate->tstamp;
 				}
 				
-				$this->arrOptions[$strField] = $varValue;
+				if ($varValue != '')
+				{
+					$this->arrOptions[$strField] = $varValue;
+				}
 			}
 		}
 		
@@ -988,8 +1058,14 @@ class IsotopeProduct extends Controller
 		{
 			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['add_to_product_variants'])
 			{
-				$this->generateProductOptionWidget($attribute, true);
-				$arrOptions[$attribute] = $this->arrOptions[$attribute];
+				if ($this->Input->post('FORM_SUBMIT') == 'iso_product_'.($this->pid ? $this->pid : $this->id) && in_array($this->Input->post($attribute), $this->arrVariantOptions['attributes'][$attribute]))
+				{
+					$arrOptions[$attribute] = $this->Input->post($attribute);
+				}
+				elseif ($this->Input->post('FORM_SUBMIT') == '' && in_array($this->Input->get($attribute), $this->arrVariantOptions['attributes'][$attribute]))
+				{
+					$arrOptions[$attribute] = $this->Input->get($attribute);
+				}
 			}
 		}
 		
