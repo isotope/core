@@ -148,15 +148,22 @@ var IsotopeProduct = new Class(
 							
 							if (newEl)
 							{
+								if (newEl.get('tag') == 'div' && newEl.hasClass('radio_container'))
+								{
+									newEl.getElements('input.radio').each( function(option, index) {
+										option.addEvent('click', this.refresh);
+									}.bind(this))
+								}
+								
 								newEl.cloneEvents(oldEl).replaces(oldEl);
 							}
 						}
-					});
+					}.bind(this));
 					
 					// Update conditionalselect
 					window.fireEvent('ajaxready');
 					$$(('#iso_product_'+product+' p.error')).destroy();
-				},
+				}.bind(this),
 				onFailure: function()
 				{
 					Isotope.hideBox();
@@ -165,9 +172,16 @@ var IsotopeProduct = new Class(
 			
 			attributes.each( function(el,index)
 			{
-				if ($(el))
+				el = $(el);
+				if (el && el.get('tag') == 'div' && el.hasClass('radio_container'))
 				{
-					$(el).addEvent('change', this.refresh);
+					el.getElements('input.radio').each( function(option) {
+						option.addEvent('click', this.refresh);
+					}.bind(this))
+				}
+				else if(el)
+				{
+					el.addEvent('change', this.refresh);
 				}
 			}.bind(this));
 		}
