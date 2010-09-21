@@ -24,6 +24,7 @@ Version 0.2.beta2
 - Improved: Cart module now hides button withouth a target page (jump to cart/checkout)
 - Improved: Added check if form ID exists in IsotopeProduct javascript class
 - Improved: Added name attribute with random value to product variant forms to prevent firefox from preserving selection on reload
+- Improved: ModuleIsotopeProductList can now be used for any product listing by replacing findProducts() an a child class.
 - Fixed: cart_html and cart_text now include subtotal, surcharges and grand total (Ticket #34)
 - Fixed: Variant price should not show "From" when all variants have the same price
 - Fixed: Now using core widget TimePeriod for shipping weight which has a larger select menu.

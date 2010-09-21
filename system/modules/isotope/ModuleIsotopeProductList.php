@@ -41,14 +41,9 @@ class ModuleIsotopeProductList extends ModuleIsotope
 	
 	protected $strSearchSQL;
 	
-	protected $arrParams;		     
+	protected $arrParams;
 	
-	/**
-	 * The ids of all pages we take care of. this is what should later be used eg. for filter data.
-	 */
-	protected $arrCategories = array();
-        
-        
+	
 	/**
 	 * Display a wildcard in the back end
 	 * @return string
@@ -66,30 +61,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			
 			return $objTemplate->parse();
 		}
-
-		global $objPage;
 		
-	 	// Determine category scope
-		switch($this->iso_category_scope)
-		{
-			case 'global':
-				$this->arrCategories = array_merge($this->getChildRecords($objPage->rootId, 'tl_page', true), array($objPage->rootId));
-				break;
-				
-			case 'parent_and_first_child':
-				$this->arrCategories = array_merge($this->Database->execute("SELECT id FROM tl_page WHERE pid={$objPage->id}")->fetchEach('id'), array($objPage->id));
-				break;
-				
-			case 'parent_and_all_children':
-				$this->arrCategories = array_merge($this->getChildRecords($objPage->id, 'tl_page', true), array($objPage->id));				
-				break;
-				
-			default:
-			case 'current_category':
-				$this->arrCategories = array($objPage->id);
-				break;		
-		}
-
 		return parent::generate();
 	}
 	
@@ -108,19 +80,44 @@ class ModuleIsotopeProductList extends ModuleIsotope
 	
 	
 	/**
-	 * Generate module
+	 * Fill the object's arrProducts array
+	 * @return array
 	 */
-	protected function compile()
-	{	
+	protected function findProducts()
+	{
+		// The ids of all pages we take care of. this is what should later be used eg. for filter data.
+		$arrCategories = array();
+		
 		global $objPage;
-			
+		
+	 	// Determine category scope
+		switch($this->iso_category_scope)
+		{
+			case 'global':
+				$arrCategories = array_merge($this->getChildRecords($objPage->rootId, 'tl_page', true), array($objPage->rootId));
+				break;
+				
+			case 'parent_and_first_child':
+				$arrCategories = array_merge($this->Database->execute("SELECT id FROM tl_page WHERE pid={$objPage->id}")->fetchEach('id'), array($objPage->id));
+				break;
+				
+			case 'parent_and_all_children':
+				$arrCategories = array_merge($this->getChildRecords($objPage->id, 'tl_page', true), array($objPage->id));
+				break;
+				
+			default:
+			case 'current_category':
+				$arrCategories = array($objPage->id);
+				break;
+		}
+		
 		if($this->Input->get('clear'))
 		{
 			$arrFilters = array();
 		}
 		else
 		{
-			$arrFilters = array('for'=>$this->Input->get('for'),'per_page'=>$this->Input->get('per_page'),'page'=>$this->Input->get('page'),'order_by'=>$this->Input->get('order_by'));	
+			$arrFilters = array('for'=>$this->Input->get('for'), 'per_page'=>$this->Input->get('per_page'), 'page'=>$this->Input->get('page'), 'order_by'=>$this->Input->get('order_by'));	
 		
 			$arrFilterFields = explode(',', $this->Input->get('filters'));	//get the names of filters we are using
 	
@@ -131,22 +128,21 @@ class ModuleIsotopeProductList extends ModuleIsotope
 					$arrFilters[$field] = $this->Input->get($field);
 				}
 			}
-						
+			
 			$this->perPage = ($this->Input->get('per_page') ? $this->Input->get('per_page') : $this->perPage);
-							
+			
 			$this->setFilterSQL($arrFilters);
 		}
 
 		if($this->strOrderBySQL=='c.sorting')
 		{
-
 			if($this->iso_listingSortField)
 			{
 				$this->setFilterSQL(array('order_by' => ($this->iso_listingSortField.'-'.$this->iso_listingSortDirection)));
 		    }
 		}
-				
-		$objProductIds = $this->Database->prepare("SELECT DISTINCT p.* FROM tl_iso_product_categories c, tl_iso_products p WHERE p.id=c.pid AND published='1'" . ($this->strFilterSQL ? " AND (" . $this->strFilterSQL . ")" : "") . " AND c.page_id IN (" . implode(',', $this->arrCategories) . ")" . ($this->strSearchSQL ? " AND (" . $this->strSearchSQL . ")" : "") . ($this->strOrderBySQL ? " ORDER BY " . $this->strOrderBySQL : ""));
+		
+		$objProductIds = $this->Database->prepare("SELECT DISTINCT p.* FROM tl_iso_product_categories c, tl_iso_products p WHERE p.id=c.pid AND published='1'" . ($this->strFilterSQL ? " AND (" . $this->strFilterSQL . ")" : "") . " AND c.page_id IN (" . implode(',', $arrCategories) . ")" . ($this->strSearchSQL ? " AND (" . $this->strSearchSQL . ")" : "") . ($this->strOrderBySQL ? " ORDER BY " . $this->strOrderBySQL : ""));
 		
 		
 		// Add pagination
@@ -162,13 +158,22 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			$objProductIds->limit($this->perPage, $offset);
 		}
 		
-		$arrProducts = $this->getProducts($objProductIds->execute($this->arrParams)->fetchEach('id'));
+		return $this->getProducts($objProductIds->execute($this->arrParams)->fetchEach('id'));
+	}
+	
+	
+	/**
+	 * Generate module
+	 */
+	protected function compile()
+	{	
+		$arrProducts = $this->findProducts();
 			
 		if (!is_array($arrProducts) || !count($arrProducts))
 		{
 			$this->Template = new FrontendTemplate('mod_message');
 			$this->Template->type = 'empty';
-			$this->Template->message = $GLOBALS['TL_LANG']['MSC']['noProducts'];
+			$this->Template->message = $this->iso_noProducts ? $this->iso_noProducts : $GLOBALS['TL_LANG']['MSC']['noProducts'];
 			return;
 		}
 		
@@ -228,7 +233,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 					case 'for':
 						//prepare clause for text search. //!@todo:  need to add filter for each std. search field plus any additional user-defined.
 						$arrSearchFields = $this->getSearchFields();
-												
+						
 						foreach($arrSearchFields as $field)
 						{
 							$arrSearchClauses[] = $this->addFilter($value, $field, 'search');
@@ -239,7 +244,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 						$arrFilterClauses[] = $this->addFilter($value, $filter, 'filter');
 						break;
 				}
-			}						
+			}
 		}
 		
 		if(count($arrFilterClauses[0]))
@@ -250,7 +255,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 				$this->arrParams[] = $param['value'];
 			}
 		}	
-
+		
 		if(count($arrSearchClauses[0]))
 		{
 			foreach($arrSearchClauses as $param)
@@ -259,7 +264,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 				$this->arrParams[] = $param['value'];
 			}
 		}	
-
+		
 		if(count($arrOrderByClauses[0]))
 		{
 			foreach($arrOrderByClauses as $row)
@@ -314,7 +319,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 					$arrReturn['sql'] 		= "p." . $strKey . " LIKE ?";
 					$strValue = str_replace('%', '', $varValue);
 		
-					$arrReturn['value'] 	= "%%" . $strValue . "%";	//double wildcard necessary to get around vsprintf bug.				
+					$arrReturn['value'] 	= "%%" . $strValue . "%";	//double wildcard necessary to get around vsprintf bug.
 					break;
 				case 'filter':
 					$arrReturn['sql']		= "p." . $strKey . "=?";
@@ -323,7 +328,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 				default:
 					break;
 			}
-		}		
+		}
 		
 		return $arrReturn;
 	}
@@ -342,7 +347,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		$arrFieldData = array();
 		
 		$objFilter = $this->Database->prepare("SELECT * FROM tl_module WHERE type='iso_productfilter' AND iso_listingModule=?")
-										   ->execute($this->id);
+									->execute($this->id);
 			
 		if($objFilter->numRows > 0)
 		{	
@@ -355,9 +360,9 @@ class ModuleIsotopeProductList extends ModuleIsotope
 					$objAttributeData = $this->Database->prepare("SELECT * FROM tl_iso_attributes WHERE id=?")
 													   ->limit(1)
 													   ->execute($intFieldID);
-			
+					
 					if($objAttributeData->numRows < 1)
-					{			
+					{
 						continue;
 					}
 					$arrSearchFields[] = $objAttributeData->field_name;
