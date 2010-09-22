@@ -540,7 +540,7 @@ $return .= '</div></div>';
 	{
 		$resp = str_replace('"', '', $resp);
 		
-		$arrResponseString = explode(",",$resp);
+		$arrResponseString = explode($this->authorize_delimiter,$resp);
 		
 		$i=1;
 		

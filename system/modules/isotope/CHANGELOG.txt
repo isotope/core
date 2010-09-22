@@ -54,6 +54,7 @@ Version 0.2.beta2
 - Fixed: Address was not checked when forwarding in checkout module
 - Fixed: Disable grouping in mail template languages
 - Fixed: mod_iso_productlist template contained a CSS ID instead of a class
+- Fixed: Authorize.net delimiter value ignored (Ticket #227)
 
 Version 0.2.beta1 (2010-08-25)
 ------------------------------
