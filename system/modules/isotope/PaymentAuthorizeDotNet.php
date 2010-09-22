@@ -182,7 +182,11 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 				"x_state"							=> $this->Isotope->Cart->billingAddress['subdivision'],
 				"x_zip"								=> $this->Isotope->Cart->billingAddress['postal'],
 				"x_company"							=> $this->Isotope->Cart->billingAddress['company'],
-				"x_email_customer"					=> "FALSE"
+				"x_email_customer"					=> "FALSE",
+				"x_email_address"					=> $this->Isotope->Cart->billingAddress['email'],
+				"x_country"							=> $this->Isotope->Cart->billingAddress['country'],
+				"x_phone"							=> $this->Isotope->Cart->billingAddress['phone'],
+				
 			);
 	
 			if($this->requireCCV)
