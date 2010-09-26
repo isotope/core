@@ -131,11 +131,11 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 		'datetime'					=> '{attribute_legend},name,field_name,type,legend,description;{validation_legend},is_required;{search_filters_legend},is_order_by_enabled',
 		'select'					=> '{attribute_legend},name,field_name,type,legend,description;{options_legend},option_list,use_alternate_source;{use_mode_legend},is_customer_defined,add_to_product_variants,is_multiple_select;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled,is_be_filterable',
 		'conditionalselect'			=> '{attribute_legend},name,field_name,type,legend,description;{options_legend},option_list,conditionField;{use_mode_legend},is_customer_defined,is_multiple_select;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled',
+		'checkbox'					=> '{attribute_legend},name,field_name,type,legend,description;{options_legend},option_list;{use_mode_legend},is_customer_defined;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled',
 		'options'					=> '{attribute_legend},name,field_name,type,legend,description;{options_legend},option_list;{use_mode_legend},is_customer_defined,add_to_product_variants,is_multiple_select;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled',
 		'fileattach'				=> '{attribute_legend},name,field_name,type,legend,description;{use_mode_legend},is_customer_defined;{validation_legend},is_required',
 		'filetree'					=> '{attribute_legend},name,field_name,type,legend,description;{use_mode_legend},is_customer_defined,is_multiple_select,show_files;{validation_legend},is_required,{search_filters_legend},is_filterable',
 		'media'						=> '{attribute_legend},name,field_name,type,legend,description;{use_mode_legend},show_files;{validation_legend},is_required',
-		'checkbox'					=> '{attribute_legend},name,field_name,type,legend,description;{use_mode_legend},is_customer_defined;{validation_legend},is_required;{search_filters_legend},is_filterable,is_order_by_enabled',
     ),
 
     // Subpalettes
