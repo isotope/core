@@ -310,12 +310,13 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		(
 			'label'			=> array($arrAttributeData['name'],$arrAttributeData['name']),
 			'inputType'		=> 'select',
-			'eval'			=> array('includeBlankOption'=>false)
+			'eval'			=> array('includeBlankOption'=>false, 'tableless'=>true)
 		);
 
 		$objWidget = new FormSelectMenu($this->prepareForWidget($arrData, $arrAttributeData['field_name'], $this->Input->get($arrAttributeData['field_name'])));
 		
 		$objWidget->options = $arrOptionList;
+		$objWidget->onchange = "filterForm.submit();";
 	
 		return $objWidget;
 
