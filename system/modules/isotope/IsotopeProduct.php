@@ -773,7 +773,7 @@ class IsotopeProduct extends Controller
 		
 		if ($arrData['attributes']['add_to_product_variants'] && is_array($arrData['options']))
 		{
-			if (count($this->arrVariantOptions['attributes'][$strField]) == 1)
+			if (count((array)$this->arrVariantOptions['attributes'][$strField]) == 1)
 			{
 				$this->arrOptions[$strField] = $this->arrVariantOptions['attributes'][$strField][0];
 				$this->Input->setPost($strField, $this->arrVariantOptions['attributes'][$strField][0]);
@@ -795,7 +795,7 @@ class IsotopeProduct extends Controller
 			{
 				if (!$option['group'] && $option['value'] != '')
 				{
-					if (!in_array($option['value'], $this->arrVariantOptions['attributes'][$strField]))
+					if (!in_array($option['value'], (array)$this->arrVariantOptions['attributes'][$strField]))
 					{
 						unset($arrField['options'][$k]);
 					}
@@ -803,7 +803,7 @@ class IsotopeProduct extends Controller
 					{
 						$blnValid = false;
 						
-						foreach( $this->arrVariantOptions['variants'] as $arrVariant )
+						foreach( (array)$this->arrVariantOptions['variants'] as $arrVariant )
 						{
 							if ($arrVariant[$strField] == $option['value'] && count($this->arrOptions) == count(array_intersect_assoc($this->arrOptions, $arrVariant)))
 							{
@@ -823,7 +823,7 @@ class IsotopeProduct extends Controller
 			
 			if ($this->Input->get($strField) != '' && $this->Input->post('FORM_SUBMIT') != 'iso_product_'.($this->pid ? $this->pid : $this->id))
 			{
-				if (in_array($this->Input->get($strField), $this->arrVariantOptions['attributes'][$strField]))
+				if (in_array($this->Input->get($strField), (array)$this->arrVariantOptions['attributes'][$strField]))
 				{
 					$this->Input->setPost($strField, $this->Input->get($strField));
 				}
@@ -1058,11 +1058,11 @@ class IsotopeProduct extends Controller
 		{
 			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['add_to_product_variants'])
 			{
-				if ($this->Input->post('FORM_SUBMIT') == 'iso_product_'.($this->pid ? $this->pid : $this->id) && in_array($this->Input->post($attribute), $this->arrVariantOptions['attributes'][$attribute]))
+				if ($this->Input->post('FORM_SUBMIT') == 'iso_product_'.($this->pid ? $this->pid : $this->id) && in_array($this->Input->post($attribute), (array)$this->arrVariantOptions['attributes'][$attribute]))
 				{
 					$arrOptions[$attribute] = $this->Input->post($attribute);
 				}
-				elseif ($this->Input->post('FORM_SUBMIT') == '' && in_array($this->Input->get($attribute), $this->arrVariantOptions['attributes'][$attribute]))
+				elseif ($this->Input->post('FORM_SUBMIT') == '' && in_array($this->Input->get($attribute), (array)$this->arrVariantOptions['attributes'][$attribute]))
 				{
 					$arrOptions[$attribute] = $this->Input->get($attribute);
 				}
