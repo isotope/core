@@ -180,7 +180,7 @@ abstract class IsotopePayment extends Frontend
 	 * 
 	 * @abstract
 	 * @access public
-	 * @return bool
+	 * @return void
 	 */
 	abstract public function processPayment();
 	
