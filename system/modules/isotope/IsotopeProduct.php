@@ -609,7 +609,7 @@ class IsotopeProduct extends Controller
 				{
 					$objGallery = $this->$attribute;
 					
-					foreach( $this->Isotope->Config->imageSizes as $size )
+					foreach( (array)$this->Isotope->Config->imageSizes as $size )
 					{
 						$arrOptions[] = array
 						(
