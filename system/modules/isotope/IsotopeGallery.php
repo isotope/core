@@ -91,7 +91,7 @@ class IsotopeGallery extends Frontend
 
 							if ($objFile->isGdImage)
 							{
-								foreach( $this->Isotope->Config->imageSizes as $size )
+								foreach( (array)$this->Isotope->Config->imageSizes as $size )
 								{
 									$strImage = $this->getImage($strFile, $size['width'], $size['height'], $size['mode']);
 									
@@ -119,7 +119,7 @@ class IsotopeGallery extends Frontend
 				// No image available, add default image
 				if (!count($this->arrFiles) && is_file(TL_ROOT . '/' . $this->Isotope->Config->missing_image_placeholder))
 				{
-					foreach( $this->Isotope->Config->imageSizes as $size )
+					foreach( (array)$this->Isotope->Config->imageSizes as $size )
 					{
 						$strImage = $this->getImage($this->Isotope->Config->missing_image_placeholder, $size['width'], $size['height'], $size['mode']);
 						
