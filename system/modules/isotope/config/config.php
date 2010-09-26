@@ -338,7 +338,7 @@ $GLOBALS['ISO_ATTR'] = array
 	),
 	'checkbox' => array
 	(
-		'sql'		=> "char(1) NOT NULL default ''",
+		'sql'		=> "blob NULL",
 	),
 	'options' => array
 	(
