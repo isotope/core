@@ -137,6 +137,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 		'authorizedotnet'		=> '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,allowed_cc_types,requireCCV,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},authorize_login,authorize_trans_key,authorize_trans_type,authorize_delimiter;{price_legend:hide},price,tax_class;{enabled_legend},debug,enabled',
 		'epay_window'			=> '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,postsale_mail,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},epay_merchantnumber,epay_secretkey;{price_legend:hide},price,tax_class;{enabled_legend},enabled',
 		'epay_form'				=> '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,postsale_mail,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},epay_merchantnumber,epay_secretkey;{price_legend:hide},price,tax_class;{enabled_legend},enabled',
+		'cybersource'			=> '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},cybersource_merchant_id,cybersource_trans_key,cybersource_trans_type;{price_legend:hide},price,tax_class;{enabled_legend},debug,enabled'
 	),
 
 	// Fields
@@ -345,6 +346,30 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['authorize_trans_type'],
 			'exclude'                 => true,
 			'default'				  => 'AUTH_CAPTURE',
+			'inputType'               => 'select',
+			'options'				  => array('AUTH_CAPTURE', 'AUTH_ONLY'),
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
+			'reference'				  => $GLOBALS['TL_LANG']['ISO_PAY']['authorizedotnet']['modes']
+		),
+		'cybersource_merchant_id' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['cybersource_merchant_id'],
+			'exclude'                 => true,
+			'inputType'               => 'text',
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>255)
+		),
+		'cybersource_trans_key' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['cybersource_trans_key'],
+			'exclude'                 => true,
+			'inputType'               => 'textarea',
+			'eval'                    => array('mandatory'=>true, 'style'=>'height: 60px;')
+		),	
+		'cybersource_trans_type' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['cybersource_trans_type'],
+			'exclude'                 => true,
+			'default'				  => 'AUTH_ONLY',
 			'inputType'               => 'select',
 			'options'				  => array('AUTH_CAPTURE', 'AUTH_ONLY'),
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
