@@ -57,7 +57,7 @@ class PaymentCybersource extends IsotopePayment
 	 */
 	public function processPayment()
 	{
-		return false;	
+		return true;
 	}
 		
 	public function checkoutForm()
@@ -264,11 +264,11 @@ class PaymentCybersource extends IsotopePayment
 				{
 					global $objPage;
 					$this->log('Invalid payment data received.', 'PaymentCybersource checkoutForm()', TL_ERROR);
-					$this->redirect($this->generateFrontendUrl($objPage->row(), '/step/process/error/'.$objReply->reasonCode));
+					$this->redirect($this->addToUrl('/step/process/error/'.$objReply->reasonCode));
 					$this->loadLanguageFile('cybersource');
 				}
 				
-				return true;
+				$this->redirect($this->addToUrl('step=confirm');
 			} 
 			catch (SoapFault $exception) 
 			{
