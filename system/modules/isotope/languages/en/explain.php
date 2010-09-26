@@ -48,3 +48,5 @@ $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][15]	= array('##billing_firstname##<b
 $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][16]	= array('##shipping_firstname##<br />##shipping_lastname##<br />...', 'Individual fields of the shipping address.');
 $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][17]	= array('##form_...##', 'Retrieve condition form data. Use the prefix "form_" and the field\'s name.');
 
+$GLOBALS['TL_LANG']['XPL']['mediaManager']		= '<p class="tl_help_table">To upload a new picture, select the file and save the product. After successfully uploading, a preview of the image is displayed and next to it you can enter its alternative text and a description. For multiple pictures, you can click on the arrows to the right and change their order, the top image is used as the main image of each product.</p>';
+
