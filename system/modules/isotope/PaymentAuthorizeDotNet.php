@@ -57,7 +57,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 	 */
 	public function processPayment()
 	{
-		return false;
+		return true;
 	}
 		
 	public function checkoutForm()
@@ -238,11 +238,11 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 			if($blnFail)
 			{
 				global $objPage;
-				$this->log('Invalid payment data received.', 'PaymentCybersource processPayment()', TL_ERROR);
-				$this->redirect($this->generateFrontendUrl($objPage->row(), '/step/process/response_type/'.$arrResponseCodes['response_type'].'/response_code/'.$arrResponseCodes['response_code']));
+				$this->log('Invalid payment data received.', 'PaymentAuthorizeDotNet processPayment()', TL_ERROR);
+				$this->redirect($this->Environment->request . (strpos($this->Environment->request, '?') === false ? '?' : '&') . 'response_type='.$arrResponseCodes['response_type'].'&response_code='.$arrResponseCodes['response_code']);
 			}
 			
-			return true;
+			$this->redirect($this->addToUrl('step=complete'));
 		}
 		
 				
