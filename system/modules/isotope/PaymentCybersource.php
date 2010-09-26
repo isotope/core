@@ -57,12 +57,11 @@ class PaymentCybersource extends IsotopePayment
 	 */
 	public function processPayment()
 	{
-		return false;	
+		return true;
 	}
 		
 	public function checkoutForm()
 	{
-		$this->loadLanguageFile('cybersource');
 		$this->import('Isotope');
 		
 		$fields = '';
@@ -78,7 +77,7 @@ class PaymentCybersource extends IsotopePayment
 		
 		foreach($arrCCTypes as $type)
 		{
-			$arrAllowedCCTypes[] = $this->arrCardTypes[$type]; //numeric keys specific to Cybersource, @TODO: merchant bank makes a difference!  
+			$arrAllowedCCTypes[] = $this->arrCardTypes[$type]; //numeric keys specific to Cybersource, @TODO: merchant bank makes a difference!
 		}
 		
 		$intStartYear = (integer)date('Y', time()); //4-digit year
@@ -120,7 +119,7 @@ class PaymentCybersource extends IsotopePayment
 			(
 				'label'			=> &$GLOBALS['TL_LANG']['ISO']['cc_ccv'],
 				'inputType'		=> 'text',
-				'eval'			=> array('mandatory'=>true, 'tableless'=>true)						
+				'eval'			=> array('mandatory'=>true, 'tableless'=>true)
 			),
 		);
 				
@@ -156,7 +155,7 @@ class PaymentCybersource extends IsotopePayment
 			$strBuffer .= $objWidget->parse();
 		}
 		
-				
+		
 		
 		global $objPage;
 		
@@ -167,9 +166,9 @@ class PaymentCybersource extends IsotopePayment
 
 		if(!$doNotSubmit && $this->Input->post('FORM_SUBMIT') == 'payment_form')
 		{	
-						
+		
 			try 
-			{				
+			{
 				$objSoapClient = new CybersourceClient('https://ics2ws'.($this->debug ? 'test' : '').'.ic3.com/commerce/1.x/transactionProcessor/CyberSourceTransaction_1.26.wsdl', array(), $this->cybersource_merchant_id, $this->cybersource_trans_key);
 			
 				$objRequest = new stdClass();
@@ -251,9 +250,10 @@ class PaymentCybersource extends IsotopePayment
 						$arrPaymentData['cc_last_four'] = substr($strCCNum, strlen($strCCNum) - 4, 4);
 						$arrSet['payment_data'] = serialize($arrPaymentData);
 						break;
-					default:						
+						
+					default:
 						$blnFail = true;
-						break;			
+						break;
 				}
 			
 				$this->Database->prepare("UPDATE tl_iso_orders %s WHERE id={$objOrder->id}")
@@ -262,13 +262,11 @@ class PaymentCybersource extends IsotopePayment
 			
 				if($blnFail)
 				{
-					global $objPage;
 					$this->log('Invalid payment data received.', 'PaymentCybersource checkoutForm()', TL_ERROR);
-					$this->redirect($this->generateFrontendUrl($objPage->row(), '/step/process/error/'.$objReply->reasonCode));
-					$this->loadLanguageFile('cybersource');
+					$this->redirect($this->Environment->request . (strpos($this->Environment->request, '?') === false ? '?' : '&') . 'error='.$objReply->reasonCode);
 				}
 				
-				return true;
+				$this->redirect($this->addToUrl('step=complete'));
 			} 
 			catch (SoapFault $exception) 
 			{
@@ -276,7 +274,7 @@ class PaymentCybersource extends IsotopePayment
 				var_dump($exception);
 			}
 		}	
-								
+		
 		return '
 <h2>' . $this->label . '</h2>'.
 ($this->Input->get('error') == '' ? '' : '<p class="error message">'.$GLOBALS['TL_LANG']['CYB'][$this->Input->get('error')].'</p>').
@@ -377,7 +375,7 @@ class PaymentCybersource extends IsotopePayment
 			switch($arrResponses['transaction-status'])
 			{
 				case 'Approved':		
-					$arrPaymentInfo['authorization_code'] = $arrResponses['authorization-code'];			
+					$arrPaymentInfo['authorization_code'] = $arrResponses['authorization-code'];
 					$strPaymentInfo = serialize($arrPaymentInfo);
 					
 					$this->Database->prepare("UPDATE tl_iso_orders SET status='processing', payment_data=? WHERE id=?")
@@ -388,7 +386,7 @@ class PaymentCybersource extends IsotopePayment
 					$strPaymentInfo = serialize($arrPaymentInfo);
 					
 					$this->Database->prepare("UPDATE tl_iso_orders SET status='on_hold', cybersource_reason=? WHERE id=?")
-								   ->execute($strPaymentInfo, $intOrderId);					
+								   ->execute($strPaymentInfo, $intOrderId);
 					break;
 			
 			}
