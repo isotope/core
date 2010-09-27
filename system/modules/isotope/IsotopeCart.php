@@ -196,7 +196,7 @@ class IsotopeCart extends IsotopeProductCollection
 		$this->strHash = $this->Input->cookie($this->strCookie);
 		
 		//  Check to see if the user is logged in.
-		if (!FE_USER_LOGGED_IN)
+		if (!FE_USER_LOGGED_IN || !$this->User->id)
 		{	
 			if (!strlen($this->strHash))	
 			{	
