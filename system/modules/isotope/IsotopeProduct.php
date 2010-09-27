@@ -424,6 +424,16 @@ class IsotopeProduct extends Controller
 		}
 
 	}
+	
+	
+	/**
+	 * Return the current data as associative array
+	 * @return array
+	 */
+	public function getData()
+	{
+		return $this->arrData;
+	}
 
 
 	/**
