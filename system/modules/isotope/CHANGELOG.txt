@@ -9,7 +9,7 @@ Version 0.3.beta1
 - Improved: Better Isotope module handling, including callback support
 - Improved: Moved multilingual support to its own extension "isotope_multilingual" with lot more options
 
-Version 0.2.beta2 (2010-09-26)
+Version 0.2.beta2 (2010-09-27)
 ------------------------------
 - Added: New "link target" field and help wizard to media manager
 - Added: IsotopeGallery now supports link targets and "rel" attributes
