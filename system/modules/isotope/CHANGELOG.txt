@@ -11,7 +11,9 @@ Version 0.3.beta1
 
 Version 0.2.rc1
 ------------------------------
+- Improved: Replace InsertTags in ##cart_text## and ##cart_html## templates
 - Fixed: FE_USER_LOGGED_IN might be true but no user available (Ticket #213)
+- Fixed: Email language was not correctly detected under certain circumstances
 
 Version 0.2.beta2 (2010-09-27)
 ------------------------------
