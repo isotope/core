@@ -927,8 +927,8 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				'shippingPrice'				=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->Shipping->price, false),
 				'paymentPrice'				=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->Payment->price, false),
 				'grandTotal'				=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->grandTotal, false),
-				'cart_text'					=> $this->Isotope->Cart->getProducts('iso_products_text'),
-				'cart_html'					=> $this->Isotope->Cart->getProducts('iso_products_html'),
+				'cart_text'					=> $this->replaceInsertTags($this->Isotope->Cart->getProducts('iso_products_text')),
+				'cart_html'					=> $this->replaceInsertTags($this->Isotope->Cart->getProducts('iso_products_html')),
 			));
 			
 			foreach( $this->Isotope->Cart->billingAddress as $k => $v )

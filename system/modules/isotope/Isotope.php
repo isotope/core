@@ -552,7 +552,7 @@ class Isotope extends Controller
 	 */
 	public function sendMail($intId, $strRecipient, $strLanguage, $arrData)
 	{
-		$objMail = $this->Database->prepare("SELECT * FROM tl_iso_mail m LEFT OUTER JOIN tl_iso_mail_content c ON m.id=c.pid WHERE m.id=? AND (c.language=? OR fallback='1') ORDER BY fallback DESC")->limit(1)->execute($intId, $strLanguage);
+		$objMail = $this->Database->prepare("SELECT * FROM tl_iso_mail m LEFT OUTER JOIN tl_iso_mail_content c ON m.id=c.pid WHERE m.id=$intId AND (c.language='$strLanguage' OR fallback='1') ORDER BY language='$strLanguage' DESC")->limit(1)->execute();
 		
 		if (!$objMail->numRows)
 		{
@@ -563,17 +563,13 @@ class Isotope extends Controller
 		$objEmail = new Email();
 		$objEmail->from = ($objMail->originateFromCustomerEmail && strlen($arrData['customer_email'])) ? $arrData['customer_email'] : $objMail->sender;
 		$objEmail->fromName = ($objMail->originateFromCustomerEmail && strlen($arrData['customer_name'])) ? $arrData['customer_name'] : $objMail->senderName;
-		$objEmail->subject = $this->parseSimpleTokens($objMail->subject, $arrData);
+		$objEmail->subject = $this->parseSimpleTokens($this->replaceInsertTags($objMail->subject), $arrData);
+		$objEmail->text = $this->parseSimpleTokens($this->replaceInsertTags($objMail->text), $arrData);
 		
 		if (strlen($arrData['customer_email']))
 		{
 			$objEmail->replyTo((strlen($arrData['customer_name']) ? sprintf('%s <%s>', $arrData['customer_name'], $arrData['customer_email']) : $arrData['customer_email']));
 		}
-		
-		// Replace insert tags
-		$text = $this->parseSimpleTokens($objMail->text, $arrData);
-		
-		$objEmail->text = $this->replaceInsertTags($text);
 		
 		$css = '';
 
