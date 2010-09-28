@@ -400,13 +400,16 @@ class tl_iso_attributes extends Backend
     
     public function disableFieldName($dc)
     {
-    	$objAttribute = $this->Database->execute("SELECT * FROM tl_iso_attributes WHERE id={$dc->id}");
-    	
-    	if (strlen($objAttribute->field_name))
+    	if ($dc->id)
     	{
-    		$GLOBALS['TL_DCA']['tl_iso_attributes']['fields']['field_name']['eval']['disabled'] = true;
-    		$GLOBALS['TL_DCA']['tl_iso_attributes']['fields']['field_name']['eval']['mandatory'] = false;
-    	}
+	    	$objAttribute = $this->Database->execute("SELECT * FROM tl_iso_attributes WHERE id={$dc->id}");
+	    	
+	    	if (strlen($objAttribute->field_name))
+	    	{
+	    		$GLOBALS['TL_DCA']['tl_iso_attributes']['fields']['field_name']['eval']['disabled'] = true;
+	    		$GLOBALS['TL_DCA']['tl_iso_attributes']['fields']['field_name']['eval']['mandatory'] = false;
+	    	}
+	    }
     }
     
     
