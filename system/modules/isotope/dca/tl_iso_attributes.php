@@ -388,13 +388,16 @@ class tl_iso_attributes extends Backend
     
     public function deleteAttribute($dc)
     {
-    	$objAttribute = $this->Database->execute("SELECT * FROM tl_iso_attributes WHERE id={$dc->id}");
-    	
-    	if ($this->Database->fieldExists($objAttribute->field_name, 'tl_iso_products'))
+    	if ($dc->id)
     	{
-			$this->import('IsotopeDatabase');
-			$this->IsotopeDatabase->delete($objAttribute->field_name);
-    	}
+	    	$objAttribute = $this->Database->execute("SELECT * FROM tl_iso_attributes WHERE id={$dc->id}");
+	    	
+	    	if ($this->Database->fieldExists($objAttribute->field_name, 'tl_iso_products'))
+	    	{
+				$this->import('IsotopeDatabase');
+				$this->IsotopeDatabase->delete($objAttribute->field_name);
+	    	}
+	    }
     }
     
     
