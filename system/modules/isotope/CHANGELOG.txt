@@ -12,6 +12,7 @@ Version 0.3.beta1
 Version 0.2.rc1
 ------------------------------
 - Improved: Replace InsertTags in ##cart_text## and ##cart_html## templates
+- Improved: Only show price for payment and shipping module if greater 0
 - Fixed: FE_USER_LOGGED_IN might be true but no user available (Ticket #213)
 - Fixed: Email language was not correctly detected under certain circumstances
 

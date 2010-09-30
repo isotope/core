@@ -456,13 +456,13 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	 				$this->Isotope->Cart->Shipping = $objModule;
 	 			}
 				
-				$arrModules[] = sprintf('<input id="ctrl_shipping_module_%s" type="radio" name="shipping[module]" value="%s"%s /> <label for="ctrl_shipping_module_%s">%s: %s</label>%s%s',
+				$arrModules[] = sprintf('<input id="ctrl_shipping_module_%s" type="radio" name="shipping[module]" value="%s"%s /> <label for="ctrl_shipping_module_%s">%s%s</label>%s%s',
 										 $objModule->id,
 										 $objModule->id,
 										 (($this->Isotope->Cart->Shipping->id == $objModule->id || $objModules->numRows==1) ? ' checked="checked"' : ''),
 										 $objModule->id,
 	 									 $objModule->label,
-	 									 $this->Isotope->formatPriceWithCurrency($objModule->price), 
+	 									 ($objModule->price ? ': '.$this->Isotope->formatPriceWithCurrency($objModule->price) : ''),
 	 									 ($objModule->note ? '<div class="clear">&nbsp;</div><br /><div class="shippingNote"><strong>Note:</strong><br />' . $objModule->note . '</div>' : ''),
 	 									 ($objModule->getShippingOptions($objModule->id) ? '<div class="clear">&nbsp;</div><br /><div class="shippingOptions"><strong>Options:</strong><br />' . $objModule->getShippingOptions($objModule->id) . '</div>' : ''));
 	 									 
@@ -573,12 +573,13 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	 				$strForm = '<div class="payment_data" id="payment_data_' . $objModule->id . '">' . $strForm . '</div>';
 	 			}
 							
-				$arrModules[] = sprintf('<input id="ctrl_payment_module_%s" type="radio" class="radio payment_module" name="payment[module]" value="%s"%s /> <label for="ctrl_payment_module_%s">%s</label>%s',
+				$arrModules[] = sprintf('<input id="ctrl_payment_module_%s" type="radio" class="radio payment_module" name="payment[module]" value="%s"%s /> <label for="ctrl_payment_module_%s">%s%s</label>%s',
 										 $objModule->id,
 										 $objModule->id,
 										 (($this->Isotope->Cart->Payment->id == $objModule->id || $objModules->numRows==1) ? ' checked="checked"' : ''),
 										 $objModule->id,
 	 									 $objModule->label,
+	 									 ($objModule->price ? ': '.$this->Isotope->formatPriceWithCurrency($objModule->price) : ''),
 	 									 $strForm);
 	 									 
 	 			$objLastModule = $objModule;
