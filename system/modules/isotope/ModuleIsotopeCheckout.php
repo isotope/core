@@ -1132,7 +1132,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		{
 			$arrData = $GLOBALS['TL_DCA']['tl_iso_addresses']['fields'][$field];
 			
-			if (!is_array($arrData))
+			if (!is_array($arrData) || ($arrData['eval']['membersOnly'] && !FE_USER_LOGGED_IN))
 				continue;
 			
 			$strClass = $GLOBALS['TL_FFL'][$arrData['inputType']];
