@@ -220,14 +220,14 @@ $GLOBALS['TL_DCA']['tl_iso_addresses'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_addresses']['isDefaultBilling'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
-			'eval'					  => array('feEditable'=>true, 'feGroup'=>'login', 'tl_class'=>'w50')
+			'eval'					  => array('feEditable'=>true, 'feGroup'=>'login', 'membersOnly'=>true, 'tl_class'=>'w50')
 		),
 		'isDefaultShipping' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_addresses']['isDefaultShipping'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
-			'eval'					  => array('feEditable'=>true, 'feGroup'=>'login', 'tl_class'=>'w50')
+			'eval'					  => array('feEditable'=>true, 'feGroup'=>'login', 'membersOnly'=>true, 'tl_class'=>'w50')
 		),
 	)
 );
