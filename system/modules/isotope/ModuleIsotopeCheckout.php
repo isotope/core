@@ -151,6 +151,12 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		if (!$this->Isotope->Cart->requiresShipping)
 		{
 			unset($GLOBALS['ISO_CHECKOUT_STEPS']['shipping']);
+			
+			// Remove payment step if items are free of charge. We need to do this here because shipping might have a price.
+			if (!$this->Isotope->Cart->requiresPayment)
+			{
+				unset($GLOBALS['ISO_CHECKOUT_STEPS']['payment']);
+			}
 		}
 		
 		
@@ -166,6 +172,10 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		// Run trough all steps until we find the current one or one reports failure
 		foreach( $GLOBALS['ISO_CHECKOUT_STEPS'] as $step => $arrCallbacks )
 		{
+			// Step could be removed while looping
+			if (!isset($GLOBALS['ISO_CHECKOUT_STEPS'][$step]))
+				continue;
+				
 			$this->strFormId = 'iso_mod_checkout_' . $step;
 			$this->Template->formId = $this->strFormId;
 			$this->Template->formSubmit = $this->strFormId;
@@ -337,13 +347,15 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	
 	protected function getBillingAddressInterface($blnReview=false)
 	{
+		$blnRequiresPayment = $this->Isotope->Cart->requiresPayment;
+		
 		if ($blnReview)
 		{
 			return array
 			(
 				'billing_address' => array
 				(
-					'headline'	=> ($this->Isotope->Cart->shippingAddress['id'] == -1 ? $GLOBALS['TL_LANG']['ISO']['billing_shipping_address'] : $GLOBALS['TL_LANG']['ISO']['billing_address']),
+					'headline'	=> ($blnRequiresPayment ? ($this->Isotope->Cart->shippingAddress['id'] == -1 ? $GLOBALS['TL_LANG']['ISO']['billing_shipping_address'] : $GLOBALS['TL_LANG']['ISO']['billing_address']) : (($this->Isotope->Cart->hasShipping && $this->Isotope->Cart->shippingAddress['id'] == -1) ? $GLOBALS['TL_LANG']['ISO']['shipping_address'] : $GLOBALS['TL_LANG']['ISO']['customer_address'])),
 					'info'		=> $this->Isotope->generateAddressString($this->Isotope->Cart->billingAddress, $this->Isotope->Config->billing_fields),
 					'edit'		=> $this->addToUrl('step=address'),
 				),
@@ -352,8 +364,8 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		
 		$objTemplate = new FrontendTemplate('iso_checkout_billing_address');
 		
-		$objTemplate->headline = $GLOBALS['TL_LANG']['ISO']['billing_address'];
-		$objTemplate->message = (FE_USER_LOGGED_IN ? $GLOBALS['TL_LANG']['ISO']['billing_address_message'] : $GLOBALS['TL_LANG']['ISO']['billing_address_guest_message']);
+		$objTemplate->headline = $blnRequiresPayment ? $GLOBALS['TL_LANG']['ISO']['billing_address'] : $GLOBALS['TL_LANG']['ISO']['customer_address'];
+		$objTemplate->message = (FE_USER_LOGGED_IN ? $GLOBALS['TL_LANG']['ISO'][($blnRequiresPayment ? 'billing' : 'customer') . '_address_message'] : $GLOBALS['TL_LANG']['ISO'][($blnRequiresPayment ? 'billing' : 'customer') . '_address_guest_message']);
 		$objTemplate->fields = $this->generateAddressWidget('billing_address');
 		
 		if (!$this->doNotSubmit)
@@ -397,7 +409,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		
 		if (!$this->doNotSubmit)
 		{
-			$strShippingAddress = $this->Isotope->Cart->shippingAddress['id'] == -1 ? $GLOBALS['TL_LANG']['MSC']['useBillingAddress'] : $this->Isotope->generateAddressString($this->Isotope->Cart->shippingAddress, $this->Isotope->Config->shipping_fields);
+			$strShippingAddress = $this->Isotope->Cart->shippingAddress['id'] == -1 ? ($this->Isotope->Cart->requiresPayment ? $GLOBALS['TL_LANG']['MSC']['useBillingAddress'] : $GLOBALS['TL_LANG']['MSC']['useCustomerAddress']) : $this->Isotope->generateAddressString($this->Isotope->Cart->shippingAddress, $this->Isotope->Config->shipping_fields);
 			
 			$this->arrOrderData['shipping_address']			= $strShippingAddress;
 			$this->arrOrderData['shipping_address_text']	= str_replace('<br />', "\n", $strShippingAddress);
@@ -510,6 +522,12 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			$this->arrOrderData['shipping_method']		= $this->Isotope->Cart->Shipping->label;
 			$this->arrOrderData['shipping_note']		= $this->Isotope->Cart->Shipping->note;
 			$this->arrOrderData['shipping_note_text']	= strip_tags($this->Isotope->Cart->Shipping->note);
+		}
+		
+		// Remove payment step if items are free of charge
+		if (!$this->Isotope->Cart->requiresPayment)
+		{
+			unset($GLOBALS['ISO_CHECKOUT_STEPS']['payment']);
 		}
 
 		return $objTemplate->parse();	
@@ -1027,13 +1045,13 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				array_insert($arrOptions, 0, array(array
 				(
 					'value'	=> -1,
-					'label' => &$GLOBALS['TL_LANG']['MSC']['useBillingAddress'],
+					'label' => ($this->Isotope->Cart->requiresPayment ? $GLOBALS['TL_LANG']['MSC']['useBillingAddress'] : $GLOBALS['TL_LANG']['MSC']['useCustomerAddress']),
 				)));
 				
 				$arrOptions[] = array
 				(
 					'value'	=> 0,
-					'label' => &$GLOBALS['TL_LANG']['MSC']['differentShippingAddress'],
+					'label' => $GLOBALS['TL_LANG']['MSC']['differentShippingAddress'],
 				);
 				break;
 				

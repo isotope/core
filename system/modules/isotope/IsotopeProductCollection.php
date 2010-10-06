@@ -116,6 +116,13 @@ abstract class IsotopeProductCollection extends Model
 				return false;
 				break;
 				
+			case 'requiresPayment':
+				if ($this->grandTotal > 0)
+					return true;
+					
+				return false;
+				break;
+				
 			case 'shippingTotal':
 				return $this->hasShipping ? (float)$this->Shipping->price : 0.00;
 				break;

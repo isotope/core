@@ -152,9 +152,10 @@ $GLOBALS['TL_LANG']['MSC']['orderStatusHeadline']		= 'Order Status: %s';
 
 
 //Addresses
-$GLOBALS['TL_LANG']['MSC']['createNewAddressLabel'] = 'Create New Address';
-$GLOBALS['TL_LANG']['MSC']['useBillingAddress'] = 'Use billing address';
-$GLOBALS['TL_LANG']['MSC']['differentShippingAddress'] = 'Different shipping address';
+$GLOBALS['TL_LANG']['MSC']['createNewAddressLabel']		= 'Create New Address';
+$GLOBALS['TL_LANG']['MSC']['useBillingAddress']			= 'Use billing address';
+$GLOBALS['TL_LANG']['MSC']['useCustomerAddress']		= 'Use customer address';
+$GLOBALS['TL_LANG']['MSC']['differentShippingAddress']	= 'Different shipping address';
 
 $GLOBALS['TL_LANG']['MSC']['addressBookLabel'] = 'Addresses';
 $GLOBALS['TL_LANG']['MSC']['editAddressLabel'] = 'Edit';
@@ -201,9 +202,11 @@ $GLOBALS['TL_LANG']['MSC']['new_to_old'] = 'later to earlier';
 $GLOBALS['TL_LANG']['ISO']['productSingle']		= '1 Product';
 $GLOBALS['TL_LANG']['ISO']['productMultiple']	= '%s Products';
 
-$GLOBALS['TL_LANG']['ISO']['shipping_address_message']	= 'Enter your shipping information or select an existing address.';
-$GLOBALS['TL_LANG']['ISO']['billing_address_message']	= 'Enter your billing information or select an existing address.';
-$GLOBALS['TL_LANG']['ISO']['billing_address_guest_message'] = 'Enter your billing information';
+$GLOBALS['TL_LANG']['ISO']['shipping_address_message']			= 'Enter your shipping information or select an existing address.';
+$GLOBALS['TL_LANG']['ISO']['billing_address_message']			= 'Enter your billing information or select an existing address.';
+$GLOBALS['TL_LANG']['ISO']['billing_address_guest_message']		= 'Enter your billing information';
+$GLOBALS['TL_LANG']['ISO']['customer_address_message']			= 'Enter your customer information or select an existing address.';
+$GLOBALS['TL_LANG']['ISO']['customer_address_guest_message']	= 'Enter your customer information';
 $GLOBALS['TL_LANG']['ISO']['shipping_method_message']	= 'Select a shipping method.';
 $GLOBALS['TL_LANG']['ISO']['shipping_method_missing']	= 'Please select a shipping method.';
 $GLOBALS['TL_LANG']['ISO']['payment_method_message']	= 'Enter your payment information.';
@@ -217,6 +220,7 @@ $GLOBALS['TL_LANG']['ISO']['checkout_review']				= 'Review';
 $GLOBALS['TL_LANG']['ISO']['billing_address']				= 'Billing Address';
 $GLOBALS['TL_LANG']['ISO']['shipping_address']				= 'Shipping Address';
 $GLOBALS['TL_LANG']['ISO']['billing_shipping_address']		= 'Billing & Shipping Address';
+$GLOBALS['TL_LANG']['ISO']['customer_address']				= 'Customer Address';
 $GLOBALS['TL_LANG']['ISO']['shipping_method']				= 'Shipping Method';
 $GLOBALS['TL_LANG']['ISO']['payment_method']				= 'Payment Method';
 $GLOBALS['TL_LANG']['ISO']['order_conditions']				= 'Order Conditions';

@@ -8,6 +8,7 @@ Version 0.3.beta1
 - Added: Availability check for products
 - Improved: Better Isotope module handling, including callback support
 - Improved: Moved multilingual support to its own extension "isotope_multilingual" with lot more options
+- Improved: Hide payment information if checkout total is 0
 
 Version 0.2.rc1
 ------------------------------
