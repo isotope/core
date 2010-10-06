@@ -42,7 +42,7 @@ class PaymentEPayForm extends PaymentEPay
 	 */
 	public function processPayment()
 	{
-		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->execute($this->Isotope->Cart->id);
+		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->executeUncached($this->Isotope->Cart->id);
 		$intTotal = $this->Isotope->Cart->grandTotal * 100;
 		
 		// Check basic order data
@@ -71,7 +71,7 @@ class PaymentEPayForm extends PaymentEPay
 	{
 		global $objPage;
 		
-		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->execute($this->Isotope->Cart->id);
+		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->executeUncached($this->Isotope->Cart->id);
 		$intTotal = round($this->Isotope->Cart->grandTotal, 2) * 100;
 		
 		$strBuffer = '
