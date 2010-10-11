@@ -318,9 +318,9 @@ class IsotopeProduct extends Controller
 				global $objPage;
 				if (TL_MODE == 'FE' && is_object($objPage))
 				{
-					$arrCategories = $this->getChildRecords($objPage->rootId, 'tl_page', true);
+					$arrCategories = $this->getChildRecords($objPage->rootId, 'tl_page', false);
 					
-					if (!$this->Database->execute("SELECT COUNT(*) AS available FROM tl_iso_product_categories WHERE pid=" . ($this->pid ? $this->pid : $this->id) . " AND page_id IN (" . implode(',', $arrCategories) . ")")->available)
+					if (!count($arrCategories) || !$this->Database->execute("SELECT COUNT(*) AS available FROM tl_iso_product_categories WHERE pid=" . ($this->pid ? $this->pid : $this->id) . " AND page_id IN (" . implode(',', $arrCategories) . ")")->available)
 						return false;
 				}
 					
