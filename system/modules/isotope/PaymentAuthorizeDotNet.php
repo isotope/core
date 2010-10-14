@@ -218,7 +218,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 				case 'Approved':				
 					$this->status = $arrResponses['transaction-status'];		
 					$this->response = $arrPaymentInfo['authorize_response'];
-					
+					$arrPaymentInfo['transaction_id']	= $arrResponses['transaction-id'];
 					$arrPaymentInfo['authorization_code'] = $arrResponses['authorization-code'];							
 					$arrSet['status'] = 'processing';
 					break;
@@ -306,6 +306,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 				$this->response = $arrPaymentInfo['authorize_response'];
 				
 				$arrPaymentInfo['authorization_code'] = $arrResponses['authorization-code'];
+				$arrPaymentInfo['transaction_id']	= $arrResponses['transaction-id'];
 				$arrSet['status'] = 'processing';
 				break;
 			default:
@@ -419,11 +420,9 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 			$objTemplate->fields = $this->generateResponseString($arrResponses, $arrReponseLabels);
 			
 			$arrSet['transaction_response'] = $arrResponses['transaction-status'];
-			$arrSet['transaction_response_code'] = $arrPaymentInfo['authorize_response'];
-		
-		}
+			$arrSet['transaction_response_code'] = $arrPaymentInfo['authorize_response'];		
 					
-		$arrSet['payment_data'] = serialize($arrPaymentInfo);
+			$arrSet['payment_data'] = serialize($arrPaymentInfo);
 				
 		
 			$strResponse = '<p class="tl_info">' . $arrPaymentInfo['authorize_response'] . ' - ' . $arrResponses['transaction-status'] . '</p>';
@@ -432,28 +431,36 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 			{
 				case 'Approved':		
 					$arrPaymentInfo['authorization_code'] = $arrResponses['authorization-code'];
-					$strPaymentInfo = serialize($arrPaymentInfo);
+					$arrPaymentInfo['transaction_id']	= $arrResponses['transaction-id'];
+					$strPaymentInfo = serialize($arrPaymentInfo);					
 					$arrSet['status'] = 'processing';	
+					$arrSet['payment_data'] = serialize($arrPaymentInfo);
+			
+					$this->Database->prepare("UPDATE tl_iso_orders %s WHERE id=?")
+							   ->set($arrSet)
+							   ->execute($intOrderId);
+							   
 					break;
 				default:
 					$arrPaymentInfo['authorize_reason'] = $arrResponses['reason'];
 					$strPaymentInfo = serialize($arrPaymentInfo);
 				
 					$arrSet['status'] = 'on_hold';
+					
+					$arrSet['payment_data'] = serialize($arrPaymentInfo);
+			
+					$this->Database->prepare("UPDATE tl_iso_orders %s WHERE id=?")
+					   ->set($arrSet)
+					   ->execute($intOrderId);
+					   
 					$blnFail = true;
 					break;
 			
 			}
 				
-			$arrSet['payment_data'] = serialize($arrPaymentInfo);
 			
-			$this->Database->prepare("UPDATE tl_iso_orders SET %s WHERE id=?")
-					   ->set($arrSet)
-					   ->execute($intOrderId);
-					   
 			$objTemplate->isConfirmation = true;
 		}
-		
 			
 		$action = ampersand($this->Environment->request, ENCODE_AMPERSANDS);
 		
@@ -556,7 +563,7 @@ $return .= '</div></div>';
 		
 		$i=1;
 		
-		$arrFieldsToDisplay = array(1, 2, 3, 4, 7, 9, 10, 11, 14, 15, 16, 17, 18, 19, 20, 22, 23, 24, 47);	//Dynamic Later
+		$arrFieldsToDisplay = array(1, 2, 3, 4, 5, 7, 9, 10, 11, 14, 15, 16, 17, 18, 19, 20, 22, 23, 24, 47);	//Dynamic Later
 	
 		foreach($arrResponseString as $currResponseString)
 		{
@@ -592,7 +599,10 @@ $return .= '</div></div>';
 							$ftitle = "Reason";
 							$fval = $pstr_trimmed;
 							break;
-							
+						case 5:
+							$ftitle = "Authorization Code";
+							$fval = $pstr_trimmed;
+							break;	
 						case 7:
 							$ftitle = "Transaction ID";
 							$fval = $pstr_trimmed;
