@@ -410,7 +410,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 			$objRequest->send('https://secure.authorize.net/gateway/transact.dll', $fieldsFinal, 'post');
 		
 			$arrResponses = $this->handleResponse($objRequest->response);
-								
+																
 			foreach(array_keys($arrResponses) as $key)
 			{
 				$arrReponseLabels[strtolower(standardize($key))] = $key;
@@ -418,8 +418,14 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 						
 			$objTemplate->fields = $this->generateResponseString($arrResponses, $arrReponseLabels);
 			
-			//$objTemplate->headline = $arrResponses['transaction-status'] . ' - ' . $this->strReason;
-			
+			$arrSet['transaction_response'] = $arrResponses['transaction-status'];
+			$arrSet['transaction_response_code'] = $arrPaymentInfo['authorize_response'];
+		
+		}
+					
+		$arrSet['payment_data'] = serialize($arrPaymentInfo);
+				
+		
 			$strResponse = '<p class="tl_info">' . $arrPaymentInfo['authorize_response'] . ' - ' . $arrResponses['transaction-status'] . '</p>';
 			
 			switch($arrResponses['transaction-status'])
@@ -427,23 +433,25 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 				case 'Approved':		
 					$arrPaymentInfo['authorization_code'] = $arrResponses['authorization-code'];
 					$strPaymentInfo = serialize($arrPaymentInfo);
-					
-					$this->Database->prepare("UPDATE tl_iso_orders SET status='processing', payment_data=? WHERE id=?")
-								   ->execute($strPaymentInfo, $intOrderId);
+					$arrSet['status'] = 'processing';	
 					break;
 				default:
 					$arrPaymentInfo['authorize_reason'] = $arrResponses['reason'];
 					$strPaymentInfo = serialize($arrPaymentInfo);
-					
-					$this->Database->prepare("UPDATE tl_iso_orders SET status='on_hold', authnet_reason=? WHERE id=?")
-								   ->execute($strPaymentInfo, $intOrderId);
+				
+					$arrSet['status'] = 'on_hold';
+					$blnFail = true;
 					break;
 			
 			}
+				
+			$arrSet['payment_data'] = serialize($arrPaymentInfo);
 			
+			$this->Database->prepare("UPDATE tl_iso_orders SET %s WHERE id=?")
+					   ->set($arrSet)
+					   ->execute($intOrderId);
+					   
 			$objTemplate->isConfirmation = true;
-	
-			//$objTemplate->showPrintLink = true;
 		}
 		
 			
