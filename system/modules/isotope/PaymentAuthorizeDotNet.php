@@ -395,7 +395,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 				"x_trans_id"						=> $arrPaymentInfo['x_trans_id'],
 				"x_amount"							=> number_format($this->fltOrderTotal, 2),
 				"x_delim_data"						=> 'TRUE',
-				"x_delim_char"						=> ',',
+				"x_delim_char"						=> $this->authorize_delimiter,
 				"x_encap_char"						=> '"',
 				"x_relay_response"					=> 'FALSE'
 			
@@ -480,7 +480,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 $return .= ($strResponse ? $strResponse : '');
 $return .= $strOrderDetails;
 $return .= '</div></div>';
-		if($arrOrderInfo['status']=='pending'){
+		if($arrOrderInfo['status']!='complete'){
 			$return .= '<div class="tl_formbody_submit"><div class="tl_submit_container">';
 			$return .= '<input type="submit" class="submit" value="' . $objTemplate->slabel . '" /></div></div>';
 		}
