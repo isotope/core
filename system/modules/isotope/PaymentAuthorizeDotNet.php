@@ -374,7 +374,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 		{
 			
 			$delimResponse = "TRUE";
-			$delimChar = $objAIMConfig->authorize_delimiter;
+			$this->authorize_delimiter = $objAIMConfig->authorize_delimiter;
 			$loginID = $objAIMConfig->authorize_login;
 			$transKey = $objAIMConfig->authorize_trans_key;
 			$transType = 'PRIOR_AUTH_CAPTURE';
