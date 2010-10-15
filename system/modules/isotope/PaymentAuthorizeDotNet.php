@@ -383,7 +383,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 		}
 
 
-		if ($this->Input->post('FORM_SUBMIT') == 'be_pos_terminal' && $arrPaymentInfo['x_trans_id']!=="0")
+		if ($this->Input->post('FORM_SUBMIT') == 'be_pos_terminal' && $arrPaymentInfo['transaction_id']!=="0")
 		{
 			
 			$authnet_values = array
@@ -392,7 +392,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 				"x_login"							=> $loginID,
 				"x_tran_key"						=> $transKey,
 				"x_type"							=> $transType,
-				"x_trans_id"						=> $arrPaymentInfo['x_trans_id'],
+				"x_trans_id"						=> $arrPaymentInfo['transaction_id'],
 				"x_amount"							=> number_format($this->fltOrderTotal, 2),
 				"x_delim_data"						=> 'TRUE',
 				"x_delim_char"						=> $this->authorize_delimiter,
