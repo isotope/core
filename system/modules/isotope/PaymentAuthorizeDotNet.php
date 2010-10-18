@@ -258,7 +258,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 	}
 	
 	
-	public function capturePayment($intTransactionId, $fltOrderTotal)
+	public function capturePayment($intOrderId, $intTransactionId, $fltOrderTotal)
 	{
 		
 		$authnet_values = array
@@ -283,21 +283,19 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 						
 		$objRequest = new Request();
 		
-		//$objRequest->send('https://secure.authorize.net/gateway/transact.dll', $fieldsFinal, 'post');
+		$objRequest->send('https://secure.authorize.net/gateway/transact.dll', $fieldsFinal, 'post');
 		
 		$arrResponses = $this->handleResponse($objRequest->response);
-								
+																
 		foreach(array_keys($arrResponses) as $key)
 		{
 			$arrReponseLabels[strtolower(standardize($key))] = $key;
 		}
 						
-		$objTemplate->fields = $this->generateResponseString($arrResponses, $arrReponseLabels);
+		//$objTemplate->fields = $this->generateResponseString($arrResponses, $arrReponseLabels);
 			
-		$strResponse = '<p class="tl_info">' . $arrPaymentInfo['authorize_response'] . ' - ' . $arrResponses['transaction-status'] . '</p>';
-		
 		$arrSet['transaction_response'] = $arrResponses['transaction-status'];
-		$arrSet['transaction_response_code'] = $arrPaymentInfo['authorize_response'];
+		$arrSet['transaction_response_code'] = $arrPaymentInfo['authorize_response'];		
 			
 		switch($arrResponses['transaction-status'])
 		{
@@ -332,7 +330,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 			$this->reason   = $arrResponses['reason'];
 				
 			$this->log('Invalid payment data received.', 'PaymentAuthorizeDotNet capturePayment()', TL_ERROR);
-			$this->redirect($this->addToUrl('&error='.$arrResponses['reason']));
+			//$this->redirect($this->addToUrl('&error='.$arrResponses['reason']));
 		}
 	
 		return true;
