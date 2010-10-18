@@ -183,6 +183,10 @@ $GLOBALS['TL_LANG']['MSG']['epay'][984]		= 'The payment was declined - system er
 /** 
  * Authorize.NET response codes & reasons
  */ 
+$GLOBALS['TL_LANG']['MSC']['authorizedotnet']['1']			= "Approved";
+$GLOBALS['TL_LANG']['MSC']['authorizedotnet']['2']			= "Declined";
+$GLOBALS['TL_LANG']['MSC']['authorizedotnet']['3']			= "Error";
+$GLOBALS['TL_LANG']['MSC']['authorizedotnet']['4']			= "Held for review";
 $GLOBALS['TL_LANG']['MSG']['authorizedotnet']['1']['1']		= "This transaction has been approved. ";
 $GLOBALS['TL_LANG']['MSG']['authorizedotnet']['2']['2']		= "This transaction has been declined. ";
 $GLOBALS['TL_LANG']['MSG']['authorizedotnet']['2']['3']		= "This transaction has been declined. ";
