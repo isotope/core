@@ -110,7 +110,13 @@ class ModuleIsotopeSetup extends BackendModule
 			$this->redirect($this->Environment->script.'?act=error');
 		}
 
-		$strTable = $this->Input->get('table') ? $this->Input->get('table') : $arrModule['tables'][0];
+		$strTable = $this->Input->get('table');
+		
+		if ($strTable == '')
+		{
+			$this->redirect($this->addToUrl('table='.$arrModule['tables'][0]));
+		}
+		
 		$id = (!$this->Input->get('act') && $this->Input->get('id')) ? $this->Input->get('id') : $this->Session->get('CURRENT_ID');
 
 		// Add module style sheet
