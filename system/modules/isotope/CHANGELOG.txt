@@ -14,6 +14,7 @@ Version 0.2.rc1
 - Fixed: added default palette for checkout module if no checkout method (guest/member) is selected
 - Fixed: tax total was not rounded according to store config
 - Fixed: PayPal Standard payment charges included taxes twice
+- Fixed: Missing argument 2 for IsotopeRules::findCoupon()
 
 Version 0.2.beta2 (2010-09-27)
 ------------------------------
