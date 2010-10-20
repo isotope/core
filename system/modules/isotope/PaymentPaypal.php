@@ -234,6 +234,9 @@ class PaymentPaypal extends IsotopePayment
 		
 		foreach( $this->Isotope->Cart->getSurcharges() as $arrSurcharge )
 		{
+			if (!$arrSurcharge['add'])
+				continue;
+				
 			$strBuffer .= '
 <input type="hidden" name="item_name_'.++$i.'" value="' . $arrSurcharge['label'] . '"/>
 <input type="hidden" name="amount_'.$i.'" value="' . $arrSurcharge['total_price'] . '"/>';
