@@ -150,7 +150,6 @@ class Isotope extends Controller
 	 */
 	public function calculatePrice($fltPrice, &$objSource, $strField, $intTaxClass=0)
 	{
-		// If price or override price is a string
 		if (!is_numeric($fltPrice))
 			return $fltPrice;
 			
@@ -189,9 +188,7 @@ class Isotope extends Controller
 			$fltPrice = (round(20*$fltPrice))/20;
 		}
 		
-		$fltPrice = round($fltPrice, $this->Config->priceRoundPrecision);
-		
-		return $fltPrice;
+		return round($fltPrice, $this->Config->priceRoundPrecision);
 	}
 	
 	
@@ -238,7 +235,7 @@ class Isotope extends Controller
 				(
 					'label'			=> (strlen($objTaxClass->label) ? $objTaxClass->label : $objIncludes->label),
 					'price'			=> $arrTaxRate['value'] . $arrTaxRate['unit'],
-					'total_price'	=> $fltTax,
+					'total_price'	=> round($fltTax, $this->Config->priceRoundPrecision),
 					'add'			=> false,
 				);
 			}

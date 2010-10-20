@@ -20,6 +20,7 @@ Version 0.2.rc1
 - Fixed: Potential database caching issue in ePay payment modules
 - Fixed: images did not change on ajax update
 - Fixed: added default palette for checkout module if no checkout method (guest/member) is selected
+- Fixed: tax total was not rounded according to store config
 
 Version 0.2.beta2 (2010-09-27)
 ------------------------------
