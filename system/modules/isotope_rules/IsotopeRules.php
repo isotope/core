@@ -247,7 +247,7 @@ class IsotopeRules extends Controller
 			
 			foreach( $arrCoupons as $code )
 			{
-				$arrRule = $this->findCoupon($code);
+				$arrRule = $this->findCoupon($code, $this->Isotope->Cart->getProducts());
 				
 				if ($arrRule === false)
 				{
