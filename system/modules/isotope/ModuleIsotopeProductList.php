@@ -85,43 +85,16 @@ class ModuleIsotopeProductList extends ModuleIsotope
 	 */
 	protected function findProducts()
 	{
-		// The ids of all pages we take care of. this is what should later be used eg. for filter data.
-		$arrCategories = array();
-		
-		global $objPage;
-		
-	 	// Determine category scope
-		switch($this->iso_category_scope)
-		{
-			case 'global':
-				$arrCategories = array_merge($this->getChildRecords($objPage->rootId, 'tl_page', true), array($objPage->rootId));
-				break;
-				
-			case 'parent_and_first_child':
-				$arrCategories = array_merge($this->Database->execute("SELECT id FROM tl_page WHERE pid={$objPage->id}")->fetchEach('id'), array($objPage->id));
-				break;
-				
-			case 'parent_and_all_children':
-				$arrCategories = array_merge($this->getChildRecords($objPage->id, 'tl_page', true), array($objPage->id));
-				break;
-				
-			default:
-			case 'current_category':
-				$arrCategories = array($objPage->id);
-				break;
-		}
-		
-		
 		if($this->Input->get('clear'))
 		{
 			$arrFilters = array();
 		}
 		else
 		{
-			$arrFilters = array('for'=>$this->Input->get('for'), 'per_page'=>$this->Input->get('per_page'), 'page'=>$this->Input->get('page'), 'order_by'=>$this->Input->get('order_by'));	
+			$arrFilters = array('for'=>$this->Input->get('for'), 'per_page'=>$this->Input->get('per_page'), 'page'=>$this->Input->get('page'), 'order_by'=>$this->Input->get('order_by'));
 		
 			$arrFilterFields = explode(',', $this->Input->get('filters'));	//get the names of filters we are using
-	
+			
 			foreach($arrFilterFields as $field)
 			{
 				if($this->Input->get($field))
@@ -142,6 +115,9 @@ class ModuleIsotopeProductList extends ModuleIsotope
 				$this->setFilterSQL(array('order_by' => ($this->iso_listingSortField.'-'.$this->iso_listingSortDirection)));
 			}
 		}
+		
+		// Determine category scope
+		$arrCategories = $this->findCategories($this->iso_category_scope);
 		
 		$objProductIds = $this->Database->prepare("SELECT DISTINCT p.* FROM tl_iso_product_categories c, tl_iso_products p WHERE p.id=c.pid AND published='1'" . ($this->strFilterSQL ? " AND (" . $this->strFilterSQL . ")" : "") . " AND c.page_id IN (" . implode(',', $arrCategories) . ")" . ($this->strSearchSQL ? " AND (" . $this->strSearchSQL . ")" : "") . ($this->strOrderBySQL ? " ORDER BY " . $this->strOrderBySQL : ""));
 		
@@ -372,6 +348,30 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		}
 		return $arrSearchFields;
 	}
-
+	
+	
+	/**
+	 * The ids of all pages we take care of. This is what should later be used eg. for filter data.
+	 */
+	protected function findCategories($strCategoryScope)
+	{
+		global $objPage;
+		
+		switch($strCategoryScope)
+		{
+			case 'global':
+				return array_merge($this->getChildRecords($objPage->rootId, 'tl_page', true), array($objPage->rootId));
+				
+			case 'parent_and_first_child':
+				return array_merge($this->Database->execute("SELECT id FROM tl_page WHERE pid={$objPage->id}")->fetchEach('id'), array($objPage->id));
+				
+			case 'parent_and_all_children':
+				return array_merge($this->getChildRecords($objPage->id, 'tl_page', true), array($objPage->id));
+				
+			default:
+			case 'current_category':
+				return array($objPage->id);
+		}
+	}
 }
 
