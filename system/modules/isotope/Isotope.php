@@ -273,7 +273,7 @@ class Isotope extends Controller
 				(
 					'label'			=> $objRates->label,
 					'price'			=> $arrTaxRate['value'] . $arrTaxRate['unit'],
-					'total_price'	=> $fltTax,
+					'total_price'	=> round($fltTax, $this->Config->priceRoundPrecision),
 					'add'			=> true,
 				);
 				
