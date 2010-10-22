@@ -27,12 +27,6 @@
 
 
 /**
- * Palettes
- */
-$GLOBALS['TL_DCA']['tl_content']['palettes']['attributeLinkRepeater'] = 'type,headline;iso_filters;url,target;guests,protected;align,space,cssID';
-
-
-/**
  * Fields
  */
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_filters'] = array

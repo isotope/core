@@ -24,8 +24,6 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['CTE']['attributeLinkRepeater'][0] = 'Egenskab filter liste';
-$GLOBALS['TL_LANG']['CTE']['attributeLinkRepeater'][1] = 'Dette element genererer en samling af links fra et valgt produkts egenskabs filter';
 $GLOBALS['TL_LANG']['ERR']['systemColumn'] = 'Navnet "%s" er reserveret til systemet. Vælg venligst et andet navn.';
 $GLOBALS['TL_LANG']['ERR']['missingButtonTemplate'] = 'Du skal angive en skabelon til knappen "%s"';
 $GLOBALS['TL_LANG']['ERR']['order_conditions'] = 'Du skal godkende salgs- og leveringsbetingelserne';

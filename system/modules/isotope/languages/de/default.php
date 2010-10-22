@@ -27,12 +27,6 @@
 
 
 /**
- * Content Elements
- */
-$GLOBALS['TL_LANG']['CTE']['attributeLinkRepeater'] = array('Artikelmerkmal-Filter Auflistung', 'Dieses Element generiert eine Sammlung von Links eines Artikelmerkmal-Filters.');
-
-
-/**
  * Errors
  */
 $GLOBALS['TL_LANG']['ERR']['systemColumn']                = 'Der Name `%s` ist vom System reserviert. Bitte wählen Sie einen anderen Namen.';
