@@ -68,10 +68,10 @@ $GLOBALS['TL_LANG']['tl_iso_products']['opPrice']		= 'Price (Surcharge)';
 $GLOBALS['TL_LANG']['tl_iso_products']['opDisable']		= 'Disable';
 $GLOBALS['TL_LANG']['tl_iso_products']['opInherit']		= 'Inherit label';
 
-$GLOBALS['TL_LANG']['tl_iso_products']['mmSrc'] = 'Image';
-$GLOBALS['TL_LANG']['tl_iso_products']['mmAlt'] = 'Alternate text';
-$GLOBALS['TL_LANG']['tl_iso_products']['mmLink'] = 'Link target';
-$GLOBALS['TL_LANG']['tl_iso_products']['mmDesc'] = 'Description';
+$GLOBALS['TL_LANG']['tl_iso_products']['mmSrc']			= 'Preview';
+$GLOBALS['TL_LANG']['tl_iso_products']['mmAlt']			= 'Alternate text';
+$GLOBALS['TL_LANG']['tl_iso_products']['mmLink']		= 'Link target';
+$GLOBALS['TL_LANG']['tl_iso_products']['mmDesc']		= 'Description';
 
 $GLOBALS['TL_LANG']['tl_iso_products']['existing_option_set'] = 'Select an existing product option set';
 $GLOBALS['TL_LANG']['tl_iso_products']['new_option_set'] = 'Create a new product option set';
@@ -101,7 +101,7 @@ $GLOBALS['TL_LANG']['tl_iso_products']['import']		= array('Import assets', 'Impo
  * Legends
  */
 $GLOBALS['TL_LANG']['tl_iso_products']['general_legend']	= "General Settings";
-$GLOBALS['TL_LANG']['tl_iso_products']['meta_legend']	= 'Meta data';
+$GLOBALS['TL_LANG']['tl_iso_products']['meta_legend']		= 'Meta data';
 $GLOBALS['TL_LANG']['tl_iso_products']['pricing_legend']	= "Pricing Settings";
 $GLOBALS['TL_LANG']['tl_iso_products']['inventory_legend']	= 'Inventory Settings';
 $GLOBALS['TL_LANG']['tl_iso_products']['shipping_legend']	= 'Shipping Settings';
