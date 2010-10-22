@@ -166,12 +166,6 @@ $GLOBALS['FE_MOD']['isotope'] = array
 
 
 /**
- * Content elements
- */
-$GLOBALS['TL_CTE']['links']['attributeLinkRepeater'] = 'ContentAttributeLinkRepeater';
-
-
-/**
  * Backend form fields
  */
 $GLOBALS['BE_FFL']['mediaManager']			= 'MediaManager';

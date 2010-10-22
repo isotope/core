@@ -27,12 +27,6 @@
 
 
 /**
- * Content Elements
- */
-$GLOBALS['TL_LANG']['CTE']['attributeLinkRepeater']   = array('Attribute Filter Lister', 'This element generates a collection of hyperlinks from a selected product attribute filter.');
-
-
-/**
  * Errors
  */
 $GLOBALS['TL_LANG']['ERR']['systemColumn'] = 'Name `%s` is reserved for system use. Please choose different name.';

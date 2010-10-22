@@ -24,8 +24,7 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['CTE']['attributeLinkRepeater'][0] = 'Table des filtres d\'attributs';
-$GLOBALS['TL_LANG']['CTE']['attributeLinkRepeater'][1] = 'Cet élément crée une collection de liens d\'après un filtre choisi d\'attributs de produits';
+
 $GLOBALS['TL_LANG']['ERR']['systemColumn'] = 'Le nom `%s` que vous avez choisi, est reservé pour l\'administration du système. Choisisez un autre nom s.v.p.';
 $GLOBALS['TL_LANG']['ERR']['missingButtonTemplate'] = 'Vous devez choisir un document de mise en page pour le bouton "%s"';
 $GLOBALS['TL_LANG']['ERR']['order_conditions'] = 'Vous devez accepter les termes et conditions avant de continuer';
