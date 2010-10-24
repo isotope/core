@@ -233,7 +233,7 @@ class Isotope extends Controller
 			{
 				$arrTaxes[$objTaxClass->id.'_'.$objIncludes->id] = array
 				(
-					'label'			=> (strlen($objTaxClass->label) ? $objTaxClass->label : $objIncludes->label),
+					'label'			=> $this->translate($objTaxClass->label ? $objTaxClass->label : ($objIncludes->label ? $objIncludes->label : $objIncludes->name)),
 					'price'			=> $arrTaxRate['value'] . $arrTaxRate['unit'],
 					'total_price'	=> round($fltTax, $this->Config->priceRoundPrecision),
 					'add'			=> false,
@@ -271,7 +271,7 @@ class Isotope extends Controller
 				
 				$arrTaxes[$objRates->id] = array
 				(
-					'label'			=> $objRates->label,
+					'label'			=> $this->translate($objRates->label ? $objRates->label : $objRates->name),
 					'price'			=> $arrTaxRate['value'] . $arrTaxRate['unit'],
 					'total_price'	=> round($fltTax, $this->Config->priceRoundPrecision),
 					'add'			=> true,
