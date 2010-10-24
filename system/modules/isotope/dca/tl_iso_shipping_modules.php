@@ -248,7 +248,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['countries'],
 			'exclude'                 => true,
 			'inputType'               => 'select',
-			'default'                 => array_keys($this->getCountries()),
 			'options'                 => $this->getCountries(),
 			'eval'                    => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50 w50h'),
 		),
