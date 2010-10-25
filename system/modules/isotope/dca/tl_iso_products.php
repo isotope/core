@@ -318,6 +318,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['tax_class'],
 			'inputType'				=> 'select',
 			'foreignKey'			=> 'tl_iso_tax_class.name',
+			'default'				=> $this->Database->execute("SELECT id FROM tl_iso_tax_class WHERE fallback='1'")->id,
 			'attributes'			=> array('legend'=>'pricing_legend'),
 			'eval'					=> array('includeBlankOption'=>true),
 		),

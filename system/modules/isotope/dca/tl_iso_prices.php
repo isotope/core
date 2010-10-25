@@ -143,6 +143,7 @@ $GLOBALS['TL_DCA']['tl_iso_prices'] = array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_prices']['tax_class'],
 			'inputType'				=> 'select',
+			'default'				=> $this->Database->execute("SELECT id FROM tl_iso_tax_class WHERE fallback='1'")->id,
 			'foreignKey'			=> 'tl_iso_tax_class.name',
 			'eval'					=> array('includeBlankOption'=>true, 'tl_class'=>'clr'),
 		),
@@ -181,7 +182,7 @@ class tl_iso_prices extends Backend
 
 	public function listRows($row)
 	{
-		$this->import('IsotopeBackend');
+		$this->import('Isotope');
 		
 		$arrTiers = array();
 		$objTiers = $this->Database->execute("SELECT * FROM tl_iso_price_tiers WHERE pid={$row['id']}");
@@ -205,7 +206,7 @@ class tl_iso_prices extends Backend
 				default:
 					if ($value != '' && $value > 0)
 					{
-						$arrInfo[] = '<strong>' . $this->IsotopeBackend->formatLabel('tl_iso_prices', $name) . '</strong>: ' . $this->IsotopeBackend->formatValue('tl_iso_prices', $name, $value);
+						$arrInfo[] = '<strong>' . $this->Isotope->formatLabel('tl_iso_prices', $name) . '</strong>: ' . $this->Isotope->formatValue('tl_iso_prices', $name, $value);
 					}
 					break;
 			}
