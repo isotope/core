@@ -39,7 +39,7 @@ class InlineGallery extends IsotopeGallery
 	/**
 	 * Generate gallery
 	 */
-	public function generateGallery()
+	public function generateGallery($strType='gallery')
 	{
 		$strGallery = '';
 		
@@ -49,7 +49,7 @@ class InlineGallery extends IsotopeGallery
 			
 			$objTemplate->setData($arrFile);
 			$objTemplate->mode = 'gallery';
-			$objTemplate->type = 'gallery';
+			$objTemplate->type = $strType;
 			$objTemplate->name = $this->name;
 			$objTemplate->product_id = $this->product_id;
 			$objTemplate->href_reader = $this->href_reader;

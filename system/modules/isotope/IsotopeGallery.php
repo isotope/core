@@ -199,7 +199,7 @@ class IsotopeGallery extends Frontend
 	/**
 	 * Generate gallery
 	 */
-	public function generateGallery()
+	public function generateGallery($strType='gallery')
 	{
 		$strGallery = '';
 		
@@ -211,7 +211,7 @@ class IsotopeGallery extends Frontend
 			
 			$objTemplate->setData($arrFile);
 			$objTemplate->mode = 'gallery';
-			$objTemplate->type = 'gallery';
+			$objTemplate->type = $strType;
 			$objTemplate->name = $this->name;
 			$objTemplate->product_id = $this->product_id;
 			$objTemplate->href_reader = $this->href_reader;
