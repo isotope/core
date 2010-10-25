@@ -16,6 +16,7 @@ Version 0.2.rc1
 - Fixed: tax total was not rounded according to store config
 - Fixed: PayPal Standard payment charges included taxes twice
 - Fixed: Missing argument 2 for IsotopeRules::findCoupon()
+- Fixed: Incorrect default value for tl_iso_products.shipping_weight
 - Fixed various issues with PayPal sandbox processing
 
 Version 0.2.beta2 (2010-09-27)
