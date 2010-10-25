@@ -39,12 +39,15 @@ class InlineGallery extends IsotopeGallery
 	/**
 	 * Generate gallery
 	 */
-	public function generateGallery($strType='gallery')
+	public function generateGallery($strType='gallery', $intSkip=0)
 	{
 		$strGallery = '';
 		
 		foreach( $this->arrFiles as $i => $arrFile )
 		{
+			if ($i < $intSkip)
+				continue;
+				
 			$objTemplate = new FrontendTemplate($this->strTemplate);
 			
 			$objTemplate->setData($arrFile);
