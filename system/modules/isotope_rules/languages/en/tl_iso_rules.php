@@ -76,6 +76,7 @@ $GLOBALS['TL_LANG']['tl_iso_rules']['type']['cart']							= 'Cart';
 $GLOBALS['TL_LANG']['tl_iso_rules']['memberRestrictions']['none']			= 'No restrictions';
 $GLOBALS['TL_LANG']['tl_iso_rules']['memberRestrictions']['groups']			= 'Specific groups';
 $GLOBALS['TL_LANG']['tl_iso_rules']['memberRestrictions']['members']		= 'Specific members';
+$GLOBALS['TL_LANG']['tl_iso_rules']['memberRestrictions']['guest']			= 'Guests Only';
 
 $GLOBALS['TL_LANG']['tl_iso_rules']['productRestrictions']['none']			= 'No restrictions';
 $GLOBALS['TL_LANG']['tl_iso_rules']['productRestrictions']['producttypes']	= 'Product types';

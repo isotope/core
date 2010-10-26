@@ -100,7 +100,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 	(
 		'__selector__'			=> array('type', 'enableCode', 'configRestrictions', 'memberRestrictions', 'productRestrictions'),
 		'default'				=> '{basic_legend},type',
-		'product'				=> '{basic_legend},type,name,discount;{limit_legend:hide},limitPerMember,limitPerConfig;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},configRestrictions,memberRestrictions,productRestrictions;{enabled_legend},enabled',
+		'product'				=> '{basic_legend},type,name,discount;{limit_legend:hide},limitPerMember,limitPerConfig;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},configRestrictions,memberRestrictions,productRestrictions,minItemQuantity,maxItemQuantity;{enabled_legend},enabled',
 		'cart'					=> '{basic_legend},type,name,label,discount,applyTo;{coupon_legend:hide},enableCode;{limit_legend:hide},limitPerMember,limitPerConfig;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},configRestrictions,memberRestrictions,productRestrictions,minItemQuantity,maxItemQuantity;{enabled_legend},enabled'
 	),
 	'subpalettes' => array
@@ -251,7 +251,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			'default'					=> 'none',
 			'exclude'					=> true,
 			'filter'					=> true,
-			'options'					=> array('none', 'groups', 'members'),
+			'options'					=> array('none', 'guest', 'groups', 'members'),
 			'eval'						=> array('submitOnChange'=>true, 'tl_class'=>'clr'),
 			'reference'					=> &$GLOBALS['TL_LANG']['tl_iso_rules']['memberRestrictions']
 		),
