@@ -226,12 +226,11 @@ abstract class IsotopeProductCollection extends Model
 				
 				try
 				{
-					$objProduct = new $strClass($objProductData->row(), $this->blnLocked);
+					$objProduct = new $strClass($objProductData->row(), deserialize($objItems->product_options), $this->blnLocked);
 				}
 				catch (Exception $e)
 				{
-					$objProduct = new IsotopeProduct(array('id'=>$objItems->product_id, 'sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price), $this->blnLocked);
-					$objProduct->setOptions(deserialize($objItems->product_options, true));
+					$objProduct = new IsotopeProduct(array('id'=>$objItems->product_id, 'sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price), deserialize($objItems->product_options), $this->blnLocked);
 				}
 				
 				$objProduct->quantity_requested = $objItems->product_quantity;

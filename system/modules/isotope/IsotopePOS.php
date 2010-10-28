@@ -355,7 +355,7 @@ class IsotopePOS extends Backend
 			$arrProduct['id'] = $objItems->product_id;
 			unset($arrProduct['pid']);
 																			
-			$objProduct = new $strClass($arrProduct, true);
+			$objProduct = new $strClass($arrProduct, deserialize($objItems->product_options), true);
 							
 			$objProduct->quantity_requested = $objItems->product_quantity;
 			$objProduct->cart_id = $objItems->id;
@@ -570,33 +570,6 @@ class IsotopePOS extends Backend
 	}
 	
 	
-	protected function getOptionsHTML($arrOptionsData)
-	{
-        $strProductData .= '<p><strong>' . $GLOBALS['TL_LANG']['MSC']['productOptionsLabel'] . '</strong></p>';
-	
-		foreach($arrOptionsData as $option)
-		{
-			//$arrOptions = deserialize($row['options']);
-        	
-        	//if(sizeof($arrOptions))
-        	//{
-        		//foreach($arrOptions as $option)
-        		//{
-	        		$arrValues = $option['values'];
-	        		
-				    $strProductData .= '<ul>';
-				   	$strProductData .= '	<li>' . $option['name'] . ': ';
-				    $strProductData .= implode(', ', $arrValues);
-					$strProductData .= '    </li>';     						
-					$strProductData .= '</ul>'; 
-				//}
-			//}
-		}
-		
-		return $strProductData;
-		
-	}
-	
 	protected function loadAddress($varValue, $intId, $blnSaveAsBillingInfo = false)
 	{
 		$intPid = $this->getPid($intId, 'tl_iso_orders');
@@ -623,6 +596,7 @@ class IsotopePOS extends Backend
 
 		return $strAddress;
 	}
+	
 	
 	protected function generatePaymentInfoString($arrOrderInfo)
 	{		

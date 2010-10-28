@@ -220,7 +220,7 @@ class PaymentPaypal extends IsotopePayment
 				
 				foreach( $arrOptions as $option )
 				{
-					$options[] = $option['name'] . ': ' . implode(', ', $option['values']);
+					$options[] = $option['label'] . ': ' . $option['value'];
 				}
 				
 				$strOptions = ' ('.implode(', ', $options).')';

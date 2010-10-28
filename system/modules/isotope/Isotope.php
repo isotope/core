@@ -630,64 +630,15 @@ class Isotope extends Controller
 		$objEmail->sendTo($strRecipient);
 	}
 	
-	
+
 	/**
-	 * Merge the OptionDataWizard and OptionWizard data.
-	 * This is a callback for attributes (eg. select menu).
+	 * Update ConditionalSelect to include the product ID in conditionField
 	 */
-	public function mergeOptionData($strField, $arrData, &$objProduct=null)
-	{
-		if (TL_MODE != 'FE' || !is_object($objProduct))
-			return $arrData;
-			
-		$arrProductData = $objProduct->getData();
-		$arrOptionData = $arrProductData[$strField];
-		
-		if (is_array($arrOptionData))
-		{
-			foreach( $arrData['options'] as $k => $v )
-			{
-				if (is_array($v))
-				{
-					foreach( $v as $kk => $vv )
-					{
-						if ($arrOptionData[$kk]['disable'])
-						{
-							unset($arrData['options'][$k][$kk]);
-							continue(2);
-						}
-					}
-					
-					if (strlen($arrOptionData[$kk]['label']) && !$arrOptionData[$kk]['inherit'])
-					{
-						$arrData['options'][$k][$kk] = $arrOptionData[$kk]['label'];
-					}
-				}
-				else
-				{
-					if ($arrOptionData[$k]['disable'])
-					{
-						unset($arrData['options'][$k]);
-						continue;
-					}
-					
-					if (strlen($arrOptionData[$k]['label']) && !$arrOptionData[$k]['inherit'])
-					{
-						$arrData['options'][$k] = $arrOptionData[$k]['label'];
-					}
-				}
-			}
-		}
-		
-		return $arrData;
-	}
-	
 	public function mergeConditionalOptionData($strField, $arrData, &$objProduct=null)
 	{
-		$arrData['attributes']['add_to_product_variants'] = false;
 		$arrData['eval']['conditionField'] = $arrData['attributes']['conditionField'] . (is_object($objProduct) ? '_'.$objProduct->id : '');
-
-		return $this->mergeOptionData($strField, $arrData, $objProduct);
+		
+		return $arrData;
 	}
 	
 	
@@ -829,13 +780,122 @@ class Isotope extends Controller
 			case 'discount':
 				if(!preg_match('/^[-+]\d+(\.\d{1,2})?%?$/', $varValue))
 				{															
-					$objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR']['calc'], $objWidget->label));
+					$objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR']['discount'], $objWidget->label));
 				}
 				return true;
 				break;
 		}
 		
 		return false;
+	}
+	
+	
+	/**
+	 * Format value (based on DC_Table::show(), Contao 2.9.0)
+	 * @param  mixed
+	 * @param  string
+	 * @param  string
+	 * @return string
+	 */
+	public function formatValue($table, $field, $value)
+	{
+		$value = deserialize($value);
+	
+		// Get field value
+		if (strlen($GLOBALS['TL_DCA'][$table]['fields'][$field]['foreignKey']))
+		{
+			$temp = array();
+			$chunks = explode('.', $GLOBALS['TL_DCA'][$table]['fields'][$field]['foreignKey']);
+
+			foreach ((array) $value as $v)
+			{
+				$objKey = $this->Database->prepare("SELECT " . $chunks[1] . " AS value FROM " . $chunks[0] . " WHERE id=?")
+										 ->limit(1)
+										 ->execute($v);
+
+				if ($objKey->numRows)
+				{
+					$temp[] = $objKey->value;
+				}
+			}
+
+			return implode(', ', $temp);
+		}
+
+		elseif (is_array($value))
+		{
+			foreach ($value as $kk=>$vv)
+			{
+				if (is_array($vv))
+				{
+					$vals = array_values($vv);
+					$value[$kk] = $vals[0].' ('.$vals[1].')';
+				}
+			}
+
+			return implode(', ', $value);
+		}
+
+		elseif ($GLOBALS['TL_DCA'][$table]['fields'][$field]['eval']['rgxp'] == 'date')
+		{
+			return $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $value);
+		}
+
+		elseif ($GLOBALS['TL_DCA'][$table]['fields'][$field]['eval']['rgxp'] == 'time')
+		{
+			return $this->parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $value);
+		}
+
+		elseif ($GLOBALS['TL_DCA'][$table]['fields'][$field]['eval']['rgxp'] == 'datim' || in_array($GLOBALS['TL_DCA'][$table]['fields'][$field]['flag'], array(5, 6, 7, 8, 9, 10)) || $field == 'tstamp')
+		{
+			return $this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $value);
+		}
+
+		elseif ($GLOBALS['TL_DCA'][$table]['fields'][$field]['inputType'] == 'checkbox' && !$GLOBALS['TL_DCA'][$table]['fields'][$field]['eval']['multiple'])
+		{
+			return strlen($value) ? $GLOBALS['TL_LANG']['MSC']['yes'] : $GLOBALS['TL_LANG']['MSC']['no'];
+		}
+
+		elseif ($GLOBALS['TL_DCA'][$table]['fields'][$field]['inputType'] == 'textarea' && ($GLOBALS['TL_DCA'][$table]['fields'][$field]['eval']['allowHtml'] || $GLOBALS['TL_DCA'][$table]['fields'][$field]['eval']['preserveTags']))
+		{
+			return specialchars($value);
+		}
+
+		elseif (is_array($GLOBALS['TL_DCA'][$table]['fields'][$field]['reference']))
+		{
+			return isset($GLOBALS['TL_DCA'][$table]['fields'][$field]['reference'][$value]) ? ((is_array($GLOBALS['TL_DCA'][$table]['fields'][$field]['reference'][$value])) ? $GLOBALS['TL_DCA'][$table]['fields'][$field]['reference'][$value][0] : $GLOBALS['TL_DCA'][$table]['fields'][$field]['reference'][$value]) : $value;
+		}
+		
+		return $value;
+	}
+	
+	
+	/**
+	 * Format label (based on DC_Table::show(), Contao 2.9.0)
+	 * @param  mixed
+	 * @param  string
+	 * @param  string
+	 * @return string
+	 */
+	public function formatLabel($table, $field)
+	{
+		// Label
+		if (count($GLOBALS['TL_DCA'][$table]['fields'][$field]['label']))
+		{
+			$label = is_array($GLOBALS['TL_DCA'][$table]['fields'][$field]['label']) ? $GLOBALS['TL_DCA'][$table]['fields'][$field]['label'][0] : $GLOBALS['TL_DCA'][$table]['fields'][$field]['label'];
+		}
+
+		else
+		{
+			$label = is_array($GLOBALS['TL_LANG']['MSC'][$field]) ? $GLOBALS['TL_LANG']['MSC'][$field][0] : $GLOBALS['TL_LANG']['MSC'][$field];
+		}
+
+		if (!strlen($label))
+		{
+			$label = $field;
+		}
+		
+		return $label;
 	}
 }
 
