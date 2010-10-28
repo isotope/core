@@ -33,7 +33,7 @@
 		<div class="optionswrapper">
 			<ul class="productOptions">
 			<?php foreach($options as $option): ?>
-				<li><strong><?php echo $option['name']; ?>:</strong> <?php echo implode(', ', $option['values']); ?></li>
+				<li><strong><?php echo $option['label']; ?>:</strong> <?php echo $option['value']; ?></li>
 			<?php endforeach; ?>
 			</ul>
 		</div>

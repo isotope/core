@@ -615,11 +615,9 @@ class tl_iso_products extends Backend
 			
 			foreach( $fields as $i )
 			{
-				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$i]['attributes']['add_to_product_variants'])
+				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$i]['attributes']['variant_option'])
 				{
-					$this->import('IsotopeBackend');
-
-					$strBuffer .= '<li><strong>' . $this->IsotopeBackend->formatLabel('tl_iso_products', $i) . ':</strong> ' . $this->IsotopeBackend->formatValue('tl_iso_products', $i, $row[$i]) . '</li>';
+					$strBuffer .= '<li><strong>' . $this->Isotope->formatLabel('tl_iso_products', $i) . ':</strong> ' . $this->Isotope->formatValue('tl_iso_products', $i, $row[$i]) . '</li>';
 				}
 			}
 			
@@ -794,7 +792,7 @@ class tl_iso_products extends Backend
 		{
 			foreach( $arrAttributes as $attribute )
 			{
-				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['add_to_product_variants'])
+				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
 				{
 					$GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['eval']['mandatory'] = true;					
 					$GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['eval']['multiple'] = true;
@@ -915,7 +913,7 @@ class tl_iso_products extends Backend
 		{
 			foreach( $arrAttributes as $attribute )
 			{
-				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['add_to_product_variants'])
+				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
 				{
 					$arrFields[] = $attribute;
 				}
@@ -1010,7 +1008,7 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 							
 				$arrSet['published'] = ($arrPublished[$objVariants->id] ? $arrPublished[$objVariants->id] : '');
 				
-				//!@todo remove this routine after the next stable release
+				//!@todo remove this routine after the 0.2 release
 				$arrSet['inherit'] = array_diff(deserialize($objVariants->inherit, true), $arrQuickEditFields);
 				
 				$this->Database->prepare("UPDATE tl_iso_products %s WHERE id=?")
@@ -1459,7 +1457,7 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 			{
 				foreach( $arrAttributes as $attribute )
 				{
-					if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['add_to_product_variants'])
+					if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
 					{
 						$arrFields[] = $attribute;
 						$GLOBALS['TL_DCA']['tl_iso_products']['fields']['variant_attributes']['options'][] = $attribute;
@@ -1483,7 +1481,7 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 					continue;
 				
 				// Do not show variant options
-				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['attributes']['add_to_product_variants'])
+				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['attributes']['variant_option'])
 					continue;
 					
 				// Field cannot be edited in variant
@@ -1521,94 +1519,81 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 	{
 		$objAttributes = $this->Database->execute("SELECT * FROM tl_iso_attributes");
 		
-		
-		// add DCA for form fields
 		while ( $objAttributes->next() )
 		{
 			$arrData = array
 			(
 				'label'				=> array($objAttributes->name, $objAttributes->description),
 				'inputType'			=> ((TL_MODE == 'BE' && strlen($GLOBALS['ISO_ATTR'][$objAttributes->type]['backend'])) ? $GLOBALS['ISO_ATTR'][$objAttributes->type]['backend'] : ((TL_MODE == 'FE' && strlen($GLOBALS['ISO_ATTR'][$objAttributes->type]['frontend'])) ? $GLOBALS['ISO_ATTR'][$objAttributes->type]['frontend'] : $objAttributes->type)),
+				'eval'				=> $objAttributes->row(),
 				'attributes'		=> $objAttributes->row(),
 				'save_callback'		=> array
 				(
-					array('tl_iso_products','saveField'),
+					array('tl_iso_products', 'saveField'),
 				),
 			);
 			
 			if ($objAttributes->is_be_filterable) $arrData['filter'] = true;
 			if ($objAttributes->is_be_searchable) $arrData['search'] = true;
-			if ($objAttributes->is_required || $objAttributes->add_to_product_variants) $arrData['eval']['mandatory'] = true;
-			if ($objAttributes->rgxp) $arrData['eval']['rgxp'] = $objAttributes->rgxp;
-			if ($objAttributes->multiple) $arrData['eval']['multiple'] = $objAttributes->multiple;
 			
-			// check for options lookup 
-			switch ($objAttributes->type)
+			// Initialize variant options
+			if ($objAttributes->variant_option)
 			{
-				case 'datetime':
-					$arrData['eval']['rgxp'] = 'date';
-					$arrData['eval']['datepicker'] = $this->getDatePickerString();
-					break;
-					
-				case 'text':
-					$arrData['eval']['tl_class'] = 'long';
-					break;
-			
-				case 'textarea':
-					if($objAttributes->use_rich_text_editor)
-					{
-						$arrData['eval']['rte'] = 'tinyMCE';
-					}
-					break;
-
-				case 'file':
-				case 'media':
-					$arrData['eval']['cols'] = 4;
-					//if($objAttributes->show_files) $arrData['eval']['files'] = true;
-					//$arrData['eval']['fieldType'] = 'radio';
-					break;
-					
-				default:
-					$arrData['eval']['multiple'] = $objAttributes->type == 'options' ? false : $arrData['eval']['multiple'];
-					if ($objAttributes->use_alternate_source && strlen($objAttributes->list_source_table) > 0 && strlen($objAttributes->list_source_field) > 0)
-					{
-						$arrData['foreignKey'] = $objAttributes->list_source_table . '.' . $objAttributes->list_source_field;
-					}
-					else
-					{
-						$arrData['options'] = array();
-						$arrOptions = deserialize($objAttributes->option_list);
-						
-						if (is_array($arrOptions) && count($arrOptions))
-						{
-							$strGroup = '';
-							foreach ($arrOptions as $option)
-							{
-								if (!strlen($option['value']))
-								{
-									$arrData['eval']['includeBlankOption'] = true;
-									$arrData['eval']['blankOptionLabel'] = $option['label'];
-									continue;
-								}
-								elseif ($option['group'])
-								{
-									$strGroup = $option['value'];
-									continue;
-								}
-								
-								if (strlen($strGroup))
-								{
-									$arrData['options'][$strGroup][$option['value']] = $option['label'];
-								}
-								else
-								{
-									$arrData['options'][$option['value']] = $option['label'];
-								}
-							}
-						}
-					}
-					break;
+				$arrData['eval']['mandatory'] = true;
+				$arrData['eval']['multiple'] = false;
+				$arrData['eval']['size'] = 1;
 			}
+			
+			// Add date picker
+			if ($objAttributes->rgxp == 'date')
+			{
+				$arrData['eval']['datepicker'] = $this->getDatePickerString();
+			}
+			
+			// Prepare options
+			if ($objAttributes->foreignKey != '')
+			{
+				$arrData['foreignKey'] = $objAttributes->foreignKey;
+				unset($arrData['options']);
+			}
+			else
+			{
+				$arrData['options'] = array();
+				$arrData['reference'] = array();
+				$arrOptions = deserialize($objAttributes->options);
+				
+				if (is_array($arrOptions) && count($arrOptions))
+				{
+					$strGroup = '';
+					foreach ($arrOptions as $option)
+					{
+						if (!strlen($option['value']))
+						{
+							$arrData['eval']['includeBlankOption'] = true;
+							$arrData['eval']['blankOptionLabel'] = $option['label'];
+							continue;
+						}
+						elseif ($option['group'])
+						{
+							$strGroup = $option['value'];
+							continue;
+						}
+						
+						if (strlen($strGroup))
+						{
+							$arrData['options'][$strGroup][$option['value']] = $option['label'];
+						}
+						else
+						{
+							$arrData['options'][$option['value']] = $option['label'];
+						}
+						
+						$arrData['reference'][$option['value']] = $option['label'];
+					}
+				}
+			}
+			
+			unset($arrData['eval']['options']);
 			
 			if (is_array($GLOBALS['ISO_ATTR'][$objAttributes->type]['callback']) && count($GLOBALS['ISO_ATTR'][$objAttributes->type]['callback']))
 			{

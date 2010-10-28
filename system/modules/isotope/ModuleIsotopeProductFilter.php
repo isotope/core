@@ -270,6 +270,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 	 * @param string $strType
 	 * @return array
 	 */
+	//!@todo "integer", "decimal" and "datetime" are no longer available
 	private function generateSortingDirections($strType)
 	{
 		switch($strType)
@@ -297,7 +298,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		
 		$arrAttributeData = $this->getProductAttributeData($intFieldID);
 	
-		$arrOptionList = deserialize($arrAttributeData['option_list']);
+		$arrOptionList = deserialize($arrAttributeData['options']);
 		
 		if(!is_array($arrOptionList) || !count($arrOptionList))
 		{

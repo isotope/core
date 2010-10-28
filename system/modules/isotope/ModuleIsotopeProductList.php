@@ -253,18 +253,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			{
 				if(strlen($row))
 				{
-					$arrRow = explode(" ", $row);
-					
-					switch($arrRow[0])
-					{
-						case 'price':		//Workaround to deal with price field being VARCHAR... check on this with Andreas... should be field type decimal.
-							$arrOrderBySQLWithParentTable[] = "CAST(p." . $arrRow[0] . " AS decimal) " . $arrRow[1];
-							break;
-							
-						default:
-							$arrOrderBySQLWithParentTable[] = "p." . $row;
-							break;
-					}
+					$arrOrderBySQLWithParentTable[] = "p." . $row;
 				}
 			}
 			

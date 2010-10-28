@@ -840,7 +840,6 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			));
 		}
 		
-		
 		$arrSurcharges = array();
 		foreach( $this->Isotope->Cart->getSurcharges() as $arrSurcharge )
 		{
@@ -852,7 +851,6 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				'tax_id'		=> $arrSurcharge['tax_id'],
 			);
 		}
-		
 		
 		$objTemplate->info = $this->getCheckoutInfo();
 		$objTemplate->products = $arrProductData;
@@ -1322,7 +1320,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	
 	private function getProductVariantValue($arrProducts)
 	{
-		$objVariantAttributes = $this->Database->prepare("SELECT name, field_name FROM tl_iso_attributes WHERE add_to_product_variants=?")
+		$objVariantAttributes = $this->Database->prepare("SELECT name, field_name FROM tl_iso_attributes WHERE variant_option=?")
 									  				->execute(1);
 									  				
 		if(!$objVariantAttributes->numRows)
