@@ -112,7 +112,7 @@ class ModuleIsotopeSetup extends BackendModule
 
 		$strTable = $this->Input->get('table');
 		
-		if ($strTable == '')
+		if ($strTable == '' && $this->Input->get('mod') == '')
 		{
 			$this->redirect($this->addToUrl('table='.$arrModule['tables'][0]));
 		}
