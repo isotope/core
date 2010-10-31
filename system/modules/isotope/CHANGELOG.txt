@@ -13,6 +13,7 @@ Version 0.3.beta1
 Version 0.2.rc1
 ------------------------------
 - Added: "Default" option for tax class
+- Added: New mode setting for rules max/min quantity
 - Improved: Replace InsertTags in ##cart_text## and ##cart_html## templates
 - Improved: Only show price for payment and shipping module if greater 0
 - Improved: Hide "Default address" checkboxes for guests
