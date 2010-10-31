@@ -136,7 +136,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 		'radiovariant_option'		=> '{attribute_legend},name,field_name,type,legend,variant_option;{description_legend:hide},description;{options_legend},options',
 		'checkbox'					=> '{attribute_legend},name,field_name,type,legend,is_customer_defined;{description_legend:hide},description;{options_legend},options,foreignKey;{config_legend},mandatory;{search_filters_legend},is_filterable,is_order_by_enabled',
 		'conditionalselect'			=> '{attribute_legend},name,field_name,type,legend,is_customer_defined;{description_legend:hide},description;{options_legend},options,foreignKey;{config_legend},conditionField,mandatory,multiple;{search_filters_legend},is_filterable,is_order_by_enabled',
-		'mediaManager'				=> '{attribute_legend},name,field_name,type,legend,is_customer_defined;{description_legend:hide},description;{config_legend},gallery,extensions,mandatory',
+		'mediaManager'				=> '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},gallery,extensions,mandatory',
     ),
 
     // Subpalettes
