@@ -100,6 +100,14 @@ class IsotopeFrontend extends Frontend
 					
 					return $intCount == 1 ? ('('.$GLOBALS['TL_LANG']['ISO']['productSingle'].')') : sprintf(('('.$GLOBALS['TL_LANG']['ISO']['productMultiple'].')'), $intCount);
 					break;
+				
+				case 'cart_total':
+					return $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->grandTotal);
+					break;
+					
+				case 'cart_subtotal':
+					return $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->subTotal);
+					break;
 			}
 			
 			return '';
