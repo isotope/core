@@ -333,7 +333,7 @@ class IsotopeRules extends Controller
 		}
 		else
 		{
-			$arrProcedures[] = "memberRestrictions='none' OR memberRestrictions='guests'";
+			$arrProcedures[] = "(memberRestrictions='none' OR memberRestrictions='guests')";
 		}
 		
 		
