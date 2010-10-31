@@ -63,7 +63,7 @@ class IsotopeProduct extends Controller
 	 * Product Options
 	 * @var array
 	 */
-	protected $arrOptions = array();
+	protected $arrOptions;
 
 	/**
 	 * Downloads for this product
@@ -103,7 +103,7 @@ class IsotopeProduct extends Controller
 	 * Construct the object
 	 */
 	//!@todo arrData['type'] is not available if recovering from non-existing product
-	public function __construct($arrData, $blnLocked=false)
+	public function __construct($arrData, $arrOptions=null, $blnLocked=false)
 	{
 		parent::__construct();
 		$this->import('Database');
@@ -120,12 +120,13 @@ class IsotopeProduct extends Controller
 			$this->arrData = $arrData;
 			
 		}
-
+		
 		$this->arrType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id=".$this->arrData['type'])->fetchAssoc();
 		$this->arrAttributes = deserialize($this->arrType['attributes'], true);
 		$this->arrCache['list_template'] = $this->arrType['list_template'];
 		$this->arrCache['reader_template'] = $this->arrType['reader_template'];
 		$this->arrVariantAttributes = $this->arrType['variants'] ? deserialize($this->arrType['variant_attributes']) : array();
+		$this->arrOptions = is_array($arrOptions) ? $arrOptions : array();
 		
 		// Remove attributes not in this product type
 		foreach( $this->arrData as $attribute => $value )
@@ -208,20 +209,16 @@ class IsotopeProduct extends Controller
 				// Initialize attribute
 				if (!isset($this->arrCache[$strKey]))
 				{
-					if (isset($GLOBALS['TL_DCA'][$this->strTable]['fields'][$strKey]))
+					if (is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$strKey]) && $GLOBALS['TL_DCA'][$this->strTable]['fields'][$strKey]['inputType'] == 'mediaManager')
 					{
-						switch( $GLOBALS['TL_DCA'][$this->strTable]['fields'][$strKey]['inputType'] )
-						{
-							case 'mediaManager':
-								$strClass = $GLOBALS['ISO_GAL'][(strlen($GLOBALS['TL_DCA'][$this->strTable]['fields'][$strKey]['attributes']['gallery']) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$strKey]['attributes']['gallery'] : $this->Isotope->Config->gallery)];
-								
-								if (!strlen($strClass) || !$this->classFileExists($strClass))
-									$strClass = 'IsotopeGallery';
-									
-								$varValue = new $strClass($strKey.'_'.($this->pid ? $this->pid : $this->id), deserialize($this->arrData[$strKey]));
-								$varValue->product_id = ($this->pid ? $this->pid : $this->id);
-								$varValue->href_reader = $this->href_reader;
-						}
+						$strClass = $GLOBALS['ISO_GAL'][(strlen($GLOBALS['TL_DCA'][$this->strTable]['fields'][$strKey]['attributes']['gallery']) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$strKey]['attributes']['gallery'] : $this->Isotope->Config->gallery)];
+						
+						if (!strlen($strClass) || !$this->classFileExists($strClass))
+							$strClass = 'IsotopeGallery';
+							
+						$varValue = new $strClass($strKey.'_'.($this->pid ? $this->pid : $this->id), deserialize($this->arrData[$strKey]));
+						$varValue->product_id = ($this->pid ? $this->pid : $this->id);
+						$varValue->href_reader = $this->href_reader;
 					}
 
 					switch( $strKey )
@@ -311,9 +308,13 @@ class IsotopeProduct extends Controller
 		
 		$arrOptions = array();
 		
-		foreach( $this->arrOptions as $name => $value )
+		foreach( $this->arrOptions as $field => $value )
 		{
-			$arrOptions[] = $this->getProductOptionValues($name, $value);
+			$arrOptions[] = array
+			(
+				'label'		=> $this->Isotope->formatLabel('tl_iso_products', $field),
+				'value'		=> $this->Isotope->formatValue('tl_iso_products', $field, $value),
+			);
 		}
 		
 		return $arrOptions;
@@ -361,12 +362,12 @@ class IsotopeProduct extends Controller
 		
 		foreach( $arrAttributes as $attribute => $varValue )
 		{
-			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['is_customer_defined'] || $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['add_to_product_variants'])
+			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['is_customer_defined'] || $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
 			{
 				$objTemplate->hasOptions = true;
 				$arrProductOptions[$attribute] = $this->generateProductOptionWidget($attribute);
 				
-				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['add_to_product_variants'])
+				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
 				{
 					$arrAjaxOptions[] = $attribute;
 				}
@@ -375,9 +376,9 @@ class IsotopeProduct extends Controller
 			{
 				$objTemplate->$attribute = $this->generateAttribute($attribute, $varValue);
 			}
-        }
-        
-        // Buttons
+		}
+		
+		// Buttons
 		$arrButtons = array();
 		if (isset($GLOBALS['TL_HOOKS']['isoButtons']) && is_array($GLOBALS['TL_HOOKS']['isoButtons']))
 		{
@@ -409,8 +410,7 @@ class IsotopeProduct extends Controller
 		$objTemplate->buttons = $arrButtons;
 		$objTemplate->quantityLabel = $GLOBALS['TL_LANG']['MSC']['quantity'];
 		$objTemplate->useQuantity = $objModule->iso_use_quantity;
-			
-
+		
 		$objTemplate->raw = $this->arrData;
 		$objTemplate->href_reader = $this->href_reader;
 		
@@ -429,11 +429,11 @@ class IsotopeProduct extends Controller
 		// HOOK for altering product data before output
 		if (isset($GLOBALS['TL_HOOKS']['iso_generateProduct']) && is_array($GLOBALS['TL_HOOKS']['iso_generateProduct']))
 		{
-			  foreach ($GLOBALS['TL_HOOKS']['iso_generateProduct'] as $callback)
-			  {
+			foreach ($GLOBALS['TL_HOOKS']['iso_generateProduct'] as $callback)
+			{
 				$this->import($callback[0]);
 				$objTemplate = $this->$callback[0]->$callback[1]($objTemplate, $this);
-			  }
+			}
 		}
 
 		return $objTemplate->parse();
@@ -453,7 +453,7 @@ class IsotopeProduct extends Controller
 		
 		foreach( $arrAttributes as $attribute => $varValue )
 		{
-			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['add_to_product_variants'])
+			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
 			{
 				$arrOptions[] = array
 				(
@@ -491,9 +491,9 @@ class IsotopeProduct extends Controller
 					);
 				}
 			}
-        }
-        
-        // HOOK for altering product data before output
+		}
+		
+		// HOOK for altering product data before output
 		if (isset($GLOBALS['TL_HOOKS']['iso_generateAjaxProduct']) && is_array($GLOBALS['TL_HOOKS']['iso_generateAjaxProduct']))
 		{
 			foreach ($GLOBALS['TL_HOOKS']['iso_generateAjaxProduct'] as $callback)
@@ -502,78 +502,28 @@ class IsotopeProduct extends Controller
 				$arrOptions = $this->$callback[0]->$callback[1]($arrOptions, $this);
 			}
 		}
-     
-        return $arrOptions;
+		
+		return $arrOptions;
 	}
 	
 	
 	protected function generateAttribute($attribute, $varValue)
 	{
-		$strBuffer = $varValue;
 		$arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute];
 		
+		// Return the IsotopeGallery object
 		if ($arrData['inputType'] == 'mediaManager')
 		{
-			// Return the IsotopeGallery object
 			return $this->$attribute;
 		}
-		elseif (in_array($arrData['inputType'], array('select', 'radio', 'checkbox')))
-		{
-			if($arrData['attributes']['use_alternate_source'])
-			{																											
-				$objData = $this->Database->prepare("SELECT * FROM " . $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['list_source_table'] . " WHERE id=?")
-										  ->limit(1)									 
-										  ->execute($varValue);
-				
-				if ($objData->numRows)
-				{
-					//!@todo this is not going to work, whats this?
-					$strBuffer = array
-					(
-						'id'	=> $varValue,
-						'raw'	=> $objData->fetchAssoc(),
-					);
-				}
-			}
-			else
-			{
-				//check for a related label to go with the value.
-				$arrOptions = deserialize($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['option_list']);
-				$varValues = deserialize($varValue);
-				$arrLabels = array();
-				
-				if (is_array($arrOptions) && count($arrOptions))
-				{
-					foreach($arrOptions as $option)
-					{
-						if(is_array($varValues))
-						{
-							if(in_array($option['value'], $varValues))
-							{
-								$arrLabels[] = $option['label'];
-							}
-						}
-						else
-						{	
-							if($option['value']===$v)
-							{
-								$arrLabels[] = $option['label'];
-							}
-						}
-					}
-				}
-				
-				if($arrLabels)
-				{									
-					$strBuffer = join(',', $arrLabels); 
-				}
-			}
-		}
-		elseif ($arrData['inputType'] == 'textarea' && $arrData['eval']['rte'] == '')				
+		
+		$strBuffer = $this->Isotope->formatValue('tl_iso_products', $attribute, $varValue);
+		
+		if ($arrData['inputType'] == 'textarea' && $arrData['eval']['rte'] == '')
 		{
 			$strBuffer = nl2br($varValue);
 		}
-		elseif ($attribute == 'price')																																		
+		elseif ($attribute == 'price')
 		{
 			if ($this->arrType['variants'] && $this->arrData['pid'] == 0 && $this->arrCache['low_price'])
 			{
@@ -629,7 +579,7 @@ class IsotopeProduct extends Controller
 		$arrData['eval']['mandatory'] = ($arrData['eval']['mandatory'] && !$blnAjax) ? true : false;
 		$arrData['eval']['required'] = $arrData['eval']['mandatory'];
 		
-		if ($arrData['attributes']['add_to_product_variants'] && is_array($arrData['options']))
+		if ($arrData['attributes']['variant_option'] && is_array($arrData['options']))
 		{
 			if ($arrData['inputType'] == 'select')
 			{
@@ -642,7 +592,7 @@ class IsotopeProduct extends Controller
 			
 			foreach( $this->arrOptions as $name => $value )
 			{
-				if ($name != $strField && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$name]['attributes']['add_to_product_variants'] && strlen($value))
+				if ($name != $strField && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$name]['attributes']['variant_option'] && strlen($value))
 				{
 					$arrSearch[$name] = $value;
 				}
@@ -726,116 +676,6 @@ class IsotopeProduct extends Controller
 	}
 	
 	
-	/**
-	 * Parse options for cart/checkout listing
-	 */
-	//!@todo I dislike the listing approach, we might find a better solution
-	protected function getProductOptionValues($strField, $varValue)
-	{	
-		$arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strField];
-		
-		switch($arrData['inputType'])
-		{
-			case 'radio':
-			case 'checkbox':
-			case 'select':
-				
-				//get the actual labels, not the key reference values.
-				$arrOptions = $this->getOptionList($arrData['attributes']);
-				
-				if(is_array($varValue))
-				{
-					foreach($varValue as $value)
-					{
-						foreach($arrOptions as $option)
-						{
-							if($option['value']==$value)
-							{
-								$varOptionValues[] = $option['label'];
-								break;
-							}
-						}
-					}	
-				}
-				else
-				{
-					foreach($arrOptions as $option)
-					{
-						if($option['value']==$varValue)
-						{
-							$varOptionValues[] = $option['label'];
-							break;
-						}
-					}
-				}
-				break;
-				
-			default:
-			
-				//these values are not by reference - they were directly entered.  
-				if (is_array($varValue))
-				{
-					foreach($varValue as $value)
-					{
-						$varOptionValues[] = $value;
-					}
-				}
-				else
-				{
-					if (strlen($varValue) && in_array($arrData['eval']['rgxp'], array('date', 'time', 'datim')))
-					{
-						$varValue = $this->parseDate($GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'].'Format'], $varValue);
-					}
-				  
-					$varOptionValues[] = $varValue;
-				}
-				
-				break;
-		
-		}		
-		
-		$arrValues = array
-		(
-			'name'		=> $arrData['label'][0],
-			'values'	=> $varOptionValues			
-		);
-		
-		return $arrValues;
-	}
-
-
-	protected function getOptionList($arrAttributeData)
-	{
-		if($arrAttributeData['use_alternate_source']==1)
-		{
-			if(strlen($arrAttributeData['list_source_table']) > 0 && strlen($arrAttributeData['list_source_field']) > 0)
-			{
-				//$strForeignKey = $arrAttributeData['list_source_table'] . '.' . $arrAttributeData['list_source_field'];
-				$objOptions = $this->Database->execute("SELECT id, " . $arrAttributeData['list_source_field'] . " FROM " . $arrAttributeData['list_source_table']);
-				
-				if(!$objOptions->numRows)
-				{
-					return array();
-				}
-				
-				while($objOptions->next())
-				{
-					$arrValues[] = array
-					(
-						'value'		=> $objOptions->id,
-						'label'		=> $objOptions->$arrAttributeData['list_source_field']
-					);
-				}
-			}
-		}
-		else
-		{
-			$arrValues = deserialize($arrAttributeData['option_list']);
-		}
-		
-		return $arrValues;
-	}
-	
 	
 	/**
 	 * Load data of a product variant if the options match one
@@ -849,7 +689,7 @@ class IsotopeProduct extends Controller
 		
 		foreach( $this->arrAttributes as $attribute )
 		{
-			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['add_to_product_variants'])
+			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
 			{
 				$this->generateProductOptionWidget($attribute, true);
 				$arrOptions[$attribute] = $this->arrOptions[$attribute];
@@ -901,7 +741,7 @@ class IsotopeProduct extends Controller
 		// Load variant options
 		foreach( $this->arrAttributes as $attribute )
 		{
-			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['add_to_product_variants'])
+			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
 			{
 				$this->arrOptions[$attribute] = $arrData[$attribute];
 			}

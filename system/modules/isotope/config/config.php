@@ -159,17 +159,10 @@ $GLOBALS['FE_MOD']['isotope'] = array
 
 
 /**
- * Content elements
- */
-$GLOBALS['TL_CTE']['links']['attributeLinkRepeater'] = 'ContentAttributeLinkRepeater';
-
-
-/**
  * Backend form fields
  */
 $GLOBALS['BE_FFL']['mediaManager']			= 'MediaManager';
 $GLOBALS['BE_FFL']['attributeWizard']		= 'AttributeWizard';
-$GLOBALS['BE_FFL']['optionDataWizard']		= 'OptionDataWizard';
 $GLOBALS['BE_FFL']['surchargeWizard']		= 'SurchargeWizard';
 $GLOBALS['BE_FFL']['variantWizard']			= 'VariantWizard';
 $GLOBALS['BE_FFL']['inheritCheckbox']		= 'InheritCheckBox';
@@ -303,60 +296,29 @@ $GLOBALS['ISO_ATTR'] = array
 	(
 		'sql'		=> "varchar(255) NOT NULL default ''",
 	),
-	'integer' => array
-	(
-		'frontend'	=> 'text',
-		'backend'	=> 'text',
-		'sql'		=> "int(10) NULL default NULL",
-	),
-	'decimal' => array
-	(
-		'frontend'	=> 'text',
-		'backend'	=> 'text',
-		'sql'		=> "double NULL default NULL",
-	),
 	'textarea' => array
 	(
 		'sql'		=> "text NULL",
 	),
-	'datetime' => array
-	(
-		'frontend'	=> 'text',
-		'backend'	=> 'text',
-		'sql'		=> "int(10) unsigned NOT NULL default '0'",
-	),
 	'select' => array
 	(
-		'backend'	=> 'optionDataWizard',
 		'sql'		=> "blob NULL",
-		'callback'	=> array(array('Isotope', 'mergeOptionData')),
 	),
-	'conditionalselect' => array
+	'radio' => array
 	(
-		'backend'	=> 'optionDataWizard',
 		'sql'		=> "blob NULL",
-		'callback'	=> array(array('Isotope', 'mergeConditionalOptionData')),
 	),
 	'checkbox' => array
 	(
 		'sql'		=> "blob NULL",
 	),
-	'options' => array
+	'conditionalselect' => array
 	(
-		'frontend'	=> 'radio',
-		'backend'	=> 'radio',
 		'sql'		=> "blob NULL",
+		'callback'	=> array(array('Isotope', 'mergeConditionalOptionData')),
 	),
-	'file' => array
+	'mediaManager' => array
 	(
-		'frontend'	=> 'mediaManager',
-		'backend'	=> 'mediaManager',
-		'sql'		=> "text NULL",
-	),
-	'media' => array
-	(
-		'class'		=> 'IsotopeGallery',
-		'backend'	=> 'mediaManager',
 		'sql'		=> "blob NULL",
 	),
 );

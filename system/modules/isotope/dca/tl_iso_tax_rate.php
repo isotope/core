@@ -139,13 +139,13 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['name'],
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>255, 'mandatory'=>true, 'tl_class'=>'w50'),
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
 		),
 		'label' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['label'],
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>255, 'mandatory'=>true, 'tl_class'=>'w50'),
+			'eval'                    => array('maxlength'=>255, 'tl_class'=>'w50'),
 		),
 		'address' => array
 		(

@@ -4,14 +4,22 @@ Isotope eCommerce Changelog
 
 Version 0.2.rc1
 ------------------------------
+- Added: "Default" option for tax class
+- Added: New mode setting for rules max/min quantity
 - Improved: Replace InsertTags in ##cart_text## and ##cart_html## templates
 - Improved: Only show price for payment and shipping module if greater 0
 - Improved: Hide "Default address" checkboxes for guests
+- Improved: Cleaned and optimized attribute configuration/setup
 - Fixed: FE_USER_LOGGED_IN might be true but no user available (Ticket #213)
 - Fixed: Email language was not correctly detected under certain circumstances
 - Fixed: Potential database caching issue in ePay payment modules
 - Fixed: images did not change on ajax update
 - Fixed: added default palette for checkout module if no checkout method (guest/member) is selected
+- Fixed: tax total was not rounded according to store config
+- Fixed: PayPal Standard payment charges included taxes twice
+- Fixed: Missing argument 2 for IsotopeRules::findCoupon()
+- Fixed: Incorrect default value for tl_iso_products.shipping_weight
+- Fixed various issues with PayPal sandbox processing
 
 Version 0.2.beta2 (2010-09-27)
 ------------------------------

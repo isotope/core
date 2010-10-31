@@ -27,48 +27,34 @@
 
 
 /**
- * Content Elements
- */
-$GLOBALS['TL_LANG']['CTE']['attributeLinkRepeater']   = array('Attribute Filter Lister', 'This element generates a collection of hyperlinks from a selected product attribute filter.');
-
-
-/**
  * Errors
  */
-$GLOBALS['TL_LANG']['ERR']['systemColumn'] = 'Name `%s` is reserved for system use. Please choose different name.';
-$GLOBALS['TL_LANG']['ERR']['missingButtonTemplate'] = 'You must specify a template for the button "%s".';
-
-$GLOBALS['TL_LANG']['ERR']['order_conditions'] = 'You must accept the terms & conditions to continue';
-$GLOBALS['TL_LANG']['ERR']['noStoreConfigurationSet'] = 'No store configuration available';
-$GLOBALS['TL_LANG']['ERR']['noDefaultStoreConfiguration'] = 'Please create a default store configuration.';
-
-$GLOBALS['TL_LANG']['ERR']['productNameMissing']		= '<no product name found>';
-$GLOBALS['TL_LANG']['ERR']['noSubProducts']				= 'no sub-products found';
-$GLOBALS['TL_LANG']['ERR']['emptyOrderHistory']			= 'You have not yet placed any orders.';
-$GLOBALS['TL_LANG']['ERR']['orderNotFound']				= 'The requested order was not found.';
-$GLOBALS['TL_LANG']['ERR']['missingCurrencyFormat']		= 'Currency formatting not found';
-$GLOBALS['TL_LANG']['ERR']['searchNotEnabled']			= 'Search functionality is not enabled!';
-$GLOBALS['TL_LANG']['ERR']['isoLoginRequired']			= 'You must be logged in to checkout.';
-$GLOBALS['TL_LANG']['ERR']['mandatoryOption']			= 'Please select an option.';
-$GLOBALS['TL_LANG']['ERR']['noAddressData']				= 'Address data is required to calculate taxes!';
-$GLOBALS['TL_LANG']['ERR']['variantDuplicate']			= 'A variant with this attributes is already available. Please select another combination.';
-$GLOBALS['TL_LANG']['ERR']['breadcrumbEmpty']			= 'The filtered category is empty, all products are now showing.';
-
-$GLOBALS['TL_LANG']['ERR']['calc']						= 'Please enter whole numbers or decimals signed with + or - and optionally with a percentage.';
-//Checkout Errors
-$GLOBALS['TL_LANG']['ERR']['orderFailed']			= 'Checkout failed. Please try again or choose another payment method.';
-$GLOBALS['TL_LANG']['ERR']['specifyBillingAddress'] = 'A billing address was not fuond.  Please specify a billing address.';
-$GLOBALS['TL_LANG']['ERR']['cc_num']				= 'Please provide a valid credit card number.';
-$GLOBALS['TL_LANG']['ERR']['cc_type']				= 'Please select a credit card type.';
-$GLOBALS['TL_LANG']['ERR']['cc_exp']				= 'Please provide a credit card expiration date in the mm/yy format.';
-$GLOBALS['TL_LANG']['ERR']['cc_ccv']				= 'Please provide a card code verification number (3 or 4 digits found on the front or back of the card).';
-$GLOBALS['TL_LANG']['ERR']['cc_match']				= 'Your credit card number does not match the selected credit card type.';
-
-//Address Book Errors
-$GLOBALS['TL_LANG']['ERR']['addressDoesNotExist'] = 'This address does not exist in your address book.';
-$GLOBALS['TL_LANG']['ERR']['noAddressBookEntries'] = 'You have no address book entries.';
-
-
+$GLOBALS['TL_LANG']['ERR']['systemColumn']					= 'Name `%s` is reserved for system use. Please choose different name.';
+$GLOBALS['TL_LANG']['ERR']['missingButtonTemplate']			= 'You must specify a template for the button "%s".';
+$GLOBALS['TL_LANG']['ERR']['order_conditions']				= 'You must accept the terms & conditions to continue';
+$GLOBALS['TL_LANG']['ERR']['noStoreConfigurationSet']		= 'No store configuration available';
+$GLOBALS['TL_LANG']['ERR']['noDefaultStoreConfiguration']	= 'Please create a default store configuration.';
+$GLOBALS['TL_LANG']['ERR']['productNameMissing']			= '<no product name found>';
+$GLOBALS['TL_LANG']['ERR']['noSubProducts']					= 'no sub-products found';
+$GLOBALS['TL_LANG']['ERR']['emptyOrderHistory']				= 'You have not yet placed any orders.';
+$GLOBALS['TL_LANG']['ERR']['orderNotFound']					= 'The requested order was not found.';
+$GLOBALS['TL_LANG']['ERR']['missingCurrencyFormat']			= 'Currency formatting not found';
+$GLOBALS['TL_LANG']['ERR']['searchNotEnabled']				= 'Search functionality is not enabled!';
+$GLOBALS['TL_LANG']['ERR']['isoLoginRequired']				= 'You must be logged in to checkout.';
+$GLOBALS['TL_LANG']['ERR']['mandatoryOption']				= 'Please select an option.';
+$GLOBALS['TL_LANG']['ERR']['noAddressData']					= 'Address data is required to calculate taxes!';
+$GLOBALS['TL_LANG']['ERR']['variantDuplicate']				= 'A variant with this attributes is already available. Please select another combination.';
+$GLOBALS['TL_LANG']['ERR']['breadcrumbEmpty']				= 'The filtered category is empty, all products are now showing.';
+$GLOBALS['TL_LANG']['ERR']['discount']						= 'Please enter whole numbers or decimals signed with + or - and optionally with a percentage.';
+$GLOBALS['TL_LANG']['ERR']['orderFailed']					= 'Checkout failed. Please try again or choose another payment method.';
+$GLOBALS['TL_LANG']['ERR']['specifyBillingAddress'] 		= 'A billing address was not fuond.  Please specify a billing address.';
+$GLOBALS['TL_LANG']['ERR']['cc_num']						= 'Please provide a valid credit card number.';
+$GLOBALS['TL_LANG']['ERR']['cc_type']						= 'Please select a credit card type.';
+$GLOBALS['TL_LANG']['ERR']['cc_exp']						= 'Please provide a credit card expiration date in the mm/yy format.';
+$GLOBALS['TL_LANG']['ERR']['cc_ccv']						= 'Please provide a card code verification number (3 or 4 digits found on the front or back of the card).';
+$GLOBALS['TL_LANG']['ERR']['cc_match']						= 'Your credit card number does not match the selected credit card type.';
+$GLOBALS['TL_LANG']['ERR']['addressDoesNotExist']			= 'This address does not exist in your address book.';
+$GLOBALS['TL_LANG']['ERR']['noAddressBookEntries']			= 'You have no address book entries.';
 
 
 /**
@@ -82,14 +68,14 @@ $GLOBALS['TL_LANG']['MSC']['editingLanguage']		= 'ATTENTION: You are editing lan
 $GLOBALS['TL_LANG']['MSC']['deleteLanguageConfirm']	= 'Are you sure you want to delete this language? There is no undo!';
 $GLOBALS['TL_LANG']['MSC']['undefinedLanguage']		= 'undefined';
 $GLOBALS['TL_LANG']['MSC']['noSurcharges']			= 'No surcharges have been found.';
-$GLOBALS['TL_LANG']['MSC']['ajaxLoadingMessage'] = 'Loading...';
-$GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline']		= 'Order no %s / %s';
-$GLOBALS['TL_LANG']['MSC']['payment_processing'] = 'Your payment is being processed. Please be patient...';
-$GLOBALS['TL_LANG']['MSC']['authorizedotnet_process_failed'] = 'Your payment could not be processed.<br /><br />Reason: %s';
-$GLOBALS['TL_LANG']['MSC']['mmNoImagesUploaded'] = 'No images uploaded.';
-$GLOBALS['TL_LANG']['MSC']['mmUploadImage'] = 'Upload additional image';
-$GLOBALS['TL_LANG']['MSC']['quantity'] = 'Quantity';
-$GLOBALS['TL_LANG']['MSC']['order_conditions'] = 'I agree to the terms & conditions';
+$GLOBALS['TL_LANG']['MSC']['ajaxLoadingMessage']	= 'Loading...';
+$GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline']	= 'Order no %s / %s';
+$GLOBALS['TL_LANG']['MSC']['payment_processing']	= 'Your payment is being processed. Please be patient...';
+$GLOBALS['TL_LANG']['MSC']['authorizedotnet_process_failed']	= 'Your payment could not be processed.<br /><br />Reason: %s';
+$GLOBALS['TL_LANG']['MSC']['mmNoUploads']			= 'No files uploaded.';
+$GLOBALS['TL_LANG']['MSC']['mmUpload']				= 'Upload new file';
+$GLOBALS['TL_LANG']['MSC']['quantity']				= 'Quantity';
+$GLOBALS['TL_LANG']['MSC']['order_conditions']		= 'I agree to the terms & conditions';
 
 $GLOBALS['TL_LANG']['MSC']['defaultSearchText'] = 'search products';
 $GLOBALS['TL_LANG']['MSC']['blankSelectOptionLabel'] = '-';
@@ -321,19 +307,13 @@ $GLOBALS['TL_LANG']['WGT']['grain']					= array('Grain', '1/7000 pound; equals a
 /**
  * Attributes
  */
-$GLOBALS['TL_LANG']['ATTR']['text']					= 'Text (up to 255 characters)';
-$GLOBALS['TL_LANG']['ATTR']['integer']				= 'Integer/Whole Numbers';
-$GLOBALS['TL_LANG']['ATTR']['decimal']				= 'Decimal';
-$GLOBALS['TL_LANG']['ATTR']['textarea']				= 'Long Text (more than 255 characters)';
-$GLOBALS['TL_LANG']['ATTR']['datetime']				= 'Date/Time value';
-$GLOBALS['TL_LANG']['ATTR']['select']				= 'Select List';
-$GLOBALS['TL_LANG']['ATTR']['checkbox']				= 'Checkbox';
-$GLOBALS['TL_LANG']['ATTR']['options']				= 'Option List';
-$GLOBALS['TL_LANG']['ATTR']['file']					= 'File Attachment';
-$GLOBALS['TL_LANG']['ATTR']['media']				= 'Media (Images, Movies, Mp3s, etc.)';
-$GLOBALS['TL_LANG']['ATTR']['label']				= 'Label/Fixed Display';
-$GLOBALS['TL_LANG']['ATTR']['input']				= 'Accept Input From Customer';
-$GLOBALS['TL_LANG']['ATTR']['conditionalselect']	= 'Conditional Select Menu';
+$GLOBALS['TL_LANG']['ATTR']['text']					= array('Text field', 'A single-line input field for a short or medium text.');
+$GLOBALS['TL_LANG']['ATTR']['textarea']				= array('Textarea', 'A multi-line input field for a medium or long text.');
+$GLOBALS['TL_LANG']['ATTR']['select']				= array('Select menu', 'A single- or multi-line drop-down menu.<br /><i>This field type is suitable for product variants.</i>');
+$GLOBALS['TL_LANG']['ATTR']['radio']				= array('Radio button menu', 'A list of multiple options from which one can be selected.<br /><i>This field type is suitable for product variants.</i>');
+$GLOBALS['TL_LANG']['ATTR']['checkbox']				= array('Checkbox menu', 'A list of multiple options from which any can be selected.');
+$GLOBALS['TL_LANG']['ATTR']['mediaManager']			= array('Media Manager', 'Upload images and other files to the Isotope eCommerce file system. Output is processed trough an IsotopeGallery class.');
+$GLOBALS['TL_LANG']['ATTR']['conditionalselect']	= array('Conditional Select-Menu', 'show select-options based on another select menu.');
 
 
 /**

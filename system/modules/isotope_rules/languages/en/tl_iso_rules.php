@@ -40,6 +40,7 @@ $GLOBALS['TL_LANG']['tl_iso_rules']['limitPerMember']		= array('Uses per member'
 $GLOBALS['TL_LANG']['tl_iso_rules']['limitPerConfig']		= array('Uses per store config', 'This will be used to see if the rule has already been redeemed.  If this is set to 0, it can be used unlimited times for each store config.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['minItemQuantity']		= array('Minimum item quantity','Please specify a minimum quantity of a an item this rule applies to.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['maxItemQuantity']		= array('Maximum item quantity','Please specify a maximum quantity of a single item this rule applies to.');
+$GLOBALS['TL_LANG']['tl_iso_rules']['quantityMode']			= array('Quantity calculation mode', 'Select a calculation mode for min/max quantity.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['startDate']      		= array('Start date', 'If desired, please specify the date this rule will become eligible on.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['endDate']        		= array('End date', 'If desired, please specify the date this rule will no longer be eligible on.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['startTime']			= array('Start time','If desired, please specify the time this rule will become eligible at.');
@@ -74,6 +75,7 @@ $GLOBALS['TL_LANG']['tl_iso_rules']['type']['product']						= 'Product';
 $GLOBALS['TL_LANG']['tl_iso_rules']['type']['cart']							= 'Cart';
 
 $GLOBALS['TL_LANG']['tl_iso_rules']['memberRestrictions']['none']			= 'No restrictions';
+$GLOBALS['TL_LANG']['tl_iso_rules']['memberRestrictions']['guests']			= 'Guests Only';
 $GLOBALS['TL_LANG']['tl_iso_rules']['memberRestrictions']['groups']			= 'Specific groups';
 $GLOBALS['TL_LANG']['tl_iso_rules']['memberRestrictions']['members']		= 'Specific members';
 
@@ -89,6 +91,10 @@ $GLOBALS['TL_LANG']['tl_iso_rules']['ruleRestrictions']['rules']			= 'Exclude ce
 $GLOBALS['TL_LANG']['tl_iso_rules']['applyTo']['product']					= 'to each product';
 $GLOBALS['TL_LANG']['tl_iso_rules']['applyTo']['item']						= 'to each unit of a product';
 $GLOBALS['TL_LANG']['tl_iso_rules']['applyTo']['cart']						= 'to the cart subtotal';
+
+$GLOBALS['TL_LANG']['tl_iso_rules']['quantityMode']['product_quantity']		= 'Quantity of product in cart';
+$GLOBALS['TL_LANG']['tl_iso_rules']['quantityMode']['cart_products']		= 'Total products in cart';
+$GLOBALS['TL_LANG']['tl_iso_rules']['quantityMode']['cart_items']			= 'Total quantity in cart';
 
 
 /**

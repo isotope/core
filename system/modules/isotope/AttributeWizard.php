@@ -286,7 +286,7 @@ class AttributeWizard extends Widget
 			if (is_array($arrData['attributes']) && strlen($arrData['attributes']['legend']) && (!is_array($this->arrDisabledFields) || !in_array($field, $this->arrDisabledFields)))
 			{
 				// Variant options are not available
-				if ($this->variants && ($arrData['attributes']['add_to_product_variants'] || $arrData['attributes']['inherit']))
+				if ($this->variants && ($arrData['attributes']['variant_option'] || $arrData['attributes']['inherit']))
 					continue;
 					
 				$arrAttributes[$arrData['attributes']['legend']][] = array

@@ -78,6 +78,17 @@ class MediaManager extends Widget implements uploadable
 		{			
 			if ($this->mandatory)
 			{
+				if (is_array($this->varValue))
+				{
+					foreach( $this->varValue as $file )
+					{
+						if (is_file(TL_ROOT . '/isotope/' . substr($file['src'], 0, 1) . '/' . $file['src']))
+						{
+							return;
+						}
+					}
+				}
+				
 				$this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['mandatory'], $this->strLabel));
 			}
 
@@ -196,10 +207,9 @@ class MediaManager extends Widget implements uploadable
 	{
 		$this->import('Database');
 		
-		$GLOBALS['TL_CSS'][] = 'plugins/slimbox/css/slimbox.css';
-		$GLOBALS['TL_JAVASCRIPT'][] = 'plugins/slimbox/js/slimbox.js';
-		$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/html/slimbox_init.js';
-
+		$GLOBALS['TL_CSS'][] = 'plugins/mediabox/css/mediabox.css';
+		$GLOBALS['TL_JAVASCRIPT'][] = 'plugins/mediabox/js/mediabox.js';
+		$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/html/mediabox_init.js';
 		
 		$arrButtons = array('up', 'down', 'delete');
 		$strCommand = 'cmd_' . $this->strField;
@@ -230,7 +240,7 @@ class MediaManager extends Widget implements uploadable
 
 		$upload = sprintf('<h3><label for="ctrl_%s_upload">%s</label></h3><p><input type="file" name="%s" id="ctrl_%s_upload" class="upload%s" /></p>',
 						$this->strId,
-						$GLOBALS['TL_LANG']['MSC']['mmUploadImage'],
+						$GLOBALS['TL_LANG']['MSC']['mmUpload'],
 						$this->strName,
 						$this->strId,
 						(strlen($this->strClass) ? ' ' . $this->strClass : ''));
@@ -238,35 +248,47 @@ class MediaManager extends Widget implements uploadable
 		$return = '<div id="ctrl_' . $this->strId . '">';
 
 		if (!is_array($this->varValue) || !count($this->varValue))
-			return $return . $GLOBALS['TL_LANG']['MSC']['mmNoImagesUploaded'] . $upload . '</div>';
+			return $return . $GLOBALS['TL_LANG']['MSC']['mmNoUploads'] . $upload . '</div>';
 
 		// Add label and return wizard
 		$return .= '<table cellspacing="0" cellpadding="0" class="tl_mediamanager" summary="Media Manager">
   <thead>
   <tr>
-    <td>'.$GLOBALS['TL_LANG'][$this->strTable]['mmSrc'].'</td>
-    <td>'.$GLOBALS['TL_LANG'][$this->strTable]['mmAlt'].' / '.$GLOBALS['TL_LANG'][$this->strTable]['mmLink'].'</td>
-    <td>'.$GLOBALS['TL_LANG'][$this->strTable]['mmDesc'].'</td>
-    <td>&nbsp;</td>
-  </tr>
+    <td class="col_0 col_first">'.$GLOBALS['TL_LANG'][$this->strTable]['mmSrc'].'</td>
+    <td class="col_1">'.$GLOBALS['TL_LANG'][$this->strTable]['mmAlt'].' / '.$GLOBALS['TL_LANG'][$this->strTable]['mmLink'].'</td>
+    <td class="col_2">'.$GLOBALS['TL_LANG'][$this->strTable]['mmDesc'].'</td>
+    <td class="col_3 col_last">&nbsp;</td>
+   </tr>
   </thead>
   <tbody>';
 
 		// Add input fields
 		for ($i=0; $i<count($this->varValue); $i++)
 		{
-			$strImage = 'isotope/' . strtolower(substr($this->varValue[$i]['src'], 0, 1)) . '/' . $this->varValue[$i]['src'];
+			$strFile = 'isotope/' . strtolower(substr($this->varValue[$i]['src'], 0, 1)) . '/' . $this->varValue[$i]['src'];
 
-			if (!is_file(TL_ROOT . '/' . $strImage))
+			if (!is_file(TL_ROOT . '/' . $strFile))
 			{
 				continue;
 			}
+			
+			$objFile = new File($strFile);
+			
+			if ($objFile->isGdImage)
+			{
+				$strPreview = $this->getImage($strFile, 50, 50, 'box');
+			}
+			else
+			{
+				$strPreview = 'system/themes/' . $this->getTheme() . '/images/' . $objFile->icon;
+			}
+			
 			$return .= '
   <tr>
-    <td><input type="hidden" name="' . $this->strName . '['.$i.'][src]" value="' . $this->varValue[$i]['src'] . '" /><a href="' . $strImage . '" rel="lightbox"><img src="' . $this->getImage($strImage, 50, 50, 'box') . '" alt="' . $this->varValue[$i]['src'] . '" /></a></td>
-    <td><input type="text" class="tl_text_2" name="' . $this->strName . '['.$i.'][alt]" value="' . $this->varValue[$i]['alt'] . '" /><br /><input type="text" class="tl_text_2" name="' . $this->strName . '['.$i.'][link]" value="' . $this->varValue[$i]['link'] . '" /></td>
-    <td><textarea name="' . $this->strName . '['.$i.'][desc]" cols="40" rows="3" class="tl_textarea">' . $this->varValue[$i]['desc'] . '</textarea></td>
-    <td>';
+    <td class="col_0 col_first"><input type="hidden" name="' . $this->strName . '['.$i.'][src]" value="' . $this->varValue[$i]['src'] . '" /><a href="' . $strFile . '" rel="lightbox"><img src="' . $strPreview . '" alt="' . $this->varValue[$i]['src'] . '" /></a></td>
+    <td class="col_1"><input type="text" class="tl_text_2" name="' . $this->strName . '['.$i.'][alt]" value="' . $this->varValue[$i]['alt'] . '" /><br /><input type="text" class="tl_text_2" name="' . $this->strName . '['.$i.'][link]" value="' . $this->varValue[$i]['link'] . '" /></td>
+    <td class="col_2"><textarea name="' . $this->strName . '['.$i.'][desc]" cols="40" rows="3" class="tl_textarea">' . $this->varValue[$i]['desc'] . '</textarea></td>
+    <td class="col_3 col_last">';
 
 			foreach ($arrButtons as $button)
 			{

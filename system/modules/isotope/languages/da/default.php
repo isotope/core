@@ -24,8 +24,6 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['CTE']['attributeLinkRepeater'][0] = 'Egenskab filter liste';
-$GLOBALS['TL_LANG']['CTE']['attributeLinkRepeater'][1] = 'Dette element genererer en samling af links fra et valgt produkts egenskabs filter';
 $GLOBALS['TL_LANG']['ERR']['systemColumn'] = 'Navnet "%s" er reserveret til systemet. Vælg venligst et andet navn.';
 $GLOBALS['TL_LANG']['ERR']['missingButtonTemplate'] = 'Du skal angive en skabelon til knappen "%s"';
 $GLOBALS['TL_LANG']['ERR']['order_conditions'] = 'Du skal godkende salgs- og leveringsbetingelserne';
@@ -66,8 +64,6 @@ $GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline'] = 'Ordre nr. %s / %s';
 $GLOBALS['TL_LANG']['MSC']['payment_processing'] = 'Din betaling bliver behandlet. Vent venligst...';
 $GLOBALS['TL_LANG']['MSC']['payment_processing_failed'] = 'Din betaling kunne ikke gennemføres.';
 $GLOBALS['TL_LANG']['MSC']['authorizedotnet_process_failed'] = 'Din betaling kunne ikke gennemføres. <br /><br />Fejlesked: %s';
-$GLOBALS['TL_LANG']['MSC']['mmNoImagesUploaded'] = 'Ingen billeder uploaded.';
-$GLOBALS['TL_LANG']['MSC']['mmUploadImage'] = 'Upload flere billeder';
 $GLOBALS['TL_LANG']['MSC']['quantity'] = 'Antal';
 $GLOBALS['TL_LANG']['MSC']['order_conditions'] = 'Jeg godkender salgs- og leveringsbetingelser';
 $GLOBALS['TL_LANG']['MSC']['defaultSearchText'] = 'Søg produkter';
@@ -240,19 +236,13 @@ $GLOBALS['TL_LANG']['WGT']['st'][0] = 'Stone (st)';
 $GLOBALS['TL_LANG']['WGT']['st'][1] = 'En britisk måling af masse, der svarer til 14 pund.';
 $GLOBALS['TL_LANG']['WGT']['grain'][0] = 'Grain';
 $GLOBALS['TL_LANG']['WGT']['grain'][1] = '1/7000 pund; svarer til en troy korn eller 64,799 mg.';
-$GLOBALS['TL_LANG']['ATTR']['text'] = 'Tekst (op til 255 tegn)';
-$GLOBALS['TL_LANG']['ATTR']['integer'] = 'Integer/Whole Numbers';
-$GLOBALS['TL_LANG']['ATTR']['decimal'] = 'Decimal';
-$GLOBALS['TL_LANG']['ATTR']['textarea'] = 'Lang tekst (mere end 255 tegn)';
-$GLOBALS['TL_LANG']['ATTR']['datetime'] = 'Dato/tid værdi';
-$GLOBALS['TL_LANG']['ATTR']['select'] = 'Valgliste (flere muligheder)';
-$GLOBALS['TL_LANG']['ATTR']['checkbox'] = 'Afkrydsningsfelt';
-$GLOBALS['TL_LANG']['ATTR']['options'] = 'Valgliste (en mulighed)';
-$GLOBALS['TL_LANG']['ATTR']['file'] = 'Fil-upload';
-$GLOBALS['TL_LANG']['ATTR']['media'] = 'Media (billeder, film, MP3 m.m.)';
-$GLOBALS['TL_LANG']['ATTR']['label'] = 'Label/Fixed Display';
-$GLOBALS['TL_LANG']['ATTR']['input'] = 'Accepter input fra kunder';
-$GLOBALS['TL_LANG']['ATTR']['conditionalselect'] = 'Betinget valgliste';
+$GLOBALS['TL_LANG']['ATTR']['text'][0] = 'Tekst (op til 255 tegn)';
+$GLOBALS['TL_LANG']['ATTR']['textarea'][0] = 'Lang tekst (mere end 255 tegn)';
+$GLOBALS['TL_LANG']['ATTR']['select'][0] = 'Valgliste (flere muligheder)';
+$GLOBALS['TL_LANG']['ATTR']['checkbox'][0] = 'Afkrydsningsfelt';
+$GLOBALS['TL_LANG']['ATTR']['radio'][0] = 'Valgliste (en mulighed)';
+$GLOBALS['TL_LANG']['ATTR']['media'][0] = 'Media (billeder, film, MP3 m.m.)';
+$GLOBALS['TL_LANG']['ATTR']['conditionalselect'][0] = 'Betinget valgliste';
 $GLOBALS['TL_LANG']['CUR']['AED'] = 'AED - United Arab Emirates Dirham';
 $GLOBALS['TL_LANG']['CUR']['AFN'] = 'AFN - Afghani';
 $GLOBALS['TL_LANG']['CUR']['ALL'] = 'ALL - Lek';

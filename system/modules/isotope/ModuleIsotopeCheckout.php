@@ -822,7 +822,6 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			));
 		}
 		
-		
 		$arrSurcharges = array();
 		foreach( $this->Isotope->Cart->getSurcharges() as $arrSurcharge )
 		{
@@ -834,7 +833,6 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				'tax_id'		=> $arrSurcharge['tax_id'],
 			);
 		}
-		
 		
 		$objTemplate->info = $this->getCheckoutInfo();
 		$objTemplate->products = $arrProductData;
@@ -1127,6 +1125,9 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		
 		$arrFields = ($strAddressType == 'billing_address' ? $this->Isotope->Config->billing_fields : $this->Isotope->Config->shipping_fields);
 		$arrDefault = $this->Isotope->Cart->$strAddressType;
+		
+		if ($arrDefault['id'] == -1)
+			$arrDefault = array();
 		
 		foreach( $arrFields as $field )
 		{

@@ -246,7 +246,7 @@ class IsotopeRules extends Controller
 			
 			foreach( $arrCoupons as $code )
 			{
-				$arrRule = $this->findCoupon($code);
+				$arrRule = $this->findCoupon($code, $this->Isotope->Cart->getProducts());
 				
 				if ($arrRule === false)
 				{
@@ -333,7 +333,7 @@ class IsotopeRules extends Controller
 		}
 		else
 		{
-			$arrProcedures[] = "memberRestrictions='none'";
+			$arrProcedures[] = "(memberRestrictions='none' OR memberRestrictions='guests')";
 		}
 		
 		
@@ -393,8 +393,24 @@ class IsotopeRules extends Controller
 		
 		foreach( $arrProducts as $objProduct )
 		{
+			switch( $arrRule['quantityMode'] )
+			{
+				case 'cart_products':
+					$intTotal = $this->Isotope->Cart->products;
+					break;
+					
+				case 'cart_items':
+					$intTotal = $this->Isotope->Cart->items;
+					break;
+					
+				case 'product_quantity':
+				default:
+					$intTotal = $objProduct->product_quantity;
+					break;
+			}
+			
 			// Cart item quantity
-			if (($arrRule['minItemQuantity'] > 0 && $arrRule['minItemQuantity'] > $objProduct->quantity_requested) || ($arrRule['maxItemQuantity'] > 0 && $arrRule['maxItemQuantity'] < $objProduct->quantity_requested))
+			if (($arrRule['minItemQuantity'] > 0 && $arrRule['minItemQuantity'] > $intTotal) || ($arrRule['maxItemQuantity'] > 0 && $arrRule['maxItemQuantity'] < $intTotal))
 			{
 				continue;
 			}

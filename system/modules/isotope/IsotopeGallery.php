@@ -199,19 +199,20 @@ class IsotopeGallery extends Frontend
 	/**
 	 * Generate gallery
 	 */
-	public function generateGallery()
+	public function generateGallery($strType='gallery', $intSkip=1)
 	{
 		$strGallery = '';
 		
-		reset($this->arrFiles);
-		
-		while( $arrFile = next($this->arrFiles) )
+		foreach( $this->arrFiles as $i => $arrFile )
 		{
+			if ($i < $intSkip)
+				continue;
+				
 			$objTemplate = new FrontendTemplate($this->strTemplate);
 			
 			$objTemplate->setData($arrFile);
 			$objTemplate->mode = 'gallery';
-			$objTemplate->type = 'gallery';
+			$objTemplate->type = $strType;
 			$objTemplate->name = $this->name;
 			$objTemplate->product_id = $this->product_id;
 			$objTemplate->href_reader = $this->href_reader;

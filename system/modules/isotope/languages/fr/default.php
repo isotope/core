@@ -24,8 +24,6 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['CTE']['attributeLinkRepeater'][0] = 'Table des filtres d\'attributs';
-$GLOBALS['TL_LANG']['CTE']['attributeLinkRepeater'][1] = 'Cet élément crée une collection de liens d\'après un filtre choisi d\'attributs de produits';
 $GLOBALS['TL_LANG']['ERR']['systemColumn'] = 'Le nom `%s` que vous avez choisi, est reservé pour l\'administration du système. Choisisez un autre nom s.v.p.';
 $GLOBALS['TL_LANG']['ERR']['missingButtonTemplate'] = 'Vous devez choisir un document de mise en page pour le bouton "%s"';
 $GLOBALS['TL_LANG']['ERR']['order_conditions'] = 'Vous devez accepter les termes et conditions avant de continuer';
@@ -63,8 +61,6 @@ $GLOBALS['TL_LANG']['MSC']['ajaxLoadingMessage'] = 'Chargement';
 $GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline'] = 'Numéro de commande de %s / %s';
 $GLOBALS['TL_LANG']['MSC']['payment_processing'] = 'Votre paiement est traité. Soyez patient...';
 $GLOBALS['TL_LANG']['MSC']['authorizedotnet_process_failed'] = 'Votre paiement n\'a pas pu être traité. <br /><br />cause: %s';
-$GLOBALS['TL_LANG']['MSC']['mmNoImagesUploaded'] = 'Pas d\'images téléchargées.';
-$GLOBALS['TL_LANG']['MSC']['mmUploadImage'] = 'Téléchargez une image supplémentaire';
 $GLOBALS['TL_LANG']['MSC']['quantity'] = 'Quantité';
 $GLOBALS['TL_LANG']['MSC']['order_conditions'] = 'J\'accepte les termes et conditions';
 $GLOBALS['TL_LANG']['MSC']['defaultSearchText'] = 'Produits à rechercher';
@@ -238,17 +234,13 @@ $GLOBALS['TL_LANG']['WGT']['st'][0] = 'Stone (st)';
 $GLOBALS['TL_LANG']['WGT']['st'][1] = 'Une mesure britannique correspondant à 14 livres';
 $GLOBALS['TL_LANG']['WGT']['grain'][0] = 'Grain';
 $GLOBALS['TL_LANG']['WGT']['grain'][1] = '1/7000 d\'un livre, correspondant à 64.799 milligrammes';
-$GLOBALS['TL_LANG']['ATTR']['text'] = 'Texte (jusqu\'à 255 caractères)';
-$GLOBALS['TL_LANG']['ATTR']['integer'] = 'Chiffres entiers';
-$GLOBALS['TL_LANG']['ATTR']['decimal'] = 'Décimal';
-$GLOBALS['TL_LANG']['ATTR']['textarea'] = 'Texte long (plus de 255 caractères)';
-$GLOBALS['TL_LANG']['ATTR']['datetime'] = 'Date/valeur temps';
-$GLOBALS['TL_LANG']['ATTR']['select'] = 'Sélectionnez une liste';
-$GLOBALS['TL_LANG']['ATTR']['checkbox'] = 'Case à cocher';
-$GLOBALS['TL_LANG']['ATTR']['options'] = 'Liste des options';
-$GLOBALS['TL_LANG']['ATTR']['file'] = 'Annexe';
-$GLOBALS['TL_LANG']['ATTR']['media'] = 'Médias (images, films, MP3 etc.)';
-$GLOBALS['TL_LANG']['ATTR']['conditionalselect'] = 'Menu de sélection conditionnel';
+$GLOBALS['TL_LANG']['ATTR']['text'][0] = 'Texte (jusqu\'à 255 caractères)';
+$GLOBALS['TL_LANG']['ATTR']['textarea'][0] = 'Texte long (plus de 255 caractères)';
+$GLOBALS['TL_LANG']['ATTR']['select'][0] = 'Sélectionnez une liste';
+$GLOBALS['TL_LANG']['ATTR']['checkbox'][0] = 'Case à cocher';
+$GLOBALS['TL_LANG']['ATTR']['radio'][0] = 'Liste des options';
+$GLOBALS['TL_LANG']['ATTR']['media'][0] = 'Médias (images, films, MP3 etc.)';
+$GLOBALS['TL_LANG']['ATTR']['conditionalselect'][0] = 'Menu de sélection conditionnel';
 $GLOBALS['TL_LANG']['CUR']['AED'] = 'AED - United Arab Emirates Dirham';
 $GLOBALS['TL_LANG']['CUR']['AFN'] = 'AFN - Afghani';
 $GLOBALS['TL_LANG']['CUR']['ALL'] = 'ALL - Lek';

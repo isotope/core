@@ -710,8 +710,8 @@ class PayflowProPOS extends Backend
 	        		$arrValues = $option['values'];
 	        		
 				    $strProductData .= '<ul>';
-				   	$strProductData .= '	<li>' . $option['name'] . ': ';
-				    $strProductData .= implode(', ', $arrValues);
+				   	$strProductData .= '	<li>' . $option['label'] . ': ';
+				    $strProductData .= $option['value'];
 					$strProductData .= '    </li>';     						
 					$strProductData .= '</ul>'; 
 				//}

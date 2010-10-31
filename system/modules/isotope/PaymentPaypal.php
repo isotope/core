@@ -56,9 +56,7 @@ class PaymentPaypal extends IsotopePayment
 	{
 		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->execute($this->Isotope->Cart->id);
 		
-		$arrData = deserialize($objOrder->payment_data, true);
-		
-		if (strlen($arrData['status']) && $arrData['status'] == 'Completed')
+		if ($objOrder->date_payed <= time())
 		{
 			unset($_SESSION['PAYPAL_TIMEOUT']);
 			return true;
@@ -112,7 +110,7 @@ class PaymentPaypal extends IsotopePayment
 			$this->log('Request Error: ' . $objRequest->error, 'PaymentPaypal processPostSale()', TL_ERROR);
 			exit;
 		}
-		elseif ($objRequest->response == 'VERIFIED' && $this->Input->post('receiver_email') == $this->paypal_account)
+		elseif ($objRequest->response == 'VERIFIED' && ($this->Input->post('receiver_email') == $this->paypal_account || $this->debug))
 		{
 			$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE order_id=?")->limit(1)->execute($this->Input->post('invoice'));
 		
@@ -169,9 +167,12 @@ class PaymentPaypal extends IsotopePayment
 			
 			if ($this->postsale_mail)
 			{
-				$this->Import('Isotope');
-				$this->Isotope->overrideConfig($objOrder->config_id);
-				$this->Isotope->sendMail($this->postsale_mail, $GLOBALS['TL_ADMIN_EMAIL'], $GLOBALS['TL_LANGUAGE'], $arrData);
+				try
+				{
+					$this->Isotope->overrideConfig($objOrder->config_id);
+					$this->Isotope->sendMail($this->postsale_mail, $GLOBALS['TL_CONFIG']['adminEmail'], $GLOBALS['TL_LANGUAGE'], $arrData);
+				}
+				catch (Exception $e) {}
 			}
 			
 			$this->log('PayPal IPN: data accepted ' . print_r($_POST, true), 'PaymentPaypal processPostSale()', TL_GENERAL);
@@ -219,7 +220,7 @@ class PaymentPaypal extends IsotopePayment
 				
 				foreach( $arrOptions as $option )
 				{
-					$options[] = $option['name'] . ': ' . implode(', ', $option['values']);
+					$options[] = $option['label'] . ': ' . $option['value'];
 				}
 				
 				$strOptions = ' ('.implode(', ', $options).')';
@@ -234,6 +235,9 @@ class PaymentPaypal extends IsotopePayment
 		
 		foreach( $this->Isotope->Cart->getSurcharges() as $arrSurcharge )
 		{
+			if (!$arrSurcharge['add'])
+				continue;
+				
 			$strBuffer .= '
 <input type="hidden" name="item_name_'.++$i.'" value="' . $arrSurcharge['label'] . '"/>
 <input type="hidden" name="amount_'.$i.'" value="' . $arrSurcharge['total_price'] . '"/>';
