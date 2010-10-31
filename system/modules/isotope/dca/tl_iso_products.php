@@ -26,9 +26,6 @@
  */
 
 
-$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/MultiTextWizard/html/js/multitext.js';
-
-
 /**
  * Table tl_iso_products 
  */
