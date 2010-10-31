@@ -334,8 +334,7 @@ class IsotopeRules extends Controller
 		}
 		else
 		{
-			//ADDED IN GUEST CHECK
-			$arrProcedures[] = "memberRestrictions='none' OR memberRestrictions='guest'";
+			$arrProcedures[] = "memberRestrictions='none' OR memberRestrictions='guests'";
 		}
 		
 		
@@ -393,16 +392,29 @@ class IsotopeRules extends Controller
 			'products'		=> array(),
 		);
 		
-		//CUSTOM USAGE FOR CART ADDED BY BLAIR********************** Calculate cart quantity, not individual product quantity
 		foreach( $arrProducts as $objProduct )
 		{
-			$intTotal = $arrRule['applyTo']=='cart' ? $this->Isotope->Cart->items : $objProduct->product_quantity;
+			switch( $arrRule['quantityMode'] )
+			{
+				case 'cart_products':
+					$intTotal = $this->Isotope->Cart->products;
+					break;
+					
+				case 'cart_items':
+					$intTotal = $this->Isotope->Cart->items;
+					break;
+					
+				case 'product_quantity':
+				default:
+					$intTotal = $objProduct->product_quantity;
+					break;
+			}
+			
 			// Cart item quantity
 			if (($arrRule['minItemQuantity'] > 0 && $arrRule['minItemQuantity'] > $intTotal) || ($arrRule['maxItemQuantity'] > 0 && $arrRule['maxItemQuantity'] < $intTotal))
 			{
 				continue;
 			}
-		//END CUSTOM USAGE********************************************
 			
 			// Regular rules have already been checked for this, only required for coupons
 			if ($blnCheckProducts)

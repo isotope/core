@@ -35,6 +35,7 @@ CREATE TABLE `tl_iso_rules` (
   `productRestrictions` varchar(32) NOT NULL default '',
   `minItemQuantity` int(10) unsigned NOT NULL default '0',
   `maxItemQuantity` int(10) unsigned NOT NULL default '0',
+  `quantityMode` varchar(32) NOT NULL default '',
   `enabled` char(1) NOT NULL default '',
   `archive` int(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
