@@ -2,6 +2,10 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 0.2.0
+------------------------------
+- Added: Label for isotope_rules extension folder
+
 Version 0.2.rc1 (2010-10-31)
 ------------------------------
 - Added: "Default" option for tax class
