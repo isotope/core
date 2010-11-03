@@ -262,10 +262,12 @@ class IsotopeCart extends IsotopeProductCollection
 		
 		if ($this->Isotope->Cart->hasShipping && $this->Isotope->Cart->Shipping->price > 0)
 		{
+			$strSurcharge = $this->Isotope->Cart->Shipping->surcharge;
+			
 			$arrSurcharges[] = array
 			(
 				'label'			=> ($GLOBALS['TL_LANG']['MSC']['shippingLabel'] . ' (' . $this->Isotope->Cart->Shipping->label . ')'),
-				'price'			=> '&nbsp;',
+				'price'			=> ($strSurcharge == '' ? '&nbsp;' : $strSurcharge),
 				'total_price'	=> $this->Isotope->Cart->Shipping->price,
 				'tax_class'		=> $this->Isotope->Cart->Shipping->tax_class,
 				'before_tax'	=> ($this->Isotope->Cart->Shipping->tax_class ? true : false),
@@ -290,10 +292,12 @@ class IsotopeCart extends IsotopeProductCollection
 		
 		if ($this->Isotope->Cart->hasPayment && $this->Isotope->Cart->Payment->price > 0)
 		{
+			$strSurcharge = $this->Isotope->Cart->Payment->surcharge;
+			
 			$arrSurcharges[] = array
 			(
 				'label'			=> ($GLOBALS['TL_LANG']['MSC']['paymentLabel'] . ' (' . $this->Isotope->Cart->Payment->label . ')'),
-				'price'			=> '&nbsp;',
+				'price'			=> ($strSurcharge == '' ? '&nbsp;' : $strSurcharge),
 				'total_price'	=> $this->Isotope->Cart->Payment->price,
 				'tax_class'		=> $this->Isotope->Cart->Payment->tax_class,
 				'before_tax'	=> ($this->Isotope->Cart->Payment->tax_class ? true : false),

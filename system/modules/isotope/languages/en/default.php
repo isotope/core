@@ -46,6 +46,7 @@ $GLOBALS['TL_LANG']['ERR']['noAddressData']					= 'Address data is required to c
 $GLOBALS['TL_LANG']['ERR']['variantDuplicate']				= 'A variant with this attributes is already available. Please select another combination.';
 $GLOBALS['TL_LANG']['ERR']['breadcrumbEmpty']				= 'The filtered category is empty, all products are now showing.';
 $GLOBALS['TL_LANG']['ERR']['discount']						= 'Please enter whole numbers or decimals signed with + or - and optionally with a percentage.';
+$GLOBALS['TL_LANG']['ERR']['surcharge']						= 'Please enter whole numbers or decimals optionally with a percentage.';
 $GLOBALS['TL_LANG']['ERR']['orderFailed']					= 'Checkout failed. Please try again or choose another payment method.';
 $GLOBALS['TL_LANG']['ERR']['specifyBillingAddress'] 		= 'A billing address was not fuond.  Please specify a billing address.';
 $GLOBALS['TL_LANG']['ERR']['cc_num']						= 'Please provide a valid credit card number.';

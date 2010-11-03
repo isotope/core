@@ -131,12 +131,29 @@ abstract class IsotopePayment extends Frontend
 							return false;
 					}
 				}
-					
+				
 				return true;
 				break;
 				
 			case 'price':
-				return $this->Isotope->calculatePrice($this->arrData['price'], $this, 'price', $this->arrData['tax_class']);
+				$strPrice = $this->arrData['price'];
+				$blnPercentage = substr($strPrice, -1) == '%' ? true : false;
+				
+				if ($blnPercentage)
+				{
+					$fltSurcharge = (float)substr($strPrice, 0, -1);
+					$fltPrice = $this->Isotope->Cart->subTotal / 100 * $fltSurcharge;
+				}
+				else
+				{
+					$fltPrice = (float)$strPrice;
+				}
+				
+				return $this->Isotope->calculatePrice($fltPrice, $this, 'price', $this->arrData['tax_class']);
+				break;
+				
+			case 'surcharge':
+				return substr($this->arrData['price'], -1) == '%' ? $this->arrData['price'] : '';
 				break;
 		}
 		

@@ -299,7 +299,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['rgxp'],
 			'exclude'				=> true,
 			'inputType'				=> 'select',
-			'options'				=> array('digit', 'alpha', 'alnum', 'extnd', 'date', 'time', 'datim', 'phone', 'email', 'url', 'price', 'discount'),
+			'options'				=> array('digit', 'alpha', 'alnum', 'extnd', 'date', 'time', 'datim', 'phone', 'email', 'url', 'price', 'discount', 'surcharge'),
 			'reference'				=> &$GLOBALS['TL_LANG']['tl_iso_attributes'],
 			'eval'					=> array('helpwizard'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
 		),
