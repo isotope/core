@@ -41,3 +41,5 @@ $GLOBALS['ISO_MOD']['translation']['iso_translation'] = array
 	'icon'		=> 'system/modules/isotope_multilingual/html/icon.png',
 );
 
+$GLOBALS['BE_MOD']['isotope']['iso_setup']['tables'][] = 'tl_iso_labels';
+
