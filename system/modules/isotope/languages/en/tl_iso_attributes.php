@@ -75,6 +75,7 @@ $GLOBALS['TL_LANG']['tl_iso_attributes']['email']					= array('E-mail address', 
 $GLOBALS['TL_LANG']['tl_iso_attributes']['url']						= array('URL format', 'Checks whether the input is a valid URL.');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['price']					= array('Price', 'Checks whether the input is a valid price.');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['discount']				= array('Discount', 'Checks whether the input is a valid discount.<br />Example: -10%, -10, +10, +10%');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['surcharge']				= array('Surcharge', 'Checks whether the input is a valid surcharge.<br />Example: 10.00, 10%');
 
 
 /**

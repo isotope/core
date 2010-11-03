@@ -784,6 +784,14 @@ class Isotope extends Controller
 				}
 				return true;
 				break;
+			
+			case 'surcharge':
+				if(!preg_match('/^\d+(\.\d{1,2})?%?$/', $varValue))
+				{															
+					$objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR']['surcharge'], $objWidget->label));
+				}
+				return true;
+				break;
 		}
 		
 		return false;

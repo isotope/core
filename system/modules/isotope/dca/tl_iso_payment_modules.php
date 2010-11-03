@@ -192,7 +192,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['price'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>10, 'rgxp'=>'price', 'tl_class'=>'w50'),
+			'eval'                    => array('maxlength'=>10, 'rgxp'=>'surcharge', 'tl_class'=>'w50'),
 		),
 		'tax_class' => array
 		(
