@@ -1162,7 +1162,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			$objWidget->rowClass = 'row_'.$i . (($i == 0) ? ' row_first' : '') . ((($i % 2) == 0) ? ' even' : ' odd');
 			
 			// Validate input
-			if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && ($this->Input->post($strAddressType) === '0' || !$this->Input->post($strAddressType)))
+			if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && ($this->Input->post($strAddressType) === '0' || $this->Input->post($strAddressType) == ''))
 			{
 				$objWidget->validate();
 				
@@ -1187,7 +1187,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 					$arrAddress[$field] = $varValue;
 				}
 			}
-			else
+			elseif ($objWidget->value != '')
 			{
 				$this->Input->setPost($objWidget->name, $objWidget->value);
 				
