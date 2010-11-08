@@ -470,7 +470,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	 			
 	 			$fltPrice = $objModule->price;
 	 			$strSurcharge = $objModule->surcharge;
-	 			$strPrice = $fltPrice > 0 ? (($strSurcharge == '' ? '' : ' ('.$strSurcharge.')') . ': '.$this->Isotope->formatPriceWithCurrency($fltPrice)) : '';
+	 			$strPrice = $fltPrice != 0 ? (($strSurcharge == '' ? '' : ' ('.$strSurcharge.')') . ': '.$this->Isotope->formatPriceWithCurrency($fltPrice)) : '';
 				
 				$arrModules[] = sprintf('<input id="ctrl_shipping_module_%s" type="radio" name="shipping[module]" value="%s"%s /> <label for="ctrl_shipping_module_%s">%s%s</label>%s%s',
 										 $objModule->id,
@@ -597,7 +597,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	 			
 	 			$fltPrice = $objModule->price;
 	 			$strSurcharge = $objModule->surcharge;
-	 			$strPrice = $fltPrice > 0 ? (($strSurcharge == '' ? '' : ' ('.$strSurcharge.')') . ': '.$this->Isotope->formatPriceWithCurrency($fltPrice)) : '';
+	 			$strPrice = $fltPrice != 0 ? (($strSurcharge == '' ? '' : ' ('.$strSurcharge.')') . ': '.$this->Isotope->formatPriceWithCurrency($fltPrice)) : '';
 							
 				$arrModules[] = sprintf('<input id="ctrl_payment_module_%s" type="radio" class="radio payment_module" name="payment[module]" value="%s"%s /> <label for="ctrl_payment_module_%s">%s%s</label>%s',
 										 $objModule->id,

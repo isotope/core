@@ -260,7 +260,7 @@ class IsotopeCart extends IsotopeProductCollection
 	{
 		$this->import('Isotope');
 		
-		if ($this->Isotope->Cart->hasShipping && $this->Isotope->Cart->Shipping->price > 0)
+		if ($this->Isotope->Cart->hasShipping && $this->Isotope->Cart->Shipping->price != 0)
 		{
 			$strSurcharge = $this->Isotope->Cart->Shipping->surcharge;
 			
@@ -290,7 +290,7 @@ class IsotopeCart extends IsotopeProductCollection
 	{
 		$this->import('Isotope');
 		
-		if ($this->Isotope->Cart->hasPayment && $this->Isotope->Cart->Payment->price > 0)
+		if ($this->Isotope->Cart->hasPayment && $this->Isotope->Cart->Payment->price != 0)
 		{
 			$strSurcharge = $this->Isotope->Cart->Payment->surcharge;
 			
