@@ -15,6 +15,7 @@ Version 0.2.0
 - Added label for isotope_rules extension folder
 - Added support for percentage surcharge for payment and shipping price
 - Fixed field tl_iso_rules.applyTo not visible in the palette
+- Fixed PayPal checkout not charging for shipping price
 
 Version 0.2.rc1 (2010-10-31)
 ------------------------------
