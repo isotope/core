@@ -500,6 +500,8 @@ class IsotopeProduct extends Controller
 	 */
 	public function generate($strTemplate, &$objModule)
 	{
+		global $objPage;
+		
 		$this->validateVariant();
 		
 		$this->arrOptions = array();
@@ -575,7 +577,7 @@ class IsotopeProduct extends Controller
 		$objTemplate->action = ampersand($this->Environment->request, true);
 		$objTemplate->formSubmit = 'iso_product_'.($this->pid ? $this->pid : $this->id);
 		
-		$GLOBALS['TL_MOOTOOLS'][] = "<script type=\"text/javascript\">new IsotopeProduct('" . $objModule->id . "', '" . ($this->pid ? $this->pid : $this->id) . "', ['ctrl_" . implode("_".($this->pid ? $this->pid : $this->id)."', 'ctrl_", $arrAjaxOptions) . "_".($this->pid ? $this->pid : $this->id)."'], {language: '" . $GLOBALS['TL_LANGUAGE'] . "'});</script>";
+		$GLOBALS['TL_MOOTOOLS'][] = "<script type=\"text/javascript\">new IsotopeProduct('" . $objModule->id . "', '" . ($this->pid ? $this->pid : $this->id) . "', ['ctrl_" . implode("_".($this->pid ? $this->pid : $this->id)."', 'ctrl_", $arrAjaxOptions) . "_".($this->pid ? $this->pid : $this->id)."'], {language: '" . $GLOBALS['TL_LANGUAGE'] . "', page: " . $objPage->id . "});</script>";
 		
 		// HOOK for altering product data before output
 		if (isset($GLOBALS['TL_HOOKS']['iso_generateProduct']) && is_array($GLOBALS['TL_HOOKS']['iso_generateProduct']))
