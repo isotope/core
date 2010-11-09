@@ -97,6 +97,7 @@ var IsotopeProduct = new Class(
 	Binds: ['refresh'],
 	options: {
 		language: 'en',
+		page: 0,
 		loadMessage: 'Loading product data …'
 	},
 	
@@ -110,7 +111,7 @@ var IsotopeProduct = new Class(
 		{
 			this.form.set('send',
 			{
-				url: ('ajax.php?action=fmd&id='+module+'&language='+this.options.language+'&product='+product),
+				url: ('ajax.php?action=fmd&id='+module+'&language='+this.options.language+'&page='+this.options.page+'&product='+product),
 				link: 'cancel',
 				onRequest: function()
 				{
