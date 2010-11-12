@@ -136,14 +136,14 @@ $GLOBALS['TL_DCA']['tl_iso_labels'] = array
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_labels']['label'],
 			'search'					=> true,
 			'inputType'					=> 'text',
-			'eval'						=> array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
+			'eval'						=> array('mandatory'=>true, 'maxlength'=>255, 'decodeEntities'=>true, 'tl_class'=>'w50'),
 		),
 		'replacement' => array
 		(
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_labels']['replacement'],
 			'search'					=> true,
 			'inputType'					=> 'text',
-			'eval'						=> array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
+			'eval'						=> array('mandatory'=>true, 'maxlength'=>255, 'decodeEntities'=>true, 'tl_class'=>'w50'),
 		),
 	)
 );
