@@ -492,8 +492,9 @@ class Isotope extends Controller
 		$arrAddress['country'] = $arrCountries[$arrAddress['country']];
 	
 		$arrSearch = $arrReplace = array();
-		foreach( $arrFields as $strField )
+		foreach( $arrFields as $arrField )
 		{
+			$strField = $arrField['value'];
 			if ($strField == 'subdivision' && strlen($arrAddress['subdivision']))
 			{
 				if (!is_array($GLOBALS['TL_LANG']['DIV']))

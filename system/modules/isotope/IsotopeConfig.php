@@ -35,6 +35,12 @@ class IsotopeConfig extends Model
 	 */
 	protected $strTable = 'tl_iso_config';
 	
+	/**
+	 * Cache
+	 * @var array
+	 */
+	protected $arrCache = array();
+	
 	
 	/**
 	 * Return custom options or table row data.
@@ -45,7 +51,31 @@ class IsotopeConfig extends Model
 	 */
 	public function __get($strKey)
 	{
-		return deserialize(parent::__get($strKey));
+		switch( $strKey )
+		{
+			case 'billing_fields_raw':
+			case 'shipping_fields_raw':
+				if (!is_array($this->arrCache[$strKey]))
+				{
+					$strField = str_replace('_raw', '', $strKey);
+					$arrFields = array();
+					
+					foreach( $this->$strField as $field )
+					{
+						if ($field['enabled'])
+						{
+							$arrFields[] = $field['value'];
+						}
+					}
+					
+					$this->arrCache[$strKey] = $arrFields;
+				}
+				
+				return $this->arrCache[$strKey];
+				
+			default:
+				return deserialize(parent::__get($strKey));
+		}
 	}
 	
 	

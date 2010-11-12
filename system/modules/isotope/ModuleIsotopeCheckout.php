@@ -1004,7 +1004,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 						
 						foreach( $this->Isotope->Config->{$address.'_fields'} as $field )
 						{
-							$arrAddress[$field] = $arrData[$address.'_'.$field];
+							$arrAddress[$field['value']] = $arrData[$address.'_'.$field['value']];
 						}
 						
 						$this->Database->prepare("INSERT INTO tl_iso_addresses %s")->set($arrAddress)->execute();
@@ -1157,19 +1157,19 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		
 		foreach( $arrFields as $field )
 		{
-			$arrData = $GLOBALS['TL_DCA']['tl_iso_addresses']['fields'][$field];
+			$arrData = $GLOBALS['TL_DCA']['tl_iso_addresses']['fields'][$field['value']];
 			
-			if (!is_array($arrData) || ($arrData['eval']['membersOnly'] && !FE_USER_LOGGED_IN))
+			if (!is_array($arrData) || !$arrData['eval']['feEditable'] || !$field['enabled'] || ($arrData['eval']['membersOnly'] && !FE_USER_LOGGED_IN))
 				continue;
 			
 			$strClass = $GLOBALS['TL_FFL'][$arrData['inputType']];
 			
 			// Continue if the class is not defined
-			if (!$this->classFileExists($strClass) || !$arrData['eval']['feEditable'])
+			if (!$this->classFileExists($strClass))
 				continue;
 			
 			// Special field "country"
-			if ($field == 'country')
+			if ($field['value'] == 'country')
 			{
 				$arrCountries = ($strAddressType == 'billing_address' ? $this->Isotope->Config->billing_countries : $this->Isotope->Config->shipping_countries);
 				$arrData['options'] = array_intersect_key($arrData['options'], array_flip($arrCountries));
@@ -1182,8 +1182,10 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				$arrData['eval']['conditionField'] = $strAddressType . '_' . $arrData['eval']['conditionField'];
 			}
 			
-			$objWidget = new $strClass($this->prepareForWidget($arrData, $strAddressType . '_' . $field, (strlen($_SESSION['CHECKOUT_DATA'][$strAddressType][$field]) ? $_SESSION['CHECKOUT_DATA'][$strAddressType][$field] : $arrDefault[$field])));
+			$objWidget = new $strClass($this->prepareForWidget($arrData, $strAddressType . '_' . $field['value'], (strlen($_SESSION['CHECKOUT_DATA'][$strAddressType][$field['value']]) ? $_SESSION['CHECKOUT_DATA'][$strAddressType][$field['value']] : $arrDefault[$field['value']])));
 			
+			$objWidget->mandatory = $field['mandatory'] ? true : false;
+			$objWidget->label = $field['label'] ? $this->Isotope->translate($field['label']) : $objWidget->label;
 			$objWidget->storeValues = true;
 			$objWidget->rowClass = 'row_'.$i . (($i == 0) ? ' row_first' : '') . ((($i % 2) == 0) ? ' even' : ' odd');
 			
@@ -1210,7 +1212,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				// Store current value
 				elseif ($objWidget->submitInput())
 				{
-					$arrAddress[$field] = $varValue;
+					$arrAddress[$field['value']] = $varValue;
 				}
 			}
 			elseif ($objWidget->value != '')

@@ -277,9 +277,9 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['shipping_fields'],
 			'exclude'                 => true,
-			'inputType'               => 'checkboxWizard',
-			'options_callback'		  => array('tl_iso_config', 'getAddressFields'),
-			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'w50 w50h'),
+			'inputType'               => 'fieldWizard',
+//			'options_callback'		  => array('tl_iso_config', 'getAddressFields'),
+			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'w50 w50h', 'table'=>'tl_iso_addresses'),
 		),
 		'billing_countries' => array
 		(
@@ -294,9 +294,9 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['billing_fields'],
 			'exclude'                 => true,
-			'inputType'               => 'checkboxWizard',
-			'options_callback'		  => array('tl_iso_config', 'getAddressFields'),
-			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'w50 w50h'),
+			'inputType'               => 'fieldWizard',
+//			'options_callback'		  => array('tl_iso_config', 'getAddressFields'),
+			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'table'=>'tl_iso_addresses', 'tl_class'=>'w50 w50h'),
 		),
 		'enableGoogleAnalytics' => array
 		(

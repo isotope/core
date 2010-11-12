@@ -395,6 +395,40 @@ class IsotopeRunonce extends Frontend
 				$this->Database->query("UPDATE tl_iso_config SET imageSizes='" . serialize($arrSizes) . "' WHERE id={$objConfigs->id}");
 			}
 		}
+		
+		$objConfigs = $this->Database->execute("SELECT * FROM tl_iso_config");
+		
+		while( $objConfigs->next() )
+		{
+			$arrBilling = deserialize($objConfigs->billing_fields);
+			$arrShipping = deserialize($objConfigs->shipping_fields);
+			
+			if (is_array($arrBilling) && count($arrBilling) && !is_array($arrBilling[0]))
+			{
+				$this->loadDataContainer('tl_iso_addresses');
+				$arrNew = array();
+				
+				foreach( $arrBilling as $field )
+				{
+					$arrNew[] = array('value'=>$field, 'enabled'=>1, 'mandatory'=>$GLOBALS['TL_DCA']['tl_iso_addresses']['fields'][$field]['eval']['mandatory']);
+				}
+				
+				$this->Database->prepare("UPDATE tl_iso_config SET billing_fields=? WHERE id=?")->execute(serialize($arrNew), $objConfigs->id);
+			}
+			
+			if (is_array($arrShipping) && count($arrShipping) && !is_array($arrShipping[0]))
+			{
+				$this->loadDataContainer('tl_iso_addresses');
+				$arrNew = array();
+				
+				foreach( $arrShipping as $field )
+				{
+					$arrNew[] = array('value'=>$field, 'enabled'=>1, 'mandatory'=>$GLOBALS['TL_DCA']['tl_iso_addresses']['fields'][$field]['eval']['mandatory']);
+				}
+				
+				$this->Database->prepare("UPDATE tl_iso_config SET shipping_fields=? WHERE id=?")->execute(serialize($arrNew), $objConfigs->id);
+			}
+		}
 	}
 	
 	

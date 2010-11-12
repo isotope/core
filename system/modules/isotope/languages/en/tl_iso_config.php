@@ -88,6 +88,10 @@ $GLOBALS['TL_LANG']['tl_iso_config']['iwMode']							= 'Mode';
 $GLOBALS['TL_LANG']['tl_iso_config']['iwWatermark']						= 'Watermark image';
 $GLOBALS['TL_LANG']['tl_iso_config']['iwPosition']						= 'Position';
 
+$GLOBALS['TL_LANG']['tl_iso_config']['fwEnabled']						= 'Enable field';
+$GLOBALS['TL_LANG']['tl_iso_config']['fwLabel']							= 'Custom label';
+$GLOBALS['TL_LANG']['tl_iso_config']['fwMandatory']						= 'Mandatory';
+
 
 /**
  * Buttons
