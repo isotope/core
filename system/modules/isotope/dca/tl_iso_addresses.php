@@ -197,7 +197,7 @@ $GLOBALS['TL_DCA']['tl_iso_addresses'] = array
 			'sorting'                 => true,
 			'inputType'               => 'select',
 			'options'                 => $this->getCountries(),
-			'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'feEditable'=>true, 'feGroup'=>'address', 'tl_class'=>'w50'),
+			'eval'                    => array('mandatory'=>true, 'feEditable'=>true, 'feGroup'=>'address', 'tl_class'=>'w50'),
 		),
 		'phone' => array
 		(
