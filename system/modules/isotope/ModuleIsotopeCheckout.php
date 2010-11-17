@@ -1101,7 +1101,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			$objWidget->tableless = true;
 
 			// Validate input
-			if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && strlen($this->Input->post($field)))
+			if ($this->Input->post('FORM_SUBMIT') == $this->strFormId)
 			{
 				$objWidget->validate();
 				
@@ -1112,6 +1112,18 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				else
 				{
 					$_SESSION['CHECKOUT_DATA'][$field]['id'] = $objWidget->value;
+				}
+			}
+			elseif ($objWidget->value != '')
+			{
+				$this->Input->setPost($objWidget->name, $objWidget->value);
+				
+				$objValidator = clone $objWidget;
+				$objValidator->validate();
+				
+				if ($objValidator->hasErrors())
+				{
+					$this->doNotSubmit = true;
 				}
 			}
 			
@@ -1215,7 +1227,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 					$arrAddress[$field['value']] = $varValue;
 				}
 			}
-			elseif ($objWidget->value != '')
+			elseif ($this->Input->post($strAddressType) === '0' || $this->Input->post($strAddressType) == '')
 			{
 				$this->Input->setPost($objWidget->name, $objWidget->value);
 				
