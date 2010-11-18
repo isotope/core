@@ -138,8 +138,17 @@ class ModuleIsotopeTranslation extends BackendModule
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
- * @author     " . $this->User->name . " <" . $this->User->email . ">
+ * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010";
+ 				
+ 				$objAuthors = $this->Database->execute("SELECT * FROM tl_user WHERE translation='{$this->User->translation}'");
+ 				
+ 				while( $objAuthors->next() )
+ 				{
+ 					$strFile .= "
+ * @author     " . $objAuthors->name . " <" . $objAuthors->email . ">";
+ 				}
+ 				
+ 				$strFile .= "
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
