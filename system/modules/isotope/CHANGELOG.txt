@@ -7,6 +7,7 @@ Version 0.3.beta1
 - Added "advanced prices". Allow to define a prices for store configs, member groups, start/stop dates
 - Added availability check for products
 - Added new "field wizard" to set up address fields with custom label and mandatory option in store configuration
+- Added option to "authorize" or "capture" transations for ePay payment modules
 - Improved: Better Isotope module handling, including callback support
 - Improved: Moved multilingual support to its own extension "isotope_multilingual" with lot more options
 - Improved: Hide payment information if checkout total is 0

@@ -135,8 +135,8 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 		'paypalpayflowpro'		=> '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,allowed_cc_types,requireCCV,postsale_mail,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},payflowpro_user,payflowpro_vendor,payflowpro_partner,payflowpro_password,payflowpro_transType;{price_legend:hide},price,tax_class;{template_legend},button;{enabled_legend},debug,enabled',
 		'postfinance'			=> '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,postsale_mail,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},postfinance_pspid,postfinance_secret,postfinance_method;{price_legend:hide},price,tax_class;{enabled_legend},debug,enabled',
 		'authorizedotnet'		=> '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,allowed_cc_types,requireCCV,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},authorize_login,authorize_trans_key,authorize_trans_type,authorize_delimiter;{price_legend:hide},price,tax_class;{enabled_legend},debug,enabled',
-		'epay_window'			=> '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,postsale_mail,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},epay_merchantnumber,epay_secretkey;{price_legend:hide},price,tax_class;{enabled_legend},enabled',
-		'epay_form'				=> '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,postsale_mail,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},epay_merchantnumber,epay_secretkey;{price_legend:hide},price,tax_class;{enabled_legend},enabled',
+		'epay_window'			=> '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,trans_type,postsale_mail,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},epay_merchantnumber,epay_secretkey;{price_legend:hide},price,tax_class;{enabled_legend},enabled',
+		'epay_form'				=> '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,trans_type,postsale_mail,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},epay_merchantnumber,epay_secretkey;{price_legend:hide},price,tax_class;{enabled_legend},enabled',
 		'cybersource'			=> '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},cybersource_merchant_id,cybersource_trans_key,cybersource_trans_type;{price_legend:hide},price,tax_class;{enabled_legend},debug,enabled'
 	),
 
@@ -212,6 +212,16 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 			'eval'					  => array('multiple'=>true, 'tl_class'=>'clr'),
 			'options_callback'		  => array('tl_iso_payment_modules', 'getAllowedCCTypes') 
 		),
+		'trans_type' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['trans_type'],
+			'exclude'                 => true,
+			'default'				  => 'capture',
+			'inputType'				  => 'select',
+			'options'				  => array('capture', 'auth'),
+			'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
+			'reference'				  => $GLOBALS['TL_LANG']['tl_iso_payment_modules'],
+		),
 		'postsale_mail' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['postsale_mail'],
@@ -226,7 +236,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'default'                 => 0,
-			'eval'                    => array('maxlength'=>255, 'rgxp'=>'price', 'tl_class'=>'w50'),
+			'eval'                    => array('maxlength'=>255, 'rgxp'=>'price', 'tl_class'=>'clr w50'),
 		),
 		'maximum_total' => array
 		(

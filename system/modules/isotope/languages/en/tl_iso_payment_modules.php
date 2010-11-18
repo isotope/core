@@ -42,6 +42,7 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['maximum_total']			= array('Maximu
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['countries']				= array('Available countries', 'Select the countries where this payment method may be used (customer\'s billing address).');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['shipping_modules']		= array('Shipping methods', 'You can restrict this payment method to certain shipping methods (eg. Cash only when picking up).');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['product_types']			= array('Product types', 'You can restrict this payment method to certain product types. If the cart contains a product type you have not selected, the payment module is not available.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['trans_type']				= array('Transaction type', 'Select if you want to instantly capture the money or authorize (and hold) for a later transaction (eg. when shipping).');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['paypal_account']			= array('PayPal Account', 'Enter your paypal account (email address).');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_user']		= array('Paypal Payflow Pro username','');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_vendor']		= array('Paypal Payflow Pro vendor','An alphanumeric string of about 10 characters.');
@@ -79,6 +80,9 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['authorize_trans_type']	= array('A
 /**
  * References
  */
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['capture']	= 'Authorize and Capture';
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['auth']		= 'Authorize Only';
+
 $GLOBALS['TL_LANG']['ISO_PAY']['authorizedotnet']['modes']['AUTH_CAPTURE'] = 'Authorize and Capture';
 $GLOBALS['TL_LANG']['ISO_PAY']['authorizedotnet']['modes']['AUTH_ONLY'] = 'Authorize Only';
 

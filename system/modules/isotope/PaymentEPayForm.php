@@ -32,7 +32,7 @@
  * @extends Payment
  */
 class PaymentEPayForm extends PaymentEPay
-{	
+{
 	
 	/**
 	 * processPayment function.
@@ -122,7 +122,7 @@ class PaymentEPayForm extends PaymentEPay
 <input type="hidden" name="declineurl" value="' . $this->Environment->base . $this->generateFrontendUrl($objPage->row(), '/step/process') . '">
 
 <input type="hidden" name="language" value="2">
-<input type="hidden" name="instantcapture" value="1">
+<input type="hidden" name="instantcapture" value="' . ($this->trans_type == 'auth' ? '0' : '1') . '">
 <input type="hidden" name="md5key" value="' . md5($this->arrCurrencies[$this->Isotope->Config->currency] . $intTotal . $objOrder->id . $this->epay_secretkey) . '">
 <input type="hidden" name="cardtype" value="0">
 <input type="hidden" name="use3D" value="1">
