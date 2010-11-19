@@ -587,7 +587,6 @@ class Isotope extends Controller
 			// Get mail template
 			$objTemplate = new FrontendTemplate((strlen($objMail->template) ? $objMail->template : 'mail_default'));
 
-			$objTemplate->title = $objMail->subject;
 			$objTemplate->body = $objMail->html;
 			$objTemplate->charset = $GLOBALS['TL_CONFIG']['characterSet'];
 			$objTemplate->css = $css;
