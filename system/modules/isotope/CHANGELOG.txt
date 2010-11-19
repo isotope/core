@@ -7,7 +7,6 @@ Version 0.3.beta1
 - Added "advanced prices". Allow to define a prices for store configs, member groups, start/stop dates
 - Added availability check for products
 - Added new "field wizard" to set up address fields with custom label and mandatory option in store configuration
-- Added option to "authorize" or "capture" transations for ePay payment modules
 - Improved: Better Isotope module handling, including callback support
 - Improved: Moved multilingual support to its own extension "isotope_multilingual" with lot more options
 - Improved: Hide payment information if checkout total is 0
@@ -17,9 +16,11 @@ Version 0.2.0
 - Added label for isotope_rules extension folder
 - Added support for percentage surcharge for payment and shipping price
 - Added italian translation for frontend information
+- Added option to "authorize" or "capture" transations for ePay payment modules
 - Fixed field tl_iso_rules.applyTo not visible in the palette
 - Fixed PayPal checkout not charging for shipping price
 - Fixed back button on attributes page (Ticket #259)
+- Fixed mail subject appearing in HTML content
 
 Version 0.2.rc1 (2010-10-31)
 ------------------------------
