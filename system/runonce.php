@@ -154,7 +154,7 @@ class IsotopeRunonce extends Frontend
 		}
 		
 		// tl_iso_attributes.is_required has been renamed to tl_iso_attributes.mandatory
-		if ($this->Database->fieldExists('size', 'tl_iso_attributes') && !$this->Database->fieldExists('imgSize', 'tl_iso_attributes'))
+		if (in_array('isotope_imageselect', $this->Config->getActiveModules()) && $this->Database->fieldExists('size', 'tl_iso_attributes') && !$this->Database->fieldExists('imgSize', 'tl_iso_attributes'))
 		{
 			$this->Database->query("ALTER TABLE tl_iso_attributes CHANGE COLUMN size imgSize varchar(64) NOT NULL default ''");
 		}
