@@ -195,8 +195,6 @@ class PaymentPaypal extends IsotopePayment
 	 */
 	public function checkoutForm()
 	{
-		$this->import('Isotope');
-		
 		$objOrder = $this->Database->prepare("SELECT order_id FROM tl_iso_orders WHERE cart_id=?")->execute($this->Isotope->Cart->id);
 		
 		$strBuffer = '
