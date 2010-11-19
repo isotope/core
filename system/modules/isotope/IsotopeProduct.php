@@ -506,7 +506,7 @@ class IsotopeProduct extends Controller
 		
 		$this->arrOptions = array();
 		
-		$objTemplate = new FrontendTemplate($strTemplate);
+		$objTemplate = new IsotopeTemplate($strTemplate);
 		
 		$arrProductOptions = array();
 		$arrAjaxOptions = array();

@@ -73,7 +73,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 			return;
 		}
 		
-		$objTemplate = new FrontendTemplate($this->iso_cart_layout);
+		$objTemplate = new IsotopeTemplate($this->iso_cart_layout);
 		
 		global $objPage;
 		$strUrl = $this->generateFrontendUrl($objPage->row());

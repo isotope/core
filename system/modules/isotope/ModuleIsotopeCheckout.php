@@ -362,7 +362,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			);
 		}
 		
-		$objTemplate = new FrontendTemplate('iso_checkout_billing_address');
+		$objTemplate = new IsotopeTemplate('iso_checkout_billing_address');
 		
 		$objTemplate->headline = $blnRequiresPayment ? $GLOBALS['TL_LANG']['ISO']['billing_address'] : $GLOBALS['TL_LANG']['ISO']['customer_address'];
 		$objTemplate->message = (FE_USER_LOGGED_IN ? $GLOBALS['TL_LANG']['ISO'][($blnRequiresPayment ? 'billing' : 'customer') . '_address_message'] : $GLOBALS['TL_LANG']['ISO'][($blnRequiresPayment ? 'billing' : 'customer') . '_address_guest_message']);
@@ -401,7 +401,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			);
 		}
 			
-		$objTemplate = new FrontendTemplate('iso_checkout_shipping_address');
+		$objTemplate = new IsotopeTemplate('iso_checkout_shipping_address');
 		
 		$objTemplate->headline = $GLOBALS['TL_LANG']['ISO']['shipping_address'];
 		$objTemplate->message = $GLOBALS['TL_LANG']['ISO']['shipping_address_message'];
@@ -486,7 +486,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			}
 		}
 		
-		$objTemplate = new FrontendTemplate('iso_checkout_shipping_method');
+		$objTemplate = new IsotopeTemplate('iso_checkout_shipping_method');
 				
 		if(!count($arrModules))
 		{			
@@ -612,7 +612,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			}
 		}
 		
-		$objTemplate = new FrontendTemplate('iso_checkout_payment_method');
+		$objTemplate = new IsotopeTemplate('iso_checkout_payment_method');
 		
 		if(!count($arrModules))
 		{
@@ -825,7 +825,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		if ($blnReview)
 			return;
 			
-		$objTemplate = new FrontendTemplate('iso_checkout_order_review');
+		$objTemplate = new IsotopeTemplate('iso_checkout_order_review');
 		
 		$objTemplate->headline = $GLOBALS['TL_LANG']['ISO']['order_review'];
 		$objTemplate->message = $GLOBALS['TL_LANG']['ISO']['order_review_message'];
@@ -1310,7 +1310,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			return '';
 		}
 		
-		$objTemplate = new FrontendTemplate('iso_google_analytics');
+		$objTemplate = new IsotopeTemplate('iso_google_analytics');
 		
 		$arrState = explode(',', $this->Isotope->Cart->billingAddress['subdivision']);
 		

@@ -125,7 +125,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 		'default'                     => '
 			{name_legend},name,label,fallback;
 			{address_legend:hide},firstname,lastname,company,street_1,street_2,street_3,postal,city,subdivision,country,emailShipping,phone;
-			{config_legend},shipping_countries,billing_countries,shipping_fields,billing_fields,orderPrefix,store_id,enableGoogleAnalytics;
+			{config_legend},shipping_countries,billing_countries,shipping_fields,billing_fields,orderPrefix,store_id,templateGroup,enableGoogleAnalytics;
 			{price_legend},priceCalculateFactor,priceCalculateMode,priceRoundPrecision,priceRoundIncrement;
 			{currency_legend},currency,currencySymbol,currencyFormat,currencyPosition;
 			{invoice_legend:hide},invoiceLogo;
@@ -298,6 +298,27 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 //			'options_callback'		  => array('tl_iso_config', 'getAddressFields'),
 			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'table'=>'tl_iso_addresses', 'tl_class'=>'w50 w50h'),
 		),
+		'orderPrefix' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['orderPrefix'],
+			'exclude'                 => true,
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>4, 'tl_class'=>'w50'),
+		),
+		'store_id' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['store_id'],
+			'exclude'                 => true,
+			'inputType'               => 'text',
+			'eval'                    => array('mandatory'=>true, 'rgxp'=>'digit', 'nospace'=>true, 'maxlength'=>2, 'tl_class'=>'w50'),
+		),
+		'templateGroup' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['templateGroup'],
+			'exclude'                 => true,
+			'inputType'               => 'fileTree',
+			'eval'                    => array('fieldType'=>'radio', 'path'=>'templates', 'tl_class'=>'clr')
+		),
 		'enableGoogleAnalytics' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['enableGoogleAnalytics'],
@@ -404,20 +425,6 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'inputType'               => 'select',
 			'options'				  => array_keys($GLOBALS['ISO_NUM']),
 			'eval'                    => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50'),
-		),
-		'orderPrefix' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['orderPrefix'],
-			'exclude'                 => true,
-			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>4, 'tl_class'=>'w50'),
-		),
-		'store_id' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['store_id'],
-			'exclude'                 => true,
-			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'rgxp'=>'digit', 'nospace'=>true, 'maxlength'=>2, 'tl_class'=>'w50'),
 		),
 	)
 );

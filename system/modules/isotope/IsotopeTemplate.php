@@ -24,55 +24,50 @@
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
- 
 
-class InlineGallery extends IsotopeGallery
+
+class IsotopeTemplate extends FrontendTemplate
 {
 	
-	/**
-	 * Template
-	 * @var string
-	 */
-	protected $strTemplate = 'iso_gallery_inline';
-	
-	
-	/**
-	 * Generate gallery
-	 */
-	public function generateGallery($strType='gallery', $intSkip=0)
+	public function __construct($strTemplate='', $strContentType='text/html')
 	{
-		$strGallery = '';
+		parent::__construct($strTemplate, $strContentType);
 		
-		foreach( $this->arrFiles as $i => $arrFile )
-		{
-			if ($i < $intSkip)
-				continue;
-				
-			$objTemplate = new IsotopeTemplate($this->strTemplate);
-			
-			$objTemplate->setData($arrFile);
-			$objTemplate->mode = 'gallery';
-			$objTemplate->type = $strType;
-			$objTemplate->name = $this->name;
-			$objTemplate->product_id = $this->product_id;
-			$objTemplate->href_reader = $this->href_reader;
-			
-			list($objTemplate->link, $objTemplate->rel) = explode('|', $arrFile['link']);
-			
-			if ($i == 0)
-			{
-				$objTemplate->class = 'active';
-			}
-			
-			$strGallery .= $objTemplate->parse();
-		}
-		
-		return '<span id="' . $this->name . '_gallery">' . $strGallery . '</span>';
+		$this->import('Isotope');
 	}
 	
 	
-	protected function injectAjax()
+	/**
+	 * Check the Isotope config directory for a particular template.
+	 * @param string
+	 * @return string
+	 * @throws Exception
+	 */
+	protected function getTemplate($strTemplate)
 	{
+		$strPath = TL_ROOT . '/templates';
+		$strTemplate = basename($strTemplate);
+
+		// Check the templates subfolder
+		if (TL_MODE == 'FE')
+		{
+			global $objPage;
+
+			$strTemplateGroup = str_replace('../', '', $this->Isotope->Config->templateGroup);
+			$strTemplateGroup = preg_replace('@^templates/@', '', $strTemplateGroup);
+
+			if ($strTemplateGroup != '')
+			{
+				$strFile = $strPath . '/' . $strTemplateGroup . '/' . $strTemplate . '.tpl';
+
+				if (file_exists($strFile))
+				{
+					return $strFile;
+				}
+			}
+		}
+
+		return parent::getTemplate($strTemplate);
 	}
 }
 

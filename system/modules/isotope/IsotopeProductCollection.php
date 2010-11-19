@@ -260,7 +260,7 @@ abstract class IsotopeProductCollection extends Model
 		{
 			$this->import('Isotope');
 			
-			$objTemplate = new FrontendTemplate($strTemplate);
+			$objTemplate = new IsotopeTemplate($strTemplate);
 			
 			$arrSurcharges = array();
 			foreach( $this->getSurcharges() as $arrSurcharge )

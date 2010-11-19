@@ -189,7 +189,7 @@ class ModuleIsotopeAddressBook extends Module
 			$this->memberTpl = 'member_default';
 		}
 		
-		$this->Template = new FrontendTemplate($this->memberTpl);
+		$this->Template = new IsotopeTemplate($this->memberTpl);
 		
 		$this->Template->fields = '';
 		$this->Template->tableless = $this->tableless;

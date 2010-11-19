@@ -181,7 +181,7 @@ class IsotopeGallery extends Frontend
 		
 		$this->injectAjax();
 		
-		$objTemplate = new FrontendTemplate($this->strTemplate);
+		$objTemplate = new IsotopeTemplate($this->strTemplate);
 			
 		$objTemplate->setData($arrFile);
 		$objTemplate->mode = 'main';
@@ -208,7 +208,7 @@ class IsotopeGallery extends Frontend
 			if ($i < $intSkip)
 				continue;
 			
-			$objTemplate = new FrontendTemplate($this->strTemplate);
+			$objTemplate = new IsotopeTemplate($this->strTemplate);
 			
 			$objTemplate->setData($arrFile);
 			$objTemplate->mode = 'gallery';
