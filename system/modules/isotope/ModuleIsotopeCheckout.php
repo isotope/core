@@ -1004,7 +1004,10 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 						
 						foreach( $this->Isotope->Config->{$address.'_fields'} as $field )
 						{
-							$arrAddress[$field['value']] = $arrData[$address.'_'.$field['value']];
+							if ($field['enabled'])
+							{
+								$arrAddress[$field['value']] = $arrData[$address.'_'.$field['value']];
+							}
 						}
 						
 						$this->Database->prepare("INSERT INTO tl_iso_addresses %s")->set($arrAddress)->execute();
