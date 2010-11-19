@@ -74,7 +74,6 @@ $GLOBALS['TL_LANG']['MSC']['searchTextBoxLabel'] = 'Cherchez le terme:';
 $GLOBALS['TL_LANG']['MSC']['searchFieldsLabel'] = 'Champs de recherche:';
 $GLOBALS['TL_LANG']['MSC']['perPageLabel'] = 'Produits par page';
 $GLOBALS['TL_LANG']['MSC']['searchTermsLabel'] = 'Mots-clés';
-$GLOBALS['TL_LANG']['MSC']['searchLabel'] = 'Recherche';
 $GLOBALS['TL_LANG']['MSC']['submitLabel'] = 'Soumettre';
 $GLOBALS['TL_LANG']['MSC']['clearFiltersLabel'] = 'Eloignez les filtres';
 $GLOBALS['TL_LANG']['MSC']['buttonLabel']['update'] = 'Mise à jour';
