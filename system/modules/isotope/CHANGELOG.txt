@@ -22,6 +22,7 @@ Version 0.2.0
 - Fixed PayPal checkout not charging for shipping price
 - Fixed back button on attributes page (Ticket #259)
 - Fixed mail subject appearing in HTML content
+- Fixed listing module having a template assigned by default
 
 Version 0.2.rc1 (2010-10-31)
 ------------------------------
