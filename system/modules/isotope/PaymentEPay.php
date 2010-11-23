@@ -137,5 +137,31 @@ window.addEvent( \'domready\' , function() {
 //--><!]]>
 </script>';
 	}
+	
+	
+	/**
+	 * Return information or advanced features in the backend.
+	 *
+	 * @access public
+	 * @param  int		Order ID
+	 * @return string
+	 */
+	public function backendInterface($orderId)
+	{
+		return '
+<div id="tl_buttons">
+<a href="'.ampersand(str_replace('&key=payment', '', $this->Environment->request)).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
+</div>
+
+<h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['TL_LANG']['PAY'][$this->type][0] . ')' . '</h2>
+
+<div class="tl_formbody_edit">
+<div class="tl_tbox block">
+<h4>' . $GLOBALS['TL_LANG']['MSC']['backendPaymentEPay'] . '</h4>
+<p class="tl_info" style="margin-top:5px"><a href="https://ssl.ditonlinebetalingssystem.dk/admin/login.asp"' . LINK_NEW_WINDOW . '>https://ssl.ditonlinebetalingssystem.dk/admin/login.asp</a></p>
+
+</div>
+</div>';
+	}
 }
 
