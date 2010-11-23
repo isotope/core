@@ -225,6 +225,7 @@ $GLOBALS['TL_LANG']['ISO']['cc_start_date']					= 'Credit card start date (requi
 $GLOBALS['TL_LANG']['MSC']['pay_with_cc']					= array('Processing payment', 'Please enter the required information to process your payment.', 'Pay now');
 $GLOBALS['TL_LANG']['ISO']['pay_with_paypal']				= array('Pay with PayPal', 'You will be redirected to the PayPal payment website. If you are not automatically redirected, please click on the "Pay now" button.', 'Pay now');
 $GLOBALS['TL_LANG']['ISO']['pay_with_epay']					= array('Pay with ePay', 'You will be redirected to the ePay payment website. If you are not automatically redirected, please click on the "Pay now" button.', 'Pay now');
+$GLOBALS['TL_LANG']['MSC']['backendPaymentEPay']			= 'Please use the following address to access the ePay admin panel';
 $GLOBALS['TL_LANG']['ISO']['backendPaymentNotFound']		= 'Payment module not found!';
 $GLOBALS['TL_LANG']['ISO']['backendShippingNotFound']		= 'Shipping module not found!';
 $GLOBALS['TL_LANG']['ISO']['backendPaymentNoInfo']			= 'This payment module does not provide additional information.';

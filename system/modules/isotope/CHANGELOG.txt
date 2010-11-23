@@ -18,6 +18,7 @@ Version 0.2.0
 - Added support for percentage surcharge for payment and shipping price
 - Added italian translation for frontend information
 - Added option to "authorize" or "capture" transations for ePay payment modules
+- Added link to admin panel for ePay payment gateway
 - Fixed field tl_iso_rules.applyTo not visible in the palette
 - Fixed PayPal checkout not charging for shipping price
 - Fixed back button on attributes page (Ticket #259)
