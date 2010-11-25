@@ -26,6 +26,7 @@ Version 0.2.0
 - Fixed listing module having a template assigned by default
 - Fixed new mode-4-grouping in shipping options
 - Fixed issues with checkbox attributes (Ticket #273)
+- Fixed fallback for deleted products throwing an exception
 
 Version 0.2.rc1 (2010-10-31)
 ------------------------------
