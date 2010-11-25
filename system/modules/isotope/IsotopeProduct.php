@@ -45,7 +45,7 @@ class IsotopeProduct extends Controller
 	 * Product type
 	 * @var array
 	 */
-	protected $arrType;
+	protected $arrType = array();
 
 	/**
 	 * Attributes assigned to this product type
@@ -63,7 +63,7 @@ class IsotopeProduct extends Controller
 	 * Product Options
 	 * @var array
 	 */
-	protected $arrOptions;
+	protected $arrOptions = array();
 
 	/**
 	 * Downloads for this product
@@ -119,6 +119,11 @@ class IsotopeProduct extends Controller
 		{
 			$this->arrData = $arrData;
 			
+		}
+		
+		if (!$this->arrData['type'])
+		{
+			return;
 		}
 		
 		$this->arrType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id=".$this->arrData['type'])->fetchAssoc();
