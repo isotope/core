@@ -1094,7 +1094,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		{
 			$strClass = $GLOBALS['TL_FFL']['radio'];
 			
-			$arrData = array('id'=>$field, 'name'=>$field, 'required'=>true);
+			$arrData = array('id'=>$field, 'name'=>$field, 'mandatory'=>true);
 			
 			$objWidget = new $strClass($arrData);
 			$objWidget->options = $arrOptions;
