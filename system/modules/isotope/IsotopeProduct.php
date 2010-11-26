@@ -241,7 +241,8 @@ class IsotopeProduct extends Controller
 							break;
 							
 						case 'categories':
-							$this->arrCache[$strKey] = $this->Database->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid=" . ($this->pid ? $this->pid : $this->id) . " ORDER BY sorting")->fetchEach('page_id');
+							$varValue = $this->Database->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid=" . ($this->pid ? $this->pid : $this->id) . " ORDER BY sorting")->fetchEach('page_id');
+							break;
 					}
 
 					$this->arrCache[$strKey] = $varValue ? $varValue : deserialize($this->arrData[$strKey]);

@@ -351,16 +351,28 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			case 'global':
 				return array_merge($this->getChildRecords($objPage->rootId, 'tl_page', true), array($objPage->rootId));
 				
-			case 'parent_and_first_child':
+			case 'current_and_first_child':
 				return array_merge($this->Database->execute("SELECT id FROM tl_page WHERE pid={$objPage->id}")->fetchEach('id'), array($objPage->id));
 				
-			case 'parent_and_all_children':
+			case 'current_and_all_children':
 				return array_merge($this->getChildRecords($objPage->id, 'tl_page', true), array($objPage->id));
+				
+			case 'parent':
+				return array($objPage->pid);
+				
+			case 'product':
+				$objProduct = $this->getProductByAlias($this->Input->get('product'));
+				
+				if (!$objProduct)
+					return array(0);
+					
+				return $objProduct->categories;
 				
 			default:
 			case 'current_category':
 				return array($objPage->id);
 		}
+
 	}
 }
 
