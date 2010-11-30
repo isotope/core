@@ -98,10 +98,11 @@ var IsotopeProduct = new Class(
 	options: {
 		language: 'en',
 		page: 0,
+		action: 'fmd',
 		loadMessage: 'Loading product data …'
 	},
 	
-	initialize: function(module, product, attributes, options)
+	initialize: function(ajaxid, product, attributes, options)
 	{
 		this.setOptions(options);
 		
@@ -111,7 +112,7 @@ var IsotopeProduct = new Class(
 		{
 			this.form.set('send',
 			{
-				url: ('ajax.php?action=fmd&id='+module+'&language='+this.options.language+'&page='+this.options.page+'&product='+product),
+				url: ('ajax.php?action='+this.options.action+'&id='+ajaxid+'&language='+this.options.language+'&page='+this.options.page+'&product='+product),
 				link: 'cancel',
 				onRequest: function()
 				{
