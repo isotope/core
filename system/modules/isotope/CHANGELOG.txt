@@ -11,6 +11,7 @@ Version 0.2.0
 - Added link to admin panel for ePay payment gateway
 - Added listing for "parent category" to product list
 - Added listing for "product categories" to product list
+- Added polish translation, thanks to Radosław Maślanek
 - Fixed field tl_iso_rules.applyTo not visible in the palette
 - Fixed PayPal checkout not charging for shipping price
 - Fixed back button on attributes page (Ticket #259)
