@@ -437,8 +437,11 @@ class IsotopePOS extends Backend
 		$objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
 		
 		$arrSurcharges = array();
-		foreach( deserialize($objOrderData->surcharges) as $arrSurcharge )
+		foreach( deserialize($objOrderData->surcharges, true) as $arrSurcharge )
 		{
+			if (!is_array($arrSurcharge))
+				continue;
+				
 			$arrSurcharges[] = array
 			(
 				'label'			=> $arrSurcharge['label'],
