@@ -474,6 +474,11 @@ class Isotope extends Controller
 	{
 		if (!is_array($arrAddress) || !count($arrAddress))
 			return $arrAddress;
+		
+		if (!is_array($GLOBALS['ISO_ADR']))
+		{
+			$this->loadLanguageFile('countries');
+		}
 			
 		if (!is_array($arrFields))
 		{
@@ -651,7 +656,7 @@ class Isotope extends Controller
 	/**
 	 * Intermediate-Function to allow DCA class to be loaded.
 	 */
-	public function loadDataContainer($strTable)
+	public function loadProductsDataContainer($strTable)
 	{
 		if ($strTable == 'tl_iso_products')
 		{
@@ -802,6 +807,12 @@ class Isotope extends Controller
 	public function formatValue($table, $field, $value)
 	{
 		$value = deserialize($value);
+		
+		if (!is_array($GLOBALS['TL_DCA'][$table]))
+		{
+			$this->loadDataContainer($table);
+			$this->loadLanguageFile($table);
+		}
 	
 		// Get field value
 		if (strlen($GLOBALS['TL_DCA'][$table]['fields'][$field]['foreignKey']))
@@ -881,6 +892,12 @@ class Isotope extends Controller
 	 */
 	public function formatLabel($table, $field)
 	{
+		if (!is_array($GLOBALS['TL_DCA'][$table]))
+		{
+			$this->loadDataContainer($table);
+			$this->loadLanguageFile($table);
+		}
+
 		// Label
 		if (count($GLOBALS['TL_DCA'][$table]['fields'][$field]['label']))
 		{
