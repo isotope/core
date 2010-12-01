@@ -664,6 +664,11 @@ class Isotope extends Controller
 			$this->import('tl_iso_products');
 			$this->tl_iso_products->loadProductsDCA();
 		}
+		elseif ($strTable == 'tl_member' && $this->Config->limitMemberCountries)
+		{
+			$arrCountries = array_unique(array_merge((array)deserialize($this->Config->billing_countries), (array)deserialize($this->Config->shipping_countries)));
+			$GLOBALS['TL_DCA']['tl_member']['fields']['country']['options'] = array_intersect_key($GLOBALS['TL_DCA']['tl_member']['fields']['country']['options'], array_flip($arrCountries));
+		}
 	}
 	
 	

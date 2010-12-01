@@ -125,7 +125,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 		'default'                     => '
 			{name_legend},name,label,fallback;
 			{address_legend:hide},firstname,lastname,company,street_1,street_2,street_3,postal,city,subdivision,country,emailShipping,phone;
-			{config_legend},shipping_countries,billing_countries,shipping_fields,billing_fields,orderPrefix,store_id,templateGroup,enableGoogleAnalytics;
+			{config_legend},shipping_countries,billing_countries,shipping_fields,billing_fields,orderPrefix,store_id,templateGroup,limitMemberCountries,enableGoogleAnalytics;
 			{price_legend},priceCalculateFactor,priceCalculateMode,priceRoundPrecision,priceRoundIncrement;
 			{currency_legend},currency,currencySymbol,currencyFormat,currencyPosition;
 			{invoice_legend:hide},invoiceLogo;
@@ -319,12 +319,19 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'inputType'               => 'fileTree',
 			'eval'                    => array('fieldType'=>'radio', 'path'=>'templates', 'tl_class'=>'clr')
 		),
+		'limitMemberCountries' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['limitMemberCountries'],
+			'exclude'                 => true,
+			'inputType'               => 'checkbox',
+			'eval'					  => array('tl_class'=>'w50'),
+		),
 		'enableGoogleAnalytics' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['enableGoogleAnalytics'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
-			'eval'					  => array('tl_class'=>'clr'),
+			'eval'					  => array('tl_class'=>'w50'),
 		),
 		'invoiceLogo' => array
 		(

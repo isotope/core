@@ -254,6 +254,7 @@ CREATE TABLE `tl_iso_config` (
   `phone` varchar(64) NOT NULL default '',
   `emailShipping` varchar(255) NOT NULL default '',
   `enableGoogleAnalytics` char(1) NOT NULL default '',
+  `limitMemberCountries` char(1) NOT NULL default '',
   `gallery` varchar(64) NOT NULL default '',
   `missing_image_placeholder` varchar(255) NOT NULL default '',
   `imageSizes` blob NULL,
