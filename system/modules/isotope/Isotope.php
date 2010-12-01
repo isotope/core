@@ -485,11 +485,6 @@ class Isotope extends Controller
 		{
 			$arrAddress['country'] = $this->Config->country;
 		}
-		
-		$arrCountries = $this->getCountries();
-		
-		$strFormat = $GLOBALS['ISO_ADR'][$arrAddress['country']];
-		$arrAddress['country'] = $arrCountries[$arrAddress['country']];
 	
 		$arrSearch = $arrReplace = array();
 		foreach( $arrFields as $arrField )
@@ -510,11 +505,11 @@ class Isotope extends Controller
 			}
 			
 			$arrSearch[] = '{'.$strField.'}';
-			$arrReplace[] = $arrAddress[$strField];
+			$arrReplace[] = $this->formatValue('tl_iso_addresses', $strField, $arrAddress[$strField]);
 		}
 
 		// Parse format
-		$strAddress = str_replace($arrSearch, $arrReplace, $strFormat);
+		$strAddress = str_replace($arrSearch, $arrReplace, $GLOBALS['ISO_ADR'][$arrAddress['country']]);
 	
 		// Remove empty tags
 		$strAddress = preg_replace('(\{[^}]+\})', '', $strAddress);
