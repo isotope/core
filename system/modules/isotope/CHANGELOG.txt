@@ -22,6 +22,7 @@ Version 0.2.0
 - Fixed issues with checkbox attributes (Ticket #273)
 - Fixed fallback for deleted products throwing an exception
 - Fixed potential foreach error in IsotopePOS (Ticket #272)
+- Fixed Check for array as well as array size on line 96 in ModuleIsotopeProductFilter (Ticket #249)
 
 Version 0.2.rc1 (2010-10-31)
 ------------------------------
