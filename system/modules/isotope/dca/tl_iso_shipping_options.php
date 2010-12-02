@@ -57,6 +57,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_options'] = array
 			'fields'                  => array('name'),
 			'panelLayout'             => 'sort,filter;search,limit',
 			'headerFields'            => array('name', 'type'),
+			'disableGrouping'		  => true,
 			'child_record_callback'   => array('tl_iso_shipping_options', 'listRow')
 		),
 		'global_operations' => array

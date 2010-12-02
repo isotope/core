@@ -244,7 +244,7 @@ $GLOBALS['ISO_NUM']["10'000.00"]	= array(2, '.', "'");
 /**
  * Hooks
  */
-$GLOBALS['TL_HOOKS']['loadDataContainer'][]			= array('Isotope', 'loadDataContainer');
+$GLOBALS['TL_HOOKS']['loadDataContainer'][]			= array('Isotope', 'loadProductsDataContainer');
 $GLOBALS['TL_HOOKS']['isoButtons'][]				= array('Isotope', 'defaultButtons');
 $GLOBALS['TL_HOOKS']['addCustomRegexp'][]			= array('Isotope', 'validateRegexp');
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][]			= array('IsotopeFrontend', 'replaceIsotopeTags');

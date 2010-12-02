@@ -80,7 +80,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 			'back' => array
 			(
 				'label'				=> &$GLOBALS['TL_LANG']['MSC']['backBT'],
-				'href'				=> 'mod=',
+				'href'				=> 'table=',
 				'class'				=> 'header_back',
 				'attributes'		=> 'onclick="Backend.getScrollOffset();"',
 			),
@@ -126,23 +126,17 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'__selector__'				=> array('type', 'multiple', 'variant_option'),
+		'__selector__'				=> array('type', 'variant_option'),
 		'default'					=> '{attribute_legend},name,field_name,type,legend',
 		'text'						=> '{attribute_legend},name,field_name,type,legend,is_customer_defined;{description_legend:hide},description;{config_legend},rgxp,maxlength,mandatory,multilingual;{search_filters_legend},is_searchable,is_order_by_enabled,is_be_searchable',
 		'textarea'					=> '{attribute_legend},name,field_name,type,legend,is_customer_defined;{description_legend:hide},description;{config_legend},rgxp,rte,mandatory,multilingual;{search_filters_legend},is_searchable,is_order_by_enabled,is_be_searchable',
-		'select'					=> '{attribute_legend},name,field_name,type,legend,variant_option,is_customer_defined;{description_legend:hide},description;{options_legend},options,foreignKey;{config_legend},mandatory,multiple;{search_filters_legend},is_filterable,is_order_by_enabled,is_be_filterable',
+		'select'					=> '{attribute_legend},name,field_name,type,legend,variant_option,is_customer_defined;{description_legend:hide},description;{options_legend},options,foreignKey;{config_legend},mandatory,multiple,size;{search_filters_legend},is_filterable,is_order_by_enabled,is_be_filterable',
 		'selectvariant_option'		=> '{attribute_legend},name,field_name,type,legend,variant_option;{description_legend:hide},description;{options_legend},options',
 		'radio'						=> '{attribute_legend},name,field_name,type,legend,variant_option,is_customer_defined;{description_legend:hide},description;{options_legend},options,foreignKey;{config_legend},mandatory;{search_filters_legend},is_filterable,is_order_by_enabled',
 		'radiovariant_option'		=> '{attribute_legend},name,field_name,type,legend,variant_option;{description_legend:hide},description;{options_legend},options',
-		'checkbox'					=> '{attribute_legend},name,field_name,type,legend,is_customer_defined;{description_legend:hide},description;{options_legend},options,foreignKey;{config_legend},mandatory;{search_filters_legend},is_filterable,is_order_by_enabled',
-		'conditionalselect'			=> '{attribute_legend},name,field_name,type,legend,is_customer_defined;{description_legend:hide},description;{options_legend},options,foreignKey;{config_legend},conditionField,mandatory,multiple;{search_filters_legend},is_filterable,is_order_by_enabled',
+		'checkbox'					=> '{attribute_legend},name,field_name,type,legend,is_customer_defined;{description_legend:hide},description;{options_legend},options,foreignKey;{config_legend},mandatory,multiple;{search_filters_legend},is_filterable,is_order_by_enabled',
+		'conditionalselect'			=> '{attribute_legend},name,field_name,type,legend,is_customer_defined;{description_legend:hide},description;{options_legend},options,foreignKey;{config_legend},mandatory,multiple,size,conditionField;{search_filters_legend},is_filterable,is_order_by_enabled',
 		'mediaManager'				=> '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},gallery,extensions,mandatory',
-    ),
-
-    // Subpalettes
-    'subpalettes' => array
-    (
-		'multiple'					=> 'size',
     ),
 
     // Fields
@@ -261,7 +255,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['multiple'],
 			'exclude'				=> true,
 			'inputType'				=> 'checkbox',
-			'eval'					=> array('submitOnChange'=>true, 'tl_class'=>'clr'),
+			'eval'					=> array('tl_class'=>'w50'),
 		),
 		'size' => array
 		(
@@ -269,7 +263,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 			'exclude'				=> true,
 			'inputType'				=> 'text',
 			'default'				=> 5,
-			'eval'					=> array('rgxp'=>'digit'),
+			'eval'					=> array('rgxp'=>'digit', 'tl_class'=>'w50'),
 		),
 		'extensions' => array
 		(
@@ -299,7 +293,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['rgxp'],
 			'exclude'				=> true,
 			'inputType'				=> 'select',
-			'options'				=> array('digit', 'alpha', 'alnum', 'extnd', 'date', 'time', 'datim', 'phone', 'email', 'url', 'price', 'discount'),
+			'options'				=> array('digit', 'alpha', 'alnum', 'extnd', 'date', 'time', 'datim', 'phone', 'email', 'url', 'price', 'discount', 'surcharge'),
 			'reference'				=> &$GLOBALS['TL_LANG']['tl_iso_attributes'],
 			'eval'					=> array('helpwizard'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
 		),
@@ -402,7 +396,7 @@ class tl_iso_attributes extends Backend
 	{
 		$objAttribute = $this->Database->execute("SELECT * FROM tl_iso_attributes WHERE id={$dc->id}");
 		
-		if ($objAttribute->type != $dc->activeRecord->type && strlen($dc->activeRecord->type) && strlen($GLOBALS['ISO_ATTR'][$dc->activeRecord->type]['sql']) && $this->Database->fieldExists($dc->activeRecord->field_name, 'tl_iso_products'))
+		if ($objAttribute->field_name != '' && $dc->activeRecord->type != '' && $objAttribute->type != $dc->activeRecord->type && $GLOBALS['ISO_ATTR'][$dc->activeRecord->type]['sql'] != '' && $this->Database->fieldExists($dc->activeRecord->field_name, 'tl_iso_products'))
 		{
 			$this->Database->query(sprintf("ALTER TABLE tl_iso_products MODIFY %s %s", $objAttribute->field_name, $GLOBALS['ISO_ATTR'][$dc->activeRecord->type]['sql']));
 		}

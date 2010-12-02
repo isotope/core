@@ -2,7 +2,32 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 0.2.rc1
+Version 0.2.0
+------------------------------
+- Added label for isotope_rules extension folder
+- Added support for percentage surcharge for payment and shipping price
+- Added italian translation for frontend information
+- Added option to "authorize" or "capture" transations for ePay payment modules
+- Added link to admin panel for ePay payment gateway
+- Added listing for "parent category" to product list
+- Added listing for "product categories" to product list
+- Added polish translation, thanks to Radosław Maślanek
+- Improved address parsing with custom fields
+- Fixed field tl_iso_rules.applyTo not visible in the palette
+- Fixed PayPal checkout not charging for shipping price
+- Fixed back button on attributes page (Ticket #259)
+- Fixed mail subject appearing in HTML content
+- Fixed listing module having a template assigned by default
+- Fixed new mode-4-grouping in shipping options
+- Fixed issues with checkbox attributes (Ticket #273)
+- Fixed fallback for deleted products throwing an exception
+- Fixed potential foreach error in IsotopePOS (Ticket #272)
+- Fixed Check for array as well as array size on line 96 in ModuleIsotopeProductFilter (Ticket #249)
+- Fixed Isotope class not able to load data containers
+- Fixed tax ids for products in checkout and cart
+- Fixed exception when deleting and creating new attribute (Ticket #260)
+
+Version 0.2.rc1 (2010-10-31)
 ------------------------------
 - Added: "Default" option for tax class
 - Added: New mode setting for rules max/min quantity
@@ -20,6 +45,7 @@ Version 0.2.rc1
 - Fixed: Missing argument 2 for IsotopeRules::findCoupon()
 - Fixed: Incorrect default value for tl_iso_products.shipping_weight
 - Fixed various issues with PayPal sandbox processing
+- Fixed address validation in checkout module
 
 Version 0.2.beta2 (2010-09-27)
 ------------------------------

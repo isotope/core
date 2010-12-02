@@ -20,20 +20,19 @@
  *
  * PHP version 5
  * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Radosław Maślanek <radek@dziupla.pl>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
 /**
- * Extension folder
+ * Fields
  */
-$GLOBALS['TL_LANG']['MOD']['isotope_rules'] = array('Isotope eCommerce: Rules & Coupons');
+$GLOBALS['TL_LANG']['tl_page']['iso_config'] = array('Konfiguracja sklepu', 'Wybierz konfigurację sklepu dla tej struktury strony.');
 
 
 /**
- * Backend Modules
+ * Legends
  */
-$GLOBALS['TL_LANG']['MOD']['iso_rules'] = array('Rules & Coupons', '');
+$GLOBALS['TL_LANG']['tl_page']['isotope_legend'] = 'Isotope eCommerce';
 

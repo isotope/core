@@ -455,6 +455,10 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	 			{
 	 				$this->Isotope->Cart->Shipping = $objModule;
 	 			}
+	 			
+	 			$fltPrice = $objModule->price;
+	 			$strSurcharge = $objModule->surcharge;
+	 			$strPrice = $fltPrice != 0 ? (($strSurcharge == '' ? '' : ' ('.$strSurcharge.')') . ': '.$this->Isotope->formatPriceWithCurrency($fltPrice)) : '';
 				
 				$arrModules[] = sprintf('<input id="ctrl_shipping_module_%s" type="radio" name="shipping[module]" value="%s"%s /> <label for="ctrl_shipping_module_%s">%s%s</label>%s%s',
 										 $objModule->id,
@@ -462,7 +466,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 										 (($this->Isotope->Cart->Shipping->id == $objModule->id || $objModules->numRows==1) ? ' checked="checked"' : ''),
 										 $objModule->id,
 	 									 $objModule->label,
-	 									 ($objModule->price ? ': '.$this->Isotope->formatPriceWithCurrency($objModule->price) : ''),
+	 									 $strPrice,
 	 									 ($objModule->note ? '<div class="clear">&nbsp;</div><br /><div class="shippingNote"><strong>Note:</strong><br />' . $objModule->note . '</div>' : ''),
 	 									 ($objModule->getShippingOptions($objModule->id) ? '<div class="clear">&nbsp;</div><br /><div class="shippingOptions"><strong>Options:</strong><br />' . $objModule->getShippingOptions($objModule->id) . '</div>' : ''));
 	 									 
@@ -572,6 +576,10 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	 			{
 	 				$strForm = '<div class="payment_data" id="payment_data_' . $objModule->id . '">' . $strForm . '</div>';
 	 			}
+	 			
+	 			$fltPrice = $objModule->price;
+	 			$strSurcharge = $objModule->surcharge;
+	 			$strPrice = $fltPrice != 0 ? (($strSurcharge == '' ? '' : ' ('.$strSurcharge.')') . ': '.$this->Isotope->formatPriceWithCurrency($fltPrice)) : '';
 							
 				$arrModules[] = sprintf('<input id="ctrl_payment_module_%s" type="radio" class="radio payment_module" name="payment[module]" value="%s"%s /> <label for="ctrl_payment_module_%s">%s%s</label>%s',
 										 $objModule->id,
@@ -579,7 +587,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 										 (($this->Isotope->Cart->Payment->id == $objModule->id || $objModules->numRows==1) ? ' checked="checked"' : ''),
 										 $objModule->id,
 	 									 $objModule->label,
-	 									 ($objModule->price ? ': '.$this->Isotope->formatPriceWithCurrency($objModule->price) : ''),
+	 									 $strPrice,
 	 									 $strForm);
 	 									 
 	 			$objLastModule = $objModule;
@@ -803,10 +811,22 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		
 		$objTemplate->headline = $GLOBALS['TL_LANG']['ISO']['order_review'];
 		$objTemplate->message = $GLOBALS['TL_LANG']['ISO']['order_review_message'];
-				
+		
+		// Surcharges must be initialized before getProducts() to apply tax_id to each product
+		$arrSurcharges = array();
+		foreach( $this->Isotope->Cart->getSurcharges() as $arrSurcharge )
+		{
+			$arrSurcharges[] = array
+			(
+				'label'			=> $arrSurcharge['label'],
+				'price'			=> $this->Isotope->formatPriceWithCurrency($arrSurcharge['price']),
+				'total_price'	=> $this->Isotope->formatPriceWithCurrency($arrSurcharge['total_price']),
+				'tax_id'		=> $arrSurcharge['tax_id'],
+			);
+		}
+		
 		$arrProductData = array();
 		$arrProducts = $this->Isotope->Cart->getProducts();
-		
 		foreach( $arrProducts as $objProduct )
 		{
 			$arrProductData[] = array_merge($objProduct->getAttributes(), array
@@ -820,18 +840,6 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				'tax_id'			=> $objProduct->tax_id,
 				'product_options'	=> $objProduct->getOptions(),
 			));
-		}
-		
-		$arrSurcharges = array();
-		foreach( $this->Isotope->Cart->getSurcharges() as $arrSurcharge )
-		{
-			$arrSurcharges[] = array
-			(
-				'label'			=> $arrSurcharge['label'],
-				'price'			=> $this->Isotope->formatPriceWithCurrency($arrSurcharge['price']),
-				'total_price'	=> $this->Isotope->formatPriceWithCurrency($arrSurcharge['total_price']),
-				'tax_id'		=> $arrSurcharge['tax_id'],
-			);
 		}
 		
 		$objTemplate->info = $this->getCheckoutInfo();
@@ -1065,7 +1073,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		{
 			$strClass = $GLOBALS['TL_FFL']['radio'];
 			
-			$arrData = array('id'=>$field, 'name'=>$field, 'required'=>true);
+			$arrData = array('id'=>$field, 'name'=>$field, 'mandatory'=>true);
 			
 			$objWidget = new $strClass($arrData);
 			$objWidget->options = $arrOptions;
@@ -1075,7 +1083,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			$objWidget->tableless = true;
 
 			// Validate input
-			if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && strlen($this->Input->post($field)))
+			if ($this->Input->post('FORM_SUBMIT') == $this->strFormId)
 			{
 				$objWidget->validate();
 				
@@ -1086,6 +1094,18 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				else
 				{
 					$_SESSION['CHECKOUT_DATA'][$field]['id'] = $objWidget->value;
+				}
+			}
+			elseif ($objWidget->value != '')
+			{
+				$this->Input->setPost($objWidget->name, $objWidget->value);
+				
+				$objValidator = clone $objWidget;
+				$objValidator->validate();
+				
+				if ($objValidator->hasErrors())
+				{
+					$this->doNotSubmit = true;
 				}
 			}
 			
@@ -1162,7 +1182,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			$objWidget->rowClass = 'row_'.$i . (($i == 0) ? ' row_first' : '') . ((($i % 2) == 0) ? ' even' : ' odd');
 			
 			// Validate input
-			if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && ($this->Input->post($strAddressType) === '0' || !$this->Input->post($strAddressType)))
+			if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && ($this->Input->post($strAddressType) === '0' || $this->Input->post($strAddressType) == ''))
 			{
 				$objWidget->validate();
 				
@@ -1187,7 +1207,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 					$arrAddress[$field] = $varValue;
 				}
 			}
-			else
+			elseif ($this->Input->post($strAddressType) === '0' || $this->Input->post($strAddressType) == '')
 			{
 				$this->Input->setPost($objWidget->name, $objWidget->value);
 				

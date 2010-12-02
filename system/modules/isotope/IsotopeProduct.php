@@ -45,7 +45,7 @@ class IsotopeProduct extends Controller
 	 * Product type
 	 * @var array
 	 */
-	protected $arrType;
+	protected $arrType = array();
 
 	/**
 	 * Attributes assigned to this product type
@@ -63,7 +63,7 @@ class IsotopeProduct extends Controller
 	 * Product Options
 	 * @var array
 	 */
-	protected $arrOptions;
+	protected $arrOptions = array();
 
 	/**
 	 * Downloads for this product
@@ -119,6 +119,11 @@ class IsotopeProduct extends Controller
 		{
 			$this->arrData = $arrData;
 			
+		}
+		
+		if (!$this->arrData['type'])
+		{
+			return;
 		}
 		
 		$this->arrType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id=".$this->arrData['type'])->fetchAssoc();
@@ -236,7 +241,8 @@ class IsotopeProduct extends Controller
 							break;
 							
 						case 'categories':
-							$this->arrCache[$strKey] = $this->Database->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid=" . ($this->pid ? $this->pid : $this->id) . " ORDER BY sorting")->fetchEach('page_id');
+							$varValue = $this->Database->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid=" . ($this->pid ? $this->pid : $this->id) . " ORDER BY sorting")->fetchEach('page_id');
+							break;
 					}
 
 					$this->arrCache[$strKey] = $varValue ? $varValue : deserialize($this->arrData[$strKey]);
@@ -352,6 +358,8 @@ class IsotopeProduct extends Controller
 	 */
 	public function generate($strTemplate, &$objModule)
 	{
+		global $objPage;
+		
 		$this->validateVariant();
 		
 		$objTemplate = new FrontendTemplate($strTemplate);
@@ -424,7 +432,7 @@ class IsotopeProduct extends Controller
 		$objTemplate->action = ampersand($this->Environment->request, true);
 		$objTemplate->formSubmit = 'iso_product_'.($this->pid ? $this->pid : $this->id);
 		
-		$GLOBALS['TL_MOOTOOLS'][] = "<script type=\"text/javascript\">new IsotopeProduct('" . $objModule->id . "', '" . ($this->pid ? $this->pid : $this->id) . "', ['ctrl_" . implode("_".($this->pid ? $this->pid : $this->id)."', 'ctrl_", $arrAjaxOptions) . "_".($this->pid ? $this->pid : $this->id)."'], {language: '" . $GLOBALS['TL_LANGUAGE'] . "'});</script>";
+		$GLOBALS['TL_MOOTOOLS'][] = "<script type=\"text/javascript\">new IsotopeProduct('" . $objModule->id . "', '" . ($this->pid ? $this->pid : $this->id) . "', ['ctrl_" . implode("_".($this->pid ? $this->pid : $this->id)."', 'ctrl_", $arrAjaxOptions) . "_".($this->pid ? $this->pid : $this->id)."'], {language: '" . $GLOBALS['TL_LANGUAGE'] . "', page: " . $objPage->id . "});</script>";
 		
 		// HOOK for altering product data before output
 		if (isset($GLOBALS['TL_HOOKS']['iso_generateProduct']) && is_array($GLOBALS['TL_HOOKS']['iso_generateProduct']))

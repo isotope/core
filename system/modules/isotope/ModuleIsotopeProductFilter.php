@@ -91,7 +91,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 			
 		}
 	
-		if(count($arrFilterFields))
+		if(is_array($arrFilterFields) && count($arrFilterFields))
 		{
 			foreach($arrFilterFields as $field)
 			{

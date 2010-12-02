@@ -474,6 +474,11 @@ class Isotope extends Controller
 	{
 		if (!is_array($arrAddress) || !count($arrAddress))
 			return $arrAddress;
+		
+		if (!is_array($GLOBALS['ISO_ADR']))
+		{
+			$this->loadLanguageFile('countries');
+		}
 			
 		if (!is_array($arrFields))
 		{
@@ -485,11 +490,6 @@ class Isotope extends Controller
 		{
 			$arrAddress['country'] = $this->Config->country;
 		}
-		
-		$arrCountries = $this->getCountries();
-		
-		$strFormat = $GLOBALS['ISO_ADR'][$arrAddress['country']];
-		$arrAddress['country'] = $arrCountries[$arrAddress['country']];
 	
 		$arrSearch = $arrReplace = array();
 		foreach( $arrFields as $strField )
@@ -509,11 +509,11 @@ class Isotope extends Controller
 			}
 			
 			$arrSearch[] = '{'.$strField.'}';
-			$arrReplace[] = $arrAddress[$strField];
+			$arrReplace[] = $this->formatValue('tl_iso_addresses', $strField, $arrAddress[$strField]);
 		}
 
 		// Parse format
-		$strAddress = str_replace($arrSearch, $arrReplace, $strFormat);
+		$strAddress = str_replace($arrSearch, $arrReplace, $GLOBALS['ISO_ADR'][$arrAddress['country']]);
 	
 		// Remove empty tags
 		$strAddress = preg_replace('(\{[^}]+\})', '', $strAddress);
@@ -587,7 +587,6 @@ class Isotope extends Controller
 			// Get mail template
 			$objTemplate = new FrontendTemplate((strlen($objMail->template) ? $objMail->template : 'mail_default'));
 
-			$objTemplate->title = $objMail->subject;
 			$objTemplate->body = $objMail->html;
 			$objTemplate->charset = $GLOBALS['TL_CONFIG']['characterSet'];
 			$objTemplate->css = $css;
@@ -657,7 +656,7 @@ class Isotope extends Controller
 	/**
 	 * Intermediate-Function to allow DCA class to be loaded.
 	 */
-	public function loadDataContainer($strTable)
+	public function loadProductsDataContainer($strTable)
 	{
 		if ($strTable == 'tl_iso_products')
 		{
@@ -784,6 +783,14 @@ class Isotope extends Controller
 				}
 				return true;
 				break;
+			
+			case 'surcharge':
+				if(!preg_match('/^-?\d+(\.\d{1,2})?%?$/', $varValue))
+				{															
+					$objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR']['surcharge'], $objWidget->label));
+				}
+				return true;
+				break;
 		}
 		
 		return false;
@@ -800,6 +807,12 @@ class Isotope extends Controller
 	public function formatValue($table, $field, $value)
 	{
 		$value = deserialize($value);
+		
+		if (!is_array($GLOBALS['TL_DCA'][$table]))
+		{
+			$this->loadDataContainer($table);
+			$this->loadLanguageFile($table);
+		}
 	
 		// Get field value
 		if (strlen($GLOBALS['TL_DCA'][$table]['fields'][$field]['foreignKey']))
@@ -879,6 +892,12 @@ class Isotope extends Controller
 	 */
 	public function formatLabel($table, $field)
 	{
+		if (!is_array($GLOBALS['TL_DCA'][$table]))
+		{
+			$this->loadDataContainer($table);
+			$this->loadLanguageFile($table);
+		}
+
 		// Label
 		if (count($GLOBALS['TL_DCA'][$table]['fields'][$field]['label']))
 		{

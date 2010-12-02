@@ -75,10 +75,12 @@ $GLOBALS['TL_LANG']['tl_module']['iso_related_categories']		= array('Related cat
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['member']	= 'Login/Registration required';
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['guest']	= 'Guest checkout only';
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['both']		= 'Both allowed';
-$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['global']				= 'All Categories';
-$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['parent_and_first_child'] = 'Current Category and First Child Category';
-$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['parent_and_all_children']	= 'Current Category and All Child Categories';
-$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['current_category']			= 'Current Category Only';
+$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['global']					= 'All Categories';
+$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['current_and_first_child']	= 'Current Category and First Child Category';
+$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['current_and_all_children']	= 'Current Category and All Child Categories';
+$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['current_category']			= 'Current Category';
+$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['parent']					= 'Parent Category';
+$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['product']					= 'Current Product\'s Categories';
 
 $GLOBALS['TL_LANG']['tl_module']['sortingDirection']['ASC'] 	= "ASC";
 $GLOBALS['TL_LANG']['tl_module']['sortingDirection']['DESC'] 	= "DESC";
