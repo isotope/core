@@ -13,6 +13,10 @@ Version 0.3.beta1
 - Improved: Moved multilingual support to its own extension "isotope_multilingual" with lot more options
 - Improved: Hide payment information if checkout total is 0
 
+Version 0.2.1
+------------------------------
+- Fixed allowed country comparison for billing & shipping countries (Ticket #279)
+
 Version 0.2.0
 ------------------------------
 - Added label for isotope_rules extension folder
