@@ -1188,7 +1188,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			{
 				$arrCountries = ($strAddressType == 'billing_address' ? $this->Isotope->Config->billing_countries : $this->Isotope->Config->shipping_countries);
 				
-				$arrData['options'] = array_intersect_key($arrData['options'], $arrCountries);
+				$arrData['options'] = array_intersect($arrData['options'], $arrCountries);
 				$arrData['default'] = $this->Isotope->Config->country;
 			}
 			
