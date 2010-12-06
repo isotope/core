@@ -76,7 +76,6 @@ $GLOBALS['TL_LANG']['MSC']['searchTextBoxLabel'] = 'Søg beskrivelse:';
 $GLOBALS['TL_LANG']['MSC']['searchFieldsLabel'] = 'Søg felter:';
 $GLOBALS['TL_LANG']['MSC']['perPageLabel'] = 'Produkter pr. side';
 $GLOBALS['TL_LANG']['MSC']['searchTermsLabel'] = 'Nøgleord';
-$GLOBALS['TL_LANG']['MSC']['searchLabel'] = 'Søg';
 $GLOBALS['TL_LANG']['MSC']['submitLabel'] = 'OK';
 $GLOBALS['TL_LANG']['MSC']['clearFiltersLabel'] = 'Nulstil filtre';
 $GLOBALS['TL_LANG']['MSC']['buttonLabel']['update'] = 'Opdater';

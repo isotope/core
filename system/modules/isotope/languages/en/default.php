@@ -88,7 +88,6 @@ $GLOBALS['TL_LANG']['MSC']['searchTextBoxLabel'] = 'Search Term: ';
 $GLOBALS['TL_LANG']['MSC']['searchFieldsLabel'] = 'Search Fields: ';
 $GLOBALS['TL_LANG']['MSC']['perPageLabel'] = 'Products Per Page';
 $GLOBALS['TL_LANG']['MSC']['searchTermsLabel'] = 'Keywords';
-$GLOBALS['TL_LANG']['MSC']['searchLabel'] = 'Search';
 $GLOBALS['TL_LANG']['MSC']['submitLabel'] = 'Submit';
 $GLOBALS['TL_LANG']['MSC']['clearFiltersLabel'] = 'Clear Filters';
 $GLOBALS['TL_LANG']['MSC']['buttonLabel']['update'] = 'Update';

@@ -2,7 +2,20 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 0.2.0
+Version 0.2.3 (2010-12-??)
+------------------------------
+- Fixed countries bug in checkout
+- Fixed language files still containing search label
+
+Version 0.2.2 (2010-12-05)
+------------------------------
+- Attempt to fix the checkout problem
+
+Version 0.2.1 (2010-12-04)
+------------------------------
+- Fixed allowed country comparison for billing & shipping countries (Ticket #279)
+
+Version 0.2.0 (2010-12-02)
 ------------------------------
 - Added label for isotope_rules extension folder
 - Added support for percentage surcharge for payment and shipping price
