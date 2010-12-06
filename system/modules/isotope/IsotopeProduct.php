@@ -313,7 +313,7 @@ class IsotopeProduct extends Controller
 				if ($this->blnLocked)
 					return true;
 					
-				if (!$this->arrData['published'])
+				if (!$this->arrData['published'] || ($this->arrData['start'] > 0 && $this->arrData['start'] > time()) || ($this->arrData['stop'] > 0 && $this->arrData['stop'] < time()))
 					return false;
 				
 				// Check if "advanced price" is available	

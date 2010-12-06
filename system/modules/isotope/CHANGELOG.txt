@@ -12,6 +12,16 @@ Version 0.3.beta1
 - Improved: Better Isotope module handling, including callback support
 - Improved: Moved multilingual support to its own extension "isotope_multilingual" with lot more options
 - Improved: Hide payment information if checkout total is 0
+- Fixed start & stop publishing dates not working
+
+Version 0.2.3 (2010-12-??)
+------------------------------
+- Fixed countries bug in checkout
+- Fixed language files still containing search label
+
+Version 0.2.2 (2010-12-05)
+------------------------------
+- Attempt to fix the checkout problem
 
 Version 0.2.1
 ------------------------------
