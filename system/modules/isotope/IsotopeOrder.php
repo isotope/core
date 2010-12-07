@@ -76,7 +76,7 @@ class IsotopeOrder extends IsotopeProductCollection
 		
 		foreach( $arrIds as $id )
 		{
-			$objDownloads = $this->Database->execute("SELECT * FROM tl_iso_downloads WHERE pid=(SELECT product_id FROM {$this->ctable} WHERE id=$id)");
+			$objDownloads = $this->Database->execute("SELECT *, (SELECT product_quantity FROM {$this->ctable} WHERE id=$id) AS product_quantity FROM tl_iso_downloads WHERE pid=(SELECT product_id FROM {$this->ctable} WHERE id=$id)");
 			
 			while( $objDownloads->next() )
 			{
@@ -85,12 +85,14 @@ class IsotopeOrder extends IsotopeProductCollection
 					'pid'					=> $id,
 					'tstamp'				=> time(),
 					'download_id'			=> $objDownloads->id,
-					'downloads_remaining'	=> ($objDownloads->downloads_allowed > 0 ? $objDownloads->downloads_allowed : ''),
+					'downloads_remaining'	=> ($objDownloads->downloads_allowed > 0 ? ($objDownloads->downloads_allowed * $objDownloads->product_quantity) : ''),
 				);
 				
 				$this->Database->prepare("INSERT INTO tl_iso_order_downloads %s")->set($arrSet)->executeUncached();
 			}
 		}
+		
+		return $arrIds;
 	}
 	
 	

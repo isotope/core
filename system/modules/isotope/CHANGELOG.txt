@@ -8,6 +8,7 @@ Version 0.2.3 (2010-12-??)
 - Fixed countries bug in checkout
 - Fixed language files still containing search label
 - Fixed address field translation in mails
+- Fixed allowed number of downloads, was not multiplicated by the number of purchases
 
 Version 0.2.2 (2010-12-05)
 ------------------------------
