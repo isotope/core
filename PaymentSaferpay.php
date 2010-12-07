@@ -113,17 +113,17 @@ class PaymentSaferpay extends IsotopePayment
 			$this->redirect($this->generateFrontendUrl($objPage->row(), '/step/failed'));
 		}
 		
-		if ($this->trans_type != 'auth' && !$this->capturePayment($objRequest->response))
+		if ($this->trans_type != 'auth')
 		{
 			// Parse ID and TOKEN out of $verification from Saferpay-Call VerifyPayConfirm
 			$arrResponse = array();
 			parse_str(substr($objRequest->response, 3), $arrResponse);
-		
+
 			// Put all attributes together and create hosting PayComplete URL 
 			// For hosting: each attribute which could have non-url-conform characters inside should be urlencoded before
 			$strUrl  = $this->strCaptureUrl . "?ACCOUNTID=" . $this->saferpay_accountid; 
 			$strUrl .= "&ID=" . urlencode($arrResponse['ID']) . "&TOKEN=" . urlencode($arrResponse['TOKEN']);
-	
+
 			// Special for testaccount: Passwort for hosting-capture neccessary.
 			// Not needed for standard-saferpay-eCommerce-accounts
 			if( substr(	$this->saferpay_accountid, 0, 6) == "99867-" )
@@ -144,7 +144,7 @@ class PaymentSaferpay extends IsotopePayment
 			}
 		}
 		
-		$this->Database->execute("UPDATE tl_iso_orders SET payment_date=" . time() . " WHERE id={$objOrder->id}");
+		$this->Database->execute("UPDATE tl_iso_orders SET date_payed=" . time() . " WHERE id={$objOrder->id}");
 		
 		return true;
 	}
