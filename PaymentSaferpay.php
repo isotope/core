@@ -95,15 +95,12 @@ class PaymentSaferpay extends IsotopePayment
 		if (strtoupper(substr($objRequest->response, 0, 3)) != "OK:")
 		{
 			global $objPage;
-			$this->log('Payment not successfull', 'PaymentSaferpay verifyPayment()', TL_ERROR);
-			var_dump($objRequest->response);
-			exit;
+			$this->log('Payment not successfull', 'PaymentSaferpay processPayment()', TL_ERROR);
 			$this->redirect($this->generateFrontendUrl($objPage->row(), '/step/failed'));
 		}
-	
-		// Used values in start.php (you should do it dynamically, of course)
-		$objOrder = $this->Database->prepare("SELECT order_id FROM tl_iso_orders WHERE cart_id=?")->execute($this->Isotope->Cart->id);
-	
+
+		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->execute($this->Isotope->Cart->id);
+
 		$arrXML = new SimpleXMLElement($strData);
 
 		if( $arrXML["ACCOUNTID"] != $this->saferpay_accountid ||
@@ -112,11 +109,44 @@ class PaymentSaferpay extends IsotopePayment
 			$arrXML["ORDERID"] != $objOrder->id )
 		{
 			global $objPage;
-			$this->log('XML data wrong, possible manipulation!', 'PaymentSaferpay verifyPayment()', TL_ERROR);
+			$this->log('XML data wrong, possible manipulation!', 'PaymentSaferpay processPayment()', TL_ERROR);
 			$this->redirect($this->generateFrontendUrl($objPage->row(), '/step/failed'));
 		}
 		
-		return $this->trans_type == 'auth' ? true : $this->capturePayment($objRequest->response);
+		if ($this->trans_type != 'auth' && !$this->capturePayment($objRequest->response))
+		{
+			// Parse ID and TOKEN out of $verification from Saferpay-Call VerifyPayConfirm
+			$arrResponse = array();
+			parse_str(substr($objRequest->response, 3), $arrResponse);
+		
+			// Put all attributes together and create hosting PayComplete URL 
+			// For hosting: each attribute which could have non-url-conform characters inside should be urlencoded before
+			$strUrl  = $this->strCaptureUrl . "?ACCOUNTID=" . $this->saferpay_accountid; 
+			$strUrl .= "&ID=" . urlencode($arrResponse['ID']) . "&TOKEN=" . urlencode($arrResponse['TOKEN']);
+	
+			// Special for testaccount: Passwort for hosting-capture neccessary.
+			// Not needed for standard-saferpay-eCommerce-accounts
+			if( substr(	$this->saferpay_accountid, 0, 6) == "99867-" )
+			{
+				$strUrl .= "&spPassword=XAjc3Kna";
+			}
+	
+			// Call the Capture URL from the saferpay hosting server 
+			$objRequest = new Request();
+			$objRequest->send($strUrl);
+	
+			// Stop if capture is not successful
+			if (strtoupper($objRequest->response) != "OK")
+			{
+				global $objPage;
+				$this->log('Payment capture failed', 'PaymentSaferpay processPayment()', TL_ERROR);
+				$this->redirect($this->generateFrontendUrl($objPage->row(), '/step/failed'));
+			}
+		}
+		
+		$this->Database->execute("UPDATE tl_iso_orders SET payment_date=" . time() . " WHERE id={$objOrder->id}");
+		
+		return true;
 	}
 	
 	
@@ -128,7 +158,7 @@ class PaymentSaferpay extends IsotopePayment
 	 */
 	public function checkoutForm()
 	{
-		$objOrder = $this->Database->prepare("SELECT order_id FROM tl_iso_orders WHERE cart_id=?")->execute($this->Isotope->Cart->id);
+		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->execute($this->Isotope->Cart->id);
 		
 		$strComplete = $this->Environment->base . $this->addToUrl('step=complete');
 		$strFailed = $this->Environment->base . $this->addToUrl('step=failed');
@@ -175,44 +205,6 @@ class PaymentSaferpay extends IsotopePayment
 	public function getAllowedCCTypes()
 	{
 		return array();
-	}
-	
-	
-	/**
-	 * Capture payment after successful verification
-	 *
-	 * @return bool
-	 */
-	private function capturePayment($strResponse)
-	{
-		// Parse ID and TOKEN out of $verification from Saferpay-Call VerifyPayConfirm
-		$arrResponse = array();
-		parse_str(substr($strResponse, 3), $arrResponse);
-	
-		// Put all attributes together and create hosting PayComplete URL 
-		// For hosting: each attribute which could have non-url-conform characters inside should be urlencoded before
-		$strUrl  = $this->strCaptureUrl . "?ACCOUNTID=" . $this->saferpay_accountid; 
-		$strUrl .= "&ID=" . urlencode($arrResponse['ID']) . "&TOKEN=" . urlencode($arrResponse['TOKEN']);
-
-		// Special for testaccount: Passwort for hosting-capture neccessary.
-		// Not needed for standard-saferpay-eCommerce-accounts
-		if( substr(	$this->saferpay_accountid, 0, 6) == "99867-" )
-		{
-			$strUrl .= "&spPassword=XAjc3Kna";
-		}
-
-		// Call the Capture URL from the saferpay hosting server 
-		$objRequest = new Request();
-		$objRequest->send($strUrl);
-
-		// Stop if capture is not successful
-		if (strtoupper($objRequest->response) != "OK")
-		{
-			$this->log('Payment capture failed', 'PaymentSaferpay verifyPayment()', TL_ERROR);
-			return false;
-		}
-	
-		return true;
 	}
 }
 
