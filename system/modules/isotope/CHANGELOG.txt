@@ -4,9 +4,10 @@ Isotope eCommerce Changelog
 
 Version 0.2.3 (2010-12-??)
 ------------------------------
+- Added hooks for altering taxes
 - Fixed countries bug in checkout
 - Fixed language files still containing search label
-- Added hooks for altering taxes
+- Fixed address field translation in mails
 
 Version 0.2.2 (2010-12-05)
 ------------------------------
