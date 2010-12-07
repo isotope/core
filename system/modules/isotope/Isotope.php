@@ -206,6 +206,19 @@ class Isotope extends Controller
 		
 		if (!$objTaxClass->numRows)
 			return $fltPrice;
+		
+		// HOOK for altering taxes
+		if (isset($GLOBALS['ISO_HOOKS']['calculateTax']) && is_array($GLOBALS['ISO_HOOKS']['calculateTax']))
+		{
+			foreach ($GLOBALS['ISO_HOOKS']['calculateTax'] as $callback)
+			{
+				$this->import($callback[0]);
+				$varValue = $this->$callback[0]->$callback[1]($objTaxClass, $fltPrice, $blnAdd, $arrAddresses);
+				
+				if ($varValue !== false)
+					return $varValue;
+			}
+		}
 			
 		$arrTaxes = array();
 		$objIncludes = $this->Database->prepare("SELECT * FROM tl_iso_tax_rate WHERE id=?")->limit(1)->execute($objTaxClass->includes);
@@ -292,6 +305,19 @@ class Isotope extends Controller
 			return false;
 			
 		$objRate->address = deserialize($objRate->address);
+		
+		// HOOK for altering taxes
+		if (isset($GLOBALS['ISO_HOOKS']['useTaxRate']) && is_array($GLOBALS['ISO_HOOKS']['useTaxRate']))
+		{
+			foreach ($GLOBALS['ISO_HOOKS']['useTaxRate'] as $callback)
+			{
+				$this->import($callback[0]);
+				$varValue = $this->$callback[0]->$callback[1]($objRate, $fltPrice, $arrAddresses);
+				
+				if ($varValue !== true)
+					return false;
+			}
+		}
 		
 		if (is_array($objRate->address) && count($objRate->address))
 		{
