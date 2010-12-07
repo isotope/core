@@ -958,12 +958,12 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			
 			foreach( $this->Isotope->Cart->billingAddress as $k => $v )
 			{
-				$arrData['billing_'.$k] = $v;
+				$arrData['billing_'.$k] = $this->Isotope->formatValue('tl_iso_addresses', $k, $v);
 			}
 			
 			foreach( $this->Isotope->Cart->shippingAddress as $k => $v )
 			{
-				$arrData['shipping_'.$k] = $v;
+				$arrData['shipping_'.$k] = $this->Isotope->formatValue('tl_iso_addresses', $k, $v);
 			}
 			
 			$this->log('New order ID ' . $orderId . ' has been placed', 'ModuleIsotopeCheckout writeOrder()', TL_ACCESS);
