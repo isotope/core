@@ -91,7 +91,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 
 			while( $objDownloads->next() )
 			{
-				$blnDownloadable = (($arrOrder['status'] == 'complete' || intval($arrOrder['date_payed']) >= time()) && ($objDownloads->downloads_allowed == 0 || $objDownloads->downloads_remaining > 0)) ? true : false;
+				$blnDownloadable = (($arrOrder['status'] == 'complete' || (intval($arrOrder['date_payed']) > 0 && intval($arrOrder['date_payed']) <= time())) && ($objDownloads->downloads_remaining === '' || $objDownloads->downloads_remaining > 0)) ? true : false;
 				
 				// Send file to the browser
 				if (strlen($this->Input->get('file')) && $this->Input->get('file') == $objDownloads->id && $blnDownloadable)
