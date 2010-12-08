@@ -12,6 +12,7 @@ Version 0.2.3 (2010-12-??)
 - Fixed address field translation in mails
 - Fixed allowed number of downloads, was not multiplicated by the number of purchases
 - Fixed download availability check bugs
+- Fixed problem with unavailable product type in rules
 
 Version 0.2.2 (2010-12-05)
 ------------------------------

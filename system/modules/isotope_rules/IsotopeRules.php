@@ -338,12 +338,16 @@ class IsotopeRules extends Controller
 		
 		
 		// Product restrictions
-		$arrIds = array();
-		$arrTypes = array();
+		$arrIds = array(0);
+		$arrTypes = array(0);
 		foreach( $arrProducts as $objProduct )
 		{
 			$arrIds[] = $objProduct->pid ? $objProduct->pid : $objProduct->id;
-			$arrTypes[] = $objProduct->type;
+			
+			if ($objProduct->type > 0)
+			{
+				$arrTypes[] = $objProduct->type;
+			}
 		}
 		
 		$arrProcedures[] = "(productRestrictions='none'
