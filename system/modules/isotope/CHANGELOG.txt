@@ -17,6 +17,8 @@ Version 0.3.beta1
 Version 0.2.3 (2010-12-??)
 ------------------------------
 - Added hooks for altering taxes
+- Added guest and member group restrictions on payment modules
+- Added product type restrictions on shipping modules
 - Fixed countries bug in checkout
 - Fixed language files still containing search label
 - Fixed address field translation in mails

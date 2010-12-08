@@ -136,12 +136,12 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
 	'palettes' => array
 	(
 		'__selector__'					=> array('type', 'protected'),
-		'default'						=> '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},price,tax_class;{config_legend},countries,subdivisions,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-		'flat'							=> '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},price,tax_class,flatCalculation,surcharge_field;{config_legend},countries,subdivisions,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-		'order_total'					=> '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},price,tax_class;{config_legend},countries,subdivisions,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-		'weight_total'					=> '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},tax_class;{config_legend},weight_unit,countries,subdivisions,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-		'ups'							=> '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},tax_class;{ups_legend},ups_enabledService,ups_accessKey,ups_developersKey,ups_userName,ups_password;{config_legend},weight_unit,countries,subdivisions,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-		'usps'							=> '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},tax_class;{usps_legend},usps_enabledService,usps_userName;{config_legend},countries,subdivisions,minimum_total,maximum_total;{expert_legend:hide},guests,protected;{enabled_legend},enabled'
+		'default'						=> '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},price,tax_class;{config_legend},countries,subdivisions,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+		'flat'							=> '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},price,tax_class,flatCalculation,surcharge_field;{config_legend},countries,subdivisions,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+		'order_total'					=> '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},price,tax_class;{config_legend},countries,subdivisions,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+		'weight_total'					=> '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},tax_class;{config_legend},weight_unit,countries,subdivisions,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+		'ups'							=> '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},tax_class;{ups_legend},ups_enabledService,ups_accessKey,ups_developersKey,ups_userName,ups_password;{config_legend},weight_unit,countries,subdivisions,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+		'usps'							=> '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},tax_class;{usps_legend},usps_enabledService,usps_userName;{config_legend},countries,subdivisions,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled'
 	),
 	
 	// Subpalettes
@@ -273,6 +273,14 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255, 'rgxp'=>'price', 'tl_class'=>'w50'),
+		),
+		'product_types' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['product_types'],
+			'exclude'                 => true,
+			'inputType'               => 'select',
+			'foreignKey'			  => 'tl_iso_producttypes.name',
+			'eval'                    => array('multiple'=>true, 'size'=>8, 'tl_class'=>'clr'),
 		),
 		'price' => array
 		(
