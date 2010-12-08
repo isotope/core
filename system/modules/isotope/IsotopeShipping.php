@@ -97,10 +97,11 @@ abstract class IsotopeShipping extends Frontend
 		switch( $strKey )
 		{
 			case 'available':
-				if (($this->guests && FE_USER_LOGGED_IN) || ($this->protected && !FE_USER_LOGGED_IN))
-				{
+				if (!$this->enabled && !BE_USER_LOGGED_IN)
 					return false;
-				}
+				
+				if (($this->guests && FE_USER_LOGGED_IN) || ($this->protected && !FE_USER_LOGGED_IN))
+					return false;
 				
 				if ($this->protected)
 				{
@@ -114,7 +115,6 @@ abstract class IsotopeShipping extends Frontend
 					return false;
 		
 				$arrCountries = deserialize($this->countries);
-				
 				if(is_array($arrCountries) && count($arrCountries) && !in_array($this->Isotope->Cart->shippingAddress['country'], $arrCountries))
 					return false;
 					
@@ -123,6 +123,17 @@ abstract class IsotopeShipping extends Frontend
 				
 				if(is_array($arrSubdivisions) && count($arrSubdivisions) && !in_array($this->Isotope->Cart->shippingAddress['subdivision'], $arrSubdivisions) && $blnHasSubdivision)
 					return false;
+				
+				$arrTypes = deserialize($this->product_types);
+				if (is_array($arrTypes) && count($arrTypes))
+				{
+					$arrProducts = $this->Isotope->Cart->getProducts();
+					foreach( $arrProducts as $objProduct )
+					{
+						if (!in_array($objProduct->type, $arrTypes))
+							return false;
+					}
+				}
 				
 				return true;
 				break;

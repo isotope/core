@@ -29,44 +29,44 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['name']				= array('Shipping Method Name', '');
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['type']				= array('Shipping Method Type', '');
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['price']				= array('Price', '');
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['note']				= array('Shipping Method Notes', 'These will be displayed on the front end in association with this shipping option.');
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['tax_class']			= array('Tax Class', '');
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['label']				= array('Label', 'This is displayed on the front end in association with the shipping option.');
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['flatCalculation']	= array('Flat calculation', '');
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['weight_unit']		= array('Weight unit', 'The unit you will enter weight rules.');
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['countries']			= array('Countries', 'Select the countries this shipping method applies to. If you don\'t select anything, the shipping method will be applied to all countries.');
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['subdivisions']	= array('State/Regions', 'Select the states/regions this shipping method applies to. If you don\'t select anything, the shipping method will be applied to all states/regions.');
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['minimum_total']		= array('Minimum total', '');
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['maximum_total']		= array('Maximum total', '');
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['surcharge_field']	= array('Shipping Surcharge', 'Please specify a surcharge (for example, a fuel surcharge on all orders) to be applied for this shipping method, if any.');
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['groups']			= array('Member Groups','Restrict this shipping option to certain member groups.');
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['enabled']			= array('Enabled', 'Is the module available for use in the store?');
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['protected']      	= array('Protect module', 'Show the module to certain member groups only.');
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['guests']         	= array('Show to guests only', 'Hide the module if a member is logged in.');
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_accessKey']     = array('UPS XML/HTML access key','This is a special alphanumeric key issued by UPS once you sign up for a UPS account and for access to the UPS Online Tools API');
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_developersKey']    = array('UPS developer\'s key','This is a special alphanumeric key issued by UPS once you sign up for a UPS account and for access to the UPS Online Tools API');
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_userName']     	= array('UPS username','This is the UPS account username that you chose while signing up on the UPS website.');
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_password']     	= array('UPS password','This is the UPS password that you chose while signing up on the UPS website.');
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_enabledService'] = array('UPS Service Type','Select a UPS shipping service to offer.');
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['usps_enabledService'] = array('USPS Service Type','Select a USPS shipping service to offer.');
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['usps_userName']     	= array('USPS username','This is the USPS account username that you chose while signing up on the USPS website.');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['name']					= array('Shipping Method Name');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['type']					= array('Shipping Method Type');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['price']					= array('Price');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['note']					= array('Shipping Method Notes', 'These will be displayed on the front end in association with this shipping option.');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['tax_class']				= array('Tax Class');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['label']					= array('Label', 'This is displayed on the front end in association with the shipping option.');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['flatCalculation']		= array('Flat calculation');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['weight_unit']			= array('Weight unit', 'The unit you will enter weight rules.');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['countries']				= array('Countries', 'Select the countries this shipping method applies to. If you don\'t select anything, the shipping method will be applied to all countries.');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['subdivisions']			= array('State/Regions', 'Select the states/regions this shipping method applies to. If you don\'t select anything, the shipping method will be applied to all states/regions.');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['minimum_total']			= array('Minimum total');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['maximum_total']			= array('Maximum total');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['product_types']			= array('Product types', 'You can restrict this shipping method to certain product types. If the cart contains a product type you have not selected, the shipping module is not available.');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['surcharge_field']		= array('Shipping Surcharge', 'Please specify a surcharge (for example, a fuel surcharge on all orders) to be applied for this shipping method, if any.');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['groups']				= array('Member Groups','Restrict this shipping option to certain member groups.');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['protected']      		= array('Protect module', 'Show the module to certain member groups only.');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['guests']         		= array('Show to guests only', 'Hide the module if a member is logged in.');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['enabled']				= array('Enabled', 'Is the module available for use in the store?');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_accessKey']     	= array('UPS XML/HTML access key','This is a special alphanumeric key issued by UPS once you sign up for a UPS account and for access to the UPS Online Tools API');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_developersKey']		= array('UPS developer\'s key','This is a special alphanumeric key issued by UPS once you sign up for a UPS account and for access to the UPS Online Tools API');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_userName']     		= array('UPS username','This is the UPS account username that you chose while signing up on the UPS website.');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_password']     		= array('UPS password','This is the UPS password that you chose while signing up on the UPS website.');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_enabledService']	= array('UPS Service Type','Select a UPS shipping service to offer.');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['usps_enabledService']	= array('USPS Service Type','Select a USPS shipping service to offer.');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['usps_userName']			= array('USPS username','This is the USPS account username that you chose while signing up on the USPS website.');
 
 
 /** 
- * Legends 
- *
+ * Legends
  */
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['title_legend']		= 'Title and type';
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['note_legend']		= 'Shipping note';
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['config_legend']		= 'Configuration';
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['expert_legend']		= 'Expert settings';
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['enabled_legend']	= 'Enabled settings';
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_legend']		= 'UPS API settings';
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['usps_legend']		= 'USPS API settings';
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['price_legend']		= 'Pricing threshold and tax class applicability';
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['expert_legend']		= 'Expert settings';
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['enabled_legend']	= 'Enabled settings';
 
 
 /**
