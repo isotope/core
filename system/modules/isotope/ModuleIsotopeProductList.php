@@ -62,6 +62,11 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			return $objTemplate->parse();
 		}
 		
+		if ($this->iso_cols < 1)
+		{
+			$this->iso_cols = 1;
+		}
+		
 		return parent::generate();
 	}
 	
