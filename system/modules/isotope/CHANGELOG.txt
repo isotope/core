@@ -25,6 +25,7 @@ Version 0.2.3 (2010-12-??)
 - Fixed allowed number of downloads, was not multiplicated by the number of purchases
 - Fixed download availability check bugs
 - Fixed jumpTo in related product list
+- Fixed division by zero error message in product list
 
 Version 0.2.2 (2010-12-05)
 ------------------------------
