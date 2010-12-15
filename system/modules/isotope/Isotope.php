@@ -616,9 +616,15 @@ class Isotope extends Controller
 			$objTemplate->body = $objMail->html;
 			$objTemplate->charset = $GLOBALS['TL_CONFIG']['characterSet'];
 			$objTemplate->css = $css;
+			
+			// Prevent parseSimpleTokens from stripping important HTML tags
+			$GLOBALS['TL_CONFIG']['allowedTags'] .= '<doctype><html><head><meta><style><body>';
+			$strHtml = str_replace('<!DOCTYPE', '<DOCTYPE', $objTemplate->parse());
+			$strHtml = $this->parseSimpleTokens($this->replaceInsertTags($strHtml), $arrData);
+			$strHTML = str_replace('<DOCTYPE', '<!DOCTYPE', $strHtml);
 
 			// Parse template
-			$objEmail->html = $this->parseSimpleTokens($this->replaceInsertTags($objTemplate->parse()), $arrData);
+			$objEmail->html = $strHtml;
 			$objEmail->imageDir = TL_ROOT . '/';
 		}
 		

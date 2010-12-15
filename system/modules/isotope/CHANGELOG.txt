@@ -15,6 +15,7 @@ Version 0.2.3 (2010-12-??)
 - Fixed problem with unavailable product type in rules
 - Fixed jumpTo in related product list
 - Fixed division by zero error message in product list
+- Fixed mail templates, parseSimpleTokens stripped important HTML tags
 
 Version 0.2.2 (2010-12-05)
 ------------------------------
