@@ -621,7 +621,7 @@ class Isotope extends Controller
 			$GLOBALS['TL_CONFIG']['allowedTags'] .= '<doctype><html><head><meta><style><body>';
 			$strHtml = str_replace('<!DOCTYPE', '<DOCTYPE', $objTemplate->parse());
 			$strHtml = $this->parseSimpleTokens($this->replaceInsertTags($strHtml), $arrData);
-			$strHTML = str_replace('<DOCTYPE', '<!DOCTYPE', $strHtml);
+			$strHtml = str_replace('<DOCTYPE', '<!DOCTYPE', $strHtml);
 
 			// Parse template
 			$objEmail->html = $strHtml;
