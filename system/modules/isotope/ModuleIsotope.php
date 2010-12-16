@@ -131,8 +131,6 @@ abstract class ModuleIsotope extends Module
 		if (!is_array($arrIds) || !count($arrIds))
 			return array();
 		
-		echo '<!-- ';
-		
 		$total = 0;
 		$arrProducts = array();
 		
@@ -155,8 +153,6 @@ abstract class ModuleIsotope extends Module
 				++$total;
 			}
 		}
-		
-		echo ' -->';
 		
 		return $arrProducts;
 	}
