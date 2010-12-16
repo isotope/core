@@ -57,7 +57,71 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 	 */
 	public function processPayment()
 	{
-		return true;
+		if($this->authorize_trans_type!='AUTH_CAPTURE')	//If we're doing auth only on purchases, then they must be completed manually in the backend.
+			return true;
+		
+		$authnet_values = array
+		(
+			"x_version"							=> '3.1',
+			"x_login"							=> $this->authorize_login,
+			"x_tran_key"						=> $this->authorize_trans_key,
+			"x_type"							=> 'PRIOR_AUTH_CAPTURE',
+			"x_trans_id"						=> $_SESSION['CHECKOUT_DATA']['AUTHDOTNET']['TRANS_ID'],
+			"x_amount"							=> number_format($fltOrderTotal, 2),	
+			"x_delim_data"						=> TRUE,
+			"x_delim_char"						=> $this->authorize_delimiter,
+			"x_encap_char"						=> '"',
+			"x_relay_response" 					=> FALSE	
+		);
+		
+		foreach( $authnet_values as $key => $value ) $fields .= "$key=" . urlencode( $value ) . "&";
+
+		$fieldsFinal = rtrim($fields, '&');
+		
+		$objRequest = new Request();
+			$objRequest->send('https://'.($this->debug ? 'test' : 'secure')'.authorize.net/gateway/transact.dll', $fields, 'post');
+		
+		$arrResponses = $this->handleResponse($objRequest->response);
+		$arrResponseCodes = $this->getResponseCodes($objRequest->response);
+	
+		foreach(array_keys($arrResponses) as $key)
+		{
+			$arrReponseLabels[strtolower(standardize($key))] = $key;
+		}		
+	
+		$arrSet['transaction_response'] = $arrResponseCodes['response_type'];
+		$arrSet['transaction_response_code'] = $arrResponseCodes['response_code'];
+				
+		switch($arrResponses['transaction-status'])
+		{
+			case 'Approved':				
+				$this->status = $arrResponses['transaction-status'];		
+				$this->response = $arrPaymentInfo['authorize_response'];
+				$arrPaymentInfo['transaction_id']	= $arrResponses['transaction-id'];
+				$arrPaymentInfo['authorization_code'] = $arrResponses['authorization-code'];							
+				$arrSet['status'] = 'processing';
+				break;
+			default:
+				$arrSet['status'] = 'on_hold';
+				$blnFail = true;
+				break;
+		
+		}
+					
+		$arrSet['payment_data'] = serialize($arrPaymentInfo);
+				
+		$this->Database->prepare("UPDATE tl_iso_orders %s WHERE id=?")
+					   ->set($arrSet)
+					   ->executeUncached($objOrder->id);			
+		
+		if($blnFail)
+		{
+			global $objPage;
+			$this->log('Transaction has failed.', 'PaymentAuthorizeDotNet processPayment()', TL_ERROR);
+			$this->redirect($this->Environment->request . (strpos($this->Environment->request, '?') === false ? '?' : '&') . 'response_type='.$arrResponseCodes['response_type'].'&response_code='.$arrResponseCodes['response_code']);
+		}
+		
+		$this->redirect($this->addToUrl('step=complete'));
 	}
 		
 	public function checkoutForm()
@@ -168,7 +232,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 				"x_delim_char"						=> $this->authorize_delimiter,
 				"x_delim_data"						=> "TRUE",
 				"x_url"								=> "FALSE",
-				"x_type"							=> $this->authorize_trans_type,
+				"x_type"							=> "AUTH_ONLY",
 				"x_method"							=> "CC",
 				"x_tran_key"						=> $this->authorize_trans_key,
 				"x_card_num"						=> $arrPayment['card_accountNumber'],
@@ -200,7 +264,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 			}
 			
 			$objRequest = new Request();
-			$objRequest->send('https://secure.authorize.net/gateway/transact.dll', $fields, 'post');
+			$objRequest->send('https://'.($this->debug ? 'test' : 'secure')'.authorize.net/gateway/transact.dll', $fields, 'post');
 			
 			$arrResponses = $this->handleResponse($objRequest->response);
 			$arrResponseCodes = $this->getResponseCodes($objRequest->response);
@@ -219,6 +283,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 					$this->status = $arrResponses['transaction-status'];		
 					$this->response = $arrPaymentInfo['authorize_response'];
 					$arrPaymentInfo['transaction_id']	= $arrResponses['transaction-id'];
+					$_SESSION['CHECKOUT_DATA']['AUTHDOTNET']['TRANS_ID'] = $arrResponses['transaction-id'];
 					$arrPaymentInfo['authorization_code'] = $arrResponses['authorization-code'];							
 					$arrSet['status'] = 'processing';
 					break;
@@ -306,6 +371,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 				$arrPaymentInfo['authorization_code'] = $arrResponses['authorization-code'];
 				$arrPaymentInfo['transaction_id']	= $arrResponses['transaction-id'];
 				$arrSet['status'] = 'processing';
+				$arrSet['payment_data'] = serialize($arrPaymentInfo);
 				break;
 			default:
 				$arrSet['status'] = 'on_hold';
@@ -314,7 +380,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 		
 		}
 			
-		$arrSet['payment_data'] = serialize($arrPaymentInfo);
+		
 				
 		$this->Database->prepare("UPDATE tl_iso_orders %s WHERE id=?")
 					   ->set($arrSet)
@@ -441,12 +507,12 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 							   
 					break;
 				default:
-					$arrPaymentInfo['authorize_reason'] = $arrResponses['reason'];
-					$strPaymentInfo = serialize($arrPaymentInfo);
+					//$arrPaymentInfo['authorize_reason'] = $arrResponses['reason'];
+					//$strPaymentInfo = serialize($arrPaymentInfo);
 				
 					$arrSet['status'] = 'on_hold';
 					
-					$arrSet['payment_data'] = serialize($arrPaymentInfo);
+					
 			
 					$this->Database->prepare("UPDATE tl_iso_orders %s WHERE id=?")
 					   ->set($arrSet)
