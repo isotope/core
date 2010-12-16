@@ -126,22 +126,37 @@ abstract class ModuleIsotope extends Module
 	/**
 	 * Retrieve multiple products by ID.
 	 */
-	protected function getProducts($arrIds, $blnCheckAvailability=true)
+	protected function getProducts($arrIds, $blnCheckAvailability=true, $intLimit=0, $intOffset=0)
 	{
 		if (!is_array($arrIds) || !count($arrIds))
 			return array();
 		
+		echo '<!-- ';
+		
+		$total = 0;
 		$arrProducts = array();
 		
 		foreach( $arrIds as $intId )
 		{
+			if ($intLimit > 0 && $total >= $intLimit)
+				break;
+			
 			$objProduct = $this->getProduct($intId, $blnCheckAvailability);
 		
 			if (is_object($objProduct))
 			{
+				if ($intOffset > 0)
+				{
+					--$intOffset;
+					continue;
+				}
+				
 				$arrProducts[] = $objProduct;
+				++$total;
 			}
 		}
+		
+		echo ' -->';
 		
 		return $arrProducts;
 	}

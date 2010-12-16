@@ -124,7 +124,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		// Determine category scope
 		$arrCategories = $this->findCategories($this->iso_category_scope);
 		
-		$objProductIds = $this->Database->prepare("SELECT DISTINCT p.* FROM tl_iso_product_categories c, tl_iso_products p WHERE p.id=c.pid AND published='1'" . ($this->strFilterSQL ? " AND (" . $this->strFilterSQL . ")" : "") . " AND c.page_id IN (" . implode(',', $arrCategories) . ")" . ($this->strSearchSQL ? " AND (" . $this->strSearchSQL . ")" : "") . ($this->strOrderBySQL ? " ORDER BY " . $this->strOrderBySQL : ""));
+		$objProductIds = $this->Database->prepare("SELECT DISTINCT p.id FROM tl_iso_product_categories c, tl_iso_products p WHERE p.id=c.pid AND published='1'" . ($this->strFilterSQL ? " AND (" . $this->strFilterSQL . ")" : "") . " AND c.page_id IN (" . implode(',', $arrCategories) . ")" . ($this->strSearchSQL ? " AND (" . $this->strSearchSQL . ")" : "") . ($this->strOrderBySQL ? " ORDER BY " . $this->strOrderBySQL : ""));
 		
 		
 		// Add pagination
@@ -137,7 +137,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			$objPagination = new Pagination($total, $this->perPage);
 			$this->Template->pagination = $objPagination->generate("\n  ");
 			
-			$objProductIds->limit($this->perPage, $offset);
+			return $this->getProducts($objProductIds->execute($this->arrParams)->fetchEach('id'), true, $this->perPage, $offset);
 		}
 		
 		return $this->getProducts($objProductIds->execute($this->arrParams)->fetchEach('id'));
