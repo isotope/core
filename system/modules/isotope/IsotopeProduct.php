@@ -111,14 +111,13 @@ class IsotopeProduct extends Controller
 		
 		$this->blnLocked = $blnLocked;
 		
-		if ($arrData['pid'] > 0)
+		if (!$this->blnLocked && $arrData['pid'] > 0)
 		{
 			$this->arrData = $this->Database->execute("SELECT * FROM tl_iso_products WHERE id={$arrData['pid']}")->fetchAssoc();
 		}
 		else
 		{
 			$this->arrData = $arrData;
-			
 		}
 		
 		if (!$this->arrData['type'])
