@@ -18,6 +18,8 @@ Version 0.2.3 (2010-12-??)
 - Fixed division by zero error message in product list
 - Fixed mail templates, parseSimpleTokens stripped important HTML tags
 - Fixed SQL error when adding new category to a product (Ticket #299)
+- Fixed bug in rule calculation for each product quantity
+- Fixed order history not showing discount price
 - Dropped italian regions (Ticket #305)
 
 Version 0.2.2 (2010-12-05)
