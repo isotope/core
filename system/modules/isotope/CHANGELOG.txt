@@ -13,6 +13,7 @@ Version 0.3.beta1
 - Improved: Moved multilingual support to its own extension "isotope_multilingual" with lot more options
 - Improved: Hide payment information if checkout total is 0
 - Fixed start & stop publishing dates not working
+- Fixed Authorize.net failed transaction bug
 
 Version 0.2.3 (2010-12-??)
 ------------------------------
@@ -28,7 +29,6 @@ Version 0.2.3 (2010-12-??)
 - Fixed division by zero error message in product list
 - Fixed mail templates, parseSimpleTokens stripped important HTML tags
 - Dropped italian regions (Ticket #305)
-- Fixed Authorize.net failed transaction bug
 
 Version 0.2.2 (2010-12-05)
 ------------------------------
