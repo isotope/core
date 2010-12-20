@@ -908,7 +908,7 @@ class tl_iso_products extends Backend
 			}
 		}
 
-$strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="16" height="16" alt="' . $GLOBALS['TL_LANG']['tl_iso_products']['published'][0].'" /></th>
+$strBuffer .= '<th style="text-align:center"><img src="system/themes/default/images/published.gif" width="16" height="16" alt="' . $GLOBALS['TL_LANG']['tl_iso_products']['published'][0].'" /><br /><input type="checkbox" onclick="Backend.toggleCheckboxes(this, \'ctrl_published\')" /></th>
 </thead>';		
 		
 		$arrFields = array_flip($arrFields);
@@ -991,7 +991,7 @@ $strBuffer .= '<th><img src="system/themes/default/images/published.gif" width="
 		}
 	}
 	
-	$strBuffer .= '<td><input type="checkbox" name="published['.$objVariants->id.']" value="1"'.($arrPublished[$objVariants->id] ? ' checked="checked"' : '').' class="tl_checkbox" /></td>
+	$strBuffer .= '<td style="text-align:center"><input type="checkbox" id="ctrl_published_'.$objVariants->id.'" name="published['.$objVariants->id.']" value="1"'.($arrPublished[$objVariants->id] ? ' checked="checked"' : '').' class="tl_checkbox" /></td>
 <tr>';
 		
 		}
