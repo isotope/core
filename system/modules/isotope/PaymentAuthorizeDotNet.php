@@ -117,8 +117,10 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 		if($blnFail)
 		{
 			global $objPage;
-			$this->log('Transaction has failed.', 'PaymentAuthorizeDotNet processPayment()', TL_ERROR);
-			$this->redirect($this->Environment->request . (strpos($this->Environment->request, '?') === false ? '?' : '&') . 'response_type='.$arrResponseCodes['response_type'].'&response_code='.$arrResponseCodes['response_code']);
+			$this->loadLanguageFile('payment');
+			$_SESSION['CHECKOUT_DATA']['responseMsg'] = $GLOBALS['TL_LANG']['MSG']['authorizedotnet'][(string)$arrResponseCodes['response_type']][(string)$arrResponseCodes['response_code']];
+			$this->log('Invalid payment data received - '.$_SESSION['CHECKOUT_DATA']['responseMsg']. ' - Order id: ' . $objOrder->id, 'PaymentAuthorizeDotNet processPayment()', TL_ERROR);
+			$this->redirect($this->Environment->request);
 		}
 		
 		$this->redirect($this->addToUrl('step=complete'));
@@ -284,7 +286,8 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 					$this->response = $arrPaymentInfo['authorize_response'];
 					$arrPaymentInfo['transaction_id']	= $arrResponses['transaction-id'];
 					$_SESSION['CHECKOUT_DATA']['AUTHDOTNET']['TRANS_ID'] = $arrResponses['transaction-id'];
-					$arrPaymentInfo['authorization_code'] = $arrResponses['authorization-code'];							
+					$arrPaymentInfo['authorization_code'] = $arrResponses['authorization-code'];	
+					$arrSet['payment_data'] = serialize($arrPaymentInfo);						
 					$arrSet['status'] = 'processing';
 					break;
 				default:
@@ -294,7 +297,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 			
 			}
 						
-			$arrSet['payment_data'] = serialize($arrPaymentInfo);
+			
 					
 			$this->Database->prepare("UPDATE tl_iso_orders %s WHERE id=?")
 						   ->set($arrSet)
@@ -303,8 +306,10 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 			if($blnFail)
 			{
 				global $objPage;
-				$this->log('Invalid payment data received.', 'PaymentAuthorizeDotNet processPayment()', TL_ERROR);
-				$this->redirect($this->Environment->request . (strpos($this->Environment->request, '?') === false ? '?' : '&') . 'response_type='.$arrResponseCodes['response_type'].'&response_code='.$arrResponseCodes['response_code']);
+				$this->loadLanguageFile('payment');
+				$_SESSION['CHECKOUT_DATA']['responseMsg'] = $GLOBALS['TL_LANG']['MSG']['authorizedotnet'][(string)$arrResponseCodes['response_type']][(string)$arrResponseCodes['response_code']];
+				$this->log('Invalid payment data received - '.$_SESSION['CHECKOUT_DATA']['responseMsg']. ' - On order id: ' . $objOrder->id, 'PaymentAuthorizeDotNet processPayment()', TL_ERROR);
+				$this->redirect($this->Environment->request);
 			}
 			
 			$this->redirect($this->addToUrl('step=complete'));
@@ -313,12 +318,17 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 				
 		return '
 <h2>' . $this->label . '</h2>'.
-($this->Input->get('response_code') == '' ? '' : '<p class="error message">'.$GLOBALS['TL_LANG']['MSG']['authorizedotnet'][$this->Input->get('response_type')][$this->Input->get('response_code')].(strlen($strError) ? $strError : '') . '</p>').
+($_SESSION['CHECKOUT_DATA']['responseMsg'] == '' ? '' : '<p class="error message">'.$_SESSION['CHECKOUT_DATA']['responseMsg'].(strlen($strError) ? $strError : '') . '</p>').
 '<form id="payment_form" action="'.$this->Environment->request.'" method="post">
 <input type="hidden" name="FORM_SUBMIT" value="payment_form" />'
 .$strBuffer.'
-<input type="submit" value="' . specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']) . '" />
-</form>';
+<input type="submit" value="' . specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']) . '" id="ctrl_submitOrder" />
+</form>
+<script type="text/javascript" language="javascript">
+$(\'ctrl_submitOrder\').addEvent(\'click\', function(event){
+	this.disabled=true;
+});
+</script>';
 		
 	}
 	
