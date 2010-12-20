@@ -15,7 +15,7 @@ Version 0.3.beta1
 - Fixed start & stop publishing dates not working
 - Fixed Authorize.net failed transaction bug
 
-Version 0.2.3 (2010-12-??)
+Version 0.2.3 (2010-12-20)
 ------------------------------
 - Added hooks for altering taxes
 - Added guest and member group restrictions on payment modules
