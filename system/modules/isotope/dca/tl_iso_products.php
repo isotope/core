@@ -726,7 +726,8 @@ class tl_iso_products extends Backend
 			
 			foreach( $arrIds as $id )
 			{
-				$this->Database->query("INSERT INTO tl_iso_product_categories (pid,tstamp,page_id,sorting) VALUES ({$dc->id}, $time, $id, ((SELECT IFNULL(MAX(c.sorting), 0) FROM (SELECT * FROM tl_iso_product_categories) as c WHERE c.page_id=$id)+128))");
+				$sorting = $this->Database->executeUncached("SELECT MAX(sorting) AS sorting FROM tl_iso_product_categories WHERE page_id=$id")->sorting + 128;
+				$this->Database->query("INSERT INTO tl_iso_product_categories (pid,tstamp,page_id,sorting) VALUES ({$dc->id}, $time, $id, $sorting)");
 			}
 		}
 		else
