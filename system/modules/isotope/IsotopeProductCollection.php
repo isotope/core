@@ -235,7 +235,7 @@ abstract class IsotopeProductCollection extends Model
 				{
 					try
 					{
-						$objProduct = new $strClass($objProductData->row(), deserialize($objItems->product_options), $this->blnLocked);
+						$objProduct = new $strClass(array_merge($objProductData->row(), array('sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price)), deserialize($objItems->product_options), $this->blnLocked);
 					}
 					catch (Exception $e)
 					{
@@ -424,6 +424,9 @@ abstract class IsotopeProductCollection extends Model
 	{
 		if (!$this->blnRecordExists)
 			return array();
+		
+		// Make sure database table has the latest prices
+		$objCollection->updatePrices();
 			
 		$time = time();
 		$arrIds = array();

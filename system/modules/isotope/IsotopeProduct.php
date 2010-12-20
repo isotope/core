@@ -178,7 +178,7 @@ class IsotopeProduct extends Controller
 		}
 		
 		// Find lowest price
-		if ($this->arrType['variants'] && in_array('price', $this->arrVariantAttributes))
+		if (!$this->blnLocked && $this->arrType['variants'] && in_array('price', $this->arrVariantAttributes))
 		{
 			if ($this->arrType['prices'])
 			{
@@ -264,7 +264,7 @@ class IsotopeProduct extends Controller
 		}
 		
 		
-		if (in_array('price', $this->arrAttributes))
+		if (!$this->blnLocked && in_array('price', $this->arrAttributes))
 		{
 			$this->findPrice();
 			$this->arrData['original_price'] = $this->arrData['price'];
@@ -978,14 +978,14 @@ class IsotopeProduct extends Controller
 		
 		foreach( $this->arrVariantAttributes as $attribute )
 		{
-			if (in_array($attribute, $arrInherit))
+			if (in_array($attribute, $arrInherit) || ($this->blnLocked && in_array($attribute, array('sku', 'name', 'price'))))
 				continue;
 			
 			$this->arrData[$attribute] = $arrData[$attribute];
 			unset($this->arrCache[$attribute]);
 		}
 		
-		if (in_array('price', $this->arrVariantAttributes))
+		if (!$this->blnLocked && in_array('price', $this->arrVariantAttributes))
 		{
 			$this->findPrice();
 			$this->arrData['original_price'] = $this->arrData['price'];

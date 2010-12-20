@@ -406,7 +406,7 @@ class IsotopeRules extends Controller
 					
 				case 'product_quantity':
 				default:
-					$intTotal = $objProduct->product_quantity;
+					$intTotal = $objProduct->quantity_requested;
 					break;
 			}
 			
