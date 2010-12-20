@@ -235,7 +235,8 @@ abstract class IsotopeProductCollection extends Model
 				{
 					try
 					{
-						$objProduct = new $strClass(array_merge($objProductData->row(), array('sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price)), deserialize($objItems->product_options), $this->blnLocked);
+						$arrData = $this->blnLocked ? array_merge($objProductData->row(), array('sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price)) : $objProductData->row();
+						$objProduct = new $strClass($arrData, deserialize($objItems->product_options), $this->blnLocked);
 					}
 					catch (Exception $e)
 					{
