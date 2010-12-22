@@ -1201,6 +1201,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			$objWidget = new $strClass($this->prepareForWidget($arrData, $strAddressType . '_' . $field['value'], (strlen($_SESSION['CHECKOUT_DATA'][$strAddressType][$field['value']]) ? $_SESSION['CHECKOUT_DATA'][$strAddressType][$field['value']] : $arrDefault[$field['value']])));
 			
 			$objWidget->mandatory = $field['mandatory'] ? true : false;
+			$objWidget->required = $objWidget->mandatory;
 			$objWidget->label = $field['label'] ? $this->Isotope->translate($field['label']) : $objWidget->label;
 			$objWidget->storeValues = true;
 			$objWidget->rowClass = 'row_'.$i . (($i == 0) ? ' row_first' : '') . ((($i % 2) == 0) ? ' even' : ' odd');
