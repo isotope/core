@@ -16,6 +16,10 @@ Version 0.3.beta1
 - Fixed Authorize.net failed transaction bug
 - Improved: Authorize.net failed transaction response handling & log data
 
+Version 0.2.4 (2011-01-??)
+------------------------------
+- Fixed weight total shipping included rates from all shipping modules
+
 Version 0.2.3 (2010-12-20)
 ------------------------------
 - Added hooks for altering taxes

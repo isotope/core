@@ -65,7 +65,7 @@ class ShippingWeightTotal extends IsotopeShipping
 	{
 		$fltWeight = $this->Isotope->Cart->getShippingWeight($this->weight_unit);
 		
-		return $this->Database->execute("SELECT * FROM tl_iso_shipping_options WHERE enabled='1' AND (weight_from=0 OR weight_from <= $fltWeight) AND (weight_to=0 OR weight_to >= $fltWeight) ORDER BY rate");
+		return $this->Database->execute("SELECT * FROM tl_iso_shipping_options WHERE pid={$this->id} AND enabled='1' AND (weight_from=0 OR weight_from <= $fltWeight) AND (weight_to=0 OR weight_to >= $fltWeight) ORDER BY rate");
 	}
 		
 	
