@@ -153,6 +153,7 @@ if ($_GET['do'] == 'iso_setup')
 $GLOBALS['FE_MOD']['isotope'] = array
 (
 	'iso_productlist'			=> 'ModuleIsotopeProductList',
+	'iso_productvariantlist'	=> 'ModuleIsotopeProductVariantList',
 	'iso_productreader'			=> 'ModuleIsotopeProductReader',
 	'iso_cart'					=> 'ModuleIsotopeCart',
 	'iso_checkout'				=> 'ModuleIsotopeCheckout',

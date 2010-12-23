@@ -42,6 +42,7 @@ $GLOBALS['TL_LANG']['MOD']['iso_setup']					= array('Shop-Konfiguration', 'Hier 
 $GLOBALS['TL_LANG']['FMD']['isotope']					= 'Isotope eCommerce';
 $GLOBALS['TL_LANG']['FMD']['iso_productfilter']			= array('Produkt Filter', 'Erstellt individuelle Filter für Isotope wie einen Kategorienbaum oder Produktattribut-Filter.');
 $GLOBALS['TL_LANG']['FMD']['iso_productlist']			= array('Produktliste', 'Allgemeines Listen-Modul. Zeigt Produkte oder Werte von Attributen an. Kann mit anderen Modulen (z.B. Filter-Modul) kombiniert werden um die Funktionen zu erweitern.');
+$GLOBALS['TL_LANG']['FMD']['iso_productvariantlist']	= array('Produktvarianten-Liste', 'Zeigt jede Variante in der Produktliste an.');
 $GLOBALS['TL_LANG']['FMD']['iso_productreader']			= array('Produktleser', 'Mit diesem Modul zeigen Sie Produktdetails an.');
 $GLOBALS['TL_LANG']['FMD']['iso_cart']					= array('Warenkorb', 'Ein vollwertiges Warenkorb-Modul. Klein- oder Grossanzeige kann durch Wahl des Templates eingestellt werden.');
 $GLOBALS['TL_LANG']['FMD']['iso_checkout']				= array('Kasse', 'Erlaubt Kunden eine Bestellung auszuführen.');

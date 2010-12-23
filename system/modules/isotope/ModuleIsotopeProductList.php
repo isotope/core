@@ -90,47 +90,17 @@ class ModuleIsotopeProductList extends ModuleIsotope
 	 */
 	protected function findProducts()
 	{
-		if($this->Input->get('clear'))
-		{
-			$arrFilters = array();
-		}
-		else
-		{
-			$arrFilters = array('for'=>$this->Input->get('for'), 'per_page'=>$this->Input->get('per_page'), 'page'=>$this->Input->get('page'), 'order_by'=>$this->Input->get('order_by'));
-		
-			$arrFilterFields = explode(',', $this->Input->get('filters'));	//get the names of filters we are using
-			
-			foreach($arrFilterFields as $field)
-			{
-				if($this->Input->get($field))
-				{
-					$arrFilters[$field] = $this->Input->get($field);
-				}
-			}
-			
-			$this->perPage = ($this->Input->get('per_page') ? $this->Input->get('per_page') : $this->perPage);
-			
-			$this->setFilterSQL($arrFilters);
-		}
-
-		if($this->strOrderBySQL=='c.sorting')
-		{
-			if($this->iso_listingSortField)
-			{
-				$this->setFilterSQL(array('order_by' => ($this->iso_listingSortField.'-'.$this->iso_listingSortDirection)));
-			}
-		}
+		$this->applyFilters();
 		
 		// Determine category scope
 		$arrCategories = $this->findCategories($this->iso_category_scope);
 		
-		$objProductIds = $this->Database->prepare("SELECT DISTINCT p.id FROM tl_iso_product_categories c, tl_iso_products p WHERE p.id=c.pid AND published='1'" . ($this->strFilterSQL ? " AND (" . $this->strFilterSQL . ")" : "") . " AND c.page_id IN (" . implode(',', $arrCategories) . ")" . ($this->strSearchSQL ? " AND (" . $this->strSearchSQL . ")" : "") . ($this->strOrderBySQL ? " ORDER BY " . $this->strOrderBySQL : ""));
-		
+		$objProductIds = $this->Database->prepare("SELECT DISTINCT p.id FROM tl_iso_product_categories c, tl_iso_products p WHERE p.id=c.pid AND published='1'" . ($this->strFilterSQL ? " AND (" . $this->strFilterSQL . ")" : "") . " AND c.page_id IN (" . implode(',', $arrCategories) . ")" . ($this->strSearchSQL ? " AND (" . $this->strSearchSQL . ")" : "") . ($this->strOrderBySQL ? " ORDER BY " . $this->strOrderBySQL : ""))->execute($this->arrParams);
 		
 		// Add pagination
 		if ($this->perPage > 0)
 		{
-			$total = $objProductIds->execute($this->arrParams)->numRows;
+			$total = $objProductIds->numRows;
 			$page = $this->Input->get('page') ? $this->Input->get('page') : 1;
 			$offset = ($page - 1) * $this->perPage;
 
@@ -140,7 +110,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			return $this->getProducts($objProductIds->execute($this->arrParams)->fetchEach('id'), true, $this->perPage, $offset);
 		}
 		
-		return $this->getProducts($objProductIds->execute($this->arrParams)->fetchEach('id'));
+		return $this->getProducts($objProductIds->fetchEach('id'));
 	}
 	
 	
@@ -182,6 +152,41 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		}
 		
 		$this->Template->products = $arrBuffer;
+	}
+	
+	
+	protected function applyFilters()
+	{
+		if($this->Input->get('clear'))
+		{
+			$arrFilters = array();
+		}
+		else
+		{
+			$arrFilters = array('for'=>$this->Input->get('for'), 'per_page'=>$this->Input->get('per_page'), 'page'=>$this->Input->get('page'), 'order_by'=>$this->Input->get('order_by'));
+		
+			$arrFilterFields = explode(',', $this->Input->get('filters'));	//get the names of filters we are using
+			
+			foreach($arrFilterFields as $field)
+			{
+				if($this->Input->get($field))
+				{
+					$arrFilters[$field] = $this->Input->get($field);
+				}
+			}
+			
+			$this->perPage = ($this->Input->get('per_page') ? $this->Input->get('per_page') : $this->perPage);
+			
+			$this->setFilterSQL($arrFilters);
+		}
+
+		if($this->strOrderBySQL=='c.sorting')
+		{
+			if($this->iso_listingSortField)
+			{
+				$this->setFilterSQL(array('order_by' => ($this->iso_listingSortField.'-'.$this->iso_listingSortDirection)));
+			}
+		}
 	}
 	
 	
