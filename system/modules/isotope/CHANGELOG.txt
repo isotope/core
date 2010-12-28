@@ -21,6 +21,7 @@ Version 0.2.4 (2011-01-??)
 - Fixed weight total shipping included rates from all shipping modules
 - Fixed mandatory asterisks not appearing in checkout address fields
 - Fixed email issues with mail clients not supporting <tfood>
+- Fixed missing comma in mail text (Ticket #217)
 
 Version 0.2.3 (2010-12-20)
 ------------------------------
