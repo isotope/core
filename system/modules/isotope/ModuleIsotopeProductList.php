@@ -107,7 +107,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			$objPagination = new Pagination($total, $this->perPage);
 			$this->Template->pagination = $objPagination->generate("\n  ");
 			
-			return $this->getProducts($objProductIds->execute($this->arrParams)->fetchEach('id'), true, $this->perPage, $offset);
+			return $this->getProducts($objProductIds->fetchEach('id'), true, $this->perPage, $offset);
 		}
 		
 		return $this->getProducts($objProductIds->fetchEach('id'));
