@@ -73,7 +73,7 @@ class IsotopeProduct extends Controller
 	/**
 	 * Downloads for this product
 	 */
-	protected $arrDownloads = array();
+	protected $arrDownloads = null;
 
 	/**
 	 * Cache properties, cache is dropped when serializing
@@ -168,13 +168,6 @@ class IsotopeProduct extends Controller
 					}
 				}
 			}
-		}
-		
-		
-		// Cache downloads for this product
-		if ($this->arrType['downloads'])
-		{
-			$this->arrDownloads = $this->Database->execute("SELECT * FROM tl_iso_downloads WHERE pid={$this->arrData['id']}")->fetchAllAssoc();
 		}
 		
 		// Find lowest price
@@ -334,7 +327,7 @@ class IsotopeProduct extends Controller
 				break;
 
 			case 'hasDownloads':
-				return count($this->arrDownloads) ? true : false;
+				return count($this->getDownloads()) ? true : false;
 				
 			case 'description_meta':
 				return $this->arrData['description_meta'] != '' ? $this->arrData['description_meta'] : ($this->arrData['teaser'] != '' ? $this->arrData['teaser'] : $this->arrData['description']);
@@ -445,6 +438,15 @@ class IsotopeProduct extends Controller
 	//!@todo: Confirm that files are available
 	public function getDownloads()
 	{
+		if (!$this->arrType['downloads'])
+			return array();
+			
+		// Cache downloads for this product
+		if (!is_array($this->arrDownloads))
+		{
+			$this->arrDownloads = $this->Database->execute("SELECT * FROM tl_iso_downloads WHERE pid={$this->arrData['id']} OR pid={$this->arrData['pid']}")->fetchAllAssoc();
+		}
+
 		return $this->arrDownloads;
 	}
 
@@ -476,7 +478,7 @@ class IsotopeProduct extends Controller
 	
 	
 	/**
-	 * Set options data and validate variant
+	 * Set options data
 	 */
 	public function setOptions(array $arrOptions)
 	{
@@ -1000,12 +1002,9 @@ class IsotopeProduct extends Controller
 			}
 		}
 		
-		// Cache downloads for this product
-		if ($this->arrType['downloads'])
-		{
-			$this->arrDownloads = $this->Database->execute("SELECT * FROM tl_iso_downloads WHERE pid={$this->arrData['id']} OR pid={$this->arrData['pid']}")->fetchAllAssoc();
-		}
-		
+		// Unset arrDownloads cache
+		$this->arrDownloads = null;
+				
 		if ($blnLoadLanguage)
 		{
 			$this->loadLanguage($arrInherit);
