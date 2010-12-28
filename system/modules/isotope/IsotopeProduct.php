@@ -874,6 +874,24 @@ class IsotopeProduct extends Controller
 					$varValue = $objDate->tstamp;
 				}
 				
+				// Trigger the save_callback
+				if (is_array($arrData['save_callback']))
+				{
+					try
+					{
+						foreach ($arrData['save_callback'] as $callback)
+						{
+							$this->import($callback[0]);
+							$varValue = $this->$callback[0]->$callback[1]($varValue, $this);
+						}
+					}
+					catch( Exception $e )
+					{
+						$objWidget->addError($e->getMessage());
+						$this->doNotSubmit = true;
+					}
+				}
+				
 				if ($varValue != '')
 				{
 					$this->arrOptions[$strField] = $varValue;
