@@ -77,7 +77,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_iso_orders']['export_emails'],
 				'href'                => 'key=export_emails',
-				'class'               => 'header_export_emails isotope-tools',
+				'class'               => 'header_iso_export isotope-tools',
 				'attributes'          => 'onclick="Backend.getScrollOffset();"'
 			),
 			'print_invoices' => array
