@@ -543,6 +543,9 @@ class Isotope extends Controller
 	
 		// Remove empty tags
 		$strAddress = preg_replace('(\{[^}]+\})', '', $strAddress);
+		
+		// Remove empty brackets
+		$strAddress = str_replace('()', '', $strAddress);
 	
 		// Remove double line breaks
 		do
