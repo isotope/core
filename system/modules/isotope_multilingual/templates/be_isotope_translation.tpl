@@ -35,7 +35,9 @@
 </form>
 
 <?php if(strlen($this->edit)): ?>
-<div id="tl_buttons">&nbsp;</div>
+<div id="tl_buttons">
+<a href="<?php echo $this->downloadHref; ?>" class="header_iso_export" title="<?php echo $this->downloadTitle; ?>" accesskey="n" onclick="Backend.getScrollOffset();"><?php echo $this->downloadLabel; ?></a>
+</div>
 <h2 class="sub_headline"><?php echo $this->headline; ?></h2>
 <?php echo $this->getMessages() . '<br />'; ?>
 <form action="<?php echo $this->action; ?>" method="post">
@@ -45,21 +47,23 @@
 
 <table cellpadding="0" cellspacing="0" class="tl_listing" summary="Table lists records">
 
-	<?php foreach ( $this->source as $key => $value): ?>
-  	  <tr onmouseover="Theme.hoverRow(this, 1);" onmouseout="Theme.hoverRow(this, 0);">
-	    <td class="tl_file_list" style="width: 49%"><?php echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?></td>
-	    <td class="tl_file_list" style="width: 2%">=</td>
-	    <td class="tl_file_list" style="width: 49%;white-space:pre"><input type="text" name="<?php echo standardize($key); ?>" class="tl_text" value="<?php echo str_replace('"', '&quot;', $this->translation[$key]); ?>" onfocus="Backend.getScrollOffset();" /> <a title="<?php echo $key; ?>"><img src="system/themes/default/images/show.gif" alt="" /></a></td>
-	  </tr>
-	<?php endforeach; ?> 
-	
+<?php foreach ( $this->source as $key => $value): ?>
+	  <tr onmouseover="Theme.hoverRow(this, 1);" onmouseout="Theme.hoverRow(this, 0);">
+    <td class="tl_file_list" style="width: 48%"><?php echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?></td>
+    <td class="tl_file_list" style="width: 2%">=</td>
+    <td class="tl_file_list" style="width: 48%"><?php if(strlen($value)>50):?><textarea name="<?php echo standardize($key); ?>" class="tl_text" onfocus="Backend.getScrollOffset();" style="height:60px;overflow:auto;"><?php echo str_replace('"', '&quot;', $this->translation[$key]); ?></textarea><?php else: ?><input type="text" name="<?php echo standardize($key); ?>" class="tl_text" value="<?php echo str_replace('"', '&quot;', $this->translation[$key]); ?>" onfocus="Backend.getScrollOffset();" /><?php endif; ?></td>
+	<td class="tl_file_list" style="width: 2%"><a title="<?php echo $key; ?>"><img src="system/themes/default/images/show.gif" alt="" /></a></td>
+  </tr>
+<?php endforeach; ?> 
+
 <?php if( $this->svn_diff && is_array($this->diff) ): $blnHeadline=false; ?>
 <?php foreach( $this->diff as $key => $value ): if($this->translation[$key] != $this->diff[$key]): if(!$blnHeadline): $blnHeadline=true; ?>
       <tr><td colspan="3" style="padding-top: 50px;"><h2><?php echo $this->diff_headline; ?></h2></td></tr><?php endif; ?>
   	  <tr onmouseover="Theme.hoverRow(this, 1);" onmouseout="Theme.hoverRow(this, 0);">
-	    <td class="tl_file_list" style="width: 49%"><?php echo $this->diff[$key]; ?></td>
+	    <td class="tl_file_list" style="width: 48%"><?php echo $this->diff[$key]; ?></td>
 	    <td class="tl_file_list" style="width: 2%">=</td>
-	    <td class="tl_file_list" style="width: 49%"><?php echo $this->translation[$key]; /*htmlspecialchars($value, ENT_COMPAT, 'UTF-8');*/ ?></td>
+	    <td class="tl_file_list" style="width: 48%"><?php echo $this->translation[$key]; /*htmlspecialchars($value, ENT_COMPAT, 'UTF-8');*/ ?></td>
+		<td class="tl_file_list" style="width: 2%"><a title="<?php echo $key; ?>"><img src="system/themes/default/images/show.gif" alt="" /></a></td>
 	  </tr>
 <?php endif; endforeach; ?>
 <?php elseif($this->svn_diff && is_string($this->diff)): ?>

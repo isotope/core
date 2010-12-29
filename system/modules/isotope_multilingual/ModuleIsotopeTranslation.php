@@ -45,6 +45,11 @@ class ModuleIsotopeTranslation extends BackendModule
 			return '<p class="tl_gerror">You have no language assigned.</p>';
 		}
 		
+		if ($this->Input->get('act') == 'download')
+		{
+			return $this->export();
+		}
+		
 		return parent::generate();
 	}
 	
@@ -216,6 +221,10 @@ class ModuleIsotopeTranslation extends BackendModule
 		$this->Template->moduleClass = strlen($arrSession['module']) ? ' active' : '';
 		$this->Template->files = $arrFiles;
 		$this->Template->fileClass = $this->Template->edit ? ' active' : '';
+		
+		$this->Template->downloadHref = $this->addToUrl('act=download');
+		$this->Template->downloadTitle = 'Download language files for this module';
+		$this->Template->downloadLabel = 'Download';
 	}
 	
 	
@@ -349,6 +358,48 @@ class ModuleIsotopeTranslation extends BackendModule
 		}
 		
 		return $ret;
+	}
+	
+	/**
+	 * Export a test translation file
+	 */
+	public function export()
+	{
+		$arrSession = $this->Session->get('filter_translation');
+		$arrSession = $arrSession['isotope_translation'];
+		
+		$strFolder = 'system/modules/' . $arrSession['module'] . '/languages/' . $this->User->translation;
+		$strZip = 'system/html/' . $this->User->translation . '.zip';
+		$arrFiles = scan(TL_ROOT . '/' . $strFolder);
+		
+		$objZip = new ZipWriter($strZip);
+		
+		foreach( $arrFiles as $file )
+		{
+			$objZip->addFile($strFolder . '/' . $file);
+		}
+		
+		$objZip->close();
+		
+		$objFile = new File($strZip);
+		
+		// Open the "save as …" dialogue
+		header('Content-Type: ' . $objFile->mime);
+		header('Content-Transfer-Encoding: binary');
+		header('Content-Disposition: attachment; filename="' . $objFile->basename . '"');
+		header('Content-Length: ' . $objFile->filesize);
+		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+		header('Pragma: public');
+		header('Expires: 0');
+
+		$resFile = fopen(TL_ROOT . '/' . $strZip, 'rb');
+		fpassthru($resFile);
+		fclose($resFile);
+		
+		unlink($strZip);
+
+		// Stop script
+		exit;
 	}
 }
 
