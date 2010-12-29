@@ -122,14 +122,21 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 	// Palettes
 	'palettes' => array
 	(
+		'__selector__'				  => array('currencySymbol'),
 		'default'                     => '
 			{name_legend},name,label,fallback;
 			{address_legend:hide},firstname,lastname,company,street_1,street_2,street_3,postal,city,subdivision,country,emailShipping,phone;
 			{config_legend},shipping_countries,billing_countries,shipping_fields,billing_fields,orderPrefix,store_id,templateGroup,limitMemberCountries,enableGoogleAnalytics;
 			{price_legend},priceCalculateFactor,priceCalculateMode,priceRoundPrecision,priceRoundIncrement;
-			{currency_legend},currency,currencySymbol,currencyFormat,currencyPosition;
+			{currency_legend},currency,currencyFormat,currencyPosition,currencySymbol;
 			{invoice_legend:hide},invoiceLogo;
 			{images_legend},gallery,missing_image_placeholder,imageSizes',
+	),
+	
+	// Subpalettes
+	'subpalettes' => array
+	(
+		'currencySymbol'				=> 'currencySpace',
 	),
 
 	// Fields
@@ -413,7 +420,14 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['currencySymbol'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
-			'eval'					  => array('tl_class'=>'w50 m12'),
+			'eval'					  => array('submitOnChange'=>true, 'tl_class'=>'w50'),
+		),
+		'currencySpace' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['currencySpace'],
+			'exclude'                 => true,
+			'inputType'               => 'checkbox',
+			'eval'					  => array('tl_class'=>'w50'),
 		),
 		'currencyPosition' => array
 		(

@@ -395,8 +395,8 @@ class Isotope extends Controller
 	 * 
 	 * @access public
 	 * @param float $fltPrice
-	 * @param string $strCurrencyCode (default: null)
 	 * @param bool $blnHtml. (default: false)
+	 * @param string $strCurrencyCode (default: null)
 	 * @return string
 	 */
 	public function formatPriceWithCurrency($fltPrice, $blnHtml=true, $strCurrencyCode = null)
@@ -405,13 +405,13 @@ class Isotope extends Controller
 		if (!is_numeric($fltPrice))
 			return $fltPrice;
 			
-		$strCurrency = (strlen($strCurrencyCode) ? $strCurrencyCode : $this->Config->currency);
+		$strCurrency = ($strCurrencyCode != '' ? $strCurrencyCode : $this->Config->currency);
 		
 		$strPrice = $this->formatPrice($fltPrice);
 		
-		if ($this->Config->currencySymbol && strlen($GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency]))
+		if ($this->Config->currencySymbol && $GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency] != '')
 		{
-			$strCurrency = ($blnHtml ? '<span class="currency">' : '') . $GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency] . ($blnHtml ? '</span>' : '');
+			$strCurrency = (($this->Config->currencyPosition == 'right' && $this->Config->currencySpace) ? ' ' : '') . ($blnHtml ? '<span class="currency">' : '') . $GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency] . ($blnHtml ? '</span>' : '') . (($this->Config->currencyPosition == 'left' && $this->Config->currencySpace) ? ' ' : '');
 		}
 		else
 		{

@@ -38,6 +38,7 @@ $GLOBALS['TL_LANG']['tl_iso_config']['priceRoundPrecision']				= array('Rounding
 $GLOBALS['TL_LANG']['tl_iso_config']['priceRoundIncrement']				= array('Rounding increment', 'Some currencies (eg. swiss francs) do not support 0.01 precicion.');
 $GLOBALS['TL_LANG']['tl_iso_config']['currency']						= array('Currency', 'Please select a currency for this store.');
 $GLOBALS['TL_LANG']['tl_iso_config']['currencySymbol']					= array('Use currency symbol', 'Use a currency symbol ($, €) if available.');
+$GLOBALS['TL_LANG']['tl_iso_config']['currencySpace']					= array('Include blank space', 'Add space between price and currency symbol.');
 $GLOBALS['TL_LANG']['tl_iso_config']['currencyPosition']				= array('Position of currency code/symbol', 'Select if you want to show currency on the left or right side of the price.');
 $GLOBALS['TL_LANG']['tl_iso_config']['currencyFormat']					= array('Currency formatting', 'Choose a formatting for prices.');
 $GLOBALS['TL_LANG']['tl_iso_config']['invoiceLogo']						= array('Invoice Logo', 'Select a logo to show up on the invoices for this store.');
