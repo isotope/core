@@ -48,6 +48,14 @@
 	background-repeat:no-repeat;
 }
 
+.header_iso_copy
+{
+	background-image:url(../../../themes/default/images/copy.gif);
+	background-position:left center;
+	background-repeat:no-repeat;
+	padding:2px 0 3px 20px;
+}
+
 .header_print_invoices
 {
 	padding:2px 0px 3px 20px;

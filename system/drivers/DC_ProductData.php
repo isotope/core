@@ -1,13 +1,13 @@
 <?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
 
 /**
- * TYPOlight webCMS
- * Copyright (C) 2005-2009 Leo Feyer
+ * TYPOlight Open Source CMS
+ * Copyright (C) 2005-2010 Leo Feyer
  *
  * This program is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
- * version 2.1 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -16,18 +16,21 @@
  * 
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
- * Software Foundation website at http://www.gnu.org/licenses/.
+ * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Andreas Schempp 2010
+ * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
+ * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
- * @version    $Id$
  */
 
 
 require_once(TL_ROOT . '/system/drivers/DC_Table.php');
 
+/**
+ * Based on DC_Table from Contao 2.9.2
+ */
 class DC_ProductData extends DC_Table
 {
 	
@@ -53,8 +56,8 @@ class DC_ProductData extends DC_Table
 	{
 		if ($GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable'])
 		{
-			$this->log('Table ' . $this->strTable . ' is not editable', 'DC_MultilingualTable edit()', TL_ERROR);
-			$this->redirect('typolight/main.php?act=error');
+			$this->log('Table ' . $this->strTable . ' is not editable', 'DC_ProductData edit()', TL_ERROR);
+			$this->redirect('contao/main.php?act=error');
 		}
 
 		if ($intID)
@@ -68,7 +71,7 @@ class DC_ProductData extends DC_Table
 		$this->blnCreateNewVersion = false;
 		$this->blnEditLanguage = false;
 		
-		// Get current record
+		// Get the current record
 		$objRow = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE id=?")
 								 ->limit(1)
 								 ->executeUncached($this->intId);
@@ -76,15 +79,15 @@ class DC_ProductData extends DC_Table
 		// Redirect if there is no record with the given ID
 		if ($objRow->numRows < 1)
 		{
-			$this->log('Could not load record ID "'.$this->intId.'" of table "'.$this->strTable.'"!', 'DC_MultilingualTable edit()', TL_ERROR);
-			$this->redirect('typolight/main.php?act=error');
+			$this->log('Could not load record ID "'.$this->intId.'" of table "'.$this->strTable.'"!', 'DC_ProductData edit()', TL_ERROR);
+			$this->redirect('contao/main.php?act=error');
 		}
 		
 		// ID of a language record is not allowed
-		elseif (strlen($objRow->language))
+		elseif ($objRow->language != '')
 		{
-			$this->log('Cannot edit language record ID "'.$this->intId.'" of table "'.$this->strTable.'"!', 'DC_MultilingualTable edit()', TL_ERROR);
-			$this->redirect('typolight/main.php?act=error');
+			$this->log('Cannot edit language record ID "'.$this->intId.'" of table "'.$this->strTable.'"!', 'DC_ProductData edit()', TL_ERROR);
+			$this->redirect('contao/main.php?act=error');
 		}
 
 		$this->objActiveRecord = $objRow;
@@ -162,7 +165,20 @@ class DC_ProductData extends DC_Table
 					$this->Database->prepare("UPDATE tl_version SET active=1 WHERE pid=? AND version=?")
 								   ->execute($this->objActiveRecord->id, $this->Input->post('version'));
 
-					$this->log(sprintf('Version %s of record ID %s (table %s) has been restored', $this->Input->post('version'), $this->objActiveRecord->id, $this->strTable), 'DC_Table edit()', TL_GENERAL);
+					$this->log(sprintf('Version %s of record ID %s (table %s) has been restored', $this->Input->post('version'), $this->objActiveRecord->id, $this->strTable), 'DC_ProductData edit()', TL_GENERAL);
+
+					// Trigger the onrestore_callback
+					if (is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['onrestore_callback']))
+					{
+						foreach ($GLOBALS['TL_DCA'][$this->strTable]['config']['onrestore_callback'] as $callback)
+						{
+							if (is_array($callback))
+							{
+								$this->import($callback[0]);
+								$this->$callback[0]->$callback[1]($this->objActiveRecord->id, $this->strTable, $data, $this->Input->post('version'));
+							}
+						}
+					}
 				}
 			}
 
@@ -308,7 +324,7 @@ class DC_ProductData extends DC_Table
 				}
 			}
 		}
-		
+
 		$version = '';
 
 		// Check versions
@@ -390,17 +406,19 @@ class DC_ProductData extends DC_Table
 <input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['save']).'" />
 <input type="submit" name="saveNclose" id="saveNclose" class="tl_submit" accesskey="c" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['saveNclose']).'" />' . (!$GLOBALS['TL_DCA'][$this->strTable]['config']['closed'] ? '
 <input type="submit" name="saveNcreate" id="saveNcreate" class="tl_submit" accesskey="n" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['saveNcreate']).'" />' : '') . ($this->Input->get('s2e') ? '
-<input type="submit" name="saveNedit" id="saveNedit" class="tl_submit" accesskey="e" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['saveNedit']).'" />' : (($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 4 || strlen($GLOBALS['TL_DCA'][$this->strTable]['config']['ptable']) || $GLOBALS['TL_DCA'][$this->strTable]['config']['switchToEdit']) ? '
+<input type="submit" name="saveNedit" id="saveNedit" class="tl_submit" accesskey="e" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['saveNedit']).'" />' : (($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 4 || strlen($this->ptable) || $GLOBALS['TL_DCA'][$this->strTable]['config']['switchToEdit']) ? '
 <input type="submit" name="saveNback" id="saveNback" class="tl_submit" accesskey="g" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['saveNback']).'" />' : '')) .'
 </div>
 
 </div>
 </form>';
+		
+		$copyFallback = $this->blnEditLanguage ? '&nbsp;&nbsp;::&nbsp;&nbsp;<a href="'.$this->addToUrl('act=copyFallback').'" class="header_iso_copy" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['copyFallback']).'" accesskey="d" onclick="Backend.getScrollOffset();">'.$GLOBALS['TL_LANG']['MSC']['copyFallback'].'</a>' : '';
 
 		// Begin the form (-> DO NOT CHANGE THIS ORDER -> this way the onsubmit attribute of the form can be changed by a field)
 		$return = $version . '
 <div id="tl_buttons">
-<a href="'.$this->getReferer(true).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'" accesskey="b" onclick="Backend.getScrollOffset();">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
+<a href="'.$this->getReferer(true).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'" accesskey="b" onclick="Backend.getScrollOffset();">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>' . $copyFallback . '
 </div>
 
 <h2 class="sub_headline">'.sprintf($GLOBALS['TL_LANG']['MSC']['editRecord'], ($this->intId ? 'ID '.$this->intId : '')).'</h2>'.$this->getMessages().'
@@ -418,7 +436,7 @@ class DC_ProductData extends DC_Table
 			$arrValues = $this->values;
 			array_unshift($arrValues, time());
 
-			// Call onsubmit_callback
+			// Trigger the onsubmit_callback
 			if (is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['onsubmit_callback']))
 			{
 				foreach ($GLOBALS['TL_DCA'][$this->strTable]['config']['onsubmit_callback'] as $callback)
@@ -427,15 +445,15 @@ class DC_ProductData extends DC_Table
 					$this->$callback[0]->$callback[1]($this);
 				}
 			}
-			
-			// Save current version
+
+			// Save the current version
 			if ($this->blnCreateNewVersion && $this->Input->post('SUBMIT_TYPE') != 'auto')
 			{
 				$this->createNewVersion($this->strTable, $this->objActiveRecord->id);
-				$this->log(sprintf('A new version of %s ID %s has been created', $this->strTable, $this->objActiveRecord->id), 'DC_Table edit()', TL_GENERAL);
+				$this->log(sprintf('A new version of %s ID %s has been created', $this->strTable, $this->objActiveRecord->id), 'DC_ProductData edit()', TL_GENERAL);
 			}
 
-			// Set current timestamp (-> DO NOT CHANGE ORDER version - timestamp)
+			// Set the current timestamp (-> DO NOT CHANGE THE ORDER version - timestamp)
 			$this->Database->prepare("UPDATE " . $this->strTable . " SET tstamp=? WHERE id=?")
 						   ->execute(time(), $this->activeRecord->id);
 
@@ -472,7 +490,19 @@ class DC_ProductData extends DC_Table
 				$_SESSION['TL_CONFIRM'] = '';
 
 				setcookie('BE_PAGE_OFFSET', 0, 0, '/');
-				$this->redirect($this->Environment->script . '?do=' . $this->Input->get('do'));
+
+				if ($this->ptable == '')
+				{
+					$this->redirect($this->Environment->script . '?do=' . $this->Input->get('do'));
+				}
+				elseif ($this->ptable == 'tl_theme' && $this->strTable == 'tl_style_sheet') # TODO: try to abstract this
+				{
+					$this->redirect($this->getReferer(false, $this->strTable));
+				}
+				else
+				{
+					$this->redirect($this->getReferer(false, $this->ptable));
+				}
 			}
 
 			elseif (isset($_POST['saveNcreate']))
@@ -498,13 +528,13 @@ class DC_ProductData extends DC_Table
 				// Parent view
 				elseif ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 4)
 				{
-					$strUrl .= $this->Database->fieldExists('sorting', $this->strTable) ? '&amp;act=create&amp;mode=1&amp;pid=' . $this->intId . '&amp;id=' . CURRENT_ID : '&amp;act=create&amp;mode=2&amp;pid=' . CURRENT_ID;
+					$strUrl .= $this->Database->fieldExists('sorting', $this->strTable) ? '&amp;act=create&amp;mode=1&amp;pid=' . $this->intId . '&amp;id=' . $this->activeRecord->pid : '&amp;act=create&amp;mode=2&amp;pid=' . $this->activeRecord->pid;
 				}
 
 				// List view
 				else
 				{
-					$strUrl .= strlen($GLOBALS['TL_DCA'][$this->strTable]['config']['ptable']) ? '&amp;act=create&amp;mode=2&amp;pid=' . CURRENT_ID : '&amp;act=create';
+					$strUrl .= strlen($this->ptable) ? '&amp;act=create&amp;mode=2&amp;pid=' . CURRENT_ID : '&amp;act=create';
 				}
 
 				$this->redirect($strUrl);
@@ -532,6 +562,36 @@ window.addEvent(\'domready\', function()
 	}
 	
 	
+	public function copyFallback()
+	{
+		$session = $this->Session->getData();
+		
+		$strLanguage = $session['language'][$this->strTable][$this->intId];
+		
+		$this->strPalette = $this->getPalette();
+		$fields = trimsplit(';|,', $this->strPalette);
+		
+		$arrDuplicate = array();
+		
+		foreach( $fields as $field )
+		{
+			if (is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]) && $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['attributes']['multilingual'])
+			{
+				$arrDuplicate[] = $field;
+			}
+		}
+		
+		if (count($arrDuplicate))
+		{
+			$arrRow = $this->Database->execute("SELECT " . implode(',', $arrDuplicate) . " FROM {$this->strTable} WHERE id={$this->intId}")->fetchAssoc();
+			
+			$this->Database->prepare("UPDATE {$this->strTable} %s WHERE pid={$this->intId} AND language='$strLanguage'")->set($arrRow)->execute();
+		}
+		
+		$this->redirect($this->addToUrl('act=edit'));
+	}
+	
+	
 	/**
 	 * List all records of a particular table
 	 * @return string
@@ -541,11 +601,6 @@ window.addEvent(\'domready\', function()
 		$return = '';
 		$this->limit = '';
 		$this->bid = 'tl_buttons';
-		
-		if (is_array($this->root) && !count($this->root))
-		{
-			$this->root = array(0);
-		}
 
 		// Clean up old tl_undo and tl_log entries
 		if ($this->strTable == 'tl_undo' && strlen($GLOBALS['TL_CONFIG']['undoPeriod']))
@@ -583,6 +638,16 @@ window.addEvent(\'domready\', function()
 			$this->values[] = CURRENT_ID;
 		}
 
+		// Custom filter
+		if (is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']) && count($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']))
+		{
+			foreach ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter'] as $filter)
+			{
+				$this->procedure[] = $filter[0];
+				$this->values[] = $filter[1];
+			}
+		}
+		
 		$return .= $this->panel();
 		$return .= $this->treeView();
 
@@ -598,7 +663,7 @@ window.addEvent(\'domready\', function()
 <div class="tl_panel_bottom">
 
 <div class="tl_submit_panel tl_subpanel">
-<input type="image" name="btfilter" id="btfilter" src="system/themes/' . $this->getTheme() . '/images/reload.gif" class="tl_img_submit" alt="apply changes" value="apply changes" />
+<input type="image" name="btfilter" id="btfilter" src="system/themes/' . $this->getTheme() . '/images/reload.gif" class="tl_img_submit" title="' . $GLOBALS['TL_LANG']['MSC']['apply'] . '" value="' . $GLOBALS['TL_LANG']['MSC']['apply'] . '" />
 </div>' . $strLimit . '
 
 <div class="clear"></div>
@@ -633,9 +698,19 @@ window.addEvent(\'domready\', function()
 		}
 		
 		$table = $this->strTable;
+		$treeClass = 'tl_tree';
 		$orderBy = $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['fields'];
 		$firstOrderBy = preg_replace('/\s+.*$/i', '', $orderBy[0]);
 
+		if ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 6)
+		{
+			$table = $this->ptable;
+			$treeClass = 'tl_tree_xtnd';
+
+			$this->loadLanguageFile($table);
+			$this->loadDataContainer($table);
+		}
+		
 		if (is_array($this->orderBy) && strlen($this->orderBy[0]))
 		{
 			$orderBy = $this->orderBy;
@@ -725,6 +800,20 @@ window.addEvent(\'domready\', function()
 			$this->redirect(preg_replace('/(&(amp;)?|\?)ptg=[^& ]*/i', '', $this->Environment->request));
 		}
 
+		// Return if a mandatory field (id, pid) is missing
+		if ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 5 && (!$this->Database->fieldExists('id', $table) || !$this->Database->fieldExists('pid', $table)))
+		{
+			return '
+<p class="tl_empty">strTable "'.$table.'" can not be shown as tree!</p>';
+		}
+
+		// Return if there is no parent table
+		if ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 6 && !strlen($this->ptable))
+		{
+			return '
+<p class="tl_empty">strTable "'.$table.'" can not be shown as extended tree!</p>';
+		}
+
 		$blnClipboard = false;
 		$arrClipboard = $this->Session->get('CLIPBOARD');
 
@@ -768,19 +857,19 @@ window.addEvent(\'domready\', function()
 <div class="tl_formbody">
 <input type="hidden" name="FORM_SUBMIT" value="tl_select" />' : '').'
 
-<div class="tl_listing_container" id="tl_listing">'.(isset($GLOBALS['TL_DCA'][$table]['list']['sorting']['breadcrumb']) ? $GLOBALS['TL_DCA'][$table]['list']['sorting']['breadcrumb'] : '').(($this->Input->get('act') == 'select') ? '
+<div class="tl_listing_container tree_view" id="tl_listing">'.(isset($GLOBALS['TL_DCA'][$table]['list']['sorting']['breadcrumb']) ? $GLOBALS['TL_DCA'][$table]['list']['sorting']['breadcrumb'] : '').(($this->Input->get('act') == 'select') ? '
 
 <div class="tl_select_trigger">
 <label for="tl_select_trigger" class="tl_select_label">'.$GLOBALS['TL_LANG']['MSC']['selectAll'].'</label> <input type="checkbox" id="tl_select_trigger" onclick="Backend.toggleCheckboxes(this)" class="tl_tree_checkbox" />
 </div>' : '').'
 
-<ul class="tl_listing tl_tree">
-  <li class="tl_folder_top" onmouseover="Theme.hoverDiv(this, 1);" onmouseout="Theme.hoverDiv(this, 0);"><div class="tl_left">'.$label.'</div> <div class="tl_right">';
+<ul class="tl_listing ' . $treeClass . '">
+  <li class="tl_folder_top"><div class="tl_left">'.$label.'</div> <div class="tl_right">';
 
 		$_buttons = '&nbsp;';
 
 		// Show paste button only if there are no root records specified
-		if ($this->Input->get('act') != 'select' && $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 5 && $blnClipboard && !count($GLOBALS['TL_DCA'][$table]['list']['sorting']['root']) && $GLOBALS['TL_DCA'][$table]['list']['sorting']['root'] !== false)
+		if ($this->Input->get('act') != 'select' && $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 5 && $blnClipboard && ((!count($GLOBALS['TL_DCA'][$table]['list']['sorting']['root']) && $GLOBALS['TL_DCA'][$table]['list']['sorting']['root'] !== false) || $GLOBALS['TL_DCA'][$table]['list']['sorting']['rootPaste']))
 		{
 			// Call paste_button_callback (&$dc, $row, $table, $cr, $childs, $previous, $next)
 			if (is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['paste_button_callback']))
@@ -826,8 +915,8 @@ window.addEvent(\'domready\', function()
 
 		return $return;
 	}
-	
-	
+
+
 	/**
 	 * Generate a particular subpart of the tree and return it as HTML string
 	 * @param integer
@@ -870,7 +959,7 @@ window.addEvent(\'domready\', function()
 		$arrIds = array();
 
 		// Get records
-		$objRows = $this->Database->prepare("SELECT id FROM " . $table . " WHERE pid=?" . ($hasSorting ? " ORDER BY sorting" : ""))
+		$objRows = $this->Database->prepare("SELECT id FROM " . $table . " WHERE pid=? AND language=''" . ($hasSorting ? " ORDER BY sorting" : ""))
 							 	  ->execute($id);
 
 		while ($objRows->next())
@@ -895,8 +984,8 @@ window.addEvent(\'domready\', function()
 
 		return $return;
 	}
-	
-	
+
+
 	/**
 	 * Recursively generate the tree and return it as HTML string
 	 * @param string
@@ -914,7 +1003,7 @@ window.addEvent(\'domready\', function()
 		static $session;
 
 		$session = $this->Session->getData();
-		$node = $this->strTable.'_tree';
+		$node = ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 6) ? $this->strTable.'_'.$table.'_tree' : $this->strTable.'_tree';
 
 		// Toggle nodes
 		if ($this->Input->get('ptg'))
@@ -960,8 +1049,9 @@ window.addEvent(\'domready\', function()
 		// Check whether the page is protected
 		$objRow->protected = ($table == 'tl_page') ? ($objRow->protected || $protectedPage) : false;
 		$session[$node][$id] = (is_int($session[$node][$id])) ? $session[$node][$id] : 0;
+		$mouseover = ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 5 || $table == $this->strTable) ? ' onmouseover="Theme.hoverDiv(this, 1);" onmouseout="Theme.hoverDiv(this, 0);"' : '';
 
-		$return .= "\n  " . '<li class="'.((($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 5 && $objRow->type == 'root') || $table != $this->strTable) ? 'tl_folder' : 'tl_file').'" onmouseover="Theme.hoverDiv(this, 1);" onmouseout="Theme.hoverDiv(this, 0);"><div class="tl_left" style="padding-left:'.($intMargin + $intSpacing).'px;">';
+		$return .= "\n  " . '<li class="'.((($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 5 && $objRow->type == 'root') || $table != $this->strTable) ? 'tl_folder' : 'tl_file').'"'.$mouseover.'><div class="tl_left" style="padding-left:'.($intMargin + $intSpacing).'px;">';
 
 		// Calculate label and add a toggle button
 		$args = array();
@@ -974,7 +1064,7 @@ window.addEvent(\'domready\', function()
 			$folderAttribute = '';
 			$img = ($session[$node][$id] == 1) ? 'folMinus.gif' : 'folPlus.gif';
 			$alt = ($session[$node][$id] == 1) ? $GLOBALS['TL_LANG']['MSC']['collapseNode'] : $GLOBALS['TL_LANG']['MSC']['expandNode'];
-			$return .= '<a href="'.$this->addToUrl('ptg='.$id).'" title="'.specialchars($alt).'" onclick="Backend.getScrollOffset(); return AjaxRequest.toggleStructure(this, \''.$node.'_'.$id.'\', '.$level.', '.$GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'].');">'.$this->generateImage($img, specialchars($alt), 'style="margin-right:2px;"').'</a>';
+			$return .= '<a href="'.$this->addToUrl('ptg='.$id).'" title="'.specialchars($alt).'" onclick="Backend.getScrollOffset(); return AjaxRequest.toggleStructure(this, \''.$node.'_'.$id.'\', '.$level.', '.$GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'].');">'.$this->generateImage($img, '', 'style="margin-right:2px;"').'</a>';
 		}
 
 		foreach ($showFields as $k=>$v)
@@ -1030,8 +1120,8 @@ window.addEvent(\'domready\', function()
 		}
 
 		$return .= '</div> <div class="tl_right">';
-		$previous = $arrPrevNext['p'];
-		$next = $arrPrevNext['n'];
+		$previous = ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 6) ? $arrPrevNext['pp'] : $arrPrevNext['p'];
+		$next = ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 6) ? $arrPrevNext['nn'] : $arrPrevNext['n'];
 		$_buttons = '';
 
 		// Regular buttons ($row, $table, $root, $blnCircularReference, $childs, $previous, $next)
@@ -1043,6 +1133,8 @@ window.addEvent(\'domready\', function()
 		// Paste buttons
 		if ($arrClipboard !== false && $this->Input->get('act') != 'select')
 		{
+			$_buttons .= ' ';
+
 			// Call paste_button_callback(&$dc, $row, $table, $blnCircularReference, $arrClipboard, $childs, $previous, $next)
 			if (is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['paste_button_callback']))
 			{
@@ -1059,8 +1151,18 @@ window.addEvent(\'domready\', function()
 				$imagePasteInto = $this->generateImage('pasteinto.gif', sprintf($GLOBALS['TL_LANG'][$this->strTable]['pasteinto'][1], $id), 'class="blink"');
 
 				// Regular tree (on cut: disable buttons of the page all its childs to avoid circular references)
-				$_buttons .= ($arrClipboard['mode'] == 'cut' && ($blnCircularReference || $arrClipboard['id'] == $id) || $arrClipboard['mode'] == 'cutAll' && ($blnCircularReference || in_array($id, $arrClipboard['id'])) || (count($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['root']) && in_array($id, $this->root))) ? $this->generateImage('pasteafter_.gif', '', 'class="blink"').' ' : '<a href="'.$this->addToUrl('act='.$arrClipboard['mode'].'&amp;mode=1&amp;pid='.$id.(!is_array($arrClipboard['id']) ? '&amp;id='.$arrClipboard['id'] : '')).'" title="'.specialchars(sprintf($GLOBALS['TL_LANG'][$this->strTable]['pasteafter'][1], $id)).'" onclick="Backend.getScrollOffset();">'.$imagePasteAfter.'</a> ';
-				$_buttons .= ($arrClipboard['mode'] == 'paste' && ($blnCircularReference || $arrClipboard['id'] == $id) || $arrClipboard['mode'] == 'cutAll' && ($blnCircularReference || in_array($id, $arrClipboard['id']))) ? $this->generateImage('pasteinto_.gif', '', 'class="blink"').' ' : '<a href="'.$this->addToUrl('act='.$arrClipboard['mode'].'&amp;mode=2&amp;pid='.$id.(!is_array($arrClipboard['id']) ? '&amp;id='.$arrClipboard['id'] : '')).'" title="'.specialchars(sprintf($GLOBALS['TL_LANG'][$this->strTable]['pasteinto'][1], $id)).'" onclick="Backend.getScrollOffset();">'.$imagePasteInto.'</a> ';
+				if ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 5)
+				{
+					$_buttons .= ($arrClipboard['mode'] == 'cut' && ($blnCircularReference || $arrClipboard['id'] == $id) || $arrClipboard['mode'] == 'cutAll' && ($blnCircularReference || in_array($id, $arrClipboard['id'])) || (count($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['root']) && in_array($id, $this->root))) ? $this->generateImage('pasteafter_.gif', '', 'class="blink"').' ' : '<a href="'.$this->addToUrl('act='.$arrClipboard['mode'].'&amp;mode=1&amp;pid='.$id.(!is_array($arrClipboard['id']) ? '&amp;id='.$arrClipboard['id'] : '')).'" title="'.specialchars(sprintf($GLOBALS['TL_LANG'][$this->strTable]['pasteafter'][1], $id)).'" onclick="Backend.getScrollOffset();">'.$imagePasteAfter.'</a> ';
+					$_buttons .= ($arrClipboard['mode'] == 'paste' && ($blnCircularReference || $arrClipboard['id'] == $id) || $arrClipboard['mode'] == 'cutAll' && ($blnCircularReference || in_array($id, $arrClipboard['id']))) ? $this->generateImage('pasteinto_.gif', '', 'class="blink"').' ' : '<a href="'.$this->addToUrl('act='.$arrClipboard['mode'].'&amp;mode=2&amp;pid='.$id.(!is_array($arrClipboard['id']) ? '&amp;id='.$arrClipboard['id'] : '')).'" title="'.specialchars(sprintf($GLOBALS['TL_LANG'][$this->strTable]['pasteinto'][1], $id)).'" onclick="Backend.getScrollOffset();">'.$imagePasteInto.'</a> ';
+				}
+
+				// Extended tree
+				else
+				{
+					$_buttons .= ($this->strTable == $table) ? (($arrClipboard['mode'] == 'cut' && ($blnCircularReference || $arrClipboard['id'] == $id) || $arrClipboard['mode'] == 'cutAll' && ($blnCircularReference || in_array($id, $arrClipboard['id']))) ? $this->generateImage('pasteafter_.gif', '', 'class="blink"') : '<a href="'.$this->addToUrl('act='.$arrClipboard['mode'].'&amp;mode=1&amp;pid='.$id.(!is_array($arrClipboard['id']) ? '&amp;id='.$arrClipboard['id'] : '')).'" title="'.specialchars(sprintf($GLOBALS['TL_LANG'][$this->strTable]['pasteafter'][1], $id)).'" onclick="Backend.getScrollOffset();">'.$imagePasteAfter.'</a> ') : '';
+					$_buttons .= ($this->strTable != $table) ? '<a href="'.$this->addToUrl('act='.$arrClipboard['mode'].'&amp;mode=2&amp;pid='.$id.(!is_array($arrClipboard['id']) ? '&amp;id='.$arrClipboard['id'] : '')).'" title="'.specialchars(sprintf($GLOBALS['TL_LANG'][$this->strTable]['pasteinto'][1], $id)).'" onclick="Backend.getScrollOffset();">'.$imagePasteInto.'</a> ' : '';
+				}
 			}
 		}
 
@@ -1147,7 +1249,7 @@ window.addEvent(\'domready\', function()
 			$this->Session->setData($session);
 		}
 
-		// Overwrite "orderBy" value with session value
+		// Overwrite the "orderBy" value with the session value
 		elseif (strlen($session['sorting'][$this->strTable]))
 		{
 			$overwrite = preg_quote(preg_replace('/\s+.*$/i', '', $session['sorting'][$this->strTable]), '/');

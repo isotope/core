@@ -68,6 +68,7 @@ $GLOBALS['TL_LANG']['MSC']['defaultLanguage']		= 'Fallback';
 $GLOBALS['TL_LANG']['MSC']['editingLanguage']		= 'ATTENTION: You are editing language-specific data!';
 $GLOBALS['TL_LANG']['MSC']['deleteLanguageConfirm']	= 'Are you sure you want to delete this language? There is no undo!';
 $GLOBALS['TL_LANG']['MSC']['undefinedLanguage']		= 'undefined';
+$GLOBALS['TL_LANG']['MSC']['copyFallback']			= 'Duplicate Fallback';
 $GLOBALS['TL_LANG']['MSC']['noSurcharges']			= 'No surcharges have been found.';
 $GLOBALS['TL_LANG']['MSC']['ajaxLoadingMessage']	= 'Loading...';
 $GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline']	= 'Order no %s / %s';

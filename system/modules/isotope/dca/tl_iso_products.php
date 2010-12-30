@@ -84,6 +84,13 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'class'				  => 'header_new',
 				'attributes'          => 'onclick="Backend.getScrollOffset();"',
 			),
+			'all' => array
+			(
+				'label'					=> &$GLOBALS['TL_LANG']['MSC']['all'],
+				'href'					=> 'act=select',
+				'class'					=> 'header_edit_all',
+				'attributes'			=> 'onclick="Backend.getScrollOffset();"'
+			),
 			'tools' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_iso_products']['tools'],
