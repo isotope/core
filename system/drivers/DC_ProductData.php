@@ -47,6 +47,102 @@ class DC_ProductData extends DC_Table
 	
 	
 	/**
+	 * List all records of a particular table
+	 * @return string
+	 */
+	public function showAll()
+	{
+		$return = '';
+		$this->limit = '';
+		$this->bid = 'tl_buttons';
+
+		// Clean up old tl_undo and tl_log entries
+		if ($this->strTable == 'tl_undo' && strlen($GLOBALS['TL_CONFIG']['undoPeriod']))
+		{
+			$this->Database->prepare("DELETE FROM tl_undo WHERE tstamp<?")
+						   ->execute(intval(time() - $GLOBALS['TL_CONFIG']['undoPeriod']));
+		}
+
+		elseif ($this->strTable == 'tl_log' && strlen($GLOBALS['TL_CONFIG']['logPeriod']))
+		{
+			$this->Database->prepare("DELETE FROM tl_log WHERE tstamp<?")
+						   ->execute(intval(time() - $GLOBALS['TL_CONFIG']['logPeriod']));
+		}
+
+		$this->reviseTable();
+
+		// Add to clipboard
+		if ($this->Input->get('act') == 'paste')
+		{
+			$arrClipboard = $this->Session->get('CLIPBOARD');
+
+			$arrClipboard[$this->strTable] = array
+			(
+				'id' => $this->Input->get('id'),
+				'childs' => $this->Input->get('childs'),
+				'mode' => $this->Input->get('mode')
+			);
+
+			$this->Session->set('CLIPBOARD', $arrClipboard);
+		}
+
+		if ($this->Input->get('table') && $GLOBALS['TL_DCA'][$this->strTable]['config']['ptable'] && $this->Database->fieldExists('pid', $this->strTable))
+		{
+			$this->procedure[] = 'pid=?';
+			$this->values[] = CURRENT_ID;
+		}
+
+		// Custom filter
+		if (is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']) && count($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']))
+		{
+			foreach ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter'] as $filter)
+			{
+				$this->procedure[] = $filter[0];
+				$this->values[] = $filter[1];
+			}
+		}
+		
+		$return .= $this->panel();
+		$return .= $this->treeView();
+
+/**
+ * Does not work because $this->root is modified and applied in limitMenu()
+ *
+		// Add another panel at the end of the page
+		if ($this->root && strpos($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['panelLayout'], 'limit') !== false && ($strLimit = $this->limitMenu(true)) != false)
+		{
+			$return .= '
+
+<form action="'.ampersand($this->Environment->request, true).'" class="tl_form" method="post">
+<div class="tl_formbody">
+<input type="hidden" name="FORM_SUBMIT" value="tl_filters_limit" />
+
+<div class="tl_panel_bottom">
+
+<div class="tl_submit_panel tl_subpanel">
+<input type="image" name="btfilter" id="btfilter" src="system/themes/' . $this->getTheme() . '/images/reload.gif" class="tl_img_submit" title="' . $GLOBALS['TL_LANG']['MSC']['apply'] . '" value="' . $GLOBALS['TL_LANG']['MSC']['apply'] . '" />
+</div>' . $strLimit . '
+
+<div class="clear"></div>
+
+</div>
+
+</div>
+</form>
+';
+		}
+*/
+
+		// Store the current IDs
+		$session = $this->Session->getData();
+		$session['CURRENT']['IDS'] = $this->current;
+		$this->Session->setData($session);
+
+		return $return;
+	}
+	
+	
+	/**
 	 * Autogenerate a form to edit the current database record
 	 * @param integer
 	 * @param integer
@@ -562,125 +658,558 @@ window.addEvent(\'domready\', function()
 	}
 	
 	
-	public function copyFallback()
+	/**
+	 * Autogenerate a form to edit all records that are currently shown
+	 * @param integer
+	 * @param integer
+	 * @return string
+	 */
+	public function editAll($intId=false, $ajaxId=false)
 	{
-		$session = $this->Session->getData();
-		
-		$strLanguage = $session['language'][$this->strTable][$this->intId];
-		
-		$this->strPalette = $this->getPalette();
-		$fields = trimsplit(';|,', $this->strPalette);
-		
-		$arrDuplicate = array();
-		
-		foreach( $fields as $field )
+		if ($GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable'])
 		{
-			if (is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]) && $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['attributes']['multilingual'])
+			$this->log('Table ' . $this->strTable . ' is not editable', 'DC_Table editAll()', TL_ERROR);
+			$this->redirect('contao/main.php?act=error');
+		}
+
+		$return = '';
+		$this->import('BackendUser', 'User');
+
+		// Get current IDs from session
+		$session = $this->Session->getData();
+		$ids = $session['CURRENT']['IDS'];
+
+		if ($this->Input->post('isAjax'))
+		{
+			$ids = array($intId);
+		}
+
+		// Save field selection in session
+		if ($this->Input->post('FORM_SUBMIT') == $this->strTable.'_all' && $this->Input->get('fields'))
+		{
+			$session['CURRENT'][$this->strTable] = deserialize($this->Input->post('all_fields'));
+			$this->Session->setData($session);
+		}
+
+		// Add fields
+		$fields = $session['CURRENT'][$this->strTable];
+
+		if (is_array($fields) && count($fields) && $this->Input->get('fields'))
+		{
+			$class = 'tl_tbox block';
+
+			// Walk through each record
+			foreach ($ids as $id)
 			{
-				$arrDuplicate[] = $field;
+				$this->intId = $id;
+				$this->procedure = array('id=?');
+				$this->values = array($this->intId);
+				$this->blnCreateNewVersion = false;
+				$this->strPalette = trimsplit('[;,]', $this->getPalette());
+
+				$this->createInitialVersion($this->strTable, $this->intId);
+
+				// Add meta fields if the current user is an administrator
+				if ($this->User->isAdmin)
+				{
+					if ($this->Database->fieldExists('sorting', $this->strTable))
+					{
+						array_unshift($this->strPalette, 'sorting');
+					}
+
+					if ($this->Database->fieldExists('pid', $this->strTable))
+					{
+						array_unshift($this->strPalette, 'pid');
+					}
+
+					$GLOBALS['TL_DCA'][$this->strTable]['fields']['pid'] = array('label'=>&$GLOBALS['TL_LANG']['MSC']['pid'], 'inputType'=>'text', 'eval'=>array('rgxp'=>'digit', 'submitOnChange'=>true));
+					$GLOBALS['TL_DCA'][$this->strTable]['fields']['sorting'] = array('label'=>&$GLOBALS['TL_LANG']['MSC']['sorting'], 'inputType'=>'text', 'eval'=>array('rgxp'=>'digit'));
+				}
+
+				// Begin current row
+				$strAjax = '';
+				$blnAjax = false;
+				$return .= '
+<div class="'.$class.'">';
+
+				$class = 'tl_box block';
+				$formFields = array();
+
+				// Get field values
+				$objValue = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE id=?")
+										   ->limit(1)
+										   ->execute($this->intId);
+
+				// Store the active record
+				$this->objActiveRecord = $objValue;
+
+				foreach ($this->strPalette as $v)
+				{
+					// Check whether field is excluded
+					if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['exclude'])
+					{
+						continue;
+					}
+
+					if ($v == '[EOF]')
+					{
+						if ($this->Input->post('isAjax') && $blnAjax)
+						{
+							return $strAjax . '<input type="hidden" name="FORM_FIELDS_'.$id.'[]" value="'.specialchars(implode(',', $formFields)).'" />';
+						}
+
+						$blnAjax = false;
+						$return .= "\n  " . '</div>';
+
+						continue;
+					}
+
+					if (preg_match('/^\[.*\]$/i', $v))
+					{
+						$thisId = 'sub_' . substr($v, 1, -1) . '_' . $id;
+						$blnAjax = ($this->Input->post('isAjax') && $ajaxId == $thisId) ? true : false;
+						$return .= "\n  " . '<div id="'.$thisId.'">';
+
+						continue;
+					}
+
+					if (!in_array($v, $fields))
+					{
+						continue;
+					}
+
+					$this->strField = $v;
+					$this->strInputName = $v.'_'.$this->intId;
+					$formFields[] = $v.'_'.$this->intId;
+
+					// Set default value and try to load the current value from DB
+					$this->varValue = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['default'] ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['default'] : '';
+
+					if ($objValue->$v !== false)
+					{
+						$this->varValue = $objValue->$v;
+					}
+
+					// Call load_callback
+					if (is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['load_callback']))
+					{
+						foreach ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['load_callback'] as $callback)
+						{
+							$this->import($callback[0]);
+							$this->varValue = $this->$callback[0]->$callback[1]($this->varValue, $this);
+						}
+					}
+
+					// Re-set the current value
+					$this->objActiveRecord->{$this->strField} = $this->varValue;
+
+					// Build the current row
+					$blnAjax ? $strAjax .= $this->row() : $return .= $this->row();
+				}
+
+				// Close box
+				$return .= '
+  <input type="hidden" name="FORM_FIELDS_'.$this->intId.'[]" value="'.specialchars(implode(',', $formFields)).'" />
+</div>';
+
+				// Save record
+				if ($this->Input->post('FORM_SUBMIT') == $this->strTable && !$this->noReload)
+				{
+					// Call onsubmit_callback
+					if (is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['onsubmit_callback']))
+					{
+						foreach ($GLOBALS['TL_DCA'][$this->strTable]['config']['onsubmit_callback'] as $callback)
+						{
+							$this->import($callback[0]);
+							$this->$callback[0]->$callback[1]($this);
+						}
+					}
+
+					// Create a new version
+					if ($this->blnCreateNewVersion && $this->Input->post('SUBMIT_TYPE') != 'auto')
+					{
+						$this->createNewVersion($this->strTable, $this->intId);
+						$this->log(sprintf('A new version of %s ID %s has been created', $this->strTable, $this->intId), 'DC_Table editAll()', TL_GENERAL);
+					}
+
+					// Set current timestamp (-> DO NOT CHANGE ORDER version - timestamp)
+					$this->Database->prepare("UPDATE " . $this->strTable . " SET tstamp=? WHERE id=?")
+								   ->execute(time(), $this->intId);
+				}
+			}
+
+			// Add the form
+			$return = '
+
+<h2 class="sub_headline_all">'.sprintf($GLOBALS['TL_LANG']['MSC']['all_info'], $this->strTable).'</h2>
+
+<form action="'.ampersand($this->Environment->request, true).'" id="'.$this->strTable.'" class="tl_form" method="post" enctype="' . ($this->blnUploadable ? 'multipart/form-data' : 'application/x-www-form-urlencoded') . '">
+<div class="tl_formbody_edit">
+<input type="hidden" name="FORM_SUBMIT" value="'.$this->strTable.'" />'.($this->noReload ? '
+
+<p class="tl_error">'.$GLOBALS['TL_LANG']['ERR']['general'].'</p>' : '').$return.'
+
+</div>
+
+<div class="tl_formbody_submit">
+
+<div class="tl_submit_container">
+<input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['save']).'" />
+<input type="submit" name="saveNclose" id="saveNclose" class="tl_submit" accesskey="c" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['saveNclose']).'" />
+</div>
+
+</div>
+</form>';
+
+			// Set the focus if there is an error
+			if ($this->noReload)
+			{
+				$return .= '
+
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+window.addEvent(\'domready\', function()
+{
+    Backend.vScrollTo(($(\'' . $this->strTable . '\').getElement(\'label.error\').getPosition().y - 20));
+});
+//--><!]]>
+</script>';
+			}
+
+			// Reload the page to prevent _POST variables from being sent twice
+			if ($this->Input->post('FORM_SUBMIT') == $this->strTable && !$this->noReload)
+			{
+				if ($this->Input->post('saveNclose'))
+				{
+					setcookie('BE_PAGE_OFFSET', 0, 0, '/');
+					$this->redirect($this->getReferer());
+				}
+
+				$this->reload();
 			}
 		}
-		
-		if (count($arrDuplicate))
+
+		// Else show a form to select the fields
+		else
 		{
-			$arrRow = $this->Database->execute("SELECT " . implode(',', $arrDuplicate) . " FROM {$this->strTable} WHERE id={$this->intId}")->fetchAssoc();
-			
-			$this->Database->prepare("UPDATE {$this->strTable} %s WHERE pid={$this->intId} AND language='$strLanguage'")->set($arrRow)->execute();
+			$options = '';
+			$fields = array();
+
+			// Add fields of the current table
+			$fields = array_merge($fields, array_keys($GLOBALS['TL_DCA'][$this->strTable]['fields']));
+
+			// Add meta fields if the current user is an administrator
+			if ($this->User->isAdmin)
+			{
+				if ($this->Database->fieldExists('sorting', $this->strTable) && !in_array('sorting', $fields))
+				{
+					array_unshift($fields, 'sorting');
+				}
+
+				if ($this->Database->fieldExists('pid', $this->strTable) && !in_array('pid', $fields))
+				{
+					array_unshift($fields, 'pid');
+				}
+			}
+
+			// Show all non-excluded fields
+			foreach ($fields as $field)
+			{
+				if ($field == 'pid' || $field == 'sorting' || (!$GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['exclude'] && !$GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['eval']['doNotShow'] && (strlen($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['inputType']) || is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['input_field_callback']))))
+				{
+					$options .= '
+<input type="checkbox" name="all_fields[]" id="all_'.$field.'" class="tl_checkbox" value="'.specialchars($field).'" /> <label for="all_'.$field.'" class="tl_checkbox_label">'.(strlen($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0]) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0] : $GLOBALS['TL_LANG']['MSC'][$field][0]).'</label><br />';
+				}
+			}
+
+			// Return select menu
+			$return .= (($_POST && !count($_POST['all_fields'])) ? '
+
+<p class="tl_error">'.$GLOBALS['TL_LANG']['ERR']['general'].'</p>' : '').'
+
+<h2 class="sub_headline_all">'.sprintf($GLOBALS['TL_LANG']['MSC']['all_info'], $this->strTable).'</h2>
+
+<form action="'.ampersand($this->Environment->request, true).'&amp;fields=1" id="'.$this->strTable.'_all" class="tl_form" method="post">
+<div class="tl_formbody_edit">
+<input type="hidden" name="FORM_SUBMIT" value="'.$this->strTable.'_all" />
+
+<div class="tl_tbox block">
+<h3><label for="fields">'.$GLOBALS['TL_LANG']['MSC']['all_fields'][0].'</label></h3>'.(($_POST && !count($_POST['all_fields'])) ? '
+<p class="tl_error">'.$GLOBALS['TL_LANG']['ERR']['all_fields'].'</p>' : '').'
+<div id="fields" class="tl_checkbox_container">
+<input type="checkbox" id="check_all" class="tl_checkbox" onclick="Backend.toggleCheckboxes(this)" /> <label for="check_all" style="color:#a6a6a6;"><em>'.$GLOBALS['TL_LANG']['MSC']['selectAll'].'</em></label><br />'.$options.'
+</div>'.(($GLOBALS['TL_CONFIG']['showHelp'] && strlen($GLOBALS['TL_LANG']['MSC']['all_fields'][1])) ? '
+<p class="tl_help tl_tip">'.$GLOBALS['TL_LANG']['MSC']['all_fields'][1].'</p>' : '').'
+</div>
+
+</div>
+
+<div class="tl_formbody_submit">
+
+<div class="tl_submit_container">
+<input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['continue']).'" />
+</div>
+
+</div>
+</form>';
 		}
-		
-		$this->redirect($this->addToUrl('act=edit'));
+
+		// Return
+		return '
+<div id="tl_buttons">
+<a href="'.$this->getReferer(true).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'" accesskey="b" onclick="Backend.getScrollOffset();">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
+</div>'.$return;
 	}
 	
 	
 	/**
-	 * List all records of a particular table
+	 * Autogenerate a form to override all records that are currently shown
+	 * @author Based on a patch by Andreas Schempp
 	 * @return string
 	 */
-	public function showAll()
+	public function overrideAll()
 	{
+		if ($GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable'])
+		{
+			$this->log('Table ' . $this->strTable . ' is not editable', 'DC_Table overrideAll()', TL_ERROR);
+			$this->redirect('contao/main.php?act=error');
+		}
+
 		$return = '';
-		$this->limit = '';
-		$this->bid = 'tl_buttons';
+		$this->import('BackendUser', 'User');
 
-		// Clean up old tl_undo and tl_log entries
-		if ($this->strTable == 'tl_undo' && strlen($GLOBALS['TL_CONFIG']['undoPeriod']))
+		// Get current IDs from session
+		$session = $this->Session->getData();
+		$ids = $session['CURRENT']['IDS'];
+
+		// Save field selection in session
+		if ($this->Input->post('FORM_SUBMIT') == $this->strTable.'_all' && $this->Input->get('fields'))
 		{
-			$this->Database->prepare("DELETE FROM tl_undo WHERE tstamp<?")
-						   ->execute(intval(time() - $GLOBALS['TL_CONFIG']['undoPeriod']));
+			$session['CURRENT'][$this->strTable] = deserialize($this->Input->post('all_fields'));
+			$this->Session->setData($session);
 		}
 
-		elseif ($this->strTable == 'tl_log' && strlen($GLOBALS['TL_CONFIG']['logPeriod']))
+		// Add fields
+		$fields = $session['CURRENT'][$this->strTable];
+
+		if (is_array($fields) && count($fields) && $this->Input->get('fields'))
 		{
-			$this->Database->prepare("DELETE FROM tl_log WHERE tstamp<?")
-						   ->execute(intval(time() - $GLOBALS['TL_CONFIG']['logPeriod']));
-		}
+			$class = 'tl_tbox block';
+			$formFields = array();
 
-		$this->reviseTable();
-
-		// Add to clipboard
-		if ($this->Input->get('act') == 'paste')
-		{
-			$arrClipboard = $this->Session->get('CLIPBOARD');
-
-			$arrClipboard[$this->strTable] = array
-			(
-				'id' => $this->Input->get('id'),
-				'childs' => $this->Input->get('childs'),
-				'mode' => $this->Input->get('mode')
-			);
-
-			$this->Session->set('CLIPBOARD', $arrClipboard);
-		}
-
-		if ($this->Input->get('table') && $GLOBALS['TL_DCA'][$this->strTable]['config']['ptable'] && $this->Database->fieldExists('pid', $this->strTable))
-		{
-			$this->procedure[] = 'pid=?';
-			$this->values[] = CURRENT_ID;
-		}
-
-		// Custom filter
-		if (is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']) && count($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']))
-		{
-			foreach ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter'] as $filter)
+			// Save record
+			if ($this->Input->post('FORM_SUBMIT') == $this->strTable)
 			{
-				$this->procedure[] = $filter[0];
-				$this->values[] = $filter[1];
+				foreach ($ids as $id)
+				{
+					$this->intId = $id;
+					$this->procedure = array('id=?');
+					$this->values = array($this->intId);
+					$this->blnCreateNewVersion = false;
+
+					$this->createInitialVersion($this->strTable, $this->intId);
+					
+					$this->strPalette = trimsplit('[;,]', $this->getPalette());
+
+					// Store all fields
+					foreach ($fields as $v)
+					{
+						// Check whether field is excluded or not in palette
+						if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['exclude'] || !in_array($v, $this->strPalette))
+						{
+							continue;
+						}
+
+						$this->strField = $v;
+						$this->strInputName = $v;
+						$this->varValue = '';
+
+						// Make sure the new value is applied
+						$GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['alwaysSave'] = true;
+
+						// Store value
+						$this->row();
+					}
+
+					// Post processing
+					if (!$this->noReload)
+					{
+						// Call onsubmit_callback
+						if (is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['onsubmit_callback']))
+						{
+							foreach ($GLOBALS['TL_DCA'][$this->strTable]['config']['onsubmit_callback'] as $callback)
+							{
+								$this->import($callback[0]);
+								$this->$callback[0]->$callback[1]($this);
+							}
+						}
+
+						// Create a new version
+						if ($this->blnCreateNewVersion)
+						{
+							$this->createNewVersion($this->strTable, $this->intId);
+							$this->log(sprintf('A new version of record ID %s (table %s) has been created', $this->intId, $this->strTable), 'DC_Table editAll()', TL_GENERAL);
+						}
+
+						// Set current timestamp (-> DO NOT CHANGE ORDER version - timestamp)
+						$this->Database->prepare("UPDATE " . $this->strTable . " SET tstamp=? WHERE id=?")
+									   ->execute(time(), $this->intId);
+					}
+				}
+			}
+
+			// Begin current row
+			$return .= '
+<div class="'.$class.'">';
+
+			foreach ($fields as $v)
+			{
+				// Check whether field is excluded
+				if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['exclude'])
+				{
+					continue;
+				}
+
+				$formFields[] = $v;
+
+				$this->intId = 0;
+				$this->procedure = array('id=?');
+				$this->values = array($this->intId);
+				$this->strField = $v;
+				$this->strInputName = $v;
+				$this->varValue = '';
+
+				// Disable auto-submit
+				$GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['submitOnChange'] = false;
+				$return .= $this->row();
+			}
+
+			// Close box
+			$return .= '
+<input type="hidden" name="FORM_FIELDS[]" value="'.specialchars(implode(',', $formFields)).'" />
+</div>';
+
+			// Add the form
+			$return = '
+
+<h2 class="sub_headline_all">'.sprintf($GLOBALS['TL_LANG']['MSC']['all_info'], $this->strTable).'</h2>
+
+<form action="'.ampersand($this->Environment->request, true).'" id="'.$this->strTable.'" class="tl_form" method="post" enctype="' . ($this->blnUploadable ? 'multipart/form-data' : 'application/x-www-form-urlencoded') . '">
+<div class="tl_formbody_edit">
+<input type="hidden" name="FORM_SUBMIT" value="'.$this->strTable.'" />'.($this->noReload ? '
+
+<p class="tl_error">'.$GLOBALS['TL_LANG']['ERR']['general'].'</p>' : '').$return.'
+
+</div>
+
+<div class="tl_formbody_submit">
+
+<div class="tl_submit_container">
+<input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['save']).'" />
+<input type="submit" name="saveNclose" id="saveNclose" class="tl_submit" accesskey="c" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['saveNclose']).'" />
+</div>
+
+</div>
+</form>';
+
+			// Set the focus if there is an error
+			if ($this->noReload)
+			{
+				$return .= '
+
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+window.addEvent(\'domready\', function()
+{
+    Backend.vScrollTo(($(\'' . $this->strTable . '\').getElement(\'label.error\').getPosition().y - 20));
+});
+//--><!]]>
+</script>';
+			}
+
+			// Reload the page to prevent _POST variables from being sent twice
+			if ($this->Input->post('FORM_SUBMIT') == $this->strTable && !$this->noReload)
+			{
+				if ($this->Input->post('saveNclose'))
+				{
+					setcookie('BE_PAGE_OFFSET', 0, 0, '/');
+					$this->redirect($this->getReferer());
+				}
+
+				$this->reload();
 			}
 		}
-		
-		$return .= $this->panel();
-		$return .= $this->treeView();
 
-		// Add another panel at the end of the page
-		if ($this->root && strpos($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['panelLayout'], 'limit') !== false && ($strLimit = $this->limitMenu(true)) != false)
+		// Else show a form to select the fields
+		else
 		{
-			$return .= '
+			$options = '';
+			$fields = array();
 
-<form action="'.ampersand($this->Environment->request, true).'" class="tl_form" method="post">
-<div class="tl_formbody">
-<input type="hidden" name="FORM_SUBMIT" value="tl_filters_limit" />
+			// Add fields of the current table
+			$fields = array_merge($fields, array_keys($GLOBALS['TL_DCA'][$this->strTable]['fields']));
 
-<div class="tl_panel_bottom">
+			// Add meta fields if the current user is an administrator
+			if ($this->User->isAdmin)
+			{
+				if ($this->Database->fieldExists('sorting', $this->strTable) && !in_array('sorting', $fields))
+				{
+					array_unshift($fields, 'sorting');
+				}
 
-<div class="tl_submit_panel tl_subpanel">
-<input type="image" name="btfilter" id="btfilter" src="system/themes/' . $this->getTheme() . '/images/reload.gif" class="tl_img_submit" title="' . $GLOBALS['TL_LANG']['MSC']['apply'] . '" value="' . $GLOBALS['TL_LANG']['MSC']['apply'] . '" />
-</div>' . $strLimit . '
+				if ($this->Database->fieldExists('pid', $this->strTable) && !in_array('pid', $fields))
+				{
+					array_unshift($fields, 'pid');
+				}
+			}
 
-<div class="clear"></div>
+			// Show all non-excluded fields
+			foreach ($fields as $field)
+			{
+				if ($field == 'pid' || $field == 'sorting' || (!$GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['exclude'] && !$GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['eval']['doNotShow'] && (strlen($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['inputType']) || is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['input_field_callback']))))
+				{
+					$options .= '
+<input type="checkbox" name="all_fields[]" id="all_'.$field.'" class="tl_checkbox" value="'.specialchars($field).'" /> <label for="all_'.$field.'" class="tl_checkbox_label">'.(strlen($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0]) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0] : $GLOBALS['TL_LANG']['MSC'][$field][0]).'</label><br />';
+				}
+			}
 
+			// Return select menu
+			$return .= (($_POST && !count($_POST['all_fields'])) ? '
+
+<p class="tl_error">'.$GLOBALS['TL_LANG']['ERR']['general'].'</p>' : '').'
+
+<h2 class="sub_headline_all">'.sprintf($GLOBALS['TL_LANG']['MSC']['all_info'], $this->strTable).'</h2>
+
+<form action="'.ampersand($this->Environment->request, true).'&amp;fields=1" id="'.$this->strTable.'_all" class="tl_form" method="post">
+<div class="tl_formbody_edit">
+<input type="hidden" name="FORM_SUBMIT" value="'.$this->strTable.'_all" />
+
+<div class="tl_tbox block">
+<h3><label for="fields">'.$GLOBALS['TL_LANG']['MSC']['all_fields'][0].'</label></h3>'.(($_POST && !count($_POST['all_fields'])) ? '
+<p class="tl_error">'.$GLOBALS['TL_LANG']['ERR']['all_fields'].'</p>' : '').'
+<div id="fields" class="tl_checkbox_container">
+<input type="checkbox" id="check_all" class="tl_checkbox" onclick="Backend.toggleCheckboxes(this)" /> <label for="check_all" style="color:#a6a6a6;"><em>'.$GLOBALS['TL_LANG']['MSC']['selectAll'].'</em></label><br />'.$options.'
+</div>'.(($GLOBALS['TL_CONFIG']['showHelp'] && strlen($GLOBALS['TL_LANG']['MSC']['all_fields'][1])) ? '
+<p class="tl_help tl_tip">'.$GLOBALS['TL_LANG']['MSC']['all_fields'][1].'</p>' : '').'
 </div>
 
 </div>
-</form>
-';
+
+<div class="tl_formbody_submit">
+
+<div class="tl_submit_container">
+<input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['continue']).'" />
+</div>
+
+</div>
+</form>';
 		}
 
-		// Store the current IDs
-		$session = $this->Session->getData();
-		$session['CURRENT']['IDS'] = $this->current;
-		$this->Session->setData($session);
-
-		return $return;
+		// Return
+		return '
+<div id="tl_buttons">
+<a href="'.$this->getReferer(true).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'" accesskey="b" onclick="Backend.getScrollOffset();">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
+</div>'.$return;
 	}
 	
 	
@@ -769,8 +1298,6 @@ window.addEvent(\'domready\', function()
 		{
 			$this->root = $objIds->fetchEach('id');
 		}
-		
-		$this->bid = strlen($return) ? $this->bid : 'tl_buttons';
 		
 		// Get session data and toggle nodes
 		if ($this->Input->get('ptg') == 'all')
@@ -1287,6 +1814,37 @@ window.addEvent(\'domready\', function()
 '.implode("\n", $options_sorter).'
 </select>
 </div>';
+	}
+	
+	
+	/**
+	 * Copy multilingual fields from fallback to current language
+	 */
+	public function copyFallback()
+	{
+		$session = $this->Session->getData();
+		
+		$strLanguage = $session['language'][$this->strTable][$this->intId];
+		$this->strPalette = trimsplit('[;,]', $this->getPalette());
+		
+		$arrDuplicate = array();
+		
+		foreach( $this->strPalette as $field )
+		{
+			if (is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]) && $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['attributes']['multilingual'])
+			{
+				$arrDuplicate[] = $field;
+			}
+		}
+		
+		if (count($arrDuplicate))
+		{
+			$arrRow = $this->Database->execute("SELECT " . implode(',', $arrDuplicate) . " FROM {$this->strTable} WHERE id={$this->intId}")->fetchAssoc();
+			
+			$this->Database->prepare("UPDATE {$this->strTable} %s WHERE pid={$this->intId} AND language='$strLanguage'")->set($arrRow)->execute();
+		}
+		
+		$this->redirect($this->addToUrl('act=edit'));
 	}
 }
 

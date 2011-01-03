@@ -201,13 +201,18 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'__selector__'				=> array('type'),
+		'__selector__'				=> array('type', 'pid'),
 		'default'					=> '{general_legend},type',
 	),
 	
 	// Fields
 	'fields' => array
 	(
+		'pid' => array
+		(
+			// Fix for DC_Table, otherwise getPalette() will not use the PID value
+			'eval'					=> array('submitOnChange'=>true),
+		),
 		'type' => array
 		(
 			'label'					=>  &$GLOBALS['TL_LANG']['tl_iso_products']['type'],
@@ -252,7 +257,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'save_callback' => array
 			(
 				array('tl_iso_products', 'generateAlias'),
-			)
+			),
 		),
 		'sku' => array
 		(
@@ -260,8 +265,8 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'search'				=> true,
 			'sorting'				=> true,
 			'inputType'				=> 'text',
-			'eval'					=> array('maxlength'=>128, 'tl_class'=>'w50'),
-			'attributes'			=> array('mandatory'=>true, 'legend'=>'general_legend'),
+			'eval'					=> array('mandatory'=>true, 'maxlength'=>128, 'tl_class'=>'w50'),
+			'attributes'			=> array('legend'=>'general_legend'),
 		),
 		'name' => array
 		(
@@ -398,7 +403,7 @@ class tl_iso_products extends Backend
 		$this->import('BackendUser', 'User');
 		$this->import('Isotope');
 	}
-
+	
 
 	/**
 	 * Show/hide the downloads button
@@ -451,6 +456,8 @@ class tl_iso_products extends Backend
 			unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_variant']);
 		}
 		
+		$session = $this->Session->getData();
+		
 		$this->import('BackendUser', 'User');
 		
 		// Hide archived (sold and deleted) products
@@ -470,6 +477,30 @@ class tl_iso_products extends Backend
 		}
 		
 		$GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'] = $arrProducts;
+		
+
+		// Set allowed page IDs (edit multiple)
+		if (is_array($session['CURRENT']['IDS']))
+		{
+			$session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $arrProducts);
+		}
+
+		// Set allowed clipboard IDs
+		if (is_array($session['CLIPBOARD']['tl_iso_products']['id']) && count($session['CLIPBOARD']['tl_iso_products']['id']))
+		{
+			$objProducts = $this->Database->execute("SELECT id FROM tl_iso_products WHERE id IN (" . implode(',', $session['CLIPBOARD']['tl_iso_products']['id']) . ") AND pid>0");
+
+			$session['CLIPBOARD']['tl_iso_products']['id'] = $objProducts->fetchEach('id');
+			
+			if (!count($session['CLIPBOARD']['tl_iso_products']['id']))
+			{
+				unset($session['CLIPBOARD']['tl_iso_products']);
+			}
+		}
+
+		// Overwrite session
+		$this->Session->setData($session);
+		
 		
 		if (strlen($this->Input->get('id')) && !in_array($this->Input->get('id'), $arrProducts))
 		{
@@ -907,7 +938,7 @@ class tl_iso_products extends Backend
 	{
 		$objProduct = $this->Database->prepare("SELECT id, pid, language, type, (SELECT attributes FROM tl_iso_producttypes WHERE id=tl_iso_products.type) AS attributes, (SELECT variant_attributes FROM tl_iso_producttypes WHERE id=tl_iso_products.type) AS variant_attributes, (SELECT prices FROM tl_iso_producttypes WHERE id=tl_iso_products.type) AS prices FROM tl_iso_products WHERE id=?")->limit(1)->execute($dc->id);
 		
-		$arrQuickEditFields = $objProduct->prices ? array('sku', 'shipping_weight', 'stock_quantity') : array('sku', 'price', 'shipping_weight', 'stock_quantity');
+		$arrQuickEditFields = $objProduct->prices ? array('sku', 'shipping_weight') : array('sku', 'price', 'shipping_weight');
 		
 		$arrFields = array();
 		$arrAttributes = deserialize($objProduct->attributes);
@@ -1421,7 +1452,9 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 	 */
 	public function buildPaletteString($dc)
 	{
-		if (!strlen($this->Input->get('act')) && !strlen($this->Input->get('key')))
+		$this->import('Isotope');
+		
+		if ($this->Input->get('act') == '' && $this->Input->get('key') == '' || $this->Input->get('act') == 'select')
 			return;
 			
 		// Set default product type
@@ -1430,61 +1463,79 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 		// Set default tax class
 		$GLOBALS['TL_DCA']['tl_iso_products']['fields']['tax_class']['default'] = $this->Database->execute("SELECT id FROM tl_iso_tax_class WHERE fallback='1'")->id;
 		
-		// Load the current product
-		$objProduct = $this->Database->prepare("SELECT id, pid, language, type, (SELECT attributes FROM tl_iso_producttypes WHERE id=tl_iso_products.type) AS attributes, (SELECT variant_attributes FROM tl_iso_producttypes WHERE id=tl_iso_products.type) AS variant_attributes, (SELECT prices FROM tl_iso_producttypes WHERE id=tl_iso_products.type) AS prices FROM tl_iso_products WHERE id=?")->limit(1)->execute($dc->id);
-			
-		if ($objProduct->pid > 0)
+		$blnEditAll = true;
+		
+		$strQuery = "SELECT
+						id,
+						pid,
+						language,
+						type,
+						(SELECT type FROM tl_iso_products p2 WHERE p2.id=p1.pid) AS parent_type,
+						(SELECT attributes FROM tl_iso_producttypes WHERE id=p1.type) AS attributes,
+						(SELECT variant_attributes FROM tl_iso_producttypes WHERE id=p1.type) AS variant_attributes,
+						(SELECT prices FROM tl_iso_producttypes WHERE id=p1.type) AS prices
+					FROM tl_iso_products p1";
+
+		
+		if ($this->Input->get('act') != 'editAll' && $dc->id > 0)
 		{
-			$objParent = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE id=?")->limit(1)->execute($objProduct->pid);
-			
-			if ($objProduct->type != $objParent->type)
+			$strQuery .= ' WHERE id=' . $dc->id;
+			$blnEditAll = false;
+		}
+		
+		$objProducts = $this->Database->execute($strQuery);
+		$blnReload = false;
+		
+		while( $objProducts->next() )
+		{
+			if ($objProducts->pid > 0 && $objProducts->type != $objProducts->parent_type)
 			{
-				$this->Database->prepare("UPDATE tl_iso_products p1 SET type=(SELECT type FROM (SELECT * FROM tl_iso_products) AS p2 WHERE p1.pid=p2.id) WHERE p1.id=?")->execute($this->Input->get('id'));
-				$this->reload();
+				$this->Database->query("UPDATE tl_iso_products SET type={$objProducts->parent_type} WHERE id={$objProducts->id}");
+				$blnReload = true;
 			}
-		}
-		
-		// Enable advanced prices
-		if ($objProduct->prices)
-		{
-			$GLOBALS['TL_DCA']['tl_iso_products']['fields']['prices']['attributes'] = $GLOBALS['TL_DCA']['tl_iso_products']['fields']['price']['attributes'];
-			$GLOBALS['TL_DCA']['tl_iso_products']['fields']['price'] = $GLOBALS['TL_DCA']['tl_iso_products']['fields']['prices'];
-		}
-		
-		$arrInherit = array();
-		$arrPalette = array();
-		
-		// Variant
-		if ($objProduct->pid > 0)
-		{
-			$arrAttributes = deserialize($objProduct->attributes);
-			$arrPalette['variant_legend'][] = 'variant_attributes,inherit';
 			
-			if (is_array($arrAttributes) && count($arrAttributes))
+			if ($blnReload)
 			{
-				foreach( $arrAttributes as $attribute )
+				continue;
+			}
+			
+			// Enable advanced prices
+			if ($objProducts->prices && !$blnEditAll)
+			{
+				$GLOBALS['TL_DCA']['tl_iso_products']['fields']['prices']['attributes'] = $GLOBALS['TL_DCA']['tl_iso_products']['fields']['price']['attributes'];
+				$GLOBALS['TL_DCA']['tl_iso_products']['fields']['price'] = $GLOBALS['TL_DCA']['tl_iso_products']['fields']['prices'];
+			}
+			
+			$arrInherit = array();
+			$arrPalette = array();
+			
+			$objProducts->attributes = deserialize($objProducts->attributes, true);
+			
+			// Variant
+			if ($objProducts->pid > 0)
+			{
+				$arrPalette['variant_legend'][] = 'variant_attributes' . ($blnEditAll ? '' : ',inherit');
+				
+				//!@todo will not work in edit all!
+				foreach( $objProducts->attributes as $attribute )
 				{
 					if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
 					{
-						$arrFields[] = $attribute;
 						$GLOBALS['TL_DCA']['tl_iso_products']['fields']['variant_attributes']['options'][] = $attribute;
 					}
 				}
-			}
-			
-			$arrFields = deserialize($objProduct->variant_attributes, true);
-		}
-		else
-		{
-			$arrFields = deserialize($objProduct->attributes, true);
-		}
 				
-		if (is_array($arrFields) && count($arrFields))
-		{
+				$arrFields = deserialize($objProducts->variant_attributes, true);
+			}
+			else
+			{
+				$arrFields = $objProducts->attributes;
+			}
+	
 			foreach( $arrFields as $field )
 			{
 				// Field is not an attribute
-				if (!is_array($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]) || !strlen($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['attributes']['legend']))
+				if (!is_array($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]) || $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['attributes']['legend'] == '')
 					continue;
 				
 				// Do not show variant options
@@ -1492,30 +1543,41 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 					continue;
 					
 				// Field cannot be edited in variant
-				if ($objProduct->pid > 0 && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['attributes']['inherit'])
+				if ($objProducts->pid > 0 && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['attributes']['inherit'])
 					continue;
-
+	
 				$arrPalette[$GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['attributes']['legend']][] = $field;
 				
-				if (!in_array($field, array('sku', 'price', 'shipping_weight', 'stock_quantity', 'published')))
+				if (!$blnEditAll && !in_array($field, array('sku', 'price', 'shipping_weight', 'published')) && in_array($field, $objProducts->attributes))
 				{
-					$arrInherit[$field] = strlen($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['label'][0]) ? $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['label'][0] : $field;
+					$arrInherit[$field] = $this->Isotope->formatLabel('tl_iso_products', $field);
 				}
 			}
+			
+			// Build
+			$arrLegends = array();
+			foreach($arrPalette as $legend=>$fields)
+			{
+				$arrLegends[] = '{' . $legend . '},' . implode(',', $fields);
+			}
+			
+			// Set inherit options
+			$GLOBALS['TL_DCA']['tl_iso_products']['fields']['inherit']['options'] = $arrInherit;
+	
+			// Add palettes
+			$GLOBALS['TL_DCA']['tl_iso_products']['palettes'][$objProducts->type . $objProducts->pid] = implode(';', $arrLegends);
 		}
 		
-		// Build
-		$arrLegends = array();
-		foreach($arrPalette as $legend=>$fields)
+		if ($blnReload)
 		{
-			$arrLegends[] = '{' . $legend . '},' . implode(',', $fields);
+			$this->reload();
 		}
-		
-		// Set inherit options
-		$GLOBALS['TL_DCA']['tl_iso_products']['fields']['inherit']['options'] = $arrInherit;
-
-		// Add palettes
-		$GLOBALS['TL_DCA']['tl_iso_products']['palettes'][$objProduct->type] = implode(';', $arrLegends);
+		elseif ($blnEditAll)
+		{
+			$GLOBALS['TL_DCA']['tl_iso_products']['fields']['inherit']['exclude'] = true;
+			$GLOBALS['TL_DCA']['tl_iso_products']['fields']['prices']['exclude'] = true;
+			$GLOBALS['TL_DCA']['tl_iso_products']['fields']['variant_attributes']['exclude'] = true;
+		}
 	}
 	
 	
