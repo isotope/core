@@ -70,7 +70,7 @@ class InheritCheckBox extends CheckBox
 <script type=\"text/javascript\">
 <!--//--><![CDATA[//><!--
 window.addEvent('domready', function() {
-  Isotope.inheritFields(['" . implode("','", $arrFields) . "'], 'Use default value');
+  Isotope.inheritFields(['" . implode("','", $arrFields) . "'], '" . str_replace("'", "\'", $GLOBALS['ISO_LANG']['MSC']['useDefault']) . "');
 });
 //--><!]]>
 </script>

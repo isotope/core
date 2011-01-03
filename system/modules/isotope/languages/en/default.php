@@ -184,6 +184,9 @@ $GLOBALS['TL_LANG']['MSC']['old_to_new'] = 'earlier to later';
 $GLOBALS['TL_LANG']['MSC']['new_to_old'] = 'later to earlier';
 
 
+$GLOBALS['ISO_LANG']['MSC']['useDefault']	= 'Use default value';
+
+
 
 /**
  * Isotope module labels
