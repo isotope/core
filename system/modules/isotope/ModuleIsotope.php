@@ -35,12 +35,6 @@ abstract class ModuleIsotope extends Module
 	 */
 	protected $Isotope;
 	
-	/**
-	 * URL cache array
-	 * @var array
-	 */
-	private static $arrUrlCache = array();
-	
 	
 	public function __construct(Database_Result $objModule, $strColumn='main')
 	{
@@ -76,7 +70,7 @@ abstract class ModuleIsotope extends Module
 	{
 		global $objPage;
 		
-		$objProductData = $this->Database->query("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS product_class FROM tl_iso_products WHERE id=$intId");
+		$objProductData = $this->Database->execute("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS product_class FROM tl_iso_products WHERE id=$intId");
 									 
 		$strClass = $GLOBALS['ISO_PRODUCT'][$objProductData->product_class]['class'];
 		
@@ -108,9 +102,7 @@ abstract class ModuleIsotope extends Module
 		$strClass = $GLOBALS['ISO_PRODUCT'][$objProductData->product_class]['class'];
 		
 		if ($strClass == '' || !$this->classFileExists($strClass))
-		{
 			return null;
-		}
 		
 		$objProduct = new $strClass($objProductData->row());
 		
