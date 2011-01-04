@@ -35,12 +35,6 @@ abstract class ModuleIsotope extends Module
 	 */
 	protected $Isotope;
 	
-	/**
-	 * URL cache array
-	 * @var array
-	 */
-	private static $arrUrlCache = array();
-	
 	
 	public function __construct(Database_Result $objModule, $strColumn='main')
 	{
