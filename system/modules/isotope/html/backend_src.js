@@ -458,33 +458,11 @@ var Isotope =
 		
 		var tools = $$('#tl_buttons .isotope-tools').clone();
 		
-		var buttons = [];
-		var nodes = $('tl_buttons').childNodes;
-		for( var i=0; i<nodes.length; i++ )
-		{
-			if (!nodes[i])
-				continue;
-				
-			if (nodes[i].hasClass && nodes[i].hasClass('isotope-tools'))
-			{
-				i++;
-				continue;
-			}
-			
-			if (nodes[i].clone)
-			{
-				buttons.push(nodes[i].clone());
-			}
-			else
-			{
-				buttons.push(nodes[i]);
-			}
-		}
-		
-		if (!buttons[buttons.length-1].clone)
-			buttons.erase(buttons[buttons.length-1]);
-		
-		$('tl_buttons').empty().adopt(buttons);
+		$$('#tl_buttons .isotope-tools').each(function(node) {
+			//node.previousSibling.deleteData(0, node.previousSibling.nodeValue.length);
+			node.previousSibling.nodeValue = '';
+			node.destroy();
+		});
 		
 		var div = new Element('div',
 		{
