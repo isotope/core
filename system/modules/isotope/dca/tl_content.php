@@ -107,10 +107,17 @@ class tl_content_isotope extends Backend
 	 */
 	public function getListTemplates(DataContainer $dc)
 	{
+		$intPid = $dc->activeRecord->pid;
+
+		if ($this->Input->get('act') == 'overrideAll')
+		{
+			$intPid = $this->Input->get('id');
+		}
+
 		// Get the page ID
 		$objArticle = $this->Database->prepare("SELECT pid FROM tl_article WHERE id=?")
 									 ->limit(1)
-									 ->execute($dc->activeRecord->pid);
+									 ->execute($intPid);
 
 		// Inherit the page settings
 		$objPage = $this->getPageDetails($objArticle->pid);

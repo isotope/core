@@ -24,6 +24,7 @@ Version 0.2.4 (2011-01-??)
 - Fixed email issues with mail clients not supporting <tfood>
 - Fixed missing comma in mail text (Ticket #217)
 - Fixed HTML issue in iso_reader_default.tpl (Ticket #203)
+- Fixed: Custom templates were not always shown in "override all" mode (see Contao Core Ticket #2725)
 - Improved italian address formatting (Ticket #305)
 
 Version 0.2.3 (2010-12-20)

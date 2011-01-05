@@ -593,7 +593,14 @@ class tl_module_isotope extends Backend
 	 */
 	public function getListTemplates(DataContainer $dc)
 	{
-		return $this->getTemplateGroup('iso_list_', $dc->activeRecord->pid);
+		$intPid = $dc->activeRecord->pid;
+
+		if ($this->Input->get('act') == 'overrideAll')
+		{
+			$intPid = $this->Input->get('id');
+		}
+
+		return $this->getTemplateGroup('iso_list_', $intPid);
 	}
 	
 	
@@ -604,7 +611,14 @@ class tl_module_isotope extends Backend
 	 */
 	public function getReaderTemplates(DataContainer $dc)
 	{
-		return $this->getTemplateGroup('iso_reader_', $dc->activeRecord->pid);
+		$intPid = $dc->activeRecord->pid;
+
+		if ($this->Input->get('act') == 'overrideAll')
+		{
+			$intPid = $this->Input->get('id');
+		}
+
+		return $this->getTemplateGroup('iso_reader_', $intPid);
 	}
 	
 	
@@ -615,7 +629,14 @@ class tl_module_isotope extends Backend
 	 */
 	public function getCartTemplates(DataContainer $dc)
 	{
-		return $this->getTemplateGroup('iso_cart_', $dc->activeRecord->pid);
+		$intPid = $dc->activeRecord->pid;
+
+		if ($this->Input->get('act') == 'overrideAll')
+		{
+			$intPid = $this->Input->get('id');
+		}
+
+		return $this->getTemplateGroup('iso_cart_', $intPid);
 	}
 	
 	
@@ -626,7 +647,14 @@ class tl_module_isotope extends Backend
 	 */
 	public function getFilterTemplates(DataContainer $dc)
 	{
-		return $this->getTemplateGroup('iso_filter_', $dc->activeRecord->pid);
+		$intPid = $dc->activeRecord->pid;
+
+		if ($this->Input->get('act') == 'overrideAll')
+		{
+			$intPid = $this->Input->get('id');
+		}
+
+		return $this->getTemplateGroup('iso_filter_', $intPid);
 	}
 }
 
