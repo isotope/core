@@ -496,7 +496,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		}
 		elseif (!$this->Isotope->Cart->hasShipping)
 		{
-			if (count($_POST))
+			if ($this->Input->post('FORM_SUBMIT') != '')
 			{
 				$objTemplate->error = $GLOBALS['TL_LANG']['ISO']['shipping_method_missing'];
 			}
@@ -616,7 +616,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		}
 		elseif (!$this->Isotope->Cart->hasPayment)
 		{
-			if (count($_POST))
+			if ($this->Input->post('FORM_SUBMIT') != '')
 			{
 				$objTemplate->error = $GLOBALS['TL_LANG']['ISO']['payment_method_missing'];
 			}
