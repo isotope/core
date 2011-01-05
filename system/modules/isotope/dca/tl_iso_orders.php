@@ -413,7 +413,7 @@ class tl_iso_orders extends Backend
 		
 		if (!$this->User->isAdmin)
 		{
-			unset($GLOBALS['TL_DCA']['tl_iso_orderes']['list']['operations']['delete']);
+			unset($GLOBALS['TL_DCA']['tl_iso_orders']['list']['operations']['delete']);
 			
 			if ($this->Input->get('act') == 'delete' || (strlen($this->Input->get('id')) && !in_array($this->Input->get('id'), $arrIds)))
 				$this->redirect($this->Environment->script.'?act=error');
