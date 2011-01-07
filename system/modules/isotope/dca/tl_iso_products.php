@@ -1682,22 +1682,13 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 	}
 	
 	
-	public function saveField($varValue, DataContainer $dc)
+	public function saveField($varValue, $dc)
 	{
-		$objAttribute = $this->Database->prepare("SELECT * FROM tl_iso_attributes WHERE field_name=?")
-									   ->limit(1)
-									   ->execute($dc->field);
-		
-		if($objAttribute->numRows < 1)
-		{
-			throw new Exception('Not a valid record id!');
-		}
-		
-		if($objAttribute->is_filterable)
+		if (TL_MODE == 'BE' && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$dc->field]['attributes']['is_filterable'])
 		{
 			$this->saveFilterValuesToCategories($varValue, $dc);
 		}
-		
+				
 		return $varValue;
 	}
 	
