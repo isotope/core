@@ -72,8 +72,8 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 		),
 		'label' => array
 		(
-			'fields'				=> array('name', 'type'),
-			'format'				=> '%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>'
+			'fields'				=> array('name', 'field_name', 'type'),
+			'format'				=> '<div style="float:left; width:200px">%s</div><div style="float:left; width:200px; color:#b3b3b3;">%s</div><div style="color:#b3b3b3">[%s]</div>'
 		),
 		'global_operations' => array
 		(
@@ -106,6 +106,12 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['edit'],
 				'href'				=> 'act=edit',
 				'icon'				=> 'edit.gif'
+			),
+			'copy' => array
+			(
+				'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['copy'],
+				'href'					=> 'act=copy',
+				'icon'					=> 'copy.gif'
 			),
 			'delete' => array
 			(
@@ -152,7 +158,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['field_name'],
 			'inputType'				=> 'text',
-			'eval'					=> array('mandatory'=>true, 'maxlength'=>30, 'unique'=>true, 'doNotSaveEmpty'=>true, 'tl_class'=>'w50'),
+			'eval'					=> array('mandatory'=>true, 'maxlength'=>30, 'unique'=>true, 'doNotCopy'=>true, 'doNotSaveEmpty'=>true, 'tl_class'=>'w50'),
 			'save_callback'			=> array
 			(
 				array('tl_iso_attributes', 'createColumn'),

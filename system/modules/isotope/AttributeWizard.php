@@ -246,17 +246,18 @@ class AttributeWizard extends Widget
 		
 		if ($arrOption['disabled'])
 		{
-			return sprintf('<span><input type="hidden" name="%s" value="%s"%s /><input id="opt_%s" type="checkbox" class="tl_checkbox" disabled="disabled" checked="checked" /> %s <label for="opt_%s">%s</label></span>',
+			return sprintf('<span><input type="hidden" name="%s" value="%s"%s /><input id="opt_%s" type="checkbox" class="tl_checkbox" disabled="disabled" checked="checked" /> %s <label for="opt_%s">%s&nbsp;<span style="display:inline;color:#b3b3b3">[%s]</span></label></span>',
 							$this->strName . '[]',
 							specialchars($arrOption['value']),
 							$this->getAttributes(),
 							$this->strId.'_'.$arrOption['value'],
 							$strButtons,
 							$this->strId.'_'.$arrOption['value'],
-							$arrOption['label']);
+							$arrOption['label'],
+							$arrOption['value']);
 		}
 		
-		return sprintf('<span><input type="checkbox" name="%s" id="opt_%s" class="tl_checkbox" value="%s"%s%s onfocus="Backend.getScrollOffset();" /> %s <label for="opt_%s">%s</label></span>',
+		return sprintf('<span><input type="checkbox" name="%s" id="opt_%s" class="tl_checkbox" value="%s"%s%s onfocus="Backend.getScrollOffset();" /> %s <label for="opt_%s">%s&nbsp;<span style="display:inline;color:#b3b3b3">[%s]</span></label></span>',
 						$this->strName . '[]',
 						$this->strId.'_'.$arrOption['value'],
 						specialchars($arrOption['value']),
@@ -264,7 +265,8 @@ class AttributeWizard extends Widget
 						$this->getAttributes(),
 						$strButtons,
 						$this->strId.'_'.$arrOption['value'],
-						$arrOption['label']);
+						$arrOption['label'],
+							$arrOption['value']);
 	}
 	
 	
