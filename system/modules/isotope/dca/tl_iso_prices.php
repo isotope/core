@@ -182,6 +182,9 @@ class tl_iso_prices extends Backend
 
 	public function listRows($row)
 	{
+		if (!$row['id'])
+			return '';
+			
 		$this->import('Isotope');
 		
 		$arrTiers = array();
@@ -218,6 +221,9 @@ class tl_iso_prices extends Backend
 	
 	public function loadTiers($varValue, $dc)
 	{
+		if (!$dc->id)
+			return array();
+			
 		$arrTiers = array();
 		$objTiers = $this->Database->execute("SELECT * FROM tl_iso_price_tiers WHERE pid={$dc->id} ORDER BY min");
 		
