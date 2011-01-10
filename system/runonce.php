@@ -35,8 +35,6 @@ class IsotopeRunonce extends Frontend
 	public function __construct()
 	{
 		parent::__construct();
-		
-		$this->import('Database');
 	}
 
 
