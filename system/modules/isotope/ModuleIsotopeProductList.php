@@ -97,20 +97,22 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		
 		$objProductIds = $this->Database->prepare("SELECT DISTINCT p.id FROM tl_iso_product_categories c, tl_iso_products p WHERE p.id=c.pid AND published='1'" . ($this->strFilterSQL ? " AND (" . $this->strFilterSQL . ")" : "") . " AND c.page_id IN (" . implode(',', $arrCategories) . ")" . ($this->strSearchSQL ? " AND (" . $this->strSearchSQL . ")" : "") . ($this->strOrderBySQL ? " ORDER BY " . $this->strOrderBySQL : ""))->execute($this->arrParams);
 		
+		$arrProducts = $this->getProducts($objProductIds->fetchEach('id'));
+		
 		// Add pagination
 		if ($this->perPage > 0)
 		{
-			$total = $objProductIds->numRows;
+			$total = count($arrProducts);
 			$page = $this->Input->get('page') ? $this->Input->get('page') : 1;
 			$offset = ($page - 1) * $this->perPage;
 
 			$objPagination = new Pagination($total, $this->perPage);
 			$this->Template->pagination = $objPagination->generate("\n  ");
 			
-			return $this->getProducts($objProductIds->fetchEach('id'), true, $this->perPage, $offset);
+			return array_slice($arrProducts, $offset, $this->perPage);
 		}
 		
-		return $this->getProducts($objProductIds->fetchEach('id'));
+		return $arrProducts;
 	}
 	
 	
