@@ -121,13 +121,16 @@ class IsotopeDatabase
 		}
 
 		fclose($resFile);
+		
+		// Do not use __destruct, because Database object might be destructed first (see http://dev.contao.org/issues/2236)
+		register_shutdown_function(array($this, 'storeFile'));
 	}
 	
 
 	/**
 	 * Save the local configuration
 	 */
-	public function __destruct()
+	public function storeFile()
 	{
 		if (!$this->blnIsModified)
 		{
@@ -149,7 +152,7 @@ class IsotopeDatabase
 			$strFile .= trim($this->strBottom) . "\n\n";
 		}
 
-		$objFile = new File('/system/modules/isotope/config/database.sql');
+		$objFile = new File('system/modules/isotope/config/database.sql');
 		$objFile->write($strFile);
 		$objFile->close();
 	}
