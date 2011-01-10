@@ -35,8 +35,6 @@ class IsotopeRunonce extends Frontend
 	public function __construct()
 	{
 		parent::__construct();
-		
-		$this->import('Database');
 	}
 
 
@@ -51,7 +49,6 @@ class IsotopeRunonce extends Frontend
 			
 		$this->renameTables();
 		$this->renameFields();
-		$this->updateProductCategories();
 		$this->updateStoreConfigurations();
 		$this->updateOrders();
 		$this->updateImageSizes();
@@ -60,27 +57,8 @@ class IsotopeRunonce extends Frontend
 		$this->updateFrontendTemplates();
 		$this->refreshDatabaseFile();
 		
-		if($this->Database->tableExists('tl_product_attribute_types'))
-			$this->Database->query("DROP TABLE tl_product_attribute_types");
-			
 		// Checkout method has been renamed from "login" to "member" to prevent a problem with palette of the login module
 		$this->Database->query("UPDATE tl_module SET iso_checkout_method='member' WHERE iso_checkout_method='login'");
-		
-		// Drop fields that are now part of the default DCA
-		$this->Database->query("DELETE FROM tl_iso_attributes WHERE field_name='alias'");
-		$this->Database->query("DELETE FROM tl_iso_attributes WHERE field_name='visibility'");
-		$this->Database->query("DELETE FROM tl_iso_attributes WHERE field_name='name'");
-		$this->Database->query("DELETE FROM tl_iso_attributes WHERE field_name='teaser'");
-		$this->Database->query("DELETE FROM tl_iso_attributes WHERE field_name='description'");
-		$this->Database->query("DELETE FROM tl_iso_attributes WHERE field_name='tax_class'");
-		$this->Database->query("DELETE FROM tl_iso_attributes WHERE field_name='main_image'");
-		$this->Database->query("DELETE FROM tl_iso_attributes WHERE field_name='sku'");
-		$this->Database->query("DELETE FROM tl_iso_attributes WHERE field_name='quantity'");
-		$this->Database->query("DELETE FROM tl_iso_attributes WHERE field_name='shipping_exempt'");
-		$this->Database->query("DELETE FROM tl_iso_attributes WHERE field_name='price'");
-		$this->Database->query("DELETE FROM tl_iso_attributes WHERE field_name='price_override'");
-		$this->Database->query("DELETE FROM tl_iso_attributes WHERE field_name='use_price_override'");
-		$this->Database->query("DELETE FROM tl_iso_attributes WHERE field_name='weight'");
 		
 		// Because configuration has been changed, we cannot use the existing cart data
 		$this->Database->query("DELETE FROM tl_iso_cart_items");
@@ -308,20 +286,7 @@ class IsotopeRunonce extends Frontend
 			}
 		}
 	}
-	
-	
-	private function updateProductCategories()
-	{
-		if ($this->Database->tableExists('tl_product_to_category'))
-		{
-			$this->Database->query("CREATE TABLE IF NOT EXISTS `tl_product_categories` (`id` int(10) unsigned NOT NULL auto_increment,`pid` int(10) unsigned NOT NULL default '0',`tstamp` int(10) unsigned NOT NULL default '0',`page_id` int(10) unsigned NOT NULL default '0',PRIMARY KEY  (`id`),KEY `pid` (`pid`)) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
-			
-			$this->Database->query("INSERT INTO tl_product_categories (pid,tstamp,page_id) (SELECT product_id AS pid, tstamp, pid AS page_id FROM tl_product_to_category)");
-			
-			$this->Database->query("DROP TABLE tl_product_to_category");
-		}
-	}
-	
+
 	
 	private function updateStoreConfigurations()
 	{
@@ -434,33 +399,6 @@ class IsotopeRunonce extends Frontend
 	
 	private function updateOrders()
 	{
-/*
-		if ($this->Database->fieldExists('product_options', 'tl_iso_order_items'))
-		{
-			$objItems = $this->Database->query("SELECT * FROM tl_iso_order_items");
-			
-			while( $objItems->next() )
-			{
-				$arrOld = deserialize($objItems->product_options);
-				
-				if (is_array($arrOld) && count($arrOld))
-				{
-					$arrOptions = array();
-					$objProduct = unserialize($objItems->product_data);
-					
-					foreach( $arrOld as $name => $value )
-					{
-						$arrOptions[$name] = $value['values'][0];
-					}
-					
-					$objProduct->setOptions($arrOptions);
-					
-					$this->Database->prepare("UPDATE tl_iso_order_items SET product_data=?, product_options='' WHERE id=?")->execute(serialize($objProduct), $objItems->id);
-				}
-			}
-		}
-*/
-		
 		if (!$this->Database->fieldExists('date_shipped', 'tl_iso_orders'))
 		{
 			$this->Database->query("ALTER TABLE tl_iso_orders ADD COLUMN date_shipped varchar(10) NOT NULL default ''");
@@ -622,22 +560,6 @@ class IsotopeRunonce extends Frontend
 			if (file_exists(TL_ROOT . '/templates/' . $old . '.tpl') && !file_exists(TL_ROOT . '/templates/' . $new . '.tpl'))
 			{
 				$this->Files->rename('templates/' . $old . '.tpl', 'templates/' . $new . '.tpl');
-			}
-		}
-		
-		
-		// Move old templates to root folder, they might be in use
-		$arrUpdate = array
-		(
-			'iso_list_featured_product',
-			'iso_reader_product_single',
-		);
-		
-		foreach( $arrUpdate as $file )
-		{
-			if (file_exists(TL_ROOT . '/system/modules/isotope/templates/' . $file . '.tpl') && !file_exists(TL_ROOT . '/templates/' . $file . '.tpl'))
-			{
-				$this->Files->rename('system/modules/isotope/templates/' . $file . '.tpl', 'templates/' . $file . '.tpl');
 			}
 		}
 	}
