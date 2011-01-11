@@ -19,6 +19,7 @@ Version 0.3.beta1
 
 Version 0.2.4 (2011-01-??)
 ------------------------------
+- Added: Use product ID in URL if alias is missing
 - Updated ContentIsotope methods to match ModuleIsotope methods (Ticket #290)
 - Fixed weight total shipping included rates from all shipping modules
 - Fixed mandatory asterisks not appearing in checkout address fields

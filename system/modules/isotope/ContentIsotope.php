@@ -95,9 +95,9 @@ abstract class ContentIsotope extends ContentElement
 	{
 		global $objPage;
 		
-		$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS product_class FROM tl_iso_products WHERE pid=0 AND alias=?")
+		$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS product_class FROM tl_iso_products WHERE pid=0 AND (alias=? OR id=?)")
 										 ->limit(1)
-										 ->executeUncached($strAlias);
+										 ->executeUncached($strAlias, (int)$strAlias);
 									 
 		$strClass = $GLOBALS['ISO_PRODUCT'][$objProductData->product_class]['class'];
 		
