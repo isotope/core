@@ -1492,7 +1492,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 		
 		while( $objProducts->next() )
 		{
-			if ($objProducts->pid > 0 && $objProducts->type != $objProducts->parent_type)
+			if ($objProducts->pid > 0 && $objProducts->parent_type != '' && $objProducts->type != $objProducts->parent_type)
 			{
 				$this->Database->query("UPDATE tl_iso_products SET type={$objProducts->parent_type} WHERE id={$objProducts->id}");
 				$blnReload = true;
