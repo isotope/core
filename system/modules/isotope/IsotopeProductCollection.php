@@ -64,6 +64,18 @@ abstract class IsotopeProductCollection extends Model
 	 */
 	public $Payment;
 	
+	/**
+	 * Configuration
+	 * @var array
+	 */
+	protected $arrSettings = array();
+	
+	/**
+	 * Record has been modified
+	 * @var bool
+	 */
+	protected $blnModified = false;
+	
 	
 	public function __construct()
 	{
@@ -72,7 +84,7 @@ abstract class IsotopeProductCollection extends Model
 		// Do not use __destruct, because Database object might be destructed first (see http://dev.contao.org/issues/2236)
 		if (!$this->blnLocked)
 		{
-			register_shutdown_function(array($this, 'updatePrices'));
+			register_shutdown_function(array($this, 'save'));
 		}
 	}
 	
@@ -174,8 +186,87 @@ abstract class IsotopeProductCollection extends Model
 				break;
 								
 			default:
-				return parent::__get($strKey);
+				if (array_key_exists($strKey, $this->arrData))
+				{
+					return deserialize($this->arrData[$strKey]);
+				}
+				else
+				{
+					return deserialize($this->arrSettings[$strKey]);
+				}
 				break;
+		}
+	}
+	
+	
+	/**
+	 * Set data.
+	 * 
+	 * @access public
+	 * @param string $strKey
+	 * @param string $varValue
+	 * @return void
+	 */
+	public function __set($strKey, $varValue)
+	{
+		if (array_key_exists($strKey, $this->arrData) || $this->Database->fieldExists($strKey, $this->strTable))
+		{
+			$this->arrData[$strKey] = $varValue;
+		}
+		else
+		{
+			$this->arrSettings[$strKey] = $varValue;
+		}
+		
+		$this->blnModified = true;
+	}
+	
+	
+	/**
+	 * Load settings from database field
+	 * @param  string
+	 * @param  mixed
+	 * @return boolean
+	 */
+	public function findBy($strRefField, $varRefId)
+	{
+		if (parent::findBy($strRefField, $varRefId))
+		{
+			$this->arrSettings = deserialize($this->arrData['settings'], true);
+			
+			return true;
+		}
+		
+		return false;
+	}
+	
+	
+	// Shutdown function to update database with latest product prices
+	public function save($blnForceInsert=false)
+	{
+		if ($this->blnModified)
+		{
+			$this->arrData['tstamp'] = time();
+			$this->arrData['settings'] = serialize($this->arrSettings);
+		}
+
+		if (is_array($this->arrProducts) && count($this->arrProducts))
+		{
+			foreach( $this->arrProducts as $objProduct )
+			{
+				$this->Database->execute("UPDATE {$this->ctable} SET price='{$objProduct->price}' WHERE id={$objProduct->cart_id}");
+			}
+		}
+		
+		elseif ($this->blnRecordExists && $this->blnModified && !$blnForceInsert)
+		{
+			return parent::save($blnForceInsert);
+		}
+		elseif (!$this->blnRecordExists || $blnForceInsert)
+		{
+			$this->findBy('id', parent::save($blnForceInsert));
+			
+			return $this->id;
 		}
 	}
 	
@@ -427,7 +518,7 @@ abstract class IsotopeProductCollection extends Model
 			return array();
 		
 		// Make sure database table has the latest prices
-		$objCollection->updatePrices();
+		$objCollection->save();
 			
 		$time = time();
 		$arrIds = array();
@@ -472,21 +563,6 @@ abstract class IsotopeProductCollection extends Model
 		}
 		
 		return $arrIds;
-	}
-	
-	
-	/**
-	 * Shutdown function to update database with latest product prices
-	 */
-	public function updatePrices()
-	{
-		if (is_array($this->arrProducts) && count($this->arrProducts))
-		{
-			foreach( $this->arrProducts as $objProduct )
-			{
-				$this->Database->execute("UPDATE {$this->ctable} SET price='{$objProduct->price}' WHERE id={$objProduct->cart_id}");
-			}
-		}
 	}
 	
 	

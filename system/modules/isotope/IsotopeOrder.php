@@ -43,6 +43,7 @@ class IsotopeOrder extends IsotopeProductCollection
 	
 	/**
 	 * Lock products from apply rule prices
+	 * @var bool
 	 */
 	protected $blnLocked = true;
 
@@ -451,6 +452,96 @@ class IsotopeOrder extends IsotopeProductCollection
 			}
 		}
 			
+		return true;
+	}
+	
+	
+	public function checkout($objCart=null)
+	{
+		if ($this->checkout_complete)
+		{
+			return true;
+		}
+		
+		$this->import('Isotope');
+		
+		// This is the case when not using ModuleIsotopeCheckout
+		if (!is_object($objCart))
+		{
+			$objCart = new IsotopeCart();
+			if (!$objCart->findBy('id', $this->cart_id))
+			{
+				return false;
+			}
+			
+			// Initialize system
+			$this->Isotope->overrideConfig($this->config_id);
+			$this->Isotope->Cart = $objCart;
+		}
+		
+		// HOOK: process checkout 
+		if (isset($GLOBALS['ISO_HOOKS']['checkout']) && is_array($GLOBALS['ISO_HOOKS']['checkout']))
+		{
+			foreach ($GLOBALS['ISO_HOOKS']['checkout'] as $callback)
+			{
+				$this->import($callback[0]);
+				
+				if ($this->$callback[0]->$callback[1]($this, $objCart) === false)
+				{
+					return false;
+				}
+			}
+		}
+		
+		$this->transferFromCollection($objCart);
+		$objCart->delete();
+		
+		$this->checkout_complete = true;
+		$this->status = $this->new_order_status;
+		$arrData = $this->email_data;
+		
+		$this->log('New order ID ' . $this->id . ' has been placed', 'IsotopeOrder checkout()', TL_ACCESS);
+		
+		if ($this->iso_mail_admin && $this->iso_sales_email != '')
+		{
+			$this->Isotope->sendMail($this->iso_mail_admin, $this->iso_sales_email, $this->language, $arrData);
+		}
+		
+		if ($this->iso_mail_customer && $this->iso_customer_email != '')
+		{
+			$this->Isotope->sendMail($this->iso_mail_customer, $this->iso_customer_email, $this->language, $arrData);
+		}
+		else
+		{
+			$this->log('Unable to send customer confirmation for order ID '.$this->id, 'IsotopeOrder checkout()', TL_ERROR);
+		}
+		
+		// Store address in address book
+		if ($this->iso_addToAddressbook && $this->pid > 0)
+		{
+			$time = time();
+			
+			foreach( array('billing', 'shipping') as $address )
+			{
+				if ($arrData[$address.'_id'] == 0)
+				{
+					$arrAddress = array('pid'=>$this->pid, 'tstamp'=>$time);
+					
+					foreach( $this->Isotope->Config->{$address.'_fields'} as $field )
+					{
+						if ($field['enabled'])
+						{
+							$arrAddress[$field['value']] = $arrData[$address.'_'.$field['value']];
+						}
+					}
+					
+					$this->Database->prepare("INSERT INTO tl_iso_addresses %s")->set($arrAddress)->execute();
+				}
+			}
+		}
+		
+		$this->save();
+		
 		return true;
 	}
 	

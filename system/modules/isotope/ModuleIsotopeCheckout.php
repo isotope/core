@@ -206,7 +206,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		
 		if ($this->strCurrentStep == 'process')
 		{
-			$this->writeOrder(false);
+			$this->writeOrder();
 			
 			$strBuffer = $this->Isotope->Cart->hasPayment ? $this->Isotope->Cart->Payment->checkoutForm() : false;
 			
@@ -227,18 +227,21 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			{
 				unset($_SESSION['FORM_DATA']);
 				unset($_SESSION['FILES']);
-				$strUniqueId = $this->writeOrder(true);
 				
-				if ($strUniqueId === false)
+				$objOrder = new IsotopeOrder();
+
+				if (!$objOrder->findBy('cart_id', $this->Isotope->Cart->id) || !$objOrder->checkout($this->Isotope->Cart))
 				{
 					$this->redirect($this->addToUrl('step=failed'));
 				}
 				
-				$this->redirect($this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($this->orderCompleteJumpTo)->fetchAssoc()) . '?uid='.$strUniqueId);
+				unset($_SESSION['CHECKOUT_DATA']);
+				unset($_SESSION['ISOTOPE']);
+				
+				$this->redirect($this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($this->orderCompleteJumpTo)->fetchAssoc()) . '?uid='.$objOrder->uniqid);
 			}
 			else
 			{
-				$this->writeOrder(false);
 				$this->Template->showNext = false;
 				$this->Template->showPrevious = false;
 			}
@@ -874,151 +877,74 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	}
 
 	
-	protected function writeOrder($blnCheckout=false)
+	protected function writeOrder()
 	{
-		$time = time();
-		$strUniqueId = uniqid($this->Isotope->Config->orderPrefix, true);
-	
-		$arrSet = array
-		(
-			'pid'					=> (FE_USER_LOGGED_IN ? $this->User->id : 0),
-			'tstamp'				=> $time,
-			'date'					=> $time,
-			'uniqid'				=> $strUniqueId,
-			'config_id'				=> $this->Isotope->Config->id,
-			'cart_id'				=> $this->Isotope->Cart->id,
-			'shipping_id'			=> ($this->Isotope->Cart->hasShipping ? $this->Isotope->Cart->Shipping->id : 0),
-			'payment_id'			=> ($this->Isotope->Cart->hasPayment ? $this->Isotope->Cart->Payment->id : 0),
-			'subTotal'				=> $this->Isotope->Cart->subTotal,		// + ($this->Input->post('gift_wrap') ? 10 : 0),		
-			'taxTotal'	 			=> $this->Isotope->Cart->taxTotal,
-			'shippingTotal'			=> $this->Isotope->Cart->shippingTotal,
-			'grandTotal'			=> $this->Isotope->Cart->grandTotal,
-			'surcharges'			=> $this->Isotope->Cart->getSurcharges(),
-			'checkout_info'			=> $this->getCheckoutInfo(),
+		$objOrder = new IsotopeOrder();
 			
-			'status'				=> ($blnCheckout ? ($this->Isotope->Cart->hasPayment ? $this->Isotope->Cart->Payment->new_order_status : 'pending') : ''),
+		if (!$objOrder->findBy('cart_id', $this->Isotope->Cart->id))
+		{
+			$objOrder->uniqid		= uniqid($this->Isotope->Config->orderPrefix, true);
+			$objOrder->cart_id		= $this->Isotope->Cart->id;
 			
-			'language'				=> $GLOBALS['TL_LANGUAGE'],
-			'billing_address'		=> serialize($this->Isotope->Cart->billingAddress),
-			'shipping_address'		=> serialize($this->Isotope->Cart->shippingAddress),
-			'currency'				=> $this->Isotope->Config->currency
-		);
-				
-		
-		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->execute($this->Isotope->Cart->id);
-	
-		if (!$objOrder->numRows)
-		{
-			$orderId = $this->Database->prepare("INSERT INTO tl_iso_orders %s")
-									  ->set($arrSet)
-									  ->executeUncached()
-									  ->insertId;
-									   
-			$this->Database->prepare("UPDATE tl_iso_orders SET order_id=? WHERE id=?")->execute(($this->Isotope->Config->orderPrefix . $orderId), $orderId);
-		}
-		else
-		{
-			$this->Database->prepare("UPDATE tl_iso_orders %s WHERE id=".$objOrder->id)
-						   ->set($arrSet)
-						   ->executeUncached();
-						   
-			$orderId = $objOrder->id;
+			$objOrder->findBy('id', $objOrder->save());
 		}
 		
-		// HOOK: process checkout 
-		if (isset($GLOBALS['TL_HOOKS']['iso_writeOrder']) && is_array($GLOBALS['TL_HOOKS']['iso_writeOrder']))
-		{
-			foreach ($GLOBALS['TL_HOOKS']['iso_writeOrder'] as $callback)
-			{
-				$this->import($callback[0]);
-				$blnCheckout = $this->$callback[0]->$callback[1]($orderId, $blnCheckout, $this);
-			}
-		}
+		$objOrder->pid				= (FE_USER_LOGGED_IN ? $this->User->id : 0);
+		$objOrder->order_id			= ($this->Isotope->Config->orderPrefix . $objOrder->id);
+		$objOrder->date				= time();
+		$objOrder->config_id		= $this->Isotope->Config->id;
+		$objOrder->shipping_id		= ($this->Isotope->Cart->hasShipping ? $this->Isotope->Cart->Shipping->id : 0);
+		$objOrder->payment_id		= ($this->Isotope->Cart->hasPayment ? $this->Isotope->Cart->Payment->id : 0);
+		$objOrder->subTotal			= $this->Isotope->Cart->subTotal;
+		$objOrder->taxTotal			= $this->Isotope->Cart->taxTotal;
+		$objOrder->shippingTotal	= $this->Isotope->Cart->shippingTotal;
+		$objOrder->grandTotal		= $this->Isotope->Cart->grandTotal;
+		$objOrder->surcharges		= $this->Isotope->Cart->getSurcharges();
+		$objOrder->checkout_info	= $this->getCheckoutInfo();
+		$objOrder->status			= '';
+		$objOrder->language			= $GLOBALS['TL_LANGUAGE'];
+		$objOrder->billing_address	= $this->Isotope->Cart->billingAddress;
+		$objOrder->shipping_address	= $this->Isotope->Cart->shippingAddress;
+		$objOrder->currency			= $this->Isotope->Config->currency;
 		
-		if ($blnCheckout)
-		{
-			$salesEmail = $this->iso_sales_email ? $this->iso_sales_email : $GLOBALS['TL_ADMIN_EMAIL'];
-			$customerMail = strlen($this->Isotope->Cart->billingAddress['email']) ? $this->Isotope->Cart->billingAddress['email'] : (strlen($this->Isotope->Cart->shippingAddress['email']) ? $this->Isotope->Cart->shippingAddress['email'] : (FE_USER_LOGGED_IN ? $this->User->email : ''));
+		$objOrder->iso_sales_email		= $this->iso_sales_email ? $this->iso_sales_email : $GLOBALS['TL_ADMIN_EMAIL'];
+		$objOrder->iso_customer_email	= strlen($this->Isotope->Cart->billingAddress['email']) ? $this->Isotope->Cart->billingAddress['email'] : (strlen($this->Isotope->Cart->shippingAddress['email']) ? $this->Isotope->Cart->shippingAddress['email'] : (FE_USER_LOGGED_IN ? $this->User->email : ''));
+		$objOrder->iso_mail_admin		= $this->iso_mail_admin;
+		$objOrder->iso_mail_customer	= $this->iso_mail_customer;
+		$objOrder->iso_addToAddressbook	= $this->iso_addToAddressbook;
+		$objOrder->new_order_status		= ($this->Isotope->Cart->hasPayment ? $this->Isotope->Cart->Payment->new_order_status : 'pending');
 
-			$arrData = array_merge($this->arrOrderData, array
-			(
-				'order_id'					=> ($this->Isotope->Config->orderPrefix . $orderId),
-				'customer_name'				=> ($this->Isotope->Cart->billingAddress['firstname'] . ' ' . $this->Isotope->Cart->billingAddress['lastname']),
-				'customer_email'			=> $customerMail,
-				'items'						=> $this->Isotope->Cart->items,
-				'products'					=> $this->Isotope->Cart->products,
-				'subTotal'					=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->subTotal, false),
-				'taxTotal'					=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->taxTotal, false),
-				'shippingPrice'				=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->Shipping->price, false),
-				'paymentPrice'				=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->Payment->price, false),
-				'grandTotal'				=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->grandTotal, false),
-				'cart_text'					=> $this->replaceInsertTags($this->Isotope->Cart->getProducts('iso_products_text')),
-				'cart_html'					=> $this->replaceInsertTags($this->Isotope->Cart->getProducts('iso_products_html')),
-			));
-			
-			foreach( $this->Isotope->Cart->billingAddress as $k => $v )
-			{
-				$arrData['billing_'.$k] = $this->Isotope->formatValue('tl_iso_addresses', $k, $v);
-			}
-			
-			foreach( $this->Isotope->Cart->shippingAddress as $k => $v )
-			{
-				$arrData['shipping_'.$k] = $this->Isotope->formatValue('tl_iso_addresses', $k, $v);
-			}
-			
-			$this->log('New order ID ' . $orderId . ' has been placed', 'ModuleIsotopeCheckout writeOrder()', TL_ACCESS);
-			
-			if ($this->iso_mail_admin && strlen($salesEmail))
-			{
-				$this->Isotope->sendMail($this->iso_mail_admin, $salesEmail, $GLOBALS['TL_LANGUAGE'], $arrData);
-			}
-			
-			if ($this->iso_mail_customer && strlen($customerMail))
-			{
-				$this->Isotope->sendMail($this->iso_mail_customer, $customerMail, $GLOBALS['TL_LANGUAGE'], $arrData);
-			}
-			else
-			{
-				$this->log('Unable to send customer confirmation for order ID '.$orderId, 'ModuleIsotopeCheckout writeOrder', TL_ERROR);
-			}
-			
-			$objOrder = new IsotopeOrder();
-			
-			if ($objOrder->findBy('id', $orderId))
-			{
-				$objOrder->transferFromCollection($this->Isotope->Cart);
-				$this->Isotope->Cart->delete();
-			}
-			
-			unset($_SESSION['CHECKOUT_DATA']);
-			unset($_SESSION['ISOTOPE']);
-			
-			// Store address in address book
-			if ($this->iso_addToAddressbook && FE_USER_LOGGED_IN)
-			{
-				foreach( array('billing', 'shipping') as $address )
-				{
-					if ($arrData[$address.'_id'] == 0)
-					{
-						$arrAddress = array('pid'=>$this->User->id, 'tstamp'=>$time);
-						
-						foreach( $this->Isotope->Config->{$address.'_fields'} as $field )
-						{
-							if ($field['enabled'])
-							{
-								$arrAddress[$field['value']] = $arrData[$address.'_'.$field['value']];
-							}
-						}
-						
-						$this->Database->prepare("INSERT INTO tl_iso_addresses %s")->set($arrAddress)->execute();
-					}
-				}
-			}
-			
-			return $strUniqueId;
+		$arrData = array_merge($this->arrOrderData, array
+		(
+			'order_id'					=> ($this->Isotope->Config->orderPrefix . $objOrder->id),
+			'customer_name'				=> ($this->Isotope->Cart->billingAddress['firstname'] . ' ' . $this->Isotope->Cart->billingAddress['lastname']),
+			'customer_email'			=> $customerMail,
+			'items'						=> $this->Isotope->Cart->items,
+			'products'					=> $this->Isotope->Cart->products,
+			'subTotal'					=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->subTotal, false),
+			'taxTotal'					=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->taxTotal, false),
+			'shippingPrice'				=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->Shipping->price, false),
+			'paymentPrice'				=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->Payment->price, false),
+			'grandTotal'				=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->grandTotal, false),
+			'cart_text'					=> $this->replaceInsertTags($this->Isotope->Cart->getProducts('iso_products_text')),
+			'cart_html'					=> $this->replaceInsertTags($this->Isotope->Cart->getProducts('iso_products_html')),
+		));
+		
+		foreach( $this->Isotope->Cart->billingAddress as $k => $v )
+		{
+			$arrData['billing_'.$k] = $this->Isotope->formatValue('tl_iso_addresses', $k, $v);
 		}
 		
-		return false;
+		foreach( $this->Isotope->Cart->shippingAddress as $k => $v )
+		{
+			$arrData['shipping_'.$k] = $this->Isotope->formatValue('tl_iso_addresses', $k, $v);
+		}
+		
+		$objOrder->email_data = $arrData;
+		
+		$objOrder->save();
+		
+		return $objOrder;
 	}
 	
 		

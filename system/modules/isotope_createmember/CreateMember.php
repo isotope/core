@@ -29,41 +29,38 @@
 class CreateMember extends Frontend
 {
 
-	public function addMember($orderId, $blnCheckout=false, $objModule)
+	public function addMember($objOrder, $objCart)
 	{
-		if($blnCheckout)
+		$arrData = array();
+		
+		//Get order info and email address
+		$arrBilling = $objOrder->billing_address;
+		
+		//First check for existing user email. Don't want to duplicate.
+		$objUser = $this->Database->prepare("SELECT * FROM tl_member WHERE email=?")->execute($arrBilling['email']);
+		
+		if (!$objUser->numRows)
 		{
-			$arrData = array();
-			$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE id=?")->execute($orderId);
+			//Only small difference here. Perhaps work to 
+			$arrData = array
+			(
+				'firstname' 	=> $arrBilling['firstname'],
+				'lastname'		=> $arrBilling['lastname'],
+				'street'		=> $arrBilling['street_1'],
+				'city'			=> $arrBilling['city'],
+				'state'			=> $arrBilling['subdivision'],
+				'postal'		=> $arrBilling['postal'],
+				'country'		=> $arrBilling['country'],
+				'email'			=> $arrBilling['email'],
+				'phone'			=> $arrBilling['phone'],
+				'username'		=> $arrBilling['lastname'] . time(),
+				'password'		=> $this->createRandomPassword()
+			);
 			
-			//Get order info and email address
-			$arrBilling = deserialize($objOrder->billing_address);
-			
-			//First check for existing user email. Don't want to duplicate.
-			$objUser = $this->Database->prepare("SELECT * FROM tl_member WHERE email=?")->execute($arrBilling['email']);
-			if(!$objUser->numRows)
-			{		
-				//Only small difference here. Perhaps work to 
-				$arrData = array
-				(
-					'firstname' 	=> $arrBilling['firstname'],
-					'lastname'		=> $arrBilling['lastname'],
-					'street'		=> $arrBilling['street_1'],
-					'city'			=> $arrBilling['city'],
-					'state'			=> $arrBilling['subdivision'],
-					'postal'		=> $arrBilling['postal'],
-					'country'		=> $arrBilling['country'],
-					'email'			=> $arrBilling['email'],
-					'phone'			=> $arrBilling['phone'],
-					'username'		=> $arrBilling['lastname'] . time(),
-					'password'		=> $this->createRandomPassword()
-				);
-				
-				$this->createNewMember($arrData);
-			
-			}
+			$this->createNewMember($arrData);
 		}
-		return $blnCheckout;
+		
+		return true;
 	}
 	
 	/**

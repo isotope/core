@@ -33,5 +33,5 @@
 /**
  * Hooks
  */
-$GLOBALS['TL_HOOKS']['iso_writeOrder'][] = array('CreateMember','addMember');
-?>
+$GLOBALS['ISO_HOOKS']['checkout'][] = array('CreateMember','addMember');
+

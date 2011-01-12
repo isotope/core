@@ -319,8 +319,15 @@ class IsotopeCart extends IsotopeProductCollection
 		{
 			foreach ($GLOBALS['TL_HOOKS']['isoCheckoutSurcharge'] as $callback)
 			{
-				$this->import($callback[0]);
-				$arrSurcharges = $this->{$callback[0]}->{$callback[1]}($arrSurcharges);
+				if ($callback[0] == 'IsotopeCart')
+				{
+					$arrSurcharges = $this->{$callback[1]}($arrSurcharges);
+				}
+				else
+				{
+					$this->import($callback[0]);
+					$arrSurcharges = $this->{$callback[0]}->{$callback[1]}($arrSurcharges);
+				}
 			}
 		}
 		

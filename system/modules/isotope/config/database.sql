@@ -336,6 +336,7 @@ CREATE TABLE `tl_iso_cart` (
   `tstamp` int(10) unsigned NOT NULL default '0',
   `session` varchar(64) NOT NULL default '',
   `store_id` int(2) unsigned NOT NULL default '0',
+  `settings` blob NULL,
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -535,6 +536,7 @@ CREATE TABLE `tl_iso_orders` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
+  `settings` blob NULL,
   `date` int(10) unsigned NOT NULL default '0',
   `date_payed` varchar(10) NOT NULL default '',
   `date_shipped` varchar(10) NOT NULL default '',

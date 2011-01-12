@@ -54,5 +54,5 @@ array_insert($GLOBALS['ISO_CHECKOUT_STEPS']['review'], 0, array(array('IsotopeRu
 $GLOBALS['TL_HOOKS']['iso_calculatePrice'][]				= array('IsotopeRules', 'calculatePrice');
 $GLOBALS['TL_HOOKS']['iso_compileCart'][] 					= array('IsotopeRules', 'getCouponForm');
 $GLOBALS['TL_HOOKS']['isoCheckoutSurcharge'][]				= array('IsotopeRules', 'getSurcharges');
-$GLOBALS['TL_HOOKS']['iso_writeOrder'][]					= array('IsotopeRules', 'writeRuleUsages');
+$GLOBALS['ISO_HOOKS']['checkout'][]							= array('IsotopeRules', 'writeRuleUsages');
 

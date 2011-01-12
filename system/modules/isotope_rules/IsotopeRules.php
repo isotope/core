@@ -230,24 +230,21 @@ class IsotopeRules extends Controller
 	
 	
 	/**
-	 * Callback for iso_writeOrder Hook. Transfer active rules to usage table.
+	 * Callback for checkout Hook. Transfer active rules to usage table.
 	 */
-	public function writeRuleUsages($orderId, $blnCheckout, &$objModule)
+	public function writeRuleUsages($objOrder, $objCart)
 	{
-		if ($this->Input->get('step') != 'process')
-			return $blnCheckout;
-		
 		$objRules = $this->findRules(array("(type='product' OR (type='cart' AND enableCode=''))"));
 		$arrRules = $objRules->fetchEach('id');
 		
-		$arrCoupons = deserialize($this->Isotope->Cart->coupons);
+		$arrCoupons = deserialize($objCart->coupons);
 		if (is_array($arrCoupons) && count($arrCoupons))
 		{
 			$arrDropped = array();
 			
 			foreach( $arrCoupons as $code )
 			{
-				$arrRule = $this->findCoupon($code, $this->Isotope->Cart->getProducts());
+				$arrRule = $this->findCoupon($code, $objCart->getProducts());
 				
 				if ($arrRule === false)
 				{
@@ -269,14 +266,13 @@ class IsotopeRules extends Controller
 		if (count($arrRules))
 		{
 			$time = time();
-			$intMember = FE_USER_LOGGED_IN ? $this->User->id : 0;
 			
-			$this->Database->query("INSERT INTO tl_iso_rule_usage (pid,tstamp,order_id,config_id,member_id) VALUES (" . implode(", $time, $orderId, {$this->Isotope->Config->id}, $intMember), (", $arrRules) . ", $time, $orderId, {$this->Isotope->Config->id}, $intMember)");
+			$this->Database->query("INSERT INTO tl_iso_rule_usage (pid,tstamp,order_id,config_id,member_id) VALUES (" . implode(", $time, {$objOrder->id}, {$this->Isotope->Config->id}, {$objOrder->pid}), (", $arrRules) . ", $time, {$objOrder->id}, {$this->Isotope->Config->id}, {$objOrder->pid})");
 			
 			$this->Database->query("UPDATE tl_iso_rules SET archive=1 WHERE id IN (" . implode(',', $arrRules) . ")");
 		}
 		
-		return $blnCheckout;
+		return true;
 	}
 	
 	/**
