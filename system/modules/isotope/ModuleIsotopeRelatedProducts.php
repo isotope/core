@@ -66,7 +66,7 @@ class ModuleIsotopeRelatedProducts extends ModuleIsotope
 	{
 		$arrIds = array(0);
 		$arrJumpTo = array();
-		$objCategories = $this->Database->prepare("SELECT *, (SELECT jumpTo FROM tl_iso_related_categories WHERE id=category) AS jumpTo FROM tl_iso_related_products WHERE pid IN (SELECT id FROM tl_iso_products WHERE alias=?) AND category IN (" . implode(',', $this->iso_related_categories) . ") ORDER BY id=" . implode(' DESC, id=', $this->iso_related_categories) . " DESC")->execute($this->Input->get('product'), $objProduct->id);
+		$objCategories = $this->Database->prepare("SELECT *, (SELECT jumpTo FROM tl_iso_related_categories WHERE id=category) AS jumpTo FROM tl_iso_related_products WHERE pid IN (SELECT id FROM tl_iso_products WHERE (alias=? OR id=?)) AND category IN (" . implode(',', $this->iso_related_categories) . ") ORDER BY id=" . implode(' DESC, id=', $this->iso_related_categories) . " DESC")->execute($this->Input->get('product'), (int)$this->Input->get('product'));
 		
 		while( $objCategories->next() )
 		{
