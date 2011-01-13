@@ -85,7 +85,7 @@ CREATE TABLE `tl_iso_products` (
   `start` varchar(10) NOT NULL default '',
   `stop` varchar(10) NOT NULL default '',
   PRIMARY KEY  (`id`),
-  KEY `pid` (`pid`)
+  KEY `pid` (`pid`, `language`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
@@ -338,7 +338,8 @@ CREATE TABLE `tl_iso_cart` (
   `store_id` int(2) unsigned NOT NULL default '0',
   `settings` blob NULL,
   PRIMARY KEY  (`id`),
-  KEY `pid` (`pid`)
+  KEY `pid` (`pid`, `store_id`)
+  KEY `session` (`session`, `store_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
