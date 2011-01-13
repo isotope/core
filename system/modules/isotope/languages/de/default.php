@@ -236,7 +236,6 @@ $GLOBALS['TL_LANG']['PAY']['paypal']            = array('PayPal Standard', 'Dies
 $GLOBALS['TL_LANG']['PAY']['paypalpro']         = array('PayPal Website Payments Pro', 'This PayPal module is a full service credit card gateway using Paypals own Website Payments Pro gateway.  Recommended only for low-traffic situations with no transactions over $10,000.');
 $GLOBALS['TL_LANG']['PAY']['paypalpayflowpro']  = array('PayPal Payflow Pro', 'The PayPal Payflow module is a full service credit card gateway, a more robust solution for most e-commerce sites.');
 $GLOBALS['TL_LANG']['PAY']['postfinance']       = array('Postfinance (Schweizerische Post)', 'Schnittstelle des Bezahlsystems der Schweizerischen Post. Unterstützt verschiedene Karten. Der Shop wird sofort über erfolgreiche Transaktionen informiert.');
-$GLOBALS['TL_LANG']['PAY']['epay_standard']		= array('ePay Standard Payment', 'Zahlungsmodul für ePay.<br /><a href="http://de.contaowiki.org/Zahlungsmodul_%22ePay_Standard_Payment%22" onclick="window.open(this.href); return false"><u>Dokumentation im Contao Wiki</u></a>');
 
 
 /**

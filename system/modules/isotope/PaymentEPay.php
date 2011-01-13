@@ -114,6 +114,7 @@ class PaymentEPay extends IsotopePayment
 <input type="hidden" name="language" value="' . (array_key_exists($GLOBALS['TL_LANGUAGE'], $this->arrLanguages) ? $this->arrLanguages[$GLOBALS['TL_LANGUAGE']] : 2) . '">
 <input type="hidden" name="merchantnumber" value="' . $this->epay_merchantnumber . '">
 <input type="hidden" name="orderid" value="' . $objOrder->id . '">
+<input type="hidden" name="description" value="' . $this->Isotope->Cart->billing_address . '">
 <input type="hidden" name="currency" value="' . $this->arrCurrencies[$this->Isotope->Config->currency] . '">
 <input type="hidden" name="amount" value="' . $intTotal . '">
 
