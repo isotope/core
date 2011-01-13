@@ -64,15 +64,18 @@ abstract class ContentIsotope extends ContentElement
 			
 	
 	/**
-	 * Shortcut for a single product by ID
+	 * Shortcut for a single product by ID or database result
+	 * @param  mixed
+	 * @return object|null
 	 */
-	protected function getProduct($intId)
+	protected function getProduct($objProductData)
 	{
 		global $objPage;
 		
-		$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS product_class FROM tl_iso_products WHERE id=$intId")
-										 ->limit(1)
-										 ->executeUncached();
+		if (is_numeric($objProductData))
+		{
+			$objProductData = $this->Database->query("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS product_class FROM tl_iso_products WHERE id=$objProductData");
+		}
 									 
 		$strClass = $GLOBALS['ISO_PRODUCT'][$objProductData->product_class]['class'];
 		
@@ -117,6 +120,8 @@ abstract class ContentIsotope extends ContentElement
 	
 	/**
 	 * Retrieve multiple products by ID.
+	 * @param  array
+	 * @return array
 	 */
 	protected function getProducts($arrIds)
 	{
@@ -124,10 +129,11 @@ abstract class ContentIsotope extends ContentElement
 			return array();
 		
 		$arrProducts = array();
+		$objProductData = $this->Database->query("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS product_class FROM tl_iso_products WHERE id IN (" . implode(',', $arrIds) . ")");
 		
-		foreach( $arrIds as $intId )
+		while( $objProductData->next() )
 		{
-			$objProduct = $this->getProduct($intId);
+			$objProduct = $this->getProduct($objProductData);
 		
 			if (is_object($objProduct))
 				$arrProducts[] = $objProduct;
