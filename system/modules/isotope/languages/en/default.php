@@ -222,6 +222,7 @@ $GLOBALS['TL_LANG']['ISO']['cc_num']						= 'Credit card number';
 $GLOBALS['TL_LANG']['ISO']['cc_type']						= 'Credit card type';
 $GLOBALS['TL_LANG']['ISO']['cc_ccv']						= 'CCV number (3 or 4 digit code)';
 $GLOBALS['TL_LANG']['ISO']['cc_exp_paypal']					= 'Expiration date';
+$GLOBALS['TL_LANG']['ISO']['cc_exp_date']					= 'Expiration month/year';
 $GLOBALS['TL_LANG']['ISO']['cc_exp_month']					= 'Expiration month';
 $GLOBALS['TL_LANG']['ISO']['cc_exp_year']					= 'Expiration year';
 $GLOBALS['TL_LANG']['ISO']['cc_issue_number']				= 'Credit card issue number, 2 digits (required for Maestro and Solo cards).';

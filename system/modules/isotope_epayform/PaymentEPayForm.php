@@ -119,8 +119,8 @@ class PaymentEPayForm extends PaymentEPay
 <input type="hidden" name="currency" value="' . $this->arrCurrencies[$this->Isotope->Config->currency] . '">
 <input type="hidden" name="amount" value="' . $intTotal . '">
 
-<input type="hidden" name="accepturl" value="' . $this->Environment->base . $this->generateFrontendUrl($objPage->row(), '/step/complete') . '">
-<input type="hidden" name="declineurl" value="' . $this->Environment->base . $this->generateFrontendUrl($objPage->row(), '/step/process') . '">
+<input type="hidden" name="accepturl" value="' . ($GLOBALS['EPAY_RELAY'] ? 'https://relay.ditonlinebetalingssystem.dk/relay/v2/relay.cgi/' : '') . $this->Environment->base . $this->generateFrontendUrl($objPage->row(), '/step/complete') . ($GLOBALS['EPAY_RELAY'] ? '?HTTP_COOKIE='.$_SERVER['HTTP_COOKIE'] : '') . '">
+<input type="hidden" name="declineurl" value="' . ($GLOBALS['EPAY_RELAY'] ? 'https://relay.ditonlinebetalingssystem.dk/relay/v2/relay.cgi/' : '') . $this->Environment->base . $this->generateFrontendUrl($objPage->row(), '/step/process') . ($GLOBALS['EPAY_RELAY'] ? '?HTTP_COOKIE='.$_SERVER['HTTP_COOKIE'] : '') . '">
 
 <input type="hidden" name="language" value="2">
 <input type="hidden" name="instantcapture" value="' . ($this->trans_type == 'auth' ? '0' : '1') . '">
