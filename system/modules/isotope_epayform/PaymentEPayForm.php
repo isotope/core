@@ -74,68 +74,45 @@ class PaymentEPayForm extends PaymentEPay
 		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->executeUncached($this->Isotope->Cart->id);
 		$intTotal = round($this->Isotope->Cart->grandTotal, 2) * 100;
 		
-		$strBuffer = '
-<h2>' . $GLOBALS['TL_LANG']['MSC']['pay_with_cc'][0] . '</h2>
-<p class="message">' . $GLOBALS['TL_LANG']['MSC']['pay_with_cc'][1] . '</p>' . 
-($this->Input->get('error') == '' ? '' : '<p class="error message">'.$GLOBALS['TL_LANG']['MSG']['epay'][$this->Input->get('error')].'</p>') . '
-<form id="payment_form" action="https://ssl.ditonlinebetalingssystem.dk/auth/default.aspx" method="post">
-
-<table cellspacing="0" cellpadding="0" summary="ePay Payment Form">
-	<tr class="cardno">
-		<td><label for="ctrl_cardno">' . $GLOBALS['TL_LANG']['ISO']['cc_num'] . '<label> <span class="mandatory">*</span></td>
-		<td><input type="text" class="text" id="ctrl_cardno" name="cardno" maxlength="19" autocomplete="off" /></td>
-	</tr>
-	<tr class="expdate">
-		<td><label for="ctrl_expmonth">' . $GLOBALS['TL_LANG']['ISO']['cc_exp_date'] . '</label> <span class="mandatory">*</span></td>
-		<td>
-			<select id="ctrl_expmonth" name="expmonth" class="select">';
+		$objTemplate = new IsotopeTemplate('iso_payment_epayform');
 		
+		$objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['pay_with_cc'][0];
+		$objTemplate->message = $GLOBALS['TL_LANG']['MSC']['pay_with_cc'][1];
+		$objTemplate->slabel = $GLOBALS['TL_LANG']['MSC']['pay_with_cc'][2];
+		$objTemplate->error = ($this->Input->get('error') == '' ? '' : $GLOBALS['TL_LANG']['MSG']['epay'][$this->Input->get('error')]);
+		$objTemplate->cancelurl = $this->Environment->base . $this->generateFrontendUrl($objPage->row(), '/step/failed');
+		
+		$objTemplate->labelCard = $GLOBALS['TL_LANG']['ISO']['cc_num'];
+		$objTemplate->labelDate = $GLOBALS['TL_LANG']['ISO']['cc_exp_date'];
+		$objTemplate->labelCCV = $GLOBALS['TL_LANG']['ISO']['cc_ccv'];
+		
+		$strMonths = '';
+		$strYears = '';
 		foreach( range(1, 12) as $month )
 		{
 			$month = str_pad($month, 2, '0', STR_PAD_LEFT);
-			$strBuffer .= '<option value="' . $month . '">' . $month . '</option>';
+			$strMonths .= '<option value="' . $month . '">' . $month . '</option>';
 		}
-		
-		$strBuffer .= '</select>&nbsp;<select id="ctrl_expyear" name="expyear" class="select">';
 		
 		for( $now=date('Y'), $year=$now; $year<=$now+12; $year++ )
 		{
-			$strBuffer .= '<option value="' . substr($year, -2) . '">' . $year . '</option>';
+			$strYears .= '<option value="' . substr($year, -2) . '">' . $year . '</option>';
 		}
+
+		$objTemplate->months = $strMonths;
+		$objTemplate->years = $strYears;
 		
-		$strBuffer .= '</select>
-		</td>
-	</tr>
-	<tr class="cvc">
-		<td><label for="ctrl_cvc">' . $GLOBALS['TL_LANG']['ISO']['cc_ccv'] . '</label></td>
-		<td><input type="text" class="text" name="cvc" id="ctrl_cvc" maxlength="4" autocomplete="off" /></td>
-	</tr>
-</table>
-
-
-<input type="hidden" name="merchantnumber" value="' . $this->epay_merchantnumber . '">
-<input type="hidden" name="orderid" value="' . $objOrder->id . '">
-<input type="hidden" name="description" value="' . $this->Isotope->generateAddressString($this->Isotope->Cart->billingAddress, $this->Isotope->Config->billing_fields) . '">
-<input type="hidden" name="currency" value="' . $this->arrCurrencies[$this->Isotope->Config->currency] . '">
-<input type="hidden" name="amount" value="' . $intTotal . '">
-
-<input type="hidden" name="accepturl" value="' . ($GLOBALS['EPAY_RELAY'] ? 'https://relay.ditonlinebetalingssystem.dk/relay/v2/relay.cgi/' : '') . $this->Environment->base . $this->generateFrontendUrl($objPage->row(), '/step/complete') . ($GLOBALS['EPAY_RELAY'] ? '?HTTP_COOKIE='.$_SERVER['HTTP_COOKIE'] : '') . '">
-<input type="hidden" name="declineurl" value="' . ($GLOBALS['EPAY_RELAY'] ? 'https://relay.ditonlinebetalingssystem.dk/relay/v2/relay.cgi/' : '') . $this->Environment->base . $this->generateFrontendUrl($objPage->row(), '/step/process') . ($GLOBALS['EPAY_RELAY'] ? '?HTTP_COOKIE='.$_SERVER['HTTP_COOKIE'] : '') . '">
-
-<input type="hidden" name="language" value="2">
-<input type="hidden" name="instantcapture" value="' . ($this->trans_type == 'auth' ? '0' : '1') . '">
-<input type="hidden" name="md5key" value="' . md5($this->arrCurrencies[$this->Isotope->Config->currency] . $intTotal . $objOrder->id . $this->epay_secretkey) . '">
-<input type="hidden" name="cardtype" value="0">
-<input type="hidden" name="use3D" value="1">
-
-<div class="submit_container">
-<input type="submit" class="submit button" value="' . $GLOBALS['TL_LANG']['MSC']['pay_with_cc'][2] . '" />
-<a class="button" href="' . $this->Environment->base . $this->generateFrontendUrl($objPage->row(), '/step/failed') . '">Cancel</a>
-</div>
-
-</form>';
-
-		return $strBuffer;
+		$objTemplate->merchantnumber = $this->epay_merchantnumber;
+		$objTemplate->orderid = $objOrder->id;
+		$objTemplate->description = $this->Isotope->generateAddressString($this->Isotope->Cart->billingAddress, $this->Isotope->Config->billing_fields);
+		$objTemplate->currency = $this->arrCurrencies[$this->Isotope->Config->currency];
+		$objTemplate->amount = $intTotal;
+		$objTemplate->accepturl = ($GLOBALS['EPAY_RELAY'] ? 'https://relay.ditonlinebetalingssystem.dk/relay/v2/relay.cgi/' : '') . $this->Environment->base . $this->generateFrontendUrl($objPage->row(), '/step/complete') . ($GLOBALS['EPAY_RELAY'] ? '?HTTP_COOKIE='.$_SERVER['HTTP_COOKIE'] : '');
+		$objTemplate->declineurl = ($GLOBALS['EPAY_RELAY'] ? 'https://relay.ditonlinebetalingssystem.dk/relay/v2/relay.cgi/' : '') . $this->Environment->base . $this->generateFrontendUrl($objPage->row(), '/step/process') . ($GLOBALS['EPAY_RELAY'] ? '?HTTP_COOKIE='.$_SERVER['HTTP_COOKIE'] : '');
+		$objTemplate->instantcapture = ($this->trans_type == 'auth' ? '0' : '1');
+		$objTemplate->md5key = md5($this->arrCurrencies[$this->Isotope->Config->currency] . $intTotal . $objOrder->id . $this->epay_secretkey);
+		
+		return $objTemplate->parse();
 	}
 }
 
