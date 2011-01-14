@@ -129,7 +129,7 @@ abstract class ContentIsotope extends ContentElement
 			return array();
 		
 		$arrProducts = array();
-		$objProductData = $this->Database->query("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS product_class FROM tl_iso_products WHERE id IN (" . implode(',', $arrIds) . ")");
+		$objProductData = $this->Database->query("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS product_class FROM tl_iso_products WHERE id IN (" . implode(',', $arrIds) . ") ORDER BY id=" . implode(' DESC, id=', $arrIds) . " DESC");
 		
 		while( $objProductData->next() )
 		{
