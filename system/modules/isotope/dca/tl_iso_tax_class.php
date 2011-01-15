@@ -69,7 +69,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = array
 			'back' => array
 			(
 				'label'					=> &$GLOBALS['TL_LANG']['MSC']['backBT'],
-				'href'					=> 'mod=',
+				'href'					=> 'mod=&table=',
 				'class'					=> 'header_back',
 				'attributes'			=> 'onclick="Backend.getScrollOffset();"',
 			),
