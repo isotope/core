@@ -642,7 +642,7 @@ class DC_TablePageId extends DC_Table
 						$_v = $objLabel->$arrForeignKey[1];
 					}
 				}
-				elseif (strlen($GLOBALS['TL_DCA'][$this->ptable]['fields'][$v]['reference'][$_v]))
+				elseif ($GLOBALS['TL_DCA'][$this->ptable]['fields'][$v]['reference'][$_v] != '')
 				{
 					$_v = $GLOBALS['TL_DCA'][$this->ptable]['fields'][$v]['reference'][$_v];
 				}
