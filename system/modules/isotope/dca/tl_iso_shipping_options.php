@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -106,9 +106,9 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_options'] = array
 	'palettes' => array
 	(
 		'default'                     => '{general_legend},name',
-		
+
 	),
-	
+
 	// Fields
 	'fields' => array
 	(
@@ -169,7 +169,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_options'] = array
 
 /**
  * tl_iso_shipping_options class.
- * 
+ *
  * @extends Backend
  */
 class tl_iso_shipping_options extends Backend
@@ -180,15 +180,15 @@ class tl_iso_shipping_options extends Backend
 	 */
 	protected $Shipping;
 
-	
+
 	/**
 	 * Instantiate the shipping module and set the palette.
-	 */	
+	 */
 	public function getModulePalette($dc)
 	{
 		if ($this->Input->get('act') == 'create')
 			return;
-		
+
 		if (!strlen($this->Input->get('act')) && !strlen($this->Input->get('key')))
 		{
 			$objModule = $this->Database->execute("SELECT * FROM tl_iso_shipping_modules WHERE id=".$dc->id);
@@ -197,17 +197,17 @@ class tl_iso_shipping_options extends Backend
 		{
 			$objModule = $this->Database->execute("SELECT m.* FROM tl_iso_shipping_modules m, tl_iso_shipping_options o WHERE o.pid=m.id AND o.id=".$dc->id);
 		}
-		
+
 		$strClass = $GLOBALS['ISO_SHIP'][$objModule->type];
-		
+
 		if ($this->classFileExists($strClass))
 		{
 			$this->Shipping = new $strClass($objModule->row());
 			$this->Shipping->moduleOptionsLoad();
 		}
 	}
-	
-	
+
+
 	/**
 	 * Get a formatted listing for this row from shipping module class.
 	 */
@@ -215,7 +215,7 @@ class tl_iso_shipping_options extends Backend
 	{
 		if (!is_object($this->Shipping))
 			return '';
-		
+
 		return $this->Shipping->moduleOptionsList($row);
 	}
 }

@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -34,14 +34,14 @@ class ModuleIsotopeAddressBook extends Module
 	 * @var string
 	 */
 	protected $strTemplate = 'mod_iso_addressbook';
-	
+
 	/**
 	 * Editable fields
 	 * @var array
 	 */
 	protected $arrFields;
-	
-	
+
+
 	/**
 	 * Return a wildcard in the back end
 	 * @return string
@@ -60,12 +60,12 @@ class ModuleIsotopeAddressBook extends Module
 
 			return $objTemplate->parse();
 		}
-		
+
 		if (!FE_USER_LOGGED_IN)
 		{
 			return '';
 		}
-		
+
 		$this->import('Isotope');
 		$this->import('FrontendUser', 'User');
 
@@ -76,7 +76,7 @@ class ModuleIsotopeAddressBook extends Module
 		{
 			return '';
 		}
-		
+
 		$GLOBALS['TL_CSS'][] = 'system/modules/isotope/html/isotope.css';
 
 		return parent::generate();
@@ -103,7 +103,7 @@ class ModuleIsotopeAddressBook extends Module
 				}
 			}
 		}
-		
+
 		// Do not add a break statement. If ID is not available, it will show all addresses.
 		switch ($this->Input->get('act'))
 		{
@@ -115,28 +115,28 @@ class ModuleIsotopeAddressBook extends Module
 				{
 					return $this->edit($this->Input->get('address'));
 				}
-								
+
 			case 'delete':
 				if (strlen($this->Input->get('address')))
 				{
 					return $this->delete($this->Input->get('address'));
 				}
-				
+
 			default:
 				$this->show();
 				break;
-		}	
-		
+		}
+
 	}
 
-	
+
 	/**
 	 * List all addresses for the current frontend user.
 	 */
 	protected function show()
 	{
 		global $objPage;
-		
+
 		$i = 0;
 		$arrAddresses = array();
 		$strUrl = $this->generateFrontendUrl($objPage->row()) . ($GLOBALS['TL_CONFIG']['disableAlias'] ? '&' : '?');
@@ -153,10 +153,10 @@ class ModuleIsotopeAddressBook extends Module
 				'edit_url'		=> ampersand($strUrl . 'act=edit&address=' . $objAddresses->id),
 				'delete_url'	=> ampersand($strUrl . 'act=delete&address=' . $objAddresses->id),
 			);
-			
+
 			$i++;
 		}
-		
+
 		if (count($arrAddresses))
 		{
 			$arrAddresses[count($arrAddresses)-1]['class'] .= ' last';
@@ -166,7 +166,7 @@ class ModuleIsotopeAddressBook extends Module
 			$this->Template->mtype = 'empty';
 			$this->Template->message = $GLOBALS['TL_LANG']['ERR']['noAddressBookEntries'];
 		}
-		
+
 		$this->Template->addressLabel = $GLOBALS['TL_LANG']['MSC']['addressBookLabel'];
 		$this->Template->addNewAddressLabel= $GLOBALS['TL_LANG']['MSC']['createNewAddressLabel'];
 		$this->Template->editAddressLabel = $GLOBALS['TL_LANG']['MSC']['editAddressLabel'];
@@ -174,8 +174,8 @@ class ModuleIsotopeAddressBook extends Module
 		$this->Template->addresses = $arrAddresses;
 		$this->Template->addNewAddress = ampersand($strUrl . 'act=create');
 	}
-	
-	
+
+
 	/**
 	 * Edit an address record.
 	 * Based on the PersonalData core module.
@@ -183,14 +183,14 @@ class ModuleIsotopeAddressBook extends Module
 	protected function edit($intAddressId=0)
 	{
 		$this->loadLanguageFile('tl_member');
-		
+
 		if (!strlen($this->memberTpl))
 		{
 			$this->memberTpl = 'member_default';
 		}
-		
+
 		$this->Template = new IsotopeTemplate($this->memberTpl);
-		
+
 		$this->Template->fields = '';
 		$this->Template->tableless = $this->tableless;
 
@@ -199,11 +199,11 @@ class ModuleIsotopeAddressBook extends Module
 		$doNotSubmit = false;
 		$hasUpload = false;
 		$row = 0;
-		
+
 		// No need to check: if the address does not exist, fields will be empty and a new address will be created
 		$objAddress = $this->Database->execute("SELECT * FROM tl_iso_addresses WHERE id=$intAddressId AND pid={$this->User->id}");
-		
-		
+
+
 		// Build form
 		foreach ($this->arrFields as $field)
 		{
@@ -311,10 +311,10 @@ class ModuleIsotopeAddressBook extends Module
 			{
 				$arrSet['pid'] = $this->User->id;
 				$arrSet['tstamp'] = time();
-				
+
 				$objAddress->id = $this->Database->prepare("INSERT INTO tl_iso_addresses %s")->set($arrSet)->execute()->insertId;
 			}
-			
+
 			// Call onsubmit_callback
 			if (is_array($GLOBALS['TL_DCA']['tl_iso_addresses']['config']['onsubmit_callback']))
 			{
@@ -327,7 +327,7 @@ class ModuleIsotopeAddressBook extends Module
 					}
 				}
 			}
-			
+
 			global $objPage;
 			$this->redirect($this->generateFrontendUrl(array('id'=>$objPage->id, 'alias'=>$objPage->alias)));
 		}
@@ -349,15 +349,15 @@ class ModuleIsotopeAddressBook extends Module
 		$this->Template->enctype = $hasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
 		$this->Template->rowLast = 'row_' . $row . ((($row % 2) == 0) ? ' even' : ' odd');
 	}
-	
-	
+
+
 	/**
 	 * Delete the given address and make sure it belongs to the current frontend user.
 	 */
 	protected function delete($intAddressId)
 	{
 		global $objPage;
-		
+
 		$this->Database->query("DELETE FROM tl_iso_addresses WHERE id=$intAddressId AND pid={$this->User->id}");
 
 		$this->redirect($this->generateFrontendUrl($objPage->row()));

@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -33,84 +33,84 @@
  */
 class PayflowProPOS extends Backend
 {
-	
-	
+
+
 	protected $fltOrderTotal;
-	
+
 	protected $fltOrderSubtotal;
-	
+
 	protected $fltOrderTaxTotal;
-	
+
 	protected $fltOrderShippingTotal;
-	
+
 	protected $arrBillingInfo;
-	
+
 	protected $intOrderId;
-	
+
 	protected $strReason;
-	
+
 	protected $strTemplate = "iso_invoice";
-	
+
 	public function __construct()
 	{
 		parent::__construct();
-		
+
 		$this->import('Isotope');
-	
+
 	}
-	
+
 	public function moduleOperations($intId)
 	{
-		
+
 		$this->import('BackendUser', 'User');
-	
+
 		if ($this->User->isAdmin)
 		{
 			$strOperations = '&nbsp;<a href="'.$this->Environment->request.'&amp;key=authorize_process_payment&amp;id=' . $intId . '" title="'.specialchars($GLOBALS['TL_LANG']['tl_iso_orders']['authorize_process_payment'][0]).'"'.$attributes.'><img src="system/modules/isotope/html/money.png" border="0" alt="' . specialchars($GLOBALS['TL_LANG']['tl_iso_orders']['authorize_process_payment'][0]) . '" /></a>';
-		} 
-			
+		}
+
 		$strOperations .= '&nbsp;<a href="'.$this->Environment->request.'&amp;key=print_order&amp;id=' . $intId . '" title="'.specialchars($GLOBALS['TL_LANG']['tl_iso_orders']['print_order'][0]).'"'.$attributes.'><img src="system/modules/isotope/html/printer.png" border="0" alt="'.specialchars($GLOBALS['TL_LANG']['tl_iso_orders']['print_order'][0]).'" /></a>';
-		
+
 		return $strOperations;
 
 	}
-	
+
 	public function getPOSInterface(DataContainer $objDc)
-	{			
+	{
 		$this->intOrderId = $objDc->id;
-		
+
 		$objOrderInfo = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE id=?")
 										   ->limit(1)
 										   ->execute($objDc->id);
-				
+
 		$arrOrderInfo = $objOrderInfo->fetchAssoc();
-		
-		
+
+
 		$this->Input->setGet('uid', $arrOrderInfo['uniqid']);
 		$objModule = new ModuleIsotopeOrderDetails($this->Database->execute("SELECT * FROM tl_module WHERE type='iso_orderdetails'"));
-		
+
 		$strOrderDetails = $objModule->generate(true);
-		
-							
+
+
 		$arrPaymentInfo = deserialize($arrOrderInfo['payment_data']);
-		
+
 		$this->fltOrderTotal = $arrOrderInfo['grandTotal'];
-		
-		
-		//Get the authorize.net configuration data			
+
+
+		//Get the authorize.net configuration data
 		$objAIMConfig = $this->Database->prepare("SELECT * FROM tl_iso_payment_modules WHERE type=?")
 														->execute('authorizedotnet');
 		if($objAIMConfig->numRows < 1)
 		{
 			return '<i>' . $GLOBALS['TL_LANG']['MSC']['noPaymentModules'] . '</i>';
 		}
-			
+
 		//Code specific to Authorize.net!
 		$objTemplate = new BackendTemplate('be_pos_terminal');
-									
+
 		if($objAIMConfig->numRows > 0)
 		{
-			
+
 			$delimResponse = "TRUE";
 			$delimChar = $objAIMConfig->authorize_delimiter;
 			$loginID = $objAIMConfig->authorize_login;
@@ -123,8 +123,8 @@ class PayflowProPOS extends Backend
 
 		if ($this->Input->post('FORM_SUBMIT') == 'be_pos_terminal' && $arrPaymentInfo['x_trans_id']!=="0")
 		{
-			
-				
+
+
 			$authnet_values = array
 			(
 				"x_version"							=> '3.1',
@@ -137,62 +137,62 @@ class PayflowProPOS extends Backend
 				"x_delim_char"						=> ',',
 				"x_encap_char"						=> '"',
 				"x_relay_response"					=> 'FALSE'
-			
+
 			);
-			
-						
+
+
 			foreach( $authnet_values as $key => $value ) $fields .= "$key=" . urlencode( $value ) . "&";
 
 			$fieldsFinal = rtrim($fields, '&');
-						
+
 			$objRequest = new Request();
-			
+
 			$objRequest->send('https://secure.authorize.net/gateway/transact.dll', $fieldsFinal, 'post');
-		
+
 			$arrResponses = $this->handleResponse($objRequest->response);
-								
+
 			foreach(array_keys($arrResponses) as $key)
 			{
 				$arrReponseLabels[strtolower(standardize($key))] = $key;
 			}
-						
+
 			$objTemplate->fields = $this->generateResponseString($arrResponses, $arrReponseLabels);
-			
+
 			$objTemplate->headline = $this->generateModuleHeadline($arrResponses['transaction-status']) . ' - ' . $this->strReason;
-			
+
 			$arrPaymentInfo['authorize_response'] = $arrResponses['transaction-status'];
-			
+
 			switch($arrResponses['transaction-status'])
 			{
-				case 'Approved':		
-					$arrPaymentInfo['authorization_code'] = $arrResponses['authorization-code'];			
+				case 'Approved':
+					$arrPaymentInfo['authorization_code'] = $arrResponses['authorization-code'];
 					$strPaymentInfo = serialize($arrPaymentInfo);
-					
+
 					$this->Database->prepare("UPDATE tl_iso_orders SET status='processing', payment_data=? WHERE id=?")
 								   ->execute($strPaymentInfo, $this->intOrderId);
 					break;
 				default:
 					$arrPaymentInfo['authorize_reason'] = $arrResponses['reason'];
 					$strPaymentInfo = serialize($arrPaymentInfo);
-					
+
 					$this->Database->prepare("UPDATE tl_iso_orders SET status='on_hold', payment_data=? WHERE id=?")
-								   ->execute($strPaymentInfo, $this->intOrderId);					
+								   ->execute($strPaymentInfo, $this->intOrderId);
 					break;
-			
+
 			}
-			
+
 			$objTemplate->isConfirmation = true;
-			
+
 			//$objTemplate->showPrintLink = true;
 		}
-		
-			
+
+
 		$action = ampersand($this->Environment->request, ENCODE_AMPERSANDS);
-		
+
 		//$objTemplate->x_cust_id;
-		
+
 		$objTemplate->formId = 'be_pos_terminal';
-	
+
 		$objTemplate->slabel = specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']);
 		$return = '<input type="hidden" name="FORM_SUBMIT" value="' . $objTemplate->formId . '" />';
 		$return .= '<div id="tl_buttons">
@@ -204,7 +204,7 @@ class PayflowProPOS extends Backend
 		$return .= '<div style="padding:10px;">';
 		$return .= $strOrderDetails;
 		$return .= '</div>';
- 
+
 		//<h2>Cart Contents:</h2><div style="border: solid 1px #cccccc; margin: 10px; padding: 10px;">' . $strProductList . '</div></div></div>';
 		if($arrOrderInfo['status']=='pending'){
 			//$return .= $objTemplate->fields;
@@ -212,58 +212,58 @@ class PayflowProPOS extends Backend
 			$return .= '<input type="submit" class="submit" value="' . $objTemplate->slabel . '" /></div></td>';
 			$return .= '</div></div>';
 		}
-					
+
 		$objTemplate->orderReview = $return;
 		$objTemplate->action = $action;
 		$objTemplate->rowLast = 'row_' . (count($this->editable) + 1) . ((($i % 2) == 0) ? ' odd' : ' even');
-						
+
 		return $objTemplate->parse();
-	
+
 	}
-	
+
 	public function cleanCreditCardData($varCCNum, $intOrderId)
 	{
-		
+
 		$strCCNum = str_replace(substr($varCCNum, 0, 12), 'XXXXXXXXXXXX', $varCCNum);
-		
+
 		$this->Database->prepare("UPDATE tl_iso_orders SET cc_num=? WHERE id=?")
 					   ->execute($strCCNum, $intOrderId);
-	
+
 	}
-	
-	
+
+
 	public function printInvoice(DataContainer $objDc)
 	{
-		
+
 		//$objDc->id = $this->Input->get('id');
 		$this->intOrderId = $objDc->id;
-		
-		//setlocale(LC_MONETARY, $GLOBALS['TL_LANG']['MSC']['isotopeLocale'][$GLOBALS['TL_LANG']['MSC']['defaultCurrency']]);		
-		
+
+		//setlocale(LC_MONETARY, $GLOBALS['TL_LANG']['MSC']['isotopeLocale'][$GLOBALS['TL_LANG']['MSC']['defaultCurrency']]);
+
 		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE id=?")
 										   ->limit(1)
 										   ->execute($objDc->id);
-		
-		
-		
+
+
+
 //		$arrOrderInfo = $objOrderInfo->fetchAssoc();
-		
-		
+
+
 		//Store ID MUST be set prior to importing the Isotope or IsotopeConfig libraries!
-				
+
 		//$this->fltOrderTotal = (float)$arrOrderInfo['subTotal'] + (float)$arrOrderInfo['taxTotal'] + (float)$arrOrderInfo['shippingTotal'];
-		
+
 		//$strBillingAddress = $this->Isotope->generateAddressString(deserialize($arrOrderInfo['billing_address']));
 		//$strShippingAddress = $this->Isotope->generateAddressString(deserialize($arrOrderInfo['shipping_address']));
-		
+
 		//$arrCheckoutInfo = deserialize($arrOrderInfo['checkout_info']);
 		//$strShippingInfo = $this->generateShippingInfoString($arrOrderInfo['shipping_rate_id']);
-		
+
 		//$arrItems = $this->getItems($arrOrderInfo['id']);
-/*		
+/*
 		$objTemplate = new BackendTemplate('iso_invoice');
-		
-		$objTemplate->invoiceTitle = $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] . ' #' . $this->intOrderId . '-' . date('mjY', $arrOrderInfo['tstamp']);		
+
+		$objTemplate->invoiceTitle = $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] . ' #' . $this->intOrderId . '-' . date('mjY', $arrOrderInfo['tstamp']);
 		$objTemplate->orderBillingAddressHeader = $GLOBALS['TL_LANG']['MSC']['iso_billing_address_header'];
 		$objTemplate->orderBillingAddressString = $strBillingAddress;
 		$objTemplate->orderShippingAddressHeader = $GLOBALS['TL_LANG']['MSC']['iso_shipping_address_header'];
@@ -277,34 +277,34 @@ class PayflowProPOS extends Backend
 		$objTemplate->productSkuHeader = $GLOBALS['TL_LANG']['MSC']['iso_sku_header'];
 		$objTemplate->productPriceHeader = $GLOBALS['TL_LANG']['MSC']['iso_price_header'];
 		$objTemplate->productQuantityHeader = $GLOBALS['TL_LANG']['MSC']['iso_quantity_header'];
-		$objTemplate->productTaxHeader = $GLOBALS['TL_LANG']['MSC']['iso_tax_header'];	
+		$objTemplate->productTaxHeader = $GLOBALS['TL_LANG']['MSC']['iso_tax_header'];
 		$objTemplate->productSubtotalHeader = $GLOBALS['TL_LANG']['MSC']['iso_subtotal_header'];
 		$objTemplate->items = $arrItems;	//name, sku, price, quantity, tax, subtotal, options = array('name', 'value')
 		$objTemplate->orderSubtotalHeader = $GLOBALS['TL_LANG']['MSC']['iso_subtotal_header'];
 		$objTemplate->orderTaxHeader = $GLOBALS['TL_LANG']['MSC']['iso_tax_header'];
 		$objTemplate->orderShippingHeader = $GLOBALS['TL_LANG']['MSC']['iso_order_shipping_header'];
 		$objTemplate->orderGrandTotalHeader = $GLOBALS['TL_LANG']['MSC']['iso_order_grand_total_header'];
-		$objTemplate->orderSubtotal = $this->Isotope->formatPriceWithCurrency($arrOrderInfo['subTotal']); 
-		$objTemplate->orderTaxTotal = $this->Isotope->formatPriceWithCurrency($arrOrderInfo['taxTotal']); 
-		$objTemplate->orderShippingTotal = $this->Isotope->formatPriceWithCurrency($arrOrderInfo['shippingTotal']); 
+		$objTemplate->orderSubtotal = $this->Isotope->formatPriceWithCurrency($arrOrderInfo['subTotal']);
+		$objTemplate->orderTaxTotal = $this->Isotope->formatPriceWithCurrency($arrOrderInfo['taxTotal']);
+		$objTemplate->orderShippingTotal = $this->Isotope->formatPriceWithCurrency($arrOrderInfo['shippingTotal']);
 		$objTemplate->orderGrandTotal = $this->Isotope->formatPriceWithCurrency($arrOrderInfo['grandTotal']);
-		$objTemplate->orderFooterString = '';	
+		$objTemplate->orderFooterString = '';
 		$objTemplate->logoImage = strlen($strInvoiceLogo) ? $this->Environment->base . $strInvoiceLogo : false;
 */
 		$strInvoiceTitle = $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] . '_' . $objDc->id . '_' . time();
 
-		
+
 		//$strArticle = html_entity_decode($strArticle, ENT_QUOTES, $GLOBALS['TL_CONFIG']['characterSet']);
-		
+
 		// Replace relative links
 		$arrLinks = array();
-		
+
 		// Remove form elements
 		$strArticle = preg_replace('/<form.*<\/form>/Us', '', $strArticle);
 		$strArticle = preg_replace('/\?pdf=[0-9]*/i', '', $strArticle);
 
 		$arrChunks = array();
-		
+
 		$strArticle .= $this->generateContent($objOrder);
 
 		preg_match_all('/<pre.*<\/pre>/Us', $strArticle, $arrChunks);
@@ -314,7 +314,7 @@ class PayflowProPOS extends Backend
 		{
 			$strArticle = str_replace($strChunk, str_replace("\n", '<br />', $strChunk), $strArticle);
 		}
-			
+
 		// Remove linebreaks and tabs
 		$strArticle = str_replace(array("\n", "\t"), '', $strArticle);
 		$strArticle = preg_replace('/<span style="text-decoration: ?underline;?">(.*)<\/span>/Us', '<u>$1</u>', $strArticle);
@@ -327,10 +327,10 @@ class PayflowProPOS extends Backend
 
 		// Include library
 		require_once(TL_ROOT . '/system/config/tcpdf.php');
-		require_once(TL_ROOT . '/plugins/tcpdf/tcpdf.php'); 
+		require_once(TL_ROOT . '/plugins/tcpdf/tcpdf.php');
 
 		// Create new PDF document
-		$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true); 
+		$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true);
 
 		// Set document information
 		$pdf->SetCreator(PDF_CREATOR);
@@ -350,10 +350,10 @@ class PayflowProPOS extends Backend
 		$pdf->SetAutoPageBreak(true, PDF_MARGIN_BOTTOM);
 
 		// Set image scale factor
-		$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO); 
+		$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
 		// Set some language-dependent strings
-		$pdf->setLanguageArray($l); 
+		$pdf->setLanguageArray($l);
 
 		// Initialize document and add a page
 		$pdf->AliasNbPages();
@@ -368,17 +368,17 @@ class PayflowProPOS extends Backend
 		// Close and output PDF document
 		$pdf->lastPage();
 		$pdf->Output(standardize(ampersand($strInvoiceTitle, false)) . '.pdf', 'D');
-		
+
 		$this->Isotope->resetConfig(true); 	//Set store back to default.
-		
+
 		ob_end_clean();
-		exit;	
+		exit;
 	}
-	
+
 	protected function generateContent($objOrder)
-	{				
+	{
 		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE uniqid=?")->limit(1)->execute($objOrder->uniqid);
-		
+
 		if (!$objOrder->numRows)
 		{
 			$objTemplate = new FrontendTemplate('mod_message');
@@ -386,54 +386,54 @@ class PayflowProPOS extends Backend
 			$objTemplate->message = $GLOBALS['TL_LANG']['ERR']['orderNotFound'];
 			return;
 		}
-		
+
 		$objTemplate = new BackendTemplate($this->strTemplate);
-				
+
 		$objTemplate->setData($objOrder->row());
-		
+
 		$this->import('Isotope');
 		$this->Isotope->overrideConfig($objOrder->config_id);
-		
+
 		// Invoice Logo
 		$objInvoiceLogo = $this->Database->prepare("SELECT invoiceLogo FROM tl_iso_config WHERE id=?")
 										 ->limit(1)
 										 ->execute($objOrder->config_id);
-		
+
 		if($objInvoiceLogo->numRows < 1)
 		{
 			$strInvoiceLogo = null;
 		}else{
 			$strInvoiceLogo = $objInvoiceLogo->invoiceLogo;
 		}
-		
+
 		$objTemplate->logoImage = strlen($strInvoiceLogo) ? $this->Environment->base . $strInvoiceLogo : false;
-		
+
 		$objTemplate->invoiceTitle = $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] . ' ' . $objOrder->id . ' - ' . date('m-d-Y g:i', $objOrder->tstamp);
-		
+
 		// Article reader
 		$arrPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->limit(1)->execute($this->jumpTo)->fetchAssoc();
-		
+
 		$arrAllDownloads = array();
 		$arrItems = array();
 		$objItems = $this->Database->prepare("SELECT p.*, o.*, t.downloads AS downloads_allowed, t.class AS product_class, (SELECT COUNT(*) FROM tl_iso_order_downloads d WHERE d.pid=o.id) AS has_downloads FROM tl_iso_order_items o LEFT OUTER JOIN tl_iso_products p ON o.product_id=p.id LEFT OUTER JOIN tl_iso_producttypes t ON p.type=t.id WHERE o.pid=?")->execute($objOrder->id);
-		
-		
+
+
 		while( $objItems->next() )
 		{
 			$strClass = $GLOBALS['ISO_PRODUCT'][$objItems->product_class]['class'];
-				
+
 			if (!$this->classFileExists($strClass))
 			{
 				$strClass = 'IsotopeProduct';
 			}
-																			
+
 			$objProduct = new $strClass($objItems->row());
-						
+
 			if ($objItems->downloads_allowed/* && $objItems->has_downlaods > 0*/)
 			{
 				$arrDownloads = array();
 				$objDownloads = $this->Database->prepare("SELECT p.*, o.* FROM tl_iso_order_downloads o LEFT OUTER JOIN tl_iso_downloads p ON o.download_id=p.id WHERE o.pid=?")->execute($objItems->id);
-				
+
 				while( $objDownloads->next() )
 				{
 					// Send file to the browser
@@ -443,10 +443,10 @@ class PayflowProPOS extends Backend
 						{
 							$this->Database->prepare("UPDATE tl_iso_order_downloads SET downloads_remaining=? WHERE id=?")->execute(($objDownloads->downloads_remaining-1), $objDownloads->id);
 						}
-						
+
 						$this->sendFileToBrowser($objDownloads->singleSRC);
 					}
-					
+
 					$arrDownload = array
 					(
 						'raw'			=> $objDownloads->row(),
@@ -455,12 +455,12 @@ class PayflowProPOS extends Backend
 						'remaining'		=> ($objDownloads->downloads_allowed > 0 ? sprintf('<br />%s Downloads verbleibend', intval($objDownloads->downloads_remaining)) : ''),
 						'downloadable'	=> (($objDownloads->downloads_allowed == 0 || $objDownloads->downloads_remaining > 0) ? true : false),
 					);
-					
+
 					$arrDownloads[] = $arrDownload;
 					$arrAllDownloads[] = $arrDownload;
 				}
 			}
-			
+
 			$arrItems[] = array
 			(
 				'raw'				=> $objItems->row(),
@@ -474,25 +474,25 @@ class PayflowProPOS extends Backend
 				'tax_id'			=> $objProduct->tax_id,
 			);
 		}
-		
-		
+
+
 		$objTemplate->info = deserialize($objOrder->checkout_info);
 		$objTemplate->items = $arrItems;
 		$objTemplate->downloads = $arrAllDownloads;
 		$objTemplate->downloadsLabel = $GLOBALS['TL_LANG']['MSC']['downloadsLabel'];
-		
+
 		$objTemplate->raw = $objOrder->row();
-		
+
 		$objTemplate->date = $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $objOrder->date);
 		$objTemplate->time = $this->parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $objOrder->date);
 		$objTemplate->datim = $this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $objOrder->date);
 		$objTemplate->datimLabel = $GLOBALS['TL_LANG']['MSC']['datimLabel'];
-		
+
 		$objTemplate->subTotalPrice = $this->Isotope->formatPriceWithCurrency($objOrder->subTotal);
 		$objTemplate->grandTotal = $this->Isotope->formatPriceWithCurrency($objOrder->grandTotal);
 		$objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
 		$objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
-		
+
 		$arrSurcharges = array();
 		foreach( deserialize($objOrder->surcharges) as $arrSurcharge )
 		{
@@ -504,9 +504,9 @@ class PayflowProPOS extends Backend
 				'tax_id'		=> $arrSurcharge['tax_id'],
 			);
 		}
-		
+
 		$objTemplate->surcharges = $arrSurcharges;
-		
+
 		$objTemplate->billing_label = $GLOBALS['TL_LANG']['ISO']['billing_address'];
 		$objTemplate->billing_address = $this->Isotope->generateAddressString(deserialize($objOrder->billing_address), $this->Isotope->Config->billing_fields);
 		if (strlen($objOrder->shipping_method))
@@ -524,7 +524,7 @@ class PayflowProPOS extends Backend
 				$objTemplate->shipping_address = $this->Isotope->generateAddressString($arrShippingAddress, $this->Isotope->Config->shipping_fields);
 			}
 		}
-		
+
 		return $objTemplate->parse();
 	}
 
@@ -532,24 +532,24 @@ class PayflowProPOS extends Backend
 	{
 		$arrItems = array();
 		$objItems = $this->Database->prepare("SELECT p.*, o.*, t.downloads AS downloads_allowed, (SELECT COUNT(*) FROM tl_iso_order_downloads d WHERE d.pid=o.id) AS has_downloads FROM tl_iso_order_items o LEFT OUTER JOIN tl_iso_products p ON o.product_id=p.id LEFT OUTER JOIN tl_iso_producttypes t ON p.type=t.id WHERE o.pid=?")->execute($intOrderId);
-		
-		
+
+
 		while( $objItems->next() )
 		{
 			$strClass = $GLOBALS['ISO_PRODUCT'][$objItems->product_class]['class'];
-				
+
 			if (!$this->classFileExists($strClass))
 			{
 				$strClass = 'IsotopeProduct';
 			}
-																			
+
 			$objProduct = new $strClass($objItems->row());
-			
+
 			if ($objItems->downloads_allowed/* && $objItems->has_downlaods > 0*/)
 			{
 				$arrDownloads = array();
 				$objDownloads = $this->Database->prepare("SELECT p.*, o.* FROM tl_iso_order_downloads o LEFT OUTER JOIN tl_iso_downloads p ON o.download_id=p.id WHERE o.pid=?")->execute($objItems->id);
-				
+
 				while( $objDownloads->next() )
 				{
 					// Send file to the browser
@@ -559,10 +559,10 @@ class PayflowProPOS extends Backend
 						{
 							$this->Database->prepare("UPDATE tl_iso_order_downloads SET downloads_remaining=? WHERE id=?")->execute(($objDownloads->downloads_remaining-1), $objDownloads->id);
 						}
-						
+
 						$this->sendFileToBrowser($objDownloads->singleSRC);
 					}
-					
+
 					$arrDownload = array
 					(
 						'raw'			=> $objDownloads->row(),
@@ -571,12 +571,12 @@ class PayflowProPOS extends Backend
 						'remaining'		=> ($objDownloads->downloads_allowed > 0 ? sprintf('<br />%s Downloads verbleibend', intval($objDownloads->downloads_remaining)) : ''),
 						'downloadable'	=> (($objDownloads->downloads_allowed == 0 || $objDownloads->downloads_remaining > 0) ? true : false),
 					);
-					
+
 					$arrDownloads[] = $arrDownload;
 					$arrAllDownloads[] = $arrDownload;
 				}
 			}
-			
+
 			$arrItems[] = array
 			(
 				'raw'			=> $objItems->row(),
@@ -589,7 +589,7 @@ class PayflowProPOS extends Backend
 				'tax_id'		=> $objProduct->tax_id,
 			);
 		}
-		
+
 		return $arrItems;
 	}
 
@@ -601,23 +601,23 @@ class PayflowProPOS extends Backend
 
 		$strStreetAddress = $arrOrderInfo[$strAddressType . '_information_street_1'];
 		$strStreetAddress .= $arrOrderInfo[$strAddressType . '_information_street_2'] ? '<br /> ' . $arrOrderInfo[$strAddressType . '_information_street_2'] : '';
-		$strStreetAddress .= $arrOrderInfo[$strAddressType . '_information_street_3'] ? '<br /> ' . $arrOrderInfo[$strAddressType . '_information_street_3'] : '';				
-		
+		$strStreetAddress .= $arrOrderInfo[$strAddressType . '_information_street_3'] ? '<br /> ' . $arrOrderInfo[$strAddressType . '_information_street_3'] : '';
+
 		$strAddress = '<br />' . $strStreetAddress;
 
 		$strAddress = '<br />' . $arrOrderInfo[$strAddressType . '_information_city'];
-		
+
 		$strAddress = $arrOrderInfo[$strAddressType . '_information_subdivision'] ? '<br /> ' . $arrOrderInfo[$strAddressType . '_information_subdivision'] : '';
-		
+
 		$strAddress = '<br />' . $arrOrderInfo[$strAddressType . '_information_postal'];
 		$strAddress = '<br />' . $arrOrderInfo[$strAddressType . '_information_country'];
-	
+
 		return $strAddress;
 	}
 
 	/**
 	* getProducts function.
-	* 
+	*
 	* @access protected
 	* @param integer $intSourceCartId
 	* @return string
@@ -629,55 +629,55 @@ class PayflowProPOS extends Backend
 		{
 			$this->Isotope->overrideConfig($config_id);	//Which store it was ordered from is important, not what the default backend store is.
 		}
-		
+
 		$objItems = $this->Database->prepare("SELECT p.*, o.*, t.class AS product_class FROM tl_iso_cart_items o LEFT JOIN tl_iso_products p ON p.id=o.product_id LEFT OUTER JOIN tl_iso_producttypes t ON p.type=t.id WHERE o.pid=?")->execute($intSourceCartId);
-		
+
 		if (!$objItems->numRows)
 		{
 			return '';
 		}
-		
+
 		$arrProductLists = array();
-		
+
 		while( $objItems->next()  )
 		{
 			$strClass = $GLOBALS['ISO_PRODUCT'][$objItems->product_class]['class'];
-				
+
 			if (!$this->classFileExists($strClass))
 			{
 				$strClass = 'IsotopeProduct';
 			}
-																			
+
 			$objProduct = new $strClass($objItems->row());
 
 			$arrProductLists[] = array
 			(
-				'id'		=> $objProduct->id, 
+				'id'		=> $objProduct->id,
 				'quantity'	=> $objItems->product_quantity,
 				'price'		=> $objItems->price,
 				'options'	=> $objProduct->getOptions(),
 			);
 		}
-		
+
 		foreach($arrProductLists as $productList)
-		{         
+		{
 			$fltProductTotal = 0.00;
-			
+
 			$objProductExtendedData = $this->Database->prepare("SELECT name, sku FROM tl_iso_products WHERE id=?")->limit(1)->execute($productList['id']);
-			
+
 			if($objProductExtendedData->numRows < 1)
 			{
 				continue;
-			}   
-			
-			$fltProductTotal = (int)$productList['quantity'] * (float)$productList['price']; 
-			
+			}
+
+			$fltProductTotal = (int)$productList['quantity'] * (float)$productList['price'];
+
 			$fltProductPrice = (float)$productList['price'];
-			
+
 			$strProductData .= $objProductExtendedData->name . ' - ' . $this->Isotope->formatPriceWithCurrency($fltProductPrice, false) . ' x ' . $productList['quantity'] . ' = ' . $this->Isotope->formatPriceWithCurrency($fltProductTotal, false) . '<br />';
-			
-			
-			
+
+
+
 			$arrAllProducts[] = array
 			(
 				'name'			=> $objProductExtendedData->name,
@@ -689,58 +689,58 @@ class PayflowProPOS extends Backend
 				'options'		=> $this->getOptionsHTML($productList['options'])
 			);
 		}
-		
+
 		return $arrAllProducts;
 	}
 
-	
-	
+
+
 	protected function getOptionsHTML($arrOptionsData)
 	{
         $strProductData .= '<p><strong>' . $GLOBALS['TL_LANG']['MSC']['productOptionsLabel'] . '</strong></p>';
-	
+
 		foreach($arrOptionsData as $option)
 		{
 			//$arrOptions = deserialize($row['options']);
-        	
+
         	//if(sizeof($arrOptions))
         	//{
         		//foreach($arrOptions as $option)
         		//{
 	        		$arrValues = $option['values'];
-	        		
+
 				    $strProductData .= '<ul>';
 				   	$strProductData .= '	<li>' . $option['label'] . ': ';
 				    $strProductData .= $option['value'];
-					$strProductData .= '    </li>';     						
-					$strProductData .= '</ul>'; 
+					$strProductData .= '    </li>';
+					$strProductData .= '</ul>';
 				//}
 			//}
 		}
-		
+
 		return $strProductData;
-		
+
 	}
-	
+
 	protected function loadAddress($varValue, $intId, $blnSaveAsBillingInfo = false)
 	{
 		$intPid = $this->getPid($intId, 'tl_iso_orders');
-	
+
 		$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE id=? and pid=?")
 									 ->limit(1)
 									 ->execute($varValue, $intPid);
-		
+
 		if($objAddress->numRows < 1)
 		{
 			return 'no address specified';
 		}
-		
+
 		if($blnSaveAsBillingInfo)
 		{
 			$this->arrBillingInfo = $objAddress->fetchAssoc();
 		}
-		
-		
+
+
 		$strAddress = $objAddress->firstname . ' ' . $objAddress->lastname . "<br />";
 		$strAddress .= $objAddress->street_1 . "<br />";
 		$strAddress .= $objAddress->city . ', ' . $objAddress->subdivision . '  ' . $objAddress->postal . "<br />";
@@ -748,37 +748,37 @@ class PayflowProPOS extends Backend
 
 		return $strAddress;
 	}
-	
+
 	protected function generatePaymentInfoString($arrOrderInfo)
-	{		
+	{
 		$arrBillingInfoLines = split("\n",$arrOrderInfo['billing_address']);
-			
+
 		$strPaymentInfo = $GLOBALS['TL_LANG']['MSC']['iso_card_name_title'] . ': ' . $arrBillingInfoLines[0] . '<br />';
 		//$strPaymentInfo .= in_array($arrOrderInfo['cc_type'], $GLOBALS['TL_LANG']['tl_iso_orders']['credit_card_types']) ? $GLOBALS['TL_LANG']['tl_iso_orders']['cc_type'][0] . ': ' . $GLOBALS['TL_LANG']['tl_iso_orders']['credit_card_types'][$arrOrderInfo['cc_type']] . '<br />' : NULL;
 		$strPaymentInfo .= strlen($arrOrderInfo['cc_type']) ? $GLOBALS['ISO_PAY']['cc_types'][$arrOrderInfo['cc_type']] : NULL;
 		$strPaymentInfo .= $GLOBALS['TL_LANG']['tl_iso_orders']['cc_num'][0] . ': XXXX-XXXX-XXXX-' . substr($arrOrderInfo['cc_num'], 12, 4) . '<br />';
 		$strPaymentInfo .= $GLOBALS['TL_LANG']['tl_iso_orders']['cc_exp'][0] . ': ' . $arrOrderInfo['cc_exp'];
-	
+
 		return $strPaymentInfo;
 	}
-	
+
 	protected function generateShippingInfoString($intShippingRateId)
 	{
 		$objShippingMethod = $this->Database->prepare("SELECT s.name, sr.description FROM tl_iso_shipping_modules s INNER JOIN tl_iso_shipping_options sr ON s.id=sr.pid  WHERE sr.id=?")
 											->limit(1)
 											->execute($intShippingRateId);
-		
+
 		if($objShippingMethod->numRows < 1)
 		{
 			return sprintf($GLOBALS['TL_LANG']['ERR']['noShippingMethodAvailable'], $intShippingRateId);
-		}						
-	
+		}
+
 		$strShippingInfo = $objShippingMethod->name . ' ' . $objShippingMethod->description;
-		
+
 		return $strShippingInfo;
 	}
-	
-	
+
+
 
 	protected function getPid($intId, $strTable)
 	{
@@ -786,69 +786,69 @@ class PayflowProPOS extends Backend
 		{
 			return 0;
 		}
-		
-		
+
+
 		$objPid = $this->Database->prepare("SELECT pid FROM " . $strTable . " WHERE id=?")
 								 ->limit(1)
 								 ->execute($intId);
-		
+
 		if($objPid->numRows < 1)
 		{
 			return 0;
 		}
-		
+
 		return $objPid->pid;
-		
+
 	}
-	
+
 		//*** AUTHORIZE.NET Processing code - move to authorize class module and call that as the standard approach for handling and rendering out data?
-	
+
 	private function addAlert($alertText)
 	{
 		return "<span style=\"color:#ff0000;\">" . $alertText . "</span>";
 	}
-	
+
 	private function generateModuleHeadline($strOrderStatus)
 	{
 		switch($strOrderStatus)
 		{
 			case "Approved":
 				$this->setOrderStatus('processing');
-				
+
 				return "Your Order Is Complete!";
 				break;
-				
+
 			case "Declined":
 				return "Your payment method has been declined.";
 				break;
-			
+
 			case "Error":
 				return "There was an error with your payment method.";
 				break;
 			default:
-				return;			
+				return;
 		}
 	}
-	
+
 	private function setOrderStatus($strStatus)
 	{
 		$this->Database->prepare("UPDATE tl_iso_orders SET status=? WHERE id=?")
 					   ->execute($strStatus, $this->intOrderId);
-					   
+
 		return;
-	
+
 	}
-	
+
 	private function generateResponseString($arrResponses, $arrResponseLabels)
 	{
 		$responseString .= '<tr><td align="right" colspan="2">&nbsp;</td></tr>';
-			
+
 			$showReason = true;
-						
+
 			foreach($arrResponses as $k=>$v)
 			{
 				$value = $v;
-				
+
 				switch($k)
 				{
 					case 'transaction-status':
@@ -856,7 +856,7 @@ class PayflowProPOS extends Backend
 						{
 							case "Declined":
 							case "Error":
-								$value = $this->addAlert($v); 
+								$value = $this->addAlert($v);
 								$showReason = true;
 								break;
 							default:
@@ -869,49 +869,49 @@ class PayflowProPOS extends Backend
 						{
 							continue;
 						}
-						
+
 						$value = $this->addAlert($v); //. "<br /><a href=\"" . $this->session['infoPage'] . "\"><strong>Click here to review and correct your order</strong></a>";
 						$this->strReason = $value;
 					case 'grand-total':
 						$value = $v;
 						break;
-				}	
-				
+				}
+
 				$responseString .= '<tr><td align="right" width="150">' . $arrResponseLabels[$k] . ':&nbsp;&nbsp;</td><td>' . $value . '</td></tr>';
-				
+
 			}
-			
+
 			return $responseString;
 	}
-	
+
 	private function handleResponse($resp)
 	{
-		
+
 		$resp = str_replace('"', '', $resp);
-		
+
 		$arrResponseString = explode(",",$resp);
-		
+
 		$i=1;
-		
+
 		$arrFieldsToDisplay = array(1, 4, 5, 7, 9, 10, 11, 14, 15, 16, 17, 18, 19, 20, 22, 23, 24);	//Dynamic Later
-		
+
 		foreach($arrResponseString as $currResponseString)
 		{
 				if(empty($currResponseString)){
 					$i++;
 					continue; //$pstr_trimmed="NO VALUE RETURNED";
 				}
-				
+
 				if(in_array($i, $arrFieldsToDisplay))
 				{
 					$pstr_trimmed = $currResponseString;
-					
+
 					switch($i)
 					{
-						
+
 						case 1:
 							$ftitle = "Transaction Status";
-									
+
 							$fval="";
 							if($pstr_trimmed=="1"){
 								$fval="Approved";
@@ -921,7 +921,7 @@ class PayflowProPOS extends Backend
 								$fval="Error";
 							}
 							break;
-						
+
 						case 4:
 							$ftitle = "Reason";
 							$fval = $pstr_trimmed;
@@ -934,82 +934,82 @@ class PayflowProPOS extends Backend
 							$ftitle = "Transaction ID";
 							$fval = $pstr_trimmed;
 							break;
-							
+
 						case 9:
 							$ftitle = "Service";
 							$fval = $pstr_trimmed;
 							break;
-							
+
 						case 10:
 							$ftitle = "Grand Total";
 							$fval = $pstr_trimmed;
 							break;
-							
+
 						case 11:
 							$ftitle = "Payment Method";
 							$fval = ($pstr_trimmed=="CC" ? "Credit Card" : "Other");
 							break;
-						
-						case 14:	
+
+						case 14:
 							$ftitle = "First Name";
 							$fval = $pstr_trimmed;
 							break;
-						
-						case 15:	
+
+						case 15:
 							$ftitle = "Last Name";
 							$fval = $pstr_trimmed;
 							break;
-							
-						case 16:	
+
+						case 16:
 							$ftitle = "Company Name";
 							$fval = $pstr_trimmed;
 							break;
-							
-						case 17:	
+
+						case 17:
 							$ftitle = "Billing Address";
 							$fval = $pstr_trimmed;
 							break;
-							
-						case 18:	
+
+						case 18:
 							$ftitle = "City";
 							$fval = $pstr_trimmed;
 							break;
-							
-						case 19:	
+
+						case 19:
 							$ftitle = "State";
 							$fval = $pstr_trimmed;
 							break;
-							
-						case 20:	
+
+						case 20:
 							$ftitle = "Zip";
 							$fval = $pstr_trimmed;
 							break;
-							
-						case 22:	
+
+						case 22:
 							$ftitle = "Phone";
 							$fval = $pstr_trimmed;
 							break;
-							
-						case 23:	
+
+						case 23:
 							$ftitle = "Fax";
 							$fval = $pstr_trimmed;
 							break;
-							
-						case 24:	
+
+						case 24:
 							$ftitle = "Email";
 							$fval = $pstr_trimmed;
 							break;
-							
+
 						default:
 							break;
 					}
-			
+
 					$arrResponse[strtolower(standardize($ftitle))] = $fval;
 				}
-	
+
 			$i++;
 		}
-	
+
 		return $arrResponse;
 	}
 

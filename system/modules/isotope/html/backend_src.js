@@ -6,12 +6,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -22,10 +22,10 @@
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
-  
- 
-var Isotope = 
-{		
+
+
+var Isotope =
+{
 
 	/**
 	 * Media Manager
@@ -74,7 +74,7 @@ var Isotope =
 			}
 		}
 	},
-	
+
 	/**
 	 * Attribute wizard
 	 * @param object
@@ -121,7 +121,7 @@ var Isotope =
 
 		}
 	},
-	
+
 	/**
 	 * Surcharge wizard
 	 * @param object
@@ -182,8 +182,8 @@ var Isotope =
 			}
 		}
 	},
-	
-	
+
+
 	/**
 	 * Field wizard
 	 * @param object
@@ -251,8 +251,8 @@ var Isotope =
 			}
 		}
 	},
-	
-	
+
+
 	/**
 	 * Image watermark wizard
 	 * @param object
@@ -309,8 +309,8 @@ var Isotope =
 			}
 		}
 	},
-	
-	
+
+
 	/**
 	 * Toggle checkbox group
 	 * @param object
@@ -340,7 +340,7 @@ var Isotope =
 
 		Backend.getScrollOffset();
 	},
-	
+
 	/**
 	 * Add the interactive help
 	 */
@@ -387,41 +387,41 @@ var Isotope =
 			el.store('complete', true);
 		});
 	},
-	
-	
+
+
 	inheritFields: function(fields, label)
 	{
 		var injectError = false;
-		
+
 		fields.each(function(name, i)
 		{
 			var el = $(('ctrl_'+name));
-			
+
 			if (el)
 			{
 				var parent = el.getParent('div').getFirst('h3');
-				
+
 				if (!parent && el.match('.tl_checkbox_single_container'))
 				{
 					parent = el;
 				}
-				
+
 				if (!parent)
 				{
 					injectError = true;
 					return;
 				}
-				
+
 				parent.addClass('inherit');
-					
+
 				var check = $('ctrl_inherit').getFirst(('input[value='+name+']'));
-				
+
 				check.setStyle('float', 'right').inject(parent);
 				$('ctrl_inherit').getFirst(('label[for='+check.get('id')+']')).setStyles({'float':'right','padding-right':'5px', 'font-weight':'normal'}).set('text', label).inject(parent);
-				
+
 				check.addEvent('change', function(event) {
 					var element = $(('ctrl_'+event.target.get('value')));
-					
+
 					if (element.match('.tl_checkbox_single_container'))
 					{
 						element.getFirst('input').disabled = event.target.checked;
@@ -431,7 +431,7 @@ var Isotope =
 						element.setStyle('display', (event.target.checked ? 'none' : 'block'));
 					}
 				});
-				
+
 				if (el.match('.tl_checkbox_single_container'))
 				{
 					el.getFirst('input').readonly = check.checked;
@@ -442,28 +442,28 @@ var Isotope =
 				}
 			}
 		});
-		
+
 		if (!injectError)
 		{
 			$('ctrl_inherit').getParent('div').setStyle('display', 'none');
 		}
 	},
-	
+
 	initializeToolsMenu: function()
 	{
 		if ($$('#tl_buttons .isotope-tools').length < 1)
 			return;
-			
+
 		$$('#tl_buttons .header_isotope_tools').setStyle('display', 'inline');
-		
+
 		var tools = $$('#tl_buttons .isotope-tools').clone();
-		
+
 		$$('#tl_buttons .isotope-tools').each(function(node) {
 			//node.previousSibling.deleteData(0, node.previousSibling.nodeValue.length);
 			node.previousSibling.nodeValue = '';
 			node.destroy();
 		});
-		
+
 		var div = new Element('div',
 		{
 			'id': 'isotopetoolsmenu',
@@ -471,10 +471,10 @@ var Isotope =
 				'top': ($$('a.header_isotope_tools')[0].getPosition().y + 22)
 			}
 		}).adopt(tools);
-		
+
 		div.inject($(document.body));
 		div.setStyle('left', $$('a.header_isotope_tools')[0].getPosition().x - 7);
-		
+
 		// Add trigger to tools buttons
 		$$('a.header_isotope_tools').addEvent('click', function(e)
 		{
@@ -482,13 +482,13 @@ var Isotope =
 			return false;
 		});
 
-		// Hide context menu 
+		// Hide context menu
 		$(document.body).addEvent('click', function()
 		{
 			$('isotopetoolsmenu').setStyle('display', 'none');
 		});
 	},
-	
+
 	initializeToolsButton: function()
 	{
 		// Hide the tool buttons
@@ -508,7 +508,7 @@ var Isotope =
 					{
 						$('isotope-contextmenu').destroy();
 					}
-	
+
 					var div = new Element('div',
 					{
 						'id': 'isotope-contextmenu',
@@ -517,22 +517,22 @@ var Isotope =
 							'display': 'block'
 						}
 					});
-					
+
 					el.getAllNext('a.isotope-tools').each( function(el2)
 					{
 						var im2 = el2.getFirst('img');
 						div.set('html', (div.get('html')+'<a href="'+ el2.href +'" title="'+ el2.title +'">'+ el2.get('html') +' '+ im2.alt +'</a>'));
 					});
-					
+
 					div.inject($(document.body));
 					div.setStyle('left', el.getPosition().x - (div.getSize().x / 2));
-					
+
 					return false;
 				});
 			}
 		});
 
-		// Hide context menu 
+		// Hide context menu
 		$(document.body).addEvent('click', function()
 		{
 			if ($defined($('isotope-contextmenu')))

@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -89,7 +89,7 @@ $GLOBALS['TL_LANG']['MSC']['searchLabel'] = 'Szukaj';
 $GLOBALS['TL_LANG']['MSC']['submitLabel'] = 'Wyślij';
 $GLOBALS['TL_LANG']['MSC']['clearFiltersLabel'] = 'Wyczyść filtry';
 $GLOBALS['TL_LANG']['MSC']['buttonLabel']['update'] = 'Aktualizuj';
-$GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'] = 'Dodaj do koszyka';		
+$GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'] = 'Dodaj do koszyka';
 $GLOBALS['TL_LANG']['MSC']['pagerSectionTitleLabel'] = 'Strona:';
 $GLOBALS['TL_LANG']['MSC']['orderByLabel'] = 'Porządkuj wg.:';
 
@@ -151,7 +151,7 @@ $GLOBALS['TL_LANG']['MSC']['iso_order_status'] = 'Status';
 $GLOBALS['TL_LANG']['MSC']['iso_order_date'] = 'Data zamówienia';
 $GLOBALS['TL_LANG']['MSC']['iso_billing_address_header'] = 'Adres zamawiającego';
 $GLOBALS['TL_LANG']['MSC']['iso_shipping_address_header'] = 'Adres odbiorcy';
-$GLOBALS['TL_LANG']['MSC']['iso_tax_header'] = 'podatek';	
+$GLOBALS['TL_LANG']['MSC']['iso_tax_header'] = 'podatek';
 $GLOBALS['TL_LANG']['MSC']['iso_subtotal_header'] = 'Podsumowanie';
 $GLOBALS['TL_LANG']['MSC']['iso_order_shipping_header'] = 'Dostawa';
 $GLOBALS['TL_LANG']['MSC']['iso_order_grand_total_header'] = 'Podsumowanie';

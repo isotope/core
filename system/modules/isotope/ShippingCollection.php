@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -24,12 +24,12 @@
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
- 
+
 
 class ShippingCollection extends IsotopeShipping
 {
 	protected $shipping_options = array();
-	
+
 	/**
 	 * Return an object property
 	 *
@@ -45,36 +45,36 @@ class ShippingCollection extends IsotopeShipping
 				return 0;
 				//return $this->Isotope->calculatePrice($this->calculateShippingRate($this->id, $this, 'price', $this->Isotope->Cart->subTotal));
 				break;
-					
+
 		}
-		
+
 		return parent::__get($strKey);
 	}
 
-	
+
 	public function calculateShippingRate($intPid, $fltCartSubTotal)
 	{
 		$this->import('FrontendUser','User');
 
 		$arrUserGroups = deserialize($this->User->groups);
-		
+
 		$arrShippingAddress = $this->Isotope->getAddress('shipping'); //Tax calculated based on billing address.
-				
+
 		$objRates = $this->Database->prepare("SELECT * FROM tl_iso_shipping_options WHERE pid=?")
 								   ->execute($intPid);
-		
+
 		if($objRates->numRows < 1)
 		{
-			return 0;		
+			return 0;
 		}
-	
+
 		$arrData = $objRates->fetchAllAssoc();
-		
+
 		//sort by groups data
 		foreach($arrData as $row)
 		{
-			$arrGroups = deserialize($row['groups']);			
-			
+			$arrGroups = deserialize($row['groups']);
+
 			//
 			if(sizeof($arrGroups))
 			{
@@ -96,7 +96,7 @@ class ShippingCollection extends IsotopeShipping
 								'rate_info'		=> $row
 							);
 					}
-				}			
+				}
 			}else{
 				switch($row['option_type'])
 				{
@@ -120,26 +120,26 @@ class ShippingCollection extends IsotopeShipping
 			}
 
 		}
-	
-	
-				
+
+
+
 		//get the basic rate - calculate it based on group '0' first, which is the default, then any group NOT 0.
 		foreach($arrBaseRates as $rate)
 		{
 			$arrCountries = deserialize($rate['rate_info']['dest_countries']);
-				
+
 			if(!is_array($arrCountries))
-			{	
+			{
 				$arrCountries = $this->getShippingModuleCountries($rate['rate_info']['pid']);
 			}
-			
+
 			if((is_array($arrCountries) && in_array($arrShippingAddress['country'], $arrCountries)) || !is_array($arrCountries))
 			{
 				//determine value ranges
 				foreach($rate['rate_info'] as $k=>$v)
 				{
 					$fltLimit = !is_null($rate['rate_info']['limit_value']) ? $rate['rate_info']['limit_value'] : 0;
-					
+
 					switch($k)
 					{
 						case 'limit_type':
@@ -147,11 +147,11 @@ class ShippingCollection extends IsotopeShipping
 							{
 								case 'lower':
 									if($fltLimit!=0 && ((float)$this->Isotope->Cart->subTotal > (float)$fltLimit))
-									{	
-										$arrEligibleRates[] = $rate['rate_info']['rate'];						
+									{
+										$arrEligibleRates[] = $rate['rate_info']['rate'];
 									}
 									break;
-								case 'upper':						
+								case 'upper':
 									if($fltLimit!=0 && ((float)$fltLimit) >= (float)$this->Isotope->Cart->subTotal)
 									{
 										$arrEligibleRates[] = $rate['rate_info']['rate'];
@@ -161,29 +161,29 @@ class ShippingCollection extends IsotopeShipping
 									break;
 							}
 						default:
-							break;				
+							break;
 					}
-				}	
+				}
 			}
-			
+
 		}
-		
+
 		//Member groups rules will override base rate rules if there is a match.
 		if(is_array($arrBaseRatesByMemberGroups))
 		{
-		
+
 			foreach($arrBaseRatesByMemberGroups as $rate)
 			{
 				$arrCountries = deserialize($rate['rate_info']['dest_countries']);
-				
+
 				if(!is_array($arrCountries))
-				{	
+				{
 					$arrCountries = $this->getShippingModuleCountries($rate['rate_info']['pid']);
-				}				
-			
+				}
+
 				//$arrRegions = deserialize($rate['rate_info']['dest_regions']);
 				//$arrPostalCodes = split(',', trim($rate['rate_info']['dest_postalcodes']));
-				
+
 				if(in_array($rate['group'], $arrUserGroups)) //is this rate a candidate rate for this member's group?
 				{
 					if((is_array($arrCountries) && in_array($arrShippingAddress['country'], $arrCountries)) || !is_array($arrCountries))
@@ -192,24 +192,24 @@ class ShippingCollection extends IsotopeShipping
 						//determine value ranges
 						foreach($rate['rate_info'] as $k=>$v)
 						{
-							
+
 							$fltLimit = !is_null($rate['rate_info']['limit_value']) ? $rate['rate_info']['limit_value'] : 0;
-							
+
 							switch($k)
 							{
 								case 'limit_type':
-								
+
 									switch($v)
 									{
 										case 'lower':
-											
+
 											if($fltLimit!=0 && ((float)$this->Isotope->Cart->subTotal >= (float)$fltLimit))
-											{	
+											{
 												$arrEligibleRates[] = $rate['rate_info']['rate'];
 											}
 											break;
 										case 'upper':
-																							
+
 											if($fltLimit!=0 && ((float)$fltLimit >= (float)$this->Isotope->Cart->subTotal))
 											{
 												$arrEligibleRates[] = $rate['rate_info']['rate'];
@@ -219,35 +219,35 @@ class ShippingCollection extends IsotopeShipping
 											break;
 									}
 								default:
-									break;				
+									break;
 							}
-						
+
 						}
-					}	
+					}
 				}
 			}
-			
+
 		}
-		
+
 		$fltBaseRate = min($arrEligibleRates);
-		
+
 		//get the basic rate - calculate it based on group '0' first, which is the default, then any group NOT 0.
 		foreach($arrSurcharges as $rate)
 		{
 			$arrCountries = deserialize($rate['rate_info']['dest_countries']);
-				
+
 			if(!is_array($arrCountries))
-			{	
+			{
 				$arrCountries = $this->getShippingModuleCountries($rate['rate_info']['pid']);
 			}
-			
+
 			if((is_array($arrCountries) && in_array($arrShippingAddress['country'], $arrCountries)) || !is_array($arrCountries))
 			{
 				//determine value ranges
 				foreach($rate['rate_info'] as $k=>$v)
 				{
 					$fltRate = !is_null($rate['rate_info']['rate']) ? $rate['rate_info']['rate'] : 0;
-					
+
 					switch($k)
 					{
 						case 'mandatory':
@@ -256,16 +256,16 @@ class ShippingCollection extends IsotopeShipping
 								case true:
 									$arrSurcharges[] = $rate['rate_info']['rate'];
 									break;
-								default:						
+								default:
 									$this->shipping_options[$rate['rate_info']['pid']] = $rate['rate_info']['id'];
 									break;
 							}
 						default:
-							break;				
+							break;
 					}
 				}
-			}	
-			
+			}
+
 		}
 
 		if(is_array($arrSurchargesByMemberGroups))
@@ -274,20 +274,20 @@ class ShippingCollection extends IsotopeShipping
 			foreach($arrSurchargesByMemberGroups as $rate)
 			{
 				$arrCountries = deserialize($rate['rate_info']['dest_countries']);
-					
+
 				if(!is_array($arrCountries))
-				{	
+				{
 					$arrCountries = $this->getShippingModuleCountries($rate['rate_info']['pid']);
 				}
-				
+
 				if((is_array($arrCountries) && in_array($arrShippingAddress['country'], $arrCountries)) || !is_array($arrCountries))
-				{			
+				{
 					//determine value ranges
 					foreach($rate['rate_info'] as $k=>$v)
 					{
-						
+
 							$fltRate = !is_null($rate['rate_info']['rate']) ? $rate['rate_info']['rate'] : 0;
-							
+
 							switch($k)
 							{
 								case 'mandatory':
@@ -301,33 +301,33 @@ class ShippingCollection extends IsotopeShipping
 											break;
 									}
 									break;
-									
+
 								default:
-									break;				
+									break;
 							}
-			
+
 					}
-				}	
-				
+				}
+
 			}
-		
+
 		}
-		 		
+
  		$fltTotalSurcharges = array_sum($arrSurcharges);
-		
+
 		$strOptionName = $this->Input->post('shipping_options');
-		
+
 		if($this->Input->post($strOptionName))
 		{
 			$_SESSION['FORM_DATA']['shipping_options'][$strOptionName] = (float)$this->Input->post($strOptionName);
-		}			
-		
+		}
+
 		$fltShippingTotal = $fltBaseRate + $fltTotalSurcharges + array_sum($_SESSION['FORM_DATA']['shipping_options']);
-		
+
 		return $fltShippingTotal;
 	}
 
-		
+
 	/*
 	,
       'fields' => array
@@ -341,77 +341,77 @@ class ShippingCollection extends IsotopeShipping
 	public function getShippingOptions($intModuleId)
 	{
 		$strOptions = is_array($this->shipping_options) && sizeof($this->shipping_options)>0 ? join(',', $this->shipping_options) : 0;
-		
+
 		$objShippingModule = $this->Database->prepare("SELECT sm.*, so.* FROM tl_iso_shipping_modules sm INNER JOIN tl_iso_shipping_options so ON so.pid=sm.id WHERE sm.id=? && so.id IN(" . $strOptions . ") AND so.mandatory!='1'")
 											->execute($intModuleId);
-		
+
 		if($objShippingModule->numRows < 1)
 		{
-			
+
 			return '';
 		}
-		
+
 		$arrShippingOptions = $objShippingModule->fetchAllAssoc();
-		
+
 		//option naming convention - 'shipping_option_' . $rate['rate_info']['pid'] . '_' . $rate['rate_info']['id']
 		foreach($arrShippingOptions as $option)
 		{
-		
+
 			$strOption .= sprintf('<label for="ctrl_shipping_option_%s">%s (+' . $this->Isotope->formatPriceWithCurrency($option['rate']) . ')</label> <input type="checkbox" id="ctrl_shipping_option_%s" name="shipping_option_%s" value="' . $option['rate'] . '" /><br />%s',
-			$option['pid'] . '_' . $option['id'], 
+			$option['pid'] . '_' . $option['id'],
 			$option['name'],
 			$option['pid'] . '_' . $option['id'],
 			$option['pid'] . '_' . $option['id'],
-			($option['description'] ? '<br />(<em>' . $option['description'] . '</em>)' : null)		
+			($option['description'] ? '<br />(<em>' . $option['description'] . '</em>)' : null)
 			);
-		
+
 			$arrOptions[] = 'shipping_option_' . $option['pid'] . '_' . $option['id'];
 		}
-		
+
 		if(is_array($arrOptions))
 		{
 			$strOption .= '<input type="hidden" name="shipping_options" value="' . join(',', $arrOptions) . '" />';
 		}
-		
+
 		return $strOption;
 	}
-	
+
 	protected function getShippingModuleCountries($intModuleId)
 	{
 		$objCountries = $this->Database->prepare("SELECT countries FROM tl_iso_shipping_modules WHERE id=?")
 									   ->limit(1)
 									   ->execute($intModuleId);
-		
+
 		if($objCoutries->numRows < 1)
 		{
 			return null;
 		}
-		
+
 		return deserialize($objCountries->countries);
 	}
 
 	public function moduleOperations()
 	{
 		/*$this->import('BackendUser', 'User');
-	
+
 		if (!$this->User->isAdmin)
 		{
 			return '';
 		}*/
-	
+
 		return '<a href="'.str_replace('tl_iso_shipping_modules','tl_iso_shipping_options',$this->Environment->request).'&amp;id=' . $this->Input->get('id') . '" title="'.specialchars($title).'"'.$attributes.'>test</a>'; //'.$this->generateImage('tablewizard.gif', 'rates table').'</a> ';
 
 	}
-	
+
 	protected function sortByUpperLimits($varValue1, $varValue2)
 	{
 		switch($varValue1['limit_type'])
 		{
 			case 'upper':
 				return $varValue2['limit_type']=='upper' ? ($varValue1['limit_value'] < $varValue2['limit_value'] ? 1 : -1) : null;
-				break;			
+				break;
 		}
-		
+
 	}
 }
 

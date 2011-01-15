@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -147,40 +147,40 @@ class tl_iso_related_products extends Backend
 	public function listRows($row)
 	{
 		$strCategory = $this->Database->prepare("SELECT * FROM tl_iso_related_categories WHERE id=?")->execute($row['category'])->name;
-		
+
 		$strBuffer = '
 <div class="cte_type" style="color:#666966"><strong>' . $GLOBALS['TL_LANG']['tl_iso_related_products']['category'][0] . ':</strong> ' . $strCategory . '</div>';
-		
+
 		$arrProducts = deserialize($row['products']);
 		if (is_array($arrProducts) && count($arrProducts))
 		{
 			$strBuffer .= '<div class="limit_height' . (!$GLOBALS['TL_CONFIG']['doNotCollapse'] ? ' h0' : '') . ' block"><ul>';
-			
+
 			$objProducts = $this->Database->execute("SELECT * FROM tl_iso_products WHERE id IN (" . implode(',', $arrProducts) . ") ORDER BY name");
-			
+
 			while( $objProducts->next() )
 			{
 				$strBuffer .= '<li>' . $objProducts->name . '</li>';
 			}
-			
+
 			$strBuffer .= '</ul></div>' . "\n";
 		}
-		
+
 		return $strBuffer;
 	}
-	
-	
+
+
 	public function initDCA($dc)
 	{
 		$arrCategories = array();
 		$objCategories = $this->Database->prepare("SELECT * FROM tl_iso_related_categories WHERE id NOT IN (SELECT category FROM tl_iso_related_products WHERE pid=" . (strlen($this->Input->get('act')) ? "(SELECT pid FROM tl_iso_related_products WHERE id=?) AND id!=?" : '?') . ")")
 										->execute($dc->id, $dc->id);
-										
+
 		while( $objCategories->next() )
 		{
 			$arrCategories[$objCategories->id] = $objCategories->name;
 		}
-		
+
 		if (!count($arrCategories))
 		{
 			$GLOBALS['TL_DCA']['tl_iso_related_products']['config']['closed'] = true;

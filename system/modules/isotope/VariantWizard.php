@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -62,7 +62,7 @@ class VariantWizard extends Widget
 			case 'maxlength':
 				$this->arrAttributes[$strKey] = ($varValue > 0) ? $varValue : '';
 				break;
-				
+
 			case 'options':
 				$this->arrOptions = deserialize($varValue, true);
 				break;
@@ -81,18 +81,18 @@ class VariantWizard extends Widget
 	{
 		// This widget has no data...
 		$this->varValue = '';
-		
+
 		$this->import('Database');
-		
+
 		$arrOptions = array();
 		$arrValue = deserialize($this->getPost($this->strName));
-		
+
 		if (!is_array($arrValue))
 		{
 			$this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['mandatory'], $this->strLabel));
 			return;
 		}
-		
+
 		foreach( $arrValue as $k => $v )
 		{
 			$arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$k];
@@ -105,27 +105,27 @@ class VariantWizard extends Widget
 					$objDate = new Date($v, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
 					$v = $objDate->tstamp;
 					break;
-			}				
-			
+			}
+
 			if (!strlen($v))
 			{
 				$this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['mandatory'], $this->strLabel));
 			}
-			
+
 			$arrOptions[$k] = $v;
 		}
-		
+
 		$objVariant = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE " . implode('=? AND ', array_keys($arrOptions)) . "=? AND id!=? AND pid=(SELECT pid FROM tl_iso_products WHERE id=?)")->execute(array_merge($arrOptions, array($this->currentRecord, $this->currentRecord)));
-		
+
 		if ($objVariant->numRows)
 		{
 			$this->addError($GLOBALS['TL_LANG']['ERR']['variantDuplicate']);
 		}
-		
+
 		if (!$this->hasErrors())
 		{
 			$arrOptions['tstamp'] = time();
-			
+
 			$this->Database->prepare("UPDATE tl_iso_products %s WHERE id=?")->set($arrOptions)->execute($this->currentRecord);
 		}
 	}
@@ -141,10 +141,10 @@ class VariantWizard extends Widget
 		{
 			return '';
 		}
-		
+
 		$this->import('Database');
 		$objVariant = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE id=?")->limit(1)->execute($this->currentRecord);
-		
+
 		// Begin table
 		$return = '<table cellspacing="0" cellpadding="0" class="tl_variantwizard" id="ctrl_'.$this->strId.'" summary="Variant wizard">
   <tbody>';
@@ -153,19 +153,19 @@ class VariantWizard extends Widget
 		foreach ($this->arrOptions as $option)
 		{
 			$datepicker = '';
-			
+
 			$arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$option['value']];
-			
+
 			switch($arrData['inputType'])
 			{
-				case 'text':	
+				case 'text':
 					$objWidget = new TextField($this->prepareForWidget($arrData, $this->strId.'['.$option['value'].']', $objVariant->{$option['value']}));
-					
+
 					if ($arrData['eval']['datepicker'])
-					{	
+					{
 						$objWidget->id = str_replace('[', '_', $objWidget->id);
-						$objWidget->id = str_replace(']', '_', $objWidget->id);		
-										
+						$objWidget->id = str_replace(']', '_', $objWidget->id);
+
 						$datepicker = '
 			  <script type="text/javascript">
 			  <!--//--><![CDATA[//><!--
@@ -174,20 +174,20 @@ class VariantWizard extends Widget
 			  </script>';
 					}
 					break;
-					
+
 				default:
 					$arrField = $this->prepareForWidget($arrData, $this->strId.'['.$option['value'].']', $objVariant->{$option['value']});
-					
+
 					foreach( $arrField['options'] as $k => $v )
 					{
 						if ($v['value'] == '')
 							unset($arrField['options'][$k]);
 					}
-					
+
 					$objWidget = new SelectMenu($arrField);
 					break;
 			}
-			
+
 			$return .= '
     <tr>
       <td>' . $objWidget->generateLabel() . '&nbsp;</td>

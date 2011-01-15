@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -24,7 +24,7 @@
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
- 
+
 
 class IsotopeDatabase
 {
@@ -102,7 +102,7 @@ class IsotopeDatabase
 				$strMode = 'bottom';
 				continue;
 			}
-			
+
 			if ($strMode == 'top')
 			{
 				$this->strTop .= $strLine;
@@ -121,11 +121,11 @@ class IsotopeDatabase
 		}
 
 		fclose($resFile);
-		
+
 		// Do not use __destruct, because Database object might be destructed first (see http://dev.contao.org/issues/2236)
 		register_shutdown_function(array($this, 'storeFile'));
 	}
-	
+
 
 	/**
 	 * Save the local configuration

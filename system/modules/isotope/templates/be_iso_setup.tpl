@@ -11,7 +11,7 @@
 
 <div class="tl_module_desc">
 <h3><a href="<?php echo $this->script; ?>?do=iso_setup&mod=<?php echo $strModule; ?>" class="navigation <?php echo $strModule; ?>"<?php if ($arrModule['icon']): ?> style="background-image:url('<?php echo $arrModule['icon']; ?>')"<?php endif; ?>><?php echo $arrModule['name']; ?></a></h3>
-<?php echo $arrModule['description']; ?> 
+<?php echo $arrModule['description']; ?>
 </div>
 <?php endforeach; endforeach; ?>
 </div>

@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -30,7 +30,7 @@ $this->loadLanguageFile('subdivisions');
 
 
 /**
- * Table tl_iso_config 
+ * Table tl_iso_config
  */
 $GLOBALS['TL_DCA']['tl_iso_config'] = array
 (
@@ -132,7 +132,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			{invoice_legend:hide},invoiceLogo;
 			{images_legend},gallery,missing_image_placeholder,imageSizes',
 	),
-	
+
 	// Subpalettes
 	'subpalettes' => array
 	(
@@ -371,7 +371,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'inputType'				  => 'imageWatermarkWizard',
 			'options'                 => array('crop', 'proportional', 'box'),
 			'reference'               => &$GLOBALS['TL_LANG']['MSC'],
-			'eval'                    => array('tl_class'=>'clr'),			
+			'eval'                    => array('tl_class'=>'clr'),
 		),
 		'priceCalculateFactor' => array
 		(
@@ -453,21 +453,21 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 
 class tl_iso_config extends Backend
 {
-	
+
 	public function checkPermission($dc)
 	{
 		if (!in_array('googleanalytics', $this->Config->getActiveModules()))
 		{
 			unset($GLOBALS['TL_DCA']['tl_iso_config']['fields']['enableGoogleAnalytics']);
 		}
-		
+
 		if (strlen($this->Input->get('act')))
 		{
 			$GLOBALS['TL_DCA']['tl_iso_config']['config']['closed'] = false;
 		}
-		
+
 		$this->import('BackendUser', 'User');
-		
+
 		// Hide archived (used and deleted) configs
 		if ($this->User->isAdmin)
 		{
@@ -479,10 +479,10 @@ class tl_iso_config extends Backend
 			{
 				$this->User->iso_configs = array(0);
 			}
-			
+
 			$arrConfigs = $this->Database->execute("SELECT id FROM tl_iso_config WHERE id IN ('','" . implode("','", $this->User->iso_configs) . "') AND archive<2")->fetchEach('id');
 		}
-		
+
 		if (!count($arrConfigs))
 		{
 			$arrConfigs = array(0);
@@ -513,19 +513,19 @@ class tl_iso_config extends Backend
 				break;
 		}
 	}
-	
-	
+
+
 	/**
 	 * Record is deleted, archive if necessary
 	 */
 	public function archiveRecord($dc)
 	{
 	}
-	
-	
+
+
 	/**
 	 * Get all checkout fields in tl_iso_config.
-	 * 
+	 *
 	 * @access public
 	 * @param object $dc
 	 * @return array
@@ -533,10 +533,10 @@ class tl_iso_config extends Backend
 	public function getAddressFields($dc)
 	{
 		$arrFields = array();
-		
+
 		$this->loadLanguageFile('tl_iso_addresses');
 		$this->loadDataContainer('tl_iso_addresses');
-		
+
 		foreach( $GLOBALS['TL_DCA']['tl_iso_addresses']['fields'] as $strField => $arrData )
 		{
 			if ($arrData['eval']['feEditable'])
@@ -544,7 +544,7 @@ class tl_iso_config extends Backend
 				$arrFields[$strField] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $strField;
 			}
 		}
-		
+
 		return $arrFields;
 	}
 }

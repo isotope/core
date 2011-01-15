@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -40,7 +40,7 @@ class FieldWizard extends Widget
 	 * @var string
 	 */
 	protected $strTemplate = 'be_widget';
-	
+
 	protected $arrOptions = array();
 
 
@@ -55,11 +55,11 @@ class FieldWizard extends Widget
 		{
 			case 'value':
 				$this->varValue = deserialize($varValue);
-				
+
 //				if (!is_array($this->varValue))
 //				{
 //					$this->varValue = array();
-//					
+//
 //					if ($this->table != '')
 //					{
 //						foreach( $GLOBALS['TL_DCA'][$this->table]['fields'] as $field => $arrData )
@@ -70,14 +70,14 @@ class FieldWizard extends Widget
 //					}
 //				}
 				break;
-			
+
 			case 'options':
 				break;
-				
+
 			case 'table':
 				$this->loadLanguageFile($varValue);
 				$this->loadDataContainer($varValue);
-				
+
 				$this->arrOptions = array();
 				foreach( $GLOBALS['TL_DCA'][$varValue]['fields'] as $name => $arrData )
 				{
@@ -86,7 +86,7 @@ class FieldWizard extends Widget
 						$this->arrOptions[] = $name;
 					}
 				}
-				
+
 				parent::__set($strKey, $varValue);
 				break;
 
@@ -172,7 +172,7 @@ class FieldWizard extends Widget
 
 			$this->redirect(preg_replace('/&(amp;)?cid=[^&]*/i', '', preg_replace('/&(amp;)?' . preg_quote($strCommand, '/') . '=[^&]*/i', '', $this->Environment->request)));
 		}
-		
+
 		// Sort options
 		if ($this->varValue)
 		{
@@ -214,7 +214,7 @@ class FieldWizard extends Widget
       <td><input type="hidden" name="'.$this->strId.'['.$i.'][value]" value="'.$option.'" />'.$GLOBALS['TL_DCA'][$this->table]['fields'][$option]['label'][0].'</td>
       <td><input type="text" name="'.$this->strId.'['.$i.'][label]" id="'.$this->strId.'_label_'.$i.'" class="tl_text_4" tabindex="'.++$tabindex.'" value="'.specialchars($this->varValue[$i]['label']).'" /></td>
       <td><input type="hidden" name="'.$this->strId.'['.$i.'][mandatory]" value="" /><input type="checkbox" name="'.$this->strId.'['.$i.'][mandatory]" id="'.$this->strId.'_mandatory_'.$i.'" class="fw_checkbox" tabindex="'.++$tabindex.'" value="1"'.($this->varValue[$i]['mandatory'] ? ' checked="checked"' : '').' /> <label for="'.$this->strId.'_mandatory_'.$i.'"></label></td>';
-			
+
 			// Add row buttons
 			$return .= '
       <td style="white-space:nowrap; padding-left:3px;">';

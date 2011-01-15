@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -24,11 +24,11 @@
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
- 
+
 
 class ImageWatermarkWizard extends Widget
 {
-	
+
 	/**
 	 * Submit user input
 	 * @var boolean
@@ -46,8 +46,8 @@ class ImageWatermarkWizard extends Widget
 	 * @var array
 	 */
 	protected $arrOptions = array();
-	
-	
+
+
 	/**
 	 * Add specific attributes
 	 * @param string
@@ -74,8 +74,8 @@ class ImageWatermarkWizard extends Widget
 				break;
 		}
 	}
-	
-	
+
+
 	/**
 	 * Return a parameter
 	 * @return string
@@ -94,8 +94,8 @@ class ImageWatermarkWizard extends Widget
 				break;
 		}
 	}
-	
-	
+
+
 	/**
 	 * Trim values
 	 * @param mixed
@@ -104,34 +104,34 @@ class ImageWatermarkWizard extends Widget
 	protected function validator($varInput)
 	{
 		$arrNames = array();
-		
+
 		foreach( $varInput as $k => $size )
 		{
 			if (in_array($size['name'], $arrNames))
 			{
 				$this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['unique'], $GLOBALS['TL_LANG'][$this->strTable]['iwName']));
 			}
-			
+
 			$arrNames[] = $size['name'];
-			
+
 			$this->mandatory = true;
 			$this->rgxp = 'alpha';
 			$this->spaceToUnderscore = true;
 			$size['name'] = parent::validator($size['name']);
-			
+
 			$this->mandatory = false;
 			$this->rgxp = 'digit';
 			$this->spaceToUnderscore = false;
 			$size['width'] = parent::validator($size['width']);
 			$size['height'] = parent::validator($size['height']);
-			
+
 			$varInput[$k] = $size;
 		}
 
 		return $varInput;
 	}
-	
-	
+
+
 	/**
 	 * Generate the widget and return it as string
 	 * @return string
@@ -139,12 +139,12 @@ class ImageWatermarkWizard extends Widget
 	public function generate()
 	{
 		$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/html/backend.js';
-		
+
 		if (!is_array($this->varValue))
 		{
 			$this->varValue = array(array('name'=>'gallery'), array('name'=>'thumbnail'), array('name'=>'medium'), array('name'=>'large'));
 		}
-		
+
 		$arrButtons = array('copy', 'delete');
 		$strCommand = 'cmd_' . $this->strField;
 
@@ -156,14 +156,14 @@ class ImageWatermarkWizard extends Widget
 				case 'copy':
 					$this->varValue = array_duplicate($this->varValue, $this->Input->get('cid'));
 					break;
-					
+
 				case 'delete':
 					$this->varValue = array_delete($this->varValue, $this->Input->get('cid'));
 					break;
 			}
 		}
-		
-		
+
+
 		// Begin table
 		$return .= '<table cellspacing="0" cellpadding="0" class="tl_imagewatermarkwizard" id="ctrl_'.$this->strId.'" summary="Field wizard">
   <thead>
@@ -191,7 +191,7 @@ class ImageWatermarkWizard extends Widget
 									   ((is_array($this->varValue[$i]) && $this->varValue[$i]['mode'] == $arrOption['value']) ? ' selected="selected"' : ''),
 									   $arrOption['label']);
 			}
-			
+
 			foreach (array('tl', 'tc', 'tr', 'bl', 'bc', 'br', 'cc') as $option)
 			{
 				$arrPositions[] = sprintf('<option value="%s"%s>%s</option>',
@@ -199,9 +199,9 @@ class ImageWatermarkWizard extends Widget
 										   ((is_array($this->varValue[$i]) && $this->varValue[$i]['position'] == $option) ? ' selected="selected"' : ''),
 										   $GLOBALS['TL_LANG'][$this->strTable][$option]);
 			}
-			
+
 			$filepicker = $this->generateImage('pickfile.gif', $GLOBALS['TL_LANG']['MSC']['filepicker'], 'style="vertical-align:top; cursor:pointer;" onclick="Backend.pickFile(this.getPrevious())"');
-			
+
 			$return .= '
     <tr>
       <td><input type="text" name="'.$this->strName.'['.$i.'][name]" id="'.$this->strId.'_name_'.$i.'" class="tl_text_4" value="'.specialchars($this->varValue[$i]['name']).'"" /></td>
@@ -210,7 +210,7 @@ class ImageWatermarkWizard extends Widget
       <td><select name="'.$this->strName.'['.$i.'][mode]" id="'.$this->strId.'_mode_'.$i.'" class="tl_select_interval" onfocus="Backend.getScrollOffset();">'.implode(' ', $arrModes).'</select></td>
       <td><input type="text" name="'.$this->strName.'['.$i.'][watermark]" id="'.$this->strId.'_watermark_'.$i.'" class="tl_text_2" value="'.specialchars($this->varValue[$i]['watermark']).'"" />'.$filepicker.'</td>
       <td><select name="'.$this->strName.'['.$i.'][position]" id="'.$this->strId.'_position_'.$i.'" class="tl_select_unit" onfocus="Backend.getScrollOffset();">'.implode(' ', $arrPositions).'</select></td>';
-      		
+
       		$return .= '
       <td>';
 
@@ -222,7 +222,7 @@ class ImageWatermarkWizard extends Widget
 			$return .= '</td>
     </tr>';
 		}
-		
+
 		return $return.'
   </tbody>
   </table>';

@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -73,7 +73,7 @@ class SurchargeWizard extends Widget
 	public function generate()
 	{
 		$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/html/backend.js';
-				
+
 		$this->import('Database');
 
 		//allows us to set which buttons can be enabled for this widget.
@@ -81,7 +81,7 @@ class SurchargeWizard extends Widget
 		{
 			$arrButtons[] = $v;
 		}*/
-		
+
 		$strCommand = 'cmd_' . $this->strField;
 
 		// Change the order
@@ -89,11 +89,11 @@ class SurchargeWizard extends Widget
 		{
 			switch ($this->Input->get($strCommand))
 			{
-				
+
 				case 'copy':
 					$this->varValue = array_duplicate($this->varValue, $this->Input->get('cid'));
 					break;
-				
+
 				case 'up':
 					$this->varValue = array_move_up($this->varValue, $this->Input->get('cid'));
 					break;
@@ -101,25 +101,25 @@ class SurchargeWizard extends Widget
 				case 'down':
 					$this->varValue = array_move_down($this->varValue, $this->Input->get('cid'));
 					break;
-				
+
 				case 'delete':
 					$this->varValue = array_delete($this->varValue, $this->Input->get('cid'));
 					break;
 			}
 		}
-		
+
 		$objTaxClasses = $this->Database->execute("SELECT id, name FROM tl_iso_tax_class");
-		
+
 		if($objTaxClasses->numRows)
 		{
 			$arrTaxClasses = $objTaxClasses->fetchAllAssoc();
 		}
-									
+
 		if(!is_array($arrTaxClasses) || !count($arrTaxClasses))
 		{
 			$arrTaxClasses = array('');
 		}
-						
+
 		// Get new value
 		if ($this->Input->post('FORM_SUBMIT') == $this->strTable)
 		{
@@ -135,8 +135,8 @@ class SurchargeWizard extends Widget
 		{
 			/*foreach($this->varValue as $v)
 			{
-				
-			
+
+
 			}*/
 		}
 
@@ -156,7 +156,7 @@ class SurchargeWizard extends Widget
 		// Add label and return wizard
 		$return .= '<table cellspacing="0" cellpadding="0" class="tl_optionwizard" id="ctrl_'.$this->strId.'" summary="Surcharge wizard">
   <thead>';
-  		
+
 		if(is_array($this->varValue) && count($this->varValue))
   		{
   			$return .= '<tr>
@@ -167,14 +167,14 @@ class SurchargeWizard extends Widget
 				    </tr>
 				</thead>
 		  <tbody>';
-	
+
 			// Add rows
 			for ($i=0; $i<count($this->varValue); $i++)
 			{
 				$arrRow = array();
 				$arrRow = $this->varValue[$i];
 				$blnEditable = false;
-				
+
 				if(is_array($arrRow))
 				{
 					$blnEditable = true;
@@ -183,12 +183,12 @@ class SurchargeWizard extends Widget
 				{
 					continue;
 				}
-				
+
 				$return .= '<tr>';
 				$return .= '	<td>'.$this->varValue[$i]['label'].'<input type="hidden" name="'.$this->strId.'['.$i.'][label]" id="'.$this->strId.'_label_'.$i.'" value="'.$this->varValue[$i]['label'].'" /></td>';
 				$return .= '	<td>'.($blnEditable ? '<input type="text" name="'.$this->strId.'['.$i.'][total_price]" id="'.$this->strId.'_total_price_'.$i.'" class="tl_text_3" value="'.specialchars(round($this->varValue[$i]['total_price'], 2)).'" />' : round($this->varValue[$i]['total_price'], 2)) . '</td>';
 				$options = '';
-	
+
 				$options = '<option value=""'.$this->optionSelected(NULL,$this->varValue[$i]['tax_class']).'>-</option>';
 				// Add Tax Classes
 				foreach ($arrTaxClasses as $v)
@@ -199,13 +199,13 @@ class SurchargeWizard extends Widget
 						$strTaxLabel = $v['name'];
 					}
 				}
-	
+
 				$return .= '
-	
+
 		<td>'.($blnEditable ? '<select name="'.$this->strId.'['.$i.'][tax_class]" class="tl_select_2" onfocus="Backend.getScrollOffset();">'.$options.'</select>' : $strTaxLabel).'</td>';
-				
+
 				$return .= '<td>';
-				
+
 				if(is_array($arrButtons))
 				{
 					foreach ($arrButtons as $button)
@@ -217,7 +217,7 @@ class SurchargeWizard extends Widget
 				{
 					$return .= '&nbsp;';
 				}
-				
+
 				$return .= '</td>
 	  </tr>';
 			}
@@ -234,7 +234,7 @@ class SurchargeWizard extends Widget
 								</tr>
 							';
 		}
-		
+
 		return $return.'
   </tbody>
   </table>';

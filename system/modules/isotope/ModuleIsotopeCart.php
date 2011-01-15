@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -35,7 +35,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 	 */
 	protected $strTemplate = 'mod_iso_cart';
 
-		
+
 	/**
 	 * Display a wildcard in the back end
 	 * @return string
@@ -56,15 +56,15 @@ class ModuleIsotopeCart extends ModuleIsotope
 
 		return parent::generate();
 	}
-	
-	
+
+
 	/**
 	 * Generate module
 	 */
 	protected function compile()
 	{
 		$arrProducts = $this->Isotope->Cart->getProducts();
-		
+
 		if (!count($arrProducts))
 		{
 			$this->Template = new FrontendTemplate('mod_message');
@@ -72,16 +72,16 @@ class ModuleIsotopeCart extends ModuleIsotope
 			$this->Template->message = $GLOBALS['TL_LANG']['MSC']['noItemsInCart'];
 			return;
 		}
-		
+
 		$objTemplate = new IsotopeTemplate($this->iso_cart_layout);
-		
+
 		global $objPage;
 		$strUrl = $this->generateFrontendUrl($objPage->row());
-		
+
 		$blnReload = false;
 		$arrQuantity = $this->Input->post('quantity');
 		$arrProductData = array();
-		
+
 		// Surcharges must be initialized before getProducts() to apply tax_id to each product
 		$arrSurcharges = array();
 		foreach( $this->Isotope->Cart->getSurcharges() as $arrSurcharge )
@@ -94,9 +94,9 @@ class ModuleIsotopeCart extends ModuleIsotope
 				'tax_id'			=> $arrSurcharge['tax_id'],
 			);
 		}
-		
+
 		$arrProducts = $this->Isotope->Cart->getProducts();
-				
+
 		foreach( $arrProducts as $i => $objProduct )
 		{
 			if ($this->Input->get('remove') == $objProduct->cart_id && $this->Isotope->Cart->deleteProduct($objProduct))
@@ -109,7 +109,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 				$this->Isotope->Cart->updateProduct($objProduct, array('product_quantity'=>$arrQuantity[$objProduct->cart_id]));
 				continue; // no need to generate $arrProductData, we reload anyway
 			}
-			
+
 			$arrProductData[] = array_merge($objProduct->getAttributes(), array
 			(
 				'id'				=> $objProduct->id,
@@ -130,15 +130,15 @@ class ModuleIsotopeCart extends ModuleIsotope
 		}
 
 		if ($blnReload)
-		{			
+		{
 			$this->reload();
 		}
-		
+
 		if (count($arrProductData))
 		{
 			$arrProductData[count($arrProductData)-1]['class'] .= ' row_last';
 		}
-							
+
 		// HOOK for adding additional forms into the template
 		if (isset($GLOBALS['TL_HOOKS']['iso_compileCart']) && is_array($GLOBALS['TL_HOOKS']['iso_compileCart']))
 		{
@@ -146,14 +146,14 @@ class ModuleIsotopeCart extends ModuleIsotope
 			{
 				$this->import($callback[0]);
 				$strForm = $this->$callback[0]->$callback[1]($this, $objTemplate, $arrProductData, $arrSurcharges);
-				
+
 				if ($strForm !== false)
 				{
 				 	$arrForms[$name] = $strForm;
 				}
 			}
 		}
-		
+
 		$objTemplate->formId = 'iso_cart_update';
 		$objTemplate->formSubmit = 'iso_cart_update';
 		$objTemplate->action = $this->Environment->request;
@@ -162,7 +162,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 		$objTemplate->cartLabel = $GLOBALS['TL_LANG']['MSC']['cartBT'];
 		$objTemplate->checkoutJumpToLabel = $GLOBALS['TL_LANG']['MSC']['checkoutBT'];
 		$objTemplate->checkoutJumpTo = $this->iso_checkout_jumpTo ? $this->generateFrontendUrl($this->Database->execute("SELECT * FROM tl_page WHERE id={$this->iso_checkout_jumpTo}")->fetchAssoc()) : '';
-		
+
 		$objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
 		$objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
 		$objTemplate->subTotalPrice = $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->subTotal);

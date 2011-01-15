@@ -7,9 +7,9 @@
 -- *                                                        *
 -- **********************************************************
 
--- 
+--
 -- Table `tl_user`
--- 
+--
 
 CREATE TABLE `tl_user` (
   `translation` varchar(2) NOT NULL default '',
@@ -18,9 +18,9 @@ CREATE TABLE `tl_user` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table `tl_iso_labels`
--- 
+--
 
 CREATE TABLE `tl_iso_labels` (
   `id` int(10) unsigned NOT NULL auto_increment,

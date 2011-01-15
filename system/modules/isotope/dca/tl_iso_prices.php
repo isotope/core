@@ -10,12 +10,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -184,19 +184,19 @@ class tl_iso_prices extends Backend
 	{
 		if (!$row['id'])
 			return '';
-			
+
 		$this->import('Isotope');
-		
+
 		$arrTiers = array();
 		$objTiers = $this->Database->execute("SELECT * FROM tl_iso_price_tiers WHERE pid={$row['id']}");
-		
+
 		while( $objTiers->next() )
 		{
 			$arrTiers[] = "{$objTiers->min}={$objTiers->price}";
 		}
-		
+
 		$arrInfo = array('<strong>'.$GLOBALS['TL_LANG']['tl_iso_prices']['price_tiers'][0].':</strong> ' . implode(', ', $arrTiers));
-		
+
 		foreach( $row as $name => $value )
 		{
 			switch( $name )
@@ -205,7 +205,7 @@ class tl_iso_prices extends Backend
 				case 'pid':
 				case 'tstamp':
 					break;
-					
+
 				default:
 					if ($value != '' && $value > 0)
 					{
@@ -214,37 +214,37 @@ class tl_iso_prices extends Backend
 					break;
 			}
 		}
-		
+
 		return '<ul style="margin:0"><li>' . implode('</li><li>', $arrInfo) . '</li></ul>';
 	}
-	
-	
+
+
 	public function loadTiers($varValue, $dc)
 	{
 		if (!$dc->id)
 			return array();
-			
+
 		$arrTiers = array();
 		$objTiers = $this->Database->execute("SELECT * FROM tl_iso_price_tiers WHERE pid={$dc->id} ORDER BY min");
-		
+
 		while( $objTiers->next() )
 		{
 			$arrTiers[] = array($objTiers->min, $objTiers->price);
 		}
-		
+
 		if (!count($arrTiers))
 		{
 			return array(array(1, ''));
 		}
-		
+
 		return $arrTiers;
 	}
-	
-	
+
+
 	public function saveTiers($varValue, $dc)
 	{
 		$arrNew = deserialize($varValue);
-		
+
 		if (!is_array($arrNew) || !count($arrNew))
 		{
 			$this->Database->query("DELETE FROM tl_iso_price_tiers WHERE pid={$dc->id}");
@@ -255,11 +255,11 @@ class tl_iso_prices extends Backend
 			$arrInsert = array();
 			$arrUpdate = array();
 			$arrDelete = $this->Database->execute("SELECT min FROM tl_iso_price_tiers WHERE pid={$dc->id}")->fetchEach('min');
-			
+
 			foreach( $arrNew as $new )
 			{
 				$pos = array_search($new[0], $arrDelete);
-				
+
 				if ($pos === false)
 				{
 					$arrInsert[$new[0]] = $new[1];
@@ -270,12 +270,12 @@ class tl_iso_prices extends Backend
 					unset($arrDelete[$pos]);
 				}
 			}
-			
+
 			if (count($arrDelete))
 			{
 				$this->Database->query("DELETE FROM tl_iso_price_tiers WHERE pid={$dc->id} AND min IN (" . implode(',', $arrDelete) . ")");
 			}
-			
+
 			if (count($arrUpdate))
 			{
 				foreach( $arrUpdate as $min => $price )
@@ -283,7 +283,7 @@ class tl_iso_prices extends Backend
 					$this->Database->prepare("UPDATE tl_iso_price_tiers SET tstamp=$time, price=? WHERE pid={$dc->id} AND min=?")->executeUncached($price, $min);
 				}
 			}
-			
+
 			if (count($arrInsert))
 			{
 				foreach( $arrInsert as $min => $price )
@@ -292,7 +292,7 @@ class tl_iso_prices extends Backend
 				}
 			}
 		}
-		
+
 		return '';
 	}
 }

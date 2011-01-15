@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -24,7 +24,7 @@
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
- 
+
 
 // Load country sub-divisions
 $this->loadLanguageFile('subdivisions');
@@ -236,7 +236,7 @@ $GLOBALS['TL_DCA']['tl_iso_addresses'] = array
 
 /**
  * tl_iso_addresses class.
- * 
+ *
  * @extends Backend
  */
 class tl_iso_addresses extends Backend
@@ -245,29 +245,29 @@ class tl_iso_addresses extends Backend
 	public function renderLabel($arrAddress)
 	{
 		$this->import('Isotope');
-		
+
 		return $this->Isotope->generateAddressString($arrAddress);
 	}
-	
-	
+
+
 	/**
 	 * Make sure only one address is marked as default
 	 */
 	public function updateDefaultAddress($dc=null)
 	{
 		$intId = TL_MODE == 'FE' ? $this->Input->get('id') : $dc->id;
-		
+
 		$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE id=?")->limit(1)->execute($intId);
-		
+
 		if (!$objAddress->numRows)
 			return;
-		
+
 		if ($this->Input->post('isDefaultBilling'))
 		{
 			$this->Database->execute("UPDATE tl_iso_addresses SET isDefaultBilling='' WHERE pid={$objAddress->pid}");
 			$this->Database->execute("UPDATE tl_iso_addresses SET isDefaultBilling='1' WHERE id={$objAddress->id}");
 		}
-		
+
 		if ($this->Input->post('isDefaultShipping'))
 		{
 			$this->Database->execute("UPDATE tl_iso_addresses SET isDefaultShipping='' WHERE pid={$objAddress->pid}");

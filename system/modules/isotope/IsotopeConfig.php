@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -24,27 +24,27 @@
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
- 
+
 
 class IsotopeConfig extends Model
 {
-	
+
 	/**
 	 * Name of the current table
 	 * @var string
 	 */
 	protected $strTable = 'tl_iso_config';
-	
+
 	/**
 	 * Cache
 	 * @var array
 	 */
 	protected $arrCache = array();
-	
-	
+
+
 	/**
 	 * Return custom options or table row data.
-	 * 
+	 *
 	 * @access public
 	 * @param mixed $strKey
 	 * @return mixed
@@ -59,7 +59,7 @@ class IsotopeConfig extends Model
 				{
 					$strField = str_replace('_raw', '', $strKey);
 					$arrFields = array();
-					
+
 					foreach( $this->$strField as $field )
 					{
 						if ($field['enabled'])
@@ -67,35 +67,35 @@ class IsotopeConfig extends Model
 							$arrFields[] = $field['value'];
 						}
 					}
-					
+
 					$this->arrCache[$strKey] = $arrFields;
 				}
-				
+
 				return $this->arrCache[$strKey];
-				
+
 			default:
 				return deserialize(parent::__get($strKey));
 		}
 	}
-	
-	
+
+
 	/**
 	 * Fetch the current store configuration.
-	 * 
+	 *
 	 * @access public
 	 * @return void
 	 */
 	public function __construct($intConfig)
 	{
 		parent::__construct();
-		
+
 		if (!$this->findBy('id', $intConfig))
 		{
 			throw new Exception('Store configuration not found');
 		}
 	}
-	
-	
+
+
 	/**
 	 * Transparently map calls to core config class, because Isotope->Config has the same name.
 	 */

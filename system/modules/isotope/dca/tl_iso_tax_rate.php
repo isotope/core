@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -24,8 +24,8 @@
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
- 
- 
+
+
 // Load country sub-divisions
 $this->loadLanguageFile('subdivisions');
 
@@ -222,50 +222,50 @@ class tl_iso_tax_rate extends Backend
 			$GLOBALS['TL_DCA']['tl_iso_tax_rate']['config']['closed'] = false;
 		}
 	}
-	
-	
+
+
 	public function getSubdivisions(DataContainer $dc)
 	{
 		$objTaxRate = $this->Database->prepare("SELECT country FROM tl_iso_tax_rate WHERE id=?")->limit(1)->execute($dc->id);
-	
+
 		if(!$objTaxRate->numRows || !strlen($objTaxRate->country))
 			return array();
-			
+
 		$this->loadLanguageFile('subdivisions');
-		
+
 		if(array_key_exists($objTaxRate->country, $GLOBALS['TL_LANG']['DIV']))
 		{
 			return $GLOBALS['TL_LANG']['DIV'][$objTaxRate->country];
 		}
-	
+
 		return array();
 	}
-	
-	
+
+
 	public function listRow($row)
 	{
 		$arrRate = deserialize($row['rate']);
-		
+
 		if ($row['config'] && !$arrRate['unit'])
 		{
 			$this->import('Isotope');
 			$this->Isotope->overrideConfig($row['config']);
-			
+
 			$strRate = $this->Isotope->formatPriceWithCurrency($arrRate['value'], false);
 		}
 		else
 		{
 			$strRate = $arrRate['value'] . '%';
 		}
-		
+
 		return sprintf('%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>', $row['name'], $strRate);
 	}
-	
-	
+
+
 	public function addCurrencyRate($dc)
 	{
 		$objConfig = $this->Database->prepare("SELECT tl_iso_config.* FROM tl_iso_tax_rate LEFT OUTER JOIN tl_iso_config ON tl_iso_config.id=tl_iso_tax_rate.config WHERE tl_iso_tax_rate.id=?")->execute($dc->id);
-		
+
 		if ($objConfig->currency)
 		{
 			$GLOBALS['TL_DCA']['tl_iso_tax_rate']['fields']['rate']['options'][''] = $objConfig->currency;

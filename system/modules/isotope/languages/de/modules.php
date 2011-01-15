@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -24,7 +24,7 @@
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
- 
+
 
 /**
  * Backend Modules
@@ -38,7 +38,7 @@ $GLOBALS['TL_LANG']['MOD']['iso_setup']					= array('Shop-Konfiguration', 'Hier 
 
 /**
  * Frontend modules
- */ 
+ */
 $GLOBALS['TL_LANG']['FMD']['isotope']					= 'Isotope eCommerce';
 $GLOBALS['TL_LANG']['FMD']['iso_productfilter']			= array('Produkt Filter', 'Erstellt individuelle Filter für Isotope wie einen Kategorienbaum oder Produktattribut-Filter.');
 $GLOBALS['TL_LANG']['FMD']['iso_productlist']			= array('Produktliste', 'Allgemeines Listen-Modul. Zeigt Produkte oder Werte von Attributen an. Kann mit anderen Modulen (z.B. Filter-Modul) kombiniert werden um die Funktionen zu erweitern.');

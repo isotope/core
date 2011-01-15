@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -123,7 +123,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
 		'default'					=> '{name_legend},name,class,fallback,prices;{description_legend:hide},description;{template_legend},list_template,reader_template;{attributes_legend},attributes,variants;{download_legend:hide},downloads',
 		'regular'					=> '{name_legend},name,class,fallback,prices;{description_legend:hide},description;{template_legend},list_template,reader_template;{attributes_legend},attributes,variants;{download_legend:hide},downloads',
 	),
-	
+
 	// Subpalettes
 	'subpalettes' => array
 	(
@@ -239,12 +239,12 @@ class tl_iso_producttypes extends Backend
 	{
 		if ($this->Input->get('mod') != 'producttypes')
 			return;
-			
+
 		if (strlen($this->Input->get('act')))
 		{
 			$GLOBALS['TL_DCA']['tl_iso_producttypes']['config']['closed'] = false;
 		}
-		
+
 		$this->import('BackendUser', 'User');
 
 		// Hide archived (sold and deleted) product types
@@ -257,7 +257,7 @@ class tl_iso_producttypes extends Backend
 			$arrTypes = is_array($this->User->iso_product_types) ? $this->User->iso_product_types : array(0);
 			$arrProductTypes = $this->Database->execute("SELECT id FROM tl_iso_producttypes WHERE id IN ('','" . implode("','", $arrTypes) . "') AND archive<2")->fetchEach('id');
 		}
-		
+
 		// Set root IDs
 		if (!count($arrProductTypes))
 		{
@@ -289,8 +289,8 @@ class tl_iso_producttypes extends Backend
 				break;
 		}
 	}
-	
-	
+
+
 	/**
 	 * Record is deleted, archive if necessary
 	 */

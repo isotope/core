@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -24,8 +24,8 @@
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
- 
- 
+
+
 /**
  * Palettes
  */
@@ -394,9 +394,9 @@ class tl_module_isotope extends Backend
 			$this->loadDataContainer('tl_iso_products');
 			$this->loadLanguageFile('tl_iso_products');
 		}
-		
+
 		$arrAttributes = array();
-		
+
 		foreach( $GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData )
 		{
 			if ($arrData['attributes']['is_order_by_enabled'])
@@ -404,11 +404,11 @@ class tl_module_isotope extends Backend
 				$arrAttributes[$field] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
 			}
 		}
-				
+
 		return $arrAttributes;
 	}
-	
-	
+
+
 	/**
 	 * getFilterFields function.
 	 *
@@ -422,9 +422,9 @@ class tl_module_isotope extends Backend
 			$this->loadDataContainer('tl_iso_products');
 			$this->loadLanguageFile('tl_iso_products');
 		}
-		
+
 		$arrAttributes = array();
-		
+
 		foreach( $GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData )
 		{
 			if ($arrData['attributes']['is_filterable'])
@@ -432,10 +432,10 @@ class tl_module_isotope extends Backend
 				$arrAttributes[$arrData['attributes']['id']] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
 			}
 		}
-				
+
 		return $arrAttributes;
 	}
-	
+
 
 	//!@todo does almost the same as getSortableAttributes, why do we need both?
 	public function getSortByFields()
@@ -445,9 +445,9 @@ class tl_module_isotope extends Backend
 			$this->loadDataContainer('tl_iso_products');
 			$this->loadLanguageFile('tl_iso_products');
 		}
-		
+
 		$arrAttributes = array();
-		
+
 		foreach( $GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData )
 		{
 			if ($arrData['attributes']['is_order_by_enabled'])
@@ -455,7 +455,7 @@ class tl_module_isotope extends Backend
 				$arrAttributes[$arrData['attributes']['id']] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
 			}
 		}
-				
+
 		return $arrAttributes;
 	}
 
@@ -467,9 +467,9 @@ class tl_module_isotope extends Backend
 			$this->loadDataContainer('tl_iso_products');
 			$this->loadLanguageFile('tl_iso_products');
 		}
-		
+
 		$arrAttributes = array();
-		
+
 		foreach( $GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData )
 		{
 			if ($arrData['attributes']['is_searchable'])
@@ -477,11 +477,11 @@ class tl_module_isotope extends Backend
 				$arrAttributes[$arrData['attributes']['id']] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
 			}
 		}
-				
+
 		return $arrAttributes;
 	}
-	
-	
+
+
 	/**
 	 * Returns a list of enabled payment modules.
 	 *
@@ -492,19 +492,19 @@ class tl_module_isotope extends Backend
 	{
 		$arrPaymentModules = array();
 		$objPaymentModules = $this->Database->execute("SELECT * FROM tl_iso_payment_modules");
-		
+
 		while( $objPaymentModules->next() )
 		{
 			$arrPaymentModules[$objPaymentModules->id] = $objPaymentModules->name;
 		}
-		
+
 		return $arrPaymentModules;
 	}
-	
-	
+
+
 	/**
 	 * getShippingModules function.
-	 * 
+	 *
 	 * @access public
 	 * @return array
 	 */
@@ -512,16 +512,16 @@ class tl_module_isotope extends Backend
 	{
 		$arrModules = array();
 		$objModules = $this->Database->execute("SELECT * FROM tl_iso_shipping_modules WHERE enabled=1");
-		
+
 		while( $objModules->next() )
 		{
 			$arrModules[$objModules->id] = $objModules->name;
 		}
-		
+
 		return $arrModules;
 	}
-	
-	
+
+
 	/**
 	 * Returns a list of listing
 	 *
@@ -532,19 +532,19 @@ class tl_module_isotope extends Backend
 	{
 		$arrListingModules = array();
 		$objListingModules = $this->Database->execute("SELECT id, name FROM tl_module WHERE type='iso_productlist'");
-		
+
 		while( $objListingModules->next() )
 		{
 			$arrListingModules[$objListingModules->id] = $objListingModules->name;
 		}
-		
+
 		return $arrListingModules;
 	}
-	
+
 
 	/**
 	 * getLoginModuleList function.
-	 * 
+	 *
 	 * @access public
 	 * @return array
 	 */
@@ -553,7 +553,7 @@ class tl_module_isotope extends Backend
 		$arrModules = array();
 
 		$objModules = $this->Database->execute("SELECT id, name FROM tl_module WHERE type='login'");
-										  
+
 		while( $objModules->next() )
 		{
 			$arrModules[$objModules->id] = $objModules->name;
@@ -561,13 +561,13 @@ class tl_module_isotope extends Backend
 
 		return $arrModules;
 	}
-	
-	
+
+
 	public function getButtons()
 	{
 		$arrOptions = array();
 		$arrButtons = array();
-		
+
 		if (isset($GLOBALS['TL_HOOKS']['isoButtons']) && is_array($GLOBALS['TL_HOOKS']['isoButtons']))
 		{
 			foreach ($GLOBALS['TL_HOOKS']['isoButtons'] as $callback)
@@ -576,16 +576,16 @@ class tl_module_isotope extends Backend
 				$arrButtons = $this->$callback[0]->$callback[1]($arrButtons);
 			}
 		}
-		
+
 		foreach( $arrButtons as $button => $data )
 		{
 			$arrOptions[$button] = $data['label'];
 		}
-		
+
 		return $arrOptions;
 	}
-	
-	
+
+
 	/**
 	 * Return list templates as array
 	 * @param object
@@ -602,8 +602,8 @@ class tl_module_isotope extends Backend
 
 		return $this->getTemplateGroup('iso_list_', $intPid);
 	}
-	
-	
+
+
 	/**
 	 * Return reader templates as array
 	 * @param object
@@ -620,8 +620,8 @@ class tl_module_isotope extends Backend
 
 		return $this->getTemplateGroup('iso_reader_', $intPid);
 	}
-	
-	
+
+
 	/**
 	 * Return cart templates as array
 	 * @param object
@@ -638,8 +638,8 @@ class tl_module_isotope extends Backend
 
 		return $this->getTemplateGroup('iso_cart_', $intPid);
 	}
-	
-	
+
+
 	/**
 	 * Return filter templates as array
 	 * @param object

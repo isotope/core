@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -35,7 +35,7 @@ $this->loadLanguageFile('tl_iso_products');
  */
 $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 (
-	
+
 	// Config
 	'config' => array
 	(
@@ -47,7 +47,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 			array('tl_iso_orders', 'checkPermission'),
 		),
 	),
-	
+
 	// List
 	'list' => array
 	(
@@ -133,13 +133,13 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 			)
 		)
 	),
-	
+
 	// Palettes
 	'palettes' => array
 	(
 		'default'                     => '{status_legend},status,date_payed,date_shipped;{details_legend},details,notes',
 	),
-	
+
 	// Fields
 	'fields' => array
 	(
@@ -222,7 +222,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 
 /**
  * tl_iso_orders class.
- * 
+ *
  * @extends Backend
  */
 class tl_iso_orders extends Backend
@@ -231,51 +231,51 @@ class tl_iso_orders extends Backend
 	public function __construct()
 	{
 		parent::__construct();
-		
+
 		$this->import('Isotope');
 	}
-	
-	
+
+
 	public function saveSurcharges($varValue, DataContainer $dc)
-	{	
-		
+	{
+
 		$fltTaxTotal = 0.00;
-		
+
 		$arrTaxables = array();
-	
+
 		$arrSurcharges = deserialize($varValue);
-				
+
 		if(!is_array($arrSurcharges) || !count($arrSurcharges))
 			return $varValue;
-			
+
 		$arrAddresses['shipping'] = deserialize($dc->activeRecord->shipping_address);
 		$arrAddresses['billing'] = deserialize($dc->activeRecord->billing_address);
-		
+
 		foreach($arrSurcharges as $surcharge)
-		{			
+		{
 			if($surcharge['tax_class']>0)
 			{
 				$surcharge['before_tax'] = 1;
 				$arrTaxables[] = $surcharge;
 			}
 		}
-		
+
 		foreach( $arrTaxables as $arrSurcharge )
 		{
 			$arrTax = array();
-			
+
 			//skip taxes.
 			if(strpos($arrSurcharge['price'], '%')!==0)
 			{
 				$arrTax = $this->Isotope->calculateTax($arrSurcharge['tax_class'], $arrSurcharge['total_price'], $arrSurcharge['before_tax'], $arrAddresses);
-			}	
-			
+			}
+
 			foreach($arrTax as $tax)
-			{				
+			{
 				$fltTaxTotal += $tax['total_price'];
-			} 
-		}	
-		
+			}
+		}
+
 		foreach($arrSurcharges as $row)
 		{
 			$arrSurchargePrices[] = array
@@ -284,22 +284,22 @@ class tl_iso_orders extends Backend
 				'total_price' 	=> $row['total_price'],
 				'tax_class' 	=> $row['tax_class']
 			);
-			
+
 			$arrTotalPrices[] = $row['total_price'];
 		}
-		
+
 		//step 2: adjust order totals
 		$fltGrandTotal = $dc->activeRecord->subTotal + array_sum($arrTotalPrices) + $fltTaxTotal;
-		
+
 		$this->Database->prepare("UPDATE tl_iso_orders SET grandTotal=? WHERE id=?")->execute($fltGrandTotal, $dc->id);
 
 		return serialize($arrSurchargePrices);
 	}
-	
-		
+
+
 	/**
 	 * Return a string of more buttons for the orders module.
-	 * 
+	 *
 	 * @access public
 	 * @param array $arrRow
 	 * @return string
@@ -311,23 +311,23 @@ class tl_iso_orders extends Backend
 		{
 			return;
 		}
-		
+
 		foreach($GLOBALS['ISO_ORDERS']['operations'] as $k=>$v)
 		{
-			
-			
+
+
 			$objPaymentType = $this->Database->prepare("SELECT type FROM tl_iso_payment_modules WHERE id=?")
 											 ->limit(1)
 											 ->execute($arrRow['payment_id']);
-		
+
 			if($objPaymentType->numRows && $objPaymentType->type==$k)
-			{				
+			{
 					$strClass = $v;
-	
+
 					if (!strlen($strClass) || !$this->classFileExists($strClass))
 						return '';
-						
-					try 
+
+					try
 					{
 						$objModule = new $strClass($arrRow);
 						$strButtons .= $objModule->moduleOperations($arrRow['id']);
@@ -336,14 +336,14 @@ class tl_iso_orders extends Backend
 
 			}
 		}
-		
+
 		return $strButtons;
 	}
 
-		
+
 	/**
 	* getOrderLabel function.
-	* 
+	*
 	* @access public
 	* @param array $row
 	* @param string $label
@@ -353,7 +353,7 @@ class tl_iso_orders extends Backend
 	{
 		$this->Isotope->overrideConfig($row['config_id']);
 		$strBillingAddress = $this->Isotope->generateAddressString(deserialize($row['billing_address']), $this->Isotope->Config->billing_fields);
-		
+
 		return '
 <div style="float:left; width:40px">' . $row['order_id'] . '</div>
 <div style="float:left; width:130px;">' . $this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $row['date']) . '</div>
@@ -361,34 +361,34 @@ class tl_iso_orders extends Backend
 <div style="float:left; width:80px; text-align:right; padding-right:20px">' . $this->Isotope->formatPriceWithCurrency($row['grandTotal']) . '</div>
 <div style="float: left; width:100px">' . $GLOBALS['TL_LANG']['ORDER'][$row['status']] . '</div>';
 	}
-	
-	
+
+
 	public function showDetails($dc, $xlabel)
 	{
 		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE id=?")->limit(1)->execute($dc->id);
-		
+
 		if ($objOrder->numRows)
 		{
 			$GLOBALS['TL_HOOKS']['outputBackendTemplate'][] = array('tl_iso_orders', 'injectPrintCSS');
-			
+
 			return $this->getOrderDescription($objOrder->row());
 		}
-	
+
 		return '';
 	}
-	
-	
+
+
 	protected function getOrderDescription($row)
 	{
 		$this->Input->setGet('uid', $row['uniqid']);
 		$objModule = new ModuleIsotopeOrderDetails($this->Database->execute("SELECT * FROM tl_module WHERE type='iso_orderdetails'"));
 		return $objModule->generate(true);
 	}
-	
+
 
 	/**
 	* Review order page stores temporary information in this table to know it when user is redirected to a payment provider. We do not show this data in backend.
-	* 
+	*
 	* @access public
 	* @param object $dc
 	* @return void
@@ -396,28 +396,28 @@ class tl_iso_orders extends Backend
 	public function checkPermission()
 	{
 		$this->import('BackendUser', 'User');
-		
+
 		$arrConfigs = $this->User->iso_configs;
-		
+
 		if($this->Input->post('tl_limit')!='all')
 			$strLimit = ' LIMIT '.(strlen($this->Input->post('tl_limit')) ? $this->Input->post('tl_limit') : '0, 30');
-				
+
 		if (!is_array($arrConfigs) || !count($arrConfigs))
 			$arrConfigs = array(0);
-		
+
 		$objOrders = $this->Database->execute("SELECT * FROM tl_iso_orders WHERE status!=''" . ($this->User->isAdmin ? '' : " AND config_id IN (".implode(',', $arrConfigs).")".$strLimit));
-		
+
 		$arrIds = $objOrders->fetchEach('id');
-		
+
 		if (!count($arrIds))
 			$arrIds = array(0);
-		
+
 		$GLOBALS['TL_DCA']['tl_iso_orders']['list']['sorting']['root'] = $arrIds;
-		
+
 		if (!$this->User->isAdmin)
 		{
 			unset($GLOBALS['TL_DCA']['tl_iso_orders']['list']['operations']['delete']);
-			
+
 			if ($this->Input->get('act') == 'delete' || (strlen($this->Input->get('id')) && !in_array($this->Input->get('id'), $arrIds)))
 				$this->redirect($this->Environment->script.'?act=error');
 		}
@@ -428,8 +428,8 @@ class tl_iso_orders extends Backend
 	{
 		return str_replace('</head>', '<link rel="stylesheet" type="text/css" href="system/modules/isotope/html/print.css" media="print" />' . "\n</head>", $strBuffer);
 	}
-	
-	
+
+
 	//!@todo orders should be sorted, but by ID or date? also might want to respect user filter/search
 	public function exportOrderEmails(DataContainer $dc)
 	{
@@ -437,20 +437,20 @@ class tl_iso_orders extends Backend
 		{
 			return '';
 		}
-		
+
 		$arrExport = array();
 		$objOrders = $this->Database->execute("SELECT billing_address FROM tl_iso_orders");
 
 		while( $objOrders->next() )
 		{
 			$arrAddress = deserialize($objOrders->billing_address);
-			
+
 			if ($arrAddress['email'])
 			{
 				$arrExport[] = $arrAddress['firstname'] . ' ' . $arrAddress['lastname'] . ' <' . $arrAddress['email'] . '>';
 			}
 		}
-		
+
 		if (!count($arrExport))
 		{
 			return '
@@ -468,8 +468,8 @@ class tl_iso_orders extends Backend
 		header('Expires: 0');
 
 		$output = '';
-		
-		foreach ($arrExport as $export) 
+
+		foreach ($arrExport as $export)
 		{
 			$output .= '"' . $export . '"' . "\n";
 		}
@@ -477,40 +477,40 @@ class tl_iso_orders extends Backend
 		echo $output;
 		exit;
 	}
-	
-	
+
+
 	public function paymentInterface($dc)
 	{
 		$objPayment = $this->Database->execute("SELECT p.* FROM tl_iso_payment_modules p, tl_iso_orders o WHERE p.id=o.payment_id AND o.id=".$dc->id);
-		
+
 		$strClass = $GLOBALS['ISO_PAY'][$objPayment->type];
-		
+
 		if (!$objPayment->numRows || !strlen($strClass) || !$this->classFileExists($strClass))
 		{
 			return '<p class="tl_gerror">'.$GLOBALS['TL_LANG']['ISO']['backendPaymentNotFound'].'</p>';
 		}
-		
+
 		$objModule = new $strClass($objPayment->row());
-		
+
 		return $objModule->backendInterface($dc->id);
 	}
-	
-	
+
+
 	public function shippingInterface($dc)
 	{
 		$objShipping = $this->Database->execute("SELECT p.* FROM tl_iso_shipping_modules p, tl_iso_orders o WHERE p.id=o.shipping_id AND o.id=".$dc->id);
-		
+
 		$strClass = $GLOBALS['ISO_SHIP'][$objShipping->type];
-		
+
 		if (!$objShipping->numRows || !strlen($strClass) || !$this->classFileExists($strClass))
 		{
 			return '<p class="tl_gerror">'.$GLOBALS['TL_LANG']['ISO']['backendShippingNotFound'].'</p>';
 		}
-		
+
 		$objModule = new $strClass($objShipping->row());
-		
+
 		return $objModule->backendInterface($dc->id);
 	}
-	
+
 }
 

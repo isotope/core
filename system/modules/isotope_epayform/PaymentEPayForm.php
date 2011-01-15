@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -24,19 +24,19 @@
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
- 
- 
+
+
 /**
  * Handle Paypal payments
- * 
+ *
  * @extends Payment
  */
 class PaymentEPayForm extends PaymentEPay
 {
-	
+
 	/**
 	 * processPayment function.
-	 * 
+	 *
 	 * @access public
 	 * @return void
 	 */
@@ -44,7 +44,7 @@ class PaymentEPayForm extends PaymentEPay
 	{
 		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->executeUncached($this->Isotope->Cart->id);
 		$intTotal = $this->Isotope->Cart->grandTotal * 100;
-		
+
 		// Check basic order data
 		if ($this->Input->get('orderid') == $objOrder->id && $this->Input->get('cur') == $this->arrCurrencies[$this->Isotope->Config->currency] && $this->Input->get('amount') == (string)$intTotal)
 		{
@@ -54,38 +54,38 @@ class PaymentEPayForm extends PaymentEPay
 				return true;
 			}
 		}
-		
+
 		global $objPage;
 		$this->log('Invalid payment data received.', 'PaymentEPayForm processPayment()', TL_ERROR);
 		$this->redirect($this->generateFrontendUrl($objPage->row(), '/step/process'));
 	}
-	
-	
+
+
 	/**
 	 * Return the payment form.
-	 * 
+	 *
 	 * @access public
 	 * @return string
 	 */
 	public function checkoutForm()
 	{
 		global $objPage;
-		
+
 		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->executeUncached($this->Isotope->Cart->id);
 		$intTotal = round($this->Isotope->Cart->grandTotal, 2) * 100;
-		
+
 		$objTemplate = new IsotopeTemplate('iso_payment_epayform');
-		
+
 		$objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['pay_with_cc'][0];
 		$objTemplate->message = $GLOBALS['TL_LANG']['MSC']['pay_with_cc'][1];
 		$objTemplate->slabel = $GLOBALS['TL_LANG']['MSC']['pay_with_cc'][2];
 		$objTemplate->error = ($this->Input->get('error') == '' ? '' : $GLOBALS['TL_LANG']['MSG']['epay'][$this->Input->get('error')]);
 		$objTemplate->cancelurl = $this->Environment->base . $this->generateFrontendUrl($objPage->row(), '/step/failed');
-		
+
 		$objTemplate->labelCard = $GLOBALS['TL_LANG']['ISO']['cc_num'];
 		$objTemplate->labelDate = $GLOBALS['TL_LANG']['ISO']['cc_exp_date'];
 		$objTemplate->labelCCV = $GLOBALS['TL_LANG']['ISO']['cc_ccv'];
-		
+
 		$strMonths = '';
 		$strYears = '';
 		foreach( range(1, 12) as $month )
@@ -93,7 +93,7 @@ class PaymentEPayForm extends PaymentEPay
 			$month = str_pad($month, 2, '0', STR_PAD_LEFT);
 			$strMonths .= '<option value="' . $month . '">' . $month . '</option>';
 		}
-		
+
 		for( $now=date('Y'), $year=$now; $year<=$now+12; $year++ )
 		{
 			$strYears .= '<option value="' . substr($year, -2) . '">' . $year . '</option>';
@@ -101,7 +101,7 @@ class PaymentEPayForm extends PaymentEPay
 
 		$objTemplate->months = $strMonths;
 		$objTemplate->years = $strYears;
-		
+
 		$objTemplate->merchantnumber = $this->epay_merchantnumber;
 		$objTemplate->orderid = $objOrder->id;
 		$objTemplate->description = $this->Isotope->generateAddressString($this->Isotope->Cart->billingAddress, $this->Isotope->Config->billing_fields);
@@ -111,7 +111,7 @@ class PaymentEPayForm extends PaymentEPay
 		$objTemplate->declineurl = ($GLOBALS['EPAY_RELAY'] ? 'https://relay.ditonlinebetalingssystem.dk/relay/v2/relay.cgi/' : '') . $this->Environment->base . $this->generateFrontendUrl($objPage->row(), '/step/process') . ($GLOBALS['EPAY_RELAY'] ? '?HTTP_COOKIE='.$_SERVER['HTTP_COOKIE'] : '');
 		$objTemplate->instantcapture = ($this->trans_type == 'auth' ? '0' : '1');
 		$objTemplate->md5key = md5($this->arrCurrencies[$this->Isotope->Config->currency] . $intTotal . $objOrder->id . $this->epay_secretkey);
-		
+
 		return $objTemplate->parse();
 	}
 }

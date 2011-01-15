@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -27,7 +27,7 @@
 
 
 /**
- * Table tl_iso_payment_modules 
+ * Table tl_iso_payment_modules
  */
 $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 (
@@ -138,7 +138,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 		'epay_window'			=> '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,trans_type,postsale_mail,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},epay_merchantnumber,epay_secretkey;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
 		'cybersource'			=> '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},cybersource_merchant_id,cybersource_trans_key,cybersource_trans_type;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled'
 	),
-	
+
 	// Subpalettes
 	'subpalettes' => array
 	(
@@ -215,7 +215,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 			'filter'                  => true,
 			'inputType'               => 'checkbox',
 			'eval'					  => array('multiple'=>true, 'tl_class'=>'clr'),
-			'options_callback'		  => array('tl_iso_payment_modules', 'getAllowedCCTypes') 
+			'options_callback'		  => array('tl_iso_payment_modules', 'getAllowedCCTypes')
 		),
 		'trans_type' => array
 		(
@@ -379,7 +379,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 			'exclude'                 => true,
 			'inputType'               => 'textarea',
 			'eval'                    => array('mandatory'=>true, 'style'=>'height: 60px;')
-		),	
+		),
 		'cybersource_trans_type' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['cybersource_trans_type'],
@@ -450,7 +450,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['debug'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
-		),		
+		),
 		'enabled' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['enabled'],
@@ -459,26 +459,26 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 		),
 	)
 );
-  
+
 
 /**
  * tl_iso_payment_modules class.
- * 
+ *
  * @extends Backend
  */
 class tl_iso_payment_modules extends Backend
 {
-	
+
 	public function checkPermission($dc)
 	{
 		if (strlen($this->Input->get('act')))
 		{
 			$GLOBALS['TL_DCA']['tl_iso_payment_modules']['config']['closed'] = false;
 		}
-		
+
 		// Hide archived (used and deleted) modules
 		$arrModules = $this->Database->execute("SELECT id FROM tl_iso_payment_modules WHERE archive<2")->fetchEach('id');
-		
+
 		if (!count($arrModules))
 		{
 			$arrModules = array(0);
@@ -509,8 +509,8 @@ class tl_iso_payment_modules extends Backend
 				break;
 		}
 	}
-	
-	
+
+
 	/**
 	 * Record is deleted, archive if necessary
 	 */
@@ -521,7 +521,7 @@ class tl_iso_payment_modules extends Backend
 
 	/**
 	 * Return a string of more buttons for the current payment module.
-	 * 
+	 *
 	 * @todo Collect additional buttons from payment modules.
 	 * @access public
 	 * @param array $arrRow
@@ -533,70 +533,70 @@ class tl_iso_payment_modules extends Backend
 
 		if (!strlen($strClass) || !$this->classFileExists($strClass))
 			return '';
-			
-		try 
+
+		try
 		{
 			$objModule = new $strClass($arrRow);
 			return $objModule->moduleOperations();
 		}
 		catch (Exception $e) {}
-		
+
 		return '';
 	}
-	
+
 	public function getAllowedCCTypes(DataContainer $dc)
 	{
 		$objModuleType = $this->Database->prepare("SELECT * FROM tl_iso_payment_modules WHERE id=?")->limit(1)->execute($dc->id);
-		
+
 		if(!$objModuleType->numRows)
 			return array();
-		
+
 		$strClass = $GLOBALS['ISO_PAY'][$objModuleType->type];
-		
+
 		if(!strlen($strClass) || !$this->classFileExists($strClass))
 			return array();
-		
+
 		$arrCCTypes = array();
 		$objModule = new $strClass($objModuleType->fetchAssoc());
-			
+
 		foreach($objModule->getAllowedCCTypes() as $type)
 		{
 			$arrCCTypes[$type] = $GLOBALS['TL_LANG']['CCT'][$type];
 		}
-			
+
 		return $arrCCTypes;
 	}
-	
+
 	public function getOrderStatus($dc)
 	{
 		$objModule = $this->Database->prepare("SELECT * FROM tl_iso_payment_modules WHERE id=?")->limit(1)->execute($dc->id);
-		
+
 		$strClass = $GLOBALS['ISO_PAY'][$objModule->type];
 
 		if (!strlen($strClass) || !$this->classFileExists($strClass))
 			return array();
-			
-		try 
+
+		try
 		{
 			$objModule = new $strClass($arrRow);
 			return $objModule->statusOptions();
 		}
 		catch (Exception $e) {}
-		
+
 		return array();
 	}
-	
-	
+
+
 	/**
 	 * Get a list of all payment modules available.
-	 * 
+	 *
 	 * @access public
 	 * @return array
 	 */
 	public function getModules()
 	{
 		$arrModules = array();
-		
+
 		if (is_array($GLOBALS['ISO_PAY']) && count($GLOBALS['ISO_PAY']))
 		{
 			foreach( $GLOBALS['ISO_PAY'] as $module => $class )
@@ -604,14 +604,14 @@ class tl_iso_payment_modules extends Backend
 				$arrModules[$module] = (strlen($GLOBALS['TL_LANG']['PAY'][$module][0]) ? $GLOBALS['TL_LANG']['PAY'][$module][0] : $module);
 			}
 		}
-		
+
 		return $arrModules;
 	}
-	
-	
+
+
 	/**
 	 * Load shipping modules into the DCA. options_callback would not work due to numeric array keys.
-	 * 
+	 *
 	 * @access public
 	 * @param object $dc
 	 * @return void
@@ -619,19 +619,19 @@ class tl_iso_payment_modules extends Backend
 	public function loadShippingModules($dc)
 	{
 		$arrModules = array(-1=>$GLOBALS['TL_LANG']['tl_iso_payment_modules']['no_shipping']);
-		
+
 		$objShippings = $this->Database->execute("SELECT * FROM tl_iso_shipping_modules ORDER BY name");
-		
+
 		while( $objShippings->next() )
 		{
 			$arrModules[$objShippings->id] = $objShippings->name;
 		}
-		
+
 		$GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['shipping_modules']['options'] = array_keys($arrModules);
 		$GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['shipping_modules']['reference'] = $arrModules;
 	}
-	
-	
+
+
 	/**
 	 * Add an image to each record
 	 * @param array

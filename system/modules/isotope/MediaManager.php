@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -41,7 +41,7 @@ class MediaManager extends Widget implements uploadable
 	 */
 	protected $strTemplate = 'be_widget';
 
-	
+
 	/**
 	 * Add specific attributes
 	 * @param string
@@ -54,25 +54,25 @@ class MediaManager extends Widget implements uploadable
 			case 'mandatory':
 				$this->arrConfiguration['mandatory'] = $varValue ? true : false;
 				break;
-				
+
 			case 'value':
 				$this->varValue = deserialize($varValue);
 				break;
-						
+
 			default:
 				parent::__set($strKey, $varValue);
 				break;
 		}
 	}
-	
-	
+
+
 	/**
 	 * Validate input and set value
 	 */
 	public function validate()
 	{
 		$this->varValue = $this->getPost($this->strName);
-		
+
 		// No file specified
 		if (!isset($_FILES[$this->strName]) || empty($_FILES[$this->strName]['name']))
 		{
@@ -88,7 +88,7 @@ class MediaManager extends Widget implements uploadable
 						}
 					}
 				}
-				
+
 				$this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['mandatory'], $this->strLabel));
 			}
 
@@ -103,7 +103,7 @@ class MediaManager extends Widget implements uploadable
 
 		// File was not uploaded
 		if (!is_uploaded_file($file['tmp_name']))
-		{			
+		{
 			if (in_array($file['error'], array(1, 2)))
 			{
 				$this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['filesize'], $maxlength_kb));
@@ -122,7 +122,7 @@ class MediaManager extends Widget implements uploadable
 
 		// File is too big
 		if ($GLOBALS['TL_CONFIG']['maxFileSize'] > 0 && $file['size'] > $GLOBALS['TL_CONFIG']['maxFileSize'])
-		{			
+		{
 			$this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['filesize'], $maxlength_kb));
 			$this->log('File "'.$file['name'].'" exceeds the maximum file size of '.$maxlength_kb.' kB', 'FormFileUpload validate()', TL_ERROR);
 
@@ -135,7 +135,7 @@ class MediaManager extends Widget implements uploadable
 
 		// File type is not allowed
 		if (!in_array(strtolower($pathinfo['extension']), $uploadTypes))
-		{			
+		{
 			$this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['filetype'], $pathinfo['extension']));
 			$this->log('File type "'.$pathinfo['extension'].'" is not allowed to be uploaded ('.$file['name'].')', 'FormFileUpload validate()', TL_ERROR);
 
@@ -168,37 +168,37 @@ class MediaManager extends Widget implements uploadable
 
 		// Save file in the isotope folder
 		if (!$this->hasErrors())
-		{			
+		{
 			$this->import('Files');
 			$this->import('Database');
-			
+
 			$pathinfo = pathinfo($file['name']);
-			
+
 			$strCacheName = standardize($pathinfo['filename']) . '.' . $pathinfo['extension'];
 			$uploadFolder = 'isotope/' . substr($strCacheName, 0, 1);
-			
+
 			if (is_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName) && md5_file($file['tmp_name']) != md5_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName))
 			{
 				$strCacheName = standardize($pathinfo['filename']) . '-' . substr(md5_file($file['tmp_name']), 0, 8) . '.' . $pathinfo['extension'];
 				$uploadFolder = 'isotope/' . substr($strCacheName, 0, 1);
 			}
-			
+
 			// Make sure directory exists
 			$this->Files->mkdir($uploadFolder);
-			
+
 			$this->Files->move_uploaded_file($file['tmp_name'], $uploadFolder . '/' . $strCacheName);
-			
+
 			if (!is_array($this->varValue))
 			{
 				$this->varValue = array();
 			}
-			
+
 			$this->varValue[] = array('src'=>$strCacheName);
 		}
-		
+
 		unset($_FILES[$this->strName]);
     }
-    
+
 	/**
 	 * Generate the widget and return it as string
 	 * @return string
@@ -206,11 +206,11 @@ class MediaManager extends Widget implements uploadable
 	public function generate()
 	{
 		$this->import('Database');
-		
+
 		$GLOBALS['TL_CSS'][] = 'plugins/mediabox/css/mediabox.css';
 		$GLOBALS['TL_JAVASCRIPT'][] = 'plugins/mediabox/js/mediabox.js';
 		$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/html/mediabox_init.js';
-		
+
 		$arrButtons = array('up', 'down', 'delete');
 		$strCommand = 'cmd_' . $this->strField;
 
@@ -231,10 +231,10 @@ class MediaManager extends Widget implements uploadable
 					$this->varValue = array_delete($this->varValue, $this->Input->get('cid'));
 					break;
 			}
-			
+
 			$this->Database->prepare("UPDATE " . $this->strTable . " SET " . $this->strField . "=? WHERE id=?")
 						   ->execute(serialize($this->varValue), $this->currentRecord);
-						   
+
 			$this->redirect(preg_replace('/&(amp;)?cid=[^&]*/i', '', preg_replace('/&(amp;)?' . preg_quote($strCommand, '/') . '=[^&]*/i', '', $this->Environment->request)));
 		}
 
@@ -244,7 +244,7 @@ class MediaManager extends Widget implements uploadable
 						$this->strName,
 						$this->strId,
 						(strlen($this->strClass) ? ' ' . $this->strClass : ''));
-						
+
 		$return = '<div id="ctrl_' . $this->strId . '">';
 
 		if (!is_array($this->varValue) || !count($this->varValue))
@@ -271,9 +271,9 @@ class MediaManager extends Widget implements uploadable
 			{
 				continue;
 			}
-			
+
 			$objFile = new File($strFile);
-			
+
 			if ($objFile->isGdImage)
 			{
 				$strPreview = $this->getImage($strFile, 50, 50, 'box');
@@ -282,7 +282,7 @@ class MediaManager extends Widget implements uploadable
 			{
 				$strPreview = 'system/themes/' . $this->getTheme() . '/images/' . $objFile->icon;
 			}
-			
+
 			$return .= '
   <tr>
     <td class="col_0 col_first"><input type="hidden" name="' . $this->strName . '['.$i.'][src]" value="' . $this->varValue[$i]['src'] . '" /><a href="' . $strFile . '" rel="lightbox"><img src="' . $strPreview . '" alt="' . $this->varValue[$i]['src'] . '" /></a></td>

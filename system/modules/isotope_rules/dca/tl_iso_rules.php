@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -42,7 +42,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			array('IsotopeBackend', 'hideArchivedRecords'),
 		),
 	),
-	
+
 	// List
 	'list' => array
 	(
@@ -94,7 +94,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			)
 		)
 	),
-	
+
 	// Palettes
 	'palettes' => array
 	(
@@ -113,7 +113,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 		'productRestrictions_pages'			=> 'pages',
 		'productRestrictions_products'		=> 'products',
 	),
-	
+
 	// Fields
 	'fields' => array
 	(
@@ -243,7 +243,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			(
 				array('tl_iso_rules', 'saveRestrictions'),
 			),
-		),	
+		),
 		'memberRestrictions' => array
 		(
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['memberRestrictions'],
@@ -270,7 +270,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			(
 				array('tl_iso_rules', 'saveRestrictions'),
 			),
-		),		
+		),
 		'members' => array
 		(
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['members'],
@@ -403,14 +403,14 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 
 class tl_iso_rules extends Backend
 {
-	
+
 	public function __construct()
 	{
 		parent::__construct();
-		
+
 		$this->import('BackendUser', 'User');
 	}
-	
+
 	/**
 	 * Return an array of enabled rules but not the active one.
 	 */
@@ -418,15 +418,15 @@ class tl_iso_rules extends Backend
 	{
 		$arrRules = array();
 		$objRules = $this->Database->execute("SELECT * FROM tl_iso_rules WHERE enabled='1' AND id!={$dc->id}");
-		
+
 		while( $objRules->next() )
 		{
 			$arrRules[$objRules->id] = $objRules->name;
 		}
-		
+
 		return $arrRules;
 	}
-	
+
 
 	/**
 	 * Load rule restrictions from linked table
@@ -435,15 +435,15 @@ class tl_iso_rules extends Backend
 	{
 		return $this->Database->execute("SELECT object_id FROM tl_iso_rule_restrictions WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}'")->fetchEach('object_id');
 	}
-	
-	
+
+
 	/**
 	 * Save rule restrictions to linked table. Only update what necessary to prevent the IDs from increasing on every save_callback
 	 */
 	public function saveRestrictions($varValue, $dc)
 	{
 		$arrNew = deserialize($varValue);
-		
+
 		if (!is_array($arrNew) || !count($arrNew))
 		{
 			$this->Database->query("DELETE FROM tl_iso_rule_restrictions WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}'");
@@ -451,26 +451,26 @@ class tl_iso_rules extends Backend
 		else
 		{
 			$arrOld = $this->Database->execute("SELECT object_id FROM tl_iso_rule_restrictions WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}'")->fetchEach('object_id');
-			
+
 			$arrInsert = array_diff($arrNew, $arrOld);
 			$arrDelete = array_diff($arrOld, $arrNew);
-			
+
 			if (count($arrDelete))
 			{
 				$this->Database->query("DELETE FROM tl_iso_rule_restrictions WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}' AND object_id IN (" . implode(',', $arrDelete) . ")");
 			}
-			
+
 			if (count($arrInsert))
 			{
 				$time = time();
 				$this->Database->query("INSERT INTO tl_iso_rule_restrictions (pid,tstamp,type,object_id) VALUES ({$dc->id}, $time, '{$dc->field}', " . implode("), ({$dc->id}, $time, '{$dc->field}', ", $arrInsert) . ")");
 			}
 		}
-		
+
 		return '';
 	}
-	
-	
+
+
 	/**
 	 * Return the "toggle visibility" button
 	 * @param array
@@ -500,7 +500,7 @@ class tl_iso_rules extends Backend
 		if (!$row['enabled'])
 		{
 			$icon = 'invisible.gif';
-		}		
+		}
 
 		return '<a href="'.$this->addToUrl($href).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
 	}
@@ -526,7 +526,7 @@ class tl_iso_rules extends Backend
 		}
 
 //		$this->createInitialVersion('tl_iso_rules', $intId);
-	
+
 		// Trigger the save_callback
 		if (is_array($GLOBALS['TL_DCA']['tl_iso_rules']['fields']['enabled']['save_callback']))
 		{

@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -24,11 +24,11 @@
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
- 
+
 
 class ShippingWeightTotal extends IsotopeShipping
 {
-	
+
 	/**
 	 * Return an object property
 	 *
@@ -43,35 +43,35 @@ class ShippingWeightTotal extends IsotopeShipping
 			case 'available':
 				if (!parent::__get('available'))
 					return false;
-					
+
 				$objOptions = $this->getOptions();
 				if (!$objOptions->numRows)
 					return false;
-					
+
 				return true;
 				break;
-				
+
 			case 'price':
 				$objOptions = $this->getOptions();
 				return $this->Isotope->calculatePrice($objOptions->rate, $this, 'price', $this->arrData['tax_class']);
-				
+
 			default:
 				return parent::__get($strKey);
 		}
 	}
-	
-	
+
+
 	protected function getOptions()
 	{
 		$fltWeight = $this->Isotope->Cart->getShippingWeight($this->weight_unit);
-		
+
 		return $this->Database->execute("SELECT * FROM tl_iso_shipping_options WHERE pid={$this->id} AND enabled='1' AND (weight_from=0 OR weight_from <= $fltWeight) AND (weight_to=0 OR weight_to >= $fltWeight) ORDER BY rate");
 	}
-		
-	
+
+
 	/**
 	 * Return a list of buttons for the table row in backend
-	 * 
+	 *
 	 * @access public
 	 * @return string
 	 */
@@ -79,11 +79,11 @@ class ShippingWeightTotal extends IsotopeShipping
 	{
 		return '<a href="'.str_replace('tl_iso_shipping_modules', 'tl_iso_shipping_options', $this->Environment->request).'&amp;id=' . $this->id . '">'.$this->generateImage('tablewizard.gif', 'rates table').'</a>';
 	}
-	
-	
+
+
 	/**
 	 * Initialize the module options DCA in backend
-	 * 
+	 *
 	 * @access public
 	 * @return string
 	 */
@@ -92,18 +92,18 @@ class ShippingWeightTotal extends IsotopeShipping
 		$GLOBALS['TL_DCA']['tl_iso_shipping_options']['palettes']['default'] = '{general_legend},name;{config_legend},weight_from,weight_to,rate;{enabled_legend},enabled';
 		$GLOBALS['TL_DCA']['tl_iso_shipping_options']['list']['sorting']['headerFields'][] = 'weight_unit';
 	}
-	
-	
+
+
 	/**
 	 * List module options in backend
-	 * 
+	 *
 	 * @access public
 	 * @return string
 	 */
 	public function moduleOptionsList($row)
 	{
 		$key = $row['enabled'] ? 'published' : 'unpublished';
-		
+
 		return '
 <div class="cte_type ' . $key . '"><strong>' . $row['name'] . '</strong></div>
 <div class="block">

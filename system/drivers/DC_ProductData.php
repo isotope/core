@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -33,19 +33,19 @@ require_once(TL_ROOT . '/system/drivers/DC_Table.php');
  */
 class DC_ProductData extends DC_Table
 {
-	
+
 	/**
 	 * True if we are editing a language
 	 */
 	protected $blnEditLanguage;
-	
-	
+
+
 	/**
 	 * Array of languages for this product's type
 	 */
 	protected $arrLanguages;
-	
-	
+
+
 	/**
 	 * List all records of a particular table
 	 * @return string
@@ -101,7 +101,7 @@ class DC_ProductData extends DC_Table
 				$this->values[] = $filter[1];
 			}
 		}
-		
+
 		$return .= $this->panel();
 		$return .= $this->treeView();
 
@@ -140,8 +140,8 @@ class DC_ProductData extends DC_Table
 
 		return $return;
 	}
-	
-	
+
+
 	/**
 	 * Autogenerate a form to edit the current database record
 	 * @param integer
@@ -166,7 +166,7 @@ class DC_ProductData extends DC_Table
 		$this->procedure[] = 'id=?';
 		$this->blnCreateNewVersion = false;
 		$this->blnEditLanguage = false;
-		
+
 		// Get the current record
 		$objRow = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE id=?")
 								 ->limit(1)
@@ -178,7 +178,7 @@ class DC_ProductData extends DC_Table
 			$this->log('Could not load record ID "'.$this->intId.'" of table "'.$this->strTable.'"!', 'DC_ProductData edit()', TL_ERROR);
 			$this->redirect('contao/main.php?act=error');
 		}
-		
+
 		// ID of a language record is not allowed
 		elseif ($objRow->language != '')
 		{
@@ -197,11 +197,11 @@ class DC_ProductData extends DC_Table
 			if ($this->Input->post('FORM_SUBMIT') == 'tl_language')
 			{
 				$session = $this->Session->getData();
-				
+
 				if (in_array($this->Input->post('language'), $this->arrLanguages))
 				{
 					$session['language'][$this->strTable][$this->intId] = $this->Input->post('language');
-					
+
 					if (strlen($this->Input->post('deleteLanguage')))
 					{
 						$this->Database->prepare("DELETE FROM " . $this->strTable . " WHERE pid=? AND language=?")->execute($this->intId, $this->Input->post('language'));
@@ -212,30 +212,30 @@ class DC_ProductData extends DC_Table
 				{
 					unset($session['language'][$this->strTable][$this->intId]);
 				}
-				
+
 				$this->Session->setData($session);
 				$_SESSION['TL_INFO'] = '';
 				$this->reload();
 			}
-			
+
 			if (strlen($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId]) && in_array($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId], $this->arrLanguages))
 			{
 				$objRow = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE pid=? AND language=?")->execute($this->intId, $_SESSION['BE_DATA']['language'][$this->strTable][$this->intId]);
-				
+
 				if (!$objRow->numRows)
 				{
 					$intId = $this->Database->prepare("INSERT INTO tl_iso_products (pid,tstamp,language) VALUES (?,?,?)")->execute($this->intId, time(), $_SESSION['BE_DATA']['language'][$this->strTable][$this->intId])->insertId;
-					
+
 					$objRow = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE id=?")->execute($intId);
 				}
-				
+
 				$this->objActiveRecord = $objRow;
 				$this->values = array($this->intId, $_SESSION['BE_DATA']['language'][$this->strTable][$this->intId]);
 				$this->procedure = array('pid=?', 'language=?');
 				$this->blnEditLanguage = true;
 			}
 		}
-		
+
 		$this->createInitialVersion($this->strTable, $this->objActiveRecord->id);
 
 		// Change version
@@ -280,7 +280,7 @@ class DC_ProductData extends DC_Table
 
 			$this->reload();
 		}
-		
+
 
 		// Build an array from boxes and rows
 		$this->strPalette = $this->getPalette();
@@ -312,7 +312,7 @@ class DC_ProductData extends DC_Table
 					{
 						unset($boxes[$k][$kk]);
 					}
-					
+
 					elseif ($this->blnEditLanguage && !$GLOBALS['TL_DCA'][$this->strTable]['fields'][$vv]['attributes']['multilingual'])
 					{
 						unset($boxes[$k][$kk]);
@@ -449,14 +449,14 @@ class DC_ProductData extends DC_Table
 </form>';
 			}
 		}
-		
+
 		// Check languages
 		if (is_array($this->arrLanguages) && count($this->arrLanguages))
 		{
 			$arrAvailableLanguages = $this->Database->prepare("SELECT language FROM " . $this->strTable . " WHERE pid=?")->execute($this->intId)->fetchEach('language');
 			$languages = '';
 			$arrLanguageLabels = $this->getLanguages();
-			
+
 			foreach( $this->arrLanguages as $language )
 			{
 				if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId] == $language)
@@ -465,10 +465,10 @@ class DC_ProductData extends DC_Table
 					$_SESSION['TL_INFO'] = array($GLOBALS['TL_LANG']['MSC']['editingLanguage']);
 					continue;
 				}
-				
+
 				$languages .= '<option value="' . $language . '">' . $arrLanguageLabels[$language] . (in_array($language, $arrAvailableLanguages) ? '' : ' ('.$GLOBALS['TL_LANG']['MSC']['undefinedLanguage'].')') . '</option>';
 			}
-			
+
 			$version .= '<form action="'.ampersand($this->Environment->request, true).'" id="tl_language" class="tl_form" method="post" style="float:left;margin-left:20px;">
 <div class="tl_formbody">
 <input type="hidden" name="FORM_SUBMIT" value="tl_language" />
@@ -481,7 +481,7 @@ class DC_ProductData extends DC_Table
 </div>
 </form>';
 		}
-		
+
 		if (strlen($version))
 		{
 			$version = '
@@ -508,7 +508,7 @@ class DC_ProductData extends DC_Table
 
 </div>
 </form>';
-		
+
 		$copyFallback = $this->blnEditLanguage ? '&nbsp;&nbsp;::&nbsp;&nbsp;<a href="'.$this->addToUrl('act=copyFallback').'" class="header_iso_copy" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['copyFallback']).'" accesskey="d" onclick="Backend.getScrollOffset();">'.$GLOBALS['TL_LANG']['MSC']['copyFallback'].'</a>' : '';
 
 		// Begin the form (-> DO NOT CHANGE THIS ORDER -> this way the onsubmit attribute of the form can be changed by a field)
@@ -656,8 +656,8 @@ window.addEvent(\'domready\', function()
 
 		return $return;
 	}
-	
-	
+
+
 	/**
 	 * Autogenerate a form to edit all records that are currently shown
 	 * @param integer
@@ -960,8 +960,8 @@ window.addEvent(\'domready\', function()
 <a href="'.$this->getReferer(true).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'" accesskey="b" onclick="Backend.getScrollOffset();">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
 </div>'.$return;
 	}
-	
-	
+
+
 	/**
 	 * Autogenerate a form to override all records that are currently shown
 	 * @author Based on a patch by Andreas Schempp
@@ -1008,7 +1008,7 @@ window.addEvent(\'domready\', function()
 					$this->blnCreateNewVersion = false;
 
 					$this->createInitialVersion($this->strTable, $this->intId);
-					
+
 					$this->strPalette = trimsplit('[;,]', $this->getPalette());
 
 					// Store all fields
@@ -1211,8 +1211,8 @@ window.addEvent(\'domready\', function()
 <a href="'.$this->getReferer(true).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'" accesskey="b" onclick="Backend.getScrollOffset();">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
 </div>'.$return;
 	}
-	
-	
+
+
 	/**
 	 * List all records of the current table as tree and return them as HTML string
 	 * @return string
@@ -1225,7 +1225,7 @@ window.addEvent(\'domready\', function()
 			return '
 <p class="tl_empty">DC_ProductData does only support sorting mode 5!</p>';
 		}
-		
+
 		$table = $this->strTable;
 		$treeClass = 'tl_tree';
 		$orderBy = $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['fields'];
@@ -1239,14 +1239,14 @@ window.addEvent(\'domready\', function()
 			$this->loadLanguageFile($table);
 			$this->loadDataContainer($table);
 		}
-		
+
 		if (is_array($this->orderBy) && strlen($this->orderBy[0]))
 		{
 			$orderBy = $this->orderBy;
 			$firstOrderBy = $this->firstOrderBy;
 		}
-		
-		
+
+
 		$query = "SELECT id FROM " . $this->strTable . " WHERE pid=0";
 
 		if (count($this->procedure))
@@ -1291,14 +1291,14 @@ window.addEvent(\'domready\', function()
 			$arrLimit = explode(',', $this->limit);
 			$objRowStmt->limit($arrLimit[1], $arrLimit[0]);
 		}
-		
+
 		$objIds = $objRowStmt->execute($this->values);
 
 		if ($objIds->numRows)
 		{
 			$this->root = $objIds->fetchEach('id');
 		}
-		
+
 		// Get session data and toggle nodes
 		if ($this->Input->get('ptg') == 'all')
 		{
@@ -1739,8 +1739,8 @@ window.addEvent(\'domready\', function()
 		$this->Session->setData($session);
 		return $return;
 	}
-	
-	
+
+
 	/**
 	 * Return a select menu that allows to sort results by a particular field
 	 * @return string
@@ -1815,20 +1815,20 @@ window.addEvent(\'domready\', function()
 </select>
 </div>';
 	}
-	
-	
+
+
 	/**
 	 * Copy multilingual fields from fallback to current language
 	 */
 	public function copyFallback()
 	{
 		$session = $this->Session->getData();
-		
+
 		$strLanguage = $session['language'][$this->strTable][$this->intId];
 		$this->strPalette = trimsplit('[;,]', $this->getPalette());
-		
+
 		$arrDuplicate = array();
-		
+
 		foreach( $this->strPalette as $field )
 		{
 			if (is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]) && $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['attributes']['multilingual'])
@@ -1836,14 +1836,14 @@ window.addEvent(\'domready\', function()
 				$arrDuplicate[] = $field;
 			}
 		}
-		
+
 		if (count($arrDuplicate))
 		{
 			$arrRow = $this->Database->execute("SELECT " . implode(',', $arrDuplicate) . " FROM {$this->strTable} WHERE id={$this->intId}")->fetchAssoc();
-			
+
 			$this->Database->prepare("UPDATE {$this->strTable} %s WHERE pid={$this->intId} AND language='$strLanguage'")->set($arrRow)->execute();
 		}
-		
+
 		$this->redirect($this->addToUrl('act=edit'));
 	}
 }

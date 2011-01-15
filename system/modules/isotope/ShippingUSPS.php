@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -24,9 +24,9 @@
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
- 
 
-/** 
+
+/**
  * USPS-specific response rate codes
  */
 $GLOBALS['TL_LANG']['ISO_USPS']['DOMESTIC']['RRC']['FIRST CLASS'] = '0';
@@ -76,37 +76,37 @@ class ShippingUSPS extends IsotopeShipping
 {
 	protected $shipping_options = array();
 
-	/** 
+	/**
 	 * Origin zip code
 	 * string
 	 */
 	protected $strOriginZip;
-	
-	/** 
+
+	/**
 	 * Destination zip code
 	 * string
 	 */
 	protected $strDestinationZip;
-	
-	/** 
+
+	/**
 	 * Destination country
 	 * string
 	 */
 	protected $strDestinationCountry;
-	
-	
+
+
 	protected $strShippingMode;
-	
-	
+
+
 	protected $strAPIMode = 'RateV3';
-	
-	/** 
+
+	/**
 	 * Weight data (pounds, ounces)
 	 * array
 	 */
 	protected $arrWeightData = array();
-	
-	
+
+
 	/**
 	 * Return an object property
 	 *
@@ -115,11 +115,11 @@ class ShippingUSPS extends IsotopeShipping
 	 * @return mixed
 	 */
 	public function __get($strKey)
-	{		
-		
+	{
+
 		switch( $strKey )
 		{
-			case 'price':						
+			case 'price':
 				/*$arrDestination = array
 				(
 					'name'			=> $this->Isotope->Cart->shippingAddress['firstname'] . ' ' . $this->Isotope->Cart->shippingAddress['lastname'],
@@ -147,24 +147,24 @@ class ShippingUSPS extends IsotopeShipping
 					'zip'			=> $this->Isotope->Config->postal,
 					'country'		=> $this->Isotope->Config->country
 				);*/
-				
+
 				$arrCountries = $this->getCountries();
 				$destCountryText = $arrCountries[$this->Isotope->Cart->shippingAddress['country']];
-			
+
 				$this->strOriginZip = $this->Isotope->Config->postal;
 				$this->strDestinationZip = $this->Isotope->Cart->shippingAddress['postal'];
 				$this->strDestinationCountry = $this->Isotope->Cart->shippingAddress['country'];
 				$this->strDestinationCountryText = ($this->Isotope->Cart->shippingAddress['country']=='uk') ? 'Great Britain' : $destCountryText;
 				$this->strShippingMode = $this->getShippingMode($this->Isotope->Cart->shippingAddress['country']);
 				$this->blnDomestic = ($this->Isotope->Cart->shippingAddress['country']!='us' ? false : true);
-				
+
 				if(!$this->blnDomestic)
 				{
 					$this->strAPIMode = 'IntlRate';
 				}
-															
+
 				$fltWeight = $this->Isotope->Cart->getShippingWeight('lb');
-				
+
 				$arrWeight = explode('.', (string)$fltWeight);
 
 				$this->arrWeightData = array
@@ -172,103 +172,103 @@ class ShippingUSPS extends IsotopeShipping
 					'pounds'		=> $arrWeight[0],
 					'ounces'		=> ((integer)$arrWeight[1] / 100) * 16
 				);
-				
+
 				return $this->calculateShippingRate();
 				break;
 		}
-		
+
 		return parent::__get($strKey);
-		
+
 	}
-	
-				
+
+
 	public function calculateShippingRate()
-	{	
+	{
 		if($_SESSION['CHECKOUT_DATA']['shipping']['modules'][$this->id]['price'])	//to avoid calling the CURL multiple times which slows us down.
 		{
 			 $fltPrice = $_SESSION['CHECKOUT_DATA']['shipping']['modules'][$this->id]['price'];
 		}
 		else
-		{					  
-			 $userName = $this->usps_userName; // Your USPS Username  
-			 $orig_zip = $this->strOriginZip; // Zipcode you are shipping FROM  
-			 $dest_zip = $this->strDestinationZip; // Zipcode you are shipping TO 
+		{
+			 $userName = $this->usps_userName; // Your USPS Username
+			 $orig_zip = $this->strOriginZip; // Zipcode you are shipping FROM
+			 $dest_zip = $this->strDestinationZip; // Zipcode you are shipping TO
 			 $dest_country = $this->strDestinationCountry;  // Country you are shipping TO
 			 $dest_countryText = $this->strDestinationCountryText;
 			 $shipMode = $this->strShippingMode;
 			 $blnDomestic = $this->blnDomestic;
-			  
-			 $url = "http://production.shippingapis.com/ShippingAPI.dll";  
-			 $ch = curl_init();  
-			   
-			 // set the target url  
-			 curl_setopt($ch, CURLOPT_URL,$url);  
-			 curl_setopt($ch, CURLOPT_HEADER, 1);  
-			 curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);  
-			   
-			 // parameters to post  
-			 curl_setopt($ch, CURLOPT_POST, 1);  
-			
+
+			 $url = "http://production.shippingapis.com/ShippingAPI.dll";
+			 $ch = curl_init();
+
+			 // set the target url
+			 curl_setopt($ch, CURLOPT_URL,$url);
+			 curl_setopt($ch, CURLOPT_HEADER, 1);
+			 curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+
+			 // parameters to post
+			 curl_setopt($ch, CURLOPT_POST, 1);
+
 			 if(!$blnDomestic) //INTERNATIONAL SHIPPING
 			 {
-			 	$data = "API=" . $this->strAPIMode . "&XML=<" . $this->strAPIMode . "Request USERID=\"" . $userName . "\"><Package ID=\"1ST\"><Pounds>" . $this->arrWeightData['pounds'] . "</Pounds><Ounces>" . $this->arrWeightData['ounces'] . "</Ounces><MailType>Package</MailType><Country>". $dest_countryText  ."</Country></Package></" . $this->strAPIMode . "Request>";  
+			 	$data = "API=" . $this->strAPIMode . "&XML=<" . $this->strAPIMode . "Request USERID=\"" . $userName . "\"><Package ID=\"1ST\"><Pounds>" . $this->arrWeightData['pounds'] . "</Pounds><Ounces>" . $this->arrWeightData['ounces'] . "</Ounces><MailType>Package</MailType><Country>". $dest_countryText  ."</Country></Package></" . $this->strAPIMode . "Request>";
 			 }else
 			 {
-			 	$data = "API=" . $this->strAPIMode . "&XML=<" . $this->strAPIMode . "Request USERID=\"" . $userName . "\"><Package ID=\"1ST\"><Service>" . $this->usps_enabledService . "</Service><ZipOrigination>" . $orig_zip . "</ZipOrigination><ZipDestination>" . $dest_zip . "</ZipDestination><Pounds>" . $this->arrWeightData['pounds'] . "</Pounds><Ounces>" . $this->arrWeightData['ounces'] . "</Ounces><Size>REGULAR</Size><Machinable>TRUE</Machinable></Package></" . $this->strAPIMode . "Request>";  
+			 	$data = "API=" . $this->strAPIMode . "&XML=<" . $this->strAPIMode . "Request USERID=\"" . $userName . "\"><Package ID=\"1ST\"><Service>" . $this->usps_enabledService . "</Service><ZipOrigination>" . $orig_zip . "</ZipOrigination><ZipDestination>" . $dest_zip . "</ZipDestination><Pounds>" . $this->arrWeightData['pounds'] . "</Pounds><Ounces>" . $this->arrWeightData['ounces'] . "</Ounces><Size>REGULAR</Size><Machinable>TRUE</Machinable></Package></" . $this->strAPIMode . "Request>";
 			 }
-			 									
-			// send the POST values to USPS  
-			curl_setopt($ch, CURLOPT_POSTFIELDS,$data);  
-			  
-			$result=curl_exec ($ch);  
-			
-			$data = strstr($result, '<?');  
-							
-			 //echo '<!-- '. $data. ' -->'; // Uncomment to show XML in comments  
-			$xml_parser = xml_parser_create();  
-			xml_parse_into_struct($xml_parser, $data, $vals, $index);  
-			xml_parser_free($xml_parser);  
-			$params = array();  
-			$level = array();  
-			foreach ($vals as $xml_elem) {  
-				if ($xml_elem['type'] == 'open') {  
-					if (array_key_exists('attributes',$xml_elem)) {  
-						list($level[$xml_elem['level']],$extra) = array_values($xml_elem['attributes']);  
-					} else {  
-					$level[$xml_elem['level']] = $xml_elem['tag'];  
-					}  
-				}  
-				if ($xml_elem['type'] == 'complete') {  
-				$start_level = 1;  
-				$php_stmt = '$params';  
-				while($start_level < $xml_elem['level']) {  
-					$php_stmt .= '[$level['.$start_level.']]';  
-					$start_level++;  
-				}  
-				$php_stmt .= '[$xml_elem[\'tag\']] = $xml_elem[\'value\'];';  
-				eval($php_stmt);  
-				}  
-			}  
-			
-			curl_close($ch);  
-			
+
+			// send the POST values to USPS
+			curl_setopt($ch, CURLOPT_POSTFIELDS,$data);
+
+			$result=curl_exec ($ch);
+
+			$data = strstr($result, '<?');
+
+			 //echo '<!-- '. $data. ' -->'; // Uncomment to show XML in comments
+			$xml_parser = xml_parser_create();
+			xml_parse_into_struct($xml_parser, $data, $vals, $index);
+			xml_parser_free($xml_parser);
+			$params = array();
+			$level = array();
+			foreach ($vals as $xml_elem) {
+				if ($xml_elem['type'] == 'open') {
+					if (array_key_exists('attributes',$xml_elem)) {
+						list($level[$xml_elem['level']],$extra) = array_values($xml_elem['attributes']);
+					} else {
+					$level[$xml_elem['level']] = $xml_elem['tag'];
+					}
+				}
+				if ($xml_elem['type'] == 'complete') {
+				$start_level = 1;
+				$php_stmt = '$params';
+				while($start_level < $xml_elem['level']) {
+					$php_stmt .= '[$level['.$start_level.']]';
+					$start_level++;
+				}
+				$php_stmt .= '[$xml_elem[\'tag\']] = $xml_elem[\'value\'];';
+				eval($php_stmt);
+				}
+			}
+
+			curl_close($ch);
+
 			//Need to uppercase the strAPImode
 			$strAPItext = strtoupper($this->strAPIMode) . 'RESPONSE';
-			
-			//echo '<pre>'; print_r($params); echo'</pre>'; // Uncomment to see xml tags  
-			
-			$strRate = ($blnDomestic ? 'RATE' : 'POSTAGE');		
-			$fltPrice = $params[strtoupper($this->strAPIMode) . 'RESPONSE']['1ST'][$GLOBALS['TL_LANG']['ISO_USPS'][$shipMode]['RRC'][$this->usps_enabledService]][$strRate];  
+
+			//echo '<pre>'; print_r($params); echo'</pre>'; // Uncomment to see xml tags
+
+			$strRate = ($blnDomestic ? 'RATE' : 'POSTAGE');
+			$fltPrice = $params[strtoupper($this->strAPIMode) . 'RESPONSE']['1ST'][$GLOBALS['TL_LANG']['ISO_USPS'][$shipMode]['RRC'][$this->usps_enabledService]][$strRate];
 			$_SESSION['CHECKOUT_DATA']['shipping']['modules'][$this->id]['price'] = $fltPrice;
 		}
-		
-		return $fltPrice;  
+
+		return $fltPrice;
 	}
 
 	public function getShippingMode($strCountry)
 	{
 		return ($strCountry=='us' ? 'DOMESTIC' : 'INTERNATIONAL');
 	}
-	
-	
+
+
 }

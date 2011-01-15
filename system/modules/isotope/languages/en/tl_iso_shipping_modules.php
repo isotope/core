@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -56,7 +56,7 @@ $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['usps_enabledService']	= array('U
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['usps_userName']			= array('USPS username','This is the USPS account username that you chose while signing up on the USPS website.');
 
 
-/** 
+/**
  * Legends
  */
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['title_legend']		= 'Title and type';
@@ -87,16 +87,16 @@ $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['flat']					 						= 'Flat';
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['perProduct']			 						= 'Per Product';
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['perItem']				 						= 'Per Item';
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_service']['01'] 	 						= 'Next Day Air';
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_service']['02'] 	 						= '2nd Day Air'; 
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_service']['02'] 	 						= '2nd Day Air';
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_service']['03'] 	 						= 'UPS Ground';
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_service']['07']		 						= 'Worldwide Express'; 
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_service']['07']		 						= 'Worldwide Express';
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_service']['08']		 						= 'Worldwide Expedited';
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_service']['11'] 	 						= 'International Standard';
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_service']['12'] 	 						= '3 Day Select';
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_service']['13'] 	 						= 'Next Day Air Saver';
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_service']['14'] 	 						= 'Next Day Air Early AM';
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_service']['54'] 	 						= 'Worldwide Express Plus'; 
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_service']['65'] 	 						= 'International Saver'; 
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_service']['54'] 	 						= 'Worldwide Express Plus';
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_service']['65'] 	 						= 'International Saver';
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['usps_service']['PARCEL'] 						= 'USPS Parcel Post';
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['usps_service']['PRIORITY'] 						= 'USPS Priority Mail (2-3 days average)';
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['usps_service']['EXPRESS'] 						= 'USPS Express Mail (Overnight Guaranteed)';

@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -33,7 +33,7 @@ $this->loadDataContainer('tl_iso_products');
 $this->loadLanguageFile('tl_iso_products');
 $this->loadLanguageFile('subdivisions');
 
-		
+
 /**
  * Table tl_iso_shipping_modules
  */
@@ -143,7 +143,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
 		'ups'							=> '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},tax_class;{ups_legend},ups_enabledService,ups_accessKey,ups_developersKey,ups_userName,ups_password;{config_legend},weight_unit,countries,subdivisions,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
 		'usps'							=> '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},tax_class;{usps_legend},usps_enabledService,usps_userName;{config_legend},countries,subdivisions,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled'
 	),
-	
+
 	// Subpalettes
 	'subpalettes' => array
 	(
@@ -360,7 +360,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
 
 /**
  * tl_iso_shipping_modules class.
- * 
+ *
  * @extends Backend
  */
 class tl_iso_shipping_modules extends Backend
@@ -372,10 +372,10 @@ class tl_iso_shipping_modules extends Backend
 		{
 			$GLOBALS['TL_DCA']['tl_iso_shipping_modules']['config']['closed'] = false;
 		}
-		
+
 		// Hide archived (used and deleted) modules
 		$arrModules = $this->Database->execute("SELECT id FROM tl_iso_shipping_modules WHERE archive<2")->fetchEach('id');
-		
+
 		if (!count($arrModules))
 		{
 			$arrModules = array(0);
@@ -406,19 +406,19 @@ class tl_iso_shipping_modules extends Backend
 				break;
 		}
 	}
-	
-	
+
+
 	/**
 	 * Record is deleted, archive if necessary
 	 */
 	public function archiveRecord($dc)
 	{
 	}
-	
-	
+
+
 	/**
 	 * Return a string of more buttons for the current shipping module.
-	 * 
+	 *
 	 * @todo Collect additional buttons from shipping modules.
 	 * @access public
 	 * @param array $arrRow
@@ -430,28 +430,28 @@ class tl_iso_shipping_modules extends Backend
 
 		if (!strlen($strClass) || !$this->classFileExists($strClass))
 			return '';
-			
-		try 
+
+		try
 		{
 			$objModule = new $strClass($arrRow);
 			return $objModule->moduleOperations();
 		}
 		catch (Exception $e) {}
-		
+
 		return '';
 	}
-	
-	
+
+
 	/**
 	 * Get a list of all shipping modules available.
-	 * 
+	 *
 	 * @access public
 	 * @return array
 	 */
 	public function getModules()
 	{
 		$arrModules = array();
-		
+
 		if (is_array($GLOBALS['ISO_SHIP']) && count($GLOBALS['ISO_SHIP']))
 		{
 			foreach( $GLOBALS['ISO_SHIP'] as $module => $class )
@@ -459,11 +459,11 @@ class tl_iso_shipping_modules extends Backend
 				$arrModules[$module] = (strlen($GLOBALS['TL_LANG']['SHIP'][$module][0]) ? $GLOBALS['TL_LANG']['SHIP'][$module][0] : $module);
 			}
 		}
-		
+
 		return $arrModules;
 	}
-	
-	
+
+
 	/**
 	 * Add an image to each record
 	 * @param array

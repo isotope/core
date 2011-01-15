@@ -1,14 +1,14 @@
 <div class="<?php echo $this->class; ?> block"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
 
     <?php if ($this->headline): ?>
-    
+
     <<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
     <?php endif; ?>
-    
+
     <div class="formbody">
         <form id="filterForm" action="<?php echo $this->action; ?>" method="get">
             <?php if($this->orderBy): ?>
-            
+
                 <div class="filter_order_by">
                     <label for="order_by"><?php echo $this->orderByLabel; ?></label>
                     <select name="order_by" id="ctrl_order_by" class="select" onchange="filterForm.submit();">
@@ -19,7 +19,7 @@
                 </div>
             <?php endif; ?>
             <?php if ($this->perPage): ?>
-            
+
                 <div class="filter_per_page">
                 <label for="per_page"><?php echo $this->perPageLabel; ?></label>
                 <select name="per_page" id="ctrl_per_page" class="select" onchange="filterForm.submit();">
@@ -43,7 +43,7 @@
                 <input type="text" name="for" id="ctrl_for" class="text" value="<?php echo ($this->for ? $this->for : $this->defaultSearchText); ?>" onblur="if (this.value=='') { this.value='<?php echo $this->defaultSearchText; ?>'; }" onfocus="if (this.value=='<?php echo $this->defaultSearchText; ?>') { this.value=''; this.select(); }" />
                 </div>
             <?php endif; ?>
-            
+
             <div class="submit_container">
                 <button type="submit" name="search" id="ctrl_search"><?php echo $this->searchLabel; ?></button>
             </div>

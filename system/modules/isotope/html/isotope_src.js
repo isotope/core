@@ -6,12 +6,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -23,7 +23,7 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
- 
+
 var Isotope =
 {
 	toggleAddressFields: function(el, id)
@@ -37,7 +37,7 @@ var Isotope =
 			$(id).setStyle('display', 'none');
 		}
 	},
-		
+
 	/**
 	 * Display a "loading data" message
 	 * @param string
@@ -67,8 +67,8 @@ var Isotope =
 		box.setStyle('display', 'block');
 		box.setStyle('top', (scroll + 100) + 'px');
 	},
-	
-	
+
+
 	/**
 	 * Hide the "loading data" message
 	 */
@@ -88,16 +88,16 @@ var Isotope =
 			if (Browser.Engine.trident && Browser.Engine.version < 5) { var sel = $$('select'); for (var i=0; i<sel.length; i++) { sel[i].setStyle('visibility', 'visible'); } }
 		}
 	},
-	
+
 	inlineGallery: function(el, product_id)
 	{
 		$$(('#images_'+product_id+'_mediumsize img')).set('src', el.href);
-		
+
 		$$(('#images_'+product_id+'_gallery div, #images_'+product_id+'_gallery img')).removeClass('active');
-		
+
 		el.addClass('active');
 		el.getChildren().addClass('active');
-		
+
 		return false;
 	}
 };
@@ -113,13 +113,13 @@ var IsotopeProduct = new Class(
 		page: 0,
 		loadMessage: 'Loading product data …'
 	},
-	
+
 	initialize: function(ajaxid, product, attributes, options)
 	{
 		this.setOptions(options);
-		
+
 		this.form = document.id(('iso_product_'+product));
-		
+
 		if (this.form)
 		{
 			this.form.set('send',
@@ -133,11 +133,11 @@ var IsotopeProduct = new Class(
 				onSuccess: function(txt, xml)
 				{
 					Isotope.hideBox();
-					
+
 					JSON.decode(txt).each( function(option)
 					{
 						var oldEl = document.id(option.id);
-						
+
 						if (oldEl)
 						{
 							var newEl = null;
@@ -147,7 +147,7 @@ var IsotopeProduct = new Class(
 									newEl = child;
 								}
 							});
-							
+
 							if (newEl)
 							{
 								if (newEl.get('tag') == 'div' && newEl.hasClass('radio_container'))
@@ -156,12 +156,12 @@ var IsotopeProduct = new Class(
 										option.addEvent('click', this.refresh);
 									}.bind(this))
 								}
-								
+
 								newEl.cloneEvents(oldEl).replaces(oldEl);
 							}
 						}
 					}.bind(this));
-					
+
 					// Update conditionalselect
 					window.fireEvent('ajaxready');
 					$$(('#iso_product_'+product+' p.error')).destroy();
@@ -171,7 +171,7 @@ var IsotopeProduct = new Class(
 					Isotope.hideBox();
 				}
 			});
-			
+
 			attributes.each( function(el,index)
 			{
 				el = $(el);
@@ -188,7 +188,7 @@ var IsotopeProduct = new Class(
 			}.bind(this));
 		}
 	},
-	
+
 	refresh: function(event)
 	{
 		this.form.send();

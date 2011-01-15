@@ -39,14 +39,14 @@ CREATE TABLE `tl_iso_rules` (
   `enabled` char(1) NOT NULL default '',
   `archive` int(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
-  KEY `pid` (`pid`),  
+  KEY `pid` (`pid`),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
- 
+
 --- --------------------------------------------------------
 
--- 
+--
 -- Table `tl_iso_rule_restrictions`
--- 
+--
 
 CREATE TABLE `tl_iso_rule_restrictions` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -61,10 +61,10 @@ CREATE TABLE `tl_iso_rule_restrictions` (
 
 -- --------------------------------------------------------
 
---- 
+---
 --- Table `tl_iso_rule_usage`
---- 
- 
+---
+
 CREATE TABLE `tl_iso_rule_usage` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
@@ -73,14 +73,14 @@ CREATE TABLE `tl_iso_rule_usage` (
   `config_id` int(10) unsigned NOT NULL default '0',
   `member_id` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
-  KEY `pid` (`pid`),  
+  KEY `pid` (`pid`),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table `tl_iso_rule_codes`
--- 
+--
 
 CREATE TABLE `tl_iso_rule_codes` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -89,14 +89,14 @@ CREATE TABLE `tl_iso_rule_codes` (
   `member_id` int(10) unsigned NOT NULL default '0',
   `code` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`id`),
-  KEY `pid` (`pid`),  
+  KEY `pid` (`pid`),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table `tl_module`
--- 
+--
 
 CREATE TABLE `tl_module` (
   `iso_enableCoupons` char(1) NOT NULL default '',

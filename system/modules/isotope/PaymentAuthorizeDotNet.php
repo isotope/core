@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -24,12 +24,12 @@
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
- 
- 
+
+
 class PaymentAuthorizeDotNet extends IsotopePayment
 {
-	
-	
+
+
 	public function __get($strKey)
 	{
 		switch( $strKey )
@@ -42,16 +42,16 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 				}
 				return false;
 				break;
-				
+
 			default:
 				return parent::__get($strKey);
 		}
 	}
-	
-	
+
+
 	/**
 	 * Process payment on confirmation page.
-	 * 
+	 *
 	 * @access public
 	 * @return void
 	 */
@@ -59,7 +59,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 	{
 		if($this->authorize_trans_type!='AUTH_CAPTURE')	//If we're doing auth only on purchases, then they must be completed manually in the backend.
 			return true;
-		
+
 		$authnet_values = array
 		(
 			"x_version"							=> '3.1',
@@ -67,53 +67,53 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 			"x_tran_key"						=> $this->authorize_trans_key,
 			"x_type"							=> 'PRIOR_AUTH_CAPTURE',
 			"x_trans_id"						=> $_SESSION['CHECKOUT_DATA']['AUTHDOTNET']['TRANS_ID'],
-			"x_amount"							=> number_format($fltOrderTotal, 2),	
+			"x_amount"							=> number_format($fltOrderTotal, 2),
 			"x_delim_data"						=> TRUE,
 			"x_delim_char"						=> $this->authorize_delimiter,
 			"x_encap_char"						=> '"',
-			"x_relay_response" 					=> FALSE	
+			"x_relay_response" 					=> FALSE
 		);
-		
+
 		foreach( $authnet_values as $key => $value ) $fields .= "$key=" . urlencode( $value ) . "&";
 
 		$fieldsFinal = rtrim($fields, '&');
-		
+
 		$objRequest = new Request();
 			$objRequest->send('https://'.($this->debug ? 'test' : 'secure')'.authorize.net/gateway/transact.dll', $fields, 'post');
-		
+
 		$arrResponses = $this->handleResponse($objRequest->response);
 		$arrResponseCodes = $this->getResponseCodes($objRequest->response);
-	
+
 		foreach(array_keys($arrResponses) as $key)
 		{
 			$arrReponseLabels[strtolower(standardize($key))] = $key;
-		}		
-	
+		}
+
 		$arrSet['transaction_response'] = $arrResponseCodes['response_type'];
 		$arrSet['transaction_response_code'] = $arrResponseCodes['response_code'];
-				
+
 		switch($arrResponses['transaction-status'])
 		{
-			case 'Approved':				
-				$this->status = $arrResponses['transaction-status'];		
+			case 'Approved':
+				$this->status = $arrResponses['transaction-status'];
 				$this->response = $arrPaymentInfo['authorize_response'];
 				$arrPaymentInfo['transaction_id']	= $arrResponses['transaction-id'];
-				$arrPaymentInfo['authorization_code'] = $arrResponses['authorization-code'];							
+				$arrPaymentInfo['authorization_code'] = $arrResponses['authorization-code'];
 				$arrSet['status'] = 'processing';
 				break;
 			default:
 				$arrSet['status'] = 'on_hold';
 				$blnFail = true;
 				break;
-		
+
 		}
-					
+
 		$arrSet['payment_data'] = serialize($arrPaymentInfo);
-				
+
 		$this->Database->prepare("UPDATE tl_iso_orders %s WHERE id=?")
 					   ->set($arrSet)
-					   ->executeUncached($objOrder->id);			
-		
+					   ->executeUncached($objOrder->id);
+
 		if($blnFail)
 		{
 			global $objPage;
@@ -122,22 +122,22 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 			$this->log('Invalid payment data received - '.$_SESSION['CHECKOUT_DATA']['responseMsg']. ' - Order id: ' . $objOrder->id, 'PaymentAuthorizeDotNet processPayment()', TL_ERROR);
 			$this->redirect($this->Environment->request);
 		}
-		
+
 		$this->redirect($this->addToUrl('step=complete'));
 	}
-		
+
 	public function checkoutForm()
 	{
 		$strBuffer = '';
 		$arrPayment = $this->Input->post('payment');
 		$arrCCTypes = deserialize($this->allowed_cc_types);
-		
+
 		$intStartYear = (integer)date('Y', time()); //2-digit year
-		
+
 		for($i=0;$i<=7;$i++)
 			$arrYears[] = (string)$intStartYear+$i;
 
-		
+
 		$arrFields = array
 		(
 			'card_accountNumber'	=> array
@@ -172,10 +172,10 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 			(
 				'label'			=> &$GLOBALS['TL_LANG']['ISO']['cc_ccv'],
 				'inputType'		=> 'text',
-				'eval'			=> array('mandatory'=>true, 'tableless'=>true)						
+				'eval'			=> array('mandatory'=>true, 'tableless'=>true)
 			),
 		);
-				
+
 		foreach( $arrFields as $field => $arrData )
 		{
 			$strClass = $GLOBALS['TL_FFL'][$arrData['inputType']];
@@ -187,13 +187,13 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 			}
 
 			$objWidget = new $strClass($this->prepareForWidget($arrData, 'payment['.$field.']'));
-			
+
 			// Validate input
 			if ($this->Input->post('FORM_SUBMIT') == 'payment_form')
 			{
-				
+
 				$objWidget->validate();
-				
+
 				if ($objWidget->hasErrors())
 				{
 					$doNotSubmit = true;
@@ -203,14 +203,14 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 			{
 				$doNotSubmit = true;
 			}
-			
+
 			$strBuffer .= $objWidget->parse();
 		}
-		
+
 		if ($this->Input->post('FORM_SUBMIT') == 'payment_form' && !$doNotSubmit)
 		{
 			/*$strCard = $this->validateCreditCard($arrPayment['card_accountNumber']);
-			
+
 			if ($strCard === false)
 			{
 				$strError = '<p class="error">' . $GLOBALS['TL_LANG']['ERR']['cc_num'] . '</p>';
@@ -221,10 +221,10 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 				$strError = '<p class="error">' . $GLOBALS['TL_LANG']['ERR']['cc_match'] . '</p>';
 				$doNotSubmit = true;
 			}*/
-			
+
 			// Get the current order, review page will create the data
 			$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->execute($this->Isotope->Cart->id);
-			
+
 			// for Authorize.net - this would be where to handle logging response information from the server.
 			$authnet_values = array
 			(
@@ -252,57 +252,57 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 				"x_email_address"					=> $this->Isotope->Cart->billingAddress['email'],
 				"x_country"							=> $this->Isotope->Cart->billingAddress['country'],
 				"x_phone"							=> $this->Isotope->Cart->billingAddress['phone'],
-				
+
 			);
-	
+
 			if($this->requireCCV)
 			{
 				$authnet_values["x_card_code"] = $arrPayment['card_cvNumber'];
 			}
-	
+
 			foreach( $authnet_values as $key => $value )
 			{
 				$fields .= "$key=" . urlencode( $value ) . "&";
 			}
-			
+
 			$objRequest = new Request();
 			$objRequest->send('https://'.($this->debug ? 'test' : 'secure')'.authorize.net/gateway/transact.dll', $fields, 'post');
-			
+
 			$arrResponses = $this->handleResponse($objRequest->response);
 			$arrResponseCodes = $this->getResponseCodes($objRequest->response);
-		
+
 			foreach(array_keys($arrResponses) as $key)
 			{
 				$arrReponseLabels[strtolower(standardize($key))] = $key;
-			}		
-		
+			}
+
 			$arrSet['transaction_response'] = $arrResponseCodes['response_type'];
 			$arrSet['transaction_response_code'] = $arrResponseCodes['response_code'];
-					
+
 			switch($arrResponses['transaction-status'])
 			{
-				case 'Approved':				
-					$this->status = $arrResponses['transaction-status'];		
+				case 'Approved':
+					$this->status = $arrResponses['transaction-status'];
 					$this->response = $arrPaymentInfo['authorize_response'];
 					$arrPaymentInfo['transaction_id']	= $arrResponses['transaction-id'];
 					$_SESSION['CHECKOUT_DATA']['AUTHDOTNET']['TRANS_ID'] = $arrResponses['transaction-id'];
-					$arrPaymentInfo['authorization_code'] = $arrResponses['authorization-code'];	
-					$arrSet['payment_data'] = serialize($arrPaymentInfo);						
+					$arrPaymentInfo['authorization_code'] = $arrResponses['authorization-code'];
+					$arrSet['payment_data'] = serialize($arrPaymentInfo);
 					$arrSet['status'] = 'processing';
 					break;
 				default:
 					$arrSet['status'] = 'on_hold';
 					$blnFail = true;
 					break;
-			
+
 			}
-						
-			
-					
+
+
+
 			$this->Database->prepare("UPDATE tl_iso_orders %s WHERE id=?")
 						   ->set($arrSet)
-						   ->executeUncached($objOrder->id);			
-			
+						   ->executeUncached($objOrder->id);
+
 			if($blnFail)
 			{
 				global $objPage;
@@ -311,11 +311,11 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 				$this->log('Invalid payment data received - '.$_SESSION['CHECKOUT_DATA']['responseMsg']. ' - On order id: ' . $objOrder->id, 'PaymentAuthorizeDotNet processPayment()', TL_ERROR);
 				$this->redirect($this->Environment->request);
 			}
-			
+
 			$this->redirect($this->addToUrl('step=complete'));
 		}
-		
-				
+
+
 		return '
 <h2>' . $this->label . '</h2>'.
 ($_SESSION['CHECKOUT_DATA']['responseMsg'] == '' ? '' : '<p class="error message">'.$_SESSION['CHECKOUT_DATA']['responseMsg'].(strlen($strError) ? $strError : '') . '</p>').
@@ -329,13 +329,13 @@ $(\'ctrl_submitOrder\').addEvent(\'click\', function(event){
 	this.disabled=true;
 });
 </script>';
-		
+
 	}
-	
-	
+
+
 	public function capturePayment($intOrderId, $intTransactionId, $fltOrderTotal)
 	{
-		
+
 		$authnet_values = array
 		(
 			"x_version"							=> '3.1',
@@ -343,41 +343,41 @@ $(\'ctrl_submitOrder\').addEvent(\'click\', function(event){
 			"x_tran_key"						=> $this->authorize_trans_key,
 			"x_type"							=> 'PRIOR_AUTH_CAPTURE',
 			"x_trans_id"						=> $intTransactionId,
-			"x_amount"							=> number_format($fltOrderTotal, 2),	
+			"x_amount"							=> number_format($fltOrderTotal, 2),
 			"x_delim_data"						=> TRUE,
 			"x_delim_char"						=> $this->authorize_delimiter,
 			"x_encap_char"						=> '"',
-			"x_relay_response" 					=> FALSE	
+			"x_relay_response" 					=> FALSE
 		);
-		
+
 		foreach( $authnet_values as $key => $value ) $fields .= "$key=" . urlencode( $value ) . "&";
 
 		$fieldsFinal = rtrim($fields, '&');
-						
+
 		$objRequest = new Request();
-		
+
 		$objRequest->send('https://secure.authorize.net/gateway/transact.dll', $fieldsFinal, 'post');
-		
+
 		$arrResponses = $this->handleResponse($objRequest->response);
 		$arrResponseCodes = $this->getResponseCodes($objRequest->response);
-		
+
 		foreach(array_keys($arrResponses) as $key)
 		{
 			$arrReponseLabels[strtolower(standardize($key))] = $key;
 		}
-			
+
 		//$objTemplate->fields = $this->generateResponseString($arrResponses, $arrReponseLabels);
-			
+
 		$arrSet['transaction_response'] = $arrResponses['response_type'];
-		$arrSet['transaction_response_code'] = $arrResponseCodes['response_code'];	
-		
+		$arrSet['transaction_response_code'] = $arrResponseCodes['response_code'];
+
 		$this->status = $GLOBALS['TL_LANG']['MSG']['authorizedotnet'][$arrResponseCodes['response_type']];
 		$this->response = $arrPaymentInfo['authorize_response'];
 		$this->reason = $GLOBALS['TL_LANG']['MSG']['authorizedotnet'][$arrResponseCodes['response_type']][$arrResponseCodes['response_code']];
-					
+
 		switch($arrResponses['transaction-status'])
 		{
-			case 'Approved':				
+			case 'Approved':
 				$arrPaymentInfo['authorization_code'] = $arrResponses['authorization-code'];
 				$arrPaymentInfo['transaction_id']	= $arrResponses['transaction-id'];
 				$arrSet['status'] = 'processing';
@@ -387,62 +387,62 @@ $(\'ctrl_submitOrder\').addEvent(\'click\', function(event){
 				$arrSet['status'] = 'on_hold';
 				$blnFail = true;
 				break;
-		
+
 		}
-			
-		
-				
+
+
+
 		$this->Database->prepare("UPDATE tl_iso_orders %s WHERE id=?")
 					   ->set($arrSet)
-					   ->execute($intOrderId);	
-			
-		
+					   ->execute($intOrderId);
+
+
 		if($blnFail)
 		{
-			global $objPage;	
-					
+			global $objPage;
+
 			$this->log(sprintf("Transaction failure. Transaction Status: %s, Reason: %s", $this->status, $this->reason), 'PaymentAuthorizeDotNet capturePayment()', TL_ERROR);
 			//$this->redirect($this->addToUrl('&error='.$arrResponses['reason']));
 		}
-	
+
 		return true;
 	}
-	
+
 	public function backendInterface($intOrderId)
-	{	
-		
-			
+	{
+
+
 		$objOrderInfo = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE id=?")
 										   ->limit(1)
 										   ->execute($intOrderId);
-				
+
 		$arrOrderInfo = $objOrderInfo->fetchAssoc();
-		
-		
+
+
 		$this->Input->setGet('uid', $arrOrderInfo['uniqid']);
 		$objModule = new ModuleIsotopeOrderDetails($this->Database->execute("SELECT * FROM tl_module WHERE type='iso_orderdetails'"));
-		
+
 		$strOrderDetails = $objModule->generate(true);
-		
-							
+
+
 		$arrPaymentInfo = deserialize($arrOrderInfo['payment_data'], true);
-		
+
 		$this->fltOrderTotal = $arrOrderInfo['grandTotal'];
-				
-		//Get the authorize.net configuration data			
+
+		//Get the authorize.net configuration data
 		$objAIMConfig = $this->Database->prepare("SELECT * FROM tl_iso_payment_modules WHERE type=?")
 														->execute('authorizedotnet');
 		if($objAIMConfig->numRows < 1)
 		{
 			return '<i>' . $GLOBALS['TL_LANG']['MSC']['noPaymentModules'] . '</i>';
 		}
-			
+
 		//Code specific to Authorize.net!
 		$objTemplate = new BackendTemplate('be_pos_terminal');
-									
+
 		if($objAIMConfig->numRows > 0)
 		{
-			
+
 			$delimResponse = "TRUE";
 			$this->authorize_delimiter = $objAIMConfig->authorize_delimiter;
 			$loginID = $objAIMConfig->authorize_login;
@@ -455,7 +455,7 @@ $(\'ctrl_submitOrder\').addEvent(\'click\', function(event){
 
 		if ($this->Input->post('FORM_SUBMIT') == 'be_pos_terminal' && $arrPaymentInfo['transaction_id']!=="0")
 		{
-			
+
 			$authnet_values = array
 			(
 				"x_version"							=> '3.1',
@@ -467,36 +467,36 @@ $(\'ctrl_submitOrder\').addEvent(\'click\', function(event){
 				"x_delim_data"						=> TRUE,
 				"x_delim_char"						=> $this->authorize_delimiter,
 				"x_encap_char"						=> '"',
-				"x_relay_response" 					=> FALSE	
+				"x_relay_response" 					=> FALSE
 			);
-			
+
 
 			foreach( $authnet_values as $key => $value ) $fields .= "$key=" . urlencode( $value ) . "&";
 
 			$fieldsFinal = rtrim($fields, '&');
-						
+
 			$objRequest = new Request();
-			
+
 			$objRequest->send('https://secure.authorize.net/gateway/transact.dll', $fieldsFinal, 'post');
-		
+
 			$arrResponses = $this->handleResponse($objRequest->response);
 			$arrResponseCodes = $this->getResponseCodes($objRequest->response);
-													
+
 			foreach(array_keys($arrResponses) as $key)
 			{
 				$arrReponseLabels[strtolower(standardize($key))] = $key;
 			}
-						
+
 			$objTemplate->fields = $this->generateResponseString($arrResponses, $arrReponseLabels);
-			
+
 			$arrSet['transaction_response'] = $arrResponses['transaction-status'];
-			$arrSet['transaction_response_code'] = $arrPaymentInfo['authorize_response'];		
-					
+			$arrSet['transaction_response_code'] = $arrPaymentInfo['authorize_response'];
+
 			$arrSet['payment_data'] = serialize($arrPaymentInfo);
-				
-		
+
+
 			$strResponse = '<p class="tl_info">' . $arrPaymentInfo['authorize_response'] . ' - ' . $arrResponses['transaction-status'] . '</p>';
-				
+
 			$this->status = $arrResponses['transaction-status'];
 			$this->response = $arrPaymentInfo['authorize_response'];
 			$this->reason = $GLOBALS['TL_LANG']['MSG']['authorizedotnet'][$arrResponseCodes['response_type']][$arrResponseCodes['response_code']];
@@ -504,47 +504,47 @@ $(\'ctrl_submitOrder\').addEvent(\'click\', function(event){
 
 			switch($arrResponses['transaction-status'])
 			{
-				case 'Approved':		
+				case 'Approved':
 					$arrPaymentInfo['authorization_code'] = $arrResponses['authorization-code'];
 					$arrPaymentInfo['transaction_id']	= $arrResponses['transaction-id'];
-					$strPaymentInfo = serialize($arrPaymentInfo);					
-					$arrSet['status'] = 'processing';	
+					$strPaymentInfo = serialize($arrPaymentInfo);
+					$arrSet['status'] = 'processing';
 					$arrSet['payment_data'] = serialize($arrPaymentInfo);
-			
+
 					$this->Database->prepare("UPDATE tl_iso_orders %s WHERE id=?")
 							   ->set($arrSet)
 							   ->execute($intOrderId);
-							   
+
 					break;
 				default:
 					//$arrPaymentInfo['authorize_reason'] = $arrResponses['reason'];
 					//$strPaymentInfo = serialize($arrPaymentInfo);
-				
+
 					$arrSet['status'] = 'on_hold';
-					
-					
-			
+
+
+
 					$this->Database->prepare("UPDATE tl_iso_orders %s WHERE id=?")
 					   ->set($arrSet)
 					   ->execute($intOrderId);
-					   
+
 					$blnFail = true;
 					break;
-			
+
 			}
-				
-			
+
+
 			$objTemplate->isConfirmation = true;
 		}
-			
+
 		$action = ampersand($this->Environment->request, ENCODE_AMPERSANDS);
-		
+
 		//$objTemplate->x_cust_id;
-		
+
 		$objTemplate->formId = 'be_pos_terminal';
-	
+
 		$objTemplate->slabel = specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']);
-		
+
 		$return = '<div id="tl_buttons">
 <input type="hidden" name="FORM_SUBMIT" value="' . $objTemplate->formId . '" />
 <a href="'.ampersand(str_replace('&key=payment', '', $this->Environment->request)).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
@@ -559,26 +559,26 @@ $return .= '</div></div>';
 			$return .= '<div class="tl_formbody_submit"><div class="tl_submit_container">';
 			$return .= '<input type="submit" class="submit" value="' . $objTemplate->slabel . '" /></div></div>';
 		}
-					
+
 		$objTemplate->orderReview = $return;
 		$objTemplate->action = $action;
 		$objTemplate->rowLast = 'row_' . (count($this->editable) + 1) . ((($i % 2) == 0) ? ' odd' : ' even');
-						
-		
-		
+
+
+
 		return $objTemplate->parse();
 	}
-	
+
 	private function generateResponseString($arrResponses, $arrResponseLabels)
 	{
 		$responseString .= '<tr><td align="right" colspan="2">&nbsp;</td></tr>';
-			
+
 			$showReason = true;
-						
+
 			foreach($arrResponses as $k=>$v)
 			{
 				$value = $v;
-				
+
 				switch($k)
 				{
 					case 'transaction-status':
@@ -586,8 +586,8 @@ $return .= '</div></div>';
 						{
 							case "Declined":
 							case "Error":
-								//$value = $this->addAlert($v); 
-								
+								//$value = $this->addAlert($v);
+
 								$showReason = true;
 								break;
 							default:
@@ -600,25 +600,25 @@ $return .= '</div></div>';
 						{
 							continue;
 						}
-						
+
 						//$value = $this->addAlert($v); //. "<br /><a href=\"" . $this->session['infoPage'] . "\"><strong>Click here to review and correct your order</strong></a>";
 						$this->strReason = $value;
 					case 'grand-total':
 						$value = $v;
 						break;
-				}	
-				
+				}
+
 				$responseString .= '<tr><td align="right" width="150">' . $arrResponseLabels[$k] . ':&nbsp;&nbsp;</td><td>' . $value . '</td></tr>';
-				
+
 			}
-			
+
 			return $responseString;
 	}
-	
+
 	private function getResponseCodes($resp)
 	{
 		$resp = str_replace('"', '', $resp);
-		
+
 		$arrResponseString = explode(",",$resp);
 
 		$arrResponseCodes = array
@@ -626,37 +626,37 @@ $return .= '</div></div>';
 			'response_type'	=> $arrResponseString[0],
 			'response_code'	=> $arrResponseString[2]
 		);
-	
+
 		return $arrResponseCodes;
 	}
-	
+
 	private function handleResponse($resp)
 	{
 		$resp = str_replace('"', '', $resp);
-		
+
 		$arrResponseString = explode($this->authorize_delimiter,$resp);
-		
+
 		$i=1;
-		
+
 		$arrFieldsToDisplay = array(1, 2, 3, 4, 5, 7, 9, 10, 11, 14, 15, 16, 17, 18, 19, 20, 22, 23, 24, 47);	//Dynamic Later
-	
+
 		foreach($arrResponseString as $currResponseString)
 		{
 				if(empty($currResponseString)){
 					$i++;
 					continue; //$pstr_trimmed="NO VALUE RETURNED";
 				}
-				
+
 				if(in_array($i, $arrFieldsToDisplay))
 				{
 					$pstr_trimmed = $currResponseString;
-					
+
 					switch($i)
 					{
-						
+
 						case 1:
 							$ftitle = "Transaction Status";
-									
+
 							$fval="";
 							if($pstr_trimmed=="1"){
 								$fval="Approved";
@@ -677,89 +677,89 @@ $return .= '</div></div>';
 						case 5:
 							$ftitle = "Authorization Code";
 							$fval = $pstr_trimmed;
-							break;	
+							break;
 						case 7:
 							$ftitle = "Transaction ID";
 							$fval = $pstr_trimmed;
 							break;
-							
+
 						case 9:
 							$ftitle = "Service";
 							$fval = $pstr_trimmed;
 							break;
-							
+
 						case 10:
 							$ftitle = "Grand Total";
 							$fval = $pstr_trimmed;
 							break;
-							
+
 						case 11:
 							$ftitle = "Payment Method";
 							$fval = ($pstr_trimmed=="CC" ? "Credit Card" : "Other");
 							break;
-						
-						case 14:	
+
+						case 14:
 							$ftitle = "First Name";
 							$fval = $pstr_trimmed;
 							break;
-						
-						case 15:	
+
+						case 15:
 							$ftitle = "Last Name";
 							$fval = $pstr_trimmed;
 							break;
-							
-						case 16:	
+
+						case 16:
 							$ftitle = "Company Name";
 							$fval = $pstr_trimmed;
 							break;
-							
-						case 17:	
+
+						case 17:
 							$ftitle = "Billing Address";
 							$fval = $pstr_trimmed;
 							break;
-							
-						case 18:	
+
+						case 18:
 							$ftitle = "City";
 							$fval = $pstr_trimmed;
 							break;
-							
-						case 19:	
+
+						case 19:
 							$ftitle = "State";
 							$fval = $pstr_trimmed;
 							break;
-							
-						case 20:	
+
+						case 20:
 							$ftitle = "Zip";
 							$fval = $pstr_trimmed;
 							break;
-							
-						case 22:	
+
+						case 22:
 							$ftitle = "Phone";
 							$fval = $pstr_trimmed;
 							break;
-							
-						case 23:	
+
+						case 23:
 							$ftitle = "Fax";
 							$fval = $pstr_trimmed;
 							break;
-							
-						case 24:	
+
+						case 24:
 							$ftitle = "Email";
 							$fval = $pstr_trimmed;
 							break;
 						case 47:
 							$ftitle = "Amount";
-							$fval = $pstr_trimmed;	
+							$fval = $pstr_trimmed;
 						default:
 							break;
 					}
-			
+
 					$arrResponse[strtolower(standardize($ftitle))] = $fval;
 				}
-	
+
 			$i++;
 		}
-	
+
 		return $arrResponse;
 	}
 

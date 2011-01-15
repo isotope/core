@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -33,7 +33,7 @@ $this->loadLanguageFile('tl_iso_products');
 
 
 /**
- * Table tl_iso_attributes 
+ * Table tl_iso_attributes
  */
 $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 (
@@ -59,7 +59,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 			array('tl_iso_attributes', 'deleteAttribute'),
 		),
 	),
-	
+
 	// List
 	'list' => array
 	(
@@ -342,14 +342,14 @@ class tl_iso_attributes extends Backend
 			$GLOBALS['TL_DCA']['tl_iso_attributes']['config']['closed'] = false;
 		}
 	}
-	
-	
+
+
 	public function deleteAttribute($dc)
 	{
 		if ($dc->id)
 		{
 			$objAttribute = $this->Database->execute("SELECT * FROM tl_iso_attributes WHERE id={$dc->id}");
-			
+
 			if ($this->Database->fieldExists($objAttribute->field_name, 'tl_iso_products'))
 			{
 				$this->import('IsotopeDatabase');
@@ -357,14 +357,14 @@ class tl_iso_attributes extends Backend
 			}
 		}
 	}
-	
-	
+
+
 	public function disableFieldName($dc)
 	{
 		if ($dc->id)
 		{
 			$objAttribute = $this->Database->execute("SELECT * FROM tl_iso_attributes WHERE id={$dc->id}");
-			
+
 			if ($objAttribute->field_name != '')
 			{
 				$GLOBALS['TL_DCA']['tl_iso_attributes']['fields']['field_name']['eval']['disabled'] = true;
@@ -372,73 +372,73 @@ class tl_iso_attributes extends Backend
 			}
 		}
 	}
-	
-	
+
+
 	public function createColumn($varValue, $dc)
 	{
 		$varValue = standardize($varValue);
-		
+
 		if (in_array($varValue, array('id', 'pid', 'sorting', 'tstamp')))
 		{
 			throw new Exception($GLOBALS['TL_LANG']['ERR']['systemColumn'], $varValue);
 			return '';
 		}
-		
+
 		if (strlen($varValue) && !$this->Database->fieldExists($varValue, 'tl_iso_products'))
 		{
 			$strType = strlen($GLOBALS['ISO_ATTR'][$this->Input->post('type')]['sql']) ? $this->Input->post('type') : 'text';
-			
+
 			$this->Database->query(sprintf("ALTER TABLE tl_iso_products ADD %s %s", $varValue, $GLOBALS['ISO_ATTR'][$strType]['sql']));
-			
+
 			$this->import('IsotopeDatabase');
 			$this->IsotopeDatabase->add($varValue, $GLOBALS['ISO_ATTR'][$strType]['sql']);
 		}
-		
+
 		return $varValue;
 	}
-	
-	
+
+
 	public function modifyColumn($dc)
 	{
 		$objAttribute = $this->Database->execute("SELECT * FROM tl_iso_attributes WHERE id={$dc->id}");
-		
+
 		if ($objAttribute->field_name != '' && $dc->activeRecord->type != '' && $objAttribute->type != $dc->activeRecord->type && $GLOBALS['ISO_ATTR'][$dc->activeRecord->type]['sql'] != '' && $this->Database->fieldExists($dc->activeRecord->field_name, 'tl_iso_products'))
 		{
 			$this->Database->query(sprintf("ALTER TABLE tl_iso_products MODIFY %s %s", $objAttribute->field_name, $GLOBALS['ISO_ATTR'][$dc->activeRecord->type]['sql']));
 		}
 	}
-	
-	
+
+
 	/**
 	 * Remove field that are not available in certain attributes and could cause unwanted results
 	 */
 	public function cleanFieldValues($dc)
 	{
 		$strPalette = $GLOBALS['TL_DCA']['tl_iso_attributes']['palettes'][$dc->activeRecord->type];
-		
+
 		if ($dc->activeRecord->variant_option && $GLOBALS['TL_DCA']['tl_iso_attributes']['palettes'][$dc->activeRecord->type.'variant_option'] != '')
 		{
 			$strPalette = $GLOBALS['TL_DCA']['tl_iso_attributes']['palettes'][$dc->activeRecord->type.'variant_option'];
 		}
-		
+
 		$arrFields = array_keys($GLOBALS['TL_DCA']['tl_iso_attributes']['fields']);
 		$arrKeep = trimsplit(',|;', $strPalette);
-		
+
 		$arrClean = array_diff($arrFields, $arrKeep);
-		
+
 		$this->Database->execute("UPDATE tl_iso_attributes SET " . implode("='', ", $arrClean) . "='' WHERE id={$dc->id}");
 	}
-	
-	
+
+
 	/**
 	 * Returns an array of select-attributes
 	 */
 	public function getConditionFields($dc)
 	{
 		$this->loadDataContainer('tl_iso_products');
-		
+
 		$arrFields = array();
-		
+
 		foreach( $GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData )
 		{
 			if ($arrData['inputType'] == 'select')
@@ -446,18 +446,18 @@ class tl_iso_attributes extends Backend
 				$arrFields[$field] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
 			}
 		}
-		
+
 		return $arrFields;
 	}
-	
-	
+
+
 	/**
 	 * Returns a list of available rte config files
 	 */
 	public function getRTE($dc)
 	{
 		$arrOptions = array();
-		
+
 		foreach( scan(TL_ROOT . '/system/config') as $file )
 		{
 			if (is_file(TL_ROOT . '/system/config/' . $file) && strpos($file, 'tiny') === 0)
@@ -465,11 +465,11 @@ class tl_iso_attributes extends Backend
 				$arrOptions[] = basename($file, '.php');
 			}
 		}
-		
+
 		return $arrOptions;
 	}
-	
-	
+
+
 	/**
 	 * Validate table and field of foreignKey
 	 */
@@ -478,10 +478,10 @@ class tl_iso_attributes extends Backend
 		if ($varValue != '')
 		{
 			list($strTable, $strField) = explode('.', $varValue);
-			
+
 			$this->Database->query("SELECT $strField FROM $strTable");
 		}
-		
+
 		return $varValue;
 	}
 }

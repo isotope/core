@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -32,16 +32,16 @@ class CreateMember extends Frontend
 	public function addMember($objOrder, $objCart)
 	{
 		$arrData = array();
-		
+
 		//Get order info and email address
 		$arrBilling = $objOrder->billing_address;
-		
+
 		//First check for existing user email. Don't want to duplicate.
 		$objUser = $this->Database->prepare("SELECT * FROM tl_member WHERE email=?")->execute($arrBilling['email']);
-		
+
 		if (!$objUser->numRows)
 		{
-			//Only small difference here. Perhaps work to 
+			//Only small difference here. Perhaps work to
 			$arrData = array
 			(
 				'firstname' 	=> $arrBilling['firstname'],
@@ -56,13 +56,13 @@ class CreateMember extends Frontend
 				'username'		=> $arrBilling['lastname'] . time(),
 				'password'		=> $this->createRandomPassword()
 			);
-			
+
 			$this->createNewMember($arrData);
 		}
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * Create a new member
 	 * @param array
@@ -73,7 +73,7 @@ class CreateMember extends Frontend
 		$arrData['login'] = 1;
 		$arrData['activation'] = md5(uniqid(mt_rand(), true));
 		$arrData['dateAdded'] = $arrData['tstamp'];
-		
+
 		//Find Customers Group... if doesn't exist, create one.
 		$arrGroup = array();
 		$objGroup = $this->Database->execute("SELECT * FROM tl_member_group WHERE name='Customers'");
@@ -85,13 +85,13 @@ class CreateMember extends Frontend
 		{
 			$arrGroup[] = $objGroup->id;
 		}
-		
+
 		// Set default group
 		$arrData['groups'] = serialize($arrGroup);
 
 		// Auto-activate account
 		$arrData['disable'] = 0;
-		
+
 		//Find Customers Newsletter... if doesn't exist, create one.
 		$arrNews = array();
 		$objNews = $this->Database->execute("SELECT * FROM tl_newsletter_channel WHERE title='General Contact'");
@@ -103,7 +103,7 @@ class CreateMember extends Frontend
 		{
 			$arrNews[] = $objNews->id;
 		}
-		
+
 		$arrData['newsletter'] = serialize($arrNews);
 
 		// Create user
@@ -122,31 +122,31 @@ class CreateMember extends Frontend
 		}
 
 	}
-	
-	/** 
-	 * The letter l (lowercase L) and the number 1 
-	 * have been removed, as they can be mistaken 
-	 * for each other. 
+
+	/**
+	 * The letter l (lowercase L) and the number 1
+	 * have been removed, as they can be mistaken
+	 * for each other.
 	 * From http://www.totallyphp.co.uk/code/create_a_random_password.htm
-	 */ 
-	
-	protected function createRandomPassword() { 
-	
-	    $chars = "abcdefghijkmnopqrstuvwxyz023456789"; 
-	    srand((double)microtime()*1000000); 
-	    $i = 0; 
-	    $pass = '' ; 
-	
-	    while ($i <= 7) { 
-	        $num = rand() % 33; 
-	        $tmp = substr($chars, $num, 1); 
-	        $pass = $pass . $tmp; 
-	        $i++; 
-	    } 
-	
-	    return $pass; 
-	
-	} 
+	 */
+
+	protected function createRandomPassword() {
+
+	    $chars = "abcdefghijkmnopqrstuvwxyz023456789";
+	    srand((double)microtime()*1000000);
+	    $i = 0;
+	    $pass = '' ;
+
+	    while ($i <= 7) {
+	        $num = rand() % 33;
+	        $tmp = substr($chars, $num, 1);
+	        $pass = $pass . $tmp;
+	        $i++;
+	    }
+
+	    return $pass;
+
+	}
 
 
 }

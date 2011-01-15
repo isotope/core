@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -24,7 +24,7 @@
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
- 
+
 
 /**
  * Parent class for all payment gateway modules
@@ -47,14 +47,14 @@ abstract class IsotopePayment extends Frontend
 	 * @var array
 	 */
 	protected $arrData = array();
-	
+
 	/**
 	 * Isotope object
 	 * @var object
 	 */
 	protected $Isotope;
-	
-	
+
+
 	/**
 	 * Initialize the object
 	 *
@@ -64,7 +64,7 @@ abstract class IsotopePayment extends Frontend
 	public function __construct($arrRow)
 	{
 		parent::__construct();
-		
+
 		$this->import('Isotope');
 		$this->loadLanguageFile('payment');
 
@@ -73,11 +73,11 @@ abstract class IsotopePayment extends Frontend
 		{
 			$arrRow['allowed_cc_types'] = array_intersect($this->getAllowedCCTypes(), $arrRow['allowed_cc_types']);
 		}
-		
+
 		$this->arrData = $arrRow;
 	}
-	
-	
+
+
 	/**
 	 * Set an object property
 	 *
@@ -105,14 +105,14 @@ abstract class IsotopePayment extends Frontend
 			case 'label':
 				return $this->Isotope->translate($this->arrData['label'] ? $this->arrData['label'] : $this->arrData['name']);
 				break;
-				
+
 			case 'available':
 				if (!$this->enabled && !BE_USER_LOGGED_IN)
 					return false;
-				
+
 				if (($this->guests && FE_USER_LOGGED_IN) || ($this->protected && !FE_USER_LOGGED_IN))
 					return false;
-				
+
 				if ($this->protected)
 				{
 					$this->import('FrontendUser', 'User');
@@ -120,18 +120,18 @@ abstract class IsotopePayment extends Frontend
 					if (!is_array($arrGroups) || !count($arrGroups) || !count(array_intersect($arrGroups, $this->User->groups)))
 						return false;
 				}
-				
+
 				if (($this->minimum_total > 0 && $this->minimum_total > $this->Isotope->Cart->subTotal) || ($this->maximum_total > 0 && $this->maximum_total < $this->Isotope->Cart->subTotal))
 					return false;
-					
+
 				$arrCountries = deserialize($this->countries);
 				if(is_array($arrCountries) && count($arrCountries) && !in_array($this->Isotope->Cart->billingAddress['country'], $arrCountries))
 					return false;
-					
+
 				$arrShippings = deserialize($this->shipping_modules);
 				if (is_array($arrShippings) && count($arrShippings) && ((!$this->Isotope->Cart->hasShipping && !in_array(-1, $arrShippings)) || ($this->Isotope->Cart->hasShipping && !in_array($this->Isotope->Cart->Shipping->id, $arrShippings))))
 					return false;
-					
+
 				$arrTypes = deserialize($this->product_types);
 				if (is_array($arrTypes) && count($arrTypes))
 				{
@@ -142,14 +142,14 @@ abstract class IsotopePayment extends Frontend
 							return false;
 					}
 				}
-				
+
 				return true;
 				break;
-				
+
 			case 'price':
 				$strPrice = $this->arrData['price'];
 				$blnPercentage = substr($strPrice, -1) == '%' ? true : false;
-				
+
 				if ($blnPercentage)
 				{
 					$fltSurcharge = (float)substr($strPrice, 0, -1);
@@ -159,22 +159,22 @@ abstract class IsotopePayment extends Frontend
 				{
 					$fltPrice = (float)$strPrice;
 				}
-				
+
 				return $this->Isotope->calculatePrice($fltPrice, $this, 'price', $this->arrData['tax_class']);
 				break;
-				
+
 			case 'surcharge':
 				return substr($this->arrData['price'], -1) == '%' ? $this->arrData['price'] : '';
 				break;
 		}
-		
+
 		return $this->arrData[$strKey];
 	}
-	
-	
+
+
 	/**
 	 * Return a list of buttons for the table row in backend
-	 * 
+	 *
 	 * @access public
 	 * @return string
 	 */
@@ -182,8 +182,8 @@ abstract class IsotopePayment extends Frontend
 	{
 		return '';
 	}
-	
-	
+
+
 	/**
 	 * Return a list of order status options.
 	 *
@@ -193,7 +193,7 @@ abstract class IsotopePayment extends Frontend
 	 * - complete
 	 * - on_hold
 	 * - cancelled
-	 * 
+	 *
 	 * @access public
 	 * @return array
 	 */
@@ -202,29 +202,29 @@ abstract class IsotopePayment extends Frontend
 		return array('pending', 'processing');
 	}
 
-	
+
 	/**
 	 * Process checkout payment. Must be implemented in each payment module.
-	 * 
+	 *
 	 * @abstract
 	 * @access public
 	 * @return mixed
 	 */
 	abstract public function processPayment();
-	
-	
+
+
 	/**
 	 * Process post-sale requests. Does nothing by default.
 	 *
 	 * This function can be called from the postsale.php file when the payment server is requestion/posting a status change.
 	 * You can see an implementation example in PaymentPostfinance.php
-	 * 
+	 *
 	 * @access public
 	 * @return void
 	 */
 	public function processPostSale() {}
-	
-	
+
+
 	/**
 	 * Return a html form for payment data or an empty string.
 	 *
@@ -232,20 +232,20 @@ abstract class IsotopePayment extends Frontend
 	 * Example: <input type="text" name="payment[$this->id][cc_num]" />
 	 * Post-Value "payment" is automatically stored in $_SESSION['CHECKOUT_DATA']['payment']
 	 * You can set $objCheckoutModule->doNotSubmit = true if post is sent but data is invalid.
-	 * 
+	 *
 	 * @access	public
-	 * @param	object	The checkout module object. 
+	 * @param	object	The checkout module object.
 	 * @return	string
 	 */
 	public function paymentForm($objCheckoutModule)
 	{
 		return '';
 	}
-	
-	
+
+
 	/**
 	 * Return a html form for checkout or false.
-	 * 
+	 *
 	 * @access public
 	 * @return mixed
 	 */
@@ -253,8 +253,8 @@ abstract class IsotopePayment extends Frontend
 	{
 		return false;
 	}
-	
-	
+
+
 	/**
 	 * Return information or advanced features in the backend.
 	 *
@@ -279,8 +279,8 @@ abstract class IsotopePayment extends Frontend
 </div>
 </div>';
 	}
-	
-	
+
+
 	/**
 	 * Return a list of valid credit card types for this payment module
 	 */
@@ -288,8 +288,8 @@ abstract class IsotopePayment extends Frontend
 	{
 		return array();
 	}
-	
-	
+
+
 	/**
 	 * Return the checkout review information.
 	 *
@@ -303,8 +303,8 @@ abstract class IsotopePayment extends Frontend
 	{
 		return $this->label;
 	}
-	
-	
+
+
 	/**
 	 * Validate a credit card number and return the card type.
 	 * http://regexlib.com/UserPatterns.aspx?authorid=7128ecda-5ab1-451d-98d9-f94d2a453b37
@@ -316,7 +316,7 @@ abstract class IsotopePayment extends Frontend
 	protected function validateCreditCard($strNumber)
 	{
 		$strNumber = preg_replace('@[^0-9]+@', '', $strNumber);
-		
+
 		if (preg_match('@(^4\d{12}$)|(^4[0-8]\d{14}$)|(^(49)[^013]\d{13}$)|(^(49030)[0-1]\d{10}$)|(^(49033)[0-4]\d{10}$)|(^(49110)[^12]\d{10}$)|(^(49117)[0-3]\d{10}$)|(^(49118)[^0-2]\d{10}$)|(^(493)[^6]\d{12}$)@', $strNumber))
 		{
 			return 'visa';
@@ -365,7 +365,7 @@ abstract class IsotopePayment extends Frontend
 		{
 			return 'ukdebit';
 		}
-		
+
 		return false;
 	}
 }

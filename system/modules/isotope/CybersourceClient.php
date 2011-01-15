@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -24,23 +24,23 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
-class CybersourceClient extends SoapClient 
+class CybersourceClient extends SoapClient
 {
    protected $merchantId;
-   
+
    protected $transactionKey;
-   
-   public function __construct($wsdl, $options = null, $strMerchantId, $strTransactionKey) 
+
+   public function __construct($wsdl, $options = null, $strMerchantId, $strTransactionKey)
    {
      parent::__construct($wsdl, $options);
-   
+
    	 $this->merchantId = $strMerchantId;
 	 $this->transactionKey = $strTransactionKey;
    }
 
 // This section inserts the UsernameToken information in the outgoing SOAP message.
-   public function __doRequest($objRequest, $strLocation, $strAction, $strVersion) 
-   {	
+   public function __doRequest($objRequest, $strLocation, $strAction, $strVersion)
+   {
      $user = $this->merchantId;
      $password = $this->transactionKey;
 
@@ -49,7 +49,7 @@ class CybersourceClient extends SoapClient
      $objRequestDOM = new DOMDocument('1.0');
      $objSoapHeaderDOM = new DOMDocument('1.0');
 
-     try 
+     try
 	 {
         $objRequestDOM->loadXML($objRequest);
 		$objSoapHeaderDOM->loadXML($strSoapHeader);
@@ -58,10 +58,10 @@ class CybersourceClient extends SoapClient
 		$objRequestDOM->firstChild->insertBefore($node, $objRequestDOM->firstChild->firstChild);
 
         $objSOAPRequest = $objRequestDOM->saveXML();
-		
-     } 
-	 catch (DOMException $e) 
-	 {	 	
+
+     }
+	 catch (DOMException $e)
+	 {
      	die( 'Error adding UsernameToken: ' . $e->code);
      }
 

@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -30,8 +30,8 @@ class ModuleIsotopeOrderHistory extends ModuleIsotope
 {
 
 	protected $strTemplate = 'mod_iso_orderhistory';
-	
-	
+
+
 	public function generate()
 	{
 		if (TL_MODE == 'BE')
@@ -46,22 +46,22 @@ class ModuleIsotopeOrderHistory extends ModuleIsotope
 
 			return $objTemplate->parse();
 		}
-		
+
 		$this->iso_config_ids = deserialize($this->iso_config_ids);
-		
+
 		if (!FE_USER_LOGGED_IN || !is_array($this->iso_config_ids) || !count($this->iso_config_ids))
 			return '';
-		
+
 		$this->import('FrontendUser', 'User');
-		
+
 		return parent::generate();
 	}
-	
-	
+
+
 	protected function compile()
 	{
 		$objOrders = $this->Database->execute("SELECT *, (SELECT COUNT(*) FROM tl_iso_order_items WHERE pid=tl_iso_orders.id) AS items FROM tl_iso_orders WHERE status!='' AND pid=".$this->User->id." AND config_id IN (" . implode(',', $this->iso_config_ids) . ") ORDER BY date DESC");
-		
+
 		// No orders found, just display an "empty" message
 		if (!$objOrders->numRows)
 		{
@@ -70,19 +70,19 @@ class ModuleIsotopeOrderHistory extends ModuleIsotope
 			$this->Template->message = $GLOBALS['TL_LANG']['ERR']['emptyOrderHistory'];
 			return;
 		}
-		
+
 		$this->import('Isotope');
-		
+
 		$arrOrders = array();
 		$arrPage = $this->Database->execute("SELECT * FROM tl_page WHERE id=".$this->jumpTo)->fetchAssoc();
-		
+
 		while( $objOrders->next() )
 		{
 			if ($this->Isotope->Config->id != $objOrders->config_id)
 			{
 				$this->Isotope->overrideConfig($objOrders->config_id);
 			}
-			
+
 			$arrOrders[] = array
 			(
 				'raw'			=> $objOrders->row(),
@@ -95,7 +95,7 @@ class ModuleIsotopeOrderHistory extends ModuleIsotope
 				'link'			=> ($this->jumpTo ? ($this->generateFrontendUrl($arrPage) . '?uid=' . $objOrders->uniqid) : ''),
 			);
 		}
-		
+
 		$this->Template->orders = $arrOrders;
 		$this->Template->dateLabel = $GLOBALS['TL_LANG']['MSC']['iso_order_date'];
 		$this->Template->statusLabel = $GLOBALS['TL_LANG']['MSC']['iso_order_status'];

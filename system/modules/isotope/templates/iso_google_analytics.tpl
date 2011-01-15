@@ -1,7 +1,7 @@
 pageTracker._addTrans(
    '<?php echo $this->id; ?>',
    '<?php echo $this->storeName; ?>',
-   '<?php echo $this->grandTotal; ?>', 
+   '<?php echo $this->grandTotal; ?>',
    '<?php echo $this->tax; ?>',
    '<?php echo $this->shipping; ?>',
    '<?php echo $this->city; ?>',

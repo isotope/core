@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -24,59 +24,59 @@
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
- 
- 
+
+
 class IsotopeCart extends IsotopeProductCollection
 {
-	
+
 	/**
 	 * Cookie hash value
 	 * @var string
 	 */
 	protected $strHash = '';
-	
+
 	/**
 	 * Name of the current table
 	 * @var string
 	 */
 	protected $strTable = 'tl_iso_cart';
-	
+
 	/**
 	 * Name of the child table
 	 * @var string
 	 */
 	protected $ctable = 'tl_iso_cart_items';
-		
+
 	/**
 	 * Name of the temporary cart cookie
 	 * @var string
 	 */
 	protected $strCookie = 'ISOTOPE_TEMP_CART';
-	
+
 	/**
 	 * Cache cart data
 	 * @var array
 	 */
 	protected $arrCache = array();
-	
-	
+
+
 	protected $arrSurcharges;
-	
-	
+
+
 	public function __construct()
 	{
 		parent::__construct();
-		
+
 		if (FE_USER_LOGGED_IN)
 		{
 			$this->import('FrontendUser', 'User');
 		}
 	}
-	
-	
+
+
 	/**
 	 * Return cart data. All data is cached for speed improvement.
-	 * 
+	 *
 	 * @access public
 	 * @param string $strKey
 	 * @return mixed
@@ -90,7 +90,7 @@ class IsotopeCart extends IsotopeProductCollection
 				if ($this->arrCache['billingAddress_id'] > 0)
 				{
 					$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE id=?")->limit(1)->execute($this->arrCache['billingAddress_id']);
-					
+
 					if ($objAddress->numRows)
 						return $objAddress->fetchAssoc();
 				}
@@ -98,11 +98,11 @@ class IsotopeCart extends IsotopeProductCollection
 				{
 					return $this->arrCache['billingAddress_data'];
 				}
-				
+
 				$this->import('Isotope');
-							
+
 				if (FE_USER_LOGGED_IN)
-				{	
+				{
 					$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE pid=? AND isDefaultBilling='1'")->limit(1)->execute($this->User->id);
 
 					if ($objAddress->numRows)
@@ -112,24 +112,24 @@ class IsotopeCart extends IsotopeProductCollection
 					// Trying to guess subdivision by country and state
 					return array_intersect_key(array_merge($this->User->getData(), array('id'=>0, 'street_1'=>$this->User->street, 'subdivision'=>strtoupper($this->User->country . '-' . $this->User->state))), array_flip($this->Isotope->Config->billing_fields_raw));
 				}
-				
+
 				return array('id'=>-1, 'postal'=>$this->Isotope->Config->postal, 'subdivision'=>$this->Isotope->Config->subdivision, 'country' => $this->Isotope->Config->country);
-				
+
 			case 'shipping_address':
 			case 'shippingAddress':
 				if ($this->arrCache['shippingAddress_id'] == -1)
-				{							
+				{
 					return array_merge($this->billingAddress, array('id' => -1));
 				}
-					
+
 				if ($this->arrCache['shippingAddress_id'] > 0)
 				{
 					$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE id=?")->limit(1)->execute($this->arrCache['shippingAddress_id']);
-					
+
 					if ($objAddress->numRows)
 						return $objAddress->fetchAssoc();
 				}
-				
+
 				if ($this->arrCache['shippingAddress_id'] == 0 && count($this->arrCache['shippingAddress_data']))
 				{
 					return $this->arrCache['shippingAddress_data'];
@@ -138,25 +138,25 @@ class IsotopeCart extends IsotopeProductCollection
 				if (FE_USER_LOGGED_IN)
 				{
 					$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE pid=? AND isDefaultShipping='1'")->limit(1)->execute($this->User->id);
-					
+
 					if ($objAddress->numRows)
 						return $objAddress->fetchAssoc();
 				}
-				
+
 				return array_merge((is_array($this->billingAddress) ? $this->billingAddress : array()), array('id' => -1));
-				
+
 			default:
 				return parent::__get($strKey);
 		}
 	}
-	
-	
+
+
 	public function __set($strKey, $varValue)
 	{
 		switch( $strKey )
 		{
 			case 'billingAddress':
-			case 'billing_address':			
+			case 'billing_address':
 				if (is_array($varValue))
 				{
 					$this->arrCache['billingAddress_id'] = 0;
@@ -180,13 +180,13 @@ class IsotopeCart extends IsotopeProductCollection
 					$this->arrCache['shippingAddress_id'] = $varValue;
 				}
 				break;
-			
+
 			default:
 				parent::__set($strKey, $varValue);
 		}
 	}
-	
-	
+
+
 	/**
 	 * Load current cart
 	 */
@@ -194,12 +194,12 @@ class IsotopeCart extends IsotopeProductCollection
 	{
 		$time = time();
 		$this->strHash = $this->Input->cookie($this->strCookie);
-		
+
 		//  Check to see if the user is logged in.
 		if (!FE_USER_LOGGED_IN || !$this->User->id)
-		{	
-			if (!strlen($this->strHash))	
-			{	
+		{
+			if (!strlen($this->strHash))
+			{
 				$this->strHash = sha1(session_id() . (!$GLOBALS['TL_CONFIG']['disableIpCheck'] ? $this->Environment->ip : '') . $intConfig . $this->strCookie);
 				$this->setCookie($this->strCookie, $this->strHash, $time+$GLOBALS['TL_CONFIG']['iso_cartTimeout'],  $GLOBALS['TL_CONFIG']['websitePath']);
 			}
@@ -210,7 +210,7 @@ class IsotopeCart extends IsotopeProductCollection
 		{
 			$objCart = $this->Database->execute("SELECT * FROM tl_iso_cart WHERE pid={$this->User->id} AND store_id=$intStore");
 		}
-				
+
 		// Create new cart
 		if ($objCart->numRows)
 		{
@@ -226,13 +226,13 @@ class IsotopeCart extends IsotopeProductCollection
 				'tstamp'		=> time(),
 				'store_id'		=> $intStore,
 			));
-			
+
 			if (!$this->findBy('id', $this->save(true)))
 			{
 				throw new Exception('Unable to create shopping cart');
 			}
 		}
-		
+
 		// Temporary cart available, move to this cart. Must be after creating a new cart!
  		if (FE_USER_LOGGED_IN && strlen($this->strHash))
  		{
@@ -242,12 +242,12 @@ class IsotopeCart extends IsotopeProductCollection
 				$this->transferFromCollection($objCart, false);
 				$objCart->delete();
 			}
-			
+
 			// Delete cookie
 			$this->setCookie($this->strCookie, '', (time() - 3600), $GLOBALS['TL_CONFIG']['websitePath']);
  		}
 	}
-	
+
 
 	/**
 	 * Hook-callback for isoCheckoutSurcharge. Accesses the shipping module to get a shipping surcharge.
@@ -259,11 +259,11 @@ class IsotopeCart extends IsotopeProductCollection
 	public function getShippingSurcharge($arrSurcharges)
 	{
 		$this->import('Isotope');
-		
+
 		if ($this->Isotope->Cart->hasShipping && $this->Isotope->Cart->Shipping->price != 0)
 		{
 			$strSurcharge = $this->Isotope->Cart->Shipping->surcharge;
-			
+
 			$arrSurcharges[] = array
 			(
 				'label'			=> ($GLOBALS['TL_LANG']['MSC']['shippingLabel'] . ' (' . $this->Isotope->Cart->Shipping->label . ')'),
@@ -273,11 +273,11 @@ class IsotopeCart extends IsotopeProductCollection
 				'before_tax'	=> ($this->Isotope->Cart->Shipping->tax_class ? true : false),
 			);
 		}
-		
+
 		return $arrSurcharges;
 	}
-	
-	
+
+
 	/**
 	 * Hook-callback for isoCheckoutSurcharge.
 	 *
@@ -289,11 +289,11 @@ class IsotopeCart extends IsotopeProductCollection
 	public function getPaymentSurcharge($arrSurcharges)
 	{
 		$this->import('Isotope');
-		
+
 		if ($this->Isotope->Cart->hasPayment && $this->Isotope->Cart->Payment->price != 0)
 		{
 			$strSurcharge = $this->Isotope->Cart->Payment->surcharge;
-			
+
 			$arrSurcharges[] = array
 			(
 				'label'			=> ($GLOBALS['TL_LANG']['MSC']['paymentLabel'] . ' (' . $this->Isotope->Cart->Payment->label . ')'),
@@ -303,17 +303,17 @@ class IsotopeCart extends IsotopeProductCollection
 				'before_tax'	=> ($this->Isotope->Cart->Payment->tax_class ? true : false),
 			);
 		}
-		
+
 		return $arrSurcharges;
 	}
-	
-		
+
+
 	public function getSurcharges()
 	{
 		$this->import('Isotope');
-		
+
 		$arrPreTax = $arrPostTax = $arrTaxes = array();
-		
+
 		$arrSurcharges = array();
 		if (isset($GLOBALS['TL_HOOKS']['isoCheckoutSurcharge']) && is_array($GLOBALS['TL_HOOKS']['isoCheckoutSurcharge']))
 		{
@@ -330,7 +330,7 @@ class IsotopeCart extends IsotopeProductCollection
 				}
 			}
 		}
-		
+
 		foreach( $arrSurcharges as $arrSurcharge )
 		{
 			if ($arrSurcharge['before_tax'])
@@ -354,10 +354,10 @@ class IsotopeCart extends IsotopeProductCollection
 					$fltPrice += $tax['products'][$objProduct->cart_id];
 				}
 			}
-			
+
 			$arrTaxIds = array();
 			$arrTax = $this->Isotope->calculateTax($objProduct->tax_class, $fltPrice);
-			
+
 			if (is_array($arrTax))
 			{
 				foreach ($arrTax as $k => $tax)
@@ -365,7 +365,7 @@ class IsotopeCart extends IsotopeProductCollection
 					if (array_key_exists($k, $arrTaxes))
 					{
 						$arrTaxes[$k]['total_price'] += $tax['total_price'];
-						
+
 						if (is_numeric($arrTaxes[$k]['price']) && is_numeric($tax['price']))
 						{
 							$arrTaxes[$k]['price'] += $tax['price'];
@@ -375,23 +375,23 @@ class IsotopeCart extends IsotopeProductCollection
 					{
 						$arrTaxes[$k] = $tax;
 					}
-					
+
 					$arrTaxes[$k]['tax_id'] = array_search($k, array_keys($arrTaxes)) + 1;
 					$arrTaxIds[] = array_search($k, array_keys($arrTaxes)) + 1;
 				}
 			}
-			
+
 			$this->arrProducts[$pid]->tax_id = implode(',', $arrTaxIds);
 		}
-		
-		
+
+
 		foreach( $arrPreTax as $arrSurcharge )
 		{
 			if (!$arrSurcharge['tax_class'])
 				continue;
-				
+
 			$arrTax = $this->Isotope->calculateTax($arrSurcharge['tax_class'], $arrSurcharge['total_price'], $arrSurcharge['before_tax']);
-			
+
 			if (is_array($arrTax))
 			{
 				foreach ($arrTax as $k => $tax)
@@ -399,7 +399,7 @@ class IsotopeCart extends IsotopeProductCollection
 					if (array_key_exists($k, $arrTaxes))
 					{
 						$arrTaxes[$k]['total_price'] += $tax['total_price'];
-						
+
 						if (is_numeric($arrTaxes[$k]['price']) && is_numeric($tax['price']))
 						{
 							$arrTaxes[$k]['price'] += $tax['price'];
@@ -409,12 +409,12 @@ class IsotopeCart extends IsotopeProductCollection
 					{
 						$arrTaxes[$k] = $tax;
 					}
-					
+
 					$arrTaxes[$k]['tax_id'] = array_search($k, array_keys($arrTaxes)) + 1;
 				}
 			}
 		}
-		
+
 		return array_merge($arrPreTax, $arrTaxes, $arrPostTax);
 	}
 }

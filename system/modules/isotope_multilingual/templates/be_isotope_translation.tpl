@@ -54,7 +54,7 @@
     <td class="tl_file_list" style="width: 48%"><?php if(strlen($value)>50):?><textarea name="<?php echo standardize($key); ?>" class="tl_text" onfocus="Backend.getScrollOffset();" style="height:60px;overflow:auto;"><?php echo str_replace('"', '&quot;', $this->translation[$key]); ?></textarea><?php else: ?><input type="text" name="<?php echo standardize($key); ?>" class="tl_text" value="<?php echo str_replace('"', '&quot;', $this->translation[$key]); ?>" onfocus="Backend.getScrollOffset();" /><?php endif; ?></td>
 	<td class="tl_file_list" style="width: 2%"><a title="<?php echo $key; ?>"><img src="system/themes/default/images/show.gif" alt="" /></a></td>
   </tr>
-<?php endforeach; ?> 
+<?php endforeach; ?>
 
 <?php if( $this->svn_diff && is_array($this->diff) ): $blnHeadline=false; ?>
 <?php foreach( $this->diff as $key => $value ): if($this->translation[$key] != $this->diff[$key]): if(!$blnHeadline): $blnHeadline=true; ?>
@@ -73,7 +73,7 @@
 	<p class="tl_info"><?php echo $this->diff; ?></p>
 </td></tr>
 <?php endif; ?>
-	
+
 </table>
 
 </div>

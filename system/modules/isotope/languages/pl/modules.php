@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -34,8 +34,8 @@ $GLOBALS['TL_LANG']['MOD']['iso_orders']				= array('Zamówienia', '');
 $GLOBALS['TL_LANG']['MOD']['iso_statistics']			= array('Statyatyki', '');
 $GLOBALS['TL_LANG']['MOD']['iso_setup']					= array('Konfiguracje sklepów','');
 
-/**														
- * Frontend modules									
+/**
+ * Frontend modules
  */
 $GLOBALS['TL_LANG']['FMD']['isotope']					= 'Isotope eCommerce';
 $GLOBALS['TL_LANG']['FMD']['iso_productfilter']			= array('Filtry produktów', 'Define individual filters for Isotope such as category trees and product attribute filters.');

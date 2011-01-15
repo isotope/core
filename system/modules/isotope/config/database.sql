@@ -8,9 +8,9 @@
 -- **********************************************************
 
 
--- 
+--
 -- Table `tl_module`
--- 
+--
 
 CREATE TABLE `tl_module` (
   `iso_list_layout` varchar(64) NOT NULL default '',
@@ -56,7 +56,7 @@ CREATE TABLE `tl_module` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table `tl_iso_products`
 --
 
@@ -91,9 +91,9 @@ CREATE TABLE `tl_iso_products` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table `tl_iso_prices`
--- 
+--
 
 CREATE TABLE `tl_iso_prices` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -112,9 +112,9 @@ CREATE TABLE `tl_iso_prices` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table `tl_iso_price_tiers`
--- 
+--
 
 CREATE TABLE `tl_iso_price_tiers` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -129,7 +129,7 @@ CREATE TABLE `tl_iso_price_tiers` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table `tl_iso_downloads`
 --
 
@@ -149,7 +149,7 @@ CREATE TABLE `tl_iso_downloads` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table `tl_iso_producttypes`
 --
 
@@ -214,9 +214,9 @@ CREATE TABLE `tl_iso_attributes` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table `tl_iso_config`
--- 
+--
 
 CREATE TABLE `tl_iso_config` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -269,7 +269,7 @@ CREATE TABLE `tl_iso_config` (
 
 --
 -- Table `tl_iso_product_categories`
---	
+--
 
 CREATE TABLE `tl_iso_product_categories` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -286,7 +286,7 @@ CREATE TABLE `tl_iso_product_categories` (
 
 --
 -- Table `tl_filter_values_to_categories` pid is page id.
--- 
+--
 CREATE TABLE `tl_filter_values_to_categories` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
@@ -301,9 +301,9 @@ CREATE TABLE `tl_filter_values_to_categories` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table `tl_page`
--- 
+--
 
 CREATE TABLE `tl_page` (
   `iso_config` int(10) unsigned NOT NULL default '0',
@@ -312,9 +312,9 @@ CREATE TABLE `tl_page` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table `tl_content`
--- 
+--
 
 CREATE TABLE `tl_content` (
   `iso_reader_jumpTo` int(10) unsigned NOT NULL default '0',
@@ -367,9 +367,9 @@ CREATE TABLE `tl_iso_cart_items` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table `tl_iso_addresses`
--- 
+--
 
 CREATE TABLE `tl_iso_addresses` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -396,9 +396,9 @@ CREATE TABLE `tl_iso_addresses` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table `tl_iso_payment_modules`
--- 
+--
 
 CREATE TABLE `tl_iso_payment_modules` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -412,7 +412,7 @@ CREATE TABLE `tl_iso_payment_modules` (
   `countries` blob NULL,
   `shipping_modules` blob NULL,
   `product_types` blob NULL,
-  `allowed_cc_types` text NULL,  
+  `allowed_cc_types` text NULL,
   `minimum_total` decimal(12,2) NOT NULL default '0.00',
   `maximum_total` decimal(12,2) NOT NULL default '0.00',
   `new_order_status` varchar(255) NOT NULL default '',
@@ -452,9 +452,9 @@ CREATE TABLE `tl_iso_payment_modules` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table `tl_payment_options`
--- 
+--
 
 CREATE TABLE `tl_payment_options` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -467,9 +467,9 @@ CREATE TABLE `tl_payment_options` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table `tl_iso_shipping_modules`
--- 
+--
 
 CREATE TABLE `tl_iso_shipping_modules` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -506,9 +506,9 @@ CREATE TABLE `tl_iso_shipping_modules` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table `tl_iso_shipping_options`
--- 
+--
 
 CREATE TABLE `tl_iso_shipping_options` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -528,7 +528,7 @@ CREATE TABLE `tl_iso_shipping_options` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table `tl_iso_orders`
 -- pid == member ID
 --
@@ -542,10 +542,10 @@ CREATE TABLE `tl_iso_orders` (
   `date_payed` varchar(10) NOT NULL default '',
   `date_shipped` varchar(10) NOT NULL default '',
   `status` varchar(32) NOT NULL default '',
-  
+
   `order_id` varchar(14) NOT NULL default '',
   `uniqid` varchar(27) NOT NULL default '',
-  
+
   `config_id` int(10) unsigned NOT NULL default '0',
   `cart_id` int(10) unsigned NOT NULL default '0',
   `payment_id` int(10) unsigned NOT NULL default '0',
@@ -555,7 +555,7 @@ CREATE TABLE `tl_iso_orders` (
   `shipping_address` blob NULL,
   `billing_address` blob NULL,
   `checkout_info` blob NULL,
-  `surcharges` blob NULL,  
+  `surcharges` blob NULL,
   `coupons` blob NULL,
   `payment_data` blob NULL,
   `shipping_data` blob NULL,
@@ -569,9 +569,9 @@ CREATE TABLE `tl_iso_orders` (
   `cc_cvv` varchar(8) NOT NULL default '',
   `transaction_response` varchar(255) NOT NULL default '',
   `transaction_response_code` varchar(255) NOT NULL default '',
-  `order_comments` text NULL, 
+  `order_comments` text NULL,
   `gift_message` text NULL,
-  `gift_wrap` char(1) NOT NULL default '', 
+  `gift_wrap` char(1) NOT NULL default '',
   `currency` varchar(4) NOT NULL default '',
   `notes` text NULL,
   PRIMARY KEY  (`id`),
@@ -619,7 +619,7 @@ CREATE TABLE `tl_iso_order_downloads` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table `tl_iso_tax_class`
 --
 
@@ -638,7 +638,7 @@ CREATE TABLE `tl_iso_tax_class` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table `tl_iso_tax_rate`
 --
 
@@ -662,7 +662,7 @@ CREATE TABLE `tl_iso_tax_rate` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table `tl_user`
 --
 
@@ -675,7 +675,7 @@ CREATE TABLE `tl_user` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table `tl_user_group`
 --
 
@@ -688,9 +688,9 @@ CREATE TABLE `tl_user_group` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table `tl_iso_mail`
--- 
+--
 
 CREATE TABLE `tl_iso_mail` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -708,9 +708,9 @@ CREATE TABLE `tl_iso_mail` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table `tl_iso_mail_content`
--- 
+--
 
 CREATE TABLE `tl_iso_mail_content` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -730,9 +730,9 @@ CREATE TABLE `tl_iso_mail_content` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table `tl_iso_related_categories`
--- 
+--
 
 CREATE TABLE `tl_iso_related_categories` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -745,9 +745,9 @@ CREATE TABLE `tl_iso_related_categories` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table `tl_iso_related_products`
--- 
+--
 
 CREATE TABLE `tl_iso_related_products` (
   `id` int(10) unsigned NOT NULL auto_increment,

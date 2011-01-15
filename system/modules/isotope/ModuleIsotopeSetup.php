@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -34,19 +34,19 @@ class ModuleIsotopeSetup extends BackendModule
 	 * @var string
 	 */
 	protected $strTemplate = 'be_iso_setup';
-	
-	
+
+
 	/**
 	 * Isotope modules
 	 * @var array
 	 */
 	protected $arrModules = array();
-	
-	
+
+
 	public function generate()
 	{
 		$this->import('BackendUser', 'User');
-		
+
 		foreach ($GLOBALS['ISO_MOD'] as $strGroup => $arrModules)
 		{
 			foreach ($arrModules as $strModule => $arrConfig)
@@ -57,7 +57,7 @@ class ModuleIsotopeSetup extends BackendModule
 					{
 						$GLOBALS['BE_MOD']['isotope']['iso_setup']['tables'] += $arrConfig['tables'];
 					}
-					
+
 					$this->arrModules[$GLOBALS['TL_LANG']['IMD'][$strGroup]][$strModule] = array
 					(
 						'name' => $GLOBALS['TL_LANG']['IMD'][$strModule][0],
@@ -67,25 +67,25 @@ class ModuleIsotopeSetup extends BackendModule
 				}
 			}
 		}
-		
+
 		// Open module
 		if ($this->Input->get('mod'))
 		{
 			return $this->getIsotopeModule($this->Input->get('mod'));
 		}
-		
+
 		return parent::generate();
 	}
-	
-	
+
+
 	protected function compile()
 	{
 		$this->Template->modules = $this->arrModules;
 		$this->Template->script = $this->Environment->script;
 		$this->Template->welcome = $GLOBALS['TL_LANG']['ISO']['config_module'];
 	}
-	
-	
+
+
 	/**
 	 * Open an isotope module and return it as HTML
 	 * @param string
@@ -102,7 +102,7 @@ class ModuleIsotopeSetup extends BackendModule
 				$arrModule =& $arrGroup[$module];
 			}
 		}
-		
+
 		// Check whether the current user has access to the current module
 		if (!$this->User->isAdmin && !$this->User->hasAccess($module, 'iso_modules'))
 		{
@@ -111,12 +111,12 @@ class ModuleIsotopeSetup extends BackendModule
 		}
 
 		$strTable = $this->Input->get('table');
-		
+
 		if ($strTable == '' && $arrModule['callback'] == '')
 		{
 			$this->redirect($this->addToUrl('table='.$arrModule['tables'][0]));
 		}
-		
+
 		$id = (!$this->Input->get('act') && $this->Input->get('id')) ? $this->Input->get('id') : $this->Session->get('CURRENT_ID');
 
 		// Add module style sheet

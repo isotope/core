@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -30,8 +30,8 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 {
 
 	protected $strTemplate = 'mod_iso_orderdetails';
-	
-	
+
+
 	public function generate($blnBackend=false)
 	{
 		if (TL_MODE == 'BE' && !$blnBackend)
@@ -46,23 +46,23 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 
 			return $objTemplate->parse();
 		}
-		
+
 		if ($blnBackend)
 		{
 			$this->backend = true;
 			$this->jumpTo = 0;
 		}
-		
+
 		return parent::generate();
 	}
-	
-	
+
+
 	protected function compile()
 	{
 		global $objPage;
-		
+
 		$objOrder = new IsotopeOrder();
-		
+
 		if (!$objOrder->findBy('uniqid', $this->Input->get('uid')))
 		{
 			$this->Template = new FrontendTemplate('mod_message');
@@ -70,16 +70,16 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 			$this->Template->message = $GLOBALS['TL_LANG']['ERR']['orderNotFound'];
 			return;
 		}
-		
+
 		$arrOrder = $objOrder->getData();
 		$this->Template->setData($arrOrder);
-		
+
 		$this->import('Isotope');
 		$this->Isotope->overrideConfig($arrOrder['config_id']);
-		
+
 		// Article reader
 		$arrPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->limit(1)->execute($this->jumpTo)->fetchAssoc();
-		
+
 		$arrAllDownloads = array();
 		$arrItems = array();
 		$arrProducts = $objOrder->getProducts();
@@ -92,7 +92,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 			while( $objDownloads->next() )
 			{
 				$blnDownloadable = (($arrOrder['status'] == 'complete' || (intval($arrOrder['date_payed']) > 0 && intval($arrOrder['date_payed']) <= time())) && ($objDownloads->downloads_remaining === '' || $objDownloads->downloads_remaining > 0)) ? true : false;
-				
+
 				// Send file to the browser
 				if (strlen($this->Input->get('file')) && $this->Input->get('file') == $objDownloads->id && $blnDownloadable)
 				{
@@ -100,10 +100,10 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 					{
 						$this->Database->prepare("UPDATE tl_iso_order_downloads SET downloads_remaining=? WHERE id=?")->execute(($objDownloads->downloads_remaining-1), $objDownloads->id);
 					}
-					
+
 					$this->sendFileToBrowser($objDownloads->singleSRC);
 				}
-				
+
 				$arrDownload = array
 				(
 					'raw'			=> $objDownloads->row(),
@@ -112,11 +112,11 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 					'remaining'		=> ($objDownloads->downloads_allowed > 0 ? sprintf('<br />%s Downloads verbleibend', intval($objDownloads->downloads_remaining)) : ''),
 					'downloadable'	=> $blnDownloadable,
 				);
-				
+
 				$arrDownloads[] = $arrDownload;
 				$arrAllDownloads[] = $arrDownload;
 			}
-						
+
 			$arrItems[] = array
 			(
 				'raw'				=> $objProduct->getData(),
@@ -131,14 +131,14 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 				'downloads'			=> $arrDownloads,
 			);
 		}
-		
+
 		$this->Template->info = deserialize($arrOrder['checkout_info'], true);
 		$this->Template->items = $arrItems;
 		$this->Template->downloads = $arrAllDownloads;
 		$this->Template->downloadsLabel = $GLOBALS['TL_LANG']['MSC']['downloadsLabel'];
-		
+
 		$this->Template->raw = $arrOrder;
-		
+
 		$this->Template->date = $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $arrOrder['date']);
 		$this->Template->time = $this->parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $arrOrder['date']);
 		$this->Template->datim = $this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $arrOrder['date']);
@@ -149,7 +149,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 		$this->Template->grandTotal = $this->Isotope->formatPriceWithCurrency($arrOrder['grandTotal']);
 		$this->Template->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
 		$this->Template->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
-		
+
 		$arrSurcharges = deserialize($arrOrder['surcharges']);
 		if (is_array($arrSurcharges) && count($arrSurcharges))
 		{
@@ -163,12 +163,12 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 		{
 			$arrSurcharges = array();
 		}
-				
+
 		$this->Template->surcharges = $arrSurcharges;
-		
+
 		$this->Template->billing_label = $GLOBALS['TL_LANG']['ISO']['billing_address'];
 		$this->Template->billing_address = $this->Isotope->generateAddressString(deserialize($arrOrder['billing_address']), $this->Isotope->Config->billing_fields);
-		
+
 		if (strlen($arrOrder['shipping_method']))
 		{
 			$arrShippingAddress = deserialize($arrOrder['shipping_address']);

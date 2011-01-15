@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -24,11 +24,11 @@
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
- 
- 
+
+
 /**
  * Handle Paypal payments
- * 
+ *
  * @extends Payment
  */
 class PaymentPaypal extends IsotopePayment
@@ -36,7 +36,7 @@ class PaymentPaypal extends IsotopePayment
 
 	/**
 	 * Return a list of status options.
-	 * 
+	 *
 	 * @access public
 	 * @return array
 	 */
@@ -44,24 +44,24 @@ class PaymentPaypal extends IsotopePayment
 	{
 		return array('pending', 'processing', 'complete', 'on_hold');
 	}
-	
-	
+
+
 	/**
 	 * processPayment function.
-	 * 
+	 *
 	 * @access public
 	 * @return void
 	 */
 	public function processPayment()
 	{
 		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->execute($this->Isotope->Cart->id);
-		
+
 		if ($objOrder->date_payed <= time())
 		{
 			unset($_SESSION['PAYPAL_TIMEOUT']);
 			return true;
 		}
-		
+
 		if (!isset($_SESSION['PAYPAL_TIMEOUT']))
 		{
 			$_SESSION['PAYPAL_TIMEOUT'] = 60;
@@ -70,31 +70,31 @@ class PaymentPaypal extends IsotopePayment
 		{
 			$_SESSION['PAYPAL_TIMEOUT'] = $_SESSION['PAYPAL_TIMEOUT'] - 5;
 		}
-		
+
 		if ($_SESSION['PAYPAL_TIMEOUT'] === 0)
 		{
 			global $objPage;
 			$this->log('Payment could not be processed.', 'PaymentPaypal processPayment()', TL_ERROR);
 			$this->redirect($this->generateFrontendUrl($objPage->row(), '/step/failed'));
 		}
-		
+
 		// Reload page every 5 seconds and check if payment was successful
 		$GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="5,' . $this->Environment->base . $this->Environment->request . '">';
-		
+
 		$objTemplate = new FrontendTemplate('mod_message');
 		$objTemplate->type = 'processing';
 		$objTemplate->message = $GLOBALS['TL_LANG']['MSC']['payment_processing'];
 		return $objTemplate->parse();
 	}
-	
-	
+
+
 	/**
 	 * Process PayPal Instant Payment Notifications (IPN)
 	 *
 	 * @access public
 	 * @return void
 	 */
-	public function processPostSale() 
+	public function processPostSale()
 	{
 		$arrData = array();
 		foreach( $_POST as $k => $v )
@@ -104,7 +104,7 @@ class PaymentPaypal extends IsotopePayment
 
 		$objRequest = new Request();
 		$objRequest->send(('https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr?cmd=_notify-validate'), implode('&', $arrData), 'post');
-		
+
 		if ($objRequest->hasError())
 		{
 			$this->log('Request Error: ' . $objRequest->error, 'PaymentPaypal processPostSale()', TL_ERROR);
@@ -113,7 +113,7 @@ class PaymentPaypal extends IsotopePayment
 		elseif ($objRequest->response == 'VERIFIED' && ($this->Input->post('receiver_email') == $this->paypal_account || $this->debug))
 		{
 			$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE order_id=?")->limit(1)->execute($this->Input->post('invoice'));
-		
+
 			if (!$objOrder->numRows)
 			{
 				$this->log('Order ID "' . $this->Input->post('invoice') . '" not found', 'PaymentPaypal processPostSale()', TL_ERROR);
@@ -124,27 +124,27 @@ class PaymentPaypal extends IsotopePayment
 			// This will result in correct e-mails and payment description.
 			$GLOBALS['TL_LANGUAGE'] = $objOrder->language;
 			$this->loadLanguageFile('default');
-			
+
 			// Load / initialize data
 			$arrPayment = deserialize($objOrder->payment_data, true);
-			
+
 			// Store request data in order for future references
 			$arrPayment['POSTSALE'][] = $_POST;
-			
-			
+
+
 			$arrData = $objOrder->row();
 			$arrData['old_payment_status'] = $arrPayment['status'];
-			
+
 			$arrPayment['status'] = $this->Input->post('payment_status');
 			$arrData['new_payment_status'] = $arrPayment['status'];
-			
+
 			// array('pending','processing','complete','on_hold', 'cancelled'),
 			switch( $arrPayment['status'] )
 			{
 				case 'Completed':
 					$this->Database->execute("UPDATE tl_iso_orders SET date_payed=" . time() . " WHERE id=" . $objOrder->id);
 					break;
-					
+
 				case 'Canceled_Reversal':
 				case 'Denied':
 				case 'Expired':
@@ -153,7 +153,7 @@ class PaymentPaypal extends IsotopePayment
 					$this->Database->execute("UPDATE tl_iso_orders SET date_payed='' WHERE id=" . $objOrder->id);
 					$this->Database->execute("UPDATE tl_iso_orders SET status='on_hold' WHERE status='complete' AND id=" . $objOrder->id);
 					break;
-					
+
 				case 'In-Progress':
 				case 'Partially_Refunded':
 				case 'Pending':
@@ -162,9 +162,9 @@ class PaymentPaypal extends IsotopePayment
 				case 'Reversed':
 					break;
 			}
-			
+
 			$this->Database->prepare("UPDATE tl_iso_orders SET payment_data=? WHERE id=?")->execute(serialize($arrPayment), $objOrder->id);
-			
+
 			if ($this->postsale_mail)
 			{
 				try
@@ -174,29 +174,29 @@ class PaymentPaypal extends IsotopePayment
 				}
 				catch (Exception $e) {}
 			}
-			
+
 			$this->log('PayPal IPN: data accepted ' . print_r($_POST, true), 'PaymentPaypal processPostSale()', TL_GENERAL);
 		}
 		else
 		{
 			$this->log('PayPal IPN: data rejected (' . $objRequest->response . ') ' . print_r($_POST, true), 'PaymentPaypal processPostSale()', TL_GENERAL);
 		}
-		
+
 		header('HTTP/1.1 200 OK');
 		exit;
 	}
-	
-	
+
+
 	/**
 	 * Return the PayPal form.
-	 * 
+	 *
 	 * @access public
 	 * @return string
 	 */
 	public function checkoutForm()
 	{
 		$objOrder = $this->Database->prepare("SELECT order_id FROM tl_iso_orders WHERE cart_id=?")->execute($this->Isotope->Cart->id);
-		
+
 		$strBuffer = '
 <h2>' . $GLOBALS['TL_LANG']['ISO']['pay_with_paypal'][0] . '</h2>
 <p class="message">' . $GLOBALS['TL_LANG']['ISO']['pay_with_paypal'][1] . '</p>
@@ -211,31 +211,31 @@ class PaymentPaypal extends IsotopePayment
 		{
 			$strOptions = '';
 			$arrOptions = $objProduct->getOptions();
-			
+
 			if (is_array($arrOptions) && count($arrOptions))
 			{
 				$options = array();
-				
+
 				foreach( $arrOptions as $option )
 				{
 					$options[] = $option['label'] . ': ' . $option['value'];
 				}
-				
+
 				$strOptions = ' ('.implode(', ', $options).')';
 			}
-			
+
 			$strBuffer .= '
 <input type="hidden" name="item_number_'.++$i.'" value="' . $objProduct->sku . '" />
 <input type="hidden" name="item_name_'.$i.'" value="' . $objProduct->name . $strOptions . '"/>
 <input type="hidden" name="amount_'.$i.'" value="' . $objProduct->price . '"/>
 <input type="hidden" name="quantity_'.$i.'" value="' . $objProduct->quantity_requested . '"/>';
 		}
-		
+
 		foreach( $this->Isotope->Cart->getSurcharges() as $arrSurcharge )
 		{
 			if ($arrSurcharge['add'] === false)
 				continue;
-				
+
 			$strBuffer .= '
 <input type="hidden" name="item_name_'.++$i.'" value="' . $arrSurcharge['label'] . '"/>
 <input type="hidden" name="amount_'.$i.'" value="' . $arrSurcharge['total_price'] . '"/>';
@@ -274,7 +274,7 @@ window.addEvent( \'domready\' , function() {
 });
 //--><!]]>
 </script>';
-	
+
 		return $strBuffer;
 	}
 }

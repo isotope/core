@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -41,7 +41,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_categories'] = array
 		'notEditable'					=> true,
 		'onload_callback' => array
 		(
-			
+
 			array('tl_iso_product_categories', 'updateFilterData'),
 		),
 	),
@@ -78,7 +78,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_categories'] = array
 			),
 		)
 	),
-	
+
 	// Fields Array must not be empty or we get a foreach error.
 	'fields' => array()
 );
@@ -97,15 +97,15 @@ class tl_iso_product_categories extends Backend
 	{
 		$this->loadDataContainer('tl_iso_products');
 		$this->loadLanguageFile('tl_iso_products');
-		
+
 		$objProduct = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE id=?")->limit(1)->execute($row['pid']);
-		
+
 		$this->import('tl_iso_products');
 		return '<div style="margin-top: -' . ($this->Input->get('act')=='select' ? 15 : 20) . 'px; margin-bottom:-8px">'.$this->tl_iso_products->getRowLabel($objProduct->row()).'</div>';
 	}
-	
-	
-	/** 
+
+
+	/**
 	 * Repair associations between products and categories.
 	 * We need tl_iso_products.pages to filter for it.
 	 * @param  object
@@ -116,7 +116,7 @@ class tl_iso_product_categories extends Backend
 		if ($this->Input->get('act') == '')
 		{
 			$arrCategories = $this->Database->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid={$dc->id}");
-			
+
 			$this->Database->query("UPDATE tl_iso_products SET pages='" . serialize($arrCategories) . "' WHERE id={$dc->id}");
 		}
 	}
