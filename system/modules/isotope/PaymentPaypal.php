@@ -112,18 +112,19 @@ class PaymentPaypal extends IsotopePayment
 		}
 		elseif ($objRequest->response == 'VERIFIED' && ($this->Input->post('receiver_email') == $this->paypal_account || $this->debug))
 		{
-			$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE order_id=?")->limit(1)->execute($this->Input->post('invoice'));
-
-			if (!$objOrder->numRows)
+			$objOrder = new IsotopeOrder();
+			
+			if (!$objOrder->findBy('order_id', $this->Input->post('invoice')))
 			{
 				$this->log('Order ID "' . $this->Input->post('invoice') . '" not found', 'PaymentPaypal processPostSale()', TL_ERROR);
 				return;
 			}
-
-			// Set the current system to the language when the user placed the order.
-			// This will result in correct e-mails and payment description.
-			$GLOBALS['TL_LANGUAGE'] = $objOrder->language;
-			$this->loadLanguageFile('default');
+			
+			if (!$objOrder->checkout())
+			{
+				$this->log('IPN checkout for Order ID "' . $this->Input->post('invoice') . '" failed', 'PaymentPaypal processPostSale()', TL_ERROR);
+				return;
+			}
 
 			// Load / initialize data
 			$arrPayment = deserialize($objOrder->payment_data, true);
@@ -132,7 +133,7 @@ class PaymentPaypal extends IsotopePayment
 			$arrPayment['POSTSALE'][] = $_POST;
 
 
-			$arrData = $objOrder->row();
+			$arrData = $objOrder->getData();
 			$arrData['old_payment_status'] = $arrPayment['status'];
 
 			$arrPayment['status'] = $this->Input->post('payment_status');
@@ -142,7 +143,7 @@ class PaymentPaypal extends IsotopePayment
 			switch( $arrPayment['status'] )
 			{
 				case 'Completed':
-					$this->Database->execute("UPDATE tl_iso_orders SET date_payed=" . time() . " WHERE id=" . $objOrder->id);
+					$objOrder->date_payed = time();
 					break;
 
 				case 'Canceled_Reversal':
@@ -150,8 +151,11 @@ class PaymentPaypal extends IsotopePayment
 				case 'Expired':
 				case 'Failed':
 				case 'Voided':
-					$this->Database->execute("UPDATE tl_iso_orders SET date_payed='' WHERE id=" . $objOrder->id);
-					$this->Database->execute("UPDATE tl_iso_orders SET status='on_hold' WHERE status='complete' AND id=" . $objOrder->id);
+					$objOrder->date_payed = '';
+					if ($objOrder->status == 'complete')
+					{
+						$objOrder->status = 'on_hold';
+					}
 					break;
 
 				case 'In-Progress':
@@ -163,7 +167,7 @@ class PaymentPaypal extends IsotopePayment
 					break;
 			}
 
-			$this->Database->prepare("UPDATE tl_iso_orders SET payment_data=? WHERE id=?")->execute(serialize($arrPayment), $objOrder->id);
+			$objOrder->payment_data = $arrPayment;
 
 			if ($this->postsale_mail)
 			{
@@ -174,6 +178,8 @@ class PaymentPaypal extends IsotopePayment
 				}
 				catch (Exception $e) {}
 			}
+			
+			$objOrder->save();
 
 			$this->log('PayPal IPN: data accepted ' . print_r($_POST, true), 'PaymentPaypal processPostSale()', TL_GENERAL);
 		}

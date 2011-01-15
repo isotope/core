@@ -31,5 +31,5 @@
 /**
  * Palettes
  */
-$GLOBALS['TL_DCA']['tl_iso_payment_modules']['palettes']['epay_form'] = '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,trans_type,postsale_mail,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},epay_merchantnumber,epay_secretkey;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled';
+$GLOBALS['TL_DCA']['tl_iso_payment_modules']['palettes']['epay_form'] = '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,trans_type,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},epay_merchantnumber,epay_secretkey;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled';
 
