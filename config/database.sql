@@ -7,9 +7,9 @@
 -- *                                                        *
 -- **********************************************************
 
--- 
+--
 -- Table `tl_iso_payment_modules`
--- 
+--
 
 CREATE TABLE `tl_iso_payment_modules` (
   `saferpay_accountid` varchar(14) NOT NULL default '',
