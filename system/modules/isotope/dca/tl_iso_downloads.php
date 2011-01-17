@@ -155,7 +155,7 @@ class tl_iso_downloads extends Backend
 			$icon = 'background: url(system/themes/' . $this->getTheme() . '/images/' . $objFile->icon . ') left center no-repeat; padding-left: 22px';
 		}
 		
-		return sprintf('<div style="margin-top: -20px; margin-bottom: -8px; padding-top: 4px; height: 16px;%s">%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span></div>', $icon, $row['title'], $row['singleSRC']);
+		return sprintf('<div style="height: 16px;%s">%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span></div>', $icon, $row['title'], $row['singleSRC']);
 	}
 }
 

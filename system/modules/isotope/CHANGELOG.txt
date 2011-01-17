@@ -17,6 +17,7 @@ Version 0.2.4 (2011-01-??)
 - Fixed global operation labels in IE7 (Ticket #253)
 - Fixed order delete button appearing for non-admins (Ticket #192)
 - Fixed issues with runonce.php database file update on certain systems
+- Fixed download listing out of view (Ticket #280)
 - Improved italian address formatting (Ticket #305)
 - Improved UK address formatting (Ticket #301)
 - Improved number of SQL queries
