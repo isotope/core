@@ -16,6 +16,8 @@ Version 0.3.beta1
 - Fixed start & stop publishing dates not working
 - Fixed Authorize.net failed transaction bug
 - Improved: Authorize.net failed transaction response handling & log data
+- Improved: Better usage of IsotopeBackend class
+- Improved: Delay loading of subdivions against memory issues (Ticket #223)
 - Removed pre-0.1 update code from runonce.php
 
 Version 0.2.4 (2011-01-??)

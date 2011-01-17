@@ -40,7 +40,7 @@ $GLOBALS['TL_DCA']['tl_iso_related_categories'] = array
 		'closed'						=> true,
 		'onload_callback' => array
 		(
-			array('tl_iso_related_categories', 'checkPermission'),
+			array('IsotopeBackend', 'initializeSetupModule'),
 		),
 	),
 
@@ -137,17 +137,4 @@ $GLOBALS['TL_DCA']['tl_iso_related_categories'] = array
 		),
 	)
 );
-
-
-class tl_iso_related_categories extends Backend
-{
-
-	public function checkPermission($dc)
-	{
-		if (strlen($this->Input->get('act')))
-		{
-			$GLOBALS['TL_DCA']['tl_iso_related_categories']['config']['closed'] = false;
-		}
-	}
-}
 

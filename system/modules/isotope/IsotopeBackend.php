@@ -82,5 +82,57 @@ class IsotopeBackend extends Backend
 			$this->redirect(str_replace('key=delete', 'act=delete', $this->Environment->request));
 		}
 	}
+	
+	
+	/**
+	 * Get array of subdivisions, delay loading of file if not necessary
+	 *
+	 * @param  object
+	 * @return array
+	 */
+	public function getSubdivisions($dc)
+	{
+		if (!is_array($GLOBALS['TL_LANG']['DIV']))
+		{
+			$this->loadLanguageFile('subdivisions');
+		}
+		
+		return $GLOBALS['TL_LANG']['DIV'];
+	}
+	
+	
+	/**
+	 * DCA for setup module tables is "closed" to hide the "new" button. Re-enable it when clicking on a button
+	 *
+	 * @param  object
+	 * @return void
+	 */
+	public function initializeSetupModule($dc)
+	{
+		if ($this->Input->get('act') != '')
+		{
+			$GLOBALS['TL_DCA'][$dc->table]['config']['closed'] = false;
+		}
+	}
+	
+	
+	/**
+	 * Add published/unpublished image to each record.
+	 *
+	 * @param array
+	 * @param string
+	 * @return string
+	 */
+	public function addPublishIcon($row, $label)
+	{
+		$image = 'published';
+
+		if (!$row['enabled'])
+		{
+			$image = 'un'.$image;
+		}
+
+		return sprintf('<div class="list_icon" style="background-image:url(\'system/themes/%s/images/%s.gif\');">%s</div>', $this->getTheme(), $image, $label);
+	}
 }
 

@@ -26,10 +26,6 @@
  */
 
 
-// Load country sub-divisions
-$this->loadLanguageFile('subdivisions');
-
-
 /**
  * Table tl_iso_tax_rate
  */
@@ -44,7 +40,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
 		'closed'					  => true,
 		'onload_callback'			  => array
 		(
-			array('tl_iso_tax_rate', 'checkPermission'),
+			array('IsotopeBackend', 'initializeSetupModule'),
 			array('tl_iso_tax_rate', 'addCurrencyRate'),
 		),
 	),
@@ -168,7 +164,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
 			'exclude'                 => true,
 			'sorting'                 => true,
 			'inputType'               => 'conditionalselect',
-			'options'				  => $GLOBALS['TL_LANG']['DIV'],
+			'options_callback'		  => array('IsotopeBackend', 'getSubdivisions'),
 			'eval'                    => array('conditionField'=>'country', 'includeBlankOption'=>true, 'tl_class'=>'w50'),
 		),
 		'postal' => array
@@ -214,33 +210,6 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
 
 class tl_iso_tax_rate extends Backend
 {
-
-	public function checkPermission($dc)
-	{
-		if (strlen($this->Input->get('act')))
-		{
-			$GLOBALS['TL_DCA']['tl_iso_tax_rate']['config']['closed'] = false;
-		}
-	}
-
-
-	public function getSubdivisions(DataContainer $dc)
-	{
-		$objTaxRate = $this->Database->prepare("SELECT country FROM tl_iso_tax_rate WHERE id=?")->limit(1)->execute($dc->id);
-
-		if(!$objTaxRate->numRows || !strlen($objTaxRate->country))
-			return array();
-
-		$this->loadLanguageFile('subdivisions');
-
-		if(array_key_exists($objTaxRate->country, $GLOBALS['TL_LANG']['DIV']))
-		{
-			return $GLOBALS['TL_LANG']['DIV'][$objTaxRate->country];
-		}
-
-		return array();
-	}
-
 
 	public function listRow($row)
 	{

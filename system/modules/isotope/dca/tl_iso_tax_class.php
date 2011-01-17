@@ -41,6 +41,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = array
 		'onload_callback' => array
 		(
 			array('tl_iso_tax_class', 'checkPermission'),
+			array('IsotopeBackend', 'initializeSetupModule'),
 		),
 		'ondelete_callback'			  => array
 		(
@@ -171,11 +172,6 @@ class tl_iso_tax_class extends Backend
 
 	public function checkPermission($dc)
 	{
-		if (strlen($this->Input->get('act')))
-		{
-			$GLOBALS['TL_DCA']['tl_iso_tax_class']['config']['closed'] = false;
-		}
-
 		// Hide archived (used and deleted) tax classes
 		$arrModules = $this->Database->execute("SELECT id FROM tl_iso_tax_class WHERE archive<2")->fetchEach('id');
 

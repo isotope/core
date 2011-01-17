@@ -42,6 +42,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 		'onload_callback'			  => array
 		(
 			array('tl_iso_payment_modules', 'checkPermission'),
+			array('IsotopeBackend', 'initializeSetupModule'),
 			array('tl_iso_payment_modules', 'loadShippingModules'),
 		),
 		'ondelete_callback'			  => array
@@ -64,7 +65,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 		(
 			'fields'                  => array('name', 'type'),
 			'format'                  => '%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>',
-			'label_callback'		  => array('tl_iso_payment_modules', 'addIcon'),
+			'label_callback'		  => array('IsotopeBackend', 'addPublishIcon'),
 
 		),
 		'global_operations' => array
@@ -471,11 +472,6 @@ class tl_iso_payment_modules extends Backend
 
 	public function checkPermission($dc)
 	{
-		if (strlen($this->Input->get('act')))
-		{
-			$GLOBALS['TL_DCA']['tl_iso_payment_modules']['config']['closed'] = false;
-		}
-
 		// Hide archived (used and deleted) modules
 		$arrModules = $this->Database->execute("SELECT id FROM tl_iso_payment_modules WHERE archive<2")->fetchEach('id');
 
@@ -629,25 +625,6 @@ class tl_iso_payment_modules extends Backend
 
 		$GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['shipping_modules']['options'] = array_keys($arrModules);
 		$GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['shipping_modules']['reference'] = $arrModules;
-	}
-
-
-	/**
-	 * Add an image to each record
-	 * @param array
-	 * @param string
-	 * @return string
-	 */
-	public function addIcon($row, $label)
-	{
-		$image = 'published';
-
-		if (!$row['enabled'])
-		{
-			$image = 'un'.$image;
-		}
-
-		return sprintf('<div class="list_icon" style="background-image:url(\'system/themes/%s/images/%s.gif\');">%s</div>', $this->getTheme(), $image, $label);
 	}
 }
 

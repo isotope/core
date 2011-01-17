@@ -46,7 +46,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 		'closed'					=> true,
 		'onload_callback'			=> array
 		(
-			array('tl_iso_attributes', 'checkPermission'),
+			array('IsotopeBackend', 'initializeSetupModule'),
 			array('tl_iso_attributes', 'disableFieldName'),
 		),
 		'onsubmit_callback' => array
@@ -334,15 +334,6 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 
 class tl_iso_attributes extends Backend
 {
-
-	public function checkPermission($dc)
-	{
-		if (strlen($this->Input->get('act')))
-		{
-			$GLOBALS['TL_DCA']['tl_iso_attributes']['config']['closed'] = false;
-		}
-	}
-
 
 	public function deleteAttribute($dc)
 	{

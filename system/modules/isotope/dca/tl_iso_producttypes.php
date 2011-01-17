@@ -40,6 +40,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
 		'onload_callback' => array
 		(
 			array('tl_iso_producttypes', 'checkPermission'),
+			array('IsotopeBackend', 'initializeSetupModule'),
 		),
 		'ondelete_callback' => array
 		(
@@ -239,11 +240,6 @@ class tl_iso_producttypes extends Backend
 	{
 		if ($this->Input->get('mod') != 'producttypes')
 			return;
-
-		if (strlen($this->Input->get('act')))
-		{
-			$GLOBALS['TL_DCA']['tl_iso_producttypes']['config']['closed'] = false;
-		}
 
 		$this->import('BackendUser', 'User');
 

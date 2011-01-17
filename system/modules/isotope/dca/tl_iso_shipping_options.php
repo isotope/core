@@ -26,10 +26,6 @@
  */
 
 
-// Load country sub-divisions
-$this->loadLanguageFile('subdivisions');
-
-
 /**
  * Table tl_iso_shipping_options
  */

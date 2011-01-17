@@ -26,10 +26,6 @@
  */
 
 
-// Load country sub-divisions
-$this->loadLanguageFile('subdivisions');
-
-
 /**
  * Table tl_iso_addresses
  */
@@ -186,7 +182,7 @@ $GLOBALS['TL_DCA']['tl_iso_addresses'] = array
 			'exclude'                 => true,
 			'sorting'                 => true,
 			'inputType'               => 'conditionalselect',
-			'options'				  => $GLOBALS['TL_LANG']['DIV'],
+			'options_callback'		  => array('IsotopeBackend', 'getSubdivisions'),
 			'eval'                    => array('feEditable'=>true, 'feGroup'=>'address', 'conditionField'=>'country', 'includeBlankOption'=>true, 'tl_class'=>'w50'),
 		),
 		'country' => array

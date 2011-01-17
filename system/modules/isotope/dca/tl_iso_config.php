@@ -26,9 +26,6 @@
  */
 
 
-$this->loadLanguageFile('subdivisions');
-
-
 /**
  * Table tl_iso_config
  */
@@ -44,6 +41,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 		'onload_callback' => array
 		(
 			array('tl_iso_config', 'checkPermission'),
+			array('IsotopeBackend', 'initializeSetupModule'),
 		),
 		'ondelete_callback'			  => array
 		(
@@ -241,7 +239,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'exclude'                 => true,
 			'sorting'                 => true,
 			'inputType'               => 'conditionalselect',
-			'options'				  => &$GLOBALS['TL_LANG']['DIV'],
+			'options_callback'		  => array('IsotopeBackend', 'getSubdivisions'),
 			'eval'                    => array('conditionField'=>'country', 'includeBlankOption'=>true, 'tl_class'=>'w50'),
 		),
 		'country' => array
@@ -460,12 +458,7 @@ class tl_iso_config extends Backend
 		{
 			unset($GLOBALS['TL_DCA']['tl_iso_config']['fields']['enableGoogleAnalytics']);
 		}
-
-		if (strlen($this->Input->get('act')))
-		{
-			$GLOBALS['TL_DCA']['tl_iso_config']['config']['closed'] = false;
-		}
-
+		
 		$this->import('BackendUser', 'User');
 
 		// Hide archived (used and deleted) configs

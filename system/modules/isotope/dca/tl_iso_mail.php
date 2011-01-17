@@ -42,7 +42,7 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
 		'ctables'                     => array('tl_iso_mail_content'),
 		'onload_callback' => array
 		(
-			array('tl_iso_mail', 'checkPermission'),
+			array('IsotopeBackend', 'initializeSetupModule'),
 		),
 	),
 
@@ -177,17 +177,4 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
 		)
 	)
 );
-
-
-class tl_iso_mail extends Backend
-{
-
-	public function checkPermission($dc)
-	{
-		if (strlen($this->Input->get('act')))
-		{
-			$GLOBALS['TL_DCA']['tl_iso_mail']['config']['closed'] = false;
-		}
-	}
-}
 
