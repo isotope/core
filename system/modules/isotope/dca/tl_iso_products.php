@@ -1625,6 +1625,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 			if ($objAttributes->foreignKey != '')
 			{
 				$arrData['foreignKey'] = $objAttributes->foreignKey;
+				$arrData['eval']['includeBlankOption'] = true;
 				unset($arrData['options']);
 			}
 			else
