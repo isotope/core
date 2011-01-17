@@ -10,9 +10,9 @@
 <p class="<?php echo $this->mtype; ?>"><?php echo $this->message; ?></p>
 <?php endif; ?>
 
-<a class="add" href="<?php echo $this->addNewAddress; ?>" title="<?php echo $this->addNewAddressLabel; ?>"><?php echo $this->addNewAddressLabel; ?></a>
+<p><a class="add" href="<?php echo $this->addNewAddress; ?>" title="<?php echo $this->addNewAddressLabel; ?>"><?php echo $this->addNewAddressLabel; ?></a></p>
 
-<?php if( count($this-addresses) ): ?>
+<?php if( count($this->addresses) ): ?>
 <ul>
 <?php foreach( $this->addresses as $address ):?>
 	<li class="<?php echo $address['class']; ?>">
