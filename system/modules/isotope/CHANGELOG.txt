@@ -9,6 +9,7 @@ Version 0.3.beta1
 - Added new "field wizard" to set up address fields with custom label and mandatory option in store configuration
 - Added option the define a custom template folder for each store configuration
 - Added store config option to limit tl_member countries to billing and shipping countries
+- Added includeBlankOption=true for select options using foreignKey (Ticket #292)
 - Improved: Better Isotope module handling, including callback support
 - Improved: Moved multilingual support to its own extension "isotope_multilingual" with lot more options
 - Improved: Hide payment information if checkout total is 0
