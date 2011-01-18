@@ -458,7 +458,7 @@ class tl_iso_config extends Backend
 		{
 			unset($GLOBALS['TL_DCA']['tl_iso_config']['fields']['enableGoogleAnalytics']);
 		}
-		
+	
 		$this->import('BackendUser', 'User');
 
 		// Hide archived (used and deleted) configs

@@ -473,7 +473,7 @@ class IsotopeOrder extends IsotopeProductCollection
 			{
 				return false;
 			}
-			
+		
 			// Set the current system to the language when the user placed the order.
 			// This will result in correct e-mails and payment description.
 			$GLOBALS['TL_LANGUAGE'] = $this->language;

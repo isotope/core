@@ -82,8 +82,8 @@ class IsotopeBackend extends Backend
 			$this->redirect(str_replace('key=delete', 'act=delete', $this->Environment->request));
 		}
 	}
-	
-	
+
+
 	/**
 	 * Get array of subdivisions, delay loading of file if not necessary
 	 *
@@ -96,11 +96,11 @@ class IsotopeBackend extends Backend
 		{
 			$this->loadLanguageFile('subdivisions');
 		}
-		
+	
 		return $GLOBALS['TL_LANG']['DIV'];
 	}
-	
-	
+
+
 	/**
 	 * DCA for setup module tables is "closed" to hide the "new" button. Re-enable it when clicking on a button
 	 *
@@ -114,8 +114,8 @@ class IsotopeBackend extends Backend
 			$GLOBALS['TL_DCA'][$dc->table]['config']['closed'] = false;
 		}
 	}
-	
-	
+
+
 	/**
 	 * Add published/unpublished image to each record.
 	 *
