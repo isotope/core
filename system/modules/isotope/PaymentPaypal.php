@@ -113,13 +113,13 @@ class PaymentPaypal extends IsotopePayment
 		elseif ($objRequest->response == 'VERIFIED' && ($this->Input->post('receiver_email') == $this->paypal_account || $this->debug))
 		{
 			$objOrder = new IsotopeOrder();
-		
+
 			if (!$objOrder->findBy('order_id', $this->Input->post('invoice')))
 			{
 				$this->log('Order ID "' . $this->Input->post('invoice') . '" not found', 'PaymentPaypal processPostSale()', TL_ERROR);
 				return;
 			}
-		
+
 			if (!$objOrder->checkout())
 			{
 				$this->log('IPN checkout for Order ID "' . $this->Input->post('invoice') . '" failed', 'PaymentPaypal processPostSale()', TL_ERROR);
@@ -178,7 +178,7 @@ class PaymentPaypal extends IsotopePayment
 				}
 				catch (Exception $e) {}
 			}
-		
+
 			$objOrder->save();
 
 			$this->log('PayPal IPN: data accepted ' . print_r($_POST, true), 'PaymentPaypal processPostSale()', TL_GENERAL);

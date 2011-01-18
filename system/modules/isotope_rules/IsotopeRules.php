@@ -387,7 +387,7 @@ class IsotopeRules extends Controller
 			'before_tax'	=> true,
 			'products'		=> array(),
 		);
-	
+
 		// Product or producttype restrictions
 		if ($arrRule['productRestrictions'] == 'products' || $arrRule['productRestrictions'] == 'producttypes')
 		{
@@ -418,7 +418,7 @@ class IsotopeRules extends Controller
 			{
 				continue;
 			}
-		
+
 			if (($arrRule['productRestrictions'] == 'products' && !in_array(($objProduct->pid ? $objProduct->pid : $objProduct->id), $arrLimit)) || ($arrRule['productRestrictions'] == 'producttypes' && !in_array($objProduct->type, $arrLimit)))
 			{
 				continue;

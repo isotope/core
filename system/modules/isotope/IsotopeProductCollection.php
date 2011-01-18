@@ -71,6 +71,12 @@ abstract class IsotopeProductCollection extends Model
 	protected $arrSettings = array();
 
 	/**
+	 * Cache __get() data until __set() is used
+	 * @var array
+	 */
+	protected $arrCache = array();
+
+	/**
 	 * Record has been modified
 	 * @var bool
 	 */
@@ -84,8 +90,17 @@ abstract class IsotopeProductCollection extends Model
 		// Do not use __destruct, because Database object might be destructed first (see http://dev.contao.org/issues/2236)
 		if (!$this->blnLocked)
 		{
-			register_shutdown_function(array($this, 'save'));
+			register_shutdown_function(array($this, 'saveDatabase'));
 		}
+	}
+
+
+	/**
+	 * Shutdown function to save data if modified
+	 */
+	public function saveDatabase()
+	{
+		$this->save();
 	}
 
 
@@ -98,104 +113,110 @@ abstract class IsotopeProductCollection extends Model
 	 */
 	public function __get($strKey)
 	{
-		switch( $strKey )
+		if (!isset($this->arrCache[$strKey]))
 		{
-			case 'table':
-				return $this->strTable;
-				break;
+			switch( $strKey )
+			{
+				case 'table':
+					return $this->strTable;
+					break;
 
-			case 'ctable':
-				return  $this->ctable;
-				break;
+				case 'ctable':
+					return  $this->ctable;
+					break;
 
-			case 'hasPayment':
-				return (is_object($this->Payment) ? true : false);
-				break;
+				case 'hasPayment':
+					return (is_object($this->Payment) ? true : false);
+					break;
 
-			case 'hasShipping':
-				return (is_object($this->Shipping) ? true : false);
-				break;
+				case 'hasShipping':
+					return (is_object($this->Shipping) ? true : false);
+					break;
 
-			case 'requiresShipping':
-				$arrProducts = $this->getProducts();
-				foreach( $arrProducts as $objProduct )
-				{
-					if (!$objProduct->shipping_exempt)
+				case 'requiresShipping':
+					$this->arrCache[$strKey] = false;
+
+					$arrProducts = $this->getProducts();
+					foreach( $arrProducts as $objProduct )
 					{
-						return true;
+						if (!$objProduct->shipping_exempt)
+						{
+							$this->arrCache[$strKey] = true;
+						}
 					}
-				}
-				return false;
-				break;
+					break;
 
-			case 'requiresPayment':
-				if ($this->grandTotal > 0)
-					return true;
+				case 'requiresPayment':
+					if ($this->grandTotal > 0)
+						return true;
 
-				return false;
-				break;
+					return false;
+					break;
 
-			case 'shippingTotal':
-				return $this->hasShipping ? (float)$this->Shipping->price : 0.00;
-				break;
+				case 'shippingTotal':
+					return $this->hasShipping ? (float)$this->Shipping->price : 0.00;
+					break;
 
-			case 'items':
-				return $this->Database->execute("SELECT SUM(product_quantity) AS items FROM {$this->ctable} i LEFT OUTER JOIN {$this->strTable} c ON i.pid=c.id WHERE i.pid={$this->id}")->items;
-				break;
+				case 'items':
+					$this->arrCache[$strKey] = $this->Database->execute("SELECT SUM(product_quantity) AS items FROM {$this->ctable} i LEFT OUTER JOIN {$this->strTable} c ON i.pid=c.id WHERE i.pid={$this->id}")->items;
+					break;
 
-			case 'products':
-				return $this->Database->execute("SELECT COUNT(*) AS items FROM {$this->ctable} i LEFT OUTER JOIN {$this->strTable} c ON i.pid=c.id WHERE i.pid={$this->id}")->items;
-				break;
+				case 'products':
+					$this->arrCache[$strKey] = $this->Database->execute("SELECT COUNT(*) AS items FROM {$this->ctable} i LEFT OUTER JOIN {$this->strTable} c ON i.pid=c.id WHERE i.pid={$this->id}")->items;
+					break;
 
-			case 'subTotal':
-				$fltTotal = 0;
+				case 'subTotal':
+					$fltTotal = 0;
 
-				$arrProducts = $this->getProducts();
-				foreach( $arrProducts as $objProduct )
-				{
-					$fltTotal += ((float)$objProduct->price * (int)$objProduct->quantity_requested);
-				}
+					$arrProducts = $this->getProducts();
+					foreach( $arrProducts as $objProduct )
+					{
+						$fltTotal += ((float)$objProduct->price * (int)$objProduct->quantity_requested);
+					}
 
-				return $fltTotal;
-				break;
+					$this->arrCache[$strKey] = $fltTotal;
+					break;
 
-			case 'taxTotal':
-				$intTaxTotal = 0;
+				case 'taxTotal':
+					$intTaxTotal = 0;
 
-				$arrSurcharges = $this->getSurcharges();
-				foreach( $arrSurcharges as $arrSurcharge )
-				{
-					if ($arrSurcharge['add'])
-						$intTaxTotal += $arrSurcharge['total_price'];
-				}
+					$arrSurcharges = $this->getSurcharges();
+					foreach( $arrSurcharges as $arrSurcharge )
+					{
+						if ($arrSurcharge['add'])
+							$intTaxTotal += $arrSurcharge['total_price'];
+					}
 
-				return $intTaxTotal;
-				break;
+					$this->arrCache[$strKey] = $intTaxTotal;
+					break;
 
-			case 'grandTotal':
-				$fltTotal = $this->subTotal;
+				case 'grandTotal':
+					$fltTotal = $this->subTotal;
 
-				$arrSurcharges = $this->getSurcharges();
-				foreach( $arrSurcharges as $arrSurcharge )
-				{
-					if ($arrSurcharge['add'] !== false)
-						$fltTotal += $arrSurcharge['total_price'];
-				}
+					$arrSurcharges = $this->getSurcharges();
+					foreach( $arrSurcharges as $arrSurcharge )
+					{
+						if ($arrSurcharge['add'] !== false)
+							$fltTotal += $arrSurcharge['total_price'];
+					}
 
-				return $fltTotal;
-				break;
+					$this->arrCache[$strKey] = $fltTotal;
+					break;
 
-			default:
-				if (array_key_exists($strKey, $this->arrData))
-				{
-					return deserialize($this->arrData[$strKey]);
-				}
-				else
-				{
-					return deserialize($this->arrSettings[$strKey]);
-				}
-				break;
+				default:
+					if (array_key_exists($strKey, $this->arrData))
+					{
+						return deserialize($this->arrData[$strKey]);
+					}
+					else
+					{
+						return deserialize($this->arrSettings[$strKey]);
+					}
+					break;
+			}
 		}
+
+		return $this->arrCache[$strKey];
 	}
 
 
@@ -219,6 +240,7 @@ abstract class IsotopeProductCollection extends Model
 		}
 
 		$this->blnModified = true;
+		$this->arrCache = array();
 	}
 
 
@@ -241,7 +263,23 @@ abstract class IsotopeProductCollection extends Model
 	}
 
 
-	// Shutdown function to update database with latest product prices
+	/**
+	 * Load settings from database field
+	 * @param  object
+	 * @param  string
+	 * @param  string
+	 */
+	public function setFromRow(Database_Result $resResult, $strTable, $strRefField)
+	{
+		parent::setFromRow($resResult, $strTable, $strRefField);
+
+		$this->arrSettings = deserialize($this->arrData['settings'], true);
+	}
+
+
+	/**
+	 * Update database with latest product prices and store settings
+	 */
 	public function save($blnForceInsert=false)
 	{
 		if ($this->blnModified)
@@ -258,7 +296,7 @@ abstract class IsotopeProductCollection extends Model
 			}
 		}
 
-		elseif ($this->blnRecordExists && $this->blnModified && !$blnForceInsert)
+		if ($this->blnRecordExists && $this->blnModified && !$blnForceInsert)
 		{
 			return parent::save($blnForceInsert);
 		}

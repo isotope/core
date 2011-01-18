@@ -96,7 +96,7 @@ class IsotopeBackend extends Backend
 		{
 			$this->loadLanguageFile('subdivisions');
 		}
-	
+
 		return $GLOBALS['TL_LANG']['DIV'];
 	}
 

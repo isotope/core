@@ -53,15 +53,6 @@ class IsotopeCart extends IsotopeProductCollection
 	 */
 	protected $strCookie = 'ISOTOPE_TEMP_CART';
 
-	/**
-	 * Cache cart data
-	 * @var array
-	 */
-	protected $arrCache = array();
-
-
-	protected $arrSurcharges;
-
 
 	public function __construct()
 	{
@@ -87,16 +78,16 @@ class IsotopeCart extends IsotopeProductCollection
 		{
 			case 'billing_address':
 			case 'billingAddress':
-				if ($this->arrCache['billingAddress_id'] > 0)
+				if ($this->arrSettings['billingAddress_id'] > 0)
 				{
-					$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE id=?")->limit(1)->execute($this->arrCache['billingAddress_id']);
+					$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE id=?")->limit(1)->execute($this->arrSettings['billingAddress_id']);
 
 					if ($objAddress->numRows)
 						return $objAddress->fetchAssoc();
 				}
-				elseif ($this->arrCache['billingAddress_id'] === 0 && is_array($this->arrCache['billingAddress_data']))
+				elseif ($this->arrSettings['billingAddress_id'] === 0 && is_array($this->arrSettings['billingAddress_data']))
 				{
-					return $this->arrCache['billingAddress_data'];
+					return $this->arrSettings['billingAddress_data'];
 				}
 
 				$this->import('Isotope');
@@ -117,22 +108,22 @@ class IsotopeCart extends IsotopeProductCollection
 
 			case 'shipping_address':
 			case 'shippingAddress':
-				if ($this->arrCache['shippingAddress_id'] == -1)
+				if ($this->arrSettings['shippingAddress_id'] == -1)
 				{
 					return array_merge($this->billingAddress, array('id' => -1));
 				}
 
-				if ($this->arrCache['shippingAddress_id'] > 0)
+				if ($this->arrSettings['shippingAddress_id'] > 0)
 				{
-					$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE id=?")->limit(1)->execute($this->arrCache['shippingAddress_id']);
+					$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE id=?")->limit(1)->execute($this->arrSettings['shippingAddress_id']);
 
 					if ($objAddress->numRows)
 						return $objAddress->fetchAssoc();
 				}
 
-				if ($this->arrCache['shippingAddress_id'] == 0 && count($this->arrCache['shippingAddress_data']))
+				if ($this->arrSettings['shippingAddress_id'] == 0 && count($this->arrSettings['shippingAddress_data']))
 				{
-					return $this->arrCache['shippingAddress_data'];
+					return $this->arrSettings['shippingAddress_data'];
 				}
 
 				if (FE_USER_LOGGED_IN)
@@ -159,12 +150,12 @@ class IsotopeCart extends IsotopeProductCollection
 			case 'billing_address':
 				if (is_array($varValue))
 				{
-					$this->arrCache['billingAddress_id'] = 0;
-					$this->arrCache['billingAddress_data'] = $varValue;
+					$this->arrSettings['billingAddress_id'] = 0;
+					$this->arrSettings['billingAddress_data'] = $varValue;
 				}
 				else
 				{
-					$this->arrCache['billingAddress_id'] = $varValue;
+					$this->arrSettings['billingAddress_id'] = $varValue;
 				}
 				break;
 
@@ -172,18 +163,21 @@ class IsotopeCart extends IsotopeProductCollection
 			case 'shipping_address':
 				if (is_array($varValue))
 				{
-					$this->arrCache['shippingAddress_id'] = 0;
-					$this->arrCache['shippingAddress_data'] = $varValue;
+					$this->arrSettings['shippingAddress_id'] = 0;
+					$this->arrSettings['shippingAddress_data'] = $varValue;
 				}
 				else
 				{
-					$this->arrCache['shippingAddress_id'] = $varValue;
+					$this->arrSettings['shippingAddress_id'] = $varValue;
 				}
 				break;
 
 			default:
 				parent::__set($strKey, $varValue);
 		}
+
+		$this->blnModified = true;
+		$this->arrCache = array();
 	}
 
 
@@ -310,6 +304,9 @@ class IsotopeCart extends IsotopeProductCollection
 
 	public function getSurcharges()
 	{
+		if (isset($this->arrCache['surcharges']))
+			return $this->arrCache['surcharges'];
+
 		$this->import('Isotope');
 
 		$arrPreTax = $arrPostTax = $arrTaxes = array();
@@ -415,7 +412,8 @@ class IsotopeCart extends IsotopeProductCollection
 			}
 		}
 
-		return array_merge($arrPreTax, $arrTaxes, $arrPostTax);
+		$this->arrCache['surcharges'] = array_merge($arrPreTax, $arrTaxes, $arrPostTax);
+		return $this->arrCache['surcharges'];
 	}
 }
 
