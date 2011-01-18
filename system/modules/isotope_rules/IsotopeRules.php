@@ -389,12 +389,29 @@ class IsotopeRules extends Controller
 		);
 
 		// Product or producttype restrictions
-		if ($arrRule['productRestrictions'] == 'products' || $arrRule['productRestrictions'] == 'producttypes')
+		if ($arrRule['productRestrictions'] != '')
 		{
 			$arrLimit = $this->Database->execute("SELECT object_id FROM tl_iso_rule_restrictions WHERE pid={$arrRule['id']} AND type='{$arrRule['productRestrictions']}'")->fetchEach('object_id');
-		}
 
-		foreach( $arrProducts as $objProduct )
+			if ($arrRule['productRestrictions'] == 'pages' && count($arrLimit))
+			{
+				$arrLimit = $this->Database->execute("SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrLimit) . ")")->fetchEach('pid');
+			}
+
+			if ($arrRule['quantityMode'] == 'cart_products' || $arrRule['quantityMode'] == 'cart_items')
+			{
+				$intTotal = 0;
+				foreach( $arrProducts as $objProduct )
+				{
+					if ((($arrRule['productRestrictions'] == 'products' || $arrRule['productRestrictions'] == 'pages') && in_array(($objProduct->pid ? $objProduct->pid : $objProduct->id), $arrLimit))
+					|| ($arrRule['productRestrictions'] == 'producttypes' && in_array($objProduct->type, $arrLimit)))
+					{
+						$intTotal += $arrRule['quantityMode']=='cart_items' ? $objProduct->quantity_requested : 1;
+					}
+				}
+			}
+		}
+		else
 		{
 			switch( $arrRule['quantityMode'] )
 			{
@@ -405,29 +422,32 @@ class IsotopeRules extends Controller
 				case 'cart_items':
 					$intTotal = $this->Isotope->Cart->items;
 					break;
+			}
+		}
 
-				case 'product_quantity':
-				default:
-					$intTotal = $objProduct->quantity_requested;
-					break;
+		foreach( $arrProducts as $objProduct )
+		{
+			// Product restrictions
+			if ((($arrRule['productRestrictions'] == 'products' || $arrRule['productRestrictions'] == 'pages') && !in_array(($objProduct->pid ? $objProduct->pid : $objProduct->id), $arrLimit))
+			|| ($arrRule['productRestrictions'] == 'producttypes' && !in_array($objProduct->type, $arrLimit)))
+			{
+				continue;
 			}
 
+
 			// Cart item quantity
+			if ($arrRule['quantityMode'] != 'cart_products' && $arrRule['quantityMode'] != 'cart_items')
+			{
+				$intTotal = $objProduct->quantity_requested;
+			}
+
 			if (($arrRule['minItemQuantity'] > 0 && $arrRule['minItemQuantity'] > $intTotal) || ($arrRule['maxItemQuantity'] > 0 && $arrRule['maxItemQuantity'] < $intTotal))
 			{
 				continue;
 			}
 
-			if (($arrRule['productRestrictions'] == 'products' && !in_array(($objProduct->pid ? $objProduct->pid : $objProduct->id), $arrLimit)) || ($arrRule['productRestrictions'] == 'producttypes' && !in_array($objProduct->type, $arrLimit)))
-			{
-				continue;
-			}
-			elseif ($arrRule['productRestrictions'] == 'pages')
-			{
-				if (!$this->Database->execute("SELECT COUNT(*) AS total FROM tl_iso_rule_restrictions WHERE pid={$arrRule['id']} AND type='pages' AND object_id IN (SELECT page_id FROM tl_iso_product_categories WHERE pid=" . ($objProduct->pid ? $objProduct->pid : $objProduct->id) . ")")->total)
-					continue;
-			}
 
+			// Apply To
 			switch( $arrRule['applyTo'] )
 			{
 				case 'product':
