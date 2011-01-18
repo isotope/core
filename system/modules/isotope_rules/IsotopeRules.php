@@ -391,7 +391,6 @@ class IsotopeRules extends Controller
 		// Product or producttype restrictions
 		if ($arrRule['productRestrictions'] == 'products' || $arrRule['productRestrictions'] == 'producttypes')
 		{
-			// ($objProduct->pid ? $objProduct->pid : $objProduct->id)
 			$arrLimit = $this->Database->execute("SELECT object_id FROM tl_iso_rule_restrictions WHERE pid={$arrRule['id']} AND type='{$arrRule['productRestrictions']}'")->fetchEach('object_id');
 		}
 
