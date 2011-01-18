@@ -114,7 +114,7 @@ class IsotopeRules extends Controller
 
 		while( $objRules->next() )
 		{
-			$arrSurcharge = $this->calculateProductSurcharge($objRules->row(), false);
+			$arrSurcharge = $this->calculateProductSurcharge($objRules->row());
 
 			if (is_array($arrSurcharge))
 				$arrSurcharges[] = $arrSurcharge;
@@ -136,7 +136,7 @@ class IsotopeRules extends Controller
 				else
 				{
 					//cart rules should total all eligible products for the cart discount and apply the discount to that amount rather than individual products.
-					$arrSurcharge = $this->calculateProductSurcharge($arrRule, true);
+					$arrSurcharge = $this->calculateProductSurcharge($arrRule);
 
 					if (is_array($arrSurcharge))
 						$arrSurcharges[] = $arrSurcharge;
@@ -367,7 +367,7 @@ class IsotopeRules extends Controller
 	/**
 	 * Calculate the total of all products to which apply a rule to
 	 */
-	protected function calculateProductSurcharge($arrRule, $blnCheckProducts=true)
+	protected function calculateProductSurcharge($arrRule)
 	{
 		$arrProducts = $this->Isotope->Cart->getProducts();
 
@@ -387,6 +387,13 @@ class IsotopeRules extends Controller
 			'before_tax'	=> true,
 			'products'		=> array(),
 		);
+		
+		// Product or producttype restrictions
+		if ($arrRule['productRestrictions'] == 'products' || $arrRule['productRestrictions'] == 'producttypes')
+		{
+			// ($objProduct->pid ? $objProduct->pid : $objProduct->id)
+			$arrLimit = $this->Database->execute("SELECT object_id FROM tl_iso_rule_restrictions WHERE pid={$arrRule['id']} AND type='{$arrRule['productRestrictions']}'")->fetchEach('object_id');
+		}
 
 		foreach( $arrProducts as $objProduct )
 		{
@@ -411,26 +418,15 @@ class IsotopeRules extends Controller
 			{
 				continue;
 			}
-
-			// Regular rules have already been checked for this, only required for coupons
-			if ($blnCheckProducts)
+			
+			if (($arrRule['productRestrictions'] == 'products' && !in_array(($objProduct->pid ? $objProduct->pid : $objProduct->id), $arrLimit)) || ($arrRule['productRestrictions'] == 'producttypes' && !in_array($objProduct->type, $arrLimit)))
 			{
-				// Product restrictions
-				if ($arrRule['productRestrictions'] == 'products')
-				{
-					if (!$this->Database->execute("SELECT * FROM tl_iso_rule_restrictions WHERE pid={$arrRule['id']} AND type='products' AND object_id=" . ($objProduct->pid ? $objProduct->pid : $objProduct->id))->numRows)
-						continue;
-				}
-				elseif ($arrRule['productRestrictions'] == 'producttypes')
-				{
-					if (!$this->Database->execute("SELECT * FROM tl_iso_rule_restrictions WHERE pid={$arrRule['id']} AND type='producttypes' AND object_id=" . $objProduct->type)->numRows)
-						continue;
-				}
-				elseif ($arrRule['productRestrictions'] == 'pages')
-				{
-					if (!$this->Database->execute("SELECT * FROM tl_iso_rule_restrictions WHERE pid={$arrRule['id']} AND type='pages' AND object_id IN (SELECT page_id FROM tl_iso_product_categories WHERE pid=" . ($objProduct->pid ? $objProduct->pid : $objProduct->id) . ")")->numRows)
-						continue;
-				}
+				continue;
+			}
+			elseif ($arrRule['productRestrictions'] == 'pages')
+			{
+				if (!$this->Database->execute("SELECT COUNT(*) AS total FROM tl_iso_rule_restrictions WHERE pid={$arrRule['id']} AND type='pages' AND object_id IN (SELECT page_id FROM tl_iso_product_categories WHERE pid=" . ($objProduct->pid ? $objProduct->pid : $objProduct->id) . ")")->total)
+					continue;
 			}
 
 			switch( $arrRule['applyTo'] )
