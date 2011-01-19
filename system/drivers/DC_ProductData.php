@@ -140,6 +140,92 @@ class DC_ProductData extends DC_Table
 
 		return $return;
 	}
+	
+	
+	/**
+	 * Duplicate all child records of a duplicated record
+	 * @param string
+	 * @param int
+	 * @param int
+	 * @param int
+	 */
+	protected function copyChilds($table, $insertID, $id, $parentId)
+	{
+		$time = time();
+		$copy = array();
+		$cctable = array();
+		$ctable = $GLOBALS['TL_DCA'][$table]['config']['ctable'];
+
+		if (!$GLOBALS['TL_DCA'][$table]['config']['ptable'] && strlen($this->Input->get('childs')) && $this->Database->fieldExists('pid', $table))
+		{
+			$ctable[] = $table;
+		}
+
+		if (!is_array($ctable))
+		{
+			return;
+		}
+
+		// Walk through each child table
+		foreach ($ctable as $v)
+		{
+			$this->loadDataContainer($v);
+			$cctable[$v] = $GLOBALS['TL_DCA'][$v]['config']['ctable'];
+
+			if (!$GLOBALS['TL_DCA'][$v]['config']['doNotCopyRecords'] && strlen($v))
+			{
+				$objCTable = $this->Database->prepare("SELECT * FROM " . $v . " WHERE pid=?" . ($this->Database->fieldExists('sorting', $v) ? " ORDER BY sorting" : ""))
+											->execute($id);
+
+				foreach ($objCTable->fetchAllAssoc() as $row)
+				{
+					// Exclude the duplicated record itself
+					if ($v == $table && $row['id'] == $parentId)
+					{
+						continue;
+					}
+
+					foreach ($row as $kk=>$vv)
+					{
+						if ($kk == 'id')
+						{
+							continue;
+						}
+
+						// Reset all unique, doNotCopy and fallback fields to their default value
+						if ($GLOBALS['TL_DCA'][$v]['fields'][$kk]['eval']['unique'] || $GLOBALS['TL_DCA'][$v]['fields'][$kk]['eval']['doNotCopy'] || $GLOBALS['TL_DCA'][$v]['fields'][$kk]['eval']['fallback'])
+						{
+							$vv = $GLOBALS['TL_DCA'][$v]['fields'][$kk]['default'] ? ((is_array($GLOBALS['TL_DCA'][$v]['fields'][$kk]['default'])) ? serialize($GLOBALS['TL_DCA'][$v]['fields'][$kk]['default']) : $GLOBALS['TL_DCA'][$v]['fields'][$kk]['default']) : '';
+						}
+
+						$copy[$v][$row['id']][$kk] = $vv;
+					}
+
+					$copy[$v][$row['id']]['pid'] = $insertID;
+					$copy[$v][$row['id']]['tstamp'] = $time;
+				}
+			}
+		}
+
+		// Duplicate the child records
+		foreach ($copy as $k=>$v)
+		{
+			if (count($v))
+			{
+				foreach ($v as $kk=>$vv)
+				{
+					$objInsertStmt = $this->Database->prepare("INSERT INTO " . $k . " %s")
+													->set($vv)
+													->execute();
+
+					if ($objInsertStmt->affectedRows && (count($cctable[$k]) || $GLOBALS['TL_DCA'][$k]['list']['sorting']['mode'] == 5) && $kk != $parentId)
+					{
+						$this->copyChilds($k, $objInsertStmt->insertId, $kk, $parentId);
+					}
+				}
+			}
+		}
+	}
 
 
 	/**

@@ -10,14 +10,23 @@ Version 0.3.beta1
 - Added option the define a custom template folder for each store configuration
 - Added store config option to limit tl_member countries to billing and shipping countries
 - Added includeBlankOption=true for select options using foreignKey (Ticket #292)
+- Added new IsotopeOrder class, checkout can now be done from postsale request
+- Added button to duplicate the fallback language to a language record
+- Added multi-edit support for products and variant data
+- Added: Copy child records (variants, languages) when copying a product
 - Improved: Better Isotope module handling, including callback support
 - Improved: Moved multilingual support to its own extension "isotope_multilingual" with lot more options
 - Improved: Hide payment information if checkout total is 0
-- Fixed start & stop publishing dates not working
-- Fixed Authorize.net failed transaction bug
 - Improved: Authorize.net failed transaction response handling & log data
 - Improved: Better usage of IsotopeBackend class
 - Improved: Delay loading of subdivions against memory issues (Ticket #223)
+- Improved: Updated ePay form payment to use a template
+- Improved: Show customer address on ePay backend
+- Improved: SQL key/index optimizations
+- Improved number of SQL queries
+- Improved: Better formatting to attributes list. Show attribute name in product type setup wizard.
+- Fixed start & stop publishing dates not working
+- Fixed Authorize.net failed transaction bug
 - Removed pre-0.1 update code from runonce.php
 
 Version 0.2.5 (2011-02-??)

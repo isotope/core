@@ -1322,7 +1322,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 	{
 		if ($row['pid'] == 0)
 		{
-			$href = 'act=copy';
+			$href = 'act=copy&childs=1';
 		}
 
 		return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
