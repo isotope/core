@@ -26,6 +26,7 @@ Version 0.3.beta1
 - Improved: SQL key/index optimizations
 - Improved number of SQL queries
 - Improved: Better formatting to attributes list. Show attribute name in product type setup wizard.
+- Improved: Show field label not value in quick edit mode
 - Fixed start & stop publishing dates not working
 - Fixed Authorize.net failed transaction bug
 - Removed pre-0.1 update code from runonce.php

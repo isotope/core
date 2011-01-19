@@ -1002,7 +1002,6 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 
 			foreach($arrWidgets as $key=>$objWidget)
 			{
-
 				switch($key)
 				{
 					case 'sku':
@@ -1048,10 +1047,16 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 							   ->set($arrSet)
 							   ->execute($objVariants->id);
 			}
+			
+			$arrValues = array();
+			foreach( array_intersect_key($objVariants->row(), $arrFields) as $k => $v )
+			{
+				$arrValues[$k] = $this->Isotope->formatValue('tl_iso_products', $k, $v);
+			}
 
 			$strBuffer .= '
 <tr>
-	<td>'.implode(', ', array_intersect_key($objVariants->row(), $arrFields)).'</td>';
+	<td>'.implode(', ', $arrValues).'</td>';
 	foreach($arrQuickEditFields as $field)
 	{
 		if(in_array($field, $arrVarAttributes))
