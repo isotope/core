@@ -1840,8 +1840,10 @@ window.addEvent(\'domready\', function()
 		if (count($arrDuplicate))
 		{
 			$intLanguageId = $this->Database->execute("SELECT id FROM {$this->strTable} WHERE pid={$this->intId} AND language='$strLanguage'")->id;
+			
+			$this->createInitialVersion($this->strTable, $intLanguageId);
+			
 			$arrRow = $this->Database->execute("SELECT " . implode(',', $arrDuplicate) . " FROM {$this->strTable} WHERE id={$this->intId}")->fetchAssoc();
-
 			$this->Database->prepare("UPDATE {$this->strTable} %s WHERE id=$intLanguageId")->set($arrRow)->executeUncached();
 			
 			$this->createNewVersion($this->strTable, $intLanguageId);
