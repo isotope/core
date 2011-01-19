@@ -509,7 +509,7 @@ class DC_ProductData extends DC_Table
 </div>
 </form>';
 
-		$copyFallback = $this->blnEditLanguage ? '&nbsp;&nbsp;::&nbsp;&nbsp;<a href="'.$this->addToUrl('act=copyFallback').'" class="header_iso_copy" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['copyFallback']).'" accesskey="d" onclick="Backend.getScrollOffset();">'.$GLOBALS['TL_LANG']['MSC']['copyFallback'].'</a>' : '';
+		$copyFallback = $this->blnEditLanguage ? '&nbsp;&nbsp;::&nbsp;&nbsp;<a href="'.$this->addToUrl('act=copyFallback').'" class="header_iso_copy" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['copyFallback']).'" accesskey="d" onclick="Backend.getScrollOffset();">'.($GLOBALS['TL_LANG']['MSC']['copyFallback'] ? $GLOBALS['TL_LANG']['MSC']['copyFallback'] : 'copyFallback').'</a>' : '';
 
 		// Begin the form (-> DO NOT CHANGE THIS ORDER -> this way the onsubmit attribute of the form can be changed by a field)
 		$return = $version . '
@@ -1836,12 +1836,16 @@ window.addEvent(\'domready\', function()
 				$arrDuplicate[] = $field;
 			}
 		}
-
+		
 		if (count($arrDuplicate))
 		{
+			$intLanguageId = $this->Database->execute("SELECT id FROM {$this->strTable} WHERE pid={$this->intId} AND language='$strLanguage'")->id;
 			$arrRow = $this->Database->execute("SELECT " . implode(',', $arrDuplicate) . " FROM {$this->strTable} WHERE id={$this->intId}")->fetchAssoc();
 
-			$this->Database->prepare("UPDATE {$this->strTable} %s WHERE pid={$this->intId} AND language='$strLanguage'")->set($arrRow)->execute();
+			$this->Database->prepare("UPDATE {$this->strTable} %s WHERE id=$intLanguageId")->set($arrRow)->executeUncached();
+			
+			$this->createNewVersion($this->strTable, $intLanguageId);
+			$this->log(sprintf('A new version of record ID %s (table %s) has been created', $intLanguageId, $this->strTable), 'DC_ProductData copyFallback()', TL_GENERAL);
 		}
 
 		$this->redirect($this->addToUrl('act=edit'));
