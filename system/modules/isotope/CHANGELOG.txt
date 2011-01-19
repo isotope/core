@@ -31,7 +31,8 @@ Version 0.3.beta1
 
 Version 0.2.5 (2011-02-??)
 ------------------------------
-
+- Fixed discount applied to subtotal on cart overrides other restrictions (Ticket #352)
+- Fixed sql in edit-all mode on attributes
 
 Version 0.2.4 (2011-01-17)
 ------------------------------
