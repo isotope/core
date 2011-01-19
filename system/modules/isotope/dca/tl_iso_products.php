@@ -1622,7 +1622,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 			}
 
 			// Prepare options
-			if ($objAttributes->foreignKey != '')
+			if ($objAttributes->foreignKey != '' && !$objAttributes->variant_option)
 			{
 				$arrData['foreignKey'] = $objAttributes->foreignKey;
 				$arrData['eval']['includeBlankOption'] = true;
@@ -1632,7 +1632,16 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 			{
 				$arrData['options'] = array();
 				$arrData['reference'] = array();
-				$arrOptions = deserialize($objAttributes->options);
+				
+				if ($objAttributes->foreignKey)
+				{
+					$arrKey = explode('.', $objAttributes->foreignKey, 2);
+					$arrOptions = $this->Database->execute("SELECT id AS value, {$arrKey[1]} AS label FROM {$arrKey[0]} ORDER BY label")->fetchAllAssoc();
+				}
+				else
+				{
+					$arrOptions = deserialize($objAttributes->options);
+				}
 
 				if (is_array($arrOptions) && count($arrOptions))
 				{
@@ -1665,6 +1674,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 				}
 			}
 
+			unset($arrData['eval']['foreignKey']);
 			unset($arrData['eval']['options']);
 
 			if (is_array($GLOBALS['ISO_ATTR'][$objAttributes->type]['callback']) && count($GLOBALS['ISO_ATTR'][$objAttributes->type]['callback']))
