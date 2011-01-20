@@ -1400,16 +1400,20 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 		}
 */
 
-		$href .= '&amp;tid='.$row['id'].'&amp;state='.($row['published'] ? '' : 1);
+		$objProductType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id=".$row['type']);
+		$fields = $row['pid'] ? deserialize($objProductType->variant_attributes, true) : deserialize($objProductType->attributes, true);
+		$time = time();
 
-		if (!$row['published'])
+		if ((in_array('start', $fields) && $row['start'] != '' && $row['start'] > $time) || (in_array('stop', $fields) && $row['stop'] != '' && $row['stop'] < $time))
+		{
+			return $this->generateImage('/system/modules/isotope/html/invisible-startstop.png', $label).' ';
+		}
+		elseif (!$row['published'])
 		{
 			$icon = 'invisible.gif';
 		}
-
-		$objProduct = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE id=?")
-									 ->limit(1)
-									 ->execute($row['id']);
+		
+		$href .= '&amp;tid='.$row['id'].'&amp;state='.($row['published'] ? '' : 1);
 
 		return '<a href="'.$this->addToUrl($href).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
 	}
