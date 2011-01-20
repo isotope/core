@@ -45,6 +45,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
 		'generate'					=> array('tl_iso_products', 'generateVariants'),
 		'quick_edit'				=> array('tl_iso_products', 'quickEditVariants'),
 		'import'					=> array('tl_iso_products', 'importAssets'),
+		'filter_cache'				=> array('tl_iso_products', 'rebuildFilterCache')
 	),
 	'iso_orders' => array
 	(

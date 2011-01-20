@@ -111,6 +111,13 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'class'				=> 'header_import_assets isotope-tools',
 				'attributes'		=> 'onclick="Backend.getScrollOffset();"',
 			),
+			'filter_cache' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_products']['filter_cache'],
+				'href'                => 'key=filter_cache',
+				'class'               => 'header_import_assets isotope-tools',
+				'attributes'          => 'onclick="Backend.getScrollOffset();"',
+			)
 		),
 		'operations' => array
 		(
@@ -1710,7 +1717,91 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 		return $varValue;
 	}
 
-
+	/** 
+	 * Rebuild the cache of filter values to categories
+	 * @param object
+	 */
+	public function rebuildFilterCache($dc)	
+	{
+		$arrFilterableAttributes = $this->Database->query("SELECT id, field_name FROM tl_iso_attributes WHERE is_filterable='1'")->fetchAllAssoc();
+		
+		if(!count($arrFilterableAttributes))
+			return;
+		
+		foreach($arrFilterableAttributes as $row)
+		{
+			$arrFilters[$row['field_name']] = array
+			(
+				'name'	=> $row['field_name'],
+				'id'	=> $row['id']
+			);
+			
+			$arrFilterFields[] = $row['field_name'];
+			$arrFilterIds[] = $row['id'];
+		}		
+			
+		$strFilterFields = implode(',', $arrFilterFields);
+		
+		$objProductRelations = $this->Database->query("SELECT pages,$strFilterFields FROM tl_iso_products WHERE published='1'");
+	
+		while($objProductRelations->next())
+		{
+			$arrPages = deserialize($objProductRelations->pages, true);
+			
+			//$arrValuesByFilter = array();
+			
+			foreach($arrPages as $page)
+			{
+				//$arrValuesByFilter = array();
+				
+				foreach($arrFilters as $field=>$vals)
+				{
+					if(!$objProductRelations->$field)
+						continue; 
+					
+					$arrTValues = array();	//acutal product values for the current filter alone
+						
+					$varValue = (is_array(deserialize($objProductRelations->$field)) ? deserialize($objProductRelations->$field,true) : $objProductRelations->$field);
+				
+					if(is_array($varValue))
+					{
+						foreach($varValues as $value)
+						{
+							$arrFilterValuesByPage[$page][$arrFilters[$field]['id']][] = $value;
+						}
+					}
+					else
+					{
+						$arrFilterValuesByPage[$page][$arrFilters[$field]['id']][] = $varValue;
+					}
+				
+				}
+			}	
+			
+		}
+		
+		if($arrFilterValuesByPage)
+		{
+			$arrRows = array();
+			$arrRowValues = array();
+			//make values unique
+			foreach($arrFilterValuesByPage as $k=>$page)
+			{				
+				foreach($page as $index=>$collection)
+				{	
+							
+					$arrRowValues[] = "$k,$index,'".serialize(array_unique($collection))."'";
+				}
+			}
+		
+			$strInserts = implode("),(",$arrRowValues);
+			$this->Database->query("TRUNCATE tl_filter_values_to_categories");
+			$this->Database->query("INSERT INTO tl_filter_values_to_categories (pid,attribute_id,value_collection) VALUES($strInserts)");
+		}		
+		
+	}
+	
+	
 	/**
 	 * Wrapper for the Product-Filter Collection associative table logic.  Grabs all necessary values in order to update the PFC table.
 	 *
