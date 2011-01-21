@@ -168,8 +168,7 @@ CREATE TABLE `tl_iso_attributes` (
   `rgxp` varchar(255) NOT NULL default '',
   `conditionField` varchar(30) NOT NULL default '',
   `gallery` varchar(64) NOT NULL default '',
-  PRIMARY KEY  (`id`),
-  KEY `pid` (`pid`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
@@ -217,8 +216,7 @@ CREATE TABLE `tl_iso_config` (
   `missing_image_placeholder` varchar(255) NOT NULL default '',
   `imageSizes` blob NULL,
   `archive` int(1) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `pid` (`pid`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
