@@ -240,13 +240,17 @@ abstract class IsotopeShipping extends Frontend
 
 
 	/**
-	 * This function is used to gather any addition shipping options that might be available specific to the current customer or order.  For example, expedited shipping based on 		 * customer location.
+	 * This function is used to gather any addition shipping options that might be available specific to the current customer or order.
+	 * For example, expedited shipping based on customer location.
 	 *
 	 * @abstract
 	 * @access public
-	 * @return void
+	 * @return string
 	 */
-	public function getShippingOptions() {}
+	public function getShippingOptions()
+	{
+		return '';
+	}
 
 
 	/**
