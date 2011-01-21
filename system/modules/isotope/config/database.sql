@@ -142,7 +142,6 @@ CREATE TABLE `tl_iso_producttypes` (
 
 CREATE TABLE `tl_iso_attributes` (
   `id` int(10) unsigned NOT NULL auto_increment,
-  `pid` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
   `name` varchar(255) NOT NULL default '',
   `field_name` varchar(30) NOT NULL default '',
@@ -182,7 +181,6 @@ CREATE TABLE `tl_iso_attributes` (
 
 CREATE TABLE `tl_iso_config` (
   `id` int(10) unsigned NOT NULL auto_increment,
-  `pid` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
   `name` varchar(255) NOT NULL default '',
   `label` varchar(255) NOT NULL default '',
@@ -506,7 +504,6 @@ CREATE TABLE `tl_iso_orders` (
   `cart_id` int(10) unsigned NOT NULL default '0',
   `payment_id` int(10) unsigned NOT NULL default '0',
   `shipping_id` int(10) unsigned NOT NULL default '0',
-  `source_cart_id` int(10) unsigned NOT NULL default '0',
   `language` varchar(2) NOT NULL default '',
   `shipping_address` blob NULL,
   `billing_address` blob NULL,
