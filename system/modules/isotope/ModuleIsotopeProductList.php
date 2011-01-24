@@ -77,7 +77,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 
 		if ($objProduct)
 		{
-			return $objProduct->generateAjax();
+			return $objProduct->generateAjax($this);
 		}
 
 		return '';

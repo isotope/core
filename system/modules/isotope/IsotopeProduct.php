@@ -76,9 +76,14 @@ class IsotopeProduct extends Controller
 	protected $arrDownloads = null;
 
 	/**
-	 * Cache properties, cache is dropped when serializing
+	 * Cache properties
 	 */
 	protected $arrCache = array();
+	
+	/**
+	 * Unique form ID
+	 */
+	protected $formSubmit = 'iso_product';
 
 	/**
 	 * for option widgets, helps determine the encoding type for a form
@@ -130,6 +135,7 @@ class IsotopeProduct extends Controller
 			return;
 		}
 
+		$this->formSubmit = 'iso_product_' . $this->arrData['id'];
 		$this->arrType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id=".(int)$this->arrData['type'])->fetchAssoc();
 		$this->arrAttributes = deserialize($this->arrType['attributes'], true);
 		$this->arrCache['list_template'] = $this->arrType['list_template'];
@@ -344,7 +350,7 @@ class IsotopeProduct extends Controller
 						if (!strlen($strClass) || !$this->classFileExists($strClass))
 							$strClass = 'IsotopeGallery';
 
-						$varValue = new $strClass($strKey.'_'.($this->pid ? $this->pid : $this->id), deserialize($this->arrData[$strKey]));
+						$varValue = new $strClass($this->formSubmit.'_'.$strKey, deserialize($this->arrData[$strKey]));
 						$varValue->product_id = ($this->pid ? $this->pid : $this->id);
 						$varValue->href_reader = $this->href_reader;
 					}
@@ -510,6 +516,8 @@ class IsotopeProduct extends Controller
 	public function generate($strTemplate, &$objModule)
 	{
 		global $objPage;
+		
+		$this->formSubmit = (($objModule instanceof ContentElement) ? 'cte' : 'fmd') . $objModule->id . '_product_' . ($this->pid ? $this->pid : $this->id);
 
 		$this->validateVariant();
 
@@ -552,7 +560,7 @@ class IsotopeProduct extends Controller
 			$arrButtons = array_intersect_key($arrButtons, array_flip(deserialize($objModule->iso_buttons, true)));
 		}
 
-		if ($this->Input->post('FORM_SUBMIT') == 'iso_product_'.($this->pid ? $this->pid : $this->id) && !$this->doNotSubmit)
+		if ($this->Input->post('FORM_SUBMIT') == $this->formSubmit && !$this->doNotSubmit)
 		{
 			foreach( $arrButtons as $button => $data )
 			{
@@ -582,11 +590,11 @@ class IsotopeProduct extends Controller
 		$objTemplate->hasOptions = count($arrProductOptions) ? true : false;
 
 		$objTemplate->enctype = $this->hasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
-		$objTemplate->formId = 'iso_product_'.($this->pid ? $this->pid : $this->id);
+		$objTemplate->formId = $this->formSubmit;
 		$objTemplate->action = ampersand($this->Environment->request, true);
-		$objTemplate->formSubmit = 'iso_product_'.($this->pid ? $this->pid : $this->id);
+		$objTemplate->formSubmit = $this->formSubmit;
 
-		$GLOBALS['TL_MOOTOOLS'][] = "<script type=\"text/javascript\">new IsotopeProduct('" . $objModule->id . "', '" . ($this->pid ? $this->pid : $this->id) . "', ['ctrl_" . implode("_".($this->pid ? $this->pid : $this->id)."', 'ctrl_", $arrAjaxOptions) . "_".($this->pid ? $this->pid : $this->id)."'], {language: '" . $GLOBALS['TL_LANGUAGE'] . "', page: " . $objPage->id . "});</script>";
+		$GLOBALS['TL_MOOTOOLS'][] = "<script type=\"text/javascript\">new IsotopeProduct('{$objModule->id}', '" . ($this->pid ? $this->pid : $this->id) . "', '{$this->formSubmit}', ['ctrl_" . implode("_".$this->formSubmit."', 'ctrl_", $arrAjaxOptions) . "_".$this->formSubmit."'], {language: '{$GLOBALS['TL_LANGUAGE']}', page: {$objPage->id}});</script>";
 
 		// HOOK for altering product data before output
 		if (isset($GLOBALS['TL_HOOKS']['iso_generateProduct']) && is_array($GLOBALS['TL_HOOKS']['iso_generateProduct']))
@@ -606,8 +614,10 @@ class IsotopeProduct extends Controller
 	/**
 	 * Generate the product data on ajax update
 	 */
-	public function generateAjax()
+	public function generateAjax(&$objModule)
 	{
+		$this->formSubmit = (($objModule instanceof ContentElement) ? 'cte' : 'fmd') . $objModule->id . '_product_' . ($this->pid ? $this->pid : $this->id);
+		
 		$this->validateVariant();
 
 		$arrOptions = array();
@@ -621,7 +631,7 @@ class IsotopeProduct extends Controller
 			{
 				$arrOptions[] = array
 				(
-					'id'		=> ('ctrl_' . $attribute . '_' . ($this->pid ? $this->pid : $this->id)),
+					'id'		=> ('ctrl_' . $attribute . '_' . $this->formSubmit),
 					'html'		=> $this->generateProductOptionWidget($attribute, true),
 				);
 			}
@@ -635,14 +645,14 @@ class IsotopeProduct extends Controller
 					{
 						$arrOptions[] = array
 						(
-							'id'		=> ($attribute . '_' . ($this->pid ? $this->pid : $this->id) . '_' . $size['name'] . 'size'),
+							'id'		=> ($this->formSubmit . '_' . $attribute . '_' . $size['name'] . 'size'),
 							'html'		=> $objGallery->generateMainImage($size['name']),
 						);
 					}
 
 					$arrOptions[] = array
 					(
-						'id'		=> ($attribute . '_' . ($this->pid ? $this->pid : $this->id) . '_gallery'),
+						'id'		=> ($this->formSubmit . '_' . $attribute . '_gallery'),
 						'html'		=> $objGallery->generateGallery(),
 					);
 				}
@@ -650,7 +660,7 @@ class IsotopeProduct extends Controller
 				{
 					$arrOptions[] = array
 					(
-						'id'		=> ($attribute . '_' . ($this->pid ? $this->pid : $this->id)),
+						'id'		=> ($this->formSubmit . '_' . $attribute),
 						'html'		=> $this->generateAttribute($attribute, $varValue),
 					);
 				}
@@ -697,7 +707,7 @@ class IsotopeProduct extends Controller
 			{
 				$strBuffer = $this->Isotope->formatPriceWithCurrency($varValue);
 
-				if ($varValue != $this->original_price)
+				if ($this->original_price > 0 && $varValue != $this->original_price)
 				{
 					$strBuffer = '<div class="original_price"><strike>' . $this->formatted_original_price . '</strike></div><div class="price">' . $strBuffer . '</div>';
 				}
@@ -714,10 +724,10 @@ class IsotopeProduct extends Controller
 			}
 		}
 
-		// Apply <span> to variant attributes so we can replace it with javascript/ajax
+		// Apply <div> ID to variant attributes so we can replace it with javascript/ajax
 		if ($this->arrType['variants'] && in_array($attribute, $this->arrVariantAttributes))
 		{
-			return '<span id="' . $attribute . '_' . ($this->pid ? $this->pid : $this->id) . '">' . $strBuffer . '</span>';
+			return '<div class="iso_attribute ' . $attribute . '" id="' . $this->formSubmit . '_' . $attribute . '">' . $strBuffer . '</div>';
 		}
 		else
 		{
@@ -798,7 +808,7 @@ class IsotopeProduct extends Controller
 
 			$arrField['options'] = array_values($arrField['options']);
 
-			if ($this->Input->get($strField) != '' && $this->Input->post('FORM_SUBMIT') != 'iso_product_'.($this->pid ? $this->pid : $this->id))
+			if ($this->Input->get($strField) != '' && $this->Input->post('FORM_SUBMIT') != $this->formSubmit)
 			{
 				if (in_array($this->Input->get($strField), (array)$this->arrVariantOptions['attributes'][$strField], true))
 				{
@@ -851,10 +861,10 @@ class IsotopeProduct extends Controller
 
 		$objWidget->storeValues = true;
 		$objWidget->tableless = true;
-		$objWidget->id .= "_" . ($this->pid ? $this->pid : $this->id);
+		$objWidget->id .= "_" . $this->formSubmit;
 
 		// Validate input
-		if ($this->Input->post('FORM_SUBMIT') == 'iso_product_'.($this->pid ? $this->pid : $this->id) || $this->Input->get($strField) != '')
+		if ($this->Input->post('FORM_SUBMIT') == $this->formSubmit || $this->Input->get($strField) != '')
 		{
 			$objWidget->validate();
 
@@ -958,7 +968,7 @@ class IsotopeProduct extends Controller
 		{
 			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
 			{
-				if ($this->Input->post('FORM_SUBMIT') == 'iso_product_'.($this->pid ? $this->pid : $this->id) && in_array($this->Input->post($attribute), (array)$this->arrVariantOptions['attributes'][$attribute], true))
+				if ($this->Input->post('FORM_SUBMIT') == $this->formSubmit && in_array($this->Input->post($attribute), (array)$this->arrVariantOptions['attributes'][$attribute], true))
 				{
 					$arrOptions[$attribute] = $this->Input->post($attribute);
 				}

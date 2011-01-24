@@ -67,7 +67,7 @@ class InlineGallery extends IsotopeGallery
 			$strGallery .= $objTemplate->parse();
 		}
 
-		return '<span id="' . $this->name . '_gallery">' . $strGallery . '</span>';
+		return '<div class="iso_attribute" id="' . $this->name . '_gallery">' . $strGallery . '</div>';
 	}
 
 

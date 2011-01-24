@@ -89,11 +89,11 @@ var Isotope =
 		}
 	},
 
-	inlineGallery: function(el, product_id)
+	inlineGallery: function(el, elementId)
 	{
-		$$(('#images_'+product_id+'_mediumsize img')).set('src', el.href);
+		$$(('#'+elementId+'_mediumsize img')).set('src', el.href);
 
-		$$(('#images_'+product_id+'_gallery div, #images_'+product_id+'_gallery img')).removeClass('active');
+		$$(('#'+elementId+'_gallery div, #'+elementId+'_gallery img')).removeClass('active');
 
 		el.addClass('active');
 		el.getChildren().addClass('active');
@@ -114,11 +114,11 @@ var IsotopeProduct = new Class(
 		loadMessage: 'Loading product data …'
 	},
 
-	initialize: function(ajaxid, product, attributes, options)
+	initialize: function(ajaxid, product, formId, attributes, options)
 	{
 		this.setOptions(options);
 
-		this.form = document.id(('iso_product_'+product));
+		this.form = document.id(formId);
 
 		if (this.form)
 		{
@@ -164,7 +164,7 @@ var IsotopeProduct = new Class(
 
 					// Update conditionalselect
 					window.fireEvent('ajaxready');
-					$$(('#iso_product_'+product+' p.error')).destroy();
+					$$(('#'+formId+' p.error')).destroy();
 				}.bind(this),
 				onFailure: function()
 				{

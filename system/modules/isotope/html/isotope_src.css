@@ -48,6 +48,10 @@
 	opacity:.3;
 }
 
+.iso_attribute {
+	display: inline;
+}
+
 .mod_iso_addressbook ul {
 	margin: 0;
 	padding: 0;

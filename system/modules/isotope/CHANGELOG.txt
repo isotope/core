@@ -28,6 +28,8 @@ Version 0.3.beta1
 - Improved: Better formatting to attributes list. Show attribute name in product type setup wizard.
 - Improved: Show field label not value in quick edit mode
 - Improved: Show "invisible" icon for products with start/stop date outside today
+- Improved: More unique element IDs to load ajax into the right container (Ticket #291)
+- Improved: Use <div> not <span> for attribute containers (Ticket #203)
 - Fixed start & stop publishing dates not working
 - Fixed Authorize.net failed transaction bug
 - Removed pre-0.1 update code from runonce.php

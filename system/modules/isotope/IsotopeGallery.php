@@ -175,7 +175,7 @@ class IsotopeGallery extends Frontend
 	public function generateMainImage($strType='medium')
 	{
 		if (!count($this->arrFiles))
-			return '<span id="' . $this->name . '_' . $strType . 'size"> </span>';
+			return '<div class="iso_attribute" id="' . $this->name . '_' . $strType . 'size"> </div>';
 
 		$arrFile = reset($this->arrFiles);
 
@@ -192,7 +192,7 @@ class IsotopeGallery extends Frontend
 
 		list($objTemplate->link, $objTemplate->rel) = explode('|', $arrFile['link']);
 
-		return '<span id="' . $this->name . '_' . $strType . 'size">'.$objTemplate->parse().'</span>';
+		return '<div class="iso_attribute" id="' . $this->name . '_' . $strType . 'size">'.$objTemplate->parse().'</div>';
 	}
 
 
@@ -223,7 +223,7 @@ class IsotopeGallery extends Frontend
 		}
 
 		$this->injectAjax();
-		return '<span id="' . $this->name . '_gallery">' . $strGallery . '</span>';
+		return '<div class="iso_attribute" id="' . $this->name . '_gallery">' . $strGallery . '</div>';
 	}
 
 
