@@ -30,7 +30,7 @@
 	position:absolute;
 	top:30px;
 	left:40%;
-	background:#fff url("images/loading.gif") no-repeat center right;
+	background:#fff url("../../../themes/default/images/loading.gif") no-repeat center right;
 	border:2px solid #000;
 	font-family:"Trebuchet MS",Verdana,sans-serif;
 	font-size:15px;
