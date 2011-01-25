@@ -56,13 +56,13 @@ abstract class IsotopeProductCollection extends Model
 	 * Shipping object if shipping module is set in product collection
 	 * @var object
 	 */
-	public $Shipping;
+	protected $Shipping;
 
 	/**
 	 * Payment object if payment module is set in product collection
 	 * @var object
 	 */
-	public $Payment;
+	protected $Payment;
 
 	/**
 	 * Configuration
@@ -123,6 +123,11 @@ abstract class IsotopeProductCollection extends Model
 
 				case 'ctable':
 					return  $this->ctable;
+					break;
+
+				case 'Shipping':
+				case 'Payment':
+					return $this->$strKey;
 					break;
 
 				case 'hasPayment':
@@ -230,13 +235,19 @@ abstract class IsotopeProductCollection extends Model
 	 */
 	public function __set($strKey, $varValue)
 	{
-		$this->blnModified = true;
 		$this->arrCache = array();
-
+		
+		if ($strKey == 'Shipping' || $strKey == 'Payment')
+		{
+			$this->$strKey = $varValue;
+			return;
+		}
+		
 		// If there is a database field for that key, we store it there
 		if (array_key_exists($strKey, $this->arrData) || $this->Database->fieldExists($strKey, $this->strTable))
 		{
 			$this->arrData[$strKey] = $varValue;
+			$this->blnModified = true;
 		}
 
 		// We dont want $this->import() objects to be in arrSettings
@@ -249,6 +260,7 @@ abstract class IsotopeProductCollection extends Model
 		else
 		{
 			$this->arrSettings[$strKey] = $varValue;
+			$this->blnModified = true;
 		}
 	}
 
