@@ -79,7 +79,7 @@ class IsotopeProduct extends Controller
 	 * Cache properties
 	 */
 	protected $arrCache = array();
-	
+
 	/**
 	 * Unique form ID
 	 */
@@ -516,7 +516,7 @@ class IsotopeProduct extends Controller
 	public function generate($strTemplate, &$objModule)
 	{
 		global $objPage;
-		
+
 		$this->formSubmit = (($objModule instanceof ContentElement) ? 'cte' : 'fmd') . $objModule->id . '_product_' . ($this->pid ? $this->pid : $this->id);
 
 		$this->validateVariant();
@@ -617,7 +617,7 @@ class IsotopeProduct extends Controller
 	public function generateAjax(&$objModule)
 	{
 		$this->formSubmit = (($objModule instanceof ContentElement) ? 'cte' : 'fmd') . $objModule->id . '_product_' . ($this->pid ? $this->pid : $this->id);
-		
+
 		$this->validateVariant();
 
 		$arrOptions = array();

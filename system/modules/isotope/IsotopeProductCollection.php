@@ -232,19 +232,19 @@ abstract class IsotopeProductCollection extends Model
 	{
 		$this->blnModified = true;
 		$this->arrCache = array();
-		
+
 		// If there is a database field for that key, we store it there
 		if (array_key_exists($strKey, $this->arrData) || $this->Database->fieldExists($strKey, $this->strTable))
 		{
 			$this->arrData[$strKey] = $varValue;
 		}
-		
+
 		// We dont want $this->import() objects to be in arrSettings
 		elseif (is_object($varValue))
 		{
 			$this->arrCache[$strKey] = $varValue;
 		}
-		
+
 		// Everything else goes into arrSettings and is serialized
 		else
 		{
