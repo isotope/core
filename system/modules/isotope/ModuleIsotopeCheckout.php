@@ -267,7 +267,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				'class'	=> $step . ($this->strCurrentStep == $step ? ' active' : '') . ($blnStepPassed ? ' passed' : '') . ($i == 0 ? ' first' : ''),
 				'label'	=> (strlen($GLOBALS['TL_LANG']['ISO']['checkout_'.$step]) ? $GLOBALS['TL_LANG']['ISO']['checkout_'.$step] : $step),
 				'href'	=> ($blnStepPassed ? $this->addToUrl('step='.$step, true) : ''),
-				'title'	=> 'Go back to step "'.$step.'"',
+				'title'	=> specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['checkboutStepBack'], (strlen($GLOBALS['TL_LANG']['ISO']['checkout_'.$step]) ? $GLOBALS['TL_LANG']['ISO']['checkout_'.$step] : $step))),
 			);
 		}
 

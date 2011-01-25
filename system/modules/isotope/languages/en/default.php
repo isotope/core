@@ -138,6 +138,7 @@ $GLOBALS['TL_LANG']['MSC']['checkoutBT']				= 'Proceed to Checkout';
 $GLOBALS['TL_LANG']['MSC']['continueShoppingBT']		= 'Continue shopping';
 $GLOBALS['TL_LANG']['MSC']['updateCartBT']				= 'Update Cart';
 $GLOBALS['TL_LANG']['MSC']['orderStatusHeadline']		= 'Order Status: %s';
+$GLOBALS['TL_LANG']['MSC']['checkboutStepBack']			= 'Go back to step "%s"';
 
 
 //Addresses

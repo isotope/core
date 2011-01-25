@@ -130,11 +130,12 @@ $GLOBALS['TL_LANG']['MSC']['noPaymentModules']       = 'Zur Zeit sind keine Zahl
 $GLOBALS['TL_LANG']['MSC']['noShippingModules']      = 'Leider können die Produkte zur Zeit nicht in Ihr Land geliefert werden. Bitte wählen Sie eine andere Versand-Adresse oder nur Artikel die nicht versendet werden müssen (z.B. Download-Artikel).';
 $GLOBALS['TL_LANG']['MSC']['noOrderEmails']          = 'Keine Bestell-E-Mails gefunden.';
 
-$GLOBALS['TL_LANG']['MSC']['cartBT']              = 'Warenkorb';
-$GLOBALS['TL_LANG']['MSC']['checkoutBT']          = 'Zur Kasse';
-$GLOBALS['TL_LANG']['MSC']['continueShoppingBT']  = 'Weiter einkaufen';
-$GLOBALS['TL_LANG']['MSC']['updateCartBT']        = 'Warenkorb aktualisieren';
-$GLOBALS['TL_LANG']['MSC']['orderStatusHeadline'] = 'Bestell-Status: %s';
+$GLOBALS['TL_LANG']['MSC']['cartBT']				= 'Warenkorb';
+$GLOBALS['TL_LANG']['MSC']['checkoutBT']			= 'Zur Kasse';
+$GLOBALS['TL_LANG']['MSC']['continueShoppingBT']	= 'Weiter einkaufen';
+$GLOBALS['TL_LANG']['MSC']['updateCartBT']			= 'Warenkorb aktualisieren';
+$GLOBALS['TL_LANG']['MSC']['orderStatusHeadline']	= 'Bestell-Status: %s';
+$GLOBALS['TL_LANG']['MSC']['checkboutStepBack']		= 'Zurück zu "%s"';
 
 
 //Addresses
