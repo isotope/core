@@ -290,6 +290,9 @@ class IsotopeProduct extends Controller
 			case 'pid':
 			case 'href_reader':
 				return $this->arrData[$strKey];
+			
+			case 'formSubmit':
+				return $this->formSubmit;
 
 			case 'original_price':
 				return $this->blnLocked ? $this->arrData['original_price'] : $this->Isotope->calculatePrice($this->arrData['original_price'], $this, 'original_price', $this->arrData['tax_class']);
