@@ -427,7 +427,9 @@ class Isotope extends Controller
 	}
 
 
-	//!@todo: clean up all getAddress stuff...
+	/**
+	 * @todo clean up all getAddress stuff...
+	 */
 	public function getAddress($strStep = 'billing')
 	{
 		if($strStep=='shipping' && !FE_USER_LOGGED_IN && $_SESSION['FORM_DATA']['shipping_address']==-1)

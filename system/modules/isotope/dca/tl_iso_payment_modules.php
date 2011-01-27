@@ -519,6 +519,7 @@ class tl_iso_payment_modules extends Backend
 	 * Return a string of more buttons for the current payment module.
 	 *
 	 * @todo Collect additional buttons from payment modules.
+	 *
 	 * @access public
 	 * @param array $arrRow
 	 * @return string

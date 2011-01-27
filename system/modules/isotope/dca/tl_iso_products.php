@@ -1047,7 +1047,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 
 				$arrSet['published'] = ($arrPublished[$objVariants->id] ? $arrPublished[$objVariants->id] : '');
 
-				//!@todo remove this routine after the 0.2 release
+				// @todo remove this routine after the 0.2 release
 				$arrSet['inherit'] = array_diff(deserialize($objVariants->inherit, true), $arrQuickEditFields);
 
 				$this->Database->prepare("UPDATE tl_iso_products %s WHERE id=?")
@@ -1398,7 +1398,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 		}
 
 /**
- * //!@todo: tl_iso_products is missing in groups settings
+ * @todo tl_iso_products is missing in groups settings
  *
 		// Check permissions AFTER checking the tid, so hacking attempts are logged
 		if (!$this->User->isAdmin && !$this->User->hasAccess('tl_iso_products::published', 'alexf'))
@@ -1534,7 +1534,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 			{
 				$arrPalette['variant_legend'][] = 'variant_attributes' . ($blnEditAll ? '' : ',inherit');
 
-				//!@todo will not work in edit all!
+				// @todo will not work in edit all!
 				foreach( $objProducts->attributes as $attribute )
 				{
 					if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])

@@ -300,11 +300,12 @@ class tl_iso_orders extends Backend
 	/**
 	 * Return a string of more buttons for the orders module.
 	 *
+	 * @todo I don't think we need that...
+	 *
 	 * @access public
 	 * @param array $arrRow
 	 * @return string
 	 */
-	//!@todo I don't think we need that...
 	public function moduleOperations($arrRow)
 	{
 		if(!count($GLOBALS['ISO_ORDERS']['operations']))
@@ -430,7 +431,9 @@ class tl_iso_orders extends Backend
 	}
 
 
-	//!@todo orders should be sorted, but by ID or date? also might want to respect user filter/search
+	/**
+	 * @todo orders should be sorted, but by ID or date? also might want to respect user filter/search
+	 */
 	public function exportOrderEmails(DataContainer $dc)
 	{
 		if ($this->Input->get('key') != 'export_emails')

@@ -1075,8 +1075,9 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	/**
 	 * Generate the current step widgets.
 	 * strResourceTable is used either to load a DCA or else to gather settings related to a given DCA.
+	 *
+	 * @todo <table...> was in a template, but I don't get why we need to define the table here?
 	 */
-	//!@todo <table...> was in a template, but I don't get why we need to define the table here?
 	protected function generateAddressWidgets($strAddressType)
 	{
 		$strBuffer = '';
@@ -1224,7 +1225,9 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	}
 
 
-	//!@todo implement google analytics using Yoans module
+	/**
+	 * @todo implement google analytics using Yoans module
+	 */
 	public function googleTracking()
 	{
 		if(!$this->Isotope->Config->enableGoogleAnalytics || $this->Input->get('step')!='complete' || !file_exists(TL_ROOT . '/system/modules/googleanalytics/GoogleAnalytics.php'))

@@ -220,7 +220,8 @@ class ModuleIsotopeProductList extends ModuleIsotope
 						break;
 
 					case 'for':
-						//prepare clause for text search. //!@todo:  need to add filter for each std. search field plus any additional user-defined.
+						// prepare clause for text search.
+						// @todo  need to add filter for each std. search field plus any additional user-defined.
 						$arrSearchFields = $this->getSearchFields();
 
 						foreach($arrSearchFields as $field)
@@ -315,9 +316,10 @@ class ModuleIsotopeProductList extends ModuleIsotope
 	/**
 	 * Get the search fields used by any corresponding filter - add defaults plus user defined
 	 *
+	 * @todo I don't know where exactly, but this should use the DCA not tl_iso_attributes
+	 *
 	 * @return array
 	 */
-	//!@todo: I don't know where exactly, but this should use the DCA not tl_iso_attributes
 	protected function getSearchFields()
 	{
 		$arrSearchFields = array('name','description');

@@ -60,8 +60,9 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 
 	/**
 	 * Compile module
+	 *
+	 * @todo generate() should confirm that data is set and hide otherwise
 	 */
-	//!@todo generate() should confirm that data is set and hide otherwise
 	protected function compile()
 	{
 		global $objPage;
@@ -266,11 +267,13 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 
 	/**
 	 * Generates sorting directions based upon data type
+	 *
+	 * @todo "integer", "decimal" and "datetime" are no longer available
+	 *
 	 * @access private
 	 * @param string $strType
 	 * @return array
 	 */
-	//!@todo "integer", "decimal" and "datetime" are no longer available
 	private function generateSortingDirections($strType)
 	{
 		switch($strType)

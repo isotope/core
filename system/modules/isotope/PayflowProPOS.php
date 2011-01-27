@@ -618,11 +618,12 @@ class PayflowProPOS extends Backend
 	/**
 	* getProducts function.
 	*
+	* @todo this function should be rewritten to use the product object
+	*
 	* @access protected
 	* @param integer $intSourceCartId
 	* @return string
 	*/
-	//!@todo this function should be rewritten to use the product object
 	protected function getProducts($intSourceCartId, $config_id = null)
 	{
 		if($config_id)

@@ -285,6 +285,7 @@ class IsotopeOrder extends IsotopeProductCollection
 	 * Hook-callback for isoCheckoutSurcharge.
 	 *
 	 * @todo	Accesses the payment module to get a payment surcharge.
+	 *
 	 * @access	public
 	 * @param	array
 	 * @return	array

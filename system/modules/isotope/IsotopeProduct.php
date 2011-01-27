@@ -111,8 +111,9 @@ class IsotopeProduct extends Controller
 
 	/**
 	 * Construct the object
+	 *
+	 * @todo arrData['type'] is not available if recovering from non-existing product
 	 */
-	//!@todo arrData['type'] is not available if recovering from non-existing product
 	public function __construct($arrData, $arrOptions=null, $blnLocked=false)
 	{
 		parent::__construct();
@@ -444,8 +445,9 @@ class IsotopeProduct extends Controller
 
 	/**
 	 * Return all downloads for this product
+	 *
+	 * @todo Confirm that files are available
 	 */
-	//!@todo: Confirm that files are available
 	public function getDownloads()
 	{
 		if (!$this->arrType['downloads'])
@@ -463,8 +465,9 @@ class IsotopeProduct extends Controller
 
 	/**
 	 * Return all options, either the raw array or prepared for product listing
+	 *
+	 * @todo I dislike the listing approach, we might find a better solution
 	 */
-	//!@todo I dislike the listing approach, we might find a better solution
 	public function getOptions($blnRaw=false)
 	{
 		if ($blnRaw)

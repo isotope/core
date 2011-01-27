@@ -145,7 +145,7 @@ class IsotopeRules extends Controller
 
 			if (count($arrDropped))
 			{
-				//!@todo show dropped coupons
+				// @todo show dropped coupons
 				$arrCoupons = array_diff($arrCoupons, $arrDropped);
 				$this->Database->query("UPDATE tl_iso_cart SET coupons='" . serialize($arrCoupons) . "' WHERE id={$this->Isotope->Cart->id}");
 			}
@@ -258,7 +258,7 @@ class IsotopeRules extends Controller
 
 			if (count($arrDropped))
 			{
-				//!@todo show dropped coupons
+				// @todo show dropped coupons
 				return false;
 			}
 		}

@@ -437,7 +437,7 @@ class tl_module_isotope extends Backend
 	}
 
 
-	//!@todo does almost the same as getSortableAttributes, why do we need both?
+	// @todo does almost the same as getSortableAttributes, why do we need both?
 	public function getSortByFields()
 	{
 		if (!is_array($GLOBALS['TL_DCA']['tl_iso_products']))

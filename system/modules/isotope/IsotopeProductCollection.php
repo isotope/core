@@ -569,8 +569,9 @@ abstract class IsotopeProductCollection extends Model
 
 	/**
 	 * Transfer products from another collection to this one (eg. Cart to Order)
+	 *
+	 * @todo: implement addToCollection (and removeFromCollection) hooks!
 	 */
-	//!todo: implement addToCollection (and removeFromCollection) hooks!
 	public function transferFromCollection(IsotopeProductCollection $objCollection, $blnDuplicate=true)
 	{
 		if (!$this->blnRecordExists)

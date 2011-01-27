@@ -77,7 +77,9 @@ class PaymentCybersource extends IsotopePayment
 
 		foreach($arrCCTypes as $type)
 		{
-			$arrAllowedCCTypes[] = $this->arrCardTypes[$type]; //numeric keys specific to Cybersource, @TODO: merchant bank makes a difference!
+			// numeric keys specific to Cybersource
+			// @todo merchant bank makes a difference!
+			$arrAllowedCCTypes[] = $this->arrCardTypes[$type];
 		}
 
 		$intStartYear = (integer)date('Y', time()); //4-digit year

@@ -284,13 +284,11 @@ class ShippingUPS extends IsotopeShipping
 	/**
 	 * Send a request to the UPS Server using xmlrpc
 	 *
-	 * @access public
-	 * @params string $request_xml XML request from the child objects
-	 * buildRequest() method
-	 * @params boool $return_raw_xml whether or not to return the raw XML from
-	 * the request
-	 *
 	 * @todo remove array creation after switching over to xpath
+	 *
+	 * @access public
+	 * @params string $request_xml XML request from the child objects buildRequest() method
+	 * @params boool $return_raw_xml whether or not to return the raw XML from the request
 	 */
 	public function sendRequest($request_xml, $return_raw_xml = true)
 	{
@@ -502,12 +500,12 @@ class ShippingUPS extends IsotopeShipping
 	/**
 	 * Buildes the package elements
 	 *
+	 * @todo determine if the package description is needed
+	 *
 	 * @access protected
 	 * @param DOMElement $dom_element
 	 * @param array $package
 	 * @return DOMElement
-	 *
-	 * @todo determine if the package description is needed
 	 */
 	protected function buildRequest_Package(&$dom_element, $package) {
 		/** build the package and packaging type **/
@@ -740,10 +738,10 @@ class ShippingUPS extends IsotopeShipping
 	/**
 	 * Returns the name of the servies response root node
 	 *
+	 * @todo remove after phps self scope has been fixed
+	 *
 	 * @access protected
 	 * @return string
-	 *
-	 * @todo remove after phps self scope has been fixed
 	 */
 	protected function getRootNodeName() {
 		return NODE_NAME_ROOT_NODE;

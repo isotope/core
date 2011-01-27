@@ -65,7 +65,7 @@ class IsotopeAutomator extends Controller
 	 */
 	public function deleteFailedOrders()
 	{
-		//!@todo implement this!
+		// @todo implement this!
 	}
 }
 

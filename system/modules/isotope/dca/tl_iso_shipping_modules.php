@@ -415,6 +415,7 @@ class tl_iso_shipping_modules extends Backend
 	 * Return a string of more buttons for the current shipping module.
 	 *
 	 * @todo Collect additional buttons from shipping modules.
+	 *
 	 * @access public
 	 * @param array $arrRow
 	 * @return string

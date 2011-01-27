@@ -122,7 +122,8 @@ abstract class IsotopeShipping extends Frontend
 					return false;
 
 				$arrSubdivisions = deserialize($this->subdivisions);
-				$blnHasSubdivision = is_array($GLOBALS['TL_LANG']['DIV'][$this->Isotope->Cart->shippingAddress['country']]);	//!@todo this should be dropped with Contao 2.9 as all countries "should" have subdivisions
+				// @todo this should be dropped with Contao 2.9 as all countries "should" have subdivisions
+				$blnHasSubdivision = is_array($GLOBALS['TL_LANG']['DIV'][$this->Isotope->Cart->shippingAddress['country']]);
 
 				if(is_array($arrSubdivisions) && count($arrSubdivisions) && !in_array($this->Isotope->Cart->shippingAddress['subdivision'], $arrSubdivisions) && $blnHasSubdivision)
 					return false;

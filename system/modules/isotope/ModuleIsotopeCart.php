@@ -167,7 +167,8 @@ class ModuleIsotopeCart extends ModuleIsotope
 		$objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
 		$objTemplate->subTotalPrice = $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->subTotal);
 		$objTemplate->grandTotalPrice = $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->grandTotal);
-		$objTemplate->showOptions = false;	//!@todo make a module option.
+		// @todo make a module option.
+		$objTemplate->showOptions = false;
 		$objTemplate->surcharges = $arrSurcharges;
 		$objTemplate->forms = $arrForms;
 
