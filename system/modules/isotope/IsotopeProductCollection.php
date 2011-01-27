@@ -253,7 +253,7 @@ abstract class IsotopeProductCollection extends Model
 		// We dont want $this->import() objects to be in arrSettings
 		elseif (is_object($varValue))
 		{
-			$this->arrCache[$strKey] = $varValue;
+			$this->$strKey = $varValue;
 		}
 
 		// Everything else goes into arrSettings and is serialized
