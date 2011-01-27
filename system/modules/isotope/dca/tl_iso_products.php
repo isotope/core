@@ -468,17 +468,25 @@ class tl_iso_products extends Backend
 		// Hide archived (sold and deleted) products
 		if ($this->User->isAdmin)
 		{
-			$arrProducts = $this->Database->execute("SELECT id FROM tl_iso_products WHERE archive<2")->fetchEach('id');
+			$objProducts = $this->Database->execute("SELECT id, (SELECT COUNT(*) FROM tl_iso_products) AS total FROM tl_iso_products WHERE archive<2");
 		}
 		else
 		{
 			$arrTypes = is_array($this->User->iso_product_types) ? $this->User->iso_product_types : array(0);
-			$arrProducts = $this->Database->execute("SELECT id FROM tl_iso_products WHERE type IN ('','" . implode("','", $arrTypes) . "') AND archive<2")->fetchEach('id');
+			$objProducts = $this->Database->execute("SELECT id, (SELECT COUNT(*) FROM tl_iso_products) AS total FROM tl_iso_products WHERE type IN ('','" . implode("','", $arrTypes) . "') AND archive<2");
 		}
 
-		if (!count($arrProducts))
+		if (!$objProduct->numRows && !$objProduct->total)
+		{
+			return;
+		}
+		elseif (!$objProduct->numRows)
 		{
 			$arrProducts = array(0);
+		}
+		else
+		{
+			$arrProducts = $objProducts->fetchEach('id');
 		}
 
 		$GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'] = $arrProducts;
