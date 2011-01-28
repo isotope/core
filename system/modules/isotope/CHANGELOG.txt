@@ -8,6 +8,7 @@ Version 0.2.5 (2011-02-??)
 - Fixed sql in edit-all mode on attributes
 - Fixed ajax load spinning icon
 - Fixed loading message font color
+- Fixed text area floating in backend product edit mode
 - Dropped unnessesary database fields
 
 Version 0.2.4 (2011-01-17)
