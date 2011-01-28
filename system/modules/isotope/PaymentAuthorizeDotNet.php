@@ -79,7 +79,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 		$fieldsFinal = rtrim($fields, '&');
 
 		$objRequest = new Request();
-			$objRequest->send('https://'.($this->debug ? 'test' : 'secure')'.authorize.net/gateway/transact.dll', $fields, 'post');
+			$objRequest->send('https://'.($this->debug ? 'test' : 'secure').'.authorize.net/gateway/transact.dll', $fields, 'post');
 
 		$arrResponses = $this->handleResponse($objRequest->response);
 		$arrResponseCodes = $this->getResponseCodes($objRequest->response);
