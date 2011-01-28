@@ -43,19 +43,19 @@ class CreateMember extends Frontend
 		{
 			//Only small difference here. Perhaps work to
 			$arrData = array
-			(
-				'firstname' 	=> $arrBilling['firstname'],
-				'lastname'		=> $arrBilling['lastname'],
-				'street'		=> $arrBilling['street_1'],
-				'city'			=> $arrBilling['city'],
-				'state'			=> $arrBilling['subdivision'],
-				'postal'		=> $arrBilling['postal'],
-				'country'		=> $arrBilling['country'],
-				'email'			=> $arrBilling['email'],
-				'phone'			=> $arrBilling['phone'],
-				'username'		=> $arrBilling['lastname'] . time(),
-				'password'		=> $this->createRandomPassword()
-			);
+				(
+					'firstname' 	=> ($arrBilling['firstname'] ? $arrBilling['firstname'] : 'newuser'.$objOrder->id),
+					'lastname'		=> ($arrBilling['lastname'] ? $arrBilling['lastname'] : 'newuser'.$objOrder->id),
+					'street'		=> $arrBilling['street_1'],
+					'city'			=> $arrBilling['city'],
+					'state'			=> $arrBilling['subdivision'],
+					'postal'		=> $arrBilling['postal'],
+					'country'		=> $arrBilling['country'],
+					'email'			=> ($arrBilling['email'] ? $arrBilling['email'] : $objOrder->id.'@snacktaxi.com'),
+					'phone'			=> $arrBilling['phone'],
+					'username'		=> $arrBilling['lastname'] . time(),
+					'password'		=> $this->createRandomPassword()
+				);
 
 			$this->createNewMember($arrData);
 		}
@@ -79,7 +79,14 @@ class CreateMember extends Frontend
 		$objGroup = $this->Database->execute("SELECT * FROM tl_member_group WHERE name='Customers'");
 		if(!$objGroup->numRows)
 		{
-			$arrGroup[] = $this->Database->execute("INSERT INTO tl_member_group (name) VALUES ('Customers')")->insertID;
+			try
+			{
+				$arrGroup[] = $this->Database->execute("INSERT INTO tl_member_group (name) VALUES ('Customers')")->insertID;
+			}
+			catch (Exception $e)
+			{
+				return;
+			}
 		}
 		else
 		{
@@ -97,7 +104,14 @@ class CreateMember extends Frontend
 		$objNews = $this->Database->execute("SELECT * FROM tl_newsletter_channel WHERE title='General Contact'");
 		if(!$objNews->numRows)
 		{
-			$arrNews[] = $this->Database->execute("INSERT INTO tl_newsletter_channel (title) VALUES ('General Contact')")->insertID;
+			try
+			{
+				$arrNews[] = $this->Database->execute("INSERT INTO tl_newsletter_channel (title) VALUES ('General Contact')")->insertID;
+			}
+			catch (Exception $e)
+			{
+				return;
+			}
 		}
 		else
 		{
@@ -106,10 +120,16 @@ class CreateMember extends Frontend
 
 		$arrData['newsletter'] = serialize($arrNews);
 
-		// Create user
-		$objNewUser = $this->Database->prepare("INSERT INTO tl_member %s")->set($arrData)->execute();
-		$insertId = $objNewUser->insertId;
-
+		try
+		{
+			// Create user
+			$objNewUser = $this->Database->prepare("INSERT INTO tl_member %s")->set($arrData)->execute();
+			$insertId = $objNewUser->insertId;
+		}
+		catch (Exception $e)
+		{
+			return;
+		}
 
 		// HOOK: send insert ID and user data
 		if (isset($GLOBALS['TL_HOOKS']['createNewUser']) && is_array($GLOBALS['TL_HOOKS']['createNewUser']))
