@@ -170,7 +170,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_producttypes']['list_template'],
 			'inputType'				=> 'select',
 			'default'				=> 'iso_list_default',
-			'options'				=> $this->getTemplateGroup('iso_list_'),
+			'options_callback'		=> array('tl_iso_producttypes', 'getListTemplates'),
 			'eval'					=> array('mandatory'=>true, 'tl_class'=>'w50'),
 		),
 		'reader_template' => array
@@ -178,7 +178,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_producttypes']['reader_template'],
 			'inputType'				=> 'select',
 			'default'				=> 'iso_reader_default',
-			'options'				=> $this->getTemplateGroup('iso_reader_'),
+			'options_callback'		=> array('tl_iso_producttypes', 'getReaderTemplates'),
 			'eval'					=> array('mandatory'=>true, 'tl_class'=>'w50'),
 		),
 		'description' => array
@@ -292,6 +292,77 @@ class tl_iso_producttypes extends Backend
 	 */
 	public function archiveRecord($dc)
 	{
+	}
+	
+	
+	/**
+	 * Return list templates as array
+	 * @param object
+	 * @return array
+	 */
+	public function getListTemplates(DataContainer $dc)
+	{
+		return $this->getTemplateGroup('iso_list_', $intPid);
+	}
+
+
+	/**
+	 * Return reader templates as array
+	 * @param object
+	 * @return array
+	 */
+	public function getReaderTemplates(DataContainer $dc)
+	{
+		return $this->getTemplateGroup('iso_reader_');
+	}
+	
+	
+	/**
+	 * List template from all themes, show theme name
+	 * Based on Controller::getTemplateGroup from Contao 2.9.3
+	 */
+	public function getTemplateGroup($strPrefix, $intPid=0)
+	{
+		$arrThemes = array();
+		$arrTemplates = array();
+		$arrFolders = array(TL_ROOT . '/templates');
+
+		// Add theme templates folder
+		$objTheme = $this->Database->execute("SELECT name, templates FROM tl_theme" . ($intPid>0 ? " WHERE id=$intPid" : ''));
+		while( $objTheme->next() )
+		{
+			if ($objTheme->templates != '')
+			{
+				$arrFolders[] = TL_ROOT .'/'. $objTheme->templates;
+				$arrThemes[TL_ROOT .'/'. $objTheme->templates] = $objTheme->name;
+			}
+		}
+
+		// Add the module subfolders
+		foreach ($this->Config->getActiveModules() as $strModule)
+		{
+			$strFolder = TL_ROOT . '/system/modules/' . $strModule . '/templates';
+
+			if (is_dir($strFolder))
+			{
+				$arrFolders[] = $strFolder;
+			}
+		}
+
+		// Find all matching templates
+		foreach ($arrFolders as $strFolder)
+		{
+			$arrFiles = preg_grep('/^' . preg_quote($strPrefix, '/') . '.*\.tpl$/i',  scan($strFolder));
+
+			foreach ($arrFiles as $strTemplate)
+			{
+				$strTemplate = basename($strTemplate, '.tpl');
+				$arrTemplates[$strTemplate] = $strTemplate . (isset($arrThemes[$strFolder]) ? ' ['.$arrThemes[$strFolder].']' : '');
+			}
+		}
+
+		natcasesort($arrTemplates);
+		return $arrTemplates;
 	}
 }
 
