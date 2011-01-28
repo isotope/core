@@ -318,7 +318,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['price'],
 			'sorting'				=> true,
 			'inputType'				=> 'text',
-			'eval'					=> array('mandatory'=>true, 'maxlength'=>255, 'rgxp'=>'price', 'tl_class'=>'w50'),
+			'eval'					=> array('mandatory'=>true, 'maxlength'=>13, 'rgxp'=>'price', 'tl_class'=>'w50'),
 			'attributes'			=> array('legend'=>'pricing_legend', 'is_order_by_enabled'=>true),
 		),
 		'prices' => array

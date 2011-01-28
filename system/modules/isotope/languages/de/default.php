@@ -31,11 +31,9 @@
  */
 $GLOBALS['TL_LANG']['ERR']['systemColumn']                = 'Der Name `%s` ist vom System reserviert. Bitte wählen Sie einen anderen Namen.';
 $GLOBALS['TL_LANG']['ERR']['missingButtonTemplate']       = 'Für den Button "%s" müssen Sie ein Template angeben.';
-
 $GLOBALS['TL_LANG']['ERR']['order_conditions']            = 'Sie müssen die AGB akzeptieren um fortzufahren';
 $GLOBALS['TL_LANG']['ERR']['noStoreConfigurationSet']     = 'Keine Shop-Konfiguration verfügbar';
 $GLOBALS['TL_LANG']['ERR']['noDefaultStoreConfiguration'] = 'Bitte erstellen Sie eine standard Shop-Konfiguration.';
-
 $GLOBALS['TL_LANG']['ERR']['productNameMissing']          = '<keinen Produkt-Namen gefunden>';
 $GLOBALS['TL_LANG']['ERR']['noSubProducts']               = 'keine Unter-Produkte gefunden';
 $GLOBALS['TL_LANG']['ERR']['emptyOrderHistory']           = 'Sie haben noch keine Bestellungen getätigt.';
@@ -46,8 +44,6 @@ $GLOBALS['TL_LANG']['ERR']['isoLoginRequired']            = 'Für den Bezahlvorg
 $GLOBALS['TL_LANG']['ERR']['mandatoryOption']             = 'Bitte wählen Sie eine Option.';
 $GLOBALS['TL_LANG']['ERR']['noAddressData']               = 'Zur Steuerberechnung werden Adressdaten benötigt!';
 $GLOBALS['TL_LANG']['ERR']['variantDuplicate']            = 'Eine Variante mit diesen Attributen ist bereits vorhanden. Wählen Sie bitte eine andere Zusammenstellung.';
-
-//Checkout Errors
 $GLOBALS['TL_LANG']['ERR']['specifyBillingAddress'] = 'Es wurde keine Rechnungs-Adresse gefunden. Bitte geben Sie eine Rechnungs-Adresse an.';
 $GLOBALS['TL_LANG']['ERR']['cc_num']                = 'Geben Sie bitte eine gültige Kreditkarten-Nummer an.';
 $GLOBALS['TL_LANG']['ERR']['cc_type']               = 'Bitte wählen Sie einen Kreditkarten-Typ.';
@@ -55,10 +51,9 @@ $GLOBALS['TL_LANG']['ERR']['cc_exp']                = 'Bitte geben Sie ein Kredi
 $GLOBALS['TL_LANG']['ERR']['cc_ccv']                = 'Bitte geben Sie eine Kartenprüfnummer (CVC) an (3- od. 4-stellig auf der Vorder- od. Rückseite der Karte).';
 $GLOBALS['TL_LANG']['ERR']['cc_match']              = 'Ihre Kreditkarten-Nummer stimmt nicht mit dem gewählten Kreditkarten-Typ überein.';
 $GLOBALS['TL_LANG']['ERR']['cc_exp_paypal']         = 'Bitte geben Sie ein Kreditkarten-Ablaufdatum im Format mm/jjjj an.';
-
-//Address Book Errors
-$GLOBALS['TL_LANG']['ERR']['addressDoesNotExist']  = 'Diese Adresse ist nicht in Ihrem Adressbuch.';
-$GLOBALS['TL_LANG']['ERR']['noAddressBookEntries'] = 'Sie haben keine Adressbuch-Einträge.';
+$GLOBALS['TL_LANG']['ERR']['addressDoesNotExist']			= 'Diese Adresse ist nicht in Ihrem Adressbuch.';
+$GLOBALS['TL_LANG']['ERR']['noAddressBookEntries']			= 'Sie haben keine Adressbuch-Einträge.';
+$GLOBALS['TL_LANG']['ERR']['cartMinSubtotal']				= 'Der Mindestbestellwert beträgt %s. Bitte legen Sie weitere Produkte in den Warenkorb.';
 
 
 /**

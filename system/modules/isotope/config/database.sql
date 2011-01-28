@@ -225,6 +225,7 @@ CREATE TABLE `tl_iso_config` (
   `priceCalculateMode` varchar(3) NOT NULL default '',
   `priceRoundPrecision` int(1) unsigned NOT NULL default '2',
   `priceRoundIncrement` varchar(4) NOT NULL default '',
+  `cartMinSubtotal` decimal(12,2) NOT NULL default '0.00',
   `currency` varchar(3) NOT NULL default '',
   `currencyFormat` varchar(20) NOT NULL default '',
   `currencyPosition` varchar(5) NOT NULL default '',

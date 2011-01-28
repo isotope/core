@@ -56,6 +56,7 @@ $GLOBALS['TL_LANG']['ERR']['cc_ccv']						= 'Please provide a card code verifica
 $GLOBALS['TL_LANG']['ERR']['cc_match']						= 'Your credit card number does not match the selected credit card type.';
 $GLOBALS['TL_LANG']['ERR']['addressDoesNotExist']			= 'This address does not exist in your address book.';
 $GLOBALS['TL_LANG']['ERR']['noAddressBookEntries']			= 'You have no address book entries.';
+$GLOBALS['TL_LANG']['ERR']['cartMinSubtotal']				= 'The minimum order amount is %s. Please add more products before checkout.';
 
 
 /**

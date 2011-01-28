@@ -1,6 +1,10 @@
 
 <div class="cart_full">
 
+<?php if ($this->hasError): ?>
+<p class="message error"><?php echo $this->minSubtotalError; ?></p>
+<?php endif; ?>
+
 <form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>" method="post">
 <div class="formbody">
 <input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formSubmit; ?>" />

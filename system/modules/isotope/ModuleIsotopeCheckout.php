@@ -104,6 +104,15 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			$this->Template->message = $GLOBALS['TL_LANG']['MSC']['noItemsInCart'];
 			return;
 		}
+		
+		// Insufficient cart subtotal
+		if ($this->Isotope->Config->cartMinSubtotal > 0 && $this->Isotope->Config->cartMinSubtotal > $this->Isotope->Cart->subTotal)
+		{
+			$this->Template = new FrontendTemplate('mod_message');
+			$this->Template->type = 'error';
+			$this->Template->message = sprintf($GLOBALS['TL_LANG']['ERR']['cartMinSubtotal'], $this->Isotope->formatPriceWithCurrency($this->Isotope->Config->cartMinSubtotal));
+			return;
+		}
 
 		// Redirect to login page if not logged in
 		if($this->iso_checkout_method == 'member' && !FE_USER_LOGGED_IN)

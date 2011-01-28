@@ -125,7 +125,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			{name_legend},name,label,fallback;
 			{address_legend:hide},firstname,lastname,company,street_1,street_2,street_3,postal,city,subdivision,country,emailShipping,phone;
 			{config_legend},shipping_countries,billing_countries,shipping_fields,billing_fields,orderPrefix,store_id,templateGroup,limitMemberCountries,enableGoogleAnalytics;
-			{price_legend},priceCalculateFactor,priceCalculateMode,priceRoundPrecision,priceRoundIncrement;
+			{price_legend},priceCalculateFactor,priceCalculateMode,priceRoundPrecision,priceRoundIncrement,cartMinSubtotal;
 			{currency_legend},currency,currencyFormat,currencyPosition,currencySymbol;
 			{invoice_legend:hide},invoiceLogo;
 			{images_legend},gallery,missing_image_placeholder,imageSizes',
@@ -404,6 +404,14 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'inputType'               => 'select',
 			'options'				  => array('0.01', '0.05'),
 			'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
+		),
+		'cartMinSubtotal' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['cartMinSubtotal'],
+			'exclude'                 => true,
+			'default'				  => '',
+			'inputType'               => 'text',
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>13, 'rgpx'=>'price', 'tl_class'=>'w50'),
 		),
 		'currency' => array
 		(
