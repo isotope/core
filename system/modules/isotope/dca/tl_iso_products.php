@@ -1644,6 +1644,11 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 			{
 				$arrData['eval']['datepicker'] = $this->getDatePickerString();
 			}
+			
+			if ($objAttributes->type == 'textarea' || $objAttributes->rte != '')
+			{
+				$arrData['eval']['tl_class'] = 'clr';
+			}
 
 			// Prepare options
 			if ($objAttributes->foreignKey != '' && !$objAttributes->variant_option)
