@@ -11,6 +11,7 @@ Version 0.2.5 (2011-02-??)
 - Fixed text area floating in backend product edit mode
 - Dropped unnessesary database fields
 - Dropped unnecessary template ce_link_repeater.tpl
+- Removed deprecated ups_developersKey
 
 Version 0.2.4 (2011-01-17)
 ------------------------------

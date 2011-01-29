@@ -48,7 +48,6 @@ $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['protected']      		= array('Prot
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['guests']         		= array('Show to guests only', 'Hide the module if a member is logged in.');
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['enabled']				= array('Enabled', 'Is the module available for use in the store?');
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_accessKey']     	= array('UPS XML/HTML access key','This is a special alphanumeric key issued by UPS once you sign up for a UPS account and for access to the UPS Online Tools API');
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_developersKey']		= array('UPS developer\'s key','This is a special alphanumeric key issued by UPS once you sign up for a UPS account and for access to the UPS Online Tools API');
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_userName']     		= array('UPS username','This is the UPS account username that you chose while signing up on the UPS website.');
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_password']     		= array('UPS password','This is the UPS password that you chose while signing up on the UPS website.');
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_enabledService']	= array('UPS Service Type','Select a UPS shipping service to offer.');

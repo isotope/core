@@ -446,7 +446,6 @@ CREATE TABLE `tl_iso_shipping_modules` (
   `groups` blob NULL,
   `enabled` char(1) NOT NULL default '',
   `ups_accessKey` varchar(255) NOT NULL default '',
-  `ups_developersKey` varchar(255) NOT NULL default '',
   `ups_userName` varchar(255) NOT NULL default '',
   `ups_password` varchar(255) NOT NULL default '',
   `ups_enabledService` varchar(255) NOT NULL default '',
