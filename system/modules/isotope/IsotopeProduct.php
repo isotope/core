@@ -111,8 +111,6 @@ class IsotopeProduct extends Controller
 
 	/**
 	 * Construct the object
-	 *
-	 * @todo arrData['type'] is not available if recovering from non-existing product
 	 */
 	public function __construct($arrData, $arrOptions=null, $blnLocked=false)
 	{
@@ -122,7 +120,7 @@ class IsotopeProduct extends Controller
 
 		$this->blnLocked = $blnLocked;
 
-		if (!$this->blnLocked && $arrData['pid'] > 0)
+		if ($arrData['pid'] > 0)
 		{
 			$this->arrData = $this->Database->execute("SELECT * FROM tl_iso_products WHERE id={$arrData['pid']}")->fetchAssoc();
 		}
@@ -154,120 +152,123 @@ class IsotopeProduct extends Controller
 		}
 
 
-		// Find all possible variant options
-		$objVariant = clone $this;
-		$objVariants = $this->Database->execute("SELECT * FROM tl_iso_products WHERE pid={$this->arrData['id']} AND language=''");
-		while( $objVariants->next() )
+		if (!$this->blnLocked)
 		{
-			$objVariant->loadVariantData($objVariants->row(), false);
-
-			if ($objVariant->available)
+			// Find all possible variant options
+			$objVariant = clone $this;
+			$objVariants = $this->Database->execute("SELECT * FROM tl_iso_products WHERE pid={$this->arrData['id']} AND language=''");
+			while( $objVariants->next() )
 			{
-				$arrVariantOptions = $objVariant->getOptions(true);
-
-				$this->arrVariantOptions['variants'][] = $arrVariantOptions;
-
-				foreach( $arrVariantOptions as $attribute => $value )
+				$objVariant->loadVariantData($objVariants->row(), false);
+	
+				if ($objVariant->available)
 				{
-					if (!in_array((string)$value, (array)$this->arrVariantOptions['attributes'][$attribute], true))
+					$arrVariantOptions = $objVariant->getOptions(true);
+	
+					$this->arrVariantOptions['variants'][] = $arrVariantOptions;
+	
+					foreach( $arrVariantOptions as $attribute => $value )
 					{
-						$this->arrVariantOptions['attributes'][$attribute][] = (string)$value;
+						if (!in_array((string)$value, (array)$this->arrVariantOptions['attributes'][$attribute], true))
+						{
+							$this->arrVariantOptions['attributes'][$attribute][] = (string)$value;
+						}
 					}
 				}
 			}
-		}
-
-		// Find lowest price
-		if (!$this->blnLocked && $this->arrType['variants'] && in_array('price', $this->arrVariantAttributes))
-		{
-			if ($this->arrType['prices'])
+	
+			// Find lowest price
+			if ($this->arrType['variants'] && in_array('price', $this->arrVariantAttributes))
 			{
-				$time = time();
-
-				$objProduct = $this->Database->execute("SELECT
-														(
-															SELECT price
-															FROM tl_iso_price_tiers
-															WHERE pid IN
-															(
-																SELECT id
-																FROM (SELECT * FROM tl_iso_prices ORDER BY config_id DESC, member_group DESC, start DESC, stop DESC) AS p
-																WHERE
-																	(config_id={$this->Isotope->Config->id} OR config_id=0)
-																	AND (member_group=".(int)$this->User->price_group." OR member_group=0)
-																	AND (start='' OR start<$time)
-																	AND (stop='' OR stop>$time)
-																	AND pid IN
-																	(
-																		SELECT id
-																		FROM tl_iso_products
-																		WHERE pid=" . ($this->arrData['pid'] ? $this->arrData['pid'] : $this->arrData['id']) . "
-																	)
-																GROUP BY pid
-															)
-															ORDER BY min ASC, price ASC LIMIT 1
-														) AS low_price,
-														(
-															SELECT price
-															FROM tl_iso_price_tiers
-															WHERE pid IN
-															(
-																SELECT id
-																FROM (SELECT * FROM tl_iso_prices ORDER BY config_id DESC, member_group DESC, start DESC, stop DESC) AS p
-																WHERE
-																	(config_id={$this->Isotope->Config->id} OR config_id=0)
-																	AND (member_group=".(int)$this->User->price_group." OR member_group=0)
-																	AND (start='' OR start<$time)
-																	AND (stop='' OR stop>$time)
-																	AND pid IN
-																	(
-																		SELECT id
-																		FROM tl_iso_products
-																		WHERE pid=" . ($this->arrData['pid'] ? $this->arrData['pid'] : $this->arrData['id']) . "
-																	)
-																GROUP BY pid
-															)
-															ORDER BY min ASC, price DESC LIMIT 1
-														) AS high_price");
-			}
-			else
-			{
-				$objProduct = $this->Database->execute("SELECT MIN(price) AS low_price, MAX(price) AS high_price FROM tl_iso_products WHERE pid=" . ($this->arrData['pid'] ? $this->arrData['pid'] : $this->arrData['id']) . " AND published='1' AND language='' GROUP BY pid");
-			}
-
-			if ($objProduct->low_price < $objProduct->high_price)
-			{
-				$this->arrCache['low_price'] = $objProduct->low_price;
-			}
-			else
-			{
-				$this->arrData['price'] = $objProduct->low_price;
-			}
-
-			if(isset($GLOBALS['TL_HOOKS']['iso_addAttributes']) && is_array($GLOBALS['TL_HOOKS']['iso_addAttributes']))
-			{
-				foreach ($GLOBALS['TL_HOOKS']['iso_addAttributes'] as $callback)
+				if ($this->arrType['prices'])
 				{
-					$this->import($callback[0]);
-					$this->arrAttributes[] = $this->$callback[0]->$callback[1]($this);
+					$time = time();
+	
+					$objProduct = $this->Database->execute("SELECT
+															(
+																SELECT price
+																FROM tl_iso_price_tiers
+																WHERE pid IN
+																(
+																	SELECT id
+																	FROM (SELECT * FROM tl_iso_prices ORDER BY config_id DESC, member_group DESC, start DESC, stop DESC) AS p
+																	WHERE
+																		(config_id={$this->Isotope->Config->id} OR config_id=0)
+																		AND (member_group=".(int)$this->User->price_group." OR member_group=0)
+																		AND (start='' OR start<$time)
+																		AND (stop='' OR stop>$time)
+																		AND pid IN
+																		(
+																			SELECT id
+																			FROM tl_iso_products
+																			WHERE pid=" . ($this->arrData['pid'] ? $this->arrData['pid'] : $this->arrData['id']) . "
+																		)
+																	GROUP BY pid
+																)
+																ORDER BY min ASC, price ASC LIMIT 1
+															) AS low_price,
+															(
+																SELECT price
+																FROM tl_iso_price_tiers
+																WHERE pid IN
+																(
+																	SELECT id
+																	FROM (SELECT * FROM tl_iso_prices ORDER BY config_id DESC, member_group DESC, start DESC, stop DESC) AS p
+																	WHERE
+																		(config_id={$this->Isotope->Config->id} OR config_id=0)
+																		AND (member_group=".(int)$this->User->price_group." OR member_group=0)
+																		AND (start='' OR start<$time)
+																		AND (stop='' OR stop>$time)
+																		AND pid IN
+																		(
+																			SELECT id
+																			FROM tl_iso_products
+																			WHERE pid=" . ($this->arrData['pid'] ? $this->arrData['pid'] : $this->arrData['id']) . "
+																		)
+																	GROUP BY pid
+																)
+																ORDER BY min ASC, price DESC LIMIT 1
+															) AS high_price");
+				}
+				else
+				{
+					$objProduct = $this->Database->execute("SELECT MIN(price) AS low_price, MAX(price) AS high_price FROM tl_iso_products WHERE pid=" . ($this->arrData['pid'] ? $this->arrData['pid'] : $this->arrData['id']) . " AND published='1' AND language='' GROUP BY pid");
+				}
+	
+				if ($objProduct->low_price < $objProduct->high_price)
+				{
+					$this->arrCache['low_price'] = $objProduct->low_price;
+				}
+				else
+				{
+					$this->arrData['price'] = $objProduct->low_price;
+				}
+	
+				if(isset($GLOBALS['TL_HOOKS']['iso_addAttributes']) && is_array($GLOBALS['TL_HOOKS']['iso_addAttributes']))
+				{
+					foreach ($GLOBALS['TL_HOOKS']['iso_addAttributes'] as $callback)
+					{
+						$this->import($callback[0]);
+						$this->arrAttributes[] = $this->$callback[0]->$callback[1]($this);
+					}
+				}
+	
+				if(isset($GLOBALS['TL_HOOKS']['iso_addVariantAttributes']) && is_array($GLOBALS['TL_HOOKS']['iso_addVariantAttributes']))
+				{
+					foreach ($GLOBALS['TL_HOOKS']['iso_addVariantAttributes'] as $callback)
+					{
+						$this->import($callback[0]);
+						$this->arrVariantAttributes[] = $this->$callback[0]->$callback[1]($this);
+					}
 				}
 			}
-
-			if(isset($GLOBALS['TL_HOOKS']['iso_addVariantAttributes']) && is_array($GLOBALS['TL_HOOKS']['iso_addVariantAttributes']))
+	
+	
+			if (in_array('price', $this->arrAttributes))
 			{
-				foreach ($GLOBALS['TL_HOOKS']['iso_addVariantAttributes'] as $callback)
-				{
-					$this->import($callback[0]);
-					$this->arrVariantAttributes[] = $this->$callback[0]->$callback[1]($this);
-				}
+				$this->findPrice();
+				$this->arrData['original_price'] = $this->arrData['price'];
 			}
-		}
-
-
-		if (!$this->blnLocked && in_array('price', $this->arrAttributes))
-		{
-			$this->findPrice();
-			$this->arrData['original_price'] = $this->arrData['price'];
 		}
 
 		$this->loadLanguage();
@@ -275,6 +276,13 @@ class IsotopeProduct extends Controller
 		if ($arrData['pid'] > 0)
 		{
 			$this->loadVariantData($arrData);
+		}
+		
+		if ($this->blnLocked)
+		{
+			$this->arrData['sku']	= $arrData['sku'];
+			$this->arrData['name']	= $arrData['name'];
+			$this->arrData['price']	= $arrData['price'];
 		}
 	}
 

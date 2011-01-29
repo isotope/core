@@ -122,6 +122,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 				'raw'				=> $objProduct->getData(),
 				'sku'				=> $objProduct->sku,
 				'name'				=> $objProduct->name,
+				'image'				=> $objProduct->images->main_image,
 				'product_options'	=> $objProduct->getOptions(),
 				'quantity'			=> $objProduct->quantity_requested,
 				'price'				=> $this->Isotope->formatPriceWithCurrency($objProduct->price),
