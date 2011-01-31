@@ -422,22 +422,22 @@ class tl_module_isotope extends Backend
 			$this->loadDataContainer('tl_iso_products');
 			$this->loadLanguageFile('tl_iso_products');
 		}
-
+		
 		$arrAttributes = array();
-
+		
 		foreach( $GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData )
 		{
 			if ($arrData['attributes']['is_filterable'])
 			{
-				$arrAttributes[$arrData['attributes']['id']] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
+				$arrAttributes[$field] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
 			}
 		}
-
+				
 		return $arrAttributes;
 	}
+	
 
-
-	// @todo does almost the same as getSortableAttributes, why do we need both?
+	//!@todo does almost the same as getSortableAttributes, why do we need both?
 	public function getSortByFields()
 	{
 		if (!is_array($GLOBALS['TL_DCA']['tl_iso_products']))
@@ -445,17 +445,17 @@ class tl_module_isotope extends Backend
 			$this->loadDataContainer('tl_iso_products');
 			$this->loadLanguageFile('tl_iso_products');
 		}
-
+		
 		$arrAttributes = array();
-
+		
 		foreach( $GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData )
 		{
 			if ($arrData['attributes']['is_order_by_enabled'])
 			{
-				$arrAttributes[$arrData['attributes']['id']] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
+				$arrAttributes[$field] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
 			}
 		}
-
+				
 		return $arrAttributes;
 	}
 
@@ -467,17 +467,17 @@ class tl_module_isotope extends Backend
 			$this->loadDataContainer('tl_iso_products');
 			$this->loadLanguageFile('tl_iso_products');
 		}
-
+		
 		$arrAttributes = array();
-
+		
 		foreach( $GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData )
 		{
 			if ($arrData['attributes']['is_searchable'])
 			{
-				$arrAttributes[$arrData['attributes']['id']] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
+				$arrAttributes[$field] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
 			}
 		}
-
+				
 		return $arrAttributes;
 	}
 
