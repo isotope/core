@@ -4,7 +4,7 @@
 <div class="radio_container">
 <?php foreach($this->paymentMethods as $method): ?>
 <span>
-	<input id="ctrl_payment_module_<?php echo $method['id']; ?>" type="radio" name="payment[module]" value="<?php echo $method['id']; ?>"<?php echo $method['checked']; ?> />
+	<input id="ctrl_payment_module_<?php echo $method['id']; ?>" type="radio" class="radio payment_module" name="payment[module]" value="<?php echo $method['id']; ?>"<?php echo $method['checked']; ?> />
 	<label for="ctrl_payment_module_<?php echo $method['id']; ?>"><?php echo $method['label'] . $method['price']; ?></label>
 	<?php if ($method['note'] != ''): ?>
 	<div class="payment_note"><?php echo $method['note']; ?></div>
