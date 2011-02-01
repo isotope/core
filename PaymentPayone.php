@@ -10,12 +10,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -53,7 +53,7 @@ class PaymentPayone extends IsotopePayment
 	{
 		$i = 0;
 		$objOrder = $this->Database->prepare("SELECT order_id FROM tl_iso_orders WHERE cart_id=?")->execute($this->Isotope->Cart->id);
-		
+
 		$arrData = array
 		(
 			'aid'				=> $this->payone_aid,
@@ -70,7 +70,7 @@ class PaymentPayone extends IsotopePayment
 			'amount'			=> ($this->Isotope->Cart->grandTotal * 100),
 			'currency'			=> $this->Isotope->Config->currency,
 		);
-		
+
 		foreach( $this->Isotope->Cart->getProducts() as $objProduct )
 		{
 			$strOptions = '';
