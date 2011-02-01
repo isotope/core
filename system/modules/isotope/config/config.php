@@ -27,6 +27,13 @@
 
 
 /**
+ * Isotope Version
+ */
+@define('ISO_VERSION', '0.2');
+@define('ISO_BUILD', '5');
+
+
+/**
  * Backend modules
  */
 if (!is_array($GLOBALS['BE_MOD']['isotope']))

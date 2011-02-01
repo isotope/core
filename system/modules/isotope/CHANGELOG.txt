@@ -2,8 +2,9 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 0.2.5 (2011-02-??)
+Version 0.2.5 (2011-02-01)
 ------------------------------
+- Added Isotope version constant to config file
 - Fixed discount applied to subtotal on cart overrides other restrictions (Ticket #352)
 - Fixed sql in edit-all mode on attributes
 - Fixed ajax load spinning icon
