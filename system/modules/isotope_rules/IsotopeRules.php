@@ -270,7 +270,7 @@ class IsotopeRules extends Controller
 			$time = time();
 			$intMember = FE_USER_LOGGED_IN ? $this->User->id : 0;
 			
-			$this->Database->query("INSERT INTO tl_iso_rule_usage (pid,tstamp,order_id,config_id,member_id) VALUES (" . implode(", $time, $orderId, {$this->Isotope->Config->id}, $intMember), (", $arrRules) . ", $time, $orderId, {$this->Isotope->Config->id}, $intMember)");
+			$this->Database->query("INSERT INTO tl_iso_rule_usage (pid,tstamp,order_id,config_id,member_id) VALUES (" . implode(", $time, $orderId, ".(int)$this->Isotope->Config->id.", $intMember), (", $arrRules) . ", $time, $orderId, ".(int)$this->Isotope->Config->id.", $intMember)");
 			
 			$this->Database->query("UPDATE tl_iso_rules SET archive=1 WHERE id IN (" . implode(',', $arrRules) . ")");
 		}
@@ -312,7 +312,7 @@ class IsotopeRules extends Controller
 		
 		
 		// Limits
-		$arrProcedures[] = "(limitPerConfig=0 OR limitPerConfig>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND config_id={$this->Isotope->Config->id}))";
+		$arrProcedures[] = "(limitPerConfig=0 OR limitPerConfig>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND config_id=".(int)$this->Isotope->Config->id."))";
 		
 		if (FE_USER_LOGGED_IN && TL_MODE == 'FE')
 		{
@@ -321,7 +321,7 @@ class IsotopeRules extends Controller
 		
 		
 		// Store config restrictions
-		$arrProcedures[] = "(configRestrictions='' OR (configRestrictions='1' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='configs' AND object_id={$this->Isotope->Config->id})>0))";
+		$arrProcedures[] = "(configRestrictions='' OR (configRestrictions='1' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='configs' AND object_id=" . (int)$this->Isotope->Config->id . ")>0))";
 		
 		
 		// Member restrictions

@@ -5,6 +5,7 @@ Isotope eCommerce Changelog
 Version 0.2.5 (2011-02-01)
 ------------------------------
 - Added Isotope version constant to config file
+- Improved: Use trigger_error() not "throw Exception" if no store configuration is available (Ticket #372)
 - Fixed discount applied to subtotal on cart overrides other restrictions (Ticket #352)
 - Fixed sql in edit-all mode on attributes
 - Fixed ajax load spinning icon

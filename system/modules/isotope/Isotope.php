@@ -67,7 +67,7 @@ class Isotope extends Controller
 		if (TL_MODE == 'FE')
 		{
 			$this->Cart = new IsotopeCart();
-			$this->Cart->initializeCart($this->Config->id, $this->Config->store_id);
+			$this->Cart->initializeCart((int)$this->Config->id, (int)$this->Config->store_id);
 		}
 	}
 	
@@ -118,7 +118,7 @@ class Isotope extends Controller
 			}
 			else
 			{
-				throw new Exception($GLOBALS['TL_LANG']['ERR']['noStoreConfigurationSet']);
+				trigger_error($GLOBALS['TL_LANG']['ERR']['noStoreConfigurationSet'], E_USER_WARNING);
 			}
 			
 			return;
