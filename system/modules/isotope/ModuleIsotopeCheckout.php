@@ -104,7 +104,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			$this->Template->message = $GLOBALS['TL_LANG']['MSC']['noItemsInCart'];
 			return;
 		}
-		
+
 		// Insufficient cart subtotal
 		if ($this->Isotope->Config->cartMinSubtotal > 0 && $this->Isotope->Config->cartMinSubtotal > $this->Isotope->Cart->subTotal)
 		{
@@ -895,7 +895,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		$objOrder->pid				= (FE_USER_LOGGED_IN ? $this->User->id : 0);
 		$objOrder->order_id			= ($this->Isotope->Config->orderPrefix . $objOrder->id);
 		$objOrder->date				= time();
-		$objOrder->config_id		= $this->Isotope->Config->id;
+		$objOrder->config_id		= (int)$this->Isotope->Config->id;
 		$objOrder->shipping_id		= ($this->Isotope->Cart->hasShipping ? $this->Isotope->Cart->Shipping->id : 0);
 		$objOrder->payment_id		= ($this->Isotope->Cart->hasPayment ? $this->Isotope->Cart->Payment->id : 0);
 		$objOrder->subTotal			= $this->Isotope->Cart->subTotal;

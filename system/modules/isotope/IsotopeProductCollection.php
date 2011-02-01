@@ -241,13 +241,13 @@ abstract class IsotopeProductCollection extends Model
 	public function __set($strKey, $varValue)
 	{
 		$this->arrCache = array();
-		
+
 		if ($strKey == 'Shipping' || $strKey == 'Payment')
 		{
 			$this->$strKey = $varValue;
 			return;
 		}
-		
+
 		// If there is a database field for that key, we store it there
 		if (array_key_exists($strKey, $this->arrData) || $this->Database->fieldExists($strKey, $this->strTable))
 		{

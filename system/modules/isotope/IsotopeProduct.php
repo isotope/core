@@ -160,13 +160,13 @@ class IsotopeProduct extends Controller
 			while( $objVariants->next() )
 			{
 				$objVariant->loadVariantData($objVariants->row(), false);
-	
+
 				if ($objVariant->available)
 				{
 					$arrVariantOptions = $objVariant->getOptions(true);
-	
+
 					$this->arrVariantOptions['variants'][] = $arrVariantOptions;
-	
+
 					foreach( $arrVariantOptions as $attribute => $value )
 					{
 						if (!in_array((string)$value, (array)$this->arrVariantOptions['attributes'][$attribute], true))
@@ -176,14 +176,14 @@ class IsotopeProduct extends Controller
 					}
 				}
 			}
-	
+
 			// Find lowest price
 			if ($this->arrType['variants'] && in_array('price', $this->arrVariantAttributes))
 			{
 				if ($this->arrType['prices'])
 				{
 					$time = time();
-	
+
 					$objProduct = $this->Database->execute("SELECT
 															(
 																SELECT price
@@ -193,7 +193,7 @@ class IsotopeProduct extends Controller
 																	SELECT id
 																	FROM (SELECT * FROM tl_iso_prices ORDER BY config_id DESC, member_group DESC, start DESC, stop DESC) AS p
 																	WHERE
-																		(config_id={$this->Isotope->Config->id} OR config_id=0)
+																		(config_id=".(int)$this->Isotope->Config->id." OR config_id=0)
 																		AND (member_group=".(int)$this->User->price_group." OR member_group=0)
 																		AND (start='' OR start<$time)
 																		AND (stop='' OR stop>$time)
@@ -215,7 +215,7 @@ class IsotopeProduct extends Controller
 																	SELECT id
 																	FROM (SELECT * FROM tl_iso_prices ORDER BY config_id DESC, member_group DESC, start DESC, stop DESC) AS p
 																	WHERE
-																		(config_id={$this->Isotope->Config->id} OR config_id=0)
+																		(config_id=".(int)$this->Isotope->Config->id." OR config_id=0)
 																		AND (member_group=".(int)$this->User->price_group." OR member_group=0)
 																		AND (start='' OR start<$time)
 																		AND (stop='' OR stop>$time)
@@ -234,7 +234,7 @@ class IsotopeProduct extends Controller
 				{
 					$objProduct = $this->Database->execute("SELECT MIN(price) AS low_price, MAX(price) AS high_price FROM tl_iso_products WHERE pid=" . ($this->arrData['pid'] ? $this->arrData['pid'] : $this->arrData['id']) . " AND published='1' AND language='' GROUP BY pid");
 				}
-	
+
 				if ($objProduct->low_price < $objProduct->high_price)
 				{
 					$this->arrCache['low_price'] = $objProduct->low_price;
@@ -243,7 +243,7 @@ class IsotopeProduct extends Controller
 				{
 					$this->arrData['price'] = $objProduct->low_price;
 				}
-	
+
 				if(isset($GLOBALS['TL_HOOKS']['iso_addAttributes']) && is_array($GLOBALS['TL_HOOKS']['iso_addAttributes']))
 				{
 					foreach ($GLOBALS['TL_HOOKS']['iso_addAttributes'] as $callback)
@@ -252,7 +252,7 @@ class IsotopeProduct extends Controller
 						$this->arrAttributes[] = $this->$callback[0]->$callback[1]($this);
 					}
 				}
-	
+
 				if(isset($GLOBALS['TL_HOOKS']['iso_addVariantAttributes']) && is_array($GLOBALS['TL_HOOKS']['iso_addVariantAttributes']))
 				{
 					foreach ($GLOBALS['TL_HOOKS']['iso_addVariantAttributes'] as $callback)
@@ -262,8 +262,8 @@ class IsotopeProduct extends Controller
 					}
 				}
 			}
-	
-	
+
+
 			if (in_array('price', $this->arrAttributes))
 			{
 				$this->findPrice();
@@ -277,7 +277,7 @@ class IsotopeProduct extends Controller
 		{
 			$this->loadVariantData($arrData);
 		}
-		
+
 		if ($this->blnLocked)
 		{
 			$this->arrData['sku']	= $arrData['sku'];
@@ -299,7 +299,7 @@ class IsotopeProduct extends Controller
 			case 'pid':
 			case 'href_reader':
 				return $this->arrData[$strKey];
-			
+
 			case 'formSubmit':
 				return $this->formSubmit;
 
@@ -953,7 +953,7 @@ class IsotopeProduct extends Controller
 													SELECT id
 													FROM tl_iso_prices
 													WHERE
-														(config_id={$this->Isotope->Config->id} OR config_id=0)
+														(config_id=".(int)$this->Isotope->Config->id." OR config_id=0)
 														AND (" . (count($this->User->groups) ? ('member_group IN (' . implode(',', $this->User->groups) . ') OR') : '') . "member_group=0)
 														AND (start='' OR start<$time)
 														AND (stop='' OR stop>$time)

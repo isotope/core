@@ -293,8 +293,8 @@ class tl_iso_producttypes extends Backend
 	public function archiveRecord($dc)
 	{
 	}
-	
-	
+
+
 	/**
 	 * Return list templates as array
 	 * @param object
@@ -315,8 +315,8 @@ class tl_iso_producttypes extends Backend
 	{
 		return $this->getTemplateGroup('iso_reader_');
 	}
-	
-	
+
+
 	/**
 	 * List template from all themes, show theme name
 	 * Based on Controller::getTemplateGroup from Contao 2.9.3

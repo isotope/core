@@ -153,7 +153,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 				}
 			}
 		}
-		
+
 		$blnInsufficientSubtotal = ($this->Isotope->Config->cartMinSubtotal > 0 && $this->Isotope->Config->cartMinSubtotal > $this->Isotope->Cart->subTotal) ? true : false;
 
 		$objTemplate->hasError = $blnInsufficientSubtotal ? true : false;

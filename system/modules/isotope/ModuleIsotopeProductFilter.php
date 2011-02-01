@@ -38,7 +38,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 	protected $strFormId = 'iso_filters';
 
 	protected $categories = array();
-	
+
 	/**
 	 * Display a wildcard in the back end
 	 * @return string
@@ -59,7 +59,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 
 		if(!$this->iso_filterFields && !$this->iso_orderByFields && !$this->iso_searchFields)
 			return '';
-		
+
 		return parent::generate();
 	}
 
@@ -79,36 +79,36 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 
 		//used to reduce the list of available options for each filter
 		$this->categories = $this->findCategories($objListingModule->iso_category_scope);
-		
-		$arrLimit = array();	
+
+		$arrLimit = array();
 		$arrOrderByOptions = array();
 
 		$this->loadLanguageFile('tl_iso_products');
-			
+
 		foreach($arrEnabledFilterFields as $field)
-		{			
+		{
 			$data = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field];
-			
+
 			if($data['eval']['is_filterable'])
-				$arrFilters[] = array('html' => $this->generateFilterWidget($field, $data));	
-		}	
-		
+				$arrFilters[] = array('html' => $this->generateFilterWidget($field, $data));
+		}
+
 		$arrOrderByOptions = $this->getOrderByOptions($this->getOrderByFields($arrEnabledOrderByFields));
 
 		if($this->iso_enableSearch)
-		{		
+		{
 			$arrSearchFields = array('name','description');
-		
+
 			if(count($arrSearchFields))
 			{
 				foreach($arrSearchFields as $field)
-				{					
+				{
 					$arrSearchFieldNames[] = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['eval']['field_name'];
 				}
-				
+
 			}
 		}
-	
+
 		//Set the default per page limit if one exists from the listing module,
 		//and also add it to the default array if it not there already
 		$strPerPageDefault = '';
@@ -158,23 +158,23 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 
 
 	private function getOrderByOptions(array $arrAttributes)
-	{		
+	{
 		$arrOptions[''] = '-';
-		
+
 		foreach($arrAttributes as $attribute)
 		{
 			$arrSortingDirections = $this->generateSortingDirections($attribute['type']);
-			
+
 			$arrOptions[$attribute['field_name'] . '-ASC'] = $attribute['label'] . ' ' . $arrSortingDirections['ASC'];
 			$arrOptions[$attribute['field_name'] . '-DESC'] = $attribute['label'] . ' ' . $arrSortingDirections['DESC'];
-	
+
 		}
-		
+
 		return $arrOptions;
 	}
 
 
-	/** 
+	/**
 	 * Automate the generation of sorting options for one or more order by-enabled attributes
 	 *
 	 * @access public
@@ -186,7 +186,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		if($arrFields)
 		{
 			foreach($arrFields as $field)
-			{			
+			{
 				switch($field)
 				{
 					case 'name':
@@ -217,7 +217,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 				}
 			}
 		}
-	
+
 		return $arrAttributeData;
 	}
 
@@ -297,24 +297,24 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 	private function loadFilterValues($strField, $arrPageIds)
 	{
 		$strPageIds = implode(',',$arrPageIds);
-		
+
 		$objFilterValues = $this->Database->query("SELECT DISTINCT $strField FROM tl_iso_products WHERE id IN (SELECT pid FROM tl_iso_product_categories WHERE page_id IN ($strPageIds)) AND published='1'");
-		
+
 		if(!$objFilterValues->numRows)
 			return array();
-		
-		return $objFilterValues->fetchEach($strField);	
-		
+
+		return $objFilterValues->fetchEach($strField);
+
 	}
-	
-	
-	/** 
+
+
+	/**
 	 * Return a widget object based on a product attribute's properties.
 	 */
 	protected function generateFilterWidget($strField, $arrData, $blnAjax=false)
 	{
 		$strClass = strlen($GLOBALS['ISO_ATTR'][$arrData['inputType']]['class']) ? $GLOBALS['ISO_ATTR'][$arrData['inputType']]['class'] : $GLOBALS['TL_FFL'][$arrData['inputType']];
-									
+
 		// Continue if the class is not defined
 		if (!$this->classFileExists($strClass))
 		{
@@ -323,16 +323,16 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 
 		$arrData['eval']['mandatory'] = ($arrData['eval']['mandatory'] && !$blnAjax) ? true : false;
 		$arrData['eval']['required'] = $arrData['eval']['mandatory'];
-		
+
 		if ($arrData['inputType'] == 'select')
 		{
 			$arrData['eval']['includeBlankOption'] = true;
 		}
-		
+
 		if (is_array($arrData['options']) || $arrData['foreignKey'])
-		{		
+		{
 			$arrField = $this->prepareForWidget($arrData, $strField);
-			
+
 		}
 		else
 		{
@@ -344,71 +344,71 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 					$arrData = $this->{$callback[0]}->{$callback[1]}($strField, $arrData, $this);
 				}
 			}
-			
+
 			$arrField = $this->prepareForWidget($arrData, $strField);
 		}
-		
+
 		$objWidget = new $strClass($arrField);
 
 		//reassign options if foreignKey our own way.
 		if($arrData['foreignKey'])
-		{		
+		{
 			$arrFK = explode(".", $arrData['foreignKey'], 2);
-			
+
 			//need to gather & reduce options
 			$arrOptions = $this->Database->execute("SELECT DISTINCT id, {$arrFK[1]} FROM {$arrFK[0]}")->fetchAllAssoc();
-	
+
 			foreach($arrOptions as $option)
 			{
-				
+
 				$arrOptionsAssoc[$option['id']] = $option[$arrFK[1]];
 			}
-	
+
 			$arrAssignedOptions = $this->loadFilterValues($strField, $this->categories);
-			
+
 			$arrFinalOptions = array();
-			
+
 			if($arrData['inputType']=='select')
 				$arrFinalOptions[] = array('value'=>'','label'=>'-');
-			
+
 			foreach($arrAssignedOptions as $val)
 			{
 				if($val==0)
 					continue;
-					
+
 				$arrFinalOptions[] = array
 				(
 					'value'	=> $val,
 					'label'	=> $arrOptionsAssoc[$val]
 				);
 			}
-	
+
 			$intCountForDisabling = ($arrData['inputType']=='select' ? 2 : 1); //with a blank option we have no less than two values, implying only one
 																		   //value and hence, disable the widget as it has no function in this case;
-			
+
 			if(count($arrFinalOptions)==$intCountForDisabling)
-			{		
+			{
 				if($arrData['inputType']=='select')
 					array_shift($arrFinalOptions);
-				
+
 				$objWidget->disabled =true;
 			}
-			
+
 			$objWidget->options = $arrFinalOptions;
 		}
-			
+
 		if($this->Input->get($strField))
 			$objWidget->value = $this->Input->get($strField);
-			
-							
+
+
 		$objWidget->storeValues = true;
 		$objWidget->tableless = true;
 		$objWidget->id .= "_" . ($this->pid ? $this->pid : $this->id);
-		
+
 		return $objWidget->parse();
 	}
-	
-	/** 
+
+	/**
 	 * Find categories based on the category scope of the listing module that corresponds to this filter module instance
 	 *
 	 * @todo: this is replicated from ModuleIsotopeProductListing until we can determine if appropriate to move this to ModuleIsotope for any module needing this data.
@@ -419,29 +419,29 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 	protected function findCategories($strCategoryScope)
 	{
 		global $objPage;
-		
+
 		switch($strCategoryScope)
 		{
 			case 'global':
 				return array_merge($this->getChildRecords($objPage->rootId, 'tl_page', true), array($objPage->rootId));
-				
+
 			case 'current_and_first_child':
 				return array_merge($this->Database->execute("SELECT id FROM tl_page WHERE pid={$objPage->id}")->fetchEach('id'), array($objPage->id));
-				
+
 			case 'current_and_all_children':
 				return array_merge($this->getChildRecords($objPage->id, 'tl_page', true), array($objPage->id));
-				
+
 			case 'parent':
 				return array($objPage->pid);
-				
+
 			case 'product':
 				$objProduct = $this->getProductByAlias($this->Input->get('product'));
-				
+
 				if (!$objProduct)
 					return array(0);
-					
+
 				return $objProduct->categories;
-				
+
 			default:
 			case 'current_category':
 				return array($objPage->id);
