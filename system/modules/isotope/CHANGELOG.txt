@@ -32,6 +32,7 @@ Version 0.3.beta1
 - Improved: Show "invisible" icon for products with start/stop date outside today
 - Improved: More unique element IDs to load ajax into the right container (Ticket #291)
 - Improved: Use <div> not <span> for attribute containers (Ticket #203)
+- Improved: Only create cart in database if necessary (will save a lot of auto_increment IDs)
 - Fixed start & stop publishing dates not working
 - Fixed Authorize.net failed transaction bug
 - Removed pre-0.1 update code from runonce.php

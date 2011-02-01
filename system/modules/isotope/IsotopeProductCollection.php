@@ -125,6 +125,11 @@ abstract class IsotopeProductCollection extends Model
 					return  $this->ctable;
 					break;
 
+				case 'id':
+				case 'pid':
+					return (int)$this->arrData[$strKey];
+					break;
+
 				case 'Shipping':
 				case 'Payment':
 					return $this->$strKey;
@@ -321,7 +326,7 @@ abstract class IsotopeProductCollection extends Model
 		{
 			return parent::save($blnForceInsert);
 		}
-		elseif (!$this->blnRecordExists || $blnForceInsert)
+		elseif ((!$this->blnRecordExists && $this->blnModified) || $blnForceInsert)
 		{
 			$this->findBy('id', parent::save($blnForceInsert));
 
@@ -469,6 +474,8 @@ abstract class IsotopeProductCollection extends Model
 		if ($intQuantity == 0)
 			return false;
 
+		$this->blnModified = true;
+
 		$objItem = $this->Database->prepare("SELECT * FROM {$this->ctable} WHERE pid={$this->id} AND product_id={$objProduct->id} AND product_options='".serialize($objProduct->getOptions(true))."'")->limit(1)->execute();
 
 		if ($objItem->numRows)
@@ -531,6 +538,8 @@ abstract class IsotopeProductCollection extends Model
 			}
 		}
 
+		$this->blnModified = true;
+
 		$intAffectedRows = $this->Database->prepare("UPDATE {$this->ctable} %s WHERE id={$objProduct->cart_id}")
 										  ->set($arrSet)
 										  ->executeUncached()
@@ -560,6 +569,8 @@ abstract class IsotopeProductCollection extends Model
 					return false;
 			}
 		}
+
+		$this->blnModified = true;
 
 		$this->Database->query("DELETE FROM {$this->ctable} WHERE id={$objProduct->cart_id}");
 
@@ -620,6 +631,11 @@ abstract class IsotopeProductCollection extends Model
 
 				$arrIds[] = $this->Database->prepare("INSERT INTO {$this->ctable} %s")->set($arrSet)->executeUncached()->insertId;
 			}
+		}
+
+		if (count($arrIds))
+		{
+			$this->blnModified = true;
 		}
 
 		return $arrIds;
