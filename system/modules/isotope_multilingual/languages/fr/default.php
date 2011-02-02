@@ -28,12 +28,11 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['tl_content']['iso_reader_jumpTo'][0] = 'Aller à la page détail du produit';
-$GLOBALS['TL_LANG']['tl_content']['iso_reader_jumpTo'][1] = 'Ce paramètre définit la page vers laquelle l\'utilisateur sera redirigé en cliquant sur un produit pour plus d\'infos.';
-$GLOBALS['TL_LANG']['tl_content']['iso_list_layout'][0] = 'Modèle de liste produit';
-$GLOBALS['TL_LANG']['tl_content']['iso_list_layout'][1] = 'Merci de choisir une disposition de liste. Vous pouvez ajouter des dispositions liste personnalisée dans le dossier  templates qui doivent commencer par iso_list_ et nécessitent l\'extension de fichier. tpl .';
-$GLOBALS['TL_LANG']['tl_content']['iso_attribute_set'][0] = 'Jeu d\'attributs de produit';
-$GLOBALS['TL_LANG']['tl_content']['iso_attribute_set'][1] = 'Sélectionnez un attribut de produit pour choisir une liste de filtres pour cette page.';
-$GLOBALS['TL_LANG']['tl_content']['iso_filters'][0] = 'Filtre de liste';
-$GLOBALS['TL_LANG']['tl_content']['iso_filters'][1] = 'Sélectionner un filtre de liste de produits';
+$GLOBALS['TL_LANG']['MSC']['translationSaved'] = 'Vos changements ont été sauvegardés.';
+$GLOBALS['TL_LANG']['MSC']['translationEdit'] = 'Modifier le fichier %s à partir de l\'extension "%s "';
+$GLOBALS['TL_LANG']['MSC']['translationSelect'] = 'Sélectionnez une extension et un fichier.';
+$GLOBALS['TL_LANG']['MSC']['translationError'] = 'Le fichier cible ne peut être analysé.';
+$GLOBALS['TL_LANG']['MSC']['translationErrorSource'] = 'Le fichier source ne peut être analysé.';
+$GLOBALS['TL_LANG']['MSC']['translationDiffHeadline'] = 'Changements entre "%s/languages/%s/%s" sur localhost et Isotope SVN.';
+$GLOBALS['TL_LANG']['MSC']['translationSVNError'] = 'Impossible de récupérer les fichiers de SVN.';
 

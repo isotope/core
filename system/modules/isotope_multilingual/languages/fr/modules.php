@@ -28,12 +28,9 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['tl_content']['iso_reader_jumpTo'][0] = 'Aller à la page détail du produit';
-$GLOBALS['TL_LANG']['tl_content']['iso_reader_jumpTo'][1] = 'Ce paramètre définit la page vers laquelle l\'utilisateur sera redirigé en cliquant sur un produit pour plus d\'infos.';
-$GLOBALS['TL_LANG']['tl_content']['iso_list_layout'][0] = 'Modèle de liste produit';
-$GLOBALS['TL_LANG']['tl_content']['iso_list_layout'][1] = 'Merci de choisir une disposition de liste. Vous pouvez ajouter des dispositions liste personnalisée dans le dossier  templates qui doivent commencer par iso_list_ et nécessitent l\'extension de fichier. tpl .';
-$GLOBALS['TL_LANG']['tl_content']['iso_attribute_set'][0] = 'Jeu d\'attributs de produit';
-$GLOBALS['TL_LANG']['tl_content']['iso_attribute_set'][1] = 'Sélectionnez un attribut de produit pour choisir une liste de filtres pour cette page.';
-$GLOBALS['TL_LANG']['tl_content']['iso_filters'][0] = 'Filtre de liste';
-$GLOBALS['TL_LANG']['tl_content']['iso_filters'][1] = 'Sélectionner un filtre de liste de produits';
+$GLOBALS['TL_LANG']['IMD']['translation'] = 'Prise en charge multilingue';
+$GLOBALS['TL_LANG']['IMD']['iso_labels'][0] = 'Traduction des libellés';
+$GLOBALS['TL_LANG']['IMD']['iso_labels'][1] = 'Divers libellés Isotope eCommerce devraient être traduit pour soutenir un magasin multilingue. Quelques exemples sont des noms de module de paiement et des options d\'attributs de produits. Grâce à cet outil vous pouvez traduire les libellés pour plusieurs langues. La plupart des champs affichent une saisie semi-automatique-liste de libellés disponibles. En outre, vous pouvez utiliser le InsertTag {{isolabel::???}}  pour remplacer un libellé.';
+$GLOBALS['TL_LANG']['IMD']['iso_translation'][0] = 'Noyau de traduction';
+$GLOBALS['TL_LANG']['IMD']['iso_translation'][1] = 'Cet outil vous permet de créer et d\'éditer directement les fichiers de langue pour toutes les extensions eCommerce Isotope. <br /> Utilisez cet outil avec précaution, il n\'a pas été entièrement testé!';
 

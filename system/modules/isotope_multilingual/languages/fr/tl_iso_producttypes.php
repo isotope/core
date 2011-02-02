@@ -28,12 +28,6 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['tl_content']['iso_reader_jumpTo'][0] = 'Aller à la page détail du produit';
-$GLOBALS['TL_LANG']['tl_content']['iso_reader_jumpTo'][1] = 'Ce paramètre définit la page vers laquelle l\'utilisateur sera redirigé en cliquant sur un produit pour plus d\'infos.';
-$GLOBALS['TL_LANG']['tl_content']['iso_list_layout'][0] = 'Modèle de liste produit';
-$GLOBALS['TL_LANG']['tl_content']['iso_list_layout'][1] = 'Merci de choisir une disposition de liste. Vous pouvez ajouter des dispositions liste personnalisée dans le dossier  templates qui doivent commencer par iso_list_ et nécessitent l\'extension de fichier. tpl .';
-$GLOBALS['TL_LANG']['tl_content']['iso_attribute_set'][0] = 'Jeu d\'attributs de produit';
-$GLOBALS['TL_LANG']['tl_content']['iso_attribute_set'][1] = 'Sélectionnez un attribut de produit pour choisir une liste de filtres pour cette page.';
-$GLOBALS['TL_LANG']['tl_content']['iso_filters'][0] = 'Filtre de liste';
-$GLOBALS['TL_LANG']['tl_content']['iso_filters'][1] = 'Sélectionner un filtre de liste de produits';
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['languages'][0] = 'Autres langues';
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['languages'][1] = 'Sélectionnez les langues supplémentaires que vous souhaitez ajouter aux données du produit. Si vous supprimez une langue, les données du produit ne sont pas supprimées, mais ne sont plus utilisées.';
 

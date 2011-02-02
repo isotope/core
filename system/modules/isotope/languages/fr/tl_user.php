@@ -31,6 +31,6 @@ $GLOBALS['TL_LANG']['tl_user']['iso_product_types'][1] = 'Les utilisateurs  peuv
 $GLOBALS['TL_LANG']['tl_user']['iso_configs'][0] = 'Configurations de boutique';
 $GLOBALS['TL_LANG']['tl_user']['iso_configs'][1] = 'Les utilisateurs peuvent voir les commandes de ces configurations.';
 $GLOBALS['TL_LANG']['tl_user']['iso_modules'][0] = 'Modules Isotope';
-$GLOBALS['TL_LANG']['tl_user']['iso_modules'][1] = 'Sélectionnez les modules dont cet utilisateur peut accéder.';
+$GLOBALS['TL_LANG']['tl_user']['iso_modules'][1] = 'Sélectionner les modules dont cet utilisateur peut accéder.';
 $GLOBALS['TL_LANG']['tl_user']['isotope_legend'] = 'Isotope eCommerce';
 

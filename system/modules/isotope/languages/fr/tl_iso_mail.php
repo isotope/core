@@ -23,11 +23,13 @@
  * @author     Rebecca Jutzi <rebecca.jutzi@bluewin.ch>
  * @author     Simon Moos <cc@simonmoos.com>
  * @author     Cyril Ponce <cyril@contao.fr>
+ * @author     Stéphane Cagni <stephane@cagni.fr>
+ * @author     Katelle Ave <contact@graphikat.net>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 $GLOBALS['TL_LANG']['tl_iso_mail']['name'][0] = 'Titre';
-$GLOBALS['TL_LANG']['tl_iso_mail']['name'][1] = 'Saisir un titre pour cet e-mail. Il sera utiliser comme référence par le sytème.';
+$GLOBALS['TL_LANG']['tl_iso_mail']['name'][1] = 'Saisir un titre pour cet e-mail. Il sera utiliser comme référence par le système.';
 $GLOBALS['TL_LANG']['tl_iso_mail']['senderName'][0] = 'Nom de l\'expéditeur';
 $GLOBALS['TL_LANG']['tl_iso_mail']['senderName'][1] = 'Saisir le nom de l\'expéditeur';
 $GLOBALS['TL_LANG']['tl_iso_mail']['sender'][0] = 'E-mail de l\'expéditeur';
@@ -39,7 +41,7 @@ $GLOBALS['TL_LANG']['tl_iso_mail']['bcc'][1] = 'Destinataires qui recevront rece
 $GLOBALS['TL_LANG']['tl_iso_mail']['template'][0] = 'Modèle d\'\'e-mail';
 $GLOBALS['TL_LANG']['tl_iso_mail']['template'][1] = 'Sélectionner un modèle HTML à utiliser.';
 $GLOBALS['TL_LANG']['tl_iso_mail']['originateFromCustomerEmail'][0] = 'Envoyer à partir de l\'e-mail d\'un client';
-$GLOBALS['TL_LANG']['tl_iso_mail']['originateFromCustomerEmail'][1] = 'Envoyez cet e-mail en utilisant l\'email du client en tant qu\'expéditeur.';
+$GLOBALS['TL_LANG']['tl_iso_mail']['originateFromCustomerEmail'][1] = 'Envoyer cet e-mail en utilisant l\'e-mail du client comme expéditeur.';
 $GLOBALS['TL_LANG']['tl_iso_mail']['new'][0] = 'Nouveau modèle d\'e-mail';
 $GLOBALS['TL_LANG']['tl_iso_mail']['new'][1] = 'Créer un nouveau modèle d\'e-mail';
 $GLOBALS['TL_LANG']['tl_iso_mail']['edit'][0] = 'Editer le modèle d\'e-mail';

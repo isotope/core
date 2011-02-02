@@ -20,14 +20,9 @@
  *
  * PHP version 5
  * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
- * @author     Rebecca Jutzi <rebecca.jutzi@bluewin.ch>
- * @author     Simon Moos <cc@simonmoos.com>
- * @author     Cyril Ponce <cyril@contao.fr>
- * @author     Stéphane Cagni <stephane@cagni.fr>
- * @author     Katelle Ave <contact@graphikat.net>
+ * @author     Angelica Schempp <aschempp@gmx.net>
+ * @author     Paolo B. <paolob@contaocms.it>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['FFL']['textCollection'][0] = 'Champ collection de texte';
-$GLOBALS['TL_LANG']['FFL']['textCollection'][1] = 'une ou plusieurs lignes de champ pour du texte court ou moyen.';
 
