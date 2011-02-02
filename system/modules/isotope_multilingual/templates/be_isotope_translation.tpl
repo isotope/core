@@ -51,7 +51,7 @@
 	  <tr onmouseover="Theme.hoverRow(this, 1);" onmouseout="Theme.hoverRow(this, 0);">
     <td class="tl_file_list" style="width: 48%"><?php echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?></td>
     <td class="tl_file_list" style="width: 2%">=</td>
-    <td class="tl_file_list" style="width: 48%"><?php if(strlen($value)>50):?><textarea name="<?php echo standardize($key); ?>" class="tl_text" onfocus="Backend.getScrollOffset();" style="height:60px;overflow:auto;"><?php echo str_replace('"', '&quot;', $this->translation[$key]); ?></textarea><?php else: ?><input type="text" name="<?php echo standardize($key); ?>" class="tl_text" value="<?php echo str_replace('"', '&quot;', $this->translation[$key]); ?>" onfocus="Backend.getScrollOffset();" /><?php endif; ?></td>
+    <td class="tl_file_list" style="width: 48%"><?php if(strlen($value)>50):?><textarea name="<?php echo standardize($key); ?>" class="tl_text" onfocus="Backend.getScrollOffset();" style="height:60px;overflow:auto;"><?php echo str_replace(array('"', '\n'), array('&quot;', "\n"), $this->translation[$key]); ?></textarea><?php else: ?><input type="text" name="<?php echo standardize($key); ?>" class="tl_text" value="<?php echo str_replace('"', '&quot;', $this->translation[$key]); ?>" onfocus="Backend.getScrollOffset();" /><?php endif; ?></td>
 	<td class="tl_file_list" style="width: 2%"><a title="<?php echo $key; ?>"><img src="system/themes/default/images/show.gif" alt="" /></a></td>
   </tr>
 <?php endforeach; ?>

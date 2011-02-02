@@ -125,39 +125,42 @@ class ModuleIsotopeTranslation extends BackendModule
 				$strFile = "<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
 
 /**
- * TYPOlight Open Source CMS
+ * Contao Open Source CMS
  * Copyright (C) 2005-2010 Leo Feyer
+ *
+ * Formerly known as TYPOlight Open Source CMS.
  *
  * This program is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- *
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010";
+ * @copyright  2009-2011 Isotope eCommerce Workgroup";
 
  				$objAuthors = $this->Database->execute("SELECT * FROM tl_user WHERE translation='{$this->User->translation}'");
 
  				while( $objAuthors->next() )
  				{
- 					$strFile .= "
- * @author     " . $objAuthors->name . " <" . $objAuthors->email . ">";
+ 					$strFile .= '
+ * @author     ' . $objAuthors->name . ' <' . $objAuthors->email . '>';
  				}
 
- 				$strFile .= "
+ 				$strFile .= '
  * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @version    $Id$
  */
 
-";
+';
 
 				foreach( $arrSource as $key => $value )
 				{
@@ -166,7 +169,9 @@ class ModuleIsotopeTranslation extends BackendModule
 					if (!strlen($value))
 						continue;
 
-					$strFile .= $key . " = '" . str_replace("'", "\'", $value) . "';\n";
+					$value = str_replace(array("\r\n", "\n", "\r", '\n'), '\n', $value, $count);
+
+					$strFile .= $key . ' = ' . ($count > 0 ? ('"' . str_replace('"', '\"', $value) . '";'."\n") : ("'" . str_replace("'", "\'", $value) . "';\n"));
 				}
 
 				$strFile .= "\n";
@@ -269,7 +274,7 @@ class ModuleIsotopeTranslation extends BackendModule
 			}
 			elseif(preg_match('@\=[ \t]*"(.*?(?<!\\\\))"@', $line, $match))
 			{
-				$return[$table] = str_replace("\'", "'", $match[1]);
+				$return[$table] = str_replace('\"', '"', $match[1]);
 			}
 
 			elseif(preg_match('@\=[ \t]*array\((.*?)\)[ \t]*;@', $line, $match))
@@ -290,7 +295,7 @@ class ModuleIsotopeTranslation extends BackendModule
 
 					if (strlen($var))
 					{
-						$return[$table . "[".$key."]"] = str_replace("\'", "'", $var);
+						$return[$table . "[".$key."]"] = str_replace(array("\'", '\"'), array("'", '"'), $var);
 					}
 				}
 			}
