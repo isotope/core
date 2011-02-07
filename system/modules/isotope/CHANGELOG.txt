@@ -14,6 +14,7 @@ Version 0.3.beta1
 - Added button to duplicate the fallback language to a language record
 - Added multi-edit support for products and variant data
 - Added minimum order subtotal amount (store config option)
+- Added sku to email product template
 - Added: Copy child records (variants, languages) when copying a product
 - Added: Allow foreignKey for variant attribute options
 - Added: Show theme templates in product type select menu

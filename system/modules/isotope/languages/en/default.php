@@ -163,6 +163,7 @@ $GLOBALS['TL_LANG']['MSC']['iso_subtotal_header'] = 'Subtotal';
 $GLOBALS['TL_LANG']['MSC']['iso_order_shipping_header'] = 'Shipping & Handling';
 $GLOBALS['TL_LANG']['MSC']['iso_order_grand_total_header'] = 'Grand Total';
 $GLOBALS['TL_LANG']['MSC']['iso_order_items'] = 'Items';
+$GLOBALS['TL_LANG']['MSC']['iso_order_sku'] = 'SKU';
 $GLOBALS['TL_LANG']['MSC']['iso_quantity_header'] = 'Quantity';
 $GLOBALS['TL_LANG']['MSC']['iso_price_header'] = 'Price';
 $GLOBALS['TL_LANG']['MSC']['iso_sku_header'] = 'SKU';
