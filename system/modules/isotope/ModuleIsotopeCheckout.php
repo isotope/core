@@ -969,6 +969,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			if ($objOrder->findBy('id', $orderId))
 			{
 				$objOrder->transferFromCollection($this->Isotope->Cart);
+				
 				$this->Isotope->Cart->delete();
 			}
 			
@@ -982,13 +983,10 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				{
 					if ($arrData[$address.'_id'] == 0)
 					{
-						$arrAddress = array('pid'=>$this->User->id, 'tstamp'=>$time);
-						
-						foreach( $this->Isotope->Config->{$address.'_fields'} as $field )
-						{
-							$arrAddress[$field] = $arrData[$address.'_'.$field];
-						}
-						
+						$arrAddress = array_intersect_key($this->Isotope->Cart->{$address.'Address'}, array_flip($this->Isotope->Config->{$address.'_fields'}));
+						$arrAddress['pid'] = $this->User->id;
+						$arrAddress['tstamp'] = $time;
+
 						$this->Database->prepare("INSERT INTO tl_iso_addresses %s")->set($arrAddress)->execute();
 					}
 				}
@@ -1124,7 +1122,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		
 		
 		$strBuffer .= '<div id="' . $field . '_new" class="address_new"' . (((!FE_USER_LOGGED_IN && $field == 'billing_address') || $objWidget->value == 0) ? '>' : ' style="display:none">');
-		$strBuffer .= '<span>' . $this->generateAddressWidgets($field) . '</span>';
+		$strBuffer .= '<span>' . $this->generateAddressWidgets($field, count($arrOptions)) . '</span>';
 		$strBuffer .= '</div>';
 		
 		return $strBuffer;
@@ -1133,10 +1131,9 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	
 	/**
 	 * Generate the current step widgets.
-	 * strResourceTable is used either to load a DCA or else to gather settings related to a given DCA.
+	 * @todo <table...> was in a template, but I don't get why we need to define the table here?
 	 */
-	//!@todo <table...> was in a template, but I don't get why we need to define the table here?
-	protected function generateAddressWidgets($strAddressType)
+	protected function generateAddressWidgets($strAddressType, $intOptions)
 	{
 		$strBuffer = '';
 		
@@ -1171,9 +1168,15 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			}
 			
 			// Special field type "conditionalselect"
-			if (strlen($arrData['eval']['conditionField']))
+			elseif (strlen($arrData['eval']['conditionField']))
 			{
 				$arrData['eval']['conditionField'] = $strAddressType . '_' . $arrData['eval']['conditionField'];
+			}
+			
+			// Special fields "isDefaultBilling" & "isDefaultShipping"
+			elseif (($field == 'isDefaultBilling' && $strAddressType == 'billing_address' && $intOptions < 2) || ($field == 'isDefaultShipping' && $strAddressType == 'shippping_address' && $intOptions < 3))
+			{
+				$arrDefault[$field] = '1';
 			}
 			
 			$objWidget = new $strClass($this->prepareForWidget($arrData, $strAddressType . '_' . $field, (strlen($_SESSION['CHECKOUT_DATA'][$strAddressType][$field]) ? $_SESSION['CHECKOUT_DATA'][$strAddressType][$field] : $arrDefault[$field])));
