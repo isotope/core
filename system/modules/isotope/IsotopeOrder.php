@@ -529,17 +529,13 @@ class IsotopeOrder extends IsotopeProductCollection
 
 			foreach( array('billing', 'shipping') as $address )
 			{
+				$arrData = deserialize($this->arrData[$address.'_address']);
+				
 				if ($arrData[$address.'_id'] == 0)
 				{
-					$arrAddress = array('pid'=>$this->pid, 'tstamp'=>$time);
-
-					foreach( $this->Isotope->Config->{$address.'_fields'} as $field )
-					{
-						if ($field['enabled'])
-						{
-							$arrAddress[$field['value']] = $arrData[$address.'_'.$field['value']];
-						}
-					}
+					$arrAddress = array_intersect_key($arrData, array_flip($this->Isotope->Config->{$address.'_fields_raw'}));
+					$arrAddress['pid'] = $this->pid;
+					$arrAddress['tstamp'] = $time;
 
 					$this->Database->prepare("INSERT INTO tl_iso_addresses %s")->set($arrAddress)->execute();
 				}

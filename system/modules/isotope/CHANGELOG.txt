@@ -37,6 +37,11 @@ Version 0.3.beta1
 - Fixed Authorize.net failed transaction bug
 - Removed pre-0.1 update code from runonce.php
 
+Version 0.2.6 (2011-02-??)
+------------------------------
+- Improved: Check isDefaultBilling/isDefaultShipping on first checkout
+- Fixed: Address was not added to address book correctly
+
 Version 0.2.5 (2011-02-01)
 ------------------------------
 - Added Isotope version constant to config file

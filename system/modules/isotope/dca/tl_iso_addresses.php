@@ -98,7 +98,7 @@ $GLOBALS['TL_DCA']['tl_iso_addresses'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'					  => '{personal_legend},firstname,lastname;{address_legend:hide},company,street_1,street_2,street_3,postal,city,subdivision,country;{contact_legend},email,phone;{default_legend},isDefaultBilling,isDefaultShipping',
+		'default'					  => '{personal_legend},firstname,lastname;{address_legend},company,street_1,street_2,street_3,postal,city,subdivision,country;{contact_legend},email,phone;{default_legend:hide},isDefaultBilling,isDefaultShipping',
 	),
 
 	// Fields

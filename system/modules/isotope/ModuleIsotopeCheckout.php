@@ -1074,7 +1074,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 
 		$strBuffer .= '<div id="' . $field . '_new" class="address_new"' . (((!FE_USER_LOGGED_IN && $field == 'billing_address') || $objWidget->value == 0) ? '>' : ' style="display:none">');
-		$strBuffer .= '<span>' . $this->generateAddressWidgets($field) . '</span>';
+		$strBuffer .= '<span>' . $this->generateAddressWidgets($field, count($arrOptions)) . '</span>';
 		$strBuffer .= '</div>';
 
 		return $strBuffer;
@@ -1087,7 +1087,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	 *
 	 * @todo <table...> was in a template, but I don't get why we need to define the table here?
 	 */
-	protected function generateAddressWidgets($strAddressType)
+	protected function generateAddressWidgets($strAddressType, $intOptions)
 	{
 		$strBuffer = '';
 
@@ -1123,9 +1123,15 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			}
 
 			// Special field type "conditionalselect"
-			if (strlen($arrData['eval']['conditionField']))
+			elseif (strlen($arrData['eval']['conditionField']))
 			{
 				$arrData['eval']['conditionField'] = $strAddressType . '_' . $arrData['eval']['conditionField'];
+			}
+			
+			// Special fields "isDefaultBilling" & "isDefaultShipping"
+			elseif (($field['value'] == 'isDefaultBilling' && $strAddressType == 'billing_address' && $intOptions < 2) || ($field['value'] == 'isDefaultShipping' && $strAddressType == 'shippping_address' && $intOptions < 3))
+			{
+				$arrDefault[$field['value']] = '1';
 			}
 
 			$objWidget = new $strClass($this->prepareForWidget($arrData, $strAddressType . '_' . $field['value'], (strlen($_SESSION['CHECKOUT_DATA'][$strAddressType][$field['value']]) ? $_SESSION['CHECKOUT_DATA'][$strAddressType][$field['value']] : $arrDefault[$field['value']])));
