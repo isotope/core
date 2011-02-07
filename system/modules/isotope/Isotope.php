@@ -606,7 +606,7 @@ class Isotope extends Controller
 			$css  = '<style type="text/css">' . "\n";
 			$css .= trim($buffer) . "\n";
 			$css .= '</style>' . "\n";
-			$arrData['newsletter.css'] = $css;
+			$arrData['head_css'] = $css;
 		}
 		
 		// Add HTML content
@@ -617,7 +617,7 @@ class Isotope extends Controller
 
 			$objTemplate->body = $objMail->html;
 			$objTemplate->charset = $GLOBALS['TL_CONFIG']['characterSet'];
-			$objTemplate->css = '##newsletter.css##';
+			$objTemplate->css = '##head_css##';
 			
 			// Prevent parseSimpleTokens from stripping important HTML tags
 			$GLOBALS['TL_CONFIG']['allowedTags'] .= '<doctype><html><head><meta><style><body>';
