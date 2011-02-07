@@ -372,38 +372,6 @@ class IsotopePOS extends Backend
 			if (!is_object($objProduct))
 				continue;
 
-			if ($objItems->downloads_allowed/* && $objItems->has_downlaods > 0*/)
-			{
-				$arrDownloads = array();
-				$objDownloads = $this->Database->prepare("SELECT p.*, o.* FROM tl_iso_order_downloads o LEFT OUTER JOIN tl_iso_downloads p ON o.download_id=p.id WHERE o.pid=?")->execute($objItems->id);
-
-				while( $objDownloads->next() )
-				{
-					// Send file to the browser
-					if (strlen($this->Input->get('file')) && $this->Input->get('file') == $objDownloads->id && ($objDownloads->downloads_allowed == 0 || $objDownloads->downloads_remaining > 0))
-					{
-						if ($objDownloads->downloads_remaining > 0)
-						{
-							$this->Database->prepare("UPDATE tl_iso_order_downloads SET downloads_remaining=? WHERE id=?")->execute(($objDownloads->downloads_remaining-1), $objDownloads->id);
-						}
-
-						$this->sendFileToBrowser($objDownloads->singleSRC);
-					}
-
-					$arrDownload = array
-					(
-						'raw'			=> $objDownloads->row(),
-						'title'			=> $objDownloads->title,
-						'href'			=> ($this->generateFrontendUrl($objPage->row()) . '?uid=' . $this->Input->get('uid') . '&amp;file=' . $objDownloads->id),
-						'remaining'		=> ($objDownloads->downloads_allowed > 0 ? sprintf('<br />%s Downloads verbleibend', intval($objDownloads->downloads_remaining)) : ''),
-						'downloadable'	=> (($objDownloads->downloads_allowed == 0 || $objDownloads->downloads_remaining > 0) ? true : false),
-					);
-
-					$arrDownloads[] = $arrDownload;
-					$arrAllDownloads[] = $arrDownload;
-				}
-			}
-
 			$arrItems[] = array
 			(
 				'raw'				=> $objItems->row(),
@@ -501,38 +469,6 @@ class IsotopePOS extends Backend
 
 			if (!is_object($objProduct))
 				continue;
-
-			if ($objItems->downloads_allowed/* && $objItems->has_downlaods > 0*/)
-			{
-				$arrDownloads = array();
-				$objDownloads = $this->Database->prepare("SELECT p.*, o.* FROM tl_iso_order_downloads o LEFT OUTER JOIN tl_iso_downloads p ON o.download_id=p.id WHERE o.pid=?")->execute($objItems->id);
-
-				while( $objDownloads->next() )
-				{
-					// Send file to the browser
-					if (strlen($this->Input->get('file')) && $this->Input->get('file') == $objDownloads->id && ($objDownloads->downloads_allowed == 0 || $objDownloads->downloads_remaining > 0))
-					{
-						if ($objDownloads->downloads_remaining > 0)
-						{
-							$this->Database->prepare("UPDATE tl_iso_order_downloads SET downloads_remaining=? WHERE id=?")->execute(($objDownloads->downloads_remaining-1), $objDownloads->id);
-						}
-
-						$this->sendFileToBrowser($objDownloads->singleSRC);
-					}
-
-					$arrDownload = array
-					(
-						'raw'			=> $objDownloads->row(),
-						'title'			=> $objDownloads->title,
-						'href'			=> ($this->generateFrontendUrl($objPage->row()) . '?uid=' . $this->Input->get('uid') . '&amp;file=' . $objDownloads->id),
-						'remaining'		=> ($objDownloads->downloads_allowed > 0 ? sprintf('<br />%s Downloads verbleibend', intval($objDownloads->downloads_remaining)) : ''),
-						'downloadable'	=> (($objDownloads->downloads_allowed == 0 || $objDownloads->downloads_remaining > 0) ? true : false),
-					);
-
-					$arrDownloads[] = $arrDownload;
-					$arrAllDownloads[] = $arrDownload;
-				}
-			}
 
 			$arrItems[] = array
 			(
