@@ -128,7 +128,7 @@ $GLOBALS['TL_DCA']['tl_iso_mail_content'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_mail_content']['subject'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'long'),
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'decodeEntities'=>true, 'tl_class'=>'long'),
 		),
 		'text' => array
 		(
