@@ -102,6 +102,10 @@ abstract class IsotopePayment extends Frontend
 	{
 		switch( $strKey )
 		{
+			case 'label':
+				return $this->arrData['label'] ? $this->arrData['label'] : $this->arrData['name'];
+				break;
+				
 			case 'available':
 				if (!$this->enabled && !BE_USER_LOGGED_IN)
 					return false;

@@ -5,6 +5,7 @@ Isotope eCommerce Changelog
 Version 0.2.6 (2011-02-??)
 ------------------------------
 - Improved: Check isDefaultBilling/isDefaultShipping on first checkout
+- Improved: Label for payment method is no longer mandatory (will use name if not set)
 - Fixed ##newsletter.css## in HTML email
 - Fixed: Address was not added to address book correctly
 - Fixed: Downloads in PDF invoice caused fatal error
