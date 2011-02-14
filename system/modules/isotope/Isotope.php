@@ -589,11 +589,13 @@ class Isotope extends Controller
 			return;
 		}
 
+		$arrPlainData = array_map('strip_tags', $arrData);
+
 		$objEmail = new Email();
 		$objEmail->from = ($objMail->originateFromCustomerEmail && strlen($arrData['customer_email'])) ? $arrData['customer_email'] : $objMail->sender;
 		$objEmail->fromName = ($objMail->originateFromCustomerEmail && strlen($arrData['customer_name'])) ? $arrData['customer_name'] : $objMail->senderName;
-		$objEmail->subject = $this->parseSimpleTokens($this->replaceInsertTags($objMail->subject), $arrData);
-		$objEmail->text = $this->parseSimpleTokens($this->replaceInsertTags($objMail->text), $arrData);
+		$objEmail->subject = $this->parseSimpleTokens($this->replaceInsertTags($objMail->subject), $arrPlainData);
+		$objEmail->text = $this->parseSimpleTokens($this->replaceInsertTags($objMail->text), $arrPlainData);
 
 		if (strlen($arrData['customer_email']))
 		{
