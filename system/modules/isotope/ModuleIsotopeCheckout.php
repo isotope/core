@@ -821,8 +821,13 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				}
 			}
 		}
-
-		return '<div class="order_conditions' . $strAttributes . '">' . $strHidden . $strFields . '</div>';
+		
+		$objTemplate = new IsotopeTemplate('iso_checkout_order_conditions');
+		$objTemplate->attributes = $strAttributes;
+		$objTemplate->hidden = $strHidden;
+		$objTemplate->fields = $strFields;
+		
+		return $objTemplate->parse();
 	}
 
 
