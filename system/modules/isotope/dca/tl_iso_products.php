@@ -1317,7 +1317,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 		}
 
 /**
- * //!@todo: tl_iso_products is missing in groups settings
+ * @todo tl_iso_products is missing in groups settings
  *
 		// Check permissions AFTER checking the tid, so hacking attempts are logged
 		if (!$this->User->isAdmin && !$this->User->hasAccess('tl_iso_products::published', 'alexf'))
@@ -1353,13 +1353,16 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 		$this->Input->setGet('act', 'toggle');
 		$this->checkPermission();
 
+/**
+ * @todo tl_iso_products is missing in groups settings
+ *
 		// Check permissions to publish
 		if (!$this->User->isAdmin && !$this->User->hasAccess('tl_iso_products::published', 'alexf'))
 		{
 			$this->log('Not enough permissions to publish/unpublish product ID "'.$intId.'"', 'tl_iso_products toggleVisibility', TL_ERROR);
 			$this->redirect($this->Environment->script.'?act=error');
 		}
-
+*/
 		$this->createInitialVersion('tl_iso_products', $intId);
 	
 		// Trigger the save_callback

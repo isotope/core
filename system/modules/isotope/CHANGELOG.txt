@@ -10,6 +10,7 @@ Version 0.2.6 (2011-02-??)
 - Fixed issue with simple tokens in mail template subject
 - Fixed issue with HTML in plain text emails
 - Fixed CSS classes for new address fields in checkout module
+- Fixed publish toggle not working for non-admins
 - Fixed: Address was not added to address book correctly
 - Fixed: Downloads in PDF invoice caused fatal error
 
