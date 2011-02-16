@@ -104,9 +104,9 @@ class PaymentSaferpay extends IsotopePayment
 		$arrXML = new SimpleXMLElement($strData);
 
 		if( $arrXML["ACCOUNTID"] != $this->saferpay_accountid
-			$arrXML["AMOUNT"] != (round($this->Isotope->Cart->grandTotal, 2) * 100)
-			$arrXML["CURRENCY"] != $this->Isotope->Config->currency
-			$arrXML["ORDERID"] != $objOrder->id )
+			|| $arrXML["AMOUNT"] != (round($this->Isotope->Cart->grandTotal, 2) * 100)
+			|| $arrXML["CURRENCY"] != $this->Isotope->Config->currency
+			|| $arrXML["ORDERID"] != $objOrder->id )
 		{
 			global $objPage;
 			$this->log('XML data wrong, possible manipulation!', 'PaymentSaferpay processPayment()', TL_ERROR);
