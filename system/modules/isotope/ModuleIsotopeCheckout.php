@@ -1135,7 +1135,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	 */
 	protected function generateAddressWidgets($strAddressType, $intOptions)
 	{
-		$strBuffer = '';
+		$arrBuffer = array();
 		
 		$this->loadLanguageFile('tl_iso_addresses');
 		$this->loadDataContainer('tl_iso_addresses');
@@ -1178,7 +1178,9 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			{
 				$arrDefault[$field] = '1';
 			}
-			
+
+			$i = count($arrBuffer);
+
 			$objWidget = new $strClass($this->prepareForWidget($arrData, $strAddressType . '_' . $field, (strlen($_SESSION['CHECKOUT_DATA'][$strAddressType][$field]) ? $_SESSION['CHECKOUT_DATA'][$strAddressType][$field] : $arrDefault[$field])));
 			
 			$objWidget->storeValues = true;
@@ -1224,9 +1226,15 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				}
 			}
 
-			$strBuffer .= $objWidget->parse();
+			$arrBuffer[] = $objWidget->parse();
 		}
 		
+		// Add row_last class to the last widget
+		array_pop($arrBuffer);
+		$objWidget->rowClass = 'row_'.$i . (($i == 0) ? ' row_first' : '') . ' row_last' . ((($i % 2) == 0) ? ' even' : ' odd');
+		$arrBuffer[] = $objWidget->parse();
+		
+		// Validate input
 		if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && !$this->doNotSubmit && is_array($arrAddress) && count($arrAddress))
 		{
 			$arrAddress['id'] = 0;
@@ -1239,7 +1247,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		}
 		
 		return '<table cellspacing="0" cellpadding="0" summary="Form fields">
-' . $strBuffer . '
+' . implode('', $arrBuffer) . '
 </table>';
 	}
 	
