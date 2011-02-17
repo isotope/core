@@ -41,7 +41,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['saferpay_accountid'] = a
 (
 	'label'			=> &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['saferpay_accountid'],
 	'inputType'		=> 'text',
-	'eval'			=> array('mandatory'=>true, 'maxlength'=>14, 'tl_class'=>'w50'),
+	'eval'			=> array('mandatory'=>true, 'maxlength'=>16, 'tl_class'=>'w50'),
 );
 
 $GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['saferpay_description'] = array
