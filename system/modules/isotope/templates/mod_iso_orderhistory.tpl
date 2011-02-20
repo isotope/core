@@ -20,7 +20,7 @@
 		<td><?php echo $order['items']; ?></td>
 		<td><?php echo $order['grandTotal']; ?></td>
 		<td><?php echo $order['status']; ?></td>
-		<td><?php if (strlen($order['link'])): ?><a href="<?php echo $order['link']; ?>">Details</a><?php endif; ?></td>
+		<td><?php if (strlen($order['link'])): ?><a href="<?php echo $order['link']; ?>"><?php echo $this->detailsLabel; ?></a><?php endif; ?></td>
 	</tr>
 <?php endforeach; ?>
 </table>

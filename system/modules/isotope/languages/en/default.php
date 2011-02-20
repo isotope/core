@@ -127,6 +127,7 @@ $GLOBALS['TL_LANG']['MSC']['noPaymentModules'] = 'No payment options are current
 $GLOBALS['TL_LANG']['MSC']['noShippingModules'] = 'No shipping options are currently available.';
 $GLOBALS['TL_LANG']['MSC']['noOrderEmails'] = 'No orders emails found.';
 $GLOBALS['TL_LANG']['MSC']['noOrders'] = 'No orders found.';
+$GLOBALS['TL_LANG']['MSC']['downloadsRemaining'] = '<br />%s downloads remaining';
 
 $GLOBALS['TL_LANG']['ISO']['couponsInputLabel'] = 'Promotional code';
 $GLOBALS['TL_LANG']['ISO']['couponsHeadline'] = 'Apply Promotional Codes';
