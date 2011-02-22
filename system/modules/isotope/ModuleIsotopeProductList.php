@@ -213,12 +213,15 @@ class ModuleIsotopeProductList extends ModuleIsotope
 						break;
 						
 					case 'for':
-						//prepare clause for text search. //!@todo:  need to add filter for each std. search field plus any additional user-defined.
-						$arrSearchFields = $this->getSearchFields();
-						
-						foreach($arrSearchFields as $field)
+						if ($value != $GLOBALS['TL_LANG']['MSC']['defaultSearchText'])
 						{
-							$arrSearchClauses[] = $this->addFilter($value, $field, 'search');
+							//prepare clause for text search. //!@todo:  need to add filter for each std. search field plus any additional user-defined.
+							$arrSearchFields = $this->getSearchFields();
+							
+							foreach($arrSearchFields as $field)
+							{
+								$arrSearchClauses[] = $this->addFilter($value, $field, 'search');
+							}
 						}
 						break;
 						
