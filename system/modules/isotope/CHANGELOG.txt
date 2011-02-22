@@ -52,6 +52,7 @@ Version 0.2.6 (2011-02-??)
 - Fixed hardcoded labels in order history/details (Ticket #382)
 - Fixed: Address was not added to address book correctly
 - Fixed: Downloads in PDF invoice caused fatal error
+- Fixed: Product filter searched for field default value (Ticket #377)
 
 Version 0.2.5 (2011-02-01)
 ------------------------------
