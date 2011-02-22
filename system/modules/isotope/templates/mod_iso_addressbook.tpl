@@ -18,7 +18,7 @@
 	<li class="<?php echo $address['class']; ?>">
 		<div class="buttons">
 			<a class="edit" href="<?php echo $address['edit_url']; ?>" title="<?php echo $this->editAddressLabel; ?>"><?php echo $this->editAddressLabel; ?></a>
-			<a class="delete" href="<?php echo $address['delete_url']; ?>" title="<?php echo $this->deleteAddressLabel; ?>"><?php echo $this->deleteAddressLabel; ?></a>
+			<a class="delete" href="<?php echo $address['delete_url']; ?>" title="<?php echo $this->deleteAddressLabel; ?>" onclick="return confirm('<?php echo $this->deleteAddressConfirm; ?>')"><?php echo $this->deleteAddressLabel; ?></a>
 		</div>
 		<?php echo $address['text']; ?>
 	</li>

@@ -152,6 +152,7 @@ $GLOBALS['TL_LANG']['MSC']['differentShippingAddress']	= 'Different shipping add
 $GLOBALS['TL_LANG']['MSC']['addressBookLabel'] = 'Addresses';
 $GLOBALS['TL_LANG']['MSC']['editAddressLabel'] = 'Edit';
 $GLOBALS['TL_LANG']['MSC']['deleteAddressLabel'] = 'Delete';
+$GLOBALS['TL_LANG']['MSC']['deleteAddressConfirm'] = 'Do you really want to delete this address? This cannot be undone.';
 
 //Invoice language Entries
 $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] = 'Invoice';
