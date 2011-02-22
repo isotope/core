@@ -33,11 +33,11 @@
 $GLOBALS['TL_LANG']['tl_iso_shipping_options']['name'] 				= array('Name', 'A brief description of the rate. Used on frontend output.');
 $GLOBALS['TL_LANG']['tl_iso_shipping_options']['rate'] 				= array('Rate', 'The shipping rate in currency format.');
 $GLOBALS['TL_LANG']['tl_iso_shipping_options']['description']		= array('Description', 'A rate description can be used to communicate how the rate is calculated to the customer.');
-$GLOBALS['TL_LANG']['tl_iso_shipping_options']['minimum_total']		= array('Minimum total', '');
-$GLOBALS['TL_LANG']['tl_iso_shipping_options']['maximum_total']		= array('Maximum total', '');
-
+$GLOBALS['TL_LANG']['tl_iso_shipping_options']['minimum_total']		= array('Minimum total');
+$GLOBALS['TL_LANG']['tl_iso_shipping_options']['maximum_total']		= array('Maximum total');
 $GLOBALS['TL_LANG']['tl_iso_shipping_options']['weight_from']		= array('Weight from', 'If overall weight of all products in cart is more than this, the rate will match. Make sure you set the correct weight unit in module settings.');
 $GLOBALS['TL_LANG']['tl_iso_shipping_options']['weight_to']			= array('Weight to', 'If overall weight of all products in cart is less than this, the rate will match. Make sure you set the correct weight unit in module settings.');
+$GLOBALS['TL_LANG']['tl_iso_shipping_options']['enabled']			= array('Enabled', 'Is the rate available for use in the store?');
 
 
 /**
