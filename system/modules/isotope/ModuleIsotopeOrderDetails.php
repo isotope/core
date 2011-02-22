@@ -96,7 +96,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 				// Send file to the browser
 				if (strlen($this->Input->get('file')) && $this->Input->get('file') == $objDownloads->id && $blnDownloadable)
 				{
-					if (!$this->backend)
+					if (!$this->backend && $objDownloads->downloads_remaining !== '')
 					{
 						$this->Database->prepare("UPDATE tl_iso_order_downloads SET downloads_remaining=? WHERE id=?")->execute(($objDownloads->downloads_remaining-1), $objDownloads->id);
 					}

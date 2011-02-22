@@ -399,39 +399,15 @@ class IsotopeRunonce extends Frontend
 	
 	private function updateOrders()
 	{
-/*
-		if ($this->Database->fieldExists('product_options', 'tl_iso_order_items'))
-		{
-			$objItems = $this->Database->query("SELECT * FROM tl_iso_order_items");
-			
-			while( $objItems->next() )
-			{
-				$arrOld = deserialize($objItems->product_options);
-				
-				if (is_array($arrOld) && count($arrOld))
-				{
-					$arrOptions = array();
-					$objProduct = unserialize($objItems->product_data);
-					
-					foreach( $arrOld as $name => $value )
-					{
-						$arrOptions[$name] = $value['values'][0];
-					}
-					
-					$objProduct->setOptions($arrOptions);
-					
-					$this->Database->prepare("UPDATE tl_iso_order_items SET product_data=?, product_options='' WHERE id=?")->execute(serialize($objProduct), $objItems->id);
-				}
-			}
-		}
-*/
-		
 		if (!$this->Database->fieldExists('date_shipped', 'tl_iso_orders'))
 		{
 			$this->Database->query("ALTER TABLE tl_iso_orders ADD COLUMN date_shipped varchar(10) NOT NULL default ''");
 		}
 		
 		$this->Database->query("UPDATE tl_iso_orders SET date_shipped=date, status='processing' WHERE status='shipped'");
+		
+		// Fix for Ticket #383
+		$this->Database->query("UPDATE tl_iso_order_downloads SET downloads_remaining='' WHERE downloads_remaining='-1'");
 	}
 	
 	
