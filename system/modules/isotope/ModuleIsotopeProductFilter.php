@@ -85,7 +85,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 
 		$this->loadLanguageFile('tl_iso_products');
 
-		foreach($arrEnabledFilterFields as $field)
+		foreach($arrFilterFields as $field)
 		{
 			$data = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field];
 
