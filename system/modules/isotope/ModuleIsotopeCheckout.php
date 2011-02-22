@@ -919,14 +919,9 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		
 		if ($blnCheckout)
 		{
-			$salesEmail = $this->iso_sales_email ? $this->iso_sales_email : $GLOBALS['TL_ADMIN_EMAIL'];
-			$customerMail = strlen($this->Isotope->Cart->billingAddress['email']) ? $this->Isotope->Cart->billingAddress['email'] : (strlen($this->Isotope->Cart->shippingAddress['email']) ? $this->Isotope->Cart->shippingAddress['email'] : (FE_USER_LOGGED_IN ? $this->User->email : ''));
-
 			$arrData = array_merge($this->arrOrderData, array
 			(
 				'order_id'					=> ($this->Isotope->Config->orderPrefix . $orderId),
-				'customer_name'				=> ($this->Isotope->Cart->billingAddress['firstname'] . ' ' . $this->Isotope->Cart->billingAddress['lastname']),
-				'customer_email'			=> $customerMail,
 				'items'						=> $this->Isotope->Cart->items,
 				'products'					=> $this->Isotope->Cart->products,
 				'subTotal'					=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->subTotal, false),
@@ -950,18 +945,38 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			
 			$this->log('New order ID ' . $orderId . ' has been placed', 'ModuleIsotopeCheckout writeOrder()', TL_ACCESS);
 			
-			if ($this->iso_mail_admin && strlen($salesEmail))
-			{
-				$this->Isotope->sendMail($this->iso_mail_admin, $salesEmail, $GLOBALS['TL_LANGUAGE'], $arrData);
-			}
-			
 			if ($this->iso_mail_customer && strlen($customerMail))
 			{
-				$this->Isotope->sendMail($this->iso_mail_customer, $customerMail, $GLOBALS['TL_LANGUAGE'], $arrData);
+				$strCustomerEmail = '';
+
+				if ($this->Isotope->Cart->billingAddress['email'] != '')
+				{
+					$strCustomerEmail = sprintf('%s %s <%s>', $this->Isotope->Cart->billingAddress['firstname'], $this->Isotope->Cart->billingAddress['lastname'], $this->Isotope->Cart->billingAddress['email']);
+				}
+				elseif ($this->Isotope->Cart->shippingAddress['email'] != '')
+				{
+					$strCustomerEmail = sprintf('%s %s <%s>', $this->Isotope->Cart->shippingAddress['firstname'], $this->Isotope->Cart->shippingAddress['lastname'], $this->Isotope->Cart->shippingAddress['email']);
+				}
+				elseif (FE_USER_LOGGED_IN && $this->User->email != '')
+				{
+					$strCustomerEmail = sprintf('%s %s <%s>', $this->User->firstname, $this->User->lastname, $this->User->email); 
+				}
+				
+				if ($strCustomerEmail != '')
+				{
+					$this->Isotope->sendMail($this->iso_mail_customer, $strCustomerEmail, $GLOBALS['TL_LANGUAGE'], $arrData);
+				}
 			}
 			else
 			{
 				$this->log('Unable to send customer confirmation for order ID '.$orderId, 'ModuleIsotopeCheckout writeOrder', TL_ERROR);
+			}
+			
+			if ($this->iso_mail_admin)
+			{
+				$strAdminEmail = $this->iso_sales_email ? $this->iso_sales_email : ($GLOBALS['TL_ADMIN_NAME'] != '' ? sprintf('%s <%s>', $GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']) : $GLOBALS['TL_ADMIN_EMAIL']);
+				
+				$this->Isotope->sendMail($this->iso_mail_admin, $strAdminEmail, $GLOBALS['TL_LANGUAGE'], $arrData, $strCustomerEmail);
 			}
 			
 			$objOrder = new IsotopeOrder();
