@@ -271,21 +271,23 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'search'				=> true,
 			'inputType'				=> 'textarea',
 			'eval'					=> array('mandatory'=>true, 'rte'=>'tinyMCE'),
-			'attributes'			=> array('legend'=>'general_legend', 'multilingual'=>true, 'use_rich_text_editor'=>true),
+			'attributes'			=> array('legend'=>'general_legend', 'multilingual'=>true),
 		),
 		'description_meta' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['description_meta'],
 			'search'				=> true,
 			'inputType'				=> 'textarea',
-			'attributes'			=> array('legend'=>'meta_legend', 'multilingual'=>true, 'maxlength'=>200),
+			'eval'					=> array('style'=>'height:60px'),
+			'attributes'			=> array('legend'=>'meta_legend', 'multilingual'=>true),
 		),
 		'keywords_meta' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['keywords_meta'],
 			'search'				=> true,
 			'inputType'				=> 'textarea',
-			'attributes'			=> array('legend'=>'meta_legend', 'multilingual'=>true, 'maxlength'=>200),
+			'eval'					=> array('style'=>'height:40px'),
+			'attributes'			=> array('legend'=>'meta_legend', 'multilingual'=>true),
 		),
 		'price' => array
 		(
