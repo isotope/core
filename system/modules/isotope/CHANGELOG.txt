@@ -44,6 +44,7 @@ Version 0.2.6 (2011-02-??)
 - Added label for toggle button in product tree
 - Improved: Check isDefaultBilling/isDefaultShipping on first checkout
 - Improved: Label for payment method is no longer mandatory (will use name if not set)
+- Improved: Made text fields for meta description & meta keywords smaller (Ticket #386)
 - Fixed ##newsletter.css## in HTML email
 - Fixed issue with simple tokens in mail template subject
 - Fixed issue with HTML in plain text emails
