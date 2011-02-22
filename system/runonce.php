@@ -405,6 +405,9 @@ class IsotopeRunonce extends Frontend
 		}
 
 		$this->Database->query("UPDATE tl_iso_orders SET date_shipped=date, status='processing' WHERE status='shipped'");
+		
+		// Fix for Ticket #383
+		$this->Database->query("UPDATE tl_iso_order_downloads SET downloads_remaining='' WHERE downloads_remaining='-1'");
 	}
 
 
