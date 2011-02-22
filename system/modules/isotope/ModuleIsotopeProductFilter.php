@@ -93,7 +93,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 				$arrFilters[] = array('html' => $this->generateFilterWidget($field, $data));
 		}
 
-		$arrOrderByOptions = $this->getOrderByOptions($this->getOrderByFields($arrEnabledOrderByFields));
+		$arrOrderByOptions = $this->getOrderByOptions($this->getOrderByFields($arrOrderByFields));
 
 		if($this->iso_enableSearch)
 		{
