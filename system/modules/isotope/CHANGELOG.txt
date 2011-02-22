@@ -5,6 +5,7 @@ Isotope eCommerce Changelog
 Version 0.2.6 (2011-02-??)
 ------------------------------
 - Added label for toggle button in product tree
+- Added missing 'enabled' label to tl_iso_shipping_options (Ticket #373)
 - Improved: Check isDefaultBilling/isDefaultShipping on first checkout
 - Improved: Label for payment method is no longer mandatory (will use name if not set)
 - Improved: Made text fields for meta description & meta keywords smaller (Ticket #386)
