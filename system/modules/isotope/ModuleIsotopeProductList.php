@@ -179,16 +179,15 @@ class ModuleIsotopeProductList extends ModuleIsotope
 
 			$this->perPage = ($this->Input->get('per_page') ? $this->Input->get('per_page') : $this->perPage);
 
-			$this->setFilterSQL($arrFilters);
-		}
+            if(!$this->Input->get('order_by'))
+            {
+                    if($this->iso_listingSortField)
+                    {
+                            $arrFilters['order_by' ] = ($this->iso_listingSortField.'-'.$this->iso_listingSortDirection);
+                    }
+            }
 
-		if($this->strOrderBySQL=='c.sorting')
-		{
-			if($this->iso_listingSortField)
-			{
-				$this->setFilterSQL(array('order_by' => ($this->iso_listingSortField.'-'.$this->iso_listingSortDirection)));
-			}
-		}
+            $this->setFilterSQL($arrFilters);
 	}
 
 
@@ -199,9 +198,10 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		$arrOrderByClauses = array();
 		$arrFilterChunks = array();
 		$arrOrderBySQLWithParentTable = array();
-
+		
 		foreach($arrFilters as $filter=>$value)
 		{
+			
 			if($value)
 			{
 				switch($filter)
@@ -209,46 +209,42 @@ class ModuleIsotopeProductList extends ModuleIsotope
 					case 'order_by':
 						$arrOrderByClauses[] = explode('-', $value);
 						break;
-
+						
 					case 'per_page':
 						//prepare per-page limit
 						$this->perPage = $value;
 						break;
-
+						
 					case 'page':
 						$this->currentPage = $value;
 						break;
-
+						
 					case 'for':
-						if ($value != $GLOBALS['TL_LANG']['MSC']['defaultSearchText'])
+						//prepare clause for text search. //!@todo:  need to add filter for each std. search field plus any additional user-defined.
+						$arrSearchFields = $this->getSearchFields();
+						
+						foreach($arrSearchFields as $field)
 						{
-							// prepare clause for text search.
-							// @todo  need to add filter for each std. search field plus any additional user-defined.
-							$arrSearchFields = $this->getSearchFields();
-	
-							foreach($arrSearchFields as $field)
-							{
-								$arrSearchClauses[] = $this->addFilter($value, $field, 'search');
-							}
+							$arrSearchClauses[] = $this->addFilter($value, $field, 'search');
 						}
 						break;
-
+						
 					default:
 						$arrFilterClauses[] = $this->addFilter($value, $filter, 'filter');
 						break;
 				}
 			}
 		}
-
+		
 		if(count($arrFilterClauses[0]))
-		{
+		{			
 			foreach($arrFilterClauses as $param)
 			{
 				$arrFilterChunks[] = $param['sql'];
 				$this->arrParams[] = $param['value'];
 			}
-		}
-
+		}	
+	
 		if(count($arrSearchClauses[0]))
 		{
 			foreach($arrSearchClauses as $param)
@@ -256,15 +252,15 @@ class ModuleIsotopeProductList extends ModuleIsotope
 				$arrSearchChunks[] = $param['sql'];
 				$this->arrParams[] = $param['value'];
 			}
-		}
-
+		}	
+		
 		if(count($arrOrderByClauses[0]))
 		{
 			foreach($arrOrderByClauses as $row)
 			{
 				$arrOrderBySQL[] = implode(" ", $row);
 			}
-
+			
 			foreach($arrOrderBySQL as $row)
 			{
 				if(strlen($row))
@@ -272,12 +268,16 @@ class ModuleIsotopeProductList extends ModuleIsotope
 					$arrOrderBySQLWithParentTable[] = "p." . $row;
 				}
 			}
-
+			
 			$this->strOrderBySQL = implode(', ', $arrOrderBySQLWithParentTable);
 		}
-
-		$this->strFilterSQL = (count($arrFilterChunks) ? implode(" AND ", $arrFilterChunks) : NULL);
-		$this->strSearchSQL = (count($arrSearchChunks) ? implode(" OR ", $arrSearchChunks) : NULL);
+		
+		if(count($arrFilterChunks))
+			$this->strFilterSQL = implode(" AND ", $arrFilterChunks);
+		
+		if(count($arrSearchChunks))
+			$this->strSearchSQL = implode(" OR ", $arrSearchChunks);
+		
 	}
 
 
