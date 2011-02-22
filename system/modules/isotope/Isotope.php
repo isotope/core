@@ -579,7 +579,7 @@ class Isotope extends Controller
 	 * @param array $arrData
 	 * @return void
 	 */
-	public function sendMail($intId, $strRecipient, $strLanguage, $arrData)
+	public function sendMail($intId, $strRecipient, $strLanguage, $arrData, $strReplyTo='')
 	{
 		$objMail = $this->Database->prepare("SELECT * FROM tl_iso_mail m LEFT OUTER JOIN tl_iso_mail_content c ON m.id=c.pid WHERE m.id=$intId AND (c.language='$strLanguage' OR fallback='1') ORDER BY language='$strLanguage' DESC")->limit(1)->execute();
 
@@ -591,83 +591,90 @@ class Isotope extends Controller
 
 		$arrPlainData = array_map('strip_tags', $arrData);
 
-		$objEmail = new Email();
-		$objEmail->from = ($objMail->originateFromCustomerEmail && strlen($arrData['customer_email'])) ? $arrData['customer_email'] : $objMail->sender;
-		$objEmail->fromName = ($objMail->originateFromCustomerEmail && strlen($arrData['customer_name'])) ? $arrData['customer_name'] : $objMail->senderName;
-		$objEmail->subject = $this->parseSimpleTokens($this->replaceInsertTags($objMail->subject), $arrPlainData);
-		$objEmail->text = $this->parseSimpleTokens($this->replaceInsertTags($objMail->text), $arrPlainData);
-
-		if (strlen($arrData['customer_email']))
+		try
 		{
-			$objEmail->replyTo((strlen($arrData['customer_name']) ? sprintf('%s <%s>', $arrData['customer_name'], $arrData['customer_email']) : $arrData['customer_email']));
-		}
+			$objEmail = new Email();
+			$objEmail->from = $objMail->sender;
+			$objEmail->fromName = $objMail->senderName;
+			$objEmail->subject = $this->parseSimpleTokens($this->replaceInsertTags($objMail->subject), $arrPlainData);
+			$objEmail->text = $this->parseSimpleTokens($this->replaceInsertTags($objMail->text), $arrPlainData);
 
-		$css = '';
-
-		// Add style sheet newsletter.css
-		if (!$objNewsletter->sendText && file_exists(TL_ROOT . '/newsletter.css'))
-		{
-			$buffer = file_get_contents(TL_ROOT . '/newsletter.css');
-			$buffer = preg_replace('@/\*\*.*\*/@Us', '', $buffer);
-
-			$css  = '<style type="text/css">' . "\n";
-			$css .= trim($buffer) . "\n";
-			$css .= '</style>' . "\n";
-			$arrData['head_css'] = $css;
-		}
-
-		// Add HTML content
-		if (!$objMail->textOnly && strlen($objMail->html))
-		{
-			// Get mail template
-			$objTemplate = new IsotopeTemplate((strlen($objMail->template) ? $objMail->template : 'mail_default'));
-
-			$objTemplate->body = $objMail->html;
-			$objTemplate->charset = $GLOBALS['TL_CONFIG']['characterSet'];
-			$objTemplate->css = '##head_css##';
-
-			// Prevent parseSimpleTokens from stripping important HTML tags
-			$GLOBALS['TL_CONFIG']['allowedTags'] .= '<doctype><html><head><meta><style><body>';
-			$strHtml = str_replace('<!DOCTYPE', '<DOCTYPE', $objTemplate->parse());
-			$strHtml = $this->parseSimpleTokens($this->replaceInsertTags($strHtml), $arrData);
-			$strHtml = str_replace('<DOCTYPE', '<!DOCTYPE', $strHtml);
-
-			// Parse template
-			$objEmail->html = $strHtml;
-			$objEmail->imageDir = TL_ROOT . '/';
-		}
-
-		if (strlen($objMail->cc))
-		{
-			$arrRecipients = trimsplit(',', $objMail->cc);
-			foreach( $arrRecipients as $recipient )
-			{
-				$objEmail->sendCc($recipient);
+			if ($strReplyTo != '')
+			{ 
+				$objEmail->replyTo($strReplyTo);
 			}
-		}
 
-		if (strlen($objMail->bcc))
-		{
-			$arrRecipients = trimsplit(',', $objMail->bcc);
-			foreach( $arrRecipients as $recipient )
+			$css = '';
+
+			// Add style sheet newsletter.css
+			if (!$objNewsletter->sendText && file_exists(TL_ROOT . '/newsletter.css'))
 			{
-				$objEmail->sendBcc($recipient);
+				$buffer = file_get_contents(TL_ROOT . '/newsletter.css');
+				$buffer = preg_replace('@/\*\*.*\*/@Us', '', $buffer);
+
+				$css  = '<style type="text/css">' . "\n";
+				$css .= trim($buffer) . "\n";
+				$css .= '</style>' . "\n";
+				$arrData['head_css'] = $css;
 			}
-		}
 
-		$attachments = deserialize($objMail->attachments);
-	   	if(is_array($attachments) && count($attachments) > 0)
-		{
-			foreach($attachments as $attachment)
+			// Add HTML content
+			if (!$objMail->textOnly && strlen($objMail->html))
 			{
-				if(file_exists(TL_ROOT . '/' . $attachment))
+				// Get mail template
+				$objTemplate = new IsotopeTemplate((strlen($objMail->template) ? $objMail->template : 'mail_default'));
+
+				$objTemplate->body = $objMail->html;
+				$objTemplate->charset = $GLOBALS['TL_CONFIG']['characterSet'];
+				$objTemplate->css = '##head_css##';
+
+				// Prevent parseSimpleTokens from stripping important HTML tags
+				$GLOBALS['TL_CONFIG']['allowedTags'] .= '<doctype><html><head><meta><style><body>';
+				$strHtml = str_replace('<!DOCTYPE', '<DOCTYPE', $objTemplate->parse());
+				$strHtml = $this->parseSimpleTokens($this->replaceInsertTags($strHtml), $arrData);
+				$strHtml = str_replace('<DOCTYPE', '<!DOCTYPE', $strHtml);
+
+				// Parse template
+				$objEmail->html = $strHtml;
+				$objEmail->imageDir = TL_ROOT . '/';
+			}
+
+			if (strlen($objMail->cc))
+			{
+				$arrRecipients = trimsplit(',', $objMail->cc);
+				foreach( $arrRecipients as $recipient )
 				{
-					$objEmail->attachFile(TL_ROOT . '/' . $attachment);
+					$objEmail->sendCc($recipient);
 				}
 			}
-		}
 
-		$objEmail->sendTo($strRecipient);
+			if (strlen($objMail->bcc))
+			{
+				$arrRecipients = trimsplit(',', $objMail->bcc);
+				foreach( $arrRecipients as $recipient )
+				{
+					$objEmail->sendBcc($recipient);
+				}
+			}
+
+			$attachments = deserialize($objMail->attachments);
+		   	if(is_array($attachments) && count($attachments) > 0)
+			{
+				foreach($attachments as $attachment)
+				{
+					if(file_exists(TL_ROOT . '/' . $attachment))
+					{
+						$objEmail->attachFile(TL_ROOT . '/' . $attachment);
+					}
+				}
+			}
+
+			$objEmail->sendTo($strRecipient);
+		}
+		catch( Exception $e )
+		{
+			$this->log('Isotope email error: ' . $e->getMessage(), __METHOD__, TL_ERROR);
+		}
 	}
 
 

@@ -915,18 +915,29 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		$objOrder->shipping_address	= $this->Isotope->Cart->shippingAddress;
 		$objOrder->currency			= $this->Isotope->Config->currency;
 
-		$objOrder->iso_sales_email		= $this->iso_sales_email ? $this->iso_sales_email : $GLOBALS['TL_ADMIN_EMAIL'];
-		$objOrder->iso_customer_email	= strlen($this->Isotope->Cart->billingAddress['email']) ? $this->Isotope->Cart->billingAddress['email'] : (strlen($this->Isotope->Cart->shippingAddress['email']) ? $this->Isotope->Cart->shippingAddress['email'] : (FE_USER_LOGGED_IN ? $this->User->email : ''));
+		$objOrder->iso_customer_email	= '';
+		$objOrder->iso_sales_email		= $this->iso_sales_email ? $this->iso_sales_email : ($GLOBALS['TL_ADMIN_NAME'] != '' ? sprintf('%s <%s>', $GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']) : $GLOBALS['TL_ADMIN_EMAIL']);		
 		$objOrder->iso_mail_admin		= $this->iso_mail_admin;
 		$objOrder->iso_mail_customer	= $this->iso_mail_customer;
 		$objOrder->iso_addToAddressbook	= $this->iso_addToAddressbook;
 		$objOrder->new_order_status		= ($this->Isotope->Cart->hasPayment ? $this->Isotope->Cart->Payment->new_order_status : 'pending');
 
+		if ($this->Isotope->Cart->billingAddress['email'] != '')
+		{
+			$objOrder->iso_customer_email = sprintf('%s %s <%s>', $this->Isotope->Cart->billingAddress['firstname'], $this->Isotope->Cart->billingAddress['lastname'], $this->Isotope->Cart->billingAddress['email']);
+		}
+		elseif ($this->Isotope->Cart->shippingAddress['email'] != '')
+		{
+			$objOrder->iso_customer_email = sprintf('%s %s <%s>', $this->Isotope->Cart->shippingAddress['firstname'], $this->Isotope->Cart->shippingAddress['lastname'], $this->Isotope->Cart->shippingAddress['email']);
+		}
+		elseif (FE_USER_LOGGED_IN && $this->User->email != '')
+		{
+			$objOrder->iso_customer_email = sprintf('%s %s <%s>', $this->User->firstname, $this->User->lastname, $this->User->email); 
+		}
+
 		$arrData = array_merge($this->arrOrderData, array
 		(
 			'order_id'					=> ($this->Isotope->Config->orderPrefix . $objOrder->id),
-			'customer_name'				=> ($this->Isotope->Cart->billingAddress['firstname'] . ' ' . $this->Isotope->Cart->billingAddress['lastname']),
-			'customer_email'			=> $customerMail,
 			'items'						=> $this->Isotope->Cart->items,
 			'products'					=> $this->Isotope->Cart->products,
 			'subTotal'					=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->subTotal, false),
