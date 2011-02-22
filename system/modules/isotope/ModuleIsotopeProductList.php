@@ -188,6 +188,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
             }
 
             $this->setFilterSQL($arrFilters);
+		}
 	}
 
 
