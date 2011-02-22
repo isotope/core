@@ -109,17 +109,14 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			}
 			
 			$this->perPage = ($this->Input->get('per_page') ? $this->Input->get('per_page') : $this->perPage);
-			
-			$this->setFilterSQL($arrFilters);
 		}
 
-		if($this->strOrderBySQL=='c.sorting')
+		if(!$arrFilters['order_by' ] && $this->iso_listingSortField)
 		{
-			if($this->iso_listingSortField)
-			{
-				$this->setFilterSQL(array('order_by' => ($this->iso_listingSortField.'-'.$this->iso_listingSortDirection)));
-		    }
+			$arrFilters['order_by' ] = ($this->iso_listingSortField.'-'.$this->iso_listingSortDirection);
 		}
+		
+		$this->setFilterSQL($arrFilters);
 		
 		// Determine category scope
 		$arrCategories = $this->findCategories($this->iso_category_scope);
@@ -267,9 +264,12 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			
 			$this->strOrderBySQL = implode(', ', $arrOrderBySQLWithParentTable);
 		}
-		
-		$this->strFilterSQL = (count($arrFilterChunks) ? implode(" AND ", $arrFilterChunks) : NULL);
-		$this->strSearchSQL = (count($arrSearchChunks) ? implode(" OR ", $arrSearchChunks) : NULL);
+
+		if (count($arrFilterChunks))
+			$this->strFilterSQL = implode(" AND ", $arrFilterChunks);
+
+		if(count($arrSearchChunks))
+			$this->strSearchSQL = implode(" OR ", $arrSearchChunks);
 	}
 	
 		
