@@ -4,7 +4,7 @@
 <form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>" method="post">
 <div class="formbody">
 <input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formSubmit; ?>" />
-<table cellpadding="0" cellspacing="0" summary="Shopping Cart">
+<table cellpadding="0" cellspacing="0" summary="<?php echo $this->summary; ?>">
 <tfoot>
 	<tr class="subtotal foot_first">
 		<td class="col_first">&nbsp;</td>

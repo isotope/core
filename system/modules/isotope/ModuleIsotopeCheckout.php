@@ -817,6 +817,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		
 		$objTemplate->headline = $GLOBALS['TL_LANG']['ISO']['order_review'];
 		$objTemplate->message = $GLOBALS['TL_LANG']['ISO']['order_review_message'];
+		$objTemplate->summary = $GLOBALS['ISO_LANG']['MSC']['cartSummary'];
 		
 		// Surcharges must be initialized before getProducts() to apply tax_id to each product
 		$arrSurcharges = array();

@@ -11,7 +11,7 @@
 </div>
 <?php endforeach; ?>
 <div class="clear">&nbsp;</div>
-<table cellpadding="0" cellspacing="0" summary="Shopping Cart">
+<table cellpadding="0" cellspacing="0" summary="<?php echo $this->summary; ?>">
 <tfoot>
 	<tr class="subtotal foot_first">
 		<td class="col_first">&nbsp;</td>

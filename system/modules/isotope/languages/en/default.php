@@ -61,6 +61,8 @@ $GLOBALS['TL_LANG']['ERR']['noAddressBookEntries']			= 'You have no address book
 /**
  * Miscellaneous
  */
+$GLOBALS['ISO_LANG']['MSC']['cartSummary']			= 'Shopping Cart Products';
+
 $GLOBALS['TL_LANG']['MSC']['labelLanguage']			= 'Language';
 $GLOBALS['TL_LANG']['MSC']['editLanguage']			= 'Edit';
 $GLOBALS['TL_LANG']['MSC']['deleteLanguage']		= 'Delete';

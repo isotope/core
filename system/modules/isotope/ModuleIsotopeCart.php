@@ -163,6 +163,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 		$objTemplate->formId = 'iso_cart_update';
 		$objTemplate->formSubmit = 'iso_cart_update';
 		$objTemplate->action = $this->Environment->request;
+		$objTemplate->summary = $GLOBALS['ISO_LANG']['MSC']['cartSummary'];
 		$objTemplate->products = $arrProductData;
 		$objTemplate->cartJumpTo = $this->iso_cart_jumpTo ? $this->generateFrontendUrl($this->Database->execute("SELECT * FROM tl_page WHERE id={$this->iso_cart_jumpTo}")->fetchAssoc()) : '';
 		$objTemplate->cartLabel = $GLOBALS['TL_LANG']['MSC']['cartBT'];
