@@ -56,7 +56,7 @@ class PaymentPayone extends IsotopePayment
 			&& (($this->input->post('mode') == 'test' && $this->debug) || ($this->input->post('mode') == 'live' && !$this->debug)))
 		{
 			$objOrder = new IsotopeOrder();
-			
+
 			if ($objOrder->findBy('order_id', $this->Input->post('reference')))
 			{
 				if ($this->Input->post('txaction') == 'paid'
@@ -64,17 +64,17 @@ class PaymentPayone extends IsotopePayment
 					&& $this->Input->post('balance') <= 0)
 				{
 					$objOrder->date_payed = time();
-					
+
 					if (ISO_VERSION > 0.2)
 					{
 						$objOrder->checkout();
 					}
-					
+
 					$objOrder->save();
 				}
 			}
 		}
-		
+
 		die('TSOK');
 	}
 
