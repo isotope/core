@@ -1,27 +1,30 @@
 <?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
 
 /**
- * TYPOlight Open Source CMS
+ * Contao Open Source CMS
  * Copyright (C) 2005-2010 Leo Feyer
+ *
+ * Formerly known as TYPOlight Open Source CMS.
  *
  * This program is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- *
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
+ * @copyright  2009-2011 Isotope eCommerce Workgroup
  * @author     Stefan Johannsen <stefan@reklamehuset.dk>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @version    $Id$
  */
 
 $GLOBALS['TL_LANG']['ERR']['systemColumn'] = 'Navnet "%s" er reserveret til systemet. Vælg venligst et andet navn.';
@@ -120,6 +123,7 @@ $GLOBALS['TL_LANG']['MSC']['checkoutBT'] = 'Gå til kassen';
 $GLOBALS['TL_LANG']['MSC']['continueShoppingBT'] = 'Køb mere';
 $GLOBALS['TL_LANG']['MSC']['updateCartBT'] = 'Opdater kurv';
 $GLOBALS['TL_LANG']['MSC']['orderStatusHeadline'] = 'Ordre status %s';
+$GLOBALS['TL_LANG']['MSC']['checkboutStepBack'] = 'Gå tilbage til "%s"';
 $GLOBALS['TL_LANG']['MSC']['createNewAddressLabel'] = 'Opret ny adresse';
 $GLOBALS['TL_LANG']['MSC']['useBillingAddress'] = 'Brug betalingsadresse';
 $GLOBALS['TL_LANG']['MSC']['useCustomerAddress'] = 'Brug kundeadresse';
@@ -127,6 +131,7 @@ $GLOBALS['TL_LANG']['MSC']['differentShippingAddress'] = 'Anden leveringsadresse
 $GLOBALS['TL_LANG']['MSC']['addressBookLabel'] = 'Adresse';
 $GLOBALS['TL_LANG']['MSC']['editAddressLabel'] = 'Rediger';
 $GLOBALS['TL_LANG']['MSC']['deleteAddressLabel'] = 'Slet';
+$GLOBALS['TL_LANG']['MSC']['deleteAddressConfirm'] = 'Ønsker du virkelig at slette denne adresse? Det kan ikke fortrydes!';
 $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] = 'Faktura';
 $GLOBALS['TL_LANG']['MSC']['iso_order_status'] = 'Status';
 $GLOBALS['TL_LANG']['MSC']['iso_order_date'] = 'Ordre dato';
@@ -137,6 +142,7 @@ $GLOBALS['TL_LANG']['MSC']['iso_subtotal_header'] = 'Subtotal';
 $GLOBALS['TL_LANG']['MSC']['iso_order_shipping_header'] = 'Salgs- og leveringsbetingelser';
 $GLOBALS['TL_LANG']['MSC']['iso_order_grand_total_header'] = 'Total';
 $GLOBALS['TL_LANG']['MSC']['iso_order_items'] = 'Emner';
+$GLOBALS['TL_LANG']['MSC']['iso_order_sku'] = 'SKU';
 $GLOBALS['TL_LANG']['MSC']['iso_quantity_header'] = 'Antal';
 $GLOBALS['TL_LANG']['MSC']['iso_price_header'] = 'Pris';
 $GLOBALS['TL_LANG']['MSC']['iso_sku_header'] = 'Varenummer';
@@ -153,6 +159,7 @@ $GLOBALS['TL_LANG']['MSC']['a_to_z'] = 'A til Z';
 $GLOBALS['TL_LANG']['MSC']['z_to_a'] = 'Z til A';
 $GLOBALS['TL_LANG']['MSC']['old_to_new'] = 'tidligere til senere';
 $GLOBALS['TL_LANG']['MSC']['new_to_old'] = 'senere til tidligere';
+$GLOBALS['ISO_LANG']['MSC']['useDefault'] = 'Brug standard værdi';
 $GLOBALS['TL_LANG']['ISO']['productSingle'] = '1 produkt';
 $GLOBALS['TL_LANG']['ISO']['productMultiple'] = '%s produkter';
 $GLOBALS['TL_LANG']['ISO']['shipping_address_message'] = 'Angiv en leveringsadresse eller vælg en bestående adresse.';
@@ -168,7 +175,7 @@ $GLOBALS['TL_LANG']['ISO']['order_review_message'] = 'Kontroller og godkend venl
 $GLOBALS['TL_LANG']['ISO']['checkout_address'] = 'Adresse';
 $GLOBALS['TL_LANG']['ISO']['checkout_shipping'] = 'Levering';
 $GLOBALS['TL_LANG']['ISO']['checkout_payment'] = 'Betaling';
-$GLOBALS['TL_LANG']['ISO']['checkout_review'] = 'Bedøm';
+$GLOBALS['TL_LANG']['ISO']['checkout_review'] = 'Godkend';
 $GLOBALS['TL_LANG']['ISO']['billing_address'] = 'Betalingsadresse';
 $GLOBALS['TL_LANG']['ISO']['shipping_address'] = 'Leveringsadresse';
 $GLOBALS['TL_LANG']['ISO']['billing_shipping_address'] = 'Betaling- og leveringsadresse';
@@ -176,12 +183,13 @@ $GLOBALS['TL_LANG']['ISO']['customer_address'] = 'Kundeadresse';
 $GLOBALS['TL_LANG']['ISO']['shipping_method'] = 'Leveringsmetode';
 $GLOBALS['TL_LANG']['ISO']['payment_method'] = 'Betalingsmetode';
 $GLOBALS['TL_LANG']['ISO']['order_conditions'] = 'Ordrebetingelser';
-$GLOBALS['TL_LANG']['ISO']['order_review'] = 'Ordrebedømmelse';
+$GLOBALS['TL_LANG']['ISO']['order_review'] = 'Godkend ordre';
 $GLOBALS['TL_LANG']['ISO']['changeCheckoutInfo'] = 'Rediger';
 $GLOBALS['TL_LANG']['ISO']['cc_num'] = 'Kreditkort nummer';
 $GLOBALS['TL_LANG']['ISO']['cc_type'] = 'Kreditkort type';
-$GLOBALS['TL_LANG']['ISO']['cc_ccv'] = 'Verificeringsnummer (3 eller 4 tal)';
-$GLOBALS['TL_LANG']['ISO']['cc_exp_paypal'] = 'Kredit kort udløbsdato (mm/åååå)';
+$GLOBALS['TL_LANG']['ISO']['cc_ccv'] = 'Kontrolcifre (3 eller 4 tal)';
+$GLOBALS['TL_LANG']['ISO']['cc_exp_paypal'] = 'Kreditkort udløbsdato (mm/åååå)';
+$GLOBALS['TL_LANG']['ISO']['cc_exp_date'] = 'Udløbs måned/år';
 $GLOBALS['TL_LANG']['ISO']['cc_exp_month'] = 'Udløbs måned';
 $GLOBALS['TL_LANG']['ISO']['cc_exp_year'] = 'Udløbs år';
 $GLOBALS['TL_LANG']['ISO']['cc_issue_number'] = 'Credit card issue number, 2 digits (required for Maestro and Solo cards).';

@@ -1,36 +1,40 @@
 <?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
 
 /**
- * TYPOlight Open Source CMS
+ * Contao Open Source CMS
  * Copyright (C) 2005-2010 Leo Feyer
+ *
+ * Formerly known as TYPOlight Open Source CMS.
  *
  * This program is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- *
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
+ * @copyright  2009-2011 Isotope eCommerce Workgroup
+ * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Rebecca Jutzi <rebecca.jutzi@bluewin.ch>
  * @author     Simon Moos <cc@simonmoos.com>
  * @author     Cyril Ponce <cyril@contao.fr>
  * @author     Stéphane Cagni <stephane@cagni.fr>
  * @author     Katelle Ave <contact@graphikat.net>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @version    $Id$
  */
 
 $GLOBALS['TL_LANG']['tl_module']['iso_list_layout'][0] = 'Modèle de liste de produits';
 $GLOBALS['TL_LANG']['tl_module']['iso_list_layout'][1] = 'Choisir une disposition la liste. Vous pouvez ajouter dispositions de liste personnalisées à <em> dossier templates </ em>. La liste des fichiers modèle commence par <em> iso_list_</ em> et nécessite l\'extension de fichie<em>. tpl </ em>.';
-$GLOBALS['TL_LANG']['tl_module']['iso_reader_layout'][0] = 'Modèle de la fiche produit';
+$GLOBALS['TL_LANG']['tl_module']['iso_reader_layout'][0] = 'Modèle de fiche produit';
 $GLOBALS['TL_LANG']['tl_module']['iso_reader_layout'][1] = 'Choisir un modèle de fiche. Vous pouvez ajouter des modèles personnalisés dans<em> dossier templates </ em>. Les modèles commencent par <em>iso_reader_ </ em> et nécessitent l\'extension de fichier<em>. tpl </ em>.';
 $GLOBALS['TL_LANG']['tl_module']['iso_reader_jumpTo'][0] = 'Aller à la page de la fiche produit';
 $GLOBALS['TL_LANG']['tl_module']['iso_reader_jumpTo'][1] = 'Ce paramètre définit la page à laquelle l\'utilisateur sera redirigé en cliquant un produit pour plus d\'infos.';

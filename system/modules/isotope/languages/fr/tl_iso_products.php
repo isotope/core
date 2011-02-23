@@ -1,31 +1,35 @@
 <?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
 
 /**
- * TYPOlight Open Source CMS
+ * Contao Open Source CMS
  * Copyright (C) 2005-2010 Leo Feyer
+ *
+ * Formerly known as TYPOlight Open Source CMS.
  *
  * This program is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- *
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
+ * @copyright  2009-2011 Isotope eCommerce Workgroup
+ * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Rebecca Jutzi <rebecca.jutzi@bluewin.ch>
  * @author     Simon Moos <cc@simonmoos.com>
  * @author     Cyril Ponce <cyril@contao.fr>
  * @author     Stéphane Cagni <stephane@cagni.fr>
  * @author     Katelle Ave <contact@graphikat.net>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @version    $Id$
  */
 
 $GLOBALS['TL_LANG']['tl_iso_products']['id'][0] = 'ID du produit';
@@ -107,6 +111,7 @@ $GLOBALS['TL_LANG']['tl_iso_products']['downloads'][0] = 'Téléchargements';
 $GLOBALS['TL_LANG']['tl_iso_products']['downloads'][1] = 'Éditer les téléchargements du produit ID %s';
 $GLOBALS['TL_LANG']['tl_iso_products']['prices'][0] = 'Gestion des prix';
 $GLOBALS['TL_LANG']['tl_iso_products']['prices'][1] = 'Gérer les prix du produit ID %s';
+$GLOBALS['TL_LANG']['tl_iso_products']['filter_cache'][0] = 'Reconstruire le cache du filtre';
 $GLOBALS['TL_LANG']['tl_iso_products']['general_legend'] = 'Paramètres généraux';
 $GLOBALS['TL_LANG']['tl_iso_products']['meta_legend'] = 'Méta informations';
 $GLOBALS['TL_LANG']['tl_iso_products']['pricing_legend'] = 'Paramètres du prix';

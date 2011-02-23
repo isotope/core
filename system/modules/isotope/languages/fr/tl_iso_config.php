@@ -1,31 +1,35 @@
 <?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
 
 /**
- * TYPOlight Open Source CMS
+ * Contao Open Source CMS
  * Copyright (C) 2005-2010 Leo Feyer
+ *
+ * Formerly known as TYPOlight Open Source CMS.
  *
  * This program is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- *
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
+ * @copyright  2009-2011 Isotope eCommerce Workgroup
+ * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Rebecca Jutzi <rebecca.jutzi@bluewin.ch>
  * @author     Simon Moos <cc@simonmoos.com>
  * @author     Cyril Ponce <cyril@contao.fr>
  * @author     Stéphane Cagni <stephane@cagni.fr>
  * @author     Katelle Ave <contact@graphikat.net>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @version    $Id$
  */
 
 $GLOBALS['TL_LANG']['tl_iso_config']['name'][0] = 'Nom de la configuration';
@@ -41,6 +45,8 @@ $GLOBALS['TL_LANG']['tl_iso_config']['priceRoundPrecision'][0] = 'Précision de 
 $GLOBALS['TL_LANG']['tl_iso_config']['priceRoundPrecision'][1] = 'Définir la précision de l\'arrondi. Une valeur entre 0 et 2 fonctionne correctement sur toutes les passerelles de paiement. Voir le manuel de PHP pour la fonction round().';
 $GLOBALS['TL_LANG']['tl_iso_config']['priceRoundIncrement'][0] = 'Augmentation de l\'arrondi';
 $GLOBALS['TL_LANG']['tl_iso_config']['priceRoundIncrement'][1] = 'Certaines monnaies (ex : francs suisses) ne prennent pas en charge la précision 0,01.';
+$GLOBALS['TL_LANG']['tl_iso_config']['cartMinSubtotal'][0] = 'Sous-total minimum';
+$GLOBALS['TL_LANG']['tl_iso_config']['cartMinSubtotal'][1] = 'Le sous-total minimum du panier requis lors d\'une commande. Saisir 0 pour désactiver.';
 $GLOBALS['TL_LANG']['tl_iso_config']['currency'][0] = 'Monnaie';
 $GLOBALS['TL_LANG']['tl_iso_config']['currency'][1] = 'Sélectionner une monnaie pour cette boutique.';
 $GLOBALS['TL_LANG']['tl_iso_config']['currencySymbol'][0] = 'Utiliser le symbole monnétaire';

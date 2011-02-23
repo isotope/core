@@ -1,31 +1,34 @@
 <?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
 
 /**
- * TYPOlight Open Source CMS
+ * Contao Open Source CMS
  * Copyright (C) 2005-2010 Leo Feyer
+ *
+ * Formerly known as TYPOlight Open Source CMS.
  *
  * This program is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- *
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
+ * @copyright  2009-2011 Isotope eCommerce Workgroup
  * @author     Rebecca Jutzi <rebecca.jutzi@bluewin.ch>
  * @author     Simon Moos <cc@simonmoos.com>
  * @author     Cyril Ponce <cyril@contao.fr>
  * @author     Stéphane Cagni <stephane@cagni.fr>
  * @author     Katelle Ave <contact@graphikat.net>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @version    $Id$
  */
 
 $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][0][0] = '##order_id##';
@@ -63,6 +66,6 @@ $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][15][1] = 'Champs individuels de l\'a
 $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][16][0] = '##shipping_firstname##<br />##shipping_lastname##<br />...';
 $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][16][1] = 'Champs individuels de l\'adresse de livraison.';
 $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][17][0] = '##form_...##';
-$GLOBALS['TL_LANG']['XPL']['isoMailTokens'][17][1] = 'Récupérer des données de formulaire. Utilisez le préfixe "form_» et le nom du champ.';
-$GLOBALS['TL_LANG']['XPL']['mediaManager'] = 'Pour télécharger une nouvelle image, sélectionnez le fichier et enregistrez le produit. Après le téléchargement, un aperçu de l\'image est affichée à côté de laquelle vous pouvez entrer le texte alternatif et une description. Pour plusieurs photos, vous pouvez cliquer sur les flèches à droite et changer leur ordre, l\'image du haut est utilisée comme image principale de chaque produit.';
+$GLOBALS['TL_LANG']['XPL']['isoMailTokens'][17][1] = 'Récupérer des données de formulaire. Utiliser le préfixe "form_» et le nom du champ.';
+$GLOBALS['TL_LANG']['XPL']['mediaManager'] = '<p class="tl_help_table">Pour télécharger une nouvelle image, sélectionner le fichier et sauvegarder le produit. Après le téléchargement, un aperçu de l\'image, un texte alternatif et une description sont affichés. Pour plusieurs photos,cliquer sur les flèches à droite pour changer leur ordre, l\'image du haut est utilisée comme image principale de chaque produit.</p>';
 

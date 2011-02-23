@@ -22,21 +22,18 @@
  *
  * PHP version 5
  * @copyright  2009-2011 Isotope eCommerce Workgroup
- * @author     Andreas Schempp <andreas@schempp.ch>
- * @author     Rebecca Jutzi <rebecca.jutzi@bluewin.ch>
- * @author     Simon Moos <cc@simonmoos.com>
- * @author     Cyril Ponce <cyril@contao.fr>
- * @author     Stéphane Cagni <stephane@cagni.fr>
- * @author     Katelle Ave <contact@graphikat.net>
+ * @author     Angelica Schempp <aschempp@gmx.net>
+ * @author     Paolo B. <paolob@contaocms.it>
+ * @author     Dan N <dan@dss.uniud.it>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  * @version    $Id$
  */
 
-$GLOBALS['TL_LANG']['tl_user_group']['iso_product_types'][0] = 'Types de produits';
-$GLOBALS['TL_LANG']['tl_user_group']['iso_product_types'][1] = 'Les utilisateurs de ce groupe peuvent seulement voir et modifier les produits et les types de produits activés.';
-$GLOBALS['TL_LANG']['tl_user_group']['iso_configs'][0] = 'Configurations de boutique';
-$GLOBALS['TL_LANG']['tl_user_group']['iso_configs'][1] = 'Les utilisateurs de ce groupe peuvent voir les commandes de ces configurations.';
-$GLOBALS['TL_LANG']['tl_user_group']['iso_modules'][0] = 'Modules Isotope';
-$GLOBALS['TL_LANG']['tl_user_group']['iso_modules'][1] = 'Sélectionner les modules dont les utilisateurs de ce groupe peuvent accéder.';
+$GLOBALS['TL_LANG']['tl_user_group']['iso_product_types'][0] = 'Tipi prodotto';
+$GLOBALS['TL_LANG']['tl_user_group']['iso_product_types'][1] = 'Gli utilizzatori possono visualizzare e modificare i prodotti abilitati.';
+$GLOBALS['TL_LANG']['tl_user_group']['iso_configs'][0] = 'Configurazioni negozio';
+$GLOBALS['TL_LANG']['tl_user_group']['iso_configs'][1] = 'Gli utilizzatori possono visualizzare gli ordini da queste configurazioni di negozio.';
+$GLOBALS['TL_LANG']['tl_user_group']['iso_modules'][0] = 'Moduli isotope';
+$GLOBALS['TL_LANG']['tl_user_group']['iso_modules'][1] = 'Selezioni quali moduli configurazione negozio sono disponibile per questo gruppo utente.';
 $GLOBALS['TL_LANG']['tl_user_group']['isotope_legend'] = 'Isotope eCommerce';
 

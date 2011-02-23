@@ -1,41 +1,45 @@
 <?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
 
 /**
- * TYPOlight Open Source CMS
+ * Contao Open Source CMS
  * Copyright (C) 2005-2010 Leo Feyer
+ *
+ * Formerly known as TYPOlight Open Source CMS.
  *
  * This program is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- *
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
+ * @copyright  2009-2011 Isotope eCommerce Workgroup
+ * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Rebecca Jutzi <rebecca.jutzi@bluewin.ch>
  * @author     Simon Moos <cc@simonmoos.com>
  * @author     Cyril Ponce <cyril@contao.fr>
  * @author     Stéphane Cagni <stephane@cagni.fr>
  * @author     Katelle Ave <contact@graphikat.net>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @version    $Id$
  */
 
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['type'][0] = 'Type de passerelle de paiement';
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['type'][1] = 'Sélectionnez une passerelle de paiement particulière (par exemple Authorize.net)';
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['type'][1] = 'Sélectionner une passerelle de paiement particulière (par exemple Authorize.net)';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['name'][0] = 'Nom du mode de paiement';
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['name'][1] = 'Entrez un nom pour ce mode de paiement. Il ne sera utilisé que dans le backend.';
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['name'][1] = 'Saisir un nom pour ce mode de paiement. Il ne sera utilisé que dans le back office.';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['label'][0] = 'Libellé du mode de paiement';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['label'][1] = 'Le libellé sera montré aux clients à la caisse.';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['note'][0] = 'Note relative au paiement';
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['note'][1] = 'Cette note peut être envoyée dans les mails de confirmation (# #  payment_note##).';
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['note'][1] = 'Cette note peut être envoyée dans les mails de confirmation (# #  payment_note# #).';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['price'][0] = 'Prix';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['tax_class'][0] = 'Taxe';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['new_order_status'][0] = 'Statut pour les nouvelles commandes';
@@ -43,17 +47,17 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['new_order_status'][1] = 'Choisir 
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['postsale_mail'][0] = 'Modèle de courriel  pour les changements de statut';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['postsale_mail'][1] = 'Sélectionnez un modèle de courriel pour avertir l\'administrateur de la boutique sur les changements d\'état de paiement.';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['minimum_total'][0] = 'Total minimum';
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['minimum_total'][1] = 'Entrez un nombre supérieur à zéro pour exclure ce mode de paiement pour les commandes de prix inférieur.';
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['minimum_total'][1] = 'Saisir un nombre supérieur à zéro pour exclure ce mode de paiement pour les commandes de prix inférieur.';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['maximum_total'][0] = 'Total maximum';
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['maximum_total'][1] = 'Entrez un nombre supérieur à zéro pour exclure ce mode de paiement pour les commandes de prix supérieur.';
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['maximum_total'][1] = 'Saisir un nombre supérieur à zéro pour exclure ce mode de paiement pour les commandes de prix supérieur.';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['countries'][0] = 'Pays autorisés';
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['countries'][1] = 'Sélectionnez les pays pour lesquels ce mode de paiement est accepté (adresse de facturation du client).';
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['countries'][1] = 'Sélectionner les pays pour lesquels ce mode de paiement est accepté (adresse de facturation du client).';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['shipping_modules'][0] = 'Modes de livraison';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['shipping_modules'][1] = 'Vous pouvez limiter ce mode de paiement à certains modes de livraison (par exemple, en espèces uniquement lors du ramassage).';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['product_types'][0] = 'Types de produit';
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['product_types'][1] = 'Vous pouvez limiter ce mode de paiement pour certains types de produits. Si le panier contient un type de produit vous n\'avez pas sélectionné, le module de paiement n\'est pas disponible.';
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['product_types'][1] = 'Limiter ce mode de paiement pour certains types de produits. Si le panier contient un type de produit vous n\'avez pas sélectionné, le module de paiement n\'est pas disponible.';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['trans_type'][0] = 'Type de transaction';
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['trans_type'][1] = 'Sélectionnez si vous voulez un encaissement immédiat ou d\'autoriser (et maintenez) en différé (par exemple lors de l\'expédition).';
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['trans_type'][1] = 'Sélectionner un encaissement immédiat ou autoriser (et maintenir) en différé (par exemple lors de l\'expédition).';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['paypal_account'][0] = 'Compte PayPal';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['paypal_account'][1] = 'Entrez votre nom d\'utilisateur paypal (adresse e-mail).';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_user'][0] = 'Paypal Payflow Pro username Paypal Payflow Pro';
@@ -63,23 +67,23 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_partner'][0] = 'Parten
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_password'][0] = 'Mot de passe api Paypal Payflow Pro';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_password'][1] = 'Une chaîne alphanumérique d\'environ 11 caractères.';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_transType'][0] = 'Type de transaction Paypal Payflow Pro';
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_transType'][1] = 'Sélectionnez un type de transaction';
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_transType'][1] = 'Sélectionner un type de transaction';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['epay_merchantnumber'][0] = 'Numéro de marchand';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['epay_merchantnumber'][1] = 'Le numéro de commerçant unique créé dans ePay. Ce numéro de commerçant se trouve dans votre contrat avec PBS.';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['epay_secretkey'][0] = 'Clé secrète';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['epay_secretkey'][1] = 'La clé secrète mise en place dans votre configuration ePay.';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['button'][0] = 'Bouton de commande';
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['button'][1] = 'Vous pouvez afficher un bouton personnalisé au lieu de celui par défaut.';
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['button'][1] = 'Afficher un bouton personnalisé au lieu de celui par défaut.';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['requireCCV'][0] = 'Code de vérification de la carte (cryptogramme)';
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['requireCCV'][1] = 'Choisissez cette option si vous souhaitez augmenter la sécurité des transactions en exigeant que le numéro de vérification de carte soit saisi.';
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['requireCCV'][1] = 'Choisir cette option pour augmenter la sécurité des transactions en exigeant que le numéro de vérification de carte soit saisi.';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['cybersource_merchant_id'][0] = 'Identifiant commerçant Cybersource';
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['cybersource_merchant_id'][1] = 'Entrez votre identifiant commerçant Cybersource ici';
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['cybersource_merchant_id'][1] = 'Saisir votre identifiant commerçant Cybersource ici';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['cybersource_trans_key'][0] = 'Clé de transaction Cybersource';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['cybersource_trans_key'][1] = 'Fournie lorsque vous avez terminé l\'inscription pour votre passerelle';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['cybersource_trans_type'][0] = 'Type de transaction Cybersource';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['allowed_cc_types'][0] = 'Cartes de crédit acceptés';
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['allowed_cc_types'][1] = 'Sélectionnez quelles cartes de crédits sont acceptées par le module.';
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['authorize_login'][0] = 'Login Authorize.net';
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['allowed_cc_types'][1] = 'Sélectionner quelles cartes de crédits sont acceptées par le module.';
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['authorize_login'][0] = 'Identifiant Authorize.net';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['authorize_login'][1] = 'Fourni quand vous avez complété votre inscription pour votre passerelle.';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['authorize_trans_key'][0] = 'Clé Authorize.net';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['authorize_trans_key'][1] = 'Fournie quand vous avez complété votre inscription pour votre passerelle.';

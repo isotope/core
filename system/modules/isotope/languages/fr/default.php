@@ -1,34 +1,38 @@
 <?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
 
 /**
- * TYPOlight Open Source CMS
+ * Contao Open Source CMS
  * Copyright (C) 2005-2010 Leo Feyer
+ *
+ * Formerly known as TYPOlight Open Source CMS.
  *
  * This program is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- *
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
+ * @copyright  2009-2011 Isotope eCommerce Workgroup
+ * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Rebecca Jutzi <rebecca.jutzi@bluewin.ch>
  * @author     Simon Moos <cc@simonmoos.com>
  * @author     Cyril Ponce <cyril@contao.fr>
  * @author     Stéphane Cagni <stephane@cagni.fr>
  * @author     Katelle Ave <contact@graphikat.net>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @version    $Id$
  */
 
-$GLOBALS['TL_LANG']['ERR']['systemColumn'] = 'Le nom `%s` que vous avez choisi, est réservé pour l\'administration du système. Choisissez un autre nom s.v.p.';
+$GLOBALS['TL_LANG']['ERR']['systemColumn'] = 'Le nom `%s` est réservé pour l\'administration du système. Merci de choisir un autre nom.';
 $GLOBALS['TL_LANG']['ERR']['missingButtonTemplate'] = 'Vous devez choisir un document de mise en page pour le bouton "%s".';
 $GLOBALS['TL_LANG']['ERR']['order_conditions'] = 'Vous devez accepter les termes et conditions avant de continuer.';
 $GLOBALS['TL_LANG']['ERR']['noStoreConfigurationSet'] = 'Il n\'existe pas de configuration pour cette boutique';
@@ -42,10 +46,10 @@ $GLOBALS['TL_LANG']['ERR']['searchNotEnabled'] = 'La fonction de recherche n\'es
 $GLOBALS['TL_LANG']['ERR']['isoLoginRequired'] = 'Vous devez être enregistré pour commander.';
 $GLOBALS['TL_LANG']['ERR']['mandatoryOption'] = 'Choisissez une option';
 $GLOBALS['TL_LANG']['ERR']['noAddressData'] = 'Votre adresse est nécessaire pour calculer les taxes !';
-$GLOBALS['TL_LANG']['ERR']['variantDuplicate'] = 'Il existe déjà une variante avec ces attributs. Choisissez une autre combinaison s.v.p.';
+$GLOBALS['TL_LANG']['ERR']['variantDuplicate'] = 'Il existe déjà une variante avec ces attributs. Merci de choisir une autre combinaison.';
 $GLOBALS['TL_LANG']['ERR']['breadcrumbEmpty'] = 'La catégorie filtrée est vide, tous les produits sont maintenant affichés.';
-$GLOBALS['TL_LANG']['ERR']['discount'] = 'Merci d\'entrer des nombres entiers ou décimaux avec + ou - et éventuellement avec un pourcentage.';
-$GLOBALS['TL_LANG']['ERR']['surcharge'] = 'Entrez des nombres entiers ou décimaux éventuellement avec un pourcentage.';
+$GLOBALS['TL_LANG']['ERR']['discount'] = 'Saisir des nombres entiers ou décimaux avec + ou - et éventuellement avec un pourcentage.';
+$GLOBALS['TL_LANG']['ERR']['surcharge'] = 'Saisir des nombres entiers ou décimaux éventuellement avec un pourcentage.';
 $GLOBALS['TL_LANG']['ERR']['orderFailed'] = 'Paiement échoué. Essayez encore une fois ou choisissez un autre mode de paiement';
 $GLOBALS['TL_LANG']['ERR']['specifyBillingAddress'] = 'Il n\'y a pas d\'adresse de facturation. Veuillez mentionner une adresse de facturation.';
 $GLOBALS['TL_LANG']['ERR']['cc_num'] = 'Veuillez mentionner le numéro valide de la carte de crédit';
@@ -55,6 +59,7 @@ $GLOBALS['TL_LANG']['ERR']['cc_ccv'] = 'Veuillez mentionner le numéro de vérif
 $GLOBALS['TL_LANG']['ERR']['cc_match'] = 'Votre numéro de carte de crédit ne correspond pas au type de carte de crédit sélectionné.';
 $GLOBALS['TL_LANG']['ERR']['addressDoesNotExist'] = 'Cette adresse n\'existe pas dans votre carnet d\'adresses.';
 $GLOBALS['TL_LANG']['ERR']['noAddressBookEntries'] = 'Il n\'y a pas d\'entrées dans votre carnet d\'adresses.';
+$GLOBALS['TL_LANG']['ERR']['cartMinSubtotal'] = 'Le montant minimum de commande est %s. Veuillez ajouter d\'autres produits avant de commander.';
 $GLOBALS['TL_LANG']['MSC']['labelLanguage'] = 'Langue';
 $GLOBALS['TL_LANG']['MSC']['editLanguage'] = 'Éditer';
 $GLOBALS['TL_LANG']['MSC']['deleteLanguage'] = 'Supprimer';
@@ -124,6 +129,7 @@ $GLOBALS['TL_LANG']['MSC']['checkoutBT'] = 'Commander';
 $GLOBALS['TL_LANG']['MSC']['continueShoppingBT'] = 'Continuez vos achats';
 $GLOBALS['TL_LANG']['MSC']['updateCartBT'] = 'Mettre le panier à jour';
 $GLOBALS['TL_LANG']['MSC']['orderStatusHeadline'] = 'Statut de commande: %s';
+$GLOBALS['TL_LANG']['MSC']['checkboutStepBack'] = 'Retourner à l\'étape "%s"';
 $GLOBALS['TL_LANG']['MSC']['createNewAddressLabel'] = 'Créer une nouvelle adresse';
 $GLOBALS['TL_LANG']['MSC']['useBillingAddress'] = 'Utiliser l\'adresse de paiement';
 $GLOBALS['TL_LANG']['MSC']['useCustomerAddress'] = 'Utiliser l\'adresse du client';
@@ -141,6 +147,7 @@ $GLOBALS['TL_LANG']['MSC']['iso_subtotal_header'] = 'Sous-total';
 $GLOBALS['TL_LANG']['MSC']['iso_order_shipping_header'] = 'Livraison et traitement';
 $GLOBALS['TL_LANG']['MSC']['iso_order_grand_total_header'] = 'Grand total';
 $GLOBALS['TL_LANG']['MSC']['iso_order_items'] = 'Articles';
+$GLOBALS['TL_LANG']['MSC']['iso_order_sku'] = 'Référence (SKU)';
 $GLOBALS['TL_LANG']['MSC']['iso_quantity_header'] = 'Quantité';
 $GLOBALS['TL_LANG']['MSC']['iso_price_header'] = 'Prix';
 $GLOBALS['TL_LANG']['MSC']['iso_sku_header'] = 'Réf.';
@@ -248,7 +255,9 @@ $GLOBALS['TL_LANG']['CCT']['laser'] = 'Laser';
 $GLOBALS['TL_LANG']['CCT']['carte_bleue'] = 'Carte Bleue';
 $GLOBALS['TL_LANG']['CCT']['carta_si'] = 'Carta Si';
 $GLOBALS['TL_LANG']['CCT']['enc_acct_num'] = 'Numéro de compte crypté';
+$GLOBALS['TL_LANG']['CCT']['uatp'] = 'Universal Air Travel Program';
 $GLOBALS['TL_LANG']['CCT']['maestro_intl'] = 'Maestro International';
+$GLOBALS['TL_LANG']['CCT']['ge_money_uk'] = 'GE Money UK';
 $GLOBALS['TL_LANG']['WGT']['mg'][0] = 'Milligramme (mg)';
 $GLOBALS['TL_LANG']['WGT']['mg'][1] = 'Unité de masse correspondant à un millième de gramme';
 $GLOBALS['TL_LANG']['WGT']['g'][0] = 'Gramme (g)';
@@ -270,9 +279,9 @@ $GLOBALS['TL_LANG']['WGT']['grain'][1] = '1/7000 d\'un livre, correspondant à 6
 $GLOBALS['TL_LANG']['ATTR']['text'][0] = 'Texte (jusqu\'à 255 caractères)';
 $GLOBALS['TL_LANG']['ATTR']['text'][1] = 'Un champ de saisie en ligne pour un texte court ou moyen.';
 $GLOBALS['TL_LANG']['ATTR']['textarea'][0] = 'Texte long (plus de 255 caractères)';
-$GLOBALS['TL_LANG']['ATTR']['textarea'][1] = 'Un champ de saisie multi-lignes pour un texte moyen ou long.';
+$GLOBALS['TL_LANG']['ATTR']['textarea'][1] = 'Un champ de saisie multiligne pour un texte moyen ou long.';
 $GLOBALS['TL_LANG']['ATTR']['select'][0] = 'Liste déroulante';
-$GLOBALS['TL_LANG']['ATTR']['select'][1] = 'Un menu déroulant simple ou multi-ligne. Ce type de champ est adapté pour les variantes de produits.';
+$GLOBALS['TL_LANG']['ATTR']['select'][1] = 'Un menu déroulant simple ou multiligne. Ce type de champ est adapté pour les variantes de produits.';
 $GLOBALS['TL_LANG']['ATTR']['radio'][0] = 'Bouton radio';
 $GLOBALS['TL_LANG']['ATTR']['radio'][1] = 'Une liste des multiples options d\'où chacune peut être sélectionnée.Ce type de champ est adapté pour les variantes de produits.';
 $GLOBALS['TL_LANG']['ATTR']['checkbox'][0] = 'Case à cocher';

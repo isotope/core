@@ -22,21 +22,18 @@
  *
  * PHP version 5
  * @copyright  2009-2011 Isotope eCommerce Workgroup
- * @author     Andreas Schempp <andreas@schempp.ch>
- * @author     Rebecca Jutzi <rebecca.jutzi@bluewin.ch>
- * @author     Simon Moos <cc@simonmoos.com>
- * @author     Cyril Ponce <cyril@contao.fr>
- * @author     Stéphane Cagni <stephane@cagni.fr>
- * @author     Katelle Ave <contact@graphikat.net>
+ * @author     Blair Winans <blair@winanscreative.com>
+ * @author     Angelica Schempp <aschempp@gmx.net>
+ * @author     Paolo B. <paolob@contaocms.it>
+ * @author     Dan N <dan@dss.uniud.it>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  * @version    $Id$
  */
 
-$GLOBALS['TL_LANG']['tl_user']['iso_product_types'][0] = 'Types de produits';
-$GLOBALS['TL_LANG']['tl_user']['iso_product_types'][1] = 'Les utilisateurs  peuvent seulement voir et modifier les produits et les types de produits activés.';
-$GLOBALS['TL_LANG']['tl_user']['iso_configs'][0] = 'Configurations de boutique';
-$GLOBALS['TL_LANG']['tl_user']['iso_configs'][1] = 'Les utilisateurs peuvent voir les commandes de ces configurations.';
-$GLOBALS['TL_LANG']['tl_user']['iso_modules'][0] = 'Modules Isotope';
-$GLOBALS['TL_LANG']['tl_user']['iso_modules'][1] = 'Sélectionner les modules dont cet utilisateur peut accéder.';
-$GLOBALS['TL_LANG']['tl_user']['isotope_legend'] = 'Isotope eCommerce';
+$GLOBALS['TL_LANG']['tl_iso_order_items']['product_name'][0] = 'Nome Prodotto';
+$GLOBALS['TL_LANG']['tl_iso_order_items']['status'][0] = 'Stato';
+$GLOBALS['TL_LANG']['tl_iso_order_items']['on_hold'] = 'In Attesa';
+$GLOBALS['TL_LANG']['tl_iso_order_items']['backordered'] = 'Ordine Arretrato';
+$GLOBALS['TL_LANG']['tl_iso_order_items']['general_legend'] = 'Informazioni Generali';
+$GLOBALS['TL_LANG']['tl_iso_order_items']['status_legend'] = 'Stato Prodotto';
 

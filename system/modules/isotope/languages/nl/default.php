@@ -1,27 +1,30 @@
 <?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
 
 /**
- * TYPOlight Open Source CMS
+ * Contao Open Source CMS
  * Copyright (C) 2005-2010 Leo Feyer
+ *
+ * Formerly known as TYPOlight Open Source CMS.
  *
  * This program is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- *
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
+ * @copyright  2009-2011 Isotope eCommerce Workgroup
  * @author     Paul Kegel <paul@artified.nl>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @version    $Id$
  */
 
 $GLOBALS['TL_LANG']['ERR']['systemColumn'] = '\'%s\' is gereserveerd voor gebruik in het systeem. Kies alstublieft een andere naam.';
@@ -79,7 +82,7 @@ $GLOBALS['TL_LANG']['MSC']['searchTextBoxLabel'] = 'Zoekterm:';
 $GLOBALS['TL_LANG']['MSC']['searchFieldsLabel'] = 'Zoekvelden:';
 $GLOBALS['TL_LANG']['MSC']['perPageLabel'] = 'Producten per pagina';
 $GLOBALS['TL_LANG']['MSC']['searchTermsLabel'] = 'Keywords';
-$GLOBALS['TL_LANG']['MSC']['submitLabel'] = 'filter';
+$GLOBALS['TL_LANG']['MSC']['submitLabel'] = 'Filter';
 $GLOBALS['TL_LANG']['MSC']['clearFiltersLabel'] = 'Leeg filter';
 $GLOBALS['TL_LANG']['MSC']['buttonLabel']['update'] = 'Verversen';
 $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'] = 'In Winkelwagen';
@@ -135,18 +138,19 @@ $GLOBALS['TL_LANG']['MSC']['iso_order_status'] = 'Status';
 $GLOBALS['TL_LANG']['MSC']['iso_order_date'] = 'Bestel datum';
 $GLOBALS['TL_LANG']['MSC']['iso_billing_address_header'] = 'Factuur adres';
 $GLOBALS['TL_LANG']['MSC']['iso_shipping_address_header'] = 'Aflever adres';
-$GLOBALS['TL_LANG']['MSC']['iso_tax_header'] = 'belasting';
+$GLOBALS['TL_LANG']['MSC']['iso_tax_header'] = 'Belasting';
 $GLOBALS['TL_LANG']['MSC']['iso_subtotal_header'] = 'subtotaal';
 $GLOBALS['TL_LANG']['MSC']['iso_order_shipping_header'] = 'Verzend & administratie';
 $GLOBALS['TL_LANG']['MSC']['iso_order_grand_total_header'] = 'Totaal';
 $GLOBALS['TL_LANG']['MSC']['iso_order_items'] = 'Artikelen';
+$GLOBALS['TL_LANG']['MSC']['iso_order_sku'] = 'Voorraad eenheid';
 $GLOBALS['TL_LANG']['MSC']['iso_quantity_header'] = 'Aantal';
 $GLOBALS['TL_LANG']['MSC']['iso_price_header'] = 'Prijs';
 $GLOBALS['TL_LANG']['MSC']['iso_sku_header'] = 'Artikelnr.';
 $GLOBALS['TL_LANG']['MSC']['iso_product_name_header'] = 'Productnaam';
 $GLOBALS['TL_LANG']['MSC']['iso_card_name_title'] = 'Naam op creditcard';
-$GLOBALS['TL_LANG']['ORDER']['pending'] = 'in behandeling';
-$GLOBALS['TL_LANG']['ORDER']['processing'] = 'wordt verwerkt';
+$GLOBALS['TL_LANG']['ORDER']['pending'] = 'In behandeling';
+$GLOBALS['TL_LANG']['ORDER']['processing'] = 'Wordt verwerkt';
 $GLOBALS['TL_LANG']['ORDER']['complete'] = 'Afgehandeld';
 $GLOBALS['TL_LANG']['ORDER']['on_hold'] = 'Wachtend';
 $GLOBALS['TL_LANG']['ORDER']['cancelled'] = 'Geanuleerd';
@@ -225,7 +229,7 @@ $GLOBALS['TL_LANG']['PAY']['cybersource'][0] = 'Cybersource';
 $GLOBALS['TL_LANG']['PAY']['cybersource'][1] = 'Voor Cybersource gebruikers. Gebruikt de "Simple Order API" methode.';
 $GLOBALS['TL_LANG']['GAL']['default'][0] = 'Default gallery (Lightbox/Mediabox)';
 $GLOBALS['TL_LANG']['GAL']['default'][1] = '<p>Gebruikt lightbox/mediabox voor volledige afbeeldingen. Zorg dat de juiste moo_ template in de page layout aanwezig is.</p><p>U kunt een "rel" attribuut opgeven om naar een target te linking door gebruik van een pipe (bv. "tl_files/video.mov|lightbox[400 300]"). Indien geen "rel" attribuut is gegeven wordt de link in een nieuw venster vertoond.</p>';
-$GLOBALS['TL_LANG']['GAL']['inline'][0] = 'inline foto album';
+$GLOBALS['TL_LANG']['GAL']['inline'][0] = 'Inline foto album';
 $GLOBALS['TL_LANG']['GAL']['inline'][1] = '<p>klikken op de album afbeelding opent het album in plaats van de hoofd-afbeelding. De hoofd afbeelding moet twee keer geüpload worden om in het album beschikbaar te komen.</p>';
 $GLOBALS['TL_LANG']['ISO_PRODUCT']['regular'][0] = 'Standaard product';
 $GLOBALS['TL_LANG']['ISO_PRODUCT']['regular'][1] = 'Een standaard product. Selecteer dit als niets anders van toepassing is.';
@@ -268,9 +272,9 @@ $GLOBALS['TL_LANG']['WGT']['st'][0] = 'Stone (st)';
 $GLOBALS['TL_LANG']['WGT']['st'][1] = 'Een Britse massa aanduiding, gelijk aan 14 pounds.';
 $GLOBALS['TL_LANG']['WGT']['grain'][0] = 'Grain';
 $GLOBALS['TL_LANG']['WGT']['grain'][1] = '1/7000 pound; ook wel een "troy grain" of 64,799 milligram.';
-$GLOBALS['TL_LANG']['ATTR']['text'][0] = 'tekst veld';
+$GLOBALS['TL_LANG']['ATTR']['text'][0] = 'Tekst veld';
 $GLOBALS['TL_LANG']['ATTR']['text'][1] = 'Een invoerveld van één regel voor korte tot middellange tekst.';
-$GLOBALS['TL_LANG']['ATTR']['textarea'][0] = 'tekst blok';
+$GLOBALS['TL_LANG']['ATTR']['textarea'][0] = 'Tekst blok';
 $GLOBALS['TL_LANG']['ATTR']['textarea'][1] = 'Een invoerveld van meerdere regels voor midellange tot lange tekst.';
 $GLOBALS['TL_LANG']['ATTR']['select'][0] = 'Selectie menu';
 $GLOBALS['TL_LANG']['ATTR']['select'][1] = 'Een één- of meer-regelig drop-down menu.<br /><i>Dit veld is geschikt voor product varianten.</i>';
