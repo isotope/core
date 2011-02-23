@@ -29,7 +29,17 @@
 class ModuleIsotopeOrderDetails extends ModuleIsotope
 {
 
+	/**
+	 * Template
+	 * @var string
+	 */
 	protected $strTemplate = 'mod_iso_orderdetails';
+	
+	/**
+	 * Disable caching of the frontend page if this module is in use.
+	 * @var bool
+	 */
+	protected $blnDisableCache = true;
 	
 	
 	public function generate($blnBackend=false)

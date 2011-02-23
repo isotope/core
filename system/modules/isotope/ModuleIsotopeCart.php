@@ -34,6 +34,12 @@ class ModuleIsotopeCart extends ModuleIsotope
 	 * @var string
 	 */
 	protected $strTemplate = 'mod_iso_cart';
+	
+	/**
+	 * Disable caching of the frontend page if this module is in use.
+	 * @var bool
+	 */
+	protected $blnDisableCache = true;
 
 		
 	/**

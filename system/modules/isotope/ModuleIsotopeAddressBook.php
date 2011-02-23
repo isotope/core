@@ -36,6 +36,12 @@ class ModuleIsotopeAddressBook extends Module
 	protected $strTemplate = 'mod_iso_addressbook';
 	
 	/**
+	 * Disable caching of the frontend page if this module is in use.
+	 * @var bool
+	 */
+	protected $blnDisableCache = true;
+	
+	/**
 	 * Editable fields
 	 * @var array
 	 */
