@@ -36,6 +36,12 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	protected $strTemplate = 'mod_iso_checkout';
 
 	/**
+	 * Disable caching of the frontend page if this module is in use.
+	 * @var bool
+	 */
+	protected $blnDisableCache = true;
+
+	/**
 	 * Current step
 	 * @var string
 	 */

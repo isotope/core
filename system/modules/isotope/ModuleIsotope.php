@@ -35,6 +35,13 @@ abstract class ModuleIsotope extends Module
 	 */
 	protected $Isotope;
 
+	/**
+	 * Disable caching of the frontend page if this module is in use.
+	 * Usefule to enable in a child classes.
+	 * @var bool
+	 */
+	protected $blnDisableCache = false;
+
 
 	public function __construct(Database_Result $objModule, $strColumn='main')
 	{
@@ -58,6 +65,13 @@ abstract class ModuleIsotope extends Module
 			{
 				$this->loadDataContainer('tl_iso_products');
 				$this->loadLanguageFile('tl_iso_products');
+			}
+			
+			// Disable caching for pages with certain modules (eg. Cart)
+			if ($this->blnDisableCache)
+			{
+				global $objPage;
+				$objPage->cache = 0;
 			}
 		}
 	}
