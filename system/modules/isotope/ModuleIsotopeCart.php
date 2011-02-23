@@ -166,6 +166,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 		$objTemplate->minSubtotalError = sprintf($GLOBALS['TL_LANG']['ERR']['cartMinSubtotal'], $this->Isotope->formatPriceWithCurrency($this->Isotope->Config->cartMinSubtotal));
 		$objTemplate->formId = 'iso_cart_update';
 		$objTemplate->formSubmit = 'iso_cart_update';
+		$objTemplate->summary = $GLOBALS['ISO_LANG']['MSC']['cartSummary'];
 		$objTemplate->action = $this->Environment->request;
 		$objTemplate->products = $arrProductData;
 		$objTemplate->cartJumpTo = $this->iso_cart_jumpTo ? $this->generateFrontendUrl($this->Database->execute("SELECT * FROM tl_page WHERE id={$this->iso_cart_jumpTo}")->fetchAssoc()) : '';

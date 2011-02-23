@@ -60,6 +60,7 @@ Version 0.2.6 (2011-02-??)
 - Fixed: Address was not added to address book correctly
 - Fixed: Downloads in PDF invoice caused fatal error
 - Fixed: Product filter searched for field default value (Ticket #377)
+- Fixed: Moved cart & checkout table summary to language file (Ticket #338)
 
 Version 0.2.5 (2011-02-01)
 ------------------------------

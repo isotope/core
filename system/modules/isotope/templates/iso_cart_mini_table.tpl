@@ -1,7 +1,7 @@
 
 <div class="cart_mini_table">
 
-<table class="productWrapper">
+<table class="productWrapper" summary="<?php echo $this->summary; ?>">
 	<tfoot>
 		<tr class="subtotal">
 			<td colspan="2"><?php echo $this->subTotalLabel; ?></td>
