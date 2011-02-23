@@ -600,7 +600,7 @@ class Isotope extends Controller
 			$objEmail->text = $this->parseSimpleTokens($this->replaceInsertTags($objMail->text), $arrPlainData);
 
 			if ($strReplyTo != '')
-			{ 
+			{
 				$objEmail->replyTo($strReplyTo);
 			}
 

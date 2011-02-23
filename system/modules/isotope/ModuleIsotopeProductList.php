@@ -222,7 +222,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 							// prepare clause for text search.
 							// @todo  need to add filter for each std. search field plus any additional user-defined.
 							$arrSearchFields = $this->getSearchFields();
-	
+
 							foreach($arrSearchFields as $field)
 							{
 								$arrSearchClauses[] = $this->addFilter($value, $field, 'search');

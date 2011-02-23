@@ -827,12 +827,12 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				}
 			}
 		}
-		
+
 		$objTemplate = new IsotopeTemplate('iso_checkout_order_conditions');
 		$objTemplate->attributes = $strAttributes;
 		$objTemplate->hidden = $strHidden;
 		$objTemplate->fields = $strFields;
-		
+
 		return $objTemplate->parse();
 	}
 
@@ -923,7 +923,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		$objOrder->currency			= $this->Isotope->Config->currency;
 
 		$objOrder->iso_customer_email	= '';
-		$objOrder->iso_sales_email		= $this->iso_sales_email ? $this->iso_sales_email : ($GLOBALS['TL_ADMIN_NAME'] != '' ? sprintf('%s <%s>', $GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']) : $GLOBALS['TL_ADMIN_EMAIL']);		
+		$objOrder->iso_sales_email		= $this->iso_sales_email ? $this->iso_sales_email : ($GLOBALS['TL_ADMIN_NAME'] != '' ? sprintf('%s <%s>', $GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']) : $GLOBALS['TL_ADMIN_EMAIL']);
 		$objOrder->iso_mail_admin		= $this->iso_mail_admin;
 		$objOrder->iso_mail_customer	= $this->iso_mail_customer;
 		$objOrder->iso_addToAddressbook	= $this->iso_addToAddressbook;
@@ -939,7 +939,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		}
 		elseif (FE_USER_LOGGED_IN && $this->User->email != '')
 		{
-			$objOrder->iso_customer_email = sprintf('%s %s <%s>', $this->User->firstname, $this->User->lastname, $this->User->email); 
+			$objOrder->iso_customer_email = sprintf('%s %s <%s>', $this->User->firstname, $this->User->lastname, $this->User->email);
 		}
 
 		$arrData = array_merge($this->arrOrderData, array
@@ -1150,13 +1150,13 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			{
 				$arrData['eval']['conditionField'] = $strAddressType . '_' . $arrData['eval']['conditionField'];
 			}
-			
+
 			// Special fields "isDefaultBilling" & "isDefaultShipping"
 			elseif (($field['value'] == 'isDefaultBilling' && $strAddressType == 'billing_address' && $intOptions < 2) || ($field['value'] == 'isDefaultShipping' && $strAddressType == 'shippping_address' && $intOptions < 3))
 			{
 				$arrDefault[$field['value']] = '1';
 			}
-			
+
 			$i = count($arrBuffer);
 
 			$objWidget = new $strClass($this->prepareForWidget($arrData, $strAddressType . '_' . $field['value'], (strlen($_SESSION['CHECKOUT_DATA'][$strAddressType][$field['value']]) ? $_SESSION['CHECKOUT_DATA'][$strAddressType][$field['value']] : $arrDefault[$field['value']])));

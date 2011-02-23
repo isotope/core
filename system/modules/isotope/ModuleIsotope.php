@@ -66,7 +66,7 @@ abstract class ModuleIsotope extends Module
 				$this->loadDataContainer('tl_iso_products');
 				$this->loadLanguageFile('tl_iso_products');
 			}
-			
+
 			// Disable caching for pages with certain modules (eg. Cart)
 			if ($this->blnDisableCache)
 			{
