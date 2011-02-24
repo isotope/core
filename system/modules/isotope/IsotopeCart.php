@@ -220,13 +220,6 @@ class IsotopeCart extends IsotopeProductCollection
 				'tstamp'		=> time(),
 				'store_id'		=> $intStore,
 			));
-
-/*
-			if (!$this->findBy('id', $this->save(true)))
-			{
-				throw new Exception('Unable to create shopping cart');
-			}
-*/
 		}
 
 		// Temporary cart available, move to this cart. Must be after creating a new cart!

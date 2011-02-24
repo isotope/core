@@ -168,11 +168,11 @@ abstract class IsotopeProductCollection extends Model
 					break;
 
 				case 'items':
-					$this->arrCache[$strKey] = $this->Database->execute("SELECT SUM(product_quantity) AS items FROM {$this->ctable} i LEFT OUTER JOIN {$this->strTable} c ON i.pid=c.id WHERE i.pid={$this->id}")->items;
+					$this->arrCache[$strKey] = $this->Database->execute("SELECT SUM(product_quantity) AS items FROM {$this->ctable} WHERE pid={$this->id}")->items;
 					break;
 
 				case 'products':
-					$this->arrCache[$strKey] = $this->Database->execute("SELECT COUNT(*) AS items FROM {$this->ctable} i LEFT OUTER JOIN {$this->strTable} c ON i.pid=c.id WHERE i.pid={$this->id}")->items;
+					$this->arrCache[$strKey] = $this->Database->execute("SELECT COUNT(*) AS items FROM {$this->ctable} WHERE pid={$this->id}")->items;
 					break;
 
 				case 'subTotal':
@@ -475,6 +475,12 @@ abstract class IsotopeProductCollection extends Model
 			return false;
 
 		$this->blnModified = true;
+		
+		// Make sure collection is in DB before adding product
+		if (!$this->id)
+		{
+			$this->save();
+		}
 
 		$objItem = $this->Database->prepare("SELECT * FROM {$this->ctable} WHERE pid={$this->id} AND product_id={$objProduct->id} AND product_options='".serialize($objProduct->getOptions(true))."'")->limit(1)->execute();
 
