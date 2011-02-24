@@ -529,9 +529,9 @@ class IsotopeOrder extends IsotopeProductCollection
 
 			foreach( array('billing', 'shipping') as $address )
 			{
-				$arrData = deserialize($this->arrData[$address.'_address']);
+				$arrData = deserialize($this->arrData[$address.'_address'], true);
 
-				if ($arrData[$address.'_id'] == 0)
+				if ($arrData['id'] == 0)
 				{
 					$arrAddress = array_intersect_key($arrData, array_flip($this->Isotope->Config->{$address.'_fields_raw'}));
 					$arrAddress['pid'] = $this->pid;
