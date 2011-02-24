@@ -204,8 +204,8 @@ class PaymentPaypal extends IsotopePayment
 		$objOrder = $this->Database->prepare("SELECT order_id FROM tl_iso_orders WHERE cart_id=?")->execute($this->Isotope->Cart->id);
 
 		$strBuffer = '
-<h2>' . $GLOBALS['TL_LANG']['ISO']['pay_with_paypal'][0] . '</h2>
-<p class="message">' . $GLOBALS['TL_LANG']['ISO']['pay_with_paypal'][1] . '</p>
+<h2>' . $GLOBALS['TL_LANG']['ISO']['pay_with_redirect'][0] . '</h2>
+<p class="message">' . $GLOBALS['TL_LANG']['ISO']['pay_with_redirect'][1] . '</p>
 <form id="payment_form" action="https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr" method="post">
 <input type="hidden" name="cmd" value="_cart">
 <input type="hidden" name="upload" value="1">
@@ -270,7 +270,7 @@ class PaymentPaypal extends IsotopePayment
 
 <input type="hidden" name="notify_url" value="' . $this->Environment->base . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id . '">
 <input type="hidden" name="bn" value="PP-BuyNowBF:btn_paynowCC_LG.gif:NonHosted">
-<input type="' . (strlen($this->button) ? 'image" src="'.$this->button.'" border="0"' : 'submit" value="'.specialchars($GLOBALS['TL_LANG']['ISO']['pay_with_paypal'][2]).'"') . ' alt="PayPal - The safer, easier way to pay online!">
+<input type="' . (strlen($this->button) ? 'image" src="'.$this->button.'" border="0"' : 'submit" value="'.specialchars($GLOBALS['TL_LANG']['ISO']['pay_with_redirect'][2]).'"') . ' alt="PayPal - The safer, easier way to pay online!">
 </form>
 
 <script type="text/javascript">

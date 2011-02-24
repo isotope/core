@@ -107,8 +107,8 @@ class PaymentEPay extends IsotopePayment
 		$intTotal = round($this->Isotope->Cart->grandTotal, 2) * 100;
 
 		return '
-<h2>' . $GLOBALS['TL_LANG']['MSC']['pay_with_epay'][0] . '</h2>
-<p class="message">' . $GLOBALS['TL_LANG']['MSC']['pay_with_epay'][1] . '</p>
+<h2>' . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0] . '</h2>
+<p class="message">' . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1] . '</p>
 <form id="payment_form" action="https://ssl.ditonlinebetalingssystem.dk/popup/default.asp" method="post">
 
 <input type="hidden" name="language" value="' . (array_key_exists($GLOBALS['TL_LANGUAGE'], $this->arrLanguages) ? $this->arrLanguages[$GLOBALS['TL_LANGUAGE']] : 2) . '">
@@ -127,7 +127,7 @@ class PaymentEPay extends IsotopePayment
 <input type="hidden" name="windowstate" value="2">
 <input type="hidden" name="use3D" value="1">
 
-<input type="submit" class="submit button" value="' . $GLOBALS['TL_LANG']['MSC']['pay_with_epay'][2] . '" />
+<input type="submit" class="submit button" value="' . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2] . '" />
 
 </form>
 <script type="text/javascript">

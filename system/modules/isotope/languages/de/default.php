@@ -212,7 +212,12 @@ $GLOBALS['TL_LANG']['ISO']['cc_ccv']                    = 'CVC-Nummer (3- od. 4-
 $GLOBALS['TL_LANG']['ISO']['cc_exp_paypal']             = 'Kreditkarten-Ablaufdatum (mm/yyyy)';
 $GLOBALS['TL_LANG']['ISO']['cc_issue_number']           = 'Kreditkarten-Ausgabenummer, 2-stellig (erforderlich für Maestro- und Solo-Karten).';
 $GLOBALS['TL_LANG']['ISO']['cc_start_date']             = 'Kreditkarten-Ausstelldatum (erforderlich für Maestro- und Solo-Karten).';
-$GLOBALS['TL_LANG']['ISO']['pay_with_paypal']           = array('Mit PayPal bezahlen', 'Sie werden nun automatisch zur PayPal Webseite weitergeleitet. Falls Sie nicht weitergeleitet werden, klicken Sie bitte auf "Jetzt bezahlen".', 'Jetzt bezahlen');
+$GLOBALS['TL_LANG']['MSC']['pay_with_cc'][0]			= 'Zahlung ausführen';
+$GLOBALS['TL_LANG']['MSC']['pay_with_cc'][1]			= 'Bitte geben Sie die benötigten Informationen ein.';
+$GLOBALS['TL_LANG']['MSC']['pay_with_cc'][2]			= 'Bezahlen';
+$GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0]		= 'Zahlung ausführen';
+$GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1]		= 'Sie werden nun zum Zahlunganbieter weitergeleitet. Falls die Weiterleitung nicht automatisch funktioniert, klicken Sie auf "Bezahlen".';
+$GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]		= 'Bezahlen';
 
 
 /**
