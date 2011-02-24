@@ -184,7 +184,7 @@ class AttributeWizard extends Widget
 		
 		foreach ($this->arrOptions as $i=>$arrOptionGroup)
 		{
-			$id = 'cbc_' . $this->strId . '_' . standardize($i);
+			$id = 'cbc_' . $this->strId . '_' . standardize($i, true);
 
 			$img = 'folPlus';
 			$display = 'none';

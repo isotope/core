@@ -198,7 +198,7 @@ class IsotopePOS extends Backend
 		
 		// Close and output PDF document
 		$pdf->lastPage();
-		$pdf->Output(standardize(ampersand($strInvoiceTitle, false)) . '.pdf', 'D');
+		$pdf->Output(standardize(ampersand($strInvoiceTitle, false), true) . '.pdf', 'D');
 		$this->Isotope->resetConfig(true); 	//Set store back to default.
 		
 		ob_end_clean();
@@ -291,7 +291,7 @@ class IsotopePOS extends Backend
 
 		// Close and output PDF document
 		$pdf->lastPage();
-		$pdf->Output(standardize(ampersand($strInvoiceTitle, false)) . '.pdf', 'D');
+		$pdf->Output(standardize(ampersand($strInvoiceTitle, false), true) . '.pdf', 'D');
 		
 		$this->Isotope->resetConfig(true); 	//Set store back to default.
 		
@@ -792,7 +792,7 @@ class IsotopePOS extends Backend
 							break;
 					}
 			
-					$arrResponse[strtolower(standardize($ftitle))] = $fval;
+					$arrResponse[strtolower(standardize($ftitle, true))] = $fval;
 				}
 	
 			$i++;

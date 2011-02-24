@@ -174,12 +174,12 @@ class MediaManager extends Widget implements uploadable
 			
 			$pathinfo = pathinfo($file['name']);
 			
-			$strCacheName = standardize($pathinfo['filename']) . '.' . $pathinfo['extension'];
+			$strCacheName = standardize($pathinfo['filename'], true) . '.' . $pathinfo['extension'];
 			$uploadFolder = 'isotope/' . substr($strCacheName, 0, 1);
 			
 			if (is_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName) && md5_file($file['tmp_name']) != md5_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName))
 			{
-				$strCacheName = standardize($pathinfo['filename']) . '-' . substr(md5_file($file['tmp_name']), 0, 8) . '.' . $pathinfo['extension'];
+				$strCacheName = standardize($pathinfo['filename'], true) . '-' . substr(md5_file($file['tmp_name']), 0, 8) . '.' . $pathinfo['extension'];
 				$uploadFolder = 'isotope/' . substr($strCacheName, 0, 1);
 			}
 			
