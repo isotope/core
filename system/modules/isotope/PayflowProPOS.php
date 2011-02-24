@@ -153,7 +153,7 @@ class PayflowProPOS extends Backend
 
 			foreach(array_keys($arrResponses) as $key)
 			{
-				$arrReponseLabels[strtolower(standardize($key))] = $key;
+				$arrReponseLabels[strtolower(standardize($key, true))] = $key;
 			}
 
 			$objTemplate->fields = $this->generateResponseString($arrResponses, $arrReponseLabels);
@@ -367,7 +367,7 @@ class PayflowProPOS extends Backend
 
 		// Close and output PDF document
 		$pdf->lastPage();
-		$pdf->Output(standardize(ampersand($strInvoiceTitle, false)) . '.pdf', 'D');
+		$pdf->Output(standardize(ampersand($strInvoiceTitle, false), true) . '.pdf', 'D');
 
 		$this->Isotope->resetConfig(true); 	//Set store back to default.
 
@@ -1005,7 +1005,7 @@ class PayflowProPOS extends Backend
 							break;
 					}
 
-					$arrResponse[strtolower(standardize($ftitle))] = $fval;
+					$arrResponse[strtolower(standardize($ftitle, true))] = $fval;
 				}
 
 			$i++;

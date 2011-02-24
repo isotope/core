@@ -86,7 +86,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 
 		foreach(array_keys($arrResponses) as $key)
 		{
-			$arrReponseLabels[strtolower(standardize($key))] = $key;
+			$arrReponseLabels[strtolower(standardize($key, true))] = $key;
 		}
 
 		$arrSet['transaction_response'] = $arrResponseCodes['response_type'];
@@ -273,7 +273,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 
 			foreach(array_keys($arrResponses) as $key)
 			{
-				$arrReponseLabels[strtolower(standardize($key))] = $key;
+				$arrReponseLabels[strtolower(standardize($key, true))] = $key;
 			}
 
 			$arrSet['transaction_response'] = $arrResponseCodes['response_type'];
@@ -363,7 +363,7 @@ $(\'ctrl_submitOrder\').addEvent(\'click\', function(event){
 
 		foreach(array_keys($arrResponses) as $key)
 		{
-			$arrReponseLabels[strtolower(standardize($key))] = $key;
+			$arrReponseLabels[strtolower(standardize($key, true))] = $key;
 		}
 
 		//$objTemplate->fields = $this->generateResponseString($arrResponses, $arrReponseLabels);
@@ -484,7 +484,7 @@ $(\'ctrl_submitOrder\').addEvent(\'click\', function(event){
 
 			foreach(array_keys($arrResponses) as $key)
 			{
-				$arrReponseLabels[strtolower(standardize($key))] = $key;
+				$arrReponseLabels[strtolower(standardize($key, true))] = $key;
 			}
 
 			$objTemplate->fields = $this->generateResponseString($arrResponses, $arrReponseLabels);
@@ -754,7 +754,7 @@ $return .= '</div></div>';
 							break;
 					}
 
-					$arrResponse[strtolower(standardize($ftitle))] = $fval;
+					$arrResponse[strtolower(standardize($ftitle, true))] = $fval;
 				}
 
 			$i++;

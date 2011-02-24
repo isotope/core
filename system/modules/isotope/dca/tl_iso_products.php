@@ -752,16 +752,16 @@ class tl_iso_products extends Backend
 		if (!strlen($varValue))
 		{
 			$autoAlias = true;
-			$varValue = standardize($this->Input->post('name'));
+			$varValue = standardize($this->Input->post('name'), true);
 
 			if (!strlen($varValue))
 			{
-				$varValue = standardize($this->Input->post('sku'));
+				$varValue = standardize($this->Input->post('sku'), true);
 			}
 
 			if (!strlen($varValue))
 			{
-				$varValue = strlen($dc->activeRecord->name) ? standardize($dc->activeRecord->name) : standardize($dc->activeRecord->sku);
+				$varValue = strlen($dc->activeRecord->name) ? standardize($dc->activeRecord->name, true) : standardize($dc->activeRecord->sku, true);
 			}
 
 			if (!strlen($varValue))
@@ -1167,7 +1167,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 					}
 				}
 
-				$strPattern = '@^(' . ($objProducts->alias ?  '|' . standardize($objProducts->alias) : '') . ($objProducts->sku ? '|' . $objProducts->sku : '') .($objProducts->sku ? '|' . standardize($objProducts->sku) : '') . (count($arrImageNames) ? '|' . implode('|', $arrImageNames) : '') . ')@i';
+				$strPattern = '@^(' . ($objProducts->alias ?  '|' . standardize($objProducts->alias, true) : '') . ($objProducts->sku ? '|' . $objProducts->sku : '') .($objProducts->sku ? '|' . standardize($objProducts->sku, true) : '') . (count($arrImageNames) ? '|' . implode('|', $arrImageNames) : '') . ')@i';
 
 				$arrMatches = preg_grep($strPattern, $arrFiles);
 

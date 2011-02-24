@@ -164,7 +164,7 @@ class ModuleIsotopeTranslation extends BackendModule
 
 				foreach( $arrSource as $key => $value )
 				{
-					$value = trim($this->Input->postRaw(standardize($key)));
+					$value = trim($this->Input->postRaw(standardize($key, true)));
 
 					if (!strlen($value))
 						continue;

@@ -367,7 +367,7 @@ class tl_iso_attributes extends Backend
 
 	public function createColumn($varValue, $dc)
 	{
-		$varValue = standardize($varValue);
+		$varValue = standardize($varValue, true);
 
 		if (in_array($varValue, array('id', 'pid', 'sorting', 'tstamp')))
 		{
