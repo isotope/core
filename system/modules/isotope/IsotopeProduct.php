@@ -317,6 +317,12 @@ class IsotopeProduct extends Controller
 			case 'total_price':
 				return $this->quantity_requested * $this->price;
 
+			case 'tax_free_price':
+				return $this->blnLocked ? $this->arrData['price'] : $this->Isotope->calculatePrice($this->arrData['price'], $this, 'price');
+
+			case 'tax_free_total_price':
+				return $this->quantity_requested * $this->tax_free_price;
+
 			case 'quantity_requested':
 				return ($this->arrCache[$strKey] ? $this->arrCache[$strKey] : 1);
 

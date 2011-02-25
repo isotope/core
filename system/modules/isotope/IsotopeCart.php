@@ -339,7 +339,7 @@ class IsotopeCart extends IsotopeProductCollection
 		$arrProducts = $this->getProducts();
 		foreach( $arrProducts as $pid => $objProduct )
 		{
-			$fltPrice = $objProduct->total_price;
+			$fltPrice = $objProduct->tax_free_total_price;
 			foreach( $arrPreTax as $tax )
 			{
 				if (isset($tax['products'][$objProduct->cart_id]))

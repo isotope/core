@@ -179,7 +179,7 @@ class IsotopeOrder extends IsotopeProductCollection
 		foreach( $arrProducts as $pid => $objProduct )
 		{
 			$arrTaxIds = array();
-			$arrTax = $this->calculateTax($objProduct->tax_class, $objProduct->total_price);
+			$arrTax = $this->calculateTax($objProduct->tax_class, $objProduct->tax_free_total_price);
 
 			if (is_array($arrTax))
 			{
