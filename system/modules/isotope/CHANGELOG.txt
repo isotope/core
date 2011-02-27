@@ -49,6 +49,7 @@ Version 0.2.6 (2011-02-??)
 - Improved: Made text fields for meta description & meta keywords smaller (Ticket #386)
 - Improved: Added javascript confirmation before deleting address (Ticket #328)
 - Improved: Use generic labels for redirecting to payment provider on checkout
+- Improved: Blair has rewritten Authorize.net's payment calls 
 - Fixed ##newsletter.css## in HTML email
 - Fixed issue with simple tokens in mail template subject
 - Fixed issue with HTML in plain text emails
@@ -63,6 +64,8 @@ Version 0.2.6 (2011-02-??)
 - Fixed: Downloads in PDF invoice caused fatal error
 - Fixed: Product filter searched for field default value (Ticket #377)
 - Fixed: Moved cart & checkout table summary to language file (Ticket #338)
+- Fixed: Adjust Order Total Shipping to account for shipping-exempt products (Ticket #398)
+
 - Adopted Contao Core Ticket #2853
 
 Version 0.2.5 (2011-02-01)
