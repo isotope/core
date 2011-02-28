@@ -35,6 +35,7 @@ Version 0.3.beta1
 - Improved: More unique element IDs to load ajax into the right container (Ticket #291)
 - Improved: Use <div> not <span> for attribute containers (Ticket #203)
 - Improved: Only create cart in database if necessary (will save a lot of auto_increment IDs)
+- Improved: Blair has rewritten Authorize.net's payment calls 
 - Fixed start & stop publishing dates not working
 - Fixed Authorize.net failed transaction bug
 - Removed pre-0.1 update code from runonce.php
@@ -49,7 +50,6 @@ Version 0.2.6 (2011-02-??)
 - Improved: Made text fields for meta description & meta keywords smaller (Ticket #386)
 - Improved: Added javascript confirmation before deleting address (Ticket #328)
 - Improved: Use generic labels for redirecting to payment provider on checkout
-- Improved: Blair has rewritten Authorize.net's payment calls 
 - Fixed ##newsletter.css## in HTML email
 - Fixed issue with simple tokens in mail template subject
 - Fixed issue with HTML in plain text emails
@@ -60,6 +60,7 @@ Version 0.2.6 (2011-02-??)
 - Fixed filters overwriting each other (Ticket #363)
 - Fixed issues with email messages (Ticket #391)
 - Fixed tax surcharge calculation for prices including taxes
+- Fixed bug in explode() for the filterFields template variable.
 - Fixed: Address was not added to address book correctly
 - Fixed: Downloads in PDF invoice caused fatal error
 - Fixed: Product filter searched for field default value (Ticket #377)
