@@ -120,7 +120,7 @@ class ShippingOrderTotal extends IsotopeShipping
 		{
 			if($objProduct->shipping_exempt)
 			{
-				$fltSubtotal -= $objProduct->price;
+				$fltSubtotal -= ($objProduct->price * $objProduct->quantity_requested);
 			}
 		
 		}
