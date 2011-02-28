@@ -22,6 +22,7 @@ Version 0.2.6 (2011-02-??)
 - Fixed filters overwriting each other (Ticket #363)
 - Fixed issues with email messages (Ticket #391)
 - Fixed tax surcharge calculation for prices including taxes
+- Fixed bug in explode() for the filterFields template variable
 - Fixed: Address was not added to address book correctly
 - Fixed: Downloads in PDF invoice caused fatal error
 - Fixed: Product filter searched for field default value (Ticket #377)

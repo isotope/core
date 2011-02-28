@@ -149,7 +149,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		$this->Template->perPage = $this->iso_enableLimit;
 		$this->Template->limit = $arrLimit;
 		$this->Template->filters = $arrFilters;
-		$this->Template->filterFields = (count($arrFieldNames) ? implode(',',$arrFieldNames) : array());
+		$this->Template->filterFields = (count($arrFilterFields) ? implode(',',$arrFilterFields) : array());
 		$this->Template->action = $this->Environment->request;
 		$this->Template->baseUrl = $arrCleanUrl[0];
 		$this->Template->orderBy = $arrOrderByOptions;
