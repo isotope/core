@@ -234,7 +234,7 @@ CREATE TABLE `tl_iso_config` (
   `orderPrefix` varchar(4) NOT NULL default '',
   `store_id` int(2) unsigned NOT NULL default '0',
   `templateGroup` varchar(255) NOT NULL default '',
-  `invoiceLogo` text NULL,
+  `invoiceLogo` varchar(255) NOT NULL default '',
   `fallback` char(1) NOT NULL default '',
   `company` varchar(255) NOT NULL default '',
   `firstname` varchar(255) NOT NULL default '',

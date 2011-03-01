@@ -515,5 +515,292 @@ class tl_iso_orders extends Backend
 		return $objModule->backendInterface($dc->id);
 	}
 
+
+	/**
+	 * Provide a select menu to choose orders by status and print PDF
+	 *
+	 * @param  object
+	 * @return string
+	 */
+	public function printInvoices()
+	{
+		$strMessage = '';
+		
+		$strReturn = '
+<div id="tl_buttons">
+<a href="'.ampersand(str_replace('&key=print_invoices', '', $this->Environment->request)).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
+</div>
+
+<h2 class="sub_headline">'.$GLOBALS['TL_LANG']['tl_iso_orders']['print_invoices'][0].'</h2>
+<form action="'.$this->Environment->request.'"  id="tl_print_invoices" class="tl_form" method="post">
+<input type="hidden" name="FORM_SUBMIT" value="tl_print_invoices" />
+<div class="tl_formbody_edit">
+<div class="tl_tbox block">';
+					
+		$objWidget = new SelectMenu($this->prepareForWidget($GLOBALS['TL_DCA']['tl_iso_orders']['fields']['status'], 'status'));
+	
+		if ($this->Input->post('FORM_SUBMIT') == 'tl_print_invoices')
+		{
+			$objOrders = $this->Database->prepare("SELECT id FROM tl_iso_orders WHERE status=?")->execute($this->Input->post('status'));
+				
+			if ($objOrders->numRows)
+			{
+				$this->generateInvoices($objOrders->fetchEach('id'));
+			}
+			else
+			{
+				$strMessage = '<p class="tl_gerror">'.$GLOBALS['TL_LANG']['MSC']['noOrders'].'</p>';
+			}
+		}	
+	
+		return $strReturn . $strMessage . $objWidget->parse() . '
+</div>
+</div>
+<div class="tl_formbody_submit">
+<div class="tl_submit_container">
+<input type="submit" name="print_invoices" id="ctrl_print_invoices" value="'.$GLOBALS['TL_LANG']['MSC']['labelSubmit'].'" />
+</div>
+</div>
+</form>
+</div>';
+	}
+	
+	
+	/**
+	 * Print one order as PDF
+	 *
+	 * @param  object
+	 * @return void
+	 */
+	public function printInvoice(DataContainer $dc)
+	{
+		$this->generateInvoices(array($dc->id));
+	}
+
+
+	/**
+	 * Generate one or multiple PDFs by order ID
+	 *
+	 * @param  array
+	 * @return void
+	 */
+	public function generateInvoices(array $arrIds)
+	{
+		$this->import('Isotope');
+
+		if(!count($arrIds))
+		{
+			$this->log('No order IDs passed to method.', __METHOD__, TL_ERROR);
+			$this->redirect($this->Environment->script . '?act=error');
+		}
+		
+		// TCPDF configuration
+		$l['a_meta_dir'] = 'ltr';
+		$l['a_meta_charset'] = $GLOBALS['TL_CONFIG']['characterSet'];
+		$l['a_meta_language'] = $GLOBALS['TL_LANGUAGE'];
+		$l['w_page'] = 'page';
+
+		// Include library
+		require_once(TL_ROOT . '/system/config/tcpdf.php');
+		require_once(TL_ROOT . '/plugins/tcpdf/tcpdf.php');
+
+		// Create new PDF document
+		$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true);
+
+		// Set document information
+		$pdf->SetCreator(PDF_CREATOR);
+		$pdf->SetAuthor(PDF_AUTHOR);
+
+// @todo $objInvoice is not defined
+//		$pdf->SetTitle($objInvoice->title);
+//		$pdf->SetSubject($objInvoice->title);
+//		$pdf->SetKeywords($objInvoice->keywords);
+
+		// Remove default header/footer
+		$pdf->setPrintHeader(false);
+		$pdf->setPrintFooter(false);
+
+		// Set margins
+		$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+
+		// Set auto page breaks
+		$pdf->SetAutoPageBreak(true, PDF_MARGIN_BOTTOM);
+
+		// Set image scale factor
+		$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+		// Set some language-dependent strings
+		$pdf->setLanguageArray($l);
+
+		// Initialize document and add a page
+		$pdf->AliasNbPages();
+
+		// Set font
+		$pdf->SetFont(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN);
+		
+		foreach( $arrIds as $intId )
+		{
+			$pdf->AddPage();
+			
+			$strArticle = $this->generateInvoiceContent($intId);
+	
+			// Write the HTML content
+			$pdf->writeHTML($strArticle, true, 0, true, 0);
+		}	
+		
+		// Close and output PDF document
+		// @todo $strInvoiceTitle is not defined
+		$pdf->lastPage();
+		$pdf->Output(standardize(ampersand($strInvoiceTitle, false), true) . '.pdf', 'D');
+		
+		// Set store back to default
+		// @todo do we need that? The PHP session is ended anyway...
+		$this->Isotope->resetConfig(true);
+		
+		// Stop script execution
+		exit;
+	}
+
+
+	/**
+	 * Generate content for an order based on iso_invoice.tpl
+	 *
+	 * @param  int
+	 * @return string
+	 */
+	public function generateInvoiceContent($intId)
+	{
+		$objOrder = new IsotopeOrder();
+		
+		if (!$objOrder->findBy('id', $intId))
+		{
+			$this->log('Could not find order with ID ' . $intId, __METHOD__, TL_ERROR);
+			$this->redirect($this->Environment->script . '?act=error');
+		}
+		
+		// Set global config to this order
+		$this->Isotope->overrideConfig($objOrder->config_id);
+		
+		$objTemplate = new BackendTemplate('iso_invoice');
+		$objTemplate->setData($objOrder->getData());
+		$objTemplate->logoImage = '';
+		
+		if ($this->Isotope->Config->invoiceLogo != '' && is_file(TL_ROOT . '/' . $this->Isotope->Config->invoiceLogo))
+		{
+			$objTemplate->logoImage = str_replace('src="', 'src="' . TL_PATH . '/', $this->generateImage($this->Isotope->Config->invoiceLogo));
+		}
+		
+		$objTemplate->invoiceTitle = $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] . ' ' . $objOrder->order_id . ' – ' . date($GLOBALS['TL_CONFIG']['datimFormat'], $objOrder->date);
+		
+		$arrItems = array();
+		$arrProducts = $objOrder->getProducts();
+		
+		foreach( $arrProducts as $objProduct )
+		{
+			$arrItems[] = array
+			(
+				'raw'				=> $objProduct->getData(),
+				'product_options' 	=> $objProduct->getOptions(),
+				'name'				=> $objProduct->name,
+				'quantity'			=> $objProduct->quantity_requested,
+				'price'				=> $objProduct->formatted_price,
+				'total'				=> $objProduct->formatted_total_price,
+				'tax_id'			=> $objProduct->tax_id,
+			);
+		}
+		
+	
+		$objTemplate->info = deserialize($objOrder->checkout_info);
+		$objTemplate->items = $arrItems;
+		
+		$objTemplate->raw = $objOrder->getData();
+		
+		$objTemplate->date = $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $objOrder->date);
+		$objTemplate->time = $this->parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $objOrder->date);
+		$objTemplate->datim = $this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $objOrder->date);
+		$objTemplate->datimLabel = $GLOBALS['TL_LANG']['MSC']['datimLabel'];
+		
+		$objTemplate->subTotalPrice = $this->Isotope->formatPriceWithCurrency($objOrder->subTotal);
+		$objTemplate->grandTotal = $this->Isotope->formatPriceWithCurrency($objOrder->grandTotal);
+		$objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
+		$objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
+		
+		$arrSurcharges = array();
+		foreach( deserialize($objOrder->surcharges, true) as $arrSurcharge )
+		{
+			if (!is_array($arrSurcharge))
+				continue;
+				
+			$arrSurcharges[] = array
+			(
+				'label'			=> $arrSurcharge['label'],
+				'price'			=> $this->Isotope->formatPriceWithCurrency($arrSurcharge['price']),
+				'total_price'	=> $this->Isotope->formatPriceWithCurrency($arrSurcharge['total_price']),
+				'tax_id'		=> $arrSurcharge['tax_id'],
+			);
+		}
+		
+		$objTemplate->surcharges = $arrSurcharges;
+		
+		$objTemplate->billing_label = $GLOBALS['TL_LANG']['ISO']['billing_address'];
+		$objTemplate->billing_address = $this->Isotope->generateAddressString(deserialize($objOrder->billing_address), $this->Isotope->Config->billing_fields);
+		if (strlen($objOrder->shipping_method))
+		{
+			$arrShippingAddress = deserialize($objOrder->shipping_address);
+			if (!is_array($arrShippingAddress) || $arrShippingAddress['id'] == -1)
+			{
+				$objTemplate->has_shipping = false;
+				$objTemplate->billing_label = $GLOBALS['TL_LANG']['ISO']['billing_shipping_address'];
+			}
+			else
+			{
+				$objTemplate->has_shipping = true;
+				$objTemplate->shipping_label = $GLOBALS['TL_LANG']['ISO']['shipping_address'];
+				$objTemplate->shipping_address = $this->Isotope->generateAddressString($arrShippingAddress, $this->Isotope->Config->shipping_fields);
+			}
+		}
+		
+		
+		$strArticle = $this->replaceInsertTags($objTemplate->parse());
+		$strArticle = html_entity_decode($strArticle, ENT_QUOTES, $GLOBALS['TL_CONFIG']['characterSet']);
+		$strArticle = $this->convertRelativeUrls($strArticle, '', true);
+
+		// Remove form elements and JavaScript links
+		$arrSearch = array
+		(
+			'@<form.*</form>@Us',
+			'@<a [^>]*href="[^"]*javascript:[^>]+>.*</a>@Us'
+		);
+
+		$strArticle = preg_replace($arrSearch, '', $strArticle);
+		
+		// Handle line breaks in preformatted text
+		$strArticle = preg_replace_callback('@(<pre.*</pre>)@Us', 'nl2br_callback', $strArticle);
+
+		// Default PDF export using TCPDF
+		$arrSearch = array
+		(
+			'@<span style="text-decoration: ?underline;?">(.*)</span>@Us',
+			'@(<img[^>]+>)@',
+			'@(<div[^>]+block[^>]+>)@',
+			'@[\n\r\t]+@',
+			'@<br /><div class="mod_article@',
+			'@href="([^"]+)(pdf=[0-9]*(&|&amp;)?)([^"]*)"@'
+		);
+
+		$arrReplace = array
+		(
+			'<u>$1</u>',
+			'<br />$1',
+			'<br />$1',
+			' ',
+			'<div class="mod_article',
+			'href="$1$4"'
+		);
+
+		$strArticle = preg_replace($arrSearch, $arrReplace, $strArticle);
+		
+		return $strArticle;
+	}
 }
 
