@@ -475,7 +475,7 @@ abstract class IsotopeProductCollection extends Model
 			return false;
 
 		$this->blnModified = true;
-		
+
 		// Make sure collection is in DB before adding product
 		if (!$this->id)
 		{

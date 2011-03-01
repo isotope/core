@@ -313,8 +313,8 @@ class IsotopeFrontend extends Frontend
 		// Return the path to new image
 		return $strCacheName;
 	}
-	
-	
+
+
 	/**
 	 * Hook callback for changelanguage extension to support language switching on product reader page
 	 *
@@ -326,12 +326,12 @@ class IsotopeFrontend extends Frontend
 	public function translateProductUrls($arrGet, $strLanguage, $arrRootPage)
 	{
 		$strProduct = $this->Input->get('product');
-		
+
 		if ($strProduct != '')
 		{
 			$arrGet['url']['product'] = $strProduct;
 		}
-		
+
 		return $arrGet;
 	}
 }
