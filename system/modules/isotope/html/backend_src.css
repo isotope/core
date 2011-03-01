@@ -157,13 +157,15 @@
 	height: auto;
 }
 
-.tree_view .tl_left a
+.tl_tree .tl_left a,
+.product_tree .tl_left a
 {
 	float: left;
 	margin-top: 10px;
 }
 
-.tree_view .tl_right
+.tl_tree .tl_right,
+.product_tree .tl_right
 {
 	height: auto;
 	text-align: right
