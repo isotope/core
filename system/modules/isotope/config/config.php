@@ -60,8 +60,8 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
 		'stylesheet'				=> 'system/modules/isotope/html/backend.css',
 		'javascript'				=> 'system/modules/isotope/html/backend.js',
 		'export_emails'     		=> array('tl_iso_orders', 'exportOrderEmails'),
-		'print_order'				=> array('IsotopePOS','printInvoice'),
-		'print_invoices'			=> array('IsotopePOS','printInvoicesInterface'),
+		'print_order'				=> array('tl_iso_orders', 'printInvoice'),
+		'print_invoices'			=> array('tl_iso_orders', 'printInvoices'),
 		'payment'					=> array('tl_iso_orders', 'paymentInterface'),
 		'shipping'					=> array('tl_iso_orders', 'shippingInterface'),
 	),/*

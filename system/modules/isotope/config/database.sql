@@ -193,7 +193,7 @@ CREATE TABLE `tl_iso_config` (
   `currencyFormat` varchar(20) NOT NULL default '',
   `orderPrefix` varchar(4) NOT NULL default '',
   `store_id` int(2) unsigned NOT NULL default '0',
-  `invoiceLogo` text NULL,
+  `invoiceLogo` varchar(255) NOT NULL default '',
   `fallback` char(1) NOT NULL default '',
   `company` varchar(255) NOT NULL default '',
   `firstname` varchar(255) NOT NULL default '',

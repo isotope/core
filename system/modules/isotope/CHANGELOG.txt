@@ -12,6 +12,7 @@ Version 0.2.6 (2011-02-??)
 - Improved: Made text fields for meta description & meta keywords smaller (Ticket #386)
 - Improved: Added javascript confirmation before deleting address (Ticket #328)
 - Improved: Use generic labels for redirecting to payment provider on checkout
+- Improved order PDF printing, fixed several bugs (Ticket #376, Ticket #356)
 - Fixed ##newsletter.css## in HTML email
 - Fixed issue with simple tokens in mail template subject
 - Fixed issue with HTML in plain text emails
