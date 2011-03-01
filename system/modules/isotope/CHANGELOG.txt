@@ -6,6 +6,7 @@ Version 0.2.6 (2011-03-01)
 ------------------------------
 - Added label for toggle button in product tree
 - Added missing 'enabled' label to tl_iso_shipping_options (Ticket #373)
+- Added support for language switching on product reader page (changelanguage extension)
 - Added: automatically disable page cache for sites with customer-related modules such as Cart (Ticket #392)
 - Improved: Check isDefaultBilling/isDefaultShipping on first checkout
 - Improved: Label for payment method is no longer mandatory (will use name if not set)
