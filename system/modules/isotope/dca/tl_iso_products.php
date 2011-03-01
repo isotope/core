@@ -726,7 +726,7 @@ class tl_iso_products extends Backend
 				$help = implode(' » ', $this->Database->execute("SELECT title FROM tl_page WHERE id IN (" . implode(',', $objPage->trail) . ") ORDER BY id=" . implode(' DESC, id=', $objPage->trail) . " DESC")->fetchEach('title'));
 			}
 
-			$arrCategories[] = '<a class="tl_tip" longdesc="' . $help . '" href="' . $this->addToUrl('table=tl_iso_product_categories&id='.$intPage) . '">' . $objPage->title . '</a>';
+			$arrCategories[] = '<a class="tl_tip" longdesc="' . $help . '" href="' . $this->Environment->script . '?do=iso_products&table=tl_iso_product_categories&id=' . $intPage . '">' . $objPage->title . '</a>';
 		}
 
 		if (!count($arrCategories))

@@ -184,7 +184,11 @@ $GLOBALS['BE_FFL']['variantWizard']			= 'VariantWizard';
 $GLOBALS['BE_FFL']['inheritCheckbox']		= 'InheritCheckBox';
 $GLOBALS['BE_FFL']['imageWatermarkWizard']	= 'ImageWatermarkWizard';
 $GLOBALS['BE_FFL']['fieldWizard']			= 'FieldWizard';
-$GLOBALS['BE_FFL']['timePeriod']			= 'TimePeriod'; // This widget belongs to the core, but if extension "calendar" is disable it wont be available without this
+$GLOBALS['BE_FFL']['productTree']			= 'ProductTree';
+
+// This widget belongs to the core, but if extension "calendar" is disable it wont be available without this
+// @todo remove this when dropping support for Contao 2.9
+$GLOBALS['BE_FFL']['timePeriod']			= 'TimePeriod'; 
 
 
 /**
@@ -265,6 +269,8 @@ $GLOBALS['TL_HOOKS']['isoButtons'][]				= array('Isotope', 'defaultButtons');
 $GLOBALS['TL_HOOKS']['addCustomRegexp'][]			= array('Isotope', 'validateRegexp');
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][]			= array('IsotopeFrontend', 'replaceIsotopeTags');
 $GLOBALS['TL_HOOKS']['translateUrlParameters'][]	= array('IsotopeFrontend', 'translateProductUrls');
+$GLOBALS['TL_HOOKS']['executePreActions'][]			= array('ProductTree', 'executePreActions');
+$GLOBALS['TL_HOOKS']['executePostActions'][]		= array('ProductTree', 'executePostActions');
 
 //$GLOBALS['TL_HOOKS']['googleTracking'][] 			= array('ModuleIsotopeCheckout', 'googleTracking');
 
