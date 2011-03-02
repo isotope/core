@@ -325,11 +325,13 @@ class IsotopeFrontend extends Frontend
 	 */
 	public function translateProductUrls($arrGet, $strLanguage, $arrRootPage)
 	{
-		$strProduct = $this->Input->get('product');
-
-		if ($strProduct != '')
+		if ($this->Input->get('product') != '')
 		{
-			$arrGet['url']['product'] = $strProduct;
+			$arrGet['url']['product'] = $this->Input->get('product');
+		}
+		elseif ($this->Input->get('step') != '')
+		{
+			$arrGet['url']['step'] = $this->Input->get('step');
 		}
 
 		return $arrGet;

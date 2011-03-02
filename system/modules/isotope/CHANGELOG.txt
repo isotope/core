@@ -40,6 +40,10 @@ Version 0.3.beta1
 - Fixed Authorize.net failed transaction bug
 - Removed pre-0.1 update code from runonce.php
 
+Version 0.2.7 (2011-03-??)
+------------------------------
+- Added support for language switching on checkout page (changelanguage extension)
+
 Version 0.2.6 (2011-03-01)
 ------------------------------
 - Added label for toggle button in product tree
