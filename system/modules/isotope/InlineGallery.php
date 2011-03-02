@@ -39,8 +39,13 @@ class InlineGallery extends IsotopeGallery
 	/**
 	 * Generate gallery
 	 */
-	public function generateGallery($strType='gallery', $intSkip=0)
+	public function generateGallery($strType='gallery', $intSkip=0, $blnForce=false)
 	{
+		// Do not render gallery if there are no additional image
+		$total = count($this->arrFiles);
+		if (($total == 1 || $total <= $intSkip) && !$blnForce)
+			return '';
+			
 		$strGallery = '';
 
 		foreach( $this->arrFiles as $i => $arrFile )
