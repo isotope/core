@@ -482,7 +482,7 @@ abstract class IsotopeProductCollection extends Model
 			$this->save();
 		}
 
-		$objItem = $this->Database->prepare("SELECT * FROM {$this->ctable} WHERE pid={$this->id} AND product_id={$objProduct->id} AND product_options='".serialize($objProduct->getOptions(true))."'")->limit(1)->execute();
+		$objItem = $this->Database->prepare("SELECT * FROM {$this->ctable} WHERE pid={$this->id} AND product_id={$objProduct->id} AND product_options=?")->limit(1)->execute(serialize($objProduct->getOptions(true)));
 
 		if ($objItem->numRows)
 		{
