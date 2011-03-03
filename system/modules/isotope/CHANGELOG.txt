@@ -5,6 +5,7 @@ Isotope eCommerce Changelog
 Version 0.2.7 (2011-03-??)
 ------------------------------
 - Added support for language switching on checkout page (changelanguage extension)
+- Added support for language switching on order details page (changelanguage extension)
 
 Version 0.2.6 (2011-03-01)
 ------------------------------
