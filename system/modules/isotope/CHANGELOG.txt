@@ -16,6 +16,8 @@ Version 0.3.beta1
 - Added minimum order subtotal amount (store config option)
 - Added sku to email product template
 - Added iso_checkout_order_conditions template
+- Added productTree widget, similar to pageTree but for products/variants
+- Added "tableless" option for checkout module (Ticket #325)
 - Added: Copy child records (variants, languages) when copying a product
 - Added: Allow foreignKey for variant attribute options
 - Added: Show theme templates in product type select menu
@@ -45,6 +47,7 @@ Version 0.2.7 (2011-03-??)
 - Added support for language switching on checkout page (changelanguage extension)
 - Added support for language switching on order details page (changelanguage extension)
 - Fixed potential SQL injection in product collection
+- Fixed CSS classes in checkout review and order details
 
 Version 0.2.6 (2011-03-01)
 ------------------------------

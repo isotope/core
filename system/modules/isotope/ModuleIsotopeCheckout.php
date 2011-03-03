@@ -450,6 +450,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				(
 					'headline'	=> $GLOBALS['TL_LANG']['ISO']['shipping_method'],
 					'info'		=> $this->Isotope->Cart->Shipping->checkoutReview(),
+					'note'		=> $this->Isotope->Cart->Shipping->note,
 					'edit'		=> $this->addToUrl('step=shipping', true),
 				),
 			);
@@ -460,8 +461,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 		if (is_array($arrModuleIds) && count($arrModuleIds))
 		{
-			$arrData = ($this->Input->post('shipping') ? $this->Input->post('shipping') : $_SESSION['CHECKOUT_DATA']['shipping']);
-
+			$arrData = $this->Input->post('shipping');
 			$objModules = $this->Database->execute("SELECT * FROM tl_iso_shipping_modules WHERE id IN (" . implode(',', $arrModuleIds) . ") AND enabled='1'");
 
 			while( $objModules->next() )
@@ -574,7 +574,6 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				),
 			);
 		}
-
 
 		$arrModules = array();
 		$arrModuleIds = deserialize($this->iso_payment_modules);
@@ -730,7 +729,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			$arrData['decodeEntities'] = true;
 			$arrData['allowHtml'] = $objForm->allowTags;
 			$arrData['rowClass'] = 'row_'.$row . (($row == 0) ? ' row_first' : (($row == ($max_row - 1)) ? ' row_last' : '')) . ((($row % 2) == 0) ? ' even' : ' odd');
-			$arrData['tableless'] = true;
+			$arrData['tableless'] = $objForm->tableless;
 
 			// Increase the row count if its a password field
 			if ($objFields->type == 'password')
@@ -831,6 +830,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		$objTemplate = new IsotopeTemplate('iso_checkout_order_conditions');
 		$objTemplate->attributes = $strAttributes;
 		$objTemplate->hidden = $strHidden;
+		$objTemplate->tableless = $this->tableless;
 		$objTemplate->fields = $strFields;
 
 		return $objTemplate->parse();
@@ -863,7 +863,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 		$arrProductData = array();
 		$arrProducts = $this->Isotope->Cart->getProducts();
-		foreach( $arrProducts as $objProduct )
+		foreach( $arrProducts as $i => $objProduct )
 		{
 			$arrProductData[] = array_merge($objProduct->getAttributes(), array
 			(
@@ -875,7 +875,13 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				'quantity'			=> $objProduct->quantity_requested,
 				'tax_id'			=> $objProduct->tax_id,
 				'product_options'	=> $objProduct->getOptions(),
+				'class'				=> 'row_' . $i . ($i%2 ? ' even' : ' odd') . ($i==0 ? ' row_first' : ''),
 			));
+		}
+		
+		if (count($arrProductData))
+		{
+			$arrProductData[count($arrProductData)-1]['class'] .= ' row_last';
 		}
 
 		$objTemplate->info = $this->getCheckoutInfo();
@@ -1163,6 +1169,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 			$objWidget->mandatory = $field['mandatory'] ? true : false;
 			$objWidget->required = $objWidget->mandatory;
+			$objWidget->tableless = $this->tableless;
 			$objWidget->label = $field['label'] ? $this->Isotope->translate($field['label']) : $objWidget->label;
 			$objWidget->storeValues = true;
 			$objWidget->rowClass = 'row_'.$i . (($i == 0) ? ' row_first' : '') . ((($i % 2) == 0) ? ' even' : ' odd');
@@ -1226,6 +1233,11 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			$this->Isotope->Cart->$strAddressType = $_SESSION['CHECKOUT_DATA'][$strAddressType];
 		}
 
+		if ($this->tableless)
+		{
+			return implode('', $arrBuffer);
+		}
+		
 		return '<table cellspacing="0" cellpadding="0" summary="Form fields">
 ' . implode('', $arrBuffer) . '
 </table>';
