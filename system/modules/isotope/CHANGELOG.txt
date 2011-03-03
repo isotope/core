@@ -7,6 +7,7 @@ Version 0.2.7 (2011-03-??)
 - Added support for language switching on checkout page (changelanguage extension)
 - Added support for language switching on order details page (changelanguage extension)
 - Fixed potential SQL injection in product collection
+- Fixed CSS classes in checkout review and order details
 
 Version 0.2.6 (2011-03-01)
 ------------------------------

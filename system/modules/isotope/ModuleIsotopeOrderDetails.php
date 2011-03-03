@@ -94,7 +94,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 		$arrItems = array();
 		$arrProducts = $objOrder->getProducts();
 
-		foreach( $arrProducts as $objProduct )
+		foreach( $arrProducts as $i => $objProduct )
 		{
 			$arrDownloads = array();
 			$objDownloads = $this->Database->prepare("SELECT p.*, o.* FROM tl_iso_order_downloads o LEFT OUTER JOIN tl_iso_downloads p ON o.download_id=p.id WHERE o.pid=?")->execute($objProduct->cart_id);
@@ -139,8 +139,15 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 				'href'				=> ($this->jumpTo ? $this->generateFrontendUrl($arrPage, '/product/'.$objProduct->alias) : ''),
 				'tax_id'			=> $objProduct->tax_id,
 				'downloads'			=> $arrDownloads,
+				'class'				=> 'row_' . $i . ($i%2 ? ' even' : ' odd') . ($i==0 ? ' row_first' : ''),
 			);
 		}
+		
+		if (count($arrItems))
+		{
+			$arrItems[count($arrItems)-1]['class'] .= ' row_last';
+		}
+
 		
 		$this->Template->info = deserialize($arrOrder['checkout_info'], true);
 		$this->Template->items = $arrItems;

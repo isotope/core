@@ -426,6 +426,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				(
 					'headline'	=> $GLOBALS['TL_LANG']['ISO']['shipping_method'],
 					'info'		=> $this->Isotope->Cart->Shipping->checkoutReview(),
+					'note'		=> $this->Isotope->Cart->Shipping->note,
 					'edit'		=> $this->addToUrl('step=shipping'),
 				),
 			);
@@ -436,7 +437,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	
 		if (is_array($arrModuleIds) && count($arrModuleIds))
 		{
-			$arrData = ($this->Input->post('shipping') ? $this->Input->post('shipping') : $_SESSION['CHECKOUT_DATA']['shipping']);
+			$arrData = $this->Input->post('shipping');
 			
 			$objModules = $this->Database->execute("SELECT * FROM tl_iso_shipping_modules WHERE id IN (" . implode(',', $arrModuleIds) . ") AND enabled='1'");
 			
@@ -544,7 +545,6 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				),
 			);
 		}
-		
 		
 		$arrModules = array();
 		$arrModuleIds = deserialize($this->iso_payment_modules);
@@ -834,7 +834,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		
 		$arrProductData = array();
 		$arrProducts = $this->Isotope->Cart->getProducts();
-		foreach( $arrProducts as $objProduct )
+		foreach( $arrProducts as $i => $objProduct )
 		{
 			$arrProductData[] = array_merge($objProduct->getAttributes(), array
 			(
@@ -846,7 +846,13 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				'quantity'			=> $objProduct->quantity_requested,
 				'tax_id'			=> $objProduct->tax_id,
 				'product_options'	=> $objProduct->getOptions(),
+				'class'				=> 'row_' . $i . ($i%2 ? ' even' : ' odd') . ($i==0 ? ' row_first' : ''),
 			));
+		}
+		
+		if (count($arrProductData))
+		{
+			$arrProductData[count($arrProductData)-1]['class'] .= ' row_last';
 		}
 		
 		$objTemplate->info = $this->getCheckoutInfo();
