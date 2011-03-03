@@ -333,6 +333,10 @@ class IsotopeFrontend extends Frontend
 		{
 			$arrGet['url']['step'] = $this->Input->get('step');
 		}
+		elseif ($this->Input->get('uid') != '')
+		{
+			$arrGet['get']['uid'] = $this->Input->get('uid');
+		}
 
 		return $arrGet;
 	}
