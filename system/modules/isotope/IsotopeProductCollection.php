@@ -63,6 +63,12 @@ abstract class IsotopeProductCollection extends Model
 	 * @var object
 	 */
 	protected $Payment;
+	
+	/**
+	 * Template
+	 * @var string
+	 */
+	protected $strTemplate = 'iso_invoice';
 
 	/**
 	 * Configuration
@@ -674,5 +680,225 @@ abstract class IsotopeProductCollection extends Model
 	 * Must be implemented by child class
 	 */
 	abstract public function getSurcharges();
+	
+	
+	/**
+	 * Generate the collection using a template. Useful for PDF output.
+	 *
+	 * @param  string
+	 * @return string
+	 */
+	public function generate($strTemplate=null, $blnResetConfig=true)
+	{
+		if ($strTemplate)
+		{
+			$this->strTemplate = $strTemplate;
+		}
+		
+		$this->import('Isotope');
+		
+		// Set global config to this collection (if available)
+		if ($this->config_id > 0)
+		{
+			$this->Isotope->overrideConfig($this->config_id);
+		}
+
+		$objTemplate = new BackendTemplate($this->strTemplate);
+		$objTemplate->setData($this->arrData);
+		$objTemplate->logoImage = '';
+
+		if ($this->Isotope->Config->invoiceLogo != '' && is_file(TL_ROOT . '/' . $this->Isotope->Config->invoiceLogo))
+		{
+			$objTemplate->logoImage = str_replace('src="', 'src="' . TL_PATH . '/', $this->Isotope->generateImage($this->Isotope->Config->invoiceLogo));
+		}
+
+		$objTemplate->invoiceTitle = $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] . ' ' . $this->order_id . ' – ' . date($GLOBALS['TL_CONFIG']['datimFormat'], $this->date);
+
+		$arrItems = array();
+		$arrProducts = $this->getProducts();
+
+		foreach( $arrProducts as $objProduct )
+		{
+			$arrItems[] = array
+			(
+				'raw'				=> $objProduct->getData(),
+				'product_options' 	=> $objProduct->getOptions(),
+				'name'				=> $objProduct->name,
+				'quantity'			=> $objProduct->quantity_requested,
+				'price'				=> $objProduct->formatted_price,
+				'total'				=> $objProduct->formatted_total_price,
+				'tax_id'			=> $objProduct->tax_id,
+			);
+		}
+
+
+		$objTemplate->info = deserialize($this->checkout_info);
+		$objTemplate->items = $arrItems;
+
+		$objTemplate->raw = $this->arrData;
+
+		$objTemplate->date = $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $this->date);
+		$objTemplate->time = $this->parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $this->date);
+		$objTemplate->datim = $this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $this->date);
+		$objTemplate->datimLabel = $GLOBALS['TL_LANG']['MSC']['datimLabel'];
+
+		$objTemplate->subTotalPrice = $this->Isotope->formatPriceWithCurrency($this->subTotal);
+		$objTemplate->grandTotal = $this->Isotope->formatPriceWithCurrency($this->grandTotal);
+		$objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
+		$objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
+
+		$arrSurcharges = array();
+		foreach( deserialize($this->surcharges, true) as $arrSurcharge )
+		{
+			if (!is_array($arrSurcharge))
+				continue;
+
+			$arrSurcharges[] = array
+			(
+				'label'			=> $arrSurcharge['label'],
+				'price'			=> $this->Isotope->formatPriceWithCurrency($arrSurcharge['price']),
+				'total_price'	=> $this->Isotope->formatPriceWithCurrency($arrSurcharge['total_price']),
+				'tax_id'		=> $arrSurcharge['tax_id'],
+			);
+		}
+
+		$objTemplate->surcharges = $arrSurcharges;
+
+		$objTemplate->billing_label = $GLOBALS['TL_LANG']['ISO']['billing_address'];
+		$objTemplate->billing_address = $this->Isotope->generateAddressString(deserialize($this->billing_address), $this->Isotope->Config->billing_fields);
+		if (strlen($this->shipping_method))
+		{
+			$arrShippingAddress = deserialize($this->shipping_address);
+			if (!is_array($arrShippingAddress) || $arrShippingAddress['id'] == -1)
+			{
+				$objTemplate->has_shipping = false;
+				$objTemplate->billing_label = $GLOBALS['TL_LANG']['ISO']['billing_shipping_address'];
+			}
+			else
+			{
+				$objTemplate->has_shipping = true;
+				$objTemplate->shipping_label = $GLOBALS['TL_LANG']['ISO']['shipping_address'];
+				$objTemplate->shipping_address = $this->Isotope->generateAddressString($arrShippingAddress, $this->Isotope->Config->shipping_fields);
+			}
+		}
+
+
+		$strArticle = $this->Isotope->replaceInsertTags($objTemplate->parse());
+		$strArticle = html_entity_decode($strArticle, ENT_QUOTES, $GLOBALS['TL_CONFIG']['characterSet']);
+		$strArticle = $this->Isotope->convertRelativeUrls($strArticle, '', true);
+
+		// Remove form elements and JavaScript links
+		$arrSearch = array
+		(
+			'@<form.*</form>@Us',
+			'@<a [^>]*href="[^"]*javascript:[^>]+>.*</a>@Us'
+		);
+
+		$strArticle = preg_replace($arrSearch, '', $strArticle);
+
+		// Handle line breaks in preformatted text
+		$strArticle = preg_replace_callback('@(<pre.*</pre>)@Us', 'nl2br_callback', $strArticle);
+
+		// Default PDF export using TCPDF
+		$arrSearch = array
+		(
+			'@<span style="text-decoration: ?underline;?">(.*)</span>@Us',
+			'@(<img[^>]+>)@',
+			'@(<div[^>]+block[^>]+>)@',
+			'@[\n\r\t]+@',
+			'@<br /><div class="mod_article@',
+			'@href="([^"]+)(pdf=[0-9]*(&|&amp;)?)([^"]*)"@'
+		);
+
+		$arrReplace = array
+		(
+			'<u>$1</u>',
+			'<br />$1',
+			'<br />$1',
+			' ',
+			'<div class="mod_article',
+			'href="$1$4"'
+		);
+
+		$strArticle = preg_replace($arrSearch, $arrReplace, $strArticle);
+		
+		// Set config back to default
+		if ($blnResetConfig)
+		{
+			$this->Isotope->resetConfig(true);
+		}
+
+		return $strArticle;
+	}
+	
+	
+	public function generatePDF($pdf=null, $blnOutput=true)
+	{
+		if ($pdf == null)
+		{
+			// TCPDF configuration
+			$l['a_meta_dir'] = 'ltr';
+			$l['a_meta_charset'] = $GLOBALS['TL_CONFIG']['characterSet'];
+			$l['a_meta_language'] = $GLOBALS['TL_LANGUAGE'];
+			$l['w_page'] = 'page';
+	
+			// Include library
+			require_once(TL_ROOT . '/system/config/tcpdf.php');
+			require_once(TL_ROOT . '/plugins/tcpdf/tcpdf.php');
+	
+			// Create new PDF document
+			$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true);
+	
+			// Set document information
+			$pdf->SetCreator(PDF_CREATOR);
+			$pdf->SetAuthor(PDF_AUTHOR);
+	
+// @todo $objInvoice is not defined
+//			$pdf->SetTitle($objInvoice->title);
+//			$pdf->SetSubject($objInvoice->title);
+//			$pdf->SetKeywords($objInvoice->keywords);
+	
+			// Remove default header/footer
+			$pdf->setPrintHeader(false);
+			$pdf->setPrintFooter(false);
+	
+			// Set margins
+			$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+	
+			// Set auto page breaks
+			$pdf->SetAutoPageBreak(true, PDF_MARGIN_BOTTOM);
+	
+			// Set image scale factor
+			$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+	
+			// Set some language-dependent strings
+			$pdf->setLanguageArray($l);
+	
+			// Initialize document and add a page
+			$pdf->AliasNbPages();
+	
+			// Set font
+			$pdf->SetFont(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN);
+		}
+		
+		// Start new page
+		$pdf->AddPage();
+		
+		// Write the HTML content
+		$pdf->writeHTML($this->generate(null, false), true, 0, true, 0);
+		
+		if ($blnOutput)
+		{
+			// Close and output PDF document
+			// @todo $strInvoiceTitle is not defined
+			$pdf->lastPage();
+			$pdf->Output(standardize(ampersand($strInvoiceTitle, false), true) . '.pdf', 'D');
+	
+			// Stop script execution
+			exit;
+		}
+		
+		return $pdf;
+	}
 }
 
