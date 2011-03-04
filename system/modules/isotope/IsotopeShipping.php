@@ -163,6 +163,17 @@ abstract class IsotopeShipping extends Frontend
 		
 		return $this->arrData[$strKey];
 	}
+
+
+	/**
+	 * Check whether a property is set
+	 * @param string
+	 * @return boolean
+	 */
+	public function __isset($strKey)
+	{
+		return isset($this->arrData[$strKey]);
+	}
 	
 	
 	/**

@@ -6,6 +6,7 @@ Version 0.2.7 (2011-03-??)
 ------------------------------
 - Added support for language switching on checkout page (changelanguage extension)
 - Added support for language switching on order details page (changelanguage extension)
+- Added support for __isset() to product, collection, gallery, payment and shipping classes (Contao Core Ticket #2897)
 - Improved ajax overlay position and transparency
 - Fixed potential SQL injection in product collection
 - Fixed CSS classes in checkout review and order details
