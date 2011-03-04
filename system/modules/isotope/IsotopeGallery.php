@@ -161,6 +161,17 @@ class IsotopeGallery extends Frontend
 
 
 	/**
+	 * Check whether a property is set
+	 * @param string
+	 * @return boolean
+	 */
+	public function __isset($strKey)
+	{
+		return isset($this->arrData[$strKey]);
+	}
+
+
+	/**
 	 * If the class is echoed, return the main image
 	 */
 	public function __toString()

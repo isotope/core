@@ -448,6 +448,17 @@ class IsotopeProduct extends Controller
 
 
 	/**
+	 * Check whether a property is set
+	 * @param string
+	 * @return boolean
+	 */
+	public function __isset($strKey)
+	{
+		return isset($this->arrData[$strKey]);
+	}
+
+
+	/**
 	 * Return the current data as associative array
 	 * @return array
 	 */
