@@ -42,7 +42,7 @@ var Isotope =
 	 * Display a "loading data" message
 	 * @param string
 	 */
-	displayBox: function(message)
+	displayBox: function(message, btnClose)
 	{
 		var box = $('iso_ajaxBox');
 		var overlay = $('iso_ajaxOverlay');
@@ -55,6 +55,12 @@ var Isotope =
 		if (!box)
 		{
 			box = new Element('div').setProperty('id', 'iso_ajaxBox').injectInside($(document.body));
+		}
+		
+		if (btnClose)
+		{
+			overlay.addEvent('click', Isotope.hideBox);
+			box.addClass('btnClose').addEvent('click', Isotope.hideBox);
 		}
 
 		var scroll = window.getScroll().y;
@@ -79,12 +85,12 @@ var Isotope =
 
 		if (overlay)
 		{
-			overlay.setStyle('display', 'none');
+			overlay.setStyle('display', 'none').removeEvents('click');
 		}
 
 		if (box)
 		{
-			box.setStyle('display', 'none');
+			box.setStyle('display', 'none').removeEvents('click').removeClass('btnClose');
 			if (Browser.Engine.trident && Browser.Engine.version < 5) { var sel = $$('select'); for (var i=0; i<sel.length; i++) { sel[i].setStyle('visibility', 'visible'); } }
 		}
 	},

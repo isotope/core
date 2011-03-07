@@ -73,16 +73,19 @@ abstract class ModuleIsotope extends Module
 				global $objPage;
 				$objPage->cache = 0;
 			}
-			
 		}
 	}
 
 	
+	/**
+	 * Include messages if enabled
+	 * @return string
+	 */
 	public function generate()
 	{
 		$strBuffer = parent::generate();
 		
-		//Prepend any messages to the module output.
+		// Prepend any messages to the module output
 		if ($this->iso_includeMessages)
 		{
 			$strBuffer = $this->getIsotopeMessages() . $strBuffer;
@@ -90,7 +93,8 @@ abstract class ModuleIsotope extends Module
 		
 		return $strBuffer;
 	}
-	
+
+
 	/**
 	 * Shortcut for a single product by ID or database result
 	 * @param  int|DB_Result
@@ -173,7 +177,8 @@ abstract class ModuleIsotope extends Module
 
 		return $arrProducts;
 	}
-	
+
+
 	/**
 	 * Return all error, confirmation and info messages as HTML.
 	 * @return string
@@ -197,21 +202,17 @@ abstract class ModuleIsotope extends Module
 				$strMessages .= sprintf('<p class="%s">%s</p>%s', $strClass, $strMessage, "\n");
 			}
 
-			if (!$_POST)
-			{
-				$_SESSION[$strGroup] = array();
-			}
+			$_SESSION[$strGroup] = array();
 		}
 
 		$strMessages = trim($strMessages);
 
 		if (strlen($strMessages))
 		{
-			$strMessages = sprintf('%s<div class="iso_message">%s%s%s</div>', "\n\n", "\n", $strMessages, "\n");
+			$strMessages = "\n\n<!-- indexer::stop -->\n<div class=\"iso_message\">\n$strMessages\n</div>\n<!-- indexer::continue -->";
 		}
 
 		return $strMessages;
 	}
-
 }
 

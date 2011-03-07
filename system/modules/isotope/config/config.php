@@ -269,6 +269,7 @@ $GLOBALS['TL_HOOKS']['isoButtons'][]				= array('Isotope', 'defaultButtons');
 $GLOBALS['TL_HOOKS']['addCustomRegexp'][]			= array('Isotope', 'validateRegexp');
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][]			= array('IsotopeFrontend', 'replaceIsotopeTags');
 $GLOBALS['TL_HOOKS']['translateUrlParameters'][]	= array('IsotopeFrontend', 'translateProductUrls');
+$GLOBALS['TL_HOOKS']['generatePage'][]				= array('IsotopeFrontend', 'injectMessages');
 $GLOBALS['TL_HOOKS']['executePreActions'][]			= array('ProductTree', 'executePreActions');
 $GLOBALS['TL_HOOKS']['executePostActions'][]		= array('ProductTree', 'executePostActions');
 

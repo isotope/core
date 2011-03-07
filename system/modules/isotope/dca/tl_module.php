@@ -388,7 +388,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_includeMessages'] = array
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_includeMessages'],
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
-	'eval'					  => array('tl_class'=>'w50','doNotCopy'=>true)
+	'eval'					  => array('tl_class'=>'w50', 'doNotCopy'=>true)
 );
 
 class tl_module_isotope extends Backend

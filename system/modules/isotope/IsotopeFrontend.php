@@ -340,5 +340,47 @@ class IsotopeFrontend extends Frontend
 
 		return $arrGet;
 	}
+	
+	
+	/**
+	 * Use generatePage Hook to inject messages if they have not been included in a module.
+	 */
+	public function injectMessages()
+	{
+		$strMessages = '';
+		$arrGroups = array('ISO_ERROR', 'ISO_CONFIRM', 'ISO_INFO');
+
+		foreach ($arrGroups as $strGroup)
+		{
+			if (!is_array($_SESSION[$strGroup]))
+			{
+				continue;
+			}
+
+			$strClass = strtolower($strGroup);
+
+			foreach ($_SESSION[$strGroup] as $strMessage)
+			{
+				$strMessages .= sprintf('<p class="%s">%s</p>', $strClass, specialchars($strMessage));
+			}
+
+			$_SESSION[$strGroup] = array();
+		}
+
+		$strMessages = trim($strMessages);
+
+		if (strlen($strMessages))
+		{
+			$GLOBALS['TL_MOOTOOLS'][] = "
+<script type=\"text/javascript\">
+<!--//--><![CDATA[//><!--
+window.addEvent('domready', function()
+{
+	Isotope.displayBox('<div class=\"iso_message\">" . $strMessages . "</div>', true);
+});
+//--><!]]>
+</script>" ;
+		}
+	}
 }
 
