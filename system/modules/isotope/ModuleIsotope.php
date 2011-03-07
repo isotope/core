@@ -34,7 +34,7 @@ abstract class ModuleIsotope extends Module
 	 * @var object
 	 */
 	protected $Isotope;
-
+	
 	/**
 	 * Disable caching of the frontend page if this module is in use.
 	 * Usefule to enable in a child classes.
@@ -73,10 +73,24 @@ abstract class ModuleIsotope extends Module
 				global $objPage;
 				$objPage->cache = 0;
 			}
+			
 		}
 	}
 
-
+	
+	public function generate()
+	{
+		$strBuffer = parent::generate();
+		
+		//Prepend any messages to the module output.
+		if ($this->iso_includeMessages)
+		{
+			$strBuffer = $this->getIsotopeMessages() . $strBuffer;
+		}
+		
+		return $strBuffer;
+	}
+	
 	/**
 	 * Shortcut for a single product by ID or database result
 	 * @param  int|DB_Result
@@ -159,5 +173,45 @@ abstract class ModuleIsotope extends Module
 
 		return $arrProducts;
 	}
+	
+	/**
+	 * Return all error, confirmation and info messages as HTML.
+	 * @return string
+	 */
+	protected function getIsotopeMessages()
+	{
+		$strMessages = '';
+		$arrGroups = array('ISO_ERROR', 'ISO_CONFIRM', 'ISO_INFO');
+
+		foreach ($arrGroups as $strGroup)
+		{
+			if (!is_array($_SESSION[$strGroup]))
+			{
+				continue;
+			}
+
+			$strClass = strtolower($strGroup);
+
+			foreach ($_SESSION[$strGroup] as $strMessage)
+			{
+				$strMessages .= sprintf('<p class="%s">%s</p>%s', $strClass, $strMessage, "\n");
+			}
+
+			if (!$_POST)
+			{
+				$_SESSION[$strGroup] = array();
+			}
+		}
+
+		$strMessages = trim($strMessages);
+
+		if (strlen($strMessages))
+		{
+			$strMessages = sprintf('%s<div class="iso_message">%s%s%s</div>', "\n\n", "\n", $strMessages, "\n");
+		}
+
+		return $strMessages;
+	}
+
 }
 

@@ -21,6 +21,7 @@ Version 0.3.beta1
 - Added: Copy child records (variants, languages) when copying a product
 - Added: Allow foreignKey for variant attribute options
 - Added: Show theme templates in product type select menu
+- Added: System messaging support (Ticket #13)
 - Improved: Better Isotope module handling, including callback support
 - Improved: Moved multilingual support to its own extension "isotope_multilingual" with lot more options
 - Improved: Hide payment information if checkout total is 0
