@@ -361,7 +361,14 @@ class ModuleIsotopeProductList extends ModuleIsotope
 	 */
 	protected function findCategories($strCategoryScope)
 	{
-		global $objPage;
+		if ($this->defineRoot && $this->rootPage > 0)
+		{
+			$objPage = $this->getPageDetails($this->rootPage);
+		}
+		else
+		{
+			global $objPage;
+		}
 
 		switch($strCategoryScope)
 		{
