@@ -958,7 +958,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			
 			$this->log('New order ID ' . $orderId . ' has been placed', 'ModuleIsotopeCheckout writeOrder()', TL_ACCESS);
 			
-			if ($this->iso_mail_customer && strlen($customerMail))
+			if ($this->iso_mail_customer)
 			{
 				$strCustomerEmail = '';
 

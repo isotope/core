@@ -10,6 +10,7 @@ Version 0.2.7 (2011-03-??)
 - Improved ajax overlay position and transparency
 - Fixed potential SQL injection in product collection
 - Fixed CSS classes in checkout review and order details
+- Fixed emails not sent to customers (Ticket #406)
 
 Version 0.2.6 (2011-03-01)
 ------------------------------
