@@ -856,7 +856,11 @@ abstract class IsotopeProductCollection extends Model
 	
 	public function generatePDF($pdf=null, $blnOutput=true)
 	{
-		if ($pdf == null)
+		if (is_string($pdf))
+		{
+			$this->strTemplate = $pdf;
+		}
+		elseif (!is_object($pdf))
 		{
 			// TCPDF configuration
 			$l['a_meta_dir'] = 'ltr';
