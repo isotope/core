@@ -89,7 +89,7 @@ class IsotopeRules extends Controller
 				if (strpos($objRules->discount, '%') !== false)
 				{
 					$fltDiscount = 100 + rtrim($objRules->discount, '%');
-					$fltDiscount = $fltPrice - ($fltPrice / 100 * $fltDiscount);
+					$fltDiscount = round($fltPrice - ($fltPrice / 100 * $fltDiscount), 10);
 					$fltDiscount = $fltDiscount > 0 ? (floor($fltDiscount * 100) / 100) : (ceil($fltDiscount * 100) / 100);
 					
 					$fltPrice = $fltPrice - $fltDiscount;
@@ -460,16 +460,20 @@ class IsotopeRules extends Controller
 				case 'product':
 					$fltPrice = $blnDiscount ? ($objProduct->total_price / 100 * $fltDiscount) : $arrRule['discount'];
 					$fltPrice = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
-					
 					$arrSurcharge['total_price'] += $fltPrice;
+
+					$fltPrice = $blnDiscount ? ($objProduct->tax_free_total_price / 100 * $fltDiscount) : $arrRule['discount'];
+					$fltPrice = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
 					$arrSurcharge['products'][$objProduct->cart_id] = $fltPrice;
 					break;
 					
 				case 'item':
 					$fltPrice = ($blnDiscount ? ($objProduct->price / 100 * $fltDiscount) : $arrRule['discount']) * $objProduct->quantity_requested;
 					$fltPrice = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
-					
 					$arrSurcharge['total_price'] += $fltPrice;
+					
+					$fltPrice = ($blnDiscount ? ($objProduct->tax_free_price / 100 * $fltDiscount) : $arrRule['discount']) * $objProduct->quantity_requested;
+					$fltPrice = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
 					$arrSurcharge['products'][$objProduct->cart_id] = $fltPrice;
 					break;
 					
