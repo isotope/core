@@ -35,7 +35,9 @@ $GLOBALS['TL_LANG']['tl_iso_mail']['sender']		= array('Sender Email', 'Enter the
 $GLOBALS['TL_LANG']['tl_iso_mail']['cc']			= array('Send a CC to', 'Recipients that should receive a carbon copy of the mail. Separate multiple addresses with a comma.');
 $GLOBALS['TL_LANG']['tl_iso_mail']['bcc']			= array('Send a BCC to', 'Recipients that should receive a blind carbon copy of the mail. Separate multiple addresses with a comma.');
 $GLOBALS['TL_LANG']['tl_iso_mail']['template']		= array('Email Template', 'Here you can select an HTML e-mail template to use.');
-
+$GLOBALS['TL_LANG']['tl_iso_mail']['attachDocument'] = array('Attach an order document','Allows you to generate an additional isotope document as a PDF attachment for this email.');
+$GLOBALS['TL_LANG']['tl_iso_mail']['documentTemplate'] = array('Document template','Select an isotope document template.');
+$GLOBALS['TL_LANG']['tl_iso_mail']['documentTitle'] = array('Document title','Please specify a title for theh attached document.');
 
 /**
  * Buttons

@@ -198,7 +198,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 			$strBuffer .= $objWidget->parse();
 		}
 
-		if ($this->Input->post('FORM_SUBMIT') == 'payment_form' && !$objModule->doNotSubmit && $arrPayment['module']==$this->id)
+		if ($this->Input->post('FORM_SUBMIT') == 'iso_mod_checkout_payment' && !$objModule->doNotSubmit && $arrPayment['module']==$this->id)
 		{
 			// Get the current order, review page will create the data
 			$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->execute($this->Isotope->Cart->id);
@@ -222,12 +222,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 
 		return '
 <h2>' . $this->label . '</h2>'.
-($_SESSION['CHECKOUT_DATA']['responseMsg'] == '' ? '' : '<p class="error message">'. $_SESSION['CHECKOUT_DATA']['responseMsg'] . '</p>').
-'<form id="payment_form" action="'.$this->Environment->request.'" method="post">
-<input type="hidden" name="FORM_SUBMIT" value="payment_form" />'
-.$strBuffer.'
-<input type="submit" class="submit" value="' . specialchars($GLOBALS['TL_LANG']['MSC']['nextStep']) . '" />
-</form>';
+($_SESSION['CHECKOUT_DATA']['responseMsg'] == '' ? '' : '<p class="error message">'. $_SESSION['CHECKOUT_DATA']['responseMsg'] . '</p>').$strBuffer;
 
 	}
 
@@ -396,7 +391,7 @@ $return .= '</div></div>';
 			"x_ship_to_zip"						=> $arrShipping['postal'],
 			"x_ship_to_country"					=> $arrShipping['country'],
 		);
-
+		
 		if($arrData['card_accountNumber']) //Passing CC data
 		{
 			$authnet_values["x_method"] 	= "CC";

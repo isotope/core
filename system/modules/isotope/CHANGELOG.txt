@@ -4,24 +4,25 @@ Isotope eCommerce Changelog
 
 Version 0.3.beta1
 ------------------------------
-- Added "advanced prices". Allow to define a prices for store configs, member groups, start/stop dates
-- Added availability check for products
-- Added new "field wizard" to set up address fields with custom label and mandatory option in store configuration
-- Added option the define a custom template folder for each store configuration
-- Added store config option to limit tl_member countries to billing and shipping countries
-- Added includeBlankOption=true for select options using foreignKey (Ticket #292)
-- Added new IsotopeOrder class, checkout can now be done from postsale request
-- Added button to duplicate the fallback language to a language record
-- Added multi-edit support for products and variant data
-- Added minimum order subtotal amount (store config option)
-- Added sku to email product template
-- Added iso_checkout_order_conditions template
-- Added productTree widget, similar to pageTree but for products/variants
-- Added "tableless" option for checkout module (Ticket #325)
+- Added: "advanced prices". Allow to define a prices for store configs, member groups, start/stop dates
+- Added: availability check for products
+- Added: new "field wizard" to set up address fields with custom label and mandatory option in store configuration
+- Added: option the define a custom template folder for each store configuration
+- Added: store config option to limit tl_member countries to billing and shipping countries
+- Added: includeBlankOption=true for select options using foreignKey (Ticket #292)
+- Added: new IsotopeOrder class, checkout can now be done from postsale request
+- Added: button to duplicate the fallback language to a language record
+- Added: multi-edit support for products and variant data
+- Added: minimum order subtotal amount (store config option)
+- Added: sku to email product template
+- Added: iso_checkout_order_conditions template
+- Added: productTree widget, similar to pageTree but for products/variants
+- Added: "tableless" option for checkout module (Ticket #325)
 - Added: Copy child records (variants, languages) when copying a product
 - Added: Allow foreignKey for variant attribute options
 - Added: Show theme templates in product type select menu
 - Added: System messaging support (Ticket #13)
+- Added: Attach optional additional PDF invoice document to system order mails
 - Improved: Better Isotope module handling, including callback support
 - Improved: Moved multilingual support to its own extension "isotope_multilingual" with lot more options
 - Improved: Hide payment information if checkout total is 0

@@ -510,12 +510,12 @@ class IsotopeOrder extends IsotopeProductCollection
 
 		if ($this->iso_mail_admin && $this->iso_sales_email != '')
 		{
-			$this->Isotope->sendMail($this->iso_mail_admin, $this->iso_sales_email, $this->language, $arrData, $this->iso_customer_email);
+			$this->Isotope->sendMail($this->iso_mail_admin, $this->iso_sales_email, $this->language, $arrData, $this->iso_customer_email, $this);
 		}
 
 		if ($this->iso_mail_customer && $this->iso_customer_email != '')
 		{
-			$this->Isotope->sendMail($this->iso_mail_customer, $this->iso_customer_email, $this->language, $arrData);
+			$this->Isotope->sendMail($this->iso_mail_customer, $this->iso_customer_email, $this->language, $arrData, '', $this);
 		}
 		else
 		{

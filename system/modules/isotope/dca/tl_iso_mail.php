@@ -118,7 +118,13 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{name_legend},name;{address_legend},senderName,sender,cc,bcc;{expert_legend:hide},template',
+		'__selector__'				  => array('attachDocument'),
+		'default'                     => '{name_legend},name,attachDocument;{address_legend},senderName,sender,cc,bcc;{expert_legend:hide},template',
+	),
+	
+	'subpalettes' => array
+	(
+		'attachDocument'			  => 'documentTemplate,documentTitle'	
 	),
 
 	// Fields
@@ -168,6 +174,24 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
 			'options'                 => $this->getTemplateGroup('mail_'),
 			'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
 		),
+		'attachDocument' => array
+		(
+			'label'					  => &$GLOBALS['TL_LANG']['tl_iso_mail']['attachDocument'],
+			'inputType'				  => 'checkbox',
+			'eval'					  => array('submitOnChange'=>true)		
+		),
+		'documentTemplate'	=> array
+		(
+			'label'					  => &$GLOBALS['TL_LANG']['tl_iso_mail']['documentTemplate'],
+			'inputType'				  => 'select',
+			'options'				  => $this->getTemplateGroup('iso_invoice_')
+		),
+		'documentTitle'		=> array
+		(
+			'label'					  => &$GLOBALS['TL_LANG']['tl_iso_mail']['documentTitle'],
+			'inputType'				  => 'text',
+			'eval'					  => array('mandatory'=>true,'maxlength'=>255)		
+		)
 	)
 );
 

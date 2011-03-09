@@ -188,7 +188,7 @@ class ShippingUPS extends IsotopeShipping
 
 				$this->destination = $arrDestination;
 
-				return $this->calculateShippingRate();
+				return ($this->arrData['price'] ? $this->price : 0) + $this->calculateShippingRate();
 
 
 				break;
@@ -200,7 +200,7 @@ class ShippingUPS extends IsotopeShipping
 	public function calculateShippingRate()
 	{
 		if($_SESSION['CHECKOUT_DATA']['shipping']['modules'][$this->id]['price'])	//to avoid calling the CURL multiple times which slows us down.
-		{
+		{			
 			 $fltPrice = $_SESSION['CHECKOUT_DATA']['shipping']['modules'][$this->id]['price'];
 		}
 		else

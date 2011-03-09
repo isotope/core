@@ -579,7 +579,7 @@ class Isotope extends Controller
 	 * @param array $arrData
 	 * @return void
 	 */
-	public function sendMail($intId, $strRecipient, $strLanguage, $arrData, $strReplyTo='')
+	public function sendMail($intId, $strRecipient, $strLanguage, $arrData, $strReplyTo='', $objCollection=null)
 	{
 		$objMail = $this->Database->prepare("SELECT * FROM tl_iso_mail m LEFT OUTER JOIN tl_iso_mail_content c ON m.id=c.pid WHERE m.id=$intId AND (c.language='$strLanguage' OR fallback='1') ORDER BY language='$strLanguage' DESC")->limit(1)->execute();
 
@@ -668,7 +668,18 @@ class Isotope extends Controller
 					}
 				}
 			}
-
+			
+			if($objMail->attachDocument && is_object($objCollection))
+			{				
+				$strTemplate = ($objMail->documentTemplate ?  $objMail->documentTemplate : null);
+				$objPdf = $objCollection->generatePDF($strTemplate,null,false);
+				$objPdf->lastPage();
+				$strTitle = $this->parseSimpleTokens($this->replaceInsertTags((string)$objMail->documentTitle), $arrPlainData);
+				$strFileName = standardize(ampersand($strTitle, false), true);
+				
+				$objEmail->attachFileFromString($objPdf->Output($strFileName.'.pdf', 'S'),$strFileName.'.pdf','application/pdf');
+			}
+			
 			$objEmail->sendTo($strRecipient);
 		}
 		catch( Exception $e )
