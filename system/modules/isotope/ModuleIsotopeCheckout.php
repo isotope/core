@@ -191,7 +191,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			
 				if ($this->doNotSubmit && $step != $this->strCurrentStep)
 				{
-					$this->redirect($this->addToUrl('step=' . $step));
+					$this->redirect($this->addToUrl('step=' . $step, true));
 				}
 			
 			}
@@ -208,7 +208,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			
 			if ($strBuffer === false)
 			{
-				$this->redirect($this->addToUrl('step=complete'));
+				$this->redirect($this->addToUrl('step=complete', true));
 			}
 			
 			$this->Template->showForm = false;
@@ -227,7 +227,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				
 				if ($strUniqueId === false)
 				{
-					$this->redirect($this->addToUrl('step=failed'));
+					$this->redirect($this->addToUrl('step=failed', true));
 				}
 				
 				$this->redirect($this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($this->orderCompleteJumpTo)->fetchAssoc()) . '?uid='.$strUniqueId);
@@ -259,7 +259,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			(
 				'class'	=> $step . ($this->strCurrentStep == $step ? ' active' : '') . ($blnStepPassed ? ' passed' : '') . ($i == 0 ? ' first' : ''),
 				'label'	=> (strlen($GLOBALS['TL_LANG']['ISO']['checkout_'.$step]) ? $GLOBALS['TL_LANG']['ISO']['checkout_'.$step] : $step),
-				'href'	=> ($blnStepPassed ? $this->addToUrl('step='.$step) : ''),
+				'href'	=> ($blnStepPassed ? $this->addToUrl('step='.$step, true) : ''),
 				'title'	=> 'Go back to step "'.$step.'"',
 			);
 		}
@@ -305,7 +305,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	
 		if (!in_array($this->strCurrentStep, $arrSteps))
 		{						
-			$this->redirect($this->addToUrl('step='.array_shift($arrSteps)));
+			$this->redirect($this->addToUrl('step='.array_shift($arrSteps), true));
 		}
 		else
 		{
@@ -313,11 +313,11 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			
 			if ($intKey == count($arrSteps))
 			{
-				$this->redirect($this->addToUrl('step=process'));
+				$this->redirect($this->addToUrl('step=process', true));
 			}
 			else
 			{
-				$this->redirect($this->addToUrl('step='.$arrSteps[$intKey]));
+				$this->redirect($this->addToUrl('step='.$arrSteps[$intKey], true));
 			}
 		}
 	}
@@ -331,12 +331,12 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		$arrSteps = array_keys($GLOBALS['ISO_CHECKOUT_STEPS']);
 		if (!in_array($this->strCurrentStep, $arrSteps))
 		{
-			$this->redirect($this->addToUrl('step='.array_shift($arrSteps)));
+			$this->redirect($this->addToUrl('step='.array_shift($arrSteps), true));
 		}
 		else
 		{
 			$strKey = array_search($this->strCurrentStep, $arrSteps);
-			$this->redirect($this->addToUrl('step='.$arrSteps[($strKey-1)]));
+			$this->redirect($this->addToUrl('step='.$arrSteps[($strKey-1)], true));
 		}
 	}
 	
@@ -351,7 +351,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				(
 					'headline'	=> ($this->Isotope->Cart->shippingAddress['id'] == -1 ? $GLOBALS['TL_LANG']['ISO']['billing_shipping_address'] : $GLOBALS['TL_LANG']['ISO']['billing_address']),
 					'info'		=> $this->Isotope->generateAddressString($this->Isotope->Cart->billingAddress, $this->Isotope->Config->billing_fields),
-					'edit'		=> $this->addToUrl('step=address'),
+					'edit'		=> $this->addToUrl('step=address', true),
 				),
 			);
 		}
@@ -390,7 +390,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				(
 					'headline'	=> $GLOBALS['TL_LANG']['ISO']['shipping_address'],
 					'info'		=> $this->Isotope->generateAddressString($this->Isotope->Cart->shippingAddress, $this->Isotope->Config->shipping_fields),
-					'edit'		=> $this->addToUrl('step=address'),
+					'edit'		=> $this->addToUrl('step=address', true),
 				),
 			);
 		}
@@ -427,7 +427,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 					'headline'	=> $GLOBALS['TL_LANG']['ISO']['shipping_method'],
 					'info'		=> $this->Isotope->Cart->Shipping->checkoutReview(),
 					'note'		=> $this->Isotope->Cart->Shipping->note,
-					'edit'		=> $this->addToUrl('step=shipping'),
+					'edit'		=> $this->addToUrl('step=shipping', true),
 				),
 			);
 		}
@@ -541,7 +541,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 					'headline'	=> $GLOBALS['TL_LANG']['ISO']['payment_method'],
 					'info'		=> $this->Isotope->Cart->Payment->checkoutReview(),
 					'note'		=> $this->Isotope->Cart->Payment->note,
-					'edit'		=> $this->addToUrl('step=payment'),
+					'edit'		=> $this->addToUrl('step=payment', true),
 				),
 			);
 		}
