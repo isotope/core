@@ -32,6 +32,10 @@ window.addEvent('domready', function() {
 			$(('payment_data_'+el.value)).setStyle('display', 'block');
 		}
 	});
+	
+	$('iso_mod_checkout_payment').addEvent('keypress',function(event) {
+		if(event.key=='enter') event.stop();             
+    });
 });
 //--><!]]>
 </script>
