@@ -344,19 +344,8 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 		(
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['products'],
 			'exclude'					=> true,
-			'inputType'					=> 'tableLookup',
-			'eval' => array
-			(
-				'mandatory'				=> true,
-				'doNotSaveEmpty'		=> true,
-				'tl_class'				=> 'clr',
-				'foreignTable'			=> 'tl_iso_products',
-				'fieldType'				=> 'checkbox',
-				'listFields'			=> array('type'=>'(SELECT name FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id)', 'name', 'sku'),
-				'searchFields'			=> array('name', 'alias', 'sku', 'description'),
-				'sqlWhere'				=> 'pid=0',
-				'searchLabel'			=> 'Search products',
-			),
+			'inputType'					=> 'productTree',
+			'eval'						=> array('mandatory'=>true, 'fieldType'=>'checkbox', 'variants'=>true, 'doNotSaveEmpty'=>true, 'tl_class'=>'clr'),
 			'load_callback' => array
 			(
 				array('tl_iso_rules', 'loadRestrictions'),

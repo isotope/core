@@ -18,6 +18,7 @@ Version 0.3.beta1
 - Added: iso_checkout_order_conditions template
 - Added: productTree widget, similar to pageTree but for products/variants
 - Added: "tableless" option for checkout module (Ticket #325)
+- Added ability to apply a rule to a product variant
 - Added: Copy child records (variants, languages) when copying a product
 - Added: Allow foreignKey for variant attribute options
 - Added: Show theme templates in product type select menu
@@ -56,6 +57,8 @@ Version 0.2.7 (2011-03-??)
 - Fixed potential SQL injection in product collection
 - Fixed CSS classes in checkout review and order details
 - Fixed emails not sent to customers (Ticket #406)
+- Fixed tax calculation for prices including taxes and discount
+- Fixed float precision on discount rules
 
 Version 0.2.6 (2011-03-01)
 ------------------------------

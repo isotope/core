@@ -165,6 +165,7 @@ class IsotopeProduct extends Controller
 				{
 					$arrVariantOptions = $objVariant->getOptions(true);
 
+					$this->arrVariantOptions['ids'][] = $objVariant->id;
 					$this->arrVariantOptions['variants'][] = $arrVariantOptions;
 
 					foreach( $arrVariantOptions as $attribute => $value )
@@ -299,6 +300,10 @@ class IsotopeProduct extends Controller
 			case 'pid':
 			case 'href_reader':
 				return $this->arrData[$strKey];
+
+			case 'variant_ids':
+				return (array)$this->arrVariantOptions['ids'];
+				break;
 
 			case 'formSubmit':
 				return $this->formSubmit;

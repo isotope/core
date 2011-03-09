@@ -82,15 +82,15 @@ class IsotopeRules extends Controller
 	{
 		if ($objSource instanceof IsotopeProduct && ($strField == 'price' || $strField == 'low_price'))
 		{
-			$objRules = $this->findRules(array("type='product'"), array(), array($objSource));
+			$objRules = $this->findRules(array("type='product'"), array(), array($objSource), ($strField == 'low_price' ? true : false));
 
 			while( $objRules->next() )
 			{
 				if (strpos($objRules->discount, '%') !== false)
 				{
 					$fltDiscount = 100 + rtrim($objRules->discount, '%');
-					$fltDiscount = $fltPrice - ($fltPrice / 100 * $fltDiscount);
-					$fltDiscount = $fltDiscount > 0 ? (floor($fltDiscount * 1000) / 1000) : (ceil($fltDiscount * 1000) / 1000);
+					$fltDiscount = round($fltPrice - ($fltPrice / 100 * $fltDiscount), 10);
+					$fltDiscount = $fltDiscount > 0 ? (floor($fltDiscount * 100) / 100) : (ceil($fltDiscount * 100) / 100);
 
 					$fltPrice = $fltPrice - $fltDiscount;
 				}
@@ -289,7 +289,7 @@ class IsotopeRules extends Controller
 	/**
 	 * Fetch rules
 	 */
-	protected function findRules($arrProcedures, $arrValues=array(), $arrProducts=null)
+	protected function findRules($arrProcedures, $arrValues=array(), $arrProducts=null, $blnIncludeVariants=false)
 	{
 		if (!is_array($arrProducts))
 		{
@@ -339,9 +339,21 @@ class IsotopeRules extends Controller
 		$arrTypes = array();
 		foreach( $arrProducts as $objProduct )
 		{
-			$arrIds[] = $objProduct->pid ? $objProduct->pid : $objProduct->id;
+			$arrIds[] = $objProduct->id;
 			$arrTypes[] = $objProduct->type;
+			
+			if ($objProduct->pid > 0)
+			{
+				$arrIds[] = $objProduct->pid;
+			}
+			
+			if ($blnIncludeVariants)
+			{
+				$arrIds = array_merge($arrIds, $objProduct->variant_ids);
+			}
 		}
+		
+		$arrIds = array_unique($arrIds);
 
 		$arrProcedures[] = "(productRestrictions='none'
 							OR (productRestrictions='producttypes' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='producttypes' AND object_id IN (" . implode(',', $arrTypes) . "))>0)
@@ -403,7 +415,8 @@ class IsotopeRules extends Controller
 				$intTotal = 0;
 				foreach( $arrProducts as $objProduct )
 				{
-					if ((($arrRule['productRestrictions'] == 'products' || $arrRule['productRestrictions'] == 'pages') && in_array(($objProduct->pid ? $objProduct->pid : $objProduct->id), $arrLimit))
+					if ((($arrRule['productRestrictions'] == 'products' || $arrRule['productRestrictions'] == 'pages')
+						&& (in_array($objProduct->id, $arrLimit) || ($objProduct->pid > 0 && in_array($objProduct->pid, $arrLimit))))
 					|| ($arrRule['productRestrictions'] == 'producttypes' && in_array($objProduct->type, $arrLimit)))
 					{
 						$intTotal += $arrRule['quantityMode']=='cart_items' ? $objProduct->quantity_requested : 1;
@@ -428,7 +441,8 @@ class IsotopeRules extends Controller
 		foreach( $arrProducts as $objProduct )
 		{
 			// Product restrictions
-			if ((($arrRule['productRestrictions'] == 'products' || $arrRule['productRestrictions'] == 'pages') && !in_array(($objProduct->pid ? $objProduct->pid : $objProduct->id), $arrLimit))
+			if ((($arrRule['productRestrictions'] == 'products' || $arrRule['productRestrictions'] == 'pages')
+				&& (!in_array($objProduct->id, $arrLimit) && ($objProduct->pid == 0 || !in_array($objProduct->pid, $arrLimit))))
 			|| ($arrRule['productRestrictions'] == 'producttypes' && !in_array($objProduct->type, $arrLimit)))
 			{
 				continue;
@@ -453,16 +467,20 @@ class IsotopeRules extends Controller
 				case 'product':
 					$fltPrice = $blnDiscount ? ($objProduct->total_price / 100 * $fltDiscount) : $arrRule['discount'];
 					$fltPrice = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
-
 					$arrSurcharge['total_price'] += $fltPrice;
+
+					$fltPrice = $blnDiscount ? ($objProduct->tax_free_total_price / 100 * $fltDiscount) : $arrRule['discount'];
+					$fltPrice = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
 					$arrSurcharge['products'][$objProduct->cart_id] = $fltPrice;
 					break;
 
 				case 'item':
 					$fltPrice = ($blnDiscount ? ($objProduct->price / 100 * $fltDiscount) : $arrRule['discount']) * $objProduct->quantity_requested;
 					$fltPrice = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
-
 					$arrSurcharge['total_price'] += $fltPrice;
+
+					$fltPrice = ($blnDiscount ? ($objProduct->tax_free_price / 100 * $fltDiscount) : $arrRule['discount']) * $objProduct->quantity_requested;
+					$fltPrice = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
 					$arrSurcharge['products'][$objProduct->cart_id] = $fltPrice;
 					break;
 
