@@ -399,12 +399,10 @@ class tl_iso_orders extends Backend
 		
 		$arrConfigs = $this->User->iso_configs;
 		
-		if (!is_array($arrConfigs) || !count($arrConfigs))
-			$arrConfigs = array(0);
-		
-		$objOrders = $this->Database->execute("SELECT * FROM tl_iso_orders WHERE status!=''" . ($this->User->isAdmin ? '' : " AND config_id IN (".implode(',', $arrConfigs).")"));
-		
-		$arrIds = $objOrders->fetchEach('id');
+		if ($this->User->isAdmin || (is_array($arrConfigs) && count($arrConfigs)))
+		{
+			$arrIds = $this->Database->execute("SELECT id FROM tl_iso_orders WHERE status!=''" . ($this->User->isAdmin ? '' : " AND config_id IN (".implode(',', $arrConfigs).")"))->fetchEach('id');
+		}
 		
 		if (!count($arrIds))
 			$arrIds = array(0);

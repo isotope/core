@@ -14,6 +14,7 @@ Version 0.2.7 (2011-03-??)
 - Fixed emails not sent to customers (Ticket #406)
 - Fixed tax calculation for prices including taxes and discount
 - Fixed float precision on discount rules
+- Fixed orders not appearing for non-admin users
 
 Version 0.2.6 (2011-03-01)
 ------------------------------
