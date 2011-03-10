@@ -48,6 +48,9 @@ Version 0.3.beta1
 - Fixed enter key trapping on checkout payment method
 - Removed pre-0.1 update code from runonce.php
 
+Version 0.2.8 (2011-03-??)
+------------------------------
+
 Version 0.2.7 (2011-03-09)
 ------------------------------
 - Added support for language switching on checkout page (changelanguage extension)
