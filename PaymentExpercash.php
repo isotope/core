@@ -104,7 +104,7 @@ class PaymentExpercash extends IsotopePayment
 			'transactionId'		=> $objOrder->order_id,
 			'amount'			=> (round($this->Isotope->Cart->grandTotal, 2)*100),
 			'currency'			=> $this->Isotope->Config->currency,
-			'paymentMethod'		=> 'automatic_payment_method',
+			'paymentMethod'		=> $this->expercash_paymentMethod,
 			'returnUrl'			=> $this->Environment->base . $this->addToUrl('step=complete', true),
 			'errorUrl'			=> $this->Environment->base . $this->addToUrl('step=failed', true),
 			'notifyUrl'			=> $this->Environment->base . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id,

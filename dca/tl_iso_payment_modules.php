@@ -22,7 +22,7 @@
 /**
  * Palettes
  */
-$GLOBALS['TL_DCA']['tl_iso_payment_modules']['palettes']['expercash'] = '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},expercash_popupId,expercash_profile,expercash_popupKey;{price_legend:hide},price,tax_class;{template_legend},expercash_css;{expert_legend:hide},guests,protected;{enabled_legend},enabled';
+$GLOBALS['TL_DCA']['tl_iso_payment_modules']['palettes']['expercash'] = '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},expercash_popupId,expercash_profile,expercash_popupKey,expercash_paymentMethod;{price_legend:hide},price,tax_class;{template_legend},expercash_css;{expert_legend:hide},guests,protected;{enabled_legend},enabled';
 
 
 /**
@@ -46,7 +46,16 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['expercash_popupKey'] = a
 (
 	'label'				=> &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['expercash_popupKey'],
 	'inputType'			=> 'text',
-	'eval'				=> array('mandatory'=>true, 'maxlength'=>32, 'decodeEntities'=>true, 'tl_class'=>'clr long'),
+	'eval'				=> array('mandatory'=>true, 'maxlength'=>32, 'decodeEntities'=>true, 'tl_class'=>'w50'),
+);
+
+$GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['expercash_paymentMethod'] = array
+(
+	'label'				=> &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['expercash_paymentMethod'],
+	'inputType'			=> 'select',
+	'options'			=> array('automatic_payment_method', 'elv_buy', 'elv_authorize', 'cc_buy', 'cc_authorize', 'giropay', 'sofortueberweisung'),
+	'reference'			=> &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['expercash_paymentMethod'],
+	'eval'				=> array('mandatory'=>true, 'tl_class'=>'w50'),
 );
 
 $GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['expercash_css'] = array
