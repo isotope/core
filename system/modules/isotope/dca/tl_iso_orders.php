@@ -597,7 +597,7 @@ class tl_iso_orders extends Backend
 			
 			if ($objOrder->findBy('id', $intId))
 			{
-				$pdf = $objOrder->generatePDF($pdf, false);
+				$pdf = $objOrder->generatePDF(null, $pdf, false);
 			}
 		}
 		

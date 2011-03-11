@@ -854,12 +854,9 @@ abstract class IsotopeProductCollection extends Model
 	}
 	
 	
-	public function generatePDF($strTemplate=null,$pdf=null, $blnOutput=true)
+	public function generatePDF($strTemplate=null, $pdf=null, $blnOutput=true)
 	{
-		if($strTemplate)
-			$this->strTemplate = $strTemplate;
-			
-		if ($pdf == null)
+		if (!is_object($pdf))
 		{
 			// TCPDF configuration
 			$l['a_meta_dir'] = 'ltr';
@@ -910,7 +907,7 @@ abstract class IsotopeProductCollection extends Model
 		$pdf->AddPage();
 		
 		// Write the HTML content
-		$pdf->writeHTML($this->generate($this->strTemplate, false), true, 0, true, 0);
+		$pdf->writeHTML($this->generate($strTemplate, false), true, 0, true, 0);
 		
 		if ($blnOutput)
 		{

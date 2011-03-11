@@ -658,7 +658,7 @@ class Isotope extends Controller
 			}
 
 			$attachments = deserialize($objMail->attachments);
-		   	if(is_array($attachments) && count($attachments) > 0)
+			if (is_array($attachments) && count($attachments) > 0)
 			{
 				foreach($attachments as $attachment)
 				{
@@ -668,18 +668,19 @@ class Isotope extends Controller
 					}
 				}
 			}
-			
-			if($objMail->attachDocument && is_object($objCollection))
-			{				
-				$strTemplate = ($objMail->documentTemplate ?  $objMail->documentTemplate : null);
-				$objPdf = $objCollection->generatePDF($strTemplate,null,false);
+
+			if ($objMail->attachDocument && $objCollection instanceof IsotopeProductCollection)
+			{
+				$strTemplate = ($objMail->documentTemplate ? $objMail->documentTemplate : null);
+
+				$objPdf = $objCollection->generatePDF($strTemplate, null, false);
 				$objPdf->lastPage();
-				$strTitle = $this->parseSimpleTokens($this->replaceInsertTags((string)$objMail->documentTitle), $arrPlainData);
-				$strFileName = standardize(ampersand($strTitle, false), true);
-				
-				$objEmail->attachFileFromString($objPdf->Output($strFileName.'.pdf', 'S'),$strFileName.'.pdf','application/pdf');
+
+				$strTitle = $this->parseSimpleTokens($this->replaceInsertTags($objMail->documentTitle), $arrPlainData);
+
+				$objEmail->attachFileFromString($objPdf->Output($strTitle.'.pdf', 'S'), $strTitle.'.pdf', 'application/pdf');
 			}
-			
+
 			$objEmail->sendTo($strRecipient);
 		}
 		catch( Exception $e )

@@ -29,15 +29,16 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_iso_mail']['name']			= array('Name', 'Please enter a name for the email. Used as a reference in the system.');
-$GLOBALS['TL_LANG']['tl_iso_mail']['senderName']	= array('Sender Name', 'Enter the name of the sender.');
-$GLOBALS['TL_LANG']['tl_iso_mail']['sender']		= array('Sender Email', 'Enter the e-mail address of the sender. The recipient will reply to this address.');
-$GLOBALS['TL_LANG']['tl_iso_mail']['cc']			= array('Send a CC to', 'Recipients that should receive a carbon copy of the mail. Separate multiple addresses with a comma.');
-$GLOBALS['TL_LANG']['tl_iso_mail']['bcc']			= array('Send a BCC to', 'Recipients that should receive a blind carbon copy of the mail. Separate multiple addresses with a comma.');
-$GLOBALS['TL_LANG']['tl_iso_mail']['template']		= array('Email Template', 'Here you can select an HTML e-mail template to use.');
-$GLOBALS['TL_LANG']['tl_iso_mail']['attachDocument'] = array('Attach an order document','Allows you to generate an additional isotope document as a PDF attachment for this email.');
-$GLOBALS['TL_LANG']['tl_iso_mail']['documentTemplate'] = array('Document template','Select an isotope document template.');
-$GLOBALS['TL_LANG']['tl_iso_mail']['documentTitle'] = array('Document title','Please specify a title for theh attached document.');
+$GLOBALS['TL_LANG']['tl_iso_mail']['name']				= array('Name', 'Please enter a name for the email. Used as a reference in the system.');
+$GLOBALS['TL_LANG']['tl_iso_mail']['senderName']		= array('Sender Name', 'Enter the name of the sender.');
+$GLOBALS['TL_LANG']['tl_iso_mail']['sender']			= array('Sender Email', 'Enter the e-mail address of the sender. The recipient will reply to this address.');
+$GLOBALS['TL_LANG']['tl_iso_mail']['cc']				= array('Send a CC to', 'Recipients that should receive a carbon copy of the mail. Separate multiple addresses with a comma.');
+$GLOBALS['TL_LANG']['tl_iso_mail']['bcc']				= array('Send a BCC to', 'Recipients that should receive a blind carbon copy of the mail. Separate multiple addresses with a comma.');
+$GLOBALS['TL_LANG']['tl_iso_mail']['template']			= array('Email Template', 'Here you can select an HTML e-mail template to use.');
+$GLOBALS['TL_LANG']['tl_iso_mail']['attachDocument']	= array('Attach an order document', 'Allows you to generate an additional document as a PDF attachment for this email.');
+$GLOBALS['TL_LANG']['tl_iso_mail']['documentTemplate']	= array('Document template', 'Select an document template to override the default collection template.');
+$GLOBALS['TL_LANG']['tl_iso_mail']['documentTitle']		= array('Document title', 'Please specify a title for the attached document.');
+
 
 /**
  * Buttons
