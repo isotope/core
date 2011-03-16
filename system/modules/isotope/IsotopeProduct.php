@@ -791,7 +791,7 @@ class IsotopeProduct extends Controller
 			if (count((array)$this->arrVariantOptions['attributes'][$strField]) == 1)
 			{
 				$this->arrOptions[$strField] = $this->arrVariantOptions['attributes'][$strField][0];
-				$this->Input->setPost($strField, $this->arrVariantOptions['attributes'][$strField][0]);
+				$arrData['default'] = $this->arrVariantOptions['attributes'][$strField][0];
 
 				if (!$blnAjax)
 				{
@@ -804,7 +804,7 @@ class IsotopeProduct extends Controller
 				$arrData['eval']['includeBlankOption'] = true;
 			}
 
-			$arrField = $this->prepareForWidget($arrData, $strField);
+			$arrField = $this->prepareForWidget($arrData, $strField, $arrData['default']);
 
 			// Unset if no variant has this option
 			foreach( $arrField['options'] as $k => $option )
@@ -825,7 +825,8 @@ class IsotopeProduct extends Controller
 
 						foreach( (array)$this->arrVariantOptions['variants'] as $arrVariant )
 						{
-							if ($arrVariant[$strField] == $option['value'] && count($this->arrOptions) == count(array_intersect_assoc($this->arrOptions, $arrVariant)))
+							// @todo not sure why we had the second check. Needs verification!
+							if ($arrVariant[$strField] == $option['value'] /* && count($this->arrOptions) == count(array_intersect_assoc($this->arrOptions, $arrVariant)) */)
 							{
 								$blnValid = true;
 							}
@@ -845,11 +846,7 @@ class IsotopeProduct extends Controller
 			{
 				if (in_array($this->Input->get($strField), (array)$this->arrVariantOptions['attributes'][$strField], true))
 				{
-					$this->Input->setPost($strField, $this->Input->get($strField));
-				}
-				else
-				{
-					$this->Input->setGet($strField, '');
+					$arrField['value'] = $this->Input->get($strField);
 				}
 			}
 		}
@@ -897,7 +894,7 @@ class IsotopeProduct extends Controller
 		$objWidget->id .= "_" . $this->formSubmit;
 
 		// Validate input
-		if ($this->Input->post('FORM_SUBMIT') == $this->formSubmit || $this->Input->get($strField) != '')
+		if ($this->Input->post('FORM_SUBMIT') == $this->formSubmit)
 		{
 			$objWidget->validate();
 
@@ -1008,6 +1005,10 @@ class IsotopeProduct extends Controller
 				elseif ($this->Input->post('FORM_SUBMIT') == '' && in_array($this->Input->get($attribute), (array)$this->arrVariantOptions['attributes'][$attribute], true))
 				{
 					$arrOptions[$attribute] = $this->Input->get($attribute);
+				}
+				elseif (count((array)$this->arrVariantOptions['attributes'][$attribute]) == 1)
+				{
+					$arrOptions[$attribute] = $this->arrVariantOptions['attributes'][$attribute][0];
 				}
 			}
 		}
