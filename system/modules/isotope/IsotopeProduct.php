@@ -84,6 +84,11 @@ class IsotopeProduct extends Controller
 	 * Unique form ID
 	 */
 	protected $formSubmit = 'iso_product';
+	
+	/**
+	 * Name of the Javascript class
+	 */
+	protected $ajaxClass = 'IsotopeProduct';
 
 	/**
 	 * for option widgets, helps determine the encoding type for a form
@@ -141,6 +146,16 @@ class IsotopeProduct extends Controller
 		$this->arrCache['reader_template'] = $this->arrType['reader_template'];
 		$this->arrVariantAttributes = $this->arrType['variants'] ? deserialize($this->arrType['variant_attributes']) : array();
 		$this->arrOptions = is_array($arrOptions) ? $arrOptions : array();
+		
+		// Allow to customize attributes
+		if(isset($GLOBALS['ISO_HOOKS']['productAttributes']) && is_array($GLOBALS['ISO_HOOKS']['productAttributes']))
+		{
+			foreach ($GLOBALS['ISO_HOOKS']['productAttributes'] as $callback)
+			{
+				$this->import($callback[0]);
+				$this->$callback[0]->$callback[1]($this->arrAttributes, $this->arrVariantAttributes, $this);
+			}
+		}
 
 		// Remove attributes not in this product type
 		foreach( $this->arrData as $attribute => $value )
@@ -243,24 +258,6 @@ class IsotopeProduct extends Controller
 				else
 				{
 					$this->arrData['price'] = $objProduct->low_price;
-				}
-
-				if(isset($GLOBALS['TL_HOOKS']['iso_addAttributes']) && is_array($GLOBALS['TL_HOOKS']['iso_addAttributes']))
-				{
-					foreach ($GLOBALS['TL_HOOKS']['iso_addAttributes'] as $callback)
-					{
-						$this->import($callback[0]);
-						$this->arrAttributes[] = $this->$callback[0]->$callback[1]($this);
-					}
-				}
-
-				if(isset($GLOBALS['TL_HOOKS']['iso_addVariantAttributes']) && is_array($GLOBALS['TL_HOOKS']['iso_addVariantAttributes']))
-				{
-					foreach ($GLOBALS['TL_HOOKS']['iso_addVariantAttributes'] as $callback)
-					{
-						$this->import($callback[0]);
-						$this->arrVariantAttributes[] = $this->$callback[0]->$callback[1]($this);
-					}
 				}
 			}
 
@@ -630,7 +627,7 @@ class IsotopeProduct extends Controller
 		$objTemplate->action = ampersand($this->Environment->request, true);
 		$objTemplate->formSubmit = $this->formSubmit;
 
-		$GLOBALS['TL_MOOTOOLS'][] = "<script type=\"text/javascript\">new IsotopeProduct('{$objModule->id}', '" . ($this->pid ? $this->pid : $this->id) . "', '{$this->formSubmit}', ['ctrl_" . implode("_".$this->formSubmit."', 'ctrl_", $arrAjaxOptions) . "_".$this->formSubmit."'], {language: '{$GLOBALS['TL_LANGUAGE']}', page: {$objPage->id}});</script>";
+		$GLOBALS['TL_MOOTOOLS'][] = "<script type=\"text/javascript\">new {$this->ajaxClass}('{$objModule->id}', '" . ($this->pid ? $this->pid : $this->id) . "', '{$this->formSubmit}', ['ctrl_" . implode("_".$this->formSubmit."', 'ctrl_", $arrAjaxOptions) . "_".$this->formSubmit."'], {language: '{$GLOBALS['TL_LANGUAGE']}', page: {$objPage->id}});</script>";
 
 		// HOOK for altering product data before output
 		if (isset($GLOBALS['TL_HOOKS']['iso_generateProduct']) && is_array($GLOBALS['TL_HOOKS']['iso_generateProduct']))
