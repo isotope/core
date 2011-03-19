@@ -621,10 +621,12 @@ abstract class IsotopeProductCollection extends Model
 	public function transferFromCollection(IsotopeProductCollection $objCollection, $blnDuplicate=true)
 	{
 		if (!$this->blnRecordExists)
-			return array();
+		{
+			$this->save();
+		}
 
 		// Make sure database table has the latest prices
-		$objCollection->save();
+//		$objCollection->save();
 
 		$time = time();
 		$arrIds = array();
