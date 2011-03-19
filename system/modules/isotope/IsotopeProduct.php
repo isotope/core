@@ -68,7 +68,7 @@ class IsotopeProduct extends Controller
 	/**
 	 * Product Options of all variants
 	 */
-	protected $arrVariantOptions = array();
+	protected $arrVariantOptions = array('current'=>array());
 
 	/**
 	 * Downloads for this product
@@ -553,12 +553,9 @@ class IsotopeProduct extends Controller
 
 		$this->formSubmit = (($objModule instanceof ContentElement) ? 'cte' : 'fmd') . $objModule->id . '_product_' . ($this->pid ? $this->pid : $this->id);
 
-		$objTemplate = new IsotopeTemplate($strTemplate);
-
 		$this->validateVariant();
-		$objTemplate->raw_options = $this->arrOptions;
-		$this->arrOptions = array();
 
+		$objTemplate = new IsotopeTemplate($strTemplate);
 		$arrProductOptions = array();
 		$arrAjaxOptions = array();
 		$arrAttributes = $this->getAttributes();
@@ -616,6 +613,7 @@ class IsotopeProduct extends Controller
 
 
 		$objTemplate->raw = $this->arrData;
+		$objTemplate->raw_options = $this->arrOptions;
 		$objTemplate->href_reader = $this->href_reader;
 
 		$objTemplate->label_detail = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
@@ -656,8 +654,6 @@ class IsotopeProduct extends Controller
 
 		$arrOptions = array();
 		$arrAttributes = $this->getAttributes();
-
-		$this->arrOptions = array();
 
 		foreach( $arrAttributes as $attribute => $varValue )
 		{
@@ -792,6 +788,7 @@ class IsotopeProduct extends Controller
 			if (count((array)$this->arrVariantOptions['attributes'][$strField]) == 1)
 			{
 				$this->arrOptions[$strField] = $this->arrVariantOptions['attributes'][$strField][0];
+				$this->arrVariantOptions['current'][$strField] = $this->arrVariantOptions['attributes'][$strField][0];
 				$arrData['default'] = $this->arrVariantOptions['attributes'][$strField][0];
 
 				if (!$blnAjax)
@@ -826,7 +823,7 @@ class IsotopeProduct extends Controller
 
 						foreach( (array)$this->arrVariantOptions['options'] as $arrVariant )
 						{
-							if ($arrVariant[$strField] == $option['value'] && count($this->arrOptions) == count(array_intersect_assoc($this->arrOptions, $arrVariant)))
+							if ($arrVariant[$strField] == $option['value'] && count($this->arrVariantOptions['current']) == count(array_intersect_assoc($this->arrVariantOptions['current'], $arrVariant)))
 							{
 								$blnValid = true;
 							}
@@ -848,6 +845,11 @@ class IsotopeProduct extends Controller
 				{
 					$arrField['value'] = $this->Input->get($strField);
 				}
+			}
+			elseif ($this->pid > 0)
+			{
+				$arrField['value'] = $this->arrOptions[$strField];
+				$this->arrVariantOptions['current'][$strField] = $this->arrOptions[$strField];
 			}
 		}
 		else
@@ -936,6 +938,7 @@ class IsotopeProduct extends Controller
 				if ($varValue != '')
 				{
 					$this->arrOptions[$strField] = $varValue;
+					$this->arrVariantOptions['current'][$strField] = $varValue;
 				}
 			}
 		}
