@@ -886,10 +886,19 @@ class Isotope extends Controller
 		{
 			$language = $GLOBALS['TL_LANGUAGE'];
 		}
+		
+		if (!is_array($GLOBALS['ISO_LANG']['TBL'][$language]))
+		{
+			$GLOBALS['ISO_LANG']['TBL'][$language] = array();
+			$objLabels = $this->Database->execute("SELECT * FROM tl_iso_labels WHERE language='$language'");
+			
+			while( $objLabels->next() )
+			{
+				$GLOBALS['ISO_LANG']['TBL'][$language][$objLabels->label] = $objLabels->replacement;
+			}
+		}
 
-		$objLabel = $this->Database->prepare("SELECT * FROM tl_iso_labels WHERE label=? AND language=?")->limit(1)->execute($label, $language);
-
-		return $objLabel->numRows ? $objLabel->replacement : $label;
+		return $GLOBALS['ISO_LANG']['TBL'][$language][$label] ? $GLOBALS['ISO_LANG']['TBL'][$language][$label] : $label;
 	}
 
 

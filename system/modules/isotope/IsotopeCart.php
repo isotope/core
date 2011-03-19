@@ -209,7 +209,7 @@ class IsotopeCart extends IsotopeProductCollection
 		if ($objCart->numRows)
 		{
 			$this->setFromRow($objCart, $this->strTable, 'id');
-			$this->Database->query("UPDATE tl_iso_cart SET tstamp=$time WHERE id={$this->id}");
+			$this->tstamp = $time;
 		}
 		else
 		{

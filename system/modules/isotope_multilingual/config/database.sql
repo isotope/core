@@ -29,5 +29,6 @@ CREATE TABLE `tl_iso_labels` (
   `label` varchar(255) NOT NULL default '',
   `replacement` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`id`),
+  KEY `language` (`language`),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 

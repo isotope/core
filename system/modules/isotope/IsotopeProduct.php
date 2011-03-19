@@ -181,7 +181,8 @@ class IsotopeProduct extends Controller
 					$arrVariantOptions = $objVariant->getOptions(true);
 
 					$this->arrVariantOptions['ids'][] = $objVariant->id;
-					$this->arrVariantOptions['variants'][] = $arrVariantOptions;
+					$this->arrVariantOptions['options'][$objVariant->id] = $arrVariantOptions;
+					$this->arrVariantOptions['variants'][$objVariant->id] = $objVariants->row();
 
 					foreach( $arrVariantOptions as $attribute => $value )
 					{
@@ -823,7 +824,7 @@ class IsotopeProduct extends Controller
 					{
 						$blnValid = false;
 
-						foreach( (array)$this->arrVariantOptions['variants'] as $arrVariant )
+						foreach( (array)$this->arrVariantOptions['options'] as $arrVariant )
 						{
 							// @todo not sure why we had the second check. Needs verification!
 							if ($arrVariant[$strField] == $option['value'] /* && count($this->arrOptions) == count(array_intersect_assoc($this->arrOptions, $arrVariant)) */)
@@ -1015,21 +1016,39 @@ class IsotopeProduct extends Controller
 
 		if (count($arrOptions))
 		{
-			$objVariant = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE pid=" . ($this->pid ? $this->pid : $this->id) . " AND published='1' AND language='' AND " . implode("=? AND ", array_keys($arrOptions)) . "=?")->execute($arrOptions);
+			$intVariant = false;
 
-			// Variant already loaded
-			if ($objVariant->id == $this->id)
-				return;
-
-			// Must match 1 variant, must not match multiple
-			if ($objVariant->numRows == 1)
+			foreach( (array)$this->arrVariantOptions['options'] as $id => $arrVariant )
 			{
-				$this->loadVariantData($objVariant->row(), false);
+				if (count(array_intersect_assoc($arrOptions, $arrVariant)) == count($arrOptions))
+				{
+					if ($intVariant === false)
+					{
+						$intVariant = $id;
+					}
+					else
+					{
+						$this->doNotSubmit = true;
+						return;
+					}
+				}
 			}
-			else
+
+
+			// Variant not found
+			if ($intVariant === false || !is_array($this->arrVariantOptions['variants'][$intVariant]))
 			{
 				$this->doNotSubmit = true;
+				return;
 			}
+
+			// Variant already loaded
+			if ($intVariant == $this->id)
+			{
+				return;
+			}
+
+			$this->loadVariantData($this->arrVariantOptions['variants'][$intVariant]);
 		}
 	}
 
