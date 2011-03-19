@@ -826,8 +826,7 @@ class IsotopeProduct extends Controller
 
 						foreach( (array)$this->arrVariantOptions['options'] as $arrVariant )
 						{
-							// @todo not sure why we had the second check. Needs verification!
-							if ($arrVariant[$strField] == $option['value'] /* && count($this->arrOptions) == count(array_intersect_assoc($this->arrOptions, $arrVariant)) */)
+							if ($arrVariant[$strField] == $option['value'] && count($this->arrOptions) == count(array_intersect_assoc($this->arrOptions, $arrVariant)))
 							{
 								$blnValid = true;
 							}
@@ -1014,13 +1013,13 @@ class IsotopeProduct extends Controller
 			}
 		}
 
-		if (count($arrOptions))
+		if (($intOptions = count($arrOptions)) > 0)
 		{
 			$intVariant = false;
 
 			foreach( (array)$this->arrVariantOptions['options'] as $id => $arrVariant )
 			{
-				if (count(array_intersect_assoc($arrOptions, $arrVariant)) == count($arrOptions))
+				if ($intOptions == count($arrVariant) && $intOptions == count(array_intersect_assoc($arrOptions, $arrVariant)))
 				{
 					if ($intVariant === false)
 					{
