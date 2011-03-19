@@ -105,15 +105,24 @@ class ModuleIsotopeCart extends ModuleIsotope
 
 		foreach( $arrProducts as $i => $objProduct )
 		{
+			// Remove product from cart
 			if ($this->Input->get('remove') == $objProduct->cart_id && $this->Isotope->Cart->deleteProduct($objProduct))
 			{
 				$this->redirect((strlen($this->Input->get('referer')) ? base64_decode($this->Input->get('referer', true)) : $strUrl));
 			}
+			
+			// Update cart data if form has been submitted
 			elseif ($this->Input->post('FORM_SUBMIT') == 'iso_cart_update' && is_array($arrQuantity))
 			{
 				$blnReload = true;
 				$this->Isotope->Cart->updateProduct($objProduct, array('product_quantity'=>$arrQuantity[$objProduct->cart_id]));
 				continue; // no need to generate $arrProductData, we reload anyway
+			}
+			
+			// No need to generate product data if we reload anyway
+			elseif ($blnReload)
+			{
+				continue;
 			}
 
 			$arrProductData[] = array_merge($objProduct->getAttributes(), array
@@ -135,7 +144,16 @@ class ModuleIsotopeCart extends ModuleIsotope
 			));
 		}
 
-		if ($blnReload)
+		$blnInsufficientSubtotal = ($this->Isotope->Config->cartMinSubtotal > 0 && $this->Isotope->Config->cartMinSubtotal > $this->Isotope->Cart->subTotal) ? true : false;
+
+		// Reload if the "checkout" button has been submitted and minimum order total is reached
+		if ($blnReload && $this->Input->post('checkout') != '' && $this->iso_checkout_jumpTo && !$blnInsufficientSubtotal)
+		{
+			$this->redirect($this->generateFrontendUrl($this->Database->execute("SELECT * FROM tl_page WHERE id={$this->iso_checkout_jumpTo}")->fetchAssoc()));
+		}
+
+		// Otherwise, just reload the page
+		elseif ($blnReload)
 		{
 			$this->reload();
 		}
@@ -159,8 +177,6 @@ class ModuleIsotopeCart extends ModuleIsotope
 				}
 			}
 		}
-
-		$blnInsufficientSubtotal = ($this->Isotope->Config->cartMinSubtotal > 0 && $this->Isotope->Config->cartMinSubtotal > $this->Isotope->Cart->subTotal) ? true : false;
 
 		$objTemplate->hasError = $blnInsufficientSubtotal ? true : false;
 		$objTemplate->minSubtotalError = sprintf($GLOBALS['TL_LANG']['ERR']['cartMinSubtotal'], $this->Isotope->formatPriceWithCurrency($this->Isotope->Config->cartMinSubtotal));

@@ -342,12 +342,10 @@ abstract class IsotopeProductCollection extends Model
 			$this->arrData['settings'] = serialize($this->arrSettings);
 		}
 
-		if (is_array($this->arrProducts) && count($this->arrProducts))
+		$arrProducts = $this->getProducts();
+		foreach( $arrProducts as $objProduct )
 		{
-			foreach( $this->arrProducts as $objProduct )
-			{
-				$this->Database->execute("UPDATE {$this->ctable} SET price='{$objProduct->price}' WHERE id={$objProduct->cart_id}");
-			}
+			$this->Database->execute("UPDATE {$this->ctable} SET price='{$objProduct->price}' WHERE id={$objProduct->cart_id}");
 		}
 
 		if ($this->blnRecordExists && $this->blnModified && !$blnForceInsert)
@@ -503,6 +501,7 @@ abstract class IsotopeProductCollection extends Model
 			return false;
 
 		$this->blnModified = true;
+		$this->arrProducts = null;
 
 		// Make sure collection is in DB before adding product
 		if (!$this->id)
@@ -573,6 +572,7 @@ abstract class IsotopeProductCollection extends Model
 		}
 
 		$this->blnModified = true;
+		$this->arrProducts = null;
 
 		$intAffectedRows = $this->Database->prepare("UPDATE {$this->ctable} %s WHERE id={$objProduct->cart_id}")
 										  ->set($arrSet)
@@ -605,6 +605,7 @@ abstract class IsotopeProductCollection extends Model
 		}
 
 		$this->blnModified = true;
+		$this->arrProducts = null;
 
 		$this->Database->query("DELETE FROM {$this->ctable} WHERE id={$objProduct->cart_id}");
 
