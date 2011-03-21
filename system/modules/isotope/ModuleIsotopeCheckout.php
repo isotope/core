@@ -988,7 +988,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 		if (FE_USER_LOGGED_IN)
 		{
-			$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE pid=? ORDER BY isDefaultBilling DESC, isDefaultShipping DESC")->execute($this->User->id);
+			$objAddress = $this->Database->execute("SELECT * FROM tl_iso_addresses WHERE pid={$this->User->id} AND store_id={$this->Isotope->Config->store_id} ORDER BY isDefaultBilling DESC, isDefaultShipping DESC");
 
 			while( $objAddress->next() )
 			{

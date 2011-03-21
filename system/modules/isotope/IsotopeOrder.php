@@ -536,6 +536,7 @@ class IsotopeOrder extends IsotopeProductCollection
 					$arrAddress = array_intersect_key($arrData, array_flip($this->Isotope->Config->{$address.'_fields_raw'}));
 					$arrAddress['pid'] = $this->pid;
 					$arrAddress['tstamp'] = $time;
+					$arrAddress['store_id'] = $this->Isotope->Config->store_id;
 
 					$this->Database->prepare("INSERT INTO tl_iso_addresses %s")->set($arrAddress)->execute();
 				}

@@ -29,7 +29,8 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_iso_addresses']['firstname']		= array('First name', 'Please enter the first name.');
+$GLOBALS['TL_LANG']['tl_iso_addresses']['store_id']		= array('Store ID', 'Use different store IDs to group a set of store configurations. A user\'s cart and addresses will be shared across the same store IDs.');
+$GLOBALS['TL_LANG']['tl_iso_addresses']['firstname']	= array('First name', 'Please enter the first name.');
 $GLOBALS['TL_LANG']['tl_iso_addresses']['lastname']		= array('Last name', 'Please enter the last name.');
 $GLOBALS['TL_LANG']['tl_iso_addresses']['company']		= array('Company', 'You can enter a company name here.');
 $GLOBALS['TL_LANG']['tl_iso_addresses']['street_1']		= array('Street', 'Please enter the street name and the street number.');
@@ -48,6 +49,7 @@ $GLOBALS['TL_LANG']['tl_iso_addresses']['isDefaultShipping']	= array('Default Sh
 /**
  * Legends
  */
+$GLOBALS['TL_LANG']['tl_iso_addresses']['store_legend'] = 'Store';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['personal_legend'] = 'Personal data';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['address_legend']  = 'Address details';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['contact_legend']  = 'Contact details';

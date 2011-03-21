@@ -373,6 +373,7 @@ CREATE TABLE `tl_iso_addresses` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
+  `store_id` int(2) unsigned NOT NULL default '0',
   `company` varchar(255) NOT NULL default '',
   `firstname` varchar(255) NOT NULL default '',
   `lastname` varchar(255) NOT NULL default '',
@@ -388,7 +389,7 @@ CREATE TABLE `tl_iso_addresses` (
   `isDefaultShipping` char(1) NOT NULL default '',
   `isDefaultBilling` char(1) NOT NULL default '',
   PRIMARY KEY  (`id`),
-  KEY `pid` (`pid`)
+  KEY `pid` (`pid`, `store_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 

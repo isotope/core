@@ -98,12 +98,21 @@ $GLOBALS['TL_DCA']['tl_iso_addresses'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'					  => '{personal_legend},firstname,lastname;{address_legend},company,street_1,street_2,street_3,postal,city,subdivision,country;{contact_legend},email,phone;{default_legend:hide},isDefaultBilling,isDefaultShipping',
+		'default'					  => '{store_legend},store_id;{personal_legend},firstname,lastname;{address_legend},company,street_1,street_2,street_3,postal,city,subdivision,country;{contact_legend},email,phone;{default_legend:hide},isDefaultBilling,isDefaultShipping',
 	),
 
 	// Fields
 	'fields' => array
 	(
+		'store_id' => array
+		(
+			'label'					  => &$GLOBALS['TL_LANG']['tl_iso_addresses']['store_id'],
+			'exclude'				  => true,
+			'filter'				  => true,
+			'sorting'				  => true,
+			'inputType'				  => 'text',
+			'eval'					  => array('mandatory'=>true, 'maxlength'=>2, 'rgxp'=>'digit'),
+		),
 		'firstname' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_addresses']['firstname'],
@@ -260,13 +269,13 @@ class tl_iso_addresses extends Backend
 
 		if ($this->Input->post('isDefaultBilling'))
 		{
-			$this->Database->execute("UPDATE tl_iso_addresses SET isDefaultBilling='' WHERE pid={$objAddress->pid}");
+			$this->Database->execute("UPDATE tl_iso_addresses SET isDefaultBilling='' WHERE pid={$objAddress->pid} AND store_id={$objAddress->store_id}");
 			$this->Database->execute("UPDATE tl_iso_addresses SET isDefaultBilling='1' WHERE id={$objAddress->id}");
 		}
 
 		if ($this->Input->post('isDefaultShipping'))
 		{
-			$this->Database->execute("UPDATE tl_iso_addresses SET isDefaultShipping='' WHERE pid={$objAddress->pid}");
+			$this->Database->execute("UPDATE tl_iso_addresses SET isDefaultShipping='' WHERE pid={$objAddress->pid} AND store_id={$objAddress->store_id}");
 			$this->Database->execute("UPDATE tl_iso_addresses SET isDefaultShipping='1' WHERE id={$objAddress->id}");
 		}
 	}

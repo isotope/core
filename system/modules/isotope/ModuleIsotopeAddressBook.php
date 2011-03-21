@@ -147,7 +147,7 @@ class ModuleIsotopeAddressBook extends Module
 		$arrAddresses = array();
 		$strUrl = $this->generateFrontendUrl($objPage->row()) . ($GLOBALS['TL_CONFIG']['disableAlias'] ? '&' : '?');
 
-		$objAddresses = $this->Database->execute("SELECT * FROM tl_iso_addresses WHERE pid={$this->User->id}");
+		$objAddresses = $this->Database->execute("SELECT * FROM tl_iso_addresses WHERE pid={$this->User->id} AND store_id={$this->Isotope->Config->store_id}");
 
 		while( $objAddresses->next() )
 		{
@@ -208,7 +208,7 @@ class ModuleIsotopeAddressBook extends Module
 		$row = 0;
 
 		// No need to check: if the address does not exist, fields will be empty and a new address will be created
-		$objAddress = $this->Database->execute("SELECT * FROM tl_iso_addresses WHERE id=$intAddressId AND pid={$this->User->id}");
+		$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE id=? AND pid={$this->User->id} AND store_id={$this->Isotope->Config->store_id}")->execute($intAddressId);
 
 
 		// Build form
@@ -228,6 +228,21 @@ class ModuleIsotopeAddressBook extends Module
 			if (!$this->classFileExists($strClass) || !$arrData['eval']['feEditable'])
 			{
 				continue;
+			}
+			
+			// Special field "country"
+			if ($field == 'country')
+			{
+				$arrCountries = array();
+				$objConfigs = $this->Database->execute("SELECT billing_countries, shipping_countries FROM tl_iso_config WHERE store_id={$this->Isotope->Config->store_id}");
+				
+				while( $objConfigs->next() )
+				{
+					$arrCountries = array_merge($arrCountries, deserialize($objConfigs->billing_countries), deserialize($objConfigs->shipping_countries));
+				}
+
+				$arrData['options'] = array_values(array_intersect($arrData['options'], $arrCountries));
+				$arrData['default'] = $this->Isotope->Config->country;
 			}
 
 			$strGroup = $arrData['eval']['feGroup'];
@@ -318,6 +333,7 @@ class ModuleIsotopeAddressBook extends Module
 			{
 				$arrSet['pid'] = $this->User->id;
 				$arrSet['tstamp'] = time();
+				$arrSet['store_id'] = $this->Isotope->Config->store_id;
 
 				$objAddress->id = $this->Database->prepare("INSERT INTO tl_iso_addresses %s")->set($arrSet)->execute()->insertId;
 			}
