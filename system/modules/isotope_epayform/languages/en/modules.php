@@ -31,5 +31,5 @@
 /**
  * Frontend modules
  */
-$GLOBALS['TL_LANG']['FMD']['epay_relay']	= array('ePay Relay', 'Load the current page trough the ePay relay script.<br /><br /><a href="http://tech.epay.dk/Secure-your-own-payment-form-using-ePay-relay-script_5.html" onclick="window.open(this.href); return false">More information</a>');
+$GLOBALS['TL_LANG']['MOD']['isotope_epayform'] = array('Isotope eCommerce: ePay Form with relay script support');
 

@@ -28,32 +28,8 @@
  */
 
 
-class ModuleEpayRelay extends Module
-{
-
-
-	public function generate()
-	{
-		if (TL_MODE == 'BE')
-		{
-			$objTemplate = new BackendTemplate('be_wildcard');
-
-			$objTemplate->wildcard = '### EPAY RELAY ###';
-			$objTemplate->title = $this->headline;
-			$objTemplate->id = $this->id;
-			$objTemplate->link = $this->name;
-			$objTemplate->href = $this->Environment->script.'?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
-
-			return $objTemplate->parse();
-		}
-
-		$GLOBALS['EPAY_RELAY'] = true;
-		$GLOBALS['TL_MOOTOOLS']['epay_reLay'] = '<script type="text/javascript" src="https://relay.ditonlinebetalingssystem.dk/relay/v2/replace_relay_urls.js"></script>';
-
-		return '';
-	}
-
-
-	protected function compile() {}
-}
+/**
+ * Frontend modules
+ */
+$GLOBALS['TL_LANG']['tl_page']['epay_relay'] = array('Enable ePay relay script', 'Load the current page trough <a href="http://tech.epay.dk/Secure-your-own-payment-form-using-ePay-relay-script_5.html" onclick="window.open(this.href); return false">the ePay relay script</a>.');
 

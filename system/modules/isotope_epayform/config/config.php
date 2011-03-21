@@ -29,12 +29,6 @@
 
 
 /**
- * Frontend modules
- */
-$GLOBALS['FE_MOD']['isotope']['epay_relay'] = 'ModuleEpayRelay';
-
-
-/**
  * Payment modules
  */
 $GLOBALS['ISO_PAY']['epay_form']			= 'PaymentEPayForm';
@@ -44,29 +38,5 @@ $GLOBALS['ISO_PAY']['epay_form']			= 'PaymentEPayForm';
  * Hooks
  */
 $GLOBALS['TL_HOOKS']['generatePage'][] = array('EpayRelay', 'overwriteBase');
-
-
-/**
- * Intercept redirects and add ePay relay script
- */
-function epay_relay($buffer)
-{
-	if ($GLOBALS['EPAY_RELAY'] === true)
-	{
-		$arrHeaders = headers_list();
-
-		foreach( $arrHeaders as $strHeader )
-		{
-			if (strpos($strHeader, 'Location: ') !== false)
-			{
-				header(str_replace('Location: ', 'Location: https://relay.ditonlinebetalingssystem.dk/relay/v2/relay.cgi/', $strHeader) . '?HTTP_COOKIE='.$_SERVER['HTTP_COOKIE']);
-				exit;
-			}
-		}
-	}
-
-	return $buffer;
-}
-
-ob_start("epay_relay");
+$GLOBALS['TL_HOOKS']['generateFrontendUrl'][] = array('EpayRelay', 'rewriteUrls');
 

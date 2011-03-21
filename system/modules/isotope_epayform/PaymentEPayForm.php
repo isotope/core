@@ -56,7 +56,7 @@ class PaymentEPayForm extends PaymentEPay
 		}
 
 		global $objPage;
-		$this->log('Invalid payment data received.', 'PaymentEPayForm processPayment()', TL_ERROR);
+		$this->log('Invalid payment data received.', __METHOD__, TL_ERROR);
 		$this->redirect($this->generateFrontendUrl($objPage->row(), '/step/process'));
 	}
 
@@ -74,13 +74,14 @@ class PaymentEPayForm extends PaymentEPay
 		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->executeUncached($this->Isotope->Cart->id);
 		$intTotal = round($this->Isotope->Cart->grandTotal, 2) * 100;
 
-		$objTemplate = new IsotopeTemplate('iso_payment_epayform');
+		$strClass = ISO_VERSION >= 0.3 ? 'IsotopeTemplate' : 'FrontendTemplate';
+		$objTemplate = new $strClass('iso_payment_epayform');
 
 		$objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['pay_with_cc'][0];
 		$objTemplate->message = $GLOBALS['TL_LANG']['MSC']['pay_with_cc'][1];
 		$objTemplate->slabel = $GLOBALS['TL_LANG']['MSC']['pay_with_cc'][2];
 		$objTemplate->error = ($this->Input->get('error') == '' ? '' : $GLOBALS['TL_LANG']['MSG']['epay'][$this->Input->get('error')]);
-		$objTemplate->cancelurl = $this->Environment->base . $this->generateFrontendUrl($objPage->row(), '/step/failed');
+		$objTemplate->cancelurl = $this->generateFrontendUrl($objPage->row(), '/step/failed');
 
 		$objTemplate->labelCard = $GLOBALS['TL_LANG']['ISO']['cc_num'];
 		$objTemplate->labelDate = $GLOBALS['TL_LANG']['ISO']['cc_exp_date'];
@@ -107,8 +108,8 @@ class PaymentEPayForm extends PaymentEPay
 		$objTemplate->description = $this->Isotope->generateAddressString($this->Isotope->Cart->billingAddress, $this->Isotope->Config->billing_fields);
 		$objTemplate->currency = $this->arrCurrencies[$this->Isotope->Config->currency];
 		$objTemplate->amount = $intTotal;
-		$objTemplate->accepturl = ($GLOBALS['EPAY_RELAY'] ? 'https://relay.ditonlinebetalingssystem.dk/relay/v2/relay.cgi/' : '') . $this->Environment->base . $this->generateFrontendUrl($objPage->row(), '/step/complete') . ($GLOBALS['EPAY_RELAY'] ? '?HTTP_COOKIE='.$_SERVER['HTTP_COOKIE'] : '');
-		$objTemplate->declineurl = ($GLOBALS['EPAY_RELAY'] ? 'https://relay.ditonlinebetalingssystem.dk/relay/v2/relay.cgi/' : '') . $this->Environment->base . $this->generateFrontendUrl($objPage->row(), '/step/process') . ($GLOBALS['EPAY_RELAY'] ? '?HTTP_COOKIE='.$_SERVER['HTTP_COOKIE'] : '');
+		$objTemplate->accepturl = $this->generateFrontendUrl($objPage->row(), '/step/complete');
+		$objTemplate->declineurl = $this->generateFrontendUrl($objPage->row(), '/step/process');
 		$objTemplate->instantcapture = ($this->trans_type == 'auth' ? '0' : '1');
 		$objTemplate->md5key = md5($this->arrCurrencies[$this->Isotope->Config->currency] . $intTotal . $objOrder->id . $this->epay_secretkey);
 

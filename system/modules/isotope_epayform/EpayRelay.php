@@ -31,12 +31,35 @@
 class EpayRelay extends Frontend
 {
 
+	/**
+	 * Override <base> meta tag in fe_page template
+	 */
 	public function overwriteBase($objPage, $objLayout, &$objPageRegular)
 	{
-		if ($GLOBALS['EPAY_RELAY'] === true)
+		if ($objPage->epay_relay)
 		{
 			$objPageRegular->Template->base = 'https://relay.ditonlinebetalingssystem.dk/relay/v2/relay.cgi/' . $this->Environment->base;
 		}
+	}
+
+
+	/**
+	 * Rewrite URLs for pages with relay script enabled
+	 */
+	public function rewriteUrls($arrRow, $strParams, $strUrl)
+	{
+		global $objPage;
+		
+		if ($arrRow['epay_relay'])
+		{
+			return 'https://relay.ditonlinebetalingssystem.dk/relay/v2/relay.cgi/' . $this->Environment->base . $strUrl . '?HTTP_COOKIE='.$_SERVER['HTTP_COOKIE'];
+		}
+		elseif ($objPage->epay_relay)
+		{
+			return $this->Environment->base . $strUrl;
+		}
+		
+		return $strUrl;
 	}
 }
 
