@@ -83,10 +83,6 @@ class IsotopeRunonce extends Controller
 		$this->Database->query("DELETE FROM tl_iso_attributes WHERE field_name='price_override'");
 		$this->Database->query("DELETE FROM tl_iso_attributes WHERE field_name='use_price_override'");
 		$this->Database->query("DELETE FROM tl_iso_attributes WHERE field_name='weight'");
-		
-		// Because configuration has been changed, we cannot use the existing cart data
-		$this->Database->query("DELETE FROM tl_iso_cart_items");
-		$this->Database->query("DELETE FROM tl_iso_cart");
 	}
 	
 	
