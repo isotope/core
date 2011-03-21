@@ -1357,5 +1357,21 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 		return $arrReturn;
 	}
+
+
+	/**
+	 * Override parent addToUrl function. Use generateFrontendUrl if we want to remove all parameters.
+	 */
+	protected function addToUrl($strRequest, $blnIgnoreParams=false)
+	{
+		if ($blnIgnoreParams)
+		{
+			global $objPage;
+			
+			return $this->generateFrontendUrl($objPage->row(), '/' . str_replace(array('=', '&amp;', '&'), '/', $strRequest));
+		}
+		
+		return parent::addToUrl($strRequest, $blnIgnoreParams);
+	}
 }
 
