@@ -63,10 +63,6 @@ class IsotopeRunonce extends Controller
 
 		// Checkout method has been renamed from "login" to "member" to prevent a problem with palette of the login module
 		$this->Database->query("UPDATE tl_module SET iso_checkout_method='member' WHERE iso_checkout_method='login'");
-
-		// Because configuration has been changed, we cannot use the existing cart data
-		$this->Database->query("DELETE FROM tl_iso_cart_items");
-		$this->Database->query("DELETE FROM tl_iso_cart");
 	}
 
 
