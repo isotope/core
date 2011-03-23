@@ -195,7 +195,7 @@ class IsotopeCart extends IsotopeProductCollection
 			if (!strlen($this->strHash))
 			{
 				$this->strHash = sha1(session_id() . (!$GLOBALS['TL_CONFIG']['disableIpCheck'] ? $this->Environment->ip : '') . $intConfig . $this->strCookie);
-				$this->setCookie($this->strCookie, $this->strHash, $time+$GLOBALS['TL_CONFIG']['iso_cartTimeout'],  $GLOBALS['TL_CONFIG']['websitePath']);
+				$this->setCookie($this->strCookie, $this->strHash, $time+$GLOBALS['TL_CONFIG']['iso_cartTimeout'], $GLOBALS['TL_CONFIG']['websitePath']);
 			}
 
 			$objCart = $this->Database->execute("SELECT * FROM tl_iso_cart WHERE session='{$this->strHash}' AND store_id=$intStore");
@@ -233,7 +233,7 @@ class IsotopeCart extends IsotopeProductCollection
 			}
 
 			// Delete cookie
-			$this->setCookie($this->strCookie, '', (time() - 3600), $GLOBALS['TL_CONFIG']['websitePath']);
+			$this->setCookie($this->strCookie, '', ($time - 3600), $GLOBALS['TL_CONFIG']['websitePath']);
  		}
 	}
 

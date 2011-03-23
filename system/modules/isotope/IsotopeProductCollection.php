@@ -253,11 +253,18 @@ abstract class IsotopeProductCollection extends Model
 			$this->$strKey = $varValue;
 			return;
 		}
+		elseif ($strKey == 'modified')
+		{
+			$this->blnModified = (bool)$varValue;
+			$this->arrCache = array();
+			$this->arrProducts = null;
+		}
 
 		// If there is a database field for that key, we store it there
 		if (array_key_exists($strKey, $this->arrData) || $this->Database->fieldExists($strKey, $this->strTable))
 		{
 			$this->arrData[$strKey] = $varValue;
+			$this->arrCache = array();
 			$this->blnModified = true;
 		}
 
@@ -278,7 +285,8 @@ abstract class IsotopeProductCollection extends Model
 			{
 				$this->arrSettings[$strKey] = $varValue;
 			}
-			
+
+			$this->arrCache = array();
 			$this->blnModified = true;
 		}
 	}
@@ -388,6 +396,9 @@ abstract class IsotopeProductCollection extends Model
 		{
 			$this->Database->prepare("DELETE FROM " . $this->ctable . " WHERE pid=?")->execute($this->id);
 		}
+		
+		$this->arrCache = array();
+		$this->arrProducts = null;
 
 		return $intAffectedRows;
 	}
@@ -500,8 +511,7 @@ abstract class IsotopeProductCollection extends Model
 		if ($intQuantity == 0)
 			return false;
 
-		$this->blnModified = true;
-		$this->arrProducts = null;
+		$this->modified = true;
 
 		// Make sure collection is in DB before adding product
 		if (!$this->id)
@@ -571,8 +581,7 @@ abstract class IsotopeProductCollection extends Model
 			}
 		}
 
-		$this->blnModified = true;
-		$this->arrProducts = null;
+		$this->modified = true;
 
 		$intAffectedRows = $this->Database->prepare("UPDATE {$this->ctable} %s WHERE id={$objProduct->cart_id}")
 										  ->set($arrSet)
@@ -604,8 +613,7 @@ abstract class IsotopeProductCollection extends Model
 			}
 		}
 
-		$this->blnModified = true;
-		$this->arrProducts = null;
+		$this->modified = true;
 
 		$this->Database->query("DELETE FROM {$this->ctable} WHERE id={$objProduct->cart_id}");
 
@@ -622,7 +630,7 @@ abstract class IsotopeProductCollection extends Model
 	{
 		if (!$this->blnRecordExists)
 		{
-			$this->save();
+			$this->save(true);
 		}
 
 		// Make sure database table has the latest prices
@@ -672,7 +680,7 @@ abstract class IsotopeProductCollection extends Model
 
 		if (count($arrIds))
 		{
-			$this->blnModified = true;
+			$this->modified = true;
 		}
 
 		return $arrIds;

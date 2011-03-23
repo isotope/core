@@ -975,8 +975,6 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		$objOrder->email_data = $arrData;
 
 		$objOrder->save();
-
-		return $objOrder;
 	}
 
 
