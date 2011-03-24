@@ -91,8 +91,6 @@ class PaymentExpercash extends IsotopePayment
 	 */
 	public function checkoutForm()
 	{
-		$this->import('Isotope');
-		
 		$objOrder = new IsotopeOrder();
 		$objOrder->findBy('cart_id', $this->Isotope->Cart->id);
 		
@@ -105,7 +103,7 @@ class PaymentExpercash extends IsotopePayment
 			'amount'			=> (round($this->Isotope->Cart->grandTotal, 2)*100),
 			'currency'			=> $this->Isotope->Config->currency,
 			'paymentMethod'		=> $this->expercash_paymentMethod,
-			'returnUrl'			=> $this->Environment->base . $this->addToUrl('step=complete', true),
+			'returnUrl'			=> $this->Environment->base . $this->addToUrl('step=complete', true) . '?uid=' . $objOrder->uniqid,
 			'errorUrl'			=> $this->Environment->base . $this->addToUrl('step=failed', true),
 			'notifyUrl'			=> $this->Environment->base . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id,
 			'profile'			=> $this->expercash_profile,
