@@ -64,11 +64,11 @@ class PostSale extends Frontend
 
 		if (!strlen($strMod) || !strlen($strId))
 		{
-			$this->log('Invalid post-sale request: '.$this->Environment->request . "\n" . print_r($_POST, true), 'PostSale run()', TL_ERROR);
+			$this->log('Invalid post-sale request: '.$this->Environment->request, __METHOD__, TL_ERROR);
 			return;
 		}
 
-		$this->log('New post-sale request: '.$this->Environment->request . "\n" . print_r($_POST, true), 'PostSale run()', TL_ACCESS);
+		$this->log('New post-sale request: '.$this->Environment->request, __METHOD__, TL_ACCESS);
 
 		switch( $strMod )
 		{

@@ -472,6 +472,7 @@ class IsotopeOrder extends IsotopeProductCollection
 			$objCart = new IsotopeCart();
 			if (!$objCart->findBy('id', $this->cart_id))
 			{
+				$this->log('Cound not find Cart ID '.$this->cart_id.' for Order ID '.$this->id, __METHOD__, TL_ERROR);
 				return false;
 			}
 
@@ -494,6 +495,7 @@ class IsotopeOrder extends IsotopeProductCollection
 
 				if ($this->$callback[0]->$callback[1]($this, $objCart) === false)
 				{
+					$this->log('Callback "'.$callback[0].':'.$callback[1].'" cancelled checkout for Order ID '.$this->id, __METHOD__, TL_ERROR);
 					return false;
 				}
 			}

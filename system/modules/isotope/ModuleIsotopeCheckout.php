@@ -102,6 +102,17 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	 */
 	protected function compile()
 	{
+		// Order has been completed (postsale request)
+		if ($this->strCurrentStep == 'complete' && $this->Input->get('uid') != '')
+		{
+			$objOrder = new IsotopeOrder();
+
+			if ($objOrder->findBy('uniqid', $this->Input->get('uid')) && $objOrder->checkout_complete)
+			{
+				$this->redirect($this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($this->orderCompleteJumpTo)->fetchAssoc()) . '?uid='.$objOrder->uniqid);
+			}
+		}
+		
 		// Return error message if cart is empty
 		if (!$this->Isotope->Cart->items)
 		{
@@ -254,6 +265,10 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				unset($_SESSION['ISOTOPE']);
 
 				$this->redirect($this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($this->orderCompleteJumpTo)->fetchAssoc()) . '?uid='.$objOrder->uniqid);
+			}
+			elseif ($strBuffer === false)
+			{
+				$this->redirect($this->addToUrl('step=failed', true));
 			}
 			else
 			{

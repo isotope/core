@@ -54,7 +54,11 @@ class PaymentPaypal extends IsotopePayment
 	 */
 	public function processPayment()
 	{
-		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->execute($this->Isotope->Cart->id);
+		$objOrder = new IsotopeOrder();
+		if (!$objOrder->findBy('cart_id', $this->Isotope->Cart->id))
+		{
+			return false;
+		}
 
 		if ($objOrder->date_payed <= time())
 		{
@@ -181,11 +185,11 @@ class PaymentPaypal extends IsotopePayment
 
 			$objOrder->save();
 
-			$this->log('PayPal IPN: data accepted ' . print_r($_POST, true), 'PaymentPaypal processPostSale()', TL_GENERAL);
+			$this->log('PayPal IPN: data accepted', 'PaymentPaypal processPostSale()', TL_GENERAL);
 		}
 		else
 		{
-			$this->log('PayPal IPN: data rejected (' . $objRequest->response . ') ' . print_r($_POST, true), 'PaymentPaypal processPostSale()', TL_GENERAL);
+			$this->log('PayPal IPN: data rejected (' . $objRequest->response . ')', 'PaymentPaypal processPostSale()', TL_GENERAL);
 		}
 
 		header('HTTP/1.1 200 OK');
@@ -201,11 +205,16 @@ class PaymentPaypal extends IsotopePayment
 	 */
 	public function checkoutForm()
 	{
-		$objOrder = $this->Database->prepare("SELECT order_id FROM tl_iso_orders WHERE cart_id=?")->execute($this->Isotope->Cart->id);
+		$objOrder = new IsotopeOrder();
+		if (!$objOrder->findBy('cart_id', $this->Isotope->Cart->id))
+		{
+			$this->redirect($this->addToUrl('step=failed', true));
+		}
+		
 
 		$strBuffer = '
-<h2>' . $GLOBALS['TL_LANG']['ISO']['pay_with_redirect'][0] . '</h2>
-<p class="message">' . $GLOBALS['TL_LANG']['ISO']['pay_with_redirect'][1] . '</p>
+<h2>' . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0] . '</h2>
+<p class="message">' . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1] . '</p>
 <form id="payment_form" action="https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr" method="post">
 <input type="hidden" name="cmd" value="_cart">
 <input type="hidden" name="upload" value="1">
@@ -252,7 +261,7 @@ class PaymentPaypal extends IsotopePayment
 <input type="hidden" name="no_note" value="1">
 <input type="hidden" name="currency_code" value="' . $this->Isotope->Config->currency . '">
 <input type="hidden" name="button_subtype" value="services">
-<input type="hidden" name="return" value="' . $this->Environment->base . $this->addToUrl('step=complete') . '">
+<input type="hidden" name="return" value="' . $this->Environment->base . $this->addToUrl('step=complete') . '?uid=' . $objOrder->uniqid . '">
 <input type="hidden" name="cancel_return" value="' . $this->Environment->base . $this->addToUrl('step=failed') . '">
 <input type="hidden" name="rm" value="1">
 <input type="hidden" name="invoice" value="' . $objOrder->order_id . '">
@@ -270,7 +279,7 @@ class PaymentPaypal extends IsotopePayment
 
 <input type="hidden" name="notify_url" value="' . $this->Environment->base . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id . '">
 <input type="hidden" name="bn" value="PP-BuyNowBF:btn_paynowCC_LG.gif:NonHosted">
-<input type="' . (strlen($this->button) ? 'image" src="'.$this->button.'" border="0"' : 'submit" value="'.specialchars($GLOBALS['TL_LANG']['ISO']['pay_with_redirect'][2]).'"') . ' alt="PayPal - The safer, easier way to pay online!">
+<input type="' . (strlen($this->button) ? 'image" src="'.$this->button.'" border="0"' : 'submit" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]).'"') . ' alt="PayPal - The safer, easier way to pay online!">
 </form>
 
 <script type="text/javascript">
