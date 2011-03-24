@@ -960,19 +960,28 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			
 			if ($this->iso_mail_customer)
 			{
+				$strCustomerName = '';
 				$strCustomerEmail = '';
 
 				if ($this->Isotope->Cart->billingAddress['email'] != '')
 				{
-					$strCustomerEmail = sprintf('%s %s <%s>', $this->Isotope->Cart->billingAddress['firstname'], $this->Isotope->Cart->billingAddress['lastname'], $this->Isotope->Cart->billingAddress['email']);
+					$strCustomerName = $this->Isotope->Cart->billingAddress['firstname'] . ' ' . $this->Isotope->Cart->billingAddress['lastname'];
+					$strCustomerEmail = $this->Isotope->Cart->billingAddress['email'];
 				}
 				elseif ($this->Isotope->Cart->shippingAddress['email'] != '')
 				{
-					$strCustomerEmail = sprintf('%s %s <%s>', $this->Isotope->Cart->shippingAddress['firstname'], $this->Isotope->Cart->shippingAddress['lastname'], $this->Isotope->Cart->shippingAddress['email']);
+					$strCustomerName = $this->Isotope->Cart->shippingAddress['firstname'] . ' ' . $this->Isotope->Cart->shippingAddress['lastname'];
+					$strCustomerEmail = $this->Isotope->Cart->shippingAddress['email'];
 				}
 				elseif (FE_USER_LOGGED_IN && $this->User->email != '')
 				{
-					$strCustomerEmail = sprintf('%s %s <%s>', $this->User->firstname, $this->User->lastname, $this->User->email); 
+					$strCustomerName = $this->User->firstname . ' ' . $this->User->lastname;
+					$strCustomerEmail = $this->User->email; 
+				}
+				
+				if (trim($strCustomerName) != '')
+				{
+					$strCustomerEmail = sprintf('%s <%s>', $strCustomerName, $strCustomerEmail);
 				}
 				
 				if ($strCustomerEmail != '')
