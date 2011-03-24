@@ -88,7 +88,8 @@ class PaymentPayone extends IsotopePayment
 	public function checkoutForm()
 	{
 		$i = 0;
-		$objOrder = $this->Database->prepare("SELECT order_id FROM tl_iso_orders WHERE cart_id=?")->execute($this->Isotope->Cart->id);
+		$objOrder = new IsotopeOrder();
+		$objOrder->findBy('cart_id', $this->Isotope->Cart->id);
 
 		$arrData = array
 		(
@@ -101,7 +102,7 @@ class PaymentPayone extends IsotopePayment
 			'reference'			=> $objOrder->order_id,
 			'display_name'		=> 'no',
 			'display_address'	=> 'no',
-			'successurl'		=> $this->Environment->base . $this->addToUrl('step=complete', true) . '?txid=__txid__',
+			'successurl'		=> $this->Environment->base . $this->addToUrl('step=complete', true) . '?uid=' . $objOrder->uniqid,
 			'backurl'			=> $this->Environment->base . $this->addToUrl('step=failed', true),
 			'amount'			=> ($this->Isotope->Cart->grandTotal * 100),
 			'currency'			=> $this->Isotope->Config->currency,
