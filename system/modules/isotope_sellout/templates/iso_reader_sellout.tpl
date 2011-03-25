@@ -19,7 +19,7 @@
 <div class="price"><?php echo $this->price; ?></div>
 <?php if($this->buttons): ?>
 <div class="submit_container">
-<?php if(is_numeric($this->stock_quantity) && $this->stock_quantity < 1): ?>
+<?php if(is_numeric($this->raow['stock_quantity']) && $this->stock_quantity < 1): ?>
 <div class="sellout"><?php echo $GLOBALS['ISO_LANG']['MSC']['sold_out']; ?></div>
 <?php else: ?>
 <?php if ($this->useQuantity): ?>
