@@ -48,6 +48,14 @@
 	background-repeat:no-repeat;
 }
 
+.header_iso_import
+{
+	padding:2px 0px 3px 20px;
+	background-image:url("import.png");
+	background-position:left center;
+	background-repeat:no-repeat;
+}
+
 .header_iso_copy
 {
 	background-image:url(../../../themes/default/images/copy.gif);

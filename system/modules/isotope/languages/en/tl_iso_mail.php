@@ -38,16 +38,19 @@ $GLOBALS['TL_LANG']['tl_iso_mail']['template']			= array('Email Template', 'Here
 $GLOBALS['TL_LANG']['tl_iso_mail']['attachDocument']	= array('Attach an order document', 'Allows you to generate an additional document as a PDF attachment for this email.');
 $GLOBALS['TL_LANG']['tl_iso_mail']['documentTemplate']	= array('Document template', 'Select an document template to override the default collection template.');
 $GLOBALS['TL_LANG']['tl_iso_mail']['documentTitle']		= array('Document title', 'Please specify a title for the attached document.');
+$GLOBALS['TL_LANG']['tl_iso_mail']['source']			= array('Source files', 'Please choose one or more .imt files from the files directory.');
 
 
 /**
  * Buttons
  */
 $GLOBALS['TL_LANG']['tl_iso_mail']['new']			= array('New Template', 'Create a new e-mail template');
-$GLOBALS['TL_LANG']['tl_iso_mail']['edit']			= array('Edit Template', 'Edit E-mail Template ID %s');
-$GLOBALS['TL_LANG']['tl_iso_mail']['copy']			= array('Copy Template', 'Copy E-mail Template ID %s');
-$GLOBALS['TL_LANG']['tl_iso_mail']['delete']		= array('Delete Template', 'Delete E-mail Template ID %s');
-$GLOBALS['TL_LANG']['tl_iso_mail']['show']			= array('Details', 'Details for E-mail Template ID %s');
+$GLOBALS['TL_LANG']['tl_iso_mail']['edit']			= array('Edit Template', 'Edit e-mail template ID %s');
+$GLOBALS['TL_LANG']['tl_iso_mail']['copy']			= array('Copy Template', 'Copy e-mail template ID %s');
+$GLOBALS['TL_LANG']['tl_iso_mail']['delete']		= array('Delete Template', 'Delete e-mail template ID %s');
+$GLOBALS['TL_LANG']['tl_iso_mail']['show']			= array('Details', 'Details for e-mail template ID %s');
+$GLOBALS['TL_LANG']['tl_iso_mail']['importMail']	= array('Import', 'Import email template');
+$GLOBALS['TL_LANG']['tl_iso_mail']['exportMail']	= array('Export', 'Export e-mail template ID %s');
 
 
 /**
@@ -56,4 +59,11 @@ $GLOBALS['TL_LANG']['tl_iso_mail']['show']			= array('Details', 'Details for E-m
 $GLOBALS['TL_LANG']['tl_iso_mail']['name_legend']		= 'Name';
 $GLOBALS['TL_LANG']['tl_iso_mail']['address_legend']	= 'Address';
 $GLOBALS['TL_LANG']['tl_iso_mail']['expert_legend']		= 'Expert Legend';
+
+
+/**
+ * References
+ */
+$GLOBALS['TL_LANG']['tl_iso_mail']['xml_error']			= 'Template "%s" is corrupt and cannot be imported.';
+$GLOBALS['TL_LANG']['tl_iso_mail']['mail_imported']		= 'Template "%s" has been imported.';
 

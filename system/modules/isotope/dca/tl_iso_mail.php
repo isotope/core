@@ -77,6 +77,13 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
 				'class'               => 'header_new',
 				'attributes'          => 'onclick="Backend.getScrollOffset();"',
 			),
+			'importMail' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_mail']['importMail'],
+				'href'                => 'key=importMail',
+				'class'               => 'header_iso_import',
+				'attributes'          => 'onclick="Backend.getScrollOffset();"'
+			),
 			'all' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['MSC']['all'],
@@ -112,6 +119,12 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
 				'href'                => 'act=show',
 				'icon'                => 'show.gif'
 			),
+			'exportMail' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_mail']['exportMail'],
+				'href'                => 'key=exportMail',
+				'icon'                => 'system/modules/isotope/html/export.png'
+			)
 		)
 	),
 
@@ -196,6 +209,11 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
 			'exclude'                 => true,
 			'inputType'				  => 'text',
 			'eval'					  => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
+		),
+		'source' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_mail']['source'],
+			'eval'                    => array('fieldType'=>'checkbox', 'files'=>true, 'filesOnly'=>true, 'extensions'=>'imt', 'class'=>'mandatory')
 		)
 	)
 );

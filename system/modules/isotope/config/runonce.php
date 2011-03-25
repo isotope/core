@@ -63,6 +63,16 @@ class IsotopeRunonce extends Controller
 
 		// Checkout method has been renamed from "login" to "member" to prevent a problem with palette of the login module
 		$this->Database->query("UPDATE tl_module SET iso_checkout_method='member' WHERE iso_checkout_method='login'");
+		
+		// Make sure file extension .imt (Isotope Mail Template) is allowed for up- and download
+		if (!in_array('imt', trimsplit(',', $GLOBALS['TL_CONFIG']['uploadTypes'])))
+		{
+			$this->Config->update('$GLOBALS[\'TL_CONFIG\'][\'uploadTypes\']', $GLOBALS['TL_CONFIG']['uploadTypes'].',imt');
+		}
+		if (!in_array('imt', trimsplit(',', $GLOBALS['TL_CONFIG']['allowedDownload'])))
+		{
+			$this->Config->update('$GLOBALS[\'TL_CONFIG\'][\'allowedDownload\']', $GLOBALS['TL_CONFIG']['allowedDownload'].',imt');
+		}
 	}
 
 
