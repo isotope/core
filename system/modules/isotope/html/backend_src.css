@@ -40,6 +40,14 @@
 	background-repeat:no-repeat;
 }
 
+.header_iso_import
+{
+	padding:2px 0px 3px 20px;
+	background-image:url("import.png");
+	background-position:left center;
+	background-repeat:no-repeat;
+}
+
 .header_export_emails
 {
 	padding:2px 0px 3px 20px;

@@ -83,6 +83,17 @@ class IsotopeRunonce extends Controller
 		$this->Database->query("DELETE FROM tl_iso_attributes WHERE field_name='price_override'");
 		$this->Database->query("DELETE FROM tl_iso_attributes WHERE field_name='use_price_override'");
 		$this->Database->query("DELETE FROM tl_iso_attributes WHERE field_name='weight'");
+
+
+		// Make sure file extension .imt (Isotope Mail Template) is allowed for up- and download
+		if (!in_array('imt', trimsplit(',', $GLOBALS['TL_CONFIG']['uploadTypes'])))
+		{
+			$this->Config->update('$GLOBALS[\'TL_CONFIG\'][\'uploadTypes\']', $GLOBALS['TL_CONFIG']['uploadTypes'].',imt');
+		}
+		if (!in_array('imt', trimsplit(',', $GLOBALS['TL_CONFIG']['allowedDownload'])))
+		{
+			$this->Config->update('$GLOBALS[\'TL_CONFIG\'][\'allowedDownload\']', $GLOBALS['TL_CONFIG']['allowedDownload'].',imt');
+		}
 	}
 	
 	
