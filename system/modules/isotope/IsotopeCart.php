@@ -66,7 +66,7 @@ class IsotopeCart extends IsotopeProductCollection
 
 
 	/**
-	 * Return cart data. All data is cached for speed improvement.
+	 * Return cart data.
 	 *
 	 * @access public
 	 * @param string $strKey
@@ -269,8 +269,6 @@ class IsotopeCart extends IsotopeProductCollection
 
 	/**
 	 * Hook-callback for isoCheckoutSurcharge.
-	 *
-	 * @todo	Accesses the payment module to get a payment surcharge.
 	 *
 	 * @access	public
 	 * @param	array

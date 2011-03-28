@@ -1099,7 +1099,7 @@ class IsotopeProduct extends Controller
 	/**
 	 * Load the language data for a product/variant if found based on the current page language
 	 */
-	protected function loadLanguage($arrIgnore=array())
+	protected function loadLanguage($arrInherit=array())
 	{
 		// This should never happen, but make sure, or we might fetch the master product record.
 		if (!strlen($GLOBALS['TL_LANGUAGE']))
@@ -1113,7 +1113,7 @@ class IsotopeProduct extends Controller
 
 			foreach( $arrAttributes as $attribute )
 			{
-				if (in_array($attribute, $arrIgnore))
+				if (in_array($attribute, $arrInherit))
 					continue;
 
 				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['multilingual'])

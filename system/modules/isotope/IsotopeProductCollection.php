@@ -419,7 +419,7 @@ abstract class IsotopeProductCollection extends Model
 
 			while( $objItems->next() )
 			{
-				$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS product_class FROM tl_iso_products WHERE pid={$objItems->product_id} OR id={$objItems->product_id}")->limit(1)->execute();
+				$objProductData = $this->Database->execute("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS product_class FROM tl_iso_products WHERE id={$objItems->product_id}");
 
 				$strClass = $GLOBALS['ISO_PRODUCT'][$objProductData->product_class]['class'];
 
@@ -514,7 +514,7 @@ abstract class IsotopeProductCollection extends Model
 		$this->modified = true;
 
 		// Make sure collection is in DB before adding product
-		if (!$this->id)
+		if (!$this->blnRecordExists)
 		{
 			$this->save();
 		}
