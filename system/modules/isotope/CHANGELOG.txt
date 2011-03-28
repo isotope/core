@@ -6,6 +6,7 @@ Version 0.2.8 (2011-03-??)
 ------------------------------
 - Added import/export option for mail templates
 - Fixed issue with email address on checkout
+- Fixed potential product load problem in IsotopeProductCollection
 
 Version 0.2.7 (2011-03-09)
 ------------------------------
