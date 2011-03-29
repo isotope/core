@@ -76,7 +76,7 @@ class IsotopeSellout extends Frontend
 			
 			if (array_key_exists('stock_quantity', $arrAttributes) && $objProduct->stock_quantity < $objProduct->quantity_requested)
 			{
-				$this->Isotope->Cart->updateProduct($objProduct, array('quantity_requested'=>$objProduct->stock_quantity));
+				$this->Isotope->Cart->updateProduct($objProduct, array('product_quantity'=>$objProduct->stock_quantity));
 				$blnCartChange = true;
 			}
 		}
