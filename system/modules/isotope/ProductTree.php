@@ -123,6 +123,25 @@ class ProductTree extends Widget
 			$this->blnSubmitInput = false;
 		}
 
+		// Check if there is at least one value
+		if ($this->fieldType == 'text')
+		{
+			if (is_array($varInput))
+			{
+				foreach ($varInput as $k => $option)
+				{
+					if ($this->mandatory && $option != '')
+					{
+						$this->mandatory = false;
+					}
+					elseif ($option == '')
+					{
+						unset($varInput[$k]);
+					}
+				}
+			}
+		}
+
 		return parent::validator($varInput);
 	}
 	
@@ -137,6 +156,12 @@ class ProductTree extends Widget
 		$GLOBALS['TL_CSS'][] = 'system/modules/isotope/html/backend_src.css';
 		
 		$this->import('BackendUser', 'User');
+		
+		// Open the tree if there is an error
+		if ($this->hasErrors())
+		{
+			$this->required = true;
+		}
 
 		$tree = '';
 		$this->getPathNodes();
@@ -381,6 +406,12 @@ class ProductTree extends Widget
 	
 				case 'radio':
 					$return .= '<input type="radio" name="'.$this->strName.'" id="'.$this->strName.'_'.$id.'" class="tl_tree_radio" value="'.specialchars($id).'" onfocus="Backend.getScrollOffset();"'.$this->optionChecked($id, $this->varValue).' />';
+					break;
+				
+				case 'text':
+					$style = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['style'] ? ' style="'.$GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['style'].'"' : '';
+					$maxlength = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['maxlength'] ? ' maxlength="'.$GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['maxlength'].'"' : '';
+					$return .= '<input type="text" class="text" name="'.$this->strName.'['.$id.']" id="'.$this->strName.'_'.$id.'" class="tl_tree_radio" value="'.specialchars($this->varValue[$id]).'" onfocus="Backend.getScrollOffset();"'.$style.$maxlength.' />';
 					break;
 			}
 		}

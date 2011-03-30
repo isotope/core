@@ -192,6 +192,11 @@ $GLOBALS['TL_LANG']['MSC']['new_to_old'] = 'later to earlier';
 $GLOBALS['ISO_LANG']['MSC']['useDefault']	= 'Use default value';
 
 
+/**
+ * Content elements
+ */
+$GLOBALS['TL_LANG']['CTE']['isotope']	= 'Isotope eCommerce';
+
 
 /**
  * Isotope module labels
@@ -300,6 +305,7 @@ $GLOBALS['TL_LANG']['CCT']['enc_acct_num']			= 'Encoded Account Number';
 $GLOBALS['TL_LANG']['CCT']['uatp']					= 'Universal Air Travel Program';
 $GLOBALS['TL_LANG']['CCT']['maestro_intl']			= 'Maestro International';
 $GLOBALS['TL_LANG']['CCT']['ge_money_uk']			= 'GE Money UK';
+
 
 /**
  * Weight Units
