@@ -50,7 +50,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['iso_reader_jumpTo'] = array
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_list_layout'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_content']['iso_list_layout'],
-	'default'                 => 'iso_list_default',
 	'exclude'                 => true,
 	'inputType'               => 'select',
 	'options_callback'		  => array('tl_content_isotope', 'getListTemplates'),
