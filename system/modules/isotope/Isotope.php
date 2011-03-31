@@ -887,6 +887,8 @@ class Isotope extends Controller
 			$language = $GLOBALS['TL_LANGUAGE'];
 		}
 		
+		$this->import('String');
+		
 		if (!is_array($GLOBALS['ISO_LANG']['TBL'][$language]))
 		{
 			$GLOBALS['ISO_LANG']['TBL'][$language] = array();
@@ -894,10 +896,11 @@ class Isotope extends Controller
 			
 			while( $objLabels->next() )
 			{
-				$GLOBALS['ISO_LANG']['TBL'][$language][$objLabels->label] = $objLabels->replacement;
+				$GLOBALS['ISO_LANG']['TBL'][$language][$this->String->decodeEntities($objLabels->label)] = $objLabels->replacement;
 			}
 		}
 
+		$label = $this->String->decodeEntities($label);
 		return $GLOBALS['ISO_LANG']['TBL'][$language][$label] ? $GLOBALS['ISO_LANG']['TBL'][$language][$label] : $label;
 	}
 
