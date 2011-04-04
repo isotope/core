@@ -187,7 +187,8 @@ class IsotopeRules extends Controller
 				{
 					$arrCoupons[] = $arrRule['code'];
 
-					$this->Database->query("UPDATE tl_iso_cart SET coupons='" . serialize($arrCoupons) . "' WHERE id={$this->Isotope->Cart->id}");
+					$this->Isotope->Cart->coupons = serialize($arrCoupons);
+					$this->Isotope->Cart->save();
 
 					$_SESSION['COUPON_SUCCESS'][$objModule->id] = sprintf($GLOBALS['TL_LANG']['MSC']['couponApplied'], $arrRule['code']);
 				}
@@ -401,7 +402,7 @@ class IsotopeRules extends Controller
 		);
 
 		// Product or producttype restrictions
-		if ($arrRule['productRestrictions'] != '')
+		if ($arrRule['productRestrictions'] != '' && $arrRule['productRestrictions'] != 'none')
 		{
 			$arrLimit = $this->Database->execute("SELECT object_id FROM tl_iso_rule_restrictions WHERE pid={$arrRule['id']} AND type='{$arrRule['productRestrictions']}'")->fetchEach('object_id');
 
