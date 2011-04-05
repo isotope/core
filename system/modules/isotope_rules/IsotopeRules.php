@@ -310,11 +310,11 @@ class IsotopeRules extends Controller
 
 
 		// Limits
-		$arrProcedures[] = "(limitPerConfig=0 OR limitPerConfig>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND config_id=".(int)$this->Isotope->Config->id."))";
+		$arrProcedures[] = "(limitPerConfig=0 OR limitPerConfig>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND config_id=".(int)$this->Isotope->Config->id." AND order_id!=(SELECT id FROM tl_iso_orders WHERE cart_id=".$this->Isotope->Cart->id.")))";
 
 		if (FE_USER_LOGGED_IN && TL_MODE=='FE')
 		{
-			$arrProcedures[] = "(limitPerMember=0 OR limitPerMember>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND member_id={$this->User->id}))";
+			$arrProcedures[] = "(limitPerMember=0 OR limitPerMember>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND member_id={$this->User->id} AND order_id!=(SELECT id FROM tl_iso_orders WHERE cart_id=".$this->Isotope->Cart->id.")))";
 		}
 
 

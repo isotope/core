@@ -56,6 +56,7 @@ Version 0.2.8 (2011-03-??)
 - Fixed issue with email address on checkout
 - Fixed potential product load problem in IsotopeProductCollection
 - Fixed potential problem with rule product restrictions
+- Fixed bug with rule limits per store config or member
 - Removed default list template in tl_content
 
 Version 0.2.7 (2011-03-09)
