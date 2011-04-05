@@ -347,12 +347,6 @@ abstract class IsotopeProductCollection extends Model
 	{
 		if (!$objProduct->cart_id)
 			return false;
-			
-		// Quantity set to 0, delete product
-		if (isset($arrSet['product_quantity']) && $arrSet['product_quantity'] == 0)
-		{
-			return $this->deleteProduct($objProduct);
-		}
 		
 		// HOOK for adding additional functionality when updating a product in the collection
 		if (isset($GLOBALS['TL_HOOKS']['iso_updateProductInCollection']) && is_array($GLOBALS['TL_HOOKS']['iso_updateProductInCollection']))
@@ -365,6 +359,12 @@ abstract class IsotopeProductCollection extends Model
 				if (is_array($arrSet) && !count($arrSet))
 					return false;
 			}
+		}
+			
+		// Quantity set to 0, delete product
+		if (isset($arrSet['product_quantity']) && $arrSet['product_quantity'] == 0)
+		{
+			return $this->deleteProduct($objProduct);
 		}
 		
 		$intAffectedRows = $this->Database->prepare("UPDATE {$this->ctable} %s WHERE id={$objProduct->cart_id}")
