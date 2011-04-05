@@ -162,7 +162,8 @@ class IsotopeRules extends Controller
 	 */
 	public function getCouponForm($objModule)
 	{
-		$arrCoupons = is_array(deserialize($this->Isotope->Cart->coupons)) ? deserialize($this->Isotope->Cart->coupons) : array();
+		$arrCoupons = deserialize($this->Isotope->Cart->coupons);
+		$arrCoupons = is_array($arrCoupons) ? $arrCoupons : array();
 		$strCoupon = $this->Input->get('coupon_'.$objModule->id);
 		
 		if ($strCoupon == '')
@@ -185,10 +186,9 @@ class IsotopeRules extends Controller
 				else
 				{
 					$arrCoupons[] = $arrRule['code'];
-					
-					$this->Isotope->Cart->coupons = serialize($arrCoupons);
-					$this->Isotope->Cart->save();
-					
+
+					$this->Database->query("UPDATE tl_iso_cart SET coupons='" . serialize($arrCoupons) . "' WHERE id={$this->Isotope->Cart->id}");
+
 					$_SESSION['COUPON_SUCCESS'][$objModule->id] = sprintf($GLOBALS['TL_LANG']['MSC']['couponApplied'], $arrRule['code']);
 				}
 			}
