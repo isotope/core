@@ -122,6 +122,11 @@ class IsotopeProduct extends Controller
 		parent::__construct();
 		$this->import('Database');
 		$this->import('Isotope');
+		
+		if (FE_USER_LOGGED_IN)
+		{
+			$this->import('FrontendUser', 'User');
+		}
 
 		$this->blnLocked = $blnLocked;
 
@@ -208,10 +213,10 @@ class IsotopeProduct extends Controller
 																WHERE pid IN
 																(
 																	SELECT id
-																	FROM (SELECT * FROM tl_iso_prices ORDER BY config_id DESC, member_group DESC, start DESC, stop DESC) AS p
+																	FROM (SELECT * FROM tl_iso_prices ORDER BY config_id DESC, " . ((FE_USER_LOGGED_IN && count($this->User->groups)) ? ('member_group='.implode(' DESC, member_group=', $this->User->groups).' DESC') : 'member_group DESC') . ", start DESC, stop DESC) AS p
 																	WHERE
 																		(config_id=".(int)$this->Isotope->Config->id." OR config_id=0)
-																		AND (member_group=".(int)$this->User->price_group." OR member_group=0)
+																		AND (" . ((FE_USER_LOGGED_IN && count($this->User->groups)) ? ('member_group IN (' . implode(',', $this->User->groups) . ') OR ') : '') . "member_group=0)
 																		AND (start='' OR start<$time)
 																		AND (stop='' OR stop>$time)
 																		AND pid IN
@@ -230,10 +235,10 @@ class IsotopeProduct extends Controller
 																WHERE pid IN
 																(
 																	SELECT id
-																	FROM (SELECT * FROM tl_iso_prices ORDER BY config_id DESC, member_group DESC, start DESC, stop DESC) AS p
+																	FROM (SELECT * FROM tl_iso_prices ORDER BY config_id DESC, " . ((FE_USER_LOGGED_IN && count($this->User->groups)) ? ('member_group='.implode(' DESC, member_group=', $this->User->groups).' DESC') : 'member_group DESC') . ", start DESC, stop DESC) AS p
 																	WHERE
 																		(config_id=".(int)$this->Isotope->Config->id." OR config_id=0)
-																		AND (member_group=".(int)$this->User->price_group." OR member_group=0)
+																		AND (" . ((FE_USER_LOGGED_IN && count($this->User->groups)) ? ('member_group IN (' . implode(',', $this->User->groups) . ') OR ') : '') . "member_group=0)
 																		AND (start='' OR start<$time)
 																		AND (stop='' OR stop>$time)
 																		AND pid IN
@@ -973,11 +978,11 @@ class IsotopeProduct extends Controller
 													FROM tl_iso_prices
 													WHERE
 														(config_id=".(int)$this->Isotope->Config->id." OR config_id=0)
-														AND (" . (count($this->User->groups) ? ('member_group IN (' . implode(',', $this->User->groups) . ') OR') : '') . "member_group=0)
+														AND (" . ((FE_USER_LOGGED_IN && count($this->User->groups)) ? ('member_group IN (' . implode(',', $this->User->groups) . ') OR ') : '') . "member_group=0)
 														AND (start='' OR start<$time)
 														AND (stop='' OR stop>$time)
 														AND pid={$this->id}
-													ORDER BY config_id DESC, " . (count($this->User->groups) ? ('member_group='.implode(' DESC, member_group=', $this->User->groups).' DESC') : 'member_group DESC') . ", start DESC, stop DESC
+													ORDER BY config_id DESC, " . ((FE_USER_LOGGED_IN && count($this->User->groups)) ? ('member_group='.implode(' DESC, member_group=', $this->User->groups).' DESC') : 'member_group DESC') . ", start DESC, stop DESC
 													LIMIT 1
 												)
 											ORDER BY min DESC LIMIT 1");
