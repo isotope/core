@@ -32,4 +32,5 @@
  * Hooks
  */
 $GLOBALS['TL_HOOKS']['iso_addProductToCollection'][] = array('IsotopeSellout', 'addProductToCollection');
+$GLOBALS['TL_HOOKS']['iso_updateProductInCollection'][] = array('IsotopeSellout', 'updateProductInCollection');
 $GLOBALS['TL_HOOKS']['iso_writeOrder'][] = array('IsotopeSellout', 'writeOrder');

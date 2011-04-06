@@ -31,35 +31,85 @@
 class IsotopeSellout extends Frontend
 {
 	
-	public function addProductToCollection($objProduct, $intQuantity, $objCollection)
+	public function addProductToCollection($objProduct, $intRequested, $objCollection)
 	{
 		if ($objCollection instanceof IsotopeCart)
 		{
 			$arrAttributes = $objProduct->getAttributes();
+			$blnStock = array_key_exists('stock_quantity', $arrAttributes);
+			$blnMaxOrder = array_key_exists('max_order_quantity', $arrAttributes) && $objProduct->max_order_quantity > 0;
 			
-			if (array_key_exists('stock_quantity', $arrAttributes))
+			if ($blnStock || $blnMaxOrder)
 			{
-				if ($objProduct->stock_quantity < 1)
+				if ($blnStock && $objProduct->stock_quantity < 1)
 				{
 					return 0;
 				}
-				
+				elseif ($blnStock && $blnMaxOrder)
+				{
+					$intAvailable = $objProduct->stock_quantity < $objProduct->max_order_quantity ? $objProduct->stock_quantity : $objProduct->max_order_quantity;
+				}
+				else
+				{
+					$intAvailable = $blnStock ? $objProduct->stock_quantity : $objProduct->max_order_quantity;
+				}
+
 				$arrProducts = $objCollection->getProducts();
 				foreach( $arrProducts as $objCartProduct )
 				{
 					if ($objProduct->id == $objCartProduct->id)
 					{
-						$intAvailable = $objProduct->stock_quantity - $objCartProduct->quantity_requested;
-						
-						return $intAvailable < $intQuantity ? $intAvailable : $intQuantity;
+						$intAvailable -= $objCartProduct->quantity_requested;
 					}
 				}
 				
-				return $objProduct->stock_quantity < $intQuantity ? $objProduct->stock_quantity : $intQuantity;
+				return $intAvailable < $intRequested ? $intAvailable : $intRequested;
 			}
 		}
 		
-		return $intQuantity;
+		return $intRequested;
+	}
+	
+	
+	public function updateProductInCollection($objProduct, $arrSet, $objCollection)
+	{
+		if ($objCollection instanceof IsotopeCart && $arrSet['product_quantity'] > 0)
+		{
+			$arrAttributes = $objProduct->getAttributes();
+			$blnStock = array_key_exists('stock_quantity', $arrAttributes);
+			$blnMaxOrder = array_key_exists('max_order_quantity', $arrAttributes) && $objProduct->max_order_quantity > 0;
+			$intRequested = $arrSet['product_quantity'];
+
+			if ($blnStock || $blnMaxOrder)
+			{
+				if ($blnStock && $objProduct->stock_quantity < 1)
+				{
+					$this->Isotope->Cart->deleteProduct($objProduct);
+					return array();
+				}
+				elseif ($blnStock && $blnMaxOrder)
+				{
+					$intAvailable = $objProduct->stock_quantity < $objProduct->max_order_quantity ? $objProduct->stock_quantity : $objProduct->max_order_quantity;
+				}
+				else
+				{
+					$intAvailable = $blnStock ? $objProduct->stock_quantity : $objProduct->max_order_quantity;
+				}
+				
+				$arrProducts = $objCollection->getProducts();
+				foreach( $arrProducts as $objCartProduct )
+				{
+					if ($objProduct->id == $objCartProduct->id && $objProduct->getOptions(true) != $objCartProduct->getOptions(true))
+					{
+						$intAvailable -= $objCartProduct->quantity_requested;
+					}
+				}
+				
+				$arrSet['product_quantity'] = $intAvailable < $intRequested ? $intAvailable : $intRequested;
+			}
+		}
+		
+		return $arrSet;
 	}
 	
 	
@@ -88,7 +138,7 @@ class IsotopeSellout extends Frontend
 			{
 				$arrAttributes = $objProduct->getAttributes();
 				
-				if (array_key_exists('stock_quantity', $arrAttributes) && $objProduct->stock_quantity < $objProduct->quantity_requested)
+				if (array_key_exists('stock_quantity', $arrAttributes))
 				{
 					$this->Database->prepare("UPDATE tl_iso_products SET stock_quantity=? WHERE id=?")
 								   ->execute(($objProduct->stock_quantity - $objProduct->quantity_requested), $objProduct->id);

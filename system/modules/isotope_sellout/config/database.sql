@@ -12,6 +12,7 @@
 -- 
 
 CREATE TABLE `tl_iso_products` (
-  `stock_quantity` int(10) unsigned NOT NULL default '0',
+  `stock_quantity` int(5) unsigned NOT NULL default '0',
+  `max_order_quantity` int(5) unsigned NOT NULL default '0',
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
