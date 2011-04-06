@@ -648,7 +648,7 @@ class DC_TablePageId extends DC_Table
 				}
 
 				// Add sorting field
-				if (strlen($_v))
+				if (!is_array($_v) && strlen($_v))
 				{
 					$key = strlen($GLOBALS['TL_LANG'][$this->ptable][$v][0]) ? $GLOBALS['TL_LANG'][$this->ptable][$v][0]  : $v;
 					$add[$key] = $_v;
@@ -802,7 +802,6 @@ class DC_TablePageId extends DC_Table
 			}
 		}
 
-/*
 		// Make items sortable
 		if ($blnHasSorting)
 		{
@@ -811,12 +810,11 @@ class DC_TablePageId extends DC_Table
 
 <script type="text/javascript">
 <!--//--><![CDATA[//><!--
-Backend.makeParentViewSortable("ul_' . CURRENT_ID . '");
+Isotope.makePageViewSortable("ul_' . CURRENT_ID . '");
 //--><!]]>
 </script>';
 		}
 
-*/
 		$return .= '
 
 </div>';

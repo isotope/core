@@ -603,6 +603,49 @@ var Isotope =
 				$('isotope-contextmenu').destroy();
 			}
 		});
+	},
+	
+	/**
+	 * Make parent view items sortable
+	 * @param object
+	 */
+	makePageViewSortable: function(ul)
+	{
+		var list = new Sortables(ul,
+		{
+			contstrain: true,
+			opacity: 0.6
+		});
+
+		list.active = false;
+
+		list.addEvent('start', function()
+		{
+			list.active = true;
+		});
+
+		list.addEvent('complete', function(el)
+		{
+	    	if (!list.active)
+	    	{
+    			return;
+    		}
+
+    		if (el.getPrevious())
+    		{
+    			var id = el.get('id').replace(/li_/, '');
+    			var pid = el.getPrevious().get('id').replace(/li_/, '');
+    			var req = window.location.search.replace(/id=[0-9]*/, 'id=' + id) + '&act=cut&mode=1&page_id=' + pid;
+    			new Request({url: window.location.href, method: 'get', data: req}).send();
+    		}
+    		else if (el.getParent())
+    		{
+    			var id = el.get('id').replace(/li_/, '');
+    			var pid = el.getParent().get('id').replace(/ul_/, '');
+    			var req = window.location.search.replace(/id=[0-9]*/, 'id=' + id) + '&act=cut&mode=2&page_id=' + pid;
+				new Request({url: window.location.href, method: 'get', data: req}).send();
+    		}
+    	});
 	}
 };
 
