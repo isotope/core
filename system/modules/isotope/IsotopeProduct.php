@@ -206,51 +206,25 @@ class IsotopeProduct extends Controller
 				{
 					$time = time();
 
-					$objProduct = $this->Database->execute("SELECT
+					$objProduct = $this->Database->execute("SELECT MIN(price) AS low_price, MAX(price) AS high_price
+															FROM tl_iso_price_tiers
+															WHERE pid IN
 															(
-																SELECT price
-																FROM tl_iso_price_tiers
-																WHERE pid IN
+																SELECT id
+																FROM
 																(
-																	SELECT id
-																	FROM (SELECT * FROM tl_iso_prices ORDER BY config_id DESC, " . ((FE_USER_LOGGED_IN && count($this->User->groups)) ? ('member_group='.implode(' DESC, member_group=', $this->User->groups).' DESC') : 'member_group DESC') . ", start DESC, stop DESC) AS p
+																	SELECT p1.id, p1.pid FROM tl_iso_prices p1 LEFT JOIN tl_iso_products p2 ON p1.pid=p2.id
 																	WHERE
-																		(config_id=".(int)$this->Isotope->Config->id." OR config_id=0)
-																		AND (" . ((FE_USER_LOGGED_IN && count($this->User->groups)) ? ('member_group IN (' . implode(',', $this->User->groups) . ') OR ') : '') . "member_group=0)
-																		AND (start='' OR start<$time)
-																		AND (stop='' OR stop>$time)
-																		AND pid IN
-																		(
-																			SELECT id
-																			FROM tl_iso_products
-																			WHERE pid=" . ($this->arrData['pid'] ? $this->arrData['pid'] : $this->arrData['id']) . "
-																		)
-																	GROUP BY pid
-																)
-																ORDER BY min ASC, price ASC LIMIT 1
-															) AS low_price,
-															(
-																SELECT price
-																FROM tl_iso_price_tiers
-																WHERE pid IN
-																(
-																	SELECT id
-																	FROM (SELECT * FROM tl_iso_prices ORDER BY config_id DESC, " . ((FE_USER_LOGGED_IN && count($this->User->groups)) ? ('member_group='.implode(' DESC, member_group=', $this->User->groups).' DESC') : 'member_group DESC') . ", start DESC, stop DESC) AS p
-																	WHERE
-																		(config_id=".(int)$this->Isotope->Config->id." OR config_id=0)
-																		AND (" . ((FE_USER_LOGGED_IN && count($this->User->groups)) ? ('member_group IN (' . implode(',', $this->User->groups) . ') OR ') : '') . "member_group=0)
-																		AND (start='' OR start<$time)
-																		AND (stop='' OR stop>$time)
-																		AND pid IN
-																		(
-																			SELECT id
-																			FROM tl_iso_products
-																			WHERE pid=" . ($this->arrData['pid'] ? $this->arrData['pid'] : $this->arrData['id']) . "
-																		)
-																	GROUP BY pid
-																)
-																ORDER BY min ASC, price DESC LIMIT 1
-															) AS high_price");
+																		p2.pid=" . ($this->arrData['pid'] ? $this->arrData['pid'] : $this->arrData['id']) . " AND p2.language=''
+																		AND p1.config_id IN (".(int)$this->Isotope->Config->id.",0)
+																		AND p1.member_group IN(" . ((FE_USER_LOGGED_IN && count($this->User->groups)) ? (implode(',', $this->User->groups).',') : '') . "0)
+																		AND (p1.start='' OR p1.start<$time)
+																		AND (p1.stop='' OR p1.stop>$time)
+																	ORDER BY p1.config_id DESC, " . ((FE_USER_LOGGED_IN && count($this->User->groups)) ? ('p1.member_group='.implode(' DESC, p1.member_group=', $this->User->groups).' DESC') : 'p1.member_group DESC') . ", p1.start DESC, p1.stop DESC
+																) AS p
+																GROUP BY pid
+															)
+															GROUP BY min ORDER BY min ASC LIMIT 1");
 				}
 				else
 				{
@@ -977,8 +951,8 @@ class IsotopeProduct extends Controller
 													SELECT id
 													FROM tl_iso_prices
 													WHERE
-														(config_id=".(int)$this->Isotope->Config->id." OR config_id=0)
-														AND (" . ((FE_USER_LOGGED_IN && count($this->User->groups)) ? ('member_group IN (' . implode(',', $this->User->groups) . ') OR ') : '') . "member_group=0)
+														config_id IN (".(int)$this->Isotope->Config->id.",0)
+														AND member_group IN(" . ((FE_USER_LOGGED_IN && count($this->User->groups)) ? (implode(',', $this->User->groups) . ',') : '') . "0)
 														AND (start='' OR start<$time)
 														AND (stop='' OR stop>$time)
 														AND pid={$this->id}
