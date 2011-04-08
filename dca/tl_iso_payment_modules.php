@@ -32,7 +32,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['expercash_popupId'] = ar
 (
 	'label'				=> &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['expercash_popupId'],
 	'inputType'			=> 'text',
-	'eval'				=> array('mandatory'=>true, 'maxlength'=>8, 'decodeEntities'=>true, 'tl_class'=>'w50'),
+	'eval'				=> array('mandatory'=>true, 'maxlength'=>10, 'decodeEntities'=>true, 'tl_class'=>'w50'),
 );
 
 $GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['expercash_profile'] = array
