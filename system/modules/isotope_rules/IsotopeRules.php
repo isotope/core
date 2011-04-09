@@ -317,7 +317,7 @@ class IsotopeRules extends Controller
 		
 		if (FE_USER_LOGGED_IN && TL_MODE == 'FE')
 		{
-			$arrProcedures[] = "(limitPerMember=0 OR limitPerMember>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND member_id={$this->User->id} AND order_id!=(SELECT id FROM tl_iso_orders WHERE cart_id=".$this->Isotope->Cart->id.")))";
+			$arrProcedures[] = "(limitPerMember=0 OR limitPerMember>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND member_id=".(int)$this->User->id." AND order_id!=(SELECT id FROM tl_iso_orders WHERE cart_id=".$this->Isotope->Cart->id.")))";
 		}
 		
 		

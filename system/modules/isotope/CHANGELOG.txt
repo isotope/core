@@ -2,7 +2,7 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 0.2.8 (2011-03-??)
+Version 0.2.8 (2011-04-??)
 ------------------------------
 - Added import/export option for mail templates
 - Added quantity_requested to product template
@@ -10,6 +10,7 @@ Version 0.2.8 (2011-03-??)
 - Fixed potential product load problem in IsotopeProductCollection
 - Fixed potential problem with rule product restrictions
 - Fixed bug with rule limits per store config or member
+- Fixed potential issue with member ID in rules
 - Removed default list template in tl_content
 
 Version 0.2.7 (2011-03-09)
