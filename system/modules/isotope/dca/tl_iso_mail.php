@@ -35,11 +35,11 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
 	// Config
 	'config' => array
 	(
-		'dataContainer'               => 'Table',
-		'enableVersioning'            => true,
-		'closed'					  => true,
-		'switchToEdit'				  => true,
-		'ctables'                     => array('tl_iso_mail_content'),
+		'dataContainer'				=> 'Table',
+		'enableVersioning'			=> true,
+		'closed'					=> true,
+		'switchToEdit'				=> true,
+		'ctable'					=> array('tl_iso_mail_content'),
 		'onload_callback' => array
 		(
 			array('IsotopeBackend', 'initializeSetupModule'),
