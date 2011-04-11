@@ -143,15 +143,31 @@ class PaymentExpercash extends IsotopePayment
 	{
 		$strKey = md5($this->Input->get('amount') . $this->Input->get('currency') . $this->Input->get('paymentMethod') . $this->Input->get('transactionId') . $this->Input->get('GuTID') . $this->expercash_popupKey);
 		
-		if ($this->Input->get('exportKey') == $strKey
-			&& $this->Input->get('amount') == (round($this->Isotope->Cart->grandTotal, 2)*100)
-			&& $this->Input->get('currency') == $this->Isotope->Config->currency
-			&& $this->Input->get('transactionId') == $objOrder->order_id)
+		if ($this->Input->get('exportKey') != $strKey)
 		{
-			return true;
+			$this->log('ExperCash: exportKey was incorrect. Possible data manipulation!', __METHOD__, TL_ERROR);
+			return false;
 		}
 		
-		return false;
+		if ($this->Input->get('amount') != (round($this->Isotope->Cart->grandTotal, 2)*100))
+		{
+			$this->log('ExperCash: amount is incorrect. Possible data manipulation!', __METHOD__, TL_ERROR);
+			return false;
+		}
+		
+		if ($this->Input->get('currency') != $this->Isotope->Config->currency)
+		{
+			$this->log('ExperCash: currency is incorrect. Possible data manipulation!', __METHOD__, TL_ERROR);
+			return false;
+		}
+		
+		if ($this->Input->get('transactionId') != $objOrder->order_id)
+		{
+			$this->log('ExperCash: transactionId is incorrect. Possible data manipulation!', __METHOD__, TL_ERROR);
+			return false;
+		}
+		
+		return true;
 	}
 }
 
