@@ -1425,7 +1425,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 		{
 			return $this->generateImage('/system/modules/isotope/html/invisible-startstop.png', $label).' ';
 		}
-		elseif (!$row['published'])
+		elseif ($row['published'] != '1')
 		{
 			$icon = 'invisible.gif';
 		}
