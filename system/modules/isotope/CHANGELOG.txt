@@ -12,6 +12,7 @@ Version 0.2.8 (2011-04-??)
 - Fixed potential problem with rule product restrictions
 - Fixed bug with rule limits per store config or member
 - Fixed potential issue with member ID in rules
+- Fixed potentially wrong publish-status icon (Ticket #437)
 - Fixed: copying mail template did not duplicate languages
 - Removed default list template in tl_content
 - Minor code cleanup
