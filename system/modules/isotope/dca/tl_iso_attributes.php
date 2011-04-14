@@ -432,7 +432,7 @@ class tl_iso_attributes extends Backend
 
 		foreach( $GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData )
 		{
-			if ($arrData['inputType'] == 'select')
+			if ($arrData['inputType'] == 'select' || ($arrData['inputType'] == 'conditionalselect' && $field != $dc->activeRecord->field_name))
 			{
 				$arrFields[$field] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
 			}
