@@ -41,6 +41,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 	(
 		'dataContainer'               => 'Table',
 		'enableVersioning'            => false,
+		'ctable'					  => array('tl_iso_order_items'),
 		'closed'            		  => true,
 		'onload_callback' 			  => array
 		(
