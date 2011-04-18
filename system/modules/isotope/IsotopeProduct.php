@@ -419,7 +419,11 @@ class IsotopeProduct extends Controller
 
 			case 'quantity_requested':
 				$this->arrCache[$strKey] = $varValue;
-				$this->findPrice();
+				
+				if (!$this->blnLocked)
+				{
+					$this->findPrice();
+				}
 				break;
 
 			default:
