@@ -88,8 +88,8 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 		//Otherwise we capture payment
 		// Get the current order
 		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->execute($this->Isotope->Cart->id);
-		$arrPaymentData = deserialize($objOrder->payment_data);
-		return $this->authCapturePayment($objOrder->id, $arrPaymentData['transaction-id'], $objOrder->grandTotal, true);
+		//$arrPaymentData = deserialize($objOrder->payment_data);
+		return $this->authCapturePayment($objOrder->id, $objOrder->grandTotal, true);
 	}
 
 
@@ -203,7 +203,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 			// Get the current order, review page will create the data
 			$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->execute($this->Isotope->Cart->id);
 
-			$blnAuthCapture = $this->authCapturePayment($objOrder->id, $this->Isotope->Cart->grandTotal, $arrPayment);
+			$blnAuthCapture = $this->authCapturePayment($objOrder->id, $this->Isotope->Cart->grandTotal, false);
 
 			if($blnAuthCapture)
 			{
@@ -308,7 +308,7 @@ $return .= '</div></div>';
 	 * @access public
 	 * @return bool
 	 */
-	public function authCapturePayment($intOrderId, $fltOrderTotal, $arrData, $blnCapture=false)
+	public function authCapturePayment($intOrderId, $fltOrderTotal, $blnCapture=false)
 	{
 		//Gather Order data and set IsotopeOrder object
 		$objOrder = new IsotopeOrder();
@@ -324,7 +324,8 @@ $return .= '</div></div>';
 		$arrBilling = array();
 		$arrShipping = array();
 		$arrProducts = array();
-
+		$arrPaymentInfo = array();
+		
 		//Gather product and address data depending on FE(Cart) or BE(Order)
 		if(TL_MODE=='FE')
 		{
@@ -351,64 +352,82 @@ $return .= '</div></div>';
 		}
 
 		//Authorization type
-		$strAuthType = ($this->authorize_trans_type =='AUTH_ONLY') ? ($blnCapture ? 'PRIOR_AUTH_CAPTURE': 'AUTH_ONLY'): 'AUTH_CAPTURE';
+		$strAuthType = $blnCapture ? 'PRIOR_AUTH_CAPTURE' : 'AUTH_ONLY';
 
 		//Get Address Data
 		$arrBillingSubdivision = explode('-', $arrBilling['subdivision']);
 		$arrShippingSubdivision = explode('-', $arrShipping['subdivision']);
-
-		$authnet_values = array
+		
+		//Set up basic request fields required by all transactions
+		$authnet_values_default = array
 		(
 			"x_version"							=> '3.1',
 			"x_login"							=> $this->authorize_login,
 			"x_tran_key"						=> $this->authorize_trans_key,
-			"x_test_request"					=> ($this->debug ? 'true' : 'false'),
+			"x_type"							=> $strAuthType,
 			"x_delim_char"						=> $this->authorize_delimiter,
 			"x_delim_data"						=> "TRUE",
 			"x_relay_response" 					=> "FALSE",
-			"x_url"								=> "FALSE",
-			"x_type"							=> $strAuthType,
-			"x_description"						=> "Order Number " . $this->Isotope->Config->orderPrefix . $objOrder->id,
-			"x_invoice_num"						=> $objOrder->id,
-			"x_amount"							=> $fltOrderTotal,
-			"x_first_name"						=> $arrBilling['firstname'],
-			"x_last_name"						=> $arrBilling['lastname'],
-			"x_company"							=> $arrBilling['company'],
-			"x_address"							=> $arrBilling['street_1']."\n".$arrBilling['street_2']."\n".$arrBilling['street_3'],
-			"x_city"							=> $arrBilling['city'],
-			"x_state"							=> $arrBillingSubdivision[1],
-			"x_zip"								=> $arrBilling['postal'],
-			"x_email_customer"					=> "FALSE",
-			"x_email"							=> $arrBilling['email'],
-			"x_country"							=> $arrBilling['country'],
-			"x_phone"							=> $arrBilling['phone'],
-			"x_ship_to_first_name"				=> $arrShipping['firstname'],
-			"x_ship_to_last_name"				=> $arrShipping['lastname'],
-			"x_ship_to_company"					=> $arrShipping['company'],
-			"x_ship_to_address"					=> $arrShipping['street_1']."\n".$arrShipping['street_2']."\n".$arrShipping['street_3'],
-			"x_ship_to_city"					=> $arrShipping['city'],
-			"x_ship_to_state"					=> $arrShippingSubdivision[1],
-			"x_ship_to_zip"						=> $arrShipping['postal'],
-			"x_ship_to_country"					=> $arrShipping['country'],
+			"x_amount"							=> $fltOrderTotal	
+			//"x_test_request"					=> ($this->debug ? 'true' : 'false'),
 		);
 		
-		if($arrData['card_accountNumber']) //Passing CC data
+		switch($strAuthType)
 		{
+			case 'AUTH_ONLY':
+				$authnet_values_authonly = array(		
+					"x_url"								=> "FALSE",					
+					"x_description"						=> "Order Number " . $this->Isotope->Config->orderPrefix . $objOrder->id,
+					"x_invoice_num"						=> $objOrder->id,
+					"x_first_name"						=> $arrBilling['firstname'],
+					"x_last_name"						=> $arrBilling['lastname'],
+					"x_company"							=> $arrBilling['company'],
+					"x_address"							=> $arrBilling['street_1']."\n".$arrBilling['street_2']."\n".$arrBilling['street_3'],
+					"x_city"							=> $arrBilling['city'],
+					"x_state"							=> $arrBillingSubdivision[1],
+					"x_zip"								=> $arrBilling['postal'],
+					"x_email_customer"					=> "FALSE",
+					"x_email"							=> $arrBilling['email'],
+					"x_country"							=> $arrBilling['country'],
+					"x_phone"							=> $arrBilling['phone'],
+					"x_ship_to_first_name"				=> $arrShipping['firstname'],
+					"x_ship_to_last_name"				=> $arrShipping['lastname'],
+					"x_ship_to_company"					=> $arrShipping['company'],
+					"x_ship_to_address"					=> $arrShipping['street_1']."\n".$arrShipping['street_2']."\n".$arrShipping['street_3'],
+					"x_ship_to_city"					=> $arrShipping['city'],
+					"x_ship_to_state"					=> $arrShippingSubdivision[1],
+					"x_ship_to_zip"						=> $arrShipping['postal'],
+					"x_ship_to_country"					=> $arrShipping['country'],
+				);
+				
+				$authnet_values = array_merge($authnet_values_default,$authnet_values_authonly);			
+				break;
+			case 'PRIOR_AUTH_CAPTURE':
+				$arrTransactionData = deserialize($objOrder->payment_data,true);				
+				$authnet_values = array_merge($authnet_values_default,array("x_trans_id" => $arrTransactionData['transaction-id']));
+				break;
+			default:
+				break;				
+		}
+				
+						
+		if(!$blnCapture) //Gather CC Data from post
+		{
+			$arrPaymentInput = $this->Input->post('payment');
+		
 			$authnet_values["x_method"] 	= "CC";
-			$authnet_values["x_card_num"]	= $arrData['card_accountNumber'];
-			$authnet_values["x_exp_date"]	= ($arrData['card_expirationMonth'].substr($arrData['card_expirationYear'], 2, 2));
+			$authnet_values["x_card_num"]	= $arrPaymentInput['card_accountNumber'];
+			$authnet_values["x_exp_date"]	= ($arrPaymentInput['card_expirationMonth'].substr($arrPaymentInput['card_expirationYear'], 2, 2));
+			
 			if($this->requireCCV)
 			{
-				$authnet_values["x_card_code"] = $arrData['card_cvNumber'];
-			}
+				$authnet_values["x_card_code"] = $arrPaymentInput['card_cvNumber'];
+			}	
+			
+			$arrPaymentInfo["x_card_num"]	= $this->maskCC($arrData['card_accountNumber']); //PCI COMPLIANCE - MASK THE CC DATA
+			$arrPaymentInfo["x_card_type"]	= $GLOBALS['TL_LANG']['CCT'][$arrData['card_cardType']];		
 		}
-
-		//PRIOR AUTH will require a previous transaction ID
-		if($blnCapture && $arrData['transaction-id'] && $this->authorize_trans_type =='AUTH_ONLY')
-		{
-			$authnet_values["x_trans_id"] = $arrData['transaction-id'];
-		}
-
+		
 		foreach( $authnet_values as $key => $value ) $fields .= "$key=" . urlencode( $value ) . "&";
 
 		$fieldsFinal = rtrim($fields, '&');
@@ -425,39 +444,37 @@ $return .= '</div></div>';
 			$arrReponseLabels[strtolower(standardize($key))] = $key;
 		}
 
-		$arrSet['transaction_response'] = $arrResponses['transaction-status'];
-		$arrSet['transaction_response_code'] = $arrResponseCodes['response_code'];
+		$objOrder->transaction_response = $arrResponses['transaction-status'];
+		$objOrder->transaction_response_code = $arrResponseCodes['response_code'];
 
 		$this->loadLanguageFile('payment');
 		$this->strStatus = $arrResponses['transaction-status'];
 		$this->strReason = $GLOBALS['TL_LANG']['MSG']['authorizedotnet'][$arrResponseCodes['response_type']][$arrResponseCodes['response_code']];
 
-		switch($arrResponses['transaction-status'])
+		if(!$blnCapture)
 		{
-			case 'Approved':
-				$arrSet['status'] = $this->new_order_status;
-				break;
-			default:
-				$arrSet['status'] = 'on_hold';
-				$blnFail = true;
-				break;
-
+			switch($arrResponses['transaction-status'])
+			{
+				case 'Approved':
+					$objOrder->status = $this->new_order_status;
+					$blnFail = false;
+					break;
+				default:
+					$objOrder->status = 'on_hold';
+					$blnFail = true;
+					break;
+	
+			}
 		}
-
-		//Log data
-		$arrOrderPaymentData = deserialize($objOrder->payment_data);
+						
+		//Update payment data AKA Response Data. Transaction ID will not be saved during test mode.
+		$arrOrderPaymentData = deserialize($objOrder->payment_data,true);
 		$arrPaymentInfo = (count($arrOrderPaymentData)) ? array_merge($arrResponses, $arrOrderPaymentData) : $arrResponses;
-		if($arrData['card_accountNumber']) //CC data
-		{
-			$arrPaymentInfo["x_card_num"]	= $this->maskCC($arrData['card_accountNumber']); //PCI COMPLIANCE - MASK THE CC DATA
-			$arrPaymentInfo["x_card_type"]	= $GLOBALS['TL_LANG']['CCT'][$arrData['card_cardType']];
-		}
-		$arrSet['payment_data'] = serialize($arrPaymentInfo);
-
-		$this->Database->prepare("UPDATE tl_iso_orders %s WHERE id=?")
-					   ->set($arrSet)
-					   ->execute($objOrder->id);
-
+				
+		$objOrder->payment_data = serialize($arrPaymentInfo);
+		
+		$objOrder->save();
+		
 		if($blnFail)
 		{
 			$this->log(sprintf("Transaction failure. Transaction Status: %s, Reason: %s", $this->strStatus, $this->strReason), 'PaymentAuthorizeDotNet capturePayment()', TL_ERROR);
