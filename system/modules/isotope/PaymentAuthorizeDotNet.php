@@ -198,11 +198,13 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 			$strBuffer .= $objWidget->parse();
 		}
 
-		if ($this->Input->post('FORM_SUBMIT') == 'iso_mod_checkout_payment' && !$objModule->doNotSubmit && $arrPayment['module']==$this->id)
+		if ($this->Input->post('FORM_SUBMIT') == 'iso_mod_checkout_payment' && !$objModule->doNotSubmit && $arrPayment['module']==$this->id && !$_SESSION['CHECKOUT_DATA']['payment']['request_lockout'])
 		{
 			// Get the current order, review page will create the data
 			$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->execute($this->Isotope->Cart->id);
 
+			$_SESSION['CHECKOUT_DATA']['payment']['request_lockout'] = true;
+			
 			$blnAuthCapture = $this->authCapturePayment($objOrder->id, $this->Isotope->Cart->grandTotal, false);
 
 			if($blnAuthCapture)
@@ -474,6 +476,9 @@ $return .= '</div></div>';
 		$objOrder->payment_data = serialize($arrPaymentInfo);
 		
 		$objOrder->save();
+		
+		//unlock the payment submit
+		$_SESSION['CHECKOUT_DATA']['payment']['request_lockout'] = false;
 		
 		if($blnFail)
 		{
