@@ -357,11 +357,11 @@ class tl_iso_orders extends Backend
 		$strBillingAddress = $this->Isotope->generateAddressString(deserialize($row['billing_address']), $this->Isotope->Config->billing_fields);
 
 		return '
-<div style="float:left; width:40px">' . $row['order_id'] . '</div>
+<div style="float:left; width:90px">' . $row['order_id'] . '</div>
 <div style="float:left; width:130px;">' . $this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $row['date']) . '</div>
-<div style="float:left; width:180px">' . substr($strBillingAddress, 0, strpos($strBillingAddress, '<br />')) . '</div>
+<div style="float:left; width:140px">' . substr($strBillingAddress, 0, strpos($strBillingAddress, '<br />')) . '</div>
 <div style="float:left; width:80px; text-align:right; padding-right:20px">' . $this->Isotope->formatPriceWithCurrency($row['grandTotal']) . '</div>
-<div style="float: left; width:100px">' . $GLOBALS['TL_LANG']['ORDER'][$row['status']] . '</div>';
+<div style="float: left; width:80px">' . $GLOBALS['TL_LANG']['ORDER'][$row['status']] . '</div>';
 	}
 
 
