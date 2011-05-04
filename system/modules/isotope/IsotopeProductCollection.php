@@ -459,6 +459,7 @@ abstract class IsotopeProductCollection extends Model
 
 				$objProduct->quantity_requested = $objItems->product_quantity;
 				$objProduct->cart_id = $objItems->id;
+				$objProduct->tax_id = $objItems->tax_id;
 				$objProduct->reader_jumpTo_Override = $objItems->href_reader;
 
 				$this->arrProducts[] = $objProduct;

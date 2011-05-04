@@ -136,7 +136,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 				'product_options'	=> $objProduct->getOptions(),
 				'quantity'			=> $objProduct->quantity_requested,
 				'price'				=> $this->Isotope->formatPriceWithCurrency($objProduct->price),
-				'total'				=> $this->Isotope->formatPriceWithCurrency(($objProduct->price * $objProduct->quantity_requested)),
+				'total'				=> $this->Isotope->formatPriceWithCurrency($objProduct->total_price),
 				'href'				=> ($this->jumpTo ? $this->generateFrontendUrl($arrPage, '/product/'.$objProduct->alias) : ''),
 				'tax_id'			=> $objProduct->tax_id,
 				'downloads'			=> $arrDownloads,

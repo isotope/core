@@ -373,7 +373,12 @@ class IsotopeCart extends IsotopeProductCollection
 				}
 			}
 
-			$this->arrProducts[$pid]->tax_id = implode(',', $arrTaxIds);
+
+			$strTaxId = implode(',', $arrTaxIds);
+			if ($objProduct->tax_id != $strTaxId)
+			{
+				$this->updateProduct($objProduct, array('tax_id'=>$strTaxId));
+			}
 		}
 
 
