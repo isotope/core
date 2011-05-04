@@ -384,6 +384,7 @@ class IsotopeRules extends Controller
 	{
 		$arrProducts = $this->Isotope->Cart->getProducts();
 
+		$blnMatch = false;
 		$blnDiscount = false;
 		if (strpos($arrRule['discount'], '%') !== false)
 		{
@@ -449,7 +450,6 @@ class IsotopeRules extends Controller
 				continue;
 			}
 
-
 			// Cart item quantity
 			if ($arrRule['quantityMode'] != 'cart_products' && $arrRule['quantityMode'] != 'cart_items')
 			{
@@ -460,7 +460,6 @@ class IsotopeRules extends Controller
 			{
 				continue;
 			}
-
 
 			// Apply To
 			switch( $arrRule['applyTo'] )
@@ -486,19 +485,20 @@ class IsotopeRules extends Controller
 					break;
 
 				case 'cart':
+					$blnMatch = true;
 					$arrSurcharge['total_price'] += $objProduct->total_price;
 					break;
 			}
 		}
 
-		if ($arrRule['applyTo'] == 'cart')
+		if ($arrRule['applyTo'] == 'cart' && $blnMatch)
 		{
 			$fltPrice = $blnDiscount ? ($arrSurcharge['total_price'] / 100 * $fltDiscount) : $arrRule['discount'];
 			$arrSurcharge['total_price'] = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
 			$arrSurcharge['before_tax'] = false;
 		}
 
-		return $arrSurcharge['total_price'] == 0 ? false: $arrSurcharge;
+		return $arrSurcharge['total_price'] == 0 ? false : $arrSurcharge;
 	}
 }
 
