@@ -57,7 +57,7 @@ class PaymentPayone extends IsotopePayment
 		{
 			$objOrder = new IsotopeOrder();
 
-			if ($objOrder->findBy('order_id', $this->Input->post('reference')))
+			if ($objOrder->findBy('id', $this->Input->post('reference')))
 			{
 				if ($this->Input->post('txaction') == 'paid'
 					&& $this->Input->post('currency') == $objOrder->currency
@@ -99,7 +99,7 @@ class PaymentPayone extends IsotopePayment
 			'request'			=> ($this->trans_type=='auth' ? 'preauthorization' : 'authorization'),
 			'encoding'			=> 'UTF-8',
 			'clearingtype'		=> $this->payone_clearingtype,
-			'reference'			=> $objOrder->order_id,
+			'reference'			=> $objOrder->id,
 			'display_name'		=> 'no',
 			'display_address'	=> 'no',
 			'successurl'		=> $this->Environment->base . $this->addToUrl('step=complete', true) . '?uid=' . $objOrder->uniqid,
