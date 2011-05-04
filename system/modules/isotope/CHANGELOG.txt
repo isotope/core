@@ -17,6 +17,7 @@ Version 0.2.8 (2011-04-??)
 - Fixed potentially wrong publish-status icon (Ticket #437)
 - Fixed order items not deleted when deleting orders (Ticket #438)
 - Fixed issue in cart rules, some were applied even if no product matched
+- Fixed tax ID is not shown for surcharges (Ticket #449)
 - Fixed: copying mail template did not duplicate languages
 - Removed default list template in tl_content
 - Minor code cleanup
