@@ -172,7 +172,7 @@ class IsotopeOrder extends IsotopeProductCollection
 	public function getSurcharges()
 	{
 		$arrSurcharges = deserialize($this->surcharges);
-		return is_array($arrSurcharegs) ? $arrSurcharges : array();
+		return is_array($arrSurcharges) ? $arrSurcharges : array();
 	}
 }
 
