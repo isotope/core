@@ -99,7 +99,7 @@ class PaymentExpercash extends IsotopePayment
 			'popupId'			=> $this->expercash_popupId,
 			'jobId'				=> microtime(),
 			'functionId'		=> (FE_USER_LOGGED_IN ? $this->User->id : $this->Isotope->Cart->session),
-			'transactionId'		=> $objOrder->order_id,
+			'transactionId'		=> $objOrder->id,
 			'amount'			=> (round($this->Isotope->Cart->grandTotal, 2)*100),
 			'currency'			=> $this->Isotope->Config->currency,
 			'paymentMethod'		=> $this->expercash_paymentMethod,
@@ -161,7 +161,7 @@ class PaymentExpercash extends IsotopePayment
 			return false;
 		}
 		
-		if ($this->Input->get('transactionId') != $objOrder->order_id)
+		if ($this->Input->get('transactionId') != $objOrder->id)
 		{
 			$this->log('ExperCash: transactionId is incorrect. Possible data manipulation!', __METHOD__, TL_ERROR);
 			return false;
