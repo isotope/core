@@ -71,6 +71,7 @@ Version 0.2.8 (2011-05-??)
 - Fixed tax ID is not shown for surcharges (Ticket #449)
 - Fixed fatal error on order PDF export (Ticket #448)
 - Fixed potential issues with data container not being loaded (Ticket #444)
+- Fixed potential issue with CC and BCC email recipients (Ticket #447)
 - Fixed: copying mail template did not duplicate languages
 - Fixed: Tax rate amount was not mandatory
 - Fixed: Tax ID information for each product was lost when placing the order (Ticket #417)

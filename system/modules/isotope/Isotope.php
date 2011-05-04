@@ -639,22 +639,16 @@ class Isotope extends Controller
 				$objEmail->imageDir = TL_ROOT . '/';
 			}
 
-			if (strlen($objMail->cc))
+			if ($objMail->cc != '')
 			{
 				$arrRecipients = trimsplit(',', $objMail->cc);
-				foreach( $arrRecipients as $recipient )
-				{
-					$objEmail->sendCc($recipient);
-				}
+				$objEmail->sendCc($arrRecipients);
 			}
-
-			if (strlen($objMail->bcc))
+			
+			if ($objMail->bcc != '')
 			{
 				$arrRecipients = trimsplit(',', $objMail->bcc);
-				foreach( $arrRecipients as $recipient )
-				{
-					$objEmail->sendBcc($recipient);
-				}
+				$objEmail->sendBcc($arrRecipients);
 			}
 
 			$attachments = deserialize($objMail->attachments);
