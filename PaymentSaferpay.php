@@ -43,7 +43,6 @@ class PaymentSaferpay extends IsotopePayment
 	 */
 	protected $strConfirmUrl = 'https://www.saferpay.com/hosting/VerifyPayConfirm.asp';
 
-
 	/**
 	 * The hosting gateway URL to PayComplete
 	 * @var string
@@ -71,6 +70,18 @@ class PaymentSaferpay extends IsotopePayment
 
 
 	/**
+	 * Return a list of status options.
+	 *
+	 * @access public
+	 * @return array
+	 */
+	public function statusOptions()
+	{
+		return array('pending', 'processing', 'complete', 'on_hold');
+	}
+
+
+	/**
 	 * Process checkout payment.
 	 *
 	 * @access public
@@ -94,23 +105,18 @@ class PaymentSaferpay extends IsotopePayment
 		// Stop if verification is not working
 		if (strtoupper(substr($objRequest->response, 0, 3)) != "OK:")
 		{
-			global $objPage;
 			$this->log('Payment not successfull', 'PaymentSaferpay processPayment()', TL_ERROR);
-			$this->redirect($this->generateFrontendUrl($objPage->row(), '/step/failed'));
+			$this->redirect($this->addToUrl('step=failed', true));
 		}
 
-		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->execute($this->Isotope->Cart->id);
+		$objOrder = new IsotopeOrder();
+		$objOrder->findBy('cart_id', $this->Isotope->Cart->id);
 
 		$arrXML = new SimpleXMLElement($strData);
 
-		if( $arrXML["ACCOUNTID"] != $this->saferpay_accountid
-			|| $arrXML["AMOUNT"] != (round($this->Isotope->Cart->grandTotal, 2) * 100)
-			|| $arrXML["CURRENCY"] != $this->Isotope->Config->currency
-			|| $arrXML["ORDERID"] != $objOrder->id )
+		if( !$this->validateXML($arrXML, $objOrder) )
 		{
-			global $objPage;
-			$this->log('XML data wrong, possible manipulation!', 'PaymentSaferpay processPayment()', TL_ERROR);
-			$this->redirect($this->generateFrontendUrl($objPage->row(), '/step/failed'));
+			$this->redirect($this->addToUrl('step=failed', true));
 		}
 
 		if ($this->trans_type != 'auth')
@@ -138,9 +144,8 @@ class PaymentSaferpay extends IsotopePayment
 			// Stop if capture is not successful
 			if (strtoupper($objRequest->response) != "OK")
 			{
-				global $objPage;
 				$this->log('Payment capture failed', 'PaymentSaferpay processPayment()', TL_ERROR);
-				$this->redirect($this->generateFrontendUrl($objPage->row(), '/step/failed'));
+				$this->redirect($this->addToUrl('step=failed', true));
 			}
 		}
 
@@ -166,7 +171,7 @@ class PaymentSaferpay extends IsotopePayment
 		// Mandatory attributes
 		$strUrl  = $this->strInitUrl;
 		$strUrl .= "?ACCOUNTID=" . $this->saferpay_accountid;
-		$strUrl .= "&AMOUNT=" . (round($this->Isotope->Cart->grandTotal, 2) * 100);
+		$strUrl .= "&AMOUNT=" . (round(($this->Isotope->Cart->grandTotal * 100), 0));
 		$strUrl .= "&CURRENCY=" . $this->Isotope->Config->currency;
 		$strUrl .= "&DESCRIPTION=" . urlencode($this->saferpay_description);
 		$strUrl .= "&SUCCESSLINK=" . urlencode($strComplete);
@@ -186,8 +191,7 @@ class PaymentSaferpay extends IsotopePayment
 
 		if ($objRequest->code != 200)
 		{
-			global $objPage;
-			$this->redirect($this->generateFrontendUrl($objPage->row(), '/step/failed'));
+			$this->redirect($this->addToUrl('step=failed', true));
 		}
 
 		$GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="0; URL=' . $objRequest->response . '">';
@@ -197,14 +201,38 @@ class PaymentSaferpay extends IsotopePayment
 <p class="message">' . $GLOBALS['TL_LANG']['MSC']['pay_with_saferpay'][1] . '</p>
 <p><a href="' . $objRequest->response . '">' . $GLOBALS['TL_LANG']['MSC']['pay_with_saferpay'][2]. '</a></p>';
 	}
-
-
+	
+	
 	/**
-	 * Return a list of valid credit card types for this payment module
+	 * Check XML data, add to log if debugging is enabled
+	 *
+	 * @param  array
+	 * @return bool
 	 */
-	public function getAllowedCCTypes()
+	private function validateXML($arrXML, $objOrder)
 	{
-		return array();
+		if ($arrXML['ACCOUNTID'] != $this->saferpay_accountid)
+		{
+			$this->log('XML data wrong, possible manipulation (accountId validation failed)!', __METHOD__, TL_ERROR);
+			return false;
+		}
+		elseif ($arrXML['AMOUNT'] != round(($this->Isotope->Cart->grandTotal * 100), 0))
+		{
+			$this->log('XML data wrong, possible manipulation (amount validation failed)!', __METHOD__, TL_ERROR);
+			return false;
+		}
+		elseif ($arrXML['CURRENCY'] != $this->Isotope->Config->currency)
+		{
+			$this->log('XML data wrong, possible manipulation (currency validation failed)!', __METHOD__, TL_ERROR);
+			return false;
+		}
+		elseif ($arrXML['ORDERID'] != $objOrder->id)
+		{
+			$this->log('XML data wrong, possible manipulation (orderId validation failed)!', __METHOD__, TL_ERROR);
+			return false;
+		}
+		
+		return true;
 	}
 }
 
