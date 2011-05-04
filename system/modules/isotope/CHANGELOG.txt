@@ -71,6 +71,7 @@ Version 0.2.8 (2011-05-??)
 - Fixed fatal error on order PDF export (Ticket #448)
 - Fixed potential issues with data container not being loaded (Ticket #444)
 - Fixed: copying mail template did not duplicate languages
+- Fixed: Tax rate amount was not mandatory
 - Removed default list template in tl_content
 - Minor code cleanup
 

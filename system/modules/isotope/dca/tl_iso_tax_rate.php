@@ -186,7 +186,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['rate'],
 			'inputType'               => 'inputUnit',
 			'options'				  => array('%'=>'%'),
-			'eval'                    => array('maxlength'=>255, 'rgxp'=>'price')
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'rgxp'=>'price'),
 		),
 		'amount' => array
 		(
