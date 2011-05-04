@@ -58,9 +58,9 @@ class PaymentPostfinance extends IsotopePayment
 	{
 		if ($this->debug) $this->log('Post-sale request from Postfinance: '.print_r($_POST, true), 'PaymentPostfinance postProcessPayment()', TL_ACCESS);
 
-		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_order WHERE order_id=?")->limit(1)->execute($this->getRequestData('orderID'));
+		$objOrder = new IsotopeOrder();
 
-		if (!$objOrder->numRows)
+		if (!$objOrder->findBy('id', $this->getRequestData('orderID')))
 		{
 			$this->log('Order ID "' . $this->getRequestData('orderID') . '" not found', 'PaymentPostfinance processPostSale()', TL_ERROR);
 			return;
@@ -84,7 +84,7 @@ class PaymentPostfinance extends IsotopePayment
 		$arrSet['payment_data']['POSTSALE'][] = $this->postfinance_method == 'GET' ? $_GET : $_POST;
 
 
-		$arrData = $objOrder->row();
+		$arrData = $objOrder->getData();
 		$arrData['old_payment_status'] = $arrSet['payment_data']['status'];
 
 
@@ -148,7 +148,9 @@ class PaymentPostfinance extends IsotopePayment
 	{
 		$this->import('Isotope');
 
-		$objOrder = $this->Database->prepare("SELECT order_id FROM tl_iso_orders WHERE cart_id=?")->execute($this->Isotope->Cart->id);
+		$objOrder = new IsotopeOrder();
+		$objOrder->findBy('cart_id', $this->Isotope->Cart->id);
+
 		$arrAddress = $this->Isotope->getAddress('billing');
 
 		$strAction = 'https://e-payment.postfinance.ch/ncol/prod/orderstandard.asp';
@@ -162,15 +164,16 @@ class PaymentPostfinance extends IsotopePayment
 		(
 			'PSPID'			=> $this->postfinance_pspid,
 			'currency'		=> $this->Isotope->Config->currency,
-			'SHASign'		=> sha1($objOrder->order_id . ($this->Isotope->Cart->grandTotal * 100) . $this->Isotope->Config->currency . $this->postfinance_pspid . $this->postfinance_secret),
+			'SHASign'		=> sha1($objOrder->id . ($this->Isotope->Cart->grandTotal * 100) . $this->Isotope->Config->currency . $this->postfinance_pspid . $this->postfinance_secret),
 		);
 
-		$this->Database->prepare("UPDATE tl_iso_orders SET payment_data=? WHERE id=?")->execute(serialize($arrData), $objOrder->id);
+		$objOrder->payment_data = $arrData;
+		$objOrder->save();
 
 		return '
 <form method="post" id="payment_form" action="' . $strAction . '">
 <input type="hidden" name="PSPID" value="' . $this->postfinance_pspid . '">
-<input type="hidden" name="orderID" value="' . $objOrder->order_id . '">
+<input type="hidden" name="orderID" value="' . $objOrder->id . '">
 <input type="hidden" name="amount" value="' . (round($this->Isotope->Cart->grandTotal, 2) * 100) . '">
 <input type="hidden" name="currency" value="' . $arrData['currency'] . '">
 <input type="hidden" name="language" value="' . $GLOBALS['TL_LANGUAGE'] . '_' . strtoupper($GLOBALS['TL_LANGUAGE']) . '">

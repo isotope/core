@@ -118,7 +118,7 @@ class PaymentPaypal extends IsotopePayment
 		{
 			$objOrder = new IsotopeOrder();
 
-			if (!$objOrder->findBy('order_id', $this->Input->post('invoice')))
+			if (!$objOrder->findBy('id', $this->Input->post('invoice')))
 			{
 				$this->log('Order ID "' . $this->Input->post('invoice') . '" not found', 'PaymentPaypal processPostSale()', TL_ERROR);
 				return;
@@ -264,7 +264,7 @@ class PaymentPaypal extends IsotopePayment
 <input type="hidden" name="return" value="' . $this->Environment->base . $this->addToUrl('step=complete') . '?uid=' . $objOrder->uniqid . '">
 <input type="hidden" name="cancel_return" value="' . $this->Environment->base . $this->addToUrl('step=failed') . '">
 <input type="hidden" name="rm" value="1">
-<input type="hidden" name="invoice" value="' . $objOrder->order_id . '">
+<input type="hidden" name="invoice" value="' . $objOrder->id . '">
 
 <input type="hidden" name="address_override" value="1">
 <input type="hidden" name="first_name" value="' . $this->Isotope->Cart->billingAddress['firstname'] . '">

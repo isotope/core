@@ -122,9 +122,9 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 	(
 		'__selector__'				  => array('currencySymbol'),
 		'default'                     => '
-			{name_legend},name,label,fallback;
+			{name_legend},name,label,fallback,store_id;
 			{address_legend:hide},firstname,lastname,company,street_1,street_2,street_3,postal,city,subdivision,country,emailShipping,phone;
-			{config_legend},shipping_countries,billing_countries,shipping_fields,billing_fields,orderPrefix,store_id,templateGroup,limitMemberCountries,enableGoogleAnalytics;
+			{config_legend},shipping_countries,billing_countries,shipping_fields,billing_fields,orderPrefix,orderDigits,templateGroup,limitMemberCountries,enableGoogleAnalytics;
 			{price_legend},priceCalculateFactor,priceCalculateMode,priceRoundPrecision,priceRoundIncrement,cartMinSubtotal;
 			{currency_legend},currency,currencyFormat,currencyPosition,currencySymbol;
 			{invoice_legend:hide},invoiceLogo;
@@ -159,7 +159,14 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['fallback'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
-			'eval'						=> array('doNotCopy'=>true, 'fallback'=>true, 'tl_class'=>'w50'),
+			'eval'						=> array('doNotCopy'=>true, 'fallback'=>true, 'tl_class'=>'w50 m12'),
+		),
+		'store_id' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['store_id'],
+			'exclude'                 => true,
+			'inputType'               => 'text',
+			'eval'                    => array('mandatory'=>true, 'rgxp'=>'digit', 'nospace'=>true, 'maxlength'=>2, 'tl_class'=>'w50'),
 		),
 		'firstname' => array
 		(
@@ -308,14 +315,16 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['orderPrefix'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>4, 'tl_class'=>'w50'),
+			'eval'                    => array('maxlength'=>5, 'decodeEntities'=>true, 'tl_class'=>'w50'),
 		),
-		'store_id' => array
+		'orderDigits' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['store_id'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['orderDigits'],
 			'exclude'                 => true,
-			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'rgxp'=>'digit', 'nospace'=>true, 'maxlength'=>2, 'tl_class'=>'w50'),
+			'default'				  => 4,
+			'inputType'               => 'select',
+			'options'				  => range(1, 9),
+			'eval'                    => array('tl_class'=>'w50'),
 		),
 		'templateGroup' => array
 		(

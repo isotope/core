@@ -40,6 +40,11 @@ class IsotopeOrder extends IsotopeProductCollection
 	 * @var string
 	 */
 	protected $ctable = 'tl_iso_order_items';
+	
+	/**
+	 * This current order's unique ID with eventual prefix.
+	 */
+	protected $strOrderId = '';
 
 	/**
 	 * Lock products from apply rule prices
@@ -52,9 +57,11 @@ class IsotopeOrder extends IsotopeProductCollection
 	{
 		switch($strKey)
 		{
+			case 'order_id':
+				return $this->strOrderId;
+				
 			case 'surcharges':
 				return $this->arrData['surcharges'] ? deserialize($this->arrData['surcharges']) : array();
-				break;
 
 			case 'billingAddress':
 				return deserialize($this->arrData['billing_address'], true);
@@ -64,6 +71,21 @@ class IsotopeOrder extends IsotopeProductCollection
 
 			default:
 				return parent::__get($strKey);
+		}
+	}
+	
+	
+	public function __set($strKey, $varValue)
+	{
+		switch( $strKey )
+		{
+			// Order ID cannot be changed, it is created through IsotopeOrder::generateOrderId on checkout
+			case 'order_id':
+				throw new Exception('IsotopeOrder order_id cannot be changed trough __set().');
+				break;
+			
+			default:
+				parent::__set($strKey, $varValue);
 		}
 	}
 
@@ -137,6 +159,10 @@ class IsotopeOrder extends IsotopeProductCollection
 					catch (Exception $e) {}
 				}
 			}
+			
+			// The order_id must not be stored in arrData, or it would overwrite the database on save().
+			$this->strOrderId = $this->arrData['order_id'];
+			unset($this->arrData['order_id']);
 
 			return true;
 		}
@@ -168,6 +194,7 @@ class IsotopeOrder extends IsotopeProductCollection
 
 		return parent::delete();
 	}
+
 
 	public function getSurcharges()
 	{
@@ -255,6 +282,7 @@ class IsotopeOrder extends IsotopeProductCollection
 
 		return array_merge($arrPreTax, $arrTaxes, $arrPostTax);
 	}
+
 
 	/**
 	 * Hook-callback for isoCheckoutSurcharge. Accesses the shipping module to get a shipping surcharge.
@@ -401,6 +429,7 @@ class IsotopeOrder extends IsotopeProductCollection
 		return $arrTaxes;
 	}
 
+
 	public function useTaxRate($objRate, $fltPrice, $arrAddresses)
 	{
 		if ($objRate->config > 0 && $objRate->config != $this->Config->id)
@@ -507,6 +536,7 @@ class IsotopeOrder extends IsotopeProductCollection
 		$this->checkout_complete = true;
 		$this->status = $this->new_order_status;
 		$arrData = $this->email_data;
+		$arrData['order_id'] = $this->generateOrderId();
 
 		$this->log('New order ID ' . $this->id . ' has been placed', 'IsotopeOrder checkout()', TL_ACCESS);
 
@@ -549,6 +579,31 @@ class IsotopeOrder extends IsotopeProductCollection
 
 		return true;
 	}
+	
+	
+	/**
+	 * Generate the next higher Order-ID based on config prefix, order number digits and existing records
+	 */
+	private function generateOrderId()
+	{
+		if ($this->strOrderId != '')
+			return $this->strOrderId;
 
+		$strPrefix = $this->Isotope->Config->orderPrefix;
+		$arrConfigIds = $this->Database->execute("SELECT id FROM tl_iso_config WHERE store_id=" . $this->Isotope->Config->store_id)->fetchEach('id');
+		
+		// Lock tables so no other order can get the same ID
+		$this->Database->lockTables(array('tl_is_orders'));
+		
+		// Retrieve the highest available order ID
+		$objMax = $this->Database->prepare("SELECT order_id FROM tl_iso_orders WHERE order_id LIKE '$strPrefix%' AND config_id IN (" . implode(',', $arrConfigIds) . ") ORDER BY order_id DESC")->limit(1)->executeUncached();
+		$intMax = (int)substr($objMax->order_id, strlen($strPrefix));
+		$this->strOrderId = $strPrefix . str_pad($intMax+1, $this->Isotope->Config->orderDigits, '0', STR_PAD_LEFT);
+		
+		$this->Database->query("UPDATE tl_iso_orders SET order_id='{$this->strOrderId}' WHERE id={$this->id}");
+		$this->Database->unlockTables();
+		
+		return $this->strOrderId;
+	}
 }
 

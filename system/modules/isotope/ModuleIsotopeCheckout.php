@@ -926,7 +926,6 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		}
 
 		$objOrder->pid				= (FE_USER_LOGGED_IN ? $this->User->id : 0);
-		$objOrder->order_id			= ($this->Isotope->Config->orderPrefix . $objOrder->id);
 		$objOrder->date				= time();
 		$objOrder->config_id		= (int)$this->Isotope->Config->id;
 		$objOrder->shipping_id		= ($this->Isotope->Cart->hasShipping ? $this->Isotope->Cart->Shipping->id : 0);
@@ -976,7 +975,6 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 		$arrData = array_merge($this->arrOrderData, array
 		(
-			'order_id'					=> ($this->Isotope->Config->orderPrefix . $objOrder->id),
 			'items'						=> $this->Isotope->Cart->items,
 			'products'					=> $this->Isotope->Cart->products,
 			'subTotal'					=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->subTotal, false),

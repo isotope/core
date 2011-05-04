@@ -31,6 +31,8 @@
  */
 $GLOBALS['TL_LANG']['tl_iso_config']['name']							= array('Configuration Name', '');
 $GLOBALS['TL_LANG']['tl_iso_config']['label']							= array('Label', 'The label is used in frontend, e.g. for config switcher.');
+$GLOBALS['TL_LANG']['tl_iso_config']['fallback']						= array('Set as default store', 'Set this as the default store for back-end currency formatting and other locale-specific information.');
+$GLOBALS['TL_LANG']['tl_iso_config']['store_id']						= array('Store ID', 'Use different store IDs to group a set of store configurations. A user\'s cart and addresses will be shared across the same store IDs.');
 $GLOBALS['TL_LANG']['tl_iso_config']['missing_image_placeholder']		= array('Missing Image Placeholder', 'This image will be used if an image file cannot be found or none are associated with a product.');
 $GLOBALS['TL_LANG']['tl_iso_config']['priceCalculateFactor']			= array('Price factor', 'Defaults should be 1. You can use this to convert between multiple currencies.');
 $GLOBALS['TL_LANG']['tl_iso_config']['priceCalculateMode']				= array('Calculation mode', 'Divide or multiply using this factor.');
@@ -43,7 +45,6 @@ $GLOBALS['TL_LANG']['tl_iso_config']['currencySpace']					= array('Include blank
 $GLOBALS['TL_LANG']['tl_iso_config']['currencyPosition']				= array('Position of currency code/symbol', 'Select if you want to show currency on the left or right side of the price.');
 $GLOBALS['TL_LANG']['tl_iso_config']['currencyFormat']					= array('Currency formatting', 'Choose a formatting for prices.');
 $GLOBALS['TL_LANG']['tl_iso_config']['invoiceLogo']						= array('Invoice Logo', 'Select a logo to show up on the invoices for this store.');
-$GLOBALS['TL_LANG']['tl_iso_config']['fallback']						= array('Set as default store', 'Set this as the default store for back-end currency formatting and other locale-specific information.');
 $GLOBALS['TL_LANG']['tl_iso_config']['firstname']   					= array('First name', 'Please enter the first name (if applicable).');
 $GLOBALS['TL_LANG']['tl_iso_config']['lastname']    					= array('Last name', 'Please enter the last name (if applicable).');
 $GLOBALS['TL_LANG']['tl_iso_config']['company']     					= array('Company', 'You can enter a company name here (if applicable).');
@@ -61,7 +62,7 @@ $GLOBALS['TL_LANG']['tl_iso_config']['shipping_fields']					= array('Shipping ad
 $GLOBALS['TL_LANG']['tl_iso_config']['billing_countries']				= array('Billing countries', 'Select the countries you want to allow for checkout billing address.');
 $GLOBALS['TL_LANG']['tl_iso_config']['billing_fields']					= array('Billing address fields', 'Select the fields for a new billing address when checking out.');
 $GLOBALS['TL_LANG']['tl_iso_config']['orderPrefix']						= array('Order number prefix', 'You can add a prefix (eg. fiscal year) to the auto-incrementing order number.');
-$GLOBALS['TL_LANG']['tl_iso_config']['store_id']						= array('Store ID', 'Use different store IDs to group a set of store configurations. A user\'s cart and addresses will be shared across the same store IDs.');
+$GLOBALS['TL_LANG']['tl_iso_config']['orderDigits']						= array('Order number length', 'Select the minimum length of the order number (not including order prefix).');
 $GLOBALS['TL_LANG']['tl_iso_config']['templateGroup']					= array('Templates folder', 'Here you can select a templates folder to search before every other template folder.');
 $GLOBALS['TL_LANG']['tl_iso_config']['limitMemberCountries']			= array('Limit member countries', 'Limit member countries (Registration, Personal Data) to the combined list of billing and shipping countries.');
 $GLOBALS['TL_LANG']['tl_iso_config']['enableGoogleAnalytics']			= array('Enable Google Analytics e-commerce tracking', 'Add Google Analytics e-commerce tracking. Please note you will also have to enable e-commerce tracking in your Google Analytics account.');

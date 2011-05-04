@@ -85,7 +85,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 		$this->Template->setData($arrOrder);
 
 		$this->import('Isotope');
-		$this->Isotope->overrideConfig($arrOrder['config_id']);
+		$this->Isotope->overrideConfig($objOrder->config_id);
 
 		// Article reader
 		$arrPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->limit(1)->execute($this->jumpTo)->fetchAssoc();
@@ -101,7 +101,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 
 			while( $objDownloads->next() )
 			{
-				$blnDownloadable = (($arrOrder['status'] == 'complete' || (intval($arrOrder['date_payed']) > 0 && intval($arrOrder['date_payed']) <= time())) && ($objDownloads->downloads_remaining === '' || $objDownloads->downloads_remaining > 0)) ? true : false;
+				$blnDownloadable = (($objOrder->status == 'complete' || (intval($objOrder->date_payed) > 0 && intval($objOrder->date_payed) <= time())) && ($objDownloads->downloads_remaining === '' || $objDownloads->downloads_remaining > 0)) ? true : false;
 
 				// Send file to the browser
 				if (strlen($this->Input->get('file')) && $this->Input->get('file') == $objDownloads->id && $blnDownloadable)
@@ -149,25 +149,25 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 			$arrItems[count($arrItems)-1]['class'] .= ' row_last';
 		}
 
-		$this->Template->info = deserialize($arrOrder['checkout_info'], true);
+		$this->Template->info = deserialize($objOrder->checkout_info, true);
 		$this->Template->items = $arrItems;
 		$this->Template->downloads = $arrAllDownloads;
 		$this->Template->downloadsLabel = $GLOBALS['TL_LANG']['MSC']['downloadsLabel'];
 
 		$this->Template->raw = $arrOrder;
 
-		$this->Template->date = $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $arrOrder['date']);
-		$this->Template->time = $this->parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $arrOrder['date']);
-		$this->Template->datim = $this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $arrOrder['date']);
-		$this->Template->orderDetailsHeadline = sprintf($GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline'], $arrOrder['order_id'], $this->Template->datim);
-		$this->Template->orderStatus = sprintf($GLOBALS['TL_LANG']['MSC']['orderStatusHeadline'], $GLOBALS['TL_LANG']['ORDER'][$arrOrder['status']]);
-		$this->Template->orderStatusKey = $arrOrder['status'];
-		$this->Template->subTotalPrice = $this->Isotope->formatPriceWithCurrency($arrOrder['subTotal']);
-		$this->Template->grandTotal = $this->Isotope->formatPriceWithCurrency($arrOrder['grandTotal']);
+		$this->Template->date = $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $objOrder->date);
+		$this->Template->time = $this->parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $objOrder->date);
+		$this->Template->datim = $this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $objOrder->date);
+		$this->Template->orderDetailsHeadline = sprintf($GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline'], $objOrder->order_id, $this->Template->datim);
+		$this->Template->orderStatus = sprintf($GLOBALS['TL_LANG']['MSC']['orderStatusHeadline'], $GLOBALS['TL_LANG']['ORDER'][$objOrder->status]);
+		$this->Template->orderStatusKey = $objOrder->status;
+		$this->Template->subTotalPrice = $this->Isotope->formatPriceWithCurrency($objOrder->subTotal);
+		$this->Template->grandTotal = $this->Isotope->formatPriceWithCurrency($objOrder->grandTotal);
 		$this->Template->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
 		$this->Template->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
 
-		$arrSurcharges = deserialize($arrOrder['surcharges']);
+		$arrSurcharges = $objOrder->surcharges;
 		if (is_array($arrSurcharges) && count($arrSurcharges))
 		{
 			foreach( $arrSurcharges as $k => $arrSurcharge )
@@ -184,11 +184,11 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 		$this->Template->surcharges = $arrSurcharges;
 
 		$this->Template->billing_label = $GLOBALS['TL_LANG']['ISO']['billing_address'];
-		$this->Template->billing_address = $this->Isotope->generateAddressString(deserialize($arrOrder['billing_address']), $this->Isotope->Config->billing_fields);
+		$this->Template->billing_address = $this->Isotope->generateAddressString($objOrder->billing_address, $this->Isotope->Config->billing_fields);
 
-		if (strlen($arrOrder['shipping_method']))
+		if (strlen($objOrder->shipping_method))
 		{
-			$arrShippingAddress = deserialize($arrOrder['shipping_address']);
+			$arrShippingAddress = $objOrder->shipping_address;
 			if (!is_array($arrShippingAddress) || $arrShippingAddress['id'] == -1)
 			{
 				$this->Template->has_shipping = false;
