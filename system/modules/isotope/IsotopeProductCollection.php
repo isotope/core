@@ -86,6 +86,11 @@ abstract class IsotopeProductCollection extends Model
 	 */
 	public function __get($strKey)
 	{
+		if ($this->blnLocked && array_key_exists($strKey, $this->arrData))
+		{
+			return deserialize($this->arrData[$strKey]);
+		}
+
 		switch( $strKey )
 		{
 			case 'table':
