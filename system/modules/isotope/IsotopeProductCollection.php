@@ -121,6 +121,15 @@ abstract class IsotopeProductCollection extends Model
 	{
 		if (!isset($this->arrCache[$strKey]))
 		{
+			if ($this->blnLocked && array_key_exists($strKey, $this->arrData))
+			{
+				return deserialize($this->arrData[$strKey]);
+			}
+			elseif ($this->blnLocked && array_key_exists($strKey, $this->arrSettings))
+			{
+				return deserialize($this->arrSettings[$strKey]);
+			}
+			
 			switch( $strKey )
 			{
 				case 'table':
