@@ -367,8 +367,9 @@ class IsotopeCart extends IsotopeProductCollection
 						$arrTaxes[$k] = $tax;
 					}
 
-					$arrTaxes[$k]['tax_id'] = array_search($k, array_keys($arrTaxes)) + 1;
-					$arrTaxIds[] = array_search($k, array_keys($arrTaxes)) + 1;
+					$taxId = array_search($k, array_keys($arrTaxes)) + 1;
+					$arrTaxes[$k]['tax_id'] = $taxId;
+					$arrTaxIds[] = $taxId;
 				}
 			}
 
@@ -376,11 +377,12 @@ class IsotopeCart extends IsotopeProductCollection
 		}
 
 
-		foreach( $arrPreTax as $arrSurcharge )
+		foreach( $arrPreTax as $i => $arrSurcharge )
 		{
 			if (!$arrSurcharge['tax_class'])
 				continue;
 
+			$arrTaxIds = array();
 			$arrTax = $this->Isotope->calculateTax($arrSurcharge['tax_class'], $arrSurcharge['total_price'], $arrSurcharge['before_tax']);
 
 			if (is_array($arrTax))
@@ -401,9 +403,13 @@ class IsotopeCart extends IsotopeProductCollection
 						$arrTaxes[$k] = $tax;
 					}
 
-					$arrTaxes[$k]['tax_id'] = array_search($k, array_keys($arrTaxes)) + 1;
+					$taxId = array_search($k, array_keys($arrTaxes)) + 1;
+					$arrTaxes[$k]['tax_id'] = $taxId;
+					$arrTaxIds[] = $taxId;
 				}
 			}
+			
+			$arrPreTax[$i]['tax_id'] = implode(',', $arrTaxIds);
 		}
 
 		$this->arrCache['surcharges'] = array_merge($arrPreTax, $arrTaxes, $arrPostTax);
