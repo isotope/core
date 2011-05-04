@@ -8,6 +8,7 @@ Version 0.2.8 (2011-04-??)
 - Added quantity_requested to product template
 - Added support for conditionalselect as conditionField
 - Improved: Do not allow negative cart/order totals
+- Improved: Do not cache arrData from IsotopeProduct, return NULL for non-existing values
 - Fixed issue with email address on checkout
 - Fixed potential product load problem in IsotopeProductCollection
 - Fixed potential problem with rule product restrictions

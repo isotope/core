@@ -226,34 +226,38 @@ class IsotopeProduct extends Controller
 						if (!strlen($strClass) || !$this->classFileExists($strClass))
 							$strClass = 'IsotopeGallery';
 							
-						$varValue = new $strClass($strKey.'_'.($this->pid ? $this->pid : $this->id), deserialize($this->arrData[$strKey]));
-						$varValue->product_id = ($this->pid ? $this->pid : $this->id);
-						$varValue->href_reader = $this->href_reader;
+						$objGallery = new $strClass($strKey.'_'.($this->pid ? $this->pid : $this->id), deserialize($this->arrData[$strKey]));
+						$objGallery->product_id = ($this->pid ? $this->pid : $this->id);
+						$objGallery->href_reader = $this->href_reader;
+						$this->arrCache[$strKey] = $objGallery;
 					}
-
-					switch( $strKey )
+					else
 					{
-						case 'formatted_price':
-							$varValue = $this->Isotope->formatPriceWithCurrency($this->price, false);
-							break;
-							
-						case 'formatted_original_price':
-							$varValue = $this->Isotope->formatPriceWithCurrency($this->original_price, false);
-							break;
-							
-						case 'formatted_total_price':
-							$varValue = $this->Isotope->formatPriceWithCurrency($this->total_price, false);
-							break;
-							
-						case 'categories':
-							$varValue = $this->Database->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid=" . ($this->pid ? $this->pid : $this->id) . " ORDER BY sorting")->fetchEach('page_id');
-							break;
-					}
+						switch( $strKey )
+						{
+							case 'formatted_price':
+								$this->arrCache[$strKey] = $this->Isotope->formatPriceWithCurrency($this->price, false);
+								break;
 
-					$this->arrCache[$strKey] = $varValue ? $varValue : deserialize($this->arrData[$strKey]);
+							case 'formatted_original_price':
+								$this->arrCache[$strKey] = $this->Isotope->formatPriceWithCurrency($this->original_price, false);
+								break;
+
+							case 'formatted_total_price':
+								$this->arrCache[$strKey] = $this->Isotope->formatPriceWithCurrency($this->total_price, false);
+								break;
+
+							case 'categories':
+								$this->arrCache[$strKey] = $this->Database->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid=" . ($this->pid ? $this->pid : $this->id) . " ORDER BY sorting")->fetchEach('page_id');
+								break;
+
+							default:
+								return isset($this->arrData[$strKey]) ? deserialize($this->arrData[$strKey]) : null;
+						}
+					}
 				}
 
-				return $this->arrCache[$strKey] ? $this->arrCache[$strKey] : '';
+				return $this->arrCache[$strKey];
 		}
 	}
 
