@@ -216,7 +216,7 @@ abstract class IsotopeProductCollection extends Model
 							$fltTotal += $arrSurcharge['total_price'];
 					}
 
-					$this->arrCache[$strKey] = $fltTotal;
+					$this->arrCache[$strKey] = $fltTotal > 0 ? $fltTotal : 0;
 					break;
 
 				default:
