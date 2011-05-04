@@ -163,7 +163,7 @@ abstract class IsotopeProductCollection extends Model
 						$fltTotal += $arrSurcharge['total_price'];
 				}
 				
-				return $fltTotal;
+				return $fltTotal > 0 ? $fltTotal : 0;
 				break;
 								
 			default:
