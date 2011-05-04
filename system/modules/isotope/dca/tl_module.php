@@ -396,11 +396,8 @@ class tl_module_isotope extends Backend
 
 	public function getSortableAttributes()
 	{
-		if (!is_array($GLOBALS['TL_DCA']['tl_iso_products']))
-		{
-			$this->loadDataContainer('tl_iso_products');
-			$this->loadLanguageFile('tl_iso_products');
-		}
+		$this->loadDataContainer('tl_iso_products');
+		$this->loadLanguageFile('tl_iso_products');
 
 		$arrAttributes = array();
 
@@ -424,11 +421,8 @@ class tl_module_isotope extends Backend
 	 */
 	public function getFilterFields()
 	{
-		if (!is_array($GLOBALS['TL_DCA']['tl_iso_products']))
-		{
-			$this->loadDataContainer('tl_iso_products');
-			$this->loadLanguageFile('tl_iso_products');
-		}
+		$this->loadDataContainer('tl_iso_products');
+		$this->loadLanguageFile('tl_iso_products');
 
 		$arrAttributes = array();
 

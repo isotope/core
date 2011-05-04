@@ -69,6 +69,7 @@ Version 0.2.8 (2011-05-??)
 - Fixed issue in cart rules, some were applied even if no product matched
 - Fixed tax ID is not shown for surcharges (Ticket #449)
 - Fixed fatal error on order PDF export (Ticket #448)
+- Fixed potential issues with data container not being loaded (Ticket #444)
 - Fixed: copying mail template did not duplicate languages
 - Removed default list template in tl_content
 - Minor code cleanup
