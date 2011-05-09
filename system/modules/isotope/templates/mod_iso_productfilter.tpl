@@ -6,7 +6,7 @@
     <?php endif; ?>
     
     <div class="formbody">
-        <form id="filterForm" action="<?php echo $this->action; ?>" method="get">
+        <form id="filterForm" name="filterForm" action="<?php echo $this->action; ?>" method="get">
             <?php if($this->orderBy): ?>
             
                 <div class="filter_order_by">

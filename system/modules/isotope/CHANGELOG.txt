@@ -2,7 +2,7 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 0.2.8 (2011-05-??)
+Version 0.2.8 (2011-05-09)
 ------------------------------
 - Added import/export option for mail templates
 - Added quantity_requested to product template
@@ -22,6 +22,7 @@ Version 0.2.8 (2011-05-??)
 - Fixed fatal error on order PDF export (Ticket #448)
 - Fixed potential issues with data container not being loaded (Ticket #444)
 - Fixed potential issue with CC and BCC email recipients (Ticket #447)
+- Fixed product filter javascript error in firefox (see http://www.contao-community.de/showthread.php?17678)
 - Fixed: copying mail template did not duplicate languages
 - Fixed: Tax rate amount was not mandatory
 - Fixed: Tax ID information for each product was lost when placing the order (Ticket #417)
