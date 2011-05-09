@@ -134,7 +134,9 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		$arrBuffer = array();
 		$last = count($arrProducts) - 1;
 		$row = 0;
+		$col = 0;
 		$rows = ceil(count($arrProducts) / $this->iso_cols) - 1;
+		$cols = $this->iso_cols - 1;
 		foreach( $arrProducts as $i => $objProduct )
 		{
 			$blnClear = false;
@@ -142,15 +144,27 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			if ($i > 0 && $i % $this->iso_cols == 0)
 			{
 				$blnClear = true;
-				$row++;
+				++$row;
+				$col = 0;
+			}
+			
+			$strClass = 'product product_'.$i . ($i%2 ? ' product_even' : ' product_odd') . ($i == 0 ? ' product_first' : '') . ($i == $last ? ' product_last' : '');
+			
+			// Add row & col classes
+			if ($this->iso_cols > 1)
+			{
+				$strClass .= ' row_'.$row . ($row%2 ? ' row_even' : ' row_odd') . ($row == 0 ? ' row_first' : '') . ($row == $rows ? ' row_last' : '');
+				$strClass .= ' col_'.$col . ($col%2 ? ' col_even' : ' col_odd') . ($col == 0 ? ' col_first' : '') . ($col == $cols ? ' col_last' : '');
 			}
 
 			$arrBuffer[] = array
 			(
 				'clear'		=> (($this->iso_cols > 1 && $blnClear) ? true : false),
-				'class'		=> ('product' . ($i%2 ? ' product_even' : ' product_odd') . ($i == 0 ? ' product_first' : '') . ($i == $last ? ' product_last' : '') . ($this->iso_cols > 1 ? ' row_'.$row . ($row%2 ? ' row_even' : ' row_odd') . ($row == 0 ? ' row_first' : '') . ($row == $rows ? ' row_last' : '') : '')),
+				'class'		=> $strClass,
 				'html'		=> $objProduct->generate((strlen($this->iso_list_layout) ? $this->iso_list_layout : $objProduct->list_template), $this),
 			);
+			
+			++$col;
 		}
 
 		$this->Template->products = $arrBuffer;
