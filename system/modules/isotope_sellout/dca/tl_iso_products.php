@@ -35,7 +35,15 @@ $GLOBALS['TL_DCA']['tl_iso_products']['fields']['stock_quantity'] = array
 (
 	'label'			=> &$GLOBALS['TL_LANG']['tl_iso_products']['stock_quantity'],
 	'inputType'		=> 'text',
-	'eval'			=> array(),
+	'eval'			=> array('mandatory'=>true, 'maxlength'=>5, 'rgxp'=>'digit'),
+	'attributes'	=> array('legend'=>'general_legend'),
+);
+
+$GLOBALS['TL_DCA']['tl_iso_products']['fields']['max_order_quantity'] = array
+(
+	'label'			=> &$GLOBALS['TL_LANG']['tl_iso_products']['max_order_quantity'],
+	'inputType'		=> 'text',
+	'eval'			=> array('mandatory'=>true, 'maxlength'=>5, 'rgxp'=>'digit'),
 	'attributes'	=> array('legend'=>'general_legend'),
 );
 

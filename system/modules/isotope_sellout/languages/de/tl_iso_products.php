@@ -31,5 +31,6 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_iso_products']['stock_quantity']	= array('Lagerbestand', 'Wie viel Stück dieses Produkts sind an Lager?');
+$GLOBALS['TL_LANG']['tl_iso_products']['stock_quantity']		= array('Lagerbestand', 'Wie viel Stück dieses Produkts sind an Lager?');
+$GLOBALS['TL_LANG']['tl_iso_products']['max_order_quantity']	= array('Max. Bestellmenge', 'Wie viel Stück dieses Produkts können max. auf einmal bestellt werden?');
 

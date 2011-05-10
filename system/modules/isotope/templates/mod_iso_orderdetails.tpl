@@ -56,7 +56,7 @@
 			<td class="col_2 quantity"><?php echo $item['quantity']; ?></td>
 			<td class="col_3 price"><?php echo $item['price']; ?></td>
 			<td class="col_4 price total"><?php echo $item['total']; ?></td>
-	    	<td class="col_5 col_last tax"><?php echo $product['tax_id']; ?></td>
+	    	<td class="col_5 col_last tax"><?php echo $item['tax_id']; ?></td>
 		</tr>
 <?php endforeach; ?>
 	</tbody>

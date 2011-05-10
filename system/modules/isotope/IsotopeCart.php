@@ -374,15 +374,21 @@ class IsotopeCart extends IsotopeProductCollection
 				}
 			}
 			
-			$this->arrProducts[$pid]->tax_id = implode(',', $arrTaxIds);
+			$strTaxId = implode(',', $arrTaxIds);
+			if ($objProduct->tax_id != $strTaxId)
+			{
+				$this->updateProduct($objProduct, array('tax_id'=>$strTaxId));
+				$this->arrProducts[$pid]->tax_id = implode(',', $arrTaxIds);
+			}
 		}
 		
 		
-		foreach( $arrPreTax as $arrSurcharge )
+		foreach( $arrPreTax as $i => $arrSurcharge )
 		{
 			if (!$arrSurcharge['tax_class'])
 				continue;
-				
+
+			$arrTaxIds = array();
 			$arrTax = $this->Isotope->calculateTax($arrSurcharge['tax_class'], $arrSurcharge['total_price']);
 			
 			if (is_array($arrTax))
@@ -404,8 +410,11 @@ class IsotopeCart extends IsotopeProductCollection
 					}
 					
 					$arrTaxes[$k]['tax_id'] = array_search($k, array_keys($arrTaxes)) + 1;
+					$arrTaxIds[] = array_search($k, array_keys($arrTaxes)) + 1;
 				}
 			}
+			
+			$arrPreTax[$i]['tax_id'] = implode(',', $arrTaxIds);
 		}
 		
 		return array_merge($arrPreTax, $arrTaxes, $arrPostTax);

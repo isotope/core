@@ -206,7 +206,6 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 			'filter'				=> true,
 			'inputType'				=> 'select',
 			'foreignKey'			=> 'tl_iso_tax_class.name',
-			'attributes'			=> array('legend'=>'tax_legend'),
 			'eval'					=> array('includeBlankOption'=>true, 'tl_class'=>'w50'),
 		),
 		'allowed_cc_types' => array

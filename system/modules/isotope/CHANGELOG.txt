@@ -2,13 +2,32 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 0.2.8 (2011-03-??)
+Version 0.2.8 (2011-05-09)
 ------------------------------
 - Added import/export option for mail templates
 - Added quantity_requested to product template
+- Added support for conditionalselect as conditionField
+- Improved: Do not allow negative cart/order totals
+- Improved: Do not cache arrData from IsotopeProduct, return NULL for non-existing values
+- Improved backend order listing (Ticket #424)
 - Fixed issue with email address on checkout
 - Fixed potential product load problem in IsotopeProductCollection
+- Fixed potential problem with rule product restrictions
+- Fixed bug with rule limits per store config or member
+- Fixed potential issue with member ID in rules
+- Fixed potentially wrong publish-status icon (Ticket #437)
+- Fixed order items not deleted when deleting orders (Ticket #438)
+- Fixed issue in cart rules, some were applied even if no product matched
+- Fixed tax ID is not shown for surcharges (Ticket #449)
+- Fixed fatal error on order PDF export (Ticket #448)
+- Fixed potential issues with data container not being loaded (Ticket #444)
+- Fixed potential issue with CC and BCC email recipients (Ticket #447)
+- Fixed product filter javascript error in firefox (see http://www.contao-community.de/showthread.php?17678)
+- Fixed: copying mail template did not duplicate languages
+- Fixed: Tax rate amount was not mandatory
+- Fixed: Tax ID information for each product was lost when placing the order (Ticket #417)
 - Removed default list template in tl_content
+- Minor code cleanup
 
 Version 0.2.7 (2011-03-09)
 ------------------------------

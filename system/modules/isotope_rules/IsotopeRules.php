@@ -162,7 +162,8 @@ class IsotopeRules extends Controller
 	 */
 	public function getCouponForm($objModule)
 	{
-		$arrCoupons = is_array(deserialize($this->Isotope->Cart->coupons)) ? deserialize($this->Isotope->Cart->coupons) : array();
+		$arrCoupons = deserialize($this->Isotope->Cart->coupons);
+		$arrCoupons = is_array($arrCoupons) ? $arrCoupons : array();
 		$strCoupon = $this->Input->get('coupon_'.$objModule->id);
 		
 		if ($strCoupon == '')
@@ -185,9 +186,9 @@ class IsotopeRules extends Controller
 				else
 				{
 					$arrCoupons[] = $arrRule['code'];
-					
+
 					$this->Database->query("UPDATE tl_iso_cart SET coupons='" . serialize($arrCoupons) . "' WHERE id={$this->Isotope->Cart->id}");
-					
+
 					$_SESSION['COUPON_SUCCESS'][$objModule->id] = sprintf($GLOBALS['TL_LANG']['MSC']['couponApplied'], $arrRule['code']);
 				}
 			}
@@ -312,11 +313,11 @@ class IsotopeRules extends Controller
 		
 		
 		// Limits
-		$arrProcedures[] = "(limitPerConfig=0 OR limitPerConfig>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND config_id=".(int)$this->Isotope->Config->id."))";
+		$arrProcedures[] = "(limitPerConfig=0 OR limitPerConfig>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND config_id=".(int)$this->Isotope->Config->id." AND order_id!=(SELECT id FROM tl_iso_orders WHERE cart_id=".$this->Isotope->Cart->id.")))";
 		
 		if (FE_USER_LOGGED_IN && TL_MODE == 'FE')
 		{
-			$arrProcedures[] = "(limitPerMember=0 OR limitPerMember>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND member_id={$this->User->id}))";
+			$arrProcedures[] = "(limitPerMember=0 OR limitPerMember>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND member_id=".(int)$this->User->id." AND order_id!=(SELECT id FROM tl_iso_orders WHERE cart_id=".$this->Isotope->Cart->id.")))";
 		}
 		
 		
@@ -378,6 +379,7 @@ class IsotopeRules extends Controller
 	{
 		$arrProducts = $this->Isotope->Cart->getProducts();
 		
+		$blnMatch = false;
 		$blnDiscount = false;
 		if (strpos($arrRule['discount'], '%') !== false)
 		{
@@ -396,7 +398,7 @@ class IsotopeRules extends Controller
 		);
 		
 		// Product or producttype restrictions
-		if ($arrRule['productRestrictions'] != '')
+		if ($arrRule['productRestrictions'] != '' && $arrRule['productRestrictions'] != 'none')
 		{
 			$arrLimit = $this->Database->execute("SELECT object_id FROM tl_iso_rule_restrictions WHERE pid={$arrRule['id']} AND type='{$arrRule['productRestrictions']}'")->fetchEach('object_id');
 			
@@ -453,7 +455,6 @@ class IsotopeRules extends Controller
 				continue;
 			}
 			
-			
 			// Apply To
 			switch( $arrRule['applyTo'] )
 			{
@@ -478,19 +479,20 @@ class IsotopeRules extends Controller
 					break;
 					
 				case 'cart':
+					$blnMatch = true;
 					$arrSurcharge['total_price'] += $objProduct->total_price;
 					break;
 			}
 		}
 		
-		if ($arrRule['applyTo'] == 'cart')
+		if ($arrRule['applyTo'] == 'cart' && $blnMatch)
 		{
 			$fltPrice = $blnDiscount ? ($arrSurcharge['total_price'] / 100 * $fltDiscount) : $arrRule['discount'];
 			$arrSurcharge['total_price'] = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
 			$arrSurcharge['before_tax'] = false;
 		}
 		
-		return $arrSurcharge['total_price'] == 0 ? false: $arrSurcharge;
+		return $arrSurcharge['total_price'] == 0 ? false : $arrSurcharge;
 	}
 }
 

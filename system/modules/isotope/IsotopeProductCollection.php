@@ -86,6 +86,11 @@ abstract class IsotopeProductCollection extends Model
 	 */
 	public function __get($strKey)
 	{
+		if ($this->blnLocked && array_key_exists($strKey, $this->arrData))
+		{
+			return deserialize($this->arrData[$strKey]);
+		}
+
 		switch( $strKey )
 		{
 			case 'table':
@@ -163,7 +168,7 @@ abstract class IsotopeProductCollection extends Model
 						$fltTotal += $arrSurcharge['total_price'];
 				}
 				
-				return $fltTotal;
+				return $fltTotal > 0 ? $fltTotal : 0;
 				break;
 								
 			default:
@@ -244,6 +249,7 @@ abstract class IsotopeProductCollection extends Model
 				
 				$objProduct->quantity_requested = $objItems->product_quantity;
 				$objProduct->cart_id = $objItems->id;
+				$objProduct->tax_id = $objItems->tax_id;
 				$objProduct->reader_jumpTo_Override = $objItems->href_reader;
 				
 				$this->arrProducts[] = $objProduct;
@@ -347,12 +353,6 @@ abstract class IsotopeProductCollection extends Model
 	{
 		if (!$objProduct->cart_id)
 			return false;
-			
-		// Quantity set to 0, delete product
-		if (isset($arrSet['product_quantity']) && $arrSet['product_quantity'] == 0)
-		{
-			return $this->deleteProduct($objProduct);
-		}
 		
 		// HOOK for adding additional functionality when updating a product in the collection
 		if (isset($GLOBALS['TL_HOOKS']['iso_updateProductInCollection']) && is_array($GLOBALS['TL_HOOKS']['iso_updateProductInCollection']))
@@ -366,12 +366,18 @@ abstract class IsotopeProductCollection extends Model
 					return false;
 			}
 		}
+			
+		// Quantity set to 0, delete product
+		if (isset($arrSet['product_quantity']) && $arrSet['product_quantity'] == 0)
+		{
+			return $this->deleteProduct($objProduct);
+		}
 		
 		$intAffectedRows = $this->Database->prepare("UPDATE {$this->ctable} %s WHERE id={$objProduct->cart_id}")
 										  ->set($arrSet)
 										  ->executeUncached()
 										  ->affectedRows;
-		
+
 		if ($intAffectedRows > 0)
 			return true;
 		

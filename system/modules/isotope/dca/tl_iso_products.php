@@ -1330,7 +1330,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 
 		$href .= '&amp;tid='.$row['id'].'&amp;state='.($row['published'] ? '' : 1);
 
-		if (!$row['published'])
+		if ($row['published'] != '1')
 		{
 			$icon = 'invisible.gif';
 		}		

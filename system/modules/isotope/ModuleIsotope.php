@@ -61,11 +61,8 @@ abstract class ModuleIsotope extends Module
 			$GLOBALS['TL_CSS'][] = 'system/modules/isotope/html/isotope.css';
 			
 			// Make sure field data is available
-			if (!is_array($GLOBALS['TL_DCA']['tl_iso_products']['fields']))
-			{
-				$this->loadDataContainer('tl_iso_products');
-				$this->loadLanguageFile('tl_iso_products');
-			}
+			$this->loadDataContainer('tl_iso_products');
+			$this->loadLanguageFile('tl_iso_products');
 			
 			// Disable caching for pages with certain modules (eg. Cart)
 			if ($this->blnDisableCache)
