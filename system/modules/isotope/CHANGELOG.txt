@@ -2,6 +2,10 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 0.2.9 (2011-05-??)
+------------------------------
+- Fixed bug when products have no SKU
+
 Version 0.2.8 (2011-05-09)
 ------------------------------
 - Added import/export option for mail templates
