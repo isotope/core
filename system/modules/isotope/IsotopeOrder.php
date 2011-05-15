@@ -231,11 +231,11 @@ class IsotopeOrder extends IsotopeProductCollection
 			$this->Isotope->overrideConfig($this->config_id);
 			$this->Isotope->Cart = $objCart;
 		}
-
-		// HOOK: process checkout
-		if (isset($GLOBALS['ISO_HOOKS']['checkout']) && is_array($GLOBALS['ISO_HOOKS']['checkout']))
+		
+                // HOOK: process checkout
+		if (isset($GLOBALS['ISO_HOOKS']['preCheckout']) && is_array($GLOBALS['ISO_HOOKS']['preCheckout']))
 		{
-			foreach ($GLOBALS['ISO_HOOKS']['checkout'] as $callback)
+			foreach ($GLOBALS['ISO_HOOKS']['preCheckout'] as $callback)
 			{
 				$this->import($callback[0]);
 
@@ -246,9 +246,10 @@ class IsotopeOrder extends IsotopeProductCollection
 				}
 			}
 		}
-
-		$this->transferFromCollection($objCart);
-		$objCart->delete();
+                
+		$arrItemIds = $this->transferFromCollection($objCart);
+		                                
+                $objCart->delete();
 
 		$this->checkout_complete = true;
 		$this->status = $this->new_order_status;
@@ -292,6 +293,17 @@ class IsotopeOrder extends IsotopeProductCollection
 			}
 		}
 
+                // HOOK: process checkout
+		if (isset($GLOBALS['ISO_HOOKS']['postCheckout']) && is_array($GLOBALS['ISO_HOOKS']['postCheckout']))
+		{
+			foreach ($GLOBALS['ISO_HOOKS']['postCheckout'] as $callback)
+			{
+				$this->import($callback[0]);
+
+				$this->$callback[0]->$callback[1](&$this, $arrItemIds);
+			}
+		}
+                
 		$this->save();
 
 		return true;
