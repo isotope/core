@@ -548,7 +548,7 @@ abstract class IsotopeProductCollection extends Model
 				'product_name'			=> (string)$objProduct->name,
 				'product_options'		=> $objProduct->getOptions(true),
 				'product_quantity'		=> (int)$intQuantity,
-				'price'					=> (float)$objProduct->price,
+				'price'					=> $objProduct->price,
 				'href_reader'			=> $objProduct->href_reader
 			);
 
