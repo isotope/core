@@ -73,12 +73,11 @@ class ModuleIsotopeCart extends ModuleIsotope
 
 		if (!count($arrProducts))
 		{
-			$this->Template = new FrontendTemplate('mod_message');
-			$this->Template->type = 'empty';
+			$this->Template->empty = true;
 			$this->Template->message = $GLOBALS['TL_LANG']['MSC']['noItemsInCart'];
 			return;
 		}
-
+		
 		$objTemplate = new IsotopeTemplate($this->iso_cart_layout);
 
 		global $objPage;
@@ -199,6 +198,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 		$objTemplate->surcharges = $arrSurcharges;
 		$objTemplate->forms = $arrForms;
 
+		$this->Template->empty = false;
 		$this->Template->cart = $objTemplate->parse();
 	}
 }
