@@ -26,6 +26,7 @@ Version 0.3.beta1
 - Added: Attach optional PDF invoice document to order mails (Ticket #9)
 - Added: Digits (min. length) for order number
 - Added: The Order ID is starting from 1 when changing the prefix
+- Added "Edit Multiple" to Order Management (Ticket #439)
 - Improved: Better Isotope module handling, including callback support
 - Improved: Moved multilingual support to its own extension "isotope_multilingual" with lot more options
 - Improved: Hide payment information if checkout total is 0

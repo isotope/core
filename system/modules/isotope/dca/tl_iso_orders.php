@@ -67,6 +67,13 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 		),
 		'global_operations' => array
 		(
+			'all' => array
+			(
+				'label'					=> &$GLOBALS['TL_LANG']['MSC']['all'],
+				'href'					=> 'act=select',
+				'class'					=> 'header_edit_all',
+				'attributes'			=> 'onclick="Backend.getScrollOffset();"'
+			),
 			'tools' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_iso_orders']['tools'],
@@ -152,7 +159,6 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 		(
 			'eval'					=> array('doNotShow'=>true),
 		),
-
 		'order_id' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['order_id'],
@@ -202,6 +208,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['surcharges'],
 			'inputType'				=> 'surchargeWizard',
+			'eval'					=> array('doNotShow'=>true),
 			'save_callback'			=> array
 			(
 				array('tl_iso_orders','saveSurcharges')
@@ -210,6 +217,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 		'details' => array
 		(
 			'input_field_callback'	=> array('tl_iso_orders', 'showDetails'),
+			'eval'					=> array('doNotShow'=>true),
 		),
 		'notes' => array
 		(
@@ -415,8 +423,16 @@ class tl_iso_orders extends Backend
 		{
 			unset($GLOBALS['TL_DCA']['tl_iso_orders']['list']['operations']['delete']);
 
-			if ($this->Input->get('act') == 'delete' || (strlen($this->Input->get('id')) && !in_array($this->Input->get('id'), $arrIds)))
+			if ($this->Input->get('act') == 'delete' || $this->Input->get('act') == 'deleteAll')
+			{
+				$this->log('Only admin can delete orders!', __METHOD__, TL_ERROR);
 				$this->redirect($this->Environment->script.'?act=error');
+			}
+			elseif (strlen($this->Input->get('id')) && !in_array($this->Input->get('id'), $arrIds))
+			{
+				$this->log('Trying to access disallowed order ID '.$this->Input->get('id'), __METHOD__, TL_ERROR);
+				$this->redirect($this->Environment->script.'?act=error');
+			}
 		}
 	}
 
