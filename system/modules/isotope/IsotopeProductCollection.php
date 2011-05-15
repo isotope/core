@@ -360,9 +360,12 @@ abstract class IsotopeProductCollection extends Model
 		}
 
 		$arrProducts = $this->getProducts();
-		foreach( $arrProducts as $objProduct )
+		if (is_array($arrProducts) && count($arrProducts))
 		{
-			$this->Database->execute("UPDATE {$this->ctable} SET price='{$objProduct->price}' WHERE id={$objProduct->cart_id}");
+			foreach( $arrProducts as $objProduct )
+			{
+				$this->Database->prepare("UPDATE {$this->ctable} SET price=? WHERE id=?")->execute($objProduct->price, $objProduct->cart_id);
+			}
 		}
 
 		if ($this->blnRecordExists && $this->blnModified && !$blnForceInsert)

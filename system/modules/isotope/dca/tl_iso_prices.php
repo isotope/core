@@ -188,7 +188,7 @@ class tl_iso_prices extends Backend
 		$this->import('Isotope');
 
 		$arrTiers = array();
-		$objTiers = $this->Database->execute("SELECT * FROM tl_iso_price_tiers WHERE pid={$row['id']}");
+		$objTiers = $this->Database->execute("SELECT * FROM tl_iso_price_tiers WHERE pid={$row['id']} ORDER BY min");
 
 		while( $objTiers->next() )
 		{
