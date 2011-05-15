@@ -52,6 +52,7 @@ Version 0.3.beta1
 - Improved: Drag & Drop of product sorting in categories
 - Improved: Additional CSS classes for product list (Ticket #432)
 - Improved: Moved $GLOBALS['ISO_PERPAGE'] to filter module setting (Ticket #70)
+- Improved: Removed product type setting for languages. If isotope_multilingual is installed, all language will appear as an option.
 - Fixed start & stop publishing dates not working
 - Fixed Authorize.net failed transaction bug
 - Fixed enter key trapping on checkout payment method

@@ -40,8 +40,6 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'enableVersioning'			=> true,
 		'closed'					=> true,
 		'ctable'					=> array('tl_iso_downloads', 'tl_iso_product_categories', 'tl_iso_prices'),
-		'ltable'					=> 'tl_iso_producttypes.languages',
-		'lref'						=> 'type',
 		'onload_callback' => array
 		(
 			array('tl_iso_products', 'checkPermission'),

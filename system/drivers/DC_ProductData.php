@@ -275,16 +275,15 @@ class DC_ProductData extends DC_Table
 		$this->objActiveRecord = $objRow;
 
 		// Load and/or change language
-		$arrLangTable = explode('.', $GLOBALS['TL_DCA'][$this->strTable]['config']['ltable']);
-		$objLangTable = $this->Database->prepare("SELECT * FROM " . $arrLangTable[0] . " WHERE id=?")->execute($this->activeRecord->{$GLOBALS['TL_DCA'][$this->strTable]['config']['lref']});
-		$this->arrLanguages = deserialize($objLangTable->{$arrLangTable[1]});
-		if (is_array($this->arrLanguages) && count($this->arrLanguages))
+		if (in_array('isotope_multilingual', $this->Config->getActiveModules()))
 		{
+			$this->arrLanguages = $this->getLanguages();
+
 			if ($this->Input->post('FORM_SUBMIT') == 'tl_language')
 			{
 				$session = $this->Session->getData();
 
-				if (in_array($this->Input->post('language'), $this->arrLanguages))
+				if (in_array($this->Input->post('language'), array_keys($this->arrLanguages)))
 				{
 					$session['language'][$this->strTable][$this->intId] = $this->Input->post('language');
 
@@ -304,7 +303,7 @@ class DC_ProductData extends DC_Table
 				$this->reload();
 			}
 
-			if (strlen($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId]) && in_array($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId], $this->arrLanguages))
+			if (strlen($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId]) && in_array($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId], array_keys($this->arrLanguages)))
 			{
 				$objRow = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE pid=? AND language=?")->execute($this->intId, $_SESSION['BE_DATA']['language'][$this->strTable][$this->intId]);
 
@@ -540,27 +539,34 @@ class DC_ProductData extends DC_Table
 		if (is_array($this->arrLanguages) && count($this->arrLanguages))
 		{
 			$arrAvailableLanguages = $this->Database->prepare("SELECT language FROM " . $this->strTable . " WHERE pid=?")->execute($this->intId)->fetchEach('language');
-			$languages = '';
-			$arrLanguageLabels = $this->getLanguages();
+			$available = '';
+			$undefined = '';
 
-			foreach( $this->arrLanguages as $language )
+			foreach( $this->arrLanguages as $language => $label )
 			{
-				if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId] == $language)
+				if (in_array($language, $arrAvailableLanguages))
 				{
-					$languages .= '<option value="' . $language . '" selected="selected">' . $arrLanguageLabels[$language] .'</option>';
-					$_SESSION['TL_INFO'] = array($GLOBALS['TL_LANG']['MSC']['editingLanguage']);
-					continue;
+					if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId] == $language)
+					{
+						$available .= '<option value="' . $language . '" selected="selected">' . $label .'</option>';
+						$_SESSION['TL_INFO'] = array($GLOBALS['TL_LANG']['MSC']['editingLanguage']);
+					}
+					else
+					{
+						$available .= '<option value="' . $language . '">' . $label . '</option>';
+					}
 				}
-
-				$languages .= '<option value="' . $language . '">' . $arrLanguageLabels[$language] . (in_array($language, $arrAvailableLanguages) ? '' : ' ('.$GLOBALS['TL_LANG']['MSC']['undefinedLanguage'].')') . '</option>';
+				else
+				{
+					$undefined .= '<option value="' . $language . '">' . $label . ' ('.$GLOBALS['TL_LANG']['MSC']['undefinedLanguage'].')' . '</option>';
+				}
 			}
 
 			$version .= '<form action="'.ampersand($this->Environment->request, true).'" id="tl_language" class="tl_form" method="post" style="float:left;margin-left:20px;">
 <div class="tl_formbody">
 <input type="hidden" name="FORM_SUBMIT" value="tl_language" />
-<strong>' . $GLOBALS['TL_LANG']['MSC']['labelLanguage'] . ':</strong>
 <select name="language" class="tl_select' . (strlen($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId]) ? ' active' : '') . '">
-	<option value="">' . $GLOBALS['TL_LANG']['MSC']['defaultLanguage'] . '</option>'.$languages.'
+	<option value="">' . $GLOBALS['TL_LANG']['MSC']['defaultLanguage'] . '</option>'.$available.$undefined.'
 </select>
 <input type="submit" name="editLanguage" class="tl_submit" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['editLanguage']).'" />
 <input type="submit" name="deleteLanguage" class="tl_submit" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['deleteLanguage']).'" onclick="return confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteLanguageConfirm'] . '\')" />

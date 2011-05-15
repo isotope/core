@@ -58,7 +58,6 @@ $GLOBALS['TL_LANG']['tl_iso_producttypes']['show']   				= array('product type d
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['name_legend']			= 'Product type settings';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['description_legend']	= 'Description';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['template_legend']		= 'Templates';
-$GLOBALS['TL_LANG']['tl_iso_producttypes']['language_legend']		= 'Multilingual settings';
-$GLOBALS['TL_LANG']['tl_iso_producttypes']['attributes_legend']	= 'Product attributes';
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['attributes_legend']		= 'Product attributes';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['download_legend']		= 'Downloads';
 
