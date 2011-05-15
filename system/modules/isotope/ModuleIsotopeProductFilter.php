@@ -109,29 +109,27 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 			}
 		}
 
-		//Set the default per page limit if one exists from the listing module,
-		//and also add it to the default array if it not there already
+		// Set the default per page limit if one exists from the listing module,
+		// and also add it to the default array if it not there already
 		$strPerPageDefault = '';
 		if($this->iso_enableLimit)
 		{
-			//Generate the limits per page... used to be derived from the number of columns in grid format, but not in list format.  For now, just a standard array.
-			$arrLimit = $GLOBALS['ISO_PERPAGE'];
+			// Generate the limits per page...
+			$arrLimit = array_map('intval', trimsplit(',', $this->iso_perPage));
 
 			if ($this->iso_listingModule)
 			{
 				$intModuleLimit = intval($objListingModule->perPage);
 
-				if($intModuleLimit > 0)
+				if ($intModuleLimit > 0)
 				{
 					$strPerPageDefault = $intModuleLimit;
-					if(!in_array($intModuleLimit,$arrLimit))
-					{
-						array_push($arrLimit,$intModuleLimit);
-						//Sort the array
-						sort($arrLimit);
-					}
+					$arrLimit[] = $intModuleLimit;
 				}
 			}
+			
+			$arrLimit = array_unique($arrLimit);
+			sort($arrLimit);
 		}
 
 		$arrCleanUrl = explode('?', $this->Environment->request);

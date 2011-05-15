@@ -69,10 +69,6 @@ class IsotopeRunonce extends Controller
 		{
 			$this->Config->update('$GLOBALS[\'TL_CONFIG\'][\'uploadTypes\']', $GLOBALS['TL_CONFIG']['uploadTypes'].',imt');
 		}
-		if (!in_array('imt', trimsplit(',', $GLOBALS['TL_CONFIG']['allowedDownload'])))
-		{
-			$this->Config->update('$GLOBALS[\'TL_CONFIG\'][\'allowedDownload\']', $GLOBALS['TL_CONFIG']['allowedDownload'].',imt');
-		}
 	}
 
 
@@ -206,6 +202,13 @@ class IsotopeRunonce extends Controller
 		if ($this->Database->fieldExists('columns', 'tl_module') && !$this->Database->fieldExists('iso_cols', 'tl_module'))
 		{
 			$this->Database->query("ALTER TABLE tl_module CHANGE COLUMN columns iso_cols int(1) unsigned NOT NULL default '1'");
+		}
+		
+		// tl_module.iso_perPage has been added
+		if (!$this->Database->fieldExists('iso_perPage', 'tl_module'))
+		{
+			$this->Database->query("ALTER TABLE tl_module ADD COLUMN iso_perPage varchar(64) NOT NULL default ''");
+			$this->Database->query("UPDATE tl_module SET iso_perPage='8,12,32,64'");
 		}
 
 		// tl_iso_orders.store_id has been renamed to tl_iso_orders.config_id

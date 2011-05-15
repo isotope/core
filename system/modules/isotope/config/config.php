@@ -235,12 +235,6 @@ $GLOBALS['ISO_PRODUCT'] = array
 
 
 /**
- * Per page defaults
- */
-$GLOBALS['ISO_PERPAGE'] = array(8,12,32,64);
-
-
-/**
  * Order Statuses
  */
 $GLOBALS['ISO_ORDER'] = array('pending', 'processing', 'complete', 'on_hold', 'cancelled');
