@@ -662,14 +662,14 @@ abstract class IsotopeProductCollection extends Model
 			if ($objNewItems->numRows)
 			{
 				$this->Database->query("UPDATE {$this->ctable} SET tstamp=$time, product_quantity=(product_quantity+{$objOldItems->product_quantity}) WHERE id={$objNewItems->id}");
-				$arrIds[] = $objNewItems->id;
+				$arrIds[$objOldItems->id] = $objNewItems->id;
 			}
 
 			// Product does not exist in this collection, we don't duplicate and are on the same table. Simply change parent id.
 			elseif (!$objNewItems->numRows && !$blnDuplicate && $this->ctable == $objCollection->ctable)
 			{
 				$this->Database->query("UPDATE {$this->ctable} SET tstamp=$time, pid={$this->id} WHERE id={$objOldItems->id}");
-				$arrIds[] = $objOldItems->id;
+				$arrIds[$objOldItems->id] = $objOldItems->id;
 			}
 
 			// Duplicate all existing rows to target table
@@ -688,7 +688,7 @@ abstract class IsotopeProductCollection extends Model
 					}
 				}
 
-				$arrIds[] = $this->Database->prepare("INSERT INTO {$this->ctable} %s")->set($arrSet)->executeUncached()->insertId;
+				$arrIds[$objOldItems->id] = $this->Database->prepare("INSERT INTO {$this->ctable} %s")->set($arrSet)->executeUncached()->insertId;
 			}
 		}
 
