@@ -73,6 +73,10 @@ $GLOBALS['TL_LANG']['tl_iso_products']['mmSrc']			= 'Preview';
 $GLOBALS['TL_LANG']['tl_iso_products']['mmAlt']			= 'Alternate text';
 $GLOBALS['TL_LANG']['tl_iso_products']['mmLink']		= 'Link target';
 $GLOBALS['TL_LANG']['tl_iso_products']['mmDesc']		= 'Description';
+$GLOBALS['TL_LANG']['tl_iso_products']['mmTranslate']	= 'Translate';
+$GLOBALS['TL_LANG']['tl_iso_products']['mmTranslateNone']	= array('None', 'Do not translate this image.');
+$GLOBALS['TL_LANG']['tl_iso_products']['mmTranslateText']	= array('Text', 'Translate alt text and description for this image.');
+$GLOBALS['TL_LANG']['tl_iso_products']['mmTranslateAll']	= array('All', 'Do not include this image in translated version.');
 
 $GLOBALS['TL_LANG']['tl_iso_products']['existing_option_set'] = 'Select an existing product option set';
 $GLOBALS['TL_LANG']['tl_iso_products']['new_option_set'] = 'Create a new product option set';

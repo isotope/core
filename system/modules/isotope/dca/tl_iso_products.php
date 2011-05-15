@@ -360,7 +360,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'inputType'				=> 'mediaManager',
 			'explanation'			=> 'mediaManager',
 			'eval'					=> array('extensions'=>'jpeg,jpg,png,gif', 'helpwizard'=>true),
-			'attributes'			=> array('legend'=>'media_legend', 'fixed'=>true),
+			'attributes'			=> array('legend'=>'media_legend', 'fixed'=>true, 'multilingual'=>true),
 		),
 		'published' => array
 		(

@@ -28,6 +28,7 @@ Version 0.3.beta1
 - Added: The Order ID is starting from 1 when changing the prefix
 - Added "Edit Multiple" to Order Management (Ticket #439)
 - Added: Use cart template for empty message (Ticket #427)
+- Added: Images and image descriptions can be translated (Ticket #401)
 - Improved: Better Isotope module handling, including callback support
 - Improved: Moved multilingual support to its own extension "isotope_multilingual" with lot more options
 - Improved: Hide payment information if checkout total is 0

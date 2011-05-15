@@ -193,7 +193,7 @@ class MediaManager extends Widget implements uploadable
 				$this->varValue = array();
 			}
 
-			$this->varValue[] = array('src'=>$strCacheName);
+			$this->varValue[] = array('src'=>$strCacheName, 'translate'=>(!$_SESSION['BE_DATA']['language'][$this->strTable][$this->currentRecord] ? '' : 'all'));
 		}
 
 		unset($_FILES[$this->strName]);
@@ -205,7 +205,19 @@ class MediaManager extends Widget implements uploadable
 	 */
 	public function generate()
 	{
+		$blnLanguage = false;
 		$this->import('Database');
+
+		// Merge parent record data
+		if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->currentRecord] != '')
+		{
+			$blnLanguage = true;
+			$objParent = $this->Database->execute("SELECT * FROM {$this->strTable} WHERE id={$this->currentRecord}");
+			$arrParent = deserialize($objParent->{$this->strField});
+
+			$this->import('Isotope');
+			$this->varValue = $this->Isotope->mergeMediaData($this->varValue, $arrParent);
+		}
 
 		$GLOBALS['TL_CSS'][] = 'plugins/mediabox/css/mediabox.css';
 		$GLOBALS['TL_JAVASCRIPT'][] = 'plugins/mediabox/js/mediabox.js';
@@ -257,7 +269,8 @@ class MediaManager extends Widget implements uploadable
     <td class="col_0 col_first">'.$GLOBALS['TL_LANG'][$this->strTable]['mmSrc'].'</td>
     <td class="col_1">'.$GLOBALS['TL_LANG'][$this->strTable]['mmAlt'].' / '.$GLOBALS['TL_LANG'][$this->strTable]['mmLink'].'</td>
     <td class="col_2">'.$GLOBALS['TL_LANG'][$this->strTable]['mmDesc'].'</td>
-    <td class="col_3 col_last">&nbsp;</td>
+    <td class="col_3">'.$GLOBALS['TL_LANG'][$this->strTable]['mmTranslate'].'</td>
+    <td class="col_4 col_last">&nbsp;</td>
   </tr>
   </thead>
   <tbody>';
@@ -283,15 +296,35 @@ class MediaManager extends Widget implements uploadable
 				$strPreview = 'system/themes/' . $this->getTheme() . '/images/' . $objFile->icon;
 			}
 
+			$strTranslateText = ($blnLanguage && $this->varValue[$i]['translate'] != 'all') ? ' disabled="disabled"' : '';
+			$strTranslateNone = ($blnLanguage && !$this->varValue[$i]['translate']) ? ' disabled="disabled"' : '';
+
 			$return .= '
   <tr>
     <td class="col_0 col_first"><input type="hidden" name="' . $this->strName . '['.$i.'][src]" value="' . $this->varValue[$i]['src'] . '" /><a href="' . $strFile . '" rel="lightbox"><img src="' . $strPreview . '" alt="' . $this->varValue[$i]['src'] . '" /></a></td>
-    <td class="col_1"><input type="text" class="tl_text_2" name="' . $this->strName . '['.$i.'][alt]" value="' . $this->varValue[$i]['alt'] . '" /><br /><input type="text" class="tl_text_2" name="' . $this->strName . '['.$i.'][link]" value="' . $this->varValue[$i]['link'] . '" /></td>
-    <td class="col_2"><textarea name="' . $this->strName . '['.$i.'][desc]" cols="40" rows="3" class="tl_textarea">' . $this->varValue[$i]['desc'] . '</textarea></td>
-    <td class="col_3 col_last">';
+    <td class="col_1"><input type="text" class="tl_text_2" name="' . $this->strName . '['.$i.'][alt]" value="' . $this->varValue[$i]['alt'] . '"'.$strTranslateNone.' /><br /><input type="text" class="tl_text_2" name="' . $this->strName . '['.$i.'][link]" value="' . $this->varValue[$i]['link'] . '"'.$strTranslateText.' /></td>
+    <td class="col_2"><textarea name="' . $this->strName . '['.$i.'][desc]" cols="40" rows="3" class="tl_textarea"'.$strTranslateNone.' >' . $this->varValue[$i]['desc'] . '</textarea></td>
+    <td class="col_3">
+    	'.($blnLanguage ? ('<input type="hidden" name="' . $this->strName . '['.$i.'][translate]" value="'.$this->varValue[$i]['translate'].'"') : '').'
+    	<div class="radio_container">
+	    	<span>
+	    		<input id="' . $this->strName . '_'.$i.'_translate_none" name="' . $this->strName . '['.$i.'][translate]" type="radio" class="tl_radio" value=""'.$this->optionChecked('', $this->varValue[$i]['translate']).($blnLanguage ? ' disabled="disabled"' : '').'>
+	    		<label for="' . $this->strName . '_'.$i.'_translate_none" title="'.$GLOBALS['TL_LANG'][$this->strTable]['mmTranslateNone'][1].'">'.$GLOBALS['TL_LANG'][$this->strTable]['mmTranslateNone'][0].'</label></span>
+	    	<span>
+	    		<input id="' . $this->strName . '_'.$i.'_translate_text" name="' . $this->strName . '['.$i.'][translate]" type="radio" class="tl_radio" value="text"'.$this->optionChecked('text', $this->varValue[$i]['translate']).($blnLanguage ? ' disabled="disabled"' : '').'>
+	    		<label for="' . $this->strName . '_'.$i.'_translate_text" title="'.$GLOBALS['TL_LANG'][$this->strTable]['mmTranslateText'][1].'">'.$GLOBALS['TL_LANG'][$this->strTable]['mmTranslateText'][0].'</label></span>
+	    	<span>
+	    		<input id="' . $this->strName . '_'.$i.'_translate_all" name="' . $this->strName . '['.$i.'][translate]" type="radio" class="tl_radio" value="all"'.$this->optionChecked('all', $this->varValue[$i]['translate']).($blnLanguage ? ' disabled="disabled"' : '').'>
+	    		<label for="' . $this->strName . '_'.$i.'_translate_all" title="'.$GLOBALS['TL_LANG'][$this->strTable]['mmTranslateAll'][1].'">'.$GLOBALS['TL_LANG'][$this->strTable]['mmTranslateAll'][0].'</label></span>
+    	</div>
+    </td>
+    <td class="col_4 col_last">';
 
 			foreach ($arrButtons as $button)
 			{
+				if ($button == 'delete' && $blnLanguage && $this->varValue[$i]['translate'] != 'all')
+					continue;
+
 				$return .= '<a href="'.$this->addToUrl('&amp;'.$strCommand.'='.$button.'&amp;cid='.$i.'&amp;id='.$this->currentRecord).'" title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable]['wz_'.$button]).'" onclick="Isotope.mediaManager(this, \''.$button.'\',  \'ctrl_'.$this->strId.'\'); return false;">'.$this->generateImage($button.'.gif', $GLOBALS['TL_LANG'][$this->strTable]['wz_'.$button], 'class="tl_listwizard_img"').'</a> ';
 			}
 

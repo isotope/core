@@ -7,7 +7,8 @@
 .tl_mediamanager th,.tl_mediamanager td{padding:2px 10px 0 0}
 .tl_mediamanager td.col_0{text-align: center;vertical-align: middle}
 .tl_mediamanager input.tl_text_2{width:220px}
-.tl_mediamanager textarea{height:40px;width:300px}
+.tl_mediamanager textarea{height:40px;width:250px}
+.tl_mediamanager .radio_container span{display:block}
 .tl_imagewatermarkwizard th{font-weight:400;text-align:left}
 .tl_imagewatermarkwizard td{padding-right:4px}
 .mod_iso_orderdetails .info_container{float:left;width:200px;border:1px dotted #ccc;margin:0 10px 10px 0;padding:10px}

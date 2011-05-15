@@ -92,7 +92,12 @@
 .tl_mediamanager textarea
 {
 	height: 40px;
-	width: 300px;
+	width: 250px;
+}
+
+.tl_mediamanager .radio_container span
+{
+	display: block;
 }
 
 .tl_imagewatermarkwizard th

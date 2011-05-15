@@ -1018,6 +1018,70 @@ class Isotope extends Controller
 
 		return $label;
 	}
+
+
+	/**
+	 * Merge media manager data from fallback and translated product data
+	 *
+	 * @param	array	$arrCurrent
+	 * @param	array	$arrParent
+	 * @return	array
+	 */
+	public function mergeMediaData($arrCurrent, $arrParent)
+	{
+		if (is_array($arrParent) && count($arrParent))
+		{
+			$arrTranslate = array();
+
+			// Create an array of images where key = image name
+			foreach( $arrParent as $i => $image)
+			{
+				if ($image['translate'] != 'all')
+				{
+					$arrTranslate[$image['src']] = $image;
+				}
+			}
+
+			if (is_array($arrCurrent) && count($arrCurrent))
+			{
+				foreach( $arrCurrent as $i => $image )
+				{
+					if (isset($arrTranslate[$image['src']]))
+					{
+						if ($arrTranslate[$image['src']]['translate'] == '')
+						{
+							$arrCurrent[$i] = $arrTranslate[$image['src']];
+						}
+						else
+						{
+							$arrCurrent[$i]['link'] = $arrTranslate[$image['src']]['link'];
+							$arrCurrent[$i]['translate'] = $arrTranslate[$image['src']]['translate'];
+						}
+						
+						unset($arrTranslate[$image['src']]);
+					}
+					elseif ($arrCurrent[$i]['translate'] != 'all')
+					{
+						unset($arrCurrent[$i]);
+					}
+				}
+
+				// Add remaining parent image to the list
+				if (count($arrTranslate))
+				{
+					$arrCurrent = array_merge($arrCurrent, array_values($arrTranslate));
+				}
+				
+				$arrCurrent = array_values($arrCurrent);
+			}
+			else
+			{
+				$arrCurrent = array_values($arrTranslate);
+			}
+		}
+		
+		return $arrCurrent;
+	}
 	
 	
 	/**

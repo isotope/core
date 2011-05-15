@@ -343,7 +343,7 @@ class IsotopeProduct extends Controller
 				// Initialize attribute
 				if (!isset($this->arrCache[$strKey]))
 				{
-					if (is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$strKey]) && $GLOBALS['TL_DCA'][$this->strTable]['fields'][$strKey]['inputType'] == 'mediaManager')
+					if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$strKey]['inputType'] == 'mediaManager')
 					{
 						$strClass = $GLOBALS['ISO_GAL'][(strlen($GLOBALS['TL_DCA'][$this->strTable]['fields'][$strKey]['attributes']['gallery']) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$strKey]['attributes']['gallery'] : $this->Isotope->Config->gallery)];
 
@@ -1092,7 +1092,7 @@ class IsotopeProduct extends Controller
 		if (!strlen($GLOBALS['TL_LANGUAGE']))
 			return;
 
-		$objLanguage = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE pid={$this->id} AND language=?")->limit(1)->execute($GLOBALS['TL_LANGUAGE']);
+		$objLanguage = $this->Database->prepare("SELECT * FROM {$this->strTable} WHERE pid={$this->id} AND language=?")->limit(1)->execute($GLOBALS['TL_LANGUAGE']);
 
 		if ($objLanguage->numRows)
 		{
@@ -1103,9 +1103,16 @@ class IsotopeProduct extends Controller
 				if (in_array($attribute, $arrInherit))
 					continue;
 
-				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['multilingual'])
+				if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$attribute]['attributes']['multilingual'])
 				{
-					$this->arrData[$attribute] = $objLanguage->$attribute;
+					if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$attribute]['inputType'] == 'mediaManager')
+					{
+						$this->arrData[$attribute] = $this->Isotope->mergeMediaData(deserialize($objLanguage->$attribute), deserialize($this->arrData[$attribute]));
+					}
+					else
+					{
+						$this->arrData[$attribute] = $objLanguage->$attribute;
+					}
 				}
 			}
 		}
