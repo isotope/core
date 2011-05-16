@@ -61,6 +61,7 @@ Version 0.3.beta1
 
 Version 0.2.9 (2011-05-??)
 ------------------------------
+- Improved: Show disabled shipping and payment modules on frontend preview
 - Fixed bug when products have no SKU
 
 Version 0.2.8 (2011-05-09)
