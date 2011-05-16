@@ -133,7 +133,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 		'cash'					=> '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
 		'paypal'				=> '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,postsale_mail,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},paypal_account;{price_legend:hide},price,tax_class;{template_legend},button;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
 		'paypalpayflowpro'		=> '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,allowed_cc_types,requireCCV,postsale_mail,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},payflowpro_user,payflowpro_vendor,payflowpro_partner,payflowpro_password,payflowpro_transType;{price_legend:hide},price,tax_class;{template_legend},button;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
-		'postfinance'			=> '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,postsale_mail,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},postfinance_pspid,postfinance_secret,postfinance_method;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
+		'postfinance'			=> '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},postfinance_pspid,postfinance_secret,postfinance_method;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
 		'authorizedotnet'		=> '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,allowed_cc_types,requireCCV,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},authorize_login,authorize_trans_key,authorize_trans_type,authorize_delimiter;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
 		'epay_window'			=> '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,trans_type,postsale_mail,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},epay_merchantnumber,epay_secretkey;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
 		'epay_form'				=> '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,trans_type,postsale_mail,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},epay_merchantnumber,epay_secretkey;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
@@ -324,7 +324,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['postfinance_pspid'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
 		),
 		'postfinance_secret' => array
 		(
