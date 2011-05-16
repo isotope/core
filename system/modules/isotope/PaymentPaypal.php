@@ -173,16 +173,6 @@ class PaymentPaypal extends IsotopePayment
 
 			$objOrder->payment_data = $arrPayment;
 
-			if ($this->postsale_mail)
-			{
-				try
-				{
-					$this->Isotope->overrideConfig($objOrder->config_id);
-					$this->Isotope->sendMail($this->postsale_mail, $GLOBALS['TL_CONFIG']['adminEmail'], $GLOBALS['TL_LANGUAGE'], $arrData);
-				}
-				catch (Exception $e) {}
-			}
-
 			$objOrder->save();
 
 			$this->log('PayPal IPN: data accepted', 'PaymentPaypal processPostSale()', TL_GENERAL);

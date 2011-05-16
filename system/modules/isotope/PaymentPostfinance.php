@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- *
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -24,11 +24,11 @@
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
-
-
+ 
+ 
 /**
  * Handle Postfinance (swiss post) payments
- *
+ * 
  * @extends Payment
  */
 class PaymentPostfinance extends IsotopePayment
@@ -36,178 +36,188 @@ class PaymentPostfinance extends IsotopePayment
 
 	/**
 	 * Process payment on confirmation page.
-	 *
+	 * 
 	 * @access public
 	 * @return void
 	 */
 	public function processPayment()
 	{
+		if ($this->Input->get('NCERROR') > 0)
+		{
+			$this->log('Order ID "' . $this->Input->get('orderID') . '" has NCERROR ' . $this->Input->get('NCERROR'), __METHOD__, TL_ERROR);
+			return false;
+		}
+
+		$objOrder = new IsotopeOrder();
+		
+		if (!$objOrder->findBy('id', $this->Input->get('orderID')))
+		{
+			$this->log('Order ID "' . $this->Input->get('orderID') . '" not found', __METHOD__, TL_ERROR);
+			return false;
+		}
+
+		$this->postfinance_method = 'GET';
+		if (!$this->validateSHASign())
+		{
+			$this->log('Received invalid postsale data for order ID "' . $objOrder->id . '"', __METHOD__, TL_ERROR);
+			return false;
+		}
+		
+		$objOrder->date_payed = time();
+		$objOrder->save();
+		
 		return true;
-		// Reload page every 5 seconds and check if payment was successful
-//		$GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="5,http://...">';
 	}
-
-
+	
+	
 	/**
 	 * Process post-sale requestion from the Postfinance payment server.
-	 *
+	 * 
 	 * @access public
 	 * @return void
 	 */
 	public function processPostSale()
 	{
-		if ($this->debug) $this->log('Post-sale request from Postfinance: '.print_r($_POST, true), 'PaymentPostfinance postProcessPayment()', TL_ACCESS);
+		if ($this->getRequestData('NCERROR') > 0)
+		{
+			$this->log('Order ID "' . $this->getRequestData('orderID') . '" has NCERROR ' . $this->getRequestData('NCERROR'), __METHOD__, TL_ERROR);
+			return;
+		}
 
 		$objOrder = new IsotopeOrder();
-
+		
 		if (!$objOrder->findBy('id', $this->getRequestData('orderID')))
 		{
-			$this->log('Order ID "' . $this->getRequestData('orderID') . '" not found', 'PaymentPostfinance processPostSale()', TL_ERROR);
-			return;
-		}
-		elseif ($this->getRequestData('NCERROR') > 0)
-		{
-			$this->log('Order ID "' . $this->getRequestData('orderID') . '" has NCERROR ' . $this->getRequestData('NCERROR'), 'PaymentPostfinance processPostSale()', TL_ERROR);
+			$this->log('Order ID "' . $this->getRequestData('orderID') . '" not found', __METHOD__, TL_ERROR);
 			return;
 		}
 
-		// Set the current system to the language when the user placed the order.
-		// This will result in correct e-mails and payment description.
-		$GLOBALS['TL_LANGUAGE'] = $objOrder->language;
-		$this->loadLanguageFile('default');
-
-		// Load / initialize data
-		$arrSet[] = array();
-		if (!is_array($arrSet['payment_data'] = deserialize($objOrder->payment_data))) $arrSet['payment_data'] = array();
-
-		// Store request data in order for future references
-		$arrSet['payment_data']['POSTSALE'][] = $this->postfinance_method == 'GET' ? $_GET : $_POST;
-
-
-		$arrData = $objOrder->getData();
-		$arrData['old_payment_status'] = $arrSet['payment_data']['status'];
-
-
-		switch( $this->getRequestData('STATUS') )
+		if (!$this->validateSHASign())
 		{
-			case 1:			// cancelled by customer
-			case 6:
-			case 7:
-				$arrSet['payment_data']['status'] = 'cancelled';
-				$arrSet['status'] = 'on_hold';
-				break;
-
-			case 2:			// acquirer declines the authorization more than the maximum permissible number of times
-			case 93:
-				$arrSet['payment_data']['status'] = 'failed';
-				break;
-
-			case 51:
-			case 52:
-			case 59:
-			case 9:			// Authorized
-				$arrSet['payment_data']['status'] = 'processing';
-				break;
-
-			case 5:			// Accepted
-				$arrSet['payment_data']['status'] = 'paid';
-				break;
-
-			case 0:			// Uncertain result
-			case 52:
-			case 92:
-				$arrSet['payment_data']['status'] = 'on_hold';
-				break;
-
-			case 4:			// Pending
-			default:
-				$arrSet['payment_data']['status'] = 'pending';
-				break;
+			$this->log('Received invalid postsale data for order ID "' . $objOrder->id . '"', __METHOD__, TL_ERROR);
+			return;
 		}
 
-		$this->Database->prepare("UPDATE tl_iso_orders %s WHERE id=?")->set($arrSet)->execute($objOrder->id);
-
-		$arrData['new_payment_status'] = $arrSet['payment_data']['status'];
-
-		if ($this->postsale_mail)
+		if (!$objOrder->checkout())
 		{
-			$this->Import('Isotope');
-			$this->Isotope->overrideConfig($objOrder->config_id);
-			$this->Isotope->sendMail($this->postsale_mail, $GLOBALS['TL_ADMIN_EMAIL'], $GLOBALS['TL_LANGUAGE'], $arrData);
+			$this->log('Post-Sale checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
+			return;
 		}
+		
+		$objOrder->date_payed = time();
+		$objOrder->save();
 	}
-
-
+	
+	
 	/**
 	 * Return the payment form.
-	 *
+	 * 
 	 * @access public
 	 * @return string
 	 */
 	public function checkoutForm()
 	{
-		$this->import('Isotope');
-
 		$objOrder = new IsotopeOrder();
-		$objOrder->findBy('cart_id', $this->Isotope->Cart->id);
 
-		$arrAddress = $this->Isotope->getAddress('billing');
-
-		$strAction = 'https://e-payment.postfinance.ch/ncol/prod/orderstandard.asp';
-
-		if ($this->debug)
+		if (!$objOrder->findBy('cart_id', $this->Isotope->Cart->id))
 		{
-			$strAction = 'https://e-payment.postfinance.ch/ncol/test/orderstandard.asp';
+			$this->redirect($this->addToUrl('step=failed', true));
 		}
 
-		$arrData = array
+		$arrAddress = $this->Isotope->Cart->billingAddress;
+		$strFailedUrl = $this->Environment->base . $this->addToUrl('step=failed');
+
+		$arrParam = array
 		(
 			'PSPID'			=> $this->postfinance_pspid,
+			'orderID'		=> $objOrder->id,
+			'amount'		=> (round(($this->Isotope->Cart->grandTotal * 100), 0)),
 			'currency'		=> $this->Isotope->Config->currency,
-			'SHASign'		=> sha1($objOrder->id . ($this->Isotope->Cart->grandTotal * 100) . $this->Isotope->Config->currency . $this->postfinance_pspid . $this->postfinance_secret),
+			'language'		=> $GLOBALS['TL_LANGUAGE'] . '_' . strtoupper($GLOBALS['TL_LANGUAGE']),
+			'CN'			=> $arrAddress['firstname'] . ' ' . $arrAddress['lastname'],
+			'EMAIL'			=> $arrAddress['email'],
+			'ownerZIP'		=> $arrAddress['postal'],
+			'owneraddress'	=> $arrAddress['street_1'],
+			'owneraddress2'	=> $arrAddress['street_2'],
+			'ownercty'		=> $arrAddress['country'],
+			'ownertown'		=> $arrAddress['city'],
+			'ownertelno'	=> $arrAddress['phone'],
+			'accepturl'		=> $this->Environment->base . $this->addToUrl('step=complete'),
+			'declineurl'	=> $strFailedUrl,
+			'exceptionurl'	=> $strFailedUrl,
+			'paramplus'		=> 'mod=pay&id=' . $this->id,
 		);
 
-		$objOrder->payment_data = $arrData;
-		$objOrder->save();
+		// SHA-1 must be generated on alphabetically sorted keys. Cant use ksort because it does not ignore key case.
+		uksort($arrParam, 'strcasecmp');
 
-		return '
-<form method="post" id="payment_form" action="' . $strAction . '">
-<input type="hidden" name="PSPID" value="' . $this->postfinance_pspid . '">
-<input type="hidden" name="orderID" value="' . $objOrder->id . '">
-<input type="hidden" name="amount" value="' . (round($this->Isotope->Cart->grandTotal, 2) * 100) . '">
-<input type="hidden" name="currency" value="' . $arrData['currency'] . '">
-<input type="hidden" name="language" value="' . $GLOBALS['TL_LANGUAGE'] . '_' . strtoupper($GLOBALS['TL_LANGUAGE']) . '">
-<input type="hidden" name="EMAIL" value="' . $arrAddress['email'] . '">
-<input type="hidden" name="ownerZIP" value="' . $arrAddress['postal'] . '">
-<input type="hidden" name="owneraddress" value="' . $arrAddress['street_1'] . '">
-<input type="hidden" name="ownercty" value="' . $arrAddress['country'] . '">
-<input type="hidden" name="ownertown" value="' . $arrAddress['city'] . '">
-<input type="hidden" name="ownertelno" value="' . $arrAddress['phone'] . '">
-<input type="hidden" name="SHASign" value="' . $arrData['SHASign'] . '">
-<!-- post payment redirection: see chapter 8.2 -->
-<input type="hidden" name="accepturl" value="' . $this->Environment->base . $this->addToUrl('step=complete') . '">
-<input type="hidden" name="declineurl" value="' . $this->Environment->base . $this->addToUrl('step=failed') . '">
-<input type="hidden" name="exceptionurl" value="' . $this->Environment->base . $this->addToUrl('step=failed') . '">
-<input type="hidden" name="cancelurl" value="' . $this->Environment->base . $this->addToUrl('step=failed') . '">
-<input type="hidden" name="paramplus" value="mod=pay&id=' . $this->id . '">
-<input type="submit" value="Bezahlen">
-</form>
-<script type="text/javascript">
-<!--//--><![CDATA[//><!--
-window.addEvent( \'domready\' , function() {
-  $(\'payment_form\').submit();
-});
-//--><!]]>
-</script>';
+		$strSHASign = '';
+		foreach( $arrParam as $k => $v )
+		{
+			if ($v == '')
+				continue;
+
+			$strSHASign .= strtoupper($k) . '=' . $v . $this->postfinance_secret;
+		}
+
+		$arrParam['SHASign'] = sha1($strSHASign);
+
+		$objTemplate = new FrontendTemplate('iso_payment_postfinance');
+		
+		$objTemplate->action = 'https://e-payment.postfinance.ch/ncol/' . ($this->debug ? 'test' : 'prod') . '/orderstandard.asp';
+		$objTemplate->params = $arrParam;
+		$objTemplate->slabel = $GLOBALS['TL_LANG']['MSC']['pay_with_cc'][2];
+		$objTemplate->id = $this->id;
+		
+		return $objTemplate->parse();
 	}
-
-
+	
+	
 	private function getRequestData($strKey)
 	{
 		if ($this->postfinance_method == 'GET')
 			return $this->Input->get($strKey);
-
+			
 		return $this->Input->post($strKey);
+	}
+	
+	
+	/**
+	 * Validate SHA-OUT signature
+	 */
+	private function validateSHASign()
+	{
+		$strSHASign = '';
+		$arrParam = array
+		(
+			'orderID'		=> $this->getRequestData('orderID'),
+			'amount'		=> $this->getRequestData('amount'),
+			'currency'		=> $this->getRequestData('currency'),
+			'PM'			=> $this->getRequestData('PM'),
+			'ACCEPTANCE'	=> $this->getRequestData('ACCEPTANCE'),
+			'STATUS'		=> $this->getRequestData('STATUS'),
+			'CARDNO'		=> $this->getRequestData('CARDNO'),
+			'PAYID'			=> $this->getRequestData('PAYID'),
+			'NCERROR'		=> $this->getRequestData('NCERROR'),
+			'BRAND'			=> $this->getRequestData('BRAND'),
+		);
+
+		uksort($arrParam, 'strcasecmp');
+
+		foreach( $arrParam as $k => $v )
+		{
+			if ($v == '')
+				continue;
+
+			$strSHASign .= strtoupper($k) . '=' . $v . $this->postfinance_secret;
+		}
+
+		if ($this->getRequestData('SHASIGN') == strtoupper(sha1($strSHASign)))
+		{
+			return true;
+		}
+		
+		return false;
 	}
 }
 

@@ -58,10 +58,12 @@ Version 0.3.beta1
 - Fixed Authorize.net failed transaction bug
 - Fixed enter key trapping on checkout payment method
 - Removed pre-0.1 update code from runonce.php
+- Removed postsale_mail from Paypal and Postfinance
 
 Version 0.2.9 (2011-05-??)
 ------------------------------
 - Improved: Show disabled shipping and payment modules on frontend preview
+- Improved Postfinance payment module with new authentication method (Ticket #235)
 - Fixed bug when products have no SKU
 
 Version 0.2.8 (2011-05-09)

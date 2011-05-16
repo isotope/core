@@ -416,7 +416,6 @@ CREATE TABLE `tl_iso_payment_modules` (
   `minimum_total` decimal(12,2) NOT NULL default '0.00',
   `maximum_total` decimal(12,2) NOT NULL default '0.00',
   `new_order_status` varchar(255) NOT NULL default '',
-  `postsale_mail` int(10) unsigned NOT NULL default '0',
   `trans_type` varchar(8) NOT NULL default '',
   `paypal_account` varchar(255) NOT NULL default '',
   `payflowpro_user` varchar(255) NOT NULL default '',

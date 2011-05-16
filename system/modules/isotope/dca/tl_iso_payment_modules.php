@@ -132,9 +132,9 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 		'__selector__'			=> array('type', 'protected'),
 		'default'				=> '{type_legend},name,type',
 		'cash'					=> '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-		'paypal'				=> '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,postsale_mail,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},paypal_account;{price_legend:hide},price,tax_class;{template_legend},button;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
+		'paypal'				=> '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},paypal_account;{price_legend:hide},price,tax_class;{template_legend},button;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
 		'paypalpayflowpro'		=> '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,allowed_cc_types,requireCCV,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},payflowpro_user,payflowpro_vendor,payflowpro_partner,payflowpro_password,payflowpro_transType;{price_legend:hide},price,tax_class;{template_legend},button;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
-		'postfinance'			=> '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,postsale_mail,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},postfinance_pspid,postfinance_secret,postfinance_method;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
+		'postfinance'			=> '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},postfinance_pspid,postfinance_secret,postfinance_method;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
 		'authorizedotnet'		=> '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,allowed_cc_types,requireCCV,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},authorize_login,authorize_trans_key,authorize_trans_type,authorize_delimiter;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
 		'epay_window'			=> '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,trans_type,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},epay_merchantnumber,epay_secretkey;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
 		'cybersource'			=> '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},cybersource_merchant_id,cybersource_trans_key,cybersource_trans_type;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled'
@@ -226,14 +226,6 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 			'options'				  => array('capture', 'auth'),
 			'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
 			'reference'				  => $GLOBALS['TL_LANG']['tl_iso_payment_modules'],
-		),
-		'postsale_mail' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['postsale_mail'],
-			'exclude'                 => true,
-			'inputType'               => 'select',
-			'foreignKey'              => 'tl_iso_mail.name',
-			'eval'					  => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
 		),
 		'minimum_total' => array
 		(
