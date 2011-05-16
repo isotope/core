@@ -439,7 +439,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		{
 			$arrData = $this->Input->post('shipping');
 			
-			$objModules = $this->Database->execute("SELECT * FROM tl_iso_shipping_modules WHERE id IN (" . implode(',', $arrModuleIds) . ") AND enabled='1'");
+			$objModules = $this->Database->execute("SELECT * FROM tl_iso_shipping_modules WHERE id IN (" . implode(',', $arrModuleIds) . ")" . (BE_USER_LOGGED_IN ? '' : " AND enabled='1'"));
 			
 			while( $objModules->next() )
 			{
@@ -552,7 +552,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		if (is_array($arrModuleIds) && count($arrModuleIds))
 		{
 			$arrData = $this->Input->post('payment');
-			$objModules = $this->Database->execute("SELECT * FROM tl_iso_payment_modules WHERE id IN (" . implode(',', $arrModuleIds) . ") AND enabled='1'");
+			$objModules = $this->Database->execute("SELECT * FROM tl_iso_payment_modules WHERE id IN (" . implode(',', $arrModuleIds) . ")" . (BE_USER_LOGGED_IN ? '' : " AND enabled='1'"));
 			
 			while( $objModules->next() )
 			{
