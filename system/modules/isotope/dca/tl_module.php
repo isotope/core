@@ -402,6 +402,7 @@ class tl_module_isotope extends Backend
 
 	public function __construct()
 	{
+		parent::__construct();
 		$this->loadDataContainer('tl_iso_products');
 		$this->loadLanguageFile('tl_iso_products');
 	}
