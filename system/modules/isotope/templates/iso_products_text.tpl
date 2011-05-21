@@ -1,5 +1,5 @@
 <?php foreach( $this->products as $objProduct ): ?>
-<?php echo $objProduct->name; ?><?php $options = $objProduct->getOptions(); if(is_array($options) && count($options)): ?> (<?php foreach($options as $i => $option): ?><?php echo ($i==0 ? '' : ',').$option['label']; ?>: <?php $option['value']; ?><?php endforeach; ?>)<?php endif; ?>: <?php echo $objProduct->quantity_requested; ?> x <?php echo $objProduct->formatted_price; ?> = <?php echo $objProduct->formatted_total_price; ?>
+<?php echo $objProduct->name; ?><?php $options = $objProduct->getOptions(); if(is_array($options) && count($options)): ?> (<?php foreach($options as $i => $option): ?><?php echo ($i==0 ? '' : ',').$option['label']; ?>: <?php echo $option['value']; ?><?php endforeach; ?>)<?php endif; ?>: <?php echo $objProduct->quantity_requested; ?> x <?php echo $objProduct->formatted_price; ?> = <?php echo $objProduct->formatted_total_price; ?>
 
 <?php endforeach; ?>
 --------------------
