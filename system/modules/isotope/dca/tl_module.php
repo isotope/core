@@ -400,11 +400,15 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_includeMessages'] = array
 class tl_module_isotope extends Backend
 {
 
-	public function getSortableAttributes()
+	public function __construct()
 	{
 		$this->loadDataContainer('tl_iso_products');
 		$this->loadLanguageFile('tl_iso_products');
+	}
 
+
+	public function getSortableAttributes()
+	{
 		$arrAttributes = array();
 
 		foreach( $GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData )
@@ -427,9 +431,6 @@ class tl_module_isotope extends Backend
 	 */
 	public function getFilterFields()
 	{
-		$this->loadDataContainer('tl_iso_products');
-		$this->loadLanguageFile('tl_iso_products');
-
 		$arrAttributes = array();
 
 		foreach( $GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData )
@@ -447,9 +448,6 @@ class tl_module_isotope extends Backend
 	// @todo does almost the same as getSortableAttributes, why do we need both?
 	public function getSortByFields()
 	{
-		$this->loadDataContainer('tl_iso_products');
-		$this->loadLanguageFile('tl_iso_products');
-
 		$arrAttributes = array();
 
 		foreach( $GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData )
@@ -466,9 +464,6 @@ class tl_module_isotope extends Backend
 
 	public function getSearchFields()
 	{
-		$this->loadDataContainer('tl_iso_products');
-		$this->loadLanguageFile('tl_iso_products');
-
 		$arrAttributes = array();
 
 		foreach( $GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData )
