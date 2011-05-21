@@ -6,6 +6,7 @@ Version 0.2.9 (2011-05-??)
 ------------------------------
 - Improved: Show disabled shipping and payment modules on frontend preview
 - Improved Postfinance payment module with new authentication method (Ticket #235)
+- Improved: Only add href_reader if field is available in product collection items table (Ticket #453)
 - Fixed bug when products have no SKU
 - Fixed product rules bug with member limits (Ticket #409)
 - Fixed specialchars in image gallery and checkout steps (Ticket #426)
