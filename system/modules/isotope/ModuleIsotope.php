@@ -110,9 +110,9 @@ abstract class ModuleIsotope extends Module
 	{
 		global $objPage;
 		
-		$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS product_class FROM tl_iso_products WHERE pid=0 AND (alias=? OR id=?)")
+		$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS product_class FROM tl_iso_products WHERE pid=0 AND " . (is_numeric($strAlias) ? 'id' : 'alias') . "=?")
 										 ->limit(1)
-										 ->executeUncached($strAlias, (int)$strAlias);
+										 ->executeUncached($strAlias);
 									 
 		$strClass = $GLOBALS['ISO_PRODUCT'][$objProductData->product_class]['class'];
 		
