@@ -552,8 +552,12 @@ abstract class IsotopeProductCollection extends Model
 				'product_options'		=> $objProduct->getOptions(true),
 				'product_quantity'		=> (int)$intQuantity,
 				'price'					=> $objProduct->price,
-				'href_reader'			=> $objProduct->href_reader
 			);
+			
+			if ($this->Database->fieldExists('href_reader', $this->ctable))
+			{
+				$arrSet['href_reader'] = $objProduct->href_reader;
+			}
 
 			$intInsertId = $this->Database->prepare("INSERT INTO {$this->ctable} %s")->set($arrSet)->executeUncached()->insertId;
 
