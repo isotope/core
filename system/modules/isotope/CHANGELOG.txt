@@ -68,6 +68,7 @@ Version 0.2.9 (2011-05-??)
 - Fixed product rules bug with member limits (Ticket #409)
 - Fixed specialchars in image gallery and checkout steps (Ticket #426)
 - Fixed issue when product alias starts with a digit (Ticket #452)
+- Fixed empty option value ##cart_text## (Ticket #418)
 
 Version 0.2.8 (2011-05-09)
 ------------------------------
