@@ -54,6 +54,7 @@ Version 0.3.beta1
 - Improved: Moved $GLOBALS['ISO_PERPAGE'] to filter module setting (Ticket #70)
 - Improved: Removed product type setting for languages. If isotope_multilingual is installed, all language will appear as an option.
 - Improved: Include old and new item ID in transferFromCollection return value
+- Improved: Empty list message checkbox behavior changed (Ticket #414)
 - Fixed start & stop publishing dates not working
 - Fixed Authorize.net failed transaction bug
 - Fixed enter key trapping on checkout payment method

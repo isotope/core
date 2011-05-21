@@ -31,8 +31,9 @@
  */
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][]			= 'iso_checkout_method';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][]			= 'iso_enableLimit';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productlist']			= '{title_legend},name,headline,type;{display_legend},perPage,iso_cols;{config_legend},iso_use_quantity,iso_category_scope,iso_jump_first,iso_listingSortField,iso_listingSortDirection;{redirect_legend},iso_reader_jumpTo,iso_addProductJumpTo;{reference_legend:hide},defineRoot;{template_legend:hide},iso_includeMessages,iso_noProducts,iso_forceNoProducts,iso_list_layout,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productvariantlist']	= '{title_legend},name,headline,type;{display_legend},perPage,iso_cols;{config_legend},iso_use_quantity,iso_category_scope,iso_jump_first,iso_listingSortField,iso_listingSortDirection;{redirect_legend},iso_reader_jumpTo,iso_addProductJumpTo;{reference_legend:hide},defineRoot;{template_legend:hide},iso_includeMessages,iso_noProducts,iso_forceNoProducts,iso_list_layout,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][]			= 'iso_emptyMessage';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productlist']			= '{title_legend},name,headline,type;{display_legend},perPage,iso_cols;{config_legend},iso_use_quantity,iso_category_scope,iso_jump_first,iso_listingSortField,iso_listingSortDirection;{redirect_legend},iso_reader_jumpTo,iso_addProductJumpTo;{reference_legend:hide},defineRoot;{template_legend:hide},iso_includeMessages,iso_emptyMessage,iso_list_layout,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productvariantlist']	= '{title_legend},name,headline,type;{display_legend},perPage,iso_cols;{config_legend},iso_use_quantity,iso_category_scope,iso_jump_first,iso_listingSortField,iso_listingSortDirection;{redirect_legend},iso_reader_jumpTo,iso_addProductJumpTo;{reference_legend:hide},defineRoot;{template_legend:hide},iso_includeMessages,iso_emptyMessage,iso_list_layout,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productreader']		= '{title_legend},name,headline,type;{config_legend},iso_use_quantity;{redirect_legend},iso_addProductJumpTo;{template_legend:hide},iso_includeMessages,iso_reader_layout,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_cart']					= '{title_legend},name,headline,type;{redirect_legend},iso_cart_jumpTo,iso_checkout_jumpTo;{template_legend},iso_includeMessages,iso_cart_layout;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_checkout']				= '{title_legend},name,headline,type;{config_legend},iso_checkout_method,iso_payment_modules,iso_shipping_modules,iso_order_conditions;{redirect_legend},iso_forward_review,orderCompleteJumpTo;{template_legend},iso_includeMessages,iso_mail_customer,iso_mail_admin,iso_sales_email,tableless;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
@@ -51,6 +52,8 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_relatedproducts']		= '{title_le
  * Subpalettes
  */
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['iso_enableLimit']		= 'iso_perPage';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['iso_emptyMessage']		= 'iso_noProducts';
+
 
 /**
  * Fields
@@ -247,20 +250,20 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_addToAddressbook'] = array
 	'inputType'               => 'checkbox',
 );
 
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_emptyMessage'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_emptyMessage'],
+	'exclude'                 => true,
+	'inputType'               => 'checkbox',
+	'eval'					  => array('submitOnChange'=>true, 'tl_class'=>'clr'),
+);
+
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_noProducts'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_noProducts'],
 	'exclude'                 => true,
 	'inputType'               => 'text',
-	'eval'                    => array('maxlength'=>255, 'tl_class'=>'w50')
-);
-
-$GLOBALS['TL_DCA']['tl_module']['fields']['iso_forceNoProducts'] = array
-(
-	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_forceNoProducts'],
-	'exclude'                 => true,
-	'inputType'               => 'checkbox',
-	'eval'					  => array('tl_class'=>'w50 m12'),
+	'eval'                    => array('maxlength'=>255, 'tl_class'=>'clr long')
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_category_scope'] = array

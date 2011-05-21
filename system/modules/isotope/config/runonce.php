@@ -48,7 +48,7 @@ class IsotopeRunonce extends Controller
 	public function run()
 	{
 		// Cancel if shop has not yet been installed
-		if (!$this->Database->tableExists('tl_store') && !$this->Database->tableExists('tl_iso_config'))
+		if (!$this->Database->tableExists('tl_iso_config'))
 			return;
 
 		$this->renameTables();
@@ -209,6 +209,13 @@ class IsotopeRunonce extends Controller
 		{
 			$this->Database->query("ALTER TABLE tl_module ADD COLUMN iso_perPage varchar(64) NOT NULL default ''");
 			$this->Database->query("UPDATE tl_module SET iso_perPage='8,12,32,64'");
+		}
+
+		// tl_module.iso_forceNoProducts has renamed to tl_module.iso_emptyMessage
+		if ($this->Database->fieldExists('iso_forceNoProducts', 'tl_module') && !$this->Database->fieldExists('iso_emptyMessage', 'tl_module'))
+		{
+			$this->Database->query("ALTER TABLE tl_module CHANGE COLUMN iso_forceNoProducts iso_emptyMessage char(1) NOT NULL default ''");
+			$this->Database->query("UPDATE tl_module SET iso_emptyMessage='1' WHERE iso_noProducts!=''");
 		}
 
 		// tl_iso_orders.store_id has been renamed to tl_iso_orders.config_id
