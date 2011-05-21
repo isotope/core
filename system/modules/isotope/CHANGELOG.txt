@@ -7,6 +7,7 @@ Version 0.2.9 (2011-05-??)
 - Improved: Show disabled shipping and payment modules on frontend preview
 - Improved Postfinance payment module with new authentication method (Ticket #235)
 - Fixed bug when products have no SKU
+- Fixed product rules bug with member limits (Ticket #409)
 
 Version 0.2.8 (2011-05-09)
 ------------------------------
