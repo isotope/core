@@ -106,7 +106,10 @@ class IsotopeGallery extends Frontend
 									{
 										$file[$size['name'] . '_size'] = $arrSize[3];
 									}
-									
+
+									$file['alt'] = specialchars($file['alt']);
+									$file['desc'] = specialchars($file['desc']);
+
 									$file[$size['name']] = $strImage;
 								}
 

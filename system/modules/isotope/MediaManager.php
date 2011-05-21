@@ -285,9 +285,9 @@ class MediaManager extends Widget implements uploadable
 			
 			$return .= '
   <tr>
-    <td class="col_0 col_first"><input type="hidden" name="' . $this->strName . '['.$i.'][src]" value="' . $this->varValue[$i]['src'] . '" /><a href="' . $strFile . '" rel="lightbox"><img src="' . $strPreview . '" alt="' . $this->varValue[$i]['src'] . '" /></a></td>
-    <td class="col_1"><input type="text" class="tl_text_2" name="' . $this->strName . '['.$i.'][alt]" value="' . $this->varValue[$i]['alt'] . '" /><br /><input type="text" class="tl_text_2" name="' . $this->strName . '['.$i.'][link]" value="' . $this->varValue[$i]['link'] . '" /></td>
-    <td class="col_2"><textarea name="' . $this->strName . '['.$i.'][desc]" cols="40" rows="3" class="tl_textarea">' . $this->varValue[$i]['desc'] . '</textarea></td>
+    <td class="col_0 col_first"><input type="hidden" name="' . $this->strName . '['.$i.'][src]" value="' . specialchars($this->varValue[$i]['src']) . '" /><a href="' . $strFile . '" rel="lightbox"><img src="' . $strPreview . '" alt="' . specialchars($this->varValue[$i]['src']) . '" /></a></td>
+    <td class="col_1"><input type="text" class="tl_text_2" name="' . $this->strName . '['.$i.'][alt]" value="' . specialchars($this->varValue[$i]['alt']) . '" /><br /><input type="text" class="tl_text_2" name="' . $this->strName . '['.$i.'][link]" value="' . specialchars($this->varValue[$i]['link']) . '" /></td>
+    <td class="col_2"><textarea name="' . $this->strName . '['.$i.'][desc]" cols="40" rows="3" class="tl_textarea">' . specialchars($this->varValue[$i]['desc']) . '</textarea></td>
     <td class="col_3 col_last">';
 
 			foreach ($arrButtons as $button)
