@@ -479,5 +479,8 @@ window.addEvent('domready', function()
 	Isotope.addInteractiveHelp();
 	Isotope.initializeToolsMenu();
 	Isotope.initializeToolsButton();
+}).addEvent('structure', function()
+{
+	Isotope.initializeToolsButton();
 });
 

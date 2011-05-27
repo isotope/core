@@ -2,6 +2,10 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 0.2.10 (2011-06-??)
+------------------------------
+- Added support for Contao 2.10 "structure" event (see http://dev.contao.org/issues/2504)
+
 Version 0.2.9 (2011-05-23)
 ------------------------------
 - Improved: Show disabled shipping and payment modules on frontend preview
