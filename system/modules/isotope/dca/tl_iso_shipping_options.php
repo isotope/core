@@ -196,7 +196,7 @@ class tl_iso_shipping_options extends Backend
 
 		$strClass = $GLOBALS['ISO_SHIP'][$objModule->type];
 
-		if ($this->classFileExists($strClass))
+		if ($strClass != '' && $this->classFileExists($strClass))
 		{
 			$this->Shipping = new $strClass($objModule->row());
 			$this->Shipping->moduleOptionsLoad();

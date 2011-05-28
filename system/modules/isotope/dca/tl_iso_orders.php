@@ -135,10 +135,6 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 				'href'			=> 'key=print_order',
 				'icon'			=> 'system/modules/isotope/html/document-pdf-text.png'
 			),
-			'buttons' => array
-			(
-				'button_callback'     => array('tl_iso_orders', 'moduleOperations'),
-			)
 		)
 	),
 
@@ -307,58 +303,13 @@ class tl_iso_orders extends Backend
 
 
 	/**
-	 * Return a string of more buttons for the orders module.
-	 *
-	 * @todo I don't think we need that...
+	 * getOrderLabel function.
 	 *
 	 * @access public
-	 * @param array $arrRow
+	 * @param array $row
+	 * @param string $label
 	 * @return string
 	 */
-	public function moduleOperations($arrRow)
-	{
-		if(!count($GLOBALS['ISO_ORDERS']['operations']))
-		{
-			return;
-		}
-
-		foreach($GLOBALS['ISO_ORDERS']['operations'] as $k=>$v)
-		{
-
-
-			$objPaymentType = $this->Database->prepare("SELECT type FROM tl_iso_payment_modules WHERE id=?")
-											 ->limit(1)
-											 ->execute($arrRow['payment_id']);
-
-			if($objPaymentType->numRows && $objPaymentType->type==$k)
-			{
-					$strClass = $v;
-
-					if (!strlen($strClass) || !$this->classFileExists($strClass))
-						return '';
-
-					try
-					{
-						$objModule = new $strClass($arrRow);
-						$strButtons .= $objModule->moduleOperations($arrRow['id']);
-					}
-					catch (Exception $e) {}
-
-			}
-		}
-
-		return $strButtons;
-	}
-
-
-	/**
-	* getOrderLabel function.
-	*
-	* @access public
-	* @param array $row
-	* @param string $label
-	* @return string
-	*/
 	public function getOrderLabel($row, $label)
 	{
 		$this->Isotope->overrideConfig($row['config_id']);

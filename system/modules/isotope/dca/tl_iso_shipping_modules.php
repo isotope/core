@@ -125,10 +125,13 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
 				'href'                => 'act=show',
 				'icon'                => 'show.gif'
 			),
-			'buttons' => array
+			'options' => array
 			(
-				'button_callback'     => array('tl_iso_shipping_modules', 'moduleOperations'),
-			)
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['options'],
+				'href'                => 'table=tl_iso_shipping_options',
+				'icon'                => 'tablewizard.gif',
+				'button_callback'     => array('tl_iso_shipping_modules', 'optionsButton'),
+			),
 		)
 	),
 
@@ -162,7 +165,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
 			'inputType'               => 'select',
 			'default'				  => 'flat',
 			'options_callback'        => array('tl_iso_shipping_modules', 'getModules'),
-			'reference'               => &$GLOBALS['TL_LANG']['SHIP'],
+//			'reference'               => &$GLOBALS['TL_LANG']['SHIP'],
 			'eval'                    => array('helpwizard'=>true, 'submitOnChange'=>true, 'tl_class'=>'clr')
 		),
 		'name' => array
@@ -314,7 +317,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
 			'default'				  => 'kg',
 			'inputType'               => 'select',
 			'options'				  => array('mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'),
-			'reference'				  => &$GLOBALS['TL_LANG']['WGT'],
+//			'reference'				  => &$GLOBALS['TL_LANG']['WGT'],
 			'eval'                    => array('tl_class'=>'clr', 'helpwizard'=>&$GLOBALS['TL_LANG']['WGT']),
 		),
 		'guests' => array
@@ -403,33 +406,6 @@ class tl_iso_shipping_modules extends Backend
 
 
 	/**
-	 * Return a string of more buttons for the current shipping module.
-	 *
-	 * @todo Collect additional buttons from shipping modules.
-	 *
-	 * @access public
-	 * @param array $arrRow
-	 * @return string
-	 */
-	public function moduleOperations($arrRow)
-	{
-		$strClass = $GLOBALS['ISO_SHIP'][$arrRow['type']];
-
-		if (!strlen($strClass) || !$this->classFileExists($strClass))
-			return '';
-
-		try
-		{
-			$objModule = new $strClass($arrRow);
-			return $objModule->moduleOperations();
-		}
-		catch (Exception $e) {}
-
-		return '';
-	}
-
-
-	/**
 	 * Get a list of all shipping modules available.
 	 *
 	 * @access public
@@ -448,6 +424,23 @@ class tl_iso_shipping_modules extends Backend
 		}
 
 		return $arrModules;
+	}
+
+
+	/**
+	 * Callback for options button
+	 */
+	public function optionsButton($row, $href, $label, $title, $icon, $attributes)
+	{
+		switch( $row['type'] )
+		{
+			case 'order_total':
+			case 'weight_total':
+				return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
+			
+			default:
+				return '';
+		}
 	}
 }
 

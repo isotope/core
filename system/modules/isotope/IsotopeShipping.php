@@ -180,18 +180,6 @@ abstract class IsotopeShipping extends Frontend
 
 
 	/**
-	 * Return a list of buttons for the table row in backend
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function moduleOperations()
-	{
-		return '';
-	}
-
-
-	/**
 	 * Initialize the module options DCA in backend
 	 *
 	 * @access public

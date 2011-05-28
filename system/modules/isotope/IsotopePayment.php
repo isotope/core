@@ -184,18 +184,6 @@ abstract class IsotopePayment extends Frontend
 
 
 	/**
-	 * Return a list of buttons for the table row in backend
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function moduleOperations()
-	{
-		return '';
-	}
-
-
-	/**
 	 * Return a list of order status options.
 	 *
 	 * Allowed return values are ($GLOBALS['ISO_ORDER']):

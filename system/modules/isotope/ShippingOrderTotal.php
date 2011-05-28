@@ -129,13 +129,6 @@ class ShippingOrderTotal extends IsotopeShipping
 	}
 
 
-	public function moduleOperations()
-	{
-		return '<a href="'.str_replace('tl_iso_shipping_modules','tl_iso_shipping_options',$this->Environment->request).'&amp;id=' . $this->id . '" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage('tablewizard.gif', 'rates table').'</a>';
-
-	}
-
-
 	/**
 	 * Initialize the module options DCA in backend
 	 *

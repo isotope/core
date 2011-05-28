@@ -118,10 +118,6 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 				'href'                => 'act=show',
 				'icon'                => 'show.gif'
 			),
-			'buttons' => array
-			(
-				'button_callback'     => array('tl_iso_payment_modules', 'moduleOperations'),
-			)
 		)
 	),
 
@@ -504,32 +500,6 @@ class tl_iso_payment_modules extends Backend
 	{
 	}
 
-
-	/**
-	 * Return a string of more buttons for the current payment module.
-	 *
-	 * @todo Collect additional buttons from payment modules.
-	 *
-	 * @access public
-	 * @param array $arrRow
-	 * @return string
-	 */
-	public function moduleOperations($arrRow)
-	{
-		$strClass = $GLOBALS['ISO_PAY'][$arrRow['type']];
-
-		if (!strlen($strClass) || !$this->classFileExists($strClass))
-			return '';
-
-		try
-		{
-			$objModule = new $strClass($arrRow);
-			return $objModule->moduleOperations();
-		}
-		catch (Exception $e) {}
-
-		return '';
-	}
 
 	public function getAllowedCCTypes(DataContainer $dc)
 	{

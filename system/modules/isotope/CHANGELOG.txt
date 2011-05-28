@@ -66,6 +66,7 @@ Version 0.3.beta1
 - Removed postsale_mail from Paypal and Postfinance
 - Removed obsolete table tl_payment_options
 - Removed obsolete table tl_filter_values_to_categories
+- Removed moduleOperations callback from payment and shipping modules. The same can be achieved through standard DCA operations.
 
 Version 0.2.10 (2011-06-??)
 ------------------------------

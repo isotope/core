@@ -70,18 +70,6 @@ class ShippingWeightTotal extends IsotopeShipping
 
 
 	/**
-	 * Return a list of buttons for the table row in backend
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function moduleOperations()
-	{
-		return '<a href="'.str_replace('tl_iso_shipping_modules', 'tl_iso_shipping_options', $this->Environment->request).'&amp;id=' . $this->id . '">'.$this->generateImage('tablewizard.gif', 'rates table').'</a>';
-	}
-
-
-	/**
 	 * Initialize the module options DCA in backend
 	 *
 	 * @access public
