@@ -55,6 +55,8 @@ Version 0.3.beta1
 - Improved: Removed product type setting for languages. If isotope_multilingual is installed, all language will appear as an option.
 - Improved: Include old and new item ID in transferFromCollection return value
 - Improved: Empty list message checkbox behavior changed (Ticket #414)
+- Improved: Hooks for Isotope eCommerce are now in ISO_HOOKS array
+- Improved: New icon theme, based on fugue icons (http://p.yusukekamiyamane.com/)
 - Fixed start & stop publishing dates not working
 - Fixed Authorize.net failed transaction bug
 - Fixed enter key trapping on checkout payment method

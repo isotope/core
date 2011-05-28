@@ -81,7 +81,7 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_iso_mail']['importMail'],
 				'href'                => 'key=importMail',
-				'class'               => 'header_iso_import',
+				'class'               => 'header_import_mail',
 				'attributes'          => 'onclick="Backend.getScrollOffset();"'
 			),
 			'all' => array
@@ -123,7 +123,7 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_iso_mail']['exportMail'],
 				'href'                => 'key=exportMail',
-				'icon'                => 'system/modules/isotope/html/export.png'
+				'icon'                => 'system/modules/isotope/html/drive-download.png'
 			)
 		)
 	),

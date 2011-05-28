@@ -113,7 +113,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_iso_products']['filter_cache'],
 				'href'                => 'key=filter_cache',
-				'class'               => 'header_import_assets isotope-tools',
+				'class'               => 'header_filter_cache isotope-tools',
 				'attributes'          => 'onclick="Backend.getScrollOffset();"',
 			)
 		),
@@ -156,14 +156,14 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'tools' => array
 			(
 				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['tools'],
-				'icon'				=> 'system/modules/isotope/html/tools.png',
+				'icon'				=> 'system/modules/isotope/html/application-task.png',
 				'attributes'		=> 'class="invisible isotope-contextmenu"',
 			),
 			'quick_edit' => array
 			(
 				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['quick_edit'],
 				'href'				=> 'key=quick_edit',
-				'icon'				=> 'system/modules/isotope/html/icon-quick_edit.png',
+				'icon'				=> 'system/modules/isotope/html/table-select-cells.png',
 				'button_callback'	=> array('tl_iso_products', 'quickEditButton'),
 				'attributes'		=> 'class="isotope-tools"',
 			),
@@ -171,7 +171,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			(
 				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['generate'],
 				'href'				=> 'key=generate',
-				'icon'				=> 'system/modules/isotope/html/icon-generate.png',
+				'icon'				=> 'system/modules/isotope/html/table-insert-row.png',
 				'button_callback'	=> array('tl_iso_products', 'generateButton'),
 				'attributes'		=> 'class="isotope-tools"',
 			),
@@ -179,7 +179,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			(
 				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['related'],
 				'href'				=> 'table=tl_iso_related_products',
-				'icon'				=> 'system/modules/isotope/html/icon-related.png',
+				'icon'				=> 'system/modules/isotope/html/sitemap.png',
 				'button_callback'	=> array('tl_iso_products', 'relatedButton'),
 				'attributes'		=> 'class="isotope-tools"',
 			),
@@ -187,7 +187,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			(
 				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['downloads'],
 				'href'				=> 'table=tl_iso_downloads',
-				'icon'				=> 'system/modules/isotope/html/attach.png',
+				'icon'				=> 'system/modules/isotope/html/paper-clip.png',
 				'button_callback'	=> array('tl_iso_products', 'downloadsButton'),
 				'attributes'		=> 'class="isotope-tools"',
 			),
@@ -195,7 +195,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			(
 				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['prices'],
 				'href'				=> 'table=tl_iso_prices',
-				'icon'				=> 'system/modules/isotope/html/prices.png',
+				'icon'				=> 'system/modules/isotope/html/price-tag.png',
 				'button_callback'	=> array('tl_iso_products', 'pricesButton'),
 				'attributes'		=> 'class="isotope-tools"',
 			),

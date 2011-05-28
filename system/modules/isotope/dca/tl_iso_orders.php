@@ -85,7 +85,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_iso_orders']['export_emails'],
 				'href'                => 'key=export_emails',
-				'class'               => 'header_iso_export isotope-tools',
+				'class'               => 'header_iso_export_csv isotope-tools',
 				'attributes'          => 'onclick="Backend.getScrollOffset();"'
 			),
 			'print_invoices' => array
@@ -121,19 +121,19 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_iso_orders']['payment'],
 				'href'                => 'key=payment',
-				'icon'                => 'system/modules/isotope/html/icon-payment.png',
+				'icon'                => 'system/modules/isotope/html/money-coin.png',
 			),
 			'shipping' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_iso_orders']['shipping'],
 				'href'                => 'key=shipping',
-				'icon'                => 'system/modules/isotope/html/icon-shipping.gif',
+				'icon'                => 'system/modules/isotope/html/box-label.png',
 			),
 			'print_order' => array
 			(
 				'label'			=> &$GLOBALS['TL_LANG']['tl_iso_orders']['print_order'],
 				'href'			=> 'key=print_order',
-				'icon'			=> 'system/modules/isotope/html/printer.png'
+				'icon'			=> 'system/modules/isotope/html/document-pdf-text.png'
 			),
 			'buttons' => array
 			(

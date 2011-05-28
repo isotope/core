@@ -62,6 +62,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 		(
 			'fields'                  => array('name', 'fallback'),
 			'format'                  => '%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>',
+			'label_callback'		  => array('tl_iso_config', 'addIcon')
 		),
 		'global_operations' => array
 		(
@@ -556,6 +557,64 @@ class tl_iso_config extends Backend
 		}
 
 		return $arrFields;
+	}
+	
+	
+	/**
+	 * Add an image to each record
+	 * @param array
+	 * @param string
+	 * @return string
+	 */
+	public function addIcon($row, $label)
+	{
+		switch( $row['currency'] )
+		{
+			case 'AUD':
+				$image = 'currency-dollar-aud';
+				break;
+
+			case 'CAD':
+				$image = 'currency-dollar-cad';
+				break;
+
+			case 'NZD':
+				$image = 'currency-dollar-nzd';
+				break;
+
+			case 'USD':
+				$image = 'currency-dollar-usd';
+				break;
+
+			case 'EUR':
+				$image = 'currency-euro';
+				break;
+
+			case 'EGP':
+			case 'FKP':
+			case 'GBP':
+			case 'GIP':
+			case 'LBP':
+			case 'SDG':
+			case 'SHP':
+			case 'SYP':
+				$image = 'currency-pound';
+				break;
+
+			case 'BYR':
+			case 'RUB':
+				$image = 'currency-ruble';
+				break;
+
+			case 'JPY':
+				$image = 'currency-yen';
+				break;
+
+			default:
+				$image = 'currency';
+		}
+
+		return sprintf('<div class="list_icon" style="background-image:url(\'system/modules/isotope/html/%s.png\');line-height:16px">%s</div>', $image, $label);
 	}
 }
 

@@ -1,9 +1,12 @@
-.header_isotope_tools{background-image:url(tools.png);background-position:left center;background-repeat:no-repeat;padding:2px 0 3px 20px}
-.header_import_assets{background-image:url(assets.gif);background-position:left center;background-repeat:no-repeat;padding:2px 0 3px 20px}
-.header_iso_export{background-image:url(export.png);background-position:left center;background-repeat:no-repeat;padding:2px 0 3px 20px}
-.header_iso_import{background-image:url(import.png);background-position:left center;background-repeat:no-repeat;padding:2px 0 3px 20px}
+#main .isotope-logo{display:block!important;padding:5px 2px 3px 0}
+#main .isotope-title{display:none!important}
+.header_isotope_tools{background-image:url(wand-hat.png);background-position:left center;background-repeat:no-repeat;padding:2px 0 3px 20px}
+.header_import_assets{background-image:url(image--plus.png);background-position:left center;background-repeat:no-repeat;padding:2px 0 3px 20px}
+.header_filter_cache{background-image:url(arrow-retweet.png);background-position:left center;background-repeat:no-repeat;padding:2px 0 3px 20px}
+.header_import_mail{background-image:url(inbox-download.png);background-position:left center;background-repeat:no-repeat;padding:2px 0 3px 20px}
 .header_iso_copy{background-image:url(../../../themes/default/images/copy.gif);background-position:left center;background-repeat:no-repeat;padding:2px 0 3px 20px}
-.header_print_invoices{background-image:url(printer.png);background-position:left center;background-repeat:no-repeat;padding:2px 0 3px 20px}
+.header_iso_export_csv{background-image:url(document-excel-csv.png);background-position:left center;background-repeat:no-repeat;padding:2px 0 3px 20px}
+.header_print_invoices{background-image:url(document-pdf-text.png);background-position:left center;background-repeat:no-repeat;padding:2px 0 3px 20px}
 .tl_mediamanager th,.tl_mediamanager td{padding:2px 10px 0 0}
 .tl_mediamanager td.col_0{text-align: center;vertical-align: middle}
 .tl_mediamanager input.tl_text_2{width:220px}

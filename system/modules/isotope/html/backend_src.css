@@ -24,10 +24,21 @@
  */
 
 
+#main .isotope-logo
+{
+	display: block !important;
+	padding: 5px 2px 3px 0
+}
+
+#main .isotope-title
+{
+	display: none !important
+}
+
 .header_isotope_tools
 {
 	padding:2px 0px 3px 20px;
-	background-image:url("tools.png");
+	background-image:url("wand-hat.png");
 	background-position:left center;
 	background-repeat:no-repeat;
 }
@@ -35,23 +46,23 @@
 .header_import_assets
 {
 	padding:2px 0px 3px 20px;
-	background-image:url("assets.gif");
+	background-image:url("image--plus.png");
 	background-position:left center;
 	background-repeat:no-repeat;
 }
 
-.header_iso_export
+.header_filter_cache
 {
-	padding:2px 0px 3px 20px;
-	background-image:url("export.png");
+	background-image:url(arrow-retweet.png);
 	background-position:left center;
 	background-repeat:no-repeat;
+	padding:2px 0 3px 20px
 }
 
-.header_iso_import
+.header_import_mail
 {
 	padding:2px 0px 3px 20px;
-	background-image:url("import.png");
+	background-image:url("inbox-download.png");
 	background-position:left center;
 	background-repeat:no-repeat;
 }
@@ -64,10 +75,18 @@
 	padding:2px 0 3px 20px;
 }
 
+.header_iso_export_csv
+{
+	background-image:url(document-excel-csv.png);
+	background-position:left center;
+	background-repeat:no-repeat;
+	padding:2px 0 3px 20px
+}
+
 .header_print_invoices
 {
 	padding:2px 0px 3px 20px;
-	background-image:url("printer.png");
+	background-image:url("document-pdf-text.png");
 	background-position:left center;
 	background-repeat:no-repeat;
 }
