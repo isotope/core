@@ -306,9 +306,9 @@ class IsotopeCart extends IsotopeProductCollection
 		$arrPreTax = $arrPostTax = $arrTaxes = array();
 
 		$arrSurcharges = array();
-		if (isset($GLOBALS['TL_HOOKS']['isoCheckoutSurcharge']) && is_array($GLOBALS['TL_HOOKS']['isoCheckoutSurcharge']))
+		if (isset($GLOBALS['ISO_HOOKS']['checkoutSurcharge']) && is_array($GLOBALS['ISO_HOOKS']['checkoutSurcharge']))
 		{
-			foreach ($GLOBALS['TL_HOOKS']['isoCheckoutSurcharge'] as $callback)
+			foreach ($GLOBALS['ISO_HOOKS']['checkoutSurcharge'] as $callback)
 			{
 				if ($callback[0] == 'IsotopeCart')
 				{

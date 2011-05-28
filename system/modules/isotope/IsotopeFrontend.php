@@ -144,9 +144,9 @@ class IsotopeFrontend extends Frontend
 		}
 
 		// HOOK: add custom logic
-		if (isset($GLOBALS['TL_HOOKS']['watermarkImage']) && is_array($GLOBALS['TL_HOOKS']['watermarkImage']))
+		if (isset($GLOBALS['ISO_HOOKS']['watermarkImage']) && is_array($GLOBALS['ISO_HOOKS']['watermarkImage']))
 		{
-			foreach ($GLOBALS['TL_HOOKS']['watermarkImage'] as $callback)
+			foreach ($GLOBALS['ISO_HOOKS']['watermarkImage'] as $callback)
 			{
 				$this->import($callback[0]);
 				$return = $this->$callback[0]->$callback[1]($image, $watermark);

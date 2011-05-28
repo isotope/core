@@ -163,9 +163,9 @@ class ModuleIsotopeCart extends ModuleIsotope
 		}
 
 		// HOOK for adding additional forms into the template
-		if (isset($GLOBALS['TL_HOOKS']['iso_compileCart']) && is_array($GLOBALS['TL_HOOKS']['iso_compileCart']))
+		if (isset($GLOBALS['ISO_HOOKS']['compileCart']) && is_array($GLOBALS['ISO_HOOKS']['compileCart']))
 		{
-			foreach ($GLOBALS['TL_HOOKS']['iso_compileCart'] as $name => $callback)
+			foreach ($GLOBALS['ISO_HOOKS']['compileCart'] as $name => $callback)
 			{
 				$this->import($callback[0]);
 				$strForm = $this->$callback[0]->$callback[1]($this, $objTemplate, $arrProductData, $arrSurcharges);

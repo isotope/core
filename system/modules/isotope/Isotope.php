@@ -154,9 +154,9 @@ class Isotope extends Controller
 			return $fltPrice;
 
 		// HOOK for altering prices
-		if (isset($GLOBALS['TL_HOOKS']['iso_calculatePrice']) && is_array($GLOBALS['TL_HOOKS']['iso_calculatePrice']))
+		if (isset($GLOBALS['ISO_HOOKS']['calculatePrice']) && is_array($GLOBALS['ISO_HOOKS']['calculatePrice']))
 		{
-			foreach ($GLOBALS['TL_HOOKS']['iso_calculatePrice'] as $callback)
+			foreach ($GLOBALS['ISO_HOOKS']['calculatePrice'] as $callback)
 			{
 				$this->import($callback[0]);
 				$fltPrice = $this->$callback[0]->$callback[1]($fltPrice, $objSource, $strField, $intTaxClass);

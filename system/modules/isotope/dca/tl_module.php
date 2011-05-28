@@ -568,9 +568,9 @@ class tl_module_isotope extends Backend
 		$arrOptions = array();
 		$arrButtons = array();
 
-		if (isset($GLOBALS['TL_HOOKS']['isoButtons']) && is_array($GLOBALS['TL_HOOKS']['isoButtons']))
+		if (isset($GLOBALS['ISO_HOOKS']['buttons']) && is_array($GLOBALS['ISO_HOOKS']['buttons']))
 		{
-			foreach ($GLOBALS['TL_HOOKS']['isoButtons'] as $callback)
+			foreach ($GLOBALS['ISO_HOOKS']['buttons'] as $callback)
 			{
 				$this->import($callback[0]);
 				$arrButtons = $this->$callback[0]->$callback[1]($arrButtons);

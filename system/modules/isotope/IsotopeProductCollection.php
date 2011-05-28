@@ -390,9 +390,9 @@ abstract class IsotopeProductCollection extends Model
 	public function delete()
 	{
 		// HOOK for adding additional functionality when deleting a collection
-		if (isset($GLOBALS['TL_HOOKS']['iso_deleteCollection']) && is_array($GLOBALS['TL_HOOKS']['iso_deleteCollection']))
+		if (isset($GLOBALS['ISO_HOOKS']['deleteCollection']) && is_array($GLOBALS['ISO_HOOKS']['deleteCollection']))
 		{
-			foreach ($GLOBALS['TL_HOOKS']['iso_deleteCollection'] as $callback)
+			foreach ($GLOBALS['ISO_HOOKS']['deleteCollection'] as $callback)
 			{
 				$this->import($callback[0]);
 				$blnRemove = $this->$callback[0]->$callback[1]($this);
@@ -512,9 +512,9 @@ abstract class IsotopeProductCollection extends Model
 	public function addProduct(IsotopeProduct $objProduct, $intQuantity)
 	{
 		// HOOK for adding additional functionality when adding product to collection
-		if (isset($GLOBALS['TL_HOOKS']['iso_addProductToCollection']) && is_array($GLOBALS['TL_HOOKS']['iso_addProductToCollection']))
+		if (isset($GLOBALS['ISO_HOOKS']['addProductToCollection']) && is_array($GLOBALS['ISO_HOOKS']['addProductToCollection']))
 		{
-			foreach ($GLOBALS['TL_HOOKS']['iso_addProductToCollection'] as $callback)
+			foreach ($GLOBALS['ISO_HOOKS']['addProductToCollection'] as $callback)
 			{
 				$this->import($callback[0]);
 				$intQuantity = $this->$callback[0]->$callback[1]($objProduct, $intQuantity, $this);
@@ -580,9 +580,9 @@ abstract class IsotopeProductCollection extends Model
 			return false;
 
 		// HOOK for adding additional functionality when updating a product in the collection
-		if (isset($GLOBALS['TL_HOOKS']['iso_updateProductInCollection']) && is_array($GLOBALS['TL_HOOKS']['iso_updateProductInCollection']))
+		if (isset($GLOBALS['ISO_HOOKS']['updateProductInCollection']) && is_array($GLOBALS['ISO_HOOKS']['updateProductInCollection']))
 		{
-			foreach ($GLOBALS['TL_HOOKS']['iso_updateProductInCollection'] as $callback)
+			foreach ($GLOBALS['ISO_HOOKS']['updateProductInCollection'] as $callback)
 			{
 				$this->import($callback[0]);
 				$arrSet = $this->$callback[0]->$callback[1]($objProduct, $arrSet, $this);
@@ -619,9 +619,9 @@ abstract class IsotopeProductCollection extends Model
 			return false;
 
 		// HOOK for adding additional functionality when a product is removed from the collection
-		if (isset($GLOBALS['TL_HOOKS']['iso_deleteProductFromCollection']) && is_array($GLOBALS['TL_HOOKS']['iso_deleteProductFromCollection']))
+		if (isset($GLOBALS['ISO_HOOKS']['deleteProductFromCollection']) && is_array($GLOBALS['ISO_HOOKS']['deleteProductFromCollection']))
 		{
-			foreach ($GLOBALS['TL_HOOKS']['iso_deleteProductFromCollection'] as $callback)
+			foreach ($GLOBALS['ISO_HOOKS']['deleteProductFromCollection'] as $callback)
 			{
 				$this->import($callback[0]);
 				$blnRemove = $this->$callback[0]->$callback[1]($objProduct, $this);
