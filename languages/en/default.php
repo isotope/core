@@ -31,7 +31,7 @@
 /**
  * Payment modules
  */
-$GLOBALS['TL_LANG']['PAY']['saferpay']			= array('Saferpay', '');
+$GLOBALS['ISO_LANG']['PAY']['saferpay']			= array('Saferpay', '');
 
 
 /**

@@ -28,7 +28,7 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['PAY']['saferpay'][0] = 'Saferpay';
+$GLOBALS['ISO_LANG']['PAY']['saferpay'][0] = 'Saferpay';
 $GLOBALS['TL_LANG']['MSC']['pay_with_saferpay'][0] = 'Payer avec Saferpay';
 $GLOBALS['TL_LANG']['MSC']['pay_with_saferpay'][1] = 'Vous allez être redirigé vers le site de paiement Saferpay. Si vous n\'êtes pas redirigé automatiquement, merci de cliquer sur le lien "Payer maintenant".';
 $GLOBALS['TL_LANG']['MSC']['pay_with_saferpay'][2] = 'Payer maintenant';

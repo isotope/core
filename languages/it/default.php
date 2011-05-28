@@ -30,7 +30,7 @@
  * @version    $Id$
  */
 
-$GLOBALS['TL_LANG']['PAY']['saferpay'][0] = 'Saferpay';
+$GLOBALS['ISO_LANG']['PAY']['saferpay'][0] = 'Saferpay';
 $GLOBALS['TL_LANG']['MSC']['pay_with_saferpay'][0] = 'Paga con Saferpay';
 $GLOBALS['TL_LANG']['MSC']['pay_with_saferpay'][1] = 'Sarà reindirizzato al sito web di Saferway. Se non è automaticamente indirizzato, per cortesia faccia click sul collegamento "Paga adesso"';
 $GLOBALS['TL_LANG']['MSC']['pay_with_saferpay'][2] = 'Paga adesso';
