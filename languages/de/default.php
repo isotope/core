@@ -31,7 +31,7 @@
 /**
  * Payment modules
  */
-$GLOBALS['TL_LANG']['PAY']['sofortueberweisung'] = array('sofortüberweisung.de');
+$GLOBALS['ISO_LANG']['PAY']['sofortueberweisung'] = array('sofortüberweisung.de');
 
 
 $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0]		= 'Zahlung ausführen';
