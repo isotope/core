@@ -50,22 +50,20 @@ class IsotopeAutomator extends Controller
 			{
 				if ($objCart->findBy('id', $id))
 				{
+					$objOrder = new IsotopeOrder();
+					
+					if ($objOrder->findBy('cart_id', $objCart->id))
+					{
+						if ($objOrder->status == '')
+						{
+							$objOrder->delete();
+						}
+					}
+					
 					$objCart->delete();
 				}
 			}
 		}
-	}
-
-
-	/**
-	 * Delete failed orders and restore rule usages
-	 *
-	 * @access public
-	 * @return void
-	 */
-	public function deleteFailedOrders()
-	{
-		// @todo implement this!
 	}
 }
 

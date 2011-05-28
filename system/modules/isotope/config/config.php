@@ -46,8 +46,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
 	'iso_products' => array
 	(
 		'tables'					=> array('tl_iso_products', 'tl_iso_product_categories', 'tl_iso_downloads', 'tl_iso_related_products', 'tl_iso_prices', 'tl_iso_price_tiers'),
-		'icon'						=> 'system/modules/isotope/html/icon-products.gif',
-		'stylesheet'				=> 'system/modules/isotope/html/backend.css',
+		'icon'						=> 'system/modules/isotope/html/store-open.png',
 		'javascript'				=> 'system/modules/isotope/html/backend.js',
 		'generate'					=> array('tl_iso_products', 'generateVariants'),
 		'quick_edit'				=> array('tl_iso_products', 'quickEditVariants'),
@@ -57,8 +56,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
 	'iso_orders' => array
 	(
 		'tables'					=> array('tl_iso_orders', 'tl_iso_order_items'),
-		'icon'						=> 'system/modules/isotope/html/icon-orders.gif',
-		'stylesheet'				=> 'system/modules/isotope/html/backend.css',
+		'icon'						=> 'system/modules/isotope/html/shopping-basket.png',
 		'javascript'				=> 'system/modules/isotope/html/backend.js',
 		'export_emails'     		=> array('tl_iso_orders', 'exportOrderEmails'),
 		'print_order'				=> array('tl_iso_orders', 'printInvoice'),
@@ -70,12 +68,16 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
 	(
 		'callback'					=> 'ModuleIsotopeSetup',
 		'tables'					=> array(),
-		'icon'						=> 'system/modules/isotope/html/icon-isotope.png',
-		'stylesheet'				=> 'system/modules/isotope/html/backend.css',
+		'icon'						=> 'system/modules/isotope/html/application-monitor.png',
 	),
 ));
 
 $GLOBALS['BE_MOD']['accounts']['member']['tables'][] = 'tl_iso_addresses';
+
+if (TL_MODE == 'BE')
+{
+	$GLOBALS['TL_CSS'][] = 'system/modules/isotope/html/backend.css';
+}
 
 
 /**
@@ -88,17 +90,17 @@ $GLOBALS['ISO_MOD'] = array
 		'producttypes' => array
 		(
 			'tables'					=> array('tl_iso_producttypes'),
-			'icon'						=> 'system/modules/isotope/html/icon-types.gif'
+			'icon'						=> 'system/modules/isotope/html/drawer.png'
 		),
 		'attributes' => array
 		(
 			'tables'					=> array('tl_iso_attributes'),
-			'icon'						=> 'system/modules/isotope/html/icon-attributes.gif',
+			'icon'						=> 'system/modules/isotope/html/table-insert-column.png',
 		),
 		'related_categories' => array
 		(
 			'tables'					=> array('tl_iso_related_categories'),
-			'icon'						=> 'system/modules/isotope/html/icon-related.png',
+			'icon'						=> 'system/modules/isotope/html/category.png',
 		),
 	),
 	'checkout' => array
@@ -106,22 +108,22 @@ $GLOBALS['ISO_MOD'] = array
 		'payment' => array
 		(
 			'tables'					=> array('tl_iso_payment_modules', 'tl_payment_options'),
-			'icon'						=> 'system/modules/isotope/html/icon-payment.png',
+			'icon'						=> 'system/modules/isotope/html/money-coin.png',
 		),
 		'shipping' => array
 		(
 				'tables'				=> array('tl_iso_shipping_modules','tl_iso_shipping_options'),
-				'icon'					=> 'system/modules/isotope/html/icon-shipping.gif',
+				'icon'					=> 'system/modules/isotope/html/box-label.png',
 		),
 		'tax_class' => array
 		(
 			'tables'					=> array('tl_iso_tax_class'),
-			'icon'						=> 'system/modules/isotope/html/icon-taxclass.gif',
+			'icon'						=> 'system/modules/isotope/html/globe.png',
 		),
 		'tax_rate' => array
 		(
 			'tables'					=> array('tl_iso_tax_rate'),
-			'icon'						=> 'system/modules/isotope/html/icon-taxrate.gif',
+			'icon'						=> 'system/modules/isotope/html/calculator.png',
 		),
 	),
 	'config' => array
@@ -129,14 +131,14 @@ $GLOBALS['ISO_MOD'] = array
 		'iso_mail' => array
 		(
 			'tables'					=> array('tl_iso_mail', 'tl_iso_mail_content'),
-			'icon'						=> 'system/modules/isotope/html/icon-mail.gif',
+			'icon'						=> 'system/modules/isotope/html/inbox-document-text.png',
 			'importMail'				=> array('IsotopeBackend', 'importMail'),
 			'exportMail'				=> array('IsotopeBackend', 'exportMail'),
 		),
 		'configs' => array
 		(
 			'tables'					=> array('tl_iso_config'),
-			'icon'						=> 'system/modules/isotope/html/icon-isotope.png',
+			'icon'						=> 'system/modules/isotope/html/construction.png',
 		),
 	)
 );
@@ -261,29 +263,26 @@ $GLOBALS['ISO_NUM']["10'000.00"]	= array(2, '.', "'");
  * Hooks
  */
 $GLOBALS['TL_HOOKS']['loadDataContainer'][]			= array('Isotope', 'loadProductsDataContainer');
-$GLOBALS['TL_HOOKS']['isoButtons'][]				= array('Isotope', 'defaultButtons');
 $GLOBALS['TL_HOOKS']['addCustomRegexp'][]			= array('Isotope', 'validateRegexp');
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][]			= array('IsotopeFrontend', 'replaceIsotopeTags');
-$GLOBALS['TL_HOOKS']['translateUrlParameters'][]	= array('IsotopeFrontend', 'translateProductUrls');
 $GLOBALS['TL_HOOKS']['generatePage'][]				= array('IsotopeFrontend', 'injectMessages');
 $GLOBALS['TL_HOOKS']['executePreActions'][]			= array('ProductTree', 'executePreActions');
 $GLOBALS['TL_HOOKS']['executePostActions'][]		= array('ProductTree', 'executePostActions');
-
-//$GLOBALS['TL_HOOKS']['googleTracking'][] 			= array('ModuleIsotopeCheckout', 'googleTracking');
+$GLOBALS['TL_HOOKS']['translateUrlParameters'][]	= array('IsotopeFrontend', 'translateProductUrls');
+$GLOBALS['ISO_HOOKS']['buttons'][]					= array('Isotope', 'defaultButtons');
 
 
 /**
  * Checkout surcharge calculation callbacks
  */
-$GLOBALS['TL_HOOKS']['isoCheckoutSurcharge'][] = array('IsotopeCart', 'getShippingSurcharge');
-$GLOBALS['TL_HOOKS']['isoCheckoutSurcharge'][] = array('IsotopeCart', 'getPaymentSurcharge');
+$GLOBALS['ISO_HOOKS']['checkoutSurcharge'][] = array('IsotopeCart', 'getShippingSurcharge');
+$GLOBALS['ISO_HOOKS']['checkoutSurcharge'][] = array('IsotopeCart', 'getPaymentSurcharge');
 
 
 /**
  * Cron Jobs
  */
 $GLOBALS['TL_CRON']['daily'][] = array('IsotopeAutomator', 'deleteOldCarts');
-$GLOBALS['TL_CRON']['daily'][] = array('IsotopeAutomator', 'deleteFailedOrders');
 
 
 /**
