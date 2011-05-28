@@ -32,13 +32,13 @@
 $GLOBALS['ISO_MOD']['translation']['iso_labels'] = array
 (
 	'tables'	=> array('tl_iso_labels'),
-	'icon'		=> 'system/modules/isotope_multilingual/html/icon.png',
+	'icon'		=> 'system/modules/isotope_multilingual/html/balloons.png',
 );
 
 $GLOBALS['ISO_MOD']['translation']['iso_translation'] = array
 (
 	'callback'	=> 'ModuleIsotopeTranslation',
-	'icon'		=> 'system/modules/isotope_multilingual/html/icon.png',
+	'icon'		=> 'system/modules/isotope_multilingual/html/locale.png',
 	'export'	=> array('ModuleIsotopeTranslation', 'export'),
 );
 
