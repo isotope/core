@@ -334,7 +334,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'inputType'				=> 'timePeriod',
 			'default'				=> array('', 'kg'),
 			'options'				=> array('mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'),
-			'reference'				=> &$GLOBALS['TL_LANG']['WGT'],
+			'reference'				=> &$GLOBALS['ISO_LANG']['WGT'],
 			'eval'					=> array('rgxp'=>'digit', 'tl_class'=>'w50 wizard', 'helpwizard'=>true),
 			'attributes'			=> array('legend'=>'shipping_legend'),
 		),

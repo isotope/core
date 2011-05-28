@@ -101,7 +101,7 @@ class PaymentCybersource extends IsotopePayment
 				'inputType'		=> 'select',
 				'options'		=> $arrAllowedCCTypes,
 				'eval'			=> array('mandatory'=>true, 'rgxp'=>'digit', 'tableless'=>true),
-				'reference'		=> &$GLOBALS['TL_LANG']['CCT'],
+				'reference'		=> &$GLOBALS['ISO_LANG']['CCT'],
 			),
 			'card_expirationMonth' => array
 			(
@@ -411,7 +411,7 @@ class PaymentCybersource extends IsotopePayment
 <input type="hidden" name="FORM_SUBMIT" value="' . $objTemplate->formId . '" />
 <a href="'.ampersand(str_replace('&key=payment', '', $this->Environment->request)).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
 </div>
-<h2 class="sub_headline">' . $GLOBALS['TL_LANG']['PAY']['authorizedotnet'][0] . (!$arrPaymentInfo['x_trans_id'] || $arrPaymentInfo['x_trans_id']=="0" ? ' - ' . 'Test Transaction' : '') . '</h2>
+<h2 class="sub_headline">' . $GLOBALS['ISO_LANG']['PAY']['authorizedotnet'][0] . (!$arrPaymentInfo['x_trans_id'] || $arrPaymentInfo['x_trans_id']=="0" ? ' - ' . 'Test Transaction' : '') . '</h2>
 <div class="tl_formbody_edit">
 <div class="tl_tbox block">';
 $return .= ($strResponse ? $strResponse : '');

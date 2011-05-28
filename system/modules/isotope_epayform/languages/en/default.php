@@ -31,5 +31,5 @@
 /**
  * Payment modules
  */
-$GLOBALS['TL_LANG']['PAY']['epay_form']			= array('ePay HTML Form', 'See <a href="http://www.epay.eu/" onclick="window.open(this.href); return false">www.epay.eu</a> for more information about ePay.');
+$GLOBALS['ISO_LANG']['PAY']['epay_form']			= array('ePay HTML Form', 'See <a href="http://www.epay.eu/" onclick="window.open(this.href); return false">www.epay.eu</a> for more information about ePay.');
 

@@ -56,6 +56,7 @@ Version 0.3.beta1
 - Improved: Include old and new item ID in transferFromCollection return value
 - Improved: Empty list message checkbox behavior changed (Ticket #414)
 - Improved: Hooks for Isotope eCommerce are now in ISO_HOOKS array
+- Improved: Labels for Isotope eCommerce are now in ISO_LANG array
 - Improved: New icon theme, based on fugue icons (http://p.yusukekamiyamane.com/) (Ticket #422)
 - Improved: Deleting orders when deleting old carts
 - Improved: Ignore quotes when sorting products (Ticket #77)

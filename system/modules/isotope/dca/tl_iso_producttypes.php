@@ -148,7 +148,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
 			'inputType'				=> 'select',
 			'default'				=> 'regular',
 			'options'				=> array_keys($GLOBALS['ISO_PRODUCT']),
-			'reference'				=> &$GLOBALS['TL_LANG']['ISO_PRODUCT'],
+			'reference'				=> &$GLOBALS['ISO_LANG']['PRODUCT'],
 			'eval'					=> array('mandatory'=>true, 'submitOnChange'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
 		),
 		'fallback' => array

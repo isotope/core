@@ -165,7 +165,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
 			'inputType'               => 'select',
 			'default'				  => 'flat',
 			'options_callback'        => array('tl_iso_shipping_modules', 'getModules'),
-//			'reference'               => &$GLOBALS['TL_LANG']['SHIP'],
+			'reference'               => &$GLOBALS['ISO_LANG']['SHIP'],
 			'eval'                    => array('helpwizard'=>true, 'submitOnChange'=>true, 'tl_class'=>'clr')
 		),
 		'name' => array
@@ -317,8 +317,8 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
 			'default'				  => 'kg',
 			'inputType'               => 'select',
 			'options'				  => array('mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'),
-//			'reference'				  => &$GLOBALS['TL_LANG']['WGT'],
-			'eval'                    => array('tl_class'=>'clr', 'helpwizard'=>&$GLOBALS['TL_LANG']['WGT']),
+			'reference'				  => &$GLOBALS['ISO_LANG']['WGT'],
+			'eval'                    => array('tl_class'=>'clr', 'helpwizard'=>&$GLOBALS['ISO_LANG']['WGT']),
 		),
 		'guests' => array
 		(
@@ -419,7 +419,7 @@ class tl_iso_shipping_modules extends Backend
 		{
 			foreach( $GLOBALS['ISO_SHIP'] as $module => $class )
 			{
-				$arrModules[$module] = (strlen($GLOBALS['TL_LANG']['SHIP'][$module][0]) ? $GLOBALS['TL_LANG']['SHIP'][$module][0] : $module);
+				$arrModules[$module] = (strlen($GLOBALS['ISO_LANG']['SHIP'][$module][0]) ? $GLOBALS['ISO_LANG']['SHIP'][$module][0] : $module);
 			}
 		}
 

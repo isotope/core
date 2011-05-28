@@ -212,7 +212,7 @@ class PaymentPaypalPayflowPro extends IsotopePayment
 				'inputType'		=> 'select',
 				'options'		=> $arrCCTypes,
 				'eval'			=> array('mandatory'=>true, 'rgxp'=>'digit', 'tableless'=>true),
-				'reference'		=> &$GLOBALS['TL_LANG']['CCT'],
+				'reference'		=> &$GLOBALS['ISO_LANG']['CCT'],
 			),
 			'cc_exp_month' => array
 			(
@@ -319,7 +319,7 @@ class PaymentPaypalPayflowPro extends IsotopePayment
 
 		$strCard = implode(' ', str_split((substr($num, 0, 2) . str_repeat('*', (strlen($num)-6)) . substr($num, -4)), 4));
 
-		return sprintf('%s<br />%s: %s', $this->label, $GLOBALS['TL_LANG']['CCT'][$type], $strCard);
+		return sprintf('%s<br />%s: %s', $this->label, $GLOBALS['ISO_LANG']['CCT'][$type], $strCard);
 	}
 
 

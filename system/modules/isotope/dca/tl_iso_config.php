@@ -362,7 +362,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'inputType'               => 'select',
 			'default'				  => 'default',
 			'options'				  => array_keys($GLOBALS['ISO_GAL']),
-			'reference'				  => &$GLOBALS['TL_LANG']['GAL'],
+			'reference'				  => &$GLOBALS['ISO_LANG']['GAL'],
 			'eval'                    => array('mandatory'=>true, 'tl_class'=>'clr', 'helpwizard'=>true),
 		),
 		'missing_image_placeholder' => array
@@ -428,7 +428,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['currency'],
 			'exclude'                 => true,
 			'inputType'               => 'select',
-			'options'				  => &$GLOBALS['TL_LANG']['CUR'],
+			'options'				  => &$GLOBALS['ISO_LANG']['CUR'],
 			'eval'                    => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50'),
 		),
 		'currencySymbol' => array

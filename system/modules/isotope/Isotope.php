@@ -409,9 +409,9 @@ class Isotope extends Controller
 
 		$strPrice = $this->formatPrice($fltPrice);
 
-		if ($this->Config->currencySymbol && $GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency] != '')
+		if ($this->Config->currencySymbol && $GLOBALS['ISO_LANG']['CUR_SYMBOL'][$strCurrency] != '')
 		{
-			$strCurrency = (($this->Config->currencyPosition == 'right' && $this->Config->currencySpace) ? ' ' : '') . ($blnHtml ? '<span class="currency">' : '') . $GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency] . ($blnHtml ? '</span>' : '') . (($this->Config->currencyPosition == 'left' && $this->Config->currencySpace) ? ' ' : '');
+			$strCurrency = (($this->Config->currencyPosition == 'right' && $this->Config->currencySpace) ? ' ' : '') . ($blnHtml ? '<span class="currency">' : '') . $GLOBALS['ISO_LANG']['CUR_SYMBOL'][$strCurrency] . ($blnHtml ? '</span>' : '') . (($this->Config->currencyPosition == 'left' && $this->Config->currencySpace) ? ' ' : '');
 		}
 		else
 		{

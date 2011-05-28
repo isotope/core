@@ -153,7 +153,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 			'inputType'               => 'select',
 			'default'				  => 'cash',
 			'options_callback'        => array('tl_iso_payment_modules', 'getModules'),
-			'reference'               => &$GLOBALS['TL_LANG']['PAY'],
+			'reference'               => &$GLOBALS['ISO_LANG']['PAY'],
 			'eval'                    => array('helpwizard'=>true, 'submitOnChange'=>true, 'tl_class'=>'clr')
 		),
 		'name' => array
@@ -518,7 +518,7 @@ class tl_iso_payment_modules extends Backend
 
 		foreach($objModule->getAllowedCCTypes() as $type)
 		{
-			$arrCCTypes[$type] = $GLOBALS['TL_LANG']['CCT'][$type];
+			$arrCCTypes[$type] = $GLOBALS['ISO_LANG']['CCT'][$type];
 		}
 
 		return $arrCCTypes;
@@ -558,7 +558,7 @@ class tl_iso_payment_modules extends Backend
 		{
 			foreach( $GLOBALS['ISO_PAY'] as $module => $class )
 			{
-				$arrModules[$module] = (strlen($GLOBALS['TL_LANG']['PAY'][$module][0]) ? $GLOBALS['TL_LANG']['PAY'][$module][0] : $module);
+				$arrModules[$module] = (strlen($GLOBALS['ISO_LANG']['PAY'][$module][0]) ? $GLOBALS['ISO_LANG']['PAY'][$module][0] : $module);
 			}
 		}
 
