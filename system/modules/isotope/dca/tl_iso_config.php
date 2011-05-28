@@ -586,6 +586,28 @@ class tl_iso_config extends Backend
 			case 'USD':
 				$image = 'currency-dollar-usd';
 				break;
+			
+			case 'BBD':
+			case 'BMD':
+			case 'BND':
+			case 'BSD':
+			case 'BZD':
+			case 'FJD':
+			case 'GYD':
+			case 'HKD':
+			case 'JMD':
+			case 'KYD':
+			case 'LRD':
+			case 'MYR':
+			case 'NAD':
+			case 'SBD':
+			case 'SGD':
+			case 'SRD':
+			case 'TTD':
+			case 'TWD':
+			case 'ZWL':
+				$image = 'currency';
+				break;
 
 			case 'EUR':
 				$image = 'currency-euro';
@@ -612,10 +634,10 @@ class tl_iso_config extends Backend
 				break;
 
 			default:
-				$image = 'currency';
+				$image = 'money';
 		}
 
-		return sprintf('<div class="list_icon" style="background-image:url(\'system/modules/isotope/html/%s.png\');line-height:16px">%s</div>', $image, $label);
+		return sprintf('<div class="list_icon" style="background-image:url(\'system/modules/isotope/html/%s.png\');line-height:16px" title="%s">%s</div>', $image, $GLOBALS['ISO_LANG']['CUR'][$row['currency']], $label);
 	}
 }
 
