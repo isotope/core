@@ -104,7 +104,7 @@ class Isotope extends Controller
 
 		if (!$intConfig)
 		{
-			$intConfig = $this->Database->execute("SELECT id FROM tl_iso_config WHERE fallback='1'")->id;
+			$intConfig = $this->Database->execute("SELECT id FROM tl_iso_config WHERE fallback='1' AND archive<2")->id;
 		}
 
 		if(!$intConfig)

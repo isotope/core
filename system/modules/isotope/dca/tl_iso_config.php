@@ -496,6 +496,7 @@ class tl_iso_config extends Backend
 
 		if (!count($arrConfigs))
 		{
+			$GLOBALS['TL_DCA']['tl_iso_config']['fields']['fallback']['default'] = '1';
 			$arrConfigs = array(0);
 		}
 
