@@ -36,7 +36,6 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 	'config' => array
 	(
 		'dataContainer'               => 'Table',
-		'ctable'                      => array('tl_payment_options'),
 		'enableVersioning'            => true,
 		'closed'					  => true,
 		'onload_callback'			  => array

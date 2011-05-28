@@ -58,11 +58,13 @@ Version 0.3.beta1
 - Improved: Hooks for Isotope eCommerce are now in ISO_HOOKS array
 - Improved: New icon theme, based on fugue icons (http://p.yusukekamiyamane.com/) (Ticket #422)
 - Improved: Deleting orders when deleting old carts
+- Improved: Ignore quotes when sorting products (Ticket #77)
 - Fixed start & stop publishing dates not working
 - Fixed Authorize.net failed transaction bug
 - Fixed enter key trapping on checkout payment method
 - Removed pre-0.1 update code from runonce.php
 - Removed postsale_mail from Paypal and Postfinance
+- Removed obsolete table tl_payment_options
 
 Version 0.2.10 (2011-06-??)
 ------------------------------

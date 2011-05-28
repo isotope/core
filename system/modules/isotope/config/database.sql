@@ -9,55 +9,6 @@
 
 
 --
--- Table `tl_module`
---
-
-CREATE TABLE `tl_module` (
-  `iso_list_layout` varchar(64) NOT NULL default '',
-  `iso_reader_layout` varchar(64) NOT NULL default '',
-  `iso_reader_jumpTo` int(10) unsigned NOT NULL default '0',
-  `iso_cart_layout` varchar(64) NOT NULL default '',
-  `iso_checkout_method` varchar(10) NOT NULL default '',
-  `iso_login_jumpTo` int(10) unsigned NOT NULL default '0',
-  `iso_payment_modules` blob NULL,
-  `iso_shipping_modules` blob NULL,
-  `filter_module` text NULL,
-  `iso_cols` int(1) unsigned NOT NULL default '1',
-  `iso_config_id` int(10) unsigned NOT NULL default '0',
-  `iso_config_ids` blob NULL,
-  `iso_jump_first` char(1) NOT NULL default '',
-  `iso_forward_review` char(1) NOT NULL default '',
-  `iso_mail_customer` int(10) unsigned NOT NULL default '0',
-  `iso_mail_admin` int(10) unsigned NOT NULL default '0',
-  `iso_sales_email` varchar(255) NOT NULL default '',
-  `iso_order_conditions` int(10) unsigned NOT NULL default '0',
-  `iso_addToAddressbook` char(1) NOT NULL default '',
-  `iso_category_scope` varchar(64) NOT NULL default '',
-  `iso_use_quantity` char(1) NOT NULL default '',
-  `iso_perPage` varchar(64) NOT NULL default '',
-  `iso_filterFields` blob NULL,
-  `iso_orderByFields` blob NULL,
-  `iso_searchFields` blob NULL,
-  `iso_enableLimit` char(1) NOT NULL default '',
-  `iso_listingModule` int(10) unsigned NOT NULL default '0',
-  `iso_enableSearch` char(1) NOT NULL default '',
-  `iso_cart_jumpTo` int(10) unsigned NOT NULL default '0',
-  `iso_checkout_jumpTo` int(10) unsigned NOT NULL default '0',
-  `orderCompleteJumpTo` int(10) unsigned NOT NULL default '0',
-  `iso_addProductJumpTo` int(10) unsigned NOT NULL default '0',
-  `iso_listingSortField` varchar(255) NOT NULL default '',
-  `iso_listingSortDirection` varchar(8) NOT NULL default '',
-  `iso_buttons` blob NULL,
-  `iso_related_categories` blob NULL,
-  `iso_noProducts` varchar(255) NOT NULL default '',
-  `iso_forceNoProducts` char(1) NOT NULL default '',  
-  `iso_includeMessages` char(1) NOT NULL default '',
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-
--- --------------------------------------------------------
-
---
 -- Table `tl_iso_products`
 --
 
@@ -300,31 +251,6 @@ CREATE TABLE `tl_filter_values_to_categories` (
 -- --------------------------------------------------------
 
 --
--- Table `tl_page`
---
-
-CREATE TABLE `tl_page` (
-  `iso_config` int(10) unsigned NOT NULL default '0',
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-
--- --------------------------------------------------------
-
---
--- Table `tl_content`
---
-
-CREATE TABLE `tl_content` (
-  `iso_reader_jumpTo` int(10) unsigned NOT NULL default '0',
-  `iso_list_layout` varchar(64) NOT NULL default '',
-  `iso_attribute_set` int(10) unsigned NOT NULL default '0',
-  `iso_filters` varchar(255) NOT NULL default '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-
--- --------------------------------------------------------
-
---
 -- Table `tl_iso_cart`
 --
 
@@ -445,21 +371,6 @@ CREATE TABLE `tl_iso_payment_modules` (
   `debug` char(1) NOT NULL default '',
   `enabled` char(1) NOT NULL default '',
   `archive` int(1) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-
--- --------------------------------------------------------
-
---
--- Table `tl_payment_options`
---
-
-CREATE TABLE `tl_payment_options` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `pid` int(10) unsigned NOT NULL default '0',
-  `tstamp` int(10) unsigned NOT NULL default '0',
-  `enabled` char(1) NOT NULL default '',
   PRIMARY KEY  (`id`),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -758,6 +669,80 @@ CREATE TABLE `tl_iso_related_products` (
   `products` blob NULL,
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`),
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+-- --------------------------------------------------------
+
+--
+-- Table `tl_page`
+--
+
+CREATE TABLE `tl_page` (
+  `iso_config` int(10) unsigned NOT NULL default '0',
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+-- --------------------------------------------------------
+
+--
+-- Table `tl_content`
+--
+
+CREATE TABLE `tl_content` (
+  `iso_reader_jumpTo` int(10) unsigned NOT NULL default '0',
+  `iso_list_layout` varchar(64) NOT NULL default '',
+  `iso_attribute_set` int(10) unsigned NOT NULL default '0',
+  `iso_filters` varchar(255) NOT NULL default '0'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+-- --------------------------------------------------------
+
+--
+-- Table `tl_module`
+--
+
+CREATE TABLE `tl_module` (
+  `iso_list_layout` varchar(64) NOT NULL default '',
+  `iso_reader_layout` varchar(64) NOT NULL default '',
+  `iso_reader_jumpTo` int(10) unsigned NOT NULL default '0',
+  `iso_cart_layout` varchar(64) NOT NULL default '',
+  `iso_checkout_method` varchar(10) NOT NULL default '',
+  `iso_login_jumpTo` int(10) unsigned NOT NULL default '0',
+  `iso_payment_modules` blob NULL,
+  `iso_shipping_modules` blob NULL,
+  `filter_module` text NULL,
+  `iso_cols` int(1) unsigned NOT NULL default '1',
+  `iso_config_id` int(10) unsigned NOT NULL default '0',
+  `iso_config_ids` blob NULL,
+  `iso_jump_first` char(1) NOT NULL default '',
+  `iso_forward_review` char(1) NOT NULL default '',
+  `iso_mail_customer` int(10) unsigned NOT NULL default '0',
+  `iso_mail_admin` int(10) unsigned NOT NULL default '0',
+  `iso_sales_email` varchar(255) NOT NULL default '',
+  `iso_order_conditions` int(10) unsigned NOT NULL default '0',
+  `iso_addToAddressbook` char(1) NOT NULL default '',
+  `iso_category_scope` varchar(64) NOT NULL default '',
+  `iso_use_quantity` char(1) NOT NULL default '',
+  `iso_perPage` varchar(64) NOT NULL default '',
+  `iso_filterFields` blob NULL,
+  `iso_orderByFields` blob NULL,
+  `iso_searchFields` blob NULL,
+  `iso_enableLimit` char(1) NOT NULL default '',
+  `iso_listingModule` int(10) unsigned NOT NULL default '0',
+  `iso_enableSearch` char(1) NOT NULL default '',
+  `iso_cart_jumpTo` int(10) unsigned NOT NULL default '0',
+  `iso_checkout_jumpTo` int(10) unsigned NOT NULL default '0',
+  `orderCompleteJumpTo` int(10) unsigned NOT NULL default '0',
+  `iso_addProductJumpTo` int(10) unsigned NOT NULL default '0',
+  `iso_listingSortField` varchar(255) NOT NULL default '',
+  `iso_listingSortDirection` varchar(8) NOT NULL default '',
+  `iso_buttons` blob NULL,
+  `iso_related_categories` blob NULL,
+  `iso_noProducts` varchar(255) NOT NULL default '',
+  `iso_forceNoProducts` char(1) NOT NULL default '',  
+  `iso_includeMessages` char(1) NOT NULL default '',
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 

@@ -107,7 +107,7 @@ $GLOBALS['ISO_MOD'] = array
 	(
 		'payment' => array
 		(
-			'tables'					=> array('tl_iso_payment_modules', 'tl_payment_options'),
+			'tables'					=> array('tl_iso_payment_modules'),
 			'icon'						=> 'system/modules/isotope/html/money-coin.png',
 		),
 		'shipping' => array
