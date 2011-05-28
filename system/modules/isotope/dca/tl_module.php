@@ -148,14 +148,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_cols'] = array
 	'eval'                    => array('maxlength'=>1, 'rgxp'=>'digit', 'tl_class'=>'w50'),
 );
 
-$GLOBALS['TL_DCA']['tl_module']['fields']['listing_filters'] = array
-(
-	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['listing_filters'],
-	'exclude'                 => true,
-	'inputType'               => 'checkbox',
-	'eval'					  => array('multiple'=>true,'tl_class'=>'m12 clr'),
-);
-
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_config_id'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_config_id'],
