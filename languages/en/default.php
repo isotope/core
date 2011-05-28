@@ -22,7 +22,7 @@
 /**
  * Payment modules
  */
-$GLOBALS['TL_LANG']['PAY']['expercash'] = array('ExperCash');
+$GLOBALS['ISO_LANG']['PAY']['expercash'] = array('ExperCash');
 
 
 $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0]		= 'Zahlung ausführen';
