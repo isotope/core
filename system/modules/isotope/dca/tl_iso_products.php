@@ -272,7 +272,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'sorting'				=> true,
 			'inputType'				=> 'text',
 			'eval'					=> array('mandatory'=>true, 'tl_class'=>'clr long'),
-			'attributes'			=> array('legend'=>'general_legend', 'multilingual'=>true, 'fixed'=>true, 'is_order_by_enabled'=>true),
+			'attributes'			=> array('legend'=>'general_legend', 'multilingual'=>true, 'fixed'=>true, 'fe_sorting'=>true),
 		),
 		'teaser' => array
 		(
@@ -312,7 +312,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'sorting'				=> true,
 			'inputType'				=> 'text',
 			'eval'					=> array('mandatory'=>true, 'maxlength'=>13, 'rgxp'=>'price', 'tl_class'=>'w50'),
-			'attributes'			=> array('legend'=>'pricing_legend', 'is_order_by_enabled'=>true),
+			'attributes'			=> array('legend'=>'pricing_legend', 'fe_sorting'=>true),
 		),
 		'prices' => array
 		(
@@ -1621,8 +1621,8 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 			$arrData['attributes']	= $objAttributes->row();
 			$arrData['eval']		= is_array($arrData['eval']) ? array_merge($arrData['eval'], $arrData['attributes']) : $arrData['attributes'];
 
-			if ($objAttributes->is_be_filterable) $arrData['filter'] = true;
-			if ($objAttributes->is_be_searchable) $arrData['search'] = true;
+			if ($objAttributes->be_filter) $arrData['filter'] = true;
+			if ($objAttributes->be_search) $arrData['search'] = true;
 
 			// Initialize variant options
 			if ($objAttributes->variant_option)

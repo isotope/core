@@ -134,14 +134,14 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 	(
 		'__selector__'				=> array('type', 'variant_option'),
 		'default'					=> '{attribute_legend},name,field_name,type,legend',
-		'text'						=> '{attribute_legend},name,field_name,type,legend,is_customer_defined;{description_legend:hide},description;{config_legend},rgxp,maxlength,mandatory,multilingual;{search_filters_legend},is_searchable,is_order_by_enabled,is_be_searchable',
-		'textarea'					=> '{attribute_legend},name,field_name,type,legend,is_customer_defined;{description_legend:hide},description;{config_legend},rgxp,rte,mandatory,multilingual;{search_filters_legend},is_searchable,is_order_by_enabled,is_be_searchable',
-		'select'					=> '{attribute_legend},name,field_name,type,legend,variant_option,is_customer_defined;{description_legend:hide},description;{options_legend},options,foreignKey;{config_legend},mandatory,multiple,size;{search_filters_legend},is_filterable,is_order_by_enabled,is_be_filterable',
+		'text'						=> '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},rgxp,maxlength,mandatory,multilingual;{search_filters_legend},fe_search,fe_sorting,be_search',
+		'textarea'					=> '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},rgxp,rte,mandatory,multilingual;{search_filters_legend},fe_search,fe_sorting,be_search',
+		'select'					=> '{attribute_legend},name,field_name,type,legend,variant_option,customer_defined;{description_legend:hide},description;{options_legend},options,foreignKey;{config_legend},mandatory,multiple,size;{search_filters_legend},fe_filter,fe_sorting,be_filter',
 		'selectvariant_option'		=> '{attribute_legend},name,field_name,type,legend,variant_option;{description_legend:hide},description;{options_legend},options,foreignKey',
-		'radio'						=> '{attribute_legend},name,field_name,type,legend,variant_option,is_customer_defined;{description_legend:hide},description;{options_legend},options,foreignKey;{config_legend},mandatory;{search_filters_legend},is_filterable,is_order_by_enabled',
+		'radio'						=> '{attribute_legend},name,field_name,type,legend,variant_option,customer_defined;{description_legend:hide},description;{options_legend},options,foreignKey;{config_legend},mandatory;{search_filters_legend},fe_filter,fe_sorting',
 		'radiovariant_option'		=> '{attribute_legend},name,field_name,type,legend,variant_option;{description_legend:hide},description;{options_legend},options,foreignKey',
-		'checkbox'					=> '{attribute_legend},name,field_name,type,legend,is_customer_defined;{description_legend:hide},description;{options_legend},options,foreignKey;{config_legend},mandatory,multiple;{search_filters_legend},is_filterable,is_order_by_enabled',
-		'conditionalselect'			=> '{attribute_legend},name,field_name,type,legend,is_customer_defined;{description_legend:hide},description;{options_legend},options,foreignKey;{config_legend},mandatory,multiple,size,conditionField;{search_filters_legend},is_filterable,is_order_by_enabled',
+		'checkbox'					=> '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{options_legend},options,foreignKey;{config_legend},mandatory,multiple;{search_filters_legend},fe_filter,fe_sorting',
+		'conditionalselect'			=> '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{options_legend},options,foreignKey;{config_legend},mandatory,multiple,size,conditionField;{search_filters_legend},fe_filter,fe_sorting',
 		'mediaManager'				=> '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},gallery,extensions,mandatory',
     ),
 
@@ -212,21 +212,21 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 			'inputType'				=> 'checkbox',
 			'eval'					=> array('submitOnChange'=>true, 'tl_class'=>'w50'),
 		),
-		'is_be_searchable' => array
+		'be_search' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['is_be_searchable'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['be_search'],
 			'exclude'				=> true,
 			'inputType'				=> 'checkbox'
 		),
-		'is_be_filterable' => array
+		'be_filter' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['is_be_filterable'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['be_filter'],
 			'exclude'				=> true,
 			'inputType'				=> 'checkbox',
 		),
-		'is_customer_defined' => array
+		'customer_defined' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['is_customer_defined'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['customer_defined'],
 			'exclude'				=> true,
 			'inputType'				=> 'checkbox',
 			'eval'					=> array('tl_class'=>'w50'),
@@ -238,21 +238,21 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 			'inputType'				=> 'checkbox',
 			'eval'					=> array('tl_class'=>'w50'),
 		),
-		'is_filterable' => array
+		'fe_filter' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['is_filterable'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['fe_filter'],
 			'exclude'				=> true,
 			'inputType'				=> 'checkbox'
 		),
-		'is_searchable' => array
+		'fe_search' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['is_searchable'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['fe_search'],
 			'exclude'				=> true,
 			'inputType'				=> 'checkbox'
 		),
-		'is_order_by_enabled' => array
+		'fe_sorting' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['is_order_by_enabled'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['fe_sorting'],
 			'exclude'				=> true,
 			'inputType'				=> 'checkbox'
 		),

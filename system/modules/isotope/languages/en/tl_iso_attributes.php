@@ -34,7 +34,7 @@ $GLOBALS['TL_LANG']['tl_iso_attributes']['field_name']				= array('Internal name
 $GLOBALS['TL_LANG']['tl_iso_attributes']['type']					= array('Type', 'Please select a type for this attribute.');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['legend']					= array('Field Group', 'Select a field group that this attribute relates to (used to organize related fields into collapsible fieldset groups when editing products.');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['variant_option']			= array('Add to product variants wizard', 'If selected, this attribute will be added to the product variants wizard for use as a product variant option.');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['is_customer_defined']		= array('Defined by Customer', 'Please select if this value defined by the customer (frontend).');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['customer_defined']		= array('Defined by Customer', 'Please select if this value defined by the customer (frontend).');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['description']				= array('Description', 'The description is shown as a hint to the backend user.');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['options']					= array('Options', 'Please enter one or more options. Use the buttons to add, move or delete an option. If you are working without JavaScript assistance, you should save your changes before you modify the order!');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['mandatory']				= array('Mandatory field', 'The product will not be added to cart if the field is empty.');
@@ -49,11 +49,11 @@ $GLOBALS['TL_LANG']['tl_iso_attributes']['foreignKey']				= array('Foreign Table
 $GLOBALS['TL_LANG']['tl_iso_attributes']['conditionField']			= array('Parent Field', 'Please select the parent field, which must be of type "Select-Menu". For parent-child relation to work, define each option of this parent field as group of the conditional select-menu.');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['gallery']					= array('Image gallery', 'Different image galleries can be developed to present media files in a custom style.');
 
-$GLOBALS['TL_LANG']['tl_iso_attributes']['is_order_by_enabled']		= array('Add to "Order By" option list', 'This field will be sortable in the listing module provided the attribute is visible to customers.');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['is_be_filterable']   		= array('Backend Filterable', 'Can this attribute be used in a backend filter?');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['is_be_searchable']   		= array('Backend Searchable', 'Should the search engine look in this field for search terms?');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['is_filterable']   		= array('Frontend Filterable', 'Can this attribute be used in a frontend filter?');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['is_searchable']   		= array('Frontend Searchable', 'Should the search engine look in this field for search terms?');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['fe_sorting']				= array('Add to "Order By" option list', 'This field will be sortable in the listing module provided the attribute is visible to customers.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['be_filter']   			= array('Backend Filterable', 'Can this attribute be used in a backend filter?');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['be_search']   			= array('Backend Searchable', 'Should the search engine look in this field for search terms?');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['fe_filter']   			= array('Frontend Filterable', 'Can this attribute be used in a frontend filter?');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['fe_search']   			= array('Frontend Searchable', 'Should the search engine look in this field for search terms?');
 
 
 /**

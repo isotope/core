@@ -62,6 +62,7 @@ Version 0.3.beta1
 - Improved: Deleting orders when deleting old carts
 - Improved: Ignore quotes when sorting products (Ticket #77)
 - Improved: Auto-set fallback checkbox if there is no fallback store config (Ticket #458)
+- Improved: Renamed attributes for frontend & backend filter, sorting and limit fields
 - Fixed start & stop publishing dates not working
 - Fixed Authorize.net failed transaction bug
 - Fixed enter key trapping on checkout payment method

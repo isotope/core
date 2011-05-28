@@ -167,6 +167,42 @@ class IsotopeRunonce extends Controller
 		{
 			$this->Database->query("ALTER TABLE tl_iso_attributes CHANGE COLUMN option_list options blob NULL");
 		}
+		
+		// tl_iso_attributes.is_be_filterable has been renamed to tl_iso_attributes.be_filter
+		if ($this->Database->fieldExists('is_be_filterable', 'tl_iso_attributes') && !$this->Database->fieldExists('be_filter', 'tl_iso_attributes'))
+		{
+			$this->Database->query("ALTER TABLE tl_iso_attributes CHANGE COLUMN is_be_filterable be_filter char(1) NOT NULL default ''");
+		}
+		
+		// tl_iso_attributes.is_filterable has been renamed to tl_iso_attributes.fe_filter
+		if ($this->Database->fieldExists('is_filterable', 'tl_iso_attributes') && !$this->Database->fieldExists('fe_filter', 'tl_iso_attributes'))
+		{
+			$this->Database->query("ALTER TABLE tl_iso_attributes CHANGE COLUMN is_filterable fe_filter char(1) NOT NULL default ''");
+		}
+		
+		// tl_iso_attributes.is_searchable has been renamed to tl_iso_attributes.fe_search
+		if ($this->Database->fieldExists('is_searchable', 'tl_iso_attributes') && !$this->Database->fieldExists('fe_search', 'tl_iso_attributes'))
+		{
+			$this->Database->query("ALTER TABLE tl_iso_attributes CHANGE COLUMN is_searchable fe_search char(1) NOT NULL default ''");
+		}
+		
+		// tl_iso_attributes.is_order_by_enabled has been renamed to tl_iso_attributes.fe_sorting
+		if ($this->Database->fieldExists('is_order_by_enabled', 'tl_iso_attributes') && !$this->Database->fieldExists('fe_sorting', 'tl_iso_attributes'))
+		{
+			$this->Database->query("ALTER TABLE tl_iso_attributes CHANGE COLUMN is_order_by_enabled fe_sorting char(1) NOT NULL default ''");
+		}
+		
+		// tl_iso_attributes.is_customer_defined has been renamed to tl_iso_attributes.customer_defined
+		if ($this->Database->fieldExists('is_customer_defined', 'tl_iso_attributes') && !$this->Database->fieldExists('customer_defined', 'tl_iso_attributes'))
+		{
+			$this->Database->query("ALTER TABLE tl_iso_attributes CHANGE COLUMN is_customer_defined customer_defined char(1) NOT NULL default ''");
+		}
+		
+		// tl_iso_attributes.is_be_searchable has been renamed to tl_iso_attributes.be_search
+		if ($this->Database->fieldExists('is_be_searchable', 'tl_iso_attributes') && !$this->Database->fieldExists('be_search', 'tl_iso_attributes'))
+		{
+			$this->Database->query("ALTER TABLE tl_iso_attributes CHANGE COLUMN is_be_searchable be_search char(1) NOT NULL default ''");
+		}
 
 		// tl_iso_addresses.state has been renamed to tl_iso_addresses.subdivision
 		if ($this->Database->fieldExists('state', 'tl_iso_addresses') && !$this->Database->fieldExists('subdivision', 'tl_iso_addresses'))

@@ -409,7 +409,7 @@ class tl_module_isotope extends Backend
 
 		foreach( $GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData )
 		{
-			if ($arrData['attributes']['is_order_by_enabled'])
+			if ($arrData['attributes']['fe_sorting'])
 			{
 				$arrAttributes[$field] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
 			}
@@ -431,7 +431,7 @@ class tl_module_isotope extends Backend
 
 		foreach( $GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData )
 		{
-			if ($arrData['attributes']['is_filterable'])
+			if ($arrData['attributes']['fe_filter'])
 			{
 				$arrAttributes[$field] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
 			}
@@ -448,7 +448,7 @@ class tl_module_isotope extends Backend
 
 		foreach( $GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData )
 		{
-			if ($arrData['attributes']['is_order_by_enabled'])
+			if ($arrData['attributes']['fe_sorting'])
 			{
 				$arrAttributes[$field] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
 			}
@@ -464,7 +464,7 @@ class tl_module_isotope extends Backend
 
 		foreach( $GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData )
 		{
-			if ($arrData['attributes']['is_searchable'])
+			if ($arrData['attributes']['fe_search'])
 			{
 				$arrAttributes[$field] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
 			}

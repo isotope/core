@@ -557,7 +557,7 @@ class IsotopeProduct extends Controller
 
 		foreach( $arrAttributes as $attribute => $varValue )
 		{
-			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['is_customer_defined'] || $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
+			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['customer_defined'] || $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
 			{
 				$objTemplate->hasOptions = true;
 				$arrProductOptions[$attribute] = $this->generateProductOptionWidget($attribute);
