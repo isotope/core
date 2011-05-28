@@ -43,8 +43,16 @@ class IsotopeTemplate extends FrontendTemplate
 	 * @return string
 	 * @throws Exception
 	 */
-	protected function getTemplate($strTemplate)
+	protected function getTemplate($strTemplate, $strFormat='html5')
 	{
+		$arrAllowed = trimsplit(',', $GLOBALS['TL_CONFIG']['templateFiles']);
+
+		if (is_array($GLOBALS['TL_CONFIG']['templateFiles']) && !in_array($strFormat, $arrAllowed))
+		{
+			throw new Exception("Invalid output format $strFormat");
+		}
+		
+		$strKey = $strTemplate . '.' . $strFormat;
 		$strPath = TL_ROOT . '/templates';
 		$strTemplate = basename($strTemplate);
 
@@ -52,12 +60,18 @@ class IsotopeTemplate extends FrontendTemplate
 		if (TL_MODE == 'FE')
 		{
 			global $objPage;
-
-			$strTemplateGroup = str_replace('../', '', $this->Isotope->Config->templateGroup);
-			$strTemplateGroup = preg_replace('@^templates/@', '', $strTemplateGroup);
+			$strTemplateGroup = str_replace(array('../', 'templates/'), '', $this->Isotope->Config->templateGroup);
 
 			if ($strTemplateGroup != '')
 			{
+				$strFile = $strPath . '/' . $strTemplateGroup . '/' . $strKey;
+
+				if (file_exists($strFile))
+				{
+					return $strFile;
+				}
+
+				// Also check for .tpl files (backwards compatibility)
 				$strFile = $strPath . '/' . $strTemplateGroup . '/' . $strTemplate . '.tpl';
 
 				if (file_exists($strFile))
@@ -67,7 +81,7 @@ class IsotopeTemplate extends FrontendTemplate
 			}
 		}
 
-		return parent::getTemplate($strTemplate);
+		return parent::getTemplate($strTemplate, $strFormat);
 	}
 }
 
