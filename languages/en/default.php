@@ -31,7 +31,7 @@
 /**
  * Payment modules
  */
-$GLOBALS['TL_LANG']['PAY']['payone']			= array('PAYONE');
+$GLOBALS['ISO_LANG']['PAY']['payone']			= array('PAYONE');
 
 
 /**

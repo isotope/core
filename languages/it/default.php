@@ -30,7 +30,7 @@
  * @version    $Id$
  */
 
-$GLOBALS['TL_LANG']['PAY']['payone'][0] = 'PAYONE';
+$GLOBALS['ISO_LANG']['PAY']['payone'][0] = 'PAYONE';
 $GLOBALS['TL_LANG']['MSC']['pay_with_payone'][0] = 'Paga con PAYONE';
 $GLOBALS['TL_LANG']['MSC']['pay_with_payone'][1] = 'Sarà reindirizzato al sito web di PAYONE. Se non è reindirizzato automaticamente, per cortesia faccia click sul collegamento "Paga adesso"';
 $GLOBALS['TL_LANG']['MSC']['pay_with_payone'][2] = 'Paga adesso';
