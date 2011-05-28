@@ -2,7 +2,6 @@
 #main .isotope-title{display:none!important}
 .header_isotope_tools{background-image:url(wand-hat.png);background-position:left center;background-repeat:no-repeat;padding:2px 0 3px 20px}
 .header_import_assets{background-image:url(image--plus.png);background-position:left center;background-repeat:no-repeat;padding:2px 0 3px 20px}
-.header_filter_cache{background-image:url(arrow-retweet.png);background-position:left center;background-repeat:no-repeat;padding:2px 0 3px 20px}
 .header_import_mail{background-image:url(inbox-download.png);background-position:left center;background-repeat:no-repeat;padding:2px 0 3px 20px}
 .header_iso_copy{background-image:url(../../../themes/default/images/copy.gif);background-position:left center;background-repeat:no-repeat;padding:2px 0 3px 20px}
 .header_iso_export_csv{background-image:url(document-excel-csv.png);background-position:left center;background-repeat:no-repeat;padding:2px 0 3px 20px}

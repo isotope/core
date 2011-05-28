@@ -234,23 +234,6 @@ CREATE TABLE `tl_iso_product_categories` (
 -- --------------------------------------------------------
 
 --
--- Table `tl_filter_values_to_categories` pid is page id.
---
-CREATE TABLE `tl_filter_values_to_categories` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `pid` int(10) unsigned NOT NULL default '0',
-  `attribute_id` int(10) unsigned NOT NULL default '0',
-  `sorting` int(10) unsigned NOT NULL default '0',
-  `tstamp` int(10) unsigned NOT NULL default '0',
-  `value_collection` text NULL,
-  PRIMARY KEY  (`id`),
-  KEY `pid` (`pid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-
--- --------------------------------------------------------
-
---
 -- Table `tl_iso_cart`
 --
 
@@ -572,32 +555,6 @@ CREATE TABLE `tl_iso_tax_rate` (
 -- --------------------------------------------------------
 
 --
--- Table `tl_user`
---
-
-CREATE TABLE `tl_user` (
- `iso_product_types` blob NULL,
- `iso_configs` blob NULL,
- `iso_modules` blob NULL,
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-
--- --------------------------------------------------------
-
---
--- Table `tl_user_group`
---
-
-CREATE TABLE `tl_user_group` (
- `iso_product_types` blob NULL,
- `iso_configs` blob NULL,
- `iso_modules` blob NULL,
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-
--- --------------------------------------------------------
-
---
 -- Table `tl_iso_mail`
 --
 
@@ -675,6 +632,24 @@ CREATE TABLE `tl_iso_related_products` (
 -- --------------------------------------------------------
 
 --
+-- Table `tl_iso_requestcache`
+--
+
+CREATE TABLE `tl_iso_requestcache` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `tstamp` int(10) unsigned NOT NULL default '0',
+  `store_id` int(10) unsigned NOT NULL default '0',
+  `filters` blob NULL,
+  `sorting` blob NULL,
+  `limit` int(10) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  KEY `store_id` (`store_id`),
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+-- --------------------------------------------------------
+
+--
 -- Table `tl_page`
 --
 
@@ -743,6 +718,32 @@ CREATE TABLE `tl_module` (
   `iso_noProducts` varchar(255) NOT NULL default '',
   `iso_forceNoProducts` char(1) NOT NULL default '',  
   `iso_includeMessages` char(1) NOT NULL default '',
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+-- --------------------------------------------------------
+
+--
+-- Table `tl_user`
+--
+
+CREATE TABLE `tl_user` (
+ `iso_product_types` blob NULL,
+ `iso_configs` blob NULL,
+ `iso_modules` blob NULL,
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+-- --------------------------------------------------------
+
+--
+-- Table `tl_user_group`
+--
+
+CREATE TABLE `tl_user_group` (
+ `iso_product_types` blob NULL,
+ `iso_configs` blob NULL,
+ `iso_modules` blob NULL,
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 

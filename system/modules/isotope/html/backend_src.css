@@ -51,14 +51,6 @@
 	background-repeat:no-repeat;
 }
 
-.header_filter_cache
-{
-	background-image:url(arrow-retweet.png);
-	background-position:left center;
-	background-repeat:no-repeat;
-	padding:2px 0 3px 20px
-}
-
 .header_import_mail
 {
 	padding:2px 0px 3px 20px;

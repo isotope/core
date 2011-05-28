@@ -65,6 +65,7 @@ Version 0.3.beta1
 - Removed pre-0.1 update code from runonce.php
 - Removed postsale_mail from Paypal and Postfinance
 - Removed obsolete table tl_payment_options
+- Removed obsolete table tl_filter_values_to_categories
 
 Version 0.2.10 (2011-06-??)
 ------------------------------

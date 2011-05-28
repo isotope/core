@@ -102,7 +102,6 @@ $GLOBALS['TL_LANG']['tl_iso_products']['import']		= array('Import assets', 'Impo
 $GLOBALS['TL_LANG']['tl_iso_products']['quick_edit']	= array('Quick-edit variants', 'Quick-edit variants for product ID %s');
 $GLOBALS['TL_LANG']['tl_iso_products']['downloads']		= array('Downloads', 'Edit downloads for product ID %s');
 $GLOBALS['TL_LANG']['tl_iso_products']['prices']		= array('Manage prices', 'Manage prices for product ID %s');
-$GLOBALS['TL_LANG']['tl_iso_products']['filter_cache']  = array('Rebuild filter cache', 'Rebuild the cache of filter values correlated to each category.');
 
 
 /**
