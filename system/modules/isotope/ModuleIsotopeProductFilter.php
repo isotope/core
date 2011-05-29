@@ -82,7 +82,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		$this->generateSorting();
 		$this->generateLimit();
 		
-		$strFilterUrl = preg_replace('/isorc=[0-9]+&?/', '', $this->Environment->request);
+		$strFilterUrl = preg_replace('/&?isorc=[0-9]+&?/', '', $this->Environment->request);
 
 		// Cache request in the database and redirect to the unique requestcache ID
 		if ($this->blnCacheRequest)
@@ -117,7 +117,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		$this->Template->id = $this->id;
 		$this->Template->formId = 'iso_filter_' . $this->id;
 		$this->Template->actionFilter = ampersand($strFilterUrl);
-		$this->Template->actionSearch = ampersand(preg_replace('/keywords=[^&]+&?/', '', $this->Environment->request));
+		$this->Template->actionSearch = ampersand(preg_replace('/&?keywords=[^&]+&?/', '', $this->Environment->request));
 		$this->Template->actionClear = ampersand(preg_replace('/\?.*/', '', $this->Environment->request));
 		$this->Template->clearLabel = $GLOBALS['TL_LANG']['MSC']['clearFiltersLabel'];
 	}
