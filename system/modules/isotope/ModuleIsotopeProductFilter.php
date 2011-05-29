@@ -35,8 +35,6 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 	 */
 	protected $strTemplate = 'mod_iso_productfilter';
 
-	protected $strFormId = 'iso_filters';
-
 	protected $categories = array();
 
 	/**
@@ -56,233 +54,210 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 
 			return $objTemplate->parse();
 		}
+		
+		$this->iso_filterFields = deserialize($this->iso_filterFields);
+		$this->iso_sortingFields = deserialize($this->iso_sortingFields);
+		$this->iso_searchFields = deserialize($this->iso_searchFields);
 
-		if(!$this->iso_filterFields && !$this->iso_orderByFields && !$this->iso_searchFields)
+		if (!$this->iso_enableLimit && !is_array($this->iso_filterFields) && !is_array($this->iso_sortingFields) && !is_array($this->iso_searchFields))
+		{
 			return '';
+		}
 
 		return parent::generate();
 	}
 
-	/**
-	 * Compile module
-	 *
-	 * @todo generate() should confirm that data is set and hide otherwise
-	 */
+
 	protected function compile()
 	{
-		global $objPage;
-
-		$arrFilterFields = deserialize($this->iso_filterFields);
-		$arrOrderByFields = deserialize($this->iso_orderByFields);
-		$arrSearchFields = deserialize($this->iso_searchFields);
-		$objListingModule = $this->Database->prepare("SELECT * FROM tl_module WHERE id=?")->limit(1)->execute($this->iso_listingModule);
-
-		//used to reduce the list of available options for each filter
-		$this->categories = $this->findCategories($objListingModule->iso_category_scope);
-
-		$arrLimit = array();
-		$arrOrderByOptions = array();
+		// used to reduce the list of available options for each filter
+		$this->categories = $this->findCategories($this->iso_category_scope);
 
 		$this->loadLanguageFile('tl_iso_products');
 
-		foreach($arrFilterFields as $field)
+		if (is_array($this->iso_filterFields))
 		{
-			$data = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field];
-
-			if($data['eval']['is_filterable'])
-				$arrFilters[] = array('html' => $this->generateFilterWidget($field, $data));
-		}
-
-		$arrOrderByOptions = $this->getOrderByOptions($this->getOrderByFields($arrOrderByFields));
-
-		if($this->iso_enableSearch)
-		{
-			$arrSearchFields = array('name','description');
-
-			if(count($arrSearchFields))
+			foreach($this->iso_filterFields as $field)
 			{
-				foreach($arrSearchFields as $field)
-				{
-					$arrSearchFieldNames[] = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['eval']['field_name'];
-				}
-
+				$data = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field];
+	
+				if($data['eval']['fe_filter'])
+					$arrFilters[] = array('html' => $this->generateFilterWidget($field, $data));
 			}
 		}
+		
+		
+		
+		
+		
+		
+		$blnCacheRequest = $this->Input->post('FORM_SUBMIT') == 'iso_filter_'.$this->id ? true : false;
+		list($strUrl) = explode('?', $this->Environment->request, 2);
 
-		// Set the default per page limit if one exists from the listing module,
-		// and also add it to the default array if it not there already
-		$strPerPageDefault = '';
-		if($this->iso_enableLimit)
+		$this->Template->hasSorting = false;
+		if (is_array($this->iso_sortingFields) && count($this->iso_sortingFields))
 		{
-			// Generate the limits per page...
-			$arrLimit = array_map('intval', trimsplit(',', $this->iso_perPage));
-
-			if ($this->iso_listingModule)
+			$arrOptions = array();
+			
+			
+			// Cache new request value
+			// @todo should support multiple sorting fields
+			list($sortingField, $sortingDirection) = explode(':', $this->Input->post('sorting'));
+			
+			if ($blnCacheRequest && in_array($sortingField, $this->iso_sortingFields))
 			{
-				$intModuleLimit = intval($objListingModule->perPage);
-
-				if ($intModuleLimit > 0)
-				{
-					$strPerPageDefault = $intModuleLimit;
-					$arrLimit[] = $intModuleLimit;
-				}
+				$GLOBALS['ISO_SORTING'][$this->id][$sortingField] = array(($sortingDirection=='DESC' ? SORT_DESC : SORT_ASC), SORT_REGULAR);
 			}
 			
-			$arrLimit = array_unique($arrLimit);
-			sort($arrLimit);
+			// Request cache contains wrong value, delete it!
+			elseif (is_array($GLOBALS['ISO_SORTING'][$this->id]) && array_diff(array_keys($GLOBALS['ISO_SORTING'][$this->id]), $this->iso_sortingFields))
+			{
+				$blnCacheRequest = true;
+				unset($GLOBALS['ISO_SORTING'][$this->id]);
+				
+				$this->Database->prepare("DELETE FROM tl_iso_requestcache WHERE id=?")->execute($this->Input->get('isorc'));
+			}
+			
+			// No need to generate options if we reload anyway
+			elseif (!$blnCacheRequest)
+			{
+				foreach( $this->iso_sortingFields as $field )
+				{
+				
+					// @todo this must be dynamic
+					switch( $field )
+					{
+						case 'price':
+							$asc = $GLOBALS['TL_LANG']['MSC']['low_to_high'];
+							$desc = $GLOBALS['TL_LANG']['MSC']['high_to_low'];
+							break;
+		
+						case 'datetime':
+							$asc = $GLOBALS['TL_LANG']['MSC']['old_to_new'];
+							$desc = $GLOBALS['TL_LANG']['MSC']['new_to_old'];
+							break;
+		
+						case 'name':
+						default:
+							$asc = $GLOBALS['TL_LANG']['MSC']['a_to_z'];
+							$desc = $GLOBALS['TL_LANG']['MSC']['z_to_a'];
+							break;
+					}
+
+				
+					$arrOptions[] = array
+					(
+						'label'		=> ($this->Isotope->formatLabel('tl_iso_products', $field) . ' ' . $asc),
+						'value'		=> $field.':ASC',
+						'default'	=> ((is_array($GLOBALS['ISO_SORTING'][$this->id]) && $GLOBALS['ISO_SORTING'][$this->id][$field][0] == SORT_ASC) ? '1' : ''),
+					);
+					
+					$arrOptions[] = array
+					(
+						'label'		=> ($this->Isotope->formatLabel('tl_iso_products', $field) . ' ' . $desc),
+						'value'		=> $field.':DESC',
+						'default'	=> ((is_array($GLOBALS['ISO_SORTING'][$this->id]) && $GLOBALS['ISO_SORTING'][$this->id][$field][0] == SORT_DESC) ? '1' : ''),
+					);
+				}
+			}
+
+			$this->Template->hasSorting = true;
+			$this->Template->sortingLabel = $GLOBALS['TL_LANG']['MSC']['orderByLabel'];
+			$this->Template->sortingOptions = $arrOptions;
 		}
 
-		$arrCleanUrl = explode('?', $this->Environment->request);
 
-		$this->Template->searchable = $this->iso_enableSearch;
-		$this->Template->perPage = $this->iso_enableLimit;
-		$this->Template->limit = $arrLimit;
+		$this->Template->hasLimit = false;
+		if ($this->iso_enableLimit)
+		{
+			$arrOptions = array();
+			$arrLimit = array_map('intval', trimsplit(',', $this->iso_perPage));
+			$intLimit = $GLOBALS['ISO_LIMIT'][$this->id] ? $GLOBALS['ISO_LIMIT'][$this->id] : $arrLimit[0];
+			$arrLimit = array_unique($arrLimit);
+			sort($arrLimit);
+
+			// Cache new request value
+			if ($blnCacheRequest && in_array($this->Input->post('limit'), $arrLimit))
+			{
+				$GLOBALS['ISO_LIMIT'][$this->id] = (int)$this->Input->post('limit');
+			}
+			
+			// Request cache contains wrong value, delete it!
+			elseif ($GLOBALS['ISO_LIMIT'][$this->id] && !in_array($GLOBALS['ISO_LIMIT'][$this->id], $arrLimit))
+			{
+				$blnCacheRequest = true;
+				$GLOBALS['ISO_LIMIT'][$this->id] = $intLimit;
+				
+				$this->Database->prepare("DELETE FROM tl_iso_requestcache WHERE id=?")->execute($this->Input->get('isorc'));
+			}
+			
+			// No need to generate options if we reload anyway
+			elseif (!$blnCacheRequest)
+			{
+				foreach( $arrLimit as $limit )
+				{
+					$arrOptions[] = array
+					(
+						'label'		=> $limit,
+						'value'		=> $limit,
+						'default'	=> ($intLimit == $limit ? '1' : ''),
+					);
+				}
+
+				$this->Template->hasLimit = true;
+				$this->Template->limitLabel = $GLOBALS['TL_LANG']['MSC']['perPageLabel'];
+				$this->Template->limitOptions = $arrOptions;
+			}
+		}
+
+
+		// Cache request in the database and redirect to the unique requestcache ID
+		if ($blnCacheRequest)
+		{
+			$time = time();
+			$varFilter = is_array($GLOBALS['ISO_FILTERS']) ? serialize($GLOBALS['ISO_FILTERS']) : null;
+			$varSorting = is_array($GLOBALS['ISO_SORTING']) ? serialize($GLOBALS['ISO_SORTING']) : null;
+			$varLimit = is_array($GLOBALS['ISO_LIMIT']) ? serialize($GLOBALS['ISO_LIMIT']) : null;
+
+			$intCacheId = $this->Database->prepare("SELECT id FROM tl_iso_requestcache WHERE store_id={$this->Isotope->Config->store_id} AND filters" . ($varFilter ? '=' : ' IS ') . "? AND sorting" . ($varSorting ? '=' : ' IS ') . "? AND limits" . ($varLimit ? '=' : ' IS ') . "?")
+										 ->execute($varFilter, $varSorting, $varLimit)
+										 ->id;
+
+			if ($intCacheId)
+			{
+				$this->Database->query("UPDATE tl_iso_requestcache SET tstamp=$time WHERE id=$intCacheId");
+			}
+			else
+			{
+				$intCacheId = $this->Database->prepare("INSERT INTO tl_iso_requestcache (tstamp,store_id,filters,sorting,limits) VALUES ($time, {$this->Isotope->Config->store_id}, ?, ?, ?)")
+											 ->execute($varFilter, $varSorting, $varLimit)
+											 ->insertId;
+			}
+			
+			$this->redirect($strUrl . '?isorc=' . $intCacheId);
+		}
+
+
+		$this->Template->id = $this->id;
+		$this->Template->formId = 'iso_filter_' . $this->id;
+		$this->Template->action = $strUrl;
+
+
+		$this->Template->searchable = (is_array($this->iso_searchFields) && count($this->iso_searchFields)) ? true : false;
 		$this->Template->filters = $arrFilters;
-		$this->Template->filterFields = (count($arrFilterFields) ? implode(',',$arrFilterFields) : array());
-		$this->Template->action = $this->Environment->request;
-		$this->Template->baseUrl = $arrCleanUrl[0];
-		$this->Template->orderBy = $arrOrderByOptions;
-		$this->Template->order_by = ($this->Input->get('order_by')) ? $this->Input->get('order_by') : $this->getListingModuleSorting($objListingModule);
-		$this->Template->per_page = ($this->Input->get('per_page') ? $this->Input->get('per_page') : $strPerPageDefault);
+		$this->Template->filterFields = (is_array($this->iso_filterFields) ? implode(',',$this->iso_filterFields) : array());
+//		$this->Template->orderBy = $this->getOrderByFields($this->iso_sortingFields);
+		$this->Template->order_by = ($this->Input->get('order_by')) ? $this->Input->get('order_by') : '';//$this->getListingModuleSorting($objListingModule);
 		$this->Template->page = ($this->Input->get('page') ? $this->Input->get('page') : 1);
 		$this->Template->for = $this->Input->get('for');
 		$this->Template->defaultSearchText = $GLOBALS['TL_LANG']['MSC']['defaultSearchText'];
-		$this->Template->orderByLabel = $GLOBALS['TL_LANG']['MSC']['orderByLabel'];
-		$this->Template->perPageLabel = $GLOBALS['TL_LANG']['MSC']['perPageLabel'];
+		
+		
 		$this->Template->keywordsLabel = $GLOBALS['TL_LANG']['MSC']['searchTermsLabel'];
 		$this->Template->searchLabel = $GLOBALS['TL_LANG']['MSC']['searchLabel'];
 		$this->Template->clearLabel = $GLOBALS['TL_LANG']['MSC']['clearFiltersLabel'];
 	}
 
-
-	private function getOrderByOptions(array $arrAttributes)
-	{
-		$arrOptions[''] = '-';
-
-		foreach($arrAttributes as $attribute)
-		{
-			$arrSortingDirections = $this->generateSortingDirections($attribute['type']);
-
-			$arrOptions[$attribute['field_name'] . '-ASC'] = $attribute['label'] . ' ' . $arrSortingDirections['ASC'];
-			$arrOptions[$attribute['field_name'] . '-DESC'] = $attribute['label'] . ' ' . $arrSortingDirections['DESC'];
-
-		}
-
-		return $arrOptions;
-	}
-
-
-	/**
-	 * Automate the generation of sorting options for one or more order by-enabled attributes
-	 *
-	 * @access public
-	 * @param array $arrFields
-	 * @return array
-	 */
-	public function getOrderByFields($arrFields)
-	{
-		if($arrFields)
-		{
-			foreach($arrFields as $field)
-			{
-				switch($field)
-				{
-					case 'name':
-						//Add default name field
-						$arrAttributeData[] = array
-						(
-							'type'			=> 'text',
-							'field_name'	=> 'name',
-							'label'			=> $GLOBALS['TL_LANG']['tl_iso_products']['name'][0]
-						);
-						break;
-					case 'price':
-						$arrAttributeData[] = array
-						(
-							'type'			=> 'decimal',
-							'field_name'	=> 'price',
-							'label'			=> $GLOBALS['TL_LANG']['tl_iso_products']['price'][0]
-						);
-						break;
-					default:
-						$arrAttributeData[] = array
-						(
-							'type'			=> $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['eval']['type'],
-							'field_name'    => $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['eval']['field_name'],
-							'label'			=> $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['eval']['name']
-						);
-						break;
-				}
-			}
-		}
-
-		return $arrAttributeData;
-	}
-
-
-	/**
-	 * Get the per page option limits from corresponding listing module
-	 *
-	 * @param int $intListingModule
-	 * @return integer
-	 */
-	private function getListingModuleLimit($intListingModule)
-	{
-		$objLimit = $this->Database->prepare("SELECT perPage FROM tl_module WHERE id=?")->limit(1)->execute($intListingModule);
-
-		if(!$objLimit->numRows)
-		{
-			return;
-		}
-
-		if($objLimit->perPage > 0)
-		{
-			$intLimit = $objLimit->perPage;
-		}
-
-		return $intLimit ;
-	}
-
-
-	/**
-	 * Get the initial sorting field and direction from corresponding listing module
-	 */
-	private function getListingModuleSorting($objModule)
-	{
-		$strSorting = '';
-
-		if(strlen($objModule->iso_listingSortField))
-		{
-			$strSorting = $objModule->iso_listingSortField . '-' . $objModule->iso_listingSortDirection;
-		}
-
-		return $strSorting;
-	}
-
-	/**
-	 * Generates sorting directions based upon data type
-	 *
-	 * @todo "integer", "decimal" and "datetime" are no longer available
-	 *
-	 * @access private
-	 * @param string $strType
-	 * @return array
-	 */
-	private function generateSortingDirections($strType)
-	{
-		switch($strType)
-		{
-			case 'integer':
-			case 'decimal':
-				return array('ASC' => $GLOBALS['TL_LANG']['MSC']['low_to_high'], 'DESC' => $GLOBALS['TL_LANG']['MSC']['high_to_low']);
-
-			case 'text':
-				return array('ASC' => $GLOBALS['TL_LANG']['MSC']['a_to_z'], 'DESC' => $GLOBALS['TL_LANG']['MSC']['z_to_a']);
-
-			case 'datetime':
-				return array('ASC' => $GLOBALS['TL_LANG']['MSC']['old_to_new'], 'DESC' => $GLOBALS['TL_LANG']['MSC']['new_to_old']);
-		}
-	}
 
 	/**
 	 * Load filter values from products based on an array of page ids for a given attribute
@@ -404,47 +379,6 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		$objWidget->id .= "_" . ($this->pid ? $this->pid : $this->id);
 
 		return $objWidget->parse();
-	}
-
-	/**
-	 * Find categories based on the category scope of the listing module that corresponds to this filter module instance
-	 *
-	 * @todo: this is replicated from ModuleIsotopeProductListing until we can determine if appropriate to move this to ModuleIsotope for any module needing this data.
-	 * @access protected
-	 * @param string $strCategoryScope
-	 * @return array
-	 */
-	protected function findCategories($strCategoryScope)
-	{
-		global $objPage;
-
-		switch($strCategoryScope)
-		{
-			case 'global':
-				return array_merge($this->getChildRecords($objPage->rootId, 'tl_page', true), array($objPage->rootId));
-
-			case 'current_and_first_child':
-				return array_merge($this->Database->execute("SELECT id FROM tl_page WHERE pid={$objPage->id}")->fetchEach('id'), array($objPage->id));
-
-			case 'current_and_all_children':
-				return array_merge($this->getChildRecords($objPage->id, 'tl_page', true), array($objPage->id));
-
-			case 'parent':
-				return array($objPage->pid);
-
-			case 'product':
-				$objProduct = $this->getProductByAlias($this->Input->get('product'));
-
-				if (!$objProduct)
-					return array(0);
-
-				return $objProduct->categories;
-
-			default:
-			case 'current_category':
-				return array($objPage->id);
-		}
-
 	}
 }
 

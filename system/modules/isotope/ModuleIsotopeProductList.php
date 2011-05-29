@@ -35,12 +35,6 @@ class ModuleIsotopeProductList extends ModuleIsotope
 	 */
 	protected $strTemplate = 'mod_iso_productlist';
 
-	protected $strOrderBySQL = 'c.sorting';
-
-	protected $strFilterSQL;
-
-	protected $strSearchSQL;
-
 	protected $arrParams;
 
 
@@ -75,7 +69,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 	{
 		$objProduct = $this->getProduct($this->Input->get('product'), false);
 
-		if ($objProduct)
+		if ($objProduct instanceof IsotopeProduct)
 		{
 			return $objProduct->generateAjax($this);
 		}
@@ -85,32 +79,43 @@ class ModuleIsotopeProductList extends ModuleIsotope
 
 
 	/**
-	 * Fill the object's arrProducts array
-	 * @return array
+	 * Find all products we need to list.
+	 * @param	void
+	 * @return	array
 	 */
 	protected function findProducts()
 	{
-		$this->applyFilters();
-
-		// Determine category scope
 		$arrCategories = $this->findCategories($this->iso_category_scope);
-
-		$objProductIds = $this->Database->prepare("SELECT DISTINCT p.id FROM tl_iso_product_categories c, tl_iso_products p WHERE p.id=c.pid" . (BE_USER_LOGGED_IN ? '' : " AND published='1'") . ($this->strFilterSQL ? " AND (" . $this->strFilterSQL . ")" : "") . " AND c.page_id IN (" . implode(',', $arrCategories) . ")" . ($this->strSearchSQL ? " AND (" . $this->strSearchSQL . ")" : "") . ($this->strOrderBySQL ? " ORDER BY " . $this->strOrderBySQL : ""))->execute($this->arrParams);
-
-		$arrProducts = $this->getProducts($objProductIds->fetchEach('id'));
-
-		// Add pagination
-		if ($this->perPage > 0)
+		
+		$arrFilter = array();
+		$arrSorting = array();
+		$this->iso_filterModules = deserialize($this->iso_filterModules, true);
+		
+		$arrModules = array_reverse($this->iso_filterModules);
+		
+		foreach( $arrModules as $module )
 		{
-			$total = count($arrProducts);
-			$page = $this->Input->get('page') ? $this->Input->get('page') : 1;
-			$offset = ($page - 1) * $this->perPage;
+			if (is_array($GLOBALS['ISO_FILTERS'][$module]))
+			{
+				// @todo implement filters!
+				var_dump($GLOBALS['ISO_FILTERS'][$module]);
+				throw new Exception('Filters are not yet implemented');
+			}
 
-			$objPagination = new Pagination($total, $this->perPage);
-			$this->Template->pagination = $objPagination->generate("\n  ");
+			if (is_array($GLOBALS['ISO_SORTING'][$module]))
+			{
+				$arrSorting = array_merge($arrSorting, $GLOBALS['ISO_SORTING'][$module]);
+			}
 
-			return array_slice($arrProducts, $offset, $this->perPage);
+			if ($GLOBALS['ISO_LIMIT'][$module] > 0)
+			{
+				$this->perPage = $GLOBALS['ISO_LIMIT'][$module];
+			}
 		}
+
+		$objProductIds = $this->Database->prepare("SELECT DISTINCT p.id FROM tl_iso_product_categories c, tl_iso_products p WHERE p.id=c.pid" . (BE_USER_LOGGED_IN ? '' : " AND published='1'") . " AND c.page_id IN (" . implode(',', $arrCategories) . ")")->execute($this->arrParams);
+
+		$arrProducts = $this->getProducts($objProductIds->fetchEach('id'), true, $arrFilter, $arrSorting);
 
 		return $arrProducts;
 	}
@@ -129,6 +134,19 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			$this->Template->type = 'empty';
 			$this->Template->message = $this->iso_emptyMessage ? $this->iso_noProducts : $GLOBALS['TL_LANG']['MSC']['noProducts'];
 			return;
+		}
+		
+		// Add pagination
+		if ($this->perPage > 0)
+		{
+			$total = count($arrProducts);
+			$page = $this->Input->get('page') ? $this->Input->get('page') : 1;
+			$offset = ($page - 1) * $this->perPage;
+
+			$objPagination = new Pagination($total, $this->perPage);
+			$this->Template->pagination = $objPagination->generate("\n  ");
+
+			$arrProducts = array_slice($arrProducts, $offset, $this->perPage);
 		}
 
 		$arrBuffer = array();
@@ -168,248 +186,6 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		}
 
 		$this->Template->products = $arrBuffer;
-	}
-
-
-	protected function applyFilters()
-	{
-		if($this->Input->get('clear'))
-		{
-			$arrFilters = array();
-		}
-		else
-		{
-			$arrFilters = array('for'=>$this->Input->get('for'), 'per_page'=>$this->Input->get('per_page'), 'page'=>$this->Input->get('page'), 'order_by'=>$this->Input->get('order_by'));
-
-			$arrFilterFields = explode(',', $this->Input->get('filters'));	//get the names of filters we are using
-
-			foreach($arrFilterFields as $field)
-			{
-				if($this->Input->get($field))
-				{
-					$arrFilters[$field] = $this->Input->get($field);
-				}
-			}
-
-			$this->perPage = ($this->Input->get('per_page') ? $this->Input->get('per_page') : $this->perPage);
-		}
-
-		if(!$arrFilters['order_by' ] && $this->iso_listingSortField)
-		{
-			$arrFilters['order_by' ] = ($this->iso_listingSortField.'-'.$this->iso_listingSortDirection);
-		}
-
-		$this->setFilterSQL($arrFilters);
-	}
-
-
-	protected function setFilterSQL($arrFilters)
-	{
-		$arrFilterClauses = array();
-		$arrSearchClauses = array();
-		$arrOrderByClauses = array();
-		$arrFilterChunks = array();
-		$arrOrderBySQLWithParentTable = array();
-
-		foreach($arrFilters as $filter=>$value)
-		{
-			if($value)
-			{
-				switch($filter)
-				{
-					case 'order_by':
-						$arrOrderByClauses[] = explode('-', $value);
-						break;
-
-					case 'per_page':
-						//prepare per-page limit
-						$this->perPage = $value;
-						break;
-
-					case 'page':
-						$this->currentPage = $value;
-						break;
-
-					case 'for':
-						if ($value != $GLOBALS['TL_LANG']['MSC']['defaultSearchText'])
-						{
-							// prepare clause for text search.
-							// @todo  need to add filter for each std. search field plus any additional user-defined.
-							$arrSearchFields = $this->getSearchFields();
-
-							foreach($arrSearchFields as $field)
-							{
-								$arrSearchClauses[] = $this->addFilter($value, $field, 'search');
-							}
-						}
-						break;
-
-					default:
-						$arrFilterClauses[] = $this->addFilter($value, $filter, 'filter');
-						break;
-				}
-			}
-		}
-
-		if(count($arrFilterClauses[0]))
-		{
-			foreach($arrFilterClauses as $param)
-			{
-				$arrFilterChunks[] = $param['sql'];
-				$this->arrParams[] = $param['value'];
-			}
-		}
-
-		if(count($arrSearchClauses[0]))
-		{
-			foreach($arrSearchClauses as $param)
-			{
-				$arrSearchChunks[] = $param['sql'];
-				$this->arrParams[] = $param['value'];
-			}
-		}
-
-		if(count($arrOrderByClauses[0]))
-		{
-			foreach($arrOrderByClauses as $row)
-			{
-				$arrOrderBySQL[] = implode(" ", $row);
-			}
-
-			foreach($arrOrderBySQL as $row)
-			{
-				if(strlen($row))
-				{
-					$arrOrderBySQLWithParentTable[] = "p." . $row;
-				}
-			}
-
-			$this->strOrderBySQL = implode(', ', $arrOrderBySQLWithParentTable);
-		}
-
-		if(count($arrFilterChunks))
-			$this->strFilterSQL = implode(" AND ", $arrFilterChunks);
-
-		if(count($arrSearchChunks))
-			$this->strSearchSQL = implode(" OR ", $arrSearchChunks);
-	}
-
-
-	/**
-	 * Gather SQL clause components to be added into the sql query for pulling product data
-	 *
-	 * @param variant $varValue
-	 * @param string $strKey
-	 * @param string $strType
-	 * @return array
-	 */
-	protected function addFilter($varValue, $strKey, $strType)
-	{
-		$arrReturn = array();
-
-		if($varValue)
-		{
-			switch($strType)
-			{
-				case 'search':
-					$arrReturn['sql'] 		= "p." . $strKey . " LIKE ?";
-					$strValue = str_replace('%', '', $varValue);
-
-					$arrReturn['value'] 	= "%%" . $strValue . "%";	//double wildcard necessary to get around vsprintf bug.
-					break;
-				case 'filter':
-					$arrReturn['sql']		= "p." . $strKey . "=?";
-					$arrReturn['value']		= $varValue;
-					break;
-				default:
-					break;
-			}
-		}
-
-		return $arrReturn;
-	}
-
-
-	/**
-	 * Get the search fields used by any corresponding filter - add defaults plus user defined
-	 *
-	 * @todo I don't know where exactly, but this should use the DCA not tl_iso_attributes
-	 *
-	 * @return array
-	 */
-	protected function getSearchFields()
-	{
-		$arrSearchFields = array('name','description');
-
-		$arrFieldData = array();
-
-		$objFilter = $this->Database->prepare("SELECT * FROM tl_module WHERE type='iso_productfilter' AND iso_listingModule=?")
-									->execute($this->id);
-
-		if($objFilter->numRows > 0)
-		{
-			$arrFieldData = deserialize($objFilter->iso_searchFields);
-
-			if(is_array($arrFieldData) && count($arrFieldData))
-			{
-				foreach($arrFieldData as $intFieldID)
-				{
-					$objAttributeData = $this->Database->prepare("SELECT * FROM tl_iso_attributes WHERE id=?")
-													   ->limit(1)
-													   ->execute($intFieldID);
-
-					if($objAttributeData->numRows < 1)
-					{
-						continue;
-					}
-					$arrSearchFields[] = $objAttributeData->field_name;
-				}
-			}
-		}
-		return $arrSearchFields;
-	}
-
-
-	/**
-	 * The ids of all pages we take care of. This is what should later be used eg. for filter data.
-	 */
-	protected function findCategories($strCategoryScope)
-	{
-		if ($this->defineRoot && $this->rootPage > 0)
-		{
-			$objPage = $this->getPageDetails($this->rootPage);
-		}
-		else
-		{
-			global $objPage;
-		}
-
-		switch($strCategoryScope)
-		{
-			case 'global':
-				return array_merge($this->getChildRecords($objPage->rootId, 'tl_page', true), array($objPage->rootId));
-
-			case 'current_and_first_child':
-				return array_merge($this->Database->execute("SELECT id FROM tl_page WHERE pid={$objPage->id}")->fetchEach('id'), array($objPage->id));
-
-			case 'current_and_all_children':
-				return array_merge($this->getChildRecords($objPage->id, 'tl_page', true), array($objPage->id));
-
-			case 'parent':
-				return array($objPage->pid);
-
-			case 'product':
-				$objProduct = $this->getProductByAlias($this->Input->get('product'));
-
-				if (!$objProduct)
-					return array(0);
-
-				return $objProduct->categories;
-
-			default:
-			case 'current_category':
-				return array($objPage->id);
-		}
 	}
 }
 

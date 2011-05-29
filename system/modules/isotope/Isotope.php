@@ -68,6 +68,19 @@ class Isotope extends Controller
 		{
 			$this->Cart = new IsotopeCart();
 			$this->Cart->initializeCart((int)$this->Config->id, (int)$this->Config->store_id);
+			
+			// Initialize request cache for product list filters
+			if ($this->Input->get('isorc') != '')
+			{
+				$objRequestCache = $this->Database->prepare("SELECT * FROM tl_iso_requestcache WHERE id=? AND store_id=?")->execute($this->Input->get('isorc'), $this->Config->store_id);
+
+				if ($objRequestCache->numRows)
+				{
+					$GLOBALS['ISO_FILTERS'] = deserialize($objRequestCache->filters);
+					$GLOBALS['ISO_SORTING'] = deserialize($objRequestCache->sorting);
+					$GLOBALS['ISO_LIMIT'] = deserialize($objRequestCache->limits);
+				}
+			}
 		}
 	}
 

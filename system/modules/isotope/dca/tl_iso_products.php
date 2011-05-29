@@ -272,7 +272,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'sorting'				=> true,
 			'inputType'				=> 'text',
 			'eval'					=> array('mandatory'=>true, 'tl_class'=>'clr long'),
-			'attributes'			=> array('legend'=>'general_legend', 'multilingual'=>true, 'fixed'=>true, 'fe_sorting'=>true),
+			'attributes'			=> array('legend'=>'general_legend', 'multilingual'=>true, 'fixed'=>true, 'fe_sorting'=>true, 'fe_search'=>true),
 		),
 		'teaser' => array
 		(
@@ -288,7 +288,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'search'				=> true,
 			'inputType'				=> 'textarea',
 			'eval'					=> array('mandatory'=>true, 'rte'=>'tinyMCE'),
-			'attributes'			=> array('legend'=>'general_legend', 'multilingual'=>true),
+			'attributes'			=> array('legend'=>'general_legend', 'multilingual'=>true, 'fe_search'=>true),
 		),
 		'description_meta' => array
 		(

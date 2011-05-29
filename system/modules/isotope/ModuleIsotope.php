@@ -93,29 +93,37 @@ abstract class ModuleIsotope extends Module
 
 
 	/**
-	 * Shortcut for a single product by ID or database result
-	 * @param  int|DB_Result
+	 * Shortcut for a single product by ID or from database result
+	 * @param  int|object
 	 * @return object|null
 	 */
 	protected function getProduct($objProductData, $blnCheckAvailability=true)
 	{
-		global $objPage;
-
 		if (is_numeric($objProductData))
 		{
-			$objProductData = $this->Database->query("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS product_class FROM tl_iso_products WHERE id=$objProductData");
+			$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS product_class FROM tl_iso_products WHERE language='' AND id=?")->execute($objProductData);
+		}
+
+		if (!($objProductData instanceof Database_Result) || !$objProductData->numRows)
+		{
+			return null;
 		}
 
 		$strClass = $GLOBALS['ISO_PRODUCT'][$objProductData->product_class]['class'];
 
 		if ($strClass == '' || !$this->classFileExists($strClass))
+		{
 			return null;
+		}
 
 		$objProduct = new $strClass($objProductData->row());
 
 		if ($blnCheckAvailability && !$objProduct->available)
+		{
 			return null;
+		}
 
+		global $objPage;
 		$objProduct->reader_jumpTo = $this->iso_reader_jumpTo ? $this->iso_reader_jumpTo : $objPage->id;
 
 		return $objProduct;
@@ -124,52 +132,78 @@ abstract class ModuleIsotope extends Module
 
 	/**
 	 * Shortcut for a single product by alias (from url?)
+	 * @param	string	$strAlias
+	 * @param	bool	$blnCheckAvailability
+	 * @return	mixed
 	 */
 	protected function getProductByAlias($strAlias, $blnCheckAvailability=true)
 	{
-		global $objPage;
-
-		$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS product_class FROM tl_iso_products WHERE pid=0 AND " . (is_numeric($strAlias) ? 'id' : 'alias') . "=?")
+		$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS product_class FROM tl_iso_products WHERE pid=0 AND language='' AND " . (is_numeric($strAlias) ? 'id' : 'alias') . "=?")
 										 ->limit(1)
 										 ->executeUncached($strAlias);
 
-		$strClass = $GLOBALS['ISO_PRODUCT'][$objProductData->product_class]['class'];
-
-		if ($strClass == '' || !$this->classFileExists($strClass))
-			return null;
-
-		$objProduct = new $strClass($objProductData->row());
-
-		if ($blnCheckAvailability && !$objProduct->available)
-			return null;
-
-		$objProduct->reader_jumpTo = $this->iso_reader_jumpTo ? $this->iso_reader_jumpTo : $objPage->id;
-
-		return $objProduct;
+		return $this->getProduct($objProductData, $blnCheckAvailability);
 	}
 
 
 	/**
-	 * Retrieve multiple products by ID.
-	 * @param  array
-	 * @return array
+	 * Generate products from database result or array of IDs.
+	 * @param	object|array	$objProductData
+	 * @param	bool			$blnCheckAvailability
+	 * @return	array
 	 */
-	protected function getProducts($arrIds, $blnCheckAvailability=true)
+	protected function getProducts($objProductData, $blnCheckAvailability=true, array $arrFilter=array(), array $arrSorting=array())
 	{
-		if (!is_array($arrIds) || !count($arrIds))
+		if (is_array($objProductData) && count($objProductData))
+		{
+			$objProductData = $this->Database->query("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS product_class FROM tl_iso_products WHERE id IN (" . implode(',', array_map('intval', $objProductData)) . ") ORDER BY id=" . implode(' DESC, id=', $objProductData) . " DESC");
+		}
+
+		if (!($objProductData instanceof Database_Result) || !$objProductData->numRows)
+		{
 			return array();
+		}
 
 		$arrProducts = array();
-		$objProductData = $this->Database->query("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS product_class FROM tl_iso_products WHERE id IN (" . implode(',', $arrIds) . ") ORDER BY id=" . implode(' DESC, id=', $arrIds) . " DESC");
 
 		while( $objProductData->next() )
 		{
 			$objProduct = $this->getProduct($objProductData, $blnCheckAvailability);
 
-			if (is_object($objProduct))
+			if ($objProduct instanceof IsotopeProduct)
 			{
-				$arrProducts[] = $objProduct;
+				$arrProducts[$objProductData->id] = $objProduct;
 			}
+		}
+
+		if (count($arrFilter))
+		{
+			global $filterConfig;
+			$filterConfig = $arrFilter;
+			$arrProducts = array_filter($arrProducts, array($this, 'filterProducts'));
+		}
+
+		if (count($arrSorting))
+		{
+			$arrParam = array();
+
+			foreach( $arrSorting as $strField => $arrConfig )
+			{
+				$arrData = array();
+				foreach( $arrProducts as $id => $objProduct )
+				{
+					$arrData[$id] = str_replace('"', '', $objProduct->$strField);
+				}
+				
+				$arrParam[] = $arrData;
+				$arrParam = array_merge($arrParam, $arrConfig);
+			}
+
+			// Add product array as the last item. This will sort the products array based on the sorting of the passed in arguments.
+			$arrParam[] = &$arrProducts;
+
+			// we need to use call_user_func_array because the number of parameters can be dynamic and this is the only way I know to pass an array as arguments
+			call_user_func_array('array_multisort', $arrParam);
 		}
 
 		return $arrProducts;
@@ -178,7 +212,8 @@ abstract class ModuleIsotope extends Module
 
 	/**
 	 * Return all error, confirmation and info messages as HTML.
-	 * @return string
+	 * @param	void
+	 * @return	string
 	 */
 	protected function getIsotopeMessages()
 	{
@@ -210,6 +245,123 @@ abstract class ModuleIsotope extends Module
 		}
 
 		return $strMessages;
+	}
+
+
+	/**
+	 * The ids of all pages we take care of. This is what should later be used eg. for filter data.
+	 */
+	protected function findCategories($strCategoryScope)
+	{
+		if ($this->defineRoot && $this->rootPage > 0)
+		{
+			$objPage = $this->getPageDetails($this->rootPage);
+		}
+		else
+		{
+			global $objPage;
+		}
+
+		switch($strCategoryScope)
+		{
+			case 'global':
+				return array_merge($this->getChildRecords($objPage->rootId, 'tl_page', true), array($objPage->rootId));
+
+			case 'current_and_first_child':
+				return array_merge($this->Database->execute("SELECT id FROM tl_page WHERE pid={$objPage->id}")->fetchEach('id'), array($objPage->id));
+
+			case 'current_and_all_children':
+				return array_merge($this->getChildRecords($objPage->id, 'tl_page', true), array($objPage->id));
+
+			case 'parent':
+				return array($objPage->pid);
+
+			case 'product':
+				$objProduct = $this->getProductByAlias($this->Input->get('product'));
+
+				if (!$objProduct)
+					return array(0);
+
+				return $objProduct->categories;
+
+			default:
+			case 'current_category':
+				return array($objPage->id);
+		}
+	}
+
+
+	/**
+	 * Callback function to filter products
+	 * @param	object	$objProduct
+	 * @return	bool
+	 */
+	private function filterProducts($objProduct)
+	{
+		global $filterConfig;
+
+		if (!is_array($filterConfig) || !count($filterConfig))
+		{
+			return true;
+		}
+
+		foreach( $filterConfig as $filter )
+		{
+			$varValue = $objProduct->{$filter['attribute']};
+
+			// If the attribute is not set for this product, the filter does not match
+			if (is_null($varValue))
+			{
+				return false;
+			}
+
+			switch( $filter['operator'] )
+			{
+				case 'like':
+				case 'search':
+					if (stripos($varValue, $filter['value']) === false)
+					{
+						return false;
+					}
+					break;
+
+				case '>':
+				case 'gt':
+					if ($varValue < $filter['value'])
+					{
+						return false;
+					}
+					break;
+
+				case '<':
+				case 'lt':
+					if ($varValue > $filter['value'])
+					{
+						return false;
+					}
+					break;
+
+				case '!=':
+				case 'neq':
+				case 'not':
+					if ($varValue == $filter['value'])
+					{
+						return false;
+					}
+					break;
+
+				case '=':
+				case '==':
+				case 'eq':
+				default:
+					if ($varValue != $filter['value'])
+					{
+						return false;
+					}
+			}
+		}
+
+		return true;
 	}
 }
 
