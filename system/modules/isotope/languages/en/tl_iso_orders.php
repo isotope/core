@@ -35,6 +35,8 @@ $GLOBALS['TL_LANG']['tl_iso_orders']['status']				= array('Order Status', 'Selec
 $GLOBALS['TL_LANG']['tl_iso_orders']['date_payed']			= array('Payment date', 'Enter a date when this order has been paid.');
 $GLOBALS['TL_LANG']['tl_iso_orders']['date_shipped']		= array('Shipped date', 'Enter a date when this order has been shipped.');
 $GLOBALS['TL_LANG']['tl_iso_orders']['date']				= array('Date');
+$GLOBALS['TL_LANG']['tl_iso_orders']['payment_id']			= array('Payment method');
+$GLOBALS['TL_LANG']['tl_iso_orders']['shipping_id']			= array('Shipping method');
 $GLOBALS['TL_LANG']['tl_iso_orders']['shipping_address']	= array('Shipping Address');
 $GLOBALS['TL_LANG']['tl_iso_orders']['billing_address']		= array('Billing Address');
 
