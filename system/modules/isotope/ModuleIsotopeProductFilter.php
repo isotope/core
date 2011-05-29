@@ -77,11 +77,12 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 	protected function compile()
 	{
 		$this->blnCacheRequest = $this->Input->post('FORM_SUBMIT') == 'iso_filter_'.$this->id ? true : false;
-		list($strUrl) = explode('?', $this->Environment->request, 2);
 
 		$this->generateFilters();
 		$this->generateSorting();
 		$this->generateLimit();
+		
+		$strFilterUrl = preg_replace('/isorc=[0-9]+&?/', '', $this->Environment->request);
 
 		// Cache request in the database and redirect to the unique requestcache ID
 		if ($this->blnCacheRequest)
@@ -105,20 +106,54 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 											 ->execute($varFilter, $varSorting, $varLimit)
 											 ->insertId;
 			}
+
 			
-			$this->redirect($strUrl . '?isorc=' . $intCacheId);
+			$this->redirect($strFilterUrl . (strpos($strFilterUrl, '?')===false ? '?' : '&') . 'isorc=' . $intCacheId);
 		}
+		
+		// Search does not affect request cache
+		$this->generateSearch();
 
 		$this->Template->id = $this->id;
 		$this->Template->formId = 'iso_filter_' . $this->id;
-		$this->Template->action = $strUrl;
+		$this->Template->actionFilter = ampersand($strFilterUrl);
+		$this->Template->actionSearch = ampersand(preg_replace('/keywords=[^&]+&?/', '', $this->Environment->request));
+		$this->Template->actionClear = ampersand(preg_replace('/\?.*/', '', $this->Environment->request));
 		$this->Template->clearLabel = $GLOBALS['TL_LANG']['MSC']['clearFiltersLabel'];
+	}
+	
+	
+	protected function generateSearch()
+	{
+		$this->Template->hasSearch = false;
+		
+		if (is_array($this->iso_searchFields) && count($this->iso_searchFields))
+		{
+			if ($this->Input->get('keywords') != '' && $this->Input->get('keywords') != $GLOBALS['TL_LANG']['MSC']['defaultSearchText'])
+			{
+				$arrKeywords = trimsplit(' ', $this->Input->get('keywords'));
+				
+				foreach( $arrKeywords as $keyword )
+				{
+					foreach( $this->iso_searchFields as $field )
+					{
+						$GLOBALS['ISO_FILTERS'][$this->id][] = array
+						(
+							'group'		=> ('keyword: '.$keyword),
+							'operator'	=> 'search',
+							'attribute'	=> $field,
+							'value'		=> $keyword,
+						);
+					}
+				}
+			}
 
-//		$this->Template->searchable = (is_array($this->iso_searchFields) && count($this->iso_searchFields)) ? true : false;
-//		$this->Template->for = $this->Input->get('for');
-//		$this->Template->defaultSearchText = $GLOBALS['TL_LANG']['MSC']['defaultSearchText'];
-//		$this->Template->keywordsLabel = $GLOBALS['TL_LANG']['MSC']['searchTermsLabel'];
-//		$this->Template->searchLabel = $GLOBALS['TL_LANG']['MSC']['searchLabel'];
+			$this->Template->hasSearch = true;
+			$this->Template->keywordsLabel = $GLOBALS['TL_LANG']['MSC']['searchTermsLabel'];
+			$this->Template->keywords = $this->Input->get('keywords');
+			$this->Template->searchLabel = $GLOBALS['TL_LANG']['MSC']['searchLabel'];
+			$this->Template->defaultSearchText = $GLOBALS['TL_LANG']['MSC']['defaultSearchText'];
+		}
 	}
 	
 	
@@ -210,11 +245,11 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 	protected function generateSorting()
 	{
 		$this->Template->hasSorting = false;
+
 		if (is_array($this->iso_sortingFields) && count($this->iso_sortingFields))
 		{
 			$arrOptions = array();
-			
-			
+
 			// Cache new request value
 			// @todo should support multiple sorting fields
 			list($sortingField, $sortingDirection) = explode(':', $this->Input->post('sorting'));

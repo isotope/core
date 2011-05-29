@@ -6,10 +6,9 @@
 <<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
 <?php endif; ?>
 
-<form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>" method="post">
+<form action="<?php echo $this->actionFilter; ?>" id="<?php echo $this->formId; ?>" method="post">
 <div class="formbody">
 <input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formId; ?>" />
-
 
 <?php if($this->hasSorting): ?>
 <div class="sorting">
@@ -33,7 +32,6 @@
 </div>
 <?php endif; ?>
 
-
 <?php if ($this->hasFilters): ?>
 <div class="filters">
 <?php foreach( $this->filterOptions as $field => $data ): ?>
@@ -48,24 +46,27 @@
 </div>
 <?php endif; ?>
 
-
-            <?php if ($this->searchable): ?>
-                <div class="filter_search">
-                <label for="ctrl_for"><?php echo $this->keywordsLabel; ?></label>
-                <noscript><input type="text" name="for" id="ctrl_for" class="text" value="<?php echo $this->for; ?>" /></noscript>
-                <input type="text" name="for" id="ctrl_for" class="text" value="<?php echo ($this->for ? $this->for : $this->defaultSearchText); ?>" onblur="if (this.value=='') { this.value='<?php echo $this->defaultSearchText; ?>'; }" onfocus="if (this.value=='<?php echo $this->defaultSearchText; ?>') { this.value=''; this.select(); }" />
-                </div>
-                <div class="submit_container">
-    	            <button type="submit" name="search" id="ctrl_search"><?php echo $this->searchLabel; ?></button>
-	            </div>
-            <?php endif; ?>
-
-
-<a href="<?php echo $this->action; ?>" class="clear_filters"><?php echo $this->clearLabel; ?></a>
-<div class="clear">&nbsp;</div>
+<noscript>
+<div class="submit_container"><input type="submit" class="submit" value="<?php echo $this->slabel; ?>" /></div>
+</noscript>
 
 </div>
 </form>
-    
+
+<?php if ($this->hasSearch): ?>
+<div class="search">
+<form action="<?php echo $this->actionSearch; ?>" method="get">
+<input type="hidden" name="isorc" value="<?php echo $this->Input->get('isorc'); ?>" />
+<label for="ctrl_keywords_<?php echo $this->id; ?>"><?php echo $this->keywordsLabel; ?></label>
+<input type="text" name="keywords" id="ctrl_keywords_<?php echo $this->id; ?>" class="text" value="<?php echo ($this->keywords ? $this->keywords : $this->defaultSearchText); ?>" onblur="if (this.value=='') { this.value='<?php echo $this->defaultSearchText; ?>'; }" onfocus="if (this.value=='<?php echo $this->defaultSearchText; ?>') { this.value=''; this.select(); }" />
+<input type="submit" class="submit" value="<?php echo $this->searchLabel; ?>" />
+</form>
+</div>
+<?php endif; ?>
+
+<a href="<?php echo $this->actionClear; ?>" class="clear_filters"><?php echo $this->clearLabel; ?></a>
+
+<div class="clear">&nbsp;</div>
+
 </div>
 <!-- indexer::continue -->
