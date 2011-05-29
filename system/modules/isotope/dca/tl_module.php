@@ -43,7 +43,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_checkoutboth']			= '{title_lege
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_orderhistory']			= '{title_legend},name,headline,type;{config_legend},iso_config_ids;{redirect_legend},jumpTo;{template_legend},iso_includeMessages;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_orderdetails']			= '{title_legend},name,headline,type;{redirect_legend},jumpTo;{template_legend},iso_includeMessages;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_configswitcher']		= '{title_legend},name,headline,type;{config_legend},iso_config_ids;{template_legend},iso_includeMessages;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productfilter']		= '{title_legend},name,headline,type;{config_legend},iso_category_scope,iso_enableLimit,iso_filterFields,iso_searchFields,iso_sortingFields;{template_legend},iso_includeMessages;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productfilter']		= '{title_legend},name,headline,type;{config_legend},iso_category_scope,iso_enableLimit,iso_filterFields,iso_searchFields,iso_sortingFields;{template_legend},iso_includeMessages,iso_filterTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_addressbook']			= '{title_legend},name,headline,type;{template_legend},iso_includeMessages,memberTpl,tableless;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_relatedproducts']		= '{title_legend},name,headline,type;{config_legend},iso_related_categories,perPage;{template_legend:hide},iso_includeMessages,iso_list_layout,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
@@ -83,6 +83,16 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_cart_layout'] = array
 	'exclude'					=> true,
 	'inputType'					=> 'select',
 	'options_callback'			=> array('tl_module_isotope', 'getCartTemplates'),
+);
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_filterTpl'] = array
+(
+	'label'						=> &$GLOBALS['TL_LANG']['tl_module']['iso_filterTpl'],
+	'exclude'					=> true,
+	'default'					=> 'iso_filter_default',
+	'inputType'					=> 'select',
+	'options_callback'			=> array('tl_module_isotope', 'getFilterTemplates'),
+	'eval'						=> array('mandatory'=>true, 'tl_class'=>'w50'),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_jump_first'] = array
@@ -586,6 +596,24 @@ class tl_module_isotope extends Backend
 		}
 
 		return $this->getTemplateGroup('iso_cart_', $intPid);
+	}
+	
+	
+	/**
+	 * Return filter templates as array
+	 * @param object
+	 * @return array
+	 */
+	public function getFilterTemplates(DataContainer $dc)
+	{
+		$intPid = $dc->activeRecord->pid;
+
+		if ($this->Input->get('act') == 'overrideAll')
+		{
+			$intPid = $this->Input->get('id');
+		}
+
+		return $this->getTemplateGroup('iso_filter_', $intPid);
 	}
 	
 	

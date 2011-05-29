@@ -31,9 +31,10 @@
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_module']['iso_list_layout']				= array('Product list template', 'Please choose a list layout. You can add custom list layouts to folder <em>templates</em>. List template files start with <em>iso_list_</em> and require file extension <em>.tpl</em>.');
-$GLOBALS['TL_LANG']['tl_module']['iso_reader_layout']			= array('Product reader template', 'Please choose a reader template.  You can add custom reader templates to folder <em>templates</em>. Reader template files start with <em>iso_reader_</em> and require file extension <em>.tpl</em>.');
+$GLOBALS['TL_LANG']['tl_module']['iso_reader_layout']			= array('Product reader template', 'Please choose a reader template.  You can add custom reader templates to folder <em>templates</em>. Reader template files start with <em>iso_reader_</em>.');
 $GLOBALS['TL_LANG']['tl_module']['iso_reader_jumpTo']			= array('Product reader jump to page', 'This setting defines to which page a user will be redirected when clicking a product for more info.');
-$GLOBALS['TL_LANG']['tl_module']['iso_cart_layout']				= array('Shopping cart template', 'Please choose a shopping cart layout. You can add custom cart layouts to folder <em>templates</em>. Cart template files start with <em>iso_cart_</em> and require file extension <em>.tpl</em>.');
+$GLOBALS['TL_LANG']['tl_module']['iso_cart_layout']				= array('Shopping cart template', 'Please choose a shopping cart layout. You can add custom cart layouts to folder <em>templates</em>. Cart template files start with <em>iso_cart_</em>.');
+$GLOBALS['TL_LANG']['tl_module']['iso_filterTpl']				= array('Filter template', 'Please choose a filter template. You can add custom filter templates to folder <em>templates</em>. Filter template files start with <em>iso_filter_</em>.');
 $GLOBALS['TL_LANG']['tl_module']['iso_cols']					= array('Columns', 'Enter a number of columns to display width-wise in the listing template.');
 $GLOBALS['TL_LANG']['tl_module']['iso_config_id']				= array('Store configuration', 'Select the store configuration that this module will be used for.');
 $GLOBALS['TL_LANG']['tl_module']['iso_config_ids']				= array('Store configurations', 'Select the store configurations that this module will be used for.');

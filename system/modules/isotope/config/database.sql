@@ -702,6 +702,7 @@ CREATE TABLE `tl_module` (
   `iso_filterModules` blob NULL,
   `iso_use_quantity` char(1) NOT NULL default '',
   `iso_perPage` varchar(64) NOT NULL default '',
+  `iso_filterTpl` varchar(64) NOT NULL default '',
   `iso_filterFields` blob NULL,
   `iso_sortingFields` blob NULL,
   `iso_searchFields` blob NULL,

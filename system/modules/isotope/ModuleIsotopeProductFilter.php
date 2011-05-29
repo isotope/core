@@ -33,7 +33,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 	 * Template
 	 * @var string
 	 */
-	protected $strTemplate = 'mod_iso_productfilter';
+	protected $strTemplate = 'iso_filter_default';
 
 	protected $blnCacheRequest = false;
 
@@ -47,7 +47,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		if (TL_MODE == 'BE')
 		{
 			$objTemplate = new BackendTemplate('be_wildcard');
-			$objTemplate->wildcard = '### ISOTOPE ECOMMERCE: FILTER MODULE ###';
+			$objTemplate->wildcard = '### ISOTOPE ECOMMERCE: PRODUCT FILTERS ###';
 			$objTemplate->title = $this->headline;
 			$objTemplate->id = $this->id;
 			$objTemplate->link = $this->name;
@@ -63,6 +63,11 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		if (!$this->iso_enableLimit && !is_array($this->iso_filterFields) && !is_array($this->iso_sortingFields) && !is_array($this->iso_searchFields))
 		{
 			return '';
+		}
+
+		if ($this->iso_filterTpl)
+		{
+			$this->strTemplate = $this->iso_filterTpl;
 		}
 
 		return parent::generate();
@@ -104,23 +109,16 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 			$this->redirect($strUrl . '?isorc=' . $intCacheId);
 		}
 
-
 		$this->Template->id = $this->id;
 		$this->Template->formId = 'iso_filter_' . $this->id;
 		$this->Template->action = $strUrl;
-
+		$this->Template->clearLabel = $GLOBALS['TL_LANG']['MSC']['clearFiltersLabel'];
 
 //		$this->Template->searchable = (is_array($this->iso_searchFields) && count($this->iso_searchFields)) ? true : false;
-
-		$this->Template->filters = $arrFilters;
-
-		$this->Template->for = $this->Input->get('for');
-		$this->Template->defaultSearchText = $GLOBALS['TL_LANG']['MSC']['defaultSearchText'];
-		
-		
-		$this->Template->keywordsLabel = $GLOBALS['TL_LANG']['MSC']['searchTermsLabel'];
-		$this->Template->searchLabel = $GLOBALS['TL_LANG']['MSC']['searchLabel'];
-		$this->Template->clearLabel = $GLOBALS['TL_LANG']['MSC']['clearFiltersLabel'];
+//		$this->Template->for = $this->Input->get('for');
+//		$this->Template->defaultSearchText = $GLOBALS['TL_LANG']['MSC']['defaultSearchText'];
+//		$this->Template->keywordsLabel = $GLOBALS['TL_LANG']['MSC']['searchTermsLabel'];
+//		$this->Template->searchLabel = $GLOBALS['TL_LANG']['MSC']['searchLabel'];
 	}
 	
 	
@@ -148,54 +146,58 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 						'value'			=> $arrInput[$strField],
 					);
 				}
-				
+
 				// Request cache contains wrong value, delete it!
-				elseif (is_array($GLOBALS['ISO_SORTING'][$this->id]) && array_diff(array_keys($GLOBALS['ISO_SORTING'][$this->id]), $this->iso_sortingFields))
+				elseif (is_array($GLOBALS['ISO_FILTERS'][$this->id]) && !in_array($GLOBALS['ISO_FILTERS'][$this->id][$strField]['value'], $arrValues))
 				{
 					$this->blnCacheRequest = true;
-					unset($GLOBALS['ISO_SORTING'][$this->id]);
-					
+					unset($GLOBALS['ISO_FILTERS'][$this->id][$strField]);
+
 					$this->Database->prepare("DELETE FROM tl_iso_requestcache WHERE id=?")->execute($this->Input->get('isorc'));
 				}
 
-				if (!count($arrValues))
+				// No need to generate options if we reload anyway
+				elseif (!$this->blnCacheRequest)
 				{
-					continue;
-				}
-
-				$arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strField];
-
-				if (is_array($GLOBALS['ISO_ATTR'][$arrData['inputType']]['callback']) && count($GLOBALS['ISO_ATTR'][$arrData['inputType']]['callback']))
-				{
-					foreach( $GLOBALS['ISO_ATTR'][$arrData['inputType']]['callback'] as $callback )
+					if (!count($arrValues))
 					{
-						$this->import($callback[0]);
-						$arrData = $this->{$callback[0]}->{$callback[1]}($strField, $arrData, $this);
-					}
-				}
-
-				// Use the default routine to initialize options data
-				$arrWidget = $this->prepareForWidget($arrData, $strField);
-				
-				$arrOptions = $arrWidget['options'];
-				foreach( $arrWidget['options'] as $k => $option )
-				{
-					if (!in_array($option['value'], $arrValues))
-					{
-						unset($arrOptions[$k]);
 						continue;
 					}
 
-					$arrOptions[$k]['default'] = $option['value'] == $GLOBALS['ISO_FILTERS'][$this->id][$strField]['value'] ? '1' : '';
-				}
+					$arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strField];
+	
+					if (is_array($GLOBALS['ISO_ATTR'][$arrData['inputType']]['callback']) && count($GLOBALS['ISO_ATTR'][$arrData['inputType']]['callback']))
+					{
+						foreach( $GLOBALS['ISO_ATTR'][$arrData['inputType']]['callback'] as $callback )
+						{
+							$this->import($callback[0]);
+							$arrData = $this->{$callback[0]}->{$callback[1]}($strField, $arrData, $this);
+						}
+					}
 
-				$arrFilters[$strField] = array
-				(
-					'label'		=> $arrWidget['label'],
-					'options'	=> $arrOptions,
-				);
+					// Use the default routine to initialize options data
+					$arrWidget = $this->prepareForWidget($arrData, $strField);
+
+					$arrOptions = $arrWidget['options'];
+					foreach( $arrWidget['options'] as $k => $option )
+					{
+						if (!in_array($option['value'], $arrValues))
+						{
+							unset($arrOptions[$k]);
+							continue;
+						}
+
+						$arrOptions[$k]['default'] = $option['value'] == $GLOBALS['ISO_FILTERS'][$this->id][$strField]['value'] ? '1' : '';
+					}
+
+					$arrFilters[$strField] = array
+					(
+						'label'		=> $arrWidget['label'],
+						'options'	=> $arrOptions,
+					);
+				}
 			}
-			
+
 			if (count($arrFilters))
 			{
 				$this->Template->hasFilters = true;
