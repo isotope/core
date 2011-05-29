@@ -849,9 +849,9 @@ class IsotopeProduct extends Controller
 		}
 		else
 		{
-			if (is_array($GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['callback']) && count($GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['callback']))
+			if (is_array($GLOBALS['ISO_ATTR'][$arrData['inputType']]['callback']) && count($GLOBALS['ISO_ATTR'][$arrData['inputType']]['callback']))
 			{
-				foreach( $GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['callback'] as $callback )
+				foreach( $GLOBALS['ISO_ATTR'][$arrData['inputType']]['callback'] as $callback )
 				{
 					$this->import($callback[0]);
 					$arrData = $this->{$callback[0]}->{$callback[1]}($strField, $arrData, $this);

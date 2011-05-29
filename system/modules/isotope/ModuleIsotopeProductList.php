@@ -35,8 +35,6 @@ class ModuleIsotopeProductList extends ModuleIsotope
 	 */
 	protected $strTemplate = 'mod_iso_productlist';
 
-	protected $arrParams;
-
 
 	/**
 	 * Display a wildcard in the back end
@@ -87,7 +85,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 	{
 		$arrCategories = $this->findCategories($this->iso_category_scope);
 		
-		$arrFilter = array();
+		$arrFilters = array();
 		$arrSorting = array();
 		$this->iso_filterModules = deserialize($this->iso_filterModules, true);
 		
@@ -97,9 +95,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		{
 			if (is_array($GLOBALS['ISO_FILTERS'][$module]))
 			{
-				// @todo implement filters!
-				var_dump($GLOBALS['ISO_FILTERS'][$module]);
-				throw new Exception('Filters are not yet implemented');
+				$arrFilters = array_merge($arrFilters, $GLOBALS['ISO_FILTERS'][$module]);
 			}
 
 			if (is_array($GLOBALS['ISO_SORTING'][$module]))
@@ -113,9 +109,9 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			}
 		}
 
-		$objProductIds = $this->Database->prepare("SELECT DISTINCT p.id FROM tl_iso_product_categories c, tl_iso_products p WHERE p.id=c.pid" . (BE_USER_LOGGED_IN ? '' : " AND published='1'") . " AND c.page_id IN (" . implode(',', $arrCategories) . ")")->execute($this->arrParams);
+		$objProductIds = $this->Database->prepare("SELECT DISTINCT p.id FROM tl_iso_product_categories c, tl_iso_products p WHERE p.id=c.pid" . (BE_USER_LOGGED_IN ? '' : " AND published='1'") . " AND c.page_id IN (" . implode(',', $arrCategories) . ")")->execute();
 
-		$arrProducts = $this->getProducts($objProductIds->fetchEach('id'), true, $arrFilter, $arrSorting);
+		$arrProducts = $this->getProducts($objProductIds->fetchEach('id'), true, $arrFilters, $arrSorting);
 
 		return $arrProducts;
 	}

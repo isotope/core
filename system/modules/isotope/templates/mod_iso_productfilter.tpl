@@ -34,12 +34,19 @@
 <?php endif; ?>
 
 
-            <?php if($this->filters): ?>
-                <input type="hidden" name="filters" value="<?php echo $this->filterFields; ?>" />
-                <?php foreach($this->filters as $filter): ?>
-                <?php  echo $filter['html']; ?>
-                <?php endforeach; ?>
-            <?php endif; ?>
+<?php if ($this->hasFilters): ?>
+<div class="filters">
+<?php foreach( $this->filterOptions as $field => $data ): ?>
+<label for="ctrl_filter_<?php echo $field; ?>_<?php echo $this->id; ?>"><?php echo $data['label']; ?></option>
+<select name="filter[<?php echo $field; ?>]" id="ctrl_filter_<?php echo $field; ?>_<?php echo $this->id; ?>" class="select" onchange="<?php echo $this->formId; ?>.submit();">
+<option value="">-</option>
+<?php foreach( $data['options'] as $option ): ?>
+<option value="<?php echo $option['value']; ?>"<?php if($option['default']) echo ' selected="selected"'; ?>><?php echo $option['label']; ?></option>
+<?php endforeach; ?>
+</select>
+<?php endforeach; ?>
+</div>
+<?php endif; ?>
 
 
             <?php if ($this->searchable): ?>
@@ -48,11 +55,11 @@
                 <noscript><input type="text" name="for" id="ctrl_for" class="text" value="<?php echo $this->for; ?>" /></noscript>
                 <input type="text" name="for" id="ctrl_for" class="text" value="<?php echo ($this->for ? $this->for : $this->defaultSearchText); ?>" onblur="if (this.value=='') { this.value='<?php echo $this->defaultSearchText; ?>'; }" onfocus="if (this.value=='<?php echo $this->defaultSearchText; ?>') { this.value=''; this.select(); }" />
                 </div>
+                <div class="submit_container">
+    	            <button type="submit" name="search" id="ctrl_search"><?php echo $this->searchLabel; ?></button>
+	            </div>
             <?php endif; ?>
 
-            <div class="submit_container">
-                <button type="submit" name="search" id="ctrl_search"><?php echo $this->searchLabel; ?></button>
-            </div>
 
 <a href="<?php echo $this->action; ?>" class="clear_filters"><?php echo $this->clearLabel; ?></a>
 <div class="clear">&nbsp;</div>

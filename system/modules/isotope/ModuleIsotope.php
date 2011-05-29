@@ -152,7 +152,7 @@ abstract class ModuleIsotope extends Module
 	 * @param	bool			$blnCheckAvailability
 	 * @return	array
 	 */
-	protected function getProducts($objProductData, $blnCheckAvailability=true, array $arrFilter=array(), array $arrSorting=array())
+	protected function getProducts($objProductData, $blnCheckAvailability=true, array $arrFilters=array(), array $arrSorting=array())
 	{
 		if (is_array($objProductData) && count($objProductData))
 		{
@@ -176,10 +176,10 @@ abstract class ModuleIsotope extends Module
 			}
 		}
 
-		if (count($arrFilter))
+		if (count($arrFilters))
 		{
 			global $filterConfig;
-			$filterConfig = $arrFilter;
+			$filterConfig = $arrFilters;
 			$arrProducts = array_filter($arrProducts, array($this, 'filterProducts'));
 		}
 
