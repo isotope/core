@@ -149,7 +149,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'tools' => array
 			(
 				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['tools'],
-				'icon'				=> 'system/modules/isotope/html/application-task.png',
+				'icon'				=> 'system/modules/isotope/html/lightning.png',
 				'attributes'		=> 'class="invisible isotope-contextmenu"',
 			),
 			'quick_edit' => array
