@@ -305,9 +305,12 @@ abstract class ModuleIsotope extends Module
 			return true;
 		}
 
+		$arrGroups = array();
+
 		foreach( $filterConfig as $filter )
 		{
 			$varValue = $objProduct->{$filter['attribute']};
+			$blnMatch = false;
 
 			// If the attribute is not set for this product, the filter does not match
 			if (is_null($varValue))
@@ -319,34 +322,34 @@ abstract class ModuleIsotope extends Module
 			{
 				case 'like':
 				case 'search':
-					if (stripos($varValue, $filter['value']) === false)
+					if (stripos($varValue, $filter['value']) !== false)
 					{
-						return false;
+						$blnMatch = true;
 					}
 					break;
 
 				case '>':
 				case 'gt':
-					if ($varValue < $filter['value'])
+					if ($varValue > $filter['value'])
 					{
-						return false;
+						$blnMatch = true;
 					}
 					break;
 
 				case '<':
 				case 'lt':
-					if ($varValue > $filter['value'])
+					if ($varValue < $filter['value'])
 					{
-						return false;
+						$blnMatch = true;
 					}
 					break;
 
 				case '!=':
 				case 'neq':
 				case 'not':
-					if ($varValue == $filter['value'])
+					if ($varValue != $filter['value'])
 					{
-						return false;
+						$blnMatch = true;
 					}
 					break;
 
@@ -354,11 +357,25 @@ abstract class ModuleIsotope extends Module
 				case '==':
 				case 'eq':
 				default:
-					if ($varValue != $filter['value'])
+					if ($varValue == $filter['value'])
 					{
-						return false;
+						$blnMatch = true;
 					}
 			}
+			
+			if ($filter['group'])
+			{
+				$arrGroups[$filter['group']] = $arrGroups[$filter['group']] ? $arrGroups[$filter['group']] : $blnMatch;
+			}
+			elseif (!$blnMatch)
+			{
+				return false;
+			}
+		}
+		
+		if (count($arrGroups) && in_array(false, $arrGroups))
+		{
+			return false;
 		}
 
 		return true;
