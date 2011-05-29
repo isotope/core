@@ -193,6 +193,18 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 			'inputType'				=> 'text',
 			'eval'					=> array('rgxp'=>'date', 'datepicker'=>$this->getDatePickerString(), 'tl_class'=>'w50 wizard'),
 		),
+		'payment_id' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['payment_id'],
+			'filter'				=> true,
+			'foreignKey'			=> 'tl_iso_payment_modules.name',
+		),
+		'shipping_id' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['shipping_id'],
+			'filter'				=> true,
+			'foreignKey'			=> 'tl_iso_shipping_modules.name',
+		),
 		'billing_address' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['billing_address'],
