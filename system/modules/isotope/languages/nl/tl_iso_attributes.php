@@ -83,7 +83,6 @@ $GLOBALS['TL_LANG']['tl_iso_attributes']['alpha'][1] = 'Staat alphabetische kara
 $GLOBALS['TL_LANG']['tl_iso_attributes']['alnum'][0] = 'Alfanumerieke karakters';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['alnum'][1] = 'Staat alphabetische en numerieke karakters toe, behalve min (-), punt (.) en spatie( ).';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['extnd'][0] = 'Uitgebreide alfanumerieke tekens';
-$GLOBALS['TL_LANG']['tl_iso_attributes']['extnd']['Allows everything except special characters which are usually encoded for security reasons (#/()<] = ').';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['date'][0] = 'Datum';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['date'][1] = 'Controleert of de invoer van de datumnotatie gelijk is de standaard datumnotatie.';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['time'][0] = 'Tijd';

@@ -204,7 +204,7 @@ class ModuleIsotopeTranslation extends BackendModule
 			elseif ($arrSession['svn_diff'])
 			{
 				$objRequest = new Request();
-				$objRequest->send('http://winans.svn.beanstalkapp.com/isotope/trunk/system/modules/' . $arrSession['module']. '/languages/' . $this->User->translation . '/' . $arrSession['file']);
+				$objRequest->send('https://winans.svn.beanstalkapp.com/isotope/trunk/system/modules/' . $arrSession['module']. '/languages/' . $this->User->translation . '/' . $arrSession['file']);
 
 				if ($objRequest->code != 200)
 				{
@@ -215,6 +215,11 @@ class ModuleIsotopeTranslation extends BackendModule
 				{
 					$data = explode("\n", $objRequest->response);
 					$this->Template->diff = $this->parse($data);
+					
+					if (!is_array($this->Template->diff))
+					{
+						$this->Template->error = $GLOBALS['TL_LANG']['MSC']['translationSVNError'];
+					}
 				}
 
 				$this->Template->diff_headline = sprintf($GLOBALS['TL_LANG']['MSC']['translationDiffHeadline'], $arrSession['module'], $this->User->translation, $arrSession['file']);
@@ -250,6 +255,8 @@ class ModuleIsotopeTranslation extends BackendModule
 
 	private function parse($data)
 	{
+		$arrVariables = array();
+
 		foreach ($data as $i => $line)
 		{
 			// Unset comments and empty lines
@@ -261,47 +268,39 @@ class ModuleIsotopeTranslation extends BackendModule
 			// Save language variable
 			if(preg_match('@\$GLOBALS(\[.*?\])*@', $line, $match))
 			{
-				$table = $match[0];
+				$strKey = $match[0];
 			}
 			else
 			{
 				return 'Line ' . ++$i . ': ' . $line;
 			}
-
-			if(preg_match("@\=[ \t]*'(.*?(?<!\\\\))'@", $line, $match))
+			
+			if (eval($line) === false)
 			{
-				$return[$table] = str_replace("\'", "'", $match[1]);
+				return 'Line ' . ++$i . ': ' . $line;
 			}
-			elseif(preg_match('@\=[ \t]*"(.*?(?<!\\\\))"@', $line, $match))
-			{
-				$return[$table] = str_replace('\"', '"', $match[1]);
-			}
-
-			elseif(preg_match('@\=[ \t]*array\((.*?)\)[ \t]*;@', $line, $match))
-			{
-				$vars = trimsplit('([\'"] *, *)', $match[1]);
-
-				foreach( $vars as $key => $var )
-				{
-					$kv = trimsplit('=>', $var);
-
-					if (count($kv) > 1)
-					{
-						$key = trim($kv[0]);
-						$var = $kv[1];
-					}
-
-					$var = trim($var, '\'" ');
-
-					if (strlen($var))
-					{
-						$return[$table . "[".$key."]"] = str_replace(array("\'", '\"'), array("'", '"'), $var);
-					}
-				}
-			}
+			
+			$varValue = eval('return '.$strKey.';');
+			
+			$this->parseVar($varValue, $strKey, $arrVariables);
 		}
 
-		return $return;
+		return $arrVariables;
+	}
+	
+	
+	private function parseVar($varValue, $strKey, &$arrVariables)
+	{
+		if (is_array($varValue))
+		{
+			foreach( $varValue as $k => $v )
+			{
+				$this->parseVar($v, $strKey.'['.$k.']', $arrVariables);
+			}
+			return;
+		}
+		
+		$arrVariables[$strKey] = $varValue;
 	}
 
 
