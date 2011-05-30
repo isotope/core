@@ -137,6 +137,13 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		{
 			$total = count($arrProducts);
 			$page = $this->Input->get('page') ? $this->Input->get('page') : 1;
+
+			// Check the maximum page number
+			if ($page > ($total/$this->perPage))
+			{
+				$page = ceil($total/$this->perPage);
+			}
+
 			$offset = ($page - 1) * $this->perPage;
 
 			$objPagination = new Pagination($total, $this->perPage);
