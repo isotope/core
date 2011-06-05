@@ -154,9 +154,12 @@ abstract class ModuleIsotope extends Module
 	 */
 	protected function getProducts($objProductData, $blnCheckAvailability=true, array $arrFilters=array(), array $arrSorting=array())
 	{
+		// $objProductData can also be an array of product ids
 		if (is_array($objProductData) && count($objProductData))
 		{
-			$objProductData = $this->Database->query("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS product_class FROM tl_iso_products WHERE id IN (" . implode(',', array_map('intval', $objProductData)) . ") ORDER BY id=" . implode(' DESC, id=', $objProductData) . " DESC");
+			$objProductData = $this->Database->query($this->Isotope->getProductSelect() . "
+														WHERE p1.id IN (" . implode(',', array_map('intval', $objProductData)) . ")
+														ORDER BY p1.id=" . implode(' DESC, p1.id=', $objProductData) . " DESC");
 		}
 
 		if (!($objProductData instanceof Database_Result) || !$objProductData->numRows)

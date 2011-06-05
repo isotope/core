@@ -34,6 +34,11 @@ class Isotope extends Controller
 	 * @var object
 	 */
 	protected static $objInstance;
+	
+	/**
+	 * Cache select statement to load product data
+	 */
+	protected $strSelect;
 
 
 	public $Config;
@@ -1094,6 +1099,38 @@ class Isotope extends Controller
 		}
 		
 		return $arrCurrent;
+	}
+	
+	
+	/**
+	 * Return select statement to load product data including multilingual fields
+	 *
+	 * @param	void
+	 * @return	string
+	 */
+	public function getProductSelect()
+	{
+		if ($this->strSelect == '')
+		{
+			$arrSelect = array("'".$GLOBALS['TL_LANGUAGE']."' AS language");
+	
+			foreach( $GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $attribute => $arrData )
+			{
+				if ($arrData['attributes']['multilingual'])
+				{
+					$arrSelect[] = "IFNULL(p2.$attribute, p1.$attribute) AS $attribute";
+				}
+			}
+			
+			$this->strSelect = "
+SELECT p1.*,
+	" . implode(', ', $arrSelect) . ",
+	(SELECT class FROM tl_iso_producttypes WHERE p1.type=tl_iso_producttypes.id) AS product_class
+FROM tl_iso_products p1
+LEFT OUTER JOIN tl_iso_products p2 ON p1.id=p2.pid AND p2.language='" . $GLOBALS['TL_LANGUAGE'] . "'";
+		}
+		
+		return $this->strSelect;
 	}
 	
 	

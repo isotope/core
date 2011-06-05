@@ -59,6 +59,8 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			$this->iso_cols = 1;
 		}
 
+		$this->iso_filterModules = deserialize($this->iso_filterModules, true);
+
 		return parent::generate();
 	}
 
@@ -73,47 +75,6 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		}
 
 		return '';
-	}
-
-
-	/**
-	 * Find all products we need to list.
-	 * @param	void
-	 * @return	array
-	 */
-	protected function findProducts()
-	{
-		$arrCategories = $this->findCategories($this->iso_category_scope);
-		
-		$arrFilters = array();
-		$arrSorting = array();
-		$this->iso_filterModules = deserialize($this->iso_filterModules, true);
-		
-		$arrModules = array_reverse($this->iso_filterModules);
-		
-		foreach( $arrModules as $module )
-		{
-			if (is_array($GLOBALS['ISO_FILTERS'][$module]))
-			{
-				$arrFilters = array_merge($arrFilters, $GLOBALS['ISO_FILTERS'][$module]);
-			}
-
-			if (is_array($GLOBALS['ISO_SORTING'][$module]))
-			{
-				$arrSorting = array_merge($arrSorting, $GLOBALS['ISO_SORTING'][$module]);
-			}
-
-			if ($GLOBALS['ISO_LIMIT'][$module] > 0)
-			{
-				$this->perPage = $GLOBALS['ISO_LIMIT'][$module];
-			}
-		}
-
-		$objProductIds = $this->Database->prepare("SELECT DISTINCT p.id FROM tl_iso_product_categories c, tl_iso_products p WHERE p.id=c.pid" . (BE_USER_LOGGED_IN ? '' : " AND published='1'") . " AND c.page_id IN (" . implode(',', $arrCategories) . ")")->execute();
-
-		$arrProducts = $this->getProducts($objProductIds->fetchEach('id'), true, $arrFilters, $arrSorting);
-
-		return $arrProducts;
 	}
 
 
@@ -189,6 +150,58 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		}
 
 		$this->Template->products = $arrBuffer;
+	}
+
+
+	/**
+	 * Find all products we need to list.
+	 * @param	void
+	 * @return	array
+	 */
+	protected function findProducts()
+	{
+		$arrCategories = $this->findCategories($this->iso_category_scope);
+
+		$objProductData = $this->Database->execute($this->Isotope->getProductSelect() . " WHERE p1.published='1' AND p1.language='' AND p1.id IN (SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . "))");
+
+		list($arrFilters, $arrSorting) = $this->getFiltersAndSorting();
+
+		$arrProducts = $this->getProducts($objProductData, true, $arrFilters, $arrSorting);
+
+		return $arrProducts;
+	}
+	
+	
+	protected function getFiltersAndSorting()
+	{
+		if (!is_array($this->iso_filterModules))
+		{
+			return array(array(), array());
+		}
+
+		$arrFilters = array();
+		$arrSorting = array();
+		$arrModules = array_reverse($this->iso_filterModules);
+
+		foreach( $arrModules as $module )
+		{
+			if (is_array($GLOBALS['ISO_FILTERS'][$module]))
+			{
+				$arrFilters = array_merge($arrFilters, $GLOBALS['ISO_FILTERS'][$module]);
+			}
+
+			if (is_array($GLOBALS['ISO_SORTING'][$module]))
+			{
+				$arrSorting = array_merge($arrSorting, $GLOBALS['ISO_SORTING'][$module]);
+			}
+
+			if ($GLOBALS['ISO_LIMIT'][$module] > 0)
+			{
+				$this->perPage = $GLOBALS['ISO_LIMIT'][$module];
+			}
+		}
+
+		return array($arrFilters, $arrSorting);
 	}
 }
 

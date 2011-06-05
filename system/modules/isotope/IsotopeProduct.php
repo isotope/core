@@ -128,7 +128,7 @@ class IsotopeProduct extends Controller
 		parent::__construct();
 		$this->import('Database');
 		$this->import('Isotope');
-		
+
 		if (FE_USER_LOGGED_IN)
 		{
 			$this->import('FrontendUser', 'User');
@@ -177,14 +177,13 @@ class IsotopeProduct extends Controller
 			}
 		}
 
-
 		if (!$this->blnLocked)
 		{
 			if ($this->arrType['variants'])
 			{
 				// Find all possible variant options
 				$objVariant = clone $this;
-				$objVariants = $this->Database->execute("SELECT * FROM tl_iso_products WHERE pid={$this->arrData['id']} AND language='' AND published='1'");
+				$objVariants = $this->Database->execute($this->Isotope->getProductSelect() . " WHERE p1.pid={$this->arrData['id']} AND p1.language='' AND p1.published='1'");
 				while( $objVariants->next() )
 				{
 					$objVariant->loadVariantData($objVariants->row(), false);
@@ -256,8 +255,6 @@ class IsotopeProduct extends Controller
 				$this->arrData['original_price'] = $this->arrData['price'];
 			}
 		}
-
-		$this->loadLanguage();
 
 		if ($arrData['pid'] > 0)
 		{
@@ -331,7 +328,7 @@ class IsotopeProduct extends Controller
 				global $objPage;
 				if (TL_MODE == 'FE' && is_object($objPage))
 				{
-					$arrCategories = $this->getChildRecords($objPage->rootId, 'tl_page', false);
+					$arrCategories = $this->getChildRecords($objPage->rootId, 'tl_page');
 
 					if (!count($arrCategories) || !$this->Database->execute("SELECT COUNT(*) AS available FROM tl_iso_product_categories WHERE pid=" . ($this->pid ? $this->pid : $this->id) . " AND page_id IN (" . implode(',', $arrCategories) . ")")->available)
 						return false;
@@ -1050,7 +1047,7 @@ class IsotopeProduct extends Controller
 	}
 
 
-	public function loadVariantData($arrData, $blnLoadLanguage=true)
+	public function loadVariantData($arrData)
 	{
 		$arrInherit = deserialize($arrData['inherit'], true);
 
@@ -1083,63 +1080,6 @@ class IsotopeProduct extends Controller
 
 		// Unset arrDownloads cache
 		$this->arrDownloads = null;
-
-		if ($blnLoadLanguage)
-		{
-			$this->loadLanguage($arrInherit);
-		}
-	}
-
-
-	/**
-	 * Find language data for a product/variant if available based on the current page language
-	 *
-	 * @param	array	$arrInherit
-	 * @return	void
-	 */
-	protected function loadLanguage($arrInherit=array())
-	{
-		// This should never happen, but make sure, or we might fetch a variant product
-		if ($GLOBALS['TL_LANGUAGE'] == '')
-			return;
-
-		$objLanguage = $this->Database->prepare("SELECT * FROM {$this->strTable} WHERE pid={$this->id} AND language=?")->limit(1)->execute($GLOBALS['TL_LANGUAGE']);
-
-		if ($objLanguage->numRows)
-		{
-			$this->loadLanguageData($objLanguage->fetchAssoc(), $arrInherit);
-		}
-	}
-
-
-	/**
-	 * Load language data
-	 *
-	 * @param	array	$arrData
-	 * @param	array	$arrInherit
-	 * @return	void
-	 */
-	public function loadLanguageData($arrData, $arrInherit=array())
-	{
-		$arrAttributes = $this->arrData['pid'] > 0 ? $this->arrVariantAttributes : $this->arrAttributes;
-
-		foreach( $arrAttributes as $attribute )
-		{
-			if (in_array($attribute, $arrInherit))
-				continue;
-
-			if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$attribute]['attributes']['multilingual'])
-			{
-				if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$attribute]['inputType'] == 'mediaManager')
-				{
-					$this->arrData[$attribute] = $this->Isotope->mergeMediaData(deserialize($arrData[$attribute]), deserialize($this->arrData[$attribute]));
-				}
-				else
-				{
-					$this->arrData[$attribute] = $arrData[$attribute];
-				}
-			}
-		}
 	}
 }
 

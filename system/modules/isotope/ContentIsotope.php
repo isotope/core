@@ -67,23 +67,31 @@ abstract class ContentIsotope extends ContentElement
 	 */
 	protected function getProduct($objProductData, $blnCheckAvailability=true)
 	{
-		global $objPage;
-
 		if (is_numeric($objProductData))
 		{
-			$objProductData = $this->Database->query("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS product_class FROM tl_iso_products WHERE id=$objProductData");
+			$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS product_class FROM tl_iso_products WHERE language='' AND id=?")->execute($objProductData);
+		}
+
+		if (!($objProductData instanceof Database_Result) || !$objProductData->numRows)
+		{
+			return null;
 		}
 
 		$strClass = $GLOBALS['ISO_PRODUCT'][$objProductData->product_class]['class'];
 
 		if ($strClass == '' || !$this->classFileExists($strClass))
+		{
 			return null;
+		}
 
 		$objProduct = new $strClass($objProductData->row());
 
 		if ($blnCheckAvailability && !$objProduct->available)
+		{
 			return null;
+		}
 
+		global $objPage;
 		$objProduct->reader_jumpTo = $this->iso_reader_jumpTo ? $this->iso_reader_jumpTo : $objPage->id;
 
 		return $objProduct;
@@ -95,25 +103,11 @@ abstract class ContentIsotope extends ContentElement
 	 */
 	protected function getProductByAlias($strAlias, $blnCheckAvailability=true)
 	{
-		global $objPage;
-
-		$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS product_class FROM tl_iso_products WHERE pid=0 AND " . (is_numeric($strAlias) ? 'id' : 'alias') . "=?")
+		$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS product_class FROM tl_iso_products WHERE pid=0 AND language='' AND " . (is_numeric($strAlias) ? 'id' : 'alias') . "=?")
 										 ->limit(1)
 										 ->executeUncached($strAlias);
 
-		$strClass = $GLOBALS['ISO_PRODUCT'][$objProductData->product_class]['class'];
-
-		if ($strClass == '' || !$this->classFileExists($strClass))
-			return null;
-
-		$objProduct = new $strClass($objProductData->row());
-
-		if ($blnCheckAvailability && !$objProduct->available)
-			return null;
-
-		$objProduct->reader_jumpTo = $this->iso_reader_jumpTo ? $this->iso_reader_jumpTo : $objPage->id;
-
-		return $objProduct;
+		return $this->getProduct($objProductData, $blnCheckAvailability);
 	}
 
 
@@ -124,22 +118,31 @@ abstract class ContentIsotope extends ContentElement
 	 */
 	protected function getProducts($arrIds, $blnCheckAvailability=true)
 	{
-		if (!is_array($arrIds) || !count($arrIds))
+		// $objProductData can also be an array of product ids
+		if (is_array($objProductData) && count($objProductData))
+		{
+			$objProductData = $this->Database->query($this->Isotope->getProductSelect() . "
+														WHERE p1.id IN (" . implode(',', array_map('intval', $objProductData)) . ")
+														ORDER BY p1.id=" . implode(' DESC, p1.id=', $objProductData) . " DESC");
+		}
+
+		if (!($objProductData instanceof Database_Result) || !$objProductData->numRows)
+		{
 			return array();
+		}
 
 		$arrProducts = array();
-		$objProductData = $this->Database->query("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS product_class FROM tl_iso_products WHERE id IN (" . implode(',', $arrIds) . ") ORDER BY id=" . implode(' DESC, id=', $arrIds) . " DESC");
 
 		while( $objProductData->next() )
 		{
 			$objProduct = $this->getProduct($objProductData, $blnCheckAvailability);
 
-			if (is_object($objProduct))
+			if ($objProduct instanceof IsotopeProduct)
 			{
-				$arrProducts[] = $objProduct;
+				$arrProducts[$objProductData->id] = $objProduct;
 			}
 		}
-
+		
 		return $arrProducts;
 	}
 }

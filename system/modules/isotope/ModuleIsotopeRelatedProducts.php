@@ -26,14 +26,8 @@
  */
 
 
-class ModuleIsotopeRelatedProducts extends ModuleIsotope
+class ModuleIsotopeRelatedProducts extends ModuleIsotopeProductList
 {
-
-	/**
-	 * Template
-	 * @var string
-	 */
-	protected $strTemplate = 'mod_iso_relatedproducts';
 
 	public function generate()
 	{
@@ -56,17 +50,22 @@ class ModuleIsotopeRelatedProducts extends ModuleIsotope
 		$this->iso_related_categories = deserialize($this->iso_related_categories);
 
 		if (!is_array($this->iso_related_categories) || !count($this->iso_related_categories))
+		{
 			return '';
+		}
 
 		return parent::generate();
 	}
 
 
-	protected function compile()
+	protected function findProducts()
 	{
+		$strAlias = $this->Input->get('product');
+		
 		$arrIds = array(0);
 		$arrJumpTo = array();
-		$objCategories = $this->Database->prepare("SELECT *, (SELECT jumpTo FROM tl_iso_related_categories WHERE id=category) AS jumpTo FROM tl_iso_related_products WHERE pid IN (SELECT id FROM tl_iso_products WHERE (alias=? OR id=?)) AND category IN (" . implode(',', $this->iso_related_categories) . ") ORDER BY id=" . implode(' DESC, id=', $this->iso_related_categories) . " DESC")->execute($this->Input->get('product'), (int)$this->Input->get('product'));
+		
+		$objCategories = $this->Database->prepare("SELECT *, (SELECT jumpTo FROM tl_iso_related_categories WHERE id=category) AS jumpTo FROM tl_iso_related_products WHERE pid IN (SELECT id FROM tl_iso_products WHERE " . (is_numeric($strAlias) ? 'id' : 'alias') . "=?) AND category IN (" . implode(',', $this->iso_related_categories) . ") ORDER BY id=" . implode(' DESC, id=', $this->iso_related_categories) . " DESC")->execute($strAlias);
 
 		while( $objCategories->next() )
 		{
@@ -83,48 +82,7 @@ class ModuleIsotopeRelatedProducts extends ModuleIsotope
 			}
 		}
 
-		$objProductIds = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE published='1' AND id IN (" . implode(',', $arrIds) . ")");
-
-		// Add pagination
-		if ($this->perPage > 0)
-		{
-			$total = $objProductIds->execute()->numRows;
-			$page = $this->Input->get('page') ? $this->Input->get('page') : 1;
-			$offset = ($page - 1) * $this->perPage;
-
-			$objPagination = new Pagination($total, $this->perPage);
-			$this->Template->pagination = $objPagination->generate("\n  ");
-
-			$objProductIds->limit($this->perPage, $offset);
-		}
-
-		$arrProducts = $this->getProducts($objProductIds->execute()->fetchEach('id'));
-
-		if (!is_array($arrProducts) || !count($arrProducts))
-		{
-			return;
-		}
-
-		global $objPage;
-		$arrBuffer = array();
-
-		foreach( $arrProducts as $i => $objProduct )
-		{
-			$objProduct->reader_jumpTo = $arrJumpTo[$objProduct->id] ? $arrJumpTo[$objProduct->id] : $objPage->id;
-			$arrBuffer[] = array
-			(
-				'class'		=> 'product' . (($i%2 ? ' even' : ' odd') . ($i == 0 ? ' product_first' : '')),
-				'html'		=> $objProduct->generate((strlen($this->iso_list_layout) ? $this->iso_list_layout : $objProduct->list_template), $this),
-			);
-		}
-
-		// Add "product_last" css class
-		if (count($arrBuffer))
-		{
-			$arrBuffer[count($arrBuffer)-1]['class'] .= ' product_last';
-		}
-
-		$this->Template->products = $arrBuffer;
+		return $this->getProducts($arrIds);
 	}
 }
 
