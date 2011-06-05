@@ -24,13 +24,13 @@
  */
 
 
-#main .isotope-logo
+#tl_moverview .isotope-logo
 {
 	display: block !important;
 	padding: 5px 2px 3px 0
 }
 
-#main .isotope-title
+#tl_moverview .isotope-title
 {
 	display: none !important
 }
