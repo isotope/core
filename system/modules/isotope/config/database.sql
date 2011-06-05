@@ -37,7 +37,7 @@ CREATE TABLE `tl_iso_products` (
   `start` varchar(10) NOT NULL default '',
   `stop` varchar(10) NOT NULL default '',
   PRIMARY KEY  (`id`),
-  KEY `pid` (`pid`, `language`)
+  KEY `pid` (`pid`, `language`, `published`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 

@@ -1710,6 +1710,15 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 
 			$GLOBALS['TL_DCA']['tl_iso_products']['fields'][$objAttributes->field_name] = $arrData;
 		}
+		
+		$GLOBALS['ISO_CONFIG']['variant_options'] = array();
+		foreach( $GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $attribute => $config )
+		{
+			if ($config['attributes']['variant_option'])
+			{
+				$GLOBALS['ISO_CONFIG']['variant_options'][] = $attribute;
+			}
+		}
 	}
 }
 

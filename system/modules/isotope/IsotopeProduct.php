@@ -324,16 +324,6 @@ class IsotopeProduct extends Controller
 				if ($this->arrType['prices'] && (($this->pid > 0 && in_array('price', $this->arrVariantAttributes)) || in_array('price', $this->arrAttributes)) && $this->arrData['price'] === null)
 					return false;
 
-				// Check if the product is in any category in the current store (page tree)
-				global $objPage;
-				if (TL_MODE == 'FE' && is_object($objPage))
-				{
-					$arrCategories = $this->getChildRecords($objPage->rootId, 'tl_page');
-
-					if (!count($arrCategories) || !$this->Database->execute("SELECT COUNT(*) AS available FROM tl_iso_product_categories WHERE pid=" . ($this->pid ? $this->pid : $this->id) . " AND page_id IN (" . implode(',', $arrCategories) . ")")->available)
-						return false;
-				}
-
 				return true;
 				break;
 
@@ -1047,7 +1037,7 @@ class IsotopeProduct extends Controller
 	}
 
 
-	public function loadVariantData($arrData)
+	public function loadVariantData($arrData, $arrInherit=false)
 	{
 		$arrInherit = deserialize($arrData['inherit'], true);
 
@@ -1070,13 +1060,7 @@ class IsotopeProduct extends Controller
 		}
 
 		// Load variant options
-		foreach( $this->arrAttributes as $attribute )
-		{
-			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
-			{
-				$this->arrOptions[$attribute] = $arrData[$attribute];
-			}
-		}
+		$this->arrOptions = array_merge($this->arrOptions, array_intersect_key($arrData, array_flip(array_intersect($this->arrAttributes, $GLOBALS['ISO_CONFIG']['variant_options']))));
 
 		// Unset arrDownloads cache
 		$this->arrDownloads = null;
