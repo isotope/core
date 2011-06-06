@@ -101,7 +101,7 @@ abstract class ModuleIsotope extends Module
 	{
 		if (is_numeric($objProductData))
 		{
-			$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS product_class FROM tl_iso_products WHERE language='' AND id=?")->execute($objProductData);
+			$objProductData = $this->Database->prepare($this->Isotope->getProductSelect() . " WHERE p1.language='' AND p1.id=?")->execute($objProductData);
 		}
 
 		if (!($objProductData instanceof Database_Result) || !$objProductData->numRows)
@@ -138,7 +138,7 @@ abstract class ModuleIsotope extends Module
 	 */
 	protected function getProductByAlias($strAlias, $blnCheckAvailability=true)
 	{
-		$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS product_class FROM tl_iso_products WHERE pid=0 AND language='' AND " . (is_numeric($strAlias) ? 'id' : 'alias') . "=?")
+		$objProductData = $this->Database->prepare($this->Isotope->getProductSelect() . " WHERE p1.pid=0 AND p1.language='' AND p1." . (is_numeric($strAlias) ? 'id' : 'alias') . "=?")
 										 ->limit(1)
 										 ->executeUncached($strAlias);
 
@@ -157,7 +157,7 @@ abstract class ModuleIsotope extends Module
 		// $objProductData can also be an array of product ids
 		if (is_array($objProductData) && count($objProductData))
 		{
-			$objProductData = $this->Database->query($this->Isotope->getProductSelect() . "
+			$objProductData = $this->Database->execute($this->Isotope->getProductSelect() . "
 														WHERE p1.id IN (" . implode(',', array_map('intval', $objProductData)) . ")
 														ORDER BY p1.id=" . implode(' DESC, p1.id=', $objProductData) . " DESC");
 		}
@@ -254,7 +254,7 @@ abstract class ModuleIsotope extends Module
 	/**
 	 * The ids of all pages we take care of. This is what should later be used eg. for filter data.
 	 */
-	protected function findCategories($strCategoryScope)
+	protected function findCategoryProducts($strCategoryScope)
 	{
 		if ($this->defineRoot && $this->rootPage > 0)
 		{
@@ -268,29 +268,46 @@ abstract class ModuleIsotope extends Module
 		switch($strCategoryScope)
 		{
 			case 'global':
-				return array_merge($this->getChildRecords($objPage->rootId, 'tl_page', true), array($objPage->rootId));
+				$arrCategories = $this->getChildRecords($objPage->rootId, 'tl_page');
+				$arrCategories[] = $objPage->rootId;
+				break;
 
 			case 'current_and_first_child':
-				return array_merge($this->Database->execute("SELECT id FROM tl_page WHERE pid={$objPage->id}")->fetchEach('id'), array($objPage->id));
+				$arrCategories = $this->Database->execute("SELECT id FROM tl_page WHERE pid={$objPage->id}")->fetchEach('id');
+				$arrCategories[] = $objPage->id;
+				break;
 
 			case 'current_and_all_children':
-				return array_merge($this->getChildRecords($objPage->id, 'tl_page', true), array($objPage->id));
+				$arrCategories = $this->getChildRecords($objPage->id, 'tl_page');
+				$arrCategories[] = $objPage->id;
+				break;
 
 			case 'parent':
-				return array($objPage->pid);
+				$arrCategories = array($objPage->pid);
+				break;
 
 			case 'product':
 				$objProduct = $this->getProductByAlias($this->Input->get('product'));
 
-				if (!$objProduct)
+				if ($objProduct instanceof IsotopeProduct)
+				{
+					$arrCategories = $objProduct->categories;
+				}
+				else
+				{
 					return array(0);
-
-				return $objProduct->categories;
-
-			default:
+				}
+				break;
+				
 			case 'current_category':
-				return array($objPage->id);
+			default:
+				$arrCategories = array($objPage->id);
+				break;
 		}
+
+		$arrIds = $this->Database->execute("SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . ")")->fetchEach('pid');
+		
+		return count($arrIds) ? $arrIds : array(0);
 	}
 
 

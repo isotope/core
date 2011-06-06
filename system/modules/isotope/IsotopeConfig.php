@@ -79,20 +79,9 @@ class IsotopeConfig extends Model
 	}
 
 
-	/**
-	 * Fetch the current store configuration.
-	 *
-	 * @access public
-	 * @return void
-	 */
-	public function __construct($intConfig)
+	public function __construct()
 	{
-		parent::__construct();
-
-		if (!$this->findBy('id', $intConfig))
-		{
-			throw new Exception('Store configuration not found');
-		}
+		return parent::__construct();
 	}
 
 

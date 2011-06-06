@@ -121,7 +121,7 @@ abstract class ContentIsotope extends ContentElement
 		// $objProductData can also be an array of product ids
 		if (is_array($objProductData) && count($objProductData))
 		{
-			$objProductData = $this->Database->query($this->Isotope->getProductSelect() . "
+			$objProductData = $this->Database->execute($this->Isotope->getProductSelect() . "
 														WHERE p1.id IN (" . implode(',', array_map('intval', $objProductData)) . ")
 														ORDER BY p1.id=" . implode(' DESC, p1.id=', $objProductData) . " DESC");
 		}

@@ -470,7 +470,7 @@ class tl_iso_attributes extends Backend
 		{
 			list($strTable, $strField) = explode('.', $varValue);
 
-			$this->Database->query("SELECT $strField FROM $strTable");
+			$this->Database->execute("SELECT $strField FROM $strTable");
 		}
 
 		return $varValue;

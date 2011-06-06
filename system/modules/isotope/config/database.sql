@@ -643,7 +643,6 @@ CREATE TABLE `tl_iso_requestcache` (
   `sorting` blob NULL,
   `limits` blob NULL,
   PRIMARY KEY  (`id`),
-  KEY `store_id` (`store_id`),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 

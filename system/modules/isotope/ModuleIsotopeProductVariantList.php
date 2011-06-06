@@ -57,9 +57,9 @@ class ModuleIsotopeProductVariantList extends ModuleIsotopeProductList
 	 */
 	protected function findProducts()
 	{
-		$arrCategories = $this->findCategories($this->iso_category_scope);
+		$arrIds = $this->findCategoryProducts($this->iso_category_scope);
 
-		$objProductData = $this->Database->execute($this->Isotope->getProductSelect() . " WHERE p1.published='1' AND p1.language='' AND (p1.id IN (SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . ")) OR p1.pid IN (SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . ")))");
+		$objProductData = $this->Database->execute($this->Isotope->getProductSelect() . " WHERE p1.published='1' AND p1.language='' AND (p1.id IN (" . implode(',', $arrIds) . ") OR p1.pid IN (" . implode(',', $arrIds) . "))");
 
 		list($arrFilters, $arrSorting) = $this->getFiltersAndSorting();
 

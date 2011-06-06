@@ -113,26 +113,27 @@ class Isotope extends Controller
 	{
 		$intConfig = null;
 
-		if(TL_MODE == 'FE')
+		if (TL_MODE == 'FE')
 		{
 			global $objPage;
 
-			$intConfig = $this->Database->prepare("SELECT iso_config FROM tl_page WHERE id=?")->execute($objPage->rootId)->iso_config;
+			$objConfig = $this->Database->prepare("SELECT c.* FROM tl_iso_config c LEFT OUTER JOIN tl_page p ON p.iso_config=c.id WHERE (p.id={$objPage->rootId} OR c.fallback='1') AND c.archive<2 ORDER BY c.fallback")->limit(1)->execute();
 		}
-
-		if (!$intConfig)
+		else
 		{
-			$intConfig = $this->Database->execute("SELECT id FROM tl_iso_config WHERE fallback='1' AND archive<2")->id;
+			$objConfig = $this->Database->execute("SELECT * FROM tl_iso_config WHERE fallback='1' AND archive<2");
 		}
 
-		if(!$intConfig)
+		if(!$objConfig->numRows)
 		{
 			if (TL_MODE == 'BE')
 			{
-				$_SESSION['TL_ERROR'] = array($GLOBALS['TL_LANG']['ERR']['noDefaultStoreConfiguration']);
+				$_SESSION['TL_ERROR'][] = $GLOBALS['TL_LANG']['ERR']['noDefaultStoreConfiguration'];
 
 				if ($this->Input->get('do') == 'iso_products')
+				{
 					$this->redirect($this->Environment->script.'?do=iso_setup&mod=configs&table=tl_iso_config&act=create');
+				}
 			}
 			else
 			{
@@ -142,7 +143,8 @@ class Isotope extends Controller
 			return;
 		}
 
-		$this->Config = new IsotopeConfig($intConfig);
+		$this->Config = new IsotopeConfig();
+		$this->Config->setFromRow($objConfig, 'tl_iso_config', 'id');
 	}
 
 
@@ -151,12 +153,9 @@ class Isotope extends Controller
 	 */
 	public function overrideConfig($intConfig)
     {
-    	try
-		{
-			$objConfig = new IsotopeConfig($intConfig);
-			$this->Config = $objConfig;
-		}
-		catch (Exception $e)
+		$this->Config = new IsotopeConfig();
+
+		if (!$this->Config->findBy('id', $intConfig) || $this->Config->archive == 2)
 		{
 			$this->resetConfig();
 		}
@@ -215,6 +214,11 @@ class Isotope extends Controller
 	 */
 	public function calculateTax($intTaxClass, $fltPrice, $blnAdd=true, $arrAddresses=null)
 	{
+		if ($intTaxClass == 0)
+		{
+			return $fltPrice;
+		}
+
 		if (!is_array($arrAddresses))
 		{
 			$arrAddresses = array('billing'=>$this->Cart->billingAddress, 'shipping'=>$this->Cart->shippingAddress);
@@ -223,7 +227,9 @@ class Isotope extends Controller
 		$objTaxClass = $this->Database->prepare("SELECT * FROM tl_iso_tax_class WHERE id=?")->limit(1)->execute($intTaxClass);
 
 		if (!$objTaxClass->numRows)
+		{
 			return $fltPrice;
+		}
 
 		// HOOK for altering taxes
 		if (isset($GLOBALS['ISO_HOOKS']['calculateTax']) && is_array($GLOBALS['ISO_HOOKS']['calculateTax']))
@@ -940,19 +946,9 @@ class Isotope extends Controller
 			$temp = array();
 			$chunks = explode('.', $GLOBALS['TL_DCA'][$table]['fields'][$field]['foreignKey']);
 
-			foreach ((array) $value as $v)
-			{
-				$objKey = $this->Database->prepare("SELECT " . $chunks[1] . " AS value FROM " . $chunks[0] . " WHERE id=?")
-										 ->limit(1)
-										 ->execute($v);
+			$objKey = $this->Database->execute("SELECT " . $chunks[1] . " AS value FROM " . $chunks[0] . " WHERE id IN (" . implode(',', array_map('intval', (array)$value)) . ")");
 
-				if ($objKey->numRows)
-				{
-					$temp[] = $objKey->value;
-				}
-			}
-
-			return implode(', ', $temp);
+			return implode(', ', $objKey->fetchEach('value'));
 		}
 
 		elseif (is_array($value))
@@ -1125,8 +1121,9 @@ class Isotope extends Controller
 			$this->strSelect = "
 SELECT p1.*,
 	" . implode(', ', $arrSelect) . ",
-	(SELECT class FROM tl_iso_producttypes WHERE p1.type=tl_iso_producttypes.id) AS product_class
+	t.class AS product_class
 FROM tl_iso_products p1
+INNER JOIN tl_iso_producttypes t ON t.id=p1.type
 LEFT OUTER JOIN tl_iso_products p2 ON p1.id=p2.pid AND p2.language='" . $GLOBALS['TL_LANGUAGE'] . "'";
 		}
 		
