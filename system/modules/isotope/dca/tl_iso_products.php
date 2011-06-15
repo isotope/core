@@ -1694,11 +1694,14 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 						$arrData['reference'][$option['value']] = $option['label'];
 					}
 				}
+				
+				if($arrData['inputType']=='select')
+					$arrData['eval']['includeBlankOption'] = true;
 			}
 
 			unset($arrData['eval']['foreignKey']);
 			unset($arrData['eval']['options']);
-
+			
 			if (is_array($GLOBALS['ISO_ATTR'][$objAttributes->type]['callback']) && count($GLOBALS['ISO_ATTR'][$objAttributes->type]['callback']))
 			{
 				foreach( $GLOBALS['ISO_ATTR'][$objAttributes->type]['callback'] as $callback )
