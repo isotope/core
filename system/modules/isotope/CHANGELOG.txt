@@ -9,7 +9,6 @@ Version 0.3.beta1
 - Added: new "field wizard" to set up address fields with custom label and mandatory option in store configuration
 - Added: option the define a custom template folder for each store configuration
 - Added: store config option to limit tl_member countries to billing and shipping countries
-- Added: includeBlankOption=true for select options using foreignKey (Ticket #292)
 - Added: new IsotopeOrder class, checkout can now be done from postsale request
 - Added: button to duplicate the fallback language to a language record
 - Added: multi-edit support for products and variant data
@@ -77,6 +76,7 @@ Version 0.2.10 (2011-06-??)
 ------------------------------
 - Added support for Contao 2.10 "structure" event (see http://dev.contao.org/issues/2504)
 - Added shipping & payment method filter to orders
+- Added: includeBlankOption=true for select options using foreignKey (Ticket #292)
 
 Version 0.2.9 (2011-05-23)
 ------------------------------
