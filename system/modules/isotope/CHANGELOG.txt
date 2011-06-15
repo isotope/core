@@ -6,6 +6,7 @@ Version 0.2.10 (2011-06-??)
 ------------------------------
 - Added support for Contao 2.10 "structure" event (see http://dev.contao.org/issues/2504)
 - Added shipping & payment method filter to orders
+- Added: includeBlankOption=true for select options using foreignKey (Ticket #292)
 
 Version 0.2.9 (2011-05-23)
 ------------------------------
