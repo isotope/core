@@ -183,7 +183,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 				}
 
 				// Request cache contains wrong value, delete it!
-				elseif (is_array($GLOBALS['ISO_FILTERS'][$this->id]) && !in_array($GLOBALS['ISO_FILTERS'][$this->id][$strField]['value'], $arrValues))
+				elseif (is_array($GLOBALS['ISO_FILTERS'][$this->id][$strField]) && !in_array($GLOBALS['ISO_FILTERS'][$this->id][$strField]['value'], $arrValues))
 				{
 					$this->blnCacheRequest = true;
 					unset($GLOBALS['ISO_FILTERS'][$this->id][$strField]);
