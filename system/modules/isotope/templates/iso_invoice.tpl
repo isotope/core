@@ -2,24 +2,24 @@
 	<table cellspacing="0" cellpadding="20" border="1">
 	<tr>
 	<td>
-
+	
 	<?php echo $this->logoImage; ?>
 	<br /><br />
-
+		
 	<h2><?php echo $this->invoiceTitle; ?></h2>
-
+	
 	<?php foreach( $this->info as $type => $data ): ?>
 	<div class="info_container <?php echo $type . $data['class']; ?>">
 		<h3><?php echo $data['headline']; ?></h3>
 		<div class="info"><?php echo $data['info']; ?></div>
 	</div>
 	<?php endforeach; ?>
-
+	
 	<table cellspacing="0" cellpadding="5" width="100%" style="margin-left:25px; margin-right:25px">
 	<?php foreach( $this->items as $item ): ?>
 		<tr>
 			<td width="60%">
-				<p><?php echo $item['name']; ?></p>
+				<?php echo $item['name']; ?><br />
 				<?php if(is_array($item['product_options']) && count($item['product_options'])): ?>
 				<ul>
 				<?php foreach($item['product_options'] as $option): ?>
@@ -53,7 +53,7 @@
 			<td>&nbsp;</td>
 		</tr>
 	</table>
-
+	
 	</td>
 	</tr>
 	</table>
