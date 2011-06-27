@@ -96,7 +96,6 @@ $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'] = 'Add To Cart';
 $GLOBALS['TL_LANG']['MSC']['pagerSectionTitleLabel'] = 'Page:';
 $GLOBALS['TL_LANG']['MSC']['orderByLabel'] = 'Order By:';
 
-$GLOBALS['TL_LANG']['MSC']['buttonActionString']['add_to_cart'] = 'Add product %s to your cart';
 $GLOBALS['TL_LANG']['MSC']['noProducts'] = 'No products have been found.';
 $GLOBALS['TL_LANG']['MSC']['invalidProductInformation'] = "We're sorry, the product information you have requested is not showing up in our store. For further assistance please contact us.";
 
@@ -113,6 +112,7 @@ $GLOBALS['TL_LANG']['MSC']['labelSubmit'] = 'Submit';
 $GLOBALS['TL_LANG']['MSC']['labelProductVariants'] = 'Please Select';
 $GLOBALS['TL_LANG']['MSC']['removeProductLinkText'] = 'Remove';
 $GLOBALS['TL_LANG']['MSC']['noItemsInCart'] = 'There are no items in your cart.';
+$GLOBALS['TL_LANG']['MSC']['addedToCart'] = 'The selected product has been added to your shopping cart.';
 $GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'] = 'Remove %s from your cart';
 $GLOBALS['TL_LANG']['MSC']['subTotalLabel'] = 'Order Subtotal: ';
 $GLOBALS['TL_LANG']['MSC']['shippingLabel'] = 'Shipping';

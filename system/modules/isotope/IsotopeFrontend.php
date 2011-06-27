@@ -57,6 +57,7 @@ class IsotopeFrontend extends Frontend
 
 		if ($this->Isotope->Cart->addProduct($objProduct, $intQuantity) !== false)
 		{
+			$_SESSION['ISO_CONFIRM'][] = $GLOBALS['TL_LANG']['MSC']['addedToCart'];
 			$this->jumpToOrReload($objModule->iso_addProductJumpTo);
 		}
 	}
@@ -347,6 +348,30 @@ class IsotopeFrontend extends Frontend
 	 */
 	public function injectMessages()
 	{
+		$strMessages = $this->getMessages();
+
+		if ($strMessages != '')
+		{
+			$GLOBALS['TL_MOOTOOLS'][] = "
+<script type=\"text/javascript\">
+<!--//--><![CDATA[//><!--
+window.addEvent('domready', function()
+{
+	Isotope.displayBox('" . $strMessages . "', true);
+});
+//--><!]]>
+</script>" ;
+		}
+	}
+	
+	
+	/**
+	 * Return all error, confirmation and info messages as HTML.
+	 * @param	void
+	 * @return	string
+	 */
+	public function getMessages()
+	{
 		$strMessages = '';
 		$arrGroups = array('ISO_ERROR', 'ISO_CONFIRM', 'ISO_INFO');
 
@@ -361,7 +386,7 @@ class IsotopeFrontend extends Frontend
 
 			foreach ($_SESSION[$strGroup] as $strMessage)
 			{
-				$strMessages .= sprintf('<p class="%s">%s</p>', $strClass, specialchars($strMessage));
+				$strMessages .= sprintf('<p class="%s">%s</p>%s', $strClass, $strMessage, "\n");
 			}
 
 			$_SESSION[$strGroup] = array();
@@ -371,16 +396,14 @@ class IsotopeFrontend extends Frontend
 
 		if (strlen($strMessages))
 		{
-			$GLOBALS['TL_MOOTOOLS'][] = "
-<script type=\"text/javascript\">
-<!--//--><![CDATA[//><!--
-window.addEvent('domready', function()
-{
-	Isotope.displayBox('<div class=\"iso_message\">" . $strMessages . "</div>', true);
-});
-//--><!]]>
-</script>" ;
+			// Automatically disable caching if a message is available
+			global $objPage;
+			$objPage->cache = 0;
+			
+			$strMessages = '<div class="iso_message">' . $strMessages . '</div>';
 		}
+
+		return $strMessages;
 	}
 }
 

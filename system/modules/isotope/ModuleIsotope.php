@@ -85,7 +85,8 @@ abstract class ModuleIsotope extends Module
 		// Prepend any messages to the module output
 		if ($this->iso_includeMessages)
 		{
-			$strBuffer = $this->getIsotopeMessages() . $strBuffer;
+			$this->import('IsotopeFrontend');
+			$strBuffer = $this->IsotopeFrontend->getMessages() . $strBuffer;
 		}
 		
 		return $strBuffer;
@@ -210,44 +211,6 @@ abstract class ModuleIsotope extends Module
 		}
 
 		return $arrProducts;
-	}
-
-
-	/**
-	 * Return all error, confirmation and info messages as HTML.
-	 * @param	void
-	 * @return	string
-	 */
-	protected function getIsotopeMessages()
-	{
-		$strMessages = '';
-		$arrGroups = array('ISO_ERROR', 'ISO_CONFIRM', 'ISO_INFO');
-
-		foreach ($arrGroups as $strGroup)
-		{
-			if (!is_array($_SESSION[$strGroup]))
-			{
-				continue;
-			}
-
-			$strClass = strtolower($strGroup);
-
-			foreach ($_SESSION[$strGroup] as $strMessage)
-			{
-				$strMessages .= sprintf('<p class="%s">%s</p>%s', $strClass, $strMessage, "\n");
-			}
-
-			$_SESSION[$strGroup] = array();
-		}
-
-		$strMessages = trim($strMessages);
-
-		if (strlen($strMessages))
-		{
-			$strMessages = "\n\n<!-- indexer::stop -->\n<div class=\"iso_message\">\n$strMessages\n</div>\n<!-- indexer::continue -->";
-		}
-
-		return $strMessages;
 	}
 
 
