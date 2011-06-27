@@ -240,17 +240,16 @@ class PaymentCybersource extends IsotopePayment
 				//, $strLocation, $strAction, $strVersion, $strMerchantId, $strTransactionKey
 				$objReply = $objSoapClient->runTransaction($objRequest);
 
-				$arrSet['transaction_response'] = $objReply->decision;
-				$arrSet['transaction_response_code'] = $objReply->reasonCode;
-
+				$arrPaymentData['transaction_response'] = $objReply->decision;
+				$arrPaymentData['transaction_response_code'] = $objReply->reasonCode;
 				$arrPaymentData['request_id'] = $objReply->requestID;
 				$arrPaymentData['request_token'] = $objReply->requestToken;
+				$arrSet['payment_data'] = serialize($arrPaymentData);
 
 				switch($objReply->decision)
 				{
 					case 'ACCEPT':
 						$arrPaymentData['cc_last_four'] = substr($strCCNum, strlen($strCCNum) - 4, 4);
-						$arrSet['payment_data'] = serialize($arrPaymentData);
 						break;
 
 					default:

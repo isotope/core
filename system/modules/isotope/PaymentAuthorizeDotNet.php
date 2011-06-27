@@ -446,9 +446,6 @@ $return .= '</div></div>';
 			$arrReponseLabels[strtolower(standardize($key))] = $key;
 		}
 
-		$objOrder->transaction_response = $arrResponses['transaction-status'];
-		$objOrder->transaction_response_code = $arrResponseCodes['response_code'];
-
 		$this->loadLanguageFile('payment');
 		$this->strStatus = $arrResponses['transaction-status'];
 		$this->strReason = $GLOBALS['TL_LANG']['MSG']['authorizedotnet'][$arrResponseCodes['response_type']][$arrResponseCodes['response_code']];
@@ -471,7 +468,7 @@ $return .= '</div></div>';
 						
 		//Update payment data AKA Response Data. Transaction ID will not be saved during test mode.
 		$arrOrderPaymentData = deserialize($objOrder->payment_data,true);
-		$arrPaymentInfo = (count($arrOrderPaymentData)) ? array_merge($arrResponses, $arrOrderPaymentData) : $arrResponses;
+		$arrPaymentInfo = (count($arrOrderPaymentData)) ? array_merge($arrOrderPaymentData, $arrResponses) : $arrResponses;
 				
 		$objOrder->payment_data = serialize($arrPaymentInfo);
 		
