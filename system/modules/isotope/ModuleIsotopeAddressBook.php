@@ -26,7 +26,7 @@
  */
 
 
-class ModuleIsotopeAddressBook extends Module
+class ModuleIsotopeAddressBook extends ModuleIsotope
 {
 
 	/**
@@ -72,9 +72,6 @@ class ModuleIsotopeAddressBook extends Module
 			return '';
 		}
 
-		$this->import('Isotope');
-		$this->import('FrontendUser', 'User');
-
 		$this->arrFields = array_unique(array_merge(deserialize($this->Isotope->Config->billing_fields_raw, true), deserialize($this->Isotope->Config->shipping_fields_raw, true)));
 
 		// Return if there are not editable fields
@@ -82,8 +79,6 @@ class ModuleIsotopeAddressBook extends Module
 		{
 			return '';
 		}
-
-		$GLOBALS['TL_CSS'][] = 'system/modules/isotope/html/isotope.css';
 
 		return parent::generate();
 	}
@@ -379,10 +374,9 @@ class ModuleIsotopeAddressBook extends Module
 	 */
 	protected function delete($intAddressId)
 	{
+		$this->Database->prepare("DELETE FROM tl_iso_addresses WHERE id=? AND pid={$this->User->id}")->executeUncached($intAddressId);
+		
 		global $objPage;
-
-		$this->Database->query("DELETE FROM tl_iso_addresses WHERE id=$intAddressId AND pid={$this->User->id}");
-
 		$this->redirect($this->generateFrontendUrl($objPage->row()));
 	}
 }

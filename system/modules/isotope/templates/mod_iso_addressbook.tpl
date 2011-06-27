@@ -13,17 +13,15 @@
 <p><a class="add" href="<?php echo $this->addNewAddress; ?>" title="<?php echo $this->addNewAddressLabel; ?>"><?php echo $this->addNewAddressLabel; ?></a></p>
 
 <?php if( count($this->addresses) ): ?>
-<ul>
 <?php foreach( $this->addresses as $address ):?>
-	<li class="<?php echo $address['class']; ?>">
-		<div class="buttons">
-			<a class="edit" href="<?php echo $address['edit_url']; ?>" title="<?php echo $this->editAddressLabel; ?>"><?php echo $this->editAddressLabel; ?></a>
-			<a class="delete" href="<?php echo $address['delete_url']; ?>" title="<?php echo $this->deleteAddressLabel; ?>" onclick="return confirm('<?php echo $this->deleteAddressConfirm; ?>')"><?php echo $this->deleteAddressLabel; ?></a>
-		</div>
-		<?php echo $address['text']; ?>
-	</li>
+<div class="<?php echo $address['class']; ?>">
+	<div class="buttons">
+		<a class="edit" href="<?php echo $address['edit_url']; ?>" title="<?php echo $this->editAddressLabel; ?>"><?php echo $this->editAddressLabel; ?></a>
+		<a class="delete" href="<?php echo $address['delete_url']; ?>" title="<?php echo $this->deleteAddressLabel; ?>" onclick="return confirm('<?php echo $this->deleteAddressConfirm; ?>')"><?php echo $this->deleteAddressLabel; ?></a>
+	</div>
+	<?php echo $address['text']; ?>
+</div>
 <?php endforeach; ?>
-</ul>
 <?php endif; ?>
 
 </div>
