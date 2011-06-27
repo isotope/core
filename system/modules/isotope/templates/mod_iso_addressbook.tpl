@@ -15,11 +15,11 @@
 <?php if( count($this->addresses) ): ?>
 <?php foreach( $this->addresses as $address ):?>
 <div class="<?php echo $address['class']; ?>">
-	<div class="buttons">
-		<a class="edit" href="<?php echo $address['edit_url']; ?>" title="<?php echo $this->editAddressLabel; ?>"><?php echo $this->editAddressLabel; ?></a>
-		<a class="delete" href="<?php echo $address['delete_url']; ?>" title="<?php echo $this->deleteAddressLabel; ?>" onclick="return confirm('<?php echo $this->deleteAddressConfirm; ?>')"><?php echo $this->deleteAddressLabel; ?></a>
-	</div>
-	<?php echo $address['text']; ?>
+<div class="buttons">
+	<a class="edit" href="<?php echo $address['edit_url']; ?>" title="<?php echo $this->editAddressLabel; ?>"><?php echo $this->editAddressLabel; ?></a>
+	<a class="delete" href="<?php echo $address['delete_url']; ?>" title="<?php echo $this->deleteAddressLabel; ?>" onclick="return confirm('<?php echo $this->deleteAddressConfirm; ?>')"><?php echo $this->deleteAddressLabel; ?></a>
+</div>
+<?php echo $address['text']; ?>
 </div>
 <?php endforeach; ?>
 <?php endif; ?>

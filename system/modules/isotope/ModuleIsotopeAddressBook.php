@@ -142,17 +142,19 @@ class ModuleIsotopeAddressBook extends ModuleIsotope
 		$arrAddresses = array();
 		$strUrl = $this->generateFrontendUrl($objPage->row()) . ($GLOBALS['TL_CONFIG']['disableAlias'] ? '&' : '?');
 
-		$objAddresses = $this->Database->execute("SELECT * FROM tl_iso_addresses WHERE pid={$this->User->id} AND store_id={$this->Isotope->Config->store_id}");
+		$objAddress = $this->Database->execute("SELECT * FROM tl_iso_addresses WHERE pid={$this->User->id} AND store_id={$this->Isotope->Config->store_id}");
 
-		while( $objAddresses->next() )
+		while( $objAddress->next() )
 		{
 			$arrAddresses[] = array
 			(
-				'id'			=> $objAddresses->id,
-				'class'			=> (($i%2 ? 'even' : 'odd') . ($i==0 ? ' first' : '')),
-				'text'			=> $this->Isotope->generateAddressString($objAddresses->row()),
-				'edit_url'		=> ampersand($strUrl . 'act=edit&address=' . $objAddresses->id),
-				'delete_url'	=> ampersand($strUrl . 'act=delete&address=' . $objAddresses->id),
+				'id'				=> $objAddress->id,
+				'class'				=> (($i%2 ? 'even' : 'odd') . ($objAddress->isDefaultBilling ? ' default_billing' : '') . ($objAddress->isDefaultShipping ? ' default_shipping' : '') . ($i==0 ? ' first' : '')),
+				'text'				=> $this->Isotope->generateAddressString($objAddress->row()),
+				'edit_url'			=> ampersand($strUrl . 'act=edit&address=' . $objAddress->id),
+				'delete_url'		=> ampersand($strUrl . 'act=delete&address=' . $objAddress->id),
+				'default_billing'	=> ($objAddress->isDefaultBilling ? true : false),
+				'default_shipping'	=> ($objAddress->isDefaultShipping ? true : false),
 			);
 
 			$i++;

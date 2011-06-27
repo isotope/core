@@ -397,6 +397,8 @@ class tl_iso_attributes extends Backend
 		{
 			$this->Database->query(sprintf("ALTER TABLE tl_iso_products MODIFY %s %s", $objAttribute->field_name, $GLOBALS['ISO_ATTR'][$dc->activeRecord->type]['sql']));
 		}
+		$this->import('IsotopeDatabase');
+		$this->IsotopeDatabase->add($objAttribute->field_name, $GLOBALS['ISO_ATTR'][$dc->activeRecord->type]['sql']);
 	}
 
 
