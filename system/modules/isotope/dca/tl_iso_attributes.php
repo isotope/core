@@ -468,7 +468,7 @@ class tl_iso_attributes extends Backend
 	{
 		if ($varValue != '')
 		{
-			list($strTable, $strField) = explode('.', $varValue);
+			list($strTable, $strField) = explode('.', $varValue, 2);
 
 			$this->Database->execute("SELECT $strField FROM $strTable");
 		}

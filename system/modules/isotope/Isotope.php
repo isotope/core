@@ -1110,12 +1110,9 @@ class Isotope extends Controller
 		{
 			$arrSelect = array("'".$GLOBALS['TL_LANGUAGE']."' AS language");
 	
-			foreach( $GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $attribute => $arrData )
+			foreach( $GLOBALS['ISO_CONFIG']['multilingual'] as $attribute )
 			{
-				if ($arrData['attributes']['multilingual'])
-				{
-					$arrSelect[] = "IFNULL(p2.$attribute, p1.$attribute) AS $attribute";
-				}
+				$arrSelect[] = "IFNULL(p2.$attribute, p1.$attribute) AS {$attribute}_{$GLOBALS['TL_LANGUAGE']}";
 			}
 			
 			$this->strSelect = "

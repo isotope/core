@@ -158,7 +158,7 @@ abstract class ModuleIsotope extends Module
 		if (is_array($objProductData) && count($objProductData))
 		{
 			$objProductData = $this->Database->execute($this->Isotope->getProductSelect() . "
-														WHERE p1.id IN (" . implode(',', array_map('intval', $objProductData)) . ")
+														WHERE p1.language='' AND p1.id IN (" . implode(',', array_map('intval', $objProductData)) . ")
 														ORDER BY p1.id=" . implode(' DESC, p1.id=', $objProductData) . " DESC");
 		}
 

@@ -1712,11 +1712,17 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 		}
 		
 		$GLOBALS['ISO_CONFIG']['variant_options'] = array();
+		$GLOBALS['ISO_CONFIG']['multilingual'] = array();
 		foreach( $GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $attribute => $config )
 		{
 			if ($config['attributes']['variant_option'])
 			{
 				$GLOBALS['ISO_CONFIG']['variant_options'][] = $attribute;
+			}
+			
+			if ($config['attributes']['multilingual'])
+			{
+				$GLOBALS['ISO_CONFIG']['multilingual'][] = $attribute;
 			}
 		}
 	}
