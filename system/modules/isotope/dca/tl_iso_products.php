@@ -22,6 +22,7 @@
  * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Christian de la Haye <service@delahaye.de>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
@@ -365,14 +366,14 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['start'],
 			'inputType'				=> 'text',
-			'eval'					=> array('rgxp'=>'date', 'datepicker'=>$this->getDatePickerString(), 'tl_class'=>'w50 wizard'),
+			'eval'					=> array('rgxp'=>'date', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'w50 wizard'),
 			'attributes'			=> array('legend'=>'publish_legend'),
 		),
 		'stop' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['stop'],
 			'inputType'				=> 'text',
-			'eval'					=> array('rgxp'=>'date', 'datepicker'=>$this->getDatePickerString(), 'tl_class'=>'w50 wizard'),
+			'eval'					=> array('rgxp'=>'date', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'w50 wizard'),
 			'attributes'			=> array('legend'=>'publish_legend'),
 		),
 		'source' => array
@@ -1635,7 +1636,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 			// Add date picker
 			if ($objAttributes->rgxp == 'date')
 			{
-				$arrData['eval']['datepicker'] = $this->getDatePickerString();
+				$arrData['eval']['datepicker'] = (method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true);
 			}
 
 			if ($objAttributes->type == 'textarea' || $objAttributes->rte != '')
@@ -1727,4 +1728,3 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 		}
 	}
 }
-

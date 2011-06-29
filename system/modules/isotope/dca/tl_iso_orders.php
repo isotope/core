@@ -22,6 +22,7 @@
  * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Christian de la Haye <service@delahaye.de>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
@@ -187,13 +188,13 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['date_payed'],
 			'inputType'				=> 'text',
-			'eval'					=> array('rgxp'=>'date', 'datepicker'=>$this->getDatePickerString(), 'tl_class'=>'w50 wizard'),
+			'eval'					=> array('rgxp'=>'date', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'w50 wizard'),
 		),
 		'date_shipped' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['date_shipped'],
 			'inputType'				=> 'text',
-			'eval'					=> array('rgxp'=>'date', 'datepicker'=>$this->getDatePickerString(), 'tl_class'=>'w50 wizard'),
+			'eval'					=> array('rgxp'=>'date', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'w50 wizard'),
 		),
 		'payment_id' => array
 		(
@@ -600,4 +601,3 @@ class tl_iso_orders extends Backend
 		exit;
 	}
 }
-

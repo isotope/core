@@ -22,6 +22,7 @@
  * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Christian de la Haye <service@delahaye.de>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
@@ -197,14 +198,14 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['startDate'],
 			'exclude'					=> true,
 			'inputType'					=> 'text',
-			'eval'						=> array('rgxp'=>'date', 'datepicker'=>$this->getDatePickerString(), 'tl_class'=>'w50 wizard')
+			'eval'						=> array('rgxp'=>'date', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'w50 wizard')
 		),
 		'endDate' => array
 		(
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['endDate'],
 			'exclude'					=> true,
 			'inputType'					=> 'text',
-			'eval'						=> array('rgxp'=>'date', 'datepicker'=>$this->getDatePickerString(), 'tl_class'=>'w50 wizard')
+			'eval'						=> array('rgxp'=>'date', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'w50 wizard')
 		),
 		'startTime' => array
 		(
@@ -533,4 +534,3 @@ class tl_iso_rules extends Backend
 //		$this->createNewVersion('tl_iso_rules', $intId);
 	}
 }
-
