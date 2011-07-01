@@ -427,7 +427,7 @@ abstract class IsotopeProductCollection extends Model
 		if (!is_array($this->arrProducts) || $blnNoCache)
 		{
 			$this->arrProducts = array();
-			$objItems = $this->Database->prepare("SELECT * FROM " . $this->ctable . " WHERE pid=?")->execute($this->id);
+			$objItems = $this->Database->prepare("SELECT * FROM " . $this->ctable . " WHERE pid=?")->executeUncached($this->id);
 
 			while( $objItems->next() )
 			{
