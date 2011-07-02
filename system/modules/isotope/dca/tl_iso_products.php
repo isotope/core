@@ -264,7 +264,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'sorting'				=> true,
 			'inputType'				=> 'text',
 			'eval'					=> array('mandatory'=>true, 'maxlength'=>128, 'tl_class'=>'w50'),
-			'attributes'			=> array('legend'=>'general_legend'),
+			'attributes'			=> array('legend'=>'general_legend', 'fe_sorting'=>true),
 		),
 		'name' => array
 		(
@@ -326,7 +326,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['tax_class'],
 			'inputType'				=> 'select',
 			'foreignKey'			=> 'tl_iso_tax_class.name',
-			'attributes'			=> array('legend'=>'pricing_legend'),
+			'attributes'			=> array('legend'=>'pricing_legend', 'tl_class'=>'w50'),
 			'eval'					=> array('includeBlankOption'=>true),
 		),
 		'shipping_weight' => array
