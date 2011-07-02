@@ -648,10 +648,10 @@ class DC_TablePageId extends DC_Table
 				}
 
 				// Add sorting field
-				if (strlen($_v))
+				if ($_v != '')
 				{
 					$key = strlen($GLOBALS['TL_LANG'][$this->ptable][$v][0]) ? $GLOBALS['TL_LANG'][$this->ptable][$v][0]  : $v;
-					$add[$key] = $_v;
+					$add[$key] = is_array($_v) ? $_v[0] : $_v;
 				}
 			}
 
