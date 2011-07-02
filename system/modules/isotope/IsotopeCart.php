@@ -128,6 +128,8 @@ class IsotopeCart extends IsotopeProductCollection
 
 				if (FE_USER_LOGGED_IN)
 				{
+					$this->import('Isotope');
+					
 					$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE pid={$this->User->id} AND store_id={$this->Isotope->Config->store_id} AND isDefaultShipping='1'")->limit(1)->execute();
 
 					if ($objAddress->numRows)
