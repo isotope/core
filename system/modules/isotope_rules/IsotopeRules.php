@@ -372,7 +372,7 @@ class IsotopeRules extends Controller
 	 */
 	protected function findCoupon($strCode, $arrProducts)
 	{
-		$objRules = $this->findRules(array("type='cart'", "enableCode='1'", "code=?"), array($strCode), $arrProducts);
+		$objRules = $this->findRules(array("type='cart'", "enableCode='1'", "BINARY code=?"), array($strCode), $arrProducts);
 		return $objRules->numRows ? $objRules->row() : false;
 	}
 
