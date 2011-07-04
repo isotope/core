@@ -368,7 +368,7 @@ class IsotopeRules extends Controller
 
 
 	/**
-	 * Find coupon matching a code
+	 * Find coupon matching a code 
 	 */
 	protected function findCoupon($strCode, $arrProducts)
 	{
