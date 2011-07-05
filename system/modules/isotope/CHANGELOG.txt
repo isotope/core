@@ -83,6 +83,7 @@ Version 0.2.10 (2011-06-??)
 - Added product sku to filter module
 - Fixed error message when editing page category (Ticket #469)
 - Fixed IsotopeProductCollection::getProducts database caching
+- Changed tl_iso_products::getCategoryList from private to protected function (Ticket #477)
 
 Version 0.2.9 (2011-05-23)
 ------------------------------

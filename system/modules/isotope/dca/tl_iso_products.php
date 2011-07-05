@@ -704,7 +704,7 @@ class tl_iso_products extends Backend
 	 * @param int
 	 * @return string
 	 */
-	private function getCategoryList($intProduct)
+	protected function getCategoryList($intProduct)
 	{
 		$arrCategories = array();
 
