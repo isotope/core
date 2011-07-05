@@ -5,7 +5,7 @@
 <div class="tl_panel">
 
 <div class="tl_submit_panel tl_subpanel">
-<input type="image" name="btfilter" id="btfilter" src="system/themes/default/images/ok.gif" class="tl_img_submit" alt="apply changes" value="apply changes" />
+<input type="image" name="btfilter" id="btfilter" src="system/themes/<?php echo $this->theme; ?>/images/ok.gif" class="tl_img_submit" alt="apply changes" value="apply changes" />
 </div>
 
 <div class="tl_filter tl_subpanel">
@@ -52,7 +52,7 @@
     <td class="tl_file_list" style="width: 48%"><?php echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?></td>
     <td class="tl_file_list" style="width: 2%">=</td>
     <td class="tl_file_list" style="width: 48%"><?php if(strlen($value)>50):?><textarea name="<?php echo standardize($key, true); ?>" class="tl_text" onfocus="Backend.getScrollOffset();" style="height:60px;overflow:auto;"><?php echo str_replace(array('"', '\n'), array('&quot;', "\n"), $this->translation[$key]); ?></textarea><?php else: ?><input type="text" name="<?php echo standardize($key, true); ?>" class="tl_text" value="<?php echo str_replace('"', '&quot;', $this->translation[$key]); ?>" onfocus="Backend.getScrollOffset();" /><?php endif; ?></td>
-	<td class="tl_file_list" style="width: 2%"><a title="<?php echo $key; ?>"><img src="system/themes/default/images/show.gif" alt="" /></a></td>
+	<td class="tl_file_list" style="width: 2%"><a title="<?php echo $key; ?>"><img src="system/themes/<?php echo $this->theme; ?>/images/show.gif" alt="" /></a></td>
   </tr>
 <?php endforeach; ?>
 
@@ -63,7 +63,7 @@
 	    <td class="tl_file_list" style="width: 48%"><?php echo $this->diff[$key]; ?></td>
 	    <td class="tl_file_list" style="width: 2%">=</td>
 	    <td class="tl_file_list" style="width: 48%"><?php echo $this->translation[$key]; /*htmlspecialchars($value, ENT_COMPAT, 'UTF-8');*/ ?></td>
-		<td class="tl_file_list" style="width: 2%"><a title="<?php echo $key; ?>"><img src="system/themes/default/images/show.gif" alt="" /></a></td>
+		<td class="tl_file_list" style="width: 2%"><a title="<?php echo $key; ?>"><img src="system/themes/<?php echo $this->theme; ?>/images/show.gif" alt="" /></a></td>
 	  </tr>
 <?php endif; endforeach; ?>
 <?php elseif($this->svn_diff && is_string($this->diff)): ?>

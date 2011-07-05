@@ -82,6 +82,7 @@ class ModuleIsotopeTranslation extends BackendModule
 		$this->Template->headline = $GLOBALS['TL_LANG']['MSC']['translationSelect'];
 		$this->Template->action = ampersand($this->Environment->request);
 		$this->Template->slabel = $GLOBALS['TL_LANG']['MSC']['save'];
+		$this->Template->theme = $this->getTheme();
 
 
 		// get modules
