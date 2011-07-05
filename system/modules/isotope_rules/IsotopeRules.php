@@ -334,35 +334,43 @@ class IsotopeRules extends Controller
 			$arrProcedures[] = "(memberRestrictions='none' OR memberRestrictions='guests')";
 		}
 
-		//Only include if products exist in the cart.
-		if(count($arrProducts))
+
+		// Product restrictions
+		$arrIds = array();
+		$arrTypes = array();
+		foreach( $arrProducts as $objProduct )
 		{
-			// Product restrictions
-			$arrIds = array();
-			$arrTypes = array();
-			foreach( $arrProducts as $objProduct )
+			$arrIds[] = $objProduct->id;
+			$arrTypes[] = $objProduct->type;
+			
+			if ($objProduct->pid > 0)
 			{
-				$arrIds[] = $objProduct->id;
-				$arrTypes[] = $objProduct->type;
-				
-				if ($objProduct->pid > 0)
-				{
-					$arrIds[] = $objProduct->pid;
-				}
-				
-				if ($blnIncludeVariants)
-				{
-					$arrIds = array_merge($arrIds, $objProduct->variant_ids);
-				}
+				$arrIds[] = $objProduct->pid;
 			}
 			
-			$arrIds = array_unique($arrIds);
-	
-			$arrProcedures[] = "(productRestrictions='none'
-								OR (productRestrictions='producttypes' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='producttypes' AND object_id IN (" . implode(',', $arrTypes) . "))>0)
-								OR (productRestrictions='products' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='products' AND object_id IN (" . implode(',', $arrIds) . "))>0)
-								OR (productRestrictions='pages' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='pages' AND object_id IN (SELECT page_id FROM tl_iso_product_categories WHERE pid IN (" . implode(',', $arrIds) . ")))))";
+			if ($blnIncludeVariants)
+			{
+				$arrIds = array_merge($arrIds, $objProduct->variant_ids);
+			}
 		}
+		
+		$arrRestrictions = array("productRestrictions='none'");
+		
+		if (count($arrTypes))
+		{
+			$arrRestrictions[] = "(productRestrictions='producttypes' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='producttypes' AND object_id IN (" . implode(',', $arrTypes) . "))>0)";
+		}
+		
+		if (count($arrIds))
+		{
+			$arrIds = array_unique($arrIds);
+			
+			$arrRestrictions[] = "(productRestrictions='products' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='products' AND object_id IN (" . implode(',', $arrIds) . "))>0)";
+			$arrRestrictions[] = "(productRestrictions='pages' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='pages' AND object_id IN (SELECT page_id FROM tl_iso_product_categories WHERE pid IN (" . implode(',', $arrIds) . "))))";
+		}
+
+		$arrProcedures[] = '(' . implode(' OR ', $arrRestrictions) . ')';
+
 
 		// Fetch and process rules
 		return $this->Database->prepare("SELECT * FROM tl_iso_rules r WHERE " . implode(' AND ', $arrProcedures) . " ORDER BY sorting")->execute($arrValues);
@@ -370,11 +378,11 @@ class IsotopeRules extends Controller
 
 
 	/**
-	 * Find coupon matching a code 
+	 * Find coupon matching a code
 	 */
 	protected function findCoupon($strCode, $arrProducts)
 	{
-		$objRules = $this->findRules(array("type='cart'", "enableCode='1'", "BINARY code=?"), array($strCode), $arrProducts);
+		$objRules = $this->findRules(array("type='cart'", "enableCode='1'", "code=?"), array($strCode), $arrProducts);
 		return $objRules->numRows ? $objRules->row() : false;
 	}
 
