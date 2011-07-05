@@ -179,7 +179,7 @@ class IsotopeRules extends Controller
 			}
 			else
 			{
-				if (in_array($strCoupon, $arrCoupons))
+				if (in_array(strtolower($strCoupon), array_map('strtolower', $arrCoupons)))
 				{
 					$_SESSION['COUPON_FAILED'][$objModule->id] = sprintf($GLOBALS['TL_LANG']['MSC']['couponDuplicate'], $strCoupon);
 				}

@@ -68,7 +68,6 @@ Version 0.3.beta1
 - Fixed start & stop publishing dates not working
 - Fixed Authorize.net failed transaction bug
 - Fixed enter key trapping on checkout payment method
-- Fixed coupon re-apply by adding BINARY keyword to SQL query searching for coupon code (Ticket #476)
 - Removed pre-0.1 update code from runonce.php
 - Removed postsale_mail from Paypal and Postfinance
 - Removed obsolete table tl_payment_options
@@ -84,6 +83,7 @@ Version 0.2.10 (2011-06-??)
 - Fixed error message when editing page category (Ticket #469)
 - Fixed IsotopeProductCollection::getProducts database caching
 - Fixed rules error on product restrictions when not product in cart (Ticket #471)
+- Fixed coupon could be applied multiple times by using different letter cases (Ticket #476)
 - Changed tl_iso_products::getCategoryList from private to protected function (Ticket #477)
 
 Version 0.2.9 (2011-05-23)
