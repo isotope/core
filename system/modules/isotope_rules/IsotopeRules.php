@@ -334,33 +334,35 @@ class IsotopeRules extends Controller
 			$arrProcedures[] = "(memberRestrictions='none' OR memberRestrictions='guests')";
 		}
 
-
-		// Product restrictions
-		$arrIds = array();
-		$arrTypes = array();
-		foreach( $arrProducts as $objProduct )
+		//Only include if products exist in the cart.
+		if(count($arrProducts))
 		{
-			$arrIds[] = $objProduct->id;
-			$arrTypes[] = $objProduct->type;
-			
-			if ($objProduct->pid > 0)
+			// Product restrictions
+			$arrIds = array();
+			$arrTypes = array();
+			foreach( $arrProducts as $objProduct )
 			{
-				$arrIds[] = $objProduct->pid;
+				$arrIds[] = $objProduct->id;
+				$arrTypes[] = $objProduct->type;
+				
+				if ($objProduct->pid > 0)
+				{
+					$arrIds[] = $objProduct->pid;
+				}
+				
+				if ($blnIncludeVariants)
+				{
+					$arrIds = array_merge($arrIds, $objProduct->variant_ids);
+				}
 			}
 			
-			if ($blnIncludeVariants)
-			{
-				$arrIds = array_merge($arrIds, $objProduct->variant_ids);
-			}
+			$arrIds = array_unique($arrIds);
+	
+			$arrProcedures[] = "(productRestrictions='none'
+								OR (productRestrictions='producttypes' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='producttypes' AND object_id IN (" . implode(',', $arrTypes) . "))>0)
+								OR (productRestrictions='products' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='products' AND object_id IN (" . implode(',', $arrIds) . "))>0)
+								OR (productRestrictions='pages' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='pages' AND object_id IN (SELECT page_id FROM tl_iso_product_categories WHERE pid IN (" . implode(',', $arrIds) . ")))))";
 		}
-		
-		$arrIds = array_unique($arrIds);
-
-		$arrProcedures[] = "(productRestrictions='none'
-							OR (productRestrictions='producttypes' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='producttypes' AND object_id IN (" . implode(',', $arrTypes) . "))>0)
-							OR (productRestrictions='products' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='products' AND object_id IN (" . implode(',', $arrIds) . "))>0)
-							OR (productRestrictions='pages' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='pages' AND object_id IN (SELECT page_id FROM tl_iso_product_categories WHERE pid IN (" . implode(',', $arrIds) . ")))))";
-
 
 		// Fetch and process rules
 		return $this->Database->prepare("SELECT * FROM tl_iso_rules r WHERE " . implode(' AND ', $arrProcedures) . " ORDER BY sorting")->execute($arrValues);

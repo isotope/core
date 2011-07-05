@@ -69,6 +69,7 @@ Version 0.3.beta1
 - Fixed Authorize.net failed transaction bug
 - Fixed enter key trapping on checkout payment method
 - Fixed coupon re-apply by adding BINARY keyword to SQL query searching for coupon code (Ticket #476)
+- Fixed rules including product restrictions by default - now only if products exist in cart (Ticket #471)
 - Removed pre-0.1 update code from runonce.php
 - Removed postsale_mail from Paypal and Postfinance
 - Removed obsolete table tl_payment_options
