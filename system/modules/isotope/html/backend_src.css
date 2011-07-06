@@ -198,9 +198,9 @@
 .iso_product
 {
 	margin-top: 2px;
-	margin-left: 22px;
 	margin-bottom: 2px;
-	width: 500px
+	width: 500px;
+	text-indent: 0;
 }
 
 .iso_product .thumbnail
@@ -209,6 +209,7 @@
 	float: left;
 	width: 34px;
 	height: 34px;
+	margin-left: -20px;
 }
 
 .iso_product ul

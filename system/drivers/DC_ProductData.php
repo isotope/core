@@ -115,12 +115,13 @@ class DC_ProductData extends DC_Table
 
 <form action="'.ampersand($this->Environment->request, true).'" class="tl_form" method="post">
 <div class="tl_formbody">
-<input type="hidden" name="FORM_SUBMIT" value="tl_filters_limit" />
+<input type="hidden" name="FORM_SUBMIT" value="tl_filters_limit">
+<input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">
 
 <div class="tl_panel_bottom">
 
 <div class="tl_submit_panel tl_subpanel">
-<input type="image" name="btfilter" id="btfilter" src="system/themes/' . $this->getTheme() . '/images/reload.gif" class="tl_img_submit" title="' . $GLOBALS['TL_LANG']['MSC']['apply'] . '" value="' . $GLOBALS['TL_LANG']['MSC']['apply'] . '" />
+<input type="image" name="btfilter" id="btfilter" src="' . TL_FILES_URL . 'system/themes/' . $this->getTheme() . '/images/reload.gif" class="tl_img_submit" title="' . $GLOBALS['TL_LANG']['MSC']['apply'] . '" value="' . $GLOBALS['TL_LANG']['MSC']['apply'] . '">
 </div>' . $strLimit . '
 
 <div class="clear"></div>
@@ -229,7 +230,7 @@ class DC_ProductData extends DC_Table
 
 
 	/**
-	 * Autogenerate a form to edit the current database record
+	 * Auto-generate a form to edit the current database record
 	 * @param integer
 	 * @param integer
 	 * @return string
@@ -450,9 +451,9 @@ class DC_ProductData extends DC_Table
 				{
 					if ($vv == '[EOF]')
 					{
-						if ($this->Input->post('isAjax') && $blnAjax)
+						if ($blnAjax && $this->Environment->isAjaxRequest)
 						{
-							return $strAjax . '<input type="hidden" name="FORM_FIELDS[]" value="'.specialchars($this->strPalette).'" />';
+							return $strAjax . '<input type="hidden" name="FORM_FIELDS[]" value="'.specialchars($this->strPalette).'">';
 						}
 
 						$blnAjax = false;
@@ -464,7 +465,7 @@ class DC_ProductData extends DC_Table
 					if (preg_match('/^\[.*\]$/i', $vv))
 					{
 						$thisId = 'sub_' . substr($vv, 1, -1);
-						$blnAjax = ($this->Input->post('isAjax') && $ajaxId == $thisId) ? true : false;
+						$blnAjax = ($ajaxId == $thisId && $this->Environment->isAjaxRequest) ? true : false;
 						$return .= "\n" . '<div id="'.$thisId.'">';
 
 						continue;
@@ -526,10 +527,11 @@ class DC_ProductData extends DC_Table
 
 				$version = '<form action="'.ampersand($this->Environment->request, true).'" id="tl_version" class="tl_form" method="post" style="float:right;">
 <div class="tl_formbody">
-<input type="hidden" name="FORM_SUBMIT" value="tl_version" />
+<input type="hidden" name="FORM_SUBMIT" value="tl_version">
+<input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">
 <select name="version" class="tl_select">'.$versions.'
 </select>
-<input type="submit" name="showVersion" id="showVersion" class="tl_submit" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['restore']).'" />
+<input type="submit" name="showVersion" id="showVersion" class="tl_submit" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['restore']).'">
 </div>
 </form>';
 			}
@@ -564,12 +566,13 @@ class DC_ProductData extends DC_Table
 
 			$version .= '<form action="'.ampersand($this->Environment->request, true).'" id="tl_language" class="tl_form" method="post" style="float:left;margin-left:20px;">
 <div class="tl_formbody">
-<input type="hidden" name="FORM_SUBMIT" value="tl_language" />
+<input type="hidden" name="FORM_SUBMIT" value="tl_language">
+<input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">
 <select name="language" class="tl_select' . (strlen($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId]) ? ' active' : '') . '">
 	<option value="">' . $GLOBALS['TL_LANG']['MSC']['defaultLanguage'] . '</option>'.$available.$undefined.'
 </select>
-<input type="submit" name="editLanguage" class="tl_submit" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['editLanguage']).'" />
-<input type="submit" name="deleteLanguage" class="tl_submit" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['deleteLanguage']).'" onclick="return confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteLanguageConfirm'] . '\')" />
+<input type="submit" name="editLanguage" class="tl_submit" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['editLanguage']).'">
+<input type="submit" name="deleteLanguage" class="tl_submit" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['deleteLanguage']).'" onclick="return confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteLanguageConfirm'] . '\')">
 </div>
 </form>';
 		}
@@ -591,15 +594,22 @@ class DC_ProductData extends DC_Table
 <div class="tl_formbody_submit">
 
 <div class="tl_submit_container">
-<input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['save']).'" />
-<input type="submit" name="saveNclose" id="saveNclose" class="tl_submit" accesskey="c" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['saveNclose']).'" />' . (!$GLOBALS['TL_DCA'][$this->strTable]['config']['closed'] ? '
-<input type="submit" name="saveNcreate" id="saveNcreate" class="tl_submit" accesskey="n" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['saveNcreate']).'" />' : '') . ($this->Input->get('s2e') ? '
-<input type="submit" name="saveNedit" id="saveNedit" class="tl_submit" accesskey="e" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['saveNedit']).'" />' : (($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 4 || strlen($this->ptable) || $GLOBALS['TL_DCA'][$this->strTable]['config']['switchToEdit']) ? '
-<input type="submit" name="saveNback" id="saveNback" class="tl_submit" accesskey="g" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['saveNback']).'" />' : '')) .'
+<input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['save']).'">
+<input type="submit" name="saveNclose" id="saveNclose" class="tl_submit" accesskey="c" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['saveNclose']).'">' . (!$GLOBALS['TL_DCA'][$this->strTable]['config']['closed'] ? '
+<input type="submit" name="saveNcreate" id="saveNcreate" class="tl_submit" accesskey="n" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['saveNcreate']).'">' : '') . ($this->Input->get('s2e') ? '
+<input type="submit" name="saveNedit" id="saveNedit" class="tl_submit" accesskey="e" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['saveNedit']).'">' : (($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 4 || strlen($this->ptable) || $GLOBALS['TL_DCA'][$this->strTable]['config']['switchToEdit']) ? '
+<input type="submit" name="saveNback" id="saveNback" class="tl_submit" accesskey="g" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['saveNback']).'">' : '')) .'
 </div>
 
 </div>
-</form>';
+</form>
+
+<script>
+window.addEvent(\'domready\', function() {
+  var first = $(\''.$this->strTable.'\').getElement(\'input[type="text"]\');
+  if (first) first.focus();
+});
+</script>';
 
 		$copyFallback = $this->blnEditLanguage ? '&nbsp;&nbsp;::&nbsp;&nbsp;<a href="'.$this->addToUrl('act=copyFallback').'" class="header_iso_copy" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['copyFallback']).'" accesskey="d" onclick="Backend.getScrollOffset();">'.($GLOBALS['TL_LANG']['MSC']['copyFallback'] ? $GLOBALS['TL_LANG']['MSC']['copyFallback'] : 'copyFallback').'</a>' : '';
 
@@ -609,12 +619,13 @@ class DC_ProductData extends DC_Table
 <a href="'.$this->getReferer(true).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'" accesskey="b" onclick="Backend.getScrollOffset();">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>' . $copyFallback . '
 </div>
 
-<h2 class="sub_headline">'.sprintf($GLOBALS['TL_LANG']['MSC']['editRecord'], ($this->intId ? 'ID '.$this->intId : '')).'</h2>'.$this->getMessages().'
-
+<h2 class="sub_headline">'.sprintf($GLOBALS['TL_LANG']['MSC']['editRecord'], ($this->intId ? 'ID '.$this->intId : '')).'</h2>
+'.$this->getMessages().'
 <form action="'.ampersand($this->Environment->request, true).'" id="'.$this->strTable.'" class="tl_form" method="post" enctype="' . ($this->blnUploadable ? 'multipart/form-data' : 'application/x-www-form-urlencoded') . '"'.(count($this->onsubmit) ? ' onsubmit="'.implode(' ', $this->onsubmit).'"' : '').'>
 <div class="tl_formbody_edit">
-<input type="hidden" name="FORM_SUBMIT" value="'.specialchars($this->strTable).'" />
-<input type="hidden" name="FORM_FIELDS[]" value="'.specialchars($this->strPalette).'" />'.($this->noReload ? '
+<input type="hidden" name="FORM_SUBMIT" value="'.specialchars($this->strTable).'">
+<input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">
+<input type="hidden" name="FORM_FIELDS[]" value="'.specialchars($this->strPalette).'">'.($this->noReload ? '
 
 <p class="tl_error">'.$GLOBALS['TL_LANG']['ERR']['general'].'</p>' : '').$return;
 
@@ -638,6 +649,17 @@ class DC_ProductData extends DC_Table
 			if ($this->blnCreateNewVersion && $this->Input->post('SUBMIT_TYPE') != 'auto')
 			{
 				$this->createNewVersion($this->strTable, $this->objActiveRecord->id);
+
+				// Call the onversion_callback
+				if (is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['onversion_callback']))
+				{
+					foreach ($GLOBALS['TL_DCA'][$this->strTable]['config']['onversion_callback'] as $callback)
+					{
+						$this->import($callback[0]);
+						$this->$callback[0]->$callback[1]($this->strTable, $this->objActiveRecord->id, $this);
+					}
+				}
+
 				$this->log(sprintf('A new version of %s ID %s has been created', $this->strTable, $this->objActiveRecord->id), 'DC_ProductData edit()', TL_GENERAL);
 			}
 
@@ -736,13 +758,10 @@ class DC_ProductData extends DC_Table
 		{
 			$return .= '
 
-<script type="text/javascript">
-<!--//--><![CDATA[//><!--
-window.addEvent(\'domready\', function()
-{
-    Backend.vScrollTo(($(\'' . $this->strTable . '\').getElement(\'label.error\').getPosition().y - 20));
+<script>
+window.addEvent(\'domready\', function() {
+  Backend.vScrollTo(($(\'' . $this->strTable . '\').getElement(\'label.error\').getPosition().y - 20));
 });
-//--><!]]>
 </script>';
 		}
 
@@ -751,7 +770,7 @@ window.addEvent(\'domready\', function()
 
 
 	/**
-	 * Autogenerate a form to edit all records that are currently shown
+	 * Auto-generate a form to edit all records that are currently shown
 	 * @param integer
 	 * @param integer
 	 * @return string
@@ -771,7 +790,7 @@ window.addEvent(\'domready\', function()
 		$session = $this->Session->getData();
 		$ids = $session['CURRENT']['IDS'];
 
-		if ($this->Input->post('isAjax'))
+		if ($this->Environment->isAjaxRequest)
 		{
 			$ids = array($intId);
 		}
@@ -789,6 +808,7 @@ window.addEvent(\'domready\', function()
 		if (is_array($fields) && count($fields) && $this->Input->get('fields'))
 		{
 			$class = 'tl_tbox block';
+			$this->checkForTinyMce();
 
 			// Walk through each record
 			foreach ($ids as $id)
@@ -814,7 +834,7 @@ window.addEvent(\'domready\', function()
 						array_unshift($this->strPalette, 'pid');
 					}
 
-					$GLOBALS['TL_DCA'][$this->strTable]['fields']['pid'] = array('label'=>&$GLOBALS['TL_LANG']['MSC']['pid'], 'inputType'=>'text', 'eval'=>array('rgxp'=>'digit', 'submitOnChange'=>true));
+					$GLOBALS['TL_DCA'][$this->strTable]['fields']['pid'] = array('label'=>&$GLOBALS['TL_LANG']['MSC']['pid'], 'inputType'=>'text', 'eval'=>array('rgxp'=>'digit'));
 					$GLOBALS['TL_DCA'][$this->strTable]['fields']['sorting'] = array('label'=>&$GLOBALS['TL_LANG']['MSC']['sorting'], 'inputType'=>'text', 'eval'=>array('rgxp'=>'digit'));
 				}
 
@@ -845,9 +865,9 @@ window.addEvent(\'domready\', function()
 
 					if ($v == '[EOF]')
 					{
-						if ($this->Input->post('isAjax') && $blnAjax)
+						if ($blnAjax && $this->Environment->isAjaxRequest)
 						{
-							return $strAjax . '<input type="hidden" name="FORM_FIELDS_'.$id.'[]" value="'.specialchars(implode(',', $formFields)).'" />';
+							return $strAjax . '<input type="hidden" name="FORM_FIELDS_'.$id.'[]" value="'.specialchars(implode(',', $formFields)).'">';
 						}
 
 						$blnAjax = false;
@@ -859,7 +879,7 @@ window.addEvent(\'domready\', function()
 					if (preg_match('/^\[.*\]$/i', $v))
 					{
 						$thisId = 'sub_' . substr($v, 1, -1) . '_' . $id;
-						$blnAjax = ($this->Input->post('isAjax') && $ajaxId == $thisId) ? true : false;
+						$blnAjax = ($ajaxId == $thisId && $this->Environment->isAjaxRequest) ? true : false;
 						$return .= "\n  " . '<div id="'.$thisId.'">';
 
 						continue;
@@ -901,7 +921,7 @@ window.addEvent(\'domready\', function()
 
 				// Close box
 				$return .= '
-  <input type="hidden" name="FORM_FIELDS_'.$this->intId.'[]" value="'.specialchars(implode(',', $formFields)).'" />
+  <input type="hidden" name="FORM_FIELDS_'.$this->intId.'[]" value="'.specialchars(implode(',', $formFields)).'">
 </div>';
 
 				// Save record
@@ -937,7 +957,8 @@ window.addEvent(\'domready\', function()
 
 <form action="'.ampersand($this->Environment->request, true).'" id="'.$this->strTable.'" class="tl_form" method="post" enctype="' . ($this->blnUploadable ? 'multipart/form-data' : 'application/x-www-form-urlencoded') . '">
 <div class="tl_formbody_edit">
-<input type="hidden" name="FORM_SUBMIT" value="'.$this->strTable.'" />'.($this->noReload ? '
+<input type="hidden" name="FORM_SUBMIT" value="'.$this->strTable.'">
+<input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">'.($this->noReload ? '
 
 <p class="tl_error">'.$GLOBALS['TL_LANG']['ERR']['general'].'</p>' : '').$return.'
 
@@ -946,8 +967,8 @@ window.addEvent(\'domready\', function()
 <div class="tl_formbody_submit">
 
 <div class="tl_submit_container">
-<input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['save']).'" />
-<input type="submit" name="saveNclose" id="saveNclose" class="tl_submit" accesskey="c" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['saveNclose']).'" />
+<input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['save']).'"> 
+<input type="submit" name="saveNclose" id="saveNclose" class="tl_submit" accesskey="c" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['saveNclose']).'">
 </div>
 
 </div>
@@ -958,13 +979,10 @@ window.addEvent(\'domready\', function()
 			{
 				$return .= '
 
-<script type="text/javascript">
-<!--//--><![CDATA[//><!--
-window.addEvent(\'domready\', function()
-{
-    Backend.vScrollTo(($(\'' . $this->strTable . '\').getElement(\'label.error\').getPosition().y - 20));
+<script>
+window.addEvent(\'domready\', function() {
+  Backend.vScrollTo(($(\'' . $this->strTable . '\').getElement(\'label.error\').getPosition().y - 20));
 });
-//--><!]]>
 </script>';
 			}
 
@@ -1010,28 +1028,31 @@ window.addEvent(\'domready\', function()
 				if ($field == 'pid' || $field == 'sorting' || (!$GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['exclude'] && !$GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['eval']['doNotShow'] && (strlen($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['inputType']) || is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['input_field_callback']))))
 				{
 					$options .= '
-<input type="checkbox" name="all_fields[]" id="all_'.$field.'" class="tl_checkbox" value="'.specialchars($field).'" /> <label for="all_'.$field.'" class="tl_checkbox_label">'.(strlen($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0]) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0] : $GLOBALS['TL_LANG']['MSC'][$field][0]).'</label><br />';
+  <input type="checkbox" name="all_fields[]" id="all_'.$field.'" class="tl_checkbox" value="'.specialchars($field).'"> <label for="all_'.$field.'" class="tl_checkbox_label">'.(strlen($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0]) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0] : $GLOBALS['TL_LANG']['MSC'][$field][0]).'</label><br>';
 				}
 			}
 
-			// Return select menu
-			$return .= (($_POST && !count($_POST['all_fields'])) ? '
+			$blnIsError = ($_POST && !count($_POST['all_fields']));
 
-<p class="tl_error">'.$GLOBALS['TL_LANG']['ERR']['general'].'</p>' : '').'
+			// Return the select menu
+			$return .= '
 
 <h2 class="sub_headline_all">'.sprintf($GLOBALS['TL_LANG']['MSC']['all_info'], $this->strTable).'</h2>
 
 <form action="'.ampersand($this->Environment->request, true).'&amp;fields=1" id="'.$this->strTable.'_all" class="tl_form" method="post">
 <div class="tl_formbody_edit">
-<input type="hidden" name="FORM_SUBMIT" value="'.$this->strTable.'_all" />
+<input type="hidden" name="FORM_SUBMIT" value="'.$this->strTable.'_all">
+<input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">'.($blnIsError ? '
+
+<p class="tl_error">'.$GLOBALS['TL_LANG']['ERR']['general'].'</p>' : '').'
 
 <div class="tl_tbox block">
-<h3><label for="fields">'.$GLOBALS['TL_LANG']['MSC']['all_fields'][0].'</label></h3>'.(($_POST && !count($_POST['all_fields'])) ? '
-<p class="tl_error">'.$GLOBALS['TL_LANG']['ERR']['all_fields'].'</p>' : '').'
-<div id="fields" class="tl_checkbox_container">
-<input type="checkbox" id="check_all" class="tl_checkbox" onclick="Backend.toggleCheckboxes(this)" /> <label for="check_all" style="color:#a6a6a6;"><em>'.$GLOBALS['TL_LANG']['MSC']['selectAll'].'</em></label><br />'.$options.'
-</div>'.(($GLOBALS['TL_CONFIG']['showHelp'] && strlen($GLOBALS['TL_LANG']['MSC']['all_fields'][1])) ? '
-<p class="tl_help tl_tip">'.$GLOBALS['TL_LANG']['MSC']['all_fields'][1].'</p>' : '').'
+<fieldset class="tl_checkbox_container">
+  <legend'.($blnIsError ? ' class="error"' : '').'>'.$GLOBALS['TL_LANG']['MSC']['all_fields'][0].'</legend>
+  <input type="checkbox" id="check_all" class="tl_checkbox" onclick="Backend.toggleCheckboxes(this)"> <label for="check_all" style="color:#a6a6a6;"><em>'.$GLOBALS['TL_LANG']['MSC']['selectAll'].'</em></label><br>'.$options.'
+</fieldset>'.($blnIsError ? '
+<p class="tl_error">'.$GLOBALS['TL_LANG']['ERR']['all_fields'].'</p>' : (($GLOBALS['TL_CONFIG']['showHelp'] && strlen($GLOBALS['TL_LANG']['MSC']['all_fields'][1])) ? '
+<p class="tl_help tl_tip">'.$GLOBALS['TL_LANG']['MSC']['all_fields'][1].'</p>' : '')).'
 </div>
 
 </div>
@@ -1039,7 +1060,7 @@ window.addEvent(\'domready\', function()
 <div class="tl_formbody_submit">
 
 <div class="tl_submit_container">
-<input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['continue']).'" />
+<input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['continue']).'">
 </div>
 
 </div>
@@ -1055,7 +1076,7 @@ window.addEvent(\'domready\', function()
 
 
 	/**
-	 * Autogenerate a form to override all records that are currently shown
+	 * Auto-generate a form to override all records that are currently shown
 	 * @author Based on a patch by Andreas Schempp
 	 * @return string
 	 */
@@ -1088,6 +1109,7 @@ window.addEvent(\'domready\', function()
 		{
 			$class = 'tl_tbox block';
 			$formFields = array();
+			$this->checkForTinyMce();
 
 			// Save record
 			if ($this->Input->post('FORM_SUBMIT') == $this->strTable)
@@ -1178,7 +1200,7 @@ window.addEvent(\'domready\', function()
 
 			// Close box
 			$return .= '
-<input type="hidden" name="FORM_FIELDS[]" value="'.specialchars(implode(',', $formFields)).'" />
+<input type="hidden" name="FORM_FIELDS[]" value="'.specialchars(implode(',', $formFields)).'">
 </div>';
 
 			// Add the form
@@ -1188,7 +1210,8 @@ window.addEvent(\'domready\', function()
 
 <form action="'.ampersand($this->Environment->request, true).'" id="'.$this->strTable.'" class="tl_form" method="post" enctype="' . ($this->blnUploadable ? 'multipart/form-data' : 'application/x-www-form-urlencoded') . '">
 <div class="tl_formbody_edit">
-<input type="hidden" name="FORM_SUBMIT" value="'.$this->strTable.'" />'.($this->noReload ? '
+<input type="hidden" name="FORM_SUBMIT" value="'.$this->strTable.'">
+<input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">'.($this->noReload ? '
 
 <p class="tl_error">'.$GLOBALS['TL_LANG']['ERR']['general'].'</p>' : '').$return.'
 
@@ -1197,8 +1220,8 @@ window.addEvent(\'domready\', function()
 <div class="tl_formbody_submit">
 
 <div class="tl_submit_container">
-<input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['save']).'" />
-<input type="submit" name="saveNclose" id="saveNclose" class="tl_submit" accesskey="c" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['saveNclose']).'" />
+<input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['save']).'"> 
+<input type="submit" name="saveNclose" id="saveNclose" class="tl_submit" accesskey="c" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['saveNclose']).'">
 </div>
 
 </div>
@@ -1209,13 +1232,10 @@ window.addEvent(\'domready\', function()
 			{
 				$return .= '
 
-<script type="text/javascript">
-<!--//--><![CDATA[//><!--
-window.addEvent(\'domready\', function()
-{
-    Backend.vScrollTo(($(\'' . $this->strTable . '\').getElement(\'label.error\').getPosition().y - 20));
+<script>
+window.addEvent(\'domready\', function() {
+  Backend.vScrollTo(($(\'' . $this->strTable . '\').getElement(\'label.error\').getPosition().y - 20));
 });
-//--><!]]>
 </script>';
 			}
 
@@ -1261,28 +1281,31 @@ window.addEvent(\'domready\', function()
 				if ($field == 'pid' || $field == 'sorting' || (!$GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['exclude'] && !$GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['eval']['doNotShow'] && (strlen($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['inputType']) || is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['input_field_callback']))))
 				{
 					$options .= '
-<input type="checkbox" name="all_fields[]" id="all_'.$field.'" class="tl_checkbox" value="'.specialchars($field).'" /> <label for="all_'.$field.'" class="tl_checkbox_label">'.(strlen($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0]) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0] : $GLOBALS['TL_LANG']['MSC'][$field][0]).'</label><br />';
+  <input type="checkbox" name="all_fields[]" id="all_'.$field.'" class="tl_checkbox" value="'.specialchars($field).'"> <label for="all_'.$field.'" class="tl_checkbox_label">'.(strlen($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0]) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0] : $GLOBALS['TL_LANG']['MSC'][$field][0]).'</label><br>';
 				}
 			}
 
-			// Return select menu
-			$return .= (($_POST && !count($_POST['all_fields'])) ? '
+			$blnIsError = ($_POST && !count($_POST['all_fields']));
 
-<p class="tl_error">'.$GLOBALS['TL_LANG']['ERR']['general'].'</p>' : '').'
+			// Return the select menu
+			$return .= '
 
 <h2 class="sub_headline_all">'.sprintf($GLOBALS['TL_LANG']['MSC']['all_info'], $this->strTable).'</h2>
 
 <form action="'.ampersand($this->Environment->request, true).'&amp;fields=1" id="'.$this->strTable.'_all" class="tl_form" method="post">
 <div class="tl_formbody_edit">
-<input type="hidden" name="FORM_SUBMIT" value="'.$this->strTable.'_all" />
+<input type="hidden" name="FORM_SUBMIT" value="'.$this->strTable.'_all">
+<input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">'.($blnIsError ? '
+
+<p class="tl_error">'.$GLOBALS['TL_LANG']['ERR']['general'].'</p>' : '').'
 
 <div class="tl_tbox block">
-<h3><label for="fields">'.$GLOBALS['TL_LANG']['MSC']['all_fields'][0].'</label></h3>'.(($_POST && !count($_POST['all_fields'])) ? '
-<p class="tl_error">'.$GLOBALS['TL_LANG']['ERR']['all_fields'].'</p>' : '').'
-<div id="fields" class="tl_checkbox_container">
-<input type="checkbox" id="check_all" class="tl_checkbox" onclick="Backend.toggleCheckboxes(this)" /> <label for="check_all" style="color:#a6a6a6;"><em>'.$GLOBALS['TL_LANG']['MSC']['selectAll'].'</em></label><br />'.$options.'
-</div>'.(($GLOBALS['TL_CONFIG']['showHelp'] && strlen($GLOBALS['TL_LANG']['MSC']['all_fields'][1])) ? '
-<p class="tl_help tl_tip">'.$GLOBALS['TL_LANG']['MSC']['all_fields'][1].'</p>' : '').'
+<fieldset class="tl_checkbox_container">
+  <legend'.($blnIsError ? ' class="error"' : '').'>'.$GLOBALS['TL_LANG']['MSC']['all_fields'][0].'</legend>
+  <input type="checkbox" id="check_all" class="tl_checkbox" onclick="Backend.toggleCheckboxes(this)"> <label for="check_all" style="color:#a6a6a6;"><em>'.$GLOBALS['TL_LANG']['MSC']['selectAll'].'</em></label><br>'.$options.'
+</fieldset>'.($blnIsError ? '
+<p class="tl_error">'.$GLOBALS['TL_LANG']['ERR']['all_fields'].'</p>' : (($GLOBALS['TL_CONFIG']['showHelp'] && strlen($GLOBALS['TL_LANG']['MSC']['all_fields'][1])) ? '
+<p class="tl_help tl_tip">'.$GLOBALS['TL_LANG']['MSC']['all_fields'][1].'</p>' : '')).'
 </div>
 
 </div>
@@ -1290,7 +1313,7 @@ window.addEvent(\'domready\', function()
 <div class="tl_formbody_submit">
 
 <div class="tl_submit_container">
-<input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['continue']).'" />
+<input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['continue']).'">
 </div>
 
 </div>
@@ -1451,8 +1474,8 @@ window.addEvent(\'domready\', function()
 		$return = '
 <div id="tl_buttons">'.(($this->Input->get('act') == 'select') ? '
 <a href="'.$this->getReferer(true).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'" accesskey="b" onclick="Backend.getScrollOffset();">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>' : '') . (($this->Input->get('act') != 'select' && !$GLOBALS['TL_DCA'][$this->strTable]['config']['closed']) ? '
-<a href="'.$this->addToUrl('act=paste&amp;mode=create').'" class="header_new" title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable]['new'][1]).'" accesskey="n" onclick="Backend.getScrollOffset();">'.$GLOBALS['TL_LANG'][$this->strTable]['new'][0].'</a>' : '') . (($this->Input->get('act') != 'select') ? $this->generateGlobalButtons() . ($blnClipboard ? ' &nbsp; :: &nbsp; <a href="'.$this->addToUrl('clipboard=1').'" class="header_clipboard" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['clearClipboard']).'" accesskey="b">'.$GLOBALS['TL_LANG']['MSC']['clearClipboard'].'</a>' : '') : '') . '
-</div>' . $this->getMessages();
+<a href="'.$this->addToUrl('act=paste&amp;mode=create').'" class="header_new" title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable]['new'][1]).'" accesskey="n" onclick="Backend.getScrollOffset();">'.$GLOBALS['TL_LANG'][$this->strTable]['new'][0].'</a>' : '') . (($this->Input->get('act') != 'select') ? $this->generateGlobalButtons() . ($blnClipboard ? ' &nbsp; :: &nbsp; <a href="'.$this->addToUrl('clipboard=1').'" class="header_clipboard" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['clearClipboard']).'" accesskey="x">'.$GLOBALS['TL_LANG']['MSC']['clearClipboard'].'</a>' : '') : '') . '
+</div>' . $this->getMessages(true);
 
 		$tree = '';
 		$blnHasSorting = $this->Database->fieldExists('sorting', $table);
@@ -1474,12 +1497,13 @@ window.addEvent(\'domready\', function()
 
 <form action="'.ampersand($this->Environment->request, true).'" id="tl_select" class="tl_form" method="post">
 <div class="tl_formbody">
-<input type="hidden" name="FORM_SUBMIT" value="tl_select" />' : '').'
+<input type="hidden" name="FORM_SUBMIT" value="tl_select">
+<input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">' : '').'
 
 <div class="tl_listing_container tree_view" id="tl_listing">'.(isset($GLOBALS['TL_DCA'][$table]['list']['sorting']['breadcrumb']) ? $GLOBALS['TL_DCA'][$table]['list']['sorting']['breadcrumb'] : '').(($this->Input->get('act') == 'select') ? '
 
 <div class="tl_select_trigger">
-<label for="tl_select_trigger" class="tl_select_label">'.$GLOBALS['TL_LANG']['MSC']['selectAll'].'</label> <input type="checkbox" id="tl_select_trigger" onclick="Backend.toggleCheckboxes(this)" class="tl_tree_checkbox" />
+<label for="tl_select_trigger" class="tl_select_label">'.$GLOBALS['TL_LANG']['MSC']['selectAll'].'</label> <input type="checkbox" id="tl_select_trigger" onclick="Backend.toggleCheckboxes(this)" class="tl_tree_checkbox">
 </div>' : '').'
 
 <ul class="tl_listing ' . $treeClass . '">
@@ -1519,12 +1543,12 @@ window.addEvent(\'domready\', function()
 
 <div class="tl_formbody_submit" style="text-align:right;">
 
-<div class="tl_submit_container">
-  <input type="submit" name="delete" id="delete" class="tl_submit" accesskey="d" onclick="return confirm(\''.$GLOBALS['TL_LANG']['MSC']['delAllConfirm'].'\');" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['deleteSelected']).'" />
-  <input type="submit" name="cut" id="cut" class="tl_submit" accesskey="x" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['moveSelected']).'" />
-  <input type="submit" name="copy" id="copy" class="tl_submit" accesskey="c" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['copySelected']).'" />' . (!$GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable'] ? '
-  <input type="submit" name="override" id="override" class="tl_submit" accesskey="v" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['overrideSelected']).'" />
-  <input type="submit" name="edit" id="edit" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['editSelected']).'" />' : '') . '
+<div class="tl_submit_container">' . (!$GLOBALS['TL_DCA'][$this->strTable]['config']['notDeletable'] ? '
+  <input type="submit" name="delete" id="delete" class="tl_submit" accesskey="d" onclick="return confirm(\''.$GLOBALS['TL_LANG']['MSC']['delAllConfirm'].'\');" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['deleteSelected']).'"> ' : '') . '
+  <input type="submit" name="cut" id="cut" class="tl_submit" accesskey="x" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['moveSelected']).'"> 
+  <input type="submit" name="copy" id="copy" class="tl_submit" accesskey="c" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['copySelected']).'"> ' . (!$GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable'] ? '
+  <input type="submit" name="override" id="override" class="tl_submit" accesskey="v" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['overrideSelected']).'"> 
+  <input type="submit" name="edit" id="edit" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['editSelected']).'"> ' : '') . '
 </div>
 
 </div>
@@ -1544,7 +1568,7 @@ window.addEvent(\'domready\', function()
 	 */
 	public function ajaxTreeView($id, $level)
 	{
-		if (!$this->Input->post('isAjax'))
+		if (!$this->Environment->isAjaxRequest)
 		{
 			return '';
 		}
@@ -1598,7 +1622,7 @@ window.addEvent(\'domready\', function()
 
 		for ($i=0; $i<count($arrIds); $i++)
 		{
-			$return .= '  ' . trim($this->generateTree($table, $arrIds[$i], array('p'=>$arrIds[($i-1)], 'n'=>$arrIds[($i+1)]), $hasSorting, $margin, ($blnClipboard ? $arrClipboard : false), ($blnClipboard && ($id == $arrClipboard ['id'] || (is_array($arrClipboard ['id']) && in_array($id, $arrClipboard ['id'])) || (!$blnPtable && !is_array($arrClipboard['id']) && in_array($id, $this->getChildRecords($arrClipboard['id'], $table, $hasSorting))))), $blnProtected));
+			$return .= ' ' . trim($this->generateTree($table, $arrIds[$i], array('p'=>$arrIds[($i-1)], 'n'=>$arrIds[($i+1)]), $hasSorting, $margin, ($blnClipboard ? $arrClipboard : false), ($id == $arrClipboard ['id'] || (is_array($arrClipboard ['id']) && in_array($id, $arrClipboard ['id'])) || (!$blnPtable && !is_array($arrClipboard['id']) && in_array($id, $this->getChildRecords($arrClipboard['id'], $table)))), $blnProtected));
 		}
 
 		return $return;
@@ -1665,8 +1689,14 @@ window.addEvent(\'domready\', function()
 			}
 		}
 
+		$blnProtected = false;
+
 		// Check whether the page is protected
-		$objRow->protected = ($table == 'tl_page') ? ($objRow->protected || $protectedPage) : false;
+		if ($table == 'tl_page')
+		{
+			$blnProtected = ($objRow->protected || $protectedPage) ? true : false;
+		}
+
 		$session[$node][$id] = (is_int($session[$node][$id])) ? $session[$node][$id] : 0;
 		$mouseover = ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 5 || $table == $this->strTable) ? ' onmouseover="Theme.hoverDiv(this, 1);" onmouseout="Theme.hoverDiv(this, 0);"' : '';
 
@@ -1688,6 +1718,15 @@ window.addEvent(\'domready\', function()
 
 		foreach ($showFields as $k=>$v)
 		{
+			// Decrypt the value
+			if ($GLOBALS['TL_DCA'][$table]['fields'][$v]['eval']['encrypt'])
+			{
+				$objRow->$v = deserialize($objRow->$v);
+
+				$this->import('Encryption');
+				$objRow->$v = $this->Encryption->decrypt($objRow->$v);
+			}
+
 			if (strpos($v, ':') !== false)
 			{
 				list($strKey, $strTable) = explode(':', $v);
@@ -1746,7 +1785,7 @@ window.addEvent(\'domready\', function()
 		// Regular buttons ($row, $table, $root, $blnCircularReference, $childs, $previous, $next)
 		if ($this->strTable == $table)
 		{
-			$_buttons .= ($this->Input->get('act') == 'select') ? '<input type="checkbox" name="IDS[]" id="ids_'.$id.'" class="tl_tree_checkbox" value="'.$id.'" />' : $this->generateButtons($objRow->row(), $table, $this->root, $blnCircularReference, $childs, $previous, $next);
+			$_buttons .= ($this->Input->get('act') == 'select') ? '<input type="checkbox" name="IDS[]" id="ids_'.$id.'" class="tl_tree_checkbox" value="'.$id.'">' : $this->generateButtons($objRow->row(), $table, $this->root, $blnCircularReference, $childs, $previous, $next);
 		}
 
 		// Paste buttons
@@ -1817,7 +1856,7 @@ window.addEvent(\'domready\', function()
 			{
 				for ($k=0; $k<count($childs); $k++)
 				{
-					$return .= $this->generateTree($table, $childs[$k], array('p'=>$childs[($k-1)], 'n'=>$childs[($k+1)]), $blnHasSorting, ($intMargin + $intSpacing), $arrClipboard, ((($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 5 && $childs[$k] == $arrClipboard['id']) || $blnCircularReference) ? true : false), ($objRow->protected || $protectedPage));
+					$return .= $this->generateTree($table, $childs[$k], array('p'=>$childs[($k-1)], 'n'=>$childs[($k+1)]), $blnHasSorting, ($intMargin + $intSpacing), $arrClipboard, ((($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 5 && $childs[$k] == $arrClipboard['id']) || $blnCircularReference) ? true : false), ($blnProtected || $protectedPage));
 				}
 			}
 		}
@@ -1901,7 +1940,7 @@ window.addEvent(\'domready\', function()
 		return '
 
 <div class="tl_sorting tl_subpanel">
-<strong>' . $GLOBALS['TL_LANG']['MSC']['sortBy'] . ':</strong>
+<strong>' . $GLOBALS['TL_LANG']['MSC']['sortBy'] . ':</strong> 
 <select name="tl_sort" id="tl_sort" class="tl_select">
 '.implode("\n", $options_sorter).'
 </select>

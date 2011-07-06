@@ -280,6 +280,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 
 		$return = '<div id="tl_buttons">
 <input type="hidden" name="FORM_SUBMIT" value="be_pos_terminal" />
+<input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">
 <a href="'.ampersand(str_replace('&key=payment', '', $this->Environment->request)).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
 </div>
 <h2 class="sub_headline">' . $GLOBALS['ISO_LANG']['PAY']['authorizedotnet'][0] . (!$arrPaymentData['transaction-id'] || $arrPaymentData['transaction-id']=="0" ? ' - ' . 'Test Transaction' : '') . '</h2>

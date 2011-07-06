@@ -358,29 +358,28 @@ var Isotope =
 
 		if (item)
 		{
-			if (item.getStyle('display') != 'inline')
+			if (item.getStyle('display') == 'none')
 			{
 				item.setStyle('display', 'inline');
 				image.src = image.src.replace('folPlus.gif', 'folMinus.gif');
-				new Request({url: window.location.href, data: 'isAjax=1&action=toggleProductTree&id=' + id + '&state=1'}).send();
+				$(el).title = CONTAO_COLLAPSE;
+				new Request.Contao().post({'action':'toggleProductTree', 'id':id, 'state':1, 'REQUEST_TOKEN':REQUEST_TOKEN});
 			}
 			else
 			{
 				item.setStyle('display', 'none');
 				image.src = image.src.replace('folMinus.gif', 'folPlus.gif');
-				new Request({url: window.location.href, data: 'isAjax=1&action=toggleProductTree&id=' + id + '&state=0'}).send();
+				$(el).title = CONTAO_EXPAND;
+				new Request.Contao().post({'action':'toggleProductTree', 'id':id, 'state':0, 'REQUEST_TOKEN':REQUEST_TOKEN});
 			}
 
 			return false;
 		}
 
-		new Request( 
+		new Request.Contao(
 		{
-			url: window.location.href,
-			data: 'isAjax=1&action=loadProductTree&id=' + id + '&level=' + level + '&field=' + field + '&name=' + name + '&state=1',
-			onRequest: AjaxRequest.displayBox('Loading data ...'),
-
-			onComplete: function(txt, xml)
+			onRequest: AjaxRequest.displayBox('Loading data …'),
+			onSuccess: function(txt, json)
 			{
 				var ul = new Element('ul');
 
@@ -396,10 +395,14 @@ var Isotope =
 				ul.injectInside(item);
 				item.injectAfter($(el).getParent('li'));
 
+				$(el).title = CONTAO_COLLAPSE;
 				image.src = image.src.replace('folPlus.gif', 'folMinus.gif');
 				AjaxRequest.hideBox();
+
+				// HOOK
+				window.fireEvent('ajax_change');
    			}
-		}).send();
+		}).post({'action':'loadProductTree', 'id':id, 'level':level, 'field':field, 'name':name, 'state':1, 'REQUEST_TOKEN':REQUEST_TOKEN});
 
 		return false;
 	},

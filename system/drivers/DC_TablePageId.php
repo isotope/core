@@ -94,12 +94,13 @@ class DC_TablePageId extends DC_Table
 
 <form action="'.ampersand($this->Environment->request, true).'" class="tl_form" method="post">
 <div class="tl_formbody">
-<input type="hidden" name="FORM_SUBMIT" value="tl_filters_limit" />
+<input type="hidden" name="FORM_SUBMIT" value="tl_filters_limit">
+<input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">
 
 <div class="tl_panel_bottom">
 
 <div class="tl_submit_panel tl_subpanel">
-<input type="image" name="btfilter" id="btfilter" src="system/themes/' . $this->getTheme() . '/images/ok.gif" class="tl_img_submit" alt="apply changes" value="apply changes" />
+<input type="image" name="btfilter" id="btfilter" src="system/themes/' . $this->getTheme() . '/images/ok.gif" class="tl_img_submit" alt="apply changes" value="apply changes">
 </div>' . $strLimit . '
 
 <div class="clear"></div>
@@ -573,7 +574,8 @@ class DC_TablePageId extends DC_Table
 
 <form action="'.ampersand($this->Environment->request, true).'" id="tl_select" class="tl_form" method="post">
 <div class="tl_formbody">
-<input type="hidden" name="FORM_SUBMIT" value="tl_select" />' : '').'
+<input type="hidden" name="FORM_SUBMIT" value="tl_select">
+<input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">' : '').'
 
 <div class="tl_listing_container">
 
@@ -590,7 +592,7 @@ class DC_TablePageId extends DC_Table
 
 			$return .= '
 <div style="text-align:right;">'.(($this->Input->get('act') == 'select') ? '
-<label for="tl_select_trigger" class="tl_select_label">'.$GLOBALS['TL_LANG']['MSC']['selectAll'].'</label> <input type="checkbox" id="tl_select_trigger" onclick="Backend.toggleCheckboxes(this)" class="tl_tree_checkbox" />' : '&nbsp;' . (($blnHasSorting && !$GLOBALS['TL_DCA'][$this->strTable]['config']['closed']) ? ' <a href="'.$this->addToUrl('act=create&amp;mode=2&amp;page_id='.$objParent->id.'&amp;id='.$this->intId).'" title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable]['pastenew'][0]).'">'.$imagePasteNew.'</a>' : '') . ($blnClipboard ? ' <a href="'.$this->addToUrl('act='.$arrClipboard['mode'].'&amp;mode=2&amp;page_id='.$objParent->id . (!$blnMultiboard ? '&amp;id='.$arrClipboard['id'] : '')).'" title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable]['pasteafter'][0]).'" onclick="Backend.getScrollOffset();">'.$imagePasteAfter.'</a>' : '')) . '
+<label for="tl_select_trigger" class="tl_select_label">'.$GLOBALS['TL_LANG']['MSC']['selectAll'].'</label> <input type="checkbox" id="tl_select_trigger" onclick="Backend.toggleCheckboxes(this)" class="tl_tree_checkbox">' : '&nbsp;' . (($blnHasSorting && !$GLOBALS['TL_DCA'][$this->strTable]['config']['closed']) ? ' <a href="'.$this->addToUrl('act=create&amp;mode=2&amp;page_id='.$objParent->id.'&amp;id='.$this->intId).'" title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable]['pastenew'][0]).'">'.$imagePasteNew.'</a>' : '') . ($blnClipboard ? ' <a href="'.$this->addToUrl('act='.$arrClipboard['mode'].'&amp;mode=2&amp;page_id='.$objParent->id . (!$blnMultiboard ? '&amp;id='.$arrClipboard['id'] : '')).'" title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable]['pasteafter'][0]).'" onclick="Backend.getScrollOffset();">'.$imagePasteAfter.'</a>' : '')) . '
 </div>';
 
 			// Format header fields
@@ -751,7 +753,7 @@ class DC_TablePageId extends DC_Table
 					// Edit multiple
 					if ($this->Input->get('act') == 'select')
 					{
-						$return .= '<input type="checkbox" name="IDS[]" id="ids_'.$row[$i]['id'].'" class="tl_tree_checkbox" value="'.$row[$i]['id'].'" />';
+						$return .= '<input type="checkbox" name="IDS[]" id="ids_'.$row[$i]['id'].'" class="tl_tree_checkbox" value="'.$row[$i]['id'].'">';
 					}
 
 					// Regular buttons
@@ -827,7 +829,7 @@ Isotope.makePageViewSortable("ul_' . CURRENT_ID . '");
 <div class="tl_formbody_submit" style="text-align:right;">
 
 <div class="tl_submit_container">
-  <input type="submit" name="cut" id="cut" class="tl_submit" alt="move selected records" accesskey="x" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['moveSelected']).'" />
+  <input type="submit" name="cut" id="cut" class="tl_submit" alt="move selected records" accesskey="x" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['moveSelected']).'">
 </div>
 
 </div>
@@ -942,12 +944,13 @@ Isotope.makePageViewSortable("ul_' . CURRENT_ID . '");
 
 <form action="'.ampersand($this->Environment->request, true).'" id="tl_select" class="tl_form" method="post">
 <div class="tl_formbody">
-<input type="hidden" name="FORM_SUBMIT" value="tl_select" />' : '').'
+<input type="hidden" name="FORM_SUBMIT" value="tl_select">
+<input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">' : '').'
 
 <div class="tl_listing_container">'.(($this->Input->get('act') == 'select') ? '
 
 <div class="tl_select_trigger">
-<label for="tl_select_trigger" class="tl_select_label">'.$GLOBALS['TL_LANG']['MSC']['selectAll'].'</label> <input type="checkbox" id="tl_select_trigger" onclick="Backend.toggleCheckboxes(this)" class="tl_tree_checkbox" />
+<label for="tl_select_trigger" class="tl_select_label">'.$GLOBALS['TL_LANG']['MSC']['selectAll'].'</label> <input type="checkbox" id="tl_select_trigger" onclick="Backend.toggleCheckboxes(this)" class="tl_tree_checkbox">
 </div>' : '').'
 
 <table cellpadding="0" cellspacing="0" class="tl_listing" summary="Table lists records">';
@@ -1215,7 +1218,7 @@ Isotope.makePageViewSortable("ul_' . CURRENT_ID . '");
 
 				// Buttons ($row, $table, $root, $blnCircularReference, $childs, $previous, $next)
 				$return .= '</td>'.(($this->Input->get('act') == 'select') ? '
-    <td class="tl_file_list tl_right_nowrap"><input type="checkbox" name="IDS[]" id="ids_'.$row['id'].'" class="tl_tree_checkbox" value="'.$row['id'].'" /></td>' : '
+    <td class="tl_file_list tl_right_nowrap"><input type="checkbox" name="IDS[]" id="ids_'.$row['id'].'" class="tl_tree_checkbox" value="'.$row['id'].'"></td>' : '
     <td class="tl_file_list tl_right_nowrap">'.$this->generateButtons($row, $this->strTable, $this->root).'</td>') . '
   </tr>';
 			}
@@ -1234,9 +1237,9 @@ Isotope.makePageViewSortable("ul_' . CURRENT_ID . '");
 <div class="tl_formbody_submit" style="text-align:right;">
 
 <div class="tl_submit_container">
-  <input type="submit" name="delete" id="delete" class="tl_submit" alt="delete selected records" accesskey="d" onclick="return confirm(\''.$GLOBALS['TL_LANG']['MSC']['delAllConfirm'].'\');" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['deleteSelected']).'" />' . (!$GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable'] ? '
-  <input type="submit" name="override" id="override" class="tl_submit" alt="override selected records" accesskey="v" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['overrideSelected']).'" />
-  <input type="submit" name="edit" id="edit" class="tl_submit" alt="edit selected records" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['editSelected']).'" />' : '') . '
+  <input type="submit" name="delete" id="delete" class="tl_submit" alt="delete selected records" accesskey="d" onclick="return confirm(\''.$GLOBALS['TL_LANG']['MSC']['delAllConfirm'].'\');" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['deleteSelected']).'">' . (!$GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable'] ? '
+  <input type="submit" name="override" id="override" class="tl_submit" alt="override selected records" accesskey="v" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['overrideSelected']).'">
+  <input type="submit" name="edit" id="edit" class="tl_submit" alt="edit selected records" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['editSelected']).'">' : '') . '
 </div>
 
 </div>

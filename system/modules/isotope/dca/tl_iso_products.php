@@ -310,7 +310,6 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'price' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['price'],
-			'sorting'				=> true,
 			'inputType'				=> 'text',
 			'eval'					=> array('mandatory'=>true, 'maxlength'=>13, 'rgxp'=>'price', 'tl_class'=>'w50'),
 			'attributes'			=> array('legend'=>'pricing_legend', 'fe_sorting'=>true),
@@ -920,6 +919,7 @@ class tl_iso_products extends Backend
 <form action="'.ampersand($this->Environment->request, true).'" id="tl_product_generate" class="tl_form" method="post">
 <div class="tl_formbody_edit">
 <input type="hidden" name="FORM_SUBMIT" value="tl_product_generate" />
+<input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">
 
 <div class="tl_tbox block">
 ' . $strBuffer . '
@@ -972,6 +972,7 @@ class tl_iso_products extends Backend
 <form action="'.ampersand($this->Environment->request, true).'" id="tl_product_quick_edit" class="tl_form" method="post">
 <div class="tl_formbody_edit">
 <input type="hidden" name="FORM_SUBMIT" value="tl_product_quick_edit" />
+<input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">
 
 <div class="tl_tbox block">
 <table width="100%" border="0" cellpadding="5" cellspacing="0" summary="">
@@ -1250,7 +1251,8 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 
 <form action="'.ampersand($this->Environment->request, true).'" id="tl_iso_products_import" class="tl_form" method="post">
 <div class="tl_formbody_edit">
-<input type="hidden" name="FORM_SUBMIT" value="tl_iso_products_import" />';
+<input type="hidden" name="FORM_SUBMIT" value="tl_iso_products_import" />
+<input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">';
 		/*$strReturn .= '<div class="tl_tbox block">
   <h3><label for="batch_size">'.$GLOBALS['TL_LANG']['tl_iso_products']['batch_size'][0].'</label></h3> <select name="batch_size"><option value=""'.($this->Input->post('batch_size') ? ' selected' : '').'>-</option>';*/
 		/*  foreach($arrBatchValues as $value)

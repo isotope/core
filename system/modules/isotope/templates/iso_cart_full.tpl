@@ -8,6 +8,7 @@
 <form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>" method="post">
 <div class="formbody">
 <input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formSubmit; ?>" />
+<input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}" />
 <table cellpadding="0" cellspacing="0" summary="<?php echo $this->summary; ?>">
 <tfoot>
 	<tr class="subtotal foot_first">

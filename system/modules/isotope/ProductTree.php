@@ -180,18 +180,18 @@ class ProductTree extends Widget
 		// Reset radio button selection
 		if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['fieldType'] == 'radio')
 		{
-			$strReset = "\n" . '    <li class="tl_folder"><div class="tl_left">&nbsp;</div> <div class="tl_right"><label for="reset_' . $this->strId . '" class="tl_change_selected">' . $GLOBALS['TL_LANG']['MSC']['resetSelected'] . '</label> <input type="radio" name="' . $this->strName . '" id="reset_' . $this->strName . '" class="tl_tree_radio" value="" onfocus="Backend.getScrollOffset();" /></div><div style="clear:both;"></div></li>';
+			$strReset = "\n" . '    <li class="tl_folder"><div class="tl_left">&nbsp;</div> <div class="tl_right"><label for="reset_' . $this->strId . '" class="tl_change_selected">' . $GLOBALS['TL_LANG']['MSC']['resetSelected'] . '</label> <input type="radio" name="' . $this->strName . '" id="reset_' . $this->strName . '" class="tl_tree_radio" value="" onfocus="Backend.getScrollOffset();"></div><div style="clear:both;"></div></li>';
 		}
 
 		// Select all checkboxes
 		elseif ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['fieldType'] == 'checkbox')
 		{
-			$strReset = "\n" . '    <li class="tl_folder"><div class="tl_left">&nbsp;</div> <div class="tl_right"><label for="check_all_' . $this->strId . '" class="tl_change_selected">' . $GLOBALS['TL_LANG']['MSC']['selectAll'] . '</label> <input type="checkbox" id="check_all_' . $this->strId . '" class="tl_tree_checkbox" value="" onclick="Backend.toggleCheckboxGroup(this, \'' . $this->strName . '\')" /></div><div style="clear:both;"></div></li>';
+			$strReset = "\n" . '    <li class="tl_folder"><div class="tl_left">&nbsp;</div> <div class="tl_right"><label for="check_all_' . $this->strId . '" class="tl_change_selected">' . $GLOBALS['TL_LANG']['MSC']['selectAll'] . '</label> <input type="checkbox" id="check_all_' . $this->strId . '" class="tl_tree_checkbox" value="" onclick="Backend.toggleCheckboxGroup(this, \'' . $this->strName . '\')"></div><div style="clear:both;"></div></li>';
 		}
 
 		// Return the tree
 		return '<ul class="tl_listing tree_view product_tree'.(strlen($this->strClass) ? ' ' . $this->strClass : '').'" id="'.$this->strId.'">
-    <li class="tl_folder_top"><div class="tl_left">'.$this->generateImage('system/modules/isotope/html/icon-products.gif').' '.(strlen($GLOBALS['TL_CONFIG']['websiteTitle']) ? $GLOBALS['TL_CONFIG']['websiteTitle'] : 'Contao Open Source CMS').'</div> <div class="tl_right"><label for="ctrl_'.$this->strId.'" class="tl_change_selected">'.$GLOBALS['TL_LANG']['MSC']['changeSelected'].'</label> <input type="checkbox" name="'.$this->strName.'_save" id="ctrl_'.$this->strId.'" class="tl_tree_checkbox" value="1" onclick="Backend.showTreeBody(this, \''.$this->strId.'_parent\');" /></div><div style="clear:both;"></div></li><li class="parent" id="'.$this->strId.'_parent"><ul>'.$tree.$strReset.'
+    <li class="tl_folder_top"><div class="tl_left">'.$this->generateImage('system/modules/isotope/html/store-open.png').' '.(strlen($GLOBALS['TL_CONFIG']['websiteTitle']) ? $GLOBALS['TL_CONFIG']['websiteTitle'] : 'Contao Open Source CMS').'</div> <div class="tl_right"><label for="ctrl_'.$this->strId.'" class="tl_change_selected">'.$GLOBALS['TL_LANG']['MSC']['changeSelected'].'</label> <input type="checkbox" name="'.$this->strName.'_save" id="ctrl_'.$this->strId.'" class="tl_tree_checkbox" value="1" onclick="Backend.showTreeBody(this, \''.$this->strId.'_parent\');" /></div><div style="clear:both;"></div></li><li class="parent" id="'.$this->strId.'_parent"><ul>'.$tree.$strReset.'
   </ul></li></ul>';
 	}
 
@@ -205,7 +205,7 @@ class ProductTree extends Widget
 	 */
 	public function generateAjax($id, $strField, $level)
 	{
-		if (!$this->Input->post('isAjax'))
+		if (!$this->Environment->isAjaxRequest)
 		{
 			return '';
 		}
@@ -282,6 +282,7 @@ class ProductTree extends Widget
 				$nodes[$this->strAjaxId] = intval($this->Input->post('state'));
 
 				$this->Session->set($this->strAjaxKey, $nodes);
+				echo json_encode(array('token'=>REQUEST_TOKEN));
 				exit; break;
 
 			// Load nodes of the file or page tree
@@ -320,7 +321,11 @@ class ProductTree extends Widget
 		
 			$objWidget = new $GLOBALS['BE_FFL']['productTree']($arrData, $dc);
 
-			echo $objWidget->generateAjax($this->strAjaxId, $this->Input->post('field'), intval($this->Input->post('level')));
+			echo json_encode(array
+			(
+				'content' => $objWidget->generateAjax($this->strAjaxId, $this->Input->post('field'), intval($this->Input->post('level'))),
+				'token'   => REQUEST_TOKEN
+			));
 			exit;
 		}
 	}
@@ -386,13 +391,13 @@ class ProductTree extends Widget
 		{
 			$folderAttribute = '';
 			$img = $blnIsOpen ? 'folMinus.gif' : 'folPlus.gif';
-			$return .= '<a href="'.$this->addToUrl($flag.'tg='.$id).'" onclick="Backend.getScrollOffset(); return Isotope.toggleProductTree(this, \''.$xtnode.'_'.$id.'\', \''.$this->strField.'\', \''.$this->strName.'\', '.$level.');">'.$this->generateImage($img, '', 'style="margin-right:2px;"').'</a>';
+			$alt = $blnIsOpen ? $GLOBALS['TL_LANG']['MSC']['collapseNode'] : $GLOBALS['TL_LANG']['MSC']['expandNode'];
+			$return .= '<a href="'.$this->addToUrl($flag.'tg='.$id).'" title="'.specialchars($alt).'" onclick="Backend.getScrollOffset(); return Isotope.toggleProductTree(this, \''.$xtnode.'_'.$id.'\', \''.$this->strField.'\', \''.$this->strName.'\', '.$level.');">'.$this->generateImage($img, '', 'style="margin-right:2px;"').'</a>';
 		}
 
 		$sub = 0;
-		$image = 'system/modules/isotope/html/icon-products.gif';
 
-		// Add page name
+		// Add product name
 		$return .= $this->dca->getRowLabel($objProduct->row()).'</div> <div class="tl_right">';
 
 		if (!count($childs) || $objProduct->pid > 0 || !$this->variantsOnly)

@@ -24,6 +24,7 @@
 <form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>" method="post" enctype="<?php echo $this->enctype; ?>">
 <div class="formbody">
 <input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formSubmit; ?>" />
+<input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}" />
 <?php echo $this->hidden; ?>
 <?php echo $this->fields; ?>
 </div>

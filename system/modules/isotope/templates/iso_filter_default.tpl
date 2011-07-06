@@ -9,6 +9,7 @@
 <form action="<?php echo $this->actionFilter; ?>" id="<?php echo $this->formId; ?>" method="post">
 <div class="formbody">
 <input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formId; ?>" />
+<input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}" />
 
 <?php if($this->hasSorting): ?>
 <div class="sorting">

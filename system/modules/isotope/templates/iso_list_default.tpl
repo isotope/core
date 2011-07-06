@@ -1,6 +1,7 @@
 <form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>" name="iso<?php echo rand(); ?>" method="post" enctype="<?php echo $this->enctype; ?>">
 <div class="formbody">
 <input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formSubmit; ?>" />
+<input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}" />
 
 <h3><a href="<?php echo $this->href_reader; ?>"><?php echo $this->name; ?></a></h3>
 
