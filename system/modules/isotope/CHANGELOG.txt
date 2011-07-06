@@ -76,7 +76,7 @@ Version 0.3.beta1
 - Removed obsolete table tl_filter_values_to_categories
 - Removed moduleOperations callback from payment and shipping modules. The same can be achieved through standard DCA operations.
 
-Version 0.2.10 (2011-06-??)
+Version 0.2.10 (2011-07-06)
 ------------------------------
 - Added support for Contao 2.10 "structure" event (see http://dev.contao.org/issues/2504)
 - Added shipping & payment method filter to orders
