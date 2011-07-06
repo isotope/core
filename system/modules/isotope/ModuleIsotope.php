@@ -34,7 +34,7 @@ abstract class ModuleIsotope extends Module
 	 * @var object
 	 */
 	protected $Isotope;
-	
+
 	/**
 	 * Disable caching of the frontend page if this module is in use.
 	 * Usefule to enable in a child classes.
@@ -73,7 +73,7 @@ abstract class ModuleIsotope extends Module
 		}
 	}
 
-	
+
 	/**
 	 * Include messages if enabled
 	 * @return string
@@ -81,14 +81,14 @@ abstract class ModuleIsotope extends Module
 	public function generate()
 	{
 		$strBuffer = parent::generate();
-		
+
 		// Prepend any messages to the module output
 		if ($this->iso_includeMessages)
 		{
 			$this->import('IsotopeFrontend');
 			$strBuffer = $this->IsotopeFrontend->getMessages() . $strBuffer;
 		}
-		
+
 		return $strBuffer;
 	}
 
@@ -198,7 +198,7 @@ abstract class ModuleIsotope extends Module
 				{
 					$arrData[$id] = str_replace('"', '', $objProduct->$strField);
 				}
-				
+
 				$arrParam[] = $arrData;
 				$arrParam = array_merge($arrParam, $arrConfig);
 			}
@@ -261,7 +261,7 @@ abstract class ModuleIsotope extends Module
 					return array(0);
 				}
 				break;
-				
+
 			case 'current_category':
 			default:
 				$arrCategories = array($objPage->id);
@@ -269,7 +269,7 @@ abstract class ModuleIsotope extends Module
 		}
 
 		$arrIds = $this->Database->execute("SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . ")")->fetchEach('pid');
-		
+
 		return count($arrIds) ? $arrIds : array(0);
 	}
 
@@ -345,7 +345,7 @@ abstract class ModuleIsotope extends Module
 						$blnMatch = true;
 					}
 			}
-			
+
 			if ($filter['group'])
 			{
 				$arrGroups[$filter['group']] = $arrGroups[$filter['group']] ? $arrGroups[$filter['group']] : $blnMatch;
@@ -355,7 +355,7 @@ abstract class ModuleIsotope extends Module
 				return false;
 			}
 		}
-		
+
 		if (count($arrGroups) && in_array(false, $arrGroups))
 		{
 			return false;

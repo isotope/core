@@ -77,7 +77,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 			$this->Template->message = $GLOBALS['TL_LANG']['MSC']['noItemsInCart'];
 			return;
 		}
-		
+
 		$objTemplate = new IsotopeTemplate($this->iso_cart_layout);
 
 		global $objPage;
@@ -109,7 +109,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 			{
 				$this->redirect((strlen($this->Input->get('referer')) ? base64_decode($this->Input->get('referer', true)) : $strUrl));
 			}
-			
+
 			// Update cart data if form has been submitted
 			elseif ($this->Input->post('FORM_SUBMIT') == 'iso_cart_update' && is_array($arrQuantity))
 			{
@@ -117,7 +117,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 				$this->Isotope->Cart->updateProduct($objProduct, array('product_quantity'=>$arrQuantity[$objProduct->cart_id]));
 				continue; // no need to generate $arrProductData, we reload anyway
 			}
-			
+
 			// No need to generate product data if we reload anyway
 			elseif ($blnReload)
 			{

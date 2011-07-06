@@ -49,7 +49,7 @@ class EpayRelay extends Frontend
 	public function rewriteUrls($arrRow, $strParams, $strUrl)
 	{
 		global $objPage;
-		
+
 		if ($arrRow['epay_relay'])
 		{
 			return 'https://relay.ditonlinebetalingssystem.dk/relay/v2/relay.cgi/' . $this->Environment->base . $strUrl . '?HTTP_COOKIE='.$_SERVER['HTTP_COOKIE'];
@@ -58,7 +58,7 @@ class EpayRelay extends Frontend
 		{
 			return $this->Environment->base . $strUrl;
 		}
-		
+
 		return $strUrl;
 	}
 }

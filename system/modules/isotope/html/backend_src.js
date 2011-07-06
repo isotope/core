@@ -340,7 +340,7 @@ var Isotope =
 
 		Backend.getScrollOffset();
 	},
-	
+
 	/**
 	 * Toggle the product tree (input field)
 	 * @param object
@@ -607,7 +607,7 @@ var Isotope =
 			}
 		});
 	},
-	
+
 	/**
 	 * Make parent view items sortable
 	 * @param object

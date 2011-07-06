@@ -7,9 +7,9 @@
 -- *                                                        *
 -- **********************************************************
 
--- 
+--
 -- Table `tl_page`
--- 
+--
 
 CREATE TABLE `tl_page` (
   `epay_relay` char(1) NOT NULL default '',

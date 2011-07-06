@@ -366,8 +366,8 @@ class tl_iso_orders extends Backend
 		$objModule = new ModuleIsotopeOrderDetails($this->Database->execute("SELECT * FROM tl_module WHERE type='iso_orderdetails'"));
 		return $objModule->generate(true);
 	}
-	
-	
+
+
 	/**
 	 * Generate the order details view when editing an order
 	 *
@@ -386,12 +386,12 @@ class tl_iso_orders extends Backend
 		}
 
 		$arrSettings = deserialize($objOrder->settings, true);
-		
+
 		if (!is_array($arrSettings['email_data']))
 		{
 			return '<div class="tl_gerror">No email data available.</div>';
 		}
-		
+
 		$strBuffer = '
 <div>
 <table cellpadding="0" cellspacing="0" class="tl_show" summary="Table lists all details of an entry" style="width:650px">
@@ -401,7 +401,7 @@ class tl_iso_orders extends Backend
 		foreach( $arrSettings['email_data'] as $k => $v )
 		{
 			$strClass = ++$i%2 ? '' : ' class="tl_bg"';
-			
+
 			$strBuffer .= '
   <tr>
     <td' . $strClass . ' style="vertical-align:top"><span class="tl_label">'.$k.': </span></td>
@@ -412,7 +412,7 @@ class tl_iso_orders extends Backend
 		$strBuffer .= '
 </tbody></table>
 </div>';
-		
+
 		return $strBuffer;
 	}
 
@@ -621,30 +621,30 @@ class tl_iso_orders extends Backend
 			$this->log('No order IDs passed to method.', __METHOD__, TL_ERROR);
 			$this->redirect($this->Environment->script . '?act=error');
 		}
-		
+
 		$pdf = null;
-		
+
 		foreach( $arrIds as $intId )
 		{
 			$objOrder = new IsotopeOrder();
-			
+
 			if ($objOrder->findBy('id', $intId))
 			{
 				$pdf = $objOrder->generatePDF(null, $pdf, false);
 			}
 		}
-		
+
 		if (!$pdf)
 		{
 			$this->log('No order IDs passed to method.', __METHOD__, TL_ERROR);
 			$this->redirect($this->Environment->script . '?act=error');
 		}
-		
+
 		// Close and output PDF document
 		// @todo $strInvoiceTitle is not defined
 		$pdf->lastPage();
 		$pdf->Output(standardize(ampersand($strInvoiceTitle, false), true) . '.pdf', 'D');
-		
+
 		// Set config back to default
 		// @todo do we need that? The PHP session is ended anyway...
 		$this->Isotope->resetConfig(true);

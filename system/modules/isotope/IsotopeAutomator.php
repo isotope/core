@@ -51,7 +51,7 @@ class IsotopeAutomator extends Controller
 				if ($objCart->findBy('id', $id))
 				{
 					$objOrder = new IsotopeOrder();
-					
+
 					if ($objOrder->findBy('cart_id', $objCart->id))
 					{
 						if ($objOrder->status == '')
@@ -59,7 +59,7 @@ class IsotopeAutomator extends Controller
 							$objOrder->delete();
 						}
 					}
-					
+
 					$objCart->delete();
 				}
 			}

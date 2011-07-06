@@ -204,7 +204,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 			$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->execute($this->Isotope->Cart->id);
 
 			$_SESSION['CHECKOUT_DATA']['payment']['request_lockout'] = true;
-			
+
 			$blnAuthCapture = $this->authCapturePayment($objOrder->id, $this->Isotope->Cart->grandTotal, false);
 
 			if($blnAuthCapture)
@@ -328,7 +328,7 @@ $return .= '</div></div>';
 		$arrShipping = array();
 		$arrProducts = array();
 		$arrPaymentInfo = array();
-		
+
 		//Gather product and address data depending on FE(Cart) or BE(Order)
 		if(TL_MODE=='FE')
 		{
@@ -360,7 +360,7 @@ $return .= '</div></div>';
 		//Get Address Data
 		$arrBillingSubdivision = explode('-', $arrBilling['subdivision']);
 		$arrShippingSubdivision = explode('-', $arrShipping['subdivision']);
-		
+
 		//Set up basic request fields required by all transactions
 		$authnet_values_default = array
 		(
@@ -371,15 +371,15 @@ $return .= '</div></div>';
 			"x_delim_char"						=> $this->authorize_delimiter,
 			"x_delim_data"						=> "TRUE",
 			"x_relay_response" 					=> "FALSE",
-			"x_amount"							=> $fltOrderTotal	
+			"x_amount"							=> $fltOrderTotal
 			//"x_test_request"					=> ($this->debug ? 'true' : 'false'),
 		);
-		
+
 		switch($strAuthType)
 		{
 			case 'AUTH_ONLY':
-				$authnet_values_authonly = array(		
-					"x_url"								=> "FALSE",					
+				$authnet_values_authonly = array(
+					"x_url"								=> "FALSE",
 					"x_description"						=> "Order Number " . $this->Isotope->Config->orderPrefix . $objOrder->id,
 					"x_invoice_num"						=> $objOrder->id,
 					"x_first_name"						=> $arrBilling['firstname'],
@@ -402,35 +402,35 @@ $return .= '</div></div>';
 					"x_ship_to_zip"						=> $arrShipping['postal'],
 					"x_ship_to_country"					=> $arrShipping['country'],
 				);
-				
-				$authnet_values = array_merge($authnet_values_default,$authnet_values_authonly);			
+
+				$authnet_values = array_merge($authnet_values_default,$authnet_values_authonly);
 				break;
 			case 'PRIOR_AUTH_CAPTURE':
-				$arrTransactionData = deserialize($objOrder->payment_data,true);				
+				$arrTransactionData = deserialize($objOrder->payment_data,true);
 				$authnet_values = array_merge($authnet_values_default,array("x_trans_id" => $arrTransactionData['transaction-id']));
 				break;
 			default:
-				break;				
+				break;
 		}
-				
-						
+
+
 		if(!$blnCapture) //Gather CC Data from post
 		{
 			$arrPaymentInput = $this->Input->post('payment');
-		
+
 			$authnet_values["x_method"] 	= "CC";
 			$authnet_values["x_card_num"]	= $arrPaymentInput['card_accountNumber'];
 			$authnet_values["x_exp_date"]	= ($arrPaymentInput['card_expirationMonth'].substr($arrPaymentInput['card_expirationYear'], 2, 2));
-			
+
 			if($this->requireCCV)
 			{
 				$authnet_values["x_card_code"] = $arrPaymentInput['card_cvNumber'];
-			}	
-			
+			}
+
 			$arrPaymentInfo["x_card_num"]	= $this->maskCC($arrData['card_accountNumber']); //PCI COMPLIANCE - MASK THE CC DATA
-			$arrPaymentInfo["x_card_type"]	= $GLOBALS['ISO_LANG']['CCT'][$arrData['card_cardType']];		
+			$arrPaymentInfo["x_card_type"]	= $GLOBALS['ISO_LANG']['CCT'][$arrData['card_cardType']];
 		}
-		
+
 		foreach( $authnet_values as $key => $value ) $fields .= "$key=" . urlencode( $value ) . "&";
 
 		$fieldsFinal = rtrim($fields, '&');
@@ -463,21 +463,21 @@ $return .= '</div></div>';
 					$objOrder->status = 'on_hold';
 					$blnFail = true;
 					break;
-	
+
 			}
 		}
-						
+
 		//Update payment data AKA Response Data. Transaction ID will not be saved during test mode.
 		$arrOrderPaymentData = deserialize($objOrder->payment_data,true);
 		$arrPaymentInfo = (count($arrOrderPaymentData)) ? array_merge($arrOrderPaymentData, $arrResponses) : $arrResponses;
-				
+
 		$objOrder->payment_data = serialize($arrPaymentInfo);
-		
+
 		$objOrder->save();
-		
+
 		//unlock the payment submit
 		$_SESSION['CHECKOUT_DATA']['payment']['request_lockout'] = false;
-		
+
 		if($blnFail)
 		{
 			$this->log(sprintf("Transaction failure. Transaction Status: %s, Reason: %s", $this->strStatus, $this->strReason), 'PaymentAuthorizeDotNet capturePayment()', TL_ERROR);

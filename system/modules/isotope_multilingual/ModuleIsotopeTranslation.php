@@ -216,7 +216,7 @@ class ModuleIsotopeTranslation extends BackendModule
 				{
 					$data = explode("\n", $objRequest->response);
 					$this->Template->diff = $this->parse($data);
-					
+
 					if (!is_array($this->Template->diff))
 					{
 						$this->Template->error = $GLOBALS['TL_LANG']['MSC']['translationSVNError'];
@@ -275,21 +275,21 @@ class ModuleIsotopeTranslation extends BackendModule
 			{
 				return 'Line ' . ++$i . ': ' . $line;
 			}
-			
+
 			if (eval($line) === false)
 			{
 				return 'Line ' . ++$i . ': ' . $line;
 			}
-			
+
 			$varValue = eval('return '.$strKey.';');
-			
+
 			$this->parseVar($varValue, $strKey, $arrVariables);
 		}
 
 		return $arrVariables;
 	}
-	
-	
+
+
 	private function parseVar($varValue, $strKey, &$arrVariables)
 	{
 		if (is_array($varValue))
@@ -300,7 +300,7 @@ class ModuleIsotopeTranslation extends BackendModule
 			}
 			return;
 		}
-		
+
 		$arrVariables[$strKey] = $varValue;
 	}
 

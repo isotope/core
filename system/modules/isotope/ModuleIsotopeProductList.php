@@ -92,7 +92,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			$this->Template->message = $this->iso_emptyMessage ? $this->iso_noProducts : $GLOBALS['TL_LANG']['MSC']['noProducts'];
 			return;
 		}
-		
+
 		// Add pagination
 		if ($this->perPage > 0)
 		{
@@ -129,9 +129,9 @@ class ModuleIsotopeProductList extends ModuleIsotope
 				++$row;
 				$col = 0;
 			}
-			
+
 			$strClass = 'product product_'.$i . ($i%2 ? ' product_even' : ' product_odd') . ($i == 0 ? ' product_first' : '') . ($i == $last ? ' product_last' : '');
-			
+
 			// Add row & col classes
 			if ($this->iso_cols > 1)
 			{
@@ -145,7 +145,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 				'class'		=> $strClass,
 				'html'		=> $objProduct->generate((strlen($this->iso_list_layout) ? $this->iso_list_layout : $objProduct->list_template), $this),
 			);
-			
+
 			++$col;
 		}
 
@@ -170,8 +170,8 @@ class ModuleIsotopeProductList extends ModuleIsotope
 
 		return $arrProducts;
 	}
-	
-	
+
+
 	protected function getFiltersAndSorting()
 	{
 		if (!is_array($this->iso_filterModules))

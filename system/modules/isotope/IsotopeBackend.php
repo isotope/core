@@ -134,8 +134,8 @@ class IsotopeBackend extends Backend
 
 		return sprintf('<div class="list_icon" style="background-image:url(\'system/themes/%s/images/%s.gif\');">%s</div>', $this->getTheme(), $image, $label);
 	}
-	
-	
+
+
 	/**
 	 * Export email template into XML file
 	 */
@@ -148,7 +148,7 @@ class IsotopeBackend extends Backend
 		{
 			return;
 		}
-		
+
 		// Romanize the name
 		$strName = utf8_romanize($objMail->name);
 		$strName = strtolower(str_replace(' ', '_', $strName));
@@ -162,7 +162,7 @@ class IsotopeBackend extends Backend
 		// Root element
 		$template = $xml->createElement('mail');
 		$template = $xml->appendChild($template);
-		
+
 		foreach ($objMail->row() as $k=>$v)
 		{
 			$field = $xml->createElement('field');
@@ -177,9 +177,9 @@ class IsotopeBackend extends Backend
 			$value = $xml->createTextNode($v);
 			$value = $field->appendChild($value);
 		}
-		
+
 		$objContent = $this->Database->execute("SELECT * FROM tl_iso_mail_content WHERE pid=".$objMail->id);
-		
+
 		while( $objContent->next() )
 		{
 			$content = $xml->createElement('content');
@@ -189,12 +189,12 @@ class IsotopeBackend extends Backend
 				$field = $xml->createElement('field');
 				$field->setAttribute('name', $k);
 				$field = $content->appendChild($field);
-	
+
 				if (is_null($v))
 				{
 					$v = 'NULL';
 				}
-	
+
 				$value = $xml->createTextNode($v);
 				$value = $field->appendChild($value);
 			}
@@ -215,7 +215,7 @@ class IsotopeBackend extends Backend
 		exit;
 	}
 
-	
+
 	/**
 	 * Import email template
 	 */
@@ -297,8 +297,8 @@ class IsotopeBackend extends Backend
 </div>
 </form>';
 	}
-	
-	
+
+
 	/**
 	 * Import mail template from XML file
 	 */
@@ -310,7 +310,7 @@ class IsotopeBackend extends Backend
 			'tl_iso_mail'         => array_diff($this->Database->getFieldNames('tl_iso_mail'), array('id', 'pid')),
 			'tl_iso_mail_content' => array_diff($this->Database->getFieldNames('tl_iso_mail_content'), array('id', 'pid')),
 		);
-		
+
 		foreach ($arrFiles as $strFile)
 		{
 			$xml = new DOMDocument();
@@ -324,35 +324,35 @@ class IsotopeBackend extends Backend
 			$arrMapper = array();
 			$template = $xml->getElementsByTagName('field');
 			$content = $xml->getElementsByTagName('content');
-			
+
 			$arrSet = array();
-			
+
 			// Loop through the mail fields
 			for( $i=0; $i<$template->length; $i++ )
 			{
 				if (!in_array($template->item($i)->getAttribute('name'), $arrDbFields['tl_iso_mail']))
 					continue;
-				
+
 				$arrSet[$template->item($i)->getAttribute('name')] = $template->item($i)->nodeValue;
 			}
-			
+
 			$intPid = $this->Database->prepare("INSERT INTO tl_iso_mail %s")->set($arrSet)->execute()->insertId;
-			
+
 			// Loop through the content fields
 			for( $i=0; $i<$content->length; $i++ )
 			{
 				$arrSet = array('pid'=>$intPid);
 				$row = $content->item($i)->childNodes;
-				
+
 				// Loop through the content fields
 				for( $j=0; $j<$row->length; $j++ )
 				{
 					if (!in_array($row->item($j)->getAttribute('name'), $arrDbFields['tl_iso_mail_content']))
 						continue;
-				
+
 					$arrSet[$row->item($j)->getAttribute('name')] = $row->item($j)->nodeValue;
 				}
-				
+
 				$this->Database->prepare("INSERT INTO tl_iso_mail_content %s")->set($arrSet)->execute();
 			}
 

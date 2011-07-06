@@ -35,7 +35,7 @@ class IsotopeRunonce extends Controller
 	public function __construct()
 	{
 		parent::__construct();
-		
+
 		// Fix potential Exception on line 0 because of __destruct method (see http://dev.contao.org/issues/2236)
 		$this->import((TL_MODE=='BE' ? 'BackendUser' : 'FrontendUser'), 'User');
 		$this->import('Database');
@@ -63,7 +63,7 @@ class IsotopeRunonce extends Controller
 
 		// Checkout method has been renamed from "login" to "member" to prevent a problem with palette of the login module
 		$this->Database->query("UPDATE tl_module SET iso_checkout_method='member' WHERE iso_checkout_method='login'");
-		
+
 		// Make sure file extension .imt (Isotope Mail Template) is allowed for up- and download
 		if (!in_array('imt', trimsplit(',', $GLOBALS['TL_CONFIG']['uploadTypes'])))
 		{
@@ -167,37 +167,37 @@ class IsotopeRunonce extends Controller
 		{
 			$this->Database->query("ALTER TABLE tl_iso_attributes CHANGE COLUMN option_list options blob NULL");
 		}
-		
+
 		// tl_iso_attributes.is_be_filterable has been renamed to tl_iso_attributes.be_filter
 		if ($this->Database->fieldExists('is_be_filterable', 'tl_iso_attributes') && !$this->Database->fieldExists('be_filter', 'tl_iso_attributes'))
 		{
 			$this->Database->query("ALTER TABLE tl_iso_attributes CHANGE COLUMN is_be_filterable be_filter char(1) NOT NULL default ''");
 		}
-		
+
 		// tl_iso_attributes.is_filterable has been renamed to tl_iso_attributes.fe_filter
 		if ($this->Database->fieldExists('is_filterable', 'tl_iso_attributes') && !$this->Database->fieldExists('fe_filter', 'tl_iso_attributes'))
 		{
 			$this->Database->query("ALTER TABLE tl_iso_attributes CHANGE COLUMN is_filterable fe_filter char(1) NOT NULL default ''");
 		}
-		
+
 		// tl_iso_attributes.is_searchable has been renamed to tl_iso_attributes.fe_search
 		if ($this->Database->fieldExists('is_searchable', 'tl_iso_attributes') && !$this->Database->fieldExists('fe_search', 'tl_iso_attributes'))
 		{
 			$this->Database->query("ALTER TABLE tl_iso_attributes CHANGE COLUMN is_searchable fe_search char(1) NOT NULL default ''");
 		}
-		
+
 		// tl_iso_attributes.is_order_by_enabled has been renamed to tl_iso_attributes.fe_sorting
 		if ($this->Database->fieldExists('is_order_by_enabled', 'tl_iso_attributes') && !$this->Database->fieldExists('fe_sorting', 'tl_iso_attributes'))
 		{
 			$this->Database->query("ALTER TABLE tl_iso_attributes CHANGE COLUMN is_order_by_enabled fe_sorting char(1) NOT NULL default ''");
 		}
-		
+
 		// tl_iso_attributes.is_customer_defined has been renamed to tl_iso_attributes.customer_defined
 		if ($this->Database->fieldExists('is_customer_defined', 'tl_iso_attributes') && !$this->Database->fieldExists('customer_defined', 'tl_iso_attributes'))
 		{
 			$this->Database->query("ALTER TABLE tl_iso_attributes CHANGE COLUMN is_customer_defined customer_defined char(1) NOT NULL default ''");
 		}
-		
+
 		// tl_iso_attributes.is_be_searchable has been renamed to tl_iso_attributes.be_search
 		if ($this->Database->fieldExists('is_be_searchable', 'tl_iso_attributes') && !$this->Database->fieldExists('be_search', 'tl_iso_attributes'))
 		{
@@ -239,13 +239,13 @@ class IsotopeRunonce extends Controller
 		{
 			$this->Database->query("ALTER TABLE tl_module CHANGE COLUMN columns iso_cols int(1) unsigned NOT NULL default '1'");
 		}
-		
+
 		// tl_module.iso_orderByFields has been renamed to tl_module.iso_sortingFields
 		if ($this->Database->fieldExists('iso_orderByFields', 'tl_module') && !$this->Database->fieldExists('iso_sortingFields', 'tl_module'))
 		{
 			$this->Database->query("ALTER TABLE tl_module CHANGE COLUMN iso_orderByFields iso_sortingFields int(1) unsigned NOT NULL default '1'");
 		}
-		
+
 		// tl_module.iso_perPage has been added
 		if (!$this->Database->fieldExists('iso_perPage', 'tl_module'))
 		{
@@ -259,7 +259,7 @@ class IsotopeRunonce extends Controller
 			$this->Database->query("ALTER TABLE tl_module CHANGE COLUMN iso_forceNoProducts iso_emptyMessage char(1) NOT NULL default ''");
 			$this->Database->query("UPDATE tl_module SET iso_emptyMessage='1' WHERE iso_noProducts!=''");
 		}
-		
+
 		// tl_module.iso_listingModule has been removed
 		if ($this->Database->fieldExists('iso_listingModule', 'tl_module'))
 		{
@@ -476,7 +476,7 @@ class IsotopeRunonce extends Controller
 		}
 
 		$this->Database->query("UPDATE tl_iso_orders SET date_shipped=date, status='processing' WHERE status='shipped'");
-		
+
 		// Fix for Ticket #383
 		$this->Database->query("UPDATE tl_iso_order_downloads SET downloads_remaining='' WHERE downloads_remaining='-1'");
 	}
@@ -609,13 +609,13 @@ class IsotopeRunonce extends Controller
 				}
 			}
 		}
-		
+
 		// Add "name" and "description" to the list of search fields. Previously, they were enabled in the code directly
 		$objFilterModules = $this->Database->execute("SELECT * FROM tl_module WHERE iso_enableSearch='1'");
 		while( $objFilterModules->next() )
 		{
 			$arrSearch = deserialize($objFilterModules->iso_searchFields);
-			
+
 			if (!is_array($arrSearch))
 			{
 				$arrSearch = array('name', 'description');
@@ -624,7 +624,7 @@ class IsotopeRunonce extends Controller
 			{
 				array_unshift($arrSearch, 'name', 'description');
 			}
-			
+
 			$this->Database->prepare("UPDATE tl_module SET iso_enableSearch='', iso_searchFields=? WHERE id=?")->executeUncached(serialize($arrSearch), $objFilterModules->id);
 		}
 	}

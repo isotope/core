@@ -342,29 +342,29 @@ class IsotopeRules extends Controller
 		{
 			$arrIds[] = $objProduct->id;
 			$arrTypes[] = $objProduct->type;
-			
+
 			if ($objProduct->pid > 0)
 			{
 				$arrIds[] = $objProduct->pid;
 			}
-			
+
 			if ($blnIncludeVariants)
 			{
 				$arrIds = array_merge($arrIds, $objProduct->variant_ids);
 			}
 		}
-		
+
 		$arrRestrictions = array("productRestrictions='none'");
-		
+
 		if (count($arrTypes))
 		{
 			$arrRestrictions[] = "(productRestrictions='producttypes' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='producttypes' AND object_id IN (" . implode(',', $arrTypes) . "))>0)";
 		}
-		
+
 		if (count($arrIds))
 		{
 			$arrIds = array_unique($arrIds);
-			
+
 			$arrRestrictions[] = "(productRestrictions='products' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='products' AND object_id IN (" . implode(',', $arrIds) . "))>0)";
 			$arrRestrictions[] = "(productRestrictions='pages' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='pages' AND object_id IN (SELECT page_id FROM tl_iso_product_categories WHERE pid IN (" . implode(',', $arrIds) . "))))";
 		}

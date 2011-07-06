@@ -51,7 +51,7 @@ class IsotopeTemplate extends FrontendTemplate
 		{
 			throw new Exception("Invalid output format $strFormat");
 		}
-		
+
 		$strKey = $strTemplate . '.' . $strFormat;
 		$strPath = TL_ROOT . '/templates';
 		$strTemplate = basename($strTemplate);

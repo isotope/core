@@ -10,12 +10,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -30,7 +30,7 @@
 
 class ProductTree extends Widget
 {
-	
+
 	/**
 	 * Submit user input
 	 * @var boolean
@@ -48,7 +48,7 @@ class ProductTree extends Widget
 	 * @var string
 	 */
 	protected $strTemplate = 'be_widget';
-	
+
 	/**
 	 * dca object to render rows
 	 * @var object
@@ -72,8 +72,8 @@ class ProductTree extends Widget
 	 * @var string
 	 */
 	protected $strAjaxName;
-	
-	
+
+
 	/**
 	 * Load database object
 	 * @param array
@@ -81,15 +81,15 @@ class ProductTree extends Widget
 	public function __construct($arrAttributes=false)
 	{
 		parent::__construct($arrAttributes);
-		
+
 		$this->loadDataContainer('tl_iso_products');
 		$this->loadLanguageFile('tl_iso_products');
-		
+
 		$this->import('Database');
 		$this->import('tl_iso_products', 'dca');
 	}
-	
-	
+
+
 	/**
 	 * Add specific attributes
 	 * @param string
@@ -108,8 +108,8 @@ class ProductTree extends Widget
 				break;
 		}
 	}
-	
-	
+
+
 	/**
 	 * Skip the field if "change selection" is not checked
 	 * @param mixed
@@ -144,8 +144,8 @@ class ProductTree extends Widget
 
 		return parent::validator($varInput);
 	}
-	
-	
+
+
 	/**
 	 * Generate the widget and return it as string
 	 * @return string
@@ -154,9 +154,9 @@ class ProductTree extends Widget
 	{
 		$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/html/backend_src.js';
 		$GLOBALS['TL_CSS'][] = 'system/modules/isotope/html/backend_src.css';
-		
+
 		$this->import('BackendUser', 'User');
-		
+
 		// Open the tree if there is an error
 		if ($this->hasErrors())
 		{
@@ -318,7 +318,7 @@ class ProductTree extends Widget
 			$arrData['strTable'] = $dc->table;
 			$arrData['id'] = strlen($this->strAjaxName) ? $this->strAjaxName : $dc->id;
 			$arrData['name'] = $this->Input->post('name');
-		
+
 			$objWidget = new $GLOBALS['BE_FFL']['productTree']($arrData, $dc);
 
 			echo json_encode(array
@@ -329,8 +329,8 @@ class ProductTree extends Widget
 			exit;
 		}
 	}
-	
-	
+
+
 	/**
 	 * Recursively render the pagetree
 	 * @param int
@@ -373,7 +373,7 @@ class ProductTree extends Widget
 			// Check whether there are child records
 			$objNodes = $this->Database->prepare("SELECT id FROM tl_iso_products WHERE pid=? AND language='' AND archive<2")
 									   ->execute($id);
-	
+
 			if ($objNodes->numRows)
 			{
 				$childs = $objNodes->fetchEach('id');
@@ -408,11 +408,11 @@ class ProductTree extends Widget
 				case 'checkbox':
 					$return .= '<input type="checkbox" name="'.$this->strName.'[]" id="'.$this->strName.'_'.$id.'" class="tl_tree_checkbox" value="'.specialchars($id).'" onfocus="Backend.getScrollOffset();"'.$this->optionChecked($id, $this->varValue).' />';
 					break;
-	
+
 				case 'radio':
 					$return .= '<input type="radio" name="'.$this->strName.'" id="'.$this->strName.'_'.$id.'" class="tl_tree_radio" value="'.specialchars($id).'" onfocus="Backend.getScrollOffset();"'.$this->optionChecked($id, $this->varValue).' />';
 					break;
-				
+
 				case 'text':
 					$style = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['style'] ? ' style="'.$GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['style'].'"' : '';
 					$maxlength = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['maxlength'] ? ' maxlength="'.$GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['maxlength'].'"' : '';
@@ -438,8 +438,8 @@ class ProductTree extends Widget
 
 		return $return;
 	}
-	
-	
+
+
 	/**
 	 * Get the IDs of all parent products of the selected product
 	 */

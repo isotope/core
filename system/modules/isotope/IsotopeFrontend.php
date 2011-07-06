@@ -341,8 +341,8 @@ class IsotopeFrontend extends Frontend
 
 		return $arrGet;
 	}
-	
-	
+
+
 	/**
 	 * Use generatePage Hook to inject messages if they have not been included in a module.
 	 */
@@ -363,8 +363,8 @@ window.addEvent('domready', function()
 </script>" ;
 		}
 	}
-	
-	
+
+
 	/**
 	 * Return all error, confirmation and info messages as HTML.
 	 * @param	void
@@ -399,7 +399,7 @@ window.addEvent('domready', function()
 			// Automatically disable caching if a message is available
 			global $objPage;
 			$objPage->cache = 0;
-			
+
 			$strMessages = '<div class="iso_message">' . $strMessages . '</div>';
 		}
 

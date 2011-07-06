@@ -250,22 +250,22 @@ class tl_iso_addresses extends Backend
 	public function renderLabel($arrAddress)
 	{
 		$this->import('Isotope');
-		
+
 		$strBuffer  = $this->Isotope->generateAddressString($arrAddress);
 		$strBuffer .= '<div style="color:#b3b3b3;margin-top:8px">' . $GLOBALS['TL_LANG']['tl_iso_addresses']['store_id'][0] . ' ' . $arrAddress['store_id'];
-		
+
 		if ($arrAddress['isDefaultBilling'])
 		{
 			$strBuffer .= ', ' . $GLOBALS['TL_LANG']['tl_iso_addresses']['isDefaultBilling'][0];
 		}
-		
+
 		if ($arrAddress['isDefaultShipping'])
 		{
 			$strBuffer .= ', ' . $GLOBALS['TL_LANG']['tl_iso_addresses']['isDefaultShipping'][0];
 		}
-		
+
 		$strBuffer .= '</div>';
-		
+
 		return $strBuffer;
 	}
 

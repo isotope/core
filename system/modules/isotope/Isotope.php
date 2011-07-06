@@ -34,7 +34,7 @@ class Isotope extends Controller
 	 * @var object
 	 */
 	protected static $objInstance;
-	
+
 	/**
 	 * Cache select statement to load product data
 	 */
@@ -73,7 +73,7 @@ class Isotope extends Controller
 		{
 			$this->Cart = new IsotopeCart();
 			$this->Cart->initializeCart((int)$this->Config->id, (int)$this->Config->store_id);
-			
+
 			// Initialize request cache for product list filters
 			if ($this->Input->get('isorc') != '')
 			{
@@ -668,7 +668,7 @@ class Isotope extends Controller
 				$arrRecipients = trimsplit(',', $objMail->cc);
 				$objEmail->sendCc($arrRecipients);
 			}
-			
+
 			if ($objMail->bcc != '')
 			{
 				$arrRecipients = trimsplit(',', $objMail->bcc);
@@ -904,14 +904,14 @@ class Isotope extends Controller
 		{
 			$language = $GLOBALS['TL_LANGUAGE'];
 		}
-		
+
 		$this->import('String');
-		
+
 		if (!is_array($GLOBALS['ISO_LANG']['TBL'][$language]))
 		{
 			$GLOBALS['ISO_LANG']['TBL'][$language] = array();
 			$objLabels = $this->Database->execute("SELECT * FROM tl_iso_labels WHERE language='$language'");
-			
+
 			while( $objLabels->next() )
 			{
 				$GLOBALS['ISO_LANG']['TBL'][$language][$this->String->decodeEntities($objLabels->label)] = $objLabels->replacement;
@@ -1071,7 +1071,7 @@ class Isotope extends Controller
 							$arrCurrent[$i]['link'] = $arrTranslate[$image['src']]['link'];
 							$arrCurrent[$i]['translate'] = $arrTranslate[$image['src']]['translate'];
 						}
-						
+
 						unset($arrTranslate[$image['src']]);
 					}
 					elseif ($arrCurrent[$i]['translate'] != 'all')
@@ -1085,7 +1085,7 @@ class Isotope extends Controller
 				{
 					$arrCurrent = array_merge($arrCurrent, array_values($arrTranslate));
 				}
-				
+
 				$arrCurrent = array_values($arrCurrent);
 			}
 			else
@@ -1093,11 +1093,11 @@ class Isotope extends Controller
 				$arrCurrent = array_values($arrTranslate);
 			}
 		}
-		
+
 		return $arrCurrent;
 	}
-	
-	
+
+
 	/**
 	 * Return select statement to load product data including multilingual fields
 	 *
@@ -1109,12 +1109,12 @@ class Isotope extends Controller
 		if ($this->strSelect == '')
 		{
 			$arrSelect = array("'".$GLOBALS['TL_LANGUAGE']."' AS language");
-	
+
 			foreach( $GLOBALS['ISO_CONFIG']['multilingual'] as $attribute )
 			{
 				$arrSelect[] = "IFNULL(p2.$attribute, p1.$attribute) AS {$attribute}_{$GLOBALS['TL_LANGUAGE']}";
 			}
-			
+
 			$this->strSelect = "
 SELECT p1.*,
 	" . implode(', ', $arrSelect) . ",
@@ -1123,11 +1123,11 @@ FROM tl_iso_products p1
 INNER JOIN tl_iso_producttypes t ON t.id=p1.type
 LEFT OUTER JOIN tl_iso_products p2 ON p1.id=p2.pid AND p2.language='" . $GLOBALS['TL_LANGUAGE'] . "'";
 		}
-		
+
 		return $this->strSelect;
 	}
-	
-	
+
+
 	/**
 	 * These functions need to be public for Models to access them
 	 */

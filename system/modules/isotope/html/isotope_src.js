@@ -56,7 +56,7 @@ var Isotope =
 		{
 			box = new Element('div').setProperty('id', 'iso_ajaxBox').injectInside($(document.body));
 		}
-		
+
 		if (btnClose)
 		{
 			overlay.addEvent('click', Isotope.hideBox);

@@ -61,10 +61,10 @@ class ModuleIsotopeRelatedProducts extends ModuleIsotopeProductList
 	protected function findProducts()
 	{
 		$strAlias = $this->Input->get('product');
-		
+
 		$arrIds = array(0);
 		$arrJumpTo = array();
-		
+
 		$objCategories = $this->Database->prepare("SELECT *, (SELECT jumpTo FROM tl_iso_related_categories WHERE id=category) AS jumpTo FROM tl_iso_related_products WHERE pid IN (SELECT id FROM tl_iso_products WHERE " . (is_numeric($strAlias) ? 'id' : 'alias') . "=?) AND category IN (" . implode(',', $this->iso_related_categories) . ") ORDER BY id=" . implode(' DESC, id=', $this->iso_related_categories) . " DESC")->execute($strAlias);
 
 		while( $objCategories->next() )

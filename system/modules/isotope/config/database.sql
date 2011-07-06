@@ -710,7 +710,7 @@ CREATE TABLE `tl_module` (
   `iso_buttons` blob NULL,
   `iso_related_categories` blob NULL,
   `iso_noProducts` varchar(255) NOT NULL default '',
-  `iso_emptyMessage` char(1) NOT NULL default '',  
+  `iso_emptyMessage` char(1) NOT NULL default '',
   `iso_includeMessages` char(1) NOT NULL default '',
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 

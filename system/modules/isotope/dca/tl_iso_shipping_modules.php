@@ -437,7 +437,7 @@ class tl_iso_shipping_modules extends Backend
 			case 'order_total':
 			case 'weight_total':
 				return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
-			
+
 			default:
 				return '';
 		}

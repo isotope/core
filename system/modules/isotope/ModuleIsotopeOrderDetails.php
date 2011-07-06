@@ -143,7 +143,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 				'class'				=> 'row_' . $i . ($i%2 ? ' even' : ' odd') . ($i==0 ? ' row_first' : ''),
 			);
 		}
-		
+
 		if (count($arrItems))
 		{
 			$arrItems[count($arrItems)-1]['class'] .= ' row_last';

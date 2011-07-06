@@ -597,8 +597,8 @@ class tl_module_isotope extends Backend
 
 		return $this->getTemplateGroup('iso_cart_', $intPid);
 	}
-	
-	
+
+
 	/**
 	 * Return filter templates as array
 	 * @param object
@@ -615,8 +615,8 @@ class tl_module_isotope extends Backend
 
 		return $this->getTemplateGroup('iso_filter_', $intPid);
 	}
-	
-	
+
+
 	/**
 	 * Return array of tl_module records where type='iso_productfilter'
 	 * @param	object
@@ -626,12 +626,12 @@ class tl_module_isotope extends Backend
 	{
 		$arrModules = array();
 		$objModules = $this->Database->execute("SELECT * FROM tl_module WHERE type='iso_productfilter'");
-		
+
 		while( $objModules->next() )
 		{
 			$arrModules[$objModules->id] = $objModules->name;
 		}
-		
+
 		return $arrModules;
 	}
 }

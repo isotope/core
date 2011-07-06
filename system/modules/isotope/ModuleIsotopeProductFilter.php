@@ -55,7 +55,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 
 			return $objTemplate->parse();
 		}
-		
+
 		$this->iso_filterFields = deserialize($this->iso_filterFields);
 		$this->iso_sortingFields = deserialize($this->iso_sortingFields);
 		$this->iso_searchFields = deserialize($this->iso_searchFields);
@@ -81,7 +81,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		$this->generateFilters();
 		$this->generateSorting();
 		$this->generateLimit();
-		
+
 		$strFilterUrl = preg_replace('/&?isorc=[0-9]+&?/', '', $this->Environment->request);
 
 		// Cache request in the database and redirect to the unique requestcache ID
@@ -107,10 +107,10 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 											 ->insertId;
 			}
 
-			
+
 			$this->redirect($strFilterUrl . (strpos($strFilterUrl, '?')===false ? '?' : '&') . 'isorc=' . $intCacheId);
 		}
-		
+
 		// Search does not affect request cache
 		$this->generateSearch();
 
@@ -121,18 +121,18 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		$this->Template->actionClear = ampersand(preg_replace('/\?.*/', '', $this->Environment->request));
 		$this->Template->clearLabel = $GLOBALS['TL_LANG']['MSC']['clearFiltersLabel'];
 	}
-	
-	
+
+
 	protected function generateSearch()
 	{
 		$this->Template->hasSearch = false;
-		
+
 		if (is_array($this->iso_searchFields) && count($this->iso_searchFields))
 		{
 			if ($this->Input->get('keywords') != '' && $this->Input->get('keywords') != $GLOBALS['TL_LANG']['MSC']['defaultSearchText'])
 			{
 				$arrKeywords = trimsplit(' ', $this->Input->get('keywords'));
-				
+
 				foreach( $arrKeywords as $keyword )
 				{
 					foreach( $this->iso_searchFields as $field )
@@ -155,8 +155,8 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 			$this->Template->defaultSearchText = $GLOBALS['TL_LANG']['MSC']['defaultSearchText'];
 		}
 	}
-	
-	
+
+
 	protected function generateFilters()
 	{
 		$this->Template->hasFilters = false;
@@ -166,7 +166,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 			$arrFilters = array();
 			$arrInput = $this->Input->post('filter');
 			$arrIds = $this->findCategoryProducts($this->iso_category_scope);
-			
+
 			foreach( $this->iso_filterFields as $strField )
 			{
 				$arrValues = $this->Database->execute("SELECT DISTINCT $strField FROM tl_iso_products WHERE id IN (" . implode(',', $arrIds) . ") AND published='1' AND $strField!=''")
@@ -200,7 +200,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 					}
 
 					$arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strField];
-	
+
 					if (is_array($GLOBALS['ISO_ATTR'][$arrData['inputType']]['callback']) && count($GLOBALS['ISO_ATTR'][$arrData['inputType']]['callback']))
 					{
 						foreach( $GLOBALS['ISO_ATTR'][$arrData['inputType']]['callback'] as $callback )
@@ -240,8 +240,8 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 			}
 		}
 	}
-	
-	
+
+
 	protected function generateSorting()
 	{
 		$this->Template->hasSorting = false;
@@ -253,27 +253,27 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 			// Cache new request value
 			// @todo should support multiple sorting fields
 			list($sortingField, $sortingDirection) = explode(':', $this->Input->post('sorting'));
-			
+
 			if ($this->blnCacheRequest && in_array($sortingField, $this->iso_sortingFields))
 			{
 				$GLOBALS['ISO_SORTING'][$this->id][$sortingField] = array(($sortingDirection=='DESC' ? SORT_DESC : SORT_ASC), SORT_REGULAR);
 			}
-			
+
 			// Request cache contains wrong value, delete it!
 			elseif (is_array($GLOBALS['ISO_SORTING'][$this->id]) && array_diff(array_keys($GLOBALS['ISO_SORTING'][$this->id]), $this->iso_sortingFields))
 			{
 				$this->blnCacheRequest = true;
 				unset($GLOBALS['ISO_SORTING'][$this->id]);
-				
+
 				$this->Database->prepare("DELETE FROM tl_iso_requestcache WHERE id=?")->execute($this->Input->get('isorc'));
 			}
-			
+
 			// No need to generate options if we reload anyway
 			elseif (!$this->blnCacheRequest)
 			{
 				foreach( $this->iso_sortingFields as $field )
 				{
-				
+
 					// @todo this must be dynamic
 					switch( $field )
 					{
@@ -281,12 +281,12 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 							$asc = $GLOBALS['TL_LANG']['MSC']['low_to_high'];
 							$desc = $GLOBALS['TL_LANG']['MSC']['high_to_low'];
 							break;
-		
+
 						case 'datetime':
 							$asc = $GLOBALS['TL_LANG']['MSC']['old_to_new'];
 							$desc = $GLOBALS['TL_LANG']['MSC']['new_to_old'];
 							break;
-		
+
 						case 'name':
 						default:
 							$asc = $GLOBALS['TL_LANG']['MSC']['a_to_z'];
@@ -294,14 +294,14 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 							break;
 					}
 
-				
+
 					$arrOptions[] = array
 					(
 						'label'		=> ($this->Isotope->formatLabel('tl_iso_products', $field) . ' ' . $asc),
 						'value'		=> $field.':ASC',
 						'default'	=> ((is_array($GLOBALS['ISO_SORTING'][$this->id]) && $GLOBALS['ISO_SORTING'][$this->id][$field][0] == SORT_ASC) ? '1' : ''),
 					);
-					
+
 					$arrOptions[] = array
 					(
 						'label'		=> ($this->Isotope->formatLabel('tl_iso_products', $field) . ' ' . $desc),
@@ -316,8 +316,8 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 			$this->Template->sortingOptions = $arrOptions;
 		}
 	}
-	
-	
+
+
 	protected function generateLimit()
 	{
 		$this->Template->hasLimit = false;
@@ -334,16 +334,16 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 			{
 				$GLOBALS['ISO_LIMIT'][$this->id] = (int)$this->Input->post('limit');
 			}
-			
+
 			// Request cache contains wrong value, delete it!
 			elseif ($GLOBALS['ISO_LIMIT'][$this->id] && !in_array($GLOBALS['ISO_LIMIT'][$this->id], $arrLimit))
 			{
 				$this->blnCacheRequest = true;
 				$GLOBALS['ISO_LIMIT'][$this->id] = $intLimit;
-				
+
 				$this->Database->prepare("DELETE FROM tl_iso_requestcache WHERE id=?")->execute($this->Input->get('isorc'));
 			}
-			
+
 			// No need to generate options if we reload anyway
 			elseif (!$this->blnCacheRequest)
 			{

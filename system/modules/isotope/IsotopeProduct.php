@@ -88,7 +88,7 @@ class IsotopeProduct extends Controller
 	 * @var string
 	 */
 	protected $formSubmit = 'iso_product';
-	
+
 	/**
 	 * Name of the Javascript class
 	 * @var string
@@ -237,7 +237,7 @@ class IsotopeProduct extends Controller
 					{
 						$objProduct = $this->Database->execute("SELECT MIN(price) AS low_price, MAX(price) AS high_price FROM tl_iso_products WHERE pid=" . ($this->arrData['pid'] ? $this->arrData['pid'] : $this->arrData['id']) . " AND published='1' AND language='' GROUP BY pid");
 					}
-	
+
 					if ($objProduct->low_price < $objProduct->high_price)
 					{
 						$this->arrCache['low_price'] = $objProduct->low_price;
@@ -357,19 +357,19 @@ class IsotopeProduct extends Controller
 							case 'formatted_price':
 								$this->arrCache[$strKey] = $this->Isotope->formatPriceWithCurrency($this->price, false);
 								break;
-	
+
 							case 'formatted_original_price':
 								$this->arrCache[$strKey] = $this->Isotope->formatPriceWithCurrency($this->original_price, false);
 								break;
-	
+
 							case 'formatted_total_price':
 								$this->arrCache[$strKey] = $this->Isotope->formatPriceWithCurrency($this->total_price, false);
 								break;
-	
+
 							case 'categories':
 								$this->arrCache[$strKey] = $this->Database->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid=" . ($this->pid ? $this->pid : $this->id) . " ORDER BY sorting")->fetchEach('page_id');
 								break;
-	
+
 							default:
 								return isset($this->arrData[$strKey]) ? deserialize($this->arrData[$strKey]) : null;
 						}
@@ -418,7 +418,7 @@ class IsotopeProduct extends Controller
 
 			case 'quantity_requested':
 				$this->arrCache[$strKey] = $varValue;
-				
+
 				if (!$this->blnLocked)
 				{
 					$this->findPrice();

@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -24,11 +24,11 @@
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
- 
- 
+
+
 /**
  * Handle Postfinance (swiss post) payments
- * 
+ *
  * @extends Payment
  */
 class PaymentPostfinance extends IsotopePayment
@@ -36,7 +36,7 @@ class PaymentPostfinance extends IsotopePayment
 
 	/**
 	 * Process payment on confirmation page.
-	 * 
+	 *
 	 * @access public
 	 * @return void
 	 */
@@ -49,7 +49,7 @@ class PaymentPostfinance extends IsotopePayment
 		}
 
 		$objOrder = new IsotopeOrder();
-		
+
 		if (!$objOrder->findBy('id', $this->Input->get('orderID')))
 		{
 			$this->log('Order ID "' . $this->Input->get('orderID') . '" not found', __METHOD__, TL_ERROR);
@@ -62,17 +62,17 @@ class PaymentPostfinance extends IsotopePayment
 			$this->log('Received invalid postsale data for order ID "' . $objOrder->id . '"', __METHOD__, TL_ERROR);
 			return false;
 		}
-		
+
 		$objOrder->date_payed = time();
 		$objOrder->save();
-		
+
 		return true;
 	}
-	
-	
+
+
 	/**
 	 * Process post-sale requestion from the Postfinance payment server.
-	 * 
+	 *
 	 * @access public
 	 * @return void
 	 */
@@ -85,7 +85,7 @@ class PaymentPostfinance extends IsotopePayment
 		}
 
 		$objOrder = new IsotopeOrder();
-		
+
 		if (!$objOrder->findBy('id', $this->getRequestData('orderID')))
 		{
 			$this->log('Order ID "' . $this->getRequestData('orderID') . '" not found', __METHOD__, TL_ERROR);
@@ -103,15 +103,15 @@ class PaymentPostfinance extends IsotopePayment
 			$this->log('Post-Sale checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
 			return;
 		}
-		
+
 		$objOrder->date_payed = time();
 		$objOrder->save();
 	}
-	
-	
+
+
 	/**
 	 * Return the payment form.
-	 * 
+	 *
 	 * @access public
 	 * @return string
 	 */
@@ -163,25 +163,25 @@ class PaymentPostfinance extends IsotopePayment
 		$arrParam['SHASign'] = sha1($strSHASign);
 
 		$objTemplate = new FrontendTemplate('iso_payment_postfinance');
-		
+
 		$objTemplate->action = 'https://e-payment.postfinance.ch/ncol/' . ($this->debug ? 'test' : 'prod') . '/orderstandard.asp';
 		$objTemplate->params = $arrParam;
 		$objTemplate->slabel = $GLOBALS['TL_LANG']['MSC']['pay_with_cc'][2];
 		$objTemplate->id = $this->id;
-		
+
 		return $objTemplate->parse();
 	}
-	
-	
+
+
 	private function getRequestData($strKey)
 	{
 		if ($this->postfinance_method == 'GET')
 			return $this->Input->get($strKey);
-			
+
 		return $this->Input->post($strKey);
 	}
-	
-	
+
+
 	/**
 	 * Validate SHA-OUT signature
 	 */
@@ -216,7 +216,7 @@ class PaymentPostfinance extends IsotopePayment
 		{
 			return true;
 		}
-		
+
 		return false;
 	}
 }

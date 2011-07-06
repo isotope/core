@@ -200,7 +200,7 @@ class PaymentPaypal extends IsotopePayment
 		{
 			$this->redirect($this->addToUrl('step=failed', true));
 		}
-		
+
 
 		$strBuffer = '
 <h2>' . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0] . '</h2>

@@ -112,7 +112,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				$this->redirect($this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($this->orderCompleteJumpTo)->fetchAssoc()) . '?uid='.$objOrder->uniqid);
 			}
 		}
-		
+
 		// Return error message if cart is empty
 		if (!$this->Isotope->Cart->items)
 		{
@@ -893,7 +893,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				'class'				=> 'row_' . $i . ($i%2 ? ' even' : ' odd') . ($i==0 ? ' row_first' : ''),
 			));
 		}
-		
+
 		if (count($arrProductData))
 		{
 			$arrProductData[count($arrProductData)-1]['class'] .= ' row_last';
@@ -963,7 +963,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		elseif (FE_USER_LOGGED_IN && $this->User->email != '')
 		{
 			$strCustomerName = $this->User->firstname . ' ' . $this->User->lastname;
-			$strCustomerEmail = $this->User->email; 
+			$strCustomerEmail = $this->User->email;
 		}
 
 		if (trim($strCustomerName) != '')
@@ -1259,7 +1259,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		{
 			return implode('', $arrBuffer);
 		}
-		
+
 		return '<table cellspacing="0" cellpadding="0" summary="Form fields">
 ' . implode('', $arrBuffer) . '
 </table>';
@@ -1389,10 +1389,10 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		if ($blnIgnoreParams)
 		{
 			global $objPage;
-			
+
 			return $this->generateFrontendUrl($objPage->row(), '/' . str_replace(array('=', '&amp;', '&'), '/', $strRequest));
 		}
-		
+
 		return parent::addToUrl($strRequest, $blnIgnoreParams);
 	}
 }

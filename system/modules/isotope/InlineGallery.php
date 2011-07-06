@@ -45,7 +45,7 @@ class InlineGallery extends IsotopeGallery
 		$total = count($this->arrFiles);
 		if (($total == 1 || $total <= $intSkip) && !$blnForce)
 			return '';
-			
+
 		$strGallery = '';
 
 		foreach( $this->arrFiles as $i => $arrFile )

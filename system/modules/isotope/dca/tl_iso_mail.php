@@ -134,7 +134,7 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
 		'__selector__'				  => array('attachDocument'),
 		'default'                     => '{name_legend},name;{address_legend},senderName,sender,cc,bcc;{document_legend:hide},attachDocument;{expert_legend:hide},template',
 	),
-	
+
 	// Subpalettes
 	'subpalettes' => array
 	(

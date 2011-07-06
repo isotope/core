@@ -63,7 +63,7 @@ abstract class IsotopeProductCollection extends Model
 	 * @var object
 	 */
 	protected $Payment;
-	
+
 	/**
 	 * Template
 	 * @var string
@@ -129,7 +129,7 @@ abstract class IsotopeProductCollection extends Model
 			{
 				return deserialize($this->arrSettings[$strKey]);
 			}
-			
+
 			switch( $strKey )
 			{
 				case 'table':
@@ -310,7 +310,7 @@ abstract class IsotopeProductCollection extends Model
 	{
 		if (isset($this->arrData[$strKey]) || isset($this->arrSettings[$strKey]))
 			return true;
-		
+
 		return false;
 	}
 
@@ -408,7 +408,7 @@ abstract class IsotopeProductCollection extends Model
 		{
 			$this->Database->prepare("DELETE FROM " . $this->ctable . " WHERE pid=?")->execute($this->id);
 		}
-		
+
 		$this->arrCache = array();
 		$this->arrProducts = null;
 
@@ -553,7 +553,7 @@ abstract class IsotopeProductCollection extends Model
 				'product_quantity'		=> (int)$intQuantity,
 				'price'					=> $objProduct->price,
 			);
-			
+
 			if ($this->Database->fieldExists('href_reader', $this->ctable))
 			{
 				$arrSet['href_reader'] = $objProduct->href_reader;
@@ -591,7 +591,7 @@ abstract class IsotopeProductCollection extends Model
 					return false;
 			}
 		}
-		
+
 		// Quantity set to 0, delete product
 		if (isset($arrSet['product_quantity']) && $arrSet['product_quantity'] == 0)
 		{
@@ -731,8 +731,8 @@ abstract class IsotopeProductCollection extends Model
 	 * Must be implemented by child class
 	 */
 	abstract public function getSurcharges();
-	
-	
+
+
 	/**
 	 * Generate the collection using a template. Useful for PDF output.
 	 *
@@ -745,9 +745,9 @@ abstract class IsotopeProductCollection extends Model
 		{
 			$this->strTemplate = $strTemplate;
 		}
-		
+
 		$this->import('Isotope');
-		
+
 		// Set global config to this collection (if available)
 		if ($this->config_id > 0)
 		{
@@ -872,7 +872,7 @@ abstract class IsotopeProductCollection extends Model
 		);
 
 		$strArticle = preg_replace($arrSearch, $arrReplace, $strArticle);
-		
+
 		// Set config back to default
 		if ($blnResetConfig)
 		{
@@ -881,8 +881,8 @@ abstract class IsotopeProductCollection extends Model
 
 		return $strArticle;
 	}
-	
-	
+
+
 	public function generatePDF($strTemplate=null, $pdf=null, $blnOutput=true)
 	{
 		if (!is_object($pdf))
@@ -892,63 +892,63 @@ abstract class IsotopeProductCollection extends Model
 			$l['a_meta_charset'] = $GLOBALS['TL_CONFIG']['characterSet'];
 			$l['a_meta_language'] = $GLOBALS['TL_LANGUAGE'];
 			$l['w_page'] = 'page';
-	
+
 			// Include library
 			require_once(TL_ROOT . '/system/config/tcpdf.php');
 			require_once(TL_ROOT . '/plugins/tcpdf/tcpdf.php');
-	
+
 			// Create new PDF document
 			$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true);
-	
+
 			// Set document information
 			$pdf->SetCreator(PDF_CREATOR);
 			$pdf->SetAuthor(PDF_AUTHOR);
-	
+
 // @todo $objInvoice is not defined
 //			$pdf->SetTitle($objInvoice->title);
 //			$pdf->SetSubject($objInvoice->title);
 //			$pdf->SetKeywords($objInvoice->keywords);
-	
+
 			// Remove default header/footer
 			$pdf->setPrintHeader(false);
 			$pdf->setPrintFooter(false);
-	
+
 			// Set margins
 			$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-	
+
 			// Set auto page breaks
 			$pdf->SetAutoPageBreak(true, PDF_MARGIN_BOTTOM);
-	
+
 			// Set image scale factor
 			$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
-	
+
 			// Set some language-dependent strings
 			$pdf->setLanguageArray($l);
-	
+
 			// Initialize document and add a page
 			$pdf->AliasNbPages();
-	
+
 			// Set font
 			$pdf->SetFont(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN);
 		}
-		
+
 		// Start new page
 		$pdf->AddPage();
-		
+
 		// Write the HTML content
 		$pdf->writeHTML($this->generate($strTemplate, false), true, 0, true, 0);
-		
+
 		if ($blnOutput)
 		{
 			// Close and output PDF document
 			// @todo $strInvoiceTitle is not defined
 			$pdf->lastPage();
 			$pdf->Output(standardize(ampersand($strInvoiceTitle, false), true) . '.pdf', 'D');
-	
+
 			// Stop script execution
 			exit;
 		}
-		
+
 		return $pdf;
 	}
 }

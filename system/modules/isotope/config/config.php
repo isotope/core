@@ -191,7 +191,7 @@ $GLOBALS['BE_FFL']['productTree']			= 'ProductTree';
 
 // This widget belongs to the core, but if extension "calendar" is disable it wont be available without this
 // @todo remove this when dropping support for Contao 2.9
-$GLOBALS['BE_FFL']['timePeriod']			= 'TimePeriod'; 
+$GLOBALS['BE_FFL']['timePeriod']			= 'TimePeriod';
 
 
 /**

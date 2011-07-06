@@ -1701,7 +1701,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 
 			unset($arrData['eval']['foreignKey']);
 			unset($arrData['eval']['options']);
-			
+
 			if (is_array($GLOBALS['ISO_ATTR'][$objAttributes->type]['callback']) && count($GLOBALS['ISO_ATTR'][$objAttributes->type]['callback']))
 			{
 				foreach( $GLOBALS['ISO_ATTR'][$objAttributes->type]['callback'] as $callback )
@@ -1713,7 +1713,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 
 			$GLOBALS['TL_DCA']['tl_iso_products']['fields'][$objAttributes->field_name] = $arrData;
 		}
-		
+
 		$GLOBALS['ISO_CONFIG']['variant_options'] = array();
 		$GLOBALS['ISO_CONFIG']['multilingual'] = array();
 		foreach( $GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $attribute => $config )
@@ -1722,7 +1722,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 			{
 				$GLOBALS['ISO_CONFIG']['variant_options'][] = $attribute;
 			}
-			
+
 			if ($config['attributes']['multilingual'])
 			{
 				$GLOBALS['ISO_CONFIG']['multilingual'][] = $attribute;

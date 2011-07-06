@@ -142,7 +142,7 @@ abstract class ContentIsotope extends ContentElement
 				$arrProducts[$objProductData->id] = $objProduct;
 			}
 		}
-		
+
 		return $arrProducts;
 	}
 }

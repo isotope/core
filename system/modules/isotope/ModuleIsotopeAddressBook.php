@@ -226,13 +226,13 @@ class ModuleIsotopeAddressBook extends ModuleIsotope
 			{
 				continue;
 			}
-			
+
 			// Special field "country"
 			if ($field == 'country')
 			{
 				$arrCountries = array();
 				$objConfigs = $this->Database->execute("SELECT billing_countries, shipping_countries FROM tl_iso_config WHERE store_id={$this->Isotope->Config->store_id}");
-				
+
 				while( $objConfigs->next() )
 				{
 					$arrCountries = array_merge($arrCountries, deserialize($objConfigs->billing_countries), deserialize($objConfigs->shipping_countries));
@@ -377,7 +377,7 @@ class ModuleIsotopeAddressBook extends ModuleIsotope
 	protected function delete($intAddressId)
 	{
 		$this->Database->prepare("DELETE FROM tl_iso_addresses WHERE id=? AND pid={$this->User->id}")->executeUncached($intAddressId);
-		
+
 		global $objPage;
 		$this->redirect($this->generateFrontendUrl($objPage->row()));
 	}

@@ -556,7 +556,7 @@ class tl_iso_config extends Backend
 			case 'USD':
 				$image = 'currency-dollar-usd';
 				break;
-			
+
 			case 'BBD':
 			case 'BMD':
 			case 'BND':
