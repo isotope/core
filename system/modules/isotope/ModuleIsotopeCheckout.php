@@ -1048,7 +1048,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			
 			while( $objAddress->next() )
 			{
-				if (!in_array($objAddress->country, $arrCountries))
+				if (is_array($arrCountries) && !in_array($objAddress->country, $arrCountries))
 					continue;
 					
 				$arrOptions[] = array
