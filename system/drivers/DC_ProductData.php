@@ -278,7 +278,8 @@ class DC_ProductData extends DC_Table
 		// Load and/or change language
 		if (in_array('isotope_multilingual', $this->Config->getActiveModules()))
 		{
-			$this->arrLanguages = $this->getLanguages();
+			$arrPageLanguages = $this->Database->execute("SELECT DISTINCT language FROM tl_page")->fetchEach('language');
+			$this->arrLanguages = array_intersect_key($this->getLanguages(), array_flip($arrPageLanguages));
 
 			if ($this->Input->post('FORM_SUBMIT') == 'tl_language')
 			{
