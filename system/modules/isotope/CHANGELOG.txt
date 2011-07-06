@@ -82,6 +82,7 @@ Version 0.2.10 (2011-06-??)
 - Added shipping & payment method filter to orders
 - Added: includeBlankOption=true for select options using foreignKey (Ticket #292)
 - Added product sku to filter module
+- Improved: billing & shipping country is no longer mandatory in store config
 - Changed tl_iso_products::getCategoryList from private to protected function (Ticket #477)
 - Fixed error message when editing page category (Ticket #469)
 - Fixed IsotopeProductCollection::getProducts database caching

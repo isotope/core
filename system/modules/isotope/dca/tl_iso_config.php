@@ -282,16 +282,14 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['shipping_countries'],
 			'exclude'                 => true,
 			'inputType'               => 'select',
-//			'default'                 => array_keys($this->getCountries()),
 			'options'                 => $this->getCountries(),
-			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'size'=>8, 'tl_class'=>'w50'),
+			'eval'                    => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50'),
 		),
 		'shipping_fields' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['shipping_fields'],
 			'exclude'                 => true,
 			'inputType'               => 'fieldWizard',
-//			'options_callback'		  => array('tl_iso_config', 'getAddressFields'),
 			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'w50 w50h', 'table'=>'tl_iso_addresses'),
 		),
 		'billing_countries' => array
@@ -299,16 +297,14 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['billing_countries'],
 			'exclude'                 => true,
 			'inputType'               => 'select',
-//			'default'                 => array_keys($this->getCountries()),
 			'options'                 => $this->getCountries(),
-			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'size'=>8, 'tl_class'=>'w50 w50h'),
+			'eval'                    => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50 w50h'),
 		),
 		'billing_fields' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['billing_fields'],
 			'exclude'                 => true,
 			'inputType'               => 'fieldWizard',
-//			'options_callback'		  => array('tl_iso_config', 'getAddressFields'),
 			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'table'=>'tl_iso_addresses', 'tl_class'=>'w50 w50h'),
 		),
 		'orderPrefix' => array
@@ -535,32 +531,6 @@ class tl_iso_config extends Backend
 	}
 
 
-	/**
-	 * Get all checkout fields in tl_iso_config.
-	 *
-	 * @access public
-	 * @param object $dc
-	 * @return array
-	 */
-	public function getAddressFields($dc)
-	{
-		$arrFields = array();
-
-		$this->loadLanguageFile('tl_iso_addresses');
-		$this->loadDataContainer('tl_iso_addresses');
-
-		foreach( $GLOBALS['TL_DCA']['tl_iso_addresses']['fields'] as $strField => $arrData )
-		{
-			if ($arrData['eval']['feEditable'])
-			{
-				$arrFields[$strField] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $strField;
-			}
-		}
-
-		return $arrFields;
-	}
-	
-	
 	/**
 	 * Add an image to each record
 	 * @param array
