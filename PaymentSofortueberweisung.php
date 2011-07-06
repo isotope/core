@@ -10,12 +10,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -26,8 +26,8 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  * @version    $Id$
  */
- 
- 
+
+
 class PaymentSofortueberweisung extends IsotopePayment
 {
 
@@ -39,7 +39,7 @@ class PaymentSofortueberweisung extends IsotopePayment
 				// sofortueberweisung.de only supports these currencies
 				if (!in_array($this->Isotope->Config->currency, array('EUR', 'CHF', 'GBP')))
 					return false;
-				
+
 				// Do NOT add a break. Continue to the parent "available" check.
 
 			default:
@@ -50,7 +50,7 @@ class PaymentSofortueberweisung extends IsotopePayment
 
 	/**
 	 * Process payment.
-	 * 
+	 *
 	 * @access public
 	 * @return void
 	 */
@@ -64,7 +64,7 @@ class PaymentSofortueberweisung extends IsotopePayment
 
 	/**
 	 * Return the payment form.
-	 * 
+	 *
 	 * @access public
 	 * @return string
 	 */
@@ -75,8 +75,8 @@ class PaymentSofortueberweisung extends IsotopePayment
 
 		$strCountry = in_array($this->Isotope->Cart->billingAddress['country'], array('de','ch','at')) ? $this->Isotope->Cart->billingAddress['country'] : 'de';
 		$strUrl = 'https://www.sofortueberweisung.'.$strCountry.'/payment/start';
-		
-		
+
+
 		$arrParam = array
 		(
 			'user_id'				=> $this->sofortueberweisung_user_id,
@@ -97,7 +97,7 @@ class PaymentSofortueberweisung extends IsotopePayment
 			'user_variable_5'		=> '',
 			'project_password'		=> $this->sofortueberweisung_project_password,
 		);
-		
+
 		$arrParam['hash'] = sha1(implode('|', $arrParam));
 		$arrParam['language_id'] = $GLOBALS['TL_LANGUAGE'];
 
@@ -133,7 +133,7 @@ window.addEvent( \'domready\' , function() {
 
 
 
-		
+
 		$strBuffer = "
 <script type=\"text/javascript\">
 <!--//--><![CDATA[//><!--

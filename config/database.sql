@@ -7,9 +7,9 @@
 -- *                                                        *
 -- **********************************************************
 
--- 
+--
 -- Table `tl_iso_payment_modules`
--- 
+--
 
 CREATE TABLE `tl_iso_payment_modules` (
   `sofortueberweisung_user_id` varchar(16) NOT NULL default '',
