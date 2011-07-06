@@ -7,9 +7,9 @@
 -- *                                                        *
 -- **********************************************************
 
--- 
+--
 -- Table `tl_iso_payment_modules`
--- 
+--
 
 CREATE TABLE `tl_iso_payment_modules` (
   `expercash_popupId` varchar(10) NOT NULL default '',
