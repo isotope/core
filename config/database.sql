@@ -7,9 +7,9 @@
 -- *                                                        *
 -- **********************************************************
 
--- 
+--
 -- Table `tl_iso_payment_modules`
--- 
+--
 
 CREATE TABLE `tl_iso_payment_modules` (
   `sparkasse_paymentmethod` varchar(32) NOT NULL default '',

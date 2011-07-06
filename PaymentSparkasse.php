@@ -10,12 +10,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -26,14 +26,14 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  * @version    $Id$
  */
- 
- 
+
+
 class PaymentSparkasse extends IsotopePayment
 {
 
 	/**
 	 * processPayment function.
-	 * 
+	 *
 	 * @access public
 	 * @return void
 	 */
@@ -41,31 +41,31 @@ class PaymentSparkasse extends IsotopePayment
 	{
 		$objOrder = new IsotopeOrder();
 		$objOrder->findBy('cart_id', $this->Isotope->Cart->id);
-		
+
 	}
-	
-	
+
+
 	/**
 	 * Process PayPal Instant Payment Notifications (IPN)
 	 *
 	 * @access public
 	 * @return void
 	 */
-	public function processPostSale() 
+	public function processPostSale()
 	{
 		$objOrder = new IsotopeOrder();
 		$objOrder->findBy('cart_id', $this->Isotope->Cart->id);
-		
+
 //		'redirecturlf'			=> $this->Environment->base.$this->addToUrl('step=failed', true),
 
 		echo 'redirecturls='.$this->Environment->base.$this->addToUrl('step=complete', true);
 		exit;
 	}
-	
-	
+
+
 	/**
 	 * Return the payment form.
-	 * 
+	 *
 	 * @access public
 	 * @return string
 	 */
@@ -76,7 +76,7 @@ class PaymentSparkasse extends IsotopePayment
 
 		$arrUrl = array();
 		$strUrl = 'https://' . ($this->debug ? 'test' : '') . 'system.sparkassen-internetkasse.de/vbv/mpi_legacy?';
-		
+
 		$arrParam = array
 		(
 			'amount'				=> number_format($this->Isotope->Cart->grandTotal, 2, ',', ''),
@@ -95,17 +95,17 @@ class PaymentSparkasse extends IsotopePayment
 			'transactiontype'		=> ($this->trans_type == 'auth' ? 'preauthorization' : 'authorization'),
 			'version'				=> '1.5',
 		);
-		
+
 //		ksort($arrParam);
 		$arrParam['mac'] = hash_hmac('sha1', implode('', $arrParam), $this->sparkasse_sslpassword);
-		
+
 		foreach( $arrParam as $k => $v )
 		{
 			$arrUrl[] = $k . '=' . $v;
 		}
-		
+
 		$strUrl .= implode('&', $arrUrl);
-		
+
 		return "
 <script type=\"text/javascript\">
 <!--//--><![CDATA[//><!--
