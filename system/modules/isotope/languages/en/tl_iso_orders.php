@@ -84,4 +84,5 @@ $GLOBALS['TL_LANG']['tl_iso_orders']['print_invoices']		= array('Print Invoices'
  */
 $GLOBALS['TL_LANG']['tl_iso_orders']['status_legend']	= 'Order status';
 $GLOBALS['TL_LANG']['tl_iso_orders']['details_legend']	= 'Order details';
+$GLOBALS['TL_LANG']['tl_iso_orders']['email_legend']	= 'Email data';
 

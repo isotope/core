@@ -30,6 +30,7 @@ Version 0.3.beta1
 - Added: Images and image descriptions can be translated (Ticket #401)
 - Added: IsotopeTemplate now supports Contao 2.10 template types (Ticket #456)
 - Added: Support for subqueries in foreignKey field
+- Added: Show email data (including notes for orders) in backend order details (Ticket #103)
 - Improved: Totally rewrote filters, allow to apply (multiple) from-to filters, language- and variant-aware sorting (Ticket #230)
 - Improved: Better Isotope module handling, including callback support
 - Improved: Moved multilingual support to its own extension "isotope_multilingual" with lot more options

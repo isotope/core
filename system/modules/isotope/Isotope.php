@@ -91,7 +91,7 @@ class Isotope extends Controller
 
 
 	/**
-	 * Instantiate a database driver object and return it (Factory)
+	 * Instantiate the Isotope object
 	 *
 	 * @return object
 	 */

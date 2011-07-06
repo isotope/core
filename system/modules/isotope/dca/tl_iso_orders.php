@@ -142,7 +142,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{status_legend},status,date_payed,date_shipped;{details_legend},details,notes',
+		'default'                     => '{status_legend},status,date_payed,date_shipped;{details_legend},details,notes;{email_legend:hide},email_data',
 	),
 
 	// Fields
@@ -225,7 +225,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 		),
 		'details' => array
 		(
-			'input_field_callback'	=> array('tl_iso_orders', 'showDetails'),
+			'input_field_callback'	=> array('tl_iso_orders', 'generateOrderDetails'),
 			'eval'					=> array('doNotShow'=>true),
 		),
 		'notes' => array
@@ -233,7 +233,12 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['notes'],
 			'inputType'				=> 'textarea',
 			'eval'					=> array('style'=>'height:80px;')
-		)
+		),
+		'email_data' => array
+		(
+			'input_field_callback'	=> array('tl_iso_orders', 'generateEmailData'),
+			'eval'					=> array('doNotShow'=>true),
+		),
 	)
 );
 
@@ -318,10 +323,10 @@ class tl_iso_orders extends Backend
 	/**
 	 * getOrderLabel function.
 	 *
-	 * @access public
-	 * @param array $row
-	 * @param string $label
-	 * @return string
+	 * @access	public
+	 * @param	array	$row
+	 * @param	string	$label
+	 * @return	string
 	 */
 	public function getOrderLabel($row, $label)
 	{
@@ -337,37 +342,89 @@ class tl_iso_orders extends Backend
 	}
 
 
-	public function showDetails($dc, $xlabel)
+	/**
+	 * Generate the order details view when editing an order
+	 *
+	 * @access	public
+	 * @param	object	$dc
+	 * @param	string	$xlabel
+	 * @return	string
+	 */
+	public function generateOrderDetails($dc, $xlabel)
 	{
-		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE id=?")->limit(1)->execute($dc->id);
+		$objOrder = $this->Database->execute("SELECT * FROM tl_iso_orders WHERE id=".$dc->id);
 
-		if ($objOrder->numRows)
+		if (!$objOrder->numRows)
 		{
-			$GLOBALS['TL_HOOKS']['outputBackendTemplate'][] = array('tl_iso_orders', 'injectPrintCSS');
-
-			return $this->getOrderDescription($objOrder->row());
+			$this->redirect($this->Environment->script . '?act=error');
 		}
 
-		return '';
-	}
+		$GLOBALS['TL_CSS'][] = 'system/modules/isotope/html/print.css|print';
 
-
-	protected function getOrderDescription($row)
-	{
-		$this->Input->setGet('uid', $row['uniqid']);
+		// Generate a regular order details module
+		$this->Input->setGet('uid', $objOrder->uniqid);
 		$objModule = new ModuleIsotopeOrderDetails($this->Database->execute("SELECT * FROM tl_module WHERE type='iso_orderdetails'"));
 		return $objModule->generate(true);
+	}
+	
+	
+	/**
+	 * Generate the order details view when editing an order
+	 *
+	 * @access	public
+	 * @param	object	$dc
+	 * @param	string	$xlabel
+	 * @return	string
+	 */
+	public function generateEmailData($dc, $xlabel)
+	{
+		$objOrder = $this->Database->execute("SELECT * FROM tl_iso_orders WHERE id=".$dc->id);
+
+		if (!$objOrder->numRows)
+		{
+			$this->redirect($this->Environment->script . '?act=error');
+		}
+
+		$arrSettings = deserialize($objOrder->settings, true);
+		
+		if (!is_array($arrSettings['email_data']))
+		{
+			return '<div class="tl_gerror">No email data available.</div>';
+		}
+		
+		$strBuffer = '
+<div>
+<table cellpadding="0" cellspacing="0" class="tl_show" summary="Table lists all details of an entry" style="width:650px">
+  <tbody>';
+
+		$i=0;
+		foreach( $arrSettings['email_data'] as $k => $v )
+		{
+			$strClass = ++$i%2 ? '' : ' class="tl_bg"';
+			
+			$strBuffer .= '
+  <tr>
+    <td' . $strClass . ' style="vertical-align:top"><span class="tl_label">'.$k.': </span></td>
+    <td' . $strClass . '>'.((strip_tags($v) == $v) ? nl2br($v) : $v).'</td>
+  </tr>';
+		}
+
+		$strBuffer .= '
+</tbody></table>
+</div>';
+		
+		return $strBuffer;
 	}
 
 
 	/**
 	* Review order page stores temporary information in this table to know it when user is redirected to a payment provider. We do not show this data in backend.
 	*
-	* @access public
-	* @param object $dc
-	* @return void
+	* @access	public
+	* @param	object $dc
+	* @return	void
 	*/
-	public function checkPermission()
+	public function checkPermission($dc)
 	{
 		$this->import('BackendUser', 'User');
 
@@ -398,12 +455,6 @@ class tl_iso_orders extends Backend
 				$this->redirect($this->Environment->script.'?act=error');
 			}
 		}
-	}
-
-
-	public function injectPrintCSS($strBuffer)
-	{
-		return str_replace('</head>', '<link rel="stylesheet" type="text/css" href="system/modules/isotope/html/print.css" media="print" />' . "\n</head>", $strBuffer);
 	}
 
 
