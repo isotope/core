@@ -201,8 +201,8 @@ class PaymentSaferpay extends IsotopePayment
 <p class="message">' . $GLOBALS['TL_LANG']['MSC']['pay_with_saferpay'][1] . '</p>
 <p><a href="' . $objRequest->response . '">' . $GLOBALS['TL_LANG']['MSC']['pay_with_saferpay'][2]. '</a></p>';
 	}
-	
-	
+
+
 	/**
 	 * Check XML data, add to log if debugging is enabled
 	 *
@@ -231,7 +231,7 @@ class PaymentSaferpay extends IsotopePayment
 			$this->log('XML data wrong, possible manipulation (orderId validation failed)!', __METHOD__, TL_ERROR);
 			return false;
 		}
-		
+
 		return true;
 	}
 }
