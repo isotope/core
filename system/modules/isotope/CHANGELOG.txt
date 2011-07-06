@@ -2,7 +2,7 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 0.2.10 (2011-06-??)
+Version 0.2.10 (2011-07-06)
 ------------------------------
 - Added support for Contao 2.10 "structure" event (see http://dev.contao.org/issues/2504)
 - Added shipping & payment method filter to orders
