@@ -80,11 +80,12 @@ Version 0.2.10 (2011-06-??)
 - Added shipping & payment method filter to orders
 - Added: includeBlankOption=true for select options using foreignKey (Ticket #292)
 - Added product sku to filter module
+- Changed tl_iso_products::getCategoryList from private to protected function (Ticket #477)
 - Fixed error message when editing page category (Ticket #469)
 - Fixed IsotopeProductCollection::getProducts database caching
 - Fixed rules error on product restrictions when not product in cart (Ticket #471)
 - Fixed coupon could be applied multiple times by using different letter cases (Ticket #476)
-- Changed tl_iso_products::getCategoryList from private to protected function (Ticket #477)
+- Fixed text email fields, make sure they never contain HTML
 
 Version 0.2.9 (2011-05-23)
 ------------------------------
