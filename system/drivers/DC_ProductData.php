@@ -1343,14 +1343,14 @@ window.addEvent(\'domready\', function() {
 		}
 
 		$table = $this->strTable;
-		$treeClass = 'tl_tree';
+		$treeClass = 'tl_tree tl_productdata';
 		$orderBy = $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['fields'];
 		$firstOrderBy = preg_replace('/\s+.*$/i', '', $orderBy[0]);
 
 		if ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 6)
 		{
 			$table = $this->ptable;
-			$treeClass = 'tl_tree_xtnd';
+			$treeClass = 'tl_tree_xtnd tl_productdata';
 
 			$this->loadLanguageFile($table);
 			$this->loadDataContainer($table);

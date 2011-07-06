@@ -22,8 +22,8 @@
 .mod_iso_orderdetails .price{text-align:right}
 .mod_iso_orderdetails tfoot td{text-align:right;padding:5px 5px 0}
 .w50h{height:auto}
-.tl_tree .tl_left a,.product_tree .tl_left a{float:left;margin-top:10px}
-.tl_tree .tl_right,.product_tree .tl_right{height:auto;text-align:right}
+.tl_productdata .tl_left a,.product_tree .tl_left a{float:left;margin-top:10px}
+.tl_productdata .tl_right,.product_tree .tl_right{height:auto;text-align:right}
 .iso_product{margin-top:2px;margin-bottom:2px;width:500px;text-indent:0}
 .iso_product .thumbnail{padding-right:5px;float:left;width:34px;height:34px;margin-left:-20px}
 .iso_product ul{margin-left:34px}

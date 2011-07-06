@@ -181,14 +181,14 @@
 	height: auto;
 }
 
-.tl_tree .tl_left a,
+.tl_productdata .tl_left a,
 .product_tree .tl_left a
 {
 	float: left;
 	margin-top: 10px;
 }
 
-.tl_tree .tl_right,
+.tl_productdata .tl_right,
 .product_tree .tl_right
 {
 	height: auto;
