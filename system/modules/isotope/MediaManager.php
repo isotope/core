@@ -219,9 +219,9 @@ class MediaManager extends Widget implements uploadable
 			$this->varValue = $this->Isotope->mergeMediaData($this->varValue, $arrParent);
 		}
 
-		$GLOBALS['TL_CSS'][] = 'plugins/mediabox/css/mediabox.css';
-		$GLOBALS['TL_JAVASCRIPT'][] = 'plugins/mediabox/js/mediabox.js';
-		$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/html/mediabox_init.js';
+		$GLOBALS['TL_CSS'][] = TL_PLUGINS_URL . 'plugins/mediabox/'. MEDIABOX .'/css/mediaboxAdvBlack21.css|screen';
+		$GLOBALS['TL_JAVASCRIPT'][] = TL_PLUGINS_URL . 'plugins/mediabox/' . MEDIABOX . '/js/mediabox.js';
+		$GLOBALS['TL_JAVASCRIPT'][] = TL_PLUGINS_URL . 'system/modules/isotope/html/mediabox_init.js';
 
 		$arrButtons = array('up', 'down', 'delete');
 		$strCommand = 'cmd_' . $this->strField;
