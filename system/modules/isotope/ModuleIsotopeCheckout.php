@@ -515,7 +515,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	 				'price'		=> $strPrice,
 	 				'checked'	=> (($this->Isotope->Cart->Shipping->id == $objModule->id || $objModules->numRows==1) ? ' checked="checked"' : ''),
 	 				'note'		=> $objModule->note,
-	 				'options'	=> $objModule->getShippingOptions($this),
+	 				'form'		=> $objModule->getShippingOptions($this),
 	 			);
 
 	 			$objLastModule = $objModule;
