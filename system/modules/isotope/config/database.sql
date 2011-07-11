@@ -344,8 +344,6 @@ CREATE TABLE `tl_iso_payment_modules` (
   `cybersource_merchant_id` varchar(255) NOT NULL default '',
   `cybersource_trans_key` text NULL,
   `cybersource_trans_type` varchar(32) NOT NULL default '',
-  `epay_merchantnumber` varchar(7) NOT NULL default '',
-  `epay_secretkey` varchar(255) NOT NULL default '',
   `requireCCV` char(1) NOT NULL default '',
   `button` varchar(255) NOT NULL default '',
   `guests` char(1) NOT NULL default '',

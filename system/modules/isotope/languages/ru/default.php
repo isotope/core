@@ -202,7 +202,6 @@ $GLOBALS['TL_LANG']['MSC']['pay_with_cc'][2] = 'Оплатить сейчас';
 $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0] = 'Обработка полатежа';
 $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1] = 'Вы будете перенаправлены на сайт платежного шлюза. Если вы не были пренаправлены автоматически, то нажмте кнопку "Оплатить сейчас".';
 $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2] = 'Оплатить сейчас';
-$GLOBALS['TL_LANG']['MSC']['backendPaymentEPay'] = 'Пожалуйста используйте этот адрес для доступа к административной панели ePay.';
 $GLOBALS['TL_LANG']['ISO']['backendPaymentNotFound'] = 'Платежный модуль не найден!';
 $GLOBALS['TL_LANG']['ISO']['backendShippingNotFound'] = 'Модуль доставки не найден!';
 $GLOBALS['TL_LANG']['ISO']['backendPaymentNoInfo'] = 'Этот платежный модуль не предоставляет дополнительной информации.';

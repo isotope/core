@@ -201,7 +201,6 @@ $GLOBALS['TL_LANG']['MSC']['pay_with_cc'][2] = 'Nu betalen';
 $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0] = 'Betaling wordt verwerkt';
 $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1] = 'U wordt nu naar de website van de betalingsaanbieder doorgestuurd. Indien u niet automatisch wordt doorgestuurd, druk dan op de "Nu betalen" knop.';
 $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2] = 'Nu betalen';
-$GLOBALS['TL_LANG']['MSC']['backendPaymentEPay'] = 'Gebruik het volgende adres om het ePay admin paneel te bereiken';
 $GLOBALS['TL_LANG']['ISO']['backendPaymentNotFound'] = 'Betaal-module niet gevonden!';
 $GLOBALS['TL_LANG']['ISO']['backendShippingNotFound'] = 'Verzend-module niet gevonden!';
 $GLOBALS['TL_LANG']['ISO']['backendPaymentNoInfo'] = 'Deze betaal-module bevat geen nadere informatie.';

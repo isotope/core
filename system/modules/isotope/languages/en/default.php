@@ -238,7 +238,6 @@ $GLOBALS['TL_LANG']['ISO']['cc_issue_number']				= 'Credit card issue number, 2 
 $GLOBALS['TL_LANG']['ISO']['cc_start_date']					= 'Credit card start date (required for Maestro and Solo cards).';
 $GLOBALS['TL_LANG']['MSC']['pay_with_cc']					= array('Processing payment', 'Please enter the required information to process your payment.', 'Pay now');
 $GLOBALS['TL_LANG']['MSC']['pay_with_redirect']				= array('Processing payment', 'You will be redirected to the payment gateway website. If you are not automatically redirected, please click on the "Pay now" button.', 'Pay now');
-$GLOBALS['TL_LANG']['MSC']['backendPaymentEPay']			= 'Please use the following address to access the ePay admin panel';
 $GLOBALS['TL_LANG']['ISO']['backendPaymentNotFound']		= 'Payment module not found!';
 $GLOBALS['TL_LANG']['ISO']['backendShippingNotFound']		= 'Shipping module not found!';
 $GLOBALS['TL_LANG']['ISO']['backendPaymentNoInfo']			= 'This payment module does not provide additional information.';
@@ -264,7 +263,6 @@ $GLOBALS['ISO_LANG']['PAY']['paypal']			= array('PayPal Standard Checkout', 'Thi
 $GLOBALS['ISO_LANG']['PAY']['paypalpayflowpro']	= array('PayPal Payflow Pro', 'The PayPal Payflow module is a full service credit card gateway, a more robust solution for most e-commerce sites.');
 $GLOBALS['ISO_LANG']['PAY']['postfinance']		= array('Postfinance', 'Payment gateway for the swiss post payment system that supports various card types. The store will be instantly notified about successfull transactions.');
 $GLOBALS['ISO_LANG']['PAY']['authorizedotnet']	= array('Authorize.net', 'An Authorize.net payment gateway.');
-$GLOBALS['ISO_LANG']['PAY']['epay_window']		= array('ePay Payment Window', 'See <a href="http://www.epay.eu/" onclick="window.open(this.href); return false">www.epay.eu</a> for more information about ePay.');
 $GLOBALS['ISO_LANG']['PAY']['cybersource']		= array('Cybersource','For Cybersource users. Uses the Simple Order API method.');
 
 /**

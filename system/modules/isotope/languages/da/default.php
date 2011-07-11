@@ -200,7 +200,6 @@ $GLOBALS['TL_LANG']['MSC']['pay_with_cc'][2] = 'Betal nu';
 $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0] = 'Bearbejder betaling';
 $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1] = 'Du vil blive viderestillet til betalingssiden. Hvis du ikke automatisk bliver viderestillet kan du klikke på knappen "Betal nu".';
 $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2] = 'Betal nu';
-$GLOBALS['TL_LANG']['MSC']['backendPaymentEPay'] = 'Brug denne adresse for at tilgå ePay administrationen.';
 $GLOBALS['TL_LANG']['ISO']['backendPaymentNotFound'] = 'Betalingsmodul ikke fundet!';
 $GLOBALS['TL_LANG']['ISO']['backendShippingNotFound'] = 'Leveringsmodul ikke fundet!';
 $GLOBALS['TL_LANG']['ISO']['backendPaymentNoInfo'] = 'Dette betalingsmodul tillader ikke yderligere information.';

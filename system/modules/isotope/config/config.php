@@ -213,8 +213,8 @@ $GLOBALS['ISO_PAY']['paypalpro']				= 'PaymentPaypalPro';
 $GLOBALS['ISO_PAY']['paypalpayflowpro']			= 'PaymentPaypalPayflowPro';
 $GLOBALS['ISO_PAY']['postfinance']				= 'PaymentPostfinance';
 $GLOBALS['ISO_PAY']['authorizedotnet']			= 'PaymentAuthorizeDotNet';
-$GLOBALS['ISO_PAY']['epay_window']				= 'PaymentEPay';
 $GLOBALS['ISO_PAY']['cybersource']				= 'PaymentCybersource';
+
 
 /**
  * Galleries

@@ -205,7 +205,6 @@ $GLOBALS['TL_LANG']['MSC']['pay_with_cc'][2] = 'Payer maintenant';
 $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0] = 'Procéder au paiement';
 $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1] = 'Vous allez être redirigés sur le site du fournisseur de services de paiement. Si vous n\'ètes pas automatiquement redirigé sur le site, appuyez sur le bouton "Payer maintenant".';
 $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2] = 'Payer maintenant';
-$GLOBALS['TL_LANG']['MSC']['backendPaymentEPay'] = 'Merci d\'utiliser l\'adresse suivante pour accéder au panneau d\'administration ePay';
 $GLOBALS['TL_LANG']['ISO']['backendPaymentNotFound'] = 'Module de paiement inconnu!';
 $GLOBALS['TL_LANG']['ISO']['backendShippingNotFound'] = 'Module de livraison inconnu!';
 $GLOBALS['TL_LANG']['ISO']['backendPaymentNoInfo'] = 'Ce module de paiement ne fournit pas d\'informations supplémentaires';

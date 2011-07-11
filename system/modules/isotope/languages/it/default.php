@@ -198,7 +198,6 @@ $GLOBALS['TL_LANG']['MSC']['pay_with_cc'][2] = 'Paga ora';
 $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0] = 'Il pagamento viene processato';
 $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1] = 'Sarà automaticamente deviato/a sul sito del prestatore di servizi di pagamento. Se la deviazione non avviene automaticamente, si prega di cliccare sul bottone "Paga ora".';
 $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2] = 'Paga ora';
-$GLOBALS['TL_LANG']['MSC']['backendPaymentEPay'] = 'Per cortesia usi il seguente indirizzo per accedere al pannello amministratore di ePay';
 $GLOBALS['TL_LANG']['ISO']['backendPaymentNotFound'] = 'Modulo di pagamento non trovato!';
 $GLOBALS['TL_LANG']['ISO']['backendShippingNotFound'] = 'Modulo di spedizione non trovato!';
 $GLOBALS['TL_LANG']['ISO']['backendPaymentNoInfo'] = 'Questo modulo di pagamento non ha informazioni aggiuntivi.';
