@@ -336,7 +336,7 @@ class tl_iso_orders extends Backend
 		return '
 <div style="float:left; width:90px">' . $row['order_id'] . '</div>
 <div style="float:left; width:130px;">' . $this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $row['date']) . '</div>
-<div style="float:left; width:140px">' . substr($strBillingAddress, 0, strpos($strBillingAddress, '<br />')) . '</div>
+<div style="float:left; width:140px">' . substr($strBillingAddress, 0, strpos($strBillingAddress, '<br>')) . '</div>
 <div style="float:left; width:80px; text-align:right; padding-right:20px">' . $this->Isotope->formatPriceWithCurrency($row['grandTotal']) . '</div>
 <div style="float: left; width:80px">' . $GLOBALS['TL_LANG']['ORDER'][$row['status']] . '</div>';
 	}
@@ -560,7 +560,7 @@ class tl_iso_orders extends Backend
 
 <h2 class="sub_headline">'.$GLOBALS['TL_LANG']['tl_iso_orders']['print_invoices'][0].'</h2>
 <form action="'.$this->Environment->request.'"  id="tl_print_invoices" class="tl_form" method="post">
-<input type="hidden" name="FORM_SUBMIT" value="tl_print_invoices" />
+<input type="hidden" name="FORM_SUBMIT" value="tl_print_invoices">
 <input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">
 <div class="tl_formbody_edit">
 <div class="tl_tbox block">';
@@ -586,7 +586,7 @@ class tl_iso_orders extends Backend
 </div>
 <div class="tl_formbody_submit">
 <div class="tl_submit_container">
-<input type="submit" name="print_invoices" id="ctrl_print_invoices" value="'.$GLOBALS['TL_LANG']['MSC']['labelSubmit'].'" />
+<input type="submit" name="print_invoices" id="ctrl_print_invoices" value="'.$GLOBALS['TL_LANG']['MSC']['labelSubmit'].'">
 </div>
 </div>
 </form>

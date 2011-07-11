@@ -23,6 +23,7 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author	   Blair Winans <blair@winanscreative.com>
+ * @author     Christian de la Haye <service@delahaye.de>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
@@ -279,7 +280,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 		}
 
 		$return = '<div id="tl_buttons">
-<input type="hidden" name="FORM_SUBMIT" value="be_pos_terminal" />
+<input type="hidden" name="FORM_SUBMIT" value="be_pos_terminal">
 <input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">
 <a href="'.ampersand(str_replace('&key=payment', '', $this->Environment->request)).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
 </div>
@@ -291,7 +292,7 @@ $return .= $strOrderDetails;
 $return .= '</div></div>';
 		if($arrOrderInfo['status']!='complete'){
 			$return .= '<div class="tl_formbody_submit"><div class="tl_submit_container">';
-			$return .= '<input type="submit" class="submit" value="' . specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']) . '" /></div></div>';
+			$return .= '<input type="submit" class="submit" value="' . specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']) . '"></div></div>';
 		}
 
 		$objTemplate->orderReview = $return;

@@ -22,6 +22,7 @@
  * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Christian de la Haye <service@delahaye.de>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
@@ -195,7 +196,7 @@ class AttributeWizard extends Widget
 				$display = 'block';
 			}
 
-			$arrOptions[] = '<div class="checkbox_toggler' . ($blnFirst ? '_first' : '') . '"><a href="' . $this->addToUrl('cbc=' . $id) . '" onclick="AjaxRequest.toggleCheckboxGroup(this, \'' . $id . '\'); Backend.getScrollOffset(); return false;"><img src="system/themes/' . $this->getTheme() . '/images/' . $img . '.gif" alt="toggle checkbox group" /></a>' . $GLOBALS['TL_LANG']['tl_iso_products'][$i] .	'</div><div id="' . $id . '" class="checkbox_options" style="display:' . $display . ';"><span class="fixed"><input type="checkbox" id="check_all_' . $id . '" class="tl_checkbox" onclick="Isotope.toggleCheckboxGroup(this, \'' . $id . '\')" /> <label for="check_all_' . $id . '" style="color:#a6a6a6;"><em>' . $GLOBALS['TL_LANG']['MSC']['selectAll'] . '</em></label></span>';
+			$arrOptions[] = '<div class="checkbox_toggler' . ($blnFirst ? '_first' : '') . '"><a href="' . $this->addToUrl('cbc=' . $id) . '" onclick="AjaxRequest.toggleCheckboxGroup(this, \'' . $id . '\'); Backend.getScrollOffset(); return false;"><img src="system/themes/' . $this->getTheme() . '/images/' . $img . '.gif" alt="toggle checkbox group"></a>' . $GLOBALS['TL_LANG']['tl_iso_products'][$i] .	'</div><div id="' . $id . '" class="checkbox_options" style="display:' . $display . ';"><span class="fixed"><input type="checkbox" id="check_all_' . $id . '" class="tl_checkbox" onclick="Isotope.toggleCheckboxGroup(this, \'' . $id . '\')"> <label for="check_all_' . $id . '" style="color:#a6a6a6;"><em>' . $GLOBALS['TL_LANG']['MSC']['selectAll'] . '</em></label></span>';
 
 			foreach ($arrOptionGroup as $arrOption)
 			{
@@ -228,7 +229,7 @@ class AttributeWizard extends Widget
 						$this->strId,
 						'tl_checkbox_container tl_checkbox_wizard',
 						(strlen($this->strClass) ? ' ' . $this->strClass : ''),
-						($blnCheckAll ? '<span class="fixed"><input type="checkbox" id="check_all_' . $this->strId . '" class="tl_checkbox" onclick="Isotope.toggleCheckboxGroup(this, \'ctrl_' . $this->strId . '\')" /> <label for="check_all_' . $this->strId . '" style="color:#a6a6a6;"><em>' . $GLOBALS['TL_LANG']['MSC']['selectAll'] . '</em></label></span>' : ''),
+						($blnCheckAll ? '<span class="fixed"><input type="checkbox" id="check_all_' . $this->strId . '" class="tl_checkbox" onclick="Isotope.toggleCheckboxGroup(this, \'ctrl_' . $this->strId . '\')"> <label for="check_all_' . $this->strId . '" style="color:#a6a6a6;"><em>' . $GLOBALS['TL_LANG']['MSC']['selectAll'] . '</em></label></span>' : ''),
 						implode('', $arrOptions),
 						$this->wizard);
 	}
@@ -246,7 +247,7 @@ class AttributeWizard extends Widget
 
 		if ($arrOption['disabled'])
 		{
-			return sprintf('<span><input type="hidden" name="%s" value="%s"%s /><input id="opt_%s" type="checkbox" class="tl_checkbox" disabled="disabled" checked="checked" /> %s <label for="opt_%s">%s&nbsp;<span style="display:inline;color:#b3b3b3">[%s]</span></label></span>',
+			return sprintf('<span><input type="hidden" name="%s" value="%s"%s><input id="opt_%s" type="checkbox" class="tl_checkbox" disabled="disabled" checked="checked"> %s <label for="opt_%s">%s&nbsp;<span style="display:inline;color:#b3b3b3">[%s]</span></label></span>',
 							$this->strName . '[]',
 							specialchars($arrOption['value']),
 							$this->getAttributes(),
@@ -257,7 +258,7 @@ class AttributeWizard extends Widget
 							$arrOption['value']);
 		}
 
-		return sprintf('<span><input type="checkbox" name="%s" id="opt_%s" class="tl_checkbox" value="%s"%s%s onfocus="Backend.getScrollOffset();" /> %s <label for="opt_%s">%s&nbsp;<span style="display:inline;color:#b3b3b3">[%s]</span></label></span>',
+		return sprintf('<span><input type="checkbox" name="%s" id="opt_%s" class="tl_checkbox" value="%s"%s%s onfocus="Backend.getScrollOffset();"> %s <label for="opt_%s">%s&nbsp;<span style="display:inline;color:#b3b3b3">[%s]</span></label></span>',
 						$this->strName . '[]',
 						$this->strId.'_'.$arrOption['value'],
 						specialchars($arrOption['value']),
@@ -305,4 +306,3 @@ class AttributeWizard extends Widget
 		return $arrAttributes;
 	}
 }
-

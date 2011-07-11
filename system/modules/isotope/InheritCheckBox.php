@@ -22,6 +22,7 @@
  * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Christian de la Haye <service@delahaye.de>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
@@ -67,12 +68,10 @@ class InheritCheckBox extends CheckBox
 		}
 
 		$strJS = "
-<script type=\"text/javascript\">
-<!--//--><![CDATA[//><!--
+<script>
 window.addEvent('domready', function() {
   Isotope.inheritFields(['" . implode("','", $arrFields) . "'], '" . str_replace("'", "\'", $GLOBALS['ISO_LANG']['MSC']['useDefault']) . "');
 });
-//--><!]]>
 </script>
 ";
 
@@ -80,7 +79,7 @@ window.addEvent('domready', function() {
 						$this->strId,
 						'tl_checkbox_container',
 						(strlen($this->strClass) ? ' ' . $this->strClass : ''),
-						str_replace('<br /></div><br />', '</div>', implode('<br />', $arrOptions)),
+						str_replace('<br></div><br>', '</div>', implode('<br>', $arrOptions)),
 						$this->wizard,
 						$strJS);
 	}
@@ -94,7 +93,7 @@ window.addEvent('domready', function() {
 	 */
 	protected function generateCheckbox($arrOption, $i)
 	{
-		return sprintf('<input type="checkbox" name="%s" id="opt_%s" class="tl_checkbox" value="%s"%s%s onfocus="Backend.getScrollOffset();" /> <label for="opt_%s">%s</label>',
+		return sprintf('<input type="checkbox" name="%s" id="opt_%s" class="tl_checkbox" value="%s"%s%s onfocus="Backend.getScrollOffset();"> <label for="opt_%s">%s</label>',
 						$this->strName . '[]',
 						$this->strId.'_'.$i,
 						specialchars($arrOption['value']),
@@ -104,4 +103,3 @@ window.addEvent('domready', function() {
 						$arrOption['label']);
 	}
 }
-

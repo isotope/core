@@ -22,6 +22,7 @@
  * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Christian de la Haye <service@delahaye.de>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
@@ -191,17 +192,14 @@ class FieldWizard extends Widget
 		}
 
 		// Begin table
-		$return .= '<table cellspacing="0" cellpadding="0" class="tl_optionwizard" id="ctrl_'.$this->strId.'" summary="Field wizard">
-  <thead>
-    <tr>
-      <th>'.$this->generateImage('show.gif', '', 'title="'.$GLOBALS['TL_LANG'][$this->strTable]['fwEnabled'].'"').'</th>
-      <th>&nbsp;</th>
-      <th>'.$this->generateImage('show.gif', '', 'title="'.$GLOBALS['TL_LANG'][$this->strTable]['fwLabel'].'"').'</th>
-      <th>'.$this->generateImage('show.gif', '', 'title="'.$GLOBALS['TL_LANG'][$this->strTable]['fwMandatory'].'"').'</th>
-      <th>&nbsp;</th>
-    </tr>
-  </thead>
-  <tbody>';
+		$return .= '<table class="tl_optionwizard" id="ctrl_'.$this->strId.'">
+  <tr>
+    <th>'.$this->generateImage('show.gif', '', 'title="'.$GLOBALS['TL_LANG'][$this->strTable]['fwEnabled'].'"').'</th>
+    <th>&nbsp;</th>
+    <th>'.$this->generateImage('show.gif', '', 'title="'.$GLOBALS['TL_LANG'][$this->strTable]['fwLabel'].'"').'</th>
+    <th>'.$this->generateImage('show.gif', '', 'title="'.$GLOBALS['TL_LANG'][$this->strTable]['fwMandatory'].'"').'</th>
+  	<th>&nbsp;</th>
+  </tr>';
 
 		$tabindex = 0;
 
@@ -210,10 +208,10 @@ class FieldWizard extends Widget
 		{
 			$return .= '
     <tr>
-      <td><input type="hidden" name="'.$this->strId.'['.$i.'][enabled]" value="" /><input type="checkbox" name="'.$this->strId.'['.$i.'][enabled]" id="'.$this->strId.'_enabled_'.$i.'" class="fw_checkbox" tabindex="'.++$tabindex.'" value="1"'.($this->varValue[$i]['enabled'] ? ' checked="checked"' : '').' /></td>
-      <td><input type="hidden" name="'.$this->strId.'['.$i.'][value]" value="'.$option.'" />'.$GLOBALS['TL_DCA'][$this->table]['fields'][$option]['label'][0].'</td>
-      <td><input type="text" name="'.$this->strId.'['.$i.'][label]" id="'.$this->strId.'_label_'.$i.'" class="tl_text_4" tabindex="'.++$tabindex.'" value="'.specialchars($this->varValue[$i]['label']).'" /></td>
-      <td><input type="hidden" name="'.$this->strId.'['.$i.'][mandatory]" value="" /><input type="checkbox" name="'.$this->strId.'['.$i.'][mandatory]" id="'.$this->strId.'_mandatory_'.$i.'" class="fw_checkbox" tabindex="'.++$tabindex.'" value="1"'.($this->varValue[$i]['mandatory'] ? ' checked="checked"' : '').' /> <label for="'.$this->strId.'_mandatory_'.$i.'"></label></td>';
+      <td><input type="hidden" name="'.$this->strId.'['.$i.'][enabled]" value=""><input type="checkbox" name="'.$this->strId.'['.$i.'][enabled]" id="'.$this->strId.'_enabled_'.$i.'" class="fw_checkbox" tabindex="'.++$tabindex.'" value="1"'.($this->varValue[$i]['enabled'] ? ' checked="checked"' : '').'></td>
+      <td><input type="hidden" name="'.$this->strId.'['.$i.'][value]" value="'.$option.'">'.$GLOBALS['TL_DCA'][$this->table]['fields'][$option]['label'][0].'</td>
+      <td><input type="text" name="'.$this->strId.'['.$i.'][label]" id="'.$this->strId.'_label_'.$i.'" class="tl_text_4" tabindex="'.++$tabindex.'" value="'.specialchars($this->varValue[$i]['label']).'"></td>
+      <td><input type="hidden" name="'.$this->strId.'['.$i.'][mandatory]" value=""><input type="checkbox" name="'.$this->strId.'['.$i.'][mandatory]" id="'.$this->strId.'_mandatory_'.$i.'" class="fw_checkbox" tabindex="'.++$tabindex.'" value="1"'.($this->varValue[$i]['mandatory'] ? ' checked="checked"' : '').'> <label for="'.$this->strId.'_mandatory_'.$i.'"></label></td>';
 
 			// Add row buttons
 			$return .= '
@@ -229,7 +227,6 @@ class FieldWizard extends Widget
 		}
 
 		return $return.'
-  </tbody>
   </table>';
 	}
 }

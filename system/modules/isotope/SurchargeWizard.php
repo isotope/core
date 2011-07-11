@@ -22,6 +22,7 @@
  * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Christian de la Haye <service@delahaye.de>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
@@ -154,8 +155,8 @@ class SurchargeWizard extends Widget
 		}
 
 		// Add label and return wizard
-		$return .= '<table cellspacing="0" cellpadding="0" class="tl_optionwizard" id="ctrl_'.$this->strId.'" summary="Surcharge wizard">
-  <thead>';
+		$return .= '<table class="tl_optionwizard" id="ctrl_'.$this->strId.'">
+  ';
 
 		if(is_array($this->varValue) && count($this->varValue))
   		{
@@ -165,8 +166,7 @@ class SurchargeWizard extends Widget
 					 <th><strong>'.$GLOBALS['TL_LANG'][$this->strTable]['opTaxClass'].'</strong></th>
 					 <th>&nbsp;</th>
 				    </tr>
-				</thead>
-		  <tbody>';
+				';
 
 			// Add rows
 			for ($i=0; $i<count($this->varValue); $i++)
@@ -185,8 +185,8 @@ class SurchargeWizard extends Widget
 				}
 
 				$return .= '<tr>';
-				$return .= '	<td>'.$this->varValue[$i]['label'].'<input type="hidden" name="'.$this->strId.'['.$i.'][label]" id="'.$this->strId.'_label_'.$i.'" value="'.$this->varValue[$i]['label'].'" /></td>';
-				$return .= '	<td>'.($blnEditable ? '<input type="text" name="'.$this->strId.'['.$i.'][total_price]" id="'.$this->strId.'_total_price_'.$i.'" class="tl_text_3" value="'.specialchars(round($this->varValue[$i]['total_price'], 2)).'" />' : round($this->varValue[$i]['total_price'], 2)) . '</td>';
+				$return .= '	<td>'.$this->varValue[$i]['label'].'<input type="hidden" name="'.$this->strId.'['.$i.'][label]" id="'.$this->strId.'_label_'.$i.'" value="'.$this->varValue[$i]['label'].'"></td>';
+				$return .= '	<td>'.($blnEditable ? '<input type="text" name="'.$this->strId.'['.$i.'][total_price]" id="'.$this->strId.'_total_price_'.$i.'" class="tl_text_3" value="'.specialchars(round($this->varValue[$i]['total_price'], 2)).'">' : round($this->varValue[$i]['total_price'], 2)) . '</td>';
 				$options = '';
 
 				$options = '<option value=""'.$this->optionSelected(NULL,$this->varValue[$i]['tax_class']).'>-</option>';
@@ -227,8 +227,6 @@ class SurchargeWizard extends Widget
 				$return .= '	<tr>
 									<th>&nbsp;</th>
 								</tr>
-							</thead>
-						    <tbody>
 								<tr>
 									<td>' . $GLOBALS['TL_LANG']['MSC']['noSurcharges'] .'</td>
 								</tr>
@@ -236,7 +234,6 @@ class SurchargeWizard extends Widget
 		}
 
 		return $return.'
-  </tbody>
   </table>';
 	}
 }

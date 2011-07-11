@@ -22,6 +22,7 @@
  * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Christian de la Haye <service@delahaye.de>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
@@ -165,8 +166,7 @@ class ImageWatermarkWizard extends Widget
 
 
 		// Begin table
-		$return .= '<table cellspacing="0" cellpadding="0" class="tl_imagewatermarkwizard" id="ctrl_'.$this->strId.'" summary="Field wizard">
-  <thead>
+		$return .= '<table class="tl_imagewatermarkwizard" id="ctrl_'.$this->strId.'">
     <tr>
       <th>'.$GLOBALS['TL_LANG'][$this->strTable]['iwName'].'</th>
       <th>'.$GLOBALS['TL_LANG'][$this->strTable]['iwWidth'].'</th>
@@ -175,9 +175,7 @@ class ImageWatermarkWizard extends Widget
       <th>'.$GLOBALS['TL_LANG'][$this->strTable]['iwWatermark'].'</th>
       <th>'.$GLOBALS['TL_LANG'][$this->strTable]['iwPosition'].'</th>
       <th>&nbsp;</th>
-    </tr>
-  </thead>
-  <tbody>';
+    </tr>';
 
 		foreach( $this->varValue as $i => $size )
 		{
@@ -204,11 +202,11 @@ class ImageWatermarkWizard extends Widget
 
 			$return .= '
     <tr>
-      <td><input type="text" name="'.$this->strName.'['.$i.'][name]" id="'.$this->strId.'_name_'.$i.'" class="tl_text_4" value="'.specialchars($this->varValue[$i]['name']).'"" /></td>
-      <td><input type="text" name="'.$this->strName.'['.$i.'][width]" id="'.$this->strId.'_width_'.$i.'" class="tl_text_4" value="'.specialchars($this->varValue[$i]['width']).'"" /></td>
-      <td><input type="text" name="'.$this->strName.'['.$i.'][height]" id="'.$this->strId.'_height_'.$i.'" class="tl_text_4" value="'.specialchars($this->varValue[$i]['height']).'"" /></td>
+      <td><input type="text" name="'.$this->strName.'['.$i.'][name]" id="'.$this->strId.'_name_'.$i.'" class="tl_text_4" value="'.specialchars($this->varValue[$i]['name']).'""></td>
+      <td><input type="text" name="'.$this->strName.'['.$i.'][width]" id="'.$this->strId.'_width_'.$i.'" class="tl_text_4" value="'.specialchars($this->varValue[$i]['width']).'""></td>
+      <td><input type="text" name="'.$this->strName.'['.$i.'][height]" id="'.$this->strId.'_height_'.$i.'" class="tl_text_4" value="'.specialchars($this->varValue[$i]['height']).'""></td>
       <td><select name="'.$this->strName.'['.$i.'][mode]" id="'.$this->strId.'_mode_'.$i.'" class="tl_select_interval" onfocus="Backend.getScrollOffset();">'.implode(' ', $arrModes).'</select></td>
-      <td><input type="text" name="'.$this->strName.'['.$i.'][watermark]" id="'.$this->strId.'_watermark_'.$i.'" class="tl_text_2" value="'.specialchars($this->varValue[$i]['watermark']).'"" />'.$filepicker.'</td>
+      <td><input type="text" name="'.$this->strName.'['.$i.'][watermark]" id="'.$this->strId.'_watermark_'.$i.'" class="tl_text_2" value="'.specialchars($this->varValue[$i]['watermark']).'"">'.$filepicker.'</td>
       <td><select name="'.$this->strName.'['.$i.'][position]" id="'.$this->strId.'_position_'.$i.'" class="tl_select_unit" onfocus="Backend.getScrollOffset();">'.implode(' ', $arrPositions).'</select></td>';
 
       		$return .= '
@@ -224,8 +222,6 @@ class ImageWatermarkWizard extends Widget
 		}
 
 		return $return.'
-  </tbody>
   </table>';
 	}
 }
-

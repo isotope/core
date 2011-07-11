@@ -23,6 +23,7 @@
  * PHP version 5
  * @copyright  Isotope eCommerce Workgroup 2011
  * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Christian de la Haye <service@delahaye.de>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  * @version    $Id$
  */
@@ -191,7 +192,7 @@ class ProductTree extends Widget
 
 		// Return the tree
 		return '<ul class="tl_listing tree_view product_tree'.(strlen($this->strClass) ? ' ' . $this->strClass : '').'" id="'.$this->strId.'">
-    <li class="tl_folder_top"><div class="tl_left">'.$this->generateImage('system/modules/isotope/html/store-open.png').' '.(strlen($GLOBALS['TL_CONFIG']['websiteTitle']) ? $GLOBALS['TL_CONFIG']['websiteTitle'] : 'Contao Open Source CMS').'</div> <div class="tl_right"><label for="ctrl_'.$this->strId.'" class="tl_change_selected">'.$GLOBALS['TL_LANG']['MSC']['changeSelected'].'</label> <input type="checkbox" name="'.$this->strName.'_save" id="ctrl_'.$this->strId.'" class="tl_tree_checkbox" value="1" onclick="Backend.showTreeBody(this, \''.$this->strId.'_parent\');" /></div><div style="clear:both;"></div></li><li class="parent" id="'.$this->strId.'_parent"><ul>'.$tree.$strReset.'
+    <li class="tl_folder_top"><div class="tl_left">'.$this->generateImage('system/modules/isotope/html/store-open.png').' '.(strlen($GLOBALS['TL_CONFIG']['websiteTitle']) ? $GLOBALS['TL_CONFIG']['websiteTitle'] : 'Contao Open Source CMS').'</div> <div class="tl_right"><label for="ctrl_'.$this->strId.'" class="tl_change_selected">'.$GLOBALS['TL_LANG']['MSC']['changeSelected'].'</label> <input type="checkbox" name="'.$this->strName.'_save" id="ctrl_'.$this->strId.'" class="tl_tree_checkbox" value="1" onclick="Backend.showTreeBody(this, \''.$this->strId.'_parent\');"></div><div style="clear:both;"></div></li><li class="parent" id="'.$this->strId.'_parent"><ul>'.$tree.$strReset.'
   </ul></li></ul>';
 	}
 
@@ -406,17 +407,17 @@ class ProductTree extends Widget
 			switch ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['fieldType'])
 			{
 				case 'checkbox':
-					$return .= '<input type="checkbox" name="'.$this->strName.'[]" id="'.$this->strName.'_'.$id.'" class="tl_tree_checkbox" value="'.specialchars($id).'" onfocus="Backend.getScrollOffset();"'.$this->optionChecked($id, $this->varValue).' />';
+					$return .= '<input type="checkbox" name="'.$this->strName.'[]" id="'.$this->strName.'_'.$id.'" class="tl_tree_checkbox" value="'.specialchars($id).'" onfocus="Backend.getScrollOffset();"'.$this->optionChecked($id, $this->varValue).'>';
 					break;
 
 				case 'radio':
-					$return .= '<input type="radio" name="'.$this->strName.'" id="'.$this->strName.'_'.$id.'" class="tl_tree_radio" value="'.specialchars($id).'" onfocus="Backend.getScrollOffset();"'.$this->optionChecked($id, $this->varValue).' />';
+					$return .= '<input type="radio" name="'.$this->strName.'" id="'.$this->strName.'_'.$id.'" class="tl_tree_radio" value="'.specialchars($id).'" onfocus="Backend.getScrollOffset();"'.$this->optionChecked($id, $this->varValue).'>';
 					break;
 
 				case 'text':
 					$style = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['style'] ? ' style="'.$GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['style'].'"' : '';
 					$maxlength = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['maxlength'] ? ' maxlength="'.$GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['maxlength'].'"' : '';
-					$return .= '<input type="text" class="text" name="'.$this->strName.'['.$id.']" id="'.$this->strName.'_'.$id.'" class="tl_tree_radio" value="'.specialchars($this->varValue[$id]).'" onfocus="Backend.getScrollOffset();"'.$style.$maxlength.' />';
+					$return .= '<input type="text" class="text" name="'.$this->strName.'['.$id.']" id="'.$this->strName.'_'.$id.'" class="tl_tree_radio" value="'.specialchars($this->varValue[$id]).'" onfocus="Backend.getScrollOffset();"'.$style.$maxlength.'>';
 					break;
 			}
 		}
@@ -486,4 +487,3 @@ class ProductTree extends Widget
 		}
 	}
 }
-
