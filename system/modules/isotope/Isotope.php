@@ -126,17 +126,19 @@ class Isotope extends Controller
 
 		if(!$objConfig->numRows)
 		{
+			// display error message in Isotope related backend modules
 			if (TL_MODE == 'BE')
 			{
-				// display error message only in isotope related categories
-				if (in_array($this->Input->get('do'), array_keys($GLOBALS['BE_MOD']['isotope'])))
+				$do = $this->Input->get('do');
+
+				if ($GLOBALS['BE_MOD']['isotope'][$do] != '')
 				{
 					$_SESSION['TL_ERROR'][] = $GLOBALS['TL_LANG']['ERR']['noDefaultStoreConfiguration'];
-				}
 
-				if ($this->Input->get('do') == 'iso_products')
-				{
-					$this->redirect($this->Environment->script.'?do=iso_setup&mod=configs&table=tl_iso_config&act=create');
+					if ($do == 'iso_products')
+					{
+						$this->redirect($this->Environment->script.'?do=iso_setup&mod=configs&table=tl_iso_config&act=create');
+					}
 				}
 			}
 			else
