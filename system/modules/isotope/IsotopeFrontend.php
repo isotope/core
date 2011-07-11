@@ -348,7 +348,7 @@ class IsotopeFrontend extends Frontend
 	 */
 	public function injectMessages()
 	{
-		$strMessages = $this->getMessages();
+		$strMessages = $this->getIsotopeMessages();
 
 		if ($strMessages != '')
 		{
@@ -370,7 +370,7 @@ window.addEvent('domready', function()
 	 * @param	void
 	 * @return	string
 	 */
-	public function getMessages()
+	public function getIsotopeMessages()
 	{
 		$strMessages = '';
 		$arrGroups = array('ISO_ERROR', 'ISO_CONFIRM', 'ISO_INFO');
