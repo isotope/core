@@ -8,9 +8,15 @@
 
 <?php if (is_array($this->steps) && count($this->steps)): ?>
 <div class="steps block">
-<ul class="steps<?php echo count($this->steps); ?>">
+<ul class="level_1 steps<?php echo count($this->steps); ?>">
 <?php foreach( $this->steps as $step ): ?>
-	<li class="<?php echo $step['class']; ?>"><?php if (strlen($step['href'])): ?><a href="<?php echo $step['href']; ?>" title="<?php echo $step['title']; ?>"><?php endif; echo $step['label']; if(strlen($step['href'])): ?></a><?php endif; ?></li>
+<li class="<?php echo $step['class']; ?>">
+<?php if (strlen($step['href'])): ?>
+<a class="<?php echo $step['class']; ?>" href="<?php echo $step['href']; ?>" title="<?php echo $step['title']; ?>"><?php echo $step['label']; ?></a>
+<?php else: ?>
+<span class="<?php echo $step['class']; ?>"><?php echo $step['label']; ?></span>
+<?php endif; ?>
+</li>
 <?php endforeach; ?>
 </ul>
 </div>

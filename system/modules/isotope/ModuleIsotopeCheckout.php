@@ -285,23 +285,26 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 		// Show checkout steps
 		$arrStepKeys = array_keys($GLOBALS['ISO_CHECKOUT_STEPS']);
-		$blnStepPassed = true;
+		$blnPassed = true;
+		$total = count($arrStepKeys) - 1;
 		$arrSteps = array();
 		foreach( $arrStepKeys as $i => $step )
 		{
 			if ($this->strCurrentStep == $step)
-				$blnStepPassed = false;
+				$blnPassed = false;
+			
+			$blnActive = $this->strCurrentStep == $step ? true : false;
 
 			$arrSteps[] = array
 			(
-				'class'	=> $step . ($this->strCurrentStep == $step ? ' active' : '') . ($blnStepPassed ? ' passed' : '') . ($i == 0 ? ' first' : ''),
-				'label'	=> (strlen($GLOBALS['TL_LANG']['ISO']['checkout_'.$step]) ? $GLOBALS['TL_LANG']['ISO']['checkout_'.$step] : $step),
-				'href'	=> ($blnStepPassed ? $this->addToUrl('step='.$step, true) : ''),
-				'title'	=> specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['checkboutStepBack'], (strlen($GLOBALS['TL_LANG']['ISO']['checkout_'.$step]) ? $GLOBALS['TL_LANG']['ISO']['checkout_'.$step] : $step))),
+				'isActive'	=> $blnActive,
+				'class'		=> $step . ($blnActive ? ' active' : '') . ($blnPassed ? ' passed' : '') . ((!$blnPassed && !$blnActive) ? ' upcoming' : '') . ($i == 0 ? ' first' : '') . ($i == $total ? ' last' : ''),
+				'label'		=> (strlen($GLOBALS['TL_LANG']['ISO']['checkout_'.$step]) ? $GLOBALS['TL_LANG']['ISO']['checkout_'.$step] : $step),
+				'href'		=> ($blnPassed ? $this->addToUrl('step='.$step, true) : ''),
+				'title'		=> specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['checkboutStepBack'], (strlen($GLOBALS['TL_LANG']['ISO']['checkout_'.$step]) ? $GLOBALS['TL_LANG']['ISO']['checkout_'.$step] : $step))),
 			);
 		}
 
-		$arrSteps[count($arrSteps)-1]['class'] .= ' last';
 		$this->Template->steps = $arrSteps;
 
 
@@ -312,7 +315,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		}
 
 		// Show "confirm order" button if this is the last step
-		elseif (array_search($this->strCurrentStep, $arrStepKeys) === (count($arrStepKeys)-1))
+		elseif (array_search($this->strCurrentStep, $arrStepKeys) === $total)
 		{
 			$this->Template->nextClass = 'confirm';
 			$this->Template->nextLabel = specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']);
