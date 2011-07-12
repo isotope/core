@@ -22,6 +22,7 @@
  * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Christian de la Haye <service@delahaye.de>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
@@ -146,8 +147,8 @@ class VariantWizard extends Widget
 		$objVariant = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE id=?")->limit(1)->execute($this->currentRecord);
 
 		// Begin table
-		$return = '<table cellspacing="0" cellpadding="0" class="tl_variantwizard" id="ctrl_'.$this->strId.'" summary="Variant wizard">
-  <tbody>';
+		$return = '<table class="tl_variantwizard" id="ctrl_'.$this->strId.'">
+  ';
 
 		// Add fields
 		foreach ($this->arrOptions as $option)
@@ -167,10 +168,8 @@ class VariantWizard extends Widget
 						$objWidget->id = str_replace(']', '_', $objWidget->id);
 
 						$datepicker = '
-			  <script type="text/javascript">
-			  <!--//--><![CDATA[//><!--
+			  <script>
 			  window.addEvent(\'domready\', function() { ' . sprintf($arrData['eval']['datepicker'], 'ctrl_' . $objWidget->id) . ' });
-			  //--><!]]>
 			  </script>';
 					}
 					break;
@@ -196,8 +195,6 @@ class VariantWizard extends Widget
 		}
 
 		return $return . '
-  </tbody>
 </table>';
 	}
 }
-
