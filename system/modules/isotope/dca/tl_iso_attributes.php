@@ -350,9 +350,20 @@ class tl_iso_attributes extends Backend
 	}
 
 
+	/**
+	 * Disable the internal field name field if it is not empty.
+	 *
+	 * @param	$dc
+	 * @return	void
+	 */
 	public function disableFieldName($dc)
 	{
-		if ($dc->id)
+		// Hide the field in editAll & overrideAll mode (Thanks to Yanick Witschi)
+		if ($this->Input->get('act') == 'editAll' || $this->Input->get('act') == 'overrideAll')
+		{
+			$GLOBALS['TL_DCA']['tl_iso_attributes']['fields']['field_name']['eval']['doNotShow'] = true;
+		}
+		elseif ($dc->id)
 		{
 			$objAttribute = $this->Database->execute("SELECT * FROM tl_iso_attributes WHERE id={$dc->id}");
 
