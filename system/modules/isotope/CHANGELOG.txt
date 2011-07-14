@@ -32,6 +32,7 @@ Version 1.3.beta1 (2011-07-??)
 - Added: Support for subqueries in foreignKey field
 - Added: Show email data (including notes for orders) in backend order details (Ticket #103)
 - Added: Implemented Contao 2.10 request tokens in Isotope (Ticket #470)
+- Added product groups, allow to categorize products in the backend
 - Improved: Totally rewrote filters, allow to apply (multiple) from-to filters, language- and variant-aware sorting (Ticket #230)
 - Improved: Better Isotope module handling, including callback support
 - Improved: Moved multilingual support to its own extension "isotope_multilingual" with lot more options

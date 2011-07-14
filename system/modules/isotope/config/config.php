@@ -45,7 +45,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
 (
 	'iso_products' => array
 	(
-		'tables'					=> array('tl_iso_products', 'tl_iso_product_categories', 'tl_iso_downloads', 'tl_iso_related_products', 'tl_iso_prices', 'tl_iso_price_tiers'),
+		'tables'					=> array('tl_iso_products', 'tl_iso_groups', 'tl_iso_product_categories', 'tl_iso_downloads', 'tl_iso_related_products', 'tl_iso_prices', 'tl_iso_price_tiers'),
 		'icon'						=> 'system/modules/isotope/html/store-open.png',
 		'javascript'				=> 'system/modules/isotope/html/backend.js',
 		'generate'					=> array('tl_iso_products', 'generateVariants'),

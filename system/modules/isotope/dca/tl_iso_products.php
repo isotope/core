@@ -40,6 +40,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'dataContainer'				=> 'ProductData',
 		'enableVersioning'			=> true,
 		'closed'					=> true,
+		'gtable'					=> 'tl_iso_groups',
 		'ctable'					=> array('tl_iso_downloads', 'tl_iso_product_categories', 'tl_iso_prices'),
 		'onload_callback' => array
 		(
@@ -58,7 +59,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'fields'				=> array('name'),
 			'flag'					=> 1,
 			'panelLayout'			=> 'filter;sort,search,limit',
-			'icon'					=> 'system/modules/isotope/html/icon-products.gif',
+			'icon'					=> 'system/modules/isotope/html/store-open.png',
 			'paste_button_callback'	=> array('tl_iso_products', 'pasteProduct'),
 		),
 		'label' => array
@@ -96,11 +97,25 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'class'				=> 'header_isotope_tools',
 				'attributes'		=> 'onclick="Backend.getScrollOffset();" style="display:none"',
 			),
-			'toggleNodes' => array
+			'toggleGroups' => array
 			(
-				'label'				=> &$GLOBALS['TL_LANG']['MSC']['toggleNodes'],
+				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['toggleGroups'],
+				'href'				=> 'gtg=all',
+				'class'				=> 'header_toggle isotope-tools',
+				'attributes'		=> 'onclick="Backend.getScrollOffset();"',
+			),
+			'toggleVariants' => array
+			(
+				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['toggleVariants'],
 				'href'				=> 'ptg=all',
 				'class'				=> 'header_toggle isotope-tools',
+				'attributes'		=> 'onclick="Backend.getScrollOffset();"',
+			),
+			'groups' => array
+			(
+				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['groups'],
+				'href'				=> 'table=tl_iso_groups',
+				'class'				=> 'header_iso_groups isotope-tools',
 				'attributes'		=> 'onclick="Backend.getScrollOffset();"',
 			),
 			'import' => array
@@ -126,6 +141,14 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'icon'				=> 'copy.gif',
 				'attributes'		=> 'onclick="Backend.getScrollOffset();"',
 				'button_callback'	=> array('tl_iso_products', 'copyProduct')
+			),
+			'cut' => array
+			(
+				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['copy'],
+				'href'				=> 'act=paste&amp;mode=cut',
+				'icon'				=> 'cut.gif',
+				'attributes'		=> 'onclick="Backend.getScrollOffset();"',
+//				'button_callback'	=> array('tl_iso_products', 'copyProduct')
 			),
 			'delete' => array
 			(
@@ -1351,22 +1374,82 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 	 */
 	public function pasteProduct(DataContainer $dc, $row, $table, $cr, $arrClipboard=false)
 	{
-		$disablePI = false;
-
+		if ($table == 'tl_iso_groups')
+		{
+			if ($arrClipboard === false || $arrClipboard['mode'] == 'create')
+			{
+				return '';
+			}
+			
+			switch( $arrClipboard['mode'] )
+			{
+				case 'cut':
+				case 'copy':
+					$objProduct = $this->Database->prepare("SELECT * FROM {$dc->table} WHERE id=?")->execute($arrClipboard['id']);
+					
+					if ($objProduct->pid > 0)
+					{
+						return '';
+					}
+					elseif ($objProduct->gid == $row['id'])
+					{
+						$disablePI = true;
+					}
+					break;
+				
+				case 'cutAll':
+				case 'copyAll':
+					// @todo implement cutAll & copyAll for multiple products and variants
+					$this->Session->set('CLIPBOARD', NULL);
+					throw new Exception('Cannot cut/copy multiple products/variants');
+					break;
+			}
+		}
+		else
+		{
+			// Disable paste buttons for variants
+			if (($row['id'] > 0 && $row['pid'] > 0) || ($arrClipboard['mode'] == 'create' && $row['id'] == 0))
+			{
+				return '';
+			}
+			
+			// Disable buttons for product if copying a product
+			elseif ($arrClipboard !== false)
+			{
+				switch( $arrClipboard['mode'] )
+				{
+					case 'cut':
+					case 'copy':
+						$objProduct = $this->Database->prepare("SELECT * FROM {$dc->table} WHERE id=?")->execute($arrClipboard['id']);
+						
+						if (($objProduct->pid == 0 && $row['id'] != 0) || ($row['id'] == 0 && $objProduct->pid > 0))
+						{
+							return '';
+						}
+						elseif ($row['id'] != 0 && $objProduct->pid == $row['id'])
+						{
+							$disablePI = true;
+						}
+						break;
+					
+					case 'cutAll':
+					case 'copyAll':
+						// @todo implement cutAll & copyAll for multiple products and variants
+						$this->Session->set('CLIPBOARD', NULL);
+						throw new Exception('Cannot cut/copy multiple products/variants');
+						break;
+				}
+			}
+		}
+		
 		// Disable all buttons if there is a circular reference
-		if ($arrClipboard !== false && ($arrClipboard['mode'] == 'cut' && ($cr == 1 || $arrClipboard['id'] == $row['id']) || $arrClipboard['mode'] == 'cutAll' && ($cr == 1 || in_array($row['id'], $arrClipboard['id']))))
+		if ($arrClipboard !== false && ($arrClipboard['mode'] == 'cut' && ($cr == 1 || ($table == $dc->table && $arrClipboard['id'] == $row['id'])) || $arrClipboard['mode'] == 'cutAll' && ($cr == 1 || ($table == $dc->table && in_array($row['id'], $arrClipboard['id'])))))
 		{
 			$disablePI = true;
 		}
 
-		// Disable buttons for variants
-		if ($row['id'] == 0 || ($row['id'] > 0 && $row['pid'] > 0))
-		{
-			return '';
-		}
-
 		// Disable "paste into" button for products without variant data
-		elseif ($row['id'] > 0)
+		elseif ($table == $dc->table && $row['id'] > 0)
 		{
 			$objType = $this->Database->prepare("SELECT * FROM tl_iso_producttypes WHERE id=?")->execute($row['type']);
 
@@ -1379,7 +1462,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 		// Return the button
 		$imagePasteInto = $this->generateImage('pasteinto.gif', sprintf($GLOBALS['TL_LANG'][$table]['pasteinto'][1], $row['id']), 'class="blink"');
 
-		return ($disablePI ? $this->generateImage('pasteinto_.gif', '', 'class="blink"').' ' : '<a href="'.$this->addToUrl('act='.$arrClipboard['mode'].'&amp;mode=2&amp;pid='.$row['id'].(!is_array($arrClipboard['id']) ? '&amp;id='.$arrClipboard['id'] : '')).'" title="'.specialchars(sprintf($GLOBALS['TL_LANG'][$table]['pasteinto'][1], $row['id'])).'" onclick="Backend.getScrollOffset();">'.$imagePasteInto.'</a> ');
+		return ($disablePI ? $this->generateImage('pasteinto_.gif', '', 'class="blink"').' ' : '<a href="'.$this->addToUrl('act='.$arrClipboard['mode'].'&amp;mode=2&amp;'.(($table != $dc->table || $row['id'] == 0) ? 'gid' : 'pid').'='.$row['id'].(!is_array($arrClipboard['id']) ? '&amp;id='.$arrClipboard['id'] : '')).'" title="'.specialchars(sprintf($GLOBALS['TL_LANG'][$table]['pasteinto'][1], $row['id'])).'" onclick="Backend.getScrollOffset();">'.$imagePasteInto.'</a> ');
 	}
 
 

@@ -39,11 +39,15 @@ class DC_ProductData extends DC_Table
 	 */
 	protected $blnEditLanguage;
 
-
 	/**
 	 * Array of languages for this product's type
 	 */
 	protected $arrLanguages;
+
+	/**
+	 * IDs of visible products
+	 */
+	protected $products = array();
 
 
 	/**
@@ -101,8 +105,9 @@ class DC_ProductData extends DC_Table
 				$this->values[] = $filter[1];
 			}
 		}
-
+		
 		$return .= $this->panel();
+		$this->fetchProductIds();
 		$return .= $this->treeView();
 
 /**
@@ -140,6 +145,36 @@ class DC_ProductData extends DC_Table
 		$this->Session->setData($session);
 
 		return $return;
+	}
+	
+	
+	/**
+	 * Assign a new position to an existing record
+	 * @param boolean
+	 */
+	public function cut($blnDoNotRedirect=false)
+	{
+		// ID and GID signify paste into a group
+		if ($this->intId > 0 && $this->Input->get('gid') != '')
+		{
+			// Empty clipboard
+			$arrClipboard = $this->Session->get('CLIPBOARD');
+			$arrClipboard[$this->strTable] = array();
+			$this->Session->set('CLIPBOARD', $arrClipboard);
+
+			// Update the record			
+			$this->Database->prepare("UPDATE {$this->strTable} SET tstamp=?, gid=? WHERE id=?")->execute(time(), $this->Input->get('gid'), $this->intId);
+			
+			if (!$blnDoNotRedirect)
+			{
+				$this->redirect($this->getReferer());
+			}
+			
+			// Do not call parent function
+			return;
+		}
+		
+		parent::cut($blnDoNotRedirect);
 	}
 	
 	
@@ -1347,86 +1382,41 @@ window.addEvent(\'domready\', function() {
 		$orderBy = $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['fields'];
 		$firstOrderBy = preg_replace('/\s+.*$/i', '', $orderBy[0]);
 
-		if ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 6)
+		if ($GLOBALS['TL_DCA'][$this->strTable]['config']['gtable'] != '')
 		{
-			$table = $this->ptable;
+			$gtable = $GLOBALS['TL_DCA'][$this->strTable]['config']['gtable'];
 			$treeClass = 'tl_tree_xtnd tl_productdata';
 
-			$this->loadLanguageFile($table);
-			$this->loadDataContainer($table);
+			$this->loadLanguageFile($gtable);
+			$this->loadDataContainer($gtable);
 		}
-
-		if (is_array($this->orderBy) && strlen($this->orderBy[0]))
+		
+		// Return if a mandatory field (id, pid) is missing
+		if (!$this->Database->fieldExists('id', $table) || !$this->Database->fieldExists('pid', $table))
 		{
-			$orderBy = $this->orderBy;
-			$firstOrderBy = $this->firstOrderBy;
+			return '
+<p class="tl_empty">strTable "'.$table.'" can not be shown as tree!</p>';
 		}
-
-
-		$query = "SELECT id FROM " . $this->strTable . " WHERE pid=0";
-
-		if (count($this->procedure))
+		
+		// Return if a mandatory field (id, pid) is missing in group table
+		if ($GLOBALS['TL_DCA'][$this->strTable]['config']['gtable'] != '' && (!$this->Database->fieldExists('id', $gtable) || !$this->Database->fieldExists('pid', $gtable) || !$this->Database->fieldExists('sorting', $gtable)))
 		{
-			$query .= " AND " . implode(' AND ', $this->procedure);
+			return '
+<p class="tl_empty">strTable "'.$gtable.'" can not be shown as grouped tree!</p>';
 		}
-
-		if (is_array($this->root) && count($this->root) > 0)
-		{
-			$query .= " AND id IN(" . implode(',', array_map('intval', $this->root)) . ")";
-		}
-
-		if (is_array($orderBy) && strlen($orderBy[0]))
-		{
-			foreach ($orderBy as $k=>$v)
-			{
-				if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['findInSet'])
-				{
-					$keys = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['options'];
-
-					if (array_is_assoc($keys))
-					{
-						$keys = array_keys($keys);
-					}
-
-					$orderBy[$k] = "FIND_IN_SET(" . $v . ", '" . implode(',', $keys) . "')";
-				}
-			}
-
-			$query .= " ORDER BY " . implode(', ', $orderBy);
-		}
-
-		if (($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['flag'] % 2) == 0)
-		{
-			$query .= " DESC";
-		}
-
-		$objRowStmt = $this->Database->prepare($query);
-
-		if (strlen($this->limit))
-		{
-			$arrLimit = explode(',', $this->limit);
-			$objRowStmt->limit($arrLimit[1], $arrLimit[0]);
-		}
-
-		$objIds = $objRowStmt->execute($this->values);
-
-		if ($objIds->numRows)
-		{
-			$this->root = $objIds->fetchEach('id');
-		}
-
+		
 		// Get session data and toggle nodes
 		if ($this->Input->get('ptg') == 'all')
 		{
 			$session = $this->Session->getData();
-			$node = ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 6) ? $this->strTable.'_'.$table.'_tree' : $this->strTable.'_tree';
+			$node = $this->strTable.'_tree';
 
 			// Expand tree
 			if (!is_array($session[$node]) || count($session[$node]) < 1 || current($session[$node]) != 1)
 			{
 				$session[$node] = array();
+				
 				$objNodes = $this->Database->execute("SELECT DISTINCT pid FROM " . $table . " WHERE pid>0");
-
 				while ($objNodes->next())
 				{
 					$session[$node][$objNodes->pid] = 1;
@@ -1440,21 +1430,35 @@ window.addEvent(\'domready\', function() {
 			}
 
 			$this->Session->setData($session);
-			$this->redirect(preg_replace('/(&(amp;)?|\?)ptg=[^& ]*/i', '', $this->Environment->request));
+			$this->redirect(preg_replace('/(&(amp;)?|\?)(ptg)=[^& ]*/i', '', $this->Environment->request));
 		}
-
-		// Return if a mandatory field (id, pid) is missing
-		if ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 5 && (!$this->Database->fieldExists('id', $table) || !$this->Database->fieldExists('pid', $table)))
+		
+		// Get session data and toggle nodes
+		if ($this->Input->get('gtg') == 'all')
 		{
-			return '
-<p class="tl_empty">strTable "'.$table.'" can not be shown as tree!</p>';
-		}
+			$session = $this->Session->getData();
+			$node = $this->strTable.'_'.$gtable.'_tree';
 
-		// Return if there is no parent table
-		if ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 6 && !strlen($this->ptable))
-		{
-			return '
-<p class="tl_empty">strTable "'.$table.'" can not be shown as extended tree!</p>';
+			// Expand tree
+			if (!is_array($session[$node]) || count($session[$node]) < 1 || current($session[$node]) != 1)
+			{
+				$session[$node] = array();
+				
+				$objNodes = $this->Database->execute("SELECT DISTINCT id FROM " . $gtable);
+				while ($objNodes->next())
+				{
+					$session[$node][$objNodes->id] = 1;
+				}
+			}
+
+			// Collapse tree
+			else
+			{
+				$session[$node] = array();
+			}
+
+			$this->Session->setData($session);
+			$this->redirect(preg_replace('/(&(amp;)?|\?)(gtg)=[^& ]*/i', '', $this->Environment->request));
 		}
 
 		$blnClipboard = false;
@@ -1479,12 +1483,18 @@ window.addEvent(\'domready\', function() {
 </div>' . $this->getMessages(true);
 
 		$tree = '';
-		$blnHasSorting = $this->Database->fieldExists('sorting', $table);
 
 		// Call a recursive function that builds the tree
+		$this->root = $this->Database->execute("SELECT id FROM $gtable WHERE pid=0 ORDER BY sorting")->fetchEach('id');
 		for ($i=0; $i<count($this->root); $i++)
 		{
-			$tree .= $this->generateTree($table, $this->root[$i], array('p'=>$this->root[($i-1)], 'n'=>$this->root[($i+1)]), $blnHasSorting, -20, ($blnClipboard ? $arrClipboard : false));
+			$tree .= $this->generateProductTree($gtable, $this->root[$i], array('p'=>$this->root[($i-1)], 'n'=>$this->root[($i+1)]), -20, ($blnClipboard ? $arrClipboard : false));
+		}
+		
+		$this->root = $this->Database->execute("SELECT id FROM $table WHERE pid=0 AND gid=0")->fetchEach('id');
+		for ($i=0; $i<count($this->root); $i++)
+		{
+			$tree .= $this->generateProductTree($table, $this->root[$i], array('p'=>$this->root[($i-1)], 'n'=>$this->root[($i+1)]), -20, ($blnClipboard ? $arrClipboard : false));
 		}
 
 		// Return if there are no records
@@ -1573,44 +1583,15 @@ window.addEvent(\'domready\', function() {
 		{
 			return '';
 		}
+		
+		$this->panel();
+		$this->fetchProductIds();
 
 		$return = '';
 		$table = $this->strTable;
-		$blnPtable = false;
-
-		// Load parent table
-		if ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 6)
-		{
-			$table = $this->ptable;
-
-			$this->loadLanguageFile($table);
-			$this->loadDataContainer($table);
-
-			$blnPtable = true;
-		}
-
-		$blnProtected = false;
-
-		// Check protected pages
-		if ($table == 'tl_page')
-		{
-			$objParent = $this->getPageDetails($id);
-			$blnProtected = $objParent->protected ? true : false;
-		}
-
+//		$blnPtable = false;
 		$margin = ($level * 20);
-		$hasSorting = $this->Database->fieldExists('sorting', $table);
-		$arrIds = array();
-
-		// Get records
-		$objRows = $this->Database->prepare("SELECT id FROM " . $table . " WHERE pid=? AND language=''" . ($hasSorting ? " ORDER BY sorting" : ""))
-							 	  ->execute($id);
-
-		while ($objRows->next())
-		{
-			$arrIds[] = $objRows->id;
-		}
-
+		
 		$blnClipboard = false;
 		$arrClipboard = $this->Session->get('CLIPBOARD');
 
@@ -1621,10 +1602,57 @@ window.addEvent(\'domready\', function() {
 			$arrClipboard = $arrClipboard[$this->strTable];
 		}
 
+		// Load groups and products
+		if ($GLOBALS['TL_DCA'][$this->strTable]['config']['gtable'] != '' && $this->Input->post('id') != ($table.'_tree_'.$id))
+		{
+			$table = $GLOBALS['TL_DCA'][$this->strTable]['config']['gtable'];
+
+			$this->loadLanguageFile($table);
+			$this->loadDataContainer($table);
+
+			$blnPtable = true;
+			
+			// Call a recursive function that builds the tree
+			$this->root = $this->Database->execute("SELECT id FROM {$this->strTable} WHERE pid=0 AND gid=$id")->fetchEach('id');
+			for ($i=0; $i<count($this->root); $i++)
+			{
+				$return .= ' ' . trim($this->generateProductTree($this->strTable, $this->root[$i], array('p'=>$this->root[($i-1)], 'n'=>$this->root[($i+1)]), $margin, ($blnClipboard ? $arrClipboard : false), ($id == $arrClipboard ['id'] || (is_array($arrClipboard ['id']) && in_array($id, $arrClipboard ['id'])) || (!$blnPtable && !is_array($arrClipboard['id']) && in_array($id, $this->getChildRecords($arrClipboard['id'], $table))))));
+			}
+			
+			$this->root = $this->Database->execute("SELECT id FROM $table WHERE pid=$id ORDER BY sorting")->fetchEach('id');
+			for ($i=0; $i<count($this->root); $i++)
+			{
+				$return .= ' ' . trim($this->generateProductTree($table, $this->root[$i], array('p'=>$this->root[($i-1)], 'n'=>$this->root[($i+1)]), $margin, ($blnClipboard ? $arrClipboard : false)));
+			}
+		}
+		
+		// Load variant
+		else
+		{
+			$this->root = $this->Database->execute("SELECT id FROM {$this->strTable} WHERE pid=$id AND gid=0")->fetchEach('id');
+			for ($i=0; $i<count($this->root); $i++)
+			{
+				$return .= ' ' . trim($this->generateProductTree($this->strTable, $this->root[$i], array('p'=>$this->root[($i-1)], 'n'=>$this->root[($i+1)]), $margin, ($blnClipboard ? $arrClipboard : false), ($id == $arrClipboard ['id'] || (is_array($arrClipboard ['id']) && in_array($id, $arrClipboard ['id'])) || (!$blnPtable && !is_array($arrClipboard['id']) && in_array($id, $this->getChildRecords($arrClipboard['id'], $table))))));
+			}
+		}
+		
+/*
+		$arrIds = array();
+
+		// Get records
+		$objRows = $this->Database->prepare("SELECT id FROM " . $table . " WHERE pid=?" . ($table == $this->strTable ? " AND language=''" : '') . ($hasSorting ? " ORDER BY sorting" : ""))
+							 	  ->execute($id);
+
+		while ($objRows->next())
+		{
+			$arrIds[] = $objRows->id;
+		}
+
 		for ($i=0; $i<count($arrIds); $i++)
 		{
-			$return .= ' ' . trim($this->generateTree($table, $arrIds[$i], array('p'=>$arrIds[($i-1)], 'n'=>$arrIds[($i+1)]), $hasSorting, $margin, ($blnClipboard ? $arrClipboard : false), ($id == $arrClipboard ['id'] || (is_array($arrClipboard ['id']) && in_array($id, $arrClipboard ['id'])) || (!$blnPtable && !is_array($arrClipboard['id']) && in_array($id, $this->getChildRecords($arrClipboard['id'], $table)))), $blnProtected));
+			$return .= ' ' . trim($this->generateProductTree($table, $arrIds[$i], array('p'=>$arrIds[($i-1)], 'n'=>$arrIds[($i+1)]), $margin, ($blnClipboard ? $arrClipboard : false), ($id == $arrClipboard ['id'] || (is_array($arrClipboard ['id']) && in_array($id, $arrClipboard ['id'])) || (!$blnPtable && !is_array($arrClipboard['id']) && in_array($id, $this->getChildRecords($arrClipboard['id'], $table))))));
 		}
+*/
 
 		return $return;
 	}
@@ -1642,20 +1670,21 @@ window.addEvent(\'domready\', function() {
 	 * @param boolean
 	 * @return string
 	 */
-	protected function generateTree($table, $id, $arrPrevNext, $blnHasSorting, $intMargin=0, $arrClipboard=false, $blnCircularReference=false, $protectedPage=false)
+	protected function generateProductTree($table, $id, $arrPrevNext, $intMargin=0, $arrClipboard=false, $blnCircularReference=false)
 	{
 		static $session;
 
 		$session = $this->Session->getData();
-		$node = ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 6) ? $this->strTable.'_'.$table.'_tree' : $this->strTable.'_tree';
+		$node = ($this->strTable != $table) ? $this->strTable.'_'.$table.'_tree' : $this->strTable.'_tree';
+		$toggle = ($this->strTable != $table) ? 'gtg' : 'ptg';
 
 		// Toggle nodes
-		if ($this->Input->get('ptg'))
+		if ($this->Input->get($toggle))
 		{
-			$session[$node][$this->Input->get('ptg')] = (isset($session[$node][$this->Input->get('ptg')]) && $session[$node][$this->Input->get('ptg')] == 1) ? 0 : 1;
+			$session[$node][$this->Input->get($toggle)] = (isset($session[$node][$this->Input->get($toggle)]) && $session[$node][$this->Input->get($toggle)] == 1) ? 0 : 1;
 			$this->Session->setData($session);
 
-			$this->redirect(preg_replace('/(&(amp;)?|\?)ptg=[^& ]*/i', '', $this->Environment->request));
+			$this->redirect(preg_replace('/(&(amp;)?|\?)'.$toggle.'=[^& ]*/i', '', $this->Environment->request));
 		}
 
 		$objRow = $this->Database->prepare("SELECT * FROM " . $table . " WHERE id=?")
@@ -1679,29 +1708,39 @@ window.addEvent(\'domready\', function() {
 		}
 
 		// Check whether there are child records
-		if ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 5 || $this->strTable != $table)
+		$objChilds = $this->Database->prepare("SELECT id FROM " . $table . " WHERE pid=?" . ($this->strTable == $table ? " AND language=''" : " ORDER BY sorting"))
+									->execute($id);
+
+		if ($objChilds->numRows)
 		{
-			$objChilds = $this->Database->prepare("SELECT id FROM " . $table . " WHERE pid=? AND language=''" . ($blnHasSorting ? " ORDER BY sorting" : ''))
-										->execute($id);
+			$childs = $objChilds->fetchEach('id');
+		}
+		
+		// Check wether there are group child records
+		if ($table != $this->strTable)
+		{
+			$objChilds = $this->Database->prepare("SELECT id FROM " . $this->strTable . " WHERE gid=?")
+							 			->execute($id);
 
 			if ($objChilds->numRows)
 			{
-				$childs = $objChilds->fetchEach('id');
+				$gchilds = $objChilds->fetchEach('id');
+			}
+			elseif (!count($childs) && $arrClipboard === false)
+			{
+				return '';
 			}
 		}
-
-		$blnProtected = false;
-
-		// Check whether the page is protected
-		if ($table == 'tl_page')
+		
+		// Only list available products
+		if ($table == $this->strTable && $objRow->pid == 0 && !in_array($id, $this->products))
 		{
-			$blnProtected = ($objRow->protected || $protectedPage) ? true : false;
+			return '';
 		}
 
 		$session[$node][$id] = (is_int($session[$node][$id])) ? $session[$node][$id] : 0;
-		$mouseover = ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 5 || $table == $this->strTable) ? ' onmouseover="Theme.hoverDiv(this, 1);" onmouseout="Theme.hoverDiv(this, 0);"' : '';
-
-		$return .= "\n  " . '<li class="'.((($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 5 && $objRow->type == 'root') || $table != $this->strTable) ? 'tl_folder' : 'tl_file').'"'.$mouseover.'><div class="tl_left" style="padding-left:'.($intMargin + $intSpacing).'px;">';
+		
+		$return .= "\n  " . '<li class="'.((($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 5 && $objRow->type == 'root') || $table != $this->strTable) ? 'tl_folder' : 'tl_file').'" onmouseover="Theme.hoverDiv(this, 1);" onmouseout="Theme.hoverDiv(this, 0);"><div class="tl_left" style="padding-left:'.($intMargin + $intSpacing).'px;">';
 
 		// Calculate label and add a toggle button
 		$args = array();
@@ -1709,12 +1748,12 @@ window.addEvent(\'domready\', function() {
 		$showFields = $GLOBALS['TL_DCA'][$table]['list']['label']['fields'];
 		$level = ($intMargin / $intSpacing + 1);
 
-		if (count($childs))
+		if (count($childs) || count($gchilds))
 		{
 			$folderAttribute = '';
 			$img = ($session[$node][$id] == 1) ? 'folMinus.gif' : 'folPlus.gif';
 			$alt = ($session[$node][$id] == 1) ? $GLOBALS['TL_LANG']['MSC']['collapseNode'] : $GLOBALS['TL_LANG']['MSC']['expandNode'];
-			$return .= '<a href="'.$this->addToUrl('ptg='.$id).'" title="'.specialchars($alt).'" onclick="Backend.getScrollOffset(); return AjaxRequest.toggleStructure(this, \''.$node.'_'.$id.'\', '.$level.', '.$GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'].');">'.$this->generateImage($img, '', 'style="margin-right:2px;"').'</a>';
+			$return .= '<a href="'.$this->addToUrl($toggle.'='.$id).'" title="'.specialchars($alt).'" onclick="Backend.getScrollOffset(); return AjaxRequest.toggleStructure(this, \''.$node.'_'.$id.'\', '.$level.', '.$GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'].');">'.$this->generateImage($img, '', 'style="margin-right:2px;"').'</a>';
 		}
 
 		foreach ($showFields as $k=>$v)
@@ -1775,18 +1814,18 @@ window.addEvent(\'domready\', function() {
 		}
 		else
 		{
-			$return .= $this->generateImage('iconPLAIN.gif', '', $folderAttribute) . ' ' . $label;
+			$return .= $this->generateImage('system/modules/isotope/html/folder-network.png', '', $folderAttribute) . ' ' . $label;
 		}
 
 		$return .= '</div> <div class="tl_right">';
-		$previous = ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 6) ? $arrPrevNext['pp'] : $arrPrevNext['p'];
-		$next = ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 6) ? $arrPrevNext['nn'] : $arrPrevNext['n'];
+		$previous = ($GLOBALS['TL_DCA'][$this->strTable]['config']['gtable'] == $table) ? $arrPrevNext['pp'] : $arrPrevNext['p'];
+		$next = ($GLOBALS['TL_DCA'][$this->strTable]['config']['gtable'] == $table) ? $arrPrevNext['nn'] : $arrPrevNext['n'];
 		$_buttons = '';
 
-		// Regular buttons ($row, $table, $root, $blnCircularReference, $childs, $previous, $next)
 		if ($this->strTable == $table)
 		{
-			$_buttons .= ($this->Input->get('act') == 'select') ? '<input type="checkbox" name="IDS[]" id="ids_'.$id.'" class="tl_tree_checkbox" value="'.$id.'">' : $this->generateButtons($objRow->row(), $table, $this->root, $blnCircularReference, $childs, $previous, $next);
+			// Regular buttons ($row, $table, $root, $blnCircularReference, $childs, $previous, $next)
+			$_buttons .= $this->Input->get('act') == 'select' ? '<input type="checkbox" name="IDS[]" id="ids_'.$id.'" class="tl_tree_checkbox" value="'.$id.'">' : $this->generateButtons($objRow->row(), $table, $this->root, $blnCircularReference, $childs, $previous, $next);
 		}
 
 		// Paste buttons
@@ -1803,53 +1842,21 @@ window.addEvent(\'domready\', function() {
 				$this->import($strClass);
 				$_buttons .= $this->$strClass->$strMethod($this, $objRow->row(), $table, $blnCircularReference, $arrClipboard, $childs, $previous, $next);
 			}
-
-			else
-			{
-				$imagePasteAfter = $this->generateImage('pasteafter.gif', sprintf($GLOBALS['TL_LANG'][$this->strTable]['pasteafter'][1], $id), 'class="blink"');
-				$imagePasteInto = $this->generateImage('pasteinto.gif', sprintf($GLOBALS['TL_LANG'][$this->strTable]['pasteinto'][1], $id), 'class="blink"');
-
-				// Regular tree (on cut: disable buttons of the page all its childs to avoid circular references)
-				if ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 5)
-				{
-					$_buttons .= ($arrClipboard['mode'] == 'cut' && ($blnCircularReference || $arrClipboard['id'] == $id) || $arrClipboard['mode'] == 'cutAll' && ($blnCircularReference || in_array($id, $arrClipboard['id'])) || (count($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['root']) && in_array($id, $this->root))) ? $this->generateImage('pasteafter_.gif', '', 'class="blink"').' ' : '<a href="'.$this->addToUrl('act='.$arrClipboard['mode'].'&amp;mode=1&amp;pid='.$id.(!is_array($arrClipboard['id']) ? '&amp;id='.$arrClipboard['id'] : '')).'" title="'.specialchars(sprintf($GLOBALS['TL_LANG'][$this->strTable]['pasteafter'][1], $id)).'" onclick="Backend.getScrollOffset();">'.$imagePasteAfter.'</a> ';
-					$_buttons .= ($arrClipboard['mode'] == 'paste' && ($blnCircularReference || $arrClipboard['id'] == $id) || $arrClipboard['mode'] == 'cutAll' && ($blnCircularReference || in_array($id, $arrClipboard['id']))) ? $this->generateImage('pasteinto_.gif', '', 'class="blink"').' ' : '<a href="'.$this->addToUrl('act='.$arrClipboard['mode'].'&amp;mode=2&amp;pid='.$id.(!is_array($arrClipboard['id']) ? '&amp;id='.$arrClipboard['id'] : '')).'" title="'.specialchars(sprintf($GLOBALS['TL_LANG'][$this->strTable]['pasteinto'][1], $id)).'" onclick="Backend.getScrollOffset();">'.$imagePasteInto.'</a> ';
-				}
-
-				// Extended tree
-				else
-				{
-					$_buttons .= ($this->strTable == $table) ? (($arrClipboard['mode'] == 'cut' && ($blnCircularReference || $arrClipboard['id'] == $id) || $arrClipboard['mode'] == 'cutAll' && ($blnCircularReference || in_array($id, $arrClipboard['id']))) ? $this->generateImage('pasteafter_.gif', '', 'class="blink"') : '<a href="'.$this->addToUrl('act='.$arrClipboard['mode'].'&amp;mode=1&amp;pid='.$id.(!is_array($arrClipboard['id']) ? '&amp;id='.$arrClipboard['id'] : '')).'" title="'.specialchars(sprintf($GLOBALS['TL_LANG'][$this->strTable]['pasteafter'][1], $id)).'" onclick="Backend.getScrollOffset();">'.$imagePasteAfter.'</a> ') : '';
-					$_buttons .= ($this->strTable != $table) ? '<a href="'.$this->addToUrl('act='.$arrClipboard['mode'].'&amp;mode=2&amp;pid='.$id.(!is_array($arrClipboard['id']) ? '&amp;id='.$arrClipboard['id'] : '')).'" title="'.specialchars(sprintf($GLOBALS['TL_LANG'][$this->strTable]['pasteinto'][1], $id)).'" onclick="Backend.getScrollOffset();">'.$imagePasteInto.'</a> ' : '';
-				}
-			}
 		}
 
 		$return .= (strlen($_buttons) ? $_buttons : '&nbsp;') . '</div><div style="clear:both;"></div></li>';
+		$group = '';
+		$rows = '';
 
 		// Add records of the table itself
-		if ($table != $this->strTable)
+		if ($table != $this->strTable && count($gchilds) && $session[$node][$id] == 1)
 		{
-			$objChilds = $this->Database->prepare("SELECT id FROM " . $this->strTable . " WHERE pid=?" . ($blnHasSorting ? " ORDER BY sorting" : ''))
-							 			->execute($id);
-
-			if ($objChilds->numRows)
+			for ($j=0; $j<count($gchilds); $j++)
 			{
-				$ids = $objChilds->fetchEach('id');
-
-				for ($j=0; $j<count($ids); $j++)
-				{
-					$return .= $this->generateTree($this->strTable, $ids[$j], array('pp'=>$ids[($j-1)], 'nn'=>$ids[($j+1)]), $blnHasSorting, ($intMargin + $intSpacing + 20), $arrClipboard, false, ($j<(count($ids)-1) || count($childs)));
-				}
+				$group .= $this->generateProductTree($this->strTable, $gchilds[$j], array('pp'=>$gchilds[($j-1)], 'nn'=>$gchilds[($j+1)]), ($intMargin + $intSpacing), $arrClipboard, false, ($j<(count($gchilds)-1) || count($childs)));
 			}
 		}
-
-		// Begin new submenu
-		if (count($childs) && $session[$node][$id] == 1)
-		{
-			$return .= '<li class="parent" id="'.$node.'_'.$id.'"><ul class="level_'.$level.'">';
-		}
-
+		
 		// Add records of the parent table
 		if ($session[$node][$id] == 1)
 		{
@@ -1857,19 +1864,32 @@ window.addEvent(\'domready\', function() {
 			{
 				for ($k=0; $k<count($childs); $k++)
 				{
-					$return .= $this->generateTree($table, $childs[$k], array('p'=>$childs[($k-1)], 'n'=>$childs[($k+1)]), $blnHasSorting, ($intMargin + $intSpacing), $arrClipboard, ((($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 5 && $childs[$k] == $arrClipboard['id']) || $blnCircularReference) ? true : false), ($blnProtected || $protectedPage));
+					$rows .= $this->generateProductTree($table, $childs[$k], array('p'=>$childs[($k-1)], 'n'=>$childs[($k+1)]), ($intMargin + $intSpacing), $arrClipboard, ((($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 5 && $childs[$k] == $arrClipboard['id']) || $blnCircularReference) ? true : false));
 				}
 			}
 		}
+		
+		
+
+		// Begin new submenu
+		if (($group != '' || $rows != '') && $session[$node][$id] == 1)
+		{
+			$group = '<li class="parent" id="'.$node.'_'.$id.'"><ul class="level_'.$level.'">' . $group . $rows;
+		}
 
 		// Close submenu
-		if (count($childs) && $session[$node][$id] == 1)
+		if ($group != '' && $session[$node][$id] == 1)
 		{
-			$return .= '</ul></li>';
+			$group .= '</ul></li>';
+		}
+		
+		if ($group == '' && $table != $this->strTable && !count($gchilds) && $arrClipboard === false)
+		{
+			return '';
 		}
 
 		$this->Session->setData($session);
-		return $return;
+		return $return . $group;
 	}
 
 
@@ -1983,6 +2003,71 @@ window.addEvent(\'domready\', function() {
 		}
 
 		$this->redirect($this->addToUrl('act=edit'));
+	}
+	
+	
+	/**
+	 * Query available product IDs
+	 */
+	private function fetchProductIds()
+	{
+		if (is_array($this->orderBy) && strlen($this->orderBy[0]))
+		{
+			$orderBy = $this->orderBy;
+			$firstOrderBy = $this->firstOrderBy;
+		}
+
+		$query = "SELECT id FROM " . $this->strTable . " WHERE pid=0";
+
+		if (count($this->procedure))
+		{
+			$query .= " AND " . implode(' AND ', $this->procedure);
+		}
+
+		if (is_array($this->root) && count($this->root) > 0)
+		{
+			$query .= " AND id IN(" . implode(',', array_map('intval', $this->root)) . ")";
+		}
+
+		if (is_array($orderBy) && strlen($orderBy[0]))
+		{
+			foreach ($orderBy as $k=>$v)
+			{
+				if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['findInSet'])
+				{
+					$keys = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['options'];
+
+					if (array_is_assoc($keys))
+					{
+						$keys = array_keys($keys);
+					}
+
+					$orderBy[$k] = "FIND_IN_SET(" . $v . ", '" . implode(',', $keys) . "')";
+				}
+			}
+
+			$query .= " ORDER BY " . implode(', ', $orderBy);
+		}
+
+		if (($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['flag'] % 2) == 0)
+		{
+			$query .= " DESC";
+		}
+
+		$objRowStmt = $this->Database->prepare($query);
+
+		if (strlen($this->limit))
+		{
+			$arrLimit = explode(',', $this->limit);
+			$objRowStmt->limit($arrLimit[1], $arrLimit[0]);
+		}
+
+		$objIds = $objRowStmt->execute($this->values);
+
+		if ($objIds->numRows)
+		{
+			$this->products = $objIds->fetchEach('id');
+		}
 	}
 }
 
