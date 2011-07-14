@@ -264,8 +264,7 @@ class MediaManager extends Widget implements uploadable
 			return $return . $GLOBALS['TL_LANG']['MSC']['mmNoUploads'] . $upload . '</div>';
 
 		// Add label and return wizard
-		$return .= '<table cellspacing="0" cellpadding="0" class="tl_mediamanager" summary="Media Manager">
-  <thead>
+		$return .= '<table class="tl_mediamanager">
   <tr>
     <td class="col_0 col_first">'.$GLOBALS['TL_LANG'][$this->strTable]['mmSrc'].'</td>
     <td class="col_1">'.$GLOBALS['TL_LANG'][$this->strTable]['mmAlt'].' / '.$GLOBALS['TL_LANG'][$this->strTable]['mmLink'].'</td>
@@ -273,8 +272,7 @@ class MediaManager extends Widget implements uploadable
     <td class="col_3">'.$GLOBALS['TL_LANG'][$this->strTable]['mmTranslate'].'</td>
     <td class="col_4 col_last">&nbsp;</td>
   </tr>
-  </thead>
-  <tbody>';
+';
 
 		// Add input fields
 		for ($i=0; $i<count($this->varValue); $i++)
@@ -307,7 +305,7 @@ class MediaManager extends Widget implements uploadable
     <td class="col_2"><textarea name="' . $this->strName . '['.$i.'][desc]" cols="40" rows="3" class="tl_textarea"'.$strTranslateNone.' >' . specialchars($this->varValue[$i]['desc']) . '</textarea></td>
     <td class="col_3">
     	'.($blnLanguage ? ('<input type="hidden" name="' . $this->strName . '['.$i.'][translate]" value="'.$this->varValue[$i]['translate'].'"') : '').'
-    	<div class="radio_container">
+    	<fieldset class="radio_container">
 	    	<span>
 	    		<input id="' . $this->strName . '_'.$i.'_translate_none" name="' . $this->strName . '['.$i.'][translate]" type="radio" class="tl_radio" value=""'.$this->optionChecked('', $this->varValue[$i]['translate']).($blnLanguage ? ' disabled="disabled"' : '').'>
 	    		<label for="' . $this->strName . '_'.$i.'_translate_none" title="'.$GLOBALS['TL_LANG'][$this->strTable]['mmTranslateNone'][1].'">'.$GLOBALS['TL_LANG'][$this->strTable]['mmTranslateNone'][0].'</label></span>
@@ -317,7 +315,7 @@ class MediaManager extends Widget implements uploadable
 	    	<span>
 	    		<input id="' . $this->strName . '_'.$i.'_translate_all" name="' . $this->strName . '['.$i.'][translate]" type="radio" class="tl_radio" value="all"'.$this->optionChecked('all', $this->varValue[$i]['translate']).($blnLanguage ? ' disabled="disabled"' : '').'>
 	    		<label for="' . $this->strName . '_'.$i.'_translate_all" title="'.$GLOBALS['TL_LANG'][$this->strTable]['mmTranslateAll'][1].'">'.$GLOBALS['TL_LANG'][$this->strTable]['mmTranslateAll'][0].'</label></span>
-    	</div>
+    	</fieldset>
     </td>
     <td class="col_4 col_last">';
 
@@ -334,7 +332,6 @@ class MediaManager extends Widget implements uploadable
 		}
 
 		return $return.'
-  </tbody>
   </table>' . $upload . '</div>';
 	}
 }
