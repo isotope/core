@@ -86,6 +86,9 @@ class IsotopeFrontend extends Frontend
 					return $this->Isotope->Cart->products;
 					break;
 
+				case 'cart_items_count':
+					return count($this->Isotope->Cart->items);
+					break;
 				case 'cart_items_label';
 					$intCount = $this->Isotope->Cart->items;
 					if (!$intCount)
