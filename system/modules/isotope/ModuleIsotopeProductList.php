@@ -114,23 +114,24 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		}
 
 		$arrBuffer = array();
-		$last = count($arrProducts) - 1;
+		$total = count($arrProducts) - 1;
+		$current = 0;
 		$row = 0;
 		$col = 0;
 		$rows = ceil(count($arrProducts) / $this->iso_cols) - 1;
 		$cols = $this->iso_cols - 1;
-		foreach( $arrProducts as $i => $objProduct )
+		foreach( $arrProducts as $objProduct )
 		{
 			$blnClear = false;
 
-			if ($i > 0 && $i % $this->iso_cols == 0)
+			if ($current > 0 && $current % $this->iso_cols == 0)
 			{
 				$blnClear = true;
 				++$row;
 				$col = 0;
 			}
 
-			$strClass = 'product product_'.$i . ($i%2 ? ' product_even' : ' product_odd') . ($i == 0 ? ' product_first' : '') . ($i == $last ? ' product_last' : '');
+			$strClass = 'product product_'.$current . ($current%2 ? ' product_even' : ' product_odd') . ($current == 0 ? ' product_first' : '') . ($current == $total ? ' product_last' : '');
 
 			// Add row & col classes
 			if ($this->iso_cols > 1)
@@ -147,6 +148,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			);
 
 			++$col;
+			++$current;
 		}
 
 		$this->Template->products = $arrBuffer;
