@@ -2,6 +2,11 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 1.3.beta2 (2011-??-??)
+------------------------------
+- Improved: Allow subclasses of ModuleIsotopeProductFilter for filter modules
+- Improved: Allow subclasses of ModuleIsotopeProductFilter to cache request
+
 Version 1.3.beta1 (2011-07-18)
 ------------------------------
 - Added: "advanced prices". Allow to define a prices for store configs, member groups, start/stop dates

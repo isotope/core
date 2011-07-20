@@ -56,33 +56,13 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 			return $objTemplate->parse();
 		}
 
-		$this->iso_filterFields = deserialize($this->iso_filterFields);
-		$this->iso_sortingFields = deserialize($this->iso_sortingFields);
-		$this->iso_searchFields = deserialize($this->iso_searchFields);
-
-		if (!$this->iso_enableLimit && !is_array($this->iso_filterFields) && !is_array($this->iso_sortingFields) && !is_array($this->iso_searchFields))
+		// Initialize module data.
+		if (!$this->initializeFilters())
 		{
 			return '';
 		}
 
-		if ($this->iso_filterTpl)
-		{
-			$this->strTemplate = $this->iso_filterTpl;
-		}
-
-		return parent::generate();
-	}
-
-
-	protected function compile()
-	{
-		$this->blnCacheRequest = $this->Input->post('FORM_SUBMIT') == 'iso_filter_'.$this->id ? true : false;
-
-		$this->generateFilters();
-		$this->generateSorting();
-		$this->generateLimit();
-
-		$strFilterUrl = preg_replace('/&?isorc=[0-9]+&?/', '', $this->Environment->request);
+		$strBuffer = parent::generate();
 
 		// Cache request in the database and redirect to the unique requestcache ID
 		if ($this->blnCacheRequest)
@@ -107,19 +87,59 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 											 ->insertId;
 			}
 
-
+			$strFilterUrl = preg_replace('/&?isorc=[0-9]+&?/', '', $this->Environment->request);
 			$this->redirect($strFilterUrl . (strpos($strFilterUrl, '?')===false ? '?' : '&') . 'isorc=' . $intCacheId);
 		}
 
-		// Search does not affect request cache
-		$this->generateSearch();
+		return $strBuffer;
+	}
 
-		$this->Template->id = $this->id;
-		$this->Template->formId = 'iso_filter_' . $this->id;
-		$this->Template->actionFilter = ampersand($strFilterUrl);
-		$this->Template->actionSearch = ampersand(preg_replace('/&?keywords=[^&]+&?/', '', $this->Environment->request));
-		$this->Template->actionClear = ampersand(preg_replace('/\?.*/', '', $this->Environment->request));
-		$this->Template->clearLabel = $GLOBALS['TL_LANG']['MSC']['clearFiltersLabel'];
+
+	/**
+	 * Initialize module data. You can override this function in a child class.
+	 *
+	 * @return	bool
+	 */
+	protected function initializeFilters()
+	{
+		$this->iso_filterFields = deserialize($this->iso_filterFields);
+		$this->iso_sortingFields = deserialize($this->iso_sortingFields);
+		$this->iso_searchFields = deserialize($this->iso_searchFields);
+
+		if (!$this->iso_enableLimit && !is_array($this->iso_filterFields) && !is_array($this->iso_sortingFields) && !is_array($this->iso_searchFields))
+		{
+			return false;
+		}
+
+		if ($this->iso_filterTpl)
+		{
+			$this->strTemplate = $this->iso_filterTpl;
+		}
+		
+		return true;
+	}
+
+
+	protected function compile()
+	{
+		$this->blnCacheRequest = $this->Input->post('FORM_SUBMIT') == 'iso_filter_'.$this->id ? true : false;
+
+		$this->generateFilters();
+		$this->generateSorting();
+		$this->generateLimit();
+
+		if (!$this->blnCacheRequest)
+		{
+			// Search does not affect request cache
+			$this->generateSearch();
+	
+			$this->Template->id = $this->id;
+			$this->Template->formId = 'iso_filter_' . $this->id;
+			$this->Template->actionFilter = ampersand(preg_replace('/&?isorc=[0-9]+&?/', '', $this->Environment->request));
+			$this->Template->actionSearch = ampersand(preg_replace('/&?keywords=[^&]+&?/', '', $this->Environment->request));
+			$this->Template->actionClear = ampersand(preg_replace('/\?.*/', '', $this->Environment->request));
+			$this->Template->clearLabel = $GLOBALS['TL_LANG']['MSC']['clearFiltersLabel'];
+		}
 	}
 
 
