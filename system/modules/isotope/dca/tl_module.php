@@ -633,7 +633,7 @@ class tl_module_isotope extends Backend
 				if ($strClass != '' && !$this->classFileExists($strClass))
 					continue;
 				
-				if ($strClass == 'ModuleIsotopeProductFilter' || is_subclass_of('ModuleIsotopeProductFilter', $strClass))
+				if ($strClass == 'ModuleIsotopeProductFilter' || is_subclass_of($strClass, 'ModuleIsotopeProductFilter'))
 				{
 					$arrClasses[] = $strName;
 				}
