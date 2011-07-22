@@ -4,6 +4,7 @@ Isotope eCommerce Changelog
 
 Version 1.3.beta2 (2011-??-??)
 ------------------------------
+- Improved: Moved the filter caching routine into its own method so custom filter modules can use it
 - Improved: Allow subclasses of ModuleIsotopeProductFilter for filter modules
 - Improved: Allow subclasses of ModuleIsotopeProductFilter to cache request
 

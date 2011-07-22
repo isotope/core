@@ -35,6 +35,11 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 	 */
 	protected $strTemplate = 'iso_filter_default';
 
+
+	/**
+	 * Should we cache this request?
+	 * @var bool
+	 */
 	protected $blnCacheRequest = false;
 
 
@@ -62,43 +67,13 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 			return '';
 		}
 
-		$strBuffer = parent::generate();
-
-		// Cache request in the database and redirect to the unique requestcache ID
-		if ($this->blnCacheRequest)
-		{
-			$time = time();
-			$varFilter = is_array($GLOBALS['ISO_FILTERS']) ? serialize($GLOBALS['ISO_FILTERS']) : null;
-			$varSorting = is_array($GLOBALS['ISO_SORTING']) ? serialize($GLOBALS['ISO_SORTING']) : null;
-			$varLimit = is_array($GLOBALS['ISO_LIMIT']) ? serialize($GLOBALS['ISO_LIMIT']) : null;
-
-			$intCacheId = $this->Database->prepare("SELECT id FROM tl_iso_requestcache WHERE store_id={$this->Isotope->Config->store_id} AND filters" . ($varFilter ? '=' : ' IS ') . "? AND sorting" . ($varSorting ? '=' : ' IS ') . "? AND limits" . ($varLimit ? '=' : ' IS ') . "?")
-										 ->execute($varFilter, $varSorting, $varLimit)
-										 ->id;
-
-			if ($intCacheId)
-			{
-				$this->Database->query("UPDATE tl_iso_requestcache SET tstamp=$time WHERE id=$intCacheId");
-			}
-			else
-			{
-				$intCacheId = $this->Database->prepare("INSERT INTO tl_iso_requestcache (tstamp,store_id,filters,sorting,limits) VALUES ($time, {$this->Isotope->Config->store_id}, ?, ?, ?)")
-											 ->execute($varFilter, $varSorting, $varLimit)
-											 ->insertId;
-			}
-
-			$strFilterUrl = preg_replace('/&?isorc=[0-9]+&?/', '', $this->Environment->request);
-			$this->redirect($strFilterUrl . (strpos($strFilterUrl, '?')===false ? '?' : '&') . 'isorc=' . $intCacheId);
-		}
-
-		return $strBuffer;
+		return parent::generate();
 	}
 
 
 	/**
 	 * Initialize module data. You can override this function in a child class.
-	 *
-	 * @return	bool
+	 * @return bool
 	 */
 	protected function initializeFilters()
 	{
@@ -118,11 +93,53 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		
 		return true;
 	}
+	
+	
+	/**
+	 * Caches the filter request in the database and returns the cache id
+	 * You should use this method as well when coding your own filter module
+	 * @return int
+	 */
+	protected function cacheRequest()
+	{
+			$time = time();
+			$varFilter = is_array($GLOBALS['ISO_FILTERS']) ? serialize($GLOBALS['ISO_FILTERS']) : null;
+			$varSorting = is_array($GLOBALS['ISO_SORTING']) ? serialize($GLOBALS['ISO_SORTING']) : null;
+			$varLimit = is_array($GLOBALS['ISO_LIMIT']) ? serialize($GLOBALS['ISO_LIMIT']) : null;
+
+			$intCacheId = $this->Database->prepare("SELECT id FROM tl_iso_requestcache WHERE store_id={$this->Isotope->Config->store_id} AND filters" . ($varFilter ? '=' : ' IS ') . "? AND sorting" . ($varSorting ? '=' : ' IS ') . "? AND limits" . ($varLimit ? '=' : ' IS ') . "?")
+										 ->execute($varFilter, $varSorting, $varLimit)
+										 ->id;
+
+			if ($intCacheId)
+			{
+				$this->Database->query("UPDATE tl_iso_requestcache SET tstamp=$time WHERE id=$intCacheId");
+			}
+			else
+			{
+				$intCacheId = $this->Database->prepare("INSERT INTO tl_iso_requestcache (tstamp,store_id,filters,sorting,limits) VALUES ($time, {$this->Isotope->Config->store_id}, ?, ?, ?)")
+											 ->execute($varFilter, $varSorting, $varLimit)
+											 ->insertId;
+			}
+			
+			return $intCacheId;	
+	}
 
 
+	/**
+	 * Compile the module
+	 */
 	protected function compile()
 	{
 		$this->blnCacheRequest = $this->Input->post('FORM_SUBMIT') == 'iso_filter_'.$this->id ? true : false;
+		
+		// Cache request in the database and redirect to the unique requestcache ID
+		if ($this->blnCacheRequest)
+		{
+			$intCacheId = $this->cacheRequest();
+			$strFilterUrl = preg_replace('/&?isorc=[0-9]+&?/', '', $this->Environment->request);
+			$this->redirect($strFilterUrl . (strpos($strFilterUrl, '?')===false ? '?' : '&') . 'isorc=' . $intCacheId);
+		}
 
 		$this->generateFilters();
 		$this->generateSorting();
@@ -143,6 +160,9 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 	}
 
 
+	/**
+	 * Generates the search
+	 */
 	protected function generateSearch()
 	{
 		$this->Template->hasSearch = false;
@@ -177,6 +197,9 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 	}
 
 
+	/**
+	 * Generates the filters
+	 */
 	protected function generateFilters()
 	{
 		$this->Template->hasFilters = false;
@@ -262,6 +285,9 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 	}
 
 
+	/**
+	 * Generates the sorting
+	 */
 	protected function generateSorting()
 	{
 		$this->Template->hasSorting = false;
@@ -338,6 +364,9 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 	}
 
 
+	/**
+	 * Generates the limits
+	 */
 	protected function generateLimit()
 	{
 		$this->Template->hasLimit = false;
