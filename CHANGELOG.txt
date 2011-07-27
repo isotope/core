@@ -1,7 +1,7 @@
-===================
-ISOTOPE - datatrans
-===================
+============================================
+Isotope eCommerce - Datatrans payment module
+============================================
 
-Version 1.0.0 (2011-07-14)
+Version 1.0.0 (2011-??-??)
 ---------------------------
-- add the first version to the SVN Repository
+- Initial release
