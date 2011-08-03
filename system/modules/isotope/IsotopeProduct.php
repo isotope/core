@@ -78,12 +78,6 @@ class IsotopeProduct extends Controller
 	protected $arrDownloads = null;
 
 	/**
-	 * Cache properties
-	 * @var array
-	 */
-	protected $arrCache = array();
-
-	/**
 	 * Unique form ID
 	 * @var string
 	 */

@@ -35,12 +35,6 @@ class IsotopeConfig extends Model
 	 */
 	protected $strTable = 'tl_iso_config';
 
-	/**
-	 * Cache
-	 * @var array
-	 */
-	protected $arrCache = array();
-
 
 	/**
 	 * Return custom options or table row data.

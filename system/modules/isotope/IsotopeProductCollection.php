@@ -77,12 +77,6 @@ abstract class IsotopeProductCollection extends Model
 	protected $arrSettings = array();
 
 	/**
-	 * Cache __get() data until __set() is used
-	 * @var array
-	 */
-	protected $arrCache = array();
-
-	/**
 	 * Record has been modified
 	 * @var bool
 	 */
