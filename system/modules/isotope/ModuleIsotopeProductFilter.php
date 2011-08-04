@@ -35,11 +35,6 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 	 */
 	protected $strTemplate = 'iso_filter_default';
 
-
-	/**
-	 * Should we cache this request?
-	 * @var bool
-	 */
 	protected $blnCacheRequest = false;
 
 
@@ -67,41 +62,11 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 			return '';
 		}
 
-		return parent::generate();
-	}
+		$strBuffer = parent::generate();
 
-
-	/**
-	 * Initialize module data. You can override this function in a child class.
-	 * @return bool
-	 */
-	protected function initializeFilters()
-	{
-		$this->iso_filterFields = deserialize($this->iso_filterFields);
-		$this->iso_sortingFields = deserialize($this->iso_sortingFields);
-		$this->iso_searchFields = deserialize($this->iso_searchFields);
-
-		if (!$this->iso_enableLimit && !is_array($this->iso_filterFields) && !is_array($this->iso_sortingFields) && !is_array($this->iso_searchFields))
+		// Cache request in the database and redirect to the unique requestcache ID
+		if ($this->blnCacheRequest)
 		{
-			return false;
-		}
-
-		if ($this->iso_filterTpl)
-		{
-			$this->strTemplate = $this->iso_filterTpl;
-		}
-		
-		return true;
-	}
-	
-	
-	/**
-	 * Caches the filter request in the database and returns the cache id
-	 * You should use this method as well when coding your own filter module
-	 * @return int
-	 */
-	protected function cacheRequest()
-	{
 			$time = time();
 			$varFilter = is_array($GLOBALS['ISO_FILTERS']) ? serialize($GLOBALS['ISO_FILTERS']) : null;
 			$varSorting = is_array($GLOBALS['ISO_SORTING']) ? serialize($GLOBALS['ISO_SORTING']) : null;
@@ -121,25 +86,44 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 											 ->execute($varFilter, $varSorting, $varLimit)
 											 ->insertId;
 			}
-			
-			return $intCacheId;	
+
+			$strFilterUrl = preg_replace('/&?isorc=[0-9]+&?/', '', $this->Environment->request);
+			$this->Input->setGet('isorc', $intCacheId);
+			$this->redirect($this->generateRequestUrl());
+		}
+
+		return $strBuffer;
 	}
 
 
 	/**
-	 * Compile the module
+	 * Initialize module data. You can override this function in a child class.
+	 *
+	 * @return	bool
 	 */
+	protected function initializeFilters()
+	{
+		$this->iso_filterFields = deserialize($this->iso_filterFields);
+		$this->iso_sortingFields = deserialize($this->iso_sortingFields);
+		$this->iso_searchFields = deserialize($this->iso_searchFields);
+
+		if (!$this->iso_enableLimit && !is_array($this->iso_filterFields) && !is_array($this->iso_sortingFields) && !is_array($this->iso_searchFields))
+		{
+			return false;
+		}
+
+		if ($this->iso_filterTpl)
+		{
+			$this->strTemplate = $this->iso_filterTpl;
+		}
+		
+		return true;
+	}
+
+
 	protected function compile()
 	{
 		$this->blnCacheRequest = $this->Input->post('FORM_SUBMIT') == 'iso_filter_'.$this->id ? true : false;
-		
-		// Cache request in the database and redirect to the unique requestcache ID
-		if ($this->blnCacheRequest)
-		{
-			$intCacheId = $this->cacheRequest();
-			$strFilterUrl = preg_replace('/&?isorc=[0-9]+&?/', '', $this->Environment->request);
-			$this->redirect($strFilterUrl . (strpos($strFilterUrl, '?')===false ? '?' : '&') . 'isorc=' . $intCacheId);
-		}
 
 		$this->generateFilters();
 		$this->generateSorting();
@@ -160,9 +144,6 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 	}
 
 
-	/**
-	 * Generates the search
-	 */
 	protected function generateSearch()
 	{
 		$this->Template->hasSearch = false;
@@ -197,9 +178,6 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 	}
 
 
-	/**
-	 * Generates the filters
-	 */
 	protected function generateFilters()
 	{
 		$this->Template->hasFilters = false;
@@ -285,9 +263,6 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 	}
 
 
-	/**
-	 * Generates the sorting
-	 */
 	protected function generateSorting()
 	{
 		$this->Template->hasSorting = false;
@@ -364,9 +339,6 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 	}
 
 
-	/**
-	 * Generates the limits
-	 */
 	protected function generateLimit()
 	{
 		$this->Template->hasLimit = false;

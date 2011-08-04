@@ -363,5 +363,67 @@ abstract class ModuleIsotope extends Module
 
 		return true;
 	}
+	
+	
+	/**
+	 * Generate the URL from existing $_GET parameters.
+	 * Use $this->Input->setGet('var', null) to remove a parameter from the final URL.
+	 */
+	protected function generateRequestUrl()
+	{
+		if (!strlen($this->Environment->request))
+		{
+			return '';
+		}
+
+		$strRequest = preg_replace('/\?.*$/i', '', $this->Environment->request);
+		$strRequest = preg_replace('/' . preg_quote($GLOBALS['TL_CONFIG']['urlSuffix'], '/') . '$/i', '', $strRequest);
+
+		$arrFragments = explode('/', $strRequest);
+
+		// Skip index.php
+		if (strtolower($arrFragments[0]) == 'index.php')
+		{
+			array_shift($arrFragments);
+		}
+
+		// HOOK: add custom logic
+		if (isset($GLOBALS['TL_HOOKS']['getPageIdFromUrl']) && is_array($GLOBALS['TL_HOOKS']['getPageIdFromUrl']))
+		{
+			foreach ($GLOBALS['TL_HOOKS']['getPageIdFromUrl'] as $callback)
+			{
+				$this->import($callback[0]);
+				$arrFragments = $this->$callback[0]->$callback[1]($arrFragments);
+			}
+		}
+		
+		$strParams = '';
+		$arrGet = array();
+
+		// Add fragments to URL params
+		for ($i=1; $i<count($arrFragments); $i+=2)
+		{
+			if (isset($_GET[$arrFragments[$i]]))
+			{
+				$key = urldecode($arrFragments[$i]);
+				
+				$this->Input->setGet($key, null);
+				$strParams .= '/' . $key . '/' . urldecode($arrFragments[$i+1]);
+			}
+		}
+		
+		// Add get parameters to URL
+		if (is_array($_GET) && count($_GET))
+		{
+			foreach( $_GET as $key => $value )
+			{
+				$arrGet[] = $key . '=' . $value;
+			}
+		}
+
+		global $objPage;
+
+		return $this->generateFrontendUrl($objPage->row(), $strParams) . (count($arrGet) ? ('?'.implode('&', $arrGet)) : '');
+	}
 }
 
