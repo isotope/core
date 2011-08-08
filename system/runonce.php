@@ -66,6 +66,9 @@ class UniversalRunonce extends Controller
 /**
  * Instantiate controller
  */
-$objUniversalRunonce = new UniversalRunonce();
-$objUniversalRunonce->run();
+if (version_compare(VERSION, '2.10', '<'))
+{
+	$objUniversalRunonce = new UniversalRunonce();
+	$objUniversalRunonce->run();
+}
 

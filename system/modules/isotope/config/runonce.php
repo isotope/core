@@ -59,16 +59,17 @@ class IsotopeRunonce extends Controller
 		$this->updateAttributes();
 		$this->updateFrontendModules();
 		$this->updateFrontendTemplates();
+		$this->generateCategoryGroups();
 		$this->refreshDatabaseFile();
-
-		// Checkout method has been renamed from "login" to "member" to prevent a problem with palette of the login module
-		$this->Database->query("UPDATE tl_module SET iso_checkout_method='member' WHERE iso_checkout_method='login'");
 
 		// Make sure file extension .imt (Isotope Mail Template) is allowed for up- and download
 		if (!in_array('imt', trimsplit(',', $GLOBALS['TL_CONFIG']['uploadTypes'])))
 		{
 			$this->Config->update('$GLOBALS[\'TL_CONFIG\'][\'uploadTypes\']', $GLOBALS['TL_CONFIG']['uploadTypes'].',imt');
 		}
+		
+		// Just make sure no variant or translation has any categories assigned
+		$this->Database->query("DELETE FROM tl_iso_product_categories WHERE pid IN (SELECT id FROM tl_iso_products WHERE pid>0)");
 	}
 
 
@@ -611,22 +612,28 @@ class IsotopeRunonce extends Controller
 		}
 
 		// Add "name" and "description" to the list of search fields. Previously, they were enabled in the code directly
-		$objFilterModules = $this->Database->execute("SELECT * FROM tl_module WHERE iso_enableSearch='1'");
-		while( $objFilterModules->next() )
+		if ($this->Database->fieldExists('iso_enableSearch', 'tl_module'))
 		{
-			$arrSearch = deserialize($objFilterModules->iso_searchFields);
-
-			if (!is_array($arrSearch))
+			$objFilterModules = $this->Database->query("SELECT * FROM tl_module WHERE iso_enableSearch='1'");
+			while( $objFilterModules->next() )
 			{
-				$arrSearch = array('name', 'description');
+				$arrSearch = deserialize($objFilterModules->iso_searchFields);
+	
+				if (!is_array($arrSearch))
+				{
+					$arrSearch = array('name', 'description');
+				}
+				else
+				{
+					array_unshift($arrSearch, 'name', 'description');
+				}
+	
+				$this->Database->prepare("UPDATE tl_module SET iso_enableSearch='', iso_searchFields=? WHERE id=?")->executeUncached(serialize($arrSearch), $objFilterModules->id);
 			}
-			else
-			{
-				array_unshift($arrSearch, 'name', 'description');
-			}
-
-			$this->Database->prepare("UPDATE tl_module SET iso_enableSearch='', iso_searchFields=? WHERE id=?")->executeUncached(serialize($arrSearch), $objFilterModules->id);
 		}
+		
+		// Checkout method has been renamed from "login" to "member" to prevent a problem with palette of the login module
+		$this->Database->query("UPDATE tl_module SET iso_checkout_method='member' WHERE iso_checkout_method='login'");
 	}
 
 
@@ -652,6 +659,54 @@ class IsotopeRunonce extends Controller
 			if (file_exists(TL_ROOT . '/templates/' . $old . '.tpl') && !file_exists(TL_ROOT . '/templates/' . $new . '.tpl'))
 			{
 				$this->Files->rename('templates/' . $old . '.tpl', 'templates/' . $new . '.tpl');
+			}
+		}
+	}
+	
+	
+	/**
+	 * Automatically generate product groups because the limit feature is no longer available.
+	 * Taking product categories order by ID will associate with the page with highest ID, probably the deepest in the page tree.
+	 */
+	private function generateCategoryGroups()
+	{
+		if (!$this->Database->tableExists('tl_iso_groups') && $this->Database->query("SELECT COUNT(*) AS total FROM tl_iso_product_categories")->total > 0)
+		{
+			$this->Database->query("
+CREATE TABLE `tl_iso_groups` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `pid` int(10) unsigned NOT NULL default '0',
+  `sorting` int(10) unsigned NOT NULL default '0',
+  `tstamp` int(10) unsigned NOT NULL default '0',
+  `name` varchar(255) NOT NULL default '',
+  PRIMARY KEY  (`id`),
+  KEY `pid` (`pid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+
+			if (!$this->Database->fieldExists('gid', 'tl_iso_products'))
+			{
+				$this->Database->query("ALTER TABLE tl_iso_products ADD `gid` int(10) unsigned NOT NULL default '0'");
+			}
+
+			$arrCategories = array();
+			$objCategories = $this->Database->execute("SELECT * FROM tl_iso_product_categories ORDER BY page_id ASC");
+			
+			while( $objCategories->next() )
+			{
+				$arrCategories[$objCategories->pid] = $objCategories->page_id;
+			}
+			
+			$time = time();
+			$intSorting = -128;
+			$objPages = $this->Database->execute("SELECT * FROM tl_page WHERE id IN (" . implode(',', array_unique($arrCategories)) . ")");
+			
+			while( $objPages->next() )
+			{
+				$intSorting += 128;
+				$intGroup = $this->Database->query("INSERT INTO tl_iso_groups (pid,sorting,tstamp,name) VALUES (0, $intSorting, $time, '{$objPages->title}')")->insertId;
+				
+				$arrProducts = array_keys(array_intersect($arrCategories, array($objPages->id)));
+				$this->Database->query("UPDATE tl_iso_products SET gid=$intGroup WHERE id IN (" . implode(',', $arrProducts) . ")");
 			}
 		}
 	}
