@@ -264,7 +264,11 @@ class IsotopeRunonce extends Controller
 		// tl_module.iso_listingModule has been removed
 		if ($this->Database->fieldExists('iso_listingModule', 'tl_module'))
 		{
-			$this->Database->query("ALTER TABLE tl_module ADD COLUMN iso_filterModules blob NULL");
+			if (!$this->Database->fieldExists('iso_filterModules', 'tl_module'))
+			{
+				$this->Database->query("ALTER TABLE tl_module ADD COLUMN iso_filterModules blob NULL");
+			}
+			
 			$this->Database->query("UPDATE tl_module m1 SET iso_category_scope=(SELECT iso_category_scope FROM (SELECT * FROM tl_module) m2 WHERE m2.id=m1.iso_listingModule) WHERE m1.type='iso_productfilter'");
 			$this->Database->query("UPDATE tl_module m1 SET iso_filterModules=(SELECT id FROM (SELECT * FROM tl_module) m2 WHERE m2.iso_listingModule=m1.id)");
 			$this->Database->query("ALTER TABLE tl_module DROP COLUMN iso_listingModule");
