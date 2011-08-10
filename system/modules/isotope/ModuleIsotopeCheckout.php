@@ -989,16 +989,6 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			'cart_html'					=> $this->replaceInsertTags($this->Isotope->Cart->getProducts('iso_products_html')),
 		));
 
-		foreach( $this->Isotope->Cart->billingAddress as $k => $v )
-		{
-			$arrData['billing_'.$k] = $this->Isotope->formatValue('tl_iso_addresses', $k, $v);
-		}
-
-		foreach( $this->Isotope->Cart->shippingAddress as $k => $v )
-		{
-			$arrData['shipping_'.$k] = $this->Isotope->formatValue('tl_iso_addresses', $k, $v);
-		}
-
 		$objOrder->email_data = $arrData;
 
 		$objOrder->save();

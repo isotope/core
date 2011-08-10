@@ -254,6 +254,25 @@ class IsotopeOrder extends IsotopeProductCollection
 		$this->status = $this->new_order_status;
 		$arrData = $this->email_data;
 		$arrData['order_id'] = $this->generateOrderId();
+		
+		foreach( $this->billing_address as $k => $v )
+		{
+			$arrData['billing_'.$k] = $this->Isotope->formatValue('tl_iso_addresses', $k, $v);
+		}
+
+		foreach( $this->shipping_address as $k => $v )
+		{
+			$arrData['shipping_'.$k] = $this->Isotope->formatValue('tl_iso_addresses', $k, $v);
+		}
+		
+		if ($this->pid > 0)
+		{
+			$objUser = $this->Database->execute("SELECT * FROM tl_member WHERE id=".(int)$this->pid);
+			foreach( $objUser->row() as $k => $v )
+			{
+				$arrData['member_'.$k] = $this->Isotope->formatValue('tl_member', $k, $v);
+			}
+		}
 
 		$this->log('New order ID ' . $this->id . ' has been placed', 'IsotopeOrder checkout()', TL_ACCESS);
 
