@@ -1812,4 +1812,59 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 			}
 		}
 	}
+
+
+	/**
+	 * Returns the foreign key for a certain language with a fallback option
+	 * @param string
+	 * @param string
+	 * @return string|false
+	 */
+	private function getForeignKeyByLang($strSettings, $strLang='fallback')
+	{
+		$arrLangLines = array();
+		$arrLines = preg_split('/[\n\r]+/i', $strSettings, null);
+		
+		// return false if there are no lines (should be impossible if the field is mandatory - defensive programming)
+		if(!is_array($arrLines))
+		{
+			return false;
+		}
+		
+		// loop over the lines
+		foreach($arrLines as $strLine)
+		{
+			// ignore comments
+			if(strpos($strLine, '#') !== false)
+			{
+				continue;
+			}
+
+			// check for a language
+			if(strpos($strLine, '=') === 2)
+			{
+				$arrChunks = explode('=', $strLine);
+				$arrLangLines[$arrChunks[0]] = $arrChunks[1];
+			}
+			// otherwise it's the fallback
+			else
+			{
+				$arrLangLines['fallback'] = $strLine;
+			}
+		}
+
+		// try to return the desired language
+		if(isset($arrLangLines[$strLang]))
+		{
+			return $arrLangLines[$strLang];
+		}
+
+		// check if there is a fallback available, otherwise take the first one
+		if(isset($arrLangLines['fallback']))
+		{
+			return $arrLangLines['fallback'];
+		}
+
+		return current($arrLangLines);
+	}
 }
