@@ -171,7 +171,7 @@ CREATE TABLE `tl_iso_attributes` (
   `multilingual` char(1) NOT NULL default '',
   `variant_option` char(1) NOT NULL default '',
   `invisible` char(1) NOT NULL default '',
-  `foreignKey` varchar(64) NOT NULL default '',
+  `foreignKey` text NULL,
   `rte` varchar(255) NOT NULL default '',
   `maxlength` int(10) unsigned NOT NULL default '0',
   `rgxp` varchar(255) NOT NULL default '',

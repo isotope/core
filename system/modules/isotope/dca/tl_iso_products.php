@@ -1728,6 +1728,9 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 			{
 				$arrData['eval']['tl_class'] = 'clr';
 			}
+			
+			// Parse multiline/multilingual foreignKey
+			$objAttributes->foreignKey = $this->parseForeignKey($objAttributes->foreignKey, $GLOBALS['TL_LANGUAGE']);
 
 			// Prepare options
 			if ($objAttributes->foreignKey != '' && !$objAttributes->variant_option)
@@ -1816,55 +1819,54 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 
 	/**
 	 * Returns the foreign key for a certain language with a fallback option
-	 * @param string
-	 * @param string
-	 * @return string|false
+	 *
+	 * @param	string
+	 * @param	string
+	 * @return	string|null
 	 */
-	private function getForeignKeyByLang($strSettings, $strLang='fallback')
+	private function parseForeignKey($strSettings, $strLanguage=false)
 	{
-		$arrLangLines = array();
-		$arrLines = preg_split('/[\n\r]+/i', $strSettings, null);
+		$strFallback = null;
+		$arrLines = trimsplit('@\r\n|\n|\r@', $strSettings);
 		
-		// return false if there are no lines (should be impossible if the field is mandatory - defensive programming)
-		if(!is_array($arrLines))
+		// return false if there are no lines
+		if ($strSettings == '' || !is_array($arrLines) || !count($arrLines))
 		{
-			return false;
+			return null;
 		}
 		
 		// loop over the lines
-		foreach($arrLines as $strLine)
+		foreach( $arrLines as $strLine )
 		{
-			// ignore comments
-			if(strpos($strLine, '#') !== false)
+			// ignore empty lines and comments
+			if ($strLine == '' || strpos($strLine, '#') === 0)
 			{
 				continue;
 			}
 
 			// check for a language
-			if(strpos($strLine, '=') === 2)
+			if (strpos($strLine, '=') === 2)
 			{
-				$arrChunks = explode('=', $strLine);
-				$arrLangLines[$arrChunks[0]] = $arrChunks[1];
+				list($language, $foreignKey) = explode('=', $strLine, 2);
+				
+				if ($language == $strLanguage)
+				{
+					return $foreignKey;
+				}
+				elseif (is_null($strFallback))
+				{
+					$strFallback = $foreignKey;
+				}
 			}
-			// otherwise it's the fallback
-			else
+			
+			// otherwise the first row is the fallback
+			elseif (is_null($strFallback))
 			{
-				$arrLangLines['fallback'] = $strLine;
+				$strFallback = $strLine;
 			}
 		}
 
-		// try to return the desired language
-		if(isset($arrLangLines[$strLang]))
-		{
-			return $arrLangLines[$strLang];
-		}
-
-		// check if there is a fallback available, otherwise take the first one
-		if(isset($arrLangLines['fallback']))
-		{
-			return $arrLangLines['fallback'];
-		}
-
-		return current($arrLangLines);
+		return $strFallback;
 	}
 }
+

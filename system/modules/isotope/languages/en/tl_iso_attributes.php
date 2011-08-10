@@ -45,7 +45,7 @@ $GLOBALS['TL_LANG']['tl_iso_attributes']['rte']						= array('Use HTML Editor', 
 $GLOBALS['TL_LANG']['tl_iso_attributes']['multilingual']			= array('Multilingual', 'Check here if this field should be translated.');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['rgxp']					= array('Input validation', 'Validate the input against a regular expression.');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['maxlength']				= array('Maximum length', 'Limit the field length to a certain number of characters (text) or bytes (file uploads).');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['foreignKey']				= array('Foreign Table & Field', 'Instead of adding options you can enter a table.field combination to select from database.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['foreignKey']				= array('Foreign Table & Field', 'Instead of adding options you can enter a table.field combination to select from database. To use multilingual foreignKeys, enter one per line and specify the language (example: en=tl_table.field)');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['conditionField']			= array('Parent Field', 'Please select the parent field, which must be of type "Select-Menu". For parent-child relation to work, define each option of this parent field as group of the conditional select-menu.');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['gallery']					= array('Image gallery', 'Different image galleries can be developed to present media files in a custom style.');
 

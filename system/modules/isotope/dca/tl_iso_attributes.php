@@ -198,8 +198,8 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['foreignKey'],
 			'exclude'				=> true,
-			'inputType'				=> 'text',
-			'eval'					=> array('maxlength'=>64),
+			'inputType'				=> 'textarea',
+			'eval'					=> array('style'=>'height:80px', 'decodeEntities'=>true),
 			'save_callback' => array
 			(
 				array('tl_iso_attributes', 'validateForeignKey'),
@@ -481,9 +481,24 @@ class tl_iso_attributes extends Backend
 	{
 		if ($varValue != '')
 		{
-			list($strTable, $strField) = explode('.', $varValue, 2);
+			$arrLines = trimsplit('@\r\n|\n|\r@', $varValue);
+			
+			foreach( $arrLines as $foreignKey )
+			{
+				if ($foreignKey == '' || strpos($foreignKey, '#') === 0)
+				{
+					continue;
+				}
 
-			$this->Database->execute("SELECT $strField FROM $strTable");
+				if (strpos($foreignKey, '=') === 2)
+				{
+					$foreignKey = substr($foreignKey, 3);
+				}
+				
+				list($strTable, $strField) = explode('.', $foreignKey, 2);
+
+				$this->Database->execute("SELECT $strField FROM $strTable");
+			}
 		}
 
 		return $varValue;
