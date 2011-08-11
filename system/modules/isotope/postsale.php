@@ -64,13 +64,13 @@ class PostSale extends Frontend
 
 		if (!strlen($strMod) || !strlen($strId))
 		{
-			$this->log('Invalid post-sale request: '.$this->Environment->request, __METHOD__, TL_ERROR);
+			$this->log('Invalid post-sale request (param error): '.$this->Environment->request, __METHOD__, TL_ERROR);
 			return;
 		}
 
 		$this->log('New post-sale request: '.$this->Environment->request, __METHOD__, TL_ACCESS);
 
-		switch( $strMod )
+		switch( strtolower($strMod) )
 		{
 			case 'pay':
 				$objModule = $this->Database->prepare("SELECT * FROM tl_iso_payment_modules WHERE id=?")->limit(1)->execute($strId);
@@ -82,18 +82,27 @@ class PostSale extends Frontend
 		}
 
 		if (!$objModule->numRows)
+		{
+			$this->log('Invalid post-sale request (module not found): '.$this->Environment->request, __METHOD__, TL_ERROR);
 			return;
+		}
 
 		$strClass = $GLOBALS['ISO_'.strtoupper($strMod)][$objModule->type];
 		if (!strlen($strClass) || !$this->classFileExists($strClass))
+		{
+			$this->log('Invalid post-sale request (class not found): '.$this->Environment->request, __METHOD__, TL_ERROR);
 			return;
+		}
 
 		try
 		{
 			$objModule = new $strClass($objModule->row());
 			return $objModule->processPostSale();
 		}
-		catch (Exception $e) {}
+		catch (Exception $e)
+		{
+			$this->log('Exception in post-sale request: '.$e->getMessage(), __METHOD__, TL_ERROR);
+		}
 
 		return;
 	}
