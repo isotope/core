@@ -1118,7 +1118,7 @@ class Isotope extends Controller
 
 			foreach( $GLOBALS['ISO_CONFIG']['multilingual'] as $attribute )
 			{
-				$arrSelect[] = "IFNULL(p2.$attribute, p1.$attribute) AS {$attribute}_{$GLOBALS['TL_LANGUAGE']}";
+				$arrSelect[] = "IFNULL(p2.$attribute, p1.$attribute) AS {$attribute}";
 			}
 
 			$this->strSelect = "
