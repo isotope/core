@@ -7,6 +7,7 @@ Version 1.3.beta2 (2011-??-??)
 - Added: runonce script will automatically generate groups based on categories (pages)
 - Added support for multilingual foreignKey in attribute table
 - Added a salutation text field to addresses (Ticket #329)
+- Added invisible hint to active step in checkout module (Ticket #331)
 - Improved: Allow subclasses of ModuleIsotopeProductFilter for filter modules
 - Improved: Allow subclasses of ModuleIsotopeProductFilter to cache request
 - Improved: new function generateRequestUrl to remove GET-parameters from request string

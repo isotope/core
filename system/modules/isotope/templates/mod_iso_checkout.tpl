@@ -14,7 +14,7 @@
 <?php if (strlen($step['href'])): ?>
 <a class="<?php echo $step['class']; ?>" href="<?php echo $step['href']; ?>" title="<?php echo $step['title']; ?>"><?php echo $step['label']; ?></a>
 <?php else: ?>
-<span class="<?php echo $step['class']; ?>"><?php echo $step['label']; ?></span>
+<span class="<?php echo $step['class']; ?>"><?php if($step['isActive']): ?><span class="invisible"><?php echo $this->activeStep; ?></span><?php endif; ?><?php echo $step['label']; ?></span>
 <?php endif; ?>
 </li>
 <?php endforeach; ?>

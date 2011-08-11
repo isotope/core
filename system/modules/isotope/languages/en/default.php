@@ -245,6 +245,12 @@ $GLOBALS['TL_LANG']['ISO']['backendShippingNoInfo']			= 'This shipping module do
 
 
 /**
+ * Miscellaneous
+ */
+$GLOBALS['ISO_LANG']['MSC']['activeStep']			= 'active step: ';
+
+
+/**
  * Shipping modules
  */
 $GLOBALS['ISO_LANG']['SHIP']['flat']				= array('Flat-price shipping');
@@ -264,6 +270,7 @@ $GLOBALS['ISO_LANG']['PAY']['paypalpayflowpro']	= array('PayPal Payflow Pro', 'T
 $GLOBALS['ISO_LANG']['PAY']['postfinance']		= array('Postfinance', 'Payment gateway for the swiss post payment system that supports various card types. The store will be instantly notified about successfull transactions.');
 $GLOBALS['ISO_LANG']['PAY']['authorizedotnet']	= array('Authorize.net', 'An Authorize.net payment gateway.');
 $GLOBALS['ISO_LANG']['PAY']['cybersource']		= array('Cybersource','For Cybersource users. Uses the Simple Order API method.');
+
 
 /**
  * Galleries
