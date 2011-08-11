@@ -437,6 +437,7 @@ class IsotopeRunonce extends Controller
 			}
 		}
 
+		$this->loadDataContainer('tl_iso_addresses');
 		$objConfigs = $this->Database->execute("SELECT * FROM tl_iso_config");
 
 		while( $objConfigs->next() )
@@ -446,7 +447,6 @@ class IsotopeRunonce extends Controller
 
 			if (is_array($arrBilling) && count($arrBilling) && !is_array($arrBilling[0]))
 			{
-				$this->loadDataContainer('tl_iso_addresses');
 				$arrNew = array();
 
 				foreach( $arrBilling as $field )
@@ -459,7 +459,6 @@ class IsotopeRunonce extends Controller
 
 			if (is_array($arrShipping) && count($arrShipping) && !is_array($arrShipping[0]))
 			{
-				$this->loadDataContainer('tl_iso_addresses');
 				$arrNew = array();
 
 				foreach( $arrShipping as $field )
