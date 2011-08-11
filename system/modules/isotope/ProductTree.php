@@ -354,6 +354,9 @@ class ProductTree extends Widget
 			$arrData['strTable'] = $dc->table;
 			$arrData['id'] = strlen($this->strAjaxName) ? $this->strAjaxName : $dc->id;
 			$arrData['name'] = $this->Input->post('name');
+			
+			$this->loadDataContainer($dc->table);
+			$arrData = array_merge($GLOBALS['TL_DCA'][$dc->table]['fields'][$arrData['name']]['eval'], $arrData);
 
 			$objWidget = new $GLOBALS['BE_FFL']['productTree']($arrData, $dc);
 
