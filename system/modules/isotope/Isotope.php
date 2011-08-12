@@ -117,7 +117,7 @@ class Isotope extends Controller
 		{
 			global $objPage;
 
-			$objConfig = $this->Database->prepare("SELECT c.* FROM tl_iso_config c LEFT OUTER JOIN tl_page p ON p.iso_config=c.id WHERE (p.id={$objPage->rootId} OR c.fallback='1') AND c.archive<2 ORDER BY c.fallback")->limit(1)->execute();
+			$objConfig = $this->Database->prepare("SELECT c.* FROM tl_iso_config c LEFT OUTER JOIN tl_page p ON p.iso_config=c.id WHERE (p.id=" . (int)$objPage->rootId . " OR c.fallback='1') AND c.archive<2 ORDER BY c.fallback")->limit(1)->execute();
 		}
 		else
 		{
@@ -961,11 +961,7 @@ class Isotope extends Controller
 		{
 			foreach ($value as $kk=>$vv)
 			{
-				if (is_array($vv))
-				{
-					$vals = array_values($vv);
-					$value[$kk] = $vals[0].' ('.$vals[1].')';
-				}
+				$value[$kk] = $this->formatValue($table, $field, $vv);
 			}
 
 			return implode(', ', $value);
