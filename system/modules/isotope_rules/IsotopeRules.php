@@ -77,12 +77,18 @@ class IsotopeRules extends Controller
 
 	/**
 	 * Calculate the price for a product, applying rules and coupons
+	 *
+	 * @param	float
+	 * @param	object
+	 * @param	string
+	 * @param	int
+	 * @return	float
 	 */
 	public function calculatePrice($fltPrice, $objSource, $strField, $intTaxClass)
 	{
 		if ($objSource instanceof IsotopeProduct && ($strField == 'price' || $strField == 'low_price'))
 		{
-			$objRules = $this->findRules(array("type='product'"), array(), array($objSource), ($strField == 'low_price' ? true : false));
+			$objRules = $this->findRules(array("type='product'"), array(), array($objSource), ($strField == 'low_price' ? true : false), array($strField => $fltPrice));
 
 			while( $objRules->next() )
 			{
@@ -290,13 +296,8 @@ class IsotopeRules extends Controller
 	/**
 	 * Fetch rules
 	 */
-	protected function findRules($arrProcedures, $arrValues=array(), $arrProducts=null, $blnIncludeVariants=false)
+	protected function findRules($arrProcedures, $arrValues=array(), $arrProducts=null, $blnIncludeVariants=false, $arrAttributeData=array())
 	{
-		if (!is_array($arrProducts))
-		{
-			$arrProducts = $this->Isotope->Cart->getProducts();
-		}
-
 		// Only enabled and not deleted/archived rules
 		$arrProcedures[] = "enabled='1'";
 		$arrProcedures[] = "archive<2";
@@ -319,57 +320,153 @@ class IsotopeRules extends Controller
 
 
 		// Store config restrictions
-		$arrProcedures[] = "(configRestrictions='' OR (configRestrictions='1' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='configs' AND object_id=".(int)$this->Isotope->Config->id.")>0))";
+		$arrProcedures[] = "(configRestrictions=''
+							OR (configRestrictions='1' AND configCondition='' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='configs' AND object_id=".(int)$this->Isotope->Config->id.")>0)
+							OR (configRestrictions='1' AND configCondition='1' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='configs' AND object_id=".(int)$this->Isotope->Config->id.")=0))";
 
 
 		// Member restrictions
 		if (FE_USER_LOGGED_IN && TL_MODE=='FE')
 		{
 			$arrProcedures[] = "(memberRestrictions='none'
-								OR (memberRestrictions='members' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='members' AND object_id={$this->User->id})>0)
-								" . (count($this->User->groups) ? " OR (memberRestrictions='groups' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='groups' AND object_id IN (" . implode(',', $this->User->groups) . "))>0)" : '') . ")";
+								OR (memberRestrictions='guests' AND memberCondition='1')
+								OR (memberRestrictions='members' AND memberCondition='' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='members' AND object_id={$this->User->id})>0)
+								OR (memberRestrictions='members' AND memberCondition='1' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='members' AND object_id={$this->User->id})=0)
+								" . (count($this->User->groups) ? "
+								OR (memberRestrictions='groups' AND memberCondition='' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='groups' AND object_id IN (" . implode(',', $this->User->groups) . "))>0)
+								OR (memberRestrictions='groups' AND memberCondition='1' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='groups' AND object_id IN (" . implode(',', $this->User->groups) . "))=0)" : '') . ")";
 		}
 		else
 		{
-			$arrProcedures[] = "(memberRestrictions='none' OR memberRestrictions='guests')";
+			$arrProcedures[] = "(memberRestrictions='none' OR (memberRestrictions='guests' AND memberCondition=''))";
 		}
 
 
 		// Product restrictions
-		$arrIds = array();
-		$arrTypes = array();
-		foreach( $arrProducts as $objProduct )
+		if (!is_array($arrProducts))
 		{
-			$arrIds[] = $objProduct->id;
-			$arrTypes[] = $objProduct->type;
+			$arrProducts = $this->Isotope->Cart->getProducts();
+		}
 
-			if ($objProduct->pid > 0)
+		if (count($arrProducts))
+		{
+			$arrProductIds = array();
+			$arrVariantIds = array();
+			$arrAttributes = array();
+			$arrTypes = array();
+
+			// Prepare product attribute condition
+			$objAttributeRules = $this->Database->execute("SELECT * FROM tl_iso_rules WHERE enabled='1' AND archive<2 and productRestrictions='attribute' AND attributeName!='' GROUP BY attributeName, attributeCondition");
+			while( $objAttributeRules->next() )
 			{
-				$arrIds[] = $objProduct->pid;
+				$arrAttributes[] = array
+				(
+					'attribute'	=> $objAttributeRules->attributeName,
+					'condition'	=> $objAttributeRules->attributeCondition,
+					'values'	=> array(),
+				);
 			}
 
-			if ($blnIncludeVariants)
+			foreach( $arrProducts as $objProduct )
 			{
-				$arrIds = array_merge($arrIds, $objProduct->variant_ids);
+				$arrProductIds[] = $objProduct->pid ? $objProduct->pid : $objProduct->id;
+				$arrVariantIds[] = $objProduct->id;
+				$arrTypes[] = $objProduct->type;
+	
+				if ($objProduct->pid > 0)
+				{
+					$arrVariantIds[] = $objProduct->pid;
+				}
+	
+				if ($blnIncludeVariants)
+				{
+					$arrVariantIds = array_merge($arrVariantIds, $objProduct->variant_ids);
+				}
+				
+				$arrOptions = $objProduct->getOptions(true);
+				foreach( $arrAttributes as $k => $restriction )
+				{
+					if (isset($arrAttributeData[$restriction['attribute']]))
+					{
+						$varValue = $arrAttributeData[$restriction['attribute']];
+					}
+					elseif (isset($arrOptions[$restriction['attribute']]))
+					{
+						$varValue = $arrOptions[$restriction['attribute']];
+					}
+					else
+					{
+						$varValue = $objProduct->{$restriction['attribute']};
+					}
+					
+					if (!is_null($varValue))
+					{
+						$arrAttributes[$k]['values'][] = is_array($varValue) ? serialize($varValue) : $varValue;
+					}
+				}
 			}
+			
+			$arrProductIds = array_unique($arrProductIds);
+			$arrVariantIds = array_unique($arrVariantIds);
+
+			$arrRestrictions = array("productRestrictions='none'");
+			$arrRestrictions[] = "(productRestrictions='producttypes' AND productCondition='' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='producttypes' AND object_id IN (" . implode(',', $arrTypes) . "))>0)";
+			$arrRestrictions[] = "(productRestrictions='producttypes' AND productCondition='1' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='producttypes' AND object_id IN (" . implode(',', $arrTypes) . "))=0)";
+			$arrRestrictions[] = "(productRestrictions='products' AND productCondition='' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='products' AND object_id IN (" . implode(',', $arrProductIds) . "))>0)";
+			$arrRestrictions[] = "(productRestrictions='products' AND productCondition='1' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='products' AND object_id IN (" . implode(',', $arrProductIds) . "))=0)";
+			$arrRestrictions[] = "(productRestrictions='variants' AND productCondition='' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='variants' AND object_id IN (" . implode(',', $arrVariantIds) . "))>0)";
+			$arrRestrictions[] = "(productRestrictions='variants' AND productCondition='1' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='variants' AND object_id IN (" . implode(',', $arrVariantIds) . "))=0)";
+			$arrRestrictions[] = "(productRestrictions='pages' AND productCondition='' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='pages' AND object_id IN (SELECT page_id FROM tl_iso_product_categories WHERE pid IN (" . implode(',', $arrProductIds) . ")))>0)";
+			$arrRestrictions[] = "(productRestrictions='pages' AND productCondition='1' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='pages' AND object_id IN (SELECT page_id FROM tl_iso_product_categories WHERE pid IN (" . implode(',', $arrProductIds) . ")))=0)";
+
+			foreach( $arrAttributes as $restriction )
+			{
+				if (!count($restriction['values']))
+					continue;
+				
+				$strRestriction = "(productRestrictions='attribute' AND attributeName='" . $restriction['attribute'] . "' AND attributeCondition='" . $restriction['condition'] . "' AND ";
+					
+				switch( $restriction['condition'] )
+				{
+					case 'eq':
+					case 'neq':
+						$strRestriction .= "attributeValue" . ($restriction['condition'] == 'neq' ? " NOT" : '') . " IN ('" . implode("','", array_map('mysql_real_escape_string', $restriction['values'])) . "')";
+						break;
+
+					case 'lt':
+					case 'gt':
+					case 'elt':
+					case 'egt':
+						$arrOR = array();
+						foreach( $restriction['values'] as $value )
+						{
+							$arrOR[] = "attributeValue" . (($restriction['condition'] == 'lt' || $restriction['condition'] == 'lte') ? '>' : '<') . (($restriction['condition'] == 'elt' || $restriction['condition'] == 'egt') ? '=' : '') . '?';
+							$arrValues[] = $value;
+						}
+						$strRestriction .= '(' . implode(' OR ', $arrOR) . ')';
+						break;
+
+					case 'starts':
+					case 'ends':
+					case 'contains':
+						$arrOR = array();
+						foreach( $restriction['values'] as $value )
+						{
+							$arrOR[] = "? LIKE CONCAT(" . (($restriction['condition'] == 'starts' || $restriction['condition'] == 'contains') ? "'%', " : '') . "attributeValue" . (($restriction['condition'] == 'ends' || $restriction['condition'] == 'contains') ? ", '%'" : '') . ")";
+							$arrValues[] = $value;
+						}
+						$strRestriction .= '(' . implode(' OR ', $arrOR) . ')';
+						break;
+					
+					default:
+						throw new Exception('Unknown rule condition "' . $restrictions['condition'] . '"');
+				}
+					
+				$arrRestrictions[] = $strRestriction . ')';
+			}
+
+			$arrProcedures[] = '(' . implode(' OR ', $arrRestrictions) . ')';
 		}
-
-		$arrRestrictions = array("productRestrictions='none'");
-
-		if (count($arrTypes))
-		{
-			$arrRestrictions[] = "(productRestrictions='producttypes' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='producttypes' AND object_id IN (" . implode(',', $arrTypes) . "))>0)";
-		}
-
-		if (count($arrIds))
-		{
-			$arrIds = array_unique($arrIds);
-
-			$arrRestrictions[] = "(productRestrictions='products' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='products' AND object_id IN (" . implode(',', $arrIds) . "))>0)";
-			$arrRestrictions[] = "(productRestrictions='pages' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='pages' AND object_id IN (SELECT page_id FROM tl_iso_product_categories WHERE pid IN (" . implode(',', $arrIds) . "))))";
-		}
-
-		$arrProcedures[] = '(' . implode(' OR ', $arrRestrictions) . ')';
 
 
 		// Fetch and process rules
@@ -427,7 +524,7 @@ class IsotopeRules extends Controller
 				$intTotal = 0;
 				foreach( $arrProducts as $objProduct )
 				{
-					if ((($arrRule['productRestrictions'] == 'products' || $arrRule['productRestrictions'] == 'pages')
+					if ((($arrRule['productRestrictions'] == 'products' || $arrRule['productRestrictions'] == 'variants' || $arrRule['productRestrictions'] == 'pages')
 						&& (in_array($objProduct->id, $arrLimit) || ($objProduct->pid > 0 && in_array($objProduct->pid, $arrLimit))))
 					|| ($arrRule['productRestrictions'] == 'producttypes' && in_array($objProduct->type, $arrLimit)))
 					{
@@ -453,7 +550,7 @@ class IsotopeRules extends Controller
 		foreach( $arrProducts as $objProduct )
 		{
 			// Product restrictions
-			if ((($arrRule['productRestrictions'] == 'products' || $arrRule['productRestrictions'] == 'pages')
+			if ((($arrRule['productRestrictions'] == 'products' || $arrRule['productRestrictions'] == 'variants' || $arrRule['productRestrictions'] == 'pages')
 				&& (!in_array($objProduct->id, $arrLimit) && ($objProduct->pid == 0 || !in_array($objProduct->pid, $arrLimit))))
 			|| ($arrRule['productRestrictions'] == 'producttypes' && !in_array($objProduct->type, $arrLimit)))
 			{

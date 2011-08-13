@@ -234,6 +234,9 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 					// Use the default routine to initialize options data
 					$arrWidget = $this->prepareForWidget($arrData, $strField);
 
+					if (!is_array($arrWidget['options']))
+						continue;
+
 					$arrOptions = $arrWidget['options'];
 					foreach( $arrWidget['options'] as $k => $option )
 					{

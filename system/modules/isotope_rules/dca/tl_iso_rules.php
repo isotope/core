@@ -41,6 +41,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 		'onload_callback' => array
 		(
 			array('IsotopeBackend', 'hideArchivedRecords'),
+			array('tl_iso_rules', 'loadAttributeValues'),
 		),
 	),
 
@@ -107,12 +108,15 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 	'subpalettes' => array
 	(
 		'enableCode'						=> 'code',
-		'configRestrictions'				=> 'configs',
-		'memberRestrictions_groups'			=> 'groups',
-		'memberRestrictions_members'		=> 'members',
-		'productRestrictions_producttypes'	=> 'producttypes',
-		'productRestrictions_pages'			=> 'pages',
-		'productRestrictions_products'		=> 'products',
+		'configRestrictions'				=> 'configs,configCondition',
+		'memberRestrictions_guests'			=> 'memberCondition',
+		'memberRestrictions_groups'			=> 'memberCondition,groups',
+		'memberRestrictions_members'		=> 'memberCondition,members',
+		'productRestrictions_producttypes'	=> 'productCondition,producttypes',
+		'productRestrictions_pages'			=> 'productCondition,pages',
+		'productRestrictions_products'		=> 'productCondition,products',
+		'productRestrictions_variants'		=> 'productCondition,variants',
+		'productRestrictions_attribute'		=> 'attributeName,attributeCondition,attributeValue',
 	),
 
 	// Fields
@@ -229,13 +233,21 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			'filter'					=> true,
 			'eval'						=> array('submitOnChange'=>true, 'tl_class'=>'clr'),
 		),
+		'configCondition' => array
+		(
+			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['configCondition'],
+			'exclude'					=> true,
+			'inputType'					=> 'radio',
+			'options'					=> array('' => $GLOBALS['TL_LANG']['tl_iso_rules']['condition_true'], '1' => $GLOBALS['TL_LANG']['tl_iso_rules']['condition_false']),
+			'eval'						=> array('tl_class'=>'w50'),
+		),
 		'configs' => array
 		(
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['configs'],
 			'exclude'					=> true,
 			'inputType'					=> 'checkbox',
 			'foreignKey'				=> 'tl_iso_config.name',
-			'eval'						=> array('mandatory'=>true, 'multiple'=>true, 'doNotSaveEmpty'=>true),
+			'eval'						=> array('mandatory'=>true, 'multiple'=>true, 'doNotSaveEmpty'=>true, 'tl_class'=>'clr w50'),
 			'load_callback' => array
 			(
 				array('tl_iso_rules', 'loadRestrictions'),
@@ -253,8 +265,16 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			'exclude'					=> true,
 			'filter'					=> true,
 			'options'					=> array('none', 'guests', 'groups', 'members'),
-			'eval'						=> array('submitOnChange'=>true, 'tl_class'=>'clr'),
+			'eval'						=> array('submitOnChange'=>true, 'tl_class'=>'clr w50 w50h'),
 			'reference'					=> &$GLOBALS['TL_LANG']['tl_iso_rules']['memberRestrictions']
+		),
+		'memberCondition' => array
+		(
+			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['memberCondition'],
+			'exclude'					=> true,
+			'inputType'					=> 'radio',
+			'options'					=> array('' => $GLOBALS['TL_LANG']['tl_iso_rules']['condition_true'], '1' => $GLOBALS['TL_LANG']['tl_iso_rules']['condition_false']),
+			'eval'						=> array('tl_class'=>'w50'),
 		),
 		'groups' => array
 		(
@@ -262,7 +282,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			'exclude'					=> true,
 			'inputType'					=> 'checkbox',
 			'foreignKey'				=> 'tl_member_group.name',
-			'eval'						=> array('mandatory'=>true, 'multiple'=>true, 'doNotSaveEmpty'=>true),
+			'eval'						=> array('mandatory'=>true, 'multiple'=>true, 'doNotSaveEmpty'=>true, 'tl_class'=>'clr'),
 			'load_callback' => array
 			(
 				array('tl_iso_rules', 'loadRestrictions'),
@@ -305,9 +325,17 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			'default'					=> 'none',
 			'exclude'					=> true,
 			'filter'					=> true,
-			'options'					=> array('none', 'producttypes', 'pages', 'products'),
-			'eval'						=> array('submitOnChange'=>true, 'tl_class'=>'clr'),
+			'options'					=> array('none', 'producttypes', 'pages', 'products', 'variants', 'attribute'),
+			'eval'						=> array('submitOnChange'=>true, 'tl_class'=>'clr w50 w50h'),
 			'reference'					=> &$GLOBALS['TL_LANG']['tl_iso_rules']['productRestrictions']
+		),
+		'productCondition' => array
+		(
+			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['productCondition'],
+			'exclude'					=> true,
+			'inputType'					=> 'radio',
+			'options'					=> array('' => $GLOBALS['TL_LANG']['tl_iso_rules']['condition_true'], '1' => $GLOBALS['TL_LANG']['tl_iso_rules']['condition_false']),
+			'eval'						=> array('tl_class'=>'w50'),
 		),
 		'producttypes' => array
 		(
@@ -315,7 +343,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			'exclude'					=> true,
 			'inputType'					=> 'checkbox',
 			'foreignKey'				=> 'tl_iso_producttypes.name',
-			'eval'						=> array('mandatory'=>true, 'multiple'=>true, 'doNotSaveEmpty'=>true),
+			'eval'						=> array('mandatory'=>true, 'multiple'=>true, 'doNotSaveEmpty'=>true, 'tl_class'=>'clr'),
 			'load_callback' => array
 			(
 				array('tl_iso_rules', 'loadRestrictions'),
@@ -331,7 +359,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			'exclude'					=> true,
 			'inputType'					=> 'pageTree',
 			'foreignKey'				=> 'tl_page.title',
-			'eval'						=> array('mandatory'=>true, 'multiple'=>true, 'fieldType'=>'checkbox', 'doNotSaveEmpty'=>true),
+			'eval'						=> array('mandatory'=>true, 'multiple'=>true, 'fieldType'=>'checkbox', 'doNotSaveEmpty'=>true, 'tl_class'=>'clr'),
 			'load_callback' => array
 			(
 				array('tl_iso_rules', 'loadRestrictions'),
@@ -345,6 +373,32 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 		(
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['products'],
 			'exclude'					=> true,
+			'inputType'					=> 'tableLookup',
+			'eval' => array
+			(
+				'mandatory'				=> true,
+				'doNotSaveEmpty'		=> true,
+				'tl_class'				=> 'clr',
+				'foreignTable'			=> 'tl_iso_products',
+				'fieldType'				=> 'checkbox',
+				'listFields'			=> array('type'=>'(SELECT name FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id)', 'name', 'sku'),
+				'searchFields'			=> array('name', 'alias', 'sku', 'description'),
+				'sqlWhere'				=> 'pid=0',
+				'searchLabel'			=> 'Search products',
+			),
+			'load_callback' => array
+			(
+				array('tl_iso_rules', 'loadRestrictions'),
+			),
+			'save_callback' => array
+			(
+				array('tl_iso_rules', 'saveRestrictions'),
+			),
+		),
+		'variants' => array
+		(
+			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['variants'],
+			'exclude'					=> true,
 			'inputType'					=> 'productTree',
 			'eval'						=> array('mandatory'=>true, 'fieldType'=>'checkbox', 'variants'=>true, 'doNotSaveEmpty'=>true, 'tl_class'=>'clr'),
 			'load_callback' => array
@@ -355,6 +409,25 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			(
 				array('tl_iso_rules', 'saveRestrictions'),
 			),
+		),
+		'attributeName' => array
+		(
+			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['attributeName'],
+			'inputType'					=> 'select',
+			'options_callback'			=> array('tl_iso_rules', 'getAttributeNames'),
+			'eval'						=> array('mandatory'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true, 'tl_class'=>'clr w50'),
+		),
+		'attributeCondition' => array
+		(
+			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['attributeCondition'],
+			'inputType'					=> 'select',
+			'options'					=> array('eq', 'neq', 'lt', 'gt', 'elt', 'egt', 'starts', 'ends', 'contains'),
+			'reference'					=> &$GLOBALS['TL_LANG']['tl_iso_rules']['attributeCondition'],
+			'eval'						=> array('mandatory'=>true, 'tl_class'=>'w50'),
+		),
+		'attributeValue' => array
+		(
+			'eval'						=> array('decodeEntities'=>true, 'tl_class'=>'clr'),
 		),
 		'minItemQuantity' => array
 		(
@@ -533,4 +606,54 @@ class tl_iso_rules extends Backend
 
 //		$this->createNewVersion('tl_iso_rules', $intId);
 	}
+	
+	
+	/**
+	 * Get attributes that can be filtered
+	 *
+	 * @param	DataContainer
+	 * @return	void
+	 */
+	public function getAttributeNames($dc)
+	{
+		$this->import('Isotope');
+		
+		$arrAttributes = array();
+		
+		foreach( $GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $attribute => $config )
+		{
+			if ($config['attributes']['legend'] != '' && $attribute != 'pages' && $config['inputType'] != 'mediaManager')
+			{
+				$arrAttributes[$attribute] = $this->Isotope->formatLabel('tl_iso_products', $attribute);
+			}
+		}
+		
+		asort($arrAttributes);
+		
+		return $arrAttributes;
+	}
+	
+	
+	/**
+	 * Initialize the attribute value field
+	 *
+	 * @param	DataContainer
+	 * @return	void
+	 */
+	public function loadAttributeValues($dc)
+	{
+		if ($this->Input->get('act') == 'edit')
+		{
+			$this->loadDataContainer('tl_iso_products');
+			$this->loadLanguageFile('tl_iso_products');
+			
+			$objRule = $this->Database->execute("SELECT * FROM tl_iso_rules WHERE id=".(int)$dc->id);
+			
+			if ($objRule->productRestrictions == 'attribute' && $objRule->attributeName != '')
+			{
+				$GLOBALS['TL_DCA']['tl_iso_rules']['fields']['attributeValue'] = array_merge($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$objRule->attributeName], $GLOBALS['TL_DCA']['tl_iso_rules']['fields']['attributeValue']);
+			}
+		}
+	}
 }
+

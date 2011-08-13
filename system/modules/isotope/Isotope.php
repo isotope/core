@@ -170,6 +170,12 @@ class Isotope extends Controller
 
 	/**
 	 * Calculate price trough hook and foreign prices.
+	 *
+	 * @param	float
+	 * @param	object
+	 * @param	string
+	 * @param	int
+	 * @return	float
 	 */
 	public function calculatePrice($fltPrice, &$objSource, $strField, $intTaxClass=0)
 	{
