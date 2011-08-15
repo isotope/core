@@ -247,7 +247,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			'exclude'					=> true,
 			'inputType'					=> 'checkbox',
 			'foreignKey'				=> 'tl_iso_config.name',
-			'eval'						=> array('mandatory'=>true, 'multiple'=>true, 'doNotSaveEmpty'=>true, 'tl_class'=>'clr w50'),
+			'eval'						=> array('mandatory'=>true, 'multiple'=>true, 'doNotSaveEmpty'=>true, 'tl_class'=>'clr w50 w50h'),
 			'load_callback' => array
 			(
 				array('tl_iso_rules', 'loadRestrictions'),
