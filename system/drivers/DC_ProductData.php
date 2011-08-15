@@ -2063,6 +2063,12 @@ window.addEvent(\'domready\', function() {
 	{
 		$arrProducts = array();
 		$arrVariants = array();
+		
+		// No products available
+		if (!is_array($this->root) || !count($this->root))
+		{
+			$this->root = array(0);
+		}
 
 		// Get root IDs matching search & filters
 		$query = "SELECT id FROM {$this->strTable} p1 WHERE id IN(" . implode(',', array_map('intval', $this->root)) . ")";
