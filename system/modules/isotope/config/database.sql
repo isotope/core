@@ -662,6 +662,25 @@ CREATE TABLE `tl_iso_requestcache` (
 -- --------------------------------------------------------
 
 --
+-- Table `tl_iso_productcache`
+--
+
+CREATE TABLE `tl_iso_productcache` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `tstamp` int(10) unsigned NOT NULL default '0',
+  `page_id` int(10) unsigned NOT NULL default '0',
+  `module_id` int(10) unsigned NOT NULL default '0',
+  `requestcache_id` int(10) unsigned NOT NULL default '0',
+  `product_id` int(10) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  KEY `product_id` (`product_id`),
+  KEY `page_id` (`page_id`, `module_id`, `requestcache_id`),
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+-- --------------------------------------------------------
+
+--
 -- Table `tl_page`
 --
 
@@ -730,6 +749,7 @@ CREATE TABLE `tl_module` (
   `iso_noProducts` varchar(255) NOT NULL default '',
   `iso_emptyMessage` char(1) NOT NULL default '',
   `iso_includeMessages` char(1) NOT NULL default '',
+  `iso_productcache` blob NULL,
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 

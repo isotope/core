@@ -34,6 +34,12 @@ class ModuleIsotopeProductList extends ModuleIsotope
 	 * @var string
 	 */
 	protected $strTemplate = 'mod_iso_productlist';
+	
+	/**
+	 * Cache products. Can be disable in a child class, e.g. a "random products list"
+	 * @var bool
+	 */
+	protected $blnCacheProducts = true;
 
 
 	/**
@@ -60,6 +66,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		}
 
 		$this->iso_filterModules = deserialize($this->iso_filterModules, true);
+		$this->iso_productcache = deserialize($this->iso_productcache, true);
 
 		return parent::generate();
 	}
@@ -83,34 +90,96 @@ class ModuleIsotopeProductList extends ModuleIsotope
 	 */
 	protected function compile()
 	{
-		$arrProducts = $this->findProducts();
+		$arrProducts = null;
 
-		if (!is_array($arrProducts) || !count($arrProducts))
+		if ($this->blnCacheProducts)
+		{
+			global $objPage;
+			$arrProductCache = $this->Database->prepare("SELECT product_id FROM tl_iso_productcache WHERE page_id=? AND module_id=? AND requestcache_id=? ORDER BY id ASC")
+											  ->execute($objPage->id, $this->id, (int)$this->Input->get('isorc'))
+											  ->fetchEach('product_id');
+
+			$total = count($arrProductCache);
+			
+			if ($total > 0)
+			{
+				$offset = $this->generatePagination($total);
+				$arrProducts = $this->getProducts(array_slice($arrProductCache, $offset, $this->perPage));
+
+				$expected = ($total - $offset);
+				$expected = $expected > $this->perPage ? $this->perPage : $expected;
+
+				// Cache is wrong, drop everything and run findProducts()
+				if (count($arrProducts) != $expected)
+				{
+					$arrProducts = null;
+				}
+			}
+		}
+		
+		if (!is_array($arrProducts))
+		{
+			// Display "loading products" message and add cache flag
+			if ($this->blnCacheProducts)
+			{
+				$blnCacheMessage = (bool)$this->iso_productcache[$objPage->id][(int)$this->Input->get('isorc')];
+				
+				if ($blnCacheMessage && !$this->Input->get('buildCache'))
+				{
+					$this->Template = new FrontendTemplate('mod_iso_productlist_caching');
+					$this->Template->message = $GLOBALS['ISO_LANG']['MSC']['productcacheLoading'];
+					return;
+				}
+				
+				// Start measuring how long it takes to load the products
+				$start = microtime(true);
+				
+				// Load products
+				$arrProducts = $this->findProducts();
+				
+				// Decide if we should cache the products
+				$end = microtime(true) - $start;
+				$this->blnCacheProducts = $end > 1 ? true : false;
+				if ($blnCacheMessage != $this->blnCacheProducts)
+				{
+					$arrCacheMessage = $this->iso_productcache;
+					$arrCacheMessage[$objPage->id][(int)$this->Input->get('isorc')] = $this->blnCacheProducts;
+					$this->Database->prepare("UPDATE tl_module SET iso_productcache=? WHERE id=?")->execute(serialize($arrCacheMessage), $this->id);
+				}
+
+				// Do not write cache if table is locked. That's the case if another process is already writing cache
+				if ($this->Database->query("SHOW OPEN TABLES FROM {$GLOBALS['TL_CONFIG']['dbDatabase']} LIKE 'tl_iso_productcache'")->In_use == 0)
+				{
+					$this->Database->lockTables(array('tl_iso_productcache'=>'WRITE'));
+					$time = time();
+					$arrIds = array();
+	
+					foreach( $arrProducts as $objProduct )
+					{
+						$arrIds[] = $objProduct->id;
+					}
+	
+					$this->Database->execute("DELETE FROM tl_iso_productcache WHERE page_id={$objPage->id} AND module_id={$this->id} AND requestcache_id=".(int)$this->Input->get('isorc'));
+					$this->Database->execute("INSERT INTO tl_iso_productcache (tstamp,page_id,module_id,requestcache_id,product_id) VALUES ($time, {$objPage->id}, {$this->id}, " . (int)$this->Input->get('isorc') . "," . implode("), ($time, {$objPage->id}, {$this->id}, " . (int)$this->Input->get('isorc') . ",", $arrIds) . ")");
+					$this->Database->unlockTables();
+				}
+			}
+			else
+			{
+				$arrProducts = $this->findProducts();
+			}
+			
+			$offset = $this->generatePagination(count($arrProducts));
+			$arrProducts = array_slice($arrProducts, $offset, $this->perPage);
+		}
+		
+		// No products found
+		elseif (!is_array($arrProducts) || !count($arrProducts))
 		{
 			$this->Template = new FrontendTemplate('mod_message');
 			$this->Template->type = 'empty';
 			$this->Template->message = $this->iso_emptyMessage ? $this->iso_noProducts : $GLOBALS['TL_LANG']['MSC']['noProducts'];
 			return;
-		}
-
-		// Add pagination
-		if ($this->perPage > 0)
-		{
-			$total = count($arrProducts);
-			$page = $this->Input->get('page') ? $this->Input->get('page') : 1;
-
-			// Check the maximum page number
-			if ($page > ($total/$this->perPage))
-			{
-				$page = ceil($total/$this->perPage);
-			}
-
-			$offset = ($page - 1) * $this->perPage;
-
-			$objPagination = new Pagination($total, $this->perPage);
-			$this->Template->pagination = $objPagination->generate("\n  ");
-
-			$arrProducts = array_slice($arrProducts, $offset, $this->perPage);
 		}
 
 		$arrBuffer = array();
@@ -168,12 +237,44 @@ class ModuleIsotopeProductList extends ModuleIsotope
 
 		list($arrFilters, $arrSorting) = $this->getFiltersAndSorting();
 
-		$arrProducts = $this->getProducts($objProductData, true, $arrFilters, $arrSorting);
+		return $this->getProducts($objProductData, true, $arrFilters, $arrSorting);
+	}
+	
+	
+	/**
+	 * Generate the pagination
+	 *
+	 * @param	int	$total
+	 * @return	int
+	 */
+	protected function generatePagination($total)
+	{
+		// Add pagination
+		if ($this->perPage > 0)
+		{
+			$page = $this->Input->get('page') ? $this->Input->get('page') : 1;
 
-		return $arrProducts;
+			// Check the maximum page number
+			if ($page > ($total/$this->perPage))
+			{
+				$page = ceil($total/$this->perPage);
+			}
+
+			$offset = ($page - 1) * $this->perPage;
+
+			$objPagination = new Pagination($total, $this->perPage);
+			$this->Template->pagination = $objPagination->generate("\n  ");
+
+			return $offset;
+		}
+		
+		return 0;
 	}
 
 
+	/**
+	 * Get filter & sorting configuration
+	 */
 	protected function getFiltersAndSorting()
 	{
 		if (!is_array($this->iso_filterModules))

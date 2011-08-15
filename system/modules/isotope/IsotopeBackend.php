@@ -83,6 +83,20 @@ class IsotopeBackend extends Backend
 			$this->redirect(str_replace('key=delete', 'act=delete', $this->Environment->request));
 		}
 	}
+	
+	
+	/**
+	 * Truncate the tl_iso_productcache table if a product is changed
+	 *
+	 * @return	void
+	 */
+	public function truncateProductCache($dc=null)
+	{
+		if (is_null($dc) || $dc->activeRecord->published)
+		{
+			$this->Database->query("TRUNCATE tl_iso_productcache");
+		}
+	}
 
 
 	/**

@@ -63,9 +63,7 @@ class ModuleIsotopeProductVariantList extends ModuleIsotopeProductList
 
 		list($arrFilters, $arrSorting) = $this->getFiltersAndSorting();
 
-		$arrProducts = $this->getProducts($objProductData, true, $arrFilters, $arrSorting);
-
-		return $arrProducts;
+		return $this->getProducts($objProductData, true, $arrFilters, $arrSorting);
 	}
 }
 

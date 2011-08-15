@@ -188,9 +188,6 @@ $GLOBALS['TL_LANG']['MSC']['old_to_new'] = 'earlier to later';
 $GLOBALS['TL_LANG']['MSC']['new_to_old'] = 'later to earlier';
 
 
-$GLOBALS['ISO_LANG']['MSC']['useDefault']	= 'Use default value';
-
-
 /**
  * Content elements
  */
@@ -247,7 +244,10 @@ $GLOBALS['TL_LANG']['ISO']['backendShippingNoInfo']			= 'This shipping module do
 /**
  * Miscellaneous
  */
+$GLOBALS['ISO_LANG']['MSC']['useDefault']			= 'Use default value';
 $GLOBALS['ISO_LANG']['MSC']['activeStep']			= 'active step: ';
+$GLOBALS['ISO_LANG']['MSC']['productcacheLoading']	= 'Loading products...';
+$GLOBALS['ISO_LANG']['MSC']['productcacheNoscript']	= 'Your browser does not support javascript. Please <a href="%s">click here</a> to load the product list.';
 
 
 /**

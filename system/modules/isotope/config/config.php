@@ -30,7 +30,7 @@
  * Isotope Version
  */
 @define('ISO_VERSION', '1.3');
-@define('ISO_BUILD', 'beta1');
+@define('ISO_BUILD', 'beta2');
 
 
 /**
@@ -250,6 +250,13 @@ $GLOBALS['TL_PERMISSIONS'][] = 'iso_modules';
 
 
 /**
+ * Allow to delete the cache in maintenance module
+ */
+$GLOBALS['TL_CACHE'][] = 'tl_iso_productcache';
+$GLOBALS['TL_CACHE'][] = 'tl_iso_requestcache';
+
+
+/**
  * Number formatting
  */
 $GLOBALS['ISO_NUM']["10000.00"]		= array(2, '.', "");
@@ -325,7 +332,7 @@ $GLOBALS['ISO_ATTR'] = array
 	),
 	'radio' => array
 	(
-		'sql'		=> "blob NULL",
+		'sql'		=> "varchar(255) NOT NULL default ''",
 	),
 	'checkbox' => array
 	(

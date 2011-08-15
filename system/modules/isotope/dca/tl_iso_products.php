@@ -48,6 +48,10 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			array('tl_iso_products', 'addBreadcrumb'),
 			array('tl_iso_products', 'buildPaletteString'),
 		),
+		'onsubmit_callback' => array
+		(
+			array('IsotopeBackend', 'truncateProductCache'),
+		),
 	),
 
 	// List
@@ -383,6 +387,10 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'inputType'				=> 'checkbox',
 			'eval'					=> array('doNotCopy'=>true),
 			'attributes'			=> array('legend'=>'publish_legend', 'fixed'=>true, 'variant_fixed'=>true),
+			'save_callback' => array
+			(
+				array('tl_iso_products', 'updateProductCache'),
+			),
 		),
 		'start' => array
 		(
@@ -1132,6 +1140,8 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 </form>';
 
 	}
+
+
 	/**
 	 * Import images and other media file for products
 	 */
@@ -1464,10 +1474,40 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 
 		return ($disablePI ? $this->generateImage('pasteinto_.gif', '', 'class="blink"').' ' : '<a href="'.$this->addToUrl('act='.$arrClipboard['mode'].'&amp;mode=2&amp;'.(($table != $dc->table || $row['id'] == 0) ? 'gid' : 'pid').'='.$row['id'].(!is_array($arrClipboard['id']) ? '&amp;id='.$arrClipboard['id'] : '')).'" title="'.specialchars(sprintf($GLOBALS['TL_LANG'][$table]['pasteinto'][1], $row['id'])).'" onclick="Backend.getScrollOffset();">'.$imagePasteInto.'</a> ');
 	}
+	
+	
+	/**
+	 * Remove products from cache if they are unpublished
+	 *
+	 * @param	string
+	 * @param	DataContainer
+	 * @return	string
+	 */
+	public function updateProductCache($varValue, $dc)
+	{
+		if ($dc instanceof DataContainer)
+		{
+			if ($dc->activeRecord->{$dc->field} == '1' && $varValue == '')
+			{
+				$this->Database->query("DELETE FROM tl_iso_productcache WHERE product_id=".(int)$dc->id);
+			}
+		}
+		elseif ($varValue == '')
+		{
+			$this->Database->query("DELETE FROM tl_iso_productcache WHERE product_id=".(int)$this->Input->get('id')." OR product_id IN (SELECT id FROM tl_iso_products WHERE pid=".(int)$this->Input->get('id').")");
+		}
+		else
+		{
+			$this->Database->query("TRUNCATE TABLE tl_iso_productcache");
+		}
+		
+		return $varValue;
+	}
 
 
 	/**
 	 * Return the "toggle visibility" button
+	 *
 	 * @param array
 	 * @param string
 	 * @param string
@@ -1500,7 +1540,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 
 		if ((in_array('start', $fields) && $row['start'] != '' && $row['start'] > $time) || (in_array('stop', $fields) && $row['stop'] != '' && $row['stop'] < $time))
 		{
-			return $this->generateImage('/system/modules/isotope/html/invisible-startstop.png', $label).' ';
+			return $this->generateImage('system/modules/isotope/html/invisible-startstop.png', $label).' ';
 		}
 		elseif ($row['published'] != '1')
 		{
