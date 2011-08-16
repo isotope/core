@@ -111,7 +111,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 			}
 
 			// Update cart data if form has been submitted
-			elseif ($this->Input->post('FORM_SUBMIT') == 'iso_cart_update' && is_array($arrQuantity))
+			elseif ($this->Input->post('FORM_SUBMIT') == ('iso_cart_update_'.$this->id) && is_array($arrQuantity))
 			{
 				$blnReload = true;
 				$this->Isotope->Cart->updateProduct($objProduct, array('product_quantity'=>$arrQuantity[$objProduct->cart_id]));
@@ -179,8 +179,8 @@ class ModuleIsotopeCart extends ModuleIsotope
 
 		$objTemplate->hasError = $blnInsufficientSubtotal ? true : false;
 		$objTemplate->minSubtotalError = sprintf($GLOBALS['TL_LANG']['ERR']['cartMinSubtotal'], $this->Isotope->formatPriceWithCurrency($this->Isotope->Config->cartMinSubtotal));
-		$objTemplate->formId = 'iso_cart_update';
-		$objTemplate->formSubmit = 'iso_cart_update';
+		$objTemplate->formId = 'iso_cart_update_'.$this->id;
+		$objTemplate->formSubmit = 'iso_cart_update_'.$this->id;
 		$objTemplate->summary = $GLOBALS['ISO_LANG']['MSC']['cartSummary'];
 		$objTemplate->action = $this->Environment->request;
 		$objTemplate->products = $arrProductData;

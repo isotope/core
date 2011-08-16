@@ -105,6 +105,7 @@ Version 0.2.11 (2011-07-??)
 - Fixed "text only" checkbox not hiding html input in mail templates
 - Fixed attribute editor allowing to change database field name in edit all mode
 - Fixed: direct links to edit mode of modules did not take account of themes
+- Fixed potential issues when having multiple cart modules on the same page
 
 Version 0.2.10 (2011-07-06)
 ------------------------------
