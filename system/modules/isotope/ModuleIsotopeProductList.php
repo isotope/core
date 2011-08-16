@@ -137,31 +137,34 @@ class ModuleIsotopeProductList extends ModuleIsotope
 				// Load products
 				$arrProducts = $this->findProducts();
 				
-				// Decide if we should cache the products
-				$end = microtime(true) - $start;
-				$this->blnCacheProducts = $end > 1 ? true : false;
-				if ($blnCacheMessage != $this->blnCacheProducts)
+				if (is_array($arrProducts) && count($arrProducts))
 				{
-					$arrCacheMessage = $this->iso_productcache;
-					$arrCacheMessage[$objPage->id][(int)$this->Input->get('isorc')] = $this->blnCacheProducts;
-					$this->Database->prepare("UPDATE tl_module SET iso_productcache=? WHERE id=?")->execute(serialize($arrCacheMessage), $this->id);
-				}
-
-				// Do not write cache if table is locked. That's the case if another process is already writing cache
-				if ($this->Database->query("SHOW OPEN TABLES FROM {$GLOBALS['TL_CONFIG']['dbDatabase']} LIKE 'tl_iso_productcache'")->In_use == 0)
-				{
-					$this->Database->lockTables(array('tl_iso_productcache'=>'WRITE'));
-					$time = time();
-					$arrIds = array();
-	
-					foreach( $arrProducts as $objProduct )
+					// Decide if we should cache the products
+					$end = microtime(true) - $start;
+					$this->blnCacheProducts = $end > 1 ? true : false;
+					if ($blnCacheMessage != $this->blnCacheProducts)
 					{
-						$arrIds[] = $objProduct->id;
+						$arrCacheMessage = $this->iso_productcache;
+						$arrCacheMessage[$objPage->id][(int)$this->Input->get('isorc')] = $this->blnCacheProducts;
+						$this->Database->prepare("UPDATE tl_module SET iso_productcache=? WHERE id=?")->execute(serialize($arrCacheMessage), $this->id);
 					}
 	
-					$this->Database->execute("DELETE FROM tl_iso_productcache WHERE page_id={$objPage->id} AND module_id={$this->id} AND requestcache_id=".(int)$this->Input->get('isorc'));
-					$this->Database->execute("INSERT INTO tl_iso_productcache (tstamp,page_id,module_id,requestcache_id,product_id) VALUES ($time, {$objPage->id}, {$this->id}, " . (int)$this->Input->get('isorc') . "," . implode("), ($time, {$objPage->id}, {$this->id}, " . (int)$this->Input->get('isorc') . ",", $arrIds) . ")");
-					$this->Database->unlockTables();
+					// Do not write cache if table is locked. That's the case if another process is already writing cache
+					if ($this->Database->query("SHOW OPEN TABLES FROM {$GLOBALS['TL_CONFIG']['dbDatabase']} LIKE 'tl_iso_productcache'")->In_use == 0)
+					{
+						$this->Database->lockTables(array('tl_iso_productcache'=>'WRITE'));
+						$time = time();
+						$arrIds = array();
+		
+						foreach( $arrProducts as $objProduct )
+						{
+							$arrIds[] = $objProduct->id;
+						}
+		
+						$this->Database->execute("DELETE FROM tl_iso_productcache WHERE page_id={$objPage->id} AND module_id={$this->id} AND requestcache_id=".(int)$this->Input->get('isorc'));
+						$this->Database->execute("INSERT INTO tl_iso_productcache (tstamp,page_id,module_id,requestcache_id,product_id) VALUES ($time, {$objPage->id}, {$this->id}, " . (int)$this->Input->get('isorc') . "," . implode("), ($time, {$objPage->id}, {$this->id}, " . (int)$this->Input->get('isorc') . ",", $arrIds) . ")");
+						$this->Database->unlockTables();
+					}
 				}
 			}
 			else
@@ -174,7 +177,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		}
 		
 		// No products found
-		elseif (!is_array($arrProducts) || !count($arrProducts))
+		if (!is_array($arrProducts) || !count($arrProducts))
 		{
 			$this->Template = new FrontendTemplate('mod_message');
 			$this->Template->type = 'empty';
