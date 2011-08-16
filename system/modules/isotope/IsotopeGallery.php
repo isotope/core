@@ -22,6 +22,7 @@
  * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Christian de la Haye <service@delahaye.de>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
@@ -65,6 +66,7 @@ class IsotopeGallery extends Frontend
 
 		$this->name = $strName;
 		$this->files = $arrFiles;
+
 	}
 
 
@@ -243,15 +245,33 @@ class IsotopeGallery extends Frontend
 
 	protected function injectAjax()
 	{
+		// special tags for different output formats
+		global $objPage;
+		if ($objPage->outputFormat != '')
+		{
+			$strOutputFormat = $objPage->outputFormat;
+		}
+		switch($strOutputFormat)
+		{
+			case 'xhtml':
+				$strJsBegin = '<script type=\"text/javascript\">
+<!--//--><![CDATA[//><!--';
+				$strJsEnd = '//--><!]]>
+</script>
+';
+				break;
+			default:
+				$strJsBegin = '<script>';
+				$strJsEnd = '</script>
+';
+				break;
+		}
+
 		$GLOBALS['TL_MOOTOOLS'][get_class($this).'_ajax'] = "
-<script type=\"text/javascript\">
-<!--//--><![CDATA[//><!--
+".$strJsBegin."
 window.addEvent('ajaxready', function() {
   Mediabox ? Mediabox.scanPage() : Lightbox.scanPage();
 });
-//--><!]]>
-</script>
-";
+".$strJsEnd;
 	}
 }
-

@@ -22,6 +22,7 @@
  * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Christian de la Haye <service@delahaye.de>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
@@ -276,14 +277,21 @@ class PaymentCybersource extends IsotopePayment
 			}
 		}
 
+		// special tags for different output formats
+		if ($objPage->outputFormat != '')
+		{
+			$strOutputFormat = $objPage->outputFormat;
+		}
+		$strTagEnding = ($strOutputFormat=='xhtml' ? ' />' : '>');
+
 		return '
 <h2>' . $this->label . '</h2>'.
 ($this->Input->get('error') == '' ? '' : '<p class="error message">'.$GLOBALS['TL_LANG']['CYB'][$this->Input->get('error')].'</p>').
-'<form id="payment_form" action="'.$this->Environment->request.'" method="post">
-<input type="hidden" name="FORM_SUBMIT" value="payment_form" />
-<input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">'
+'<form id="payment_form" action="'.$this->Environment->request.'" method="post"' . $strTagEnding . '
+<input type="hidden" name="FORM_SUBMIT" value="payment_form"' . $strTagEnding . '
+<input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'"' . $strTagEnding
 .$strBuffer.'
-<input type="submit" value="' . specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']) . '" />
+<input type="submit" value="' . specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']) . '"' . $strTagEnding . '
 </form>';
 
 
@@ -439,4 +447,3 @@ $return .= '</div></div>';
 		return array('mc', 'visa', 'amex', 'discover', 'jcb', 'diners', 'enroute', 'carte_blanche', 'jal', 'maestro', 'delta', 'solo', 'visa_electron', 'dankort', 'laser', 'carte_bleue', 'carta_si', 'enc_acct_num', 'uatp', 'maestro_intl', 'ge_money_uk');
 	}
 }
-

@@ -1,0 +1,38 @@
+<div class="shipping_method">
+<h2><?php echo $this->headline; ?></h2>
+<p><?php echo $this->message; ?></p>
+<div class="radio_container">
+<?php foreach($this->shippingMethods as $method): ?>
+<span>
+	<input id="ctrl_shipping_module_<?php echo $method['id']; ?>" type="radio" class="radio shipping_module" name="shipping[module]" value="<?php echo $method['id']; ?>"<?php echo $method['checked']; ?> />
+	<label for="ctrl_shipping_module_<?php echo $method['id']; ?>"><?php echo $method['label'] . $method['price']; ?></label>
+	<?php if ($method['note'] != ''): ?>
+	<div class="shipping_note"><?php echo $method['note']; ?></div>
+	<?php endif; ?>
+	<?php if ($method['form'] != ''): ?>
+	<div class="shipping_data" id="shipping_data_<?php echo $method['id']; ?>"><?php echo $method['form']; ?></div>
+	<?php endif; ?>
+</span>
+<?php endforeach; ?>
+</div>
+<?php if (strlen($this->error)): ?>
+<p class="error"><?php echo $this->error; ?></p><?php endif; ?>
+</div>
+
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+window.addEvent('domready', function() {
+	$$('.shipping_data').setStyle('display', 'none');
+	$$('input.payment_module').each( function(el) {
+		el.addEvent('click', function (event) {
+			$$('.shipping_data').setStyle('display', 'none');
+			if ($(('shipping_data_'+event.target.value)))
+				$(('shipping_data_'+event.target.value)).setStyle('display', 'block');
+		});
+		if (el.checked && $(('shipping_data_'+el.value))) {
+			$(('shipping_data_'+el.value)).setStyle('display', 'block');
+		}
+	});
+});
+//--><!]]>
+</script>

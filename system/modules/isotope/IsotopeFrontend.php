@@ -22,6 +22,7 @@
  * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Christian de la Haye <service@delahaye.de>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
@@ -350,17 +351,37 @@ class IsotopeFrontend extends Frontend
 	{
 		$strMessages = $this->getIsotopeMessages();
 
+		// special tags for different output formats
+		global $objPage;
+		if ($objPage->outputFormat != '')
+		{
+			$strOutputFormat = $objPage->outputFormat;
+		}
+		switch($strOutputFormat)
+		{
+			case 'xhtml':
+				$strJsBegin = '<script type=\"text/javascript\">
+<!--//--><![CDATA[//><!--';
+				$strJsEnd = '//--><!]]>
+</script>
+';
+				break;
+			default:
+				$strJsBegin = '<script>';
+				$strJsEnd = '</script>
+';
+				break;
+		}
+
 		if ($strMessages != '')
 		{
 			$GLOBALS['TL_MOOTOOLS'][] = "
-<script type=\"text/javascript\">
-<!--//--><![CDATA[//><!--
+".$strJsBegin."
 window.addEvent('domready', function()
 {
 	Isotope.displayBox('" . $strMessages . "', true);
 });
-//--><!]]>
-</script>" ;
+".$strJsEnd;
 		}
 	}
 
@@ -406,4 +427,3 @@ window.addEvent('domready', function()
 		return $strMessages;
 	}
 }
-

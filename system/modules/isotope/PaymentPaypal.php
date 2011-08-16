@@ -22,6 +22,7 @@
  * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Christian de la Haye <service@delahaye.de>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
@@ -201,16 +202,39 @@ class PaymentPaypal extends IsotopePayment
 			$this->redirect($this->addToUrl('step=failed', true));
 		}
 
+		// special tags for different output formats
+		global $objPage;
+		if ($objPage->outputFormat != '')
+		{
+			$strOutputFormat = $objPage->outputFormat;
+		}
+		switch($strOutputFormat)
+		{
+			case 'xhtml':
+				$strTagEnding = ' />';
+				$strJsBegin = '<script type=\"text/javascript\">
+<!--//--><![CDATA[//><!--';
+				$strJsEnd = '//--><!]]>
+</script>
+';
+				break;
+			default:
+				$strTagEnding = '>';
+				$strJsBegin = '<script>';
+				$strJsEnd = '</script>
+';
+				break;
+		}
 
 		$strBuffer = '
 <h2>' . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0] . '</h2>
 <p class="message">' . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1] . '</p>
 <form id="payment_form" action="https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr" method="post">
-<input type="hidden" name="cmd" value="_cart">
-<input type="hidden" name="upload" value="1">
-<input type="hidden" name="charset" value="UTF-8">
-<input type="hidden" name="business" value="' . $this->paypal_account . '">
-<input type="hidden" name="lc" value="' . strtoupper($GLOBALS['TL_LANGUAGE']) . '">';
+<input type="hidden" name="cmd" value="_cart"' . $strTagEnding . '
+<input type="hidden" name="upload" value="1"' . $strTagEnding . '
+<input type="hidden" name="charset" value="UTF-8"' . $strTagEnding . '
+<input type="hidden" name="business" value="' . $this->paypal_account . '"' . $strTagEnding . '
+<input type="hidden" name="lc" value="' . strtoupper($GLOBALS['TL_LANGUAGE']) . '"' . $strTagEnding;
 
 		foreach( $this->Isotope->Cart->getProducts() as $objProduct )
 		{
@@ -230,10 +254,10 @@ class PaymentPaypal extends IsotopePayment
 			}
 
 			$strBuffer .= '
-<input type="hidden" name="item_number_'.++$i.'" value="' . $objProduct->sku . '" />
-<input type="hidden" name="item_name_'.$i.'" value="' . $objProduct->name . $strOptions . '"/>
+<input type="hidden" name="item_number_'.++$i.'" value="' . $objProduct->sku . '"' . $strTagEnding . '
+<input type="hidden" name="item_name_'.$i.'" value="' . $objProduct->name . $strOptions . '"' . $strTagEnding . '
 <input type="hidden" name="amount_'.$i.'" value="' . $objProduct->price . '"/>
-<input type="hidden" name="quantity_'.$i.'" value="' . $objProduct->quantity_requested . '"/>';
+<input type="hidden" name="quantity_'.$i.'" value="' . $objProduct->quantity_requested . '"' . $strTagEnding;
 		}
 
 		foreach( $this->Isotope->Cart->getSurcharges() as $arrSurcharge )
@@ -242,45 +266,42 @@ class PaymentPaypal extends IsotopePayment
 				continue;
 
 			$strBuffer .= '
-<input type="hidden" name="item_name_'.++$i.'" value="' . $arrSurcharge['label'] . '"/>
-<input type="hidden" name="amount_'.$i.'" value="' . $arrSurcharge['total_price'] . '"/>';
+<input type="hidden" name="item_name_'.++$i.'" value="' . $arrSurcharge['label'] . '"' . $strTagEnding . '
+<input type="hidden" name="amount_'.$i.'" value="' . $arrSurcharge['total_price'] . '"' . $strTagEnding;
 		}
 
 		$strBuffer .= '
-<input type="hidden" name="no_shipping" value="1">
-<input type="hidden" name="no_note" value="1">
-<input type="hidden" name="currency_code" value="' . $this->Isotope->Config->currency . '">
-<input type="hidden" name="button_subtype" value="services">
-<input type="hidden" name="return" value="' . $this->Environment->base . $this->addToUrl('step=complete') . '?uid=' . $objOrder->uniqid . '">
-<input type="hidden" name="cancel_return" value="' . $this->Environment->base . $this->addToUrl('step=failed') . '">
-<input type="hidden" name="rm" value="1">
-<input type="hidden" name="invoice" value="' . $objOrder->id . '">
+<input type="hidden" name="no_shipping" value="1"' . $strTagEnding . '
+<input type="hidden" name="no_note" value="1"' . $strTagEnding . '
+<input type="hidden" name="currency_code" value="' . $this->Isotope->Config->currency . '"' . $strTagEnding . '
+<input type="hidden" name="button_subtype" value="services"' . $strTagEnding . '
+<input type="hidden" name="return" value="' . $this->Environment->base . $this->addToUrl('step=complete') . '?uid=' . $objOrder->uniqid . '"' . $strTagEnding . '
+<input type="hidden" name="cancel_return" value="' . $this->Environment->base . $this->addToUrl('step=failed') . '"' . $strTagEnding . '
+<input type="hidden" name="rm" value="1"' . $strTagEnding . '
+<input type="hidden" name="invoice" value="' . $objOrder->id . '"' . $strTagEnding . '
 
-<input type="hidden" name="address_override" value="1">
-<input type="hidden" name="first_name" value="' . $this->Isotope->Cart->billingAddress['firstname'] . '">
-<input type="hidden" name="last_name" value="' . $this->Isotope->Cart->billingAddress['lastname'] . '">
-<input type="hidden" name="address1" value="' . $this->Isotope->Cart->billingAddress['street_1'] . '">
-<input type="hidden" name="address2" value="' . $this->Isotope->Cart->billingAddress['street_2'] . '">
-<input type="hidden" name="zip" value="' . $this->Isotope->Cart->billingAddress['postal'] . '">
-<input type="hidden" name="city" value="' . $this->Isotope->Cart->billingAddress['city'] . '">
-<input type="hidden" name="country" value="' . strtoupper($this->Isotope->Cart->billingAddress['country']) . '">
-<input type="hidden" name="email" value="' . $this->Isotope->Cart->billingAddress['email'] . '">
-<input type="hidden" name="night_phone_b" value="' . $this->Isotope->Cart->billingAddress['phone'] . '">
+<input type="hidden" name="address_override" value="1"' . $strTagEnding . '
+<input type="hidden" name="first_name" value="' . $this->Isotope->Cart->billingAddress['firstname'] . '"' . $strTagEnding . '
+<input type="hidden" name="last_name" value="' . $this->Isotope->Cart->billingAddress['lastname'] . '"' . $strTagEnding . '
+<input type="hidden" name="address1" value="' . $this->Isotope->Cart->billingAddress['street_1'] . '"' . $strTagEnding . '
+<input type="hidden" name="address2" value="' . $this->Isotope->Cart->billingAddress['street_2'] . '"' . $strTagEnding . '
+<input type="hidden" name="zip" value="' . $this->Isotope->Cart->billingAddress['postal'] . '"' . $strTagEnding . '
+<input type="hidden" name="city" value="' . $this->Isotope->Cart->billingAddress['city'] . '"' . $strTagEnding . '
+<input type="hidden" name="country" value="' . strtoupper($this->Isotope->Cart->billingAddress['country']) . '"' . $strTagEnding . '
+<input type="hidden" name="email" value="' . $this->Isotope->Cart->billingAddress['email'] . '"' . $strTagEnding . '
+<input type="hidden" name="night_phone_b" value="' . $this->Isotope->Cart->billingAddress['phone'] . '"' . $strTagEnding . '
 
-<input type="hidden" name="notify_url" value="' . $this->Environment->base . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id . '">
-<input type="hidden" name="bn" value="PP-BuyNowBF:btn_paynowCC_LG.gif:NonHosted">
-<input type="' . (strlen($this->button) ? 'image" src="'.$this->button.'" border="0"' : 'submit" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]).'"') . ' alt="PayPal - The safer, easier way to pay online!">
+<input type="hidden" name="notify_url" value="' . $this->Environment->base . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id . '"' . $strTagEnding . '
+<input type="hidden" name="bn" value="PP-BuyNowBF:btn_paynowCC_LG.gif:NonHosted"' . $strTagEnding . '
+<input type="' . (strlen($this->button) ? 'image" src="'.$this->button.'" border="0"' : 'submit" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]).'"') . ' alt="PayPal - The safer, easier way to pay online!"' . $strTagEnding . '
 </form>
 
-<script type="text/javascript">
-<!--//--><![CDATA[//><!--
+' . $strJsBegin . '
 window.addEvent( \'domready\' , function() {
   $(\'payment_form\').submit();
 });
-//--><!]]>
-</script>';
+' . $strJsEnd;
 
 		return $strBuffer;
 	}
 }
-

@@ -22,6 +22,7 @@
  * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Christian de la Haye <service@delahaye.de>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
@@ -602,7 +603,31 @@ class IsotopeProduct extends Controller
 		$objTemplate->action = ampersand($this->Environment->request, true);
 		$objTemplate->formSubmit = $this->formSubmit;
 
-		$GLOBALS['TL_MOOTOOLS'][] = "<script type=\"text/javascript\">new {$this->ajaxClass}('{$objModule->id}', '" . ($this->pid ? $this->pid : $this->id) . "', '{$this->formSubmit}', ['ctrl_" . implode("_".$this->formSubmit."', 'ctrl_", $arrAjaxOptions) . "_".$this->formSubmit."'], {language: '{$GLOBALS['TL_LANGUAGE']}', page: {$objPage->id}});</script>";
+		// special tags for different output formats
+		global $objPage;
+		if ($objPage->outputFormat != '')
+		{
+			$strOutputFormat = $objPage->outputFormat;
+		}
+		switch($strOutputFormat)
+		{
+			case 'xhtml':
+				$strJsBegin = '<script type=\"text/javascript\">
+<!--//--><![CDATA[//><!--';
+				$strJsEnd = '//--><!]]>
+</script>
+';
+				break;
+			default:
+				$strJsBegin = '<script>';
+				$strJsEnd = '</script>
+';
+				break;
+		}
+
+		$GLOBALS['TL_MOOTOOLS'][] = $strJsBegin . "
+new {$this->ajaxClass}('{$objModule->id}', '" . ($this->pid ? $this->pid : $this->id) . "', '{$this->formSubmit}', ['ctrl_" . implode("_".$this->formSubmit."', 'ctrl_", $arrAjaxOptions) . "_".$this->formSubmit."'], {language: '{$GLOBALS['TL_LANGUAGE']}', page: {$objPage->id}});
+" . $strJsEnd;
 
 		// HOOK for altering product data before output
 		if (isset($GLOBALS['ISO_HOOKS']['generateProduct']) && is_array($GLOBALS['ISO_HOOKS']['generateProduct']))
@@ -1060,4 +1085,3 @@ class IsotopeProduct extends Controller
 		$this->arrDownloads = null;
 	}
 }
-

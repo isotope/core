@@ -22,6 +22,7 @@
  * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Christian de la Haye <service@delahaye.de>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
@@ -319,7 +320,15 @@ class PaymentPaypalPayflowPro extends IsotopePayment
 
 		$strCard = implode(' ', str_split((substr($num, 0, 2) . str_repeat('*', (strlen($num)-6)) . substr($num, -4)), 4));
 
-		return sprintf('%s<br />%s: %s', $this->label, $GLOBALS['ISO_LANG']['CCT'][$type], $strCard);
+		// special tags for different output formats
+		global $objPage;
+		if ($objPage->outputFormat != '')
+		{
+			$strOutputFormat = $objPage->outputFormat;
+		}
+		$strTagEnding = ($strOutputFormat=='xhtml' ? ' />' : '>');
+
+		return sprintf('%s<br'.$strTagEnding.'%s: %s', $this->label, $GLOBALS['ISO_LANG']['CCT'][$type], $strCard);
 	}
 
 
@@ -329,4 +338,3 @@ class PaymentPaypalPayflowPro extends IsotopePayment
 	}
 
 }
-
