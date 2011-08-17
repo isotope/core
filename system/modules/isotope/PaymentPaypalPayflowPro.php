@@ -320,15 +320,9 @@ class PaymentPaypalPayflowPro extends IsotopePayment
 
 		$strCard = implode(' ', str_split((substr($num, 0, 2) . str_repeat('*', (strlen($num)-6)) . substr($num, -4)), 4));
 
-		// special tags for different output formats
-		global $objPage;
-		if ($objPage->outputFormat != '')
-		{
-			$strOutputFormat = $objPage->outputFormat;
-		}
-		$strTagEnding = ($strOutputFormat=='xhtml' ? ' />' : '>');
-
-		return sprintf('%s<br'.$strTagEnding.'%s: %s', $this->label, $GLOBALS['ISO_LANG']['CCT'][$type], $strCard);
+		list($endTag) = IsotopeFrontend::getElementAndScriptTags();
+		
+		return sprintf('%s<br'.$endTag.'%s: %s', $this->label, $GLOBALS['ISO_LANG']['CCT'][$type], $strCard);
 	}
 
 
@@ -338,3 +332,4 @@ class PaymentPaypalPayflowPro extends IsotopePayment
 	}
 
 }
+

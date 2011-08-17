@@ -66,7 +66,6 @@ class IsotopeGallery extends Frontend
 
 		$this->name = $strName;
 		$this->files = $arrFiles;
-
 	}
 
 
@@ -245,33 +244,15 @@ class IsotopeGallery extends Frontend
 
 	protected function injectAjax()
 	{
-		// special tags for different output formats
-		global $objPage;
-		if ($objPage->outputFormat != '')
-		{
-			$strOutputFormat = $objPage->outputFormat;
-		}
-		switch($strOutputFormat)
-		{
-			case 'xhtml':
-				$strJsBegin = '<script type=\"text/javascript\">
-<!--//--><![CDATA[//><!--';
-				$strJsEnd = '//--><!]]>
-</script>
-';
-				break;
-			default:
-				$strJsBegin = '<script>';
-				$strJsEnd = '</script>
-';
-				break;
-		}
-
+		list(,$startScript, $endScript) = IsotopeFrontend::getElementAndScriptTags();
+		
 		$GLOBALS['TL_MOOTOOLS'][get_class($this).'_ajax'] = "
-".$strJsBegin."
+$startScript
 window.addEvent('ajaxready', function() {
   Mediabox ? Mediabox.scanPage() : Lightbox.scanPage();
 });
-".$strJsEnd;
+$endScript
+";
 	}
 }
+

@@ -12,6 +12,7 @@ Version 1.3.beta2 (2011-??-??)
 - Added option to invert the rule condition (match/match not)
 - Added product list caching with intelligent self-configuration to display a "please wait" message only when necessary
 - Added caching tables to the maintenance cleaing options
+- Added .html5 & .xhtml templates for Contao 2.10 (Ticket #457)
 - Improved: Allow subclasses of ModuleIsotopeProductFilter for filter modules
 - Improved: Allow subclasses of ModuleIsotopeProductFilter to cache request
 - Improved: new function generateRequestUrl to remove GET-parameters from request string

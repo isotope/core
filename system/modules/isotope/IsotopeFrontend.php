@@ -350,38 +350,17 @@ class IsotopeFrontend extends Frontend
 	public function injectMessages()
 	{
 		$strMessages = $this->getIsotopeMessages();
-
-		// special tags for different output formats
-		global $objPage;
-		if ($objPage->outputFormat != '')
-		{
-			$strOutputFormat = $objPage->outputFormat;
-		}
-		switch($strOutputFormat)
-		{
-			case 'xhtml':
-				$strJsBegin = '<script type=\"text/javascript\">
-<!--//--><![CDATA[//><!--';
-				$strJsEnd = '//--><!]]>
-</script>
-';
-				break;
-			default:
-				$strJsBegin = '<script>';
-				$strJsEnd = '</script>
-';
-				break;
-		}
+		list(,$startScript, $endScript) = IsotopeFrontend::getElementAndScriptTags();
 
 		if ($strMessages != '')
 		{
 			$GLOBALS['TL_MOOTOOLS'][] = "
-".$strJsBegin."
+$startScript
 window.addEvent('domready', function()
 {
 	Isotope.displayBox('" . $strMessages . "', true);
 });
-".$strJsEnd;
+$endScript";
 		}
 	}
 
@@ -426,4 +405,34 @@ window.addEvent('domready', function()
 
 		return $strMessages;
 	}
+	
+	
+	/**
+	 * Get html & javascript tags depending on output format (Contao 2.10)
+	 *
+	 * @param	void
+	 * @return	array
+	 */
+	public static function getElementAndScriptTags($blnAjax=false)
+	{
+		global $objPage;
+
+		switch( $objPage->outputFormat )
+		{
+			case 'html5':
+				return array('>', '<script>', '</script>');
+
+			case 'xhtml':
+			default:
+				if ($blnAjax)
+				{
+					return array(' />', '<script type=\"text/javascript\">', '</script>');
+				}
+				else
+				{
+					return array(' />', '<script type=\"text/javascript\">'."\n".'<!--//--><![CDATA[//><!--', '//--><!]]>'."\n".'</script>');
+				}
+		}
+	}
 }
+

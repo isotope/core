@@ -277,21 +277,16 @@ class PaymentCybersource extends IsotopePayment
 			}
 		}
 
-		// special tags for different output formats
-		if ($objPage->outputFormat != '')
-		{
-			$strOutputFormat = $objPage->outputFormat;
-		}
-		$strTagEnding = ($strOutputFormat=='xhtml' ? ' />' : '>');
+		list($endTag) = IsotopeFrontend::getElementAndScriptTags();
 
 		return '
 <h2>' . $this->label . '</h2>'.
 ($this->Input->get('error') == '' ? '' : '<p class="error message">'.$GLOBALS['TL_LANG']['CYB'][$this->Input->get('error')].'</p>').
-'<form id="payment_form" action="'.$this->Environment->request.'" method="post"' . $strTagEnding . '
-<input type="hidden" name="FORM_SUBMIT" value="payment_form"' . $strTagEnding . '
-<input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'"' . $strTagEnding
+'<form id="payment_form" action="'.$this->Environment->request.'" method="post">
+<input type="hidden" name="FORM_SUBMIT" value="payment_form"' . $endTag . '
+<input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'"' . $endTag
 .$strBuffer.'
-<input type="submit" value="' . specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']) . '"' . $strTagEnding . '
+<input type="submit" value="' . specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']) . '"' . $endTag . '
 </form>';
 
 
@@ -344,7 +339,6 @@ class PaymentCybersource extends IsotopePayment
 
 		if ($this->Input->post('FORM_SUBMIT') == 'be_pos_terminal' && $arrPaymentInfo['x_trans_id']!=="0")
 		{
-
 			$cybersource_values = array
 			(
 				"x_version"							=> '3.1',
@@ -357,11 +351,12 @@ class PaymentCybersource extends IsotopePayment
 				"x_delim_char"						=> ',',
 				"x_encap_char"						=> '"',
 				"x_relay_response"					=> 'FALSE'
-
 			);
 
-
-			foreach( $cybersource_values as $key => $value ) $fields .= "$key=" . urlencode( $value ) . "&";
+			foreach( $cybersource_values as $key => $value )
+			{
+				$fields .= "$key=" . urlencode( $value ) . "&";
+			}
 
 			$fieldsFinal = rtrim($fields, '&');
 
@@ -391,6 +386,7 @@ class PaymentCybersource extends IsotopePayment
 					$this->Database->prepare("UPDATE tl_iso_orders SET status='processing', payment_data=? WHERE id=?")
 								   ->execute($strPaymentInfo, $intOrderId);
 					break;
+
 				default:
 					$arrPaymentInfo['authorize_reason'] = $arrResponses['reason'];
 					$strPaymentInfo = serialize($arrPaymentInfo);
@@ -398,7 +394,6 @@ class PaymentCybersource extends IsotopePayment
 					$this->Database->prepare("UPDATE tl_iso_orders SET status='on_hold', cybersource_reason=? WHERE id=?")
 								   ->execute($strPaymentInfo, $intOrderId);
 					break;
-
 			}
 
 			$objTemplate->isConfirmation = true;
@@ -441,9 +436,9 @@ $return .= '</div></div>';
 	}
 
 
-
 	public function getAllowedCCTypes()
 	{
 		return array('mc', 'visa', 'amex', 'discover', 'jcb', 'diners', 'enroute', 'carte_blanche', 'jal', 'maestro', 'delta', 'solo', 'visa_electron', 'dankort', 'laser', 'carte_bleue', 'carta_si', 'enc_acct_num', 'uatp', 'maestro_intl', 'ge_money_uk');
 	}
 }
+

@@ -603,31 +603,8 @@ class IsotopeProduct extends Controller
 		$objTemplate->action = ampersand($this->Environment->request, true);
 		$objTemplate->formSubmit = $this->formSubmit;
 
-		// special tags for different output formats
-		global $objPage;
-		if ($objPage->outputFormat != '')
-		{
-			$strOutputFormat = $objPage->outputFormat;
-		}
-		switch($strOutputFormat)
-		{
-			case 'xhtml':
-				$strJsBegin = '<script type=\"text/javascript\">
-<!--//--><![CDATA[//><!--';
-				$strJsEnd = '//--><!]]>
-</script>
-';
-				break;
-			default:
-				$strJsBegin = '<script>';
-				$strJsEnd = '</script>
-';
-				break;
-		}
-
-		$GLOBALS['TL_MOOTOOLS'][] = $strJsBegin . "
-new {$this->ajaxClass}('{$objModule->id}', '" . ($this->pid ? $this->pid : $this->id) . "', '{$this->formSubmit}', ['ctrl_" . implode("_".$this->formSubmit."', 'ctrl_", $arrAjaxOptions) . "_".$this->formSubmit."'], {language: '{$GLOBALS['TL_LANGUAGE']}', page: {$objPage->id}});
-" . $strJsEnd;
+		list(,$startScript, $endScript) = IsotopeFrontend::getElementAndScriptTags();
+		$GLOBALS['TL_MOOTOOLS'][] = $startScript."new {$this->ajaxClass}('{$objModule->id}', '" . ($this->pid ? $this->pid : $this->id) . "', '{$this->formSubmit}', ['ctrl_" . implode("_".$this->formSubmit."', 'ctrl_", $arrAjaxOptions) . "_".$this->formSubmit."'], {language: '{$GLOBALS['TL_LANGUAGE']}', page: {$objPage->id}});".$endScript;
 
 		// HOOK for altering product data before output
 		if (isset($GLOBALS['ISO_HOOKS']['generateProduct']) && is_array($GLOBALS['ISO_HOOKS']['generateProduct']))
@@ -1085,3 +1062,4 @@ new {$this->ajaxClass}('{$objModule->id}', '" . ($this->pid ? $this->pid : $this
 		$this->arrDownloads = null;
 	}
 }
+
