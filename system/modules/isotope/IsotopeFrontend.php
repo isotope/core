@@ -126,7 +126,7 @@ class IsotopeFrontend extends Frontend
 	/**
 	 * Apply a watermark to an image
 	 */
-	public function watermarkImage($image, $watermark, $position='br')
+	public static function watermarkImage($image, $watermark, $position='br')
 	{
 		$image = urldecode($image);
 
@@ -150,8 +150,8 @@ class IsotopeFrontend extends Frontend
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['watermarkImage'] as $callback)
 			{
-				$this->import($callback[0]);
-				$return = $this->$callback[0]->$callback[1]($image, $watermark);
+				$objCallback = (in_array('getInstance', get_class_methods($callback[0]))) ? call_user_func(array($callback[0], 'getInstance')) : new $callback[0]();
+				$return = $objCallback->$callback[1]($image, $watermark);
 
 				if (is_string($return))
 				{
@@ -299,8 +299,8 @@ class IsotopeFrontend extends Frontend
 		// Resize the original image
 		if ($target)
 		{
-			$this->import('Files');
-			$this->Files->rename($strCacheName, $target);
+			$objFiles = Files::getInstance();
+			$objFiles->rename($strCacheName, $target);
 
 			return $target;
 		}
@@ -308,8 +308,8 @@ class IsotopeFrontend extends Frontend
 		// Set the file permissions when the Safe Mode Hack is used
 		if ($GLOBALS['TL_CONFIG']['useFTP'])
 		{
-			$this->import('Files');
-			$this->Files->chmod($strCacheName, 0644);
+			$objFiles = Files::getInstance();
+			$objFiles->chmod($strCacheName, 0644);
 		}
 
 		// Return the path to new image
@@ -349,7 +349,7 @@ class IsotopeFrontend extends Frontend
 	 */
 	public function injectMessages()
 	{
-		$strMessages = $this->getIsotopeMessages();
+		$strMessages = IsotopeFrontend::getIsotopeMessages();
 		list(,$startScript, $endScript) = IsotopeFrontend::getElementAndScriptTags();
 
 		if ($strMessages != '')
@@ -370,7 +370,7 @@ $endScript";
 	 * @param	void
 	 * @return	string
 	 */
-	public function getIsotopeMessages()
+	public static function getIsotopeMessages()
 	{
 		$strMessages = '';
 		$arrGroups = array('ISO_ERROR', 'ISO_CONFIRM', 'ISO_INFO');
@@ -426,11 +426,11 @@ $endScript";
 			default:
 				if ($blnAjax)
 				{
-					return array(' />', '<script type=\"text/javascript\">', '</script>');
+					return array(' />', '<script type="text/javascript">', '</script>');
 				}
 				else
 				{
-					return array(' />', '<script type=\"text/javascript\">'."\n".'<!--//--><![CDATA[//><!--', '//--><!]]>'."\n".'</script>');
+					return array(' />', '<script type="text/javascript">'."\n".'<!--//--><![CDATA[//><!--', '//--><!]]>'."\n".'</script>');
 				}
 		}
 	}

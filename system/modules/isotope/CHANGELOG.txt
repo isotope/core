@@ -21,6 +21,7 @@ Version 1.3.beta2 (2011-??-??)
 - Fixed a bug in runonce script preventing the database file from being refreshed
 - Fixed a bug with Contao 2.10 and the new foreignKey implementation
 - Fixed product translations not working (Ticket #448)
+- Started using static functions if they don't need the class (see IsotopeFrontend)
 
 Version 1.3.beta1 (2011-07-18)
 ------------------------------

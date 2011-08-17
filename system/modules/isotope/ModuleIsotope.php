@@ -85,8 +85,7 @@ abstract class ModuleIsotope extends Module
 		// Prepend any messages to the module output
 		if ($this->iso_includeMessages)
 		{
-			$this->import('IsotopeFrontend');
-			$strBuffer = $this->IsotopeFrontend->getIsotopeMessages() . $strBuffer;
+			$strBuffer = IsotopeFrontend::getIsotopeMessages() . $strBuffer;
 		}
 
 		return $strBuffer;

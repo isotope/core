@@ -98,8 +98,7 @@ class IsotopeGallery extends Frontend
 
 									if ($strImage != $strFile && $size['watermark'] != '')
 									{
-										$this->import('IsotopeFrontend');
-										$strImage = $this->IsotopeFrontend->watermarkImage($strImage, $size['watermark'], $size['position']);
+										$strImage = IsotopeFrontend::watermarkImage($strImage, $size['watermark'], $size['position']);
 									}
 
 									$arrSize = @getimagesize(TL_ROOT . '/' . $strImage);
