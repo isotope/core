@@ -156,17 +156,19 @@ class SurchargeWizard extends Widget
 
 		// Add label and return wizard
 		$return .= '<table class="tl_optionwizard" id="ctrl_'.$this->strId.'">
-  ';
+  <thead>';
 
 		if(is_array($this->varValue) && count($this->varValue))
   		{
-  			$return .= '<tr>
-					 <th><strong>'.$GLOBALS['TL_LANG'][$this->strTable]['opLabel'].'</strong></th>
-					 <th><strong>'.$GLOBALS['TL_LANG'][$this->strTable]['opPrice'].'</strong></th>
-					 <th><strong>'.$GLOBALS['TL_LANG'][$this->strTable]['opTaxClass'].'</strong></th>
-					 <th>&nbsp;</th>
-				    </tr>
-				';
+  			$return .= '
+    <tr>
+      <th><strong>'.$GLOBALS['TL_LANG'][$this->strTable]['opLabel'].'</strong></th>
+      <th><strong>'.$GLOBALS['TL_LANG'][$this->strTable]['opPrice'].'</strong></th>
+      <th><strong>'.$GLOBALS['TL_LANG'][$this->strTable]['opTaxClass'].'</strong></th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>';
 
 			// Add rows
 			for ($i=0; $i<count($this->varValue); $i++)
@@ -201,8 +203,7 @@ class SurchargeWizard extends Widget
 				}
 
 				$return .= '
-
-		<td>'.($blnEditable ? '<select name="'.$this->strId.'['.$i.'][tax_class]" class="tl_select_2" onfocus="Backend.getScrollOffset();">'.$options.'</select>' : $strTaxLabel).'</td>';
+      <td>'.($blnEditable ? '<select name="'.$this->strId.'['.$i.'][tax_class]" class="tl_select_2" onfocus="Backend.getScrollOffset();">'.$options.'</select>' : $strTaxLabel).'</td>';
 
 				$return .= '<td>';
 
@@ -218,23 +219,27 @@ class SurchargeWizard extends Widget
 					$return .= '&nbsp;';
 				}
 
-				$return .= '</td>
-	  </tr>';
+				$return .= '
+      </td>
+	</tr>';
 			}
 		}
 		else
 		{
-				$return .= '	<tr>
-									<th>&nbsp;</th>
-								</tr>
-								<tr>
-									<td>' . $GLOBALS['TL_LANG']['MSC']['noSurcharges'] .'</td>
-								</tr>
-							';
+				$return .= '
+    <tr>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>' . $GLOBALS['TL_LANG']['MSC']['noSurcharges'] .'</td>
+    </tr>';
 		}
 
 		return $return.'
-  </table>';
+  </tbody>
+</table>';
 	}
 }
 

@@ -167,6 +167,7 @@ class ImageWatermarkWizard extends Widget
 
 		// Begin table
 		$return .= '<table class="tl_imagewatermarkwizard" id="ctrl_'.$this->strId.'">
+  <thead>
     <tr>
       <th>'.$GLOBALS['TL_LANG'][$this->strTable]['iwName'].'</th>
       <th>'.$GLOBALS['TL_LANG'][$this->strTable]['iwWidth'].'</th>
@@ -175,7 +176,9 @@ class ImageWatermarkWizard extends Widget
       <th>'.$GLOBALS['TL_LANG'][$this->strTable]['iwWatermark'].'</th>
       <th>'.$GLOBALS['TL_LANG'][$this->strTable]['iwPosition'].'</th>
       <th>&nbsp;</th>
-    </tr>';
+    </tr>
+  </thead>
+  <tbody>';
 
 		foreach( $this->varValue as $i => $size )
 		{
@@ -222,6 +225,8 @@ class ImageWatermarkWizard extends Widget
 		}
 
 		return $return.'
+  </tbody>
   </table>';
 	}
 }
+
