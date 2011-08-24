@@ -298,7 +298,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			$arrSteps[] = array
 			(
 				'isActive'	=> $blnActive,
-				'class'		=> $step . ($blnActive ? ' active' : '') . ($blnPassed ? ' passed' : '') . ((!$blnPassed && !$blnActive) ? ' upcoming' : '') . ($i == 0 ? ' first' : '') . ($i == $total ? ' last' : ''),
+				'class'		=> 'step_'.$i . ($i == 0 ? ' first' : '') . ($i == $total ? ' last' : '') . ($blnActive ? ' active' : '') . ($blnPassed ? ' passed' : '') . ((!$blnPassed && !$blnActive) ? ' upcoming' : '') . ' '.$step,
 				'label'		=> (strlen($GLOBALS['TL_LANG']['ISO']['checkout_'.$step]) ? $GLOBALS['TL_LANG']['ISO']['checkout_'.$step] : $step),
 				'href'		=> ($blnPassed ? $this->addToUrl('step='.$step, true) : ''),
 				'title'		=> specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['checkboutStepBack'], (strlen($GLOBALS['TL_LANG']['ISO']['checkout_'.$step]) ? $GLOBALS['TL_LANG']['ISO']['checkout_'.$step] : $step))),
