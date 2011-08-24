@@ -140,14 +140,19 @@ var IsotopeProduct = new Class(
 				{
 					Isotope.hideBox();
 
-					JSON.decode(txt).each( function(option)
+					var json = JSON.decode(txt);
+					
+					// Update request token
+					REQUEST_TOKEN = json.token;
+					document.getElements('input[type="hidden"][name="REQUEST_TOKEN"]').set('value', json.token);
+					
+					json.content.each( function(option)
 					{
 						var oldEl = document.id(option.id);
-
 						if (oldEl)
 						{
 							var newEl = null;
-							var container = new Element('div').set('html', option.html).getElements('').each( function(child) {
+							new Element('div').set('html', option.html).getElements('*').each( function(child) {
 								if (child.get('id') == option.id)
 								{
 									newEl = child;

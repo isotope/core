@@ -604,7 +604,7 @@ class IsotopeProduct extends Controller
 		$objTemplate->formSubmit = $this->formSubmit;
 
 		list(,$startScript, $endScript) = IsotopeFrontend::getElementAndScriptTags();
-		$GLOBALS['TL_MOOTOOLS'][] = $startScript."new {$this->ajaxClass}('{$objModule->id}', '" . ($this->pid ? $this->pid : $this->id) . "', '{$this->formSubmit}', ['ctrl_" . implode("_".$this->formSubmit."', 'ctrl_", $arrAjaxOptions) . "_".$this->formSubmit."'], {language: '{$GLOBALS['TL_LANGUAGE']}', page: {$objPage->id}});".$endScript;
+		$GLOBALS['TL_MOOTOOLS'][] = $startScript."\nnew {$this->ajaxClass}('{$objModule->id}', '" . ($this->pid ? $this->pid : $this->id) . "', '{$this->formSubmit}', ['ctrl_" . implode("_".$this->formSubmit."', 'ctrl_", $arrAjaxOptions) . "_".$this->formSubmit."'], {language: '{$GLOBALS['TL_LANGUAGE']}', page: {$objPage->id}});\n".$endScript;
 
 		// HOOK for altering product data before output
 		if (isset($GLOBALS['ISO_HOOKS']['generateProduct']) && is_array($GLOBALS['ISO_HOOKS']['generateProduct']))
