@@ -868,16 +868,12 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		$objTemplate->summary = $GLOBALS['ISO_LANG']['MSC']['cartSummary'];
 
 		// Surcharges must be initialized before getProducts() to apply tax_id to each product
-		$arrSurcharges = array();
-		foreach( $this->Isotope->Cart->getSurcharges() as $arrSurcharge )
+		$arrSurcharges = $this->Isotope->Cart->getSurcharges();
+		foreach( $arrSurcharges as $k => $arrSurcharge )
 		{
-			$arrSurcharges[] = array
-			(
-				'label'			=> $arrSurcharge['label'],
-				'price'			=> $this->Isotope->formatPriceWithCurrency($arrSurcharge['price']),
-				'total_price'	=> $this->Isotope->formatPriceWithCurrency($arrSurcharge['total_price']),
-				'tax_id'		=> $arrSurcharge['tax_id'],
-			);
+			$arrSurcharges[$k]['price']			= $this->Isotope->formatPriceWithCurrency($arrSurcharge['price']);
+			$arrSurcharges[$k]['total_price']	= $this->Isotope->formatPriceWithCurrency($arrSurcharge['total_price']);
+			$arrSurcharges[$k]['rowclass']		= trim('foot_'.($k+1) . ' ' . $arrSurcharge[$k]['rowclass']);
 		}
 
 		$arrProductData = array();

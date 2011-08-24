@@ -18,21 +18,21 @@
 
 <table>
 	<tfoot>
-		<tr class="subtotal foot_first">
+		<tr class="foot_0 foot_first subtotal">
 			<td class="col_first name" colspan="3"><?php echo $this->subTotalLabel; ?></td>
 			<td class="price">&nbsp;</td>
 			<td class="price total"><?php echo $this->subTotalPrice; ?></td>
 			<td class="col_last tax">&nbsp;</td>
 		</tr>
 <?php if (is_array($this->surcharges)): foreach( $this->surcharges as $surcharge ): ?>
-		<tr>
+		<tr class="<?php echo $surcharge['rowclass']; ?>">
 			<td class="col_first name" colspan="3"><?php echo $surcharge['label']; ?></td>
 			<td class="price"><?php echo $surcharge['price']; ?></td>
 			<td class="price total"><?php echo $surcharge['total_price']; ?></td>
 			<td class="col_last tax"><?php echo $surcharge['tax_id']; ?></td>
 		</tr>
 <?php endforeach; endif; ?>
-		<tr class="grandtotal foot_last">
+		<tr class="foot_<?php echo count($this->surcharges)+1; ?> foot_last grandtotal">
 			<td class="col_first name" colspan="3"><?php echo $this->grandTotalLabel; ?></td>
 			<td class="price total" colspan="2"><?php echo $this->grandTotal; ?></td>
 			<td class="col_last tax">&nbsp;</td>

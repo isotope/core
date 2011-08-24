@@ -11,7 +11,7 @@
 <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}" />
 <table cellpadding="0" cellspacing="0" summary="<?php echo $this->summary; ?>">
 <tfoot>
-	<tr class="subtotal foot_first">
+	<tr class="foot_0 foot_first subtotal">
 		<td class="col_first">&nbsp;</td>
 		<td class="name" colspan="2"><?php echo $this->subTotalLabel; ?></td>
 		<td class="price">&nbsp;</td>
@@ -29,7 +29,7 @@
 		<td class="col_last remove">&nbsp;</td>
 	</tr>
 <?php endforeach; ?>
-	<tr class="grandtotal foot_last">
+	<tr class="foot_<?php echo count($this->surcharges)+1; ?> foot_last grandtotal">
 		<td class="col_first">&nbsp;</td>
 		<td class="name" colspan="2"><?php echo $this->grandTotalLabel; ?></td>
 		<td class="price total" colspan="2"><?php echo $this->grandTotalPrice; ?></td>
