@@ -302,7 +302,7 @@ class tl_iso_producttypes extends Backend
 	 */
 	public function getListTemplates(DataContainer $dc)
 	{
-		return $this->getTemplateGroup('iso_list_', $intPid);
+		return $this->getTemplateGroup('iso_list_');
 	}
 
 
@@ -321,11 +321,14 @@ class tl_iso_producttypes extends Backend
 	 * List template from all themes, show theme name
 	 * Based on Controller::getTemplateGroup from Contao 2.9.3
 	 */
-	public function getTemplateGroup($strPrefix, $intPid=0)
+	protected function getTemplateGroup($strPrefix, $intTheme=0)
 	{
 		$arrThemes = array();
 		$arrTemplates = array();
-		$arrFolders = array(TL_ROOT . '/templates');
+		$arrFolders = array();
+		
+		// Add the templates root directory
+		$arrFolders[] = TL_ROOT . '/templates';
 
 		// Add theme templates folder
 		$objTheme = $this->Database->execute("SELECT name, templates FROM tl_theme" . ($intPid>0 ? " WHERE id=$intPid" : ''));
@@ -338,7 +341,7 @@ class tl_iso_producttypes extends Backend
 			}
 		}
 
-		// Add the module subfolders
+		// Add the module templates folders if they exist
 		foreach ($this->Config->getActiveModules() as $strModule)
 		{
 			$strFolder = TL_ROOT . '/system/modules/' . $strModule . '/templates';
@@ -352,12 +355,13 @@ class tl_iso_producttypes extends Backend
 		// Find all matching templates
 		foreach ($arrFolders as $strFolder)
 		{
-			$arrFiles = preg_grep('/^' . preg_quote($strPrefix, '/') . '.*\.tpl$/i',  scan($strFolder));
+			$arrFiles = preg_grep('/^' . preg_quote($strPrefix, '/') . '/i',  scan($strFolder));
 
 			foreach ($arrFiles as $strTemplate)
 			{
-				$strTemplate = basename($strTemplate, '.tpl');
-				$arrTemplates[$strTemplate] = $strTemplate . (isset($arrThemes[$strFolder]) ? ' ['.$arrThemes[$strFolder].']' : '');
+				$strName = basename($strTemplate);
+				$strName = substr($strName, 0, strrpos($strName, '.'));
+				$arrTemplates[$strName] = $strName . (isset($arrThemes[$strFolder]) ? ' ['.$arrThemes[$strFolder].']' : '');
 			}
 		}
 
