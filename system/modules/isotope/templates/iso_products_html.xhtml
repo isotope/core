@@ -26,18 +26,18 @@
 	<td><?php echo $objProduct->formatted_total_price; ?></td>
 </tr>
 <?php endforeach; ?>
-<tr class="subtotal foot_first">
+<tr class="foot_0 foot_first subtotal">
 	<td class="name" colspan="3"><?php echo $this->subTotalLabel; ?></td>
 	<td class="price total" colspan="2"><?php echo $this->subTotalPrice; ?></td>
 </tr>
 <?php foreach( $this->surcharges as $surcharge ): ?>
-<tr class="surcharge">
+<tr class="<?php echo $surcharge['rowclass']; ?>">
 	<td class="name" colspan="3"><?php echo $surcharge['label']; ?></td>
 	<td class="price"><?php echo $surcharge['price']; ?></td>
 	<td class="price total"><?php echo $surcharge['total_price']; ?></td>
 </tr>
 <?php endforeach; ?>
-<tr class="grandtotal foot_last">
+<tr class="foot_<?php echo count($this->surcharges)+1; ?> foot_last grandtotal">
 	<td class="name" colspan="3"><?php echo $this->grandTotalLabel; ?></td>
 	<td class="price total" colspan="2"><?php echo $this->grandTotalPrice; ?></td>
 </tr>
