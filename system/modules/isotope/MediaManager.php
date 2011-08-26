@@ -265,6 +265,7 @@ class MediaManager extends Widget implements uploadable
 
 		// Add label and return wizard
 		$return .= '<table class="tl_mediamanager">
+  <thead>
   <tr>
     <td class="col_0 col_first">'.$GLOBALS['TL_LANG'][$this->strTable]['mmSrc'].'</td>
     <td class="col_1">'.$GLOBALS['TL_LANG'][$this->strTable]['mmAlt'].' / '.$GLOBALS['TL_LANG'][$this->strTable]['mmLink'].'</td>
@@ -272,7 +273,8 @@ class MediaManager extends Widget implements uploadable
     <td class="col_3">'.$GLOBALS['TL_LANG'][$this->strTable]['mmTranslate'].'</td>
     <td class="col_4 col_last">&nbsp;</td>
   </tr>
-';
+  </thead>
+  <tbody>';
 
 		// Add input fields
 		for ($i=0; $i<count($this->varValue); $i++)
@@ -332,6 +334,7 @@ class MediaManager extends Widget implements uploadable
 		}
 
 		return $return.'
+  </tbody>
   </table>' . $upload . '</div>';
 	}
 }

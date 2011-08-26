@@ -148,7 +148,7 @@ class VariantWizard extends Widget
 
 		// Begin table
 		$return = '<table class="tl_variantwizard" id="ctrl_'.$this->strId.'">
-  ';
+  <tbody>';
 
 		// Add fields
 		foreach ($this->arrOptions as $option)
@@ -195,6 +195,8 @@ class VariantWizard extends Widget
 		}
 
 		return $return . '
+  </tbody>
 </table>';
 	}
 }
+
