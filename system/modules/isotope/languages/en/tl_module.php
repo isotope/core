@@ -48,10 +48,12 @@ $GLOBALS['TL_LANG']['tl_module']['iso_noProducts']				= array('Message for empty
 $GLOBALS['TL_LANG']['tl_module']['iso_emptyMessage']			= array('Define empty message', 'Set a custom message when the product list is empty.');
 $GLOBALS['TL_LANG']['tl_module']['orderCompleteJumpTo']			= array('Completed order jump to page', 'Select a page the customer will be referred to after their order is complete.');
 $GLOBALS['TL_LANG']['tl_module']['iso_jump_first']				= array('Redirect to first product', 'Check here if users are redirected to the first product of the list.');
+$GLOBALS['TL_LANG']['tl_module']['iso_hide_list']				= array('Hide in reader mode', 'Hide product list when a product alias is found in the URL.');
 $GLOBALS['TL_LANG']['tl_module']['iso_mail_customer']			= array('Customer notification email', 'Select the Iotope Email used to send to customers when they place an order');
 $GLOBALS['TL_LANG']['tl_module']['iso_mail_admin']				= array('Sales admin notification email', 'Select the Iotope Email used to send to a sales admin when a customers places an order');
 $GLOBALS['TL_LANG']['tl_module']['iso_sales_email']				= array('Sales admin email address', 'Enter an email address other than the default System Admin for store notifications to be sent to.');
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope']			= array('Category Scope', 'Specify the scope of a product lister.');
+$GLOBALS['TL_LANG']['tl_module']['iso_list_where']				= array('Condition', 'Here you can enter a SQL condition to filter the products (e.g. <em>featured=1</em> or <em>color!=\'red\'</em>).');
 $GLOBALS['TL_LANG']['tl_module']['iso_use_quantity'] 			= array('Enable quantity', 'Allow users to specify 1 or more of a product to be purchased.');
 $GLOBALS['TL_LANG']['tl_module']['iso_filterModules']			= array('Filter modules', 'Select the filter modules you want to consider for this product list.');
 $GLOBALS['TL_LANG']['tl_module']['iso_filterFields']			= array('Enabled filters', 'Please select filters to enable.');

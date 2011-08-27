@@ -186,7 +186,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		{
 			$arrFilters = array();
 			$arrInput = $this->Input->post('filter');
-			$arrIds = $this->findCategoryProducts($this->iso_category_scope);
+			$arrIds = $this->findCategoryProducts($this->iso_category_scope, $this->iso_list_where);
 
 			foreach( $this->iso_filterFields as $strField )
 			{

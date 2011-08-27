@@ -56,13 +56,12 @@ class ModuleIsotopeProductReader extends ModuleIsotope
 		}
 
 		// Return if no product has been specified
-		if (!strlen($this->Input->get('product')))
+		if ($this->Input->get('product') == '')
 		{
 			return '';
 		}
 
 		global $objPage;
-
 		$this->iso_reader_jumpTo = $objPage->id;
 
 		return parent::generate();

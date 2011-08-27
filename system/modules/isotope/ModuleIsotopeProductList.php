@@ -59,6 +59,12 @@ class ModuleIsotopeProductList extends ModuleIsotope
 
 			return $objTemplate->parse();
 		}
+		
+		// Hide product list in reader mode if the respective setting is enabled
+		if ($this->iso_hide_list && $this->Input->get('product') != '')
+		{
+			return '';
+		}
 
 		if ($this->iso_cols < 1)
 		{
@@ -100,7 +106,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 											  ->fetchEach('product_id');
 
 			$total = count($arrProductCache);
-			
+
 			if ($total > 0)
 			{
 				$offset = $this->generatePagination($total);
@@ -116,7 +122,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 				}
 			}
 		}
-		
+
 		if (!is_array($arrProducts))
 		{
 			// Display "loading products" message and add cache flag
@@ -240,7 +246,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 	 */
 	protected function findProducts()
 	{
-		$arrIds = $this->findCategoryProducts($this->iso_category_scope);
+		$arrIds = $this->findCategoryProducts($this->iso_category_scope, $this->iso_list_where);
 
 		$objProductData = $this->Database->execute($this->Isotope->getProductSelect() . " WHERE p1.published='1' AND p1.language='' AND p1.id IN (" . implode(',', $arrIds) . ")");
 
