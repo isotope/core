@@ -184,6 +184,12 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			$this->Template->message = $this->iso_emptyMessage ? $this->iso_noProducts : $GLOBALS['TL_LANG']['MSC']['noProducts'];
 			return;
 		}
+		
+		if ($this->iso_jump_first && $this->Input->get('product') == '')
+		{
+			$objProduct = array_shift($arrProducts);
+			$this->redirect($objProduct->href_reader);
+		}
 
 		$arrBuffer = array();
 		$total = count($arrProducts) - 1;
