@@ -153,7 +153,7 @@ class IsotopeRules extends Controller
 			{
 				// @todo show dropped coupons
 				$arrCoupons = array_diff($arrCoupons, $arrDropped);
-				$this->Database->query("UPDATE tl_iso_cart SET coupons='" . serialize($arrCoupons) . "' WHERE id={$this->Isotope->Cart->id}");
+				$this->Database->query("UPDATE tl_iso_cart SET coupons='" . serialize($arrCoupons) . "' WHERE id=".(int)$this->Isotope->Cart->id);
 			}
 		}
 
@@ -287,7 +287,7 @@ class IsotopeRules extends Controller
 	 */
 	public function cleanRuleUsages(&$objModule)
 	{
-		$this->Database->query("DELETE FROM tl_iso_rule_usage WHERE pid=(SELECT id FROM tl_iso_orders WHERE cart_id={$this->Isotope->Cart->id})");
+		$this->Database->query("DELETE FROM tl_iso_rule_usage WHERE pid=(SELECT id FROM tl_iso_orders WHERE cart_id=".(int)$this->Isotope->Cart->id.")");
 
 		return '';
 	}
@@ -311,11 +311,11 @@ class IsotopeRules extends Controller
 
 
 		// Limits
-		$arrProcedures[] = "(limitPerConfig=0 OR limitPerConfig>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND config_id=".(int)$this->Isotope->Config->id." AND order_id NOT IN (SELECT id FROM tl_iso_orders WHERE cart_id=".$this->Isotope->Cart->id.")))";
+		$arrProcedures[] = "(limitPerConfig=0 OR limitPerConfig>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND config_id=".(int)$this->Isotope->Config->id." AND order_id NOT IN (SELECT id FROM tl_iso_orders WHERE cart_id=".(int)$this->Isotope->Cart->id.")))";
 
 		if (FE_USER_LOGGED_IN && TL_MODE=='FE')
 		{
-			$arrProcedures[] = "(limitPerMember=0 OR limitPerMember>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND member_id=".(int)$this->User->id." AND order_id NOT IN (SELECT id FROM tl_iso_orders WHERE cart_id=".$this->Isotope->Cart->id.")))";
+			$arrProcedures[] = "(limitPerMember=0 OR limitPerMember>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND member_id=".(int)$this->User->id." AND order_id NOT IN (SELECT id FROM tl_iso_orders WHERE cart_id=".(int)$this->Isotope->Cart->id.")))";
 		}
 
 

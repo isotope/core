@@ -120,6 +120,7 @@ Version 0.2.11 (2011-08-??)
 - Fixed potential issues when having multiple cart modules on the same page
 - Fixed: Image watermark was not applied if the original image was not resized (Ticket #487)
 - Fixed: Asset import added every image to every product due to regex bug (Ticket #512)
+- Fixed potential issue in rules when no cart ID was available (Ticket #509)
 
 Version 0.2.10 (2011-07-06)
 ------------------------------
