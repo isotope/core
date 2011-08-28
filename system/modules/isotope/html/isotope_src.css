@@ -1,0 +1,68 @@
+/**
+ * TYPOlight Open Source CMS
+ * Copyright (C) 2005-2010 Leo Feyer
+ *
+ * This program is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation, either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program. If not, please visit the Free
+ * Software Foundation website at <http://www.gnu.org/licenses/>.
+ *
+ * PHP version 5
+ * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
+ * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ * @author     Andreas Schempp <andreas@schempp.ch>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
+ */
+
+
+#iso_ajaxBox {
+	width:20%;
+	padding:24px;
+	position:absolute;
+	top:30px;
+	left:40%;
+	background:#fff url("../../../themes/default/images/loading.gif") no-repeat right center;
+	border:2px solid #000;
+	font-family:"Trebuchet MS",Verdana,sans-serif;
+	font-size:15px;
+	line-height: 18px;
+	text-align:left;
+	color:#000;
+	padding-right: 50px;
+}
+
+#iso_ajaxBox.btnClose {
+	background:#fff url("../../../themes/default/images/help.gif") no-repeat 96% 18px;
+	cursor: pointer;
+}
+
+#iso_ajaxBox p {
+	margin:0;
+	padding:0;
+}
+
+#iso_ajaxOverlay {
+	width:100%;
+	height:100%;
+	position:fixed;
+	top:0;
+	left:0;
+	background-color:#000;
+	-moz-opacity:0.5;
+	opacity:0.5;
+	_display:none;
+	filter:Alpha(opacity=50);
+}
+
+.iso_attribute {
+	display: inline;
+}

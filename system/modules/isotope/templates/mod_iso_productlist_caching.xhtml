@@ -1,0 +1,33 @@
+
+<!-- indexer::stop -->
+<div class="<?php echo $this->class; ?> block"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
+<?php if ($this->headline): ?>
+
+<<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
+<?php endif; ?>
+
+<p class="message loading"><?php echo $this->message; ?></p>
+
+<noscript>
+<p class="message error"><?php echo $this->noscript; ?></p>
+</noscript>
+
+</div>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+window.addEvent('domready', function() {
+	Isotope.displayBox('<?php echo $this->message; ?>')
+	new Request({
+		url: window.location.href,
+		method: 'get',
+		data: {
+			'buildCache': '1'
+		},
+		onComplete: function() {
+			window.location.reload();
+		}
+	}).send();
+});
+//--><!]]>
+</script>
+<!-- indexer::continue -->
