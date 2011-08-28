@@ -108,7 +108,7 @@ Version 1.3.beta1 (2011-07-18)
 - Removed moduleOperations callback from payment and shipping modules. The same can be achieved through standard DCA operations.
 - Moved ePay payment modules to own extension
 
-Version 0.2.11 (2011-07-??)
+Version 0.2.11 (2011-08-??)
 ------------------------------
 - Improved: checkout is now relying on order pid for member, not the currently logged in user object
 - Improved: member data is available in checkout confirmation email template
@@ -116,6 +116,7 @@ Version 0.2.11 (2011-07-??)
 - Fixed attribute editor allowing to change database field name in edit all mode
 - Fixed: direct links to edit mode of modules did not take account of themes
 - Fixed potential issues when having multiple cart modules on the same page
+- Fixed: Image watermark was not applied if the original image was not resized (Ticket #487)
 
 Version 0.2.10 (2011-07-06)
 ------------------------------

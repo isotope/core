@@ -96,7 +96,7 @@ class IsotopeGallery extends Frontend
 								{
 									$strImage = $this->getImage($strFile, $size['width'], $size['height'], $size['mode']);
 
-									if ($strImage != $strFile && $size['watermark'] != '')
+									if ($size['watermark'] != '')
 									{
 										$strImage = IsotopeFrontend::watermarkImage($strImage, $size['watermark'], $size['position']);
 									}
