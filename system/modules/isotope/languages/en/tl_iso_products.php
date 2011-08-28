@@ -55,7 +55,6 @@ $GLOBALS['TL_LANG']['tl_iso_products']['inherit']				= array('Inherited attribut
  * Reference
  */
 $GLOBALS['TL_LANG']['tl_iso_products']['source']				= array('Source folder', 'Please choose the folder where product assets are located.');
-$GLOBALS['TL_LANG']['tl_iso_products']['batch_size']			= array('Batch size', 'Select the number of records you would like to process at a time.  If the page times out, reduce the number.');
 
 $GLOBALS['TL_LANG']['tl_iso_products']['internal'] = array('Internal file', 'Select a media file existing on the web server (flash or mp3 file).');
 $GLOBALS['TL_LANG']['tl_iso_products']['external'] = array('External file', 'Specify a video from an external source (such as Youtube).');

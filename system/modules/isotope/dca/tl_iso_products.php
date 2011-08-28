@@ -1081,9 +1081,6 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 
 				$arrSet['published'] = ($arrPublished[$objVariants->id] ? $arrPublished[$objVariants->id] : '');
 
-				// @todo remove this routine after the 0.2 release
-				$arrSet['inherit'] = array_diff(deserialize($objVariants->inherit, true), $arrQuickEditFields);
-
 				$this->Database->prepare("UPDATE tl_iso_products %s WHERE id=?")
 							   ->set($arrSet)
 							   ->execute($objVariants->id);
@@ -1138,33 +1135,31 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 
 </div>
 </form>';
-
 	}
 
 
 	/**
 	 * Import images and other media file for products
+	 *
+	 * @param	DataContainer
+	 * @param	array
+	 * @return	string
 	 */
 	public function importAssets($dc, $arrNewImages = array())
 	{
 		$objTree = new FileTree($this->prepareForWidget($GLOBALS['TL_DCA']['tl_iso_products']['fields']['source'], 'source', null, 'source', 'tl_iso_products'));
 
-		$intCurrentBatch = 0;
-
 		// Import assets
-		if ($this->Input->post('FORM_SUBMIT') == 'tl_iso_products_import' && strlen($this->Input->post('source')))
+		if ($this->Input->post('FORM_SUBMIT') == 'tl_iso_products_import' && $this->Input->post('source') != '')
 		{
 			$this->import('Files');
-
-			//$intLimit = (integer)$this->Input->post('batch_size');
-			//$intCurrentBatch = ($this->Input->get('current_batch') ? (integer)$this->Input->get('current_batch') : $intCurrentBatch);
 
 			$strPath = $this->Input->post('source');
 			$arrFiles = scan(TL_ROOT . '/' . $strPath);
 
 			if (!count($arrFiles))
 			{
-				$_SESSION['TL_ERROR'][] = 'No files in this folder';
+				$_SESSION['TL_ERROR'][] = $GLOBALS['ISO_LANG']['MSC']['noFilesInFolder'];
 				$this->reload();
 			}
 
@@ -1174,7 +1169,6 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 
 			while( $objProducts->next() )
 			{
-
 				$arrImageNames  = array();
 				$arrImages = deserialize($objProducts->images);
 
@@ -1184,22 +1178,27 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 				}
 				else
 				{
-					foreach($arrImages as $row)
+					foreach( $arrImages as $row )
 					{
-						if($row['src'])
+						if ($row['src'])
 						{
 							$arrImageNames[] = $row['src'];
 						}
 					}
 				}
 
-				$strPattern = '@^(' . ($objProducts->alias ?  '|' . standardize($objProducts->alias, true) : '') . ($objProducts->sku ? '|' . $objProducts->sku : '') .($objProducts->sku ? '|' . standardize($objProducts->sku, true) : '') . (count($arrImageNames) ? '|' . implode('|', $arrImageNames) : '') . ')@i';
+				$arrPattern = array();
+				$arrPattern[] = $objProducts->alias ?  standardize($objProducts->alias, true) : null;
+				$arrPattern[] = $objProducts->sku ? $objProducts->sku : null;
+				$arrPattern[] = $objProducts->sku ? standardize($objProducts->sku, true) : null;
+				$arrPattern[] = count($arrImageNames) ? implode('|', $arrImageNames) : null;
+
+				$strPattern = '@^(' . implode('|', array_filter($arrPattern)) . ')@i';
 
 				$arrMatches = preg_grep($strPattern, $arrFiles);
 
 				if (count($arrMatches))
 				{
-
 					$arrNewImages = array();
 
 					foreach( $arrMatches as $file )
@@ -1272,10 +1271,8 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 			$this->reload();
 		}
 
-		//$arrBatchValues = array(25,50,100,200);
-
 		// Return form
-		$strReturn = '
+		return '
 <div id="tl_buttons">
 <a href="'.ampersand(str_replace('&key=import', '', $this->Environment->request)).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
 </div>
@@ -1285,19 +1282,11 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 <form action="'.ampersand($this->Environment->request, true).'" id="tl_iso_products_import" class="tl_form" method="post">
 <div class="tl_formbody_edit">
 <input type="hidden" name="FORM_SUBMIT" value="tl_iso_products_import">
-<input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">';
-		/*$strReturn .= '<div class="tl_tbox block">
-  <h3><label for="batch_size">'.$GLOBALS['TL_LANG']['tl_iso_products']['batch_size'][0].'</label></h3> <select name="batch_size"><option value=""'.($this->Input->post('batch_size') ? ' selected' : '').'>-</option>';*/
-		/*  foreach($arrBatchValues as $value)
-		  {
-				$strReturn .= '<option value="'.$value.'"'.($this->Input->post('batch_size')==$value ? ' selected' : '').'>'.$value.'</option>';
-		  }
-		$strReturn .= '</select>';
-		$strReturn .= (strlen($GLOBALS['TL_LANG']['tl_iso_products']['batch_size'][1]) ? '
-		  <p class="tl_help">'.$GLOBALS['TL_LANG']['tl_iso_products']['batch_size'][1].'</p>' : '').'</div>';*/
+<input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">
 
-		return $strReturn . '<div class="tl_tbox block">
-  <h3><label for="source">'.$GLOBALS['TL_LANG']['tl_iso_products']['source'][0].'</label> <a href="typolight/files.php" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['fileManager']) . '" onclick="Backend.getScrollOffset(); this.blur(); Backend.openWindow(this, 750, 500); return false;">' . $this->generateImage('filemanager.gif', $GLOBALS['TL_LANG']['MSC']['fileManager'], 'style="vertical-align:text-bottom;"') . '</a></h3>'.$objTree->generate().(strlen($GLOBALS['TL_LANG']['tl_iso_products']['source'][1]) ? '
+<div class="tl_tbox block">
+  <h3><label for="source">'.$GLOBALS['TL_LANG']['tl_iso_products']['source'][0].'</label> <a href="typolight/files.php" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['fileManager']) . '" onclick="Backend.getScrollOffset(); this.blur(); Backend.openWindow(this, 750, 500); return false;">' . $this->generateImage('filemanager.gif', $GLOBALS['TL_LANG']['MSC']['fileManager'], 'style="vertical-align:text-bottom;"') . '</a></h3>
+  '.$objTree->generate().(strlen($GLOBALS['TL_LANG']['tl_iso_products']['source'][1]) ? '
   <p class="tl_help">'.$GLOBALS['TL_LANG']['tl_iso_products']['source'][1].'</p>' : '').'
 </div>
 
