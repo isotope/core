@@ -1,0 +1,356 @@
+===========================
+Isotope eCommerce Changelog
+===========================
+
+Version 0.2.11 (2011-08-28)
+------------------------------
+- Improved: checkout is now relying on order pid for member, not the currently logged in user object
+- Improved: member data is available in checkout confirmation email template
+- Fixed "text only" checkbox not hiding html input in mail templates
+- Fixed attribute editor allowing to change database field name in edit all mode
+- Fixed: direct links to edit mode of modules did not take account of themes
+- Fixed potential issues when having multiple cart modules on the same page
+- Fixed: Image watermark was not applied if the original image was not resized (Ticket #487)
+- Fixed: Asset import added every image to every product due to regex bug (Ticket #512)
+- Fixed potential issue in rules when no cart ID was available (Ticket #509)
+
+Version 0.2.10 (2011-07-06)
+------------------------------
+- Added support for Contao 2.10 "structure" event (see http://dev.contao.org/issues/2504)
+- Added shipping & payment method filter to orders
+- Added: includeBlankOption=true for select options using foreignKey (Ticket #292)
+- Added product sku to filter module
+- Improved: billing & shipping country is no longer mandatory in store config
+- Changed tl_iso_products::getCategoryList from private to protected function (Ticket #477)
+- Fixed error message when editing page category (Ticket #469)
+- Fixed IsotopeProductCollection::getProducts database caching
+- Fixed rules error on product restrictions when not product in cart (Ticket #471)
+- Fixed coupon could be applied multiple times by using different letter cases (Ticket #476)
+- Fixed text email fields, make sure they never contain HTML
+
+Version 0.2.9 (2011-05-23)
+------------------------------
+- Improved: Show disabled shipping and payment modules on frontend preview
+- Improved Postfinance payment module with new authentication method (Ticket #235)
+- Improved: Only add href_reader if field is available in product collection items table (Ticket #453)
+- Fixed bug when products have no SKU
+- Fixed product rules bug with member limits (Ticket #409)
+- Fixed specialchars in image gallery and checkout steps (Ticket #426)
+- Fixed issue when product alias starts with a digit (Ticket #452)
+- Fixed empty option value ##cart_text## (Ticket #418)
+
+Version 0.2.8 (2011-05-09)
+------------------------------
+- Added import/export option for mail templates
+- Added quantity_requested to product template
+- Added support for conditionalselect as conditionField
+- Improved: Do not allow negative cart/order totals
+- Improved: Do not cache arrData from IsotopeProduct, return NULL for non-existing values
+- Improved backend order listing (Ticket #424)
+- Fixed issue with email address on checkout
+- Fixed potential product load problem in IsotopeProductCollection
+- Fixed potential problem with rule product restrictions
+- Fixed bug with rule limits per store config or member
+- Fixed potential issue with member ID in rules
+- Fixed potentially wrong publish-status icon (Ticket #437)
+- Fixed order items not deleted when deleting orders (Ticket #438)
+- Fixed issue in cart rules, some were applied even if no product matched
+- Fixed tax ID is not shown for surcharges (Ticket #449)
+- Fixed fatal error on order PDF export (Ticket #448)
+- Fixed potential issues with data container not being loaded (Ticket #444)
+- Fixed potential issue with CC and BCC email recipients (Ticket #447)
+- Fixed product filter javascript error in firefox (see http://www.contao-community.de/showthread.php?17678)
+- Fixed: copying mail template did not duplicate languages
+- Fixed: Tax rate amount was not mandatory
+- Fixed: Tax ID information for each product was lost when placing the order (Ticket #417)
+- Removed default list template in tl_content
+- Minor code cleanup
+
+Version 0.2.7 (2011-03-09)
+------------------------------
+- Added support for language switching on checkout page (changelanguage extension)
+- Added support for language switching on order details page (changelanguage extension)
+- Added support for __isset() to product, collection, gallery, payment and shipping classes (Contao Core Ticket #2897)
+- Added root page option to product list module (Ticket #366)
+- Improved ajax overlay position and transparency
+- Fixed potential SQL injection in product collection
+- Fixed CSS classes in checkout review and order details
+- Fixed emails not sent to customers (Ticket #406)
+- Fixed tax calculation for prices including taxes and discount
+- Fixed float precision on discount rules
+- Fixed orders not appearing for non-admin users
+
+Version 0.2.6 (2011-03-01)
+------------------------------
+- Added label for toggle button in product tree
+- Added missing 'enabled' label to tl_iso_shipping_options (Ticket #373)
+- Added support for language switching on product reader page (changelanguage extension)
+- Added: automatically disable page cache for sites with customer-related modules such as Cart (Ticket #392)
+- Improved: Check isDefaultBilling/isDefaultShipping on first checkout
+- Improved: Label for payment method is no longer mandatory (will use name if not set)
+- Improved: Made text fields for meta description & meta keywords smaller (Ticket #386)
+- Improved: Added javascript confirmation before deleting address (Ticket #328)
+- Improved: Use generic labels for redirecting to payment provider on checkout
+- Improved order PDF printing, fixed several bugs (Ticket #376, Ticket #356)
+- Fixed ##newsletter.css## in HTML email
+- Fixed issue with simple tokens in mail template subject
+- Fixed issue with HTML in plain text emails
+- Fixed CSS classes for new address fields in checkout module
+- Fixed publish toggle not working for non-admins
+- Fixed hardcoded labels in order history/details (Ticket #382)
+- Fixed unlimited downloads only downloadable once (Ticket #383)
+- Fixed filters overwriting each other (Ticket #363)
+- Fixed issues with email messages (Ticket #391)
+- Fixed tax surcharge calculation for prices including taxes
+- Fixed bug in explode() for the filterFields template variable
+- Fixed: Address was not added to address book correctly
+- Fixed: Downloads in PDF invoice caused fatal error
+- Fixed: Product filter searched for field default value (Ticket #377)
+- Fixed: Moved cart & checkout table summary to language file (Ticket #338)
+- Fixed: Adjust Order Total Shipping to account for shipping-exempt products (Ticket #398)
+- Adopted Contao Core Ticket #2853
+
+Version 0.2.5 (2011-02-01)
+------------------------------
+- Added Isotope version constant to config file
+- Improved: Use trigger_error() not "throw Exception" if no store configuration is available (Ticket #372)
+- Fixed discount applied to subtotal on cart overrides other restrictions (Ticket #352)
+- Fixed sql in edit-all mode on attributes
+- Fixed ajax load spinning icon
+- Fixed loading message font color
+- Fixed text area floating in backend product edit mode
+- Dropped unnessesary database fields
+- Dropped unnecessary template ce_link_repeater.tpl
+- Removed deprecated ups_developersKey
+
+Version 0.2.4 (2011-01-17)
+------------------------------
+- Added: Use product ID in URL if alias is missing
+- Updated ContentIsotope methods to match ModuleIsotope methods (Ticket #290)
+- Fixed weight total shipping included rates from all shipping modules
+- Fixed mandatory asterisks not appearing in checkout address fields
+- Fixed email issues with mail clients not supporting <tfood>
+- Fixed missing comma in mail text (Ticket #217)
+- Fixed HTML issue in iso_reader_default.tpl (Ticket #203)
+- Fixed: Custom templates were not always shown in "override all" mode (see Contao Core Ticket #2725)
+- Fixed shipping and payment method always displaying error message (Ticket #175)
+- Fixed toggle button not appearing for non-admins (Ticket #253)
+- Fixed global operation labels in IE7 (Ticket #253)
+- Fixed order delete button appearing for non-admins (Ticket #192)
+- Fixed issues with runonce.php database file update on certain systems
+- Fixed download listing out of view (Ticket #280)
+- Fixed small error in the mod_iso_addressbook.tpl (Ticket #324)
+- Fixed invalid name attribute in form tag (Ticket #322)
+- Fixed: Product list did not show unpublished products when frontend preview was used
+- Improved italian address formatting (Ticket #305)
+- Improved UK address formatting (Ticket #301)
+- Improved number of SQL queries
+
+Version 0.2.3 (2010-12-20)
+------------------------------
+- Added hooks for altering taxes
+- Added guest and member group restrictions on payment modules
+- Added product type restrictions on shipping modules
+- Added "check all" in product quick edit (Ticket #294)
+- Fixed countries bug in checkout
+- Fixed language files still containing search label
+- Fixed address field translation in mails
+- Fixed allowed number of downloads, was not multiplicated by the number of purchases
+- Fixed download availability check bugs
+- Fixed problem with unavailable product type in rules
+- Fixed jumpTo in related product list
+- Fixed division by zero error message in product list
+- Fixed mail templates, parseSimpleTokens stripped important HTML tags
+- Fixed SQL error when adding new category to a product (Ticket #299)
+- Fixed bug in rule calculation for each product quantity
+- Fixed order history not showing discount price
+- Dropped italian regions (Ticket #305)
+
+Version 0.2.2 (2010-12-05)
+------------------------------
+- Attempt to fix the checkout problem
+
+Version 0.2.1 (2010-12-04)
+------------------------------
+- Fixed allowed country comparison for billing & shipping countries (Ticket #279)
+
+Version 0.2.0 (2010-12-02)
+------------------------------
+- Added label for isotope_rules extension folder
+- Added support for percentage surcharge for payment and shipping price
+- Added italian translation for frontend information
+- Added option to "authorize" or "capture" transations for ePay payment modules
+- Added link to admin panel for ePay payment gateway
+- Added listing for "parent category" to product list
+- Added listing for "product categories" to product list
+- Added polish translation, thanks to Radosław Maślanek
+- Improved address parsing with custom fields
+- Fixed field tl_iso_rules.applyTo not visible in the palette
+- Fixed PayPal checkout not charging for shipping price
+- Fixed back button on attributes page (Ticket #259)
+- Fixed mail subject appearing in HTML content
+- Fixed listing module having a template assigned by default
+- Fixed new mode-4-grouping in shipping options
+- Fixed issues with checkbox attributes (Ticket #273)
+- Fixed fallback for deleted products throwing an exception
+- Fixed potential foreach error in IsotopePOS (Ticket #272)
+- Fixed Check for array as well as array size on line 96 in ModuleIsotopeProductFilter (Ticket #249)
+- Fixed Isotope class not able to load data containers
+- Fixed tax ids for products in checkout and cart
+- Fixed exception when deleting and creating new attribute (Ticket #260)
+
+Version 0.2.rc1 (2010-10-31)
+------------------------------
+- Added: "Default" option for tax class
+- Added: New mode setting for rules max/min quantity
+- Improved: Replace InsertTags in ##cart_text## and ##cart_html## templates
+- Improved: Only show price for payment and shipping module if greater 0
+- Improved: Hide "Default address" checkboxes for guests
+- Improved: Cleaned and optimized attribute configuration/setup
+- Fixed: FE_USER_LOGGED_IN might be true but no user available (Ticket #213)
+- Fixed: Email language was not correctly detected under certain circumstances
+- Fixed: Potential database caching issue in ePay payment modules
+- Fixed: images did not change on ajax update
+- Fixed: added default palette for checkout module if no checkout method (guest/member) is selected
+- Fixed: tax total was not rounded according to store config
+- Fixed: PayPal Standard payment charges included taxes twice
+- Fixed: Missing argument 2 for IsotopeRules::findCoupon()
+- Fixed: Incorrect default value for tl_iso_products.shipping_weight
+- Fixed various issues with PayPal sandbox processing
+- Fixed address validation in checkout module
+
+Version 0.2.beta2 (2010-09-27)
+------------------------------
+- Added: New "link target" field and help wizard to media manager
+- Added: IsotopeGallery now supports link targets and "rel" attributes
+- Added: Support for 13 more currencies in ePay Standard payment module
+- Added: New payment module for ePay in-shop payment processing
+- Added: CSS class even/odd for product list
+- Added: Define custom image sizes using a wizard
+- Added: Watermark option for all images
+- Added: Addresses are added to address book on checkout (enable in checkout module) (Ticket #24)
+- Added: Abstract class ContentIsotope to build content elements
+- Added: Frontend modules now support theme templates
+- Added: Cybersource payment gateway
+- Improved: Downloads can now be added to product variants (Ticket #116)
+- Improved: PayPal Standard now shows products on paypal page (Ticket #146)
+- Improved: Product reader now has a "back" link (Ticket #197)
+- Improved: Downloads is now a tools option (Ticket #116)
+- Improved: Remove form errors when selecting a new product variant
+- Improved: Empty option labels are now taken as blankOptionLabel for variant select menus
+- Improved: Variant products don't show select menus with only one option
+- Improved: Cart module now hides button withouth a target page (jump to cart/checkout)
+- Improved: Added check if form ID exists in IsotopeProduct javascript class
+- Improved: Added name attribute with random value to product variant forms to prevent firefox from preserving selection on reload
+- Improved: ModuleIsotopeProductList can now be used for any product listing by replacing findProducts() an a child class.
+- Improved: authnet_response and authnet_reason to generic transaction_response and transaction_response_code
+- Improved: Authorize.net now PCI-compliant - no longer storing card data in session
+- Fixed: cart_html and cart_text now include subtotal, surcharges and grand total (Ticket #34)
+- Fixed: Variant price should not show "From" when all variants have the same price
+- Fixed: Now using core widget TimePeriod for shipping weight which has a larger select menu.
+- Fixed: Printing order PDF throwed an exception
+- Fixed: Use first available product type if no default/fallback is set
+- Fixed: Problem with standardize function and wrong image folder (Ticket #201)
+- Fixed: Incorrect reference to bcc property of a mailing object (Ticket #206)
+- Fixed: All variant attributes are now mandatory
+- Fixed: Phone number not filled in PayPal Standard (Ticket #171)
+- Fixed: Line breaks in teaser did not work (Ticket #198)
+- Fixed: tl_iso_addressbook.email is no longer mandatory (Ticket #174)
+- Fixed: Removed redirect page from address book module setting (Ticket #174)
+- Fixed: IsotopeProduct no longer shows attributes not available in product type
+- Fixed: Cart insert tags did not work
+- Fixed: Wrong check for existing attribute (Ticket #218)
+- Fixed: Updated address formats for Contao 2.9 (especially Great Britain)
+- Fixed: Address was not checked when forwarding in checkout module
+- Fixed: Disable grouping in mail template languages
+- Fixed: mod_iso_productlist template contained a CSS ID instead of a class
+- Fixed: Authorize.net delimiter value ignored (Ticket #227),
+- Fixed: Added x_country, x_phone, x_email_address to Authorize.net request (Ticket #228)
+
+Version 0.2.beta1 (2010-08-25)
+------------------------------
+- Introducing IsotopeProductCollection, abstracting a collection of products (eg. cart, order, wishlist)
+- Introducing IsotopeGallery class for creating custom image galleries
+- Checkout condition data is now available in order confirmation mail (Ticket #103)
+- Added: Product weight field and weight units
+- Added: Shipping module for price based on product weight
+- Added: New payment module for ePay (www.epay.eu)
+- Added: Hooks for altering product before output
+- Added: Payment and and shipping module can now provide additional info for each order (trough a button/operation)
+- Added: Limit panel to tl_iso_product_categories (Ticket #132)
+- Added: Jumpto page support when adding product to cart (Ticket #72)
+- Added: Batch invoice printing, by status
+- Added: Consolidation of order management global operations into a tools menu
+- Added: Backend order notes field
+- Added: Option to watermark medium and large images
+- Added: Store ID to group carts if you're using Isotope on multiple stores/domains
+- Added: (partial) translation for french and danish
+- Improved: New css classes for product list when using grid layout
+- Improved: Surcharges can now be applied before calculating tax for a product
+- Improved: Allow custom forms/data after the cart (eg. Coupon input)
+- Improved: cart + order table are now storing the variant ID instead of base product ID
+- Improved: MediaManager now standardizes file names to prevent file system issues
+- Improved: Do not add an MD5 unique key to filename if not necessary.
+- Fixed: overwriting of authorize payment information used for delayed capture upon non-successful transaction
+- Fixed: reference to a undeclared deprecated method in PaymentAuthorizeDotNet
+- Fixed: reference to the cart in Authorize.net - $this->Cart now referred to as $this->Isotope->Cart
+- Fixed: Images are now updated when selecting a product variant
+- Fixed: Null array bug in ModuleIsotopeProductFilter
+- Fixed: Null object bug in IsotopeCart
+- Fixed: Disabled deprecated product storage in checkout module - now copies only product options to order items table.
+- Fixed: Changed all price fields to use decimal(12,2) (payment gateways require 2 digit precision)
+- Fixed: Table naming is not consistent, renamed tl_cart,tl_cart_items to tl_iso_cart,tl_iso_cart_items (Ticket #117)
+- Fixed: Paypal expiration dates now separate select widgets to ensure proper date format (Ticket #162)
+- Fixed: Authorize.net expiration dates now separate select widgets to ensure proper date format
+- Fixed: Javascript error in Internet Explorer 6+7
+- Fixed: Invoice title not showing up in iso_invoice.tpl if no logo image set
+- Fixed: Variant option attributes are no longer shown in base product edit mode
+- Fixed: Product list columns now work with MySQL 4.1
+- Fixed: Only images should be uploaded trough the media manager
+- Removed: Paypal Website Payments Pro option - use Paypal Payflow Pro or Paypal Standard
+- Removed generatePrice() function, stpl_price and stpl_total_price templates. Now using formatPriceWithCurrency
+- Removed old weight field, updated shipping modules to take advantages of new weight calculation
+- Removed taxTotalWithShipping simple token
+
+Version 0.1.3 (2010-07-05)
+------------------------------
+- Fixed: InsertTags could output HTML in meta description
+- Fixed: Status labels were not available in order history
+- Fixed: sending email as text only did not work (Ticket #37)
+- Fixed: Javascript sorting of images did not work
+- Fixed: No products and no breadcrumb show up if filtered page does not have a product (Ticket #115)
+- Fixed multiple URL problems in address book module
+- Fixed multiple URL and template problems in shopping cart module
+- Fixed bug in runonce.php, must not use TRUNCATE to empty cart table
+
+Version 0.1.2 (2010-06-20)
+------------------------------
+- Fixed: Backend variant listing showed unassigned attributes (Ticket #135)
+- Fixed problem with payment modules accepting only two digit floating point precision (Ticket #136)
+- Fixed wrong grand total price in cart module (Ticket #137)
+- Fixed variant price in cart not correct
+- Fixed a possible bug with attributes not available in the template
+- Moved product tax class field to pricing legend (Ticket #134)
+- Now using domready event to submit payment checkout forms (Ticket #145)
+- Fixed multiple label issues (Ticket #78, Ticket #148, Ticket #150)
+
+Version 0.1.1 (2010-06-06)
+------------------------------
+- Customer email is now sent to member email if no email in address book
+- Fixed: Countries and shipping methods for payment modules are no longer mandatory
+- Fixed: Subdivisions for shipping modules should now work correctly
+- Fixed: Tax was not applied to flat price shipping
+- Fixed: Final price for paypal standard payment module did not include taxes
+- Fixed: Latest order did not appear in order history module
+- Fixed: Checkout condition form did show invisible fields
+- Fixed: Bug with minimum/maximum order total calculation.
+- Fixed: missing price calculation function in Order Total shipping (Ticket #112)
+- Fixed old image size message (Ticket #119)
+- Fixed wrong template name for config switcher module
+- Fixed product alias not generated correctly when alias field is before name (Ticket #123)
+- Fixed template bug in iso_cart_full (Ticket #129)
+- Fixed problem with checkout in Internet Explorer 6 (Ticket #128)
+
+Version 0.1.0 stable (2010-05-23)
+------------------------------
+- Initial stable release
