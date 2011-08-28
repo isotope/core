@@ -283,7 +283,7 @@ $GLOBALS['ISO_LANG']['GAL']['inline']			= array('Inline gallery', '<p>Clicking o
 /**
  * Product types
  */
-$GLOBALS['ISO_LANG']['PRODUCT']['regular']	= array('Regular product', 'A default product. Select this if nothing else matches.');
+$GLOBALS['ISO_LANG']['PRODUCT']['regular']			= array('Regular product', 'A default product. Select this if nothing else matches.');
 
 
 /**
@@ -296,14 +296,14 @@ $GLOBALS['ISO_LANG']['CCT']['discover']				= 'Discover';
 $GLOBALS['ISO_LANG']['CCT']['jcb']					= 'JCB';
 $GLOBALS['ISO_LANG']['CCT']['diners']				= 'Diner\'s Club';
 $GLOBALS['ISO_LANG']['CCT']['enroute']				= 'EnRoute';
-$GLOBALS['ISO_LANG']['CCT']['carte_blanche']			= 'Carte Blanche';
+$GLOBALS['ISO_LANG']['CCT']['carte_blanche']		= 'Carte Blanche';
 $GLOBALS['ISO_LANG']['CCT']['jal']					= 'JAL';
 $GLOBALS['ISO_LANG']['CCT']['maestro']				= 'Maestro UK';
-$GLOBALS['ISO_LANG']['CCT']['delta']					= 'Delta';
+$GLOBALS['ISO_LANG']['CCT']['delta']				= 'Delta';
 $GLOBALS['ISO_LANG']['CCT']['solo']					= 'Solo';
-$GLOBALS['ISO_LANG']['CCT']['visa_electron']			= 'Visa Electron';
+$GLOBALS['ISO_LANG']['CCT']['visa_electron']		= 'Visa Electron';
 $GLOBALS['ISO_LANG']['CCT']['dankort']				= 'Dankort';
-$GLOBALS['ISO_LANG']['CCT']['laser']					= 'Laser';
+$GLOBALS['ISO_LANG']['CCT']['laser']				= 'Laser';
 $GLOBALS['ISO_LANG']['CCT']['carte_bleue']			= 'Carte Bleue';
 $GLOBALS['ISO_LANG']['CCT']['carta_si']				= 'Carta Si';
 $GLOBALS['ISO_LANG']['CCT']['enc_acct_num']			= 'Encoded Account Number';
@@ -317,25 +317,25 @@ $GLOBALS['ISO_LANG']['CCT']['ge_money_uk']			= 'GE Money UK';
  * http://www.metric-conversions.org/weight/weight-conversions.htm
  */
 $GLOBALS['ISO_LANG']['WGT']['mg']					= array('Milligram (mg)', 'A unit of mass equal to one-thousandth of a gram.');
-$GLOBALS['ISO_LANG']['WGT']['g']						= array('Gram (g)', 'A metric unit of weight equal to one thousandth of a kilogram.');
+$GLOBALS['ISO_LANG']['WGT']['g']					= array('Gram (g)', 'A metric unit of weight equal to one thousandth of a kilogram.');
 $GLOBALS['ISO_LANG']['WGT']['kg']					= array('Kilogram (kg)', 'One kilogram is equivalent to 1,000 grams or 2.2 pounds; the mass of a liter of water.');
-$GLOBALS['ISO_LANG']['WGT']['t']						= array('Metric Ton (t)', 'A unit of weight equal to 1,000 kilograms, or 2,204.6 pounds.');
+$GLOBALS['ISO_LANG']['WGT']['t']					= array('Metric Ton (t)', 'A unit of weight equal to 1,000 kilograms, or 2,204.6 pounds.');
 $GLOBALS['ISO_LANG']['WGT']['ct']					= array('Carats (ct)', 'A measure of weight used for gemstones. One carat is equal to 1/5 of a gram (200 milligrams). Note that karat with a "K" is a measure of the purity of a gold alloy.');
 $GLOBALS['ISO_LANG']['WGT']['oz']					= array('Ounce (oz)', 'A unit of weight equal to one sixteenth of a pound or 28.35 grams.');
 $GLOBALS['ISO_LANG']['WGT']['lb']					= array('Pound (lb)', 'A unit of mass equal to 16 ounces');
 $GLOBALS['ISO_LANG']['WGT']['st']					= array('Stone (st)', 'A British measurement of mass that equals fourteen pounds.');
-$GLOBALS['ISO_LANG']['WGT']['grain']					= array('Grain', '1/7000 pound; equals a troy grain or 64.799 milligrams.');
+$GLOBALS['ISO_LANG']['WGT']['grain']				= array('Grain', '1/7000 pound; equals a troy grain or 64.799 milligrams.');
 
 
 /**
  * Attributes
  */
-$GLOBALS['ISO_LANG']['ATTR']['text']					= array('Text field', 'A single-line input field for a short or medium text.');
-$GLOBALS['ISO_LANG']['ATTR']['textarea']				= array('Textarea', 'A multi-line input field for a medium or long text.');
+$GLOBALS['ISO_LANG']['ATTR']['text']				= array('Text field', 'A single-line input field for a short or medium text.');
+$GLOBALS['ISO_LANG']['ATTR']['textarea']			= array('Textarea', 'A multi-line input field for a medium or long text.');
 $GLOBALS['ISO_LANG']['ATTR']['select']				= array('Select menu', 'A single- or multi-line drop-down menu.<br /><i>This field type is suitable for product variants.</i>');
 $GLOBALS['ISO_LANG']['ATTR']['radio']				= array('Radio button menu', 'A list of multiple options from which one can be selected.<br /><i>This field type is suitable for product variants.</i>');
-$GLOBALS['ISO_LANG']['ATTR']['checkbox']				= array('Checkbox menu', 'A list of multiple options from which any can be selected.');
-$GLOBALS['ISO_LANG']['ATTR']['mediaManager']			= array('Media Manager', 'Upload images and other files to the Isotope eCommerce file system. Output is processed trough an IsotopeGallery class.');
+$GLOBALS['ISO_LANG']['ATTR']['checkbox']			= array('Checkbox menu', 'A list of multiple options from which any can be selected.');
+$GLOBALS['ISO_LANG']['ATTR']['mediaManager']		= array('Media Manager', 'Upload images and other files to the Isotope eCommerce file system. Output is processed trough an IsotopeGallery class.');
 $GLOBALS['ISO_LANG']['ATTR']['conditionalselect']	= array('Conditional Select-Menu', 'show select-options based on another select menu.');
 
 

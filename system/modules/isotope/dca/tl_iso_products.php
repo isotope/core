@@ -347,6 +347,26 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'inputType'				=> 'dcaWizard',
 			'foreignTable'			=> 'tl_iso_prices',
 		),
+		'price_tiers' => array
+		(
+			'tableformat' => array
+			(
+				'min'		=> array
+				(
+					'label'			=> &$GLOBALS['TL_LANG']['tl_iso_products']['price_tiers']['min'],
+					'format'		=> &$GLOBALS['TL_LANG']['tl_iso_products']['price_tiers']['min_format'],
+				),
+				'price'		=> array
+				(
+					'label'			=> &$GLOBALS['TL_LANG']['tl_iso_products']['price_tiers']['price'],
+					'rgxp'			=> 'price'
+				),
+				'tax_class'	=> array
+				(
+					'doNotShow'		=> true,
+				),
+			),
+		),
 		'tax_class' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['tax_class'],

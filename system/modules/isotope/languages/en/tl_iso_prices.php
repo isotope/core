@@ -34,7 +34,7 @@
 $GLOBALS['TL_LANG']['tl_iso_prices']['price_tiers']		= array('Price Tiers', 'Setup at least one price tier for "Quantity 1". You can enter discount prices if the user orders more than one product.');
 $GLOBALS['TL_LANG']['tl_iso_prices']['tax_class']		= array('Tax Class', 'Please select a tax class for this price.');
 $GLOBALS['TL_LANG']['tl_iso_prices']['config_id']		= array('Store configuration', 'Select a store configuration for this price.');
-$GLOBALS['TL_LANG']['tl_iso_prices']['member_group']	= array('Price group', 'Select a price group (member group) for this price.');
+$GLOBALS['TL_LANG']['tl_iso_prices']['member_group']	= array('Member group', 'Select a member group for this price.');
 $GLOBALS['TL_LANG']['tl_iso_prices']['start']			= array('Use from', 'Do not use the price on the website before this day.');
 $GLOBALS['TL_LANG']['tl_iso_prices']['stop']			= array('Use until', 'Do not use the price on the website after this day.');
 

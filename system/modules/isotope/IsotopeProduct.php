@@ -206,8 +206,10 @@ class IsotopeProduct extends Controller
 				{
 					if ($this->arrType['prices'] && count($this->arrVariantOptions['ids']))
 					{
+						// Add "price_tiers" to variant attributes, so the field is updated through ajax
+						$this->arrVariantAttributes[] = 'price_tiers';
+						
 						$time = time();
-
 						$objProduct = $this->Database->execute("SELECT MIN(price) AS low_price, MAX(price) AS high_price
 																FROM tl_iso_price_tiers
 																WHERE pid IN
@@ -699,8 +701,6 @@ class IsotopeProduct extends Controller
 			return $this->$attribute;
 		}
 
-		$strBuffer = $this->Isotope->formatValue('tl_iso_products', $attribute, $varValue);
-
 		if ($arrData['inputType'] == 'textarea' && $arrData['eval']['rte'] == '')
 		{
 			$strBuffer = nl2br($varValue);
@@ -720,6 +720,95 @@ class IsotopeProduct extends Controller
 					$strBuffer = '<div class="original_price"><strike>' . $this->formatted_original_price . '</strike></div><div class="price">' . $strBuffer . '</div>';
 				}
 			}
+		}
+		
+		// Generate a HTML table for associative arrays
+		elseif (is_array($varValue) && !array_is_assoc($varValue) && is_array($varValue[0]))
+		{
+			$arrFormat = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['tableformat'];
+			
+			$last = count($varValue[0])-1;
+			
+			$strBuffer = '
+<table class="'.$attribute.'">
+  <thead>
+    <tr>';
+
+			foreach( array_keys($varValue[0]) as $i => $name )
+			{
+				if ($arrFormat[$name]['doNotShow'])
+				{
+					continue;
+				}
+				
+				$label = $arrFormat[$name]['label'] ? $arrFormat[$name]['label'] : $name;
+				
+				$strBuffer .= '
+      <th class="head_'.$i.($i==0 ? ' head_first' : '').($i==$last ? ' head_last' : ''). (!is_numeric($name) ? ' '.standardize($name) : '').'">' . $label . '</th>';
+			}
+			
+			$strBuffer .= '
+    </tr>
+  </thead>
+  <tbody>';
+			
+			foreach( $varValue as $r => $row )
+			{
+				$strBuffer .= '
+    <tr class="row_'.$r.($r==0 ? ' row_first' : '').($r==$last ? ' row_last' : '').' '.($r%2 ? 'odd' : 'even').'">';
+    			
+    			$c = -1;
+    			foreach( $row as $name => $value )
+    			{
+    				if ($arrFormat[$name]['doNotShow'])
+    				{
+    					continue;
+    				}
+    				
+    				if ($arrFormat[$name]['rgxp'] == 'price')
+    				{
+    					$value = $this->Isotope->formatPriceWithCurrency($value);
+    				}
+    				else
+    				{
+    					$value = $arrFormat[$name]['format'] ? sprintf($arrFormat[$name]['format'], $value) : $value;
+    				}
+    				
+    				$strBuffer .= '
+      <td class="col_'.++$c.($c==0 ? ' col_first' : '').($c==$i ? ' col_last' : '').' '.standardize($name).'">' . $value . '</td>';
+    			}
+    			
+    			$strBuffer .= '
+    </tr>';
+			}
+			
+			$strBuffer .= '
+  </tbody>
+</table>';
+		}
+		
+		// Generate ul/li listing for simpley arrays
+		elseif (is_array($varValue))
+		{
+			$strBuffer = '
+<ul>';
+			
+			$current = 0;
+			$last = count($varValue)-1;
+			foreach( $varValue as $value )
+			{
+				$class = trim(($current == 0 ? 'first' : '') . ($current == $last ? ' last' : ''));
+				
+				$strBuffer .= '
+  <li'.($class != '' ? ' class="'.$class.'"' : '').'>' . $value . '</li>';
+			}
+			
+			$strBuffer .= '
+</ul>';
+		}
+		else
+		{
+			$strBuffer = $this->Isotope->formatValue('tl_iso_products', $attribute, $varValue);
 		}
 
 		// Allow for custom attribute types to modify their output.
@@ -940,28 +1029,37 @@ class IsotopeProduct extends Controller
 
 		$time = time();
 
-		$objPrice = $this->Database->execute("SELECT price, tax_class
-											FROM tl_iso_price_tiers t
-											LEFT JOIN tl_iso_prices p ON t.pid=p.id
-											WHERE
-												min<={$this->quantity_requested}
-												AND t.pid=
-												(
-													SELECT id
-													FROM tl_iso_prices
-													WHERE
-														config_id IN (".(int)$this->Isotope->Config->id.",0)
-														AND member_group IN(" . ((FE_USER_LOGGED_IN && count($this->User->groups)) ? (implode(',', $this->User->groups) . ',') : '') . "0)
-														AND (start='' OR start<$time)
-														AND (stop='' OR stop>$time)
-														AND pid={$this->id}
-													ORDER BY config_id DESC, " . ((FE_USER_LOGGED_IN && count($this->User->groups)) ? ('member_group='.implode(' DESC, member_group=', $this->User->groups).' DESC') : 'member_group DESC') . ", start DESC, stop DESC
-													LIMIT 1
-												)
-											ORDER BY min DESC LIMIT 1");
+		$objPrices = $this->Database->execute("SELECT min, price, tax_class
+												FROM tl_iso_price_tiers t
+												LEFT JOIN tl_iso_prices p ON t.pid=p.id
+												WHERE
+													t.pid=
+													(
+														SELECT id
+														FROM tl_iso_prices
+														WHERE
+															config_id IN (".(int)$this->Isotope->Config->id.",0)
+															AND member_group IN(" . ((FE_USER_LOGGED_IN && count($this->User->groups)) ? (implode(',', $this->User->groups) . ',') : '') . "0)
+															AND (start='' OR start<$time)
+															AND (stop='' OR stop>$time)
+															AND pid={$this->id}
+														ORDER BY config_id DESC, " . ((FE_USER_LOGGED_IN && count($this->User->groups)) ? ('member_group='.implode(' DESC, member_group=', $this->User->groups).' DESC') : 'member_group DESC') . ", start DESC, stop DESC
+														LIMIT 1
+													)
+												ORDER BY min DESC");
 
-		$this->arrData['price'] = $objPrice->price;
-		$this->arrData['tax_class'] = $objPrice->tax_class;
+		$this->arrData['price'] = 0;
+		$this->arrCache['price_tiers'] = $objPrices->fetchAllAssoc();
+
+		foreach( $this->arrCache['price_tiers'] as $price )
+		{
+			if ($price['min'] <= $this->quantity_requested)
+			{
+				$this->arrData['price'] = $price['price'];
+				$this->arrData['tax_class'] = $price['tax_class'];
+				break;
+			}
+		}
 	}
 
 

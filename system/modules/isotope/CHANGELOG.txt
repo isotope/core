@@ -17,6 +17,8 @@ Version 1.3.beta2 (2011-??-??)
 - Added consistent surcharge classes to cart, checkout and order details (Ticket #494)
 - Added "hide in reader mode" option to product listing
 - Added SQL condition field to product listing (Ticket #114)
+- Added automated table/list rendering option for array attributes
+- Added price tiers to product template (Ticket #466)
 - Improved: Allow subclasses of ModuleIsotopeProductFilter for filter modules
 - Improved: Allow subclasses of ModuleIsotopeProductFilter to cache request
 - Improved: new function generateRequestUrl to remove GET-parameters from request string

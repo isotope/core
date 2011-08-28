@@ -105,6 +105,7 @@ $GLOBALS['TL_LANG']['tl_iso_products']['quick_edit']		= array('Quick-edit varian
 $GLOBALS['TL_LANG']['tl_iso_products']['downloads']			= array('Downloads', 'Edit downloads for product ID %s');
 $GLOBALS['TL_LANG']['tl_iso_products']['prices']			= array('Manage prices', 'Manage prices for product ID %s');
 
+
 /**
  * Legends
  */
@@ -117,4 +118,12 @@ $GLOBALS['TL_LANG']['tl_iso_products']['options_legend']	= 'Product Options Sett
 $GLOBALS['TL_LANG']['tl_iso_products']['media_legend']		= 'Media Management';
 $GLOBALS['TL_LANG']['tl_iso_products']['publish_legend']	= 'Publishing';
 $GLOBALS['TL_LANG']['tl_iso_products']['variant_legend']	= 'Product variant setup';
+
+
+/**
+ * Table format
+ */
+$GLOBALS['TL_LANG']['tl_iso_products']['price_tiers']['min']		= 'Quantity';
+$GLOBALS['TL_LANG']['tl_iso_products']['price_tiers']['min_format']	= 'from %s pcs.';
+$GLOBALS['TL_LANG']['tl_iso_products']['price_tiers']['price']		= 'Price';
 

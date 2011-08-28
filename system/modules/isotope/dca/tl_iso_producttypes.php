@@ -334,7 +334,7 @@ class tl_iso_producttypes extends Backend
 		$objTheme = $this->Database->execute("SELECT name, templates FROM tl_theme" . ($intPid>0 ? " WHERE id=$intPid" : ''));
 		while( $objTheme->next() )
 		{
-			if ($objTheme->templates != '')
+			if ($objTheme->templates != '' && is_dir(TL_ROOT .'/'. $objTheme->templates))
 			{
 				$arrFolders[] = TL_ROOT .'/'. $objTheme->templates;
 				$arrThemes[TL_ROOT .'/'. $objTheme->templates] = $objTheme->name;
