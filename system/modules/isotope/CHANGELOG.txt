@@ -24,6 +24,7 @@ Version 1.3.beta2 (2011-??-??)
 - Improved: new function generateRequestUrl to remove GET-parameters from request string
 - Improved backend product list, no more "limit" option but can search & filter through all products and variants and translations (Ticket #495)
 - Improved error logging in postsale script (Ticket #390)
+- Improved PostFinance postsale check
 - Fixed a bug in runonce script preventing the database file from being refreshed
 - Fixed a bug with Contao 2.10 and the new foreignKey implementation
 - Fixed product translations not working (Ticket #448)

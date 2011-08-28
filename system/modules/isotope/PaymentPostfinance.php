@@ -188,19 +188,16 @@ class PaymentPostfinance extends IsotopePayment
 	private function validateSHASign()
 	{
 		$strSHASign = '';
-		$arrParam = array
-		(
-			'orderID'		=> $this->getRequestData('orderID'),
-			'amount'		=> $this->getRequestData('amount'),
-			'currency'		=> $this->getRequestData('currency'),
-			'PM'			=> $this->getRequestData('PM'),
-			'ACCEPTANCE'	=> $this->getRequestData('ACCEPTANCE'),
-			'STATUS'		=> $this->getRequestData('STATUS'),
-			'CARDNO'		=> $this->getRequestData('CARDNO'),
-			'PAYID'			=> $this->getRequestData('PAYID'),
-			'NCERROR'		=> $this->getRequestData('NCERROR'),
-			'BRAND'			=> $this->getRequestData('BRAND'),
-		);
+		$arrParam = array();
+		$arrSHAOut = array('AAVADDRESS', 'AAVCHECK', 'AAVZIP', 'ACCEPTANCE', 'ALIAS', 'AMOUNT', 'BRAND', 'CARDNO', 'CCCTY', 'CN', 'COMPLUS', 'CREATION_STATUS', 'CURRENCY', 'CVCCHECK', 'DCC_COMMPERCENTAGE', 'DCC_CONVAMOUNT', 'DCC_CONVCCY', 'DCC_EXCHRATE', 'DCC_EXCHRATESOURCE', 'DCC_EXCHRATETS', 'DCC_INDICATOR', 'DCC_MARGINPERC', 'ENTAGE', 'DCC_VALIDHOURS', 'DIGESTC', 'ARDNO', 'ECI', 'ED', 'ENCCARDNO', 'IP', 'IPCTY', 'NBREMAILUSAGE', 'NBRIPUSAGE', 'NBRIPUSAGE_ALLTX', 'NBRUSAGE', 'NCERROR', 'ORDERID', 'PAYID');
+		
+		foreach( array_keys(($this->postfinance_method == 'GET' ? $_GET : $_POST)) as $key )
+		{
+			if (in_array(strtoupper($key), $arrSHAOut))
+			{
+				$arrParam[$key] = $this->getRequestData($key);
+			}
+		}
 
 		uksort($arrParam, 'strcasecmp');
 
