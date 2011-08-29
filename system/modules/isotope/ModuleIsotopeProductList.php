@@ -179,7 +179,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			}
 			
 			$offset = $this->generatePagination(count($arrProducts));
-			$arrProducts = array_slice($arrProducts, $offset, $this->perPage);
+			$arrProducts = array_slice($arrProducts, $offset, ($this->perPage > 0 ? $this->perPage : $total));
 		}
 		
 		// No products found
