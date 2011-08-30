@@ -248,6 +248,9 @@ class IsotopeProduct extends Controller
 
 			if (in_array('price', $this->arrAttributes))
 			{
+				// Add "price_tiers" to attributes, so the field is available in the template
+				$this->arrAttributes[] = 'price_tiers';
+				
 				$this->findPrice();
 				$this->arrData['original_price'] = $this->arrData['price'];
 			}
