@@ -22,6 +22,7 @@
  * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Christian de la Haye <service@delahaye.de>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
@@ -41,6 +42,7 @@ $GLOBALS['TL_LANG']['tl_iso_config']['currency']					= array('Währung', 'Wähle
 $GLOBALS['TL_LANG']['tl_iso_config']['currencySymbol']				= array('Währungssymbol verwenden', 'Das Währungssymbol verwenden ($, €) falls möglich.');
 $GLOBALS['TL_LANG']['tl_iso_config']['currencyPosition']			= array('Position der Währungsbezeichung/-symbol', 'Wählen Sie ob die Währung links oder rechts des Preises angezeigt werden soll.');
 $GLOBALS['TL_LANG']['tl_iso_config']['currencyFormat']				= array('Währungsformat', 'Wählen Sie eine Formatierung für Preise.');
+$GLOBALS['TL_LANG']['tl_iso_config']['enableContinueShopping']		= array('´Einkauf fortsetzen´ aktivieren', 'Fügt dem Warenkorb einen Link zum aktuell hinzugefügten Artikel hinzu.');
 
 
 /**
@@ -72,4 +74,3 @@ $GLOBALS['TL_LANG']['tl_iso_config']['price_legend']	    		= 'Preise';
 $GLOBALS['TL_LANG']['tl_iso_config']['currency_legend']	    		= 'Währungs-Formattierung';
 $GLOBALS['TL_LANG']['tl_iso_config']['invoice_legend']	    		= 'Rechnungen';
 $GLOBALS['TL_LANG']['tl_iso_config']['images_legend']	    		= 'Bilder';
-

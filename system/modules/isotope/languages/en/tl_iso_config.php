@@ -22,6 +22,7 @@
  * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Christian de la Haye <service@delahaye.de>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
@@ -68,6 +69,7 @@ $GLOBALS['TL_LANG']['tl_iso_config']['limitMemberCountries']			= array('Limit me
 $GLOBALS['TL_LANG']['tl_iso_config']['enableGoogleAnalytics']			= array('Enable Google Analytics e-commerce tracking', 'Add Google Analytics e-commerce tracking. Please note you will also have to enable e-commerce tracking in your Google Analytics account.');
 $GLOBALS['TL_LANG']['tl_iso_config']['gallery']							= array('Product image gallery', 'Different image galleries can be developed to present media files in a custom style.');
 $GLOBALS['TL_LANG']['tl_iso_config']['imageSizes']						= array('Image sizes', 'You can create custom image sizes for use in your templates. The default sizes are "gallery", "thumbnail", "medium" and "large".');
+$GLOBALS['TL_LANG']['tl_iso_config']['enableContinueShopping']			= array('Enable ´Continue shopping´ button', 'Add a link to the currently added product to the cart.');
 
 
 /**
@@ -118,4 +120,3 @@ $GLOBALS['TL_LANG']['tl_iso_config']['price_legend']	    			= 'Pricing';
 $GLOBALS['TL_LANG']['tl_iso_config']['currency_legend']	    			= 'Currency formatting';
 $GLOBALS['TL_LANG']['tl_iso_config']['invoice_legend']	    			= 'Invoice';
 $GLOBALS['TL_LANG']['tl_iso_config']['images_legend']	    			= 'Images';
-

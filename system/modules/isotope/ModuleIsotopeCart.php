@@ -22,6 +22,7 @@
  * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Christian de la Haye <service@delahaye.de>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
@@ -97,6 +98,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 		}
 
 		$arrProducts = $this->Isotope->Cart->getProducts();
+		$strContinueJumpTo = '';
 
 		foreach( $arrProducts as $i => $objProduct )
 		{
@@ -137,6 +139,8 @@ class ModuleIsotopeCart extends ModuleIsotope
 				'remove_link_title' => specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $objProduct->name)),
 				'class'				=> 'row_' . $i . ($i%2 ? ' even' : ' odd') . ($i==0 ? ' row_first' : ''),
 			));
+
+			$strContinueJumpTo = ($_SESSION['ISO_LASTADDED'] == $objProduct->id) ? $objProduct->href_reader : $strContinueJumpTo;
 		}
 
 		$blnInsufficientSubtotal = ($this->Isotope->Config->cartMinSubtotal > 0 && $this->Isotope->Config->cartMinSubtotal > $this->Isotope->Cart->subTotal) ? true : false;
@@ -184,6 +188,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 		$objTemplate->cartLabel = $GLOBALS['TL_LANG']['MSC']['cartBT'];
 		$objTemplate->checkoutJumpToLabel = $GLOBALS['TL_LANG']['MSC']['checkoutBT'];
 		$objTemplate->checkoutJumpTo = ($this->iso_checkout_jumpTo && !$blnInsufficientSubtotal) ? $this->generateFrontendUrl($this->Database->execute("SELECT * FROM tl_page WHERE id={$this->iso_checkout_jumpTo}")->fetchAssoc()) : '';
+		$objTemplate->continueJumpTo = ($this->Isotope->Config->enableContinueShopping && $_SESSION[ISO_CONFIRM]) ? $strContinueJumpTo : false;
 
 		$objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
 		$objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
@@ -198,4 +203,3 @@ class ModuleIsotopeCart extends ModuleIsotope
 		$this->Template->cart = $objTemplate->parse();
 	}
 }
-
