@@ -39,9 +39,7 @@ class PaymentSparkasse extends IsotopePayment
 	 */
 	public function processPayment()
 	{
-		$objOrder = new IsotopeOrder();
-		$objOrder->findBy('cart_id', $this->Isotope->Cart->id);
-
+		return true;
 	}
 
 
@@ -53,12 +51,20 @@ class PaymentSparkasse extends IsotopePayment
 	 */
 	public function processPostSale()
 	{
-		$objOrder = new IsotopeOrder();
-		$objOrder->findBy('cart_id', $this->Isotope->Cart->id);
-
-//		'redirecturlf'			=> $this->Environment->base.$this->addToUrl('step=failed', true),
-
-		echo 'redirecturls='.$this->Environment->base.$this->addToUrl('step=complete', true);
+		// Sparkasse system sent error message
+		if ($this->Input->post('directPosErrorCode') > 0)
+		{
+			$this->postsaleFailed($this->Input->post('directPosErrorMessage'));
+		}
+		
+		echo 'redirecturls='.$this->Environment->base . $this->generateFrontendUrl($this->Database->execute("SELECT * FROM tl_page WHERE id=".(int)$this->Input->post('sessionid'))->fetchAssoc(), '/step/complete');
+		exit;
+	}
+	
+	
+	private function postsaleFailed($strReason='')
+	{
+		echo 'redirecturlf='.$this->Environment->base . $this->generateFrontendUrl($this->Database->execute("SELECT * FROM tl_page WHERE id=".(int)$this->Input->post('sessionid'))->fetchAssoc(), '/step/failed') . ($strReason != '' ? '?reason='.$strReason : '');
 		exit;
 	}
 
@@ -71,6 +77,8 @@ class PaymentSparkasse extends IsotopePayment
 	 */
 	public function checkoutForm()
 	{
+		global $objPage;
+		
 		$objOrder = new IsotopeOrder();
 		$objOrder->findBy('cart_id', $this->Isotope->Cart->id);
 
@@ -90,13 +98,19 @@ class PaymentSparkasse extends IsotopePayment
 			'locale'				=> $GLOBALS['TL_LANGUAGE'],
 			'orderid'				=> $objOrder->id,
 			'paymentmethod'			=> $this->sparkasse_paymentmethod,
-			'sessionid'				=> 's105731611',
+			'sessionid'				=> $objPage->id,
 			'sslmerchant'			=> $this->sparkasse_sslmerchant,
 			'transactiontype'		=> ($this->trans_type == 'auth' ? 'preauthorization' : 'authorization'),
 			'version'				=> '1.5',
 		);
 
-//		ksort($arrParam);
+		if ($this->sparkasse_merchantref != '')
+		{
+			$arrParam['merchantref'] = substr($this->replaceInsertTags($this->sparkasse_merchantref), 0, 30);
+		}
+
+		ksort($arrParam);
+		
 		$arrParam['mac'] = hash_hmac('sha1', implode('', $arrParam), $this->sparkasse_sslpassword);
 
 		foreach( $arrParam as $k => $v )

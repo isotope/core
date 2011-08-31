@@ -34,7 +34,7 @@
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['sparkasse_paymentmethod']	= array('Zahlungsart', 'Bitte wählen Sie die Zahlungsart für dieses Modul.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['sparkasse_sslmerchant']		= array('Händlerkennung', 'Bitte geben Sie Ihre Händlerkennung ein.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['sparkasse_sslpassword']		= array('Passwort', 'Bitte geben Sie Ihre SSL-Passwort ein.');
-
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['sparkasse_merchantref']		= array('Händler-Referenz', 'Transaktionsreferenz, die auf der Kreditkartenabrechnung des Händlers statt der Warenkorbnummer angezeigt wird.');
 
 /**
  * References

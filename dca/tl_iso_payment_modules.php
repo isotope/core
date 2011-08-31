@@ -31,7 +31,7 @@
 /**
  * Palettes
  */
-$GLOBALS['TL_DCA']['tl_iso_payment_modules']['palettes']['sparkasse'] = '{type_legend},name,label,type;{note_legend:hide},note;{config_legend:hide},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},sparkasse_paymentmethod,trans_type,sparkasse_sslmerchant,sparkasse_sslpassword;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled';
+$GLOBALS['TL_DCA']['tl_iso_payment_modules']['palettes']['sparkasse'] = '{type_legend},name,label,type;{note_legend:hide},note;{config_legend:hide},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},sparkasse_paymentmethod,trans_type,sparkasse_sslmerchant,sparkasse_sslpassword,sparkasse_merchantref;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled';
 
 
 /**
@@ -58,5 +58,12 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['sparkasse_sslpassword'] 
 	'label'				=> &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['sparkasse_sslpassword'],
 	'inputType'			=> 'text',
 	'eval'				=> array('mandatory'=>true, 'maxlength'=>255, 'hideInput'=>true, 'tl_class'=>'w50'),
+);
+
+$GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['sparkasse_merchantref'] = array
+(
+	'label'				=> &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['sparkasse_merchantref'],
+	'inputType'			=> 'text',
+	'eval'				=> array('mandatory'=>true, 'maxlength'=>255, 'decodeEntities'=>true, 'tl_class'=>'clr long'),
 );
 
