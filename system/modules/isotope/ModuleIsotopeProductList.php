@@ -109,8 +109,13 @@ class ModuleIsotopeProductList extends ModuleIsotope
 
 			if ($total > 0)
 			{
+				if ($this->perPage == 0)
+				{
+					$this->perPage = $total;
+				}
+				
 				$offset = $this->generatePagination($total);
-				$arrProducts = $this->getProducts(array_slice($arrProductCache, $offset, ($this->perPage > 0 ? $this->perPage : $total)));
+				$arrProducts = $this->getProducts(array_slice($arrProductCache, $offset, $this->perPage));
 
 				$expected = ($total - $offset);
 				$expected = $expected > $this->perPage ? $this->perPage : $expected;
