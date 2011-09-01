@@ -107,17 +107,25 @@ class ModuleIsotopeProductList extends ModuleIsotope
 
 			$total = count($arrProductCache);
 
+			// Cache found
 			if ($total > 0)
 			{
-				$perPage = $this->perPage > 0 ? $this->perPage : $total;
-				$offset = $this->generatePagination($total);
-				$arrProducts = $this->getProducts(array_slice($arrProductCache, $offset, $perPage));
+				if ($this->perPage > 0)
+				{
+					$offset = $this->generatePagination($total);
 
-				$expected = ($total - $offset);
-				$expected = $expected > $perPage ? $perPage : $expected;
+					$total = ($total - $offset);
+					$total = $total > $this->perPage ? $this->perPage : $total;
+
+					$arrProducts = $this->getProducts(array_slice($arrProductCache, $offset, $this->perPage));
+				}
+				else
+				{
+					$arrProducts = $this->getProducts($arrProductCache);
+				}
 
 				// Cache is wrong, drop everything and run findProducts()
-				if (count($arrProducts) != $expected)
+				if (count($arrProducts) != $total)
 				{
 					$arrProducts = null;
 				}
@@ -179,10 +187,13 @@ class ModuleIsotopeProductList extends ModuleIsotope
 				$arrProducts = $this->findProducts();
 			}
 			
-			$offset = $this->generatePagination(count($arrProducts));
-			$arrProducts = array_slice($arrProducts, $offset, ($this->perPage > 0 ? $this->perPage : $total));
+			if ($this->perPage > 0)
+			{
+				$offset = $this->generatePagination(count($arrProducts));
+				$arrProducts = array_slice($arrProducts, $offset, $this->perPage);
+			}
 		}
-		
+
 		// No products found
 		if (!is_array($arrProducts) || !count($arrProducts))
 		{
