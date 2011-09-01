@@ -2,6 +2,10 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 1.3.rc1 (2011-??-??)
+------------------------------
+- Fixed radio button events in Internet Explorer (Ticket #484)
+
 Version 1.3.beta2 (2011-08-28)
 ------------------------------
 - Added: runonce script will automatically generate groups based on categories (pages)

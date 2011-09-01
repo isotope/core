@@ -161,11 +161,11 @@ var IsotopeProduct = new Class(
 
 							if (newEl)
 							{
-								if (newEl.get('tag') == 'div' && newEl.hasClass('radio_container'))
+								if (newEl.hasClass('radio_container'))
 								{
 									newEl.getElements('input.radio').each( function(option, index) {
 										option.addEvent('click', this.refresh);
-									}.bind(this))
+									}.bind(this));
 								}
 
 								newEl.cloneEvents(oldEl).replaces(oldEl);
@@ -186,11 +186,11 @@ var IsotopeProduct = new Class(
 			attributes.each( function(el,index)
 			{
 				el = $(el);
-				if (el && el.get('tag') == 'div' && el.hasClass('radio_container'))
+				if (el && el.hasClass('radio_container'))
 				{
 					el.getElements('input.radio').each( function(option) {
 						option.addEvent('click', this.refresh);
-					}.bind(this))
+					}.bind(this));
 				}
 				else if(el)
 				{
