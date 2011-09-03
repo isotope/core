@@ -59,6 +59,10 @@ class Isotope extends Controller
 		parent::__construct();
 		$this->import('Database');
 		$this->import('FrontendUser', 'User');
+		
+		// Make sure field data is available
+		$this->loadDataContainer('tl_iso_products');
+		$this->loadLanguageFile('tl_iso_products');
 
 		if (strlen($_SESSION['ISOTOPE']['config_id']))
 		{

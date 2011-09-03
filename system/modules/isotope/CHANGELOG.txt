@@ -5,6 +5,7 @@ Isotope eCommerce Changelog
 Version 1.3.rc1 (2011-??-??)
 ------------------------------
 - Fixed radio button events in Internet Explorer (Ticket #484)
+- Fixed products DCA not loaded in rare cases
 
 Version 1.3.beta2 (2011-08-28)
 ------------------------------
