@@ -70,6 +70,10 @@ class IsotopeRunonce extends Controller
 		
 		// Just make sure no variant or translation has any categories assigned
 		$this->Database->query("DELETE FROM tl_iso_product_categories WHERE pid IN (SELECT id FROM tl_iso_products WHERE pid>0)");
+		
+		// Delete caches
+		$this->Database->query("TRUNCATE TABLE tl_iso_productcache");
+		$this->Database->query("TRUNCATE TABLE tl_iso_requestcache");
 	}
 
 
