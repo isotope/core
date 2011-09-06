@@ -64,7 +64,7 @@ class PaymentExpercash extends IsotopePayment
 		{
 			$objOrder->date_payed = time();
 
-			if (ISO_VERSION > 0.2)
+			if (version_compare(ISO_VERSION, '0.2', '>'))
 			{
 				$objOrder->checkout();
 			}
