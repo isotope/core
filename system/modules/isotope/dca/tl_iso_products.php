@@ -1696,8 +1696,8 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 				if (!is_array($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]) || $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['attributes']['legend'] == '')
 					continue;
 
-				// Do not show variant options
-				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['attributes']['variant_option'])
+				// Do not show variant options & customer defined fields
+				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['attributes']['variant_option'] || $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['attributes']['customer_defined'])
 					continue;
 
 				// Field cannot be edited in variant
