@@ -101,15 +101,17 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		if ($this->blnCacheProducts)
 		{
 			global $objPage;
-			$arrProductCache = $this->Database->prepare("SELECT product_id FROM tl_iso_productcache WHERE page_id=? AND module_id=? AND requestcache_id=? ORDER BY id ASC")
-											  ->execute($objPage->id, $this->id, (int)$this->Input->get('isorc'))
-											  ->fetchEach('product_id');
+			$objProductCache = $this->Database->prepare("SELECT product_id FROM tl_iso_productcache WHERE page_id=? AND module_id=? AND requestcache_id=? ORDER BY id ASC")
+											  ->execute($objPage->id, $this->id, (int)$this->Input->get('isorc'));										  
 
-			$total = count($arrProductCache);
+			$total = $objProductCache->numRows;
 
 			// Cache found
 			if ($total > 0)
 			{
+				$arrProductCache = $objProductCache->fetchEach('product_id');
+				unset($objProductCache);
+				
 				if ($this->perPage > 0)
 				{
 					$offset = $this->generatePagination($total);
