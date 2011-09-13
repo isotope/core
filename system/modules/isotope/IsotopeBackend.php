@@ -90,12 +90,11 @@ class IsotopeBackend extends Backend
 	 *
 	 * @return	void
 	 */
-	public function truncateProductCache($dc=null)
+	public function truncateProductCache($varValue=null)
 	{
-		if (is_null($dc) || $dc->activeRecord->published)
-		{
-			$this->Database->query("TRUNCATE tl_iso_productcache");
-		}
+		$this->Database->query("TRUNCATE tl_iso_productcache");
+		
+		return $varValue;
 	}
 
 
