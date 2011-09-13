@@ -671,10 +671,10 @@ CREATE TABLE `tl_iso_productcache` (
   `page_id` int(10) unsigned NOT NULL default '0',
   `module_id` int(10) unsigned NOT NULL default '0',
   `requestcache_id` int(10) unsigned NOT NULL default '0',
-  `product_id` int(10) unsigned NOT NULL default '0',
+  `keywords` varchar(255) NOT NULL default '',
+  `products` blob NULL,
   PRIMARY KEY  (`id`),
-  KEY `product_id` (`product_id`),
-  KEY `page_id` (`page_id`, `module_id`, `requestcache_id`),
+  KEY `page_id` (`page_id`, `module_id`, `requestcache_id`, `keywords`),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 

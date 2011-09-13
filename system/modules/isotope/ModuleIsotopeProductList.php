@@ -101,35 +101,41 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		if ($this->blnCacheProducts)
 		{
 			global $objPage;
-			$objProductCache = $this->Database->prepare("SELECT product_id FROM tl_iso_productcache WHERE page_id=? AND module_id=? AND requestcache_id=? ORDER BY id ASC")
-											  ->execute($objPage->id, $this->id, (int)$this->Input->get('isorc'));										  
 
-			$total = $objProductCache->numRows;
+			$objCache = $this->Database->prepare("SELECT * FROM tl_iso_productcache WHERE page_id=? AND module_id=? AND requestcache_id=? AND (keywords=? OR keywords='') ORDER BY keywords=''")
+									   ->limit(1)
+									   ->execute($objPage->id, $this->id, (int)$this->Input->get('isorc'), $this->Input->get('keywords'));
 
 			// Cache found
-			if ($total > 0)
+			if ($objCache->numRows)
 			{
-				$arrProductCache = $objProductCache->fetchEach('product_id');
-				unset($objProductCache);
+				$arrCacheIds = deserialize($objCache->products);
 				
-				if ($this->perPage > 0)
+				// Use the cache if keywords match. Otherwise we will use the product IDs as a "limit" for findProducts()
+				if ($objCache->keywords == $this->Input->get('keywords'))
 				{
-					$offset = $this->generatePagination($total);
+					$total = count($arrCacheIds);
 
-					$total = ($total - $offset);
-					$total = $total > $this->perPage ? $this->perPage : $total;
+					if ($this->perPage > 0)
+					{
+						$offset = $this->generatePagination($total);
 
-					$arrProducts = $this->getProducts(array_slice($arrProductCache, $offset, $this->perPage));
-				}
-				else
-				{
-					$arrProducts = $this->getProducts($arrProductCache);
-				}
+						$total = $total - $offset;
+						$total = $total > $this->perPage ? $this->perPage : $total;
 
-				// Cache is wrong, drop everything and run findProducts()
-				if (count($arrProducts) != $total)
-				{
-					$arrProducts = null;
+						$arrProducts = $this->getProducts(array_slice($arrCacheIds, $offset, $this->perPage));
+					}
+					else
+					{
+						$arrProducts = $this->getProducts($arrCacheIds);
+					}
+
+					// Cache is wrong, drop everything and run findProducts()
+					if (count($arrProducts) != $total)
+					{
+						unset($arrCacheIds);
+						$arrProducts = null;
+					}
 				}
 			}
 		}
@@ -152,11 +158,11 @@ class ModuleIsotopeProductList extends ModuleIsotope
 				$start = microtime(true);
 				
 				// Load products
-				$arrProducts = $this->findProducts();
+				$arrProducts = $this->findProducts($arrCacheIds);
 				
 				if (is_array($arrProducts) && count($arrProducts))
 				{
-					// Decide if we should cache the products
+					// Decide if we should show the "caching products" message
 					$end = microtime(true) - $start;
 					$this->blnCacheProducts = $end > 1 ? true : false;
 					if ($blnCacheMessage != $this->blnCacheProducts)
@@ -178,8 +184,8 @@ class ModuleIsotopeProductList extends ModuleIsotope
 							$arrIds[] = $objProduct->id;
 						}
 		
-						$this->Database->execute("DELETE FROM tl_iso_productcache WHERE page_id={$objPage->id} AND module_id={$this->id} AND requestcache_id=".(int)$this->Input->get('isorc'));
-						$this->Database->execute("INSERT INTO tl_iso_productcache (tstamp,page_id,module_id,requestcache_id,product_id) VALUES ($time, {$objPage->id}, {$this->id}, " . (int)$this->Input->get('isorc') . "," . implode("), ($time, {$objPage->id}, {$this->id}, " . (int)$this->Input->get('isorc') . ",", $arrIds) . ")");
+						$this->Database->query("DELETE FROM tl_iso_productcache WHERE page_id={$objPage->id} AND module_id={$this->id} AND requestcache_id=".(int)$this->Input->get('isorc'));
+						$this->Database->query("INSERT INTO tl_iso_productcache (tstamp,page_id,module_id,requestcache_id,product_id) VALUES ($time, {$objPage->id}, {$this->id}, " . (int)$this->Input->get('isorc') . "," . implode("), ($time, {$objPage->id}, {$this->id}, " . (int)$this->Input->get('isorc') . ",", $arrIds) . ")");
 						$this->Database->unlockTables();
 					}
 				}
@@ -258,9 +264,14 @@ class ModuleIsotopeProductList extends ModuleIsotope
 	 * @param	void
 	 * @return	array
 	 */
-	protected function findProducts()
+	protected function findProducts($arrCacheIds=null)
 	{
 		$arrIds = $this->findCategoryProducts($this->iso_category_scope, $this->iso_list_where);
+		
+		if (is_array($arrCacheIds))
+		{
+			$arrIds = array_intersect($arrIds, $arrCacheIds);
+		}
 
 		$objProductData = $this->Database->execute($this->Isotope->getProductSelect() . " WHERE p1.published='1' AND p1.language='' AND p1.id IN (" . implode(',', $arrIds) . ")");
 
