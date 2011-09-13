@@ -59,7 +59,6 @@ class IsotopeFrontend extends Frontend
 		if ($this->Isotope->Cart->addProduct($objProduct, $intQuantity) !== false)
 		{
 			$_SESSION['ISO_CONFIRM'][] = $GLOBALS['TL_LANG']['MSC']['addedToCart'];
-			$_SESSION['ISO_LASTADDED'] = $objProduct->id;
 			$this->jumpToOrReload($objModule->iso_addProductJumpTo);
 		}
 	}
@@ -436,3 +435,4 @@ $endScript";
 		}
 	}
 }
+

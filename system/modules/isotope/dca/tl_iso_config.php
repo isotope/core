@@ -22,7 +22,6 @@
  * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Andreas Schempp <andreas@schempp.ch>
- * @author     Christian de la Haye <service@delahaye.de>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
@@ -126,7 +125,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 		'default'                     => '
 			{name_legend},name,label,fallback,store_id;
 			{address_legend:hide},firstname,lastname,company,street_1,street_2,street_3,postal,city,subdivision,country,emailShipping,phone;
-			{config_legend},shipping_countries,billing_countries,shipping_fields,billing_fields,orderPrefix,orderDigits,templateGroup,limitMemberCountries,enableGoogleAnalytics,enableContinueShopping;
+			{config_legend},shipping_countries,billing_countries,shipping_fields,billing_fields,orderPrefix,orderDigits,templateGroup,limitMemberCountries,enableGoogleAnalytics;
 			{price_legend},priceCalculateFactor,priceCalculateMode,priceRoundPrecision,priceRoundIncrement,cartMinSubtotal;
 			{currency_legend},currency,currencyFormat,currencyPosition,currencySymbol;
 			{invoice_legend:hide},invoiceLogo;
@@ -341,13 +340,6 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 		'enableGoogleAnalytics' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['enableGoogleAnalytics'],
-			'exclude'                 => true,
-			'inputType'               => 'checkbox',
-			'eval'					  => array('tl_class'=>'w50'),
-		),
-		'enableContinueShopping' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['enableContinueShopping'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
 			'eval'					  => array('tl_class'=>'w50'),
@@ -618,3 +610,4 @@ class tl_iso_config extends Backend
 		return sprintf('<div class="list_icon" style="background-image:url(\'system/modules/isotope/html/%s.png\');line-height:16px" title="%s">%s</div>', $image, $GLOBALS['ISO_LANG']['CUR'][$row['currency']], $label);
 	}
 }
+

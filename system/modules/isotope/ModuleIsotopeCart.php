@@ -98,7 +98,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 		}
 
 		$arrProducts = $this->Isotope->Cart->getProducts();
-		$strContinueJumpTo = '';
+		$lastAdded = ($this->iso_continueShopping && count($_SESSION['ISO_CONFIRM'])) ? $this->Isotope->Cart->lastAdded : 0;
 
 		foreach( $arrProducts as $i => $objProduct )
 		{
@@ -114,12 +114,6 @@ class ModuleIsotopeCart extends ModuleIsotope
 				$blnReload = true;
 				$this->Isotope->Cart->updateProduct($objProduct, array('product_quantity'=>$arrQuantity[$objProduct->cart_id]));
 				continue; // no need to generate $arrProductData, we reload anyway
-			}
-
-			// No need to generate product data if we reload anyway
-			elseif ($blnReload)
-			{
-				continue;
 			}
 
 			$arrProductData[] = array_merge($objProduct->getAttributes(), array
@@ -139,13 +133,16 @@ class ModuleIsotopeCart extends ModuleIsotope
 				'remove_link_title' => specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $objProduct->name)),
 				'class'				=> 'row_' . $i . ($i%2 ? ' even' : ' odd') . ($i==0 ? ' row_first' : ''),
 			));
-
-			$strContinueJumpTo = ($_SESSION['ISO_LASTADDED'] == $objProduct->id) ? $objProduct->href_reader : $strContinueJumpTo;
+			
+			if ($lastAdded == $objProduct->cart_id)
+			{
+				$objTemplate->continueJumpTo = $objProduct->href_reader;
+			}
 		}
 
 		$blnInsufficientSubtotal = ($this->Isotope->Config->cartMinSubtotal > 0 && $this->Isotope->Config->cartMinSubtotal > $this->Isotope->Cart->subTotal) ? true : false;
 
-		// Reload if the "checkout" button has been submitted and minimum order total is reached
+		// Redirect if the "checkout" button has been submitted and minimum order total is reached
 		if ($blnReload && $this->Input->post('checkout') != '' && $this->iso_checkout_jumpTo && !$blnInsufficientSubtotal)
 		{
 			$this->redirect($this->generateFrontendUrl($this->Database->execute("SELECT * FROM tl_page WHERE id={$this->iso_checkout_jumpTo}")->fetchAssoc()));
@@ -188,7 +185,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 		$objTemplate->cartLabel = $GLOBALS['TL_LANG']['MSC']['cartBT'];
 		$objTemplate->checkoutJumpToLabel = $GLOBALS['TL_LANG']['MSC']['checkoutBT'];
 		$objTemplate->checkoutJumpTo = ($this->iso_checkout_jumpTo && !$blnInsufficientSubtotal) ? $this->generateFrontendUrl($this->Database->execute("SELECT * FROM tl_page WHERE id={$this->iso_checkout_jumpTo}")->fetchAssoc()) : '';
-		$objTemplate->continueJumpTo = ($this->Isotope->Config->enableContinueShopping && $_SESSION[ISO_CONFIRM]) ? $strContinueJumpTo : false;
+		$objTemplate->continueLabel = $GLOBALS['TL_LANG']['MSC']['continueShoppingBT'];
 
 		$objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
 		$objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
@@ -203,3 +200,4 @@ class ModuleIsotopeCart extends ModuleIsotope
 		$this->Template->cart = $objTemplate->parse();
 	}
 }
+

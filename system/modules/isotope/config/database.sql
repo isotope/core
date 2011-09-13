@@ -229,7 +229,6 @@ CREATE TABLE `tl_iso_config` (
   `missing_image_placeholder` varchar(255) NOT NULL default '',
   `imageSizes` blob NULL,
   `archive` int(1) unsigned NOT NULL default '0',
-  `enableContinueShopping` int(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -753,6 +752,7 @@ CREATE TABLE `tl_module` (
   `iso_emptyMessage` char(1) NOT NULL default '',
   `iso_includeMessages` char(1) NOT NULL default '',
   `iso_productcache` blob NULL,
+  `iso_continueShopping` char(1) NOT NULL default '',
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
@@ -784,3 +784,4 @@ CREATE TABLE `tl_user_group` (
 
 -- PRODUCT ATTRIBUTES START --
 -- PRODUCT ATTRIBUTES STOP --
+

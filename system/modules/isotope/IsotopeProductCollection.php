@@ -183,6 +183,12 @@ abstract class IsotopeProductCollection extends Model
 				case 'products':
 					$this->arrCache[$strKey] = $this->Database->execute("SELECT COUNT(*) AS items FROM {$this->ctable} WHERE pid={$this->id}")->items;
 					break;
+				
+				case 'lastAdded':
+					// getProducts() will set the cache key/value.
+					// Only if the function has never been called, this will be triggered
+					$this->getProducts('', true);
+					break;
 
 				case 'subTotal':
 					$fltTotal = 0;
@@ -421,6 +427,9 @@ abstract class IsotopeProductCollection extends Model
 		if (!is_array($this->arrProducts) || $blnNoCache)
 		{
 			$this->arrProducts = array();
+			$this->arrCache['lastAdded'] = 0;
+			$lastAdded = 0;
+			
 			$objItems = $this->Database->prepare("SELECT * FROM " . $this->ctable . " WHERE pid=?")->executeUncached($this->id);
 
 			while( $objItems->next() )
@@ -458,6 +467,12 @@ abstract class IsotopeProductCollection extends Model
 				$objProduct->cart_id = $objItems->id;
 				$objProduct->tax_id = $objItems->tax_id;
 				$objProduct->reader_jumpTo_Override = $objItems->href_reader;
+				
+				if ($objItems->tstamp > $lastAdded)
+				{
+					$this->arrCache['lastAdded'] = $objItems->id;
+					$lastAdded = $objItems->tstamp;
+				}
 
 				$this->arrProducts[] = $objProduct;
 			}
@@ -518,6 +533,7 @@ abstract class IsotopeProductCollection extends Model
 		if ($intQuantity == 0)
 			return false;
 
+		$time = time();
 		$this->modified = true;
 
 		// Make sure collection is in DB before adding product
@@ -530,7 +546,7 @@ abstract class IsotopeProductCollection extends Model
 
 		if ($objItem->numRows)
 		{
-			$this->Database->query("UPDATE {$this->ctable} SET product_quantity=(product_quantity+$intQuantity) WHERE id={$objItem->id}");
+			$this->Database->query("UPDATE {$this->ctable} SET tstamp=$time, product_quantity=(product_quantity+$intQuantity) WHERE id={$objItem->id}");
 
 			return $objItems->id;
 		}
@@ -539,7 +555,7 @@ abstract class IsotopeProductCollection extends Model
 			$arrSet = array
 			(
 				'pid'					=> $this->id,
-				'tstamp'				=> time(),
+				'tstamp'				=> $time,
 				'product_id'			=> (int)$objProduct->id,
 				'product_sku'			=> (string)$objProduct->sku,
 				'product_name'			=> (string)$objProduct->name,
@@ -591,6 +607,9 @@ abstract class IsotopeProductCollection extends Model
 		{
 			return $this->deleteProduct($objProduct);
 		}
+		
+		// Modify timestamp when updating a product
+		$arrSet['tstamp'] = time();
 
 		$intAffectedRows = $this->Database->prepare("UPDATE {$this->ctable} %s WHERE id={$objProduct->cart_id}")
 										  ->set($arrSet)
