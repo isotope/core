@@ -102,8 +102,7 @@ class ModuleIsotopeProductReader extends ModuleIsotope
 
 		global $objPage;
 
-		// @todo remove function_exists() when we drop support for Contao 2.9
-		$objPage->pageTitle = function_exists('strip_insert_tags') ? strip_insert_tags($objProduct->name) : $objProduct->name;
+		$objPage->pageTitle = strip_insert_tags($objProduct->name);
 		$objPage->description = $this->prepareMetaDescription($objProduct->description_meta);
 
 		$GLOBALS['TL_KEYWORDS'] .= (strlen($GLOBALS['TL_KEYWORDS']) ? ', ' : '') . $objProduct->keywords_meta;
