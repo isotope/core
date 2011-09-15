@@ -8,6 +8,7 @@ Version 1.3.rc1 (2011-??-??)
 - Fixed radio button events in Internet Explorer (Ticket #484)
 - Fixed products DCA not loaded in rare cases
 - Fixed: hide customer definied fields in product edit mode
+- Fixed low price calculation for advanced prices
 
 Version 1.3.beta2 (2011-08-28)
 ------------------------------

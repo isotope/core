@@ -219,7 +219,7 @@ class IsotopeProduct extends Controller
 																	(
 																		SELECT p1.id, p1.pid FROM tl_iso_prices p1 LEFT JOIN tl_iso_products p2 ON p1.pid=p2.id
 																		WHERE
-																			p2.pid IN (" . implode(',', $this->arrVariantOptions['ids']) . ")
+																			p1.pid IN (" . implode(',', $this->arrVariantOptions['ids']) . ")
 																			AND p1.config_id IN (".(int)$this->Isotope->Config->id.",0)
 																			AND p1.member_group IN(" . ((FE_USER_LOGGED_IN && count($this->User->groups)) ? (implode(',', $this->User->groups).',') : '') . "0)
 																			AND (p1.start='' OR p1.start<$time)
