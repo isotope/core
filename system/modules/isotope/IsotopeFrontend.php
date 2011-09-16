@@ -442,6 +442,7 @@ $endScript";
 	 *
 	 * @param	int		database ID
 	 * @param	string	form id (FORM SUBMIT)
+	 * @param	array	form config that gets merged with the form data from the database
 	 * @return	object|null
 	 */
 	public function prepareForm($intId, $strFormId, $arrConfig=array())

@@ -722,7 +722,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		$objForm = $this->IsotopeFrontend->prepareForm($this->iso_order_conditions, $this->strFormId, array('tableless'=>$this->tableless));
 		
 		// Form not found
-		if (!is_object($objForm))
+		if ($objForm == null)
 		{
 			return '';
 		}
