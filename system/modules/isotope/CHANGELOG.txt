@@ -5,6 +5,7 @@ Isotope eCommerce Changelog
 Version 1.3.rc1 (2011-??-??)
 ------------------------------
 - Added "continue shopping" feature (Ticket #295)
+- Added: new function IsotopeFrontend::prepareCustomForm() to ease including custom forms created by the form generator
 - Fixed radio button events in Internet Explorer (Ticket #484)
 - Fixed products DCA not loaded in rare cases
 - Fixed: hide customer definied fields in product edit mode

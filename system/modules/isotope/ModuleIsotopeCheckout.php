@@ -22,6 +22,7 @@
  * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Yanick Witschi <yanick.witschi@certo-net.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
@@ -717,116 +718,11 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			return '';
 		}
 
-		$objForm = $this->Database->prepare("SELECT * FROM tl_form WHERE id=?")->limit(1)->execute($this->iso_order_conditions);
-
-		$hasUpload = false;
-
-		$this->loadDataContainer('tl_form_field');
-
-		$strFields = '';
-		$strHidden = '';
-
-		// Get all form fields
-		$objFields = $this->Database->prepare("SELECT * FROM tl_form_field WHERE pid=? AND invisible='' ORDER BY sorting")
-									->execute($objForm->id);
-
-		$row = 0;
-		$max_row = $objFields->numRows;
-
-		while ($objFields->next())
-		{
-			$strClass = $GLOBALS['TL_FFL'][$objFields->type];
-
-			// Continue if the class is not defined
-			if (!$this->classFileExists($strClass))
-			{
-				continue;
-			}
-
-			$arrData = $objFields->row();
-
-			$arrData['decodeEntities'] = true;
-			$arrData['allowHtml'] = $objForm->allowTags;
-			$arrData['rowClass'] = 'row_'.$row . (($row == 0) ? ' row_first' : (($row == ($max_row - 1)) ? ' row_last' : '')) . ((($row % 2) == 0) ? ' even' : ' odd');
-			$arrData['tableless'] = $objForm->tableless;
-
-			// Increase the row count if its a password field
-			if ($objFields->type == 'password')
-			{
-				++$row;
-				++$max_row;
-
-				$arrData['rowClassConfirm'] = 'row_'.$row . (($row == ($max_row - 1)) ? ' row_last' : '') . ((($row % 2) == 0) ? ' even' : ' odd');
-			}
-
-			$objWidget = new $strClass($arrData);
-			$objWidget->required = $objFields->mandatory ? true : false;
-
-			// HOOK: load form field callback
-			if (isset($GLOBALS['TL_HOOKS']['loadFormField']) && is_array($GLOBALS['TL_HOOKS']['loadFormField']))
-			{
-				foreach ($GLOBALS['TL_HOOKS']['loadFormField'] as $callback)
-				{
-					$this->import($callback[0]);
-					$objWidget = $this->$callback[0]->$callback[1]($objWidget, $this->strFormId, $objForm->row());
-				}
-			}
-
-			// Validate input
-			if ($this->Input->post('FORM_SUBMIT') == $this->strFormId)
-			{
-				$objWidget->validate();
-
-				// HOOK: validate form field callback
-				if (isset($GLOBALS['TL_HOOKS']['validateFormField']) && is_array($GLOBALS['TL_HOOKS']['validateFormField']))
-				{
-					foreach ($GLOBALS['TL_HOOKS']['validateFormField'] as $callback)
-					{
-						$this->import($callback[0]);
-						$objWidget = $this->$callback[0]->$callback[1]($objWidget, $this->strFormId, $objForm->row());
-					}
-				}
-
-				if ($objWidget->hasErrors())
-				{
-					$this->doNotSubmit = true;
-				}
-
-				// Store current value in the session
-				elseif ($objWidget->submitInput())
-				{
-					$_SESSION['FORM_DATA'][$objFields->name] = $objWidget->value;
-				}
-
-				unset($_POST[$objFields->name]);
-			}
-
-			if ($objWidget instanceof uploadable)
-			{
-				$hasUpload = true;
-			}
-
-			if ($objWidget instanceof FormHidden)
-			{
-				$strHidden .= $objWidget->parse();
-				--$max_row;
-				continue;
-			}
-
-			$strFields .= $objWidget->parse();
-			++$row;
-		}
-
-		$strAttributes = '';
-		$arrAttributes = deserialize($objForm->attributes, true);
-
-		if (strlen($arrAttributes[1]))
-		{
-			$strAttributes .= ' ' . $arrAttributes[1];
-		}
-
-		$this->Template->enctype = $hasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
-
+		$this->import('IsotopeFrontend');
+		$objCustomForm = $this->IsotopeFrontend->prepareCustomForm($this->iso_order_conditions, $this->strFormId);
+		$this->doNotSubmit = $objCustomForm->blnHasErrors;
+		$this->Template->enctype = $objCustomForm->enctype;
+		
 		if (!$this->doNotSubmit)
 		{
 			if (is_array($_SESSION['FORM_DATA']))
@@ -845,11 +741,29 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				}
 			}
 		}
-
+		
 		$objTemplate = new IsotopeTemplate('iso_checkout_order_conditions');
-		$objTemplate->attributes = $strAttributes;
-		$objTemplate->hidden = $strHidden;
-		$objTemplate->tableless = $this->tableless;
+		$objTemplate->attributes	= $objCustomForm->attributes;
+		$objTemplate->tableless		= $this->tableless;
+		
+		$strFields = '';
+		$strHidden = '';
+		
+		if ($objCustomForm->blnHasFields)
+		{
+			foreach ($objCustomForm->arrFields as $strFieldName => $arrFieldData)
+			{
+				if ($objCustomForm->arrWidgets[$arrFieldData['name']] instanceof FormHidden)
+				{
+					$strHidden .= $objCustomForm->arrWidgets[$arrFieldData['name']]->parse();
+					continue;
+				}
+				
+				$strFields .= $objCustomForm->arrWidgets[$arrFieldData['name']]->parse();
+			}
+		}
+				
+		$objTemplate->hidden = $strHidden;	
 		$objTemplate->fields = $strFields;
 
 		return $objTemplate->parse();

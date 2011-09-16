@@ -23,6 +23,7 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Christian de la Haye <service@delahaye.de>
+ * @author     Yanick Witschi <yanick.witschi@certo-net.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
@@ -409,15 +410,14 @@ $endScript";
 	
 	/**
 	 * Get html & javascript tags depending on output format (Contao 2.10)
-	 *
-	 * @param	void
-	 * @return	array
+	 * @param boolean
+	 * @return array
 	 */
 	public static function getElementAndScriptTags($blnAjax=false)
 	{
 		global $objPage;
 
-		switch( $objPage->outputFormat )
+		switch ($objPage->outputFormat)
 		{
 			case 'html5':
 				return array('>', '<script>', '</script>');
@@ -433,6 +433,155 @@ $endScript";
 					return array(' />', '<script type="text/javascript">'."\n".'<!--//--><![CDATA[//><!--', '//--><!]]>'."\n".'</script>');
 				}
 		}
+	}
+	
+	
+	/**
+	 * Prepare form fields from a certain form ID
+	 * Useful if you want to give the user the possibility to use a custom form for a certain action (e.g. order conditions)
+	 * @param int | form id (database)
+	 * @param string | form id (FORM SUBMIT)
+	 * @return object
+	 */
+	public function prepareCustomForm($intFormId, $strFormId)
+	{
+		$objCustomForm = new stdClass();
+		$objCustomForm->arrWidgets		= array();
+		$objCustomForm->arrFields		= array();
+		$objCustomForm->arrFormData		= array();
+		$objCustomForm->arrFiles		= array();
+		$objCustomForm->blnSubmitted	= false;
+		$objCustomForm->blnHasErrors	= false;
+		$objCustomForm->blnHasUpload	= false;
+		$objCustomForm->blnHasFields	= false;
+		$objCustomForm->blnHasFormData	= false;
+		$objCustomForm->blnHasFiles		= false;
+
+		$objForm = $this->Database->prepare("SELECT * FROM tl_form WHERE id=?")->limit(1)->execute($intFormId);
+
+		$this->loadDataContainer('tl_form_field');
+
+		// Get all form fields
+		$objFields = $this->Database->prepare("SELECT * FROM tl_form_field WHERE pid=? AND invisible='' ORDER BY sorting")
+									->execute($objForm->id);
+									
+		$objCustomForm->blnHasFields = $objFields->numRows;
+
+		$row = 0;
+		$max_row = $objFields->numRows;
+
+		while ($objFields->next())
+		{
+			$strClass = $GLOBALS['TL_FFL'][$objFields->type];
+
+			// Continue if the class is not defined
+			if (!$this->classFileExists($strClass))
+			{
+				continue;
+			}
+
+			$arrData = $objFields->row();
+			$arrData['decodeEntities'] = true;
+			$arrData['allowHtml'] = $objForm->allowTags;
+			$arrData['rowClass'] = 'row_'.$row . (($row == 0) ? ' row_first' : (($row == ($max_row - 1)) ? ' row_last' : '')) . ((($row % 2) == 0) ? ' even' : ' odd');
+			$arrData['tableless'] = $objForm->tableless;
+
+			// Increase the row count if its a password field
+			if ($objFields->type == 'password')
+			{
+				++$row;
+				++$max_row;
+
+				$arrData['rowClassConfirm'] = 'row_'.$row . (($row == ($max_row - 1)) ? ' row_last' : '') . ((($row % 2) == 0) ? ' even' : ' odd');
+			}
+
+			$objWidget = new $strClass($arrData);
+			$objWidget->required = $objFields->mandatory ? true : false;
+
+			// HOOK: load form field callback
+			if (isset($GLOBALS['TL_HOOKS']['loadFormField']) && is_array($GLOBALS['TL_HOOKS']['loadFormField']))
+			{
+				foreach ($GLOBALS['TL_HOOKS']['loadFormField'] as $callback)
+				{
+					$this->import($callback[0]);
+					$objWidget = $this->$callback[0]->$callback[1]($objWidget, $strFormId, $objForm->row());
+				}
+			}
+
+			// Validate input
+			if ($this->Input->post('FORM_SUBMIT') == $strFormId)
+			{
+				$objCustomForm->blnSubmitted = true;
+				$objWidget->validate();
+
+				// HOOK: validate form field callback
+				if (isset($GLOBALS['TL_HOOKS']['validateFormField']) && is_array($GLOBALS['TL_HOOKS']['validateFormField']))
+				{
+					foreach ($GLOBALS['TL_HOOKS']['validateFormField'] as $callback)
+					{
+						$this->import($callback[0]);
+						$objWidget = $this->$callback[0]->$callback[1]($objWidget, $strFormId, $objForm->row());
+					}
+				}
+
+				if ($objWidget->hasErrors())
+				{
+					$objCustomForm->blnHasErrors = true;
+				}
+
+				// Store current value in the session
+				elseif ($objWidget->submitInput())
+				{
+					$_SESSION['FORM_DATA'][$objFields->name] = $objWidget->value;
+				}
+
+				unset($_POST[$objFields->name]);
+			}
+
+			if ($objWidget instanceof uploadable)
+			{
+				$objCustomForm->blnHasUpload = true;
+			}
+
+			if ($objWidget instanceof FormHidden)
+			{
+				--$max_row;
+				continue;
+			}
+			
+			$objCustomForm->arrWidgets[$arrData['name']]	= $objWidget;
+			$objCustomForm->arrFields[$arrData['name']]		= $arrData;
+
+			++$row;
+		}
+
+		// form attributes
+		$strAttributes = '';
+		$arrAttributes = deserialize($objForm->attributes, true);
+		if (strlen($arrAttributes[1]))
+		{
+			$strAttributes .= ' ' . $arrAttributes[1];
+		}
+
+		$objCustomForm->attributes	= $strAttributes;
+		$objCustomForm->enctype		= $objCustomForm->blnHasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
+		
+		if (!$objCustomForm->blnHasErrors)
+		{
+			if (is_array($_SESSION['FORM_DATA']))
+			{
+				$objCustomForm->blnHasFormData = true;
+				$objCustomForm->arrFormData	= $_SESSION['FORM_DATA'];
+			}
+
+			if (is_array($_SESSION['FILES']))
+			{
+				$objCustomForm->blnHasFiles = true;
+				$objCustomForm->arrFiles = $_SESSION['FILES'];				
+			}
+		}
+
+		return $objCustomForm;
 	}
 }
 
