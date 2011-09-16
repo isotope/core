@@ -453,9 +453,7 @@ $endScript";
 		$objCustomForm->arrFiles		= array();
 		$objCustomForm->blnSubmitted	= false;
 		$objCustomForm->blnHasErrors	= false;
-		$objCustomForm->blnHasUpload	= false;
-		$objCustomForm->blnHasFields	= false;
-		$objCustomForm->blnHasFormData	= false;
+		$objCustomForm->blnHasUploads	= false;
 
 		$objForm = $this->Database->prepare("SELECT * FROM tl_form WHERE id=?")->limit(1)->execute($intFormId);
 		$objCustomForm->arrForm	= $objForm->row();
@@ -465,8 +463,6 @@ $endScript";
 		// Get all form fields
 		$objFields = $this->Database->prepare("SELECT * FROM tl_form_field WHERE pid=? AND invisible='' ORDER BY sorting")
 									->execute($objForm->id);
-						
-		$objCustomForm->blnHasFields = ($objFields->numRows) ? true : false;
 
 		$row = 0;
 		$max_row = $objFields->numRows;
@@ -535,15 +531,21 @@ $endScript";
 				{
 					$objCustomForm->arrFormData[$objFields->name]	= $objWidget->value;
 					$_SESSION['FORM_DATA'][$objFields->name]		= $objWidget->value;
-					
-					// uploads
-					if ($objWidget instanceof uploadable)
-					{
-						$objCustomForm->arrFiles[$objFields->name]	= $_SESSION['FILES'][$objFields->name];
-					}					
+
+				}
+
+				// Store file uploads
+				elseif ($objWidget instanceof uploadable)
+				{
+					$objCustomForm->arrFiles[$objFields->name]	= $_SESSION['FILES'][$objFields->name];
 				}
 
 				unset($_POST[$objFields->name]);
+			}
+
+			if ($objWidget instanceof uploadable)
+			{
+				$objCustomForm->blnHasUploads = true;
 			}
 
 			if ($objWidget instanceof FormHidden)
