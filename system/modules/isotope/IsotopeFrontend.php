@@ -448,6 +448,7 @@ $endScript";
 		$objCustomForm = new stdClass();
 		$objCustomForm->arrWidgets		= array();
 		$objCustomForm->arrFields		= array();
+		$objCustomForm->arrForm			= array();
 		$objCustomForm->arrFormData		= array();
 		$objCustomForm->arrFiles		= array();
 		$objCustomForm->blnSubmitted	= false;
@@ -455,17 +456,17 @@ $endScript";
 		$objCustomForm->blnHasUpload	= false;
 		$objCustomForm->blnHasFields	= false;
 		$objCustomForm->blnHasFormData	= false;
-		$objCustomForm->blnHasFiles		= false;
 
 		$objForm = $this->Database->prepare("SELECT * FROM tl_form WHERE id=?")->limit(1)->execute($intFormId);
+		$objCustomForm->arrForm	= $objForm->row();
 
 		$this->loadDataContainer('tl_form_field');
 
 		// Get all form fields
 		$objFields = $this->Database->prepare("SELECT * FROM tl_form_field WHERE pid=? AND invisible='' ORDER BY sorting")
 									->execute($objForm->id);
-									
-		$objCustomForm->blnHasFields = $objFields->numRows;
+						
+		$objCustomForm->blnHasFields = ($objFields->numRows) ? true : false;
 
 		$row = 0;
 		$max_row = $objFields->numRows;
@@ -504,7 +505,7 @@ $endScript";
 				foreach ($GLOBALS['TL_HOOKS']['loadFormField'] as $callback)
 				{
 					$this->import($callback[0]);
-					$objWidget = $this->$callback[0]->$callback[1]($objWidget, $strFormId, $objForm->row());
+					$objWidget = $this->$callback[0]->$callback[1]($objWidget, $strFormId, $objCustomForm->arrForm);
 				}
 			}
 
@@ -520,7 +521,7 @@ $endScript";
 					foreach ($GLOBALS['TL_HOOKS']['validateFormField'] as $callback)
 					{
 						$this->import($callback[0]);
-						$objWidget = $this->$callback[0]->$callback[1]($objWidget, $strFormId, $objForm->row());
+						$objWidget = $this->$callback[0]->$callback[1]($objWidget, $strFormId, $objCustomForm->arrForm);
 					}
 				}
 
@@ -532,15 +533,17 @@ $endScript";
 				// Store current value in the session
 				elseif ($objWidget->submitInput())
 				{
-					$_SESSION['FORM_DATA'][$objFields->name] = $objWidget->value;
+					$objCustomForm->arrFormData[$objFields->name]	= $objWidget->value;
+					$_SESSION['FORM_DATA'][$objFields->name]		= $objWidget->value;
+					
+					// uploads
+					if ($objWidget instanceof uploadable)
+					{
+						$objCustomForm->arrFiles[$objFields->name]	= $_SESSION['FILES'][$objFields->name];
+					}					
 				}
 
 				unset($_POST[$objFields->name]);
-			}
-
-			if ($objWidget instanceof uploadable)
-			{
-				$objCustomForm->blnHasUpload = true;
 			}
 
 			if ($objWidget instanceof FormHidden)
@@ -565,21 +568,6 @@ $endScript";
 
 		$objCustomForm->attributes	= $strAttributes;
 		$objCustomForm->enctype		= $objCustomForm->blnHasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
-		
-		if (!$objCustomForm->blnHasErrors)
-		{
-			if (is_array($_SESSION['FORM_DATA']))
-			{
-				$objCustomForm->blnHasFormData = true;
-				$objCustomForm->arrFormData	= $_SESSION['FORM_DATA'];
-			}
-
-			if (is_array($_SESSION['FILES']))
-			{
-				$objCustomForm->blnHasFiles = true;
-				$objCustomForm->arrFiles = $_SESSION['FILES'];				
-			}
-		}
 
 		return $objCustomForm;
 	}
