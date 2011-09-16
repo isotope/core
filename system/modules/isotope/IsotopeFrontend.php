@@ -446,7 +446,7 @@ $endScript";
 	public function prepareCustomForm($intFormId, $strFormId)
 	{
 		$objCustomForm = new stdClass();
-		$objCustomForm->arrWidgets		= array();
+		$objCustomForm->arrHidden		= array();
 		$objCustomForm->arrFields		= array();
 		$objCustomForm->arrForm			= array();
 		$objCustomForm->arrFormData		= array();
@@ -551,11 +551,11 @@ $endScript";
 			if ($objWidget instanceof FormHidden)
 			{
 				--$max_row;
+				$objCustomForm->arrHidden[$arrData['name']]	= $objWidget;
 				continue;
 			}
 			
-			$objCustomForm->arrWidgets[$arrData['name']]	= $objWidget;
-			$objCustomForm->arrFields[$arrData['name']]		= $arrData;
+			$objCustomForm->arrFields[$arrData['name']]		= $objWidget;
 
 			++$row;
 		}
