@@ -442,9 +442,9 @@ $endScript";
 	 *
 	 * @param	int		database ID
 	 * @param	string	form id (FORM SUBMIT)
-	 * @return	object
+	 * @return	object|null
 	 */
-	public function prepareForm($intId, $strFormId)
+	public function prepareForm($intId, $strFormId, $arrConfig=array())
 	{
 		$objForm = new stdClass();
 		$objForm->arrHidden		= array();
@@ -455,7 +455,7 @@ $endScript";
 		$objForm->blnHasErrors	= false;
 		$objForm->blnHasUploads	= false;
 
-		$objForm->arrData		= $this->Database->execute("SELECT * FROM tl_form WHERE id=".(int)$intId)->fetchAssoc();
+		$objForm->arrData		= array_merge($this->Database->execute("SELECT * FROM tl_form WHERE id=".(int)$intId)->fetchAssoc(), $arrConfig);
 		
 		// Form not found
 		if (!$objForm->arrData['id'])

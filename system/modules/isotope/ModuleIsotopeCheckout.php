@@ -719,52 +719,37 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		}
 
 		$this->import('IsotopeFrontend');
-		$objCustomForm = $this->IsotopeFrontend->prepareCustomForm($this->iso_order_conditions, $this->strFormId);
-		$this->doNotSubmit = $objCustomForm->blnHasErrors;
-		$this->Template->enctype = $objCustomForm->enctype;
+		$objForm = $this->IsotopeFrontend->prepareForm($this->iso_order_conditions, $this->strFormId, array('tableless'=>$this->tableless));
+		
+		// Form not found
+		if (!is_object($objForm))
+		{
+			return '';
+		}
+		
+		$this->doNotSubmit = $objForm->blnHasErrors ? true : $this->doNotSubmit;
+		$this->Template->enctype = $objForm->enctype;
 		
 		if (!$this->doNotSubmit)
 		{
-			if (is_array($_SESSION['FORM_DATA']))
+			foreach( $objForm->arrFormData as $name => $value )
 			{
-				foreach( $_SESSION['FORM_DATA'] as $name => $value )
-				{
-					$this->arrOrderData['form_'.$name] = $value;
-				}
+				$this->arrOrderData['form_'.$name] = $value;
 			}
 
-			if (is_array($_SESSION['FILES']))
+			foreach( $objForm->arrFiles as $name => $file )
 			{
-				foreach( $_SESSION['FILES'] as $name => $file )
-				{
-					$this->arrOrderData['form_'.$name] = $this->Environment->base . str_replace(TL_ROOT . '/', '', dirname($file['tmp_name'])) . '/' . rawurlencode($file['name']);
-				}
+				$this->arrOrderData['form_'.$name] = $this->Environment->base . str_replace(TL_ROOT . '/', '', dirname($file['tmp_name'])) . '/' . rawurlencode($file['name']);
 			}
 		}
 		
 		$objTemplate = new IsotopeTemplate('iso_checkout_order_conditions');
-		$objTemplate->attributes	= $objCustomForm->attributes;
+		$objTemplate->attributes	= $objForm->attributes;
 		$objTemplate->tableless		= $this->tableless;
 		
-		$strFields = '';
-		$strHidden = '';
-		
-		if ($objCustomForm->blnHasFields)
-		{
-			foreach ($objCustomForm->arrFields as $strFieldName => $arrFieldData)
-			{
-				if ($objCustomForm->arrWidgets[$arrFieldData['name']] instanceof FormHidden)
-				{
-					$strHidden .= $objCustomForm->arrWidgets[$arrFieldData['name']]->parse();
-					continue;
-				}
-				
-				$strFields .= $objCustomForm->arrWidgets[$arrFieldData['name']]->parse();
-			}
-		}
-				
-		$objTemplate->hidden = $strHidden;	
-		$objTemplate->fields = $strFields;
+		$parse = create_function('$a', 'return $a->parse();');
+		$objTemplate->hidden = implode('', array_map($parse, $objForm->arrHidden));
+		$objTemplate->fields = implode('', array_map($parse, $objForm->arrFields));
 
 		return $objTemplate->parse();
 	}
