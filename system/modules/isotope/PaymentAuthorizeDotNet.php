@@ -55,7 +55,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 	 * @param string
 	 * @param mixed
 	 */
-	public function __get($strKey)
+/*	public function __get($strKey)
 	{
 		switch( $strKey )
 		{
@@ -71,7 +71,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 			default:
 				return parent::__get($strKey);
 		}
-	}
+	}*/
 
 
 	/**
@@ -85,12 +85,18 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 		//We have already done the Authorization - go to Complete step
 		if($this->authorize_trans_type =='AUTH_ONLY')
 			return true;
-
-		//Otherwise we capture payment
-		// Get the current order
-		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->execute($this->Isotope->Cart->id);
+		
+		$objOrder = new IsotopeOrder();
+		$objOrder->findBy('cart_id', $this->Isotope->Cart->id);
+		
 		//$arrPaymentData = deserialize($objOrder->payment_data);
-		return $this->authCapturePayment($objOrder->id, $objOrder->grandTotal, true);
+		if($this->authCapturePayment($objOrder->id, $objOrder->grandTotal, true))
+			return true;
+		
+		global $objPage;
+		$this->log('Invalid payment data received.', 'PaymentAuthorizeDotNet processPayment()', TL_ERROR);
+		$this->redirect($this->generateFrontendUrl($objPage->row(), '/step/failed'));
+		
 	}
 
 
@@ -103,9 +109,10 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 	 * @return string
 	 */
 	public function paymentForm($objModule)
-	{
+	{		
 		$strBuffer = '';
 		$arrPayment = $this->Input->post('payment');
+				
 		$arrCCTypes = deserialize($this->allowed_cc_types);
 
 		$intStartYear = (integer)date('Y', time()); //2-digit year
@@ -180,12 +187,12 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 				{
 					$objModule->doNotSubmit = true;
 				}
+			
+				/*if ($objWidget->mandatory && !strlen($objWidget->value))
+				{
+					$objModule->doNotSubmit = true;
+				}*/
 			}
-			elseif ($objWidget->mandatory && !strlen($objWidget->value))
-			{
-				$objModule->doNotSubmit = true;
-			}
-
 			//PCI Compliance - Mask CC Values
 			if($field=='card_accountNumber' && strlen($objWidget->value))
 			{
@@ -373,7 +380,7 @@ $return .= '</div></div>';
 			"x_delim_data"						=> "TRUE",
 			"x_relay_response" 					=> "FALSE",
 			"x_amount"							=> $fltOrderTotal
-			//"x_test_request"					=> ($this->debug ? 'true' : 'false'),
+			"x_test_request"					=> ($this->debug ? "TRUE" : "FALSE"),
 		);
 
 		switch($strAuthType)
