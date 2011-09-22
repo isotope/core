@@ -52,94 +52,53 @@ abstract class ContentIsotope extends ContentElement
 			// Load Isotope javascript and css
 			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/html/isotope.js';
 			$GLOBALS['TL_CSS'][] = 'system/modules/isotope/html/isotope.css';
+			
+			// Make sure we have a reader page
+			if (!$this->iso_reader_jumpTo)
+			{
+				global $objPage;
+				$this->iso_reader_jumpTo = $objPage->id;
+			}
 		}
 	}
 
 
 	/**
-	 * Shortcut for a single product by ID or database result
-	 * @param  int|DB_Result
-	 * @return object|null
+	 * Shortcut for a single product by ID or from database result
+	 *
+	 * @deprecated
+	 * @see IsotopeFrontend::getProduct()
 	 */
 	protected function getProduct($objProductData, $blnCheckAvailability=true)
 	{
-		if (is_numeric($objProductData))
-		{
-			$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS product_class FROM tl_iso_products WHERE language='' AND id=?")->execute($objProductData);
-		}
-
-		if (!($objProductData instanceof Database_Result) || !$objProductData->numRows)
-		{
-			return null;
-		}
-
-		$strClass = $GLOBALS['ISO_PRODUCT'][$objProductData->product_class]['class'];
-
-		if ($strClass == '' || !$this->classFileExists($strClass))
-		{
-			return null;
-		}
-
-		$objProduct = new $strClass($objProductData->row());
-
-		if ($blnCheckAvailability && !$objProduct->available)
-		{
-			return null;
-		}
-
-		global $objPage;
-		$objProduct->reader_jumpTo = $this->iso_reader_jumpTo ? $this->iso_reader_jumpTo : $objPage->id;
-
-		return $objProduct;
+		trigger_error('Using ContentIsotope::getProduct() is deprecated. Please use IsotopeFrontend::getProduct()', E_USER_NOTICE);
+		return IsotopeFrontend::getProduct($objProductData, $this->iso_reader_jumpTo, $blnCheckAvailability);
 	}
 
 
 	/**
 	 * Shortcut for a single product by alias (from url?)
+	 *
+	 * @deprecated
+	 * @see IsotopeFrontend::getProducts()
 	 */
 	protected function getProductByAlias($strAlias, $blnCheckAvailability=true)
 	{
-		$objProductData = $this->Database->prepare("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS product_class FROM tl_iso_products WHERE pid=0 AND language='' AND " . (is_numeric($strAlias) ? 'id' : 'alias') . "=?")
-										 ->limit(1)
-										 ->executeUncached($strAlias);
-
-		return $this->getProduct($objProductData, $blnCheckAvailability);
+		trigger_error('Using ContentIsotope::getProductByAlias() is deprecated. Please use IsotopeFrontend::getProductByAlias()', E_USER_NOTICE);
+		return IsotopeFrontend::getProductByAlias($strAlias, $this->iso_reader_jumpTo, $blnCheckAvailability);
 	}
 
 
 	/**
-	 * Retrieve multiple products by ID.
-	 * @param  array
-	 * @return array
+	 * Generate products from database result or array of IDs.
+	 *
+	 * @deprecated
+	 * @see IsotopeFrontend::getProducts()
 	 */
-	protected function getProducts($arrIds, $blnCheckAvailability=true)
+	protected function getProducts($objProductData, $blnCheckAvailability=true, array $arrFilters=array(), array $arrSorting=array())
 	{
-		// $objProductData can also be an array of product ids
-		if (is_array($objProductData) && count($objProductData))
-		{
-			$objProductData = $this->Database->execute($this->Isotope->getProductSelect() . "
-														WHERE p1.id IN (" . implode(',', array_map('intval', $objProductData)) . ")
-														ORDER BY p1.id=" . implode(' DESC, p1.id=', $objProductData) . " DESC");
-		}
-
-		if (!($objProductData instanceof Database_Result) || !$objProductData->numRows)
-		{
-			return array();
-		}
-
-		$arrProducts = array();
-
-		while( $objProductData->next() )
-		{
-			$objProduct = $this->getProduct($objProductData, $blnCheckAvailability);
-
-			if ($objProduct instanceof IsotopeProduct)
-			{
-				$arrProducts[$objProductData->id] = $objProduct;
-			}
-		}
-
-		return $arrProducts;
+		trigger_error('Using ContentIsotope::getProducts() is deprecated. Please use IsotopeFrontend::getProducts()', E_USER_NOTICE);
+		return IsotopeFrontend::getProducts($objProductData, $this->iso_reader_jumpTo, $blnCheckAvailability, $arrFilters, $arrSorting);
 	}
 }
 

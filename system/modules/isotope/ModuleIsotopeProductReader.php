@@ -70,7 +70,7 @@ class ModuleIsotopeProductReader extends ModuleIsotope
 
 	public function generateAjax()
 	{
-		$objProduct = $this->getProduct($this->Input->get('product'), false);
+		$objProduct = IsotopeFrontend::getProduct($this->Input->get('product'), $this->iso_reader_jumpTo, false);
 
 		if ($objProduct)
 		{
@@ -86,7 +86,7 @@ class ModuleIsotopeProductReader extends ModuleIsotope
 	 */
 	protected function compile()
 	{
-		$objProduct = $this->getProductByAlias($this->Input->get('product'));
+		$objProduct = IsotopeFrontend::getProductByAlias($this->Input->get('product'), $this->iso_reader_jumpTo);
 
 		if (!$objProduct)
 		{

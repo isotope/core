@@ -7,6 +7,8 @@ Version 1.3.rc1 (2011-??-??)
 - Added: new product attribute "File tree"
 - Added "continue shopping" feature (Ticket #295)
 - Added: new function IsotopeFrontend::prepareForm() to ease including custom forms created by the form generator
+- Added CSS class "trail" to product category pages when in reader mode (Ticket #76)
+- Improved: loading products is now centralized in IsotopeFrontend static functions
 - Fixed radio button events in Internet Explorer (Ticket #484)
 - Fixed products DCA not loaded in rare cases
 - Fixed: hide customer definied fields in product edit mode

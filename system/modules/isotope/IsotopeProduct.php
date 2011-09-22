@@ -178,7 +178,7 @@ class IsotopeProduct extends Controller
 			{
 				// Find all possible variant options
 				$objVariant = clone $this;
-				$objVariants = $this->Database->execute($this->Isotope->getProductSelect() . " WHERE p1.pid={$this->arrData['id']} AND p1.language='' AND p1.published='1'");
+				$objVariants = $this->Database->execute(IsotopeProduct::getSelectStatement() . " WHERE p1.pid={$this->arrData['id']} AND p1.language='' AND p1.published='1'");
 				while( $objVariants->next() )
 				{
 					$objVariant->loadVariantData($objVariants->row(), false);
@@ -1161,6 +1161,38 @@ class IsotopeProduct extends Controller
 
 		// Unset arrDownloads cache
 		$this->arrDownloads = null;
+	}
+	
+	
+	/**
+	 * Return select statement to load product data including multilingual fields
+	 *
+	 * @param	void
+	 * @return	string
+	 */
+	public static function getSelectStatement()
+	{
+		static $strSelect = '';
+		
+		if ($strSelect == '')
+		{
+			$arrSelect = array("'".$GLOBALS['TL_LANGUAGE']."' AS language");
+
+			foreach( $GLOBALS['ISO_CONFIG']['multilingual'] as $attribute )
+			{
+				$arrSelect[] = "IFNULL(p2.$attribute, p1.$attribute) AS {$attribute}";
+			}
+
+			$strSelect = "
+SELECT p1.*,
+	" . implode(', ', $arrSelect) . ",
+	t.class AS product_class
+FROM tl_iso_products p1
+INNER JOIN tl_iso_producttypes t ON t.id=p1.type
+LEFT OUTER JOIN tl_iso_products p2 ON p1.id=p2.pid AND p2.language='" . $GLOBALS['TL_LANGUAGE'] . "'";
+		}
+
+		return $strSelect;
 	}
 }
 

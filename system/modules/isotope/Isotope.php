@@ -1113,30 +1113,15 @@ class Isotope extends Controller
 	/**
 	 * Return select statement to load product data including multilingual fields
 	 *
-	 * @param	void
-	 * @return	string
+	 * @param		void
+	 * @return		string
+	 * @deprecated	moved to static function IsotopeProduct::getProductStatement()
+	 * @see			IsotopeProduct::getProductStatement()
 	 */
 	public function getProductSelect()
 	{
-		if ($this->strSelect == '')
-		{
-			$arrSelect = array("'".$GLOBALS['TL_LANGUAGE']."' AS language");
-
-			foreach( $GLOBALS['ISO_CONFIG']['multilingual'] as $attribute )
-			{
-				$arrSelect[] = "IFNULL(p2.$attribute, p1.$attribute) AS {$attribute}";
-			}
-
-			$this->strSelect = "
-SELECT p1.*,
-	" . implode(', ', $arrSelect) . ",
-	t.class AS product_class
-FROM tl_iso_products p1
-INNER JOIN tl_iso_producttypes t ON t.id=p1.type
-LEFT OUTER JOIN tl_iso_products p2 ON p1.id=p2.pid AND p2.language='" . $GLOBALS['TL_LANGUAGE'] . "'";
-		}
-
-		return $this->strSelect;
+		trigger_error('Using Isotope::getProductSelect() is deprecated. Please use IsotopeProduct::getProductStatement()', E_USER_NOTICE);
+		return IsotopeProduct::getProductStatement();
 	}
 
 

@@ -122,6 +122,52 @@ class IsotopeFrontend extends Frontend
 
 		return false;
 	}
+	
+	
+	/**
+	 * Add the navigation trail CSS class to pages belonging to the active product
+	 *
+	 * @param	Template
+	 * @return	void
+	 * @link	http://www.contao.org/hooks.html#parseTemplate
+	 */
+	public function fixNavigationTrail(&$objTemplate)
+	{
+		if ($this->Input->get('product') != '' && substr($objTemplate->getName(), 0, 4) == 'nav_')
+		{
+			static $arrTrail = null;
+			
+			// Only fetch the product once. getProductByAlias will return null if the product is not found.
+			if ($arrTrail == null)
+			{
+				$arrTrail = array();
+				$objProduct = self::getProductByAlias($this->Input->get('product'));
+
+				foreach( $objProduct->categories as $pageId )
+				{
+					$objPage = $this->getPageDetails($pageId);
+					$arrTrail = array_merge($arrTrail, $objPage->trail);
+				}
+
+				$arrTrail = array_unique($arrTrail);
+			}
+
+			if (count($arrTrail))
+			{
+				$arrItems = $objTemplate->items;
+
+				foreach( $arrItems as $k => $arrItem )
+				{
+					if (in_array($arrItem['id'], $arrTrail) && strpos($arrItem['class'], 'trail') === false)
+					{
+						$arrItems[$k]['class'] .= ' trail';
+					}
+				}
+				
+				$objTemplate->items = $arrItems;
+			}
+		}
+	}
 
 
 	/**
@@ -575,6 +621,236 @@ $endScript";
 		$objForm->enctype		= $objForm->blnHasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
 
 		return $objForm;
+	}
+	
+	
+	/**
+	 * Shortcut for a single product by ID or from database result
+	 *
+	 * @param	Database_Result|int
+	 * @param	int
+	 * @param	bool
+	 * @return	IsotopeProduct|null
+	 */
+	public static function getProduct($objProductData, $intReaderPage=0, $blnCheckAvailability=true)
+	{
+		if (is_numeric($objProductData))
+		{
+			$Database = Database::getInstance();
+			
+			$objProductData = $Database->prepare(IsotopeProduct::getSelectStatement() . " WHERE p1.language='' AND p1.id=?")->execute($objProductData);
+		}
+
+		if (!($objProductData instanceof Database_Result) || !$objProductData->numRows)
+		{
+			return null;
+		}
+
+		$strClass = $GLOBALS['ISO_PRODUCT'][$objProductData->product_class]['class'];
+
+		try
+		{
+			$objProduct = new $strClass($objProductData->row());
+		}
+		catch (Exception $e)
+		{
+			return null;
+		}
+
+		if ($blnCheckAvailability && !$objProduct->available)
+		{
+			return null;
+		}
+
+		$objProduct->reader_jumpTo = $intReaderPage;
+
+		return $objProduct;
+	}
+
+
+	/**
+	 * Shortcut for a single product by alias (from url?)
+	 *
+	 * @param	string
+	 * @param	int
+	 * @param	bool
+	 * @return	IsotopeProduct|null
+	 */
+	public static function getProductByAlias($strAlias, $intReaderPage=0, $blnCheckAvailability=true)
+	{
+		$Database = Database::getInstance();
+		
+		$objProductData = $Database->prepare(IsotopeProduct::getSelectStatement() . " WHERE p1.pid=0 AND p1.language='' AND p1." . (is_numeric($strAlias) ? 'id' : 'alias') . "=?")
+								   ->limit(1)
+								   ->executeUncached($strAlias);
+
+		return self::getProduct($objProductData, $intReaderPage, $blnCheckAvailability);
+	}
+	
+	
+	/**
+	 * Generate products from database result or array of IDs.
+	 *
+	 * @param	Database_Result|array
+	 * @param	int
+	 * @param	bool
+	 * @param	array
+	 * @param	array
+	 * @return	array
+	 */
+	public static function getProducts($objProductData, $intReaderPage=0, $blnCheckAvailability=true, array $arrFilters=array(), array $arrSorting=array())
+	{
+		// $objProductData can also be an array of product ids
+		if (is_array($objProductData) && count($objProductData))
+		{
+			$Database = Database::getInstance();
+			
+			$objProductData = $Database->execute(IsotopeProduct::getSelectStatement() . "
+													WHERE p1.language='' AND p1.id IN (" . implode(',', array_map('intval', $objProductData)) . ")
+													ORDER BY p1.id=" . implode(' DESC, p1.id=', $objProductData) . " DESC");
+		}
+
+		if (!($objProductData instanceof Database_Result) || !$objProductData->numRows)
+		{
+			return array();
+		}
+
+		$arrProducts = array();
+
+		while( $objProductData->next() )
+		{
+			$objProduct = IsotopeFrontend::getProduct($objProductData, $intReaderPage, $blnCheckAvailability);
+
+			if ($objProduct instanceof IsotopeProduct)
+			{
+				$arrProducts[$objProductData->id] = $objProduct;
+			}
+		}
+
+		if (count($arrFilters))
+		{
+			global $filterConfig;
+			$filterConfig = $arrFilters;
+			$arrProducts = array_filter($arrProducts, array(self, 'filterProducts'));
+		}
+
+		if (count($arrSorting))
+		{
+			$arrParam = array();
+
+			foreach( $arrSorting as $strField => $arrConfig )
+			{
+				$arrData = array();
+				foreach( $arrProducts as $id => $objProduct )
+				{
+					$arrData[$id] = str_replace('"', '', $objProduct->$strField);
+				}
+
+				$arrParam[] = $arrData;
+				$arrParam = array_merge($arrParam, $arrConfig);
+			}
+
+			// Add product array as the last item. This will sort the products array based on the sorting of the passed in arguments.
+			$arrParam[] = &$arrProducts;
+
+			// we need to use call_user_func_array because the number of parameters can be dynamic and this is the only way I know to pass an array as arguments
+			call_user_func_array('array_multisort', $arrParam);
+		}
+
+		return $arrProducts;
+	}
+	
+	
+	/**
+	 * Callback function to filter products
+	 *
+	 * @param	object	$objProduct
+	 * @return	bool
+	 * @see		array_filter()
+	 */
+	private static function filterProducts($objProduct)
+	{
+		global $filterConfig;
+
+		if (!is_array($filterConfig) || !count($filterConfig))
+		{
+			return true;
+		}
+
+		$arrGroups = array();
+
+		foreach( $filterConfig as $filter )
+		{
+			$varValue = $objProduct->{$filter['attribute']};
+			$blnMatch = false;
+
+			// If the attribute is not set for this product, the filter does not match
+			if (is_null($varValue))
+			{
+				return false;
+			}
+
+			switch( $filter['operator'] )
+			{
+				case 'like':
+				case 'search':
+					if (stripos($varValue, $filter['value']) !== false)
+					{
+						$blnMatch = true;
+					}
+					break;
+
+				case '>':
+				case 'gt':
+					if ($varValue > $filter['value'])
+					{
+						$blnMatch = true;
+					}
+					break;
+
+				case '<':
+				case 'lt':
+					if ($varValue < $filter['value'])
+					{
+						$blnMatch = true;
+					}
+					break;
+
+				case '!=':
+				case 'neq':
+				case 'not':
+					if ($varValue != $filter['value'])
+					{
+						$blnMatch = true;
+					}
+					break;
+
+				case '=':
+				case '==':
+				case 'eq':
+				default:
+					if ($varValue == $filter['value'])
+					{
+						$blnMatch = true;
+					}
+			}
+
+			if ($filter['group'])
+			{
+				$arrGroups[$filter['group']] = $arrGroups[$filter['group']] ? $arrGroups[$filter['group']] : $blnMatch;
+			}
+			elseif (!$blnMatch)
+			{
+				return false;
+			}
+		}
+
+		if (count($arrGroups) && in_array(false, $arrGroups))
+		{
+			return false;
+		}
+
+		return true;
 	}
 }
 
