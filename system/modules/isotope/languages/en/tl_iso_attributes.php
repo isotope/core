@@ -37,7 +37,7 @@ $GLOBALS['TL_LANG']['tl_iso_attributes']['variant_option']			= array('Add to pro
 $GLOBALS['TL_LANG']['tl_iso_attributes']['customer_defined']		= array('Defined by Customer', 'Please select if this value defined by the customer (frontend).');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['description']				= array('Description', 'The description is shown as a hint to the backend user.');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['options']					= array('Options', 'Please enter one or more options. Use the buttons to add, move or delete an option. If you are working without JavaScript assistance, you should save your changes before you modify the order!');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['mandatory']				= array('Mandatory field', 'The product will not be added to cart if the field is empty.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['mandatory']				= array('Mandatory field', 'The field must be filled when editing a product.');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['multiple']				= array('Multiple selection', 'Allow visitors to select more than one option.');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['size']					= array('List size', 'Here you can enter the size of the select box.');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['extensions']				= array('Allowed file types', 'A comma separated list of valid file extensions.');
@@ -51,7 +51,6 @@ $GLOBALS['TL_LANG']['tl_iso_attributes']['gallery']					= array('Image gallery',
 $GLOBALS['TL_LANG']['tl_iso_attributes']['files']					= array('Show files', 'Show both files and folders.');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['filesOnly']				= array('Files only', 'Remove the radio buttons or checkboxes next to folders.');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['fieldType']				= array('Field type', 'Display radio buttons or checkboxes next to folders.');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['path']					= array('Folder path', 'Here you can enter a custom root directory.');
 
 $GLOBALS['TL_LANG']['tl_iso_attributes']['fe_sorting']				= array('Add to "Order By" option list', 'This field will be sortable in the listing module provided the attribute is visible to customers.');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['be_filter']   			= array('Backend Filterable', 'Can this attribute be used in a backend filter?');

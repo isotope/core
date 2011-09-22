@@ -143,7 +143,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 		'checkbox'					=> '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{options_legend},options,foreignKey;{config_legend},mandatory,multiple;{search_filters_legend},fe_filter,fe_sorting',
 		'conditionalselect'			=> '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{options_legend},options,foreignKey;{config_legend},mandatory,multiple,size,conditionField;{search_filters_legend},fe_filter,fe_sorting',
 		'mediaManager'				=> '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},gallery,extensions,mandatory',
-		'fileTree'					=> '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},files,filesOnly,fieldType,extensions,path,mandatory',
+		'fileTree'					=> '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,extensions,files,filesOnly,,mandatory',
     ),
 
     // Fields
@@ -329,6 +329,15 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 			'reference'				=> &$GLOBALS['ISO_LANG']['GAL'],
 			'eval'					=> array('includeBlankOption'=>true, 'tl_class'=>'w50', 'helpwizard'=>true),
 		),
+		'fieldType' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['fieldType'],
+			'exclude'				=> true,
+			'inputType'				=> 'select',
+			'options'               => array('checkbox', 'radio'),
+			'reference'             => &$GLOBALS['TL_LANG']['tl_iso_attributes'],
+			'eval'					=> array('tl_class'=>'w50'),
+		),
 		'files' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['files'],
@@ -343,22 +352,6 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 			'inputType'				=> 'checkbox',
 			'eval'					=> array('tl_class'=>'w50'),
 		),
-		'fieldType' => array
-		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['fieldType'],
-			'exclude'				=> true,
-			'inputType'				=> 'select',
-			'options'               => array('checkbox', 'radio'),
-			'reference'             => &$GLOBALS['TL_LANG']['tl_iso_attributes'],
-			'eval'					=> array('tl_class'=>'clr'),
-		),
-		'path' => array
-		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['path'],
-			'exclude'				=> true,
-			'inputType'				=> 'text',
-			'eval'					=> array('trailingSlash'=>false, 'tl_class'=>'w50'),
-		)
 	)
 );
 

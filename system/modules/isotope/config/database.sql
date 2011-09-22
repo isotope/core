@@ -180,7 +180,6 @@ CREATE TABLE `tl_iso_attributes` (
   `files` char(1) NOT NULL default '',
   `filesOnly` char(1) NOT NULL default '',
   `fieldType` varchar(8) NOT NULL default '',
-  `path` varchar(128) NOT NULL default '',
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
