@@ -124,6 +124,7 @@ Version 0.2.12 (2011-??-??)
 ---------------------------
 - Added "transferCollection" hook
 - Fixed availability of unpublished products
+- Fixed: min&max limit in product rule was not applied
 
 Version 0.2.11 (2011-08-28)
 ------------------------------

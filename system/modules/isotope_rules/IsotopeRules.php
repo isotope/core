@@ -92,6 +92,12 @@ class IsotopeRules extends Controller
 
 			while( $objRules->next() )
 			{
+				// Cart item quantity
+				if ($objRules->quantityMode == 'product_quantity' && (($objRules->minItemQuantity > 0 && $objRules->minItemQuantity > $objSource->quantity_requested) || ($objRules->maxItemQuantity > 0 && $objRules->maxItemQuantity < $objSource->quantity_requested)))
+				{
+					continue;
+				}
+				
 				if (strpos($objRules->discount, '%') !== false)
 				{
 					$fltDiscount = 100 + rtrim($objRules->discount, '%');
