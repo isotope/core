@@ -104,7 +104,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 
 			$objCache = $this->Database->prepare("SELECT * FROM tl_iso_productcache WHERE page_id=? AND module_id=? AND requestcache_id=? AND (keywords=? OR keywords='') ORDER BY keywords=''")
 									   ->limit(1)
-									   ->execute($objPage->id, $this->id, (int)$this->Input->get('isorc'), $this->Input->get('keywords'));
+									   ->execute($objPage->id, $this->id, (int)$this->Input->get('isorc'), (string)$this->Input->get('keywords'));
 
 			// Cache found
 			if ($objCache->numRows)
@@ -183,9 +183,13 @@ class ModuleIsotopeProductList extends ModuleIsotope
 						{
 							$arrIds[] = $objProduct->id;
 						}
-		
-						$this->Database->query("DELETE FROM tl_iso_productcache WHERE page_id={$objPage->id} AND module_id={$this->id} AND requestcache_id=".(int)$this->Input->get('isorc'));
-						$this->Database->query("INSERT INTO tl_iso_productcache (tstamp,page_id,module_id,requestcache_id,product_id) VALUES ($time, {$objPage->id}, {$this->id}, " . (int)$this->Input->get('isorc') . "," . implode("), ($time, {$objPage->id}, {$this->id}, " . (int)$this->Input->get('isorc') . ",", $arrIds) . ")");
+
+						$this->Database->prepare("DELETE FROM tl_iso_productcache WHERE page_id={$objPage->id} AND module_id={$this->id} AND requestcache_id=? AND keywords=?")
+									   ->executeUncached((int)$this->Input->get('isorc'), (string)$this->Input->get('keywords'));
+									   
+						$this->Database->prepare("INSERT INTO tl_iso_productcache (tstamp,page_id,module_id,requestcache_id,keywords,products) VALUES ($time, {$objPage->id}, {$this->id}, ?,?,?)")
+									   ->executeUncached((int)$this->Input->get('isorc'), (string)$this->Input->get('keywords'), serialize($arrIds));
+									   
 						$this->Database->unlockTables();
 					}
 				}
