@@ -784,3 +784,10 @@ CREATE TABLE `tl_user_group` (
  `iso_modules` blob NULL,
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+
+-- PRODUCT ATTRIBUTES START --
+CREATE TABLE `tl_iso_products` (
+  `file` varchar(128) NOT NULL default '',
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+-- PRODUCT ATTRIBUTES STOP --
+
