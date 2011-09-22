@@ -343,6 +343,10 @@ $GLOBALS['ISO_ATTR'] = array
 	(
 		'sql'		=> "blob NULL",
 	),
+	'fileTree' => array
+	(
+		'sql'		=> "blob NULL"
+	)
 );
 
 

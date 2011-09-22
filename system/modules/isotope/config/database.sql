@@ -177,6 +177,10 @@ CREATE TABLE `tl_iso_attributes` (
   `rgxp` varchar(255) NOT NULL default '',
   `conditionField` varchar(30) NOT NULL default '',
   `gallery` varchar(64) NOT NULL default '',
+  `files` char(1) NOT NULL default '',
+  `filesOnly` char(1) NOT NULL default '',
+  `fieldType` varchar(8) NOT NULL default '',
+  `path` varchar(128) NOT NULL default '',
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -781,7 +785,14 @@ CREATE TABLE `tl_user_group` (
  `iso_modules` blob NULL,
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-
 -- PRODUCT ATTRIBUTES START --
+CREATE TABLE `tl_iso_products` (
+  `download` varchar(128) NOT NULL default '',
+  `color` blob NULL,
+  `size` varchar(255) NOT NULL default '',
+  `test` blob NULL,
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 -- PRODUCT ATTRIBUTES STOP --
+
+
 

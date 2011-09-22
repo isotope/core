@@ -337,6 +337,7 @@ $GLOBALS['ISO_LANG']['ATTR']['radio']				= array('Radio button menu', 'A list of
 $GLOBALS['ISO_LANG']['ATTR']['checkbox']			= array('Checkbox menu', 'A list of multiple options from which any can be selected.');
 $GLOBALS['ISO_LANG']['ATTR']['mediaManager']		= array('Media Manager', 'Upload images and other files to the Isotope eCommerce file system. Output is processed trough an IsotopeGallery class.');
 $GLOBALS['ISO_LANG']['ATTR']['conditionalselect']	= array('Conditional Select-Menu', 'show select-options based on another select menu.');
+$GLOBALS['ISO_LANG']['ATTR']['fileTree']			= array('File tree', 'A file tree for single or multiple files and folders.');
 
 
 /**

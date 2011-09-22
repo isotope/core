@@ -4,6 +4,7 @@ Isotope eCommerce Changelog
 
 Version 1.3.rc1 (2011-??-??)
 ------------------------------
+- Added: new product attribute "File tree"
 - Added "continue shopping" feature (Ticket #295)
 - Added: new function IsotopeFrontend::prepareForm() to ease including custom forms created by the form generator
 - Fixed radio button events in Internet Explorer (Ticket #484)

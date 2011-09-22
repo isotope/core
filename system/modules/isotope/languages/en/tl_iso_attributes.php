@@ -48,6 +48,10 @@ $GLOBALS['TL_LANG']['tl_iso_attributes']['maxlength']				= array('Maximum length
 $GLOBALS['TL_LANG']['tl_iso_attributes']['foreignKey']				= array('Foreign Table & Field', 'Instead of adding options you can enter a table.field combination to select from database. To use multilingual foreignKeys, enter one per line and specify the language (example: en=tl_table.field)');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['conditionField']			= array('Parent Field', 'Please select the parent field, which must be of type "Select-Menu". For parent-child relation to work, define each option of this parent field as group of the conditional select-menu.');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['gallery']					= array('Image gallery', 'Different image galleries can be developed to present media files in a custom style.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['files']					= array('Show files', 'Show both files and folders.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['filesOnly']				= array('Files only', 'Remove the radio buttons or checkboxes next to folders.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['fieldType']				= array('Field type', 'Display radio buttons or checkboxes next to folders.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['path']					= array('Folder path', 'Here you can enter a custom root directory.');
 
 $GLOBALS['TL_LANG']['tl_iso_attributes']['fe_sorting']				= array('Add to "Order By" option list', 'This field will be sortable in the listing module provided the attribute is visible to customers.');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['be_filter']   			= array('Backend Filterable', 'Can this attribute be used in a backend filter?');
@@ -63,6 +67,8 @@ $GLOBALS['TL_LANG']['tl_iso_attributes']['opValue']					= 'Value';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['opLabel']					= 'Label';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['opDefault']				= 'Default';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['opGroup']					= 'Group';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['checkbox']				= 'Checkbox';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['radio']					= 'Radio';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['digit']					= array('Numeric characters', 'Allows numeric characters, minus (-), full stop (.) and space ( ).');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['alpha']					= array('Alphabetic characters', 'Allows alphabetic characters, minus (-), full stop (.) and space ( ).');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['alnum']					= array('Alphanumeric characters', 'Allows alphabetic and numeric characters, minus (-), full stop (.), underscore (_) and space ( ).');
