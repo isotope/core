@@ -22,6 +22,7 @@
  * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Christian de la Haye <service@delahaye.de>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
@@ -338,6 +339,7 @@ $GLOBALS['ISO_LANG']['ATTR']['checkbox']			= array('Checkbox menu', 'A list of m
 $GLOBALS['ISO_LANG']['ATTR']['mediaManager']		= array('Media Manager', 'Upload images and other files to the Isotope eCommerce file system. Output is processed trough an IsotopeGallery class.');
 $GLOBALS['ISO_LANG']['ATTR']['conditionalselect']	= array('Conditional Select-Menu', 'show select-options based on another select menu.');
 $GLOBALS['ISO_LANG']['ATTR']['fileTree']			= array('File tree', 'A file tree for single or multiple files and folders.');
+$GLOBALS['ISO_LANG']['ATTR']['downloads']			= array('Downloads', 'Download files from the product, e.g. manuals, data sheets etc..');
 
 
 /**

@@ -625,6 +625,155 @@ $endScript";
 	
 	
 	/**
+	 * Generate download attributes
+	 *
+	 * @param	string
+	 * @param	array
+	 * @param	mixed
+	 * @return	string
+	 * @see		IsotopeProduct::generateAttribute()
+	 */
+	public function generateDownloadAttribute($attribute, $arrData, $arrFiles)
+	{
+		// Return if there are no files
+		if (!is_array($arrFiles) || count($arrFiles) < 1)
+		{
+			return '';
+		}
+		
+		$file = $this->Input->get('file', true);
+
+		// Send the file to the browser
+		if ($file != '' && (in_array($file, $arrFiles) || in_array(dirname($file), $arrFiles)) && !preg_match('/^meta(_[a-z]{2})?\.txt$/', basename($file)))
+		{
+			$this->sendFileToBrowser($file);
+		}
+
+		$files = array();
+		$auxDate = array();
+
+		$allowedDownload = trimsplit(',', strtolower($GLOBALS['TL_CONFIG']['allowedDownload']));
+
+		// Get all files
+		foreach ($arrFiles as $file)
+		{
+			if (isset($files[$file]) || !file_exists(TL_ROOT . '/' . $file))
+			{
+				continue;
+			}
+
+			// Single files
+			if (is_file(TL_ROOT . '/' . $file))
+			{
+				$objFile = new File($file);
+
+				if (in_array($objFile->extension, $allowedDownload) && !preg_match('/^meta(_[a-z]{2})?\.txt$/', basename($file)))
+				{
+					$this->parseMetaFile(dirname($file), true);
+					$arrMeta = $this->arrMeta[$objFile->basename];
+
+					if ($arrMeta[0] == '')
+					{
+						$arrMeta[0] = specialchars($objFile->basename);
+					}
+
+					$files[$file] = array
+					(
+						'link' => $arrMeta[0],
+						'title' => $arrMeta[0],
+						'href' => $this->Environment->request . (($GLOBALS['TL_CONFIG']['disableAlias'] || strpos($this->Environment->request, '?') !== false) ? '&amp;' : '?') . 'file=' . $this->urlEncode($file),
+						'caption' => $arrMeta[2],
+						'filesize' => $this->getReadableSize($objFile->filesize, 1),
+						'icon' => TL_FILES_URL . 'system/themes/' . $this->getTheme() . '/images/' . $objFile->icon,
+						'mime' => $objFile->mime,
+						'meta' => $arrMeta
+					);
+
+					$auxDate[] = $objFile->mtime;
+				}
+
+				continue;
+			}
+
+			$subfiles = scan(TL_ROOT . '/' . $file);
+			$this->parseMetaFile($file);
+
+			// Folders
+			foreach ($subfiles as $subfile)
+			{
+				if (is_dir(TL_ROOT . '/' . $file . '/' . $subfile))
+				{
+					continue;
+				}
+
+				$objFile = new File($file . '/' . $subfile);
+
+				if (in_array($objFile->extension, $allowedDownload) && !preg_match('/^meta(_[a-z]{2})?\.txt$/', basename($subfile)))
+				{
+					$arrMeta = $this->arrMeta[$objFile->basename];
+
+					if ($arrMeta[0] == '')
+					{
+						$arrMeta[0] = specialchars($objFile->basename);
+					}
+
+					$files[$file . '/' . $subfile] = array
+					(
+						'link' => $arrMeta[0],
+						'title' => $arrMeta[0],
+						'href' => $this->Environment->request . (($GLOBALS['TL_CONFIG']['disableAlias'] || strpos($this->Environment->request, '?') !== false) ? '&amp;' : '?') . 'file=' . $this->urlEncode($file . '/' . $subfile),
+						'caption' => $arrMeta[2],
+						'filesize' => $this->getReadableSize($objFile->filesize, 1),
+						'icon' => 'system/themes/' . $this->getTheme() . '/images/' . $objFile->icon,
+						'meta' => $arrMeta
+					);
+
+					$auxDate[] = $objFile->mtime;
+				}
+			}
+		}
+
+		// Sort array
+		switch ($arrData['eval']['sortBy'])
+		{
+			default:
+			case 'name_asc':
+				uksort($files, 'basename_natcasecmp');
+				break;
+
+			case 'name_desc':
+				uksort($files, 'basename_natcasercmp');
+				break;
+
+			case 'date_asc':
+				array_multisort($files, SORT_NUMERIC, $auxDate, SORT_ASC);
+				break;
+
+			case 'date_desc':
+				array_multisort($files, SORT_NUMERIC, $auxDate, SORT_DESC);
+				break;
+
+			case 'meta':
+				$arrFiles = array();
+				foreach ($this->arrAux as $k)
+				{
+					if (strlen($k))
+					{
+						$arrFiles[] = $files[$k];
+					}
+				}
+				$files = $arrFiles;
+				break;
+		}
+
+		$objTemplate = new FrontendTemplate('ce_downloads');
+		$objTemplate->class = $attribute;
+		$objTemplate->files = array_values($files);
+		return $objTemplate->parse();
+	}
+	
+	
+	/**
 	 * Shortcut for a single product by ID or from database result
 	 *
 	 * @param	Database_Result|int

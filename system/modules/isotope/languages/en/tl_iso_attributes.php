@@ -22,6 +22,7 @@
  * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Christian de la Haye <service@delahaye.de>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
@@ -51,12 +52,13 @@ $GLOBALS['TL_LANG']['tl_iso_attributes']['gallery']					= array('Image gallery',
 $GLOBALS['TL_LANG']['tl_iso_attributes']['files']					= array('Show files', 'Show both files and folders.');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['filesOnly']				= array('Files only', 'Remove the radio buttons or checkboxes next to folders.');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['fieldType']				= array('Field type', 'Display radio buttons or checkboxes next to folders.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['sortBy']					= array('Order by', 'Please choose the sort order.');
 
 $GLOBALS['TL_LANG']['tl_iso_attributes']['fe_sorting']				= array('Add to "Order By" option list', 'This field will be sortable in the listing module provided the attribute is visible to customers.');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['be_filter']   			= array('Backend Filterable', 'Can this attribute be used in a backend filter?');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['be_search']   			= array('Backend Searchable', 'Should the search engine look in this field for search terms?');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['fe_filter']   			= array('Frontend Filterable', 'Can this attribute be used in a frontend filter?');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['fe_search']   			= array('Frontend Searchable', 'Should the search engine look in this field for search terms?');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['be_filter']				= array('Backend Filterable', 'Can this attribute be used in a backend filter?');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['be_search']				= array('Backend Searchable', 'Should the search engine look in this field for search terms?');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['fe_filter']				= array('Frontend Filterable', 'Can this attribute be used in a frontend filter?');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['fe_search']				= array('Frontend Searchable', 'Should the search engine look in this field for search terms?');
 
 
 /**
@@ -81,17 +83,24 @@ $GLOBALS['TL_LANG']['tl_iso_attributes']['url']						= array('URL format', 'Chec
 $GLOBALS['TL_LANG']['tl_iso_attributes']['price']					= array('Price', 'Checks whether the input is a valid price.');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['discount']				= array('Discount', 'Checks whether the input is a valid discount.<br />Example: -10%, -10, +10, +10%');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['surcharge']				= array('Surcharge', 'Checks whether the input is a valid surcharge.<br />Example: 10.00, 10%');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['name_asc']				= 'File name (ascending)';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['name_desc']				= 'File name (descending)';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['date_asc']				= 'Date (ascending)';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['date_desc']				= 'Date (descending)';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['meta']					= 'Meta file (meta.txt)';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['random']					= 'Random order';
+
 
 
 /**
  * Buttons
  */
-$GLOBALS['TL_LANG']['tl_iso_attributes']['new']    					= array('New Attribute', 'Create a new attribute.');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['edit']   					= array('Edit Attribute', 'Edit attribute ID %s.');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['copy']   					= array('Copy Attribute', 'Copy attribute ID %s.');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['delete'] 					= array('Delete Attribute', 'Delete attribute ID %s. The database column is not dropped, you need to manually update the database using the install tool or repository manager.');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['show']   					= array('Show Attribute Details', 'Show details for attribute ID %s.');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['deleteConfirm'] 			= 'Do you really want to delete attribute ID %s. Database field is not dropped, you need to manually update the database using the install tool or repository manager.';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['new']						= array('New Attribute', 'Create a new attribute.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['edit']					= array('Edit Attribute', 'Edit attribute ID %s.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['copy']					= array('Copy Attribute', 'Copy attribute ID %s.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['delete']					= array('Delete Attribute', 'Delete attribute ID %s. The database column is not dropped, you need to manually update the database using the install tool or repository manager.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['show']					= array('Show Attribute Details', 'Show details for attribute ID %s.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['deleteConfirm']			= 'Do you really want to delete attribute ID %s. Database field is not dropped, you need to manually update the database using the install tool or repository manager.';
 
 
 /**

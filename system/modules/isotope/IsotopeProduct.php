@@ -725,6 +725,13 @@ class IsotopeProduct extends Controller
 			}
 		}
 		
+		// Generate download attributes
+		elseif ($arrData['inputType'] == 'downloads')
+		{
+			$this->import('IsotopeFrontend');
+			$strBuffer = $this->IsotopeFrontend->generateDownloadAttribute($attribute, $arrData, $varValue);
+		}
+		
 		// Generate a HTML table for associative arrays
 		elseif (is_array($varValue) && !array_is_assoc($varValue) && is_array($varValue[0]))
 		{
