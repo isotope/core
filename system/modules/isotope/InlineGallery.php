@@ -56,6 +56,7 @@ class InlineGallery extends IsotopeGallery
 			$objTemplate = new IsotopeTemplate($this->strTemplate);
 
 			$objTemplate->setData($arrFile);
+			$objTemplate->id = $i;
 			$objTemplate->mode = 'gallery';
 			$objTemplate->type = $strType;
 			$objTemplate->name = $this->name;
