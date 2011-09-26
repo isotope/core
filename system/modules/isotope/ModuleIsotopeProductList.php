@@ -321,30 +321,34 @@ class ModuleIsotopeProductList extends ModuleIsotope
 	 */
 	protected function getFiltersAndSorting()
 	{
-		if (!is_array($this->iso_filterModules))
-		{
-			return array(array(), array());
-		}
-
 		$arrFilters = array();
 		$arrSorting = array();
-		$arrModules = array_reverse($this->iso_filterModules);
-
-		foreach( $arrModules as $module )
+		
+		if ($this->iso_listingSortField != '')
 		{
-			if (is_array($GLOBALS['ISO_FILTERS'][$module]))
+			$arrSorting[$this->iso_listingSortField] = array(($this->iso_listingSortDirection=='DESC' ? SORT_DESC : SORT_ASC), SORT_REGULAR);
+		}
+		
+		if (is_array($this->iso_filterModules))
+		{
+			$arrModules = array_reverse($this->iso_filterModules);
+	
+			foreach( $arrModules as $module )
 			{
-				$arrFilters = array_merge($arrFilters, $GLOBALS['ISO_FILTERS'][$module]);
-			}
-
-			if (is_array($GLOBALS['ISO_SORTING'][$module]))
-			{
-				$arrSorting = array_merge($arrSorting, $GLOBALS['ISO_SORTING'][$module]);
-			}
-
-			if ($GLOBALS['ISO_LIMIT'][$module] > 0)
-			{
-				$this->perPage = $GLOBALS['ISO_LIMIT'][$module];
+				if (is_array($GLOBALS['ISO_FILTERS'][$module]))
+				{
+					$arrFilters = array_merge($arrFilters, $GLOBALS['ISO_FILTERS'][$module]);
+				}
+	
+				if (is_array($GLOBALS['ISO_SORTING'][$module]))
+				{
+					$arrSorting = array_merge($arrSorting, $GLOBALS['ISO_SORTING'][$module]);
+				}
+	
+				if ($GLOBALS['ISO_LIMIT'][$module] > 0)
+				{
+					$this->perPage = $GLOBALS['ISO_LIMIT'][$module];
+				}
 			}
 		}
 
