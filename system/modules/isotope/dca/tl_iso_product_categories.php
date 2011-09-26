@@ -44,6 +44,10 @@ $GLOBALS['TL_DCA']['tl_iso_product_categories'] = array
 
 			array('tl_iso_product_categories', 'updateFilterData'),
 		),
+		'oncut_callback' => array
+		(
+			array('IsotopeBackend', 'truncateProductCache'),
+		),
 	),
 
 	// List
@@ -101,7 +105,7 @@ class tl_iso_product_categories extends Backend
 		$objProduct = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE id=?")->limit(1)->execute($row['pid']);
 
 		$this->import('tl_iso_products');
-		return '<div style="margin-top: -' . ($this->Input->get('act')=='select' ? 15 : 20) . 'px; margin-bottom:-8px">'.$this->tl_iso_products->getRowLabel($objProduct->row()).'</div>';
+		return $this->tl_iso_products->getRowLabel($objProduct->row());
 	}
 
 

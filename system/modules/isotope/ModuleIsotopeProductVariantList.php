@@ -59,7 +59,7 @@ class ModuleIsotopeProductVariantList extends ModuleIsotopeProductList
 	{
 		$arrIds = $this->findCategoryProducts($this->iso_category_scope, $this->iso_list_where);
 
-		$objProductData = $this->Database->execute(IsotopeProduct::getSelectStatement() . " WHERE p1.published='1' AND p1.language='' AND (p1.id IN (" . implode(',', $arrIds) . ") OR p1.pid IN (" . implode(',', $arrIds) . "))");
+		$objProductData = $this->Database->execute(IsotopeProduct::getSelectStatement() . " WHERE p1.published='1' AND p1.language='' AND (p1.id IN (" . implode(',', $arrIds) . ") OR p1.pid IN (" . implode(',', $arrIds) . ")) ORDER BY sorting");
 
 		list($arrFilters, $arrSorting) = $this->getFiltersAndSorting();
 

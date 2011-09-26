@@ -44,3 +44,12 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['iso_config'] = array
 	'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
 );
 
+
+/**
+ * Disable header edit button
+ */
+if ($_GET['table'] == 'tl_iso_product_categories')
+{
+	$GLOBALS['TL_DCA']['tl_page']['config']['notEditable'] = true;
+}
+

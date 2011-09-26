@@ -1183,6 +1183,8 @@ class IsotopeProduct extends Controller
 		
 		if ($strSelect == '')
 		{
+			global $objPage;
+			
 			$arrSelect = array("'".$GLOBALS['TL_LANGUAGE']."' AS language");
 
 			foreach( $GLOBALS['ISO_CONFIG']['multilingual'] as $attribute )
@@ -1193,10 +1195,12 @@ class IsotopeProduct extends Controller
 			$strSelect = "
 SELECT p1.*,
 	" . implode(', ', $arrSelect) . ",
-	t.class AS product_class
+	t.class AS product_class,
+	c.sorting
 FROM tl_iso_products p1
 INNER JOIN tl_iso_producttypes t ON t.id=p1.type
-LEFT OUTER JOIN tl_iso_products p2 ON p1.id=p2.pid AND p2.language='" . $GLOBALS['TL_LANGUAGE'] . "'";
+LEFT OUTER JOIN tl_iso_products p2 ON p1.id=p2.pid AND p2.language='" . $GLOBALS['TL_LANGUAGE'] . "'
+LEFT OUTER JOIN tl_iso_product_categories c ON p1.id=c.pid AND c.page_id=" . (int)$objPage->id;
 		}
 
 		return $strSelect;

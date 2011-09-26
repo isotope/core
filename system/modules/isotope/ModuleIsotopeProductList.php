@@ -277,7 +277,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			$arrIds = array_intersect($arrIds, $arrCacheIds);
 		}
 
-		$objProductData = $this->Database->execute(IsotopeProduct::getSelectStatement() . " WHERE p1.published='1' AND p1.language='' AND p1.id IN (" . implode(',', $arrIds) . ")");
+		$objProductData = $this->Database->execute(IsotopeProduct::getSelectStatement() . " WHERE p1.published='1' AND p1.language='' AND p1.id IN (" . implode(',', $arrIds) . ") ORDER BY sorting");
 
 		list($arrFilters, $arrSorting) = $this->getFiltersAndSorting();
 
