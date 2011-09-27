@@ -16,6 +16,7 @@ Version 1.3.rc1 (2011-??-??)
 - Fixed low price calculation for advanced prices
 - Fixed sorting by module configuration (#2037)
 - Fixed backend category sorting, updated DC_TablePageId driver (#2101)
+- Fixed invisible subgroups when no product in parent group (#2121)
 
 Version 1.3.beta2 (2011-08-28)
 ------------------------------

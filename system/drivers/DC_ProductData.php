@@ -1855,7 +1855,7 @@ window.addEvent(\'domready\', function() {
 			$group .= '</ul></li>';
 		}
 		
-		if ($group == '' && $table != $this->strTable && !count($gchilds) && $arrClipboard === false)
+		if ($group == '' && $table != $this->strTable && !count($childs) && !count($gchilds) && $arrClipboard === false)
 		{
 			return '';
 		}
