@@ -732,10 +732,16 @@ CREATE TABLE `tl_iso_groups` (
 		while( $objAttributes->next() )
 		{
 			// Skip empty lines
-			if (!strlen($objAttributes->field_name) || !strlen($GLOBALS['ISO_ATTR'][$objAttributes->type]['sql']))
+			if ($objAttributes->field_name == '' || $GLOBALS['ISO_ATTR'][$objAttributes->type]['sql'] == '')
 				continue;
 
 			$this->IsotopeDatabase->add($objAttributes->field_name, $GLOBALS['ISO_ATTR'][$objAttributes->type]['sql']);
+			
+			// Add indexes
+			if ($objAttributes->fe_filter && $GLOBALS['ISO_ATTR'][$objAttributes->type]['useIndex'])
+			{
+				$this->IsotopeDatabase->add("KEY `{$objAttributes->field_name}`", "(`{$objAttributes->field_name}`)");
+			}
 		}
 	}
 }

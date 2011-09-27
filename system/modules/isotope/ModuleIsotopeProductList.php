@@ -356,6 +356,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			}
 		}
 		
+		// thanks to certo web & design for sponsoring this feature
 		if ($blnNativeSQL)
 		{
 			$strWhere = '';

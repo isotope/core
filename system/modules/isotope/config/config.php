@@ -319,6 +319,7 @@ $GLOBALS['ISO_ATTR'] = array
 	'text' => array
 	(
 		'sql'		=> "varchar(255) NOT NULL default ''",
+		'useIndex'	=> true,
 	),
 	'textarea' => array
 	(
@@ -331,6 +332,7 @@ $GLOBALS['ISO_ATTR'] = array
 	'radio' => array
 	(
 		'sql'		=> "varchar(255) NOT NULL default ''",
+		'useIndex'	=> true,
 	),
 	'checkbox' => array
 	(

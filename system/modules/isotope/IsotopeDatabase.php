@@ -117,6 +117,10 @@ class IsotopeDatabase
 				{
 					$this->arrData[$arrMatch[1]] = trim($arrMatch[2]);
 				}
+				elseif (preg_match('@^[ ]*(KEY[ ]+`[^`]+`)([^,]*)@i', $strLine, $arrMatch))
+				{
+					$this->arrData[$arrMatch[1]] = trim($arrMatch[2]);
+				}
 			}
 		}
 
@@ -142,7 +146,14 @@ class IsotopeDatabase
 
 		foreach ($this->arrData as $k=>$v)
 		{
-			$strFile .= "  `$k` $v,\n";
+			if (strpos($k, 'KEY') !== false)
+			{
+				$strFile .= "  $k $v,\n";
+			}
+			else
+			{
+				$strFile .= "  `$k` $v,\n";
+			}
 		}
 
 		$strFile .= ") ENGINE=MyISAM DEFAULT CHARSET=utf8;\n-- PRODUCT ATTRIBUTES STOP --\n\n";
