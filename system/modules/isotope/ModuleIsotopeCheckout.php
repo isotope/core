@@ -867,7 +867,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 		if (trim($strCustomerName) != '')
 		{
-			$strCustomerEmail = sprintf('%s <%s>', $strCustomerName, $strCustomerEmail);
+			$strCustomerEmail = sprintf('"%s" <%s>', IsotopeEmail::romanizeFriendlyName($strCustomerName), $strCustomerEmail);
 		}
 
 		$objOrder->iso_customer_email	= $strCustomerEmail;

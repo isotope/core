@@ -345,5 +345,16 @@ class IsotopeEmail extends Controller
 			$this->strDocumentTitle = $objTemplate->documentTitle;
 		}
 	}
+	
+	
+	public static function romanizeFriendlyName($strName)
+	{
+		$strName = html_entity_decode($strName, ENT_QUOTES, $GLOBALS['TL_CONFIG']['characterSet']);
+		$strName = strip_insert_tags($strName);
+		$strName = utf8_romanize($strName);
+		$strName = preg_replace('/[^A-Za-z0-9\.!#$%&\'*+-\/=?^_ `{\|}~]+/i', '_', $strName);
+		
+		return $strName;
+	}
 }
 
