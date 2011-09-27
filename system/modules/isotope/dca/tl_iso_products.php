@@ -339,7 +339,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['price'],
 			'inputType'				=> 'text',
 			'eval'					=> array('mandatory'=>true, 'maxlength'=>13, 'rgxp'=>'price', 'tl_class'=>'w50'),
-			'attributes'			=> array('legend'=>'pricing_legend', 'fe_sorting'=>true),
+			'attributes'			=> array('legend'=>'pricing_legend', 'fe_sorting'=>true, 'dynamic'=>true),
 		),
 		'prices' => array
 		(
@@ -349,6 +349,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		),
 		'price_tiers' => array
 		(
+			'eval'					=> array('dynamic'=>true),
 			'tableformat' => array
 			(
 				'min'		=> array
@@ -373,7 +374,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'inputType'				=> 'select',
 			'foreignKey'			=> 'tl_iso_tax_class.name',
 			'attributes'			=> array('legend'=>'pricing_legend', 'tl_class'=>'w50'),
-			'eval'					=> array('includeBlankOption'=>true),
+			'eval'					=> array('includeBlankOption'=>true, 'dynamic'=>true),
 		),
 		'shipping_weight' => array
 		(
@@ -398,7 +399,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'inputType'				=> 'mediaManager',
 			'explanation'			=> 'mediaManager',
 			'eval'					=> array('extensions'=>'jpeg,jpg,png,gif', 'helpwizard'=>true),
-			'attributes'			=> array('legend'=>'media_legend', 'fixed'=>true, 'multilingual'=>true),
+			'attributes'			=> array('legend'=>'media_legend', 'fixed'=>true, 'multilingual'=>true, 'dynamic'=>true),
 		),
 		'published' => array
 		(
@@ -1822,6 +1823,8 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 
 		$GLOBALS['ISO_CONFIG']['variant_options'] = array();
 		$GLOBALS['ISO_CONFIG']['multilingual'] = array();
+		$GLOBALS['ISO_CONFIG']['dynamicAttributes'] = array();
+		
 		foreach( $GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $attribute => $config )
 		{
 			if ($config['attributes']['variant_option'])
@@ -1832,6 +1835,11 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 			if ($config['attributes']['multilingual'])
 			{
 				$GLOBALS['ISO_CONFIG']['multilingual'][] = $attribute;
+			}
+			
+			if ($config['attributes']['dynamic'])
+			{
+				$GLOBALS['ISO_CONFIG']['dynamicAttributes'][] = $attribute;
 			}
 		}
 	}

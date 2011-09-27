@@ -276,10 +276,11 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		{
 			$arrIds = array_intersect($arrIds, $arrCacheIds);
 		}
+		
+		list($arrFilters, $arrSorting, $strWhere, $arrValues) = $this->getFiltersAndSorting();
 
-		$objProductData = $this->Database->execute(IsotopeProduct::getSelectStatement() . " WHERE p1.published='1' AND p1.language='' AND p1.id IN (" . implode(',', $arrIds) . ") ORDER BY sorting");
-
-		list($arrFilters, $arrSorting) = $this->getFiltersAndSorting();
+		$objProductData = $this->Database->prepare(IsotopeProduct::getSelectStatement() . "\nWHERE p1.published='1' AND p1.language='' AND p1.id IN (" . implode(',', $arrIds) . ")$strWhere ORDER BY sorting")
+										 ->execute($arrValues);
 
 		return IsotopeFrontend::getProducts($objProductData, $this->iso_reader_jumpTo, true, $arrFilters, $arrSorting);
 	}
@@ -318,8 +319,11 @@ class ModuleIsotopeProductList extends ModuleIsotope
 
 	/**
 	 * Get filter & sorting configuration
+	 *
+	 * @param	bool
+	 * @return	array
 	 */
-	protected function getFiltersAndSorting()
+	protected function getFiltersAndSorting($blnNativeSQL=true)
 	{
 		$arrFilters = array();
 		$arrSorting = array();
@@ -350,6 +354,35 @@ class ModuleIsotopeProductList extends ModuleIsotope
 					$this->perPage = $GLOBALS['ISO_LIMIT'][$module];
 				}
 			}
+		}
+		
+		if ($blnNativeSQL)
+		{
+			$strWhere = '';
+			$arrWhere = array();
+			$arrValues = array();
+
+			// Initiate native SQL filtering
+			foreach( $arrFilters as $k => $filter )
+			{
+				if ($filter['group'] == '' && !in_array($filter['attribute'], $GLOBALS['ISO_CONFIG']['dynamicAttributes']))
+				{
+					$operator = IsotopeFrontend::convertFilterOperator($filter['operator'], 'SQL');
+					
+					$arrWhere[] = "{$filter['attribute']} $operator ?";
+					$arrValues[] = $filter['value'];
+					
+					unset($arrFilters[$k]);
+				}
+			}
+			
+			if (count($arrWhere))
+			{
+				$strWhere = " AND ((p1." . implode(' AND p1.', $arrWhere) . ") OR p1.id IN (SELECT pid FROM tl_iso_products WHERE published='1' AND language='' AND " . implode(' AND ', $arrWhere) . "))";
+				$arrValues = array_merge($arrValues, $arrValues);
+			}
+			
+			return array($arrFilters, $arrSorting, $strWhere, $arrValues);
 		}
 
 		return array($arrFilters, $arrSorting);

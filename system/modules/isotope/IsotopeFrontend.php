@@ -938,50 +938,24 @@ $endScript";
 			{
 				return false;
 			}
+			
+			$operator = self::convertFilterOperator($filter['operator'], 'PHP');
 
-			switch( $filter['operator'] )
+			switch( $operator )
 			{
-				case 'like':
-				case 'search':
+				case 'stripos':
 					if (stripos($varValue, $filter['value']) !== false)
 					{
 						$blnMatch = true;
 					}
 					break;
 
-				case '>':
-				case 'gt':
-					if ($varValue > $filter['value'])
-					{
-						$blnMatch = true;
-					}
-					break;
-
-				case '<':
-				case 'lt':
-					if ($varValue < $filter['value'])
-					{
-						$blnMatch = true;
-					}
-					break;
-
-				case '!=':
-				case 'neq':
-				case 'not':
-					if ($varValue != $filter['value'])
-					{
-						$blnMatch = true;
-					}
-					break;
-
-				case '=':
-				case '==':
-				case 'eq':
 				default:
-					if ($varValue == $filter['value'])
+					if (eval('return $varValue '.$operator.' $filter[\'value\'];'))
 					{
 						$blnMatch = true;
 					}
+					break;
 			}
 
 			if ($filter['group'])
@@ -1000,6 +974,53 @@ $endScript";
 		}
 
 		return true;
+	}
+	
+	
+	/**
+	 * Convert a filter operator for PHP or SQL
+	 *
+	 * @param	string
+	 * @param	string
+	 * @return	string
+	 */
+	public static function convertFilterOperator($operator, $mode='PHP')
+	{
+		switch( $operator )
+		{
+			case 'like':
+			case 'search':
+				return $mode == 'SQL' ? 'REGEXP' : 'stripos';
+
+			case '>':
+			case 'gt':
+				return '>';
+
+			case '<':
+			case 'lt':
+				return '<';
+			
+			case '>=':
+			case '=>':
+			case 'gte':
+				return '>=';
+
+			case '<=':
+			case '=<':
+			case 'lte':
+				return '<=';
+
+			case '!=':
+			case 'neq':
+			case 'not':
+				return '!=';
+
+			case '=':
+			case '==':
+			case 'eq':
+			default:
+				return $mode == 'SQL' ? '=' : '==';
+		}
 	}
 }
 
