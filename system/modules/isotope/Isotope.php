@@ -621,103 +621,18 @@ class Isotope extends Controller
 	 */
 	public function sendMail($intId, $strRecipient, $strLanguage, $arrData, $strReplyTo='', $objCollection=null)
 	{
-		$objMail = $this->Database->prepare("SELECT * FROM tl_iso_mail m LEFT OUTER JOIN tl_iso_mail_content c ON m.id=c.pid WHERE m.id=$intId AND (c.language='$strLanguage' OR fallback='1') ORDER BY language='$strLanguage' DESC")->limit(1)->execute();
-
-		if (!$objMail->numRows)
-		{
-			$this->log(sprintf('E-mail template ID %s for language %s not found', $intId, strtoupper($strLanguage)), 'Isotope sendMail()', TL_ERROR);
-			return;
-		}
-
-		$arrPlainData = array_map('strip_tags', $arrData);
-
 		try
 		{
-			$objEmail = new Email();
-			$objEmail->from = $objMail->sender;
-			$objEmail->fromName = $objMail->senderName;
-			$objEmail->subject = $this->parseSimpleTokens($this->replaceInsertTags($objMail->subject), $arrPlainData);
-			$objEmail->text = $this->parseSimpleTokens($this->replaceInsertTags($objMail->text), $arrPlainData);
-
+			$objEmail = new IsotopeEmail($intId, $strLanguage, $objCollection);
+			
 			if ($strReplyTo != '')
 			{
 				$objEmail->replyTo($strReplyTo);
 			}
-
-			$css = '';
-
-			// Add style sheet newsletter.css
-			if (!$objNewsletter->sendText && file_exists(TL_ROOT . '/newsletter.css'))
-			{
-				$buffer = file_get_contents(TL_ROOT . '/newsletter.css');
-				$buffer = preg_replace('@/\*\*.*\*/@Us', '', $buffer);
-
-				$css  = '<style type="text/css">' . "\n";
-				$css .= trim($buffer) . "\n";
-				$css .= '</style>' . "\n";
-				$arrData['head_css'] = $css;
-			}
-
-			// Add HTML content
-			if (!$objMail->textOnly && strlen($objMail->html))
-			{
-				// Get mail template
-				$objTemplate = new IsotopeTemplate((strlen($objMail->template) ? $objMail->template : 'mail_default'));
-
-				$objTemplate->body = $objMail->html;
-				$objTemplate->charset = $GLOBALS['TL_CONFIG']['characterSet'];
-				$objTemplate->css = '##head_css##';
-
-				// Prevent parseSimpleTokens from stripping important HTML tags
-				$GLOBALS['TL_CONFIG']['allowedTags'] .= '<doctype><html><head><meta><style><body>';
-				$strHtml = str_replace('<!DOCTYPE', '<DOCTYPE', $objTemplate->parse());
-				$strHtml = $this->parseSimpleTokens($this->replaceInsertTags($strHtml), $arrData);
-				$strHtml = str_replace('<DOCTYPE', '<!DOCTYPE', $strHtml);
-
-				// Parse template
-				$objEmail->html = $strHtml;
-				$objEmail->imageDir = TL_ROOT . '/';
-			}
-
-			if ($objMail->cc != '')
-			{
-				$arrRecipients = trimsplit(',', $objMail->cc);
-				$objEmail->sendCc($arrRecipients);
-			}
-
-			if ($objMail->bcc != '')
-			{
-				$arrRecipients = trimsplit(',', $objMail->bcc);
-				$objEmail->sendBcc($arrRecipients);
-			}
-
-			$attachments = deserialize($objMail->attachments);
-			if (is_array($attachments) && count($attachments) > 0)
-			{
-				foreach($attachments as $attachment)
-				{
-					if(file_exists(TL_ROOT . '/' . $attachment))
-					{
-						$objEmail->attachFile(TL_ROOT . '/' . $attachment);
-					}
-				}
-			}
-
-			if ($objMail->attachDocument && $objCollection instanceof IsotopeProductCollection)
-			{
-				$strTemplate = ($objMail->documentTemplate ? $objMail->documentTemplate : null);
-
-				$objPdf = $objCollection->generatePDF($strTemplate, null, false);
-				$objPdf->lastPage();
-
-				$strTitle = $this->parseSimpleTokens($this->replaceInsertTags($objMail->documentTitle), $arrPlainData);
-
-				$objEmail->attachFileFromString($objPdf->Output($strTitle.'.pdf', 'S'), $strTitle.'.pdf', 'application/pdf');
-			}
-
-			$objEmail->sendTo($strRecipient);
+			
+			$objEmail->send($strRecipient, $arrData);
 		}
-		catch( Exception $e )
+		catch (Exception $e)
 		{
 			$this->log('Isotope email error: ' . $e->getMessage(), __METHOD__, TL_ERROR);
 		}
@@ -1113,8 +1028,6 @@ class Isotope extends Controller
 	/**
 	 * Return select statement to load product data including multilingual fields
 	 *
-	 * @param		void
-	 * @return		string
 	 * @deprecated	moved to static function IsotopeProduct::getProductStatement()
 	 * @see			IsotopeProduct::getProductStatement()
 	 */

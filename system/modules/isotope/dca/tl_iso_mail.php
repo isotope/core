@@ -132,7 +132,7 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
 	'palettes' => array
 	(
 		'__selector__'				  => array('attachDocument'),
-		'default'                     => '{name_legend},name;{address_legend},senderName,sender,cc,bcc;{document_legend:hide},attachDocument;{expert_legend:hide},template',
+		'default'                     => '{name_legend},name;{address_legend},senderName,sender,cc,bcc;{document_legend:hide},attachDocument;{expert_legend:hide},template,priority',
 	),
 
 	// Subpalettes
@@ -188,6 +188,16 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
 			'options'                 => $this->getTemplateGroup('mail_'),
 			'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
 		),
+		'priority' => array
+		(
+			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_mail']['priority'],
+			'exclude'					=> true,
+			'inputType'					=> 'select',
+			'options'					=> array(1,2,3,4,5),
+			'default'					=> 3,
+			'reference'					=> &$GLOBALS['TL_LANG']['tl_iso_mail']['priority_ref'],
+			'eval'						=> array('tl_class'=>'w50'),
+		),
 		'attachDocument' => array
 		(
 			'label'					  => &$GLOBALS['TL_LANG']['tl_iso_mail']['attachDocument'],
@@ -208,13 +218,13 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
 			'label'					  => &$GLOBALS['TL_LANG']['tl_iso_mail']['documentTitle'],
 			'exclude'                 => true,
 			'inputType'				  => 'text',
-			'eval'					  => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
+			'eval'					  => array('mandatory'=>true, 'maxlength'=>255, 'decodeEntities'=>true, 'tl_class'=>'w50'),
 		),
 		'source' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_mail']['source'],
 			'eval'                    => array('fieldType'=>'checkbox', 'files'=>true, 'filesOnly'=>true, 'extensions'=>'imt', 'class'=>'mandatory')
-		)
+		),
 	)
 );
 

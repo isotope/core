@@ -35,6 +35,7 @@ $GLOBALS['TL_LANG']['tl_iso_mail']['sender']			= array('Sender Email', 'Enter th
 $GLOBALS['TL_LANG']['tl_iso_mail']['cc']				= array('Send a CC to', 'Recipients that should receive a carbon copy of the mail. Separate multiple addresses with a comma.');
 $GLOBALS['TL_LANG']['tl_iso_mail']['bcc']				= array('Send a BCC to', 'Recipients that should receive a blind carbon copy of the mail. Separate multiple addresses with a comma.');
 $GLOBALS['TL_LANG']['tl_iso_mail']['template']			= array('Email Template', 'Here you can select an HTML e-mail template to use.');
+$GLOBALS['TL_LANG']['tl_iso_mail']['priority']			= array('Priority', 'Please select a priority.');
 $GLOBALS['TL_LANG']['tl_iso_mail']['attachDocument']	= array('Attach an order document', 'Allows you to generate an additional document as a PDF attachment for this email.');
 $GLOBALS['TL_LANG']['tl_iso_mail']['documentTemplate']	= array('Document template', 'Select an document template to override the default collection template.');
 $GLOBALS['TL_LANG']['tl_iso_mail']['documentTitle']		= array('Document title', 'Please specify a title for the attached document.');
@@ -66,4 +67,9 @@ $GLOBALS['TL_LANG']['tl_iso_mail']['expert_legend']		= 'Expert Legend';
  */
 $GLOBALS['TL_LANG']['tl_iso_mail']['xml_error']			= 'Template "%s" is corrupt and cannot be imported.';
 $GLOBALS['TL_LANG']['tl_iso_mail']['mail_imported']		= 'Template "%s" has been imported.';
+$GLOBALS['TL_LANG']['tl_iso_mail']['priority_ref']['1'] = 'very high';
+$GLOBALS['TL_LANG']['tl_iso_mail']['priority_ref']['2'] = 'high';
+$GLOBALS['TL_LANG']['tl_iso_mail']['priority_ref']['3'] = 'normal';
+$GLOBALS['TL_LANG']['tl_iso_mail']['priority_ref']['4'] = 'low';
+$GLOBALS['TL_LANG']['tl_iso_mail']['priority_ref']['5'] = 'very low';
 

@@ -587,6 +587,7 @@ CREATE TABLE `tl_iso_mail` (
   `attachDocument` char(1) NOT NULL default '',
   `documentTemplate` varchar(255) NOT NULL default '',
   `documentTitle` varchar(255) NOT NULL default '',
+  `priority` int(1) unsigned NOT NULL default '3',
   PRIMARY KEY  (`id`),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
