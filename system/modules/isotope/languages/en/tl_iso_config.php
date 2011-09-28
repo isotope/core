@@ -66,7 +66,6 @@ $GLOBALS['TL_LANG']['tl_iso_config']['orderPrefix']						= array('Order number p
 $GLOBALS['TL_LANG']['tl_iso_config']['orderDigits']						= array('Order number length', 'Select the minimum length of the order number (not including order prefix).');
 $GLOBALS['TL_LANG']['tl_iso_config']['templateGroup']					= array('Templates folder', 'Here you can select a templates folder to search before every other template folder.');
 $GLOBALS['TL_LANG']['tl_iso_config']['limitMemberCountries']			= array('Limit member countries', 'Limit member countries (Registration, Personal Data) to the combined list of billing and shipping countries.');
-$GLOBALS['TL_LANG']['tl_iso_config']['enableGoogleAnalytics']			= array('Enable Google Analytics e-commerce tracking', 'Add Google Analytics e-commerce tracking. Please note you will also have to enable e-commerce tracking in your Google Analytics account.');
 $GLOBALS['TL_LANG']['tl_iso_config']['gallery']							= array('Product image gallery', 'Different image galleries can be developed to present media files in a custom style.');
 $GLOBALS['TL_LANG']['tl_iso_config']['imageSizes']						= array('Image sizes', 'You can create custom image sizes for use in your templates. The default sizes are "gallery", "thumbnail", "medium" and "large".');
 

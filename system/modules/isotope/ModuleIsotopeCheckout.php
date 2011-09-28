@@ -1194,52 +1194,6 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	}
 
 
-	/**
-	 * @todo implement google analytics using Yoans module
-	 */
-	public function googleTracking()
-	{
-		if(!$this->Isotope->Config->enableGoogleAnalytics || $this->Input->get('step')!='complete' || !file_exists(TL_ROOT . '/system/modules/googleanalytics/GoogleAnalytics.php'))
-		{
-			return '';
-		}
-
-		$objTemplate = new IsotopeTemplate('iso_google_analytics');
-
-		$arrState = explode(',', $this->Isotope->Cart->billingAddress['subdivision']);
-
-		$arrProducts = $this->Isotope->Cart->getProducts();
-
-		$arrVariantValues = $this->getProductVariantValues($arrProducts);
-
-		foreach($arrProducts as $objProduct)
-		{
-			$strVariant = (is_array($arrVariantValues[$objProduct->id]['variants']) ? implode(' ', $arrVariantValues[$objProduct->id]['variants']) : '');
-
-			$arrItems[] = array
-			(
-				'sku'		=> $objProduct->sku,
-				'name'		=> $objProduct->name,
-				'variant'	=> $strVariant,
-				'price'		=> $objProduct->price,
-				'quantity'	=> $objProduct->quantity_requested
-			);
-		}
-
-		$objTemplate->id = $intOrderId;
-		$objTemplate->storeName = $this->Isotope->Config->name;
-		$objTemplate->grandTotal = $this->Isotope->Cart->grandTotal;
-		$objTemplate->tax = $this->Isotope->Cart->taxTotal;
-		$objTemplate->shipping = $this->Isotope->Cart->shippingTotal;
-		$objTemplate->city = $this->Isotope->Cart->billingAddress['city'];
-		$objTemplate->state = $arrState[1];
-		$objTemplate->country = $this->Isotope->Cart->billingAddress['country'];
-		$objTemplate->items = $arrItems;
-
-		return $objTemplate->parse();
-	}
-
-
 	private function getProductVariantValue($arrProducts)
 	{
 		$objVariantAttributes = $this->Database->prepare("SELECT name, field_name FROM tl_iso_attributes WHERE variant_option=?")

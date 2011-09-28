@@ -125,7 +125,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 		'default'                     => '
 			{name_legend},name,label,fallback,store_id;
 			{address_legend:hide},firstname,lastname,company,street_1,street_2,street_3,postal,city,subdivision,country,emailShipping,phone;
-			{config_legend},shipping_countries,billing_countries,shipping_fields,billing_fields,orderPrefix,orderDigits,templateGroup,limitMemberCountries,enableGoogleAnalytics;
+			{config_legend},shipping_countries,billing_countries,shipping_fields,billing_fields,orderPrefix,orderDigits,templateGroup,limitMemberCountries;
 			{price_legend},priceCalculateFactor,priceCalculateMode,priceRoundPrecision,priceRoundIncrement,cartMinSubtotal;
 			{currency_legend},currency,currencyFormat,currencyPosition,currencySymbol;
 			{invoice_legend:hide},invoiceLogo;
@@ -337,13 +337,6 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'inputType'               => 'checkbox',
 			'eval'					  => array('tl_class'=>'w50'),
 		),
-		'enableGoogleAnalytics' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['enableGoogleAnalytics'],
-			'exclude'                 => true,
-			'inputType'               => 'checkbox',
-			'eval'					  => array('tl_class'=>'w50'),
-		),
 		'invoiceLogo' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['invoiceLogo'],
@@ -468,11 +461,6 @@ class tl_iso_config extends Backend
 
 	public function checkPermission($dc)
 	{
-		if (!in_array('googleanalytics', $this->Config->getActiveModules()))
-		{
-			unset($GLOBALS['TL_DCA']['tl_iso_config']['fields']['enableGoogleAnalytics']);
-		}
-
 		$this->import('BackendUser', 'User');
 
 		// Hide archived (used and deleted) configs

@@ -21,6 +21,7 @@ Version 1.3.rc1 (2011-??-??)
 - Fixed backend category sorting, updated DC_TablePageId driver (#2101)
 - Fixed invisible subgroups when no product in parent group (#2121)
 - Fixed potential issue in email addresses (#2041)
+- Dropped unimplemented enableGoogleAnalytics checkbox in store config (#2102)
 
 Version 1.3.beta2 (2011-08-28)
 ------------------------------
