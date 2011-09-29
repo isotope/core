@@ -44,6 +44,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'ctable'					=> array('tl_iso_downloads', 'tl_iso_product_categories', 'tl_iso_prices'),
 		'onload_callback' => array
 		(
+			array('tl_iso_products', 'applyAdvancedFilters'),
 			array('tl_iso_products', 'checkPermission'),
 			array('tl_iso_products', 'addBreadcrumb'),
 			array('tl_iso_products', 'buildPaletteString'),
@@ -89,18 +90,72 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'class'				=> 'header_new',
 				'attributes'		=> 'onclick="Backend.getScrollOffset();"',
 			),
-			'all' => array
+			'filter' => array
 			(
-				'label'				=> &$GLOBALS['TL_LANG']['MSC']['all'],
-				'href'				=> 'act=select',
-				'class'				=> 'header_edit_all',
-				'attributes'		=> 'onclick="Backend.getScrollOffset();"'
+				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['filter'],
+				'class'				=> ('header_iso_filter' . (is_array($this->Input->get('filter')) ? ' header_iso_filter_active' : '')),
+				'attributes'		=> 'onclick="Backend.getScrollOffset();" style="display:none"',
+			),
+			'filter_noimages' => array
+			(
+				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['filter_noimages'],
+				'href'				=> 'filter[]=noimages',
+				'class'				=> 'header_iso_filter_noimages isotope-filter',
+				'attributes'		=> 'onclick="Backend.getScrollOffset();"',
+				'button_callback'	=> array('tl_iso_products', 'filterButton'),
+			),
+			'filter_nocategory' => array
+			(
+				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['filter_nocategory'],
+				'href'				=> 'filter[]=nocategory',
+				'class'				=> 'header_iso_filter_nocategory isotope-filter',
+				'attributes'		=> 'onclick="Backend.getScrollOffset();"',
+				'button_callback'	=> array('tl_iso_products', 'filterButton'),
+			),
+			'filter_new_today' => array
+			(
+				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['filter_new_today'],
+				'href'				=> 'filter[]=new_today',
+				'class'				=> 'header_iso_filter_new_today isotope-filter',
+				'attributes'		=> 'onclick="Backend.getScrollOffset();"',
+				'button_callback'	=> array('tl_iso_products', 'filterButton'),
+			),
+			'filter_new_week' => array
+			(
+				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['filter_new_week'],
+				'href'				=> 'filter[]=new_week',
+				'class'				=> 'header_iso_filter_new_week isotope-filter',
+				'attributes'		=> 'onclick="Backend.getScrollOffset();"',
+				'button_callback'	=> array('tl_iso_products', 'filterButton'),
+			),
+			'filter_new_month' => array
+			(
+				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['filter_new_month'],
+				'href'				=> 'filter[]=new_month',
+				'class'				=> 'header_iso_filter_new_month isotope-filter',
+				'attributes'		=> 'onclick="Backend.getScrollOffset();"',
+				'button_callback'	=> array('tl_iso_products', 'filterButton'),
+			),
+			'filter_remove' => array
+			(
+				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['filter_remove'],
+				'href'				=> 'filter[]=test',
+				'class'				=> 'header_iso_filter_remove isotope-filter',
+				'attributes'		=> ('onclick="Backend.getScrollOffset();"' . (is_array($this->Input->get('filter')) ? '' : ' style="display:none"')),
+				'button_callback'	=> array('tl_iso_products', 'filterRemoveButton'),
 			),
 			'tools' => array
 			(
 				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['tools'],
 				'class'				=> 'header_isotope_tools',
 				'attributes'		=> 'onclick="Backend.getScrollOffset();" style="display:none"',
+			),
+			'all' => array
+			(
+				'label'				=> &$GLOBALS['TL_LANG']['MSC']['all'],
+				'href'				=> 'act=select',
+				'class'				=> 'header_edit_all isotope-tools',
+				'attributes'		=> 'onclick="Backend.getScrollOffset();"'
 			),
 			'toggleGroups' => array
 			(
@@ -513,6 +568,79 @@ class tl_iso_products extends Backend
 
 		return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
 	}
+	
+	
+	/**
+	 * Apply advanced filters to product list view
+	 *
+	 * @param	DataContainer
+	 */
+	public function applyAdvancedFilters()
+	{
+		$arrFilters = $this->Input->get('filter');
+		
+		if ($this->Input->get('act') == '' && $this->Input->get('key') == '' && is_array($arrFilters))
+		{
+			$arrProducts = null;
+			$arrNames = array();
+			
+			foreach( $arrFilters as $filter )
+			{
+				switch( $filter )
+				{
+					case 'noimages':
+						$objProducts = $this->Database->execute("SELECT id FROM tl_iso_products WHERE pid=0 AND language='' AND images IS NULL");
+						$arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
+						break;
+					
+					case 'nocategory':
+						$objProducts = $this->Database->execute("SELECT id FROM tl_iso_products p WHERE pid=0 AND language='' AND (SELECT COUNT(*) FROM tl_iso_product_categories c WHERE c.pid=p.id)=0");
+						$arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
+						break;
+					
+					case 'new_today':
+						$objProducts = $this->Database->execute("SELECT id FROM tl_iso_products p WHERE pid=0 AND language='' AND dateAdded>=".strtotime('-1 day'));
+						$arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
+						break;
+					
+					case 'new_week':
+						$objProducts = $this->Database->execute("SELECT id FROM tl_iso_products p WHERE pid=0 AND language='' AND dateAdded>=".strtotime('-1 week'));
+						$arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
+						break;
+					
+					case 'new_month':
+						$objProducts = $this->Database->execute("SELECT id FROM tl_iso_products p WHERE pid=0 AND language='' AND dateAdded>=".strtotime('-1 month'));
+						$arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
+						break;
+						
+					default:
+						// HOOK: add custom logic
+						if (isset($GLOBALS['ISO_HOOKS']['applyAdvancedFilters']) && is_array($GLOBALS['ISO_HOOKS']['applyAdvancedFilters']))
+						{
+							foreach ($GLOBALS['ISO_HOOKS']['applyAdvancedFilters'] as $callback)
+							{
+								$objCallback = (in_array('getInstance', get_class_methods($callback[0]))) ? call_user_func(array($callback[0], 'getInstance')) : new $callback[0]();
+								$arrReturn = $objCallback->$callback[1]($filter);
+
+								if (is_array($arrReturn))
+								{
+									$arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $arrReturn) : $arrReturn;
+									break;
+								}
+							}
+						}
+						
+						$this->log('Advanced product filter "'.$filter.'" not found.', __METHOD__, TL_ERROR);
+						break;
+				}
+				
+				$arrNames[] = $GLOBALS['TL_LANG']['tl_iso_products']['filter_'.$filter][0];
+			}
+			
+			$GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'] = $arrProducts;
+			$GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['breadcrumb'] .= '<p class="tl_info">' . $GLOBALS['TL_LANG']['tl_iso_products']['filter'][0] . ': ' . implode(', ', $arrNames) . '</p><br>';
+		}
+	}
 
 
 	/**
@@ -557,6 +685,11 @@ class tl_iso_products extends Backend
 		else
 		{
 			$arrProducts = $objProducts->fetchEach('id');
+		}
+
+		if (is_array($GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root']))
+		{
+			$arrProducts = array_intersect($GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'], $arrProducts);
 		}
 
 		$GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'] = $arrProducts;
@@ -1508,6 +1641,64 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 		$imagePasteInto = $this->generateImage('pasteinto.gif', sprintf($GLOBALS['TL_LANG'][$table]['pasteinto'][1], $row['id']), 'class="blink"');
 
 		return ($disablePI ? $this->generateImage('pasteinto_.gif', '', 'class="blink"').' ' : '<a href="'.$this->addToUrl('act='.$arrClipboard['mode'].'&amp;mode=2&amp;'.(($table != $dc->table || $row['id'] == 0) ? 'gid' : 'pid').'='.$row['id'].(!is_array($arrClipboard['id']) ? '&amp;id='.$arrClipboard['id'] : '')).'" title="'.specialchars(sprintf($GLOBALS['TL_LANG'][$table]['pasteinto'][1], $row['id'])).'" onclick="Backend.getScrollOffset();">'.$imagePasteInto.'</a> ');
+	}
+	
+	
+	/**
+	 * Return the filter button, allow for multiple filters
+	 *
+	 * @param	string
+	 * @param	string
+	 * @param	string
+	 * @param	string
+	 * @param	string
+	 * @param	string
+	 * @param	array
+	 * @return	string
+	 * @todo	remove "isotope-filter" static class when Contao Defect #3504 has been implemented
+	 */
+	public function filterButton($href, $label, $title, $class, $attributes, $table, $root)
+	{
+		static $arrFilters = false;
+		
+		if ($arrFilters === false)
+		{
+			$arrFilters = (array)$this->Input->get('filter');
+		}
+		
+		$filter = str_replace('filter[]=', '', $href);
+		
+		if (in_array($filter, $arrFilters))
+		{
+			$href = ampersand(str_replace('&'.$href, '', $this->Environment->request));
+		}
+		else
+		{
+			$href = ampersand($this->Environment->request . '&') . $href;
+		}
+		
+		return ' &#160; :: &#160; <a href="'.$href.'" class="'.$class.' isotope-filter" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ';
+	}
+	
+	
+	/**
+	 * Return the "remove filter" button (unset url parameters)
+	 *
+	 * @param	string
+	 * @param	string
+	 * @param	string
+	 * @param	string
+	 * @param	string
+	 * @param	string
+	 * @param	array
+	 * @return	string
+	 * @todo	remove static classes when Contao Defect #3504 has been implemented
+	 */
+	public function filterRemoveButton($href, $label, $title, $class, $attributes, $table, $root)
+	{
+		$href = preg_replace('/&?filter\[\]=[^&]*/', '', $this->Environment->request);
+		
+		return ' &#160; :: &#160; <a href="'.$href.'" class="header_iso_filter_remove isotope-filter" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ';
 	}
 
 

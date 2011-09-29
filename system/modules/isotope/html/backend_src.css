@@ -43,6 +43,27 @@
 	background-repeat:no-repeat;
 }
 
+.header_iso_filter
+{
+	padding:2px 0px 3px 20px;
+	background-image:url("magnifier.png");
+	background-position:left center;
+	background-repeat:no-repeat;
+}
+
+.header_iso_filter_active
+{
+	background-image:url("magnifier--plus.png");
+}
+
+.header_iso_filter_remove
+{
+	padding:2px 0px 3px 20px;
+	background-image:url("magnifier--minus.png");
+	background-position:left center;
+	background-repeat:no-repeat;
+}
+
 .header_import_assets
 {
 	padding:2px 0px 3px 20px;
@@ -87,6 +108,46 @@
 {
 	padding:2px 0px 3px 20px;
 	background-image:url("folders.png");
+	background-position:left center;
+	background-repeat:no-repeat;
+}
+
+.header_iso_filter_noimages
+{
+	padding:2px 0px 3px 20px;
+	background-image:url("image--exclamation.png");
+	background-position:left center;
+	background-repeat:no-repeat;
+}
+
+.header_iso_filter_nocategory
+{
+	padding:2px 0px 3px 20px;
+	background-image:url("globe--exclamation.png");
+	background-position:left center;
+	background-repeat:no-repeat;
+}
+
+.header_iso_filter_new_today
+{
+	padding:2px 0px 3px 20px;
+	background-image:url("calendar-select.png");
+	background-position:left center;
+	background-repeat:no-repeat;
+}
+
+.header_iso_filter_new_week
+{
+	padding:2px 0px 3px 20px;
+	background-image:url("calendar-select-week.png");
+	background-position:left center;
+	background-repeat:no-repeat;
+}
+
+.header_iso_filter_new_month
+{
+	padding:2px 0px 3px 20px;
+	background-image:url("calendar-select-month.png");
 	background-position:left center;
 	background-repeat:no-repeat;
 }
@@ -263,6 +324,7 @@ h3.inherit,
 }
 
 #isotopetoolsmenu,
+#isotopefiltermenu,
 #isotope-contextmenu
 {
 	display:none;
@@ -277,6 +339,7 @@ h3.inherit,
 }
 
 #isotopetoolsmenu a,
+#isotopefiltermenu a,
 #isotope-contextmenu a
 {
 	display:block;
@@ -285,6 +348,7 @@ h3.inherit,
 }
 
 #isotopetoolsmenu img,
+#isotopefiltermenu img,
 #isotope-contextmenu img
 {
 	padding-bottom: 1px;

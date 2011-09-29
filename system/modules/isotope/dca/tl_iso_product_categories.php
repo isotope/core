@@ -66,7 +66,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_categories'] = array
 			'view' => array
 			(
 				'label'					=> &$GLOBALS['TL_LANG']['MSC']['fePreview'],
-				'class'					=> 'header_edit_all',
+				'class'					=> 'header_preview',
 				'button_callback'		=> array('tl_iso_product_categories', 'getPageViewButton'),
 			),
 			'all' => array
@@ -146,7 +146,7 @@ class tl_iso_product_categories extends Backend
 	 * @param	array
 	 * @return	string
 	 */
-	public function getPageViewButton($href, $label, $title, $icon, $attributes, $table, $root)
+	public function getPageViewButton($href, $label, $title, $class, $attributes, $table, $root)
 	{
 		$objPage = $this->getPageDetails($this->Input->get('id'));
 

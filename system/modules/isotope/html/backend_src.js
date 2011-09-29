@@ -554,6 +554,46 @@ var Isotope =
 			$('isotopetoolsmenu').setStyle('display', 'none');
 		});
 	},
+	
+	initializeFilterMenu: function()
+	{
+		if ($$('#tl_buttons .isotope-filter').length < 1)
+			return;
+
+		$$('#tl_buttons .header_iso_filter').setStyle('display', 'inline');
+
+		var tools = $$('#tl_buttons .isotope-filter').clone();
+
+		$$('#tl_buttons .isotope-filter').each(function(node) {
+			//node.previousSibling.deleteData(0, node.previousSibling.nodeValue.length);
+			node.previousSibling.nodeValue = '';
+			node.destroy();
+		});
+
+		var div = new Element('div',
+		{
+			'id': 'isotopefiltermenu',
+			'styles': {
+				'top': ($$('a.header_iso_filter')[0].getPosition().y + 22)
+			}
+		}).adopt(tools);
+
+		div.inject($(document.body));
+		div.setStyle('left', $$('a.header_iso_filter')[0].getPosition().x - 7);
+
+		// Add trigger to tools buttons
+		$$('a.header_iso_filter').addEvent('click', function(e)
+		{
+			$('isotopefiltermenu').setStyle('display', 'block');
+			return false;
+		});
+
+		// Hide context menu
+		$(document.body).addEvent('click', function()
+		{
+			$('isotopefiltermenu').setStyle('display', 'none');
+		});
+	},
 
 	initializeToolsButton: function()
 	{
@@ -656,6 +696,7 @@ window.addEvent('domready', function()
 {
 	Isotope.addInteractiveHelp();
 	Isotope.initializeToolsMenu();
+	Isotope.initializeFilterMenu();
 	Isotope.initializeToolsButton();
 }).addEvent('structure', function()
 {
