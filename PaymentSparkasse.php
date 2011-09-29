@@ -56,12 +56,12 @@ class PaymentSparkasse extends IsotopePayment
 		{
 			$this->postsaleFailed($this->Input->post('directPosErrorMessage'));
 		}
-		
+
 		echo 'redirecturls='.$this->Environment->base . $this->generateFrontendUrl($this->Database->execute("SELECT * FROM tl_page WHERE id=".(int)$this->Input->post('sessionid'))->fetchAssoc(), '/step/complete');
 		exit;
 	}
-	
-	
+
+
 	private function postsaleFailed($strReason='')
 	{
 		echo 'redirecturlf='.$this->Environment->base . $this->generateFrontendUrl($this->Database->execute("SELECT * FROM tl_page WHERE id=".(int)$this->Input->post('sessionid'))->fetchAssoc(), '/step/failed') . ($strReason != '' ? '?reason='.$strReason : '');
@@ -78,7 +78,7 @@ class PaymentSparkasse extends IsotopePayment
 	public function checkoutForm()
 	{
 		global $objPage;
-		
+
 		$objOrder = new IsotopeOrder();
 		$objOrder->findBy('cart_id', $this->Isotope->Cart->id);
 
@@ -110,7 +110,7 @@ class PaymentSparkasse extends IsotopePayment
 		}
 
 		ksort($arrParam);
-		
+
 		$arrParam['mac'] = hash_hmac('sha1', implode('', $arrParam), $this->sparkasse_sslpassword);
 
 		foreach( $arrParam as $k => $v )
