@@ -554,7 +554,7 @@ var Isotope =
 			$('isotopetoolsmenu').setStyle('display', 'none');
 		});
 	},
-	
+
 	initializeFilterMenu: function()
 	{
 		if ($$('#tl_buttons .isotope-filter').length < 1)

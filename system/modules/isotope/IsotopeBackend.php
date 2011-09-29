@@ -83,8 +83,8 @@ class IsotopeBackend extends Backend
 			$this->redirect(str_replace('key=delete', 'act=delete', $this->Environment->request));
 		}
 	}
-	
-	
+
+
 	/**
 	 * Truncate the tl_iso_productcache table if a product is changed
 	 *
@@ -93,7 +93,7 @@ class IsotopeBackend extends Backend
 	public function truncateProductCache($varValue=null)
 	{
 		$this->Database->query("TRUNCATE tl_iso_productcache");
-		
+
 		return $varValue;
 	}
 

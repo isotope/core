@@ -10,12 +10,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -37,7 +37,7 @@ class UniversalRunonce extends Controller
 	public function __construct()
 	{
 		parent::__construct();
-		
+
 		// Fix potential Exception on line 0 because of __destruct method (see http://dev.contao.org/issues/2236)
 		$this->import((TL_MODE=='BE' ? 'BackendUser' : 'FrontendUser'), 'User');
 		$this->import('Database');
@@ -51,7 +51,7 @@ class UniversalRunonce extends Controller
 	{
 		$this->import('Files');
 		$arrModules = scan(TL_ROOT . '/system/modules/');
-		
+
 		foreach ($arrModules as $strModule)
 		{
 			if ((@include(TL_ROOT . '/system/modules/' . $strModule . '/config/runonce.php')) !== false)

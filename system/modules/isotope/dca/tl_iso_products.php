@@ -514,8 +514,8 @@ class tl_iso_products extends Backend
 		$this->import('BackendUser', 'User');
 		$this->import('Isotope');
 	}
-	
-	
+
+
 	/**
 	 * Store the date when the product has been added
 	 *
@@ -568,8 +568,8 @@ class tl_iso_products extends Backend
 
 		return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
 	}
-	
-	
+
+
 	/**
 	 * Apply advanced filters to product list view
 	 *
@@ -578,12 +578,12 @@ class tl_iso_products extends Backend
 	public function applyAdvancedFilters()
 	{
 		$arrFilters = $this->Input->get('filter');
-		
+
 		if ($this->Input->get('act') == '' && $this->Input->get('key') == '' && is_array($arrFilters))
 		{
 			$arrProducts = null;
 			$arrNames = array();
-			
+
 			foreach( $arrFilters as $filter )
 			{
 				switch( $filter )
@@ -592,27 +592,27 @@ class tl_iso_products extends Backend
 						$objProducts = $this->Database->execute("SELECT id FROM tl_iso_products WHERE pid=0 AND language='' AND images IS NULL");
 						$arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
 						break;
-					
+
 					case 'nocategory':
 						$objProducts = $this->Database->execute("SELECT id FROM tl_iso_products p WHERE pid=0 AND language='' AND (SELECT COUNT(*) FROM tl_iso_product_categories c WHERE c.pid=p.id)=0");
 						$arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
 						break;
-					
+
 					case 'new_today':
 						$objProducts = $this->Database->execute("SELECT id FROM tl_iso_products p WHERE pid=0 AND language='' AND dateAdded>=".strtotime('-1 day'));
 						$arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
 						break;
-					
+
 					case 'new_week':
 						$objProducts = $this->Database->execute("SELECT id FROM tl_iso_products p WHERE pid=0 AND language='' AND dateAdded>=".strtotime('-1 week'));
 						$arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
 						break;
-					
+
 					case 'new_month':
 						$objProducts = $this->Database->execute("SELECT id FROM tl_iso_products p WHERE pid=0 AND language='' AND dateAdded>=".strtotime('-1 month'));
 						$arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
 						break;
-						
+
 					default:
 						// HOOK: add custom logic
 						if (isset($GLOBALS['ISO_HOOKS']['applyAdvancedFilters']) && is_array($GLOBALS['ISO_HOOKS']['applyAdvancedFilters']))
@@ -629,14 +629,14 @@ class tl_iso_products extends Backend
 								}
 							}
 						}
-						
+
 						$this->log('Advanced product filter "'.$filter.'" not found.', __METHOD__, TL_ERROR);
 						break;
 				}
-				
+
 				$arrNames[] = $GLOBALS['TL_LANG']['tl_iso_products']['filter_'.$filter][0];
 			}
-			
+
 			$GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'] = $arrProducts;
 			$GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['breadcrumb'] .= '<p class="tl_info">' . $GLOBALS['TL_LANG']['tl_iso_products']['filter'][0] . ': ' . implode(', ', $arrNames) . '</p><br>';
 		}
@@ -1558,13 +1558,13 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 			{
 				return '';
 			}
-			
+
 			switch( $arrClipboard['mode'] )
 			{
 				case 'cut':
 				case 'copy':
 					$objProduct = $this->Database->prepare("SELECT * FROM {$dc->table} WHERE id=?")->execute($arrClipboard['id']);
-					
+
 					if ($objProduct->pid > 0)
 					{
 						return '';
@@ -1574,7 +1574,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 						$disablePI = true;
 					}
 					break;
-				
+
 				case 'cutAll':
 				case 'copyAll':
 					// @todo implement cutAll & copyAll for multiple products and variants
@@ -1590,7 +1590,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 			{
 				return '';
 			}
-			
+
 			// Disable buttons for product if copying a product
 			elseif ($arrClipboard !== false)
 			{
@@ -1599,7 +1599,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 					case 'cut':
 					case 'copy':
 						$objProduct = $this->Database->prepare("SELECT * FROM {$dc->table} WHERE id=?")->execute($arrClipboard['id']);
-						
+
 						if (($objProduct->pid == 0 && $row['id'] != 0) || ($row['id'] == 0 && $objProduct->pid > 0))
 						{
 							return '';
@@ -1609,7 +1609,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 							$disablePI = true;
 						}
 						break;
-					
+
 					case 'cutAll':
 					case 'copyAll':
 						// @todo implement cutAll & copyAll for multiple products and variants
@@ -1619,7 +1619,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 				}
 			}
 		}
-		
+
 		// Disable all buttons if there is a circular reference
 		if ($arrClipboard !== false && ($arrClipboard['mode'] == 'cut' && ($cr == 1 || ($table == $dc->table && $arrClipboard['id'] == $row['id'])) || $arrClipboard['mode'] == 'cutAll' && ($cr == 1 || ($table == $dc->table && in_array($row['id'], $arrClipboard['id'])))))
 		{
@@ -1642,8 +1642,8 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 
 		return ($disablePI ? $this->generateImage('pasteinto_.gif', '', 'class="blink"').' ' : '<a href="'.$this->addToUrl('act='.$arrClipboard['mode'].'&amp;mode=2&amp;'.(($table != $dc->table || $row['id'] == 0) ? 'gid' : 'pid').'='.$row['id'].(!is_array($arrClipboard['id']) ? '&amp;id='.$arrClipboard['id'] : '')).'" title="'.specialchars(sprintf($GLOBALS['TL_LANG'][$table]['pasteinto'][1], $row['id'])).'" onclick="Backend.getScrollOffset();">'.$imagePasteInto.'</a> ');
 	}
-	
-	
+
+
 	/**
 	 * Return the filter button, allow for multiple filters
 	 *
@@ -1660,14 +1660,14 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 	public function filterButton($href, $label, $title, $class, $attributes, $table, $root)
 	{
 		static $arrFilters = false;
-		
+
 		if ($arrFilters === false)
 		{
 			$arrFilters = (array)$this->Input->get('filter');
 		}
-		
+
 		$filter = str_replace('filter[]=', '', $href);
-		
+
 		if (in_array($filter, $arrFilters))
 		{
 			$href = ampersand(str_replace('&'.$href, '', $this->Environment->request));
@@ -1676,11 +1676,11 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 		{
 			$href = ampersand($this->Environment->request . '&') . $href;
 		}
-		
+
 		return ' &#160; :: &#160; <a href="'.$href.'" class="'.$class.' isotope-filter" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ';
 	}
-	
-	
+
+
 	/**
 	 * Return the "remove filter" button (unset url parameters)
 	 *
@@ -1697,7 +1697,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 	public function filterRemoveButton($href, $label, $title, $class, $attributes, $table, $root)
 	{
 		$href = preg_replace('/&?filter\[\]=[^&]*/', '', $this->Environment->request);
-		
+
 		return ' &#160; :: &#160; <a href="'.$href.'" class="header_iso_filter_remove isotope-filter" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ';
 	}
 
@@ -1965,7 +1965,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 			{
 				$arrData['eval']['tl_class'] = 'clr';
 			}
-			
+
 			// Parse multiline/multilingual foreignKey
 			$objAttributes->foreignKey = $this->parseForeignKey($objAttributes->foreignKey, $GLOBALS['TL_LANGUAGE']);
 
@@ -2040,7 +2040,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 		$GLOBALS['ISO_CONFIG']['variant_options'] = array();
 		$GLOBALS['ISO_CONFIG']['multilingual'] = array();
 		$GLOBALS['ISO_CONFIG']['dynamicAttributes'] = array();
-		
+
 		foreach( $GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $attribute => $config )
 		{
 			if ($config['attributes']['variant_option'])
@@ -2052,7 +2052,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 			{
 				$GLOBALS['ISO_CONFIG']['multilingual'][] = $attribute;
 			}
-			
+
 			if ($config['attributes']['dynamic'])
 			{
 				$GLOBALS['ISO_CONFIG']['dynamicAttributes'][] = $attribute;
@@ -2072,13 +2072,13 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 	{
 		$strFallback = null;
 		$arrLines = trimsplit('@\r\n|\n|\r@', $strSettings);
-		
+
 		// return false if there are no lines
 		if ($strSettings == '' || !is_array($arrLines) || !count($arrLines))
 		{
 			return null;
 		}
-		
+
 		// loop over the lines
 		foreach( $arrLines as $strLine )
 		{
@@ -2092,7 +2092,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 			if (strpos($strLine, '=') === 2)
 			{
 				list($language, $foreignKey) = explode('=', $strLine, 2);
-				
+
 				if ($language == $strLanguage)
 				{
 					return $foreignKey;
@@ -2102,7 +2102,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 					$strFallback = $foreignKey;
 				}
 			}
-			
+
 			// otherwise the first row is the fallback
 			elseif (is_null($strFallback))
 			{

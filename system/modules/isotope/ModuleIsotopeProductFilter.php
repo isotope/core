@@ -116,7 +116,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		{
 			$this->strTemplate = $this->iso_filterTpl;
 		}
-		
+
 		return true;
 	}
 
@@ -133,7 +133,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		{
 			// Search does not affect request cache
 			$this->generateSearch();
-	
+
 			$this->Template->id = $this->id;
 			$this->Template->formId = 'iso_filter_' . $this->id;
 			$this->Template->actionFilter = ampersand(preg_replace('/&?isorc=[0-9]+&?/', '', $this->Environment->request));

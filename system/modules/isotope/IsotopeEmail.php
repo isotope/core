@@ -36,7 +36,7 @@ class IsotopeEmail extends Controller
 	 * @var object
 	 */
 	protected $objEmail;
-	
+
 	/**
 	 * Contain the simple tokens for this email
 	 * @var array
@@ -48,39 +48,39 @@ class IsotopeEmail extends Controller
 	 * @var string
 	 */
 	protected $strLanguage;
-	
+
 	/**
 	 * Email template file
 	 * @var string
 	 */
 	protected $strTemplate;
-	
+
 	/**
 	 * Contao CSS file to include
 	 * @var string
 	 */
 	protected $strCssFile = 'isotope';
-	
+
 	/**
 	 * Collection PDF data
 	 * @var mixed
 	 */
 	protected $varDocumentData;
-	
+
 	/**
 	 * Collection PDF title
 	 * @var string
 	 */
 	protected $strDocumentTitle;
-	
+
 	/**
 	 * if attachments have been added (= reset $objEmail if language changes)
 	 * @var bool
 	 */
 	protected $attachmentsDone = false;
-	
+
 	/**
-	 * the id of the mail template 
+	 * the id of the mail template
 	 * @var int
 	 */
 	protected $intId;
@@ -96,7 +96,7 @@ class IsotopeEmail extends Controller
 	{
 		parent::__construct();
 		$this->import('Database');
-		
+
 		// Verify collection object type
 		if (!($objCollection instanceof IsotopeProductCollection))
 		{
@@ -122,7 +122,7 @@ class IsotopeEmail extends Controller
 			case 'simpleTokens':
 				$this->arrSimpleTokens = $varValue;
 				break;
-			
+
 			case 'language':
 				$strLanguage = substr($varValue, 0, 2);
 				if ($strLanguage != $this->strLanguage)
@@ -130,14 +130,14 @@ class IsotopeEmail extends Controller
 					$this->initializeTemplate($strLanguage);
 				}
 				break;
-			
+
 			case 'collection':
 				if ($varValue instanceof IsotopeProductCollection)
 				{
 					$this->initializeTemplate($this->strLanguage, $objCollection);
 				}
 				break;
-			
+
 			default:
 				$this->objEmail->__set($strKey, $varValue);
 				break;
@@ -157,14 +157,14 @@ class IsotopeEmail extends Controller
 			case 'language':
 				return $this->strLanguage;
 				break;
-			
+
 			default:
 				return $this->objEmail->__get($strKey);
 				break;
 		}
 	}
-	
-	
+
+
 	/**
 	 * Call parent Email object method
 	 *
@@ -176,8 +176,8 @@ class IsotopeEmail extends Controller
 	{
 		return call_user_func_array(array($this->objEmail, $function), $param_arr);
 	}
-	
-	
+
+
 	/**
 	 * Send to give address with tokens
 	 *
@@ -191,18 +191,18 @@ class IsotopeEmail extends Controller
 		{
 			$this->language = $strLanguage;
 		}
-		
+
 		if (is_array($arrTokens))
 		{
 			$this->simpleTokens = $arrTokens;
 		}
-		
+
 		return $this->sendTo($varRecipients);
 	}
 
 
 	/**
-	 * Set the data and send the email. 
+	 * Set the data and send the email.
 	 * DON'T CALL THIS METHOD BEFORE YOU HAVE DONE ALL MODIFICATIONS ON THE MAIL TEMPLATE
 	 */
 	public function sendTo()
@@ -212,7 +212,7 @@ class IsotopeEmail extends Controller
 		{
 			$this->strLanguage = $GLOBALS['TL_LANGUAGE'];
 		}
-		
+
 		// get the data for the active language
 		$objLanguage = $this->Database->prepare("SELECT * FROM tl_iso_mail_content WHERE pid={$this->intId} AND (language='{$this->strLanguage}' OR fallback='1') ORDER BY fallback")
 									  ->limit(1)
@@ -222,12 +222,12 @@ class IsotopeEmail extends Controller
 		{
 			throw new Exception('No fallback language found for mail template ID '.$this->intId);
 		}
-		
+
 		$this->strLanguage = $objLanguage->language;
-		
+
 		$arrData = $this->arrSimpleTokens;
 		$arrPlainData = array_map('strip_tags', $this->arrSimpleTokens);
-		
+
 		$this->objEmail->subject = $this->parseSimpleTokens($this->replaceInsertTags($objLanguage->subject), $arrPlainData);
 		$this->objEmail->text = $this->parseSimpleTokens($this->replaceInsertTags($objLanguage->text), $arrPlainData);
 
@@ -241,13 +241,13 @@ class IsotopeEmail extends Controller
 			{
 				$buffer = file_get_contents(TL_ROOT . '/system/scripts/' . $this->strCssFile . '.css');
 				$buffer = preg_replace('@/\*\*.*\*/@Us', '', $buffer);
-	
+
 				$css  = '<style type="text/css">' . "\n";
 				$css .= trim($buffer) . "\n";
 				$css .= '</style>' . "\n";
 				$arrData['head_css'] = $css;
 			}
-			
+
 			$objTemplate = new FrontendTemplate($this->strTemplate);
 			$objTemplate->body = $objLanguage->html;
 			$objTemplate->charset = $GLOBALS['TL_CONFIG']['characterSet'];
@@ -262,7 +262,7 @@ class IsotopeEmail extends Controller
 			// Parse template
 			$this->objEmail->html = $strHtml;
 		}
-		
+
 		if (!$this->attachmentsDone)
 		{
 			foreach (deserialize($objLanguage->attachments, true) as $file)
@@ -272,21 +272,21 @@ class IsotopeEmail extends Controller
 					$this->objEmail->attachFile(TL_ROOT . '/' . $file);
 				}
 			}
-			
+
 			// @todo the PDF name could contain user specific information if sent to multiple recipients
 			if ($this->strDocumentTitle != '')
 			{
 				$strTitle = $this->parseSimpleTokens($this->replaceInsertTags($this->strDocumentTitle), $arrPlainData);
 				$this->objEmail->attachFileFromString($this->varDocumentData, $strTitle.'.pdf', 'application/pdf');
 			}
-			
+
 			$this->attachmentsDone = true;
 		}
 
 		return $this->objEmail->sendTo(func_get_args());
 	}
-	
-	
+
+
 	/**
 	 * Initialize from template and reset attachments if language changes
 	 *
@@ -298,14 +298,14 @@ class IsotopeEmail extends Controller
 	{
 		$this->objEmail = new Email();
 		$this->attachmentsDone = false;
-		
+
 		$objTemplate = $this->Database->execute("SELECT * FROM tl_iso_mail WHERE id=" . $this->intId);
 
 		if ($objTemplate->numRows < 1)
 		{
 			throw new Exception('No mail template with ID "' . $this->intId . '" found.');
 		}
-		
+
 		$this->strLanguage = $strLanguage;
 
 		// set the options
@@ -323,7 +323,7 @@ class IsotopeEmail extends Controller
 
 			$this->objEmail->sendCc($email);
 		}
-		
+
 		// recipient_bcc
 		$arrBcc = trimsplit(',', $objTemplate->bcc);
 		foreach ((array)$arrBcc as $email)
@@ -333,27 +333,27 @@ class IsotopeEmail extends Controller
 
 			$this->objEmail->sendBcc($email);
 		}
-		
+
 		$this->strTemplate = $objTemplate->template ? $objTemplate->template : 'mail_default';
-		
+
 		if ($objTemplate->attachDocument && $objCollection instanceof IsotopeProductCollection)
 		{
 			$objPdf = $objCollection->generatePDF(($objTemplate->documentTemplate ? $objTemplate->documentTemplate : null), null, false);
 			$objPdf->lastPage();
-			
+
 			$this->varDocumentData = $objPdf->Output('collection.pdf', 'S');
 			$this->strDocumentTitle = $objTemplate->documentTitle;
 		}
 	}
-	
-	
+
+
 	public static function romanizeFriendlyName($strName)
 	{
 		$strName = html_entity_decode($strName, ENT_QUOTES, $GLOBALS['TL_CONFIG']['characterSet']);
 		$strName = strip_insert_tags($strName);
 		$strName = utf8_romanize($strName);
 		$strName = preg_replace('/[^A-Za-z0-9\.!#$%&\'*+-\/=?^_ `{\|}~]+/i', '_', $strName);
-		
+
 		return $strName;
 	}
 }

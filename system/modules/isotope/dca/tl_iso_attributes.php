@@ -442,16 +442,16 @@ class tl_iso_attributes extends Backend
 		{
 			$this->Database->query(sprintf("ALTER TABLE tl_iso_products MODIFY %s %s", $objAttribute->field_name, $GLOBALS['ISO_ATTR'][$dc->activeRecord->type]['sql']));
 		}
-		
+
 		$this->import('IsotopeDatabase');
 		$this->IsotopeDatabase->update($objAttribute->field_name, $GLOBALS['ISO_ATTR'][$dc->activeRecord->type]['sql']);
-		
+
 		if ($objAttribute->fe_filter && $GLOBALS['ISO_ATTR'][$dc->activeRecord->type]['useIndex'])
 		{
 			$this->IsotopeDatabase->add("KEY `{$objAttribute->field_name}`", "(`{$objAttribute->field_name}`)");
-			
+
 			$arrFields = $this->Database->listFields('tl_iso_products');
-			
+
 			if ($arrFields[$objAttribute->field_name]['type'] != 'index')
 			{
 				$this->Database->query("ALTER TABLE `tl_iso_products` ADD KEY `{$objAttribute->field_name}` (`{$objAttribute->field_name}`);");
@@ -533,7 +533,7 @@ class tl_iso_attributes extends Backend
 		if ($varValue != '')
 		{
 			$arrLines = trimsplit('@\r\n|\n|\r@', $varValue);
-			
+
 			foreach( $arrLines as $foreignKey )
 			{
 				if ($foreignKey == '' || strpos($foreignKey, '#') === 0)
@@ -545,7 +545,7 @@ class tl_iso_attributes extends Backend
 				{
 					$foreignKey = substr($foreignKey, 3);
 				}
-				
+
 				list($strTable, $strField) = explode('.', $foreignKey, 2);
 
 				$this->Database->execute("SELECT $strField FROM $strTable");

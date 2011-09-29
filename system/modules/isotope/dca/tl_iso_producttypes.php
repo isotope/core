@@ -326,7 +326,7 @@ class tl_iso_producttypes extends Backend
 		$arrThemes = array();
 		$arrTemplates = array();
 		$arrFolders = array();
-		
+
 		// Add the templates root directory
 		$arrFolders[] = TL_ROOT . '/templates';
 

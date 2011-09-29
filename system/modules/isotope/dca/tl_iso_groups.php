@@ -10,12 +10,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -131,7 +131,7 @@ $GLOBALS['TL_DCA']['tl_iso_groups'] = array
 
 class tl_iso_groups extends Backend
 {
-	
+
 	/**
 	 * Add an image to each group in the tree
 	 * @param array
@@ -145,12 +145,12 @@ class tl_iso_groups extends Backend
 	public function addIcon($row, $label, DataContainer $dc=null, $imageAttribute='', $blnReturnImage=false)
 	{
 		$bold = $dc->table == 'tl_iso_products' ? ' style="font-weight:bold"' : '';
-		
+
 		return $this->generateImage('system/modules/isotope/html/folder-network.png', '', $imageAttribute) . ' <span'.$bold.'>' . $label . '</span>';
 		//return $this->generateImage('system/modules/isotope/html/folder-network.png', '', $imageAttribute) . ' <a href="' . $this->addToUrl('node='.$row['id']) . '"'.$bold.'>' . $label . '</a>';
 	}
-	
-	
+
+
 	/**
 	 * Reassign products to no group when group is deleted
 	 *
@@ -161,7 +161,7 @@ class tl_iso_groups extends Backend
 	{
 		$arrGroups = $this->getChildRecords($dc->id, 'tl_iso_groups');
 		$arrGroups[] = $dc->id;
-		
+
 		$this->Database->query("UPDATE tl_iso_products SET gid=0 WHERE gid IN (" . implode(',', $arrGroups) . ")");
 	}
 }

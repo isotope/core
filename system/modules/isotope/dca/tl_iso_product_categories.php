@@ -132,8 +132,8 @@ class tl_iso_product_categories extends Backend
 			$this->Database->query("UPDATE tl_iso_products SET pages='" . serialize($arrCategories) . "' WHERE id={$dc->id}");
 		}
 	}
-	
-	
+
+
 	/**
 	 * Return the page view button
 	 *
@@ -152,7 +152,7 @@ class tl_iso_product_categories extends Backend
 
 		$href  = ($this->Environment->ssl ? 'https://' : 'http://') . ($objPage->dns == '' ? $this->Environment->host : $objPage->dns) . (TL_PATH == '' ? '' : TL_PATH) . '/';
 		$href .= $this->generateFrontendUrl($objPage->row());
-		
+
 		return ' &#160; :: &#160; <a href="'.$href.'" target="_blank" class="header_preview" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ';
 	}
 }

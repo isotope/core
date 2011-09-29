@@ -254,7 +254,7 @@ class IsotopeOrder extends IsotopeProductCollection
 		$this->status = $this->new_order_status;
 		$arrData = $this->email_data;
 		$arrData['order_id'] = $this->generateOrderId();
-		
+
 		foreach( $this->billing_address as $k => $v )
 		{
 			$arrData['billing_'.$k] = $this->Isotope->formatValue('tl_iso_addresses', $k, $v);
@@ -264,7 +264,7 @@ class IsotopeOrder extends IsotopeProductCollection
 		{
 			$arrData['shipping_'.$k] = $this->Isotope->formatValue('tl_iso_addresses', $k, $v);
 		}
-		
+
 		if ($this->pid > 0)
 		{
 			$objUser = $this->Database->execute("SELECT * FROM tl_member WHERE id=".(int)$this->pid);

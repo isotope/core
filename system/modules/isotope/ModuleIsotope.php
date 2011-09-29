@@ -66,7 +66,7 @@ abstract class ModuleIsotope extends Module
 				global $objPage;
 				$objPage->cache = 0;
 			}
-			
+
 			// Make sure we have a reader page
 			if (!$this->iso_reader_jumpTo)
 			{
@@ -192,8 +192,8 @@ abstract class ModuleIsotope extends Module
 
 		return count($arrIds) ? $arrIds : array(0);
 	}
-	
-	
+
+
 	/**
 	 * Generate the URL from existing $_GET parameters.
 	 * Use $this->Input->setGet('var', null) to remove a parameter from the final URL.
@@ -225,7 +225,7 @@ abstract class ModuleIsotope extends Module
 				$arrFragments = $this->$callback[0]->$callback[1]($arrFragments);
 			}
 		}
-		
+
 		$strParams = '';
 		$arrGet = array();
 
@@ -235,12 +235,12 @@ abstract class ModuleIsotope extends Module
 			if (isset($_GET[$arrFragments[$i]]))
 			{
 				$key = urldecode($arrFragments[$i]);
-				
+
 				$this->Input->setGet($key, null);
 				$strParams .= '/' . $key . '/' . urldecode($arrFragments[$i+1]);
 			}
 		}
-		
+
 		// Add get parameters to URL
 		if (is_array($_GET) && count($_GET))
 		{

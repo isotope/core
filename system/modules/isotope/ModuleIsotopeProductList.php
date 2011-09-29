@@ -34,7 +34,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 	 * @var string
 	 */
 	protected $strTemplate = 'mod_iso_productlist';
-	
+
 	/**
 	 * Cache products. Can be disable in a child class, e.g. a "random products list"
 	 * @var bool
@@ -59,7 +59,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 
 			return $objTemplate->parse();
 		}
-		
+
 		// Hide product list in reader mode if the respective setting is enabled
 		if ($this->iso_hide_list && $this->Input->get('product') != '')
 		{
@@ -110,7 +110,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			if ($objCache->numRows)
 			{
 				$arrCacheIds = deserialize($objCache->products);
-				
+
 				// Use the cache if keywords match. Otherwise we will use the product IDs as a "limit" for findProducts()
 				if ($objCache->keywords == $this->Input->get('keywords'))
 				{
@@ -146,20 +146,20 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			if ($this->blnCacheProducts)
 			{
 				$blnCacheMessage = (bool)$this->iso_productcache[$objPage->id][(int)$this->Input->get('isorc')];
-				
+
 				if ($blnCacheMessage && !$this->Input->get('buildCache'))
 				{
 					$this->Template = new FrontendTemplate('mod_iso_productlist_caching');
 					$this->Template->message = $GLOBALS['ISO_LANG']['MSC']['productcacheLoading'];
 					return;
 				}
-				
+
 				// Start measuring how long it takes to load the products
 				$start = microtime(true);
-				
+
 				// Load products
 				$arrProducts = $this->findProducts($arrCacheIds);
-				
+
 				if (is_array($arrProducts) && count($arrProducts))
 				{
 					// Decide if we should show the "caching products" message
@@ -171,14 +171,14 @@ class ModuleIsotopeProductList extends ModuleIsotope
 						$arrCacheMessage[$objPage->id][(int)$this->Input->get('isorc')] = $this->blnCacheProducts;
 						$this->Database->prepare("UPDATE tl_module SET iso_productcache=? WHERE id=?")->execute(serialize($arrCacheMessage), $this->id);
 					}
-	
+
 					// Do not write cache if table is locked. That's the case if another process is already writing cache
 					if ($this->Database->query("SHOW OPEN TABLES FROM `{$GLOBALS['TL_CONFIG']['dbDatabase']}` LIKE 'tl_iso_productcache'")->In_use == 0)
 					{
 						$this->Database->lockTables(array('tl_iso_productcache'=>'WRITE'));
 						$time = time();
 						$arrIds = array();
-		
+
 						foreach( $arrProducts as $objProduct )
 						{
 							$arrIds[] = $objProduct->id;
@@ -186,10 +186,10 @@ class ModuleIsotopeProductList extends ModuleIsotope
 
 						$this->Database->prepare("DELETE FROM tl_iso_productcache WHERE page_id={$objPage->id} AND module_id={$this->id} AND requestcache_id=? AND keywords=?")
 									   ->executeUncached((int)$this->Input->get('isorc'), (string)$this->Input->get('keywords'));
-									   
+
 						$this->Database->prepare("INSERT INTO tl_iso_productcache (tstamp,page_id,module_id,requestcache_id,keywords,products) VALUES ($time, {$objPage->id}, {$this->id}, ?,?,?)")
 									   ->executeUncached((int)$this->Input->get('isorc'), (string)$this->Input->get('keywords'), serialize($arrIds));
-									   
+
 						$this->Database->unlockTables();
 					}
 				}
@@ -198,7 +198,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			{
 				$arrProducts = $this->findProducts();
 			}
-			
+
 			if ($this->perPage > 0)
 			{
 				$offset = $this->generatePagination(count($arrProducts));
@@ -214,7 +214,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			$this->Template->message = $this->iso_emptyMessage ? $this->iso_noProducts : $GLOBALS['TL_LANG']['MSC']['noProducts'];
 			return;
 		}
-		
+
 		if ($this->iso_jump_first && $this->Input->get('product') == '')
 		{
 			$objProduct = array_shift($arrProducts);
@@ -271,12 +271,12 @@ class ModuleIsotopeProductList extends ModuleIsotope
 	protected function findProducts($arrCacheIds=null)
 	{
 		$arrIds = $this->findCategoryProducts($this->iso_category_scope, $this->iso_list_where);
-		
+
 		if (is_array($arrCacheIds))
 		{
 			$arrIds = array_intersect($arrIds, $arrCacheIds);
 		}
-		
+
 		list($arrFilters, $arrSorting, $strWhere, $arrValues) = $this->getFiltersAndSorting();
 
 		$objProductData = $this->Database->prepare(IsotopeProduct::getSelectStatement() . "\nWHERE p1.published='1' AND p1.language='' AND p1.id IN (" . implode(',', $arrIds) . ")$strWhere ORDER BY sorting")
@@ -284,8 +284,8 @@ class ModuleIsotopeProductList extends ModuleIsotope
 
 		return IsotopeFrontend::getProducts($objProductData, $this->iso_reader_jumpTo, true, $arrFilters, $arrSorting);
 	}
-	
-	
+
+
 	/**
 	 * Generate the pagination
 	 *
@@ -312,7 +312,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 
 			return $offset;
 		}
-		
+
 		return 0;
 	}
 
@@ -327,35 +327,35 @@ class ModuleIsotopeProductList extends ModuleIsotope
 	{
 		$arrFilters = array();
 		$arrSorting = array();
-		
+
 		if ($this->iso_listingSortField != '')
 		{
 			$arrSorting[$this->iso_listingSortField] = array(($this->iso_listingSortDirection=='DESC' ? SORT_DESC : SORT_ASC), SORT_REGULAR);
 		}
-		
+
 		if (is_array($this->iso_filterModules))
 		{
 			$arrModules = array_reverse($this->iso_filterModules);
-	
+
 			foreach( $arrModules as $module )
 			{
 				if (is_array($GLOBALS['ISO_FILTERS'][$module]))
 				{
 					$arrFilters = array_merge($arrFilters, $GLOBALS['ISO_FILTERS'][$module]);
 				}
-	
+
 				if (is_array($GLOBALS['ISO_SORTING'][$module]))
 				{
 					$arrSorting = array_merge($arrSorting, $GLOBALS['ISO_SORTING'][$module]);
 				}
-	
+
 				if ($GLOBALS['ISO_LIMIT'][$module] > 0)
 				{
 					$this->perPage = $GLOBALS['ISO_LIMIT'][$module];
 				}
 			}
 		}
-		
+
 		// thanks to certo web & design for sponsoring this feature
 		if ($blnNativeSQL)
 		{
@@ -369,20 +369,20 @@ class ModuleIsotopeProductList extends ModuleIsotope
 				if ($filter['group'] == '' && !in_array($filter['attribute'], $GLOBALS['ISO_CONFIG']['dynamicAttributes']))
 				{
 					$operator = IsotopeFrontend::convertFilterOperator($filter['operator'], 'SQL');
-					
+
 					$arrWhere[] = "{$filter['attribute']} $operator ?";
 					$arrValues[] = $filter['value'];
-					
+
 					unset($arrFilters[$k]);
 				}
 			}
-			
+
 			if (count($arrWhere))
 			{
 				$strWhere = " AND ((p1." . implode(' AND p1.', $arrWhere) . ") OR p1.id IN (SELECT pid FROM tl_iso_products WHERE published='1' AND language='' AND " . implode(' AND ', $arrWhere) . "))";
 				$arrValues = array_merge($arrValues, $arrValues);
 			}
-			
+
 			return array($arrFilters, $arrSorting, $strWhere, $arrValues);
 		}
 

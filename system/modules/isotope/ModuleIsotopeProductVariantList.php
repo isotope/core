@@ -60,12 +60,12 @@ class ModuleIsotopeProductVariantList extends ModuleIsotopeProductList
 	protected function findProducts($arrCacheIds=null)
 	{
 		$arrIds = $this->findCategoryProducts($this->iso_category_scope, $this->iso_list_where);
-		
+
 		if (is_array($arrCacheIds))
 		{
 			$arrIds = array_intersect($arrIds, $arrCacheIds);
 		}
-		
+
 		list($arrFilters, $arrSorting, $strWhere, $arrValues) = $this->getFiltersAndSorting();
 
 		$objProductData = $this->Database->prepare(IsotopeProduct::getSelectStatement() . " WHERE p1.published='1' AND p1.language='' AND (p1.pid IN (" . implode(',', $arrIds) . "))$strWhere ORDER BY sorting")

@@ -133,7 +133,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 				'remove_link_title' => specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $objProduct->name)),
 				'class'				=> 'row_' . $i . ($i%2 ? ' even' : ' odd') . ($i==0 ? ' row_first' : ''),
 			));
-			
+
 			if ($lastAdded == $objProduct->cart_id)
 			{
 				$objTemplate->continueJumpTo = $objProduct->href_reader;

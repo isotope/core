@@ -52,7 +52,7 @@ abstract class ContentIsotope extends ContentElement
 			// Load Isotope javascript and css
 			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/html/isotope.js';
 			$GLOBALS['TL_CSS'][] = 'system/modules/isotope/html/isotope.css';
-			
+
 			// Make sure we have a reader page
 			if (!$this->iso_reader_jumpTo)
 			{

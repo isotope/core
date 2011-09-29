@@ -246,7 +246,7 @@ class IsotopeGallery extends Frontend
 	protected function injectAjax()
 	{
 		list(,$startScript, $endScript) = IsotopeFrontend::getElementAndScriptTags();
-		
+
 		$GLOBALS['TL_MOOTOOLS'][get_class($this).'_ajax'] = "
 $startScript
 window.addEvent('ajaxready', function() {

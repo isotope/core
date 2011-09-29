@@ -293,7 +293,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		{
 			if ($this->strCurrentStep == $step)
 				$blnPassed = false;
-			
+
 			$blnActive = $this->strCurrentStep == $step ? true : false;
 
 			$arrSteps[] = array
@@ -720,16 +720,16 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 		$this->import('IsotopeFrontend');
 		$objForm = $this->IsotopeFrontend->prepareForm($this->iso_order_conditions, $this->strFormId, array('tableless'=>$this->tableless));
-		
+
 		// Form not found
 		if ($objForm == null)
 		{
 			return '';
 		}
-		
+
 		$this->doNotSubmit = $objForm->blnHasErrors ? true : $this->doNotSubmit;
 		$this->Template->enctype = $objForm->enctype;
-		
+
 		if (!$this->doNotSubmit)
 		{
 			foreach( $objForm->arrFormData as $name => $value )
@@ -742,11 +742,11 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				$this->arrOrderData['form_'.$name] = $this->Environment->base . str_replace(TL_ROOT . '/', '', dirname($file['tmp_name'])) . '/' . rawurlencode($file['name']);
 			}
 		}
-		
+
 		$objTemplate = new IsotopeTemplate('iso_checkout_order_conditions');
 		$objTemplate->attributes	= $objForm->attributes;
 		$objTemplate->tableless		= $this->tableless;
-		
+
 		$parse = create_function('$a', 'return $a->parse();');
 		$objTemplate->hidden = implode('', array_map($parse, $objForm->arrHidden));
 		$objTemplate->fields = implode('', array_map($parse, $objForm->arrFields));

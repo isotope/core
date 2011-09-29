@@ -85,18 +85,18 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 		//We have already done the Authorization - go to Complete step
 		if($this->authorize_trans_type =='AUTH_ONLY')
 			return true;
-		
+
 		$objOrder = new IsotopeOrder();
 		$objOrder->findBy('cart_id', $this->Isotope->Cart->id);
-		
+
 		//$arrPaymentData = deserialize($objOrder->payment_data);
 		if($this->authCapturePayment($objOrder->id, $objOrder->grandTotal, true))
 			return true;
-		
+
 		global $objPage;
 		$this->log('Invalid payment data received.', 'PaymentAuthorizeDotNet processPayment()', TL_ERROR);
 		$this->redirect($this->generateFrontendUrl($objPage->row(), '/step/failed'));
-		
+
 	}
 
 
@@ -109,10 +109,10 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 	 * @return string
 	 */
 	public function paymentForm($objModule)
-	{		
+	{
 		$strBuffer = '';
 		$arrPayment = $this->Input->post('payment');
-				
+
 		$arrCCTypes = deserialize($this->allowed_cc_types);
 
 		$intStartYear = (integer)date('Y', time()); //2-digit year
@@ -187,7 +187,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 				{
 					$objModule->doNotSubmit = true;
 				}
-			
+
 				/*if ($objWidget->mandatory && !strlen($objWidget->value))
 				{
 					$objModule->doNotSubmit = true;

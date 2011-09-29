@@ -606,8 +606,8 @@ class tl_iso_rules extends Backend
 
 //		$this->createNewVersion('tl_iso_rules', $intId);
 	}
-	
-	
+
+
 	/**
 	 * Get attributes that can be filtered
 	 *
@@ -617,9 +617,9 @@ class tl_iso_rules extends Backend
 	public function getAttributeNames($dc)
 	{
 		$this->import('Isotope');
-		
+
 		$arrAttributes = array();
-		
+
 		foreach( $GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $attribute => $config )
 		{
 			if ($config['attributes']['legend'] != '' && $attribute != 'pages' && $config['inputType'] != 'mediaManager')
@@ -627,13 +627,13 @@ class tl_iso_rules extends Backend
 				$arrAttributes[$attribute] = $this->Isotope->formatLabel('tl_iso_products', $attribute);
 			}
 		}
-		
+
 		asort($arrAttributes);
-		
+
 		return $arrAttributes;
 	}
-	
-	
+
+
 	/**
 	 * Initialize the attribute value field
 	 *
@@ -646,9 +646,9 @@ class tl_iso_rules extends Backend
 		{
 			$this->loadDataContainer('tl_iso_products');
 			$this->loadLanguageFile('tl_iso_products');
-			
+
 			$objRule = $this->Database->execute("SELECT * FROM tl_iso_rules WHERE id=".(int)$dc->id);
-			
+
 			if ($objRule->productRestrictions == 'attribute' && $objRule->attributeName != '')
 			{
 				$GLOBALS['TL_DCA']['tl_iso_rules']['fields']['attributeValue'] = array_merge($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$objRule->attributeName], $GLOBALS['TL_DCA']['tl_iso_rules']['fields']['attributeValue']);

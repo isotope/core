@@ -321,7 +321,7 @@ class PaymentPaypalPayflowPro extends IsotopePayment
 		$strCard = implode(' ', str_split((substr($num, 0, 2) . str_repeat('*', (strlen($num)-6)) . substr($num, -4)), 4));
 
 		list($endTag) = IsotopeFrontend::getElementAndScriptTags();
-		
+
 		return sprintf('%s<br'.$endTag.'%s: %s', $this->label, $GLOBALS['ISO_LANG']['CCT'][$type], $strCard);
 	}
 

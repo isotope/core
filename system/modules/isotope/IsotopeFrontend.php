@@ -122,8 +122,8 @@ class IsotopeFrontend extends Frontend
 
 		return false;
 	}
-	
-	
+
+
 	/**
 	 * Add the navigation trail CSS class to pages belonging to the active product
 	 *
@@ -136,7 +136,7 @@ class IsotopeFrontend extends Frontend
 		if ($this->Input->get('product') != '' && substr($objTemplate->getName(), 0, 4) == 'nav_')
 		{
 			static $arrTrail = null;
-			
+
 			// Only fetch the product once. getProductByAlias will return null if the product is not found.
 			if ($arrTrail == null)
 			{
@@ -163,7 +163,7 @@ class IsotopeFrontend extends Frontend
 						$arrItems[$k]['class'] .= ' trail';
 					}
 				}
-				
+
 				$objTemplate->items = $arrItems;
 			}
 		}
@@ -452,8 +452,8 @@ $endScript";
 
 		return $strMessages;
 	}
-	
-	
+
+
 	/**
 	 * Get html & javascript tags depending on output format (Contao 2.10)
 	 * @param boolean
@@ -480,8 +480,8 @@ $endScript";
 				}
 		}
 	}
-	
-	
+
+
 	/**
 	 * Prepare form fields from a form generator form ID
 	 * Useful if you want to give the user the possibility to use a custom form for a certain action (e.g. order conditions)
@@ -503,7 +503,7 @@ $endScript";
 		$objForm->blnHasUploads	= false;
 
 		$objForm->arrData		= array_merge($this->Database->execute("SELECT * FROM tl_form WHERE id=".(int)$intId)->fetchAssoc(), $arrConfig);
-		
+
 		// Form not found
 		if (!$objForm->arrData['id'])
 		{
@@ -603,7 +603,7 @@ $endScript";
 				$objForm->arrHidden[$arrData['name']]	= $objWidget;
 				continue;
 			}
-			
+
 			$objForm->arrFields[$arrData['name']]		= $objWidget;
 
 			++$row;
@@ -622,8 +622,8 @@ $endScript";
 
 		return $objForm;
 	}
-	
-	
+
+
 	/**
 	 * Generate download attributes
 	 *
@@ -640,7 +640,7 @@ $endScript";
 		{
 			return '';
 		}
-		
+
 		$file = $this->Input->get('file', true);
 
 		// Send the file to the browser
@@ -771,8 +771,8 @@ $endScript";
 		$objTemplate->files = array_values($files);
 		return $objTemplate->parse();
 	}
-	
-	
+
+
 	/**
 	 * Shortcut for a single product by ID or from database result
 	 *
@@ -786,7 +786,7 @@ $endScript";
 		if (is_numeric($objProductData))
 		{
 			$Database = Database::getInstance();
-			
+
 			$objProductData = $Database->prepare(IsotopeProduct::getSelectStatement() . " WHERE p1.language='' AND p1.id=?")->execute($objProductData);
 		}
 
@@ -828,15 +828,15 @@ $endScript";
 	public static function getProductByAlias($strAlias, $intReaderPage=0, $blnCheckAvailability=true)
 	{
 		$Database = Database::getInstance();
-		
+
 		$objProductData = $Database->prepare(IsotopeProduct::getSelectStatement() . " WHERE p1.pid=0 AND p1.language='' AND p1." . (is_numeric($strAlias) ? 'id' : 'alias') . "=?")
 								   ->limit(1)
 								   ->executeUncached($strAlias);
 
 		return self::getProduct($objProductData, $intReaderPage, $blnCheckAvailability);
 	}
-	
-	
+
+
 	/**
 	 * Generate products from database result or array of IDs.
 	 *
@@ -853,7 +853,7 @@ $endScript";
 		if (is_array($objProductData) && count($objProductData))
 		{
 			$Database = Database::getInstance();
-			
+
 			$objProductData = $Database->execute(IsotopeProduct::getSelectStatement() . "
 													WHERE p1.language='' AND p1.id IN (" . implode(',', array_map('intval', $objProductData)) . ")
 													ORDER BY p1.id=" . implode(' DESC, p1.id=', $objProductData) . " DESC");
@@ -908,8 +908,8 @@ $endScript";
 
 		return $arrProducts;
 	}
-	
-	
+
+
 	/**
 	 * Callback function to filter products
 	 *
@@ -938,7 +938,7 @@ $endScript";
 			{
 				return false;
 			}
-			
+
 			$operator = self::convertFilterOperator($filter['operator'], 'PHP');
 
 			switch( $operator )
@@ -975,8 +975,8 @@ $endScript";
 
 		return true;
 	}
-	
-	
+
+
 	/**
 	 * Convert a filter operator for PHP or SQL
 	 *
@@ -999,7 +999,7 @@ $endScript";
 			case '<':
 			case 'lt':
 				return '<';
-			
+
 			case '>=':
 			case '=>':
 			case 'gte':

@@ -49,7 +49,7 @@ class ProductTree extends Widget
 	 * @var string
 	 */
 	protected $strTemplate = 'be_widget';
-	
+
 	/**
 	 * Allowed product types
 	 * @var array
@@ -91,7 +91,7 @@ class ProductTree extends Widget
 
 		$this->loadDataContainer('tl_iso_products');
 		$this->loadLanguageFile('tl_iso_products');
-		
+
 		$this->loadDataContainer('tl_iso_groups');
 		$this->loadLanguageFile('tl_iso_groups');
 
@@ -99,7 +99,7 @@ class ProductTree extends Widget
 		$this->import('BackendUser', 'User');
 		$this->import('tl_iso_products');
 		$this->import('tl_iso_groups');
-		
+
 		$this->arrTypes = is_array($this->User->iso_product_types) ? $this->User->iso_product_types : array(0);
 	}
 
@@ -178,7 +178,7 @@ class ProductTree extends Widget
 		$tree = '';
 		$this->getPathNodes();
 
-		
+
 		$objGroups = $this->Database->execute("SELECT id FROM tl_iso_groups WHERE pid=0 ORDER BY sorting");
 		while( $objGroups->next() )
 		{
@@ -262,11 +262,11 @@ class ProductTree extends Widget
 		// Load requested nodes
 		$tree = '';
 		$level = $level * 20;
-		
+
 		if (strpos($this->Input->post('id'), 'groups') === false)
 		{
 			$objProducts = $this->Database->prepare("SELECT id FROM tl_iso_products WHERE language='' AND archive<2 AND pid=?".($this->User->isAdmin ? '' : " AND type IN ('','" . implode("','", $this->arrTypes) . "')")." ORDER BY name")->execute($id);
-	
+
 			while ($objProducts->next())
 			{
 				$tree .= $this->renderProducts($objProducts->id, $level);
@@ -275,14 +275,14 @@ class ProductTree extends Widget
 		else
 		{
 			$objGroups = $this->Database->execute("SELECT id FROM tl_iso_groups WHERE pid=".$id." ORDER BY sorting");
-	
+
 			while ($objGroups->next())
 			{
 				$tree .= $this->renderGroups($objGroups->id, $level);
 			}
-			
+
 			$objProducts = $this->Database->prepare("SELECT id FROM tl_iso_products WHERE language='' AND archive<2 AND gid=?".($this->User->isAdmin ? '' : " AND type IN ('','" . implode("','", $this->arrTypes) . "')")." ORDER BY name")->execute($id);
-	
+
 			while ($objProducts->next())
 			{
 				$tree .= $this->renderProducts($objProducts->id, $level);
@@ -354,7 +354,7 @@ class ProductTree extends Widget
 			$arrData['strTable'] = $dc->table;
 			$arrData['id'] = strlen($this->strAjaxName) ? $this->strAjaxName : $dc->id;
 			$arrData['name'] = $this->Input->post('name');
-			
+
 			$this->loadDataContainer($dc->table);
 			$arrData = array_merge($GLOBALS['TL_DCA'][$dc->table]['fields'][$arrData['name']]['eval'], $arrData);
 
@@ -368,7 +368,7 @@ class ProductTree extends Widget
 			exit;
 		}
 	}
-	
+
 
 	/**
 	 * Recursively render product groups
@@ -376,7 +376,7 @@ class ProductTree extends Widget
 	 * @param int
 	 * @param integer
 	 * @return string
-	 */	
+	 */
 	protected function renderGroups($id, $intMargin)
 	{
 		static $session;
@@ -416,7 +416,7 @@ class ProductTree extends Widget
 		$products = $this->Database->prepare("SELECT id FROM tl_iso_products WHERE gid=?".($this->User->isAdmin ? '' : " AND type IN ('','" . implode("','", $this->arrTypes) . "')")." ORDER BY name")
 								   ->execute($id)
 								   ->fetchEach('id');
-		
+
 		if (!count($products) && !count($childs))
 		{
 			return '';
@@ -455,7 +455,7 @@ class ProductTree extends Widget
 					$group .= $this->renderProducts($products[$k], ($intMargin + $intSpacing));
 				}
 			}
-			
+
 			if (count($childs))
 			{
 				for ($k=0; $k<count($childs); $k++)
@@ -463,7 +463,7 @@ class ProductTree extends Widget
 					$group .= $this->renderGroups($childs[$k], ($intMargin + $intSpacing));
 				}
 			}
-			
+
 			if ($group == '')
 				return '';
 
@@ -495,7 +495,7 @@ class ProductTree extends Widget
 		{
 			$session[$node][$this->Input->get($flag.'tg')] = (isset($session[$node][$this->Input->get($flag.'tg')]) && $session[$node][$this->Input->get($flag.'tg')] == 1) ? 0 : 1;
 			$this->Session->setData($session);
-			
+
 			$this->redirect(preg_replace('/(&(amp;)?|\?)'.$flag.'tg=[^& ]*/i', '', $this->Environment->request));
 		}
 
@@ -622,7 +622,7 @@ class ProductTree extends Widget
 				{
 					$this->arrNodes['products'][] = $objProduct->pid;
 				}
-				
+
 				// Add pid to the nodes array
 				if ($objProduct->gid > 0)
 				{

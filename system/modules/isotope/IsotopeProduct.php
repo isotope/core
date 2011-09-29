@@ -208,7 +208,7 @@ class IsotopeProduct extends Controller
 					{
 						// Add "price_tiers" to variant attributes, so the field is updated through ajax
 						$this->arrVariantAttributes[] = 'price_tiers';
-						
+
 						$time = time();
 						$objProduct = $this->Database->execute("SELECT MIN(price) AS low_price, MAX(price) AS high_price
 																FROM tl_iso_price_tiers
@@ -250,7 +250,7 @@ class IsotopeProduct extends Controller
 			{
 				// Add "price_tiers" to attributes, so the field is available in the template
 				$this->arrAttributes[] = 'price_tiers';
-				
+
 				$this->findPrice();
 				$this->arrData['original_price'] = $this->arrData['price'];
 			}
@@ -724,21 +724,21 @@ class IsotopeProduct extends Controller
 				}
 			}
 		}
-		
+
 		// Generate download attributes
 		elseif ($arrData['inputType'] == 'downloads')
 		{
 			$this->import('IsotopeFrontend');
 			$strBuffer = $this->IsotopeFrontend->generateDownloadAttribute($attribute, $arrData, $varValue);
 		}
-		
+
 		// Generate a HTML table for associative arrays
 		elseif (is_array($varValue) && !array_is_assoc($varValue) && is_array($varValue[0]))
 		{
 			$arrFormat = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['tableformat'];
-			
+
 			$last = count($varValue[0])-1;
-			
+
 			$strBuffer = '
 <table class="'.$attribute.'">
   <thead>
@@ -750,23 +750,23 @@ class IsotopeProduct extends Controller
 				{
 					continue;
 				}
-				
+
 				$label = $arrFormat[$name]['label'] ? $arrFormat[$name]['label'] : $name;
-				
+
 				$strBuffer .= '
       <th class="head_'.$i.($i==0 ? ' head_first' : '').($i==$last ? ' head_last' : ''). (!is_numeric($name) ? ' '.standardize($name) : '').'">' . $label . '</th>';
 			}
-			
+
 			$strBuffer .= '
     </tr>
   </thead>
   <tbody>';
-			
+
 			foreach( $varValue as $r => $row )
 			{
 				$strBuffer .= '
     <tr class="row_'.$r.($r==0 ? ' row_first' : '').($r==$last ? ' row_last' : '').' '.($r%2 ? 'odd' : 'even').'">';
-    			
+
     			$c = -1;
     			foreach( $row as $name => $value )
     			{
@@ -774,7 +774,7 @@ class IsotopeProduct extends Controller
     				{
     					continue;
     				}
-    				
+
     				if ($arrFormat[$name]['rgxp'] == 'price')
     				{
     					$value = $this->Isotope->formatPriceWithCurrency($value);
@@ -783,36 +783,36 @@ class IsotopeProduct extends Controller
     				{
     					$value = $arrFormat[$name]['format'] ? sprintf($arrFormat[$name]['format'], $value) : $value;
     				}
-    				
+
     				$strBuffer .= '
       <td class="col_'.++$c.($c==0 ? ' col_first' : '').($c==$i ? ' col_last' : '').' '.standardize($name).'">' . $value . '</td>';
     			}
-    			
+
     			$strBuffer .= '
     </tr>';
 			}
-			
+
 			$strBuffer .= '
   </tbody>
 </table>';
 		}
-		
+
 		// Generate ul/li listing for simpley arrays
 		elseif (is_array($varValue))
 		{
 			$strBuffer = '
 <ul>';
-			
+
 			$current = 0;
 			$last = count($varValue)-1;
 			foreach( $varValue as $value )
 			{
 				$class = trim(($current == 0 ? 'first' : '') . ($current == $last ? ' last' : ''));
-				
+
 				$strBuffer .= '
   <li'.($class != '' ? ' class="'.$class.'"' : '').'>' . $value . '</li>';
 			}
-			
+
 			$strBuffer .= '
 </ul>';
 		}
@@ -1169,8 +1169,8 @@ class IsotopeProduct extends Controller
 		// Unset arrDownloads cache
 		$this->arrDownloads = null;
 	}
-	
-	
+
+
 	/**
 	 * Return select statement to load product data including multilingual fields
 	 *
@@ -1180,11 +1180,11 @@ class IsotopeProduct extends Controller
 	public static function getSelectStatement()
 	{
 		static $strSelect = '';
-		
+
 		if ($strSelect == '')
 		{
 			global $objPage;
-			
+
 			$arrSelect = array("'".$GLOBALS['TL_LANGUAGE']."' AS language");
 
 			foreach( $GLOBALS['ISO_CONFIG']['multilingual'] as $attribute )

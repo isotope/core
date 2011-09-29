@@ -59,7 +59,7 @@ class Isotope extends Controller
 		parent::__construct();
 		$this->import('Database');
 		$this->import('FrontendUser', 'User');
-		
+
 		// Make sure field data is available
 		$this->loadDataContainer('tl_iso_products');
 		$this->loadLanguageFile('tl_iso_products');
@@ -624,12 +624,12 @@ class Isotope extends Controller
 		try
 		{
 			$objEmail = new IsotopeEmail($intId, $strLanguage, $objCollection);
-			
+
 			if ($strReplyTo != '')
 			{
 				$objEmail->replyTo($strReplyTo);
 			}
-			
+
 			$objEmail->send($strRecipient, $arrData);
 		}
 		catch (Exception $e)

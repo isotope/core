@@ -97,7 +97,7 @@ class IsotopeRules extends Controller
 				{
 					continue;
 				}
-				
+
 				if (strpos($objRules->discount, '%') !== false)
 				{
 					$fltDiscount = 100 + rtrim($objRules->discount, '%');
@@ -378,17 +378,17 @@ class IsotopeRules extends Controller
 				$arrProductIds[] = $objProduct->pid ? $objProduct->pid : $objProduct->id;
 				$arrVariantIds[] = $objProduct->id;
 				$arrTypes[] = $objProduct->type;
-	
+
 				if ($objProduct->pid > 0)
 				{
 					$arrVariantIds[] = $objProduct->pid;
 				}
-	
+
 				if ($blnIncludeVariants)
 				{
 					$arrVariantIds = array_merge($arrVariantIds, $objProduct->variant_ids);
 				}
-				
+
 				$arrOptions = $objProduct->getOptions(true);
 				foreach( $arrAttributes as $k => $restriction )
 				{
@@ -404,14 +404,14 @@ class IsotopeRules extends Controller
 					{
 						$varValue = $objProduct->{$restriction['attribute']};
 					}
-					
+
 					if (!is_null($varValue))
 					{
 						$arrAttributes[$k]['values'][] = is_array($varValue) ? serialize($varValue) : $varValue;
 					}
 				}
 			}
-			
+
 			$arrProductIds = array_unique($arrProductIds);
 			$arrVariantIds = array_unique($arrVariantIds);
 
@@ -429,9 +429,9 @@ class IsotopeRules extends Controller
 			{
 				if (!count($restriction['values']))
 					continue;
-				
+
 				$strRestriction = "(productRestrictions='attribute' AND attributeName='" . $restriction['attribute'] . "' AND attributeCondition='" . $restriction['condition'] . "' AND ";
-					
+
 				switch( $restriction['condition'] )
 				{
 					case 'eq':
@@ -463,11 +463,11 @@ class IsotopeRules extends Controller
 						}
 						$strRestriction .= '(' . implode(' OR ', $arrOR) . ')';
 						break;
-					
+
 					default:
 						throw new Exception('Unknown rule condition "' . $restrictions['condition'] . '"');
 				}
-					
+
 				$arrRestrictions[] = $strRestriction . ')';
 			}
 

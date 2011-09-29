@@ -655,21 +655,21 @@ class tl_module_isotope extends Backend
 	public function getFilterModules(DataContainer $dc)
 	{
 		$arrClasses = array();
-		
+
 		foreach( $GLOBALS['FE_MOD'] as $strGroup => $arrModules )
 		{
 			foreach( $arrModules as $strName => $strClass )
 			{
 				if ($strClass != '' && !$this->classFileExists($strClass))
 					continue;
-				
+
 				if ($strClass == 'ModuleIsotopeProductFilter' || is_subclass_of($strClass, 'ModuleIsotopeProductFilter'))
 				{
 					$arrClasses[] = $strName;
 				}
 			}
 		}
-		
+
 		$arrModules = array();
 		$objModules = $this->Database->execute("SELECT * FROM tl_module WHERE type IN ('" . implode("','", $arrClasses) . "')");
 

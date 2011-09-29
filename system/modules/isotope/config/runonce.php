@@ -67,10 +67,10 @@ class IsotopeRunonce extends Controller
 		{
 			$this->Config->update('$GLOBALS[\'TL_CONFIG\'][\'uploadTypes\']', $GLOBALS['TL_CONFIG']['uploadTypes'].',imt');
 		}
-		
+
 		// Just make sure no variant or translation has any categories assigned
 		$this->Database->query("DELETE FROM tl_iso_product_categories WHERE pid IN (SELECT id FROM tl_iso_products WHERE pid>0)");
-		
+
 		// Delete caches
 		$this->Database->query("TRUNCATE TABLE tl_iso_productcache");
 		$this->Database->query("TRUNCATE TABLE tl_iso_requestcache");
@@ -272,7 +272,7 @@ class IsotopeRunonce extends Controller
 			{
 				$this->Database->query("ALTER TABLE tl_module ADD COLUMN iso_filterModules blob NULL");
 			}
-			
+
 			$this->Database->query("UPDATE tl_module m1 SET iso_category_scope=(SELECT iso_category_scope FROM (SELECT * FROM tl_module) m2 WHERE m2.id=m1.iso_listingModule) WHERE m1.type='iso_productfilter'");
 			$this->Database->query("UPDATE tl_module m1 SET iso_filterModules=(SELECT id FROM (SELECT * FROM tl_module) m2 WHERE m2.iso_listingModule=m1.id)");
 			$this->Database->query("ALTER TABLE tl_module DROP COLUMN iso_listingModule");
@@ -505,13 +505,13 @@ class IsotopeRunonce extends Controller
 			$this->Database->query("ALTER TABLE tl_iso_attributes ADD COLUMN foreignKey varchar(64) NOT NULL default ''");
 			$this->Database->query("UPDATE tl_iso_attributes SET foreignKey=CONCAT(list_source_table, '.', list_source_field) WHERE use_alternate_source='1'");
 		}
-		
+
 		// Update dateAdded for products
 		if (!$this->Database->fieldExists('dateAdded', 'tl_iso_products'))
 		{
 			$this->Database->query("ALTER TABLE tl_iso_products ADD COLUMN dateAdded int(10) unsigned NOT NULL default '0'");
 		}
-		
+
 		$this->Database->query("UPDATE tl_iso_products SET dateAdded=tstamp WHERE dateAdded=0");
 	}
 
@@ -633,7 +633,7 @@ class IsotopeRunonce extends Controller
 			while( $objFilterModules->next() )
 			{
 				$arrSearch = deserialize($objFilterModules->iso_searchFields);
-	
+
 				if (!is_array($arrSearch))
 				{
 					$arrSearch = array('name', 'description');
@@ -642,11 +642,11 @@ class IsotopeRunonce extends Controller
 				{
 					array_unshift($arrSearch, 'name', 'description');
 				}
-	
+
 				$this->Database->prepare("UPDATE tl_module SET iso_enableSearch='', iso_searchFields=? WHERE id=?")->executeUncached(serialize($arrSearch), $objFilterModules->id);
 			}
 		}
-		
+
 		// Checkout method has been renamed from "login" to "member" to prevent a problem with palette of the login module
 		$this->Database->query("UPDATE tl_module SET iso_checkout_method='member' WHERE iso_checkout_method='login'");
 	}
@@ -677,8 +677,8 @@ class IsotopeRunonce extends Controller
 			}
 		}
 	}
-	
-	
+
+
 	/**
 	 * Automatically generate product groups because the limit feature is no longer available.
 	 * Taking product categories order by ID will associate with the page with highest ID, probably the deepest in the page tree.
@@ -705,21 +705,21 @@ CREATE TABLE `tl_iso_groups` (
 
 			$arrCategories = array();
 			$objCategories = $this->Database->execute("SELECT * FROM tl_iso_product_categories ORDER BY page_id ASC");
-			
+
 			while( $objCategories->next() )
 			{
 				$arrCategories[$objCategories->pid] = $objCategories->page_id;
 			}
-			
+
 			$time = time();
 			$intSorting = -128;
 			$objPages = $this->Database->execute("SELECT * FROM tl_page WHERE id IN (" . implode(',', array_unique($arrCategories)) . ")");
-			
+
 			while( $objPages->next() )
 			{
 				$intSorting += 128;
 				$intGroup = $this->Database->query("INSERT INTO tl_iso_groups (pid,sorting,tstamp,name) VALUES (0, $intSorting, $time, '{$objPages->title}')")->insertId;
-				
+
 				$arrProducts = array_keys(array_intersect($arrCategories, array($objPages->id)));
 				$this->Database->query("UPDATE tl_iso_products SET gid=$intGroup WHERE id IN (" . implode(',', $arrProducts) . ")");
 			}
@@ -744,7 +744,7 @@ CREATE TABLE `tl_iso_groups` (
 				continue;
 
 			$this->IsotopeDatabase->add($objAttributes->field_name, $GLOBALS['ISO_ATTR'][$objAttributes->type]['sql']);
-			
+
 			// Add indexes
 			if ($objAttributes->fe_filter && $GLOBALS['ISO_ATTR'][$objAttributes->type]['useIndex'])
 			{

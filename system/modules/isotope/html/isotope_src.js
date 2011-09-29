@@ -141,11 +141,11 @@ var IsotopeProduct = new Class(
 					Isotope.hideBox();
 
 					var json = JSON.decode(txt);
-					
+
 					// Update request token
 					REQUEST_TOKEN = json.token;
 					document.getElements('input[type="hidden"][name="REQUEST_TOKEN"]').set('value', json.token);
-					
+
 					json.content.each( function(option)
 					{
 						var oldEl = document.id(option.id);

@@ -183,7 +183,7 @@ abstract class IsotopeProductCollection extends Model
 				case 'products':
 					$this->arrCache[$strKey] = $this->Database->execute("SELECT COUNT(*) AS items FROM {$this->ctable} WHERE pid={$this->id}")->items;
 					break;
-				
+
 				case 'lastAdded':
 					// getProducts() will set the cache key/value.
 					// Only if the function has never been called, this will be triggered
@@ -429,7 +429,7 @@ abstract class IsotopeProductCollection extends Model
 			$this->arrProducts = array();
 			$this->arrCache['lastAdded'] = 0;
 			$lastAdded = 0;
-			
+
 			$objItems = $this->Database->prepare("SELECT * FROM " . $this->ctable . " WHERE pid=?")->executeUncached($this->id);
 
 			while( $objItems->next() )
@@ -467,7 +467,7 @@ abstract class IsotopeProductCollection extends Model
 				$objProduct->cart_id = $objItems->id;
 				$objProduct->tax_id = $objItems->tax_id;
 				$objProduct->reader_jumpTo_Override = $objItems->href_reader;
-				
+
 				if ($objItems->tstamp > $lastAdded)
 				{
 					$this->arrCache['lastAdded'] = $objItems->id;
@@ -607,7 +607,7 @@ abstract class IsotopeProductCollection extends Model
 		{
 			return $this->deleteProduct($objProduct);
 		}
-		
+
 		// Modify timestamp when updating a product
 		$arrSet['tstamp'] = time();
 
@@ -676,9 +676,9 @@ abstract class IsotopeProductCollection extends Model
 		while( $objOldItems->next() )
 		{
 			$blnTransfer = true;
-			
+
 			$objNewItems = $this->Database->execute("SELECT * FROM {$this->ctable} WHERE pid={$this->id} AND product_id={$objOldItems->product_id} AND product_options='{$objOldItems->product_options}'");
-			
+
 			// HOOK for adding additional functionality when adding product to collection
 			if (isset($GLOBALS['ISO_HOOKS']['transferCollection']) && is_array($GLOBALS['ISO_HOOKS']['transferCollection']))
 			{
@@ -688,7 +688,7 @@ abstract class IsotopeProductCollection extends Model
 					$blnTransfer = $this->$callback[0]->$callback[1]($objOldItems, $objNewItems, $objCollection, $this, $blnTransfer);
 				}
 			}
-			
+
 			if (!$blnTransfer)
 				continue;
 
