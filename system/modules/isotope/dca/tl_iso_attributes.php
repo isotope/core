@@ -415,10 +415,9 @@ class tl_iso_attributes extends Backend
 	{
 		$varValue = standardize($varValue, true);
 
-		if (in_array($varValue, array('id', 'pid', 'sorting', 'tstamp')))
+		if (in_array($varValue, array('id', 'pid', 'sorting', 'tstamp', 'dateAdded', 'type', 'language')))
 		{
 			throw new Exception($GLOBALS['TL_LANG']['ERR']['systemColumn'], $varValue);
-			return '';
 		}
 
 		if (strlen($varValue) && !$this->Database->fieldExists($varValue, 'tl_iso_products'))

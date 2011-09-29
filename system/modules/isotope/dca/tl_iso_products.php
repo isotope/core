@@ -51,6 +51,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'onsubmit_callback' => array
 		(
 			array('IsotopeBackend', 'truncateProductCache'),
+			array('tl_iso_products', 'storeDateAdded')
 		),
 	),
 
@@ -238,9 +239,14 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			// Fix for DC_Table, otherwise getPalette() will not use the PID value
 			'eval'					=> array('submitOnChange'=>true),
 		),
+		'dateAdded' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['MSC']['dateAdded'],
+			'eval'					=> array('rgxp'=>'datim'),
+		),
 		'type' => array
 		(
-			'label'					=>  &$GLOBALS['TL_LANG']['tl_iso_products']['type'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['type'],
 			'filter'				=> true,
 			'inputType'				=> 'select',
 			'options_callback'		=> array('tl_iso_products', 'getProductTypes'),
@@ -269,7 +275,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['inherit'],
 			'inputType'				=> 'inheritCheckbox',
-			'eval'					=> array('multiple'=>true),
+			'eval'					=> array('multiple'=>true, 'doNotShow'=>true),
 		),
 		'alias' => array
 		(
@@ -452,6 +458,25 @@ class tl_iso_products extends Backend
 
 		$this->import('BackendUser', 'User');
 		$this->import('Isotope');
+	}
+	
+	
+	/**
+	 * Store the date when the product has been added
+	 *
+	 * @param	object
+	 * @return	void
+	 */
+	public function storeDateAdded(DataContainer $dc)
+	{
+		// Return if there is no active record (override all)
+		if (!$dc->activeRecord || $dc->activeRecord->dateAdded > 0)
+		{
+			return;
+		}
+
+		$this->Database->prepare("UPDATE tl_iso_products SET dateAdded=? WHERE id=?")
+					   ->execute(time(), $dc->id);
 	}
 
 

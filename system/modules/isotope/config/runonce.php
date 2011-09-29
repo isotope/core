@@ -505,6 +505,14 @@ class IsotopeRunonce extends Controller
 			$this->Database->query("ALTER TABLE tl_iso_attributes ADD COLUMN foreignKey varchar(64) NOT NULL default ''");
 			$this->Database->query("UPDATE tl_iso_attributes SET foreignKey=CONCAT(list_source_table, '.', list_source_field) WHERE use_alternate_source='1'");
 		}
+		
+		// Update dateAdded for products
+		if (!$this->Database->fieldExists('dateAdded', 'tl_iso_products'))
+		{
+			$this->Database->query("ALTER TABLE tl_iso_products ADD COLUMN dateAdded int(10) unsigned NOT NULL default '0'");
+		}
+		
+		$this->Database->query("UPDATE tl_iso_products SET dateAdded=tstamp WHERE dateAdded=0");
 	}
 
 

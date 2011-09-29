@@ -17,6 +17,7 @@ CREATE TABLE `tl_iso_products` (
   `pid` int(10) unsigned NOT NULL default '0',
   `gid` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
+  `dateAdded` int(10) unsigned NOT NULL default '0',
   `type` int(10) unsigned NOT NULL default '0',
   `language` varchar(2) NOT NULL default '',
   `pages` blob NULL,
