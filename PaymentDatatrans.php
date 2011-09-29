@@ -10,12 +10,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -33,7 +33,7 @@ class PaymentDatatrans extends IsotopePayment
 {
 	/**
 	 * Return a list of status options.
-	 * 
+	 *
 	 * @access public
 	 * @return array
 	 */
@@ -49,7 +49,7 @@ class PaymentDatatrans extends IsotopePayment
 	public function processPostSale()
 	{
 		$this->import('Input');
-		
+
 		// stop if something went wrong
 		if ($this->Input->post('status') != 'success')
 		{
@@ -58,7 +58,7 @@ class PaymentDatatrans extends IsotopePayment
 		}
 
 		$objOrder = new IsotopeOrder();
-		
+
 		if (!$objOrder->findBy('id', $this->Input->post('refno')))
 		{
 			$this->log('Order ID "' . $this->Input->post('refno') . '" not found', __METHOD__, TL_ERROR);
@@ -98,7 +98,7 @@ class PaymentDatatrans extends IsotopePayment
 	public function processPayment()
 	{
 		$objOrder = new IsotopeOrder();
-		
+
 		if (!$objOrder->findBy('cart_id', $this->Isotope->Cart->id))
 		{
 			$this->log('Cart ID "' . $this->Isotope->Cart->id . '" not found', __METHOD__, TL_ERROR);
@@ -115,7 +115,7 @@ class PaymentDatatrans extends IsotopePayment
 	/**
 	 * Generate the submit form for datatrans and if javascript
 	 * is enabled redirect automaticly
-	 * 
+	 *
 	 * @return string
 	 */
 	public function checkoutForm()
