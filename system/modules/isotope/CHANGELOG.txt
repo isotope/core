@@ -12,6 +12,7 @@ Version 1.3.rc1 (2011-??-??)
 - Added native SQL filtering for static attributes (#2045)
 - Added SQL index keys for filtered attributes (#2134)
 - Added IsotopeEmail class to improve email handling (#2158)
+- Added frontend preview button when in product category (page) view
 - Improved: loading products is now centralized in IsotopeFrontend static functions
 - Fixed radio button events in Internet Explorer (Ticket #484)
 - Fixed products DCA not loaded in rare cases

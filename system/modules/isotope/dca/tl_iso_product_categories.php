@@ -63,6 +63,12 @@ $GLOBALS['TL_DCA']['tl_iso_product_categories'] = array
 		),
 		'global_operations' => array
 		(
+			'view' => array
+			(
+				'label'					=> &$GLOBALS['TL_LANG']['MSC']['fePreview'],
+				'class'					=> 'header_edit_all',
+				'button_callback'		=> array('tl_iso_product_categories', 'getPageViewButton'),
+			),
 			'all' => array
 			(
 				'label'					=> &$GLOBALS['TL_LANG']['MSC']['all'],
@@ -94,6 +100,7 @@ class tl_iso_product_categories extends Backend
 
 	/**
 	 * List pages
+	 *
 	 * @param  array
 	 * @return string
 	 */
@@ -111,7 +118,8 @@ class tl_iso_product_categories extends Backend
 
 	/**
 	 * Repair associations between products and categories.
-	 * We need tl_iso_products.pages to filter for it.
+	 * We only need tl_iso_products.pages to filter for categories in the backend.
+	 *
 	 * @param  object
 	 * @return void
 	 */
@@ -123,6 +131,29 @@ class tl_iso_product_categories extends Backend
 
 			$this->Database->query("UPDATE tl_iso_products SET pages='" . serialize($arrCategories) . "' WHERE id={$dc->id}");
 		}
+	}
+	
+	
+	/**
+	 * Return the page view button
+	 *
+	 * @param	string
+	 * @param	string
+	 * @param	string
+	 * @param	string
+	 * @param	string
+	 * @param	string
+	 * @param	array
+	 * @return	string
+	 */
+	public function getPageViewButton($href, $label, $title, $icon, $attributes, $table, $root)
+	{
+		$objPage = $this->getPageDetails($this->Input->get('id'));
+
+		$href  = ($this->Environment->ssl ? 'https://' : 'http://') . ($objPage->dns == '' ? $this->Environment->host : $objPage->dns) . (TL_PATH == '' ? '' : TL_PATH) . '/';
+		$href .= $this->generateFrontendUrl($objPage->row());
+		
+		return ' &#160; :: &#160; <a href="'.$href.'" target="_blank" class="header_preview" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ';
 	}
 }
 
