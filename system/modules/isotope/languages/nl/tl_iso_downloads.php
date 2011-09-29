@@ -1,8 +1,10 @@
 <?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
 
 /**
- * TYPOlight Open Source CMS
+ * Contao Open Source CMS
  * Copyright (C) 2005-2010 Leo Feyer
+ *
+ * Formerly known as TYPOlight Open Source CMS.
  *
  * This program is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,13 +21,14 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
+ * @copyright  2009-2011 Isotope eCommerce Workgroup
  * @author     Paul Kegel <paul@artified.nl>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @version    $Id$
  */
 
 $GLOBALS['TL_LANG']['tl_iso_downloads']['singleSRC'][0] = 'Bijlage';
-$GLOBALS['TL_LANG']['tl_iso_downloads']['singleSRC'][1] = 'Select het bestand dat u wil verkopen';
+$GLOBALS['TL_LANG']['tl_iso_downloads']['singleSRC'][1] = 'Selecteer het bestand dat u wil verkopen';
 $GLOBALS['TL_LANG']['tl_iso_downloads']['title'][0] = 'Titel';
 $GLOBALS['TL_LANG']['tl_iso_downloads']['title'][1] = 'Voer een titel in voor deze download';
 $GLOBALS['TL_LANG']['tl_iso_downloads']['description'][0] = 'Omschrijving';

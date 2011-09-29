@@ -231,4 +231,5 @@ $GLOBALS['TL_LANG']['MSG']['authorizedotnet']['3']['43'] = 'Der Händler wurde i
 $GLOBALS['TL_LANG']['MSG']['authorizedotnet']['2']['44'] = 'Die Transaktion wurde abgelehnt - Der bei der Transaktion übertragene Karten-Code entsprach nicht dem Kartencode bei der ausgebenden Bank, so dass die Transaktion abgelehnt wurde.';
 $GLOBALS['TL_LANG']['MSG']['authorizedotnet']['2']['45'] = 'Die Transaktion wurde abgelehnt - Dieser Fehler wird ausgegeben, wenn die Transaktion vom Verarbeiter einen Code erhält, die den Ablehnungskriterien entspricht, die der Händler für AVS und die Karten-Code-Filter eingestellt hat.';
 $GLOBALS['TL_LANG']['MSG']['authorizedotnet']['3']['46'] = 'Ihre Session ist abgelaufen oder existiert nicht. Sie müssen sich anmelden um den Vorgang fortzusetzen.';
+$GLOBALS['TL_LANG']['MSG']['authorizedotnet']['3']['47'] = 'Der Wert der für die Abrechnung angefragt wird, darf nicht höher sein als der ursprünglich authorisierte Wert - Dies geschieht, wenn der Händler Finanzmittel anfordert, die höher sind als der ursprüngliche Wert der authorisierten Transaktion.';
 

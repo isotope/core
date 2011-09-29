@@ -1,8 +1,10 @@
 <?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
 
 /**
- * TYPOlight Open Source CMS
+ * Contao Open Source CMS
  * Copyright (C) 2005-2010 Leo Feyer
+ *
+ * Formerly known as TYPOlight Open Source CMS.
  *
  * This program is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,15 +21,19 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
- * @author     Andreas Schempp <andreas@schempp.ch>
- * @author     Philipp Kaiblinger <philipp.kaiblinger@kaipo.at>
+ * @copyright  2009-2011 Isotope eCommerce Workgroup
+ * @author     Andreas Burg <ab@andreasburg.de>
+ * @author     Nikolas Runde <info@nrmedia.de>
+ * @author     Patrick Grob <grob@a-sign.ch>
+ * @author     Frank Berger <berger@mediastuff.de>
+ * @author     Angelica Schempp <aschempp@gmx.net>
+ * @author     Oliver Hoff <oliver@hoff.com>
+ * @author     Stefan Preiss <stefan@preiss-at-work.de>
+ * @author     Nina Gerling <gerling@ena-webstudio.de>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @version    $Id$
  */
 
-
-/**
- * Fields
- */
-$GLOBALS['TL_LANG']['tl_user']['translation'] = array('Übersetzungs-Sprache', 'Dieses Mitglied ist für die Übersetzung der gewählten Sprache zuständig.');
+$GLOBALS['TL_LANG']['tl_user']['translation'][0] = 'Übersetzungs-Sprache';
+$GLOBALS['TL_LANG']['tl_user']['translation'][1] = 'Wählen Sie die Sprache für die dieses Mitglied zuständig ist.';
 

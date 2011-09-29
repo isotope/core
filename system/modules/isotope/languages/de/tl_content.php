@@ -1,8 +1,10 @@
 <?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
 
 /**
- * TYPOlight Open Source CMS
+ * Contao Open Source CMS
  * Copyright (C) 2005-2010 Leo Feyer
+ *
+ * Formerly known as TYPOlight Open Source CMS.
  *
  * This program is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,16 +21,25 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- * @author     Andreas Schempp <andreas@schempp.ch>
+ * @copyright  2009-2011 Isotope eCommerce Workgroup
+ * @author     Andreas Burg <ab@andreasburg.de>
+ * @author     Nikolas Runde <info@nrmedia.de>
+ * @author     Patrick Grob <grob@a-sign.ch>
+ * @author     Frank Berger <berger@mediastuff.de>
+ * @author     Angelica Schempp <aschempp@gmx.net>
+ * @author     Oliver Hoff <oliver@hoff.com>
+ * @author     Stefan Preiss <stefan@preiss-at-work.de>
+ * @author     Nina Gerling <gerling@ena-webstudio.de>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @version    $Id: ModuleIsotopeTranslation.php 2273 2011-05-30 21:02:24Z aschempp $
  */
 
-
-/**
- * Fields
- */
-$GLOBALS['TL_LANG']['tl_content']['iso_attribute_set'] = array('Artikelmerkmal-Sammlung', 'Wählen Sie eine Artikelmerkmal-Sammlung um einen Filter für diese Seite zu wählen.');
-$GLOBALS['TL_LANG']['tl_content']['iso_filters'] = array('Auflistungs-Filter', 'Wählen Sie einen Artikelmerkmal-Filter.');
+$GLOBALS['TL_LANG']['tl_content']['iso_reader_jumpTo'][0] = 'Produktleser-Weiterleitungsseite';
+$GLOBALS['TL_LANG']['tl_content']['iso_reader_jumpTo'][1] = 'Diese Einstellung legt fest zu welcher Seite der Nutzer geleitet wird, wenn er bei einem Produkt weitere Informationen anklickt.';
+$GLOBALS['TL_LANG']['tl_content']['iso_list_layout'][0] = 'Produktlisten-Template';
+$GLOBALS['TL_LANG']['tl_content']['iso_list_layout'][1] = 'Bitte wählen Sie ein Listen-Layout. Sie können neue angepasste Listen-Layouts in den Ordner <em>templates</em> hinzufügen. Listen-Templates beginnen mit <em>iso_list_</em> und benötigen die Dateiendung <em>.html5, .xhtml</em> oder <em>.tpl</em>.';
+$GLOBALS['TL_LANG']['tl_content']['iso_attribute_set'][0] = 'Artikelmerkmal-Sammlung';
+$GLOBALS['TL_LANG']['tl_content']['iso_attribute_set'][1] = 'Wählen Sie eine Artikelmerkmal-Sammlung um einen Filter für diese Seite zu wählen.';
+$GLOBALS['TL_LANG']['tl_content']['iso_filters'][0] = 'Auflistungs-Filter';
+$GLOBALS['TL_LANG']['tl_content']['iso_filters'][1] = 'Wählen Sie einen Artikelmerkmal-Filter.';
 
