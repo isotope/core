@@ -1045,6 +1045,5 @@ class Isotope extends Controller
 	 */
 	public function replaceInsertTags($strBuffer, $blnCache=false) { return parent::replaceInsertTags($strBuffer, $blnCache); }
 	public function convertRelativeUrls($strContent, $strBase='', $blnHrefOnly=false) { return parent::convertRelativeUrls($strContent, $strBase, $blnHrefOnly); }
-	public function generateImage($src, $alt='', $attributes='') { return parent::generateImage($src, $alt, $attributes); }
 }
 

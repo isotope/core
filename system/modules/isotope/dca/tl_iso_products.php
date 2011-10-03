@@ -378,7 +378,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['description'],
 			'search'				=> true,
 			'inputType'				=> 'textarea',
-			'eval'					=> array('mandatory'=>true, 'rte'=>'tinyMCE'),
+			'eval'					=> array('mandatory'=>true, 'rte'=>'tinyMCE', 'tl_class'=>'clr'),
 			'attributes'			=> array('legend'=>'general_legend', 'multilingual'=>true, 'fe_search'=>true),
 		),
 		'description_meta' => array
