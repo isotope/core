@@ -25,6 +25,7 @@
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Christian de la Haye <service@delahaye.de>
+ * @author     Yanick Witschi <yanick.witschi@certo-net.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
@@ -163,6 +164,16 @@ class IsotopeGallery extends Frontend
 				return $this->arrData[$strKey];
 		}
 	}
+	
+	
+	/**
+	 * Returns whether the gallery object has an image do display or not
+	 * @return boolean
+	 */
+	public function hasImages()
+	{
+		return (count($this->arrFiles)) ? true : false;
+	}
 
 
 	/**
@@ -258,4 +269,3 @@ $endScript
 ";
 	}
 }
-
