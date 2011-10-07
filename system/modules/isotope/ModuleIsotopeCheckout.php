@@ -33,6 +33,18 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 {
 
 	/**
+	 * Order data. Each checkout step can provide key-value (string) data for the order email.
+	 * @var array
+	 */
+	public $arrOrderData = array();
+
+	/**
+	 * Do not submit form
+	 * @var bool
+	 */
+	public $doNotSubmit = false;
+	
+	/**
 	 * Template
 	 * @var string
 	 */
@@ -62,18 +74,6 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	 */
 	protected $strFormId = 'iso_mod_checkout';
 
-	/**
-	 * Order data. Each checkout step can provide key-value (string) data for the order email.
-	 * @var array
-	 */
-	public $arrOrderData = array();
-
-	/**
-	 * Do not submit form
-	 * @var bool
-	 */
-	public $doNotSubmit = false;
-
 
 	/**
 	 * Display a wildcard in the back end
@@ -97,6 +97,16 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		$this->strCurrentStep = $this->Input->get('step');
 
 		return parent::generate();
+	}
+	
+	
+	/**
+	 * Returns the current form id
+	 * @return string
+	 */
+	public function getFormId()
+	{
+		return $this->strFormId;
 	}
 
 
@@ -1196,6 +1206,22 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	}
 
 
+	/**
+	 * Override parent addToUrl function. Use generateFrontendUrl if we want to remove all parameters.
+	 */
+	protected function addToUrl($strRequest, $blnIgnoreParams=false)
+	{
+		if ($blnIgnoreParams)
+		{
+			global $objPage;
+
+			return $this->generateFrontendUrl($objPage->row(), '/' . str_replace(array('=', '&amp;', '&'), '/', $strRequest));
+		}
+
+		return parent::addToUrl($strRequest, $blnIgnoreParams);
+	}
+
+
 	private function getProductVariantValue($arrProducts)
 	{
 		$objVariantAttributes = $this->Database->prepare("SELECT name, field_name FROM tl_iso_attributes WHERE variant_option=?")
@@ -1223,22 +1249,6 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		}
 
 		return $arrReturn;
-	}
-
-
-	/**
-	 * Override parent addToUrl function. Use generateFrontendUrl if we want to remove all parameters.
-	 */
-	protected function addToUrl($strRequest, $blnIgnoreParams=false)
-	{
-		if ($blnIgnoreParams)
-		{
-			global $objPage;
-
-			return $this->generateFrontendUrl($objPage->row(), '/' . str_replace(array('=', '&amp;', '&'), '/', $strRequest));
-		}
-
-		return parent::addToUrl($strRequest, $blnIgnoreParams);
 	}
 }
 
