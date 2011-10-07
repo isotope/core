@@ -1720,7 +1720,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 	 */
 	public function toggleVariants($href, $label, $title, $class, $attributes, $table, $root)
 	{
-		$objVariants = $this->Database->query("SELECT COUNT(id) AS hasVariants FROM tl_iso_products WHERE pid!=0");
+		$objVariants = $this->Database->query("SELECT COUNT(id) AS hasVariants FROM tl_iso_products WHERE pid>0 AND language=''");
 		
 		if (!$objVariants->hasVariants)
 		{
