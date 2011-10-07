@@ -165,6 +165,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'href'				=> 'gtg=all',
 				'class'				=> 'header_toggle isotope-tools',
 				'attributes'		=> 'onclick="Backend.getScrollOffset();"',
+				'button_callback'	=> array('tl_iso_products', 'toggleGroups')
 			),
 			'toggleVariants' => array
 			(
@@ -172,6 +173,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'href'				=> 'ptg=all',
 				'class'				=> 'header_toggle isotope-tools',
 				'attributes'		=> 'onclick="Backend.getScrollOffset();"',
+				'button_callback'	=> array('tl_iso_products', 'toggleVariants')
 			),
 			'groups' => array
 			(
@@ -1702,6 +1704,56 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 
 		return ' &#160; :: &#160; <a href="'.$href.'" class="header_iso_filter_remove isotope-filter" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ';
 	}
+	
+	
+	/**
+	 * Hide "toggle all variants" button if there are no variants at all
+	 * 
+	 * @param	string
+	 * @param	string
+	 * @param	string
+	 * @param	string
+	 * @param	string
+	 * @param	string
+	 * @param	array
+	 * @return	string
+	 */
+	public function toggleVariants($href, $label, $title, $class, $attributes, $table, $root)
+	{
+		$objVariants = $this->Database->query("SELECT COUNT(id) AS hasVariants FROM tl_iso_products WHERE pid!=0");
+		
+		if (!$objVariants->hasVariants)
+		{
+			return '';
+		}
+		
+		return '<a href="' . $this->addToUrl('&amp;' . $href) . '" class="header_toggle isotope-tools" title="' . specialchars($title) . '"' . $attributes . '>' . specialchars($label) . '</a>';
+	}
+	
+	
+	/**
+	 * Hide "toggle all groups" button if there are no groups at all
+	 * 
+	 * @param	string
+	 * @param	string
+	 * @param	string
+	 * @param	string
+	 * @param	string
+	 * @param	string
+	 * @param	array
+	 * @return	string
+	 */
+	public function toggleGroups($href, $label, $title, $class, $attributes, $table, $root)
+	{
+		$objGroups = $this->Database->query("SELECT COUNT(id) AS hasGroups FROM tl_iso_groups");
+		
+		if (!$objGroups->hasGroups)
+		{
+			return '';
+		}
+		
+		return '<a href="' . $this->addToUrl('&amp;' . $href) . '" class="header_toggle isotope-tools" title="' . specialchars($title) . '"' . $attributes . '>' . specialchars($label) . '</a>';
+	}	
 
 
 	/**
@@ -2115,4 +2167,3 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 		return $strFallback;
 	}
 }
-
