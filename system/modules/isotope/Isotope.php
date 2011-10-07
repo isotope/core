@@ -28,6 +28,14 @@
  */
 
 
+/**
+ * Class Isotope
+ * 
+ * The base class for all Isotope components.
+ * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ */
 class Isotope extends Controller
 {
 
@@ -39,13 +47,28 @@ class Isotope extends Controller
 
 	/**
 	 * Cache select statement to load product data
+	 * @var string
 	 */
 	protected $strSelect;
 
-
+	/**
+	 * Current config instance
+	 * @var object
+	 */
 	public $Config;
+
+	/**
+	 * Current cart instance
+	 * @var object
+	 */
 	public $Cart;
+
+	/**
+	 * Current order instance
+	 * @var object
+	 */
 	public $Order;
+
 
 	/**
 	 * Prevent cloning of the object (Singleton)
@@ -98,7 +121,6 @@ class Isotope extends Controller
 
 	/**
 	 * Instantiate the Isotope object
-	 *
 	 * @return object
 	 */
 	public static function getInstance()
@@ -122,7 +144,6 @@ class Isotope extends Controller
 		if (TL_MODE == 'FE')
 		{
 			global $objPage;
-
 			$objConfig = $this->Database->prepare("SELECT c.* FROM tl_iso_config c LEFT OUTER JOIN tl_page p ON p.iso_config=c.id WHERE (p.id=" . (int)$objPage->rootId . " OR c.fallback='1') AND c.archive<2 ORDER BY c.fallback")->limit(1)->execute();
 		}
 		else
@@ -130,9 +151,9 @@ class Isotope extends Controller
 			$objConfig = $this->Database->execute("SELECT * FROM tl_iso_config WHERE fallback='1' AND archive<2");
 		}
 
-		if(!$objConfig->numRows)
+		if (!$objConfig->numRows)
 		{
-			// display error message in Isotope related backend modules
+			// Display error message in Isotope related backend modules
 			if (TL_MODE == 'BE')
 			{
 				$do = $this->Input->get('do');
@@ -162,6 +183,7 @@ class Isotope extends Controller
 
 	/**
 	 * Manual override of the store configuration
+	 * @param integer
 	 */
 	public function overrideConfig($intConfig)
     {
@@ -175,18 +197,19 @@ class Isotope extends Controller
 
 
 	/**
-	 * Calculate price trough hook and foreign prices.
-	 *
-	 * @param	float
-	 * @param	object
-	 * @param	string
-	 * @param	int
-	 * @return	float
+	 * Calculate price trough hook and foreign prices
+	 * @param float
+	 * @param object
+	 * @param string
+	 * @param integer
+	 * @return float
 	 */
 	public function calculatePrice($fltPrice, &$objSource, $strField, $intTaxClass=0)
 	{
 		if (!is_numeric($fltPrice))
+		{
 			return $fltPrice;
+		}
 
 		// HOOK for altering prices
 		if (isset($GLOBALS['ISO_HOOKS']['calculatePrice']) && is_array($GLOBALS['ISO_HOOKS']['calculatePrice']))
@@ -220,7 +243,7 @@ class Isotope extends Controller
 
 		if ($this->Config->priceRoundIncrement == '0.05')
 		{
-			$fltPrice = (round(20*$fltPrice))/20;
+			$fltPrice = (round(20 * $fltPrice)) / 20;
 		}
 
 		return round($fltPrice, $this->Config->priceRoundPrecision);
@@ -229,6 +252,11 @@ class Isotope extends Controller
 
 	/**
 	 * Calculate tax for a certain tax class, based on the current user information
+	 * @param integer
+	 * @param float
+	 * @param boolean
+	 * @param array
+	 * @return array
 	 */
 	public function calculateTax($intTaxClass, $fltPrice, $blnAdd=true, $arrAddresses=null)
 	{
@@ -258,7 +286,9 @@ class Isotope extends Controller
 				$varValue = $this->$callback[0]->$callback[1]($objTaxClass, $fltPrice, $blnAdd, $arrAddresses);
 
 				if ($varValue !== false)
+				{
 					return $varValue;
+				}
 			}
 		}
 
@@ -269,11 +299,12 @@ class Isotope extends Controller
 		{
 			$arrTaxRate = deserialize($objIncludes->rate);
 
-			// final price / (1 + (tax / 100)
+			// Final price / (1 + (tax / 100)
 			if (strlen($arrTaxRate['unit']))
 			{
 				$fltTax = $fltPrice - ($fltPrice / (1 + (floatval($arrTaxRate['value']) / 100)));
 			}
+
 			// Full amount
 			else
 			{
@@ -286,7 +317,7 @@ class Isotope extends Controller
 			}
 			else
 			{
-				$arrTaxes[$objTaxClass->id.'_'.$objIncludes->id] = array
+				$arrTaxes[$objTaxClass->id . '_' . $objIncludes->id] = array
 				(
 					'label'			=> $this->translate($objTaxClass->label ? $objTaxClass->label : ($objIncludes->label ? $objIncludes->label : $objIncludes->name)),
 					'price'			=> $arrTaxRate['value'] . $arrTaxRate['unit'],
@@ -302,22 +333,27 @@ class Isotope extends Controller
 		}
 
 		$arrRates = deserialize($objTaxClass->rates);
+
+		// Return if there are no rates
 		if (!is_array($arrRates) || !count($arrRates))
+		{
 			return $arrTaxes;
+		}
 
 		$objRates = $this->Database->execute("SELECT * FROM tl_iso_tax_rate WHERE id IN (" . implode(',', $arrRates) . ") ORDER BY id=" . implode(" DESC, id=", $arrRates) . " DESC");
 
-		while( $objRates->next() )
+		while ($objRates->next())
 		{
 			if ($this->useTaxRate($objRates, $fltPrice, $arrAddresses))
 			{
 				$arrTaxRate = deserialize($objRates->rate);
 
-				// final price * (1 + (tax / 100)
+				// Final price * (1 + (tax / 100)
 				if (strlen($arrTaxRate['unit']))
 				{
 					$fltTax = ($fltPrice * (1 + (floatval($arrTaxRate['value']) / 100))) - $fltPrice;
 				}
+
 				// Full amount
 				else
 				{
@@ -333,7 +369,9 @@ class Isotope extends Controller
 				);
 
 				if ($objRates->stop)
+				{
 					break;
+				}
 			}
 		}
 
@@ -341,10 +379,19 @@ class Isotope extends Controller
 	}
 
 
+	/**
+	 * Determine whether to use the tax rate or not
+	 * @param object
+	 * @param float
+	 * @param array
+	 * @return boolean
+	 */
 	public function useTaxRate($objRate, $fltPrice, $arrAddresses)
 	{
 		if ($objRate->config > 0 && $objRate->config != $this->Config->id)
+		{
 			return false;
+		}
 
 		$objRate->address = deserialize($objRate->address);
 
@@ -357,50 +404,68 @@ class Isotope extends Controller
 				$varValue = $this->$callback[0]->$callback[1]($objRate, $fltPrice, $arrAddresses);
 
 				if ($varValue !== true)
+				{
 					return false;
+				}
 			}
 		}
 
 		if (is_array($objRate->address) && count($objRate->address))
 		{
-			foreach( $arrAddresses as $name => $arrAddress )
+			foreach ($arrAddresses as $name => $arrAddress)
 			{
 				if (!in_array($name, $objRate->address))
+				{
 					continue;
+				}
 
 				if (strlen($objRate->country) && $objRate->country != $arrAddress['country'])
+				{
 					return false;
+				}
 
 				if (strlen($objRate->subdivision) && $objRate->subdivision != $arrAddress['subdivision'])
+				{
 					return false;
+				}
 
 				$arrPostal = deserialize($objRate->postal);
+
 				if (is_array($arrPostal) && count($arrPostal) && strlen($arrPostal[0]))
 				{
 					if (strlen($arrPostal[1]))
 					{
 						if ($arrPostal[0] > $arrAddress['postal'] || $arrPostal[1] < $arrAddress['postal'])
+						{
 							return false;
+						}
 					}
 					else
 					{
 						if ($arrPostal[0] != $arrAddress['postal'])
+						{
 							return false;
+						}
 					}
 				}
 
 				$arrPrice = deserialize($objRate->amount);
+
 				if (is_array($arrPrice) && count($arrPrice) && strlen($arrPrice[0]))
 				{
 					if (strlen($arrPrice[1]))
 					{
 						if ($arrPrice[0] > $fltPrice || $arrPrice[1] < $fltPrice)
+						{
 							return false;
+						}
 					}
 					else
 					{
 						if ($arrPrice[0] != $fltPrice)
+						{
 							return false;
+						}
 					}
 				}
 			}
@@ -411,44 +476,45 @@ class Isotope extends Controller
 
 
 	/**
-	 * Format given price according to store config settings.
-	 *
-	 * @access public
-	 * @param float $fltPrice
+	 * Format given price according to store config settings
+	 * @param float
 	 * @return float
 	 */
 	public function formatPrice($fltPrice)
 	{
 		// If price or override price is a string
 		if (!is_numeric($fltPrice))
+		{
 			return $fltPrice;
+		}
 
 		$arrFormat = $GLOBALS['ISO_NUM'][$this->Config->currencyFormat];
 
 		if (!is_array($arrFormat) || !count($arrFormat) == 3)
+		{
 			return $fltPrice;
+		}
 
 		return number_format($fltPrice, $arrFormat[0], $arrFormat[1], $arrFormat[2]);
 	}
 
 
 	/**
-	 * Format given price according to store config settings, including currency representation.
-	 *
-	 * @access public
-	 * @param float $fltPrice
-	 * @param bool $blnHtml. (default: false)
-	 * @param string $strCurrencyCode (default: null)
+	 * Format given price according to store config settings, including currency representation
+	 * @param float
+	 * @param boolean
+	 * @param string
 	 * @return string
 	 */
-	public function formatPriceWithCurrency($fltPrice, $blnHtml=true, $strCurrencyCode = null)
+	public function formatPriceWithCurrency($fltPrice, $blnHtml=true, $strCurrencyCode=null)
 	{
 		// If price or override price is a string
 		if (!is_numeric($fltPrice))
+		{
 			return $fltPrice;
+		}
 
 		$strCurrency = ($strCurrencyCode != '' ? $strCurrencyCode : $this->Config->currency);
-
 		$strPrice = $this->formatPrice($fltPrice);
 
 		if ($this->Config->currencySymbol && $GLOBALS['ISO_LANG']['CUR_SYMBOL'][$strCurrency] != '')
@@ -470,19 +536,24 @@ class Isotope extends Controller
 
 
 	/**
+	 * Get the address details and return it as array
 	 * @todo clean up all getAddress stuff...
+	 * @param string
+	 * @return array
 	 */
 	public function getAddress($strStep = 'billing')
 	{
-		if($strStep=='shipping' && !FE_USER_LOGGED_IN && $_SESSION['FORM_DATA']['shipping_address']==-1)
+		if ($strStep == 'shipping' && !FE_USER_LOGGED_IN && $_SESSION['FORM_DATA']['shipping_address'] == -1)
 		{
 			$strStep = 'billing';
 		}
 
 		if ($_SESSION['FORM_DATA'][$strStep.'_address'] && !isset($_SESSION['FORM_DATA']['billing_address']))
+		{
 			return false;
+		}
 
-		$intAddressId = $_SESSION['FORM_DATA'][$strStep.'_address'];
+		$intAddressId = $_SESSION['FORM_DATA'][$strStep . '_address'];
 
 		// Take billing address
 		if ($intAddressId == -1)
@@ -515,11 +586,10 @@ class Isotope extends Controller
 		}
 		else
 		{
-			$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE id=?")
-												->limit(1)
-												->execute($intAddressId);
+			$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE id=?")->limit(1)->execute($intAddressId);
 
-			if($objAddress->numRows < 1)
+			// Return if no address was found
+			if ($objAddress->numRows < 1)
 			{
 				return $GLOBALS['TL_LANG']['MSC']['ERR']['specifyBillingAddress'];
 			}
@@ -535,15 +605,16 @@ class Isotope extends Controller
 
 	/**
 	 * Generate an address string
-	 *
-	 * @access protected
-	 * @param array $arrAddress
+	 * @param array
+	 * @param array
 	 * @return string
 	 */
 	public function generateAddressString($arrAddress, $arrFields=null)
 	{
 		if (!is_array($arrAddress) || !count($arrAddress))
+		{
 			return $arrAddress;
+		}
 
 		if (!is_array($GLOBALS['ISO_ADR']))
 		{
@@ -561,10 +632,13 @@ class Isotope extends Controller
 			$arrAddress['country'] = $this->Config->country;
 		}
 
-		$arrSearch = $arrReplace = array();
-		foreach( $arrFields as $arrField )
+		$arrSearch = array();
+		$arrReplace = array();
+
+		foreach ($arrFields as $arrField)
 		{
 			$strField = $arrField['value'];
+
 			if ($strField == 'subdivision' && strlen($arrAddress['subdivision']))
 			{
 				if (!is_array($GLOBALS['TL_LANG']['DIV']))
@@ -579,7 +653,7 @@ class Isotope extends Controller
 				$arrReplace[] = $subdivion;
 			}
 
-			$arrSearch[] = '{'.$strField.'}';
+			$arrSearch[] = '{' . $strField . '}';
 			$arrReplace[] = $this->formatValue('tl_iso_addresses', $strField, $arrAddress[$strField]);
 		}
 
@@ -601,25 +675,28 @@ class Isotope extends Controller
 
 		// Remove line break at beginning of address
 		if (strpos($strAddress, '<br />') === 0)
+		{
 			$strAddress = substr($strAddress, 6);
+		}
 
 		// Remove line break at end of address
 		if (substr($strAddress, -6) == '<br />')
+		{
 			$strAddress = substr($strAddress, 0, -6);
+		}
 
 		return $strAddress;
 	}
 
 
 	/**
-	 * Send an email using the isotope e-mail templates.
-	 *
-	 * @access public
-	 * @param int $intId
-	 * @param string $strRecipient
-	 * @param string $strLanguage
-	 * @param array $arrData
-	 * @return void
+	 * Send an email using the isotope e-mail templates
+	 * @param integer
+	 * @param string
+	 * @param string
+	 * @param array
+	 * @param string
+	 * @param object
 	 */
 	public function sendMail($intId, $strRecipient, $strLanguage, $arrData, $strReplyTo='', $objCollection=null)
 	{
@@ -643,17 +720,22 @@ class Isotope extends Controller
 
 	/**
 	 * Update ConditionalSelect to include the product ID in conditionField
+	 * @param string
+	 * @param array
+	 * @param object
+	 * @return array
 	 */
 	public function mergeConditionalOptionData($strField, $arrData, &$objProduct=null)
 	{
-		$arrData['eval']['conditionField'] = $arrData['attributes']['conditionField'] . (is_object($objProduct) ? '_'.$objProduct->formSubmit : '');
-
+		$arrData['eval']['conditionField'] = $arrData['attributes']['conditionField'] . (is_object($objProduct) ? '_' . $objProduct->formSubmit : '');
 		return $arrData;
 	}
 
 
 	/**
-	 * Callback for isoButton Hook.
+	 * Callback for isoButton Hook
+	 * @param array
+	 * @return array
 	 */
 	public function defaultButtons($arrButtons)
 	{
@@ -665,7 +747,8 @@ class Isotope extends Controller
 
 
 	/**
-	 * Intermediate-Function to allow DCA class to be loaded.
+	 * Intermediate-Function to allow DCA class to be loaded
+	 * @param string
 	 */
 	public function loadProductsDataContainer($strTable)
 	{
@@ -683,20 +766,25 @@ class Isotope extends Controller
 
 
 	/**
-	 * Standardize and calculate the total of multiple weights.
+	 * Standardize and calculate the total of multiple weights
 	 *
 	 * It's probably faster in theory to convert only the total to the final unit, and not each product weight.
 	 * However, we might loose precision, not sure about that.
 	 * Based on formulas found at http://jumk.de/calc/gewicht.shtml
+	 * @param array
+	 * @param string
+	 * @return mixed
 	 */
 	public function calculateWeight($arrWeights, $strUnit)
 	{
 		if (!is_array($arrWeights) || !count($arrWeights))
+		{
 			return 0;
+		}
 
 		$fltWeight = 0;
 
-		foreach( $arrWeights as $weight )
+		foreach ($arrWeights as $weight)
 		{
 			if (is_array($weight) && $weight['value'] > 0 && strlen($weight['unit']))
 			{
@@ -709,12 +797,17 @@ class Isotope extends Controller
 
 
 	/**
-	 * Convert weight units.
+	 * Convert weight units
 	 * Supported source/target units: mg, g, kg, t, ct, oz, lb, st, grain
+	 * @param float
+	 * @param string
+	 * @param string
+	 * @return mixed
+	 * @throws Exception
 	 */
 	public function convertWeight($fltWeight, $strSourceUnit, $strTargetUnit)
 	{
-		switch( $strSourceUnit )
+		switch ($strSourceUnit)
 		{
 			case 'mg':
 				return $this->convertWeight(($fltWeight / 1000000), 'kg', $strTargetUnit);
@@ -723,7 +816,7 @@ class Isotope extends Controller
 				return $this->convertWeight(($fltWeight / 1000), 'kg', $strTargetUnit);
 
 			case 'kg':
-				switch( $strTargetUnit )
+				switch ($strTargetUnit)
 				{
 					case 'mg':
 						return $fltWeight * 1000000;
@@ -780,9 +873,16 @@ class Isotope extends Controller
 	}
 
 
+	/**
+	 * Validate a custom regular expression
+	 * @param string
+	 * @param mixed
+	 * @param object
+	 * @return boolean
+	 */
 	public function validateRegexp($strRegexp, $varValue, Widget $objWidget)
 	{
-		switch( $strRegexp )
+		switch ($strRegexp)
 		{
 			case 'price':
 				if (!preg_match('/^[\d \.-]*$/', $varValue))
@@ -793,7 +893,7 @@ class Isotope extends Controller
 				break;
 
 			case 'discount':
-				if(!preg_match('/^[-+]\d+(\.\d{1,2})?%?$/', $varValue))
+				if (!preg_match('/^[-+]\d+(\.\d{1,2})?%?$/', $varValue))
 				{
 					$objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR']['discount'], $objWidget->label));
 				}
@@ -801,7 +901,7 @@ class Isotope extends Controller
 				break;
 
 			case 'surcharge':
-				if(!preg_match('/^-?\d+(\.\d{1,2})?%?$/', $varValue))
+				if (!preg_match('/^-?\d+(\.\d{1,2})?%?$/', $varValue))
 				{
 					$objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR']['surcharge'], $objWidget->label));
 				}
@@ -815,17 +915,21 @@ class Isotope extends Controller
 
 	/**
 	 * Translate a value using the tl_iso_label table
-	 * @param  mixed
+	 * @param mixed
+	 * @param boolean
 	 * @return mixed
 	 */
 	public function translate($label, $language=false)
 	{
 		if (!in_array('isotope_multilingual', $this->Config->getActiveModules()))
+		{
 			return $label;
+		}
 
+		// Recursively translate label array
 		if (is_array($label))
 		{
-			foreach( $label as $k => $v )
+			foreach ($label as $k => $v)
 			{
 				$label[$k] = $this->translate($v, $language);
 			}
@@ -845,7 +949,7 @@ class Isotope extends Controller
 			$GLOBALS['ISO_LANG']['TBL'][$language] = array();
 			$objLabels = $this->Database->execute("SELECT * FROM tl_iso_labels WHERE language='$language'");
 
-			while( $objLabels->next() )
+			while ($objLabels->next())
 			{
 				$GLOBALS['ISO_LANG']['TBL'][$language][$this->String->decodeEntities($objLabels->label)] = $objLabels->replacement;
 			}
@@ -858,117 +962,113 @@ class Isotope extends Controller
 
 	/**
 	 * Format value (based on DC_Table::show(), Contao 2.9.0)
-	 * @param  mixed
-	 * @param  string
-	 * @param  string
+	 * @param string
+	 * @param string
+	 * @param mixed
 	 * @return string
 	 */
-	public function formatValue($table, $field, $value)
+	public function formatValue($strTable, $strField, $varValue)
 	{
-		$value = deserialize($value);
+		$varValue = deserialize($varValue);
 
-		if (!is_array($GLOBALS['TL_DCA'][$table]))
+		if (!is_array($GLOBALS['TL_DCA'][$strTable]))
 		{
-			$this->loadDataContainer($table);
-			$this->loadLanguageFile($table);
+			$this->loadDataContainer($strTable);
+			$this->loadLanguageFile($strTable);
 		}
 
 		// Get field value
-		if (strlen($GLOBALS['TL_DCA'][$table]['fields'][$field]['foreignKey']))
+		if (strlen($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['foreignKey']))
 		{
-			$temp = array();
-			$chunks = explode('.', $GLOBALS['TL_DCA'][$table]['fields'][$field]['foreignKey']);
-
-			$objKey = $this->Database->execute("SELECT " . $chunks[1] . " AS value FROM " . $chunks[0] . " WHERE id IN (" . implode(',', array_map('intval', (array)$value)) . ")");
+			$chunks = explode('.', $GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['foreignKey']);
+			$objKey = $this->Database->execute("SELECT " . $chunks[1] . " AS value FROM " . $chunks[0] . " WHERE id IN (" . implode(',', array_map('intval', (array)$varValue)) . ")");
 
 			return implode(', ', $objKey->fetchEach('value'));
 		}
 
-		elseif (is_array($value))
+		elseif (is_array($varValue))
 		{
-			foreach ($value as $kk=>$vv)
+			foreach ($varValue as $kk => $vv)
 			{
-				$value[$kk] = $this->formatValue($table, $field, $vv);
+				$varValue[$kk] = $this->formatValue($strTable, $strField, $vv);
 			}
 
-			return implode(', ', $value);
+			return implode(', ', $varValue);
 		}
 
-		elseif ($GLOBALS['TL_DCA'][$table]['fields'][$field]['eval']['rgxp'] == 'date')
+		elseif ($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['eval']['rgxp'] == 'date')
 		{
-			return $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $value);
+			return $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $varValue);
 		}
 
-		elseif ($GLOBALS['TL_DCA'][$table]['fields'][$field]['eval']['rgxp'] == 'time')
+		elseif ($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['eval']['rgxp'] == 'time')
 		{
-			return $this->parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $value);
+			return $this->parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $varValue);
 		}
 
-		elseif ($GLOBALS['TL_DCA'][$table]['fields'][$field]['eval']['rgxp'] == 'datim' || in_array($GLOBALS['TL_DCA'][$table]['fields'][$field]['flag'], array(5, 6, 7, 8, 9, 10)) || $field == 'tstamp')
+		elseif ($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['eval']['rgxp'] == 'datim' || in_array($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['flag'], array(5, 6, 7, 8, 9, 10)) || $strField == 'tstamp')
 		{
-			return $this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $value);
+			return $this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $varValue);
 		}
 
-		elseif ($GLOBALS['TL_DCA'][$table]['fields'][$field]['inputType'] == 'checkbox' && !$GLOBALS['TL_DCA'][$table]['fields'][$field]['eval']['multiple'])
+		elseif ($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['inputType'] == 'checkbox' && !$GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['eval']['multiple'])
 		{
-			return strlen($value) ? $GLOBALS['TL_LANG']['MSC']['yes'] : $GLOBALS['TL_LANG']['MSC']['no'];
+			return strlen($varValue) ? $GLOBALS['TL_LANG']['MSC']['yes'] : $GLOBALS['TL_LANG']['MSC']['no'];
 		}
 
-		elseif ($GLOBALS['TL_DCA'][$table]['fields'][$field]['inputType'] == 'textarea' && ($GLOBALS['TL_DCA'][$table]['fields'][$field]['eval']['allowHtml'] || $GLOBALS['TL_DCA'][$table]['fields'][$field]['eval']['preserveTags']))
+		elseif ($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['inputType'] == 'textarea' && ($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['eval']['allowHtml'] || $GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['eval']['preserveTags']))
 		{
-			return specialchars($value);
+			return specialchars($varValue);
 		}
 
-		elseif (is_array($GLOBALS['TL_DCA'][$table]['fields'][$field]['reference']))
+		elseif (is_array($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['reference']))
 		{
-			return isset($GLOBALS['TL_DCA'][$table]['fields'][$field]['reference'][$value]) ? ((is_array($GLOBALS['TL_DCA'][$table]['fields'][$field]['reference'][$value])) ? $GLOBALS['TL_DCA'][$table]['fields'][$field]['reference'][$value][0] : $GLOBALS['TL_DCA'][$table]['fields'][$field]['reference'][$value]) : $value;
+			return isset($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['reference'][$varValue]) ? ((is_array($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['reference'][$varValue])) ? $GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['reference'][$varValue][0] : $GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['reference'][$varValue]) : $varValue;
 		}
 
-		return $value;
+		return $varValue;
 	}
 
 
 	/**
 	 * Format label (based on DC_Table::show(), Contao 2.9.0)
-	 * @param  mixed
-	 * @param  string
-	 * @param  string
+	 * @param string
+	 * @param string
 	 * @return string
 	 */
-	public function formatLabel($table, $field)
+	public function formatLabel($strTable, $strField)
 	{
-		if (!is_array($GLOBALS['TL_DCA'][$table]))
+		if (!is_array($GLOBALS['TL_DCA'][$strTable]))
 		{
-			$this->loadDataContainer($table);
-			$this->loadLanguageFile($table);
+			$this->loadDataContainer($strTable);
+			$this->loadLanguageFile($strTable);
 		}
 
 		// Label
-		if (count($GLOBALS['TL_DCA'][$table]['fields'][$field]['label']))
+		if (count($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['label']))
 		{
-			$label = is_array($GLOBALS['TL_DCA'][$table]['fields'][$field]['label']) ? $GLOBALS['TL_DCA'][$table]['fields'][$field]['label'][0] : $GLOBALS['TL_DCA'][$table]['fields'][$field]['label'];
+			$strLabel = is_array($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['label']) ? $GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['label'][0] : $GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['label'];
 		}
 
 		else
 		{
-			$label = is_array($GLOBALS['TL_LANG']['MSC'][$field]) ? $GLOBALS['TL_LANG']['MSC'][$field][0] : $GLOBALS['TL_LANG']['MSC'][$field];
+			$strLabel = is_array($GLOBALS['TL_LANG']['MSC'][$strField]) ? $GLOBALS['TL_LANG']['MSC'][$strField][0] : $GLOBALS['TL_LANG']['MSC'][$strField];
 		}
 
-		if (!strlen($label))
+		if (!strlen($strLabel))
 		{
-			$label = $field;
+			$strLabel = $strField;
 		}
 
-		return $label;
+		return $strLabel;
 	}
 
 
 	/**
 	 * Merge media manager data from fallback and translated product data
-	 *
-	 * @param	array	$arrCurrent
-	 * @param	array	$arrParent
-	 * @return	array
+	 * @param array
+	 * @param array
+	 * @return array
 	 */
 	public function mergeMediaData($arrCurrent, $arrParent)
 	{
@@ -987,7 +1087,7 @@ class Isotope extends Controller
 
 			if (is_array($arrCurrent) && count($arrCurrent))
 			{
-				foreach( $arrCurrent as $i => $image )
+				foreach ($arrCurrent as $i => $image)
 				{
 					if (isset($arrTranslate[$image['src']]))
 					{
@@ -1029,9 +1129,8 @@ class Isotope extends Controller
 
 	/**
 	 * Return select statement to load product data including multilingual fields
-	 *
-	 * @deprecated	moved to static function IsotopeProduct::getProductStatement()
-	 * @see			IsotopeProduct::getProductStatement()
+	 * @deprecated Moved to static function IsotopeProduct::getProductStatement()
+	 * @see	IsotopeProduct::getProductStatement()
 	 */
 	public function getProductSelect()
 	{
