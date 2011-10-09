@@ -28,14 +28,19 @@
  */
 
 
+/**
+ * Class IsotopeAutomator
+ * 
+ * Provide methods to run Isotope automated jobs.
+ * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ */
 class IsotopeAutomator extends Controller
 {
 
 	/**
-	 * Remove carts that have not been accessed for a given number of days (depending on store config).
-	 *
-	 * @access public
-	 * @return void
+	 * Remove carts that have not been accessed for a given number of days (depending on store config)
 	 */
 	public function deleteOldCarts()
 	{
@@ -48,7 +53,7 @@ class IsotopeAutomator extends Controller
 		{
 			$objCart = new IsotopeCart();
 
-			foreach( $objCarts->fetchEach('id') as $id )
+			foreach ($objCarts->fetchEach('id') as $id)
 			{
 				if ($objCart->findBy('id', $id))
 				{

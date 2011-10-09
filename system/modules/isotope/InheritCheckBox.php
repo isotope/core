@@ -24,11 +24,19 @@
  * @copyright  Isotope eCommerce Workgroup 2009-2011
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- * @author     Christian de la Haye <service@delahaye.de>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
+/**
+ * Class InheritCheckbox
+ * 
+ * Provide methods to inherit checbkox fields.
+ * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ * @author     Christian de la Haye <service@delahaye.de>
+ */
 class InheritCheckBox extends CheckBox
 {
 
@@ -41,12 +49,13 @@ class InheritCheckBox extends CheckBox
 
 		if (is_array($this->varValue) && count($this->varValue))
 		{
-			foreach( $this->varValue as $field )
+			foreach ($this->varValue as $field)
 			{
 				$GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['eval']['mandatory'] = false;
 			}
 		}
 	}
+
 
 	/**
 	 * Generate the widget and return it as string

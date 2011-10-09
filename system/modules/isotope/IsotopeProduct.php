@@ -24,11 +24,19 @@
  * @copyright  Isotope eCommerce Workgroup 2009-2011
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- * @author     Christian de la Haye <service@delahaye.de>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
+/**
+ * Class IsotopeProduct
+ * 
+ * Provide methods to handle Isotope products.
+ * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ * @author     Christian de la Haye <service@delahaye.de>
+ */
 class IsotopeProduct extends Controller
 {
 
@@ -93,20 +101,20 @@ class IsotopeProduct extends Controller
 	protected $ajaxClass = 'IsotopeProduct';
 
 	/**
-	 * for option widgets, helps determine the encoding type for a form
-	 * @var bool
+	 * For option widgets, helps determine the encoding type for a form
+	 * @var boolean
 	 */
 	protected $hasUpload = false;
 
 	/**
-	 * for option widgets, don't submit if certain validation(s) fail
-	 * @var bool
+	 * For option widgets, don't submit if certain validation(s) fail
+	 * @var boolean
 	 */
 	protected $doNotSubmit = false;
 
 	/**
 	 * Lock products from changes and don't calculate prices
-	 * @var bool
+	 * @var boolean
 	 */
 	protected $blnLocked = false;
 
@@ -119,6 +127,9 @@ class IsotopeProduct extends Controller
 
 	/**
 	 * Construct the object
+	 * @param array
+	 * @param array
+	 * @param boolean
 	 */
 	public function __construct($arrData, $arrOptions=null, $blnLocked=false)
 	{
@@ -156,7 +167,7 @@ class IsotopeProduct extends Controller
 		$this->arrOptions = is_array($arrOptions) ? $arrOptions : array();
 
 		// Allow to customize attributes
-		if(isset($GLOBALS['ISO_HOOKS']['productAttributes']) && is_array($GLOBALS['ISO_HOOKS']['productAttributes']))
+		if (isset($GLOBALS['ISO_HOOKS']['productAttributes']) && is_array($GLOBALS['ISO_HOOKS']['productAttributes']))
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['productAttributes'] as $callback)
 			{
@@ -166,7 +177,7 @@ class IsotopeProduct extends Controller
 		}
 
 		// Remove attributes not in this product type
-		foreach( $this->arrData as $attribute => $value )
+		foreach ($this->arrData as $attribute => $value)
 		{
 			if (!in_array($attribute, $this->arrAttributes) && !in_array($attribute, $this->arrVariantAttributes) && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['legend'] != '')
 			{
@@ -181,7 +192,8 @@ class IsotopeProduct extends Controller
 				// Find all possible variant options
 				$objVariant = clone $this;
 				$objVariants = $this->Database->execute(IsotopeProduct::getSelectStatement() . " WHERE p1.pid={$this->arrData['id']} AND p1.language='' AND p1.published='1'");
-				while( $objVariants->next() )
+
+				while ($objVariants->next())
 				{
 					$objVariant->loadVariantData($objVariants->row(), false);
 
@@ -193,11 +205,11 @@ class IsotopeProduct extends Controller
 						$this->arrVariantOptions['options'][$objVariant->id] = $arrVariantOptions;
 						$this->arrVariantOptions['variants'][$objVariant->id] = $objVariants->row();
 
-						foreach( $arrVariantOptions as $attribute => $value )
+						foreach ($arrVariantOptions as $attribute => $value)
 						{
-							if (!in_array((string)$value, (array)$this->arrVariantOptions['attributes'][$attribute], true))
+							if (!in_array((string) $value, (array) $this->arrVariantOptions['attributes'][$attribute], true))
 							{
-								$this->arrVariantOptions['attributes'][$attribute][] = (string)$value;
+								$this->arrVariantOptions['attributes'][$attribute][] = (string) $value;
 							}
 						}
 					}
@@ -210,8 +222,8 @@ class IsotopeProduct extends Controller
 					{
 						// Add "price_tiers" to variant attributes, so the field is updated through ajax
 						$this->arrVariantAttributes[] = 'price_tiers';
-
 						$time = time();
+
 						$objProduct = $this->Database->execute("SELECT MIN(price) AS low_price, MAX(price) AS high_price
 																FROM tl_iso_price_tiers
 																WHERE pid IN
@@ -222,11 +234,11 @@ class IsotopeProduct extends Controller
 																		SELECT p1.id, p1.pid FROM tl_iso_prices p1 LEFT JOIN tl_iso_products p2 ON p1.pid=p2.id
 																		WHERE
 																			p1.pid IN (" . implode(',', $this->arrVariantOptions['ids']) . ")
-																			AND p1.config_id IN (".(int)$this->Isotope->Config->id.",0)
+																			AND p1.config_id IN (" . (int) $this->Isotope->Config->id . ",0)
 																			AND p1.member_group IN(" . ((FE_USER_LOGGED_IN && count($this->User->groups)) ? (implode(',', $this->User->groups).',') : '') . "0)
 																			AND (p1.start='' OR p1.start<$time)
 																			AND (p1.stop='' OR p1.stop>$time)
-																		ORDER BY p1.config_id DESC, " . ((FE_USER_LOGGED_IN && count($this->User->groups)) ? ('p1.member_group='.implode(' DESC, p1.member_group=', $this->User->groups).' DESC') : 'p1.member_group DESC') . ", p1.start DESC, p1.stop DESC
+																		ORDER BY p1.config_id DESC, " . ((FE_USER_LOGGED_IN && count($this->User->groups)) ? ('p1.member_group=' . implode(' DESC, p1.member_group=', $this->User->groups) . ' DESC') : 'p1.member_group DESC') . ", p1.start DESC, p1.stop DESC
 																	) AS p
 																	GROUP BY pid
 																)
@@ -274,11 +286,12 @@ class IsotopeProduct extends Controller
 
 	/**
 	 * Get a property
+	 * @param string
 	 * @return mixed
 	 */
 	public function __get($strKey)
 	{
-		switch( $strKey)
+		switch ($strKey)
 		{
 			case 'id':
 			case 'pid':
@@ -286,7 +299,7 @@ class IsotopeProduct extends Controller
 				return $this->arrData[$strKey];
 
 			case 'variant_ids':
-				return (array)$this->arrVariantOptions['ids'];
+				return (array) $this->arrVariantOptions['ids'];
 				break;
 
 			case 'formSubmit':
@@ -317,14 +330,20 @@ class IsotopeProduct extends Controller
 
 			case 'available':
 				if ($this->blnLocked)
+				{
 					return true;
+				}
 
 				if (!BE_USER_LOGGED_IN && (!$this->arrData['published'] || ($this->arrData['start'] > 0 && $this->arrData['start'] > time()) || ($this->arrData['stop'] > 0 && $this->arrData['stop'] < time())))
+				{
 					return false;
+				}
 
 				// Check if "advanced price" is available
 				if ($this->arrType['prices'] && (($this->pid > 0 && in_array('price', $this->arrVariantAttributes)) || in_array('price', $this->arrAttributes)) && $this->arrData['price'] === null)
+				{
 					return false;
+				}
 
 				return true;
 				break;
@@ -345,16 +364,18 @@ class IsotopeProduct extends Controller
 						$strClass = $GLOBALS['ISO_GAL'][(strlen($GLOBALS['TL_DCA'][$this->strTable]['fields'][$strKey]['attributes']['gallery']) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$strKey]['attributes']['gallery'] : $this->Isotope->Config->gallery)];
 
 						if (!strlen($strClass) || !$this->classFileExists($strClass))
+						{
 							$strClass = 'IsotopeGallery';
+						}
 
-						$objGallery = new $strClass($this->formSubmit.'_'.$strKey, deserialize($this->arrData[$strKey]));
+						$objGallery = new $strClass($this->formSubmit . '_' . $strKey, deserialize($this->arrData[$strKey]));
 						$objGallery->product_id = ($this->pid ? $this->pid : $this->id);
 						$objGallery->href_reader = $this->href_reader;
 						$this->arrCache[$strKey] = $objGallery;
 					}
 					else
 					{
-						switch( $strKey )
+						switch ($strKey)
 						{
 							case 'formatted_price':
 								$this->arrCache[$strKey] = $this->Isotope->formatPriceWithCurrency($this->price, false);
@@ -385,10 +406,12 @@ class IsotopeProduct extends Controller
 
 	/**
 	 * Set a property
+	 * @param string
+	 * @param mixed
 	 */
 	public function __set($strKey, $varValue)
 	{
-		switch( $strKey )
+		switch ($strKey)
 		{
 			case 'reader_jumpTo':
 				$strUrlKey = $this->arrData['alias'] ? $this->arrData['alias'] : ($this->arrData['pid'] ? $this->arrData['pid'] : $this->arrData['id']);
@@ -397,6 +420,7 @@ class IsotopeProduct extends Controller
 				if ($this->arrData['pid'] > 0)
 				{
 					$arrOptions = array();
+
 					foreach( $this->arrOptions as $k => $v )
 					{
 						$arrOptions[] = $k . '=' . urlencode($v);
@@ -457,13 +481,15 @@ class IsotopeProduct extends Controller
 
 	/**
 	 * Return all downloads for this product
-	 *
 	 * @todo Confirm that files are available
+	 * @return array
 	 */
 	public function getDownloads()
 	{
 		if (!$this->arrType['downloads'])
+		{
 			return array();
+		}
 
 		// Cache downloads for this product
 		if (!is_array($this->arrDownloads))
@@ -477,8 +503,9 @@ class IsotopeProduct extends Controller
 
 	/**
 	 * Return all options, either the raw array or prepared for product listing
-	 *
 	 * @todo I dislike the listing approach, we might find a better solution
+	 * @param boolean
+	 * @return array
 	 */
 	public function getOptions($blnRaw=false)
 	{
@@ -489,12 +516,12 @@ class IsotopeProduct extends Controller
 
 		$arrOptions = array();
 
-		foreach( $this->arrOptions as $field => $value )
+		foreach ($this->arrOptions as $field => $value)
 		{
 			$arrOptions[] = array
 			(
-				'label'		=> $this->Isotope->formatLabel('tl_iso_products', $field),
-				'value'		=> $this->Isotope->formatValue('tl_iso_products', $field, $value),
+				'label'	=> $this->Isotope->formatLabel('tl_iso_products', $field),
+				'value'	=> $this->Isotope->formatValue('tl_iso_products', $field, $value),
 			);
 		}
 
@@ -504,6 +531,7 @@ class IsotopeProduct extends Controller
 
 	/**
 	 * Set options data
+	 * @param array
 	 */
 	public function setOptions(array $arrOptions)
 	{
@@ -512,14 +540,15 @@ class IsotopeProduct extends Controller
 
 
 	/**
-	 * Return all attributes for this product
+	 * Return all attributes for this product as array
+	 * @return array
 	 */
 	public function getAttributes()
 	{
 		$arrData = array();
 		$arrAttributes = array_unique(array_merge($this->arrAttributes, $this->arrVariantAttributes));
 
-		foreach( $arrAttributes as $attribute )
+		foreach ($arrAttributes as $attribute)
 		{
 			$arrData[$attribute] = $this->$attribute;
 		}
@@ -530,13 +559,15 @@ class IsotopeProduct extends Controller
 
 	/**
 	 * Generate a product template
+	 * @param string
+	 * @param object
+	 * @return string
 	 */
 	public function generate($strTemplate, &$objModule)
 	{
 		global $objPage;
 
 		$this->formSubmit = (($objModule instanceof ContentElement) ? 'cte' : 'fmd') . $objModule->id . '_product_' . ($this->pid ? $this->pid : $this->id);
-
 		$this->validateVariant();
 
 		$objTemplate = new IsotopeTemplate($strTemplate);
@@ -544,7 +575,7 @@ class IsotopeProduct extends Controller
 		$arrAjaxOptions = array();
 		$arrAttributes = $this->getAttributes();
 
-		foreach( $arrAttributes as $attribute => $varValue )
+		foreach ($arrAttributes as $attribute => $varValue)
 		{
 			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['customer_defined'] || $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
 			{
@@ -562,8 +593,9 @@ class IsotopeProduct extends Controller
 			}
 		}
 
-		// Buttons
 		$arrButtons = array();
+
+		// Buttons
 		if (isset($GLOBALS['ISO_HOOKS']['buttons']) && is_array($GLOBALS['ISO_HOOKS']['buttons']))
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['buttons'] as $callback)
@@ -577,7 +609,7 @@ class IsotopeProduct extends Controller
 
 		if ($this->Input->post('FORM_SUBMIT') == $this->formSubmit && !$this->doNotSubmit)
 		{
-			foreach( $arrButtons as $button => $data )
+			foreach ($arrButtons as $button => $data)
 			{
 				if (strlen($this->Input->post($button)))
 				{
@@ -595,16 +627,12 @@ class IsotopeProduct extends Controller
 		$objTemplate->quantityLabel = $GLOBALS['TL_LANG']['MSC']['quantity'];
 		$objTemplate->useQuantity = $objModule->iso_use_quantity;
 		$objTemplate->quantity_requested = $this->quantity_requested;
-
 		$objTemplate->raw = $this->arrData;
 		$objTemplate->raw_options = $this->arrOptions;
 		$objTemplate->href_reader = $this->href_reader;
-
 		$objTemplate->label_detail = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
-
 		$objTemplate->options = $arrProductOptions;
 		$objTemplate->hasOptions = count($arrProductOptions) ? true : false;
-
 		$objTemplate->enctype = $this->hasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
 		$objTemplate->formId = $this->formSubmit;
 		$objTemplate->action = ampersand($this->Environment->request, true);
@@ -630,24 +658,25 @@ class IsotopeProduct extends Controller
 
 	/**
 	 * Generate the product data on ajax update
+	 * @param object
+	 * @return array
 	 */
 	public function generateAjax(&$objModule)
 	{
 		$this->formSubmit = (($objModule instanceof ContentElement) ? 'cte' : 'fmd') . $objModule->id . '_product_' . ($this->pid ? $this->pid : $this->id);
-
 		$this->validateVariant();
 
 		$arrOptions = array();
 		$arrAttributes = $this->getAttributes();
 
-		foreach( $arrAttributes as $attribute => $varValue )
+		foreach ($arrAttributes as $attribute => $varValue)
 		{
 			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
 			{
 				$arrOptions[] = array
 				(
-					'id'		=> ('ctrl_' . $attribute . '_' . $this->formSubmit),
-					'html'		=> $this->generateProductOptionWidget($attribute, true),
+					'id' => ('ctrl_' . $attribute . '_' . $this->formSubmit),
+					'html' => $this->generateProductOptionWidget($attribute, true),
 				);
 			}
 			elseif (in_array($attribute, $this->arrVariantAttributes))
@@ -656,27 +685,27 @@ class IsotopeProduct extends Controller
 				{
 					$objGallery = $this->$attribute;
 
-					foreach( (array)$this->Isotope->Config->imageSizes as $size )
+					foreach ((array) $this->Isotope->Config->imageSizes as $size)
 					{
 						$arrOptions[] = array
 						(
-							'id'		=> ($this->formSubmit . '_' . $attribute . '_' . $size['name'] . 'size'),
-							'html'		=> $objGallery->generateMainImage($size['name']),
+							'id' => ($this->formSubmit . '_' . $attribute . '_' . $size['name'] . 'size'),
+							'html' => $objGallery->generateMainImage($size['name']),
 						);
 					}
 
 					$arrOptions[] = array
 					(
-						'id'		=> ($this->formSubmit . '_' . $attribute . '_gallery'),
-						'html'		=> $objGallery->generateGallery(),
+						'id' => ($this->formSubmit . '_' . $attribute . '_gallery'),
+						'html' => $objGallery->generateGallery(),
 					);
 				}
 				else
 				{
 					$arrOptions[] = array
 					(
-						'id'		=> ($this->formSubmit . '_' . $attribute),
-						'html'		=> $this->generateAttribute($attribute, $varValue),
+						'id' => ($this->formSubmit . '_' . $attribute),
+						'html' => $this->generateAttribute($attribute, $varValue),
 					);
 				}
 			}
@@ -696,6 +725,12 @@ class IsotopeProduct extends Controller
 	}
 
 
+	/**
+	 * Generate an atrtibute and return it as HTML string
+	 * @param string
+	 * @param mixed
+	 * @param string
+	 */
 	protected function generateAttribute($attribute, $varValue)
 	{
 		$arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute];
@@ -746,7 +781,7 @@ class IsotopeProduct extends Controller
   <thead>
     <tr>';
 
-			foreach( array_keys($varValue[0]) as $i => $name )
+			foreach (array_keys($varValue[0]) as $i => $name)
 			{
 				if ($arrFormat[$name]['doNotShow'])
 				{
@@ -764,13 +799,14 @@ class IsotopeProduct extends Controller
   </thead>
   <tbody>';
 
-			foreach( $varValue as $r => $row )
+			foreach ($varValue as $r => $row)
 			{
 				$strBuffer .= '
     <tr class="row_'.$r.($r==0 ? ' row_first' : '').($r==$last ? ' row_last' : '').' '.($r%2 ? 'odd' : 'even').'">';
 
     			$c = -1;
-    			foreach( $row as $name => $value )
+
+    			foreach ($row as $name => $value)
     			{
     				if ($arrFormat[$name]['doNotShow'])
     				{
@@ -846,7 +882,10 @@ class IsotopeProduct extends Controller
 
 
 	/**
-	 * Return a widget object based on a product attribute's properties.
+	 * Return a widget object based on a product attribute's properties
+	 * @param string
+	 * @param boolean
+	 * @return object
 	 */
 	protected function generateProductOptionWidget($strField, $blnAjax=false)
 	{
@@ -884,13 +923,13 @@ class IsotopeProduct extends Controller
 			$arrField = $this->prepareForWidget($arrData, $strField, $arrData['default']);
 
 			// Unset if no variant has this option
-			foreach( $arrField['options'] as $k => $option )
+			foreach ($arrField['options'] as $k => $option)
 			{
 				// Keep groups and blankOptionLabels
 				if (!$option['group'] && $option['value'] != '')
 				{
 					// Unset option if no attribute has this option at all (in any enabled variant)
-					if (!in_array((string)$option['value'], (array)$this->arrVariantOptions['attributes'][$strField], true))
+					if (!in_array((string) $option['value'], (array) $this->arrVariantOptions['attributes'][$strField], true))
 					{
 						unset($arrField['options'][$k]);
 					}
@@ -900,7 +939,7 @@ class IsotopeProduct extends Controller
 					{
 						$blnValid = false;
 
-						foreach( (array)$this->arrVariantOptions['options'] as $arrVariant )
+						foreach ((array) $this->arrVariantOptions['options'] as $arrVariant)
 						{
 							if ($arrVariant[$strField] == $option['value'] && count($this->arrVariantOptions['current']) == count(array_intersect_assoc($this->arrVariantOptions['current'], $arrVariant)))
 							{
@@ -935,7 +974,7 @@ class IsotopeProduct extends Controller
 		{
 			if (is_array($GLOBALS['ISO_ATTR'][$arrData['inputType']]['callback']) && count($GLOBALS['ISO_ATTR'][$arrData['inputType']]['callback']))
 			{
-				foreach( $GLOBALS['ISO_ATTR'][$arrData['inputType']]['callback'] as $callback )
+				foreach ($GLOBALS['ISO_ATTR'][$arrData['inputType']]['callback'] as $callback)
 				{
 					$this->import($callback[0]);
 					$arrData = $this->{$callback[0]}->{$callback[1]}($strField, $arrData, $this);
@@ -947,9 +986,11 @@ class IsotopeProduct extends Controller
 
 		// Translate widget
 		$arrField['label'] = $this->Isotope->translate($arrField['label']);
+
+		// Translate widget options
 		if (is_array($arrField['options']))
 		{
-			foreach( $arrField['options'] as $k => $v )
+			foreach ($arrField['options'] as $k => $v)
 			{
 				if ($v['label'])
 				{
@@ -957,7 +998,7 @@ class IsotopeProduct extends Controller
 				}
 				elseif (is_array($v))
 				{
-					foreach( $v as $kk => $vv )
+					foreach ($v as $kk => $vv)
 					{
 						if ($k['label'])
 						{
@@ -1007,7 +1048,7 @@ class IsotopeProduct extends Controller
 							$varValue = $this->$callback[0]->$callback[1]($varValue, $this);
 						}
 					}
-					catch( Exception $e )
+					catch (Exception $e)
 					{
 						$objWidget->addError($e->getMessage());
 						$this->doNotSubmit = true;
@@ -1037,7 +1078,9 @@ class IsotopeProduct extends Controller
 	protected function findPrice()
 	{
 		if (!$this->arrType['prices'])
+		{
 			return;
+		}
 
 		$time = time();
 
@@ -1050,12 +1093,12 @@ class IsotopeProduct extends Controller
 														SELECT id
 														FROM tl_iso_prices
 														WHERE
-															config_id IN (".(int)$this->Isotope->Config->id.",0)
+															config_id IN (". (int) $this->Isotope->Config->id . ",0)
 															AND member_group IN(" . ((FE_USER_LOGGED_IN && count($this->User->groups)) ? (implode(',', $this->User->groups) . ',') : '') . "0)
 															AND (start='' OR start<$time)
 															AND (stop='' OR stop>$time)
 															AND pid={$this->id}
-														ORDER BY config_id DESC, " . ((FE_USER_LOGGED_IN && count($this->User->groups)) ? ('member_group='.implode(' DESC, member_group=', $this->User->groups).' DESC') : 'member_group DESC') . ", start DESC, stop DESC
+														ORDER BY config_id DESC, " . ((FE_USER_LOGGED_IN && count($this->User->groups)) ? ('member_group=' . implode(' DESC, member_group=', $this->User->groups) . ' DESC') : 'member_group DESC') . ", start DESC, stop DESC
 														LIMIT 1
 													)
 												ORDER BY min DESC");
@@ -1063,7 +1106,7 @@ class IsotopeProduct extends Controller
 		$this->arrData['price'] = 0;
 		$this->arrCache['price_tiers'] = $objPrices->fetchAllAssoc();
 
-		foreach( $this->arrCache['price_tiers'] as $price )
+		foreach ($this->arrCache['price_tiers'] as $price)
 		{
 			if ($price['min'] <= $this->quantity_requested)
 			{
@@ -1081,11 +1124,13 @@ class IsotopeProduct extends Controller
 	protected function validateVariant()
 	{
 		if (!$this->arrType['variants'])
+		{
 			return;
+		}
 
 		$arrOptions = array();
 
-		foreach( $this->arrAttributes as $attribute )
+		foreach ($this->arrAttributes as $attribute)
 		{
 			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
 			{
@@ -1097,18 +1142,20 @@ class IsotopeProduct extends Controller
 				{
 					$arrOptions[$attribute] = $this->Input->get($attribute);
 				}
-				elseif (count((array)$this->arrVariantOptions['attributes'][$attribute]) == 1)
+				elseif (count((array) $this->arrVariantOptions['attributes'][$attribute]) == 1)
 				{
 					$arrOptions[$attribute] = $this->arrVariantOptions['attributes'][$attribute][0];
 				}
 			}
 		}
 
-		if (($intOptions = count($arrOptions)) > 0)
+		$intOptions = count($arrOptions);
+
+		if ($intOptions > 0)
 		{
 			$intVariant = false;
 
-			foreach( (array)$this->arrVariantOptions['options'] as $id => $arrVariant )
+			foreach ((array) $this->arrVariantOptions['options'] as $id => $arrVariant)
 			{
 				if ($intOptions == count($arrVariant) && $intOptions == count(array_intersect_assoc($arrOptions, $arrVariant)))
 				{
@@ -1123,7 +1170,6 @@ class IsotopeProduct extends Controller
 					}
 				}
 			}
-
 
 			// Variant not found
 			if ($intVariant === false || !is_array($this->arrVariantOptions['variants'][$intVariant]))
@@ -1143,6 +1189,11 @@ class IsotopeProduct extends Controller
 	}
 
 
+	/**
+	 * Load variant data basing on provided data
+	 * @param array
+	 * @param array
+	 */
 	public function loadVariantData($arrData, $arrInherit=false)
 	{
 		$arrInherit = deserialize($arrData['inherit'], true);
@@ -1150,10 +1201,12 @@ class IsotopeProduct extends Controller
 		$this->arrData['id'] = $arrData['id'];
 		$this->arrData['pid'] = $arrData['pid'];
 
-		foreach( $this->arrVariantAttributes as $attribute )
+		foreach ($this->arrVariantAttributes as $attribute)
 		{
 			if (in_array($attribute, $arrInherit) || ($this->blnLocked && in_array($attribute, array('sku', 'name', 'price'))))
+			{
 				continue;
+			}
 
 			$this->arrData[$attribute] = $arrData[$attribute];
 			unset($this->arrCache[$attribute]);
@@ -1175,9 +1228,7 @@ class IsotopeProduct extends Controller
 
 	/**
 	 * Return select statement to load product data including multilingual fields
-	 *
-	 * @param	void
-	 * @return	string
+	 * @return string
 	 */
 	public static function getSelectStatement()
 	{
@@ -1186,10 +1237,9 @@ class IsotopeProduct extends Controller
 		if ($strSelect == '')
 		{
 			global $objPage;
-
 			$arrSelect = array("'".$GLOBALS['TL_LANGUAGE']."' AS language");
 
-			foreach( $GLOBALS['ISO_CONFIG']['multilingual'] as $attribute )
+			foreach ($GLOBALS['ISO_CONFIG']['multilingual'] as $attribute)
 			{
 				$arrSelect[] = "IFNULL(p2.$attribute, p1.$attribute) AS {$attribute}";
 			}
@@ -1202,7 +1252,7 @@ SELECT p1.*,
 FROM tl_iso_products p1
 INNER JOIN tl_iso_producttypes t ON t.id=p1.type
 LEFT OUTER JOIN tl_iso_products p2 ON p1.id=p2.pid AND p2.language='" . $GLOBALS['TL_LANGUAGE'] . "'
-LEFT OUTER JOIN tl_iso_product_categories c ON p1.id=c.pid AND c.page_id=" . (int)$objPage->id;
+LEFT OUTER JOIN tl_iso_product_categories c ON p1.id=c.pid AND c.page_id=" . (int) $objPage->id;
 		}
 
 		return $strSelect;

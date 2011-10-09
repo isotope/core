@@ -24,12 +24,20 @@
  * @copyright  Isotope eCommerce Workgroup 2009-2011
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- * @author     Christian de la Haye <service@delahaye.de>
- * @author     Yanick Witschi <yanick.witschi@certo-net.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
+/**
+ * Class IsotopeFrontend
+ * 
+ * Provide methods to handle Isotope front end components.
+ * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ * @author     Christian de la Haye <service@delahaye.de>
+ * @author     Yanick Witschi <yanick.witschi@certo-net.ch>
+ */
 class IsotopeFrontend extends Frontend
 {
 
@@ -40,20 +48,20 @@ class IsotopeFrontend extends Frontend
 	protected $Isotope;
 
 
+	/**
+	 * Import the Isotope object
+	 */
 	public function __construct()
 	{
 		parent::__construct();
-
 		$this->import('Isotope');
 	}
 
 
 	/**
 	 * Callback for add_to_cart button
-	 *
-	 * @access	public
-	 * @param	object
-	 * @return	void
+	 * @param object
+	 * @param object
 	 */
 	public function addToCart($objProduct, $objModule=null)
 	{
@@ -68,10 +76,8 @@ class IsotopeFrontend extends Frontend
 
 
 	/**
-	 * Replaces Isotope-specific InsertTags in Frontend.
-	 *
-	 * @access public
-	 * @param string $strTag
+	 * Replaces Isotope-specific InsertTags in Frontend
+	 * @param string
 	 * @return mixed
 	 */
 	public function replaceIsotopeTags($strTag)
@@ -80,7 +86,7 @@ class IsotopeFrontend extends Frontend
 
 		if (count($arrTag) == 2 && $arrTag[0] == 'isotope')
 		{
-			switch( $arrTag[1] )
+			switch ($arrTag[1])
 			{
 				case 'cart_items';
 					return $this->Isotope->Cart->items;
@@ -92,16 +98,22 @@ class IsotopeFrontend extends Frontend
 
 				case 'cart_items_label';
 					$intCount = $this->Isotope->Cart->items;
+
 					if (!$intCount)
+					{
 						return '';
+					}
 
 					return $intCount == 1 ? ('('.$GLOBALS['TL_LANG']['ISO']['productSingle'].')') : sprintf(('('.$GLOBALS['TL_LANG']['ISO']['productMultiple'].')'), $intCount);
 					break;
 
 				case 'cart_products_label';
 					$intCount = $this->Isotope->Cart->products;
+
 					if (!$intCount)
+					{
 						return '';
+					}
 
 					return $intCount == 1 ? ('('.$GLOBALS['TL_LANG']['ISO']['productSingle'].')') : sprintf(('('.$GLOBALS['TL_LANG']['ISO']['productMultiple'].')'), $intCount);
 					break;
@@ -128,10 +140,8 @@ class IsotopeFrontend extends Frontend
 
 	/**
 	 * Add the navigation trail CSS class to pages belonging to the active product
-	 *
-	 * @param	Template
-	 * @return	void
-	 * @link	http://www.contao.org/hooks.html#parseTemplate
+	 * @param object
+	 * @link http://www.contao.org/hooks.html#parseTemplate
 	 */
 	public function fixNavigationTrail(&$objTemplate)
 	{
@@ -145,7 +155,7 @@ class IsotopeFrontend extends Frontend
 				$arrTrail = array();
 				$objProduct = self::getProductByAlias($this->Input->get('product'));
 
-				foreach( $objProduct->categories as $pageId )
+				foreach ($objProduct->categories as $pageId)
 				{
 					$objPage = $this->getPageDetails($pageId);
 					$arrTrail = array_merge($arrTrail, $objPage->trail);
@@ -158,7 +168,7 @@ class IsotopeFrontend extends Frontend
 			{
 				$arrItems = $objTemplate->items;
 
-				foreach( $arrItems as $k => $arrItem )
+				foreach ($arrItems as $k => $arrItem)
 				{
 					if (in_array($arrItem['id'], $arrTrail) && strpos($arrItem['class'], 'trail') === false)
 					{
@@ -174,6 +184,9 @@ class IsotopeFrontend extends Frontend
 
 	/**
 	 * Apply a watermark to an image
+	 * @param string
+	 * @param string
+	 * @param string
 	 */
 	public static function watermarkImage($image, $watermark, $position='br')
 	{
@@ -185,7 +198,6 @@ class IsotopeFrontend extends Frontend
 		}
 
 		$objFile = new File($image);
-
 		$strCacheName = 'system/html/' . $objFile->filename . '-' . substr(md5($watermark . '-' . $position . '-' . $objFile->mtime), 0, 8) . '.' . $objFile->extension;
 
 		// Return the path of the new image if it exists already
@@ -244,8 +256,9 @@ class IsotopeFrontend extends Frontend
 			return $image;
 		}
 
-		// Load watermark
 		$objWatermark = new File($watermark);
+
+		// Load watermark
 		switch ($objWatermark->extension)
 		{
 			case 'gif':
@@ -277,7 +290,7 @@ class IsotopeFrontend extends Frontend
 			return $image;
 		}
 
-		switch( $position )
+		switch ($position)
 		{
 			case 'tl':
 				$x = 0;
@@ -368,10 +381,9 @@ class IsotopeFrontend extends Frontend
 
 	/**
 	 * Hook callback for changelanguage extension to support language switching on product reader page
-	 *
-	 * @param  array
-	 * @param  string
-	 * @param  array
+	 * @param array
+	 * @param string
+	 * @param array
 	 * @return array
 	 */
 	public function translateProductUrls($arrGet, $strLanguage, $arrRootPage)
@@ -394,7 +406,7 @@ class IsotopeFrontend extends Frontend
 
 
 	/**
-	 * Use generatePage Hook to inject messages if they have not been included in a module.
+	 * Use generatePage Hook to inject messages if they have not been included in a module
 	 */
 	public function injectMessages()
 	{
@@ -415,9 +427,8 @@ $endScript";
 
 
 	/**
-	 * Return all error, confirmation and info messages as HTML.
-	 * @param	void
-	 * @return	string
+	 * Return all error, confirmation and info messages as HTML string
+	 * @return string
 	 */
 	public static function getIsotopeMessages()
 	{
@@ -487,24 +498,23 @@ $endScript";
 	/**
 	 * Prepare form fields from a form generator form ID
 	 * Useful if you want to give the user the possibility to use a custom form for a certain action (e.g. order conditions)
-	 *
-	 * @param	int		database ID
-	 * @param	string	form id (FORM SUBMIT)
-	 * @param	array	form config that gets merged with the form data from the database
-	 * @return	object|null
+	 * @param integer Database ID
+	 * @param string Form ID (FORM SUBMIT)
+	 * @param array	Form config that gets merged with the form data from the database
+	 * @return object|null
 	 */
 	public function prepareForm($intId, $strFormId, $arrConfig=array())
 	{
 		$objForm = new stdClass();
-		$objForm->arrHidden		= array();
-		$objForm->arrFields		= array();
-		$objForm->arrFormData	= array();
-		$objForm->arrFiles		= array();
-		$objForm->blnSubmitted	= false;
-		$objForm->blnHasErrors	= false;
+		$objForm->arrHidden     = array();
+		$objForm->arrFields	    = array();
+		$objForm->arrFormData   = array();
+		$objForm->arrFiles      = array();
+		$objForm->blnSubmitted  = false;
+		$objForm->blnHasErrors  = false;
 		$objForm->blnHasUploads	= false;
 
-		$objForm->arrData		= array_merge($this->Database->execute("SELECT * FROM tl_form WHERE id=".(int)$intId)->fetchAssoc(), $arrConfig);
+		$objForm->arrData = array_merge($this->Database->execute("SELECT * FROM tl_form WHERE id=".(int)$intId)->fetchAssoc(), $arrConfig);
 
 		// Form not found
 		if (!$objForm->arrData['id'])
@@ -611,16 +621,17 @@ $endScript";
 			++$row;
 		}
 
-		// form attributes
 		$strAttributes = '';
 		$arrAttributes = deserialize($objForm->arrData['attributes'], true);
+
+		// Form attributes
 		if (strlen($arrAttributes[1]))
 		{
 			$strAttributes .= ' ' . $arrAttributes[1];
 		}
 
-		$objForm->attributes	= $strAttributes;
-		$objForm->enctype		= $objForm->blnHasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
+		$objForm->attributes = $strAttributes;
+		$objForm->enctype = $objForm->blnHasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
 
 		return $objForm;
 	}
@@ -628,12 +639,11 @@ $endScript";
 
 	/**
 	 * Generate download attributes
-	 *
-	 * @param	string
-	 * @param	array
-	 * @param	mixed
-	 * @return	string
-	 * @see		IsotopeProduct::generateAttribute()
+	 * @param string
+	 * @param array
+	 * @param array
+	 * @return string
+	 * @see IsotopeProduct::generateAttribute()
 	 */
 	public function generateDownloadAttribute($attribute, $arrData, $arrFiles)
 	{
@@ -771,24 +781,23 @@ $endScript";
 		$objTemplate = new FrontendTemplate('ce_downloads');
 		$objTemplate->class = $attribute;
 		$objTemplate->files = array_values($files);
+
 		return $objTemplate->parse();
 	}
 
 
 	/**
 	 * Shortcut for a single product by ID or from database result
-	 *
-	 * @param	Database_Result|int
-	 * @param	int
-	 * @param	bool
-	 * @return	IsotopeProduct|null
+	 * @param object
+	 * @param integer
+	 * @param boolean
+	 * @return IsotopeProduct|null
 	 */
 	public static function getProduct($objProductData, $intReaderPage=0, $blnCheckAvailability=true)
 	{
 		if (is_numeric($objProductData))
 		{
 			$Database = Database::getInstance();
-
 			$objProductData = $Database->prepare(IsotopeProduct::getSelectStatement() . " WHERE p1.language='' AND p1.id=?")->execute($objProductData);
 		}
 
@@ -814,18 +823,16 @@ $endScript";
 		}
 
 		$objProduct->reader_jumpTo = $intReaderPage;
-
 		return $objProduct;
 	}
 
 
 	/**
 	 * Shortcut for a single product by alias (from url?)
-	 *
-	 * @param	string
-	 * @param	int
-	 * @param	bool
-	 * @return	IsotopeProduct|null
+	 * @param string
+	 * @param integer
+	 * @param boolean
+	 * @return IsotopeProduct|null
 	 */
 	public static function getProductByAlias($strAlias, $intReaderPage=0, $blnCheckAvailability=true)
 	{
@@ -840,14 +847,13 @@ $endScript";
 
 
 	/**
-	 * Generate products from database result or array of IDs.
-	 *
-	 * @param	Database_Result|array
-	 * @param	int
-	 * @param	bool
-	 * @param	array
-	 * @param	array
-	 * @return	array
+	 * Generate products from database result or array of IDs
+	 * @param Database_Result|array
+	 * @param integer
+	 * @param boolean
+	 * @param array
+	 * @param array
+	 * @return array
 	 */
 	public static function getProducts($objProductData, $intReaderPage=0, $blnCheckAvailability=true, array $arrFilters=array(), array $arrSorting=array())
 	{
@@ -868,7 +874,7 @@ $endScript";
 
 		$arrProducts = array();
 
-		while( $objProductData->next() )
+		while ($objProductData->next())
 		{
 			$objProduct = IsotopeFrontend::getProduct($objProductData, $intReaderPage, $blnCheckAvailability);
 
@@ -889,10 +895,11 @@ $endScript";
 		{
 			$arrParam = array();
 
-			foreach( $arrSorting as $strField => $arrConfig )
+			foreach ($arrSorting as $strField => $arrConfig)
 			{
 				$arrData = array();
-				foreach( $arrProducts as $id => $objProduct )
+
+				foreach ($arrProducts as $id => $objProduct)
 				{
 					$arrData[$id] = str_replace('"', '', $objProduct->$strField);
 				}
@@ -904,7 +911,7 @@ $endScript";
 			// Add product array as the last item. This will sort the products array based on the sorting of the passed in arguments.
 			$arrParam[] = &$arrProducts;
 
-			// we need to use call_user_func_array because the number of parameters can be dynamic and this is the only way I know to pass an array as arguments
+			// We need to use call_user_func_array because the number of parameters can be dynamic and this is the only way I know to pass an array as arguments
 			call_user_func_array('array_multisort', $arrParam);
 		}
 
@@ -914,10 +921,9 @@ $endScript";
 
 	/**
 	 * Callback function to filter products
-	 *
-	 * @param	object	$objProduct
-	 * @return	bool
-	 * @see		array_filter()
+	 * @param object
+	 * @return boolean
+	 * @see array_filter()
 	 */
 	private static function filterProducts($objProduct)
 	{
@@ -930,7 +936,7 @@ $endScript";
 
 		$arrGroups = array();
 
-		foreach( $filterConfig as $filter )
+		foreach ($filterConfig as $filter)
 		{
 			$varValue = $objProduct->{$filter['attribute']};
 			$blnMatch = false;
@@ -981,14 +987,13 @@ $endScript";
 
 	/**
 	 * Convert a filter operator for PHP or SQL
-	 *
-	 * @param	string
-	 * @param	string
-	 * @return	string
+	 * @param string
+	 * @param string
+	 * @return string
 	 */
 	public static function convertFilterOperator($operator, $mode='PHP')
 	{
-		switch( $operator )
+		switch ($operator)
 		{
 			case 'like':
 			case 'search':

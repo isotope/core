@@ -28,19 +28,31 @@
  */
 
 
+/**
+ * Class IsotopeTemplate
+ * 
+ * Provide methods to handle Isotope templates.
+ * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ */
 class IsotopeTemplate extends FrontendTemplate
 {
 
+	/**
+	 * Initialize the template
+	 * @param string
+	 * @param string
+	 */
 	public function __construct($strTemplate='', $strContentType='text/html')
 	{
 		parent::__construct($strTemplate, $strContentType);
-
 		$this->import('Isotope');
 	}
 
 
 	/**
-	 * Check the Isotope config directory for a particular template.
+	 * Check the Isotope config directory for a particular template
 	 * @param string
 	 * @return string
 	 * @throws Exception

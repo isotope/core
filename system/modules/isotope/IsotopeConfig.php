@@ -28,6 +28,14 @@
  */
 
 
+/**
+ * Class IsotopeConfig
+ * 
+ * Provide methods to handle Isotope configuration.
+ * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ */
 class IsotopeConfig extends Model
 {
 
@@ -39,15 +47,13 @@ class IsotopeConfig extends Model
 
 
 	/**
-	 * Return custom options or table row data.
-	 *
-	 * @access public
-	 * @param mixed $strKey
+	 * Return custom options or table row data
+	 * @param mixed
 	 * @return mixed
 	 */
 	public function __get($strKey)
 	{
-		switch( $strKey )
+		switch ($strKey)
 		{
 			case 'billing_fields_raw':
 			case 'shipping_fields_raw':
@@ -75,6 +81,9 @@ class IsotopeConfig extends Model
 	}
 
 
+	/**
+	 * Initialize the config
+	 */
 	public function __construct()
 	{
 		return parent::__construct();
@@ -82,7 +91,9 @@ class IsotopeConfig extends Model
 
 
 	/**
-	 * Transparently map calls to core config class, because Isotope->Config has the same name.
+	 * Transparently map calls to core config class, because Isotope->Config has the same name
+	 * @param string
+	 * @param array
 	 */
 	public function __call($name, $arguments)
 	{

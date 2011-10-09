@@ -24,11 +24,19 @@
  * @copyright  Isotope eCommerce Workgroup 2009-2011
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- * @author     Christian de la Haye <service@delahaye.de>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
+/**
+ * Class FieldWizard
+ * 
+ * Provide methods to handle fields table.
+ * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ * @author     Christian de la Haye <service@delahaye.de>
+ */
 class FieldWizard extends Widget
 {
 
@@ -44,6 +52,10 @@ class FieldWizard extends Widget
 	 */
 	protected $strTemplate = 'be_widget';
 
+	/**
+	 * Options
+	 * @var array
+	 */
 	protected $arrOptions = array();
 
 
@@ -59,19 +71,21 @@ class FieldWizard extends Widget
 			case 'value':
 				$this->varValue = deserialize($varValue);
 
-//				if (!is_array($this->varValue))
-//				{
-//					$this->varValue = array();
-//
-//					if ($this->table != '')
-//					{
-//						foreach( $GLOBALS['TL_DCA'][$this->table]['fields'] as $field => $arrData )
-//						{
-//							if ($arrData['eval']['feEditable'] && $arrData['eval']['mandatory'])
-//								$this->varValue[] = array('value'=>$field, 'enabled'=>true, 'mandatory'=>true);
-//						}
-//					}
-//				}
+				/*if (!is_array($this->varValue))
+				{
+					$this->varValue = array();
+
+					if ($this->table != '')
+					{
+						foreach( $GLOBALS['TL_DCA'][$this->table]['fields'] as $field => $arrData )
+						{
+							if ($arrData['eval']['feEditable'] && $arrData['eval']['mandatory'])
+							{
+								$this->varValue[] = array('value'=>$field, 'enabled'=>true, 'mandatory'=>true);
+							}
+						}
+					}
+				}*/
 				break;
 
 			case 'options':
@@ -82,7 +96,8 @@ class FieldWizard extends Widget
 				$this->loadDataContainer($varValue);
 
 				$this->arrOptions = array();
-				foreach( $GLOBALS['TL_DCA'][$varValue]['fields'] as $name => $arrData )
+
+				foreach ($GLOBALS['TL_DCA'][$varValue]['fields'] as $name => $arrData)
 				{
 					if ($arrData['eval']['feEditable'])
 					{

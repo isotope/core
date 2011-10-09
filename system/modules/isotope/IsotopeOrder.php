@@ -28,6 +28,14 @@
  */
 
 
+/**
+ * Class IsotopeOrder
+ * 
+ * Provide methods to handle Isotope orders.
+ * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ */
 class IsotopeOrder extends IsotopeProductCollection
 {
 
@@ -44,20 +52,26 @@ class IsotopeOrder extends IsotopeProductCollection
 	protected $ctable = 'tl_iso_order_items';
 
 	/**
-	 * This current order's unique ID with eventual prefix.
+	 * This current order's unique ID with eventual prefix
+	 * @param string
 	 */
 	protected $strOrderId = '';
 
 	/**
 	 * Lock products from apply rule prices
-	 * @var bool
+	 * @var boolean
 	 */
 	protected $blnLocked = true;
 
 
+	/**
+	 * Return a value
+	 * @param string
+	 * @return mixed
+	 */
 	public function __get($strKey)
 	{
-		switch($strKey)
+		switch ($strKey)
 		{
 			case 'order_id':
 				return $this->strOrderId;
@@ -77,9 +91,15 @@ class IsotopeOrder extends IsotopeProductCollection
 	}
 
 
+	/**
+	 * Set a value
+	 * @param string
+	 * @param mixed
+	 * @throws Exception
+	 */
 	public function __set($strKey, $varValue)
 	{
-		switch( $strKey )
+		switch ($strKey)
 		{
 			// Order ID cannot be changed, it is created through IsotopeOrder::generateOrderId on checkout
 			case 'order_id':
@@ -94,16 +114,19 @@ class IsotopeOrder extends IsotopeProductCollection
 
 	/**
 	 * Add downloads to this order
+	 * @param object
+	 * @param boolean
+	 * @return array
 	 */
 	public function transferFromCollection(IsotopeProductCollection $objCollection, $blnDuplicate=true)
 	{
 		$arrIds = parent::transferFromCollection($objCollection, $blnDuplicate);
 
-		foreach( $arrIds as $id )
+		foreach ($arrIds as $id)
 		{
 			$objDownloads = $this->Database->execute("SELECT *, (SELECT product_quantity FROM {$this->ctable} WHERE id=$id) AS product_quantity FROM tl_iso_downloads WHERE pid=(SELECT product_id FROM {$this->ctable} WHERE id=$id)");
 
-			while( $objDownloads->next() )
+			while ($objDownloads->next())
 			{
 				$arrSet = array
 				(
@@ -123,7 +146,8 @@ class IsotopeOrder extends IsotopeProductCollection
 
 	/**
 	 * Find a record by its reference field and return true if it has been found
-	 * @param  int
+	 * @param string
+	 * @param mixed
 	 * @return boolean
 	 */
 	public function findBy($strRefField, $varRefId)
@@ -175,6 +199,8 @@ class IsotopeOrder extends IsotopeProductCollection
 
 	/**
 	 * Remove downloads when removing a product
+	 * @param object
+	 * @return boolean
 	 */
 	public function deleteProduct(IsotopeProduct $objProduct)
 	{
@@ -188,16 +214,20 @@ class IsotopeOrder extends IsotopeProductCollection
 
 
 	/**
-	 * Also delete downloads when deleting this order.
+	 * Delete downloads when deleting this order
+	 * @return integer
 	 */
 	public function delete()
 	{
 		$this->Database->query("DELETE FROM tl_iso_order_downloads WHERE pid IN (SELECT id FROM {$this->ctable} WHERE pid={$this->id})");
-
 		return parent::delete();
 	}
 
 
+	/**
+	 * Return current surcharges as array
+	 * @return array
+	 */
 	public function getSurcharges()
 	{
 		$arrSurcharges = deserialize($this->surcharges);
@@ -205,6 +235,11 @@ class IsotopeOrder extends IsotopeProductCollection
 	}
 
 
+	/**
+	 * Process the order checkout
+	 * @param object
+	 * @return boolean
+	 */
 	public function checkout($objCart=null)
 	{
 		if ($this->checkout_complete)
@@ -218,6 +253,7 @@ class IsotopeOrder extends IsotopeProductCollection
 		if (!is_object($objCart))
 		{
 			$objCart = new IsotopeCart();
+
 			if (!$objCart->findBy('id', $this->cart_id))
 			{
 				$this->log('Cound not find Cart ID '.$this->cart_id.' for Order ID '.$this->id, __METHOD__, TL_ERROR);
@@ -243,7 +279,7 @@ class IsotopeOrder extends IsotopeProductCollection
 
 				if ($this->$callback[0]->$callback[1]($this, $objCart) === false)
 				{
-					$this->log('Callback "'.$callback[0].':'.$callback[1].'" cancelled checkout for Order ID '.$this->id, __METHOD__, TL_ERROR);
+					$this->log('Callback "' . $callback[0] . ':' . $callback[1] . '" cancelled checkout for Order ID ' . $this->id, __METHOD__, TL_ERROR);
 					return false;
 				}
 			}
@@ -257,22 +293,23 @@ class IsotopeOrder extends IsotopeProductCollection
 		$arrData = $this->email_data;
 		$arrData['order_id'] = $this->generateOrderId();
 
-		foreach( $this->billing_address as $k => $v )
+		foreach ($this->billing_address as $k => $v)
 		{
-			$arrData['billing_'.$k] = $this->Isotope->formatValue('tl_iso_addresses', $k, $v);
+			$arrData['billing_' . $k] = $this->Isotope->formatValue('tl_iso_addresses', $k, $v);
 		}
 
-		foreach( $this->shipping_address as $k => $v )
+		foreach ($this->shipping_address as $k => $v)
 		{
-			$arrData['shipping_'.$k] = $this->Isotope->formatValue('tl_iso_addresses', $k, $v);
+			$arrData['shipping_' . $k] = $this->Isotope->formatValue('tl_iso_addresses', $k, $v);
 		}
 
 		if ($this->pid > 0)
 		{
-			$objUser = $this->Database->execute("SELECT * FROM tl_member WHERE id=".(int)$this->pid);
-			foreach( $objUser->row() as $k => $v )
+			$objUser = $this->Database->execute("SELECT * FROM tl_member WHERE id=" . (int) $this->pid);
+
+			foreach ($objUser->row() as $k => $v)
 			{
-				$arrData['member_'.$k] = $this->Isotope->formatValue('tl_member', $k, $v);
+				$arrData['member_' . $k] = $this->Isotope->formatValue('tl_member', $k, $v);
 			}
 		}
 
@@ -297,13 +334,13 @@ class IsotopeOrder extends IsotopeProductCollection
 		{
 			$time = time();
 
-			foreach( array('billing', 'shipping') as $address )
+			foreach (array('billing', 'shipping') as $address)
 			{
-				$arrData = deserialize($this->arrData[$address.'_address'], true);
+				$arrData = deserialize($this->arrData[$address . '_address'], true);
 
 				if ($arrData['id'] == 0)
 				{
-					$arrAddress = array_intersect_key($arrData, array_flip($this->Isotope->Config->{$address.'_fields_raw'}));
+					$arrAddress = array_intersect_key($arrData, array_flip($this->Isotope->Config->{$address . '_fields_raw'}));
 					$arrAddress['pid'] = $this->pid;
 					$arrAddress['tstamp'] = $time;
 					$arrAddress['store_id'] = $this->Isotope->Config->store_id;
@@ -324,18 +361,20 @@ class IsotopeOrder extends IsotopeProductCollection
 		}
 
 		$this->save();
-
 		return true;
 	}
 
 
 	/**
 	 * Generate the next higher Order-ID based on config prefix, order number digits and existing records
+	 * @return string
 	 */
 	private function generateOrderId()
 	{
 		if ($this->strOrderId != '')
+		{
 			return $this->strOrderId;
+		}
 
 		$strPrefix = $this->Isotope->Config->orderPrefix;
 		$arrConfigIds = $this->Database->execute("SELECT id FROM tl_iso_config WHERE store_id=" . $this->Isotope->Config->store_id)->fetchEach('id');
@@ -345,7 +384,7 @@ class IsotopeOrder extends IsotopeProductCollection
 
 		// Retrieve the highest available order ID
 		$objMax = $this->Database->prepare("SELECT order_id FROM tl_iso_orders WHERE order_id LIKE '$strPrefix%' AND config_id IN (" . implode(',', $arrConfigIds) . ") ORDER BY order_id DESC")->limit(1)->executeUncached();
-		$intMax = (int)substr($objMax->order_id, strlen($strPrefix));
+		$intMax = (int) substr($objMax->order_id, strlen($strPrefix));
 		$this->strOrderId = $strPrefix . str_pad($intMax+1, $this->Isotope->Config->orderDigits, '0', STR_PAD_LEFT);
 
 		$this->Database->query("UPDATE tl_iso_orders SET order_id='{$this->strOrderId}' WHERE id={$this->id}");

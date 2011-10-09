@@ -24,12 +24,20 @@
  * @copyright  Isotope eCommerce Workgroup 2009-2011
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- * @author     Christian de la Haye <service@delahaye.de>
- * @author     Yanick Witschi <yanick.witschi@certo-net.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
+/**
+ * Class IsotopeGallery
+ * 
+ * Provide methods to handle Isotope galleries.
+ * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ * @author     Christian de la Haye <service@delahaye.de>
+ * @author     Yanick Witschi <yanick.witschi@certo-net.ch>
+ */
 class IsotopeGallery extends Frontend
 {
 
@@ -60,13 +68,14 @@ class IsotopeGallery extends Frontend
 
 	/**
 	 * Construct the object
+	 * @param string
+	 * @param array
 	 */
 	public function __construct($strName, $arrFiles)
 	{
 		parent::__construct();
 
 		$this->import('Isotope');
-
 		$this->name = $strName;
 		$this->files = $arrFiles;
 	}
@@ -74,18 +83,20 @@ class IsotopeGallery extends Frontend
 
 	/**
 	 * Set a value
+	 * @param string
+	 * @param mixed
 	 */
 	public function __set($strKey, $varValue)
 	{
-		switch( $strKey )
+		switch ($strKey)
 		{
 			case 'files':
 				$this->arrFiles = array();
 				$varValue = deserialize($varValue);
 
-				if(is_array($varValue) && count($varValue))
+				if (is_array($varValue) && count($varValue))
 				{
-					foreach( $varValue as $k => $file )
+					foreach ($varValue as $k => $file)
 					{
 						$strFile = 'isotope/' . strtolower(substr($file['src'], 0, 1)) . '/' . $file['src'];
 
@@ -95,7 +106,7 @@ class IsotopeGallery extends Frontend
 
 							if ($objFile->isGdImage)
 							{
-								foreach( (array)$this->Isotope->Config->imageSizes as $size )
+								foreach ((array) $this->Isotope->Config->imageSizes as $size)
 								{
 									$strImage = $this->getImage($strFile, $size['width'], $size['height'], $size['mode']);
 
@@ -105,6 +116,7 @@ class IsotopeGallery extends Frontend
 									}
 
 									$arrSize = @getimagesize(TL_ROOT . '/' . $strImage);
+
 									if (is_array($arrSize) && strlen($arrSize[3]))
 									{
 										$file[$size['name'] . '_size'] = $arrSize[3];
@@ -125,11 +137,11 @@ class IsotopeGallery extends Frontend
 				// No image available, add default image
 				if (!count($this->arrFiles) && is_file(TL_ROOT . '/' . $this->Isotope->Config->missing_image_placeholder))
 				{
-					foreach( (array)$this->Isotope->Config->imageSizes as $size )
+					foreach ((array) $this->Isotope->Config->imageSizes as $size)
 					{
 						$strImage = $this->getImage($this->Isotope->Config->missing_image_placeholder, $size['width'], $size['height'], $size['mode']);
-
 						$arrSize = @getimagesize(TL_ROOT . '/' . $strImage);
+
 						if (is_array($arrSize) && strlen($arrSize[3]))
 						{
 							$file[$size['name'] . '_size'] = $arrSize[3];
@@ -151,10 +163,12 @@ class IsotopeGallery extends Frontend
 
 	/**
 	 * Get a value
+	 * @param string
+	 * @return mixed
 	 */
 	public function __get($strKey)
 	{
-		switch( $strKey )
+		switch ($strKey)
 		{
 			case 'main_image':
 				return reset($this->arrFiles);
@@ -197,12 +211,16 @@ class IsotopeGallery extends Frontend
 
 
 	/**
-	 * Generate main image
+	 * Generate main image and return it as HTML string
+	 * @param string
+	 * @return string
 	 */
 	public function generateMainImage($strType='medium')
 	{
 		if (!count($this->arrFiles))
+		{
 			return '<div class="iso_attribute" id="' . $this->name . '_' . $strType . 'size"> </div>';
+		}
 
 		$arrFile = reset($this->arrFiles);
 
@@ -220,21 +238,26 @@ class IsotopeGallery extends Frontend
 
 		list($objTemplate->link, $objTemplate->rel) = explode('|', $arrFile['link']);
 
-		return '<div class="iso_attribute" id="' . $this->name . '_' . $strType . 'size">'.$objTemplate->parse().'</div>';
+		return '<div class="iso_attribute" id="' . $this->name . '_' . $strType . 'size">' . $objTemplate->parse() . '</div>';
 	}
 
 
 	/**
-	 * Generate gallery
+	 * Generate gallery and return it as HTML string
+	 * @param string
+	 * @param integer
+	 * @return string
 	 */
 	public function generateGallery($strType='gallery', $intSkip=1)
 	{
 		$strGallery = '';
 
-		foreach( $this->arrFiles as $i => $arrFile )
+		foreach ($this->arrFiles as $i => $arrFile)
 		{
 			if ($i < $intSkip)
+			{
 				continue;
+			}
 
 			$objTemplate = new IsotopeTemplate($this->strTemplate);
 
@@ -256,6 +279,9 @@ class IsotopeGallery extends Frontend
 	}
 
 
+	/**
+	 * Inject Ajax scripts
+	 */
 	protected function injectAjax()
 	{
 		list(,$startScript, $endScript) = IsotopeFrontend::getElementAndScriptTags();

@@ -28,6 +28,14 @@
  */
 
 
+/**
+ * Class IsotopeEmail
+ * 
+ * Provide methods to send Isotope e-mails.
+ * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ */
 class IsotopeEmail extends Controller
 {
 
@@ -75,22 +83,22 @@ class IsotopeEmail extends Controller
 
 	/**
 	 * if attachments have been added (= reset $objEmail if language changes)
-	 * @var bool
+	 * @var boolean
 	 */
 	protected $attachmentsDone = false;
 
 	/**
 	 * the id of the mail template
-	 * @var int
+	 * @var integer
 	 */
 	protected $intId;
 
+
 	/**
 	 * Construct object
-	 *
-	 * @param	int
-	 * @param	string
-	 * @return	void
+	 * @param integer
+	 * @param string
+	 * @param object
 	 */
 	public function __construct($intId, $strLanguage=null, $objCollection=null)
 	{
@@ -110,10 +118,8 @@ class IsotopeEmail extends Controller
 
 	/**
 	 * Set an object property
-	 *
-	 * @param	string
-	 * @param	mixed
-	 * @return	void
+	 * @param string
+	 * @param mixed
 	 */
 	public function __set($strKey, $varValue)
 	{
@@ -125,6 +131,7 @@ class IsotopeEmail extends Controller
 
 			case 'language':
 				$strLanguage = substr($varValue, 0, 2);
+
 				if ($strLanguage != $this->strLanguage)
 				{
 					$this->initializeTemplate($strLanguage);
@@ -146,9 +153,8 @@ class IsotopeEmail extends Controller
 
 	/**
 	 * Return an object property
-	 *
-	 * @param	string
-	 * @return	mixed
+	 * @param string
+	 * @return mixed
 	 */
 	public function __get($strKey)
 	{
@@ -167,10 +173,9 @@ class IsotopeEmail extends Controller
 
 	/**
 	 * Call parent Email object method
-	 *
-	 * @param	string
-	 * @param	array
-	 * @return	mixed
+	 * @param string
+	 * @param array
+	 * @return mixed
 	 */
 	public function __call($function, array $param_arr)
 	{
@@ -180,10 +185,9 @@ class IsotopeEmail extends Controller
 
 	/**
 	 * Send to give address with tokens
-	 *
-	 * @param	mixed
-	 * @param	array|null
-	 * @param	string|null
+	 * @param mixed
+	 * @param array
+	 * @param string
 	 */
 	public function send($varRecipients, $arrTokens=null, $strLanguage=null)
 	{
@@ -213,7 +217,7 @@ class IsotopeEmail extends Controller
 			$this->strLanguage = $GLOBALS['TL_LANGUAGE'];
 		}
 
-		// get the data for the active language
+		// Get the data for the active language
 		$objLanguage = $this->Database->prepare("SELECT * FROM tl_iso_mail_content WHERE pid={$this->intId} AND (language='{$this->strLanguage}' OR fallback='1') ORDER BY fallback")
 									  ->limit(1)
 									  ->execute();
@@ -231,7 +235,7 @@ class IsotopeEmail extends Controller
 		$this->objEmail->subject = $this->parseSimpleTokens($this->replaceInsertTags($objLanguage->subject), $arrPlainData);
 		$this->objEmail->text = $this->parseSimpleTokens($this->replaceInsertTags($objLanguage->text), $arrPlainData);
 
-		// html
+		// Generate HTML
 		if (!$objLanguage->textOnly && $objLanguage->html != '')
 		{
 			$arrData['head_css'] = '';
@@ -263,6 +267,7 @@ class IsotopeEmail extends Controller
 			$this->objEmail->html = $strHtml;
 		}
 
+		// Add attachments
 		if (!$this->attachmentsDone)
 		{
 			foreach (deserialize($objLanguage->attachments, true) as $file)
@@ -289,10 +294,9 @@ class IsotopeEmail extends Controller
 
 	/**
 	 * Initialize from template and reset attachments if language changes
-	 *
-	 * @param	string
-	 * @return	void
-	 * @throws	Exception
+	 * @param string
+	 * @param object
+	 * @throws Exception
 	 */
 	protected function initializeTemplate($strLanguage, $objCollection)
 	{
@@ -308,28 +312,34 @@ class IsotopeEmail extends Controller
 
 		$this->strLanguage = $strLanguage;
 
-		// set the options
+		// Set the options
 		$this->objEmail->imageDir = TL_ROOT . '/';
 		$this->objEmail->fromName = $objTemplate->senderName ? $objTemplate->senderName : $GLOBALS['TL_ADMIN_NAME'];
 		$this->objEmail->from = $objTemplate->sender ? $objTemplate->sender : $GLOBALS['TL_ADMIN_EMAIL'];
 		$this->objEmail->priority = $objTemplate->priority;
 
-		// recipient_cc
 		$arrCc = trimsplit(',', $objTemplate->cc);
-		foreach ((array)$arrCC as $email)
+
+		// Recipient_cc
+		foreach ((array) $arrCC as $email)
 		{
 			if ($email == '' || !$this->isValidEmailAddress($email))
+			{
 				continue;
+			}
 
 			$this->objEmail->sendCc($email);
 		}
 
-		// recipient_bcc
 		$arrBcc = trimsplit(',', $objTemplate->bcc);
-		foreach ((array)$arrBcc as $email)
+
+		// Recipient_bcc
+		foreach ((array) $arrBcc as $email)
 		{
 			if ($email == '' || !$this->isValidEmailAddress($email))
+			{
 				continue;
+			}
 
 			$this->objEmail->sendBcc($email);
 		}
@@ -347,6 +357,11 @@ class IsotopeEmail extends Controller
 	}
 
 
+	/**
+	 * Romanize a friendly name and return it as string
+	 * @param string
+	 * @return string
+	 */
 	public static function romanizeFriendlyName($strName)
 	{
 		$strName = html_entity_decode($strName, ENT_QUOTES, $GLOBALS['TL_CONFIG']['characterSet']);

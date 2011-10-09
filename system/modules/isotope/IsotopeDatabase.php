@@ -28,6 +28,14 @@
  */
 
 
+/**
+ * Class IsotopeDatabase
+ * 
+ * Provide methods to handle Isotope database file modifications.
+ * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ */
 class IsotopeDatabase
 {
 

@@ -28,6 +28,14 @@
  */
 
 
+/**
+ * Class IsotopeCart
+ * 
+ * Provide methods to handle Isotope cart.
+ * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ */
 class IsotopeCart extends IsotopeProductCollection
 {
 
@@ -56,6 +64,9 @@ class IsotopeCart extends IsotopeProductCollection
 	protected $strCookie = 'ISOTOPE_TEMP_CART';
 
 
+	/**
+	 * Import a front end user
+	 */
 	public function __construct()
 	{
 		parent::__construct();
@@ -68,15 +79,13 @@ class IsotopeCart extends IsotopeProductCollection
 
 
 	/**
-	 * Return cart data.
-	 *
-	 * @access public
-	 * @param string $strKey
+	 * Return the cart data
+	 * @param string
 	 * @return mixed
 	 */
 	public function __get($strKey)
 	{
-		switch( $strKey )
+		switch ($strKey)
 		{
 			case 'billing_address':
 			case 'billingAddress':
@@ -85,7 +94,9 @@ class IsotopeCart extends IsotopeProductCollection
 					$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE id=?")->limit(1)->execute($this->arrSettings['billingAddress_id']);
 
 					if ($objAddress->numRows)
+					{
 						return $objAddress->fetchAssoc();
+					}
 				}
 				elseif ($this->arrSettings['billingAddress_id'] === 0 && is_array($this->arrSettings['billingAddress_data']))
 				{
@@ -99,7 +110,9 @@ class IsotopeCart extends IsotopeProductCollection
 					$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE pid={$this->User->id} AND store_id={$this->Isotope->Config->store_id} AND isDefaultBilling='1'")->limit(1)->execute();
 
 					if ($objAddress->numRows)
+					{
 						return $objAddress->fetchAssoc();
+					}
 
 					// Return the default user data, but ID should be 0 to know that it is a custom/new address
 					// Trying to guess subdivision by country and state
@@ -120,7 +133,9 @@ class IsotopeCart extends IsotopeProductCollection
 					$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE id=?")->limit(1)->execute($this->arrSettings['shippingAddress_id']);
 
 					if ($objAddress->numRows)
+					{
 						return $objAddress->fetchAssoc();
+					}
 				}
 
 				if ($this->arrSettings['shippingAddress_id'] == 0 && count($this->arrSettings['shippingAddress_data']))
@@ -135,7 +150,9 @@ class IsotopeCart extends IsotopeProductCollection
 					$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE pid={$this->User->id} AND store_id={$this->Isotope->Config->store_id} AND isDefaultShipping='1'")->limit(1)->execute();
 
 					if ($objAddress->numRows)
+					{
 						return $objAddress->fetchAssoc();
+					}
 				}
 
 				return array_merge((is_array($this->billingAddress) ? $this->billingAddress : array()), array('id' => -1));
@@ -146,9 +163,14 @@ class IsotopeCart extends IsotopeProductCollection
 	}
 
 
+	/**
+	 * Set the cart data
+	 * @param string
+	 * @param mixed
+	 */
 	public function __set($strKey, $varValue)
 	{
-		switch( $strKey )
+		switch ($strKey)
 		{
 			case 'billingAddress':
 			case 'billing_address':
@@ -186,7 +208,9 @@ class IsotopeCart extends IsotopeProductCollection
 
 
 	/**
-	 * Load current cart
+	 * Load the current cart
+	 * @param integer
+	 * @param integer
 	 */
 	public function initializeCart($intConfig, $intStore)
 	{
@@ -230,6 +254,7 @@ class IsotopeCart extends IsotopeProductCollection
  		if (FE_USER_LOGGED_IN && strlen($this->strHash))
  		{
 			$objCart = new IsotopeCart();
+
 			if ($objCart->findBy('session', $this->strHash))
 			{
 				$this->transferFromCollection($objCart, false);
@@ -244,10 +269,8 @@ class IsotopeCart extends IsotopeProductCollection
 
 	/**
 	 * Hook-callback for isoCheckoutSurcharge. Accesses the shipping module to get a shipping surcharge.
-	 *
-	 * @access	public
-	 * @param	array
-	 * @return	array
+	 * @param array
+	 * @return array
 	 */
 	public function getShippingSurcharge($arrSurcharges)
 	{
@@ -272,11 +295,9 @@ class IsotopeCart extends IsotopeProductCollection
 
 
 	/**
-	 * Hook-callback for isoCheckoutSurcharge.
-	 *
-	 * @access	public
-	 * @param	array
-	 * @return	array
+	 * Hook-callback for isoCheckoutSurcharge
+	 * @param array
+	 * @return array
 	 */
 	public function getPaymentSurcharge($arrSurcharges)
 	{
@@ -300,16 +321,23 @@ class IsotopeCart extends IsotopeProductCollection
 	}
 
 
+	/**
+	 * Return current surcharges as array
+	 * @return array
+	 */
 	public function getSurcharges()
 	{
 		if (isset($this->arrCache['surcharges']))
+		{
 			return $this->arrCache['surcharges'];
+		}
 
 		$this->import('Isotope');
-
-		$arrPreTax = $arrPostTax = $arrTaxes = array();
-
+		$arrPreTax = array();
+		$arrPostTax = array();
+		$arrTaxes = array();
 		$arrSurcharges = array();
+
 		if (isset($GLOBALS['ISO_HOOKS']['checkoutSurcharge']) && is_array($GLOBALS['ISO_HOOKS']['checkoutSurcharge']))
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['checkoutSurcharge'] as $callback)
@@ -326,7 +354,7 @@ class IsotopeCart extends IsotopeProductCollection
 			}
 		}
 
-		foreach( $arrSurcharges as $arrSurcharge )
+		foreach ($arrSurcharges as $arrSurcharge)
 		{
 			if ($arrSurcharge['before_tax'])
 			{
@@ -339,10 +367,12 @@ class IsotopeCart extends IsotopeProductCollection
 		}
 
 		$arrProducts = $this->getProducts();
-		foreach( $arrProducts as $pid => $objProduct )
+
+		foreach ($arrProducts as $pid => $objProduct)
 		{
 			$fltPrice = $objProduct->tax_free_total_price;
-			foreach( $arrPreTax as $tax )
+
+			foreach ($arrPreTax as $tax)
 			{
 				if (isset($tax['products'][$objProduct->cart_id]))
 				{
@@ -377,19 +407,20 @@ class IsotopeCart extends IsotopeProductCollection
 				}
 			}
 
-
 			$strTaxId = implode(',', $arrTaxIds);
+
 			if ($objProduct->tax_id != $strTaxId)
 			{
 				$this->updateProduct($objProduct, array('tax_id'=>$strTaxId));
 			}
 		}
 
-
-		foreach( $arrPreTax as $i => $arrSurcharge )
+		foreach ($arrPreTax as $i => $arrSurcharge)
 		{
 			if (!$arrSurcharge['tax_class'])
+			{
 				continue;
+			}
 
 			$arrTaxIds = array();
 			$arrTax = $this->Isotope->calculateTax($arrSurcharge['tax_class'], $arrSurcharge['total_price'], $arrSurcharge['before_tax']);

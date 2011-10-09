@@ -28,6 +28,14 @@
  */
 
 
+/**
+ * Class ContentIsotope
+ * 
+ * Provide methods to handle Isotope content elements.
+ * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ */
 abstract class ContentIsotope extends ContentElement
 {
 
@@ -38,6 +46,10 @@ abstract class ContentIsotope extends ContentElement
 	protected $Isotope;
 
 
+	/**
+	 * Initialize the content element
+	 * @param object
+	 */
 	public function __construct(Database_Result $objElement)
 	{
 		parent::__construct($objElement);
@@ -67,7 +79,6 @@ abstract class ContentIsotope extends ContentElement
 
 	/**
 	 * Shortcut for a single product by ID or from database result
-	 *
 	 * @deprecated
 	 * @see IsotopeFrontend::getProduct()
 	 */
@@ -80,7 +91,6 @@ abstract class ContentIsotope extends ContentElement
 
 	/**
 	 * Shortcut for a single product by alias (from url?)
-	 *
 	 * @deprecated
 	 * @see IsotopeFrontend::getProducts()
 	 */
@@ -92,8 +102,7 @@ abstract class ContentIsotope extends ContentElement
 
 
 	/**
-	 * Generate products from database result or array of IDs.
-	 *
+	 * Generate products from database result or array of IDs
 	 * @deprecated
 	 * @see IsotopeFrontend::getProducts()
 	 */

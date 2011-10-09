@@ -24,16 +24,31 @@
  * @copyright  Isotope eCommerce Workgroup 2009-2011
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- * @author     Christian de la Haye <service@delahaye.de>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
+/**
+ * Class IsotopeBackend
+ * 
+ * Provide methods to handle Isotope back end components.
+ * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ * @author     Christian de la Haye <service@delahaye.de>
+ */
 class IsotopeBackend extends Backend
 {
 
 	/**
 	 * Disable the edit button for archived records
+	 * @param array
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @return string
 	 */
 	public function disableArchivedRecord($row, $href, $label, $title, $icon, $attributes)
 	{
@@ -42,7 +57,8 @@ class IsotopeBackend extends Backend
 
 
 	/**
-	 * Hide archived records.
+	 * Hide archived records
+	 * @param object
 	 */
 	public function hideArchivedRecords($dc)
 	{
@@ -65,11 +81,8 @@ class IsotopeBackend extends Backend
 
 
 	/**
-	 * Archive a database record.
-	 *
-	 * @access	public
-	 * @param	object
-	 * @return	void
+	 * Archive a database record
+	 * @param object
 	 */
 	public function archiveRecord($dc)
 	{
@@ -89,8 +102,8 @@ class IsotopeBackend extends Backend
 
 	/**
 	 * Truncate the tl_iso_productcache table if a product is changed
-	 *
-	 * @return	void
+	 * @param mixed
+	 * @return mixed
 	 */
 	public function truncateProductCache($varValue=null)
 	{
@@ -102,8 +115,7 @@ class IsotopeBackend extends Backend
 
 	/**
 	 * Get array of subdivisions, delay loading of file if not necessary
-	 *
-	 * @param  object
+	 * @param object
 	 * @return array
 	 */
 	public function getSubdivisions($dc)
@@ -119,9 +131,7 @@ class IsotopeBackend extends Backend
 
 	/**
 	 * DCA for setup module tables is "closed" to hide the "new" button. Re-enable it when clicking on a button
-	 *
-	 * @param  object
-	 * @return void
+	 * @param object
 	 */
 	public function initializeSetupModule($dc)
 	{
@@ -133,8 +143,7 @@ class IsotopeBackend extends Backend
 
 
 	/**
-	 * Add published/unpublished image to each record.
-	 *
+	 * Add published/unpublished image to each record
 	 * @param array
 	 * @param string
 	 * @return string
@@ -154,6 +163,7 @@ class IsotopeBackend extends Backend
 
 	/**
 	 * Export email template into XML file
+	 * @param object
 	 */
 	public function exportMail($dc)
 	{
@@ -196,11 +206,12 @@ class IsotopeBackend extends Backend
 
 		$objContent = $this->Database->execute("SELECT * FROM tl_iso_mail_content WHERE pid=".$objMail->id);
 
-		while( $objContent->next() )
+		while ($objContent->next())
 		{
 			$content = $xml->createElement('content');
 			$content = $template->appendChild($content);
-			foreach( $objContent->row() as $k=>$v )
+
+			foreach ($objContent->row() as $k => $v)
 			{
 				$field = $xml->createElement('field');
 				$field->setAttribute('name', $k);
@@ -234,6 +245,8 @@ class IsotopeBackend extends Backend
 
 	/**
 	 * Import email template
+	 * @param object
+	 * @return string
 	 */
 	public function importMail($dc)
 	{
@@ -317,13 +330,14 @@ class IsotopeBackend extends Backend
 
 	/**
 	 * Import mail template from XML file
+	 * @param array
 	 */
 	protected function importMailFiles($arrFiles)
 	{
 		// Store the field names of the theme tables
 		$arrDbFields = array
 		(
-			'tl_iso_mail'         => array_diff($this->Database->getFieldNames('tl_iso_mail'), array('id', 'pid')),
+			'tl_iso_mail' => array_diff($this->Database->getFieldNames('tl_iso_mail'), array('id', 'pid')),
 			'tl_iso_mail_content' => array_diff($this->Database->getFieldNames('tl_iso_mail_content'), array('id', 'pid')),
 		);
 
@@ -331,6 +345,7 @@ class IsotopeBackend extends Backend
 		{
 			$xml = new DOMDocument();
 			$xml->preserveWhiteSpace = false;
+
 			if (!$xml->loadXML(file_get_contents(TL_ROOT . '/' . $strFile)))
 			{
 				$_SESSION['TL_ERROR'][] = sprintf($GLOBALS['TL_LANG']['tl_iso_mail']['xml_error'], basename($strFile));
@@ -347,7 +362,9 @@ class IsotopeBackend extends Backend
 			for( $i=0; $i<$template->length; $i++ )
 			{
 				if (!in_array($template->item($i)->getAttribute('name'), $arrDbFields['tl_iso_mail']))
+				{
 					continue;
+				}
 
 				$arrSet[$template->item($i)->getAttribute('name')] = $template->item($i)->nodeValue;
 			}
@@ -355,16 +372,18 @@ class IsotopeBackend extends Backend
 			$intPid = $this->Database->prepare("INSERT INTO tl_iso_mail %s")->set($arrSet)->execute()->insertId;
 
 			// Loop through the content fields
-			for( $i=0; $i<$content->length; $i++ )
+			for ($i=0; $i<$content->length; $i++)
 			{
 				$arrSet = array('pid'=>$intPid);
 				$row = $content->item($i)->childNodes;
 
 				// Loop through the content fields
-				for( $j=0; $j<$row->length; $j++ )
+				for ($j=0; $j<$row->length; $j++)
 				{
 					if (!in_array($row->item($j)->getAttribute('name'), $arrDbFields['tl_iso_mail_content']))
+					{
 						continue;
+					}
 
 					$arrSet[$row->item($j)->getAttribute('name')] = $row->item($j)->nodeValue;
 				}

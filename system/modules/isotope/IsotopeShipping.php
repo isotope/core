@@ -29,23 +29,24 @@
 
 
 /**
+ * Class IsotopeShipping
+ * 
  * Parent class for all shipping gateway modules
+ * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 abstract class IsotopeShipping extends Frontend
 {
 
 	/**
 	 * Template
-	 *
-	 * @access protected
 	 * @var string
 	 */
 	protected $strTemplate;
 
 	/**
 	 * Current record
-	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $arrData = array();
@@ -59,24 +60,19 @@ abstract class IsotopeShipping extends Frontend
 
 	/**
 	 * Initialize the object
-	 *
-	 * @access public
-	 * @param array $arrRow
+	 * @param array
 	 */
 	public function __construct($arrRow)
 	{
 		parent::__construct();
 
 		$this->import('Isotope');
-
 		$this->arrData = $arrRow;
 	}
 
 
 	/**
 	 * Set an object property
-	 *
-	 * @access public
 	 * @param string
 	 * @param mixed
 	 */
@@ -88,14 +84,12 @@ abstract class IsotopeShipping extends Frontend
 
 	/**
 	 * Return an object property
-	 *
-	 * @access public
 	 * @param string
 	 * @return mixed
 	 */
 	public function __get($strKey)
 	{
-		switch( $strKey )
+		switch ($strKey)
 		{
 			case 'label':
 				return $this->Isotope->translate($this->arrData['label'] ? $this->arrData['label'] : $this->arrData['name']);
@@ -103,41 +97,59 @@ abstract class IsotopeShipping extends Frontend
 
 			case 'available':
 				if (!$this->enabled && !BE_USER_LOGGED_IN)
+				{
 					return false;
+				}
 
 				if (($this->guests && FE_USER_LOGGED_IN) || ($this->protected && !FE_USER_LOGGED_IN))
+				{
 					return false;
+				}
 
 				if ($this->protected)
 				{
 					$this->import('FrontendUser', 'User');
 					$arrGroups = deserialize($this->groups);
+
 					if (!is_array($arrGroups) || !count($arrGroups) || !count(array_intersect($arrGroups, $this->User->groups)))
+					{
 						return false;
+					}
 				}
 
 				if (($this->minimum_total > 0 && $this->minimum_total > $this->Isotope->Cart->subTotal) || ($this->maximum_total > 0 && $this->maximum_total < $this->Isotope->Cart->subTotal))
+				{
 					return false;
+				}
 
 				$arrCountries = deserialize($this->countries);
-				if(is_array($arrCountries) && count($arrCountries) && !in_array($this->Isotope->Cart->shippingAddress['country'], $arrCountries))
+
+				if (is_array($arrCountries) && count($arrCountries) && !in_array($this->Isotope->Cart->shippingAddress['country'], $arrCountries))
+				{
 					return false;
+				}
 
 				$arrSubdivisions = deserialize($this->subdivisions);
 				// @todo this should be dropped with Contao 2.9 as all countries "should" have subdivisions
 				$blnHasSubdivision = is_array($GLOBALS['TL_LANG']['DIV'][$this->Isotope->Cart->shippingAddress['country']]);
 
-				if(is_array($arrSubdivisions) && count($arrSubdivisions) && !in_array($this->Isotope->Cart->shippingAddress['subdivision'], $arrSubdivisions) && $blnHasSubdivision)
+				if (is_array($arrSubdivisions) && count($arrSubdivisions) && !in_array($this->Isotope->Cart->shippingAddress['subdivision'], $arrSubdivisions) && $blnHasSubdivision)
+				{
 					return false;
+				}
 
 				$arrTypes = deserialize($this->product_types);
+
 				if (is_array($arrTypes) && count($arrTypes))
 				{
 					$arrProducts = $this->Isotope->Cart->getProducts();
-					foreach( $arrProducts as $objProduct )
+
+					foreach ($arrProducts as $objProduct)
 					{
 						if (!in_array($objProduct->type, $arrTypes))
+						{
 							return false;
+						}
 					}
 				}
 
@@ -183,17 +195,13 @@ abstract class IsotopeShipping extends Frontend
 
 	/**
 	 * Initialize the module options DCA in backend
-	 *
-	 * @access public
-	 * @return string
 	 */
 	public function moduleOptionsLoad() {}
 
 
 	/**
 	 * List module options in backend
-	 *
-	 * @access public
+	 * @param array
 	 * @return string
 	 */
 	public function moduleOptionsList($row)
@@ -204,18 +212,15 @@ abstract class IsotopeShipping extends Frontend
 
 	/**
 	 * Return information or advanced features in the backend.
-	 *
 	 * Use this function to present advanced features or basic shipping information for an order in the backend.
-	 *
-	 * @access public
-	 * @param  int		Order ID
+	 * @param integer
 	 * @return string
 	 */
 	public function backendInterface($orderId)
 	{
 		return '
 <div id="tl_buttons">
-<a href="'.ampersand(str_replace('&key=shipping', '', $this->Environment->request)).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
+<a href="' . ampersand(str_replace('&key=shipping', '', $this->Environment->request)) . '" class="header_back" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
 </div>
 
 <h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['ISO_LANG']['SHIP'][$this->type][0] . ')' . '</h2>
@@ -233,10 +238,6 @@ abstract class IsotopeShipping extends Frontend
 	 *
 	 * This function can be called from the postsale.php file when the shipping server is requestion/posting a status change.
 	 * You can see an implementation example in PaymentPostfinance.php
-	 *
-	 * @abstract
-	 * @access public
-	 * @return void
 	 */
 	public function processPostSale() {}
 
@@ -244,9 +245,7 @@ abstract class IsotopeShipping extends Frontend
 	/**
 	 * This function is used to gather any addition shipping options that might be available specific to the current customer or order.
 	 * For example, expedited shipping based on customer location.
-	 *
-	 * @access public
-	 * @param  object
+	 * @param object
 	 * @return string
 	 */
 	public function getShippingOptions(&$objModule)
@@ -260,8 +259,6 @@ abstract class IsotopeShipping extends Frontend
 	 *
 	 * Use this to return custom checkout information about this shipping module.
 	 * Example: Information about tracking codes.
-	 *
-	 * @access public
 	 * @return string
 	 */
 	public function checkoutReview()

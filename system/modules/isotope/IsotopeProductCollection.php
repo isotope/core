@@ -28,6 +28,14 @@
  */
 
 
+/**
+ * Class IsotopeProductCollection
+ * 
+ * Provide methods to handle Isotope product collections.
+ * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ */
 abstract class IsotopeProductCollection extends Model
 {
 
@@ -39,6 +47,7 @@ abstract class IsotopeProductCollection extends Model
 
 	/**
 	 * Define if data should be threaded as "locked", eg. not apply discount rules to product prices
+	 * @var boolean
 	 */
 	protected $blnLocked = false;
 
@@ -80,11 +89,14 @@ abstract class IsotopeProductCollection extends Model
 
 	/**
 	 * Record has been modified
-	 * @var bool
+	 * @var boolean
 	 */
 	protected $blnModified = false;
 
 
+	/**
+	 * Initialize the object
+	 */
 	public function __construct()
 	{
 		parent::__construct();
@@ -107,10 +119,8 @@ abstract class IsotopeProductCollection extends Model
 
 
 	/**
-	 * Return data.
-	 *
-	 * @access public
-	 * @param string $strKey
+	 * Return data
+	 * @param string
 	 * @return mixed
 	 */
 	public function __get($strKey)
@@ -126,7 +136,7 @@ abstract class IsotopeProductCollection extends Model
 				return deserialize($this->arrSettings[$strKey]);
 			}
 
-			switch( $strKey )
+			switch ($strKey)
 			{
 				case 'table':
 					return $this->strTable;
@@ -138,7 +148,7 @@ abstract class IsotopeProductCollection extends Model
 
 				case 'id':
 				case 'pid':
-					return (int)$this->arrData[$strKey];
+					return (int) $this->arrData[$strKey];
 					break;
 
 				case 'Shipping':
@@ -156,9 +166,9 @@ abstract class IsotopeProductCollection extends Model
 
 				case 'requiresShipping':
 					$this->arrCache[$strKey] = false;
-
 					$arrProducts = $this->getProducts();
-					foreach( $arrProducts as $objProduct )
+
+					foreach ($arrProducts as $objProduct)
 					{
 						if (!$objProduct->shipping_exempt)
 						{
@@ -169,13 +179,15 @@ abstract class IsotopeProductCollection extends Model
 
 				case 'requiresPayment':
 					if ($this->grandTotal > 0)
+					{
 						return true;
+					}
 
 					return false;
 					break;
 
 				case 'shippingTotal':
-					return $this->hasShipping ? (float)$this->Shipping->price : 0.00;
+					return $this->hasShipping ? (float) $this->Shipping->price : 0.00;
 					break;
 
 				case 'items':
@@ -194,11 +206,11 @@ abstract class IsotopeProductCollection extends Model
 
 				case 'subTotal':
 					$fltTotal = 0;
-
 					$arrProducts = $this->getProducts();
-					foreach( $arrProducts as $objProduct )
+
+					foreach ($arrProducts as $objProduct)
 					{
-						$fltTotal += ((float)$objProduct->price * (int)$objProduct->quantity_requested);
+						$fltTotal += ((float) $objProduct->price * (int) $objProduct->quantity_requested);
 					}
 
 					$this->arrCache[$strKey] = $fltTotal;
@@ -206,12 +218,14 @@ abstract class IsotopeProductCollection extends Model
 
 				case 'taxTotal':
 					$intTaxTotal = 0;
-
 					$arrSurcharges = $this->getSurcharges();
-					foreach( $arrSurcharges as $arrSurcharge )
+
+					foreach ($arrSurcharges as $arrSurcharge)
 					{
 						if ($arrSurcharge['add'])
+						{
 							$intTaxTotal += $arrSurcharge['total_price'];
+						}
 					}
 
 					$this->arrCache[$strKey] = $intTaxTotal;
@@ -219,12 +233,14 @@ abstract class IsotopeProductCollection extends Model
 
 				case 'grandTotal':
 					$fltTotal = $this->subTotal;
-
 					$arrSurcharges = $this->getSurcharges();
-					foreach( $arrSurcharges as $arrSurcharge )
+
+					foreach ($arrSurcharges as $arrSurcharge)
 					{
 						if ($arrSurcharge['add'] !== false)
+						{
 							$fltTotal += $arrSurcharge['total_price'];
+						}
 					}
 
 					$this->arrCache[$strKey] = $fltTotal > 0 ? $fltTotal : 0;
@@ -248,12 +264,9 @@ abstract class IsotopeProductCollection extends Model
 
 
 	/**
-	 * Set data.
-	 *
-	 * @access public
-	 * @param string $strKey
-	 * @param string $varValue
-	 * @return void
+	 * Set data
+	 * @param string
+	 * @param mixed
 	 */
 	public function __set($strKey, $varValue)
 	{
@@ -266,7 +279,7 @@ abstract class IsotopeProductCollection extends Model
 		}
 		elseif ($strKey == 'modified')
 		{
-			$this->blnModified = (bool)$varValue;
+			$this->blnModified = (bool) $varValue;
 			$this->arrCache = array();
 			$this->arrProducts = null;
 		}
@@ -311,24 +324,7 @@ abstract class IsotopeProductCollection extends Model
 	public function __isset($strKey)
 	{
 		if (isset($this->arrData[$strKey]) || isset($this->arrSettings[$strKey]))
-			return true;
-
-		return false;
-	}
-
-
-	/**
-	 * Load settings from database field
-	 * @param  string
-	 * @param  mixed
-	 * @return boolean
-	 */
-	public function findBy($strRefField, $varRefId)
-	{
-		if (parent::findBy($strRefField, $varRefId))
 		{
-			$this->arrSettings = deserialize($this->arrData['settings'], true);
-
 			return true;
 		}
 
@@ -338,20 +334,39 @@ abstract class IsotopeProductCollection extends Model
 
 	/**
 	 * Load settings from database field
-	 * @param  object
-	 * @param  string
-	 * @param  string
+	 * @param string
+	 * @param mixed
+	 * @return boolean
+	 */
+	public function findBy($strRefField, $varRefId)
+	{
+		if (parent::findBy($strRefField, $varRefId))
+		{
+			$this->arrSettings = deserialize($this->arrData['settings'], true);
+			return true;
+		}
+
+		return false;
+	}
+
+
+	/**
+	 * Load settings from database field
+	 * @param object
+	 * @param string
+	 * @param string
 	 */
 	public function setFromRow(Database_Result $resResult, $strTable, $strRefField)
 	{
 		parent::setFromRow($resResult, $strTable, $strRefField);
-
 		$this->arrSettings = deserialize($this->arrData['settings'], true);
 	}
 
 
 	/**
 	 * Update database with latest product prices and store settings
+	 * @param boolean
+	 * @return integer
 	 */
 	public function save($blnForceInsert=false)
 	{
@@ -362,9 +377,10 @@ abstract class IsotopeProductCollection extends Model
 		}
 
 		$arrProducts = $this->getProducts();
+
 		if (is_array($arrProducts) && count($arrProducts))
 		{
-			foreach( $arrProducts as $objProduct )
+			foreach ($arrProducts as $objProduct)
 			{
 				$this->Database->prepare("UPDATE {$this->ctable} SET price=? WHERE id=?")->execute($objProduct->price, $objProduct->cart_id);
 			}
@@ -377,17 +393,14 @@ abstract class IsotopeProductCollection extends Model
 		elseif ((!$this->blnRecordExists && $this->blnModified) || $blnForceInsert)
 		{
 			$this->findBy('id', parent::save($blnForceInsert));
-
 			return $this->id;
 		}
 	}
 
 
 	/**
-	 * Also delete child table records when dropping this collection.
-	 *
-	 * @access public
-	 * @return int
+	 * Also delete child table records when dropping this collection
+	 * @return integer
 	 */
 	public function delete()
 	{
@@ -400,7 +413,9 @@ abstract class IsotopeProductCollection extends Model
 				$blnRemove = $this->$callback[0]->$callback[1]($this);
 
 				if ($blnRemove === false)
+				{
 					return 0;
+				}
 			}
 		}
 
@@ -419,9 +434,9 @@ abstract class IsotopeProductCollection extends Model
 
 
 	/**
-	 * Fetch products from database.
-	 *
-	 * @access public
+	 * Fetch products from database
+	 * @param string
+	 * @param boolean
 	 * @return array
 	 */
 	public function getProducts($strTemplate='', $blnNoCache=false)
@@ -434,10 +449,9 @@ abstract class IsotopeProductCollection extends Model
 
 			$objItems = $this->Database->prepare("SELECT * FROM " . $this->ctable . " WHERE pid=?")->executeUncached($this->id);
 
-			while( $objItems->next() )
+			while ($objItems->next())
 			{
 				$objProductData = $this->Database->execute("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS product_class FROM tl_iso_products WHERE id={$objItems->product_id}");
-
 				$strClass = $GLOBALS['ISO_PRODUCT'][$objProductData->product_class]['class'];
 
 				if ($objProductData->numRows && $strClass != '')
@@ -483,18 +497,17 @@ abstract class IsotopeProductCollection extends Model
 		if (strlen($strTemplate))
 		{
 			$this->import('Isotope');
-
 			$objTemplate = new IsotopeTemplate($strTemplate);
-
 			$arrSurcharges = array();
-			foreach( $this->getSurcharges() as $arrSurcharge )
+
+			foreach ($this->getSurcharges() as $arrSurcharge)
 			{
 				$arrSurcharges[] = array
 				(
-					'label'				=> $arrSurcharge['label'],
-					'price'				=> $this->Isotope->formatPriceWithCurrency($arrSurcharge['price']),
-					'total_price'		=> $this->Isotope->formatPriceWithCurrency($arrSurcharge['total_price']),
-					'tax_id'			=> $arrSurcharge['tax_id'],
+					'label'	=> $arrSurcharge['label'],
+					'price' => $this->Isotope->formatPriceWithCurrency($arrSurcharge['price']),
+					'total_price' => $this->Isotope->formatPriceWithCurrency($arrSurcharge['total_price']),
+					'tax_id' => $arrSurcharge['tax_id'],
 				);
 			}
 
@@ -514,11 +527,9 @@ abstract class IsotopeProductCollection extends Model
 
 	/**
 	 * Add a product to the collection
-	 *
-	 * @access	public
-	 * @param	object	The product object
-	 * @param	int		How many products to add
-	 * @return	int		ID of database record added/updated
+	 * @param object The product object
+	 * @param integer How many products to add
+	 * @return integer ID of database record added/updated
 	 */
 	public function addProduct(IsotopeProduct $objProduct, $intQuantity)
 	{
@@ -533,7 +544,9 @@ abstract class IsotopeProductCollection extends Model
 		}
 
 		if ($intQuantity == 0)
+		{
 			return false;
+		}
 
 		$time = time();
 		$this->modified = true;
@@ -549,21 +562,20 @@ abstract class IsotopeProductCollection extends Model
 		if ($objItem->numRows)
 		{
 			$this->Database->query("UPDATE {$this->ctable} SET tstamp=$time, product_quantity=(product_quantity+$intQuantity) WHERE id={$objItem->id}");
-
 			return $objItems->id;
 		}
 		else
 		{
 			$arrSet = array
 			(
-				'pid'					=> $this->id,
-				'tstamp'				=> $time,
-				'product_id'			=> (int)$objProduct->id,
-				'product_sku'			=> (string)$objProduct->sku,
-				'product_name'			=> (string)$objProduct->name,
-				'product_options'		=> $objProduct->getOptions(true),
-				'product_quantity'		=> (int)$intQuantity,
-				'price'					=> $objProduct->price,
+				'pid'				=> $this->id,
+				'tstamp'			=> $time,
+				'product_id'		=> (int) $objProduct->id,
+				'product_sku'		=> (string) $objProduct->sku,
+				'product_name'		=> (string) $objProduct->name,
+				'product_options'	=> $objProduct->getOptions(true),
+				'product_quantity'	=> (int) $intQuantity,
+				'price'				=> $objProduct->price,
 			);
 
 			if ($this->Database->fieldExists('href_reader', $this->ctable))
@@ -572,7 +584,6 @@ abstract class IsotopeProductCollection extends Model
 			}
 
 			$intInsertId = $this->Database->prepare("INSERT INTO {$this->ctable} %s")->set($arrSet)->executeUncached()->insertId;
-
 			return $intInsertId;
 		}
 	}
@@ -580,16 +591,16 @@ abstract class IsotopeProductCollection extends Model
 
 	/**
 	 * update a product in the collection
-	 *
-	 * @access	public
-	 * @param	object	The product object
-	 * @param   array The property(ies) to adjust
-	 * @return	int		ID of database record added/updated
+	 * @param object The product object
+	 * @param array The property(ies) to adjust
+	 * @return integer ID of database record added/updated
 	 */
 	public function updateProduct(IsotopeProduct $objProduct, $arrSet)
 	{
 		if (!$objProduct->cart_id)
+		{
 			return false;
+		}
 
 		// HOOK for adding additional functionality when updating a product in the collection
 		if (isset($GLOBALS['ISO_HOOKS']['updateProductInCollection']) && is_array($GLOBALS['ISO_HOOKS']['updateProductInCollection']))
@@ -600,7 +611,9 @@ abstract class IsotopeProductCollection extends Model
 				$arrSet = $this->$callback[0]->$callback[1]($objProduct, $arrSet, $this);
 
 				if (is_array($arrSet) && !count($arrSet))
+				{
 					return false;
+				}
 			}
 		}
 
@@ -628,10 +641,17 @@ abstract class IsotopeProductCollection extends Model
 	}
 
 
+	/**
+	 * Delete a product in the collection
+	 * @param object
+	 * @return boolean
+	 */
 	public function deleteProduct(IsotopeProduct $objProduct)
 	{
 		if (!$objProduct->cart_id)
+		{
 			return false;
+		}
 
 		// HOOK for adding additional functionality when a product is removed from the collection
 		if (isset($GLOBALS['ISO_HOOKS']['deleteProductFromCollection']) && is_array($GLOBALS['ISO_HOOKS']['deleteProductFromCollection']))
@@ -642,24 +662,23 @@ abstract class IsotopeProductCollection extends Model
 				$blnRemove = $this->$callback[0]->$callback[1]($objProduct, $this);
 
 				if ($blnRemove === false)
+				{
 					return false;
+				}
 			}
 		}
 
 		$this->modified = true;
-
 		$this->Database->query("DELETE FROM {$this->ctable} WHERE id={$objProduct->cart_id}");
-
 		return true;
 	}
 
 
 	/**
 	 * Transfer products from another collection to this one (e.g. Cart to Order)
-	 *
-	 * @param	IsotopeProductCollection
-	 * @param	bool
-	 * @return	array
+	 * @param object
+	 * @param boolean
+	 * @return array
 	 */
 	public function transferFromCollection(IsotopeProductCollection $objCollection, $blnDuplicate=true)
 	{
@@ -669,16 +688,15 @@ abstract class IsotopeProductCollection extends Model
 		}
 
 		// Make sure database table has the latest prices
-//		$objCollection->save();
+		//$objCollection->save();
 
 		$time = time();
 		$arrIds = array();
 	 	$objOldItems = $this->Database->execute("SELECT * FROM {$objCollection->ctable} WHERE pid={$objCollection->id}");
 
-		while( $objOldItems->next() )
+		while ($objOldItems->next())
 		{
 			$blnTransfer = true;
-
 			$objNewItems = $this->Database->execute("SELECT * FROM {$this->ctable} WHERE pid={$this->id} AND product_id={$objOldItems->product_id} AND product_options='{$objOldItems->product_options}'");
 
 			// HOOK for adding additional functionality when adding product to collection
@@ -692,7 +710,9 @@ abstract class IsotopeProductCollection extends Model
 			}
 
 			if (!$blnTransfer)
+			{
 				continue;
+			}
 
 			// Product exists in target table. Increase amount.
 			if ($objNewItems->numRows)
@@ -713,10 +733,12 @@ abstract class IsotopeProductCollection extends Model
 			{
 				$arrSet = array('pid'=>$this->id, 'tstamp'=>$time);
 
-				foreach( $objOldItems->row() as $k=>$v )
+				foreach ($objOldItems->row() as $k => $v)
 				{
 					if (in_array($k, array('id', 'pid', 'tstamp')))
+					{
 						continue;
+					}
 
 					if ($this->Database->fieldExists($k, $this->ctable))
 					{
@@ -739,15 +761,16 @@ abstract class IsotopeProductCollection extends Model
 
 	/**
 	 * Calculate the weight of all products in the cart in a specific weight unit
+	 * @param string
+	 * @return mixed
 	 */
 	public function getShippingWeight($unit)
 	{
 		$this->import('Isotope');
-
 		$arrWeights = array();
 		$arrProducts = $this->getProducts();
 
-		foreach( $arrProducts as $objProduct )
+		foreach ($arrProducts as $objProduct)
 		{
 			$arrWeight = deserialize($objProduct->shipping_weight, true);
 			$arrWeight['value'] = $objProduct->quantity_requested * floatval($arrWeight['value']);
@@ -766,9 +789,9 @@ abstract class IsotopeProductCollection extends Model
 
 
 	/**
-	 * Generate the collection using a template. Useful for PDF output.
-	 *
-	 * @param  string
+	 * Generate the collection using a template. Useful for PDF output
+	 * @param string
+	 * @param boolean
 	 * @return string
 	 */
 	public function generate($strTemplate=null, $blnResetConfig=true)
@@ -800,7 +823,7 @@ abstract class IsotopeProductCollection extends Model
 		$arrItems = array();
 		$arrProducts = $this->getProducts();
 
-		foreach( $arrProducts as $objProduct )
+		foreach ($arrProducts as $objProduct)
 		{
 			$arrItems[] = array
 			(
@@ -817,24 +840,24 @@ abstract class IsotopeProductCollection extends Model
 
 		$objTemplate->info = deserialize($this->checkout_info);
 		$objTemplate->items = $arrItems;
-
 		$objTemplate->raw = $this->arrData;
-
 		$objTemplate->date = $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $this->date);
 		$objTemplate->time = $this->parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $this->date);
 		$objTemplate->datim = $this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $this->date);
 		$objTemplate->datimLabel = $GLOBALS['TL_LANG']['MSC']['datimLabel'];
-
 		$objTemplate->subTotalPrice = $this->Isotope->formatPriceWithCurrency($this->subTotal);
 		$objTemplate->grandTotal = $this->Isotope->formatPriceWithCurrency($this->grandTotal);
 		$objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
 		$objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
 
 		$arrSurcharges = array();
-		foreach( deserialize($this->surcharges, true) as $arrSurcharge )
+
+		foreach (deserialize($this->surcharges, true) as $arrSurcharge)
 		{
 			if (!is_array($arrSurcharge))
+			{
 				continue;
+			}
 
 			$arrSurcharges[] = array
 			(
@@ -846,12 +869,13 @@ abstract class IsotopeProductCollection extends Model
 		}
 
 		$objTemplate->surcharges = $arrSurcharges;
-
 		$objTemplate->billing_label = $GLOBALS['TL_LANG']['ISO']['billing_address'];
 		$objTemplate->billing_address = $this->Isotope->generateAddressString(deserialize($this->billing_address), $this->Isotope->Config->billing_fields);
+
 		if (strlen($this->shipping_method))
 		{
 			$arrShippingAddress = deserialize($this->shipping_address);
+
 			if (!is_array($arrShippingAddress) || $arrShippingAddress['id'] == -1)
 			{
 				$objTemplate->has_shipping = false;
@@ -864,7 +888,6 @@ abstract class IsotopeProductCollection extends Model
 				$objTemplate->shipping_address = $this->Isotope->generateAddressString($arrShippingAddress, $this->Isotope->Config->shipping_fields);
 			}
 		}
-
 
 		$strArticle = $this->Isotope->replaceInsertTags($objTemplate->parse());
 		$strArticle = html_entity_decode($strArticle, ENT_QUOTES, $GLOBALS['TL_CONFIG']['characterSet']);
@@ -915,6 +938,12 @@ abstract class IsotopeProductCollection extends Model
 	}
 
 
+	/**
+	 * Generate a PDF file and optionally send it to the browser
+	 * @param string
+	 * @param object
+	 * @param boolean
+	 */
 	public function generatePDF($strTemplate=null, $pdf=null, $blnOutput=true)
 	{
 		if (!is_object($pdf))

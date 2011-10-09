@@ -24,11 +24,19 @@
  * @copyright  Isotope eCommerce Workgroup 2009-2011
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- * @author     Christian de la Haye <service@delahaye.de>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
+/**
+ * Class AttributeWizard
+ * 
+ * Provide methods to handle attributes.
+ * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ * @author     Christian de la Haye <service@delahaye.de>
+ */
 class AttributeWizard extends Widget
 {
 
@@ -50,13 +58,16 @@ class AttributeWizard extends Widget
 	 */
 	protected $arrOptions = array();
 
-
 	/**
-	 * A list of fields we do not want to show. This can be set by the product type class.
+	 * A list of fields we do not want to show. This can be set by the product type class
+	 * @var array
 	 */
 	protected $arrDisabledFields;
 
-
+	/**
+	 * Active record
+	 * @param object
+	 */
 	protected $objActiveRecord;
 
 
@@ -108,10 +119,9 @@ class AttributeWizard extends Widget
 	public function generate()
 	{
 		$this->import('Database');
+
 		$this->objActiveRecord = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE id=?")->execute($this->currentRecord);
-
 		$this->arrDisabledFields = $GLOBALS['ISO_PRODUCT'][$this->objActiveRecord->class]['disabledFields'];
-
 		$this->arrOptions = $this->getOptions();
 
 		$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/html/backend.js';
@@ -158,12 +168,12 @@ class AttributeWizard extends Widget
 			$arrOptions = array();
 
 			// Move selected and sorted options to the top
-			foreach ($this->arrOptions as $i=>$arrOptionGroup)
+			foreach ($this->arrOptions as $i => $arrOptionGroup)
 			{
 				$arrOptions[$i] = array();
 				$arrTemp = $this->arrOptions[$i];
 
-				foreach( $arrOptionGroup as $k=>$arrOption )
+				foreach ($arrOptionGroup as $k => $arrOption)
 				{
 					if (($intPos = array_search($arrOption['value'], $this->varValue)) !== false)
 					{
@@ -184,11 +194,9 @@ class AttributeWizard extends Widget
 		$blnCheckAll = true;
 		$arrOptions = array();
 
-
-		foreach ($this->arrOptions as $i=>$arrOptionGroup)
+		foreach ($this->arrOptions as $i => $arrOptionGroup)
 		{
 			$id = 'cbc_' . $this->strId . '_' . standardize($i, true);
-
 			$img = 'folPlus';
 			$display = 'none';
 
@@ -203,7 +211,6 @@ class AttributeWizard extends Widget
 			foreach ($arrOptionGroup as $arrOption)
 			{
 				$strButtons = '';
-
 				$k = (is_array($this->varValue) && in_array($arrOption['value'], $this->varValue)) ? $cid++ : '';
 
 				foreach ($arrButtons as $strButton)
@@ -240,7 +247,7 @@ class AttributeWizard extends Widget
 	/**
 	 * Generate a checkbox and return it as string
 	 * @param array
-	 * @param integer
+	 * @param string
 	 * @param string
 	 * @return string
 	 */
@@ -275,6 +282,7 @@ class AttributeWizard extends Widget
 
 	/**
 	 * Return attributes as associative array with legends as keys
+	 * @return array
 	 */
 	protected function getOptions()
 	{
@@ -286,13 +294,15 @@ class AttributeWizard extends Widget
 		$arrAttributes = array();
 		$arrDca = $GLOBALS['TL_DCA']['tl_iso_products']['fields'];
 
-		foreach( $arrDca as $field => $arrData )
+		foreach ($arrDca as $field => $arrData)
 		{
 			if (is_array($arrData['attributes']) && strlen($arrData['attributes']['legend']) && (!is_array($this->arrDisabledFields) || !in_array($field, $this->arrDisabledFields)))
 			{
 				// Variant options are not available
 				if ($this->variants && ($arrData['attributes']['variant_option'] || $arrData['attributes']['inherit']))
+				{
 					continue;
+				}
 
 				$arrAttributes[$arrData['attributes']['legend']][] = array
 				(
@@ -304,7 +314,6 @@ class AttributeWizard extends Widget
 		}
 
 		uksort($arrAttributes, create_function('$a,$b', 'return (array_search($a, $GLOBALS["TL_DCA"]["tl_iso_attributes"]["fields"]["legend"]["options"]) > array_search($b, $GLOBALS["TL_DCA"]["tl_iso_attributes"]["fields"]["legend"]["options"])) ? 1 : -1;'));
-
 		return $arrAttributes;
 	}
 }

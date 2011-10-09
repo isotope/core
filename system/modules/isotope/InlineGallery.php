@@ -28,6 +28,14 @@
  */
 
 
+/**
+ * Class InlineGallery
+ * 
+ * Provide methods to handle inline gallery.
+ * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ */
 class InlineGallery extends IsotopeGallery
 {
 
@@ -39,21 +47,30 @@ class InlineGallery extends IsotopeGallery
 
 
 	/**
-	 * Generate gallery
+	 * Generate gallery and return it as HTML string
+	 * @param string
+	 * @param integer
+	 * @param boolean
+	 * @return string
 	 */
 	public function generateGallery($strType='gallery', $intSkip=0, $blnForce=false)
 	{
 		// Do not render gallery if there are no additional image
 		$total = count($this->arrFiles);
+
 		if (($total == 1 || $total <= $intSkip) && !$blnForce)
+		{
 			return '';
+		}
 
 		$strGallery = '';
 
-		foreach( $this->arrFiles as $i => $arrFile )
+		foreach ($this->arrFiles as $i => $arrFile)
 		{
 			if ($i < $intSkip)
+			{
 				continue;
+			}
 
 			$objTemplate = new IsotopeTemplate($this->strTemplate);
 
@@ -79,6 +96,9 @@ class InlineGallery extends IsotopeGallery
 	}
 
 
+	/**
+	 * Inject AJAX script
+	 */
 	protected function injectAjax()
 	{
 	}
