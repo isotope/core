@@ -178,12 +178,7 @@ abstract class IsotopeProductCollection extends Model
 					break;
 
 				case 'requiresPayment':
-					if ($this->grandTotal > 0)
-					{
-						return true;
-					}
-
-					return false;
+					return $this->grandTotal > 0 ? true : false;
 					break;
 
 				case 'shippingTotal':
@@ -688,7 +683,7 @@ abstract class IsotopeProductCollection extends Model
 		}
 
 		// Make sure database table has the latest prices
-		//$objCollection->save();
+//		$objCollection->save();
 
 		$time = time();
 		$arrIds = array();

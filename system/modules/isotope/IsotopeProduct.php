@@ -729,7 +729,7 @@ class IsotopeProduct extends Controller
 	 * Generate an atrtibute and return it as HTML string
 	 * @param string
 	 * @param mixed
-	 * @param string
+	 * @return string|IsotopeGallery
 	 */
 	protected function generateAttribute($attribute, $varValue)
 	{
@@ -885,7 +885,7 @@ class IsotopeProduct extends Controller
 	 * Return a widget object based on a product attribute's properties
 	 * @param string
 	 * @param boolean
-	 * @return object
+	 * @return string
 	 */
 	protected function generateProductOptionWidget($strField, $blnAjax=false)
 	{

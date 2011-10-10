@@ -788,7 +788,7 @@ $endScript";
 
 	/**
 	 * Shortcut for a single product by ID or from database result
-	 * @param object
+	 * @param Database_Result|int
 	 * @param integer
 	 * @param boolean
 	 * @return IsotopeProduct|null
