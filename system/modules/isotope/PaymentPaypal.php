@@ -63,7 +63,7 @@ class PaymentPaypal extends IsotopePayment
 			return false;
 		}
 
-		if ($objOrder->date_payed <= time())
+		if ($objOrder->date_payed > 0 && $objOrder->date_payed <= time())
 		{
 			unset($_SESSION['PAYPAL_TIMEOUT']);
 			return true;
@@ -81,7 +81,7 @@ class PaymentPaypal extends IsotopePayment
 		if ($_SESSION['PAYPAL_TIMEOUT'] === 0)
 		{
 			global $objPage;
-			$this->log('Payment could not be processed.', 'PaymentPaypal processPayment()', TL_ERROR);
+			$this->log('Payment could not be processed.', __METHOD__, TL_ERROR);
 			$this->redirect($this->generateFrontendUrl($objPage->row(), '/step/failed'));
 		}
 
@@ -114,7 +114,7 @@ class PaymentPaypal extends IsotopePayment
 
 		if ($objRequest->hasError())
 		{
-			$this->log('Request Error: ' . $objRequest->error, 'PaymentPaypal processPostSale()', TL_ERROR);
+			$this->log('Request Error: ' . $objRequest->error, __METHOD__, TL_ERROR);
 			exit;
 		}
 		elseif ($objRequest->response == 'VERIFIED' && ($this->Input->post('receiver_email') == $this->paypal_account || $this->debug))
@@ -123,13 +123,20 @@ class PaymentPaypal extends IsotopePayment
 
 			if (!$objOrder->findBy('id', $this->Input->post('invoice')))
 			{
-				$this->log('Order ID "' . $this->Input->post('invoice') . '" not found', 'PaymentPaypal processPostSale()', TL_ERROR);
+				$this->log('Order ID "' . $this->Input->post('invoice') . '" not found', __METHOD__, TL_ERROR);
+				return;
+			}
+			
+			// Validate payment data (see #2221)
+			if ($objOrder->currency != $this->Input->post('mc_currency') || $objOrder->grandTotal != $this->Input->post('mc_gross'))
+			{
+				$this->log('IPN checkout manipulation in payment from "' . $this->Input->post('payer_email') . '" !', __METHOD__, TL_ERROR);
 				return;
 			}
 
 			if (!$objOrder->checkout())
 			{
-				$this->log('IPN checkout for Order ID "' . $this->Input->post('invoice') . '" failed', 'PaymentPaypal processPostSale()', TL_ERROR);
+				$this->log('IPN checkout for Order ID "' . $this->Input->post('invoice') . '" failed', __METHOD__, TL_ERROR);
 				return;
 			}
 
@@ -182,7 +189,7 @@ class PaymentPaypal extends IsotopePayment
 		}
 		else
 		{
-			$this->log('PayPal IPN: data rejected (' . $objRequest->response . ')', 'PaymentPaypal processPostSale()', TL_GENERAL);
+			$this->log('PayPal IPN: data rejected (' . $objRequest->response . ')', __METHOD__, TL_GENERAL);
 		}
 
 		header('HTTP/1.1 200 OK');

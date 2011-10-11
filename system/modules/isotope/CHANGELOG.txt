@@ -136,11 +136,12 @@ Version 1.3.beta1 (2011-07-18)
 - Removed moduleOperations callback from payment and shipping modules. The same can be achieved through standard DCA operations.
 - Moved ePay payment modules to own extension
 
-Version 0.2.12 (2011-??-??)
+Version 0.2.12 (2011-10-11)
 ---------------------------
 - Added "transferCollection" hook
 - Fixed availability of unpublished products
 - Fixed: min&max limit in product rule was not applied
+- Fixed security issue in payment modules (#2221)
 
 Version 0.2.11 (2011-08-28)
 ------------------------------
