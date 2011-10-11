@@ -38,6 +38,12 @@ class DC_ProductData extends DC_Table
 	 * True if we are editing a language
 	 */
 	protected $blnEditLanguage;
+	
+	/**
+	 * Deferred loading of product data
+	 * @var bool
+	 */
+	protected $blnDeferredLoading = false;
 
 	/**
 	 * Array of languages for this product's type
@@ -48,6 +54,22 @@ class DC_ProductData extends DC_Table
 	 * IDs of visible products
 	 */
 	protected $products = array();
+	
+	
+	/**
+	 * Initialize the object
+	 * @param string
+	 */
+	public function __construct($strTable)
+	{
+		$this->import('Environment');
+		
+		$this->Environment->request = preg_replace('/&loadDeferredProduct=[^&]*&level=[^&]*/', '', $this->Environment->request);
+		$this->Environment->requestUri = preg_replace('/&loadDeferredProduct=[^&]*&level=[^&]*/', '', $this->Environment->requestUri);
+		$this->Environment->queryString = preg_replace('/&loadDeferredProduct=[^&]*&level=[^&]*/', '', $this->Environment->queryString);
+		
+		parent::__construct($strTable);
+	}
 
 
 	/**
@@ -1347,6 +1369,23 @@ window.addEvent(\'domready\', function() {
 			return '
 <p class="tl_empty">DC_ProductData does only support sorting mode 5!</p>';
 		}
+		
+		if ($this->Input->get('loadDeferredProduct') > 0)
+		{
+			$this->intId = $this->Input->get('loadDeferredProduct');
+			$level = (int)$this->Input->get('level');
+			$this->blnDeferredLoading = true;
+			$this->Input->setGet('loadDeferredProduct', null);
+			$this->Input->setGet('level', null);
+			
+			while(ob_end_clean());
+			echo json_encode(array
+			(
+				'content'	=> $this->ajaxTreeView($this->intId, $level),
+				'token'		=> REQUEST_TOKEN,
+			));
+			exit;
+		}
 
 		$table = $this->strTable;
 		$treeClass = 'tl_tree tl_productdata';
@@ -1432,6 +1471,20 @@ window.addEvent(\'domready\', function() {
 			$this->redirect(preg_replace('/(&(amp;)?|\?)(gtg)=[^& ]*/i', '', $this->Environment->request));
 		}
 
+		// Handle overload detection. This variable is only true if the previous rendering was not successful
+		if ($this->Session->get('PRODUCTDATA_OVERLOAD'))
+		{
+			// From now on we defer loading to prevent another overload
+			$GLOBALS['TL_CONFIG']['iso_deferProductLoading'] = true;
+			$this->Config->add('$GLOBALS[\'TL_CONFIG\'][\'iso_deferProductLoading\']', true);
+
+			// Close all groups
+			$session = $this->Session->getData();
+			$node = $this->strTable.'_'.$gtable.'_tree';
+			$session[$node] = array();
+			$this->Session->setData($session);
+		}
+
 		$blnClipboard = false;
 		$arrClipboard = $this->Session->get('CLIPBOARD');
 
@@ -1454,6 +1507,9 @@ window.addEvent(\'domready\', function() {
 </div>' . $this->getMessages(true);
 
 		$tree = '';
+		
+		// Start the overload detection
+		$this->Session->set('PRODUCTDATA_OVERLOAD', true);
 
 		// Call a recursive function that builds the tree including groups
 		$this->root = $this->Database->execute("SELECT id FROM $gtable WHERE pid=0 ORDER BY sorting")->fetchEach('id');
@@ -1468,6 +1524,9 @@ window.addEvent(\'domready\', function() {
 		{
 			$tree .= $this->generateProductTree($table, $this->root[$i], array('p'=>$this->root[($i-1)], 'n'=>$this->root[($i+1)]), -20, ($blnClipboard ? $arrClipboard : false));
 		}
+
+		// Stop the overload detection, everything went smoothly
+		$this->Session->set('PRODUCTDATA_OVERLOAD', false);
 
 		// Return if there are no records
 		if (!strlen($tree) && $this->Input->get('act') != 'paste')
@@ -1519,6 +1578,35 @@ window.addEvent(\'domready\', function() {
 
 </div>';
 
+		if ($GLOBALS['TL_CONFIG']['iso_deferProductLoading'])
+		{
+			$return .= "
+<script>
+function loadDeferredProducts() {
+	var scroll = window.getScroll().y + window.getSize().y;
+	$$('.deferred_product').each( function(el) {
+		if (scroll - el.getPosition().y > 0)
+		{
+			el.removeClass('deferred_product');
+			var productId = el.get('id').replace('product_', '');
+			var level = (el.getParent('ul').get('class').match(/level_/) ? el.getParent('ul').get('class').replace('level_', '').toInt() : -1);
+			new Request.Contao({
+				method: 'get',
+				url: (window.location.href+'&loadDeferredProduct='+productId+'&level='+level),
+				onComplete: function(html, text) {
+					var temp = new Element('div').set('html', html);
+					temp.getChildren().each( function(li) { li.inject(el.getParent('li'), 'before') });
+					el.getParent('li').destroy();
+					window.fireEvent('structure');
+				}
+			}).send();
+		}
+	});
+}
+$(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDeferredProducts).addEvent('ajax_change', loadDeferredProducts);
+</script>";
+		}
+
 		// Close form
 		if ($this->Input->get('act') == 'select')
 		{
@@ -1551,7 +1639,7 @@ window.addEvent(\'domready\', function() {
 	 */
 	public function ajaxTreeView($id, $level)
 	{
-		if (!$this->Environment->isAjaxRequest)
+		if (!$this->Environment->isAjaxRequest && !$this->blnDeferredLoading)
 		{
 			return '';
 		}
@@ -1561,7 +1649,7 @@ window.addEvent(\'domready\', function() {
 
 		$return = '';
 		$table = $this->strTable;
-//		$blnPtable = false;
+		$blnPtable = false;
 		$margin = ($level * 20);
 
 		$blnClipboard = false;
@@ -1574,8 +1662,21 @@ window.addEvent(\'domready\', function() {
 			$arrClipboard = $arrClipboard[$this->strTable];
 		}
 
+		// Load single product
+		if ($this->blnDeferredLoading)
+		{
+			$blnPtable = true;
+			
+			// Call a recursive function that builds the tree
+			$this->root = $this->Database->execute("SELECT id FROM {$this->strTable} WHERE id=$id")->fetchEach('id');
+			for ($i=0; $i<count($this->root); $i++)
+			{
+				$return .= ' ' . trim($this->generateProductTree($this->strTable, $id, array(), $margin, ($blnClipboard ? $arrClipboard : false), ($id == $arrClipboard ['id'] || (is_array($arrClipboard ['id']) && in_array($id, $arrClipboard ['id'])) || (!$blnPtable && !is_array($arrClipboard['id']) && in_array($id, $this->getChildRecords($arrClipboard['id'], $table))))));
+			}
+		}
+		
 		// Load groups and products
-		if ($GLOBALS['TL_DCA'][$this->strTable]['config']['gtable'] != '' && $this->Input->post('id') != ($table.'_tree_'.$id))
+		elseif ($GLOBALS['TL_DCA'][$this->strTable]['config']['gtable'] != '' && $this->Input->post('id') != ($table.'_tree_'.$id))
 		{
 			$table = $GLOBALS['TL_DCA'][$this->strTable]['config']['gtable'];
 
@@ -1711,8 +1812,13 @@ window.addEvent(\'domready\', function() {
 		}
 
 		$session[$node][$id] = (is_int($session[$node][$id])) ? $session[$node][$id] : 0;
-
-		$return .= "\n  " . '<li class="'.((($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 5 && $objRow->type == 'root') || $table != $this->strTable) ? 'tl_folder' : 'tl_file').'" onmouseover="Theme.hoverDiv(this, 1);" onmouseout="Theme.hoverDiv(this, 0);"><div class="tl_left" style="padding-left:'.($intMargin + $intSpacing).'px;">';
+		
+		$return .= "\n  " . '<li class="'.(($table != $this->strTable) ? 'tl_folder' : 'tl_file').'" onmouseover="Theme.hoverDiv(this, 1);" onmouseout="Theme.hoverDiv(this, 0);"><div class="tl_left" style="padding-left:'.($intMargin + $intSpacing).'px;">';
+		
+		if ($GLOBALS['TL_CONFIG']['iso_deferProductLoading'] && $table == $this->strTable && !$this->Environment->isAjaxRequest)
+		{
+			return $return . '<div class="iso_product deferred_product" id="product_' . $objRow->id . '"><div class="thumbnail"><img src="system/themes/default/images/loading.gif" alt=""></div><p>' . $objRow->name . '</p></div></div></li>';
+		}
 
 		// Calculate label and add a toggle button
 		$args = array();
@@ -1725,7 +1831,7 @@ window.addEvent(\'domready\', function() {
 			$folderAttribute = '';
 			$img = ($session[$node][$id] == 1) ? 'folMinus.gif' : 'folPlus.gif';
 			$alt = ($session[$node][$id] == 1) ? $GLOBALS['TL_LANG']['MSC']['collapseNode'] : $GLOBALS['TL_LANG']['MSC']['expandNode'];
-			$return .= '<a href="'.$this->addToUrl($toggle.'='.$id).'" title="'.specialchars($alt).'" onclick="Backend.getScrollOffset(); return AjaxRequest.toggleStructure(this, \''.$node.'_'.$id.'\', '.$level.', '.$GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'].');">'.$this->generateImage($img, '', 'style="margin-right:2px;"').'</a>';
+			$return .= '<a href="'.$this->addToUrl($toggle.'='.$id).'" title="'.specialchars($alt).'" onclick="Backend.getScrollOffset(); AjaxRequest.toggleStructure(this, \''.$node.'_'.$id.'\', '.$level.', '.$GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'].'); window.fireEvent(\'ajax_change\'); return false">'.$this->generateImage($img, '', 'style="margin-right:2px;"').'</a>';
 		}
 
 		foreach ($showFields as $k=>$v)

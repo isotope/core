@@ -252,6 +252,10 @@
 	height: auto;
 }
 
+.tl_productdata .tl_file {
+	min-height: 36px;
+}
+
 .tl_productdata .tl_file .tl_left a,
 .product_tree .tl_file .tl_left a
 {

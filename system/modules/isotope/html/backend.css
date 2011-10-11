@@ -31,6 +31,7 @@
 .mod_iso_orderdetails .price{text-align:right}
 .mod_iso_orderdetails tfoot td{text-align:right;padding:5px 5px 0}
 .w50h{height:auto}
+.tl_productdata .tl_file{min-height:36px}
 .tl_productdata .tl_file .tl_left a,.product_tree .tl_file .tl_left a{float:left;margin-top:10px}
 .tl_productdata .tl_file .tl_left a.tl_tip,.product_tree .tl_file .tl_left a.tl_tip{float:none}
 .tl_productdata .tl_file .tl_right,.product_tree .tl_file .tl_right{height:auto;text-align:right}
