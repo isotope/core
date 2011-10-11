@@ -13,7 +13,7 @@
 --
 
 CREATE TABLE `tl_iso_payment_modules` (
-  `datatrans_id` varchar(100) NOT NULL default '',
-  `datatrans_sign` char(1) NOT NULL default '0',
-  `datatrans_sign_value` varchar(100) NOT NULL default '',
+  `datatrans_id` varchar(16) NOT NULL default '',
+  `datatrans_sign` varchar(128) NOT NULL default '',
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+

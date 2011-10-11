@@ -22,21 +22,16 @@
  *
  * PHP version 5
  * @copyright  Isotope eCommerce Workgroup 2009-2011
- * @author     Leo Unglaub <leo.unglaub@iserv.ch>
+ * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Leo Unglaub <leo@leo-unglaub.net>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  * @version    $Id: $
  */
 
+
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['datatrans_id']			= array('Merchant-ID', 'Bitte geben Sie ihre Datatrans Merchant-ID ein.');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['datatrans_sign']			= array('sign Parameter', 'Aktivieren Sie diese Checkbox um einen "sign" Parameter zu verwenden.');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['datatrans_sign_value']	= array('sign Wert', 'Bitte geben Sie den gleichen "sign" Wert ein, wie in datatrans Control Panel.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['datatrans_id']	= array('Merchant-ID', 'Bitte geben Sie ihre Datatrans Merchant-ID ein.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['datatrans_sign']	= array('HMAC-Schlüssel', 'Bitte geben Sie den HMAC-Schlüssel aus Ihrem Datatrans Control Panel ein.');
 
-
-/**
- * MSC
- */
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['datatrans_label_pay']	= 'Jetzt mit Datatrans bezahlen';
-?>

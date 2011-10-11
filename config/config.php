@@ -22,7 +22,8 @@
  *
  * PHP version 5
  * @copyright  Isotope eCommerce Workgroup 2009-2011
- * @author     Leo Unglaub <leo.unglaub@iserv.ch>
+ * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Leo Unglaub <leo@leo-unglaub.net>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  * @version    $Id: $
  */
@@ -33,4 +34,3 @@
  */
 $GLOBALS['ISO_PAY']['datatrans'] = 'PaymentDatatrans';
 
-?>

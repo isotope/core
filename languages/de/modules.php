@@ -23,15 +23,13 @@
  * PHP version 5
  * @copyright  Isotope eCommerce Workgroup 2009-2011
  * @author     Andreas Schempp <andreas@schempp.ch>
- * @author     Leo Unglaub <leo@leo-unglaub.net>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
- * @version    $Id: $
+ * @version    $Id$
  */
 
 
 /**
- * Fields
+ * Extension folder
  */
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['datatrans_id']	= array('Merchant-ID', 'Please enter your merchant ID.');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['datatrans_sign']	= array('HMAC Key', 'Please enter your HMAC key from the Datatrans control panel.');
+$GLOBALS['TL_LANG']['MOD']['isotope_datatrans'] = array('Isotope eCommerce: Datatrans Zahlungsmodul');
 

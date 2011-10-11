@@ -22,7 +22,8 @@
  *
  * PHP version 5
  * @copyright  Isotope eCommerce Workgroup 2009-2011
- * @author     Leo Unglaub <leo.unglaub@iserv.ch>
+ * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Leo Unglaub <leo@leo-unglaub.net>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  * @version    $Id: $
  */
@@ -30,14 +31,7 @@
 /**
  * Palettes
  */
-$GLOBALS['TL_DCA']['tl_iso_payment_modules']['palettes']['__selector__'][] = 'datatrans_sign';
-$GLOBALS['TL_DCA']['tl_iso_payment_modules']['palettes']['datatrans'] = '{type_legend},name,label,type;{config_legend},new_order_status,trans_type,postsale_mail,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},datatrans_id,datatrans_sign;{expert_legend:hide},guests,protected;{enabled_legend},enabled';
-
-
-/**
- * Subpalettes
- */
-$GLOBALS['TL_DCA']['tl_iso_payment_modules']['subpalettes']['datatrans_sign'] = 'datatrans_sign_value';
+$GLOBALS['TL_DCA']['tl_iso_payment_modules']['palettes']['datatrans'] = '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,trans_type,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},datatrans_id,datatrans_sign;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled';
 
 
 /**
@@ -55,15 +49,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['datatrans_sign'] = array
 (
 	'label'		=> &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['datatrans_sign'],
 	'exclude'	=> true,
-	'inputType'	=> 'checkbox',
-	'eval'		=> array('tl_class'=>'clr', 'submitOnChange'=>true)
+	'inputType'	=> 'text',
+	'eval'		=> array('mandatory'=>true, 'decodeEntities'=>true, 'tl_class'=>'w50')
 );
 
-$GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['datatrans_sign_value'] = array
-(
-	'label'		=> &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['datatrans_sign_value'],
-	'exclude'	=> true,
-	'inputType'	=> 'text',
-	'eval'		=> array('mandatory'=>true, 'tl_class'=>'w50')
-);
-?>
