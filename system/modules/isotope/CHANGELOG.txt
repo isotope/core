@@ -17,6 +17,7 @@ Version 1.3.rc1 (2011-??-??)
 - Added "advanced filters" for backend product list
 - Added "hasImages()" method to the gallery to ease checking for existance of images
 - Added deferred (lazy) loading of product data if backend is overloaded
+- Added option to force displaying variants of a product type
 - Improved: loading products is now centralized in IsotopeFrontend static functions
 - Fixed radio button events in Internet Explorer (Ticket #484)
 - Fixed products DCA not loaded in rare cases

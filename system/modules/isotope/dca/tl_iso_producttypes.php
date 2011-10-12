@@ -130,7 +130,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
 	// Subpalettes
 	'subpalettes' => array
 	(
-		'variants'					=> 'variant_attributes',
+		'variants'					=> 'variant_attributes,alwaysShow',
 	),
 
 	// Fields
@@ -212,6 +212,12 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
 			'exclude'				=> true,
 			'inputType'				=> 'attributeWizard',
 			'eval'					=> array('variants'=>true),
+		),
+        'alwaysShow' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_producttypes']['alwaysShow'],
+			'exclude'				=> true,
+			'inputType'				=> 'checkbox'
 		),
 		'downloads' => array
 		(
