@@ -40,7 +40,7 @@
 <tbody>
 <?php foreach($this->products as $product): ?>
     <tr class="<?php echo $product['class']; ?>">
-		<td class="col_0 col_first image"><a href="<?php echo $product['link']; ?>" title="<?php echo $product['name']; ?>"><img src="<?php echo $product['image']['gallery']; ?>" alt="<?php echo $product['image']['alt']; ?>" class="thumbnail"<?php echo $product['image']['gallery_size']; ?> /></a></td>
+		<td class="col_0 col_first image"><a href="<?php echo $product['link']; ?>" title="<?php echo $product['name']; ?>"><img src="<?php echo $product['image']['gallery']; ?>" alt="<?php echo $product['image']['alt']; ?>" class="thumbnail" <?php echo $product['image']['gallery_size']; ?> /></a></td>
    		<td class="col_1 name">
    			<a href="<?php echo $product['link']; ?>" title="<?php echo $product['name']; ?>"><?php echo $product['name']; ?></a>
 			<?php if($product['product_options']): ?>
