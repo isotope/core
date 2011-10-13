@@ -175,7 +175,7 @@ class ModuleIsotopeSetup extends BackendModule
 		}
 
 		// AJAX request
-		if ($this->Input->post('isAjax'))
+		if ($_POST && $this->Environment->isAjaxRequest)
 		{
 			$this->objAjax->executePostActions($dc);
 		}
