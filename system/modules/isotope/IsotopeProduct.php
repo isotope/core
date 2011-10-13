@@ -632,6 +632,7 @@ class IsotopeProduct extends Controller
 		$objTemplate->href_reader = $this->href_reader;
 		$objTemplate->label_detail = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
 		$objTemplate->options = $arrProductOptions;
+		$objTemplate->optionsCSSClasses = IsotopeFrontend::generateCSSClassesFromArray($arrProductOptions, 'iso_product_option');
 		$objTemplate->hasOptions = count($arrProductOptions) ? true : false;
 		$objTemplate->enctype = $this->hasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
 		$objTemplate->formId = $this->formSubmit;

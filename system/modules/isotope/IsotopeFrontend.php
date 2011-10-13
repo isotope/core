@@ -1029,5 +1029,58 @@ $endScript";
 				return $mode == 'SQL' ? '=' : '==';
 		}
 	}
+	
+	
+	/**
+	 * Generate an array of classes based on an array
+	 * @param array data rows
+	 * @param string class prefix (e.g. iso_product)
+	 * @param int number of columns
+	 * @return array
+	 */
+	public static function generateCSSClassesFromArray($arrData, $strClassPrefix, $intColumns=0)
+	{
+		// defining 0 columns doesn't make sense
+		$hasColumns = ($intColumns > 0);
+		$arrClasses = array();
+		$total = count($arrData) - 1;
+		$current = 0;
+		
+		if ($hasColumns)
+		{
+			$row = 0;
+			$col = 0;
+			$rows = ceil(count($arrData) / $intColumns) - 1;
+			$cols = $intColumns - 1;			
+		}
+		
+		foreach ($arrData as $k => $v)
+		{
+			if ($hasColumns && $current > 0 && $current % $intColumns == 0)
+			{
+				++$row;
+				$col = 0;
+			}
+			
+			// if the key is numeric, we add the prefix "id_", pass your $arrData with keys if you don't like "id_"
+			$strKey = (is_numeric($k)) ? 'id_' . $k : $k;
+			
+			$strClass = $strKey . ' ' . $strClassPrefix . ' ' . $strClassPrefix . '_' . $current . ($current%2 ? ' ' . $strClassPrefix . '_even' : ' ' . $strClassPrefix . '_odd') . ($current == 0 ? ' ' . $strClassPrefix . '_first' : '') . ($current == $total ? ' ' . $strClassPrefix . '_last' : '');
+		
+			// Add row & col classes
+			if ($hasColumns)
+			{
+				$strClass .= ' row_'.$row . ($row%2 ? ' row_even' : ' row_odd') . ($row == 0 ? ' row_first' : '') . ($row == $rows ? ' row_last' : '');
+				$strClass .= ' col_'.$col . ($col%2 ? ' col_even' : ' col_odd') . ($col == 0 ? ' col_first' : '') . ($col == $cols ? ' col_last' : '');
+			}
+
+			$arrClasses[$k] = $strClass;
+			
+			++$col;
+			++$current;
+		}
+		
+		return $arrClasses;
+	}
 }
 

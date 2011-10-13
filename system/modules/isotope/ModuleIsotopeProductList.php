@@ -240,42 +240,17 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			$this->redirect($objProduct->href_reader);
 		}
 
+		$arrCSSClasses = IsotopeFrontend::generateCSSClassesFromArray($arrProducts, 'product', $this->iso_cols);
 		$arrBuffer = array();
-		$total = count($arrProducts) - 1;
-		$current = 0;
-		$row = 0;
-		$col = 0;
-		$rows = ceil(count($arrProducts) / $this->iso_cols) - 1;
-		$cols = $this->iso_cols - 1;
-		foreach( $arrProducts as $objProduct )
+		foreach ($arrProducts as $k => $objProduct)
 		{
-			$blnClear = false;
-
-			if ($current > 0 && $current % $this->iso_cols == 0)
-			{
-				$blnClear = true;
-				++$row;
-				$col = 0;
-			}
-
-			$strClass = 'product product_'.$current . ($current%2 ? ' product_even' : ' product_odd') . ($current == 0 ? ' product_first' : '') . ($current == $total ? ' product_last' : '');
-
-			// Add row & col classes
-			if ($this->iso_cols > 1)
-			{
-				$strClass .= ' row_'.$row . ($row%2 ? ' row_even' : ' row_odd') . ($row == 0 ? ' row_first' : '') . ($row == $rows ? ' row_last' : '');
-				$strClass .= ' col_'.$col . ($col%2 ? ' col_even' : ' col_odd') . ($col == 0 ? ' col_first' : '') . ($col == $cols ? ' col_last' : '');
-			}
-
 			$arrBuffer[] = array
 			(
-				'clear'		=> (($this->iso_cols > 1 && $blnClear) ? true : false),
-				'class'		=> $strClass,
+				// @todo: do we still need this? clearing can easily be done using the CSS classes
+				//'clear'		=> (($this->iso_cols > 1 && $blnClear) ? true : false),
+				'class'		=> $arrCSSClasses[$k],
 				'html'		=> $objProduct->generate((strlen($this->iso_list_layout) ? $this->iso_list_layout : $objProduct->list_template), $this),
-			);
-
-			++$col;
-			++$current;
+			);			
 		}
 
 		$this->Template->products = $arrBuffer;
