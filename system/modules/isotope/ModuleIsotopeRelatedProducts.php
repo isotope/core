@@ -28,9 +28,28 @@
  */
 
 
+/**
+ * Class ModuleIsotopeRelatedProducts
+ * 
+ * List products related to the current product reader.
+ * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ */
 class ModuleIsotopeRelatedProducts extends ModuleIsotopeProductList
 {
 
+	/**
+	 * Do not cache related products cause the list is different depending on URL parameters
+	 * @var bool
+	 */
+	protected $blnCacheProducts = false;
+
+
+	/**
+	 * Generate the module
+	 * @return string
+	 */
 	public function generate()
 	{
 		if (TL_MODE == 'BE')
@@ -47,7 +66,9 @@ class ModuleIsotopeRelatedProducts extends ModuleIsotopeProductList
 		}
 
 		if (!strlen($this->Input->get('product')))
+		{
 			return '';
+		}
 
 		$this->iso_related_categories = deserialize($this->iso_related_categories);
 
@@ -60,6 +81,10 @@ class ModuleIsotopeRelatedProducts extends ModuleIsotopeProductList
 	}
 
 
+	/**
+	 * Find all products we need to list.
+	 * @return	array
+	 */
 	protected function findProducts()
 	{
 		$strAlias = $this->Input->get('product');
@@ -69,7 +94,7 @@ class ModuleIsotopeRelatedProducts extends ModuleIsotopeProductList
 
 		$objCategories = $this->Database->prepare("SELECT *, (SELECT jumpTo FROM tl_iso_related_categories WHERE id=category) AS jumpTo FROM tl_iso_related_products WHERE pid IN (SELECT id FROM tl_iso_products WHERE " . (is_numeric($strAlias) ? 'id' : 'alias') . "=?" . ($this->iso_list_where != '' ? ' AND '.$this->iso_list_where : '') . ") AND category IN (" . implode(',', $this->iso_related_categories) . ") ORDER BY id=" . implode(' DESC, id=', $this->iso_related_categories) . " DESC")->execute($strAlias);
 
-		while( $objCategories->next() )
+		while ($objCategories->next())
 		{
 			$ids = deserialize($objCategories->products);
 
