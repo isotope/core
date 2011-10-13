@@ -673,14 +673,14 @@ CREATE TABLE `tl_iso_requestcache` (
 
 CREATE TABLE `tl_iso_productcache` (
   `id` int(10) unsigned NOT NULL auto_increment,
-  `tstamp` int(10) unsigned NOT NULL default '0',
   `page_id` int(10) unsigned NOT NULL default '0',
   `module_id` int(10) unsigned NOT NULL default '0',
   `requestcache_id` int(10) unsigned NOT NULL default '0',
   `keywords` varchar(255) NOT NULL default '',
   `products` blob NULL,
+  `expires` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
-  KEY `page_id` (`page_id`, `module_id`, `requestcache_id`, `keywords`),
+  KEY `page_id` (`page_id`, `module_id`, `requestcache_id`, `keywords`, `expires`),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 

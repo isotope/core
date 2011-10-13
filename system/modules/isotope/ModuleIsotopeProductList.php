@@ -26,6 +26,14 @@
  */
 
 
+/**
+ * Class ModuleIsotopeProductList
+ * 
+ * The mother of all product lists.
+ * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ */
 class ModuleIsotopeProductList extends ModuleIsotope
 {
 
@@ -78,6 +86,10 @@ class ModuleIsotopeProductList extends ModuleIsotope
 	}
 
 
+	/**
+	 * Generate a single product and return it's HTML string
+	 * @return string
+	 */
 	public function generateAjax()
 	{
 		$objProduct = IsotopeFrontend::getProduct($this->Input->get('product'), $this->iso_reader_jumpTo, false);
@@ -92,7 +104,10 @@ class ModuleIsotopeProductList extends ModuleIsotope
 
 
 	/**
-	 * Generate module
+	 * Compile product list.
+	 *
+	 * This function is specially designed so you can keep it in your child classes and only override findProducts().
+	 * You will automatically gain product caching (see class property), grid classes, pagination and more.
 	 */
 	protected function compile()
 	{
@@ -101,8 +116,9 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		if ($this->blnCacheProducts)
 		{
 			global $objPage;
+			$time = time();
 
-			$objCache = $this->Database->prepare("SELECT * FROM tl_iso_productcache WHERE page_id=? AND module_id=? AND requestcache_id=? AND (keywords=? OR keywords='') ORDER BY keywords=''")
+			$objCache = $this->Database->prepare("SELECT * FROM tl_iso_productcache WHERE page_id=? AND module_id=? AND requestcache_id=? AND (keywords=? OR keywords='') AND (expires>$time OR expires=0) ORDER BY keywords=''")
 									   ->limit(1)
 									   ->execute($objPage->id, $this->id, (int)$this->Input->get('isorc'), (string)$this->Input->get('keywords'));
 
@@ -175,20 +191,23 @@ class ModuleIsotopeProductList extends ModuleIsotope
 					// Do not write cache if table is locked. That's the case if another process is already writing cache
 					if ($this->Database->query("SHOW OPEN TABLES FROM `{$GLOBALS['TL_CONFIG']['dbDatabase']}` LIKE 'tl_iso_productcache'")->In_use == 0)
 					{
-						$this->Database->lockTables(array('tl_iso_productcache'=>'WRITE'));
-						$time = time();
+						$this->Database->lockTables(array('tl_iso_productcache'=>'WRITE', 'tl_iso_products'=>'READ'));
 						$arrIds = array();
 
 						foreach( $arrProducts as $objProduct )
 						{
 							$arrIds[] = $objProduct->id;
 						}
+						
+						$intExpires = (int) $this->Database->execute("SELECT MIN(start) AS expires FROM tl_iso_products WHERE id NOT IN (" . implode(',', $arrIds) . ") AND start>$time")
+														   ->expires;
 
-						$this->Database->prepare("DELETE FROM tl_iso_productcache WHERE page_id={$objPage->id} AND module_id={$this->id} AND requestcache_id=? AND keywords=?")
-									   ->executeUncached((int)$this->Input->get('isorc'), (string)$this->Input->get('keywords'));
+						// Also delete all expired caches if we run a delete anyway
+						$this->Database->prepare("DELETE FROM tl_iso_productcache WHERE (page_id=? AND module_id=? AND requestcache_id=? AND keywords=?) OR expires<$time")
+									   ->executeUncached($objPage->id, $this->id, (int)$this->Input->get('isorc'), (string)$this->Input->get('keywords'));
 
-						$this->Database->prepare("INSERT INTO tl_iso_productcache (tstamp,page_id,module_id,requestcache_id,keywords,products) VALUES ($time, {$objPage->id}, {$this->id}, ?,?,?)")
-									   ->executeUncached((int)$this->Input->get('isorc'), (string)$this->Input->get('keywords'), serialize($arrIds));
+						$this->Database->prepare("INSERT INTO tl_iso_productcache (page_id,module_id,requestcache_id,keywords,products,expires) VALUES (?,?,?,?,?,?)")
+									   ->executeUncached($objPage->id, $this->id, (int)$this->Input->get('isorc'), (string)$this->Input->get('keywords'), serialize($arrIds), $intExpires);
 
 						$this->Database->unlockTables();
 					}
@@ -265,7 +284,6 @@ class ModuleIsotopeProductList extends ModuleIsotope
 
 	/**
 	 * Find all products we need to list.
-	 * @param	void
 	 * @return	array
 	 */
 	protected function findProducts($arrCacheIds=null)
@@ -288,8 +306,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 
 	/**
 	 * Generate the pagination
-	 *
-	 * @param	int	$total
+	 * @param	int
 	 * @return	int
 	 */
 	protected function generatePagination($total)
@@ -319,7 +336,6 @@ class ModuleIsotopeProductList extends ModuleIsotope
 
 	/**
 	 * Get filter & sorting configuration
-	 *
 	 * @param	bool
 	 * @return	array
 	 */
