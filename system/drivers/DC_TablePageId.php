@@ -243,7 +243,7 @@ class DC_TablePageId extends DC_Table
 		if ($this->Database->fieldExists('page_id', $this->strTable) && $this->Database->fieldExists('sorting', $this->strTable))
 		{
 			// page_id is not set - only valid for duplicated records, as they get the same parent ID as the original record!
-			if (is_null($page_id) && $this->intId && $mode == 'copy')
+			if ($page_id === null && $this->intId && $mode == 'copy')
 			{
 				$page_id = $this->intId;
 			}
@@ -308,7 +308,7 @@ class DC_TablePageId extends DC_Table
 											  				 ->executeUncached($newpage_id, $curSorting);
 
 							// Select sorting value of the next record
-							if (!is_null($objNextSorting->sorting))
+							if ($objNextSorting->sorting !== null)
 							{
 								$nxtSorting = $objNextSorting->sorting;
 
@@ -359,7 +359,7 @@ class DC_TablePageId extends DC_Table
 		elseif ($this->Database->fieldExists('page_id', $this->strTable))
 		{
 			// page_id is not set - only valid for duplicated records, as they get the same parent ID as the original record!
-			if (is_null($page_id) && $this->intId && $mode == 'copy')
+			if ($page_id === null && $this->intId && $mode == 'copy')
 			{
 				$page_id = $this->intId;
 			}

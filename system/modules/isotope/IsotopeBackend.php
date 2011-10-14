@@ -195,7 +195,7 @@ class IsotopeBackend extends Backend
 			$field->setAttribute('name', $k);
 			$field = $template->appendChild($field);
 
-			if (is_null($v))
+			if ($v === null)
 			{
 				$v = 'NULL';
 			}
@@ -217,7 +217,7 @@ class IsotopeBackend extends Backend
 				$field->setAttribute('name', $k);
 				$field = $content->appendChild($field);
 
-				if (is_null($v))
+				if ($v === null)
 				{
 					$v = 'NULL';
 				}

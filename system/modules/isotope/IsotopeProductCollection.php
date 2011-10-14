@@ -296,7 +296,7 @@ abstract class IsotopeProductCollection extends Model
 		// Everything else goes into arrSettings and is serialized
 		else
 		{
-			if (is_null($varValue))
+			if ($varValue === null)
 			{
 				unset($this->arrSettings[$strKey]);
 			}

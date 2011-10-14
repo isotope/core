@@ -942,7 +942,7 @@ $endScript";
 			$blnMatch = false;
 
 			// If the attribute is not set for this product, the filter does not match
-			if (is_null($varValue))
+			if ($varValue === null)
 			{
 				return false;
 			}
@@ -1040,7 +1040,6 @@ $endScript";
 	 */
 	public static function generateCSSClassesFromArray($arrData, $strClassPrefix, $intColumns=0)
 	{
-		// defining 0 columns doesn't make sense
 		$hasColumns = ($intColumns > 0);
 		$arrClasses = array();
 		$total = count($arrData) - 1;
