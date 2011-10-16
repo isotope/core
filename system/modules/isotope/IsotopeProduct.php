@@ -580,7 +580,7 @@ class IsotopeProduct extends Controller
 			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['customer_defined'] || $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
 			{
 				$objTemplate->hasOptions = true;
-				$arrProductOptions[$attribute] = $this->generateProductOptionWidget($attribute);
+				$arrProductOptions[$attribute]['html'] = $this->generateProductOptionWidget($attribute);
 
 				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
 				{
@@ -631,9 +631,8 @@ class IsotopeProduct extends Controller
 		$objTemplate->raw_options = $this->arrOptions;
 		$objTemplate->href_reader = $this->href_reader;
 		$objTemplate->label_detail = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
-		$objTemplate->options = $arrProductOptions;
-		$objTemplate->optionsCSSClasses = IsotopeFrontend::generateCSSClassesFromArray($arrProductOptions, 'iso_product_option');
-		$objTemplate->hasOptions = count($arrProductOptions) ? true : false;
+		$objTemplate->options = IsotopeFrontend::generateRowClass($arrProductOptions, 'product_option');
+		$objTemplate->hasOptions = count($arrProductOptions) > 0 ? true : false;
 		$objTemplate->enctype = $this->hasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
 		$objTemplate->formId = $this->formSubmit;
 		$objTemplate->action = ampersand($this->Environment->request, true);

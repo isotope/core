@@ -74,11 +74,6 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			return '';
 		}
 
-		if ($this->iso_cols < 1)
-		{
-			$this->iso_cols = 1;
-		}
-
 		$this->iso_filterModules = deserialize($this->iso_filterModules, true);
 		$this->iso_productcache = deserialize($this->iso_productcache, true);
 
@@ -240,20 +235,16 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			$this->redirect($objProduct->href_reader);
 		}
 
-		$arrCSSClasses = IsotopeFrontend::generateCSSClassesFromArray($arrProducts, 'product', $this->iso_cols);
 		$arrBuffer = array();
-		foreach ($arrProducts as $k => $objProduct)
+		foreach ($arrProducts as $objProduct)
 		{
 			$arrBuffer[] = array
 			(
-				// @todo: do we still need this? clearing can easily be done using the CSS classes
-				//'clear'		=> (($this->iso_cols > 1 && $blnClear) ? true : false),
-				'class'		=> $arrCSSClasses[$k],
 				'html'		=> $objProduct->generate((strlen($this->iso_list_layout) ? $this->iso_list_layout : $objProduct->list_template), $this),
 			);			
 		}
 
-		$this->Template->products = $arrBuffer;
+		$this->Template->products = IsotopeFrontend::generateRowClass($arrBuffer, 'product', 'class', $this->iso_cols);
 	}
 
 

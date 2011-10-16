@@ -142,17 +142,11 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 				'href'				=> ($this->jumpTo ? $this->generateFrontendUrl($arrPage, '/product/'.$objProduct->alias) : ''),
 				'tax_id'			=> $objProduct->tax_id,
 				'downloads'			=> $arrDownloads,
-				'class'				=> 'row_' . $i . ($i%2 ? ' even' : ' odd') . ($i==0 ? ' row_first' : ''),
 			);
 		}
 
-		if (count($arrItems))
-		{
-			$arrItems[count($arrItems)-1]['class'] .= ' row_last';
-		}
-
 		$this->Template->info = deserialize($objOrder->checkout_info, true);
-		$this->Template->items = $arrItems;
+		$this->Template->items = IsotopeFrontend::generateRowClass($arrItems, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
 		$this->Template->downloads = $arrAllDownloads;
 		$this->Template->downloadsLabel = $GLOBALS['TL_LANG']['MSC']['downloadsLabel'];
 
@@ -168,24 +162,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 		$this->Template->grandTotal = $this->Isotope->formatPriceWithCurrency($objOrder->grandTotal);
 		$this->Template->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
 		$this->Template->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
-
-		$arrSurcharges = $objOrder->surcharges;
-		if (is_array($arrSurcharges) && count($arrSurcharges))
-		{
-			foreach( $arrSurcharges as $k => $arrSurcharge )
-			{
-				$arrSurcharges[$k]['price']			= $this->Isotope->formatPriceWithCurrency($arrSurcharge['price']);
-				$arrSurcharges[$k]['total_price']	= $this->Isotope->formatPriceWithCurrency($arrSurcharge['total_price']);
-				$arrSurcharges[$k]['rowclass']		= trim('foot_'.($k+1) . ' ' . $arrSurcharge[$k]['rowclass']);
-			}
-		}
-		else
-		{
-			$arrSurcharges = array();
-		}
-
-		$this->Template->surcharges = $arrSurcharges;
-
+		$this->Template->surcharges = IsotopeFrontend::formatSurcharges($objOrder->getSurcharges());
 		$this->Template->billing_label = $GLOBALS['TL_LANG']['ISO']['billing_address'];
 		$this->Template->billing_address = $this->Isotope->generateAddressString($objOrder->billing_address, $this->Isotope->Config->billing_fields);
 

@@ -1032,19 +1032,19 @@ $endScript";
 	
 	
 	/**
-	 * Generate an array of classes based on an array
+	 * Generate row class for an array
 	 * @param array data rows
-	 * @param string class prefix (e.g. iso_product)
+	 * @param string class prefix (e.g. "product")
 	 * @param int number of columns
 	 * @return array
 	 */
-	public static function generateCSSClassesFromArray($arrData, $strClassPrefix, $intColumns=0)
+	public static function generateRowClass($arrData, $strClass='', $strKey='rowClass', $intColumns=0, $options=125)
 	{
-		$hasColumns = ($intColumns > 0);
-		$arrClasses = array();
+		$strClassPrefix = $strClass == '' ? '' : $strClass.'_';
+		$hasColumns = ($intColumns > 1);
 		$total = count($arrData) - 1;
 		$current = 0;
-		
+
 		if ($hasColumns)
 		{
 			$row = 0;
@@ -1052,34 +1052,91 @@ $endScript";
 			$rows = ceil(count($arrData) / $intColumns) - 1;
 			$cols = $intColumns - 1;			
 		}
-		
-		foreach ($arrData as $k => $v)
+
+		foreach ($arrData as $k => $varValue)
 		{
 			if ($hasColumns && $current > 0 && $current % $intColumns == 0)
 			{
 				++$row;
 				$col = 0;
 			}
-			
-			// if the key is numeric, we add the prefix "id_", pass your $arrData with keys if you don't like "id_"
-			$strKey = (is_numeric($k)) ? 'id_' . $k : $k;
-			
-			$strClass = $strKey . ' ' . $strClassPrefix . ' ' . $strClassPrefix . '_' . $current . ($current%2 ? ' ' . $strClassPrefix . '_even' : ' ' . $strClassPrefix . '_odd') . ($current == 0 ? ' ' . $strClassPrefix . '_first' : '') . ($current == $total ? ' ' . $strClassPrefix . '_last' : '');
-		
-			// Add row & col classes
-			if ($hasColumns)
+
+			$class = '';
+
+			if ($options & ISO_CLASS_NAME)
 			{
-				$strClass .= ' row_'.$row . ($row%2 ? ' row_even' : ' row_odd') . ($row == 0 ? ' row_first' : '') . ($row == $rows ? ' row_last' : '');
-				$strClass .= ' col_'.$col . ($col%2 ? ' col_even' : ' col_odd') . ($col == 0 ? ' col_first' : '') . ($col == $cols ? ' col_last' : '');
+				$class .= ' ' . $strClass;
+			}
+			
+			if ($options & ISO_CLASS_KEY)
+			{
+				$class .= ' ' . $strClassPrefix . $k;
+			}
+			
+			if ($options & ISO_CLASS_COUNT)
+			{
+				$class .= ' ' . $strClassPrefix . $current;
+			}
+			
+			if ($options & ISO_CLASS_EVENODD)
+			{
+				$class .= ' ' . (($options & ISO_CLASS_NAME || $options & ISO_CLASS_ROW) ? $strClassPrefix : '') . ($current%2 ? 'even' : 'odd');
+			}
+			
+			if ($options & ISO_CLASS_FIRSTLAST)
+			{
+				$class .= ($current == 0 ? ' ' . $strClassPrefix . 'first' : '') . ($current == $total ? ' ' . $strClassPrefix . 'last' : '');
+			}
+			
+			if ($hasColumns && $options & ISO_CLASS_ROW)
+			{
+				$class .= ' row_'.$row . ($row%2 ? ' row_even' : ' row_odd') . ($row == 0 ? ' row_first' : '') . ($row == $rows ? ' row_last' : '');
+			}
+			
+			if ($hasColumns && $options & ISO_CLASS_COL)
+			{
+				$class .= ' col_'.$col . ($col%2 ? ' col_even' : ' col_odd') . ($col == 0 ? ' col_first' : '') . ($col == $cols ? ' col_last' : '');
 			}
 
-			$arrClasses[$k] = $strClass;
+			if (is_array($varValue))
+			{
+				$arrData[$k][$strKey] = trim($arrData[$k][$strKey] . ' ' . $class);
+			}
+			elseif (is_object($varValue))
+			{
+				$varValue->$strKey = trim($varValue->$strKey . ' ' . $class);
+				$arrData[$k] = $varValue;
+			}
+			else
+			{
+				$arrData[$k] = '<span class="' . $class . '">' . $varValue . '</span>';
+			}
 			
 			++$col;
 			++$current;
 		}
 		
-		return $arrClasses;
+		return $arrData;
+	}
+
+
+	/**
+	 * Format surcharge prices
+	 * @param array
+	 * @return array
+	 */
+	public static function formatSurcharges($arrSurcharges)
+	{
+		$Isotope = Isotope::getInstance();
+
+		foreach ($arrSurcharges as $k => $arrSurcharge)
+		{
+			$arrSurcharges[$k]['price']			= $Isotope->formatPriceWithCurrency($arrSurcharge['price']);
+			$arrSurcharges[$k]['total_price']	= $Isotope->formatPriceWithCurrency($arrSurcharge['total_price']);
+			$arrSurcharges[$k]['rowClass']		= trim('foot_'.($k+1) . ' ' . $arrSurcharge[$k]['rowClass']);
+		}
+		
+		return $arrSurcharges;
 	}
 }
 

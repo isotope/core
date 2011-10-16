@@ -493,21 +493,9 @@ abstract class IsotopeProductCollection extends Model
 		{
 			$this->import('Isotope');
 			$objTemplate = new IsotopeTemplate($strTemplate);
-			$arrSurcharges = array();
-
-			foreach ($this->getSurcharges() as $arrSurcharge)
-			{
-				$arrSurcharges[] = array
-				(
-					'label'	=> $arrSurcharge['label'],
-					'price' => $this->Isotope->formatPriceWithCurrency($arrSurcharge['price']),
-					'total_price' => $this->Isotope->formatPriceWithCurrency($arrSurcharge['total_price']),
-					'tax_id' => $arrSurcharge['tax_id'],
-				);
-			}
-
+			
 			$objTemplate->products = $this->arrProducts;
-			$objTemplate->surcharges = $arrSurcharges;
+			$objTemplate->surcharges = IsotopeFrontend::formatSurcharges($this->getSurcharges());
 			$objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
 			$objTemplate->subTotalPrice = $this->Isotope->formatPriceWithCurrency($this->subTotal, false);
 			$objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
@@ -832,7 +820,6 @@ abstract class IsotopeProductCollection extends Model
 			);
 		}
 
-
 		$objTemplate->info = deserialize($this->checkout_info);
 		$objTemplate->items = $arrItems;
 		$objTemplate->raw = $this->arrData;
@@ -845,25 +832,7 @@ abstract class IsotopeProductCollection extends Model
 		$objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
 		$objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
 
-		$arrSurcharges = array();
-
-		foreach (deserialize($this->surcharges, true) as $arrSurcharge)
-		{
-			if (!is_array($arrSurcharge))
-			{
-				continue;
-			}
-
-			$arrSurcharges[] = array
-			(
-				'label'			=> $arrSurcharge['label'],
-				'price'			=> $this->Isotope->formatPriceWithCurrency($arrSurcharge['price']),
-				'total_price'	=> $this->Isotope->formatPriceWithCurrency($arrSurcharge['total_price']),
-				'tax_id'		=> $arrSurcharge['tax_id'],
-			);
-		}
-
-		$objTemplate->surcharges = $arrSurcharges;
+		$objTemplate->surcharges = IsotopeFrontend::formatSurcharges($this->getSurcharges());
 		$objTemplate->billing_label = $GLOBALS['TL_LANG']['ISO']['billing_address'];
 		$objTemplate->billing_address = $this->Isotope->generateAddressString(deserialize($this->billing_address), $this->Isotope->Config->billing_fields);
 

@@ -76,9 +76,6 @@ class IsotopeOrder extends IsotopeProductCollection
 			case 'order_id':
 				return $this->strOrderId;
 
-			case 'surcharges':
-				return $this->arrData['surcharges'] ? deserialize($this->arrData['surcharges']) : array();
-
 			case 'billingAddress':
 				return deserialize($this->arrData['billing_address'], true);
 
@@ -230,7 +227,7 @@ class IsotopeOrder extends IsotopeProductCollection
 	 */
 	public function getSurcharges()
 	{
-		$arrSurcharges = deserialize($this->surcharges);
+		$arrSurcharges = deserialize($this->arrData['surcharges']);
 		return is_array($arrSurcharges) ? $arrSurcharges : array();
 	}
 

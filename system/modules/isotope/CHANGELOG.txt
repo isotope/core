@@ -18,7 +18,7 @@ Version 1.3.rc1 (2011-??-??)
 - Added "hasImages()" method to the gallery to ease checking for existance of images
 - Added deferred (lazy) loading of product data if backend is overloaded
 - Added option to force displaying variants of a product type (#2232)
-- Added new function IsotopeFrontend::generateCSSClassesFromArray() to build useful CSS classes from any array
+- Added new function IsotopeFrontend::generateRowClass() to add useful CSS classes to any array
 - Added new template param optionsCSSClasses
 - Added "empty message" option to cart module (#2197)
 - Improved: loading products is now centralized in IsotopeFrontend static functions

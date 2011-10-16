@@ -678,11 +678,11 @@ class tl_iso_products extends Backend
 			$objProducts = $this->Database->execute("SELECT id, (SELECT COUNT(*) FROM tl_iso_products) AS total FROM tl_iso_products WHERE type IN ('','" . implode("','", $arrTypes) . "') AND archive<2");
 		}
 
-		if (!$objProduct->numRows && !$objProduct->total)
+		if (!$objProducts->numRows && !$objProducts->total)
 		{
 			return;
 		}
-		elseif (!$objProduct->numRows)
+		elseif (!$objProducts->numRows)
 		{
 			$arrProducts = array(0);
 		}

@@ -92,12 +92,6 @@ class ModuleIsotopeCart extends ModuleIsotope
 
 		// Surcharges must be initialized before getProducts() to apply tax_id to each product
 		$arrSurcharges = $this->Isotope->Cart->getSurcharges();
-		foreach( $arrSurcharges as $k => $arrSurcharge )
-		{
-			$arrSurcharges[$k]['price']			= $this->Isotope->formatPriceWithCurrency($arrSurcharge['price']);
-			$arrSurcharges[$k]['total_price']	= $this->Isotope->formatPriceWithCurrency($arrSurcharge['total_price']);
-			$arrSurcharges[$k]['rowclass']		= trim('foot_'.($k+1) . ' ' . $arrSurcharge[$k]['rowclass']);
-		}
 
 		$arrProducts = $this->Isotope->Cart->getProducts();
 		$lastAdded = ($this->iso_continueShopping && count($_SESSION['ISO_CONFIRM'])) ? $this->Isotope->Cart->lastAdded : 0;
@@ -133,7 +127,6 @@ class ModuleIsotopeCart extends ModuleIsotope
 				'remove_link'		=> ampersand($strUrl . ($GLOBALS['TL_CONFIG']['disableAlias'] ? '&' : '?') . 'remove='.$objProduct->cart_id.'&referer='.base64_encode($this->Environment->request)),
 				'remove_link_text'  => $GLOBALS['TL_LANG']['MSC']['removeProductLinkText'],
 				'remove_link_title' => specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $objProduct->name)),
-				'class'				=> 'row_' . $i . ($i%2 ? ' even' : ' odd') . ($i==0 ? ' row_first' : ''),
 			));
 
 			if ($lastAdded == $objProduct->cart_id)
@@ -154,11 +147,6 @@ class ModuleIsotopeCart extends ModuleIsotope
 		elseif ($blnReload)
 		{
 			$this->reload();
-		}
-
-		if (count($arrProductData))
-		{
-			$arrProductData[count($arrProductData)-1]['class'] .= ' row_last';
 		}
 
 		// HOOK for adding additional forms into the template
@@ -182,7 +170,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 		$objTemplate->formSubmit = 'iso_cart_update_'.$this->id;
 		$objTemplate->summary = $GLOBALS['ISO_LANG']['MSC']['cartSummary'];
 		$objTemplate->action = $this->Environment->request;
-		$objTemplate->products = $arrProductData;
+		$objTemplate->products = IsotopeFrontend::generateRowClass($arrProductData, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
 		$objTemplate->cartJumpTo = $this->iso_cart_jumpTo ? $this->generateFrontendUrl($this->Database->execute("SELECT * FROM tl_page WHERE id={$this->iso_cart_jumpTo}")->fetchAssoc()) : '';
 		$objTemplate->cartLabel = $GLOBALS['TL_LANG']['MSC']['cartBT'];
 		$objTemplate->checkoutJumpToLabel = $GLOBALS['TL_LANG']['MSC']['checkoutBT'];
@@ -195,7 +183,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 		$objTemplate->grandTotalPrice = $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->grandTotal);
 		// @todo make a module option.
 		$objTemplate->showOptions = false;
-		$objTemplate->surcharges = $arrSurcharges;
+		$objTemplate->surcharges = IsotopeFrontend::formatSurcharges($arrSurcharges);
 		$objTemplate->forms = $arrForms;
 
 		$this->Template->empty = false;

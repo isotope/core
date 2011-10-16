@@ -374,3 +374,15 @@ $GLOBALS['URL_KEYWORDS'][] = 'step';
  */
 $GLOBALS['TL_CONFIG']['iso_cartTimeout'] = 2592000;
 
+
+/**
+ * Options
+ */
+define('ISO_CLASS_NAME', 1);
+define('ISO_CLASS_KEY', 2);
+define('ISO_CLASS_COUNT', 4);
+define('ISO_CLASS_EVENODD', 8);
+define('ISO_CLASS_FIRSTLAST', 16);
+define('ISO_CLASS_ROW', 32);
+define('ISO_CLASS_COL', 64);
+

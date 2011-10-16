@@ -780,16 +780,10 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 		// Surcharges must be initialized before getProducts() to apply tax_id to each product
 		$arrSurcharges = $this->Isotope->Cart->getSurcharges();
-		foreach( $arrSurcharges as $k => $arrSurcharge )
-		{
-			$arrSurcharges[$k]['price']			= $this->Isotope->formatPriceWithCurrency($arrSurcharge['price']);
-			$arrSurcharges[$k]['total_price']	= $this->Isotope->formatPriceWithCurrency($arrSurcharge['total_price']);
-			$arrSurcharges[$k]['rowclass']		= trim('foot_'.($k+1) . ' ' . $arrSurcharge[$k]['rowclass']);
-		}
 
 		$arrProductData = array();
 		$arrProducts = $this->Isotope->Cart->getProducts();
-		foreach( $arrProducts as $i => $objProduct )
+		foreach( $arrProducts as $objProduct )
 		{
 			$arrProductData[] = array_merge($objProduct->getAttributes(), array
 			(
@@ -801,18 +795,12 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				'quantity'			=> $objProduct->quantity_requested,
 				'tax_id'			=> $objProduct->tax_id,
 				'product_options'	=> $objProduct->getOptions(),
-				'class'				=> 'row_' . $i . ($i%2 ? ' even' : ' odd') . ($i==0 ? ' row_first' : ''),
 			));
 		}
 
-		if (count($arrProductData))
-		{
-			$arrProductData[count($arrProductData)-1]['class'] .= ' row_last';
-		}
-
 		$objTemplate->info = $this->getCheckoutInfo();
-		$objTemplate->products = $arrProductData;
-		$objTemplate->surcharges = $arrSurcharges;
+		$objTemplate->products = IsotopeFrontend::generateRowClass($arrProductData, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
+		$objTemplate->surcharges = IsotopeFrontend::formatSurcharges($arrSurcharges);
 		$objTemplate->edit_info = $GLOBALS['TL_LANG']['ISO']['changeCheckoutInfo'];
 		$objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
 		$objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
@@ -1041,7 +1029,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	 */
 	protected function generateAddressWidgets($strAddressType, $intOptions)
 	{
-		$arrBuffer = array();
+		$arrWidgets = array();
 
 		$this->loadLanguageFile('tl_iso_addresses');
 		$this->loadDataContainer('tl_iso_addresses');
@@ -1086,8 +1074,6 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				$arrDefault[$field['value']] = '1';
 			}
 
-			$i = count($arrBuffer);
-
 			$objWidget = new $strClass($this->prepareForWidget($arrData, $strAddressType . '_' . $field['value'], (strlen($_SESSION['CHECKOUT_DATA'][$strAddressType][$field['value']]) ? $_SESSION['CHECKOUT_DATA'][$strAddressType][$field['value']] : $arrDefault[$field['value']])));
 
 			$objWidget->mandatory = $field['mandatory'] ? true : false;
@@ -1095,7 +1081,6 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			$objWidget->tableless = $this->tableless;
 			$objWidget->label = $field['label'] ? $this->Isotope->translate($field['label']) : $objWidget->label;
 			$objWidget->storeValues = true;
-			$objWidget->rowClass = 'row_'.$i . (($i == 0) ? ' row_first' : '') . ((($i % 2) == 0) ? ' even' : ' odd');
 
 			// Validate input
 			if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && ($this->Input->post($strAddressType) === '0' || $this->Input->post($strAddressType) == ''))
@@ -1136,13 +1121,10 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				}
 			}
 
-			$arrBuffer[] = $objWidget->parse();
+			$arrWidgets[] = $objWidget;
 		}
-
-		// Add row_last class to the last widget
-		array_pop($arrBuffer);
-		$objWidget->rowClass = 'row_'.$i . (($i == 0) ? ' row_first' : '') . ' row_last' . ((($i % 2) == 0) ? ' even' : ' odd');
-		$arrBuffer[] = $objWidget->parse();
+		
+		$arrWidgets = IsotopeFrontend::generateRowClass($arrWidgets, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
 
 		// Validate input
 		if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && !$this->doNotSubmit && is_array($arrAddress) && count($arrAddress))
@@ -1155,14 +1137,22 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		{
 			$this->Isotope->Cart->$strAddressType = $_SESSION['CHECKOUT_DATA'][$strAddressType];
 		}
+		
+		$strBuffer = '';
+		
+		foreach( $arrWidgets as $objWidget )
+		{
+			$strBuffer .= $objWidget->parse();
+		}
 
 		if ($this->tableless)
 		{
-			return implode('', $arrBuffer);
+			return $strBuffer;
 		}
 
-		return '<table cellspacing="0" cellpadding="0" summary="Form fields">
-' . implode('', $arrBuffer) . '
+		return '
+<table>
+' . $strBuffer . '
 </table>';
 	}
 

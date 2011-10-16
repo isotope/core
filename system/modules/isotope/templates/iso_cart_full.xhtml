@@ -20,7 +20,7 @@
 		<td class="col_last remove">&nbsp;</td>
 	</tr>
 <?php foreach( $this->surcharges as $surcharge ): ?>
-	<tr class="<?php echo $surcharge['rowclass']; ?>">
+	<tr class="<?php echo $surcharge['rowClass']; ?>">
 		<td class="col_first">&nbsp;</td>
 		<td class="name" colspan="2"><?php echo $surcharge['label']; ?></td>
 		<td class="price"><?php echo $surcharge['price']; ?></td>
@@ -39,7 +39,7 @@
 </tfoot>
 <tbody>
 <?php foreach($this->products as $product): ?>
-    <tr class="<?php echo $product['class']; ?>">
+    <tr class="<?php echo $product['rowClass']; ?>">
 		<td class="col_0 col_first image"><a href="<?php echo $product['link']; ?>" title="<?php echo $product['name']; ?>"><img src="<?php echo $product['image']['gallery']; ?>" alt="<?php echo $product['image']['alt']; ?>" class="thumbnail" <?php echo $product['image']['gallery_size']; ?> /></a></td>
    		<td class="col_1 name">
    			<a href="<?php echo $product['link']; ?>" title="<?php echo $product['name']; ?>"><?php echo $product['name']; ?></a>
