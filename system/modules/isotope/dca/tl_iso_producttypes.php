@@ -130,7 +130,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
 	// Subpalettes
 	'subpalettes' => array
 	(
-		'variants'					=> 'variant_attributes,alwaysShow',
+		'variants'					=> 'variant_attributes,force_variant_options',
 	),
 
 	// Fields
@@ -188,8 +188,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_producttypes']['description'],
 			'exclude'				=> true,
 			'inputType'				=> 'textarea',
-			'eval'					=> array('style'=>'height:80px'),
-
+			'eval'					=> array('style'=>'height:80px', 'tl_class'=>'clr'),
 		),
         'attributes' => array
 		(
@@ -211,13 +210,14 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_producttypes']['variant_attributes'],
 			'exclude'				=> true,
 			'inputType'				=> 'attributeWizard',
-			'eval'					=> array('variants'=>true),
+			'eval'					=> array('variants'=>true, 'tl_class'=>'clr'),
 		),
-        'alwaysShow' => array
+        'force_variant_options' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_producttypes']['alwaysShow'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_producttypes']['force_variant_options'],
 			'exclude'				=> true,
-			'inputType'				=> 'checkbox'
+			'inputType'				=> 'checkbox',
+			'eval'					=> array('tl_class'=>'clr'),
 		),
 		'downloads' => array
 		(

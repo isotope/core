@@ -41,7 +41,7 @@ $GLOBALS['TL_LANG']['tl_iso_producttypes']['description']			= array('Description
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['attributes']			= array('Attributes', 'Select the collection of attributes that should be included for this product type.');
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['variants']				= array('Enable variants', 'Check here if this product type has variants.');
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['variant_attributes']	= array('Variant attributes', 'Select the collection of variant attributes that should be included for this product type. Those that are not selected will be hidden from view and inherited from the parent product.');
-$GLOBALS['TL_LANG']['tl_iso_producttypes']['alwaysShow']			= array('Always display variants', 'Enable this checkbox if you want to always display the variants. Otherwise the user won\'t get any variants displayed if there\'s only one.');
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['force_variant_options']	= array('Always show variant attributes', 'Show a variant attribute (select, radio) even if there is only one choice.');
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['downloads']				= array('Enable downloads', 'Check here if this product type has downloads.');
 
 

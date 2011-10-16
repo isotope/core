@@ -904,7 +904,7 @@ class IsotopeProduct extends Controller
 
 		if ($arrData['attributes']['variant_option'] && is_array($arrData['options']))
 		{
-			if ((count((array)$this->arrVariantOptions['attributes'][$strField]) == 1) && !$this->arrType['alwaysShow'])
+			if ((count((array)$this->arrVariantOptions['attributes'][$strField]) == 1) && !$this->arrType['force_variant_options'])
 			{
 				$this->arrOptions[$strField] = $this->arrVariantOptions['attributes'][$strField][0];
 				$this->arrVariantOptions['current'][$strField] = $this->arrVariantOptions['attributes'][$strField][0];

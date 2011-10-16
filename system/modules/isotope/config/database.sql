@@ -138,7 +138,7 @@ CREATE TABLE `tl_iso_producttypes` (
   `attributes` blob NULL,
   `variants` char(1) NOT NULL default '',
   `variant_attributes` blob NULL,
-  `alwaysShow` char(1) NOT NULL default '',
+  `force_variant_options` char(1) NOT NULL default '',
   `downloads` char(1) NOT NULL default '',
   `archive` int(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
