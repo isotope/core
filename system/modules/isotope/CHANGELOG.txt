@@ -149,6 +149,7 @@ Version 0.2.12 (2011-10-11)
 - Fixed availability of unpublished products
 - Fixed: min&max limit in product rule was not applied
 - Fixed security issue in payment modules (#2221)
+- Fixed language keys in paypal module (#2245)
 
 Version 0.2.11 (2011-08-28)
 ------------------------------
