@@ -145,7 +145,14 @@ class IsotopeFrontend extends Frontend
 	 */
 	public function fixNavigationTrail(&$objTemplate)
 	{
-		if ($this->Input->get('product') != '' && substr($objTemplate->getName(), 0, 4) == 'nav_')
+		// Unset hook to prevent further execution on non-reader pages
+		if ($this->Input->get('product') == '')
+		{
+			unset($GLOBALS['TL_HOOKS']['parseTemplate'][array_search(array('IsotopeFrontend', 'fixNavigationTrail'), $GLOBALS['TL_HOOKS']['parseTemplate'])]);
+			return;
+		}
+		
+		if (substr($objTemplate->getName(), 0, 4) == 'nav_')
 		{
 			static $arrTrail = null;
 
