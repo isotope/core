@@ -28,6 +28,10 @@
  */
 
 
+/**
+ * Class ModuleIsotopeConfigSwitcher
+ * Front end module Isotope "config switcher".
+ */
 class ModuleIsotopeConfigSwitcher extends ModuleIsotope
 {
 
@@ -39,7 +43,8 @@ class ModuleIsotopeConfigSwitcher extends ModuleIsotope
 
 
 	/**
-	 * Generate the module
+	 * Display a wildcard in the back end
+	 * @return string
 	 */
 	public function generate()
 	{
@@ -59,7 +64,9 @@ class ModuleIsotopeConfigSwitcher extends ModuleIsotope
 		$this->iso_config_ids = deserialize($this->iso_config_ids);
 
 		if (!is_array($this->iso_config_ids) || !count($this->iso_config_ids))
+		{
 			return '';
+		}
 
 		if (strlen($this->Input->get('config')))
 		{
@@ -77,30 +84,29 @@ class ModuleIsotopeConfigSwitcher extends ModuleIsotope
 
 	/**
 	 * Compile the module
+	 * @return void
 	 */
 	protected function compile()
 	{
 		$this->import('Isotope');
-
 		$arrConfigs = array();
 		$objConfigs = $this->Database->execute("SELECT * FROM tl_iso_config WHERE id IN (" . implode(',', $this->iso_config_ids) . ")");
-
 		$c=0;
-		while( $objConfigs->next() )
+
+		while ($objConfigs->next())
 		{
 			$arrConfigs[] = array
 			(
 				'label'		=> (strlen($objConfigs->label) ? $objConfigs->label : $objConfigs->name),
-				'class'		=> ($c==0 ? 'first' : ''),
+				'class'		=> (($c == 0) ? 'first' : ''),
 				'active'	=> ($this->Isotope->Config->id == $objConfigs->id ? true : false),
-				'href'		=> ($this->Environment->request . (strpos($this->Environment->request, '?')===false ? '?' : '&amp;') . 'config=' . $objConfigs->id),
+				'href'		=> ($this->Environment->request . ((strpos($this->Environment->request, '?') === false) ? '?' : '&amp;') . 'config=' . $objConfigs->id),
 			);
 
 			$c++;
 		}
 
 		$arrConfigs[count($arrConfigs)-1]['class'] = trim($arrConfigs[count($arrConfigs)-1]['class'] . ' last');
-
 		$this->Template->configs = $arrConfigs;
 	}
 }

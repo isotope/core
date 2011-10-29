@@ -29,6 +29,10 @@
  */
 
 
+/**
+ * Class ModuleIsotopeCart
+ * Front end module Isotope "cart".
+ */
 class ModuleIsotopeCart extends ModuleIsotope
 {
 
@@ -40,7 +44,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 
 	/**
 	 * Disable caching of the frontend page if this module is in use.
-	 * @var bool
+	 * @var boolean
 	 */
 	protected $blnDisableCache = true;
 
@@ -69,6 +73,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 
 	/**
 	 * Generate module
+	 * @return void
 	 */
 	protected function compile()
 	{
@@ -96,7 +101,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 		$arrProducts = $this->Isotope->Cart->getProducts();
 		$lastAdded = ($this->iso_continueShopping && count($_SESSION['ISO_CONFIRM'])) ? $this->Isotope->Cart->lastAdded : 0;
 
-		foreach( $arrProducts as $i => $objProduct )
+		foreach ($arrProducts as $i => $objProduct)
 		{
 			// Remove product from cart
 			if ($this->Input->get('remove') == $objProduct->cart_id && $this->Isotope->Cart->deleteProduct($objProduct))

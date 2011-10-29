@@ -28,6 +28,10 @@
  */
 
 
+/**
+ * Class ModuleIsotope
+ * Parent class for Isotope modules.
+ */
 abstract class ModuleIsotope extends Module
 {
 
@@ -45,6 +49,12 @@ abstract class ModuleIsotope extends Module
 	protected $blnDisableCache = false;
 
 
+	/**
+	 * Load libraries and scripts
+	 * @param object
+	 * @param string
+	 * @return void
+	 */
 	public function __construct(Database_Result $objModule, $strColumn='main')
 	{
 		parent::__construct($objModule, $strColumn);
@@ -99,7 +109,6 @@ abstract class ModuleIsotope extends Module
 
 	/**
 	 * Shortcut for a single product by ID or from database result
-	 *
 	 * @deprecated
 	 * @see IsotopeFrontend::getProduct()
 	 */
@@ -112,7 +121,6 @@ abstract class ModuleIsotope extends Module
 
 	/**
 	 * Shortcut for a single product by alias (from url?)
-	 *
 	 * @deprecated
 	 * @see IsotopeFrontend::getProducts()
 	 */
@@ -124,8 +132,7 @@ abstract class ModuleIsotope extends Module
 
 
 	/**
-	 * Generate products from database result or array of IDs.
-	 *
+	 * Generate products from database result or array of IDs
 	 * @deprecated
 	 * @see IsotopeFrontend::getProducts()
 	 */
@@ -138,6 +145,9 @@ abstract class ModuleIsotope extends Module
 
 	/**
 	 * The ids of all pages we take care of. This is what should later be used eg. for filter data.
+	 * @param string
+	 * @param string
+	 * @return integer
 	 */
 	protected function findCategoryProducts($strCategoryScope, $strWhere='')
 	{
@@ -150,7 +160,7 @@ abstract class ModuleIsotope extends Module
 			global $objPage;
 		}
 
-		switch($strCategoryScope)
+		switch ($strCategoryScope)
 		{
 			case 'global':
 				$arrCategories = $this->getChildRecords($objPage->rootId, 'tl_page');
@@ -191,7 +201,6 @@ abstract class ModuleIsotope extends Module
 		}
 
 		$arrIds = $this->Database->execute("SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . ")" . ($strWhere != '' ? ' AND '.$strWhere : ''))->fetchEach('pid');
-
 		return count($arrIds) ? $arrIds : array(0);
 	}
 
@@ -199,6 +208,7 @@ abstract class ModuleIsotope extends Module
 	/**
 	 * Generate the URL from existing $_GET parameters.
 	 * Use $this->Input->setGet('var', null) to remove a parameter from the final URL.
+	 * @return string
 	 */
 	protected function generateRequestUrl()
 	{
@@ -209,7 +219,6 @@ abstract class ModuleIsotope extends Module
 
 		$strRequest = preg_replace('/\?.*$/i', '', $this->Environment->request);
 		$strRequest = preg_replace('/' . preg_quote($GLOBALS['TL_CONFIG']['urlSuffix'], '/') . '$/i', '', $strRequest);
-
 		$arrFragments = explode('/', $strRequest);
 
 		// Skip index.php
@@ -237,7 +246,6 @@ abstract class ModuleIsotope extends Module
 			if (isset($_GET[$arrFragments[$i]]))
 			{
 				$key = urldecode($arrFragments[$i]);
-
 				$this->Input->setGet($key, null);
 				$strParams .= '/' . $key . '/' . urldecode($arrFragments[$i+1]);
 			}
@@ -246,14 +254,13 @@ abstract class ModuleIsotope extends Module
 		// Add get parameters to URL
 		if (is_array($_GET) && count($_GET))
 		{
-			foreach( $_GET as $key => $value )
+			foreach ($_GET as $key => $value)
 			{
 				$arrGet[] = $key . '=' . $value;
 			}
 		}
 
 		global $objPage;
-
 		return $this->generateFrontendUrl($objPage->row(), $strParams) . (count($arrGet) ? ('?'.implode('&', $arrGet)) : '');
 	}
 }

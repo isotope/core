@@ -28,6 +28,10 @@
  */
 
 
+/**
+ * Class ModuleIsotopeProductReader
+ * Front end module Isotope "product reader".
+ */
 class ModuleIsotopeProductReader extends ModuleIsotope
 {
 
@@ -70,6 +74,10 @@ class ModuleIsotopeProductReader extends ModuleIsotope
 	}
 
 
+	/**
+	 * Generate AJAX scripts
+	 * @return string
+	 */
 	public function generateAjax()
 	{
 		$objProduct = IsotopeFrontend::getProduct($this->Input->get('product'), $this->iso_reader_jumpTo, false);
@@ -85,6 +93,7 @@ class ModuleIsotopeProductReader extends ModuleIsotope
 
 	/**
 	 * Generate module
+	 * @return void
 	 */
 	protected function compile()
 	{

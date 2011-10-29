@@ -30,18 +30,14 @@
 
 /**
  * Class ModuleIsotopeRelatedProducts
- * 
  * List products related to the current product reader.
- * @copyright  Isotope eCommerce Workgroup 2009-2011
- * @author     Andreas Schempp <andreas@schempp.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 class ModuleIsotopeRelatedProducts extends ModuleIsotopeProductList
 {
 
 	/**
 	 * Do not cache related products cause the list is different depending on URL parameters
-	 * @var bool
+	 * @var boolean
 	 */
 	protected $blnCacheProducts = false;
 
@@ -83,12 +79,11 @@ class ModuleIsotopeRelatedProducts extends ModuleIsotopeProductList
 
 	/**
 	 * Find all products we need to list.
-	 * @return	array
+	 * @return array
 	 */
 	protected function findProducts()
 	{
 		$strAlias = $this->Input->get('product');
-
 		$arrIds = array(0);
 		$arrJumpTo = array();
 

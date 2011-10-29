@@ -28,6 +28,10 @@
  */
 
 
+/**
+ * Class ModuleIsotopeSetup
+ * Back end module Isotope "setup".
+ */
 class ModuleIsotopeSetup extends BackendModule
 {
 
@@ -37,7 +41,6 @@ class ModuleIsotopeSetup extends BackendModule
 	 */
 	protected $strTemplate = 'be_iso_setup';
 
-
 	/**
 	 * Isotope modules
 	 * @var array
@@ -45,6 +48,10 @@ class ModuleIsotopeSetup extends BackendModule
 	protected $arrModules = array();
 
 
+	/**
+	 * Generate the module
+	 * @return string
+	 */
 	public function generate()
 	{
 		$this->import('BackendUser', 'User');
@@ -80,6 +87,9 @@ class ModuleIsotopeSetup extends BackendModule
 	}
 
 
+	/**
+	 * Generate the module
+	 */
 	protected function compile()
 	{
 		$this->Template->modules = $this->arrModules;
@@ -91,7 +101,7 @@ class ModuleIsotopeSetup extends BackendModule
 	/**
 	 * Open an isotope module and return it as HTML
 	 * @param string
-	 * @return string
+	 * @return mixed
 	 */
 	protected function getIsotopeModule($module)
 	{
@@ -170,7 +180,6 @@ class ModuleIsotopeSetup extends BackendModule
 
 			$dataContainer = 'DC_' . $GLOBALS['TL_DCA'][$strTable]['config']['dataContainer'];
 			require_once(sprintf('%s/system/drivers/%s.php', TL_ROOT, $dataContainer));
-
 			$dc = new $dataContainer($strTable);
 		}
 

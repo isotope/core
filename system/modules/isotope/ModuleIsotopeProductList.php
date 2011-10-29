@@ -28,11 +28,7 @@
 
 /**
  * Class ModuleIsotopeProductList
- * 
  * The mother of all product lists.
- * @copyright  Isotope eCommerce Workgroup 2009-2011
- * @author     Andreas Schempp <andreas@schempp.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 class ModuleIsotopeProductList extends ModuleIsotope
 {
@@ -45,7 +41,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 
 	/**
 	 * Cache products. Can be disable in a child class, e.g. a "random products list"
-	 * @var bool
+	 * @var boolean
 	 */
 	protected $blnCacheProducts = true;
 
@@ -103,6 +99,8 @@ class ModuleIsotopeProductList extends ModuleIsotope
 	 *
 	 * This function is specially designed so you can keep it in your child classes and only override findProducts().
 	 * You will automatically gain product caching (see class property), grid classes, pagination and more.
+	 * 
+	 * @return void
 	 */
 	protected function compile()
 	{
@@ -176,10 +174,11 @@ class ModuleIsotopeProductList extends ModuleIsotope
 					// Decide if we should show the "caching products" message
 					$end = microtime(true) - $start;
 					$this->blnCacheProducts = $end > 1 ? true : false;
+
 					if ($blnCacheMessage != $this->blnCacheProducts)
 					{
 						$arrCacheMessage = $this->iso_productcache;
-						$arrCacheMessage[$objPage->id][(int)$this->Input->get('isorc')] = $this->blnCacheProducts;
+						$arrCacheMessage[$objPage->id][(int) $this->Input->get('isorc')] = $this->blnCacheProducts;
 						$this->Database->prepare("UPDATE tl_module SET iso_productcache=? WHERE id=?")->execute(serialize($arrCacheMessage), $this->id);
 					}
 
@@ -189,7 +188,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 						$this->Database->lockTables(array('tl_iso_productcache'=>'WRITE', 'tl_iso_products'=>'READ'));
 						$arrIds = array();
 
-						foreach( $arrProducts as $objProduct )
+						foreach ($arrProducts as $objProduct)
 						{
 							$arrIds[] = $objProduct->id;
 						}
@@ -236,11 +235,12 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		}
 
 		$arrBuffer = array();
+
 		foreach ($arrProducts as $objProduct)
 		{
 			$arrBuffer[] = array
 			(
-				'html'		=> $objProduct->generate((strlen($this->iso_list_layout) ? $this->iso_list_layout : $objProduct->list_template), $this),
+				'html' => $objProduct->generate((strlen($this->iso_list_layout) ? $this->iso_list_layout : $objProduct->list_template), $this),
 			);			
 		}
 
@@ -250,7 +250,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 
 	/**
 	 * Find all products we need to list.
-	 * @return	array
+	 * @return array
 	 */
 	protected function findProducts($arrCacheIds=null)
 	{
@@ -262,18 +262,15 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		}
 
 		list($arrFilters, $arrSorting, $strWhere, $arrValues) = $this->getFiltersAndSorting();
-
-		$objProductData = $this->Database->prepare(IsotopeProduct::getSelectStatement() . "\nWHERE p1.published='1' AND p1.language='' AND p1.id IN (" . implode(',', $arrIds) . ")$strWhere ORDER BY sorting")
-										 ->execute($arrValues);
-
+		$objProductData = $this->Database->prepare(IsotopeProduct::getSelectStatement() . "\nWHERE p1.published='1' AND p1.language='' AND p1.id IN (" . implode(',', $arrIds) . ")$strWhere ORDER BY sorting")->execute($arrValues);
 		return IsotopeFrontend::getProducts($objProductData, $this->iso_reader_jumpTo, true, $arrFilters, $arrSorting);
 	}
 
 
 	/**
 	 * Generate the pagination
-	 * @param	int
-	 * @return	int
+	 * @param integer
+	 * @return integer
 	 */
 	protected function generatePagination($total)
 	{
@@ -302,8 +299,8 @@ class ModuleIsotopeProductList extends ModuleIsotope
 
 	/**
 	 * Get filter & sorting configuration
-	 * @param	bool
-	 * @return	array
+	 * @param boolean
+	 * @return array
 	 */
 	protected function getFiltersAndSorting($blnNativeSQL=true)
 	{
@@ -319,7 +316,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		{
 			$arrModules = array_reverse($this->iso_filterModules);
 
-			foreach( $arrModules as $module )
+			foreach ($arrModules as $module)
 			{
 				if (is_array($GLOBALS['ISO_FILTERS'][$module]))
 				{
@@ -338,7 +335,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			}
 		}
 
-		// thanks to certo web & design for sponsoring this feature
+		// Thanks to certo web & design for sponsoring this feature
 		if ($blnNativeSQL)
 		{
 			$strWhere = '';
@@ -346,15 +343,13 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			$arrValues = array();
 
 			// Initiate native SQL filtering
-			foreach( $arrFilters as $k => $filter )
+			foreach ($arrFilters as $k => $filter)
 			{
 				if ($filter['group'] == '' && !in_array($filter['attribute'], $GLOBALS['ISO_CONFIG']['dynamicAttributes']))
 				{
 					$operator = IsotopeFrontend::convertFilterOperator($filter['operator'], 'SQL');
-
 					$arrWhere[] = "{$filter['attribute']} $operator ?";
 					$arrValues[] = $filter['value'];
-
 					unset($arrFilters[$k]);
 				}
 			}

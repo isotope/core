@@ -29,6 +29,10 @@
  */
 
 
+/**
+ * Class MediaManager
+ * Provide methods to handle media files.
+ */
 class MediaManager extends Widget implements uploadable
 {
 
@@ -71,6 +75,7 @@ class MediaManager extends Widget implements uploadable
 
 	/**
 	 * Validate input and set value
+	 * @return void
 	 */
 	public function validate()
 	{
@@ -83,7 +88,7 @@ class MediaManager extends Widget implements uploadable
 			{
 				if (is_array($this->varValue))
 				{
-					foreach( $this->varValue as $file )
+					foreach ($this->varValue as $file)
 					{
 						if (is_file(TL_ROOT . '/isotope/' . substr($file['src'], 0, 1) . '/' . $file['src']))
 						{
@@ -176,7 +181,6 @@ class MediaManager extends Widget implements uploadable
 			$this->import('Database');
 
 			$pathinfo = pathinfo($file['name']);
-
 			$strCacheName = standardize($pathinfo['filename'], true) . '.' . $pathinfo['extension'];
 			$uploadFolder = 'isotope/' . substr($strCacheName, 0, 1);
 
@@ -188,7 +192,6 @@ class MediaManager extends Widget implements uploadable
 
 			// Make sure directory exists
 			$this->Files->mkdir($uploadFolder);
-
 			$this->Files->move_uploaded_file($file['tmp_name'], $uploadFolder . '/' . $strCacheName);
 
 			if (!is_array($this->varValue))
@@ -201,6 +204,7 @@ class MediaManager extends Widget implements uploadable
 
 		unset($_FILES[$this->strName]);
     }
+
 
 	/**
 	 * Generate the widget and return it as string
@@ -263,7 +267,9 @@ class MediaManager extends Widget implements uploadable
 		$return = '<div id="ctrl_' . $this->strId . '">';
 
 		if (!is_array($this->varValue) || !count($this->varValue))
+		{
 			return $return . $GLOBALS['TL_LANG']['MSC']['mmNoUploads'] . $upload . '</div>';
+		}
 
 		// Add label and return wizard
 		$return .= '<table class="tl_mediamanager">
@@ -326,7 +332,9 @@ class MediaManager extends Widget implements uploadable
 			foreach ($arrButtons as $button)
 			{
 				if ($button == 'delete' && $blnLanguage && $this->varValue[$i]['translate'] != 'all')
+				{
 					continue;
+				}
 
 				$return .= '<a href="'.$this->addToUrl('&amp;'.$strCommand.'='.$button.'&amp;cid='.$i.'&amp;id='.$this->currentRecord).'" title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable]['wz_'.$button]).'" onclick="Isotope.mediaManager(this, \''.$button.'\',  \'ctrl_'.$this->strId.'\'); return false;">'.$this->generateImage($button.'.gif', $GLOBALS['TL_LANG'][$this->strTable]['wz_'.$button], 'class="tl_listwizard_img"').'</a> ';
 			}

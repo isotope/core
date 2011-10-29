@@ -28,6 +28,10 @@
  */
 
 
+/**
+ * Class ModuleIsotopeProductFilter
+ * Front end module Isotope "product filter".
+ */
 class ModuleIsotopeProductFilter extends ModuleIsotope
 {
 
@@ -37,6 +41,10 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 	 */
 	protected $strTemplate = 'iso_filter_default';
 
+	/**
+	 * Cache request
+	 * @var boolean
+	 */
 	protected $blnCacheRequest = false;
 
 
@@ -99,9 +107,8 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 
 
 	/**
-	 * Initialize module data. You can override this function in a child class.
-	 *
-	 * @return	bool
+	 * Initialize module data. You can override this function in a child class
+	 * @return boolean
 	 */
 	protected function initializeFilters()
 	{
@@ -123,6 +130,10 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 	}
 
 
+	/**
+	 * Generate the module
+	 * @return void
+	 */
 	protected function compile()
 	{
 		$this->blnCacheRequest = $this->Input->post('FORM_SUBMIT') == 'iso_filter_'.$this->id ? true : false;
@@ -146,6 +157,10 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 	}
 
 
+	/**
+	 * Generate a search form
+	 * @return void
+	 */
 	protected function generateSearch()
 	{
 		$this->Template->hasSearch = false;
@@ -156,9 +171,9 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 			{
 				$arrKeywords = trimsplit(' ', $this->Input->get('keywords'));
 
-				foreach( $arrKeywords as $keyword )
+				foreach ($arrKeywords as $keyword)
 				{
-					foreach( $this->iso_searchFields as $field )
+					foreach ($this->iso_searchFields as $field)
 					{
 						$GLOBALS['ISO_FILTERS'][$this->id][] = array
 						(
@@ -180,6 +195,10 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 	}
 
 
+	/**
+	 * Generate a filter form
+	 * @return void
+	 */
 	protected function generateFilters()
 	{
 		$this->Template->hasFilters = false;
@@ -190,7 +209,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 			$arrInput = $this->Input->post('filter');
 			$arrIds = $this->findCategoryProducts($this->iso_category_scope, $this->iso_list_where);
 
-			foreach( $this->iso_filterFields as $strField )
+			foreach ($this->iso_filterFields as $strField)
 			{
 				$arrValues = $this->Database->execute("SELECT DISTINCT $strField FROM tl_iso_products WHERE (id IN (" . implode(',', $arrIds) . ") OR pid IN (" . implode(',', $arrIds) . ")) AND published='1' AND language='' AND $strField!=''")
 											->fetchEach($strField);
@@ -226,7 +245,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 
 					if (is_array($GLOBALS['ISO_ATTR'][$arrData['inputType']]['callback']) && count($GLOBALS['ISO_ATTR'][$arrData['inputType']]['callback']))
 					{
-						foreach( $GLOBALS['ISO_ATTR'][$arrData['inputType']]['callback'] as $callback )
+						foreach ($GLOBALS['ISO_ATTR'][$arrData['inputType']]['callback'] as $callback)
 						{
 							$this->import($callback[0]);
 							$arrData = $this->{$callback[0]}->{$callback[1]}($strField, $arrData, $this);
@@ -237,10 +256,13 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 					$arrWidget = $this->prepareForWidget($arrData, $strField);
 
 					if (!is_array($arrWidget['options']))
+					{
 						continue;
+					}
 
 					$arrOptions = $arrWidget['options'];
-					foreach( $arrWidget['options'] as $k => $option )
+
+					foreach ($arrWidget['options'] as $k => $option)
 					{
 						if (!in_array($option['value'], $arrValues))
 						{
@@ -268,6 +290,10 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 	}
 
 
+	/**
+	 * Generate a sorting form
+	 * @return void
+	 */
 	protected function generateSorting()
 	{
 		$this->Template->hasSorting = false;
@@ -297,11 +323,10 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 			// No need to generate options if we reload anyway
 			elseif (!$this->blnCacheRequest)
 			{
-				foreach( $this->iso_sortingFields as $field )
+				foreach ($this->iso_sortingFields as $field)
 				{
-
 					// @todo this must be dynamic
-					switch( $field )
+					switch ($field)
 					{
 						case 'price':
 							$asc = $GLOBALS['TL_LANG']['MSC']['low_to_high'];
@@ -319,7 +344,6 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 							$desc = $GLOBALS['TL_LANG']['MSC']['z_to_a'];
 							break;
 					}
-
 
 					$arrOptions[] = array
 					(
@@ -344,9 +368,14 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 	}
 
 
+	/**
+	 * Generate a limit form
+	 * @return void
+	 */
 	protected function generateLimit()
 	{
 		$this->Template->hasLimit = false;
+
 		if ($this->iso_enableLimit)
 		{
 			$arrOptions = array();
@@ -373,7 +402,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 			// No need to generate options if we reload anyway
 			elseif (!$this->blnCacheRequest)
 			{
-				foreach( $arrLimit as $limit )
+				foreach ($arrLimit as $limit)
 				{
 					$arrOptions[] = array
 					(

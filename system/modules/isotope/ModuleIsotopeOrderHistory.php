@@ -28,6 +28,10 @@
  */
 
 
+/**
+ * Class ModuleIsotopeOrderHistory
+ * Front end module Isotope "order history".
+ */
 class ModuleIsotopeOrderHistory extends ModuleIsotope
 {
 
@@ -38,12 +42,16 @@ class ModuleIsotopeOrderHistory extends ModuleIsotope
 	protected $strTemplate = 'mod_iso_orderhistory';
 
 	/**
-	 * Disable caching of the frontend page if this module is in use.
-	 * @var bool
+	 * Disable caching of the frontend page if this module is in use
+	 * @var boolean
 	 */
 	protected $blnDisableCache = true;
 
 
+	/**
+	 * Display a wildcard in the back end
+	 * @return string
+	 */
 	public function generate()
 	{
 		if (TL_MODE == 'BE')
@@ -62,14 +70,19 @@ class ModuleIsotopeOrderHistory extends ModuleIsotope
 		$this->iso_config_ids = deserialize($this->iso_config_ids);
 
 		if (!FE_USER_LOGGED_IN || !is_array($this->iso_config_ids) || !count($this->iso_config_ids))
+		{
 			return '';
+		}
 
 		$this->import('FrontendUser', 'User');
-
 		return parent::generate();
 	}
 
 
+	/**
+	 * Generate the module
+	 * @return void
+	 */
 	protected function compile()
 	{
 		$objOrders = $this->Database->execute("SELECT *, (SELECT COUNT(*) FROM tl_iso_order_items WHERE pid=tl_iso_orders.id) AS items FROM tl_iso_orders WHERE status!='' AND pid=".$this->User->id." AND config_id IN (" . implode(',', $this->iso_config_ids) . ") ORDER BY date DESC");
@@ -84,11 +97,10 @@ class ModuleIsotopeOrderHistory extends ModuleIsotope
 		}
 
 		$this->import('Isotope');
-
 		$arrOrders = array();
 		$arrPage = $this->Database->execute("SELECT * FROM tl_page WHERE id=".$this->jumpTo)->fetchAssoc();
 
-		while( $objOrders->next() )
+		while ($objOrders->next())
 		{
 			if ($this->Isotope->Config->id != $objOrders->config_id)
 			{

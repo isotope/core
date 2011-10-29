@@ -28,6 +28,10 @@
  */
 
 
+/**
+ * Class ModuleIsotopeOrderDetails
+ * Front end module Isotope "order details".
+ */
 class ModuleIsotopeOrderDetails extends ModuleIsotope
 {
 
@@ -38,12 +42,16 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 	protected $strTemplate = 'mod_iso_orderdetails';
 
 	/**
-	 * Disable caching of the frontend page if this module is in use.
-	 * @var bool
+	 * Disable caching of the frontend page if this module is in use
+	 * @var boolean
 	 */
 	protected $blnDisableCache = true;
 
 
+	/**
+	 * Display a wildcard in the back end
+	 * @return string
+	 */
 	public function generate($blnBackend=false)
 	{
 		if (TL_MODE == 'BE' && !$blnBackend)
@@ -69,10 +77,13 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 	}
 
 
+	/**
+	 * Generate the module
+	 * @return void
+	 */
 	protected function compile()
 	{
 		global $objPage;
-
 		$objOrder = new IsotopeOrder();
 
 		if (!$objOrder->findBy('uniqid', $this->Input->get('uid')))
@@ -96,12 +107,12 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 		$arrItems = array();
 		$arrProducts = $objOrder->getProducts();
 
-		foreach( $arrProducts as $i => $objProduct )
+		foreach ($arrProducts as $i => $objProduct)
 		{
 			$arrDownloads = array();
 			$objDownloads = $this->Database->prepare("SELECT p.*, o.* FROM tl_iso_order_downloads o LEFT OUTER JOIN tl_iso_downloads p ON o.download_id=p.id WHERE o.pid=?")->execute($objProduct->cart_id);
 
-			while( $objDownloads->next() )
+			while ($objDownloads->next())
 			{
 				$blnDownloadable = (($objOrder->status == 'complete' || (intval($objOrder->date_payed) > 0 && intval($objOrder->date_payed) <= time())) && ($objDownloads->downloads_remaining === '' || $objDownloads->downloads_remaining > 0)) ? true : false;
 

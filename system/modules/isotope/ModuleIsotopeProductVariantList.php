@@ -28,6 +28,10 @@
  */
 
 
+/**
+ * Class ModuleIsotopeProductVariantList
+ * Front end module Isotope "product variant list".
+ */
 class ModuleIsotopeProductVariantList extends ModuleIsotopeProductList
 {
 
@@ -55,9 +59,8 @@ class ModuleIsotopeProductVariantList extends ModuleIsotopeProductList
 
 	/**
 	 * Fill the object's arrProducts array
-	 *
-	 * @param	array|null
-	 * @return	array
+	 * @param array|null
+	 * @return array
 	 */
 	protected function findProducts($arrCacheIds=null)
 	{
@@ -69,10 +72,7 @@ class ModuleIsotopeProductVariantList extends ModuleIsotopeProductList
 		}
 
 		list($arrFilters, $arrSorting, $strWhere, $arrValues) = $this->getFiltersAndSorting();
-
-		$objProductData = $this->Database->prepare(IsotopeProduct::getSelectStatement() . " WHERE p1.published='1' AND p1.language='' AND (p1.pid IN (" . implode(',', $arrIds) . "))$strWhere ORDER BY sorting")
-										 ->execute($arrValues);
-
+		$objProductData = $this->Database->prepare(IsotopeProduct::getSelectStatement() . " WHERE p1.published='1' AND p1.language='' AND (p1.pid IN (" . implode(',', $arrIds) . "))$strWhere ORDER BY sorting")->execute($arrValues);
 		return IsotopeFrontend::getProducts($objProductData, $this->iso_reader_jumpTo, true, $arrFilters, $arrSorting);
 	}
 }

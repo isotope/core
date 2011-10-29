@@ -28,6 +28,10 @@
  */
 
 
+/**
+ * Class ModuleIsotopeAddressBook
+ * Front end module Isotope "address book".
+ */
 class ModuleIsotopeAddressBook extends ModuleIsotope
 {
 
@@ -38,7 +42,7 @@ class ModuleIsotopeAddressBook extends ModuleIsotope
 	protected $strTemplate = 'mod_iso_addressbook';
 
 	/**
-	 * Disable caching of the frontend page if this module is in use.
+	 * Disable caching of the frontend page if this module is in use
 	 * @var bool
 	 */
 	protected $blnDisableCache = true;
@@ -88,6 +92,7 @@ class ModuleIsotopeAddressBook extends ModuleIsotope
 
 	/**
 	 * Generate module
+	 * @return void
 	 */
 	protected function compile()
 	{
@@ -129,29 +134,27 @@ class ModuleIsotopeAddressBook extends ModuleIsotope
 				$this->show();
 				break;
 		}
-
 	}
 
 
 	/**
-	 * List all addresses for the current frontend user.
+	 * List all addresses for the current frontend user
+	 * @return void
 	 */
 	protected function show()
 	{
 		global $objPage;
-
 		$i = 0;
 		$arrAddresses = array();
 		$strUrl = $this->generateFrontendUrl($objPage->row()) . ($GLOBALS['TL_CONFIG']['disableAlias'] ? '&' : '?');
-
 		$objAddress = $this->Database->execute("SELECT * FROM tl_iso_addresses WHERE pid={$this->User->id} AND store_id={$this->Isotope->Config->store_id}");
 
-		while( $objAddress->next() )
+		while ($objAddress->next())
 		{
 			$arrAddresses[] = array
 			(
 				'id'				=> $objAddress->id,
-				'class'				=> (($i%2 ? 'even' : 'odd') . ($objAddress->isDefaultBilling ? ' default_billing' : '') . ($objAddress->isDefaultShipping ? ' default_shipping' : '') . ($i==0 ? ' first' : '')),
+				'class'				=> ((($i % 2) ? 'even' : 'odd') . ($objAddress->isDefaultBilling ? ' default_billing' : '') . ($objAddress->isDefaultShipping ? ' default_shipping' : '') . (($i == 0) ? ' first' : '')),
 				'text'				=> $this->Isotope->generateAddressString($objAddress->row()),
 				'edit_url'			=> ampersand($strUrl . 'act=edit&address=' . $objAddress->id),
 				'delete_url'		=> ampersand($strUrl . 'act=delete&address=' . $objAddress->id),
@@ -183,8 +186,9 @@ class ModuleIsotopeAddressBook extends ModuleIsotope
 
 
 	/**
-	 * Edit an address record.
-	 * Based on the PersonalData core module.
+	 * Edit an address record. Based on the PersonalData core module
+	 * @param integer
+	 * @return void
 	 */
 	protected function edit($intAddressId=0)
 	{
@@ -196,7 +200,6 @@ class ModuleIsotopeAddressBook extends ModuleIsotope
 		}
 
 		$this->Template = new IsotopeTemplate($this->memberTpl);
-
 		$this->Template->fields = '';
 		$this->Template->tableless = $this->tableless;
 
@@ -208,7 +211,6 @@ class ModuleIsotopeAddressBook extends ModuleIsotope
 
 		// No need to check: if the address does not exist, fields will be empty and a new address will be created
 		$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE id=? AND pid={$this->User->id} AND store_id={$this->Isotope->Config->store_id}")->execute($intAddressId);
-
 
 		// Build form
 		foreach ($this->arrFields as $field)
@@ -374,7 +376,9 @@ class ModuleIsotopeAddressBook extends ModuleIsotope
 
 
 	/**
-	 * Delete the given address and make sure it belongs to the current frontend user.
+	 * Delete the given address and make sure it belongs to the current frontend user
+	 * @param integer
+	 * @return void
 	 */
 	protected function delete($intAddressId)
 	{
