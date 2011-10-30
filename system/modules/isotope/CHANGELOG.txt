@@ -24,6 +24,7 @@ Version 1.3.rc1 (2011-??-??)
 - Improved: loading products is now centralized in IsotopeFrontend static functions
 - Improved: "Loading product data" is now in the language file (#2215)
 - Improved: Removed size and added maxlength attribute to quantity input fields (#2118)
+- Improved: updated currency list according to ISO 4217 (#2082)
 - Fixed radio button events in Internet Explorer (Ticket #484)
 - Fixed products DCA not loaded in rare cases
 - Fixed: hide customer definied fields in product edit mode
