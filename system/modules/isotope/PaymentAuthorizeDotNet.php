@@ -381,8 +381,8 @@ $return .= '</div></div>';
 			"x_delim_char"						=> $this->authorize_delimiter,
 			"x_delim_data"						=> "TRUE",
 			"x_relay_response" 					=> "FALSE",
-			"x_amount"							=> $fltOrderTotal
-			"x_test_request"					=> ($this->debug ? "TRUE" : "FALSE"),
+			"x_amount"							=> $fltOrderTotal,
+			"x_test_request"					=> ($this->debug ? "TRUE" : "FALSE")
 		);
 
 		switch($strAuthType)
