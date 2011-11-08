@@ -1273,7 +1273,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 	/**
 	 * Override parent addToUrl function. Use generateFrontendUrl if we want to remove all parameters.
-	 * @oaram string
+	 * @param string
 	 * @param boolean
 	 * @return string
 	 */
