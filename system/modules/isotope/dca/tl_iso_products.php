@@ -1114,7 +1114,7 @@ class tl_iso_products extends Backend
 					if (!$objVariant->numRows)
 					{
 						$this->Database->prepare("INSERT INTO tl_iso_products (tstamp,pid,inherit,type," . implode(',', array_keys($combination)) . ") VALUES (?,?,?,?" . str_repeat(',?', count($combination)) . ")")
-									   ->execute(array_merge(array($time, $objProduct->id, $objProduct->variant_attributes, $objProduct->type), $combination));
+									   ->execute(array_merge(array($time, $objProduct->id, array_diff($objProduct->variant_attributes, array('sku', 'price', 'shipping_weight', 'published')), $objProduct->type), $combination));
 					}
 				}
 

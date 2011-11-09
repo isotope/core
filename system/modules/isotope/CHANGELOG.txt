@@ -36,6 +36,7 @@ Version 1.3.rc1 (2011-??-??)
 - Fixed invalid markup in several templates (#2081)
 - Fixed related products loaded from product cache (#2236)
 - Fixed product cache not considering product start date (#2230)
+- Fixed issue with variant generator and prices (#2046)
 - Dropped unimplemented enableGoogleAnalytics checkbox in store config (#2102)
 
 Version 1.3.beta2 (2011-08-28)
