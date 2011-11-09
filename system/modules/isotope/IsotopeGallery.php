@@ -181,12 +181,22 @@ class IsotopeGallery extends Frontend
 	
 	
 	/**
+	 * Get the number of images
+	 * @return int
+	 */
+	public function size()
+	{
+		return count($this->arrFiles);
+	}
+	
+	
+	/**
 	 * Returns whether the gallery object has an image do display or not
 	 * @return boolean
 	 */
 	public function hasImages()
 	{
-		return (count($this->arrFiles)) ? true : false;
+		return ($this->size()) ? true : false;
 	}
 
 
