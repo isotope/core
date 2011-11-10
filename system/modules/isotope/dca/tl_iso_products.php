@@ -1573,10 +1573,6 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 					{
 						return '';
 					}
-					elseif ($objProduct->gid == $row['id'])
-					{
-						$disablePI = true;
-					}
 					break;
 
 				case 'cutAll':
