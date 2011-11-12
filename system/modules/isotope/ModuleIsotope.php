@@ -79,12 +79,15 @@ abstract class ModuleIsotope extends Module
 				$objPage->cache = 0;
 			}
 
+			//@todo: Had to comment this out while changing the reader settings to tl_page --> do we still need this?
+			/*
 			// Make sure we have a reader page
 			if (!$this->iso_reader_jumpTo)
 			{
 				global $objPage;
 				$this->iso_reader_jumpTo = $objPage->id;
 			}
+			 * */
 		}
 	}
 

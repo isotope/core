@@ -83,7 +83,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 	 */
 	public function generateAjax()
 	{
-		$objProduct = IsotopeFrontend::getProduct($this->Input->get('product'), $this->iso_reader_jumpTo, false);
+		$objProduct = IsotopeFrontend::getProduct($this->Input->get('product'), $this->getReaderPageId(), false);
 
 		if ($objProduct instanceof IsotopeProduct)
 		{
@@ -132,11 +132,11 @@ class ModuleIsotopeProductList extends ModuleIsotope
 						$total = $total - $offset;
 						$total = $total > $this->perPage ? $this->perPage : $total;
 
-						$arrProducts = IsotopeFrontend::getProducts(array_slice($arrCacheIds, $offset, $this->perPage), $this->iso_reader_jumpTo);
+						$arrProducts = IsotopeFrontend::getProducts(array_slice($arrCacheIds, $offset, $this->perPage), $this->getReaderPageId());
 					}
 					else
 					{
-						$arrProducts = IsotopeFrontend::getProducts($arrCacheIds, $this->iso_reader_jumpTo);
+						$arrProducts = IsotopeFrontend::getProducts($arrCacheIds, $this->getReaderPageId());
 					}
 
 					// Cache is wrong, drop everything and run findProducts()
@@ -263,7 +263,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 
 		list($arrFilters, $arrSorting, $strWhere, $arrValues) = $this->getFiltersAndSorting();
 		$objProductData = $this->Database->prepare(IsotopeProduct::getSelectStatement() . "\nWHERE p1.published='1' AND p1.language='' AND p1.id IN (" . implode(',', $arrIds) . ")$strWhere ORDER BY sorting")->execute($arrValues);
-		return IsotopeFrontend::getProducts($objProductData, $this->iso_reader_jumpTo, true, $arrFilters, $arrSorting);
+		return IsotopeFrontend::getProducts($objProductData, $this->getReaderPageId(), true, $arrFilters, $arrSorting);
 	}
 
 
@@ -364,6 +364,24 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		}
 
 		return array($arrFilters, $arrSorting);
+	}
+
+
+	/**
+	 * Get reader page id according to the settings
+	 * @return int page id of the reader
+	 */
+	private function getReaderPageId()
+	{
+		// if set in module, it always overwrites the settings in tl_page
+		if ($this->iso_reader_jumpTo > 0)
+		{
+			return $this->iso_reader_jumpTo;
+		}
+		
+		global $objPage;
+		$this->import('IsotopeFrontend');
+		return $this->IsotopeFrontend->getReaderPageIdFromPage($objPage);
 	}
 }
 

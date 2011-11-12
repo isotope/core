@@ -46,6 +46,12 @@ class IsotopeFrontend extends Frontend
 	 * @var object
 	 */
 	protected $Isotope;
+	
+	/**
+	 * Cached reader page id's
+	 * @var array
+	 */
+	protected $arrReaderPageIds = array();
 
 
 	/**
@@ -1144,6 +1150,111 @@ $endScript";
 		}
 		
 		return $arrSurcharges;
+	}
+	
+	
+	
+	
+	/**
+	 * Adds the product urls to the array so they get indexed when the search index is being rebuilt in the maintenance module
+	 * @param array absolute page urls
+	 * @return array extended array of absolute page urls
+	 */
+	public function addProductsToSearchIndex($arrPages)
+	{
+		$arrIsotopeProductPages = array();
+		
+		// get all products available
+		$objProducts = $this->Database->execute(IsotopeProduct::getSelectStatement() . " WHERE p1.language='' AND p1.pid=0 AND p1.published=1");
+		$arrProducts = self::getProducts($objProducts);
+		
+		if (!count($arrProducts))
+		{
+			return;
+		}
+		
+		// get all the categories for every product
+		foreach ($arrProducts as $objProduct)
+		{
+			$arrCategories = $objProduct->categories;
+			
+			if (!is_array($arrCategories) || !count($arrCategories))
+			{
+				continue;
+			}
+			
+			$objCategoryPages = $this->Database->execute('SELECT * FROM tl_page WHERE id IN(' . implode(',', $arrCategories) . ')');
+			
+			if (!$objCategoryPages->numRows)
+			{
+				continue;
+			}
+			
+			while($objCategoryPages->next())
+			{
+				// set the reader jump to page
+				$objProduct->reader_jumpTo = $this->getReaderPageIdFromPage($objCategoryPages);
+				
+				// generate the front end url
+				$arrIsotopeProductPages[] = $this->Environment->base . $objProduct->href_reader;
+			}
+		}
+		
+		// the reader page id can be the same for several categories so we have to make sure we only index the product once
+		$arrIsotopeProductPages = array_unique($arrIsotopeProductPages);
+		
+		return array_merge($arrPages, $arrIsotopeProductPages);
+	}
+
+
+
+
+	/**
+	 * Gets the product reader of a certain page
+	 * @param object page object
+	 * @return int reader page id
+	 */
+	public function getReaderPageIdFromPage($objPage)
+	{
+		// return from cache
+		if (isset($this->arrReaderPageIds[$objPage->id]))
+		{
+			return $this->arrReaderPageIds[$objPage->id];
+		}
+
+		// if the reader page is set on the current page id we return this one
+		if ($objPage->iso_setReaderJumpTo)
+		{
+			return $objPage->iso_readerJumpTo;
+		}
+		
+		// unfortunately there are no hooks in Controller::getPageDetails() but the data gets cached anyway
+		$intReaderPageId = 0;
+		$pid = $objPage->pid;
+		do
+		{
+			$objParentPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")
+											->limit(1)
+											->execute($pid);
+
+			if ($objParentPage->numRows < 1)
+			{
+				break;
+			}
+			
+			if ($objParentPage->iso_setReaderJumpTo)
+			{
+				$intReaderPageId = $objParentPage->iso_readerJumpTo;
+			}
+
+			$pid = $objParentPage->pid;
+		}
+		while ($pid > 0 && $objParentPage->type != 'root');
+		
+		// cache the id
+		$this->arrReaderPageIds[$objPage->id] = $intReaderPageId;
+		
+		return $intReaderPageId;
 	}
 }
 

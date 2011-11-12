@@ -32,6 +32,19 @@
  * Palettes
  */
 $GLOBALS['TL_DCA']['tl_page']['palettes']['root'] = str_replace(';{publish_legend}', ';{isotope_legend},iso_config;{publish_legend}', $GLOBALS['TL_DCA']['tl_page']['palettes']['root']);
+$GLOBALS['TL_DCA']['tl_page']['palettes']['regular'] = str_replace(';{publish_legend}', ';{isotope_legend},iso_setReaderJumpTo;{publish_legend}', $GLOBALS['TL_DCA']['tl_page']['palettes']['regular']);
+
+
+/**
+ * Selectors
+ */
+$GLOBALS['TL_DCA']['tl_page']['palettes']['__selector__'][] = 'iso_setReaderJumpTo';
+
+
+/**
+ * Subpalettes
+ */
+$GLOBALS['TL_DCA']['tl_page']['subpalettes']['iso_setReaderJumpTo'] = 'iso_readerJumpTo';
 
 
 /**
@@ -44,6 +57,21 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['iso_config'] = array
 	'inputType'               => 'select',
 	'foreignKey'			  => 'tl_iso_config.name',
 	'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
+);
+$GLOBALS['TL_DCA']['tl_page']['fields']['iso_setReaderJumpTo'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_page']['iso_setReaderJumpTo'],
+	'exclude'                 => true,
+	'inputType'               => 'checkbox',
+	'eval'                    => array('submitOnChange'=>true, 'tl_class'=>'clr')
+);
+$GLOBALS['TL_DCA']['tl_page']['fields']['iso_readerJumpTo'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_page']['iso_readerJumpTo'],
+	'exclude'                 => true,
+	'inputType'               => 'pageTree',
+	// @todo: only show the pages from this page root (a reader page in a different page tree than the current doesn't make sense) as soon as http://dev.contao.org/issues/3563 is implemented
+	'eval'					  => array('fieldType'=>'radio', 'mandatory'=>true)
 );
 
 

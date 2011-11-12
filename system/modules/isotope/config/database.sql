@@ -692,6 +692,8 @@ CREATE TABLE `tl_iso_productcache` (
 
 CREATE TABLE `tl_page` (
   `iso_config` int(10) unsigned NOT NULL default '0',
+  `iso_setReaderJumpTo` char(1) NOT NULL default '',
+  `iso_readerJumpTo` int(10) unsigned NOT NULL default '0',
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
