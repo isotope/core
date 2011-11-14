@@ -1207,30 +1207,29 @@ $endScript";
 	}
 
 
-
-
 	/**
 	 * Gets the product reader of a certain page
 	 * @param object page object
 	 * @return int reader page id
 	 */
-	public function getReaderPageIdFromPage($objPage)
+	public function getReaderPageIdFromPage($objOriginPage)
 	{
 		// return from cache
-		if (isset($this->arrReaderPageIds[$objPage->id]))
+		if (isset($this->arrReaderPageIds[$objOriginPage->id]))
 		{
-			return $this->arrReaderPageIds[$objPage->id];
+			return $this->arrReaderPageIds[$objOriginPage->id];
 		}
 
 		// if the reader page is set on the current page id we return this one
-		if ($objPage->iso_setReaderJumpTo)
+		if ($objOriginPage->iso_setReaderJumpTo)
 		{
-			return $objPage->iso_readerJumpTo;
+			// cache the id
+			$this->arrReaderPageIds[$objOriginPage->id] = $objOriginPage->iso_readerJumpTo;
+			return $objOriginPage->iso_readerJumpTo;
 		}
 		
-		// unfortunately there are no hooks in Controller::getPageDetails() but the data gets cached anyway
-		$intReaderPageId = 0;
-		$pid = $objPage->pid;
+		// now move up the page tree until we find a page where the reader is set
+		$pid = $objOriginPage->pid;
 		do
 		{
 			$objParentPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")
@@ -1244,17 +1243,20 @@ $endScript";
 			
 			if ($objParentPage->iso_setReaderJumpTo)
 			{
-				$intReaderPageId = $objParentPage->iso_readerJumpTo;
+				// cache the id
+				$this->arrReaderPageIds[$objParentPage->id] = $objParentPage->iso_readerJumpTo;
+				return $objParentPage->iso_readerJumpTo;
 			}
 
 			$pid = $objParentPage->pid;
 		}
 		while ($pid > 0 && $objParentPage->type != 'root');
 		
+		// and if there is no reader page set at all we take the current page object
+		global $objPage;
 		// cache the id
-		$this->arrReaderPageIds[$objPage->id] = $intReaderPageId;
-		
-		return $intReaderPageId;
+		$this->arrReaderPageIds[$objOriginPage->id] = $objPage->id;
+		return $objPage->id;
 	}
 }
 
