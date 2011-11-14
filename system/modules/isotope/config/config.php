@@ -290,6 +290,7 @@ $GLOBALS['ISO_HOOKS']['checkoutSurcharge'][] = array('IsotopeCart', 'getPaymentS
  * Cron Jobs
  */
 $GLOBALS['TL_CRON']['daily'][] = array('IsotopeAutomator', 'deleteOldCarts');
+$GLOBALS['TL_CRON']['daily'][] = array('IsotopeAutomator', 'convertCurrencies');
 
 
 /**

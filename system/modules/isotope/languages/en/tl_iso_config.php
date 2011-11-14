@@ -47,6 +47,9 @@ $GLOBALS['TL_LANG']['tl_iso_config']['currencySymbol']					= array('Use currency
 $GLOBALS['TL_LANG']['tl_iso_config']['currencySpace']					= array('Include blank space', 'Add space between price and currency symbol.');
 $GLOBALS['TL_LANG']['tl_iso_config']['currencyPosition']				= array('Position of currency code/symbol', 'Select if you want to show currency on the left or right side of the price.');
 $GLOBALS['TL_LANG']['tl_iso_config']['currencyFormat']					= array('Currency formatting', 'Choose a formatting for prices.');
+$GLOBALS['TL_LANG']['tl_iso_config']['currencyAutomator']				= array('Automatic currency conversion', 'Enable automatic update of price calcuation factors by using an online currency conversion provider.');
+$GLOBALS['TL_LANG']['tl_iso_config']['currencyOrigin']					= array('Currency origin', 'Please select the source currency for calculation.');
+$GLOBALS['TL_LANG']['tl_iso_config']['currencyProvider']				= array('Currency Data Provider', 'Select an available online provider of currency calculation data.');
 $GLOBALS['TL_LANG']['tl_iso_config']['invoiceLogo']						= array('Invoice Logo', 'Select a logo to show up on the invoices for this store.');
 $GLOBALS['TL_LANG']['tl_iso_config']['firstname']   					= array('First name', 'Please enter the first name (if applicable).');
 $GLOBALS['TL_LANG']['tl_iso_config']['lastname']    					= array('Last name', 'Please enter the last name (if applicable).');
@@ -99,6 +102,9 @@ $GLOBALS['TL_LANG']['tl_iso_config']['fwEnabled']						= 'Enable field';
 $GLOBALS['TL_LANG']['tl_iso_config']['fwLabel']							= 'Custom label';
 $GLOBALS['TL_LANG']['tl_iso_config']['fwMandatory']						= 'Mandatory';
 
+$GLOBALS['TL_LANG']['tl_iso_config']['ecb.int']							= 'European Central Bank';
+$GLOBALS['TL_LANG']['tl_iso_config']['admin.ch']						= 'Swiss Federal Department of Finance';
+
 
 /**
  * Buttons
@@ -118,6 +124,7 @@ $GLOBALS['TL_LANG']['tl_iso_config']['address_legend']	    			= 'Address configu
 $GLOBALS['TL_LANG']['tl_iso_config']['config_legend']					= 'Configuration';
 $GLOBALS['TL_LANG']['tl_iso_config']['price_legend']	    			= 'Pricing';
 $GLOBALS['TL_LANG']['tl_iso_config']['currency_legend']	    			= 'Currency formatting';
+$GLOBALS['TL_LANG']['tl_iso_config']['converter_legend']	    		= 'Currency conversion';
 $GLOBALS['TL_LANG']['tl_iso_config']['invoice_legend']	    			= 'Invoice';
 $GLOBALS['TL_LANG']['tl_iso_config']['images_legend']	    			= 'Images';
 

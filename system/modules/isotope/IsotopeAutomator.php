@@ -72,5 +72,41 @@ class IsotopeAutomator extends Controller
 			}
 		}
 	}
+	
+	
+	/**
+	 * Update the store configs with latest currency conversion data
+	 * @return void
+	 */
+	public function convertCurrencies()
+	{
+		$objConfigs = $this->Database->execute("SELECT * FROM tl_iso_config WHERE currencyAutomator='1'");
+		
+		while( $objConfigs->next() )
+		{
+			switch ($objConfigs->currencyProvider)
+			{
+				case 'ecb.int':
+					// To be implemented by Kamil in step 1
+					break;
+				
+				case 'admin.ch':
+					// To be implemented by Kamil in step 2
+					break;
+				
+				default:
+					// HOOK for other currency providers
+					// function myCurrencyConverter($strProvider, $strSourceCurrency, $strTargetCurrency, $arrConfig)
+					if (isset($GLOBALS['ISO_HOOKS']['convertCurrency']) && is_array($GLOBALS['ISO_HOOKS']['convertCurrency']))
+					{
+						foreach ($GLOBALS['ISO_HOOKS']['convertCurrency'] as $callback)
+						{
+							$this->import($callback[0]);
+							$this->$callback[0]->$callback[1]($objConfig->currencyProvider, $objConfig->currencyOrigin, $objConfig->currency, $objConfig-row());
+						}
+					}
+			}
+		}
+	}
 }
 
