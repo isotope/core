@@ -339,6 +339,10 @@ $return .= '</div></div>';
 		$arrProducts = array();
 		$arrPaymentInfo = array();
 
+		//grab any existing payment data.  If this is an order where a prior auth was made and a new total greater than the original exists,
+		//we need to re-auth.  Otherwise we simply use the old auth with the <= order total.
+		$arrOrderPaymentData = deserialize($objOrder->payment_data,true);
+
 		//Gather product and address data depending on FE(Cart) or BE(Order)
 		if(TL_MODE=='FE')
 		{
@@ -390,8 +394,8 @@ $return .= '</div></div>';
 			case 'AUTH_ONLY':
 				$authnet_values_authonly = array(
 					"x_url"								=> "FALSE",
-					"x_description"						=> "Order Number " . $this->Isotope->Config->orderPrefix . $objOrder->id,
-					"x_invoice_num"						=> $objOrder->id,
+					"x_description"						=> "Order Number " . $this->Isotope->Config->orderPrefix . $objOrder->order_id,
+					"x_invoice_num"						=> $objOrder->order_id,
 					"x_first_name"						=> $arrBilling['firstname'],
 					"x_last_name"						=> $arrBilling['lastname'],
 					"x_company"							=> $arrBilling['company'],
@@ -445,22 +449,31 @@ $return .= '</div></div>';
 
 		$fieldsFinal = rtrim($fields, '&');
 
-		$objRequest = new Request();
-
-		$objRequest->send('https://'.($this->debug ? 'test' : 'secure').'.authorize.net/gateway/transact.dll', $fieldsFinal, 'post');
-
-		$arrResponses = $this->handleResponse($objRequest->response);
-		$arrResponseCodes = $this->getResponseCodes($objRequest->response);
-
-		foreach(array_keys($arrResponses) as $key)
+		//new auth required if one has been sent and the value of that was less than our new value.
+		if(!count($arrOrderPaymentData) || $blnCapture || (!$blnCapture && count($arrOrderPaymentData) && $fltOrderTotal>$arrOrderPaymentData['grand-total']))
 		{
-			$arrReponseLabels[strtolower(standardize($key))] = $key;
+			$objRequest = new Request();
+	
+			$objRequest->send('https://'.($this->debug ? 'test' : 'secure').'.authorize.net/gateway/transact.dll', $fieldsFinal, 'post');
+	
+			$arrResponses = $this->handleResponse($objRequest->response);
+			$arrResponseCodes = $this->getResponseCodes($objRequest->response);
+	
+			foreach(array_keys($arrResponses) as $key)
+			{
+				$arrReponseLabels[strtolower(standardize($key))] = $key;
+			}
+	
+			$this->loadLanguageFile('payment');
+			$this->strStatus = $arrResponses['transaction-status'];
+			$this->strReason = $GLOBALS['TL_LANG']['MSG']['authorizedotnet'][$arrResponseCodes['response_type']][$arrResponseCodes['response_code']];
 		}
-
-		$this->loadLanguageFile('payment');
-		$this->strStatus = $arrResponses['transaction-status'];
-		$this->strReason = $GLOBALS['TL_LANG']['MSG']['authorizedotnet'][$arrResponseCodes['response_type']][$arrResponseCodes['response_code']];
-
+		else
+		{
+			//otherwise, if this isn't a capture, simply bypass/return true.  If it is, we need to do some additional work below.
+			if(!$blnCapture) return true;
+		}
+		
 		if(!$blnCapture)
 		{
 			switch($arrResponses['transaction-status'])
@@ -478,7 +491,6 @@ $return .= '</div></div>';
 		}
 
 		//Update payment data AKA Response Data. Transaction ID will not be saved during test mode.
-		$arrOrderPaymentData = deserialize($objOrder->payment_data,true);
 		$arrPaymentInfo = (count($arrOrderPaymentData)) ? array_merge($arrOrderPaymentData, $arrResponses) : $arrResponses;
 
 		$objOrder->payment_data = serialize($arrPaymentInfo);
