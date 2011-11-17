@@ -58,6 +58,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['iso_config'] = array
 	'foreignKey'			  => 'tl_iso_config.name',
 	'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
 );
+
 $GLOBALS['TL_DCA']['tl_page']['fields']['iso_setReaderJumpTo'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_page']['iso_setReaderJumpTo'],
@@ -65,6 +66,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['iso_setReaderJumpTo'] = array
 	'inputType'               => 'checkbox',
 	'eval'                    => array('submitOnChange'=>true, 'tl_class'=>'clr')
 );
+
 $GLOBALS['TL_DCA']['tl_page']['fields']['iso_readerJumpTo'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_page']['iso_readerJumpTo'],

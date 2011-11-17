@@ -51,7 +51,7 @@ class IsotopeFrontend extends Frontend
 	 * Cached reader page id's
 	 * @var array
 	 */
-	protected $arrReaderPageIds = array();
+	protected static $arrReaderPageIds = array();
 
 
 	/**
@@ -1151,10 +1151,8 @@ $endScript";
 		
 		return $arrSurcharges;
 	}
-	
-	
-	
-	
+
+
 	/**
 	 * Adds the product urls to the array so they get indexed when the search index is being rebuilt in the maintenance module
 	 * @param array absolute page urls
@@ -1193,7 +1191,7 @@ $endScript";
 			while($objCategoryPages->next())
 			{
 				// set the reader jump to page
-				$objProduct->reader_jumpTo = $this->getReaderPageIdFromPage($objCategoryPages);
+				$objProduct->reader_jumpTo = self::getReaderPageId($objCategoryPages);
 				
 				// generate the front end url
 				$arrIsotopeProductPages[] = $this->Environment->base . $objProduct->href_reader;
@@ -1209,42 +1207,65 @@ $endScript";
 
 	/**
 	 * Gets the product reader of a certain page
-	 * @param object page object
-	 * @return int reader page id
+	 * @param Database_Result|int	page object or page ID
+	 * @param int	override setting from a module or content element
+	 * @return int	reader page id
 	 */
-	public function getReaderPageIdFromPage($objOriginPage)
+	public static function getReaderPageId($objOriginPage=null, $intOverride=0)
 	{
-		// return from cache
-		if (isset($this->arrReaderPageIds[$objOriginPage->id]))
+		if ($intOverride > 0)
 		{
-			return $this->arrReaderPageIds[$objOriginPage->id];
+			return $intOverride;
+		}
+		
+		if ($objOriginPage === null)
+		{
+			global $objPage;
+			$objOriginPage = $objPage;
+		}
+		
+		$intPage = is_object($objOriginPage) ? (int) $objOriginPage->id : (int) $objOriginPage;
+		
+		// return from cache
+		if (isset(self::$arrReaderPageIds[$intPage]))
+		{
+			return self::$arrReaderPageIds[$intPage];
+		}
+		
+		$objDatabase = Database::getInstance();
+		
+		if (!is_object($objOriginPage))
+		{
+			$objOriginPage = $objDatabase->execute("SELECT * FROM tl_page WHERE id=" . $intPage);
 		}
 
 		// if the reader page is set on the current page id we return this one
-		if ($objOriginPage->iso_setReaderJumpTo)
+		if ($objOriginPage->iso_setReaderJumpTo > 0)
 		{
-			// cache the id
-			$this->arrReaderPageIds[$objOriginPage->id] = $objOriginPage->iso_readerJumpTo;
+			self::$arrReaderPageIds[$intPage] = $objOriginPage->iso_readerJumpTo;
 			return $objOriginPage->iso_readerJumpTo;
 		}
 		
 		// now move up the page tree until we find a page where the reader is set
+		$trail = array();
 		$pid = $objOriginPage->pid;
+		
 		do
 		{
-			$objParentPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")
-											->limit(1)
-											->execute($pid);
+			$objParentPage = $objDatabase->execute("SELECT * FROM tl_page WHERE id=" . $pid);
 
 			if ($objParentPage->numRows < 1)
 			{
 				break;
 			}
 			
-			if ($objParentPage->iso_setReaderJumpTo)
+			$trail[] = $objParentPage->id;
+			
+			if ($objParentPage->iso_setReaderJumpTo > 0)
 			{
-				// cache the id
-				$this->arrReaderPageIds[$objParentPage->id] = $objParentPage->iso_readerJumpTo;
+				// cache the reader page for all trail pages
+				self::$arrReaderPageIds = array_merge(self::$arrReaderPageIds, array_fill_keys($trail, $objParentPage->iso_readerJumpTo));
+
 				return $objParentPage->iso_readerJumpTo;
 			}
 
@@ -1252,10 +1273,10 @@ $endScript";
 		}
 		while ($pid > 0 && $objParentPage->type != 'root');
 		
-		// and if there is no reader page set at all we take the current page object
+		// if there is no reader page set at all, we take the current page object
 		global $objPage;
-		// cache the id
-		$this->arrReaderPageIds[$objOriginPage->id] = $objPage->id;
+		self::$arrReaderPageIds[$intPage] = $objPage->id;
+		
 		return $objPage->id;
 	}
 }

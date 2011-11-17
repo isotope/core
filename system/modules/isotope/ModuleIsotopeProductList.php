@@ -83,7 +83,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 	 */
 	public function generateAjax()
 	{
-		$objProduct = IsotopeFrontend::getProduct($this->Input->get('product'), $this->getReaderPageId(), false);
+		$objProduct = IsotopeFrontend::getProduct($this->Input->get('product'), IsotopeFrontend::getReaderPageId(null, $this->iso_reader_jumpTo), false);
 
 		if ($objProduct instanceof IsotopeProduct)
 		{
@@ -132,11 +132,11 @@ class ModuleIsotopeProductList extends ModuleIsotope
 						$total = $total - $offset;
 						$total = $total > $this->perPage ? $this->perPage : $total;
 
-						$arrProducts = IsotopeFrontend::getProducts(array_slice($arrCacheIds, $offset, $this->perPage), $this->getReaderPageId());
+						$arrProducts = IsotopeFrontend::getProducts(array_slice($arrCacheIds, $offset, $this->perPage), IsotopeFrontend::getReaderPageId(null, $this->iso_reader_jumpTo));
 					}
 					else
 					{
-						$arrProducts = IsotopeFrontend::getProducts($arrCacheIds, $this->getReaderPageId());
+						$arrProducts = IsotopeFrontend::getProducts($arrCacheIds, IsotopeFrontend::getReaderPageId(null, $this->iso_reader_jumpTo));
 					}
 
 					// Cache is wrong, drop everything and run findProducts()
@@ -263,7 +263,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 
 		list($arrFilters, $arrSorting, $strWhere, $arrValues) = $this->getFiltersAndSorting();
 		$objProductData = $this->Database->prepare(IsotopeProduct::getSelectStatement() . "\nWHERE p1.published='1' AND p1.language='' AND p1.id IN (" . implode(',', $arrIds) . ")$strWhere ORDER BY sorting")->execute($arrValues);
-		return IsotopeFrontend::getProducts($objProductData, $this->getReaderPageId(), true, $arrFilters, $arrSorting);
+		return IsotopeFrontend::getProducts($objProductData, IsotopeFrontend::getReaderPageId(null, $this->iso_reader_jumpTo), true, $arrFilters, $arrSorting);
 	}
 
 

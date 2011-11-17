@@ -73,7 +73,7 @@ class ModuleIsotopeProductVariantList extends ModuleIsotopeProductList
 
 		list($arrFilters, $arrSorting, $strWhere, $arrValues) = $this->getFiltersAndSorting();
 		$objProductData = $this->Database->prepare(IsotopeProduct::getSelectStatement() . " WHERE p1.published='1' AND p1.language='' AND (p1.pid IN (" . implode(',', $arrIds) . "))$strWhere ORDER BY sorting")->execute($arrValues);
-		return IsotopeFrontend::getProducts($objProductData, $this->getReaderPageId(), true, $arrFilters, $arrSorting);
+		return IsotopeFrontend::getProducts($objProductData, IsotopeFrontend::getReaderPageId(null, $this->iso_reader_jumpTo), true, $arrFilters, $arrSorting);
 	}
 }
 

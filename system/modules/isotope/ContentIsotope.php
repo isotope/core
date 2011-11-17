@@ -66,13 +66,6 @@ abstract class ContentIsotope extends ContentElement
 			// Load Isotope javascript and css
 			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/html/isotope.js';
 			$GLOBALS['TL_CSS'][] = 'system/modules/isotope/html/isotope.css';
-
-			// Make sure we have a reader page
-			if (!$this->iso_reader_jumpTo)
-			{
-				global $objPage;
-				$this->iso_reader_jumpTo = $objPage->id;
-			}
 		}
 	}
 
@@ -85,7 +78,7 @@ abstract class ContentIsotope extends ContentElement
 	protected function getProduct($objProductData, $blnCheckAvailability=true)
 	{
 		trigger_error('Using ContentIsotope::getProduct() is deprecated. Please use IsotopeFrontend::getProduct()', E_USER_NOTICE);
-		return IsotopeFrontend::getProduct($objProductData, $this->iso_reader_jumpTo, $blnCheckAvailability);
+		return IsotopeFrontend::getProduct($objProductData, IsotopeFrontend::getReaderPageId(null, $this->iso_reader_jumpTo), $blnCheckAvailability);
 	}
 
 
@@ -97,7 +90,7 @@ abstract class ContentIsotope extends ContentElement
 	protected function getProductByAlias($strAlias, $blnCheckAvailability=true)
 	{
 		trigger_error('Using ContentIsotope::getProductByAlias() is deprecated. Please use IsotopeFrontend::getProductByAlias()', E_USER_NOTICE);
-		return IsotopeFrontend::getProductByAlias($strAlias, $this->iso_reader_jumpTo, $blnCheckAvailability);
+		return IsotopeFrontend::getProductByAlias($strAlias, IsotopeFrontend::getReaderPageId(null, $this->iso_reader_jumpTo), $blnCheckAvailability);
 	}
 
 
@@ -109,7 +102,7 @@ abstract class ContentIsotope extends ContentElement
 	protected function getProducts($objProductData, $blnCheckAvailability=true, array $arrFilters=array(), array $arrSorting=array())
 	{
 		trigger_error('Using ContentIsotope::getProducts() is deprecated. Please use IsotopeFrontend::getProducts()', E_USER_NOTICE);
-		return IsotopeFrontend::getProducts($objProductData, $this->iso_reader_jumpTo, $blnCheckAvailability, $arrFilters, $arrSorting);
+		return IsotopeFrontend::getProducts($objProductData, IsotopeFrontend::getReaderPageId(null, $this->iso_reader_jumpTo), $blnCheckAvailability, $arrFilters, $arrSorting);
 	}
 }
 

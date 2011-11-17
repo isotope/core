@@ -67,9 +67,6 @@ class ModuleIsotopeProductReader extends ModuleIsotope
 			return '';
 		}
 
-		global $objPage;
-		$this->iso_reader_jumpTo = $objPage->id;
-
 		return parent::generate();
 	}
 
@@ -80,7 +77,7 @@ class ModuleIsotopeProductReader extends ModuleIsotope
 	 */
 	public function generateAjax()
 	{
-		$objProduct = IsotopeFrontend::getProduct($this->Input->get('product'), $this->iso_reader_jumpTo, false);
+		$objProduct = IsotopeFrontend::getProduct($this->Input->get('product'), IsotopeFrontend::getReaderPageId(), false);
 
 		if ($objProduct)
 		{
@@ -97,7 +94,7 @@ class ModuleIsotopeProductReader extends ModuleIsotope
 	 */
 	protected function compile()
 	{
-		$objProduct = IsotopeFrontend::getProductByAlias($this->Input->get('product'), $this->iso_reader_jumpTo);
+		$objProduct = IsotopeFrontend::getProductByAlias($this->Input->get('product'), IsotopeFrontend::getReaderPageId());
 
 		if (!$objProduct)
 		{
