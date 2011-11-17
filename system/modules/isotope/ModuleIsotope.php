@@ -78,16 +78,6 @@ abstract class ModuleIsotope extends Module
 				global $objPage;
 				$objPage->cache = 0;
 			}
-
-			//@todo: Had to comment this out while changing the reader settings to tl_page --> do we still need this?
-			/*
-			// Make sure we have a reader page
-			if (!$this->iso_reader_jumpTo)
-			{
-				global $objPage;
-				$this->iso_reader_jumpTo = $objPage->id;
-			}
-			 * */
 		}
 	}
 
@@ -265,6 +255,24 @@ abstract class ModuleIsotope extends Module
 
 		global $objPage;
 		return $this->generateFrontendUrl($objPage->row(), $strParams) . (count($arrGet) ? ('?'.implode('&', $arrGet)) : '');
+	}
+
+
+	/**
+	 * Get reader page id according to the settings
+	 * @return int page id of the reader
+	 */
+	protected function getReaderPageId()
+	{
+		// if set in module, it always overwrites the settings in tl_page
+		if ($this->iso_reader_jumpTo > 0)
+		{
+			return $this->iso_reader_jumpTo;
+		}
+		
+		global $objPage;
+		$this->import('IsotopeFrontend');
+		return $this->IsotopeFrontend->getReaderPageIdFromPage($objPage);
 	}
 }
 

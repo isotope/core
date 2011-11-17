@@ -365,23 +365,5 @@ class ModuleIsotopeProductList extends ModuleIsotope
 
 		return array($arrFilters, $arrSorting);
 	}
-
-
-	/**
-	 * Get reader page id according to the settings
-	 * @return int page id of the reader
-	 */
-	private function getReaderPageId()
-	{
-		// if set in module, it always overwrites the settings in tl_page
-		if ($this->iso_reader_jumpTo > 0)
-		{
-			return $this->iso_reader_jumpTo;
-		}
-		
-		global $objPage;
-		$this->import('IsotopeFrontend');
-		return $this->IsotopeFrontend->getReaderPageIdFromPage($objPage);
-	}
 }
 
