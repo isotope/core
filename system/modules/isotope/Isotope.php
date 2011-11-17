@@ -242,71 +242,7 @@ class Isotope extends Controller
 			$fltPrice = $this->calculateTax($intTaxClass, $fltPrice, false);
 		}
 
-		if ($this->Config->priceRoundIncrement == '0.05')
-		{
-			$fltPrice = self::round05($fltPrice);
-		}
-
-		return round($fltPrice, $this->Config->priceRoundPrecision);
-	}
-
-
-	/**
-	 * Calculates the total tax and applies the rounding increment if necessary
-	 * @param array surcharges array
-	 * @return float total tax
-	 */
-	public function calculateTaxTotal($arrSurcharges)
-	{
-		$fltTotal = 0;
-		var_dump('gna');
-		foreach ($arrSurcharges as $arrSurcharge)
-		{
-			if ($arrSurcharge['add'])
-			{
-				$fltTotal += $arrSurcharge['total_price'];
-			}
-			var_dump('gna');
-			// apply rounding increment for every tax class (I checked for "not 0.01" first to save useless DB queries)
-			if ($this->Config->priceRoundIncrement != '0.01')
-			{
-				var_dump('gna');
-				$objTaxClass = $this->Database->prepare("SELECT applyRoundingIncrement FROM tl_iso_tax_class WHERE id=?")->limit(1)->execute($arrSurcharge['tax_class']);
-				if ($objTaxClass->applyRoundingIncrement)
-				{
-					$fltTotal = self::round05($fltTotal);
-				}
-			}
-		}
-		
-		return $fltTotal;
-	}
-	
-	
-	/**
-	 * Calculates the grand total and applies the rounding increment if necessary
-	 * @param float subtotal
-	 * @param array surcharges array
-	 * @return float grand total
-	 */
-	public function calculateGrandTotal($fltSubTotal, $arrSurcharges)
-	{
-		foreach ($arrSurcharges as $arrSurcharge)
-		{
-			if ($arrSurcharge['add'] !== false)
-			{
-				$fltSubTotal += $arrSurcharge['total_price'];
-			}
-		}
-		
-		// apply rounding increment
-		if ($this->Config->priceRoundIncrement == '0.05')
-		{
-			$fltSubTotal = self::round05($fltSubTotal);
-		}
-		
-		// a grand total can never be negative!
-		return $fltSubTotal > 0 ? $fltSubTotal : 0;
+		return $this->roundPrice($fltPrice);
 	}
 
 
@@ -377,18 +313,11 @@ class Isotope extends Controller
 			}
 			else
 			{
-				// apply rounding increment if we need to
-				if ($this->Config->priceRoundIncrement != '0.01' && $objTaxClass->applyRoundingIncrement)
-				{
-					$fltTax = self::round05($fltTax);
-				}
-				
-				
 				$arrTaxes[$objTaxClass->id . '_' . $objIncludes->id] = array
 				(
 					'label'			=> $this->translate($objTaxClass->label ? $objTaxClass->label : ($objIncludes->label ? $objIncludes->label : $objIncludes->name)),
 					'price'			=> $arrTaxRate['value'] . $arrTaxRate['unit'],
-					'total_price'	=> $fltTax,
+					'total_price'	=> $this->roundPrice($fltTax, $objTaxClass->applyRoundingIncrement),
 					'add'			=> false,
 				);
 			}
@@ -426,18 +355,12 @@ class Isotope extends Controller
 				{
 					$fltTax = floatval($arrTaxRate['value']);
 				}
-				
-				// apply rounding increment if we need to
-				if ($this->Config->priceRoundIncrement != '0.01' && $objTaxClass->applyRoundingIncrement)
-				{
-					$fltTax = self::round05($fltTax);
-				}
 
 				$arrTaxes[$objRates->id] = array
 				(
 					'label'			=> $this->translate($objRates->label ? $objRates->label : $objRates->name),
 					'price'			=> $arrTaxRate['value'] . $arrTaxRate['unit'],
-					'total_price'	=> $fltTax,
+					'total_price'	=> $this->roundPrice($fltTax, $objTaxClass->applyRoundingIncrement),
 					'add'			=> true,
 				);
 
@@ -545,6 +468,23 @@ class Isotope extends Controller
 		}
 
 		return true;
+	}
+	
+	
+	/**
+	 * Rounds a price according to store config settings
+	 * @param float original value
+	 * @param bool apply rounding increment
+	 * @return float rounded value 
+	 */
+	public function roundPrice($fltValue, $blnApplyRoundingIncrement=true)
+	{
+		if ($blnApplyRoundingIncrement && $this->Config->priceRoundIncrement == '0.05')
+		{
+			$fltPrice = (round(20 * $fltPrice)) / 20;
+		}
+
+		return round($fltPrice, $this->Config->priceRoundPrecision);
 	}
 
 
@@ -1209,17 +1149,6 @@ class Isotope extends Controller
 	{
 		trigger_error('Using Isotope::getProductSelect() is deprecated. Please use IsotopeProduct::getProductStatement()', E_USER_NOTICE);
 		return IsotopeProduct::getProductStatement();
-	}
-	
-	
-	/**
-	 * Rounds a certain value to 0.05 increments
-	 * @param float original value
-	 * @return float rounded value 
-	 */
-	public static function round05($fltValue)
-	{
-		return (round(20 * $fltValue)) / 20;
 	}
 
 

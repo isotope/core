@@ -213,21 +213,35 @@ abstract class IsotopeProductCollection extends Model
 					break;
 
 				case 'taxTotal':
-					$arrSurcharges = $this->getSurcharges();
-					
 					$this->import('Isotope');
-					$fltTotal = $this->Isotope->calculateTaxTotal($arrSurcharges);
+					$intTaxTotal = 0;
+					$arrSurcharges = $this->getSurcharges();
 
-					$this->arrCache[$strKey] = $fltTotal;
+					foreach ($arrSurcharges as $arrSurcharge)
+					{
+						if ($arrSurcharge['add'])
+						{
+							$intTaxTotal += $arrSurcharge['total_price'];
+						}
+					}
+
+					$this->arrCache[$strKey] = $intTaxTotal;
 					break;
 
 				case 'grandTotal':
-					$arrSurcharges = $this->getSurcharges();
-					
 					$this->import('Isotope');
-					$fltTotal = $this->Isotope->calculateGrandTotal($this->subTotal, $arrSurcharges);
+					$fltTotal = $this->subTotal;
+					$arrSurcharges = $this->getSurcharges();
 
-					$this->arrCache[$strKey] = $fltTotal;
+					foreach ($arrSurcharges as $arrSurcharge)
+					{
+						if ($arrSurcharge['add'] !== false)
+						{
+							$fltTotal += $arrSurcharge['total_price'];
+						}
+					}
+
+					$this->arrCache[$strKey] = $fltTotal > 0 ? $this->Isotope->roundPrice($fltTotal) : 0;
 					break;
 
 				default:
