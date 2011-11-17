@@ -124,7 +124,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{name_legend},name,fallback;{rate_legend},includes,label,rates',
+		'default'                     => '{name_legend},name,fallback,applyRoundingIncrement;{rate_legend},includes,label,rates',
 	),
 
 	// Fields
@@ -143,6 +143,13 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = array
 			'exclude'				=> true,
 			'inputType'				=> 'checkbox',
 			'eval'					=> array('fallback'=>true, 'tl_class'=>'w50 m12'),
+		),
+		'applyRoundingIncrement' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_tax_class']['applyRoundingIncrement'],
+			'exclude'				=> true,
+			'inputType'				=> 'checkbox',
+			'eval'					=> array('tl_class'=>'w50 m12'),
 		),
 		'includes' => array
 		(

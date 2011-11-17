@@ -27,6 +27,8 @@ Version 1.3.rc1 (2011-??-??)
 - Improved: Removed size and added maxlength attribute to quantity input fields (#2118)
 - Improved: updated currency list according to ISO 4217 (#2082)
 - Improved: the reader page id is now set in the site structure but you can still overwrite it per module (#2105)
+- Improved: the rounding increment can now also be applied for tax classes (#2505)
+- Improved: the rounding increment is now applied on the grand total too (#2341)
 - Fixed radio button events in Internet Explorer (Ticket #484)
 - Fixed products DCA not loaded in rare cases
 - Fixed: hide customer definied fields in product edit mode

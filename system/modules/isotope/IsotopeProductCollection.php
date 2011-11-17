@@ -24,6 +24,7 @@
  * @copyright  Isotope eCommerce Workgroup 2009-2011
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ * @author     Yanick Witschi <yanick.witschi@certo-net.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
@@ -212,33 +213,21 @@ abstract class IsotopeProductCollection extends Model
 					break;
 
 				case 'taxTotal':
-					$intTaxTotal = 0;
 					$arrSurcharges = $this->getSurcharges();
+					
+					$this->import('Isotope');
+					$fltTotal = $this->Isotope->calculateTaxTotal($arrSurcharges);
 
-					foreach ($arrSurcharges as $arrSurcharge)
-					{
-						if ($arrSurcharge['add'])
-						{
-							$intTaxTotal += $arrSurcharge['total_price'];
-						}
-					}
-
-					$this->arrCache[$strKey] = $intTaxTotal;
+					$this->arrCache[$strKey] = $fltTotal;
 					break;
 
 				case 'grandTotal':
-					$fltTotal = $this->subTotal;
 					$arrSurcharges = $this->getSurcharges();
+					
+					$this->import('Isotope');
+					$fltTotal = $this->Isotope->calculateGrandTotal($this->subTotal, $arrSurcharges);
 
-					foreach ($arrSurcharges as $arrSurcharge)
-					{
-						if ($arrSurcharge['add'] !== false)
-						{
-							$fltTotal += $arrSurcharge['total_price'];
-						}
-					}
-
-					$this->arrCache[$strKey] = $fltTotal > 0 ? $fltTotal : 0;
+					$this->arrCache[$strKey] = $fltTotal;
 					break;
 
 				default:
