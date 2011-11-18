@@ -87,20 +87,31 @@ class IsotopeAutomator extends Controller
 			switch ($objConfigs->currencyProvider)
 			{
 				case 'ecb.int':
+					$fltCourse = ($objConfig->currency == 'EUR') ? 1 : 0;
+					$fltCourseOrigin = ($objConfig->currencyOrigin == 'EUR') ? 1 : 0;
+
+					// Parse the XML
 					$strSource = 'http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml';
 					$objXml = new SimpleXMLElement($strSource, null, true);
 
 					foreach ($objXml->Cube->Cube->Cube as $rate)
 					{
-						if ($currency['code'] == strtolower($objConfig->currencyOrigin))
-						{
-							$fltCourseOrigin = (float) $currency->kurs;
-						}
-
-						if ($currency['code'] == strtolower($objConfig->currency))
+						if (!$fltCourse && $currency['code'] == strtolower($objConfig->currency))
 						{
 							$fltCourse = (float) $currency->kurs;
 						}
+
+						if (!$fltCourse && $currency['code'] == strtolower($objConfig->currencyOrigin))
+						{
+							$fltCourseOrigin = (float) $currency->kurs;
+						}
+					}
+
+					// Log if one of the currencies is not available
+					if (!$fltCourse || !$fltCourseOrigin)
+					{
+						$this->log('Could not find currency to convert in European Central Bank (ecb.int).', 'IsotopeAutomator convertCurrencies()', TL_ERROR);
+						return;
 					}
 
 					$fltFactor = $fltCourse / $fltCourseOrigin;
@@ -108,23 +119,34 @@ class IsotopeAutomator extends Controller
 					break;
 				
 				case 'admin.ch':
+					$fltCourse = ($objConfig->currency == 'CHF') ? 1 : 0;
+					$fltCourseOrigin = ($objConfig->currencyOrigin == 'CHF') ? 1 : 0;
+
+					// Parse the XML
 					$strSource = 'http://www.afd.admin.ch/publicdb/newdb/mwst_kurse/wechselkurse.php';
 					$objXml = new SimpleXMLElement($strSource, null, true);
 
 					foreach ($objXml->devise as $currency)
 					{
-						if ($currency['code'] == strtolower($objConfig->currencyOrigin))
+						if (!$fltCourse && $currency['code'] == strtolower($objConfig->currency))
+						{							
+							$fltCourse = (float) $currency->kurs;
+						}
+
+						if (!$fltCourse && $currency['code'] == strtolower($objConfig->currencyOrigin))
 						{
 							$fltCourseOrigin = (float) $currency->kurs;
 						}
-
-						if ($currency['code'] == strtolower($objConfig->currency))
-						{
-							$fltCourse = (float) $currency->kurs;
-						}
 					}
 
-					$fltFactor = $fltCourseOrigin / $fltCourse;
+					// Log if one of the currencies is not available
+					if (!$fltCourse || !$fltCourseOrigin)
+					{
+						$this->log('Could not find currency to convert in Swiss Federal Department of Finance (admin.ch).', 'IsotopeAutomator convertCurrencies()', TL_ERROR);
+						return;
+					}
+
+					$fltFactor = $fltCourse / $fltCourseOrigin;
 					$this->Database->prepare("UPDATE tl_iso_config SET priceCalculateFactor=? WHERE id=?")->execute($fltFactor, $objConfigs->id);
 					break;
 				
