@@ -101,7 +101,7 @@ class IsotopeAutomator extends Controller
 							$fltCourse = (float) $currency->kurs;
 						}
 
-						if (!$fltCourse && $currency['code'] == strtolower($objConfig->currencyOrigin))
+						if (!$fltCourseOrigin && $currency['code'] == strtolower($objConfig->currencyOrigin))
 						{
 							$fltCourseOrigin = (float) $currency->kurs;
 						}
@@ -133,7 +133,7 @@ class IsotopeAutomator extends Controller
 							$fltCourse = (float) $currency->kurs;
 						}
 
-						if (!$fltCourse && $currency['code'] == strtolower($objConfig->currencyOrigin))
+						if (!$fltCourseOrigin && $currency['code'] == strtolower($objConfig->currencyOrigin))
 						{
 							$fltCourseOrigin = (float) $currency->kurs;
 						}
