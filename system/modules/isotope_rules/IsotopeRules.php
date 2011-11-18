@@ -510,7 +510,7 @@ class IsotopeRules extends Controller
 
 		$arrSurcharge = array
 		(
-			'label'			=> ($arrRule['label'] ? $arrRule['label'] : $arrRule['name']),
+			'label'			=> $this->Isotope->translate(($arrRule['label'] ? $arrRule['label'] : $arrRule['name'])),
 			'price'			=> ($blnDiscount ? $fltDiscount.'%' : ''),
 			'total_price'	=> 0,
 			'tax_class'		=> 0,
