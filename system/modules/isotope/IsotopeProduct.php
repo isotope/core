@@ -890,7 +890,7 @@ class IsotopeProduct extends Controller
 	protected function generateProductOptionWidget($strField, $blnAjax=false)
 	{
 		$arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strField];
-		$strClass = strlen($GLOBALS['ISO_ATTR'][$arrData['inputType']]['class']) ? $GLOBALS['ISO_ATTR'][$arrData['inputType']]['class'] : $GLOBALS['TL_FFL'][$arrData['inputType']];
+		$strClass = strlen($GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['class']) ? $GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['class'] : $GLOBALS['TL_FFL'][$arrData['inputType']];
 
 		// Continue if the class is not defined
 		if (!$this->classFileExists($strClass))
@@ -972,9 +972,9 @@ class IsotopeProduct extends Controller
 		}
 		else
 		{
-			if (is_array($GLOBALS['ISO_ATTR'][$arrData['inputType']]['callback']) && count($GLOBALS['ISO_ATTR'][$arrData['inputType']]['callback']))
+			if (is_array($GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['callback']) && count($GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['callback']))
 			{
-				foreach ($GLOBALS['ISO_ATTR'][$arrData['inputType']]['callback'] as $callback)
+				foreach ($GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['callback'] as $callback)
 				{
 					$this->import($callback[0]);
 					$arrData = $this->{$callback[0]}->{$callback[1]}($strField, $arrData, $this);
