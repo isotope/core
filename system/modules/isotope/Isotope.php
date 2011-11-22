@@ -481,10 +481,10 @@ class Isotope extends Controller
 	{
 		if ($blnApplyRoundingIncrement && $this->Config->priceRoundIncrement == '0.05')
 		{
-			$fltPrice = (round(20 * $fltPrice)) / 20;
+			$fltValue = (round(20 * $fltValue)) / 20;
 		}
 
-		return round($fltPrice, $this->Config->priceRoundPrecision);
+		return round($fltValue, $this->Config->priceRoundPrecision);
 	}
 
 
