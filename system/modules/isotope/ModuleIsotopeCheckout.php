@@ -933,7 +933,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 		$arrData = array_merge($this->arrOrderData, array
 		(
-			'uniqid'                    => $strUniqueId,
+			'uniqid'                    => $objOrder->uniqid,
 			'order_id'                    => ($this->Isotope->Config->orderPrefix . $orderId),
 			'items'                        => $this->Isotope->Cart->items,
 			'products'                    => $this->Isotope->Cart->products,
