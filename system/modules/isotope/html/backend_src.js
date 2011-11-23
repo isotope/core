@@ -37,9 +37,9 @@ var Isotope =
 	 */
 	mediaManager: function(el, command, id)
 	{
-		var table = $(id).getFirst('table');
+		var table = document.id(id).getFirst('table');
 		var tbody = table.getFirst('tbody');
-		var parent = $(el).getParent('tr');
+		var parent = document.id(el).getParent('tr');
 		var rows = tbody.getChildren();
 
 		Backend.getScrollOffset();
@@ -85,8 +85,8 @@ var Isotope =
 	 */
 	attributeWizard: function(el, command, id)
 	{
-		var container = $(id);
-		var parent = $(el).getParent();
+		var container = document.id(id);
+		var parent = document.id(el).getParent();
 
 		Backend.getScrollOffset();
 
@@ -132,9 +132,9 @@ var Isotope =
 	 */
 	surchargeWizard: function(el, command, id)
 	{
-		var table = $(id);
+		var table = document.id(id);
 		var tbody = table.getFirst().getNext();
-		var parent = $(el).getParent('tr');
+		var parent = document.id(el).getParent('tr');
 		var rows = tbody.getChildren();
 
 		Backend.getScrollOffset();
@@ -194,9 +194,9 @@ var Isotope =
 	 */
 	fieldWizard: function(el, command, id)
 	{
-		var table = $(id);
+		var table = document.id(id);
 		var tbody = table.getFirst().getNext();
-		var parent = $(el).getParent('tr');
+		var parent = document.id(el).getParent('tr');
 		var rows = tbody.getChildren();
 
 		Backend.getScrollOffset();
@@ -263,9 +263,9 @@ var Isotope =
 	 */
 	imageWatermarkWizard: function(el, command, id)
 	{
-		var table = $(id);
+		var table = document.id(id);
 		var tbody = table.getFirst().getNext();
-		var parent = $(el).getParent('tr');
+		var parent = document.id(el).getParent('tr');
 		var rows = tbody.getChildren();
 
 		Backend.getScrollOffset();
@@ -320,8 +320,8 @@ var Isotope =
 	 */
 	toggleCheckboxGroup: function(el, id)
 	{
-		var cls = $(el).className;
-		var status = $(el).checked ? 'checked' : '';
+		var cls = document.id(el).className;
+		var status = document.id(el).checked ? 'checked' : '';
 
 		if (cls == 'tl_checkbox')
 		{
@@ -355,8 +355,8 @@ var Isotope =
 	toggleProductTree: function (el, id, field, name, level)
 	{
 		el.blur();
-		var item = $(id);
-		var image = $(el).getFirst();
+		var item = document.id(id);
+		var image = document.id(el).getFirst();
 
 		if (item)
 		{
@@ -364,14 +364,14 @@ var Isotope =
 			{
 				item.setStyle('display', 'inline');
 				image.src = image.src.replace('folPlus.gif', 'folMinus.gif');
-				$(el).title = CONTAO_COLLAPSE;
+				document.id(el).title = CONTAO_COLLAPSE;
 				new Request.Contao().post({'action':'toggleProductTree', 'id':id, 'state':1, 'REQUEST_TOKEN':REQUEST_TOKEN});
 			}
 			else
 			{
 				item.setStyle('display', 'none');
 				image.src = image.src.replace('folMinus.gif', 'folPlus.gif');
-				$(el).title = CONTAO_EXPAND;
+				document.id(el).title = CONTAO_EXPAND;
 				new Request.Contao().post({'action':'toggleProductTree', 'id':id, 'state':0, 'REQUEST_TOKEN':REQUEST_TOKEN});
 			}
 
@@ -395,9 +395,9 @@ var Isotope =
 				item.setStyle('display', 'inline');
 
 				ul.injectInside(item);
-				item.injectAfter($(el).getParent('li'));
+				item.injectAfter(document.id(el).getParent('li'));
 
-				$(el).title = CONTAO_COLLAPSE;
+				document.id(el).title = CONTAO_COLLAPSE;
 				image.src = image.src.replace('folPlus.gif', 'folMinus.gif');
 				AjaxRequest.hideBox();
 
@@ -425,11 +425,11 @@ var Isotope =
 			{
 				el.timo = setTimeout(function()
 				{
-					var box = $('tl_helpBox');
+					var box = document.id('tl_helpBox');
 
 					if (!box)
 					{
-						box = new Element('div').setProperty('id', 'tl_helpBox').injectInside($(document.body));
+						box = new Element('div').setProperty('id', 'tl_helpBox').injectInside(document.id(document.body));
 					}
 
 					var scroll = el.getTop();
@@ -442,7 +442,7 @@ var Isotope =
 
 			el.addEvent('mouseout', function()
 			{
-				var box = $('tl_helpBox');
+				var box = document.id('tl_helpBox');
 
 				if (box)
 				{
@@ -463,7 +463,7 @@ var Isotope =
 
 		fields.each(function(name, i)
 		{
-			var el = $(('ctrl_'+name));
+			var el = document.id(('ctrl_'+name));
 
 			if (el)
 			{
@@ -482,13 +482,13 @@ var Isotope =
 
 				parent.addClass('inherit');
 
-				var check = $('ctrl_inherit').getFirst(('input[value='+name+']'));
+				var check = document.id('ctrl_inherit').getFirst(('input[value='+name+']'));
 
 				check.setStyle('float', 'right').inject(parent);
-				$('ctrl_inherit').getFirst(('label[for='+check.get('id')+']')).setStyles({'float':'right','padding-right':'5px', 'font-weight':'normal'}).set('text', label).inject(parent);
+				document.id('ctrl_inherit').getFirst(('label[for='+check.get('id')+']')).setStyles({'float':'right','padding-right':'5px', 'font-weight':'normal'}).set('text', label).inject(parent);
 
 				check.addEvent('change', function(event) {
-					var element = $(('ctrl_'+event.target.get('value')));
+					var element = document.id(('ctrl_'+event.target.get('value')));
 
 					if (element.match('.tl_checkbox_single_container'))
 					{
@@ -513,7 +513,7 @@ var Isotope =
 
 		if (!injectError)
 		{
-			$('ctrl_inherit').getParent('div').setStyle('display', 'none');
+			document.id('ctrl_inherit').getParent('div').setStyle('display', 'none');
 		}
 	},
 
@@ -540,20 +540,20 @@ var Isotope =
 			}
 		}).adopt(tools);
 
-		div.inject($(document.body));
+		div.inject(document.id(document.body));
 		div.setStyle('left', $$('a.header_isotope_tools')[0].getPosition().x - 7);
 
 		// Add trigger to tools buttons
 		$$('a.header_isotope_tools').addEvent('click', function(e)
 		{
-			$('isotopetoolsmenu').setStyle('display', 'block');
+			document.id('isotopetoolsmenu').setStyle('display', 'block');
 			return false;
 		});
 
 		// Hide context menu
-		$(document.body).addEvent('click', function()
+		document.id(document.body).addEvent('click', function()
 		{
-			$('isotopetoolsmenu').setStyle('display', 'none');
+			document.id('isotopetoolsmenu').setStyle('display', 'none');
 		});
 	},
 
@@ -580,20 +580,20 @@ var Isotope =
 			}
 		}).adopt(tools);
 
-		div.inject($(document.body));
+		div.inject(document.id(document.body));
 		div.setStyle('left', $$('a.header_iso_filter')[0].getPosition().x - 7);
 
 		// Add trigger to tools buttons
 		$$('a.header_iso_filter').addEvent('click', function(e)
 		{
-			$('isotopefiltermenu').setStyle('display', 'block');
+			document.id('isotopefiltermenu').setStyle('display', 'block');
 			return false;
 		});
 
 		// Hide context menu
-		$(document.body).addEvent('click', function()
+		document.id(document.body).addEvent('click', function()
 		{
-			$('isotopefiltermenu').setStyle('display', 'none');
+			document.id('isotopefiltermenu').setStyle('display', 'none');
 		});
 	},
 
@@ -612,9 +612,9 @@ var Isotope =
 			{
 				el.removeClass('invisible').addEvent('click', function(e)
 				{
-					if ($defined($('isotope-contextmenu')))
+					if ($defined(document.id('isotope-contextmenu')))
 					{
-						$('isotope-contextmenu').destroy();
+						document.id('isotope-contextmenu').destroy();
 					}
 
 					var div = new Element('div',
@@ -632,7 +632,7 @@ var Isotope =
 						div.set('html', (div.get('html')+'<a href="'+ el2.href +'" title="'+ el2.title +'">'+ el2.get('html') +' '+ im2.alt +'</a>'));
 					});
 
-					div.inject($(document.body));
+					div.inject(document.id(document.body));
 					div.setStyle('left', el.getPosition().x - (div.getSize().x / 2));
 
 					return false;
@@ -641,11 +641,11 @@ var Isotope =
 		});
 
 		// Hide context menu
-		$(document.body).addEvent('click', function()
+		document.id(document.body).addEvent('click', function()
 		{
-			if ($defined($('isotope-contextmenu')))
+			if ($defined(document.id('isotope-contextmenu')))
 			{
-				$('isotope-contextmenu').destroy();
+				document.id('isotope-contextmenu').destroy();
 			}
 		});
 	},

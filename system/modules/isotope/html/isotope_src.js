@@ -32,11 +32,11 @@ var Isotope =
 	{
 		if (el.value == '0' && el.checked)
 		{
-			$(id).setStyle('display', 'block');
+			document.id(id).setStyle('display', 'block');
 		}
 		else
 		{
-			$(id).setStyle('display', 'none');
+			document.id(id).setStyle('display', 'none');
 		}
 	},
 
@@ -46,17 +46,17 @@ var Isotope =
 	 */
 	displayBox: function(message, btnClose)
 	{
-		var box = $('iso_ajaxBox');
-		var overlay = $('iso_ajaxOverlay');
+		var box = document.id('iso_ajaxBox');
+		var overlay = document.id('iso_ajaxOverlay');
 
 		if (!overlay)
 		{
-			overlay = new Element('div').setProperty('id', 'iso_ajaxOverlay').injectInside($(document.body));
+			overlay = new Element('div').setProperty('id', 'iso_ajaxOverlay').injectInside(document.id(document.body));
 		}
 
 		if (!box)
 		{
-			box = new Element('div').setProperty('id', 'iso_ajaxBox').injectInside($(document.body));
+			box = new Element('div').setProperty('id', 'iso_ajaxBox').injectInside(document.id(document.body));
 		}
 
 		if (btnClose)
@@ -82,8 +82,8 @@ var Isotope =
 	 */
 	hideBox: function()
 	{
-		var box = $('iso_ajaxBox');
-		var overlay = $('iso_ajaxOverlay');
+		var box = document.id('iso_ajaxBox');
+		var overlay = document.id('iso_ajaxOverlay');
 
 		if (overlay)
 		{
@@ -187,7 +187,7 @@ var IsotopeProduct = new Class(
 
 			attributes.each( function(el,index)
 			{
-				el = $(el);
+				el = document.id(el);
 				if (el && el.hasClass('radio_container'))
 				{
 					el.getElements('input.radio').each( function(option) {
