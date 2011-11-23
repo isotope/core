@@ -281,6 +281,16 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 				}
 			}
 
+			// HOOK for altering the filters
+			if (isset($GLOBALS['ISO_HOOKS']['generateFilters']) && is_array($GLOBALS['ISO_HOOKS']['generateFilters']))
+			{
+				foreach ($GLOBALS['ISO_HOOKS']['generateFilters'] as $callback)
+				{
+					$this->import($callback[0]);
+					$arrFilters = $this->$callback[0]->$callback[1]($arrFilters);
+				}
+			}
+
 			if (count($arrFilters))
 			{
 				$this->Template->hasFilters = true;
