@@ -30,6 +30,8 @@ Version 1.3.rc1 (2011-??-??)
 - Improved: the reader page id is now set in the site structure but you can still overwrite it per module (#2105)
 - Improved: the rounding increment can now also be applied for tax classes (#2505)
 - Improved: the rounding increment is now applied on the grand total too (#2341)
+- Improved: Make Company Details accessible in Invoice Template (#2239)
+- Improved: Add uniqid to order mail wildcards (#2531)
 - Fixed radio button events in Internet Explorer (Ticket #484)
 - Fixed products DCA not loaded in rare cases
 - Fixed: hide customer definied fields in product edit mode
@@ -43,11 +45,9 @@ Version 1.3.rc1 (2011-??-??)
 - Fixed product cache not considering product start date (#2230)
 - Fixed issue with variant generator and prices (#2046)
 - Fixed copy/paste of product variants into its own product
-- Fixed Add uniqid to order mail wildcards (#2531)
 - Fixed order of country and states (#2486)
-- Fixed Make Company Details accessible in Invoice Template (#2239)
-- Dropped unimplemented enableGoogleAnalytics checkbox in store config (#2102)
 - Fixed replace $ in mootools with document.id for isotope.js and backend.js (#2200)
+- Dropped unimplemented enableGoogleAnalytics checkbox in store config (#2102)
 
 Version 1.3.beta2 (2011-08-28)
 ------------------------------

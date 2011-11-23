@@ -822,19 +822,8 @@ abstract class IsotopeProductCollection extends Model
 				'tax_id'			=> $objProduct->tax_id,
 			);
 		}
-
-		$objTemplate->invoiceOrderId = $this->order_id;
-		$objTemplate->invoiceDate = date($GLOBALS['TL_CONFIG']['dateFormat'], $this->date);
-		$objTemplate->firstname = $this->Isotope->Config->firstname;
-		$objTemplate->lastname  = $this->Isotope->Config->lastname;
-		$objTemplate->company   = $this->Isotope->Config->company;
-		$objTemplate->street_1  = $this->Isotope->Config->street_1;
-		$objTemplate->street_2  = $this->Isotope->Config->street_2;
-		$objTemplate->street_3  = $this->Isotope->Config->street_3;
-		$objTemplate->postal    = $this->Isotope->Config->postal;
-		$objTemplate->city      = $this->Isotope->Config->city;
-		$objTemplate->phone     = $this->Isotope->Config->phone;
-		$objTemplate->emailShipping = $this->Isotope->Config->emailShipping;
+		
+		$objTemplate->config = $this->Isotope->Config->getData(); 	
 		$objTemplate->info = deserialize($this->checkout_info);
 		$objTemplate->items = $arrItems;
 		$objTemplate->raw = $this->arrData;
