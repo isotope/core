@@ -304,26 +304,29 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		$blnPassed = true;
 		$total = count($arrStepKeys) - 1;
 		$arrSteps = array();
-
-		foreach ($arrStepKeys as $i => $step)
+		
+		if(!$this->strCurrentStep=='payment' || !$this->strCurrentStep=='process')
 		{
-			if ($this->strCurrentStep == $step)
+			foreach ($arrStepKeys as $i => $step)
 			{
-				$blnPassed = false;
+				if ($this->strCurrentStep == $step)
+				{
+					$blnPassed = false;
+				}
+	
+				$blnActive = $this->strCurrentStep == $step ? true : false;
+	
+				$arrSteps[] = array
+				(
+					'isActive'	=> $blnActive,
+					'class'		=> 'step_' . $i . (($i == 0) ? ' first' : '') . ($i == $total ? ' last' : '') . ($blnActive ? ' active' : '') . ($blnPassed ? ' passed' : '') . ((!$blnPassed && !$blnActive) ? ' upcoming' : '') . ' '. $step,
+					'label'		=> (strlen($GLOBALS['TL_LANG']['ISO']['checkout_' . $step]) ? $GLOBALS['TL_LANG']['ISO']['checkout_' . $step] : $step),
+					'href'		=> ($blnPassed ? $this->addToUrl('step=' . $step, true) : ''),
+					'title'		=> specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['checkboutStepBack'], (strlen($GLOBALS['TL_LANG']['ISO']['checkout_' . $step]) ? $GLOBALS['TL_LANG']['ISO']['checkout_' . $step] : $step))),
+				);
 			}
-
-			$blnActive = $this->strCurrentStep == $step ? true : false;
-
-			$arrSteps[] = array
-			(
-				'isActive'	=> $blnActive,
-				'class'		=> 'step_' . $i . (($i == 0) ? ' first' : '') . ($i == $total ? ' last' : '') . ($blnActive ? ' active' : '') . ($blnPassed ? ' passed' : '') . ((!$blnPassed && !$blnActive) ? ' upcoming' : '') . ' '. $step,
-				'label'		=> (strlen($GLOBALS['TL_LANG']['ISO']['checkout_' . $step]) ? $GLOBALS['TL_LANG']['ISO']['checkout_' . $step] : $step),
-				'href'		=> ($blnPassed ? $this->addToUrl('step=' . $step, true) : ''),
-				'title'		=> specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['checkboutStepBack'], (strlen($GLOBALS['TL_LANG']['ISO']['checkout_' . $step]) ? $GLOBALS['TL_LANG']['ISO']['checkout_' . $step] : $step))),
-			);
 		}
-
+		
 		$this->Template->steps = $arrSteps;
 		$this->Template->activeStep = $GLOBALS['ISO_LANG']['MSC']['activeStep'];
 
