@@ -126,7 +126,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 		'__selector__'				  => array('currencySymbol', 'currencyAutomator'),
 		'default'                     => '
 			{name_legend},name,label,fallback,store_id;
-			{address_legend:hide},firstname,lastname,company,street_1,street_2,street_3,postal,city,subdivision,country,emailShipping,phone;
+			{address_legend:hide},firstname,lastname,company,street_1,street_2,street_3,postal,city,country,subdivision,emailShipping,phone;
 			{config_legend},shipping_countries,billing_countries,shipping_fields,billing_fields,orderPrefix,orderDigits,templateGroup,limitMemberCountries;
 			{price_legend},priceRoundPrecision,priceRoundIncrement,cartMinSubtotal;
 			{currency_legend},currency,currencyFormat,currencyPosition,currencySymbol;
