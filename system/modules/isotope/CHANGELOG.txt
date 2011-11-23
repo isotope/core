@@ -45,6 +45,7 @@ Version 1.3.rc1 (2011-??-??)
 - Fixed copy/paste of product variants into its own product
 - Fixed Add uniqid to order mail wildcards (#2531)
 - Fixed order of country and states (#2486)
+- Fixed Make Company Details accessible in Invoice Template (#2239)
 - Dropped unimplemented enableGoogleAnalytics checkbox in store config (#2102)
 
 Version 1.3.beta2 (2011-08-28)
