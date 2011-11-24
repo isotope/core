@@ -182,7 +182,7 @@ CREATE TABLE `tl_iso_attributes` (
   `files` char(1) NOT NULL default '',
   `filesOnly` char(1) NOT NULL default '',
   `fieldType` varchar(8) NOT NULL default '',
-  `sortBy` varchar(32) NOT NULL default ''
+  `sortBy` varchar(32) NOT NULL default '',
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -681,7 +681,7 @@ CREATE TABLE `tl_iso_productcache` (
   `module_id` int(10) unsigned NOT NULL default '0',
   `requestcache_id` int(10) unsigned NOT NULL default '0',
   `keywords` varchar(255) NOT NULL default '',
-  `products` blob NULL,
+  `product_id` int(10) unsigned NOT NULL default '0',
   `expires` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `page_id` (`page_id`, `module_id`, `requestcache_id`, `keywords`, `expires`),
