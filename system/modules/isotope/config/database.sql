@@ -681,7 +681,7 @@ CREATE TABLE `tl_iso_productcache` (
   `module_id` int(10) unsigned NOT NULL default '0',
   `requestcache_id` int(10) unsigned NOT NULL default '0',
   `keywords` varchar(255) NOT NULL default '',
-  `product_id` int(10) unsigned NOT NULL default '0',
+  `products` blob NULL,
   `expires` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `page_id` (`page_id`, `module_id`, `requestcache_id`, `keywords`, `expires`),
