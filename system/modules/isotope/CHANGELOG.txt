@@ -34,6 +34,7 @@ Version 1.3.rc1 (2011-??-??)
 - Improved: Add uniqid to order mail wildcards (#2531)
 - Improved: disable checkout navigation on payment and processing steps (#2529)
 - Improved: start and stop date are now fixed fields, available on all product types
+- Improved: Can now cut & paste multiple products between groups (#2229)
 - Fixed radio button events in Internet Explorer (Ticket #484)
 - Fixed products DCA not loaded in rare cases
 - Fixed: hide customer definied fields in product edit mode

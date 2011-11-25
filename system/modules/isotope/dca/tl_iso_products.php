@@ -69,6 +69,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'panelLayout'			=> 'filter;sort,search',
 			'icon'					=> 'system/modules/isotope/html/store-open.png',
 			'paste_button_callback'	=> array('tl_iso_products', 'pasteProduct'),
+			'rootPaste'				=> true,
 		),
 		'label' => array
 		(
@@ -699,20 +700,18 @@ class tl_iso_products extends Backend
 		$GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'] = $arrProducts;
 
 
-		// Set allowed page IDs (edit multiple)
+		// Set allowed product IDs (edit multiple)
 		if (is_array($session['CURRENT']['IDS']))
 		{
 			$session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $arrProducts);
 		}
 
 		// Set allowed clipboard IDs
-		if (is_array($session['CLIPBOARD']['tl_iso_products']['id']) && count($session['CLIPBOARD']['tl_iso_products']['id']))
+		if (is_array($session['CLIPBOARD']['tl_iso_products']['id']))
 		{
-			$objProducts = $this->Database->execute("SELECT id FROM tl_iso_products WHERE id IN (" . implode(',', $session['CLIPBOARD']['tl_iso_products']['id']) . ") AND pid>0");
+			$session['CLIPBOARD']['tl_iso_products']['id'] = array_intersect($session['CLIPBOARD']['tl_iso_products']['id'], $arrProducts, $this->Database->query("SELECT id FROM tl_iso_products WHERE pid=0")->fetchEach('id'));
 
-			$session['CLIPBOARD']['tl_iso_products']['id'] = $objProducts->fetchEach('id');
-
-			if (!count($session['CLIPBOARD']['tl_iso_products']['id']))
+			if (empty($session['CLIPBOARD']['tl_iso_products']['id']))
 			{
 				unset($session['CLIPBOARD']['tl_iso_products']);
 			}
@@ -1575,11 +1574,10 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 					}
 					break;
 
-				case 'cutAll':
 				case 'copyAll':
 					// @todo implement cutAll & copyAll for multiple products and variants
 					$this->Session->set('CLIPBOARD', NULL);
-					throw new Exception('Cannot cut/copy multiple products/variants');
+					throw new Exception('Cannot copy multiple products/variants');
 					break;
 			}
 		}
@@ -1613,8 +1611,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 					case 'cutAll':
 					case 'copyAll':
 						// @todo implement cutAll & copyAll for multiple products and variants
-						$this->Session->set('CLIPBOARD', NULL);
-						throw new Exception('Cannot cut/copy multiple products/variants');
+						return '';
 						break;
 				}
 			}

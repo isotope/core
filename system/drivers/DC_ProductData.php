@@ -167,6 +167,32 @@ class DC_ProductData extends DC_Table
 
 		parent::cut($blnDoNotRedirect);
 	}
+	
+	
+	/**
+	 * Move all selected records
+	 */
+	public function cutAll()
+	{
+		// GID tells about paste into a group
+		if ($this->Input->get('gid') != '')
+		{
+			$arrClipboard = $this->Session->get('CLIPBOARD');
+	
+			if (isset($arrClipboard[$this->strTable]) && is_array($arrClipboard[$this->strTable]['id']))
+			{
+				foreach ($arrClipboard[$this->strTable]['id'] as $id)
+				{
+					$this->intId = $id;
+					$this->cut(true);
+				}
+			}
+	
+			$this->redirect($this->getReferer());
+		}
+		
+		return parent::cutAll();
+	}
 
 
 	/**
@@ -1679,7 +1705,7 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 			$this->root = $this->Database->query("SELECT id FROM {$this->strTable} WHERE pid=0 AND gid=$id")->fetchEach('id');
 			for ($i=0; $i<count($this->root); $i++)
 			{
-				$return .= ' ' . trim($this->generateProductTree($this->strTable, $this->root[$i], array('p'=>$this->root[($i-1)], 'n'=>$this->root[($i+1)]), $margin, ($blnClipboard ? $arrClipboard : false), ($id == $arrClipboard ['id'] || (is_array($arrClipboard ['id']) && in_array($id, $arrClipboard ['id'])) || (!$blnPtable && !is_array($arrClipboard['id']) && in_array($id, $this->getChildRecords($arrClipboard['id'], $table))))));
+				$return .= ' ' . trim($this->generateProductTree($this->strTable, $this->root[$i], array('p'=>$this->root[($i-1)], 'n'=>$this->root[($i+1)]), $margin, ($blnClipboard ? $arrClipboard : false), ($id == $arrClipboard['id'] || (is_array($arrClipboard ['id']) && in_array($id, $arrClipboard ['id'])) || (!$blnPtable && !is_array($arrClipboard['id']) && in_array($id, $this->getChildRecords($arrClipboard['id'], $table))))));
 			}
 
 			// Load subgroups in the current group
@@ -1696,7 +1722,7 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 			$this->root = $this->Database->query("SELECT id FROM {$this->strTable} WHERE pid=$id AND gid=0")->fetchEach('id');
 			for ($i=0; $i<count($this->root); $i++)
 			{
-				$return .= ' ' . trim($this->generateProductTree($this->strTable, $this->root[$i], array('p'=>$this->root[($i-1)], 'n'=>$this->root[($i+1)]), $margin, ($blnClipboard ? $arrClipboard : false), ($id == $arrClipboard ['id'] || (is_array($arrClipboard ['id']) && in_array($id, $arrClipboard ['id'])) || (!$blnPtable && !is_array($arrClipboard['id']) && in_array($id, $this->getChildRecords($arrClipboard['id'], $table))))));
+				$return .= ' ' . trim($this->generateProductTree($this->strTable, $this->root[$i], array('p'=>$this->root[($i-1)], 'n'=>$this->root[($i+1)]), $margin, ($blnClipboard ? $arrClipboard : false), ($id == $arrClipboard['id'] || (is_array($arrClipboard ['id']) && in_array($id, $arrClipboard ['id'])) || (!$blnPtable && !is_array($arrClipboard['id']) && in_array($id, $this->getChildRecords($arrClipboard['id'], $table))))));
 			}
 		}
 
