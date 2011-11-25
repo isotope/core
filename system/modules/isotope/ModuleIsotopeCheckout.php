@@ -305,7 +305,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		$total = count($arrStepKeys) - 1;
 		$arrSteps = array();
 		
-		if(!$this->strCurrentStep=='payment' || !$this->strCurrentStep=='process')
+		if ($this->strCurrentStep != 'process' && $this->strCurrentStep != 'complete')
 		{
 			foreach ($arrStepKeys as $i => $step)
 			{
@@ -936,17 +936,16 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 		$arrData = array_merge($this->arrOrderData, array
 		(
-			'uniqid'                    => $objOrder->uniqid,
-			'order_id'                    => ($this->Isotope->Config->orderPrefix . $orderId),
-			'items'                        => $this->Isotope->Cart->items,
-			'products'                    => $this->Isotope->Cart->products,
-			'subTotal'                    => $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->subTotal, false),
-			'taxTotal'                    => $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->taxTotal, false),
-			'shippingPrice'                => $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->Shipping->price, false),
-			'paymentPrice'                => $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->Payment->price, false),
-			'grandTotal'                => $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->grandTotal, false),
-			'cart_text'                    => strip_tags($this->replaceInsertTags($this->Isotope->Cart->getProducts('iso_products_text'))),
-			'cart_html'                    => $this->replaceInsertTags($this->Isotope->Cart->getProducts('iso_products_html')),
+			'uniqid'			=> $objOrder->uniqid,
+			'items'				=> $this->Isotope->Cart->items,
+			'products'			=> $this->Isotope->Cart->products,
+			'subTotal'			=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->subTotal, false),
+			'taxTotal'			=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->taxTotal, false),
+			'shippingPrice'		=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->Shipping->price, false),
+			'paymentPrice'		=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->Payment->price, false),
+			'grandTotal'		=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->grandTotal, false),
+			'cart_text'			=> strip_tags($this->replaceInsertTags($this->Isotope->Cart->getProducts('iso_products_text'))),
+			'cart_html'			=> $this->replaceInsertTags($this->Isotope->Cart->getProducts('iso_products_html')),
 		));
 
 		$objOrder->email_data = $arrData;
