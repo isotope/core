@@ -205,13 +205,16 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 
 		if (is_array($this->iso_filterFields) && count($this->iso_filterFields))
 		{
+			$time = time();
 			$arrFilters = array();
 			$arrInput = $this->Input->post('filter');
 			$arrIds = $this->findCategoryProducts($this->iso_category_scope, $this->iso_list_where);
 
 			foreach ($this->iso_filterFields as $strField)
 			{
-				$arrValues = $this->Database->execute("SELECT DISTINCT $strField FROM tl_iso_products WHERE (id IN (" . implode(',', $arrIds) . ") OR pid IN (" . implode(',', $arrIds) . ")) AND published='1' AND language='' AND $strField!=''")
+				$arrValues = $this->Database->execute("SELECT DISTINCT $strField FROM tl_iso_products
+														WHERE (id IN (" . implode(',', $arrIds) . ") OR pid IN (" . implode(',', $arrIds) . ")) AND language='' AND $strField!=''"
+														. (BE_USER_LOGGED_IN ? " AND published='1' AND (start='' OR start<$time) AND (stop='' OR stop>$time)" : ''))
 											->fetchEach($strField);
 
 				if ($this->blnCacheRequest && in_array($arrInput[$strField], $arrValues))

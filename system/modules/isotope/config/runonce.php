@@ -61,6 +61,7 @@ class IsotopeRunonce extends Controller
 		$this->updateAttributes();
 		$this->updateFrontendModules();
 		$this->updateFrontendTemplates();
+		$this->updateProductTypes();
 		$this->generateCategoryGroups();
 		$this->refreshDatabaseFile();
 
@@ -676,6 +677,48 @@ class IsotopeRunonce extends Controller
 			if (file_exists(TL_ROOT . '/templates/' . $old . '.tpl') && !file_exists(TL_ROOT . '/templates/' . $new . '.tpl'))
 			{
 				$this->Files->rename('templates/' . $old . '.tpl', 'templates/' . $new . '.tpl');
+			}
+		}
+	}
+	
+	
+	private function updateProductTypes()
+	{
+		$objTypes = $this->Database->query("SELECT * FROM tl_iso_producttypes");
+		
+		while( $objTypes->next() )
+		{
+			$arrSet = array();
+			$arrAttributes = deserialize($objTypes->attributes, true);
+			$arrVariantAttributes = deserialize($objTypes->variant_attributes, true);
+			
+			if (!in_array('start', $arrAttributes))
+			{
+				$arrAttributes[] = 'start';
+				$arrSet['attributes'] = $arrAttributes;
+			}
+			
+			if (!in_array('stop', $arrAttributes))
+			{
+				$arrAttributes[] = 'stop';
+				$arrSet['attributes'] = $arrAttributes;
+			}
+			
+			if (!in_array('start', $arrVariantAttributes))
+			{
+				$arrVariantAttributes[] = 'start';
+				$arrSet['attributes'] = $arrVariantAttributes;
+			}
+			
+			if (!in_array('stop', $arrVariantAttributes))
+			{
+				$arrVariantAttributes[] = 'stop';
+				$arrSet['variant_attributes'] = $arrVariantAttributes;
+			}
+			
+			if (!empty($arrSet))
+			{
+				$this->Database->prepare("UPDATE tl_iso_producttypes %s WHERE id=?")->set($arrSet)->execute($objTypes->id);
 			}
 		}
 	}

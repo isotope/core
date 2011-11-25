@@ -189,9 +189,12 @@ class IsotopeProduct extends Controller
 		{
 			if ($this->arrType['variants'])
 			{
+				$time = time();
+				
 				// Find all possible variant options
 				$objVariant = clone $this;
-				$objVariants = $this->Database->execute(IsotopeProduct::getSelectStatement() . " WHERE p1.pid={$this->arrData['id']} AND p1.language='' AND p1.published='1'");
+				$objVariants = $this->Database->execute(IsotopeProduct::getSelectStatement() . " WHERE p1.pid={$this->arrData['id']} AND p1.language=''"
+														. (BE_USER_LOGGED_IN ? " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)" : ''));
 
 				while ($objVariants->next())
 				{
@@ -222,7 +225,6 @@ class IsotopeProduct extends Controller
 					{
 						// Add "price_tiers" to variant attributes, so the field is updated through ajax
 						$this->arrVariantAttributes[] = 'price_tiers';
-						$time = time();
 
 						$objProduct = $this->Database->execute("SELECT MIN(price) AS low_price, MAX(price) AS high_price
 																FROM tl_iso_price_tiers
@@ -246,7 +248,10 @@ class IsotopeProduct extends Controller
 					}
 					else
 					{
-						$objProduct = $this->Database->execute("SELECT MIN(price) AS low_price, MAX(price) AS high_price FROM tl_iso_products WHERE pid=" . ($this->arrData['pid'] ? $this->arrData['pid'] : $this->arrData['id']) . " AND published='1' AND language='' GROUP BY pid");
+						$objProduct = $this->Database->execute("SELECT MIN(price) AS low_price, MAX(price) AS high_price FROM tl_iso_products
+																WHERE pid=" . ($this->arrData['pid'] ? $this->arrData['pid'] : $this->arrData['id']) . " AND language=''"
+																. (BE_USER_LOGGED_IN ? " AND published='1' AND (start='' OR start<$time) AND (stop='' OR stop>$time)" : '')
+																. " GROUP BY pid");
 					}
 
 					if ($objProduct->low_price < $objProduct->high_price)

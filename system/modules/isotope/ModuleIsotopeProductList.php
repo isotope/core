@@ -72,6 +72,12 @@ class ModuleIsotopeProductList extends ModuleIsotope
 
 		$this->iso_filterModules = deserialize($this->iso_filterModules, true);
 		$this->iso_productcache = deserialize($this->iso_productcache, true);
+		
+		// Disable the cache if in preview mode
+		if (BE_USER_LOGGED_IN)
+		{
+			$this->blnCacheProducts = false;
+		}
 
 		return parent::generate();
 	}
@@ -256,6 +262,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 	 */
 	protected function findProducts($arrCacheIds=null)
 	{
+		$time = time();
 		$arrIds = $this->findCategoryProducts($this->iso_category_scope, $this->iso_list_where);
 
 		if (is_array($arrCacheIds))
@@ -264,7 +271,13 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		}
 
 		list($arrFilters, $arrSorting, $strWhere, $arrValues) = $this->getFiltersAndSorting();
-		$objProductData = $this->Database->prepare(IsotopeProduct::getSelectStatement() . "\nWHERE p1.published='1' AND p1.language='' AND p1.id IN (" . implode(',', $arrIds) . ")$strWhere ORDER BY sorting")->execute($arrValues);
+		
+		$objProductData = $this->Database->prepare(IsotopeProduct::getSelectStatement() . "
+													WHERE p1.language='' AND p1.id IN (" . implode(',', $arrIds) . ")"
+													. (BE_USER_LOGGED_IN ? " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)" : '')
+													. "$strWhere ORDER BY sorting")
+										 ->execute($arrValues);
+		
 		return IsotopeFrontend::getProducts($objProductData, IsotopeFrontend::getReaderPageId(null, $this->iso_reader_jumpTo), true, $arrFilters, $arrSorting);
 	}
 
@@ -358,7 +371,9 @@ class ModuleIsotopeProductList extends ModuleIsotope
 
 			if (count($arrWhere))
 			{
-				$strWhere = " AND ((p1." . implode(' AND p1.', $arrWhere) . ") OR p1.id IN (SELECT pid FROM tl_iso_products WHERE published='1' AND language='' AND " . implode(' AND ', $arrWhere) . "))";
+				$time = time();
+				$strWhere = " AND ((p1." . implode(' AND p1.', $arrWhere) . ") OR p1.id IN (SELECT pid FROM tl_iso_products WHERE language='' AND " . implode(' AND ', $arrWhere)
+							. (BE_USER_LOGGED_IN ? " AND published='1' AND (start='' OR start<$time) AND (stop='' OR stop>$time)" : '') . "))";
 				$arrValues = array_merge($arrValues, $arrValues);
 			}
 

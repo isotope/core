@@ -64,6 +64,7 @@ class ModuleIsotopeProductVariantList extends ModuleIsotopeProductList
 	 */
 	protected function findProducts($arrCacheIds=null)
 	{
+		$time = time();
 		$arrIds = $this->findCategoryProducts($this->iso_category_scope, $this->iso_list_where);
 
 		if (is_array($arrCacheIds))
@@ -72,7 +73,13 @@ class ModuleIsotopeProductVariantList extends ModuleIsotopeProductList
 		}
 
 		list($arrFilters, $arrSorting, $strWhere, $arrValues) = $this->getFiltersAndSorting();
-		$objProductData = $this->Database->prepare(IsotopeProduct::getSelectStatement() . " WHERE p1.published='1' AND p1.language='' AND (p1.pid IN (" . implode(',', $arrIds) . "))$strWhere ORDER BY sorting")->execute($arrValues);
+		
+		$objProductData = $this->Database->prepare(IsotopeProduct::getSelectStatement() . "
+													WHERE AND p1.language='' AND (p1.id IN (" . implode(',', $arrIds) . ") OR p1.pid IN (" . implode(',', $arrIds) . "))"
+													. (BE_USER_LOGGED_IN ? " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)" : '')
+													. "$strWhere ORDER BY sorting")
+										 ->execute($arrValues);
+		
 		return IsotopeFrontend::getProducts($objProductData, IsotopeFrontend::getReaderPageId(null, $this->iso_reader_jumpTo), true, $arrFilters, $arrSorting);
 	}
 }

@@ -810,8 +810,13 @@ $endScript";
 	{
 		if (is_numeric($objProductData))
 		{
+			$time = time();
 			$Database = Database::getInstance();
-			$objProductData = $Database->prepare(IsotopeProduct::getSelectStatement() . " WHERE p1.language='' AND p1.id=?")->execute($objProductData);
+			
+			$objProductData = $Database->prepare(IsotopeProduct::getSelectStatement() . "
+													WHERE p1.language='' AND p1.id=?"
+													. (BE_USER_LOGGED_IN ? " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)" : ''))
+									   ->execute($objProductData);
 		}
 
 		if (!($objProductData instanceof Database_Result) || !$objProductData->numRows)
@@ -849,9 +854,12 @@ $endScript";
 	 */
 	public static function getProductByAlias($strAlias, $intReaderPage=0, $blnCheckAvailability=true)
 	{
+		$time = time();
 		$Database = Database::getInstance();
 
-		$objProductData = $Database->prepare(IsotopeProduct::getSelectStatement() . " WHERE p1.pid=0 AND p1.language='' AND p1." . (is_numeric($strAlias) ? 'id' : 'alias') . "=?")
+		$objProductData = $Database->prepare(IsotopeProduct::getSelectStatement() . "
+												WHERE p1.pid=0 AND p1.language='' AND p1." . (is_numeric($strAlias) ? 'id' : 'alias') . "=?"
+												 . (BE_USER_LOGGED_IN ? " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)" : ''))
 								   ->limit(1)
 								   ->executeUncached($strAlias);
 
@@ -873,10 +881,12 @@ $endScript";
 		// $objProductData can also be an array of product ids
 		if (is_array($objProductData) && count($objProductData))
 		{
+			$time = time();
 			$Database = Database::getInstance();
 
 			$objProductData = $Database->execute(IsotopeProduct::getSelectStatement() . "
-													WHERE p1.language='' AND p1.id IN (" . implode(',', array_map('intval', $objProductData)) . ")
+													WHERE p1.language='' AND p1.id IN (" . implode(',', array_map('intval', $objProductData)) . ")"
+													 . (BE_USER_LOGGED_IN ? " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)" : '') . "
 													ORDER BY p1.id=" . implode(' DESC, p1.id=', $objProductData) . " DESC");
 		}
 
@@ -1160,10 +1170,11 @@ $endScript";
 	 */
 	public function addProductsToSearchIndex($arrPages)
 	{
+		$time = time();
 		$arrIsotopeProductPages = array();
 		
 		// get all products available
-		$objProducts = $this->Database->execute(IsotopeProduct::getSelectStatement() . " WHERE p1.language='' AND p1.pid=0 AND p1.published=1");
+		$objProducts = $this->Database->execute(IsotopeProduct::getSelectStatement() . " WHERE p1.language='' AND p1.pid=0 AND p1.published=1 AND (start='' OR start<$time) AND (stop='' OR stop>$time)");
 		$arrProducts = self::getProducts($objProducts);
 		
 		if (!count($arrProducts))
