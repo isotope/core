@@ -111,14 +111,16 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			global $objPage;
 			$time = time();
 
-			$objCache = $this->Database->prepare("SELECT * FROM tl_iso_productcache WHERE page_id=? AND module_id=? AND requestcache_id=? AND (keywords=? OR keywords='') AND (expires>$time OR expires=0) ORDER BY keywords=''")
+			$objCache = $this->Database->prepare("SELECT * FROM tl_iso_productcache
+												  WHERE page_id=? AND module_id=? AND requestcache_id=? AND (keywords=? OR keywords='') AND (expires>$time OR expires=0)
+												  ORDER BY keywords=''")
 									   ->limit(1)
 									   ->execute($objPage->id, $this->id, (int)$this->Input->get('isorc'), (string)$this->Input->get('keywords'));
 
 			// Cache found
 			if ($objCache->numRows)
 			{
-				$arrCacheIds = deserialize($objCache->products);
+				$arrCacheIds = explode(',', $objCache->products);
 
 				// Use the cache if keywords match. Otherwise we will use the product IDs as a "limit" for findProducts()
 				if ($objCache->keywords == $this->Input->get('keywords'))
@@ -201,7 +203,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 									   ->executeUncached($objPage->id, $this->id, (int)$this->Input->get('isorc'), (string)$this->Input->get('keywords'));
 
 						$this->Database->prepare("INSERT INTO tl_iso_productcache (page_id,module_id,requestcache_id,keywords,products,expires) VALUES (?,?,?,?,?,?)")
-									   ->executeUncached($objPage->id, $this->id, (int)$this->Input->get('isorc'), (string)$this->Input->get('keywords'), serialize($arrIds), $intExpires);
+									   ->executeUncached($objPage->id, $this->id, (int)$this->Input->get('isorc'), (string)$this->Input->get('keywords'), implode(',', $arrIds), $intExpires);
 
 						$this->Database->unlockTables();
 					}
