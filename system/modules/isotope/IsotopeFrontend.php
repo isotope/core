@@ -891,7 +891,7 @@ $endScript";
 		{
 			$objProduct = IsotopeFrontend::getProduct($objProductData, $intReaderPage, $blnCheckAvailability);
 
-			if ($objProduct instanceof IsotopeProduct)
+			if ($objProduct !== null)
 			{
 				$arrProducts[$objProductData->id] = $objProduct;
 			}

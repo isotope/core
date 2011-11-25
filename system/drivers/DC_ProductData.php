@@ -85,14 +85,12 @@ class DC_ProductData extends DC_Table
 		// Clean up old tl_undo and tl_log entries
 		if ($this->strTable == 'tl_undo' && strlen($GLOBALS['TL_CONFIG']['undoPeriod']))
 		{
-			$this->Database->prepare("DELETE FROM tl_undo WHERE tstamp<?")
-						   ->execute(intval(time() - $GLOBALS['TL_CONFIG']['undoPeriod']));
+			$this->Database->query("DELETE FROM tl_undo WHERE tstamp<".intval(time() - $GLOBALS['TL_CONFIG']['undoPeriod']));
 		}
 
 		elseif ($this->strTable == 'tl_log' && strlen($GLOBALS['TL_CONFIG']['logPeriod']))
 		{
-			$this->Database->prepare("DELETE FROM tl_log WHERE tstamp<?")
-						   ->execute(intval(time() - $GLOBALS['TL_CONFIG']['logPeriod']));
+			$this->Database->query("DELETE FROM tl_log WHERE tstamp<".intval(time() - $GLOBALS['TL_CONFIG']['logPeriod']));
 		}
 
 		$this->reviseTable();
@@ -147,7 +145,7 @@ class DC_ProductData extends DC_Table
 	 */
 	public function cut($blnDoNotRedirect=false)
 	{
-		// ID and GID signify paste into a group
+		// ID and GID tell about paste into a group
 		if ($this->intId > 0 && $this->Input->get('gid') != '')
 		{
 			// Empty clipboard
@@ -185,7 +183,7 @@ class DC_ProductData extends DC_Table
 		$cctable = array();
 		$ctable = $GLOBALS['TL_DCA'][$table]['config']['ctable'];
 
-		if (!$GLOBALS['TL_DCA'][$table]['config']['ptable'] && strlen($this->Input->get('childs')) && $this->Database->fieldExists('pid', $table))
+		if (!$GLOBALS['TL_DCA'][$table]['config']['ptable'] && $this->Input->get('childs') != '' && $this->Database->fieldExists('pid', $table))
 		{
 			$ctable[] = $table;
 		}
@@ -201,7 +199,7 @@ class DC_ProductData extends DC_Table
 			$this->loadDataContainer($v);
 			$cctable[$v] = $GLOBALS['TL_DCA'][$v]['config']['ctable'];
 
-			if (!$GLOBALS['TL_DCA'][$v]['config']['doNotCopyRecords'] && strlen($v))
+			if (!$GLOBALS['TL_DCA'][$v]['config']['doNotCopyRecords'] && $v != '')
 			{
 				$objCTable = $this->Database->prepare("SELECT * FROM " . $v . " WHERE pid=?" . ($this->Database->fieldExists('sorting', $v) ? " ORDER BY sorting" : ""))
 											->execute($id);
@@ -317,7 +315,7 @@ class DC_ProductData extends DC_Table
 				{
 					$session['language'][$this->strTable][$this->intId] = $this->Input->post('language');
 
-					if (strlen($this->Input->post('deleteLanguage')))
+					if ($this->Input->post('deleteLanguage') != '')
 					{
 						$this->Database->prepare("DELETE FROM " . $this->strTable . " WHERE pid=? AND language=?")->execute($this->intId, $this->Input->post('language'));
 						unset($session['language'][$this->strTable][$this->intId]);
@@ -333,7 +331,7 @@ class DC_ProductData extends DC_Table
 				$this->reload();
 			}
 
-			if (strlen($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId]) && in_array($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId], array_keys($this->arrLanguages)))
+			if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId] != '' && in_array($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId], array_keys($this->arrLanguages)))
 			{
 				$objRow = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE pid=? AND language=?")->execute($this->intId, $_SESSION['BE_DATA']['language'][$this->strTable][$this->intId]);
 
@@ -354,7 +352,7 @@ class DC_ProductData extends DC_Table
 		$this->createInitialVersion($this->strTable, $this->objActiveRecord->id);
 
 		// Change version
-		if ($GLOBALS['TL_DCA'][$this->strTable]['config']['enableVersioning'] && $this->Input->post('FORM_SUBMIT') == 'tl_version' && strlen($this->Input->post('version')))
+		if ($GLOBALS['TL_DCA'][$this->strTable]['config']['enableVersioning'] && $this->Input->post('FORM_SUBMIT') == 'tl_version' && $this->Input->post('version') != '')
 		{
 			$objData = $this->Database->prepare("SELECT * FROM tl_version WHERE fromTable=? AND pid=? AND version=?")
 									  ->limit(1)
@@ -597,7 +595,7 @@ class DC_ProductData extends DC_Table
 <div class="tl_formbody">
 <input type="hidden" name="FORM_SUBMIT" value="tl_language">
 <input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">
-<select name="language" class="tl_select' . (strlen($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId]) ? ' active' : '') . '">
+<select name="language" class="tl_select' . ($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId] == '' ? '' : ' active') . '">
 	<option value="">' . $GLOBALS['TL_LANG']['MSC']['defaultLanguage'] . '</option>'.$available.$undefined.'
 </select>
 <input type="submit" name="editLanguage" class="tl_submit" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['editLanguage']).'">
@@ -606,7 +604,7 @@ class DC_ProductData extends DC_Table
 </form>';
 		}
 
-		if (strlen($version))
+		if ($version != '')
 		{
 			$version = '
 <div class="tl_version_panel">
@@ -626,7 +624,7 @@ class DC_ProductData extends DC_Table
 <input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['save']).'">
 <input type="submit" name="saveNclose" id="saveNclose" class="tl_submit" accesskey="c" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['saveNclose']).'">' . (!$GLOBALS['TL_DCA'][$this->strTable]['config']['closed'] ? '
 <input type="submit" name="saveNcreate" id="saveNcreate" class="tl_submit" accesskey="n" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['saveNcreate']).'">' : '') . ($this->Input->get('s2e') ? '
-<input type="submit" name="saveNedit" id="saveNedit" class="tl_submit" accesskey="e" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['saveNedit']).'">' : (($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 4 || strlen($this->ptable) || $GLOBALS['TL_DCA'][$this->strTable]['config']['switchToEdit']) ? '
+<input type="submit" name="saveNedit" id="saveNedit" class="tl_submit" accesskey="e" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['saveNedit']).'">' : (($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 4 || $this->ptable != '' || $GLOBALS['TL_DCA'][$this->strTable]['config']['switchToEdit']) ? '
 <input type="submit" name="saveNback" id="saveNback" class="tl_submit" accesskey="g" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['saveNback']).'">' : '')) .'
 </div>
 
@@ -773,7 +771,7 @@ window.addEvent(\'domready\', function() {
 				// List view
 				else
 				{
-					$strUrl .= strlen($this->ptable) ? '&amp;act=create&amp;mode=2&amp;pid=' . CURRENT_ID : '&amp;act=create';
+					$strUrl .= $this->ptable != '' ? '&amp;act=create&amp;mode=2&amp;pid=' . CURRENT_ID : '&amp;act=create';
 				}
 
 				$this->redirect($strUrl);
@@ -1054,10 +1052,10 @@ window.addEvent(\'domready\', function() {
 			// Show all non-excluded fields
 			foreach ($fields as $field)
 			{
-				if ($field == 'pid' || $field == 'sorting' || (!$GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['exclude'] && !$GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['eval']['doNotShow'] && (strlen($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['inputType']) || is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['input_field_callback']))))
+				if ($field == 'pid' || $field == 'sorting' || (!$GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['exclude'] && !$GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['eval']['doNotShow'] && ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['inputType'] != '' || is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['input_field_callback']))))
 				{
 					$options .= '
-  <input type="checkbox" name="all_fields[]" id="all_'.$field.'" class="tl_checkbox" value="'.specialchars($field).'"> <label for="all_'.$field.'" class="tl_checkbox_label">'.(strlen($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0]) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0] : $GLOBALS['TL_LANG']['MSC'][$field][0]).'</label><br>';
+  <input type="checkbox" name="all_fields[]" id="all_'.$field.'" class="tl_checkbox" value="'.specialchars($field).'"> <label for="all_'.$field.'" class="tl_checkbox_label">'.($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0] != '' ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0] : $GLOBALS['TL_LANG']['MSC'][$field][0]).'</label><br>';
 				}
 			}
 
@@ -1080,7 +1078,7 @@ window.addEvent(\'domready\', function() {
   <legend'.($blnIsError ? ' class="error"' : '').'>'.$GLOBALS['TL_LANG']['MSC']['all_fields'][0].'</legend>
   <input type="checkbox" id="check_all" class="tl_checkbox" onclick="Backend.toggleCheckboxes(this)"> <label for="check_all" style="color:#a6a6a6;"><em>'.$GLOBALS['TL_LANG']['MSC']['selectAll'].'</em></label><br>'.$options.'
 </fieldset>'.($blnIsError ? '
-<p class="tl_error">'.$GLOBALS['TL_LANG']['ERR']['all_fields'].'</p>' : (($GLOBALS['TL_CONFIG']['showHelp'] && strlen($GLOBALS['TL_LANG']['MSC']['all_fields'][1])) ? '
+<p class="tl_error">'.$GLOBALS['TL_LANG']['ERR']['all_fields'].'</p>' : (($GLOBALS['TL_CONFIG']['showHelp'] && $GLOBALS['TL_LANG']['MSC']['all_fields'][1] != '') ? '
 <p class="tl_help tl_tip">'.$GLOBALS['TL_LANG']['MSC']['all_fields'][1].'</p>' : '')).'
 </div>
 
@@ -1307,10 +1305,10 @@ window.addEvent(\'domready\', function() {
 			// Show all non-excluded fields
 			foreach ($fields as $field)
 			{
-				if ($field == 'pid' || $field == 'sorting' || (!$GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['exclude'] && !$GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['eval']['doNotShow'] && (strlen($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['inputType']) || is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['input_field_callback']))))
+				if ($field == 'pid' || $field == 'sorting' || (!$GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['exclude'] && !$GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['eval']['doNotShow'] && ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['inputType'] != '' || is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['input_field_callback']))))
 				{
 					$options .= '
-  <input type="checkbox" name="all_fields[]" id="all_'.$field.'" class="tl_checkbox" value="'.specialchars($field).'"> <label for="all_'.$field.'" class="tl_checkbox_label">'.(strlen($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0]) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0] : $GLOBALS['TL_LANG']['MSC'][$field][0]).'</label><br>';
+  <input type="checkbox" name="all_fields[]" id="all_'.$field.'" class="tl_checkbox" value="'.specialchars($field).'"> <label for="all_'.$field.'" class="tl_checkbox_label">'.($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0] != '' ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0] : $GLOBALS['TL_LANG']['MSC'][$field][0]).'</label><br>';
 				}
 			}
 
@@ -1333,7 +1331,7 @@ window.addEvent(\'domready\', function() {
   <legend'.($blnIsError ? ' class="error"' : '').'>'.$GLOBALS['TL_LANG']['MSC']['all_fields'][0].'</legend>
   <input type="checkbox" id="check_all" class="tl_checkbox" onclick="Backend.toggleCheckboxes(this)"> <label for="check_all" style="color:#a6a6a6;"><em>'.$GLOBALS['TL_LANG']['MSC']['selectAll'].'</em></label><br>'.$options.'
 </fieldset>'.($blnIsError ? '
-<p class="tl_error">'.$GLOBALS['TL_LANG']['ERR']['all_fields'].'</p>' : (($GLOBALS['TL_CONFIG']['showHelp'] && strlen($GLOBALS['TL_LANG']['MSC']['all_fields'][1])) ? '
+<p class="tl_error">'.$GLOBALS['TL_LANG']['ERR']['all_fields'].'</p>' : (($GLOBALS['TL_CONFIG']['showHelp'] && $GLOBALS['TL_LANG']['MSC']['all_fields'][1] != '') ? '
 <p class="tl_help tl_tip">'.$GLOBALS['TL_LANG']['MSC']['all_fields'][1].'</p>' : '')).'
 </div>
 
@@ -1366,14 +1364,13 @@ window.addEvent(\'domready\', function() {
 		// Return if there is no parent table
 		if ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] != 5)
 		{
-			return '
-<p class="tl_empty">DC_ProductData does only support sorting mode 5!</p>';
+			return '<p class="tl_empty">DC_ProductData does only support sorting mode 5!</p>';
 		}
 		
 		if ($this->Input->get('loadDeferredProduct') > 0)
 		{
-			$this->intId = $this->Input->get('loadDeferredProduct');
-			$level = (int)$this->Input->get('level');
+			$this->intId = (int) $this->Input->get('loadDeferredProduct');
+			$level = (int) $this->Input->get('level');
 			$this->blnDeferredLoading = true;
 			$this->Input->setGet('loadDeferredProduct', null);
 			$this->Input->setGet('level', null);
@@ -1404,15 +1401,13 @@ window.addEvent(\'domready\', function() {
 		// Return if a mandatory field (id, pid) is missing
 		if (!$this->Database->fieldExists('id', $table) || !$this->Database->fieldExists('pid', $table))
 		{
-			return '
-<p class="tl_empty">strTable "'.$table.'" can not be shown as tree!</p>';
+			return '<p class="tl_empty">strTable "'.$table.'" can not be shown as tree!</p>';
 		}
 
 		// Return if a mandatory field (id, pid) is missing in group table
 		if ($GLOBALS['TL_DCA'][$this->strTable]['config']['gtable'] != '' && (!$this->Database->fieldExists('id', $gtable) || !$this->Database->fieldExists('pid', $gtable) || !$this->Database->fieldExists('sorting', $gtable)))
 		{
-			return '
-<p class="tl_empty">strTable "'.$gtable.'" can not be shown as grouped tree!</p>';
+			return '<p class="tl_empty">strTable "'.$gtable.'" can not be shown as grouped tree!</p>';
 		}
 
 		// Get session data and toggle nodes
@@ -1454,7 +1449,7 @@ window.addEvent(\'domready\', function() {
 			{
 				$session[$node] = array();
 
-				$objNodes = $this->Database->execute("SELECT DISTINCT id FROM " . $gtable);
+				$objNodes = $this->Database->execute("SELECT id FROM " . $gtable);
 				while ($objNodes->next())
 				{
 					$session[$node][$objNodes->id] = 1;
@@ -1496,7 +1491,7 @@ window.addEvent(\'domready\', function() {
 		}
 
 		$label = $GLOBALS['TL_DCA'][$table]['config']['label'];
-		$icon = strlen($GLOBALS['TL_DCA'][$table]['list']['sorting']['icon']) ? $GLOBALS['TL_DCA'][$table]['list']['sorting']['icon'] : 'pagemounts.gif';
+		$icon = $GLOBALS['TL_DCA'][$table]['list']['sorting']['icon'] ? $GLOBALS['TL_DCA'][$table]['list']['sorting']['icon'] : 'pagemounts.gif';
 		$label = $this->generateImage($icon).' <label>'.$label.'</label>';
 
 		// Begin buttons container
@@ -1512,14 +1507,14 @@ window.addEvent(\'domready\', function() {
 		$this->Session->set('PRODUCTDATA_OVERLOAD', true);
 
 		// Call a recursive function that builds the tree including groups
-		$this->root = $this->Database->execute("SELECT id FROM $gtable WHERE pid=0 ORDER BY sorting")->fetchEach('id');
-		for ($i=0; $i<count($this->root); $i++)
+		$this->root = $this->Database->query("SELECT id FROM $gtable WHERE pid=0 ORDER BY sorting")->fetchEach('id');
+		for ($i=0, $count=count($this->root); $i<$count; $i++)
 		{
 			$tree .= $this->generateProductTree($gtable, $this->root[$i], array('p'=>$this->root[($i-1)], 'n'=>$this->root[($i+1)]), -20, ($blnClipboard ? $arrClipboard : false));
 		}
 
 		// Generate all products not in a group
-		$this->root = $this->Database->execute("SELECT id FROM $table WHERE pid=0 AND gid=0 AND id IN (" . implode(',', $this->products) . ") ORDER BY id=" . implode(' DESC, id=', $this->products) . " DESC")->fetchEach('id');
+		$this->root = $this->Database->query("SELECT id FROM $table WHERE pid=0 AND gid=0 AND id IN (" . implode(',', $this->products) . ") ORDER BY id=" . implode(' DESC, id=', $this->products) . " DESC")->fetchEach('id');
 		for ($i=0; $i<count($this->root); $i++)
 		{
 			$tree .= $this->generateProductTree($table, $this->root[$i], array('p'=>$this->root[($i-1)], 'n'=>$this->root[($i+1)]), -20, ($blnClipboard ? $arrClipboard : false));
@@ -1529,7 +1524,7 @@ window.addEvent(\'domready\', function() {
 		$this->Session->set('PRODUCTDATA_OVERLOAD', false);
 
 		// Return if there are no records
-		if (!strlen($tree) && $this->Input->get('act') != 'paste')
+		if ($tree == '' && $this->Input->get('act') != 'paste')
 		{
 			return $return . '
 <p class="tl_empty">'.$GLOBALS['TL_LANG']['MSC']['noResult'].'</p>';
@@ -1667,12 +1662,7 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 		{
 			$blnPtable = true;
 			
-			// Call a recursive function that builds the tree
-			$this->root = $this->Database->execute("SELECT id FROM {$this->strTable} WHERE id=$id")->fetchEach('id');
-			for ($i=0; $i<count($this->root); $i++)
-			{
-				$return .= ' ' . trim($this->generateProductTree($this->strTable, $id, array(), $margin, ($blnClipboard ? $arrClipboard : false), ($id == $arrClipboard ['id'] || (is_array($arrClipboard ['id']) && in_array($id, $arrClipboard ['id'])) || (!$blnPtable && !is_array($arrClipboard['id']) && in_array($id, $this->getChildRecords($arrClipboard['id'], $table))))));
-			}
+			return ' ' . trim($this->generateProductTree($this->strTable, $id, array(), $margin, ($blnClipboard ? $arrClipboard : false), ($id == $arrClipboard ['id'] || (is_array($arrClipboard ['id']) && in_array($id, $arrClipboard ['id'])) || (!$blnPtable && !is_array($arrClipboard['id']) && in_array($id, $this->getChildRecords($arrClipboard['id'], $table))))));
 		}
 		
 		// Load groups and products
@@ -1685,14 +1675,15 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 
 			$blnPtable = true;
 
-			// Call a recursive function that builds the tree
-			$this->root = $this->Database->execute("SELECT id FROM {$this->strTable} WHERE pid=0 AND gid=$id")->fetchEach('id');
+			// Load products in the current group
+			$this->root = $this->Database->query("SELECT id FROM {$this->strTable} WHERE pid=0 AND gid=$id")->fetchEach('id');
 			for ($i=0; $i<count($this->root); $i++)
 			{
 				$return .= ' ' . trim($this->generateProductTree($this->strTable, $this->root[$i], array('p'=>$this->root[($i-1)], 'n'=>$this->root[($i+1)]), $margin, ($blnClipboard ? $arrClipboard : false), ($id == $arrClipboard ['id'] || (is_array($arrClipboard ['id']) && in_array($id, $arrClipboard ['id'])) || (!$blnPtable && !is_array($arrClipboard['id']) && in_array($id, $this->getChildRecords($arrClipboard['id'], $table))))));
 			}
 
-			$this->root = $this->Database->execute("SELECT id FROM $table WHERE pid=$id ORDER BY sorting")->fetchEach('id');
+			// Load subgroups in the current group
+			$this->root = $this->Database->query("SELECT id FROM $table WHERE pid=$id ORDER BY sorting")->fetchEach('id');
 			for ($i=0; $i<count($this->root); $i++)
 			{
 				$return .= ' ' . trim($this->generateProductTree($table, $this->root[$i], array('p'=>$this->root[($i-1)], 'n'=>$this->root[($i+1)]), $margin, ($blnClipboard ? $arrClipboard : false)));
@@ -1702,30 +1693,12 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 		// Load variant
 		else
 		{
-			$this->root = $this->Database->execute("SELECT id FROM {$this->strTable} WHERE pid=$id AND gid=0")->fetchEach('id');
+			$this->root = $this->Database->query("SELECT id FROM {$this->strTable} WHERE pid=$id AND gid=0")->fetchEach('id');
 			for ($i=0; $i<count($this->root); $i++)
 			{
 				$return .= ' ' . trim($this->generateProductTree($this->strTable, $this->root[$i], array('p'=>$this->root[($i-1)], 'n'=>$this->root[($i+1)]), $margin, ($blnClipboard ? $arrClipboard : false), ($id == $arrClipboard ['id'] || (is_array($arrClipboard ['id']) && in_array($id, $arrClipboard ['id'])) || (!$blnPtable && !is_array($arrClipboard['id']) && in_array($id, $this->getChildRecords($arrClipboard['id'], $table))))));
 			}
 		}
-
-/*
-		$arrIds = array();
-
-		// Get records
-		$objRows = $this->Database->prepare("SELECT id FROM " . $table . " WHERE pid=?" . ($table == $this->strTable ? " AND language=''" : '') . ($hasSorting ? " ORDER BY sorting" : ""))
-							 	  ->execute($id);
-
-		while ($objRows->next())
-		{
-			$arrIds[] = $objRows->id;
-		}
-
-		for ($i=0; $i<count($arrIds); $i++)
-		{
-			$return .= ' ' . trim($this->generateProductTree($table, $arrIds[$i], array('p'=>$arrIds[($i-1)], 'n'=>$arrIds[($i+1)]), $margin, ($blnClipboard ? $arrClipboard : false), ($id == $arrClipboard ['id'] || (is_array($arrClipboard ['id']) && in_array($id, $arrClipboard ['id'])) || (!$blnPtable && !is_array($arrClipboard['id']) && in_array($id, $this->getChildRecords($arrClipboard['id'], $table))))));
-		}
-*/
 
 		return $return;
 	}
@@ -1745,6 +1718,12 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 	 */
 	protected function generateProductTree($table, $id, $arrPrevNext, $intMargin=0, $arrClipboard=false, $blnCircularReference=false)
 	{
+		// Only list products & variants matched by the search & filters
+		if ($table == $this->strTable && !in_array($id, $this->products))
+		{
+			return '';
+		}
+		
 		static $session;
 
 		$session = $this->Session->getData();
@@ -1759,20 +1738,24 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 
 			$this->redirect(preg_replace('/(&(amp;)?|\?)'.$toggle.'=[^& ]*/i', '', $this->Environment->request));
 		}
+		
+		$intSpacing = 20;
+		$return = "\n  " . '<li class="'.(($table != $this->strTable) ? 'tl_folder' : 'tl_file').'" onmouseover="Theme.hoverDiv(this, 1);" onmouseout="Theme.hoverDiv(this, 0);"><div class="tl_left" style="padding-left:'.($intMargin + $intSpacing).'px;">';;
 
-		$objRow = $this->Database->prepare("SELECT * FROM " . $table . " WHERE id=?")
-								 ->limit(1)
-								 ->execute($id);
+		$session[$node][$id] = (is_int($session[$node][$id])) ? $session[$node][$id] : 0;
+		
+		if ($GLOBALS['TL_CONFIG']['iso_deferProductLoading'] && $table == $this->strTable && !$this->Environment->isAjaxRequest)
+		{
+			return $return . '<div class="iso_product deferred_product" id="product_' . $id . '"><div class="thumbnail"><img src="system/themes/default/images/loading.gif" alt=""></div><p>&nbsp;</p></div></div></li>';
+		}
+
+		$objRow = $this->Database->query("SELECT * FROM " . $table . " WHERE id=" . (int)$id);
 
 		// Return if there is no result
 		if ($objRow->numRows < 1)
 		{
-			$this->Session->setData($session);
 			return '';
 		}
-
-		$return = '';
-		$intSpacing = 20;
 
 		// Add the ID to the list of current IDs
 		if ($this->strTable == $table)
@@ -1781,8 +1764,7 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 		}
 
 		// Check whether there are child records
-		$objChilds = $this->Database->prepare("SELECT id FROM " . $table . " WHERE pid=?" . ($this->strTable == $table ? " AND language='' AND id IN (" . implode(',', $this->products) . ") ORDER BY id=" . implode(' DESC, id=', $this->products) . " DESC" : " ORDER BY sorting"))
-									->execute($id);
+		$objChilds = $this->Database->query("SELECT id FROM " . $table . " WHERE pid=$id" . ($this->strTable == $table ? " AND language='' AND id IN (" . implode(',', $this->products) . ") ORDER BY id=" . implode(' DESC, id=', $this->products) . " DESC" : " ORDER BY sorting"));
 
 		if ($objChilds->numRows)
 		{
@@ -1792,8 +1774,7 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 		// Check wether there are group child records
 		if ($table != $this->strTable)
 		{
-			$objChilds = $this->Database->prepare("SELECT id FROM " . $this->strTable . " WHERE gid=? AND id IN (" . implode(',', $this->products) . ") ORDER BY id=" . implode(' DESC, id=', $this->products) . " DESC")
-							 			->execute($id);
+			$objChilds = $this->Database->query("SELECT id FROM " . $this->strTable . " WHERE gid=$id AND id IN (" . implode(',', $this->products) . ") ORDER BY id=" . implode(' DESC, id=', $this->products) . " DESC");
 
 			if ($objChilds->numRows)
 			{
@@ -1803,21 +1784,6 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 			{
 				return '';
 			}
-		}
-
-		// Only list products & variants matched by the search & filters
-		if ($table == $this->strTable && !in_array($id, $this->products))
-		{
-			return '';
-		}
-
-		$session[$node][$id] = (is_int($session[$node][$id])) ? $session[$node][$id] : 0;
-		
-		$return .= "\n  " . '<li class="'.(($table != $this->strTable) ? 'tl_folder' : 'tl_file').'" onmouseover="Theme.hoverDiv(this, 1);" onmouseout="Theme.hoverDiv(this, 0);"><div class="tl_left" style="padding-left:'.($intMargin + $intSpacing).'px;">';
-		
-		if ($GLOBALS['TL_CONFIG']['iso_deferProductLoading'] && $table == $this->strTable && !$this->Environment->isAjaxRequest)
-		{
-			return $return . '<div class="iso_product deferred_product" id="product_' . $objRow->id . '"><div class="thumbnail"><img src="system/themes/default/images/loading.gif" alt=""></div><p>' . $objRow->name . '</p></div></div></li>';
 		}
 
 		// Calculate label and add a toggle button
@@ -1862,15 +1828,15 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 			}
 			elseif ($GLOBALS['TL_DCA'][$table]['fields'][$v]['inputType'] == 'checkbox' && !$GLOBALS['TL_DCA'][$table]['fields'][$v]['eval']['multiple'])
 			{
-				$args[$k] = strlen($objRow->$v) ? (strlen($GLOBALS['TL_DCA'][$table]['fields'][$v]['label'][0]) ? $GLOBALS['TL_DCA'][$table]['fields'][$v]['label'][0] : $v) : '';
+				$args[$k] = $objRow->$v != '' ? ($GLOBALS['TL_DCA'][$table]['fields'][$v]['label'][0] != '' ? $GLOBALS['TL_DCA'][$table]['fields'][$v]['label'][0] : $v) : '';
 			}
 			else
 			{
-				$args[$k] = strlen($GLOBALS['TL_DCA'][$table]['fields'][$v]['reference'][$objRow->$v]) ? $GLOBALS['TL_DCA'][$table]['fields'][$v]['reference'][$objRow->$v] : $objRow->$v;
+				$args[$k] = $GLOBALS['TL_DCA'][$table]['fields'][$v]['reference'][$objRow->$v] != '' ? $GLOBALS['TL_DCA'][$table]['fields'][$v]['reference'][$objRow->$v] : $objRow->$v;
 			}
 		}
 
-		$label = vsprintf(((strlen($GLOBALS['TL_DCA'][$table]['list']['label']['format'])) ? $GLOBALS['TL_DCA'][$table]['list']['label']['format'] : '%s'), $args);
+		$label = vsprintf(($GLOBALS['TL_DCA'][$table]['list']['label']['format'] != '' ? $GLOBALS['TL_DCA'][$table]['list']['label']['format'] : '%s'), $args);
 
 		// Shorten label it if it is too long
 		if ($GLOBALS['TL_DCA'][$table]['list']['label']['maxCharacters'] > 0 && $GLOBALS['TL_DCA'][$table]['list']['label']['maxCharacters'] < strlen(strip_tags($label)))
@@ -1922,7 +1888,7 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 			}
 		}
 
-		$return .= (strlen($_buttons) ? $_buttons : '&nbsp;') . '</div><div style="clear:both;"></div></li>';
+		$return .= ($_buttons != '' ? $_buttons : '&nbsp;') . '</div><div style="clear:both;"></div></li>';
 		$group = '';
 		$rows = '';
 
@@ -1981,12 +1947,7 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 		$search = $this->searchMenu();
 		$sort = $this->sortMenu();
 
-		if (!strlen($filter) && !strlen($search) && !strlen($sort))
-		{
-			return '';
-		}
-
-		if (!strlen($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['panelLayout']))
+		if ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['panelLayout'] == '' || ($filter == '' && $search == '' && $sort == ''))
 		{
 			return '';
 		}
@@ -2024,7 +1985,7 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 </div>';
 			}
 
-			if (strlen($panels))
+			if ($panels != '')
 			{
 				$return .= '
 <div class="tl_panel">'.$submit.$panels.'
@@ -2085,7 +2046,7 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 		}
 
 		// Overwrite the "orderBy" value with the session value
-		elseif (strlen($session['sorting'][$this->strTable]))
+		elseif ($session['sorting'][$this->strTable] != '')
 		{
 			$overwrite = preg_quote(preg_replace('/\s+.*$/i', '', $session['sorting'][$this->strTable]), '/');
 			$orderBy = array_diff($orderBy, preg_grep('/^'.$overwrite.'/i', $orderBy));
@@ -2108,7 +2069,7 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 				$options_label = $options_label[0];
 			}
 
-			$options_sorter[$options_label] = '  <option value="'.specialchars($field).'"'.((!strlen($session['sorting'][$this->strTable]) && $field == $firstOrderBy || $field == str_replace(' DESC', '', $session['sorting'][$this->strTable])) ? ' selected="selected"' : '').'>'.$options_label.'</option>';
+			$options_sorter[$options_label] = '  <option value="'.specialchars($field).'"'.(($session['sorting'][$this->strTable] == '' && $field == $firstOrderBy || $field == str_replace(' DESC', '', $session['sorting'][$this->strTable])) ? ' selected="selected"' : '').'>'.$options_label.'</option>';
 		}
 
 		// Sort by option values
@@ -2181,7 +2142,7 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 
 		if (count($this->procedure))
 		{
-			$query .= " AND " . implode(' AND ', $this->procedure);
+			$query .= ' AND ' . implode(' AND ', $this->procedure);
 		}
 
 		$objIds = $this->Database->prepare($query)->execute($this->values);
@@ -2193,7 +2154,7 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 
 
 		// Get variant IDs matching search & filters
-		$query = "SELECT id, language, pid AS pid1, (SELECT pid FROM {$this->strTable} WHERE id=p1.pid) AS pid2 FROM {$this->strTable} p1 WHERE pid > 0";
+		$query = "SELECT id, language, pid AS pid1, (SELECT pid FROM {$this->strTable} WHERE id=p1.pid) AS pid2 FROM {$this->strTable} p1 WHERE pid>0";
 
 		if (count($this->procedure))
 		{
@@ -2222,7 +2183,7 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 			// Skip this variant because it is not allowed (not in root IDs)
 			elseif (!in_array($objChilds->pid1, $this->root))
 			{
-					continue;
+				continue;
 			}
 
 			elseif (!in_array($objChilds->pid1, $arrProducts))
@@ -2252,7 +2213,7 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 		$this->products = array_unique(array_merge($arrProducts, $arrVariants));
 
 		// Order IDs by session value
-		if (is_array($this->orderBy) && strlen($this->orderBy[0]) && count($this->products))
+		if (is_array($this->orderBy) && $this->orderBy[0] != '' && !empty($this->products))
 		{
 			$query = "SELECT id FROM {$this->strTable} WHERE id IN (" . implode(',', $this->products) . ")";
 			$orderBy = $this->orderBy;

@@ -85,7 +85,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 	{
 		$objProduct = IsotopeFrontend::getProduct($this->Input->get('product'), IsotopeFrontend::getReaderPageId(null, $this->iso_reader_jumpTo), false);
 
-		if ($objProduct instanceof IsotopeProduct)
+		if ($objProduct !== null)
 		{
 			return $objProduct->generateAjax($this);
 		}
@@ -144,7 +144,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 					// Cache is wrong, drop everything and run findProducts()
 					if (count($arrProducts) != $total)
 					{
-						unset($arrCacheIds);
+						$arrCacheIds = null;
 						$arrProducts = null;
 					}
 				}
@@ -171,9 +171,9 @@ class ModuleIsotopeProductList extends ModuleIsotope
 				// Load products
 				$arrProducts = $this->findProducts($arrCacheIds);
 
-				if (is_array($arrProducts) && count($arrProducts))
+				if (!empty($arrProducts))
 				{
-					// Decide if we should show the "caching products" message
+					// Decide if we should show the "caching products" message the next time
 					$end = microtime(true) - $start;
 					$this->blnCacheProducts = $end > 1 ? true : false;
 
@@ -195,7 +195,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 							$arrIds[] = $objProduct->id;
 						}
 						
-						$intExpires = (int) $this->Database->execute("SELECT MIN(start) AS expires FROM tl_iso_products WHERE id NOT IN (" . implode(',', $arrIds) . ") AND start>$time")
+						$intExpires = (int) $this->Database->execute("SELECT MIN(start) AS expires FROM tl_iso_products WHERE start>$time")
 														   ->expires;
 
 						// Also delete all expired caches if we run a delete anyway

@@ -177,7 +177,7 @@ abstract class ModuleIsotope extends Module
 			case 'product':
 				$objProduct = IsotopeFrontend::getProductByAlias($this->Input->get('product'));
 
-				if ($objProduct instanceof IsotopeProduct)
+				if ($objProduct !== null)
 				{
 					$arrCategories = $objProduct->categories;
 				}
