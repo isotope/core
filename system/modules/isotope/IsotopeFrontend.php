@@ -139,6 +139,31 @@ class IsotopeFrontend extends Frontend
 		{
 			return $this->Isotope->translate($arrTag[1], $arrTag[2]);
 		}
+		elseif ($arrTag[0] == 'order')
+		{
+			$objOrder = new IsotopeOrder();
+			
+			if($objOrder->findBy('uniqid', $this->Input->get('uid')))
+			{
+				$blnMemberCheck = true;
+				
+				if ($objOrder->pid > 0)
+				{
+					$this->import('FrontendUser', 'User');
+					if ($this->User->id != $objOrder->pid)
+					{
+						$blnMemberCheck = false;
+					}
+				}
+
+				$arrOrder = $objOrder->getData();
+								
+				if(array_key_exists($arrTag[1], $arrOrder) && $blnMemberCheck)
+				{
+					return $arrOrder[$arrTag[1]];
+				}
+			}
+		}
 
 		return false;
 	}
