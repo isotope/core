@@ -274,7 +274,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		
 		$objProductData = $this->Database->prepare(IsotopeProduct::getSelectStatement() . "
 													WHERE p1.language='' AND p1.id IN (" . implode(',', $arrIds) . ")"
-													. (BE_USER_LOGGED_IN ? " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)" : '')
+													. (BE_USER_LOGGED_IN ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)")
 													. "$strWhere ORDER BY sorting")
 										 ->execute($arrValues);
 		
@@ -373,7 +373,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			{
 				$time = time();
 				$strWhere = " AND ((p1." . implode(' AND p1.', $arrWhere) . ") OR p1.id IN (SELECT pid FROM tl_iso_products WHERE language='' AND " . implode(' AND ', $arrWhere)
-							. (BE_USER_LOGGED_IN ? " AND published='1' AND (start='' OR start<$time) AND (stop='' OR stop>$time)" : '') . "))";
+							. (BE_USER_LOGGED_IN ? '' : " AND published='1' AND (start='' OR start<$time) AND (stop='' OR stop>$time)") . "))";
 				$arrValues = array_merge($arrValues, $arrValues);
 			}
 

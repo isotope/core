@@ -214,7 +214,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 			{
 				$arrValues = $this->Database->execute("SELECT DISTINCT $strField FROM tl_iso_products
 														WHERE (id IN (" . implode(',', $arrIds) . ") OR pid IN (" . implode(',', $arrIds) . ")) AND language='' AND $strField!=''"
-														. (BE_USER_LOGGED_IN ? " AND published='1' AND (start='' OR start<$time) AND (stop='' OR stop>$time)" : ''))
+														. (BE_USER_LOGGED_IN ? '' : " AND published='1' AND (start='' OR start<$time) AND (stop='' OR stop>$time)"))
 											->fetchEach($strField);
 
 				if ($this->blnCacheRequest && in_array($arrInput[$strField], $arrValues))

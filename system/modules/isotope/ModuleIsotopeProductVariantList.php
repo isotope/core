@@ -76,7 +76,7 @@ class ModuleIsotopeProductVariantList extends ModuleIsotopeProductList
 		
 		$objProductData = $this->Database->prepare(IsotopeProduct::getSelectStatement() . "
 													WHERE AND p1.language='' AND (p1.id IN (" . implode(',', $arrIds) . ") OR p1.pid IN (" . implode(',', $arrIds) . "))"
-													. (BE_USER_LOGGED_IN ? " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)" : '')
+													. (BE_USER_LOGGED_IN ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)")
 													. "$strWhere ORDER BY sorting")
 										 ->execute($arrValues);
 		

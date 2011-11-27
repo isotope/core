@@ -194,7 +194,7 @@ class IsotopeProduct extends Controller
 				// Find all possible variant options
 				$objVariant = clone $this;
 				$objVariants = $this->Database->execute(IsotopeProduct::getSelectStatement() . " WHERE p1.pid={$this->arrData['id']} AND p1.language=''"
-														. (BE_USER_LOGGED_IN ? " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)" : ''));
+														. (BE_USER_LOGGED_IN ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)"));
 
 				while ($objVariants->next())
 				{
@@ -250,7 +250,7 @@ class IsotopeProduct extends Controller
 					{
 						$objProduct = $this->Database->execute("SELECT MIN(price) AS low_price, MAX(price) AS high_price FROM tl_iso_products
 																WHERE pid=" . ($this->arrData['pid'] ? $this->arrData['pid'] : $this->arrData['id']) . " AND language=''"
-																. (BE_USER_LOGGED_IN ? " AND published='1' AND (start='' OR start<$time) AND (stop='' OR stop>$time)" : '')
+																. (BE_USER_LOGGED_IN ? '' : " AND published='1' AND (start='' OR start<$time) AND (stop='' OR stop>$time)")
 																. " GROUP BY pid");
 					}
 
