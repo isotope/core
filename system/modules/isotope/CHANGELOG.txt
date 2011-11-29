@@ -54,7 +54,8 @@ Version 1.3.rc1 (2011-??-??)
 - Fixed replace $ in mootools with document.id for isotope.js and backend.js (#2200)
 - Fixed assignment of uniqid in ModuleIsotopeCheckout::writeOrder() (#2531)
 - Fixed: added missing comma after "sortBy" field in tl_iso_attributes
-- Fixed Checkout gives an error on single quotes (#2576)
+- Fixed: Checkout gives an error on single quotes (#2576)
+- Fixed: Shipment template does not show forms (#2479)
 - Dropped unimplemented enableGoogleAnalytics checkbox in store config (#2102)
 
 Version 1.3.beta2 (2011-08-28)

@@ -22,7 +22,7 @@
 <script type="text/javascript">
 window.addEvent('domready', function() {
 	$$('.shipping_data').setStyle('display', 'none');
-	$$('input.payment_module').each( function(el) {
+	$$('input.shipping_module').each( function(el) {
 		el.addEvent('click', function (event) {
 			$$('.shipping_data').setStyle('display', 'none');
 			if ($(('shipping_data_'+event.target.value)))
