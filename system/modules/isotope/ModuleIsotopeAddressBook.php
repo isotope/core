@@ -144,7 +144,6 @@ class ModuleIsotopeAddressBook extends ModuleIsotope
 	protected function show()
 	{
 		global $objPage;
-		$i = 0;
 		$arrAddresses = array();
 		$strUrl = $this->generateFrontendUrl($objPage->row()) . ($GLOBALS['TL_CONFIG']['disableAlias'] ? '&' : '?');
 		$objAddress = $this->Database->execute("SELECT * FROM tl_iso_addresses WHERE pid={$this->User->id} AND store_id={$this->Isotope->Config->store_id}");
@@ -154,22 +153,16 @@ class ModuleIsotopeAddressBook extends ModuleIsotope
 			$arrAddresses[] = array
 			(
 				'id'				=> $objAddress->id,
-				'class'				=> ((($i % 2) ? 'even' : 'odd') . ($objAddress->isDefaultBilling ? ' default_billing' : '') . ($objAddress->isDefaultShipping ? ' default_shipping' : '') . (($i == 0) ? ' first' : '')),
+				'label'				=> $this->Isotope->translate($objAddress->label),
 				'text'				=> $this->Isotope->generateAddressString($objAddress->row()),
 				'edit_url'			=> ampersand($strUrl . 'act=edit&address=' . $objAddress->id),
 				'delete_url'		=> ampersand($strUrl . 'act=delete&address=' . $objAddress->id),
 				'default_billing'	=> ($objAddress->isDefaultBilling ? true : false),
 				'default_shipping'	=> ($objAddress->isDefaultShipping ? true : false),
 			);
-
-			$i++;
 		}
 
-		if (count($arrAddresses))
-		{
-			$arrAddresses[count($arrAddresses)-1]['class'] .= ' last';
-		}
-		else
+		if(empty($arrAddresses))
 		{
 			$this->Template->mtype = 'empty';
 			$this->Template->message = $GLOBALS['TL_LANG']['ERR']['noAddressBookEntries'];
@@ -180,7 +173,7 @@ class ModuleIsotopeAddressBook extends ModuleIsotope
 		$this->Template->editAddressLabel = $GLOBALS['TL_LANG']['MSC']['editAddressLabel'];
 		$this->Template->deleteAddressLabel = $GLOBALS['TL_LANG']['MSC']['deleteAddressLabel'];
 		$this->Template->deleteAddressConfirm = specialchars($GLOBALS['TL_LANG']['MSC']['deleteAddressConfirm']);
-		$this->Template->addresses = $arrAddresses;
+		$this->Template->addresses = IsotopeFrontend::generateRowClass($arrAddresses, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);;
 		$this->Template->addNewAddress = ampersand($strUrl . 'act=create');
 	}
 

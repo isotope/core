@@ -100,7 +100,7 @@ $GLOBALS['TL_DCA']['tl_iso_addresses'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'					  => '{store_legend:hide},store_id;{personal_legend},salutation,firstname,lastname;{address_legend},company,street_1,street_2,street_3,postal,city,subdivision,country;{contact_legend},email,phone;{default_legend:hide},isDefaultBilling,isDefaultShipping',
+		'default'					  => '{store_legend},store_id,label;{personal_legend},salutation,firstname,lastname;{address_legend},company,street_1,street_2,street_3,postal,city,subdivision,country;{contact_legend},email,phone;{default_legend:hide},isDefaultBilling,isDefaultShipping',
 	),
 
 	// Fields
@@ -113,7 +113,15 @@ $GLOBALS['TL_DCA']['tl_iso_addresses'] = array
 			'filter'				=> true,
 			'sorting'				=> true,
 			'inputType'				=> 'text',
-			'eval'					=> array('mandatory'=>true, 'maxlength'=>2, 'rgxp'=>'digit'),
+			'eval'					=> array('mandatory'=>true, 'maxlength'=>2, 'rgxp'=>'digit', 'tl_class'=>'w50')
+		),
+		'label' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_addresses']['label'],
+			'exclude'				=> true,
+			'search'				=> true,
+			'inputType'				=> 'text',
+			'eval'					=> array('mandatory'=>true, 'maxlength'=>255, 'feEditable'=>true, 'feGroup'=>'address', 'tl_class'=>'w50')
 		),
 		'salutation' => array
 		(

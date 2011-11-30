@@ -37,6 +37,7 @@ Version 1.3.rc1 (2011-??-??)
 - Improved: Can now cut & paste multiple products between groups (#2229)
 - Improved: Provide insert tags on order confirmation page (#2260)
 - Improved: Simplified order insert tags code
+- Improved: Addresses can now optionally be labelled by the customer (#2051 and #2052)
 - Fixed radio button events in Internet Explorer (Ticket #484)
 - Fixed products DCA not loaded in rare cases
 - Fixed: hide customer definied fields in product edit mode

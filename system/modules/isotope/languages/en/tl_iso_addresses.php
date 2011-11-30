@@ -32,6 +32,7 @@
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_iso_addresses']['store_id']				= array('Store ID', 'Use different store IDs to group a set of store configurations. A user\'s cart and addresses will be shared across the same store IDs.');
+$GLOBALS['TL_LANG']['tl_iso_addresses']['label']				= array('Label', 'Please enter a custom label for this adress.');
 $GLOBALS['TL_LANG']['tl_iso_addresses']['salutation']			= array('Salutation', 'Please enter the salutation (Mr, Mrs, Dr., Prof.).');
 $GLOBALS['TL_LANG']['tl_iso_addresses']['firstname']			= array('First name', 'Please enter the first name.');
 $GLOBALS['TL_LANG']['tl_iso_addresses']['lastname']				= array('Last name', 'Please enter the last name.');
