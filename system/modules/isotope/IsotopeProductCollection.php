@@ -683,7 +683,7 @@ abstract class IsotopeProductCollection extends Model
 		while ($objOldItems->next())
 		{
 			$blnTransfer = true;
-			$objNewItems = $this->Database->prepare("SELECT * FROM {$this->ctable} WHERE pid={$this->id} AND product_id={$objOldItems->product_id} AND product_options='{$objOldItems->product_options}'")->execute();
+			$objNewItems = $this->Database->prepare("SELECT * FROM {$this->ctable} WHERE pid={$this->id} AND product_id={$objOldItems->product_id} AND product_options=?")->execute($objOldItems->product_options);
 
 			// HOOK for adding additional functionality when adding product to collection
 			if (isset($GLOBALS['ISO_HOOKS']['transferCollection']) && is_array($GLOBALS['ISO_HOOKS']['transferCollection']))
