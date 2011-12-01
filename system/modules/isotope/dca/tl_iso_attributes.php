@@ -480,8 +480,9 @@ class tl_iso_attributes extends Backend
 
 		$arrFields = array_keys($GLOBALS['TL_DCA']['tl_iso_attributes']['fields']);
 		$arrKeep = trimsplit(',|;', $strPalette);
+		$arrSubpalettes = trimsplit(',', implode(',', (array)$GLOBALS['TL_DCA']['tl_iso_attributes']['subpalettes']));
 
-		$arrClean = array_diff($arrFields, $arrKeep, array('pid', 'sorting'));
+		$arrClean = array_diff($arrFields, $arrKeep, $arrSubpalettes, array('pid', 'sorting'));
 
 		$this->Database->execute("UPDATE tl_iso_attributes SET " . implode("='', ", $arrClean) . "='' WHERE id={$dc->id}");
 	}
