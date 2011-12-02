@@ -53,6 +53,7 @@ class IsotopeRunonce extends Controller
 		if (!$this->Database->tableExists('tl_iso_config'))
 			return;
 
+		$this->createIsotopeFolder();
 		$this->renameTables();
 		$this->renameFields();
 		$this->updateStoreConfigurations();
@@ -77,6 +78,23 @@ class IsotopeRunonce extends Controller
 		// Delete caches
 		$this->Database->query("TRUNCATE TABLE tl_iso_productcache");
 		$this->Database->query("TRUNCATE TABLE tl_iso_requestcache");
+	}
+
+
+	/**
+	 * Creates the isotope media folder if it doesn't exist yet
+	 */
+	private function createIsotopeFolder()
+	{
+		// delete files from repository so they don't get deleted while updating Isotope.
+		// IMPORTANT: don't remove the TL_ROOT/isotope directory from the ER package - it needs to be deployed otherwise the ER client will delete it automatically
+		// @todo for version 1.6 or so: we can now assume that everybody at least runs 1.3 and thus we can stop deploying TL_ROOT/isotope because it has been deleted by the following
+		// queries we have implemented for 1.3 RC1
+		$this->Database->prepare('DELETE FROM tl_repository_instfiles WHERE filename=?')->execute('isotope');
+		$this->Database->prepare('DELETE FROM tl_repository_instfiles WHERE filename=?')->execute('isotope/index.html');
+		
+		// the constructor automatically checks whether the folder already exists or not
+		new Folder('isotope');
 	}
 
 
