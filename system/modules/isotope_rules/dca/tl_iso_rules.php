@@ -42,7 +42,6 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 		'enableVersioning'				=> false,
 		'onload_callback' => array
 		(
-			array('IsotopeBackend', 'hideArchivedRecords'),
 			array('tl_iso_rules', 'loadAttributeValues'),
 		),
 	),
@@ -61,14 +60,23 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			'fields'					=> array('name', 'code'),
 			'label'						=> '%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>',
 		),
+		'global_operations' => array
+		(
+			'all' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['MSC']['all'],
+				'href'                => 'act=select',
+				'class'               => 'header_edit_all',
+				'attributes'          => 'onclick="Backend.getScrollOffset();" accesskey="e"'
+			)
+		),
 		'operations' => array
 		(
 			'edit' => array
 			(
 				'label'					=> &$GLOBALS['TL_LANG']['tl_iso_rules']['edit'],
 				'href'					=> 'act=edit',
-				'icon'					=> 'edit.gif',
-				'button_callback'		=> array('IsotopeBackend', 'disableArchivedRecord'),
+				'icon'					=> 'edit.gif'
 			),
 			'copy' => array
 			(

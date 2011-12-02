@@ -37,8 +37,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
 	(
 		'tables'					=> array('tl_iso_rules'),
 		'javsacript'				=> 'system/modules/isotope/html/backend.js',
-		'icon'						=> 'system/modules/isotope_rules/html/auction-hammer-gavel.png',
-		'delete'					=> array('IsotopeBackend', 'archiveRecord'),
+		'icon'						=> 'system/modules/isotope_rules/html/auction-hammer-gavel.png'
 	),
 ));
 

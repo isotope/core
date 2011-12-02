@@ -43,11 +43,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
 		(
 			array('tl_iso_producttypes', 'checkPermission'),
 			array('IsotopeBackend', 'initializeSetupModule'),
-		),
-		'ondelete_callback' => array
-		(
-			array('tl_iso_producttypes', 'archiveRecord'),
-		),
+		)
 	),
 
 	// List
@@ -292,14 +288,6 @@ class tl_iso_producttypes extends Backend
 				$this->Session->setData($session);
 				break;
 		}
-	}
-
-
-	/**
-	 * Record is deleted, archive if necessary
-	 */
-	public function archiveRecord($dc)
-	{
 	}
 
 

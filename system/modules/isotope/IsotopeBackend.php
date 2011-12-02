@@ -39,7 +39,7 @@
  */
 class IsotopeBackend extends Backend
 {
-
+/*
 	/**
 	 * Disable the edit button for archived records
 	 * @param array
@@ -49,7 +49,7 @@ class IsotopeBackend extends Backend
 	 * @param string
 	 * @param string
 	 * @return string
-	 */
+	 *
 	public function disableArchivedRecord($row, $href, $label, $title, $icon, $attributes)
 	{
 		return $row['archive'] == 0 ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
@@ -59,7 +59,7 @@ class IsotopeBackend extends Backend
 	/**
 	 * Hide archived records
 	 * @param object
-	 */
+	 *
 	public function hideArchivedRecords($dc)
 	{
 		$arrRoot = $GLOBALS['TL_DCA'][$dc->table]['list']['sorting']['root'];
@@ -83,7 +83,7 @@ class IsotopeBackend extends Backend
 	/**
 	 * Archive a database record
 	 * @param object
-	 */
+	 *
 	public function archiveRecord($dc)
 	{
 		$objRecord = $this->Database->execute("SELECT * FROM {$dc->table} WHERE id={$dc->id}");
@@ -98,7 +98,7 @@ class IsotopeBackend extends Backend
 			$this->redirect(str_replace('key=delete', 'act=delete', $this->Environment->request));
 		}
 	}
-
+*/
 
 	/**
 	 * Truncate the tl_iso_productcache table if a product is changed

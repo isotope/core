@@ -44,11 +44,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 		(
 			array('tl_iso_config', 'checkPermission'),
 			array('IsotopeBackend', 'initializeSetupModule'),
-		),
-		'ondelete_callback'			  => array
-		(
-			array('tl_iso_config', 'archiveRecord'),
-		),
+		)
 	),
 
 	// List
@@ -536,14 +532,6 @@ class tl_iso_config extends Backend
 				$this->Session->setData($session);
 				break;
 		}
-	}
-
-
-	/**
-	 * Record is deleted, archive if necessary
-	 */
-	public function archiveRecord($dc)
-	{
 	}
 
 

@@ -45,11 +45,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 			array('tl_iso_payment_modules', 'checkPermission'),
 			array('IsotopeBackend', 'initializeSetupModule'),
 			array('tl_iso_payment_modules', 'loadShippingModules'),
-		),
-		'ondelete_callback'			  => array
-		(
-			array('tl_iso_payment_modules', 'archiveRecord'),
-		),
+		)
 	),
 
 	// List
@@ -477,14 +473,6 @@ class tl_iso_payment_modules extends Backend
 				$this->Session->setData($session);
 				break;
 		}
-	}
-
-
-	/**
-	 * Record is deleted, archive if necessary
-	 */
-	public function archiveRecord($dc)
-	{
 	}
 
 
