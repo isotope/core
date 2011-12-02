@@ -148,6 +148,26 @@ class IsotopeFrontend extends Frontend
 				return $objOrder->{$arrTag[1]};
 			}
 		}
+		elseif ($arrTag[0] == 'product')
+		{
+			// 2 possible use cases:
+			// {{product::attribute}}				- gets the data of the current product (GET parameter "product")
+			// {{product::attribute::product_id}}	- gets the data of the specified product ID
+			$count = count($arrTag);
+			$objProduct = null;
+			
+			if ($count == 2)
+			{
+				$objProduct = self::getProductByAlias($this->Input->get('product'));
+			}
+			
+			if($count == 3)
+			{
+				$objProduct = self::getProduct($arrTag[2]);
+			}
+			
+			return ($objProduct !== null) ? $objProduct->{$arrTag[1]} : '';
+		}
 
 		return false;
 	}
