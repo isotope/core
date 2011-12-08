@@ -40,6 +40,7 @@ Version 1.3.rc1 (2011-??-??)
 - Improved: Simplified order insert tags code
 - Improved: Addresses can now optionally be labelled by the customer (#2051 and #2052)
 - Improved: The isotope folder now gets generated on-the-fly (#2044)
+- Improved: SKU must now be unique
 - Fixed radio button events in Internet Explorer (Ticket #484)
 - Fixed products DCA not loaded in rare cases
 - Fixed: hide customer definied fields in product edit mode
