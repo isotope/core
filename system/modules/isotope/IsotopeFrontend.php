@@ -581,6 +581,10 @@ $endScript";
 			}
 
 			$arrData = $objFields->row();
+			
+			// make sure "name" is set because not all form fields do need it and it would thus overwrite the array indexes
+			$arrData['name'] = ($arrData['name']) ? $arrData['name'] : 'field_' . $arrData['id'];
+			
 			$arrData['decodeEntities'] = true;
 			$arrData['allowHtml'] = $objForm->arrData['allowTags'];
 			$arrData['rowClass'] = 'row_'.$row . (($row == 0) ? ' row_first' : (($row == ($max_row - 1)) ? ' row_last' : '')) . ((($row % 2) == 0) ? ' even' : ' odd');
