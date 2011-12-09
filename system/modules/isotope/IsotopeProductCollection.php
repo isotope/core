@@ -390,7 +390,7 @@ abstract class IsotopeProductCollection extends Model
 			foreach ($GLOBALS['ISO_HOOKS']['saveCollection'] as $callback)
 			{
 				$this->import($callback[0]);
-				$this->$callback[0]->$callback[1]($objOrder);
+				$this->$callback[0]->$callback[1]($this);
 			}
 		}
 
