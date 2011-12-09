@@ -90,7 +90,7 @@ class IsotopeFrontend extends Frontend
 	{
 		$arrTag = trimsplit('::', $strTag);
 
-		if (count($arrTag) == 2 && $arrTag[0] == 'isotope')
+		if ($arrTag[0] == 'isotope')
 		{
 			switch ($arrTag[1])
 			{
@@ -143,28 +143,20 @@ class IsotopeFrontend extends Frontend
 		{
 			$objOrder = new IsotopeOrder();
 			
-			if($objOrder->findBy('uniqid', $this->Input->get('uid')))
+			if ($objOrder->findBy('uniqid', $this->Input->get('uid')))
 			{				
 				return $objOrder->{$arrTag[1]};
 			}
+			
+			return '';
 		}
 		elseif ($arrTag[0] == 'product')
 		{
 			// 2 possible use cases:
 			// {{product::attribute}}				- gets the data of the current product (GET parameter "product")
 			// {{product::attribute::product_id}}	- gets the data of the specified product ID
-			$count = count($arrTag);
-			$objProduct = null;
 			
-			if ($count == 2)
-			{
-				$objProduct = self::getProductByAlias($this->Input->get('product'));
-			}
-			
-			if($count == 3)
-			{
-				$objProduct = self::getProduct($arrTag[2]);
-			}
+			$objProduct = (count($arrTag) == 3) ? self::getProduct($arrTag[2]) : self::getProductByAlias($this->Input->get('product'));
 			
 			return ($objProduct !== null) ? $objProduct->{$arrTag[1]} : '';
 		}
