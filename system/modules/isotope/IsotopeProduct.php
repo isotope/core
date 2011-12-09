@@ -895,13 +895,6 @@ class IsotopeProduct extends Controller
 	protected function generateProductOptionWidget($strField, $blnAjax=false)
 	{
 		$arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strField];
-		$strClass = strlen($GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['class']) ? $GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['class'] : $GLOBALS['TL_FFL'][$arrData['inputType']];
-
-		// Continue if the class is not defined
-		if (!$this->classFileExists($strClass))
-		{
-			return '';
-		}
 
 		$arrData['eval']['mandatory'] = ($arrData['eval']['mandatory'] && !$blnAjax) ? true : false;
 		$arrData['eval']['required'] = $arrData['eval']['mandatory'];
@@ -1012,6 +1005,14 @@ class IsotopeProduct extends Controller
 					}
 				}
 			}
+		}
+		
+		$strClass = strlen($GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['class']) ? $GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['class'] : $GLOBALS['TL_FFL'][$arrData['inputType']];
+
+		// Continue if the class is not defined
+		if (!$this->classFileExists($strClass))
+		{
+			return '';
 		}
 
 		$objWidget = new $strClass($arrField);
