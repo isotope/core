@@ -523,6 +523,9 @@ class IsotopeProduct extends Controller
 
 		foreach ($this->arrOptions as $field => $value)
 		{
+			if ($value == '')
+				continue;
+			
 			$arrOptions[] = array
 			(
 				'label'	=> $this->Isotope->formatLabel('tl_iso_products', $field),
@@ -875,7 +878,7 @@ class IsotopeProduct extends Controller
 		}
 
 		// Apply <div> ID to variant attributes so we can replace it with javascript/ajax
-		if ($this->arrType['variants'] && in_array($attribute, $this->arrVariantAttributes))
+		if (in_array($attribute, $this->arrVariantAttributes))
 		{
 			return '<div class="iso_attribute ' . $attribute . '" id="' . $this->formSubmit . '_' . $attribute . '">' . $strBuffer . '</div>';
 		}
@@ -960,6 +963,7 @@ class IsotopeProduct extends Controller
 				if (in_array($this->Input->get($strField), (array)$this->arrVariantOptions['attributes'][$strField], true))
 				{
 					$arrField['value'] = $this->Input->get($strField);
+					$this->arrVariantOptions['current'][$strField] = $this->Input->get($strField);
 				}
 			}
 			elseif ($this->pid > 0)
@@ -1061,10 +1065,14 @@ class IsotopeProduct extends Controller
 					}
 				}
 
-				if ($varValue != '')
+				if (!$objWidget->hasErrors())
 				{
 					$this->arrOptions[$strField] = $varValue;
-					$this->arrVariantOptions['current'][$strField] = $varValue;
+					
+					if ($arrData['attributes']['variant_option'] && $varValue != '')
+					{
+						$this->arrVariantOptions['current'][$strField] = $varValue;
+					}
 				}
 			}
 		}
