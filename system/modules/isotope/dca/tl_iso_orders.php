@@ -53,6 +53,10 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 		(
 			array('tl_iso_orders', 'checkPermission'),
 		),
+		'onsubmit_callback' => array
+		(
+			array('tl_iso_orders', 'executeSaveHook'),
+		),
 	),
 
 	// List
@@ -657,4 +661,28 @@ class tl_iso_orders extends Backend
 		// Stop script execution
 		exit;
 	}
+	
+	
+	/**
+	 * Execute the saveCollection hook when an order is saved
+	 * @param DataContainer
+	 */
+	public function executeSaveHook($dc)
+	{
+		$objOrder = new IsotopeOrder();
+		
+		if ($objOrder->findBy('id', $dc->id))
+		{
+			// HOOK for adding additional functionality when saving
+			if (isset($GLOBALS['ISO_HOOKS']['saveCollection']) && is_array($GLOBALS['ISO_HOOKS']['saveCollection']))
+			{
+				foreach ($GLOBALS['ISO_HOOKS']['saveCollection'] as $callback)
+				{
+					$this->import($callback[0]);
+					$this->$callback[0]->$callback[1]($objOrder);
+				}
+			}
+		}
+	}
 }
+

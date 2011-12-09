@@ -384,6 +384,16 @@ abstract class IsotopeProductCollection extends Model
 			}
 		}
 
+		// HOOK for adding additional functionality when saving
+		if (isset($GLOBALS['ISO_HOOKS']['saveCollection']) && is_array($GLOBALS['ISO_HOOKS']['saveCollection']))
+		{
+			foreach ($GLOBALS['ISO_HOOKS']['saveCollection'] as $callback)
+			{
+				$this->import($callback[0]);
+				$this->$callback[0]->$callback[1]($objOrder);
+			}
+		}
+
 		if ($this->blnRecordExists && $this->blnModified && !$blnForceInsert)
 		{
 			return parent::save($blnForceInsert);
