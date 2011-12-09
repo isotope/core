@@ -39,66 +39,6 @@
  */
 class IsotopeBackend extends Backend
 {
-/*
-	/**
-	 * Disable the edit button for archived records
-	 * @param array
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @return string
-	 *
-	public function disableArchivedRecord($row, $href, $label, $title, $icon, $attributes)
-	{
-		return $row['archive'] == 0 ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
-	}
-
-
-	/**
-	 * Hide archived records
-	 * @param object
-	 *
-	public function hideArchivedRecords($dc)
-	{
-		$arrRoot = $GLOBALS['TL_DCA'][$dc->table]['list']['sorting']['root'];
-
-		$arrRoot = $this->Database->execute("SELECT id FROM {$dc->table} WHERE archive<2" . ((is_array($arrRoot) && count($arrRoot)) ? " AND id IN (".implode(',', $arrRoot).")" : ''))->fetchEach('id');
-
-		$GLOBALS['TL_DCA'][$dc->table]['list']['sorting']['root'] = count($arrRoot) ? $arrRoot : array(0);
-
-		if ($this->Input->get('act') == 'edit')
-		{
-			$objRecord = $this->Database->execute("SELECT * FROM {$dc->table} WHERE id={$dc->id}");
-
-			if ($objRecord->numRows && $objRecord->archive > 0)
-			{
-				$GLOBALS['TL_DCA'][$dc->table]['config']['notEditable'] = true;
-			}
-		}
-	}
-
-
-	/**
-	 * Archive a database record
-	 * @param object
-	 *
-	public function archiveRecord($dc)
-	{
-		$objRecord = $this->Database->execute("SELECT * FROM {$dc->table} WHERE id={$dc->id}");
-
-		if ($objRecord->archive > 0)
-		{
-			$this->Database->execute("UPDATE {$dc->table} SET archive=2 WHERE id={$dc->id}");
-			$this->redirect($this->getReferer());
-		}
-		else
-		{
-			$this->redirect(str_replace('key=delete', 'act=delete', $this->Environment->request));
-		}
-	}
-*/
 
 	/**
 	 * Truncate the tl_iso_productcache table if a product is changed
