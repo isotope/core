@@ -983,7 +983,7 @@ class IsotopeProduct extends Controller
 				}
 			}
 
-			$arrField = $this->prepareForWidget($arrData, $strField);
+			$arrField = $this->prepareForWidget($arrData, $strField, $arrData['default']);
 		}
 
 		// Translate widget
