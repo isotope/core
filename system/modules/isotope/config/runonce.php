@@ -385,6 +385,24 @@ class IsotopeRunonce extends Controller
 				$this->Database->query("UPDATE tl_iso_payment_modules SET shipping_modules='" . serialize($arrShipping) . "' WHERE id={$objPayments->id}");
 			}
 		}
+		
+		// tax rates dont have a range but freetext field for postal codes
+		if ($this->Database->fieldExists('postal', 'tl_iso_tax_rate') && !$this->Database->fieldExists('postalCodes', 'tl_iso_tax_rate'))
+		{
+			$this->Database->query("ALTER TABLE tl_iso_tax_rate ADD COLUMN postalCodes text NULL");
+			
+			$obTaxRates = $this->Database->execute("SELECT * FROM tl_iso_tax_rate WHERE postal!=''");
+			
+			while( $objTaxRates->next() )
+			{
+				$arrCodes = deserialize($objTaxRates->postal);
+				
+				if (is_array($arrCodes) && $arrCodes[0] != '' && $arrCodes[1] != '')
+				{
+					$this->Database->query("UPDATE tl_iso_tax_rate SET postalCodes='{$arrCodes[0]}-{$arrCodes[1]}' WHERE id=" . $objTaxRates->id);
+				}
+			}
+		}
 	}
 
 

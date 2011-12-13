@@ -41,6 +41,7 @@ $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['flatCalculation']		= array('Flat
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['weight_unit']			= array('Weight unit', 'The unit you will enter weight rules.');
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['countries']				= array('Countries', 'Select the countries this shipping method applies to. If you don\'t select anything, the shipping method will be applied to all countries.');
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['subdivisions']			= array('State/Regions', 'Select the states/regions this shipping method applies to. If you don\'t select anything, the shipping method will be applied to all states/regions.');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['postalCodes']			= array('Postal codes', 'Limit this shipping module to postal codes. You can enter a comma separated list and ranges (e.g. 1234,1235,1236-1239,1100-1200).');
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['minimum_total']			= array('Minimum total');
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['maximum_total']			= array('Maximum total');
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['product_types']			= array('Product types', 'You can restrict this shipping method to certain product types. If the cart contains a product type you have not selected, the shipping module is not available.');

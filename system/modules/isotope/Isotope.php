@@ -424,6 +424,17 @@ class Isotope extends Controller
 				{
 					return false;
 				}
+				
+				// Check if address has a valid postal code
+				if ($objRate->postalCodes != '')
+				{
+					$arrCodes = IsotopeFrontend::parsePostalCodes($objRate->postalCodes);
+					
+					if (!in_array($arrAddress['postal'], $arrCodes))
+					{
+						return false;
+					}
+				}
 
 				$arrPostal = deserialize($objRate->postal);
 

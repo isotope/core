@@ -137,8 +137,8 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
 	'palettes' => array
 	(
 		'__selector__'					=> array('type', 'protected'),
-		'default'						=> '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},price,tax_class;{config_legend},countries,subdivisions,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-		'flat'							=> '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},price,tax_class,flatCalculation,surcharge_field;{config_legend},countries,subdivisions,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+		'default'						=> '{title_legend},type,name',
+		'flat'							=> '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},price,tax_class,flatCalculation,surcharge_field;{config_legend},countries,subdivisions,postalCodes,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
 		'order_total'					=> '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},price,tax_class;{config_legend},countries,subdivisions,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
 		'weight_total'					=> '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},tax_class;{config_legend},weight_unit,countries,subdivisions,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
 		'ups'							=> '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},tax_class;{ups_legend},ups_enabledService,ups_accessKey,ups_userName,ups_password;{config_legend},weight_unit,countries,subdivisions,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
@@ -252,6 +252,13 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
 			'inputType'               => 'conditionalselect',
 			'options_callback'		  => array('IsotopeBackend', 'getSubdivisions'),
 			'eval'                    => array('multiple'=>true, 'size'=>8, 'conditionField'=>'countries', 'tl_class'=>'w50 w50h'),
+		),
+		'postalCodes' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['postalCodes'],
+			'exclude'                 => true,
+			'inputType'               => 'textarea',
+			'eval'                    => array('style'=>'height:40px', 'tl_class'=>'clr'),
 		),
 		'minimum_total' => array
 		(

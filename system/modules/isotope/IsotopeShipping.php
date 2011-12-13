@@ -123,19 +123,26 @@ abstract class IsotopeShipping extends Frontend
 				}
 
 				$arrCountries = deserialize($this->countries);
-
-				if (is_array($arrCountries) && count($arrCountries) && !in_array($this->Isotope->Cart->shippingAddress['country'], $arrCountries))
+				if (is_array($arrCountries) && !empty($arrCountries) && !in_array($this->Isotope->Cart->shippingAddress['country'], $arrCountries))
 				{
 					return false;
 				}
 
 				$arrSubdivisions = deserialize($this->subdivisions);
-				// @todo this should be dropped with Contao 2.9 as all countries "should" have subdivisions
-				$blnHasSubdivision = is_array($GLOBALS['TL_LANG']['DIV'][$this->Isotope->Cart->shippingAddress['country']]);
-
-				if (is_array($arrSubdivisions) && count($arrSubdivisions) && !in_array($this->Isotope->Cart->shippingAddress['subdivision'], $arrSubdivisions) && $blnHasSubdivision)
+				if (is_array($arrSubdivisions) && !empty($arrSubdivisions) && !in_array($this->Isotope->Cart->shippingAddress['subdivision'], $arrSubdivisions))
 				{
 					return false;
+				}
+				
+				// Check if address has a valid postal code
+				if ($this->postalCodes != '')
+				{
+					$arrCodes = IsotopeFrontend::parsePostalCodes($this->postalCodes);
+					
+					if (!in_array($this->Isotope->Cart->shippingAddress['postal'], $arrCodes))
+					{
+						return false;
+					}
 				}
 
 				$arrTypes = deserialize($this->product_types);

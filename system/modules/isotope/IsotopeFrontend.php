@@ -1315,5 +1315,35 @@ $endScript";
 		
 		return $objPage->id;
 	}
+	
+	
+	/**
+	 * Get postal codes from CSV and ranges
+	 * @param string
+	 * @return array
+	 */
+	public static function parsePostalCodes($strPostalCodes)
+	{
+		$arrCodes = array();
+		
+		foreach (trimsplit(',', $strPostalCodes) as $strCode)
+		{
+			$arrCode = trimsplit('-', $strCode);
+			
+			// Ignore codes with more than 1 range
+			switch (count($arrCode))
+			{
+				case 1:
+					$arrCodes[] = $arrCode[0];
+					break;
+					
+				case 2:
+					$arrCodes = array_merge($arrCodes, range($arrCode[0], $arrCode[1]));
+					break;
+			}
+		}
+		
+		return $arrCodes;
+	}
 }
 

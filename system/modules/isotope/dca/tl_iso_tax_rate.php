@@ -126,7 +126,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{name_legend},name,label;{rate_legend},rate;{location_legend},address,country,subdivision,postal;{condition_legend},amount;{config_legend},config,stop',
+		'default'                     => '{name_legend},name,label;{rate_legend},rate;{location_legend},address,country,subdivision,postalCodes;{condition_legend},amount;{config_legend},config,stop',
 	),
 
 
@@ -169,12 +169,12 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
 			'options_callback'		  => array('IsotopeBackend', 'getSubdivisions'),
 			'eval'                    => array('conditionField'=>'country', 'includeBlankOption'=>true, 'tl_class'=>'w50'),
 		),
-		'postal' => array
+		'postalCodes' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['postal'],
-			'flag'                    => 1,
-			'inputType'               => 'text',
-			'eval'                    => array('multiple'=>true, 'size'=>2, 'maxlength'=>10, 'rgxp'=>'digit', 'tl_class'=>'w50'),
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['postalCodes'],
+			'exclude'                 => true,
+			'inputType'               => 'textarea',
+			'eval'                    => array('style'=>'height:40px', 'tl_class'=>'clr'),
 		),
 		'config' => array
 		(
