@@ -712,25 +712,25 @@ class IsotopeRunonce extends Controller
 			if (!in_array('start', $arrAttributes))
 			{
 				$arrAttributes[] = 'start';
-				$arrSet['attributes'] = $arrAttributes;
+				$arrSet['attributes'] = serialize($arrAttributes);
 			}
 			
 			if (!in_array('stop', $arrAttributes))
 			{
 				$arrAttributes[] = 'stop';
-				$arrSet['attributes'] = $arrAttributes;
+				$arrSet['attributes'] = serialize($arrAttributes);
 			}
 			
 			if (!in_array('start', $arrVariantAttributes))
 			{
 				$arrVariantAttributes[] = 'start';
-				$arrSet['attributes'] = $arrVariantAttributes;
+				$arrSet['attributes'] = serialize($arrVariantAttributes);
 			}
 			
 			if (!in_array('stop', $arrVariantAttributes))
 			{
 				$arrVariantAttributes[] = 'stop';
-				$arrSet['variant_attributes'] = $arrVariantAttributes;
+				$arrSet['variant_attributes'] = serialize($arrVariantAttributes);
 			}
 			
 			if (!empty($arrSet))
