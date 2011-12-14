@@ -1540,8 +1540,17 @@ window.addEvent(\'domready\', function() {
 		}
 
 		// Generate all products not in a group
-		$this->root = $this->Database->query("SELECT id FROM $table WHERE pid=0 AND gid=0 AND id IN (" . implode(',', $this->products) . ") ORDER BY id=" . implode(' DESC, id=', $this->products) . " DESC")->fetchEach('id');
-		for ($i=0; $i<count($this->root); $i++)
+		if ($GLOBALS['TL_CONFIG']['iso_deferProductLoading'])
+		{
+			$root = $this->Database->query("SELECT id FROM $table WHERE pid=0 AND gid=0")->fetchEach('id');
+			$this->root = array_values(array_intersect($this->products, $root));
+		}
+		else
+		{
+			$this->root = $this->Database->query("SELECT id FROM $table WHERE pid=0 AND gid=0 AND id IN (" . implode(',', $this->products) . ") ORDER BY id=" . implode(' DESC, id=', $this->products) . " DESC")->fetchEach('id');
+		}
+		
+		for ($i=0, $count=count($this->root); $i<$count; $i++)
 		{
 			$tree .= $this->generateProductTree($table, $this->root[$i], array('p'=>$this->root[($i-1)], 'n'=>$this->root[($i+1)]), -20, ($blnClipboard ? $arrClipboard : false));
 		}
@@ -1790,25 +1799,46 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 		}
 
 		// Check whether there are child records
-		$objChilds = $this->Database->query("SELECT id FROM " . $table . " WHERE pid=$id" . ($this->strTable == $table ? " AND language='' AND id IN (" . implode(',', $this->products) . ") ORDER BY id=" . implode(' DESC, id=', $this->products) . " DESC" : " ORDER BY sorting"));
-
-		if ($objChilds->numRows)
+		if ($GLOBALS['TL_CONFIG']['iso_deferProductLoading'] && $this->strTable == $table)
 		{
-			$childs = $objChilds->fetchEach('id');
+			$childs = $this->Database->query("SELECT id FROM " . $table . " WHERE pid=$id AND language=''")->fetchEach('id');
+			$childs = array_values(array_intersect($this->products, $childs));
+		}
+		else
+		{
+			$objChilds = $this->Database->query("SELECT id FROM " . $table . " WHERE pid=$id" . ($this->strTable == $table ? " AND language='' AND id IN (" . implode(',', $this->products) . ") ORDER BY id=" . implode(' DESC, id=', $this->products) . " DESC" : " ORDER BY sorting"));
+			
+			if ($objChilds->numRows)
+			{
+				$childs = $objChilds->fetchEach('id');
+			}
 		}
 
 		// Check wether there are group child records
 		if ($table != $this->strTable)
 		{
-			$objChilds = $this->Database->query("SELECT id FROM " . $this->strTable . " WHERE gid=$id AND id IN (" . implode(',', $this->products) . ") ORDER BY id=" . implode(' DESC, id=', $this->products) . " DESC");
-
-			if ($objChilds->numRows)
+			if ($GLOBALS['TL_CONFIG']['iso_deferProductLoading'])
 			{
-				$gchilds = $objChilds->fetchEach('id');
+				$gchilds = $this->Database->query("SELECT id FROM " . $this->strTable . " WHERE gid=$id")->fetchEach('id');
+				$gchilds = array_values(array_intersect($this->products, $gchilds));
+				
+				if (empty($gchilds) && empty($childs) && $arrClipboard === false)
+				{
+					return '';
+				}
 			}
-			elseif (!count($childs) && $arrClipboard === false)
+			else
 			{
-				return '';
+				$objChilds = $this->Database->query("SELECT id FROM " . $this->strTable . " WHERE gid=$id AND id IN (" . implode(',', $this->products) . ") ORDER BY id=" . implode(' DESC, id=', $this->products) . " DESC");
+				
+				if ($objChilds->numRows)
+				{
+					$gchilds = $objChilds->fetchEach('id');
+				}
+				elseif (empty($childs) && $arrClipboard === false)
+				{
+					return '';
+				}
 			}
 		}
 
@@ -1818,7 +1848,7 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 		$showFields = $GLOBALS['TL_DCA'][$table]['list']['label']['fields'];
 		$level = ($intMargin / $intSpacing + 1);
 
-		if (count($childs) || count($gchilds))
+		if (!empty($childs) || !empty($gchilds))
 		{
 			$folderAttribute = '';
 			$img = ($session[$node][$id] == 1) ? 'folMinus.gif' : 'folPlus.gif';
