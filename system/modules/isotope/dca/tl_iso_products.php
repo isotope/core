@@ -659,7 +659,7 @@ class tl_iso_products extends Backend
 		}
 
 		// Hide "add variant" button if no products with variants enabled exist
-		if (!$this->Database->execute("SELECT * FROM tl_iso_products LEFT JOIN tl_iso_producttypes ON tl_iso_products.type=tl_iso_producttypes.id WHERE tl_iso_producttypes.variants='1'")->numRows)
+		if ($this->Database->query("SELECT COUNT(*) AS total FROM tl_iso_products p LEFT JOIN tl_iso_producttypes t ON p.type=t.id WHERE t.variants='1'")->total == 0)
 		{
 			unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_variant']);
 		}
@@ -668,37 +668,29 @@ class tl_iso_products extends Backend
 
 		$this->import('BackendUser', 'User');
 
-		// Hide archived (sold and deleted) products
 		if ($this->User->isAdmin)
 		{
-			$objProducts = $this->Database->execute("SELECT id, (SELECT COUNT(*) FROM tl_iso_products) AS total FROM tl_iso_products WHERE archive<2");
+			return;
 		}
-		else
-		{
-			$arrTypes = is_array($this->User->iso_product_types) ? $this->User->iso_product_types : array(0);
-			$objProducts = $this->Database->execute("SELECT id, (SELECT COUNT(*) FROM tl_iso_products) AS total FROM tl_iso_products WHERE type IN ('','" . implode("','", $arrTypes) . "') AND archive<2");
-		}
+		
+		$arrTypes = count($this->User->iso_product_types) ? $this->User->iso_product_types : array(0);
+		$objProducts = $this->Database->execute("SELECT id, (SELECT COUNT(*) FROM tl_iso_products) AS total FROM tl_iso_products WHERE type IN ('','" . implode("','", $arrTypes) . "')");
 
+		// Do not run permission check if there are no products in the table
 		if (!$objProducts->numRows && !$objProducts->total)
 		{
 			return;
 		}
-		elseif (!$objProducts->numRows)
-		{
-			$arrProducts = array(0);
-		}
-		else
-		{
-			$arrProducts = $objProducts->fetchEach('id');
-		}
 
+		$arrProducts = $objProducts->numRows ? $objProducts->fetchEach('id') : array(0);
+
+		// Maybe another function has already set allowed product IDs
 		if (is_array($GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root']))
 		{
 			$arrProducts = array_intersect($GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'], $arrProducts);
 		}
 
 		$GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'] = $arrProducts;
-
 
 		// Set allowed product IDs (edit multiple)
 		if (is_array($session['CURRENT']['IDS']))
@@ -720,11 +712,10 @@ class tl_iso_products extends Backend
 		// Overwrite session
 		$this->Session->setData($session);
 
-
-		if (strlen($this->Input->get('id')) && !in_array($this->Input->get('id'), $arrProducts))
+		if ($this->Input->get('id') > 0 && !in_array($this->Input->get('id'), $arrProducts))
 		{
-			$this->log('Cannot access product ID '.$this->Input->get('id'), 'tl_iso_products checkPermission()', TL_ACCESS);
-			$this->redirect($this->Environment->script.'?act=error');
+			$this->log('Cannot access product ID '.$this->Input->get('id'), __METHOD__, TL_ACCESS);
+			$this->redirect('contao/main.php?act=error');
 		}
 	}
 

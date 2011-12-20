@@ -185,7 +185,7 @@ class ProductTree extends Widget
 			$tree .= $this->renderGroups($objGroups->id, -20);
 		}
 
-		$objProducts = $this->Database->execute("SELECT id FROM tl_iso_products WHERE pid=0 AND gid=0 AND language='' AND archive<2" . ($this->User->isAdmin ? '' : " AND type IN ('','" . implode("','", $this->arrTypes) . "')"));
+		$objProducts = $this->Database->execute("SELECT id FROM tl_iso_products WHERE pid=0 AND gid=0 AND language=''" . ($this->User->isAdmin ? '' : " AND type IN ('','" . implode("','", $this->arrTypes) . "')"));
 
 		while ($objProducts->next())
 		{
@@ -265,7 +265,7 @@ class ProductTree extends Widget
 
 		if (strpos($this->Input->post('id'), 'groups') === false)
 		{
-			$objProducts = $this->Database->prepare("SELECT id FROM tl_iso_products WHERE language='' AND archive<2 AND pid=?".($this->User->isAdmin ? '' : " AND type IN ('','" . implode("','", $this->arrTypes) . "')")." ORDER BY name")->execute($id);
+			$objProducts = $this->Database->prepare("SELECT id FROM tl_iso_products WHERE language='' AND pid=?".($this->User->isAdmin ? '' : " AND type IN ('','" . implode("','", $this->arrTypes) . "')")." ORDER BY name")->execute($id);
 
 			while ($objProducts->next())
 			{
@@ -281,7 +281,7 @@ class ProductTree extends Widget
 				$tree .= $this->renderGroups($objGroups->id, $level);
 			}
 
-			$objProducts = $this->Database->prepare("SELECT id FROM tl_iso_products WHERE language='' AND archive<2 AND gid=?".($this->User->isAdmin ? '' : " AND type IN ('','" . implode("','", $this->arrTypes) . "')")." ORDER BY name")->execute($id);
+			$objProducts = $this->Database->prepare("SELECT id FROM tl_iso_products WHERE language='' AND gid=?".($this->User->isAdmin ? '' : " AND type IN ('','" . implode("','", $this->arrTypes) . "')")." ORDER BY name")->execute($id);
 
 			while ($objProducts->next())
 			{
@@ -514,7 +514,7 @@ class ProductTree extends Widget
 		if ($this->variants)
 		{
 			// Check whether there are child records
-			$objNodes = $this->Database->prepare("SELECT id FROM tl_iso_products WHERE pid=? AND language='' AND archive<2")
+			$objNodes = $this->Database->prepare("SELECT id FROM tl_iso_products WHERE pid=? AND language=''")
 									   ->execute($id);
 
 			if ($objNodes->numRows)

@@ -339,4 +339,22 @@ class IsotopeBackend extends Backend
 		setcookie('BE_PAGE_OFFSET', 0, 0, '/');
 		$this->redirect(str_replace('&key=importMail', '', $this->Environment->request));
 	}
+	
+	
+	/**
+	 * Return all Isotope modules 
+	 * @return array
+	 */
+	public function getIsotopeModules()
+	{
+		$arrModules = array();
+
+		foreach ($GLOBALS['ISO_MOD'] as $k=>$v)
+		{
+			$arrModules[$k] = array_keys($v);
+		}
+
+		return $arrModules;
+	}
 }
+

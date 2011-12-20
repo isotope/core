@@ -26,6 +26,7 @@ Version 1.3.rc1 (2011-??-??)
 - Added: new hook saveCollection
 - Added: inserttag to retrieve data of the current product or a certain product id (#2047)
 - Added: support for postal code ranges in flat shipping module
+- Added: Permission settings now available for all Isotope backend modules
 - Improved: loading products is now centralized in IsotopeFrontend static functions
 - Improved: "Loading product data" is now in the language file (#2215)
 - Improved: Removed size and Added: maxlength attribute to quantity input fields (#2118)
@@ -64,6 +65,7 @@ Version 1.3.rc1 (2011-??-??)
 - Fixed: Checkout gives an error on single quotes (#2576)
 - Fixed: Shipment template does not show forms (#2479)
 - Fixed: Sorting is ambiguous in ModuleIsotopeProductList.php (#2697)
+- Fixed: Non-Admins cannot create a product type (#2261)
 - Dropped unimplemented enableGoogleAnalytics checkbox in store config (#2102)
 
 Version 1.3.beta2 (2011-08-28)

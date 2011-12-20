@@ -41,8 +41,8 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
 		'closed'					=> true,
 		'onload_callback' => array
 		(
-			array('tl_iso_producttypes', 'checkPermission'),
 			array('IsotopeBackend', 'initializeSetupModule'),
+			array('tl_iso_producttypes', 'checkPermission'),
 		)
 	),
 
@@ -98,6 +98,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
 				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_producttypes']['copy'],
 				'href'				=> 'act=copy',
 				'icon'				=> 'copy.gif',
+				'button_callback'     => array('tl_iso_producttypes', 'copyProductType')
 			),
 			'delete' => array
 			(
@@ -105,6 +106,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
 				'href'				=> 'act=delete',
 				'icon'				=> 'delete.gif',
 				'attributes'		=> 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"',
+				'button_callback'     => array('tl_iso_producttypes', 'deleteProductType')
 			),
 			'show' => array
 			(
@@ -166,6 +168,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
 		'list_template' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_producttypes']['list_template'],
+			'exclude'                 => true,
 			'inputType'				=> 'select',
 			'default'				=> 'iso_list_default',
 			'options_callback'		=> array('tl_iso_producttypes', 'getListTemplates'),
@@ -174,6 +177,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
 		'reader_template' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_producttypes']['reader_template'],
+			'exclude'                 => true,
 			'inputType'				=> 'select',
 			'default'				=> 'iso_reader_default',
 			'options_callback'		=> array('tl_iso_producttypes', 'getReaderTemplates'),
@@ -236,56 +240,133 @@ class tl_iso_producttypes extends Backend
 
 	/**
 	 * Check permissions to edit table tl_iso_producttypes.
-	 *
-	 * @access public
-	 * @return void
 	 */
 	public function checkPermission()
 	{
+		// Do not run the permission check on other Isotope modules
 		if ($this->Input->get('mod') != 'producttypes')
+		{
 			return;
-
+		}
+		
 		$this->import('BackendUser', 'User');
-
-		// Hide archived (sold and deleted) product types
+		
 		if ($this->User->isAdmin)
 		{
-			$arrProductTypes = $this->Database->execute("SELECT id FROM tl_iso_producttypes WHERE archive<2")->fetchEach('id');
-		}
-		else
-		{
-			$arrTypes = is_array($this->User->iso_product_types) ? $this->User->iso_product_types : array(0);
-			$arrProductTypes = $this->Database->execute("SELECT id FROM tl_iso_producttypes WHERE id IN ('','" . implode("','", $arrTypes) . "') AND archive<2")->fetchEach('id');
+			return;
 		}
 
 		// Set root IDs
-		if (!count($arrProductTypes))
+		if (!is_array($this->User->iso_product_types) || count($this->User->iso_product_types) < 1)
 		{
-			$arrProductTypes = array(0);
+			$root = array(0);
+		}
+		else
+		{
+			$root = $this->User->iso_product_types;
 		}
 
-		$GLOBALS['TL_DCA']['tl_iso_producttypes']['list']['sorting']['root'] = $arrProductTypes;
+		$GLOBALS['TL_DCA']['tl_iso_producttypes']['list']['sorting']['root'] = $root;
+
+		// Check permissions to add product types
+		if (!$this->User->hasAccess('create', 'iso_product_typep'))
+		{
+			$GLOBALS['TL_DCA']['tl_iso_producttypes']['config']['closed'] = true;
+			unset($GLOBALS['TL_DCA']['tl_iso_producttypes']['list']['global_operations']['new']);
+		}
 
 		// Check current action
 		switch ($this->Input->get('act'))
 		{
+			case 'create':
+			case 'select':
+				// Allow
+				break;
+
 			case 'edit':
+				// Dynamically add the record to the user profile
+				if (!in_array($this->Input->get('id'), $root))
+				{
+					$arrNew = $this->Session->get('new_records');
+
+					if (is_array($arrNew['tl_iso_producttypes']) && in_array($this->Input->get('id'), $arrNew['tl_iso_producttypes']))
+					{
+						// Add permissions on user level
+						if ($this->User->inherit == 'custom' || !$this->User->groups[0])
+						{
+							$objUser = $this->Database->prepare("SELECT iso_product_types, iso_product_typep FROM tl_user WHERE id=?")
+													   ->limit(1)
+													   ->execute($this->User->id);
+
+							$arrPermissions = deserialize($objUser->tl_iso_producttypep);
+
+							if (is_array($arrPermissions) && in_array('create', $arrPermissions))
+							{
+								$arrAccess = deserialize($objUser->iso_product_types);
+								$arrAccess[] = $this->Input->get('id');
+
+								$this->Database->prepare("UPDATE tl_user SET iso_product_types=? WHERE id=?")
+											   ->execute(serialize($arrAccess), $this->User->id);
+							}
+						}
+
+						// Add permissions on group level
+						elseif ($this->User->groups[0] > 0)
+						{
+							$objGroup = $this->Database->prepare("SELECT iso_product_types, iso_product_typep FROM tl_user_group WHERE id=?")
+													   ->limit(1)
+													   ->execute($this->User->groups[0]);
+
+							$arrPermissions = deserialize($objGroup->iso_product_typep);
+
+							if (is_array($arrPermissions) && in_array('create', $arrPermissions))
+							{
+								$arrAccess = deserialize($objGroup->iso_product_types);
+								$arrAccess[] = $this->Input->get('id');
+
+								$this->Database->prepare("UPDATE tl_user_group SET iso_product_types=? WHERE id=?")
+											   ->execute(serialize($arrAccess), $this->User->groups[0]);
+							}
+						}
+
+						// Add new element to the user object
+						$root[] = $this->Input->get('id');
+						$this->User->iso_product_types = $root;
+					}
+				}
+				// No break;
+
 			case 'copy':
 			case 'delete':
 			case 'show':
-				if (!in_array($this->Input->get('id'), $arrProductTypes))
+				if (!in_array($this->Input->get('id'), $root) || ($this->Input->get('act') == 'delete' && !$this->User->hasAccess('delete', 'iso_product_typep')))
 				{
-					$this->log('Not enough permissions to '.$this->Input->get('act').' product type ID "'.$this->Input->get('id').'"', 'tl_iso_producttypes checkPermission()', TL_ACCESS);
-					$this->redirect($this->Environment->script.'?act=error');
+					$this->log('Not enough permissions to '.$this->Input->get('act').' product type ID "'.$this->Input->get('id').'"', __METHOD__, TL_ERROR);
+					$this->redirect('contao/main.php?act=error');
 				}
 				break;
 
 			case 'editAll':
-			case 'copyAll':
 			case 'deleteAll':
+			case 'overrideAll':
 				$session = $this->Session->getData();
-				$session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $arrProductTypes);
+				if ($this->Input->get('act') == 'deleteAll' && !$this->User->hasAccess('delete', 'iso_product_typep'))
+				{
+					$session['CURRENT']['IDS'] = array();
+				}
+				else
+				{
+					$session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $root);
+				}
 				$this->Session->setData($session);
+				break;
+
+			default:
+				if (strlen($this->Input->get('act')))
+				{
+					$this->log('Not enough permissions to '.$this->Input->get('act').' product types', __METHOD__, TL_ERROR);
+					$this->redirect('contao/main.php?act=error');
+				}
 				break;
 		}
 	}
@@ -363,6 +444,38 @@ class tl_iso_producttypes extends Backend
 
 		natcasesort($arrTemplates);
 		return $arrTemplates;
+	}
+
+
+	/**
+	 * Return the copy product type button
+	 * @param array
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @return string
+	 */
+	public function copyProductType($row, $href, $label, $title, $icon, $attributes)
+	{
+		return ($this->User->isAdmin || $this->User->hasAccess('create', 'iso_product_typep')) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
+	}
+
+
+	/**
+	 * Return the delete product type button
+	 * @param array
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @return string
+	 */
+	public function deleteProductType($row, $href, $label, $title, $icon, $attributes)
+	{
+		return ($this->User->isAdmin || $this->User->hasAccess('delete', 'iso_product_typep')) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
 	}
 }
 

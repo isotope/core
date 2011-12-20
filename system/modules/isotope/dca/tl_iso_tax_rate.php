@@ -43,6 +43,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
 		'onload_callback'			  => array
 		(
 			array('IsotopeBackend', 'initializeSetupModule'),
+			array('tl_iso_tax_rate', 'checkPermission'),
 			array('tl_iso_tax_rate', 'addCurrencyRate'),
 		),
 	),
@@ -98,21 +99,16 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['copy'],
 				'href'                => 'act=copy',
-				'icon'                => 'copy.gif'
-			),
-			'cut' => array
-			(
-				'label'					=> &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['cut'],
-				'href'					=> 'act=paste&amp;mode=cut',
-				'icon'					=> 'cut.gif',
-				'attributes'			=> 'onclick="Backend.getScrollOffset();"'
+				'icon'                => 'copy.gif',
+				'button_callback'     => array('tl_iso_tax_rate', 'copyTaxClass'),
 			),
 			'delete' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['delete'],
 				'href'                => 'act=delete',
 				'icon'                => 'delete.gif',
-				'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
+				'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"',
+				'button_callback'     => array('tl_iso_tax_rate', 'deleteTaxClass'),
 			),
 			'show' => array
 			(
@@ -213,6 +209,145 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
 class tl_iso_tax_rate extends Backend
 {
 
+	/**
+	 * Check permissions to edit table tl_iso_tax_rate.
+	 */
+	public function checkPermission()
+	{
+		// Do not run the permission check on other Isotope modules
+		if ($this->Input->get('mod') != 'tax_rate')
+		{
+			return;
+		}
+		
+		$this->import('BackendUser', 'User');
+		
+		if ($this->User->isAdmin)
+		{
+			return;
+		}
+
+		// Set root IDs
+		if (!is_array($this->User->iso_tax_rates) || count($this->User->iso_tax_rates) < 1)
+		{
+			$root = array(0);
+		}
+		else
+		{
+			$root = $this->User->iso_tax_rates;
+		}
+
+		$GLOBALS['TL_DCA']['tl_iso_tax_rate']['list']['sorting']['root'] = $root;
+
+		// Check permissions to add tax rates
+		if (!$this->User->hasAccess('create', 'iso_tax_ratep'))
+		{
+			$GLOBALS['TL_DCA']['tl_iso_tax_rate']['config']['closed'] = true;
+			unset($GLOBALS['TL_DCA']['tl_iso_tax_rate']['list']['global_operations']['new']);
+		}
+
+		// Check current action
+		switch ($this->Input->get('act'))
+		{
+			case 'create':
+			case 'select':
+				// Allow
+				break;
+
+			case 'edit':
+				// Dynamically add the record to the user profile
+				if (!in_array($this->Input->get('id'), $root))
+				{
+					$arrNew = $this->Session->get('new_records');
+
+					if (is_array($arrNew['tl_iso_tax_rate']) && in_array($this->Input->get('id'), $arrNew['tl_iso_tax_rate']))
+					{
+						// Add permissions on user level
+						if ($this->User->inherit == 'custom' || !$this->User->groups[0])
+						{
+							$objUser = $this->Database->prepare("SELECT iso_tax_rates, iso_tax_ratep FROM tl_user WHERE id=?")
+													   ->limit(1)
+													   ->execute($this->User->id);
+
+							$arrPermissions = deserialize($objUser->iso_tax_ratep);
+
+							if (is_array($arrPermissions) && in_array('create', $arrPermissions))
+							{
+								$arrAccess = deserialize($objUser->iso_tax_rates);
+								$arrAccess[] = $this->Input->get('id');
+
+								$this->Database->prepare("UPDATE tl_user SET iso_tax_rates=? WHERE id=?")
+											   ->execute(serialize($arrAccess), $this->User->id);
+							}
+						}
+
+						// Add permissions on group level
+						elseif ($this->User->groups[0] > 0)
+						{
+							$objGroup = $this->Database->prepare("SELECT iso_tax_rates, iso_tax_ratep FROM tl_user_group WHERE id=?")
+													   ->limit(1)
+													   ->execute($this->User->groups[0]);
+
+							$arrPermissions = deserialize($objGroup->iso_tax_ratep);
+
+							if (is_array($arrPermissions) && in_array('create', $arrPermissions))
+							{
+								$arrAccess = deserialize($objGroup->iso_tax_rates);
+								$arrAccess[] = $this->Input->get('id');
+
+								$this->Database->prepare("UPDATE tl_user_group SET iso_tax_rates=? WHERE id=?")
+											   ->execute(serialize($arrAccess), $this->User->groups[0]);
+							}
+						}
+
+						// Add new element to the user object
+						$root[] = $this->Input->get('id');
+						$this->User->iso_tax_rates = $root;
+					}
+				}
+				// No break;
+
+			case 'copy':
+			case 'delete':
+			case 'show':
+				if (!in_array($this->Input->get('id'), $root) || ($this->Input->get('act') == 'delete' && !$this->User->hasAccess('delete', 'iso_tax_ratep')))
+				{
+					$this->log('Not enough permissions to '.$this->Input->get('act').' tax rate ID "'.$this->Input->get('id').'"', __METHOD__, TL_ERROR);
+					$this->redirect('contao/main.php?act=error');
+				}
+				break;
+
+			case 'editAll':
+			case 'deleteAll':
+			case 'overrideAll':
+				$session = $this->Session->getData();
+				if ($this->Input->get('act') == 'deleteAll' && !$this->User->hasAccess('delete', 'iso_tax_ratep'))
+				{
+					$session['CURRENT']['IDS'] = array();
+				}
+				else
+				{
+					$session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $root);
+				}
+				$this->Session->setData($session);
+				break;
+
+			default:
+				if (strlen($this->Input->get('act')))
+				{
+					$this->log('Not enough permissions to '.$this->Input->get('act').' tax rates', __METHOD__, TL_ERROR);
+					$this->redirect('contao/main.php?act=error');
+				}
+				break;
+		}
+	}
+	
+	
+	/**
+	 * List all records with formatted currency
+	 * @param array
+	 * @return string
+	 */
 	public function listRow($row)
 	{
 		$arrRate = deserialize($row['rate']);
@@ -233,6 +368,10 @@ class tl_iso_tax_rate extends Backend
 	}
 
 
+	/**
+	 * Set the currency rate from selected store config
+	 * @param DataContainer
+	 */
 	public function addCurrencyRate($dc)
 	{
 		$objConfig = $this->Database->prepare("SELECT tl_iso_config.* FROM tl_iso_tax_rate LEFT OUTER JOIN tl_iso_config ON tl_iso_config.id=tl_iso_tax_rate.config WHERE tl_iso_tax_rate.id=?")->execute($dc->id);
@@ -241,6 +380,38 @@ class tl_iso_tax_rate extends Backend
 		{
 			$GLOBALS['TL_DCA']['tl_iso_tax_rate']['fields']['rate']['options'][''] = $objConfig->currency;
 		}
+	}
+
+
+	/**
+	 * Return the copy tax rate button
+	 * @param array
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @return string
+	 */
+	public function copyTaxRate($row, $href, $label, $title, $icon, $attributes)
+	{
+		return ($this->User->isAdmin || $this->User->hasAccess('create', 'iso_tax_ratep')) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
+	}
+
+
+	/**
+	 * Return the delete tax rate button
+	 * @param array
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @return string
+	 */
+	public function deleteTaxRate($row, $href, $label, $title, $icon, $attributes)
+	{
+		return ($this->User->isAdmin || $this->User->hasAccess('delete', 'iso_tax_ratep')) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
 	}
 }
 

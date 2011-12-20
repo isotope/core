@@ -31,9 +31,21 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_user']['iso_product_types']		= array('Product types', 'Users can only see and edit products and product types you enable.');
-$GLOBALS['TL_LANG']['tl_user']['iso_configs']			= array('Store configurations', 'Users can see orders from these store configurations.');
-$GLOBALS['TL_LANG']['tl_user']['iso_modules']			= array('Isotope modules', 'Select which store configuration modules this user can access.');
+$GLOBALS['TL_LANG']['tl_user']['iso_modules']			= array('Isotope modules', 'Select which store configuration modules user of this group can access.');
+$GLOBALS['TL_LANG']['tl_user']['iso_product_types']		= array('Allowed product types', 'Here you can grant access to one or more product types.');
+$GLOBALS['TL_LANG']['tl_user']['iso_product_typep']		= array('Product type permissions', 'Here you can define the product type permissions.');
+$GLOBALS['TL_LANG']['tl_user']['iso_payment_modules']	= array('Allowed payment modules', 'Here you can grant access to one or more payment modules.');
+$GLOBALS['TL_LANG']['tl_user']['iso_payment_modulep']	= array('Payment module permissions', 'Here you can define the product type permissions.');
+$GLOBALS['TL_LANG']['tl_user']['iso_shipping_modules']	= array('Allowed shipping modules', 'Here you can grant access to one or more shipping modules.');
+$GLOBALS['TL_LANG']['tl_user']['iso_shipping_modulep']	= array('Shipping module permissions', 'Here you can define the product type permissions.');
+$GLOBALS['TL_LANG']['tl_user']['iso_tax_classes']		= array('Allowed tax classes', 'Here you can grant access to one or more tax classes.');
+$GLOBALS['TL_LANG']['tl_user']['iso_tax_classp']		= array('Tax class permissions', 'Here you can define the product type permissions.');
+$GLOBALS['TL_LANG']['tl_user']['iso_tax_rates']			= array('Allowed tax rates', 'Here you can grant access to one or more tax rates.');
+$GLOBALS['TL_LANG']['tl_user']['iso_tax_ratep']			= array('Tax rate permissions', 'Here you can define the tax rate permissions.');
+$GLOBALS['TL_LANG']['tl_user']['iso_mails']				= array('Allowed email templates', 'Here you can grant access to one or more email templates.');
+$GLOBALS['TL_LANG']['tl_user']['iso_mailp']				= array('Email template permissions', 'Here you can define the email template permissions.');
+$GLOBALS['TL_LANG']['tl_user']['iso_configs']			= array('Allowed store configurations', 'Here you can grant access to one or more store configurations.');
+$GLOBALS['TL_LANG']['tl_user']['iso_configp']			= array('Store configuration permissions', 'Her you can define the store configuration permissions.');
 
 
 /**

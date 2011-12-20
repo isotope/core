@@ -142,17 +142,20 @@ class Isotope extends Controller
 	{
 		$intConfig = null;
 
-		if (TL_MODE == 'FE')
+		if ($this->Database->tableExists('tl_iso_config'))
 		{
-			global $objPage;
-			$objConfig = $this->Database->prepare("SELECT c.* FROM tl_iso_config c LEFT OUTER JOIN tl_page p ON p.iso_config=c.id WHERE (p.id=" . (int)$objPage->rootId . " OR c.fallback='1') AND c.archive<2 ORDER BY c.fallback")->limit(1)->execute();
-		}
-		else
-		{
-			$objConfig = $this->Database->execute("SELECT * FROM tl_iso_config WHERE fallback='1' AND archive<2");
+			if (TL_MODE == 'FE')
+			{
+				global $objPage;
+				$objConfig = $this->Database->prepare("SELECT c.* FROM tl_iso_config c LEFT OUTER JOIN tl_page p ON p.iso_config=c.id WHERE (p.id=" . (int)$objPage->rootId . " OR c.fallback='1') ORDER BY c.fallback")->limit(1)->execute();
+			}
+			else
+			{
+				$objConfig = $this->Database->execute("SELECT * FROM tl_iso_config WHERE fallback='1'");
+			}
 		}
 
-		if (!$objConfig->numRows)
+		if ($objConfig === null || !$objConfig->numRows)
 		{
 			// Display error message in Isotope related backend modules
 			if (TL_MODE == 'BE')
@@ -190,7 +193,7 @@ class Isotope extends Controller
     {
 		$this->Config = new IsotopeConfig();
 
-		if (!$this->Config->findBy('id', $intConfig) || $this->Config->archive == 2)
+		if (!$this->Config->findBy('id', $intConfig))
 		{
 			$this->resetConfig();
 		}

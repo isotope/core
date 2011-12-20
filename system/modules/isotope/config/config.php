@@ -243,9 +243,21 @@ $GLOBALS['ISO_ORDER'] = array('pending', 'processing', 'complete', 'on_hold', 'c
 /**
  * Permissions are access settings for user and groups (fields in tl_user and tl_user_group)
  */
-$GLOBALS['TL_PERMISSIONS'][] = 'iso_configs';
-$GLOBALS['TL_PERMISSIONS'][] = 'iso_product_types';
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_modules';
+$GLOBALS['TL_PERMISSIONS'][] = 'iso_product_types';
+$GLOBALS['TL_PERMISSIONS'][] = 'iso_product_typep';
+$GLOBALS['TL_PERMISSIONS'][] = 'iso_payment_modules';
+$GLOBALS['TL_PERMISSIONS'][] = 'iso_payment_modulep';
+$GLOBALS['TL_PERMISSIONS'][] = 'iso_shipping_modules';
+$GLOBALS['TL_PERMISSIONS'][] = 'iso_shipping_modulep';
+$GLOBALS['TL_PERMISSIONS'][] = 'iso_tax_rates';
+$GLOBALS['TL_PERMISSIONS'][] = 'iso_tax_ratep';
+$GLOBALS['TL_PERMISSIONS'][] = 'iso_tax_classes';
+$GLOBALS['TL_PERMISSIONS'][] = 'iso_tax_classp';
+$GLOBALS['TL_PERMISSIONS'][] = 'iso_mails';
+$GLOBALS['TL_PERMISSIONS'][] = 'iso_mailp';
+$GLOBALS['TL_PERMISSIONS'][] = 'iso_configs';
+$GLOBALS['TL_PERMISSIONS'][] = 'iso_configp';
 
 
 /**
@@ -353,7 +365,7 @@ $GLOBALS['ISO_ATTR'] = array
 	),
 	'fileTree' => array
 	(
-		'sql'		=> "blob NULL"
+		'sql'		=> "blob NULL",
 	),
 	'downloads' => array
 	(

@@ -42,8 +42,8 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 		'closed'					  => true,
 		'onload_callback' => array
 		(
-			array('tl_iso_config', 'checkPermission'),
 			array('IsotopeBackend', 'initializeSetupModule'),
+			array('tl_iso_config', 'checkPermission'),
 		)
 	),
 
@@ -99,6 +99,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 				'label'               => &$GLOBALS['TL_LANG']['tl_iso_config']['copy'],
 				'href'                => 'act=copy',
 				'icon'                => 'copy.gif',
+				'button_callback'     => array('tl_iso_config', 'copyConfig'),
 			),
 			'delete' => array
 			(
@@ -106,6 +107,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 				'href'                => 'act=delete',
 				'icon'                => 'delete.gif',
 				'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"',
+				'button_callback'     => array('tl_iso_config', 'deleteConfig'),
 			),
 			'show' => array
 			(
@@ -483,53 +485,143 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 class tl_iso_config extends Backend
 {
 
-	public function checkPermission($dc)
+	/**
+	 * Check permissions to edit table tl_iso_config.
+	 */
+	public function checkPermission()
 	{
+		// Do not run the permission check on other Isotope modules
+		if ($this->Input->get('mod') != 'configs')
+		{
+			return;
+		}
+		
+		// Set fallback if no fallback is available
+		$objConfig = $this->Database->query("SELECT COUNT(*) AS total FROM tl_iso_config WHERE fallback='1'");
+		
+		if ($objConfig->total == 0)
+		{
+			$GLOBALS['TL_DCA']['tl_iso_config']['fields']['fallback']['default'] = '1';
+		}
+		
 		$this->import('BackendUser', 'User');
-
-		// Hide archived (used and deleted) configs
+		
 		if ($this->User->isAdmin)
 		{
-			$arrConfigs = $this->Database->execute("SELECT id FROM tl_iso_config WHERE archive<2")->fetchEach('id');
+			return;
+		}
+
+		// Set root IDs
+		if (!is_array($this->User->iso_configs) || count($this->User->iso_configs) < 1)
+		{
+			$root = array(0);
 		}
 		else
 		{
-			if (!is_array($this->User->iso_configs) || !count($this->User->iso_configs))
-			{
-				$this->User->iso_configs = array(0);
-			}
-
-			$arrConfigs = $this->Database->execute("SELECT id FROM tl_iso_config WHERE id IN ('','" . implode("','", $this->User->iso_configs) . "') AND archive<2")->fetchEach('id');
+			$root = $this->User->iso_configs;
 		}
 
-		if (!count($arrConfigs))
+		$GLOBALS['TL_DCA']['tl_iso_config']['list']['sorting']['root'] = $root;
+
+		// Check permissions to add configs
+		if (!$this->User->hasAccess('create', 'iso_configp'))
 		{
-			$GLOBALS['TL_DCA']['tl_iso_config']['fields']['fallback']['default'] = '1';
-			$arrConfigs = array(0);
+			$GLOBALS['TL_DCA']['tl_iso_config']['config']['closed'] = true;
+			unset($GLOBALS['TL_DCA']['tl_iso_config']['list']['global_operations']['new']);
 		}
-
-		$GLOBALS['TL_DCA']['tl_iso_config']['list']['sorting']['root'] = $arrConfigs;
 
 		// Check current action
 		switch ($this->Input->get('act'))
 		{
+			case 'create':
+			case 'select':
+				// Allow
+				break;
+
 			case 'edit':
+				// Dynamically add the record to the user profile
+				if (!in_array($this->Input->get('id'), $root))
+				{
+					$arrNew = $this->Session->get('new_records');
+
+					if (is_array($arrNew['tl_iso_config']) && in_array($this->Input->get('id'), $arrNew['tl_iso_config']))
+					{
+						// Add permissions on user level
+						if ($this->User->inherit == 'custom' || !$this->User->groups[0])
+						{
+							$objUser = $this->Database->prepare("SELECT iso_configs, iso_configp FROM tl_user WHERE id=?")
+													   ->limit(1)
+													   ->execute($this->User->id);
+
+							$arrPermissions = deserialize($objUser->iso_configp);
+
+							if (is_array($arrPermissions) && in_array('create', $arrPermissions))
+							{
+								$arrAccess = deserialize($objUser->iso_configs);
+								$arrAccess[] = $this->Input->get('id');
+
+								$this->Database->prepare("UPDATE tl_user SET iso_configs=? WHERE id=?")
+											   ->execute(serialize($arrAccess), $this->User->id);
+							}
+						}
+
+						// Add permissions on group level
+						elseif ($this->User->groups[0] > 0)
+						{
+							$objGroup = $this->Database->prepare("SELECT iso_configs, iso_configp FROM tl_user_group WHERE id=?")
+													   ->limit(1)
+													   ->execute($this->User->groups[0]);
+
+							$arrPermissions = deserialize($objGroup->iso_configp);
+
+							if (is_array($arrPermissions) && in_array('create', $arrPermissions))
+							{
+								$arrAccess = deserialize($objGroup->iso_configs);
+								$arrAccess[] = $this->Input->get('id');
+
+								$this->Database->prepare("UPDATE tl_user_group SET iso_configs=? WHERE id=?")
+											   ->execute(serialize($arrAccess), $this->User->groups[0]);
+							}
+						}
+
+						// Add new element to the user object
+						$root[] = $this->Input->get('id');
+						$this->User->iso_configs = $root;
+					}
+				}
+				// No break;
+
 			case 'copy':
 			case 'delete':
 			case 'show':
-				if (!in_array($this->Input->get('id'), $arrConfigs))
+				if (!in_array($this->Input->get('id'), $root) || ($this->Input->get('act') == 'delete' && !$this->User->hasAccess('delete', 'iso_configp')))
 				{
-					$this->log('Not enough permissions to '.$this->Input->get('act').' config ID "'.$this->Input->get('id').'"', 'tl_iso_config checkPermission()', TL_ACCESS);
-					$this->redirect($this->Environment->script.'?act=error');
+					$this->log('Not enough permissions to '.$this->Input->get('act').' store configuration ID "'.$this->Input->get('id').'"', __METHOD__, TL_ERROR);
+					$this->redirect('contao/main.php?act=error');
 				}
 				break;
 
 			case 'editAll':
-			case 'copyAll':
 			case 'deleteAll':
+			case 'overrideAll':
 				$session = $this->Session->getData();
-				$session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $arrConfigs);
+				if ($this->Input->get('act') == 'deleteAll' && !$this->User->hasAccess('delete', 'iso_configp'))
+				{
+					$session['CURRENT']['IDS'] = array();
+				}
+				else
+				{
+					$session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $root);
+				}
 				$this->Session->setData($session);
+				break;
+
+			default:
+				if (strlen($this->Input->get('act')))
+				{
+					$this->log('Not enough permissions to '.$this->Input->get('act').' store configurations', __METHOD__, TL_ERROR);
+					$this->redirect('contao/main.php?act=error');
+				}
 				break;
 		}
 	}
@@ -612,6 +704,38 @@ class tl_iso_config extends Backend
 		}
 
 		return sprintf('<div class="list_icon" style="background-image:url(\'system/modules/isotope/html/%s.png\');line-height:16px" title="%s">%s</div>', $image, $GLOBALS['ISO_LANG']['CUR'][$row['currency']], $label);
+	}
+
+
+	/**
+	 * Return the copy config button
+	 * @param array
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @return string
+	 */
+	public function copyConfig($row, $href, $label, $title, $icon, $attributes)
+	{
+		return ($this->User->isAdmin || $this->User->hasAccess('create', 'iso_configp')) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
+	}
+
+
+	/**
+	 * Return the delete config button
+	 * @param array
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @return string
+	 */
+	public function deleteConfig($row, $href, $label, $title, $icon, $attributes)
+	{
+		return ($this->User->isAdmin || $this->User->hasAccess('delete', 'iso_configp')) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
 	}
 }
 
