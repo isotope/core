@@ -86,14 +86,9 @@ class IsotopeRunonce extends Controller
 	 */
 	private function createIsotopeFolder()
 	{
-		// delete files from repository so they don't get deleted while updating Isotope.
-		// IMPORTANT: don't remove the TL_ROOT/isotope directory from the ER package - it needs to be deployed otherwise the ER client will delete it automatically
-		// @todo for version 1.6 or so: we can now assume that everybody at least runs 1.3 and thus we can stop deploying TL_ROOT/isotope because it has been deleted by the following
-		// queries we have implemented for 1.3 RC1
+		// delete the "isotope" folder from ER2 database table so they don't get deleted while updating or uninstalling Isotope.
+		// IMPORTANT: don't remove the TL_ROOT/isotope directory from the ER package
 		$this->Database->query("DELETE FROM tl_repository_instfiles WHERE filename='isotope' OR filename='isotope/index.html'");
-		
-		// the constructor automatically checks whether the folder already exists or not
-		new Folder('isotope');
 	}
 
 
