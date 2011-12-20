@@ -68,6 +68,7 @@ Version 1.3.rc1 (2011-??-??)
 - Fixed: Non-Admins cannot create a product type (#2261)
 - Fixed: Order Id doesn't get incremented (#2222)
 - Fixed: SQL condition in product list is wrong (#2189)
+- Fixed: "Edit multiple" does not work in Internet Explorer (#2680)
 - Dropped unimplemented enableGoogleAnalytics checkbox in store config (#2102)
 
 Version 1.3.beta2 (2011-08-28)
