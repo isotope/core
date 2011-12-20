@@ -275,7 +275,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		$objProductData = $this->Database->prepare(IsotopeProduct::getSelectStatement() . "
 													WHERE p1.language='' AND p1.id IN (" . implode(',', $arrIds) . ")"
 													. (BE_USER_LOGGED_IN ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)")
-													. "$strWhere ORDER BY sorting")
+													. "$strWhere ORDER BY c.sorting")
 										 ->execute($arrValues);
 		
 		return IsotopeFrontend::getProducts($objProductData, IsotopeFrontend::getReaderPageId(null, $this->iso_reader_jumpTo), true, $arrFilters, $arrSorting);
