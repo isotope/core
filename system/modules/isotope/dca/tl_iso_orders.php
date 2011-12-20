@@ -650,8 +650,10 @@ class tl_iso_orders extends Backend
 		}
 
 		// Close and output PDF document
-		// @todo $strInvoiceTitle is not defined
 		$pdf->lastPage();
+
+		// @todo make things like this configurable in a further version of Isotope
+		$strInvoiceTitle = 'invoice_' . $objOrder->order_id;
 		$pdf->Output(standardize(ampersand($strInvoiceTitle, false), true) . '.pdf', 'D');
 
 		// Set config back to default
