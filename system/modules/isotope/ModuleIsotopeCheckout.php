@@ -234,6 +234,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 					$strBuffer .= $this->{$callback[0]}->{$callback[1]}($this);
 				}
 
+				// the user wanted to proceed but the current step is not completed yet
 				if ($this->doNotSubmit && $step != $this->strCurrentStep)
 				{
 					$this->redirect($this->addToUrl('step=' . $step, true));
@@ -371,8 +372,10 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		}
 		else
 		{
+			// key of the next step
 			$intKey = array_search($this->strCurrentStep, $arrSteps) + 1;
 
+			// redirect to step "process" if the next step is the last one
 			if ($intKey == count($arrSteps))
 			{
 				$this->redirect($this->addToUrl('step=process', true));

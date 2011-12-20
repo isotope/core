@@ -327,7 +327,7 @@ $GLOBALS['ISO_CHECKOUT_STEPS'] = array
 	(
 		array('ModuleIsotopeCheckout', 'getOrderReviewInterface'),
 		array('ModuleIsotopeCheckout', 'getOrderConditionsInterface')
-	),
+	)
 );
 
 $GLOBALS['ISO_ATTR'] = array
