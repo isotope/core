@@ -139,10 +139,9 @@ abstract class ModuleIsotope extends Module
 	/**
 	 * The ids of all pages we take care of. This is what should later be used eg. for filter data.
 	 * @param string
-	 * @param string
-	 * @return integer
+	 * @return array
 	 */
-	protected function findCategoryProducts($strCategoryScope, $strWhere='')
+	protected function findCategories($strCategoryScope)
 	{
 		if ($this->defineRoot && $this->rootPage > 0)
 		{
@@ -193,8 +192,7 @@ abstract class ModuleIsotope extends Module
 				break;
 		}
 
-		$arrIds = $this->Database->execute("SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . ")" . ($strWhere != '' ? ' AND '.$strWhere : ''))->fetchEach('pid');
-		return count($arrIds) ? $arrIds : array(0);
+		return empty($arrCategories) ? array(0) : $arrCategories;
 	}
 
 

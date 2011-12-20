@@ -208,13 +208,16 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 			$time = time();
 			$arrFilters = array();
 			$arrInput = $this->Input->post('filter');
-			$arrIds = $this->findCategoryProducts($this->iso_category_scope, $this->iso_list_where);
+			$arrCategories = $this->findCategories($this->iso_category_scope);
 
 			foreach ($this->iso_filterFields as $strField)
 			{
-				$arrValues = $this->Database->execute("SELECT DISTINCT $strField FROM tl_iso_products
-														WHERE (id IN (" . implode(',', $arrIds) . ") OR pid IN (" . implode(',', $arrIds) . ")) AND language='' AND $strField!=''"
-														. (BE_USER_LOGGED_IN ? '' : " AND published='1' AND (start='' OR start<$time) AND (stop='' OR stop>$time)"))
+				$arrValues = $this->Database->execute("SELECT DISTINCT $strField FROM tl_iso_products p1
+														WHERE p1.language='' AND p1.$strField!=''"
+														. (BE_USER_LOGGED_IN ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)")
+														. "AND (p1.id IN (SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . "))
+														   OR pid IN (SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . ")))"
+														. ($this->iso_list_where == '' ? '' : " AND {$this->iso_list_where}"))
 											->fetchEach($strField);
 
 				if ($this->blnCacheRequest && in_array($arrInput[$strField], $arrValues))

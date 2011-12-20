@@ -263,18 +263,16 @@ class ModuleIsotopeProductList extends ModuleIsotope
 	protected function findProducts($arrCacheIds=null)
 	{
 		$time = time();
-		$arrIds = $this->findCategoryProducts($this->iso_category_scope, $this->iso_list_where);
-
-		if (is_array($arrCacheIds))
-		{
-			$arrIds = array_intersect($arrIds, $arrCacheIds);
-		}
+		$arrCategories = $this->findCategories($this->iso_category_scope);
 
 		list($arrFilters, $arrSorting, $strWhere, $arrValues) = $this->getFiltersAndSorting();
 		
 		$objProductData = $this->Database->prepare(IsotopeProduct::getSelectStatement() . "
-													WHERE p1.language='' AND p1.id IN (" . implode(',', $arrIds) . ")"
+													WHERE p1.language=''"
 													. (BE_USER_LOGGED_IN ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)")
+													. "AND p1.id IN (SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . "))"
+													. (is_array($arrCacheIds) ? ("AND p1.id IN (" . implode(',', $arrCacheIds) . ")") : '')
+													. ($this->iso_list_where == '' ? '' : " AND {$this->iso_list_where}")
 													. "$strWhere ORDER BY c.sorting")
 										 ->execute($arrValues);
 		
