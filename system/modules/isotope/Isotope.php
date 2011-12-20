@@ -1008,6 +1008,7 @@ class Isotope extends Controller
 		if (strlen($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['foreignKey']))
 		{
 			$chunks = explode('.', $GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['foreignKey']);
+			$varValue = empty($varValue) ? array(0) : $varValue;
 			$objKey = $this->Database->execute("SELECT " . $chunks[1] . " AS value FROM " . $chunks[0] . " WHERE id IN (" . implode(',', array_map('intval', (array)$varValue)) . ")");
 
 			return implode(', ', $objKey->fetchEach('value'));

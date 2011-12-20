@@ -70,6 +70,7 @@ Version 1.3.rc1 (2011-??-??)
 - Fixed: SQL condition in product list is wrong (#2189)
 - Fixed: "Edit multiple" does not work in Internet Explorer (#2680)
 - Fixed: Invoice PDF had no title when printing (#2036)
+- Fixed: Isotope::formatValue will throw error if not page category selected on a product (#2699)
 - Dropped unimplemented enableGoogleAnalytics checkbox in store config (#2102)
 
 Version 1.3.beta2 (2011-08-28)
