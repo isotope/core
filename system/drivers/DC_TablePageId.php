@@ -1249,5 +1249,73 @@ Isotope.makePageViewSortable("ul_' . CURRENT_ID . '");
 
 		return $return;
 	}
+	
+	
+	/**
+	 * Compile buttons from the table configuration array and return them as HTML
+	 * @param array
+	 * @param string
+	 * @param array
+	 * @param boolean
+	 * @param array
+	 * @param int
+	 * @param int
+	 * @return string
+	 */
+	protected function generateButtons($arrRow, $strTable, $arrRootIds=array(), $blnCircularReference=false, $arrChildRecordIds=null, $strPrevious=null, $strNext=null)
+	{
+		if (!count($GLOBALS['TL_DCA'][$strTable]['list']['operations']))
+		{
+			return '';
+		}
+
+		$return = '';
+
+		foreach ($GLOBALS['TL_DCA'][$strTable]['list']['operations'] as $k=>$v)
+		{
+			$v = is_array($v) ? $v : array($v);
+			$label = strlen($v['label'][0]) ? $v['label'][0] : $k;
+			$title = sprintf((strlen($v['label'][1]) ? $v['label'][1] : $k), $arrRow['pid']);
+			$attributes = strlen($v['attributes']) ? ' ' . ltrim(sprintf($v['attributes'], $arrRow['id'], $arrRow['id'])) : '';
+
+			// Call a custom function instead of using the default button
+			if (is_array($v['button_callback']))
+			{
+				$this->import($v['button_callback'][0]);
+				$return .= $this->$v['button_callback'][0]->$v['button_callback'][1]($arrRow, $v['href'], $label, $title, $v['icon'], $attributes, $strTable, $arrRootIds, $arrChildRecordIds, $blnCircularReference, $strPrevious, $strNext);
+
+				continue;
+			}
+
+			// Generate all buttons except "move up" and "move down" buttons
+			if ($k != 'move' && $v != 'move')
+			{
+				$return .= '<a href="'.$this->addToUrl($v['href'].'&amp;id='.$arrRow['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($v['icon'], $label).'</a> ';
+				continue;
+			}
+
+			$arrDirections = array('up', 'down');
+			$arrRootIds = is_array($arrRootIds) ? $arrRootIds : array($arrRootIds);
+
+			foreach ($arrDirections as $dir)
+			{
+				$label = strlen($GLOBALS['TL_LANG'][$strTable][$dir][0]) ? $GLOBALS['TL_LANG'][$strTable][$dir][0] : $dir;
+				$title = strlen($GLOBALS['TL_LANG'][$strTable][$dir][1]) ? $GLOBALS['TL_LANG'][$strTable][$dir][1] : $dir;
+
+				$label = $this->generateImage($dir.'.gif', $label);
+				$href = strlen($v['href']) ? $v['href'] : '&amp;act=move';
+
+				if ($dir == 'up')
+				{
+					$return .= ((is_numeric($strPrevious) && (!in_array($arrRow['id'], $arrRootIds) || !count($GLOBALS['TL_DCA'][$strTable]['list']['sorting']['root']))) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$arrRow['id']).'&amp;sid='.intval($strPrevious).'" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ' : $this->generateImage('up_.gif')).' ';
+					continue;
+				}
+
+				$return .= ((is_numeric($strNext) && (!in_array($arrRow['id'], $arrRootIds) || !count($GLOBALS['TL_DCA'][$strTable]['list']['sorting']['root']))) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$arrRow['id']).'&amp;sid='.intval($strNext).'" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ' : $this->generateImage('down_.gif')).' ';
+			}
+		}
+
+		return trim($return);
+	}
 }
 
