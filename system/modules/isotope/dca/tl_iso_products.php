@@ -56,6 +56,10 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			array('IsotopeBackend', 'truncateProductCache'),
 			array('tl_iso_products', 'storeDateAdded')
 		),
+		'oncopy_callback' => array
+		(
+			array('tl_iso_products', 'updateCategorySorting'),
+		),
 	),
 
 	// List
@@ -999,7 +1003,7 @@ class tl_iso_products extends Backend
 	{
 		$arrIds = deserialize($varValue);
 
-		if (is_array($arrIds) && count($arrIds))
+		if (is_array($arrIds) && !empty($arrIds))
 		{
 			$time = time();
 			$this->Database->query("DELETE FROM tl_iso_product_categories WHERE pid={$dc->id} AND page_id NOT IN (" . implode(',', $arrIds) . ")");
@@ -2150,4 +2154,22 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 
 		return $strFallback;
 	}
+
+
+	/**
+	 * Update sorting of product in categories when duplicating, move new product to the bottom
+	 * @param int
+	 * @param DataContainer
+	 * @link http://www.contao.org/callbacks.html#oncopy_callback
+	 */
+	public function updateCategorySorting($insertId, $dc)
+	{
+		$objCategories = $this->Database->query("SELECT c1.*, MAX(c2.sorting) AS max_sorting FROM tl_iso_product_categories c1 LEFT JOIN tl_iso_product_categories c2 ON c1.page_id=c2.page_id WHERE c1.pid=" . (int) $insertId . " GROUP BY c1.page_id");
+		
+		while( $objCategories->next() )
+		{
+			$this->Database->query("UPDATE tl_iso_product_categories SET sorting=" . ($objCategories->max_sorting + 128) . " WHERE id=" . $objCategories->id);
+		}
+	}
 }
+
