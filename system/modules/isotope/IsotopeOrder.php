@@ -356,7 +356,7 @@ class IsotopeOrder extends IsotopeProductCollection
 			foreach ($GLOBALS['ISO_HOOKS']['postCheckout'] as $callback)
 			{
 				$this->import($callback[0]);
-				$this->$callback[0]->$callback[1]($this, $arrItemIds);
+				$this->$callback[0]->$callback[1]($this, $arrItemIds, $arrData);
 			}
 		}
 
