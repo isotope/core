@@ -445,10 +445,11 @@ class IsotopeFrontend extends Frontend
 	public function injectMessages()
 	{
 		$strMessages = IsotopeFrontend::getIsotopeMessages();
-		list(,$startScript, $endScript) = IsotopeFrontend::getElementAndScriptTags();
 
 		if ($strMessages != '')
 		{
+			list(,$startScript, $endScript) = IsotopeFrontend::getElementAndScriptTags();
+
 			$GLOBALS['TL_MOOTOOLS'][] = "
 $startScript
 window.addEvent('domready', function()

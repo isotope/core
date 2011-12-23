@@ -43,13 +43,28 @@
 }
 
 #iso_ajaxBox.btnClose {
-	background:#fff url("../../../themes/default/images/help.gif") no-repeat 96% 18px;
+	background-image: none;
 	cursor: pointer;
 }
 
 #iso_ajaxBox p {
 	margin:0;
 	padding:0;
+}
+
+#iso_ajaxBox .iso_error {
+	padding-left: 34px;
+	background: url("cross-24.png") left center no-repeat;
+}
+
+#iso_ajaxBox .iso_confirm {
+	padding-left: 34px;
+	background: url("tick-24.png") left center no-repeat;
+}
+
+#iso_ajaxBox .iso_info {
+	padding-left: 34px;
+	background: url("information-24.png") left center no-repeat;
 }
 
 #iso_ajaxOverlay {
