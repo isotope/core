@@ -1147,7 +1147,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			}
 
 			// Special fields "isDefaultBilling" & "isDefaultShipping"
-			elseif (($field['value'] == 'isDefaultBilling' && $strAddressType == 'billing_address' && $intOptions < 2) || ($field['value'] == 'isDefaultShipping' && $strAddressType == 'shippping_address' && $intOptions < 3))
+			elseif (($field['value'] == 'isDefaultBilling' && $strAddressType == 'billing_address' && $intOptions < 2) || ($field['value'] == 'isDefaultShipping' && $strAddressType == 'shipping_address' && $intOptions < 3))
 			{
 				$arrDefault[$field['value']] = '1';
 			}
