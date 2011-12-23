@@ -252,19 +252,21 @@ class IsotopeRules extends Controller
 	{
 		$objRules = $this->findRules(array("(type='product' OR (type='cart' AND enableCode=''))"));
 		$arrRules = $objRules->fetchEach('id');
-
 		$arrCoupons = deserialize($objCart->coupons);
-		if (is_array($arrCoupons) && count($arrCoupons))
-		{
-			$arrDropped = array();
 
-			foreach( $arrCoupons as $code )
+		if (is_array($arrCoupons) && !empty($arrCoupons))
+		{
+			$blnError = false;
+
+			foreach ($arrCoupons as $k => $code)
 			{
 				$arrRule = $this->findCoupon($code, $objCart->getProducts());
 
 				if ($arrRule === false)
 				{
-					$arrDropped[] = $code;
+					$_SESSION['ISO_ERROR'][] = sprintf($GLOBALS['ISO_LANG']['ERR']['couponCodeDropped'], $code);
+					unset($arrCoupons[$k]);
+					$blnError = true;
 				}
 				else
 				{
@@ -272,14 +274,14 @@ class IsotopeRules extends Controller
 				}
 			}
 
-			if (count($arrDropped))
+			if ($blnError)
 			{
-				// @todo show dropped coupons
+				$objCart->coupons = $arrCoupons;
 				return false;
 			}
 		}
 
-		if (count($arrRules))
+		if (!empty($arrRules))
 		{
 			$time = time();
 

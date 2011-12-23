@@ -48,6 +48,7 @@ Version 1.3.rc1 (2011-??-??)
 - Improved: Tax rates now have more flexible postal code settings
 - Improved: make arrCache data available in product template (#2340)
 - Improved: Duplicating a product will sort it at the bottom of a category (#2618)
+- Improved: Now generates an error message if a coupon code could not be applied
 - Fixed: radio button events in Internet Explorer (Ticket #484)
 - Fixed: products DCA not loaded in rare cases
 - Fixed: hide customer definied fields in product edit mode

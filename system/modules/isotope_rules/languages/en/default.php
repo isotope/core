@@ -29,6 +29,12 @@
 
 
 /**
+ * Errors
+ */
+$GLOBALS['ISO_LANG']['ERR']['couponCodeDropped']	= 'Your coupon code "%s" could not be applied. Please review your order again.';
+
+
+/**
  * Miscellaneous
  */
 $GLOBALS['TL_LANG']['MSC']['couponHeadline']	= 'Apply Promotional Codes';
