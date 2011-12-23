@@ -43,7 +43,6 @@ CREATE TABLE `tl_iso_rules` (
   `maxItemQuantity` int(10) unsigned NOT NULL default '0',
   `quantityMode` varchar(32) NOT NULL default '',
   `enabled` char(1) NOT NULL default '',
-  `archive` int(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

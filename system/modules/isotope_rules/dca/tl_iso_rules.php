@@ -563,7 +563,7 @@ class tl_iso_rules extends Backend
 		}
 
 		// Check permissions AFTER checking the tid, so hacking attempts are logged
-		if (!$this->User->isAdmin && !$this->User->hasAccess('tl_iso_rules::enabled', 'alexf') || $row['archive'] > 0)
+		if (!$this->User->isAdmin && !$this->User->hasAccess('tl_iso_rules::enabled', 'alexf'))
 		{
 			return $this->generateImage($icon, $label).' ';
 		}

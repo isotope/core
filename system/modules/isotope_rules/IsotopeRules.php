@@ -284,8 +284,6 @@ class IsotopeRules extends Controller
 			$time = time();
 
 			$this->Database->query("INSERT INTO tl_iso_rule_usage (pid,tstamp,order_id,config_id,member_id) VALUES (" . implode(", $time, {$objOrder->id}, ".(int)$this->Isotope->Config->id.", {$objOrder->pid}), (", $arrRules) . ", $time, {$objOrder->id}, ".(int)$this->Isotope->Config->id.", {$objOrder->pid})");
-
-			$this->Database->query("UPDATE tl_iso_rules SET archive=1 WHERE id IN (" . implode(',', $arrRules) . ")");
 		}
 
 		return true;
@@ -307,10 +305,8 @@ class IsotopeRules extends Controller
 	 */
 	protected function findRules($arrProcedures, $arrValues=array(), $arrProducts=null, $blnIncludeVariants=false, $arrAttributeData=array())
 	{
-		// Only enabled and not deleted/archived rules
+		// Only enabled rules
 		$arrProcedures[] = "enabled='1'";
-		$arrProcedures[] = "archive<2";
-
 
 		// Date & Time restrictions
 		$arrProcedures[] = "(startDate='' OR FROM_UNIXTIME(startDate,GET_FORMAT(DATE,'INTERNAL')) <= FROM_UNIXTIME(UNIX_TIMESTAMP(),GET_FORMAT(DATE,'INTERNAL')))";
@@ -365,7 +361,7 @@ class IsotopeRules extends Controller
 			$arrTypes = array();
 
 			// Prepare product attribute condition
-			$objAttributeRules = $this->Database->execute("SELECT * FROM tl_iso_rules WHERE enabled='1' AND archive<2 and productRestrictions='attribute' AND attributeName!='' GROUP BY attributeName, attributeCondition");
+			$objAttributeRules = $this->Database->execute("SELECT * FROM tl_iso_rules WHERE enabled='1' AND productRestrictions='attribute' AND attributeName!='' GROUP BY attributeName, attributeCondition");
 			while( $objAttributeRules->next() )
 			{
 				$arrAttributes[] = array
