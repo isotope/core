@@ -526,7 +526,9 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		if (is_array($arrModuleIds) && count($arrModuleIds))
 		{
 			$arrData = $this->Input->post('shipping');
-			$objModules = $this->Database->execute("SELECT * FROM tl_iso_shipping_modules WHERE id IN (" . implode(',', $arrModuleIds) . ")" . (BE_USER_LOGGED_IN ? '' : " AND enabled='1'"));
+			$arrModuleIds = array_map('intval', $arrModuleIds);
+			
+			$objModules = $this->Database->execute("SELECT * FROM tl_iso_shipping_modules WHERE id IN (" . implode(',', $arrModuleIds) . ")" . (BE_USER_LOGGED_IN ? '' : " AND enabled='1'") . " ORDER BY " . $this->Database->findInSet('id', $arrModuleIds));
 
 			while ($objModules->next())
 			{
@@ -654,10 +656,12 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		$arrModules = array();
 		$arrModuleIds = deserialize($this->iso_payment_modules);
 
-		if (is_array($arrModuleIds) && count($arrModuleIds))
+		if (is_array($arrModuleIds) && !empty($arrModuleIds))
 		{
 			$arrData = $this->Input->post('payment');
-			$objModules = $this->Database->execute("SELECT * FROM tl_iso_payment_modules WHERE id IN (" . implode(',', $arrModuleIds) . ")" . (BE_USER_LOGGED_IN ? '' : " AND enabled='1'"));
+			$arrModuleIds = array_map('intval', $arrModuleIds);
+			
+			$objModules = $this->Database->execute("SELECT * FROM tl_iso_payment_modules WHERE id IN (" . implode(',', $arrModuleIds) . ")" . (BE_USER_LOGGED_IN ? '' : " AND enabled='1'") . " ORDER BY " . $this->Database->findInSet('id', $arrModuleIds));
 
 			while ($objModules->next())
 			{

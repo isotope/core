@@ -190,7 +190,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_payment_modules'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_payment_modules'],
 	'exclude'                 => true,
-	'inputType'               => 'checkbox',
+	'inputType'               => 'checkboxWizard',
 	'eval'					  => array('multiple'=>true),
 	'options_callback'		  => array('tl_module_isotope','getPaymentModules')
 );
@@ -199,7 +199,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_shipping_modules'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_shipping_modules'],
 	'exclude'                 => true,
-	'inputType'               => 'checkbox',
+	'inputType'               => 'checkboxWizard',
 	'eval'					  => array('multiple'=>true),
 	'options_callback'		  => array('tl_module_isotope','getShippingModules')
 );
