@@ -635,7 +635,7 @@ class IsotopeProduct extends Controller
 		$objTemplate->quantityLabel = $GLOBALS['TL_LANG']['MSC']['quantity'];
 		$objTemplate->useQuantity = $objModule->iso_use_quantity;
 		$objTemplate->quantity_requested = $this->quantity_requested;
-		$objTemplate->raw = $this->arrData;
+		$objTemplate->raw = array_merge($this->arrData, $this-arrCache);
 		$objTemplate->raw_options = $this->arrOptions;
 		$objTemplate->href_reader = $this->href_reader;
 		$objTemplate->label_detail = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
