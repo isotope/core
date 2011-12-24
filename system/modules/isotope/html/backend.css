@@ -1,27 +1,29 @@
 #tl_moverview .isotope-logo{display:block!important;padding:5px 2px 3px 0}
 #tl_moverview .isotope-title{display:none!important}
 .header_isotope_tools{background-image:url(lightning.png);background-position:left center;background-repeat:no-repeat;padding:2px 0 3px 20px}
-.header_iso_filter{padding:2px 0px 3px 20px;background-image:url("magnifier.png");background-position:left center;background-repeat:no-repeat;}
-.header_iso_filter_active{background-image:url("magnifier--plus.png");}
-.header_iso_filter_remove{padding:2px 0px 3px 20px;background-image:url("magnifier--minus.png");background-position:left center;background-repeat:no-repeat;}
+.header_iso_filter{background-image:url(magnifier.png);background-position:left center;background-repeat:no-repeat;padding:2px 0 3px 20px}
+.header_iso_filter_active{background-image:url(magnifier--plus.png)}
+.header_iso_filter_remove{background-image:url(magnifier--minus.png);background-position:left center;background-repeat:no-repeat;padding:2px 0 3px 20px}
 .header_import_assets{background-image:url(image--plus.png);background-position:left center;background-repeat:no-repeat;padding:2px 0 3px 20px}
 .header_import_mail{background-image:url(inbox-download.png);background-position:left center;background-repeat:no-repeat;padding:2px 0 3px 20px}
 .header_iso_copy{background-image:url(../../../themes/default/images/copy.gif);background-position:left center;background-repeat:no-repeat;padding:2px 0 3px 20px}
 .header_iso_export_csv{background-image:url(document-excel-csv.png);background-position:left center;background-repeat:no-repeat;padding:2px 0 3px 20px}
 .header_print_invoices{background-image:url(document-pdf-text.png);background-position:left center;background-repeat:no-repeat;padding:2px 0 3px 20px}
-.header_iso_groups{padding:2px 0px 3px 20px;background-image:url("folders.png");background-position:left center;background-repeat:no-repeat}
-.header_iso_filter_noimages{padding:2px 0px 3px 20px;background-image:url("image--exclamation.png");background-position:left center;background-repeat:no-repeat;}
-.header_iso_filter_nocategory{padding:2px 0px 3px 20px;background-image:url("globe--exclamation.png");background-position:left center;background-repeat:no-repeat;}
-.header_iso_filter_new_today{padding:2px 0px 3px 20px;background-image:url("calendar-select.png");background-position:left center;background-repeat:no-repeat;}
-.header_iso_filter_new_week{padding:2px 0px 3px 20px;background-image:url("calendar-select-week.png");background-position:left center;background-repeat:no-repeat;}
-.header_iso_filter_new_month{padding:2px 0px 3px 20px;background-image:url("calendar-select-month.png");background-position:left center;background-repeat:no-repeat;}
+.header_iso_groups{background-image:url(folders.png);background-position:left center;background-repeat:no-repeat;padding:2px 0 3px 20px}
+.header_iso_filter_noimages{background-image:url(image--exclamation.png);background-position:left center;background-repeat:no-repeat;padding:2px 0 3px 20px}
+.header_iso_filter_nocategory{background-image:url(globe--exclamation.png);background-position:left center;background-repeat:no-repeat;padding:2px 0 3px 20px}
+.header_iso_filter_new_today{background-image:url(calendar-select.png);background-position:left center;background-repeat:no-repeat;padding:2px 0 3px 20px}
+.header_iso_filter_new_week{background-image:url(calendar-select-week.png);background-position:left center;background-repeat:no-repeat;padding:2px 0 3px 20px}
+.header_iso_filter_new_month{background-image:url(calendar-select-month.png);background-position:left center;background-repeat:no-repeat;padding:2px 0 3px 20px}
 .tl_mediamanager th,.tl_mediamanager td{padding:2px 10px 0 0}
-.tl_mediamanager td.col_0{text-align: center;vertical-align: middle}
+.tl_mediamanager td.col_0{text-align:center;vertical-align:middle}
 .tl_mediamanager input.tl_text_2{width:220px}
 .tl_mediamanager textarea{height:40px;width:250px}
 .tl_mediamanager .radio_container span{display:block}
 .tl_imagewatermarkwizard th{font-weight:400;text-align:left}
 .tl_imagewatermarkwizard td{padding-right:4px}
+.tl_attributewizard label{width:300px;display:inline-block}
+.tl_attributewizard label span{display:inline;color:#b3b3b3}
 .mod_iso_orderdetails .info_container{float:left;width:200px;border:1px dotted #ccc;margin:0 10px 10px 0;padding:10px}
 .mod_iso_orderdetails .info_container h3{margin-top:0;margin-bottom:5px}
 .mod_iso_orderdetails table{margin-top:20px;border-top:1px dotted #ccc;width:100%}

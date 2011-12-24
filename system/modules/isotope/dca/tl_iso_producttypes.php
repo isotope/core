@@ -195,8 +195,21 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_producttypes']['attributes'],
 			'exclude'				=> true,
 			'inputType'				=> 'attributeWizard',
-			'default'				=> array('type', 'pages', 'alias', 'sku', 'name', 'teaser', 'description', 'price', 'tax_class', 'images', 'published'),
-			'eval'					=> array('mandatory'=>true),
+			'default'				=> array
+			(
+				'type'				=> array('enabled'=>1, 'position'=>1, 'tl_class_select'=>'clr'),
+				'pages'				=> array('enabled'=>1, 'position'=>2, 'tl_class_select'=>'clr'),
+				'alias'				=> array('enabled'=>1, 'position'=>3, 'tl_class_select'=>'w50'),
+				'sku'				=> array('enabled'=>1, 'position'=>4, 'tl_class_select'=>'w50'),
+				'name'				=> array('enabled'=>1, 'position'=>5, 'tl_class_select'=>'clr long'),
+				'teaser'			=> array('enabled'=>1, 'position'=>6, 'tl_class_select'=>'clr'),
+				'description'		=> array('enabled'=>1, 'position'=>7, 'tl_class_select'=>'clr'),
+				'price'				=> array('enabled'=>1, 'position'=>8, 'tl_class_select'=>'w50'),
+				'tax_class'			=> array('enabled'=>1, 'position'=>9, 'tl_class_select'=>'w50'),
+				'images'			=> array('enabled'=>1, 'position'=>10, 'tl_class_select'=>'clr'),
+				'published'			=> array('enabled'=>1, 'position'=>11, 'tl_class_select'=>'clr'),
+			),
+			'eval'					=> array('helpwizard'=>true, 'tl_class'=>'clr', 'tl_classes'=>array('clr', 'clr long', 'long', 'w50', 'w50 m12')),
 		),
 		'variants' => array
 		(
@@ -210,7 +223,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_producttypes']['variant_attributes'],
 			'exclude'				=> true,
 			'inputType'				=> 'attributeWizard',
-			'eval'					=> array('variants'=>true, 'tl_class'=>'clr'),
+			'eval'					=> array('helpwizard'=>true, 'variants'=>true, 'tl_class'=>'clr', 'tl_classes'=>array('clr', 'clr long', 'long', 'w50', 'w50 m12')),
 		),
         'force_variant_options' => array
 		(

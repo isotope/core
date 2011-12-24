@@ -193,6 +193,16 @@
 	padding-right: 4px;
 }
 
+.tl_attributewizard label {
+	width: 300px;
+	display: inline-block;
+}
+
+.tl_attributewizard label span {
+	display: inline;
+	color: #b3b3b3;
+}
+
 .mod_iso_orderdetails .info_container
 {
 	float:left;
