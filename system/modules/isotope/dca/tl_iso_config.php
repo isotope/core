@@ -124,8 +124,8 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 		'__selector__'				  => array('currencySymbol', 'currencyAutomator'),
 		'default'                     => '
 			{name_legend},name,label,fallback,store_id;
-			{address_legend:hide},firstname,lastname,company,street_1,street_2,street_3,postal,city,country,subdivision,emailShipping,phone;
 			{config_legend},shipping_countries,billing_countries,shipping_fields,billing_fields,orderPrefix,orderDigits,templateGroup,limitMemberCountries;
+			{address_legend:hide},firstname,lastname,company,street_1,street_2,street_3,postal,city,country,subdivision,email,phone;
 			{price_legend},priceRoundPrecision,priceRoundIncrement,cartMinSubtotal;
 			{currency_legend},currency,currencyFormat,currencyPosition,currencySymbol;
 			{converter_legend:hide},priceCalculateFactor,priceCalculateMode,currencyAutomator;
@@ -271,9 +271,9 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>64, 'rgxp'=>'phone', 'tl_class'=>'w50'),
 		),
-		'emailShipping' => array
+		'email' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['emailShipping'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['email'],
 			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'text',

@@ -67,7 +67,7 @@ $GLOBALS['TL_LANG']['tl_iso_config']['city'][0] = 'By';
 $GLOBALS['TL_LANG']['tl_iso_config']['subdivision'][0] = 'Region';
 $GLOBALS['TL_LANG']['tl_iso_config']['country'][0] = 'Land';
 $GLOBALS['TL_LANG']['tl_iso_config']['phone'][0] = 'Telefonnummer';
-$GLOBALS['TL_LANG']['tl_iso_config']['emailShipping'][0] = 'E-mail';
+$GLOBALS['TL_LANG']['tl_iso_config']['email'][0] = 'E-mail';
 $GLOBALS['TL_LANG']['tl_iso_config']['shipping_countries'][0] = 'Fragt til disse lande';
 $GLOBALS['TL_LANG']['tl_iso_config']['shipping_countries'][1] = 'Vælg de lande du ønsker skal være tilgængelige for forsendelse.';
 

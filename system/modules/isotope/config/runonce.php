@@ -304,6 +304,12 @@ class IsotopeRunonce extends Controller
 		{
 			$this->Database->query("ALTER TABLE tl_iso_config CHANGE COLUMN isDefaultStore fallback char(1) NOT NULL default ''");
 		}
+		
+		// tl_iso_config.emailShipping has been renamed to tl_iso_config.email
+		if ($this->Database->fieldExists('emailShipping', 'tl_iso_config') && !$this->Database->fieldExists('email', 'tl_iso_config'))
+		{
+			$this->Database->query("ALTER TABLE tl_iso_config CHANGE COLUMN emailShipping email varchar(255) NOT NULL default ''");
+		}
 
 		// tl_user.iso_stores has been renamed to tl_user.iso_configs
 		if ($this->Database->fieldExists('iso_stores', 'tl_user') && !$this->Database->fieldExists('iso_configs', 'tl_user'))
