@@ -217,7 +217,6 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'href'				=> 'act=paste&amp;mode=cut',
 				'icon'				=> 'cut.gif',
 				'attributes'		=> 'onclick="Backend.getScrollOffset();"',
-//				'button_callback'	=> array('tl_iso_products', 'copyProduct')
 			),
 			'delete' => array
 			(
@@ -1982,7 +1981,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 			$arrData = is_array($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$objAttributes->field_name]) ? $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$objAttributes->field_name] : array();
 
 			$arrData['label']		= array($objAttributes->name, $objAttributes->description);
-			$arrData['inputType']	= ((TL_MODE == 'BE' && strlen($GLOBALS['ISO_ATTR'][$objAttributes->type]['backend'])) ? $GLOBALS['ISO_ATTR'][$objAttributes->type]['backend'] : ((TL_MODE == 'FE' && strlen($GLOBALS['ISO_ATTR'][$objAttributes->type]['frontend'])) ? $GLOBALS['ISO_ATTR'][$objAttributes->type]['frontend'] : $objAttributes->type));
+			$arrData['inputType']	= ((TL_MODE == 'BE' && $GLOBALS['ISO_ATTR'][$objAttributes->type]['backend'] != '') ? $GLOBALS['ISO_ATTR'][$objAttributes->type]['backend'] : ((TL_MODE == 'FE' && $GLOBALS['ISO_ATTR'][$objAttributes->type]['frontend'] != '') ? $GLOBALS['ISO_ATTR'][$objAttributes->type]['frontend'] : $objAttributes->type));
 			$arrData['attributes']	= $objAttributes->row();
 			$arrData['eval']		= is_array($arrData['eval']) ? array_merge($arrData['eval'], $arrData['attributes']) : $arrData['attributes'];
 
