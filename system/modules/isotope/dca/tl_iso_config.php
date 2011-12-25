@@ -124,8 +124,9 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 		'__selector__'				  => array('currencySymbol', 'currencyAutomator'),
 		'default'                     => '
 			{name_legend},name,label,fallback,store_id;
-			{config_legend},shipping_countries,billing_countries,shipping_fields,billing_fields,orderPrefix,orderDigits,templateGroup,limitMemberCountries;
 			{address_legend:hide},firstname,lastname,company,street_1,street_2,street_3,postal,city,country,subdivision,email,phone;
+			{config_legend},orderPrefix,orderDigits,templateGroup;
+			{checkout_legend},shipping_countries,billing_countries,shipping_fields,billing_fields,shipping_country,billing_country,limitMemberCountries;
 			{price_legend},priceRoundPrecision,priceRoundIncrement,cartMinSubtotal;
 			{currency_legend},currency,currencyFormat,currencyPosition,currencySymbol;
 			{converter_legend:hide},priceCalculateFactor,priceCalculateMode,currencyAutomator;
@@ -294,6 +295,14 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'inputType'               => 'fieldWizard',
 			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'w50 w50h', 'table'=>'tl_iso_addresses'),
 		),
+		'shipping_country' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['shipping_country'],
+			'exclude'                 => true,
+			'inputType'               => 'select',
+			'options'                 => $this->getCountries(),
+			'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
+		),
 		'billing_countries' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['billing_countries'],
@@ -308,6 +317,14 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'exclude'                 => true,
 			'inputType'               => 'fieldWizard',
 			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'table'=>'tl_iso_addresses', 'tl_class'=>'w50 w50h'),
+		),
+		'billing_country' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['billing_country'],
+			'exclude'                 => true,
+			'inputType'               => 'select',
+			'options'                 => $this->getCountries(),
+			'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
 		),
 		'orderPrefix' => array
 		(
