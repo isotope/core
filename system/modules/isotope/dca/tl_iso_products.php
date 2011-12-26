@@ -1926,7 +1926,9 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 					continue;
 
 				// Do not show variant options & customer defined fields
-				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['attributes']['variant_option'] || $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['attributes']['customer_defined'])
+				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['attributes']['variant_option']
+				|| $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['attributes']['customer_defined']
+				|| $GLOBLAS['ISO_ATTR'][$GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['attributes']['type']]['customer_defined'])
 					continue;
 
 				// Field cannot be edited in variant
