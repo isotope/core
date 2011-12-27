@@ -746,7 +746,7 @@ abstract class IsotopeProductCollection extends Model
 			}
 		}
 
-		if (count($arrIds))
+		if (!empty($arrIds))
 		{
 			$this->modified = true;
 		}

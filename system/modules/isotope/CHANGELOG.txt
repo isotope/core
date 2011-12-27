@@ -76,6 +76,7 @@ Version 1.3.rc1 (2011-??-??)
 - Fixed: Invoice PDF had no title when printing (#2036)
 - Fixed: Isotope::formatValue will throw error if not page category selected on a product (#2699)
 - Fixed: Coupon code usage was not saved in database (#2656 + #2679)
+- Fixed: Old guest cart was not available on login until after a reload (#2684)
 - Dropped unimplemented enableGoogleAnalytics checkbox in store config (#2102)
 
 Version 1.3.beta2 (2011-08-28)

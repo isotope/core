@@ -251,7 +251,7 @@ class IsotopeCart extends IsotopeProductCollection
 		}
 
 		// Temporary cart available, move to this cart. Must be after creating a new cart!
- 		if (FE_USER_LOGGED_IN && strlen($this->strHash))
+ 		if (FE_USER_LOGGED_IN && $this->strHash != '')
  		{
 			$objCart = new IsotopeCart();
 
@@ -263,6 +263,7 @@ class IsotopeCart extends IsotopeProductCollection
 
 			// Delete cookie
 			$this->setCookie($this->strCookie, '', ($time - 3600), $GLOBALS['TL_CONFIG']['websitePath']);
+			$this->reload();
  		}
 	}
 
