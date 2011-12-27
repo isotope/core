@@ -1543,14 +1543,22 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 	}
 
 
-
 	/**
-	 * Return the paste page button
+	 * Return the paste button
+	 * @param DataContainer
+	 * @param array
+	 * @param string
+	 * @param bool
+	 * @param array
+	 * @return string
+	 * @link http://www.contao.org/callbacks.html#paste_button_callback
 	 */
 	public function pasteProduct(DataContainer $dc, $row, $table, $cr, $arrClipboard=false)
 	{
+		// Paste button for product groups
 		if ($table == 'tl_iso_groups')
 		{
+			// Cannot paste new variants into product groups
 			if ($arrClipboard === false || $arrClipboard['mode'] == 'create')
 			{
 				return '';
@@ -1558,6 +1566,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 
 			switch( $arrClipboard['mode'] )
 			{
+				// Cannot paste a variant into product groups
 				case 'cut':
 				case 'copy':
 					$objProduct = $this->Database->prepare("SELECT * FROM {$dc->table} WHERE id=?")->execute($arrClipboard['id']);
@@ -1567,24 +1576,18 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 						return '';
 					}
 					break;
-
-				case 'copyAll':
-					// @todo implement cutAll & copyAll for multiple products and variants
-					$this->Session->set('CLIPBOARD', NULL);
-					throw new Exception('Cannot copy multiple products/variants');
-					break;
 			}
 		}
+		
+		// Paste button for products/variants
 		else
 		{
 			// Disable paste buttons for variants
-			if (($row['id'] > 0 && $row['pid'] > 0) || ($arrClipboard['mode'] == 'create' && $row['id'] == 0))
+			if ($row['id'] > 0 && $row['pid'] > 0)
 			{
 				return '';
 			}
-
-			// Disable buttons for product if copying a product
-			elseif ($arrClipboard !== false)
+			elseif ($arrClipboard !== false && $row['id'] > 0)
 			{
 				switch( $arrClipboard['mode'] )
 				{
@@ -1592,19 +1595,23 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 					case 'copy':
 						$objProduct = $this->Database->prepare("SELECT * FROM {$dc->table} WHERE id=?")->execute($arrClipboard['id']);
 
+						// Cannot cut or copy a product into product, only variant into product
 						if (($objProduct->pid == 0 && $row['id'] != 0) || ($row['id'] == 0 && $objProduct->pid > 0))
 						{
 							return '';
 						}
+						
+						// Cannot copy a variant into it's current product
 						elseif ($row['id'] != 0 && $objProduct->pid == $row['id'])
 						{
 							$disablePI = true;
 						}
 						break;
 
+					// Cannot cut or copy product into products
+					// cut or copy multiple variants is disabled
 					case 'cutAll':
 					case 'copyAll':
-						// @todo implement cutAll & copyAll for multiple products and variants
 						return '';
 						break;
 				}
@@ -1631,7 +1638,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 		// Return the button
 		$imagePasteInto = $this->generateImage('pasteinto.gif', sprintf($GLOBALS['TL_LANG'][$table]['pasteinto'][1], $row['id']), 'class="blink"');
 
-		return ($disablePI ? $this->generateImage('pasteinto_.gif', '', 'class="blink"').' ' : '<a href="'.$this->addToUrl('act='.$arrClipboard['mode'].'&amp;mode=2&amp;'.(($table != $dc->table || $row['id'] == 0) ? 'gid' : 'pid').'='.$row['id'].(!is_array($arrClipboard['id']) ? '&amp;id='.$arrClipboard['id'] : '')).'" title="'.specialchars(sprintf($GLOBALS['TL_LANG'][$table]['pasteinto'][1], $row['id'])).'" onclick="Backend.getScrollOffset();">'.$imagePasteInto.'</a> ');
+		return ($disablePI ? $this->generateImage('pasteinto_.gif', '', 'class="blink"').' ' : '<a href="'.$this->addToUrl('act='.$arrClipboard['mode'].'&amp;mode=1&childs=1&amp;'.(($table != $dc->table || $row['id'] == 0) ? 'gid' : 'pid').'='.$row['id'].(!is_array($arrClipboard['id']) ? '&amp;id='.$arrClipboard['id'] : '')).'" title="'.specialchars(sprintf($GLOBALS['TL_LANG'][$table]['pasteinto'][1], $row['id'])).'" onclick="Backend.getScrollOffset();">'.$imagePasteInto.'</a> ');
 	}
 
 

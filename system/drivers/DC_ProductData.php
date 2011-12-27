@@ -282,6 +282,36 @@ class DC_ProductData extends DC_Table
 
 
 	/**
+	 * Move all selected records
+	 */
+	public function copyAll()
+	{
+		// GID tells about paste into a group
+		if ($this->Input->get('gid') != '')
+		{
+			$arrClipboard = $this->Session->get('CLIPBOARD');
+	
+			if (isset($arrClipboard[$this->strTable]) && is_array($arrClipboard[$this->strTable]['id']))
+			{
+				$arrIds = array();
+				
+				foreach ($arrClipboard[$this->strTable]['id'] as $id)
+				{
+					$this->intId = $id;
+					$arrIds[] = $this->copy(true);
+				}
+				
+				$this->Database->query("UPDATE {$this->strTable} SET gid=" . (int)$this->Input->get('gid') . " WHERE id IN (" . implode(',', $arrIds) . ")");
+			}
+	
+			$this->redirect($this->getReferer());
+		}
+		
+		return parent::copyAll();
+	}
+
+
+	/**
 	 * Auto-generate a form to edit the current database record
 	 * @param integer
 	 * @param integer
@@ -1925,7 +1955,7 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 		if ($this->strTable == $table)
 		{
 			// Regular buttons ($row, $table, $root, $blnCircularReference, $childs, $previous, $next)
-			$_buttons .= $this->Input->get('act') == 'select' ? '<input type="checkbox" name="IDS[]" id="ids_'.$id.'" class="tl_tree_checkbox" value="'.$id.'">' : $this->generateButtons($objRow->row(), $table, $this->root, $blnCircularReference, $childs, $previous, $next);
+			$_buttons .= $this->Input->get('act') == 'select' ? ($objRow->pid == 0 ? '<input type="checkbox" name="IDS[]" id="ids_'.$id.'" class="tl_tree_checkbox" value="'.$id.'">' : '') : $this->generateButtons($objRow->row(), $table, $this->root, $blnCircularReference, $childs, $previous, $next);
 		}
 
 		// Paste buttons
