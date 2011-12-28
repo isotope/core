@@ -320,11 +320,6 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		$arrFilters = array();
 		$arrSorting = array();
 
-		if ($this->iso_listingSortField != '')
-		{
-			$arrSorting[$this->iso_listingSortField] = array(($this->iso_listingSortDirection=='DESC' ? SORT_DESC : SORT_ASC), SORT_REGULAR);
-		}
-
 		if (is_array($this->iso_filterModules))
 		{
 			$arrModules = array_reverse($this->iso_filterModules);
@@ -346,6 +341,11 @@ class ModuleIsotopeProductList extends ModuleIsotope
 					$this->perPage = $GLOBALS['ISO_LIMIT'][$module];
 				}
 			}
+		}
+		
+		if (empty($arrSorting) && $this->iso_listingSortField != '')
+		{
+			$arrSorting[$this->iso_listingSortField] = array(($this->iso_listingSortDirection=='DESC' ? SORT_DESC : SORT_ASC), SORT_REGULAR);
 		}
 
 		// Thanks to certo web & design for sponsoring this feature
