@@ -1141,6 +1141,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			{
 				$arrCountries = ($strAddressType == 'billing_address' ? $this->Isotope->Config->billing_countries : $this->Isotope->Config->shipping_countries);
 				$arrData['options'] = array_values(array_intersect($arrData['options'], $arrCountries));
+				$arrDefault['country'] = $this->Isotope->Config->country;
 			}
 
 			// Special field type "conditionalselect"

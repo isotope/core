@@ -221,7 +221,7 @@ CREATE TABLE `tl_iso_config` (
   `postal` varchar(32) NOT NULL default '',
   `city` varchar(255) NOT NULL default '',
   `subdivision` varchar(10) NOT NULL default '',
-  `country` varchar(32) NOT NULL default '',
+  `country` varchar(2) NOT NULL default '',
   `shipping_countries` blob NULL,
   `shipping_fields` blob NULL,
   `billing_countries` blob NULL,
