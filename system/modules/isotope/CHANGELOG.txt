@@ -50,6 +50,8 @@ Version 1.3.rc1 (2011-??-??)
 - Improved: Duplicating a product will sort it at the bottom of a category (#2618)
 - Improved: Now generates an error message if a coupon code could not be applied
 - Improved: Can now multi-edit all features of a product. Can not multi-edit variants anymore (#2209)
+- Improved: The attribute wizard now supports any kind of CSS class (e.g. w50 for half width)  (#2227)
+- Improved: The attribute wizard now allows the user to specify which fields ar mandatory 
 - Fixed: radio button events in Internet Explorer (Ticket #484)
 - Fixed: products DCA not loaded in rare cases
 - Fixed: hide customer definied fields in product edit mode
