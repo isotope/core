@@ -1,0 +1,15 @@
+# Ignore everything (useful to ignore the whole Contao installation)
+*
+
+# Do not ignore ".gitignore"
+!.gitignore
+
+# List all core files and directories here
+!isotope
+!system/drivers/DC_ProductData.php
+!system/drivers/DC_TablePageId.php
+!system/modules/isotope
+!system/modules/isotope_multilingual
+!system/modules/isotope_rules
+
+
