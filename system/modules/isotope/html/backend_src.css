@@ -203,6 +203,26 @@
 	color: #b3b3b3;
 }
 
+.tl_attributewizard_columninfo img.tl_class_select {
+	margin-left: 405px;
+}
+
+.tl_attributewizard_columninfo img.tl_class_text {
+	margin-left: 80px;
+}
+
+.tl_attributewizard_columninfo img.mandatory_default {
+	margin-left: 35px;
+}
+
+.tl_attributewizard_columninfo img.mandatory_no {
+	margin-left: 8px;
+}
+
+.tl_attributewizard_columninfo img.mandatory_yes {
+	margin-left: 8px;
+}
+
 .mod_iso_orderdetails .info_container
 {
 	float:left;

@@ -242,7 +242,8 @@ class AttributeWizard extends Widget
 			$blnCheckAll = false;
 		}
 
-        return sprintf('<div id="ctrl_%s" class="%s%s">%s%s</div>%s',
+        return sprintf('%s<div id="ctrl_%s" class="%s%s">%s%s</div>%s',
+        				$this->generateInfoBar(),
 						$this->strId,
 						'tl_checkbox_container tl_checkbox_wizard tl_attributewizard',
 						(strlen($this->strClass) ? ' ' . $this->strClass : ''),
@@ -342,6 +343,33 @@ class AttributeWizard extends Widget
 		uksort($arrAttributes, create_function('$a,$b', 'return (array_search($a, $GLOBALS["TL_DCA"]["tl_iso_attributes"]["fields"]["legend"]["options"]) > array_search($b, $GLOBALS["TL_DCA"]["tl_iso_attributes"]["fields"]["legend"]["options"])) ? 1 : -1;'));
 
 		return $arrAttributes;
+	}
+
+
+	/**
+	 * Generates the info icons that contain the description for the columns
+	 * @return string
+	 */
+	private function generateInfoBar()
+	{
+		$return = '<div class="tl_attributewizard_columninfo">';
+		
+		$arrColumns = array
+		(
+			'tl_class_select',
+			'tl_class_text',
+			'mandatory_default',
+			'mandatory_no',
+			'mandatory_yes'
+		);
+		
+		foreach ($arrColumns as $strClass)
+		{
+			$strLabel = $GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz'][$strClass];
+			$return .= $this->generateImage('show.gif', $strLabel, 'class="' . $strClass . '" title="' . $strLabel . '"');
+		}
+		
+		return $return . '</div>';
 	}
 }
 
