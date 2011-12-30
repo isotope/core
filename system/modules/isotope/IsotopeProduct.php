@@ -160,8 +160,8 @@ class IsotopeProduct extends Controller
 
 		$this->formSubmit = 'iso_product_' . $this->arrData['id'];
 		$this->arrType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id=".(int)$this->arrData['type'])->fetchAssoc();
-		$this->arrAttributes = deserialize($this->arrType['attributes'], true);
-		$this->arrVariantAttributes = $this->arrType['variants'] ? deserialize($this->arrType['variant_attributes']) : array();
+		$this->arrAttributes = array_keys(deserialize($this->arrType['attributes'], true));
+		$this->arrVariantAttributes = $this->arrType['variants'] ? array_keys(deserialize($this->arrType['variant_attributes'])) : array();
 		$this->arrCache['list_template'] = $this->arrType['list_template'];
 		$this->arrCache['reader_template'] = $this->arrType['reader_template'];
 		$this->arrOptions = is_array($arrOptions) ? $arrOptions : array();

@@ -64,3 +64,12 @@ $GLOBALS['TL_LANG']['tl_iso_producttypes']['template_legend']		= 'Templates';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['attributes_legend']		= 'Product attributes';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['download_legend']		= 'Downloads';
 
+
+/**
+ * AttributeWizard
+ */
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz']['tl_class_select']	= 'Here you can choose from a few predefined Contao CSS classes';
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz']['tl_class_text']		= 'Here you can write your own CSS classes that should be applied to the field';
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz']['mandatory_default']	= 'Mandatory: Take the default value';
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz']['mandatory_no']		= 'Mandatory: No, never';
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz']['mandatory_yes']		= 'Mandatory: Yes, always';

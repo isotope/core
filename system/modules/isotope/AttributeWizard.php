@@ -104,10 +104,18 @@ class AttributeWizard extends Widget
 	public function validate()
 	{
 		parent::validate();
-
-		if (!isset($_POST[$this->strName]))
+		
+		// Workaround for key sorting in DataContainer ~line 285
+		$i = 0;
+		foreach ($this->varValue as $k => $v)
 		{
-			$this->varValue = '';
+			if (!$v['enabled'])
+			{
+				unset($this->varValue[$k]);
+				continue;
+			}
+
+			$this->varValue[$k]['position'] = $i++;
 		}
 	}
 
@@ -175,9 +183,9 @@ class AttributeWizard extends Widget
 
 				foreach ($arrOptionGroup as $k => $arrOption)
 				{
-					if (($intPos = array_search($arrOption['value'], $this->varValue)) !== false)
+					if ($this->varValue[$arrOption['value']]['enabled'])
 					{
-						$arrOptions[$i][$intPos] = $arrOption;
+						$arrOptions[$i][$this->varValue[$arrOption['value']]['position']] = $arrOption;
 						unset($arrTemp[$k]);
 					}
 				}
@@ -218,7 +226,7 @@ class AttributeWizard extends Widget
 					$strButtons .= '<a href="'.$this->addToUrl('&amp;'.$strCommand.'='.$strButton.'&amp;cid='.$k.'&amp;id='.$this->currentRecord).'" title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable][$strButton][0]).'" onclick="Isotope.attributeWizard(this, \''.$strButton.'\', \''.$id.'\'); return false;">'.$this->generateImage($strButton.'.gif', $GLOBALS['TL_LANG'][$this->strTable][$strButton][0], 'class="tl_checkbox_wizard_img"').'</a> ';
 				}
 
-				$arrOptions[] = $this->generateCheckbox($arrOption, $i, $strButtons);
+				$arrOptions[] = $this->generateCheckbox($arrOption, $i, $strButtons, $cid);
 			}
 
 			$arrOptions[] = '</div>';
@@ -234,9 +242,10 @@ class AttributeWizard extends Widget
 			$blnCheckAll = false;
 		}
 
-        return sprintf('<div id="ctrl_%s" class="%s%s">%s%s</div>%s',
+        return sprintf('%s<div id="ctrl_%s" class="%s%s">%s%s</div>%s',
+        				$this->generateInfoBar(),
 						$this->strId,
-						'tl_checkbox_container tl_checkbox_wizard',
+						'tl_checkbox_container tl_checkbox_wizard tl_attributewizard',
 						(strlen($this->strClass) ? ' ' . $this->strClass : ''),
 						($blnCheckAll ? '<span class="fixed"><input type="checkbox" id="check_all_' . $this->strId . '" class="tl_checkbox" onclick="Isotope.toggleCheckboxGroup(this, \'ctrl_' . $this->strId . '\')"> <label for="check_all_' . $this->strId . '" style="color:#a6a6a6;"><em>' . $GLOBALS['TL_LANG']['MSC']['selectAll'] . '</em></label></span>' : ''),
 						implode('', $arrOptions),
@@ -251,14 +260,14 @@ class AttributeWizard extends Widget
 	 * @param string
 	 * @return string
 	 */
-	protected function generateCheckbox($arrOption, $strGroup, $strButtons)
+	protected function generateCheckbox($arrOption, $strGroup, $strButtons, $cid)
 	{
+		$strBuffer = '<span class="' . ($cid%2 ? 'even' : 'odd') . '" onmouseover="Theme.hoverDiv(this, 1);" onmouseout="Theme.hoverDiv(this, 0);">';
 
 		if ($arrOption['disabled'])
 		{
-			return sprintf('<span><input type="hidden" name="%s" value="%s"%s><input id="opt_%s" type="checkbox" class="tl_checkbox" disabled="disabled" checked="checked"> %s <label for="opt_%s">%s&nbsp;<span style="display:inline;color:#b3b3b3">[%s]</span></label></span>',
-							$this->strName . '[]',
-							specialchars($arrOption['value']),
+			$strBuffer .= sprintf('<input type="hidden" name="%s" value="1"%s><input id="opt_%s" type="checkbox" class="tl_checkbox" disabled="disabled" checked="checked"> %s <label for="opt_%s">%s&nbsp;<span>[%s]</span></label>',
+							$this->strName . '[' . $arrOption['value'] . '][enabled]',
 							$this->getAttributes(),
 							$this->strId.'_'.$arrOption['value'],
 							$strButtons,
@@ -266,17 +275,35 @@ class AttributeWizard extends Widget
 							$arrOption['label'],
 							$arrOption['value']);
 		}
+		else
+		{
+			$strBuffer .= sprintf('<input type="checkbox" name="%s" id="opt_%s" class="tl_checkbox" value="1"%s%s onfocus="Backend.getScrollOffset();"> %s <label for="opt_%s">%s&nbsp;<span>[%s]</span></label>',
+							$this->strName . '[' . $arrOption['value'] . '][enabled]',
+							$this->strId.'_'.$arrOption['value'],
+							((is_array($this->varValue) && $this->varValue[$arrOption['value']]['enabled']) ? ' checked="checked"' : ''),
+							$this->getAttributes(),
+							$strButtons,
+							$this->strId.'_'.$arrOption['value'],
+							$arrOption['label'],
+								$arrOption['value']);
+		}
 
-		return sprintf('<span><input type="checkbox" name="%s" id="opt_%s" class="tl_checkbox" value="%s"%s%s onfocus="Backend.getScrollOffset();"> %s <label for="opt_%s">%s&nbsp;<span style="display:inline;color:#b3b3b3">[%s]</span></label></span>',
-						$this->strName . '[]',
-						$this->strId.'_'.$arrOption['value'],
-						specialchars($arrOption['value']),
-						((is_array($this->varValue) && in_array($arrOption['value'], $this->varValue)) ? ' checked="checked"' : ''),
-						$this->getAttributes(),
-						$strButtons,
-						$this->strId.'_'.$arrOption['value'],
-						$arrOption['label'],
-							$arrOption['value']);
+		// Add tl_class options from DCA
+		$strBuffer .= '<select class="select" name="' . $this->strName . '[' . $arrOption['value'] . '][tl_class_select]"><option value="">-</option>';
+
+		foreach ($this->tl_classes as $class)
+		{
+			$strBuffer .= '<option value="' . $class . '"' . $this->optionSelected($this->varValue[$arrOption['value']]['tl_class_select'], $class) . '>' . $class . '</option>';
+		}
+
+		return $strBuffer . '
+	</select>
+	<input type="text" class="tl_text_4" name="' . $this->strName . '[' . $arrOption['value'] . '][tl_class_text]" value="' . $this->varValue[$arrOption['value']]['tl_class_text'] . '">
+	
+	<input type="radio" name="' . $this->strName . '[' . $arrOption['value'] . '][mandatory]" value="0"' . $this->optionChecked($this->varValue[$arrOption['value']]['mandatory'], 0) . '>
+	<input type="radio" name="' . $this->strName . '[' . $arrOption['value'] . '][mandatory]" value="1"' . $this->optionChecked($this->varValue[$arrOption['value']]['mandatory'], 1) . '>
+	<input type="radio" name="' . $this->strName . '[' . $arrOption['value'] . '][mandatory]" value="2"' . $this->optionChecked($this->varValue[$arrOption['value']]['mandatory'], 2) . '>
+</span>';
 	}
 
 
@@ -314,6 +341,35 @@ class AttributeWizard extends Widget
 		}
 
 		uksort($arrAttributes, create_function('$a,$b', 'return (array_search($a, $GLOBALS["TL_DCA"]["tl_iso_attributes"]["fields"]["legend"]["options"]) > array_search($b, $GLOBALS["TL_DCA"]["tl_iso_attributes"]["fields"]["legend"]["options"])) ? 1 : -1;'));
+
 		return $arrAttributes;
 	}
+
+
+	/**
+	 * Generates the info icons that contain the description for the columns
+	 * @return string
+	 */
+	private function generateInfoBar()
+	{
+		$return = '<div class="tl_attributewizard_columninfo">';
+		
+		$arrColumns = array
+		(
+			'tl_class_select',
+			'tl_class_text',
+			'mandatory_default',
+			'mandatory_no',
+			'mandatory_yes'
+		);
+		
+		foreach ($arrColumns as $strClass)
+		{
+			$strLabel = $GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz'][$strClass];
+			$return .= $this->generateImage('show.gif', $strLabel, 'class="' . $strClass . '" title="' . $strLabel . '"');
+		}
+		
+		return $return . '</div>';
+	}
 }
+

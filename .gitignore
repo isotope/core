@@ -1,0 +1,17 @@
+# Ignore everything (useful to ignore the whole Contao installation)
+/*
+
+# Do not ignore ".gitignore"
+!.gitignore
+
+# Isotope ignoring rules
+!/system/
+/system/*
+!/system/modules
+/system/modules/*
+!system/modules/isotope/
+!system/modules/isotope_multilingual/
+!system/modules/isotope_rules/
+
+!/system/drivers/DC_ProductData.php
+!/system/drivers/DC_TablePageId.php

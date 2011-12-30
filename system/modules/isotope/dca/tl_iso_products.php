@@ -569,9 +569,9 @@ class tl_iso_products extends Backend
 		if (!$objType->prices)
 			return '';
 
-		$arrAttributes = deserialize(($row['pid'] ? $objType->variant_attributes : $objType->attributes), true);
+		$arrAttributes = deserialize(($row['pid'] > 0 ? $objType->variant_attributes : $objType->attributes), true);
 
-		if (!in_array('price', $arrAttributes))
+		if (!$arrAttributes['price']['enabled'])
 			return '';
 
 		return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
@@ -854,24 +854,24 @@ class tl_iso_products extends Backend
 		}
 
 		$objProductType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id=".$row['type']);
-		$fields = deserialize($objProductType->attributes, true);
+		$arrAttributes = deserialize($objProductType->attributes, true);
 
 		if ($row['pid'] > 0)
 		{
 			$strBuffer = '<div class="iso_product"><div class="thumbnail">'.$thumbnail.'</div><ul>';
 
-			foreach( $fields as $i )
+			foreach( $arrAttributes as $attribute => $arrConfig )
 			{
-				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$i]['attributes']['variant_option'])
+				if ($arrConfig['enabled'] && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
 				{
-					$strBuffer .= '<li><strong>' . $this->Isotope->formatLabel('tl_iso_products', $i) . ':</strong> ' . $this->Isotope->formatValue('tl_iso_products', $i, $row[$i]) . '</li>';
+					$strBuffer .= '<li><strong>' . $this->Isotope->formatLabel('tl_iso_products', $attribute) . ':</strong> ' . $this->Isotope->formatValue('tl_iso_products', $attribute, $row[$attribute]) . '</li>';
 				}
 			}
 
 			return $strBuffer . '</ul></div>';
 		}
 
-		return '<div class="iso_product"><div class="thumbnail">'.$thumbnail.'</div><p>' . $row['name'] . (($row['sku'] != '' && in_array('sku', $fields)) ? '<span style="color:#b3b3b3; padding-left:3px;">['.$row['sku'].']</span>' : '') . '</p><div>' . ($row['pid']==0 ? '<em>' . $this->getCategoryList($row['id']) . '</em>' : '') . '</div></div> ';
+		return '<div class="iso_product"><div class="thumbnail">'.$thumbnail.'</div><p>' . $row['name'] . (($row['sku'] != '' && in_array('sku', $arrAttributes)) ? '<span style="color:#b3b3b3; padding-left:3px;">['.$row['sku'].']</span>' : '') . '</p><div>' . ($row['pid']==0 ? '<em>' . $this->getCategoryList($row['id']) . '</em>' : '') . '</div></div> ';
 	}
 
 
@@ -1036,10 +1036,16 @@ class tl_iso_products extends Backend
 		$arrOptions = array();
 		$arrAttributes = deserialize($objProduct->attributes);
 
-		if (is_array($arrAttributes) && count($arrAttributes))
+		if (is_array($arrAttributes))
 		{
-			foreach( $arrAttributes as $attribute )
+			foreach( $arrAttributes as $attribute => $arrConfig )
 			{
+				// Skip disabled attributes
+				if (!$arrConfig['enabled'])
+				{
+					continue;
+				}
+
 				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
 				{
 					$GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['eval']['mandatory'] = true;
@@ -1158,11 +1164,11 @@ class tl_iso_products extends Backend
 		$arrAttributes = deserialize($objProduct->attributes);
 		$arrVarAttributes = deserialize($objProduct->variant_attributes);
 
-		if (is_array($arrAttributes) && count($arrAttributes))
+		if (is_array($arrAttributes))
 		{
-			foreach( $arrAttributes as $attribute )
+			foreach( $arrAttributes as $attribute => $arrConfig )
 			{
-				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
+				if ($arrConfig['enabled'] && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
 				{
 					$arrFields[] = $attribute;
 				}
@@ -1188,7 +1194,7 @@ class tl_iso_products extends Backend
 
 		foreach($arrQuickEditFields as $field)
 		{
-			if(in_array($field, $arrVarAttributes))
+			if($arrVarAttributes[$field]['enabled'])
 			{
 				$strBuffer .= '<th>'.$GLOBALS['TL_LANG']['tl_iso_products'][$field][0].'</th>';
 			}
@@ -1210,7 +1216,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 
 			foreach($arrQuickEditFields as $field)
 			{
-				if(in_array($field, $arrVarAttributes))
+				if ($arrVarAttributes[$field]['enabled'])
 				{
 					$strClass = $GLOBALS['BE_FFL'][$GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['inputType']];
 					$arrWidgets[$field] = new $strClass($this->prepareForWidget($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field], $field.'[' . $objVariants->id .']', $objVariants->{$field}));
@@ -1273,7 +1279,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 	<td>'.implode(', ', $arrValues).'</td>';
 	foreach($arrQuickEditFields as $field)
 	{
-		if(in_array($field, $arrVarAttributes))
+		if ($arrVarAttributes[$field]['enabled'])
 		{
 			$strBuffer .= '<td>'.$arrWidgets[$field]->generate().'</td>';
 		}
@@ -1780,10 +1786,10 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 */
 
 		$objProductType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id=".$row['type']);
-		$fields = $row['pid'] ? deserialize($objProductType->variant_attributes, true) : deserialize($objProductType->attributes, true);
+		$arrAttributes = $row['pid'] ? deserialize($objProductType->variant_attributes, true) : deserialize($objProductType->attributes, true);
 		$time = time();
 
-		if ((in_array('start', $fields) && $row['start'] != '' && $row['start'] > $time) || (in_array('stop', $fields) && $row['stop'] != '' && $row['stop'] < $time))
+		if (($arrAttributes['start']['enabled'] && $row['start'] != '' && $row['start'] > $time) || ($arrAttributes['stop']['enabled'] && $row['stop'] != '' && $row['stop'] < $time))
 		{
 			return $this->generateImage('system/modules/isotope/html/invisible-startstop.png', $label).' ';
 		}
@@ -1843,6 +1849,8 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 
 	/**
 	 * Build palette for the current product type / variant
+	 *
+	 * @param DataContainer
 	 */
 	public function buildPaletteString($dc)
 	{
@@ -1851,11 +1859,13 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 		if ($this->Input->get('act') == '' && $this->Input->get('key') == '' || $this->Input->get('act') == 'select')
 			return;
 
+		$arrFields = &$GLOBALS['TL_DCA']['tl_iso_products']['fields'];
+
 		// Set default product type
-		$GLOBALS['TL_DCA']['tl_iso_products']['fields']['type']['default'] = $this->Database->execute("SELECT id FROM tl_iso_producttypes ORDER BY fallback DESC, name")->id;
+		$arrFields['type']['default'] = $this->Database->execute("SELECT id FROM tl_iso_producttypes ORDER BY fallback DESC, name")->id;
 
 		// Set default tax class
-		$GLOBALS['TL_DCA']['tl_iso_products']['fields']['tax_class']['default'] = $this->Database->execute("SELECT id FROM tl_iso_tax_class WHERE fallback='1'")->id;
+		$arrFields['tax_class']['default'] = $this->Database->execute("SELECT id FROM tl_iso_tax_class WHERE fallback='1'")->id;
 
 		$blnEditAll = true;
 
@@ -1896,8 +1906,8 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 			// Enable advanced prices
 			if ($objProducts->prices && !$blnEditAll)
 			{
-				$GLOBALS['TL_DCA']['tl_iso_products']['fields']['prices']['attributes'] = $GLOBALS['TL_DCA']['tl_iso_products']['fields']['price']['attributes'];
-				$GLOBALS['TL_DCA']['tl_iso_products']['fields']['price'] = $GLOBALS['TL_DCA']['tl_iso_products']['fields']['prices'];
+				$arrFields['prices']['attributes'] = $arrFields['price']['attributes'];
+				$arrFields['price'] = $arrFields['prices'];
 			}
 
 			$arrInherit = array();
@@ -1910,41 +1920,52 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 			{
 				$arrPalette['variant_legend'][] = 'variant_attributes' . ($blnEditAll ? '' : ',inherit');
 
-				// @todo will not work in edit all!
-				foreach( $objProducts->attributes as $attribute )
+				// @todo will not work in edit all, should use option_callback!
+				foreach( $objProducts->attributes as $attribute => $arrConfig )
 				{
-					if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
+					if ($arrConfig['enabled'] && $arrFields[$attribute]['attributes']['variant_option'])
 					{
-						$GLOBALS['TL_DCA']['tl_iso_products']['fields']['variant_attributes']['options'][] = $attribute;
+						$arrFields['variant_attributes']['options'][] = $attribute;
 					}
 				}
 
-				$arrFields = deserialize($objProducts->variant_attributes, true);
+				$arrAttributes = deserialize($objProducts->variant_attributes, true);
 			}
 			else
 			{
-				$arrFields = $objProducts->attributes;
+				$arrAttributes = $objProducts->attributes;
 			}
 
-			foreach( $arrFields as $field )
+			foreach( $arrAttributes as $attribute => $arrConfig )
 			{
-				// Field is not an attribute
-				if (!is_array($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]) || $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['attributes']['legend'] == '')
+				// Field is disabled or not an attribute
+				if (!$arrConfig['enabled'] || !is_array($arrFields[$attribute]) || $arrFields[$attribute]['attributes']['legend'] == '')
 					continue;
 
 				// Do not show variant options & customer defined fields
-				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['attributes']['variant_option'] || $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['attributes']['customer_defined'])
+				if ($arrFields[$attribute]['attributes']['variant_option'] || $arrFields[$attribute]['attributes']['customer_defined'])
 					continue;
 
 				// Field cannot be edited in variant
-				if ($objProducts->pid > 0 && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['attributes']['inherit'])
+				if ($objProducts->pid > 0 && $arrFields[$attribute]['attributes']['inherit'])
 					continue;
 
-				$arrPalette[$GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['attributes']['legend']][] = $field;
+				$arrPalette[$arrFields[$attribute]['attributes']['legend']][$arrConfig['position']] = $attribute;
 
-				if (!$blnEditAll && !in_array($field, array('sku', 'price', 'shipping_weight', 'published')) && in_array($field, $objProducts->attributes))
+				// Apply product type attribute config
+				if (($tl_class = trim($arrConfig['tl_class_select'] . ' ' . $arrConfig['tl_class_text'])) != '')
 				{
-					$arrInherit[$field] = $this->Isotope->formatLabel('tl_iso_products', $field);
+					$arrFields[$attribute]['eval']['tl_class'] = $tl_class;
+				}
+				
+				if ($arrConfig['mandatory'] > 0)
+				{
+					$arrFields[$attribute]['eval']['mandatory'] = $arrConfig['mandatory'] == 1 ? false : true;
+			}
+
+				if (!$blnEditAll && !in_array($attribute, array('sku', 'price', 'shipping_weight', 'published')) && $objProducts->attributes[$attribute]['enabled'])
+				{
+					$arrInherit[$attribute] = $this->Isotope->formatLabel('tl_iso_products', $attribute);
 				}
 			}
 
@@ -1952,11 +1973,12 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 			$arrLegends = array();
 			foreach($arrPalette as $legend=>$fields)
 			{
+				ksort($fields);
 				$arrLegends[] = '{' . $legend . '},' . implode(',', $fields);
 			}
 
 			// Set inherit options
-			$GLOBALS['TL_DCA']['tl_iso_products']['fields']['inherit']['options'] = $arrInherit;
+			$arrFields['inherit']['options'] = $arrInherit;
 
 			// Add palettes
 			$GLOBALS['TL_DCA']['tl_iso_products']['palettes'][$objProducts->type . $objProducts->pid] = implode(';', $arrLegends);
@@ -1968,9 +1990,9 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 		}
 		elseif ($blnEditAll)
 		{
-			$GLOBALS['TL_DCA']['tl_iso_products']['fields']['inherit']['exclude'] = true;
-			$GLOBALS['TL_DCA']['tl_iso_products']['fields']['prices']['exclude'] = true;
-			$GLOBALS['TL_DCA']['tl_iso_products']['fields']['variant_attributes']['exclude'] = true;
+			$arrFields['inherit']['exclude'] = true;
+			$arrFields['prices']['exclude'] = true;
+			$arrFields['variant_attributes']['exclude'] = true;
 		}
 	}
 

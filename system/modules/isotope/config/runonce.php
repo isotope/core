@@ -552,6 +552,32 @@ class IsotopeRunonce extends Controller
 		}
 
 		$this->Database->query("UPDATE tl_iso_products SET dateAdded=tstamp WHERE dateAdded=0");
+
+
+		// Update attribute wizard
+		$objTypes = $this->Database->execute("SELECT * FROM tl_iso_producttypes");
+
+		while ($objTypes->next())
+		{
+			foreach (array('attributes', 'variant_attributes') as $field)
+			{
+				$arrAttributes = deserialize($objTypes->$field);
+
+				if (!array_is_assoc($arrAttributes))
+				{
+					$arrNew = array();
+
+					foreach ($arrAttributes as $i => $attribute)
+					{
+						$arrNew[$attribute]['enabled'] = '1';
+						$arrNew[$attribute]['position'] = $i;
+					}
+
+					$this->Database->prepare("UPDATE tl_iso_producttypes SET $field=? WHERE id=?")
+								   ->execute(serialize($arrNew), $objTypes->id);
+				}
+			}
+		}
 	}
 
 
