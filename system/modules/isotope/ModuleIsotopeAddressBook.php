@@ -150,30 +150,29 @@ class ModuleIsotopeAddressBook extends ModuleIsotope
 
 		while ($objAddress->next())
 		{
-			$arrAddresses[] = array
+			$arrAddresses[] = array_merge($objAddress->row(), array
 			(
 				'id'				=> $objAddress->id,
-				'label'				=> $this->Isotope->translate($objAddress->label),
+				'class'				=> (($objAddress->isDefaultBilling ? 'default_billing' : '') . ($objAddress->isDefaultShipping ? ' default_shipping' : '')),
 				'text'				=> $this->Isotope->generateAddressString($objAddress->row()),
 				'edit_url'			=> ampersand($strUrl . 'act=edit&address=' . $objAddress->id),
 				'delete_url'		=> ampersand($strUrl . 'act=delete&address=' . $objAddress->id),
 				'default_billing'	=> ($objAddress->isDefaultBilling ? true : false),
 				'default_shipping'	=> ($objAddress->isDefaultShipping ? true : false),
-			);
+			));
 		}
 
-		if(empty($arrAddresses))
+		if (empty($arrAddresses))
 		{
 			$this->Template->mtype = 'empty';
 			$this->Template->message = $GLOBALS['TL_LANG']['ERR']['noAddressBookEntries'];
 		}
 
-		$this->Template->addressLabel = $GLOBALS['TL_LANG']['MSC']['addressBookLabel'];
 		$this->Template->addNewAddressLabel= $GLOBALS['TL_LANG']['MSC']['createNewAddressLabel'];
 		$this->Template->editAddressLabel = $GLOBALS['TL_LANG']['MSC']['editAddressLabel'];
 		$this->Template->deleteAddressLabel = $GLOBALS['TL_LANG']['MSC']['deleteAddressLabel'];
 		$this->Template->deleteAddressConfirm = specialchars($GLOBALS['TL_LANG']['MSC']['deleteAddressConfirm']);
-		$this->Template->addresses = IsotopeFrontend::generateRowClass($arrAddresses, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);;
+		$this->Template->addresses = IsotopeFrontend::generateRowClass($arrAddresses, '', 'class', 0, ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);;
 		$this->Template->addNewAddress = ampersand($strUrl . 'act=create');
 	}
 

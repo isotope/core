@@ -12,7 +12,6 @@
 
 <p><a class="add" href="<?php echo $this->addNewAddress; ?>" title="<?php echo $this->addNewAddressLabel; ?>"><?php echo $this->addNewAddressLabel; ?></a></p>
 
-<?php if( count($this->addresses) ): ?>
 <?php foreach( $this->addresses as $address ):?>
 <div class="<?php echo $address['rowClass']; ?>">
 <h2><?php echo $address['label']; ?></h2>
@@ -23,7 +22,6 @@
 <?php echo $address['text']; ?>
 </div>
 <?php endforeach; ?>
-<?php endif; ?>
 
 </section>
 <!-- indexer::continue -->
