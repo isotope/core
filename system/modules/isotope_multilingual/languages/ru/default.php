@@ -21,12 +21,11 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  2009-2011 Isotope eCommerce Workgroup
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Blair Winans <blair@winanscreative.com>
  * @author     D S <dreel@bk.ru>
  * @author     Lia Fiolia <kontakt@li-fi.de>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
- * @version    $Id: ModuleIsotopeTranslation.php 2395 2011-08-17 07:05:29Z aschempp $
  */
 
 $GLOBALS['TL_LANG']['MSC']['translationSaved'] = 'Изменения сохранены.';

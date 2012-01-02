@@ -2,7 +2,7 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 1.3.rc1 (2011-??-??)
+Version 1.3.rc1 (2012-01-02)
 ------------------------------
 - Added: new product attribute "File tree"
 - Added: new product attribute "Downloads"
