@@ -552,32 +552,6 @@ class IsotopeRunonce extends Controller
 		}
 
 		$this->Database->query("UPDATE tl_iso_products SET dateAdded=tstamp WHERE dateAdded=0");
-
-
-		// Update attribute wizard
-		$objTypes = $this->Database->execute("SELECT * FROM tl_iso_producttypes");
-
-		while ($objTypes->next())
-		{
-			foreach (array('attributes', 'variant_attributes') as $field)
-			{
-				$arrAttributes = deserialize($objTypes->$field);
-
-				if (!array_is_assoc($arrAttributes))
-				{
-					$arrNew = array();
-
-					foreach ($arrAttributes as $i => $attribute)
-					{
-						$arrNew[$attribute]['enabled'] = '1';
-						$arrNew[$attribute]['position'] = $i;
-					}
-
-					$this->Database->prepare("UPDATE tl_iso_producttypes SET $field=? WHERE id=?")
-								   ->execute(serialize($arrNew), $objTypes->id);
-				}
-			}
-		}
 	}
 
 
@@ -744,43 +718,35 @@ class IsotopeRunonce extends Controller
 	}
 	
 	
+	/**
+	 * Update product types for new attribute wizard and make start&stop date enabled
+	 */
 	private function updateProductTypes()
 	{
-		$objTypes = $this->Database->query("SELECT * FROM tl_iso_producttypes");
-		
-		while( $objTypes->next() )
+		$objTypes = $this->Database->execute("SELECT * FROM tl_iso_producttypes");
+
+		while ($objTypes->next())
 		{
-			$arrSet = array();
-			$arrAttributes = deserialize($objTypes->attributes, true);
-			$arrVariantAttributes = deserialize($objTypes->variant_attributes, true);
-			
-			if (!in_array('start', $arrAttributes))
+			foreach (array('attributes', 'variant_attributes') as $field)
 			{
-				$arrAttributes[] = 'start';
-				$arrSet['attributes'] = serialize($arrAttributes);
-			}
-			
-			if (!in_array('stop', $arrAttributes))
-			{
-				$arrAttributes[] = 'stop';
-				$arrSet['attributes'] = serialize($arrAttributes);
-			}
-			
-			if (!in_array('start', $arrVariantAttributes))
-			{
-				$arrVariantAttributes[] = 'start';
-				$arrSet['attributes'] = serialize($arrVariantAttributes);
-			}
-			
-			if (!in_array('stop', $arrVariantAttributes))
-			{
-				$arrVariantAttributes[] = 'stop';
-				$arrSet['variant_attributes'] = serialize($arrVariantAttributes);
-			}
-			
-			if (!empty($arrSet))
-			{
-				$this->Database->prepare("UPDATE tl_iso_producttypes %s WHERE id=?")->set($arrSet)->execute($objTypes->id);
+				$arrAttributes = deserialize($objTypes->$field);
+
+				if (!array_is_assoc($arrAttributes))
+				{
+					$arrNew = array();
+
+					foreach ($arrAttributes as $i => $attribute)
+					{
+						$arrNew[$attribute]['enabled'] = '1';
+						$arrNew[$attribute]['position'] = $i;
+					}
+					
+					$arrNew['start']['enabled'] = '1';
+					$arrNew['stop']['enabled'] = '1';
+
+					$this->Database->prepare("UPDATE tl_iso_producttypes SET $field=? WHERE id=?")
+								   ->execute(serialize($arrNew), $objTypes->id);
+				}
 			}
 		}
 	}
