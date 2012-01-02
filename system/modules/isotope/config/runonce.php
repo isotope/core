@@ -392,7 +392,7 @@ class IsotopeRunonce extends Controller
 		{
 			$this->Database->query("ALTER TABLE tl_iso_tax_rate ADD COLUMN postalCodes text NULL");
 			
-			$obTaxRates = $this->Database->execute("SELECT * FROM tl_iso_tax_rate WHERE postal!=''");
+			$objTaxRates = $this->Database->execute("SELECT * FROM tl_iso_tax_rate WHERE postal!=''");
 			
 			while( $objTaxRates->next() )
 			{
