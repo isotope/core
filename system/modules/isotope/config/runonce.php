@@ -731,7 +731,7 @@ class IsotopeRunonce extends Controller
 			{
 				$arrAttributes = deserialize($objTypes->$field);
 
-				if (!array_is_assoc($arrAttributes))
+				if (is_array($arrAttributes) && !array_is_assoc($arrAttributes))
 				{
 					$arrNew = array();
 
