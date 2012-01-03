@@ -100,7 +100,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
 				'label'               => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['copy'],
 				'href'                => 'act=copy',
 				'icon'                => 'copy.gif',
-				'button_callback'     => array('tl_iso_tax_rate', 'copyTaxClass'),
+				'button_callback'     => array('tl_iso_tax_rate', 'copyTaxRate'),
 			),
 			'delete' => array
 			(
@@ -108,7 +108,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
 				'href'                => 'act=delete',
 				'icon'                => 'delete.gif',
 				'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"',
-				'button_callback'     => array('tl_iso_tax_rate', 'deleteTaxClass'),
+				'button_callback'     => array('tl_iso_tax_rate', 'deleteTaxRate'),
 			),
 			'show' => array
 			(
@@ -414,4 +414,3 @@ class tl_iso_tax_rate extends Backend
 		return ($this->User->isAdmin || $this->User->hasAccess('delete', 'iso_tax_ratep')) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
 	}
 }
-
