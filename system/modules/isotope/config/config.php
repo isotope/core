@@ -284,11 +284,16 @@ $GLOBALS['TL_HOOKS']['addCustomRegexp'][]			= array('Isotope', 'validateRegexp')
 $GLOBALS['TL_HOOKS']['getSearchablePages'][]		= array('IsotopeFrontend', 'addProductsToSearchIndex');
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][]			= array('IsotopeFrontend', 'replaceIsotopeTags');
 $GLOBALS['TL_HOOKS']['generatePage'][]				= array('IsotopeFrontend', 'injectMessages');
-$GLOBALS['TL_HOOKS']['parseTemplate'][]				= array('IsotopeFrontend', 'fixNavigationTrail');
 $GLOBALS['TL_HOOKS']['executePreActions'][]			= array('ProductTree', 'executePreActions');
 $GLOBALS['TL_HOOKS']['executePostActions'][]		= array('ProductTree', 'executePostActions');
 $GLOBALS['TL_HOOKS']['translateUrlParameters'][]	= array('IsotopeFrontend', 'translateProductUrls');
 $GLOBALS['ISO_HOOKS']['buttons'][]					= array('Isotope', 'defaultButtons');
+
+if (TL_MODE == 'FE')
+{
+	// Do not parse backend templates
+	$GLOBALS['TL_HOOKS']['parseTemplate'][]			= array('IsotopeFrontend', 'fixNavigationTrail');
+}
 
 
 /**
