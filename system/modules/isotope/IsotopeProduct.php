@@ -1223,7 +1223,11 @@ class IsotopeProduct extends Controller
 			}
 
 			$this->arrData[$attribute] = $arrData[$attribute];
-			unset($this->arrCache[$attribute]);
+			
+			if (is_array($this->arrCache) && isset($this->arrCache[$attribute]))
+			{
+				unset($this->arrCache[$attribute]);
+			}
 		}
 
 		if (!$this->blnLocked && in_array('price', $this->arrVariantAttributes))
