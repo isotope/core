@@ -933,27 +933,26 @@ $endScript";
 			}
 		}
 
-		if (count($arrFilters))
+		if (!empty($arrFilters))
 		{
 			global $filterConfig;
 			$filterConfig = $arrFilters;
 			$arrProducts = array_filter($arrProducts, array(self, 'filterProducts'));
 		}
 
-		if (count($arrSorting))
+		if (!empty($arrSorting))
 		{
 			$arrParam = array();
+			$arrData = array();
 
 			foreach ($arrSorting as $strField => $arrConfig)
 			{
-				$arrData = array();
-
 				foreach ($arrProducts as $id => $objProduct)
 				{
-					$arrData[$id] = str_replace('"', '', $objProduct->$strField);
+					$arrData[$strField][$id] = str_replace('"', '', $objProduct->$strField);
 				}
 
-				$arrParam[] = $arrData;
+				$arrParam[] = &$arrData[$strField];
 				$arrParam = array_merge($arrParam, $arrConfig);
 			}
 
