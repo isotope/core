@@ -1588,8 +1588,14 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 		// Paste button for products/variants
 		else
 		{
+			// Disable root paste for variants
+			if ($row['id'] == 0 && $this->Input->get('mode') == 'create')
+			{
+				return '';
+			}
+			
 			// Disable paste buttons for variants
-			if ($row['id'] > 0 && $row['pid'] > 0)
+			elseif ($row['id'] > 0 && $row['pid'] > 0)
 			{
 				return '';
 			}

@@ -7,6 +7,9 @@ Version 1.3.rc2 (2012-??-??)
 ### Improved
 - Product sorting is now case-insensitive
 
+### Fixed
+- Pasting new product variant into root node (#2767)
+
 
 Version 1.3.rc1 (2012-01-02)
 ----------------------------
