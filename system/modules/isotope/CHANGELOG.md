@@ -6,9 +6,14 @@ Version 1.3.rc2 (2012-??-??)
 
 ### Improved
 - Product sorting is now case-insensitive
+- Hide "new" button when pasting product or variant
 
 ### Fixed
 - Pasting new product variant into root node (#2767)
+- Product variant could not be created (#2769)
+
+### Other
+- Introducing the "provider" directory for complex callback handlers
 
 
 Version 1.3.rc1 (2012-01-02)

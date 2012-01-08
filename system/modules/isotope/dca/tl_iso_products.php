@@ -86,14 +86,14 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'new_product' => array
 			(
 				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['new_product'],
-				'href'				=> 'act=create',
+				'href'				=> 'act=paste&mode=create&type=product',
 				'class'				=> 'header_new',
 				'attributes'		=> 'onclick="Backend.getScrollOffset();"',
 			),
 			'new_variant' => array
 			(
 				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['new_variant'],
-				'href'				=> 'act=paste&mode=create',
+				'href'				=> 'act=paste&mode=create&type=variant',
 				'class'				=> 'header_new',
 				'attributes'		=> 'onclick="Backend.getScrollOffset();"',
 			),
@@ -209,7 +209,6 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'href'				=> 'act=paste&amp;mode=copy&amp;childs=1',
 				'icon'				=> 'copy.gif',
 				'attributes'		=> 'onclick="Backend.getScrollOffset();"',
-				'button_callback'	=> array('tl_iso_products', 'copyProduct')
 			),
 			'cut' => array
 			(
@@ -515,6 +514,13 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 class tl_iso_products extends Backend
 {
 
+	/**
+	 * paste_button_callback Provider
+	 * @var PasteProductButton
+	 */
+	protected $PasteProductButton;
+	
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -656,7 +662,7 @@ class tl_iso_products extends Backend
 	 */
 	public function checkPermission()
 	{
-		if (strlen($this->Input->get('act')) && $this->Input->get('mode') != 'create')
+		if ($this->Input->get('act') != '' && ($this->Input->get('mode') == '' || is_numeric($this->Input->get('mode'))))
 		{
 			$GLOBALS['TL_DCA']['tl_iso_products']['config']['closed'] = false;
 		}
@@ -1536,20 +1542,6 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 
 
 	/**
-	 * Return the copy page button
-	 */
-	public function copyProduct($row, $href, $label, $title, $icon, $attributes, $table)
-	{
-		if ($row['pid'] == 0)
-		{
-			$href = 'act=copy&childs=1';
-		}
-
-		return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
-	}
-
-
-	/**
 	 * Return the paste button
 	 * @param DataContainer
 	 * @param array
@@ -1561,96 +1553,10 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 	 */
 	public function pasteProduct(DataContainer $dc, $row, $table, $cr, $arrClipboard=false)
 	{
-		// Paste button for product groups
-		if ($table == 'tl_iso_groups')
-		{
-			// Cannot paste new variants into product groups
-			if ($arrClipboard === false || $arrClipboard['mode'] == 'create')
-			{
-				return '';
-			}
-
-			switch( $arrClipboard['mode'] )
-			{
-				// Cannot paste a variant into product groups
-				case 'cut':
-				case 'copy':
-					$objProduct = $this->Database->prepare("SELECT * FROM {$dc->table} WHERE id=?")->execute($arrClipboard['id']);
-
-					if ($objProduct->pid > 0)
-					{
-						return '';
-					}
-					break;
-			}
-		}
+		require_once(TL_ROOT . '/system/modules/isotope/providers/PasteProductButton.php');
 		
-		// Paste button for products/variants
-		else
-		{
-			// Disable root paste for variants
-			if ($row['id'] == 0 && $this->Input->get('mode') == 'create')
-			{
-				return '';
-			}
-			
-			// Disable paste buttons for variants
-			elseif ($row['id'] > 0 && $row['pid'] > 0)
-			{
-				return '';
-			}
-			elseif ($arrClipboard !== false && $row['id'] > 0)
-			{
-				switch( $arrClipboard['mode'] )
-				{
-					case 'cut':
-					case 'copy':
-						$objProduct = $this->Database->prepare("SELECT * FROM {$dc->table} WHERE id=?")->execute($arrClipboard['id']);
-
-						// Cannot cut or copy a product into product, only variant into product
-						if (($objProduct->pid == 0 && $row['id'] != 0) || ($row['id'] == 0 && $objProduct->pid > 0))
-						{
-							return '';
-						}
-						
-						// Cannot copy a variant into it's current product
-						elseif ($row['id'] != 0 && $objProduct->pid == $row['id'])
-						{
-							$disablePI = true;
-						}
-						break;
-
-					// Cannot cut or copy product into products
-					// cut or copy multiple variants is disabled
-					case 'cutAll':
-					case 'copyAll':
-						return '';
-						break;
-				}
-			}
-		}
-
-		// Disable all buttons if there is a circular reference
-		if ($arrClipboard !== false && ($arrClipboard['mode'] == 'cut' && ($cr == 1 || ($table == $dc->table && $arrClipboard['id'] == $row['id'])) || $arrClipboard['mode'] == 'cutAll' && ($cr == 1 || ($table == $dc->table && in_array($row['id'], $arrClipboard['id'])))))
-		{
-			$disablePI = true;
-		}
-
-		// Disable "paste into" button for products without variant data
-		elseif ($table == $dc->table && $row['id'] > 0)
-		{
-			$objType = $this->Database->prepare("SELECT * FROM tl_iso_producttypes WHERE id=?")->execute($row['type']);
-
-			if (!$objType->variants)
-			{
-				$disablePI = true;
-			}
-		}
-
-		// Return the button
-		$imagePasteInto = $this->generateImage('pasteinto.gif', sprintf($GLOBALS['TL_LANG'][$table]['pasteinto'][1], $row['id']), 'class="blink"');
-
-		return ($disablePI ? $this->generateImage('pasteinto_.gif', '', 'class="blink"').' ' : '<a href="'.$this->addToUrl('act='.$arrClipboard['mode'].'&amp;mode=1&childs=1&amp;'.(($table != $dc->table || $row['id'] == 0) ? 'gid' : 'pid').'='.$row['id'].(!is_array($arrClipboard['id']) ? '&amp;id='.$arrClipboard['id'] : '')).'" title="'.specialchars(sprintf($GLOBALS['TL_LANG'][$table]['pasteinto'][1], $row['id'])).'" onclick="Backend.getScrollOffset();">'.$imagePasteInto.'</a> ');
+		$this->import('PasteProductButton');
+		return $this->PasteProductButton->generate($dc, $row, $table, $cr, $arrClipboard);
 	}
 
 
