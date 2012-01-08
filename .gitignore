@@ -5,13 +5,13 @@
 !.gitignore
 
 # Isotope ignoring rules
-!/system/
-/system/*
-!/system/modules
-/system/modules/*
+!isotope/
+!system/
+system/*
+!system/drivers/
+system/drivers/*
+!system/modules
+system/modules/*
 !system/modules/isotope/
 !system/modules/isotope_multilingual/
 !system/modules/isotope_rules/
-
-!/system/drivers/DC_ProductData.php
-!/system/drivers/DC_TablePageId.php
