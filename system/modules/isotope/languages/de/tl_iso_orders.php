@@ -34,7 +34,7 @@
  */
 
 $GLOBALS['TL_LANG']['tl_iso_orders']['order_id'][0] = 'Bestellnummer';
-$GLOBALS['TL_LANG']['tl_iso_orders']['uniqid'][0] = 'Einzigartige ID';
+$GLOBALS['TL_LANG']['tl_iso_orders']['uniqid'][0] = 'Eindeutige ID';
 $GLOBALS['TL_LANG']['tl_iso_orders']['status'][0] = 'Bestellstatus';
 $GLOBALS['TL_LANG']['tl_iso_orders']['status'][1] = 'Wählen Sie den Status der Bestellung.';
 $GLOBALS['TL_LANG']['tl_iso_orders']['date_payed'][0] = 'Bezahldatum';

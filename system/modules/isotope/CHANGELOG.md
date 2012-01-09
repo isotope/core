@@ -7,6 +7,7 @@ Version 1.3.rc2 (2012-??-??)
 ### Improved
 - Product sorting is now case-insensitive
 - Hide "new" button when pasting product or variant
+- German translation
 
 ### Fixed
 - Pasting new product variant into root node (#2767)

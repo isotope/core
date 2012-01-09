@@ -37,7 +37,7 @@ $GLOBALS['TL_LANG']['tl_module']['iso_list_layout'][0] = 'Produktlisten-Template
 $GLOBALS['TL_LANG']['tl_module']['iso_list_layout'][1] = 'Bitte wählen Sie ein Listen-Layout. Sie können individuelle Listen-Layouts zum <em>templates</em>-Ordner hinzufügen. Listen-Templates beginnen mit <em>iso_list_</em> und benötigen eine Dateiendung <em>.html5, .xhtml oder .tpl (veraltet)</em>.';
 $GLOBALS['TL_LANG']['tl_module']['iso_reader_layout'][0] = 'Produktleser-Template';
 $GLOBALS['TL_LANG']['tl_module']['iso_reader_layout'][1] = 'Bitte wählen Sie ein Leser-Template. Sie können individuelle Leser-Templates zum <em>templates</em>-Ordner hinzufügen. Leser-Templates beginnen mit <em>iso_reader_</em>.';
-$GLOBALS['TL_LANG']['tl_module']['iso_reader_jumpTo'][0] = 'Weiterleitungs-Seite für Produkt-Leser';
+$GLOBALS['TL_LANG']['tl_module']['iso_reader_jumpTo'][0] = 'Weiterleitungs-Seite zum Produkt-Leser';
 $GLOBALS['TL_LANG']['tl_module']['iso_reader_jumpTo'][1] = 'Diese Einstellung legt fest, zu welcher Seite ein Nutzer weitergeleitet wird, wenn er bei einem Produkt auf weitere Informationen (Produktdetails) klickt.';
 $GLOBALS['TL_LANG']['tl_module']['iso_cart_layout'][0] = 'Warenkorb-Template';
 $GLOBALS['TL_LANG']['tl_module']['iso_cart_layout'][1] = 'Bitte wählen Sie ein Warenkorb-Layout. Sie können individuelle Warenkorb-Layouts zum <em>templates</em>-Ordner hinzufügen. Warenkorb-Templates beginnen mit <em>iso_cart_</em>.';
@@ -76,7 +76,7 @@ $GLOBALS['TL_LANG']['tl_module']['iso_mail_admin'][1] = 'Wählen Sie die Isotope
 $GLOBALS['TL_LANG']['tl_module']['iso_sales_email'][0] = 'E-Mail-Adresse des Verkaufsadmins';
 $GLOBALS['TL_LANG']['tl_module']['iso_sales_email'][1] = 'Geben Sie eine E-Mail-Adresse (abweichend von der Standard Systemadmin-Adresse) ein, zu der Shop-Benachrichtigungen gesendet werden sollen.';
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope'][0] = 'Kategorie-Anwendungsbereich';
-$GLOBALS['TL_LANG']['tl_module']['iso_category_scope'][1] = 'Spezifizieren Sie den Anwendungsbereich eines Produkt-Auflisters.';
+$GLOBALS['TL_LANG']['tl_module']['iso_category_scope'][1] = 'Spezifizieren Sie den Anwendungsbereich diese Produktliste.';
 $GLOBALS['TL_LANG']['tl_module']['iso_use_quantity'][0] = 'Menge aktivieren';
 $GLOBALS['TL_LANG']['tl_module']['iso_use_quantity'][1] = 'Ermöglicht es den Nutzern anzugeben, dass 1 oder mehrere Stück eines Produkts gekauft werden sollen.';
 $GLOBALS['TL_LANG']['tl_module']['iso_filterModules'][0] = 'Filter-Module';
@@ -107,7 +107,7 @@ $GLOBALS['TL_LANG']['tl_module']['iso_forward_review'][0] = 'Vorwärts zur Bewer
 $GLOBALS['TL_LANG']['tl_module']['iso_forward_review'][1] = 'Den Nutzer zur Bewertungsseite weiterleiten, falls keine weiteren Daten in einem Schritt benötigt werden.';
 $GLOBALS['TL_LANG']['tl_module']['iso_related_categories'][0] = 'Ähnliche Kategorien';
 $GLOBALS['TL_LANG']['tl_module']['iso_related_categories'][1] = 'Wählen Sie Kategorien aus denen Produkte angezeigt werden sollen.';
-$GLOBALS['TL_LANG']['tl_module']['iso_includeMessages'][0] = 'Nachrichten einbinden';
+$GLOBALS['TL_LANG']['tl_module']['iso_includeMessages'][0] = 'Meldungen ausgeben';
 $GLOBALS['TL_LANG']['tl_module']['iso_includeMessages'][1] = 'Diese Einstellung ermöglicht es den Nutzern Fehler, Hinweise oder Bestätigungen anzuzeigen, die der Gast  sehen sollte.';
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['member'] = 'Anmelden/Registrieren erforderlich';
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['guest'] = 'Nur Gast-Bestellungen';
@@ -123,4 +123,11 @@ $GLOBALS['TL_LANG']['tl_module']['sortingDirection']['DESC'] = 'Abwärts';
 $GLOBALS['TL_LANG']['tl_module']['featured_legend'] = 'Sonderprodukte-Einstellungen';
 $GLOBALS['TL_LANG']['tl_module']['config_legend'] = 'Konfigurations-Einstellungen';
 $GLOBALS['TL_LANG']['tl_module']['display_legend'] = 'Anzeige-Einstellungen';
+
+
+/**
+ * Fields
+ */
+$GLOBALS['TL_LANG']['tl_module']['iso_list_where']				= array('Bedingung', 'Geben Sie eine SQL-Bedingung zum filtern der Liste ein. Sie müssen die Felder mit "p1." beginnen (z.B. <em>p1.featured=1</em> oder <em>p1.color!=\'red\'</em>)!');
+$GLOBALS['TL_LANG']['tl_module']['iso_hide_list']				= array('Ausblenden bei Produktansicht', 'Blendet die Liste aus, wenn ein Produkt-Alias in der URL gefunden wird.');
 

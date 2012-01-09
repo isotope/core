@@ -131,3 +131,18 @@ $GLOBALS['TL_LANG']['tl_iso_products']['media_legend'] = 'Dateiverwaltung';
 $GLOBALS['TL_LANG']['tl_iso_products']['publish_legend'] = 'Veröffentlichung';
 $GLOBALS['TL_LANG']['tl_iso_products']['variant_legend'] = 'Produktvarianten-Einrichtung';
 
+
+/**
+ * Buttons
+ */
+$GLOBALS['TL_LANG']['tl_iso_products']['filter']			= array('Erweiterte Filter', 'Erweiterte Filter anwenden');
+$GLOBALS['TL_LANG']['tl_iso_products']['filter_remove']		= array('Filter entfernen', 'Erweiterte Filter zurücksetzen');
+$GLOBALS['TL_LANG']['tl_iso_products']['filter_noimages']	= array('Produkte ohne Bilder', 'Zeit nur Produkte ohne Produktbilder');
+$GLOBALS['TL_LANG']['tl_iso_products']['filter_nocategory']	= array('Produkte ohne Kategorie', 'Zeigt zur Produkte die keiner Kategorie zugeordnet sind');
+$GLOBALS['TL_LANG']['tl_iso_products']['filter_new_today']	= array('Heute hinzugefügt', 'Zeigt nur Produkte welche heute hinzugefügt wurden');
+$GLOBALS['TL_LANG']['tl_iso_products']['filter_new_week']	= array('Diese Woche hinzugefügt', 'Zeigt nur Produkte welche in den letzten 7 Tagen hinzugefügt wurden');
+$GLOBALS['TL_LANG']['tl_iso_products']['filter_new_month']	= array('Diesen Monat hinzugefügt', 'Zeigt nur Produkte welche in den letzten 30 Tagen hinzugefügt wurden');
+$GLOBALS['TL_LANG']['tl_iso_products']['toggleGroups']		= array('Alle Gruppen öffnen/schließen', 'Alle Gruppen öffnen/schließen');
+$GLOBALS['TL_LANG']['tl_iso_products']['toggleVariants']	= array('Alle Varianten öffnen/schließen', 'Alle Varianten öffnen/schließen');
+$GLOBALS['TL_LANG']['tl_iso_products']['groups']			= array('Produktgruppen', 'Produktgruppen verwalten');
+
