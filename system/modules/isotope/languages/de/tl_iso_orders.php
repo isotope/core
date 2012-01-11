@@ -88,6 +88,14 @@ $GLOBALS['TL_LANG']['tl_iso_orders']['export_emails'][0] = 'Exportiere Bestell-E
 $GLOBALS['TL_LANG']['tl_iso_orders']['export_emails'][1] = 'Alle E-Mails für diejenigen die bestellten exportieren.';
 $GLOBALS['TL_LANG']['tl_iso_orders']['print_invoices'][0] = 'Rechnungen drucken';
 $GLOBALS['TL_LANG']['tl_iso_orders']['print_invoices'][1] = 'Eine oder mehrere Rechnungen in ein Einzeldokument eines bestimmten Bestellstatus\' drucken.';
+
+
+/**
+ * Legends
+ */
 $GLOBALS['TL_LANG']['tl_iso_orders']['status_legend'] = 'Bestellstatus';
 $GLOBALS['TL_LANG']['tl_iso_orders']['details_legend'] = 'Bestelldetails';
+$GLOBALS['TL_LANG']['tl_iso_orders']['email_legend']	= 'E-Mail Daten';
+$GLOBALS['TL_LANG']['tl_iso_orders']['billing_address_legend']	= 'Rechnungsadress-Daten';
+$GLOBALS['TL_LANG']['tl_iso_orders']['shipping_address_legend']	= 'Versandadress-Daten';
 

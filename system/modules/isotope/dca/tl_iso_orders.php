@@ -151,7 +151,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{status_legend},status,date_payed,date_shipped;{details_legend},details,notes;{email_legend:hide},email_data',
+		'default'                     => '{status_legend},status,date_payed,date_shipped;{details_legend},details,notes;{email_legend:hide},email_data;{billing_address_legend:hide},billing_address_data;{shipping_address_legend:hide},shipping_address_data',
 	),
 
 	// Fields
@@ -246,6 +246,16 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 		'email_data' => array
 		(
 			'input_field_callback'	=> array('tl_iso_orders', 'generateEmailData'),
+			'eval'					=> array('doNotShow'=>true),
+		),
+		'billing_address_data' => array
+		(
+			'input_field_callback'	=> array('tl_iso_orders', 'generateBillingAddressData'),
+			'eval'					=> array('doNotShow'=>true),
+		),
+		'shipping_address_data' => array
+		(
+			'input_field_callback'	=> array('tl_iso_orders', 'generateShippingAddressData'),
 			'eval'					=> array('doNotShow'=>true),
 		),
 	)
@@ -415,6 +425,84 @@ class tl_iso_orders extends Backend
   <tr>
     <td' . $strClass . ' style="vertical-align:top"><span class="tl_label">'.$k.': </span></td>
     <td' . $strClass . '>'.((strip_tags($v) == $v) ? nl2br($v) : $v).'</td>
+  </tr>';
+		}
+
+		$strBuffer .= '
+</tbody></table>
+</div>';
+
+		return $strBuffer;
+	}
+	
+	
+	/**
+	 * Generate the billing address details
+	 * @param	object	$dc
+	 * @param	string	$xlabel
+	 * @return	string
+	 */
+	public function generateBillingAddressData($dc, $xlabel)
+	{
+		return $this->generateAddressData($dc->id, 'billing_address');
+	}
+	
+	
+	/**
+	 * Generate the shipping address details
+	 * @param	object	$dc
+	 * @param	string	$xlabel
+	 * @return	string
+	 */
+	public function generateShippingAddressData($dc, $xlabel)
+	{
+		return $this->generateAddressData($dc->id, 'shipping_address');
+	}
+	
+	
+	/**
+	 * Generate address details
+	 * @param	int
+	 * @param	string
+	 * @return	string
+	 */
+	protected function generateAddressData($intId, $strField)
+	{
+		$objOrder = $this->Database->execute("SELECT * FROM tl_iso_orders WHERE id=".$intId);
+
+		if (!$objOrder->numRows)
+		{
+			$this->redirect('contao/main.php?act=error');
+		}
+
+		$arrAddress = deserialize($objOrder->$strField, true);
+
+		if (!is_array($arrAddress))
+		{
+			return '<div class="tl_gerror">No address data available.</div>';
+		}
+		
+		$this->loadDataContainer('tl_iso_addresses');
+
+		$strBuffer = '
+<div>
+<table cellpadding="0" cellspacing="0" class="tl_show" summary="Table lists all details of an entry" style="width:650px">
+  <tbody>';
+
+		$i=0;
+		foreach( $GLOBALS['TL_DCA']['tl_iso_addresses']['fields'] as $k => $v )
+		{
+			if (!isset($arrAddress[$k]))
+				continue;
+			
+			$v = $arrAddress[$k];
+			
+			$strClass = ++$i%2 ? '' : ' class="tl_bg"';
+
+			$strBuffer .= '
+  <tr>
+    <td' . $strClass . ' style="vertical-align:top"><span class="tl_label">'.$this->Isotope->formatLabel('tl_iso_addresses', $k).': </span></td>
+    <td' . $strClass . '>'.$this->Isotope->formatValue('tl_iso_addresses', $k, $v).'</td>
   </tr>';
 		}
 
