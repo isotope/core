@@ -178,7 +178,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 
 			$objWidget = new $strClass($this->prepareForWidget($arrData, 'payment['.$field.']'));
 
-			$objWidget->value = $_SESSION['CHECKOUT_DATA']['payment'][$field];
+			//$objWidget->value = $_SESSION['CHECKOUT_DATA']['payment'][$field];
 
 			// Validate input
 			if ($this->Input->post('FORM_SUBMIT') == 'payment_form' && $arrPayment['module']==$this->id)
@@ -202,7 +202,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 			}
 			if($field=='card_cvNumber' && strlen($objWidget->value))
 			{
-				$objWidget->value = '****';
+				$objWidget->value = '***';
 			}
 
 			$strBuffer .= $objWidget->parse();
@@ -215,13 +215,15 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 
 			$_SESSION['CHECKOUT_DATA']['payment']['request_lockout'] = true;
 
-			$blnAuthCapture = $this->authCapturePayment($objOrder->id, $this->Isotope->Cart->grandTotal, false);
+			$blnResult = $this->authCapturePayment($objOrder->id, $this->Isotope->Cart->grandTotal, false);
 
-			if($blnAuthCapture)
+			if($blnResult)  //At this point the response data has been saved to the order and the auth was successful.
 			{
 					unset($_SESSION['CHECKOUT_DATA']['responseMsg']);
+                                        unset($_SESSION['CHECKOUT_DATA']['payment']);
+
 					$_SESSION['CHECKOUT_DATA']['payment']['card_accountNumber'] = $this->maskCC($arrPayment['card_accountNumber']); //PCI COMPLIANCE - MASK THE CC DATA
-					$_SESSION['CHECKOUT_DATA']['payment']['card_cvNumber'] = '****';
+					$_SESSION['CHECKOUT_DATA']['payment']['card_cvNumber'] = '***';
 					$_SESSION['CHECKOUT_DATA']['payment']['success'] = true;
 			}
 			else
@@ -431,7 +433,7 @@ $return .= '</div></div>';
 		if(!$blnCapture) //Gather CC Data from post
 		{
 			$arrPaymentInput = $this->Input->post('payment');
-
+                        unset($_POST['payment']);
 			$authnet_values["x_method"] 	= "CC";
 			$authnet_values["x_card_num"]	= $arrPaymentInput['card_accountNumber'];
 			$authnet_values["x_exp_date"]	= ($arrPaymentInput['card_expirationMonth'].substr($arrPaymentInput['card_expirationYear'], 2, 2));
@@ -450,7 +452,7 @@ $return .= '</div></div>';
 		$fieldsFinal = rtrim($fields, '&');
 
 		//new auth required if one has been sent and the value of that was less than our new value.
-		if(!count($arrOrderPaymentData) || $blnCapture || (!$blnCapture && count($arrOrderPaymentData) && $fltOrderTotal>$arrOrderPaymentData['grand-total']))
+		if(!count($arrOrderPaymentData) || $arrOrderPaymentData['transaction-status']!='Approved' || $blnCapture || (!$blnCapture && count($arrOrderPaymentData) && $fltOrderTotal>$arrOrderPaymentData['grand-total']))
 		{
 			$objRequest = new Request();
 	
@@ -458,7 +460,9 @@ $return .= '</div></div>';
 	
 			$arrResponses = $this->handleResponse($objRequest->response);
 			$arrResponseCodes = $this->getResponseCodes($objRequest->response);
-	
+
+	                unset($arrPaymentInput); //clear all cc input
+
 			foreach(array_keys($arrResponses) as $key)
 			{
 				$arrReponseLabels[strtolower(standardize($key))] = $key;
@@ -499,6 +503,8 @@ $return .= '</div></div>';
 
 		//unlock the payment submit
 		$_SESSION['CHECKOUT_DATA']['payment']['request_lockout'] = false;
+
+
 
 		if($blnFail)
 		{
