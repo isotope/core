@@ -253,6 +253,8 @@ $GLOBALS['ISO_LANG']['MSC']['productcacheLoading']	= 'Loading products...';
 $GLOBALS['ISO_LANG']['MSC']['productcacheNoscript']	= 'Your browser does not support javascript. Please <a href="%s">click here</a> to load the product list.';
 $GLOBALS['ISO_LANG']['MSC']['noFilesInFolder']		= 'No files in this folder';
 $GLOBALS['ISO_LANG']['MSC']['loadingProductData']	= 'Loading product data …';
+$GLOBALS['ISO_LANG']['MSC']['templateConfig']		= '%s (Store Config: %s)';
+$GLOBALS['ISO_LANG']['MSC']['templateTheme']		= '%s (Theme: %s)';
 
 
 /**

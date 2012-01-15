@@ -591,7 +591,7 @@ class tl_module_isotope extends Backend
 			$intPid = $this->Input->get('id');
 		}
 
-		return $this->getTemplateGroup('iso_list_', $intPid);
+		return IsotopeBackend::getTemplates('iso_list_', $intPid);
 	}
 
 
@@ -609,7 +609,7 @@ class tl_module_isotope extends Backend
 			$intPid = $this->Input->get('id');
 		}
 
-		return $this->getTemplateGroup('iso_reader_', $intPid);
+		return IsotopeBackend::getTemplates('iso_reader_', $intPid);
 	}
 
 
@@ -627,7 +627,7 @@ class tl_module_isotope extends Backend
 			$intPid = $this->Input->get('id');
 		}
 
-		return $this->getTemplateGroup('iso_cart_', $intPid);
+		return IsotopeBackend::getTemplates('iso_cart_', $intPid);
 	}
 
 
@@ -645,7 +645,7 @@ class tl_module_isotope extends Backend
 			$intPid = $this->Input->get('id');
 		}
 
-		return $this->getTemplateGroup('iso_filter_', $intPid);
+		return IsotopeBackend::getTemplates('iso_filter_', $intPid);
 	}
 
 

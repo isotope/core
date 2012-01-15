@@ -356,5 +356,87 @@ class IsotopeBackend extends Backend
 
 		return $arrModules;
 	}
+	
+	
+	/**
+	 * List template from all themes, show theme name
+	 * @param string
+	 * @param int
+	 * @return array
+	 */
+	public static function getTemplates($strPrefix, $intTheme=0)
+	{
+		$objDatabase = Database::getInstance();
+		$objConfig = Config::getInstance();
+
+		$arrThemes = array();
+		$arrStores = array();
+		$arrTemplates = array();
+		$arrFolders = array();
+
+		// Add the templates root directory
+		$arrFolders[] = TL_ROOT . '/templates';
+
+		// Add theme templates folder
+		$objTheme = $objDatabase->execute("SELECT name, templates FROM tl_theme" . ($intPid>0 ? " WHERE id=$intPid" : ''));
+		while( $objTheme->next() )
+		{
+			if ($objTheme->templates != '' && is_dir(TL_ROOT .'/'. $objTheme->templates))
+			{
+				$arrFolders[] = TL_ROOT .'/'. $objTheme->templates;
+				$arrThemes[TL_ROOT .'/'. $objTheme->templates] = $objTheme->name;
+			}
+		}
+		
+		// Add Isotope config templates folder
+		$objStore = $objDatabase->execute("SELECT name, templateGroup FROM tl_iso_config");
+		while( $objStore->next() )
+		{
+			if ($objStore->templateGroup != '' && is_dir(TL_ROOT .'/'. $objStore->templateGroup))
+			{
+				$arrFolders[] = TL_ROOT .'/'. $objStore->templateGroup;
+				$arrStores[TL_ROOT .'/'. $objStore->templateGroup] = $objStore->name;
+			}
+		}
+
+		// Add the module templates folders if they exist
+		foreach ($objConfig->getActiveModules() as $strModule)
+		{
+			$strFolder = TL_ROOT . '/system/modules/' . $strModule . '/templates';
+
+			if (is_dir($strFolder))
+			{
+				$arrFolders[] = $strFolder;
+			}
+		}
+
+		// Find all matching templates
+		foreach ($arrFolders as $strFolder)
+		{
+			$arrFiles = preg_grep('/^' . preg_quote($strPrefix, '/') . '/i',  scan($strFolder));
+
+			foreach ($arrFiles as $strTemplate)
+			{
+				$strName = basename($strTemplate);
+				$strName = substr($strName, 0, strrpos($strName, '.'));
+				
+				if (isset($arrThemes[$strFolder]))
+				{
+					$arrTemplates[$strName] = sprintf($GLOBALS['ISO_LANG']['MSC']['templateTheme'], $strName, $arrThemes[$strFolder]);
+				}
+				elseif (isset($arrStores[$strFolder]))
+				{
+					$arrTemplates[$strName] = sprintf($GLOBALS['ISO_LANG']['MSC']['templateConfig'], $strName, $arrStores[$strFolder]);
+				}
+				else
+				{
+					$arrTemplates[$strName] = $strName;
+				}
+			}
+		}
+
+		natcasesort($arrTemplates);
+		return $arrTemplates;
+	}
 }
 

@@ -443,3 +443,10 @@ $GLOBALS['ISO_LANG']['CUR']['ZAR'] = 'ZAR - Rand';
 $GLOBALS['ISO_LANG']['CUR']['ZMK'] = 'ZMK - sambischer Kwacha';
 $GLOBALS['ISO_LANG']['CUR']['ZWL'] = 'ZWL - Simbabwe-Dollar';
 
+
+/**
+ * Miscellaneous
+ */
+$GLOBALS['ISO_LANG']['MSC']['templateConfig']		= '%s (Shop-Konfiguration: %s)';
+$GLOBALS['ISO_LANG']['MSC']['templateTheme']		= '%s (Theme: %s)';
+

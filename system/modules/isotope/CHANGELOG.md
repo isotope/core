@@ -9,6 +9,7 @@ Version 1.3.rc2 (2012-??-??)
 - Hide "new" button when pasting product or variant
 - German translation
 - Reordered category scope options in module settings
+- Include store config template folder in template selection (#2786)
 
 ### Fixed
 - Pasting new product variant into root node (#2767)
