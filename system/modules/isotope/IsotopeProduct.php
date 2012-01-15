@@ -331,7 +331,12 @@ class IsotopeProduct extends Controller
 				return $this->quantity_requested * $this->tax_free_price;
 
 			case 'quantity_requested':
-				return ($this->arrCache[$strKey] ? $this->arrCache[$strKey] : 1);
+				if (!$this->arrCache[$strKey] && $this->Input->post('FORM_SUBMIT') == $this->formSubmit)
+				{
+					$this->arrCache[$strKey] = (int) $this->Input->post('quantity_requested');
+				}
+				
+				return $this->arrCache[$strKey] ? $this->arrCache[$strKey] : 1;
 
 			case 'available':
 				if ($this->blnLocked)

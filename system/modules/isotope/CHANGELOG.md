@@ -15,6 +15,7 @@ Version 1.3.rc2 (2012-??-??)
 - Pasting new product variant into root node (#2767)
 - Product variant could not be created (#2769)
 - Editing multiple products did not work (#2745)
+- Keep requested quantity on product error (#2772)
 
 ### Other
 - Introducing the "provider" directory for complex callback handlers
