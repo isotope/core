@@ -31,8 +31,6 @@
 
 /**
  * Handle Paypal payments
- *
- * @extends Payment
  */
 class PaymentPaypal extends IsotopePayment
 {

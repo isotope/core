@@ -99,7 +99,7 @@ class Isotope extends Controller
 			$this->resetConfig();
 		}
 
-		if (TL_MODE == 'FE')
+		if (TL_MODE == 'FE' && strpos($this->Environment->script, 'postsale.php') === false)
 		{
 			$this->Cart = new IsotopeCart();
 			$this->Cart->initializeCart((int)$this->Config->id, (int)$this->Config->store_id);
