@@ -423,63 +423,6 @@ class IsotopeRunonce extends Controller
 			$this->Database->query("UPDATE tl_iso_config SET billing_fields=shipping_fields");
 		}
 
-		if ($this->Database->fieldExists('gallery_size', 'tl_iso_config') && !$this->Database->fieldExists('imageSizes','tl_iso_config'))
-		{
-			$this->Database->query("ALTER TABLE tl_iso_config ADD COLUMN imageSizes blob NULL");
-
-			$objConfigs = $this->Database->execute("SELECT * FROM tl_iso_config");
-
-			while( $objConfigs->next() )
-			{
-				$arrGallery = deserialize($objConfigs->gallery_size, true);
-				$arrThumbnail = deserialize($objConfigs->thumbnail_size, true);
-				$arrMedium = deserialize($objConfigs->medium_size, true);
-				$arrLarge = deserialize($objConfigs->large_size, true);
-
-				$arrSizes = array
-				(
-					array
-					(
-						'name'		=> 'gallery',
-						'width'		=> $arrGallery[0],
-						'height'	=> $arrGallery[1],
-						'mode'		=> $arrGallery[2],
-						'watermark'	=> $objConfigs->gallery_watermark,
-						'position'	=> $objConfigs->watermark_position,
-					),
-					array
-					(
-						'name'		=> 'thumbnail',
-						'width'		=> $arrThumbnail[0],
-						'height'	=> $arrThumbnail[1],
-						'mode'		=> $arrThumbnail[2],
-						'watermark'	=> $objConfigs->thumbnail_watermark,
-						'position'	=> $objConfigs->watermark_position,
-					),
-					array
-					(
-						'name'		=> 'medium',
-						'width'		=> $arrMedium[0],
-						'height'	=> $arrMedium[1],
-						'mode'		=> $arrMedium[2],
-						'watermark'	=> $objConfigs->medium_watermark,
-						'position'	=> $objConfigs->watermark_position,
-					),
-					array
-					(
-						'name'		=> 'large',
-						'width'		=> $arrLarge[0],
-						'height'	=> $arrLarge[1],
-						'mode'		=> $arrLarge[2],
-						'watermark'	=> $objConfigs->large_watermark,
-						'position'	=> $objConfigs->watermark_position,
-					),
-				);
-
-				$this->Database->query("UPDATE tl_iso_config SET imageSizes='" . serialize($arrSizes) . "' WHERE id={$objConfigs->id}");
-			}
-		}
-
 		$this->loadDataContainer('tl_iso_addresses');
 		$objConfigs = $this->Database->execute("SELECT * FROM tl_iso_config");
 
@@ -621,6 +564,64 @@ class IsotopeRunonce extends Controller
 				// Do not use multiple DROP COLUMN in one ALTER TABLE. It is supported by MySQL, but not standard SQL92
 				$this->Database->query("ALTER TABLE tl_iso_config DROP COLUMN ".$size."_image_width");
 				$this->Database->query("ALTER TABLE tl_iso_config DROP COLUMN ".$size."_image_height");
+			}
+		}
+		
+		
+		if ($this->Database->fieldExists('gallery_size', 'tl_iso_config') && !$this->Database->fieldExists('imageSizes','tl_iso_config'))
+		{
+			$this->Database->query("ALTER TABLE tl_iso_config ADD COLUMN imageSizes blob NULL");
+
+			$objConfigs = $this->Database->execute("SELECT * FROM tl_iso_config");
+
+			while( $objConfigs->next() )
+			{
+				$arrGallery = deserialize($objConfigs->gallery_size, true);
+				$arrThumbnail = deserialize($objConfigs->thumbnail_size, true);
+				$arrMedium = deserialize($objConfigs->medium_size, true);
+				$arrLarge = deserialize($objConfigs->large_size, true);
+
+				$arrSizes = array
+				(
+					array
+					(
+						'name'		=> 'gallery',
+						'width'		=> $arrGallery[0],
+						'height'	=> $arrGallery[1],
+						'mode'		=> $arrGallery[2],
+						'watermark'	=> $objConfigs->gallery_watermark,
+						'position'	=> $objConfigs->watermark_position,
+					),
+					array
+					(
+						'name'		=> 'thumbnail',
+						'width'		=> $arrThumbnail[0],
+						'height'	=> $arrThumbnail[1],
+						'mode'		=> $arrThumbnail[2],
+						'watermark'	=> $objConfigs->thumbnail_watermark,
+						'position'	=> $objConfigs->watermark_position,
+					),
+					array
+					(
+						'name'		=> 'medium',
+						'width'		=> $arrMedium[0],
+						'height'	=> $arrMedium[1],
+						'mode'		=> $arrMedium[2],
+						'watermark'	=> $objConfigs->medium_watermark,
+						'position'	=> $objConfigs->watermark_position,
+					),
+					array
+					(
+						'name'		=> 'large',
+						'width'		=> $arrLarge[0],
+						'height'	=> $arrLarge[1],
+						'mode'		=> $arrLarge[2],
+						'watermark'	=> $objConfigs->large_watermark,
+						'position'	=> $objConfigs->watermark_position,
+					),
+				);
+
+				$this->Database->query("UPDATE tl_iso_config SET imageSizes='" . serialize($arrSizes) . "' WHERE id={$objConfigs->id}");
 			}
 		}
 	}
