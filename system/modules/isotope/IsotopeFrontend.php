@@ -540,6 +540,9 @@ $endScript";
 	 */
 	public function prepareForm($intId, $strFormId, $arrConfig=array())
 	{
+		$this->loadDataContainer('tl_form');
+		$this->loadDataContainer('tl_form_field');
+		
 		$objForm = new stdClass();
 		$objForm->arrHidden     = array();
 		$objForm->arrFields	    = array();
