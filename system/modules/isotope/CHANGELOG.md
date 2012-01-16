@@ -16,6 +16,7 @@ Version 1.3.rc2 (2012-??-??)
 - Product variant could not be created (#2769)
 - Editing multiple products did not work (#2745)
 - Keep requested quantity on product error (#2772)
+- Rules could not be deleted (#2798)
 
 ### Other
 - Introducing the "provider" directory for complex callback handlers
