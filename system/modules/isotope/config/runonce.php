@@ -50,7 +50,7 @@ class IsotopeRunonce extends Controller
 	public function run()
 	{
 		// Cancel if shop has not yet been installed
-		if (!$this->Database->tableExists('tl_iso_config'))
+		if (!$this->Database->tableExists('tl_iso_config') && !$this->Database->tableExists('tl_store'))
 			return;
 
 		$this->createIsotopeFolder();
