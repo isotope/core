@@ -10,6 +10,7 @@ Version 1.3.rc2 (2012-??-??)
 - German translation
 - Reordered category scope options in module settings
 - Include store config template folder in template selection (#2786)
+- Improvement to IsotopeGallery::generateMainImage() and InlineGallery::generateGallery() html rendering of css selectors for image and gallery containers (#2771)
 
 ### Fixed
 - Pasting new product variant into root node (#2767)

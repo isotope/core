@@ -229,7 +229,7 @@ class IsotopeGallery extends Frontend
 	{
 		if (!count($this->arrFiles))
 		{
-			return '<div class="iso_attribute" id="' . $this->name . '_' . $strType . 'size"> </div>';
+			return '<div class="iso_attribute images ' . strtolower($strType).'" id="' . $this->name . '_' . $strType . 'size"> </div>';
 		}
 
 		$arrFile = reset($this->arrFiles);
@@ -248,7 +248,7 @@ class IsotopeGallery extends Frontend
 
 		list($objTemplate->link, $objTemplate->rel) = explode('|', $arrFile['link']);
 
-		return '<div class="iso_attribute" id="' . $this->name . '_' . $strType . 'size">' . $objTemplate->parse() . '</div>';
+		return '<div class="iso_attribute images ' . strtolower($strType).'" id="' . $this->name . '_' . $strType . 'size">' . $objTemplate->parse() . '</div>';
 	}
 
 
@@ -285,7 +285,7 @@ class IsotopeGallery extends Frontend
 		}
 
 		$this->injectAjax();
-		return '<div class="iso_attribute" id="' . $this->name . '_gallery">' . $strGallery . '</div>';
+		return '<div class="iso_attribute '.strtolower($strType).'" id="' . $this->name . '_gallery">' . $strGallery . '</div>';
 	}
 
 
