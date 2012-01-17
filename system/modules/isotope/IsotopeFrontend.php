@@ -940,7 +940,8 @@ $endScript";
 			$arrProducts = array_filter($arrProducts, array(self, 'filterProducts'));
 		}
 
-		if (!empty($arrSorting))
+		// $arrProducts can be empty if the filter removed all records
+		if (!empty($arrSorting) && !empty($arrProducts))
 		{
 			$arrParam = array();
 			$arrData = array();
@@ -960,7 +961,7 @@ $endScript";
 
 			// Add product array as the last item. This will sort the products array based on the sorting of the passed in arguments.
 			$arrParam[] = &$arrProducts;
-
+			
 			// We need to use call_user_func_array because the number of parameters can be dynamic and this is the only way I know to pass an array as arguments
 			call_user_func_array('array_multisort', $arrParam);
 		}
