@@ -10,6 +10,7 @@ Version 1.3.rc2 (2012-??-??)
 - German translation
 - Reordered category scope options in module settings
 - Include store config template folder in template selection (#2786)
+- Load form data containers in IsotopeFrontend::prepareForm
 - Improvement to IsotopeGallery::generateMainImage() and InlineGallery::generateGallery() html rendering of css selectors for image and gallery containers (#2771)
 
 ### Fixed
@@ -18,6 +19,7 @@ Version 1.3.rc2 (2012-??-??)
 - Editing multiple products did not work (#2745)
 - Keep requested quantity on product error (#2772)
 - Rules could not be deleted (#2798)
+- Fixed array_multisort error message when search matched no product
 
 ### Other
 - Introducing the "provider" directory for complex callback handlers
