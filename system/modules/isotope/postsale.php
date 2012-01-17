@@ -52,6 +52,9 @@ class PostSale extends Frontend
 	 */
 	public function __construct()
 	{
+		// Contao Hooks are not save to be run on the postsale script (e.g. parseFrontendTemplate)
+		unset($GLOBALS['TL_HOOKS']);
+
 		parent::__construct();
 	}
 
