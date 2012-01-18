@@ -556,10 +556,11 @@ class IsotopeProduct extends Controller
 	 * Return all attributes for this product as array
 	 * @return array
 	 */
-	public function getAttributes()
+	/* TICKET #2639 BEGIN */
+	public function getAttributes(array $arrAttributes = null)
 	{
 		$arrData = array();
-		$arrAttributes = array_unique(array_merge($this->arrAttributes, $this->arrVariantAttributes));
+		$arrAttributes === null && $arrAttributes = array_unique(array_merge($this->arrAttributes, $this->arrVariantAttributes));
 
 		foreach ($arrAttributes as $attribute)
 		{
@@ -568,6 +569,7 @@ class IsotopeProduct extends Controller
 
 		return $arrData;
 	}
+	/* TICKET #2639 END */
 
 
 	/**
@@ -586,25 +588,37 @@ class IsotopeProduct extends Controller
 		$objTemplate = new IsotopeTemplate($strTemplate);
 		$arrProductOptions = array();
 		$arrAjaxOptions = array();
-		$arrAttributes = $this->getAttributes();
-
-		foreach ($arrAttributes as $attribute => $varValue)
+/* TICKET #2639 BEGIN */
+		$arrFields = $GLOBALS['TL_DCA']['tl_iso_products']['fields'];
+		$arrAttributes = array();
+		
+		foreach (array_unique(array_merge($this->arrAttributes, $this->arrVariantAttributes)) as $attribute)
 		{
-			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['customer_defined'] || $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
+			if ($arrFields[$attribute]['attributes']['customer_defined'] || $arrFields[$attribute]['attributes']['variant_option'])
 			{
 				$objTemplate->hasOptions = true;
 				$arrProductOptions[$attribute]['html'] = $this->generateProductOptionWidget($attribute);
 
-				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
+				if ($arrFields[$attribute]['attributes']['variant_option']
+/* TICKET #2648 BEGIN */
+				|| $arrFields[$attribute]['attributes']['ajax_option'])
+/* TICKET #2648 END */
 				{
 					$arrAjaxOptions[] = $attribute;
 				}
 			}
 			else
 			{
-				$objTemplate->$attribute = $this->generateAttribute($attribute, $varValue);
+				$arrAttributes[] = $attribute;
 			}
 		}
+
+		$arrAttributes = $this->getAttributes($arrAttributes);
+		foreach($arrAttributes as $attribute => $varValue)
+		{
+			$objTemplate->$attribute = $this->generateAttribute($attribute, $varValue);
+		}
+/* TICKET #2639 END */
 
 		$arrButtons = array();
 
@@ -680,49 +694,60 @@ class IsotopeProduct extends Controller
 		$this->validateVariant();
 
 		$arrOptions = array();
-		$arrAttributes = $this->getAttributes();
-
-		foreach ($arrAttributes as $attribute => $varValue)
+/* TICKET #2639 BEGIN */
+		$arrAttributes = array();
+		
+		foreach (array_unique(array_merge($this->arrAttributes, $this->arrVariantAttributes)) as $attribute)
 		{
-			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
+			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option']
+/* TICKET #2648 BEGIN */
+			|| $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['ajax_option'])
+/* TICKET #2648 END */
 			{
 				$arrOptions[] = array
 				(
-					'id' => ('ctrl_' . $attribute . '_' . $this->formSubmit),
+					'id' => 'ctrl_' . $attribute . '_' . $this->formSubmit,
 					'html' => $this->generateProductOptionWidget($attribute, true),
 				);
 			}
 			elseif (in_array($attribute, $this->arrVariantAttributes))
 			{
-				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['inputType'] == 'mediaManager')
-				{
-					$objGallery = $this->$attribute;
-
-					foreach ((array) $this->Isotope->Config->imageSizes as $size)
-					{
-						$arrOptions[] = array
-						(
-							'id' => ($this->formSubmit . '_' . $attribute . '_' . $size['name'] . 'size'),
-							'html' => $objGallery->generateMainImage($size['name']),
-						);
-					}
-
-					$arrOptions[] = array
-					(
-						'id' => ($this->formSubmit . '_' . $attribute . '_gallery'),
-						'html' => $objGallery->generateGallery(),
-					);
-				}
-				else
-				{
-					$arrOptions[] = array
-					(
-						'id' => ($this->formSubmit . '_' . $attribute),
-						'html' => $this->generateAttribute($attribute, $varValue),
-					);
-				}
+				$arrAttributes[] = $attribute;
 			}
 		}
+		
+		$arrAttributes = $this->getAttributes($arrAttributes);
+		foreach($arrAttributes as $attribute => $varValue)
+		{
+			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['inputType'] == 'mediaManager')
+			{
+				$objGallery = $this->$attribute;
+
+				foreach ((array) $this->Isotope->Config->imageSizes as $size)
+				{
+					$arrOptions[] = array
+					(
+						'id' => ('ctrl_' . $this->formSubmit . '_' . $attribute . '_' . $size['name'] . 'size'),
+						'html' => $objGallery->generateMainImage($size['name']),
+					);
+				}
+
+				$arrOptions[] = array
+				(
+					'id' => ($this->formSubmit . '_' . $attribute . '_gallery'),
+					'html' => $objGallery->generateGallery(),
+				);
+			}
+			else
+			{
+				$arrOptions[] = array
+				(
+					'id' => ($this->formSubmit . '_' . $attribute),
+					'html' => $this->generateAttribute($attribute, $varValue),
+				);
+			}
+		}
+/* TICKET #2639 END */
 
 		// HOOK for altering product data before output
 		if (isset($GLOBALS['ISO_HOOKS']['generateAjaxProduct']) && is_array($GLOBALS['ISO_HOOKS']['generateAjaxProduct']))
