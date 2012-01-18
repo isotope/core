@@ -104,7 +104,7 @@ class PaymentPaypal extends IsotopePayment
 		$arrData = array();
 		foreach( $_POST as $k => $v )
 		{
-			$arrData[] = $k . '=' . $v;
+			$arrData[] = $k . '=' . urlencode($v);
 		}
 
 		$objRequest = new Request();
@@ -128,7 +128,7 @@ class PaymentPaypal extends IsotopePayment
 			// Validate payment data (see #2221)
 			if ($objOrder->currency != $this->Input->post('mc_currency') || $objOrder->grandTotal != $this->Input->post('mc_gross'))
 			{
-				$this->log('IPN checkout manipulation in payment from "' . $this->Input->post('payer_email') . '" !', __METHOD__, TL_ERROR);
+				$this->log('IPN manipulation in payment from "' . $this->Input->post('payer_email') . '" !', __METHOD__, TL_ERROR);
 				return;
 			}
 
@@ -183,11 +183,11 @@ class PaymentPaypal extends IsotopePayment
 
 			$objOrder->save();
 
-			$this->log('PayPal IPN: data accepted', 'PaymentPaypal processPostSale()', TL_GENERAL);
+			$this->log('PayPal IPN: data accepted', __METHOD__, TL_GENERAL);
 		}
 		else
 		{
-			$this->log('PayPal IPN: data rejected (' . $objRequest->response . ')', __METHOD__, TL_GENERAL);
+			$this->log('PayPal IPN: data rejected (' . $objRequest->response . ')', __METHOD__, TL_ERROR);
 		}
 
 		header('HTTP/1.1 200 OK');
