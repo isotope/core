@@ -29,9 +29,9 @@
 //namespace UnitedPrototype\GoogleAnalytics\Internals\Request;
 
 //use UnitedPrototype\GoogleAnalytics\SocialInteraction;
-require_once('../../SocialInteraction.php');
+require_once('../../GoogleAnalyticsSocialInteraction.php');
 
-class SocialinteractionRequest extends PageviewRequest {
+class GoogleAnalyticsSocialinteractionRequest extends PageviewRequest {
 	
 	/**
 	 * @var \UnitedPrototype\GoogleAnalytics\SocialInteraction

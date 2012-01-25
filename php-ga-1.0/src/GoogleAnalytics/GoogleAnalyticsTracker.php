@@ -35,14 +35,14 @@
 //use UnitedPrototype\GoogleAnalytics\Internals\Request\ItemRequest;
 //use UnitedPrototype\GoogleAnalytics\Internals\Request\SocialInteractionRequest;
 
-require_once('Internals\Util.php');
-require_once('Internals\Request\PageviewRequest.php');
-require_once('Internals\Request\EventRequest.php');
-require_once('Internals\Request\TransactionRequest.php');
-require_once('Internals\Request\ItemRequest.php');
-require_once('Internals\Request\SocialInteractionRequest.php');
+require_once('Internals\GoogleAnalyticsUtil.php');
+require_once('Internals\Request\GoogleAnalyticsPageviewRequest.php');
+require_once('Internals\Request\GoogleAnalyticsEventRequest.php');
+require_once('Internals\Request\GoogleAnalyticsTransactionRequest.php');
+require_once('Internals\Request\GoogleAnalyticsItemRequest.php');
+require_once('Internals\Request\GoogleAnalyticsSocialInteractionRequest.php');
 
-class Tracker {
+class GoogleAnalyticsTracker {
 	
 	/**
 	 * Google Analytics client version on which this library is built upon,
@@ -233,7 +233,7 @@ class Tracker {
 	 * @param \UnitedPrototype\GoogleAnalytics\Visitor $visitor
 	 */
 	public function trackPageview(Page $page, Session $session, Visitor $visitor) {
-		$request = new PageviewRequest(static::$config);
+		$request = new GoogleAnalyticsPageviewRequest(static::$config);
 		$request->setPage($page);
 		$request->setSession($session);
 		$request->setVisitor($visitor);
@@ -253,7 +253,7 @@ class Tracker {
 		// Ensure that all required parameters are set
 		$event->validate();
 		
-		$request = new EventRequest(static::$config);
+		$request = new GoogleAnalyticsEventRequest(static::$config);
 		$request->setEvent($event);
 		$request->setSession($session);
 		$request->setVisitor($visitor);
@@ -278,7 +278,7 @@ class Tracker {
 		// Ensure that all required parameters are set
 		$transaction->validate();
 		
-		$request = new TransactionRequest(static::$config);
+		$request = new GoogleAnalyticsTransactionRequest(static::$config);
 		$request->setTransaction($transaction);
 		$request->setSession($session);
 		$request->setVisitor($visitor);
@@ -291,7 +291,7 @@ class Tracker {
 			// Ensure that all required parameters are set
 			$item->validate();
 			
-			$request = new ItemRequest(static::$config);
+			$request = new GoogleAnalyticsItemRequest(static::$config);
 			$request->setItem($item);
 			$request->setSession($session);
 			$request->setVisitor($visitor);
@@ -310,7 +310,7 @@ class Tracker {
 	 * @param \UnitedPrototype\GoogleAnalytics\Visitor $visitor
 	 */
 	public function trackSocial(SocialInteraction $socialInteraction, Page $page, Session $session, Visitor $visitor) {
-		$request = new SocialInteractionRequest(static::$config);
+		$request = new GoogleAnalyticsSocialInteractionRequest(static::$config);
 		$request->setSocialInteraction($socialInteraction);
 		$request->setPage($page);
 		$request->setSession($session);

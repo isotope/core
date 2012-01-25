@@ -31,7 +31,7 @@
 /**
  * @link http://code.google.com/p/gaforflash/source/browse/trunk/src/com/google/analytics/ecommerce/Item.as
  */
-class Item {
+class GoogleAnalyticsItem {
 	
 	/**
 	 * Order ID, e.g. "a2343898", will be mapped to "utmtid" parameter

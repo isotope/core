@@ -31,12 +31,12 @@
 //use UnitedPrototype\GoogleAnalytics\Config;
 
 //use UnitedPrototype\GoogleAnalytics\Internals\Util;
-require_once('../../Config.php');
-require_once('../Util.php');
+require_once('../../GoogleAnalyticsConfig.php');
+require_once('../GoogleAnalyticsUtil.php');
 /**
  * @link http://code.google.com/p/gaforflash/source/browse/trunk/src/com/google/analytics/core/GIFRequest.as
  */
-abstract class HttpRequest {	
+abstract class GoogleAnalyticsHttpRequest {	
 	
 	/**
 	 * Indicates the type of request, will be mapped to "utmt" parameter

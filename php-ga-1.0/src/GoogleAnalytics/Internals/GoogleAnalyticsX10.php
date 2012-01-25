@@ -29,11 +29,11 @@
 //namespace UnitedPrototype\GoogleAnalytics\Internals;
 
 /**
- * This is nearly a 1:1 PHP port of the gaforflash X10 class code.
+ * This is nearly a 1:1 PHP port of the gaforflash X10 class GoogleAnalyticscode.
  * 
  * @link http://code.google.com/p/gaforflash/source/browse/trunk/src/com/google/analytics/data/X10.as
  */
-class X10 {
+class GoogleAnalyticsX10 {
 	
 	/**
 	 * @var array

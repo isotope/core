@@ -5,7 +5,7 @@ spl_autoload_register(function($className) {
 		$className = substr($className, 1);
 	}
 	
-	// Leave if class should not be handled by this autoloader
+	// Leave if class GoogleAnalyticsshould not be handled by this autoloader
 	if(strpos($className, 'UnitedPrototype\\GoogleAnalytics') !== 0) return;
 	
 	$classPath = strtr(substr($className, strlen('UnitedPrototype')), '\\', '/') . '.php';

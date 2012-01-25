@@ -34,7 +34,7 @@
  * 
  * @link http://code.google.com/p/gaforflash/source/browse/trunk/src/com/google/analytics/core/GIFRequest.as
  */
-class Config {
+class GoogleAnalyticsConfig {
 	
 	/**
 	 * How strict should errors get handled? After all, we do just do some

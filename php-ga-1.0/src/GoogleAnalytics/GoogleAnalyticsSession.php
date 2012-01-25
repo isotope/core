@@ -31,14 +31,14 @@
 //use UnitedPrototype\GoogleAnalytics\Internals\Util;
 
 //use DateTime;
-require_once('Internals/Util.php');
+require_once('Internals/GoogleAnalyticsUtil.php');
 
 /**
  * You should serialize this object and store it in the //user session to keep it
  * persistent between requests (similar to the "__umtb" cookie of
  * the GA Javascript client).
  */
-class Session {
+class GoogleAnalyticsSession {
 	
 	/**
 	 * A unique per-session ID, will be mapped to "utmhid" parameter

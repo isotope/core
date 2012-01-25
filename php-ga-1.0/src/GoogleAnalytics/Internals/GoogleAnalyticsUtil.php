@@ -31,10 +31,10 @@
 /**
  * @link http://code.google.com/p/gaforflash/source/browse/trunk/src/com/google/analytics/core/Utils.as
  */
-class Util {
+class GoogleAnalyticsUtil {
 	
 	/**
-	 * This class does only have public static methods, no instantiation necessary
+	 * This class GoogleAnalyticsdoes only have public static methods, no instantiation necessary
 	 */
 	private function __construct() { }
 	

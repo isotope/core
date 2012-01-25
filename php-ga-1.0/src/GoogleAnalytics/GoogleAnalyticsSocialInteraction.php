@@ -28,7 +28,7 @@
 
 //namespace UnitedPrototype\GoogleAnalytics;
 
-class SocialInteraction {
+class GoogleAnalyticsSocialInteraction {
 	
 	/**
 	 * Required. A string representing the social network being tracked (e.g. "Facebook", "Twitter", "LinkedIn", ...),

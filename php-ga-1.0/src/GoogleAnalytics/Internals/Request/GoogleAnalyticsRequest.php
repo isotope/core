@@ -37,15 +37,15 @@
 //use UnitedPrototype\GoogleAnalytics\Internals\Util;
 //use UnitedPrototype\GoogleAnalytics\Internals\X10;
 
-require_once('../../Tracker.php');
-require_once('../../Visitor.php');
-require_once('../../Session.php');
-require_once('../../CustomVariable.php');
-require_once('../ParameterHolder.php');
-require_once('../Util.php');
-require_once('../X10.php');
+require_once('../../GoogleAnalyticsTracker.php');
+require_once('../../GoogleAnalyticsVisitor.php');
+require_once('../../GoogleAnalyticsSession.php');
+require_once('../../GoogleAnalyticsCustomVariable.php');
+require_once('../GoogleAnalyticsParameterHolder.php');
+require_once('../GoogleAnalyticsUtil.php');
+require_once('../GoogleAnalyticsX10.php');
 
-abstract class Request extends HttpRequest {
+abstract class GoogleAnalyticsRequest extends HttpRequest {
 	
 	/**
 	 * @var \UnitedPrototype\GoogleAnalytics\Tracker
@@ -148,7 +148,7 @@ abstract class Request extends HttpRequest {
 	 * @return \UnitedPrototype\GoogleAnalytics\Internals\ParameterHolder
 	 */
 	protected function buildParameters() {
-		$p = new ParameterHolder();
+		$p = new GoogleAnalyticsParameterHolder();
 		
 		$p->utmac = $this->tracker->getAccountId();
 		$p->utmhn = $this->tracker->getDomainName();
@@ -208,7 +208,7 @@ abstract class Request extends HttpRequest {
 				Tracker::_raiseError('The sum of all custom variables cannot exceed 5 in any given request.', __METHOD__);
 			}
 			
-			$x10 = new X10();
+			$x10 = new GoogleAnalyticsX10();
 			
 			$x10->clearKey(self::X10_CUSTOMVAR_NAME_PROJECT_ID);
 			$x10->clearKey(self::X10_CUSTOMVAR_VALUE_PROJECT_ID);

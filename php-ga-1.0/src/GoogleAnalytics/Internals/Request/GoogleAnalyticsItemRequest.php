@@ -31,10 +31,10 @@
 //use UnitedPrototype\GoogleAnalytics\Item;
 
 //use UnitedPrototype\GoogleAnalytics\Internals\ParameterHolder;
-require_once('../../Item.php');
-require_once('../ParameterHolder.php');
+require_once('../../GoogleAnalyticsItem.php');
+require_once('../GoogleAnalyticsParameterHolder.php');
 
-class ItemRequest extends Request {
+class GoogleAnalyticsItemRequest extends Request {
 	
 	/**
 	 * @var \UnitedPrototype\GoogleAnalytics\Item

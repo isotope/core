@@ -28,7 +28,7 @@
 
 //namespace UnitedPrototype\GoogleAnalytics;
 
-class Page {
+class GoogleAnalyticsPage {
 	
 	/**
 	 * Page request URI, e.g. "/path/page.html", will be mapped to

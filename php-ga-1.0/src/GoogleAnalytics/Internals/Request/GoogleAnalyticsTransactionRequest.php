@@ -32,10 +32,10 @@
 
 //use UnitedPrototype\GoogleAnalytics\Internals\ParameterHolder;
 
-require_once('../../Transaction.php');
-require_once('../ParameterHolder.php');
+require_once('../../GoogleAnalyticsTransaction.php');
+require_once('../GoogleAnalyticsParameterHolder.php');
 
-class TransactionRequest extends Request {
+class GoogleAnalyticsTransactionRequest extends Request {
 	
 	/**
 	 * @var \UnitedPrototype\GoogleAnalytics\Transaction

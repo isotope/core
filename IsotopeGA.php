@@ -29,5 +29,77 @@
 class IsotopeGA extends Frontend
 {
 	
+	public function postCheckout($objOrder, $arrItemIds, $arrData)
+	{
+		require_once('system/modules/isotope_ga/php-ga-1.0/src/GoogleAnalytics/GoogleAnalyticsTracker.php');
+		require_once('system/modules/isotope_ga/php-ga-1.0/src/GoogleAnalytics/GoogleAnalyticsSession.php');
+		require_once('system/modules/isotope_ga/php-ga-1.0/src/GoogleAnalytics/GoogleAnalyticsVisitor.php');
+		require_once('system/modules/isotope_ga/php-ga-1.0/src/GoogleAnalytics/GoogleAnalyticsTransaction.php');
+		require_once('system/modules/isotope_ga/php-ga-1.0/src/GoogleAnalytics/GoogleAnalyticsItem.php');
+		// Initilize GA Tracker
+		$tracker = new GoogleAnalyticsTracker($this->Isotope->Config->ga_account, $this->Environment->base);
+		
+		// Assemble Visitor information
+		// (could also get unserialized from database)
+		$visitor = new GoogleAnalyticsVisitor();
+		$visitor->setIpAddress($this->Environment->ip);
+		$visitor->setUserAgent($this->Environment->httpUserAgent);
+			
+		$transaction = new GoogleAnalyticsTransaction();
+		
+		$transaction->setOrderId($objOrder->order_id);
+		$transaction->setAffiliation($this->Isotope->Config->name);
+		$transaction->setTotal($objOrder->grand_total);
+		$transaction->setTax($objOrder->taxTotal);
+		$transaction->setCity($objOrder->billingAddress['city']);
+		
+		if($objOrder->billingAddress['subdivision'])
+		{
+			$arrSub = explode("-",$objOrder->billingAddress['subdivision']);
+			$transaction->setState($arrSub[1]);
+		}
+		
+		$transaction->setCountry($objOrder->billingAddress['country']);
+		
+		$arrProducts = $objOrder->getProducts();
+			
+		$item = new GoogleAnalyticsItem();
+		
+		foreach($arrProducts as $i=>$objProduct)
+		{	
+			$arrOptions = array();
+			$arrOptionValues = array();
+	
+			if($objProduct->sku)
+				$item->setSku = $objProduct->sku;
+	
+			$item->setName = $objProduct->name;
+			$item->setPrice = $objProduct->price;
+			$item->setQuantity = $objProduct->quantity_requested;
+			
+			//Do we also potentially have options?
+			$arrOptions = $objProduct->getOptions(true);
+									
+			foreach ($arrOptions as $field => $value)
+			{
+				if ($value == '')
+					continue;
+				
+				$arrOptionValues[] = $this->Isotope->formatValue('tl_iso_products', $field, $value);
+				
+			}
+			
+			if(count($arrOptionValues))
+				$item->setVariation(implode(' ',$arrOptionValues));
+				
+			$transaction->addItem($item);
+		}
+		
+		// Assemble Session information
+		// (could also get unserialized from PHP session)
+		$session = $_SESSION;
+		
+		$transaction->trackTransaction($transaction, $session, $visitor);
+	}
 	
 }

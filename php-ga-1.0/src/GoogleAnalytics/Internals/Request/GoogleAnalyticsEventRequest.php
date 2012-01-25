@@ -27,13 +27,13 @@
  */
 
 //namespace UnitedPrototype\GoogleAnalytics\Internals\Request;
-require_once('../../Event.php');
-require_once('../X10.php');
+require_once('../../GoogleAnalyticsEvent.php');
+require_once('../GoogleAnalyticsX10.php');
 //use UnitedPrototype\GoogleAnalytics\Event;
 
 //use UnitedPrototype\GoogleAnalytics\Internals\X10;
 
-class EventRequest extends Request {
+class GoogleAnalyticsEventRequest extends Request {
 	
 	/**
 	 * @var \UnitedPrototype\GoogleAnalytics\Event
@@ -78,7 +78,7 @@ class EventRequest extends Request {
 	protected function buildParameters() {
 		$p = parent::buildParameters();
 		
-		$x10 = new X10();
+		$x10 = new GoogleAnalyticsX10();
 		
 		$x10->clearKey(self::X10_EVENT_PROJECT_ID);
 		$x10->clearValue(self::X10_EVENT_PROJECT_ID);

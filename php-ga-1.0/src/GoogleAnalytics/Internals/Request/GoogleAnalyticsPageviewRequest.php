@@ -27,10 +27,10 @@
  */
 
 //namespace UnitedPrototype\GoogleAnalytics\Internals\Request;
-require_once('../../Page.php');
+require_once('../../GoogleAnalyticsPage.php');
 //use UnitedPrototype\GoogleAnalytics\Page;
 
-class PageviewRequest extends Request {
+class GoogleAnalyticsPageviewRequest extends Request {
 	
 	/**
 	 * @var \UnitedPrototype\GoogleAnalytics\Page

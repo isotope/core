@@ -31,14 +31,14 @@
 	//use UnitedPrototype\GoogleAnalytics\Internals\Util;
 	
 	//use DateTime;
-require_once('Internals/Util.php');
+require_once('Internals/GoogleAnalyticsUtil.php');
 
 /**
  * You should serialize this object and store it in e.g. the //user database to keep it
  * persistent for the same //user permanently (similar to the "__umtz" cookie of
  * the GA Javascript client).
  */
-class Campaign {
+class GoogleAnalyticsCampaign {
 	
 	/**
 	 * See self::TYPE_* constants, will be mapped to "__utmz" parameter.
@@ -185,7 +185,7 @@ class Campaign {
 				break;
 		}
 		
-		$this->creationTime = new DateTime();
+		$this->creationTime = new GoogleAnalyticsDateTime();
 	}
 	
 	/**
@@ -194,7 +194,7 @@ class Campaign {
 	 * @return \UnitedPrototype\GoogleAnalytics\Campaign
 	 */
 	public static function createFromReferrer($url) {
-		$instance = new static(self::TYPE_REFERRAL);
+		$instance = new GoogleAnalyticsstatic(self::TYPE_REFERRAL);
 		$urlInfo = parse_url($url);
 		$instance->source  = $urlInfo['host'];
 		$instance->content = $urlInfo['path'];

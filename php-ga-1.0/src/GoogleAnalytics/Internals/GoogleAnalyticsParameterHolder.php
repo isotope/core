@@ -29,15 +29,15 @@
 //namespace UnitedPrototype\GoogleAnalytics\Internals;
 
 //use UnitedPrototype\GoogleAnalytics\Tracker;
-require_once('../Tracker.php');
+require_once('../GoogleAnalyticsTracker.php');
 
 /**
- * This simple class is mainly meant to be a well-documented overview of all
+ * This simple class GoogleAnalyticsis mainly meant to be a well-documented overview of all
  * possible GA tracking parameters.
  * 
  * @link http://code.google.com/apis/analytics/docs/tracking/gaTrackingTroubleshooting.html#gifParameters
  */
-class ParameterHolder {	
+class GoogleAnalyticsParameterHolder {	
 	
 	// - - - - - - - - - - - - - - - - - General parameters - - - - - - - - - - - - - - - - -
 	

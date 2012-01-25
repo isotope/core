@@ -29,12 +29,12 @@
 //namespace UnitedPrototype\GoogleAnalytics;
 
 //use UnitedPrototype\GoogleAnalytics\Internals\Util;
-require_once('Internals/Util.php');
+require_once('Internals/GoogleAnalyticsUtil.php');
 
 /**
  * @link http://code.google.com/apis/analytics/docs/tracking/gaTrackingCustomVariables.html
  */
-class CustomVariable {
+class GoogleAnalyticsCustomVariable {
 	
 	/**
 	 * @var int

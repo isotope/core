@@ -29,7 +29,7 @@
 //namespace UnitedPrototype\GoogleAnalytics;
 
 //use UnitedPrototype\GoogleAnalytics\Internals\Util;
-require_once('Internals/Util.php');
+require_once('Internals/GoogleAnalyticsUtil.php');
 
 //use DateTime;
 
@@ -38,7 +38,7 @@ require_once('Internals/Util.php');
  * persistent for the same //user permanently (similar to the "__umta" cookie of
  * the GA Javascript client).
  */
-class Visitor {
+class GoogleAnalyticsVisitor {
 	
 	/**
 	 * Unique //user ID, will be part of the "__utma" cookie parameter
@@ -150,7 +150,7 @@ class Visitor {
 	 */
 	public function __construct() {
 		// ga.js sets all three timestamps to now for new visitors, so we do the same
-		$now = new DateTime();
+		$now = new GoogleAnalyticsDateTime();
 		$this->setFirstVisitTime($now);
 		$this->setPreviousVisitTime($now);
 		$this->setCurrentVisitTime($now);

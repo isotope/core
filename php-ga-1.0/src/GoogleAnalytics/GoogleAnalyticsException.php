@@ -32,7 +32,7 @@
  * @see Config::$errorSeverity
  * @see Tracker::_raiseError()
  */
-class Exception extends \Exception {
+class GoogleAnalyticsException extends Exception {
 	
 }
 

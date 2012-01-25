@@ -32,7 +32,7 @@
  * @link http://code.google.com/apis/analytics/docs/tracking/eventTrackerOverview.html
  * @link http://code.google.com/apis/analytics/docs/gaJS/gaJSApiEventTracking.html
  */
-class Event {	
+class GoogleAnalyticsEvent {	
 	
 	/**
 	 * The general event category (e.g. "Videos").
