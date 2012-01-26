@@ -568,7 +568,7 @@ class IsotopeRunonce extends Controller
 		}
 		
 		
-		if ($this->Database->fieldExists('gallery_size', 'tl_iso_config') && !$this->Database->fieldExists('imageSizes','tl_iso_config'))
+		if ($this->Database->fieldExists('gallery_size', 'tl_iso_config', true) && !$this->Database->fieldExists('imageSizes','tl_iso_config', true))
 		{
 			$this->Database->query("ALTER TABLE tl_iso_config ADD COLUMN imageSizes blob NULL");
 
