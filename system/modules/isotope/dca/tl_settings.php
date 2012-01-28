@@ -29,15 +29,14 @@
 
 
 /**
- * Palettes
+ * Extend a tl_settings default palette
  */
 $GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] = str_replace(';{chmod_legend', ',iso_cartTimeout;{chmod_legend', $GLOBALS['TL_DCA']['tl_settings']['palettes']['default']);
 
 
 /**
- * Fields
+ * Add fields to tl_settings
  */
-
 $GLOBALS['TL_DCA']['tl_settings']['fields']['iso_cartTimeout'] = array
 (
 	'label'					=> &$GLOBALS['TL_LANG']['tl_settings']['iso_cartTimeout'],

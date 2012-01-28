@@ -29,7 +29,7 @@
 
 
 /**
- * Palettes
+ * Add palettes to tl_module
  */
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][]			= 'iso_checkout_method';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][]			= 'iso_enableLimit';
@@ -51,14 +51,14 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_relatedproducts']		= '{title_le
 
 
 /**
- * Subpalettes
+ * Add subpalettes to tl_module
  */
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['iso_enableLimit']		= 'iso_perPage';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['iso_emptyMessage']		= 'iso_noProducts';
 
 
 /**
- * Fields
+ * Add fields to tl_module
  */
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_list_layout'] = array
 (
@@ -428,9 +428,16 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_continueShopping'] = array
 );
 
 
+/**
+ * Class tl_module_isotope
+ * Provide miscellaneous methods that are used by the data configuration array.
+ */
 class tl_module_isotope extends Backend
 {
 
+	/**
+	 * Load tl_iso_products data container and language file
+	 */
 	public function __construct()
 	{
 		parent::__construct();
@@ -440,16 +447,14 @@ class tl_module_isotope extends Backend
 
 
 	/**
-	 * getFilterFields function.
-	 *
-	 * @access public
+	 * Get the attribute filter fields and return them as array
 	 * @return array
 	 */
 	public function getFilterFields()
 	{
 		$arrAttributes = array();
 
-		foreach( $GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData )
+		foreach ($GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData)
 		{
 			if ($arrData['attributes']['fe_filter'])
 			{
@@ -461,11 +466,15 @@ class tl_module_isotope extends Backend
 	}
 
 
+	/**
+	 * Get the attribute sorting fields and return them as array
+	 * @return array
+	 */
 	public function getSortingFields()
 	{
 		$arrAttributes = array();
 
-		foreach( $GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData )
+		foreach ($GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData)
 		{
 			if ($arrData['attributes']['fe_sorting'])
 			{
@@ -477,11 +486,15 @@ class tl_module_isotope extends Backend
 	}
 
 
+	/**
+	 * Get the attribute search fields and return them as array
+	 * @return array
+	 */
 	public function getSearchFields()
 	{
 		$arrAttributes = array();
 
-		foreach( $GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData )
+		foreach ($GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData)
 		{
 			if ($arrData['attributes']['fe_search'])
 			{
@@ -494,9 +507,7 @@ class tl_module_isotope extends Backend
 
 
 	/**
-	 * Returns a list of enabled payment modules.
-	 *
-	 * @access public
+	 * Returns a list of all payment modules
 	 * @return array
 	 */
 	public function getPaymentModules()
@@ -504,7 +515,7 @@ class tl_module_isotope extends Backend
 		$arrPaymentModules = array();
 		$objPaymentModules = $this->Database->execute("SELECT * FROM tl_iso_payment_modules");
 
-		while( $objPaymentModules->next() )
+		while ($objPaymentModules->next())
 		{
 			$arrPaymentModules[$objPaymentModules->id] = $objPaymentModules->name;
 		}
@@ -514,9 +525,7 @@ class tl_module_isotope extends Backend
 
 
 	/**
-	 * getShippingModules function.
-	 *
-	 * @access public
+	 * Get all enabled shipping modules and return them as array
 	 * @return array
 	 */
 	public function getShippingModules()
@@ -524,7 +533,7 @@ class tl_module_isotope extends Backend
 		$arrModules = array();
 		$objModules = $this->Database->execute("SELECT * FROM tl_iso_shipping_modules WHERE enabled=1");
 
-		while( $objModules->next() )
+		while ($objModules->next())
 		{
 			$arrModules[$objModules->id] = $objModules->name;
 		}
@@ -534,18 +543,15 @@ class tl_module_isotope extends Backend
 
 
 	/**
-	 * getLoginModuleList function.
-	 *
-	 * @access public
+	 * Get all login modules and return them as array
 	 * @return array
 	 */
 	public function getLoginModuleList()
 	{
 		$arrModules = array();
-
 		$objModules = $this->Database->execute("SELECT id, name FROM tl_module WHERE type='login'");
 
-		while( $objModules->next() )
+		while ($objModules->next())
 		{
 			$arrModules[$objModules->id] = $objModules->name;
 		}
@@ -554,6 +560,10 @@ class tl_module_isotope extends Backend
 	}
 
 
+	/**
+	 * Get all buttons and return them as array
+	 * @return array
+	 */
 	public function getButtons()
 	{
 		$arrOptions = array();
@@ -568,7 +578,7 @@ class tl_module_isotope extends Backend
 			}
 		}
 
-		foreach( $arrButtons as $button => $data )
+		foreach ($arrButtons as $button => $data)
 		{
 			$arrOptions[$button] = $data['label'];
 		}
@@ -579,7 +589,7 @@ class tl_module_isotope extends Backend
 
 	/**
 	 * Return list templates as array
-	 * @param object
+	 * @param DataContainer
 	 * @return array
 	 */
 	public function getListTemplates(DataContainer $dc)
@@ -597,7 +607,7 @@ class tl_module_isotope extends Backend
 
 	/**
 	 * Return reader templates as array
-	 * @param object
+	 * @param DataContainer
 	 * @return array
 	 */
 	public function getReaderTemplates(DataContainer $dc)
@@ -615,7 +625,7 @@ class tl_module_isotope extends Backend
 
 	/**
 	 * Return cart templates as array
-	 * @param object
+	 * @param DataContainer
 	 * @return array
 	 */
 	public function getCartTemplates(DataContainer $dc)
@@ -633,7 +643,7 @@ class tl_module_isotope extends Backend
 
 	/**
 	 * Return filter templates as array
-	 * @param object
+	 * @param DataContainer
 	 * @return array
 	 */
 	public function getFilterTemplates(DataContainer $dc)
@@ -650,20 +660,22 @@ class tl_module_isotope extends Backend
 
 
 	/**
-	 * Return array of tl_module records where type='iso_productfilter'
-	 * @param	object
-	 * @return	array
+	 * Get all filter modules and return them as array
+	 * @param DataContainer
+	 * @return array
 	 */
 	public function getFilterModules(DataContainer $dc)
 	{
 		$arrClasses = array();
 
-		foreach( $GLOBALS['FE_MOD'] as $strGroup => $arrModules )
+		foreach ($GLOBALS['FE_MOD'] as $strGroup => $arrModules)
 		{
-			foreach( $arrModules as $strName => $strClass )
+			foreach ($arrModules as $strName => $strClass)
 			{
 				if ($strClass != '' && !$this->classFileExists($strClass))
+				{
 					continue;
+				}
 
 				if ($strClass == 'ModuleIsotopeProductFilter' || is_subclass_of($strClass, 'ModuleIsotopeProductFilter'))
 				{
@@ -675,7 +687,7 @@ class tl_module_isotope extends Backend
 		$arrModules = array();
 		$objModules = $this->Database->execute("SELECT * FROM tl_module WHERE type IN ('" . implode("','", $arrClasses) . "')");
 
-		while( $objModules->next() )
+		while ($objModules->next())
 		{
 			$arrModules[$objModules->id] = $objModules->name;
 		}

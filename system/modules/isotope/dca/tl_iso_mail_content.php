@@ -168,10 +168,25 @@ $GLOBALS['TL_DCA']['tl_iso_mail_content'] = array
 );
 
 
+/**
+ * Class tl_iso_mail_content
+ * Provide miscellaneous methods that are used by the data configuration array.
+ */
 class tl_iso_mail_content extends Backend
 {
+
+	/**
+	 * Available languages
+	 * @var array
+	 */
 	protected $arrLanguages;
 
+
+	/**
+	 * List contents of the e-mail
+	 * @param array
+	 * @return string
+	 */
 	public function listRows($arrRow)
 	{
 		if (!is_array($this->arrLanguages))

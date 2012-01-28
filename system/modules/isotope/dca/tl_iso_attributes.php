@@ -30,7 +30,7 @@
 
 
 /**
- * Load language file for field legends
+ * Load tl_iso_products language file for field legends
  */
 $this->loadLanguageFile('tl_iso_products');
 
@@ -112,9 +112,9 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 			),
 			'copy' => array
 			(
-				'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['copy'],
-				'href'					=> 'act=copy',
-				'icon'					=> 'copy.gif'
+				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['copy'],
+				'href'				=> 'act=copy',
+				'icon'				=> 'copy.gif'
 			),
 			'delete' => array
 			(
@@ -369,9 +369,18 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 );
 
 
+/**
+ * Class tl_iso_attribuets
+ * Provide miscellaneous methods that are used by the data configuration array.
+ */
 class tl_iso_attributes extends Backend
 {
 
+	/**
+	 * Delete an attribute in tl_iso_products table
+	 * @param object
+	 * @return void
+	 */
 	public function deleteAttribute($dc)
 	{
 		if ($dc->id)
@@ -389,8 +398,7 @@ class tl_iso_attributes extends Backend
 
 	/**
 	 * Disable the internal field name field if it is not empty.
-	 *
-	 * @param	$dc
+	 * @param object
 	 * @return	void
 	 */
 	public function disableFieldName($dc)
@@ -413,6 +421,13 @@ class tl_iso_attributes extends Backend
 	}
 
 
+	/**
+	 * Create an attribute column in tl_iso_products table
+	 * @param mixed
+	 * @param object
+	 * @return mixed
+	 * @throws Exception
+	 */
 	public function createColumn($varValue, $dc)
 	{
 		$varValue = standardize($varValue, true);
@@ -436,6 +451,11 @@ class tl_iso_attributes extends Backend
 	}
 
 
+	/**
+	 * Alter an attribtue column in tl_iso_products table
+	 * @param object
+	 * @return void
+	 */
 	public function modifyColumn($dc)
 	{
 		$objAttribute = $this->Database->execute("SELECT * FROM tl_iso_attributes WHERE id={$dc->id}");
@@ -451,7 +471,6 @@ class tl_iso_attributes extends Backend
 		if ($objAttribute->fe_filter && $GLOBALS['ISO_ATTR'][$dc->activeRecord->type]['useIndex'])
 		{
 			$this->IsotopeDatabase->add("KEY `{$objAttribute->field_name}`", "(`{$objAttribute->field_name}`)");
-
 			$arrFields = $this->Database->listFields('tl_iso_products');
 
 			if ($arrFields[$objAttribute->field_name]['type'] != 'index')
@@ -468,6 +487,8 @@ class tl_iso_attributes extends Backend
 
 	/**
 	 * Remove field that are not available in certain attributes and could cause unwanted results
+	 * @param object
+	 * @return void
 	 */
 	public function cleanFieldValues($dc)
 	{
@@ -489,15 +510,16 @@ class tl_iso_attributes extends Backend
 
 
 	/**
-	 * Returns an array of select-attributes
+	 * Return an array of select-attributes
+	 * @param object
+	 * @return array
 	 */
 	public function getConditionFields($dc)
 	{
 		$this->loadDataContainer('tl_iso_products');
-
 		$arrFields = array();
 
-		foreach( $GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData )
+		foreach ($GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData)
 		{
 			if ($arrData['inputType'] == 'select' || ($arrData['inputType'] == 'conditionalselect' && $field != $dc->activeRecord->field_name))
 			{
@@ -510,13 +532,15 @@ class tl_iso_attributes extends Backend
 
 
 	/**
-	 * Returns a list of available rte config files
+	 * Return a list of available rte config files
+	 * @param object
+	 * @return array
 	 */
 	public function getRTE($dc)
 	{
 		$arrOptions = array();
 
-		foreach( scan(TL_ROOT . '/system/config') as $file )
+		foreach (scan(TL_ROOT . '/system/config') as $file)
 		{
 			if (is_file(TL_ROOT . '/system/config/' . $file) && strpos($file, 'tiny') === 0)
 			{
@@ -530,6 +554,9 @@ class tl_iso_attributes extends Backend
 
 	/**
 	 * Validate table and field of foreignKey
+	 * @param mixed
+	 * @param object
+	 * @return mixed
 	 */
 	public function validateForeignKey($varValue, $dc)
 	{
@@ -537,7 +564,7 @@ class tl_iso_attributes extends Backend
 		{
 			$arrLines = trimsplit('@\r\n|\n|\r@', $varValue);
 
-			foreach( $arrLines as $foreignKey )
+			foreach ($arrLines as $foreignKey)
 			{
 				if ($foreignKey == '' || strpos($foreignKey, '#') === 0)
 				{
@@ -550,7 +577,6 @@ class tl_iso_attributes extends Backend
 				}
 
 				list($strTable, $strField) = explode('.', $foreignKey, 2);
-
 				$this->Database->execute("SELECT $strField FROM $strTable");
 			}
 		}

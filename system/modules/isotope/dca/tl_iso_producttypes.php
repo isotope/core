@@ -244,15 +244,15 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
 
 
 /**
- * tl_iso_producttypes class.
- *
- * @extends Backend
+ * Class tl_iso_producttypes
+ * Provide miscellaneous methods that are used by the data configuration array.
  */
 class tl_iso_producttypes extends Backend
 {
 
 	/**
-	 * Check permissions to edit table tl_iso_producttypes.
+	 * Check permissions to edit table tl_iso_producttypes
+	 * @return void
 	 */
 	public function checkPermission()
 	{
@@ -387,7 +387,7 @@ class tl_iso_producttypes extends Backend
 
 	/**
 	 * Return list templates as array
-	 * @param object
+	 * @param DataContainer
 	 * @return array
 	 */
 	public function getListTemplates(DataContainer $dc)
@@ -398,7 +398,7 @@ class tl_iso_producttypes extends Backend
 
 	/**
 	 * Return reader templates as array
-	 * @param object
+	 * @param DataContainer
 	 * @return array
 	 */
 	public function getReaderTemplates(DataContainer $dc)

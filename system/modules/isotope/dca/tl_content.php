@@ -29,7 +29,7 @@
 
 
 /**
- * Fields
+ * Add fields to tl_content
  */
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_filters'] = array
 (
@@ -59,14 +59,16 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['iso_list_layout'] = array
 );
 
 
+/**
+ * Class tl_content_isotope
+ * Provide miscellaneous methods that are used by the data configuration array.
+ */
 class tl_content_isotope extends Backend
 {
 
 	/**
-	 * getFilters function.
-	 *
-	 * @access public
-	 * @param object DataContainer $dc
+	 * Get the filters and return them as array
+	 * @param DataContainer
 	 * @return array
 	 */
 	public function getFilters(DataContainer $dc)
@@ -75,7 +77,7 @@ class tl_content_isotope extends Backend
 										  ->limit(1)
 										  ->execute($dc->id);
 
-		if($objAttributeSet->numRows < 1)
+		if ($objAttributeSet->numRows < 1)
 		{
 			return '';
 		}
@@ -83,16 +85,16 @@ class tl_content_isotope extends Backend
 		$intAttributeSet = $objAttributeSet->iso_attribute_set;
 
 		$objFilters = $this->Database->prepare("SELECT id, name FROM tl_iso_attributes WHERE fe_filter=? AND pid=?")
-									 ->execute(1, (int)$intAttributeSet);
+									 ->execute(1, (int) $intAttributeSet);
 
-		if($objFilters->numRows < 1)
+		if ($objFilters->numRows < 1)
 		{
 			return array();
 		}
 
 		$arrFilters = $objFilters->fetchAllAssoc();
 
-		foreach($arrFilters as $filter)
+		foreach ($arrFilters as $filter)
 		{
 			$arrFilterList[$filter['id']] = $filter['name'];
 		}
@@ -103,7 +105,7 @@ class tl_content_isotope extends Backend
 
 	/**
 	 * Return all list templates as array
-	 * @param object
+	 * @param DataContainer
 	 * @return array
 	 */
 	public function getListTemplates(DataContainer $dc)

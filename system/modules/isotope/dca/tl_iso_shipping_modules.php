@@ -29,7 +29,7 @@
 
 
 /**
- * Load required DCA and language files
+ * Load tl_iso_products data container and language files
  */
 $this->loadDataContainer('tl_iso_products');
 $this->loadLanguageFile('tl_iso_products');
@@ -359,17 +359,16 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
 );
 
 
-
 /**
- * tl_iso_shipping_modules class.
- *
- * @extends Backend
+ * Class tl_iso_shipping_modules
+ * Provide miscellaneous methods that are used by the data configuration array.
  */
 class tl_iso_shipping_modules extends Backend
 {
 
 	/**
-	 * Check permissions to edit table tl_iso_shipping_modules.
+	 * Check permissions to edit table tl_iso_shipping_modules
+	 * @return void
 	 */
 	public function checkPermission()
 	{
@@ -503,9 +502,7 @@ class tl_iso_shipping_modules extends Backend
 
 
 	/**
-	 * Get a list of all shipping modules available.
-	 *
-	 * @access public
+	 * Get a list of all shipping modules available
 	 * @return array
 	 */
 	public function getModules()
@@ -514,7 +511,7 @@ class tl_iso_shipping_modules extends Backend
 
 		if (is_array($GLOBALS['ISO_SHIP']) && count($GLOBALS['ISO_SHIP']))
 		{
-			foreach( $GLOBALS['ISO_SHIP'] as $module => $class )
+			foreach ($GLOBALS['ISO_SHIP'] as $module => $class)
 			{
 				$arrModules[$module] = (strlen($GLOBALS['ISO_LANG']['SHIP'][$module][0]) ? $GLOBALS['ISO_LANG']['SHIP'][$module][0] : $module);
 			}
@@ -526,10 +523,17 @@ class tl_iso_shipping_modules extends Backend
 
 	/**
 	 * Callback for options button
+	 * @param array
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @return string
 	 */
 	public function optionsButton($row, $href, $label, $title, $icon, $attributes)
 	{
-		switch( $row['type'] )
+		switch ($row['type'])
 		{
 			case 'order_total':
 			case 'weight_total':

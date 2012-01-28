@@ -29,13 +29,13 @@
 
 
 /**
- * Palettes
+ * Extend a tl_user_group palette
  */
 $GLOBALS['TL_DCA']['tl_user_group']['palettes']['default'] = str_replace('{alexf_legend}', '{isotope_legend:hide},iso_modules,iso_product_types,iso_product_typep,iso_payment_modules,iso_payment_modulep,iso_shipping_modules,iso_shipping_modulep,iso_tax_classes,iso_tax_classp,iso_tax_rates,iso_tax_ratep,iso_mails,iso_mailp,iso_configs,iso_configp;{alexf_legend}', $GLOBALS['TL_DCA']['tl_user_group']['palettes']['default']);
 
 
 /**
- * Fields
+ * Add fields to tl_user_group
  */
 $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_modules'] = array
 (

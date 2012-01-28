@@ -91,19 +91,20 @@ $GLOBALS['TL_DCA']['tl_iso_product_categories'] = array
 		)
 	),
 
-	// Fields Array must not be empty or we get a foreach error.
-	'fields' => array()
+	'fields' => array() // Fields array must not be empty or we get a foreach error
 );
 
 
-
+/**
+ * Class tl_iso_product_categories
+ * Provide miscellaneous methods that are used by the data configuration array.
+ */
 class tl_iso_product_categories extends Backend
 {
 
 	/**
-	 * List pages
-	 *
-	 * @param  array
+	 * List the products
+	 * @param array
 	 * @return string
 	 */
 	public function listRows($row)
@@ -121,8 +122,7 @@ class tl_iso_product_categories extends Backend
 	/**
 	 * Repair associations between products and categories.
 	 * We only need tl_iso_products.pages to filter for categories in the backend.
-	 *
-	 * @param  object
+	 * @param DataContainer
 	 * @return void
 	 */
 	public function updateFilterData(DataContainer $dc)
@@ -130,7 +130,6 @@ class tl_iso_product_categories extends Backend
 		if ($this->Input->get('act') == '')
 		{
 			$arrCategories = $this->Database->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid={$dc->id}");
-
 			$this->Database->query("UPDATE tl_iso_products SET pages='" . serialize($arrCategories) . "' WHERE id={$dc->id}");
 		}
 	}
@@ -138,15 +137,14 @@ class tl_iso_product_categories extends Backend
 
 	/**
 	 * Return the page view button
-	 *
-	 * @param	string
-	 * @param	string
-	 * @param	string
-	 * @param	string
-	 * @param	string
-	 * @param	string
-	 * @param	array
-	 * @return	string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param array
+	 * @return string
 	 */
 	public function getPageViewButton($href, $label, $title, $class, $attributes, $table, $root)
 	{

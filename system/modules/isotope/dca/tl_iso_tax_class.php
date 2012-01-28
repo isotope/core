@@ -174,11 +174,16 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = array
 );
 
 
+/**
+ * Class tl_iso_tax_class
+ * Provide miscellaneous methods that are used by the data configuration array.
+ */
 class tl_iso_tax_class extends Backend
 {
 
 	/**
-	 * Check permissions to edit table tl_iso_tax_class.
+	 * Check permissions to edit table tl_iso_tax_class
+	 * @return void
 	 */
 	public function checkPermission()
 	{
@@ -319,10 +324,9 @@ class tl_iso_tax_class extends Backend
 	{
 		$arrCountries = $this->getCountries();
 		$arrRates = array();
-
 		$objRates = $this->Database->execute("SELECT * FROM tl_iso_tax_rate ORDER BY country, name");
 
-		while( $objRates->next() )
+		while ($objRates->next())
 		{
 			$arrRates[$objRates->id] = $arrCountries[$objRates->country] . ' - ' . $objRates->name;
 		}
