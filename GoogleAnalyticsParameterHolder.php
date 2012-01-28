@@ -26,10 +26,6 @@
  * @copyright Copyright (c) 2010 United Prototype GmbH (http://unitedprototype.com)
  */
 
-//namespace UnitedPrototype\GoogleAnalytics\Internals;
-
-//use UnitedPrototype\GoogleAnalytics\Tracker;
-require_once('../GoogleAnalyticsTracker.php');
 
 /**
  * This simple class GoogleAnalyticsis mainly meant to be a well-documented overview of all
@@ -45,7 +41,7 @@ class GoogleAnalyticsParameterHolder {
 	 * Google Analytics client version, e.g. "4.7.2"
 	 * @var string
 	 */
-	public $utmwv = Tracker::VERSION;
+	public $utmwv = GoogleAnalyticsTracker::VERSION;
 	
 	/**
 	 * Google Analytics account ID, e.g. "UA-1234567-8"

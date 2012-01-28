@@ -26,8 +26,6 @@
  * @copyright Copyright (c) 2010 United Prototype GmbH (http://unitedprototype.com)
  */
 
-////namespace UnitedPrototype\GoogleAnalytics\Internals;
-
 /**
  * @link http://code.google.com/p/gaforflash/source/browse/trunk/src/com/google/analytics/core/Utils.as
  */
@@ -46,7 +44,7 @@ class GoogleAnalyticsUtil {
 	 * @return string
 	 */
 	public static function encodeUriComponent($value) {
-		return static::convertToUriComponentEncoding(rawurlencode($value));
+		return $this->convertToUriComponentEncoding(rawurlencode($value));
 	}
 	
 	/**

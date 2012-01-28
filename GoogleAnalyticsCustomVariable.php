@@ -26,10 +26,6 @@
  * @copyright Copyright (c) 2010 United Prototype GmbH (http://unitedprototype.com)
  */
 
-//namespace UnitedPrototype\GoogleAnalytics;
-
-//use UnitedPrototype\GoogleAnalytics\Internals\Util;
-require_once('Internals/GoogleAnalyticsUtil.php');
 
 /**
  * @link http://code.google.com/apis/analytics/docs/tracking/gaTrackingCustomVariables.html
@@ -66,7 +62,7 @@ class GoogleAnalyticsCustomVariable {
 	 * 
 	 * @var int
 	 */
-	protected $scope = self::SCOPE_PAGE;
+	protected $scope = $this->SCOPE_PAGE;
 	
 	
 	/**
@@ -101,8 +97,8 @@ class GoogleAnalyticsCustomVariable {
 		// name and value of 64 bytes after URL encoding,
 		// see http://code.google.com/apis/analytics/docs/tracking/gaTrackingCustomVariables.html#varTypes
 		// and http://xahlee.org/js/google_analytics_tracker_2010-07-01_expanded.js line 563
-		if(strlen(Util::encodeUriComponent($this->name . $this->value)) > 64) {
-			Tracker::_raiseError('Custom Variable combined name and value encoded length must not be larger than 64 bytes.', __METHOD__);
+		if(strlen(GoogleAnalyticsUtil::encodeUriComponent($this->name . $this->value)) > 64) {
+			GoogleAnalyticsTracker::_raiseError('Custom Variable combined name and value encoded length must not be larger than 64 bytes.', __METHOD__);
 		}
 	}
 	
@@ -122,7 +118,7 @@ class GoogleAnalyticsCustomVariable {
 		// trick to allow for more of them which we could investigate at a later time (see
 		// http://analyticsimpact.com/2010/05/24/get-more-than-5-custom-variables-in-google-analytics/)
 		if($index < 1 || $index > 5) {
-			Tracker::_raiseError('Custom Variable index has to be between 1 and 5.', __METHOD__);
+			GoogleAnalyticsTracker::_raiseError('Custom Variable index has to be between 1 and 5.', __METHOD__);
 		}
 		
 		$this->index = (int)$index;
@@ -167,8 +163,8 @@ class GoogleAnalyticsCustomVariable {
 	 * @param int $scope
 	 */
 	public function setScope($scope) {
-		if(!in_array($scope, array(self::SCOPE_PAGE, self::SCOPE_SESSION, self::SCOPE_VISITOR))) {
-			Tracker::_raiseError('Custom Variable scope has to be one of the CustomVariable::SCOPE_* constant values.', __METHOD__);
+		if(!in_array($scope, array($this->SCOPE_PAGE, $this->SCOPE_SESSION, $this->SCOPE_VISITOR))) {
+			GoogleAnalyticsTracker::_raiseError('Custom Variable scope has to be one of the CustomVariable::SCOPE_* constant values.', __METHOD__);
 		}
 		
 		$this->scope = (int)$scope;

@@ -26,8 +26,6 @@
  * @copyright Copyright (c) 2010 United Prototype GmbH (http://unitedprototype.com)
  */
 
-//namespace UnitedPrototype\GoogleAnalytics;
-
 class GoogleAnalyticsSocialInteraction {
 	
 	/**
@@ -72,7 +70,7 @@ class GoogleAnalyticsSocialInteraction {
 	
 	public function validate() {
 		if($this->network === null || $this->action === null) {
-			Tracker::_raiseError('Social interactions need to have at least the "network" and "action" attributes defined.', __METHOD__);
+			GoogleAnalyticsTracker::_raiseError('Social interactions need to have at least the "network" and "action" attributes defined.', __METHOD__);
 		}
 	}
 	

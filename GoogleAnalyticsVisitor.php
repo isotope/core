@@ -26,13 +26,6 @@
  * @copyright Copyright (c) 2010 United Prototype GmbH (http://unitedprototype.com)
  */
 
-//namespace UnitedPrototype\GoogleAnalytics;
-
-//use UnitedPrototype\GoogleAnalytics\Internals\Util;
-require_once('Internals/GoogleAnalyticsUtil.php');
-
-//use DateTime;
-
 /**
  * You should serialize this object and store it in the //user database to keep it
  * persistent for the same //user permanently (similar to the "__umta" cookie of
@@ -99,10 +92,10 @@ class GoogleAnalyticsVisitor {
 	/**
 	 * //user agent string of the end //user, will be mapped to "//user-Agent" request header
 	 * 
-	 * @see Internals\Request\HttpRequest::$//userAgent
+	 * @see Internals\Request\HttpRequest::$userAgent
 	 * @var string
 	 */
-	protected $//userAgent;
+	protected $userAgent;
 	
 	/**
 	 * Locale string (country part optional), e.g. "de-DE", will be mapped to "utmul" parameter
@@ -150,7 +143,7 @@ class GoogleAnalyticsVisitor {
 	 */
 	public function __construct() {
 		// ga.js sets all three timestamps to now for new visitors, so we do the same
-		$now = new GoogleAnalyticsDateTime();
+		$now = new DateTime();
 		$this->setFirstVisitTime($now);
 		$this->setPreviousVisitTime($now);
 		$this->setCurrentVisitTime($now);
@@ -171,7 +164,7 @@ class GoogleAnalyticsVisitor {
 	public function fromUtma($value) {
 		$parts = explode('.', $value);
 		if(count($parts) != 6) {
-			Tracker::_raiseError('The given "__utma" cookie value is invalid.', __METHOD__);
+			GoogleAnalyticsTracker::_raiseError('The given "__utma" cookie value is invalid.', __METHOD__);
 			return $this;
 		}
 		
@@ -216,15 +209,15 @@ class GoogleAnalyticsVisitor {
 			}
 		}
 		
-		if(!empty($value['HTTP_//useR_AGENT'])) {
-			$this->set//userAgent($value['HTTP_//useR_AGENT']);
+		if(!empty($value['HTTP_USER_AGENT'])) {
+			$this->setuserAgent($value['HTTP_USER_AGENT']);
 		}
 		
 		if(!empty($value['HTTP_ACCEPT_LANGUAGE'])) {
 			$parsedLocales = array();
 			if(preg_match_all('/(^|\s*,\s*)([a-zA-Z]{1,8}(-[a-zA-Z]{1,8})*)\s*(;\s*q\s*=\s*(1(\.0{0,3})?|0(\.[0-9]{0,3})))?/i', $value['HTTP_ACCEPT_LANGUAGE'], $matches)) {
-				$matches[2] = array_map(function($part) { return str_replace('-', '_', $part); }, $matches[2]);
-				$matches[5] = array_map(function($part) { return $part === '' ? 1 : $part; }, $matches[5]);
+				$matches[2] = array_map(array($this,'returnPart'), $matches[2]);
+				$matches[5] = array_map(array($this,'returnPart'), $matches[5]);
 				$parsedLocales = array_combine($matches[2], $matches[5]);
 				arsort($parsedLocales, SORT_NUMERIC);
 				$parsedLocales = array_keys($parsedLocales);
@@ -239,6 +232,11 @@ class GoogleAnalyticsVisitor {
 		return $this;
 	}
 	
+	public function returnPart($part)
+	{ 
+		return str_replace('-', '_', $part); 
+	}
+	
 	/**
 	 * Generates a hashed value from //user-specific properties.
 	 * 
@@ -247,9 +245,9 @@ class GoogleAnalyticsVisitor {
 	 */
 	protected function generateHash() {
 		// TODO: Emulate orginal Google Analytics client library generation more closely
-		$string  = $this->//userAgent;
+		$string  = $this->userAgent;
 		$string .= $this->screenResolution . $this->screenColorDepth;
-		return Util::generateHash($string);
+		return GoogleAnalyticsUtil::generateHash($string);
 	}
 	
 	/**
@@ -262,7 +260,7 @@ class GoogleAnalyticsVisitor {
 		// There seems to be an error in the gaforflash code, so we take the formula
 		// from http://xahlee.org/js/google_analytics_tracker_2010-07-01_expanded.js line 711
 		// instead ("&" instead of "*")
-		return ((Util::generate32bitRandom() ^ $this->generateHash()) & 0x7fffffff);
+		return ((GoogleAnalyticsUtil::generate32bitRandom() ^ $this->generateHash()) & 0x7fffffff);
 	}
 	
 	/**
@@ -271,7 +269,7 @@ class GoogleAnalyticsVisitor {
 	 */
 	public function setUniqueId($value) {
 		if($value < 0 || $value > 0x7fffffff) {
-			Tracker::_raiseError('Visitor unique ID has to be a 32-bit integer between 0 and ' . 0x7fffffff . '.', __METHOD__);
+			GoogleAnalyticsTracker::_raiseError('Visitor unique ID has to be a 32-bit integer between 0 and ' . 0x7fffffff . '.', __METHOD__);
 		}
 		
 		$this->uniqueId = (int)$value;
@@ -294,9 +292,9 @@ class GoogleAnalyticsVisitor {
 	 * Updates the "previousVisitTime", "currentVisitTime" and "visitCount"
 	 * fields based on the given session object.
 	 * 
-	 * @param Session $session
+	 * @param GoogleAnalyticsSession $session
 	 */
-	public function addSession(Session $session) {
+	public function addSession(GoogleAnalyticsSession $session) {
 		$startTime = $session->getStartTime();
 		if($startTime != $this->currentVisitTime) {
 			$this->previousVisitTime = $this->currentVisitTime;
@@ -378,15 +376,15 @@ class GoogleAnalyticsVisitor {
 	/**
 	 * @param string $value
 	 */
-	public function set//userAgent($value) {
-		$this->//userAgent = $value;
+	public function setuserAgent($value) {
+		$this->userAgent = $value;
 	}
 	
 	/**
 	 * @return string
 	 */
-	public function get//userAgent() {
-		return $this->//userAgent;
+	public function getuserAgent() {
+		return $this->userAgent;
 	}
 	
 	/**

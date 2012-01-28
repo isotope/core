@@ -26,14 +26,8 @@
  * @copyright Copyright (c) 2010 United Prototype GmbH (http://unitedprototype.com)
  */
 
-//namespace UnitedPrototype\GoogleAnalytics\Internals\Request;
-require_once('../../GoogleAnalyticsEvent.php');
-require_once('../GoogleAnalyticsX10.php');
-//use UnitedPrototype\GoogleAnalytics\Event;
 
-//use UnitedPrototype\GoogleAnalytics\Internals\X10;
-
-class GoogleAnalyticsEventRequest extends Request {
+class GoogleAnalyticsEventRequest extends GoogleAnalyticsRequest {
 	
 	/**
 	 * @var \UnitedPrototype\GoogleAnalytics\Event
@@ -67,7 +61,7 @@ class GoogleAnalyticsEventRequest extends Request {
 	 * @return string
 	 */
 	protected function getType() {
-		return Request::TYPE_EVENT;
+		return GoogleAnalyticsRequest::TYPE_EVENT;
 	}
 	
 	/**
@@ -80,22 +74,22 @@ class GoogleAnalyticsEventRequest extends Request {
 		
 		$x10 = new GoogleAnalyticsX10();
 		
-		$x10->clearKey(self::X10_EVENT_PROJECT_ID);
-		$x10->clearValue(self::X10_EVENT_PROJECT_ID);
+		$x10->clearKey($this->X10_EVENT_PROJECT_ID);
+		$x10->clearValue($this->X10_EVENT_PROJECT_ID);
 		
 		// Object / Category
-		$x10->setKey(self::X10_EVENT_PROJECT_ID, self::X10_EVENT_OBJECT_KEY_NUM, $this->event->getCategory());
+		$x10->setKey($this->X10_EVENT_PROJECT_ID, $this->X10_EVENT_OBJECT_KEY_NUM, $this->event->getCategory());
 		
 		// Event Type / Action
-		$x10->setKey(self::X10_EVENT_PROJECT_ID, self::X10_EVENT_TYPE_KEY_NUM, $this->event->getAction());
+		$x10->setKey($this->X10_EVENT_PROJECT_ID, $this->X10_EVENT_TYPE_KEY_NUM, $this->event->getAction());
 		
 		if($this->event->getLabel() !== null) {
 			// Event Description / Label
-			$x10->setKey(self::X10_EVENT_PROJECT_ID, self::X10_EVENT_LABEL_KEY_NUM, $this->event->getLabel());
+			$x10->setKey($this->X10_EVENT_PROJECT_ID, $this->X10_EVENT_LABEL_KEY_NUM, $this->event->getLabel());
 		}
 		
 		if($this->event->getValue() !== null) {
-			$x10->setValue(self::X10_EVENT_PROJECT_ID, self::X10_EVENT_VALUE_VALUE_NUM, $this->event->getValue());
+			$x10->setValue($this->X10_EVENT_PROJECT_ID, $this->X10_EVENT_VALUE_VALUE_NUM, $this->event->getValue());
 		}
 		
 		$p->utme .= $x10->renderUrlString();
@@ -115,9 +109,9 @@ class GoogleAnalyticsEventRequest extends Request {
 	}
 	
 	/**
-	 * @param \UnitedPrototype\GoogleAnalytics\Event $event
+	 * @param \UnitedPrototype\GoogleAnalytics\GoogleAnalyticsEvent $event
 	 */
-	public function setEvent(Event $event) {
+	public function setEvent(GoogleAnalyticsEvent $event) {
 		$this->event = $event;
 	}
 	

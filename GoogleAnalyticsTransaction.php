@@ -26,8 +26,6 @@
  * @copyright Copyright (c) 2010 United Prototype GmbH (http://unitedprototype.com)
  */
 
-//namespace UnitedPrototype\GoogleAnalytics;
-
 /**
  * @link http://code.google.com/p/gaforflash/source/browse/trunk/src/com/google/analytics/ecommerce/Transaction.as
  */
@@ -107,15 +105,15 @@ class GoogleAnalyticsTransaction {
 	
 	public function validate() {
 		if(!$this->items) {
-			Tracker::_raiseError('Transactions need to consist of at least one item.', __METHOD__);
+			GoogleAnalyticsTracker::_raiseError('Transactions need to consist of at least one item.', __METHOD__);
 		}
 	}
 	
 	/**
 	 * @link http://code.google.com/apis/analytics/docs/gaJS/gaJSApiEcommerce.html#_gat.GA_Tracker_._addItem
-	 * @param \UnitedPrototype\GoogleAnalytics\Item $item
+	 * @param \UnitedPrototype\GoogleAnalytics\GoogleAnalyticsItem $item
 	 */
-	public function addItem(Item $item) {
+	public function addItem(GoogleAnalyticsItem $item) {
 		// Associated items inherit the transaction's order ID
 		$item->setOrderId($this->orderId);
 		

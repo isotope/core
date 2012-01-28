@@ -26,56 +26,12 @@
  * @copyright Copyright (c) 2010 United Prototype GmbH (http://unitedprototype.com)
  */
 
-//namespace UnitedPrototype\GoogleAnalytics\Internals\Request;
-require_once('../../GoogleAnalyticsPage.php');
-//use UnitedPrototype\GoogleAnalytics\Page;
 
-class GoogleAnalyticsPageviewRequest extends Request {
-	
-	/**
-	 * @var \UnitedPrototype\GoogleAnalytics\Page
-	 */
-	protected $page;
-	
-	
-	/**
-	 * @return string
-	 */
-	protected function getType() {
-		return Request::TYPE_PAGE;
-	}
-	
-	/**
-	 * @return \UnitedPrototype\GoogleAnalytics\Internals\ParameterHolder
-	 */
-	protected function buildParameters() {
-		$p = parent::buildParameters();
-		
-		$p->utmp  = $this->page->getPath();
-		$p->utmdt = $this->page->getTitle();
-		if($this->page->getCharset() !== null) {
-			$p->utmcs = $this->page->getCharset();
-		}
-		if($this->page->getReferrer() !== null) {
-			$p->utmr = $this->page->getReferrer();
-		}
-		
-		return $p;
-	}
-	
-	/**
-	 * @return \UnitedPrototype\GoogleAnalytics\Page
-	 */
-	public function getPage() {
-		return $this->page;
-	}
-	
-	/**
-	 * @param \UnitedPrototype\GoogleAnalytics\Page $page
-	 */
-	public function setPage(Page $page) {
-		$this->page = $page;
-	}
+/**
+ * @see Config::$errorSeverity
+ * @see Tracker::_raiseError()
+ */
+class GoogleAnalyticsException extends GoogleAnalyticsException {
 	
 }
 

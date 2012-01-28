@@ -26,8 +26,6 @@
  * @copyright Copyright (c) 2010 United Prototype GmbH (http://unitedprototype.com)
  */
 
-//namespace UnitedPrototype\GoogleAnalytics;
-
 /**
  * Note: Doesn't necessarily have to be consistent across requests, as it doesn't
  * alter the actual tracking result.
@@ -42,12 +40,12 @@ class GoogleAnalyticsConfig {
 	 * functionality in production.
 	 * RECOMMENDATION: Exceptions during deveopment, warnings in production.
 	 * 
-	 * Assign any value of the self::ERROR_SEVERITY_* constants.
+	 * Assign any value of the $this->ERROR_SEVERITY_* constants.
 	 * 
 	 * @see Tracker::_raiseError()
 	 * @var int
 	 */
-	protected $errorSeverity = self::ERROR_SEVERITY_EXCEPTIONS;
+	protected $errorSeverity = ERROR_SEVERITY_EXCEPTIONS;
 	
 	/**
 	 * Ignore all errors completely.
@@ -144,20 +142,20 @@ class GoogleAnalyticsConfig {
 			if(method_exists($this, $setterMethod)) {
 				$this->$setterMethod($value);
 			} else {
-				return Tracker::_raiseError('There is no setting "' . $property . '".', __METHOD__);
+				return GoogleAnalyticsTracker::_raiseError('There is no setting "' . $property . '".', __METHOD__);
 			}
 		}
 	}
 	
 	/**
-	 * @return int See self::ERROR_SEVERITY_* constants
+	 * @return int See $this->ERROR_SEVERITY_* constants
 	 */
 	public function getErrorSeverity() {
 		return $this->errorSeverity;
 	}
 	
 	/**
-	 * @param int $errorSeverity See self::ERROR_SEVERITY_* constants
+	 * @param int $errorSeverity See $this->ERROR_SEVERITY_* constants
 	 */
 	public function setErrorSeverity($errorSeverity) {
 		$this->errorSeverity = $errorSeverity;
@@ -201,7 +199,7 @@ class GoogleAnalyticsConfig {
 	/**
 	 * @param \Closure $callback
 	 */
-	public function setLoggingCallback(\Closure $callback) {
+	public function setLoggingCallback($callback) {
 		$this->loggingCallback = $callback;
 	}
 	

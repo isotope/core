@@ -26,13 +26,6 @@
  * @copyright Copyright (c) 2010 United Prototype GmbH (http://unitedprototype.com)
  */
 
-//namespace UnitedPrototype\GoogleAnalytics\Internals\Request;
-
-//use UnitedPrototype\GoogleAnalytics\Config;
-
-//use UnitedPrototype\GoogleAnalytics\Internals\Util;
-require_once('../../GoogleAnalyticsConfig.php');
-require_once('../GoogleAnalyticsUtil.php');
 /**
  * @link http://code.google.com/p/gaforflash/source/browse/trunk/src/com/google/analytics/core/GIFRequest.as
  */
@@ -59,14 +52,22 @@ abstract class GoogleAnalyticsHttpRequest {
 	/**
 	 * @var string
 	 */
-	protected $//userAgent;
+	protected $userAgent;
 	
 	
 	/**
 	 * @param \UnitedPrototype\GoogleAnalytics\Config $config
 	 */
-	public function __construct(Config $config = null) {
-		$this->setConfig($config ? $config : new Config());
+	public function __construct(GoogleAnalyticsConfig $config = null) {
+		if(is_object($config))
+		{
+			$objConfig = $config;
+		}
+		else
+		{
+			$objConfig = new GoogleAnalyticsHttpRequest();	
+		}
+		$this->setConfig($objConfig);
 	}
 	
 	/**
@@ -79,7 +80,7 @@ abstract class GoogleAnalyticsHttpRequest {
 	/**
 	 * @param \UnitedPrototype\GoogleAnalytics\Config $config
 	 */
-	public function setConfig(Config $config) {
+	public function setConfig(GoogleAnalyticsConfig $config) {
 		$this->config = $config;
 	}
 	
@@ -93,8 +94,8 @@ abstract class GoogleAnalyticsHttpRequest {
 	/**
 	 * @param string $value
 	 */
-	protected function set//userAgent($value) {
-		$this->//userAgent = $value;
+	protected function setuserAgent($value) {
+		$this->userAgent = $value;
 	}
 	
 	/**
@@ -116,12 +117,12 @@ abstract class GoogleAnalyticsHttpRequest {
 		}
 		// Mimic Javascript's encodeURIComponent() encoding for the query
 		// string just to be sure we are 100% consistent with GA's Javascript client
-		$queryString = Util::convertToUriComponentEncoding($queryString);
+		$queryString = GoogleAnalyticsUtil::convertToUriComponentEncoding($queryString);
 		
 		// Recent versions of ga.js //use HTTP POST requests if the query string is too long
-		$//usePost = strlen($queryString) > 2036;
+		$usePost = strlen($queryString) > 2036;
 		
-		if(!$//usePost) {
+		if(!$usePost) {
 			$r = 'GET ' . $this->config->getEndpointPath() . '?' . $queryString . ' HTTP/1.0' . "\r\n";
 		} else {
 			// FIXME: The "/p" shouldn't be hardcoded here, instead we need a GET and a POST endpoint...
@@ -129,8 +130,8 @@ abstract class GoogleAnalyticsHttpRequest {
 		}
 		$r .= 'Host: ' . $this->config->getEndpointHost() . "\r\n";
 		
-		if($this->//userAgent) {
-			$r .= '//user-Agent: ' . str_replace(array("\n", "\r"), '', $this->//userAgent) . "\r\n";
+		if($this->userAgent) {
+			$r .= '//user-Agent: ' . str_replace(array("\n", "\r"), '', $this->userAgent) . "\r\n";
 		}
 		
 		if($this->xForwardedFor) {
@@ -140,7 +141,7 @@ abstract class GoogleAnalyticsHttpRequest {
 			$r .= 'X-Forwarded-For: ' . str_replace(array("\n", "\r"), '', $this->xForwardedFor) . "\r\n";
 		}
 		
-		if($//usePost) {
+		if($usePost) {
 			// Don't ask me why "text/plain", but ga.js says so :)
 			$r .= 'Content-Type: text/plain' . "\r\n";
 			$r .= 'Content-Length: ' . strlen($queryString) . "\r\n";
@@ -149,7 +150,7 @@ abstract class GoogleAnalyticsHttpRequest {
 		$r .= 'Connection: close' . "\r\n";
 		$r .= "\r\n\r\n";
 		
-		if($//usePost) {
+		if($usePost) {
 			$r .= $queryString;
 		}
 		
@@ -222,14 +223,15 @@ abstract class GoogleAnalyticsHttpRequest {
 			// We //use a closure here to retain the current values/states of
 			// this instance and $request (as the //use statement will copy them
 			// into its own scope)
-			register_shutdown_function(function() //use($instance) {
-				$instance->_send();
-			});
+			register_shutdown_function(array($this,'shutDown'),$instance);
 		} else {
 			$this->_send();
 		}
 	}
 
+	public function shutDown($instance) {
+		$instance->_send();
+	}
 }
 
 ?>

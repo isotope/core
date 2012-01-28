@@ -26,8 +26,6 @@
  * @copyright Copyright (c) 2010 United Prototype GmbH (http://unitedprototype.com)
  */
 
-//namespace UnitedPrototype\GoogleAnalytics;
-
 /**
  * @link http://code.google.com/apis/analytics/docs/tracking/eventTrackerOverview.html
  * @link http://code.google.com/apis/analytics/docs/gaJS/gaJSApiEventTracking.html
@@ -90,7 +88,7 @@ class GoogleAnalyticsEvent {
 	
 	public function validate() {
 		if($this->category === null || $this->action === null) {
-			Tracker::_raiseError('Events need at least to have a category and action defined.', __METHOD__);
+			GoogleAnalyticsTracker::_raiseError('Events need at least to have a category and action defined.', __METHOD__);
 		}
 	}
 	

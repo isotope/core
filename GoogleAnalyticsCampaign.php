@@ -26,13 +26,6 @@
  * @copyright Copyright (c) 2010 United Prototype GmbH (http://unitedprototype.com)
  */
 
-	//namespace UnitedPrototype\GoogleAnalytics;
-	
-	//use UnitedPrototype\GoogleAnalytics\Internals\Util;
-	
-	//use DateTime;
-require_once('Internals/GoogleAnalyticsUtil.php');
-
 /**
  * You should serialize this object and store it in e.g. the //user database to keep it
  * persistent for the same //user permanently (similar to the "__umtz" cookie of
@@ -41,7 +34,7 @@ require_once('Internals/GoogleAnalyticsUtil.php');
 class GoogleAnalyticsCampaign {
 	
 	/**
-	 * See self::TYPE_* constants, will be mapped to "__utmz" parameter.
+	 * See $this->TYPE_* constants, will be mapped to "__utmz" parameter.
 	 * 
 	 * @see Internals\ParameterHolder::$__utmz
 	 * @var string
@@ -160,32 +153,32 @@ class GoogleAnalyticsCampaign {
 	 * @param string $type See TYPE_* constants
 	 */
 	public function __construct($type) {
-		if(!in_array($type, array(self::TYPE_DIRECT, self::TYPE_ORGANIC, self::TYPE_REFERRAL))) {
-			Tracker::_raiseError('Campaign type has to be one of the Campaign::TYPE_* constant values.', __METHOD__);
+		if(!in_array($type, array($this->TYPE_DIRECT, $this->TYPE_ORGANIC, $this->TYPE_REFERRAL))) {
+			GoogleAnalyticsTracker::_raiseError('Campaign type has to be one of the GoogleAnalyticsCampaign::TYPE_* constant values.', __METHOD__);
 		}
 		
 		$this->type = $type;
 		
 		switch($type) {
 			// See http://code.google.com/p/gaforflash/source/browse/trunk/src/com/google/analytics/campaign/CampaignManager.as#375
-			case self::TYPE_DIRECT:
+			case $this->TYPE_DIRECT:
 				$this->name   = '(direct)';
 				$this->source = '(direct)';
 				$this->medium = '(none)';
 				break;
 			// See http://code.google.com/p/gaforflash/source/browse/trunk/src/com/google/analytics/campaign/CampaignManager.as#340
-			case self::TYPE_REFERRAL:
+			case $this->TYPE_REFERRAL:
 				$this->name   = '(referral)';
 				$this->medium = 'referral';
 				break;
 			// See http://code.google.com/p/gaforflash/source/browse/trunk/src/com/google/analytics/campaign/CampaignManager.as#280
-			case self::TYPE_ORGANIC:
+			case $this->TYPE_ORGANIC:
 				$this->name   = '(organic)';
 				$this->medium = 'organic';
 				break;
 		}
 		
-		$this->creationTime = new GoogleAnalyticsDateTime();
+		$this->creationTime = new DateTime();
 	}
 	
 	/**
@@ -194,7 +187,7 @@ class GoogleAnalyticsCampaign {
 	 * @return \UnitedPrototype\GoogleAnalytics\Campaign
 	 */
 	public static function createFromReferrer($url) {
-		$instance = new GoogleAnalyticsstatic(self::TYPE_REFERRAL);
+		$instance = new GoogleAnalyticsCampaign($this->TYPE_REFERRAL);
 		$urlInfo = parse_url($url);
 		$instance->source  = $urlInfo['host'];
 		$instance->content = $urlInfo['path'];
@@ -209,7 +202,7 @@ class GoogleAnalyticsCampaign {
 		// NOTE: gaforflash states that id and gClickId must also be specified,
 		// but that doesn't seem to be correct
 		if(!$this->source) {
-			Tracker::_raiseError('Campaigns need to have at least the "source" attribute defined.', __METHOD__);
+			GoogleAnalyticsTracker::_raiseError('Campaigns need to have at least the "source" attribute defined.', __METHOD__);
 		}
 	}
 	

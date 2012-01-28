@@ -26,16 +26,7 @@
  * @copyright Copyright (c) 2010 United Prototype GmbH (http://unitedprototype.com)
  */
 
-//namespace UnitedPrototype\GoogleAnalytics\Internals\Request;
-
-//use UnitedPrototype\GoogleAnalytics\Transaction;
-
-//use UnitedPrototype\GoogleAnalytics\Internals\ParameterHolder;
-
-require_once('../../GoogleAnalyticsTransaction.php');
-require_once('../GoogleAnalyticsParameterHolder.php');
-
-class GoogleAnalyticsTransactionRequest extends Request {
+class GoogleAnalyticsTransactionRequest extends GoogleAnalyticsRequest {
 	
 	/**
 	 * @var \UnitedPrototype\GoogleAnalytics\Transaction
@@ -47,7 +38,7 @@ class GoogleAnalyticsTransactionRequest extends Request {
 	 * @return string
 	 */
 	protected function getType() {
-		return Request::TYPE_TRANSACTION;
+		return GoogleAnalyticsRequest::TYPE_TRANSACTION;
 	}
 	
 	/**
@@ -74,10 +65,10 @@ class GoogleAnalyticsTransactionRequest extends Request {
 	 * The GA Javascript client doesn't send any visitor information for
 	 * e-commerce requests, so we don't either.
 	 * 
-	 * @param \UnitedPrototype\GoogleAnalytics\Internals\ParameterHolder $p
+	 * @param \UnitedPrototype\GoogleAnalytics\Internals\GoogleAnalyticsParameterHolder $p
 	 * @return \UnitedPrototype\GoogleAnalytics\Internals\ParameterHolder
 	 */
-	protected function buildVisitorParameters(ParameterHolder $p) {
+	protected function buildVisitorParameters(GoogleAnalyticsParameterHolder $p) {
 		return $p;
 	}
 	
@@ -85,10 +76,10 @@ class GoogleAnalyticsTransactionRequest extends Request {
 	 * The GA Javascript client doesn't send any custom variables for
 	 * e-commerce requests, so we don't either.
 	 * 
-	 * @param \UnitedPrototype\GoogleAnalytics\Internals\ParameterHolder $p
+	 * @param \UnitedPrototype\GoogleAnalytics\Internals\GoogleAnalyticsParameterHolder $p
 	 * @return \UnitedPrototype\GoogleAnalytics\Internals\ParameterHolder
 	 */
-	protected function buildCustomVariablesParameter(ParameterHolder $p) {
+	protected function buildCustomVariablesParameter(GoogleAnalyticsParameterHolder $p) {
 		return $p;
 	}
 	
@@ -102,7 +93,7 @@ class GoogleAnalyticsTransactionRequest extends Request {
 	/**
 	 * @param \UnitedPrototype\GoogleAnalytics\Transaction $transaction
 	 */
-	public function setTransaction(Transaction $transaction) {
+	public function setTransaction(GoogleAnalyticsTransaction $transaction) {
 		$this->transaction = $transaction;
 	}
 	

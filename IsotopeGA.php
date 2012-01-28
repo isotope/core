@@ -26,18 +26,24 @@
  */
  
  
-class IsotopeGA extends Frontend
+class IsotopeGA extends IsotopeFrontend
 {
 	
 	public function postCheckout($objOrder, $arrItemIds, $arrData)
-	{
-		require_once('system/modules/isotope_ga/php-ga-1.0/src/GoogleAnalytics/GoogleAnalyticsTracker.php');
-		require_once('system/modules/isotope_ga/php-ga-1.0/src/GoogleAnalytics/GoogleAnalyticsSession.php');
-		require_once('system/modules/isotope_ga/php-ga-1.0/src/GoogleAnalytics/GoogleAnalyticsVisitor.php');
-		require_once('system/modules/isotope_ga/php-ga-1.0/src/GoogleAnalytics/GoogleAnalyticsTransaction.php');
-		require_once('system/modules/isotope_ga/php-ga-1.0/src/GoogleAnalytics/GoogleAnalyticsItem.php');
+	{		
+		/*$this->import('GoogleAnalyticsTracker');
+		$this->import('GoogleAnalyticsSession');
+		$this->import('GoogleAnalyticsVisitor');
+		$this->import('GoogleAnalyticsTransaction');
+		$this->import('GoogleAnalyticsItem');
+		*/
+		
+		$objConfig = new IsotopeConfig();
+		
+		$objConfig->findBy('id',$objOrder->config_id);
+		
 		// Initilize GA Tracker
-		$tracker = new GoogleAnalyticsTracker($this->Isotope->Config->ga_account, $this->Environment->base);
+		$tracker = new GoogleAnalyticsTracker($objConfig->ga_account, $this->Environment->base);
 		
 		// Assemble Visitor information
 		// (could also get unserialized from database)
@@ -48,7 +54,7 @@ class IsotopeGA extends Frontend
 		$transaction = new GoogleAnalyticsTransaction();
 		
 		$transaction->setOrderId($objOrder->order_id);
-		$transaction->setAffiliation($this->Isotope->Config->name);
+		$transaction->setAffiliation($objConfig->name);
 		$transaction->setTotal($objOrder->grand_total);
 		$transaction->setTax($objOrder->taxTotal);
 		$transaction->setCity($objOrder->billingAddress['city']);
@@ -56,7 +62,7 @@ class IsotopeGA extends Frontend
 		if($objOrder->billingAddress['subdivision'])
 		{
 			$arrSub = explode("-",$objOrder->billingAddress['subdivision']);
-			$transaction->setState($arrSub[1]);
+			$transaction->setRegion($arrSub[1]);
 		}
 		
 		$transaction->setCountry($objOrder->billingAddress['country']);
@@ -97,9 +103,9 @@ class IsotopeGA extends Frontend
 		
 		// Assemble Session information
 		// (could also get unserialized from PHP session)
-		$session = $_SESSION;
+		$session = new GoogleAnalyticsSession();
 		
-		$transaction->trackTransaction($transaction, $session, $visitor);
+		$tracker->trackTransaction($transaction, $session, $visitor);
 	}
 	
 }

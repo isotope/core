@@ -26,15 +26,8 @@
  * @copyright Copyright (c) 2010 United Prototype GmbH (http://unitedprototype.com)
  */
 
-//namespace UnitedPrototype\GoogleAnalytics\Internals\Request;
 
-//use UnitedPrototype\GoogleAnalytics\Item;
-
-//use UnitedPrototype\GoogleAnalytics\Internals\ParameterHolder;
-require_once('../../GoogleAnalyticsItem.php');
-require_once('../GoogleAnalyticsParameterHolder.php');
-
-class GoogleAnalyticsItemRequest extends Request {
+class GoogleAnalyticsItemRequest extends GoogleAnalyticsRequest {
 	
 	/**
 	 * @var \UnitedPrototype\GoogleAnalytics\Item
@@ -46,7 +39,7 @@ class GoogleAnalyticsItemRequest extends Request {
 	 * @return string
 	 */
 	protected function getType() {
-		return Request::TYPE_ITEM;
+		return GoogleAnalyticsRequest::TYPE_ITEM;
 	}
 	
 	/**
@@ -71,10 +64,10 @@ class GoogleAnalyticsItemRequest extends Request {
 	 * The GA Javascript client doesn't send any visitor information for
 	 * e-commerce requests, so we don't either.
 	 * 
-	 * @param \UnitedPrototype\GoogleAnalytics\Internals\ParameterHolder $p
+	 * @param \UnitedPrototype\GoogleAnalytics\Internals\GoogleAnalyticsParameterHolder $p
 	 * @return \UnitedPrototype\GoogleAnalytics\Internals\ParameterHolder
 	 */
-	protected function buildVisitorParameters(ParameterHolder $p) {
+	protected function buildVisitorParameters(GoogleAnalyticsParameterHolder $p) {
 		return $p;
 	}
 	
@@ -82,10 +75,10 @@ class GoogleAnalyticsItemRequest extends Request {
 	 * The GA Javascript client doesn't send any custom variables for
 	 * e-commerce requests, so we don't either.
 	 * 
-	 * @param \UnitedPrototype\GoogleAnalytics\Internals\ParameterHolder $p
+	 * @param \UnitedPrototype\GoogleAnalytics\Internals\GoogleAnalyticsParameterHolder $p
 	 * @return \UnitedPrototype\GoogleAnalytics\Internals\ParameterHolder
 	 */
-	protected function buildCustomVariablesParameter(ParameterHolder $p) {
+	protected function buildCustomVariablesParameter(GoogleAnalyticsParameterHolder $p) {
 		return $p;
 	}
 	
@@ -97,9 +90,9 @@ class GoogleAnalyticsItemRequest extends Request {
 	}
 	
 	/**
-	 * @param \UnitedPrototype\GoogleAnalytics\Item $item
+	 * @param \UnitedPrototype\GoogleAnalytics\GoogleAnalyticsItem $item
 	 */
-	public function setItem(Item $item) {
+	public function setItem(GoogleAnalyticsItem $item) {
 		$this->item = $item;
 	}
 	

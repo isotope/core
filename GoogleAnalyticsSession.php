@@ -26,13 +26,6 @@
  * @copyright Copyright (c) 2010 United Prototype GmbH (http://unitedprototype.com)
  */
 
-//namespace UnitedPrototype\GoogleAnalytics;
-
-//use UnitedPrototype\GoogleAnalytics\Internals\Util;
-
-//use DateTime;
-require_once('Internals/GoogleAnalyticsUtil.php');
-
 /**
  * You should serialize this object and store it in the //user session to keep it
  * persistent between requests (similar to the "__umtb" cookie of
@@ -82,7 +75,7 @@ class GoogleAnalyticsSession {
 	 */
 	protected function generateSessionId() {
 		// TODO: Integrate AdSense support
-		return Util::generate32bitRandom();
+		return GoogleAnalyticsUtil::generate32bitRandom();
 	}
 	
 	/**

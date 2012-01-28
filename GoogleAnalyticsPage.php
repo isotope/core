@@ -26,7 +26,6 @@
  * @copyright Copyright (c) 2010 United Prototype GmbH (http://unitedprototype.com)
  */
 
-//namespace UnitedPrototype\GoogleAnalytics;
 
 class GoogleAnalyticsPage {
 	
@@ -86,7 +85,7 @@ class GoogleAnalyticsPage {
 	 */
 	public function setPath($path) {
 		if($path && $path[0] != '/') {
-			Tracker::_raiseError('The page path should always start with a slash ("/").', __METHOD__);
+			GoogleAnalyticsTracker::_raiseError('The page path should always start with a slash ("/").', __METHOD__);
 		}
 		
 		$this->path = $path;

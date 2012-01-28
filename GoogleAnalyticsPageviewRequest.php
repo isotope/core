@@ -26,24 +26,20 @@
  * @copyright Copyright (c) 2010 United Prototype GmbH (http://unitedprototype.com)
  */
 
-//namespace UnitedPrototype\GoogleAnalytics\Internals\Request;
 
-//use UnitedPrototype\GoogleAnalytics\SocialInteraction;
-require_once('../../GoogleAnalyticsSocialInteraction.php');
-
-class GoogleAnalyticsSocialinteractionRequest extends PageviewRequest {
+class GoogleAnalyticsPageviewRequest extends GoogleAnalyticsRequest {
 	
 	/**
-	 * @var \UnitedPrototype\GoogleAnalytics\SocialInteraction
+	 * @var \UnitedPrototype\GoogleAnalytics\Page
 	 */
-	protected $socialInteraction;
+	protected $page;
 	
 	
 	/**
 	 * @return string
 	 */
 	protected function getType() {
-		return Request::TYPE_SOCIAL;
+		return GoogleAnalyticsRequest::TYPE_PAGE;
 	}
 	
 	/**
@@ -52,30 +48,30 @@ class GoogleAnalyticsSocialinteractionRequest extends PageviewRequest {
 	protected function buildParameters() {
 		$p = parent::buildParameters();
 		
-		$p->utmsn  = $this->socialInteraction->getNetwork();
-		$p->utmsa  = $this->socialInteraction->getAction();
-		$p->utmsid = $this->socialInteraction->getTarget();
-		if($p->utmsid === null) {
-			// Default to page path like ga.js,
-			// see http://code.google.com/apis/analytics/docs/tracking/gaTrackingSocial.html#settingUp
-			$p->utmsid = $this->page->getPath();
+		$p->utmp  = $this->page->getPath();
+		$p->utmdt = $this->page->getTitle();
+		if($this->page->getCharset() !== null) {
+			$p->utmcs = $this->page->getCharset();
+		}
+		if($this->page->getReferrer() !== null) {
+			$p->utmr = $this->page->getReferrer();
 		}
 		
 		return $p;
 	}
 	
 	/**
-	 * @return \UnitedPrototype\GoogleAnalytics\SocialInteraction
+	 * @return \UnitedPrototype\GoogleAnalytics\Page
 	 */
-	public function getSocialInteraction() {
-		return $this->socialInteraction;
+	public function getPage() {
+		return $this->page;
 	}
 	
 	/**
-	 * @param \UnitedPrototype\GoogleAnalytics\SocialInteraction $socialInteraction
+	 * @param \UnitedPrototype\GoogleAnalytics\GoogleAnalyticsPage $page
 	 */
-	public function setSocialInteraction(SocialInteraction $socialInteraction) {
-		$this->socialInteraction = $socialInteraction;
+	public function setPage(GoogleAnalyticsPage $page) {
+		$this->page = $page;
 	}
 	
 }
