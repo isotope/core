@@ -31,15 +31,6 @@
 /**
  * Add fields to tl_content
  */
-$GLOBALS['TL_DCA']['tl_content']['fields']['iso_filters'] = array
-(
-	'label'                   => &$GLOBALS['TL_LANG']['tl_content']['iso_filters'],
-	'exclude'                 => true,
-	'inputType'               => 'select',
-	'eval'                    => array('includeBlankOption'=>true),
-	'options_callback'		  => array('tl_content_isotope', 'getFilters'),
-);
-
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_reader_jumpTo'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_content']['iso_reader_jumpTo'],
