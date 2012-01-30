@@ -177,7 +177,6 @@ abstract class GoogleAnalyticsHttpRequest {
 	public function _send() {
 		$request = $this->buildHttpRequest();
 		$response = null;
-		
 		// Do not actually send the request if endpoint host is set to null
 		if($this->config->getEndpointHost() !== null) {
 			$timeout = $this->config->getRequestTimeout();
@@ -203,6 +202,7 @@ abstract class GoogleAnalyticsHttpRequest {
 			
 			fclose($socket);
 		}
+		
 		
 		if($loggingCallback = $this->config->getLoggingCallback()) {
 			$loggingCallback($request, $response);

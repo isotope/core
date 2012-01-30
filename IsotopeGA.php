@@ -42,6 +42,9 @@ class IsotopeGA extends IsotopeFrontend
 		
 		$objConfig->findBy('id',$objOrder->config_id);
 		
+		if(!$objConfig->ga_enable)
+			return;
+		
 		// Initilize GA Tracker
 		$tracker = new GoogleAnalyticsTracker($objConfig->ga_account, $this->Environment->base);
 		
@@ -55,8 +58,9 @@ class IsotopeGA extends IsotopeFrontend
 		
 		$transaction->setOrderId($objOrder->order_id);
 		$transaction->setAffiliation($objConfig->name);
-		$transaction->setTotal($objOrder->grand_total);
+		$transaction->setTotal($objOrder->grandTotal);
 		$transaction->setTax($objOrder->taxTotal);
+		$transaction->setShipping($objOrder->shippingTotal);
 		$transaction->setCity($objOrder->billingAddress['city']);
 		
 		if($objOrder->billingAddress['subdivision'])
@@ -69,19 +73,21 @@ class IsotopeGA extends IsotopeFrontend
 		
 		$arrProducts = $objOrder->getProducts();
 			
-		$item = new GoogleAnalyticsItem();
+		
 		
 		foreach($arrProducts as $i=>$objProduct)
 		{	
+			$item = new GoogleAnalyticsItem();
+		
 			$arrOptions = array();
 			$arrOptionValues = array();
 	
 			if($objProduct->sku)
-				$item->setSku = $objProduct->sku;
+				$item->setSku($objProduct->sku);
 	
-			$item->setName = $objProduct->name;
-			$item->setPrice = $objProduct->price;
-			$item->setQuantity = $objProduct->quantity_requested;
+			$item->setName($objProduct->name);
+			$item->setPrice($objProduct->price);
+			$item->setQuantity($objProduct->quantity_requested);
 			
 			//Do we also potentially have options?
 			$arrOptions = $objProduct->getOptions(true);
