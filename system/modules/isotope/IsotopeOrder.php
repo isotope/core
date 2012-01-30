@@ -391,7 +391,7 @@ class IsotopeOrder extends IsotopeProductCollection
 		$this->strOrderId = $strPrefix . str_pad($intMax+1, $this->Isotope->Config->orderDigits, '0', STR_PAD_LEFT);
 
 		// HOOK: alter the order ID
-        if (isset($GLOBALS['ISO_HOOKS']['generateOrderId']) && is_array($GLOBALS['ISO_HOOKS']['generateOrderId']))
+		if (isset($GLOBALS['ISO_HOOKS']['generateOrderId']) && is_array($GLOBALS['ISO_HOOKS']['generateOrderId']))
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['generateOrderId'] as $callback)
 			{
