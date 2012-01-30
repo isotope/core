@@ -389,6 +389,17 @@ class IsotopeOrder extends IsotopeProductCollection
 		$intMax = (int) substr($objMax->order_id, $intPrefix);
 		
 		$this->strOrderId = $strPrefix . str_pad($intMax+1, $this->Isotope->Config->orderDigits, '0', STR_PAD_LEFT);
+
+		// HOOK: alter the order ID
+        if (isset($GLOBALS['ISO_HOOKS']['generateOrderId']) && is_array($GLOBALS['ISO_HOOKS']['generateOrderId']))
+		{
+			foreach ($GLOBALS['ISO_HOOKS']['generateOrderId'] as $callback)
+			{
+				$this->import($callback[0]);
+				$this->strOrderId = $this->$callback[0]->$callback[1]($this->strOrderId, $this);
+			}
+		}
+
 		$this->Database->query("UPDATE tl_iso_orders SET order_id='{$this->strOrderId}' WHERE id={$this->id}");
 		$this->Database->unlockTables();
 
