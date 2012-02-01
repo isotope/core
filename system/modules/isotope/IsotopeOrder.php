@@ -350,8 +350,6 @@ class IsotopeOrder extends IsotopeProductCollection
 			}
 		}
 
-		$this->save();
-
 		// HOOK: process checkout
 		if (isset($GLOBALS['ISO_HOOKS']['postCheckout']) && is_array($GLOBALS['ISO_HOOKS']['postCheckout']))
 		{
@@ -362,6 +360,7 @@ class IsotopeOrder extends IsotopeProductCollection
 			}
 		}
 
+		$this->save();
 		return true;
 	}
 
