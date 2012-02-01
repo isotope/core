@@ -20,6 +20,7 @@ Version 1.3.rc2 (2012-??-??)
 - Keep requested quantity on product error (#2772)
 - Rules could not be deleted (#2798)
 - Fixed array_multisort error message when search matched no product
+- Fixed bug in tax calculations that would not calculate tax on both billing & shipping addresses.
 
 ### Other
 - Introducing the "provider" directory for complex callback handlers
