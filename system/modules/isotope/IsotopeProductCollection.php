@@ -811,7 +811,8 @@ abstract class IsotopeProductCollection extends Model
 
 		if ($this->Isotope->Config->invoiceLogo != '' && is_file(TL_ROOT . '/' . $this->Isotope->Config->invoiceLogo))
 		{
-			$objTemplate->logoImage = '<img src="' . TL_PATH . '/' . $this->Isotope->Config->invoiceLogo . '" alt="" />';
+		
+			$objTemplate->logoImage = '<img src="' . $this->Environment->base . '/' . $this->Isotope->Config->invoiceLogo . '" alt="" />';
 		}
 
 		$objTemplate->invoiceTitle = $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] . ' ' . $this->order_id . ' – ' . date($GLOBALS['TL_CONFIG']['datimFormat'], $this->date);
