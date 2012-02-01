@@ -127,6 +127,10 @@ $GLOBALS['TL_DCA']['tl_iso_related_products'] = array
 );
 
 
+/**
+ * Class tl_iso_related_products
+ * Provide miscellaneous methods that are used by the data configuration array.
+ */
 class tl_iso_related_products extends Backend
 {
 
@@ -144,13 +148,13 @@ class tl_iso_related_products extends Backend
 <div class="cte_type" style="color:#666966"><strong>' . $GLOBALS['TL_LANG']['tl_iso_related_products']['category'][0] . ':</strong> ' . $strCategory . '</div>';
 
 		$arrProducts = deserialize($row['products']);
+
 		if (is_array($arrProducts) && count($arrProducts))
 		{
 			$strBuffer .= '<div class="limit_height' . (!$GLOBALS['TL_CONFIG']['doNotCollapse'] ? ' h0' : '') . ' block"><ul>';
-
 			$objProducts = $this->Database->execute("SELECT * FROM tl_iso_products WHERE id IN (" . implode(',', $arrProducts) . ") ORDER BY name");
 
-			while( $objProducts->next() )
+			while ($objProducts->next())
 			{
 				$strBuffer .= '<li>' . $objProducts->name . '</li>';
 			}
@@ -162,13 +166,18 @@ class tl_iso_related_products extends Backend
 	}
 
 
+	/**
+	 * Initialize the data container
+	 * @param object
+	 * @return string
+	 */
 	public function initDCA($dc)
 	{
 		$arrCategories = array();
 		$objCategories = $this->Database->prepare("SELECT * FROM tl_iso_related_categories WHERE id NOT IN (SELECT category FROM tl_iso_related_products WHERE pid=" . (strlen($this->Input->get('act')) ? "(SELECT pid FROM tl_iso_related_products WHERE id=?) AND id!=?" : '?') . ")")
 										->execute($dc->id, $dc->id);
 
-		while( $objCategories->next() )
+		while ($objCategories->next())
 		{
 			$arrCategories[$objCategories->id] = $objCategories->name;
 		}

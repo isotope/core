@@ -166,26 +166,30 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_options'] = array
 
 
 /**
- * tl_iso_shipping_options class.
- *
- * @extends Backend
+ * Class tl_iso_shipping_options
+ * Provide miscellaneous methods that are used by the data configuration array.
  */
 class tl_iso_shipping_options extends Backend
 {
 
 	/**
-	 * The current shipping class. Instantiated by the onload callback.
+	 * The current shipping class. Instantiated by the onload_callback.
+	 * @param object
 	 */
 	protected $Shipping;
 
 
 	/**
-	 * Instantiate the shipping module and set the palette.
+	 * Instantiate the shipping module and set the palette
+	 * @param object
+	 * @return void
 	 */
 	public function getModulePalette($dc)
 	{
 		if ($this->Input->get('act') == 'create')
+		{
 			return;
+		}
 
 		if (!strlen($this->Input->get('act')) && !strlen($this->Input->get('key')))
 		{
@@ -207,12 +211,16 @@ class tl_iso_shipping_options extends Backend
 
 
 	/**
-	 * Get a formatted listing for this row from shipping module class.
+	 * Get a formatted listing for this row from shipping module class
+	 * @param array
+	 * @return string
 	 */
 	public function listRow($row)
 	{
 		if (!is_object($this->Shipping))
+		{
 			return '';
+		}
 
 		return $this->Shipping->moduleOptionsList($row);
 	}

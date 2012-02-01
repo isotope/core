@@ -257,18 +257,22 @@ $GLOBALS['TL_DCA']['tl_iso_addresses'] = array
 
 
 /**
- * tl_iso_addresses class.
- *
- * @extends Backend
+ * Class tl_iso_addresses
+ * Provide miscellaneous methods that are used by the data configuration array.
  */
 class tl_iso_addresses extends Backend
 {
 
+	/**
+	 * Generate and return the address label
+	 * @param array
+	 * @return string
+	 */
 	public function renderLabel($arrAddress)
 	{
 		$this->import('Isotope');
 
-		$strBuffer  = $this->Isotope->generateAddressString($arrAddress);
+		$strBuffer = $this->Isotope->generateAddressString($arrAddress);
 		$strBuffer .= '<div style="color:#b3b3b3;margin-top:8px">' . $GLOBALS['TL_LANG']['tl_iso_addresses']['store_id'][0] . ' ' . $arrAddress['store_id'];
 
 		if ($arrAddress['isDefaultBilling'])
@@ -282,22 +286,24 @@ class tl_iso_addresses extends Backend
 		}
 
 		$strBuffer .= '</div>';
-
 		return $strBuffer;
 	}
 
 
 	/**
 	 * Make sure only one address is marked as default
+	 * @param object
+	 * @return void
 	 */
 	public function updateDefaultAddress($dc=null)
 	{
 		$intId = TL_MODE == 'FE' ? $this->Input->get('id') : $dc->id;
-
 		$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE id=?")->limit(1)->execute($intId);
 
 		if (!$objAddress->numRows)
+		{
 			return;
+		}
 
 		if ($this->Input->post('isDefaultBilling'))
 		{

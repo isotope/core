@@ -61,6 +61,7 @@ $GLOBALS['TL_LANG']['tl_iso_mail']['exportMail']	= array('Export', 'Export e-mai
  */
 $GLOBALS['TL_LANG']['tl_iso_mail']['name_legend']		= 'Name';
 $GLOBALS['TL_LANG']['tl_iso_mail']['address_legend']	= 'Address';
+$GLOBALS['TL_LANG']['tl_iso_mail']['document_legend']	= 'Attachment';
 $GLOBALS['TL_LANG']['tl_iso_mail']['expert_legend']		= 'Expert Legend';
 
 

@@ -178,29 +178,40 @@ $GLOBALS['TL_DCA']['tl_iso_prices'] = array
 );
 
 
+/**
+ * Class tl_iso_prices
+ * Provide miscellaneous methods that are used by the data configuration array.
+ */
 class tl_iso_prices extends Backend
 {
 
+	/**
+	 * List all price rows
+	 * @param array
+	 * @return string
+	 */
 	public function listRows($row)
 	{
 		if (!$row['id'])
+		{
 			return '';
+		}
 
 		$this->import('Isotope');
 
 		$arrTiers = array();
 		$objTiers = $this->Database->execute("SELECT * FROM tl_iso_price_tiers WHERE pid={$row['id']} ORDER BY min");
 
-		while( $objTiers->next() )
+		while ($objTiers->next())
 		{
 			$arrTiers[] = "{$objTiers->min}={$objTiers->price}";
 		}
 
 		$arrInfo = array('<strong>'.$GLOBALS['TL_LANG']['tl_iso_prices']['price_tiers'][0].':</strong> ' . implode(', ', $arrTiers));
 
-		foreach( $row as $name => $value )
+		foreach ($row as $name => $value)
 		{
-			switch( $name )
+			switch ($name)
 			{
 				case 'id':
 				case 'pid':
@@ -220,15 +231,23 @@ class tl_iso_prices extends Backend
 	}
 
 
+	/**
+	 * Get tiers and return them as array
+	 * @param mixed
+	 * @param object
+	 * @return array
+	 */
 	public function loadTiers($varValue, $dc)
 	{
 		if (!$dc->id)
+		{
 			return array();
+		}
 
 		$arrTiers = array();
 		$objTiers = $this->Database->execute("SELECT * FROM tl_iso_price_tiers WHERE pid={$dc->id} ORDER BY min");
 
-		while( $objTiers->next() )
+		while ($objTiers->next())
 		{
 			$arrTiers[] = array($objTiers->min, $objTiers->price);
 		}
@@ -242,6 +261,12 @@ class tl_iso_prices extends Backend
 	}
 
 
+	/**
+	 * Save the price tiers
+	 * @param mixed
+	 * @param object
+	 * @return string
+	 */
 	public function saveTiers($varValue, $dc)
 	{
 		$arrNew = deserialize($varValue);
@@ -257,7 +282,7 @@ class tl_iso_prices extends Backend
 			$arrUpdate = array();
 			$arrDelete = $this->Database->execute("SELECT min FROM tl_iso_price_tiers WHERE pid={$dc->id}")->fetchEach('min');
 
-			foreach( $arrNew as $new )
+			foreach ($arrNew as $new)
 			{
 				$pos = array_search($new[0], $arrDelete);
 
@@ -279,7 +304,7 @@ class tl_iso_prices extends Backend
 
 			if (count($arrUpdate))
 			{
-				foreach( $arrUpdate as $min => $price )
+				foreach ($arrUpdate as $min => $price)
 				{
 					$this->Database->prepare("UPDATE tl_iso_price_tiers SET tstamp=$time, price=? WHERE pid={$dc->id} AND min=?")->executeUncached($price, $min);
 				}
@@ -287,7 +312,7 @@ class tl_iso_prices extends Backend
 
 			if (count($arrInsert))
 			{
-				foreach( $arrInsert as $min => $price )
+				foreach ($arrInsert as $min => $price)
 				{
 					$this->Database->prepare("INSERT INTO tl_iso_price_tiers (pid,tstamp,min,price) VALUES ({$dc->id}, $time, ?, ?)")->executeUncached($min, $price);
 				}

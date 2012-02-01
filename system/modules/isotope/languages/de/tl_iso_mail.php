@@ -73,3 +73,9 @@ $GLOBALS['TL_LANG']['tl_iso_mail']['expert_legend'] = 'Experten-Einstellungen';
 $GLOBALS['TL_LANG']['tl_iso_mail']['xml_error'] = 'Template " %s" ist defekt und kann nicht importiert werden.';
 $GLOBALS['TL_LANG']['tl_iso_mail']['mail_imported'] = 'Template "%s" wurde importiert.';
 
+
+/**
+ * Legends
+ */
+$GLOBALS['TL_LANG']['tl_iso_mail']['document_legend']	= 'Bestelldokument';
+

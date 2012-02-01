@@ -482,11 +482,16 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 );
 
 
+/**
+ * Class tl_iso_config
+ * Provide miscellaneous methods that are used by the data configuration array.
+ */
 class tl_iso_config extends Backend
 {
 
 	/**
-	 * Check permissions to edit table tl_iso_config.
+	 * Check permissions to edit table tl_iso_config
+	 * @return void
 	 */
 	public function checkPermission()
 	{
@@ -495,17 +500,18 @@ class tl_iso_config extends Backend
 		{
 			return;
 		}
-		
+
 		// Set fallback if no fallback is available
 		$objConfig = $this->Database->query("SELECT COUNT(*) AS total FROM tl_iso_config WHERE fallback='1'");
-		
+
 		if ($objConfig->total == 0)
 		{
 			$GLOBALS['TL_DCA']['tl_iso_config']['fields']['fallback']['default'] = '1';
 		}
-		
+
 		$this->import('BackendUser', 'User');
-		
+
+		// Return if user is admin
 		if ($this->User->isAdmin)
 		{
 			return;
@@ -635,7 +641,7 @@ class tl_iso_config extends Backend
 	 */
 	public function addIcon($row, $label)
 	{
-		switch( $row['currency'] )
+		switch ($row['currency'])
 		{
 			case 'AUD':
 				$image = 'currency-dollar-aud';

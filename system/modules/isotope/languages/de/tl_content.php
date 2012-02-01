@@ -39,6 +39,4 @@ $GLOBALS['TL_LANG']['tl_content']['iso_list_layout'][0] = 'Produktlisten-Templat
 $GLOBALS['TL_LANG']['tl_content']['iso_list_layout'][1] = 'Bitte wählen Sie ein Listen-Layout. Sie können neue angepasste Listen-Layouts in den Ordner <em>templates</em> hinzufügen. Listen-Templates beginnen mit <em>iso_list_</em> und benötigen die Dateiendung <em>.html5, .xhtml</em> oder <em>.tpl</em>.';
 $GLOBALS['TL_LANG']['tl_content']['iso_attribute_set'][0] = 'Artikelmerkmal-Sammlung';
 $GLOBALS['TL_LANG']['tl_content']['iso_attribute_set'][1] = 'Wählen Sie eine Artikelmerkmal-Sammlung um einen Filter für diese Seite zu wählen.';
-$GLOBALS['TL_LANG']['tl_content']['iso_filters'][0] = 'Auflistungs-Filter';
-$GLOBALS['TL_LANG']['tl_content']['iso_filters'][1] = 'Wählen Sie einen Artikelmerkmal-Filter.';
 

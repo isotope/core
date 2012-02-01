@@ -29,13 +29,13 @@
 
 
 /**
- * Configuration
+ * Add a child table to tl_member
  */
 $GLOBALS['TL_DCA']['tl_member']['config']['ctable'][] = 'tl_iso_addresses';
 
 
 /**
- * Operations
+ * Add a global operation to tl_member
  */
 $GLOBALS['TL_DCA']['tl_member']['list']['operations']['address_book'] = array
 (
@@ -46,7 +46,7 @@ $GLOBALS['TL_DCA']['tl_member']['list']['operations']['address_book'] = array
 
 
 /**
- * Fields
+ * Force the "country" field to be mandatory
  */
 $GLOBALS['TL_DCA']['tl_member']['fields']['country']['eval']['mandatory'] = true;
 

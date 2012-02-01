@@ -76,7 +76,7 @@ class ModuleIsotopeProductVariantList extends ModuleIsotopeProductList
 														OR p1.pid IN (SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . ")))"
 													. (is_array($arrCacheIds) ? ("AND (p1.id IN (" . implode(',', $arrCacheIds) . ") OR p1.pid IN (" . implode(',', $arrCacheIds) . "))") : '')
 													. ($this->iso_list_where == '' ? '' : " AND {$this->iso_list_where}")
-													. "$strWhere ORDER BY sorting")
+													. "$strWhere ORDER BY c.sorting")
 										 ->execute($arrValues);
 		
 		return IsotopeFrontend::getProducts($objProductData, IsotopeFrontend::getReaderPageId(null, $this->iso_reader_jumpTo), true, $arrFilters, $arrSorting);

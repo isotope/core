@@ -4,6 +4,9 @@ Isotope eCommerce Changelog
 Version 1.3.rc2 (2012-??-??)
 ----------------------------
 
+### New
+- Added a new hook generateOrderId (#2841)
+
 ### Improved
 - Product sorting is now case-insensitive
 - Hide "new" button when pasting product or variant

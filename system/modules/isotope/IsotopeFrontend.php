@@ -995,10 +995,14 @@ $endScript";
 			$varValue = $objProduct->{$filter['attribute']};
 			$blnMatch = false;
 
-			// If the attribute is not set for this product, the filter does not match
+			// If the attribute is not set for this product, we will ignore this attribute
 			if ($varValue === null)
 			{
-				return false;
+				continue;
+			}
+			elseif (is_array($varValue))
+			{
+				$varValue = http_build_query($varValue);
 			}
 
 			$operator = self::convertFilterOperator($filter['operator'], 'PHP');

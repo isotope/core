@@ -206,11 +206,16 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
 );
 
 
+/**
+ * Class tl_iso_tax_rate
+ * Provide miscellaneous methods that are used by the data configuration array.
+ */
 class tl_iso_tax_rate extends Backend
 {
 
 	/**
-	 * Check permissions to edit table tl_iso_tax_rate.
+	 * Check permissions to edit table tl_iso_tax_rate
+	 * @return void
 	 */
 	public function checkPermission()
 	{
@@ -370,7 +375,7 @@ class tl_iso_tax_rate extends Backend
 
 	/**
 	 * Set the currency rate from selected store config
-	 * @param DataContainer
+	 * @param object
 	 */
 	public function addCurrencyRate($dc)
 	{
