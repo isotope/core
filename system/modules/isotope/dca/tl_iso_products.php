@@ -1041,9 +1041,9 @@ class tl_iso_products extends Backend
 	 */
 	public function saveProductCategories($varValue, DataContainer $dc)
 	{
-		$arrIds = deserialize($varValue, true);
+		$arrIds = deserialize($varValue);
 
-		if (!empty($arrIds))
+		if (is_array($arrIds) && !empty($arrIds))
 		{
 			$time = time();
 			$this->Database->query("DELETE FROM tl_iso_product_categories WHERE pid={$dc->id} AND page_id NOT IN (" . implode(',', $arrIds) . ")");
@@ -1077,9 +1077,9 @@ class tl_iso_products extends Backend
 		$doNotSubmit = false;
 		$strBuffer = '';
 		$arrOptions = array();
-		$arrAttributes = deserialize($objProduct->attributes, true);
+		$arrAttributes = deserialize($objProduct->attributes);
 
-		if (!empty($arrAttributes))
+		if (is_array($arrAttributes))
 		{
 			foreach ($arrAttributes as $attribute => $arrConfig)
 			{
