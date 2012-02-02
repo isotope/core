@@ -76,11 +76,6 @@ class ModuleIsotopeCumulativeFilter extends ModuleIsotopeProductFilter
 			return true;
 		}
 		
-		if ($this->iso_filterTpl)
-		{
-			$this->strTemplate = $this->iso_filterTpl;
-		}
-		
 		return false;
 	}
 	
