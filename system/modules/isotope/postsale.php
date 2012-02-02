@@ -54,6 +54,9 @@ class PostSale extends Frontend
 	{
 		// Contao Hooks are not save to be run on the postsale script (e.g. parseFrontendTemplate)
 		unset($GLOBALS['TL_HOOKS']);
+		
+		// Need to load our own Hooks (e.g. loadDataContainer)
+		include_once(TL_ROOT . '/system/modules/isotope/config/config.php');
 
 		parent::__construct();
 	}
