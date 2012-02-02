@@ -19,8 +19,9 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Radosław Maślanek <radek@dziupla.pl>
+ * @author     Kamil Kuźmiński <kamil.kuzminski@gmail.com>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
@@ -28,9 +29,22 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_user']['iso_product_types']		= array('Typy produktów', 'Users can only see and edit products and product types you enable.');
-$GLOBALS['TL_LANG']['tl_user']['iso_configs']			= array('Konfiguracje sklepu', 'Users can see orders from these store configurations.');
-$GLOBALS['TL_LANG']['tl_user']['iso_modules']			= array('Moduły Isotope', 'Select which store configuration modules this user can access.');
+$GLOBALS['TL_LANG']['tl_user']['iso_modules']			= array('Moduły Isotope', 'Wybierz dla których konfiguracji sklepów ten użytkownik ma dostęp.');
+$GLOBALS['TL_LANG']['tl_user']['iso_product_types']		= array('Typy produktów', 'Użytkownik może zobaczyć i edytować tylko produkty i typy produktów, które udostępnisz.');
+$GLOBALS['TL_LANG']['tl_user']['iso_product_typep']		= array('Uprawnienia dla typów produktów', 'Tutaj możesz określić uprawnienia dla typów produktów.');
+$GLOBALS['TL_LANG']['tl_user']['iso_payment_modules']	= array('Dozwolone moduły płatności', 'Tutaj możesz nadać dostęp do jednego lub więcej modułów płatności.');
+$GLOBALS['TL_LANG']['tl_user']['iso_payment_modulep']	= array('Uprawnienia dla modułów płatności', 'Tutaj możesz określić uprawnienia dla modułów płatności.');
+$GLOBALS['TL_LANG']['tl_user']['iso_shipping_modules']	= array('Dozwolone moduły dostawy', 'Tutaj możesz nadać dostęp do jednego lub więcej modułów dostawy.');
+$GLOBALS['TL_LANG']['tl_user']['iso_shipping_modulep']	= array('Uprawnienia dla modułów dostawy', 'Tutaj możesz określić uprawnienia dla modułów dostawy.');
+$GLOBALS['TL_LANG']['tl_user']['iso_tax_classes']		= array('Dozwolone klasy podatków', 'Tutaj możesz nadać dostęp do jednego lub więcej klas podatków.');
+$GLOBALS['TL_LANG']['tl_user']['iso_tax_classp']		= array('Uprawnienia dla klas podatków', 'Tutaj możesz określić uprawnienia dla klas podatków.');
+$GLOBALS['TL_LANG']['tl_user']['iso_tax_rates']			= array('Dozwolone stawki podatkowe', 'Tutaj możesz nadać dostęp do jednego lub więcej stawek podatków.');
+$GLOBALS['TL_LANG']['tl_user']['iso_tax_ratep']			= array('Uprawnienia dla stawek podatkowych', 'Tutaj możesz określić uprawnienia dla stawek produktów.');
+$GLOBALS['TL_LANG']['tl_user']['iso_mails']				= array('Dozwolone szablony e-mail', 'Tutaj możesz nadać dostęp do jednego lub więcej szablonów e-mail.');
+$GLOBALS['TL_LANG']['tl_user']['iso_mailp']				= array('Uprawnienia dla szablonów e-mail', 'Tutaj możesz określić uprawnienia dla szablonów e-mail.');
+$GLOBALS['TL_LANG']['tl_user']['iso_configs']			= array('Konfiguracje sklepu', 'Użytkownik może widzieć zamówienia z tych konfiguracji sklepów.');
+$GLOBALS['TL_LANG']['tl_user']['iso_configp']			= array('Uprawnienia dla konfiguracji sklepów', 'Tutaj możesz określić uprawnienia dla konfiguracji sklepów.');
+
 
 
 /**

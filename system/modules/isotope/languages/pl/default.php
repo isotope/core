@@ -19,8 +19,9 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Radosław Maślanek <radek@dziupla.pl>
+ * @author     Kamil Kuźmiński <kamil.kuzminski@gmail.com>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
@@ -44,7 +45,8 @@ $GLOBALS['TL_LANG']['ERR']['mandatoryOption']				= 'Proszę wybrać opcje.';
 $GLOBALS['TL_LANG']['ERR']['noAddressData']					= 'Dane adresowe są wymagane do celów podatkowych!';
 $GLOBALS['TL_LANG']['ERR']['variantDuplicate']				= 'Taki sam wariant produktu już istnieje. Utwórz inny wariant';
 $GLOBALS['TL_LANG']['ERR']['breadcrumbEmpty']				= 'Filtr był pusty, wyświetlono wszystkie produkty.';
-$GLOBALS['TL_LANG']['ERR']['discount']						= 'Proszę wprowadzić liczby całkowite dziesietne poprzedzone  + lub - dozwolony jest także procent.';
+$GLOBALS['TL_LANG']['ERR']['discount']						= 'Proszę wprowadzić liczby całkowite dziesiętne poprzedzone  + lub - dozwolony jest także procent.';
+$GLOBALS['TL_LANG']['ERR']['surcharge']						= 'Proszę wprowadzić liczby całkowite dziesiętne z opcjonalnym symbolem procenta.';
 $GLOBALS['TL_LANG']['ERR']['orderFailed']					= 'Kasa. Prosze spróbować ponownie lub wybrać inny moduł płatności.';
 $GLOBALS['TL_LANG']['ERR']['specifyBillingAddress'] 		= 'Nie znaleziono adresu billingowego.  Prosze uzupełnić adres.';
 $GLOBALS['TL_LANG']['ERR']['cc_num']						= 'Proszę podać poprawny numer karty kredytowej.';
@@ -54,17 +56,19 @@ $GLOBALS['TL_LANG']['ERR']['cc_ccv']						= 'Podaj kod zabezpieczający karty (C
 $GLOBALS['TL_LANG']['ERR']['cc_match']						= 'Podany numer karty kredytowej nie pasuje do wybranego typu karty..';
 $GLOBALS['TL_LANG']['ERR']['addressDoesNotExist']			= 'Ten adres nie istnieje w Twojej książce adresowej.';
 $GLOBALS['TL_LANG']['ERR']['noAddressBookEntries']			= 'Nie masz żadnych wpisów adresowych.';
+$GLOBALS['TL_LANG']['ERR']['cartMinSubtotal']				= 'Minimalna wartość zamówienia wynosi %s. Musisz dodać więcej produktów przez złożeniem zamówienia.';
 
 
 /**
  * Miscellaneous
  */
-$GLOBALS['TL_LANG']['MSC']['labelLanguage']			= 'Język';
 $GLOBALS['TL_LANG']['MSC']['editLanguage']			= 'Edytuj';
 $GLOBALS['TL_LANG']['MSC']['deleteLanguage']		= 'Skasuj';
 $GLOBALS['TL_LANG']['MSC']['defaultLanguage']		= 'Podstawowy';
+$GLOBALS['TL_LANG']['MSC']['editingLanguage']		= 'UWAGA: Edytujesz dane wybranej wersji językowej!';
 $GLOBALS['TL_LANG']['MSC']['deleteLanguageConfirm']	= 'Czy na pewno chcesz skasować ten język? Ta operacja jest nieodwracalna!';
 $GLOBALS['TL_LANG']['MSC']['undefinedLanguage']		= 'niezdefiniowany';
+$GLOBALS['TL_LANG']['MSC']['copyFallback']			= 'Kopiuj podstawowy';
 $GLOBALS['TL_LANG']['MSC']['noSurcharges']			= 'Niczego nie znaleziono (surcharges - poprawic).';
 $GLOBALS['TL_LANG']['MSC']['ajaxLoadingMessage']	= 'Wczytywanie...';
 $GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline']	= 'Zamówienie nr %s / %s';
@@ -85,7 +89,6 @@ $GLOBALS['TL_LANG']['MSC']['searchTextBoxLabel'] = 'Szukane wyrażenie: ';
 $GLOBALS['TL_LANG']['MSC']['searchFieldsLabel'] = 'Pola wyszukiwania: ';
 $GLOBALS['TL_LANG']['MSC']['perPageLabel'] = 'Wyników na stronie';
 $GLOBALS['TL_LANG']['MSC']['searchTermsLabel'] = 'Słowa kluczowe';
-$GLOBALS['TL_LANG']['MSC']['searchLabel'] = 'Szukaj';
 $GLOBALS['TL_LANG']['MSC']['submitLabel'] = 'Wyślij';
 $GLOBALS['TL_LANG']['MSC']['clearFiltersLabel'] = 'Wyczyść filtry';
 $GLOBALS['TL_LANG']['MSC']['buttonLabel']['update'] = 'Aktualizuj';
@@ -93,8 +96,8 @@ $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'] = 'Dodaj do koszyka';
 $GLOBALS['TL_LANG']['MSC']['pagerSectionTitleLabel'] = 'Strona:';
 $GLOBALS['TL_LANG']['MSC']['orderByLabel'] = 'Porządkuj wg.:';
 
-$GLOBALS['TL_LANG']['MSC']['buttonActionString']['add_to_cart'] = 'Dodaj produkt %s do koszyka';
 $GLOBALS['TL_LANG']['MSC']['noProducts'] = 'Niestety, nie odnaleziono żadnego produktu.';
+$GLOBALS['TL_LANG']['MSC']['invalidProductInformation'] = "Przepraszamy, informacja o produkcie, którego szukasz, jest niedostępna. W celu uzyskania dalszego wsparcia skontaktuj się z nami.";
 
 $GLOBALS['TL_LANG']['MSC']['productOptionsLabel'] = 'Opcje';
 
@@ -124,6 +127,7 @@ $GLOBALS['TL_LANG']['MSC']['noPaymentModules'] = 'W chwili obecnej nie ma dostę
 $GLOBALS['TL_LANG']['MSC']['noShippingModules'] = 'W chwili obecnej nie ma dostepnych metod dostawy.';
 $GLOBALS['TL_LANG']['MSC']['noOrderEmails'] = 'Nie znaleziono emaili z zamówieniami.';
 $GLOBALS['TL_LANG']['MSC']['noOrders'] = 'Nie znaleziono żadnego zamówienia.';
+$GLOBALS['TL_LANG']['MSC']['downloadsRemaining'] = '<br />%s plików do pobrania';
 
 $GLOBALS['TL_LANG']['ISO']['couponsInputLabel'] = 'Kod promocji';
 $GLOBALS['TL_LANG']['ISO']['couponsHeadline'] = 'Zastosuj kod promocji';
@@ -134,16 +138,19 @@ $GLOBALS['TL_LANG']['MSC']['checkoutBT']				= 'Przejdź do kasy';
 $GLOBALS['TL_LANG']['MSC']['continueShoppingBT']		= 'Wróć do sklepu';
 $GLOBALS['TL_LANG']['MSC']['updateCartBT']				= 'Aktualizuj koszyk';
 $GLOBALS['TL_LANG']['MSC']['orderStatusHeadline']		= 'Status zamówienia: %s';
+$GLOBALS['TL_LANG']['MSC']['checkboutStepBack']			= 'Wróć do kroku "%s"';
 
 
 //Addresses
 $GLOBALS['TL_LANG']['MSC']['createNewAddressLabel'] = 'Doddaj nowy adres';
 $GLOBALS['TL_LANG']['MSC']['useBillingAddress'] = 'Użyj adresu z rachunku';
+$GLOBALS['TL_LANG']['MSC']['useCustomerAddress']		= 'Użyj adresu klienta';
 $GLOBALS['TL_LANG']['MSC']['differentShippingAddress'] = 'Inny adres dostawy';
 
 $GLOBALS['TL_LANG']['MSC']['addressBookLabel'] = 'Adresy';
 $GLOBALS['TL_LANG']['MSC']['editAddressLabel'] = 'Edytuj';
 $GLOBALS['TL_LANG']['MSC']['deleteAddressLabel'] = 'Skasuj';
+$GLOBALS['TL_LANG']['MSC']['deleteAddressConfirm'] = 'Czy jesteś pewien, że chcesz usunąć ten adres? Ta operacja nie może być cofnięta.';
 
 //Invoice language Entries
 $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] = 'Faktura';
@@ -156,6 +163,7 @@ $GLOBALS['TL_LANG']['MSC']['iso_subtotal_header'] = 'Podsumowanie';
 $GLOBALS['TL_LANG']['MSC']['iso_order_shipping_header'] = 'Dostawa';
 $GLOBALS['TL_LANG']['MSC']['iso_order_grand_total_header'] = 'Podsumowanie';
 $GLOBALS['TL_LANG']['MSC']['iso_order_items'] = 'Przedmioty';
+$GLOBALS['TL_LANG']['MSC']['iso_order_sku'] = 'SKU';
 $GLOBALS['TL_LANG']['MSC']['iso_quantity_header'] = 'Ilość';
 $GLOBALS['TL_LANG']['MSC']['iso_price_header'] = 'Cena';
 $GLOBALS['TL_LANG']['MSC']['iso_sku_header'] = 'SKU';
@@ -179,6 +187,11 @@ $GLOBALS['TL_LANG']['MSC']['old_to_new'] = 'od najstarszego';
 $GLOBALS['TL_LANG']['MSC']['new_to_old'] = 'od najnowszego';
 
 
+/**
+ * Content elements
+ */
+$GLOBALS['TL_LANG']['CTE']['isotope']	= 'Isotope eCommerce';
+
 
 /**
  * Isotope module labels
@@ -186,14 +199,16 @@ $GLOBALS['TL_LANG']['MSC']['new_to_old'] = 'od najnowszego';
 $GLOBALS['TL_LANG']['ISO']['productSingle']		= '1 Produkt';
 $GLOBALS['TL_LANG']['ISO']['productMultiple']	= '%s Produkty';
 
-$GLOBALS['TL_LANG']['ISO']['shipping_address_message']	= 'Wprowadź dane do dostawy lub wybierz spośród zdefiniowanych.';
-$GLOBALS['TL_LANG']['ISO']['billing_address_message']	= 'Wybierz dane do faktury lub wybierz spośród zdefiniowanych';
-$GLOBALS['TL_LANG']['ISO']['billing_address_guest_message'] = 'Wprowadź dane do faktury';
-$GLOBALS['TL_LANG']['ISO']['shipping_method_message']	= 'Wybierz opcję dostawy.';
-$GLOBALS['TL_LANG']['ISO']['shipping_method_missing']	= 'Proszę wybrać opcję dostawy.';
-$GLOBALS['TL_LANG']['ISO']['payment_method_message']	= 'Wybierz sposób płatności.';
-$GLOBALS['TL_LANG']['ISO']['payment_method_missing']	= 'Proszę wybrać sposób płatności.';
-$GLOBALS['TL_LANG']['ISO']['order_review_message']		= 'Przejżyj i potwierdż zamówienie.';
+$GLOBALS['TL_LANG']['ISO']['shipping_address_message']			= 'Wprowadź dane do dostawy lub wybierz spośród zdefiniowanych.';
+$GLOBALS['TL_LANG']['ISO']['billing_address_message']			= 'Wybierz dane do faktury lub wybierz spośród zdefiniowanych';
+$GLOBALS['TL_LANG']['ISO']['billing_address_guest_message'] 	= 'Wprowadź dane do faktury';
+$GLOBALS['TL_LANG']['ISO']['customer_address_message']			= 'Wprowadź dane kilenta lub wybierz spośród zdefiniowanych.';
+$GLOBALS['TL_LANG']['ISO']['customer_address_guest_message']	= 'Wprowadź dane klienta';
+$GLOBALS['TL_LANG']['ISO']['shipping_method_message']			= 'Wybierz opcję dostawy.';
+$GLOBALS['TL_LANG']['ISO']['shipping_method_missing']			= 'Proszę wybrać opcję dostawy.';
+$GLOBALS['TL_LANG']['ISO']['payment_method_message']			= 'Wybierz sposób płatności.';
+$GLOBALS['TL_LANG']['ISO']['payment_method_missing']			= 'Proszę wybrać sposób płatności.';
+$GLOBALS['TL_LANG']['ISO']['order_review_message']				= 'Przejżyj i potwierdż zamówienie.';
 
 $GLOBALS['TL_LANG']['ISO']['checkout_address']				= 'Adres';
 $GLOBALS['TL_LANG']['ISO']['checkout_shipping']				= 'Dostawa';
@@ -205,7 +220,7 @@ $GLOBALS['TL_LANG']['ISO']['billing_shipping_address']		= 'Adres dostawy i fktur
 $GLOBALS['TL_LANG']['ISO']['shipping_method']				= 'Sposób dostawy';
 $GLOBALS['TL_LANG']['ISO']['payment_method']				= 'Sposób płatności';
 $GLOBALS['TL_LANG']['ISO']['order_conditions']				= 'Warunki zamówienia';
-$GLOBALS['TL_LANG']['ISO']['order_review']					='Szczegóły zamówienia';
+$GLOBALS['TL_LANG']['ISO']['order_review']					= 'Szczegóły zamówienia';
 $GLOBALS['TL_LANG']['ISO']['changeCheckoutInfo']			= 'Zmień';
 $GLOBALS['TL_LANG']['ISO']['cc_num']						= 'Numer karty kredytowej';
 $GLOBALS['TL_LANG']['ISO']['cc_type']						= 'Typ karty kredytowej';
@@ -213,6 +228,10 @@ $GLOBALS['TL_LANG']['ISO']['cc_ccv']						= 'numer CCV (3 lub 4 cyfry)';
 $GLOBALS['TL_LANG']['ISO']['cc_exp_date']					= 'Ważność - dzień';
 $GLOBALS['TL_LANG']['ISO']['cc_exp_month']					= 'Ważność - miesiąc';
 $GLOBALS['TL_LANG']['ISO']['cc_exp_year']					= 'Ważność - rok';
+$GLOBALS['TL_LANG']['ISO']['cc_issue_number']				= 'Numer wydania, 2 cyfry (wymagane dla kard Maestro i Solo).';
+$GLOBALS['TL_LANG']['ISO']['cc_start_date']					= 'Data wydania (wymagane dla kard Maestro i Solo).';
+$GLOBALS['TL_LANG']['MSC']['pay_with_cc']					= array('Płatność jest przetwarzana', 'Proszę wprowadzić niezbędne informacje do przetworzenia twojej płatności.', 'Zapłać teraz');
+$GLOBALS['TL_LANG']['MSC']['pay_with_redirect']				= array('Płatność jest przetwarzana', 'Zostaniesz przekierowany na strony systemu płatności. Jeśli nie jesteś automatycznie przekierowany, kliknij przycisk "Zapłać teraz".', 'Zapłać teraz');
 $GLOBALS['TL_LANG']['ISO']['backendPaymentNotFound']		= 'Moduł płatności nie został znaleziony!';
 $GLOBALS['TL_LANG']['ISO']['backendShippingNotFound']		= 'Moduł dostawy nie został znaleziony!';
 $GLOBALS['TL_LANG']['ISO']['backendPaymentNoInfo']			= 'O tym module płatności nie ma dodatkowych informacji.';
@@ -220,23 +239,45 @@ $GLOBALS['TL_LANG']['ISO']['backendShippingNoInfo']			= 'O tym module dostawy ni
 
 
 /**
+ * Miscellaneous
+ */
+$GLOBALS['ISO_LANG']['MSC']['useDefault']			= 'Użyj domyślnej wartości';
+$GLOBALS['ISO_LANG']['MSC']['activeStep']			= 'aktywny krok: ';
+$GLOBALS['ISO_LANG']['MSC']['productcacheLoading']	= 'Ładuję produkty...';
+$GLOBALS['ISO_LANG']['MSC']['productcacheNoscript']	= 'Twoja przeglądarka nie wspiera javascript. <a href="%s">Kliknij tutaj</a>, aby załadować listę produktów.';
+$GLOBALS['ISO_LANG']['MSC']['noFilesInFolder']		= 'Brak plików w tym folderze';
+$GLOBALS['ISO_LANG']['MSC']['loadingProductData']	= 'Ładuję informacje o produkcie …';
+$GLOBALS['ISO_LANG']['MSC']['templateConfig']		= '%s (Konfiguracja sklepu: %s)';
+$GLOBALS['ISO_LANG']['MSC']['templateTheme']		= '%s (Motyw: %s)';
+
+
+/**
  * Shipping modules
  */
 $GLOBALS['ISO_LANG']['SHIP']['flat']				= array('Stała cena dostawy');
 $GLOBALS['ISO_LANG']['SHIP']['weight_total']		= array('Koszt odstawy wg. wagi całkowitej');
-$GLOBALS['ISO_LANG']['SHIP']['order_total']		= array('Koszt wg. wagi zamówienia');
+$GLOBALS['ISO_LANG']['SHIP']['order_total']			= array('Koszt wg. wagi zamówienia');
+$GLOBALS['ISO_LANG']['SHIP']['collection']			= array('Kolekcja');
+$GLOBALS['ISO_LANG']['SHIP']['ups']					= array('Dostawa UPS Live Rates and Service');
+$GLOBALS['ISO_LANG']['SHIP']['usps']				= array('Dostawa USPS Live Rates and Service');
 
 
 /**
  * Payment modules
  */
 $GLOBALS['ISO_LANG']['PAY']['cash']				= array('Gotówka', 'Użyj tego w przypadku rozliczeń gotówkowych');
+$GLOBALS['ISO_LANG']['PAY']['paypal']			= array('PayPal Standard Checkout', 'Ten moduł Paypal wspiera IPN (Instant Payment Notifications).');
+$GLOBALS['ISO_LANG']['PAY']['paypalpayflowpro']	= array('PayPal Payflow Pro', 'Moduł PayPal Payflow wspiera w całości płatności kartą kredytową.');
+$GLOBALS['ISO_LANG']['PAY']['postfinance']		= array('Postfinance', 'Metoda płatności dla szwajcarskiego system płatności. Sklep będzie natychmiast powiadamiany o pomyślnych transakcjach.');
+$GLOBALS['ISO_LANG']['PAY']['authorizedotnet']	= array('Authorize.net', 'Metoda płatności Authorize.net.');
+$GLOBALS['ISO_LANG']['PAY']['cybersource']		= array('Cybersource', 'Dla użytkowników Cybersource. Używa metody Simple Order API.');
 
 
 /**
  * Galleries
  */
 $GLOBALS['ISO_LANG']['GAL']['default']			= array('Standardowa galeria (Lightbox/Mediabox)', '<p>używa lightbox/mediabox do powiększania obrazków z galerii. Upewnij sie, że wybrany jest odpowiedni moo_ template w konfiguracji szablonów/themes.</p><p>Możesz doać paramert "rel" do linku wg schematu: (np. "tl_files/video.mov|lightbox[400 300]"). Jeżeli nie podasz "rel" link otworzy się w nowym oknie.</p>');
+$GLOBALS['ISO_LANG']['GAL']['inline']			= array('Liniowa galeria', 'Klkinięcie w obrazek galerii spowoduje wyświetlenie go zamiast obrazu głównego.');
 
 
 /**
@@ -270,21 +311,28 @@ $GLOBALS['ISO_LANG']['CCT']['ge_money_uk']			= 'GE Money UK';
  * http://www.metric-conversions.org/weight/weight-conversions.htm
  */
 $GLOBALS['ISO_LANG']['WGT']['mg']					= array('Milligram (mg)', 'Metryczna jednostka wagi odpowiadająca - 0.0001kg 100mg=1g');
-$GLOBALS['ISO_LANG']['WGT']['g']						= array('Gram (g)', 'Metryczna jednostka wagi odpowiadająca 0.001kg - 1000mg=1kg');
+$GLOBALS['ISO_LANG']['WGT']['g']					= array('Gram (g)', 'Metryczna jednostka wagi odpowiadająca 0.001kg - 1000mg=1kg');
 $GLOBALS['ISO_LANG']['WGT']['kg']					= array('Kilogram (kg)', 'jeden kilogram równa się 1000 gram lub 2.2 funta; masie 1 litra wody.');
-$GLOBALS['ISO_LANG']['WGT']['t']						= array('Metric Ton (t)', 'Metryczna jednostaka wagi odpowiadająca 1000 kg lub 2,204.6 funta.');
+$GLOBALS['ISO_LANG']['WGT']['t']					= array('Metric Ton (t)', 'Metryczna jednostaka wagi odpowiadająca 1000 kg lub 2,204.6 funta.');
+$GLOBALS['ISO_LANG']['WGT']['ct']					= array('Karat (ct)', 'Jednostka wagi używana dla kamieni szlachetnych. Jeden karat równa się 1/5 grama (200 miligramom).');
+$GLOBALS['ISO_LANG']['WGT']['oz']					= array('Uncja (oz)', 'Jednostka wagi równa jednej szesnastej funta lub 28.35 gramom.');
+$GLOBALS['ISO_LANG']['WGT']['lb']					= array('Funt (lb)', 'Jednostka wagi równa 16 uncjom.');
+$GLOBALS['ISO_LANG']['WGT']['st']					= array('Stone (st)', 'Brytyjska miara wagi, która równa się czternastu funtom.');
+$GLOBALS['ISO_LANG']['WGT']['grain']				= array('Grain', '1/7000 funta; równa się 64.799 miligramom.');
 
 
 /**
  * Attributes
  */
-$GLOBALS['ISO_LANG']['ATTR']['text']					= array('Linia tekstu', 'A single-line input field for a short or medium text.');
-$GLOBALS['ISO_LANG']['ATTR']['textarea']				= array('Pole tekstu', 'A multi-line input field for a medium or long text.');
+$GLOBALS['ISO_LANG']['ATTR']['text']				= array('Linia tekstu', 'A single-line input field for a short or medium text.');
+$GLOBALS['ISO_LANG']['ATTR']['textarea']			= array('Pole tekstu', 'A multi-line input field for a medium or long text.');
 $GLOBALS['ISO_LANG']['ATTR']['select']				= array('wybór - lista/menu', 'A single- or multi-line drop-down menu.<br /><i>This field type is suitable for product variants.</i>');
 $GLOBALS['ISO_LANG']['ATTR']['radio']				= array('Wybór - guzik/select', 'A list of multiple options from which one can be selected.<br /><i>This field type is suitable for product variants.</i>');
-$GLOBALS['ISO_LANG']['ATTR']['checkbox']				= array('Wybór - pole wielokrotnego' , 'A list of multiple options from which any can be selected.');
-$GLOBALS['ISO_LANG']['ATTR']['mediaManager']			= array('Manager plików', 'Upload images and other files to the Isotope eCommerce file system. Output is processed trough an IsotopeGallery class.');
+$GLOBALS['ISO_LANG']['ATTR']['checkbox']			= array('Wybór - pole wielokrotnego' , 'A list of multiple options from which any can be selected.');
+$GLOBALS['ISO_LANG']['ATTR']['mediaManager']		= array('Manager plików', 'Upload images and other files to the Isotope eCommerce file system. Output is processed trough an IsotopeGallery class.');
 $GLOBALS['ISO_LANG']['ATTR']['conditionalselect']	= array('Warunkowe menu-wyboru', 'pokazuje pocje w zależności od poprzedniego wyboru.');
+$GLOBALS['ISO_LANG']['ATTR']['fileTree']			= array('Drzewo plików', 'Drzewo plików dla jednego lub wielu plików i folderów.');
+$GLOBALS['ISO_LANG']['ATTR']['downloads']			= array('Downloads', 'Pliki do pobrania, np. instrukcje, dane techniczne, itp.');
 
 
 /**

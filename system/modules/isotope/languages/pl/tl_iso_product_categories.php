@@ -1,8 +1,10 @@
 <?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
 
 /**
- * TYPOlight Open Source CMS
+ * Contao Open Source CMS
  * Copyright (C) 2005-2010 Leo Feyer
+ *
+ * Formerly known as TYPOlight Open Source CMS.
  *
  * This program is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,22 +22,14 @@
  *
  * PHP version 5
  * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Radosław Maślanek <radek@dziupla.pl>
  * @author     Kamil Kuźmiński <kamil.kuzminski@gmail.com>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
 /**
- * Fields
+ * Buttons
  */
-$GLOBALS['TL_LANG']['tl_page']['iso_config'] 			= array('Konfiguracja sklepu', 'Wybierz konfigurację sklepu dla tej struktury stron.');
-$GLOBALS['TL_LANG']['tl_page']['iso_setReaderJumpTo']	= array('Skonfiguruj stronę czytnika dla tej kategorii Isotope', 'Każda strona zawierająca listę produktów musi mieć przypisaną stronę z czytnikiem (dziedziczne).');
-$GLOBALS['TL_LANG']['tl_page']['iso_readerJumpTo']		= array('Wybierz stronę czytnika', 'Wybierz stronę docelową, do której będą prowadzić produkty z tej stronie.');
-
-
-/**
- * Legends
- */
-$GLOBALS['TL_LANG']['tl_page']['isotope_legend'] = 'Isotope eCommerce';
+$GLOBALS['TL_LANG']['tl_iso_product_categories']['cut']			= array('Przenieś produkt', 'Przenieś produkt ID %s');
+$GLOBALS['TL_LANG']['tl_iso_product_categories']['pasteafter']	= array('Wklej na początku', 'Wklej po produkcie ID %s');
 

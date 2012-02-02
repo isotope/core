@@ -19,8 +19,9 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Radosław Maślanek <radek@dziupla.pl>
+ * @author     Kamil Kuźmiński <kamil.kuzminski@gmail.com>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
@@ -38,22 +39,23 @@ $GLOBALS['TL_LANG']['MOD']['iso_setup']					= array('Konfiguracje sklepów','');
  * Frontend modules
  */
 $GLOBALS['TL_LANG']['FMD']['isotope']					= 'Isotope eCommerce';
-$GLOBALS['TL_LANG']['FMD']['iso_productfilter']			= array('Filtry produktów', 'Define individual filters for Isotope such as category trees and product attribute filters.');
-$GLOBALS['TL_LANG']['FMD']['iso_productlist']			= array('Lista produktów', 'Główny moduł listy produktów.  Can be used to list products or values of attributes. May be combined with other modules (i.e. the Filter Module) to provide further drill-down capabilities.');
+$GLOBALS['TL_LANG']['FMD']['iso_productfilter']			= array('Filtry produktów', 'Definiuj indywidualne filtry dla Isotope, takie jak drzewa kategorii i atrybuty produków.');
+$GLOBALS['TL_LANG']['FMD']['iso_productlist']			= array('Lista produktów', 'Główny moduł listy produktów. Może być użyty do wyświetlenia listy produktów lub wartości atrybutów. Może być używany z innymi modułami (np. moduł filtrowania).');
+$GLOBALS['TL_LANG']['FMD']['iso_productvariantlist']	= array('Lista wariantów produktu', 'Wyświetla listę każdego wariantu produktu. Używaj templatki iso_list_variants z tym modułem.');
 $GLOBALS['TL_LANG']['FMD']['iso_productreader']			= array('Przeglądarka produktów', 'Ten moduł wyświetla pełny opis produktu');
-$GLOBALS['TL_LANG']['FMD']['iso_cart']					= array('Koszyk', 'A fully-featured shopping cart module.  Box or Full Display can be set by template selection.');
-$GLOBALS['TL_LANG']['FMD']['iso_checkout']				= array('Kasa', 'Allow store customers to complete their transactions.');
-$GLOBALS['TL_LANG']['FMD']['iso_addressbook']			= array('Książka adresowa','Allow customers to manage their address book.');
-$GLOBALS['TL_LANG']['FMD']['iso_orderhistory']			= array('Hostoria zamówień', 'Order lister that allows customers to view their order history');
-$GLOBALS['TL_LANG']['FMD']['iso_orderdetails']			= array('Szczegóły zamówienia', 'Order reader that allows customers to view order history details');
-$GLOBALS['TL_LANG']['FMD']['iso_configswitcher']		= array('Zmiana konfiguracji sklepu', 'Switch between store configuration to change currency and other settings.');
-$GLOBALS['TL_LANG']['FMD']['iso_relatedproducts']		= array('Powiązane produkty', 'List products related to the current one.');
+$GLOBALS['TL_LANG']['FMD']['iso_cart']					= array('Koszyk', 'W pełni fukncjonalny koszyk produktów. Tryb wyświetlania zależy od templatki.');
+$GLOBALS['TL_LANG']['FMD']['iso_checkout']				= array('Kasa', 'Miejsce, gdzie klienci finalizują swoje transakcje.');
+$GLOBALS['TL_LANG']['FMD']['iso_addressbook']			= array('Książka adresowa','Miejsce, gdzie klienci zarządzają swoimi książkami adresowymi.');
+$GLOBALS['TL_LANG']['FMD']['iso_orderhistory']			= array('Historia zamówień', 'Lista sfinalizowanych zamówień klienta.');
+$GLOBALS['TL_LANG']['FMD']['iso_orderdetails']			= array('Szczegóły zamówienia', 'Czytnik zamówienia, który pozwala klientowi na dostęp do historii zamówienia.');
+$GLOBALS['TL_LANG']['FMD']['iso_configswitcher']		= array('Zmiana konfiguracji sklepu', 'Przełącznik pomiędzy konfiguracjami sklepu, np. do zmiany waluty i innych ustawień.');
+$GLOBALS['TL_LANG']['FMD']['iso_relatedproducts']		= array('Powiązane produkty', 'Lista produktów powiązanych z aktywnie wyświetlonym.');
 
 
 /**
  * Isotope Modules
  */
-$GLOBALS['TL_LANG']['ISO']['config_module']				= 'Isotope eCommerce configuration';
+$GLOBALS['TL_LANG']['ISO']['config_module']				= 'Isotope eCommerce konfiguracja';
 $GLOBALS['TL_LANG']['IMD']['checkout']					= 'Funkcje finansowe';
 $GLOBALS['TL_LANG']['IMD']['product']					= 'Zarządzanie produktami';
 $GLOBALS['TL_LANG']['IMD']['config']					= 'Ustawienia ogólne';
