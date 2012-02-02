@@ -259,7 +259,6 @@ class Isotope extends Controller
 	 */
 	public function calculateTax($intTaxClass, $fltPrice, $blnAdd=true, $arrAddresses=null)
 	{
-			
 		if ($intTaxClass == 0)
 		{
 			return $fltPrice;
@@ -393,7 +392,7 @@ class Isotope extends Controller
 			return false;
 		}
 
-		$objRate->address = deserialize($objRate->address,true);
+		$objRate->address = deserialize($objRate->address);
 
 		// HOOK for altering taxes
 		if (isset($GLOBALS['ISO_HOOKS']['useTaxRate']) && is_array($GLOBALS['ISO_HOOKS']['useTaxRate']))
@@ -411,26 +410,21 @@ class Isotope extends Controller
 		}
 
 		if (is_array($objRate->address) && count($objRate->address))
-		{			
+		{
 			foreach ($arrAddresses as $name => $arrAddress)
 			{
-				$blnTrigger = true;
-				
 				if (!in_array($name, $objRate->address))
-				{	
-					$blnTrigger = false;				
+				{
 					continue;
 				}
 
 				if (strlen($objRate->country) && $objRate->country != $arrAddress['country'])
 				{
-					$blnTrigger = false;
 					continue;
 				}
 
 				if (strlen($objRate->subdivision) && $objRate->subdivision != $arrAddress['subdivision'])
-				{					
-					$blnTrigger = false;
+				{
 					continue;
 				}
 				
@@ -441,7 +435,6 @@ class Isotope extends Controller
 					
 					if (!in_array($arrAddress['postal'], $arrCodes))
 					{
-						$blnTrigger = false;
 						continue;
 					}
 				}
@@ -454,7 +447,6 @@ class Isotope extends Controller
 					{
 						if ($arrPrice[0] > $fltPrice || $arrPrice[1] < $fltPrice)
 						{
-							$blnTrigger = false;
 							continue;
 						}
 					}
@@ -462,15 +454,21 @@ class Isotope extends Controller
 					{
 						if ($arrPrice[0] != $fltPrice)
 						{
-							$blnTrigger = false;
 							continue;
 						}
 					}
 				}
+				
+				// This address is valid, otherwise one of the check would have skipped this (continue)
+				return true;
 			}
-		}		
-		
-		return $blnTrigger;
+			
+			// No address has passed all checks and returned true
+			return false;
+		}
+
+		// Addresses are not checked at all, return true
+		return true;
 	}
 	
 	
