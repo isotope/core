@@ -446,28 +446,6 @@ class Isotope extends Controller
 					}
 				}
 
-				$arrPostal = deserialize($objRate->postal);
-
-				if (is_array($arrPostal) && count($arrPostal) && strlen($arrPostal[0]))
-				{
-					if (strlen($arrPostal[1]))
-					{
-						if ($arrPostal[0] > $arrAddress['postal'] || $arrPostal[1] < $arrAddress['postal'])
-						{
-							$blnTrigger = false;
-							continue;
-						}
-					}
-					else
-					{
-						if ($arrPostal[0] != $arrAddress['postal'])
-						{
-							$blnTrigger = false;
-							continue;
-						}
-					}
-				}
-
 				$arrPrice = deserialize($objRate->amount);
 
 				if (is_array($arrPrice) && count($arrPrice) && strlen($arrPrice[0]))
