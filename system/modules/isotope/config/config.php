@@ -177,11 +177,12 @@ $GLOBALS['FE_MOD']['isotope'] = array
 	'iso_cart'					=> 'ModuleIsotopeCart',
 	'iso_checkout'				=> 'ModuleIsotopeCheckout',
 	'iso_productfilter'			=> 'ModuleIsotopeProductFilter',
+	'iso_cumulativefilter'		=> 'ModuleIsotopeCumulativeFilter',
 	'iso_orderhistory'			=> 'ModuleIsotopeOrderHistory',
 	'iso_orderdetails'			=> 'ModuleIsotopeOrderDetails',
 	'iso_configswitcher'		=> 'ModuleIsotopeConfigSwitcher',
 	'iso_addressbook'			=> 'ModuleIsotopeAddressBook',
-	'iso_relatedproducts'		=> 'ModuleIsotopeRelatedProducts',
+	'iso_relatedproducts'		=> 'ModuleIsotopeRelatedProducts'
 );
 
 
