@@ -21,7 +21,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
@@ -29,15 +29,14 @@
 
 
 /**
- * Palettes
+ * Extend a tl_settings default palette
  */
 $GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] = str_replace(';{chmod_legend', ',iso_cartTimeout;{chmod_legend', $GLOBALS['TL_DCA']['tl_settings']['palettes']['default']);
 
 
 /**
- * Fields
+ * Add fields to tl_settings
  */
-
 $GLOBALS['TL_DCA']['tl_settings']['fields']['iso_cartTimeout'] = array
 (
 	'label'					=> &$GLOBALS['TL_LANG']['tl_settings']['iso_cartTimeout'],

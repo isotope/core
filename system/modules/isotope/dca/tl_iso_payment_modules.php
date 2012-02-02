@@ -21,7 +21,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
@@ -69,17 +69,17 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 		(
 			'back' => array
 			(
-				'label'					=> &$GLOBALS['TL_LANG']['MSC']['backBT'],
-				'href'					=> 'mod=&table=',
-				'class'					=> 'header_back',
-				'attributes'			=> 'onclick="Backend.getScrollOffset();"',
+				'label'               => &$GLOBALS['TL_LANG']['MSC']['backBT'],
+				'href'                => 'mod=&table=',
+				'class'               => 'header_back',
+				'attributes'          => 'onclick="Backend.getScrollOffset();"',
 			),
 			'new' => array
 			(
-				'label'					=> &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['new'],
-				'href'					=> 'act=create',
-				'class'					=> 'header_new',
-				'attributes'			=> 'onclick="Backend.getScrollOffset();"',
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['new'],
+				'href'                => 'act=create',
+				'class'               => 'header_new',
+				'attributes'          => 'onclick="Backend.getScrollOffset();"',
 			),
 			'all' => array
 			(
@@ -137,7 +137,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 	// Subpalettes
 	'subpalettes' => array
 	(
-		'protected'						=> 'groups',
+		'protected'				=> 'groups',
 	),
 
 	// Fields
@@ -435,15 +435,15 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 
 
 /**
- * tl_iso_payment_modules class.
- *
- * @extends Backend
+ * Class tl_iso_payment_modules
+ * Provide miscellaneous methods that are used by the data configuration array.
  */
 class tl_iso_payment_modules extends Backend
 {
 
 	/**
-	 * Check permissions to edit table tl_iso_payment_modules.
+	 * Check permissions to edit table tl_iso_payment_modules
+	 * @return void
 	 */
 	public function checkPermission()
 	{
@@ -452,9 +452,10 @@ class tl_iso_payment_modules extends Backend
 		{
 			return;
 		}
-		
+
 		$this->import('BackendUser', 'User');
-		
+
+		// Return if user is admin
 		if ($this->User->isAdmin)
 		{
 			return;
@@ -576,22 +577,31 @@ class tl_iso_payment_modules extends Backend
 	}
 	
 
+	/**
+	 * Get allowed CC types and return them as array
+	 * @param DataContainer
+	 * @return array
+	 */
 	public function getAllowedCCTypes(DataContainer $dc)
 	{
 		$objModuleType = $this->Database->prepare("SELECT * FROM tl_iso_payment_modules WHERE id=?")->limit(1)->execute($dc->id);
 
-		if(!$objModuleType->numRows)
+		if (!$objModuleType->numRows)
+		{
 			return array();
+		}
 
 		$strClass = $GLOBALS['ISO_PAY'][$objModuleType->type];
 
-		if(!strlen($strClass) || !$this->classFileExists($strClass))
+		if (!strlen($strClass) || !$this->classFileExists($strClass))
+		{
 			return array();
+		}
 
 		$arrCCTypes = array();
 		$objModule = new $strClass($objModuleType->fetchAssoc());
 
-		foreach($objModule->getAllowedCCTypes() as $type)
+		foreach ($objModule->getAllowedCCTypes() as $type)
 		{
 			$arrCCTypes[$type] = $GLOBALS['ISO_LANG']['CCT'][$type];
 		}
@@ -599,14 +609,21 @@ class tl_iso_payment_modules extends Backend
 		return $arrCCTypes;
 	}
 
+
+	/**
+	 * Get order status and return it as array
+	 * @param object
+	 * @return array
+	 */
 	public function getOrderStatus($dc)
 	{
 		$objModule = $this->Database->prepare("SELECT * FROM tl_iso_payment_modules WHERE id=?")->limit(1)->execute($dc->id);
-
 		$strClass = $GLOBALS['ISO_PAY'][$objModule->type];
 
 		if (!strlen($strClass) || !$this->classFileExists($strClass))
+		{
 			return array();
+		}
 
 		try
 		{
@@ -620,9 +637,7 @@ class tl_iso_payment_modules extends Backend
 
 
 	/**
-	 * Get a list of all payment modules available.
-	 *
-	 * @access public
+	 * Return a list of all payment modules available
 	 * @return array
 	 */
 	public function getModules()
@@ -631,7 +646,7 @@ class tl_iso_payment_modules extends Backend
 
 		if (is_array($GLOBALS['ISO_PAY']) && count($GLOBALS['ISO_PAY']))
 		{
-			foreach( $GLOBALS['ISO_PAY'] as $module => $class )
+			foreach ($GLOBALS['ISO_PAY'] as $module => $class)
 			{
 				$arrModules[$module] = (strlen($GLOBALS['ISO_LANG']['PAY'][$module][0]) ? $GLOBALS['ISO_LANG']['PAY'][$module][0] : $module);
 			}
@@ -642,19 +657,16 @@ class tl_iso_payment_modules extends Backend
 
 
 	/**
-	 * Load shipping modules into the DCA. options_callback would not work due to numeric array keys.
-	 *
-	 * @access public
-	 * @param object $dc
+	 * Load shipping modules into the DCA (options_callback would not work due to numeric array keys)
+	 * @param object
 	 * @return void
 	 */
 	public function loadShippingModules($dc)
 	{
 		$arrModules = array(-1=>$GLOBALS['TL_LANG']['tl_iso_payment_modules']['no_shipping']);
-
 		$objShippings = $this->Database->execute("SELECT * FROM tl_iso_shipping_modules ORDER BY name");
 
-		while( $objShippings->next() )
+		while ($objShippings->next())
 		{
 			$arrModules[$objShippings->id] = $objShippings->name;
 		}
@@ -662,7 +674,7 @@ class tl_iso_payment_modules extends Backend
 		$GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['shipping_modules']['options'] = array_keys($arrModules);
 		$GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['shipping_modules']['reference'] = $arrModules;
 	}
-	
+
 
 	/**
 	 * Return the copy payment module button

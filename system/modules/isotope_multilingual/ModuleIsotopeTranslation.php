@@ -19,7 +19,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Philipp Kaiblinger <philipp.kaiblinger@kaipo.at>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
@@ -146,7 +146,7 @@ class ModuleIsotopeTranslation extends BackendModule
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  2009-2011 Isotope eCommerce Workgroup";
+ * @copyright  Isotope eCommerce Workgroup 2009-2012";
 
  				$objAuthors = $this->Database->execute("SELECT * FROM tl_user WHERE translation='{$this->User->translation}'");
 
@@ -158,7 +158,6 @@ class ModuleIsotopeTranslation extends BackendModule
 
  				$strFile .= '
  * @license    http://opensource.org/licenses/lgpl-3.0.html
- * @version    $Id$
  */
 
 ';

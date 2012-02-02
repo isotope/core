@@ -21,7 +21,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Yanick Witschi <yanick.witschi@certo-net.ch>
@@ -33,7 +33,7 @@
  * Class Isotope
  * 
  * The base class for all Isotope components.
- * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
@@ -99,7 +99,7 @@ class Isotope extends Controller
 			$this->resetConfig();
 		}
 
-		if (TL_MODE == 'FE')
+		if (TL_MODE == 'FE' && strpos($this->Environment->script, 'postsale.php') === false)
 		{
 			$this->Cart = new IsotopeCart();
 			$this->Cart->initializeCart((int)$this->Config->id, (int)$this->Config->store_id);
@@ -259,6 +259,7 @@ class Isotope extends Controller
 	 */
 	public function calculateTax($intTaxClass, $fltPrice, $blnAdd=true, $arrAddresses=null)
 	{
+			
 		if ($intTaxClass == 0)
 		{
 			return $fltPrice;
@@ -392,7 +393,7 @@ class Isotope extends Controller
 			return false;
 		}
 
-		$objRate->address = deserialize($objRate->address);
+		$objRate->address = deserialize($objRate->address,true);
 
 		// HOOK for altering taxes
 		if (isset($GLOBALS['ISO_HOOKS']['useTaxRate']) && is_array($GLOBALS['ISO_HOOKS']['useTaxRate']))
@@ -410,22 +411,27 @@ class Isotope extends Controller
 		}
 
 		if (is_array($objRate->address) && count($objRate->address))
-		{
+		{			
 			foreach ($arrAddresses as $name => $arrAddress)
 			{
+				$blnTrigger = true;
+				
 				if (!in_array($name, $objRate->address))
-				{
+				{	
+					$blnTrigger = false;				
 					continue;
 				}
 
 				if (strlen($objRate->country) && $objRate->country != $arrAddress['country'])
 				{
-					return false;
+					$blnTrigger = false;
+					continue;
 				}
 
 				if (strlen($objRate->subdivision) && $objRate->subdivision != $arrAddress['subdivision'])
-				{
-					return false;
+				{					
+					$blnTrigger = false;
+					continue;
 				}
 				
 				// Check if address has a valid postal code
@@ -435,7 +441,8 @@ class Isotope extends Controller
 					
 					if (!in_array($arrAddress['postal'], $arrCodes))
 					{
-						return false;
+						$blnTrigger = false;
+						continue;
 					}
 				}
 
@@ -447,14 +454,16 @@ class Isotope extends Controller
 					{
 						if ($arrPostal[0] > $arrAddress['postal'] || $arrPostal[1] < $arrAddress['postal'])
 						{
-							return false;
+							$blnTrigger = false;
+							continue;
 						}
 					}
 					else
 					{
 						if ($arrPostal[0] != $arrAddress['postal'])
 						{
-							return false;
+							$blnTrigger = false;
+							continue;
 						}
 					}
 				}
@@ -467,21 +476,23 @@ class Isotope extends Controller
 					{
 						if ($arrPrice[0] > $fltPrice || $arrPrice[1] < $fltPrice)
 						{
-							return false;
+							$blnTrigger = false;
+							continue;
 						}
 					}
 					else
 					{
 						if ($arrPrice[0] != $fltPrice)
 						{
-							return false;
+							$blnTrigger = false;
+							continue;
 						}
 					}
 				}
 			}
-		}
-
-		return true;
+		}		
+		
+		return $blnTrigger;
 	}
 	
 	
@@ -726,7 +737,7 @@ class Isotope extends Controller
 	 * @param object
 	 */
 	public function sendMail($intId, $strRecipient, $strLanguage, $arrData, $strReplyTo='', $objCollection=null)
-	{
+	{				
 		try
 		{
 			$objEmail = new IsotopeEmail($intId, $strLanguage, $objCollection);
@@ -740,7 +751,7 @@ class Isotope extends Controller
 		}
 		catch (Exception $e)
 		{
-			$this->log('Isotope email error: ' . $e->getMessage(), __METHOD__, TL_ERROR);
+			$this->log('Isotope email error: '.$e->getMessage(), __METHOD__, TL_ERROR);
 		}
 	}
 

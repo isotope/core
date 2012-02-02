@@ -21,7 +21,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Christian de la Haye <service@delahaye.de>
@@ -168,10 +168,25 @@ $GLOBALS['TL_DCA']['tl_iso_mail_content'] = array
 );
 
 
+/**
+ * Class tl_iso_mail_content
+ * Provide miscellaneous methods that are used by the data configuration array.
+ */
 class tl_iso_mail_content extends Backend
 {
+
+	/**
+	 * Available languages
+	 * @var array
+	 */
 	protected $arrLanguages;
 
+
+	/**
+	 * List contents of the e-mail
+	 * @param array
+	 * @return string
+	 */
 	public function listRows($arrRow)
 	{
 		if (!is_array($this->arrLanguages))

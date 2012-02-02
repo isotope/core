@@ -21,7 +21,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
@@ -32,7 +32,7 @@
  * Class IsotopeFrontend
  * 
  * Provide methods to handle Isotope front end components.
- * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Christian de la Haye <service@delahaye.de>
@@ -540,6 +540,9 @@ $endScript";
 	 */
 	public function prepareForm($intId, $strFormId, $arrConfig=array())
 	{
+		$this->loadDataContainer('tl_form');
+		$this->loadDataContainer('tl_form_field');
+		
 		$objForm = new stdClass();
 		$objForm->arrHidden     = array();
 		$objForm->arrFields	    = array();
@@ -933,33 +936,35 @@ $endScript";
 			}
 		}
 
-		if (count($arrFilters))
+		if (!empty($arrFilters))
 		{
 			global $filterConfig;
 			$filterConfig = $arrFilters;
 			$arrProducts = array_filter($arrProducts, array(self, 'filterProducts'));
 		}
 
-		if (count($arrSorting))
+		// $arrProducts can be empty if the filter removed all records
+		if (!empty($arrSorting) && !empty($arrProducts))
 		{
 			$arrParam = array();
+			$arrData = array();
 
 			foreach ($arrSorting as $strField => $arrConfig)
 			{
-				$arrData = array();
-
 				foreach ($arrProducts as $id => $objProduct)
 				{
-					$arrData[$id] = str_replace('"', '', $objProduct->$strField);
+					// Both SORT_STRING and SORT_REGULAR are case sensitive, strings starting with a capital letter will come before strings starting with a lowercase letter.
+					// To perform a case insensitive search, force the sorting order to be determined by a lowercase copy of the original value.
+					$arrData[$strField][$id] = strtolower(str_replace('"', '', $objProduct->$strField));
 				}
 
-				$arrParam[] = $arrData;
+				$arrParam[] = &$arrData[$strField];
 				$arrParam = array_merge($arrParam, $arrConfig);
 			}
 
 			// Add product array as the last item. This will sort the products array based on the sorting of the passed in arguments.
 			$arrParam[] = &$arrProducts;
-
+			
 			// We need to use call_user_func_array because the number of parameters can be dynamic and this is the only way I know to pass an array as arguments
 			call_user_func_array('array_multisort', $arrParam);
 		}
@@ -990,10 +995,14 @@ $endScript";
 			$varValue = $objProduct->{$filter['attribute']};
 			$blnMatch = false;
 
-			// If the attribute is not set for this product, the filter does not match
+			// If the attribute is not set for this product, we will ignore this attribute
 			if ($varValue === null)
 			{
-				return false;
+				continue;
+			}
+			elseif (is_array($varValue))
+			{
+				$varValue = http_build_query($varValue);
 			}
 
 			$operator = self::convertFilterOperator($filter['operator'], 'PHP');

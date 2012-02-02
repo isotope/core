@@ -21,7 +21,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
@@ -29,26 +29,26 @@
 
 
 /**
- * Palettes
+ * Extend tl_page palettes
  */
 $GLOBALS['TL_DCA']['tl_page']['palettes']['root'] = str_replace(';{publish_legend}', ';{isotope_legend},iso_config;{publish_legend}', $GLOBALS['TL_DCA']['tl_page']['palettes']['root']);
 $GLOBALS['TL_DCA']['tl_page']['palettes']['regular'] = str_replace(';{publish_legend}', ';{isotope_legend},iso_setReaderJumpTo;{publish_legend}', $GLOBALS['TL_DCA']['tl_page']['palettes']['regular']);
 
 
 /**
- * Selectors
+ * Add a selector to tl_page
  */
 $GLOBALS['TL_DCA']['tl_page']['palettes']['__selector__'][] = 'iso_setReaderJumpTo';
 
 
 /**
- * Subpalettes
+ * Add subpalettes to tl_page
  */
 $GLOBALS['TL_DCA']['tl_page']['subpalettes']['iso_setReaderJumpTo'] = 'iso_readerJumpTo';
 
 
 /**
- * Fields
+ * Add fields to tl_page
  */
 $GLOBALS['TL_DCA']['tl_page']['fields']['iso_config'] = array
 (

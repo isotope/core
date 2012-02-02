@@ -21,7 +21,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
@@ -234,11 +234,16 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
 );
 
 
+/**
+ * Class tl_iso_mail
+ * Provide miscellaneous methods that are used by the data configuration array.
+ */
 class tl_iso_mail extends Backend
 {
 	
 	/**
-	 * Check permissions to edit table tl_iso_mail.
+	 * Check permissions to edit table tl_iso_mail
+	 * @return void
 	 */
 	public function checkPermission()
 	{
@@ -247,9 +252,10 @@ class tl_iso_mail extends Backend
 		{
 			return;
 		}
-		
+
 		$this->import('BackendUser', 'User');
-		
+
+		// Return if admin is user
 		if ($this->User->isAdmin)
 		{
 			return;
@@ -376,8 +382,8 @@ class tl_iso_mail extends Backend
 				break;
 		}
 	}
-	
-	
+
+
 	/**
 	 * Return the copy mail button
 	 * @param array

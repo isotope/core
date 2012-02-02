@@ -21,7 +21,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
@@ -29,13 +29,13 @@
 
 
 /**
- * Configuration
+ * Add a child table to tl_member
  */
 $GLOBALS['TL_DCA']['tl_member']['config']['ctable'][] = 'tl_iso_addresses';
 
 
 /**
- * Operations
+ * Add a global operation to tl_member
  */
 $GLOBALS['TL_DCA']['tl_member']['list']['operations']['address_book'] = array
 (
@@ -46,7 +46,7 @@ $GLOBALS['TL_DCA']['tl_member']['list']['operations']['address_book'] = array
 
 
 /**
- * Fields
+ * Force the "country" field to be mandatory
  */
 $GLOBALS['TL_DCA']['tl_member']['fields']['country']['eval']['mandatory'] = true;
 

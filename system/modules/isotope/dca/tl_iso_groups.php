@@ -21,7 +21,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
@@ -129,6 +129,10 @@ $GLOBALS['TL_DCA']['tl_iso_groups'] = array
 );
 
 
+/**
+ * Class tl_iso_groups
+ * Provide miscellaneous methods that are used by the data configuration array.
+ */
 class tl_iso_groups extends Backend
 {
 
@@ -136,7 +140,7 @@ class tl_iso_groups extends Backend
 	 * Add an image to each group in the tree
 	 * @param array
 	 * @param string
-	 * @param object
+	 * @param DataContainer
 	 * @param string
 	 * @param boolean
 	 * @return string
@@ -153,9 +157,8 @@ class tl_iso_groups extends Backend
 
 	/**
 	 * Reassign products to no group when group is deleted
-	 *
-	 * @param	object
-	 * @return	void
+	 * @param object
+	 * @return void
 	 */
 	public function deleteGroup($dc)
 	{

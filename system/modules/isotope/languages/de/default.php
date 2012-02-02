@@ -21,7 +21,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  2009-2011 Isotope eCommerce Workgroup
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Burg <ab@andreasburg.de>
  * @author     Nikolas Runde <info@nrmedia.de>
  * @author     Patrick Grob <grob@a-sign.ch>
@@ -31,7 +31,6 @@
  * @author     Stefan Preiss <stefan@preiss-at-work.de>
  * @author     Nina Gerling <gerling@ena-webstudio.de>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
- * @version    $Id: ModuleIsotopeTranslation.php 2273 2011-05-30 21:02:24Z aschempp $
  */
 
 $GLOBALS['TL_LANG']['ERR']['systemColumn'] = 'Der Name `%s` ist vom System reserviert. Bitte wählen Sie einen anderen Namen.';
@@ -231,7 +230,7 @@ $GLOBALS['ISO_LANG']['PAY']['paypalpayflowpro'][1] = 'Das PayPal Payflow Modul i
 $GLOBALS['ISO_LANG']['PAY']['postfinance'][0] = 'Postfinance (Schweizer Post)';
 $GLOBALS['ISO_LANG']['PAY']['postfinance'][1] = 'Schnittstelle des Bezahlsystems der Schweizer Post. Unterstützt verschiedene Karten. Der Shop wird sofort über erfolgreiche Transaktionen informiert.';
 $GLOBALS['ISO_LANG']['PAY']['authorizedotnet'][0] = 'Authorize.net';
-$GLOBALS['ISO_LANG']['PAY']['authorizedotnet'][1] = 'Eie Bezahl-Schnittstelle von Authorize.net';
+$GLOBALS['ISO_LANG']['PAY']['authorizedotnet'][1] = 'Eine Bezahl-Schnittstelle von Authorize.net';
 $GLOBALS['ISO_LANG']['PAY']['cybersource'][0] = 'Cybersource';
 $GLOBALS['ISO_LANG']['PAY']['cybersource'][1] = 'Für Cybersource Nutzer. Funktioniert auf Basis der Simple Order API-Methode.';
 $GLOBALS['ISO_LANG']['GAL']['default'][0] = 'Standardgalerie (Lightbox/Mediabox)';
@@ -284,7 +283,7 @@ $GLOBALS['ISO_LANG']['ATTR']['text'][1] = 'Ein einzeiliges Eingabefeld für kurz
 $GLOBALS['ISO_LANG']['ATTR']['textarea'][0] = 'Textbereich';
 $GLOBALS['ISO_LANG']['ATTR']['textarea'][1] = 'Ein mehrzeiliges Eingabefeld für einen mittellangen oder langen Text.';
 $GLOBALS['ISO_LANG']['ATTR']['select'][0] = 'Auswahlmenü';
-$GLOBALS['ISO_LANG']['ATTR']['select'][1] = 'Ein einfaches oder mehrzeikiges Auklappmenü.<br><i>Dieser Feldtyp ist für Produktvarianten geeignet.</i>';
+$GLOBALS['ISO_LANG']['ATTR']['select'][1] = 'Ein einfaches oder mehrzeiliges Ausklappmenü.<br><i>Dieser Feldtyp ist für Produktvarianten geeignet.</i>';
 $GLOBALS['ISO_LANG']['ATTR']['radio'][0] = 'Radio Button-Menü';
 $GLOBALS['ISO_LANG']['ATTR']['radio'][1] = 'Mehrere Optionen aus denen eine Option ausgewählt werden kann.<br><i>Dieser Feldtyp ist für Produktvarianten geeignet.</i>';
 $GLOBALS['ISO_LANG']['ATTR']['checkbox'][0] = 'Checkbox-Menü';
@@ -443,4 +442,11 @@ $GLOBALS['ISO_LANG']['CUR']['YER'] = 'YER - Jemen-Rial';
 $GLOBALS['ISO_LANG']['CUR']['ZAR'] = 'ZAR - Rand';
 $GLOBALS['ISO_LANG']['CUR']['ZMK'] = 'ZMK - sambischer Kwacha';
 $GLOBALS['ISO_LANG']['CUR']['ZWL'] = 'ZWL - Simbabwe-Dollar';
+
+
+/**
+ * Miscellaneous
+ */
+$GLOBALS['ISO_LANG']['MSC']['templateConfig']		= '%s (Shop-Konfiguration: %s)';
+$GLOBALS['ISO_LANG']['MSC']['templateTheme']		= '%s (Theme: %s)';
 

@@ -21,7 +21,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  2009-2011 Isotope eCommerce Workgroup
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Burg <ab@andreasburg.de>
  * @author     Nikolas Runde <info@nrmedia.de>
  * @author     Patrick Grob <grob@a-sign.ch>
@@ -31,11 +31,10 @@
  * @author     Stefan Preiss <stefan@preiss-at-work.de>
  * @author     Nina Gerling <gerling@ena-webstudio.de>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
- * @version    $Id: ModuleIsotopeTranslation.php 2273 2011-05-30 21:02:24Z aschempp $
  */
 
 $GLOBALS['TL_LANG']['tl_iso_orders']['order_id'][0] = 'Bestellnummer';
-$GLOBALS['TL_LANG']['tl_iso_orders']['uniqid'][0] = 'Einzigartige ID';
+$GLOBALS['TL_LANG']['tl_iso_orders']['uniqid'][0] = 'Eindeutige ID';
 $GLOBALS['TL_LANG']['tl_iso_orders']['status'][0] = 'Bestellstatus';
 $GLOBALS['TL_LANG']['tl_iso_orders']['status'][1] = 'Wählen Sie den Status der Bestellung.';
 $GLOBALS['TL_LANG']['tl_iso_orders']['date_payed'][0] = 'Bezahldatum';
@@ -89,6 +88,14 @@ $GLOBALS['TL_LANG']['tl_iso_orders']['export_emails'][0] = 'Exportiere Bestell-E
 $GLOBALS['TL_LANG']['tl_iso_orders']['export_emails'][1] = 'Alle E-Mails für diejenigen die bestellten exportieren.';
 $GLOBALS['TL_LANG']['tl_iso_orders']['print_invoices'][0] = 'Rechnungen drucken';
 $GLOBALS['TL_LANG']['tl_iso_orders']['print_invoices'][1] = 'Eine oder mehrere Rechnungen in ein Einzeldokument eines bestimmten Bestellstatus\' drucken.';
+
+
+/**
+ * Legends
+ */
 $GLOBALS['TL_LANG']['tl_iso_orders']['status_legend'] = 'Bestellstatus';
 $GLOBALS['TL_LANG']['tl_iso_orders']['details_legend'] = 'Bestelldetails';
+$GLOBALS['TL_LANG']['tl_iso_orders']['email_legend']	= 'E-Mail Daten';
+$GLOBALS['TL_LANG']['tl_iso_orders']['billing_address_legend']	= 'Rechnungsadress-Daten';
+$GLOBALS['TL_LANG']['tl_iso_orders']['shipping_address_legend']	= 'Versandadress-Daten';
 

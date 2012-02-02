@@ -21,7 +21,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
@@ -32,7 +32,7 @@
  * Class IsotopeProduct
  * 
  * Provide methods to handle Isotope products.
- * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Christian de la Haye <service@delahaye.de>
@@ -331,7 +331,12 @@ class IsotopeProduct extends Controller
 				return $this->quantity_requested * $this->tax_free_price;
 
 			case 'quantity_requested':
-				return ($this->arrCache[$strKey] ? $this->arrCache[$strKey] : 1);
+				if (!$this->arrCache[$strKey] && $this->Input->post('FORM_SUBMIT') == $this->formSubmit)
+				{
+					$this->arrCache[$strKey] = (int) $this->Input->post('quantity_requested');
+				}
+				
+				return $this->arrCache[$strKey] ? $this->arrCache[$strKey] : 1;
 
 			case 'available':
 				if ($this->blnLocked)
@@ -1111,7 +1116,7 @@ class IsotopeProduct extends Controller
 															AND member_group IN(" . ((FE_USER_LOGGED_IN && count($this->User->groups)) ? (implode(',', $this->User->groups) . ',') : '') . "0)
 															AND (start='' OR start<$time)
 															AND (stop='' OR stop>$time)
-															AND pid=" . ($this->pid > 0 ? $this->pid : $this->id) . "
+															AND pid=" . ($this->pid ? $this->pid : $this->id) . "
 														ORDER BY config_id DESC, " . ((FE_USER_LOGGED_IN && count($this->User->groups)) ? ('member_group=' . implode(' DESC, member_group=', $this->User->groups) . ' DESC') : 'member_group DESC') . ", start DESC, stop DESC
 														LIMIT 1
 													)
@@ -1223,7 +1228,11 @@ class IsotopeProduct extends Controller
 			}
 
 			$this->arrData[$attribute] = $arrData[$attribute];
-			unset($this->arrCache[$attribute]);
+			
+			if (is_array($this->arrCache) && isset($this->arrCache[$attribute]))
+			{
+				unset($this->arrCache[$attribute]);
+			}
 		}
 
 		if (!$this->blnLocked && in_array('price', $this->arrVariantAttributes))

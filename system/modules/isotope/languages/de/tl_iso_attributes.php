@@ -21,7 +21,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  2009-2011 Isotope eCommerce Workgroup
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Burg <ab@andreasburg.de>
  * @author     Nikolas Runde <info@nrmedia.de>
  * @author     Patrick Grob <grob@a-sign.ch>
@@ -31,7 +31,6 @@
  * @author     Stefan Preiss <stefan@preiss-at-work.de>
  * @author     Nina Gerling <gerling@ena-webstudio.de>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
- * @version    $Id: ModuleIsotopeTranslation.php 2273 2011-05-30 21:02:24Z aschempp $
  */
 
 $GLOBALS['TL_LANG']['tl_iso_attributes']['name'][0] = 'Name';
@@ -44,7 +43,7 @@ $GLOBALS['TL_LANG']['tl_iso_attributes']['legend'][0] = 'Feldgruppe';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['legend'][1] = 'Wählen Sie eine Feldgruppe die mit diesem Artikelmerkmal in Beziehung steht (wird benutzt um verbundene Felder in ausklappbaren Fieldset-Gruppen einzurichten, wenn Produkte bearbeitet werden.';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['variant_option'][0] = 'Für Varianten verwenden';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['variant_option'][1] = 'Klicken Sie hier wenn dieses Attribut für die Konfiguration von Produktvarianten verwendet wird.';
-$GLOBALS['TL_LANG']['tl_iso_attributes']['customer_defined'][0] = 'Durch den Kunden auswählbar.';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['customer_defined'][0] = 'Durch den Kunden auswählbar';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['customer_defined'][1] = 'Bitte wählen Sie dieses Feld aus, wenn der Wert durch den Kunden (Frontend) ausgewählt/definiert werden kann.';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['description'][0] = 'Beschreibung';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['description'][1] = 'Die Beschreibung wird als Hinweis für den Backend-Nutzer angezeigt.';

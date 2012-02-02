@@ -21,7 +21,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Yanick Witschi <yanick.witschi@certo-net.ch>
@@ -940,6 +940,8 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		}
 
 		$objOrder->iso_customer_email	= $strCustomerEmail;
+		
+		$strCart = $this->replaceInsertTags($this->Isotope->Cart->getProducts('iso_products_html'));
 
 		$arrData = array_merge($this->arrOrderData, array
 		(
@@ -951,8 +953,8 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			'shippingPrice'		=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->Shipping->price, false),
 			'paymentPrice'		=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->Payment->price, false),
 			'grandTotal'		=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->grandTotal, false),
-			'cart_text'			=> strip_tags($this->replaceInsertTags($this->Isotope->Cart->getProducts('iso_products_text'))),
-			'cart_html'			=> $this->replaceInsertTags($this->Isotope->Cart->getProducts('iso_products_html')),
+			'cart_text'			=> strip_tags($strCart),
+			'cart_html'			=> $strCart,
 		));
 
 		$objOrder->email_data = $arrData;

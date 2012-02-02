@@ -21,7 +21,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
@@ -52,6 +52,9 @@ class PostSale extends Frontend
 	 */
 	public function __construct()
 	{
+		// Contao Hooks are not save to be run on the postsale script (e.g. parseFrontendTemplate)
+		unset($GLOBALS['TL_HOOKS']);
+
 		parent::__construct();
 	}
 

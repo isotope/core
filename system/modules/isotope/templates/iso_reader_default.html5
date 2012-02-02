@@ -22,7 +22,7 @@
 <div class="submit_container">
 <?php if ($this->useQuantity): ?>
 <div class="quantity_container">
-<label for="quantity_requested_<?php echo $this->raw['id']; ?>"><?php echo $this->quantityLabel; ?>:</label> <input type="text" class="text" id="quantity_requested_<?php echo $this->raw['id']; ?>" name="quantity_requested" value="1" maxlength="10" onblur="if (this.value=='') { this.value='1'; }" onfocus="if (this.value=='1') { this.value=''; }">
+<label for="quantity_requested_<?php echo $this->raw['id']; ?>"><?php echo $this->quantityLabel; ?>:</label> <input type="text" class="text" id="quantity_requested_<?php echo $this->raw['id']; ?>" name="quantity_requested" value="<?php echo $this->quantity_requested; ?>" maxlength="10" onblur="if (this.value=='') { this.value='1'; }" onfocus="if (this.value=='1') { this.value=''; }">
 </div>
 <?php endif; ?>
 <?php foreach( $this->buttons as $name => $button ): ?>

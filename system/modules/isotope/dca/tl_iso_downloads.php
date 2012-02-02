@@ -21,7 +21,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
@@ -140,13 +140,16 @@ $GLOBALS['TL_DCA']['tl_iso_downloads'] = array
 );
 
 
+/**
+ * Class tl_iso_downloads
+ * Provide miscellaneous methods that are used by the data configuration array.
+ */
 class tl_iso_downloads extends Backend
 {
 
 	/**
 	 * Add an image to each record
 	 * @param array
-	 * @param string
 	 * @return string
 	 */
 	public function listRows($row)

@@ -21,7 +21,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
@@ -3621,7 +3621,7 @@ $GLOBALS['TL_LANG']['DIV']['tr']['TR-31'] = 'Hatay';
 $GLOBALS['TL_LANG']['DIV']['tr']['TR-76'] = 'I_dir';
 $GLOBALS['TL_LANG']['DIV']['tr']['TR-32'] = 'Isparta';
 $GLOBALS['TL_LANG']['DIV']['tr']['TR-33'] = '_çel';
-$GLOBALS['TL_LANG']['DIV']['tr']['TR-34'] = '_stanbul';
+$GLOBALS['TL_LANG']['DIV']['tr']['TR-34'] = 'Istanbul';
 $GLOBALS['TL_LANG']['DIV']['tr']['TR-35'] = '_zmir';
 $GLOBALS['TL_LANG']['DIV']['tr']['TR-46'] = 'Kahramanmara_';
 $GLOBALS['TL_LANG']['DIV']['tr']['TR-78'] = 'Karabük';

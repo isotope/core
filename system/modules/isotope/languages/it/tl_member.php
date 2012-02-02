@@ -21,12 +21,11 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  2009-2011 Isotope eCommerce Workgroup
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Angelica Schempp <aschempp@gmx.net>
  * @author     Paolo B. <paolob@contaocms.it>
  * @author     Dan N <dan@dss.uniud.it>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
- * @version    $Id$
  */
 
 $GLOBALS['TL_LANG']['tl_member']['address_book'][0] = 'Rubrica';

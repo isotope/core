@@ -21,7 +21,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Christian de la Haye <service@delahaye.de>
@@ -79,10 +79,10 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 		(
 			'all' => array
 			(
-				'label'					=> &$GLOBALS['TL_LANG']['MSC']['all'],
-				'href'					=> 'act=select',
-				'class'					=> 'header_edit_all',
-				'attributes'			=> 'onclick="Backend.getScrollOffset();"'
+				'label'	              => &$GLOBALS['TL_LANG']['MSC']['all'],
+				'href'                => 'act=select',
+				'class'               => 'header_edit_all',
+				'attributes'          => 'onclick="Backend.getScrollOffset();"'
 			),
 			'tools' => array
 			(
@@ -141,9 +141,9 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 			),
 			'print_order' => array
 			(
-				'label'			=> &$GLOBALS['TL_LANG']['tl_iso_orders']['print_order'],
-				'href'			=> 'key=print_order',
-				'icon'			=> 'system/modules/isotope/html/document-pdf-text.png'
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_orders']['print_order'],
+				'href'                => 'key=print_order',
+				'icon'                => 'system/modules/isotope/html/document-pdf-text.png'
 			),
 		)
 	),
@@ -151,7 +151,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{status_legend},status,date_payed,date_shipped;{details_legend},details,notes;{email_legend:hide},email_data',
+		'default'                     => '{status_legend},status,date_payed,date_shipped;{details_legend},details,notes;{email_legend:hide},email_data;{billing_address_legend:hide},billing_address_data;{shipping_address_legend:hide},shipping_address_data',
 	),
 
 	// Fields
@@ -248,67 +248,83 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 			'input_field_callback'	=> array('tl_iso_orders', 'generateEmailData'),
 			'eval'					=> array('doNotShow'=>true),
 		),
+		'billing_address_data' => array
+		(
+			'input_field_callback'	=> array('tl_iso_orders', 'generateBillingAddressData'),
+			'eval'					=> array('doNotShow'=>true),
+		),
+		'shipping_address_data' => array
+		(
+			'input_field_callback'	=> array('tl_iso_orders', 'generateShippingAddressData'),
+			'eval'					=> array('doNotShow'=>true),
+		),
 	)
 );
 
 
 /**
- * tl_iso_orders class.
- *
- * @extends Backend
+ * Class tl_iso_orders
+ * Provide miscellaneous methods that are used by the data configuration array.
  */
 class tl_iso_orders extends Backend
 {
 
+	/**
+	 * Import an Isotope object
+	 */
 	public function __construct()
 	{
 		parent::__construct();
-
 		$this->import('Isotope');
 	}
 
 
+	/**
+	 * Calculate and save surcharges
+	 * @param mixed
+	 * @param DataContainer
+	 * @return mixed
+	 */
 	public function saveSurcharges($varValue, DataContainer $dc)
 	{
-
 		$fltTaxTotal = 0.00;
-
 		$arrTaxables = array();
-
 		$arrSurcharges = deserialize($varValue);
 
-		if(!is_array($arrSurcharges) || !count($arrSurcharges))
+		if (!is_array($arrSurcharges) || !count($arrSurcharges))
+		{
 			return $varValue;
+		}
 
 		$arrAddresses['shipping'] = deserialize($dc->activeRecord->shipping_address);
 		$arrAddresses['billing'] = deserialize($dc->activeRecord->billing_address);
 
-		foreach($arrSurcharges as $surcharge)
+		foreach ($arrSurcharges as $surcharge)
 		{
-			if($surcharge['tax_class']>0)
+			if ($surcharge['tax_class'] > 0)
 			{
 				$surcharge['before_tax'] = 1;
 				$arrTaxables[] = $surcharge;
 			}
 		}
 
-		foreach( $arrTaxables as $arrSurcharge )
+		foreach ($arrTaxables as $arrSurcharge)
 		{
 			$arrTax = array();
 
-			//skip taxes.
-			if(strpos($arrSurcharge['price'], '%')!==0)
+			// Skip taxes
+			if (strpos($arrSurcharge['price'], '%')!==0)
 			{
 				$arrTax = $this->Isotope->calculateTax($arrSurcharge['tax_class'], $arrSurcharge['total_price'], $arrSurcharge['before_tax'], $arrAddresses);
 			}
 
-			foreach($arrTax as $tax)
+			foreach ($arrTax as $tax)
 			{
 				$fltTaxTotal += $tax['total_price'];
 			}
 		}
 
-		foreach($arrSurcharges as $row)
+		foreach ($arrSurcharges as $row)
 		{
 			$arrSurchargePrices[] = array
 			(
@@ -320,9 +336,8 @@ class tl_iso_orders extends Backend
 			$arrTotalPrices[] = $row['total_price'];
 		}
 
-		//step 2: adjust order totals
+		// Adjust order totals
 		$fltGrandTotal = $dc->activeRecord->subTotal + array_sum($arrTotalPrices) + $fltTaxTotal;
-
 		$this->Database->prepare("UPDATE tl_iso_orders SET grandTotal=? WHERE id=?")->execute($fltGrandTotal, $dc->id);
 
 		return serialize($arrSurchargePrices);
@@ -330,12 +345,10 @@ class tl_iso_orders extends Backend
 
 
 	/**
-	 * getOrderLabel function.
-	 *
-	 * @access	public
-	 * @param	array	$row
-	 * @param	string	$label
-	 * @return	string
+	 * Generate the order label and return it as string
+	 * @param array
+	 * @param string
+	 * @return string
 	 */
 	public function getOrderLabel($row, $label)
 	{
@@ -353,11 +366,9 @@ class tl_iso_orders extends Backend
 
 	/**
 	 * Generate the order details view when editing an order
-	 *
-	 * @access	public
-	 * @param	object	$dc
-	 * @param	string	$xlabel
-	 * @return	string
+	 * @param object
+	 * @param string
+	 * @return string
 	 */
 	public function generateOrderDetails($dc, $xlabel)
 	{
@@ -379,15 +390,13 @@ class tl_iso_orders extends Backend
 
 	/**
 	 * Generate the order details view when editing an order
-	 *
-	 * @access	public
-	 * @param	object	$dc
-	 * @param	string	$xlabel
-	 * @return	string
+	 * @param object
+	 * @param string
+	 * @return string
 	 */
 	public function generateEmailData($dc, $xlabel)
 	{
-		$objOrder = $this->Database->execute("SELECT * FROM tl_iso_orders WHERE id=".$dc->id);
+		$objOrder = $this->Database->execute("SELECT * FROM tl_iso_orders WHERE id=" . $dc->id);
 
 		if (!$objOrder->numRows)
 		{
@@ -407,7 +416,8 @@ class tl_iso_orders extends Backend
   <tbody>';
 
 		$i=0;
-		foreach( $arrSettings['email_data'] as $k => $v )
+
+		foreach ($arrSettings['email_data'] as $k => $v)
 		{
 			$strClass = ++$i%2 ? '' : ' class="tl_bg"';
 
@@ -424,19 +434,96 @@ class tl_iso_orders extends Backend
 
 		return $strBuffer;
 	}
+	
+	
+	/**
+	 * Generate the billing address details
+	 * @param object
+	 * @param string
+	 * @return string
+	 */
+	public function generateBillingAddressData($dc, $xlabel)
+	{
+		return $this->generateAddressData($dc->id, 'billing_address');
+	}
+	
+	
+	/**
+	 * Generate the shipping address details
+	 * @param object
+	 * @param string
+	 * @return string
+	 */
+	public function generateShippingAddressData($dc, $xlabel)
+	{
+		return $this->generateAddressData($dc->id, 'shipping_address');
+	}
+	
+	
+	/**
+	 * Generate address details amd return it as string
+	 * @param integer
+	 * @param string
+	 * @return string
+	 */
+	protected function generateAddressData($intId, $strField)
+	{
+		$objOrder = $this->Database->execute("SELECT * FROM tl_iso_orders WHERE id=".$intId);
+
+		if (!$objOrder->numRows)
+		{
+			$this->redirect('contao/main.php?act=error');
+		}
+
+		$arrAddress = deserialize($objOrder->$strField, true);
+
+		if (!is_array($arrAddress))
+		{
+			return '<div class="tl_gerror">No address data available.</div>';
+		}
+		
+		$this->loadDataContainer('tl_iso_addresses');
+
+		$strBuffer = '
+<div>
+<table cellpadding="0" cellspacing="0" class="tl_show" summary="Table lists all details of an entry" style="width:650px">
+  <tbody>';
+
+		$i=0;
+
+		foreach ($GLOBALS['TL_DCA']['tl_iso_addresses']['fields'] as $k => $v)
+		{
+			if (!isset($arrAddress[$k]))
+			{
+				continue;
+			}
+			
+			$v = $arrAddress[$k];
+			$strClass = (++$i % 2) ? '' : ' class="tl_bg"';
+
+			$strBuffer .= '
+  <tr>
+    <td' . $strClass . ' style="vertical-align:top"><span class="tl_label">'.$this->Isotope->formatLabel('tl_iso_addresses', $k).': </span></td>
+    <td' . $strClass . '>'.$this->Isotope->formatValue('tl_iso_addresses', $k, $v).'</td>
+  </tr>';
+		}
+
+		$strBuffer .= '
+</tbody></table>
+</div>';
+
+		return $strBuffer;
+	}
 
 
 	/**
 	* Review order page stores temporary information in this table to know it when user is redirected to a payment provider. We do not show this data in backend.
-	*
-	* @access	public
-	* @param	object $dc
-	* @return	void
+	* @param object
+	* @return void
 	*/
 	public function checkPermission($dc)
 	{
 		$this->import('BackendUser', 'User');
-
 		$arrConfigs = $this->User->iso_configs;
 
 		if ($this->User->isAdmin || (is_array($arrConfigs) && count($arrConfigs)))
@@ -445,7 +532,9 @@ class tl_iso_orders extends Backend
 		}
 
 		if (!count($arrIds))
+		{
 			$arrIds = array(0);
+		}
 
 		$GLOBALS['TL_DCA']['tl_iso_orders']['list']['sorting']['root'] = $arrIds;
 
@@ -468,6 +557,9 @@ class tl_iso_orders extends Backend
 
 
 	/**
+	 * Export order e-mails and send them to browser as file
+	 * @param DataContainer
+	 * @return string
 	 * @todo orders should be sorted, but by ID or date? also might want to respect user filter/search
 	 */
 	public function exportOrderEmails(DataContainer $dc)
@@ -480,7 +572,7 @@ class tl_iso_orders extends Backend
 		$arrExport = array();
 		$objOrders = $this->Database->execute("SELECT billing_address FROM tl_iso_orders");
 
-		while( $objOrders->next() )
+		while ($objOrders->next())
 		{
 			$arrAddress = deserialize($objOrders->billing_address);
 
@@ -518,10 +610,14 @@ class tl_iso_orders extends Backend
 	}
 
 
+	/**
+	 * Generate a payment interface and return it as HTML string
+	 * @param object
+	 * @return string
+	 */
 	public function paymentInterface($dc)
 	{
 		$objPayment = $this->Database->execute("SELECT p.* FROM tl_iso_payment_modules p, tl_iso_orders o WHERE p.id=o.payment_id AND o.id=".$dc->id);
-
 		$strClass = $GLOBALS['ISO_PAY'][$objPayment->type];
 
 		if (!$objPayment->numRows || !strlen($strClass) || !$this->classFileExists($strClass))
@@ -530,15 +626,18 @@ class tl_iso_orders extends Backend
 		}
 
 		$objModule = new $strClass($objPayment->row());
-
 		return $objModule->backendInterface($dc->id);
 	}
 
 
+	/**
+	 * Generate a shipping interface and return it as HTML string
+	 * @param object
+	 * @return string
+	 */
 	public function shippingInterface($dc)
 	{
 		$objShipping = $this->Database->execute("SELECT p.* FROM tl_iso_shipping_modules p, tl_iso_orders o WHERE p.id=o.shipping_id AND o.id=".$dc->id);
-
 		$strClass = $GLOBALS['ISO_SHIP'][$objShipping->type];
 
 		if (!$objShipping->numRows || !strlen($strClass) || !$this->classFileExists($strClass))
@@ -547,15 +646,12 @@ class tl_iso_orders extends Backend
 		}
 
 		$objModule = new $strClass($objShipping->row());
-
 		return $objModule->backendInterface($dc->id);
 	}
 
 
 	/**
 	 * Provide a select menu to choose orders by status and print PDF
-	 *
-	 * @param  object
 	 * @return string
 	 */
 	public function printInvoices()
@@ -605,8 +701,7 @@ class tl_iso_orders extends Backend
 
 	/**
 	 * Print one order as PDF
-	 *
-	 * @param  object
+	 * @param DataContainer
 	 * @return void
 	 */
 	public function printInvoice(DataContainer $dc)
@@ -617,15 +712,14 @@ class tl_iso_orders extends Backend
 
 	/**
 	 * Generate one or multiple PDFs by order ID
-	 *
-	 * @param  array
+	 * @param array
 	 * @return void
 	 */
 	public function generateInvoices(array $arrIds)
 	{
 		$this->import('Isotope');
 
-		if(!count($arrIds))
+		if (!count($arrIds))
 		{
 			$this->log('No order IDs passed to method.', __METHOD__, TL_ERROR);
 			$this->redirect($this->Environment->script . '?act=error');
@@ -633,7 +727,7 @@ class tl_iso_orders extends Backend
 
 		$pdf = null;
 
-		foreach( $arrIds as $intId )
+		foreach ($arrIds as $intId)
 		{
 			$objOrder = new IsotopeOrder();
 
@@ -663,11 +757,12 @@ class tl_iso_orders extends Backend
 		// Stop script execution
 		exit;
 	}
-	
-	
+
+
 	/**
 	 * Execute the saveCollection hook when an order is saved
-	 * @param DataContainer
+	 * @param object
+	 * @return void
 	 */
 	public function executeSaveHook($dc)
 	{

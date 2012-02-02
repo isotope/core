@@ -21,10 +21,9 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  2009-2011 Isotope eCommerce Workgroup
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Paul Kegel <paul@artified.nl>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
- * @version    $Id$
  */
 
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['AUTH_CAPTURE'][1] = 'Transacties van dit type zullen worden verzonden voor autorisatie. Indien goedgekeurd zal de transactie automatisch worden opgenomen voor vereffening (verekening). Dit is het foutieve type transactie in de gateway (toegangspoort). Indien geen type wordt aangegeven bij het voorleggen van transacties aan de gateway, zal de gateway aannemen dat de transactie is van het type';

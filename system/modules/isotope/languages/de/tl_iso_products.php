@@ -21,7 +21,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  2009-2011 Isotope eCommerce Workgroup
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Burg <ab@andreasburg.de>
  * @author     Nikolas Runde <info@nrmedia.de>
  * @author     Patrick Grob <grob@a-sign.ch>
@@ -31,7 +31,6 @@
  * @author     Stefan Preiss <stefan@preiss-at-work.de>
  * @author     Nina Gerling <gerling@ena-webstudio.de>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
- * @version    $Id: ModuleIsotopeTranslation.php 2273 2011-05-30 21:02:24Z aschempp $
  */
 
 $GLOBALS['TL_LANG']['tl_iso_products']['id'][0] = 'Produkt-ID';
@@ -131,4 +130,19 @@ $GLOBALS['TL_LANG']['tl_iso_products']['options_legend'] = 'Produktoptionen-Eins
 $GLOBALS['TL_LANG']['tl_iso_products']['media_legend'] = 'Dateiverwaltung';
 $GLOBALS['TL_LANG']['tl_iso_products']['publish_legend'] = 'Veröffentlichung';
 $GLOBALS['TL_LANG']['tl_iso_products']['variant_legend'] = 'Produktvarianten-Einrichtung';
+
+
+/**
+ * Buttons
+ */
+$GLOBALS['TL_LANG']['tl_iso_products']['filter']			= array('Erweiterte Filter', 'Erweiterte Filter anwenden');
+$GLOBALS['TL_LANG']['tl_iso_products']['filter_remove']		= array('Filter entfernen', 'Erweiterte Filter zurücksetzen');
+$GLOBALS['TL_LANG']['tl_iso_products']['filter_noimages']	= array('Produkte ohne Bilder', 'Zeit nur Produkte ohne Produktbilder');
+$GLOBALS['TL_LANG']['tl_iso_products']['filter_nocategory']	= array('Produkte ohne Kategorie', 'Zeigt zur Produkte die keiner Kategorie zugeordnet sind');
+$GLOBALS['TL_LANG']['tl_iso_products']['filter_new_today']	= array('Heute hinzugefügt', 'Zeigt nur Produkte welche heute hinzugefügt wurden');
+$GLOBALS['TL_LANG']['tl_iso_products']['filter_new_week']	= array('Diese Woche hinzugefügt', 'Zeigt nur Produkte welche in den letzten 7 Tagen hinzugefügt wurden');
+$GLOBALS['TL_LANG']['tl_iso_products']['filter_new_month']	= array('Diesen Monat hinzugefügt', 'Zeigt nur Produkte welche in den letzten 30 Tagen hinzugefügt wurden');
+$GLOBALS['TL_LANG']['tl_iso_products']['toggleGroups']		= array('Alle Gruppen öffnen/schließen', 'Alle Gruppen öffnen/schließen');
+$GLOBALS['TL_LANG']['tl_iso_products']['toggleVariants']	= array('Alle Varianten öffnen/schließen', 'Alle Varianten öffnen/schließen');
+$GLOBALS['TL_LANG']['tl_iso_products']['groups']			= array('Produktgruppen', 'Produktgruppen verwalten');
 

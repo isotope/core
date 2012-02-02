@@ -21,10 +21,9 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  2009-2011 Isotope eCommerce Workgroup
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     D S <dreel@bk.ru>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
- * @version    $Id$
  */
 
 $GLOBALS['TL_LANG']['tl_content']['iso_list_layout'][0] = 'Шаблон списка товаров';

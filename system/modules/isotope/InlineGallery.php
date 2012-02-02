@@ -21,7 +21,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
@@ -32,7 +32,7 @@
  * Class InlineGallery
  * 
  * Provide methods to handle inline gallery.
- * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
@@ -92,7 +92,7 @@ class InlineGallery extends IsotopeGallery
 			$strGallery .= $objTemplate->parse();
 		}
 
-		return '<div class="iso_attribute" id="' . $this->name . '_gallery">' . $strGallery . '</div>';
+		return '<div class="iso_attribute '.strtolower($strType).'" id="' . $this->name . '_gallery">' . $strGallery . '</div>';
 	}
 
 

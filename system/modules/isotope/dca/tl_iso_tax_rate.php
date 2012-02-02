@@ -21,7 +21,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
@@ -100,7 +100,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
 				'label'               => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['copy'],
 				'href'                => 'act=copy',
 				'icon'                => 'copy.gif',
-				'button_callback'     => array('tl_iso_tax_rate', 'copyTaxClass'),
+				'button_callback'     => array('tl_iso_tax_rate', 'copyTaxRate'),
 			),
 			'delete' => array
 			(
@@ -108,7 +108,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
 				'href'                => 'act=delete',
 				'icon'                => 'delete.gif',
 				'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"',
-				'button_callback'     => array('tl_iso_tax_rate', 'deleteTaxClass'),
+				'button_callback'     => array('tl_iso_tax_rate', 'deleteTaxRate'),
 			),
 			'show' => array
 			(
@@ -206,11 +206,16 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
 );
 
 
+/**
+ * Class tl_iso_tax_rate
+ * Provide miscellaneous methods that are used by the data configuration array.
+ */
 class tl_iso_tax_rate extends Backend
 {
 
 	/**
-	 * Check permissions to edit table tl_iso_tax_rate.
+	 * Check permissions to edit table tl_iso_tax_rate
+	 * @return void
 	 */
 	public function checkPermission()
 	{
@@ -370,7 +375,7 @@ class tl_iso_tax_rate extends Backend
 
 	/**
 	 * Set the currency rate from selected store config
-	 * @param DataContainer
+	 * @param object
 	 */
 	public function addCurrencyRate($dc)
 	{
@@ -414,4 +419,3 @@ class tl_iso_tax_rate extends Backend
 		return ($this->User->isAdmin || $this->User->hasAccess('delete', 'iso_tax_ratep')) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
 	}
 }
-

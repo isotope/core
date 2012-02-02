@@ -21,7 +21,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
@@ -32,7 +32,7 @@
  * Class IsotopeGallery
  * 
  * Provide methods to handle Isotope galleries.
- * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Christian de la Haye <service@delahaye.de>
@@ -229,7 +229,7 @@ class IsotopeGallery extends Frontend
 	{
 		if (!count($this->arrFiles))
 		{
-			return '<div class="iso_attribute" id="' . $this->name . '_' . $strType . 'size"> </div>';
+			return '<div class="iso_attribute images ' . strtolower($strType).'" id="' . $this->name . '_' . $strType . 'size"> </div>';
 		}
 
 		$arrFile = reset($this->arrFiles);
@@ -248,7 +248,7 @@ class IsotopeGallery extends Frontend
 
 		list($objTemplate->link, $objTemplate->rel) = explode('|', $arrFile['link']);
 
-		return '<div class="iso_attribute" id="' . $this->name . '_' . $strType . 'size">' . $objTemplate->parse() . '</div>';
+		return '<div class="iso_attribute images ' . strtolower($strType).'" id="' . $this->name . '_' . $strType . 'size">' . $objTemplate->parse() . '</div>';
 	}
 
 
@@ -285,7 +285,7 @@ class IsotopeGallery extends Frontend
 		}
 
 		$this->injectAjax();
-		return '<div class="iso_attribute" id="' . $this->name . '_gallery">' . $strGallery . '</div>';
+		return '<div class="iso_attribute '.strtolower($strType).'" id="' . $this->name . '_gallery">' . $strGallery . '</div>';
 	}
 
 

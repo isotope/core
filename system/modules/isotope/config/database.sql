@@ -15,6 +15,7 @@
 CREATE TABLE `tl_iso_products` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
+  `sorting` int(10) unsigned NOT NULL default '0',
   `gid` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
   `dateAdded` int(10) unsigned NOT NULL default '0',
@@ -705,7 +706,6 @@ CREATE TABLE `tl_content` (
   `iso_reader_jumpTo` int(10) unsigned NOT NULL default '0',
   `iso_list_layout` varchar(64) NOT NULL default '',
   `iso_attribute_set` int(10) unsigned NOT NULL default '0',
-  `iso_filters` varchar(255) NOT NULL default '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 

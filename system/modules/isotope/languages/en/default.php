@@ -21,7 +21,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Christian de la Haye <service@delahaye.de>
@@ -253,6 +253,8 @@ $GLOBALS['ISO_LANG']['MSC']['productcacheLoading']	= 'Loading products...';
 $GLOBALS['ISO_LANG']['MSC']['productcacheNoscript']	= 'Your browser does not support javascript. Please <a href="%s">click here</a> to load the product list.';
 $GLOBALS['ISO_LANG']['MSC']['noFilesInFolder']		= 'No files in this folder';
 $GLOBALS['ISO_LANG']['MSC']['loadingProductData']	= 'Loading product data …';
+$GLOBALS['ISO_LANG']['MSC']['templateConfig']		= '%s (Store Config: %s)';
+$GLOBALS['ISO_LANG']['MSC']['templateTheme']		= '%s (Theme: %s)';
 
 
 /**

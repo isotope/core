@@ -21,7 +21,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
@@ -244,15 +244,15 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
 
 
 /**
- * tl_iso_producttypes class.
- *
- * @extends Backend
+ * Class tl_iso_producttypes
+ * Provide miscellaneous methods that are used by the data configuration array.
  */
 class tl_iso_producttypes extends Backend
 {
 
 	/**
-	 * Check permissions to edit table tl_iso_producttypes.
+	 * Check permissions to edit table tl_iso_producttypes
+	 * @return void
 	 */
 	public function checkPermission()
 	{
@@ -387,76 +387,23 @@ class tl_iso_producttypes extends Backend
 
 	/**
 	 * Return list templates as array
-	 * @param object
+	 * @param DataContainer
 	 * @return array
 	 */
 	public function getListTemplates(DataContainer $dc)
 	{
-		return $this->getTemplateGroup('iso_list_');
+		return IsotopeBackend::getTemplates('iso_list_');
 	}
 
 
 	/**
 	 * Return reader templates as array
-	 * @param object
+	 * @param DataContainer
 	 * @return array
 	 */
 	public function getReaderTemplates(DataContainer $dc)
 	{
-		return $this->getTemplateGroup('iso_reader_');
-	}
-
-
-	/**
-	 * List template from all themes, show theme name
-	 * Based on Controller::getTemplateGroup from Contao 2.9.3
-	 */
-	protected function getTemplateGroup($strPrefix, $intTheme=0)
-	{
-		$arrThemes = array();
-		$arrTemplates = array();
-		$arrFolders = array();
-
-		// Add the templates root directory
-		$arrFolders[] = TL_ROOT . '/templates';
-
-		// Add theme templates folder
-		$objTheme = $this->Database->execute("SELECT name, templates FROM tl_theme" . ($intPid>0 ? " WHERE id=$intPid" : ''));
-		while( $objTheme->next() )
-		{
-			if ($objTheme->templates != '' && is_dir(TL_ROOT .'/'. $objTheme->templates))
-			{
-				$arrFolders[] = TL_ROOT .'/'. $objTheme->templates;
-				$arrThemes[TL_ROOT .'/'. $objTheme->templates] = $objTheme->name;
-			}
-		}
-
-		// Add the module templates folders if they exist
-		foreach ($this->Config->getActiveModules() as $strModule)
-		{
-			$strFolder = TL_ROOT . '/system/modules/' . $strModule . '/templates';
-
-			if (is_dir($strFolder))
-			{
-				$arrFolders[] = $strFolder;
-			}
-		}
-
-		// Find all matching templates
-		foreach ($arrFolders as $strFolder)
-		{
-			$arrFiles = preg_grep('/^' . preg_quote($strPrefix, '/') . '/i',  scan($strFolder));
-
-			foreach ($arrFiles as $strTemplate)
-			{
-				$strName = basename($strTemplate);
-				$strName = substr($strName, 0, strrpos($strName, '.'));
-				$arrTemplates[$strName] = $strName . (isset($arrThemes[$strFolder]) ? ' ['.$arrThemes[$strFolder].']' : '');
-			}
-		}
-
-		natcasesort($arrTemplates);
-		return $arrTemplates;
+		return IsotopeBackend::getTemplates('iso_reader_');
 	}
 
 

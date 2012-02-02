@@ -21,7 +21,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
@@ -50,7 +50,7 @@ class IsotopeRunonce extends Controller
 	public function run()
 	{
 		// Cancel if shop has not yet been installed
-		if (!$this->Database->tableExists('tl_iso_config'))
+		if (!$this->Database->tableExists('tl_iso_config') && !$this->Database->tableExists('tl_store'))
 			return;
 
 		$this->createIsotopeFolder();
@@ -392,7 +392,7 @@ class IsotopeRunonce extends Controller
 		{
 			$this->Database->query("ALTER TABLE tl_iso_tax_rate ADD COLUMN postalCodes text NULL");
 			
-			$obTaxRates = $this->Database->execute("SELECT * FROM tl_iso_tax_rate WHERE postal!=''");
+			$objTaxRates = $this->Database->execute("SELECT * FROM tl_iso_tax_rate WHERE postal!=''");
 			
 			while( $objTaxRates->next() )
 			{
@@ -421,63 +421,6 @@ class IsotopeRunonce extends Controller
 			$this->Database->query("ALTER TABLE tl_iso_config CHANGE COLUMN address_fields shipping_fields blob NULL");
 			$this->Database->query("ALTER TABLE tl_iso_config ADD COLUMN billing_fields blob NULL");
 			$this->Database->query("UPDATE tl_iso_config SET billing_fields=shipping_fields");
-		}
-
-		if ($this->Database->fieldExists('gallery_size', 'tl_iso_config') && !$this->Database->fieldExists('imageSizes','tl_iso_config'))
-		{
-			$this->Database->query("ALTER TABLE tl_iso_config ADD COLUMN imageSizes blob NULL");
-
-			$objConfigs = $this->Database->execute("SELECT * FROM tl_iso_config");
-
-			while( $objConfigs->next() )
-			{
-				$arrGallery = deserialize($objConfigs->gallery_size, true);
-				$arrThumbnail = deserialize($objConfigs->thumbnail_size, true);
-				$arrMedium = deserialize($objConfigs->medium_size, true);
-				$arrLarge = deserialize($objConfigs->large_size, true);
-
-				$arrSizes = array
-				(
-					array
-					(
-						'name'		=> 'gallery',
-						'width'		=> $arrGallery[0],
-						'height'	=> $arrGallery[1],
-						'mode'		=> $arrGallery[2],
-						'watermark'	=> $objConfigs->gallery_watermark,
-						'position'	=> $objConfigs->watermark_position,
-					),
-					array
-					(
-						'name'		=> 'thumbnail',
-						'width'		=> $arrThumbnail[0],
-						'height'	=> $arrThumbnail[1],
-						'mode'		=> $arrThumbnail[2],
-						'watermark'	=> $objConfigs->thumbnail_watermark,
-						'position'	=> $objConfigs->watermark_position,
-					),
-					array
-					(
-						'name'		=> 'medium',
-						'width'		=> $arrMedium[0],
-						'height'	=> $arrMedium[1],
-						'mode'		=> $arrMedium[2],
-						'watermark'	=> $objConfigs->medium_watermark,
-						'position'	=> $objConfigs->watermark_position,
-					),
-					array
-					(
-						'name'		=> 'large',
-						'width'		=> $arrLarge[0],
-						'height'	=> $arrLarge[1],
-						'mode'		=> $arrLarge[2],
-						'watermark'	=> $objConfigs->large_watermark,
-						'position'	=> $objConfigs->watermark_position,
-					),
-				);
-
-				$this->Database->query("UPDATE tl_iso_config SET imageSizes='" . serialize($arrSizes) . "' WHERE id={$objConfigs->id}");
-			}
 		}
 
 		$this->loadDataContainer('tl_iso_addresses');
@@ -552,32 +495,6 @@ class IsotopeRunonce extends Controller
 		}
 
 		$this->Database->query("UPDATE tl_iso_products SET dateAdded=tstamp WHERE dateAdded=0");
-
-
-		// Update attribute wizard
-		$objTypes = $this->Database->execute("SELECT * FROM tl_iso_producttypes");
-
-		while ($objTypes->next())
-		{
-			foreach (array('attributes', 'variant_attributes') as $field)
-			{
-				$arrAttributes = deserialize($objTypes->$field);
-
-				if (!array_is_assoc($arrAttributes))
-				{
-					$arrNew = array();
-
-					foreach ($arrAttributes as $i => $attribute)
-					{
-						$arrNew[$attribute]['enabled'] = '1';
-						$arrNew[$attribute]['position'] = $i;
-					}
-
-					$this->Database->prepare("UPDATE tl_iso_producttypes SET $field=? WHERE id=?")
-								   ->execute(serialize($arrNew), $objTypes->id);
-				}
-			}
-		}
 	}
 
 
@@ -647,6 +564,64 @@ class IsotopeRunonce extends Controller
 				// Do not use multiple DROP COLUMN in one ALTER TABLE. It is supported by MySQL, but not standard SQL92
 				$this->Database->query("ALTER TABLE tl_iso_config DROP COLUMN ".$size."_image_width");
 				$this->Database->query("ALTER TABLE tl_iso_config DROP COLUMN ".$size."_image_height");
+			}
+		}
+		
+		
+		if ($this->Database->fieldExists('gallery_size', 'tl_iso_config', true) && !$this->Database->fieldExists('imageSizes','tl_iso_config', true))
+		{
+			$this->Database->query("ALTER TABLE tl_iso_config ADD COLUMN imageSizes blob NULL");
+
+			$objConfigs = $this->Database->execute("SELECT * FROM tl_iso_config");
+
+			while( $objConfigs->next() )
+			{
+				$arrGallery = deserialize($objConfigs->gallery_size, true);
+				$arrThumbnail = deserialize($objConfigs->thumbnail_size, true);
+				$arrMedium = deserialize($objConfigs->medium_size, true);
+				$arrLarge = deserialize($objConfigs->large_size, true);
+
+				$arrSizes = array
+				(
+					array
+					(
+						'name'		=> 'gallery',
+						'width'		=> $arrGallery[0],
+						'height'	=> $arrGallery[1],
+						'mode'		=> $arrGallery[2],
+						'watermark'	=> $objConfigs->gallery_watermark,
+						'position'	=> $objConfigs->watermark_position,
+					),
+					array
+					(
+						'name'		=> 'thumbnail',
+						'width'		=> $arrThumbnail[0],
+						'height'	=> $arrThumbnail[1],
+						'mode'		=> $arrThumbnail[2],
+						'watermark'	=> $objConfigs->thumbnail_watermark,
+						'position'	=> $objConfigs->watermark_position,
+					),
+					array
+					(
+						'name'		=> 'medium',
+						'width'		=> $arrMedium[0],
+						'height'	=> $arrMedium[1],
+						'mode'		=> $arrMedium[2],
+						'watermark'	=> $objConfigs->medium_watermark,
+						'position'	=> $objConfigs->watermark_position,
+					),
+					array
+					(
+						'name'		=> 'large',
+						'width'		=> $arrLarge[0],
+						'height'	=> $arrLarge[1],
+						'mode'		=> $arrLarge[2],
+						'watermark'	=> $objConfigs->large_watermark,
+						'position'	=> $objConfigs->watermark_position,
+					),
+				);
+
+				$this->Database->query("UPDATE tl_iso_config SET imageSizes='" . serialize($arrSizes) . "' WHERE id={$objConfigs->id}");
 			}
 		}
 	}
@@ -744,43 +719,35 @@ class IsotopeRunonce extends Controller
 	}
 	
 	
+	/**
+	 * Update product types for new attribute wizard and make start&stop date enabled
+	 */
 	private function updateProductTypes()
 	{
-		$objTypes = $this->Database->query("SELECT * FROM tl_iso_producttypes");
-		
-		while( $objTypes->next() )
+		$objTypes = $this->Database->execute("SELECT * FROM tl_iso_producttypes");
+
+		while ($objTypes->next())
 		{
-			$arrSet = array();
-			$arrAttributes = deserialize($objTypes->attributes, true);
-			$arrVariantAttributes = deserialize($objTypes->variant_attributes, true);
-			
-			if (!in_array('start', $arrAttributes))
+			foreach (array('attributes', 'variant_attributes') as $field)
 			{
-				$arrAttributes[] = 'start';
-				$arrSet['attributes'] = serialize($arrAttributes);
-			}
-			
-			if (!in_array('stop', $arrAttributes))
-			{
-				$arrAttributes[] = 'stop';
-				$arrSet['attributes'] = serialize($arrAttributes);
-			}
-			
-			if (!in_array('start', $arrVariantAttributes))
-			{
-				$arrVariantAttributes[] = 'start';
-				$arrSet['attributes'] = serialize($arrVariantAttributes);
-			}
-			
-			if (!in_array('stop', $arrVariantAttributes))
-			{
-				$arrVariantAttributes[] = 'stop';
-				$arrSet['variant_attributes'] = serialize($arrVariantAttributes);
-			}
-			
-			if (!empty($arrSet))
-			{
-				$this->Database->prepare("UPDATE tl_iso_producttypes %s WHERE id=?")->set($arrSet)->execute($objTypes->id);
+				$arrAttributes = deserialize($objTypes->$field);
+
+				if (is_array($arrAttributes) && !array_is_assoc($arrAttributes))
+				{
+					$arrNew = array();
+
+					foreach ($arrAttributes as $i => $attribute)
+					{
+						$arrNew[$attribute]['enabled'] = '1';
+						$arrNew[$attribute]['position'] = $i;
+					}
+					
+					$arrNew['start']['enabled'] = '1';
+					$arrNew['stop']['enabled'] = '1';
+
+					$this->Database->prepare("UPDATE tl_iso_producttypes SET $field=? WHERE id=?")
+								   ->execute(serialize($arrNew), $objTypes->id);
+				}
 			}
 		}
 	}

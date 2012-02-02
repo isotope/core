@@ -21,7 +21,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Isotope eCommerce Workgroup 2009-2011
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
@@ -61,6 +61,7 @@ $GLOBALS['TL_LANG']['tl_iso_mail']['exportMail']	= array('Export', 'Export e-mai
  */
 $GLOBALS['TL_LANG']['tl_iso_mail']['name_legend']		= 'Name';
 $GLOBALS['TL_LANG']['tl_iso_mail']['address_legend']	= 'Address';
+$GLOBALS['TL_LANG']['tl_iso_mail']['document_legend']	= 'Attachment';
 $GLOBALS['TL_LANG']['tl_iso_mail']['expert_legend']		= 'Expert Legend';
 
 

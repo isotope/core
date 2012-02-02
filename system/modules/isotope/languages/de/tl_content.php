@@ -21,7 +21,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  2009-2011 Isotope eCommerce Workgroup
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Burg <ab@andreasburg.de>
  * @author     Nikolas Runde <info@nrmedia.de>
  * @author     Patrick Grob <grob@a-sign.ch>
@@ -31,7 +31,6 @@
  * @author     Stefan Preiss <stefan@preiss-at-work.de>
  * @author     Nina Gerling <gerling@ena-webstudio.de>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
- * @version    $Id: ModuleIsotopeTranslation.php 2273 2011-05-30 21:02:24Z aschempp $
  */
 
 $GLOBALS['TL_LANG']['tl_content']['iso_reader_jumpTo'][0] = 'Produktleser-Weiterleitungsseite';
@@ -40,6 +39,4 @@ $GLOBALS['TL_LANG']['tl_content']['iso_list_layout'][0] = 'Produktlisten-Templat
 $GLOBALS['TL_LANG']['tl_content']['iso_list_layout'][1] = 'Bitte wählen Sie ein Listen-Layout. Sie können neue angepasste Listen-Layouts in den Ordner <em>templates</em> hinzufügen. Listen-Templates beginnen mit <em>iso_list_</em> und benötigen die Dateiendung <em>.html5, .xhtml</em> oder <em>.tpl</em>.';
 $GLOBALS['TL_LANG']['tl_content']['iso_attribute_set'][0] = 'Artikelmerkmal-Sammlung';
 $GLOBALS['TL_LANG']['tl_content']['iso_attribute_set'][1] = 'Wählen Sie eine Artikelmerkmal-Sammlung um einen Filter für diese Seite zu wählen.';
-$GLOBALS['TL_LANG']['tl_content']['iso_filters'][0] = 'Auflistungs-Filter';
-$GLOBALS['TL_LANG']['tl_content']['iso_filters'][1] = 'Wählen Sie einen Artikelmerkmal-Filter.';
 
