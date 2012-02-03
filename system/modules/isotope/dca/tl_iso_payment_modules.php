@@ -599,7 +599,7 @@ class tl_iso_payment_modules extends Backend
 		}
 
 		$arrCCTypes = array();
-		$objModule = new $strClass($objModuleType->fetchAssoc());
+		$objModule = new $strClass($objModuleType->row());
 
 		foreach ($objModule->getAllowedCCTypes() as $type)
 		{
@@ -627,7 +627,7 @@ class tl_iso_payment_modules extends Backend
 
 		try
 		{
-			$objModule = new $strClass($arrRow);
+			$objModule = new $strClass($objModule->row());
 			return $objModule->statusOptions();
 		}
 		catch (Exception $e) {}
