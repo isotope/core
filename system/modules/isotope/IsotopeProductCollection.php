@@ -558,7 +558,7 @@ abstract class IsotopeProductCollection extends Model
 		if ($objItem->numRows)
 		{
 			$this->Database->query("UPDATE {$this->ctable} SET tstamp=$time, product_quantity=(product_quantity+$intQuantity) WHERE id={$objItem->id}");
-			return $objItems->id;
+			return $objItem->id;
 		}
 		else
 		{
