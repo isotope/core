@@ -1219,10 +1219,10 @@ $endScript";
 		}
 		
 		// if we have a root page id (sitemap.xml e.g.) we have to make sure we only consider categories in this tree
-		$arrForbiddenPageIds = array();
+		$arrAllowedPageIds = array();
 		if ($intRootPageId > 0)
 		{
-			$arrForbiddenPageIds = $this->getChildRecords($intRootPageId, 'tl_page');
+			$arrAllowedPageIds = $this->getChildRecords($intRootPageId, 'tl_page');
 		}
 		
 		// get all the categories for every product
@@ -1230,8 +1230,8 @@ $endScript";
 		{
 			$arrCategories = $objProduct->categories;
 			
-			// filter those that are forbidden
-			$arrCategories = array_diff($arrCategories, $arrForbiddenPageIds);
+			// filter those that are allowed
+			$arrCategories = array_intersect($arrCategories, $arrAllowedPageIds);
 			
 			if (!is_array($arrCategories) || !count($arrCategories))
 			{
