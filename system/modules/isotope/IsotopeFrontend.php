@@ -1201,9 +1201,10 @@ $endScript";
 	/**
 	 * Adds the product urls to the array so they get indexed when the search index is being rebuilt in the maintenance module
 	 * @param array absolute page urls
+	 * @param int root page id
 	 * @return array extended array of absolute page urls
 	 */
-	public function addProductsToSearchIndex($arrPages)
+	public function addProductsToSearchIndex($arrPages, $intRootPageId=0)
 	{
 		$time = time();
 		$arrIsotopeProductPages = array();
@@ -1217,10 +1218,25 @@ $endScript";
 			return;
 		}
 		
+		// if we have a root page id (sitemap.xml e.g.) we have to make sure we only consider categories in this tree
+		$arrForbiddenPageIds = array();
+		if ($intRootPageId > 0)
+		{
+			$arrForbiddenPageIds = $this->getChildRecords($intRootPageId, 'tl_page');
+		}
+		
 		// get all the categories for every product
 		foreach ($arrProducts as $objProduct)
 		{
 			$arrCategories = $objProduct->categories;
+			
+			// filter those that are forbidden
+			$arrCategories = array_diff($arrCategories, $arrForbiddenPageIds);
+			
+			if (!is_array($arrCategories) || !count($arrCategories))
+			{
+				continue;
+			}
 			
 			if (!is_array($arrCategories) || !count($arrCategories))
 			{
