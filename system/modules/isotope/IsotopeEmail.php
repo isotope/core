@@ -126,7 +126,25 @@ class IsotopeEmail extends Controller
 		switch ($strKey)
 		{
 			case 'simpleTokens':
-				$this->arrSimpleTokens = $varValue;
+				if (!is_array($varValue))
+				{
+					$arrValue = deserialize($varValue, true);
+				}
+				
+				$arrTokens = array();
+				
+				foreach( $arrValue as $k => $v )
+				{
+					if (is_array($v))
+					{
+						$arrTokens[$k] = $this->recursiveImplode(', ', $v);
+						continue;
+					}
+					
+					$arrTokens[$k] = $v;
+				}
+				
+				$this->arrSimpleTokens = $arrTokens;
 				break;
 
 			case 'language':
@@ -370,6 +388,32 @@ class IsotopeEmail extends Controller
 		$strName = preg_replace('/[^A-Za-z0-9\.!#$%&\'*+-\/=?^_ `{\|}~]+/i', '_', $strName);
 
 		return $strName;
+	}
+
+
+	/**
+	 * Recursivly implode an array
+	 * @param string
+	 * @param array
+	 * @return string
+	 */
+	protected function recursiveImplode($strGlue, $arrPieces)
+	{
+		$arrReturn = array();
+		
+		foreach( $arrPieces as $varPiece )
+		{
+			if (is_array($varPiece))
+			{
+				$arrReturn[] = $this->recursiveImplode($strGlue, $varPiece);
+			}
+			else
+			{
+				$arrReturn[] = $varPiece;
+			}
+		}
+
+		return implode($strGlue, $arrReturn);
 	}
 }
 
