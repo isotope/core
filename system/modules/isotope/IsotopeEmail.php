@@ -164,7 +164,14 @@ class IsotopeEmail extends Controller
 				break;
 
 			default:
-				$this->objEmail->__set($strKey, $varValue);
+				if (is_object($varValue))
+				{
+					$this->$strKey = $varValue;
+				}
+				else
+				{
+					$this->objEmail->__set($strKey, $varValue);
+				}
 				break;
 		}
 	}
@@ -183,7 +190,7 @@ class IsotopeEmail extends Controller
 				break;
 
 			default:
-				return $this->objEmail->__get($strKey);
+				return $this->$strKey ? $this->$strKey : $this->objEmail->__get($strKey);
 				break;
 		}
 	}
