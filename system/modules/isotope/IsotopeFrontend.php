@@ -965,12 +965,15 @@ $endScript";
 					$arrParam[] = $v;
 				}
 			}
-
-			// Add product array as the last item. This will sort the products array based on the sorting of the passed in arguments.
-			$arrParam[] = &$arrProducts;
 			
-			// We need to use call_user_func_array because the number of parameters can be dynamic and this is the only way I know to pass an array as arguments
-			call_user_func_array('array_multisort', $arrParam);
+			$strEval = '';
+			foreach( $arrParam as $k => $v )
+			{
+				$strEval .= '$arrParam[' . $k . '], ';
+			}
+			
+			// Add product array as the last item. This will sort the products array based on the sorting of the passed in arguments.
+			eval('array_multisort(' . $strEval . '$arrProducts);');
 		}
 
 		return $arrProducts;
