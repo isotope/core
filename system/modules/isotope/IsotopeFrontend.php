@@ -959,7 +959,11 @@ $endScript";
 				}
 
 				$arrParam[] = &$arrData[$strField];
-				$arrParam = array_merge($arrParam, $arrConfig);
+				
+				foreach( $arrConfig as $k => $v )
+				{
+					$arrParam[] = $v;
+				}
 			}
 
 			// Add product array as the last item. This will sort the products array based on the sorting of the passed in arguments.
