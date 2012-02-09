@@ -28,16 +28,25 @@
  
 class IsotopeGA extends IsotopeFrontend
 {
+	public function triggerAction()
+	{
+		$this->import('Isotope');
+
+		$blnCompatible = version_compare(ISO_VERSION, '1.3', '<');
+		$arrParam = func_get_args();
+		
+		if($blnCompatible)
+		{
+			call_user_func_array(array($this, 'postCheckoutCompatible'), $arrParam);
+		}
+		else
+		{
+			call_user_func_array(array($this, 'postCheckout'), $arrParam);
+		}
+	}
 	
 	public function postCheckout($objOrder, $arrItemIds, $arrData)
-	{		
-		/*$this->import('GoogleAnalyticsTracker');
-		$this->import('GoogleAnalyticsSession');
-		$this->import('GoogleAnalyticsVisitor');
-		$this->import('GoogleAnalyticsTransaction');
-		$this->import('GoogleAnalyticsItem');
-		*/
-		
+	{				
 		$objConfig = new IsotopeConfig();
 		
 		$objConfig->findBy('id',$objOrder->config_id);
@@ -45,6 +54,30 @@ class IsotopeGA extends IsotopeFrontend
 		if(!$objConfig->ga_enable)
 			return;
 		
+		$this->trackGATransaction($objConfig,$objOrder);
+	}
+
+	public function postCheckoutCompatible($orderId, $blnCheckout, $objModule)	
+	{
+		$objOrder = new IsotopeOrder();
+			
+		if ($objOrder->findBy('id', $orderId))
+		{
+			$this->assignGroups($objOrder, $this->Isotope->Cart);
+		}
+		
+		$objConfig = new IsotopeConfig();
+		
+		$objConfig->findBy('id',$objOrder->config_id);
+		
+		if(!$objConfig->ga_enable)
+			return;
+			
+		$this->trackGATransaction($objConfig,$objOrder);
+	}
+
+	protected function trackGATransaction($objConfig,$objOrder)
+	{
 		// Initilize GA Tracker
 		$tracker = new GoogleAnalyticsTracker($objConfig->ga_account, $this->Environment->base);
 		
@@ -111,7 +144,6 @@ class IsotopeGA extends IsotopeFrontend
 		// (could also get unserialized from PHP session)
 		$session = new GoogleAnalyticsSession();
 		
-		$tracker->trackTransaction($transaction, $session, $visitor);
+		$tracker->trackTransaction($transaction, $session, $visitor);	
 	}
-	
 }

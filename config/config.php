@@ -25,5 +25,5 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
-
-$GLOBALS['ISO_HOOKS']['postCheckout'][]	= array('IsotopeGA','postCheckout');
+$GLOBALS['TL_HOOKS']['iso_writeOrder'][] = array('IsotopeGA','triggerAction');
+$GLOBALS['ISO_HOOKS']['postCheckout'][]	= array('IsotopeGA','triggerAction');
