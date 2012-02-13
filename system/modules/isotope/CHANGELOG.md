@@ -6,6 +6,7 @@ Version 1.3.rc2 (2012-??-??)
 
 ### New
 - Added a new hook generateOrderId (#2841)
+- Added a new hook addAssetImportRegexp (#2744)
 
 ### Improved
 - Product sorting is now case-insensitive

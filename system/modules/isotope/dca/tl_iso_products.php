@@ -1420,6 +1420,17 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 				$arrPattern[] = $objProducts->sku ? standardize($objProducts->sku, true) : null;
 				$arrPattern[] = count($arrImageNames) ? implode('|', $arrImageNames) : null;
 
+				// HOOK: add custom logic
+				if (isset($GLOBALS['ISO_HOOKS']['addAssetImportRegexp']) && is_array($GLOBALS['ISO_HOOKS']['addAssetImportRegexp']))
+				{
+					foreach ($GLOBALS['ISO_HOOKS']['addAssetImportRegexp'] as $callback)
+					{
+						$this->import($callback[0]);
+						
+						$arrPattern = $this->$callback[0]->$callback[1]($arrPattern,$objProducts);
+					}
+				}
+				
 				$strPattern = '@^(' . implode('|', array_filter($arrPattern)) . ')@i';
 
 				$arrMatches = preg_grep($strPattern, $arrFiles);
