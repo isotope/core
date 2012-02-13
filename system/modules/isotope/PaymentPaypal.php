@@ -115,7 +115,7 @@ class PaymentPaypal extends IsotopePayment
 			$this->log('Request Error: ' . $objRequest->error, __METHOD__, TL_ERROR);
 			exit;
 		}
-		elseif ($objRequest->response == 'VERIFIED' && ($this->Input->post('receiver_email') == $this->paypal_account || $this->debug))
+		elseif ($objRequest->response == 'VERIFIED' && ($this->Input->post('receiver_email', true) == $this->paypal_account || $this->debug))
 		{
 			$objOrder = new IsotopeOrder();
 
