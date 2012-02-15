@@ -63,20 +63,20 @@ class PaymentPaypal extends IsotopePayment
 
 		if ($objOrder->date_payed > 0 && $objOrder->date_payed <= time())
 		{
-			unset($_SESSION['PAYPAL_TIMEOUT']);
+			unset($_SESSION['CHECKOUT_DATA']['TIMEOUT']);
 			return true;
 		}
 
-		if (!isset($_SESSION['PAYPAL_TIMEOUT']))
+		if (!isset($_SESSION['CHECKOUT_DATA']['TIMEOUT']))
 		{
-			$_SESSION['PAYPAL_TIMEOUT'] = 60;
+			$_SESSION['CHECKOUT_DATA']['TIMEOUT'] = 60;
 		}
 		else
 		{
-			$_SESSION['PAYPAL_TIMEOUT'] = $_SESSION['PAYPAL_TIMEOUT'] - 5;
+			$_SESSION['CHECKOUT_DATA']['TIMEOUT'] = $_SESSION['CHECKOUT_DATA']['TIMEOUT'] - 5;
 		}
 
-		if ($_SESSION['PAYPAL_TIMEOUT'] === 0)
+		if ($_SESSION['CHECKOUT_DATA']['TIMEOUT'] === 0)
 		{
 			global $objPage;
 			$this->log('Payment could not be processed.', __METHOD__, TL_ERROR);

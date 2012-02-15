@@ -124,9 +124,35 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		{
 			$objOrder = new IsotopeOrder();
 
-			if ($objOrder->findBy('uniqid', $this->Input->get('uid')) && $objOrder->checkout_complete)
+			if ($objOrder->findBy('uniqid', $this->Input->get('uid')))
 			{
-				$this->redirect($this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($this->orderCompleteJumpTo)->fetchAssoc()) . '?uid='.$objOrder->uniqid);
+				if ($objOrder->checkout_complete)
+				{
+					unset($_SESSION['CHECKOUT_DATA']);
+					unset($_SESSION['ISOTOPE']);
+	
+					$this->redirect($this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($this->orderCompleteJumpTo)->fetchAssoc()) . '?uid='.$objOrder->uniqid);
+				}
+
+				if (!isset($_SESSION['CHECKOUT_DATA']['TIMEOUT']))
+				{
+					$_SESSION['CHECKOUT_DATA']['TIMEOUT'] = 60;
+				}
+				else
+				{
+					$_SESSION['CHECKOUT_DATA']['TIMEOUT'] = $_SESSION['CHECKOUT_DATA']['TIMEOUT'] - 5;
+				}
+
+				if ($_SESSION['CHECKOUT_DATA']['TIMEOUT'] > 0)
+				{
+					// Reload page every 5 seconds and check if payment was successful
+					$GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="5,' . $this->Environment->base . $this->Environment->request . '">';
+			
+					$this->Template = new FrontendTemplate('mod_message');
+					$this->Template->type = 'processing';
+					$this->Template->message = $GLOBALS['TL_LANG']['MSC']['payment_processing'];
+					return;
+				}
 			}
 		}
 
