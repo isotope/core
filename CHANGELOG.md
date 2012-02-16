@@ -4,6 +4,8 @@ Isotope eCommerce - Google Analytics
 
 Version 0.1.0 (2012-02-09)
 ------------------------------
+### Fixed
+- Fatal error (undefined method) in 0.2 compatibility mode (Ticket #4)
 
 ### Other
 - Added Isotope 0.2 compatibility

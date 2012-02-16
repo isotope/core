@@ -49,31 +49,32 @@ class IsotopeGA extends IsotopeFrontend
 	{				
 		$objConfig = new IsotopeConfig();
 		
-		$objConfig->findBy('id',$objOrder->config_id);
-		
-		if(!$objConfig->ga_enable)
-			return;
-		
-		$this->trackGATransaction($objConfig,$objOrder);
+		if($objConfig->findBy('id',$objOrder->config_id))
+		{
+			
+			if(!$objConfig->ga_enable)
+				return;
+			
+			$this->trackGATransaction($objConfig,$objOrder);
+		}
 	}
 
 	public function postCheckoutCompatible($orderId, $blnCheckout, $objModule)	
 	{
 		$objOrder = new IsotopeOrder();
 			
-		if ($objOrder->findBy('id', $orderId))
+		if (!$objOrder->findBy('id', $orderId))
 		{
-			$this->assignGroups($objOrder, $this->Isotope->Cart);
-		}
-		
-		$objConfig = new IsotopeConfig();
-		
-		$objConfig->findBy('id',$objOrder->config_id);
-		
-		if(!$objConfig->ga_enable)
-			return;
 			
-		$this->trackGATransaction($objConfig,$objOrder);
+			$objConfig = new IsotopeConfig();
+			
+			$objConfig->findBy('id',$objOrder->config_id);
+			
+			if(!$objConfig->ga_enable)
+				return;
+				
+			$this->trackGATransaction($objConfig,$objOrder);
+		}
 	}
 
 	protected function trackGATransaction($objConfig,$objOrder)
