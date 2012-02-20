@@ -472,7 +472,7 @@ class tl_module_isotope extends Backend
 	 */
 	public function getSortingFields()
 	{
-		$arrAttributes = array(''=>'Standard');
+		$arrAttributes = array();
 
 		foreach ($GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData)
 		{
