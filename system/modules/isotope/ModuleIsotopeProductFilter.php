@@ -72,6 +72,12 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 			return '';
 		}
 
+		// Hide product list in reader mode if the respective setting is enabled
+		if ($this->iso_hide_list && $this->Input->get('product') != '')
+		{
+			return '';
+		}
+
 		$strBuffer = parent::generate();
 
 		// Cache request in the database and redirect to the unique requestcache ID
