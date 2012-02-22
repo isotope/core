@@ -28,6 +28,12 @@
  
 class IsotopeGA extends IsotopeFrontend
 {
+
+	/**
+	 * Trigger the correct function based on Isotope version
+	 * @params mixed
+	 * @return mixed
+	 */
 	public function triggerAction()
 	{
 		$this->import('Isotope');
@@ -37,47 +43,64 @@ class IsotopeGA extends IsotopeFrontend
 		
 		if($blnCompatible)
 		{
-			call_user_func_array(array($this, 'postCheckoutCompatible'), $arrParam);
+			return call_user_func_array(array($this, 'postCheckoutCompatible'), $arrParam);
 		}
 		else
 		{
-			call_user_func_array(array($this, 'postCheckout'), $arrParam);
+			return call_user_func_array(array($this, 'postCheckout'), $arrParam);
 		}
 	}
 	
+	
+	/**
+	 * Process checkout in Isotope 1.3+
+	 */
 	public function postCheckout($objOrder, $arrItemIds, $arrData)
-	{				
+	{
 		$objConfig = new IsotopeConfig();
 		
-		if($objConfig->findBy('id',$objOrder->config_id))
+		if ($objConfig->findBy('id', $objOrder->config_id))
 		{
-			
-			if(!$objConfig->ga_enable)
-				return;
-			
-			$this->trackGATransaction($objConfig,$objOrder);
+			if ($objConfig->ga_enable)
+			{
+				$this->trackGATransaction($objConfig,$objOrder);
+			}
 		}
+		
+		return true;
 	}
 
+
+	/**
+	 * Process checkout in Isotope 0.2
+	 */
 	public function postCheckoutCompatible($orderId, $blnCheckout, $objModule)	
 	{
 		$objOrder = new IsotopeOrder();
 			
-		if (!$objOrder->findBy('id', $orderId))
+		if ($objOrder->findBy('id', $orderId))
 		{
-			
 			$objConfig = new IsotopeConfig();
 			
-			$objConfig->findBy('id',$objOrder->config_id);
-			
-			if(!$objConfig->ga_enable)
-				return;
-				
-			$this->trackGATransaction($objConfig,$objOrder);
+			if ($objConfig->findBy('id', $objOrder->config_id))
+			{
+				if ($objConfig->ga_enable)
+				{	
+					$this->trackGATransaction($objConfig, $objOrder);
+				}
+			}
 		}
+		
+		return $blnCheckout;
 	}
 
-	protected function trackGATransaction($objConfig,$objOrder)
+	
+	/**
+	 * Actually execute the GoogleAnalytics tracking
+	 * @param Database_Result
+	 * @param IsotopeProductCollection
+	 */
+	protected function trackGATransaction($objConfig, $objOrder)
 	{
 		// Initilize GA Tracker
 		$tracker = new GoogleAnalyticsTracker($objConfig->ga_account, $this->Environment->base);
