@@ -22,6 +22,7 @@ CREATE TABLE `tl_iso_rules` (
   `label` varchar(255) NOT NULL default '',
   `applyTo` varchar(8) NOT NULL default '',
   `discount` varchar(16) NOT NULL default '',
+  `tax_class` int(10) unsigned NOT NULL default '0',
   `enableCode` char(1) NOT NULL default '',
   `code` varchar(255) NOT NULL default '',
   `limitPerMember` int(10) unsigned NOT NULL default '0',

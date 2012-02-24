@@ -63,6 +63,7 @@ class IsotopeRunonce extends Controller
 		$this->updateFrontendModules();
 		$this->updateFrontendTemplates();
 		$this->updateProductTypes();
+		$this->updateRules();
 		$this->generateCategoryGroups();
 		$this->refreshDatabaseFile();
 
@@ -750,6 +751,17 @@ class IsotopeRunonce extends Controller
 				}
 			}
 		}
+	}
+	
+	
+	/**
+	 * tl_iso_rule.applyTo values had to be renamed for palettes to work
+	 */
+	private function updateRules()
+	{
+		$this->Database->query("UPDATE tl_iso_rules SET applyTo='products' WHERE applyTo='product'");
+		$this->Database->query("UPDATE tl_iso_rules SET applyTo='items' WHERE applyTo='item'");
+		$this->Database->query("UPDATE tl_iso_rules SET applyTo='subtotal' WHERE applyTo='cart'");
 	}
 
 

@@ -110,11 +110,14 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'__selector__'			=> array('type', 'enableCode', 'configRestrictions', 'memberRestrictions', 'productRestrictions'),
+		'__selector__'			=> array('type', 'applyTo', 'enableCode', 'configRestrictions', 'memberRestrictions', 'productRestrictions'),
 		'default'				=> '{basic_legend},type',
 		'product'				=> '{basic_legend},type,name,discount;{limit_legend:hide},limitPerMember,limitPerConfig,minItemQuantity,maxItemQuantity,quantityMode;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},configRestrictions,memberRestrictions,productRestrictions;{enabled_legend},enabled',
-		'cart'					=> '{basic_legend},type,name,label,discount,applyTo;{coupon_legend:hide},enableCode;{limit_legend:hide},limitPerMember,limitPerConfig,minItemQuantity,maxItemQuantity,quantityMode;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},configRestrictions,memberRestrictions,productRestrictions;{enabled_legend},enabled'
+		'cart'					=> '{basic_legend},type,applyTo,name,label,discount;{coupon_legend:hide},enableCode;{limit_legend:hide},limitPerMember,limitPerConfig,minItemQuantity,maxItemQuantity,quantityMode;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},configRestrictions,memberRestrictions,productRestrictions;{enabled_legend},enabled',
+		'cartsubtotal'			=> '{basic_legend},type,applyTo,name,label,discount,tax_class;{coupon_legend:hide},enableCode;{limit_legend:hide},limitPerMember,limitPerConfig,minItemQuantity,maxItemQuantity,quantityMode;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},configRestrictions,memberRestrictions,productRestrictions;{enabled_legend},enabled',
 	),
+	
+	// Subpalettes
 	'subpalettes' => array
 	(
 		'enableCode'						=> 'code',
@@ -141,7 +144,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			'inputType'					=> 'select',
 			'options'					=> array('product', 'cart'),
 			'reference'					=> &$GLOBALS['TL_LANG']['tl_iso_rules']['type'],
-			'eval'						=> array('mandatory'=>true, 'submitOnChange'=>true),
+			'eval'						=> array('mandatory'=>true, 'submitOnChange'=>true, 'tl_class'=>'w50'),
 		),
 		'name' => array
 		(
@@ -149,7 +152,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			'exclude'					=> true,
 			'search'					=> true,
 			'inputType'					=> 'text',
-			'eval'						=> array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50')
+			'eval'						=> array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'clr w50')
 		),
 		'label' => array
 		(
@@ -165,7 +168,16 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			'exclude'					=> true,
 			'search'					=> true,
 			'inputType'					=> 'text',
-			'eval'						=> array('mandatory'=>true, 'maxlength'=>16, 'rgxp'=>'discount', 'tl_class'=>'w50')
+			'eval'						=> array('mandatory'=>true, 'maxlength'=>16, 'rgxp'=>'discount', 'tl_class'=>'clr w50')
+		),
+		'tax_class' => array
+		(
+			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['tax_class'],
+			'exclude'					=> true,
+			'filter'					=> true,
+			'inputType'					=> 'select',
+			'options_callback'			=> array('IsotopeBackend', 'getTaxClassesWithSplit'),
+			'eval'						=> array('includeBlankOption'=>true, 'tl_class'=>'w50'),
 		),
 		'applyTo' => array
 		(
@@ -173,9 +185,9 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			'exclude'					=> true,
 			'default'					=> 'product',
 			'inputType'					=> 'select',
-			'options'					=> array('product', 'item', 'cart'),
+			'options'					=> array('products', 'items', 'subtotal'),
 			'reference'					=> &$GLOBALS['TL_LANG']['tl_iso_rules']['applyTo'],
-			'eval'						=> array('mandatory'=>true, 'tl_class'=>'w50')
+			'eval'						=> array('mandatory'=>true, 'submitOnChange'=>true, 'tl_class'=>'w50')
 		),
 		'enableCode' => array
 		(

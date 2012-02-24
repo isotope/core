@@ -514,17 +514,17 @@ class IsotopeRules extends Controller
 		$arrProducts = $this->Isotope->Cart->getProducts();
 
 		$blnMatch = false;
-		$blnDiscount = false;
+		$blnPercentage = false;
 		if (strpos($arrRule['discount'], '%') !== false)
 		{
-			$blnDiscount = true;
+			$blnPercentage = true;
 			$fltDiscount = rtrim($arrRule['discount'], '%');
 		}
 
 		$arrSurcharge = array
 		(
 			'label'			=> $this->Isotope->translate(($arrRule['label'] ? $arrRule['label'] : $arrRule['name'])),
-			'price'			=> ($blnDiscount ? $fltDiscount.'%' : ''),
+			'price'			=> ($blnPercentage ? $fltDiscount.'%' : ''),
 			'total_price'	=> 0,
 			'tax_class'		=> 0,
 			'before_tax'	=> true,
@@ -550,7 +550,7 @@ class IsotopeRules extends Controller
 						&& (in_array($objProduct->id, $arrLimit) || ($objProduct->pid > 0 && in_array($objProduct->pid, $arrLimit))))
 					|| ($arrRule['productRestrictions'] == 'producttypes' && in_array($objProduct->type, $arrLimit)))
 					{
-						$intTotal += $arrRule['quantityMode']=='cart_items' ? $objProduct->quantity_requested : 1;
+						$intTotal += $arrRule['quantityMode'] == 'cart_items' ? $objProduct->quantity_requested : 1;
 					}
 				}
 			}
@@ -579,12 +579,13 @@ class IsotopeRules extends Controller
 				continue;
 			}
 
-			// Cart item quantity
+			// Because we apply to the quantity of only this product, we override $intTotal in every foreach loop
 			if ($arrRule['quantityMode'] != 'cart_products' && $arrRule['quantityMode'] != 'cart_items')
 			{
 				$intTotal = $objProduct->quantity_requested;
 			}
 
+			// Quantity does not match, do not apply to this product
 			if (($arrRule['minItemQuantity'] > 0 && $arrRule['minItemQuantity'] > $intTotal) || ($arrRule['maxItemQuantity'] > 0 && $arrRule['maxItemQuantity'] < $intTotal))
 			{
 				continue;
@@ -593,38 +594,43 @@ class IsotopeRules extends Controller
 			// Apply To
 			switch( $arrRule['applyTo'] )
 			{
-				case 'product':
-					$fltPrice = $blnDiscount ? ($objProduct->total_price / 100 * $fltDiscount) : $arrRule['discount'];
+				case 'products':
+					$fltPrice = $blnPercentage ? ($objProduct->total_price / 100 * $fltDiscount) : $arrRule['discount'];
 					$fltPrice = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
 					$arrSurcharge['total_price'] += $fltPrice;
 
-					$fltPrice = $blnDiscount ? ($objProduct->tax_free_total_price / 100 * $fltDiscount) : $arrRule['discount'];
+					$fltPrice = $blnPercentage ? ($objProduct->tax_free_total_price / 100 * $fltDiscount) : $arrRule['discount'];
 					$fltPrice = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
 					$arrSurcharge['products'][$objProduct->cart_id] = $fltPrice;
 					break;
 
-				case 'item':
-					$fltPrice = ($blnDiscount ? ($objProduct->price / 100 * $fltDiscount) : $arrRule['discount']) * $objProduct->quantity_requested;
+				case 'items':
+					$fltPrice = ($blnPercentage ? ($objProduct->price / 100 * $fltDiscount) : $arrRule['discount']) * $objProduct->quantity_requested;
 					$fltPrice = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
 					$arrSurcharge['total_price'] += $fltPrice;
 
-					$fltPrice = ($blnDiscount ? ($objProduct->tax_free_price / 100 * $fltDiscount) : $arrRule['discount']) * $objProduct->quantity_requested;
+					$fltPrice = ($blnPercentage ? ($objProduct->tax_free_price / 100 * $fltDiscount) : $arrRule['discount']) * $objProduct->quantity_requested;
 					$fltPrice = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
 					$arrSurcharge['products'][$objProduct->cart_id] = $fltPrice;
 					break;
 
-				case 'cart':
+				case 'subtotal':
 					$blnMatch = true;
 					$arrSurcharge['total_price'] += $objProduct->total_price;
+					
+					if ($arrRule['tax_class'] == -1)
+					{
+						$arrSurcharge['products'][$objProduct->cart_id] = $fltPrice;
+					}
 					break;
 			}
 		}
 
-		if ($arrRule['applyTo'] == 'cart' && $blnMatch)
+		if ($arrRule['applyTo'] == 'subtotal' && $blnMatch)
 		{
-			$fltPrice = $blnDiscount ? ($arrSurcharge['total_price'] / 100 * $fltDiscount) : $arrRule['discount'];
+			$fltPrice = $blnPercentage ? ($arrSurcharge['total_price'] / 100 * $fltDiscount) : $arrRule['discount'];
 			$arrSurcharge['total_price'] = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
-			$arrSurcharge['before_tax'] = false;
+			$arrSurcharge['before_tax'] = ($arrRule['tax_class'] == -1 ? true : false);
 		}
 
 		return $arrSurcharge['total_price'] == 0 ? false : $arrSurcharge;
