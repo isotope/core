@@ -55,4 +55,5 @@ $GLOBALS['ISO_HOOKS']['calculatePrice'][]				= array('IsotopeRules', 'calculateP
 $GLOBALS['ISO_HOOKS']['compileCart'][] 					= array('IsotopeRules', 'getCouponForm');
 $GLOBALS['ISO_HOOKS']['checkoutSurcharge'][]			= array('IsotopeRules', 'getSurcharges');
 $GLOBALS['ISO_HOOKS']['preCheckout'][]					= array('IsotopeRules', 'writeRuleUsages');
+$GLOBALS['ISO_HOOKS']['transferredCollection'][]		= array('IsotopeRules', 'transferCoupons');
 

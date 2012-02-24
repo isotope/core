@@ -300,6 +300,21 @@ class IsotopeRules extends Controller
 
 		return '';
 	}
+	
+	
+	/**
+	 * Transfer coupons from one cart to another. This happens if a guest cart is moved to user cart.
+	 * @param IsotopeProductCollection
+	 * @param IsotopeProductCollection
+	 * @param array
+	 */
+	public function transferCoupons($objOldCollection, $objNewCollection, $arrIds)
+	{
+		if ($objOldCollection instanceof IsotopeCart && $objNewCollection instanceof IsotopeCart)
+		{
+			$objNewCollection->coupons = $objOldCollection->coupons;
+		}
+	}
 
 
 	/**

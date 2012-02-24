@@ -750,6 +750,16 @@ abstract class IsotopeProductCollection extends Model
 		{
 			$this->modified = true;
 		}
+		
+		// HOOK for adding additional functionality when adding product to collection
+		if (isset($GLOBALS['ISO_HOOKS']['transferredCollection']) && is_array($GLOBALS['ISO_HOOKS']['transferredCollection']))
+		{
+			foreach ($GLOBALS['ISO_HOOKS']['transferredCollection'] as $callback)
+			{
+				$this->import($callback[0]);
+				$this->$callback[0]->$callback[1]($objCollection, $this, $arrIds);
+			}
+		}
 
 		return $arrIds;
 	}

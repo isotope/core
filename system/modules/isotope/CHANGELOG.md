@@ -5,8 +5,9 @@ Version 1.3.rc2 (2012-??-??)
 ----------------------------
 
 ### New
-- Added a new hook generateOrderId (#2841)
-- Added a new hook addAssetImportRegexp (#2744)
+- Added hook generateOrderId (#2841)
+- Added hook addAssetImportRegexp (#2744)
+- Added hook transferredCollection (#2865)
 
 ### Improved
 - Product sorting is now case-insensitive
@@ -28,6 +29,7 @@ Version 1.3.rc2 (2012-??-??)
 - Bug in sitemap.xml generation that would include product urls from a different root page
 - Possible error message with date validation (#2917)
 - tl_iso_productcache is emptied every time loading a product list module (#2897)
+- Coupons are now transferred from guest to member cart on login (#2865)
 
 ### Other
 - Introducing the "provider" directory for complex callback handlers
