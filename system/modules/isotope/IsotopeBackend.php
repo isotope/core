@@ -438,5 +438,26 @@ class IsotopeBackend extends Backend
 		natcasesort($arrTemplates);
 		return $arrTemplates;
 	}
+	
+	
+	/**
+	 * Get all tax classes, including a "split amonst products" option
+	 * @param DataContainer
+	 * @return array
+	 */
+	public function getTaxClassesWithSplit()
+	{
+		$arrTaxes = array();
+		$objTaxes = $this->Database->execute("SELECT * FROM tl_iso_tax_class ORDER BY name");
+		
+		while( $objTaxes->next() )
+		{
+			$arrTaxes[$objTaxes->id] = $objTaxes->name;
+		}
+		
+		$arrTaxes[-1] = $GLOBALS['ISO_LANG']['MSC']['splittedTaxRate'];
+		
+		return $arrTaxes;
+	}
 }
 

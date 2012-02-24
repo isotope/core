@@ -206,7 +206,19 @@ abstract class IsotopeProductCollection extends Model
 
 					foreach ($arrProducts as $objProduct)
 					{
-						$fltTotal += ((float) $objProduct->price * (int) $objProduct->quantity_requested);
+						$fltTotal += (float) $objProduct->total_price;
+					}
+
+					$this->arrCache[$strKey] = $fltTotal;
+					break;
+				
+				case 'taxFreeSubTotal':
+					$fltTotal = 0;
+					$arrProducts = $this->getProducts();
+
+					foreach ($arrProducts as $objProduct)
+					{
+						$fltTotal += (float) $objProduct->tax_free_total_price;
 					}
 
 					$this->arrCache[$strKey] = $fltTotal;

@@ -325,7 +325,33 @@ class IsotopeProduct extends Controller
 				return $this->quantity_requested * $this->price;
 
 			case 'tax_free_price':
-				return $this->blnLocked ? $this->arrData['price'] : $this->Isotope->calculatePrice($this->arrData['price'], $this, 'price');
+				$fltPrice = $this->blnLocked ? $this->arrData['price'] : $this->Isotope->calculatePrice($this->arrData['price'], $this, 'price');
+				
+				if ($this->arrData['tax_class'] > 0)
+				{
+					$objIncludes = $this->Database->prepare("SELECT r.* FROM tl_iso_tax_rate r LEFT JOIN tl_iso_tax_class c ON c.includes=r.id WHERE c.id=?")->execute($this->arrData['tax_class']);
+	
+					if ($objIncludes->numRows)
+					{
+						$arrTaxRate = deserialize($objIncludes->rate);
+			
+						// Final price / (1 + (tax / 100)
+						if (strlen($arrTaxRate['unit']))
+						{
+							$fltTax = $fltPrice - ($fltPrice / (1 + (floatval($arrTaxRate['value']) / 100)));
+						}
+						
+						// Full amount
+						else
+						{
+							$fltTax = floatval($arrTaxRate['value']);
+						}
+			
+						$fltPrice -= $fltTax;
+					}
+				}
+				
+				return $fltPrice;
 
 			case 'tax_free_total_price':
 				return $this->quantity_requested * $this->tax_free_price;
@@ -1046,7 +1072,7 @@ class IsotopeProduct extends Controller
 				$varValue = $objWidget->value;
 
 				// Convert date formats into timestamps
-				if ($varValue != '' && in_array($arrData['eval']['rgxp'], array('date', 'time', 'datim')))
+				if (strlen($varValue) && in_array($arrData['eval']['rgxp'], array('date', 'time', 'datim')))
 				{
 					$objDate = new Date($varValue, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
 					$varValue = $objDate->tstamp;

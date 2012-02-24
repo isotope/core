@@ -25,6 +25,7 @@
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Yanick Witschi <yanick.witschi@certo-net.ch>
+ * @author     Christoph Wiechert <christoph.wiechert@4wardmedia.de>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
@@ -247,6 +248,65 @@ class Isotope extends Controller
 
 		return $this->roundPrice($fltPrice);
 	}
+	
+	
+	/**
+	 * Calculate a product surcharge and apply taxes if necessary
+	 * @param string
+	 * @param string
+	 * @param integer
+	 * @param array
+	 */
+	public function calculateSurcharge($strPrice, $strLabel, $intTaxClass, $objCollection, $objSource)
+	{
+		$blnPercentage = substr($strPrice, -1) == '%' ? true : false;
+
+		if ($blnPercentage)
+		{
+			$fltSurcharge = (float)substr($strPrice, 0, -1);
+			$fltPrice = $objCollection->subTotal / 100 * $fltSurcharge;
+		}
+		else
+		{
+			$fltPrice = (float)$strPrice;
+		}
+
+		$fltPrice = $this->Isotope->calculatePrice($fltPrice, $objSource, 'price', $intTaxClass);
+		
+		$arrSurcharge = array
+		(
+			'label'			=> $strLabel,
+			'price'			=> ($blnPercentage ? $strPrice : '&nbsp;'),
+			'total_price'	=> $fltPrice,
+			'tax_class'		=> $intTaxClass,
+			'before_tax'	=> ($intTaxClass ? true : false),
+		);
+		
+		if ($intTaxClass == -1)
+		{
+			$arrProducts = array();
+            foreach( $objCollection->getProducts() as $objProduct )
+            {
+            	if ($blnPercentage)
+            	{
+            		$fltProductPrice = $objProduct->total_price / 100 * $fltSurcharge;
+            	}
+            	else
+            	{
+					$fltProductPrice = $fltPrice / 100 * (100 / $objCollection->taxFreeSubTotal * $objProduct->tax_free_total_price);
+            	}
+            	
+                $fltProductPrice = $fltProductPrice > 0 ? (floor($fltProductPrice * 100) / 100) : (ceil($fltProductPrice * 100) / 100);
+                $arrProducts[$objProduct->cart_id] = $fltProductPrice;
+            }
+
+            $arrSurcharge['tax_class'] = 0;
+            $arrSurcharge['before_tax'] = true;
+            $arrSurcharge['products'] = $arrProducts;
+		}
+		
+		return $arrSurcharge;
+	}
 
 
 	/**
@@ -257,9 +317,9 @@ class Isotope extends Controller
 	 * @param array
 	 * @return array
 	 */
-	public function calculateTax($intTaxClass, $fltPrice, $blnAdd=true, $arrAddresses=null)
+	public function calculateTax($intTaxClass, $fltPrice, $blnAdd=true, $arrAddresses=null, $blnSubtract=true)
 	{
-		if ($intTaxClass == 0)
+		if ($intTaxClass < 1)
 		{
 			return $fltPrice;
 		}
@@ -292,7 +352,7 @@ class Isotope extends Controller
 		}
 
 		$arrTaxes = array();
-		$objIncludes = $this->Database->prepare("SELECT * FROM tl_iso_tax_rate WHERE id=?")->limit(1)->execute($objTaxClass->includes);
+		$objIncludes = $this->Database->prepare("SELECT * FROM tl_iso_tax_rate WHERE id=?")->execute($objTaxClass->includes);
 
 		if ($objIncludes->numRows)
 		{
@@ -312,7 +372,10 @@ class Isotope extends Controller
 
 			if (!$this->useTaxRate($objIncludes, $fltPrice, $arrAddresses))
 			{
-				$fltPrice -= $fltTax;
+				if ($blnSubtract)
+				{
+					$fltPrice -= $fltTax;
+				}
 			}
 			else
 			{

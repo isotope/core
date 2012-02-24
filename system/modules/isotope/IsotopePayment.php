@@ -308,6 +308,25 @@ abstract class IsotopePayment extends Frontend
 
 
 	/**
+	 * Get the checkout surcharge for this shipping method
+	 */
+	public function getSurcharge($objCollection)
+	{
+		if ($this->arrData['price'] == 0)
+		{
+			return false;
+		}
+
+		return $this->Isotope->calculateSurcharge(
+								$this->arrData['price'],
+								($GLOBALS['TL_LANG']['MSC']['paymentLabel'] . ' (' . $this->label . ')'),
+								$this->arrData['tax_class'],
+								$objCollection,
+								$this);
+	}
+
+
+	/**
 	 * Validate a credit card number and return the card type.
 	 * http://regexlib.com/UserPatterns.aspx?authorid=7128ecda-5ab1-451d-98d9-f94d2a453b37
 	 *

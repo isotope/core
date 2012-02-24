@@ -200,7 +200,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 			'exclude'				=> true,
 			'filter'				=> true,
 			'inputType'				=> 'select',
-			'foreignKey'			=> 'tl_iso_tax_class.name',
+			'options_callback'		=> array('IsotopeBackend', 'getTaxClassesWithSplit'),
 			'eval'					=> array('includeBlankOption'=>true, 'tl_class'=>'w50'),
 		),
 		'allowed_cc_types' => array

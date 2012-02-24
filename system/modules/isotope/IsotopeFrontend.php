@@ -65,6 +65,37 @@ class IsotopeFrontend extends Frontend
 
 
 	/**
+	 * Get shipping and payment surcharges from cart object
+	 * @param array
+	 * @return array
+	 */
+	public function getShippingAndPaymentSurcharges($arrSurcharges)
+	{
+		if ($this->Isotope->Cart->hasShipping)
+		{
+			$arrSurcharge = $this->Isotope->Cart->Shipping->getSurcharge($this->Isotope->Cart);
+			
+			if ($arrSurcharge !== false)
+			{
+				$arrSurcharges[] = $arrSurcharge;
+			}
+		}
+
+		if ($this->Isotope->Cart->hasPayment)
+		{
+			$arrSurcharge = $this->Isotope->Cart->Payment->getSurcharge($this->Isotope->Cart);
+			
+			if ($arrSurcharge !== false)
+			{
+				$arrSurcharges[] = $arrSurcharge;
+			}
+		}
+
+		return $arrSurcharges;
+	}
+
+
+	/**
 	 * Callback for add_to_cart button
 	 * @param object
 	 * @param object

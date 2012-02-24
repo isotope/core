@@ -255,6 +255,7 @@ $GLOBALS['ISO_LANG']['MSC']['noFilesInFolder']		= 'No files in this folder';
 $GLOBALS['ISO_LANG']['MSC']['loadingProductData']	= 'Loading product data …';
 $GLOBALS['ISO_LANG']['MSC']['templateConfig']		= '%s (Store Config: %s)';
 $GLOBALS['ISO_LANG']['MSC']['templateTheme']		= '%s (Theme: %s)';
+$GLOBALS['ISO_LANG']['MSC']['splittedTaxRate']		= 'Splitted';
 
 
 /**

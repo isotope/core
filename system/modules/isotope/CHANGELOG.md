@@ -8,6 +8,7 @@ Version 1.3.rc2 (2012-??-??)
 - Added hook generateOrderId (#2841)
 - Added hook addAssetImportRegexp (#2744)
 - Added hook transferredCollection (#2865)
+- Added new Isotope::calculateSurcharge() function. Can generate surcharges with tax, without tax or with tax splitted according to collection products!
 
 ### Improved
 - Product sorting is now case-insensitive

@@ -269,60 +269,6 @@ class IsotopeCart extends IsotopeProductCollection
 
 
 	/**
-	 * Hook-callback for isoCheckoutSurcharge. Accesses the shipping module to get a shipping surcharge.
-	 * @param array
-	 * @return array
-	 */
-	public function getShippingSurcharge($arrSurcharges)
-	{
-		$this->import('Isotope');
-
-		if ($this->Isotope->Cart->hasShipping && $this->Isotope->Cart->Shipping->price != 0)
-		{
-			$strSurcharge = $this->Isotope->Cart->Shipping->surcharge;
-
-			$arrSurcharges[] = array
-			(
-				'label'			=> ($GLOBALS['TL_LANG']['MSC']['shippingLabel'] . ' (' . $this->Isotope->Cart->Shipping->label . ')'),
-				'price'			=> ($strSurcharge == '' ? '&nbsp;' : $strSurcharge),
-				'total_price'	=> $this->Isotope->Cart->Shipping->price,
-				'tax_class'		=> $this->Isotope->Cart->Shipping->tax_class,
-				'before_tax'	=> ($this->Isotope->Cart->Shipping->tax_class ? true : false),
-			);
-		}
-
-		return $arrSurcharges;
-	}
-
-
-	/**
-	 * Hook-callback for isoCheckoutSurcharge
-	 * @param array
-	 * @return array
-	 */
-	public function getPaymentSurcharge($arrSurcharges)
-	{
-		$this->import('Isotope');
-
-		if ($this->Isotope->Cart->hasPayment && $this->Isotope->Cart->Payment->price != 0)
-		{
-			$strSurcharge = $this->Isotope->Cart->Payment->surcharge;
-
-			$arrSurcharges[] = array
-			(
-				'label'			=> ($GLOBALS['TL_LANG']['MSC']['paymentLabel'] . ' (' . $this->Isotope->Cart->Payment->label . ')'),
-				'price'			=> ($strSurcharge == '' ? '&nbsp;' : $strSurcharge),
-				'total_price'	=> $this->Isotope->Cart->Payment->price,
-				'tax_class'		=> $this->Isotope->Cart->Payment->tax_class,
-				'before_tax'	=> ($this->Isotope->Cart->Payment->tax_class ? true : false),
-			);
-		}
-
-		return $arrSurcharges;
-	}
-
-
-	/**
 	 * Return current surcharges as array
 	 * @return array
 	 */
@@ -371,7 +317,7 @@ class IsotopeCart extends IsotopeProductCollection
 
 		foreach ($arrProducts as $objProduct)
 		{
-			$fltPrice = $objProduct->tax_free_total_price;
+			$fltPrice = $objProduct->total_price;
 
 			foreach ($arrPreTax as $tax)
 			{
@@ -382,7 +328,7 @@ class IsotopeCart extends IsotopeProductCollection
 			}
 
 			$arrTaxIds = array();
-			$arrTax = $this->Isotope->calculateTax($objProduct->tax_class, $fltPrice);
+			$arrTax = $this->Isotope->calculateTax($objProduct->tax_class, $fltPrice, true, null, false);
 
 			if (is_array($arrTax))
 			{

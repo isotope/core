@@ -272,5 +272,24 @@ abstract class IsotopeShipping extends Frontend
 	{
 		return $this->label;
 	}
+	
+	
+	/**
+	 * Get the checkout surcharge for this shipping method
+	 */
+	public function getSurcharge($objCollection)
+	{
+		if ($this->arrData['price'] == 0)
+		{
+			return false;
+		}
+
+		return $this->Isotope->calculateSurcharge(
+								$this->arrData['price'],
+								($GLOBALS['TL_LANG']['MSC']['shippingLabel'] . ' (' . $this->label . ')'),
+								$this->arrData['tax_class'],
+								$objCollection,
+								$this);
+	}
 }
 

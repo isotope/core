@@ -288,19 +288,13 @@ $GLOBALS['TL_HOOKS']['executePreActions'][]			= array('ProductTree', 'executePre
 $GLOBALS['TL_HOOKS']['executePostActions'][]		= array('ProductTree', 'executePostActions');
 $GLOBALS['TL_HOOKS']['translateUrlParameters'][]	= array('IsotopeFrontend', 'translateProductUrls');
 $GLOBALS['ISO_HOOKS']['buttons'][]					= array('Isotope', 'defaultButtons');
+$GLOBALS['ISO_HOOKS']['checkoutSurcharge'][]		= array('IsotopeFrontend', 'getShippingAndPaymentSurcharges');
 
 if (TL_MODE == 'FE')
 {
 	// Do not parse backend templates
 	$GLOBALS['TL_HOOKS']['parseTemplate'][]			= array('IsotopeFrontend', 'fixNavigationTrail');
 }
-
-
-/**
- * Checkout surcharge calculation callbacks
- */
-$GLOBALS['ISO_HOOKS']['checkoutSurcharge'][] = array('IsotopeCart', 'getShippingSurcharge');
-$GLOBALS['ISO_HOOKS']['checkoutSurcharge'][] = array('IsotopeCart', 'getPaymentSurcharge');
 
 
 /**
