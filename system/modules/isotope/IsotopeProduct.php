@@ -1046,7 +1046,7 @@ class IsotopeProduct extends Controller
 				$varValue = $objWidget->value;
 
 				// Convert date formats into timestamps
-				if (strlen($varValue) && in_array($arrData['eval']['rgxp'], array('date', 'time', 'datim')))
+				if ($varValue != '' && in_array($arrData['eval']['rgxp'], array('date', 'time', 'datim')))
 				{
 					$objDate = new Date($varValue, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
 					$varValue = $objDate->tstamp;

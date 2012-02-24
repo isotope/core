@@ -26,6 +26,7 @@ Version 1.3.rc2 (2012-??-??)
 - Fixed array_multisort error message when search matched no product
 - Fixed bug in tax calculations that would not calculate tax on both billing & shipping addresses.
 - Fixed bug in sitemap.xml generation that would include product urls from a different root page
+- Fixed possible error message with date validation (#2917)
 
 ### Other
 - Introducing the "provider" directory for complex callback handlers
