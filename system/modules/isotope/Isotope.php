@@ -256,15 +256,23 @@ class Isotope extends Controller
 	 * @param string
 	 * @param integer
 	 * @param array
+	 * @param object
 	 */
-	public function calculateSurcharge($strPrice, $strLabel, $intTaxClass, $objCollection, $objSource)
+	public function calculateSurcharge($strPrice, $strLabel, $intTaxClass, $arrProducts, $objSource)
 	{
 		$blnPercentage = substr($strPrice, -1) == '%' ? true : false;
 
 		if ($blnPercentage)
 		{
+			$fltTotal = 0;
+			
+			foreach( $arrProducts as $objProduct )
+			{
+				$fltTotal += (float) $objProduct->total_price;
+			}
+			
 			$fltSurcharge = (float)substr($strPrice, 0, -1);
-			$fltPrice = $objCollection->subTotal / 100 * $fltSurcharge;
+			$fltPrice = $fltTotal / 100 * $fltSurcharge;
 		}
 		else
 		{
@@ -284,8 +292,15 @@ class Isotope extends Controller
 		
 		if ($intTaxClass == -1)
 		{
+			$fltTotal = 0;
+			
+			foreach( $arrProducts as $objProduct )
+			{
+				$fltTotal += (float) $objProduct->tax_free_total_price;
+			}
+			
 			$arrProducts = array();
-            foreach( $objCollection->getProducts() as $objProduct )
+            foreach( $arrProducts as $objProduct )
             {
             	if ($blnPercentage)
             	{
@@ -293,7 +308,7 @@ class Isotope extends Controller
             	}
             	else
             	{
-					$fltProductPrice = $fltPrice / 100 * (100 / $objCollection->taxFreeSubTotal * $objProduct->tax_free_total_price);
+					$fltProductPrice = $fltPrice / 100 * (100 / $fltTotal * $objProduct->tax_free_total_price);
             	}
             	
                 $fltProductPrice = $fltProductPrice > 0 ? (floor($fltProductPrice * 100) / 100) : (ceil($fltProductPrice * 100) / 100);

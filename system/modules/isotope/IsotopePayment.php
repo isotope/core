@@ -321,7 +321,7 @@ abstract class IsotopePayment extends Frontend
 								$this->arrData['price'],
 								($GLOBALS['TL_LANG']['MSC']['paymentLabel'] . ' (' . $this->label . ')'),
 								$this->arrData['tax_class'],
-								$objCollection,
+								$objCollection->getProducts(),
 								$this);
 	}
 
