@@ -363,6 +363,32 @@ class IsotopeOrder extends IsotopeProductCollection
 		$this->save();
 		return true;
 	}
+	
+	
+	/**
+	 * Complete order if the checkout has been made. This will cleanup session data
+	 */
+	public function complete()
+	{
+		if ($this->checkout_complete)
+		{
+			$intConfig = $_SESSION['ISOTOPE']['config_id'];
+			
+			unset($_SESSION['CHECKOUT_DATA']);
+			unset($_SESSION['ISOTOPE']);
+			unset($_SESSION['FORM_DATA']);
+			unset($_SESSION['FILES']);
+			
+			if ($intConfig > 0)
+			{
+				$_SESSION['ISOTOPE']['config_id'] = $intConfig;
+			}
+
+			return true;
+		}
+		
+		return false;
+	}
 
 
 	/**

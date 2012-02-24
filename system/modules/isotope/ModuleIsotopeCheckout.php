@@ -126,15 +126,15 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 			if ($objOrder->findBy('uniqid', $this->Input->get('uid')))
 			{
-				if ($objOrder->checkout_complete)
+				// Order is complete, forward to confirmation page
+				if ($objOrder->complete())
 				{
 					IsotopeFrontend::clearTimeout();
-					unset($_SESSION['CHECKOUT_DATA']);
-					unset($_SESSION['ISOTOPE']);
-	
+
 					$this->redirect($this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($this->orderCompleteJumpTo)->fetchAssoc()) . '?uid='.$objOrder->uniqid);
 				}
-				
+
+				// Order is not complete, wait for it
 				if (IsotopeFrontend::setTimeout())
 				{
 					$this->Template = new FrontendTemplate('mod_message');
@@ -282,20 +282,16 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 			if ($strBuffer === true)
 			{
-				unset($_SESSION['FORM_DATA']);
-				unset($_SESSION['FILES']);
-
 				$objOrder = new IsotopeOrder();
 
-				if (!$objOrder->findBy('cart_id', $this->Isotope->Cart->id) || !$objOrder->checkout($this->Isotope->Cart))
+				// If checkout is successful, complete order and redirect to confirmation page
+				if ($objOrder->findBy('cart_id', $this->Isotope->Cart->id) && $objOrder->checkout($this->Isotope->Cart) && $objOrder->complete())
 				{
-					$this->redirect($this->addToUrl('step=failed', true));
+					$this->redirect($this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($this->orderCompleteJumpTo)->fetchAssoc()) . '?uid='.$objOrder->uniqid);
 				}
-
-				unset($_SESSION['CHECKOUT_DATA']);
-				unset($_SESSION['ISOTOPE']);
-
-				$this->redirect($this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($this->orderCompleteJumpTo)->fetchAssoc()) . '?uid='.$objOrder->uniqid);
+				
+				// Checkout failed, show error message
+				$this->redirect($this->addToUrl('step=failed', true));
 			}
 			elseif ($strBuffer === false)
 			{
