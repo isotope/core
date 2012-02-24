@@ -17,6 +17,7 @@ Version 1.3.rc2 (2012-??-??)
 - Include store config template folder in template selection (#2786)
 - Load form data containers in IsotopeFrontend::prepareForm
 - Improvement to IsotopeGallery::generateMainImage() and InlineGallery::generateGallery() html rendering of css selectors for image and gallery containers (#2771)
+- Added "pages" and "inherit" to the list of core fields that cannot be overwritten in attributes (#2843)
 
 ### Fixed
 - Pasting new product variant into root node (#2767)

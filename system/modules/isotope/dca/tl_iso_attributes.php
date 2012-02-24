@@ -432,7 +432,7 @@ class tl_iso_attributes extends Backend
 	{
 		$varValue = standardize($varValue, true);
 
-		if (in_array($varValue, array('id', 'pid', 'sorting', 'tstamp', 'dateAdded', 'type', 'language')))
+		if (in_array($varValue, array('id', 'pid', 'tstamp', 'dateAdded', 'type', 'language', 'pages', 'inherit')))
 		{
 			throw new Exception($GLOBALS['TL_LANG']['ERR']['systemColumn'], $varValue);
 		}
