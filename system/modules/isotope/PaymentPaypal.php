@@ -63,33 +63,21 @@ class PaymentPaypal extends IsotopePayment
 
 		if ($objOrder->date_payed > 0 && $objOrder->date_payed <= time())
 		{
-			unset($_SESSION['CHECKOUT_DATA']['TIMEOUT']);
+			IsotopeFrontend::clearTimeout();
 			return true;
 		}
 
-		if (!isset($_SESSION['CHECKOUT_DATA']['TIMEOUT']))
+		if (IsotopeFrontend::setTimeout())
 		{
-			$_SESSION['CHECKOUT_DATA']['TIMEOUT'] = 60;
-		}
-		else
-		{
-			$_SESSION['CHECKOUT_DATA']['TIMEOUT'] = $_SESSION['CHECKOUT_DATA']['TIMEOUT'] - 5;
-		}
-
-		if ($_SESSION['CHECKOUT_DATA']['TIMEOUT'] === 0)
-		{
-			global $objPage;
-			$this->log('Payment could not be processed.', __METHOD__, TL_ERROR);
-			$this->redirect($this->generateFrontendUrl($objPage->row(), '/step/failed'));
+			$objTemplate = new FrontendTemplate('mod_message');
+			$objTemplate->type = 'processing';
+			$objTemplate->message = $GLOBALS['TL_LANG']['MSC']['payment_processing'];
+			return $objTemplate->parse();
 		}
 
-		// Reload page every 5 seconds and check if payment was successful
-		$GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="5,' . $this->Environment->base . $this->Environment->request . '">';
-
-		$objTemplate = new FrontendTemplate('mod_message');
-		$objTemplate->type = 'processing';
-		$objTemplate->message = $GLOBALS['TL_LANG']['MSC']['payment_processing'];
-		return $objTemplate->parse();
+		global $objPage;
+		$this->log('Payment could not be processed.', __METHOD__, TL_ERROR);
+		$this->redirect($this->generateFrontendUrl($objPage->row(), '/step/failed'));
 	}
 
 
