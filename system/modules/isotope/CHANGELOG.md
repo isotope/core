@@ -23,10 +23,11 @@ Version 1.3.rc2 (2012-??-??)
 - Editing multiple products did not work (#2745)
 - Keep requested quantity on product error (#2772)
 - Rules could not be deleted (#2798)
-- Fixed array_multisort error message when search matched no product
-- Fixed bug in tax calculations that would not calculate tax on both billing & shipping addresses.
-- Fixed bug in sitemap.xml generation that would include product urls from a different root page
-- Fixed possible error message with date validation (#2917)
+- array_multisort error message when search matched no product
+- Bug in tax calculations that would not calculate tax on both billing & shipping addresses.
+- Bug in sitemap.xml generation that would include product urls from a different root page
+- Possible error message with date validation (#2917)
+- tl_iso_productcache is emptied every time loading a product list module (#2897)
 
 ### Other
 - Introducing the "provider" directory for complex callback handlers
