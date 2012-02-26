@@ -297,7 +297,7 @@ class Isotope extends Controller
 				$fltTotal += (float) $objProduct->tax_free_total_price;
 			}
 			
-			$arrProducts = array();
+			$arrSubtract = array();
             foreach( $arrProducts as $objProduct )
             {
             	if ($blnPercentage)
@@ -310,12 +310,12 @@ class Isotope extends Controller
             	}
             	
                 $fltProductPrice = $fltProductPrice > 0 ? (floor($fltProductPrice * 100) / 100) : (ceil($fltProductPrice * 100) / 100);
-                $arrProducts[$objProduct->cart_id] = $fltProductPrice;
+                $arrSubtract[$objProduct->cart_id] = $fltProductPrice;
             }
 
             $arrSurcharge['tax_class'] = 0;
             $arrSurcharge['before_tax'] = true;
-            $arrSurcharge['products'] = $arrProducts;
+            $arrSurcharge['products'] = $arrSubtract;
 		}
 		
 		return $arrSurcharge;
