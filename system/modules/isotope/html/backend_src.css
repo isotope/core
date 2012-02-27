@@ -198,7 +198,11 @@
 	display: inline-block;
 }
 
-.tl_attributewizard label span {
+.tl_attributewizard .checkbox_options span {
+	display: block;
+}
+
+.tl_attributewizard .checkbox_options label span {
 	display: inline;
 	color: #b3b3b3;
 }
