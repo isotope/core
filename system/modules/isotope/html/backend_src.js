@@ -496,7 +496,8 @@ var Isotope =
 					}
 					else
 					{
-						element.setStyle('display', (event.target.checked ? 'none' : 'block'));
+						element.setStyle('display', (event.target.checked ? 'none' : 'initial'));
+						element.getNext(':not(.tl_tip)').setStyle('display', (event.target.checked ? 'none' : 'initial'));
 					}
 				});
 
@@ -506,7 +507,8 @@ var Isotope =
 				}
 				else
 				{
-					el.setStyle('display', (check.checked ? 'none' : 'block'));
+					el.setStyle('display', (check.checked ? 'none' : 'initial'));
+					el.getNext(':not(.tl_tip)').setStyle('display', (check.checked ? 'none' : 'initial'));
 				}
 			}
 		});
