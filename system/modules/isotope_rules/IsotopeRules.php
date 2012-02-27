@@ -350,13 +350,15 @@ class IsotopeRules extends Controller
 		// Member restrictions
 		if (FE_USER_LOGGED_IN && TL_MODE=='FE')
 		{
+			$arrGroups = array_map('intval', $this->User->groups);
+			
 			$arrProcedures[] = "(memberRestrictions='none'
 								OR (memberRestrictions='guests' AND memberCondition='1')
 								OR (memberRestrictions='members' AND memberCondition='' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='members' AND object_id=".(int)$this->User->id.")>0)
 								OR (memberRestrictions='members' AND memberCondition='1' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='members' AND object_id=".(int)$this->User->id.")=0)
-								" . (count($this->User->groups) ? "
-								OR (memberRestrictions='groups' AND memberCondition='' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='groups' AND object_id IN (" . implode(',', $this->User->groups) . "))>0)
-								OR (memberRestrictions='groups' AND memberCondition='1' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='groups' AND object_id IN (" . implode(',', $this->User->groups) . "))=0)" : '') . ")";
+								" . (!empty($arrGroups) ? "
+								OR (memberRestrictions='groups' AND memberCondition='' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='groups' AND object_id IN (" . implode(',', $arrGroups) . "))>0)
+								OR (memberRestrictions='groups' AND memberCondition='1' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='groups' AND object_id IN (" . implode(',', $arrGroups) . "))=0)" : '') . ")";
 		}
 		else
 		{

@@ -34,6 +34,7 @@ Version 1.3.rc2 (2012-??-??)
 - Possible error message with date validation (#2917)
 - tl_iso_productcache is emptied every time loading a product list module (#2897)
 - Coupons are now transferred from guest to member cart on login (#2865)
+- Potential array issue with member groups (#2870)
 
 ### Other
 - Introducing the "provider" directory for complex callback handlers
