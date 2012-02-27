@@ -85,22 +85,6 @@ CREATE TABLE `tl_iso_rule_usage` (
 -- --------------------------------------------------------
 
 --
--- Table `tl_iso_rule_codes`
---
-
-CREATE TABLE `tl_iso_rule_codes` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `pid` int(10) unsigned NOT NULL default '0',
-  `tstamp` int(10) unsigned NOT NULL default '0',
-  `member_id` int(10) unsigned NOT NULL default '0',
-  `code` varchar(255) NOT NULL default '',
-  PRIMARY KEY  (`id`),
-  KEY `pid` (`pid`),
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
 -- Table `tl_module`
 --
 
