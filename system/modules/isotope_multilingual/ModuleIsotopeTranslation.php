@@ -39,6 +39,7 @@ class ModuleIsotopeTranslation extends BackendModule
 	public function generate()
 	{
 		$this->import('BackendUser', 'User');
+		$this->import('Files');
 
 		if (!strlen($this->User->translation))
 		{
@@ -100,7 +101,6 @@ class ModuleIsotopeTranslation extends BackendModule
 		{
 			if (!is_dir(TL_ROOT . '/system/modules/' . $arrSession['module']. '/languages/' . $this->User->translation))
 			{
-				$this->import('Files');
 				$this->Files->mkdir('system/modules/' . $arrSession['module']. '/languages/' . $this->User->translation);
 			}
 
@@ -119,49 +119,13 @@ class ModuleIsotopeTranslation extends BackendModule
 		if (is_file(TL_ROOT . '/system/modules/' . $arrSession['module']. '/languages/en/' . $arrSession['file']))
 		{
 			$arrSource = $this->parseFile(TL_ROOT . '/system/modules/' . $arrSession['module']. '/languages/en/' . $arrSession['file']);
+			$arrTranslation = $this->parseFile(TL_ROOT . '/system/modules/' . $arrSession['module']. '/languages/' . $this->User->translation . '/' . $arrSession['file']);
 
 			if ($this->Input->post('FORM_SUBMIT') == 'isotope_translation')
 			{
-				$strFile = "<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+				$strData = '';
 
-/**
- * Contao Open Source CMS
- * Copyright (C) 2005-2010 Leo Feyer
- *
- * Formerly known as TYPOlight Open Source CMS.
- *
- * This program is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation, either
- * version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program. If not, please visit the Free
- * Software Foundation website at <http://www.gnu.org/licenses/>.
- *
- * PHP version 5
- * @copyright  Isotope eCommerce Workgroup 2009-2012";
-
- 				$objAuthors = $this->Database->execute("SELECT * FROM tl_user WHERE translation='{$this->User->translation}'");
-
- 				while( $objAuthors->next() )
- 				{
- 					$strFile .= '
- * @author     ' . $objAuthors->name . ' <' . $objAuthors->email . '>';
- 				}
-
- 				$strFile .= '
- * @license    http://opensource.org/licenses/lgpl-3.0.html
- */
-
-';
-
-				foreach( $arrSource as $key => $value )
+				foreach( array_keys($arrSource) as $key )
 				{
 					$value = trim($this->Input->postRaw(standardize($key, true)));
 
@@ -169,14 +133,21 @@ class ModuleIsotopeTranslation extends BackendModule
 						continue;
 
 					$value = str_replace(array("\r\n", "\n", "\r", '\n'), '\n', $value, $count);
+					
+					if ($value == $arrTranslation[$key])
+						continue;
 
-					$strFile .= $key . ' = ' . ($count > 0 ? ('"' . str_replace('"', '\"', $value) . '";'."\n") : ("'" . str_replace("'", "\'", $value) . "';\n"));
+					$strData .= $key . ' = ' . ($count > 0 ? ('"' . str_replace('"', '\"', $value) . '";'."\n") : ("'" . str_replace("'", "\'", $value) . "';\n"));
+				}
+				
+				if ($strData == '')
+				{
+					$this->Files->delete('system/modules/' . $arrSession['module']. '/languages/' . $this->User->translation . '/local/' . $arrSession['file']);
+					$this->reload();
 				}
 
-				$strFile .= "\n";
-
-				$objFile = new File('system/modules/' . $arrSession['module']. '/languages/' . $this->User->translation . '/' . $arrSession['file']);
-				$objFile->write($strFile);
+				$objFile = new File('system/modules/' . $arrSession['module']. '/languages/' . $this->User->translation . '/local/' . $arrSession['file']);
+				$objFile->write($this->getHeader() . $strData . "\n");
 				$objFile->close();
 
 				$_SESSION['TL_CONFIRM'][] = $GLOBALS['ISO_LANG']['MSC']['translationSaved'];
@@ -185,7 +156,7 @@ class ModuleIsotopeTranslation extends BackendModule
 
 			$this->Template->edit = true;
 			$this->Template->source = $arrSource;
-			$this->Template->translation = $this->parseFile(TL_ROOT . '/system/modules/' . $arrSession['module']. '/languages/' . $this->User->translation . '/' . $arrSession['file']);
+			$this->Template->translation = array_merge($arrTranslation, $this->parseFile(TL_ROOT . '/system/modules/' . $arrSession['module']. '/languages/' . $this->User->translation . '/local/' . $arrSession['file']));
 			$this->Template->headline = sprintf($GLOBALS['ISO_LANG']['MSC']['translationEdit'], $arrSession['file'], $arrSession['module']);
 
 			if (!is_array($this->Template->source))
@@ -210,6 +181,111 @@ class ModuleIsotopeTranslation extends BackendModule
 		$this->Template->downloadHref = $this->addToUrl('act=download');
 		$this->Template->downloadTitle = 'Download language files for this module';
 		$this->Template->downloadLabel = 'Download';
+	}
+
+
+	/**
+	 * Export a combined translation file
+	 */
+	protected function export()
+	{
+		$arrSession = $this->Session->get('filter_translation');
+		$arrSession = $arrSession['isotope_translation'];
+
+		$strFolder = 'system/modules/' . $arrSession['module'] . '/languages/' . $this->User->translation;
+		$strZip = 'system/html/' . $this->User->translation . '.zip';
+		$arrFiles = scan(TL_ROOT . '/' . $strFolder);
+		$strHeader = $this->getHeader();
+
+		$objZip = new ZipWriter($strZip);
+
+		foreach( $arrFiles as $file )
+		{
+			$strData = '';
+			
+			$arrSource = $this->parseFile(TL_ROOT . '/system/modules/' . $arrSession['module']. '/languages/en/' . $file);
+			$arrTranslation = array_merge($this->parseFile(TL_ROOT . '/system/modules/' . $arrSession['module']. '/languages/' . $this->User->translation . '/' . $file), $this->parseFile(TL_ROOT . '/system/modules/' . $arrSession['module']. '/languages/' . $this->User->translation . '/local/' . $file));
+			
+			foreach( array_keys($arrSource) as $key )
+			{
+				$value = str_replace(array("\r\n", "\n", "\r", '\n'), '\n', $arrTranslation[$key], $count);
+				
+				$strData .= $key . ' = ' . ($count > 0 ? ('"' . str_replace('"', '\"', $value) . '";'."\n") : ("'" . str_replace("'", "\'", $value) . "';\n"));
+			}
+			
+			$objZip->addString($strHeader . $strData . "\n", $strFolder . '/' . $file);
+		}
+
+		$objZip->close();
+
+		$objFile = new File($strZip);
+
+		// Open the "save as …" dialogue
+		header('Content-Type: ' . $objFile->mime);
+		header('Content-Transfer-Encoding: binary');
+		header('Content-Disposition: attachment; filename="' . $objFile->basename . '"');
+		header('Content-Length: ' . $objFile->filesize);
+		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+		header('Pragma: public');
+		header('Expires: 0');
+
+		$resFile = fopen(TL_ROOT . '/' . $strZip, 'rb');
+		fpassthru($resFile);
+		fclose($resFile);
+
+		unlink($strZip);
+
+		// Stop script
+		exit;
+	}
+	
+	
+	/**
+	 * Return the header for a language file
+	 * @return string
+	 */
+	private function getHeader()
+	{
+		$strHeader = "<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+
+/**
+ * Contao Open Source CMS
+ * Copyright (C) 2005-2010 Leo Feyer
+ *
+ * Formerly known as TYPOlight Open Source CMS.
+ *
+ * This program is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation, either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program. If not, please visit the Free
+ * Software Foundation website at <http://www.gnu.org/licenses/>.
+ *
+ * PHP version 5
+ * @copyright  Isotope eCommerce Workgroup 2009-2012";
+
+ 		$objAuthors = $this->Database->prepare("SELECT * FROM tl_user WHERE translation=?")->execute($this->User->translation);
+
+		while( $objAuthors->next() )
+		{
+			$strHeader .= '
+ * @author     ' . $objAuthors->name . ' <' . $objAuthors->email . '>';
+		}
+
+		$strHeader .= '
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
+ */
+
+';
+
+		return $strHeader;
 	}
 
 
@@ -276,49 +352,6 @@ class ModuleIsotopeTranslation extends BackendModule
 		}
 
 		$arrVariables[$strKey] = $varValue;
-	}
-
-
-	/**
-	 * Export a test translation file
-	 */
-	public function export()
-	{
-		$arrSession = $this->Session->get('filter_translation');
-		$arrSession = $arrSession['isotope_translation'];
-
-		$strFolder = 'system/modules/' . $arrSession['module'] . '/languages/' . $this->User->translation;
-		$strZip = 'system/html/' . $this->User->translation . '.zip';
-		$arrFiles = scan(TL_ROOT . '/' . $strFolder);
-
-		$objZip = new ZipWriter($strZip);
-
-		foreach( $arrFiles as $file )
-		{
-			$objZip->addFile($strFolder . '/' . $file);
-		}
-
-		$objZip->close();
-
-		$objFile = new File($strZip);
-
-		// Open the "save as …" dialogue
-		header('Content-Type: ' . $objFile->mime);
-		header('Content-Transfer-Encoding: binary');
-		header('Content-Disposition: attachment; filename="' . $objFile->basename . '"');
-		header('Content-Length: ' . $objFile->filesize);
-		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-		header('Pragma: public');
-		header('Expires: 0');
-
-		$resFile = fopen(TL_ROOT . '/' . $strZip, 'rb');
-		fpassthru($resFile);
-		fclose($resFile);
-
-		unlink($strZip);
-
-		// Stop script
-		exit;
 	}
 }
 

@@ -21,32 +21,21 @@
  * PHP version 5
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
- * @author     Philipp Kaiblinger <philipp.kaiblinger@kaipo.at>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
-/**
- * Isotope Modules
- */
-$GLOBALS['ISO_MOD']['translation']['iso_labels'] = array
-(
-	'tables'	=> array('tl_iso_labels'),
-	'icon'		=> 'system/modules/isotope_multilingual/html/balloons.png',
-);
-
-$GLOBALS['ISO_MOD']['translation']['iso_translation'] = array
-(
-	'callback'	=> 'ModuleIsotopeTranslation',
-	'icon'		=> 'system/modules/isotope_multilingual/html/locale.png',
-	'export'	=> array('ModuleIsotopeTranslation', 'export'),
-);
-
-$GLOBALS['BE_MOD']['isotope']['iso_setup']['tables'][] = 'tl_iso_labels';
-
-
-/**
- * Hooks
- */
-$GLOBALS['TL_HOOKS']['loadLanguageFile'][] = array('Isotopetranslation', 'loadLocalLanguageFiles');
+class IsotopeTranslation extends Controller
+{
+	
+	public function loadLocalLanguageFiles($strName, $strLanguage)
+	{
+		// Parse all active modules
+		foreach ($this->Config->getActiveModules() as $strModule)
+		{
+			$strFile = sprintf('%s/system/modules/%s/languages/%s/local/%s.php', TL_ROOT, $strModule, $strLanguage, $strName);
+			@include($strFile);
+		}
+	}
+}
 
