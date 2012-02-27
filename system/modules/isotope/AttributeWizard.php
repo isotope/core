@@ -262,7 +262,7 @@ class AttributeWizard extends Widget
 	 */
 	protected function generateCheckbox($arrOption, $strGroup, $strButtons, $cid)
 	{
-		$strBuffer = '<span class="' . ($cid%2 ? 'even' : 'odd') . '" onmouseover="Theme.hoverDiv(this, 1);" onmouseout="Theme.hoverDiv(this, 0);">';
+		$strBuffer = '<span onmouseover="Theme.hoverDiv(this, 1);" onmouseout="Theme.hoverDiv(this, 0);">';
 
 		if ($arrOption['disabled'])
 		{
