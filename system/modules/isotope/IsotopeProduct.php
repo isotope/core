@@ -1086,7 +1086,16 @@ class IsotopeProduct extends Controller
 						foreach ($arrData['save_callback'] as $callback)
 						{
 							$this->import($callback[0]);
-							$varValue = $this->$callback[0]->$callback[1]($varValue, $this);
+							
+							try
+							{
+								$varValue = $this->$callback[0]->$callback[1]($varValue, $this);
+							}
+							catch (Exception $e)
+							{
+								$objWidget->class = 'error';
+								$objWidget->addError($e->getMessage());
+							}
 						}
 					}
 					catch (Exception $e)
