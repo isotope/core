@@ -42,7 +42,7 @@ class ModuleIsotopeTranslation extends BackendModule
 
 		if (!strlen($this->User->translation))
 		{
-			return '<p class="tl_gerror">You have no language assigned.</p>';
+			return '<p class="tl_gerror">' . $GLOBALS['ISO_LANG']['ERR']['noLanguageForTranslation'] . '</p>';
 		}
 
 		if ($this->Input->get('act') == 'download')
@@ -67,7 +67,6 @@ class ModuleIsotopeTranslation extends BackendModule
 			(
 				'module'	=> $this->Input->post('module'),
 				'file'		=> $this->Input->post('file'),
-				'svn_diff'	=> ($this->Input->post('svn_diff') ? true : false),
 			);
 
 			$this->Session->appendData($arrFilter);
@@ -79,7 +78,7 @@ class ModuleIsotopeTranslation extends BackendModule
 		$arrSession = $arrSession['isotope_translation'];
 
 
-		$this->Template->headline = $GLOBALS['TL_LANG']['MSC']['translationSelect'];
+		$this->Template->headline = $GLOBALS['ISO_LANG']['MSC']['translationSelect'];
 		$this->Template->action = ampersand($this->Environment->request);
 		$this->Template->slabel = $GLOBALS['TL_LANG']['MSC']['save'];
 		$this->Template->theme = $this->getTheme();
@@ -180,53 +179,29 @@ class ModuleIsotopeTranslation extends BackendModule
 				$objFile->write($strFile);
 				$objFile->close();
 
-				$_SESSION['TL_CONFIRM'][] = $GLOBALS['TL_LANG']['MSC']['translationSaved'];
+				$_SESSION['TL_CONFIRM'][] = $GLOBALS['ISO_LANG']['MSC']['translationSaved'];
 				$this->reload();
 			}
 
 			$this->Template->edit = true;
 			$this->Template->source = $arrSource;
 			$this->Template->translation = $this->parseFile(TL_ROOT . '/system/modules/' . $arrSession['module']. '/languages/' . $this->User->translation . '/' . $arrSession['file']);
-			$this->Template->headline = sprintf($GLOBALS['TL_LANG']['MSC']['translationEdit'], $arrSession['file'], $arrSession['module']);
+			$this->Template->headline = sprintf($GLOBALS['ISO_LANG']['MSC']['translationEdit'], $arrSession['file'], $arrSession['module']);
 
 			if (!is_array($this->Template->source))
 			{
 				$this->Template->edit = false;
-				$this->Template->error = $GLOBALS['TL_LANG']['MSC']['translationErrorSource'];
+				$this->Template->error = $GLOBALS['ISO_LANG']['MSC']['translationErrorSource'];
 				$this->Template->headline = $this->Template->source . '<div style="white-space:pre;overflow:scroll;font-family:Courier New"><br><br>' . str_replace("\t", '    ', htmlspecialchars(file_get_contents(TL_ROOT . '/system/modules/' . $arrSession['module']. '/languages/en/' . $arrSession['file']), ENT_COMPAT, 'UTF-8')) . '</div>';
 			}
 			elseif (!is_array($this->Template->translation))
 			{
 				$this->Template->edit = false;
-				$this->Template->error = $GLOBALS['TL_LANG']['MSC']['translationError'];
+				$this->Template->error = $GLOBALS['ISO_LANG']['MSC']['translationError'];
 				$this->Template->headline = $this->Template->translation . '<div style="white-space:pre;overflow:scroll;font-family:Courier New"><br><br>' . str_replace("\t", '    ', htmlspecialchars(file_get_contents(TL_ROOT . '/system/modules/' . $arrSession['module']. '/languages/' . $this->User->translation . '/' . $arrSession['file']), ENT_COMPAT, 'UTF-8')) . '</div>';
-			}
-			elseif ($arrSession['svn_diff'])
-			{
-				$objRequest = new Request();
-				$objRequest->send('https://winans.svn.beanstalkapp.com/isotope/trunk/system/modules/' . $arrSession['module']. '/languages/' . $this->User->translation . '/' . $arrSession['file']);
-
-				if ($objRequest->code != 200)
-				{
-					$this->Template->diff = 'HTTP Error ' . $objRequest->code;
-					$this->Template->error = $GLOBALS['TL_LANG']['MSC']['translationSVNError'];
-				}
-				else
-				{
-					$data = explode("\n", $objRequest->response);
-					$this->Template->diff = $this->parse($data);
-
-					if (!is_array($this->Template->diff))
-					{
-						$this->Template->error = $GLOBALS['TL_LANG']['MSC']['translationSVNError'];
-					}
-				}
-
-				$this->Template->diff_headline = sprintf($GLOBALS['TL_LANG']['MSC']['translationDiffHeadline'], $arrSession['module'], $this->User->translation, $arrSession['file']);
 			}
 		}
 
-		$this->Template->svn_diff = $arrSession['svn_diff'];
 		$this->Template->modules = $arrModules;
 		$this->Template->moduleClass = strlen($arrSession['module']) ? ' active' : '';
 		$this->Template->files = $arrFiles;

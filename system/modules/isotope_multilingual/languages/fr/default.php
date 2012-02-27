@@ -28,11 +28,9 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['MSC']['translationSaved'] = 'Vos changements ont été sauvegardés.';
-$GLOBALS['TL_LANG']['MSC']['translationEdit'] = 'Modifier le fichier %s à partir de l\'extension "%s "';
-$GLOBALS['TL_LANG']['MSC']['translationSelect'] = 'Sélectionnez une extension et un fichier.';
-$GLOBALS['TL_LANG']['MSC']['translationError'] = 'Le fichier cible ne peut être analysé.';
-$GLOBALS['TL_LANG']['MSC']['translationErrorSource'] = 'Le fichier source ne peut être analysé.';
-$GLOBALS['TL_LANG']['MSC']['translationDiffHeadline'] = 'Changements entre "%s/languages/%s/%s" sur localhost et Isotope SVN.';
-$GLOBALS['TL_LANG']['MSC']['translationSVNError'] = 'Impossible de récupérer les fichiers de SVN.';
+$GLOBALS['ISO_LANG']['MSC']['translationSaved'] = 'Vos changements ont été sauvegardés.';
+$GLOBALS['ISO_LANG']['MSC']['translationEdit'] = 'Modifier le fichier %s à partir de l\'extension "%s "';
+$GLOBALS['ISO_LANG']['MSC']['translationSelect'] = 'Sélectionnez une extension et un fichier.';
+$GLOBALS['ISO_LANG']['MSC']['translationError'] = 'Le fichier cible ne peut être analysé.';
+$GLOBALS['ISO_LANG']['MSC']['translationErrorSource'] = 'Le fichier source ne peut être analysé.';
 

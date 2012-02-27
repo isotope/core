@@ -27,13 +27,17 @@
 
 
 /**
+ * Errors
+ */
+$GLOBALS['ISO_LANG']['ERR']['noLanguageForTranslation']	= 'You have no language assigned.';
+
+
+/**
  * Miscellaneous
  */
-$GLOBALS['TL_LANG']['MSC']['translationSaved']			= 'Your changes have been saved.';
-$GLOBALS['TL_LANG']['MSC']['translationEdit']			= 'Edit file %s from extension "%s"';
-$GLOBALS['TL_LANG']['MSC']['translationSelect']			= 'Please select an extension and a file.';
-$GLOBALS['TL_LANG']['MSC']['translationError']			= 'The target file could not be parsed.';
-$GLOBALS['TL_LANG']['MSC']['translationErrorSource']	= 'The source file could not be parsed.';
-$GLOBALS['TL_LANG']['MSC']['translationDiffHeadline']	= 'Changes between "%s/languages/%s/%s" on localhost and Isotope SVN.';
-$GLOBALS['TL_LANG']['MSC']['translationSVNError']		= 'Unable to retrieve file from SVN.';
+$GLOBALS['ISO_LANG']['MSC']['translationSaved']			= 'Your changes have been saved.';
+$GLOBALS['ISO_LANG']['MSC']['translationEdit']			= 'Edit file %s from extension "%s"';
+$GLOBALS['ISO_LANG']['MSC']['translationSelect']		= 'Please select an extension and a file.';
+$GLOBALS['ISO_LANG']['MSC']['translationError']			= 'The target file could not be parsed.';
+$GLOBALS['ISO_LANG']['MSC']['translationErrorSource']	= 'The source file could not be parsed.';
 

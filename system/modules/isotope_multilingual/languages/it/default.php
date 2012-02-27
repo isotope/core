@@ -29,11 +29,9 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['MSC']['translationSaved'] = 'Le sue modifiche sono state cambiate.';
-$GLOBALS['TL_LANG']['MSC']['translationEdit'] = 'Modifichi il file %s dall\'estensione "%s"';
-$GLOBALS['TL_LANG']['MSC']['translationSelect'] = 'Per cortesia selezioni un\'estensione e un file.';
-$GLOBALS['TL_LANG']['MSC']['translationError'] = 'E\' stato impossibile analizzare Il file destinazione';
-$GLOBALS['TL_LANG']['MSC']['translationErrorSource'] = 'E\' stato impossibile analizzare Il file sorgente';
-$GLOBALS['TL_LANG']['MSC']['translationDiffHeadline'] = 'Cambiamenti tra "%s/languages/%s/%s" su localhost e Isotope SVN.';
-$GLOBALS['TL_LANG']['MSC']['translationSVNError'] = 'Impossibile recuperare il file da SVN.';
+$GLOBALS['ISO_LANG']['MSC']['translationSaved'] = 'Le sue modifiche sono state cambiate.';
+$GLOBALS['ISO_LANG']['MSC']['translationEdit'] = 'Modifichi il file %s dall\'estensione "%s"';
+$GLOBALS['ISO_LANG']['MSC']['translationSelect'] = 'Per cortesia selezioni un\'estensione e un file.';
+$GLOBALS['ISO_LANG']['MSC']['translationError'] = 'E\' stato impossibile analizzare Il file destinazione';
+$GLOBALS['ISO_LANG']['MSC']['translationErrorSource'] = 'E\' stato impossibile analizzare Il file sorgente';
 

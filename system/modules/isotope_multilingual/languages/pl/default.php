@@ -24,11 +24,9 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['MSC']['translationSaved'] = 'Twoje zmiany zostały zapisane';
-$GLOBALS['TL_LANG']['MSC']['translationEdit'] = 'Edytuj plik %s dla rozrzerzenia "%s"';
-$GLOBALS['TL_LANG']['MSC']['translationSelect'] = 'Prosze wybrać rozszerzenie i plik.';
-$GLOBALS['TL_LANG']['MSC']['translationError'] = 'Plik docelowy nie mógł zostać (pharsed?)';
-$GLOBALS['TL_LANG']['MSC']['translationErrorSource'] = 'Plik docelowy nie mógł zostać (pharsed?)';
-$GLOBALS['TL_LANG']['MSC']['translationDiffHeadline'] = 'Zmiany pomiędzy "%s/languages/%s/%s" w localhost i Isotope SVN.';
-$GLOBALS['TL_LANG']['MSC']['translationSVNError'] = 'Nie udało się pobrać pliku z  SVN.';
+$GLOBALS['ISO_LANG']['MSC']['translationSaved'] = 'Twoje zmiany zostały zapisane';
+$GLOBALS['ISO_LANG']['MSC']['translationEdit'] = 'Edytuj plik %s dla rozrzerzenia "%s"';
+$GLOBALS['ISO_LANG']['MSC']['translationSelect'] = 'Prosze wybrać rozszerzenie i plik.';
+$GLOBALS['ISO_LANG']['MSC']['translationError'] = 'Plik docelowy nie mógł zostać (pharsed?)';
+$GLOBALS['ISO_LANG']['MSC']['translationErrorSource'] = 'Plik docelowy nie mógł zostać (pharsed?)';
 

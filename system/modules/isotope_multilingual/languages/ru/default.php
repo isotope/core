@@ -28,11 +28,9 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['MSC']['translationSaved'] = 'Изменения сохранены.';
-$GLOBALS['TL_LANG']['MSC']['translationEdit'] = 'Изменить файл% из расширения "%s"';
-$GLOBALS['TL_LANG']['MSC']['translationSelect'] = 'Пожалуйста, выберите расширение и файл.';
-$GLOBALS['TL_LANG']['MSC']['translationError'] = 'Целевой файл не может быть разобран.';
-$GLOBALS['TL_LANG']['MSC']['translationErrorSource'] = 'Исходный файл не может быть разобран.';
-$GLOBALS['TL_LANG']['MSC']['translationDiffHeadline'] = 'Изменения между "%s/languages/%s/%s" в локальной системе и Isotope SVN.';
-$GLOBALS['TL_LANG']['MSC']['translationSVNError'] = 'Невозможно извлечь файл из SVN.';
+$GLOBALS['ISO_LANG']['MSC']['translationSaved'] = 'Изменения сохранены.';
+$GLOBALS['ISO_LANG']['MSC']['translationEdit'] = 'Изменить файл% из расширения "%s"';
+$GLOBALS['ISO_LANG']['MSC']['translationSelect'] = 'Пожалуйста, выберите расширение и файл.';
+$GLOBALS['ISO_LANG']['MSC']['translationError'] = 'Целевой файл не может быть разобран.';
+$GLOBALS['ISO_LANG']['MSC']['translationErrorSource'] = 'Исходный файл не может быть разобран.';
 

@@ -24,11 +24,9 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['MSC']['translationSaved'] = 'De wijzigingen zijn opgeslagen';
-$GLOBALS['TL_LANG']['MSC']['translationEdit'] = 'Bewerk bestand %s van uitbreiding %s';
-$GLOBALS['TL_LANG']['MSC']['translationSelect'] = 'Selecteer een uitbreiding en een bestand';
-$GLOBALS['TL_LANG']['MSC']['translationError'] = 'Het doelbestand kan niet worden verwerkt.';
-$GLOBALS['TL_LANG']['MSC']['translationErrorSource'] = 'Het bronbestand kan niet worden verwerkt.';
-$GLOBALS['TL_LANG']['MSC']['translationDiffHeadline'] = 'Veranderingen tussen "%s / talen /%s /%s" op localhost en Isotopen SVN.';
-$GLOBALS['TL_LANG']['MSC']['translationSVNError'] = 'Kan bestand niet ophalen uit SVN.(Subversion)';
+$GLOBALS['ISO_LANG']['MSC']['translationSaved'] = 'De wijzigingen zijn opgeslagen';
+$GLOBALS['ISO_LANG']['MSC']['translationEdit'] = 'Bewerk bestand %s van uitbreiding %s';
+$GLOBALS['ISO_LANG']['MSC']['translationSelect'] = 'Selecteer een uitbreiding en een bestand';
+$GLOBALS['ISO_LANG']['MSC']['translationError'] = 'Het doelbestand kan niet worden verwerkt.';
+$GLOBALS['ISO_LANG']['MSC']['translationErrorSource'] = 'Het bronbestand kan niet worden verwerkt.';
 
