@@ -20,6 +20,7 @@ Version 1.3.rc2 (2012-??-??)
 - Improvement to IsotopeGallery::generateMainImage() and InlineGallery::generateGallery() html rendering of css selectors for image and gallery containers (#2771)
 - Added "pages" and "inherit" to the list of core fields that cannot be overwritten in attributes (#2843)
 - Added support for exception error message in save_callback for IsotopeProduct options
+- Pass checkout module when executing IsotopePayment::checkoutForm() (#2858)
 
 ### Fixed
 - Pasting new product variant into root node (#2767)

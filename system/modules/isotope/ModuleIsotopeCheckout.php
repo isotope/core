@@ -265,7 +265,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		if ($this->strCurrentStep == 'process')
 		{
 			$this->writeOrder();
-			$strBuffer = $this->Isotope->Cart->hasPayment ? $this->Isotope->Cart->Payment->checkoutForm() : false;
+			$strBuffer = $this->Isotope->Cart->hasPayment ? $this->Isotope->Cart->Payment->checkoutForm($this) : false;
 
 			if ($strBuffer === false)
 			{
