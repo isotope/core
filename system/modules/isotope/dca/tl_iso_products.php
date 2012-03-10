@@ -359,7 +359,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'sorting'				=> true,
 			'inputType'				=> 'text',
 			'eval'					=> array('mandatory'=>true, 'maxlength'=>128, 'unique'=>true, 'tl_class'=>'w50'),
-			'attributes'			=> array('legend'=>'general_legend', 'fe_sorting'=>true),
+			'attributes'			=> array('legend'=>'general_legend', 'fe_sorting'=>true, 'fe_search'=>true),
 		),
 		'name' => array
 		(
