@@ -1269,7 +1269,8 @@ $endScript";
 			$arrCategories = $objProduct->categories;
 			
 			// filter those that are allowed
-			$arrCategories = array_intersect($arrCategories, $arrAllowedPageIds);
+			if(count($arrAllowedPageIds))
+				$arrCategories = array_intersect($arrCategories, $arrAllowedPageIds);
 			
 			if (!is_array($arrCategories) || !count($arrCategories))
 			{
@@ -1294,7 +1295,7 @@ $endScript";
 				$objProduct->reader_jumpTo = self::getReaderPageId($objCategoryPages);
 				
 				// generate the front end url
-				$arrIsotopeProductPages[] = $this->Environment->base . $objProduct->href_reader;
+				$arrIsotopeProductPages[] = $this->Environment->base . ltrim($objProduct->href_reader,'/');
 			}
 		}
 		
