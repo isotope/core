@@ -982,22 +982,22 @@ class tl_iso_products extends Backend
 		$autoAlias = false;
 
 		// Generate alias if there is none
-		if (!strlen($varValue))
+		if ($varValue == '')
 		{
 			$autoAlias = true;
 			$varValue = standardize($this->Input->post('name'), true);
 
-			if (!strlen($varValue))
+			if ($varValue == '')
 			{
 				$varValue = standardize($this->Input->post('sku'), true);
 			}
 
-			if (!strlen($varValue))
+			if ($varValue == '')
 			{
 				$varValue = strlen($dc->activeRecord->name) ? standardize($dc->activeRecord->name, true) : standardize($dc->activeRecord->sku, true);
 			}
 
-			if (!strlen($varValue))
+			if ($varValue == '')
 			{
 				$varValue = $dc->id;
 			}
