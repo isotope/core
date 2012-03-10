@@ -38,6 +38,7 @@ Version 1.3.rc2 (2012-??-??)
 - Products Search Indexing would fail if page root=0
 - trim extra backslash from URLs returned in Products Search Indexing
 - The sorting for Order ID was not correct (#2871)
+- Duplicating an attribute caused an empty field to be added in database.sql (#2955)
 
 ### Other
 - Introducing the "provider" directory for complex callback handlers

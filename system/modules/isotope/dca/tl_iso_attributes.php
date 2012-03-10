@@ -437,9 +437,9 @@ class tl_iso_attributes extends Backend
 			throw new Exception($GLOBALS['TL_LANG']['ERR']['systemColumn'], $varValue);
 		}
 
-		if (strlen($varValue) && !$this->Database->fieldExists($varValue, 'tl_iso_products'))
+		if ($varValue != '' && !$this->Database->fieldExists($varValue, 'tl_iso_products'))
 		{
-			$strType = strlen($GLOBALS['ISO_ATTR'][$this->Input->post('type')]['sql']) ? $this->Input->post('type') : 'text';
+			$strType = $GLOBALS['ISO_ATTR'][$this->Input->post('type')]['sql'] == '' ? 'text' : $this->Input->post('type');
 
 			$this->Database->query(sprintf("ALTER TABLE tl_iso_products ADD %s %s", $varValue, $GLOBALS['ISO_ATTR'][$strType]['sql']));
 
@@ -459,8 +459,13 @@ class tl_iso_attributes extends Backend
 	public function modifyColumn($dc)
 	{
 		$objAttribute = $this->Database->execute("SELECT * FROM tl_iso_attributes WHERE id={$dc->id}");
+		
+		if ($objAttribute->field_name == '')
+		{
+			return;
+		}
 
-		if ($objAttribute->field_name != '' && $dc->activeRecord->type != '' && $objAttribute->type != $dc->activeRecord->type && $GLOBALS['ISO_ATTR'][$dc->activeRecord->type]['sql'] != '' && $this->Database->fieldExists($dc->activeRecord->field_name, 'tl_iso_products'))
+		if ($dc->activeRecord->type != '' && $objAttribute->type != $dc->activeRecord->type && $GLOBALS['ISO_ATTR'][$dc->activeRecord->type]['sql'] != '' && $this->Database->fieldExists($dc->activeRecord->field_name, 'tl_iso_products'))
 		{
 			$this->Database->query(sprintf("ALTER TABLE tl_iso_products MODIFY %s %s", $objAttribute->field_name, $GLOBALS['ISO_ATTR'][$dc->activeRecord->type]['sql']));
 		}
