@@ -428,7 +428,7 @@ class IsotopeOrder extends IsotopeProductCollection
 			$this->Database->lockTables(array('tl_iso_orders'));
 	
 			// Retrieve the highest available order ID
-			$objMax = $this->Database->prepare("SELECT order_id FROM tl_iso_orders WHERE " . ($strPrefix != '' ? "order_id LIKE '$strPrefix%' AND " : '') . "config_id IN (" . implode(',', $arrConfigIds) . ") ORDER BY CAST(" . ($strPrefix != '' ? "SUBSTRING(order_id, $intPrefix)" : 'order_id') . " AS UNSIGNED) DESC")->limit(1)->executeUncached();
+			$objMax = $this->Database->prepare("SELECT order_id FROM tl_iso_orders WHERE " . ($strPrefix != '' ? "order_id LIKE '$strPrefix%' AND " : '') . "config_id IN (" . implode(',', $arrConfigIds) . ") ORDER BY CAST(" . ($strPrefix != '' ? "SUBSTRING(order_id, " . ($intPrefix+1) . ")" : 'order_id') . " AS UNSIGNED) DESC")->limit(1)->executeUncached();
 			$intMax = (int) substr($objMax->order_id, $intPrefix);
 			
 			$this->strOrderId = $strPrefix . str_pad($intMax+1, $this->Isotope->Config->orderDigits, '0', STR_PAD_LEFT);

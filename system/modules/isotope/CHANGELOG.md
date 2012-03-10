@@ -36,7 +36,8 @@ Version 1.3.rc2 (2012-??-??)
 - Coupons are now transferred from guest to member cart on login (#2865)
 - Potential array issue with member groups (#2870)
 - Products Search Indexing would fail if page root=0
-- trim extra backslash from URLs returned in Products Search Indexing 
+- trim extra backslash from URLs returned in Products Search Indexing
+- The sorting for Order ID was not correct (#2871)
 
 ### Other
 - Introducing the "provider" directory for complex callback handlers
