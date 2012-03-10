@@ -78,9 +78,24 @@ class ModuleIsotopeSetup extends BackendModule
 		}
 
 		// Open module
-		if ($this->Input->get('mod'))
+		if ($this->Input->get('mod') != '')
 		{
 			return $this->getIsotopeModule($this->Input->get('mod'));
+		}
+		
+		// Table set but module missing, fix the saveNcreate link
+		elseif ($this->Input->get('table') != '')
+		{
+			foreach ($GLOBALS['ISO_MOD'] as $arrGroup)
+			{
+				foreach( $arrGroup as $strModule => $arrConfig )
+				{
+					if (is_array($arrConfig['tables']) && in_array($this->Input->get('table'), $arrConfig['tables']))
+					{
+						$this->redirect($this->addToUrl('mod=' . $strModule));
+					}
+				}
+			}
 		}
 
 		return parent::generate();
@@ -144,7 +159,7 @@ class ModuleIsotopeSetup extends BackendModule
 		}
 
 		// Redirect if the current table does not belong to the current module
-		if (strlen($strTable))
+		if ($strTable != '')
 		{
 			if (!in_array($strTable, (array) $arrModule['tables']))
 			{
