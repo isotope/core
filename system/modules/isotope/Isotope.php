@@ -86,38 +86,6 @@ class Isotope extends Controller
 		parent::__construct();
 		$this->import('Database');
 		$this->import('FrontendUser', 'User');
-
-		// Make sure field data is available
-		$this->loadDataContainer('tl_iso_products');
-		$this->loadLanguageFile('tl_iso_products');
-
-		if (strlen($_SESSION['ISOTOPE']['config_id']))
-		{
-			$this->overrideConfig($_SESSION['ISOTOPE']['config_id']);
-		}
-		else
-		{
-			$this->resetConfig();
-		}
-
-		if (TL_MODE == 'FE' && strpos($this->Environment->script, 'postsale.php') === false)
-		{
-			$this->Cart = new IsotopeCart();
-			$this->Cart->initializeCart((int)$this->Config->id, (int)$this->Config->store_id);
-
-			// Initialize request cache for product list filters
-			if ($this->Input->get('isorc') != '')
-			{
-				$objRequestCache = $this->Database->prepare("SELECT * FROM tl_iso_requestcache WHERE id=? AND store_id=?")->execute($this->Input->get('isorc'), $this->Config->store_id);
-
-				if ($objRequestCache->numRows)
-				{
-					$GLOBALS['ISO_FILTERS'] = deserialize($objRequestCache->filters);
-					$GLOBALS['ISO_SORTING'] = deserialize($objRequestCache->sorting);
-					$GLOBALS['ISO_LIMIT'] = deserialize($objRequestCache->limits);
-				}
-			}
-		}
 	}
 
 
@@ -130,6 +98,38 @@ class Isotope extends Controller
 		if (!is_object(self::$objInstance))
 		{
 			self::$objInstance = new Isotope();
+			
+			// Make sure field data is available
+			self::$objInstance->loadDataContainer('tl_iso_products');
+			self::$objInstance->loadLanguageFile('tl_iso_products');
+	
+			if (strlen($_SESSION['ISOTOPE']['config_id']))
+			{
+				self::$objInstance->overrideConfig($_SESSION['ISOTOPE']['config_id']);
+			}
+			else
+			{
+				self::$objInstance->resetConfig();
+			}
+	
+			if (TL_MODE == 'FE' && strpos(self::$objInstance->Environment->script, 'postsale.php') === false)
+			{
+				self::$objInstance->Cart = new IsotopeCart();
+				self::$objInstance->Cart->initializeCart((int)self::$objInstance->Config->id, (int)self::$objInstance->Config->store_id);
+	
+				// Initialize request cache for product list filters
+				if (self::$objInstance->Input->get('isorc') != '')
+				{
+					$objRequestCache = self::$objInstance->Database->prepare("SELECT * FROM tl_iso_requestcache WHERE id=? AND store_id=?")->execute(self::$objInstance->Input->get('isorc'), self::$objInstance->Config->store_id);
+	
+					if ($objRequestCache->numRows)
+					{
+						$GLOBALS['ISO_FILTERS'] = deserialize($objRequestCache->filters);
+						$GLOBALS['ISO_SORTING'] = deserialize($objRequestCache->sorting);
+						$GLOBALS['ISO_LIMIT'] = deserialize($objRequestCache->limits);
+					}
+				}
+			}
 		}
 
 		return self::$objInstance;
