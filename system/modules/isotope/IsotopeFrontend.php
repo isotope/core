@@ -1429,8 +1429,10 @@ $endScript";
 
 		if ($_SESSION['ISO_TIMEOUT'] > 0)
 		{
+			$objEnvironment = Environment::getInstance();
+
 			// Reload page every 5 seconds
-			$GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="' . $intSeconds . ',' . $this->Environment->base . $this->Environment->request . '">';
+			$GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="' . $intSeconds . ',' . $objEnvironment->base . $objEnvironment->request . '">';
 	
 			return true;
 		}
