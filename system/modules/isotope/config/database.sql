@@ -15,7 +15,6 @@
 CREATE TABLE `tl_iso_products` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
-  `sorting` int(10) unsigned NOT NULL default '0',
   `gid` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
   `dateAdded` int(10) unsigned NOT NULL default '0',
