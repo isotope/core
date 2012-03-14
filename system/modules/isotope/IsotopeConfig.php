@@ -74,6 +74,19 @@ class IsotopeConfig extends Model
 				}
 
 				return $this->arrCache[$strKey];
+			
+			case 'billing_countries':
+			case 'shipping_countries':
+				$arrCountries = deserialize(parent::__get($strKey));
+				
+				if (!is_array($arrCountries) || empty($arrCountries))
+				{
+					$this->import('Isotope');
+					$arrCountries = array_keys($this->Isotope->getCountries());
+				}
+				
+				return $arrCountries;
+				break;
 
 			default:
 				return deserialize(parent::__get($strKey));
