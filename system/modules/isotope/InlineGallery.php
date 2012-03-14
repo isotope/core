@@ -60,7 +60,7 @@ class InlineGallery extends IsotopeGallery
 
 		if (($total == 1 || $total <= $intSkip) && !$blnForce)
 		{
-			return '';
+			return $this->generateAttribute($this->name . '_gallery', ' ', $strType);
 		}
 
 		$strGallery = '';
@@ -92,7 +92,7 @@ class InlineGallery extends IsotopeGallery
 			$strGallery .= $objTemplate->parse();
 		}
 
-		return '<div class="iso_attribute '.strtolower($strType).'" id="' . $this->name . '_gallery">' . $strGallery . '</div>';
+		return $this->generateAttribute($this->name . '_gallery', $strGallery, $strType);
 	}
 
 

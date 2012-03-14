@@ -229,7 +229,7 @@ class IsotopeGallery extends Frontend
 	{
 		if (!count($this->arrFiles))
 		{
-			return '<div class="iso_attribute images ' . strtolower($strType).'" id="' . $this->name . '_' . $strType . 'size"> </div>';
+			return $this->generateAttribute($this->name . '_' . $strType . 'size', ' ', 'images ' . $strType);
 		}
 
 		$arrFile = reset($this->arrFiles);
@@ -248,7 +248,7 @@ class IsotopeGallery extends Frontend
 
 		list($objTemplate->link, $objTemplate->rel) = explode('|', $arrFile['link']);
 
-		return '<div class="iso_attribute images ' . strtolower($strType).'" id="' . $this->name . '_' . $strType . 'size">' . $objTemplate->parse() . '</div>';
+		return $this->generateAttribute($this->name . '_' . $strType . 'size', $objTemplate->parse(), 'images ' . $strType);
 	}
 
 
@@ -285,7 +285,7 @@ class IsotopeGallery extends Frontend
 		}
 
 		$this->injectAjax();
-		return '<div class="iso_attribute '.strtolower($strType).'" id="' . $this->name . '_gallery">' . $strGallery . '</div>';
+		return $this->generateAttribute($this->name . '_gallery', $strGallery, $strType);
 	}
 
 
@@ -304,4 +304,18 @@ window.addEvent('ajaxready', function() {
 $endScript
 ";
 	}
+	
+	
+	/**
+	 * Generate the HTML attribute container
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @return string
+	 */
+	protected function generateAttribute($strId, $strBuffer, $strClass='')
+	{
+		return '<div class="iso_attribute' . ($strClass != '' ? ' '.strtolower($strClass) : '') .'" id="' . $strId . '">' . $strBuffer . '</div>';
+	}
 }
+
