@@ -3,6 +3,7 @@
 
 # Do not ignore ".gitignore"
 !.gitignore
+!README.md
 
 # Isotope ignoring rules
 !isotope/
