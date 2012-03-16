@@ -257,7 +257,13 @@ class IsotopeCart extends IsotopeProductCollection
 
 			if ($objCart->findBy('session', $this->strHash))
 			{
-				$this->transferFromCollection($objCart, false);
+				$arrIds = $this->transferFromCollection($objCart, false);
+
+				if (!empty($arrIds))
+				{
+					$_SESSION['ISO_CONFIRM'][] = $GLOBALS['TL_LANG']['MSC']['cartMerged'];
+				}
+
 				$objCart->delete();
 			}
 

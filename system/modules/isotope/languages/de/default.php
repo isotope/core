@@ -124,6 +124,7 @@ $GLOBALS['TL_LANG']['MSC']['noOrderEmails'] = 'Keine Bestell-E-Mails gefunden.';
 $GLOBALS['TL_LANG']['MSC']['noOrders'] = 'Keine Bestellungen gefunden.';
 $GLOBALS['TL_LANG']['MSC']['downloadsRemaining'] = '<br />%s Downloads verbleibend';
 $GLOBALS['TL_LANG']['MSC']['addedToCart'] = 'Das gewählte Produkt wurde in den Warenkorb gelegt.';
+$GLOBALS['TL_LANG']['MSC']['cartMerged'] = 'Die unbestellten Produkte Ihres letzten Besuchs wurden wieder übernommen. Bitte prüfen Sie den Warenkorb-Inhalt.';
 $GLOBALS['TL_LANG']['ISO']['couponsInputLabel'] = 'Gutschein-Code';
 $GLOBALS['TL_LANG']['ISO']['couponsHeadline'] = 'Gutschein-Code anwenden';
 $GLOBALS['TL_LANG']['ISO']['couponsSubmitLabel'] = 'Anwenden';
