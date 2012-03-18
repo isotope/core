@@ -41,6 +41,7 @@ Version 1.3.rc2 (2012-??-??)
 - The sorting for Order ID was not correct (#2871)
 - Duplicating an attribute caused an empty field to be added in database.sql (#2955)
 - saveNcreate did not work in ModuleIsotopeSetup (#2933)
+- new product was not created in the selected group
 
 ### Other
 - Introducing the "provider" directory for complex callback handlers
