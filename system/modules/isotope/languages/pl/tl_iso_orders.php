@@ -33,7 +33,7 @@
 $GLOBALS['TL_LANG']['tl_iso_orders']['order_id']			= array('ID zamówienia');
 $GLOBALS['TL_LANG']['tl_iso_orders']['uniqid']				= array('Unikalne ID');
 $GLOBALS['TL_LANG']['tl_iso_orders']['status']				= array('Status zamówienia', 'Proszę wybrrać status tego zamówienia.');
-$GLOBALS['TL_LANG']['tl_iso_orders']['date_payed']			= array('Data płatności', 'Proszę wprowadzić datę płatności za to zamówienie.');
+$GLOBALS['TL_LANG']['tl_iso_orders']['date_paid']			= array('Data płatności', 'Proszę wprowadzić datę płatności za to zamówienie.');
 $GLOBALS['TL_LANG']['tl_iso_orders']['date_shipped']		= array('Data wysyłki', 'Proszę wprowadzić datę wysyłki tego zamówienia.');
 $GLOBALS['TL_LANG']['tl_iso_orders']['date']				= array('Data');
 $GLOBALS['TL_LANG']['tl_iso_orders']['payment_id']			= array('Metoda płatności');

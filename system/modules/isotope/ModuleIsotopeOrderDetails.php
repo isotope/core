@@ -114,7 +114,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 
 			while ($objDownloads->next())
 			{
-				$blnDownloadable = (($objOrder->status == 'complete' || (intval($objOrder->date_payed) > 0 && intval($objOrder->date_payed) <= time())) && ($objDownloads->downloads_remaining === '' || $objDownloads->downloads_remaining > 0)) ? true : false;
+				$blnDownloadable = (($objOrder->status == 'complete' || (intval($objOrder->date_paid) > 0 && intval($objOrder->date_paid) <= time())) && ($objDownloads->downloads_remaining === '' || $objDownloads->downloads_remaining > 0)) ? true : false;
 
 				// Send file to the browser
 				if (strlen($this->Input->get('file')) && $this->Input->get('file') == $objDownloads->id && $blnDownloadable)

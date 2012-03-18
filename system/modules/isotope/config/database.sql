@@ -452,7 +452,7 @@ CREATE TABLE `tl_iso_orders` (
   `tstamp` int(10) unsigned NOT NULL default '0',
   `settings` blob NULL,
   `date` int(10) unsigned NOT NULL default '0',
-  `date_payed` varchar(10) NOT NULL default '',
+  `date_paid` varchar(10) NOT NULL default '',
   `date_shipped` varchar(10) NOT NULL default '',
   `status` varchar(32) NOT NULL default '',
 

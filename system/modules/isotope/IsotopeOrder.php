@@ -83,7 +83,7 @@ class IsotopeOrder extends IsotopeProductCollection
 				return deserialize($this->arrData['shipping_address'], true);
 			
 			case 'paid':
-				return (((int) $this->date_payed) >= time() && $this->status == 'complete');
+				return (((int) $this->date_paid) >= time() && $this->status == 'complete');
 
 			default:
 				return parent::__get($strKey);

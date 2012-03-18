@@ -61,7 +61,7 @@ class PaymentPaypal extends IsotopePayment
 			return false;
 		}
 
-		if ($objOrder->date_payed > 0 && $objOrder->date_payed <= time())
+		if ($objOrder->date_paid > 0 && $objOrder->date_paid <= time())
 		{
 			IsotopeFrontend::clearTimeout();
 			return true;
@@ -143,7 +143,7 @@ class PaymentPaypal extends IsotopePayment
 			switch( $arrPayment['status'] )
 			{
 				case 'Completed':
-					$objOrder->date_payed = time();
+					$objOrder->date_paid = time();
 					break;
 
 				case 'Canceled_Reversal':
@@ -151,7 +151,7 @@ class PaymentPaypal extends IsotopePayment
 				case 'Expired':
 				case 'Failed':
 				case 'Voided':
-					$objOrder->date_payed = '';
+					$objOrder->date_paid = '';
 					if ($objOrder->status == 'complete')
 					{
 						$objOrder->status = 'on_hold';

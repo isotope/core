@@ -299,6 +299,12 @@ class IsotopeRunonce extends Controller
 		{
 			$this->Database->query("ALTER TABLE tl_iso_orders CHANGE COLUMN store_id config_id int(10) unsigned NOT NULL default '0'");
 		}
+		
+		// tl_iso_orders.date_payed has been renamed to tl_iso_orders.date_paid
+		if ($this->Database->fieldExists('date_payed', 'tl_iso_orders') && !$this->Database->fieldExists('date_paid', 'tl_iso_orders'))
+		{
+			$this->Database->query("ALTER TABLE tl_iso_orders CHANGE COLUMN date_payed date_paid varchar(10) NOT NULL default ''");
+		}
 
 		// tl_iso_config.isDefaultStore has been renamed to tl_iso_config.fallback
 		if ($this->Database->fieldExists('isDefaultStore', 'tl_iso_config') && !$this->Database->fieldExists('fallback', 'tl_iso_config'))

@@ -73,7 +73,7 @@ class PaymentPostfinance extends IsotopePayment
 			$this->redirect($this->addToUrl('step=failed', true));
 		}
 
-		$objOrder->date_payed = time();
+		$objOrder->date_paid = time();
 		$objOrder->save();
 
 		return true;
@@ -121,7 +121,7 @@ class PaymentPostfinance extends IsotopePayment
 			return;
 		}
 
-		$objOrder->date_payed = time();
+		$objOrder->date_paid = time();
 		$objOrder->save();
 	}
 

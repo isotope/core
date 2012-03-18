@@ -22,6 +22,7 @@ Version 1.3.rc2 (2012-??-??)
 - Added support for exception error message in save_callback for IsotopeProduct options
 - Pass checkout module when executing IsotopePayment::checkoutForm() (#2858)
 - Core product attribute "SKU" should ben search-enabled
+- Renamed tl_iso_orders.date_payed to date_paid (#2275)
 
 ### Fixed
 - Pasting new product variant into root node (#2767)
