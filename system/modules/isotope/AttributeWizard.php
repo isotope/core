@@ -323,7 +323,7 @@ class AttributeWizard extends Widget
 
 		foreach ($arrDca as $field => $arrData)
 		{
-			if (is_array($arrData['attributes']) && strlen($arrData['attributes']['legend']) && (!is_array($this->arrDisabledFields) || !in_array($field, $this->arrDisabledFields)))
+			if (is_array($arrData['attributes']) && $arrData['attributes']['legend'] != '' && (!is_array($this->arrDisabledFields) || !in_array($field, $this->arrDisabledFields)))
 			{
 				// Variant options are not available
 				if ($this->variants && ($arrData['attributes']['variant_option'] || $arrData['attributes']['inherit']))
