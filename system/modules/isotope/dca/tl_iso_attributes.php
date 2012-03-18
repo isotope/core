@@ -135,7 +135,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'__selector__'				=> array('type', 'variant_option'),
+		'__selector__'				=> array('type', 'variant_option', 'storeFile'),
 		'default'					=> '{attribute_legend},name,field_name,type,legend',
 		'text'						=> '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},rgxp,maxlength,mandatory,multilingual;{search_filters_legend},fe_search,fe_sorting,be_search',
 		'textarea'					=> '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},rgxp,rte,mandatory,multilingual;{search_filters_legend},fe_search,fe_sorting,be_search',
@@ -148,8 +148,14 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 		'mediaManager'				=> '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},gallery,extensions,mandatory',
 		'fileTree'					=> '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,extensions,files,filesOnly,mandatory',
 		'downloads'					=> '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,extensions,sortBy,files,filesOnly,mandatory',
-
+		'upload'					=> '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},extensions,maxlength,mandatory;{store_legend:hide},storeFile',
     ),
+
+	// Subpalettes
+	'subpalettes' => array
+	(
+		'storeFile'					=> 'uploadFolder,useHomeDir,doNotOverwrite',
+	),
 
     // Fields
 	'fields' => array
@@ -339,8 +345,8 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['fieldType'],
 			'exclude'				=> true,
 			'inputType'				=> 'select',
-			'options'               => array('checkbox', 'radio'),
-			'reference'             => &$GLOBALS['TL_LANG']['tl_iso_attributes'],
+			'options'				=> array('checkbox', 'radio'),
+			'reference'				=> &$GLOBALS['TL_LANG']['tl_iso_attributes'],
 			'eval'					=> array('tl_class'=>'w50'),
 		),
 		'files' => array
@@ -359,11 +365,39 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 		),
 		'sortBy' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_attributes']['sortBy'],
-			'exclude'                 => true,
-			'inputType'               => 'select',
-			'options'                 => array('name_asc', 'name_desc', 'date_asc', 'date_desc', 'meta', 'random'),
-			'reference'               => &$GLOBALS['TL_LANG']['tl_iso_attributes'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['sortBy'],
+			'exclude'				=> true,
+			'inputType'				=> 'select',
+			'options'				=> array('name_asc', 'name_desc', 'date_asc', 'date_desc', 'meta', 'random'),
+			'reference'				=> &$GLOBALS['TL_LANG']['tl_iso_attributes'],
+		),
+		'storeFile' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['storeFile'],
+			'exclude'				=> true,
+			'inputType'				=> 'checkbox',
+			'eval'					=> array('submitOnChange'=>true)
+		),
+		'uploadFolder' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['uploadFolder'],
+			'exclude'				=> true,
+			'inputType'				=> 'fileTree',
+			'eval'					=> array('fieldType'=>'radio', 'tl_class'=>'clr')
+		),
+		'useHomeDir' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['useHomeDir'],
+			'exclude'				=> true,
+			'inputType'				=> 'checkbox',
+			'eval'					=> array('tl_class'=>'w50')
+		),
+		'doNotOverwrite' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['doNotOverwrite'],
+			'exclude'				=> true,
+			'inputType'				=> 'checkbox',
+			'eval'					=> array('tl_class'=>'w50')
 		),
 	)
 );
