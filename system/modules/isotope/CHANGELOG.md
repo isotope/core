@@ -43,6 +43,7 @@ Version 1.3.rc2 (2012-??-??)
 - Duplicating an attribute caused an empty field to be added in database.sql (#2955)
 - saveNcreate did not work in ModuleIsotopeSetup (#2933)
 - new product was not created in the selected group
+- possible error message when page trail is empty (#2797)
 
 ### Other
 - Introducing the "provider" directory for complex callback handlers

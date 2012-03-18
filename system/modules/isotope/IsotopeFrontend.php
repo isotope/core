@@ -223,7 +223,11 @@ class IsotopeFrontend extends Frontend
 				foreach ($objProduct->categories as $pageId)
 				{
 					$objPage = $this->getPageDetails($pageId);
-					$arrTrail = array_merge($arrTrail, $objPage->trail);
+					
+					if (is_array($objPage->trail))
+					{
+						$arrTrail = array_merge($arrTrail, $objPage->trail);
+					}
 				}
 
 				$arrTrail = array_unique($arrTrail);
