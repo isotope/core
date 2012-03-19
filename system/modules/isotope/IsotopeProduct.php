@@ -160,8 +160,8 @@ class IsotopeProduct extends Controller
 
 		$this->formSubmit = 'iso_product_' . $this->arrData['id'];
 		$this->arrType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id=".(int)$this->arrData['type'])->fetchAssoc();
-		$this->arrAttributes = array_keys(deserialize($this->arrType['attributes'], true));
-		$this->arrVariantAttributes = $this->arrType['variants'] ? array_keys(deserialize($this->arrType['variant_attributes'])) : array();
+		$this->arrAttributes = $this->getSortedAttributes($this->arrType['attributes']);
+		$this->arrVariantAttributes = $this->arrType['variants'] ? $this->getSortedAttributes($this->arrType['variant_attributes']) : array();
 		$this->arrCache['list_template'] = $this->arrType['list_template'];
 		$this->arrCache['reader_template'] = $this->arrType['reader_template'];
 		$this->arrOptions = is_array($arrOptions) ? $arrOptions : array();
@@ -1314,6 +1314,21 @@ LEFT OUTER JOIN tl_iso_product_categories c ON p1.id=c.pid AND c.page_id=" . (in
 		}
 
 		return $strSelect;
+	}
+	
+	
+	/**
+	 * Sort the attributes based on their position (from wizard) and return their names only
+	 * @param mixed
+	 * @return array
+	 */
+	protected function getSortedAttributes($varValue)
+	{
+		$arrAttributes = deserialize($varValue, true);
+		
+		uasort($arrAttributes, create_function('$a,$b', 'return $a["position"] > $b["position"];'));
+		
+		return array_keys($arrAttributes);
 	}
 }
 

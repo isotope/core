@@ -44,6 +44,7 @@ Version 1.3.rc2 (2012-03-19)
 - saveNcreate did not work in ModuleIsotopeSetup (#2933)
 - new product was not created in the selected group
 - possible error message when page trail is empty (#2797)
+- sorting of customer defined and variant attributes was incorrect (#2829)
 
 ### Other
 - Introducing the "provider" directory for complex callback handlers
