@@ -748,5 +748,26 @@ class ShippingUPS extends IsotopeShipping
 	protected function getRootNodeName() {
 		return NODE_NAME_ROOT_NODE;
 	} // end function getRootNodeName()
+	
+	
+	/**
+	 * Get the checkout surcharge for this shipping method
+	 */
+	public function getSurcharge($objCollection)
+	{
+		$fltPrice = $this->price;
+
+		if ($fltPrice == 0)
+		{
+			return false;
+		}
+
+		return $this->Isotope->calculateSurcharge(
+								$fltPrice,
+								($GLOBALS['TL_LANG']['MSC']['shippingLabel'] . ' (' . $this->label . ')'),
+								$this->arrData['tax_class'],
+								$objCollection->getProducts(),
+								$this);
+	}
 }
 
