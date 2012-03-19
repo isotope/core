@@ -273,4 +273,23 @@ class ShippingUSPS extends IsotopeShipping
 	}
 
 
+	/**
+	 * Get the checkout surcharge for this shipping method
+	 */
+	public function getSurcharge($objCollection)
+	{
+		$fltPrice = $this->price;
+
+		if ($fltPrice == 0)
+		{
+			return false;
+		}
+
+		return $this->Isotope->calculateSurcharge(
+								$fltPrice,
+								($GLOBALS['TL_LANG']['MSC']['shippingLabel'] . ' (' . $this->label . ')'),
+								$this->arrData['tax_class'],
+								$objCollection->getProducts(),
+								$this);
+	}
 }

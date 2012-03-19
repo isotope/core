@@ -157,4 +157,25 @@ class ShippingOrderTotal extends IsotopeShipping
 <div class="limit_height' . (!$GLOBALS['TL_CONFIG']['doNotCollapse'] ? ' h52' : '') . ' block">
 '. $GLOBALS['TL_LANG']['tl_iso_shipping_options']['option_type'][0] . ': ' . $GLOBALS['TL_LANG']['tl_iso_shipping_options']['types'][$row['option_type']] . '<br><br>' . $row['rate'] .' for '. $row['upper_limit'] . ' based on ' . $row['dest_country'] .', '. $row['dest_region'] . ', ' . $row['dest_zip'] . '</div>' . "\n";
 	}
+	
+
+	/**
+	 * Get the checkout surcharge for this shipping method
+	 */
+	public function getSurcharge($objCollection)
+	{
+		$fltEligibleSubTotal = $this->getAdjustedSubTotal((TL_MODE=='FE' ? $this->Isotope->Cart->subTotal : $this->Isotope->Order->subTotal));
+
+		if ($fltEligibleSubTotal <= 0)
+		{
+			return false;
+		}
+
+		return $this->Isotope->calculateSurcharge(
+								$this->calculateShippingRate($this->id, $fltEligibleSubTotal),
+								($GLOBALS['TL_LANG']['MSC']['shippingLabel'] . ' (' . $this->label . ')'),
+								$this->arrData['tax_class'],
+								$objCollection->getProducts(),
+								$this);
+	}
 }

@@ -115,5 +115,26 @@ class ShippingWeightTotal extends IsotopeShipping
 </table>
 </div>';
 	}
+	
+	
+	/**
+	 * Get the checkout surcharge for this shipping method
+	 */
+	public function getSurcharge($objCollection)
+	{
+		$objOptions = $this->getOptions();
+
+		if (!$objOptions->numRows || $objOptions->rate == 0)
+		{
+			return false;
+		}
+
+		return $this->Isotope->calculateSurcharge(
+								$objOptions->rate,
+								($GLOBALS['TL_LANG']['MSC']['shippingLabel'] . ' (' . $this->label . ')'),
+								$this->arrData['tax_class'],
+								$objCollection->getProducts(),
+								$this);
+	}
 }
 
