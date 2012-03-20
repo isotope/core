@@ -633,7 +633,7 @@ class Isotope extends Controller
 	 */
 	public function getAddress($strStep = 'billing')
 	{
-		if ($strStep == 'shipping' && !FE_USER_LOGGED_IN && $_SESSION['FORM_DATA']['shipping_address'] == -1)
+		if ($strStep == 'shipping' && FE_USER_LOGGED_IN !== true && $_SESSION['FORM_DATA']['shipping_address'] == -1)
 		{
 			$strStep = 'billing';
 		}

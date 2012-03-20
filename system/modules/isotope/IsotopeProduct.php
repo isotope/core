@@ -137,7 +137,7 @@ class IsotopeProduct extends Controller
 		$this->import('Database');
 		$this->import('Isotope');
 
-		if (FE_USER_LOGGED_IN)
+		if (FE_USER_LOGGED_IN === true)
 		{
 			$this->import('FrontendUser', 'User');
 		}
@@ -194,7 +194,7 @@ class IsotopeProduct extends Controller
 				// Find all possible variant options
 				$objVariant = clone $this;
 				$objVariants = $this->Database->execute(IsotopeProduct::getSelectStatement() . " WHERE p1.pid={$this->arrData['id']} AND p1.language=''"
-														. (BE_USER_LOGGED_IN ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)"));
+														. (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)"));
 
 				while ($objVariants->next())
 				{
@@ -237,10 +237,10 @@ class IsotopeProduct extends Controller
 																		WHERE
 																			p1.pid IN (" . implode(',', $this->arrVariantOptions['ids']) . ")
 																			AND p1.config_id IN (" . (int) $this->Isotope->Config->id . ",0)
-																			AND p1.member_group IN(" . ((FE_USER_LOGGED_IN && count($this->User->groups)) ? (implode(',', $this->User->groups).',') : '') . "0)
+																			AND p1.member_group IN(" . ((FE_USER_LOGGED_IN === true && count($this->User->groups)) ? (implode(',', $this->User->groups).',') : '') . "0)
 																			AND (p1.start='' OR p1.start<$time)
 																			AND (p1.stop='' OR p1.stop>$time)
-																		ORDER BY p1.config_id DESC, " . ((FE_USER_LOGGED_IN && count($this->User->groups)) ? ('p1.member_group=' . implode(' DESC, p1.member_group=', $this->User->groups) . ' DESC') : 'p1.member_group DESC') . ", p1.start DESC, p1.stop DESC
+																		ORDER BY p1.config_id DESC, " . ((FE_USER_LOGGED_IN === true && count($this->User->groups)) ? ('p1.member_group=' . implode(' DESC, p1.member_group=', $this->User->groups) . ' DESC') : 'p1.member_group DESC') . ", p1.start DESC, p1.stop DESC
 																	) AS p
 																	GROUP BY pid
 																)
@@ -250,7 +250,7 @@ class IsotopeProduct extends Controller
 					{
 						$objProduct = $this->Database->execute("SELECT MIN(price) AS low_price, MAX(price) AS high_price FROM tl_iso_products
 																WHERE pid=" . ($this->arrData['pid'] ? $this->arrData['pid'] : $this->arrData['id']) . " AND language=''"
-																. (BE_USER_LOGGED_IN ? '' : " AND published='1' AND (start='' OR start<$time) AND (stop='' OR stop>$time)")
+																. (BE_USER_LOGGED_IN === true ? '' : " AND published='1' AND (start='' OR start<$time) AND (stop='' OR stop>$time)")
 																. " GROUP BY pid");
 					}
 
@@ -370,7 +370,7 @@ class IsotopeProduct extends Controller
 					return true;
 				}
 
-				if (!BE_USER_LOGGED_IN && (!$this->arrData['published'] || ($this->arrData['start'] > 0 && $this->arrData['start'] > time()) || ($this->arrData['stop'] > 0 && $this->arrData['stop'] < time())))
+				if (BE_USER_LOGGED_IN !== true && (!$this->arrData['published'] || ($this->arrData['start'] > 0 && $this->arrData['start'] > time()) || ($this->arrData['stop'] > 0 && $this->arrData['stop'] < time())))
 				{
 					return false;
 				}
@@ -1148,11 +1148,11 @@ class IsotopeProduct extends Controller
 														FROM tl_iso_prices
 														WHERE
 															config_id IN (". (int) $this->Isotope->Config->id . ",0)
-															AND member_group IN(" . ((FE_USER_LOGGED_IN && count($this->User->groups)) ? (implode(',', $this->User->groups) . ',') : '') . "0)
+															AND member_group IN(" . ((FE_USER_LOGGED_IN === true && count($this->User->groups)) ? (implode(',', $this->User->groups) . ',') : '') . "0)
 															AND (start='' OR start<$time)
 															AND (stop='' OR stop>$time)
 															AND pid=" . ($this->pid ? $this->pid : $this->id) . "
-														ORDER BY config_id DESC, " . ((FE_USER_LOGGED_IN && count($this->User->groups)) ? ('member_group=' . implode(' DESC, member_group=', $this->User->groups) . ' DESC') : 'member_group DESC') . ", start DESC, stop DESC
+														ORDER BY config_id DESC, " . ((FE_USER_LOGGED_IN === true && count($this->User->groups)) ? ('member_group=' . implode(' DESC, member_group=', $this->User->groups) . ' DESC') : 'member_group DESC') . ", start DESC, stop DESC
 														LIMIT 1
 													)
 												ORDER BY min DESC");

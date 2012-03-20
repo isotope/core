@@ -69,7 +69,7 @@ class ModuleIsotopeOrderHistory extends ModuleIsotope
 
 		$this->iso_config_ids = deserialize($this->iso_config_ids);
 
-		if (!FE_USER_LOGGED_IN || !is_array($this->iso_config_ids) || !count($this->iso_config_ids))
+		if (FE_USER_LOGGED_IN !== true || !is_array($this->iso_config_ids) || !count($this->iso_config_ids))
 		{
 			return '';
 		}

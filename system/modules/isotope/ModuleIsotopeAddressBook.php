@@ -73,7 +73,7 @@ class ModuleIsotopeAddressBook extends ModuleIsotope
 			return $objTemplate->parse();
 		}
 
-		if (!FE_USER_LOGGED_IN)
+		if (FE_USER_LOGGED_IN !== true)
 		{
 			return '';
 		}

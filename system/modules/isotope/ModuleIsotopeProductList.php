@@ -74,7 +74,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		$this->iso_productcache = deserialize($this->iso_productcache, true);
 		
 		// Disable the cache if in preview mode
-		if (BE_USER_LOGGED_IN)
+		if (BE_USER_LOGGED_IN === true)
 		{
 			$this->blnCacheProducts = false;
 		}
@@ -269,7 +269,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		
 		$objProductData = $this->Database->prepare(IsotopeProduct::getSelectStatement() . "
 													WHERE p1.language=''"
-													. (BE_USER_LOGGED_IN ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)")
+													. (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)")
 													. "AND p1.id IN (SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . "))"
 													. (is_array($arrCacheIds) ? ("AND p1.id IN (" . implode(',', $arrCacheIds) . ")") : '')
 													. ($this->iso_list_where == '' ? '' : " AND {$this->iso_list_where}")
@@ -371,7 +371,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			{
 				$time = time();
 				$strWhere = " AND ((p1." . implode(' AND p1.', $arrWhere) . ") OR p1.id IN (SELECT pid FROM tl_iso_products WHERE language='' AND " . implode(' AND ', $arrWhere)
-							. (BE_USER_LOGGED_IN ? '' : " AND published='1' AND (start='' OR start<$time) AND (stop='' OR stop>$time)") . "))";
+							. (BE_USER_LOGGED_IN === true ? '' : " AND published='1' AND (start='' OR start<$time) AND (stop='' OR stop>$time)") . "))";
 				$arrValues = array_merge($arrValues, $arrValues);
 			}
 
