@@ -51,6 +51,7 @@ class IsotopeAutomator extends Controller
 
 		if ($objCarts->numRows)
 		{
+			$arrIds = array();
 			$objCart = new IsotopeCart();
 
 			foreach ($objCarts->fetchEach('id') as $id)
@@ -68,7 +69,13 @@ class IsotopeAutomator extends Controller
 					}
 
 					$objCart->delete();
+					$arrIds[] = $id;
 				}
+			}
+			
+			if (!empty($arrIds))
+			{
+				$this->log('Purged ' . count($arrIds) . ' old guest carts', __METHOD__, TL_CRON);
 			}
 		}
 	}
