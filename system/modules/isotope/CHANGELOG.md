@@ -6,6 +6,7 @@ Version 1.3.0 stable (2012-??-??)
 
 ### Improved
 - PayPal Standard does no longer override the address in debug mode. It could cause issues with international addresses in the sandbox.
+- Use the BYPASS_TOKEN_CHECK constant for postsale script
 
 ### Fixed
 - Do not initialize a cart when running the Contao cron job
