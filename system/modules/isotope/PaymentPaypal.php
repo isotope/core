@@ -253,7 +253,7 @@ class PaymentPaypal extends IsotopePayment
 <input type="hidden" name="rm" value="1"' . $endTag . '
 <input type="hidden" name="invoice" value="' . $objOrder->id . '"' . $endTag . '
 
-<input type="hidden" name="address_override" value="1"' . $endTag . '
+<input type="hidden" name="address_override" value="' . ($this->debug ? '0' : '1') . '"' . $endTag . '
 <input type="hidden" name="first_name" value="' . $this->Isotope->Cart->billingAddress['firstname'] . '"' . $endTag . '
 <input type="hidden" name="last_name" value="' . $this->Isotope->Cart->billingAddress['lastname'] . '"' . $endTag . '
 <input type="hidden" name="address1" value="' . $this->Isotope->Cart->billingAddress['street_1'] . '"' . $endTag . '
