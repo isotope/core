@@ -11,6 +11,7 @@ Version 1.3.0 stable (2012-??-??)
 ### Fixed
 - Do not initialize a cart when running the Contao cron job
 - Force type comparison when checking for BE_/FE_USER_LOGGED_IN (fixes #2976)
+- The product cache caused an endless loop when no results were found
 
 
 Version 1.3.rc2 (2012-03-19)

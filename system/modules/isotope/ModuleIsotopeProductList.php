@@ -126,7 +126,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			// Cache found
 			if ($objCache->numRows)
 			{
-				$arrCacheIds = explode(',', $objCache->products);
+				$arrCacheIds = $objCache->products == '' ? array() : explode(',', $objCache->products);
 
 				// Use the cache if keywords match. Otherwise we will use the product IDs as a "limit" for findProducts()
 				if ($objCache->keywords == $this->Input->get('keywords'))
@@ -177,42 +177,39 @@ class ModuleIsotopeProductList extends ModuleIsotope
 				// Load products
 				$arrProducts = $this->findProducts($arrCacheIds);
 
-				if (!empty($arrProducts))
+				// Decide if we should show the "caching products" message the next time
+				$end = microtime(true) - $start;
+				$this->blnCacheProducts = $end > 1 ? true : false;
+
+				if ($blnCacheMessage != $this->blnCacheProducts)
 				{
-					// Decide if we should show the "caching products" message the next time
-					$end = microtime(true) - $start;
-					$this->blnCacheProducts = $end > 1 ? true : false;
+					$arrCacheMessage = $this->iso_productcache;
+					$arrCacheMessage[$objPage->id][(int) $this->Input->get('isorc')] = $this->blnCacheProducts;
+					$this->Database->prepare("UPDATE tl_module SET iso_productcache=? WHERE id=?")->execute(serialize($arrCacheMessage), $this->id);
+				}
 
-					if ($blnCacheMessage != $this->blnCacheProducts)
+				// Do not write cache if table is locked. That's the case if another process is already writing cache
+				if ($this->Database->query("SHOW OPEN TABLES FROM `{$GLOBALS['TL_CONFIG']['dbDatabase']}` LIKE 'tl_iso_productcache'")->In_use == 0)
+				{
+					$this->Database->lockTables(array('tl_iso_productcache'=>'WRITE', 'tl_iso_products'=>'READ'));
+					$arrIds = array();
+
+					foreach ($arrProducts as $objProduct)
 					{
-						$arrCacheMessage = $this->iso_productcache;
-						$arrCacheMessage[$objPage->id][(int) $this->Input->get('isorc')] = $this->blnCacheProducts;
-						$this->Database->prepare("UPDATE tl_module SET iso_productcache=? WHERE id=?")->execute(serialize($arrCacheMessage), $this->id);
+						$arrIds[] = $objProduct->id;
 					}
+					
+					$intExpires = (int) $this->Database->execute("SELECT MIN(start) AS expires FROM tl_iso_products WHERE start>$time")
+													   ->expires;
 
-					// Do not write cache if table is locked. That's the case if another process is already writing cache
-					if ($this->Database->query("SHOW OPEN TABLES FROM `{$GLOBALS['TL_CONFIG']['dbDatabase']}` LIKE 'tl_iso_productcache'")->In_use == 0)
-					{
-						$this->Database->lockTables(array('tl_iso_productcache'=>'WRITE', 'tl_iso_products'=>'READ'));
-						$arrIds = array();
+					// Also delete all expired caches if we run a delete anyway
+					$this->Database->prepare("DELETE FROM tl_iso_productcache WHERE (page_id=? AND module_id=? AND requestcache_id=? AND keywords=?) OR (expires>0 AND expires<$time)")
+								   ->executeUncached($objPage->id, $this->id, (int)$this->Input->get('isorc'), (string)$this->Input->get('keywords'));
 
-						foreach ($arrProducts as $objProduct)
-						{
-							$arrIds[] = $objProduct->id;
-						}
-						
-						$intExpires = (int) $this->Database->execute("SELECT MIN(start) AS expires FROM tl_iso_products WHERE start>$time")
-														   ->expires;
+					$this->Database->prepare("INSERT INTO tl_iso_productcache (page_id,module_id,requestcache_id,keywords,products,expires) VALUES (?,?,?,?,?,?)")
+								   ->executeUncached($objPage->id, $this->id, (int)$this->Input->get('isorc'), (string)$this->Input->get('keywords'), implode(',', $arrIds), $intExpires);
 
-						// Also delete all expired caches if we run a delete anyway
-						$this->Database->prepare("DELETE FROM tl_iso_productcache WHERE (page_id=? AND module_id=? AND requestcache_id=? AND keywords=?) OR (expires>0 AND expires<$time)")
-									   ->executeUncached($objPage->id, $this->id, (int)$this->Input->get('isorc'), (string)$this->Input->get('keywords'));
-
-						$this->Database->prepare("INSERT INTO tl_iso_productcache (page_id,module_id,requestcache_id,keywords,products,expires) VALUES (?,?,?,?,?,?)")
-									   ->executeUncached($objPage->id, $this->id, (int)$this->Input->get('isorc'), (string)$this->Input->get('keywords'), implode(',', $arrIds), $intExpires);
-
-						$this->Database->unlockTables();
-					}
+					$this->Database->unlockTables();
 				}
 			}
 			else
@@ -288,7 +285,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 	protected function generatePagination($total)
 	{
 		// Add pagination
-		if ($this->perPage > 0)
+		if ($this->perPage > 0 && $total > 0)
 		{
 			$page = $this->Input->get('page') ? $this->Input->get('page') : 1;
 
