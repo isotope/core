@@ -8,6 +8,7 @@ Version 1.3.0 stable (2012-??-??)
 - PayPal Standard does no longer override the address in debug mode. It could cause issues with international addresses in the sandbox.
 
 ### Fixed
+- Do not initialize a cart when running the Contao cron job
 
 
 Version 1.3.rc2 (2012-03-19)

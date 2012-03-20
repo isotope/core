@@ -112,7 +112,7 @@ class Isotope extends Controller
 				self::$objInstance->resetConfig();
 			}
 	
-			if (TL_MODE == 'FE' && strpos(self::$objInstance->Environment->script, 'postsale.php') === false)
+			if (TL_MODE == 'FE' && strpos(self::$objInstance->Environment->script, 'postsale.php') === false && strpos(self::$objInstance->Environment->script, 'cron.php') === false)
 			{
 				self::$objInstance->Cart = new IsotopeCart();
 				self::$objInstance->Cart->initializeCart((int)self::$objInstance->Config->id, (int)self::$objInstance->Config->store_id);
