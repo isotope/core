@@ -106,7 +106,4 @@ $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['parent'] = 'Catégor
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['product'] = 'Produit actuel des catégories';
 $GLOBALS['TL_LANG']['tl_module']['sortingDirection']['ASC'] = 'ASC';
 $GLOBALS['TL_LANG']['tl_module']['sortingDirection']['DESC'] = 'DESC';
-$GLOBALS['TL_LANG']['tl_module']['featured_legend'] = 'Paramètres du produit vedette';
-$GLOBALS['TL_LANG']['tl_module']['config_legend'] = 'Paramètres de configuration';
-$GLOBALS['TL_LANG']['tl_module']['display_legend'] = 'Paramètres d\'affichage';
 

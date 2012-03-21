@@ -113,7 +113,4 @@ $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['parent'] = 'Parent c
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['product'] = 'Huidige product categoriën';
 $GLOBALS['TL_LANG']['tl_module']['sortingDirection']['ASC'] = 'oplopende';
 $GLOBALS['TL_LANG']['tl_module']['sortingDirection']['DESC'] = 'aflopende';
-$GLOBALS['TL_LANG']['tl_module']['featured_legend'] = 'Featured product instellingen';
-$GLOBALS['TL_LANG']['tl_module']['config_legend'] = 'Configuratie instellingen';
-$GLOBALS['TL_LANG']['tl_module']['display_legend'] = 'Weergave instellingen';
 

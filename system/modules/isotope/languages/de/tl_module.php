@@ -62,9 +62,9 @@ $GLOBALS['TL_LANG']['tl_module']['iso_order_conditions'][1] = 'Optional: Wählen
 $GLOBALS['TL_LANG']['tl_module']['iso_addToAddressbook'][0] = 'Zum Adressbuch hinzufügen';
 $GLOBALS['TL_LANG']['tl_module']['iso_addToAddressbook'][1] = 'Neue Adressen zum Mitglieder-Adressbuch hinzufügen (wenn angemeldet)';
 $GLOBALS['TL_LANG']['tl_module']['iso_noProducts'][0] = 'Nachricht für leere Listen';
-$GLOBALS['TL_LANG']['tl_module']['iso_noProducts'][1] = 'Geben Sie eine individuelle Nachricht ein die angezeigt wird, falls die Produktliste leer ist.';
+$GLOBALS['TL_LANG']['tl_module']['iso_noProducts'][1] = 'Geben Sie eine individuelle Nachricht ein die angezeigt wird, wenn keine Produkte anzuzeigen sind.';
 $GLOBALS['TL_LANG']['tl_module']['iso_emptyMessage'][0] = 'Leer-Nachricht angeben';
-$GLOBALS['TL_LANG']['tl_module']['iso_emptyMessage'][1] = 'Legen Sie eine individuelle Nachricht an, wenn die Produktliste leer ist.';
+$GLOBALS['TL_LANG']['tl_module']['iso_emptyMessage'][1] = 'Legen Sie eine individuelle Nachricht ein, falls keine Produkte angezeigt werden.';
 $GLOBALS['TL_LANG']['tl_module']['orderCompleteJumpTo'][0] = 'Bestellbestätigungs-Weiterleitungsseite';
 $GLOBALS['TL_LANG']['tl_module']['orderCompleteJumpTo'][1] = 'Wählen Sie eine Seite aus, zu der der Kunde weitergeleitet wird, wenn seine Bestellung abgeschlossen wurde.';
 $GLOBALS['TL_LANG']['tl_module']['iso_jump_first'][0] = 'Zum ersten Produkt weiterleiten';
@@ -103,8 +103,8 @@ $GLOBALS['TL_LANG']['tl_module']['iso_listingSortDirection'][0] = 'Anfängliche 
 $GLOBALS['TL_LANG']['tl_module']['iso_listingSortDirection'][1] = 'Wählen Sie eine anfängliche Sortierrichtung.';
 $GLOBALS['TL_LANG']['tl_module']['iso_buttons'][0] = 'Schaltflächen';
 $GLOBALS['TL_LANG']['tl_module']['iso_buttons'][1] = 'Wählen Sie welche Schaltflächen angezeigt werden sollen.';
-$GLOBALS['TL_LANG']['tl_module']['iso_forward_review'][0] = 'Vorwärts zur Bewertungsseite';
-$GLOBALS['TL_LANG']['tl_module']['iso_forward_review'][1] = 'Den Nutzer zur Bewertungsseite weiterleiten, falls keine weiteren Daten in einem Schritt benötigt werden.';
+$GLOBALS['TL_LANG']['tl_module']['iso_forward_review'][0] = 'Weiterleiten zur Bestätigungsseite';
+$GLOBALS['TL_LANG']['tl_module']['iso_forward_review'][1] = 'Den Nutzer zur Bestätigungsseite weiterleiten, wenn alle benötigten Daten vorhanden sind.';
 $GLOBALS['TL_LANG']['tl_module']['iso_related_categories'][0] = 'Ähnliche Kategorien';
 $GLOBALS['TL_LANG']['tl_module']['iso_related_categories'][1] = 'Wählen Sie Kategorien aus denen Produkte angezeigt werden sollen.';
 $GLOBALS['TL_LANG']['tl_module']['iso_includeMessages'][0] = 'Meldungen ausgeben';
@@ -120,9 +120,6 @@ $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['parent'] = 'Eltern-K
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['product'] = 'Kategorien des aktiven Produkts';
 $GLOBALS['TL_LANG']['tl_module']['sortingDirection']['ASC'] = 'Aufwärts';
 $GLOBALS['TL_LANG']['tl_module']['sortingDirection']['DESC'] = 'Abwärts';
-$GLOBALS['TL_LANG']['tl_module']['featured_legend'] = 'Sonderprodukte-Einstellungen';
-$GLOBALS['TL_LANG']['tl_module']['config_legend'] = 'Konfigurations-Einstellungen';
-$GLOBALS['TL_LANG']['tl_module']['display_legend'] = 'Anzeige-Einstellungen';
 
 
 /**
