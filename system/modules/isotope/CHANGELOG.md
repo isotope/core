@@ -16,6 +16,7 @@ Version 1.3.0 stable (2012-??-??)
 - Force type comparison when checking for BE_/FE_USER_LOGGED_IN (fixes #2976)
 - The product cache caused an endless loop when no results were found
 - Missing whitespace between HTML tags
+- ID attribute for quantity_requested was incorrect in list templates
 
 
 Version 1.3.rc2 (2012-03-19)
