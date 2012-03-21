@@ -802,7 +802,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		}
 
 		$this->import('IsotopeFrontend');
-		$objForm = $this->IsotopeFrontend->prepareForm($this->iso_order_conditions, $this->strFormId, array('tableless'=>$this->tableless));
+		$objForm = $this->IsotopeFrontend->prepareForm($this->iso_order_conditions, $this->strFormId);
 
 		// Form not found
 		if ($objForm == null)
