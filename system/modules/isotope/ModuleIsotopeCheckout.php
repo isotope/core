@@ -828,7 +828,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 		$objTemplate = new IsotopeTemplate('iso_checkout_order_conditions');
 		$objTemplate->attributes	= $objForm->attributes;
-		$objTemplate->tableless		= $this->tableless;
+		$objTemplate->tableless		= $objForm->arrData['tableless'];
 
 		$parse = create_function('$a', 'return $a->parse();');
 		$objTemplate->hidden = implode('', array_map($parse, $objForm->arrHidden));
