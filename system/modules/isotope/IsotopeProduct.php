@@ -1081,27 +1081,20 @@ class IsotopeProduct extends Controller
 				// Trigger the save_callback
 				if (is_array($arrData['save_callback']))
 				{
-					try
+					foreach ($arrData['save_callback'] as $callback)
 					{
-						foreach ($arrData['save_callback'] as $callback)
+						$this->import($callback[0]);
+						
+						try
 						{
-							$this->import($callback[0]);
-							
-							try
-							{
-								$varValue = $this->$callback[0]->$callback[1]($varValue, $this);
-							}
-							catch (Exception $e)
-							{
-								$objWidget->class = 'error';
-								$objWidget->addError($e->getMessage());
-							}
+							$varValue = $this->$callback[0]->$callback[1]($varValue, $this);
 						}
-					}
-					catch (Exception $e)
-					{
-						$objWidget->addError($e->getMessage());
-						$this->doNotSubmit = true;
+						catch (Exception $e)
+						{
+							$objWidget->class = 'error';
+							$objWidget->addError($e->getMessage());
+							$this->doNotSubmit = true;
+						}
 					}
 				}
 
