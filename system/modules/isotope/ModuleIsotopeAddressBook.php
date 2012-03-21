@@ -243,7 +243,7 @@ class ModuleIsotopeAddressBook extends ModuleIsotope
 			$arrData['eval']['tableless'] = $this->tableless;
 			$arrData['eval']['required'] = ($objAddress->$field == '' && $arrData['eval']['mandatory']) ? true : false;
 
-			$objWidget = new $strClass($this->prepareForWidget($arrData, $field, $objAddress->$field));
+			$objWidget = new $strClass($this->prepareForWidget($arrData, $field, ($objAddress->$field ? $objAddress->$field : $arrData['default'])));
 
 			$objWidget->storeValues = true;
 			$objWidget->rowClass = 'row_'.$row . (($row == 0) ? ' row_first' : '') . ((($row % 2) == 0) ? ' even' : ' odd');

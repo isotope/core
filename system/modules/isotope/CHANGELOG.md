@@ -17,6 +17,9 @@ Version 1.3.0 stable (2012-??-??)
 - The product cache caused an endless loop when no results were found
 - Missing whitespace between HTML tags
 - ID attribute for quantity_requested was incorrect in list templates
+- Incorrect usage of "rowClass" in mod_iso_addressbook templates
+- Missing address labels are not hidden, leaving empty h2 tags in mod_iso_addressbook templates
+- Default county is not set in Address Book edit mode for new address entry form
 
 
 Version 1.3.rc2 (2012-03-19)
