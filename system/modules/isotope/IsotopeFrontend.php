@@ -214,29 +214,35 @@ class IsotopeFrontend extends Frontend
 		{
 			static $arrTrail = null;
 
-			// Only fetch the product once. getProductByAlias will return null if the product is not found.
+			// Only fetch the product once
 			if ($arrTrail == null)
 			{
 				$arrTrail = array();
 				$objProduct = self::getProductByAlias($this->Input->get('product'));
                 
-                // make sure categories is an array
-                $arrCategories = (is_array($objProduct->categories) && count($objProduct->categories)) ? $objProduct->categories : array();
-
-                foreach ($arrCategories as $pageId)
-				{
-					$objPage = $this->getPageDetails($pageId);
-					
-					if (is_array($objPage->trail))
+                // getProductByAlias will return null if the product is not found
+                if ($objProduct !== null)
+                {
+	                $arrCategories = $objProduct->categories;
+	
+					if (is_array($arrCategories) && !empty($arrCategories))
 					{
-						$arrTrail = array_merge($arrTrail, $objPage->trail);
+		                foreach ($arrCategories as $pageId)
+						{
+							$objPage = $this->getPageDetails($pageId);
+							
+							if (is_array($objPage->trail))
+							{
+								$arrTrail = array_merge($arrTrail, $objPage->trail);
+							}
+						}
+
+						$arrTrail = array_unique($arrTrail);
 					}
 				}
-
-				$arrTrail = array_unique($arrTrail);
 			}
 
-			if (count($arrTrail))
+			if (!empty($arrTrail))
 			{
 				$arrItems = $objTemplate->items;
 
