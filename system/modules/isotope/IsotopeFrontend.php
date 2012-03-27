@@ -219,8 +219,11 @@ class IsotopeFrontend extends Frontend
 			{
 				$arrTrail = array();
 				$objProduct = self::getProductByAlias($this->Input->get('product'));
+                
+                // make sure categories is an array
+                $arrCategories = (is_array($objProduct->categories) && count($objProduct->categories)) ? $objProduct->categories : array();
 
-				foreach ($objProduct->categories as $pageId)
+                foreach ($arrCategories as $pageId)
 				{
 					$objPage = $this->getPageDetails($pageId);
 					
