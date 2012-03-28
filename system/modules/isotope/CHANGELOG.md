@@ -22,6 +22,7 @@ Version 1.3.0 stable (2012-??-??)
 - Missing address labels are not hidden, leaving empty h2 tags in mod_iso_addressbook templates
 - Default county is not set in Address Book edit mode for new address entry form
 - Fixed warning when product was not assigned to any category (#2998)
+- The back button in shop config list did not work
 
 
 Version 1.3.rc2 (2012-03-19)
