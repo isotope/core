@@ -10,6 +10,7 @@ Version 1.3.0 stable (2012-??-??)
 - Write log protocol when deleting guest cards
 - Updated palettes and legend labels in tl_module (#2975)
 - Now uses the "tableless" setting of the form generator in checkout module's order review form
+- When member countries are limited and only one result is available, set it as the default field value.
 
 ### Fixed
 - Do not initialize a cart when running the Contao cron job
