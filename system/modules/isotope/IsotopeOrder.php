@@ -95,9 +95,11 @@ class IsotopeOrder extends IsotopeProductCollection
 				return $objStatus->paid ? true : false;
 			
 			case 'statusLabel':
-				return $this->Database->prepare("SELECT name FROM tl_iso_orderstatus WHERE id=?")
-									  ->execute($this->arrData['status'])
-									  ->name;
+				$strStatus = $this->Database->prepare("SELECT name FROM tl_iso_orderstatus WHERE id=?")
+											->execute($this->arrData['status'])
+											->name;
+				
+				return $this->Isotope->translate($strStatus);
 				break;
 
 			default:
@@ -261,8 +263,6 @@ class IsotopeOrder extends IsotopeProductCollection
 		{
 			return true;
 		}
-
-		$this->import('Isotope');
 
 		// This is the case when not using ModuleIsotopeCheckout
 		if (!is_object($objCart))
@@ -463,8 +463,6 @@ class IsotopeOrder extends IsotopeProductCollection
 	 */
 	public function getEmailData()
 	{
-		$this->import('Isotope');
-		
 		$arrData = $this->email_data;
 		$arrData['order_id'] = $this->order_id;
 		$arrData['status'] = $this->statusLabel;
