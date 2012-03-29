@@ -183,6 +183,10 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 			'sorting'				=> true,
 			'inputType'             => 'select',
 			'options'         		=> IsotopeBackend::getOrderStatus(),
+			'save_callback'			=> array
+			(
+				array('tl_iso_orders', 'updateStatus'),
+			),
 		),
 		'date' => array
 		(
@@ -760,6 +764,38 @@ class tl_iso_orders extends Backend
 
 		// Stop script execution
 		exit;
+	}
+	
+	
+	/**
+	 * Trigger order status update when changing the status in the backend
+	 * @param string
+	 * @param DataContainer
+	 * @return string
+	 * @link http://www.contao.org/callbacks.html#save_callback
+	 */
+	public function updateStatus($varValue, $dc)
+	{
+		if ($dc->activeRecord && $dc->activeRecord->status != $varValue)
+		{
+			$objOrder = new IsotopeOrder();
+		
+			if ($objOrder->findBy('id', $dc->id))
+			{
+				if ($objOrder->updateOrderStatus($varValue))
+				{
+					return $varValue;
+				}
+				
+				// Status update has been cancelled, do not update
+				else
+				{
+					return $dc->activeRecord->status;
+				}
+			}
+		}
+		
+		return $varValue;
 	}
 
 
