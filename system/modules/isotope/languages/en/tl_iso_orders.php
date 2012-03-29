@@ -62,6 +62,7 @@ $GLOBALS['TL_LANG']['tl_iso_orders']['opLabel']					= 'Name of Surcharge';
 $GLOBALS['TL_LANG']['tl_iso_orders']['opPrice']					= 'Price';
 $GLOBALS['TL_LANG']['tl_iso_orders']['opTaxClass']				= 'Tax Class';
 $GLOBALS['TL_LANG']['tl_iso_orders']['opAddTax']				= 'Add Tax?';
+$GLOBALS['TL_LANG']['tl_iso_orders']['orderStatusEmail']		= 'The status of your order has been updated and the client has been notified by email.';
 
 
 /**

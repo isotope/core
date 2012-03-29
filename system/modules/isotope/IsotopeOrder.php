@@ -432,6 +432,11 @@ class IsotopeOrder extends IsotopeProductCollection
 			if ($objNewStatus->mail_customer && $this->iso_customer_email != '')
 			{
 				$this->Isotope->sendMail($objNewStatus->mail_customer, $this->iso_customer_email, $this->language, $arrData, '', $this);
+				
+				if (TL_MODE == 'BE')
+				{
+					$this->addConfirmationMessage($GLOBALS['TL_LANG']['tl_iso_orders']['orderStatusEmail']);
+				}
 			}
 			
 			if ($objNewStatus->mail_admin && $this->iso_sales_email != '')
