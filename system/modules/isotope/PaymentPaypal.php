@@ -140,10 +140,7 @@ class PaymentPaypal extends IsotopePayment
 				case 'Failed':
 				case 'Voided':
 					$objOrder->date_paid = '';
-					if ($objOrder->status == 'complete')
-					{
-						$objOrder->status = 'on_hold';
-					}
+					$objOrder->status = $this->Isotope->Config->orderstatus_error;
 					break;
 
 				case 'In-Progress':

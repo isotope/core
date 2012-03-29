@@ -483,11 +483,11 @@ $return .= '</div></div>';
 			switch($arrResponses['transaction-status'])
 			{
 				case 'Approved':
-					$objOrder->status = $this->new_order_status;
+					$objOrder->status = ($this->new_order_status ? $this->new_order_status : $this->Isotope->Config->orderstatus_new);
 					$blnFail = false;
 					break;
 				default:
-					$objOrder->status = 'on_hold';
+					$objOrder->status = $this->Isotope->Config->orderstatus_error;
 					$blnFail = true;
 					break;
 
