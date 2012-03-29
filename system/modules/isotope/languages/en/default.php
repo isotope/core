@@ -175,15 +175,6 @@ $GLOBALS['TL_LANG']['MSC']['iso_sku_header'] = 'SKU';
 $GLOBALS['TL_LANG']['MSC']['iso_product_name_header'] = 'Product Name';
 $GLOBALS['TL_LANG']['MSC']['iso_card_name_title'] = 'Name on Credit Card';
 
-
-// Order status options
-$GLOBALS['TL_LANG']['ORDER']['pending']		= 'Pending';
-$GLOBALS['TL_LANG']['ORDER']['processing']	= 'Processing';
-$GLOBALS['TL_LANG']['ORDER']['complete']	= 'Complete';
-$GLOBALS['TL_LANG']['ORDER']['on_hold']		= 'On Hold';
-$GLOBALS['TL_LANG']['ORDER']['cancelled']	= 'Cancelled';
-
-
 $GLOBALS['TL_LANG']['MSC']['low_to_high'] = 'lo to hi';
 $GLOBALS['TL_LANG']['MSC']['high_to_low'] = 'hi to lo';
 $GLOBALS['TL_LANG']['MSC']['a_to_z'] = 'A to Z';

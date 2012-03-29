@@ -66,7 +66,8 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 		(
 			'mode'                    => 2,
 			'fields'                  => array('date DESC'),
-			'panelLayout'             => 'filter;sort,search,limit'
+			'panelLayout'             => 'filter;sort,search,limit',
+			'filter'                  => array(array('status>?', '0')),
 		),
 		'label' => array
 		(
@@ -181,8 +182,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 			'filter'                => true,
 			'sorting'				=> true,
 			'inputType'             => 'select',
-			'options'         		=> $GLOBALS['ISO_ORDER'],
-			'reference'         	=> &$GLOBALS['TL_LANG']['ORDER'],
+			'options'         		=> IsotopeBackend::getOrderStatus(),
 		),
 		'date' => array
 		(
@@ -523,34 +523,39 @@ class tl_iso_orders extends Backend
 	public function checkPermission($dc)
 	{
 		$this->import('BackendUser', 'User');
+		
+		if ($this->User->isAdmin)
+		{
+			return;
+		}
+		
+		// Only admins can delete orders. Others should set the status to cancelled.
+		unset($GLOBALS['TL_DCA']['tl_iso_orders']['list']['operations']['delete']);
+		if ($this->Input->get('act') == 'delete' || $this->Input->get('act') == 'deleteAll')
+		{
+			$this->log('Only admin can delete orders!', __METHOD__, TL_ERROR);
+			$this->redirect($this->Environment->script.'?act=error');
+		}
+		
+		$arrIds = array(0);
 		$arrConfigs = $this->User->iso_configs;
 
-		if ($this->User->isAdmin || (is_array($arrConfigs) && count($arrConfigs)))
+		if (is_array($arrConfigs) && !empty($arrConfigs))
 		{
-			$arrIds = $this->Database->execute("SELECT id FROM tl_iso_orders WHERE status!=''" . ($this->User->isAdmin ? '' : " AND config_id IN (".implode(',', $arrConfigs).")"))->fetchEach('id');
-		}
-
-		if (!count($arrIds))
-		{
-			$arrIds = array(0);
+			$objOrders = $this->Database->query("SELECT id FROM tl_iso_orders WHERE config_id IN (" . implode(',', $arrConfigs) . ")");
+			
+			if ($objOrders->numRows)
+			{
+				$arrIds = $objOrders->fetchEach('id');
+			}
 		}
 
 		$GLOBALS['TL_DCA']['tl_iso_orders']['list']['sorting']['root'] = $arrIds;
 
-		if (!$this->User->isAdmin)
+		if ($this->Input->get('id') != '' && !in_array($this->Input->get('id'), $arrIds))
 		{
-			unset($GLOBALS['TL_DCA']['tl_iso_orders']['list']['operations']['delete']);
-
-			if ($this->Input->get('act') == 'delete' || $this->Input->get('act') == 'deleteAll')
-			{
-				$this->log('Only admin can delete orders!', __METHOD__, TL_ERROR);
-				$this->redirect($this->Environment->script.'?act=error');
-			}
-			elseif (strlen($this->Input->get('id')) && !in_array($this->Input->get('id'), $arrIds))
-			{
-				$this->log('Trying to access disallowed order ID '.$this->Input->get('id'), __METHOD__, TL_ERROR);
-				$this->redirect($this->Environment->script.'?act=error');
-			}
+			$this->log('Trying to access disallowed order ID '.$this->Input->get('id'), __METHOD__, TL_ERROR);
+			$this->redirect($this->Environment->script.'?act=error');
 		}
 	}
 

@@ -454,7 +454,7 @@ CREATE TABLE `tl_iso_orders` (
   `date` int(10) unsigned NOT NULL default '0',
   `date_paid` varchar(10) NOT NULL default '',
   `date_shipped` varchar(10) NOT NULL default '',
-  `status` varchar(32) NOT NULL default '',
+  `status` int(10) unsigned NOT NULL default '0',
 
   `order_id` varchar(14) NOT NULL default '',
   `uniqid` varchar(27) NOT NULL default '',
