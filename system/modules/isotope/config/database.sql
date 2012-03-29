@@ -211,6 +211,8 @@ CREATE TABLE `tl_iso_config` (
   `orderPrefix` varchar(5) NOT NULL default '',
   `orderDigits` int(1) unsigned NOT NULL default '4',
   `templateGroup` varchar(255) NOT NULL default '',
+  `orderstatus_new` int(10) unsigned NOT NULL default '0',
+  `orderstatus_error` int(10) unsigned NOT NULL default '0',
   `invoiceLogo` varchar(255) NOT NULL default '',
   `company` varchar(255) NOT NULL default '',
   `firstname` varchar(255) NOT NULL default '',
