@@ -427,6 +427,7 @@ class IsotopeOrder extends IsotopeProductCollection
 		if ($objNewStatus->mail_customer > 0 || $objNewStatus->mail_admin > 0)
 		{
 			$arrData = $this->getEmailData();
+			$arrData['new_status'] = $objNewStatus->name;
 	
 			if ($objNewStatus->mail_customer && $this->iso_customer_email != '')
 			{
@@ -466,6 +467,7 @@ class IsotopeOrder extends IsotopeProductCollection
 		
 		$arrData = $this->email_data;
 		$arrData['order_id'] = $this->order_id;
+		$arrData['status'] = $this->statusLabel;
 
 		foreach ($this->billing_address as $k => $v)
 		{
