@@ -915,7 +915,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		$objOrder->grandTotal		= $this->Isotope->Cart->grandTotal;
 		$objOrder->surcharges		= $this->Isotope->Cart->getSurcharges();
 		$objOrder->checkout_info	= $this->getCheckoutInfo();
-		$objOrder->status			= '';
+		$objOrder->status			= 0;
 		$objOrder->language			= $GLOBALS['TL_LANGUAGE'];
 		$objOrder->billing_address	= $this->Isotope->Cart->billingAddress;
 		$objOrder->shipping_address	= $this->Isotope->Cart->shippingAddress;

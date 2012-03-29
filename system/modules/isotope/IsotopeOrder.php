@@ -83,7 +83,22 @@ class IsotopeOrder extends IsotopeProductCollection
 				return deserialize($this->arrData['shipping_address'], true);
 			
 			case 'paid':
-				return (((int) $this->date_paid) >= time() && $this->status == 'complete');
+				// Order is paid if a payment date is set
+				$paid = (int) $this->date_paid;
+				if ($paid > 0 && $paid <= time())
+				{
+					return true;
+				}
+				
+				// Otherwise we check the orderstatus checkbox
+				$objStatus = $this->Database->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $this->status);
+				return $objStatus->paid ? true : false;
+			
+			case 'statusLabel':
+				return $this->Database->prepare("SELECT name FROM tl_iso_orderstatus WHERE id=?")
+									  ->execute($this->arrData['status'])
+									  ->name;
+				break;
 
 			default:
 				return parent::__get($strKey);
@@ -289,7 +304,7 @@ class IsotopeOrder extends IsotopeProductCollection
 		$objCart->delete();
 
 		$this->checkout_complete = true;
-		$this->status = $this->new_order_status;
+		$this->status = ($this->new_order_status ? $this->new_order_status : $this->Isotope->Config->orderstatus_new);
 		$arrData = $this->email_data;
 		$arrData['order_id'] = $this->generateOrderId();
 

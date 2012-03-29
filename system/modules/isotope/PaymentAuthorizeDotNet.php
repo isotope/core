@@ -486,6 +486,7 @@ $return .= '</div></div>';
 					$objOrder->status = ($this->new_order_status ? $this->new_order_status : $this->Isotope->Config->orderstatus_new);
 					$blnFail = false;
 					break;
+
 				default:
 					$objOrder->status = $this->Isotope->Config->orderstatus_error;
 					$blnFail = true;
