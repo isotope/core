@@ -200,22 +200,6 @@ abstract class IsotopePayment extends Frontend
 
 
 	/**
-	 * Return a list of order status options
-	 * Allowed return values are ($GLOBALS['ISO_ORDER']):
-	 * - pending
-	 * - processing
-	 * - complete
-	 * - on_hold
-	 * - cancelled
-	 * @return array
-	 */
-	public function statusOptions()
-	{
-		return array('pending', 'processing');
-	}
-
-
-	/**
 	 * Process checkout payment. Must be implemented in each payment module
 	 * @access public
 	 * @return mixed

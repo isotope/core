@@ -36,18 +36,6 @@ class PaymentPaypal extends IsotopePayment
 {
 
 	/**
-	 * Return a list of status options.
-	 *
-	 * @access public
-	 * @return array
-	 */
-	public function statusOptions()
-	{
-		return array('pending', 'processing', 'complete', 'on_hold');
-	}
-
-
-	/**
 	 * processPayment function.
 	 *
 	 * @access public

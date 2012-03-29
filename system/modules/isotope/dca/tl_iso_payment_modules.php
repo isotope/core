@@ -182,10 +182,8 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['new_order_status'],
 			'exclude'                 => true,
 			'inputType'               => 'select',
-			'default'                 => 'pending',
-			'options_callback'        => array('tl_iso_payment_modules', 'getOrderStatus'),
-			'reference'               => &$GLOBALS['TL_LANG']['ORDER'],
-			'eval'                    => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50'),
+			'options'                 => IsotopeBackend::getOrderStatus(),
+			'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
 		),
 		'price' => array
 		(
@@ -607,32 +605,6 @@ class tl_iso_payment_modules extends Backend
 		}
 
 		return $arrCCTypes;
-	}
-
-
-	/**
-	 * Get order status and return it as array
-	 * @param object
-	 * @return array
-	 */
-	public function getOrderStatus($dc)
-	{
-		$objModule = $this->Database->prepare("SELECT * FROM tl_iso_payment_modules WHERE id=?")->limit(1)->execute($dc->id);
-		$strClass = $GLOBALS['ISO_PAY'][$objModule->type];
-
-		if (!strlen($strClass) || !$this->classFileExists($strClass))
-		{
-			return array();
-		}
-
-		try
-		{
-			$objModule = new $strClass($objModule->row());
-			return $objModule->statusOptions();
-		}
-		catch (Exception $e) {}
-
-		return array();
 	}
 
 
