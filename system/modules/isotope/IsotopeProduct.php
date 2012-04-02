@@ -619,7 +619,11 @@ class IsotopeProduct extends Controller
 			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['customer_defined'] || $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
 			{
 				$objTemplate->hasOptions = true;
-				$arrProductOptions[$attribute]['html'] = $this->generateProductOptionWidget($attribute);
+				$arrProductOptions[$attribute] = array_merge($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute], array
+				(
+					'name'	=> $attribute,
+					'html'	=> $this->generateProductOptionWidget($attribute),
+				));
 
 				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
 				{
@@ -712,11 +716,12 @@ class IsotopeProduct extends Controller
 		{
 			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
 			{
-				$arrOptions[] = array
+				$arrOptions[] = array_merge($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute], array
 				(
-					'id' => ('ctrl_' . $attribute . '_' . $this->formSubmit),
-					'html' => $this->generateProductOptionWidget($attribute, true),
-				);
+					'id'	=> ('ctrl_' . $attribute . '_' . $this->formSubmit),
+					'name'	=> $attribute,
+					'html'	=> $this->generateProductOptionWidget($attribute, true),
+				));
 			}
 			elseif (in_array($attribute, $this->arrVariantAttributes))
 			{
@@ -726,26 +731,29 @@ class IsotopeProduct extends Controller
 
 					foreach ((array) $this->Isotope->Config->imageSizes as $size)
 					{
-						$arrOptions[] = array
+						$arrOptions[] = array_merge($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute], array
 						(
-							'id' => ($this->formSubmit . '_' . $attribute . '_' . $size['name'] . 'size'),
-							'html' => $objGallery->generateMainImage($size['name']),
-						);
+							'id'	=> ($this->formSubmit . '_' . $attribute . '_' . $size['name'] . 'size'),
+							'name'	=> $attribute,
+							'html'	=> $objGallery->generateMainImage($size['name']),
+						));
 					}
 
-					$arrOptions[] = array
+					$arrOptions[] = array_merge($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute], array
 					(
 						'id' => ($this->formSubmit . '_' . $attribute . '_gallery'),
+						'name'	=> $attribute,
 						'html' => $objGallery->generateGallery(),
-					);
+					));
 				}
 				else
 				{
-					$arrOptions[] = array
+					$arrOptions[] = array_merge($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute], array
 					(
 						'id' => ($this->formSubmit . '_' . $attribute),
+						'name'	=> $attribute,
 						'html' => $this->generateAttribute($attribute, $varValue),
-					);
+					));
 				}
 			}
 		}
