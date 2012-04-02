@@ -39,10 +39,6 @@ $GLOBALS['TL_DCA']['tl_iso_addresses'] = array
 	(
 		'ptable'					=> 'tl_member',
 		'dataContainer'				=> 'Table',
-		'onsubmit_callback' => array
-		(
-			array('tl_iso_addresses', 'updateDefaultAddress'),
-		)
 	),
 
 	// List
@@ -112,7 +108,7 @@ $GLOBALS['TL_DCA']['tl_iso_addresses'] = array
 			'exclude'				=> true,
 			'search'				=> true,
 			'inputType'				=> 'text',
-			'eval'					=> array('mandatory'=>true, 'maxlength'=>255, 'feEditable'=>true, 'feGroup'=>'address', 'tl_class'=>'w50')
+			'eval'					=> array('maxlength'=>255, 'feEditable'=>true, 'feGroup'=>'address', 'tl_class'=>'w50')
 		),
 		'store_id' => array
 		(
@@ -242,7 +238,11 @@ $GLOBALS['TL_DCA']['tl_iso_addresses'] = array
 			'exclude'				=> true,
 			'filter'				=> true,
 			'inputType'				=> 'checkbox',
-			'eval'					=> array('feEditable'=>true, 'feGroup'=>'login', 'membersOnly'=>true, 'tl_class'=>'w50')
+			'eval'					=> array('feEditable'=>true, 'feGroup'=>'login', 'membersOnly'=>true, 'tl_class'=>'w50'),
+			'save_callback' => array
+			(
+				array('tl_iso_addresses', 'updateDefault'),
+			),
 		),
 		'isDefaultShipping' => array
 		(
@@ -250,7 +250,11 @@ $GLOBALS['TL_DCA']['tl_iso_addresses'] = array
 			'exclude'				=> true,
 			'filter'				=> true,
 			'inputType'				=> 'checkbox',
-			'eval'					=> array('feEditable'=>true, 'feGroup'=>'login', 'membersOnly'=>true, 'tl_class'=>'w50')
+			'eval'					=> array('feEditable'=>true, 'feGroup'=>'login', 'membersOnly'=>true, 'tl_class'=>'w50'),
+			'save_callback' => array
+			(
+				array('tl_iso_addresses', 'updateDefault'),
+			),
 		),
 	)
 );
@@ -288,34 +292,25 @@ class tl_iso_addresses extends Backend
 		$strBuffer .= '</div>';
 		return $strBuffer;
 	}
-
-
+	
+	
 	/**
-	 * Make sure only one address is marked as default
+	 * Reset all default checkboxes when setting a new address as default
+	 * @param mixed
 	 * @param object
-	 * @return void
+	 * @return mixed
+	 * @link http://www.contao.org/callback.html#save_callback
 	 */
-	public function updateDefaultAddress($dc=null)
+	public function updateDefault($varValue, $dc)
 	{
-		$intId = TL_MODE == 'FE' ? $this->Input->get('id') : $dc->id;
-		$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE id=?")->limit(1)->execute($intId);
-
-		if (!$objAddress->numRows)
+		$objAddress = ($dc instanceOf DataContainer) ? $dc->activeRecord : $dc;
+		
+		if ($varValue == '1' && $objAddress->{$dc->field} != $varValue)
 		{
-			return;
+			$this->Database->execute("UPDATE tl_iso_addresses SET {$dc->field}='' WHERE pid={$objAddress->pid} AND store_id={$objAddress->store_id}");
 		}
-
-		if ($this->Input->post('isDefaultBilling'))
-		{
-			$this->Database->execute("UPDATE tl_iso_addresses SET isDefaultBilling='' WHERE pid={$objAddress->pid} AND store_id={$objAddress->store_id}");
-			$this->Database->execute("UPDATE tl_iso_addresses SET isDefaultBilling='1' WHERE id={$objAddress->id}");
-		}
-
-		if ($this->Input->post('isDefaultShipping'))
-		{
-			$this->Database->execute("UPDATE tl_iso_addresses SET isDefaultShipping='' WHERE pid={$objAddress->pid} AND store_id={$objAddress->store_id}");
-			$this->Database->execute("UPDATE tl_iso_addresses SET isDefaultShipping='1' WHERE id={$objAddress->id}");
-		}
+		
+		return $varValue;
 	}
 }
 

@@ -207,6 +207,10 @@ class ModuleIsotopeAddressBook extends ModuleIsotope
 		// Build form
 		foreach ($this->arrFields as $field)
 		{
+			// Make the address object look like a Data Container (for the save_callback)
+			$objAddress->field = $field;
+			
+			// Reference DCA, it's faster to lookup than a deep array
 			$arrData = &$GLOBALS['TL_DCA']['tl_iso_addresses']['fields'][$field];
 
 			// Map checkboxWizard to regular checkbox widget
