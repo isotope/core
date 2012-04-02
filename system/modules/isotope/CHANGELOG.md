@@ -25,6 +25,7 @@ Version 1.3.0 stable (2012-??-??)
 - The back button in shop config list did not work
 - Address book module did not correctly handle default address checkbox (#3000)
 - Flat shipping price was not calculate correctly (#3010)
+- PayPal Standard payment did not support negative amounts (discounts) (#3014)
 
 
 Version 1.3.rc2 (2012-03-19)

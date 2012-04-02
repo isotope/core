@@ -232,15 +232,30 @@ class PaymentPaypal extends IsotopePayment
 <input type="hidden" name="amount_'.$i.'" value="' . $objProduct->price . '"/>
 <input type="hidden" name="quantity_'.$i.'" value="' . $objProduct->quantity_requested . '"' . $endTag;
 		}
+		
+		$fltDiscount = 0;
 
 		foreach( $this->Isotope->Cart->getSurcharges() as $arrSurcharge )
 		{
 			if ($arrSurcharge['add'] === false)
 				continue;
 
+			// PayPal does only support one single discount item
+			if ($arrSurcharge['total_price'] < 0)
+			{
+				$fltDiscount -= $arrSurcharge['total_price'];
+				continue;
+			}
+
 			$strBuffer .= '
 <input type="hidden" name="item_name_'.++$i.'" value="' . $arrSurcharge['label'] . '"' . $endTag . '
 <input type="hidden" name="amount_'.$i.'" value="' . $arrSurcharge['total_price'] . '"' . $endTag;
+		}
+		
+		if ($fltDiscount > 0)
+		{
+			$strBuffer .= '
+<input type="hidden" name="discount_amount_cart" value="' . $fltDiscount . '"' . $endTag;
 		}
 
 		$strBuffer .= '
