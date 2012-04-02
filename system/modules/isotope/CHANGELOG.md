@@ -24,6 +24,7 @@ Version 1.3.0 stable (2012-??-??)
 - Fixed warning when product was not assigned to any category (#2998)
 - The back button in shop config list did not work
 - Address book module did not correctly handle default address checkbox (#3000)
+- Flat shipping price was not calculate correctly (#3010)
 
 
 Version 1.3.rc2 (2012-03-19)

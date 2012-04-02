@@ -43,31 +43,7 @@ class ShippingFlat extends IsotopeShipping
 		switch( $strKey )
 		{
 			case 'price':
-
-				$strPrice = $this->arrData['price'];
-				$blnPercentage = substr($strPrice, -1) == '%' ? true : false;
-
-				if ($blnPercentage)
-				{
-					$fltSurcharge = (float)substr($strPrice, 0, -1);
-					$fltPrice = $this->Isotope->Cart->subTotal / 100 * $fltSurcharge;
-				}
-				else
-				{
-					$fltPrice = (float)$strPrice;
-				}
-
-				switch( $this->flatCalculation )
-				{
-					case 'perProduct':
-						return $this->Isotope->calculatePrice((($fltPrice * $this->Isotope->Cart->products) + $this->calculateSurcharge()), $this, 'price', $this->arrData['tax_class']);
-
-					case 'perItem':
-						return $this->Isotope->calculatePrice((($fltPrice * $this->Isotope->Cart->items) + $this->calculateSurcharge()), $this, 'price', $this->arrData['tax_class']);
-
-					default:
-						return $this->Isotope->calculatePrice(($fltPrice + $this->calculateSurcharge()), $this, 'price', $this->arrData['tax_class']);
-				}
+				return $this->Isotope->calculatePrice($this->getPrice(), $this, 'price', $this->arrData['tax_class']);
 				break;
 		}
 
@@ -75,6 +51,64 @@ class ShippingFlat extends IsotopeShipping
 	}
 
 
+	/**
+	 * Get the checkout surcharge for this shipping method
+	 */
+	public function getSurcharge($objCollection)
+	{
+		$fltPrice = $this->getPrice();
+
+		if ($fltPrice == 0)
+		{
+			return false;
+		}
+
+		return $this->Isotope->calculateSurcharge(
+								$fltPrice,
+								($GLOBALS['TL_LANG']['MSC']['shippingLabel'] . ' (' . $this->label . ')'),
+								$this->arrData['tax_class'],
+								$objCollection->getProducts(),
+								$this);
+	}
+	
+	
+	/**
+	 * Calculate the price based on module configuration
+	 * @return float
+	 */
+	private function getPrice()
+	{
+		$strPrice = $this->arrData['price'];
+		$blnPercentage = substr($strPrice, -1) == '%' ? true : false;
+
+		if ($blnPercentage)
+		{
+			$fltSurcharge = (float)substr($strPrice, 0, -1);
+			$fltPrice = $this->Isotope->Cart->subTotal / 100 * $fltSurcharge;
+		}
+		else
+		{
+			$fltPrice = (float)$strPrice;
+		}
+
+		switch( $this->flatCalculation )
+		{
+			case 'perProduct':
+				return (($fltPrice * $this->Isotope->Cart->products) + $this->calculateSurcharge());
+
+			case 'perItem':
+				return (($fltPrice * $this->Isotope->Cart->items) + $this->calculateSurcharge());
+
+			default:
+				return ($fltPrice + $this->calculateSurcharge());
+		}
+	}
+
+
+	/**
+	 * Calculate surcharge from a product if the surcharge field is set in module settings
+	 * @return float
+	 */
 	protected function calculateSurcharge()
 	{
 		if (!strlen($this->surcharge_field))
