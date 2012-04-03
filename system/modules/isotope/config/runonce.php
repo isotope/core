@@ -429,6 +429,15 @@ class IsotopeRunonce extends Controller
 			$this->Database->query("ALTER TABLE tl_iso_config ADD COLUMN billing_fields blob NULL");
 			$this->Database->query("UPDATE tl_iso_config SET billing_fields=shipping_fields");
 		}
+		
+		foreach( array('billing_country', 'shipping_country') as $field )
+		{
+			if (!$this->Database->fieldExists($field, 'tl_iso_config'))
+			{
+				$this->Database->query("ALTER TABLE tl_iso_config ADD COLUMN `" . $field . "` varchar(2) NOT NULL default ''");
+				$this->Database->query("UPDATE tl_iso_config SET `" . $field . "`=country");
+			}
+		}
 
 		$this->loadDataContainer('tl_iso_addresses');
 		$objConfigs = $this->Database->execute("SELECT * FROM tl_iso_config");
