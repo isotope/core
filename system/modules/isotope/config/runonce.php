@@ -289,8 +289,18 @@ class IsotopeRunonce extends Controller
 				$this->Database->query("ALTER TABLE tl_module ADD COLUMN iso_filterModules blob NULL");
 			}
 
-			$this->Database->query("UPDATE tl_module m1 SET iso_category_scope=(SELECT iso_category_scope FROM (SELECT * FROM tl_module) m2 WHERE m2.id=m1.iso_listingModule) WHERE m1.type='iso_productfilter'");
-			$this->Database->query("UPDATE tl_module m1 SET iso_filterModules=(SELECT id FROM (SELECT * FROM tl_module) m2 WHERE m2.iso_listingModule=m1.id)");
+			if ($this->Database->fieldExists('iso_category_scope', 'tl_module'))
+			{
+				$this->Database->query("UPDATE tl_module m1 SET iso_category_scope=(SELECT iso_category_scope FROM (SELECT * FROM tl_module) m2 WHERE m2.id=m1.iso_listingModule) WHERE m1.type='iso_productfilter'");
+			}
+			
+			$objModules = $this->Database->query("SELECT iso_listingModule, GROUP_CONCAT(id) AS ids FROM tl_module WHERE iso_listingModule>0 GROUP BY iso_listingModule");
+			
+			while( $objModules->next() )
+			{
+				$this->Database->query("UPDATE tl_module SET iso_filterModules='" . serialize(explode(',', $objModules->ids)) . "' WHERE id=" . $objModules->iso_listingModule);
+			}
+			
 			$this->Database->query("ALTER TABLE tl_module DROP COLUMN iso_listingModule");
 		}
 
