@@ -239,7 +239,7 @@ class ModuleIsotopeAddressBook extends ModuleIsotope
 				}
 
 				$arrData['options'] = array_values(array_intersect($arrData['options'], $arrCountries));
-				$arrData['default'] = $this->Isotope->Config->country;
+				$arrData['default'] = $this->Isotope->Config->billing_country;
 			}
 
 			$strGroup = $arrData['eval']['feGroup'];
