@@ -1,7 +1,7 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 1.3.0 stable (2012-??-??)
+Version 1.3.0 stable (2012-04-03)
 ---------------------------------
 
 ### Improved
