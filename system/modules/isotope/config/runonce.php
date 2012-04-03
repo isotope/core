@@ -53,19 +53,19 @@ class IsotopeRunonce extends Controller
 		if (!$this->Database->tableExists('tl_iso_config') && !$this->Database->tableExists('tl_store'))
 			return;
 
-		$this->createIsotopeFolder();
-		$this->renameTables();
-		$this->renameFields();
-		$this->updateStoreConfigurations();
-		$this->updateOrders();
-		$this->updateImageSizes();
-		$this->updateAttributes();
-		$this->updateFrontendModules();
-		$this->updateFrontendTemplates();
-		$this->updateProductTypes();
-		$this->updateRules();
-		$this->generateCategoryGroups();
-		$this->refreshDatabaseFile();
+		$this->exec('createIsotopeFolder');
+		$this->exec('renameTables');
+		$this->exec('renameFields');
+		$this->exec('updateStoreConfigurations');
+		$this->exec('updateOrders');
+		$this->exec('updateImageSizes');
+		$this->exec('updateAttributes');
+		$this->exec('updateFrontendModules');
+		$this->exec('updateFrontendTemplates');
+		$this->exec('updateProductTypes');
+		$this->exec('updateRules');
+		$this->exec('generateCategoryGroups');
+		$this->exec('refreshDatabaseFile');
 
 		// Make sure file extension .imt (Isotope Mail Template) is allowed for up- and download
 		if (!in_array('imt', trimsplit(',', $GLOBALS['TL_CONFIG']['uploadTypes'])))
@@ -79,6 +79,43 @@ class IsotopeRunonce extends Controller
 		// Delete caches
 		$this->Database->query("TRUNCATE TABLE tl_iso_productcache");
 		$this->Database->query("TRUNCATE TABLE tl_iso_requestcache");
+	}
+	
+	
+	private function exec($function)
+	{
+		try 
+		{
+			$this->$function();
+		}
+		catch (Exception $e)
+		{
+echo '
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Contao Open Source CMS</title>
+<style media="screen">
+div { width:520px; margin:64px auto 18px; padding:24px; background:#ffc; border:1px solid #fc0; font-family:Verdana,sans-serif; font-size:13px; }
+h1 { font-size:18px; font-weight:normal; margin:0 0 18px; }
+</style>
+</head>
+<body>
+
+<div>
+
+<h1>Isotope eCommerce Update was not run successfully!</h1>
+
+<pre>' . $e->getMessage() . '</pre>
+
+</div>
+
+</body>
+</html>
+';
+			exit;
+		}
 	}
 
 
