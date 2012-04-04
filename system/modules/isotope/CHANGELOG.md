@@ -4,8 +4,11 @@ Isotope eCommerce Changelog
 Version 1.4.beta1 (2012-??-??)
 ------------------------------
 
-## New
+### New
 - New filter module "Cumulative filter"
+
+### Improved
+- Checkout steps are now a numbered list (#3040)
 
 
 Version 1.3.0 stable (2012-04-04)
