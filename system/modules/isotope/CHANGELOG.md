@@ -1,6 +1,33 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 1.3.0 stable (2012-04-04)
+---------------------------------
+
+### Improved
+- PayPal Standard does no longer override the address in debug mode. It could cause issues with international addresses in the sandbox.
+- Use the BYPASS_TOKEN_CHECK constant for postsale script
+- Write log protocol when deleting guest cards
+- Updated palettes and legend labels in tl_module (#2975)
+- Now uses the "tableless" setting of the form generator in checkout module's order review form
+- When member countries are limited and only one result is available, set it as the default field value.
+
+### Fixed
+- Do not initialize a cart when running the Contao cron job
+- Force type comparison when checking for BE_/FE_USER_LOGGED_IN (fixes #2976)
+- The product cache caused an endless loop when no results were found
+- Missing whitespace between HTML tags
+- ID attribute for quantity_requested was incorrect in list templates
+- Incorrect usage of "rowClass" in mod_iso_addressbook templates
+- Missing address labels are not hidden, leaving empty h2 tags in mod_iso_addressbook templates
+- Default county is not set in Address Book edit mode for new address entry form
+- Fixed warning when product was not assigned to any category (#2998)
+- The back button in shop config list did not work
+- Address book module did not correctly handle default address checkbox (#3000)
+- Flat shipping price was not calculate correctly (#3010)
+- PayPal Standard payment did not support negative amounts (discounts) (#3014)
+
+
 Version 1.3.rc2 (2012-03-19)
 ----------------------------
 

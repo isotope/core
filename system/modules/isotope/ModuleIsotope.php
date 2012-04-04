@@ -63,7 +63,7 @@ abstract class ModuleIsotope extends Module
 		{
 			$this->import('Isotope');
 
-			if (FE_USER_LOGGED_IN)
+			if (FE_USER_LOGGED_IN === true)
 			{
 				$this->import('FrontendUser', 'User');
 			}

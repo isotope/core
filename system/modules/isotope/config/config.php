@@ -33,7 +33,7 @@
  * Isotope Version
  */
 @define('ISO_VERSION', '1.3');
-@define('ISO_BUILD', 'RC2');
+@define('ISO_BUILD', '0');
 
 
 /**
@@ -130,10 +130,15 @@ $GLOBALS['ISO_MOD'] = array
 	),
 	'config' => array
 	(
+		'orderstatus' => array
+		(
+			'tables'					=> array('tl_iso_orderstatus'),
+			'icon'						=> 'system/modules/isotope/html/traffic-light.png',
+		),
 		'iso_mail' => array
 		(
 			'tables'					=> array('tl_iso_mail', 'tl_iso_mail_content'),
-			'icon'						=> 'system/modules/isotope/html/inbox-document-text.png',
+			'icon'						=> 'system/modules/isotope/html/mail-open-document-text.png',
 			'importMail'				=> array('IsotopeBackend', 'importMail'),
 			'exportMail'				=> array('IsotopeBackend', 'exportMail'),
 		),

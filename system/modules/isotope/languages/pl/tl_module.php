@@ -88,11 +88,3 @@ $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['product']					= 'Kat
 $GLOBALS['TL_LANG']['tl_module']['sortingDirection']['ASC'] 	= "ASC";
 $GLOBALS['TL_LANG']['tl_module']['sortingDirection']['DESC'] 	= "DESC";
 
-
-/**
- * Legends
- */
-$GLOBALS['TL_LANG']['tl_module']['featured_legend']  = 'Ustawienia promowanych produktów';
-$GLOBALS['TL_LANG']['tl_module']['config_legend']    = 'Ustawienia konfiguracji';
-$GLOBALS['TL_LANG']['tl_module']['display_legend']   = 'Ustawienia wyświetlania';
-

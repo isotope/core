@@ -28,17 +28,13 @@
  */
 
 
-// Preserve $_POST data
-$arrPOST = $_POST;
-unset($_POST);
-
 /**
  * Initialize the system
  */
 define('TL_MODE', 'FE');
-require('../../initialize.php');
+define('BYPASS_TOKEN_CHECK', true);
 
-$_POST = $arrPOST;
+require('../../initialize.php');
 
 
 class PostSale extends Frontend
@@ -56,7 +52,7 @@ class PostSale extends Frontend
 		unset($GLOBALS['TL_HOOKS']);
 		
 		// Need to load our own Hooks (e.g. loadDataContainer)
-		include_once(TL_ROOT . '/system/modules/isotope/config/config.php');
+		include(TL_ROOT . '/system/modules/isotope/config/config.php');
 
 		parent::__construct();
 	}

@@ -232,15 +232,30 @@ class PaymentPaypal extends IsotopePayment
 <input type="hidden" name="amount_'.$i.'" value="' . $objProduct->price . '"/>
 <input type="hidden" name="quantity_'.$i.'" value="' . $objProduct->quantity_requested . '"' . $endTag;
 		}
+		
+		$fltDiscount = 0;
 
 		foreach( $this->Isotope->Cart->getSurcharges() as $arrSurcharge )
 		{
 			if ($arrSurcharge['add'] === false)
 				continue;
 
+			// PayPal does only support one single discount item
+			if ($arrSurcharge['total_price'] < 0)
+			{
+				$fltDiscount -= $arrSurcharge['total_price'];
+				continue;
+			}
+
 			$strBuffer .= '
 <input type="hidden" name="item_name_'.++$i.'" value="' . $arrSurcharge['label'] . '"' . $endTag . '
 <input type="hidden" name="amount_'.$i.'" value="' . $arrSurcharge['total_price'] . '"' . $endTag;
+		}
+		
+		if ($fltDiscount > 0)
+		{
+			$strBuffer .= '
+<input type="hidden" name="discount_amount_cart" value="' . $fltDiscount . '"' . $endTag;
 		}
 
 		$strBuffer .= '
@@ -253,7 +268,7 @@ class PaymentPaypal extends IsotopePayment
 <input type="hidden" name="rm" value="1"' . $endTag . '
 <input type="hidden" name="invoice" value="' . $objOrder->id . '"' . $endTag . '
 
-<input type="hidden" name="address_override" value="1"' . $endTag . '
+<input type="hidden" name="address_override" value="' . ($this->debug ? '0' : '1') . '"' . $endTag . '
 <input type="hidden" name="first_name" value="' . $this->Isotope->Cart->billingAddress['firstname'] . '"' . $endTag . '
 <input type="hidden" name="last_name" value="' . $this->Isotope->Cart->billingAddress['lastname'] . '"' . $endTag . '
 <input type="hidden" name="address1" value="' . $this->Isotope->Cart->billingAddress['street_1'] . '"' . $endTag . '

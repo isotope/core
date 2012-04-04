@@ -28,7 +28,6 @@
 
 $GLOBALS['TL_LANG']['MOD']['iso_products'][0] = 'Управление товарами';
 $GLOBALS['TL_LANG']['MOD']['iso_orders'][0] = 'Заказы';
-$GLOBALS['TL_LANG']['MOD']['iso_statistics'][0] = 'Статистика';
 $GLOBALS['TL_LANG']['MOD']['iso_setup'][0] = 'Конфигурация магазина';
 $GLOBALS['TL_LANG']['FMD']['isotope'] = 'Isotope eCommerce';
 $GLOBALS['TL_LANG']['FMD']['iso_productfilter'][0] = 'Фильтр товаров';

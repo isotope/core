@@ -164,7 +164,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		}
 
 		// Redirect to login page if not logged in
-		if ($this->iso_checkout_method == 'member' && !FE_USER_LOGGED_IN)
+		if ($this->iso_checkout_method == 'member' && FE_USER_LOGGED_IN !== true)
 		{
 			$objPage = $this->Database->prepare("SELECT id,alias FROM tl_page WHERE id=?")->limit(1)->execute($this->iso_login_jumpTo);
 
@@ -178,7 +178,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 			$this->redirect($this->generateFrontendUrl($objPage->row()));
 		}
-		elseif ($this->iso_checkout_method == 'guest' && FE_USER_LOGGED_IN)
+		elseif ($this->iso_checkout_method == 'guest' && FE_USER_LOGGED_IN === true)
 		{
 			$this->Template = new FrontendTemplate('mod_message');
 			$this->Template->type = 'error';
@@ -444,7 +444,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		$objTemplate = new IsotopeTemplate('iso_checkout_billing_address');
 
 		$objTemplate->headline = $blnRequiresPayment ? $GLOBALS['TL_LANG']['ISO']['billing_address'] : $GLOBALS['TL_LANG']['ISO']['customer_address'];
-		$objTemplate->message = (FE_USER_LOGGED_IN ? $GLOBALS['TL_LANG']['ISO'][($blnRequiresPayment ? 'billing' : 'customer') . '_address_message'] : $GLOBALS['TL_LANG']['ISO'][($blnRequiresPayment ? 'billing' : 'customer') . '_address_guest_message']);
+		$objTemplate->message = (FE_USER_LOGGED_IN === true ? $GLOBALS['TL_LANG']['ISO'][($blnRequiresPayment ? 'billing' : 'customer') . '_address_message'] : $GLOBALS['TL_LANG']['ISO'][($blnRequiresPayment ? 'billing' : 'customer') . '_address_guest_message']);
 		$objTemplate->fields = $this->generateAddressWidget('billing_address');
 
 		if (!$this->doNotSubmit)
@@ -539,7 +539,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			$arrData = $this->Input->post('shipping');
 			$arrModuleIds = array_map('intval', $arrModuleIds);
 			
-			$objModules = $this->Database->execute("SELECT * FROM tl_iso_shipping_modules WHERE id IN (" . implode(',', $arrModuleIds) . ")" . (BE_USER_LOGGED_IN ? '' : " AND enabled='1'") . " ORDER BY " . $this->Database->findInSet('id', $arrModuleIds));
+			$objModules = $this->Database->execute("SELECT * FROM tl_iso_shipping_modules WHERE id IN (" . implode(',', $arrModuleIds) . ")" . (BE_USER_LOGGED_IN === true ? '' : " AND enabled='1'") . " ORDER BY " . $this->Database->findInSet('id', $arrModuleIds));
 
 			while ($objModules->next())
 			{
@@ -672,7 +672,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			$arrData = $this->Input->post('payment');
 			$arrModuleIds = array_map('intval', $arrModuleIds);
 			
-			$objModules = $this->Database->execute("SELECT * FROM tl_iso_payment_modules WHERE id IN (" . implode(',', $arrModuleIds) . ")" . (BE_USER_LOGGED_IN ? '' : " AND enabled='1'") . " ORDER BY " . $this->Database->findInSet('id', $arrModuleIds));
+			$objModules = $this->Database->execute("SELECT * FROM tl_iso_payment_modules WHERE id IN (" . implode(',', $arrModuleIds) . ")" . (BE_USER_LOGGED_IN === true ? '' : " AND enabled='1'") . " ORDER BY " . $this->Database->findInSet('id', $arrModuleIds));
 
 			while ($objModules->next())
 			{
@@ -802,7 +802,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		}
 
 		$this->import('IsotopeFrontend');
-		$objForm = $this->IsotopeFrontend->prepareForm($this->iso_order_conditions, $this->strFormId, array('tableless'=>$this->tableless));
+		$objForm = $this->IsotopeFrontend->prepareForm($this->iso_order_conditions, $this->strFormId);
 
 		// Form not found
 		if ($objForm == null)
@@ -828,7 +828,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 		$objTemplate = new IsotopeTemplate('iso_checkout_order_conditions');
 		$objTemplate->attributes	= $objForm->attributes;
-		$objTemplate->tableless		= $this->tableless;
+		$objTemplate->tableless		= $objForm->arrData['tableless'];
 
 		$parse = create_function('$a', 'return $a->parse();');
 		$objTemplate->hidden = implode('', array_map($parse, $objForm->arrHidden));
@@ -904,7 +904,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			$objOrder->findBy('id', $objOrder->save());
 		}
 
-		$objOrder->pid				= (FE_USER_LOGGED_IN ? $this->User->id : 0);
+		$objOrder->pid				= (FE_USER_LOGGED_IN === true ? $this->User->id : 0);
 		$objOrder->date				= time();
 		$objOrder->config_id		= (int) $this->Isotope->Config->id;
 		$objOrder->shipping_id		= ($this->Isotope->Cart->hasShipping ? $this->Isotope->Cart->Shipping->id : 0);
@@ -939,7 +939,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			$strCustomerName = $this->Isotope->Cart->shippingAddress['firstname'] . ' ' . $this->Isotope->Cart->shippingAddress['lastname'];
 			$strCustomerEmail = $this->Isotope->Cart->shippingAddress['email'];
 		}
-		elseif (FE_USER_LOGGED_IN && $this->User->email != '')
+		elseif (FE_USER_LOGGED_IN === true && $this->User->email != '')
 		{
 			$strCustomerName = $this->User->firstname . ' ' . $this->User->lastname;
 			$strCustomerEmail = $this->User->email;
@@ -982,7 +982,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		$arrOptions = array();
 		$arrCountries = ($field == 'billing_address' ? $this->Isotope->Config->billing_countries : $this->Isotope->Config->shipping_countries);
 
-		if (FE_USER_LOGGED_IN)
+		if (FE_USER_LOGGED_IN === true)
 		{
 			$objAddress = $this->Database->execute("SELECT * FROM tl_iso_addresses WHERE pid={$this->User->id} AND store_id={$this->Isotope->Config->store_id} ORDER BY isDefaultBilling DESC, isDefaultShipping DESC");
 
@@ -1025,7 +1025,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				$arrAddress = $_SESSION['CHECKOUT_DATA'][$field] ? $_SESSION['CHECKOUT_DATA'][$field] : $this->Isotope->Cart->billingAddress;
 				$intDefaultValue = strlen($arrAddress['id']) ? $arrAddress['id'] : 0;
 
-				if (FE_USER_LOGGED_IN)
+				if (FE_USER_LOGGED_IN === true)
 				{
 					$arrOptions[] = array
 					(
@@ -1093,13 +1093,13 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		{
 			$this->Isotope->Cart->$field = $_SESSION['CHECKOUT_DATA'][$field]['id'];
 		}
-		elseif (!FE_USER_LOGGED_IN)
+		elseif (FE_USER_LOGGED_IN !== true)
 		{
 
 			//$this->doNotSubmit = true;
 		}
 
-		$strBuffer .= '<div id="' . $field . '_new" class="address_new"' . (((!FE_USER_LOGGED_IN && $field == 'billing_address') || $objWidget->value == 0) ? '>' : ' style="display:none">');
+		$strBuffer .= '<div id="' . $field . '_new" class="address_new"' . (((FE_USER_LOGGED_IN !== true && $field == 'billing_address') || $objWidget->value == 0) ? '>' : ' style="display:none">');
 		$strBuffer .= '<span>' . $this->generateAddressWidgets($field, count($arrOptions)) . '</span>';
 		$strBuffer .= '</div>';
 		return $strBuffer;
@@ -1134,7 +1134,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		{
 			$arrData = $GLOBALS['TL_DCA']['tl_iso_addresses']['fields'][$field['value']];
 
-			if (!is_array($arrData) || !$arrData['eval']['feEditable'] || !$field['enabled'] || ($arrData['eval']['membersOnly'] && !FE_USER_LOGGED_IN))
+			if (!is_array($arrData) || !$arrData['eval']['feEditable'] || !$field['enabled'] || ($arrData['eval']['membersOnly'] && FE_USER_LOGGED_IN !== true))
 			{
 				continue;
 			}

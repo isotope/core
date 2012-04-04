@@ -29,7 +29,6 @@
 $GLOBALS['TL_LANG']['MOD']['isotope'] = 'Isotope eCommerce';
 $GLOBALS['TL_LANG']['MOD']['iso_products'][0] = 'Gestione prodotti';
 $GLOBALS['TL_LANG']['MOD']['iso_orders'][0] = 'Ordini';
-$GLOBALS['TL_LANG']['MOD']['iso_statistics'][0] = 'Statistiche';
 $GLOBALS['TL_LANG']['MOD']['iso_setup'][0] = 'Configurazione negozio';
 $GLOBALS['TL_LANG']['FMD']['isotope'] = 'Isotope eCommerce';
 $GLOBALS['TL_LANG']['FMD']['iso_productfilter'][0] = 'Filtro Prodotti';

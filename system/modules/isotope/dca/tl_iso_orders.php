@@ -66,13 +66,12 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 		(
 			'mode'                    => 2,
 			'fields'                  => array('date DESC'),
-			'flag'                    => 1,
 			'panelLayout'             => 'filter;sort,search,limit'
 		),
 		'label' => array
 		(
-			'fields'                  => array('order_id'),
-			'label'                   => '%s',
+			'fields'                  => array('order_id', 'date', 'billing_address', 'grandTotal', 'status'),
+			'showColumns'             => true,
 			'label_callback'          => array('tl_iso_orders', 'getOrderLabel')
 		),
 		'global_operations' => array
@@ -237,6 +236,10 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 			'input_field_callback'	=> array('tl_iso_orders', 'generateOrderDetails'),
 			'eval'					=> array('doNotShow'=>true),
 		),
+		'grandTotal' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['grandTotal'],			
+		),
 		'notes' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['notes'],
@@ -350,17 +353,15 @@ class tl_iso_orders extends Backend
 	 * @param string
 	 * @return string
 	 */
-	public function getOrderLabel($row, $label)
+	public function getOrderLabel($row, $label, DataContainer $dc, $args)
 	{
 		$this->Isotope->overrideConfig($row['config_id']);
 		$strBillingAddress = $this->Isotope->generateAddressString(deserialize($row['billing_address']), $this->Isotope->Config->billing_fields);
 
-		return '
-<div style="float:left; width:90px">' . $row['order_id'] . '</div>
-<div style="float:left; width:130px;">' . $this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $row['date']) . '</div>
-<div style="float:left; width:140px">' . substr($strBillingAddress, 0, strpos($strBillingAddress, '<br>')) . '</div>
-<div style="float:left; width:80px; text-align:right; padding-right:20px">' . $this->Isotope->formatPriceWithCurrency($row['grandTotal']) . '</div>
-<div style="float: left; width:80px">' . $GLOBALS['TL_LANG']['ORDER'][$row['status']] . '</div>';
+		$args[2] = substr($strBillingAddress, 0, strpos($strBillingAddress, '<br />'));
+		$args[3] = $this->Isotope->formatPriceWithCurrency($row['grandTotal']);
+		
+		return $args;
 	}
 
 

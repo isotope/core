@@ -37,7 +37,6 @@ $GLOBALS['TL_LANG']['MOD']['iso_products'][0] = 'Produkte';
 $GLOBALS['TL_LANG']['MOD']['iso_products'][1] = 'Verwalten Sie Produkte und Produkt-Varianten.';
 $GLOBALS['TL_LANG']['MOD']['iso_orders'][0] = 'Bestellungen';
 $GLOBALS['TL_LANG']['MOD']['iso_orders'][1] = 'Alle Bestellungen in Ihrem Online-Shop sind hier ersichtlich.';
-$GLOBALS['TL_LANG']['MOD']['iso_statistics'][0] = 'Verkaufsstatistik';
 $GLOBALS['TL_LANG']['MOD']['iso_setup'][0] = 'Shop-Konfiguration';
 $GLOBALS['TL_LANG']['MOD']['iso_setup'][1] = 'Hier können Sie Isotope eCommerce konfigurieren.';
 $GLOBALS['TL_LANG']['FMD']['isotope'] = 'Isotope eCommerce';

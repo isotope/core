@@ -71,7 +71,7 @@ class IsotopeCart extends IsotopeProductCollection
 	{
 		parent::__construct();
 
-		if (FE_USER_LOGGED_IN)
+		if (FE_USER_LOGGED_IN === true)
 		{
 			$this->import('FrontendUser', 'User');
 		}
@@ -105,7 +105,7 @@ class IsotopeCart extends IsotopeProductCollection
 
 				$this->import('Isotope');
 
-				if (FE_USER_LOGGED_IN)
+				if (FE_USER_LOGGED_IN === true)
 				{
 					$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE pid={$this->User->id} AND store_id={$this->Isotope->Config->store_id} AND isDefaultBilling='1'")->limit(1)->execute();
 
@@ -143,7 +143,7 @@ class IsotopeCart extends IsotopeProductCollection
 					return $this->arrSettings['shippingAddress_data'];
 				}
 
-				if (FE_USER_LOGGED_IN)
+				if (FE_USER_LOGGED_IN === true)
 				{
 					$this->import('Isotope');
 
@@ -218,7 +218,7 @@ class IsotopeCart extends IsotopeProductCollection
 		$this->strHash = $this->Input->cookie($this->strCookie);
 
 		//  Check to see if the user is logged in.
-		if (!FE_USER_LOGGED_IN || !$this->User->id)
+		if (FE_USER_LOGGED_IN !== true)
 		{
 			if (!strlen($this->strHash))
 			{
@@ -251,7 +251,7 @@ class IsotopeCart extends IsotopeProductCollection
 		}
 
 		// Temporary cart available, move to this cart. Must be after creating a new cart!
- 		if (FE_USER_LOGGED_IN && $this->strHash != '')
+ 		if (FE_USER_LOGGED_IN === true && $this->strHash != '')
  		{
 			$objCart = new IsotopeCart();
 

@@ -27,7 +27,6 @@
 $GLOBALS['TL_LANG']['MOD']['isotope'] = 'Isotope Webwinkel';
 $GLOBALS['TL_LANG']['MOD']['iso_products'][0] = 'Productbeheer';
 $GLOBALS['TL_LANG']['MOD']['iso_orders'][0] = 'Bestellingen';
-$GLOBALS['TL_LANG']['MOD']['iso_statistics'][0] = 'Statistieken';
 $GLOBALS['TL_LANG']['MOD']['iso_setup'][0] = 'Instellingen';
 $GLOBALS['TL_LANG']['FMD']['isotope'] = 'Isotope Webwinkel';
 $GLOBALS['TL_LANG']['FMD']['iso_productfilter'][0] = 'Product filter';

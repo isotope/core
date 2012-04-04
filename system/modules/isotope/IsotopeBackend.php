@@ -445,10 +445,12 @@ class IsotopeBackend extends Backend
 	 * @param DataContainer
 	 * @return array
 	 */
-	public function getTaxClassesWithSplit()
+	public static function getTaxClassesWithSplit()
 	{
+		$objDatabase = Database::getInstance();
+		
 		$arrTaxes = array();
-		$objTaxes = $this->Database->execute("SELECT * FROM tl_iso_tax_class ORDER BY name");
+		$objTaxes = $objDatabase->execute("SELECT * FROM tl_iso_tax_class ORDER BY name");
 		
 		while( $objTaxes->next() )
 		{

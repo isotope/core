@@ -602,9 +602,6 @@ class IsotopeRules extends Controller
 					$fltPrice = $blnPercentage ? ($objProduct->total_price / 100 * $fltDiscount) : $arrRule['discount'];
 					$fltPrice = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
 					$arrSurcharge['total_price'] += $fltPrice;
-
-					$fltPrice = $blnPercentage ? ($objProduct->tax_free_total_price / 100 * $fltDiscount) : $arrRule['discount'];
-					$fltPrice = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
 					$arrSurcharge['products'][$objProduct->cart_id] = $fltPrice;
 					break;
 
@@ -612,9 +609,6 @@ class IsotopeRules extends Controller
 					$fltPrice = ($blnPercentage ? ($objProduct->price / 100 * $fltDiscount) : $arrRule['discount']) * $objProduct->quantity_requested;
 					$fltPrice = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
 					$arrSurcharge['total_price'] += $fltPrice;
-
-					$fltPrice = ($blnPercentage ? ($objProduct->tax_free_price / 100 * $fltDiscount) : $arrRule['discount']) * $objProduct->quantity_requested;
-					$fltPrice = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
 					$arrSurcharge['products'][$objProduct->cart_id] = $fltPrice;
 					break;
 
@@ -644,7 +638,8 @@ class IsotopeRules extends Controller
 			// discount total! not related to tax subtraction
 			$fltPrice = $blnPercentage ? ($arrSurcharge['total_price'] / 100 * $fltDiscount) : $arrRule['discount'];
 			$arrSurcharge['total_price'] = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
-			$arrSurcharge['before_tax'] = ($arrRule['tax_class'] == -1 ? true : false);
+			$arrSurcharge['before_tax'] = ($arrRule['tax_class'] != 0 ? true : false);
+			$arrSurcharge['tax_class'] = ($arrRule['tax_class'] > 0 ? $arrRule['tax_class'] : 0);
 
 			// If fixed price discount with splitted taxes, calculate total amount of discount per taxed product
 			if ($arrRule['tax_class'] == -1 && !$blnPercentage)

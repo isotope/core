@@ -112,7 +112,7 @@ class Isotope extends Controller
 				self::$objInstance->resetConfig();
 			}
 	
-			if (TL_MODE == 'FE' && strpos(self::$objInstance->Environment->script, 'postsale.php') === false)
+			if (TL_MODE == 'FE' && strpos(self::$objInstance->Environment->script, 'postsale.php') === false && strpos(self::$objInstance->Environment->script, 'cron.php') === false)
 			{
 				self::$objInstance->Cart = new IsotopeCart();
 				self::$objInstance->Cart->initializeCart((int)self::$objInstance->Config->id, (int)self::$objInstance->Config->store_id);
@@ -633,7 +633,7 @@ class Isotope extends Controller
 	 */
 	public function getAddress($strStep = 'billing')
 	{
-		if ($strStep == 'shipping' && !FE_USER_LOGGED_IN && $_SESSION['FORM_DATA']['shipping_address'] == -1)
+		if ($strStep == 'shipping' && FE_USER_LOGGED_IN !== true && $_SESSION['FORM_DATA']['shipping_address'] == -1)
 		{
 			$strStep = 'billing';
 		}
@@ -847,10 +847,19 @@ class Isotope extends Controller
 			$this->import('tl_iso_products');
 			$this->tl_iso_products->loadProductsDCA();
 		}
+		
+		// Limit the member countries to the selection in store config
 		elseif ($strTable == 'tl_member' && $this->Config->limitMemberCountries)
 		{
 			$arrCountries = array_unique(array_merge((array)deserialize($this->Config->billing_countries), (array)deserialize($this->Config->shipping_countries)));
-			$GLOBALS['TL_DCA']['tl_member']['fields']['country']['options'] = array_intersect_key($GLOBALS['TL_DCA']['tl_member']['fields']['country']['options'], array_flip($arrCountries));
+			$arrCountries = array_intersect_key($GLOBALS['TL_DCA']['tl_member']['fields']['country']['options'], array_flip($arrCountries));
+			$GLOBALS['TL_DCA']['tl_member']['fields']['country']['options'] = $arrCountries;
+			
+			if (count($arrCountries) == 1)
+			{
+				$arrCountryCodes = array_keys($arrCountries);
+				$GLOBALS['TL_DCA']['tl_member']['fields']['country']['default'] = $arrCountryCodes[0];
+			}
 		}
 	}
 

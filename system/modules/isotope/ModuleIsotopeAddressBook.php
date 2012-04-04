@@ -73,7 +73,7 @@ class ModuleIsotopeAddressBook extends ModuleIsotope
 			return $objTemplate->parse();
 		}
 
-		if (!FE_USER_LOGGED_IN)
+		if (FE_USER_LOGGED_IN !== true)
 		{
 			return '';
 		}
@@ -207,6 +207,10 @@ class ModuleIsotopeAddressBook extends ModuleIsotope
 		// Build form
 		foreach ($this->arrFields as $field)
 		{
+			// Make the address object look like a Data Container (for the save_callback)
+			$objAddress->field = $field;
+			
+			// Reference DCA, it's faster to lookup than a deep array
 			$arrData = &$GLOBALS['TL_DCA']['tl_iso_addresses']['fields'][$field];
 
 			// Map checkboxWizard to regular checkbox widget
@@ -243,7 +247,7 @@ class ModuleIsotopeAddressBook extends ModuleIsotope
 			$arrData['eval']['tableless'] = $this->tableless;
 			$arrData['eval']['required'] = ($objAddress->$field == '' && $arrData['eval']['mandatory']) ? true : false;
 
-			$objWidget = new $strClass($this->prepareForWidget($arrData, $field, $objAddress->$field));
+			$objWidget = new $strClass($this->prepareForWidget($arrData, $field, ($objAddress->$field ? $objAddress->$field : $arrData['default'])));
 
 			$objWidget->storeValues = true;
 			$objWidget->rowClass = 'row_'.$row . (($row == 0) ? ' row_first' : '') . ((($row % 2) == 0) ? ' even' : ' odd');

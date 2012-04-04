@@ -104,12 +104,12 @@ abstract class IsotopePayment extends Frontend
 				break;
 
 			case 'available':
-				if (!$this->enabled && !BE_USER_LOGGED_IN)
+				if (!$this->enabled && BE_USER_LOGGED_IN !== true)
 				{
 					return false;
 				}
 
-				if (($this->guests && FE_USER_LOGGED_IN) || ($this->protected && !FE_USER_LOGGED_IN))
+				if (($this->guests && FE_USER_LOGGED_IN === true) || ($this->protected && FE_USER_LOGGED_IN !== true))
 				{
 					return false;
 				}
