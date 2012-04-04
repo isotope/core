@@ -130,11 +130,6 @@ $GLOBALS['ISO_MOD'] = array
 	),
 	'config' => array
 	(
-		'orderstatus' => array
-		(
-			'tables'					=> array('tl_iso_orderstatus'),
-			'icon'						=> 'system/modules/isotope/html/traffic-light.png',
-		),
 		'iso_mail' => array
 		(
 			'tables'					=> array('tl_iso_mail', 'tl_iso_mail_content'),
