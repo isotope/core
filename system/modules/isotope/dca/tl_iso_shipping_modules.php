@@ -166,7 +166,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
 			'default'				  => 'flat',
 			'options_callback'        => array('tl_iso_shipping_modules', 'getModules'),
 			'reference'               => &$GLOBALS['ISO_LANG']['SHIP'],
-			'eval'                    => array('helpwizard'=>true, 'submitOnChange'=>true, 'tl_class'=>'clr')
+			'eval'                    => array('helpwizard'=>true, 'submitOnChange'=>true, 'tl_class'=>'clr', 'chosen'=>true)
 		),
 		'name' => array
 		(
@@ -244,7 +244,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
 			'exclude'                 => true,
 			'inputType'               => 'select',
 			'options'                 => $this->getCountries(),
-			'eval'                    => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50 w50h'),
+			'eval'                    => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50 w50h', 'chosen'=>true)
 		),
 		'subdivisions' => array
 		(
@@ -316,7 +316,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
 			'inputType'               => 'select',
 			'options'                 => array_keys($GLOBALS['TL_DCA']['tl_iso_products']['fields']),
 			'reference'               => &$GLOBALS['TL_LANG']['tl_iso_products'],
-			'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
+			'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true)
 		),
 		'weight_unit' => array
 		(

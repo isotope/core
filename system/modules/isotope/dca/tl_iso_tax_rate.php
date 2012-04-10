@@ -154,7 +154,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['country'],
 			'inputType'               => 'select',
 			'options'                 => $this->getCountries(),
-			'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50')
+			'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true)
 		),
 		'subdivision' => array
 		(

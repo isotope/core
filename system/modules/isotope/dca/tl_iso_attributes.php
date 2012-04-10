@@ -175,8 +175,8 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['type'],
 			'inputType'				=> 'select',
 			'options'				=> array_keys($GLOBALS['ISO_ATTR']),
-			'eval'					=> array('mandatory'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
-			'reference'				=> &$GLOBALS['ISO_LANG']['ATTR'],
+			'eval'					=> array('mandatory'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true, 'helpwizard'=>true, 'tl_class'=>'w50', 'chosen'=>true),
+			'reference'				=> &$GLOBALS['ISO_LANG']['ATTR']
 		),
 		'legend' => array
 		(
@@ -185,7 +185,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 			'default'				=> 'options_legend',
 			'options'				=> array('general_legend', 'meta_legend', 'pricing_legend', 'inventory_legend', 'shipping_legend', 'options_legend', 'media_legend', 'publish_legend'),
 			'reference'				=> &$GLOBALS['TL_LANG']['tl_iso_products'],
-			'eval'					=> array('mandatory'=>true, 'tl_class'=>'w50'),
+			'eval'					=> array('mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true)
 		),
 		'description' => array
 		(
@@ -291,7 +291,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 			'exclude'				=> true,
 			'inputType'				=> 'select',
 			'options_callback'		=> array('tl_iso_attributes', 'getRTE'),
-			'eval'					=> array('includeBlankOption'=>true, 'tl_class'=>'w50'),
+			'eval'					=> array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true)
 		),
 		'multilingual' => array
 		(
@@ -307,7 +307,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 			'inputType'				=> 'select',
 			'options'				=> array('digit', 'alpha', 'alnum', 'extnd', 'date', 'time', 'datim', 'phone', 'email', 'url', 'price', 'discount', 'surcharge'),
 			'reference'				=> &$GLOBALS['TL_LANG']['tl_iso_attributes'],
-			'eval'					=> array('helpwizard'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
+			'eval'					=> array('helpwizard'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true)
 		),
 		'maxlength' => array
 		(
@@ -322,7 +322,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 			'exclude'				=> true,
 			'inputType'				=> 'select',
 			'options_callback'		=> array('tl_iso_attributes', 'getConditionFields'),
-			'eval'					=> array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50'),
+			'eval'					=> array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true)
 		),
 		'gallery' => array
 		(

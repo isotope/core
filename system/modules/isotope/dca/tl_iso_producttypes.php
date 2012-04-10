@@ -172,7 +172,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
 			'inputType'				=> 'select',
 			'default'				=> 'iso_list_default',
 			'options_callback'		=> array('tl_iso_producttypes', 'getListTemplates'),
-			'eval'					=> array('mandatory'=>true, 'tl_class'=>'w50'),
+			'eval'					=> array('mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true)
 		),
 		'reader_template' => array
 		(
@@ -181,7 +181,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
 			'inputType'				=> 'select',
 			'default'				=> 'iso_reader_default',
 			'options_callback'		=> array('tl_iso_producttypes', 'getReaderTemplates'),
-			'eval'					=> array('mandatory'=>true, 'tl_class'=>'w50'),
+			'eval'					=> array('mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true)
 		),
 		'description' => array
 		(

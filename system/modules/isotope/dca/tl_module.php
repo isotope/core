@@ -67,7 +67,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_list_layout'] = array
 	'exclude'					=> true,
 	'inputType'					=> 'select',
 	'options_callback'			=> array('tl_module_isotope', 'getListTemplates'),
-	'eval'						=> array('includeBlankOption'=>true, 'tl_class'=>'w50'),
+	'eval'						=> array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true)
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_reader_layout'] = array
@@ -76,7 +76,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_reader_layout'] = array
 	'exclude'					=> true,
 	'inputType'					=> 'select',
 	'options_callback'			=> array('tl_module_isotope', 'getReaderTemplates'),
-	'eval'						=> array('includeBlankOption'=>true),
+	'eval'						=> array('includeBlankOption'=>true, 'chosen'=>true)
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_cart_layout'] = array
@@ -85,7 +85,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_cart_layout'] = array
 	'exclude'					=> true,
 	'inputType'					=> 'select',
 	'options_callback'			=> array('tl_module_isotope', 'getCartTemplates'),
-	'eval'						=> array('tl_class'=>'w50'),
+	'eval'						=> array('tl_class'=>'w50', 'chosen'=>true)
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_filterTpl'] = array
@@ -95,7 +95,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_filterTpl'] = array
 	'default'					=> 'iso_filter_default',
 	'inputType'					=> 'select',
 	'options_callback'			=> array('tl_module_isotope', 'getFilterTemplates'),
-	'eval'						=> array('mandatory'=>true, 'tl_class'=>'w50'),
+	'eval'						=> array('mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true)
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_jump_first'] = array
@@ -227,7 +227,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_mail_customer'] = array
 	'exclude'                 => true,
 	'inputType'               => 'select',
 	'foreignKey'              => 'tl_iso_mail.name',
-	'eval'					  => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'clr')
+	'eval'					  => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'clr', 'chosen'=>true)
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_mail_admin'] = array
@@ -236,7 +236,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_mail_admin'] = array
 	'exclude'                 => true,
 	'inputType'               => 'select',
 	'foreignKey'              => 'tl_iso_mail.name',
-	'eval'					  => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50')
+	'eval'					  => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true)
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_sales_email'] = array
@@ -253,7 +253,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_order_conditions'] = array
 	'exclude'                 => true,
 	'inputType'               => 'select',
 	'foreignKey'			  => 'tl_form.title',
-	'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
+	'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true)
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_addToAddressbook'] = array
@@ -375,7 +375,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_listingSortField'] = array
 	'exclude'                 => true,
 	'inputType'               => 'select',
 	'options_callback'		  => array('tl_module_isotope', 'getSortingFields'),
-	'eval'					  => array('includeBlankOption'=>true, 'tl_class'=>'clr w50'),
+	'eval'					  => array('includeBlankOption'=>true, 'tl_class'=>'clr w50', 'chosen'=>true),
 	'save_callback' => array
 	(
 		array('IsotopeBackend', 'truncateProductCache'),
