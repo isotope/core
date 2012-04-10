@@ -812,8 +812,5 @@ CREATE TABLE `tl_user_group` (
  `iso_configp` blob NULL,
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
--- PRODUCT ATTRIBUTES START --
--- PRODUCT ATTRIBUTES STOP --
-
 
 
