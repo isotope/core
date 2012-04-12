@@ -1,6 +1,13 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 1.3.1 stable (????-??-??)
+---------------------------------
+
+### Fixed
+- The gallery lightbox did not work in Contao 2.11 (#3079)
+
+
 Version 1.3.0 stable (2012-04-04)
 ---------------------------------
 
