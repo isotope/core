@@ -6,6 +6,7 @@ Version 1.4.beta1 (2012-??-??)
 
 ### New
 - New filter module "Cumulative filter"
+- Merged the zoom gallery into Isotope eCommerce core
 
 ### Improved
 - Checkout steps are now a numbered list (#3040)
