@@ -50,8 +50,8 @@ class ZoomGallery extends InlineGallery
 		// Include scripts and styles
 		if (version_compare(MOOTOOLS_CORE, '1.3.0') >= 0)
 		{
-			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope_zoomgallery/html/zoomgallery.js';
-			$GLOBALS['TL_CSS'][] = 'system/modules/isotope_zoomgallery/html/zoomgallery.css';
+			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/html/zoomgallery.js';
+			$GLOBALS['TL_CSS'][] = 'system/modules/isotope/html/zoomgallery.css';
 		}
 
 		return parent::generateGallery();
