@@ -9,6 +9,7 @@ Version 1.4.beta1 (2012-??-??)
 
 ### Improved
 - Checkout steps are now a numbered list (#3040)
+- Product list can be sorted by dateAdded, this allows to list the newest products
 
 
 Version 1.3.0 stable (2012-04-04)
