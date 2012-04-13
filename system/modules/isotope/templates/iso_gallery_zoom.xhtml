@@ -10,6 +10,7 @@
 <!--//--><![CDATA[//><!--
 var zoom_<?php echo $this->product_id; ?>;
 window.addEvent('load', function(){ zoom_<?php echo $this->product_id; ?> = Isotope.zoomGallery(zoom_<?php echo $this->product_id; ?>, '<?php echo $this->large; ?>'); });
+window.addEvent('ajaxready', function(){ zoom_<?php echo $this->product_id; ?> = Isotope.zoomGallery(zoom_<?php echo $this->product_id; ?>, '<?php echo $this->large; ?>'); });
 //--><!]]>
 </script>
 <?php else: ?>
