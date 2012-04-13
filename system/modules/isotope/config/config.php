@@ -221,6 +221,7 @@ $GLOBALS['ISO_PAY']['cybersource']				= 'PaymentCybersource';
  */
 $GLOBALS['ISO_GAL']['default']					= 'IsotopeGallery';
 $GLOBALS['ISO_GAL']['inline']					= 'InlineGallery';
+$GLOBALS['ISO_GAL']['zoom']						= 'ZoomGallery';
 
 
 /**
