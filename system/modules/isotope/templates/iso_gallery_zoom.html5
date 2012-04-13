@@ -9,7 +9,7 @@
 <script>
 var zoom_<?php echo $this->product_id; ?>;
 window.addEvent('load', function(){ zoom_<?php echo $this->product_id; ?> = Isotope.zoomGallery(zoom_<?php echo $this->product_id; ?>, '<?php echo $this->large; ?>'); });
-window.addEvent('ajaxready', function(){ zoom_<?php echo $this->product_id; ?> = Isotope.zoomGallery(zoom_<?php echo $this->product_id; ?>, '<?php echo $this->large; ?>'); });
+window.addEvent('ajaxready', function(){ zoom_<?php echo $this->product_id; ?> = Isotope.zoomGallery(zoom_<?php echo $this->product_id; ?>, document.getElement('#<?php echo $this->name; ?>_mediumsize a.zoomImage').get('href')); });
 </script>
 <?php else: ?>
 <figure class="image_container"><div class="zoom"><a href="<?php echo $this->href_reader; ?>" class="zoomImage" title="<?php echo $this->desc; ?>"><img src="<?php echo $this->{$this->type}; ?>" alt="<?php echo $this->alt; ?>"<?php echo $this->{$this->type.'_size'}; ?>></a></div></figure>
