@@ -293,6 +293,7 @@ $GLOBALS['ISO_LANG']['ATTR']['mediaManager'][0] = 'Dateiverwaltung';
 $GLOBALS['ISO_LANG']['ATTR']['mediaManager'][1] = 'Laden Sie Bilder oder andere Dateitypen in die Isotope Ecommerce-Dateiverwaltung (nicht gleichzusetzen mit der Contao-Dateiverwaltung!). Die Ausgabe erfolgt durch eine IsotopeGallery Klasse.';
 $GLOBALS['ISO_LANG']['ATTR']['conditionalselect'][0] = 'Abhängiges Auswahlmenü';
 $GLOBALS['ISO_LANG']['ATTR']['conditionalselect'][1] = 'Zeigt Auswahloptionen basierend auf einem anderen Auswahlmenü.';
+$GLOBALS['ISO_LANG']['ATTR']['upload'] = array('Datei-Upload', 'Ein einzeiliges Eingabefeld zur Übertragung lokaler Dateien auf den Server.');
 $GLOBALS['ISO_LANG']['CUR']['AED'] = 'AED - VAE-Dirham';
 $GLOBALS['ISO_LANG']['CUR']['AFN'] = 'AFN - Afghani';
 $GLOBALS['ISO_LANG']['CUR']['ALL'] = 'ALL - Lek';
