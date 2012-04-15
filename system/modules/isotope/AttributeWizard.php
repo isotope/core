@@ -129,7 +129,7 @@ class AttributeWizard extends Widget
 		$this->import('Database');
 
 		$this->objActiveRecord = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE id=?")->execute($this->currentRecord);
-		$this->arrDisabledFields = $GLOBALS['ISO_PRODUCT'][$this->objActiveRecord->class]['disabledFields'];
+		$this->arrDisabledFields = (array) $GLOBALS['ISO_PRODUCT'][$this->objActiveRecord->class]['disabledFields'];
 		$this->arrOptions = $this->getOptions();
 
 		$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/html/backend.js';
@@ -323,7 +323,7 @@ class AttributeWizard extends Widget
 
 		foreach ($arrDca as $field => $arrData)
 		{
-			if (is_array($arrData['attributes']) && $arrData['attributes']['legend'] != '' && (!is_array($this->arrDisabledFields) || !in_array($field, $this->arrDisabledFields)))
+			if (is_array($arrData['attributes']) && $arrData['attributes']['legend'] != '' && !in_array($field, $this->arrDisabledFields) && !$GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['customer_defined'])
 			{
 				// Variant options are not available
 				if ($this->variants && ($arrData['attributes']['variant_option'] || $arrData['attributes']['inherit']))

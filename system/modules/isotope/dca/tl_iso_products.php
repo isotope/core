@@ -1934,7 +1934,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 				}
 
 				// Do not show variant options & customer defined fields
-				if ($arrFields[$attribute]['attributes']['variant_option'] || $arrFields[$attribute]['attributes']['customer_defined'])
+				if ($arrFields[$attribute]['attributes']['variant_option'] || $arrFields[$attribute]['attributes']['customer_defined'] || $GLOBLAS['ISO_ATTR'][$arrFields[$attribute]['attributes']['type']]['customer_defined'])
 				{
 					continue;
 				}
