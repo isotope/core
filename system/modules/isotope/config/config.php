@@ -372,7 +372,12 @@ $GLOBALS['ISO_ATTR'] = array
 	(
 		'sql'		=> "blob NULL",
 		'backend'	=> 'fileTree',
-//		'callback'	=> array(array('IsotopeMoreattributes','imaFileDownloads')),
+	),
+	'upload' => array
+	(
+		'sql'				=> "varchar (255) NOT NULL default ''",
+		'backend'			=> false,
+		'customer_defined'	=> true,
 	),
 );
 

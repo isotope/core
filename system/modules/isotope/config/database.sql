@@ -179,6 +179,10 @@ CREATE TABLE `tl_iso_attributes` (
   `filesOnly` char(1) NOT NULL default '',
   `fieldType` varchar(8) NOT NULL default '',
   `sortBy` varchar(32) NOT NULL default '',
+  `storeFile` char(1) NOT NULL default '',
+  `uploadFolder` varchar(255) NOT NULL default '',
+  `useHomeDir` char(1) NOT NULL default '',
+  `doNotOverwrite` char(1) NOT NULL default '',
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
