@@ -7,6 +7,8 @@ Version 1.4.beta1 (2012-??-??)
 ### New
 - New filter module "Cumulative filter"
 - Merged the zoom gallery into Isotope eCommerce core
+- Added support for frontend-only attributes
+- Added new attribute type "upload"
 
 ### Improved
 - Checkout steps are now a numbered list (#3040)
