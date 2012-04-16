@@ -548,7 +548,7 @@ CREATE TABLE `tl_iso_orderstatus` (
   `sorting` int(10) unsigned NOT NULL default '0',
   `name` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`id`),
-  KEY `pid` (`pid`),
+  KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 
 			$blnUpdate = true;
