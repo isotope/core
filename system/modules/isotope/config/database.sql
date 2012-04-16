@@ -215,6 +215,8 @@ CREATE TABLE `tl_iso_config` (
   `orderPrefix` varchar(5) NOT NULL default '',
   `orderDigits` int(1) unsigned NOT NULL default '4',
   `templateGroup` varchar(255) NOT NULL default '',
+  `orderstatus_new` int(10) unsigned NOT NULL default '0',
+  `orderstatus_error` int(10) unsigned NOT NULL default '0',
   `invoiceLogo` varchar(255) NOT NULL default '',
   `company` varchar(255) NOT NULL default '',
   `firstname` varchar(255) NOT NULL default '',
@@ -354,7 +356,7 @@ CREATE TABLE `tl_iso_payment_modules` (
   `allowed_cc_types` text NULL,
   `minimum_total` decimal(12,2) NOT NULL default '0.00',
   `maximum_total` decimal(12,2) NOT NULL default '0.00',
-  `new_order_status` varchar(255) NOT NULL default '',
+  `new_order_status` int(10) unsigned NOT NULL default '0',
   `trans_type` varchar(8) NOT NULL default '',
   `paypal_account` varchar(255) NOT NULL default '',
   `payflowpro_user` varchar(255) NOT NULL default '',
@@ -460,7 +462,7 @@ CREATE TABLE `tl_iso_orders` (
   `date` int(10) unsigned NOT NULL default '0',
   `date_paid` varchar(10) NOT NULL default '',
   `date_shipped` varchar(10) NOT NULL default '',
-  `status` varchar(32) NOT NULL default '',
+  `status` int(10) unsigned NOT NULL default '0',
 
   `order_id` varchar(14) NOT NULL default '',
   `uniqid` varchar(27) NOT NULL default '',
@@ -571,6 +573,26 @@ CREATE TABLE `tl_iso_tax_rate` (
   `compound` char(1) NOT NULL default '',
   `stop` char(1) NOT NULL default '',
   PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+-- --------------------------------------------------------
+
+--
+-- Table `tl_iso_orderstatus`
+--
+
+CREATE TABLE `tl_iso_orderstatus` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `pid` int(10) unsigned NOT NULL default '0',
+  `tstamp` int(10) unsigned NOT NULL default '0',
+  `sorting` int(10) unsigned NOT NULL default '0',
+  `name` varchar(255) NOT NULL default '',
+  `paid` char(1) NOT NULL default '',
+  `mail_customer` int(10) unsigned NOT NULL default '0',
+  `mail_admin` int(10) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  KEY `pid` (`pid`),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 

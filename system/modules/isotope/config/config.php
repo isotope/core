@@ -237,12 +237,6 @@ $GLOBALS['ISO_PRODUCT'] = array
 
 
 /**
- * Order Statuses
- */
-$GLOBALS['ISO_ORDER'] = array('pending', 'processing', 'complete', 'on_hold', 'cancelled');
-
-
-/**
  * Permissions are access settings for user and groups (fields in tl_user and tl_user_group)
  */
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_modules';

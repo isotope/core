@@ -461,5 +461,26 @@ class IsotopeBackend extends Backend
 		
 		return $arrTaxes;
 	}
+	
+	
+	/**
+	 * Get order status and return it as array
+	 * @param object
+	 * @return array
+	 */
+	public static function getOrderStatus()
+	{
+		$objDatabase = Database::getInstance();
+		
+		$arrStatus = array();
+		$objStatus = $objDatabase->execute("SELECT id, name FROM tl_iso_orderstatus ORDER BY sorting");
+		
+		while( $objStatus->next() )
+		{
+			$arrStatus[$objStatus->id] = $objStatus->name;
+		}
+		
+		return $arrStatus;
+	}
 }
 

@@ -107,6 +107,8 @@ abstract class IsotopeProductCollection extends Model
 		{
 			register_shutdown_function(array($this, 'saveDatabase'));
 		}
+		
+		$this->import('Isotope');
 	}
 
 

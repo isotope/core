@@ -62,7 +62,7 @@ class IsotopeAutomator extends Controller
 
 					if ($objOrder->findBy('cart_id', $objCart->id))
 					{
-						if ($objOrder->status == '')
+						if ($objOrder->status == 0)
 						{
 							$objOrder->delete();
 						}

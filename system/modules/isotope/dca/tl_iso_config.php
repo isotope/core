@@ -130,7 +130,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			{price_legend},priceRoundPrecision,priceRoundIncrement,cartMinSubtotal;
 			{currency_legend},currency,currencyFormat,currencyPosition,currencySymbol;
 			{converter_legend:hide},priceCalculateFactor,priceCalculateMode,currencyAutomator;
-			{invoice_legend:hide},invoiceLogo;
+			{order_legend:hide},orderstatus_new,orderstatus_error,invoiceLogo;
 			{images_legend},gallery,missing_image_placeholder,imageSizes',
 	),
 
@@ -356,12 +356,28 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'inputType'               => 'checkbox',
 			'eval'					  => array('tl_class'=>'w50'),
 		),
+		'orderstatus_new' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['orderstatus_new'],
+			'filter'                  => true,
+			'inputType'               => 'select',
+			'options'                 => IsotopeBackend::getOrderStatus(),
+			'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
+		),
+		'orderstatus_error' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['orderstatus_error'],
+			'filter'                  => true,
+			'inputType'               => 'select',
+			'options'                 => IsotopeBackend::getOrderStatus(),
+			'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
+		),
 		'invoiceLogo' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['invoiceLogo'],
 			'exclude'                 => true,
 			'inputType'               => 'fileTree',
-			'eval'                    => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>'jpg,jpeg,gif,png,tif,tiff'),
+			'eval'                    => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>'jpg,jpeg,gif,png,tif,tiff', 'tl_class'=>'clr'),
 		),
 		'gallery' => array
 		(

@@ -59,16 +59,17 @@ $GLOBALS['TL_LANG']['FMD']['iso_relatedproducts']		= array('Related products', '
  * Isotope Modules
  */
 $GLOBALS['TL_LANG']['ISO']['config_module']				= 'Isotope eCommerce configuration';
-$GLOBALS['TL_LANG']['IMD']['checkout']					= 'Checkout Flow';
 $GLOBALS['TL_LANG']['IMD']['product']					= 'Products';
-$GLOBALS['TL_LANG']['IMD']['config']					= 'General settings';
+$GLOBALS['TL_LANG']['IMD']['attributes']				= array('Attributes', 'Manage and create product attributes such as size, color, etc.');
+$GLOBALS['TL_LANG']['IMD']['producttypes']				= array('Product types', 'Manage and create product types from sets of attributes.');
+$GLOBALS['TL_LANG']['IMD']['related_categories']		= array('Related categories', 'Define categories for product relations.');
+$GLOBALS['TL_LANG']['IMD']['checkout']					= 'Checkout Flow';
 $GLOBALS['TL_LANG']['IMD']['shipping']					= array('Shipping methods','Set up Shipping Methods such as UPS, USPS, DHL, etc.');
 $GLOBALS['TL_LANG']['IMD']['payment']					= array('Payment methods','Set up Payment Methods such as Authorize.net, PayPal Pro, and more.');
 $GLOBALS['TL_LANG']['IMD']['tax_class']					= array('Tax classes','Set up Tax classes, which contain sets of Tax rates.');
 $GLOBALS['TL_LANG']['IMD']['tax_rate']					= array('Tax rates','Set up tax rates based on things like shipping/billing location and order total.');
-$GLOBALS['TL_LANG']['IMD']['attributes']				= array('Attributes', 'Manage and create product attributes such as size, color, etc.');
-$GLOBALS['TL_LANG']['IMD']['producttypes']				= array('Product types', 'Manage and create product types from sets of attributes.');
-$GLOBALS['TL_LANG']['IMD']['related_categories']		= array('Related categories', 'Define categories for product relations.');
-$GLOBALS['TL_LANG']['IMD']['iso_mail']					= array('E-Mail manager','Customize Admin and Customer Notification Emails.');
+$GLOBALS['TL_LANG']['IMD']['config']					= 'General settings';
+$GLOBALS['TL_LANG']['IMD']['orderstatus']				= array('Order status', 'Define order status.');
+$GLOBALS['TL_LANG']['IMD']['iso_mail']					= array('E-Mail manager', 'Customize Admin and Customer Notification Emails.');
 $GLOBALS['TL_LANG']['IMD']['configs']					= array('Store configurations', 'Configure general settings for this store.');
 
