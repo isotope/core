@@ -142,6 +142,11 @@ $GLOBALS['ISO_MOD'] = array
 			'tables'					=> array('tl_iso_config'),
 			'icon'						=> 'system/modules/isotope/html/construction.png',
 		),
+		'orderstatus' => array
+		(
+			'tables'					=> array('tl_iso_orderstatus'),
+			'icon'						=> 'system/modules/isotope/html/traffic-light.png',
+		),
 	)
 );
 

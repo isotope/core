@@ -9,6 +9,7 @@ Version 1.4.beta1 (2012-??-??)
 - Merged the zoom gallery into Isotope eCommerce core
 - Added support for frontend-only attributes
 - Added new attribute type "upload"
+- Can now manage order status in the backend and notify on status changes
 
 ### Improved
 - Checkout steps are now a numbered list (#3040)
