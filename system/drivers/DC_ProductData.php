@@ -429,9 +429,20 @@ class DC_ProductData extends DC_Table
 		$this->objActiveRecord = $objRow;
 
 		// Load and/or change language
-		if (in_array('isotope_multilingual', $this->Config->getActiveModules()))
+		$activeModules = $this->Config->getActiveModules();
+		if (in_array('isotope_multilingual', $activeModules))
 		{
+			if(in_array('i18nl10n', $activeModules))
+			{
+				$arrPageLanguages = array_diff(
+					deserialize($GLOBALS['TL_CONFIG']['i18nl10n_languages']),
+					array($GLOBALS['TL_CONFIG']['i18nl10n_default_language'])
+          		);
+    		}
+			else
+			{
 			$arrPageLanguages = $this->Database->execute("SELECT DISTINCT language FROM tl_page")->fetchEach('language');
+			}
 			$this->arrLanguages = array_intersect_key($this->getLanguages(), array_flip($arrPageLanguages));
 
 			if ($this->Input->post('FORM_SUBMIT') == 'tl_language')
