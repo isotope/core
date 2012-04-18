@@ -50,7 +50,7 @@ class DC_ProductData extends DC_Table
 	 * @var array
 	 */
 	protected $arrLanguages;
-
+	
 	/**
 	 * Array of language labels
 	 * @var array
@@ -436,19 +436,15 @@ class DC_ProductData extends DC_Table
 		$this->objActiveRecord = $objRow;
 
 		// Load and/or change language
-		$activeModules = $this->Config->getActiveModules();
-		if (in_array('isotope_multilingual', $activeModules))
+		$arrActiveModules = $this->Config->getActiveModules();
+
+		if (in_array('isotope_multilingual', $arrActiveModules))
 		{
-			if(in_array('i18nl10n', $activeModules))
-			{
-				$arrPageLanguages = array_diff(
-					deserialize($GLOBALS['TL_CONFIG']['i18nl10n_languages']),
-					array($GLOBALS['TL_CONFIG']['i18nl10n_default_language'])
-          		);
-    		}
-			else
-			{
 			$arrPageLanguages = $this->Database->execute("SELECT DISTINCT language FROM tl_page")->fetchEach('language');
+
+			if (in_array('i18nl10n', $arrActiveModules))
+			{
+				$arrPageLanguages = array_filter(array_merge($arrPageLanguages, deserialize($GLOBALS['TL_CONFIG']['i18nl10n_languages'], true)));
 			}
 
 			$this->arrLanguageLabels = $this->getLanguages();
