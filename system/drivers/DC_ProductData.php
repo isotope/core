@@ -47,8 +47,15 @@ class DC_ProductData extends DC_Table
 
 	/**
 	 * Array of languages for this product's type
+	 * @var array
 	 */
 	protected $arrLanguages;
+
+	/**
+	 * Array of language labels
+	 * @var array
+	 */
+	protected $arrLanguageLabels;
 
 	/**
 	 * IDs of visible products
@@ -443,13 +450,15 @@ class DC_ProductData extends DC_Table
 			{
 			$arrPageLanguages = $this->Database->execute("SELECT DISTINCT language FROM tl_page")->fetchEach('language');
 			}
-			$this->arrLanguages = array_intersect_key($this->getLanguages(), array_flip($arrPageLanguages));
+
+			$this->arrLanguageLabels = $this->getLanguages();
+			$this->arrLanguages = array_intersect_key(array_keys($this->arrLanguageLabels), $arrPageLanguages);
 
 			if ($this->Input->post('FORM_SUBMIT') == 'tl_language')
 			{
 				$session = $this->Session->getData();
 
-				if (in_array($this->Input->post('language'), array_keys($this->arrLanguages)))
+				if (in_array($this->Input->post('language'), $this->arrLanguages))
 				{
 					$session['language'][$this->strTable][$this->intId] = $this->Input->post('language');
 
@@ -469,7 +478,7 @@ class DC_ProductData extends DC_Table
 				$this->reload();
 			}
 
-			if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId] != '' && in_array($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId], array_keys($this->arrLanguages)))
+			if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId] != '' && in_array($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId], $this->arrLanguages))
 			{
 				$objRow = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE pid=? AND language=?")->execute($this->intId, $_SESSION['BE_DATA']['language'][$this->strTable][$this->intId]);
 
@@ -703,29 +712,29 @@ class DC_ProductData extends DC_Table
 		}
 
 		// Check languages
-		if (is_array($this->arrLanguages) && count($this->arrLanguages))
+		if (is_array($this->arrLanguages) && !empty($this->arrLanguages))
 		{
 			$arrAvailableLanguages = $this->Database->prepare("SELECT language FROM " . $this->strTable . " WHERE pid=?")->execute($this->intId)->fetchEach('language');
 			$available = '';
 			$undefined = '';
 
-			foreach( $this->arrLanguages as $language => $label )
+			foreach( $this->arrLanguages as $language )
 			{
 				if (in_array($language, $arrAvailableLanguages))
 				{
 					if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId] == $language)
 					{
-						$available .= '<option value="' . $language . '" selected="selected">' . $label .'</option>';
+						$available .= '<option value="' . $language . '" selected="selected">' . $this->arrLanguageLabels[$language] .'</option>';
 						$_SESSION['TL_INFO'] = array($GLOBALS['TL_LANG']['MSC']['editingLanguage']);
 					}
 					else
 					{
-						$available .= '<option value="' . $language . '">' . $label . '</option>';
+						$available .= '<option value="' . $language . '">' . $this->arrLanguageLabels[$language] . '</option>';
 					}
 				}
 				else
 				{
-					$undefined .= '<option value="' . $language . '">' . $label . ' ('.$GLOBALS['TL_LANG']['MSC']['undefinedLanguage'].')' . '</option>';
+					$undefined .= '<option value="' . $language . '">' . $this->arrLanguageLabels[$language] . ' ('.$GLOBALS['TL_LANG']['MSC']['undefinedLanguage'].')' . '</option>';
 				}
 			}
 
