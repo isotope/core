@@ -7,7 +7,7 @@ Version 1.3.1 stable (????-??-??)
 ### Fixed
 - The gallery lightbox did not work in Contao 2.11 (#3079)
 - Show templates from theme and store config folders in mail template configuration (#3080)
-
+- IsotopeProduct doesn't support AJAX calls from Content Elements (#3095)
 
 Version 1.3.0 stable (2012-04-04)
 ---------------------------------
