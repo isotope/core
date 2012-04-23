@@ -4,6 +4,9 @@ Isotope eCommerce Changelog
 Version 1.3.1 stable (????-??-??)
 ---------------------------------
 
+### Improved
+- misspelling in german language files
+
 ### Fixed
 - The gallery lightbox did not work in Contao 2.11 (#3079)
 - Show templates from theme and store config folders in mail template configuration (#3080)
