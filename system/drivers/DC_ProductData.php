@@ -440,11 +440,14 @@ class DC_ProductData extends DC_Table
 
 		if (in_array('isotope_multilingual', $arrActiveModules))
 		{
-			$arrPageLanguages = $this->Database->execute("SELECT DISTINCT language FROM tl_page")->fetchEach('language');
-
+			// Add support for i18nl10n extension
 			if (in_array('i18nl10n', $arrActiveModules))
 			{
-				$arrPageLanguages = array_filter(array_merge($arrPageLanguages, deserialize($GLOBALS['TL_CONFIG']['i18nl10n_languages'], true)));
+				$arrPageLanguages = array_filter(array_unique(deserialize($GLOBALS['TL_CONFIG']['i18nl10n_languages'], true)));
+			}
+			else
+			{
+				$arrPageLanguages = $this->Database->execute("SELECT DISTINCT language FROM tl_page")->fetchEach('language');
 			}
 
 			$this->arrLanguageLabels = $this->getLanguages();
