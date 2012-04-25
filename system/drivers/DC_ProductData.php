@@ -451,7 +451,7 @@ class DC_ProductData extends DC_Table
 			}
 
 			$this->arrLanguageLabels = $this->getLanguages();
-			$this->arrLanguages = array_intersect_key(array_keys($this->arrLanguageLabels), $arrPageLanguages);
+			$this->arrLanguages = array_intersect(array_keys($this->arrLanguageLabels), $arrPageLanguages);
 
 			if ($this->Input->post('FORM_SUBMIT') == 'tl_language')
 			{
