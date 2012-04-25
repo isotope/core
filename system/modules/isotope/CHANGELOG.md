@@ -13,6 +13,7 @@ Version 1.3.1 stable (????-??-??)
 - IsotopeProduct doesn't support AJAX calls from Content Elements (#3095)
 - the third parameter to postCheckout hook could contain wrong data (#3100)
 - potential error message in frontend preview (#3093)
+- the filter template did not have a button label on javascript fallback (#3113)
 
 Version 1.3.0 stable (2012-04-04)
 ---------------------------------
