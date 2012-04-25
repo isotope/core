@@ -149,11 +149,16 @@ class tl_iso_product_categories extends Backend
 	public function getPageViewButton($href, $label, $title, $class, $attributes, $table, $root)
 	{
 		$objPage = $this->getPageDetails($this->Input->get('id'));
-
-		$href  = ($this->Environment->ssl ? 'https://' : 'http://') . ($objPage->dns == '' ? $this->Environment->host : $objPage->dns) . (TL_PATH == '' ? '' : TL_PATH) . '/';
-		$href .= $this->generateFrontendUrl($objPage->row());
-
-		return ' &#160; :: &#160; <a href="'.$href.'" target="_blank" class="header_preview" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ';
+		
+		if (is_object($objPage))
+		{
+			$href  = ($this->Environment->ssl ? 'https://' : 'http://') . ($objPage->dns == '' ? $this->Environment->host : $objPage->dns) . (TL_PATH == '' ? '' : TL_PATH) . '/';
+			$href .= $this->generateFrontendUrl($objPage->row());
+	
+			return ' &#160; :: &#160; <a href="'.$href.'" target="_blank" class="header_preview" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ';
+		}
+		
+		return '';
 	}
 }
 

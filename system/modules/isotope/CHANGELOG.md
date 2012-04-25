@@ -14,6 +14,7 @@ Version 1.3.1 stable (????-??-??)
 - the third parameter to postCheckout hook could contain wrong data (#3100)
 - potential error message in frontend preview (#3093)
 - the filter template did not have a button label on javascript fallback (#3113)
+- potential exception on product sorting view in the backend (#3094)
 
 Version 1.3.0 stable (2012-04-04)
 ---------------------------------
