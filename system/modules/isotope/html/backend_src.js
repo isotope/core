@@ -497,7 +497,9 @@ var Isotope =
 					else
 					{
 						element.setStyle('display', (event.target.checked ? 'none' : 'initial'));
-						element.getNext(':not(.tl_tip)').setStyle('display', (event.target.checked ? 'none' : 'initial'));
+						
+						// Query would fail if there is no tooltip
+						try { element.getNext(':not(.tl_tip)').setStyle('display', (event.target.checked ? 'none' : 'initial')); } catch (e) {}
 					}
 				});
 
@@ -508,7 +510,9 @@ var Isotope =
 				else
 				{
 					el.setStyle('display', (check.checked ? 'none' : 'initial'));
-					el.getNext(':not(.tl_tip)').setStyle('display', (check.checked ? 'none' : 'initial'));
+					
+					// Query would fail if there is no tooltip
+					try { el.getNext(':not(.tl_tip)').setStyle('display', (check.checked ? 'none' : 'initial')); } catch (e) {}
 				}
 			}
 		});

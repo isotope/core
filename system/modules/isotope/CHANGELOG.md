@@ -15,6 +15,7 @@ Version 1.3.1 stable (????-??-??)
 - potential error message in frontend preview (#3093)
 - the filter template did not have a button label on javascript fallback (#3113)
 - potential exception on product sorting view in the backend (#3094)
+- The inherit wizard caused javascript errors when no tooltip was given on a field (#3092)
 
 Version 1.3.0 stable (2012-04-04)
 ---------------------------------
