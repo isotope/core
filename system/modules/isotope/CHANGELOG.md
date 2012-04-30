@@ -6,6 +6,7 @@ Version 1.3.1 stable (????-??-??)
 
 ### Improved
 - misspelling in german language files
+- updated english language files (#3083)
 
 ### Fixed
 - The gallery lightbox did not work in Contao 2.11 (#3079)
