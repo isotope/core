@@ -336,11 +336,11 @@ class IsotopeOrder extends IsotopeProductCollection
 
 			foreach (array('billing', 'shipping') as $address)
 			{
-				$arrData = deserialize($this->arrData[$address . '_address'], true);
+				$arrAddress = deserialize($this->arrData[$address . '_address'], true);
 
-				if ($arrData['id'] == 0)
+				if ($arrAddress['id'] == 0)
 				{
-					$arrAddress = array_intersect_key($arrData, array_flip($this->Isotope->Config->{$address . '_fields_raw'}));
+					$arrAddress = array_intersect_key($arrAddress, array_flip($this->Isotope->Config->{$address . '_fields_raw'}));
 					$arrAddress['pid'] = $this->pid;
 					$arrAddress['tstamp'] = $time;
 					$arrAddress['store_id'] = $this->Isotope->Config->store_id;

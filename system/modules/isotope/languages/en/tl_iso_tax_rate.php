@@ -52,11 +52,13 @@ $GLOBALS['TL_LANG']['tl_iso_tax_rate']['copy']			= array('Copy tax rate', 'Copy 
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['delete']		= array('Delete tax rate', 'Delete tax rate ID %s');
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['show']			= array('Order Details', 'Show details of tax rate ID %s');
 
+
 /**
  * Reference
  */
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['billing']		= 'Billing Address';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['shipping']		= 'Shipping Address';
+
 
 /**
  * Legends
@@ -66,3 +68,4 @@ $GLOBALS['TL_LANG']['tl_iso_tax_rate']['rate_legend']		= 'Rate Legend';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['location_legend']	= 'Location Legend';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['condition_legend']	= 'Conditions Legend';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['config_legend']		= 'Configuration Legend';
+

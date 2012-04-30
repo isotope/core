@@ -33,19 +33,19 @@
  */
 $GLOBALS['TL_LANG']['tl_iso_products']['id']					= array('Product ID');
 $GLOBALS['TL_LANG']['tl_iso_products']['pages']					= array('Categories', 'Select a category (page-based categories take advantage of TYPOlight pages features such as navigation automation, protection, templates, and full integration with content elements.');
-$GLOBALS['TL_LANG']['tl_iso_products']['type']					= array('Product Type', 'Product types are defined in the Product Type Manager.');
-$GLOBALS['TL_LANG']['tl_iso_products']['alias']					= array('Alias');
-$GLOBALS['TL_LANG']['tl_iso_products']['name']					= array('Name');
-$GLOBALS['TL_LANG']['tl_iso_products']['sku']					= array('SKU');
+$GLOBALS['TL_LANG']['tl_iso_products']['type']					= array('Product Type', 'Select your product type. Product types are defined in the store configuration.');
+$GLOBALS['TL_LANG']['tl_iso_products']['alias']					= array('Alias', 'You can enter a unique alias for this product. It will be automatically generated from the name if empty.');
+$GLOBALS['TL_LANG']['tl_iso_products']['name']					= array('Name', 'Please enter the name of this product.');
+$GLOBALS['TL_LANG']['tl_iso_products']['sku']					= array('SKU', 'Please enter a unique stock keeping unit for this product.');
 $GLOBALS['TL_LANG']['tl_iso_products']['shipping_weight']		= array('Shipping weight', 'Please enter the shipping weight for this product. This can be used to calculate shipping cost.');
-$GLOBALS['TL_LANG']['tl_iso_products']['teaser']				= array('Teaser');
-$GLOBALS['TL_LANG']['tl_iso_products']['description']			= array('Description');
-$GLOBALS['TL_LANG']['tl_iso_products']['description_meta']		= array('Meta description');
-$GLOBALS['TL_LANG']['tl_iso_products']['keywords_meta']			= array('Meta keywords');
-$GLOBALS['TL_LANG']['tl_iso_products']['price']					= array('Price');
+$GLOBALS['TL_LANG']['tl_iso_products']['teaser']				= array('Teaser', 'Please enter the teaser.');
+$GLOBALS['TL_LANG']['tl_iso_products']['description']			= array('Description', 'Please enter the product description.');
+$GLOBALS['TL_LANG']['tl_iso_products']['description_meta']		= array('Meta description', 'Meta description will be placed in the header on product detail page, for search engine optimization.');
+$GLOBALS['TL_LANG']['tl_iso_products']['keywords_meta']			= array('Meta keywords', 'Meta keywords will be placed in the header on product detail page, for search engine optimization.');
+$GLOBALS['TL_LANG']['tl_iso_products']['price']					= array('Price', 'Please enter the price(s) for this product.');
 $GLOBALS['TL_LANG']['tl_iso_products']['shipping_exempt']		= array('Exempt from shipping', 'Check if item is not a shipped item (such as downloadable products).');
-$GLOBALS['TL_LANG']['tl_iso_products']['tax_class']				= array('Tax Class');
-$GLOBALS['TL_LANG']['tl_iso_products']['images']				= array('Images');
+$GLOBALS['TL_LANG']['tl_iso_products']['tax_class']				= array('Tax Class', 'Select your appropriate tax class.');
+$GLOBALS['TL_LANG']['tl_iso_products']['images']				= array('Images', 'Upload images to this product. Please save the product after selecting a file.');
 $GLOBALS['TL_LANG']['tl_iso_products']['published']				= array('Publish product', 'Click here to show this product on your website.');
 $GLOBALS['TL_LANG']['tl_iso_products']['start']					= array('Start date', 'Do not show this product before the date specified.');
 $GLOBALS['TL_LANG']['tl_iso_products']['stop']					= array('Stop date', 'Do not show this product after the date specified.');
@@ -57,32 +57,26 @@ $GLOBALS['TL_LANG']['tl_iso_products']['inherit']				= array('Inherited attribut
  * Reference
  */
 $GLOBALS['TL_LANG']['tl_iso_products']['source']				= array('Source folder', 'Please choose the folder where product assets are located.');
-
-$GLOBALS['TL_LANG']['tl_iso_products']['internal'] = array('Internal file', 'Select a media file existing on the web server (flash or mp3 file).');
-$GLOBALS['TL_LANG']['tl_iso_products']['external'] = array('External file', 'Specify a video from an external source (such as Youtube).');
-
-$GLOBALS['TL_LANG']['tl_iso_products']['opAttribute'] = 'Product Attribute';
-$GLOBALS['TL_LANG']['tl_iso_products']['opValueSets'] = 'Option Values';
-
-$GLOBALS['TL_LANG']['tl_iso_products']['opValue']		= 'Value';
-$GLOBALS['TL_LANG']['tl_iso_products']['opLabel']		= 'Label';
-$GLOBALS['TL_LANG']['tl_iso_products']['opPrice']		= 'Price (Surcharge)';
-$GLOBALS['TL_LANG']['tl_iso_products']['opDisable']		= 'Disable';
-$GLOBALS['TL_LANG']['tl_iso_products']['opInherit']		= 'Inherit label';
-
-$GLOBALS['TL_LANG']['tl_iso_products']['mmSrc']			= 'Preview';
-$GLOBALS['TL_LANG']['tl_iso_products']['mmAlt']			= 'Alternate text';
-$GLOBALS['TL_LANG']['tl_iso_products']['mmLink']		= 'Link target';
-$GLOBALS['TL_LANG']['tl_iso_products']['mmDesc']		= 'Description';
-$GLOBALS['TL_LANG']['tl_iso_products']['mmTranslate']	= 'Translate';
-$GLOBALS['TL_LANG']['tl_iso_products']['mmTranslateNone']	= array('None', 'Do not translate this image.');
-$GLOBALS['TL_LANG']['tl_iso_products']['mmTranslateText']	= array('Text', 'Translate alt text and description for this image.');
-$GLOBALS['TL_LANG']['tl_iso_products']['mmTranslateAll']	= array('All', 'Do not include this image in translated version.');
-
-$GLOBALS['TL_LANG']['tl_iso_products']['existing_option_set'] = 'Select an existing product option set';
-$GLOBALS['TL_LANG']['tl_iso_products']['new_option_set'] = 'Create a new product option set';
-
-$GLOBALS['TL_LANG']['tl_iso_products']['variantValuesLabel'] = 'Variant';
+$GLOBALS['TL_LANG']['tl_iso_products']['internal']				= array('Internal file', 'Select a media file existing on the web server (flash or mp3 file).');
+$GLOBALS['TL_LANG']['tl_iso_products']['external']				= array('External file', 'Specify a video from an external source (such as Youtube).');
+$GLOBALS['TL_LANG']['tl_iso_products']['opAttribute']			= 'Product Attribute';
+$GLOBALS['TL_LANG']['tl_iso_products']['opValueSets']			= 'Option Values';
+$GLOBALS['TL_LANG']['tl_iso_products']['opValue']				= 'Value';
+$GLOBALS['TL_LANG']['tl_iso_products']['opLabel']				= 'Label';
+$GLOBALS['TL_LANG']['tl_iso_products']['opPrice']				= 'Price (Surcharge)';
+$GLOBALS['TL_LANG']['tl_iso_products']['opDisable']				= 'Disable';
+$GLOBALS['TL_LANG']['tl_iso_products']['opInherit']				= 'Inherit label';
+$GLOBALS['TL_LANG']['tl_iso_products']['mmSrc']					= 'Preview';
+$GLOBALS['TL_LANG']['tl_iso_products']['mmAlt']					= 'Alternate text';
+$GLOBALS['TL_LANG']['tl_iso_products']['mmLink']				= 'Link target';
+$GLOBALS['TL_LANG']['tl_iso_products']['mmDesc']				= 'Description';
+$GLOBALS['TL_LANG']['tl_iso_products']['mmTranslate']			= 'Translate';
+$GLOBALS['TL_LANG']['tl_iso_products']['mmTranslateNone']		= array('None', 'Do not translate this image.');
+$GLOBALS['TL_LANG']['tl_iso_products']['mmTranslateText']		= array('Text', 'Translate alt text and description for this image.');
+$GLOBALS['TL_LANG']['tl_iso_products']['mmTranslateAll']		= array('All', 'Do not include this image in translated version.');
+$GLOBALS['TL_LANG']['tl_iso_products']['existing_option_set']	= 'Select an existing product option set';
+$GLOBALS['TL_LANG']['tl_iso_products']['new_option_set']		= 'Create a new product option set';
+$GLOBALS['TL_LANG']['tl_iso_products']['variantValuesLabel']	= 'Variant';
 
 
 /**
