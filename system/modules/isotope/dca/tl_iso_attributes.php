@@ -57,10 +57,6 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 			array('tl_iso_attributes', 'modifyColumn'),
 			array('tl_iso_attributes', 'cleanFieldValues'),
 		),
-		'ondelete_callback' => array
-		(
-			array('tl_iso_attributes', 'deleteAttribute'),
-		),
 	),
 
 	// List
@@ -157,7 +153,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 		'storeFile'					=> 'uploadFolder,useHomeDir,doNotOverwrite',
 	),
 
-    // Fields
+	// Fields
 	'fields' => array
 	(
 		'name' => array
@@ -411,26 +407,6 @@ class tl_iso_attributes extends Backend
 {
 
 	/**
-	 * Delete an attribute in tl_iso_products table
-	 * @param object
-	 * @return void
-	 */
-	public function deleteAttribute($dc)
-	{
-		if ($dc->id)
-		{
-			$objAttribute = $this->Database->execute("SELECT * FROM tl_iso_attributes WHERE id={$dc->id}");
-
-			if ($this->Database->fieldExists($objAttribute->field_name, 'tl_iso_products'))
-			{
-				$this->import('IsotopeDatabase');
-				$this->IsotopeDatabase->delete($objAttribute->field_name);
-			}
-		}
-	}
-
-
-	/**
 	 * Disable the internal field name field if it is not empty.
 	 * @param object
 	 * @return	void
@@ -476,9 +452,6 @@ class tl_iso_attributes extends Backend
 			$strType = $GLOBALS['ISO_ATTR'][$this->Input->post('type')]['sql'] == '' ? 'text' : $this->Input->post('type');
 
 			$this->Database->query(sprintf("ALTER TABLE tl_iso_products ADD %s %s", $varValue, $GLOBALS['ISO_ATTR'][$strType]['sql']));
-
-			$this->import('IsotopeDatabase');
-			$this->IsotopeDatabase->add($varValue, $GLOBALS['ISO_ATTR'][$strType]['sql']);
 		}
 
 		return $varValue;
@@ -504,22 +477,14 @@ class tl_iso_attributes extends Backend
 			$this->Database->query(sprintf("ALTER TABLE tl_iso_products MODIFY %s %s", $objAttribute->field_name, $GLOBALS['ISO_ATTR'][$dc->activeRecord->type]['sql']));
 		}
 
-		$this->import('IsotopeDatabase');
-		$this->IsotopeDatabase->update($objAttribute->field_name, $GLOBALS['ISO_ATTR'][$dc->activeRecord->type]['sql']);
-
 		if ($objAttribute->fe_filter && $GLOBALS['ISO_ATTR'][$dc->activeRecord->type]['useIndex'])
 		{
-			$this->IsotopeDatabase->add("KEY `{$objAttribute->field_name}`", "(`{$objAttribute->field_name}`)");
 			$arrFields = $this->Database->listFields('tl_iso_products');
 
 			if ($arrFields[$objAttribute->field_name]['type'] != 'index')
 			{
 				$this->Database->query("ALTER TABLE `tl_iso_products` ADD KEY `{$objAttribute->field_name}` (`{$objAttribute->field_name}`);");
 			}
-		}
-		else
-		{
-			$this->IsotopeDatabase->delete("KEY `{$objAttribute->field_name}`");
 		}
 	}
 

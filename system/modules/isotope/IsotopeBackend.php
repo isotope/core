@@ -482,5 +482,34 @@ class IsotopeBackend extends Backend
 		
 		return $arrStatus;
 	}
+
+
+	/**
+	 * Add the product attributes to the db updater array so the users don't delete them while updating
+	 * @param array
+	 * @return array
+	 */
+	public function addAttributesToDBUpdate($arrData)
+	{
+		$objAttributes = $this->Database->execute("SELECT * FROM tl_iso_attributes");
+
+		while ($objAttributes->next())
+		{
+			if ($objAttributes->type == '' || $GLOBALS['ISO_ATTR'][$objAttributes->type]['sql'] == '')
+			{
+				continue;
+			}
+
+			$arrData['tl_iso_products']['TABLE_FIELDS'][$objAttributes->field_name] = sprintf('`%s` %s', $objAttributes->field_name, $GLOBALS['ISO_ATTR'][$objAttributes->type]['sql']);
+
+			// also check indexes
+			if ($objAttributes->fe_filter && $GLOBALS['ISO_ATTR'][$objAttributes->type]['useIndex'])
+			{
+				$arrData['tl_iso_products']['TABLE_CREATE_DEFINITIONS'][$objAttributes->field_name] = sprintf('KEY `%s` (`%s`)', $objAttributes->field_name, $objAttributes->field_name);
+			}
+		}
+
+		return $arrData;
+	}
 }
 
