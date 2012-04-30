@@ -375,7 +375,7 @@ $GLOBALS['ISO_ATTR'] = array
 	),
 	'upload' => array
 	(
-		'sql'				=> "varchar (255) NOT NULL default ''",
+		'sql'				=> "varchar(255) NOT NULL default ''",
 		'backend'			=> false,
 		'customer_defined'	=> true,
 	),
