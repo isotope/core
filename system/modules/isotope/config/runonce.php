@@ -65,7 +65,6 @@ class IsotopeRunonce extends Controller
 		$this->exec('updateProductTypes');
 		$this->exec('updateRules');
 		$this->exec('generateCategoryGroups');
-		$this->exec('refreshDatabaseFile');
 
 		// Make sure file extension .imt (Isotope Mail Template) is allowed for up- and download
 		if (!in_array('imt', trimsplit(',', $GLOBALS['TL_CONFIG']['uploadTypes'])))
@@ -896,33 +895,6 @@ CREATE TABLE `tl_iso_groups` (
 
 				$arrProducts = array_keys(array_intersect($arrCategories, array($objPages->id)));
 				$this->Database->query("UPDATE tl_iso_products SET gid=$intGroup WHERE id IN (" . implode(',', $arrProducts) . ")");
-			}
-		}
-	}
-
-
-	/**
-	 * Regenerate the database.sql to include custom attributes.
-	 * This info might have been lost when updating the file via FTP.
-	 */
-	private function refreshDatabaseFile()
-	{
-		$this->import('IsotopeDatabase');
-
-		$objAttributes = $this->Database->execute("SELECT * FROM tl_iso_attributes");
-
-		while( $objAttributes->next() )
-		{
-			// Skip empty lines
-			if ($objAttributes->field_name == '' || $GLOBALS['ISO_ATTR'][$objAttributes->type]['sql'] == '')
-				continue;
-
-			$this->IsotopeDatabase->add($objAttributes->field_name, $GLOBALS['ISO_ATTR'][$objAttributes->type]['sql']);
-
-			// Add indexes
-			if ($objAttributes->fe_filter && $GLOBALS['ISO_ATTR'][$objAttributes->type]['useIndex'])
-			{
-				$this->IsotopeDatabase->add("KEY `{$objAttributes->field_name}`", "(`{$objAttributes->field_name}`)");
 			}
 		}
 	}
