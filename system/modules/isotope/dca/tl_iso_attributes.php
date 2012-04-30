@@ -57,10 +57,6 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 			array('tl_iso_attributes', 'modifyColumn'),
 			array('tl_iso_attributes', 'cleanFieldValues'),
 		),
-		'ondelete_callback' => array
-		(
-			array('tl_iso_attributes', 'deleteAttribute'),
-		),
 	),
 
 	// List
@@ -375,25 +371,6 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
  */
 class tl_iso_attributes extends Backend
 {
-
-	/**
-	 * Delete an attribute in tl_iso_products table
-	 * @param object
-	 * @return void
-	 */
-	public function deleteAttribute($dc)
-	{
-		if ($dc->id)
-		{
-			$objAttribute = $this->Database->execute("SELECT * FROM tl_iso_attributes WHERE id={$dc->id}");
-
-			if ($this->Database->fieldExists($objAttribute->field_name, 'tl_iso_products'))
-			{
-				// @todo: is this a bug or don't we update tl_iso_products here (if not, we can remove the whole callback)
-			}
-		}
-	}
-
 
 	/**
 	 * Disable the internal field name field if it is not empty.
