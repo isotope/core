@@ -335,7 +335,7 @@ class IsotopeRules extends Controller
 		// Limits
 		$arrProcedures[] = "(limitPerConfig=0 OR limitPerConfig>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND config_id=".(int)$this->Isotope->Config->id." AND order_id NOT IN (SELECT id FROM tl_iso_orders WHERE cart_id=".(int)$this->Isotope->Cart->id.")))";
 
-		if (FE_USER_LOGGED_IN && TL_MODE=='FE')
+		if (FE_USER_LOGGED_IN === true && TL_MODE=='FE')
 		{
 			$arrProcedures[] = "(limitPerMember=0 OR limitPerMember>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND member_id=".(int)$this->User->id." AND order_id NOT IN (SELECT id FROM tl_iso_orders WHERE cart_id=".(int)$this->Isotope->Cart->id.")))";
 		}
@@ -348,7 +348,7 @@ class IsotopeRules extends Controller
 
 
 		// Member restrictions
-		if (FE_USER_LOGGED_IN && TL_MODE=='FE')
+		if (FE_USER_LOGGED_IN === true && TL_MODE=='FE')
 		{
 			$arrGroups = array_map('intval', $this->User->groups);
 			

@@ -680,9 +680,9 @@ class IsotopeProduct extends Controller
 		$objTemplate->formId = $this->formSubmit;
 		$objTemplate->action = ampersand($this->Environment->request, true);
 		$objTemplate->formSubmit = $this->formSubmit;
-
+		
 		list(,$startScript, $endScript) = IsotopeFrontend::getElementAndScriptTags();
-		$GLOBALS['TL_MOOTOOLS'][] = $startScript."\nnew {$this->ajaxClass}('{$objModule->id}', '" . ($this->pid ? $this->pid : $this->id) . "', '{$this->formSubmit}', ['ctrl_" . implode("_".$this->formSubmit."', 'ctrl_", $arrAjaxOptions) . "_".$this->formSubmit."'], {language: '{$GLOBALS['TL_LANGUAGE']}', page: {$objPage->id}, loadMessage:'" . specialchars($GLOBALS['ISO_LANG']['MSC']['loadingProductData']) . "'});\n".$endScript;
+		$GLOBALS['TL_MOOTOOLS'][] = $startScript."\nnew {$this->ajaxClass}('{$objModule->id}', '" . ($this->pid ? $this->pid : $this->id) . "', '{$this->formSubmit}', ['ctrl_" . implode("_".$this->formSubmit."', 'ctrl_", $arrAjaxOptions) . "_".$this->formSubmit."'], {language: '{$GLOBALS['TL_LANGUAGE']}', action: '".($objModule instanceof Module ? 'fmd' : 'cte')."', page: {$objPage->id}, loadMessage:'" . specialchars($GLOBALS['ISO_LANG']['MSC']['loadingProductData']) . "'});\n".$endScript;
 
 		// HOOK for altering product data before output
 		if (isset($GLOBALS['ISO_HOOKS']['generateProduct']) && is_array($GLOBALS['ISO_HOOKS']['generateProduct']))
@@ -1152,7 +1152,7 @@ class IsotopeProduct extends Controller
 															AND member_group IN(" . ((FE_USER_LOGGED_IN === true && count($this->User->groups)) ? (implode(',', $this->User->groups) . ',') : '') . "0)
 															AND (start='' OR start<$time)
 															AND (stop='' OR stop>$time)
-															AND pid=" . ($this->pid ? $this->pid : $this->id) . "
+															AND pid=" . (($this->pid > 0 && !in_array('price', $this->arrVariantAttributes)) ? $this->pid : $this->id) . "
 														ORDER BY config_id DESC, " . ((FE_USER_LOGGED_IN === true && count($this->User->groups)) ? ('member_group=' . implode(' DESC, member_group=', $this->User->groups) . ' DESC') : 'member_group DESC') . ", start DESC, stop DESC
 														LIMIT 1
 													)

@@ -159,6 +159,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 			$this->Template->actionSearch = ampersand(preg_replace('/&?keywords=[^&]+&?/', '', $this->Environment->request));
 			$this->Template->actionClear = ampersand(preg_replace('/\?.*/', '', $this->Environment->request));
 			$this->Template->clearLabel = $GLOBALS['TL_LANG']['MSC']['clearFiltersLabel'];
+			$this->Template->slabel = $GLOBALS['TL_LANG']['MSC']['submitLabel'];
 		}
 	}
 

@@ -17,6 +17,25 @@ Version 1.4.beta1 (2012-??-??)
 - Product list can be sorted by dateAdded, this allows to list the newest products
 
 
+Version 1.3.1 stable (2012-04-30)
+---------------------------------
+
+### Improved
+- misspelling in german language files
+- updated english language files (#3083)
+
+### Fixed
+- The gallery lightbox did not work in Contao 2.11 (#3079)
+- Show templates from theme and store config folders in mail template configuration (#3080)
+- IsotopeProduct doesn't support AJAX calls from Content Elements (#3095)
+- the third parameter to postCheckout hook could contain wrong data (#3100)
+- potential error message in frontend preview (#3093)
+- the filter template did not have a button label on javascript fallback (#3113)
+- potential exception on product sorting view in the backend (#3094)
+- The inherit wizard caused javascript errors when no tooltip was given on a field (#3092)
+- Advanced pricing did not work on product variants (#3052)
+
+
 Version 1.3.0 stable (2012-04-04)
 ---------------------------------
 

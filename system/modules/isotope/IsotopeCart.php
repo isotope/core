@@ -233,11 +233,11 @@ class IsotopeCart extends IsotopeProductCollection
 				$this->setCookie($this->strCookie, $this->strHash, $time+$GLOBALS['TL_CONFIG']['iso_cartTimeout'], $GLOBALS['TL_CONFIG']['websitePath']);
 			}
 
-			$objCart = $this->Database->execute("SELECT * FROM tl_iso_cart WHERE session='{$this->strHash}' AND store_id=$intStore");
+			$objCart = $this->Database->execute("SELECT * FROM tl_iso_cart WHERE session='{$this->strHash}' AND store_id=" . (int) $intStore);
 		}
 		else
 		{
-			$objCart = $this->Database->execute("SELECT * FROM tl_iso_cart WHERE pid={$this->User->id} AND store_id=$intStore");
+			$objCart = $this->Database->execute("SELECT * FROM tl_iso_cart WHERE pid=" . (int) $this->User->id . " AND store_id=" . (int) $intStore);
 		}
 
 		// Create new cart
