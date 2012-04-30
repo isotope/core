@@ -474,6 +474,11 @@ class IsotopeBackend extends Backend
 
 		while ($objAttributes->next())
 		{
+			if ($objAttributes->type == '' || $GLOBALS['ISO_ATTR'][$objAttributes->type]['sql'] == '')
+			{
+				continue;
+			}
+
 			$arrData['tl_iso_products']['TABLE_FIELDS'][$objAttributes->field_name] = sprintf('`%s` %s', $objAttributes->field_name, $GLOBALS['ISO_ATTR'][$objAttributes->type]['sql']);
 
 			// also check indexes
