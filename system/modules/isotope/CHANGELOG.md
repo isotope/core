@@ -1,6 +1,11 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 1.3.2 stable (????-??-??)
+---------------------------------
+-
+
+
 Version 1.3.1 stable (2012-04-30)
 ---------------------------------
 
@@ -18,6 +23,7 @@ Version 1.3.1 stable (2012-04-30)
 - potential exception on product sorting view in the backend (#3094)
 - The inherit wizard caused javascript errors when no tooltip was given on a field (#3092)
 - Advanced pricing did not work on product variants (#3052)
+
 
 Version 1.3.0 stable (2012-04-04)
 ---------------------------------
