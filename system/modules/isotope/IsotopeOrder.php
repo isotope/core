@@ -413,7 +413,8 @@ class IsotopeOrder extends IsotopeProductCollection
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate'] as $callback)
 			{
-				$objCallback = (method_exists('getInstance', $callback[0]) ? $callback[0]::getInstance() : new $callback[0]);
+				$strClass = $callback[0];
+				$objCallback = (in_array('getInstance', get_class_methods($strClass))) ? call_user_func(array($strClass, 'getInstance')) : new $strClass();
 				$blnCancel = $this->$callback[0]->$callback[1]($this, $objNewStatus, $blnActions);
 				
 				if ($blnCancel === true)
@@ -455,7 +456,8 @@ class IsotopeOrder extends IsotopeProductCollection
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['postOrderStatusUpdate'] as $callback)
 			{
-				$objCallback = (method_exists('getInstance', $callback[0]) ? $callback[0]::getInstance() : new $callback[0]);
+				$strClass = $callback[0];
+				$objCallback = (in_array('getInstance', get_class_methods($strClass))) ? call_user_func(array($strClass, 'getInstance')) : new $strClass();
 				$this->$callback[0]->$callback[1]($this, $intOldStatus, $objNewStatus, $blnActions);
 			}
 		}

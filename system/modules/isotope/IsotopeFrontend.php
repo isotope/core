@@ -676,9 +676,8 @@ $endScript";
 				// Store current value in the session
 				elseif ($objWidget->submitInput())
 				{
-					$objForm->arrFormData[$objFields->name]	= $objWidget->value;
-					$_SESSION['FORM_DATA'][$objFields->name]		= $objWidget->value;
-
+					$objForm->arrFormData[$objFields->name] = $objWidget->value;
+					$_SESSION['FORM_DATA'][$objFields->name] = $objWidget->value;
 				}
 
 				// Store file uploads
