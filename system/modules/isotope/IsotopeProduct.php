@@ -1068,14 +1068,14 @@ class IsotopeProduct extends Controller
 		if ($this->Input->post('FORM_SUBMIT') == $this->formSubmit)
 		{
 			$objWidget->validate();
-
+			
 			if ($objWidget->hasErrors())
 			{
 				$this->doNotSubmit = true;
 			}
 
 			// Store current value
-			elseif ($objWidget->submitInput())
+			elseif ($objWidget->submitInput() || $objWidget instanceof uploadable)
 			{
 				$varValue = $objWidget->value;
 
@@ -1095,7 +1095,7 @@ class IsotopeProduct extends Controller
 						
 						try
 						{
-							$varValue = $this->$callback[0]->$callback[1]($varValue, $this);
+							$varValue = $this->$callback[0]->$callback[1]($varValue, $this, $objWidget);
 						}
 						catch (Exception $e)
 						{

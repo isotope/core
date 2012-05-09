@@ -305,6 +305,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['MSC']['dateAdded'],
 			'eval'					=> array('rgxp'=>'datim'),
+			'attributes'			=> array('fe_sorting'=>true),
 		),
 		'type' => array
 		(
@@ -1933,7 +1934,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 				}
 
 				// Do not show variant options & customer defined fields
-				if ($arrFields[$attribute]['attributes']['variant_option'] || $arrFields[$attribute]['attributes']['customer_defined'])
+				if ($arrFields[$attribute]['attributes']['variant_option'] || $arrFields[$attribute]['attributes']['customer_defined'] || $GLOBLAS['ISO_ATTR'][$arrFields[$attribute]['attributes']['type']]['customer_defined'])
 				{
 					continue;
 				}
@@ -2031,12 +2032,25 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 			// Add date picker
 			if ($objAttributes->rgxp == 'date')
 			{
-				$arrData['eval']['datepicker'] = (method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true);
+				$arrData['eval']['datepicker'] = (method_exists($this, 'getDatePickerString') ? $this->getDatePickerString() : true);
 			}
 
+			// Textarea cannot be w50
 			if ($objAttributes->type == 'textarea' || $objAttributes->rte != '')
 			{
 				$arrData['eval']['tl_class'] = 'clr';
+			}
+			
+			// Customer defined widgets
+			if ($GLOBALS['ISO_ATTR'][$objAttributes->type]['customer_defined'])
+			{
+				$arrData['attributes']['customer_defined'] = true;
+			}
+			
+			// Install save_callback for upload widgets
+			if ($objAttributes->type == 'upload')
+			{
+				$arrData['save_callback'][] = array('IsotopeFrontend', 'saveUpload');
 			}
 
 			// Parse multiline/multilingual foreignKey

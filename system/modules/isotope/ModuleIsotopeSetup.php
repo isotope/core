@@ -109,7 +109,7 @@ class ModuleIsotopeSetup extends BackendModule
 	{
 		$this->Template->modules = $this->arrModules;
 		$this->Template->script = $this->Environment->script;
-		$this->Template->welcome = $GLOBALS['TL_LANG']['ISO']['config_module'];
+		$this->Template->welcome = sprintf($GLOBALS['TL_LANG']['ISO']['config_module'], ISO_VERSION . '.' . ISO_BUILD);
 	}
 
 

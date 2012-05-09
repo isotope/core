@@ -57,10 +57,6 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 			array('tl_iso_attributes', 'modifyColumn'),
 			array('tl_iso_attributes', 'cleanFieldValues'),
 		),
-		'ondelete_callback' => array
-		(
-			array('tl_iso_attributes', 'deleteAttribute'),
-		),
 	),
 
 	// List
@@ -135,7 +131,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'__selector__'				=> array('type', 'variant_option'),
+		'__selector__'				=> array('type', 'variant_option', 'storeFile'),
 		'default'					=> '{attribute_legend},name,field_name,type,legend',
 		'text'						=> '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},rgxp,maxlength,mandatory,multilingual;{search_filters_legend},fe_search,fe_sorting,be_search',
 		'textarea'					=> '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},rgxp,rte,mandatory,multilingual;{search_filters_legend},fe_search,fe_sorting,be_search',
@@ -148,10 +144,16 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 		'mediaManager'				=> '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},gallery,extensions,mandatory',
 		'fileTree'					=> '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,extensions,files,filesOnly,mandatory',
 		'downloads'					=> '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,extensions,sortBy,files,filesOnly,mandatory',
-
+		'upload'					=> '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},extensions,maxlength,mandatory;{store_legend:hide},storeFile',
     ),
 
-    // Fields
+	// Subpalettes
+	'subpalettes' => array
+	(
+		'storeFile'					=> 'uploadFolder,useHomeDir,doNotOverwrite',
+	),
+
+	// Fields
 	'fields' => array
 	(
 		'name' => array
@@ -175,8 +177,8 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['type'],
 			'inputType'				=> 'select',
 			'options'				=> array_keys($GLOBALS['ISO_ATTR']),
-			'eval'					=> array('mandatory'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
-			'reference'				=> &$GLOBALS['ISO_LANG']['ATTR'],
+			'eval'					=> array('mandatory'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true, 'helpwizard'=>true, 'tl_class'=>'w50', 'chosen'=>true),
+			'reference'				=> &$GLOBALS['ISO_LANG']['ATTR']
 		),
 		'legend' => array
 		(
@@ -185,7 +187,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 			'default'				=> 'options_legend',
 			'options'				=> array('general_legend', 'meta_legend', 'pricing_legend', 'inventory_legend', 'shipping_legend', 'options_legend', 'media_legend', 'publish_legend'),
 			'reference'				=> &$GLOBALS['TL_LANG']['tl_iso_products'],
-			'eval'					=> array('mandatory'=>true, 'tl_class'=>'w50'),
+			'eval'					=> array('mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true)
 		),
 		'description' => array
 		(
@@ -291,7 +293,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 			'exclude'				=> true,
 			'inputType'				=> 'select',
 			'options_callback'		=> array('tl_iso_attributes', 'getRTE'),
-			'eval'					=> array('includeBlankOption'=>true, 'tl_class'=>'w50'),
+			'eval'					=> array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true)
 		),
 		'multilingual' => array
 		(
@@ -307,7 +309,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 			'inputType'				=> 'select',
 			'options'				=> array('digit', 'alpha', 'alnum', 'extnd', 'date', 'time', 'datim', 'phone', 'email', 'url', 'price', 'discount', 'surcharge'),
 			'reference'				=> &$GLOBALS['TL_LANG']['tl_iso_attributes'],
-			'eval'					=> array('helpwizard'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
+			'eval'					=> array('helpwizard'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true)
 		),
 		'maxlength' => array
 		(
@@ -322,7 +324,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 			'exclude'				=> true,
 			'inputType'				=> 'select',
 			'options_callback'		=> array('tl_iso_attributes', 'getConditionFields'),
-			'eval'					=> array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50'),
+			'eval'					=> array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true)
 		),
 		'gallery' => array
 		(
@@ -339,8 +341,8 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['fieldType'],
 			'exclude'				=> true,
 			'inputType'				=> 'select',
-			'options'               => array('checkbox', 'radio'),
-			'reference'             => &$GLOBALS['TL_LANG']['tl_iso_attributes'],
+			'options'				=> array('checkbox', 'radio'),
+			'reference'				=> &$GLOBALS['TL_LANG']['tl_iso_attributes'],
 			'eval'					=> array('tl_class'=>'w50'),
 		),
 		'files' => array
@@ -359,11 +361,39 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 		),
 		'sortBy' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_attributes']['sortBy'],
-			'exclude'                 => true,
-			'inputType'               => 'select',
-			'options'                 => array('name_asc', 'name_desc', 'date_asc', 'date_desc', 'meta', 'random'),
-			'reference'               => &$GLOBALS['TL_LANG']['tl_iso_attributes'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['sortBy'],
+			'exclude'				=> true,
+			'inputType'				=> 'select',
+			'options'				=> array('name_asc', 'name_desc', 'date_asc', 'date_desc', 'meta', 'random'),
+			'reference'				=> &$GLOBALS['TL_LANG']['tl_iso_attributes'],
+		),
+		'storeFile' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['storeFile'],
+			'exclude'				=> true,
+			'inputType'				=> 'checkbox',
+			'eval'					=> array('submitOnChange'=>true)
+		),
+		'uploadFolder' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['uploadFolder'],
+			'exclude'				=> true,
+			'inputType'				=> 'fileTree',
+			'eval'					=> array('fieldType'=>'radio', 'tl_class'=>'clr')
+		),
+		'useHomeDir' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['useHomeDir'],
+			'exclude'				=> true,
+			'inputType'				=> 'checkbox',
+			'eval'					=> array('tl_class'=>'w50')
+		),
+		'doNotOverwrite' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['doNotOverwrite'],
+			'exclude'				=> true,
+			'inputType'				=> 'checkbox',
+			'eval'					=> array('tl_class'=>'w50')
 		),
 	)
 );
@@ -375,26 +405,6 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
  */
 class tl_iso_attributes extends Backend
 {
-
-	/**
-	 * Delete an attribute in tl_iso_products table
-	 * @param object
-	 * @return void
-	 */
-	public function deleteAttribute($dc)
-	{
-		if ($dc->id)
-		{
-			$objAttribute = $this->Database->execute("SELECT * FROM tl_iso_attributes WHERE id={$dc->id}");
-
-			if ($this->Database->fieldExists($objAttribute->field_name, 'tl_iso_products'))
-			{
-				$this->import('IsotopeDatabase');
-				$this->IsotopeDatabase->delete($objAttribute->field_name);
-			}
-		}
-	}
-
 
 	/**
 	 * Disable the internal field name field if it is not empty.
@@ -442,9 +452,6 @@ class tl_iso_attributes extends Backend
 			$strType = $GLOBALS['ISO_ATTR'][$this->Input->post('type')]['sql'] == '' ? 'text' : $this->Input->post('type');
 
 			$this->Database->query(sprintf("ALTER TABLE tl_iso_products ADD %s %s", $varValue, $GLOBALS['ISO_ATTR'][$strType]['sql']));
-
-			$this->import('IsotopeDatabase');
-			$this->IsotopeDatabase->add($varValue, $GLOBALS['ISO_ATTR'][$strType]['sql']);
 		}
 
 		return $varValue;
@@ -470,22 +477,14 @@ class tl_iso_attributes extends Backend
 			$this->Database->query(sprintf("ALTER TABLE tl_iso_products MODIFY %s %s", $objAttribute->field_name, $GLOBALS['ISO_ATTR'][$dc->activeRecord->type]['sql']));
 		}
 
-		$this->import('IsotopeDatabase');
-		$this->IsotopeDatabase->update($objAttribute->field_name, $GLOBALS['ISO_ATTR'][$dc->activeRecord->type]['sql']);
-
 		if ($objAttribute->fe_filter && $GLOBALS['ISO_ATTR'][$dc->activeRecord->type]['useIndex'])
 		{
-			$this->IsotopeDatabase->add("KEY `{$objAttribute->field_name}`", "(`{$objAttribute->field_name}`)");
 			$arrFields = $this->Database->listFields('tl_iso_products');
 
 			if ($arrFields[$objAttribute->field_name]['type'] != 'index')
 			{
 				$this->Database->query("ALTER TABLE `tl_iso_products` ADD KEY `{$objAttribute->field_name}` (`{$objAttribute->field_name}`);");
 			}
-		}
-		else
-		{
-			$this->IsotopeDatabase->delete("KEY `{$objAttribute->field_name}`");
 		}
 	}
 

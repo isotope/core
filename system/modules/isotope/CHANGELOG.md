@@ -1,6 +1,22 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 1.4.beta1 (2012-??-??)
+------------------------------
+
+### New
+- New filter module "Cumulative filter"
+- Merged the zoom gallery into Isotope eCommerce core
+- Added support for frontend-only attributes
+- Added new attribute type "upload"
+- Can now manage order status in the backend and notify on status changes
+- Added support for i18nl10n extension
+
+### Improved
+- Checkout steps are now a numbered list (#3040)
+- Product list can be sorted by dateAdded, this allows to list the newest products
+
+
 Version 1.3.1 stable (2012-04-30)
 ---------------------------------
 
@@ -18,6 +34,7 @@ Version 1.3.1 stable (2012-04-30)
 - potential exception on product sorting view in the backend (#3094)
 - The inherit wizard caused javascript errors when no tooltip was given on a field (#3092)
 - Advanced pricing did not work on product variants (#3052)
+
 
 Version 1.3.0 stable (2012-04-04)
 ---------------------------------

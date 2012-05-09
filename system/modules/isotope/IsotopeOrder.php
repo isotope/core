@@ -83,7 +83,24 @@ class IsotopeOrder extends IsotopeProductCollection
 				return deserialize($this->arrData['shipping_address'], true);
 			
 			case 'paid':
-				return (((int) $this->date_paid) >= time() && $this->status == 'complete');
+				// Order is paid if a payment date is set
+				$paid = (int) $this->date_paid;
+				if ($paid > 0 && $paid <= time())
+				{
+					return true;
+				}
+				
+				// Otherwise we check the orderstatus checkbox
+				$objStatus = $this->Database->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $this->status);
+				return $objStatus->paid ? true : false;
+			
+			case 'statusLabel':
+				$strStatus = $this->Database->prepare("SELECT name FROM tl_iso_orderstatus WHERE id=?")
+											->execute($this->arrData['status'])
+											->name;
+				
+				return $this->Isotope->translate($strStatus);
+				break;
 
 			default:
 				return parent::__get($strKey);
@@ -247,8 +264,6 @@ class IsotopeOrder extends IsotopeProductCollection
 			return true;
 		}
 
-		$this->import('Isotope');
-
 		// This is the case when not using ModuleIsotopeCheckout
 		if (!is_object($objCart))
 		{
@@ -289,31 +304,12 @@ class IsotopeOrder extends IsotopeProductCollection
 		$objCart->delete();
 
 		$this->checkout_complete = true;
-		$this->status = $this->new_order_status;
-		$arrData = $this->email_data;
-		$arrData['order_id'] = $this->generateOrderId();
+		$this->status = ($this->new_order_status ? $this->new_order_status : $this->Isotope->Config->orderstatus_new);
+		
+		$this->generateOrderId();
+		$arrData = $this->getEmailData();
 
-		foreach ($this->billing_address as $k => $v)
-		{
-			$arrData['billing_' . $k] = $this->Isotope->formatValue('tl_iso_addresses', $k, $v);
-		}
-
-		foreach ($this->shipping_address as $k => $v)
-		{
-			$arrData['shipping_' . $k] = $this->Isotope->formatValue('tl_iso_addresses', $k, $v);
-		}
-
-		if ($this->pid > 0)
-		{
-			$objUser = $this->Database->execute("SELECT * FROM tl_member WHERE id=" . (int) $this->pid);
-
-			foreach ($objUser->row() as $k => $v)
-			{
-				$arrData['member_' . $k] = $this->Isotope->formatValue('tl_member', $k, $v);
-			}
-		}
-
-		$this->log('New order ID ' . $this->id . ' has been placed', 'IsotopeOrder checkout()', TL_ACCESS);
+		$this->log('New order ID ' . $this->id . ' has been placed', __METHOD__, TL_ACCESS);
 
 		if ($this->iso_mail_admin && $this->iso_sales_email != '')
 		{
@@ -326,7 +322,7 @@ class IsotopeOrder extends IsotopeProductCollection
 		}
 		else
 		{
-			$this->log('Unable to send customer confirmation for order ID '.$this->id, 'IsotopeOrder checkout()', TL_ERROR);
+			$this->log('Unable to send customer confirmation for order ID '.$this->id, __METHOD__, TL_ERROR);
 		}
 
 		// Store address in address book
@@ -388,6 +384,117 @@ class IsotopeOrder extends IsotopeProductCollection
 		}
 		
 		return false;
+	}
+	
+	
+	/**
+	 * Update the status of this order and trigger actions (email & hook)
+	 * @param int
+	 * @param bool
+	 * @return bool
+	 */
+	public function updateOrderStatus($intNewStatus, $blnActions=true)
+	{
+		// Status already set, nothing to do
+		if ($this->status == $intNewStatus)
+		{
+			return true;
+		}
+		
+		$objNewStatus = $this->Database->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $intNewStatus);
+		
+		if ($objNewStatus->numRows == 0)
+		{
+			return false;
+		}
+		
+		// HOOK: allow to cancel a status update
+		if (isset($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate']) && is_array($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate']))
+		{
+			foreach ($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate'] as $callback)
+			{
+				$strClass = $callback[0];
+				$objCallback = (in_array('getInstance', get_class_methods($strClass))) ? call_user_func(array($strClass, 'getInstance')) : new $strClass();
+				$blnCancel = $this->$callback[0]->$callback[1]($this, $objNewStatus, $blnActions);
+				
+				if ($blnCancel === true)
+				{
+					return false;
+				}
+			}
+		}
+		
+		// Trigger email actions
+		if ($objNewStatus->mail_customer > 0 || $objNewStatus->mail_admin > 0)
+		{
+			$arrData = $this->getEmailData();
+			$arrData['new_status'] = $objNewStatus->name;
+	
+			if ($objNewStatus->mail_customer && $this->iso_customer_email != '')
+			{
+				$this->Isotope->sendMail($objNewStatus->mail_customer, $this->iso_customer_email, $this->language, $arrData, '', $this);
+				
+				if (TL_MODE == 'BE')
+				{
+					$this->addConfirmationMessage($GLOBALS['TL_LANG']['tl_iso_orders']['orderStatusEmail']);
+				}
+			}
+			
+			if ($objNewStatus->mail_admin && $this->iso_sales_email != '')
+			{
+				$this->Isotope->sendMail($objNewStatus->mail_admin, $this->iso_sales_email, $this->language, $arrData, $this->iso_customer_email, $this);
+			}
+		}
+		
+		// Store old status and set the new one
+		$intOldStatus = $this->status;
+		$this->status = $objNewStatus->id;
+		$this->save();
+		
+		// HOOK: order status has been updated
+		if (isset($GLOBALS['ISO_HOOKS']['postOrderStatusUpdate']) && is_array($GLOBALS['ISO_HOOKS']['postOrderStatusUpdate']))
+		{
+			foreach ($GLOBALS['ISO_HOOKS']['postOrderStatusUpdate'] as $callback)
+			{
+				$strClass = $callback[0];
+				$objCallback = (in_array('getInstance', get_class_methods($strClass))) ? call_user_func(array($strClass, 'getInstance')) : new $strClass();
+				$this->$callback[0]->$callback[1]($this, $intOldStatus, $objNewStatus, $blnActions);
+			}
+		}
+	}
+	
+	
+	/**
+	 * Retrieve the array of email data for parsing simple tokens
+	 * @return array
+	 */
+	public function getEmailData()
+	{
+		$arrData = $this->email_data;
+		$arrData['order_id'] = $this->order_id;
+		$arrData['status'] = $this->statusLabel;
+
+		foreach ($this->billing_address as $k => $v)
+		{
+			$arrData['billing_' . $k] = $this->Isotope->formatValue('tl_iso_addresses', $k, $v);
+		}
+
+		foreach ($this->shipping_address as $k => $v)
+		{
+			$arrData['shipping_' . $k] = $this->Isotope->formatValue('tl_iso_addresses', $k, $v);
+		}
+
+		if ($this->pid > 0)
+		{
+			$objUser = $this->Database->execute("SELECT * FROM tl_member WHERE id=" . (int) $this->pid);
+
+			foreach ($objUser->row() as $k => $v)
+			{
+				$arrData['member_' . $k] = $this->Isotope->formatValue('tl_member', $k, $v);
+			}
+		}
+		
+		return $arrData;
 	}
 
 

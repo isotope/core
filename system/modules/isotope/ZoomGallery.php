@@ -1,8 +1,8 @@
-<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php if (!defined('TL_ROOT')) die('You cannot access this file directly!');
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2010 Leo Feyer
+ * Copyright (C) 2005-2011 Leo Feyer
  *
  * Formerly known as TYPOlight Open Source CMS.
  *
@@ -21,30 +21,40 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Isotope eCommerce Workgroup 2009-2012
+ * @copyright  Isotope eCommerce Workgroup 2011
  * @author     Andreas Schempp <andreas@schempp.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ * @author     Kamil Kuźmiński <kamil.kuzminski@gmail.com>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @version    $Id$
  */
 
 
-/**
- * Handle cash payments
- *
- * @extends Payment
- */
-class PaymentCash extends IsotopePayment
+class ZoomGallery extends InlineGallery
 {
 
 	/**
-	 * processPayment function.
-	 *
-	 * @access public
-	 * @return void
+	 * Template
+	 * @var string
 	 */
-	public function processPayment()
+	protected $strTemplate = 'iso_gallery_zoom';
+
+
+	/**
+	 * Generate gallery
+	 * @param string
+	 * @param integer
+	 * @param boolean
+	 */
+	public function generateGallery($strType='gallery', $intSkip=0, $blnForce=false)
 	{
-		return true;
+		// Include scripts and styles
+		if (version_compare(MOOTOOLS_CORE, '1.3.0') >= 0)
+		{
+			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/html/zoomgallery.js';
+			$GLOBALS['TL_CSS'][] = 'system/modules/isotope/html/zoomgallery.css';
+		}
+
+		return parent::generateGallery();
 	}
 }
 

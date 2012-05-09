@@ -8,7 +8,7 @@
 
 <?php if (is_array($this->steps) && count($this->steps)): ?>
 <div class="steps block">
-<ul class="level_1 steps<?php echo count($this->steps); ?>">
+<ol class="level_1 steps<?php echo count($this->steps); ?>">
 <?php foreach( $this->steps as $step ): ?>
 <li class="<?php echo $step['class']; ?>">
 <?php if (strlen($step['href'])): ?>
@@ -18,7 +18,7 @@
 <?php endif; ?>
 </li>
 <?php endforeach; ?>
-</ul>
+</ol>
 </div>
 <?php endif; ?>
 

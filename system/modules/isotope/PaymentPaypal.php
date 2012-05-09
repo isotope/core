@@ -36,18 +36,6 @@ class PaymentPaypal extends IsotopePayment
 {
 
 	/**
-	 * Return a list of status options.
-	 *
-	 * @access public
-	 * @return array
-	 */
-	public function statusOptions()
-	{
-		return array('pending', 'processing', 'complete', 'on_hold');
-	}
-
-
-	/**
 	 * processPayment function.
 	 *
 	 * @access public
@@ -89,14 +77,8 @@ class PaymentPaypal extends IsotopePayment
 	 */
 	public function processPostSale()
 	{
-		$arrData = array();
-		foreach( $_POST as $k => $v )
-		{
-			$arrData[] = $k . '=' . urlencode($v);
-		}
-
 		$objRequest = new Request();
-		$objRequest->send(('https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr?cmd=_notify-validate'), implode('&', $arrData), 'post');
+		$objRequest->send(('https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr?cmd=_notify-validate'), http_build_query($_POST), 'post');
 
 		if ($objRequest->hasError())
 		{
@@ -152,10 +134,7 @@ class PaymentPaypal extends IsotopePayment
 				case 'Failed':
 				case 'Voided':
 					$objOrder->date_paid = '';
-					if ($objOrder->status == 'complete')
-					{
-						$objOrder->status = 'on_hold';
-					}
+					$objOrder->status = $this->Isotope->Config->orderstatus_error;
 					break;
 
 				case 'In-Progress':
