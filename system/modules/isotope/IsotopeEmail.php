@@ -339,31 +339,9 @@ class IsotopeEmail extends Controller
 		$this->objEmail->from = $objTemplate->sender ? $objTemplate->sender : $GLOBALS['TL_ADMIN_EMAIL'];
 		$this->objEmail->priority = $objTemplate->priority;
 
-		$arrCc = trimsplit(',', $objTemplate->cc);
-
-		// Recipient_cc
-		foreach ((array) $arrCC as $email)
-		{
-			if ($email == '' || !$this->isValidEmailAddress($email))
-			{
-				continue;
-			}
-
-			$this->objEmail->sendCc($email);
-		}
-
-		$arrBcc = trimsplit(',', $objTemplate->bcc);
-
-		// Recipient_bcc
-		foreach ((array) $arrBcc as $email)
-		{
-			if ($email == '' || !$this->isValidEmailAddress($email))
-			{
-				continue;
-			}
-
-			$this->objEmail->sendBcc($email);
-		}
+		// Add CC and BCC recipients
+		$this->addRecipients($objTemplate->cc, 'sendCc');
+		$this->addRecipients($objTemplate->bcc, 'sendBcc');
 
 		$this->strTemplate = $objTemplate->template ? $objTemplate->template : 'mail_default';
 
@@ -417,6 +395,33 @@ class IsotopeEmail extends Controller
 		}
 
 		return implode($strGlue, $arrReturn);
+	}
+	
+	
+	/**
+	 * Add (blind) carbon copy recipients to the email object
+	 * @param string
+	 * @param string
+	 */
+	protected function addRecipients($strRecipients, $strMethod='sendCc')
+	{
+		$arrAdd = array();
+		$arrRecipients = (array) trimsplit(',', $strRecipients);
+		
+		foreach ($arrRecipients as $email)
+		{
+			if ($email == '' || !$this->isValidEmailAddress($email))
+			{
+				continue;
+			}
+
+			$arrAdd[] = $email;
+		}
+		
+		if (!empty($arrAdd))
+		{
+			$this->objEmail->{$strMethod}($arrAdd);
+		}
 	}
 }
 
