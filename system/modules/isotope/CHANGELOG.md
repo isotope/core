@@ -16,6 +16,7 @@ Version 1.4.beta1 (2012-??-??)
 - Checkout steps are now a numbered list (#3040)
 - Product list can be sorted by dateAdded, this allows to list the newest products
 - More modular gallery class, also allows to retrieve the list of images (#3173)
+- Added getimagesize data to gallery template (#3173)
 
 
 Version 1.3.1 stable (2012-04-30)

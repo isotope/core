@@ -319,6 +319,7 @@ $endScript
 					if (is_array($arrSize) && strlen($arrSize[3]))
 					{
 						$file[$size['name'] . '_size'] = $arrSize[3];
+						$file[$size['name'] . '_imageSize'] = $arrSize;
 					}
 
 					$file['alt'] = specialchars($file['alt']);
