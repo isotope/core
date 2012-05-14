@@ -208,6 +208,11 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 			'inputType'				=> 'text',
 			'eval'					=> array('rgxp'=>'date', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'w50 wizard'),
 		),
+		'config_id' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['config_id'],
+			'foreignKey'			=> 'tl_iso_config.name',
+		),
 		'payment_id' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['payment_id'],
