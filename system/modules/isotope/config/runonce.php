@@ -546,6 +546,9 @@ CREATE TABLE `tl_iso_orderstatus` (
   `tstamp` int(10) unsigned NOT NULL default '0',
   `sorting` int(10) unsigned NOT NULL default '0',
   `name` varchar(255) NOT NULL default '',
+  `paid` char(1) NOT NULL default '',
+  `mail_customer` int(10) unsigned NOT NULL default '0',
+  `mail_admin` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
@@ -554,7 +557,7 @@ CREATE TABLE `tl_iso_orderstatus` (
 		}
 		else
 		{
-			$objRecords = $this->Database->query("SELECT COUNT(*) AS total FROM tl_iso_orderstatus");
+			$objRecords = $this->Database->query("SELECT COUNT(id) AS total FROM tl_iso_orderstatus");
 			$blnUpdate = $objRecords->total > 0 ? false : true;
 		}
 		
@@ -577,7 +580,7 @@ CREATE TABLE `tl_iso_orderstatus` (
 			foreach( $arrStatus as $i => $status )
 			{
 				$strLabel = $GLOBALS['TL_LANG']['ORDER'][$status] == '' ? $status : $GLOBALS['TL_LANG']['ORDER'][$status];
-				$intId = $this->Database->prepare("INSERT INTO tl_iso_orderstatus (tstamp,sorting,name) VALUES ($time,$i,?)")->executeUncached($strLabel)->insertId;
+				$intId = $this->Database->prepare("INSERT INTO tl_iso_orderstatus (tstamp,sorting,name,paid) VALUES ($time,?,?,?)")->executeUncached(($i*128), $strLabel, ($status == 'complete' ? '1' : ''))->insertId;
 				
 				$this->Database->prepare("UPDATE tl_iso_orders SET status=? WHERE status=?")->executeUncached($intId, $status);
 				$this->Database->prepare("UPDATE tl_iso_payment_modules SET new_order_status=? WHERE new_order_status=?")->executeUncached($intId, $status);
