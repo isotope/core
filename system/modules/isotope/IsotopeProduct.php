@@ -1239,7 +1239,7 @@ class IsotopeProduct extends Controller
 				return;
 			}
 
-			$this->loadVariantData($this->arrVariantOptions['variants'][$intVariant]);
+			$this->loadVariantData($this->arrVariantOptions['variants'][$intVariant], false, true);
 		}
 	}
 
@@ -1249,7 +1249,7 @@ class IsotopeProduct extends Controller
 	 * @param array
 	 * @param array
 	 */
-	public function loadVariantData($arrData, $arrInherit=false)
+	public function loadVariantData($arrData, $arrInherit=false, $findPrice=false)
 	{
 		$arrInherit = deserialize($arrData['inherit'], true);
 
@@ -1265,7 +1265,7 @@ class IsotopeProduct extends Controller
 
 			$this->arrData[$attribute] = $arrData[$attribute];
 			
-			if (is_array($this->arrCache) && isset($this->arrCache[$attribute]))
+			if (is_array($this->arrCache) && isset($this->arrCache[$attribute]) && $findPrice)
 			{
 				unset($this->arrCache[$attribute]);
 			}
