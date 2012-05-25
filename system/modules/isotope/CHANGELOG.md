@@ -5,6 +5,7 @@ Version 1.3.2 stable (????-??-??)
 ---------------------------------
 - Surcharges with percent as price were not rounded
 - Multiple CC and BCC recipients on emails templates did not work
+- Prevent the filter from generating useless "isorc" params
 
 
 Version 1.3.1 stable (2012-04-30)

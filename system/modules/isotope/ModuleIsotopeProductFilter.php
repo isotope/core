@@ -88,6 +88,12 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 			$varSorting = is_array($GLOBALS['ISO_SORTING']) ? serialize($GLOBALS['ISO_SORTING']) : null;
 			$varLimit = is_array($GLOBALS['ISO_LIMIT']) ? serialize($GLOBALS['ISO_LIMIT']) : null;
 
+			// if all filters are null we don't have to cache (this will prevent useless isorc params from being generated)
+			if (!$varFilter && !$varLimit && !$varSorting)
+			{
+				$this->redirect($this->generateRequestUrl());
+			}
+
 			$intCacheId = $this->Database->prepare("SELECT id FROM tl_iso_requestcache WHERE store_id={$this->Isotope->Config->store_id} AND filters" . ($varFilter ? '=' : ' IS ') . "? AND sorting" . ($varSorting ? '=' : ' IS ') . "? AND limits" . ($varLimit ? '=' : ' IS ') . "?")
 										 ->execute($varFilter, $varSorting, $varLimit)
 										 ->id;
@@ -103,7 +109,6 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 											 ->insertId;
 			}
 
-			$strFilterUrl = preg_replace('/&?isorc=[0-9]+&?/', '', $this->Environment->request);
 			$this->Input->setGet('isorc', $intCacheId);
 			$this->redirect($this->generateRequestUrl());
 		}
