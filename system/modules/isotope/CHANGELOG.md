@@ -8,6 +8,7 @@ Version 1.3.2 stable (????-??-??)
 - Prevent the filter from generating useless "isorc" params
 - Fixed medium size width & height in inline gallery
 - Plain text emails could contain HTML when using InsertTags (#3172)
+- Fixed IsotopeAutomator::convertCurrencies function (#3141)
 
 
 Version 1.3.1 stable (2012-04-30)
