@@ -251,10 +251,9 @@ class IsotopeEmail extends Controller
 		$this->strLanguage = $objLanguage->language;
 
 		$arrData = $this->arrSimpleTokens;
-		$arrPlainData = array_map('strip_tags', $this->arrSimpleTokens);
 
-		$this->objEmail->subject = $this->parseSimpleTokens($this->replaceInsertTags($objLanguage->subject), $arrPlainData);
-		$this->objEmail->text = $this->parseSimpleTokens($this->replaceInsertTags($objLanguage->text), $arrPlainData);
+		$this->objEmail->subject = strip_tags($this->parseSimpleTokens($this->replaceInsertTags($objLanguage->subject), $arrData));
+		$this->objEmail->text = strip_tags($this->parseSimpleTokens($this->replaceInsertTags($objLanguage->text), $arrData));
 
 		// Generate HTML
 		if (!$objLanguage->textOnly && $objLanguage->html != '')
@@ -302,7 +301,7 @@ class IsotopeEmail extends Controller
 			// @todo the PDF name could contain user specific information if sent to multiple recipients
 			if ($this->strDocumentTitle != '')
 			{
-				$strTitle = $this->parseSimpleTokens($this->replaceInsertTags($this->strDocumentTitle), $arrPlainData);
+				$strTitle = strip_tags($this->parseSimpleTokens($this->replaceInsertTags($this->strDocumentTitle), $arrData));
 				$this->objEmail->attachFileFromString($this->varDocumentData, $strTitle.'.pdf', 'application/pdf');
 			}
 
