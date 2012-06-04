@@ -3,12 +3,16 @@ Isotope eCommerce Changelog
 
 Version 1.3.2 stable (????-??-??)
 ---------------------------------
+
+### Improved 
 - Surcharges with percent as price were not rounded
-- Multiple CC and BCC recipients on emails templates did not work
 - Prevent the filter from generating useless "isorc" params
-- Fixed medium size width & height in inline gallery
 - Plain text emails could contain HTML when using InsertTags (#3172)
-- Fixed IsotopeAutomator::convertCurrencies function (#3141)
+
+### Fixed
+- Multiple CC and BCC recipients on emails templates did not work
+- Fixed medium size width & height in inline gallery
+- IsotopeAutomator::convertCurrencies function was not working (#3141)
 
 
 Version 1.3.1 stable (2012-04-30)
