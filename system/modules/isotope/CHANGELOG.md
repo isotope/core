@@ -13,6 +13,7 @@ Version 1.3.2 stable (????-??-??)
 - Multiple CC and BCC recipients on emails templates did not work
 - Fixed medium size width & height in inline gallery
 - IsotopeAutomator::convertCurrencies function was not working (#3141)
+- Palette selectors not working correctly in rules (#3138)
 
 
 Version 1.3.1 stable (2012-04-30)
