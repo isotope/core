@@ -8,6 +8,7 @@ Version 1.3.2 stable (????-??-??)
 - Surcharges with percent as price were not rounded
 - Prevent the filter from generating useless "isorc" params
 - Plain text emails could contain HTML when using InsertTags (#3172)
+- Added some german labels
 
 ### Fixed
 - Multiple CC and BCC recipients on emails templates did not work
