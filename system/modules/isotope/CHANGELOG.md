@@ -9,6 +9,7 @@ Version 1.3.2 stable (????-??-??)
 - Prevent the filter from generating useless "isorc" params
 - Plain text emails could contain HTML when using InsertTags (#3172)
 - Added some german labels
+- Hide the "invoice logo" option in store config, if the server does not support it (#3124)
 
 ### Fixed
 - Multiple CC and BCC recipients on emails templates did not work
