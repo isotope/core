@@ -92,7 +92,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 		$objOrder->findBy('cart_id', $this->Isotope->Cart->id);
 
 		//$arrPaymentData = deserialize($objOrder->payment_data);
-		if($this->authCapturePayment($objOrder->id, $objOrder->grandTotal, true))
+		if($this->authCapturePayment($objOrder->id, $this->Isotope->Cart->grandTotal, true))
 			return true;
 
 		global $objPage;
@@ -110,8 +110,14 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 	 * @param object
 	 * @return string
 	 */
-	public function paymentForm($objModule)
-	{
+	public function paymentForm(&$objModule)
+	{		
+		if($_SESSION['checkout']['grandTotal']!==$this->Isotope->Cart->grandTotal)
+			$_SESSION['checkout']['success']=false;
+	
+		//set/reset grand total.
+		$_SESSION['checkout']['grandTotal'] = $this->Isotope->Cart->grandTotal;
+	
 		$strBuffer = '';
 		$arrPayment = $this->Input->post('payment');
 
@@ -209,27 +215,38 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 		}
 
 		if ($this->Input->post('FORM_SUBMIT') == 'iso_mod_checkout_payment' && !$objModule->doNotSubmit && $arrPayment['module']==$this->id && !$_SESSION['CHECKOUT_DATA']['payment']['request_lockout'])
-		{
-			// Get the current order, review page will create the data
-			$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->execute($this->Isotope->Cart->id);
+		{	
+			//Gather Order data and set IsotopeOrder object
+			$objOrder = new IsotopeOrder();
+	
+			if (!$objOrder->findBy('cart_id', $this->Isotope->Cart->id))
+			{
+				$objOrder->uniqid		= uniqid($this->Isotope->Config->orderPrefix, true);
+				$objOrder->cart_id		= $this->Isotope->Cart->id;
+				$objOrder->findBy('id', $objOrder->save());
+			}
 
 			$_SESSION['CHECKOUT_DATA']['payment']['request_lockout'] = true;
-
-			$blnResult = $this->authCapturePayment($objOrder->id, $this->Isotope->Cart->grandTotal, false);
+			
+			if($_SESSION['CHECKOUT_DATA']['payment']['success']!==true)
+				$blnResult = $this->authCapturePayment($objOrder->id, $this->Isotope->Cart->grandTotal, false);
 
 			if($blnResult)  //At this point the response data has been saved to the order and the auth was successful.
-			{
+			{					
 					unset($_SESSION['CHECKOUT_DATA']['responseMsg']);
-                                        unset($_SESSION['CHECKOUT_DATA']['payment']);
 
 					$_SESSION['CHECKOUT_DATA']['payment']['card_accountNumber'] = $this->maskCC($arrPayment['card_accountNumber']); //PCI COMPLIANCE - MASK THE CC DATA
 					$_SESSION['CHECKOUT_DATA']['payment']['card_cvNumber'] = '***';
-					$_SESSION['CHECKOUT_DATA']['payment']['success'] = true;
+					$_SESSION['CHECKOUT_DATA']['payment']['success'] = true;		
+					$objModule->doNotSubmit = false;			
 			}
 			else
 			{
-				$objModule->doNotSubmit = true;
-				$_SESSION['CHECKOUT_DATA']['responseMsg'] = sprintf("Transaction failure. Transaction Status: %s, Reason: %s", $this->strStatus, $this->strReason);
+				if($_SESSION['CHECKOUT_DATA']['payment']['success']!==true)
+				{
+					$objModule->doNotSubmit = true;
+					$_SESSION['CHECKOUT_DATA']['responseMsg'] = sprintf("Transaction failure. Transaction Status: %s, Reason: %s", $this->strStatus, $this->strReason);
+				}
 			}
 
 		}
@@ -250,9 +267,10 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 	public function backendInterface($intOrderId)
 	{
 		$arrOrderInfo = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE id=?")
-										   ->limit(1)
-										   ->execute($intOrderId)
-										   ->fetchAssoc();
+							   ->limit(1)
+							   ->execute($intOrderId)
+							   ->fetchAssoc();
+
 
 		$this->Input->setGet('uid', $arrOrderInfo['uniqid']);
 		$objModule = new ModuleIsotopeOrderDetails($this->Database->execute("SELECT * FROM tl_module WHERE type='iso_orderdetails'"));
@@ -285,11 +303,27 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 
 		if ($this->Input->post('FORM_SUBMIT') == 'be_pos_terminal' && $arrPaymentData['transaction-id']!=="0")
 		{
-			$blnAuthCapture = $this->authCapturePayment($arrOrderInfo['id'], $arrPaymentData['transaction-id'], $arrOrderInfo['grandTotal'], true);
+			$blnAuthCapture = $this->authCapturePayment($arrOrderInfo['id'], $arrOrderInfo['grandTotal'], true);
 
 			$strResponse = '<p class="tl_info">' . sprintf("Transaction Status: %s, Reason: %s", $this->strStatus, $this->strReason) . '</p>';
 		}
+		
+		if($blnAuthCapture)
+		{
+			$objOrder = new IsotopeOrder();
 
+			if (!$objOrder->findBy('id', $intOrderId))
+			{
+				$objOrder->uniqid		= uniqid($this->Isotope->Config->orderPrefix, true);				
+				$objOrder->findBy('id', $objOrder->save());
+			}
+			
+			$objOrder->status		= 'processing';
+			
+			$objOrder->save();
+
+		}
+		
 		$return = '<div id="tl_buttons">
 <input type="hidden" name="FORM_SUBMIT" value="be_pos_terminal">
 <input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">
@@ -301,7 +335,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 $return .= ($strResponse ? $strResponse : '');
 $return .= $strOrderDetails;
 $return .= '</div></div>';
-		if($arrOrderInfo['status']!='complete'){
+		if($arrOrderInfo['status']==$this->new_order_status){
 			$return .= '<div class="tl_formbody_submit"><div class="tl_submit_container">';
 			$return .= '<input type="submit" class="submit" value="' . specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']) . '"></div></div>';
 		}
@@ -324,7 +358,7 @@ $return .= '</div></div>';
 	 * @return bool
 	 */
 	public function authCapturePayment($intOrderId, $fltOrderTotal, $blnCapture=false)
-	{
+	{		
 		//Gather Order data and set IsotopeOrder object
 		$objOrder = new IsotopeOrder();
 
@@ -446,6 +480,7 @@ $return .= '</div></div>';
 			$arrPaymentInfo["x_card_num"]	= $this->maskCC($arrData['card_accountNumber']); //PCI COMPLIANCE - MASK THE CC DATA
 			$arrPaymentInfo["x_card_type"]	= $GLOBALS['ISO_LANG']['CCT'][$arrData['card_cardType']];
 		}
+
 
 		foreach( $authnet_values as $key => $value ) $fields .= "$key=" . urlencode( $value ) . "&";
 
