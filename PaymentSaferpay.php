@@ -149,7 +149,7 @@ class PaymentSaferpay extends IsotopePayment
 			}
 		}
 
-		$this->Database->execute("UPDATE tl_iso_orders SET date_payed=" . time() . " WHERE id={$objOrder->id}");
+		$this->Database->execute("UPDATE tl_iso_orders SET date_paid=" . time() . " WHERE id={$objOrder->id}");
 
 		return true;
 	}
