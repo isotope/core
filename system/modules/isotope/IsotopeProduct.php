@@ -185,7 +185,7 @@ class IsotopeProduct extends Controller
 			}
 		}
 
-		if (!$this->blnLocked)
+		if (!$this->blnLocked  && !is_array($arrOptions))
 		{
 			if ($this->arrType['variants'])
 			{
