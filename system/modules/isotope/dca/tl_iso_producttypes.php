@@ -158,6 +158,13 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
 			'inputType'				=> 'checkbox',
 			'eval'					=> array('fallback'=>true, 'tl_class'=>'w50'),
 		),
+		'description' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_producttypes']['description'],
+			'exclude'				=> true,
+			'inputType'				=> 'textarea',
+			'eval'					=> array('style'=>'height:80px', 'tl_class'=>'clr'),
+		),
 		'prices' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_producttypes']['prices'],
@@ -182,13 +189,6 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
 			'default'				=> 'iso_reader_default',
 			'options_callback'		=> array('tl_iso_producttypes', 'getReaderTemplates'),
 			'eval'					=> array('mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true)
-		),
-		'description' => array
-		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_producttypes']['description'],
-			'exclude'				=> true,
-			'inputType'				=> 'textarea',
-			'eval'					=> array('style'=>'height:80px', 'tl_class'=>'clr'),
 		),
         'attributes' => array
 		(
