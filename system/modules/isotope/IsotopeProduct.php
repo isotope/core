@@ -280,7 +280,8 @@ class IsotopeProduct extends Controller
 			$this->loadVariantData($arrData);
 		}
 
-		if ($this->blnLocked)
+		// Make sure the locked attributes are set
+		if ($this->isLocked())
 		{
 			$this->arrData['sku']	= $arrData['sku'];
 			$this->arrData['name']	= $arrData['name'];
@@ -311,21 +312,21 @@ class IsotopeProduct extends Controller
 				return $this->formSubmit;
 
 			case 'original_price':
-				return $this->blnLocked ? $this->arrData['original_price'] : $this->Isotope->calculatePrice($this->arrData['original_price'], $this, 'original_price', $this->arrData['tax_class']);
+				return $this->isLocked() ? $this->arrData['original_price'] : $this->Isotope->calculatePrice($this->arrData['original_price'], $this, 'original_price', $this->arrData['tax_class']);
 
 			case 'price':
 				if ($this->hasVariants() && $this->arrData['pid'] == 0 && $this->arrCache['low_price'])
 				{
-					return $this->blnLocked ? $this->arrData['low_price'] : $this->Isotope->calculatePrice($this->arrCache['low_price'], $this, 'low_price', $this->arrData['tax_class']);
+					return $this->isLocked() ? $this->arrData['low_price'] : $this->Isotope->calculatePrice($this->arrCache['low_price'], $this, 'low_price', $this->arrData['tax_class']);
 				}
 
-				return $this->blnLocked ? $this->arrData['price'] : $this->Isotope->calculatePrice($this->arrData['price'], $this, 'price', $this->arrData['tax_class']);
+				return $this->isLocked() ? $this->arrData['price'] : $this->Isotope->calculatePrice($this->arrData['price'], $this, 'price', $this->arrData['tax_class']);
 
 			case 'total_price':
 				return $this->quantity_requested * $this->price;
 
 			case 'tax_free_price':
-				$fltPrice = $this->blnLocked ? $this->arrData['price'] : $this->Isotope->calculatePrice($this->arrData['price'], $this, 'price');
+				$fltPrice = $this->isLocked() ? $this->arrData['price'] : $this->Isotope->calculatePrice($this->arrData['price'], $this, 'price');
 				
 				if ($this->arrData['tax_class'] > 0)
 				{
@@ -465,7 +466,7 @@ class IsotopeProduct extends Controller
 			case 'quantity_requested':
 				$this->arrCache[$strKey] = $varValue;
 
-				if (!$this->blnLocked)
+				if (!$this->isLocked())
 				{
 					$this->findPrice();
 				}
@@ -678,9 +679,23 @@ class IsotopeProduct extends Controller
 	}
 	
 	
+	/**
+	 * Returns true if the product is locked (price should not be calculated, e.g. in orders), otherwise returns false
+	 * @return bool
+	 */
+	public function isLocked()
+	{
+		return $this->blnLocked;
+	}
+	
+	
+	/**
+	 * Returns true if the product is available, otherwise returns false
+	 * @return bool
+	 */
 	public function isAvailable()
 	{
-		if ($this->blnLocked)
+		if ($this->isLocked())
 		{
 			return true;
 		}
@@ -1362,7 +1377,7 @@ class IsotopeProduct extends Controller
 
 		foreach ($this->arrVariantAttributes as $attribute)
 		{
-			if (in_array($attribute, $arrInherit) || ($this->blnLocked && in_array($attribute, array('sku', 'name', 'price'))))
+			if (in_array($attribute, $arrInherit) || ($this->isLocked() && in_array($attribute, array('sku', 'name', 'price'))))
 			{
 				continue;
 			}
@@ -1375,7 +1390,7 @@ class IsotopeProduct extends Controller
 			}
 		}
 
-		if (!$this->blnLocked && $this->hasVariantPrices())
+		if (!$this->isLocked() && $this->hasVariantPrices())
 		{
 			$this->findPrice();
 			$this->arrData['original_price'] = $this->arrData['price'];
