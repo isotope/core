@@ -292,12 +292,17 @@ class IsotopeProduct extends Controller
 				return $this->isLocked() ? $this->arrData['original_price'] : $this->Isotope->calculatePrice($this->arrData['original_price'], $this, 'original_price', $this->arrData['tax_class']);
 
 			case 'price':
+				if ($this->isLocked())
+				{
+					return $this->arrData['price'];
+				}
+				
 				if ($this->hasVariants() && $this->arrData['pid'] == 0 && $this->arrCache['low_price'])
 				{
-					return $this->isLocked() ? $this->arrData['low_price'] : $this->Isotope->calculatePrice($this->arrCache['low_price'], $this, 'low_price', $this->arrData['tax_class']);
+					return $this->Isotope->calculatePrice($this->arrCache['low_price'], $this, 'low_price', $this->arrData['tax_class']);
 				}
 
-				return $this->isLocked() ? $this->arrData['price'] : $this->Isotope->calculatePrice($this->arrData['price'], $this, 'price', $this->arrData['tax_class']);
+				return $this->Isotope->calculatePrice($this->arrData['price'], $this, 'price', $this->arrData['tax_class']);
 
 			case 'total_price':
 				return $this->quantity_requested * $this->price;
