@@ -304,7 +304,7 @@ class IsotopeProduct extends Controller
 				return $this->arrData[$strKey];
 
 			case 'variant_ids':
-				return (array) $this->arrVariantOptions['ids'];
+				return $this->getVariantIds();
 				break;
 
 			case 'formSubmit':
@@ -497,6 +497,64 @@ class IsotopeProduct extends Controller
 	{
 		return $this->arrData;
 	}
+	
+	
+	/**
+	 * Return the product type configuration
+	 * @return array
+	 */
+	public function getType()
+	{
+		return $this->arrType;
+	}
+	
+	
+	/**
+	 * Return the product attributes
+	 * @return array
+	 */
+	public function getProductAttributes()
+	{
+		return $this->arrAttributes;
+	}
+	
+	
+	/**
+	 * Return the product variant attributes
+	 * @return array
+	 */
+	public function getVariantAttributes()
+	{
+		return $this->arrVariantAttributes;
+	}
+
+
+	/**
+	 * Return all attributes for this product as array
+	 * @return array
+	 */
+	public function getAttributes()
+	{
+		$arrData = array();
+		$arrAttributes = array_unique(array_merge($this->arrAttributes, $this->arrVariantAttributes));
+
+		foreach ($arrAttributes as $attribute)
+		{
+			$arrData[$attribute] = $this->$attribute;
+		}
+
+		return $arrData;
+	}
+	
+	
+	/**
+	 * Return all available variant IDs of this product
+	 * @return array
+	 */
+	public function getVariantIds()
+	{
+		return (array) $this->arrVariantOptions['ids'];
+	}
 
 
 	/**
@@ -549,24 +607,6 @@ class IsotopeProduct extends Controller
 		}
 
 		return $arrOptions;
-	}
-
-
-	/**
-	 * Return all attributes for this product as array
-	 * @return array
-	 */
-	public function getAttributes()
-	{
-		$arrData = array();
-		$arrAttributes = array_unique(array_merge($this->arrAttributes, $this->arrVariantAttributes));
-
-		foreach ($arrAttributes as $attribute)
-		{
-			$arrData[$attribute] = $this->$attribute;
-		}
-
-		return $arrData;
 	}
 
 
