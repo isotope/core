@@ -669,16 +669,6 @@ class IsotopeProduct extends Controller
 	
 	
 	/**
-	 * Returns true if advanced prices are enabled in the product type, otherwise returns false
-	 * @return bool
-	 */
-	public function hasAdvancedPrices()
-	{
-		return (bool) $this->arrType['prices'];
-	}
-	
-	
-	/**
 	 * Returns true if product has variants, and the price is a variant attribute
 	 * @return bool
 	 */
@@ -690,6 +680,16 @@ class IsotopeProduct extends Controller
 		}
 		
 		return false;
+	}
+	
+	
+	/**
+	 * Returns true if advanced prices are enabled in the product type, otherwise returns false
+	 * @return bool
+	 */
+	public function hasAdvancedPrices()
+	{
+		return (bool) $this->arrType['prices'];
 	}
 	
 	
