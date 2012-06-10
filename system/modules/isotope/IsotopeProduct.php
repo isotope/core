@@ -569,16 +569,6 @@ class IsotopeProduct extends Controller
 
 
 	/**
-	 * Set options data
-	 * @param array
-	 */
-	public function setOptions(array $arrOptions)
-	{
-		$this->arrOptions = $arrOptions;
-	}
-
-
-	/**
 	 * Return all attributes for this product as array
 	 * @return array
 	 */
@@ -593,6 +583,16 @@ class IsotopeProduct extends Controller
 		}
 
 		return $arrData;
+	}
+
+
+	/**
+	 * Set options data
+	 * @param array
+	 */
+	public function setOptions(array $arrOptions)
+	{
+		$this->arrOptions = $arrOptions;
 	}
 
 
