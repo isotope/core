@@ -161,7 +161,7 @@ class IsotopeProduct extends Controller
 		$this->formSubmit = 'iso_product_' . $this->arrData['id'];
 		$this->arrType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id=".(int)$this->arrData['type'])->fetchAssoc();
 		$this->arrAttributes = $this->getSortedAttributes($this->arrType['attributes']);
-		$this->arrVariantAttributes = $this->arrType['variants'] ? $this->getSortedAttributes($this->arrType['variant_attributes']) : array();
+		$this->arrVariantAttributes = $this->hasVariants() ? $this->getSortedAttributes($this->arrType['variant_attributes']) : array();
 		$this->arrCache['list_template'] = $this->arrType['list_template'];
 		$this->arrCache['reader_template'] = $this->arrType['reader_template'];
 		$this->arrOptions = is_array($arrOptions) ? $arrOptions : array();
@@ -314,7 +314,7 @@ class IsotopeProduct extends Controller
 				return $this->blnLocked ? $this->arrData['original_price'] : $this->Isotope->calculatePrice($this->arrData['original_price'], $this, 'original_price', $this->arrData['tax_class']);
 
 			case 'price':
-				if ($this->arrType['variants'] && $this->arrData['pid'] == 0 && $this->arrCache['low_price'])
+				if ($this->hasVariants() && $this->arrData['pid'] == 0 && $this->arrCache['low_price'])
 				{
 					return $this->blnLocked ? $this->arrData['low_price'] : $this->Isotope->calculatePrice($this->arrCache['low_price'], $this, 'low_price', $this->arrData['tax_class']);
 				}
@@ -370,13 +370,13 @@ class IsotopeProduct extends Controller
 					return true;
 				}
 
-				if (BE_USER_LOGGED_IN !== true && (!$this->arrData['published'] || ($this->arrData['start'] > 0 && $this->arrData['start'] > time()) || ($this->arrData['stop'] > 0 && $this->arrData['stop'] < time())))
+				if (BE_USER_LOGGED_IN !== true && !$this->isPublished())
 				{
 					return false;
 				}
 
 				// Check if "advanced price" is available
-				if ($this->arrType['prices'] && (($this->pid > 0 && in_array('price', $this->arrVariantAttributes)) || in_array('price', $this->arrAttributes)) && $this->arrData['price'] === null)
+				if ($this->hasAdvancedPrices() && (($this->pid > 0 && in_array('price', $this->arrVariantAttributes)) || in_array('price', $this->arrAttributes)) && $this->arrData['price'] === null)
 				{
 					return false;
 				}
@@ -594,6 +594,64 @@ class IsotopeProduct extends Controller
 	{
 		$this->arrOptions = $arrOptions;
 	}
+	
+	
+	/**
+	 * Returns true if variants are enabled in the product type, otherwise returns false
+	 * @return bool
+	 */
+	public function hasVariants()
+	{
+		return (bool) $this->arrType['variants'];
+	}
+	
+	
+	/**
+	 * Returns true if advanced prices are enabled in the product type, otherwise returns false
+	 * @return bool
+	 */
+	public function hasAdvancedPrices()
+	{
+		return (bool) $this->arrType['prices'];
+	}
+	
+	
+	/**
+	 * Returns true if product has variants, and the price is a variant attribute
+	 * @return bool
+	 */
+	public function hasVariantPrices()
+	{
+		if ($this->hasVariants() && in_array('price', $this->arrVariantAttributes))
+		{
+			return true;
+		}
+		
+		return false;
+	}
+	
+	
+	/**
+	 * Returns true if the product is published, otherwise returns false
+	 * @bool
+	 */
+	public function isPublished()
+	{
+		if (!$this->arrData['published'])
+		{
+			return false;
+		}
+		elseif ($this->arrData['start'] > 0 && $this->arrData['start'] > time())
+		{
+			return false;
+		}
+		elseif ($this->arrData['stop'] > 0 && $this->arrData['stop'] < time())
+		{
+			return false;
+		}
+		
+		return true;
+	}
 
 
 	/**
@@ -794,7 +852,7 @@ class IsotopeProduct extends Controller
 		}
 		elseif ($arrData['eval']['rgxp'] == 'price')
 		{
-			if ($this->arrType['variants'] && $this->arrData['pid'] == 0 && $this->arrCache['low_price'])
+			if ($this->hasVariants() && $this->arrData['pid'] == 0 && $this->arrCache['low_price'])
 			{
 				$strBuffer = sprintf($GLOBALS['TL_LANG']['MSC']['priceRangeLabel'], $this->Isotope->formatPriceWithCurrency($varValue));
 			}
@@ -1178,7 +1236,7 @@ class IsotopeProduct extends Controller
 	 */
 	protected function validateVariant()
 	{
-		if (!$this->arrType['variants'])
+		if (!$this->hasVariants())
 		{
 			return;
 		}
@@ -1271,7 +1329,7 @@ class IsotopeProduct extends Controller
 			}
 		}
 
-		if (!$this->blnLocked && in_array('price', $this->arrVariantAttributes))
+		if (!$this->blnLocked && $this->hasVariantPrices())
 		{
 			$this->findPrice();
 			$this->arrData['original_price'] = $this->arrData['price'];
