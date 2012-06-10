@@ -80,7 +80,7 @@ class IsotopeProduct extends Controller
 	 * Product Options of all variants
 	 * @var array
 	 */
-	protected $arrVariantOptions = array('current'=>array());
+	protected $arrVariantOptions = null;
 
 	/**
 	 * Downloads for this product
@@ -192,32 +192,8 @@ class IsotopeProduct extends Controller
 			{
 				$time = time();
 				
-				// Find all possible variant options
-				$objVariant = clone $this;
-				$objVariants = $this->Database->execute(IsotopeProduct::getSelectStatement() . " WHERE p1.pid={$this->arrData['id']} AND p1.language=''"
-														. (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)"));
-
-				while ($objVariants->next())
-				{
-					$objVariant->loadVariantData($objVariants->row(), false);
-
-					if ($objVariant->available)
-					{
-						$arrVariantOptions = $objVariant->getOptions(true);
-
-						$this->arrVariantOptions['ids'][] = $objVariant->id;
-						$this->arrVariantOptions['options'][$objVariant->id] = $arrVariantOptions;
-						$this->arrVariantOptions['variants'][$objVariant->id] = $objVariants->row();
-
-						foreach ($arrVariantOptions as $attribute => $value)
-						{
-							if (!in_array((string) $value, (array) $this->arrVariantOptions['attributes'][$attribute], true))
-							{
-								$this->arrVariantOptions['attributes'][$attribute][] = (string) $value;
-							}
-						}
-					}
-				}
+				// Make sure variant options are initialized
+				$this->getVariantOptions();
 
 				// Find lowest price
 				if (in_array('price', $this->arrVariantAttributes))
@@ -550,12 +526,67 @@ class IsotopeProduct extends Controller
 	
 	
 	/**
+	 * Return variant options data
+	 * @return array|false
+	 */
+	public function getVariantOptions()
+	{
+		if (!$this->hasVariants())
+		{
+			return false;
+		}
+		
+		if (!is_array($this->arrVariantOptions))
+		{
+			$time = time();
+			$this->arrVariantOptions = array('current'=>array());
+			
+			// Find all possible variant options
+			$objVariant = clone $this;
+			$objVariants = $this->Database->execute(IsotopeProduct::getSelectStatement() . " WHERE p1.pid={$this->arrData['id']} AND p1.language=''"
+													. (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)"));
+
+			while ($objVariants->next())
+			{
+				$objVariant->loadVariantData($objVariants->row(), false);
+
+				if ($objVariant->isAvailable())
+				{
+					$arrVariantOptions = $objVariant->getOptions(true);
+
+					$this->arrVariantOptions['ids'][] = $objVariant->id;
+					$this->arrVariantOptions['options'][$objVariant->id] = $arrVariantOptions;
+					$this->arrVariantOptions['variants'][$objVariant->id] = $objVariants->row();
+
+					foreach ($arrVariantOptions as $attribute => $value)
+					{
+						if (!in_array((string) $value, (array) $this->arrVariantOptions['attributes'][$attribute], true))
+						{
+							$this->arrVariantOptions['attributes'][$attribute][] = (string) $value;
+						}
+					}
+				}
+			}
+		}
+		
+		return $this->arrVariantOptions;
+	}
+	
+	
+	/**
 	 * Return all available variant IDs of this product
-	 * @return array
+	 * @return array|false
 	 */
 	public function getVariantIds()
 	{
-		return (array) $this->arrVariantOptions['ids'];
+		$arrVariantOptions = $this->getVariantOptions();
+		
+		if ($arrVariantOptions === false)
+		{
+			return false;
+		}
+		
+		return (array) $arrVariantOptions['ids'];
 	}
 
 
@@ -1060,6 +1091,9 @@ class IsotopeProduct extends Controller
 
 		$arrData['eval']['mandatory'] = ($arrData['eval']['mandatory'] && !$blnAjax) ? true : false;
 		$arrData['eval']['required'] = $arrData['eval']['mandatory'];
+		
+		// Make sure variant options are initialized
+		$this->getVariantOptions();
 
 		if ($arrData['attributes']['variant_option'] && is_array($arrData['options']))
 		{
@@ -1302,6 +1336,9 @@ class IsotopeProduct extends Controller
 		{
 			return;
 		}
+		
+		// Make sure variant options are initialized
+		$this->getVariantOptions();
 
 		$arrOptions = array();
 
