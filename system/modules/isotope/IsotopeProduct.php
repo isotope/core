@@ -365,23 +365,7 @@ class IsotopeProduct extends Controller
 				return $this->arrCache[$strKey] ? $this->arrCache[$strKey] : 1;
 
 			case 'available':
-				if ($this->blnLocked)
-				{
-					return true;
-				}
-
-				if (BE_USER_LOGGED_IN !== true && !$this->isPublished())
-				{
-					return false;
-				}
-
-				// Check if "advanced price" is available
-				if ($this->hasAdvancedPrices() && (($this->pid > 0 && in_array('price', $this->arrVariantAttributes)) || in_array('price', $this->arrAttributes)) && $this->arrData['price'] === null)
-				{
-					return false;
-				}
-
-				return true;
+				return $this->isAvailable();
 				break;
 
 			case 'hasDownloads':
@@ -650,6 +634,28 @@ class IsotopeProduct extends Controller
 			return false;
 		}
 		
+		return true;
+	}
+	
+	
+	public function isAvailable()
+	{
+		if ($this->blnLocked)
+		{
+			return true;
+		}
+
+		if (BE_USER_LOGGED_IN !== true && !$this->isPublished())
+		{
+			return false;
+		}
+
+		// Check if "advanced price" is available
+		if ($this->hasAdvancedPrices() && (($this->pid > 0 && $this->hasVariantPrices()) || in_array('price', $this->arrAttributes)) && $this->arrData['price'] === null)
+		{
+			return false;
+		}
+
 		return true;
 	}
 
