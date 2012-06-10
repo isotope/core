@@ -186,75 +186,14 @@ class IsotopeProduct extends Controller
 			}
 		}
 
-		if (!$this->blnLocked)
-		{
-			if ($this->arrType['variants'])
-			{
-				$time = time();
-				
-				// Make sure variant options are initialized
-				$this->getVariantOptions();
-
-				// Find lowest price
-				if (in_array('price', $this->arrVariantAttributes))
-				{
-					if ($this->arrType['prices'] && count($this->arrVariantOptions['ids']))
-					{
-						// Add "price_tiers" to variant attributes, so the field is updated through ajax
-						$this->arrVariantAttributes[] = 'price_tiers';
-
-						$objProduct = $this->Database->execute("SELECT MIN(price) AS low_price, MAX(price) AS high_price
-																FROM tl_iso_price_tiers
-																WHERE pid IN
-																(
-																	SELECT id
-																	FROM
-																	(
-																		SELECT p1.id, p1.pid FROM tl_iso_prices p1 LEFT JOIN tl_iso_products p2 ON p1.pid=p2.id
-																		WHERE
-																			p1.pid IN (" . implode(',', $this->arrVariantOptions['ids']) . ")
-																			AND p1.config_id IN (" . (int) $this->Isotope->Config->id . ",0)
-																			AND p1.member_group IN(" . ((FE_USER_LOGGED_IN === true && count($this->User->groups)) ? (implode(',', $this->User->groups).',') : '') . "0)
-																			AND (p1.start='' OR p1.start<$time)
-																			AND (p1.stop='' OR p1.stop>$time)
-																		ORDER BY p1.config_id DESC, " . ((FE_USER_LOGGED_IN === true && count($this->User->groups)) ? ('p1.member_group=' . implode(' DESC, p1.member_group=', $this->User->groups) . ' DESC') : 'p1.member_group DESC') . ", p1.start DESC, p1.stop DESC
-																	) AS p
-																	GROUP BY pid
-																)
-																GROUP BY min ORDER BY min ASC LIMIT 1");
-					}
-					else
-					{
-						$objProduct = $this->Database->execute("SELECT MIN(price) AS low_price, MAX(price) AS high_price FROM tl_iso_products
-																WHERE pid=" . ($this->arrData['pid'] ? $this->arrData['pid'] : $this->arrData['id']) . " AND language=''"
-																. (BE_USER_LOGGED_IN === true ? '' : " AND published='1' AND (start='' OR start<$time) AND (stop='' OR stop>$time)")
-																. " GROUP BY pid");
-					}
-
-					if ($objProduct->low_price < $objProduct->high_price)
-					{
-						$this->arrCache['low_price'] = $objProduct->low_price;
-					}
-					else
-					{
-						$this->arrData['price'] = $objProduct->low_price;
-					}
-				}
-			}
-
-			if (in_array('price', $this->arrAttributes))
-			{
-				// Add "price_tiers" to attributes, so the field is available in the template
-				$this->arrAttributes[] = 'price_tiers';
-
-				$this->findPrice();
-				$this->arrData['original_price'] = $this->arrData['price'];
-			}
-		}
-
 		if ($arrData['pid'] > 0)
 		{
 			$this->loadVariantData($arrData);
+		}
+		elseif (!$this->isLocked())
+		{
+			// findPrice() is called by loadVariantData()
+			$this->findPrice();
 		}
 
 		// Make sure the locked attributes are set
@@ -289,20 +228,10 @@ class IsotopeProduct extends Controller
 				return $this->formSubmit;
 
 			case 'original_price':
-				return $this->isLocked() ? $this->arrData['original_price'] : $this->Isotope->calculatePrice($this->arrData['original_price'], $this, 'original_price', $this->arrData['tax_class']);
+				return $this->isLocked() ? $this->arrData['price'] : $this->Isotope->calculatePrice($this->arrData['price'], $this, 'original_price', $this->arrData['tax_class']);
 
 			case 'price':
-				if ($this->isLocked())
-				{
-					return $this->arrData['price'];
-				}
-				
-				if ($this->hasVariants() && $this->arrData['pid'] == 0 && $this->arrCache['low_price'])
-				{
-					return $this->Isotope->calculatePrice($this->arrCache['low_price'], $this, 'low_price', $this->arrData['tax_class']);
-				}
-
-				return $this->Isotope->calculatePrice($this->arrData['price'], $this, 'price', $this->arrData['tax_class']);
+				return $this->isLocked() ? $this->arrData['price'] : $this->Isotope->calculatePrice($this->arrData['price'], $this, 'price', $this->arrData['tax_class']);
 
 			case 'total_price':
 				return $this->quantity_requested * $this->price;
@@ -743,7 +672,7 @@ class IsotopeProduct extends Controller
 		}
 
 		// Check if "advanced price" is available
-		if ($this->hasAdvancedPrices() && (($this->pid > 0 && $this->hasVariantPrices()) || in_array('price', $this->arrAttributes)) && $this->arrData['price'] === null)
+		if ($this->arrData['price'] === null)
 		{
 			return false;
 		}
@@ -944,25 +873,36 @@ class IsotopeProduct extends Controller
 			return $this->$attribute;
 		}
 
-		if ($arrData['inputType'] == 'textarea' && $arrData['eval']['rte'] == '')
+		// Calculate the prices
+		elseif ($attribute == 'price')
 		{
-			$strBuffer = nl2br($varValue);
-		}
-		elseif ($arrData['eval']['rgxp'] == 'price')
-		{
-			if ($this->hasVariants() && $this->arrData['pid'] == 0 && $this->arrCache['low_price'])
+			$fltPrice = $varValue;
+			$fltOriginalPrice = $this->original_price;
+			
+			if ($this->arrCache['from_price'] !== null)
 			{
-				$strBuffer = sprintf($GLOBALS['TL_LANG']['MSC']['priceRangeLabel'], $this->Isotope->formatPriceWithCurrency($varValue));
+				$fltPrice = $this->Isotope->calculatePrice($this->arrCache['from_price'], $this, 'price', $this->arrData['tax_class']);
+				$fltOriginalPrice = $this->Isotope->calculatePrice($this->arrCache['from_price'], $this, 'original_price', $this->arrData['tax_class']);
+
+				$strBuffer = sprintf($GLOBALS['TL_LANG']['MSC']['priceRangeLabel'], $this->Isotope->formatPriceWithCurrency($fltPrice));
+				$strOriginalPrice = sprintf($GLOBALS['TL_LANG']['MSC']['priceRangeLabel'], $this->Isotope->formatPriceWithCurrency($fltOriginalPrice));
 			}
 			else
 			{
-				$strBuffer = $this->Isotope->formatPriceWithCurrency($varValue);
-
-				if ($this->original_price > 0 && $varValue != $this->original_price)
-				{
-					$strBuffer = '<div class="original_price"><strike>' . $this->formatted_original_price . '</strike></div><div class="price">' . $strBuffer . '</div>';
-				}
+				$strBuffer = $this->Isotope->formatPriceWithCurrency($fltPrice);
+				$strOriginalPrice = $this->Isotope->formatPriceWithCurrency($fltOriginalPrice);
 			}
+
+			if ($fltPrice != $fltOriginalPrice)
+			{
+				$strBuffer = '<div class="original_price"><strike>' . $strOriginalPrice . '</strike></div><div class="price">' . $strBuffer . '</div>';
+			}
+		}
+		
+		// Convert line breaks in textarea to <br> tags
+		elseif ($arrData['inputType'] == 'textarea' && $arrData['eval']['rte'] == '')
+		{
+			$strBuffer = nl2br($varValue);
 		}
 
 		// Generate download attributes
@@ -1287,47 +1227,30 @@ class IsotopeProduct extends Controller
 
 
 	/**
-	 * Find advanced price (if enabled)
+	 * Find price for the current product/variant
 	 */
 	protected function findPrice()
 	{
-		if (!$this->arrType['prices'])
+		require_once(TL_ROOT . '/system/modules/isotope/providers/ProductPriceFinder.php');
+		
+		$arrPrice = ProductPriceFinder::findPrice($this);
+
+		$this->arrData['price'] = $arrPrice['price'];
+		$this->arrData['tax_class'] = $arrPrice['tax_class'];
+		$this->arrCache['from_price'] = $arrPrice['from_price'];
+		
+		// Add "price_tiers" to attributes, so the field is available in the template
+		if ($this->hasAdvancedPrices())
 		{
-			return;
-		}
+			$this->arrAttributes[] = 'price_tiers';
 
-		$time = time();
-
-		$objPrices = $this->Database->execute("SELECT min, price, tax_class
-												FROM tl_iso_price_tiers t
-												LEFT JOIN tl_iso_prices p ON t.pid=p.id
-												WHERE
-													t.pid=
-													(
-														SELECT id
-														FROM tl_iso_prices
-														WHERE
-															config_id IN (". (int) $this->Isotope->Config->id . ",0)
-															AND member_group IN(" . ((FE_USER_LOGGED_IN === true && count($this->User->groups)) ? (implode(',', $this->User->groups) . ',') : '') . "0)
-															AND (start='' OR start<$time)
-															AND (stop='' OR stop>$time)
-															AND pid=" . (($this->pid > 0 && !in_array('price', $this->arrVariantAttributes)) ? $this->pid : $this->id) . "
-														ORDER BY config_id DESC, " . ((FE_USER_LOGGED_IN === true && count($this->User->groups)) ? ('member_group=' . implode(' DESC, member_group=', $this->User->groups) . ' DESC') : 'member_group DESC') . ", start DESC, stop DESC
-														LIMIT 1
-													)
-												ORDER BY min DESC");
-
-		$this->arrData['price'] = 0;
-		$this->arrCache['price_tiers'] = $objPrices->fetchAllAssoc();
-
-		foreach ($this->arrCache['price_tiers'] as $price)
-		{
-			if ($price['min'] <= $this->quantity_requested)
+			// Add "price_tiers" to variant attributes, so the field is updated through ajax
+			if ($this->hasVariantPrices())
 			{
-				$this->arrData['price'] = $price['price'];
-				$this->arrData['tax_class'] = $price['tax_class'];
-				break;
+				$this->arrVariantAttributes[] = 'price_tiers';
 			}
+			
+			$this->arrCache['price_tiers'] = $arrPrice['price_tiers'];
 		}
 	}
 
@@ -1436,7 +1359,6 @@ class IsotopeProduct extends Controller
 		if (!$this->isLocked() && $this->hasVariantPrices())
 		{
 			$this->findPrice();
-			$this->arrData['original_price'] = $this->arrData['price'];
 		}
 
 		// Load variant options
