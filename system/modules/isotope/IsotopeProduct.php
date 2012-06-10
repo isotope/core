@@ -131,7 +131,7 @@ class IsotopeProduct extends Controller
 	 * @param array
 	 * @param boolean
 	 */
-	public function __construct($arrData, $arrOptions=null, $blnLocked=false)
+	public function __construct($arrData, $arrOptions=null, $blnLocked=false, $intQuantity=1)
 	{
 		parent::__construct();
 		$this->import('Database');
@@ -164,6 +164,7 @@ class IsotopeProduct extends Controller
 		$this->arrVariantAttributes = $this->hasVariants() ? $this->getSortedAttributes($this->arrType['variant_attributes']) : array();
 		$this->arrCache['list_template'] = $this->arrType['list_template'];
 		$this->arrCache['reader_template'] = $this->arrType['reader_template'];
+		$this->arrCache['quantity_requested'] = $intQuantity;
 		$this->arrOptions = is_array($arrOptions) ? $arrOptions : array();
 
 		// Allow to customize attributes
