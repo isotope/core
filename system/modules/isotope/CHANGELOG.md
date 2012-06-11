@@ -1,7 +1,7 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 1.3.2 stable (????-??-??)
+Version 1.3.2 stable (2012-06-11)
 ---------------------------------
 
 ### Improved 
@@ -16,6 +16,8 @@ Version 1.3.2 stable (????-??-??)
 - Fixed medium size width & height in inline gallery
 - IsotopeAutomator::convertCurrencies function was not working (#3141)
 - Palette selectors not working correctly in rules (#3138)
+- Authorize.net payment module not proceeding to review (#3223)
+- Price tiers did not show "from"-price
 
 
 Version 1.3.1 stable (2012-04-30)
