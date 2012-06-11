@@ -1,6 +1,25 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 1.3.2 stable (2012-06-11)
+---------------------------------
+
+### Improved 
+- Surcharges with percent as price were not rounded
+- Prevent the filter from generating useless "isorc" params
+- Plain text emails could contain HTML when using InsertTags (#3172)
+- Added some german labels
+- Hide the "invoice logo" option in store config, if the server does not support it (#3124)
+
+### Fixed
+- Multiple CC and BCC recipients on emails templates did not work
+- Fixed medium size width & height in inline gallery
+- IsotopeAutomator::convertCurrencies function was not working (#3141)
+- Palette selectors not working correctly in rules (#3138)
+- Authorize.net payment module not proceeding to review (#3223)
+- Price tiers did not show "from"-price
+
+
 Version 1.3.1 stable (2012-04-30)
 ---------------------------------
 
@@ -18,6 +37,7 @@ Version 1.3.1 stable (2012-04-30)
 - potential exception on product sorting view in the backend (#3094)
 - The inherit wizard caused javascript errors when no tooltip was given on a field (#3092)
 - Advanced pricing did not work on product variants (#3052)
+
 
 Version 1.3.0 stable (2012-04-04)
 ---------------------------------
