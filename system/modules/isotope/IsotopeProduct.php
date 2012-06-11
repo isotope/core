@@ -185,7 +185,7 @@ class IsotopeProduct extends Controller
 			}
 		}
 
-		if (!$this->blnLocked)
+		if (!$this->blnLocked  && !is_array($arrOptions))
 		{
 			if ($this->arrType['variants'])
 			{
@@ -226,24 +226,16 @@ class IsotopeProduct extends Controller
 						// Add "price_tiers" to variant attributes, so the field is updated through ajax
 						$this->arrVariantAttributes[] = 'price_tiers';
 
-						$objProduct = $this->Database->execute("SELECT MIN(price) AS low_price, MAX(price) AS high_price
-																FROM tl_iso_price_tiers
-																WHERE pid IN
-																(
-																	SELECT id
-																	FROM
-																	(
-																		SELECT p1.id, p1.pid FROM tl_iso_prices p1 LEFT JOIN tl_iso_products p2 ON p1.pid=p2.id
-																		WHERE
-																			p1.pid IN (" . implode(',', $this->arrVariantOptions['ids']) . ")
-																			AND p1.config_id IN (" . (int) $this->Isotope->Config->id . ",0)
-																			AND p1.member_group IN(" . ((FE_USER_LOGGED_IN === true && count($this->User->groups)) ? (implode(',', $this->User->groups).',') : '') . "0)
-																			AND (p1.start='' OR p1.start<$time)
-																			AND (p1.stop='' OR p1.stop>$time)
-																		ORDER BY p1.config_id DESC, " . ((FE_USER_LOGGED_IN === true && count($this->User->groups)) ? ('p1.member_group=' . implode(' DESC, p1.member_group=', $this->User->groups) . ' DESC') : 'p1.member_group DESC') . ", p1.start DESC, p1.stop DESC
-																	) AS p
-																	GROUP BY pid
-																)");
+						$objProduct = $this->Database->execute("SELECT MIN(p3.price) AS low_price, MAX(p3.price) AS high_price
+																				FROM tl_iso_prices p1
+																				LEFT JOIN tl_iso_products p2 ON p1.pid=p2.id
+																				LEFT JOIN tl_iso_price_tiers p3	ON p3.pid=p1.id
+																				WHERE p2.id IN (" . implode(',', $this->arrVariantOptions['ids']) . ")
+																				AND p1.config_id IN (" . (int) $this->Isotope->Config->id . ",0)
+																				AND p1.member_group IN(" . ((FE_USER_LOGGED_IN === true && count($this->User->groups)) ? (implode(',', $this->User->groups).',') : '') . "0)
+																				AND (p1.start='' OR p1.start<$time)
+																				AND (p1.stop='' OR p1.stop>$time)		
+																           ");
 					}
 					else
 					{
@@ -1238,7 +1230,7 @@ class IsotopeProduct extends Controller
 				return;
 			}
 
-			$this->loadVariantData($this->arrVariantOptions['variants'][$intVariant]);
+			$this->loadVariantData($this->arrVariantOptions['variants'][$intVariant], false, true);
 		}
 	}
 
@@ -1248,7 +1240,7 @@ class IsotopeProduct extends Controller
 	 * @param array
 	 * @param array
 	 */
-	public function loadVariantData($arrData, $arrInherit=false)
+	public function loadVariantData($arrData, $arrInherit=false, $findPrice=false)
 	{
 		$arrInherit = deserialize($arrData['inherit'], true);
 
@@ -1264,7 +1256,7 @@ class IsotopeProduct extends Controller
 
 			$this->arrData[$attribute] = $arrData[$attribute];
 			
-			if (is_array($this->arrCache) && isset($this->arrCache[$attribute]))
+			if (is_array($this->arrCache) && isset($this->arrCache[$attribute]) && $findPrice)
 			{
 				unset($this->arrCache[$attribute]);
 			}
