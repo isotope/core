@@ -243,8 +243,7 @@ class IsotopeProduct extends Controller
 																		ORDER BY p1.config_id DESC, " . ((FE_USER_LOGGED_IN === true && count($this->User->groups)) ? ('p1.member_group=' . implode(' DESC, p1.member_group=', $this->User->groups) . ' DESC') : 'p1.member_group DESC') . ", p1.start DESC, p1.stop DESC
 																	) AS p
 																	GROUP BY pid
-																)
-																GROUP BY min ORDER BY min ASC LIMIT 1");
+																)");
 					}
 					else
 					{

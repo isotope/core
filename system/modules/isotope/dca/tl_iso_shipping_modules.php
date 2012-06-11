@@ -159,7 +159,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
 		'type' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['type'],
-			'default'                 => 'cc',
 			'exclude'                 => true,
 			'filter'                  => true,
 			'inputType'               => 'select',

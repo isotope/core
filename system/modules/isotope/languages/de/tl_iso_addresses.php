@@ -35,6 +35,9 @@
 
 $GLOBALS['TL_LANG']['tl_iso_addresses']['store_id'][0] = 'Shop-ID';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['store_id'][1] = 'Nutzen Sie verschiedene Shop-IDs um mehrere Shop-Konfigurationen zu gruppieren. Der Warenkorb und die Adressen des Nutzers werden übergreifend zwischen Shops mit identischer ID genutzt.';
+$GLOBALS['TL_LANG']['tl_iso_addresses']['salutation'][0] = 'Anrede';
+$GLOBALS['TL_LANG']['tl_iso_addresses']['salutation'][1] = 'Bitte geben Sie die Anrede ein (Herr, Frau, Dr., Prof.).';
+
 $GLOBALS['TL_LANG']['tl_iso_addresses']['firstname'][0] = 'Vorname';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['firstname'][1] = 'Bitte geben Sie den Vornamen ein.';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['lastname'][0] = 'Nachname';

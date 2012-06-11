@@ -87,6 +87,8 @@ class IsotopeAutomator extends Controller
 	 */
 	public function convertCurrencies()
 	{
+		$this->import('Database');
+
 		$objConfigs = $this->Database->execute("SELECT * FROM tl_iso_config WHERE currencyAutomator='1'");
 		
 		while ($objConfigs->next())
@@ -94,8 +96,8 @@ class IsotopeAutomator extends Controller
 			switch ($objConfigs->currencyProvider)
 			{
 				case 'ecb.int':
-					$fltCourse = ($objConfig->currency == 'EUR') ? 1 : 0;
-					$fltCourseOrigin = ($objConfig->currencyOrigin == 'EUR') ? 1 : 0;
+					$fltCourse = ($objConfigs->currency == 'EUR') ? 1 : 0;
+					$fltCourseOrigin = ($objConfigs->currencyOrigin == 'EUR') ? 1 : 0;
 
 					// Parse the XML
 					$strSource = 'http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml';
@@ -103,12 +105,12 @@ class IsotopeAutomator extends Controller
 
 					foreach ($objXml->Cube->Cube->Cube as $rate)
 					{
-						if (!$fltCourse && $currency['code'] == strtolower($objConfig->currency))
+						if (!$fltCourse && $currency['code'] == strtolower($objConfigs->currency))
 						{
 							$fltCourse = (float) $currency->kurs;
 						}
 
-						if (!$fltCourseOrigin && $currency['code'] == strtolower($objConfig->currencyOrigin))
+						if (!$fltCourseOrigin && $currency['code'] == strtolower($objConfigs->currencyOrigin))
 						{
 							$fltCourseOrigin = (float) $currency->kurs;
 						}
@@ -126,8 +128,8 @@ class IsotopeAutomator extends Controller
 					break;
 				
 				case 'admin.ch':
-					$fltCourse = ($objConfig->currency == 'CHF') ? 1 : 0;
-					$fltCourseOrigin = ($objConfig->currencyOrigin == 'CHF') ? 1 : 0;
+					$fltCourse = ($objConfigs->currency == 'CHF') ? 1 : 0;
+					$fltCourseOrigin = ($objConfigs->currencyOrigin == 'CHF') ? 1 : 0;
 
 					// Parse the XML
 					$strSource = 'http://www.afd.admin.ch/publicdb/newdb/mwst_kurse/wechselkurse.php';
@@ -135,12 +137,12 @@ class IsotopeAutomator extends Controller
 
 					foreach ($objXml->devise as $currency)
 					{
-						if (!$fltCourse && $currency['code'] == strtolower($objConfig->currency))
+						if (!$fltCourse && $currency['code'] == strtolower($objConfigs->currency))
 						{							
 							$fltCourse = (float) $currency->kurs;
 						}
 
-						if (!$fltCourseOrigin && $currency['code'] == strtolower($objConfig->currencyOrigin))
+						if (!$fltCourseOrigin && $currency['code'] == strtolower($objConfigs->currencyOrigin))
 						{
 							$fltCourseOrigin = (float) $currency->kurs;
 						}
@@ -165,7 +167,7 @@ class IsotopeAutomator extends Controller
 						foreach ($GLOBALS['ISO_HOOKS']['convertCurrency'] as $callback)
 						{
 							$this->import($callback[0]);
-							$this->$callback[0]->$callback[1]($objConfig->currencyProvider, $objConfig->currencyOrigin, $objConfig->currency, $objConfig-row());
+							$this->$callback[0]->$callback[1]($objConfigs->currencyProvider, $objConfigs->currencyOrigin, $objConfigs->currency, $objConfigs-row());
 						}
 					}
 			}

@@ -183,7 +183,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 		(
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['applyTo'],
 			'exclude'					=> true,
-			'default'					=> 'product',
+			'default'					=> 'products',
 			'inputType'					=> 'select',
 			'options'					=> array('products', 'items', 'subtotal'),
 			'reference'					=> &$GLOBALS['TL_LANG']['tl_iso_rules']['applyTo'],

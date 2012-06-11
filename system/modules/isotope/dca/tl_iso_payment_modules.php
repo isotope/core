@@ -146,7 +146,6 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 		'type' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['type'],
-			'default'                 => 'cc',
 			'exclude'                 => true,
 			'filter'                  => true,
 			'inputType'               => 'select',
@@ -325,7 +324,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 			'inputType'               => 'select',
 			'default'                 => 'POST',
 			'options'                 => array('POST', 'GET'),
-			'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50', 'tl_class'=>'w50'),
+			'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
 		),
 		'authorize_login' => array
 		(

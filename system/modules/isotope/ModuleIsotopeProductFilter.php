@@ -84,28 +84,31 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		if ($this->blnCacheRequest)
 		{
 			$time = time();
-			$varFilter = is_array($GLOBALS['ISO_FILTERS']) ? serialize($GLOBALS['ISO_FILTERS']) : null;
-			$varSorting = is_array($GLOBALS['ISO_SORTING']) ? serialize($GLOBALS['ISO_SORTING']) : null;
-			$varLimit = is_array($GLOBALS['ISO_LIMIT']) ? serialize($GLOBALS['ISO_LIMIT']) : null;
+			$varFilter = (is_array($GLOBALS['ISO_FILTERS']) && !empty($GLOBALS['ISO_FILTERS'])) ? serialize($GLOBALS['ISO_FILTERS']) : null;
+			$varSorting = (is_array($GLOBALS['ISO_SORTING']) && !empty($GLOBALS['ISO_SORTING'])) ? serialize($GLOBALS['ISO_SORTING']) : null;
+			$varLimit = (is_array($GLOBALS['ISO_LIMIT']) && !empty($GLOBALS['ISO_LIMIT'])) ? serialize($GLOBALS['ISO_LIMIT']) : null;
 
-			$intCacheId = $this->Database->prepare("SELECT id FROM tl_iso_requestcache WHERE store_id={$this->Isotope->Config->store_id} AND filters" . ($varFilter ? '=' : ' IS ') . "? AND sorting" . ($varSorting ? '=' : ' IS ') . "? AND limits" . ($varLimit ? '=' : ' IS ') . "?")
-										 ->execute($varFilter, $varSorting, $varLimit)
-										 ->id;
-
-			if ($intCacheId)
+			// if all filters are null we don't have to cache (this will prevent useless isorc params from being generated)
+			if ($varFilter !== null && $varLimit !== null && $varSorting !== null)
 			{
-				$this->Database->query("UPDATE tl_iso_requestcache SET tstamp=$time WHERE id=$intCacheId");
-			}
-			else
-			{
-				$intCacheId = $this->Database->prepare("INSERT INTO tl_iso_requestcache (tstamp,store_id,filters,sorting,limits) VALUES ($time, {$this->Isotope->Config->store_id}, ?, ?, ?)")
+				$intCacheId = $this->Database->prepare("SELECT id FROM tl_iso_requestcache WHERE store_id={$this->Isotope->Config->store_id} AND filters" . ($varFilter ? '=' : ' IS ') . "? AND sorting" . ($varSorting ? '=' : ' IS ') . "? AND limits" . ($varLimit ? '=' : ' IS ') . "?")
 											 ->execute($varFilter, $varSorting, $varLimit)
-											 ->insertId;
+											 ->id;
+	
+				if ($intCacheId)
+				{
+					$this->Database->query("UPDATE tl_iso_requestcache SET tstamp=$time WHERE id=$intCacheId");
+				}
+				else
+				{
+					$intCacheId = $this->Database->prepare("INSERT INTO tl_iso_requestcache (tstamp,store_id,filters,sorting,limits) VALUES ($time, {$this->Isotope->Config->store_id}, ?, ?, ?)")
+												 ->execute($varFilter, $varSorting, $varLimit)
+												 ->insertId;
+				}
+	
+				$this->Input->setGet('isorc', $intCacheId);
+				$this->redirect($this->generateRequestUrl());
 			}
-
-			$strFilterUrl = preg_replace('/&?isorc=[0-9]+&?/', '', $this->Environment->request);
-			$this->Input->setGet('isorc', $intCacheId);
-			$this->redirect($this->generateRequestUrl());
 		}
 
 		return $strBuffer;
