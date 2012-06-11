@@ -251,10 +251,9 @@ class IsotopeEmail extends Controller
 		$this->strLanguage = $objLanguage->language;
 
 		$arrData = $this->arrSimpleTokens;
-		$arrPlainData = array_map('strip_tags', $this->arrSimpleTokens);
 
-		$this->objEmail->subject = $this->parseSimpleTokens($this->replaceInsertTags($objLanguage->subject), $arrPlainData);
-		$this->objEmail->text = $this->parseSimpleTokens($this->replaceInsertTags($objLanguage->text), $arrPlainData);
+		$this->objEmail->subject = strip_tags($this->parseSimpleTokens($this->replaceInsertTags($objLanguage->subject), $arrData));
+		$this->objEmail->text = strip_tags($this->parseSimpleTokens($this->replaceInsertTags($objLanguage->text), $arrData));
 
 		// Generate HTML
 		if (!$objLanguage->textOnly && $objLanguage->html != '')
@@ -302,7 +301,7 @@ class IsotopeEmail extends Controller
 			// @todo the PDF name could contain user specific information if sent to multiple recipients
 			if ($this->strDocumentTitle != '')
 			{
-				$strTitle = $this->parseSimpleTokens($this->replaceInsertTags($this->strDocumentTitle), $arrPlainData);
+				$strTitle = strip_tags($this->parseSimpleTokens($this->replaceInsertTags($this->strDocumentTitle), $arrData));
 				$this->objEmail->attachFileFromString($this->varDocumentData, $strTitle.'.pdf', 'application/pdf');
 			}
 
@@ -339,31 +338,9 @@ class IsotopeEmail extends Controller
 		$this->objEmail->from = $objTemplate->sender ? $objTemplate->sender : $GLOBALS['TL_ADMIN_EMAIL'];
 		$this->objEmail->priority = $objTemplate->priority;
 
-		$arrCc = trimsplit(',', $objTemplate->cc);
-
-		// Recipient_cc
-		foreach ((array) $arrCC as $email)
-		{
-			if ($email == '' || !$this->isValidEmailAddress($email))
-			{
-				continue;
-			}
-
-			$this->objEmail->sendCc($email);
-		}
-
-		$arrBcc = trimsplit(',', $objTemplate->bcc);
-
-		// Recipient_bcc
-		foreach ((array) $arrBcc as $email)
-		{
-			if ($email == '' || !$this->isValidEmailAddress($email))
-			{
-				continue;
-			}
-
-			$this->objEmail->sendBcc($email);
-		}
+		// Add CC and BCC recipients
+		$this->addRecipients($objTemplate->cc, 'sendCc');
+		$this->addRecipients($objTemplate->bcc, 'sendBcc');
 
 		$this->strTemplate = $objTemplate->template ? $objTemplate->template : 'mail_default';
 
@@ -417,6 +394,33 @@ class IsotopeEmail extends Controller
 		}
 
 		return implode($strGlue, $arrReturn);
+	}
+	
+	
+	/**
+	 * Add (blind) carbon copy recipients to the email object
+	 * @param string
+	 * @param string
+	 */
+	protected function addRecipients($strRecipients, $strMethod='sendCc')
+	{
+		$arrAdd = array();
+		$arrRecipients = (array) trimsplit(',', $strRecipients);
+		
+		foreach ($arrRecipients as $email)
+		{
+			if ($email == '' || !$this->isValidEmailAddress($email))
+			{
+				continue;
+			}
+
+			$arrAdd[] = $email;
+		}
+		
+		if (!empty($arrAdd))
+		{
+			$this->objEmail->{$strMethod}($arrAdd);
+		}
 	}
 }
 

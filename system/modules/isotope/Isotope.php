@@ -272,7 +272,7 @@ class Isotope extends Controller
 			}
 			
 			$fltSurcharge = (float)substr($strPrice, 0, -1);
-			$fltPrice = $fltTotal / 100 * $fltSurcharge;
+			$fltPrice = $this->Isotope->roundPrice($fltTotal / 100 * $fltSurcharge);
 		}
 		else
 		{
