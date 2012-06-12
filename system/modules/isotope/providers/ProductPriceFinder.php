@@ -118,7 +118,7 @@ class ProductPriceFinder extends System
 	 */
 	protected static function findAdvancedProductPrice(IsotopeProduct $objProduct)
 	{
-		$arrIds = $objProduct->hasVariantPrices() ? $objProduct->getVariantIds() : $objProduct->id;
+		$arrIds = $objProduct->hasVariantPrices() ? $objProduct->getVariantIds() : array($objProduct->id);
 		$arrData = self::getAdvancedPrices($arrIds, $objProduct->quantity_requested);
 		
 		if ($objProduct->hasVariants())
@@ -147,7 +147,7 @@ class ProductPriceFinder extends System
 	 * @param int
 	 * @return array
 	 */
-	protected static function getAdvancedPrices($arrIds, $intQuantity=1)
+	protected static function getAdvancedPrices(array $arrIds, $intQuantity=1)
 	{
 		$time = time();
 		$arrGroups = self::getMemberGroups();
