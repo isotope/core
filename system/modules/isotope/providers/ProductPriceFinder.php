@@ -150,6 +150,8 @@ class ProductPriceFinder extends System
 	protected static function getAdvancedPrices(array $arrIds, $intQuantity=1)
 	{
 		$time = time();
+		$arrData = array();
+		$blnPriceFound = false;
 		$arrGroups = self::getMemberGroups();
 		
 		$objPrices = Database::getInstance()->execute("SELECT min, price, tax_class
@@ -171,10 +173,9 @@ class ProductPriceFinder extends System
 															)
 														ORDER BY min DESC");
 
-		$blnPriceFound = false;
-		$arrData = array('price_tiers'=>$objPrices->fetchAllAssoc());
+		$arrPrices = $objPrices->fetchAllAssoc();
 
-		foreach ($arrData['price_tiers'] as $arrPrice)
+		foreach ($arrPrices as $arrPrice)
 		{
 			if (!$blnPriceFound && $arrPrice['min'] <= $intQuantity)
 			{
@@ -188,6 +189,8 @@ class ProductPriceFinder extends System
 				$arrData['from_price'] = $arrPrice['price'];
 			}
 		}
+		
+		$arrData['price_tiers'] = array_reverse($arrPrices);
 		
 		return $arrData;
 	}
