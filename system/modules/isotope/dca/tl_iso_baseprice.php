@@ -38,6 +38,11 @@ $GLOBALS['TL_DCA']['tl_iso_baseprice'] = array
 	(
 		'dataContainer'					=> 'Table',
 		'enableVersioning'				=> true,
+		'closed'					=> true,
+		'onload_callback' => array
+		(
+			array('IsotopeBackend', 'initializeSetupModule'),
+		),
 	),
 
 	// List
@@ -57,6 +62,20 @@ $GLOBALS['TL_DCA']['tl_iso_baseprice'] = array
 		),
 		'global_operations' => array
 		(
+			'back' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['MSC']['backBT'],
+				'href'                => 'mod=&table=',
+				'class'               => 'header_back',
+				'attributes'          => 'onclick="Backend.getScrollOffset();"',
+			),
+			'new' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_baseprice']['new'],
+				'href'                => 'act=create',
+				'class'               => 'header_new',
+				'attributes'          => 'onclick="Backend.getScrollOffset();"',
+			),
 			'all' => array
 			(
 				'label'					=> &$GLOBALS['TL_LANG']['MSC']['all'],
