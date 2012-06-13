@@ -97,10 +97,10 @@ class ProductPriceFinder extends System
 		$arrData['price'] = $arrProduct['price'];
 		$arrData['tax_class'] = $arrProduct['tax_class'];
 		
-		$objResult = $this->Database->execute("SELECT MIN(price) AS low_price, MAX(price) AS high_price FROM tl_iso_products
-												WHERE pid=" . ($this->arrData['pid'] ? $this->arrData['pid'] : $this->arrData['id']) . " AND language=''"
-												. (BE_USER_LOGGED_IN === true ? '' : " AND published='1' AND (start='' OR start<$time) AND (stop='' OR stop>$time)")
-												. " GROUP BY pid");
+		$objResult = Database::getInstance()->execute("SELECT MIN(price) AS low_price, MAX(price) AS high_price FROM tl_iso_products
+														WHERE pid=" . ($objProduct->pid ? $objProduct->pid : $objProduct->id) . " AND language=''"
+														. (BE_USER_LOGGED_IN === true ? '' : " AND published='1' AND (start='' OR start<$time) AND (stop='' OR stop>$time)")
+														. " GROUP BY pid");
 		
 		if ($objResult->low_price < $objResult->high_price)
 		{
