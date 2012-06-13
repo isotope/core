@@ -70,6 +70,7 @@ $GLOBALS['TL_LANG']['IMD']['tax_class']					= array('Tax classes','Set up Tax cl
 $GLOBALS['TL_LANG']['IMD']['tax_rate']					= array('Tax rates','Set up tax rates based on things like shipping/billing location and order total.');
 $GLOBALS['TL_LANG']['IMD']['config']					= 'General settings';
 $GLOBALS['TL_LANG']['IMD']['orderstatus']				= array('Order status', 'Define order status.');
+$GLOBALS['TL_LANG']['IMD']['baseprice']					= array('Base prices', 'Define base price.');
 $GLOBALS['TL_LANG']['IMD']['iso_mail']					= array('E-Mail manager', 'Customize Admin and Customer Notification Emails.');
 $GLOBALS['TL_LANG']['IMD']['configs']					= array('Store configurations', 'Configure general settings for this store.');
 

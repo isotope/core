@@ -779,6 +779,7 @@ class IsotopeProduct extends Controller
 	 */
 	protected function generateAttribute($attribute, $varValue)
 	{
+		$strBuffer = '';
 		$arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute];
 
 		// Return the IsotopeGallery object
@@ -791,6 +792,21 @@ class IsotopeProduct extends Controller
 		{
 			$strBuffer = nl2br($varValue);
 		}
+		
+		// Calculate base price
+		elseif ($attribute == 'baseprice')
+		{
+			if (is_array($varValue) && $varValue['unit'] > 0 && $varValue['value'] != '')
+			{
+				$objBasePrice = $this->Database->execute("SELECT * FROM tl_iso_baseprice WHERE id=" . (int) $varValue['unit']);
+				
+				if ($objBasePrice->numRows)
+				{
+					$strBuffer = sprintf($objBasePrice->label, $this->Isotope->formatPriceWithCurrency($this->price / $varValue['value']));
+				}
+			}
+		}
+		
 		elseif ($arrData['eval']['rgxp'] == 'price')
 		{
 			if ($this->arrType['variants'] && $this->arrData['pid'] == 0 && $this->arrCache['low_price'])
