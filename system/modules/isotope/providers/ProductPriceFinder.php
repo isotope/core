@@ -98,14 +98,18 @@ class ProductPriceFinder extends System
 		$arrData['price'] = $arrProduct['price'];
 		$arrData['tax_class'] = $arrProduct['tax_class'];
 		
-		$objResult = Database::getInstance()->execute("SELECT MIN(price) AS low_price, MAX(price) AS high_price FROM tl_iso_products
-														WHERE pid=" . ($objProduct->pid ? $objProduct->pid : $objProduct->id) . " AND language=''"
-														. (BE_USER_LOGGED_IN === true ? '' : " AND published='1' AND (start='' OR start<$time) AND (stop='' OR stop>$time)")
-														. " GROUP BY pid");
-		
-		if ($objResult->low_price > 0 && $objResult->low_price < $objResult->high_price)
+		// Only look for low price if no variant is selected
+		if ($objProduct->pid == 0)
 		{
-			$arrData['from_price'] = $objResult->low_price;
+			$objResult = Database::getInstance()->execute("SELECT MIN(price) AS low_price, MAX(price) AS high_price FROM tl_iso_products
+															WHERE pid=" . ($objProduct->pid ? $objProduct->pid : $objProduct->id) . " AND language=''"
+															. (BE_USER_LOGGED_IN === true ? '' : " AND published='1' AND (start='' OR start<$time) AND (stop='' OR stop>$time)")
+															. " GROUP BY pid");
+			
+			if ($objResult->low_price > 0 && $objResult->low_price < $objResult->high_price)
+			{
+				$arrData['from_price'] = $objResult->low_price;
+			}
 		}
 		
 		return $arrData;
