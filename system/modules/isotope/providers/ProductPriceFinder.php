@@ -40,7 +40,7 @@ class ProductPriceFinder extends System
 		$blnAdvancedPrices = $objProduct->hasAdvancedPrices();
 		$blnVariantPrices = $objProduct->hasVariantPrices();
 
-		if ($blnAdvancedPrices && $blnVariantPrices && $objProduct->pid > 0)
+		if ($blnAdvancedPrices && $blnVariantPrices)
 		{
 			$arrData = self::findAdvancedVariantPrice($objProduct);
 		}
@@ -117,32 +117,32 @@ class ProductPriceFinder extends System
 	
 	
 	/**
-	 * Find price data for a product without variants but with advanced prices
+	 * Find price data for a product without variant prices but with advanced prices
 	 * @param IsotopeProduct
 	 * @return array
 	 */
 	protected static function findAdvancedProductPrice(IsotopeProduct $objProduct)
 	{
-		$arrIds = $objProduct->hasVariantPrices() ? $objProduct->getVariantIds() : array($objProduct->id);
-		$arrData = self::getAdvancedPrices($arrIds, $objProduct->quantity_requested);
-		
-		if ($objProduct->hasVariants())
-		{
-			$arrData['from_price'] = self::findLowestAdvancedPriceOfVariants($objProduct->getVariantIds());
-		}
-		
-		return $arrData;
+		return self::getAdvancedPrices(array($objProduct->id), $objProduct->quantity_requested);
 	}
 	
 	
 	/**
-	 * Find price data for a variant product with advanced prices
+	 * Find price data for a variant product with advanced prices and with variant prices
 	 * @param IsotopeProduct
 	 * @return array
 	 */
 	protected static function findAdvancedVariantPrice(IsotopeProduct $objProduct)
 	{
-		return self::getAdvancedPrices(array($objProduct->id), $objProduct->quantity_requested);
+		$arrIds = $objProduct->pid == 0 ? $objProduct->getVariantIds() : array($objProduct->id);
+		$arrData = self::getAdvancedPrices($arrIds, $objProduct->quantity_requested);
+		
+		if ($objProduct->pid == 0)
+		{
+			$arrData['from_price'] = self::findLowestAdvancedPriceOfVariants($arrIds);
+		}
+		
+		return $arrData;
 	}
 	
 	
@@ -189,7 +189,7 @@ class ProductPriceFinder extends System
 				$blnPriceFound = true;
 			}
 			
-			if ($objPrices->numRows > 1 && $arrData['from_price'] == null || $arrPrice['price'] < $arrData['from_price'])
+			if ($arrData['from_price'] == null || $arrPrice['price'] < $arrData['from_price'])
 			{
 				$arrData['from_price'] = $arrPrice['price'];
 			}
