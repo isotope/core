@@ -241,14 +241,14 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 			'exclude'                 => true,
 			'inputType'               => 'select',
 			'options'                 => $this->getCountries(),
-			'eval'                    => array('multiple'=>true, 'size'=>8, 'tl_class'=>'clr', 'chosen'=>true)
+			'eval'                    => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50', 'chosen'=>true)
 		),
 		'shipping_modules' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['shipping_modules'],
 			'exclude'                 => true,
 			'inputType'               => 'select',
-			'eval'                    => array('multiple'=>true, 'size'=>8, 'tl_class'=>'clr', 'chosen'=>true)
+			'eval'                    => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50', 'chosen'=>true)
 		),
 		'product_types' => array
 		(
@@ -256,7 +256,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 			'exclude'                 => true,
 			'inputType'               => 'select',
 			'foreignKey'			  => 'tl_iso_producttypes.name',
-			'eval'                    => array('multiple'=>true, 'size'=>8, 'tl_class'=>'clr', 'chosen'=>true)
+			'eval'                    => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50', 'chosen'=>true)
 		),
 		'paypal_account' => array
 		(
