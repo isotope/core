@@ -227,7 +227,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_mail_customer'] = array
 	'exclude'                 => true,
 	'inputType'               => 'select',
 	'foreignKey'              => 'tl_iso_mail.name',
-	'eval'					  => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'clr', 'chosen'=>true)
+	'eval'					  => array('includeBlankOption'=>true, 'mandatory'=>true, 'chosen'=>true)
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_mail_admin'] = array
