@@ -20,6 +20,7 @@ Version 1.4.beta1 (2012-??-??)
 - Added edit-header dropdown for mail templates (#3228)
 - Allow insert tags in order prefix (#3197)
 - Hide "related products" button if there are no categories (#3018)
+- Removed filter-by-node functionality, it's no longer useful (#2766)
 
 
 Version 1.3.2 stable (2012-06-11)
