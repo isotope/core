@@ -1557,6 +1557,13 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 		{
 			return '';
 		}
+		
+		$objCategories = $this->Database->execute("SELECT COUNT(id) AS total FROM tl_iso_related_categories");
+		
+		if ($objCategories->total == 0)
+		{
+			return '';
+		}
 
 		return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
 	}
