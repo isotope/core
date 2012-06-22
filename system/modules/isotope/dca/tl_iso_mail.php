@@ -101,7 +101,15 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_iso_mail']['edit'],
 				'href'                => 'table=tl_iso_mail_content',
-				'icon'                => 'edit.gif'
+				'icon'                => 'edit.gif',
+				'attributes'          => 'class="contextmenu"'
+			),
+			'editheader' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_mail']['editheader'],
+				'href'                => 'act=edit',
+				'icon'                => 'header.gif',
+				'attributes'          => 'class="edit-header"'
 			),
 			'copy' => array
 			(
