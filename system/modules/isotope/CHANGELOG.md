@@ -18,6 +18,7 @@ Version 1.4.beta1 (2012-??-??)
 - More modular gallery class, also allows to retrieve the list of images (#3173)
 - Added getimagesize data to gallery template (#3173)
 - Added edit-header dropdown for mail templates (#3228)
+- Allow insert tags in order prefix (#3197)
 
 
 Version 1.3.2 stable (2012-06-11)
