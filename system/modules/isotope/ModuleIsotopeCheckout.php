@@ -980,6 +980,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	{
 		$strBuffer = '';
 		$arrOptions = array();
+		$blnHasAddress = false;
 		$arrCountries = ($field == 'billing_address' ? $this->Isotope->Config->billing_countries : $this->Isotope->Config->shipping_countries);
 
 		if (FE_USER_LOGGED_IN === true)
@@ -998,6 +999,8 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 					'value'		=> $objAddress->id,
 					'label'		=> $this->Isotope->generateAddressString($objAddress->row(), ($field == 'billing_address' ? $this->Isotope->Config->billing_fields : $this->Isotope->Config->shipping_fields)),
 				);
+				
+				$blnHasAddress = true;
 			}
 		}
 
@@ -1025,7 +1028,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				$arrAddress = $_SESSION['CHECKOUT_DATA'][$field] ? $_SESSION['CHECKOUT_DATA'][$field] : $this->Isotope->Cart->billingAddress;
 				$intDefaultValue = strlen($arrAddress['id']) ? $arrAddress['id'] : 0;
 
-				if (FE_USER_LOGGED_IN === true)
+				if ($blnHasAddress)
 				{
 					$arrOptions[] = array
 					(

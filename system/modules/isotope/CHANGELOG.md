@@ -24,6 +24,7 @@ Version 1.4.beta1 (2012-??-??)
 - Allow insert tags in order prefix (#3197)
 - Hide "related products" button if there are no categories (#3018)
 - Removed filter-by-node functionality, it's no longer useful (#2766)
+- No longer shows the "create new address" radio for billing address if no stored address is available
 
 
 Version 1.3.2 stable (2012-06-11)
