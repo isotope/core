@@ -520,7 +520,7 @@ class IsotopeBackend extends Backend
 	public function getOrderMessages()
 	{
 		$arrMessages = array();
-		$objOrders = $this->Database->query("SELECT COUNT(*) AS total, s.name FROM tl_iso_orders o LEFT JOIN tl_iso_orderstatus s ON o.status=s.id GROUP BY s.id");
+		$objOrders = $this->Database->query("SELECT COUNT(*) AS total, s.name FROM tl_iso_orders o LEFT JOIN tl_iso_orderstatus s ON o.status=s.id WHERE s.welcomescreen='1' GROUP BY s.id");
 		
 		while ($objOrders->next())
 		{
