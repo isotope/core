@@ -1208,16 +1208,16 @@ $endScript";
 
 			if (is_array($varValue))
 			{
-				$arrData[$k][$strKey] = trim($arrData[$k][$strKey] . ' ' . $class);
+				$arrData[$k][$strKey] = trim($arrData[$k][$strKey] . $class);
 			}
 			elseif (is_object($varValue))
 			{
-				$varValue->$strKey = trim($varValue->$strKey . ' ' . $class);
+				$varValue->$strKey = trim($varValue->$strKey . $class);
 				$arrData[$k] = $varValue;
 			}
 			else
 			{
-				$arrData[$k] = '<span class="' . $class . '">' . $varValue . '</span>';
+				$arrData[$k] = '<span class="' . trim($arrData[$k][$strKey] . $class) . '">' . $varValue . '</span>';
 			}
 			
 			++$col;
