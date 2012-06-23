@@ -185,7 +185,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['legend'],
 			'inputType'				=> 'select',
 			'default'				=> 'options_legend',
-			'options'				=> array('general_legend', 'meta_legend', 'pricing_legend', 'inventory_legend', 'shipping_legend', 'options_legend', 'media_legend', 'publish_legend'),
+			'options'				=> array('general_legend', 'meta_legend', 'pricing_legend', 'inventory_legend', 'shipping_legend', 'options_legend', 'media_legend', 'expert_legend', 'publish_legend'),
 			'reference'				=> &$GLOBALS['TL_LANG']['tl_iso_products'],
 			'eval'					=> array('mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true)
 		),

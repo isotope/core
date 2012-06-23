@@ -469,6 +469,13 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'eval'					=> array('extensions'=>'jpeg,jpg,png,gif', 'helpwizard'=>true),
 			'attributes'			=> array('legend'=>'media_legend', 'fixed'=>true, 'multilingual'=>true, 'dynamic'=>true),
 		),
+		'cssID' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['cssID'],
+			'inputType'				=> 'text',
+			'eval'					=> array('multiple'=>true, 'size'=>2, 'tl_class'=>'w50'),
+			'attributes'			=> array('legend'=>'expert_legend'),
+		),
 		'published' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['published'],

@@ -46,6 +46,7 @@ $GLOBALS['TL_LANG']['tl_iso_products']['price']					= array('Price', 'Please ent
 $GLOBALS['TL_LANG']['tl_iso_products']['shipping_exempt']		= array('Exempt from shipping', 'Check if item is not a shipped item (such as downloadable products).');
 $GLOBALS['TL_LANG']['tl_iso_products']['tax_class']				= array('Tax Class', 'Select your appropriate tax class.');
 $GLOBALS['TL_LANG']['tl_iso_products']['images']				= array('Images', 'Upload images to this product. Please save the product after selecting a file.');
+$GLOBALS['TL_LANG']['tl_iso_products']['cssID']					= array('CSS ID/class', 'Here you can set an ID and one or more classes.');
 $GLOBALS['TL_LANG']['tl_iso_products']['published']				= array('Publish product', 'Click here to show this product on your website.');
 $GLOBALS['TL_LANG']['tl_iso_products']['start']					= array('Start date', 'Do not show this product before the date specified.');
 $GLOBALS['TL_LANG']['tl_iso_products']['stop']					= array('Stop date', 'Do not show this product after the date specified.');
@@ -119,6 +120,7 @@ $GLOBALS['TL_LANG']['tl_iso_products']['inventory_legend']	= 'Inventory Settings
 $GLOBALS['TL_LANG']['tl_iso_products']['shipping_legend']	= 'Shipping Settings';
 $GLOBALS['TL_LANG']['tl_iso_products']['options_legend']	= 'Product Options Settings';
 $GLOBALS['TL_LANG']['tl_iso_products']['media_legend']		= 'Media Management';
+$GLOBALS['TL_LANG']['tl_iso_products']['expert_legend']		= 'Expert settings';
 $GLOBALS['TL_LANG']['tl_iso_products']['publish_legend']	= 'Publishing';
 $GLOBALS['TL_LANG']['tl_iso_products']['variant_legend']	= 'Product variant setup';
 

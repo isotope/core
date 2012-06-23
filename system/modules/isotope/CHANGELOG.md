@@ -12,6 +12,7 @@ Version 1.4.beta1 (2012-??-??)
 - Can now manage order status in the backend and notify on status changes
 - Support for i18nl10n extension
 - The backend now lists new orders on the welcome screen (#2111)
+- Ever product can now have a CSS class and ID (#2812)
 
 ### Improved
 - Checkout steps are now a numbered list (#3040)

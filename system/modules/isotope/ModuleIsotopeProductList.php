@@ -245,7 +245,9 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		{
 			$arrBuffer[] = array
 			(
-				'html' => $objProduct->generate((strlen($this->iso_list_layout) ? $this->iso_list_layout : $objProduct->list_template), $this),
+				'cssID'	=> ($objProduct->cssID[0] != '') ? ' id="' . $objProduct->cssID[0] . '"' : '',
+				'class'	=> $objProduct->cssID[1],
+				'html'	=> $objProduct->generate((strlen($this->iso_list_layout) ? $this->iso_list_layout : $objProduct->list_template), $this),
 			);			
 		}
 
