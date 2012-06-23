@@ -589,6 +589,7 @@ CREATE TABLE `tl_iso_orderstatus` (
   `sorting` int(10) unsigned NOT NULL default '0',
   `name` varchar(255) NOT NULL default '',
   `paid` char(1) NOT NULL default '',
+  `welcomescreen` char(1) NOT NULL default '',
   `mail_customer` int(10) unsigned NOT NULL default '0',
   `mail_admin` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),

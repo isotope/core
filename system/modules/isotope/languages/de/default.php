@@ -446,4 +446,5 @@ $GLOBALS['ISO_LANG']['CUR']['ZWL'] = 'ZWL - Simbabwe-Dollar';
  */
 $GLOBALS['ISO_LANG']['MSC']['templateConfig']		= '%s (Shop-Konfiguration: %s)';
 $GLOBALS['ISO_LANG']['MSC']['templateTheme']		= '%s (Theme: %s)';
+$GLOBALS['ISO_LANG']['MSC']['newOrders']			= 'Sie haben %s Bestellung(en) mit Status "%s"';
 

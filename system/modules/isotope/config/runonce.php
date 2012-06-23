@@ -107,7 +107,7 @@ h1 { font-size:18px; font-weight:normal; margin:0 0 18px; }
 
 <h1>Isotope eCommerce Update was not run successfully!</h1>
 
-<pre>' . $e->getMessage() . '</pre>
+<pre style="white-space:normal">' . $e->getMessage() . '</pre>
 
 </div>
 
@@ -547,6 +547,7 @@ CREATE TABLE `tl_iso_orderstatus` (
   `sorting` int(10) unsigned NOT NULL default '0',
   `name` varchar(255) NOT NULL default '',
   `paid` char(1) NOT NULL default '',
+  `welcomescreen` char(1) NOT NULL default '',
   `mail_customer` int(10) unsigned NOT NULL default '0',
   `mail_admin` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
@@ -580,7 +581,7 @@ CREATE TABLE `tl_iso_orderstatus` (
 			foreach( $arrStatus as $i => $status )
 			{
 				$strLabel = $GLOBALS['TL_LANG']['ORDER'][$status] == '' ? $status : $GLOBALS['TL_LANG']['ORDER'][$status];
-				$intId = $this->Database->prepare("INSERT INTO tl_iso_orderstatus (tstamp,sorting,name,paid) VALUES ($time,?,?,?)")->executeUncached(($i*128), $strLabel, ($status == 'complete' ? '1' : ''))->insertId;
+				$intId = $this->Database->prepare("INSERT INTO tl_iso_orderstatus (tstamp,sorting,name,paid,welcomescreen) VALUES ($time,?,?,?,?)")->executeUncached(($i*128), $strLabel, ($status == 'complete' ? '1' : ''), ($status == 'pending' ? '1' : ''))->insertId;
 				
 				$this->Database->prepare("UPDATE tl_iso_orders SET status=? WHERE status=?")->executeUncached($intId, $status);
 				$this->Database->prepare("UPDATE tl_iso_payment_modules SET new_order_status=? WHERE new_order_status=?")->executeUncached($intId, $status);

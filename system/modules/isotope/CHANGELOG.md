@@ -10,7 +10,8 @@ Version 1.4.beta1 (2012-??-??)
 - Added support for frontend-only attributes
 - Added new attribute type "upload"
 - Can now manage order status in the backend and notify on status changes
-- Added support for i18nl10n extension
+- Support for i18nl10n extension
+- The backend now lists new orders on the welcome screen (#2111)
 
 ### Improved
 - Checkout steps are now a numbered list (#3040)

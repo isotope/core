@@ -288,6 +288,7 @@ $GLOBALS['TL_HOOKS']['generatePage'][]				= array('IsotopeFrontend', 'injectMess
 $GLOBALS['TL_HOOKS']['executePreActions'][]			= array('ProductTree', 'executePreActions');
 $GLOBALS['TL_HOOKS']['executePostActions'][]		= array('ProductTree', 'executePostActions');
 $GLOBALS['TL_HOOKS']['translateUrlParameters'][]	= array('IsotopeFrontend', 'translateProductUrls');
+$GLOBALS['TL_HOOKS']['getSystemMessages'][]			= array('IsotopeBackend', 'getOrderMessages');
 $GLOBALS['ISO_HOOKS']['buttons'][]					= array('Isotope', 'defaultButtons');
 $GLOBALS['ISO_HOOKS']['checkoutSurcharge'][]		= array('IsotopeFrontend', 'getShippingAndPaymentSurcharges');
 $GLOBALS['TL_HOOKS']['sqlGetFromFile'][]			= array('IsotopeBackend', 'addAttributesToDBUpdate');

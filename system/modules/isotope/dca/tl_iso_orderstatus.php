@@ -129,7 +129,7 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'						=> '{name_legend},name,paid;{email_legend},mail_customer,mail_admin',
+		'default'						=> '{name_legend},name,paid,welcomescreen;{email_legend},mail_customer,mail_admin',
 	),
 
 	// Fields
@@ -139,13 +139,19 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
 		(
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_orderstatus']['name'],
 			'inputType'					=> 'text',
-			'eval'						=> array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
+			'eval'						=> array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'clr'),
 		),
 		'paid' => array
 		(
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_orderstatus']['paid'],
 			'inputType'					=> 'checkbox',
-			'eval'						=> array('tl_class'=>'w50 m12'),
+			'eval'						=> array('tl_class'=>'w50'),
+		),
+		'welcomescreen' => array
+		(
+			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_orderstatus']['welcomescreen'],
+			'inputType'					=> 'checkbox',
+			'eval'						=> array('tl_class'=>'w50'),
 		),
 		'mail_customer' => array
 		(

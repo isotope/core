@@ -248,6 +248,7 @@ $GLOBALS['ISO_LANG']['MSC']['loadingProductData']	= 'Loading product data …';
 $GLOBALS['ISO_LANG']['MSC']['templateConfig']		= '%s (Store Config: %s)';
 $GLOBALS['ISO_LANG']['MSC']['templateTheme']		= '%s (Theme: %s)';
 $GLOBALS['ISO_LANG']['MSC']['splittedTaxRate']		= 'Splitted';
+$GLOBALS['ISO_LANG']['MSC']['newOrders']			= 'You have %s order(s) with status "%s"';
 
 
 /**

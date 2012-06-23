@@ -511,5 +511,23 @@ class IsotopeBackend extends Backend
 
 		return $arrData;
 	}
+
+
+	/**
+	 * Show messages for new order status
+	 * @return string
+	 */
+	public function getOrderMessages()
+	{
+		$arrMessages = array();
+		$objOrders = $this->Database->query("SELECT COUNT(*) AS total, s.name FROM tl_iso_orders o LEFT JOIN tl_iso_orderstatus s ON o.status=s.id GROUP BY s.id");
+		
+		while ($objOrders->next())
+		{
+			$arrMessages[] = '<p class="tl_new">' . sprintf($GLOBALS['ISO_LANG']['MSC']['newOrders'], $objOrders->total, $objOrders->name) . '</p>';
+		}
+		
+		return implode("\n", $arrMessages);
+	}
 }
 
