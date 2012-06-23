@@ -113,8 +113,8 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 		'__selector__'			=> array('type', 'applyTo', 'enableCode', 'configRestrictions', 'memberRestrictions', 'productRestrictions'),
 		'default'				=> '{basic_legend},type',
 		'product'				=> '{basic_legend},type,name,discount;{limit_legend:hide},limitPerMember,limitPerConfig,minItemQuantity,maxItemQuantity,quantityMode;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},configRestrictions,memberRestrictions,productRestrictions;{enabled_legend},enabled',
-		'cart'					=> '{basic_legend},type,applyTo,name,label,discount;{coupon_legend:hide},enableCode;{limit_legend:hide},limitPerMember,limitPerConfig,minItemQuantity,maxItemQuantity,quantityMode;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},configRestrictions,memberRestrictions,productRestrictions;{enabled_legend},enabled',
-		'cartsubtotal'			=> '{basic_legend},type,applyTo,name,label,discount,tax_class;{coupon_legend:hide},enableCode;{limit_legend:hide},limitPerMember,limitPerConfig,minItemQuantity,maxItemQuantity,quantityMode;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},configRestrictions,memberRestrictions,productRestrictions;{enabled_legend},enabled',
+		'cart'					=> '{basic_legend},type,applyTo,name,label,discount;{coupon_legend:hide},enableCode;{limit_legend:hide},limitPerMember,limitPerConfig,minSubtotal,maxSubtotal,minItemQuantity,maxItemQuantity,quantityMode;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},configRestrictions,memberRestrictions,productRestrictions;{enabled_legend},enabled',
+		'cartsubtotal'			=> '{basic_legend},type,applyTo,name,label,discount,tax_class;{coupon_legend:hide},enableCode;{limit_legend:hide},limitPerMember,limitPerConfig,minSubtotal,maxSubtotal,minItemQuantity,maxItemQuantity,quantityMode;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},configRestrictions,memberRestrictions,productRestrictions;{enabled_legend},enabled',
 	),
 	
 	// Subpalettes
@@ -218,6 +218,44 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			'exclude'					=> true,
 			'inputType'					=> 'text',
 			'eval'						=> array('rgxp'=>'digit', 'maxlength'=>10, 'tl_class'=>'w50'),
+		),
+		'minSubtotal' => array
+		(
+			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['minSubtotal'],
+			'exclude'					=> true,
+			'inputType'					=> 'text',
+			'eval'						=> array('maxlength'=>10, 'rgxp'=>'digit', 'tl_class'=>'w50')
+		),
+		'maxSubtotal' => array
+		(
+			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['maxSubtotal'],
+			'exclude'					=> true,
+			'inputType'					=> 'text',
+			'eval'						=> array('maxlength'=>10, 'rgxp'=>'digit', 'tl_class'=>'w50')
+		),
+		'minItemQuantity' => array
+		(
+			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['minItemQuantity'],
+			'exclude'					=> true,
+			'inputType'					=> 'text',
+			'eval'						=> array('maxlength'=>10, 'rgxp'=>'digit', 'tl_class'=>'w50')
+		),
+		'maxItemQuantity' => array
+		(
+			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['maxItemQuantity'],
+			'exclude'					=> true,
+			'inputType'					=> 'text',
+			'eval'						=> array('maxlength'=>10, 'rgxp'=>'digit', 'tl_class'=>'w50')
+		),
+		'quantityMode' => array
+		(
+			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['quantityMode'],
+			'exclude'					=> true,
+			'inputType'					=> 'select',
+			'default'					=> 'product_quantity',
+			'options'					=> array('product_quantity', 'cart_products', 'cart_items'),
+			'reference'					=> &$GLOBALS['TL_LANG']['tl_iso_rules']['quantityMode'],
+			'eval'						=> array('tl_class'=>'w50')
 		),
 		'startDate' => array
 		(
@@ -450,30 +488,6 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 		'attributeValue' => array
 		(
 			'eval'						=> array('decodeEntities'=>true, 'tl_class'=>'clr'),
-		),
-		'minItemQuantity' => array
-		(
-			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['minItemQuantity'],
-			'exclude'					=> true,
-			'inputType'					=> 'text',
-			'eval'						=> array('maxlength'=>10, 'rgxp'=>'digit', 'tl_class'=>'w50')
-		),
-		'maxItemQuantity' => array
-		(
-			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['maxItemQuantity'],
-			'exclude'					=> true,
-			'inputType'					=> 'text',
-			'eval'						=> array('maxlength'=>10, 'rgxp'=>'digit', 'tl_class'=>'w50')
-		),
-		'quantityMode' => array
-		(
-			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['quantityMode'],
-			'exclude'					=> true,
-			'inputType'					=> 'select',
-			'default'					=> 'product_quantity',
-			'options'					=> array('product_quantity', 'cart_products', 'cart_items'),
-			'reference'					=> &$GLOBALS['TL_LANG']['tl_iso_rules']['quantityMode'],
-			'eval'						=> array('tl_class'=>'w50')
 		),
 		'enabled'	=> array
 		(
