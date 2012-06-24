@@ -292,7 +292,6 @@ class IsotopeCart extends IsotopeProductCollection
 			return $this->arrCache['surcharges'];
 		}
 
-		$this->import('Isotope');
 		$arrPreTax = array();
 		$arrPostTax = array();
 		$arrTaxes = array();
