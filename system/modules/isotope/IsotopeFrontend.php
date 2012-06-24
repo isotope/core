@@ -121,7 +121,7 @@ class IsotopeFrontend extends Frontend
 	{
 		$arrTag = trimsplit('::', $strTag);
 
-		if ($arrTag[0] == 'isotope')
+		if ($arrTag[0] == 'isotope' || $arrTag[0] == 'cache_isotope')
 		{
 			switch ($arrTag[1])
 			{
