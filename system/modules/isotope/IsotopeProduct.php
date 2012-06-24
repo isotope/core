@@ -30,7 +30,7 @@
 
 /**
  * Class IsotopeProduct
- * 
+ *
  * Provide methods to handle Isotope products.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
@@ -238,31 +238,31 @@ class IsotopeProduct extends Controller
 
 			case 'tax_free_price':
 				$fltPrice = $this->isLocked() ? $this->arrData['price'] : $this->Isotope->calculatePrice($this->arrData['price'], $this, 'price');
-				
+
 				if ($this->arrData['tax_class'] > 0)
 				{
 					$objIncludes = $this->Database->prepare("SELECT r.* FROM tl_iso_tax_rate r LEFT JOIN tl_iso_tax_class c ON c.includes=r.id WHERE c.id=?")->execute($this->arrData['tax_class']);
-	
+
 					if ($objIncludes->numRows)
 					{
 						$arrTaxRate = deserialize($objIncludes->rate);
-			
+
 						// Final price / (1 + (tax / 100)
 						if (strlen($arrTaxRate['unit']))
 						{
 							$fltTax = $fltPrice - ($fltPrice / (1 + (floatval($arrTaxRate['value']) / 100)));
 						}
-						
+
 						// Full amount
 						else
 						{
 							$fltTax = floatval($arrTaxRate['value']);
 						}
-			
+
 						$fltPrice -= $fltTax;
 					}
 				}
-				
+
 				return $fltPrice;
 
 			case 'tax_free_total_price':
@@ -273,7 +273,7 @@ class IsotopeProduct extends Controller
 				{
 					$this->arrCache[$strKey] = (int) $this->Input->post('quantity_requested');
 				}
-				
+
 				return $this->arrCache[$strKey] ? $this->arrCache[$strKey] : 1;
 
 			case 'available':
@@ -409,8 +409,8 @@ class IsotopeProduct extends Controller
 	{
 		return $this->arrData;
 	}
-	
-	
+
+
 	/**
 	 * Return the product type configuration
 	 * @return array
@@ -419,8 +419,8 @@ class IsotopeProduct extends Controller
 	{
 		return $this->arrType;
 	}
-	
-	
+
+
 	/**
 	 * Return the product attributes
 	 * @return array
@@ -429,8 +429,8 @@ class IsotopeProduct extends Controller
 	{
 		return $this->arrAttributes;
 	}
-	
-	
+
+
 	/**
 	 * Return the product variant attributes
 	 * @return array
@@ -457,8 +457,8 @@ class IsotopeProduct extends Controller
 
 		return $arrData;
 	}
-	
-	
+
+
 	/**
 	 * Return variant options data
 	 * @return array|false
@@ -469,12 +469,12 @@ class IsotopeProduct extends Controller
 		{
 			return false;
 		}
-		
+
 		if (!is_array($this->arrVariantOptions))
 		{
 			$time = time();
 			$this->arrVariantOptions = array('current'=>array());
-			
+
 			// Find all possible variant options
 			$objVariant = clone $this;
 			$objVariants = $this->Database->execute(IsotopeProduct::getSelectStatement() . " WHERE p1.pid={$this->arrData['id']} AND p1.language=''"
@@ -502,11 +502,11 @@ class IsotopeProduct extends Controller
 				}
 			}
 		}
-		
+
 		return $this->arrVariantOptions;
 	}
-	
-	
+
+
 	/**
 	 * Return all available variant IDs of this product
 	 * @return array|false
@@ -514,12 +514,12 @@ class IsotopeProduct extends Controller
 	public function getVariantIds()
 	{
 		$arrVariantOptions = $this->getVariantOptions();
-		
+
 		if ($arrVariantOptions === false)
 		{
 			return false;
 		}
-		
+
 		return (array) $arrVariantOptions['ids'];
 	}
 
@@ -565,7 +565,7 @@ class IsotopeProduct extends Controller
 		{
 			if ($value == '')
 				continue;
-			
+
 			$arrOptions[] = array
 			(
 				'label'	=> $this->Isotope->formatLabel('tl_iso_products', $field),
@@ -585,8 +585,8 @@ class IsotopeProduct extends Controller
 	{
 		$this->arrOptions = $arrOptions;
 	}
-	
-	
+
+
 	/**
 	 * Returns true if variants are enabled in the product type, otherwise returns false
 	 * @return bool
@@ -595,8 +595,8 @@ class IsotopeProduct extends Controller
 	{
 		return (bool) $this->arrType['variants'];
 	}
-	
-	
+
+
 	/**
 	 * Returns true if product has variants, and the price is a variant attribute
 	 * @return bool
@@ -607,11 +607,11 @@ class IsotopeProduct extends Controller
 		{
 			return true;
 		}
-		
+
 		return false;
 	}
-	
-	
+
+
 	/**
 	 * Returns true if advanced prices are enabled in the product type, otherwise returns false
 	 * @return bool
@@ -620,8 +620,8 @@ class IsotopeProduct extends Controller
 	{
 		return (bool) $this->arrType['prices'];
 	}
-	
-	
+
+
 	/**
 	 * Returns true if the product is published, otherwise returns false
 	 * @bool
@@ -640,11 +640,11 @@ class IsotopeProduct extends Controller
 		{
 			return false;
 		}
-		
+
 		return true;
 	}
-	
-	
+
+
 	/**
 	 * Returns true if the product is locked (price should not be calculated, e.g. in orders), otherwise returns false
 	 * @return bool
@@ -653,8 +653,8 @@ class IsotopeProduct extends Controller
 	{
 		return $this->blnLocked;
 	}
-	
-	
+
+
 	/**
 	 * Returns true if the product is available, otherwise returns false
 	 * @return bool
@@ -669,6 +669,28 @@ class IsotopeProduct extends Controller
 		if (BE_USER_LOGGED_IN !== true && !$this->isPublished())
 		{
 			return false;
+		}
+
+		// Show to guests only
+		if ($this->arrData['guests'] && FE_USER_LOGGED_IN === true && BE_USER_LOGGED_IN !== true && !$this->arrData['protected'])
+		{
+			return false;
+		}
+
+		// Protected product
+		if (BE_USER_LOGGED_IN !== true && $this->arrData['protected'])
+		{
+			if (FE_USER_LOGGED_IN !== true)
+			{
+				return false;
+			}
+
+			$groups = deserialize($this->arrData['groups']);
+
+			if (!is_array($groups) || empty($groups) || !count(array_intersect($groups, $this->User->groups)))
+			{
+				return false;
+			}
 		}
 
 		// Check if "advanced price" is available
@@ -765,7 +787,7 @@ class IsotopeProduct extends Controller
 		$objTemplate->formId = $this->formSubmit;
 		$objTemplate->action = ampersand($this->Environment->request, true);
 		$objTemplate->formSubmit = $this->formSubmit;
-		
+
 		list(,$startScript, $endScript) = IsotopeFrontend::getElementAndScriptTags();
 		$GLOBALS['TL_MOOTOOLS'][] = $startScript."\nnew {$this->ajaxClass}('{$objModule->id}', '" . ($this->pid ? $this->pid : $this->id) . "', '{$this->formSubmit}', ['ctrl_" . implode("_".$this->formSubmit."', 'ctrl_", $arrAjaxOptions) . "_".$this->formSubmit."'], {language: '{$GLOBALS['TL_LANGUAGE']}', action: '".($objModule instanceof Module ? 'fmd' : 'cte')."', page: {$objPage->id}, loadMessage:'" . specialchars($GLOBALS['ISO_LANG']['MSC']['loadingProductData']) . "'});\n".$endScript;
 
@@ -878,7 +900,7 @@ class IsotopeProduct extends Controller
 		{
 			$fltPrice = $varValue;
 			$fltOriginalPrice = $this->original_price;
-			
+
 			if ($this->arrCache['from_price'] !== null)
 			{
 				$fltPrice = $this->Isotope->calculatePrice($this->arrCache['from_price'], $this, 'price', $this->arrData['tax_class']);
@@ -898,7 +920,7 @@ class IsotopeProduct extends Controller
 				$strBuffer = '<div class="original_price"><strike>' . $strOriginalPrice . '</strike></div><div class="price">' . $strBuffer . '</div>';
 			}
 		}
-		
+
 		// Convert line breaks in textarea to <br> tags
 		elseif ($arrData['inputType'] == 'textarea' && $arrData['eval']['rte'] == '')
 		{
@@ -1036,7 +1058,7 @@ class IsotopeProduct extends Controller
 
 		$arrData['eval']['mandatory'] = ($arrData['eval']['mandatory'] && !$blnAjax) ? true : false;
 		$arrData['eval']['required'] = $arrData['eval']['mandatory'];
-		
+
 		// Make sure variant options are initialized
 		$this->getVariantOptions();
 
@@ -1148,7 +1170,7 @@ class IsotopeProduct extends Controller
 				}
 			}
 		}
-		
+
 		$strClass = strlen($GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['class']) ? $GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['class'] : $GLOBALS['TL_FFL'][$arrData['inputType']];
 
 		// Continue if the class is not defined
@@ -1167,7 +1189,7 @@ class IsotopeProduct extends Controller
 		if ($this->Input->post('FORM_SUBMIT') == $this->formSubmit)
 		{
 			$objWidget->validate();
-			
+
 			if ($objWidget->hasErrors())
 			{
 				$this->doNotSubmit = true;
@@ -1191,7 +1213,7 @@ class IsotopeProduct extends Controller
 					foreach ($arrData['save_callback'] as $callback)
 					{
 						$this->import($callback[0]);
-						
+
 						try
 						{
 							$varValue = $this->$callback[0]->$callback[1]($varValue, $this, $objWidget);
@@ -1208,7 +1230,7 @@ class IsotopeProduct extends Controller
 				if (!$objWidget->hasErrors())
 				{
 					$this->arrOptions[$strField] = $varValue;
-					
+
 					if ($arrData['attributes']['variant_option'] && $varValue != '')
 					{
 						$this->arrVariantOptions['current'][$strField] = $varValue;
@@ -1232,13 +1254,13 @@ class IsotopeProduct extends Controller
 	protected function findPrice()
 	{
 		require_once(TL_ROOT . '/system/modules/isotope/providers/ProductPriceFinder.php');
-		
+
 		$arrPrice = ProductPriceFinder::findPrice($this);
 
 		$this->arrData['price'] = $arrPrice['price'];
 		$this->arrData['tax_class'] = $arrPrice['tax_class'];
 		$this->arrCache['from_price'] = $arrPrice['from_price'];
-		
+
 		// Add "price_tiers" to attributes, so the field is available in the template
 		if ($this->hasAdvancedPrices())
 		{
@@ -1249,7 +1271,7 @@ class IsotopeProduct extends Controller
 			{
 				$this->arrVariantAttributes[] = 'price_tiers';
 			}
-			
+
 			$this->arrCache['price_tiers'] = $arrPrice['price_tiers'];
 		}
 	}
@@ -1264,7 +1286,7 @@ class IsotopeProduct extends Controller
 		{
 			return;
 		}
-		
+
 		// Make sure variant options are initialized
 		$this->getVariantOptions();
 
@@ -1349,7 +1371,7 @@ class IsotopeProduct extends Controller
 			}
 
 			$this->arrData[$attribute] = $arrData[$attribute];
-			
+
 			if (is_array($this->arrCache) && isset($this->arrCache[$attribute]))
 			{
 				unset($this->arrCache[$attribute]);
@@ -1400,8 +1422,8 @@ LEFT OUTER JOIN tl_iso_product_categories c ON p1.id=c.pid AND c.page_id=" . (in
 
 		return $strSelect;
 	}
-	
-	
+
+
 	/**
 	 * Sort the attributes based on their position (from wizard) and return their names only
 	 * @param mixed
@@ -1410,9 +1432,9 @@ LEFT OUTER JOIN tl_iso_product_categories c ON p1.id=c.pid AND c.page_id=" . (in
 	protected function getSortedAttributes($varValue)
 	{
 		$arrAttributes = deserialize($varValue, true);
-		
+
 		uasort($arrAttributes, create_function('$a,$b', 'return $a["position"] > $b["position"];'));
-		
+
 		return array_keys($arrAttributes);
 	}
 }
