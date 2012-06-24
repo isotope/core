@@ -5,7 +5,9 @@ Version 1.3.3 stable (2012-??-??)
 ---------------------------------
 
 ### Improved
+
 ### Fixed
+- Added missing german translations (#3226)
 
 
 Version 1.3.2 stable (2012-06-11)
