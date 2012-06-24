@@ -120,14 +120,15 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'__selector__'				=> array('class', 'variants'),
-		'default'					=> '{name_legend},name,class,fallback,prices;{description_legend:hide},description;{template_legend},list_template,reader_template;{attributes_legend},attributes,variants;{download_legend:hide},downloads',
-		'regular'					=> '{name_legend},name,class,fallback,prices;{description_legend:hide},description;{template_legend},list_template,reader_template;{attributes_legend},attributes,variants;{download_legend:hide},downloads',
+		'__selector__'				=> array('class', 'prices', 'variants'),
+		'default'					=> '{name_legend},name,class',
+		'regular'					=> '{name_legend},name,class,fallback;{description_legend:hide},description;{prices_legend:hide},prices;{template_legend},list_template,reader_template;{attributes_legend},attributes;{variants_legend:hide},variants;{download_legend:hide},downloads',
 	),
 
 	// Subpalettes
 	'subpalettes' => array
 	(
+		'prices'					=> 'show_price_tiers',
 		'variants'					=> 'variant_attributes,force_variant_options',
 	),
 
@@ -168,6 +169,13 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
 		'prices' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_producttypes']['prices'],
+			'exclude'				=> true,
+			'inputType'				=> 'checkbox',
+			'eval'					=> array('submitOnChange'=>true, 'tl_class'=>'clr'),
+		),
+		'show_price_tiers' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_producttypes']['show_price_tiers'],
 			'exclude'				=> true,
 			'inputType'				=> 'checkbox',
 			'eval'					=> array('tl_class'=>'w50'),

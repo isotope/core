@@ -131,6 +131,7 @@ CREATE TABLE `tl_iso_producttypes` (
   `fallback` char(1) NOT NULL default '',
   `description` text NULL,
   `prices` char(1) NOT NULL default '',
+  `show_price_tiers` char(1) NOT NULL default '',
   `list_template` varchar(255) NOT NULL default '',
   `reader_template` varchar(255) NOT NULL default '',
   `attributes` blob NULL,

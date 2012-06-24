@@ -481,27 +481,26 @@ abstract class IsotopeProductCollection extends Model
 					try
 					{
 						$arrData = $this->blnLocked ? array_merge($objProductData->row(), array('sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price)) : $objProductData->row();
-						$objProduct = new $strClass($arrData, deserialize($objItems->product_options), $this->blnLocked);
+						$objProduct = new $strClass($arrData, deserialize($objItems->product_options), $this->blnLocked, $objItems->product_quantity);
 					}
 					catch (Exception $e)
 					{
-						$objProduct = new IsotopeProduct(array('id'=>$objItems->product_id, 'sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price), deserialize($objItems->product_options), $this->blnLocked);
+						$objProduct = new IsotopeProduct(array('id'=>$objItems->product_id, 'sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price), deserialize($objItems->product_options), $this->blnLocked, $objItems->product_quantity);
 					}
 				}
 				else
 				{
-					$objProduct = new IsotopeProduct(array('id'=>$objItems->product_id, 'sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price), deserialize($objItems->product_options), $this->blnLocked);
+					$objProduct = new IsotopeProduct(array('id'=>$objItems->product_id, 'sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price), deserialize($objItems->product_options), $this->blnLocked, $objItems->product_quantity);
 				}
 
 				// Remove product from collection if it is no longer available
-				if (!$objProduct->available)
+				if (!$objProduct->isAvailable())
 				{
 					$objProduct->cart_id = $objItems->id;
 					$this->deleteProduct($objProduct);
 					continue;
 				}
 
-				$objProduct->quantity_requested = $objItems->product_quantity;
 				$objProduct->cart_id = $objItems->id;
 				$objProduct->tax_id = $objItems->tax_id;
 				$objProduct->reader_jumpTo_Override = $objItems->href_reader;
