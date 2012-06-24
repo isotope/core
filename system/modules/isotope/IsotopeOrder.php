@@ -271,7 +271,7 @@ class IsotopeOrder extends IsotopeProductCollection
 
 			if (!$objCart->findBy('id', $this->cart_id))
 			{
-				$this->log('Cound not find Cart ID '.$this->cart_id.' for Order ID '.$this->id, __METHOD__, TL_ERROR);
+				$this->log('Could not find Cart ID '.$this->cart_id.' for Order ID '.$this->id, __METHOD__, TL_ERROR);
 				return false;
 			}
 
