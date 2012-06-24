@@ -32,7 +32,7 @@
  */
 class ModuleIsotopeCumulativeFilter extends ModuleIsotopeProductFilter
 {
-	
+
 	/**
 	 * Template
 	 * @var string
@@ -57,7 +57,7 @@ class ModuleIsotopeCumulativeFilter extends ModuleIsotopeProductFilter
 
 			return $objTemplate->parse();
 		}
-		
+
 		return parent::generate();
 	}
 
@@ -70,21 +70,21 @@ class ModuleIsotopeCumulativeFilter extends ModuleIsotopeProductFilter
 	protected function initializeFilters()
 	{
 		$this->iso_filterFields = deserialize($this->iso_filterFields, true);
-		
+
 		if(!empty($this->iso_filterFields))
 		{
 			return true;
 		}
-		
+
 		if ($this->iso_filterTpl)
 		{
 			$this->strTemplate = $this->iso_filterTpl;
 		}
-		
+
 		return false;
 	}
-	
-	
+
+
 	/**
 	 * Compile the module
 	 */
@@ -96,12 +96,12 @@ class ModuleIsotopeCumulativeFilter extends ModuleIsotopeProductFilter
 									$this->Input->get('mod') == $this->id) ? true : false;
 
 		$this->generateFilter();
-			
+
 		$this->Template->linkClearAll	= ampersand(preg_replace('/\?.*/', '', $this->Environment->request));
 		$this->Template->labelClearAll	= $GLOBALS['TL_LANG']['MSC']['clearFiltersLabel'];
 	}
-	
-	
+
+
 	/**
 	 * Generates the filter
 	 */
@@ -111,8 +111,8 @@ class ModuleIsotopeCumulativeFilter extends ModuleIsotopeProductFilter
 		$strMode		= $this->Input->get('cfilter');
 		$strField		= $this->Input->get('attr');
 		$intValue		= $this->Input->get('v');
-		$strFilterKey	= $strField . '::' . $intValue;	
-		
+		$strFilterKey	= $strField . '::' . $intValue;
+
 		// set filter values
 		if($this->blnCacheRequest)
 		{
@@ -123,7 +123,7 @@ class ModuleIsotopeCumulativeFilter extends ModuleIsotopeProductFilter
 					'operator'		=> '==',
 					'attribute'		=> $strField,
 					'value'			=> $intValue
-				);				
+				);
 			}
 			else
 			{
@@ -136,33 +136,33 @@ class ModuleIsotopeCumulativeFilter extends ModuleIsotopeProductFilter
 			$this->Input->setGet('attr', null);
 			$this->Input->setGet('v', null);
 		}
-		
+
 		// build filter
 		foreach($this->iso_filterFields as $strField)
 		{
 			$arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strField];
-			
+
 			// Use the default routine to initialize options data
 			$arrWidget = $this->prepareForWidget($arrData, $strField);
 
 			$arrOptions = array();
-			
+
 			foreach($arrWidget['options'] as $k => $option)
 			{
 				$intValue = (int) $option['value'];
 				$strFilterKey = $strField . '::' . $intValue;
-				
+
 				// skip zero values (includeBlankOption)
 				if($intValue == 0)
 					continue;
-				 
+
 				$blnIsActive = ($GLOBALS['ISO_FILTERS'][$this->id][$strFilterKey]['value'] == $intValue);
-				
+
 				$arrParams		= array();
 				$arrParams[]	= array('mod', $this->id);
 				$arrParams[]	= array('attr', $strField);
 				$arrParams[]	= array('v', $intValue);
-				
+
 				// add or remove mode
 				if($blnIsActive)
 				{
@@ -172,7 +172,7 @@ class ModuleIsotopeCumulativeFilter extends ModuleIsotopeProductFilter
 				{
 					$arrParams[]	= array('cfilter', 'add');
 				}
-					
+
 				$arrOptions[$k]['label']	= $arrWidget['options'][$k]['label'];
 				$arrOptions[$k]['default']	= $GLOBALS['ISO_FILTERS'][$this->id][$strField]['value'] ? '1' : '';
 				$arrOptions[$k]['url']		= $this->addToCurrentUrl($arrParams);
@@ -198,13 +198,13 @@ class ModuleIsotopeCumulativeFilter extends ModuleIsotopeProductFilter
 	protected function addToCurrentUrl($arrParams)
 	{
 		$strUrl = $this->Environment->request;
-		
+
 		foreach($arrParams as $arrParam)
 		{
-			$strUrl .= (strpos($strUrl, '?') !== false) ? '&' : '?';	
+			$strUrl .= (strpos($strUrl, '?') !== false) ? '&' : '?';
 			$strUrl .= $arrParam[0] . '=' . $arrParam[1];
 		}
-		
+
 		return $strUrl;
 	}
 }

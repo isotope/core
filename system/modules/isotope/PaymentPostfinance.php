@@ -65,7 +65,7 @@ class PaymentPostfinance extends IsotopePayment
 			$this->log('Received invalid postsale data for order ID "' . $objOrder->id . '"', __METHOD__, TL_ERROR);
 			return false;
 		}
-		
+
 		// Validate payment data (see #2221)
 		if ($objOrder->currency != $this->getRequestData('currency') || $objOrder->grandTotal != $this->getRequestData('amount'))
 		{
@@ -107,7 +107,7 @@ class PaymentPostfinance extends IsotopePayment
 			$this->log('Received invalid postsale data for order ID "' . $objOrder->id . '"', __METHOD__, TL_ERROR);
 			return;
 		}
-		
+
 		// Validate payment data (see #2221)
 		if ($objOrder->currency != $this->getRequestData('currency') || $objOrder->grandTotal != $this->getRequestData('amount'))
 		{

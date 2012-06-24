@@ -94,7 +94,7 @@ class PaymentPaypal extends IsotopePayment
 				$this->log('Order ID "' . $this->Input->post('invoice') . '" not found', __METHOD__, TL_ERROR);
 				return;
 			}
-			
+
 			// Validate payment data (see #2221)
 			if ($objOrder->currency != $this->Input->post('mc_currency') || $objOrder->grandTotal != $this->Input->post('mc_gross'))
 			{
@@ -211,7 +211,7 @@ class PaymentPaypal extends IsotopePayment
 <input type="hidden" name="amount_'.$i.'" value="' . $objProduct->price . '"/>
 <input type="hidden" name="quantity_'.$i.'" value="' . $objProduct->quantity_requested . '"' . $endTag;
 		}
-		
+
 		$fltDiscount = 0;
 
 		foreach( $this->Isotope->Cart->getSurcharges() as $arrSurcharge )
@@ -230,7 +230,7 @@ class PaymentPaypal extends IsotopePayment
 <input type="hidden" name="item_name_'.++$i.'" value="' . $arrSurcharge['label'] . '"' . $endTag . '
 <input type="hidden" name="amount_'.$i.'" value="' . $arrSurcharge['total_price'] . '"' . $endTag;
 		}
-		
+
 		if ($fltDiscount > 0)
 		{
 			$strBuffer .= '

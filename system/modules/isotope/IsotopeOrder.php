@@ -30,7 +30,7 @@
 
 /**
  * Class IsotopeOrder
- * 
+ *
  * Provide methods to handle Isotope orders.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
@@ -81,7 +81,7 @@ class IsotopeOrder extends IsotopeProductCollection
 
 			case 'shippingAddress':
 				return deserialize($this->arrData['shipping_address'], true);
-			
+
 			case 'paid':
 				// Order is paid if a payment date is set
 				$paid = (int) $this->date_paid;
@@ -89,16 +89,16 @@ class IsotopeOrder extends IsotopeProductCollection
 				{
 					return true;
 				}
-				
+
 				// Otherwise we check the orderstatus checkbox
 				$objStatus = $this->Database->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $this->status);
 				return $objStatus->paid ? true : false;
-			
+
 			case 'statusLabel':
 				$strStatus = $this->Database->prepare("SELECT name FROM tl_iso_orderstatus WHERE id=?")
 											->execute($this->arrData['status'])
 											->name;
-				
+
 				return $this->Isotope->translate($strStatus);
 				break;
 
@@ -305,7 +305,7 @@ class IsotopeOrder extends IsotopeProductCollection
 
 		$this->checkout_complete = true;
 		$this->status = ($this->new_order_status ? $this->new_order_status : $this->Isotope->Config->orderstatus_new);
-		
+
 		$this->generateOrderId();
 		$arrData = $this->getEmailData();
 
@@ -359,8 +359,8 @@ class IsotopeOrder extends IsotopeProductCollection
 		$this->save();
 		return true;
 	}
-	
-	
+
+
 	/**
 	 * Complete order if the checkout has been made. This will cleanup session data
 	 */
@@ -369,12 +369,12 @@ class IsotopeOrder extends IsotopeProductCollection
 		if ($this->checkout_complete)
 		{
 			$intConfig = $_SESSION['ISOTOPE']['config_id'];
-			
+
 			unset($_SESSION['CHECKOUT_DATA']);
 			unset($_SESSION['ISOTOPE']);
 			unset($_SESSION['FORM_DATA']);
 			unset($_SESSION['FILES']);
-			
+
 			if ($intConfig > 0)
 			{
 				$_SESSION['ISOTOPE']['config_id'] = $intConfig;
@@ -382,11 +382,11 @@ class IsotopeOrder extends IsotopeProductCollection
 
 			return true;
 		}
-		
+
 		return false;
 	}
-	
-	
+
+
 	/**
 	 * Update the status of this order and trigger actions (email & hook)
 	 * @param int
@@ -400,14 +400,14 @@ class IsotopeOrder extends IsotopeProductCollection
 		{
 			return true;
 		}
-		
+
 		$objNewStatus = $this->Database->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $intNewStatus);
-		
+
 		if ($objNewStatus->numRows == 0)
 		{
 			return false;
 		}
-		
+
 		// HOOK: allow to cancel a status update
 		if (isset($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate']) && is_array($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate']))
 		{
@@ -416,41 +416,41 @@ class IsotopeOrder extends IsotopeProductCollection
 				$strClass = $callback[0];
 				$objCallback = (in_array('getInstance', get_class_methods($strClass))) ? call_user_func(array($strClass, 'getInstance')) : new $strClass();
 				$blnCancel = $this->$callback[0]->$callback[1]($this, $objNewStatus, $blnActions);
-				
+
 				if ($blnCancel === true)
 				{
 					return false;
 				}
 			}
 		}
-		
+
 		// Trigger email actions
 		if ($objNewStatus->mail_customer > 0 || $objNewStatus->mail_admin > 0)
 		{
 			$arrData = $this->getEmailData();
 			$arrData['new_status'] = $objNewStatus->name;
-	
+
 			if ($objNewStatus->mail_customer && $this->iso_customer_email != '')
 			{
 				$this->Isotope->sendMail($objNewStatus->mail_customer, $this->iso_customer_email, $this->language, $arrData, '', $this);
-				
+
 				if (TL_MODE == 'BE')
 				{
 					$this->addConfirmationMessage($GLOBALS['TL_LANG']['tl_iso_orders']['orderStatusEmail']);
 				}
 			}
-			
+
 			if ($objNewStatus->mail_admin && $this->iso_sales_email != '')
 			{
 				$this->Isotope->sendMail($objNewStatus->mail_admin, $this->iso_sales_email, $this->language, $arrData, $this->iso_customer_email, $this);
 			}
 		}
-		
+
 		// Store old status and set the new one
 		$intOldStatus = $this->status;
 		$this->status = $objNewStatus->id;
 		$this->save();
-		
+
 		// HOOK: order status has been updated
 		if (isset($GLOBALS['ISO_HOOKS']['postOrderStatusUpdate']) && is_array($GLOBALS['ISO_HOOKS']['postOrderStatusUpdate']))
 		{
@@ -462,8 +462,8 @@ class IsotopeOrder extends IsotopeProductCollection
 			}
 		}
 	}
-	
-	
+
+
 	/**
 	 * Retrieve the array of email data for parsing simple tokens
 	 * @return array
@@ -493,7 +493,7 @@ class IsotopeOrder extends IsotopeProductCollection
 				$arrData['member_' . $k] = $this->Isotope->formatValue('tl_member', $k, $v);
 			}
 		}
-		
+
 		return $arrData;
 	}
 
@@ -508,7 +508,7 @@ class IsotopeOrder extends IsotopeProductCollection
 		{
 			return $this->strOrderId;
 		}
-		
+
 		// HOOK: generate a custom order ID
 		if (isset($GLOBALS['ISO_HOOKS']['generateOrderId']) && is_array($GLOBALS['ISO_HOOKS']['generateOrderId']))
 		{
@@ -516,7 +516,7 @@ class IsotopeOrder extends IsotopeProductCollection
 			{
 				$this->import($callback[0]);
 				$strOrderId = $this->$callback[0]->$callback[1]($this);
-				
+
 				if ($strOrderId !== false)
 				{
 					$this->strOrderId = $strOrderId;
@@ -530,14 +530,14 @@ class IsotopeOrder extends IsotopeProductCollection
 			$strPrefix = $this->Isotope->replaceInsertTags($this->Isotope->Config->orderPrefix);
 			$intPrefix = utf8_strlen($strPrefix);
 			$arrConfigIds = $this->Database->execute("SELECT id FROM tl_iso_config WHERE store_id=" . $this->Isotope->Config->store_id)->fetchEach('id');
-	
+
 			// Lock tables so no other order can get the same ID
 			$this->Database->lockTables(array('tl_iso_orders'));
-	
+
 			// Retrieve the highest available order ID
 			$objMax = $this->Database->prepare("SELECT order_id FROM tl_iso_orders WHERE " . ($strPrefix != '' ? "order_id LIKE '$strPrefix%' AND " : '') . "config_id IN (" . implode(',', $arrConfigIds) . ") ORDER BY CAST(" . ($strPrefix != '' ? "SUBSTRING(order_id, " . ($intPrefix+1) . ")" : 'order_id') . " AS UNSIGNED) DESC")->limit(1)->executeUncached();
 			$intMax = (int) substr($objMax->order_id, $intPrefix);
-			
+
 			$this->strOrderId = $strPrefix . str_pad($intMax+1, $this->Isotope->Config->orderDigits, '0', STR_PAD_LEFT);
 		}
 

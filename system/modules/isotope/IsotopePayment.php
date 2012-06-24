@@ -30,7 +30,7 @@
 
 /**
  * Class IsotopePayment
- * 
+ *
  * Parent class for all payment gateway modules.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>

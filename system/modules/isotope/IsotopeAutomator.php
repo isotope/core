@@ -30,7 +30,7 @@
 
 /**
  * Class IsotopeAutomator
- * 
+ *
  * Provide methods to run Isotope automated jobs.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
@@ -72,15 +72,15 @@ class IsotopeAutomator extends Controller
 					$arrIds[] = $id;
 				}
 			}
-			
+
 			if (!empty($arrIds))
 			{
 				$this->log('Purged ' . count($arrIds) . ' old guest carts', __METHOD__, TL_CRON);
 			}
 		}
 	}
-	
-	
+
+
 	/**
 	 * Update the store configs with latest currency conversion data
 	 * @return void
@@ -90,7 +90,7 @@ class IsotopeAutomator extends Controller
 		$this->import('Database');
 
 		$objConfigs = $this->Database->execute("SELECT * FROM tl_iso_config WHERE currencyAutomator='1'");
-		
+
 		while ($objConfigs->next())
 		{
 			switch ($objConfigs->currencyProvider)
@@ -126,7 +126,7 @@ class IsotopeAutomator extends Controller
 					$fltFactor = $fltCourse / $fltCourseOrigin;
 					$this->Database->prepare("UPDATE tl_iso_config SET priceCalculateFactor=? WHERE id=?")->execute($fltFactor, $objConfigs->id);
 					break;
-				
+
 				case 'admin.ch':
 					$fltCourse = ($objConfigs->currency == 'CHF') ? 1 : 0;
 					$fltCourseOrigin = ($objConfigs->currencyOrigin == 'CHF') ? 1 : 0;
@@ -138,7 +138,7 @@ class IsotopeAutomator extends Controller
 					foreach ($objXml->devise as $currency)
 					{
 						if (!$fltCourse && $currency['code'] == strtolower($objConfigs->currency))
-						{							
+						{
 							$fltCourse = (float) $currency->kurs;
 						}
 
@@ -158,7 +158,7 @@ class IsotopeAutomator extends Controller
 					$fltFactor = $fltCourse / $fltCourseOrigin;
 					$this->Database->prepare("UPDATE tl_iso_config SET priceCalculateFactor=? WHERE id=?")->execute($fltFactor, $objConfigs->id);
 					break;
-				
+
 				default:
 					// HOOK for other currency providers
 					// function myCurrencyConverter($strProvider, $strSourceCurrency, $strTargetCurrency, $arrConfig)

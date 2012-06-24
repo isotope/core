@@ -30,7 +30,7 @@
 
 /**
  * Class IsotopeGallery
- * 
+ *
  * Provide methods to handle Isotope galleries.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
@@ -106,7 +106,7 @@ class IsotopeGallery extends Frontend
 				if (empty($this->arrFiles))
 				{
 					$strPlaceholder = $this->Isotope->Config->missing_image_placeholder;
-					
+
 					if ($strPlaceholder != '' && is_file(TL_ROOT . '/' . $strPlaceholder))
 					{
 						$this->addImage(array('src'=>$this->Isotope->Config->missing_image_placeholder), false);
@@ -147,8 +147,8 @@ class IsotopeGallery extends Frontend
 				return $this->arrData[$strKey];
 		}
 	}
-	
-	
+
+
 	/**
 	 * Get the number of images
 	 * @return int
@@ -157,8 +157,8 @@ class IsotopeGallery extends Frontend
 	{
 		return count($this->arrFiles);
 	}
-	
-	
+
+
 	/**
 	 * Returns whether the gallery object has an image do display or not
 	 * @return boolean
@@ -273,8 +273,8 @@ window.addEvent('ajaxready', function() {
 $endScript
 ";
 	}
-	
-	
+
+
 	/**
 	 * Generate the HTML attribute container
 	 * @param string

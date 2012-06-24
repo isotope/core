@@ -30,7 +30,7 @@
 
 /**
  * Class IsotopeCart
- * 
+ *
  * Provide methods to handle Isotope cart.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
@@ -154,14 +154,14 @@ class IsotopeCart extends IsotopeProductCollection
 						return $objAddress->fetchAssoc();
 					}
 				}
-				
+
 				$arrBilling = $this->billingAddress;
-				
+
 				if ($arrBilling['id'] != -1)
 				{
 					return $arrBilling;
 				}
-				
+
 				return array('id'=>-1, 'country' => $this->Isotope->Config->shipping_country);
 
 			default:

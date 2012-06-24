@@ -30,7 +30,7 @@
 
 /**
  * Class IsotopeProduct
- * 
+ *
  * Provide methods to handle Isotope products.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
@@ -190,7 +190,7 @@ class IsotopeProduct extends Controller
 			if ($this->arrType['variants'])
 			{
 				$time = time();
-				
+
 				// Find all possible variant options
 				$objVariant = clone $this;
 				$objVariants = $this->Database->execute(IsotopeProduct::getSelectStatement() . " WHERE p1.pid={$this->arrData['id']} AND p1.language=''"
@@ -325,31 +325,31 @@ class IsotopeProduct extends Controller
 
 			case 'tax_free_price':
 				$fltPrice = $this->blnLocked ? $this->arrData['price'] : $this->Isotope->calculatePrice($this->arrData['price'], $this, 'price');
-				
+
 				if ($this->arrData['tax_class'] > 0)
 				{
 					$objIncludes = $this->Database->prepare("SELECT r.* FROM tl_iso_tax_rate r LEFT JOIN tl_iso_tax_class c ON c.includes=r.id WHERE c.id=?")->execute($this->arrData['tax_class']);
-	
+
 					if ($objIncludes->numRows)
 					{
 						$arrTaxRate = deserialize($objIncludes->rate);
-			
+
 						// Final price / (1 + (tax / 100)
 						if (strlen($arrTaxRate['unit']))
 						{
 							$fltTax = $fltPrice - ($fltPrice / (1 + (floatval($arrTaxRate['value']) / 100)));
 						}
-						
+
 						// Full amount
 						else
 						{
 							$fltTax = floatval($arrTaxRate['value']);
 						}
-			
+
 						$fltPrice -= $fltTax;
 					}
 				}
-				
+
 				return $fltPrice;
 
 			case 'tax_free_total_price':
@@ -360,7 +360,7 @@ class IsotopeProduct extends Controller
 				{
 					$this->arrCache[$strKey] = (int) $this->Input->post('quantity_requested');
 				}
-				
+
 				return $this->arrCache[$strKey] ? $this->arrCache[$strKey] : 1;
 
 			case 'available':
@@ -558,7 +558,7 @@ class IsotopeProduct extends Controller
 		{
 			if ($value == '')
 				continue;
-			
+
 			$arrOptions[] = array
 			(
 				'label'	=> $this->Isotope->formatLabel('tl_iso_products', $field),
@@ -682,7 +682,7 @@ class IsotopeProduct extends Controller
 		$objTemplate->formId = $this->formSubmit;
 		$objTemplate->action = ampersand($this->Environment->request, true);
 		$objTemplate->formSubmit = $this->formSubmit;
-		
+
 		list(,$startScript, $endScript) = IsotopeFrontend::getElementAndScriptTags();
 		$GLOBALS['TL_MOOTOOLS'][] = $startScript."\nnew {$this->ajaxClass}('{$objModule->id}', '" . ($this->pid ? $this->pid : $this->id) . "', '{$this->formSubmit}', ['ctrl_" . implode("_".$this->formSubmit."', 'ctrl_", $arrAjaxOptions) . "_".$this->formSubmit."'], {language: '{$GLOBALS['TL_LANGUAGE']}', action: '".($objModule instanceof Module ? 'fmd' : 'cte')."', page: {$objPage->id}, loadMessage:'" . specialchars($GLOBALS['ISO_LANG']['MSC']['loadingProductData']) . "'});\n".$endScript;
 
@@ -1051,7 +1051,7 @@ class IsotopeProduct extends Controller
 				}
 			}
 		}
-		
+
 		$strClass = strlen($GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['class']) ? $GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['class'] : $GLOBALS['TL_FFL'][$arrData['inputType']];
 
 		// Continue if the class is not defined
@@ -1070,7 +1070,7 @@ class IsotopeProduct extends Controller
 		if ($this->Input->post('FORM_SUBMIT') == $this->formSubmit)
 		{
 			$objWidget->validate();
-			
+
 			if ($objWidget->hasErrors())
 			{
 				$this->doNotSubmit = true;
@@ -1094,7 +1094,7 @@ class IsotopeProduct extends Controller
 					foreach ($arrData['save_callback'] as $callback)
 					{
 						$this->import($callback[0]);
-						
+
 						try
 						{
 							$varValue = $this->$callback[0]->$callback[1]($varValue, $this, $objWidget);
@@ -1111,7 +1111,7 @@ class IsotopeProduct extends Controller
 				if (!$objWidget->hasErrors())
 				{
 					$this->arrOptions[$strField] = $varValue;
-					
+
 					if ($arrData['attributes']['variant_option'] && $varValue != '')
 					{
 						$this->arrVariantOptions['current'][$strField] = $varValue;
@@ -1266,7 +1266,7 @@ class IsotopeProduct extends Controller
 			}
 
 			$this->arrData[$attribute] = $arrData[$attribute];
-			
+
 			if (is_array($this->arrCache) && isset($this->arrCache[$attribute]))
 			{
 				unset($this->arrCache[$attribute]);
@@ -1318,8 +1318,8 @@ LEFT OUTER JOIN tl_iso_product_categories c ON p1.id=c.pid AND c.page_id=" . (in
 
 		return $strSelect;
 	}
-	
-	
+
+
 	/**
 	 * Sort the attributes based on their position (from wizard) and return their names only
 	 * @param mixed
@@ -1328,9 +1328,9 @@ LEFT OUTER JOIN tl_iso_product_categories c ON p1.id=c.pid AND c.page_id=" . (in
 	protected function getSortedAttributes($varValue)
 	{
 		$arrAttributes = deserialize($varValue, true);
-		
+
 		uasort($arrAttributes, create_function('$a,$b', 'return $a["position"] > $b["position"];'));
-		
+
 		return array_keys($arrAttributes);
 	}
 }

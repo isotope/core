@@ -47,7 +47,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	 * @var boolean
 	 */
 	public $doNotSubmit = false;
-	
+
 	/**
 	 * Template
 	 * @var string
@@ -101,8 +101,8 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		$this->strCurrentStep = $this->Input->get('step');
 		return parent::generate();
 	}
-	
-	
+
+
 	/**
 	 * Returns the current form ID
 	 * @return string
@@ -289,7 +289,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				{
 					$this->redirect($this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($this->orderCompleteJumpTo)->fetchAssoc()) . '?uid='.$objOrder->uniqid);
 				}
-				
+
 				// Checkout failed, show error message
 				$this->redirect($this->addToUrl('step=failed', true));
 			}
@@ -316,7 +316,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		$blnPassed = true;
 		$total = count($arrStepKeys) - 1;
 		$arrSteps = array();
-		
+
 		if ($this->strCurrentStep != 'process' && $this->strCurrentStep != 'complete')
 		{
 			foreach ($arrStepKeys as $i => $step)
@@ -325,9 +325,9 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				{
 					$blnPassed = false;
 				}
-	
+
 				$blnActive = $this->strCurrentStep == $step ? true : false;
-	
+
 				$arrSteps[] = array
 				(
 					'isActive'	=> $blnActive,
@@ -338,7 +338,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				);
 			}
 		}
-		
+
 		$this->Template->steps = $arrSteps;
 		$this->Template->activeStep = $GLOBALS['ISO_LANG']['MSC']['activeStep'];
 
@@ -538,7 +538,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		{
 			$arrData = $this->Input->post('shipping');
 			$arrModuleIds = array_map('intval', $arrModuleIds);
-			
+
 			$objModules = $this->Database->execute("SELECT * FROM tl_iso_shipping_modules WHERE id IN (" . implode(',', $arrModuleIds) . ")" . (BE_USER_LOGGED_IN === true ? '' : " AND enabled='1'") . " ORDER BY " . $this->Database->findInSet('id', $arrModuleIds));
 
 			while ($objModules->next())
@@ -671,7 +671,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		{
 			$arrData = $this->Input->post('payment');
 			$arrModuleIds = array_map('intval', $arrModuleIds);
-			
+
 			$objModules = $this->Database->execute("SELECT * FROM tl_iso_payment_modules WHERE id IN (" . implode(',', $arrModuleIds) . ")" . (BE_USER_LOGGED_IN === true ? '' : " AND enabled='1'") . " ORDER BY " . $this->Database->findInSet('id', $arrModuleIds));
 
 			while ($objModules->next())
@@ -999,7 +999,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 					'value'		=> $objAddress->id,
 					'label'		=> $this->Isotope->generateAddressString($objAddress->row(), ($field == 'billing_address' ? $this->Isotope->Config->billing_fields : $this->Isotope->Config->shipping_fields)),
 				);
-				
+
 				$blnHasAddress = true;
 			}
 		}
@@ -1218,7 +1218,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 			$arrWidgets[] = $objWidget;
 		}
-		
+
 		$arrWidgets = IsotopeFrontend::generateRowClass($arrWidgets, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
 
 		// Validate input
@@ -1232,9 +1232,9 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		{
 			$this->Isotope->Cart->$strAddressType = $_SESSION['CHECKOUT_DATA'][$strAddressType];
 		}
-		
+
 		$strBuffer = '';
-		
+
 		foreach ($arrWidgets as $objWidget)
 		{
 			$strBuffer .= $objWidget->parse();

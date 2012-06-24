@@ -82,7 +82,7 @@ class ModuleIsotopeSetup extends BackendModule
 		{
 			return $this->getIsotopeModule($this->Input->get('mod'));
 		}
-		
+
 		// Table set but module missing, fix the saveNcreate link
 		elseif ($this->Input->get('table') != '')
 		{

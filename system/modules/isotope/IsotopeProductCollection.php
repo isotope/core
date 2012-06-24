@@ -31,7 +31,7 @@
 
 /**
  * Class IsotopeProductCollection
- * 
+ *
  * Provide methods to handle Isotope product collections.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
@@ -107,7 +107,7 @@ abstract class IsotopeProductCollection extends Model
 		{
 			register_shutdown_function(array($this, 'saveDatabase'));
 		}
-		
+
 		$this->import('Isotope');
 	}
 
@@ -213,7 +213,7 @@ abstract class IsotopeProductCollection extends Model
 
 					$this->arrCache[$strKey] = $fltTotal;
 					break;
-				
+
 				case 'taxFreeSubTotal':
 					$fltTotal = 0;
 					$arrProducts = $this->getProducts();
@@ -520,7 +520,7 @@ abstract class IsotopeProductCollection extends Model
 		{
 			$this->import('Isotope');
 			$objTemplate = new IsotopeTemplate($strTemplate);
-			
+
 			$objTemplate->products = $this->arrProducts;
 			$objTemplate->surcharges = IsotopeFrontend::formatSurcharges($this->getSurcharges());
 			$objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
@@ -764,7 +764,7 @@ abstract class IsotopeProductCollection extends Model
 		{
 			$this->modified = true;
 		}
-		
+
 		// HOOK for adding additional functionality when adding product to collection
 		if (isset($GLOBALS['ISO_HOOKS']['transferredCollection']) && is_array($GLOBALS['ISO_HOOKS']['transferredCollection']))
 		{
@@ -835,7 +835,7 @@ abstract class IsotopeProductCollection extends Model
 
 		if ($this->Isotope->Config->invoiceLogo != '' && is_file(TL_ROOT . '/' . $this->Isotope->Config->invoiceLogo))
 		{
-		
+
 			$objTemplate->logoImage = '<img src="' . $this->Environment->base . '/' . $this->Isotope->Config->invoiceLogo . '" alt="" />';
 		}
 
@@ -857,8 +857,8 @@ abstract class IsotopeProductCollection extends Model
 				'tax_id'			=> $objProduct->tax_id,
 			);
 		}
-		
-		$objTemplate->config = $this->Isotope->Config->getData(); 	
+
+		$objTemplate->config = $this->Isotope->Config->getData();
 		$objTemplate->info = deserialize($this->checkout_info);
 		$objTemplate->items = $arrItems;
 		$objTemplate->raw = $this->arrData;
