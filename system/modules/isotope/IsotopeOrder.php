@@ -157,6 +157,29 @@ class IsotopeOrder extends IsotopeProductCollection
 			}
 		}
 
+		// Update the product IDs of surcharges (see #3029)
+		$arrSurcharges = $this->surcharges;
+
+		if (is_array($arrSurcharges) && !empty($arrSurcharges))
+		{
+			foreach ($arrSurcharges as $k => $arrSurcharge)
+			{
+				$arrProducts = $arrSurcharge['products'];
+
+				if (is_array($arrProducts) && !empty($arrProducts))
+				{
+					foreach ($arrProducts as $kk => $intId)
+					{
+						$arrProducts[$kk] = $arrIds[$intId];
+					}
+
+					$arrSurcharges[$k]['products'] = $arrProducts;
+				}
+			}
+
+			$this->surcharges = $arrSurcharges;
+		}
+
 		return $arrIds;
 	}
 
