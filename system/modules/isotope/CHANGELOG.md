@@ -1,10 +1,17 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 1.3.3 stable (2012-??-??)
+---------------------------------
+
+### Improved
+### Fixed
+
+
 Version 1.3.2 stable (2012-06-11)
 ---------------------------------
 
-### Improved 
+### Improved
 - Surcharges with percent as price were not rounded
 - Prevent the filter from generating useless "isorc" params
 - Plain text emails could contain HTML when using InsertTags (#3172)
@@ -168,7 +175,7 @@ Version 1.3.rc1 (2012-01-02)
 - Now generates an error message if a coupon code could not be applied
 - Can now multi-edit all features of a product. Can not multi-edit variants anymore (#2209)
 - The attribute wizard now supports any kind of CSS class (e.g. w50 for half width)  (#2227)
-- The attribute wizard now allows the user to specify which fields ar mandatory 
+- The attribute wizard now allows the user to specify which fields ar mandatory
 
 ### Fixed
 - radio button events in Internet Explorer (Ticket #484)
