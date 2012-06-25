@@ -191,7 +191,6 @@ $GLOBALS['FE_MOD']['isotope'] = array
  */
 $GLOBALS['BE_FFL']['mediaManager']			= 'MediaManager';
 $GLOBALS['BE_FFL']['attributeWizard']		= 'AttributeWizard';
-$GLOBALS['BE_FFL']['surchargeWizard']		= 'SurchargeWizard';
 $GLOBALS['BE_FFL']['variantWizard']			= 'VariantWizard';
 $GLOBALS['BE_FFL']['inheritCheckbox']		= 'InheritCheckBox';
 $GLOBALS['BE_FFL']['imageWatermarkWizard']	= 'ImageWatermarkWizard';

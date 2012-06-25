@@ -52,14 +52,6 @@ $GLOBALS['TL_LANG']['tl_iso_orders']['cc_type'] = array('Typ karty', 'Typ karty 
 $GLOBALS['TL_LANG']['tl_iso_orders']['cc_exp'] = array('Wygasa', 'Data wygaśnięcia karty kredytowej');
 $GLOBALS['TL_LANG']['tl_iso_orders']['notes'] = array('Notatki','Jeśli chcesz przekazać dodatkowe informacje dla innych użytkowników, zrób to tutaj.');
 
-/**
- * Reference
- */
-$GLOBALS['TL_LANG']['tl_iso_orders']['opLabel']					= 'Nazwa dopłaty';
-$GLOBALS['TL_LANG']['tl_iso_orders']['opPrice']					= 'Cena';
-$GLOBALS['TL_LANG']['tl_iso_orders']['opTaxClass']				= 'Klasa podatku';
-$GLOBALS['TL_LANG']['tl_iso_orders']['opAddTax']				= 'Dodać poaatek?';
-
 
 /**
  * Buttons

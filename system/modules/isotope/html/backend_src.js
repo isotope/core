@@ -125,68 +125,6 @@ var Isotope =
 	},
 
 	/**
-	 * Surcharge wizard
-	 * @param object
-	 * @param string
-	 * @param string
-	 */
-	surchargeWizard: function(el, command, id)
-	{
-		var table = document.id(id);
-		var tbody = table.getFirst().getNext();
-		var parent = document.id(el).getParent('tr');
-		var rows = tbody.getChildren();
-
-		Backend.getScrollOffset();
-
-		switch (command)
-		{
-			case 'copy':
-				var tr = new Element('tr');
-				var childs = parent.getChildren();
-
-				for (var i=0; i<childs.length; i++)
-				{
-					var next = childs[i].clone(true).injectInside(tr);
-					next.getFirst().value = childs[i].getFirst().value;
-				}
-
-				tr.injectAfter(parent);
-				break;
-
-			case 'up':
-				parent.getPrevious() ? parent.injectBefore(parent.getPrevious()) : parent.injectInside(tbody);
-				break;
-
-			case 'down':
-				parent.getNext() ? parent.injectAfter(parent.getNext()) : parent.injectBefore(tbody.getFirst());
-				break;
-
-			case 'delete':
-				(rows.length > 1) ? parent.destroy() : null;
-				break;
-		}
-
-		rows = tbody.getChildren();
-
-		for (var i=0; i<rows.length; i++)
-		{
-			var childs = rows[i].getChildren();
-
-			for (var j=0; j<childs.length; j++)
-			{
-				var first = childs[j].getFirst();
-
-				if (first.type == 'select-one' || first.type == 'text' || first.type == 'checkbox')
-				{
-					first.name = first.name.replace(/\[[0-9]+\]/ig, '[' + i + ']');
-				}
-			}
-		}
-	},
-
-
-	/**
 	 * Field wizard
 	 * @param object
 	 * @param string
@@ -497,7 +435,7 @@ var Isotope =
 					else
 					{
 						element.setStyle('display', (event.target.checked ? 'none' : 'initial'));
-						
+
 						// Query would fail if there is no tooltip
 						try { element.getNext(':not(.tl_tip)').setStyle('display', (event.target.checked ? 'none' : 'initial')); } catch (e) {}
 					}
@@ -510,7 +448,7 @@ var Isotope =
 				else
 				{
 					el.setStyle('display', (check.checked ? 'none' : 'initial'));
-					
+
 					// Query would fail if there is no tooltip
 					try { el.getNext(':not(.tl_tip)').setStyle('display', (check.checked ? 'none' : 'initial')); } catch (e) {}
 				}
@@ -526,7 +464,7 @@ var Isotope =
 	initializeToolsMenu: function()
 	{
 		var tools = document.getElements('#tl_buttons .isotope-tools');
-		
+
 		if (tools.length < 1)
 			return;
 
@@ -534,7 +472,7 @@ var Isotope =
 		tools.each(function(node) {
 			node.previousSibling.nodeValue = '';
 		});
-		
+
 		// Add trigger to tools buttons
 		document.getElement('a.header_isotope_tools').addEvent('click', function(e)
 		{
@@ -564,7 +502,7 @@ var Isotope =
 	initializeFilterMenu: function()
 	{
 		var tools = document.getElements('#tl_buttons .isotope-filter');
-		
+
 		if (tools.length < 1)
 			return;
 
@@ -572,7 +510,7 @@ var Isotope =
 		tools.each(function(node) {
 			node.previousSibling.nodeValue = '';
 		});
-		
+
 		// Add trigger to tools buttons
 		document.getElement('a.header_iso_filter').addEvent('click', function(e)
 		{
