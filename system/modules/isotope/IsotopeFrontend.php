@@ -732,6 +732,15 @@ $endScript";
 	 */
 	public function generateDownloadAttribute($attribute, $arrData, $arrFiles)
 	{
+		
+		// if its a single file download
+		if (!is_array($arrFiles) && file_exists(TL_ROOT . '/' . $arrFiles))
+		{
+			$arrFileTemp = array();
+			$arrFileTemp[] = $arrFiles;
+			$arrFiles = $arrFileTemp;
+		}	
+	
 		// Return if there are no files
 		if (!is_array($arrFiles) || count($arrFiles) < 1)
 		{
