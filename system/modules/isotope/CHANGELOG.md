@@ -26,6 +26,7 @@ Version 1.4.beta1 (2012-??-??)
 - Removed filter-by-node functionality, it's no longer useful (#2766)
 - No longer shows the "create new address" radio for billing address if no stored address is available
 - Insert tags can now be excepted from cache (#3098)
+- The payment and shipping order info is now a context menu
 
 
 Version 1.3.2 stable (2012-06-11)

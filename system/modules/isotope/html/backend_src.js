@@ -540,7 +540,7 @@ var Isotope =
 	initializeToolsButton: function()
 	{
 		// Hide the tool buttons
-		document.getElements('#tl_listing .isotope-tools').addClass('invisible');
+		document.getElements('#tl_listing .isotope-tools, .tl_listing .isotope-tools').addClass('invisible');
 
 		// Add trigger to edit buttons
 		document.getElements('a.isotope-contextmenu').each(function(el)
