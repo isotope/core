@@ -714,13 +714,8 @@ class tl_iso_orders extends Backend
 		
 			if ($objOrder->findBy('id', $dc->id))
 			{
-				if ($objOrder->updateOrderStatus($varValue))
-				{
-					return $varValue;
-				}
-				
 				// Status update has been cancelled, do not update
-				else
+				if (!$objOrder->updateOrderStatus($varValue))
 				{
 					return $dc->activeRecord->status;
 				}
