@@ -34,10 +34,11 @@
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['name']					= array('Name', 'Please enter a name for this product type.');
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['class']					= array('Product Class', 'Please select a product class. Different product classes will handle products differently.');
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['fallback']				= array('Default', 'Check here if this is the default product type.');
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['description']			= array('Description', 'A hint to product managers what this product type is for.');
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['prices']				= array('Advanced pricing', 'Allow to define multiple prices per product, eg. for different store configs, member groups or dates.');
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['show_price_tiers']		= array('Show price tiers', 'Show highest tier as lowest product price.');
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['list_template']			= array('Listing Template', 'Select a template for product listing.');
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['reader_template']		= array('Reader Template', 'Select a template for product details.');
-$GLOBALS['TL_LANG']['tl_iso_producttypes']['description']			= array('Description', 'A hint to product managers what this product type is for.');
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['attributes']			= array('Attributes', 'Select the collection of attributes that should be included for this product type.');
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['variants']				= array('Enable variants', 'Check here if this product type has variants.');
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['variant_attributes']	= array('Variant attributes', 'Select the collection of variant attributes that should be included for this product type. Those that are not selected will be hidden from view and inherited from the parent product.');

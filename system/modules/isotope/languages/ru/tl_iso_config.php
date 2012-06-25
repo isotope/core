@@ -37,6 +37,5 @@ $GLOBALS['TL_LANG']['tl_iso_config']['city'][0] = 'Город';
 $GLOBALS['TL_LANG']['tl_iso_config']['country'][0] = 'Страна';
 $GLOBALS['TL_LANG']['tl_iso_config']['templateGroup'][0] = 'Папка шаблонов';
 $GLOBALS['TL_LANG']['tl_iso_config']['iwWatermark'] = 'Изображение водяного знака';
-$GLOBALS['TL_LANG']['tl_iso_config']['invoice_legend'] = 'Счёт';
 $GLOBALS['TL_LANG']['tl_iso_config']['images_legend'] = 'Изображения';
 

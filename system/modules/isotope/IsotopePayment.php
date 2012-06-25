@@ -30,7 +30,7 @@
 
 /**
  * Class IsotopePayment
- * 
+ *
  * Parent class for all payment gateway modules.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
@@ -196,22 +196,6 @@ abstract class IsotopePayment extends Frontend
 	public function __isset($strKey)
 	{
 		return isset($this->arrData[$strKey]);
-	}
-
-
-	/**
-	 * Return a list of order status options
-	 * Allowed return values are ($GLOBALS['ISO_ORDER']):
-	 * - pending
-	 * - processing
-	 * - complete
-	 * - on_hold
-	 * - cancelled
-	 * @return array
-	 */
-	public function statusOptions()
-	{
-		return array('pending', 'processing');
 	}
 
 

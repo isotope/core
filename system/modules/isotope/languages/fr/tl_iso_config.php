@@ -143,6 +143,5 @@ $GLOBALS['TL_LANG']['tl_iso_config']['address_legend'] = 'Configuration d\'adres
 $GLOBALS['TL_LANG']['tl_iso_config']['config_legend'] = 'Configuration';
 $GLOBALS['TL_LANG']['tl_iso_config']['price_legend'] = 'Prix';
 $GLOBALS['TL_LANG']['tl_iso_config']['currency_legend'] = 'Formatage de la monnaie';
-$GLOBALS['TL_LANG']['tl_iso_config']['invoice_legend'] = 'Facture';
 $GLOBALS['TL_LANG']['tl_iso_config']['images_legend'] = 'Images';
 

@@ -158,11 +158,6 @@ $GLOBALS['TL_LANG']['MSC']['iso_price_header'] = 'Preis';
 $GLOBALS['TL_LANG']['MSC']['iso_sku_header'] = 'Artikelnr.';
 $GLOBALS['TL_LANG']['MSC']['iso_product_name_header'] = 'Produktbezeichnung';
 $GLOBALS['TL_LANG']['MSC']['iso_card_name_title'] = 'Name auf Kreditkarte';
-$GLOBALS['TL_LANG']['ORDER']['pending'] = 'Anstehend';
-$GLOBALS['TL_LANG']['ORDER']['processing'] = 'In Bearbeitung';
-$GLOBALS['TL_LANG']['ORDER']['complete'] = 'Erledigt';
-$GLOBALS['TL_LANG']['ORDER']['on_hold'] = 'Zurück gestellt';
-$GLOBALS['TL_LANG']['ORDER']['cancelled'] = 'Storniert';
 $GLOBALS['TL_LANG']['MSC']['low_to_high'] = 'niedrig - hoch';
 $GLOBALS['TL_LANG']['MSC']['high_to_low'] = 'hoch - niedrig';
 $GLOBALS['TL_LANG']['MSC']['a_to_z'] = 'A - Z';
@@ -293,6 +288,7 @@ $GLOBALS['ISO_LANG']['ATTR']['mediaManager'][0] = 'Dateiverwaltung';
 $GLOBALS['ISO_LANG']['ATTR']['mediaManager'][1] = 'Laden Sie Bilder oder andere Dateitypen in die Isotope Ecommerce-Dateiverwaltung (nicht gleichzusetzen mit der Contao-Dateiverwaltung!). Die Ausgabe erfolgt durch eine IsotopeGallery Klasse.';
 $GLOBALS['ISO_LANG']['ATTR']['conditionalselect'][0] = 'Abhängiges Auswahlmenü';
 $GLOBALS['ISO_LANG']['ATTR']['conditionalselect'][1] = 'Zeigt Auswahloptionen basierend auf einem anderen Auswahlmenü.';
+$GLOBALS['ISO_LANG']['ATTR']['upload'] = array('Datei-Upload', 'Ein einzeiliges Eingabefeld zur Übertragung lokaler Dateien auf den Server.');
 $GLOBALS['ISO_LANG']['CUR']['AED'] = 'AED - VAE-Dirham';
 $GLOBALS['ISO_LANG']['CUR']['AFN'] = 'AFN - Afghani';
 $GLOBALS['ISO_LANG']['CUR']['ALL'] = 'ALL - Lek';
@@ -450,4 +446,5 @@ $GLOBALS['ISO_LANG']['CUR']['ZWL'] = 'ZWL - Simbabwe-Dollar';
  */
 $GLOBALS['ISO_LANG']['MSC']['templateConfig']		= '%s (Shop-Konfiguration: %s)';
 $GLOBALS['ISO_LANG']['MSC']['templateTheme']		= '%s (Theme: %s)';
+$GLOBALS['ISO_LANG']['MSC']['newOrders']			= 'Sie haben %s Bestellung(en) mit Status "%s"';
 

@@ -31,6 +31,7 @@
 /**
  * Fields
  */
+$GLOBALS['TL_LANG']['tl_iso_orders']['config_id']			= array('Shop configuration');
 $GLOBALS['TL_LANG']['tl_iso_orders']['order_id']			= array('Order ID');
 $GLOBALS['TL_LANG']['tl_iso_orders']['uniqid']				= array('Unique ID');
 $GLOBALS['TL_LANG']['tl_iso_orders']['status']				= array('Order Status', 'Select the status of this order.');
@@ -63,6 +64,7 @@ $GLOBALS['TL_LANG']['tl_iso_orders']['opLabel']					= 'Name of Surcharge';
 $GLOBALS['TL_LANG']['tl_iso_orders']['opPrice']					= 'Price';
 $GLOBALS['TL_LANG']['tl_iso_orders']['opTaxClass']				= 'Tax Class';
 $GLOBALS['TL_LANG']['tl_iso_orders']['opAddTax']				= 'Add Tax?';
+$GLOBALS['TL_LANG']['tl_iso_orders']['orderStatusEmail']		= 'The status of your order has been updated and the client has been notified by email.';
 
 
 /**
