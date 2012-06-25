@@ -783,7 +783,8 @@ $endScript";
 						'filesize' => $this->getReadableSize($objFile->filesize, 1),
 						'icon' => TL_FILES_URL . 'system/themes/' . $this->getTheme() . '/images/' . $objFile->icon,
 						'mime' => $objFile->mime,
-						'meta' => $arrMeta
+						'meta' => $arrMeta,
+						'extension' => $objfile->extension
 					);
 
 					$auxDate[] = $objFile->mtime;
