@@ -58,8 +58,6 @@ $GLOBALS['TL_LANG']['tl_iso_orders']['notes'] = array('Order notes','If you woul
 /**
  * Reference
  */
-$GLOBALS['TL_LANG']['tl_iso_orders']['shipping_method_labels']['ups_ground'] = 'UPS Ground';
-
 $GLOBALS['TL_LANG']['tl_iso_orders']['opLabel']					= 'Name of Surcharge';
 $GLOBALS['TL_LANG']['tl_iso_orders']['opPrice']					= 'Price';
 $GLOBALS['TL_LANG']['tl_iso_orders']['opTaxClass']				= 'Tax Class';
@@ -70,15 +68,11 @@ $GLOBALS['TL_LANG']['tl_iso_orders']['orderStatusEmail']		= 'The status of your 
 /**
  * Buttons
  */
-$GLOBALS['TL_LANG']['tl_iso_orders']['new']					= array('New Order', 'Create a New order');
-$GLOBALS['TL_LANG']['tl_iso_orders']['edit']				= array('Edit Order', 'Edit order ID %s');
-$GLOBALS['TL_LANG']['tl_iso_orders']['copy']				= array('Copy Order', 'Copy order ID %s');
-$GLOBALS['TL_LANG']['tl_iso_orders']['delete']				= array('Delete Order', 'Delete order ID %s');
-$GLOBALS['TL_LANG']['tl_iso_orders']['show']				= array('Order Details', 'Show details of order ID %s');
-$GLOBALS['TL_LANG']['tl_iso_orders']['edit_order']			= array('Edit Order', 'Edit order items, add or remove products.');
-$GLOBALS['TL_LANG']['tl_iso_orders']['edit_order_items']	= array('Edit Order Items', 'Edit items for order ID %s');
+$GLOBALS['TL_LANG']['tl_iso_orders']['edit']				= array('Edit order', 'Edit order ID %s');
+$GLOBALS['TL_LANG']['tl_iso_orders']['copy']				= array('Copy order', 'Copy order ID %s');
+$GLOBALS['TL_LANG']['tl_iso_orders']['delete']				= array('Delete order', 'Delete order ID %s');
+$GLOBALS['TL_LANG']['tl_iso_orders']['show']				= array('Order details', 'Show details of order ID %s');
 $GLOBALS['TL_LANG']['tl_iso_orders']['print_order']			= array('Print this order', 'Print an invoice for the current order');
-$GLOBALS['TL_LANG']['tl_iso_orders']['authorize_process_payment'] = array('Authorizet.net Point-of-sale Terminal', 'Conduct a transaction using the Authorize.net point-of-sale terminal');
 $GLOBALS['TL_LANG']['tl_iso_orders']['tools']				= array('Tools', 'More options for order management.');
 $GLOBALS['TL_LANG']['tl_iso_orders']['export_emails']		= array('Export Order Emails','Export all emails for those who have ordered.');
 $GLOBALS['TL_LANG']['tl_iso_orders']['print_invoices']		= array('Print Invoices','Print one or more invoices into a single document of a certain order status.');
