@@ -390,7 +390,7 @@ CREATE TABLE `tl_iso_shipping_modules` (
   `tstamp` int(10) unsigned NOT NULL default '0',
   `name` varchar(255) NOT NULL default '',
   `type` varchar(64) NOT NULL default '',
-  `label` varchar(255) NOT NULL default '',
+  `slabel` varchar(255) NOT NULL default '',
   `note` text NULL,
   `tax_class` int(10) NOT NULL default '0',
   `countries` blob NULL,
