@@ -200,6 +200,7 @@ class PaymentPaypal extends IsotopePayment
 		list($endTag, $startScript, $endScript) = IsotopeFrontend::getElementAndScriptTags();
 
 		$strBuffer = '
+<div class="inside paypal">
 <h2>' . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0] . '</h2>
 <p class="message">' . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1] . '</p>
 <form id="payment_form" action="https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr" method="post">
@@ -283,7 +284,7 @@ class PaymentPaypal extends IsotopePayment
 <input type="hidden" name="bn" value="PP-BuyNowBF:btn_paynowCC_LG.gif:NonHosted"' . $endTag . '
 <input type="' . (strlen($this->button) ? 'image" src="'.$this->button.'" border="0"' : 'submit" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]).'"') . ' alt="PayPal - The safer, easier way to pay online!"' . $endTag . '
 </form>
-
+</div>
 ' . $startScript . '
 window.addEvent( \'domready\' , function() {
   $(\'payment_form\').submit();
