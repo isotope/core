@@ -92,7 +92,7 @@ abstract class IsotopeShipping extends Frontend
 		switch ($strKey)
 		{
 			case 'label':
-				return $this->Isotope->translate($this->arrData['label'] ? $this->arrData['label'] : $this->arrData['name']);
+				return $this->Isotope->translate($this->arrData['slabel'] ? $this->arrData['slabel'] : $this->arrData['name']);
 				break;
 
 			case 'available':
