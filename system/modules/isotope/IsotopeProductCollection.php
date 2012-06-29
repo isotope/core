@@ -31,7 +31,7 @@
 
 /**
  * Class IsotopeProductCollection
- * 
+ *
  * Provide methods to handle Isotope product collections.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
@@ -107,6 +107,8 @@ abstract class IsotopeProductCollection extends Model
 		{
 			register_shutdown_function(array($this, 'saveDatabase'));
 		}
+
+		$this->import('Isotope');
 	}
 
 
@@ -211,7 +213,7 @@ abstract class IsotopeProductCollection extends Model
 
 					$this->arrCache[$strKey] = $fltTotal;
 					break;
-				
+
 				case 'taxFreeSubTotal':
 					$fltTotal = 0;
 					$arrProducts = $this->getProducts();
@@ -479,27 +481,26 @@ abstract class IsotopeProductCollection extends Model
 					try
 					{
 						$arrData = $this->blnLocked ? array_merge($objProductData->row(), array('sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price)) : $objProductData->row();
-						$objProduct = new $strClass($arrData, deserialize($objItems->product_options), $this->blnLocked);
+						$objProduct = new $strClass($arrData, deserialize($objItems->product_options), $this->blnLocked, $objItems->product_quantity);
 					}
 					catch (Exception $e)
 					{
-						$objProduct = new IsotopeProduct(array('id'=>$objItems->product_id, 'sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price), deserialize($objItems->product_options), $this->blnLocked);
+						$objProduct = new IsotopeProduct(array('id'=>$objItems->product_id, 'sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price), deserialize($objItems->product_options), $this->blnLocked, $objItems->product_quantity);
 					}
 				}
 				else
 				{
-					$objProduct = new IsotopeProduct(array('id'=>$objItems->product_id, 'sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price), deserialize($objItems->product_options), $this->blnLocked);
+					$objProduct = new IsotopeProduct(array('id'=>$objItems->product_id, 'sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price), deserialize($objItems->product_options), $this->blnLocked, $objItems->product_quantity);
 				}
 
 				// Remove product from collection if it is no longer available
-				if (!$objProduct->available)
+				if (!$objProduct->isAvailable())
 				{
 					$objProduct->cart_id = $objItems->id;
 					$this->deleteProduct($objProduct);
 					continue;
 				}
 
-				$objProduct->quantity_requested = $objItems->product_quantity;
 				$objProduct->cart_id = $objItems->id;
 				$objProduct->tax_id = $objItems->tax_id;
 				$objProduct->reader_jumpTo_Override = $objItems->href_reader;
@@ -518,7 +519,7 @@ abstract class IsotopeProductCollection extends Model
 		{
 			$this->import('Isotope');
 			$objTemplate = new IsotopeTemplate($strTemplate);
-			
+
 			$objTemplate->products = $this->arrProducts;
 			$objTemplate->surcharges = IsotopeFrontend::formatSurcharges($this->getSurcharges());
 			$objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
@@ -762,7 +763,7 @@ abstract class IsotopeProductCollection extends Model
 		{
 			$this->modified = true;
 		}
-		
+
 		// HOOK for adding additional functionality when adding product to collection
 		if (isset($GLOBALS['ISO_HOOKS']['transferredCollection']) && is_array($GLOBALS['ISO_HOOKS']['transferredCollection']))
 		{
@@ -833,7 +834,7 @@ abstract class IsotopeProductCollection extends Model
 
 		if ($this->Isotope->Config->invoiceLogo != '' && is_file(TL_ROOT . '/' . $this->Isotope->Config->invoiceLogo))
 		{
-		
+
 			$objTemplate->logoImage = '<img src="' . $this->Environment->base . '/' . $this->Isotope->Config->invoiceLogo . '" alt="" />';
 		}
 
@@ -855,8 +856,8 @@ abstract class IsotopeProductCollection extends Model
 				'tax_id'			=> $objProduct->tax_id,
 			);
 		}
-		
-		$objTemplate->config = $this->Isotope->Config->getData(); 	
+
+		$objTemplate->config = $this->Isotope->Config->getData();
 		$objTemplate->info = deserialize($this->checkout_info);
 		$objTemplate->items = $arrItems;
 		$objTemplate->raw = $this->arrData;

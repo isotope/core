@@ -30,7 +30,7 @@
 
 /**
  * Class IsotopeGallery
- * 
+ *
  * Provide methods to handle Isotope galleries.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
@@ -94,64 +94,29 @@ class IsotopeGallery extends Frontend
 				$this->arrFiles = array();
 				$varValue = deserialize($varValue);
 
-				if (is_array($varValue) && count($varValue))
+				if (is_array($varValue) && !empty($varValue))
 				{
-					foreach ($varValue as $k => $file)
+					foreach ($varValue as $file)
 					{
-						$strFile = 'isotope/' . strtolower(substr($file['src'], 0, 1)) . '/' . $file['src'];
-
-						if (is_file(TL_ROOT . '/' . $strFile))
-						{
-							$objFile = new File($strFile);
-
-							if ($objFile->isGdImage)
-							{
-								foreach ((array) $this->Isotope->Config->imageSizes as $size)
-								{
-									$strImage = $this->getImage($strFile, $size['width'], $size['height'], $size['mode']);
-
-									if ($size['watermark'] != '')
-									{
-										$strImage = IsotopeFrontend::watermarkImage($strImage, $size['watermark'], $size['position']);
-									}
-
-									$arrSize = @getimagesize(TL_ROOT . '/' . $strImage);
-
-									if (is_array($arrSize) && strlen($arrSize[3]))
-									{
-										$file[$size['name'] . '_size'] = $arrSize[3];
-									}
-
-									$file['alt'] = specialchars($file['alt']);
-									$file['desc'] = specialchars($file['desc']);
-
-									$file[$size['name']] = $strImage;
-								}
-
-								$this->arrFiles[] = $file;
-							}
-						}
+						$this->addImage($file);
 					}
 				}
 
-				// No image available, add default image
-				if (!count($this->arrFiles) && is_file(TL_ROOT . '/' . $this->Isotope->Config->missing_image_placeholder))
+				// No image available, add placeholder from store configuration
+				if (empty($this->arrFiles))
 				{
-					foreach ((array) $this->Isotope->Config->imageSizes as $size)
+					$strPlaceholder = $this->Isotope->Config->missing_image_placeholder;
+
+					if ($strPlaceholder != '' && is_file(TL_ROOT . '/' . $strPlaceholder))
 					{
-						$strImage = $this->getImage($this->Isotope->Config->missing_image_placeholder, $size['width'], $size['height'], $size['mode']);
-						$arrSize = @getimagesize(TL_ROOT . '/' . $strImage);
-
-						if (is_array($arrSize) && strlen($arrSize[3]))
-						{
-							$file[$size['name'] . '_size'] = $arrSize[3];
-						}
-
-						$file[$size['name']] = $strImage;
+						$this->addImage(array('src'=>$this->Isotope->Config->missing_image_placeholder), false);
 					}
-
-					$this->arrFiles[] = $file;
 				}
+				break;
+
+			case 'main_image':
+				$file = is_array($varValue) ? $varValue : array('src'=>$file);
+				return $this->addImage($file, true, true);
 				break;
 
 			default:
@@ -174,12 +139,16 @@ class IsotopeGallery extends Frontend
 				return reset($this->arrFiles);
 				break;
 
+			case 'images':
+				return $this->arrFiles;
+				break;
+
 			default:
 				return $this->arrData[$strKey];
 		}
 	}
-	
-	
+
+
 	/**
 	 * Get the number of images
 	 * @return int
@@ -188,15 +157,15 @@ class IsotopeGallery extends Frontend
 	{
 		return count($this->arrFiles);
 	}
-	
-	
+
+
 	/**
 	 * Returns whether the gallery object has an image do display or not
 	 * @return boolean
 	 */
 	public function hasImages()
 	{
-		return ($this->size()) ? true : false;
+		return !empty($this->arrFiles);
 	}
 
 
@@ -304,8 +273,8 @@ window.addEvent('ajaxready', function() {
 $endScript
 ";
 	}
-	
-	
+
+
 	/**
 	 * Generate the HTML attribute container
 	 * @param string
@@ -316,6 +285,64 @@ $endScript
 	protected function generateAttribute($strId, $strBuffer, $strClass='')
 	{
 		return '<div class="iso_attribute' . ($strClass != '' ? ' '.strtolower($strClass) : '') .'" id="' . $strId . '">' . $strBuffer . '</div>';
+	}
+
+
+	/**
+	 * Add an image to the gallery
+	 * @param array
+	 * @param bool
+	 * @param bool
+	 * @return bool
+	 */
+	private function addImage(array $file, $blnWatermark=true, $blnMain=false)
+	{
+		$strFile = 'isotope/' . strtolower(substr($file['src'], 0, 1)) . '/' . $file['src'];
+
+		if (is_file(TL_ROOT . '/' . $strFile))
+		{
+			$objFile = new File($strFile);
+
+			if ($objFile->isGdImage)
+			{
+				foreach ((array) $this->Isotope->Config->imageSizes as $size)
+				{
+					$strImage = $this->getImage($strFile, $size['width'], $size['height'], $size['mode']);
+
+					if ($size['watermark'] != '' && $blnWatermark)
+					{
+						$strImage = IsotopeFrontend::watermarkImage($strImage, $size['watermark'], $size['position']);
+					}
+
+					$arrSize = @getimagesize(TL_ROOT . '/' . $strImage);
+
+					if (is_array($arrSize) && strlen($arrSize[3]))
+					{
+						$file[$size['name'] . '_size'] = $arrSize[3];
+						$file[$size['name'] . '_imageSize'] = $arrSize;
+					}
+
+					$file['alt'] = specialchars($file['alt']);
+					$file['desc'] = specialchars($file['desc']);
+
+					$file[$size['name']] = $strImage;
+				}
+
+				// Main image is first in the array
+				if ($blnMain)
+				{
+					array_unshift($this->arrFiles, $file);
+				}
+				else
+				{
+					$this->arrFiles[] = $file;
+				}
+
+				return true;
+			}
+		}
+
+		return false;
 	}
 }
 

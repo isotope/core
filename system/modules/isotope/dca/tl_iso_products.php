@@ -48,7 +48,6 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		(
 			array('tl_iso_products', 'applyAdvancedFilters'),
 			array('tl_iso_products', 'checkPermission'),
-			array('tl_iso_products', 'addBreadcrumb'),
 			array('tl_iso_products', 'buildPaletteString'),
 		),
 		'onsubmit_callback' => array
@@ -289,8 +288,14 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'__selector__'				=> array('type', 'pid'),
+		'__selector__'				=> array('type', 'pid', 'protected'),
 		'default'					=> '{general_legend},type',
+	),
+
+	// Subpalettes
+	'subpalettes' => array
+	(
+		'protected'					=> 'groups',
 	),
 
 	// Fields
@@ -305,6 +310,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['MSC']['dateAdded'],
 			'eval'					=> array('rgxp'=>'datim'),
+			'attributes'			=> array('fe_sorting'=>true),
 		),
 		'type' => array
 		(
@@ -468,6 +474,34 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'explanation'			=> 'mediaManager',
 			'eval'					=> array('extensions'=>'jpeg,jpg,png,gif', 'helpwizard'=>true),
 			'attributes'			=> array('legend'=>'media_legend', 'fixed'=>true, 'multilingual'=>true, 'dynamic'=>true),
+		),
+		'protected' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['protected'],
+			'inputType'				=> 'checkbox',
+			'eval'					=> array('submitOnChange'=>true, 'tl_class'=>'clr'),
+			'attributes'			=> array('legend'=>'expert_legend'),
+		),
+		'groups' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['groups'],
+			'inputType'				=> 'checkbox',
+			'foreignKey'			=> 'tl_member_group.name',
+			'eval'					=> array('mandatory'=>true, 'multiple'=>true),
+		),
+		'guests' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['guests'],
+			'inputType'				=> 'checkbox',
+			'eval'					=> array('tl_class'=>'w50'),
+			'attributes'			=> array('legend'=>'expert_legend'),
+		),
+		'cssID' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['cssID'],
+			'inputType'				=> 'text',
+			'eval'					=> array('multiple'=>true, 'size'=>2, 'tl_class'=>'w50'),
+			'attributes'			=> array('legend'=>'expert_legend'),
 		),
 		'published' => array
 		(
@@ -705,7 +739,7 @@ class tl_iso_products extends Backend
 		{
 			return;
 		}
-		
+
 		$arrTypes = count($this->User->iso_product_types) ? $this->User->iso_product_types : array(0);
 		$objProducts = $this->Database->execute("SELECT id, (SELECT COUNT(*) FROM tl_iso_products) AS total FROM tl_iso_products WHERE type IN ('','" . implode("','", $arrTypes) . "')");
 
@@ -750,116 +784,6 @@ class tl_iso_products extends Backend
 			$this->log('Cannot access product ID '.$this->Input->get('id'), __METHOD__, TL_ACCESS);
 			$this->redirect('contao/main.php?act=error');
 		}
-	}
-
-
-	/**
-	 * Add the breadcrumb menu
-	 * @return void
-	 */
-	public function addBreadcrumb()
-	{
-		// Set a new node
-		if (isset($_GET['node']))
-		{
-			$this->Session->set('tl_page_node', $this->Input->get('node'));
-			$this->redirect(preg_replace('/&node=[^&]*/', '', $this->Environment->request));
-		}
-
-		$intNode = $this->Session->get('tl_page_node');
-
-		if ($intNode < 1)
-		{
-			return;
-		}
-
-		$arrIds = array();
-		$arrLinks = array();
-
-		// Generate breadcrumb trail
-		if ($intNode)
-		{
-			$this->loadDataContainer('tl_page');
-			$tl_page = new tl_page();
-			$intId = $intNode;
-
-			do
-			{
-				$objPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")
-								->limit(1)
-								->execute($intId);
-
-				if ($objPage->numRows < 1)
-				{
-					// Currently selected page does not exits
-					if ($intId == $intNode)
-					{
-						$this->Session->set('tl_page_node', 0);
-						return;
-					}
-
-					break;
-				}
-
-				$arrIds[] = $intId;
-
-				// No link for the active page
-				if ($objPage->id == $intNode)
-				{
-					$arrLinks[] = $tl_page->addIcon($objPage->row(), '', null, '', true) . ' ' . $objPage->title;
-				}
-				else
-				{
-					$arrLinks[] = $tl_page->addIcon($objPage->row(), '', null, '', true) . ' <a href="' . $this->addToUrl('node='.$objPage->id) . '">' . $objPage->title . '</a>';
-				}
-
-				// Do not show the mounted pages
-				if (!$this->User->isAdmin && in_array($objPage->id, $this->User->pagemounts))
-				{
-					break;
-				}
-
-				$intId = $objPage->pid;
-			}
-			while ($intId > 0 && $objPage->type != 'root');
-		}
-
-		// Check whether the node is mounted
-		if (!$this->User->isAdmin && !$this->User->hasAccess($arrIds, 'pagemounts'))
-		{
-			$this->Session->set('tl_page_node', 0);
-
-			$this->log('Page ID '.$intNode.' was not mounted', 'tl_page addBreadcrumb', TL_ERROR);
-			$this->redirect($this->Environment->script.'?act=error');
-		}
-
-		// Limit tree
-		$arrNodes = array_merge(array($intNode), $this->getChildRecords($intNode, 'tl_page'));
-		$objProducts = $this->Database->execute("SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrNodes) . ")");
-
-		if ($objProducts->numRows)
-		{
-			$GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'] = $objProducts->fetchEach('pid');
-		}
-		else
-		{
-			$berror = '
-
-<ul id="tl_breadcrumb">
-  <li>' . $GLOBALS['TL_LANG']['ERR']['breadcrumbEmpty'] . '</li>
-</ul>';
-		}
-
-		// Add root link
-		$arrLinks[] = '<img src="system/themes/' . $this->getTheme() . '/images/pagemounts.gif" width="18" height="18" alt=""> <a href="' . $this->addToUrl('node=0') . '">' . $GLOBALS['TL_LANG']['MSC']['filterAll'] . '</a>';
-		$arrLinks = array_reverse($arrLinks);
-
-		// Insert breadcrumb menu
-		$GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['breadcrumb'] = '
-
-<ul id="tl_breadcrumb">
-  <li>' . implode(' &gt; </li><li>', $arrLinks) . '</li>
-</ul>'.$berror;
 	}
 
 
@@ -1426,11 +1350,11 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 					foreach ($GLOBALS['ISO_HOOKS']['addAssetImportRegexp'] as $callback)
 					{
 						$this->import($callback[0]);
-						
+
 						$arrPattern = $this->$callback[0]->$callback[1]($arrPattern,$objProducts);
 					}
 				}
-				
+
 				$strPattern = '@^(' . implode('|', array_filter($arrPattern)) . ')@i';
 
 				$arrMatches = preg_grep($strPattern, $arrFiles);
@@ -1557,6 +1481,13 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 			return '';
 		}
 
+		$objCategories = $this->Database->execute("SELECT COUNT(id) AS total FROM tl_iso_related_categories");
+
+		if ($objCategories->total == 0)
+		{
+			return '';
+		}
+
 		return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
 	}
 
@@ -1634,7 +1565,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 	public function pasteProduct(DataContainer $dc, $row, $table, $cr, $arrClipboard=false)
 	{
 		require_once(TL_ROOT . '/system/modules/isotope/providers/PasteProductButton.php');
-		
+
 		$this->import('PasteProductButton');
 		return $this->PasteProductButton->generate($dc, $row, $table, $cr, $arrClipboard);
 	}
@@ -1693,8 +1624,8 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 		$href = preg_replace('/&?filter\[\]=[^&]*/', '', $this->Environment->request);
 		return ' &#160; :: &#160; <a href="'.$href.'" class="header_iso_filter_remove isotope-filter" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ';
 	}
-	
-	
+
+
 	/**
 	 * Hide "toggle all variants" button if there are no variants at all
 	 * @param string
@@ -1709,16 +1640,16 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 	public function toggleVariants($href, $label, $title, $class, $attributes, $table, $root)
 	{
 		$objVariants = $this->Database->query("SELECT COUNT(id) AS hasVariants FROM tl_iso_products WHERE pid>0 AND language=''");
-		
+
 		if (!$objVariants->hasVariants)
 		{
 			return '';
 		}
-		
+
 		return '<a href="' . $this->addToUrl('&amp;' . $href) . '" class="header_toggle isotope-tools" title="' . specialchars($title) . '"' . $attributes . '>' . specialchars($label) . '</a>';
 	}
-	
-	
+
+
 	/**
 	 * Hide "toggle all groups" button if there are no groups at all
 	 * @param string
@@ -1733,14 +1664,14 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 	public function toggleGroups($href, $label, $title, $class, $attributes, $table, $root)
 	{
 		$objGroups = $this->Database->query("SELECT COUNT(id) AS hasGroups FROM tl_iso_groups");
-		
+
 		if (!$objGroups->hasGroups)
 		{
 			return '';
 		}
-		
+
 		return '<a href="' . $this->addToUrl('&amp;' . $href) . '" class="header_toggle isotope-tools" title="' . specialchars($title) . '"' . $attributes . '>' . specialchars($label) . '</a>';
-	}	
+	}
 
 
 	/**
@@ -1933,7 +1864,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 				}
 
 				// Do not show variant options & customer defined fields
-				if ($arrFields[$attribute]['attributes']['variant_option'] || $arrFields[$attribute]['attributes']['customer_defined'])
+				if ($arrFields[$attribute]['attributes']['variant_option'] || $arrFields[$attribute]['attributes']['customer_defined'] || $GLOBLAS['ISO_ATTR'][$arrFields[$attribute]['attributes']['type']]['customer_defined'])
 				{
 					continue;
 				}
@@ -1951,7 +1882,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 				{
 					$arrFields[$attribute]['eval']['tl_class'] = $tl_class;
 				}
-				
+
 				if ($arrConfig['mandatory'] > 0)
 				{
 					$arrFields[$attribute]['eval']['mandatory'] = $arrConfig['mandatory'] == 1 ? false : true;
@@ -2031,12 +1962,25 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 			// Add date picker
 			if ($objAttributes->rgxp == 'date')
 			{
-				$arrData['eval']['datepicker'] = (method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true);
+				$arrData['eval']['datepicker'] = (method_exists($this, 'getDatePickerString') ? $this->getDatePickerString() : true);
 			}
 
+			// Textarea cannot be w50
 			if ($objAttributes->type == 'textarea' || $objAttributes->rte != '')
 			{
 				$arrData['eval']['tl_class'] = 'clr';
+			}
+
+			// Customer defined widgets
+			if ($GLOBALS['ISO_ATTR'][$objAttributes->type]['customer_defined'])
+			{
+				$arrData['attributes']['customer_defined'] = true;
+			}
+
+			// Install save_callback for upload widgets
+			if ($objAttributes->type == 'upload')
+			{
+				$arrData['save_callback'][] = array('IsotopeFrontend', 'saveUpload');
 			}
 
 			// Parse multiline/multilingual foreignKey
@@ -2196,7 +2140,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 	public function updateCategorySorting($insertId, $dc)
 	{
 		$objCategories = $this->Database->query("SELECT c1.*, MAX(c2.sorting) AS max_sorting FROM tl_iso_product_categories c1 LEFT JOIN tl_iso_product_categories c2 ON c1.page_id=c2.page_id WHERE c1.pid=" . (int) $insertId . " GROUP BY c1.page_id");
-		
+
 		while ($objCategories->next())
 		{
 			$this->Database->query("UPDATE tl_iso_product_categories SET sorting=" . ($objCategories->max_sorting + 128) . " WHERE id=" . $objCategories->id);

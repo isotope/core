@@ -30,7 +30,7 @@
 
 /**
  * Class IsotopeCart
- * 
+ *
  * Provide methods to handle Isotope cart.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
@@ -119,7 +119,7 @@ class IsotopeCart extends IsotopeProductCollection
 					return array_intersect_key(array_merge($this->User->getData(), array('id'=>0, 'street_1'=>$this->User->street, 'subdivision'=>strtoupper($this->User->country . '-' . $this->User->state))), array_flip($this->Isotope->Config->billing_fields_raw));
 				}
 
-				return array('id'=>-1, 'postal'=>$this->Isotope->Config->postal, 'subdivision'=>$this->Isotope->Config->subdivision, 'country' => $this->Isotope->Config->country);
+				return array('id'=>-1, 'country' => $this->Isotope->Config->billing_country);
 
 			case 'shipping_address':
 			case 'shippingAddress':
@@ -155,7 +155,14 @@ class IsotopeCart extends IsotopeProductCollection
 					}
 				}
 
-				return array_merge((is_array($this->billingAddress) ? $this->billingAddress : array()), array('id' => -1));
+				$arrBilling = $this->billingAddress;
+
+				if ($arrBilling['id'] != -1)
+				{
+					return $arrBilling;
+				}
+
+				return array('id'=>-1, 'country' => $this->Isotope->Config->shipping_country);
 
 			default:
 				return parent::__get($strKey);
@@ -285,7 +292,6 @@ class IsotopeCart extends IsotopeProductCollection
 			return $this->arrCache['surcharges'];
 		}
 
-		$this->import('Isotope');
 		$arrPreTax = array();
 		$arrPostTax = array();
 		$arrTaxes = array();

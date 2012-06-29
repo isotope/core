@@ -68,7 +68,7 @@ class ModuleIsotopeProductVariantList extends ModuleIsotopeProductList
 		$arrCategories = $this->findCategories($this->iso_category_scope);
 
 		list($arrFilters, $arrSorting, $strWhere, $arrValues) = $this->getFiltersAndSorting();
-		
+
 		$objProductData = $this->Database->prepare(IsotopeProduct::getSelectStatement() . "
 													WHERE p1.language=''"
 													. (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)")
@@ -78,7 +78,7 @@ class ModuleIsotopeProductVariantList extends ModuleIsotopeProductList
 													. ($this->iso_list_where == '' ? '' : " AND {$this->iso_list_where}")
 													. "$strWhere ORDER BY c.sorting")
 										 ->execute($arrValues);
-		
+
 		return IsotopeFrontend::getProducts($objProductData, IsotopeFrontend::getReaderPageId(null, $this->iso_reader_jumpTo), true, $arrFilters, $arrSorting);
 	}
 }

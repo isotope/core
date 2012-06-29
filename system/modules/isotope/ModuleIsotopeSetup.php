@@ -82,7 +82,7 @@ class ModuleIsotopeSetup extends BackendModule
 		{
 			return $this->getIsotopeModule($this->Input->get('mod'));
 		}
-		
+
 		// Table set but module missing, fix the saveNcreate link
 		elseif ($this->Input->get('table') != '')
 		{
@@ -109,7 +109,7 @@ class ModuleIsotopeSetup extends BackendModule
 	{
 		$this->Template->modules = $this->arrModules;
 		$this->Template->script = $this->Environment->script;
-		$this->Template->welcome = $GLOBALS['TL_LANG']['ISO']['config_module'];
+		$this->Template->welcome = sprintf($GLOBALS['TL_LANG']['ISO']['config_module'], ISO_VERSION . '.' . ISO_BUILD);
 	}
 
 

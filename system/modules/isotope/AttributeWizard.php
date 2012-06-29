@@ -30,7 +30,7 @@
 
 /**
  * Class AttributeWizard
- * 
+ *
  * Provide methods to handle attributes.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
@@ -104,7 +104,7 @@ class AttributeWizard extends Widget
 	public function validate()
 	{
 		parent::validate();
-		
+
 		// Workaround for key sorting in DataContainer ~line 285
 		$i = 0;
 		foreach ($this->varValue as $k => $v)
@@ -129,7 +129,7 @@ class AttributeWizard extends Widget
 		$this->import('Database');
 
 		$this->objActiveRecord = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE id=?")->execute($this->currentRecord);
-		$this->arrDisabledFields = $GLOBALS['ISO_PRODUCT'][$this->objActiveRecord->class]['disabledFields'];
+		$this->arrDisabledFields = (array) $GLOBALS['ISO_PRODUCT'][$this->objActiveRecord->class]['disabledFields'];
 		$this->arrOptions = $this->getOptions();
 
 		$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/html/backend.js';
@@ -299,7 +299,7 @@ class AttributeWizard extends Widget
 		return $strBuffer . '
 	</select>
 	<input type="text" class="tl_text_4" name="' . $this->strName . '[' . $arrOption['value'] . '][tl_class_text]" value="' . $this->varValue[$arrOption['value']]['tl_class_text'] . '">
-	
+
 	<input type="radio" name="' . $this->strName . '[' . $arrOption['value'] . '][mandatory]" value="0"' . $this->optionChecked($this->varValue[$arrOption['value']]['mandatory'], 0) . '>
 	<input type="radio" name="' . $this->strName . '[' . $arrOption['value'] . '][mandatory]" value="1"' . $this->optionChecked($this->varValue[$arrOption['value']]['mandatory'], 1) . '>
 	<input type="radio" name="' . $this->strName . '[' . $arrOption['value'] . '][mandatory]" value="2"' . $this->optionChecked($this->varValue[$arrOption['value']]['mandatory'], 2) . '>
@@ -323,7 +323,7 @@ class AttributeWizard extends Widget
 
 		foreach ($arrDca as $field => $arrData)
 		{
-			if (is_array($arrData['attributes']) && $arrData['attributes']['legend'] != '' && (!is_array($this->arrDisabledFields) || !in_array($field, $this->arrDisabledFields)))
+			if (is_array($arrData['attributes']) && $arrData['attributes']['legend'] != '' && !in_array($field, $this->arrDisabledFields))
 			{
 				// Variant options are not available
 				if ($this->variants && ($arrData['attributes']['variant_option'] || $arrData['attributes']['inherit']))
@@ -353,7 +353,7 @@ class AttributeWizard extends Widget
 	private function generateInfoBar()
 	{
 		$return = '<div class="tl_attributewizard_columninfo">';
-		
+
 		$arrColumns = array
 		(
 			'tl_class_select',
@@ -362,13 +362,13 @@ class AttributeWizard extends Widget
 			'mandatory_no',
 			'mandatory_yes'
 		);
-		
+
 		foreach ($arrColumns as $strClass)
 		{
 			$strLabel = $GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz'][$strClass];
 			$return .= $this->generateImage('show.gif', $strLabel, 'class="' . $strClass . '" title="' . $strLabel . '"');
 		}
-		
+
 		return $return . '</div>';
 	}
 }
