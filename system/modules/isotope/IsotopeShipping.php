@@ -30,7 +30,7 @@
 
 /**
  * Class IsotopeShipping
- * 
+ *
  * Parent class for all shipping gateway modules
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
@@ -133,12 +133,12 @@ abstract class IsotopeShipping extends Frontend
 				{
 					return false;
 				}
-				
+
 				// Check if address has a valid postal code
 				if ($this->postalCodes != '')
 				{
 					$arrCodes = IsotopeFrontend::parsePostalCodes($this->postalCodes);
-					
+
 					if (!in_array($this->Isotope->Cart->shippingAddress['postal'], $arrCodes))
 					{
 						return false;
@@ -272,8 +272,8 @@ abstract class IsotopeShipping extends Frontend
 	{
 		return $this->label;
 	}
-	
-	
+
+
 	/**
 	 * Get the checkout surcharge for this shipping method
 	 */

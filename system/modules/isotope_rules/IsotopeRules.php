@@ -95,6 +95,12 @@ class IsotopeRules extends Controller
 
 			while( $objRules->next() )
 			{
+				// Cart subtotal
+				if (($objRules->minSubtotal > 0 && $objSource->subTotal < $objRules->minSubtotal) || ($objRules->maxSubtotal > 0 && $objSource->subTotal > $objRules->maxSubtotal))
+				{
+					continue;
+				}
+
 				// Cart item quantity
 				if ($objRules->quantityMode == 'product_quantity' && (($objRules->minItemQuantity > 0 && $objRules->minItemQuantity > $objSource->quantity_requested) || ($objRules->maxItemQuantity > 0 && $objRules->maxItemQuantity < $objSource->quantity_requested)))
 				{

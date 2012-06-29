@@ -385,16 +385,16 @@ class PaymentCybersource extends IsotopePayment
 					$arrPaymentInfo['authorization_code'] = $arrResponses['authorization-code'];
 					$strPaymentInfo = serialize($arrPaymentInfo);
 
-					$this->Database->prepare("UPDATE tl_iso_orders SET status='processing', payment_data=? WHERE id=?")
-								   ->execute($strPaymentInfo, $intOrderId);
+					$this->Database->prepare("UPDATE tl_iso_orders SET status=?, payment_data=? WHERE id=?")
+								   ->execute(($this->new_order_status ? $this->new_order_status : $this->Isotope->Config->orderstatus_new), $strPaymentInfo, $intOrderId);
 					break;
 
 				default:
 					$arrPaymentInfo['authorize_reason'] = $arrResponses['reason'];
 					$strPaymentInfo = serialize($arrPaymentInfo);
 
-					$this->Database->prepare("UPDATE tl_iso_orders SET status='on_hold', cybersource_reason=? WHERE id=?")
-								   ->execute($strPaymentInfo, $intOrderId);
+					$this->Database->prepare("UPDATE tl_iso_orders SET status=?, cybersource_reason=? WHERE id=?")
+								   ->execute($this->Isotope->Config->orderstatus_error, $strPaymentInfo, $intOrderId);
 					break;
 			}
 

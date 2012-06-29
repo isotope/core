@@ -7,7 +7,7 @@
 <div class="product_list">
 
 <?php foreach( $this->products as $product ): ?>
-<div class="<?php echo $product['class']; ?>">
+<div<?php echo $product['cssID']; ?> class="<?php echo $product['class']; ?>">
 <?php echo $product['html']; ?>
 </div>
 <?php endforeach; ?>

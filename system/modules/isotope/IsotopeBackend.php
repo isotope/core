@@ -30,7 +30,7 @@
 
 /**
  * Class IsotopeBackend
- * 
+ *
  * Provide methods to handle Isotope back end components.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
@@ -339,10 +339,10 @@ class IsotopeBackend extends Backend
 		setcookie('BE_PAGE_OFFSET', 0, 0, '/');
 		$this->redirect(str_replace('&key=importMail', '', $this->Environment->request));
 	}
-	
-	
+
+
 	/**
-	 * Return all Isotope modules 
+	 * Return all Isotope modules
 	 * @return array
 	 */
 	public function getIsotopeModules()
@@ -356,8 +356,8 @@ class IsotopeBackend extends Backend
 
 		return $arrModules;
 	}
-	
-	
+
+
 	/**
 	 * List template from all themes, show theme name
 	 * @param string
@@ -387,7 +387,7 @@ class IsotopeBackend extends Backend
 				$arrThemes[TL_ROOT .'/'. $objTheme->templates] = $objTheme->name;
 			}
 		}
-		
+
 		// Add Isotope config templates folder
 		$objStore = $objDatabase->execute("SELECT name, templateGroup FROM tl_iso_config");
 		while( $objStore->next() )
@@ -419,7 +419,7 @@ class IsotopeBackend extends Backend
 			{
 				$strName = basename($strTemplate);
 				$strName = substr($strName, 0, strrpos($strName, '.'));
-				
+
 				if (isset($arrThemes[$strFolder]))
 				{
 					$arrTemplates[$strName] = sprintf($GLOBALS['ISO_LANG']['MSC']['templateTheme'], $strName, $arrThemes[$strFolder]);
@@ -438,8 +438,8 @@ class IsotopeBackend extends Backend
 		natcasesort($arrTemplates);
 		return $arrTemplates;
 	}
-	
-	
+
+
 	/**
 	 * Get all tax classes, including a "split amonst products" option
 	 * @param DataContainer
@@ -448,18 +448,86 @@ class IsotopeBackend extends Backend
 	public static function getTaxClassesWithSplit()
 	{
 		$objDatabase = Database::getInstance();
-		
+
 		$arrTaxes = array();
 		$objTaxes = $objDatabase->execute("SELECT * FROM tl_iso_tax_class ORDER BY name");
-		
+
 		while( $objTaxes->next() )
 		{
 			$arrTaxes[$objTaxes->id] = $objTaxes->name;
 		}
-		
+
 		$arrTaxes[-1] = $GLOBALS['ISO_LANG']['MSC']['splittedTaxRate'];
-		
+
 		return $arrTaxes;
+	}
+
+
+	/**
+	 * Get order status and return it as array
+	 * @param object
+	 * @return array
+	 */
+	public static function getOrderStatus()
+	{
+		$objDatabase = Database::getInstance();
+
+		$arrStatus = array();
+		$objStatus = $objDatabase->execute("SELECT id, name FROM tl_iso_orderstatus ORDER BY sorting");
+
+		while( $objStatus->next() )
+		{
+			$arrStatus[$objStatus->id] = $objStatus->name;
+		}
+
+		return $arrStatus;
+	}
+
+
+	/**
+	 * Add the product attributes to the db updater array so the users don't delete them while updating
+	 * @param array
+	 * @return array
+	 */
+	public function addAttributesToDBUpdate($arrData)
+	{
+		$objAttributes = $this->Database->execute("SELECT * FROM tl_iso_attributes");
+
+		while ($objAttributes->next())
+		{
+			if ($objAttributes->type == '' || $GLOBALS['ISO_ATTR'][$objAttributes->type]['sql'] == '')
+			{
+				continue;
+			}
+
+			$arrData['tl_iso_products']['TABLE_FIELDS'][$objAttributes->field_name] = sprintf('`%s` %s', $objAttributes->field_name, $GLOBALS['ISO_ATTR'][$objAttributes->type]['sql']);
+
+			// also check indexes
+			if ($objAttributes->fe_filter && $GLOBALS['ISO_ATTR'][$objAttributes->type]['useIndex'])
+			{
+				$arrData['tl_iso_products']['TABLE_CREATE_DEFINITIONS'][$objAttributes->field_name] = sprintf('KEY `%s` (`%s`)', $objAttributes->field_name, $objAttributes->field_name);
+			}
+		}
+
+		return $arrData;
+	}
+
+
+	/**
+	 * Show messages for new order status
+	 * @return string
+	 */
+	public function getOrderMessages()
+	{
+		$arrMessages = array();
+		$objOrders = $this->Database->query("SELECT COUNT(*) AS total, s.name FROM tl_iso_orders o LEFT JOIN tl_iso_orderstatus s ON o.status=s.id WHERE s.welcomescreen='1' GROUP BY s.id");
+
+		while ($objOrders->next())
+		{
+			$arrMessages[] = '<p class="tl_new">' . sprintf($GLOBALS['ISO_LANG']['MSC']['newOrders'], $objOrders->total, $objOrders->name) . '</p>';
+		}
+
+		return implode("\n", $arrMessages);
 	}
 }
 

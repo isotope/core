@@ -45,11 +45,11 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 	// Config
 	'config' => array
 	(
-		'dataContainer'               => 'Table',
-		'enableVersioning'            => false,
-		'ctable'					  => array('tl_iso_order_items'),
-		'closed'            		  => true,
-		'onload_callback' 			  => array
+		'dataContainer'				=> 'Table',
+		'enableVersioning'			=> false,
+		'ctable'					=> array('tl_iso_order_items'),
+		'closed'					=> true,
+		'onload_callback'			=> array
 		(
 			array('tl_iso_orders', 'checkPermission'),
 		),
@@ -64,85 +64,95 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 	(
 		'sorting' => array
 		(
-			'mode'                    => 2,
-			'fields'                  => array('date DESC'),
-			'panelLayout'             => 'filter;sort,search,limit'
+			'mode'					=> 2,
+			'fields'				=> array('date DESC'),
+			'panelLayout'			=> 'filter;sort,search,limit',
+			'filter'				=> array(array('status>?', '0')),
 		),
 		'label' => array
 		(
-			'fields'                  => array('order_id', 'date', 'billing_address', 'grandTotal', 'status'),
-			'showColumns'             => true,
-			'label_callback'          => array('tl_iso_orders', 'getOrderLabel')
+			'fields'				=> array('order_id', 'date', 'billing_address', 'grandTotal', 'status'),
+			'showColumns'			=> true,
+			'label_callback'		=> array('tl_iso_orders', 'getOrderLabel')
 		),
 		'global_operations' => array
 		(
 			'all' => array
 			(
-				'label'	              => &$GLOBALS['TL_LANG']['MSC']['all'],
-				'href'                => 'act=select',
-				'class'               => 'header_edit_all',
-				'attributes'          => 'onclick="Backend.getScrollOffset();"'
+				'label'				=> &$GLOBALS['TL_LANG']['MSC']['all'],
+				'href'				=> 'act=select',
+				'class'				=> 'header_edit_all',
+				'attributes'		=> 'onclick="Backend.getScrollOffset();"'
 			),
 			'tools' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_iso_orders']['tools'],
-				'href'                => '',
-				'class'               => 'header_isotope_tools',
-				'attributes'          => 'onclick="Backend.getScrollOffset();" style="display:none"',
+				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_orders']['tools'],
+				'href'				=> '',
+				'class'				=> 'header_isotope_tools',
+				'attributes'		=> 'onclick="Backend.getScrollOffset();" style="display:none"',
 			),
 			'export_emails' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_iso_orders']['export_emails'],
-				'href'                => 'key=export_emails',
-				'class'               => 'header_iso_export_csv isotope-tools',
-				'attributes'          => 'onclick="Backend.getScrollOffset();"'
+				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_orders']['export_emails'],
+				'href'				=> 'key=export_emails',
+				'class'				=> 'header_iso_export_csv isotope-tools',
+				'attributes'		=> 'onclick="Backend.getScrollOffset();"'
 			),
 			'print_invoices' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_iso_orders']['print_invoices'],
-				'href'                => 'key=print_invoices',
-				'class'               => 'header_print_invoices isotope-tools',
-				'attributes'          => 'onclick="Backend.getScrollOffset();"'
+				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_orders']['print_invoices'],
+				'href'				=> 'key=print_invoices',
+				'class'				=> 'header_print_invoices isotope-tools',
+				'attributes'		=> 'onclick="Backend.getScrollOffset();"'
 			)
 		),
 		'operations' => array
 		(
 			'edit' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_iso_orders']['edit'],
-				'href'                => 'act=edit',
-				'icon'                => 'edit.gif'
+				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_orders']['edit'],
+				'href'				=> 'act=edit',
+				'icon'				=> 'edit.gif'
 			),
 			'delete' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_iso_orders']['delete'],
-				'href'                => 'act=delete',
-				'icon'                => 'delete.gif',
-				'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
+				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_orders']['delete'],
+				'href'				=> 'act=delete',
+				'icon'				=> 'delete.gif',
+				'attributes'		=> 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
+			),
+			'info' => array
+			(
+				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_orders']['info'],
+				'icon'				=> 'show.gif',
+				'attributes'		=> 'class="invisible isotope-contextmenu"',
 			),
 			'show' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_iso_orders']['show'],
-				'href'                => 'act=show',
-				'icon'                => 'show.gif'
+				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_orders']['show'],
+				'href'				=> 'act=show',
+				'icon'				=> 'show.gif',
+				'attributes'		=> 'class="isotope-tools"',
 			),
 			'payment' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_iso_orders']['payment'],
-				'href'                => 'key=payment',
-				'icon'                => 'system/modules/isotope/html/money-coin.png',
+				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_orders']['payment'],
+				'href'				=> 'key=payment',
+				'icon'				=> 'system/modules/isotope/html/money-coin.png',
+				'attributes'		=> 'class="isotope-tools"',
 			),
 			'shipping' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_iso_orders']['shipping'],
-				'href'                => 'key=shipping',
-				'icon'                => 'system/modules/isotope/html/box-label.png',
+				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_orders']['shipping'],
+				'href'				=> 'key=shipping',
+				'icon'				=> 'system/modules/isotope/html/box-label.png',
+				'attributes'		=> 'class="isotope-tools"',
 			),
 			'print_order' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_iso_orders']['print_order'],
-				'href'                => 'key=print_order',
-				'icon'                => 'system/modules/isotope/html/document-pdf-text.png'
+				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_orders']['print_order'],
+				'href'				=> 'key=print_order',
+				'icon'				=> 'system/modules/isotope/html/document-pdf-text.png'
 			),
 		)
 	),
@@ -150,7 +160,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{status_legend},status,date_paid,date_shipped;{details_legend},details,notes;{email_legend:hide},email_data;{billing_address_legend:hide},billing_address_data;{shipping_address_legend:hide},shipping_address_data',
+		'default'					=> '{status_legend},status,date_paid,date_shipped;{details_legend},details,notes;{email_legend:hide},email_data;{billing_address_legend:hide},billing_address_data;{shipping_address_legend:hide},shipping_address_data',
 	),
 
 	// Fields
@@ -181,8 +191,11 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 			'filter'                => true,
 			'sorting'				=> true,
 			'inputType'             => 'select',
-			'options'         		=> $GLOBALS['ISO_ORDER'],
-			'reference'         	=> &$GLOBALS['TL_LANG']['ORDER'],
+			'options'         		=> IsotopeBackend::getOrderStatus(),
+			'save_callback'			=> array
+			(
+				array('tl_iso_orders', 'updateStatus'),
+			),
 		),
 		'date' => array
 		(
@@ -204,6 +217,11 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 			'inputType'				=> 'text',
 			'eval'					=> array('rgxp'=>'date', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'w50 wizard'),
 		),
+		'config_id' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['config_id'],
+			'foreignKey'			=> 'tl_iso_config.name',
+		),
 		'payment_id' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['payment_id'],
@@ -221,16 +239,6 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['billing_address'],
 			'search'				=> true,
 		),
-		'surcharges' => array
-		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['surcharges'],
-			'inputType'				=> 'surchargeWizard',
-			'eval'					=> array('doNotShow'=>true),
-			'save_callback'			=> array
-			(
-				array('tl_iso_orders','saveSurcharges')
-			)
-		),
 		'details' => array
 		(
 			'input_field_callback'	=> array('tl_iso_orders', 'generateOrderDetails'),
@@ -238,7 +246,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 		),
 		'grandTotal' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['grandTotal'],			
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['grandTotal'],
 		),
 		'notes' => array
 		(
@@ -283,71 +291,6 @@ class tl_iso_orders extends Backend
 
 
 	/**
-	 * Calculate and save surcharges
-	 * @param mixed
-	 * @param DataContainer
-	 * @return mixed
-	 */
-	public function saveSurcharges($varValue, DataContainer $dc)
-	{
-		$fltTaxTotal = 0.00;
-		$arrTaxables = array();
-		$arrSurcharges = deserialize($varValue);
-
-		if (!is_array($arrSurcharges) || !count($arrSurcharges))
-		{
-			return $varValue;
-		}
-
-		$arrAddresses['shipping'] = deserialize($dc->activeRecord->shipping_address);
-		$arrAddresses['billing'] = deserialize($dc->activeRecord->billing_address);
-
-		foreach ($arrSurcharges as $surcharge)
-		{
-			if ($surcharge['tax_class'] > 0)
-			{
-				$surcharge['before_tax'] = 1;
-				$arrTaxables[] = $surcharge;
-			}
-		}
-
-		foreach ($arrTaxables as $arrSurcharge)
-		{
-			$arrTax = array();
-
-			// Skip taxes
-			if (strpos($arrSurcharge['price'], '%')!==0)
-			{
-				$arrTax = $this->Isotope->calculateTax($arrSurcharge['tax_class'], $arrSurcharge['total_price'], $arrSurcharge['before_tax'], $arrAddresses);
-			}
-
-			foreach ($arrTax as $tax)
-			{
-				$fltTaxTotal += $tax['total_price'];
-			}
-		}
-
-		foreach ($arrSurcharges as $row)
-		{
-			$arrSurchargePrices[] = array
-			(
-				'label' 		=> $row['label'],
-				'total_price' 	=> $row['total_price'],
-				'tax_class' 	=> $row['tax_class']
-			);
-
-			$arrTotalPrices[] = $row['total_price'];
-		}
-
-		// Adjust order totals
-		$fltGrandTotal = $dc->activeRecord->subTotal + array_sum($arrTotalPrices) + $fltTaxTotal;
-		$this->Database->prepare("UPDATE tl_iso_orders SET grandTotal=? WHERE id=?")->execute($fltGrandTotal, $dc->id);
-
-		return serialize($arrSurchargePrices);
-	}
-
-
-	/**
 	 * Generate the order label and return it as string
 	 * @param array
 	 * @param string
@@ -360,7 +303,7 @@ class tl_iso_orders extends Backend
 
 		$args[2] = substr($strBillingAddress, 0, strpos($strBillingAddress, '<br />'));
 		$args[3] = $this->Isotope->formatPriceWithCurrency($row['grandTotal']);
-		
+
 		return $args;
 	}
 
@@ -435,8 +378,8 @@ class tl_iso_orders extends Backend
 
 		return $strBuffer;
 	}
-	
-	
+
+
 	/**
 	 * Generate the billing address details
 	 * @param object
@@ -447,8 +390,8 @@ class tl_iso_orders extends Backend
 	{
 		return $this->generateAddressData($dc->id, 'billing_address');
 	}
-	
-	
+
+
 	/**
 	 * Generate the shipping address details
 	 * @param object
@@ -459,8 +402,8 @@ class tl_iso_orders extends Backend
 	{
 		return $this->generateAddressData($dc->id, 'shipping_address');
 	}
-	
-	
+
+
 	/**
 	 * Generate address details amd return it as string
 	 * @param integer
@@ -482,7 +425,7 @@ class tl_iso_orders extends Backend
 		{
 			return '<div class="tl_gerror">No address data available.</div>';
 		}
-		
+
 		$this->loadDataContainer('tl_iso_addresses');
 
 		$strBuffer = '
@@ -498,7 +441,7 @@ class tl_iso_orders extends Backend
 			{
 				continue;
 			}
-			
+
 			$v = $arrAddress[$k];
 			$strClass = (++$i % 2) ? '' : ' class="tl_bg"';
 
@@ -525,34 +468,39 @@ class tl_iso_orders extends Backend
 	public function checkPermission($dc)
 	{
 		$this->import('BackendUser', 'User');
-		$arrConfigs = $this->User->iso_configs;
 
-		if ($this->User->isAdmin || (is_array($arrConfigs) && count($arrConfigs)))
+		if ($this->User->isAdmin)
 		{
-			$arrIds = $this->Database->execute("SELECT id FROM tl_iso_orders WHERE status!=''" . ($this->User->isAdmin ? '' : " AND config_id IN (".implode(',', $arrConfigs).")"))->fetchEach('id');
+			return;
 		}
 
-		if (!count($arrIds))
+		// Only admins can delete orders. Others should set the status to cancelled.
+		unset($GLOBALS['TL_DCA']['tl_iso_orders']['list']['operations']['delete']);
+		if ($this->Input->get('act') == 'delete' || $this->Input->get('act') == 'deleteAll')
 		{
-			$arrIds = array(0);
+			$this->log('Only admin can delete orders!', __METHOD__, TL_ERROR);
+			$this->redirect($this->Environment->script.'?act=error');
+		}
+
+		$arrIds = array(0);
+		$arrConfigs = $this->User->iso_configs;
+
+		if (is_array($arrConfigs) && !empty($arrConfigs))
+		{
+			$objOrders = $this->Database->query("SELECT id FROM tl_iso_orders WHERE config_id IN (" . implode(',', $arrConfigs) . ")");
+
+			if ($objOrders->numRows)
+			{
+				$arrIds = $objOrders->fetchEach('id');
+			}
 		}
 
 		$GLOBALS['TL_DCA']['tl_iso_orders']['list']['sorting']['root'] = $arrIds;
 
-		if (!$this->User->isAdmin)
+		if ($this->Input->get('id') != '' && !in_array($this->Input->get('id'), $arrIds))
 		{
-			unset($GLOBALS['TL_DCA']['tl_iso_orders']['list']['operations']['delete']);
-
-			if ($this->Input->get('act') == 'delete' || $this->Input->get('act') == 'deleteAll')
-			{
-				$this->log('Only admin can delete orders!', __METHOD__, TL_ERROR);
-				$this->redirect($this->Environment->script.'?act=error');
-			}
-			elseif (strlen($this->Input->get('id')) && !in_array($this->Input->get('id'), $arrIds))
-			{
-				$this->log('Trying to access disallowed order ID '.$this->Input->get('id'), __METHOD__, TL_ERROR);
-				$this->redirect($this->Environment->script.'?act=error');
-			}
+			$this->log('Trying to access disallowed order ID '.$this->Input->get('id'), __METHOD__, TL_ERROR);
+			$this->redirect($this->Environment->script.'?act=error');
 		}
 	}
 
@@ -761,6 +709,33 @@ class tl_iso_orders extends Backend
 
 
 	/**
+	 * Trigger order status update when changing the status in the backend
+	 * @param string
+	 * @param DataContainer
+	 * @return string
+	 * @link http://www.contao.org/callbacks.html#save_callback
+	 */
+	public function updateStatus($varValue, $dc)
+	{
+		if ($dc->activeRecord && $dc->activeRecord->status != $varValue)
+		{
+			$objOrder = new IsotopeOrder();
+
+			if ($objOrder->findBy('id', $dc->id))
+			{
+				// Status update has been cancelled, do not update
+				if (!$objOrder->updateOrderStatus($varValue))
+				{
+					return $dc->activeRecord->status;
+				}
+			}
+		}
+
+		return $varValue;
+	}
+
+
+	/**
 	 * Execute the saveCollection hook when an order is saved
 	 * @param object
 	 * @return void
@@ -768,7 +743,7 @@ class tl_iso_orders extends Backend
 	public function executeSaveHook($dc)
 	{
 		$objOrder = new IsotopeOrder();
-		
+
 		if ($objOrder->findBy('id', $dc->id))
 		{
 			// HOOK for adding additional functionality when saving
