@@ -388,8 +388,8 @@ $return .= '</div></div>';
 		}
 		else
 		{
-			$arrBilling = $objOrder->billingAddress;
-			$arrShipping = $objOrder->shippingAddress;
+			$arrBilling = $objOrder->billing_address;
+			$arrShipping = $objOrder->shipping_address;
 			$arrProducts =  $objOrder->getProducts();
 		}
 		if(count($arrProducts))

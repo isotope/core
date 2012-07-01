@@ -76,12 +76,6 @@ class IsotopeOrder extends IsotopeProductCollection
 			case 'order_id':
 				return $this->strOrderId;
 
-			case 'billingAddress':
-				return deserialize($this->arrData['billing_address'], true);
-
-			case 'shippingAddress':
-				return deserialize($this->arrData['shipping_address'], true);
-
 			case 'paid':
 				// Order is paid if a payment date is set
 				$paid = (int) $this->date_paid;
@@ -103,6 +97,24 @@ class IsotopeOrder extends IsotopeProductCollection
 				break;
 
 			default:
+				if (!isset($this->arrCache[$strKey]))
+				{
+					switch( $strKey )
+					{
+						case 'billingAddress':
+							$objAddress = new IsotopeAddressModel();
+							$objAddress->setData(deserialize($this->arrData['billing_address'], true));
+							$this->arrCache[$strKey] = $objAddress;
+							break;
+
+						case 'shippingAddress':
+							$objAddress = new IsotopeAddressModel();
+							$objAddress->setData(deserialize($this->arrData['shipping_address'], true));
+							$this->arrCache[$strKey] = $objAddress;
+							break;
+					}
+				}
+
 				return parent::__get($strKey);
 		}
 	}
