@@ -299,9 +299,12 @@ class tl_iso_orders extends Backend
 	public function getOrderLabel($row, $label, DataContainer $dc, $args)
 	{
 		$this->Isotope->overrideConfig($row['config_id']);
-		$strBillingAddress = $this->Isotope->generateAddressString(deserialize($row['billing_address']), $this->Isotope->Config->billing_fields);
 
-		$args[2] = substr($strBillingAddress, 0, strpos($strBillingAddress, '<br />'));
+		$objAddress = new IsotopeAddressModel();
+		$objAddress->setData(deserialize($row['billing_address'], true));
+		$arrTokens = $objAddress->getTokens($this->Isotope->Config->billing_fields);
+
+		$args[2] = $arrTokens['hcard_fn'];
 		$args[3] = $this->Isotope->formatPriceWithCurrency($row['grandTotal']);
 
 		return $args;
