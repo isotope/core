@@ -1243,6 +1243,7 @@ class Isotope extends Controller
 	 * These functions need to be public for Models to access them
 	 */
 	public function replaceInsertTags($strBuffer, $blnCache=false) { return parent::replaceInsertTags($strBuffer, $blnCache); }
+	public function parseSimpleTokens($strBuffer, $arrData) { return parent::parseSimpleTokens($strBuffer, $arrData); }
 	public function convertRelativeUrls($strContent, $strBase='', $blnHrefOnly=false) { return parent::convertRelativeUrls($strContent, $strBase, $blnHrefOnly); }
 	public function getCountries() { return parent::getCountries(); }
 }
