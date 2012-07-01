@@ -180,6 +180,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 		if (strlen($objOrder->shipping_method))
 		{
 			$arrShippingAddress = $objOrder->shipping_address;
+
 			if (!is_array($arrShippingAddress) || $arrShippingAddress['id'] == -1)
 			{
 				$this->Template->has_shipping = false;

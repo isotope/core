@@ -146,15 +146,18 @@ class ModuleIsotopeAddressBook extends ModuleIsotope
 		global $objPage;
 		$arrAddresses = array();
 		$strUrl = $this->generateFrontendUrl($objPage->row()) . ($GLOBALS['TL_CONFIG']['disableAlias'] ? '&' : '?');
-		$objAddress = $this->Database->execute("SELECT * FROM tl_iso_addresses WHERE pid={$this->User->id} AND store_id={$this->Isotope->Config->store_id}");
+		$objAddresses = $this->Database->execute("SELECT * FROM tl_iso_addresses WHERE pid={$this->User->id} AND store_id={$this->Isotope->Config->store_id}");
 
-		while ($objAddress->next())
+		while ($objAddresses->next())
 		{
-			$arrAddresses[] = array_merge($objAddress->row(), array
+			$objAddress = new IsotopeAddressModel();
+			$objAddress->setData($objAddresses->row());
+
+			$arrAddresses[] = array_merge($objAddress->getData(), array
 			(
 				'id'				=> $objAddress->id,
 				'class'				=> (($objAddress->isDefaultBilling ? 'default_billing' : '') . ($objAddress->isDefaultShipping ? ' default_shipping' : '')),
-				'text'				=> $this->Isotope->generateAddressString($objAddress->row()),
+				'text'				=> $objAddress->generateHtml(),
 				'edit_url'			=> ampersand($strUrl . 'act=edit&address=' . $objAddress->id),
 				'delete_url'		=> ampersand($strUrl . 'act=delete&address=' . $objAddress->id),
 				'default_billing'	=> ($objAddress->isDefaultBilling ? true : false),

@@ -382,8 +382,8 @@ $return .= '</div></div>';
 		//Gather product and address data depending on FE(Cart) or BE(Order)
 		if(TL_MODE=='FE')
 		{
-			$arrBilling = $this->Isotope->Cart->billingAddress;
-			$arrShipping = $this->Isotope->Cart->shippingAddress;
+			$arrBilling = $this->Isotope->Cart->billing_address;
+			$arrShipping = $this->Isotope->Cart->shipping_address;
 			$arrProducts = $this->Isotope->Cart->getProducts();
 		}
 		else
