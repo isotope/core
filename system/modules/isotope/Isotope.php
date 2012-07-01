@@ -1245,6 +1245,7 @@ class Isotope extends Controller
 	public function replaceInsertTags($strBuffer, $blnCache=false) { return parent::replaceInsertTags($strBuffer, $blnCache); }
 	public function parseSimpleTokens($strBuffer, $arrData) { return parent::parseSimpleTokens($strBuffer, $arrData); }
 	public function convertRelativeUrls($strContent, $strBase='', $blnHrefOnly=false) { return parent::convertRelativeUrls($strContent, $strBase, $blnHrefOnly); }
+	public function loadDataContainer($strName, $blnNoCache=false) { parent::loadDataContainer($strName, $blnNoCache); }
 	public function getCountries() { return parent::getCountries(); }
 }
 
