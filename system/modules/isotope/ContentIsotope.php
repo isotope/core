@@ -30,7 +30,7 @@
 
 /**
  * Class ContentIsotope
- * 
+ *
  * Provide methods to handle Isotope content elements.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>

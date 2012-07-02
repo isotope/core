@@ -52,6 +52,14 @@ $GLOBALS['TL_LANG']['tl_iso_products']['shipping_exempt'][0] = 'Vom Versand auss
 $GLOBALS['TL_LANG']['tl_iso_products']['shipping_exempt'][1] = 'Klicken Sie hier wenn dieses Produkt nicht versendet wird (wie z.B. herunterladbare Produkte.';
 $GLOBALS['TL_LANG']['tl_iso_products']['tax_class'][0] = 'Steuerklasse';
 $GLOBALS['TL_LANG']['tl_iso_products']['images'][0] = 'Bilder';
+$GLOBALS['TL_LANG']['tl_iso_products']['protected'][0] = 'Produkt schützen';
+$GLOBALS['TL_LANG']['tl_iso_products']['protected'][1] = 'Den Produkt-Zugriff auf bestimmte Mitgliedergruppen beschränken.';
+$GLOBALS['TL_LANG']['tl_iso_products']['groups'][0] = 'Erlaubte Mitgliedergruppen';
+$GLOBALS['TL_LANG']['tl_iso_products']['groups'][1] = 'Diese Gruppen dürfen auf das Produkt zugreifen.';
+$GLOBALS['TL_LANG']['tl_iso_products']['guests'][0] = 'Nur Gästen anzeigen';
+$GLOBALS['TL_LANG']['tl_iso_products']['guests'][1] = 'Dieses Produkt ausblenden, sobald ein Benutzer angemeldet ist.';
+$GLOBALS['TL_LANG']['tl_iso_products']['cssID'][0] = 'CSS-ID/Klasse';
+$GLOBALS['TL_LANG']['tl_iso_products']['cssID'][1] = 'Hier können Sie eine ID und beliebig viele Klassen eingeben.';
 $GLOBALS['TL_LANG']['tl_iso_products']['published'][0] = 'Produkt veröffentlichen';
 $GLOBALS['TL_LANG']['tl_iso_products']['published'][1] = 'Klicken Sie hier wenn das Produkt auf der Webseite angezeigt werden soll.';
 $GLOBALS['TL_LANG']['tl_iso_products']['start'][0] = 'Startdatum';
@@ -128,6 +136,7 @@ $GLOBALS['TL_LANG']['tl_iso_products']['inventory_legend'] = 'Inventar-Einstellu
 $GLOBALS['TL_LANG']['tl_iso_products']['shipping_legend'] = 'Versand-Einstellungen';
 $GLOBALS['TL_LANG']['tl_iso_products']['options_legend'] = 'Produktoptionen-Einstellungen';
 $GLOBALS['TL_LANG']['tl_iso_products']['media_legend'] = 'Dateiverwaltung';
+$GLOBALS['TL_LANG']['tl_iso_products']['expert_legend'] = 'Experten-Einstellungen';
 $GLOBALS['TL_LANG']['tl_iso_products']['publish_legend'] = 'Veröffentlichung';
 $GLOBALS['TL_LANG']['tl_iso_products']['variant_legend'] = 'Produktvarianten-Einrichtung';
 
@@ -145,4 +154,12 @@ $GLOBALS['TL_LANG']['tl_iso_products']['filter_new_month']	= array('Diesen Monat
 $GLOBALS['TL_LANG']['tl_iso_products']['toggleGroups']		= array('Alle Gruppen öffnen/schließen', 'Alle Gruppen öffnen/schließen');
 $GLOBALS['TL_LANG']['tl_iso_products']['toggleVariants']	= array('Alle Varianten öffnen/schließen', 'Alle Varianten öffnen/schließen');
 $GLOBALS['TL_LANG']['tl_iso_products']['groups']			= array('Produktgruppen', 'Produktgruppen verwalten');
+
+
+/**
+ * Table format
+ */
+$GLOBALS['TL_LANG']['tl_iso_products']['price_tiers']['min']		= 'Anzahl';
+$GLOBALS['TL_LANG']['tl_iso_products']['price_tiers']['min_format']	= 'ab %s Stk.';
+$GLOBALS['TL_LANG']['tl_iso_products']['price_tiers']['price']		= 'Preis';
 

@@ -114,7 +114,7 @@ $GLOBALS['TL_DCA']['tl_iso_related_products'] = array
 			'filter'					=> true,
 			'inputType'					=> 'select',
 			'foreignKey'				=> 'tl_iso_related_categories.name',
-			'eval'						=> array('mandatory'=>true, 'includeBlankOption'=>true),
+			'eval'						=> array('mandatory'=>true, 'includeBlankOption'=>true, 'chosen'=>true)
 		),
 		'products' => array
 		(

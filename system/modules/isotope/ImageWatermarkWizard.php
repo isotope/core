@@ -31,7 +31,7 @@
 
 /**
  * Class ImageWatermarkWizard
- * 
+ *
  * Wizard that allows to define image sizes and watermark positions.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>

@@ -70,8 +70,8 @@ class ShippingFlat extends IsotopeShipping
 								$objCollection->getProducts(),
 								$this);
 	}
-	
-	
+
+
 	/**
 	 * Calculate the price based on module configuration
 	 * @return float

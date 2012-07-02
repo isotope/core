@@ -32,8 +32,8 @@
 /**
  * Isotope Version
  */
-@define('ISO_VERSION', '1.3');
-@define('ISO_BUILD', '1');
+@define('ISO_VERSION', '1.4');
+@define('ISO_BUILD', 'dev');
 
 
 /**
@@ -142,6 +142,11 @@ $GLOBALS['ISO_MOD'] = array
 			'tables'					=> array('tl_iso_config'),
 			'icon'						=> 'system/modules/isotope/html/construction.png',
 		),
+		'orderstatus' => array
+		(
+			'tables'					=> array('tl_iso_orderstatus'),
+			'icon'						=> 'system/modules/isotope/html/traffic-light.png',
+		),
 	)
 );
 
@@ -172,11 +177,12 @@ $GLOBALS['FE_MOD']['isotope'] = array
 	'iso_cart'					=> 'ModuleIsotopeCart',
 	'iso_checkout'				=> 'ModuleIsotopeCheckout',
 	'iso_productfilter'			=> 'ModuleIsotopeProductFilter',
+	'iso_cumulativefilter'		=> 'ModuleIsotopeCumulativeFilter',
 	'iso_orderhistory'			=> 'ModuleIsotopeOrderHistory',
 	'iso_orderdetails'			=> 'ModuleIsotopeOrderDetails',
 	'iso_configswitcher'		=> 'ModuleIsotopeConfigSwitcher',
 	'iso_addressbook'			=> 'ModuleIsotopeAddressBook',
-	'iso_relatedproducts'		=> 'ModuleIsotopeRelatedProducts',
+	'iso_relatedproducts'		=> 'ModuleIsotopeRelatedProducts'
 );
 
 
@@ -185,7 +191,6 @@ $GLOBALS['FE_MOD']['isotope'] = array
  */
 $GLOBALS['BE_FFL']['mediaManager']			= 'MediaManager';
 $GLOBALS['BE_FFL']['attributeWizard']		= 'AttributeWizard';
-$GLOBALS['BE_FFL']['surchargeWizard']		= 'SurchargeWizard';
 $GLOBALS['BE_FFL']['variantWizard']			= 'VariantWizard';
 $GLOBALS['BE_FFL']['inheritCheckbox']		= 'InheritCheckBox';
 $GLOBALS['BE_FFL']['imageWatermarkWizard']	= 'ImageWatermarkWizard';
@@ -220,6 +225,7 @@ $GLOBALS['ISO_PAY']['cybersource']				= 'PaymentCybersource';
  */
 $GLOBALS['ISO_GAL']['default']					= 'IsotopeGallery';
 $GLOBALS['ISO_GAL']['inline']					= 'InlineGallery';
+$GLOBALS['ISO_GAL']['zoom']						= 'ZoomGallery';
 
 
 /**
@@ -232,12 +238,6 @@ $GLOBALS['ISO_PRODUCT'] = array
 		'class'	=> 'IsotopeProduct',
 	),
 );
-
-
-/**
- * Order Statuses
- */
-$GLOBALS['ISO_ORDER'] = array('pending', 'processing', 'complete', 'on_hold', 'cancelled');
 
 
 /**
@@ -287,8 +287,10 @@ $GLOBALS['TL_HOOKS']['generatePage'][]				= array('IsotopeFrontend', 'injectMess
 $GLOBALS['TL_HOOKS']['executePreActions'][]			= array('ProductTree', 'executePreActions');
 $GLOBALS['TL_HOOKS']['executePostActions'][]		= array('ProductTree', 'executePostActions');
 $GLOBALS['TL_HOOKS']['translateUrlParameters'][]	= array('IsotopeFrontend', 'translateProductUrls');
+$GLOBALS['TL_HOOKS']['getSystemMessages'][]			= array('IsotopeBackend', 'getOrderMessages');
 $GLOBALS['ISO_HOOKS']['buttons'][]					= array('Isotope', 'defaultButtons');
 $GLOBALS['ISO_HOOKS']['checkoutSurcharge'][]		= array('IsotopeFrontend', 'getShippingAndPaymentSurcharges');
+$GLOBALS['TL_HOOKS']['sqlGetFromFile'][]			= array('IsotopeBackend', 'addAttributesToDBUpdate');
 
 if (TL_MODE == 'FE')
 {
@@ -370,7 +372,12 @@ $GLOBALS['ISO_ATTR'] = array
 	(
 		'sql'		=> "blob NULL",
 		'backend'	=> 'fileTree',
-//		'callback'	=> array(array('IsotopeMoreattributes','imaFileDownloads')),
+	),
+	'upload' => array
+	(
+		'sql'				=> "varchar(255) NOT NULL default ''",
+		'backend'			=> false,
+		'customer_defined'	=> true,
 	),
 );
 
