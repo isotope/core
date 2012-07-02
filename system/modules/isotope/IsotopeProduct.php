@@ -1406,7 +1406,7 @@ class IsotopeProduct extends Controller
 
 			foreach ($GLOBALS['ISO_CONFIG']['multilingual'] as $attribute)
 			{
-				$arrSelect[] = "IFNULL(p2.$attribute, p1.$attribute) AS {$attribute}";
+				$arrSelect[] = "IFNULL(NULLIF(p2.$attribute,' '), p1.$attribute) AS {$attribute}";
 			}
 
 			$strSelect = "
