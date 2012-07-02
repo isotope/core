@@ -30,7 +30,7 @@
 
 /**
  * Class IsotopeTemplate
- * 
+ *
  * Provide methods to handle Isotope templates.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>

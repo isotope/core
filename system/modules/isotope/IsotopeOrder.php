@@ -30,7 +30,7 @@
 
 /**
  * Class IsotopeOrder
- * 
+ *
  * Provide methods to handle Isotope orders.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
@@ -81,9 +81,26 @@ class IsotopeOrder extends IsotopeProductCollection
 
 			case 'shippingAddress':
 				return deserialize($this->arrData['shipping_address'], true);
-			
+
 			case 'paid':
-				return (((int) $this->date_paid) >= time() && $this->status == 'complete');
+				// Order is paid if a payment date is set
+				$paid = (int) $this->date_paid;
+				if ($paid > 0 && $paid <= time())
+				{
+					return true;
+				}
+
+				// Otherwise we check the orderstatus checkbox
+				$objStatus = $this->Database->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $this->status);
+				return $objStatus->paid ? true : false;
+
+			case 'statusLabel':
+				$strStatus = $this->Database->prepare("SELECT name FROM tl_iso_orderstatus WHERE id=?")
+											->execute($this->arrData['status'])
+											->name;
+
+				return $this->Isotope->translate($strStatus);
+				break;
 
 			default:
 				return parent::__get($strKey);
@@ -138,6 +155,29 @@ class IsotopeOrder extends IsotopeProductCollection
 
 				$this->Database->prepare("INSERT INTO tl_iso_order_downloads %s")->set($arrSet)->executeUncached();
 			}
+		}
+
+		// Update the product IDs of surcharges (see #3029)
+		$arrSurcharges = $this->surcharges;
+
+		if (is_array($arrSurcharges) && !empty($arrSurcharges))
+		{
+			foreach ($arrSurcharges as $k => $arrSurcharge)
+			{
+				$arrProducts = $arrSurcharge['products'];
+
+				if (is_array($arrProducts) && !empty($arrProducts))
+				{
+					foreach ($arrProducts as $kk => $intId)
+					{
+						$arrProducts[$kk] = $arrIds[$intId];
+					}
+
+					$arrSurcharges[$k]['products'] = $arrProducts;
+				}
+			}
+
+			$this->surcharges = $arrSurcharges;
 		}
 
 		return $arrIds;
@@ -247,8 +287,6 @@ class IsotopeOrder extends IsotopeProductCollection
 			return true;
 		}
 
-		$this->import('Isotope');
-
 		// This is the case when not using ModuleIsotopeCheckout
 		if (!is_object($objCart))
 		{
@@ -256,7 +294,7 @@ class IsotopeOrder extends IsotopeProductCollection
 
 			if (!$objCart->findBy('id', $this->cart_id))
 			{
-				$this->log('Cound not find Cart ID '.$this->cart_id.' for Order ID '.$this->id, __METHOD__, TL_ERROR);
+				$this->log('Could not find Cart ID '.$this->cart_id.' for Order ID '.$this->id, __METHOD__, TL_ERROR);
 				return false;
 			}
 
@@ -289,31 +327,12 @@ class IsotopeOrder extends IsotopeProductCollection
 		$objCart->delete();
 
 		$this->checkout_complete = true;
-		$this->status = $this->new_order_status;
-		$arrData = $this->email_data;
-		$arrData['order_id'] = $this->generateOrderId();
+		$this->status = ($this->new_order_status ? $this->new_order_status : $this->Isotope->Config->orderstatus_new);
 
-		foreach ($this->billing_address as $k => $v)
-		{
-			$arrData['billing_' . $k] = $this->Isotope->formatValue('tl_iso_addresses', $k, $v);
-		}
+		$this->generateOrderId();
+		$arrData = $this->getEmailData();
 
-		foreach ($this->shipping_address as $k => $v)
-		{
-			$arrData['shipping_' . $k] = $this->Isotope->formatValue('tl_iso_addresses', $k, $v);
-		}
-
-		if ($this->pid > 0)
-		{
-			$objUser = $this->Database->execute("SELECT * FROM tl_member WHERE id=" . (int) $this->pid);
-
-			foreach ($objUser->row() as $k => $v)
-			{
-				$arrData['member_' . $k] = $this->Isotope->formatValue('tl_member', $k, $v);
-			}
-		}
-
-		$this->log('New order ID ' . $this->id . ' has been placed', 'IsotopeOrder checkout()', TL_ACCESS);
+		$this->log('New order ID ' . $this->id . ' has been placed', __METHOD__, TL_ACCESS);
 
 		if ($this->iso_mail_admin && $this->iso_sales_email != '')
 		{
@@ -326,7 +345,7 @@ class IsotopeOrder extends IsotopeProductCollection
 		}
 		else
 		{
-			$this->log('Unable to send customer confirmation for order ID '.$this->id, 'IsotopeOrder checkout()', TL_ERROR);
+			$this->log('Unable to send customer confirmation for order ID '.$this->id, __METHOD__, TL_ERROR);
 		}
 
 		// Store address in address book
@@ -363,8 +382,8 @@ class IsotopeOrder extends IsotopeProductCollection
 		$this->save();
 		return true;
 	}
-	
-	
+
+
 	/**
 	 * Complete order if the checkout has been made. This will cleanup session data
 	 */
@@ -373,12 +392,12 @@ class IsotopeOrder extends IsotopeProductCollection
 		if ($this->checkout_complete)
 		{
 			$intConfig = $_SESSION['ISOTOPE']['config_id'];
-			
+
 			unset($_SESSION['CHECKOUT_DATA']);
 			unset($_SESSION['ISOTOPE']);
 			unset($_SESSION['FORM_DATA']);
 			unset($_SESSION['FILES']);
-			
+
 			if ($intConfig > 0)
 			{
 				$_SESSION['ISOTOPE']['config_id'] = $intConfig;
@@ -386,8 +405,119 @@ class IsotopeOrder extends IsotopeProductCollection
 
 			return true;
 		}
-		
+
 		return false;
+	}
+
+
+	/**
+	 * Update the status of this order and trigger actions (email & hook)
+	 * @param int
+	 * @param bool
+	 * @return bool
+	 */
+	public function updateOrderStatus($intNewStatus, $blnActions=true)
+	{
+		// Status already set, nothing to do
+		if ($this->status == $intNewStatus)
+		{
+			return true;
+		}
+
+		$objNewStatus = $this->Database->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $intNewStatus);
+
+		if ($objNewStatus->numRows == 0)
+		{
+			return false;
+		}
+
+		// HOOK: allow to cancel a status update
+		if (isset($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate']) && is_array($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate']))
+		{
+			foreach ($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate'] as $callback)
+			{
+				$strClass = $callback[0];
+				$objCallback = (in_array('getInstance', get_class_methods($strClass))) ? call_user_func(array($strClass, 'getInstance')) : new $strClass();
+				$blnCancel = $this->$callback[0]->$callback[1]($this, $objNewStatus, $blnActions);
+
+				if ($blnCancel === true)
+				{
+					return false;
+				}
+			}
+		}
+
+		// Trigger email actions
+		if ($objNewStatus->mail_customer > 0 || $objNewStatus->mail_admin > 0)
+		{
+			$arrData = $this->getEmailData();
+			$arrData['new_status'] = $objNewStatus->name;
+
+			if ($objNewStatus->mail_customer && $this->iso_customer_email != '')
+			{
+				$this->Isotope->sendMail($objNewStatus->mail_customer, $this->iso_customer_email, $this->language, $arrData, '', $this);
+
+				if (TL_MODE == 'BE')
+				{
+					$this->addConfirmationMessage($GLOBALS['TL_LANG']['tl_iso_orders']['orderStatusEmail']);
+				}
+			}
+
+			if ($objNewStatus->mail_admin && $this->iso_sales_email != '')
+			{
+				$this->Isotope->sendMail($objNewStatus->mail_admin, $this->iso_sales_email, $this->language, $arrData, $this->iso_customer_email, $this);
+			}
+		}
+
+		// Store old status and set the new one
+		$intOldStatus = $this->status;
+		$this->status = $objNewStatus->id;
+		$this->save();
+
+		// HOOK: order status has been updated
+		if (isset($GLOBALS['ISO_HOOKS']['postOrderStatusUpdate']) && is_array($GLOBALS['ISO_HOOKS']['postOrderStatusUpdate']))
+		{
+			foreach ($GLOBALS['ISO_HOOKS']['postOrderStatusUpdate'] as $callback)
+			{
+				$strClass = $callback[0];
+				$objCallback = (in_array('getInstance', get_class_methods($strClass))) ? call_user_func(array($strClass, 'getInstance')) : new $strClass();
+				$this->$callback[0]->$callback[1]($this, $intOldStatus, $objNewStatus, $blnActions);
+			}
+		}
+	}
+
+
+	/**
+	 * Retrieve the array of email data for parsing simple tokens
+	 * @return array
+	 */
+	public function getEmailData()
+	{
+		$arrData = $this->email_data;
+		$arrData['order_id'] = $this->order_id;
+		$arrData['status'] = $this->statusLabel;
+
+		foreach ($this->billing_address as $k => $v)
+		{
+			$arrData['billing_' . $k] = $this->Isotope->formatValue('tl_iso_addresses', $k, $v);
+		}
+
+		foreach ($this->shipping_address as $k => $v)
+		{
+			$arrData['shipping_' . $k] = $this->Isotope->formatValue('tl_iso_addresses', $k, $v);
+		}
+
+		if ($this->pid > 0)
+		{
+			$objUser = $this->Database->execute("SELECT * FROM tl_member WHERE id=" . (int) $this->pid);
+
+			foreach ($objUser->row() as $k => $v)
+			{
+				$arrData['member_' . $k] = $this->Isotope->formatValue('tl_member', $k, $v);
+			}
+		}
+
+		return $arrData;
 	}
 
 
@@ -401,7 +531,7 @@ class IsotopeOrder extends IsotopeProductCollection
 		{
 			return $this->strOrderId;
 		}
-		
+
 		// HOOK: generate a custom order ID
 		if (isset($GLOBALS['ISO_HOOKS']['generateOrderId']) && is_array($GLOBALS['ISO_HOOKS']['generateOrderId']))
 		{
@@ -409,7 +539,7 @@ class IsotopeOrder extends IsotopeProductCollection
 			{
 				$this->import($callback[0]);
 				$strOrderId = $this->$callback[0]->$callback[1]($this);
-				
+
 				if ($strOrderId !== false)
 				{
 					$this->strOrderId = $strOrderId;
@@ -420,17 +550,17 @@ class IsotopeOrder extends IsotopeProductCollection
 
 		if ($this->strOrderId == '')
 		{
-			$strPrefix = $this->Isotope->Config->orderPrefix;
+			$strPrefix = $this->Isotope->replaceInsertTags($this->Isotope->Config->orderPrefix);
 			$intPrefix = utf8_strlen($strPrefix);
 			$arrConfigIds = $this->Database->execute("SELECT id FROM tl_iso_config WHERE store_id=" . $this->Isotope->Config->store_id)->fetchEach('id');
-	
+
 			// Lock tables so no other order can get the same ID
 			$this->Database->lockTables(array('tl_iso_orders'));
-	
+
 			// Retrieve the highest available order ID
 			$objMax = $this->Database->prepare("SELECT order_id FROM tl_iso_orders WHERE " . ($strPrefix != '' ? "order_id LIKE '$strPrefix%' AND " : '') . "config_id IN (" . implode(',', $arrConfigIds) . ") ORDER BY CAST(" . ($strPrefix != '' ? "SUBSTRING(order_id, " . ($intPrefix+1) . ")" : 'order_id') . " AS UNSIGNED) DESC")->limit(1)->executeUncached();
 			$intMax = (int) substr($objMax->order_id, $intPrefix);
-			
+
 			$this->strOrderId = $strPrefix . str_pad($intMax+1, $this->Isotope->Config->orderDigits, '0', STR_PAD_LEFT);
 		}
 

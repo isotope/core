@@ -32,35 +32,39 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_iso_attributes']['name']					= array('Name', 'Please enter a name for this attribute.');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['field_name']				= array('Internal name', 'Internal name is the database field name and must be unique.');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['type']					= array('Type', 'Please select a type for this attribute.');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['legend']					= array('Field Group', 'Select a field group that this attribute relates to (used to organize related fields into collapsible fieldset groups when editing products.');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['variant_option']			= array('Add to product variants wizard', 'If selected, this attribute will be added to the product variants wizard for use as a product variant option.');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['customer_defined']		= array('Defined by Customer', 'Please select if this value defined by the customer (frontend).');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['description']				= array('Description', 'The description is shown as a hint to the backend user.');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['options']					= array('Options', 'Please enter one or more options. Use the buttons to add, move or delete an option. If you are working without JavaScript assistance, you should save your changes before you modify the order!');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['mandatory']				= array('Mandatory field', 'The field must be filled when editing a product.');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['multiple']				= array('Multiple selection', 'Allow visitors to select more than one option.');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['size']					= array('List size', 'Here you can enter the size of the select box.');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['extensions']				= array('Allowed file types', 'A comma separated list of valid file extensions.');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['rte']						= array('Use HTML Editor', 'Select a tinyMCE configuration file to enable the rich text editor.');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['multilingual']			= array('Multilingual', 'Check here if this field should be translated.');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['rgxp']					= array('Input validation', 'Validate the input against a regular expression.');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['maxlength']				= array('Maximum length', 'Limit the field length to a certain number of characters (text) or bytes (file uploads).');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['foreignKey']				= array('Foreign Table & Field', 'Instead of adding options you can enter a table.field combination to select from database. To use multilingual foreignKeys, enter one per line and specify the language (example: en=tl_table.field)');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['conditionField']			= array('Parent Field', 'Please select the parent field, which must be of type "Select-Menu". For parent-child relation to work, define each option of this parent field as group of the conditional select-menu.');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['gallery']					= array('Image gallery', 'Different image galleries can be developed to present media files in a custom style.');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['files']					= array('Show files', 'Show both files and folders.');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['filesOnly']				= array('Files only', 'Remove the radio buttons or checkboxes next to folders.');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['fieldType']				= array('Field type', 'Display radio buttons or checkboxes next to folders.');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['sortBy']					= array('Order by', 'Please choose the sort order.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['name']				= array('Name', 'Please enter a name for this attribute.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['field_name']			= array('Internal name', 'Internal name is the database field name and must be unique.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['type']				= array('Type', 'Please select a type for this attribute.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['legend']				= array('Field Group', 'Select a field group that this attribute relates to (used to organize related fields into collapsible fieldset groups when editing products.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['variant_option']		= array('Add to product variants wizard', 'If selected, this attribute will be added to the product variants wizard for use as a product variant option.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['customer_defined']	= array('Defined by Customer', 'Please select if this value defined by the customer (frontend).');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['description']			= array('Description', 'The description is shown as a hint to the backend user.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['options']				= array('Options', 'Please enter one or more options. Use the buttons to add, move or delete an option. If you are working without JavaScript assistance, you should save your changes before you modify the order!');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['mandatory']			= array('Mandatory field', 'The field must be filled when editing a product.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['multiple']			= array('Multiple selection', 'Allow visitors to select more than one option.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['size']				= array('List size', 'Here you can enter the size of the select box.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['extensions']			= array('Allowed file types', 'A comma separated list of valid file extensions.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['rte']					= array('Use HTML Editor', 'Select a tinyMCE configuration file to enable the rich text editor.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['multilingual']		= array('Multilingual', 'Check here if this field should be translated.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['rgxp']				= array('Input validation', 'Validate the input against a regular expression.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['maxlength']			= array('Maximum length', 'Limit the field length to a certain number of characters (text) or bytes (file uploads).');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['foreignKey']			= array('Foreign Table & Field', 'Instead of adding options you can enter a table.field combination to select from database. To use multilingual foreignKeys, enter one per line and specify the language (example: en=tl_table.field)');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['conditionField']		= array('Parent Field', 'Please select the parent field, which must be of type "Select-Menu". For parent-child relation to work, define each option of this parent field as group of the conditional select-menu.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['gallery']				= array('Image gallery', 'Different image galleries can be developed to present media files in a custom style.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['files']				= array('Show files', 'Show both files and folders.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['filesOnly']			= array('Files only', 'Remove the radio buttons or checkboxes next to folders.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['fieldType']			= array('Field type', 'Display radio buttons or checkboxes next to folders.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['sortBy']				= array('Order by', 'Please choose the sort order.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['storeFile']			= array('Store uploaded files', 'Move the uploaded files to a folder on the server.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['uploadFolder']		= array('Target folder', 'Please select the target folder from the files directory.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['useHomeDir']			= array('Use home directory', 'Store the file in the home directory if there is an authenticated user.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['doNotOverwrite']		= array('Preserve existing files', 'Add a numeric suffix to the new file if the file name already exists.');
 
-$GLOBALS['TL_LANG']['tl_iso_attributes']['fe_sorting']				= array('Add to "Order By" option list', 'This field will be sortable in the listing module provided the attribute is visible to customers.');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['be_filter']				= array('Backend Filterable', 'Can this attribute be used in a backend filter?');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['be_search']				= array('Backend Searchable', 'Should the search engine look in this field for search terms?');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['fe_filter']				= array('Frontend Filterable', 'Can this attribute be used in a frontend filter?');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['fe_search']				= array('Frontend Searchable', 'Should the search engine look in this field for search terms?');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['fe_sorting']			= array('Add to "Order By" option list', 'This field will be sortable in the listing module provided the attribute is visible to customers.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['be_filter']			= array('Backend Filterable', 'Can this attribute be used in a backend filter?');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['be_search']			= array('Backend Searchable', 'Should the search engine look in this field for search terms?');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['fe_filter']			= array('Frontend Filterable', 'Can this attribute be used in a frontend filter?');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['fe_search']			= array('Frontend Searchable', 'Should the search engine look in this field for search terms?');
 
 
 /**
@@ -114,4 +118,5 @@ $GLOBALS['TL_LANG']['tl_iso_attributes']['options_legend']			= 'Options';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['config_legend']			= 'Attribute configuration';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['validation_legend']		= 'Input validation';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['search_filters_legend']	= 'Search & Filtering Settings';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['store_legend']			= 'Store file';
 

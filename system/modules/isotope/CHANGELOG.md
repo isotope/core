@@ -1,10 +1,38 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 1.4.beta1 (2012-??-??)
+------------------------------
+
+### New
+- New filter module "Cumulative filter"
+- Merged the zoom gallery into Isotope eCommerce core
+- Added support for frontend-only attributes
+- Added new attribute type "upload"
+- Can now manage order status in the backend and notify on status changes
+- Support for i18nl10n extension
+- The backend now lists new orders on the welcome screen (#2111)
+- Ever product can now have a CSS class and ID (#2812)
+- Rules can now be limited to subtotal in cart
+
+### Improved
+- Checkout steps are now a numbered list (#3040)
+- Product list can be sorted by dateAdded, this allows to list the newest products
+- More modular gallery class, also allows to retrieve the list of images (#3173)
+- Added getimagesize data to gallery template (#3173)
+- Added edit-header dropdown for mail templates (#3228)
+- Allow insert tags in order prefix (#3197)
+- Hide "related products" button if there are no categories (#3018)
+- Removed filter-by-node functionality, it's no longer useful (#2766)
+- No longer shows the "create new address" radio for billing address if no stored address is available
+- Insert tags can now be excepted from cache (#3098)
+- The payment and shipping order info is now a context menu
+
+
 Version 1.3.2 stable (2012-06-11)
 ---------------------------------
 
-### Improved 
+### Improved
 - Surcharges with percent as price were not rounded
 - Prevent the filter from generating useless "isorc" params
 - Plain text emails could contain HTML when using InsertTags (#3172)
@@ -168,7 +196,7 @@ Version 1.3.rc1 (2012-01-02)
 - Now generates an error message if a coupon code could not be applied
 - Can now multi-edit all features of a product. Can not multi-edit variants anymore (#2209)
 - The attribute wizard now supports any kind of CSS class (e.g. w50 for half width)  (#2227)
-- The attribute wizard now allows the user to specify which fields ar mandatory 
+- The attribute wizard now allows the user to specify which fields ar mandatory
 
 ### Fixed
 - radio button events in Internet Explorer (Ticket #484)

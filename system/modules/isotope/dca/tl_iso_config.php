@@ -124,12 +124,13 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 		'__selector__'				  => array('currencySymbol', 'currencyAutomator'),
 		'default'                     => '
 			{name_legend},name,label,fallback,store_id;
-			{config_legend},shipping_countries,billing_countries,shipping_fields,billing_fields,orderPrefix,orderDigits,templateGroup,limitMemberCountries;
 			{address_legend:hide},firstname,lastname,company,street_1,street_2,street_3,postal,city,country,subdivision,email,phone;
+			{config_legend},orderPrefix,orderDigits,templateGroup;
+			{checkout_legend},shipping_countries,billing_countries,shipping_fields,billing_fields,shipping_country,billing_country,limitMemberCountries;
 			{price_legend},priceRoundPrecision,priceRoundIncrement,cartMinSubtotal;
 			{currency_legend},currency,currencyFormat,currencyPosition,currencySymbol;
 			{converter_legend:hide},priceCalculateFactor,priceCalculateMode,currencyAutomator;
-			{invoice_legend:hide},invoiceLogo;
+			{order_legend:hide},orderstatus_new,orderstatus_error,invoiceLogo;
 			{images_legend},gallery,missing_image_placeholder,imageSizes',
 	),
 
@@ -261,7 +262,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'inputType'               => 'select',
 			'default'				  => $this->User->country,
 			'options'                 => $this->getCountries(),
-			'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
+			'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true),
 		),
 		'phone' => array
 		(
@@ -277,7 +278,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>64, 'rgxp'=>'email', 'tl_class'=>'w50'),
+			'eval'                    => array('maxlength'=>64, 'rgxp'=>'email', 'tl_class'=>'w50')
 		),
 		'shipping_countries' => array
 		(
@@ -285,14 +286,22 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'exclude'                 => true,
 			'inputType'               => 'select',
 			'options'                 => $this->getCountries(),
-			'eval'                    => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50'),
+			'eval'                    => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50', 'chosen'=>true)
 		),
 		'shipping_fields' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['shipping_fields'],
 			'exclude'                 => true,
 			'inputType'               => 'fieldWizard',
-			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'w50 w50h', 'table'=>'tl_iso_addresses'),
+			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'w50 w50h', 'table'=>'tl_iso_addresses')
+		),
+		'shipping_country' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['shipping_country'],
+			'exclude'                 => true,
+			'inputType'               => 'select',
+			'options'                 => $this->getCountries(),
+			'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true)
 		),
 		'billing_countries' => array
 		(
@@ -300,7 +309,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'exclude'                 => true,
 			'inputType'               => 'select',
 			'options'                 => $this->getCountries(),
-			'eval'                    => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50 w50h'),
+			'eval'                    => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50 w50h', 'chosen'=>true)
 		),
 		'billing_fields' => array
 		(
@@ -308,6 +317,14 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'exclude'                 => true,
 			'inputType'               => 'fieldWizard',
 			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'table'=>'tl_iso_addresses', 'tl_class'=>'w50 w50h'),
+		),
+		'billing_country' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['billing_country'],
+			'exclude'                 => true,
+			'inputType'               => 'select',
+			'options'                 => $this->getCountries(),
+			'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true)
 		),
 		'orderPrefix' => array
 		(
@@ -339,12 +356,28 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'inputType'               => 'checkbox',
 			'eval'					  => array('tl_class'=>'w50'),
 		),
+		'orderstatus_new' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['orderstatus_new'],
+			'filter'                  => true,
+			'inputType'               => 'select',
+			'options'                 => IsotopeBackend::getOrderStatus(),
+			'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
+		),
+		'orderstatus_error' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['orderstatus_error'],
+			'filter'                  => true,
+			'inputType'               => 'select',
+			'options'                 => IsotopeBackend::getOrderStatus(),
+			'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
+		),
 		'invoiceLogo' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['invoiceLogo'],
 			'exclude'                 => true,
 			'inputType'               => 'fileTree',
-			'eval'                    => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>'jpg,jpeg,gif,png,tif,tiff'),
+			'eval'                    => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>'jpg,jpeg,gif,png,tif,tiff', 'tl_class'=>'clr'),
 		),
 		'gallery' => array
 		(

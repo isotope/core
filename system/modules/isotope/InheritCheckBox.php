@@ -30,7 +30,7 @@
 
 /**
  * Class InheritCheckbox
- * 
+ *
  * Provide methods to inherit checbkox fields.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>

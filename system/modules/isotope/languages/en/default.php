@@ -175,15 +175,6 @@ $GLOBALS['TL_LANG']['MSC']['iso_sku_header'] = 'SKU';
 $GLOBALS['TL_LANG']['MSC']['iso_product_name_header'] = 'Product Name';
 $GLOBALS['TL_LANG']['MSC']['iso_card_name_title'] = 'Name on Credit Card';
 
-
-// Order status options
-$GLOBALS['TL_LANG']['ORDER']['pending']		= 'Pending';
-$GLOBALS['TL_LANG']['ORDER']['processing']	= 'Processing';
-$GLOBALS['TL_LANG']['ORDER']['complete']	= 'Complete';
-$GLOBALS['TL_LANG']['ORDER']['on_hold']		= 'On Hold';
-$GLOBALS['TL_LANG']['ORDER']['cancelled']	= 'Cancelled';
-
-
 $GLOBALS['TL_LANG']['MSC']['low_to_high'] = 'lo to hi';
 $GLOBALS['TL_LANG']['MSC']['high_to_low'] = 'hi to lo';
 $GLOBALS['TL_LANG']['MSC']['a_to_z'] = 'A to Z';
@@ -257,6 +248,7 @@ $GLOBALS['ISO_LANG']['MSC']['loadingProductData']	= 'Loading product data …';
 $GLOBALS['ISO_LANG']['MSC']['templateConfig']		= '%s (Store Config: %s)';
 $GLOBALS['ISO_LANG']['MSC']['templateTheme']		= '%s (Theme: %s)';
 $GLOBALS['ISO_LANG']['MSC']['splittedTaxRate']		= 'Splitted';
+$GLOBALS['ISO_LANG']['MSC']['newOrders']			= 'You have %s order(s) with status "%s"';
 
 
 /**
@@ -286,6 +278,7 @@ $GLOBALS['ISO_LANG']['PAY']['cybersource']		= array('Cybersource','For Cybersour
  */
 $GLOBALS['ISO_LANG']['GAL']['default']			= array('Default gallery (Lightbox/Mediabox)', 'Uses the lightbox/mediabox for full size images. Make sure you select the appropriate moo_ template in your page layout configuration.</p><p>You can supply a "rel" attribute to the link target by using a pipe (eg. "tl_files/video.mov|lightbox[400 300]"). If no "rel" attribute is supplied, the link will be opened in a new window.');
 $GLOBALS['ISO_LANG']['GAL']['inline']			= array('Inline gallery', 'Clicking on a gallery image will replace the main image.');
+$GLOBALS['ISO_LANG']['GAL']['zoom'] = array('Inline gallery with zoom effect', 'In addition to the behaviour of inline gallery, it also adds an image zoom feature to the main image.');
 
 
 /**
@@ -347,6 +340,7 @@ $GLOBALS['ISO_LANG']['ATTR']['mediaManager']		= array('Media Manager', 'Upload i
 $GLOBALS['ISO_LANG']['ATTR']['conditionalselect']	= array('Conditional Select-Menu', 'show select-options based on another select menu.');
 $GLOBALS['ISO_LANG']['ATTR']['fileTree']			= array('File tree', 'A file tree for single or multiple files and folders.');
 $GLOBALS['ISO_LANG']['ATTR']['downloads']			= array('Downloads', 'Download files from the product, e.g. manuals, data sheets etc..');
+$GLOBALS['ISO_LANG']['ATTR']['upload']				= array('File upload', 'A single-line input field to upload a local file to the server.');
 
 
 /**

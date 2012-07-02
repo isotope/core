@@ -34,6 +34,10 @@ CREATE TABLE `tl_iso_products` (
   `shipping_weight` varchar(255) NOT NULL default '',
   `shipping_exempt` char(1) NOT NULL default '',
   `tax_class` int(10) unsigned NOT NULL default '0',
+  `protected` char(1) NOT NULL default '',
+  `groups` blob NULL,
+  `guests` char(1) NOT NULL default '',
+  `cssID` varchar(255) NOT NULL default '',
   `published` char(1) NOT NULL default '',
   `start` varchar(10) NOT NULL default '',
   `stop` varchar(10) NOT NULL default '',
@@ -128,10 +132,11 @@ CREATE TABLE `tl_iso_producttypes` (
   `name` varchar(255) NOT NULL default '',
   `class` varchar(32) NOT NULL default 'regular',
   `fallback` char(1) NOT NULL default '',
+  `description` text NULL,
   `prices` char(1) NOT NULL default '',
+  `show_price_tiers` char(1) NOT NULL default '',
   `list_template` varchar(255) NOT NULL default '',
   `reader_template` varchar(255) NOT NULL default '',
-  `description` text NULL,
   `attributes` blob NULL,
   `variants` char(1) NOT NULL default '',
   `variant_attributes` blob NULL,
@@ -179,6 +184,10 @@ CREATE TABLE `tl_iso_attributes` (
   `filesOnly` char(1) NOT NULL default '',
   `fieldType` varchar(8) NOT NULL default '',
   `sortBy` varchar(32) NOT NULL default '',
+  `storeFile` char(1) NOT NULL default '',
+  `uploadFolder` varchar(255) NOT NULL default '',
+  `useHomeDir` char(1) NOT NULL default '',
+  `doNotOverwrite` char(1) NOT NULL default '',
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -211,6 +220,8 @@ CREATE TABLE `tl_iso_config` (
   `orderPrefix` varchar(5) NOT NULL default '',
   `orderDigits` int(1) unsigned NOT NULL default '4',
   `templateGroup` varchar(255) NOT NULL default '',
+  `orderstatus_new` int(10) unsigned NOT NULL default '0',
+  `orderstatus_error` int(10) unsigned NOT NULL default '0',
   `invoiceLogo` varchar(255) NOT NULL default '',
   `company` varchar(255) NOT NULL default '',
   `firstname` varchar(255) NOT NULL default '',
@@ -224,8 +235,10 @@ CREATE TABLE `tl_iso_config` (
   `country` varchar(2) NOT NULL default '',
   `shipping_countries` blob NULL,
   `shipping_fields` blob NULL,
+  `shipping_country` varchar(2) NOT NULL default '',
   `billing_countries` blob NULL,
   `billing_fields` blob NULL,
+  `billing_country` varchar(2) NOT NULL default '',
   `phone` varchar(64) NOT NULL default '',
   `email` varchar(255) NOT NULL default '',
   `limitMemberCountries` char(1) NOT NULL default '',
@@ -348,7 +361,7 @@ CREATE TABLE `tl_iso_payment_modules` (
   `allowed_cc_types` text NULL,
   `minimum_total` decimal(12,2) NOT NULL default '0.00',
   `maximum_total` decimal(12,2) NOT NULL default '0.00',
-  `new_order_status` varchar(255) NOT NULL default '',
+  `new_order_status` int(10) unsigned NOT NULL default '0',
   `trans_type` varchar(8) NOT NULL default '',
   `paypal_account` varchar(255) NOT NULL default '',
   `payflowpro_user` varchar(255) NOT NULL default '',
@@ -454,7 +467,7 @@ CREATE TABLE `tl_iso_orders` (
   `date` int(10) unsigned NOT NULL default '0',
   `date_paid` varchar(10) NOT NULL default '',
   `date_shipped` varchar(10) NOT NULL default '',
-  `status` varchar(32) NOT NULL default '',
+  `status` int(10) unsigned NOT NULL default '0',
 
   `order_id` varchar(14) NOT NULL default '',
   `uniqid` varchar(27) NOT NULL default '',
@@ -565,6 +578,27 @@ CREATE TABLE `tl_iso_tax_rate` (
   `compound` char(1) NOT NULL default '',
   `stop` char(1) NOT NULL default '',
   PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+-- --------------------------------------------------------
+
+--
+-- Table `tl_iso_orderstatus`
+--
+
+CREATE TABLE `tl_iso_orderstatus` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `pid` int(10) unsigned NOT NULL default '0',
+  `tstamp` int(10) unsigned NOT NULL default '0',
+  `sorting` int(10) unsigned NOT NULL default '0',
+  `name` varchar(255) NOT NULL default '',
+  `paid` char(1) NOT NULL default '',
+  `welcomescreen` char(1) NOT NULL default '',
+  `mail_customer` int(10) unsigned NOT NULL default '0',
+  `mail_admin` int(10) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  KEY `pid` (`pid`),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
@@ -809,9 +843,6 @@ CREATE TABLE `tl_user_group` (
  `iso_configs` blob NULL,
  `iso_configp` blob NULL,
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- PRODUCT ATTRIBUTES START --
--- PRODUCT ATTRIBUTES STOP --
 
 
 
