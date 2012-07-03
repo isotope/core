@@ -8,6 +8,7 @@ Version 1.3.3 stable (2012-??-??)
 
 ### Fixed
 - Added missing german translations (#3226)
+- Fixed a slight possibility to generate duplicate orrder IDs
 
 
 Version 1.3.2 stable (2012-06-11)
