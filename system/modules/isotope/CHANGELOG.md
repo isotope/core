@@ -5,6 +5,7 @@ Version 1.3.3 stable (2012-??-??)
 ---------------------------------
 
 ### Improved
+- Resolved potential layout issue when using advanced prices
 
 ### Fixed
 - Added missing german translations (#3226)
