@@ -5,6 +5,8 @@ Version 1.3.4 stable (2012-??-??)
 ---------------------------------
 
 ### Improved
+- Better error handling in the runonce script
+
 ### Fixed
 
 
