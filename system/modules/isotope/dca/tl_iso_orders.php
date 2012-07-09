@@ -238,7 +238,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 		),
 		'grandTotal' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['grandTotal'],			
+			'label'					=> &$GLOBALS['TL_LANG']['MSC']['grandTotalLabel'],
 		),
 		'notes' => array
 		(
@@ -360,7 +360,7 @@ class tl_iso_orders extends Backend
 
 		$args[2] = substr($strBillingAddress, 0, strpos($strBillingAddress, '<br />'));
 		$args[3] = $this->Isotope->formatPriceWithCurrency($row['grandTotal']);
-		
+
 		return $args;
 	}
 
@@ -435,8 +435,8 @@ class tl_iso_orders extends Backend
 
 		return $strBuffer;
 	}
-	
-	
+
+
 	/**
 	 * Generate the billing address details
 	 * @param object
@@ -447,8 +447,8 @@ class tl_iso_orders extends Backend
 	{
 		return $this->generateAddressData($dc->id, 'billing_address');
 	}
-	
-	
+
+
 	/**
 	 * Generate the shipping address details
 	 * @param object
@@ -459,8 +459,8 @@ class tl_iso_orders extends Backend
 	{
 		return $this->generateAddressData($dc->id, 'shipping_address');
 	}
-	
-	
+
+
 	/**
 	 * Generate address details amd return it as string
 	 * @param integer
@@ -482,7 +482,7 @@ class tl_iso_orders extends Backend
 		{
 			return '<div class="tl_gerror">No address data available.</div>';
 		}
-		
+
 		$this->loadDataContainer('tl_iso_addresses');
 
 		$strBuffer = '
@@ -498,7 +498,7 @@ class tl_iso_orders extends Backend
 			{
 				continue;
 			}
-			
+
 			$v = $arrAddress[$k];
 			$strClass = (++$i % 2) ? '' : ' class="tl_bg"';
 
@@ -768,7 +768,7 @@ class tl_iso_orders extends Backend
 	public function executeSaveHook($dc)
 	{
 		$objOrder = new IsotopeOrder();
-		
+
 		if ($objOrder->findBy('id', $dc->id))
 		{
 			// HOOK for adding additional functionality when saving
