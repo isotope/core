@@ -8,7 +8,7 @@ Version 1.3.3 stable (2012-??-??)
 - Resolved potential layout issue when using advanced prices
 
 ### Fixed
-- Added missing german translations (#3226)
+- Added missing german translations (#3226 & #3284)
 - Fixed a slight possibility to generate duplicate orrder IDs
 
 
