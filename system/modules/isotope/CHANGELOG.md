@@ -12,6 +12,7 @@ Version 1.3.3 stable (2012-07-09)
 - Fixed a slight possibility to generate duplicate orrder IDs
 - Grand total label for backend is now using the correct translation (#3270)
 - Custom sorting did not work when using a lister reference page
+- Attribute rule filter could be incorrectly applied
 
 
 Version 1.3.2 stable (2012-06-11)
