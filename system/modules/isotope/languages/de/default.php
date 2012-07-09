@@ -165,6 +165,7 @@ $GLOBALS['TL_LANG']['MSC']['z_to_a'] = 'Z - A';
 $GLOBALS['TL_LANG']['MSC']['old_to_new'] = 'alt - neu';
 $GLOBALS['TL_LANG']['MSC']['new_to_old'] = 'neu - alt';
 $GLOBALS['ISO_LANG']['MSC']['useDefault'] = 'Standardwert nutzen';
+$GLOBALS['ISO_LANG']['MSC']['loadingProductData'] = 'Produktdaten werden geladen …';
 $GLOBALS['TL_LANG']['CTE']['isotope'] = 'Isotope eCommerce';
 $GLOBALS['TL_LANG']['ISO']['productSingle'] = '1 Produkt';
 $GLOBALS['TL_LANG']['ISO']['productMultiple'] = '%s Produkte';

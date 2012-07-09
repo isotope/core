@@ -160,6 +160,6 @@ $GLOBALS['TL_LANG']['tl_iso_products']['groups']			= array('Produktgruppen', 'Pr
  * Table format
  */
 $GLOBALS['TL_LANG']['tl_iso_products']['price_tiers']['min']		= 'Anzahl';
-$GLOBALS['TL_LANG']['tl_iso_products']['price_tiers']['min_format']	= 'ab %s Stk.';
+$GLOBALS['TL_LANG']['tl_iso_products']['price_tiers']['min_format']	= 'ab %s Stück';
 $GLOBALS['TL_LANG']['tl_iso_products']['price_tiers']['price']		= 'Preis';
 

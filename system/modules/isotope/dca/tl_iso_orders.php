@@ -246,7 +246,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 		),
 		'grandTotal' => array
 		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['grandTotal'],
+			'label'					=> &$GLOBALS['TL_LANG']['MSC']['grandTotalLabel'],
 		),
 		'notes' => array
 		(

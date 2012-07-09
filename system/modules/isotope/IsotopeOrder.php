@@ -555,7 +555,7 @@ class IsotopeOrder extends IsotopeProductCollection
 			$arrConfigIds = $this->Database->execute("SELECT id FROM tl_iso_config WHERE store_id=" . $this->Isotope->Config->store_id)->fetchEach('id');
 
 			// Lock tables so no other order can get the same ID
-			$this->Database->lockTables(array('tl_iso_orders'));
+			$this->Database->lockTables(array('tl_iso_orders'=>'WRITE'));
 
 			// Retrieve the highest available order ID
 			$objMax = $this->Database->prepare("SELECT order_id FROM tl_iso_orders WHERE " . ($strPrefix != '' ? "order_id LIKE '$strPrefix%' AND " : '') . "config_id IN (" . implode(',', $arrConfigIds) . ") ORDER BY CAST(" . ($strPrefix != '' ? "SUBSTRING(order_id, " . ($intPrefix+1) . ")" : 'order_id') . " AS UNSIGNED) DESC")->limit(1)->executeUncached();
