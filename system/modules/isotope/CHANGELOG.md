@@ -11,6 +11,7 @@ Version 1.3.3 stable (2012-07-09)
 - Added missing german translations (#3226 & #3284)
 - Fixed a slight possibility to generate duplicate orrder IDs
 - Grand total label for backend is now using the correct translation (#3270)
+- Custom sorting did not work when using a lister reference page
 
 
 Version 1.3.2 stable (2012-06-11)
