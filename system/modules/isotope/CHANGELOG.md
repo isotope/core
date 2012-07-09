@@ -6,10 +6,11 @@ Version 1.3.3 stable (2012-07-09)
 
 ### Improved
 - Resolved potential layout issue when using advanced prices
+- Do not show rule discounts for low_price when rule is restricted to product variants (#3189)
 
 ### Fixed
 - Added missing german translations (#3226 & #3284)
-- Fixed a slight possibility to generate duplicate orrder IDs
+- Fixed a slight possibility to generate duplicate order IDs
 - Grand total label for backend is now using the correct translation (#3270)
 - Custom sorting did not work when using a lister reference page
 - Attribute rule filter could be incorrectly applied

@@ -101,6 +101,12 @@ class IsotopeRules extends Controller
 					continue;
 				}
 
+				// We're unable to apply variant price rules to low_price (see #3189)
+				if ($strField == 'low_price' && $objRules->productRestrictions == 'variants')
+				{
+					continue;
+				}
+
 				if (strpos($objRules->discount, '%') !== false)
 				{
 					$fltDiscount = 100 + rtrim($objRules->discount, '%');
