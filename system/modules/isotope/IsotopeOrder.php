@@ -30,7 +30,7 @@
 
 /**
  * Class IsotopeOrder
- * 
+ *
  * Provide methods to handle Isotope orders.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
@@ -81,7 +81,7 @@ class IsotopeOrder extends IsotopeProductCollection
 
 			case 'shippingAddress':
 				return deserialize($this->arrData['shipping_address'], true);
-			
+
 			case 'paid':
 				return (((int) $this->date_paid) >= time() && $this->status == 'complete');
 
@@ -363,8 +363,8 @@ class IsotopeOrder extends IsotopeProductCollection
 		$this->save();
 		return true;
 	}
-	
-	
+
+
 	/**
 	 * Complete order if the checkout has been made. This will cleanup session data
 	 */
@@ -373,12 +373,12 @@ class IsotopeOrder extends IsotopeProductCollection
 		if ($this->checkout_complete)
 		{
 			$intConfig = $_SESSION['ISOTOPE']['config_id'];
-			
+
 			unset($_SESSION['CHECKOUT_DATA']);
 			unset($_SESSION['ISOTOPE']);
 			unset($_SESSION['FORM_DATA']);
 			unset($_SESSION['FILES']);
-			
+
 			if ($intConfig > 0)
 			{
 				$_SESSION['ISOTOPE']['config_id'] = $intConfig;
@@ -386,7 +386,7 @@ class IsotopeOrder extends IsotopeProductCollection
 
 			return true;
 		}
-		
+
 		return false;
 	}
 
@@ -401,7 +401,7 @@ class IsotopeOrder extends IsotopeProductCollection
 		{
 			return $this->strOrderId;
 		}
-		
+
 		// HOOK: generate a custom order ID
 		if (isset($GLOBALS['ISO_HOOKS']['generateOrderId']) && is_array($GLOBALS['ISO_HOOKS']['generateOrderId']))
 		{
@@ -409,7 +409,7 @@ class IsotopeOrder extends IsotopeProductCollection
 			{
 				$this->import($callback[0]);
 				$strOrderId = $this->$callback[0]->$callback[1]($this);
-				
+
 				if ($strOrderId !== false)
 				{
 					$this->strOrderId = $strOrderId;
@@ -423,14 +423,14 @@ class IsotopeOrder extends IsotopeProductCollection
 			$strPrefix = $this->Isotope->Config->orderPrefix;
 			$intPrefix = utf8_strlen($strPrefix);
 			$arrConfigIds = $this->Database->execute("SELECT id FROM tl_iso_config WHERE store_id=" . $this->Isotope->Config->store_id)->fetchEach('id');
-	
+
 			// Lock tables so no other order can get the same ID
-			$this->Database->lockTables(array('tl_iso_orders'));
-	
+			$this->Database->lockTables(array('tl_iso_orders'=>'WRITE'));
+
 			// Retrieve the highest available order ID
 			$objMax = $this->Database->prepare("SELECT order_id FROM tl_iso_orders WHERE " . ($strPrefix != '' ? "order_id LIKE '$strPrefix%' AND " : '') . "config_id IN (" . implode(',', $arrConfigIds) . ") ORDER BY CAST(" . ($strPrefix != '' ? "SUBSTRING(order_id, " . ($intPrefix+1) . ")" : 'order_id') . " AS UNSIGNED) DESC")->limit(1)->executeUncached();
 			$intMax = (int) substr($objMax->order_id, $intPrefix);
-			
+
 			$this->strOrderId = $strPrefix . str_pad($intMax+1, $this->Isotope->Config->orderDigits, '0', STR_PAD_LEFT);
 		}
 

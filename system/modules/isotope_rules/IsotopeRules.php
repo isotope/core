@@ -101,6 +101,12 @@ class IsotopeRules extends Controller
 					continue;
 				}
 
+				// We're unable to apply variant price rules to low_price (see #3189)
+				if ($strField == 'low_price' && $objRules->productRestrictions == 'variants')
+				{
+					continue;
+				}
+
 				if (strpos($objRules->discount, '%') !== false)
 				{
 					$fltDiscount = 100 + rtrim($objRules->discount, '%');
@@ -300,8 +306,8 @@ class IsotopeRules extends Controller
 
 		return '';
 	}
-	
-	
+
+
 	/**
 	 * Transfer coupons from one cart to another. This happens if a guest cart is moved to user cart.
 	 * @param IsotopeProductCollection
@@ -351,7 +357,7 @@ class IsotopeRules extends Controller
 		if (FE_USER_LOGGED_IN === true && TL_MODE=='FE')
 		{
 			$arrGroups = array_map('intval', $this->User->groups);
-			
+
 			$arrProcedures[] = "(memberRestrictions='none'
 								OR (memberRestrictions='guests' AND memberCondition='1')
 								OR (memberRestrictions='members' AND memberCondition='' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='members' AND object_id=".(int)$this->User->id.")>0)
@@ -410,6 +416,8 @@ class IsotopeRules extends Controller
 				$arrOptions = $objProduct->getOptions(true);
 				foreach( $arrAttributes as $k => $restriction )
 				{
+					$varValue = null;
+
 					if (isset($arrAttributeData[$restriction['attribute']]))
 					{
 						$varValue = $arrAttributeData[$restriction['attribute']];
@@ -518,7 +526,7 @@ class IsotopeRules extends Controller
 		$blnMatch = false;
 		$blnPercentage = false;
 		$fltTotal = 0;
-		
+
 		if (strpos($arrRule['discount'], '%') !== false)
 		{
 			$blnPercentage = true;
@@ -615,7 +623,7 @@ class IsotopeRules extends Controller
 				case 'subtotal':
 					$blnMatch = true;
 					$arrSurcharge['total_price'] += $objProduct->total_price;
-					
+
 					if ($arrRule['tax_class'] == -1)
 					{
 						if ($blnPercentage)

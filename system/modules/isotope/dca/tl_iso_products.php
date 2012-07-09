@@ -414,6 +414,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['prices'],
 			'inputType'				=> 'dcaWizard',
 			'foreignTable'			=> 'tl_iso_prices',
+			'eval'					=> array('tl_class'=>'clr'),
 		),
 		'price_tiers' => array
 		(
@@ -705,7 +706,7 @@ class tl_iso_products extends Backend
 		{
 			return;
 		}
-		
+
 		$arrTypes = count($this->User->iso_product_types) ? $this->User->iso_product_types : array(0);
 		$objProducts = $this->Database->execute("SELECT id, (SELECT COUNT(*) FROM tl_iso_products) AS total FROM tl_iso_products WHERE type IN ('','" . implode("','", $arrTypes) . "')");
 
@@ -1426,11 +1427,11 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 					foreach ($GLOBALS['ISO_HOOKS']['addAssetImportRegexp'] as $callback)
 					{
 						$this->import($callback[0]);
-						
+
 						$arrPattern = $this->$callback[0]->$callback[1]($arrPattern,$objProducts);
 					}
 				}
-				
+
 				$strPattern = '@^(' . implode('|', array_filter($arrPattern)) . ')@i';
 
 				$arrMatches = preg_grep($strPattern, $arrFiles);
@@ -1634,7 +1635,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 	public function pasteProduct(DataContainer $dc, $row, $table, $cr, $arrClipboard=false)
 	{
 		require_once(TL_ROOT . '/system/modules/isotope/providers/PasteProductButton.php');
-		
+
 		$this->import('PasteProductButton');
 		return $this->PasteProductButton->generate($dc, $row, $table, $cr, $arrClipboard);
 	}
@@ -1693,8 +1694,8 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 		$href = preg_replace('/&?filter\[\]=[^&]*/', '', $this->Environment->request);
 		return ' &#160; :: &#160; <a href="'.$href.'" class="header_iso_filter_remove isotope-filter" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ';
 	}
-	
-	
+
+
 	/**
 	 * Hide "toggle all variants" button if there are no variants at all
 	 * @param string
@@ -1709,16 +1710,16 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 	public function toggleVariants($href, $label, $title, $class, $attributes, $table, $root)
 	{
 		$objVariants = $this->Database->query("SELECT COUNT(id) AS hasVariants FROM tl_iso_products WHERE pid>0 AND language=''");
-		
+
 		if (!$objVariants->hasVariants)
 		{
 			return '';
 		}
-		
+
 		return '<a href="' . $this->addToUrl('&amp;' . $href) . '" class="header_toggle isotope-tools" title="' . specialchars($title) . '"' . $attributes . '>' . specialchars($label) . '</a>';
 	}
-	
-	
+
+
 	/**
 	 * Hide "toggle all groups" button if there are no groups at all
 	 * @param string
@@ -1733,14 +1734,14 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 	public function toggleGroups($href, $label, $title, $class, $attributes, $table, $root)
 	{
 		$objGroups = $this->Database->query("SELECT COUNT(id) AS hasGroups FROM tl_iso_groups");
-		
+
 		if (!$objGroups->hasGroups)
 		{
 			return '';
 		}
-		
+
 		return '<a href="' . $this->addToUrl('&amp;' . $href) . '" class="header_toggle isotope-tools" title="' . specialchars($title) . '"' . $attributes . '>' . specialchars($label) . '</a>';
-	}	
+	}
 
 
 	/**
@@ -1951,7 +1952,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 				{
 					$arrFields[$attribute]['eval']['tl_class'] = $tl_class;
 				}
-				
+
 				if ($arrConfig['mandatory'] > 0)
 				{
 					$arrFields[$attribute]['eval']['mandatory'] = $arrConfig['mandatory'] == 1 ? false : true;
@@ -2196,7 +2197,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 	public function updateCategorySorting($insertId, $dc)
 	{
 		$objCategories = $this->Database->query("SELECT c1.*, MAX(c2.sorting) AS max_sorting FROM tl_iso_product_categories c1 LEFT JOIN tl_iso_product_categories c2 ON c1.page_id=c2.page_id WHERE c1.pid=" . (int) $insertId . " GROUP BY c1.page_id");
-		
+
 		while ($objCategories->next())
 		{
 			$this->Database->query("UPDATE tl_iso_product_categories SET sorting=" . ($objCategories->max_sorting + 128) . " WHERE id=" . $objCategories->id);

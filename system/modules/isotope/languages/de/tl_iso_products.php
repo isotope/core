@@ -146,3 +146,11 @@ $GLOBALS['TL_LANG']['tl_iso_products']['toggleGroups']		= array('Alle Gruppen ö
 $GLOBALS['TL_LANG']['tl_iso_products']['toggleVariants']	= array('Alle Varianten öffnen/schließen', 'Alle Varianten öffnen/schließen');
 $GLOBALS['TL_LANG']['tl_iso_products']['groups']			= array('Produktgruppen', 'Produktgruppen verwalten');
 
+
+/**
+ * Table format
+ */
+$GLOBALS['TL_LANG']['tl_iso_products']['price_tiers']['min']		= 'Anzahl';
+$GLOBALS['TL_LANG']['tl_iso_products']['price_tiers']['min_format']	= 'ab %s Stück';
+$GLOBALS['TL_LANG']['tl_iso_products']['price_tiers']['price']		= 'Preis';
+

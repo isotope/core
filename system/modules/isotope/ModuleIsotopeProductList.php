@@ -72,7 +72,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 
 		$this->iso_filterModules = deserialize($this->iso_filterModules, true);
 		$this->iso_productcache = deserialize($this->iso_productcache, true);
-		
+
 		// Disable the cache if in preview mode
 		if (BE_USER_LOGGED_IN === true)
 		{
@@ -105,7 +105,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 	 *
 	 * This function is specially designed so you can keep it in your child classes and only override findProducts().
 	 * You will automatically gain product caching (see class property), grid classes, pagination and more.
-	 * 
+	 *
 	 * @return void
 	 */
 	protected function compile()
@@ -198,7 +198,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 					{
 						$arrIds[] = $objProduct->id;
 					}
-					
+
 					$intExpires = (int) $this->Database->execute("SELECT MIN(start) AS expires FROM tl_iso_products WHERE start>$time")
 													   ->expires;
 
@@ -246,7 +246,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			$arrBuffer[] = array
 			(
 				'html' => $objProduct->generate((strlen($this->iso_list_layout) ? $this->iso_list_layout : $objProduct->list_template), $this),
-			);			
+			);
 		}
 
 		$this->Template->products = IsotopeFrontend::generateRowClass($arrBuffer, 'product', 'class', $this->iso_cols);
@@ -263,16 +263,16 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		$arrCategories = $this->findCategories($this->iso_category_scope);
 
 		list($arrFilters, $arrSorting, $strWhere, $arrValues) = $this->getFiltersAndSorting();
-		
+
 		$objProductData = $this->Database->prepare(IsotopeProduct::getSelectStatement() . "
 													WHERE p1.language=''"
 													. (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)")
-													. "AND p1.id IN (SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . "))"
+													. "AND c.page_id IN (" . implode(',', $arrCategories) . ")"
 													. (is_array($arrCacheIds) ? ("AND p1.id IN (" . implode(',', $arrCacheIds) . ")") : '')
 													. ($this->iso_list_where == '' ? '' : " AND {$this->iso_list_where}")
-													. "$strWhere ORDER BY c.sorting")
+													. "$strWhere GROUP BY p1.id ORDER BY c.sorting")
 										 ->execute($arrValues);
-		
+
 		return IsotopeFrontend::getProducts($objProductData, IsotopeFrontend::getReaderPageId(null, $this->iso_reader_jumpTo), true, $arrFilters, $arrSorting);
 	}
 
@@ -339,7 +339,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 				}
 			}
 		}
-		
+
 		if (empty($arrSorting) && $this->iso_listingSortField != '')
 		{
 			$arrSorting[$this->iso_listingSortField] = array(($this->iso_listingSortDirection=='DESC' ? SORT_DESC : SORT_ASC), SORT_REGULAR);
