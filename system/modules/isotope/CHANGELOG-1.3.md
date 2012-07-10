@@ -8,6 +8,7 @@ Version 1.3.4 stable (2012-??-??)
 - Better error handling in the runonce script
 
 ### Fixed
+- Filter module did not work correctly (#3291)
 
 
 Version 1.3.3 stable (2012-07-09)
