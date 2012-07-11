@@ -597,6 +597,7 @@ CREATE TABLE `tl_iso_orderstatus` (
   `welcomescreen` char(1) NOT NULL default '',
   `mail_customer` int(10) unsigned NOT NULL default '0',
   `mail_admin` int(10) unsigned NOT NULL default '0',
+  `sales_email` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

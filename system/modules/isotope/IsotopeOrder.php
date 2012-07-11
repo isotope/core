@@ -463,9 +463,10 @@ class IsotopeOrder extends IsotopeProductCollection
 				}
 			}
 
-			if ($objNewStatus->mail_admin && $this->iso_sales_email != '')
+			$strSalesEmail = $objNewStatus->sales_email ? $objNewStatus->sales_email : $this->iso_sales_email;
+			if ($objNewStatus->mail_admin && $strSalesEmail != '')
 			{
-				$this->Isotope->sendMail($objNewStatus->mail_admin, $this->iso_sales_email, $this->language, $arrData, $this->iso_customer_email, $this);
+				$this->Isotope->sendMail($objNewStatus->mail_admin, $strSalesEmail, $this->language, $arrData, $this->iso_customer_email, $this);
 			}
 		}
 

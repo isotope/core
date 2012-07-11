@@ -35,6 +35,7 @@ $GLOBALS['TL_LANG']['tl_iso_orderstatus']['paid']			= array('Order is paid', 'As
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['welcomescreen']	= array('Show on welcome screen', 'Show number of orders with this status on the backend welcome screen.');
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['mail_customer']	= array('E-Mail to customer', 'Select an email template to notify the customer when this status is assigned to an order.');
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['mail_admin']		= array('E-Mail to admin', 'Select an email template to notify the admin when this status is assigned to an order.');
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['sales_email']	= array('Sales admin email address', 'Enter an email address for status notifications to be sent to. If you dont enter anything, the checkout modules sales admin or system admin will be notified.');
 
 
 /**

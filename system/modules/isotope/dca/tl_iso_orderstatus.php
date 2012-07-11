@@ -10,12 +10,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -129,7 +129,7 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'						=> '{name_legend},name,paid,welcomescreen;{email_legend},mail_customer,mail_admin',
+		'default'						=> '{name_legend},name,paid,welcomescreen;{email_legend},mail_customer,mail_admin,sales_email',
 	),
 
 	// Fields
@@ -158,7 +158,7 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_orderstatus']['mail_customer'],
 			'inputType'					=> 'select',
 			'foreignKey'				=> 'tl_iso_mail.name',
-			'eval'						=> array('includeBlankOption'=>true, 'tl_class'=>'w50')
+			'eval'						=> array('includeBlankOption'=>true)
 		),
 		'mail_admin' => array
 		(
@@ -166,6 +166,13 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
 			'inputType'					=> 'select',
 			'foreignKey'				=> 'tl_iso_mail.name',
 			'eval'						=> array('includeBlankOption'=>true, 'tl_class'=>'w50')
+		),
+		'sales_email' => array
+		(
+			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_orderstatus']['sales_email'],
+			'exclude'					=> true,
+			'inputType'					=> 'text',
+			'eval'						=> array('maxlength'=>255, 'rgxp'=>'email', 'tl_class'=>'w50')
 		),
 	)
 );
@@ -191,8 +198,8 @@ class tl_iso_orderstatus extends Backend
 
 		return sprintf('<div class="list_icon" style="background-image:url(\'system/themes/%s/images/%s.gif\');">%s</div>', $this->getTheme(), $image, $label);
 	}
-	
-	
+
+
 	/**
 	 * Return the paste button
 	 * @param object
@@ -207,10 +214,10 @@ class tl_iso_orderstatus extends Backend
 		if ($row['id'] == 0)
 		{
 			$imagePasteInto = $this->generateImage('pasteinto.gif', sprintf($GLOBALS['TL_LANG'][$dc->table]['pasteinto'][1], $row['id']));
-			
+
 			return $cr ? $this->generateImage('pasteinto_.gif').' ' : '<a href="'.$this->addToUrl('act='.$arrClipboard['mode'].'&mode=2&pid='.$row['id'].'&id='.$arrClipboard['id']).'" title="'.specialchars(sprintf($GLOBALS['TL_LANG'][$dc->table]['pasteinto'][1], $row['id'])).'" onclick="Backend.getScrollOffset();">'.$imagePasteInto.'</a> ';
 		}
-		
+
 		$imagePasteAfter = $this->generateImage('pasteafter.gif', sprintf($GLOBALS['TL_LANG'][$dc->table]['pasteafter'][1], $row['id']));
 
 		return (($arrClipboard['mode'] == 'cut' && $arrClipboard['id'] == $row['id']) || $cr) ? $this->generateImage('pasteafter_.gif').' ' : '<a href="'.$this->addToUrl('act='.$arrClipboard['mode'].'&mode=1&pid='.$row['id'].'&id='.$arrClipboard['id']).'" title="'.specialchars(sprintf($GLOBALS['TL_LANG'][$dc->table]['pasteafter'][1], $row['id'])).'" onclick="Backend.getScrollOffset();">'.$imagePasteAfter.'</a> ';
