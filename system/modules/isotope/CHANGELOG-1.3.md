@@ -1,6 +1,16 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 1.3.4 stable (2012-07-12)
+---------------------------------
+
+### Improved
+- Better error handling in the runonce script
+
+### Fixed
+- Filter module did not work correctly (#3291)
+- Product options did now show up in order details if the product has been deleted (#3288)
+
 
 Version 1.3.3 stable (2012-07-09)
 ---------------------------------
