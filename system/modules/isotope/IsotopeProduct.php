@@ -153,6 +153,8 @@ class IsotopeProduct extends Controller
 			$this->arrData = $arrData;
 		}
 
+		$this->arrOptions = is_array($arrOptions) ? $arrOptions : array();
+
 		if (!$this->arrData['type'])
 		{
 			return;
@@ -165,7 +167,6 @@ class IsotopeProduct extends Controller
 		$this->arrCache['list_template'] = $this->arrType['list_template'];
 		$this->arrCache['reader_template'] = $this->arrType['reader_template'];
 		$this->arrCache['quantity_requested'] = $intQuantity;
-		$this->arrOptions = is_array($arrOptions) ? $arrOptions : array();
 
 		// Allow to customize attributes
 		if (isset($GLOBALS['ISO_HOOKS']['productAttributes']) && is_array($GLOBALS['ISO_HOOKS']['productAttributes']))

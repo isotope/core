@@ -80,11 +80,11 @@ class IsotopeRunonce extends Controller
 		$this->Database->query("TRUNCATE TABLE tl_iso_productcache");
 		$this->Database->query("TRUNCATE TABLE tl_iso_requestcache");
 	}
-	
-	
+
+
 	private function exec($function)
 	{
-		try 
+		try
 		{
 			$this->$function();
 		}
@@ -330,14 +330,14 @@ h1 { font-size:18px; font-weight:normal; margin:0 0 18px; }
 			{
 				$this->Database->query("UPDATE tl_module m1 SET iso_category_scope=(SELECT iso_category_scope FROM (SELECT * FROM tl_module) m2 WHERE m2.id=m1.iso_listingModule) WHERE m1.type='iso_productfilter'");
 			}
-			
+
 			$objModules = $this->Database->query("SELECT iso_listingModule, GROUP_CONCAT(id) AS ids FROM tl_module WHERE iso_listingModule>0 GROUP BY iso_listingModule");
-			
+
 			while( $objModules->next() )
 			{
 				$this->Database->query("UPDATE tl_module SET iso_filterModules='" . serialize(explode(',', $objModules->ids)) . "' WHERE id=" . $objModules->iso_listingModule);
 			}
-			
+
 			$this->Database->query("ALTER TABLE tl_module DROP COLUMN iso_listingModule");
 		}
 
@@ -346,7 +346,7 @@ h1 { font-size:18px; font-weight:normal; margin:0 0 18px; }
 		{
 			$this->Database->query("ALTER TABLE tl_iso_orders CHANGE COLUMN store_id config_id int(10) unsigned NOT NULL default '0'");
 		}
-		
+
 		// tl_iso_orders.date_payed has been renamed to tl_iso_orders.date_paid
 		if ($this->Database->fieldExists('date_payed', 'tl_iso_orders') && !$this->Database->fieldExists('date_paid', 'tl_iso_orders'))
 		{
@@ -358,7 +358,7 @@ h1 { font-size:18px; font-weight:normal; margin:0 0 18px; }
 		{
 			$this->Database->query("ALTER TABLE tl_iso_config CHANGE COLUMN isDefaultStore fallback char(1) NOT NULL default ''");
 		}
-		
+
 		// tl_iso_config.emailShipping has been renamed to tl_iso_config.email
 		if ($this->Database->fieldExists('emailShipping', 'tl_iso_config') && !$this->Database->fieldExists('email', 'tl_iso_config'))
 		{
@@ -440,18 +440,18 @@ h1 { font-size:18px; font-weight:normal; margin:0 0 18px; }
 				$this->Database->query("UPDATE tl_iso_payment_modules SET shipping_modules='" . serialize($arrShipping) . "' WHERE id={$objPayments->id}");
 			}
 		}
-		
+
 		// tax rates dont have a range but freetext field for postal codes
 		if ($this->Database->fieldExists('postal', 'tl_iso_tax_rate') && !$this->Database->fieldExists('postalCodes', 'tl_iso_tax_rate'))
 		{
 			$this->Database->query("ALTER TABLE tl_iso_tax_rate ADD COLUMN postalCodes text NULL");
-			
+
 			$objTaxRates = $this->Database->execute("SELECT * FROM tl_iso_tax_rate WHERE postal!=''");
-			
+
 			while( $objTaxRates->next() )
 			{
 				$arrCodes = deserialize($objTaxRates->postal);
-				
+
 				if (is_array($arrCodes) && $arrCodes[0] != '' && $arrCodes[1] != '')
 				{
 					$this->Database->query("UPDATE tl_iso_tax_rate SET postalCodes='{$arrCodes[0]}-{$arrCodes[1]}' WHERE id=" . $objTaxRates->id);
@@ -613,8 +613,8 @@ CREATE TABLE `tl_iso_orderstatus` (
 		}
 
 		$this->Database->query("UPDATE tl_iso_products SET dateAdded=tstamp WHERE dateAdded=0");
-		
-		
+
+
 		// Update attribute wizard
 		$objTypes = $this->Database->execute("SELECT * FROM tl_iso_producttypes");
 
@@ -710,8 +710,8 @@ CREATE TABLE `tl_iso_orderstatus` (
 				$this->Database->query("ALTER TABLE tl_iso_config DROP COLUMN ".$size."_image_height");
 			}
 		}
-		
-		
+
+
 		if ($this->Database->fieldExists('gallery_size', 'tl_iso_config', true) && !$this->Database->fieldExists('imageSizes','tl_iso_config', true))
 		{
 			$this->Database->query("ALTER TABLE tl_iso_config ADD COLUMN imageSizes blob NULL");
@@ -861,8 +861,8 @@ CREATE TABLE `tl_iso_orderstatus` (
 			}
 		}
 	}
-	
-	
+
+
 	/**
 	 * Update product types for new attribute wizard and make start&stop date enabled
 	 */
@@ -885,7 +885,7 @@ CREATE TABLE `tl_iso_orderstatus` (
 						$arrNew[$attribute]['enabled'] = '1';
 						$arrNew[$attribute]['position'] = $i;
 					}
-					
+
 					$arrNew['start']['enabled'] = '1';
 					$arrNew['stop']['enabled'] = '1';
 
@@ -895,16 +895,19 @@ CREATE TABLE `tl_iso_orderstatus` (
 			}
 		}
 	}
-	
-	
+
+
 	/**
 	 * tl_iso_rule.applyTo values had to be renamed for palettes to work
 	 */
 	private function updateRules()
 	{
-		$this->Database->query("UPDATE tl_iso_rules SET applyTo='products' WHERE applyTo='product'");
-		$this->Database->query("UPDATE tl_iso_rules SET applyTo='items' WHERE applyTo='item'");
-		$this->Database->query("UPDATE tl_iso_rules SET applyTo='subtotal' WHERE applyTo='cart'");
+		if ($this->Database->tableExists('tl_iso_rules'))
+		{
+			$this->Database->query("UPDATE tl_iso_rules SET applyTo='products' WHERE applyTo='product'");
+			$this->Database->query("UPDATE tl_iso_rules SET applyTo='items' WHERE applyTo='item'");
+			$this->Database->query("UPDATE tl_iso_rules SET applyTo='subtotal' WHERE applyTo='cart'");
+		}
 	}
 
 

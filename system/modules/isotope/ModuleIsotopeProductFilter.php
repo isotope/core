@@ -89,7 +89,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 			$varLimit = (is_array($GLOBALS['ISO_LIMIT']) && !empty($GLOBALS['ISO_LIMIT'])) ? serialize($GLOBALS['ISO_LIMIT']) : null;
 
 			// if all filters are null we don't have to cache (this will prevent useless isorc params from being generated)
-			if ($varFilter !== null && $varLimit !== null && $varSorting !== null)
+			if ($varFilter !== null || $varLimit !== null || $varSorting !== null)
 			{
 				$intCacheId = $this->Database->prepare("SELECT id FROM tl_iso_requestcache WHERE store_id={$this->Isotope->Config->store_id} AND filters" . ($varFilter ? '=' : ' IS ') . "? AND sorting" . ($varSorting ? '=' : ' IS ') . "? AND limits" . ($varLimit ? '=' : ' IS ') . "?")
 											 ->execute($varFilter, $varSorting, $varLimit)
