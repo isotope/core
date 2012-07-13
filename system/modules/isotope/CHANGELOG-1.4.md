@@ -28,4 +28,5 @@ Version 1.4.beta1 (2012-??-??)
 - No longer shows the "create new address" radio for billing address if no stored address is available
 - Insert tags can now be excepted from cache (#3098)
 - The payment and shipping order info is now a context menu
+- Include file extension when generating download attribute
 
