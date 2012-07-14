@@ -733,7 +733,8 @@ class IsotopeProduct extends Controller
 					'html'	=> $this->generateProductOptionWidget($attribute),
 				));
 
-				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
+				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option']
+				|| $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['ajax_option'])
 				{
 					$arrAjaxOptions[] = $attribute;
 				}
@@ -822,7 +823,8 @@ class IsotopeProduct extends Controller
 
 		foreach ($arrAttributes as $attribute => $varValue)
 		{
-			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
+			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option']
+			|| $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['ajax_option'])
 			{
 				$arrOptions[] = array_merge($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute], array
 				(
