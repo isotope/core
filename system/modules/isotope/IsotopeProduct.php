@@ -446,10 +446,10 @@ class IsotopeProduct extends Controller
 	 * Return all attributes for this product as array
 	 * @return array
 	 */
-	public function getAttributes()
+	public function getAttributes(array $arrAttributes = null)
 	{
 		$arrData = array();
-		$arrAttributes = array_unique(array_merge($this->arrAttributes, $this->arrVariantAttributes));
+		$arrAttributes || $arrAttributes = array_unique(array_merge($this->arrAttributes, $this->arrVariantAttributes));
 
 		foreach ($arrAttributes as $attribute)
 		{
