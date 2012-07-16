@@ -971,7 +971,8 @@ $endScript";
 		}
 
 		$arrProducts = array();
-
+		
+		$objProductData->reset();
 		while ($objProductData->next())
 		{
 			$objProduct = IsotopeFrontend::getProduct($objProductData, $intReaderPage, $blnCheckAvailability);
