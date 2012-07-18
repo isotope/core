@@ -491,21 +491,24 @@ class IsotopeBackend extends Backend
 	 */
 	public function addAttributesToDBUpdate($arrData)
 	{
-		$objAttributes = $this->Database->execute("SELECT * FROM tl_iso_attributes");
-
-		while ($objAttributes->next())
+		if ($this->Database->tableExists('tl_iso_attributes'))
 		{
-			if ($objAttributes->type == '' || $GLOBALS['ISO_ATTR'][$objAttributes->type]['sql'] == '')
+			$objAttributes = $this->Database->execute("SELECT * FROM tl_iso_attributes");
+	
+			while ($objAttributes->next())
 			{
-				continue;
-			}
-
-			$arrData['tl_iso_products']['TABLE_FIELDS'][$objAttributes->field_name] = sprintf('`%s` %s', $objAttributes->field_name, $GLOBALS['ISO_ATTR'][$objAttributes->type]['sql']);
-
-			// also check indexes
-			if ($objAttributes->fe_filter && $GLOBALS['ISO_ATTR'][$objAttributes->type]['useIndex'])
-			{
-				$arrData['tl_iso_products']['TABLE_CREATE_DEFINITIONS'][$objAttributes->field_name] = sprintf('KEY `%s` (`%s`)', $objAttributes->field_name, $objAttributes->field_name);
+				if ($objAttributes->type == '' || $GLOBALS['ISO_ATTR'][$objAttributes->type]['sql'] == '')
+				{
+					continue;
+				}
+	
+				$arrData['tl_iso_products']['TABLE_FIELDS'][$objAttributes->field_name] = sprintf('`%s` %s', $objAttributes->field_name, $GLOBALS['ISO_ATTR'][$objAttributes->type]['sql']);
+	
+				// Also check indexes
+				if ($objAttributes->fe_filter && $GLOBALS['ISO_ATTR'][$objAttributes->type]['useIndex'])
+				{
+					$arrData['tl_iso_products']['TABLE_CREATE_DEFINITIONS'][$objAttributes->field_name] = sprintf('KEY `%s` (`%s`)', $objAttributes->field_name, $objAttributes->field_name);
+				}
 			}
 		}
 
