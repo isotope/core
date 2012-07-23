@@ -5,7 +5,9 @@ Version 1.3.5 stable (2012-??-??)
 ---------------------------------
 
 ### Improved
+
 ### Fixed
+- Error message when using a system column name for an attribute did not work
 
 
 Version 1.3.4 stable (2012-07-12)
