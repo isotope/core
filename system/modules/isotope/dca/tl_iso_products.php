@@ -1759,6 +1759,10 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 		if (strlen($this->Input->get('tid')))
 		{
 			$this->toggleVisibility($this->Input->get('tid'), ($this->Input->get('state') == 1));
+
+			// Stop the DC_ProductData overload detection
+			$this->Session->set('PRODUCTDATA_OVERLOAD', false);
+
 			$this->redirect($this->getReferer());
 		}
 

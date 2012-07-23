@@ -8,6 +8,7 @@ Version 1.3.5 stable (2012-??-??)
 
 ### Fixed
 - Error message when using a system column name for an attribute did not work
+- The visible toggle only worked once and triggered overload detection
 
 
 Version 1.3.4 stable (2012-07-12)
