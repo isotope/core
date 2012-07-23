@@ -125,7 +125,6 @@ $GLOBALS['TL_LANG']['tl_iso_attributes']['attribute_legend'] = 'Attribut-Name & 
 $GLOBALS['TL_LANG']['tl_iso_attributes']['description_legend'] = 'Beschreibung';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['options_legend'] = 'Optionen';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['config_legend'] = 'Attribut-Konfiguration';
-$GLOBALS['TL_LANG']['tl_iso_attributes']['validation_legend'] = 'Eingabeprüfung';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['search_filters_legend'] = 'Suche- & Filter-Einstellungen';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['storeFile']      = array('Hochgeladene Dateien speichern', 'Die hochgeladenen Dateien in einen Ordner auf dem Server verschieben.');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['uploadFolder']   = array('Zielverzeichnis', 'Bitte wählen Sie das Zielverzeichnis aus der Dateiübersicht.');

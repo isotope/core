@@ -116,7 +116,6 @@ $GLOBALS['TL_LANG']['tl_iso_attributes']['attribute_legend']		= 'Attribute name 
 $GLOBALS['TL_LANG']['tl_iso_attributes']['description_legend']		= 'Description';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['options_legend']			= 'Options';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['config_legend']			= 'Attribute configuration';
-$GLOBALS['TL_LANG']['tl_iso_attributes']['validation_legend']		= 'Input validation';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['search_filters_legend']	= 'Search & Filtering Settings';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['store_legend']			= 'Store file';
 

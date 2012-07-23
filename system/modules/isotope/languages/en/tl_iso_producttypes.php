@@ -61,8 +61,10 @@ $GLOBALS['TL_LANG']['tl_iso_producttypes']['show']   				= array('product type d
  */
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['name_legend']			= 'Product type settings';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['description_legend']	= 'Description';
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['prices_legend']			= 'Prices';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['template_legend']		= 'Templates';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['attributes_legend']		= 'Product attributes';
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['variants_legend']		= 'Variant attributes';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['download_legend']		= 'Downloads';
 
 
@@ -74,3 +76,4 @@ $GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz']['tl_class_text']		= 'Here 
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz']['mandatory_default']	= 'Mandatory: Take the default value';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz']['mandatory_no']		= 'Mandatory: No, never';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz']['mandatory_yes']		= 'Mandatory: Yes, always';
+
