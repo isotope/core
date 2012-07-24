@@ -49,11 +49,11 @@ class ModuleIsotopeCumulativeFilter extends ModuleIsotopeProductFilter
 		if (TL_MODE == 'BE')
 		{
 			$objTemplate = new BackendTemplate('be_wildcard');
-			$objTemplate->wildcard = '### ISOTOPE ECOMMERCE: KIENER CUSTOM FILTER ###';
+			$objTemplate->wildcard = '### ISOTOPE ECOMMERCE: CUMULATIVE FILTER ###';
 			$objTemplate->title = $this->headline;
 			$objTemplate->id = $this->id;
 			$objTemplate->link = $this->name;
-			$objTemplate->href = $this->Environment->script.'?do=modules&amp;act=edit&amp;id=' . $this->id;
+			$objTemplate->href = 'contao/main.php?do=themes&amp;act=edit&amp;id=' . $this->id;
 
 			return $objTemplate->parse();
 		}
