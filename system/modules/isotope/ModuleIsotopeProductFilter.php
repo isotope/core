@@ -222,13 +222,18 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 
 			foreach ($this->iso_filterFields as $strField)
 			{
-				$arrValues = $this->Database->execute("SELECT DISTINCT $strField FROM tl_iso_products p1
+				$arrValues = array();
+				$objValues = $this->Database->execute("SELECT DISTINCT $strField FROM tl_iso_products p1
 														WHERE p1.language='' AND p1.$strField!=''"
 														. (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)")
 														. "AND (p1.id IN (SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . "))
 														   OR pid IN (SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . ")))"
-														. ($this->iso_list_where == '' ? '' : " AND {$this->iso_list_where}"))
-											->fetchEach($strField);
+														. ($this->iso_list_where == '' ? '' : " AND {$this->iso_list_where}"));
+
+				while ($objValues->next())
+				{
+					$arrValues += deserialize($objValues->$strField, true);
+				}
 
 				if ($this->blnCacheRequest && in_array($arrInput[$strField], $arrValues))
 				{

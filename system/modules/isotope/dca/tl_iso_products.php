@@ -2076,7 +2076,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 				$GLOBALS['ISO_CONFIG']['multilingual'][] = $attribute;
 			}
 
-			if ($config['attributes']['dynamic'])
+			if ($config['attributes']['dynamic'] || $config['eval']['multiple'])
 			{
 				$GLOBALS['ISO_CONFIG']['dynamicAttributes'][] = $attribute;
 			}

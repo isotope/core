@@ -1036,7 +1036,7 @@ $endScript";
 	{
 		global $filterConfig;
 
-		if (!is_array($filterConfig) || !count($filterConfig))
+		if (!is_array($filterConfig) || empty($filterConfig))
 		{
 			return true;
 		}
@@ -1045,36 +1045,43 @@ $endScript";
 
 		foreach ($filterConfig as $filter)
 		{
-			$varValue = $objProduct->{$filter['attribute']};
+			$varValues = $objProduct->{$filter['attribute']};
 			$blnMatch = false;
 
 			// If the attribute is not set for this product, we will ignore this attribute
-			if ($varValue === null)
+			if ($varValues === null)
 			{
 				continue;
 			}
-			elseif (is_array($varValue))
+			elseif (!is_array($varValues))
 			{
-				$varValue = http_build_query($varValue);
+				$varValues = array($varValues);
 			}
 
 			$operator = self::convertFilterOperator($filter['operator'], 'PHP');
 
-			switch( $operator )
+			foreach ($varValues as $varValue)
 			{
-				case 'stripos':
-					if (stripos($varValue, $filter['value']) !== false)
-					{
-						$blnMatch = true;
-					}
-					break;
+				$blnMatchOne = false;
 
-				default:
-					if (eval('return $varValue '.$operator.' $filter[\'value\'];'))
-					{
-						$blnMatch = true;
-					}
-					break;
+				switch( $operator )
+				{
+					case 'stripos':
+						if (stripos($varValue, $filter['value']) !== false)
+						{
+							$blnMatchOne = true;
+						}
+						break;
+
+					default:
+						if (eval('return $varValue '.$operator.' $filter[\'value\'];'))
+						{
+							$blnMatchOne = true;
+						}
+						break;
+				}
+
+				$blnMatch = $blnMatch ? $blnMatch : $blnMatchOne;
 			}
 
 			if ($filter['group'])
