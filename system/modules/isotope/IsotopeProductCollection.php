@@ -700,7 +700,7 @@ abstract class IsotopeProductCollection extends Model
 
 		$time = time();
 		$arrIds = array();
-	 	$objOldItems = $this->Database->execute("SELECT * FROM {$objCollection->ctable} WHERE pid={$objCollection->id}");
+	 	$objOldItems = $this->Database->execute("SELECT * FROM {$objCollection->ctable} WHERE pid={$objCollection->id} ORDER by id");
 
 		while ($objOldItems->next())
 		{
