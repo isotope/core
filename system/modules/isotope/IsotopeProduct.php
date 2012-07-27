@@ -559,8 +559,8 @@ class IsotopeProduct extends Controller
 
 			$arrOptions[] = array
 			(
-				'label'	=> $this->Isotope->formatLabel('tl_iso_products', $field),
-				'value'	=> $this->Isotope->formatValue('tl_iso_products', $field, $value),
+				'label'	=> $this->Isotope->translate($this->Isotope->formatLabel('tl_iso_products', $field)),
+				'value'	=> $this->Isotope->translate($this->Isotope->formatValue('tl_iso_products', $field, $value)),
 			);
 		}
 
