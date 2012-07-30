@@ -923,7 +923,7 @@ class IsotopeProduct extends Controller
 		}
 		else
 		{
-			return $strBuffer;
+			return $this->Isotope->translate($strBuffer);
 		}
 	}
 
