@@ -889,6 +889,16 @@ abstract class IsotopeProductCollection extends Model
 				$objTemplate->shipping_address = $this->Isotope->generateAddressString($arrShippingAddress, $this->Isotope->Config->shipping_fields);
 			}
 		}
+		
+		// HOOK for edit Template when generate
+		if (isset($GLOBALS['ISO_HOOKS']['generateCollection']) && is_array($GLOBALS['ISO_HOOKS']['generateCollection']))
+		{
+			foreach ($GLOBALS['ISO_HOOKS']['generateCollection'] as $callback)
+			{
+				$this->import($callback[0]);
+				$objTemplate = $this->$callback[0]->$callback[1]($objTemplate, $this);
+			}
+		}
 
 		$strArticle = $this->Isotope->replaceInsertTags($objTemplate->parse());
 		$strArticle = html_entity_decode($strArticle, ENT_QUOTES, $GLOBALS['TL_CONFIG']['characterSet']);
