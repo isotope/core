@@ -31,4 +31,5 @@ Version 1.4.beta1 (2012-??-??)
 - The payment and shipping order info is now a context menu
 - Include file extension when generating download attribute
 - generateProduct hook no longer requires template as return value
+- Replaced <section> tags with regular <div> tags.
 
