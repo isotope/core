@@ -224,17 +224,21 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		}
 
 		// Run trough all steps until we find the current one or one reports failure
+		$intCurrentStep = 0;
+		$intTotalSteps = count($GLOBALS['ISO_CHECKOUT_STEPS']);
 		foreach ($GLOBALS['ISO_CHECKOUT_STEPS'] as $step => $arrCallbacks)
 		{
 			// Step could be removed while looping
 			if (!isset($GLOBALS['ISO_CHECKOUT_STEPS'][$step]))
 			{
+				--$intTotalSteps;
 				continue;
 			}
 
 			$this->strFormId = 'iso_mod_checkout_' . $step;
 			$this->Template->formId = $this->strFormId;
 			$this->Template->formSubmit = $this->strFormId;
+			++$intCurrentStep;
 			$strBuffer = '';
 
 			foreach ($arrCallbacks as $callback)
@@ -258,6 +262,8 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 			if ($step == $this->strCurrentStep)
 			{
+				global $objPage;
+				$objPage->pageTitle = sprintf($GLOBALS['ISO_LANG']['MSC']['checkoutStep'], $intCurrentStep, $intTotalSteps, (strlen($GLOBALS['TL_LANG']['ISO']['checkout_' . $step]) ? $GLOBALS['TL_LANG']['ISO']['checkout_' . $step] : $step)) . ($objPage->pageTitle ? $objPage->pageTitle : $objPage->title);
 				break;
 			}
 		}
