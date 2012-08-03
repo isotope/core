@@ -798,7 +798,7 @@ class IsotopeProduct extends Controller
 			foreach ($GLOBALS['ISO_HOOKS']['generateProduct'] as $callback)
 			{
 				$this->import($callback[0]);
-				$objTemplate = $this->$callback[0]->$callback[1]($objTemplate, $this);
+				$this->$callback[0]->$callback[1]($objTemplate, $this);
 			}
 		}
 

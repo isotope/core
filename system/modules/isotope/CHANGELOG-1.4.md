@@ -30,4 +30,5 @@ Version 1.4.beta1 (2012-??-??)
 - Insert tags can now be excepted from cache (#3098)
 - The payment and shipping order info is now a context menu
 - Include file extension when generating download attribute
+- generateProduct hook no longer requires template as return value
 
