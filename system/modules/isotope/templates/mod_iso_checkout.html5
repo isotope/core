@@ -51,8 +51,10 @@
 </div>
 <script>
 window.addEvent('domready', function() {
-	var buttons = document.getElements('.mod_iso_checkout .submit_container input.submit');
-	buttons.addEvent('click', function() { buttons.set('disabled', true) });
+	document.getElements('.mod_iso_checkout form').addEvent('submit', function() {
+		document.getElement('.mod_iso_checkout input[name=nextStep]').set('disabled', true);
+		(function() { window.location.reload() }).delay(30000);
+	});
 });
 </script>
 <!-- indexer::continue -->
