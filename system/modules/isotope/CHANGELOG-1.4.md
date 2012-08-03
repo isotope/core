@@ -16,6 +16,7 @@ Version 1.4.beta1 (2012-??-??)
 - Ever product can now have a CSS class and ID (#2812)
 - Rules can now be limited to subtotal in cart
 - Can now filter for serialized data (e.g. checkboxes)
+- Added generateCollection hook (#27)
 
 ### Improved
 - Checkout steps are now a numbered list (#3040)
