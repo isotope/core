@@ -5,6 +5,7 @@ Version 1.3.5 stable (2012-??-??)
 ---------------------------------
 
 ### Improved
+- The first shipping & payment option was not always selected in checkout module (#3206)
 
 ### Fixed
 - Error message when using a system column name for an attribute did not work
