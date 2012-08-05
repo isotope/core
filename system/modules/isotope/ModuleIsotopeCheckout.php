@@ -47,7 +47,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	 * @var boolean
 	 */
 	public $doNotSubmit = false;
-	
+
 	/**
 	 * Template
 	 * @var string
@@ -101,8 +101,8 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		$this->strCurrentStep = $this->Input->get('step');
 		return parent::generate();
 	}
-	
-	
+
+
 	/**
 	 * Returns the current form ID
 	 * @return string
@@ -289,7 +289,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				{
 					$this->redirect($this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($this->orderCompleteJumpTo)->fetchAssoc()) . '?uid='.$objOrder->uniqid);
 				}
-				
+
 				// Checkout failed, show error message
 				$this->redirect($this->addToUrl('step=failed', true));
 			}
@@ -316,7 +316,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		$blnPassed = true;
 		$total = count($arrStepKeys) - 1;
 		$arrSteps = array();
-		
+
 		if ($this->strCurrentStep != 'process' && $this->strCurrentStep != 'complete')
 		{
 			foreach ($arrStepKeys as $i => $step)
@@ -325,9 +325,9 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				{
 					$blnPassed = false;
 				}
-	
+
 				$blnActive = $this->strCurrentStep == $step ? true : false;
-	
+
 				$arrSteps[] = array
 				(
 					'isActive'	=> $blnActive,
@@ -338,7 +338,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				);
 			}
 		}
-		
+
 		$this->Template->steps = $arrSteps;
 		$this->Template->activeStep = $GLOBALS['ISO_LANG']['MSC']['activeStep'];
 
@@ -534,11 +534,11 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		$arrModules = array();
 		$arrModuleIds = deserialize($this->iso_shipping_modules);
 
-		if (is_array($arrModuleIds) && count($arrModuleIds))
+		if (is_array($arrModuleIds) && !empty($arrModuleIds))
 		{
 			$arrData = $this->Input->post('shipping');
 			$arrModuleIds = array_map('intval', $arrModuleIds);
-			
+
 			$objModules = $this->Database->execute("SELECT * FROM tl_iso_shipping_modules WHERE id IN (" . implode(',', $arrModuleIds) . ")" . (BE_USER_LOGGED_IN === true ? '' : " AND enabled='1'") . " ORDER BY " . $this->Database->findInSet('id', $arrModuleIds));
 
 			while ($objModules->next())
@@ -585,9 +585,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			}
 		}
 
-		$objTemplate = new IsotopeTemplate('iso_checkout_shipping_method');
-
-		if (!count($arrModules))
+		if (empty($arrModules))
 		{
 			$this->doNotSubmit = true;
 			$this->Template->showNext = false;
@@ -601,10 +599,14 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 			return $objTemplate->parse();
 		}
-		elseif (!$this->Isotope->Cart->hasShipping && !strlen($_SESSION['CHECKOUT_DATA']['shipping']['module']) && count($arrModules) == 1)
+
+		$objTemplate = new IsotopeTemplate('iso_checkout_shipping_method');
+
+		if (!$this->Isotope->Cart->hasShipping && !strlen($_SESSION['CHECKOUT_DATA']['shipping']['module']) && count($arrModules) == 1)
 		{
 			$this->Isotope->Cart->Shipping = $objLastModule;
 			$_SESSION['CHECKOUT_DATA']['shipping']['module'] = $this->Isotope->Cart->Shipping->id;
+			$arrModules[0]['checked'] = ' checked="checked"';
 		}
 		elseif (!$this->Isotope->Cart->hasShipping)
 		{
@@ -671,7 +673,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		{
 			$arrData = $this->Input->post('payment');
 			$arrModuleIds = array_map('intval', $arrModuleIds);
-			
+
 			$objModules = $this->Database->execute("SELECT * FROM tl_iso_payment_modules WHERE id IN (" . implode(',', $arrModuleIds) . ")" . (BE_USER_LOGGED_IN === true ? '' : " AND enabled='1'") . " ORDER BY " . $this->Database->findInSet('id', $arrModuleIds));
 
 			while ($objModules->next())
@@ -718,8 +720,6 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			}
 		}
 
-		$objTemplate = new IsotopeTemplate('iso_checkout_payment_method');
-
 		if (!count($arrModules))
 		{
 			$this->doNotSubmit = true;
@@ -734,10 +734,14 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 			return $objTemplate->parse();
 		}
-		elseif (!$this->Isotope->Cart->hasPayment && !strlen($_SESSION['CHECKOUT_DATA']['payment']['module']) && count($arrModules) == 1)
+
+		$objTemplate = new IsotopeTemplate('iso_checkout_payment_method');
+
+		if (!$this->Isotope->Cart->hasPayment && !strlen($_SESSION['CHECKOUT_DATA']['payment']['module']) && count($arrModules) == 1)
 		{
 			$this->Isotope->Cart->Payment = $objLastModule;
 			$_SESSION['CHECKOUT_DATA']['payment']['module'] = $this->Isotope->Cart->Payment->id;
+            $arrModules[0]['checked'] = ' checked="checked"';
 		}
 		elseif (!$this->Isotope->Cart->hasPayment)
 		{
@@ -1215,7 +1219,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 			$arrWidgets[] = $objWidget;
 		}
-		
+
 		$arrWidgets = IsotopeFrontend::generateRowClass($arrWidgets, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
 
 		// Validate input
@@ -1229,9 +1233,9 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		{
 			$this->Isotope->Cart->$strAddressType = $_SESSION['CHECKOUT_DATA'][$strAddressType];
 		}
-		
+
 		$strBuffer = '';
-		
+
 		foreach ($arrWidgets as $objWidget)
 		{
 			$strBuffer .= $objWidget->parse();

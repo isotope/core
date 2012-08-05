@@ -525,7 +525,7 @@ $endScript";
 
 			foreach ($_SESSION[$strGroup] as $strMessage)
 			{
-				$strMessages .= sprintf('<p class="%s">%s</p>%s', $strClass, $strMessage, "\n");
+				$strMessages .= sprintf('<p class="%s">%s</p>', $strClass, $strMessage);
 			}
 
 			$_SESSION[$strGroup] = array();

@@ -492,12 +492,12 @@ var Isotope =
 
 					if (element.match('.tl_checkbox_single_container'))
 					{
-						element.getFirst('input').disabled = event.target.checked;
+						element.getFirst('input[type=checkbox]').disabled = event.target.checked;
 					}
 					else
 					{
 						element.setStyle('display', (event.target.checked ? 'none' : 'initial'));
-						
+
 						// Query would fail if there is no tooltip
 						try { element.getNext(':not(.tl_tip)').setStyle('display', (event.target.checked ? 'none' : 'initial')); } catch (e) {}
 					}
@@ -505,12 +505,12 @@ var Isotope =
 
 				if (el.match('.tl_checkbox_single_container'))
 				{
-					el.getFirst('input').readonly = check.checked;
+					el.getFirst('input[type=checkbox]').disabled = check.checked;
 				}
 				else
 				{
 					el.setStyle('display', (check.checked ? 'none' : 'initial'));
-					
+
 					// Query would fail if there is no tooltip
 					try { el.getNext(':not(.tl_tip)').setStyle('display', (check.checked ? 'none' : 'initial')); } catch (e) {}
 				}
@@ -526,7 +526,7 @@ var Isotope =
 	initializeToolsMenu: function()
 	{
 		var tools = document.getElements('#tl_buttons .isotope-tools');
-		
+
 		if (tools.length < 1)
 			return;
 
@@ -534,7 +534,7 @@ var Isotope =
 		tools.each(function(node) {
 			node.previousSibling.nodeValue = '';
 		});
-		
+
 		// Add trigger to tools buttons
 		document.getElement('a.header_isotope_tools').addEvent('click', function(e)
 		{
@@ -564,7 +564,7 @@ var Isotope =
 	initializeFilterMenu: function()
 	{
 		var tools = document.getElements('#tl_buttons .isotope-filter');
-		
+
 		if (tools.length < 1)
 			return;
 
@@ -572,7 +572,7 @@ var Isotope =
 		tools.each(function(node) {
 			node.previousSibling.nodeValue = '';
 		});
-		
+
 		// Add trigger to tools buttons
 		document.getElement('a.header_iso_filter').addEvent('click', function(e)
 		{

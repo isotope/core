@@ -1,6 +1,21 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 1.3.5 stable (2012-08-06)
+---------------------------------
+
+### Improved
+- The first shipping & payment option was not always selected in checkout module (#3206)
+
+### Fixed
+- Error message when using a system column name for an attribute did not work
+- The visible toggle only worked once and triggered overload detection
+- SKU did not show up in the backend product list
+- Back link in label translator did not work (#3309)
+- Single checkbox container was not disabled in inherit wizard (#3318)
+- Displaying multiple Isotope messages did not work (#3316)
+
+
 Version 1.3.4 stable (2012-07-12)
 ---------------------------------
 

@@ -434,7 +434,7 @@ class tl_iso_attributes extends Backend
 
 		if (in_array($varValue, array('id', 'pid', 'tstamp', 'dateAdded', 'type', 'language', 'pages', 'inherit')))
 		{
-			throw new Exception($GLOBALS['TL_LANG']['ERR']['systemColumn'], $varValue);
+			throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['systemColumn'], $varValue));
 		}
 
 		if ($varValue != '' && !$this->Database->fieldExists($varValue, 'tl_iso_products'))
@@ -459,7 +459,7 @@ class tl_iso_attributes extends Backend
 	public function modifyColumn($dc)
 	{
 		$objAttribute = $this->Database->execute("SELECT * FROM tl_iso_attributes WHERE id={$dc->id}");
-		
+
 		if ($objAttribute->field_name == '')
 		{
 			return;
