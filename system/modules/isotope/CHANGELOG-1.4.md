@@ -17,6 +17,7 @@ Version 1.4.beta1 (2012-??-??)
 - Rules can now be limited to subtotal in cart
 - Can now filter for serialized data (e.g. checkboxes)
 - Change page title to reflect current step in checkout module (#2085)
+- Use multiColumnWizard for all appropriate fields (#2038)
 
 ### Improved
 - Checkout steps are now a numbered list (#3040)

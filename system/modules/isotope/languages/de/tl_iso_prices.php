@@ -55,8 +55,8 @@ $GLOBALS['TL_LANG']['tl_iso_prices']['delete'][0] = 'Preis löschen';
 $GLOBALS['TL_LANG']['tl_iso_prices']['delete'][1] = 'Preis ID %s löschen';
 $GLOBALS['TL_LANG']['tl_iso_prices']['show'][0] = 'Preis-Details';
 $GLOBALS['TL_LANG']['tl_iso_prices']['show'][1] = 'Details der Preis ID %s anzeigen';
-$GLOBALS['TL_LANG']['tl_iso_prices']['price_tier_columns']['min'] = 'Menge (min)';
-$GLOBALS['TL_LANG']['tl_iso_prices']['price_tier_columns']['price'] = 'Preis';
+$GLOBALS['TL_LANG']['tl_iso_prices']['price_tier_columns']['min'] = array('Menge (min)');
+$GLOBALS['TL_LANG']['tl_iso_prices']['price_tier_columns']['price'] = array('Preis');
 $GLOBALS['TL_LANG']['tl_iso_prices']['price_legend'] = 'Preis';
 $GLOBALS['TL_LANG']['tl_iso_prices']['limit_legend'] = 'Einschränkungen';
 

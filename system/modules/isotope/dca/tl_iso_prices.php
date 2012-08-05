@@ -110,24 +110,25 @@ $GLOBALS['TL_DCA']['tl_iso_prices'] = array
 		'price_tiers' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_prices']['price_tiers'],
-			'inputType'				=> 'multitextWizard',
+			'inputType'				=> 'multiColumnWizard',
 			'eval'					=> array
 			(
 				'doNotSaveEmpty'	=> true,
 				'tl_class'			=> 'clr',
-				'columns'			=> array
+				'disableSorting'	=> true,
+				'columnFields'		=> array
 				(
 					'min' => array
 					(
 						'label'		=> &$GLOBALS['TL_LANG']['tl_iso_prices']['price_tier_columns']['min'],
-						'mandatory'	=> true,
-						'rgxp'		=> 'digit',
+						'inputType'	=> 'text',
+						'eval'		=> array('mandatory'=>true, 'rgxp'=>'digit', 'style'=>'width:100px'),
 					),
 					'price' => array
 					(
 						'label'		=> &$GLOBALS['TL_LANG']['tl_iso_prices']['price_tier_columns']['price'],
-						'mandatory'	=> true,
-						'rgxp'		=> 'price',
+						'inputType'	=> 'text',
+						'eval'		=> array('mandatory'=>true, 'rgxp'=>'price', 'style'=>'width:100px'),
 					),
 				),
 			),
@@ -244,17 +245,12 @@ class tl_iso_prices extends Backend
 			return array();
 		}
 
-		$arrTiers = array();
-		$objTiers = $this->Database->execute("SELECT * FROM tl_iso_price_tiers WHERE pid={$dc->id} ORDER BY min");
+		$arrTiers = $this->Database->execute("SELECT min, price FROM tl_iso_price_tiers WHERE pid={$dc->id} ORDER BY min")
+								   ->fetchAllAssoc();
 
-		while ($objTiers->next())
+		if (empty($arrTiers))
 		{
-			$arrTiers[] = array($objTiers->min, $objTiers->price);
-		}
-
-		if (!count($arrTiers))
-		{
-			return array(array(1, ''));
+			return array(array('min'=>1));
 		}
 
 		return $arrTiers;
@@ -271,7 +267,7 @@ class tl_iso_prices extends Backend
 	{
 		$arrNew = deserialize($varValue);
 
-		if (!is_array($arrNew) || !count($arrNew))
+		if (!is_array($arrNew) || empty($arrNew))
 		{
 			$this->Database->query("DELETE FROM tl_iso_price_tiers WHERE pid={$dc->id}");
 		}
@@ -284,15 +280,15 @@ class tl_iso_prices extends Backend
 
 			foreach ($arrNew as $new)
 			{
-				$pos = array_search($new[0], $arrDelete);
+				$pos = array_search($new['min'], $arrDelete);
 
 				if ($pos === false)
 				{
-					$arrInsert[$new[0]] = $new[1];
+					$arrInsert[$new['min']] = $new['price'];
 				}
 				else
 				{
-					$arrUpdate[$new[0]] = $new[1];
+					$arrUpdate[$new['min']] = $new['price'];
 					unset($arrDelete[$pos]);
 				}
 			}

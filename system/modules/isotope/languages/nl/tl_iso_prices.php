@@ -46,8 +46,8 @@ $GLOBALS['TL_LANG']['tl_iso_prices']['delete'][0] = 'Verwijder prijs';
 $GLOBALS['TL_LANG']['tl_iso_prices']['delete'][1] = 'Verwijder prijs ID %s';
 $GLOBALS['TL_LANG']['tl_iso_prices']['show'][0] = 'Prijs details';
 $GLOBALS['TL_LANG']['tl_iso_prices']['show'][1] = 'Toon details van prijs ID %s';
-$GLOBALS['TL_LANG']['tl_iso_prices']['price_tier_columns']['min'] = 'Hoeveelheid (minimaal)';
-$GLOBALS['TL_LANG']['tl_iso_prices']['price_tier_columns']['price'] = 'Prijs';
+$GLOBALS['TL_LANG']['tl_iso_prices']['price_tier_columns']['min'] = array('Hoeveelheid (minimaal)');
+$GLOBALS['TL_LANG']['tl_iso_prices']['price_tier_columns']['price'] = array('Prijs');
 $GLOBALS['TL_LANG']['tl_iso_prices']['price_legend'] = 'Prijs';
 $GLOBALS['TL_LANG']['tl_iso_prices']['limit_legend'] = 'Beperkingen';
 
