@@ -126,7 +126,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			{name_legend},name,label,fallback,store_id;
 			{address_legend:hide},firstname,lastname,company,street_1,street_2,street_3,postal,city,country,subdivision,email,phone;
 			{config_legend},orderPrefix,orderDigits,templateGroup;
-			{checkout_legend},shipping_countries,billing_countries,shipping_fields,billing_fields,shipping_country,billing_country,limitMemberCountries;
+			{checkout_legend},billing_countries,shipping_countries,billing_fields,shipping_fields,billing_country,shipping_country,limitMemberCountries;
 			{price_legend},priceRoundPrecision,priceRoundIncrement,cartMinSubtotal;
 			{currency_legend},currency,currencyFormat,currencyPosition,currencySymbol;
 			{converter_legend:hide},priceCalculateFactor,priceCalculateMode,currencyAutomator;
@@ -286,7 +286,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'exclude'                 => true,
 			'inputType'               => 'select',
 			'options'                 => $this->getCountries(),
-			'eval'                    => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50', 'chosen'=>true)
+			'eval'                    => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50 w50h', 'chosen'=>true)
 		),
 		'shipping_fields' => array
 		(
@@ -316,7 +316,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['billing_fields'],
 			'exclude'                 => true,
 			'inputType'               => 'fieldWizard',
-			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'table'=>'tl_iso_addresses', 'tl_class'=>'w50 w50h'),
+			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'table'=>'tl_iso_addresses', 'tl_class'=>'clr w50 w50h'),
 		),
 		'billing_country' => array
 		(
