@@ -400,10 +400,57 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 		(
 			'label'					  => &$GLOBALS['TL_LANG']['tl_iso_config']['imageSizes'],
 			'exclude'                 => true,
-			'inputType'				  => 'imageWatermarkWizard',
-			'options'                 => array('crop', 'proportional', 'box'),
-			'reference'               => &$GLOBALS['TL_LANG']['MSC'],
-			'eval'                    => array('tl_class'=>'clr'),
+			'inputType'				  => 'multiColumnWizard',
+			'eval'                    => array
+			(
+				'mandatory'           => true,
+				'tl_class'            => 'clr',
+				'disableSorting'      => true,
+				'columnFields' => array
+				(
+					'name' => array
+					(
+						'label'       => $GLOBALS['TL_LANG']['tl_iso_config']['iwName'],
+						'inputType'   => 'text',
+						'eval'        => array('mandatory'=>true, 'rgxp'=>'alpha', 'spaceToUnderscore'=>true, 'class'=>'tl_text_4'),
+					),
+					'width' => array
+					(
+						'label'       => $GLOBALS['TL_LANG']['tl_iso_config']['iwWidth'],
+						'inputType'   => 'text',
+						'eval'        => array('rgxp'=>'digit', 'class'=>'tl_text_4'),
+					),
+					'height' => array
+					(
+						'label'       => $GLOBALS['TL_LANG']['tl_iso_config']['iwHeight'],
+						'inputType'   => 'text',
+						'eval'        => array('rgxp'=>'digit', 'class'=>'tl_text_4'),
+					),
+					'mode' => array
+					(
+						'label'       => $GLOBALS['TL_LANG']['tl_iso_config']['iwMode'],
+						'inputType'   => 'select',
+						'options'     => $GLOBALS['TL_CROP'],
+						'reference'   => &$GLOBALS['TL_LANG']['MSC'],
+						'eval'        => array('style'=>'width:150px'),
+					),
+					'watermark' => array
+					(
+						'label'       => $GLOBALS['TL_LANG']['tl_iso_config']['iwWatermark'],
+						'inputType'   => 'text',
+						'eval'        => array('class'=>'tl_text_2'),
+						'wizard'      => array(array('tl_iso_config', 'filePicker')),
+					),
+					'position' => array
+					(
+						'label'       => $GLOBALS['TL_LANG']['tl_iso_config']['iwPosition'],
+						'inputType'   => 'select',
+						'options'     => array('tl', 'tc', 'tr', 'bl', 'bc', 'br', 'cc'),
+						'reference'   => $GLOBALS['TL_LANG']['tl_iso_config'],
+						'eval'        => array('style'=>'width:60px'),
+					),
+				),
+			),
 		),
 		'priceCalculateFactor' => array
 		(
@@ -541,7 +588,7 @@ class tl_iso_config extends Backend
 		{
 			$GLOBALS['TL_DCA']['tl_iso_config']['fields']['fallback']['default'] = '1';
 		}
-		
+
 		// Disable the invoice image, this is a bug in TCPDF (see http://contao-forge.org/issues/3124)
 		if (ini_get('safe_mode') || ini_get('open_basedir') != '')
 		{
@@ -781,6 +828,18 @@ class tl_iso_config extends Backend
 	public function deleteConfig($row, $href, $label, $title, $icon, $attributes)
 	{
 		return ($this->User->isAdmin || $this->User->hasAccess('delete', 'iso_configp')) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
+	}
+
+
+	/**
+	 * Return the file picker wizard
+	 * @param DataContainer
+	 * @return string
+	 */
+	public function filePicker(DataContainer $dc)
+	{
+		$strField = 'ctrl_' . $dc->field . (($this->Input->get('act') == 'editAll') ? '_' . $dc->id : '');
+		return ' ' . $this->generateImage('pickfile.gif', $GLOBALS['TL_LANG']['MSC']['filepicker'], 'style="vertical-align:top;cursor:pointer" onclick="Backend.pickFile(\'' . $strField . '\')"');
 	}
 }
 

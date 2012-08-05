@@ -95,12 +95,12 @@ $GLOBALS['TL_LANG']['tl_iso_config']['bc']								= 'Bottom';
 $GLOBALS['TL_LANG']['tl_iso_config']['br']								= 'Bottom Right';
 $GLOBALS['TL_LANG']['tl_iso_config']['cc']								= 'Center';
 
-$GLOBALS['TL_LANG']['tl_iso_config']['iwName']							= 'Name';
-$GLOBALS['TL_LANG']['tl_iso_config']['iwWidth']							= 'Width';
-$GLOBALS['TL_LANG']['tl_iso_config']['iwHeight']						= 'Height';
-$GLOBALS['TL_LANG']['tl_iso_config']['iwMode']							= 'Mode';
-$GLOBALS['TL_LANG']['tl_iso_config']['iwWatermark']						= 'Watermark image';
-$GLOBALS['TL_LANG']['tl_iso_config']['iwPosition']						= 'Position';
+$GLOBALS['TL_LANG']['tl_iso_config']['iwName']							= array('Name');
+$GLOBALS['TL_LANG']['tl_iso_config']['iwWidth']							= array('Width');
+$GLOBALS['TL_LANG']['tl_iso_config']['iwHeight']						= array('Height');
+$GLOBALS['TL_LANG']['tl_iso_config']['iwMode']							= array('Mode');
+$GLOBALS['TL_LANG']['tl_iso_config']['iwWatermark']						= array('Watermark image');
+$GLOBALS['TL_LANG']['tl_iso_config']['iwPosition']						= array('Position');
 
 $GLOBALS['TL_LANG']['tl_iso_config']['fwEnabled']						= 'Enable field';
 $GLOBALS['TL_LANG']['tl_iso_config']['fwLabel']							= 'Custom label';
