@@ -540,7 +540,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		$arrModules = array();
 		$arrModuleIds = deserialize($this->iso_shipping_modules);
 
-		if (is_array($arrModuleIds) && count($arrModuleIds))
+		if (is_array($arrModuleIds) && !empty($arrModuleIds))
 		{
 			$arrData = $this->Input->post('shipping');
 			$arrModuleIds = array_map('intval', $arrModuleIds);
@@ -591,9 +591,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			}
 		}
 
-		$objTemplate = new IsotopeTemplate('iso_checkout_shipping_method');
-
-		if (!count($arrModules))
+		if (empty($arrModules))
 		{
 			$this->doNotSubmit = true;
 			$this->Template->showNext = false;
@@ -607,10 +605,14 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 			return $objTemplate->parse();
 		}
-		elseif (!$this->Isotope->Cart->hasShipping && !strlen($_SESSION['CHECKOUT_DATA']['shipping']['module']) && count($arrModules) == 1)
+
+		$objTemplate = new IsotopeTemplate('iso_checkout_shipping_method');
+
+		if (!$this->Isotope->Cart->hasShipping && !strlen($_SESSION['CHECKOUT_DATA']['shipping']['module']) && count($arrModules) == 1)
 		{
 			$this->Isotope->Cart->Shipping = $objLastModule;
 			$_SESSION['CHECKOUT_DATA']['shipping']['module'] = $this->Isotope->Cart->Shipping->id;
+			$arrModules[0]['checked'] = ' checked="checked"';
 		}
 		elseif (!$this->Isotope->Cart->hasShipping)
 		{
@@ -724,8 +726,6 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			}
 		}
 
-		$objTemplate = new IsotopeTemplate('iso_checkout_payment_method');
-
 		if (!count($arrModules))
 		{
 			$this->doNotSubmit = true;
@@ -740,10 +740,14 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 			return $objTemplate->parse();
 		}
-		elseif (!$this->Isotope->Cart->hasPayment && !strlen($_SESSION['CHECKOUT_DATA']['payment']['module']) && count($arrModules) == 1)
+
+		$objTemplate = new IsotopeTemplate('iso_checkout_payment_method');
+
+		if (!$this->Isotope->Cart->hasPayment && !strlen($_SESSION['CHECKOUT_DATA']['payment']['module']) && count($arrModules) == 1)
 		{
 			$this->Isotope->Cart->Payment = $objLastModule;
 			$_SESSION['CHECKOUT_DATA']['payment']['module'] = $this->Isotope->Cart->Payment->id;
+            $arrModules[0]['checked'] = ' checked="checked"';
 		}
 		elseif (!$this->Isotope->Cart->hasPayment)
 		{

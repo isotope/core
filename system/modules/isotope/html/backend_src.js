@@ -430,7 +430,7 @@ var Isotope =
 
 					if (element.match('.tl_checkbox_single_container'))
 					{
-						element.getFirst('input').disabled = event.target.checked;
+						element.getFirst('input[type=checkbox]').disabled = event.target.checked;
 					}
 					else
 					{
@@ -443,7 +443,7 @@ var Isotope =
 
 				if (el.match('.tl_checkbox_single_container'))
 				{
-					el.getFirst('input').readonly = check.checked;
+					el.getFirst('input[type=checkbox]').disabled = check.checked;
 				}
 				else
 				{
