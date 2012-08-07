@@ -891,6 +891,16 @@ abstract class IsotopeProductCollection extends Model
 			}
 		}
 
+		// HOOK to allow overriding of the template
+		if (isset($GLOBALS['ISO_HOOKS']['generateCollection']) && is_array($GLOBALS['ISO_HOOKS']['generateCollection']))
+		{
+			foreach ($GLOBALS['ISO_HOOKS']['generateCollection'] as $callback)
+			{
+				$this->import($callback[0]);
+				$this->$callback[0]->$callback[1]($objTemplate, $arrItems, $this);
+			}
+		}
+
 		$strArticle = $this->Isotope->replaceInsertTags($objTemplate->parse());
 		$strArticle = html_entity_decode($strArticle, ENT_QUOTES, $GLOBALS['TL_CONFIG']['characterSet']);
 		$strArticle = $this->Isotope->convertRelativeUrls($strArticle, '', true);
