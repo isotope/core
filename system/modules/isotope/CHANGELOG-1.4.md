@@ -37,3 +37,5 @@ Version 1.4.beta1 (2012-??-??)
 - Replaced <section> tags with regular <div> tags.
 - Disabled forward/back buttons on click in checkout module to prevent a second submit (#3328)
 
+### Fixed
+- The watermarkImage hook did not pass the image position
