@@ -43,6 +43,7 @@ $GLOBALS['TL_LANG']['tl_iso_producttypes']['attributes']			= array('Attributes',
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['variants']				= array('Enable variants', 'Check here if this product type has variants.');
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['variant_attributes']	= array('Variant attributes', 'Select the collection of variant attributes that should be included for this product type. Those that are not selected will be hidden from view and inherited from the parent product.');
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['force_variant_options']	= array('Always show variant attributes', 'Show a variant attribute (select, radio) even if there is only one choice.');
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['shipping_exempt']		= array('Exempt from shipping', 'Check if items of this producttype are not a shipped item (such as downloadable products).');
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['downloads']				= array('Enable downloads', 'Check here if this product type has downloads.');
 
 
@@ -65,7 +66,7 @@ $GLOBALS['TL_LANG']['tl_iso_producttypes']['prices_legend']			= 'Prices';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['template_legend']		= 'Templates';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['attributes_legend']		= 'Product attributes';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['variants_legend']		= 'Variant attributes';
-$GLOBALS['TL_LANG']['tl_iso_producttypes']['download_legend']		= 'Downloads';
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['expert_legend']			= 'Expert settings';
 
 
 /**

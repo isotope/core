@@ -18,6 +18,7 @@ Version 1.4.beta1 (2012-??-??)
 - Can now filter for serialized data (e.g. checkboxes)
 - Change page title to reflect current step in checkout module (#2085)
 - Added generateCollection hook (#27)
+- Exempt all products of a certain type from shipping (#3148)
 
 ### Improved
 - Checkout steps are now a numbered list (#3040)

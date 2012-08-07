@@ -122,7 +122,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
 	(
 		'__selector__'				=> array('class', 'prices', 'variants'),
 		'default'					=> '{name_legend},name,class',
-		'regular'					=> '{name_legend},name,class,fallback;{description_legend:hide},description;{prices_legend:hide},prices;{template_legend},list_template,reader_template;{attributes_legend},attributes;{variants_legend:hide},variants;{download_legend:hide},downloads',
+		'regular'					=> '{name_legend},name,class,fallback;{description_legend:hide},description;{prices_legend:hide},prices;{template_legend},list_template,reader_template;{attributes_legend},attributes;{variants_legend:hide},variants;{expert_legend:hide},shipping_exempt,downloads',
 	),
 
 	// Subpalettes
@@ -240,12 +240,18 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
 			'inputType'				=> 'checkbox',
 			'eval'					=> array('tl_class'=>'clr'),
 		),
+		'shipping_exempt' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_producttypes']['shipping_exempt'],
+			'inputType'				=> 'checkbox',
+			'eval'					=> array('tl_class'=>'w50'),
+		),
 		'downloads' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_producttypes']['downloads'],
 			'exclude'				=> true,
 			'inputType'				=> 'checkbox',
-			'eval'					=> array(),
+			'eval'					=> array('tl_class'=>'w50'),
 		),
 	)
 );
@@ -269,9 +275,9 @@ class tl_iso_producttypes extends Backend
 		{
 			return;
 		}
-		
+
 		$this->import('BackendUser', 'User');
-		
+
 		if ($this->User->isAdmin)
 		{
 			return;

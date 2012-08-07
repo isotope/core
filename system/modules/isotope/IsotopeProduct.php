@@ -277,6 +277,9 @@ class IsotopeProduct extends Controller
 
 				return $this->arrCache[$strKey] ? $this->arrCache[$strKey] : 1;
 
+			case 'shipping_exempt':
+				return ($this->arrData['shipping_exempt'] || $this->arrType['shipping_exempt']) ? true : false;
+
 			case 'available':
 				return $this->isAvailable();
 				break;

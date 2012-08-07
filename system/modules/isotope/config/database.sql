@@ -141,6 +141,7 @@ CREATE TABLE `tl_iso_producttypes` (
   `variants` char(1) NOT NULL default '',
   `variant_attributes` blob NULL,
   `force_variant_options` char(1) NOT NULL default '',
+  `shipping_exempt` char(1) NOT NULL default '',
   `downloads` char(1) NOT NULL default '',
   PRIMARY KEY  (`id`),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
