@@ -243,23 +243,22 @@ class ModuleIsotopeProductList extends ModuleIsotope
 
 		foreach ($arrProducts as $objProduct)
 		{
-			$tempData = array
+			$arrBuffer[] = array
 			(
 				'cssID'	=> ($objProduct->cssID[0] != '') ? ' id="' . $objProduct->cssID[0] . '"' : '',
 				'class'	=> $objProduct->cssID[1],
 				'html'	=> $objProduct->generate((strlen($this->iso_list_layout) ? $this->iso_list_layout : $objProduct->list_template), $this)
 			);
+		}
 
-			// HOOK: to add any product field or attribute to mod_iso_productlist template
-			if (isset($GLOBALS['ISO_HOOKS']['getProductField']) && is_array($GLOBALS['ISO_HOOKS']['getProductField']))
+		// HOOK: to add any product field or attribute to mod_iso_productlist template
+		if (isset($GLOBALS['ISO_HOOKS']['generateProductList']) && is_array($GLOBALS['ISO_HOOKS']['generateProductList']))
+		{
+			foreach ($GLOBALS['ISO_HOOKS']['generateProductList'] as $callback)
 			{
-				foreach ($GLOBALS['ISO_HOOKS']['getProductField'] as $callback)
-				{
-					$this->import($callback[0]);
-					$tempData = array_merge($tempData, $this->$callback[0]->$callback[1]($objProduct));
-				}
+				$this->import($callback[0]);
+				$arrBuffer = $this->$callback[0]->$callback[1]($arrBuffer, $arrProducts, $this->Template, $this);
 			}
-			$arrBuffer[] = $tempData;;
 		}
 
 		$this->Template->products = IsotopeFrontend::generateRowClass($arrBuffer, 'product', 'class', $this->iso_cols);
