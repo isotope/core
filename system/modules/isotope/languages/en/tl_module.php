@@ -32,8 +32,12 @@
 /**
  * Fields
  */
+$GLOBALS['TL_LANG']['tl_module']['iso_producttype']				= array('Product type', '');
+$GLOBALS['TL_LANG']['tl_module']['iso_template']				= array('Template', '');
 $GLOBALS['TL_LANG']['tl_module']['iso_list_layout']				= array('Product list template', 'Please choose a list layout. You can add custom list layouts to folder <em>templates</em>. List template files start with <em>iso_list_</em> and require file extension <em>.tpl</em>.');
+$GLOBALS['TL_LANG']['tl_module']['iso_list_layoutPerType']		= array('Product list template by product type', 'You can choose a individual list template for each product type. You can add custom list layouts to folder <em>templates</em>. List template files start with <em>iso_list_</em> and require file extension <em>.tpl</em>.');
 $GLOBALS['TL_LANG']['tl_module']['iso_reader_layout']			= array('Product reader template', 'Please choose a reader template.  You can add custom reader templates to folder <em>templates</em>. Reader template files start with <em>iso_reader_</em>.');
+$GLOBALS['TL_LANG']['tl_module']['iso_reader_layoutPerType']	= array('Product reader template by product type', 'You can choose a individual reader template for each product type. You can add custom reader templates to folder <em>templates</em>. Reader template files start with <em>iso_reader_</em>.');
 $GLOBALS['TL_LANG']['tl_module']['iso_reader_jumpTo']			= array('Product reader jump to page', 'This setting defines to which page a user will be redirected when clicking a product for more info (<strong>Note:</strong> This overwrites the settings in the site structure!).');
 $GLOBALS['TL_LANG']['tl_module']['iso_cart_layout']				= array('Shopping cart template', 'Please choose a shopping cart layout. You can add custom cart layouts to folder <em>templates</em>. Cart template files start with <em>iso_cart_</em>.');
 $GLOBALS['TL_LANG']['tl_module']['iso_filterTpl']				= array('Filter template', 'Please choose a filter template. You can add custom filter templates to folder <em>templates</em>. Filter template files start with <em>iso_filter_</em>.');

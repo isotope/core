@@ -243,17 +243,32 @@ class ModuleIsotopeProductList extends ModuleIsotope
 
 		foreach ($arrProducts as $objProduct)
 		{
+			$strTemplate = $this->getProductTemplate($objProduct);
 			$arrBuffer[] = array
 			(
 				'cssID'	=> ($objProduct->cssID[0] != '') ? ' id="' . $objProduct->cssID[0] . '"' : '',
 				'class'	=> $objProduct->cssID[1],
-				'html'	=> $objProduct->generate((strlen($this->iso_list_layout) ? $this->iso_list_layout : $objProduct->list_template), $this),
+				'html'	=> $objProduct->generate($strTemplate, $this),
 			);
 		}
 
 		$this->Template->products = IsotopeFrontend::generateRowClass($arrBuffer, 'product', 'class', $this->iso_cols);
 	}
 
+	private $arrProductTemplates;
+	
+	protected function getProductTemplate($objProduct) {
+		if(!isset($this->arrProductTemplates)) {
+			$this->arrProductTemplates = deserialize($this->iso_list_layoutPerType, true);
+		}
+		if(strlen($this->arrProductTemplates[$objProduct->type])) {
+			return $this->arrProductTemplates[$objProduct->type];
+		}
+		if(strlen($this->iso_list_layout)) {
+			return $this->iso_list_layout;
+		}
+		return $objProduct->list_template;
+	}
 
 	/**
 	 * Find all products we need to list.
