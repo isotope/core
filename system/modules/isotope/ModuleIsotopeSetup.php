@@ -69,7 +69,7 @@ class ModuleIsotopeSetup extends BackendModule
 
 					$this->arrModules[$GLOBALS['TL_LANG']['IMD'][$strGroup]][$strModule] = array
 					(
-						'name' => $GLOBALS['TL_LANG']['IMD'][$strModule][0],
+						'name' => ($GLOBALS['TL_LANG']['IMD'][$strModule][0] ? $GLOBALS['TL_LANG']['IMD'][$strModule][0] : $strModule),
 						'description' => $GLOBALS['TL_LANG']['IMD'][$strModule][1],
 						'icon' => $arrConfig['icon']
 					);
