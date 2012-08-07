@@ -168,7 +168,7 @@ class IsotopeProduct extends Controller
 		$this->arrCache['reader_template'] = $this->arrType['reader_template'];
 		$this->arrCache['quantity_requested'] = $intQuantity;
 
-		// Allow to customize attributes
+		// !HOOK: allow to customize attributes
 		if (isset($GLOBALS['ISO_HOOKS']['productAttributes']) && is_array($GLOBALS['ISO_HOOKS']['productAttributes']))
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['productAttributes'] as $callback)
@@ -749,7 +749,7 @@ class IsotopeProduct extends Controller
 
 		$arrButtons = array();
 
-		// Buttons
+		// !HOOK: retrive buttons
 		if (isset($GLOBALS['ISO_HOOKS']['buttons']) && is_array($GLOBALS['ISO_HOOKS']['buttons']))
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['buttons'] as $callback)
@@ -795,7 +795,7 @@ class IsotopeProduct extends Controller
 		list(,$startScript, $endScript) = IsotopeFrontend::getElementAndScriptTags();
 		$GLOBALS['TL_MOOTOOLS'][] = $startScript."\nnew {$this->ajaxClass}('{$objModule->id}', '" . ($this->pid ? $this->pid : $this->id) . "', '{$this->formSubmit}', ['ctrl_" . implode("_".$this->formSubmit."', 'ctrl_", $arrAjaxOptions) . "_".$this->formSubmit."'], {language: '{$GLOBALS['TL_LANGUAGE']}', action: '".($objModule instanceof Module ? 'fmd' : 'cte')."', page: {$objPage->id}, loadMessage:'" . specialchars($GLOBALS['ISO_LANG']['MSC']['loadingProductData']) . "'});\n".$endScript;
 
-		// HOOK for altering product data before output
+		// !HOOK: alter product data before output
 		if (isset($GLOBALS['ISO_HOOKS']['generateProduct']) && is_array($GLOBALS['ISO_HOOKS']['generateProduct']))
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['generateProduct'] as $callback)
@@ -869,7 +869,7 @@ class IsotopeProduct extends Controller
 			}
 		}
 
-		// HOOK for altering product data before output
+		// !HOOK: alter product data before ajax output
 		if (isset($GLOBALS['ISO_HOOKS']['generateAjaxProduct']) && is_array($GLOBALS['ISO_HOOKS']['generateAjaxProduct']))
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['generateAjaxProduct'] as $callback)
@@ -1028,7 +1028,7 @@ class IsotopeProduct extends Controller
 			$strBuffer = $this->Isotope->formatValue('tl_iso_products', $attribute, $varValue);
 		}
 
-		// Allow for custom attribute types to modify their output.
+		// !HOOK: allow for custom attribute types to modify their output
 		if (isset($GLOBALS['ISO_HOOKS']['generateAttribute']) && is_array($GLOBALS['ISO_HOOKS']['generateAttribute']))
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['generateAttribute'] as $callback)

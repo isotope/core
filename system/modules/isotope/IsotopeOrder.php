@@ -308,7 +308,7 @@ class IsotopeOrder extends IsotopeProductCollection
 			$this->Isotope->Cart = $objCart;
 		}
 
-		// HOOK: process checkout
+		// !HOOK: pre-process checkout
 		if (isset($GLOBALS['ISO_HOOKS']['preCheckout']) && is_array($GLOBALS['ISO_HOOKS']['preCheckout']))
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['preCheckout'] as $callback)
@@ -317,7 +317,7 @@ class IsotopeOrder extends IsotopeProductCollection
 
 				if ($this->$callback[0]->$callback[1]($this, $objCart) === false)
 				{
-					$this->log('Callback "' . $callback[0] . ':' . $callback[1] . '" cancelled checkout for Order ID ' . $this->id, __METHOD__, TL_ERROR);
+					$this->log('Callback ' . $callback[0] . '::' . $callback[1] . '() cancelled checkout for Order ID ' . $this->id, __METHOD__, TL_ERROR);
 					return false;
 				}
 			}
@@ -369,7 +369,7 @@ class IsotopeOrder extends IsotopeProductCollection
 			}
 		}
 
-		// HOOK: process checkout
+		// !HOOK: post-process checkout
 		if (isset($GLOBALS['ISO_HOOKS']['postCheckout']) && is_array($GLOBALS['ISO_HOOKS']['postCheckout']))
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['postCheckout'] as $callback)
@@ -431,7 +431,7 @@ class IsotopeOrder extends IsotopeProductCollection
 			return false;
 		}
 
-		// HOOK: allow to cancel a status update
+		// !HOOK: allow to cancel a status update
 		if (isset($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate']) && is_array($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate']))
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate'] as $callback)
@@ -475,7 +475,7 @@ class IsotopeOrder extends IsotopeProductCollection
 		$this->status = $objNewStatus->id;
 		$this->save();
 
-		// HOOK: order status has been updated
+		// !HOOK: order status has been updated
 		if (isset($GLOBALS['ISO_HOOKS']['postOrderStatusUpdate']) && is_array($GLOBALS['ISO_HOOKS']['postOrderStatusUpdate']))
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['postOrderStatusUpdate'] as $callback)
@@ -533,7 +533,7 @@ class IsotopeOrder extends IsotopeProductCollection
 			return $this->strOrderId;
 		}
 
-		// HOOK: generate a custom order ID
+		// !HOOK: generate a custom order ID
 		if (isset($GLOBALS['ISO_HOOKS']['generateOrderId']) && is_array($GLOBALS['ISO_HOOKS']['generateOrderId']))
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['generateOrderId'] as $callback)

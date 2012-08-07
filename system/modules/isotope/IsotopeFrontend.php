@@ -284,7 +284,7 @@ class IsotopeFrontend extends Frontend
 			return $strCacheName;
 		}
 
-		// HOOK: add custom logic
+		// !HOOK: override image watermark routine
 		if (isset($GLOBALS['ISO_HOOKS']['watermarkImage']) && is_array($GLOBALS['ISO_HOOKS']['watermarkImage']))
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['watermarkImage'] as $callback)

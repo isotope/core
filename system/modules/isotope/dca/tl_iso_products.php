@@ -687,7 +687,7 @@ class tl_iso_products extends Backend
 						break;
 
 					default:
-						// HOOK: add custom logic
+						// !HOOK: add custom advanced filters
 						if (isset($GLOBALS['ISO_HOOKS']['applyAdvancedFilters']) && is_array($GLOBALS['ISO_HOOKS']['applyAdvancedFilters']))
 						{
 							foreach ($GLOBALS['ISO_HOOKS']['applyAdvancedFilters'] as $callback)
@@ -1345,7 +1345,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 				$arrPattern[] = $objProducts->sku ? standardize($objProducts->sku, true) : null;
 				$arrPattern[] = count($arrImageNames) ? implode('|', $arrImageNames) : null;
 
-				// HOOK: add custom import regex patterns
+				// !HOOK: add custom import regex patterns
 				if (isset($GLOBALS['ISO_HOOKS']['addAssetImportRegexp']) && is_array($GLOBALS['ISO_HOOKS']['addAssetImportRegexp']))
 				{
 					foreach ($GLOBALS['ISO_HOOKS']['addAssetImportRegexp'] as $callback)

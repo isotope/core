@@ -160,7 +160,7 @@ class IsotopeAutomator extends Controller
 					break;
 
 				default:
-					// HOOK for other currency providers
+					// !HOOK: other currency providers
 					// function myCurrencyConverter($strProvider, $strSourceCurrency, $strTargetCurrency, $arrConfig)
 					if (isset($GLOBALS['ISO_HOOKS']['convertCurrency']) && is_array($GLOBALS['ISO_HOOKS']['convertCurrency']))
 					{

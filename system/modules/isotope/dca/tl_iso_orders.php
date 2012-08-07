@@ -746,7 +746,7 @@ class tl_iso_orders extends Backend
 
 		if ($objOrder->findBy('id', $dc->id))
 		{
-			// HOOK for adding additional functionality when saving
+			// !HOOK: add additional functionality when saving collection
 			if (isset($GLOBALS['ISO_HOOKS']['saveCollection']) && is_array($GLOBALS['ISO_HOOKS']['saveCollection']))
 			{
 				foreach ($GLOBALS['ISO_HOOKS']['saveCollection'] as $callback)

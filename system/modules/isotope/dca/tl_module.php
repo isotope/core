@@ -570,6 +570,7 @@ class tl_module_isotope extends Backend
 		$arrOptions = array();
 		$arrButtons = array();
 
+		// !HOOK: add product buttons
 		if (isset($GLOBALS['ISO_HOOKS']['buttons']) && is_array($GLOBALS['ISO_HOOKS']['buttons']))
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['buttons'] as $callback)

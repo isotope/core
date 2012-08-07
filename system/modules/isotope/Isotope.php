@@ -216,7 +216,7 @@ class Isotope extends Controller
 			return $fltPrice;
 		}
 
-		// HOOK for altering prices
+		// !HOOK: calculate price
 		if (isset($GLOBALS['ISO_HOOKS']['calculatePrice']) && is_array($GLOBALS['ISO_HOOKS']['calculatePrice']))
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['calculatePrice'] as $callback)
@@ -349,7 +349,7 @@ class Isotope extends Controller
 			return $fltPrice;
 		}
 
-		// HOOK for altering taxes
+		// !HOOK: calculate taxes
 		if (isset($GLOBALS['ISO_HOOKS']['calculateTax']) && is_array($GLOBALS['ISO_HOOKS']['calculateTax']))
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['calculateTax'] as $callback)
@@ -470,7 +470,7 @@ class Isotope extends Controller
 
 		$objRate->address = deserialize($objRate->address);
 
-		// HOOK for altering taxes
+		// !HOOK: use tax rate
 		if (isset($GLOBALS['ISO_HOOKS']['useTaxRate']) && is_array($GLOBALS['ISO_HOOKS']['useTaxRate']))
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['useTaxRate'] as $callback)

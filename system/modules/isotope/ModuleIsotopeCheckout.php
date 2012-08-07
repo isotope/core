@@ -1049,7 +1049,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				break;
 		}
 
-		// HOOK: add custom addresses, such as from a stored gift registry
+		// !HOOK: add custom addresses
 		if (isset($GLOBALS['ISO_HOOKS']['addCustomAddress']) && is_array($GLOBALS['ISO_HOOKS']['addCustomAddress']))
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['addCustomAddress'] as $callback)

@@ -398,7 +398,7 @@ abstract class IsotopeProductCollection extends Model
 			}
 		}
 
-		// HOOK for adding additional functionality when saving
+		// !HOOK: additional functionality when saving a collection
 		if (isset($GLOBALS['ISO_HOOKS']['saveCollection']) && is_array($GLOBALS['ISO_HOOKS']['saveCollection']))
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['saveCollection'] as $callback)
@@ -426,7 +426,7 @@ abstract class IsotopeProductCollection extends Model
 	 */
 	public function delete()
 	{
-		// HOOK for adding additional functionality when deleting a collection
+		// !HOOK: additional functionality when deleting a collection
 		if (isset($GLOBALS['ISO_HOOKS']['deleteCollection']) && is_array($GLOBALS['ISO_HOOKS']['deleteCollection']))
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['deleteCollection'] as $callback)
@@ -542,7 +542,7 @@ abstract class IsotopeProductCollection extends Model
 	 */
 	public function addProduct(IsotopeProduct $objProduct, $intQuantity)
 	{
-		// HOOK for adding additional functionality when adding product to collection
+		// !HOOK: additional functionality when adding product to collection
 		if (isset($GLOBALS['ISO_HOOKS']['addProductToCollection']) && is_array($GLOBALS['ISO_HOOKS']['addProductToCollection']))
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['addProductToCollection'] as $callback)
@@ -611,7 +611,7 @@ abstract class IsotopeProductCollection extends Model
 			return false;
 		}
 
-		// HOOK for adding additional functionality when updating a product in the collection
+		// !HOOK: additional functionality when updating a product in the collection
 		if (isset($GLOBALS['ISO_HOOKS']['updateProductInCollection']) && is_array($GLOBALS['ISO_HOOKS']['updateProductInCollection']))
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['updateProductInCollection'] as $callback)
@@ -662,7 +662,7 @@ abstract class IsotopeProductCollection extends Model
 			return false;
 		}
 
-		// HOOK for adding additional functionality when a product is removed from the collection
+		// !HOOK: additional functionality when a product is removed from the collection
 		if (isset($GLOBALS['ISO_HOOKS']['deleteProductFromCollection']) && is_array($GLOBALS['ISO_HOOKS']['deleteProductFromCollection']))
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['deleteProductFromCollection'] as $callback)
@@ -708,7 +708,7 @@ abstract class IsotopeProductCollection extends Model
 			$blnTransfer = true;
 			$objNewItems = $this->Database->prepare("SELECT * FROM {$this->ctable} WHERE pid={$this->id} AND product_id={$objOldItems->product_id} AND product_options=?")->execute($objOldItems->product_options);
 
-			// HOOK for adding additional functionality when adding product to collection
+			// !HOOK: additional functionality when adding product to collection
 			if (isset($GLOBALS['ISO_HOOKS']['transferCollection']) && is_array($GLOBALS['ISO_HOOKS']['transferCollection']))
 			{
 				foreach ($GLOBALS['ISO_HOOKS']['transferCollection'] as $callback)
@@ -764,7 +764,7 @@ abstract class IsotopeProductCollection extends Model
 			$this->modified = true;
 		}
 
-		// HOOK for adding additional functionality when adding product to collection
+		// !HOOK: additional functionality when adding product to collection
 		if (isset($GLOBALS['ISO_HOOKS']['transferredCollection']) && is_array($GLOBALS['ISO_HOOKS']['transferredCollection']))
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['transferredCollection'] as $callback)
@@ -891,7 +891,7 @@ abstract class IsotopeProductCollection extends Model
 			}
 		}
 
-		// HOOK to allow overriding of the template
+		// !HOOK: allow overriding of the template
 		if (isset($GLOBALS['ISO_HOOKS']['generateCollection']) && is_array($GLOBALS['ISO_HOOKS']['generateCollection']))
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['generateCollection'] as $callback)

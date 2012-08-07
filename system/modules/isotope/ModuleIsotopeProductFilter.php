@@ -302,7 +302,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 				}
 			}
 
-			// HOOK for altering the filters
+			// !HOOK: alter the filters
 			if (isset($GLOBALS['ISO_HOOKS']['generateFilters']) && is_array($GLOBALS['ISO_HOOKS']['generateFilters']))
 			{
 				foreach ($GLOBALS['ISO_HOOKS']['generateFilters'] as $callback)

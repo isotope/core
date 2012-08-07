@@ -154,7 +154,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 			$this->reload();
 		}
 
-		// HOOK for adding additional forms into the template
+		// !HOOK: add additional forms into the template
 		if (isset($GLOBALS['ISO_HOOKS']['compileCart']) && is_array($GLOBALS['ISO_HOOKS']['compileCart']))
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['compileCart'] as $name => $callback)
