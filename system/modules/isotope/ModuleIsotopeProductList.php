@@ -247,7 +247,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			(
 				'cssID'	=> ($objProduct->cssID[0] != '') ? ' id="' . $objProduct->cssID[0] . '"' : '',
 				'class'	=> $objProduct->cssID[1],
-				'html'	=> $objProduct->generate((strlen($this->iso_list_layout) ? $this->iso_list_layout : $objProduct->list_template), $this)
+				'html'	=> $objProduct->generate((strlen($this->iso_list_layout) ? $this->iso_list_layout : $objProduct->list_template), $this),
 			);
 		}
 
