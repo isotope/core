@@ -356,14 +356,28 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 			{
 				foreach ($this->iso_sortingFields as $field)
 				{
-					// @todo this must be dynamic
-					switch ($field)
+					// Add sort label based on data type
+					if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field] && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['eval']['rgxp'])
+						$type = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['eval']['rgxp'];
+					else
+						$type = $field;
+
+					switch ($type)
 					{
+						case 'digit':
+							$asc = $GLOBALS['TL_LANG']['MSC']['small_to_large'];
+							$desc = $GLOBALS['TL_LANG']['MSC']['large_to_small'];
+							break;
+
 						case 'price':
+						case 'surcharge':
 							$asc = $GLOBALS['TL_LANG']['MSC']['low_to_high'];
 							$desc = $GLOBALS['TL_LANG']['MSC']['high_to_low'];
 							break;
 
+						case 'date':
+						case 'time':
+						case 'datim':
 						case 'datetime':
 							$asc = $GLOBALS['TL_LANG']['MSC']['old_to_new'];
 							$desc = $GLOBALS['TL_LANG']['MSC']['new_to_old'];
