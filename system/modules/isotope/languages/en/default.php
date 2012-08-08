@@ -190,6 +190,8 @@ $GLOBALS['TL_LANG']['MSC']['a_to_z'] = 'A to Z';
 $GLOBALS['TL_LANG']['MSC']['z_to_a'] = 'Z to A';
 $GLOBALS['TL_LANG']['MSC']['old_to_new'] = 'earlier to later';
 $GLOBALS['TL_LANG']['MSC']['new_to_old'] = 'later to earlier';
+$GLOBALS['TL_LANG']['MSC']['small_to_large'] = 'small to large';
+$GLOBALS['TL_LANG']['MSC']['large_to_small'] = 'large to small';
 
 
 /**
