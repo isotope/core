@@ -476,7 +476,7 @@ h1 { font-size:18px; font-weight:normal; margin:0 0 18px; }
 			$this->Database->query("ALTER TABLE tl_iso_config ADD COLUMN billing_fields blob NULL");
 			$this->Database->query("UPDATE tl_iso_config SET billing_fields=shipping_fields");
 		}
-		
+
 		foreach( array('billing_country', 'shipping_country') as $field )
 		{
 			if (!$this->Database->fieldExists($field, 'tl_iso_config'))
@@ -533,8 +533,8 @@ h1 { font-size:18px; font-weight:normal; margin:0 0 18px; }
 		// Fix for Ticket #383
 		$this->Database->query("UPDATE tl_iso_order_downloads SET downloads_remaining='' WHERE downloads_remaining='-1'");
 	}
-	
-	
+
+
 	private function initializeOrderStatus()
 	{
 		if (!$this->Database->tableExists('tl_iso_orderstatus'))
@@ -561,15 +561,25 @@ CREATE TABLE `tl_iso_orderstatus` (
 			$objRecords = $this->Database->query("SELECT COUNT(id) AS total FROM tl_iso_orderstatus");
 			$blnUpdate = $objRecords->total > 0 ? false : true;
 		}
-		
+
 		if ($blnUpdate)
 		{
+			// Make sure the required fields are added in the store configuration
+			if (!$this->Database->fieldExists('orderstatus_new', 'tl_iso_config'))
+			{
+				$this->Database->query("ALTER TABLE tl_iso_config ADD COLUMN orderstatus_new int(10) unsigned NOT NULL default '0'");
+			}
+			if (!$this->Database->fieldExists('orderstatus_error', 'tl_iso_config'))
+			{
+				$this->Database->query("ALTER TABLE tl_iso_config ADD COLUMN orderstatus_error int(10) unsigned NOT NULL default '0'");
+			}
+
 			$GLOBALS['TL_LANG']['ORDER']['pending']		= 'Pending';
 			$GLOBALS['TL_LANG']['ORDER']['processing']	= 'Processing';
 			$GLOBALS['TL_LANG']['ORDER']['complete']	= 'Complete';
 			$GLOBALS['TL_LANG']['ORDER']['on_hold']		= 'On Hold';
 			$GLOBALS['TL_LANG']['ORDER']['cancelled']	= 'Cancelled';
-			
+
 			$time = time();
 			$arrStatus = array_unique(array_merge
 			(
@@ -577,12 +587,22 @@ CREATE TABLE `tl_iso_orderstatus` (
 				$this->Database->execute("SELECT DISTINCT status FROM tl_iso_orders WHERE status!=''")->fetchEach('status'),
 				$this->Database->execute("SELECT DISTINCT new_order_status FROM tl_iso_payment_modules WHERE new_order_status!=''")->fetchEach('new_order_status')
 			));
-			
+
 			foreach( $arrStatus as $i => $status )
 			{
 				$strLabel = $GLOBALS['TL_LANG']['ORDER'][$status] == '' ? $status : $GLOBALS['TL_LANG']['ORDER'][$status];
 				$intId = $this->Database->prepare("INSERT INTO tl_iso_orderstatus (tstamp,sorting,name,paid,welcomescreen) VALUES ($time,?,?,?,?)")->executeUncached(($i*128), $strLabel, ($status == 'complete' ? '1' : ''), ($status == 'pending' ? '1' : ''))->insertId;
-				
+
+				// Update existing store configurations
+				if ($status == 'pending')
+				{
+					$this->Database->prepare("UPDATE tl_iso_config SET orderstatus_new=$intId WHERE orderstatus_new=0");
+				}
+				elseif ($status == 'on_hold')
+				{
+					$this->Database->prepare("UPDATE tl_iso_config SET orderstatus_error=$intId WHERE orderstatus_error=0");
+				}
+
 				$this->Database->prepare("UPDATE tl_iso_orders SET status=? WHERE status=?")->executeUncached($intId, $status);
 				$this->Database->prepare("UPDATE tl_iso_payment_modules SET new_order_status=? WHERE new_order_status=?")->executeUncached($intId, $status);
 			}
