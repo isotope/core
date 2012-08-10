@@ -112,12 +112,15 @@ $GLOBALS['TL_LANG']['tl_module']['iso_includeMessages'][1] = 'Diese Einstellung 
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['member'] = 'Anmelden/Registrieren erforderlich';
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['guest'] = 'Nur Gast-Bestellungen';
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['both'] = 'Beides erlaubt';
-$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['global'] = 'Alle Kategorien';
-$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['current_and_first_child'] = 'Aktive Kategorie und "Erstes Kind"-Kategorie';
-$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['current_and_all_children'] = 'Aktive Kategorie und "Alle Kinder"-Kategorien';
-$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['current_category'] = 'Aktive Kategorie';
-$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['parent'] = 'Eltern-Kategorie';
-$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['product'] = 'Kategorien des aktiven Produkts';
+$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['global'][0] = 'Alle Kategorien';
+$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['current_and_first_child'][0] = 'Aktive Kategorie und "Erstes Kind"-Kategorie';
+$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['current_and_all_children'][0] = 'Aktive Kategorie und "Alle Kinder"-Kategorien';
+$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['current_category'][0] = 'Aktive Kategorie';
+$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['parent'][0] = 'Eltern-Kategorie';
+$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['product'][0] = 'Kategorien des aktiven Produkts';
+$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['article'][0] = 'Kategorie des Artikels';
+$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['article'][1] = 'Wenn Sie dieses Modul in einem Artikel plazieren, werden die Produkte der Artikel-Elternseite angezeigt (z.B. falls der Artikel per InsertTag auf einer anderen Seite verwendet wird).';
+
 $GLOBALS['TL_LANG']['tl_module']['sortingDirection']['ASC'] = 'Aufwärts';
 $GLOBALS['TL_LANG']['tl_module']['sortingDirection']['DESC'] = 'Abwärts';
 
