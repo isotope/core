@@ -187,7 +187,7 @@ abstract class ModuleIsotope extends Module
 				break;
 
 			case 'article':
-				$arrCategories = array($GLOBALS['ISO_CONFIG']['current_article'] > 0 ? $GLOBALS['ISO_CONFIG']['current_article'] : $objPage->id);
+				$arrCategories = array($GLOBALS['ISO_CONFIG']['current_article']['pid'] > 0 ? $GLOBALS['ISO_CONFIG']['current_article']['pid'] : $objPage->id);
 				break;
 
 			case 'current_category':

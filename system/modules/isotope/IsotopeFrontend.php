@@ -1494,7 +1494,8 @@ $endScript";
 	 */
 	public function storeCurrentArticle($objRow)
 	{
-		$GLOBALS['ISO_CONFIG']['current_article'] = $objRow->id;
+		$GLOBALS['ISO_CONFIG']['current_article']['id'] = $objRow->id;
+		$GLOBALS['ISO_CONFIG']['current_article']['pid'] = $objRow->pid;
 	}
 }
 
