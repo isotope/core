@@ -494,16 +494,16 @@ class IsotopeBackend extends Backend
 		if ($this->Database->tableExists('tl_iso_attributes'))
 		{
 			$objAttributes = $this->Database->execute("SELECT * FROM tl_iso_attributes");
-	
+
 			while ($objAttributes->next())
 			{
-				if ($objAttributes->type == '' || $GLOBALS['ISO_ATTR'][$objAttributes->type]['sql'] == '')
+				if ($objAttributes->field_name == '' || $objAttributes->type == '' || $GLOBALS['ISO_ATTR'][$objAttributes->type]['sql'] == '')
 				{
 					continue;
 				}
-	
+
 				$arrData['tl_iso_products']['TABLE_FIELDS'][$objAttributes->field_name] = sprintf('`%s` %s', $objAttributes->field_name, $GLOBALS['ISO_ATTR'][$objAttributes->type]['sql']);
-	
+
 				// Also check indexes
 				if ($objAttributes->fe_filter && $GLOBALS['ISO_ATTR'][$objAttributes->type]['useIndex'])
 				{
