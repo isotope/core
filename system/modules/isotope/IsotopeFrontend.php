@@ -1486,5 +1486,15 @@ $endScript";
 	{
 		unset($_SESSION['ISO_TIMEOUT']);
 	}
+
+
+	/**
+	 * Store the current article ID so we know it for the product list
+	 * @param Database_Result
+	 */
+	public function storeCurrentArticle($objRow)
+	{
+		$GLOBALS['ISO_CONFIG']['current_article'] = $objRow->id;
+	}
 }
 
