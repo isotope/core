@@ -449,10 +449,10 @@ class IsotopeProduct extends Controller
 	 * Return all attributes for this product as array
 	 * @return array
 	 */
-	public function getAttributes()
+	public function getAttributes(array $arrAttributes = null)
 	{
 		$arrData = array();
-		$arrAttributes = array_unique(array_merge($this->arrAttributes, $this->arrVariantAttributes));
+		$arrAttributes || $arrAttributes = array_unique(array_merge($this->arrAttributes, $this->arrVariantAttributes));
 
 		foreach ($arrAttributes as $attribute)
 		{
@@ -723,9 +723,9 @@ class IsotopeProduct extends Controller
 		$objTemplate = new IsotopeTemplate($strTemplate);
 		$arrProductOptions = array();
 		$arrAjaxOptions = array();
-		$arrAttributes = $this->getAttributes();
-
-		foreach ($arrAttributes as $attribute => $varValue)
+		$arrAttrNames = array();
+		
+		foreach (array_unique(array_merge($this->arrAttributes, $this->arrVariantAttributes)) as $attribute)
 		{
 			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['customer_defined'] || $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
 			{
@@ -743,8 +743,13 @@ class IsotopeProduct extends Controller
 			}
 			else
 			{
-				$objTemplate->$attribute = $this->generateAttribute($attribute, $varValue);
+				$arrAttrNames[] = $attribute;
 			}
+		}
+
+		foreach($this->getAttributes($arrAttrNames) as $attribute => $varValue)
+		{
+			$objTemplate->$attribute = $this->generateAttribute($attribute, $varValue);
 		}
 
 		$arrButtons = array();
@@ -821,9 +826,9 @@ class IsotopeProduct extends Controller
 		$this->validateVariant();
 
 		$arrOptions = array();
-		$arrAttributes = $this->getAttributes();
-
-		foreach ($arrAttributes as $attribute => $varValue)
+		$arrAttrNames = array();
+		
+		foreach (array_unique(array_merge($this->arrAttributes, $this->arrVariantAttributes)) as $attribute)
 		{
 			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
 			{
@@ -836,6 +841,12 @@ class IsotopeProduct extends Controller
 			}
 			elseif (in_array($attribute, $this->arrVariantAttributes))
 			{
+				$arrAttrNames[] = $attribute;
+			}
+		}
+		
+		foreach($this->getAttributes($arrAttrNames) as $attribute => $varValue)
+		{
 				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['inputType'] == 'mediaManager')
 				{
 					$objGallery = $this->$attribute;
@@ -866,7 +877,6 @@ class IsotopeProduct extends Controller
 						'html' => $this->generateAttribute($attribute, $varValue),
 					));
 				}
-			}
 		}
 
 		// !HOOK: alter product data before ajax output
