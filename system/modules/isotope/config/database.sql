@@ -34,6 +34,7 @@ CREATE TABLE `tl_iso_products` (
   `shipping_weight` varchar(255) NOT NULL default '',
   `shipping_exempt` char(1) NOT NULL default '',
   `tax_class` int(10) unsigned NOT NULL default '0',
+  `baseprice` varchar(255) NOT NULL default '',
   `protected` char(1) NOT NULL default '',
   `groups` blob NULL,
   `guests` char(1) NOT NULL default '',
@@ -601,6 +602,21 @@ CREATE TABLE `tl_iso_orderstatus` (
   `sales_email` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`),
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+-- --------------------------------------------------------
+
+--
+-- Table `tl_iso_base_price`
+--
+
+CREATE TABLE `tl_iso_baseprice` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `tstamp` int(10) unsigned NOT NULL default '0',
+  `name` varchar(255) NOT NULL default '',
+  `label` varchar(255) NOT NULL default '',
+  PRIMARY KEY  (`id`),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 

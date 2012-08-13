@@ -45,6 +45,7 @@ $GLOBALS['TL_LANG']['tl_iso_products']['keywords_meta']			= array('Meta keywords
 $GLOBALS['TL_LANG']['tl_iso_products']['price']					= array('Price', 'Please enter the price(s) for this product.');
 $GLOBALS['TL_LANG']['tl_iso_products']['shipping_exempt']		= array('Exempt from shipping', 'Check if item is not a shipped item (such as downloadable products).');
 $GLOBALS['TL_LANG']['tl_iso_products']['tax_class']				= array('Tax Class', 'Select your appropriate tax class.');
+$GLOBALS['TL_LANG']['tl_iso_products']['baseprice']				= array('Base price', 'Please enter your base price information.');
 $GLOBALS['TL_LANG']['tl_iso_products']['images']				= array('Images', 'Upload images to this product. Please save the product after selecting a file.');
 $GLOBALS['TL_LANG']['tl_iso_products']['protected']				= array('Protect product', 'Restrict product access to certain member groups.');
 $GLOBALS['TL_LANG']['tl_iso_products']['groups']				= array('Allowed member groups', 'These groups will be able to access the product.');

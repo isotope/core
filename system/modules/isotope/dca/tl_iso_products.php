@@ -451,6 +451,14 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'attributes'			=> array('legend'=>'pricing_legend', 'tl_class'=>'w50'),
 			'eval'					=> array('includeBlankOption'=>true, 'dynamic'=>true),
 		),
+		'baseprice' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['baseprice'],
+			'inputType'				=> 'timePeriod',
+			'foreignKey'			=> 'tl_iso_baseprice.name',
+			'attributes'			=> array('legend'=>'pricing_legend', 'tl_class'=>'w50'),
+			'eval'					=> array('includeBlankOption'=>true),
+		),
 		'shipping_weight' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['shipping_weight'],
