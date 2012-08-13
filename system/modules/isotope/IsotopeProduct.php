@@ -802,7 +802,7 @@ class IsotopeProduct extends Controller
 				
 				if ($objBasePrice->numRows)
 				{
-					$strBuffer = sprintf($objBasePrice->label, $this->Isotope->formatPriceWithCurrency($this->price / $varValue['value']));
+					$strBuffer = sprintf($objBasePrice->label, $this->Isotope->formatPriceWithCurrency($this->price / $varValue['value']), $varValue['value']);
 				}
 			}
 		}
