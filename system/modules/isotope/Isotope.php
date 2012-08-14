@@ -128,6 +128,13 @@ class Isotope extends Controller
 						$GLOBALS['ISO_SORTING'] = deserialize($objRequestCache->sorting);
 						$GLOBALS['ISO_LIMIT'] = deserialize($objRequestCache->limits);
 					}
+					// otherwise remove the isorc GET param and redirect
+					else
+					{
+						unset($_GET['isorc']);
+						$strQuery = http_build_query($_GET);
+						self::$objInstance->redirect(preg_replace('/\?.*$/i', '', self::$objInstance->Environment->request) . (($strQuery) ? '?' . $strQuery : ''));
+					}
 				}
 			}
 		}
