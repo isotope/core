@@ -107,8 +107,9 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 				}
 
 				$this->Input->setGet('isorc', $intCacheId);
-				$this->redirect($this->generateRequestUrl());
 			}
+
+			$this->redirect($this->generateRequestUrl());
 		}
 
 		return $strBuffer;
