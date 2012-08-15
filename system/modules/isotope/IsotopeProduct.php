@@ -454,9 +454,8 @@ class IsotopeProduct extends Controller
 				$strUrlKey = $this->arrData['alias'] ? $this->arrData['alias'] : ($this->arrData['pid'] ? $this->arrData['pid'] : $this->arrData['id']);
 
 				// make sure the page object is loaded because of the url language feature (e.g. when rebuilding the search index in the back end or ajax actions)
-				if (!$objPage)
+				if (!$objPage && $objPage = $this->getPageDetails($varValue))
 				{
-					$objPage = $this->getPageDetails($varValue);
 					$strUrl  = $this->generateFrontendUrl($objPage->fetchAssoc(), '/product/' . $strUrlKey, $objPage->rootLanguage);
 				}
 				else
