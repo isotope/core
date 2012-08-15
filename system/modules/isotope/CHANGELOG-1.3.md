@@ -1,6 +1,12 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 1.3.6 stable (????-??-??)
+---------------------------------
+
+### Fixed
+- Rebuilding the search index did not consider the language fragment
+
 Version 1.3.5 stable (2012-08-06)
 ---------------------------------
 
