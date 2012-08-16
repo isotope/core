@@ -19,7 +19,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
@@ -1249,8 +1249,8 @@ Isotope.makePageViewSortable("ul_' . CURRENT_ID . '");
 
 		return $return;
 	}
-	
-	
+
+
 	/**
 	 * Compile buttons from the table configuration array and return them as HTML
 	 * @param array
