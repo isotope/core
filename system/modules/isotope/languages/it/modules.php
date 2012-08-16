@@ -20,7 +20,6 @@
  *
  * PHP version 5
  * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
- * @author     Angelica Schempp <aschempp@gmx.net>
  * @author     Paolo B. <paolob@contaocms.it>
  * @author     Dan N <dan@dss.uniud.it>
  * @license    http://opensource.org/licenses/lgpl-3.0.html

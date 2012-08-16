@@ -22,7 +22,6 @@
  *
  * PHP version 5
  * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Angelica Schempp <aschempp@gmx.net>
  * @author     Paolo B. <paolob@contaocms.it>
  * @author     Dan N <dan@dss.uniud.it>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
