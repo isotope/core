@@ -518,6 +518,17 @@ class IsotopeOrder extends IsotopeProductCollection
 			}
 		}
 
+		// !HOOK: add custom email tokens
+		if (isset($GLOBALS['ISO_HOOKS']['getOrderEmailData']) && is_array($GLOBALS['ISO_HOOKS']['getOrderEmailData']))
+		{
+			foreach ($GLOBALS['ISO_HOOKS']['getOrderEmailData'] as $callback)
+			{
+				$strClass = $callback[0];
+				$objCallback = (in_array('getInstance', get_class_methods($strClass))) ? call_user_func(array($strClass, 'getInstance')) : new $strClass();
+				$arrData = $this->$callback[0]->$callback[1]($this, $arrData);
+			}
+		}
+
 		return $arrData;
 	}
 
