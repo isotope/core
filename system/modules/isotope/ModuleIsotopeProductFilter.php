@@ -233,7 +233,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 
 				while ($objValues->next())
 				{
-					$arrValues += deserialize($objValues->$strField, true);
+					$arrValues = array_merge($arrValues, deserialize($objValues->$strField, true));
 				}
 
 				if ($this->blnCacheRequest && in_array($arrInput[$strField], $arrValues))
