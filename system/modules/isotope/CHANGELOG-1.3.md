@@ -1,11 +1,15 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 1.3.6 stable (????-??-??)
+Version 1.3.6 stable (2012-08-??)
 ---------------------------------
+
+### Improved
+- Do not show cart merge warning if member cart is empty
 
 ### Fixed
 - Rebuilding the search index did not consider the language fragment
+
 
 Version 1.3.5 stable (2012-08-06)
 ---------------------------------
