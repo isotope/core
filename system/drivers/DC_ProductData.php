@@ -19,7 +19,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
@@ -38,7 +38,7 @@ class DC_ProductData extends DC_Table
 	 * True if we are editing a language
 	 */
 	protected $blnEditLanguage;
-	
+
 	/**
 	 * Deferred loading of product data
 	 * @var bool
@@ -61,8 +61,8 @@ class DC_ProductData extends DC_Table
 	 * IDs of visible products
 	 */
 	protected $products = array();
-	
-	
+
+
 	/**
 	 * Initialize the object
 	 * @param string
@@ -70,11 +70,11 @@ class DC_ProductData extends DC_Table
 	public function __construct($strTable)
 	{
 		$this->import('Environment');
-		
+
 		$this->Environment->request = preg_replace('/&loadDeferredProduct=[^&]*&level=[^&]*/', '', $this->Environment->request);
 		$this->Environment->requestUri = preg_replace('/&loadDeferredProduct=[^&]*&level=[^&]*/', '', $this->Environment->requestUri);
 		$this->Environment->queryString = preg_replace('/&loadDeferredProduct=[^&]*&level=[^&]*/', '', $this->Environment->queryString);
-		
+
 		parent::__construct($strTable);
 	}
 
@@ -144,8 +144,8 @@ class DC_ProductData extends DC_Table
 
 		return $return;
 	}
-	
-	
+
+
 	/**
 	 * Insert a new row into a database table
 	 * @param array
@@ -156,9 +156,9 @@ class DC_ProductData extends DC_Table
 		{
 			$set = array();
 		}
-		
+
 		$set['gid'] = (int) $this->Input->get('gid');
-		
+
 		parent::create($set);
 	}
 
@@ -191,8 +191,8 @@ class DC_ProductData extends DC_Table
 
 		parent::cut($blnDoNotRedirect);
 	}
-	
-	
+
+
 	/**
 	 * Move all selected records
 	 */
@@ -202,7 +202,7 @@ class DC_ProductData extends DC_Table
 		if ($this->Input->get('gid') != '')
 		{
 			$arrClipboard = $this->Session->get('CLIPBOARD');
-	
+
 			if (isset($arrClipboard[$this->strTable]) && is_array($arrClipboard[$this->strTable]['id']))
 			{
 				foreach ($arrClipboard[$this->strTable]['id'] as $id)
@@ -211,14 +211,14 @@ class DC_ProductData extends DC_Table
 					$this->cut(true);
 				}
 			}
-	
+
 			$this->redirect($this->getReferer());
 		}
-		
+
 		return parent::cutAll();
 	}
-	
-	
+
+
 	/**
 	 * Duplicate a particular record of the current table
 	 * @param boolean
@@ -329,27 +329,27 @@ class DC_ProductData extends DC_Table
 		if ($this->Input->get('gid') != '')
 		{
 			$arrClipboard = $this->Session->get('CLIPBOARD');
-	
+
 			if (isset($arrClipboard[$this->strTable]) && is_array($arrClipboard[$this->strTable]['id']))
 			{
 				$arrIds = array();
-				
+
 				foreach ($arrClipboard[$this->strTable]['id'] as $id)
 				{
 					$this->intId = $id;
 					$arrIds[] = $this->copy(true);
 				}
-				
+
 				$this->Database->query("UPDATE {$this->strTable} SET gid=" . (int)$this->Input->get('gid') . " WHERE id IN (" . implode(',', $arrIds) . ")");
 			}
-	
+
 			$this->redirect($this->getReferer());
 		}
-		
+
 		return parent::copyAll();
 	}
-	
-	
+
+
 	/**
 	 * Calculate the new position of a moved or inserted record
 	 * @param string
@@ -1134,7 +1134,7 @@ window.addEvent(\'domready\', function() {
 <div class="tl_formbody_submit">
 
 <div class="tl_submit_container">
-<input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['save']).'"> 
+<input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['save']).'">
 <input type="submit" name="saveNclose" id="saveNclose" class="tl_submit" accesskey="c" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['saveNclose']).'">
 </div>
 
@@ -1492,7 +1492,7 @@ window.addEvent(\'domready\', function() {
 		{
 			return '<p class="tl_empty">DC_ProductData does only support sorting mode 5!</p>';
 		}
-		
+
 		if ($this->Input->get('loadDeferredProduct') > 0)
 		{
 			$this->intId = (int) $this->Input->get('loadDeferredProduct');
@@ -1500,7 +1500,7 @@ window.addEvent(\'domready\', function() {
 			$this->blnDeferredLoading = true;
 			$this->Input->setGet('loadDeferredProduct', null);
 			$this->Input->setGet('level', null);
-			
+
 			while(ob_end_clean());
 			echo json_encode(array
 			(
@@ -1628,7 +1628,7 @@ window.addEvent(\'domready\', function() {
 </div>' . $this->getMessages(true);
 
 		$tree = '';
-		
+
 		// Start the overload detection
 		$this->Session->set('PRODUCTDATA_OVERLOAD', true);
 
@@ -1649,7 +1649,7 @@ window.addEvent(\'domready\', function() {
 		{
 			$this->root = $this->Database->query("SELECT id FROM $table WHERE pid=0 AND gid=0 AND id IN (" . implode(',', $this->products) . ") ORDER BY id=" . implode(' DESC, id=', $this->products) . " DESC")->fetchEach('id');
 		}
-		
+
 		for ($i=0, $count=count($this->root); $i<$count; $i++)
 		{
 			$tree .= $this->generateProductTree($table, $this->root[$i], array('p'=>$this->root[($i-1)], 'n'=>$this->root[($i+1)]), -20, ($blnClipboard ? $arrClipboard : false));
@@ -1796,10 +1796,10 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 		if ($this->blnDeferredLoading)
 		{
 			$blnPtable = true;
-			
+
 			return ' ' . trim($this->generateProductTree($this->strTable, $id, array(), $margin, ($blnClipboard ? $arrClipboard : false), ($id == $arrClipboard ['id'] || (is_array($arrClipboard ['id']) && in_array($id, $arrClipboard ['id'])) || (!$blnPtable && !is_array($arrClipboard['id']) && in_array($id, $this->getChildRecords($arrClipboard['id'], $table))))));
 		}
-		
+
 		// Load groups and products
 		elseif ($GLOBALS['TL_DCA'][$this->strTable]['config']['gtable'] != '' && $this->Input->post('id') != ($table.'_tree_'.$id))
 		{
@@ -1858,7 +1858,7 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 		{
 			return '';
 		}
-		
+
 		static $session;
 
 		$session = $this->Session->getData();
@@ -1873,12 +1873,12 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 
 			$this->redirect(preg_replace('/(&(amp;)?|\?)'.$toggle.'=[^& ]*/i', '', $this->Environment->request));
 		}
-		
+
 		$intSpacing = 20;
 		$return = "\n  " . '<li class="'.(($table != $this->strTable) ? 'tl_folder' : 'tl_file').'" onmouseover="Theme.hoverDiv(this, 1);" onmouseout="Theme.hoverDiv(this, 0);"><div class="tl_left" style="padding-left:'.($intMargin + $intSpacing).'px;">';;
 
 		$session[$node][$id] = (is_int($session[$node][$id])) ? $session[$node][$id] : 0;
-		
+
 		if ($GLOBALS['TL_CONFIG']['iso_deferProductLoading'] && $table == $this->strTable && !$this->Environment->isAjaxRequest)
 		{
 			return $return . '<div class="iso_product deferred_product" id="product_' . $id . '"><div class="thumbnail"><img src="system/themes/default/images/loading.gif" alt=""></div><p>&nbsp;</p></div></div></li>';
@@ -1907,7 +1907,7 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 		else
 		{
 			$objChilds = $this->Database->query("SELECT id FROM " . $table . " WHERE pid=$id" . ($this->strTable == $table ? " AND language='' AND id IN (" . implode(',', $this->products) . ") ORDER BY id=" . implode(' DESC, id=', $this->products) . " DESC" : " ORDER BY sorting"));
-			
+
 			if ($objChilds->numRows)
 			{
 				$childs = $objChilds->fetchEach('id');
@@ -1921,7 +1921,7 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 			{
 				$gchilds = $this->Database->query("SELECT id FROM " . $this->strTable . " WHERE gid=$id")->fetchEach('id');
 				$gchilds = array_values(array_intersect($this->products, $gchilds));
-				
+
 				if (empty($gchilds) && empty($childs) && $arrClipboard === false)
 				{
 					return '';
@@ -1930,7 +1930,7 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 			else
 			{
 				$objChilds = $this->Database->query("SELECT id FROM " . $this->strTable . " WHERE gid=$id AND id IN (" . implode(',', $this->products) . ") ORDER BY id=" . implode(' DESC, id=', $this->products) . " DESC");
-				
+
 				if ($objChilds->numRows)
 				{
 					$gchilds = $objChilds->fetchEach('id');
