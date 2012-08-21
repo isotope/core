@@ -577,7 +577,7 @@ class IsotopeProduct extends Controller
 
 		foreach ($this->arrOptions as $field => $value)
 		{
-			if ($value == '')
+			if ($value == '' || $value == '-')
 				continue;
 
 			$arrOptions[] = array
