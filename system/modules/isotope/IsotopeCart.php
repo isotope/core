@@ -30,7 +30,7 @@
 
 /**
  * Class IsotopeCart
- * 
+ *
  * Provide methods to handle Isotope cart.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
@@ -253,13 +253,14 @@ class IsotopeCart extends IsotopeProductCollection
 		// Temporary cart available, move to this cart. Must be after creating a new cart!
  		if (FE_USER_LOGGED_IN === true && $this->strHash != '')
  		{
+ 			$blnMerge = $this->products ? true : false;
 			$objCart = new IsotopeCart();
 
 			if ($objCart->findBy('session', $this->strHash))
 			{
 				$arrIds = $this->transferFromCollection($objCart, false);
 
-				if (!empty($arrIds))
+				if ($blnMerge && !empty($arrIds))
 				{
 					$_SESSION['ISO_CONFIRM'][] = $GLOBALS['TL_LANG']['MSC']['cartMerged'];
 				}

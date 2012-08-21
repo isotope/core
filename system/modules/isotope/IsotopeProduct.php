@@ -450,8 +450,18 @@ class IsotopeProduct extends Controller
 		switch ($strKey)
 		{
 			case 'reader_jumpTo':
+				global $objPage;
 				$strUrlKey = $this->arrData['alias'] ? $this->arrData['alias'] : ($this->arrData['pid'] ? $this->arrData['pid'] : $this->arrData['id']);
-				$strUrl = $this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($varValue)->fetchAssoc(), '/product/' . $strUrlKey);
+
+				// make sure the page object is loaded because of the url language feature (e.g. when rebuilding the search index in the back end or ajax actions)
+				if (!$objPage && $objPage = $this->getPageDetails($varValue))
+				{
+					$strUrl  = $this->generateFrontendUrl($objPage->fetchAssoc(), '/product/' . $strUrlKey, $objPage->rootLanguage);
+				}
+				else
+				{
+					$strUrl = $this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($varValue)->fetchAssoc(), '/product/' . $strUrlKey, $objPage->rootLanguage);
+				}
 
 				if ($this->arrData['pid'] > 0)
 				{

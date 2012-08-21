@@ -19,8 +19,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Winans Creative 2009, Intelligent Spark 2010, iserv.ch GmbH 2010
- * @author     Angelica Schempp <aschempp@gmx.net>
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Paolo B. <paolob@contaocms.it>
  * @author     Dan N <dan@dss.uniud.it>
  * @license    http://opensource.org/licenses/lgpl-3.0.html

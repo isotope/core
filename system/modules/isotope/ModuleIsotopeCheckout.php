@@ -427,14 +427,30 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	protected function getBillingAddressInterface($blnReview=false)
 	{
 		$blnRequiresPayment = $this->Isotope->Cart->requiresPayment;
+		$blnRequiresShipping = $this->Isotope->Cart->requiresShipping;
 
 		if ($blnReview)
 		{
+			$strHeadline = $GLOBALS['TL_LANG']['ISO']['billing_address'];
+
+			if ($blnRequiresPayment && $blnRequiresShipping && $this->Isotope->Cart->shippingAddress['id'] == -1)
+			{
+				$strHeadline = $GLOBALS['TL_LANG']['ISO']['billing_shipping_address'];
+			}
+			elseif ($blnRequiresShipping && $this->Isotope->Cart->shippingAddress['id'] == -1)
+			{
+				$strHeadline = $GLOBALS['TL_LANG']['ISO']['shipping_address'];
+			}
+			elseif (!$blnRequiresPayment && !$blnRequiresShipping)
+			{
+				$strHeadline = $GLOBALS['TL_LANG']['ISO']['customer_address'];
+			}
+
 			return array
 			(
 				'billing_address' => array
 				(
-					'headline'	=> ($blnRequiresPayment ? ($this->Isotope->Cart->shippingAddress['id'] == -1 ? $GLOBALS['TL_LANG']['ISO']['billing_shipping_address'] : $GLOBALS['TL_LANG']['ISO']['billing_address']) : (($this->Isotope->Cart->hasShipping && $this->Isotope->Cart->shippingAddress['id'] == -1) ? $GLOBALS['TL_LANG']['ISO']['shipping_address'] : $GLOBALS['TL_LANG']['ISO']['customer_address'])),
+					'headline'	=> $strHeadline,
 					'info'		=> $this->Isotope->generateAddressString($this->Isotope->Cart->billingAddress, $this->Isotope->Config->billing_fields),
 					'edit'		=> $this->addToUrl('step=address', true),
 				),
