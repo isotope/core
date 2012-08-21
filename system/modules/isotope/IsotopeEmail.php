@@ -30,7 +30,7 @@
 
 /**
  * Class IsotopeEmail
- * 
+ *
  * Provide methods to send Isotope e-mails.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
@@ -128,7 +128,7 @@ class IsotopeEmail extends Controller
 			case 'simpleTokens':
 				$arrTokens = array();
 				$arrValue = deserialize($varValue, true);
-				
+
 				foreach( $arrValue as $k => $v )
 				{
 					if (is_array($v))
@@ -136,10 +136,10 @@ class IsotopeEmail extends Controller
 						$arrTokens[$k] = $this->recursiveImplode(', ', $v);
 						continue;
 					}
-					
+
 					$arrTokens[$k] = $v;
 				}
-				
+
 				$this->arrSimpleTokens = $arrTokens;
 				break;
 
@@ -281,6 +281,7 @@ class IsotopeEmail extends Controller
 			$GLOBALS['TL_CONFIG']['allowedTags'] .= '<doctype><html><head><meta><style><body>';
 			$strHtml = str_replace('<!DOCTYPE', '<DOCTYPE', $objTemplate->parse());
 			$strHtml = $this->parseSimpleTokens($this->replaceInsertTags($strHtml), $arrData);
+			$strHtml = $this->convertRelativeUrls($strHtml);
 			$strHtml = str_replace('<DOCTYPE', '<!DOCTYPE', $strHtml);
 
 			// Parse template
@@ -380,7 +381,7 @@ class IsotopeEmail extends Controller
 	protected function recursiveImplode($strGlue, $arrPieces)
 	{
 		$arrReturn = array();
-		
+
 		foreach( $arrPieces as $varPiece )
 		{
 			if (is_array($varPiece))
@@ -395,8 +396,8 @@ class IsotopeEmail extends Controller
 
 		return implode($strGlue, $arrReturn);
 	}
-	
-	
+
+
 	/**
 	 * Add (blind) carbon copy recipients to the email object
 	 * @param string
@@ -406,7 +407,7 @@ class IsotopeEmail extends Controller
 	{
 		$arrAdd = array();
 		$arrRecipients = (array) trimsplit(',', $strRecipients);
-		
+
 		foreach ($arrRecipients as $email)
 		{
 			if ($email == '' || !$this->isValidEmailAddress($email))
@@ -416,7 +417,7 @@ class IsotopeEmail extends Controller
 
 			$arrAdd[] = $email;
 		}
-		
+
 		if (!empty($arrAdd))
 		{
 			$this->objEmail->{$strMethod}($arrAdd);

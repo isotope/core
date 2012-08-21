@@ -10,6 +10,7 @@ Version 1.3.6 stable (2012-08-??)
 ### Fixed
 - Rebuilding the search index did not consider the language fragment
 - Wrong address title when no shipping was required (only download products)
+- Convert relative URLs to absolute in email templates
 
 
 Version 1.3.5 stable (2012-08-06)
