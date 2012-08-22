@@ -45,6 +45,7 @@ $GLOBALS['TL_LANG']['tl_module']['iso_payment_modules']			= array('Payment metho
 $GLOBALS['TL_LANG']['tl_module']['iso_shipping_modules']		= array('Shipping methods', 'Select one or more shipping methods for this checkout module.');
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method']			= array('Checkout method', 'Choose your checkout method.');
 $GLOBALS['TL_LANG']['tl_module']['iso_order_conditions']		= array('Order conditions form', 'Choose a custom form that is used to display your order terms and conditions (optional).');
+$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions_position']	= array('Position of order conditions form', 'Define if the order condition form should be shown before or after the products list.');
 $GLOBALS['TL_LANG']['tl_module']['iso_addToAddressbook']		= array('Add to address book', 'Add new addresses to members address book (if logged in).');
 $GLOBALS['TL_LANG']['tl_module']['iso_emptyMessage']			= array('Define empty message', 'Set a custom message when there is nothing to show (empty product list, empty cart, etc.).');
 $GLOBALS['TL_LANG']['tl_module']['iso_noProducts']				= array('Message when empty', 'Enter a custom message if there is nothing to show (empty product list, empty cart, etc.).');
@@ -89,7 +90,8 @@ $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['current_and_all_chil
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['current_category']			= 'Current Category';
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['parent']					= 'Parent Category';
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['product']					= 'Current Product\'s Categories';
-
-$GLOBALS['TL_LANG']['tl_module']['sortingDirection']['ASC'] 	= "ASC";
-$GLOBALS['TL_LANG']['tl_module']['sortingDirection']['DESC'] 	= "DESC";
+$GLOBALS['TL_LANG']['tl_module']['sortingDirection']['ASC'] 		= "ASC";
+$GLOBALS['TL_LANG']['tl_module']['sortingDirection']['DESC'] 		= "DESC";
+$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions_position']['before']				= 'Before products list';
+$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions_position']['after']				= 'After products list';
 
