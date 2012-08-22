@@ -46,8 +46,6 @@
 <?php echo $this->fields; ?>
 <?php endif; ?>
 
-<?php if (strlen($this->checkoutForm)): ?><div class="checkout_form"><?php echo $this->checkoutForm; ?></div><?php endif; ?>
-
 </div>
 <script>
 window.addEvent('domready', function() {
