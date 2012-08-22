@@ -1,16 +1,5 @@
 
-<div class="order_review">
-<h2><?php echo $this->headline; ?></h2>
-<p><?php echo $this->message; ?></p>
-
-<?php foreach( $this->info as $type => $data ): ?>
-<div class="info_container <?php echo $type . $data['class']; ?>"><?php if ($data['edit']): ?>
-	<a href="<?php echo $data['edit']; ?>" class="edit"><?php echo $this->edit_info; ?></a><?php endif; ?>
-	<h3><?php echo $data['headline']; ?></h3>
-	<div class="info"><?php echo $data['info']; ?></div>
-</div>
-<?php endforeach; ?>
-<div class="clear">&nbsp;</div>
+<div class="order_products">
 <table>
 <tfoot>
 	<tr class="foot_0 foot_first subtotal">
