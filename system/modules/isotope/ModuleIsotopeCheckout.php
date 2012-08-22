@@ -792,6 +792,38 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 
 	/**
+	 * Generate order conditions interface if shown before products
+	 * @param boolean
+	 * @return string
+	 */
+	protected function getOrderConditionsBeforeProducts($blnReview=false)
+	{
+		if ($this->iso_order_conditions_position == 'before')
+		{
+			return $this->getOrderConditionsInterface($blnReview);
+		}
+
+		return '';
+	}
+
+
+	/**
+	 * Generate order conditions interface if shown after products
+	 * @param boolean
+	 * @return string
+	 */
+	protected function getOrderConditionsAfterProducts($blnReview=false)
+	{
+		if ($this->iso_order_conditions_position == 'after')
+		{
+			return $this->getOrderConditionsInterface($blnReview);
+		}
+
+		return '';
+	}
+
+
+	/**
 	 * Generate order conditions interface and return it as HTML string
 	 * @param boolean
 	 * @return string
