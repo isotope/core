@@ -5,7 +5,9 @@ Version 1.3.7 stable (2012-??-??)
 ---------------------------------
 
 ### Improved
+
 ### Fixed
+- Javascript was displayed in raw format when using the inherit widget
 
 
 Version 1.3.6 stable (2012-08-21)
