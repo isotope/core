@@ -143,7 +143,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 		'conditionalselect'			=> '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{options_legend},options,foreignKey;{config_legend},mandatory,multiple,size,conditionField;{search_filters_legend},fe_filter,fe_sorting',
 		'mediaManager'				=> '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},gallery,extensions,mandatory',
 		'fileTree'					=> '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,extensions,files,filesOnly,mandatory',
-		'downloads'					=> '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,extensions,sortBy,files,filesOnly,mandatory',
+		'downloads'					=> '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,extensions,sortBy,path,files,filesOnly,mandatory',
 		'upload'					=> '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},extensions,maxlength,mandatory;{store_legend:hide},storeFile',
     ),
 
@@ -366,6 +366,14 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 			'inputType'				=> 'select',
 			'options'				=> array('name_asc', 'name_desc', 'date_asc', 'date_desc', 'meta', 'random'),
 			'reference'				=> &$GLOBALS['TL_LANG']['tl_iso_attributes'],
+			'eval'					=> array('tl_class'=>'clr')
+		),
+		'path' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['path'],
+			'exclude'				=> true,
+			'inputType'				=> 'fileTree',
+			'eval'					=> array('fieldType'=>'radio', 'tl_class'=>'clr')
 		),
 		'storeFile' => array
 		(
