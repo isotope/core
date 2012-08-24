@@ -786,6 +786,7 @@ CREATE TABLE `tl_module` (
   `iso_mail_admin` int(10) unsigned NOT NULL default '0',
   `iso_sales_email` varchar(255) NOT NULL default '',
   `iso_order_conditions` int(10) unsigned NOT NULL default '0',
+  `iso_order_conditions_position` varchar(6) NOT NULL default 'after',
   `iso_addToAddressbook` char(1) NOT NULL default '',
   `iso_category_scope` varchar(64) NOT NULL default '',
   `iso_list_where` varchar(255) NOT NULL default '',

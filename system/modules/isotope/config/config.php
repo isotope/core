@@ -331,8 +331,10 @@ $GLOBALS['ISO_CHECKOUT_STEPS'] = array
 	),
 	'review' => array
 	(
-		array('ModuleIsotopeCheckout', 'getOrderReviewInterface'),
-		array('ModuleIsotopeCheckout', 'getOrderConditionsInterface')
+		array('ModuleIsotopeCheckout', 'getOrderInfoInterface'),
+		array('ModuleIsotopeCheckout', 'getOrderConditionsBeforeProducts'),
+		array('ModuleIsotopeCheckout', 'getOrderProductsInterface'),
+		array('ModuleIsotopeCheckout', 'getOrderConditionsAfterProducts'),
 	)
 );
 

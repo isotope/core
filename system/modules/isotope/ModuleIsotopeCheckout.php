@@ -792,6 +792,38 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 
 	/**
+	 * Generate order conditions interface if shown before products
+	 * @param boolean
+	 * @return string
+	 */
+	protected function getOrderConditionsBeforeProducts($blnReview=false)
+	{
+		if ($this->iso_order_conditions_position == 'before')
+		{
+			return $this->getOrderConditionsInterface($blnReview);
+		}
+
+		return '';
+	}
+
+
+	/**
+	 * Generate order conditions interface if shown after products
+	 * @param boolean
+	 * @return string
+	 */
+	protected function getOrderConditionsAfterProducts($blnReview=false)
+	{
+		if ($this->iso_order_conditions_position == 'after')
+		{
+			return $this->getOrderConditionsInterface($blnReview);
+		}
+
+		return '';
+	}
+
+
+	/**
 	 * Generate order conditions interface and return it as HTML string
 	 * @param boolean
 	 * @return string
@@ -869,17 +901,40 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	 * @param boolean
 	 * @return string
 	 */
-	protected function getOrderReviewInterface($blnReview=false)
+	protected function getOrderInfoInterface($blnReview=false)
 	{
 		if ($blnReview)
 		{
 			return;
 		}
 
-		$objTemplate = new IsotopeTemplate('iso_checkout_order_review');
+		$objTemplate = new IsotopeTemplate('iso_checkout_order_info');
 		$objTemplate->headline = $GLOBALS['TL_LANG']['ISO']['order_review'];
 		$objTemplate->message = $GLOBALS['TL_LANG']['ISO']['order_review_message'];
 		$objTemplate->summary = $GLOBALS['ISO_LANG']['MSC']['cartSummary'];
+
+
+
+		$objTemplate->info = $this->getCheckoutInfo();
+		$objTemplate->edit_info = $GLOBALS['TL_LANG']['ISO']['changeCheckoutInfo'];
+
+		return $objTemplate->parse();
+	}
+
+
+	/**
+	 * Generate list of products for the order review page
+	 * @param bool
+	 * @return string
+	 */
+	protected function getOrderProductsInterface($blnReview=false)
+	{
+		if ($blnReview)
+		{
+			return;
+		}
+
+		$objTemplate = new IsotopeTemplate('iso_checkout_order_products');
 
 		// Surcharges must be initialized before getProducts() to apply tax_id to each product
 		$arrSurcharges = $this->Isotope->Cart->getSurcharges();
@@ -901,13 +956,10 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			));
 		}
 
-		$objTemplate->info = $this->getCheckoutInfo();
 		$objTemplate->products = IsotopeFrontend::generateRowClass($arrProductData, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
 		$objTemplate->surcharges = IsotopeFrontend::formatSurcharges($arrSurcharges);
-		$objTemplate->edit_info = $GLOBALS['TL_LANG']['ISO']['changeCheckoutInfo'];
 		$objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
 		$objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
-
 		$objTemplate->subTotalPrice = $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->subTotal);
 		$objTemplate->grandTotalPrice = $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->grandTotal);
 
