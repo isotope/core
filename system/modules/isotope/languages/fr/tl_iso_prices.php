@@ -50,8 +50,8 @@ $GLOBALS['TL_LANG']['tl_iso_prices']['delete'][0] = 'Effacer le prix';
 $GLOBALS['TL_LANG']['tl_iso_prices']['delete'][1] = 'Effacer le prix ID %s';
 $GLOBALS['TL_LANG']['tl_iso_prices']['show'][0] = 'Détails du prix';
 $GLOBALS['TL_LANG']['tl_iso_prices']['show'][1] = 'Montre les détails du prix ID %s';
-$GLOBALS['TL_LANG']['tl_iso_prices']['price_tier_columns']['min'] = 'Quantité (minimum)';
-$GLOBALS['TL_LANG']['tl_iso_prices']['price_tier_columns']['price'] = 'Prix';
+$GLOBALS['TL_LANG']['tl_iso_prices']['price_tier_columns']['min'] = array('Quantité (minimum)');
+$GLOBALS['TL_LANG']['tl_iso_prices']['price_tier_columns']['price'] = array('Prix');
 $GLOBALS['TL_LANG']['tl_iso_prices']['price_legend'] = 'Prix';
 $GLOBALS['TL_LANG']['tl_iso_prices']['limit_legend'] = 'Limites';
 

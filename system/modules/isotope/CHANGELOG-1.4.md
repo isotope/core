@@ -24,6 +24,7 @@ Version 1.4.beta1 (2012-??-??)
 - Added getOrderEmailData hook to add custom simple tokens to order emails
 - Added support for frontend-only attributes
 - Added generateProductList hook (#17)
+- Use multiColumnWizard for all appropriate fields (#2038)
 
 ### Improved
 - Checkout steps are now a numbered list (#3040)
@@ -42,6 +43,7 @@ Version 1.4.beta1 (2012-??-??)
 - Replaced <section> tags with regular <div> tags.
 - Disabled forward/back buttons on click in checkout module to prevent a second submit (#3328)
 - Use "-" as value to add a variant option that should not be shown in the frontend
+- Added Contao 2.11 image crop modes to gallery size configuration
 
 ### Fixed
 - The watermarkImage hook did not pass the image position
