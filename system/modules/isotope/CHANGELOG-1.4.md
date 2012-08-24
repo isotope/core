@@ -2,7 +2,7 @@ Isotope eCommerce Changelog
 ===========================
 
 
-Version 1.4.beta1 (2012-??-??)
+Version 1.4.beta1 (2012-08-24)
 ------------------------------
 
 ### New
@@ -11,6 +11,7 @@ Version 1.4.beta1 (2012-??-??)
 - The backend now lists new orders on the welcome screen (#2111)
 - Option to show checkout conditions before products (german "checkout button" law)
 - Merged the zoom gallery into Isotope eCommerce core
+- Merged isotope_multilingual into Isotope eCommerce core
 - Added new attribute type "upload"
 - New filter module "Cumulative filter"
 - Ever product can now have a CSS class and ID (#2812)
