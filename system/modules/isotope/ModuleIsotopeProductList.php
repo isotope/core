@@ -257,6 +257,16 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			);
 		}
 
+		// HOOK: to add any product field or attribute to mod_iso_productlist template
+		if (isset($GLOBALS['ISO_HOOKS']['generateProductList']) && is_array($GLOBALS['ISO_HOOKS']['generateProductList']))
+		{
+			foreach ($GLOBALS['ISO_HOOKS']['generateProductList'] as $callback)
+			{
+				$this->import($callback[0]);
+				$arrBuffer = $this->$callback[0]->$callback[1]($arrBuffer, $arrProducts, $this->Template, $this);
+			}
+		}
+
 		$this->Template->products = IsotopeFrontend::generateRowClass($arrBuffer, 'product', 'class', $this->iso_cols);
 	}
 

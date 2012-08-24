@@ -21,6 +21,7 @@ Version 1.4.beta1 (2012-??-??)
 - Added getOrderEmailData hook to add custom simple tokens to order emails
 - Exempt all products of a certain type from shipping (#3148)
 - Added support for the eval->path attribute (#3342)
+- Added generateProductList hook (#17)
 
 ### Improved
 - Checkout steps are now a numbered list (#3040)
