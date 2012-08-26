@@ -30,7 +30,7 @@
 
 /**
  * Class AttributeWizard
- * 
+ *
  * Provide methods to handle attributes.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
@@ -104,7 +104,7 @@ class AttributeWizard extends Widget
 	public function validate()
 	{
 		parent::validate();
-		
+
 		// Workaround for key sorting in DataContainer ~line 285
 		$i = 0;
 		foreach ($this->varValue as $k => $v)
@@ -262,7 +262,7 @@ class AttributeWizard extends Widget
 	 */
 	protected function generateCheckbox($arrOption, $strGroup, $strButtons, $cid)
 	{
-		$strBuffer = '<span onmouseover="Theme.hoverDiv(this, 1);" onmouseout="Theme.hoverDiv(this, 0);">';
+		$strBuffer = '<span class="row" onmouseover="Theme.hoverDiv(this, 1);" onmouseout="Theme.hoverDiv(this, 0);"><span class="cell label">';
 
 		if ($arrOption['disabled'])
 		{
@@ -289,7 +289,7 @@ class AttributeWizard extends Widget
 		}
 
 		// Add tl_class options from DCA
-		$strBuffer .= '<select class="select" name="' . $this->strName . '[' . $arrOption['value'] . '][tl_class_select]"><option value="">-</option>';
+		$strBuffer .= '</span><span class="cell tl_class_select"><select class="select" name="' . $this->strName . '[' . $arrOption['value'] . '][tl_class_select]"><option value="">-</option>';
 
 		foreach ($this->tl_classes as $class)
 		{
@@ -297,12 +297,11 @@ class AttributeWizard extends Widget
 		}
 
 		return $strBuffer . '
-	</select>
-	<input type="text" class="tl_text_4" name="' . $this->strName . '[' . $arrOption['value'] . '][tl_class_text]" value="' . $this->varValue[$arrOption['value']]['tl_class_text'] . '">
-	
-	<input type="radio" name="' . $this->strName . '[' . $arrOption['value'] . '][mandatory]" value="0"' . $this->optionChecked($this->varValue[$arrOption['value']]['mandatory'], 0) . '>
-	<input type="radio" name="' . $this->strName . '[' . $arrOption['value'] . '][mandatory]" value="1"' . $this->optionChecked($this->varValue[$arrOption['value']]['mandatory'], 1) . '>
-	<input type="radio" name="' . $this->strName . '[' . $arrOption['value'] . '][mandatory]" value="2"' . $this->optionChecked($this->varValue[$arrOption['value']]['mandatory'], 2) . '>
+	</select></span>
+	<span class="cell tl_class_text"><input type="text" class="tl_text_4" name="' . $this->strName . '[' . $arrOption['value'] . '][tl_class_text]" value="' . $this->varValue[$arrOption['value']]['tl_class_text'] . '"></span>
+	<span class="cell mandatory_default"><input type="radio" name="' . $this->strName . '[' . $arrOption['value'] . '][mandatory]" value="0"' . $this->optionChecked($this->varValue[$arrOption['value']]['mandatory'], 0) . '></span>
+	<span class="cell mandatory_no"><input type="radio" name="' . $this->strName . '[' . $arrOption['value'] . '][mandatory]" value="1"' . $this->optionChecked($this->varValue[$arrOption['value']]['mandatory'], 1) . '></span>
+	<span class="cell mandatory_yes"><input type="radio" name="' . $this->strName . '[' . $arrOption['value'] . '][mandatory]" value="2"' . $this->optionChecked($this->varValue[$arrOption['value']]['mandatory'], 2) . '></span>
 </span>';
 	}
 
@@ -352,8 +351,8 @@ class AttributeWizard extends Widget
 	 */
 	private function generateInfoBar()
 	{
-		$return = '<div class="tl_attributewizard_columninfo">';
-		
+		$return = '<div class="tl_attributewizard_columninfo"><span class="cell label"></span>';
+
 		$arrColumns = array
 		(
 			'tl_class_select',
@@ -362,13 +361,13 @@ class AttributeWizard extends Widget
 			'mandatory_no',
 			'mandatory_yes'
 		);
-		
+
 		foreach ($arrColumns as $strClass)
 		{
 			$strLabel = $GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz'][$strClass];
-			$return .= $this->generateImage('show.gif', $strLabel, 'class="' . $strClass . '" title="' . $strLabel . '"');
+			$return .= '<span class="cell ' . $strClass . '">' . $this->generateImage('show.gif', $strLabel, 'class="' . $strClass . '" title="' . $strLabel . '"') . '</span>';
 		}
-		
+
 		return $return . '</div>';
 	}
 }

@@ -193,6 +193,7 @@
 	padding-right: 4px;
 }
 
+/*
 .tl_attributewizard label {
 	width: 300px;
 	display: inline-block;
@@ -226,6 +227,56 @@
 .tl_attributewizard_columninfo img.mandatory_yes {
 	margin-left: 8px;
 }
+*/
+
+.tl_attributewizard {
+	display: table;
+}
+
+.tl_attributewizard_columninfo {
+	display: table;
+	margin-left: 21px;
+}
+
+.tl_attributewizard_columninfo img {
+	cursor: help;
+}
+
+.tl_attributewizard > div {
+	display: table-row-group;
+}
+
+.tl_attributewizard .row {
+	display: table-row;
+}
+
+.tl_attributewizard .cell,
+.tl_attributewizard_columninfo .cell {
+	display: table-cell;
+}
+
+.tl_attributewizard .cell.label,
+.tl_attributewizard_columninfo .cell.label {
+	width: 400px;
+}
+
+.tl_attributewizard .cell.tl_class_select,
+.tl_attributewizard_columninfo .cell.tl_class_select,
+.tl_attributewizard .cell.tl_class_text,
+.tl_attributewizard_columninfo .cell.tl_class_text {
+	width: 90px;
+}
+
+.tl_attributewizard .cell.mandatory_default,
+.tl_attributewizard_columninfo .cell.mandatory_default,
+.tl_attributewizard .cell.mandatory_no,
+.tl_attributewizard_columninfo .cell.mandatory_no,
+.tl_attributewizard .cell.mandatory_yes,
+.tl_attributewizard_columninfo .cell.mandatory_yes {
+	width: 20px;
+	text-align: center;
+}
+
 
 .mod_iso_orderdetails .info_container
 {

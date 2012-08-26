@@ -78,7 +78,7 @@ $GLOBALS['BE_MOD']['accounts']['member']['tables'][] = 'tl_iso_addresses';
 
 if (TL_MODE == 'BE')
 {
-	$GLOBALS['TL_CSS'][] = 'system/modules/isotope/html/backend.css';
+	$GLOBALS['TL_CSS'][] = 'system/modules/isotope/html/backend_src.css';
 }
 
 
