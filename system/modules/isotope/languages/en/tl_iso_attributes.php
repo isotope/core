@@ -66,6 +66,7 @@ $GLOBALS['TL_LANG']['tl_iso_attributes']['be_filter']			= array('Backend Filtera
 $GLOBALS['TL_LANG']['tl_iso_attributes']['be_search']			= array('Backend Searchable', 'Should the search engine look in this field for search terms?');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['fe_filter']			= array('Frontend Filterable', 'Can this attribute be used in a frontend filter?');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['fe_search']			= array('Frontend Searchable', 'Should the search engine look in this field for search terms?');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['datepicker']			= array('Date picker', 'Show a date picker for this field.');
 
 
 /**
