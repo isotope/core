@@ -4,6 +4,8 @@ Isotope eCommerce Changelog
 Version 1.4.? (2012-??-??)
 ------------------------------
 
+### Fixed
+- Rules for cart subtotal was not correctly applied
 
 
 Version 1.4.beta1 (2012-08-24)
