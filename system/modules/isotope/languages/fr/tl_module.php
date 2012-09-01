@@ -32,9 +32,9 @@
  */
 
 $GLOBALS['TL_LANG']['tl_module']['iso_list_layout'][0] = 'Modèle de liste de produits';
-$GLOBALS['TL_LANG']['tl_module']['iso_list_layout'][1] = 'Choisir une disposition la liste. Vous pouvez ajouter dispositions de liste personnalisées à <em> dossier templates </ em>. La liste des fichiers modèle commence par <em> iso_list_</ em> et nécessite l\'extension de fichie<em>. tpl </ em>.';
+$GLOBALS['TL_LANG']['tl_module']['iso_list_layout'][1] = 'Choisir une disposition la liste. Vous pouvez ajouter dispositions de liste personnalisées à <em>dossier templates</em>. La liste des fichiers modèle commence par <em>iso_list_</em> et nécessite l\'extension de fichier <em>.tpl</em>.';
 $GLOBALS['TL_LANG']['tl_module']['iso_reader_layout'][0] = 'Modèle de fiche produit';
-$GLOBALS['TL_LANG']['tl_module']['iso_reader_layout'][1] = 'Choisir un modèle de fiche. Vous pouvez ajouter des modèles personnalisés dans<em> dossier templates </ em>. Les modèles commencent par <em>iso_reader_ </ em> et nécessitent l\'extension de fichier<em>. tpl </ em>.';
+$GLOBALS['TL_LANG']['tl_module']['iso_reader_layout'][1] = 'Choisir un modèle de fiche. Vous pouvez ajouter des modèles personnalisés dans <em>dossier templates</em>. Les modèles commencent par <em>iso_reader_</em> et nécessitent l\'extension de fichier <em>.tpl</em>.';
 $GLOBALS['TL_LANG']['tl_module']['iso_reader_jumpTo'][0] = 'Aller à la page de la fiche produit';
 $GLOBALS['TL_LANG']['tl_module']['iso_reader_jumpTo'][1] = 'Ce paramètre définit la page à laquelle l\'utilisateur sera redirigé en cliquant un produit pour plus d\'infos.';
 $GLOBALS['TL_LANG']['tl_module']['iso_cart_layout'][0] = 'Modèle du panier';
@@ -100,7 +100,7 @@ $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['guest'] = 'Commande
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['both'] = 'Les deux autorisés';
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['global'] = 'Toutes catégories';
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['current_and_first_child'] = 'Catégorie actuelle et la premère catégorie enfant';
-$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['current_and_all_children'] = 'Catégorie actuelle et toutes les catégorie enfant';
+$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['current_and_all_children'] = 'Catégorie actuelle et toutes les catégories enfant';
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['current_category'] = 'Catégorie en cours';
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['parent'] = 'Catégorie parente';
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['product'] = 'Produit actuel des catégories';
