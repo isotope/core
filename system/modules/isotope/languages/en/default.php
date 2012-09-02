@@ -277,7 +277,7 @@ $GLOBALS['ISO_LANG']['PAY']['cybersource']		= array('Cybersource','For Cybersour
 /**
  * Galleries
  */
-$GLOBALS['ISO_LANG']['GAL']['default']			= array('Default gallery (Lightbox/Mediabox)', 'Uses the lightbox/mediabox for full size images. Make sure you select the appropriate moo_ template in your page layout configuration.</p><p>You can supply a "rel" attribute to the link target by using a pipe (eg. "tl_files/video.mov|lightbox[400 300]"). If no "rel" attribute is supplied, the link will be opened in a new window.');
+$GLOBALS['ISO_LANG']['GAL']['default']			= array('Default gallery (Lightbox/Mediabox)', '<p>Uses the lightbox/mediabox for full size images. Make sure you select the appropriate "moo_" template in your page layout configuration.</p><p>You can supply a "rel" attribute to the link target by using a pipe (eg. "tl_files/video.mov|lightbox[400 300]"). If no "rel" attribute is supplied, the link will be opened in a new window.</p>');
 $GLOBALS['ISO_LANG']['GAL']['inline']			= array('Inline gallery', 'Clicking on a gallery image will replace the main image.');
 $GLOBALS['ISO_LANG']['GAL']['zoom'] = array('Inline gallery with zoom effect', 'In addition to the behaviour of inline gallery, it also adds an image zoom feature to the main image.');
 
