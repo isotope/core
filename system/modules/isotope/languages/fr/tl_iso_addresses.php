@@ -95,10 +95,10 @@ $GLOBALS['TL_LANG']['tl_iso_addresses']['new'][0] = 'Nouvelle adresse';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['new'][1] = 'Créer une nouvelle adresse';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['show'][0] = 'Détails de l\'adresse';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['show'][1] = 'Afficher les détails de l\'adresse ID %s';
-$GLOBALS['TL_LANG']['tl_iso_addresses']['edit'][0] = 'Editer l\'adresse';
-$GLOBALS['TL_LANG']['tl_iso_addresses']['edit'][1] = 'Editer l\'adresse ID %s';
-$GLOBALS['TL_LANG']['tl_iso_addresses']['copy'][0] = 'Duppliquer l\'adresse';
-$GLOBALS['TL_LANG']['tl_iso_addresses']['copy'][1] = 'Duppliquer l\'adresse ID %s';
+$GLOBALS['TL_LANG']['tl_iso_addresses']['edit'][0] = 'Éditer l\'adresse';
+$GLOBALS['TL_LANG']['tl_iso_addresses']['edit'][1] = 'Éditer l\'adresse ID %s';
+$GLOBALS['TL_LANG']['tl_iso_addresses']['copy'][0] = 'Dupliquer l\'adresse';
+$GLOBALS['TL_LANG']['tl_iso_addresses']['copy'][1] = 'Dupliquer l\'adresse ID %s';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['delete'][0] = 'Supprimer l\'adresse';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['delete'][1] = 'Supprimer l\'adresse ID %s';
 

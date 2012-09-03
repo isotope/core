@@ -50,7 +50,7 @@ $GLOBALS['TL_LANG']['tl_iso_orders']['shipping_id'][0]      = 'Mode de livraison
 $GLOBALS['TL_LANG']['tl_iso_orders']['shipping_address'][0] = 'Adresse de livraison';
 $GLOBALS['TL_LANG']['tl_iso_orders']['billing_address'][0]  = 'Adresse de facturation';
 
-$GLOBALS['TL_LANG']['tl_iso_orders']['order_subtotal'][0]   = 'Sous total';
+$GLOBALS['TL_LANG']['tl_iso_orders']['order_subtotal'][0]   = 'Sous-total';
 $GLOBALS['TL_LANG']['tl_iso_orders']['order_tax'][0]        = 'Coût des taxes';
 $GLOBALS['TL_LANG']['tl_iso_orders']['shippingTotal'][0]    = 'Coût de la livrasion';
 $GLOBALS['TL_LANG']['tl_iso_orders']['shipping_method'][0]  = 'Mode de livraison';
@@ -78,8 +78,8 @@ $GLOBALS['TL_LANG']['tl_iso_orders']['orderStatusEmail'] = 'The status of your o
  */
 $GLOBALS['TL_LANG']['tl_iso_orders']['edit'][0]           = 'Éditer la commande';
 $GLOBALS['TL_LANG']['tl_iso_orders']['edit'][1]           = 'Éditer la commande ID %s';
-$GLOBALS['TL_LANG']['tl_iso_orders']['copy'][0]           = 'Duppliquer la commande';
-$GLOBALS['TL_LANG']['tl_iso_orders']['copy'][1]           = 'Duppliquer la commande ID %s';
+$GLOBALS['TL_LANG']['tl_iso_orders']['copy'][0]           = 'Dupliquer la commande';
+$GLOBALS['TL_LANG']['tl_iso_orders']['copy'][1]           = 'Dupliquer la commande ID %s';
 $GLOBALS['TL_LANG']['tl_iso_orders']['delete'][0]         = 'Supprimer la commande';
 $GLOBALS['TL_LANG']['tl_iso_orders']['delete'][1]         = 'Supprimer la commande ID %s';
 $GLOBALS['TL_LANG']['tl_iso_orders']['show'][0]           = 'Afficher les détails de la commande';

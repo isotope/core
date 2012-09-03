@@ -120,7 +120,7 @@ $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['member']           
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['guest']                   = 'Commande invité seulement';
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['both']                    = 'Les deux autorisés';
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['global']                   = 'Toutes catégories';
-$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['current_and_first_child']  = 'Catégorie actuelle et la premère catégorie enfant';
+$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['current_and_first_child']  = 'Catégorie actuelle et la première catégorie enfant';
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['current_and_all_children'] = 'Catégorie actuelle et toutes les catégories enfant';
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['current_category']         = 'Catégorie en cours';
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['parent']                   = 'Catégorie parente';
