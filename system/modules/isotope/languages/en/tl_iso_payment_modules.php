@@ -94,7 +94,7 @@ $GLOBALS['TL_LANG']['tl_payment_module']['payflowpro_transTypes']['Authorization
 /**
  * Legends
  */
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['type_legend']		= 'Name & Type';
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['type_legend']		= 'Name &amp; Type';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['note_legend']		= 'Additional Notes';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['config_legend']		= 'General Configuration';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['gateway_legend']		= 'Payment Gateway Configuration';

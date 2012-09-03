@@ -61,20 +61,35 @@ $GLOBALS['TL_LANG']['tl_iso_attributes']['maxlength'][1] = 'Limite la longueur d
 $GLOBALS['TL_LANG']['tl_iso_attributes']['foreignKey'][0] = 'Table et champ contenant les options';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['foreignKey'][1] = 'Au lieu d\'ajouter des options vous pouvez entrer une combinaison table.champ pour les sélectionner depuis la base de données.';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['conditionField'][0] = 'Champ parent';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['conditionField'][1] = 'Please select the parent field, which must be of type "Select-Menu". For parent-child relation to work, define each option of this parent field as group of the conditional select-menu.';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['gallery'][0] = 'Galerie d\'images';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['gallery'][1] = 'Des galeries d\'images différentes peuvent être développées pour présenter des fichiers multimédias dans un style personnalisé.';
-$GLOBALS['TL_LANG']['tl_iso_attributes']['fe_sorting'][0] = 'Ajouter aux option de la liste de tri';
-$GLOBALS['TL_LANG']['tl_iso_attributes']['be_filter'][0] = 'Peut-être filtré en back office';
-$GLOBALS['TL_LANG']['tl_iso_attributes']['be_search'][0] = 'Peut-être recherché en back office';
-$GLOBALS['TL_LANG']['tl_iso_attributes']['be_search'][1] = 'Le moteur de recherche doit-il inclure ce champ?';
-$GLOBALS['TL_LANG']['tl_iso_attributes']['fe_filter'][0] = 'Peut-être filtré en front office';
-$GLOBALS['TL_LANG']['tl_iso_attributes']['fe_filter'][1] = 'Cet atrribut peut-il être filtré en frontend?';
-$GLOBALS['TL_LANG']['tl_iso_attributes']['fe_search'][0] = 'Peut-être recherché en front office';
-$GLOBALS['TL_LANG']['tl_iso_attributes']['fe_search'][1] = 'Le moteur de recherche doit-il inclure ce champ?';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['files'] = array('Show files', 'Show both files and folders.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['filesOnly'] = array('Files only', 'Remove the radio buttons or checkboxes next to folders.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['fieldType'] = array('Field type', 'Display radio buttons or checkboxes next to folders.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['sortBy'] = array('Order by', 'Please choose the sort order.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['path'] = array('Root directory', 'You can limit the file tree by defining a root directory here.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['storeFile'] = array('Store uploaded files', 'Move the uploaded files to a folder on the server.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['uploadFolder'] = array('Target folder', 'Please select the target folder from the files directory.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['useHomeDir'] = array('Use home directory', 'Store the file in the home directory if there is an authenticated user.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['doNotOverwrite'] = array('Preserve existing files', 'Add a numeric suffix to the new file if the file name already exists.');
+
+$GLOBALS['TL_LANG']['tl_iso_attributes']['fe_sorting'] = array('Add to "Order By" option list', 'This field will be sortable in the listing module provided the attribute is visible to customers.');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['be_filter'] = array('Peut être filtré en back office', 'Cet attribut peut-il être filtré en back office ?');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['be_search'] = array('Peut être recherché en back office', 'Le moteur de recherche doit-il inclure ce champ ?');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['fe_filter'] = array('Peut être filtré en front office', 'Cet attribut peut-il être filtré en front office ?');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['fe_search'] = array('Peut être recherché en front office', 'Le moteur de recherche doit-il inclure ce champ ?');
+
+
+/**
+ * Reference
+ */
 $GLOBALS['TL_LANG']['tl_iso_attributes']['opValue'] = 'Valeur';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['opLabel'] = 'Libellé';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['opDefault'] = 'Par défaut';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['opGroup'] = 'Groupe';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['checkbox'] = 'Case à cocher';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['radio'] = 'Radio';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['digit'][0] = 'Caractères numériques';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['digit'][1] = 'Autorise les caractères numériques, moins (-), point (.) et espace ( ).';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['alpha'][0] = 'Caractères alphabétiques';
@@ -100,20 +115,38 @@ $GLOBALS['TL_LANG']['tl_iso_attributes']['discount'][0] = 'Remise';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['discount'][1] = 'Vérifie si le format de réduction est valide.<br />Exemple: -10%, -10, +10, +10%';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['surcharge'][0] = 'Supplément';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['surcharge'][1] = 'Vérifie si le format de supplément est valide.<br />Exemple: 10.00, 10%';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['name_asc'] = 'File name (ascending)';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['name_desc'] = 'File name (descending)';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['date_asc'] = 'Date (ascending)';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['date_desc'] = 'Date (descending)';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['meta'] = 'Meta file (meta.txt)';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['random'] = 'Random order';
+
+
+/**
+ * Buttons
+ */
 $GLOBALS['TL_LANG']['tl_iso_attributes']['new'][0] = 'Nouvel attribut';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['new'][1] = 'Créer un nouvel attribut';
-$GLOBALS['TL_LANG']['tl_iso_attributes']['edit'][0] = 'Editer l\'attribut';
-$GLOBALS['TL_LANG']['tl_iso_attributes']['edit'][1] = 'Editer l\'attribut ID %s.';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['edit'][0] = 'Éditer l\'attribut';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['edit'][1] = 'Éditer l\'attribut ID %s.';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['copy'][0] = 'Copier l\'attribut';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['copy'][1] = 'Copier l\'attribut ID %s.';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['delete'][0] = 'Supprimer l\'attribut';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['delete'][1] = 'Supprimer l\'attribut ID %s.';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['show'][0] = 'Afficher les détails de l\'attribut';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['show'][1] = 'Afficher les détails de l\'attribut ID %s.';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['deleteConfirm'] = 'Do you really want to delete attribute ID %s. Database field is not dropped, you need to manually update the database using the install tool or repository manager.';
+
+
+/**
+ * Legends
+ */
 $GLOBALS['TL_LANG']['tl_iso_attributes']['attribute_legend'] = 'Nom et type d\'attribut';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['description_legend'] = 'Description';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['options_legend'] = 'Options';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['config_legend'] = 'Configuration d\'attribut';
-$GLOBALS['TL_LANG']['tl_iso_attributes']['validation_legend'] = 'Validation de saisie';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['search_filters_legend'] = 'Paramètres de recherche et de filtre';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['store_legend'] = 'Store file';
 
+//$GLOBALS['TL_LANG']['tl_iso_attributes']['validation_legend'] = 'Validation de saisie';
