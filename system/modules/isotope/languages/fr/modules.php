@@ -89,12 +89,12 @@ $GLOBALS['TL_LANG']['IMD']['payment'][1]                = 'Mise en place de mode
 $GLOBALS['TL_LANG']['IMD']['tax_class'][0]              = 'Taxes';
 $GLOBALS['TL_LANG']['IMD']['tax_class'][1]              = 'Mise en place de taxes, qui contiennent des ensembles de taux de taxe.';
 $GLOBALS['TL_LANG']['IMD']['tax_rate'][0]               = 'Taux de taxe';
-$GLOBALS['TL_LANG']['IMD']['tax_rate'][1]               = 'Mise en place des taux de taxe basé sur des choses comme le lieu de livraison/facturation et le total de la commande.';
+$GLOBALS['TL_LANG']['IMD']['tax_rate'][1]               = 'Mise en place des taux de taxe basés sur des choses comme le lieu de livraison/facturation et le total de la commande.';
 $GLOBALS['TL_LANG']['IMD']['config']                    = 'Paramètres généraux';
 $GLOBALS['TL_LANG']['IMD']['orderstatus']               = array('État des commandes', 'Définir l\'état des commandes.');
 $GLOBALS['TL_LANG']['IMD']['baseprice']                 = array('Prix de base', 'Définir les prix de base.');
 $GLOBALS['TL_LANG']['IMD']['iso_mail'][0]               = 'Gestion des e-mails';
-$GLOBALS['TL_LANG']['IMD']['iso_mail'][1]               = 'Personnaliser les emails de notification de l\'administrateur et des clients.';
+$GLOBALS['TL_LANG']['IMD']['iso_mail'][1]               = 'Personnaliser les e-mails de notification de l\'administrateur et des clients.';
 $GLOBALS['TL_LANG']['IMD']['configs'][0]                = 'Configuration de boutique';
 $GLOBALS['TL_LANG']['IMD']['configs'][1]                = 'Configurer les paramètres généraux de la boutique.';
 

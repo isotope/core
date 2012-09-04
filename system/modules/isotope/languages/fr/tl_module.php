@@ -62,7 +62,7 @@ $GLOBALS['TL_LANG']['tl_module']['iso_order_conditions'][1]       = 'Choisissez 
 $GLOBALS['TL_LANG']['tl_module']['iso_order_conditions_position'] = array('Position of order conditions form', 'Define if the order condition form should be shown before or after the products list.');
 $GLOBALS['TL_LANG']['tl_module']['iso_addToAddressbook'][0]       = 'Ajouter au carnet d\'adresses';
 $GLOBALS['TL_LANG']['tl_module']['iso_addToAddressbook'][1]       = 'Ajouter de nouvelles adresses au carnet d\'adresses des membres (si connecté).';
-$GLOBALS['TL_LANG']['tl_module']['iso_emptyMessage']              = array('Define empty message', 'Set a custom message when there is nothing to show (empty product list, empty cart, etc.).');
+$GLOBALS['TL_LANG']['tl_module']['iso_emptyMessage']              = array('Définir un message vide', 'Définir un message personnalisé quand il n\'y a rien à afficher (liste de produit vide, panier vide, etc.)');
 $GLOBALS['TL_LANG']['tl_module']['iso_noProducts'][0]             = 'Message pour la liste vide';
 $GLOBALS['TL_LANG']['tl_module']['iso_noProducts'][1]             = 'Laisser vide pour le message par défaut.';
 $GLOBALS['TL_LANG']['tl_module']['iso_emptyFilter']               = array('Define a message if no filter is set', 'Set a custom message when there is no filter set.');
@@ -79,7 +79,7 @@ $GLOBALS['TL_LANG']['tl_module']['iso_mail_admin'][1]             = 'Sélectionn
 $GLOBALS['TL_LANG']['tl_module']['iso_sales_email'][0]            = 'Adresse e-mail de l\'administrateur des ventes';
 $GLOBALS['TL_LANG']['tl_module']['iso_sales_email'][1]            = 'Saisir une adresse e-mail autre que celle par défaut de l\'administrateur système pour stocker les notifications qui doivent être envoyés.';
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope'][0]         = 'Portée de la catégorie';
-$GLOBALS['TL_LANG']['tl_module']['iso_list_where']                = array('Condition', 'Here you can enter a SQL condition to filter the products. You must prefix the fields with "p1." (e.g. <em>p1.featured=1</em> or <em>p1.color!=\'red\'</em>)!');
+$GLOBALS['TL_LANG']['tl_module']['iso_list_where']                = array('Condition', 'Ici, vous pouvez entrer une condition SQL pour filtrer les produits. Vous devez préfixer les champs avec "p1." (par ex. : <em>p1.featured=1</em> ou <em>p1.color!=\'red\'</em>)!');
 $GLOBALS['TL_LANG']['tl_module']['iso_use_quantity'][0]           = 'Activer la quantité';
 $GLOBALS['TL_LANG']['tl_module']['iso_use_quantity'][1]           = 'Permet aux utilisateurs de spécifier un ou plusieurs produits à acheter.';
 $GLOBALS['TL_LANG']['tl_module']['iso_filterModules']             = array('Filter modules', 'Select the filter modules you want to consider for this product list.');

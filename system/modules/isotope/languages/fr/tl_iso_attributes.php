@@ -29,7 +29,7 @@
  */
 
 $GLOBALS['TL_LANG']['tl_iso_attributes']['name'][0] = 'Nom';
-$GLOBALS['TL_LANG']['tl_iso_attributes']['name'][1] = 'Merci d\' entrer un nom pour cet attribut.';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['name'][1] = 'Merci d\'entrer un nom pour cet attribut.';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['field_name'][0] = 'Nom interne';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['field_name'][1] = 'Le nom interne est le nom du champ dans la base de données et doit être unique.';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['type'][0] = 'Type';
@@ -42,24 +42,24 @@ $GLOBALS['TL_LANG']['tl_iso_attributes']['customer_defined'][1] = 'Merci de choi
 $GLOBALS['TL_LANG']['tl_iso_attributes']['description'][0] = 'Description';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['description'][1] = 'La description est indiquée par un indice à l\'utilisateur back office.';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['options'][0] = 'Options';
-$GLOBALS['TL_LANG']['tl_iso_attributes']['options'][1] = 'Merci d\' entrer une ou plusieurs options. Utilisez les boutons pour ajouter, déplacer ou supprimer une option. Si vous travaillez sans l\'aide de JavaScript, vous devez enregistrer vos modifications avant de modifier l\'ordre!';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['options'][1] = 'Merci d\'entrer une ou plusieurs options. Utilisez les boutons pour ajouter, déplacer ou supprimer une option. Si vous travaillez sans l\'aide de JavaScript, vous devez enregistrer vos modifications avant de modifier l\'ordre.';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['mandatory'][0] = 'Champ obligatoire';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['mandatory'][1] = 'Le produit ne sera pas ajouté au panier si ce champ est vide.';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['multiple'][0] = 'Sélection multiple';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['multiple'][1] = 'Autorise les visiteurs à sélectionner plusieurs options.';
-$GLOBALS['TL_LANG']['tl_iso_attributes']['size'][0] = 'Taile de la liste';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['size'][0] = 'Taille de la liste';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['size'][1] = 'Vous pouvez entrer ici la taille de la boîte de sélection.';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['extensions'][0] = 'Types de champs autorisés';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['extensions'][1] = 'Une liste des extensions de fichier valide séparée par des virgules.';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['rte'][0] = 'Utiliser l\'éditeur HTML';
-$GLOBALS['TL_LANG']['tl_iso_attributes']['rte'][1] = 'Sélectionnez un fichier de configuration tinyMCE pour permettre l\'éditeur de texte riche.';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['rte'][1] = 'Sélectionnez un fichier de configuration tinyMCE pour activer l\'éditeur de texte riche.';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['multilingual'][0] = 'Multilingue';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['multilingual'][1] = 'Cochez cette case si ce champ doit être traduit.';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['rgxp'][0] = 'Validation de saisie';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['maxlength'][0] = 'Longueur maximale';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['maxlength'][1] = 'Limite la longueur du champ à un certain nombre de caractères (texte) ou octets (téléchargement).';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['foreignKey'][0] = 'Table et champ contenant les options';
-$GLOBALS['TL_LANG']['tl_iso_attributes']['foreignKey'][1] = 'Au lieu d\'ajouter des options vous pouvez entrer une combinaison table.champ pour les sélectionner depuis la base de données.';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['foreignKey'][1] = 'Au lieu d\'ajouter des options vous pouvez entrer une combinaison "table.champ" pour les sélectionner depuis la base de données.';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['conditionField'][0] = 'Champ parent';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['conditionField'][1] = 'Please select the parent field, which must be of type "Select-Menu". For parent-child relation to work, define each option of this parent field as group of the conditional select-menu.';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['gallery'][0] = 'Galerie d\'images';
