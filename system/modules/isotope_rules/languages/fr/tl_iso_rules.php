@@ -29,12 +29,12 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_iso_rules']['type']                = array('Type', 'Please choose the type of rule.');
-$GLOBALS['TL_LANG']['tl_iso_rules']['name']                = array('Name', 'Please enter a name for this rule.');
-$GLOBALS['TL_LANG']['tl_iso_rules']['label']               = array('Label', 'The label will be show in cart. If you do not enter a label, the name will be used.');
+$GLOBALS['TL_LANG']['tl_iso_rules']['type']                = array('Type', 'Veuillez, s\'il vous plaît, choisir le type de règle.');
+$GLOBALS['TL_LANG']['tl_iso_rules']['name']                = array('Nom', 'Veuillez, s\'il vous plaît, insérer un nom pour cette règle.');
+$GLOBALS['TL_LANG']['tl_iso_rules']['label']               = array('Label', 'Le label sera affiché dans le panier. Si vous n\'entrer pas un label, le nom sera utilisé.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['discount']            = array('Discount', 'Valid values are decimals or whole numbers, minus a numerical value or minus a percentage.');
-$GLOBALS['TL_LANG']['tl_iso_rules']['tax_class']           = array('Tax Class');
-$GLOBALS['TL_LANG']['tl_iso_rules']['applyTo']             = array('Apply discount to', 'Select how the discount is applied.');
+$GLOBALS['TL_LANG']['tl_iso_rules']['tax_class']           = array('Taxe');
+$GLOBALS['TL_LANG']['tl_iso_rules']['applyTo']             = array('Appliquer la réduction à', 'Sélectionnez la façon dont la réduction est appliquée.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['enableCode']          = array('Enable coupon code', 'Require a code to be entered to invoke this rule, as a coupon.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['code']                = array('Rule (coupon) code', 'Please enter a code by which a customer will invoke this rule, as a coupon.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['limitPerMember']      = array('Uses per member', 'This will be used to see if the rule has already been redeemed.  If this is set to 0, it can be used unlimited times for each customer.');
@@ -62,7 +62,7 @@ $GLOBALS['TL_LANG']['tl_iso_rules']['products']            = array('Products', '
 $GLOBALS['TL_LANG']['tl_iso_rules']['variants']            = array('Products & Variants', 'Select products & variants this rule is restricted to. If none, all are eligible.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['attributeName']       = array('Attribute name', 'Select the product attribute you want to restrict.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['attributeCondition']  = array('Attribute condition', 'Select the product attribute you want to restrict.');
-$GLOBALS['TL_LANG']['tl_iso_rules']['pages']               = array('Categories', 'Select categories this rule is restricted to.  If none, all are eligible.');
+$GLOBALS['TL_LANG']['tl_iso_rules']['pages']               = array('Categories', 'Select categories this rule is restricted to. If none, all are eligible.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['enabled']             = array('Enabled', 'Please select whether this rule is currently enabled or not.');
 
 
@@ -81,7 +81,7 @@ $GLOBALS['TL_LANG']['tl_iso_rules']['enabled_legend']  = 'Disponibilité';
  * Reference
  */
 $GLOBALS['TL_LANG']['tl_iso_rules']['type']['product']                     = 'Produit';
-$GLOBALS['TL_LANG']['tl_iso_rules']['type']['cart']                        = 'Cart';
+$GLOBALS['TL_LANG']['tl_iso_rules']['type']['cart']                        = 'Panier';
 $GLOBALS['TL_LANG']['tl_iso_rules']['memberRestrictions']['none']          = 'Aucune restriction';
 $GLOBALS['TL_LANG']['tl_iso_rules']['memberRestrictions']['guests']        = 'Invités';
 $GLOBALS['TL_LANG']['tl_iso_rules']['memberRestrictions']['groups']        = 'Groupes spécifiques';
@@ -95,12 +95,12 @@ $GLOBALS['TL_LANG']['tl_iso_rules']['productRestrictions']['attribute']    = 'Pr
 $GLOBALS['TL_LANG']['tl_iso_rules']['ruleRestrictions']['all']             = 'Exclure toutes les autres règles';
 $GLOBALS['TL_LANG']['tl_iso_rules']['ruleRestrictions']['none']            = 'Aucune exclusion de règles';
 $GLOBALS['TL_LANG']['tl_iso_rules']['ruleRestrictions']['rules']           = 'Exclure certaines règles';
-$GLOBALS['TL_LANG']['tl_iso_rules']['applyTo']['products']                 = 'to each product';
-$GLOBALS['TL_LANG']['tl_iso_rules']['applyTo']['items']                    = 'to each unit of a product';
+$GLOBALS['TL_LANG']['tl_iso_rules']['applyTo']['products']                 = 'à chaque produit';
+$GLOBALS['TL_LANG']['tl_iso_rules']['applyTo']['items']                    = 'à chaque unité d\'un produit';
 $GLOBALS['TL_LANG']['tl_iso_rules']['applyTo']['subtotal']                 = 'to the cart subtotal';
-$GLOBALS['TL_LANG']['tl_iso_rules']['quantityMode']['product_quantity']    = 'Quantity of product in cart';
-$GLOBALS['TL_LANG']['tl_iso_rules']['quantityMode']['cart_products']       = 'Total products in cart';
-$GLOBALS['TL_LANG']['tl_iso_rules']['quantityMode']['cart_items']          = 'Total quantity in cart';
+$GLOBALS['TL_LANG']['tl_iso_rules']['quantityMode']['product_quantity']    = 'Quantité de produit dans le panier';
+$GLOBALS['TL_LANG']['tl_iso_rules']['quantityMode']['cart_products']       = 'Total des produits dans le panier';
+$GLOBALS['TL_LANG']['tl_iso_rules']['quantityMode']['cart_items']          = 'Quantité totale dans le panier';
 $GLOBALS['TL_LANG']['tl_iso_rules']['condition_true']                      = 'vrai';
 $GLOBALS['TL_LANG']['tl_iso_rules']['condition_false']                     = 'faux';
 $GLOBALS['TL_LANG']['tl_iso_rules']['attributeCondition']['eq']            = 'est égal à';

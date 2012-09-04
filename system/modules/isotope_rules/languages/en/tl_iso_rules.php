@@ -64,7 +64,7 @@ $GLOBALS['TL_LANG']['tl_iso_rules']['products']				= array('Products', 'Select p
 $GLOBALS['TL_LANG']['tl_iso_rules']['variants']				= array('Products & Variants', 'Select products & variants this rule is restricted to. If none, all are eligible.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['attributeName']		= array('Attribute name', 'Select the product attribute you want to restrict.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['attributeCondition']	= array('Attribute condition', 'Select the product attribute you want to restrict.');
-$GLOBALS['TL_LANG']['tl_iso_rules']['pages']				= array('Categories', 'Select categories this rule is restricted to.  If none, all are eligible.');
+$GLOBALS['TL_LANG']['tl_iso_rules']['pages']				= array('Categories', 'Select categories this rule is restricted to. If none, all are eligible.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['enabled']				= array('Enabled', 'Please select whether this rule is currently enabled or not.');
 
 

@@ -29,11 +29,11 @@
 /**
  * Extension folder
  */
-$GLOBALS['TL_LANG']['MOD']['isotope_rules'] = array('Isotope eCommerce: Règles &amp; Coupons');
+$GLOBALS['TL_LANG']['MOD']['isotope_rules'] = array('Isotope eCommerce: Règles &amp; coupons');
 
 
 /**
  * Backend Modules
  */
-$GLOBALS['TL_LANG']['MOD']['iso_rules'] = array('Règles &amp; Coupons', '');
+$GLOBALS['TL_LANG']['MOD']['iso_rules'] = array('Règles &amp; coupons', '');
 
