@@ -839,6 +839,7 @@ CREATE TABLE `tl_user` (
  `iso_mailp` blob NULL,
  `iso_configs` blob NULL,
  `iso_configp` blob NULL,
+ `iso_groups` blob NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
@@ -864,6 +865,7 @@ CREATE TABLE `tl_user_group` (
  `iso_mailp` blob NULL,
  `iso_configs` blob NULL,
  `iso_configp` blob NULL,
+ `iso_groups` blob NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 

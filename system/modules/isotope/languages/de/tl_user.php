@@ -39,4 +39,6 @@ $GLOBALS['TL_LANG']['tl_user']['iso_configs'][1] = 'Nutzer können Bestellungen 
 $GLOBALS['TL_LANG']['tl_user']['iso_modules'][0] = 'Isotope-Module';
 $GLOBALS['TL_LANG']['tl_user']['iso_modules'][1] = 'Wählen Sie auf welche Shop-Konfigurationsmodule die Nutzer Zugriff haben.';
 $GLOBALS['TL_LANG']['tl_user']['isotope_legend'] = 'Isotope eCommerce';
+$GLOBALS['TL_LANG']['tl_user']['iso_groups']		= array('Erlaubte Produktgruppen', 'Zugriff auf Produktegruppen für diese Benutzergruppe limitieren. Wird vererbt.');
+
 

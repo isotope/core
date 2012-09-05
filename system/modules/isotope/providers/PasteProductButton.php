@@ -29,7 +29,12 @@
 
 class PasteProductButton extends Backend
 {
-	
+	/**
+	 * True if group already added
+	 * @var bool
+	 */
+	static private $blnHasGroup = false;
+
 	/**
 	 * Handle the paste button callback for tl_iso_products
 	 * @param DataContainer
@@ -47,7 +52,37 @@ class PasteProductButton extends Backend
 		{
 			return '';
 		}
-		
+
+		// make sure there's at least one product group
+		if (!self::$blnHasGroup)
+		{
+			$objGroups = $this->Database->executeUncached('SELECT COUNT(id) AS total FROM tl_iso_groups');
+			if (!$objGroups->total)
+			{
+				$intGroup = $this->Database->prepare('INSERT INTO tl_iso_groups (pid,sorting,tstamp,name) VALUES (?, ?, ?, ?)')
+										   ->execute(0, 0, time(), '---GENERAL---')
+										   ->insertId;
+
+				// add all products to that new folder
+				$this->Database->prepare("UPDATE tl_iso_products SET gid=? WHERE pid=0 AND language='' AND gid=0")->execute($intGroup);
+
+				// open the first one as benefit
+				$session = $this->Session->getData();
+				$session['tl_iso_products_tl_iso_groups_tree'][$intGroup] = 1;
+				$this->Session->setData($session);
+
+				$this->reload();
+			}
+
+			self::$blnHasGroup = true;
+		}
+
+		// Can't do anything in root
+		if ($row['id'] == 0)
+		{
+			return '';
+		}
+
 		// Create a new product or variant
 		if ($arrClipboard['mode'] == 'create')
 		{

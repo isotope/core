@@ -185,6 +185,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'href'				=> 'table=tl_iso_groups',
 				'class'				=> 'header_iso_groups isotope-tools',
 				'attributes'		=> 'onclick="Backend.getScrollOffset();"',
+				'button_callback'	=> array('tl_iso_products', 'groups')
 			),
 			'import' => array
 			(
@@ -725,7 +726,7 @@ class tl_iso_products extends Backend
 
 
 	/**
-	 * Only list product types a user is allowed to see
+	 * Check permissions for that entry
 	 * @return void
 	 */
 	public function checkPermission()
@@ -764,6 +765,19 @@ class tl_iso_products extends Backend
 		if (is_array($GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root']))
 		{
 			$arrProducts = array_intersect($GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'], $arrProducts);
+		}
+
+		// Filter out product groups the user can't see
+		if (is_array($this->User->iso_groups) && !empty($this->User->iso_groups))
+		{
+			$arrAllowed = $this->getChildRecords($this->User->iso_groups, 'tl_iso_groups');
+			$arrAllowed = array_merge($this->User->iso_groups, $arrAllowed);
+
+			$objGroupProducts = $this->Database->execute('SELECT id FROM tl_iso_products WHERE gid IN (' . implode(',', $arrAllowed) . ')');
+			if ($objGroupProducts->numRows)
+			{
+				$arrProducts = array_intersect($arrProducts, $objGroupProducts->fetchEach('id'));
+			}
 		}
 
 		$GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'] = $arrProducts;
@@ -1680,6 +1694,27 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 		}
 
 		return '<a href="' . $this->addToUrl('&amp;' . $href) . '" class="header_toggle isotope-tools" title="' . specialchars($title) . '"' . $attributes . '>' . specialchars($label) . '</a>';
+	}
+
+	/**
+	 * Hide "product groups" button for non-admins
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param array
+	 * @return string
+	 */
+	public function groups($href, $label, $title, $class, $attributes, $table, $root)
+	{
+		if (!$this->User->isAdmin)
+		{
+			return '';
+		}
+
+		return '<a href="' . $this->addToUrl('&amp;' . $href) . '" class="header_iso_groups isotope-tools" title="' . specialchars($title) . '"' . $attributes . '>' . specialchars($label) . '</a>';
 	}
 
 
