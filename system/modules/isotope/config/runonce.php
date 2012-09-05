@@ -985,7 +985,7 @@ CREATE TABLE `tl_iso_groups` (
 	 */
 	private function createGroupForAllNonAssignedProducts()
 	{
-		$objNoGroupProducts = $this->Database->execute('SELECT id FROM tl_iso_products WHERE pid=0 AND gid=0');
+		$objNoGroupProducts = $this->Database->execute("SELECT id FROM tl_iso_products WHERE pid=0 AND language='' AND gid=0");
 
 		if (!$objNoGroupProducts->numRows)
 		{
