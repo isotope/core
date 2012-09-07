@@ -121,5 +121,6 @@ $GLOBALS['TL_LANG']['tl_iso_rules']['new']		= array('Add rule', 'Create a new ru
 $GLOBALS['TL_LANG']['tl_iso_rules']['edit']		= array('Edit rule', 'Edit rule ID %s');
 $GLOBALS['TL_LANG']['tl_iso_rules']['copy']		= array('Duplicate rule', 'Duplicate rule ID %s');
 $GLOBALS['TL_LANG']['tl_iso_rules']['delete']	= array('Delete rule', 'Delete rule ID %s');
+$GLOBALS['TL_LANG']['tl_iso_rules']['toggle']	= array('Publish/unpublish rule', 'Publish/unpublish rule ID %s');
 $GLOBALS['TL_LANG']['tl_iso_rules']['show']		= array('Rule details', 'Show the details of rule ID %s');
 
