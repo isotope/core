@@ -263,7 +263,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_order_conditions_position'] = arr
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions_position'],
 	'exclude'                 => true,
 	'inputType'               => 'radio',
-	'options'				  => array('before', 'after'),
+	'options'				  => array('top', 'before', 'after'),
 	'reference'				  => &$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions_position'],
 	'eval'                    => array('tl_class'=>'w50'),
 );

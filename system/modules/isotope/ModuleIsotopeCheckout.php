@@ -792,6 +792,22 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 
 	/**
+	 * Generate order conditions interface if shown on top (before address)
+	 * @param boolean
+	 * @return string
+	 */
+	protected function getOrderConditionsOnTop($blnReview=false)
+	{
+		if ($this->iso_order_conditions_position == 'top')
+		{
+			return $this->getOrderConditionsInterface($blnReview);
+		}
+
+		return '';
+	}
+
+
+	/**
 	 * Generate order conditions interface if shown before products
 	 * @param boolean
 	 * @return string

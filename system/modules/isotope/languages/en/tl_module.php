@@ -92,6 +92,7 @@ $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['parent']					= 'Pare
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['product']					= 'Current Product\'s Categories';
 $GLOBALS['TL_LANG']['tl_module']['sortingDirection']['ASC'] 		= "ASC";
 $GLOBALS['TL_LANG']['tl_module']['sortingDirection']['DESC'] 		= "DESC";
+$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions_position']['top']				= 'On top (before address)';
 $GLOBALS['TL_LANG']['tl_module']['iso_order_conditions_position']['before']				= 'Before products list';
 $GLOBALS['TL_LANG']['tl_module']['iso_order_conditions_position']['after']				= 'After products list';
 
