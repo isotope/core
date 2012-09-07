@@ -10,6 +10,7 @@ Version 1.4.? (2012-??-??)
 
 ### Fixed
 - Rules for cart subtotal was not correctly applied
+- Price tiers showed as "from" price even if not enabled
 
 
 Version 1.4.beta1 (2012-08-24)

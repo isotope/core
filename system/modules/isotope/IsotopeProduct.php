@@ -282,14 +282,15 @@ class IsotopeProduct extends Controller
 
 			case 'available':
 				return $this->isAvailable();
-				break;
 
 			case 'hasDownloads':
 				return count($this->getDownloads()) ? true : false;
 
+			case 'show_price_tiers':
+				return (bool) $this->arrType['show_price_tiers'];
+
 			case 'description_meta':
 				return $this->arrData['description_meta'] != '' ? $this->arrData['description_meta'] : ($this->arrData['teaser'] != '' ? $this->arrData['teaser'] : $this->arrData['description']);
-				break;
 
 			default:
 				// Initialize attribute
