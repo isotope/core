@@ -54,5 +54,5 @@ $GLOBALS['TL_LANG']['tl_iso_related_products']['pasteafter'][1] = 'Coller après
 $GLOBALS['TL_LANG']['tl_iso_related_products']['pastenew'][0] = 'Ajouter nouveau en haut';
 $GLOBALS['TL_LANG']['tl_iso_related_products']['pastenew'][1] = 'Ajouter nouveau après la catégorie ID %s';
 $GLOBALS['TL_LANG']['tl_iso_related_products']['category_legend'] = 'Catégorie';
-$GLOBALS['TL_LANG']['tl_iso_related_products']['products_legend'] = 'Produits associés';
+$GLOBALS['TL_LANG']['tl_iso_related_products']['products_legend'] = 'Produits similaires';
 

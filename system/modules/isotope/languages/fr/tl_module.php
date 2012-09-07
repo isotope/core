@@ -105,7 +105,7 @@ $GLOBALS['TL_LANG']['tl_module']['iso_buttons'][0]                = 'Boutons';
 $GLOBALS['TL_LANG']['tl_module']['iso_buttons'][1]                = 'Sélectionner les boutons à afficher';
 $GLOBALS['TL_LANG']['tl_module']['iso_forward_review'][0]         = 'Avancer à la page résumé';
 $GLOBALS['TL_LANG']['tl_module']['iso_forward_review'][1]         = 'Avancer l\'utilisateur à la page résumé si aucune donnée n\'est requise lors des étapes suivantes.';
-$GLOBALS['TL_LANG']['tl_module']['iso_related_categories'][0]     = 'Catégories connexes';
+$GLOBALS['TL_LANG']['tl_module']['iso_related_categories'][0]     = 'Catégories similaires';
 $GLOBALS['TL_LANG']['tl_module']['iso_related_categories'][1]     = 'Sélectionner les catégories desquelles montrer les produits.';
 $GLOBALS['TL_LANG']['tl_module']['iso_includeMessages']           = array('Include messaging', 'This setting allows the module to include any errors, notifications, or confirmations the visitor should be aware of.');
 $GLOBALS['TL_LANG']['tl_module']['iso_continueShopping']          = array('Enable "Continue shopping" button', 'Add a link to the currently added product to the cart.');
@@ -127,6 +127,7 @@ $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['parent']            
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['product']                  = 'Produit actuel des catégories';
 $GLOBALS['TL_LANG']['tl_module']['sortingDirection']['ASC']                            = 'ASC';
 $GLOBALS['TL_LANG']['tl_module']['sortingDirection']['DESC']                           = 'DESC';
+$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions_position']['top']               = 'Dessus (avant l\'adresse)';
 $GLOBALS['TL_LANG']['tl_module']['iso_order_conditions_position']['before']            = 'Avant la liste des produits';
 $GLOBALS['TL_LANG']['tl_module']['iso_order_conditions_position']['after']             = 'Après la liste des produits';
 
