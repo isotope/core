@@ -34,7 +34,11 @@ class IsotopeTranslation extends Controller
 		foreach ($this->Config->getActiveModules() as $strModule)
 		{
 			$strFile = sprintf('%s/system/modules/%s/languages/%s/local/%s.php', TL_ROOT, $strModule, $strLanguage, $strName);
-			@include($strFile);
+
+			if (is_file($strFile))
+			{
+				@include($strFile);
+			}
 		}
 	}
 }
