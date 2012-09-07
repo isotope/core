@@ -84,10 +84,10 @@ $GLOBALS['TL_LANG']['tl_iso_attributes']['fe_search'] = array('Peut être recher
 /**
  * Reference
  */
-$GLOBALS['TL_LANG']['tl_iso_attributes']['opValue'] = 'Valeur';
-$GLOBALS['TL_LANG']['tl_iso_attributes']['opLabel'] = 'Libellé';
-$GLOBALS['TL_LANG']['tl_iso_attributes']['opDefault'] = 'Par défaut';
-$GLOBALS['TL_LANG']['tl_iso_attributes']['opGroup'] = 'Groupe';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['options']['value'] = array('Valeur');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['options']['label'] = array('Libellé');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['options']['default'] = array('Par défaut');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['options']['group'] = array('Groupe');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['checkbox'] = 'Case à cocher';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['radio'] = 'Radio';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['digit'][0] = 'Caractères numériques';

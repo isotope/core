@@ -71,10 +71,10 @@ $GLOBALS['TL_LANG']['tl_iso_attributes']['fe_search']			= array('Frontend Search
 /**
  * Reference
  */
-$GLOBALS['TL_LANG']['tl_iso_attributes']['opValue']					= 'Value';
-$GLOBALS['TL_LANG']['tl_iso_attributes']['opLabel']					= 'Label';
-$GLOBALS['TL_LANG']['tl_iso_attributes']['opDefault']				= 'Default';
-$GLOBALS['TL_LANG']['tl_iso_attributes']['opGroup']					= 'Group';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['options']['value']		= array('Value');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['options']['label']		= array('Label');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['options']['default']		= array('Default');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['options']['group']		= array('Group');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['checkbox']				= 'Checkbox';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['radio']					= 'Radio';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['digit']					= array('Numeric characters', 'Allows numeric characters, minus (-), full stop (.) and space ( ).');

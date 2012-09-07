@@ -51,6 +51,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 		(
 			array('IsotopeBackend', 'initializeSetupModule'),
 			array('tl_iso_attributes', 'disableFieldName'),
+			array('tl_iso_attributes', 'prepareForVariantOptions'),
 		),
 		'onsubmit_callback' => array
 		(
@@ -199,8 +200,38 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['options'],
 			'exclude'				=> true,
-			'inputType'				=> 'optionWizard',
-			'eval'					=> array('tl_class'=>'clr'),
+			'inputType'				=> 'multiColumnWizard',
+			'eval'					=> array
+			(
+				'tl_class'			=> 'clr',
+				'columnFields' => array
+				(
+					'value' => array
+					(
+						'label'		=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['options']['value'],
+						'inputType'	=> 'text',
+						'eval'		=> array('class'=>'tl_text_2'),
+					),
+					'label' => array
+					(
+						'label'		=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['options']['label'],
+						'inputType'	=> 'text',
+						'eval'		=> array('class'=>'tl_text_2'),
+					),
+					'default' => array
+					(
+						'label'		=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['options']['default'],
+						'inputType'	=> 'checkbox',
+						'eval'		=> array('columnPos'=>2),
+					),
+					'group' => array
+					(
+						'label'		=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['options']['group'],
+						'inputType'	=> 'checkbox',
+						'eval'		=> array('columnPos'=>3),
+					),
+				),
+			),
 		),
 		'foreignKey' => array
 		(
@@ -435,6 +466,22 @@ class tl_iso_attributes extends Backend
 				$GLOBALS['TL_DCA']['tl_iso_attributes']['fields']['field_name']['eval']['disabled'] = true;
 				$GLOBALS['TL_DCA']['tl_iso_attributes']['fields']['field_name']['eval']['mandatory'] = false;
 			}
+		}
+	}
+
+
+	/**
+	 * Hide certain options if this is a variant option
+	 * @param DataContainer
+	 */
+	public function prepareForVariantOptions($dc)
+	{
+		$objAttribute = $this->Database->prepare("SELECT * FROM tl_iso_attributes WHERE id=?")->execute($dc->id);
+
+		if ($objAttribute->variant_option)
+		{
+			unset($GLOBALS['TL_DCA']['tl_iso_attributes']['fields']['options']['eval']['columnFields']['default']);
+			unset($GLOBALS['TL_DCA']['tl_iso_attributes']['fields']['options']['eval']['columnFields']['group']);
 		}
 	}
 
