@@ -708,15 +708,10 @@ class tl_iso_products extends Backend
 		}
 
 		$arrTypes = count($this->User->iso_product_types) ? $this->User->iso_product_types : array(0);
-		$objProducts = $this->Database->execute("SELECT id, (SELECT COUNT(*) FROM tl_iso_products) AS total FROM tl_iso_products WHERE type IN ('','" . implode("','", $arrTypes) . "')");
 
-		// Do not run permission check if there are no products in the table
-		if (!$objProducts->numRows && !$objProducts->total)
-		{
-			return;
-		}
+		$objProducts = $this->Database->execute("SELECT id FROM tl_iso_products WHERE type IN ('','" . implode("','", $arrTypes) . "')");
 
-		$arrProducts = $objProducts->numRows ? $objProducts->fetchEach('id') : array(0);
+		$arrProducts = $objProducts->numRows ? $objProducts->fetchEach('id') : array();
 
 		// Maybe another function has already set allowed product IDs
 		if (is_array($GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root']))
@@ -1223,7 +1218,7 @@ class tl_iso_products extends Backend
 		}
 
 		$objVariants = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE pid=? AND language=''")->execute($dc->id);
-		$strBuffer .= '<div id="tl_buttons">
+		$strBuffer = '<div id="tl_buttons">
 <a href="'.ampersand(str_replace('&key=quick_edit', '', $this->Environment->request)).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
 </div>
 
