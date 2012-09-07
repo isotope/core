@@ -143,17 +143,6 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 	// Fields
 	'fields' => array
 	(
-		'type' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['type'],
-			'exclude'                 => true,
-			'filter'                  => true,
-			'inputType'               => 'select',
-			'default'				  => 'cash',
-			'options_callback'        => array('tl_iso_payment_modules', 'getModules'),
-			'reference'               => &$GLOBALS['ISO_LANG']['PAY'],
-			'eval'                    => array('helpwizard'=>true, 'submitOnChange'=>true, 'tl_class'=>'clr')
-		),
 		'name' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['name'],
@@ -168,6 +157,17 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255, 'tl_class'=>'w50'),
+		),
+		'type' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['type'],
+			'exclude'                 => true,
+			'filter'                  => true,
+			'inputType'               => 'select',
+			'default'				  => 'cash',
+			'options_callback'        => array('tl_iso_payment_modules', 'getModules'),
+			'reference'               => &$GLOBALS['ISO_LANG']['PAY'],
+			'eval'                    => array('helpwizard'=>true, 'submitOnChange'=>true, 'chosen'=>true, 'tl_class'=>'w50')
 		),
 		'note' => array
 		(
@@ -572,7 +572,7 @@ class tl_iso_payment_modules extends Backend
 				break;
 		}
 	}
-	
+
 
 	/**
 	 * Get allowed CC types and return them as array
