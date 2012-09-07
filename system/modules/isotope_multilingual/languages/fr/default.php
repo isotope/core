@@ -28,9 +28,19 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['ISO_LANG']['MSC']['translationSaved'] = 'Vos changements ont été sauvegardés.';
-$GLOBALS['ISO_LANG']['MSC']['translationEdit'] = 'Modifier le fichier %s à partir de l\'extension "%s "';
-$GLOBALS['ISO_LANG']['MSC']['translationSelect'] = 'Sélectionnez une extension et un fichier.';
-$GLOBALS['ISO_LANG']['MSC']['translationError'] = 'Le fichier cible ne peut être analysé.';
+
+/**
+ * Errors
+ */
+$GLOBALS['ISO_LANG']['ERR']['noLanguageForTranslation']	= 'Vous n\'avez pas langue assignée.';
+
+
+/**
+ * Miscellaneous
+ */
+$GLOBALS['ISO_LANG']['MSC']['translationSaved']       = 'Vos changements ont été sauvegardés.';
+$GLOBALS['ISO_LANG']['MSC']['translationEdit']        = 'Modifier le fichier %s à partir de l\'extension "%s"';
+$GLOBALS['ISO_LANG']['MSC']['translationSelect']      = 'Sélectionnez une extension et un fichier.';
+$GLOBALS['ISO_LANG']['MSC']['translationError']       = 'Le fichier cible ne peut être analysé.';
 $GLOBALS['ISO_LANG']['MSC']['translationErrorSource'] = 'Le fichier source ne peut être analysé.';
 
