@@ -277,7 +277,7 @@ $GLOBALS['ISO_LANG']['PAY']['cybersource']		= array('Cybersource','For Cybersour
 /**
  * Galleries
  */
-$GLOBALS['ISO_LANG']['GAL']['default']			= array('Default gallery (Lightbox/Mediabox)', 'Uses the lightbox/mediabox for full size images. Make sure you select the appropriate moo_ template in your page layout configuration.</p><p>You can supply a "rel" attribute to the link target by using a pipe (eg. "tl_files/video.mov|lightbox[400 300]"). If no "rel" attribute is supplied, the link will be opened in a new window.');
+$GLOBALS['ISO_LANG']['GAL']['default']			= array('Default gallery (Lightbox/Mediabox)', '<p>Uses the lightbox/mediabox for full size images. Make sure you select the appropriate "moo_" template in your page layout configuration.</p><p>You can supply a "rel" attribute to the link target by using a pipe (eg. "tl_files/video.mov|lightbox[400 300]"). If no "rel" attribute is supplied, the link will be opened in a new window.</p>');
 $GLOBALS['ISO_LANG']['GAL']['inline']			= array('Inline gallery', 'Clicking on a gallery image will replace the main image.');
 $GLOBALS['ISO_LANG']['GAL']['zoom'] = array('Inline gallery with zoom effect', 'In addition to the behaviour of inline gallery, it also adds an image zoom feature to the main image.');
 
@@ -340,7 +340,7 @@ $GLOBALS['ISO_LANG']['ATTR']['checkbox']			= array('Checkbox menu', 'A list of m
 $GLOBALS['ISO_LANG']['ATTR']['mediaManager']		= array('Media Manager', 'Upload images and other files to the Isotope eCommerce file system. Output is processed trough an IsotopeGallery class.');
 $GLOBALS['ISO_LANG']['ATTR']['conditionalselect']	= array('Conditional Select-Menu', 'show select-options based on another select menu.');
 $GLOBALS['ISO_LANG']['ATTR']['fileTree']			= array('File tree', 'A file tree for single or multiple files and folders.');
-$GLOBALS['ISO_LANG']['ATTR']['downloads']			= array('Downloads', 'Download files from the product, e.g. manuals, data sheets etc..');
+$GLOBALS['ISO_LANG']['ATTR']['downloads']			= array('Downloads', 'Download files from the product, e.g. manuals, data sheets etc.');
 $GLOBALS['ISO_LANG']['ATTR']['upload']				= array('File upload', 'A single-line input field to upload a local file to the server.');
 
 

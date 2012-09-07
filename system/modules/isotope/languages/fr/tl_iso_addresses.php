@@ -31,8 +31,14 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
+
+/**
+ * Fields
+ */
 $GLOBALS['TL_LANG']['tl_iso_addresses']['store_id'][0] = 'ID de la boutique';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['store_id'][1] = 'Utiliser des ID de boutique différents pour regrouper un ensemble de configurations de magasin. Un panier de commande sera partagé entre les mêmes ID de boutique.';
+$GLOBALS['TL_LANG']['tl_iso_addresses']['label'] = array('Libellé', 'Veuillez, s\'il vous plaît, entrer un libellé personnalisé pour cette adresse.');
+$GLOBALS['TL_LANG']['tl_iso_addresses']['salutation'] = array('Civilité', 'Veuillez, s\'il vous plaît, entrer un titre de civilité (M., Mme, Dr, Pr).');
 $GLOBALS['TL_LANG']['tl_iso_addresses']['firstname'][0] = 'Prénom';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['firstname'][1] = 'Saisir le prénom.';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['lastname'][0] = 'Nom de famille';
@@ -61,23 +67,38 @@ $GLOBALS['TL_LANG']['tl_iso_addresses']['isDefaultBilling'][0] = 'Adresse de fac
 $GLOBALS['TL_LANG']['tl_iso_addresses']['isDefaultBilling'][1] = 'Est-ce l\'adresse de facturation par défaut ?';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['isDefaultShipping'][0] = 'Adresse de livraison par défaut';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['isDefaultShipping'][1] = 'Est-ce l\'adresse de livraison par défaut ?';
+
+
+/**
+ * Legends
+ */
 $GLOBALS['TL_LANG']['tl_iso_addresses']['store_legend'] = 'Boutique';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['personal_legend'] = 'Données personnelles';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['address_legend'] = 'Détails de l\'adresse';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['contact_legend'] = 'Détails du contact';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['default_legend'] = 'Adresse par défaut';
+
+
+/**
+ * Reference
+ */
 $GLOBALS['TL_LANG']['tl_iso_addresses']['personalData'] = 'Données personnelles';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['addressDetails'] = 'Détails de l\'adresse';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['contactDetails'] = 'Détails du contact';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['loginDetails'] = 'Adresse par défaut';
+
+
+/**
+ * Buttons
+ */
 $GLOBALS['TL_LANG']['tl_iso_addresses']['new'][0] = 'Nouvelle adresse';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['new'][1] = 'Créer une nouvelle adresse';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['show'][0] = 'Détails de l\'adresse';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['show'][1] = 'Afficher les détails de l\'adresse ID %s';
-$GLOBALS['TL_LANG']['tl_iso_addresses']['edit'][0] = 'Editer l\'adresse';
-$GLOBALS['TL_LANG']['tl_iso_addresses']['edit'][1] = 'Editer l\'adresse ID %s';
-$GLOBALS['TL_LANG']['tl_iso_addresses']['copy'][0] = 'Duppliquer l\'adresse';
-$GLOBALS['TL_LANG']['tl_iso_addresses']['copy'][1] = 'Duppliquer l\'adresse ID %s';
+$GLOBALS['TL_LANG']['tl_iso_addresses']['edit'][0] = 'Éditer l\'adresse';
+$GLOBALS['TL_LANG']['tl_iso_addresses']['edit'][1] = 'Éditer l\'adresse ID %s';
+$GLOBALS['TL_LANG']['tl_iso_addresses']['copy'][0] = 'Dupliquer l\'adresse';
+$GLOBALS['TL_LANG']['tl_iso_addresses']['copy'][1] = 'Dupliquer l\'adresse ID %s';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['delete'][0] = 'Supprimer l\'adresse';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['delete'][1] = 'Supprimer l\'adresse ID %s';
 
