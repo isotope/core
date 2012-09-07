@@ -253,6 +253,7 @@
 .tl_attributewizard .cell,
 .tl_attributewizard_columninfo .cell {
 	display: table-cell;
+	position: relative;
 }
 
 .tl_attributewizard .cell.label,
