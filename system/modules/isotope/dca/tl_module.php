@@ -75,7 +75,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_reader_layout'] = array
 	'exclude'					=> true,
 	'inputType'					=> 'select',
 	'options_callback'			=> array('tl_module_isotope', 'getReaderTemplates'),
-	'eval'						=> array('includeBlankOption'=>true),
+	'eval'						=> array('includeBlankOption'=>true, 'tl_class'=>'w50'),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_cart_layout'] = array
