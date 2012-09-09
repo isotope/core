@@ -67,7 +67,7 @@ $GLOBALS['TL_LANG']['tl_iso_producttypes']['copy'][1]   = 'Dupliquer le type de 
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['delete'][0] = 'Effacer le type de produit';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['delete'][1] = 'Effacer le type de produit ID %s';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['show'][0]   = 'Détails du type de produit';
-$GLOBALS['TL_LANG']['tl_iso_producttypes']['show'][1]   = 'Montrer les détails du type de produit ID %s';
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['show'][1]   = 'Afficher les détails du type de produit ID %s';
 
 
 /**

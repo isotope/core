@@ -43,8 +43,8 @@ $GLOBALS['TL_LANG']['tl_iso_tax_class']['copy'][0] = 'Dupliquer la taxe';
 $GLOBALS['TL_LANG']['tl_iso_tax_class']['copy'][1] = 'Dupliquer la taxe ID %s';
 $GLOBALS['TL_LANG']['tl_iso_tax_class']['delete'][0] = 'Supprimer la taxe';
 $GLOBALS['TL_LANG']['tl_iso_tax_class']['delete'][1] = 'Supprimer la taxe ID %s';
-$GLOBALS['TL_LANG']['tl_iso_tax_class']['show'][0] = 'Afficher les détail de la taxe';
-$GLOBALS['TL_LANG']['tl_iso_tax_class']['show'][1] = 'Afficher les détail de la taxe ID %s';
+$GLOBALS['TL_LANG']['tl_iso_tax_class']['show'][0] = 'Afficher les détails de la taxe';
+$GLOBALS['TL_LANG']['tl_iso_tax_class']['show'][1] = 'Afficher les détails de la taxe ID %s';
 $GLOBALS['TL_LANG']['tl_iso_tax_class']['name_legend'] = 'Nom';
 $GLOBALS['TL_LANG']['tl_iso_tax_class']['rate_legend'] = 'Taux de taxe';
 

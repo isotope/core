@@ -32,7 +32,7 @@
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_iso_products']['id']					= array('Product ID');
-$GLOBALS['TL_LANG']['tl_iso_products']['pages']					= array('Categories', 'Select a category (page-based categories take advantage of TYPOlight pages features such as navigation automation, protection, templates, and full integration with content elements.');
+$GLOBALS['TL_LANG']['tl_iso_products']['pages']					= array('Categories', 'Select a category (page-based categories take advantage of Contao pages features such as navigation automation, protection, templates, and full integration with content elements.');
 $GLOBALS['TL_LANG']['tl_iso_products']['type']					= array('Product Type', 'Select your product type. Product types are defined in the store configuration.');
 $GLOBALS['TL_LANG']['tl_iso_products']['alias']					= array('Alias', 'You can enter a unique alias for this product. It will be automatically generated from the name if empty.');
 $GLOBALS['TL_LANG']['tl_iso_products']['name']					= array('Name', 'Please enter the name of this product.');
