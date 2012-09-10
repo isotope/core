@@ -1237,13 +1237,14 @@ $endScript";
 	 */
 	public static function formatSurcharges($arrSurcharges)
 	{
+		$i = 0;
 		$Isotope = Isotope::getInstance();
 
 		foreach ($arrSurcharges as $k => $arrSurcharge)
 		{
 			$arrSurcharges[$k]['price']			= $Isotope->formatPriceWithCurrency($arrSurcharge['price']);
 			$arrSurcharges[$k]['total_price']	= $Isotope->formatPriceWithCurrency($arrSurcharge['total_price']);
-			$arrSurcharges[$k]['rowClass']		= trim('foot_'.($k+1) . ' ' . $arrSurcharge[$k]['rowClass']);
+			$arrSurcharges[$k]['rowClass']		= trim('foot_'.(++$i) . ' ' . $arrSurcharge[$k]['rowClass']);
 		}
 
 		return $arrSurcharges;

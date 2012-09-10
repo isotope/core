@@ -93,7 +93,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			),
 			'toggle' => array
 			(
-				'label'					=> &$GLOBALS['TL_LANG']['tl_page']['toggle'],
+				'label'					=> &$GLOBALS['TL_LANG']['tl_iso_rules']['toggle'],
 				'icon'					=> 'visible.gif',
 				'attributes'			=> 'onclick="Backend.getScrollOffset(); return AjaxRequest.toggleVisibility(this, %s);"',
 				'button_callback'		=> array('tl_iso_rules', 'toggleIcon'),
