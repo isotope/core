@@ -32,7 +32,7 @@
 /**
  * Errors
  */
-$GLOBALS['ISO_LANG']['ERR']['noLanguageForTranslation']	= 'Vous n\'avez pas langue assignée.';
+$GLOBALS['ISO_LANG']['ERR']['noLanguageForTranslation']	= 'Vous n\'avez aucune langue assignée.';
 
 
 /**

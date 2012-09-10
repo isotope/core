@@ -57,7 +57,7 @@ $GLOBALS['TL_LANG']['tl_iso_mail_content']['copy'][0]   = 'Dupliquer la langue';
 $GLOBALS['TL_LANG']['tl_iso_mail_content']['copy'][1]   = 'Dupliquer la langue ID %s';
 $GLOBALS['TL_LANG']['tl_iso_mail_content']['delete'][0] = 'Supprimer la langue';
 $GLOBALS['TL_LANG']['tl_iso_mail_content']['delete'][1] = 'Supprimer la langue ID %s';
-$GLOBALS['TL_LANG']['tl_iso_mail_content']['show'][0]   = 'Afficher les détails de la langue';
+$GLOBALS['TL_LANG']['tl_iso_mail_content']['show'][0]   = 'Détails de la langue';
 $GLOBALS['TL_LANG']['tl_iso_mail_content']['show'][1]   = 'Afficher les détails de la langue ID %s';
 
 

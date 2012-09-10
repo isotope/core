@@ -126,6 +126,7 @@ $GLOBALS['TL_LANG']['tl_iso_config']['show']   							= array('Show configuratio
 $GLOBALS['TL_LANG']['tl_iso_config']['name_legend']						= 'Name';
 $GLOBALS['TL_LANG']['tl_iso_config']['address_legend']	    			= 'Address configuration';
 $GLOBALS['TL_LANG']['tl_iso_config']['config_legend']					= 'Configuration';
+$GLOBALS['TL_LANG']['tl_iso_config']['checkout_legend']					= 'Checkout';
 $GLOBALS['TL_LANG']['tl_iso_config']['price_legend']	    			= 'Pricing';
 $GLOBALS['TL_LANG']['tl_iso_config']['currency_legend']	    			= 'Currency formatting';
 $GLOBALS['TL_LANG']['tl_iso_config']['converter_legend']	    		= 'Currency conversion';

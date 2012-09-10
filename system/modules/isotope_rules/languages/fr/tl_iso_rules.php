@@ -41,7 +41,7 @@ $GLOBALS['TL_LANG']['tl_iso_rules']['limitPerMember']      = array('Uses per mem
 $GLOBALS['TL_LANG']['tl_iso_rules']['limitPerConfig']      = array('Uses per store config', 'This will be used to see if the rule has already been redeemed.  If this is set to 0, it can be used unlimited times for each store config.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['minItemQuantity']     = array('Minimum subtotal', 'Please specify a minimum subtotal this rule applies to.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['maxItemQuantity']     = array('Maximum subtotal', 'Please specify a maximum subtotal this rule applies to.');
-$GLOBALS['TL_LANG']['tl_iso_rules']['minItemQuantity']     = array('Minimum item quantity', 'Please specify a minimum quantity of a an item this rule applies to.');
+$GLOBALS['TL_LANG']['tl_iso_rules']['minItemQuantity']     = array('Minimum item quantity', 'Please specify a minimum quantity of an item this rule applies to.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['maxItemQuantity']     = array('Maximum item quantity', 'Please specify a maximum quantity of a single item this rule applies to.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['quantityMode']        = array('Quantity calculation mode', 'Select a calculation mode for min/max quantity.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['startDate']           = array('Start date', 'If desired, please specify the date this rule will become eligible on.');
@@ -90,7 +90,7 @@ $GLOBALS['TL_LANG']['tl_iso_rules']['productRestrictions']['none']         = 'Au
 $GLOBALS['TL_LANG']['tl_iso_rules']['productRestrictions']['producttypes'] = 'Types de produits';
 $GLOBALS['TL_LANG']['tl_iso_rules']['productRestrictions']['pages']        = 'Catégories';
 $GLOBALS['TL_LANG']['tl_iso_rules']['productRestrictions']['products']     = 'Produits';
-$GLOBALS['TL_LANG']['tl_iso_rules']['productRestrictions']['variants']     = 'Products &amp; Variants';
+$GLOBALS['TL_LANG']['tl_iso_rules']['productRestrictions']['variants']     = 'Produits &amp; Variantes';
 $GLOBALS['TL_LANG']['tl_iso_rules']['productRestrictions']['attribute']    = 'Product attribute';
 $GLOBALS['TL_LANG']['tl_iso_rules']['ruleRestrictions']['all']             = 'Exclure toutes les autres règles';
 $GLOBALS['TL_LANG']['tl_iso_rules']['ruleRestrictions']['none']            = 'Aucune exclusion de règles';
@@ -117,9 +117,10 @@ $GLOBALS['TL_LANG']['tl_iso_rules']['attributeCondition']['contains']      = 'co
 /**
  * Buttons
  */
-$GLOBALS['TL_LANG']['tl_iso_rules']['new']    = array('Ajouter une règle', 'Créer une nouvelle règle');
+$GLOBALS['TL_LANG']['tl_iso_rules']['new']    = array('Créer une règle', 'Créer une nouvelle règle');
 $GLOBALS['TL_LANG']['tl_iso_rules']['edit']   = array('Éditer une règle', 'Éditer la règle ID %s');
 $GLOBALS['TL_LANG']['tl_iso_rules']['copy']   = array('Dupliquer une règle', 'Dupliquer la règle ID %s');
 $GLOBALS['TL_LANG']['tl_iso_rules']['delete'] = array('Supprimer une règle', 'Supprimer la règle ID %s');
-$GLOBALS['TL_LANG']['tl_iso_rules']['show']   = array('Rule details', 'Show the details of rule ID %s');
+$GLOBALS['TL_LANG']['tl_iso_rules']['toggle'] = array('Publier/dé-publier une règle', 'Publier/dé-publier la règle ID %s');
+$GLOBALS['TL_LANG']['tl_iso_rules']['show']   = array('Détails de la règle', 'Afficher les détails de la règle ID %s');
 
