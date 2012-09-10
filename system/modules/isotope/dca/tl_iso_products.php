@@ -749,35 +749,38 @@ class tl_iso_products extends Backend
 			return;
 		}
 
-		$arrTypes = count($this->User->iso_product_types) ? $this->User->iso_product_types : array(0);
-		$objProducts = $this->Database->execute("SELECT id, (SELECT COUNT(*) FROM tl_iso_products) AS total FROM tl_iso_products WHERE type IN ('','" . implode("','", $arrTypes) . "')");
-
-		// Do not run permission check if there are no products in the table
-		if (!$objProducts->numRows && !$objProducts->total)
+		if (!is_array($this->User->iso_product_types) || empty($this->User->iso_product_types))
 		{
-			return;
+			$GLOBALS['TL_DCA']['tl_iso_products']['config']['closed'] = true;
+			unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_product']);
+			unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_variant']);
+			$GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'] = array();
 		}
-
-		$arrProducts = $objProducts->numRows ? $objProducts->fetchEach('id') : array(0);
-
-		// Maybe another function has already set allowed product IDs
-		if (is_array($GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root']))
+		else
 		{
-			$arrProducts = array_intersect($GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'], $arrProducts);
-		}
+			$objProducts = $this->Database->execute("SELECT id FROM tl_iso_products WHERE type IN ('','" . implode("','", $this->User->iso_product_types) . "')");
 
-		$GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'] = $arrProducts;
+			$arrProducts = $objProducts->numRows ? $objProducts->fetchEach('id') : array();
+
+			// Maybe another function has already set allowed product IDs
+			if (is_array($GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root']))
+			{
+				$arrProducts = array_intersect($GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'], $arrProducts);
+			}
+
+			$GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'] = $arrProducts;
+		}
 
 		// Set allowed product IDs (edit multiple)
 		if (is_array($session['CURRENT']['IDS']))
 		{
-			$session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $arrProducts);
+			$session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root']);
 		}
 
 		// Set allowed clipboard IDs
 		if (is_array($session['CLIPBOARD']['tl_iso_products']['id']))
 		{
-			$session['CLIPBOARD']['tl_iso_products']['id'] = array_intersect($session['CLIPBOARD']['tl_iso_products']['id'], $arrProducts, $this->Database->query("SELECT id FROM tl_iso_products WHERE pid=0")->fetchEach('id'));
+			$session['CLIPBOARD']['tl_iso_products']['id'] = array_intersect($session['CLIPBOARD']['tl_iso_products']['id'], $GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'], $this->Database->query("SELECT id FROM tl_iso_products WHERE pid=0")->fetchEach('id'));
 
 			if (empty($session['CLIPBOARD']['tl_iso_products']['id']))
 			{
@@ -788,7 +791,7 @@ class tl_iso_products extends Backend
 		// Overwrite session
 		$this->Session->setData($session);
 
-		if ($this->Input->get('id') > 0 && !in_array($this->Input->get('id'), $arrProducts))
+		if ($this->Input->get('id') > 0 && !in_array($this->Input->get('id'), $GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root']))
 		{
 			$this->log('Cannot access product ID '.$this->Input->get('id'), __METHOD__, TL_ACCESS);
 			$this->redirect('contao/main.php?act=error');
@@ -1155,7 +1158,7 @@ class tl_iso_products extends Backend
 		}
 
 		$objVariants = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE pid=? AND language=''")->execute($dc->id);
-		$strBuffer .= '<div id="tl_buttons">
+		$strBuffer = '<div id="tl_buttons">
 <a href="'.ampersand(str_replace('&key=quick_edit', '', $this->Environment->request)).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
 </div>
 

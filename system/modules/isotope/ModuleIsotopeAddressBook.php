@@ -204,6 +204,9 @@ class ModuleIsotopeAddressBook extends ModuleIsotope
 		// No need to check: if the address does not exist, fields will be empty and a new address will be created
 		$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE id=? AND pid={$this->User->id} AND store_id={$this->Isotope->Config->store_id}")->execute($intAddressId);
 
+		$objAddress->pid = $this->User->id;
+		$objAddress->store_id = $this->Isotope->Config->store_id;
+
 		// Build form
 		foreach ($this->arrFields as $field)
 		{
