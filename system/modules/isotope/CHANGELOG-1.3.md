@@ -8,10 +8,10 @@ Version 1.3.7 stable (2012-??-??)
 
 ### Fixed
 - Javascript was displayed in raw format when using the inherit widget
-- Fixed another bug when rebuilding the search index
+- Language bug when rebuilding the search index
 - Setting default billing or shipping address did not work for new addresses
 - AttributeWizard was not correctly displayed
-- Fixed permission check for product type access (#3372)
+- Better permission check for product type access (#3372)
 
 
 Version 1.3.6 stable (2012-08-21)
