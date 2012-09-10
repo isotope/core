@@ -1,10 +1,8 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 1.3.7 stable (2012-??-??)
+Version 1.3.7 stable (2012-09-10)
 ---------------------------------
-
-### Improved
 
 ### Fixed
 - Javascript was displayed in raw format when using the inherit widget
