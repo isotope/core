@@ -1120,7 +1120,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		}
 
 		$strBuffer .= '<div id="' . $field . '_new" class="address_new"' . (((FE_USER_LOGGED_IN !== true && $field == 'billing_address') || $objWidget->value == 0) ? '>' : ' style="display:none">');
-		$strBuffer .= '<span>' . $this->generateAddressWidgets($field, count($arrOptions)) . '</span>';
+		$strBuffer .= '<div>' . $this->generateAddressWidgets($field, count($arrOptions)) . '</div>';
 		$strBuffer .= '</div>';
 		return $strBuffer;
 	}
