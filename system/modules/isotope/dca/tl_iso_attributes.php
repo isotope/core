@@ -397,7 +397,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 			'inputType'				=> 'select',
 			'options'				=> array('name_asc', 'name_desc', 'date_asc', 'date_desc', 'meta', 'random'),
 			'reference'				=> &$GLOBALS['TL_LANG']['tl_iso_attributes'],
-			'eval'					=> array('tl_class'=>'clr')
+			'eval'					=> array('tl_class'=>'w50')
 		),
 		'path' => array
 		(
