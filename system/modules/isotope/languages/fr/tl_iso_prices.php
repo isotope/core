@@ -33,7 +33,7 @@
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_iso_prices']['price_tiers'][0]  = 'Groupes de prix';
-$GLOBALS['TL_LANG']['tl_iso_prices']['price_tiers'][1]  = 'Installation au moins un niveau de prix pour "Quantité 1". Vous pouvez entrer des prix réduits si l\'utilisateur commande plus d\'un produit.';
+$GLOBALS['TL_LANG']['tl_iso_prices']['price_tiers'][1]  = 'Configurer au moins un niveau de prix pour "Quantité 1". Vous pouvez entrer des prix réduits si l\'utilisateur commande plus d\'un produit.';
 $GLOBALS['TL_LANG']['tl_iso_prices']['tax_class'][0]    = 'Taxe';
 $GLOBALS['TL_LANG']['tl_iso_prices']['tax_class'][1]    = 'Sélectionner une taxe pour ce prix.';
 $GLOBALS['TL_LANG']['tl_iso_prices']['config_id'][0]    = 'Configuration de la boutique';
@@ -49,13 +49,13 @@ $GLOBALS['TL_LANG']['tl_iso_prices']['stop'][1]         = 'Ne pas utiliser le pr
 /**
  * Buttons
  */
-$GLOBALS['TL_LANG']['tl_iso_prices']['new'][0]    = 'Ajouter le prix';
+$GLOBALS['TL_LANG']['tl_iso_prices']['new'][0]    = 'Ajouter un prix';
 $GLOBALS['TL_LANG']['tl_iso_prices']['new'][1]    = 'Ajouter un nouveau prix à ce produit';
-$GLOBALS['TL_LANG']['tl_iso_prices']['edit'][0]   = 'Éditer le prix';
+$GLOBALS['TL_LANG']['tl_iso_prices']['edit'][0]   = 'Éditer un prix';
 $GLOBALS['TL_LANG']['tl_iso_prices']['edit'][1]   = 'Éditer le prix ID %s';
-$GLOBALS['TL_LANG']['tl_iso_prices']['copy'][0]   = 'Dupliquer le prix';
+$GLOBALS['TL_LANG']['tl_iso_prices']['copy'][0]   = 'Dupliquer un prix';
 $GLOBALS['TL_LANG']['tl_iso_prices']['copy'][1]   = 'Dupliquer le prix ID %s';
-$GLOBALS['TL_LANG']['tl_iso_prices']['delete'][0] = 'Effacer le prix';
+$GLOBALS['TL_LANG']['tl_iso_prices']['delete'][0] = 'Effacer un prix';
 $GLOBALS['TL_LANG']['tl_iso_prices']['delete'][1] = 'Effacer le prix ID %s';
 $GLOBALS['TL_LANG']['tl_iso_prices']['show'][0]   = 'Détails du prix';
 $GLOBALS['TL_LANG']['tl_iso_prices']['show'][1]   = 'Afficher les détails du prix ID %s';

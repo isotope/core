@@ -66,5 +66,5 @@ $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][16][0] = '##shipping_firstname##<br 
 $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][16][1] = 'Champs individuels de l\'adresse de livraison.';
 $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][17][0] = '##form_...##';
 $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][17][1] = 'Récupérer des données de formulaire. Utiliser le préfixe "form_" et le nom du champ.';
-$GLOBALS['TL_LANG']['XPL']['mediaManager'] = '<p class="tl_help_table">Pour télécharger une nouvelle image, sélectionner le fichier et sauvegarder le produit. Après le téléchargement, un aperçu de l\'image, un texte alternatif et une description sont affichés. Pour plusieurs photos, cliquez sur les flèches à droite pour changer leur ordre, l\'image du haut est utilisée comme image principale de chaque produit.</p>';
+$GLOBALS['TL_LANG']['XPL']['mediaManager'] = '<p class="tl_help_table">Pour télécharger une nouvelle image, sélectionner le fichier et sauvegarder le produit. Après le téléchargement, un aperçu de l\'image, un texte alternatif et une description sont affichés. Si vous avez plusieurs photos, cliquez sur les flèches à droite pour changer leur ordre, l\'image du haut est utilisée comme image principale de chaque produit.</p>';
 

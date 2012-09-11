@@ -45,8 +45,8 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['note'][0]                    = 'N
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['note'][1]                    = 'Cette note peut être envoyée dans les mails de confirmation (##payment_note##).';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['price'][0]                   = 'Prix';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['tax_class'][0]               = 'Taxe';
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['new_order_status'][0]        = 'Statut pour les nouvelles commandes';
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['new_order_status'][1]        = 'Choisir un statut correspondant aux nouvelles commandes.';
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['new_order_status'][0]        = 'État pour les nouvelles commandes';
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['new_order_status'][1]        = 'Choisir un état correspondant aux nouvelles commandes.';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['minimum_total'][0]           = 'Total minimum';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['minimum_total'][1]           = 'Saisir un nombre supérieur à zéro pour exclure ce mode de paiement pour les commandes de prix inférieur.';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['maximum_total'][0]           = 'Total maximum';
@@ -98,7 +98,7 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['guests'][1]                  = 'C
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['debug'][0]                   = 'Mode debug';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['debug'][1]                   = 'Pour les tests sans paiement réel.';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['enabled'][0]                 = 'Activé';
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['enabled'][1]                 = 'Cochez cette case si le module de paiement doit être activé dans le magasin.';
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['enabled'][1]                 = 'Cochez cette case si le module de paiement doit être activé dans la boutique.';
 
 
 /**
@@ -145,19 +145,11 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['enabled_legend']  = 'Paramètres 
  */
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['new'][0]    = 'Nouveau mode de paiement';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['new'][1]    = 'Créer un nouveau mode de paiement';
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['edit'][0]   = 'Éditer le mode de paiement';
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['edit'][0]   = 'Éditer un mode de paiement';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['edit'][1]   = 'Éditer le mode de paiement ID %s';
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['copy'][0]   = 'Dupliquer le mode de paiement';
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['copy'][0]   = 'Dupliquer un mode de paiement';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['copy'][1]   = 'Dupliquer le mode de paiement ID %s';
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['delete'][0] = 'Supprimer le mode de paiement';
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['delete'][0] = 'Supprimer un mode de paiement';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['delete'][1] = 'Supprimer le mode de paiement ID %s';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['show'][0]   = 'Détails du mode de paiement';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['show'][1]   = 'Afficher les détails du mode de paiement ID %s';
-
-
-//$GLOBALS['TL_LANG']['tl_iso_payment_modules']['epay_merchantnumber'][0] = 'Numéro de marchand';
-//$GLOBALS['TL_LANG']['tl_iso_payment_modules']['epay_merchantnumber'][1] = 'Le numéro de commerçant unique créé dans ePay. Ce numéro de commerçant se trouve dans votre contrat avec PBS.';
-//$GLOBALS['TL_LANG']['tl_iso_payment_modules']['epay_secretkey'][0] = 'Clé secrète';
-//$GLOBALS['TL_LANG']['tl_iso_payment_modules']['epay_secretkey'][1] = 'La clé secrète mise en place dans votre configuration ePay.';
-//$GLOBALS['TL_LANG']['tl_iso_payment_modules']['postsale_mail'][0] = 'Modèle de courriel pour les changements de statut';
-//$GLOBALS['TL_LANG']['tl_iso_payment_modules']['postsale_mail'][1] = 'Sélectionnez un modèle de courriel pour avertir l\'administrateur de la boutique sur les changements d\'état de paiement.';

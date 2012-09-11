@@ -36,7 +36,7 @@
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_iso_addresses']['store_id'][0]          = 'ID de la boutique';
-$GLOBALS['TL_LANG']['tl_iso_addresses']['store_id'][1]          = 'Utiliser des ID de boutique différents pour regrouper un ensemble de configurations de magasin. Un panier de commande sera partagé entre les mêmes ID de boutique.';
+$GLOBALS['TL_LANG']['tl_iso_addresses']['store_id'][1]          = 'Utiliser des ID de boutique différents pour regrouper un ensemble de configurations de boutique. Un panier de commande sera partagé entre les mêmes ID de boutique.';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['label']                = array('Libellé', 'Veuillez, s\'il vous plaît, entrer un libellé personnalisé pour cette adresse.');
 $GLOBALS['TL_LANG']['tl_iso_addresses']['salutation']           = array('Civilité', 'Veuillez, s\'il vous plaît, entrer un titre de civilité (M., Mme, Dr, Pr).');
 $GLOBALS['TL_LANG']['tl_iso_addresses']['firstname'][0]         = 'Prénom';

@@ -31,7 +31,7 @@
  */
 $GLOBALS['TL_LANG']['tl_iso_rules']['type']                = array('Type', 'Veuillez, s\'il vous plaît, choisir le type de règle.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['name']                = array('Nom', 'Veuillez, s\'il vous plaît, insérer un nom pour cette règle.');
-$GLOBALS['TL_LANG']['tl_iso_rules']['label']               = array('Label', 'Le label sera affiché dans le panier. Si vous n\'entrer pas un label, le nom sera utilisé.');
+$GLOBALS['TL_LANG']['tl_iso_rules']['label']               = array('Label', 'Le label sera affiché dans le panier. Si vous n\'entrez pas un label, le nom sera utilisé.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['discount']            = array('Discount', 'Valid values are decimals or whole numbers, minus a numerical value or minus a percentage.');
 $GLOBALS['TL_LANG']['tl_iso_rules']['tax_class']           = array('Taxe');
 $GLOBALS['TL_LANG']['tl_iso_rules']['applyTo']             = array('Appliquer la réduction à', 'Sélectionnez la façon dont la réduction est appliquée.');

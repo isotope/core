@@ -51,11 +51,11 @@ $GLOBALS['TL_LANG']['tl_iso_mail_content']['attachments'][1] = 'Choisir les fich
  */
 $GLOBALS['TL_LANG']['tl_iso_mail_content']['new'][0]    = 'Nouvelle langue';
 $GLOBALS['TL_LANG']['tl_iso_mail_content']['new'][1]    = 'Créer une nouvelle langue pour ce message.';
-$GLOBALS['TL_LANG']['tl_iso_mail_content']['edit'][0]   = 'Éditer la langue';
+$GLOBALS['TL_LANG']['tl_iso_mail_content']['edit'][0]   = 'Éditer une langue';
 $GLOBALS['TL_LANG']['tl_iso_mail_content']['edit'][1]   = 'Éditer la langue ID %s';
-$GLOBALS['TL_LANG']['tl_iso_mail_content']['copy'][0]   = 'Dupliquer la langue';
+$GLOBALS['TL_LANG']['tl_iso_mail_content']['copy'][0]   = 'Dupliquer une langue';
 $GLOBALS['TL_LANG']['tl_iso_mail_content']['copy'][1]   = 'Dupliquer la langue ID %s';
-$GLOBALS['TL_LANG']['tl_iso_mail_content']['delete'][0] = 'Supprimer la langue';
+$GLOBALS['TL_LANG']['tl_iso_mail_content']['delete'][0] = 'Supprimer une langue';
 $GLOBALS['TL_LANG']['tl_iso_mail_content']['delete'][1] = 'Supprimer la langue ID %s';
 $GLOBALS['TL_LANG']['tl_iso_mail_content']['show'][0]   = 'Détails de la langue';
 $GLOBALS['TL_LANG']['tl_iso_mail_content']['show'][1]   = 'Afficher les détails de la langue ID %s';

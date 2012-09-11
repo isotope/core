@@ -90,16 +90,13 @@ $GLOBALS['TL_LANG']['tl_iso_products']['mmSrc']               = 'Aperçu';
 $GLOBALS['TL_LANG']['tl_iso_products']['mmAlt']               = 'Texte alternatif';
 $GLOBALS['TL_LANG']['tl_iso_products']['mmLink']              = 'Cible du lien';
 $GLOBALS['TL_LANG']['tl_iso_products']['mmDesc']              = 'Description';
-$GLOBALS['TL_LANG']['tl_iso_products']['mmTranslate']         = 'Translate';
-$GLOBALS['TL_LANG']['tl_iso_products']['mmTranslateNone']     = array('None', 'Do not translate this image.');
-$GLOBALS['TL_LANG']['tl_iso_products']['mmTranslateText']     = array('Text', 'Translate alt text and description for this image.');
-$GLOBALS['TL_LANG']['tl_iso_products']['mmTranslateAll']      = array('All', 'Do not include this image in translated version.');
+$GLOBALS['TL_LANG']['tl_iso_products']['mmTranslate']         = 'Traduire';
+$GLOBALS['TL_LANG']['tl_iso_products']['mmTranslateNone']     = array('Non', 'Ne pas traduire cette image.');
+$GLOBALS['TL_LANG']['tl_iso_products']['mmTranslateText']     = array('Texte', 'Traduire le texte alternatif et la description pour cette image.');
+$GLOBALS['TL_LANG']['tl_iso_products']['mmTranslateAll']      = array('Exclure', 'Ne pas inclure cette image dans la version traduite.');
 $GLOBALS['TL_LANG']['tl_iso_products']['existing_option_set'] = 'Sélectionner une option de produits existants';
 $GLOBALS['TL_LANG']['tl_iso_products']['new_option_set']      = 'Créer une nouvelle option de produits';
 $GLOBALS['TL_LANG']['tl_iso_products']['variantValuesLabel']  = 'Variante';
-
-//$GLOBALS['TL_LANG']['tl_iso_products']['batch_size'][0]      = 'Taille du traitement par lots';
-//$GLOBALS['TL_LANG']['tl_iso_products']['batch_size'][1]      = 'Sélectionner le nombre d\'enregistrements à traiter en une fois.';
 
 
 /**
@@ -118,7 +115,7 @@ $GLOBALS['TL_LANG']['tl_iso_products']['cut'][1]            = 'Déplacer le prod
 $GLOBALS['TL_LANG']['tl_iso_products']['delete'][0]         = 'Supprimer le produit';
 $GLOBALS['TL_LANG']['tl_iso_products']['delete'][1]         = 'Supprimer le produit ID %s';
 $GLOBALS['TL_LANG']['tl_iso_products']['toggle']            = array('Publier/dé-publier un produit', 'Publier/dé-publier le produit ID %s');
-$GLOBALS['TL_LANG']['tl_iso_products']['show'][0]           = 'Afficher les détails du produit';
+$GLOBALS['TL_LANG']['tl_iso_products']['show'][0]           = 'Détails du produit';
 $GLOBALS['TL_LANG']['tl_iso_products']['show'][1]           = 'Afficher les détails du produit ID %s';
 $GLOBALS['TL_LANG']['tl_iso_products']['generate'][0]       = 'Générer des variantes';
 $GLOBALS['TL_LANG']['tl_iso_products']['generate'][1]       = 'Générer des variantes pour le produit ID %s';
@@ -159,9 +156,6 @@ $GLOBALS['TL_LANG']['tl_iso_products']['media_legend']     = 'Gestionnaire de m�
 $GLOBALS['TL_LANG']['tl_iso_products']['expert_legend']    = 'Paramètres avancés';
 $GLOBALS['TL_LANG']['tl_iso_products']['publish_legend']   = 'Publication';
 $GLOBALS['TL_LANG']['tl_iso_products']['variant_legend']   = 'Configuration des variantes du produit';
-
-//$GLOBALS['TL_LANG']['tl_iso_products']['filter_cache'][0] = 'Reconstruire le cache du filtre';
-//$GLOBALS['TL_LANG']['tl_iso_products']['tax_legend']      = 'Paramètres de taxe';
 
 
 /**

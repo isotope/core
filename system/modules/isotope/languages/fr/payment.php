@@ -32,7 +32,7 @@
  */
 
 $GLOBALS['TL_LANG']['MSG']['epay'][-5604] = 'Les frais ne peuvent pas être calculés pour le type de carte utilisé.';
-$GLOBALS['TL_LANG']['MSG']['epay'][-5603] = 'Le magasin n\'autorise pas l\'emploi de ce type de carte.';
+$GLOBALS['TL_LANG']['MSG']['epay'][-5603] = 'La boutique n\'autorise pas l\'emploi de ce type de carte.';
 $GLOBALS['TL_LANG']['MSG']['epay'][-5602] = 'Un code de monnaie invalide a été utilisé.';
 $GLOBALS['TL_LANG']['MSG']['epay'][-5601] = 'Les frais ne peuvent pas être calculés pour le type de carte utilisé.';
 $GLOBALS['TL_LANG']['MSG']['epay'][-5600] = 'Le numéro de carte est incorrect - préfixe invalide (doit être de 6 caractères).';
