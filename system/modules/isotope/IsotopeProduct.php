@@ -450,6 +450,14 @@ class IsotopeProduct extends Controller
 		switch ($strKey)
 		{
 			case 'reader_jumpTo':
+
+				// Remove the target URL if no page ID is given
+				if ($varValue == '' || $varValue < 1)
+				{
+					$this->arrData['href_reader'] = '';
+					break;
+				}
+
 				global $objPage;
 				$strUrlKey = $this->arrData['alias'] ? $this->arrData['alias'] : ($this->arrData['pid'] ? $this->arrData['pid'] : $this->arrData['id']);
 

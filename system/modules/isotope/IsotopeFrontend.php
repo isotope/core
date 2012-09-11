@@ -1306,11 +1306,13 @@ $endScript";
 
 			while($objCategoryPages->next())
 			{
-				// set the reader jump to page
 				$objProduct->reader_jumpTo = self::getReaderPageId($objCategoryPages);
+				$strUrl = $objProduct->href_reader;
 
-				// generate the front end url
-				$arrIsotopeProductPages[] = $this->Environment->base . ltrim($objProduct->href_reader,'/');
+				if ($strUrl != '')
+				{
+					$arrIsotopeProductPages[] = $this->Environment->base . ltrim($strUrl, '/');
+				}
 			}
 		}
 
