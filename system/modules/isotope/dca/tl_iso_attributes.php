@@ -149,9 +149,9 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 		'fileTree'					=> '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,extensions,files,filesOnly,mandatory',
 		'downloads'					=> '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,extensions,sortBy,files,filesOnly,mandatory',
 
-    ),
+	),
 
-    // Fields
+	// Fields
 	'fields' => array
 	(
 		'name' => array
@@ -339,8 +339,8 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['fieldType'],
 			'exclude'				=> true,
 			'inputType'				=> 'select',
-			'options'               => array('checkbox', 'radio'),
-			'reference'             => &$GLOBALS['TL_LANG']['tl_iso_attributes'],
+			'options'				=> array('checkbox', 'radio'),
+			'reference'				=> &$GLOBALS['TL_LANG']['tl_iso_attributes'],
 			'eval'					=> array('tl_class'=>'w50'),
 		),
 		'files' => array
@@ -359,11 +359,12 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 		),
 		'sortBy' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_attributes']['sortBy'],
-			'exclude'                 => true,
-			'inputType'               => 'select',
-			'options'                 => array('name_asc', 'name_desc', 'date_asc', 'date_desc', 'meta', 'random'),
-			'reference'               => &$GLOBALS['TL_LANG']['tl_iso_attributes'],
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['sortBy'],
+			'exclude'				=> true,
+			'inputType'				=> 'select',
+			'options'				=> array('name_asc', 'name_desc', 'date_asc', 'date_desc', 'meta', 'random'),
+			'reference'				=> &$GLOBALS['TL_LANG']['tl_iso_attributes'],
+			'eval'					=> array('tl_class'=>'w50'),
 		),
 	)
 );
