@@ -456,11 +456,12 @@ class IsotopeProduct extends Controller
 				// make sure the page object is loaded because of the url language feature (e.g. when rebuilding the search index in the back end or ajax actions)
 				if (!$objPage)
 				{
-					// don't use $objPage here as we would set it globally and thus for all the following products
-					if ($objTargetPage = $this->getPageDetails($varValue))
-					{
-						$strUrl  = $this->generateFrontendUrl($objTargetPage->row(), '/product/' . $strUrlKey, $objTargetPage->rootLanguage);
-					}
+					$objTargetPage = $this->getPageDetails($varValue);
+					$strUrl  = $this->generateFrontendUrl($objTargetPage->row(), '/product/' . $strUrlKey, $objTargetPage->rootLanguage);
+				}
+				else
+				{
+					$strUrl = $this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($varValue)->fetchAssoc(), '/product/' . $strUrlKey, $objPage->rootLanguage);
 				}
 
 				if ($this->arrData['pid'] > 0)

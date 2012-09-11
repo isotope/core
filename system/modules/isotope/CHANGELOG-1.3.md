@@ -6,6 +6,7 @@ Version 1.3.8 stable (2012-09-11)
 
 ### Fixed
 - Did not use Contao's Request class to retrieve currency information
+- The reader URL did not work anymore
 
 
 Version 1.3.7 stable (2012-09-10)
