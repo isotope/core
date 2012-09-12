@@ -35,6 +35,7 @@ class PasteProductButton extends Backend
 	 */
 	static private $blnHasGroup = false;
 
+
 	/**
 	 * Handle the paste button callback for tl_iso_products
 	 * @param DataContainer

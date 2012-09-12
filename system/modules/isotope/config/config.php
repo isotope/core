@@ -263,6 +263,7 @@ $GLOBALS['TL_PERMISSIONS'][] = 'iso_mailp';
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_configs';
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_configp';
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_groups';
+$GLOBALS['TL_PERMISSIONS'][] = 'iso_groupp';
 
 
 /**
