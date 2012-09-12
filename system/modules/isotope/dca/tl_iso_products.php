@@ -185,7 +185,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'href'				=> 'table=tl_iso_groups',
 				'class'				=> 'header_iso_groups isotope-tools',
 				'attributes'		=> 'onclick="Backend.getScrollOffset();"',
-				'button_callback'	=> array('tl_iso_products', 'groups')
+				'button_callback'	=> array('tl_iso_products', 'groupsButton')
 			),
 			'import' => array
 			(
@@ -1707,7 +1707,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 	 * @param array
 	 * @return string
 	 */
-	public function groups($href, $label, $title, $class, $attributes, $table, $root)
+	public function groupsButton($href, $label, $title, $class, $attributes, $table, $root)
 	{
 		if (!$this->User->isAdmin)
 		{
