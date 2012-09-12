@@ -40,6 +40,10 @@ $GLOBALS['TL_DCA']['tl_iso_groups'] = array
 		'dataContainer'					=> 'Table',
 		'label'							=> &$GLOBALS['TL_LANG']['tl_iso_groups']['label'],
 		'enableVersioning'				=> true,
+		'onload_callback' => array
+		(
+			array('tl_iso_groups', 'checkPermission'),
+		),
 		'ondelete_callback' => array
 		(
 			array('tl_iso_groups', 'deleteGroup'),
@@ -135,6 +139,21 @@ $GLOBALS['TL_DCA']['tl_iso_groups'] = array
  */
 class tl_iso_groups extends Backend
 {
+
+	/**
+	 * Only admins can access the product groups configuration
+	 */
+	public function checkPermission()
+	{
+		$this->import('BackendUser', 'User');
+
+		if (!$this->User->isAdmin)
+		{
+			$this->log('Unallowed access to product groups!', __METHOD__, TL_ERROR);
+			$this->redirect('contao/main.php?act=error');
+		}
+	}
+
 
 	/**
 	 * Add an image to each group in the tree
