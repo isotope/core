@@ -33,6 +33,3 @@
  */
 $GLOBALS['TL_LANG']['tl_user_group']['isotope_legend']		= 'Isotope eCommerce';
 
-$GLOBALS['TL_LANG']['tl_user_group']['iso_groups']		= array('Allowed product groups', 'Limit access to product groups for this user group. Gets inherited.');
-
-

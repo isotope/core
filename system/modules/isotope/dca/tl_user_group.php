@@ -184,7 +184,7 @@ $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_configp'] = array
 
 $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_groups'] = array
 (
-	'label'					=> &$GLOBALS['TL_LANG']['tl_user_group']['iso_groups'],
+	'label'					=> &$GLOBALS['TL_LANG']['tl_user']['iso_groups'],
 	'exclude'				=> true,
 	'inputType'				=> 'tableTree',
 	'reference'				=> array
@@ -196,11 +196,11 @@ $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_groups'] = array
 	),
 	'eval'					=> array
 	(
-			'tableColumn'	=>'tl_iso_groups.name',
-			'fieldType'		=>'checkbox',
+			'tableColumn'	=> 'tl_iso_groups.name',
+			'fieldType'		=> 'checkbox',
 			'title'			=> &$GLOBALS['TL_LANG']['tl_iso_groups']['label'],
 			'children'		=> true,
-			'tl_class'		=>'clr'
+			'tl_class'		=> 'clr'
 	)
 );
 
