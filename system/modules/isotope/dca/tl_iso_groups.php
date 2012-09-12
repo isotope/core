@@ -152,10 +152,17 @@ class tl_iso_groups extends Backend
 	/**
 	 * Check access permissions
 	 */
-	public function checkPermission()
+	public function checkPermission($dc)
 	{
 		if ($this->User->isAdmin)
 		{
+			return;
+		}
+
+		// Load permissions in tl_iso_products
+		if ($dc->table == 'tl_iso_products')
+		{
+			$GLOBALS['TL_DCA']['tl_iso_groups']['list']['sorting']['root'] = (array) $this->User->iso_groups;
 			return;
 		}
 
