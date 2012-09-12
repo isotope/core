@@ -297,7 +297,13 @@ $endScript
 	 */
 	private function addImage(array $file, $blnWatermark=true, $blnMain=false)
 	{
-		$strFile = 'isotope/' . strtolower(substr($file['src'], 0, 1)) . '/' . $file['src'];
+		$strFile = $file['src'];
+
+		// File without path must be located in the isotope root folder
+		if (strpos($strFile, '/') === false)
+		{
+			$strFile = 'isotope/' . strtolower(substr($strFile, 0, 1)) . '/' . $strFile;
+		}
 
 		if (is_file(TL_ROOT . '/' . $strFile))
 		{
