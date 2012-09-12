@@ -981,25 +981,26 @@ CREATE TABLE `tl_iso_groups` (
 
 
 	/**
-	 * In Isotope 1.4 every product has to be assigned to a product groups o permissions work well
+	 * In Isotope 1.4 every product has to be assigned to a product groups for access permissions
 	 */
 	private function createGroupForAllNonAssignedProducts()
 	{
-		$objNoGroupProducts = $this->Database->execute("SELECT id FROM tl_iso_products WHERE pid=0 AND language='' AND gid=0");
-
-		if (!$objNoGroupProducts->numRows)
+		if (!$this->Database->tableExists('tl_iso_groups') || !$this->Database->tableExists('tl_iso_products'))
 		{
 			return;
 		}
 
-		// generate a group called "--GENERAL--"
-		$intGroup = $this->Database->prepare('INSERT INTO tl_iso_groups (pid,sorting,tstamp,name) VALUES (?, ?, ?, ?)')
-			->execute(0, 0, time(), '---GENERAL---')
-			->insertId;
+		$objNoGroupProducts = $this->Database->executeUncached("SELECT COUNT(id) AS total FROM tl_iso_products WHERE pid=0 AND language='' AND gid=0");
 
-		// update
-		$this->Database->prepare('UPDATE tl_iso_products SET gid=? WHERE id IN (' . implode(',', $objNoGroupProducts->fetchEach('id')) . ')')
-			->execute($intGroup);
+		if ($objNoGroupProducts->total < 1)
+		{
+			return;
+		}
+
+		// generate a group, we can't take an existing one because we dont know which one to use
+		$intGroup = $this->Database->executeUncached("INSERT INTO tl_iso_groups (pid,sorting,tstamp,name) VALUES (0, 0, " . time() . ", '### GENERAL ###')")->insertId;
+
+		$this->Database->query("UPDATE tl_iso_products SET gid=$intGroup WHERE pid=0 AND language='' AND gid=0");
 	}
 }
 
