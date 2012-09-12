@@ -532,5 +532,32 @@ class IsotopeBackend extends Backend
 
 		return implode("\n", $arrMessages);
 	}
+
+
+	/**
+	 * Generate the GENERAL group if there is none
+	 * @return boolean
+	 */
+	public static function createGeneralGroup()
+	{
+		$objDatabase = Database::getInstance();
+
+		$objGroups = $objDatabase->executeUncached("SELECT COUNT(id) AS total FROM tl_iso_groups");
+
+		if ($objGroups->total == 0)
+		{
+			$intGroup = $objDatabase->executeUncached("INSERT INTO tl_iso_groups (pid,sorting,tstamp,name) VALUES (0, 0, " . time() . ", '### GENERAL ###')")->insertId;
+
+			// add all products to that new folder
+			$objDatabase->query("UPDATE tl_iso_products SET gid=$intGroup WHERE pid=0 AND language='' AND gid=0");
+
+			// toggle (open) the new group
+			Session::getInstance()->set('tl_iso_products_tl_iso_groups_tree', array($intGroup=>1));
+
+			return true;
+		}
+
+		return false;
+	}
 }
 

@@ -185,6 +185,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'href'				=> 'table=tl_iso_groups',
 				'class'				=> 'header_iso_groups isotope-tools',
 				'attributes'		=> 'onclick="Backend.getScrollOffset();"',
+				'button_callback'	=> array('tl_iso_products', 'groupsButton')
 			),
 			'import' => array
 			(
@@ -725,7 +726,7 @@ class tl_iso_products extends Backend
 
 
 	/**
-	 * Only list product types a user is allowed to see
+	 * Check permissions for that entry
 	 * @return void
 	 */
 	public function checkPermission()
@@ -749,7 +750,8 @@ class tl_iso_products extends Backend
 			return;
 		}
 
-		if (!is_array($this->User->iso_product_types) || empty($this->User->iso_product_types))
+		// Filter by product type and group permissions
+		if (!is_array($this->User->iso_product_types) || empty($this->User->iso_product_types) || !is_array($this->User->iso_groups) || empty($this->User->iso_groups))
 		{
 			$GLOBALS['TL_DCA']['tl_iso_products']['config']['closed'] = true;
 			unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_product']);
@@ -758,8 +760,9 @@ class tl_iso_products extends Backend
 		}
 		else
 		{
-			$objProducts = $this->Database->execute("SELECT id FROM tl_iso_products WHERE type IN ('','" . implode("','", $this->User->iso_product_types) . "')");
+			$arrGroups = array_merge($this->User->iso_groups, $this->getChildRecords($this->User->iso_groups, 'tl_iso_groups'));
 
+			$objProducts = $this->Database->execute("SELECT id FROM tl_iso_products WHERE type IN ('','" . implode("','", $this->User->iso_product_types) . "') AND gid IN (" . implode(',', $arrGroups) . ") AND pid=0 AND language=''");
 			$arrProducts = $objProducts->numRows ? $objProducts->fetchEach('id') : array();
 
 			// Maybe another function has already set allowed product IDs
@@ -1683,6 +1686,27 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 		}
 
 		return '<a href="' . $this->addToUrl('&amp;' . $href) . '" class="header_toggle isotope-tools" title="' . specialchars($title) . '"' . $attributes . '>' . specialchars($label) . '</a>';
+	}
+
+	/**
+	 * Hide "product groups" button for non-admins
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param array
+	 * @return string
+	 */
+	public function groupsButton($href, $label, $title, $class, $attributes, $table, $root)
+	{
+		if (!$this->User->isAdmin && (!is_array($this->User->iso_groupp) || empty($this->User->iso_groupp) || !is_array($this->User->iso_groups) || empty($this->User->iso_groups)))
+		{
+			return '';
+		}
+
+		return '<a href="' . $this->addToUrl('&amp;' . $href) . '" class="header_iso_groups isotope-tools" title="' . specialchars($title) . '"' . $attributes . '>' . specialchars($label) . '</a>';
 	}
 
 

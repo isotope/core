@@ -66,6 +66,7 @@ class IsotopeRunonce extends Controller
 		$this->exec('updateProductTypes');
 		$this->exec('updateRules');
 		$this->exec('generateCategoryGroups');
+		$this->exec('createGroupForAllNonAssignedProducts');
 
 		// Make sure file extension .imt (Isotope Mail Template) is allowed for up- and download
 		if (!in_array('imt', trimsplit(',', $GLOBALS['TL_CONFIG']['uploadTypes'])))
@@ -976,6 +977,30 @@ CREATE TABLE `tl_iso_groups` (
 				$this->Database->query("UPDATE tl_iso_products SET gid=$intGroup WHERE id IN (" . implode(',', $arrProducts) . ")");
 			}
 		}
+	}
+
+
+	/**
+	 * In Isotope 1.4 every product has to be assigned to a product groups for access permissions
+	 */
+	private function createGroupForAllNonAssignedProducts()
+	{
+		if (!$this->Database->tableExists('tl_iso_groups') || !$this->Database->tableExists('tl_iso_products'))
+		{
+			return;
+		}
+
+		$objNoGroupProducts = $this->Database->executeUncached("SELECT COUNT(id) AS total FROM tl_iso_products WHERE pid=0 AND language='' AND gid=0");
+
+		if ($objNoGroupProducts->total < 1)
+		{
+			return;
+		}
+
+		// generate a group, we can't take an existing one because we dont know which one to use
+		$intGroup = $this->Database->executeUncached("INSERT INTO tl_iso_groups (pid,sorting,tstamp,name) VALUES (0, 0, " . time() . ", '### GENERAL ###')")->insertId;
+
+		$this->Database->query("UPDATE tl_iso_products SET gid=$intGroup WHERE pid=0 AND language='' AND gid=0");
 	}
 }
 

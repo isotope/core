@@ -46,6 +46,8 @@ $GLOBALS['TL_LANG']['tl_user']['iso_mails']				= array('Allowed email templates'
 $GLOBALS['TL_LANG']['tl_user']['iso_mailp']				= array('Email template permissions', 'Here you can define the email template permissions.');
 $GLOBALS['TL_LANG']['tl_user']['iso_configs']			= array('Allowed store configurations', 'Here you can grant access to one or more store configurations.');
 $GLOBALS['TL_LANG']['tl_user']['iso_configp']			= array('Store configuration permissions', 'Her you can define the store configuration permissions.');
+$GLOBALS['TL_LANG']['tl_user']['iso_groups']			= array('Allowed product groups', 'Limit access to product groups for this user group. Gets inherited.');
+$GLOBALS['TL_LANG']['tl_user']['iso_groupp']			= array('Product group permissions', 'Here you can define the product group permissions.');
 
 
 /**

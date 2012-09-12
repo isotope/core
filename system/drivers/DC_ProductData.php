@@ -50,7 +50,7 @@ class DC_ProductData extends DC_Table
 	 * @var array
 	 */
 	protected $arrLanguages;
-	
+
 	/**
 	 * Array of language labels
 	 * @var array
@@ -1522,6 +1522,19 @@ window.addEvent(\'domready\', function() {
 
 			$this->loadLanguageFile($gtable);
 			$this->loadDataContainer($gtable);
+
+			// Call onload_callback (e.g. to check permissions)
+			if (is_array($GLOBALS['TL_DCA'][$gtable]['config']['onload_callback']))
+			{
+				foreach ($GLOBALS['TL_DCA'][$gtable]['config']['onload_callback'] as $callback)
+				{
+					if (is_array($callback))
+					{
+						$this->import($callback[0]);
+						$this->$callback[0]->$callback[1]($this);
+					}
+				}
+			}
 		}
 
 		// Return if a mandatory field (id, pid) is missing
@@ -1633,26 +1646,10 @@ window.addEvent(\'domready\', function() {
 		$this->Session->set('PRODUCTDATA_OVERLOAD', true);
 
 		// Call a recursive function that builds the tree including groups
-		$this->root = $this->Database->query("SELECT id FROM $gtable WHERE pid=0 ORDER BY sorting")->fetchEach('id');
+		$this->root = is_array($GLOBALS['TL_DCA'][$gtable]['list']['sorting']['root']) ? $this->eliminateNestedPages($GLOBALS['TL_DCA'][$gtable]['list']['sorting']['root'], $gtable, true) : $this->Database->query("SELECT id FROM $gtable WHERE pid=0 ORDER BY sorting")->fetchEach('id');
 		for ($i=0, $count=count($this->root); $i<$count; $i++)
 		{
 			$tree .= $this->generateProductTree($gtable, $this->root[$i], array('p'=>$this->root[($i-1)], 'n'=>$this->root[($i+1)]), -20, ($blnClipboard ? $arrClipboard : false));
-		}
-
-		// Generate all products not in a group
-		if ($GLOBALS['TL_CONFIG']['iso_deferProductLoading'])
-		{
-			$root = $this->Database->query("SELECT id FROM $table WHERE pid=0 AND gid=0")->fetchEach('id');
-			$this->root = array_values(array_intersect($this->products, $root));
-		}
-		else
-		{
-			$this->root = $this->Database->query("SELECT id FROM $table WHERE pid=0 AND gid=0 AND id IN (" . implode(',', $this->products) . ") ORDER BY id=" . implode(' DESC, id=', $this->products) . " DESC")->fetchEach('id');
-		}
-
-		for ($i=0, $count=count($this->root); $i<$count; $i++)
-		{
-			$tree .= $this->generateProductTree($table, $this->root[$i], array('p'=>$this->root[($i-1)], 'n'=>$this->root[($i+1)]), -20, ($blnClipboard ? $arrClipboard : false));
 		}
 
 		// Stop the overload detection, everything went smoothly
