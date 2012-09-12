@@ -1639,22 +1639,6 @@ window.addEvent(\'domready\', function() {
 			$tree .= $this->generateProductTree($gtable, $this->root[$i], array('p'=>$this->root[($i-1)], 'n'=>$this->root[($i+1)]), -20, ($blnClipboard ? $arrClipboard : false));
 		}
 
-		// Generate all products not in a group
-		if ($GLOBALS['TL_CONFIG']['iso_deferProductLoading'])
-		{
-			$root = $this->Database->query("SELECT id FROM $table WHERE pid=0 AND gid=0")->fetchEach('id');
-			$this->root = array_values(array_intersect($this->products, $root));
-		}
-		else
-		{
-			$this->root = $this->Database->query("SELECT id FROM $table WHERE pid=0 AND gid=0 AND id IN (" . implode(',', $this->products) . ") ORDER BY id=" . implode(' DESC, id=', $this->products) . " DESC")->fetchEach('id');
-		}
-
-		for ($i=0, $count=count($this->root); $i<$count; $i++)
-		{
-			$tree .= $this->generateProductTree($table, $this->root[$i], array('p'=>$this->root[($i-1)], 'n'=>$this->root[($i+1)]), -20, ($blnClipboard ? $arrClipboard : false));
-		}
-
 		// Stop the overload detection, everything went smoothly
 		$this->Session->set('PRODUCTDATA_OVERLOAD', false);
 

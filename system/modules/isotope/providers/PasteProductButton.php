@@ -56,20 +56,8 @@ class PasteProductButton extends Backend
 		// make sure there's at least one product group
 		if (!self::$blnHasGroup)
 		{
-			$objGroups = $this->Database->executeUncached("SELECT COUNT(id) AS total FROM tl_iso_groups");
-
-			if ($objGroups->total == 0)
+			if (IsotopeBackend::createGeneralGroup())
 			{
-				$intGroup = $this->Database->executeUncached("INSERT INTO tl_iso_groups (pid,sorting,tstamp,name) VALUES (0, 0, " . time() . ", '### GENERAL ###')")->insertId;
-
-				// add all products to that new folder
-				$this->Database->query("UPDATE tl_iso_products SET gid=$intGroup WHERE pid=0 AND language='' AND gid=0");
-
-				// toggle the new group
-				$session = $this->Session->getData();
-				$session['tl_iso_products_tl_iso_groups_tree'][$intGroup] = 1;
-				$this->Session->setData($session);
-
 				$this->reload();
 			}
 
