@@ -64,6 +64,7 @@ $GLOBALS['TL_LANG']['tl_module']['iso_filterModules']			= array('Filter modules'
 $GLOBALS['TL_LANG']['tl_module']['iso_filterFields']			= array('Enabled filters', 'Please select filters to enable.');
 $GLOBALS['TL_LANG']['tl_module']['iso_sortingFields']			= array('Enabled sorting fields', 'Please select orderable fields to enable.');
 $GLOBALS['TL_LANG']['tl_module']['iso_searchFields']			= array('Enabled search fields', 'Please select search fields to enable.');
+$GLOBALS['TL_LANG']['tl_module']['iso_searchAutocomplete']		= array('Autocomplete search field', 'If you select a field here, the search will be autocompleted by the values of that field.');
 $GLOBALS['TL_LANG']['tl_module']['iso_enableLimit']				= array('Enable per-page limiting', 'Allow the user to select the number of records to show per page.');
 $GLOBALS['TL_LANG']['tl_module']['iso_perPage']					= array('Per page options', 'Enter a comma separated list for the limit dropdown. The first option will be used as the default value. Values will automatically sort by number.');
 $GLOBALS['TL_LANG']['tl_module']['iso_cart_jumpTo']				= array('Shopping Cart Jump to page', 'This setting defines to which page a user will be redirected when requesting a full shopping cart view.');
