@@ -320,7 +320,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'inputType'				=> 'select',
 			'options_callback'		=> array('tl_iso_products', 'getProductTypes'),
 			'foreignKey'			=> (strlen($this->Input->get('table')) ? 'tl_iso_producttypes.name' : null),
-			'eval'					=> array('mandatory'=>true, 'submitOnChange'=>true),
+			'eval'					=> array('mandatory'=>true, 'submitOnChange'=>true, 'includeBlankOption'=>true),
 			'attributes'			=> array('legend'=>'general_legend', 'fixed'=>true, 'inherit'=>true),
 		),
 		'pages' => array
@@ -762,7 +762,7 @@ class tl_iso_products extends Backend
 		{
 			$arrGroups = array_merge($this->User->iso_groups, $this->getChildRecords($this->User->iso_groups, 'tl_iso_groups'));
 
-			$objProducts = $this->Database->execute("SELECT id FROM tl_iso_products WHERE type IN ('','" . implode("','", $this->User->iso_product_types) . "') AND gid IN (" . implode(',', $arrGroups) . ") AND pid=0 AND language=''");
+			$objProducts = $this->Database->execute("SELECT id FROM tl_iso_products WHERE type IN (0," . implode(',', $this->User->iso_product_types) . ") AND gid IN (" . implode(',', $arrGroups) . ") AND pid=0 AND language=''");
 			$arrProducts = $objProducts->numRows ? $objProducts->fetchEach('id') : array();
 
 			// Maybe another function has already set allowed product IDs
@@ -796,7 +796,7 @@ class tl_iso_products extends Backend
 
 		if ($this->Input->get('id') > 0 && !in_array($this->Input->get('id'), $GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root']))
 		{
-			$this->log('Cannot access product ID '.$this->Input->get('id'), __METHOD__, TL_ACCESS);
+			$this->log('Cannot access product ID '.$this->Input->get('id'), __METHOD__, TL_ERROR);
 			$this->redirect('contao/main.php?act=error');
 		}
 	}
@@ -861,13 +861,13 @@ class tl_iso_products extends Backend
 		$this->import('BackendUser', 'User');
 		$arrTypes = $this->User->iso_product_types;
 
-		if (!is_array($arrTypes) || !count($arrTypes))
+		if (!$this->User->isAdmin && (!is_array($arrTypes) || !count($arrTypes)))
 		{
-			$arrTypes = array(0);
+			$arrTypes = array();
 		}
 
 		$arrProductTypes = array();
-		$objProductTypes = $this->Database->execute("SELECT id,name FROM tl_iso_producttypes" . ($this->User->isAdmin ? '' : (" WHERE id IN (".implode(',', $arrTypes).")")) . " ORDER BY name");
+		$objProductTypes = $this->Database->execute("SELECT id,name FROM tl_iso_producttypes" . ($this->User->isAdmin ? '' : (" WHERE id IN (" . implode(',', $arrTypes) . ")")) . " ORDER BY name");
 
 		while ($objProductTypes->next())
 		{
@@ -1823,10 +1823,10 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 		$arrLegendSort = array_merge(array('variant_legend'), $GLOBALS['TL_DCA']['tl_iso_attributes']['fields']['legend']['options']);
 
 		// Set default product type
-		$arrFields['type']['default'] = $this->Database->execute("SELECT id FROM tl_iso_producttypes ORDER BY fallback DESC, name")->id;
+		$arrFields['type']['default'] = (int) $this->Database->execute("SELECT id FROM tl_iso_producttypes WHERE fallback='1'" . ($this->User->isAdmin ? '' : (" AND id IN (" . implode(',', $this->User->iso_product_types) . ")")))->id;
 
 		// Set default tax class
-		$arrFields['tax_class']['default'] = $this->Database->execute("SELECT id FROM tl_iso_tax_class WHERE fallback='1'")->id;
+		$arrFields['tax_class']['default'] = (int) $this->Database->execute("SELECT id FROM tl_iso_tax_class WHERE fallback='1'")->id;
 
 		$blnEditAll = true;
 
