@@ -95,7 +95,11 @@ window.addEvent('domready', function() {
 						'minLength': 1,
 						'autoSubmit': true,
 						'selectMode': 'pick',
-						'filterSubset': true
+						'filterSubset': true,
+						'onSelection': function(el, selected, value, input)
+						{
+							el.getParent('form').submit();
+						}
 					});
 				}
 			}
