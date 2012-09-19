@@ -540,6 +540,7 @@ Autocompleter.Local = new Class({
 	},
 
 	query: function() {
+		if (!this.queryValue) this.queryValue = this.element.value;
 		this.update(this.filter());
 	}
 
