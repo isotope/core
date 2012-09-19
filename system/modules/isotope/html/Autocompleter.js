@@ -367,7 +367,7 @@ var Autocompleter = new Class({
 		if (!choice || choice == this.selected) return;
 		if (this.selected) this.selected.removeClass('autocompleter-selected');
 		this.selected = choice.addClass('autocompleter-selected');
-		this.fireEvent('onSelect', [this.element, this.selected, selection]);
+		this.fireEvent('onOver', [this.element, this.selected, selection]);
 		if (!this.selectMode) this.opted = this.element.value;
 		if (!selection) return;
 		this.selectedValue = this.selected.inputValue;
@@ -385,6 +385,7 @@ var Autocompleter = new Class({
 		this.setSelection(true);
 		this.queryValue = false;
 		this.hideChoices();
+		this.fireEvent('onSelect', [this.element, this.selected]);
 	},
 
 	filter: function(tokens) {

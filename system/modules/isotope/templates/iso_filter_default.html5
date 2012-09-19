@@ -95,7 +95,7 @@ window.addEvent('domready', function() {
 						'autoSubmit': true,
 						'selectMode': 'pick',
 						'filterSubset': true,
-						'onSelection': function(el, selected, value, input)
+						'onSelect': function(el)
 						{
 							el.getParent('form').submit();
 						}
