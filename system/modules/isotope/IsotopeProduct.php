@@ -769,7 +769,7 @@ class IsotopeProduct extends Controller
 
 		$arrButtons = array();
 
-		// !HOOK: retrive buttons
+		// !HOOK: retrieve buttons
 		if (isset($GLOBALS['ISO_HOOKS']['buttons']) && is_array($GLOBALS['ISO_HOOKS']['buttons']))
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['buttons'] as $callback)
@@ -811,6 +811,7 @@ class IsotopeProduct extends Controller
 		$objTemplate->formId = $this->formSubmit;
 		$objTemplate->action = ampersand($this->Environment->request, true);
 		$objTemplate->formSubmit = $this->formSubmit;
+		$objTemplate->product = $this;
 
 		list(,$startScript, $endScript) = IsotopeFrontend::getElementAndScriptTags();
 		$GLOBALS['TL_MOOTOOLS'][] = $startScript."\nnew {$this->ajaxClass}('{$objModule->id}', '" . ($this->pid ? $this->pid : $this->id) . "', '{$this->formSubmit}', ['ctrl_" . implode("_".$this->formSubmit."', 'ctrl_", $arrAjaxOptions) . "_".$this->formSubmit."'], {language: '{$GLOBALS['TL_LANGUAGE']}', action: '".($objModule instanceof Module ? 'fmd' : 'cte')."', page: {$objPage->id}, loadMessage:'" . specialchars($GLOBALS['ISO_LANG']['MSC']['loadingProductData']) . "'});\n".$endScript;
