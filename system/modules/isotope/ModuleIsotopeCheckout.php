@@ -1406,39 +1406,5 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 		return parent::addToUrl($strRequest, $blnIgnoreParams);
 	}
-
-
-	/**
-	 * Return product variant value as array
-	 * @param array
-	 * @return array
-	 */
-	private function getProductVariantValue($arrProducts)
-	{
-		$objVariantAttributes = $this->Database->prepare("SELECT name, field_name FROM tl_iso_attributes WHERE variant_option=?")->execute(1);
-
-		if (!$objVariantAttributes->numRows)
-		{
-			return '';
-		}
-
-		while ($objVariantAttributes->next())
-		{
-			$strField = $objVariantAttributes->field_name;
-
-			foreach ($arrProducts as $objProduct)
-			{
-				if (property_exists($objProduct, $strField))
-				{
-					if ($row[$strField])
-					{
-						$arrReturn[$objProduct->id]['variants'][] = $row[$strField];
-					}
-				}
-			}
-		}
-
-		return $arrReturn;
-	}
 }
 
