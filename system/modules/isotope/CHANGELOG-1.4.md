@@ -1,6 +1,13 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 1.4.? (2012-??-??)
+------------------------------
+
+### Fixed
+- Product was hidden if price was not an attribute
+
+
 Version 1.4.beta2 (2012-09-24)
 ------------------------------
 

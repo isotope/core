@@ -727,7 +727,7 @@ class IsotopeProduct extends Controller
 		}
 
 		// Check if "advanced price" is available
-		if ($this->arrData['price'] === null)
+		if ($this->arrData['price'] === null && (in_array('price', $this->arrAttributes) || in_array('price', $this->arrVariantAttributes)))
 		{
 			return false;
 		}
