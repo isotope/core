@@ -507,8 +507,11 @@ class IsotopeOrder extends IsotopeProductCollection
 	public function getEmailData()
 	{
 		$arrData = $this->email_data;
+		$arrData['id'] = $this->id;
 		$arrData['order_id'] = $this->order_id;
+		$arrData['uniqid'] = $this->uniqid;
 		$arrData['status'] = $this->statusLabel;
+		$arrData['status_id'] = $this->arrData['status'];
 
 		foreach ($this->billing_address as $k => $v)
 		{

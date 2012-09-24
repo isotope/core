@@ -1060,7 +1060,6 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 		$arrData = array_merge($this->arrOrderData, array
 		(
-			'uniqid'			=> $objOrder->uniqid,
 			'items'				=> $this->Isotope->Cart->items,
 			'products'			=> $this->Isotope->Cart->products,
 			'subTotal'			=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->subTotal, false),
