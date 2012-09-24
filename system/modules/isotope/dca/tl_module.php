@@ -46,7 +46,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_checkoutboth']			= '{title_lege
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_orderhistory']			= '{title_legend},name,headline,type;{config_legend},iso_config_ids;{redirect_legend},jumpTo;{template_legend},iso_includeMessages;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_orderdetails']			= '{title_legend},name,headline,type;{redirect_legend},jumpTo;{template_legend},iso_includeMessages;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_configswitcher']		= '{title_legend},name,headline,type;{config_legend},iso_config_ids;{template_legend},iso_includeMessages;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productfilter']		= '{title_legend},name,headline,type;{config_legend},iso_category_scope,iso_list_where,iso_enableLimit,iso_filterFields,iso_searchFields,iso_sortingFields;{template_legend},iso_filterTpl,iso_includeMessages,iso_hide_list;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productfilter']		= '{title_legend},name,headline,type;{config_legend},iso_category_scope,iso_list_where,iso_enableLimit,iso_filterFields,iso_searchFields,iso_searchAutocomplete,iso_sortingFields;{template_legend},iso_filterTpl,iso_includeMessages,iso_hide_list;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_cumulativefilter']		= '{title_legend},name,headline,type;{config_legend},iso_filterFields;{template_legend},iso_filterTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_addressbook']			= '{title_legend},name,headline,type;{template_legend},iso_includeMessages,memberTpl,tableless;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_relatedproducts']		= '{title_legend},name,headline,type;{config_legend},iso_related_categories,iso_list_where,perPage,iso_cols;{redirect_legend},iso_reader_jumpTo,iso_addProductJumpTo;{template_legend:hide},iso_list_layout,iso_use_quantity,iso_includeMessages,iso_emptyMessage,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
@@ -344,22 +344,31 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_filterFields'] = array
 	'eval'					  => array('multiple'=>true, 'tl_class'=>'clr'),
 );
 
-$GLOBALS['TL_DCA']['tl_module']['fields']['iso_sortingFields'] = array
-(
-	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_sortingFields'],
-	'exclude'                 => true,
-	'inputType'               => 'checkboxWizard',
-	'options_callback'		  => array('tl_module_isotope', 'getSortingFields'),
-	'eval'					  => array('multiple'=>true),
-);
-
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_searchFields'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_searchFields'],
 	'exclude'                 => true,
 	'inputType'               => 'checkboxWizard',
 	'options_callback'		  => array('tl_module_isotope', 'getSearchFields'),
-	'eval'					  => array('multiple'=>true),
+	'eval'					  => array('multiple'=>true, 'tl_class'=>'w50 w50h'),
+);
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_searchAutocomplete'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_searchAutocomplete'],
+	'exclude'                 => true,
+	'inputType'               => 'select',
+	'options_callback'		  => array('tl_module_isotope', 'getAutocompleteFields'),
+	'eval'					  => array('tl_class'=>'w50', 'includeBlankOption'=>true),
+);
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_sortingFields'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_sortingFields'],
+	'exclude'                 => true,
+	'inputType'               => 'checkboxWizard',
+	'options_callback'		  => array('tl_module_isotope', 'getSortingFields'),
+	'eval'					  => array('multiple'=>true, 'tl_class'=>'clr'),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_enableLimit'] = array
@@ -526,6 +535,26 @@ class tl_module_isotope extends Backend
 		foreach ($GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData)
 		{
 			if ($arrData['attributes']['fe_search'])
+			{
+				$arrAttributes[$field] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
+			}
+		}
+
+		return $arrAttributes;
+	}
+
+
+	/**
+	 * Get the attribute autocomplete fields and return them as array
+	 * @return array
+	 */
+	public function getAutocompleteFields()
+	{
+		$arrAttributes = array();
+
+		foreach ($GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData)
+		{
+			if ($arrData['attributes']['fe_search'] && !$arrData['attributes']['dynamic'])
 			{
 				$arrAttributes[$field] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
 			}

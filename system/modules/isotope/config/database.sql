@@ -798,6 +798,7 @@ CREATE TABLE `tl_module` (
   `iso_filterFields` blob NULL,
   `iso_sortingFields` blob NULL,
   `iso_searchFields` blob NULL,
+  `iso_searchAutocomplete` varchar(255) NOT NULL default '',
   `iso_enableLimit` char(1) NOT NULL default '',
   `iso_cart_jumpTo` int(10) unsigned NOT NULL default '0',
   `iso_checkout_jumpTo` int(10) unsigned NOT NULL default '0',

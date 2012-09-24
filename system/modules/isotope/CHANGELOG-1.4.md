@@ -4,6 +4,9 @@ Isotope eCommerce Changelog
 Version 1.4.? (2012-??-??)
 ------------------------------
 
+### New
+- Can now apply an autocompleter on the search field of a product filter module
+
 ### Improved
 - Using MultiColumnWizard for attribute options
 - Hide "default" and "group" checkboxes for variant options
