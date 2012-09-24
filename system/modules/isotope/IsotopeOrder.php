@@ -535,9 +535,8 @@ class IsotopeOrder extends IsotopeProductCollection
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['getOrderEmailData'] as $callback)
 			{
-				$strClass = $callback[0];
-				$objCallback = (in_array('getInstance', get_class_methods($strClass))) ? call_user_func(array($strClass, 'getInstance')) : new $strClass();
-				$arrData = $this->$callback[0]->$callback[1]($this, $arrData);
+				$objCallback = (in_array('getInstance', get_class_methods($callback[0]))) ? call_user_func(array($callback[0], 'getInstance')) : new $callback[0]();
+				$arrData = $objCallback->$callback[1]($this, $arrData);
 			}
 		}
 

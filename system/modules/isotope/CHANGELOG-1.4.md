@@ -19,6 +19,7 @@ Version 1.4.? (2012-??-??)
 - Fallback image was not rendered
 - Shipping module palette was broken due to Chosen selects
 - Added new order status fields to exclude list (#3366)
+- getOrderEmailData hook was not working correctly
 
 
 Version 1.4.beta1 (2012-08-24)
