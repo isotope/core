@@ -294,7 +294,7 @@ var Isotope =
 	 */
 	addInteractiveHelp: function()
 	{
-		$$('a.tl_tip').each(function(el)
+		document.getElements('a.tl_tip').each(function(el)
 		{
 			if (el.retrieve('complete'))
 			{
@@ -585,6 +585,7 @@ window.addEvent('domready', function()
 	Isotope.initializeToolsButton();
 }).addEvent('structure', function()
 {
+	Isotope.addInteractiveHelp();
 	Isotope.initializeToolsButton();
 });
 
