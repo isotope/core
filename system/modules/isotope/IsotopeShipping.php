@@ -122,14 +122,16 @@ abstract class IsotopeShipping extends Frontend
 					return false;
 				}
 
+				$objAddress = $this->Isotope->Cart->shippingAddress;
+
 				$arrCountries = deserialize($this->countries);
-				if (is_array($arrCountries) && !empty($arrCountries) && !in_array($this->Isotope->Cart->shippingAddress['country'], $arrCountries))
+				if (is_array($arrCountries) && !empty($arrCountries) && !in_array($objAddress->country, $arrCountries))
 				{
 					return false;
 				}
 
 				$arrSubdivisions = deserialize($this->subdivisions);
-				if (is_array($arrSubdivisions) && !empty($arrSubdivisions) && !in_array($this->Isotope->Cart->shippingAddress['subdivision'], $arrSubdivisions))
+				if (is_array($arrSubdivisions) && !empty($arrSubdivisions) && !in_array($objAddress->subdivision, $arrSubdivisions))
 				{
 					return false;
 				}
@@ -139,7 +141,7 @@ abstract class IsotopeShipping extends Frontend
 				{
 					$arrCodes = IsotopeFrontend::parsePostalCodes($this->postalCodes);
 
-					if (!in_array($this->Isotope->Cart->shippingAddress['postal'], $arrCodes))
+					if (!in_array($objAddress->postal, $arrCodes))
 					{
 						return false;
 					}

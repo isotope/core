@@ -37,7 +37,7 @@
 $GLOBALS['ISO_ADR']['generic'] =
 '<div class="vcard">{if hcard_org!=""}##hcard_org##
 {endif}
-{if hcard_n=="1"}<div class="n">##salutation## ##hcard_given_name## ##hcard_family_name##</div>{endif}
+{if hcard_n=="1"}<div class="n">##hcard_honorific_prefix## ##hcard_given_name## ##hcard_family_name##</div>{endif}
 
 {if hcard_adr=="1"}<div class="adr">##hcard_street_address##
 
@@ -51,40 +51,64 @@ $GLOBALS['ISO_ADR']['generic'] =
 ##hcard_email##</div>';
 
 $GLOBALS['ISO_ADR']['it'] =
-'<div class="vcard">##company##
-##salutation## ##firstname## ##lastname##
-##street_1##
-##street_2##
-##street_3##
-##postal## ##city## (##subdivision-abbr##)
-##country##
+'<div class="vcard">{if hcard_org!=""}##hcard_org##
+{endif}
+{if hcard_n=="1"}<div class="n">##hcard_honorific_prefix## ##hcard_given_name## ##hcard_family_name##</div>{endif}
 
-##phone##
-##email##';
+{if hcard_adr=="1"}<div class="adr">##hcard_street_address##
 
-$GLOBALS['ISO_ADR']['uk'] =
-'##company##
-##salutation## ##firstname## ##lastname##
-##street_1##
-##street_2##
-##street_3##
+##hcard_postal_code## ##hcard_locality## {if hcard_region!=""}(##hcard_region##){endif}
+
+##hcard_country_name##</div>{endif}
+
+
+##hcard_tel##
+
+##hcard_email##</div>';
+
+$GLOBALS['ISO_ADR']['gb'] =
+'<div class="vcard">{if hcard_org!=""}##hcard_org##
+{endif}
+{if hcard_n=="1"}<div class="n">##hcard_honorific_prefix## ##hcard_given_name## ##hcard_family_name##</div>{endif}
+
+{if hcard_adr=="1"}<div class="adr">##hcard_street_address##
+
+##hcard_region## {if outputFormat=="html"} <br> {else} <br /> {endif}
+
+##hcard_locality## {if outputFormat=="html"} <br> {else} <br /> {endif}
+
+##hcard_postal_code##
+
+##hcard_country_name##</div>{endif}
+
+
+##hcard_tel##
+
+##hcard_email##</div>
+
+<!--
 ##city##
 ##state##
 ##postal##
 ##country##
 
 ##phone##
-##email##';
+##email##
+-->';
 
 $GLOBALS['ISO_ADR']['us'] =
-'##company##
-##salutation## ##firstname## ##lastname##
-##street_1##
-##street_2##
-##street_3##
-##city##, ##subdivision-abbr## ##postal##
-##country##
+'<div class="vcard">{if hcard_org!=""}##hcard_org##
+{endif}
+{if hcard_n=="1"}<div class="n">##hcard_honorific_prefix## ##hcard_given_name## ##hcard_family_name##</div>{endif}
 
-##phone##
-##email##';
+{if hcard_adr=="1"}<div class="adr">##hcard_street_address##
+
+##hcard_locality##, ##hcard_region_abbr## ##hcard_postal_code##
+
+##hcard_country_name##</div>{endif}
+
+
+##hcard_tel##
+
+##hcard_email##</div>';
 

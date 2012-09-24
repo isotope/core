@@ -710,7 +710,7 @@ class Isotope extends Controller
 		$objAddress = new IsotopeAddressModel();
 		$objAddress->setData($arrAddress);
 
-		return $objAddress->generateHtml();
+		return $objAddress->generateHtml($arrFields);
 	}
 
 

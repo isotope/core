@@ -1116,7 +1116,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		switch ($field)
 		{
 			case 'shipping_address':
-				$arrAddress = $_SESSION['CHECKOUT_DATA'][$field] ? $_SESSION['CHECKOUT_DATA'][$field] : $this->Isotope->Cart->shippingAddress;
+				$arrAddress = $_SESSION['CHECKOUT_DATA'][$field] ? $_SESSION['CHECKOUT_DATA'][$field] : $this->Isotope->Cart->shipping_address;
 				$intDefaultValue = strlen($arrAddress['id']) ? $arrAddress['id'] : -1;
 
 				array_insert($arrOptions, 0, array(array
