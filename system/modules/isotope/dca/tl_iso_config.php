@@ -359,6 +359,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 		'orderstatus_new' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['orderstatus_new'],
+			'exclude'                 => true,
 			'filter'                  => true,
 			'inputType'               => 'select',
 			'options'                 => IsotopeBackend::getOrderStatus(),
@@ -367,6 +368,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 		'orderstatus_error' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['orderstatus_error'],
+			'exclude'                 => true,
 			'filter'                  => true,
 			'inputType'               => 'select',
 			'options'                 => IsotopeBackend::getOrderStatus(),

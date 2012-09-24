@@ -6,6 +6,7 @@ Version 1.4.? (2012-??-??)
 
 ### New
 - Can now apply an autocompleter on the search field of a product filter module
+- Addresses are now formatted as hCard in the frontend
 
 ### Improved
 - Using MultiColumnWizard for attribute options
@@ -15,6 +16,8 @@ Version 1.4.? (2012-??-??)
 - Rules for cart subtotal was not correctly applied
 - Price tiers showed as "from" price even if not enabled
 - Fallback image was not rendered
+- Shipping module palette was broken due to Chosen selects
+- Added new order status fields to exclude list (#3366)
 
 
 Version 1.4.beta1 (2012-08-24)
