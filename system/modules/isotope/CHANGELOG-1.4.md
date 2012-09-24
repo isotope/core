@@ -1,13 +1,14 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 1.4.? (2012-??-??)
+Version 1.4.beta2 (2012-09-24)
 ------------------------------
 
 ### New
 - Can now apply an autocompleter on the search field of a product filter module
 - Addresses are now formatted as hCard in the frontend
 - Can now list products of a page if it's article is included (e.g. using inserttag) (#3343)
+- Added permissions to product groups. You can no longer have products outside of a group.
 
 ### Improved
 - Using MultiColumnWizard for attribute options
