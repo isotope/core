@@ -132,7 +132,7 @@ abstract class IsotopePayment extends Frontend
 
 				$arrCountries = deserialize($this->countries);
 
-				if(is_array($arrCountries) && count($arrCountries) && !in_array($this->Isotope->Cart->billingAddress['country'], $arrCountries))
+				if(is_array($arrCountries) && count($arrCountries) && !in_array($this->Isotope->Cart->billingAddress->country, $arrCountries))
 				{
 					return false;
 				}

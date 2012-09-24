@@ -872,7 +872,7 @@ abstract class IsotopeProductCollection extends Model
 
 		$objTemplate->surcharges = IsotopeFrontend::formatSurcharges($this->getSurcharges());
 		$objTemplate->billing_label = $GLOBALS['TL_LANG']['ISO']['billing_address'];
-		$objTemplate->billing_address = $this->Isotope->generateAddressString(deserialize($this->billing_address), $this->Isotope->Config->billing_fields);
+		$objTemplate->billing_address = $this->billingAddress->generateText($this->Isotope->Config->billing_fields);
 
 		if (strlen($this->shipping_method))
 		{
@@ -887,7 +887,7 @@ abstract class IsotopeProductCollection extends Model
 			{
 				$objTemplate->has_shipping = true;
 				$objTemplate->shipping_label = $GLOBALS['TL_LANG']['ISO']['shipping_address'];
-				$objTemplate->shipping_address = $this->Isotope->generateAddressString($arrShippingAddress, $this->Isotope->Config->shipping_fields);
+				$objTemplate->shipping_address = $this->shippingAddress->generateText($this->Isotope->Config->shipping_fields);
 			}
 		}
 

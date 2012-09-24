@@ -345,7 +345,7 @@ class Isotope extends Controller
 
 		if (!is_array($arrAddresses))
 		{
-			$arrAddresses = array('billing'=>$this->Cart->billingAddress, 'shipping'=>$this->Cart->shippingAddress);
+			$arrAddresses = array('billing'=>$this->Cart->billing_address, 'shipping'=>$this->Cart->shipping_address);
 		}
 
 		$objTaxClass = $this->Database->prepare("SELECT * FROM tl_iso_tax_class WHERE id=?")->limit(1)->execute($intTaxClass);
@@ -701,87 +701,16 @@ class Isotope extends Controller
 
 	/**
 	 * Generate an address string
-	 * @param array
-	 * @param array
-	 * @return string
+	 * @deprecated Please use the IsotopeAddressModel class
 	 */
 	public function generateAddressString($arrAddress, $arrFields=null)
 	{
-		if (!is_array($arrAddress) || !count($arrAddress))
-		{
-			return $arrAddress;
-		}
+		trigger_error('Using Isotope::generateAddressString() is deprecated. Please use the IsotopeAddressModel class.', E_USER_NOTICE);
 
-		if (!is_array($GLOBALS['ISO_ADR']))
-		{
-			$this->loadLanguageFile('countries');
-		}
+		$objAddress = new IsotopeAddressModel();
+		$objAddress->setData($arrAddress);
 
-		if (!is_array($arrFields))
-		{
-			$arrFields = deserialize($this->Config->billing_fields, true);
-		}
-
-		// We need a country to format the address, user default country if none is available
-		if (!strlen($arrAddress['country']))
-		{
-			$arrAddress['country'] = $this->Config->country;
-		}
-
-		$arrSearch = array();
-		$arrReplace = array();
-
-		foreach ($arrFields as $arrField)
-		{
-			$strField = $arrField['value'];
-
-			if ($strField == 'subdivision' && strlen($arrAddress['subdivision']))
-			{
-				if (!is_array($GLOBALS['TL_LANG']['DIV']))
-				{
-					$this->loadLanguageFile('subdivisions');
-				}
-
-				list($country, $subdivion) = explode('-', $arrAddress['subdivision']);
-				$arrAddress['subdivision'] = $GLOBALS['TL_LANG']['DIV'][$country][$arrAddress['subdivision']];
-
-				$arrSearch[] = '{subdivision-abbr}';
-				$arrReplace[] = $subdivion;
-			}
-
-			$arrSearch[] = '{' . $strField . '}';
-			$arrReplace[] = $this->formatValue('tl_iso_addresses', $strField, $arrAddress[$strField]);
-		}
-
-		// Parse format
-		$strAddress = str_replace($arrSearch, $arrReplace, $GLOBALS['ISO_ADR'][$arrAddress['country']]);
-
-		// Remove empty tags
-		$strAddress = preg_replace('(\{[^}]+\})', '', $strAddress);
-
-		// Remove empty brackets
-		$strAddress = str_replace('()', '', $strAddress);
-
-		// Remove double line breaks
-		do
-		{
-			$strAddress = str_replace('<br /><br />', '<br />', trim($strAddress), $found);
-		}
-		while ($found > 0);
-
-		// Remove line break at beginning of address
-		if (strpos($strAddress, '<br />') === 0)
-		{
-			$strAddress = substr($strAddress, 6);
-		}
-
-		// Remove line break at end of address
-		if (substr($strAddress, -6) == '<br />')
-		{
-			$strAddress = substr($strAddress, 0, -6);
-		}
-
-		return $strAddress;
+		return $objAddress->generateHtml();
 	}
 
 
@@ -1249,7 +1178,9 @@ class Isotope extends Controller
 	 * These functions need to be public for Models to access them
 	 */
 	public function replaceInsertTags($strBuffer, $blnCache=false) { return parent::replaceInsertTags($strBuffer, $blnCache); }
+	public function parseSimpleTokens($strBuffer, $arrData) { return parent::parseSimpleTokens($strBuffer, $arrData); }
 	public function convertRelativeUrls($strContent, $strBase='', $blnHrefOnly=false) { return parent::convertRelativeUrls($strContent, $strBase, $blnHrefOnly); }
+	public function loadDataContainer($strName, $blnNoCache=false) { parent::loadDataContainer($strName, $blnNoCache); }
 	public function getCountries() { return parent::getCountries(); }
 }
 

@@ -171,11 +171,13 @@ class PaymentPaypal extends IsotopePayment
 	public function checkoutForm()
 	{
 		$objOrder = new IsotopeOrder();
+
 		if (!$objOrder->findBy('cart_id', $this->Isotope->Cart->id))
 		{
 			$this->redirect($this->addToUrl('step=failed', true));
 		}
 
+		$objAddress = $this->Isotope->Cart->billingAddress;
 		list($endTag, $startScript, $endScript) = IsotopeFrontend::getElementAndScriptTags();
 
 		$strBuffer = '
@@ -248,15 +250,15 @@ class PaymentPaypal extends IsotopePayment
 <input type="hidden" name="invoice" value="' . $objOrder->id . '"' . $endTag . '
 
 <input type="hidden" name="address_override" value="' . ($this->debug ? '0' : '1') . '"' . $endTag . '
-<input type="hidden" name="first_name" value="' . $this->Isotope->Cart->billingAddress['firstname'] . '"' . $endTag . '
-<input type="hidden" name="last_name" value="' . $this->Isotope->Cart->billingAddress['lastname'] . '"' . $endTag . '
-<input type="hidden" name="address1" value="' . $this->Isotope->Cart->billingAddress['street_1'] . '"' . $endTag . '
-<input type="hidden" name="address2" value="' . $this->Isotope->Cart->billingAddress['street_2'] . '"' . $endTag . '
-<input type="hidden" name="zip" value="' . $this->Isotope->Cart->billingAddress['postal'] . '"' . $endTag . '
-<input type="hidden" name="city" value="' . $this->Isotope->Cart->billingAddress['city'] . '"' . $endTag . '
-<input type="hidden" name="country" value="' . strtoupper($this->Isotope->Cart->billingAddress['country']) . '"' . $endTag . '
-<input type="hidden" name="email" value="' . $this->Isotope->Cart->billingAddress['email'] . '"' . $endTag . '
-<input type="hidden" name="night_phone_b" value="' . $this->Isotope->Cart->billingAddress['phone'] . '"' . $endTag . '
+<input type="hidden" name="first_name" value="' . $objAddress['firstname'] . '"' . $endTag . '
+<input type="hidden" name="last_name" value="' . $objAddress->lastname . '"' . $endTag . '
+<input type="hidden" name="address1" value="' . $objAddress->street_1 . '"' . $endTag . '
+<input type="hidden" name="address2" value="' . $objAddress->street_2 . '"' . $endTag . '
+<input type="hidden" name="zip" value="' . $objAddress->postal . '"' . $endTag . '
+<input type="hidden" name="city" value="' . $objAddress->city . '"' . $endTag . '
+<input type="hidden" name="country" value="' . strtoupper($objAddress->country) . '"' . $endTag . '
+<input type="hidden" name="email" value="' . $objAddress->email . '"' . $endTag . '
+<input type="hidden" name="night_phone_b" value="' . $objAddress->phone . '"' . $endTag . '
 
 <input type="hidden" name="notify_url" value="' . $this->Environment->base . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id . '"' . $endTag . '
 <input type="hidden" name="bn" value="PP-BuyNowBF:btn_paynowCC_LG.gif:NonHosted"' . $endTag . '
