@@ -7,6 +7,7 @@ Version 1.4.? (2012-??-??)
 ### New
 - Can now apply an autocompleter on the search field of a product filter module
 - Addresses are now formatted as hCard in the frontend
+- Can now list products of a page if it's article is included (e.g. using inserttag) (#3343)
 
 ### Improved
 - Using MultiColumnWizard for attribute options

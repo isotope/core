@@ -313,9 +313,9 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_category_scope'] = array
 	'exclude'                 => true,
 	'inputType'               => 'radio',
 	'default'				  => 'current_category',
-	'options'				  => array('current_category', 'current_and_first_child', 'current_and_all_children', 'parent', 'product', 'global'),
+	'options'				  => array('current_category', 'current_and_first_child', 'current_and_all_children', 'parent', 'product', 'article', 'global'),
 	'reference'				  => &$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref'],
-	'eval'					  => array('tl_class'=>'w50 w50h')
+	'eval'					  => array('tl_class'=>'w50 w50h', 'helpwizard'=>true),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_list_where'] = array
