@@ -14,6 +14,7 @@ Version 1.4.? (2012-??-??)
 - Hide "default" and "group" checkboxes for variant options
 - Added default address parameter to "addCustomAddress" hook (#2142)
 - New simple tokens ##id# and ##status_id## for order email (#3035)
+- Process input before generating attributes (#2639)
 
 ### Fixed
 - Rules for cart subtotal was not correctly applied

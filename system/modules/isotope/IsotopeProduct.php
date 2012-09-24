@@ -466,15 +466,24 @@ class IsotopeProduct extends Controller
 
 
 	/**
+	 * Return all product and variant attributes
+	 * @return array
+	 */
+	public function getProductAndVariantAttributes()
+	{
+		return array_unique(array_merge($this->arrAttributes, $this->arrVariantAttributes));
+	}
+
+
+	/**
 	 * Return all attributes for this product as array
 	 * @return array
 	 */
 	public function getAttributes()
 	{
 		$arrData = array();
-		$arrAttributes = array_unique(array_merge($this->arrAttributes, $this->arrVariantAttributes));
 
-		foreach ($arrAttributes as $attribute)
+		foreach ($this->getProductAndVariantAttributes() as $attribute)
 		{
 			$arrData[$attribute] = $this->$attribute;
 		}
@@ -743,9 +752,9 @@ class IsotopeProduct extends Controller
 		$objTemplate = new IsotopeTemplate($strTemplate);
 		$arrProductOptions = array();
 		$arrAjaxOptions = array();
-		$arrAttributes = $this->getAttributes();
+		$arrToGenerate = array();
 
-		foreach ($arrAttributes as $attribute => $varValue)
+		foreach ($this->getProductAndVariantAttributes() as $attribute)
 		{
 			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['customer_defined'] || $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
 			{
@@ -763,8 +772,13 @@ class IsotopeProduct extends Controller
 			}
 			else
 			{
-				$objTemplate->$attribute = $this->generateAttribute($attribute, $varValue);
+				$arrToGenerate[] = $attribute;
 			}
+		}
+
+		foreach($arrToGenerate as $attribute)
+		{
+			$objTemplate->$attribute = $this->generateAttribute($attribute, $this->$attribute);
 		}
 
 		$arrButtons = array();
@@ -842,9 +856,9 @@ class IsotopeProduct extends Controller
 		$this->validateVariant();
 
 		$arrOptions = array();
-		$arrAttributes = $this->getAttributes();
+		$arrToGenerate = array();
 
-		foreach ($arrAttributes as $attribute => $varValue)
+		foreach ($this->getProductAndVariantAttributes() as $attribute)
 		{
 			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
 			{
@@ -857,36 +871,41 @@ class IsotopeProduct extends Controller
 			}
 			elseif (in_array($attribute, $this->arrVariantAttributes))
 			{
-				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['inputType'] == 'mediaManager')
-				{
-					$objGallery = $this->$attribute;
+				$arrToGenerate[] = $attribute;
+			}
+		}
 
-					foreach ((array) $this->Isotope->Config->imageSizes as $size)
-					{
-						$arrOptions[] = array_merge($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute], array
-						(
-							'id'	=> ($this->formSubmit . '_' . $attribute . '_' . $size['name'] . 'size'),
-							'name'	=> $attribute,
-							'html'	=> $objGallery->generateMainImage($size['name']),
-						));
-					}
+		foreach($arrToGenerate as $attribute)
+		{
+			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['inputType'] == 'mediaManager')
+			{
+				$objGallery = $this->$attribute;
 
-					$arrOptions[] = array_merge($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute], array
-					(
-						'id' => ($this->formSubmit . '_' . $attribute . '_gallery'),
-						'name'	=> $attribute,
-						'html' => $objGallery->generateGallery(),
-					));
-				}
-				else
+				foreach ((array) $this->Isotope->Config->imageSizes as $size)
 				{
 					$arrOptions[] = array_merge($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute], array
 					(
-						'id' => ($this->formSubmit . '_' . $attribute),
+						'id'	=> ($this->formSubmit . '_' . $attribute . '_' . $size['name'] . 'size'),
 						'name'	=> $attribute,
-						'html' => $this->generateAttribute($attribute, $varValue),
+						'html'	=> $objGallery->generateMainImage($size['name']),
 					));
 				}
+
+				$arrOptions[] = array_merge($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute], array
+				(
+					'id' => ($this->formSubmit . '_' . $attribute . '_gallery'),
+					'name'	=> $attribute,
+					'html' => $objGallery->generateGallery(),
+				));
+			}
+			else
+			{
+				$arrOptions[] = array_merge($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute], array
+				(
+					'id' => ($this->formSubmit . '_' . $attribute),
+					'name'	=> $attribute,
+					'html' => $this->generateAttribute($attribute, $this->$attribute),
+				));
 			}
 		}
 
