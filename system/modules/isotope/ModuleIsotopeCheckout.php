@@ -1154,7 +1154,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			foreach ($GLOBALS['ISO_HOOKS']['addCustomAddress'] as $callback)
 			{
 				$this->import($callback[0]);
-				$arrOptions = $this->$callback[0]->$callback[1]($arrOptions, $field, $this);
+				$arrOptions = $this->$callback[0]->$callback[1]($arrOptions, $field, $intDefaultValue, $this);
 			}
 		}
 

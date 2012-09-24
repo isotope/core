@@ -11,6 +11,7 @@ Version 1.4.? (2012-??-??)
 ### Improved
 - Using MultiColumnWizard for attribute options
 - Hide "default" and "group" checkboxes for variant options
+- Added default address parameter to "addCustomAddress" hook (#2142)
 
 ### Fixed
 - Rules for cart subtotal was not correctly applied
