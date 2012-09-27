@@ -53,7 +53,7 @@ class ZoomGallery extends InlineGallery
 			$GLOBALS['TL_CSS'][] = 'system/modules/isotope/html/zoomgallery.css';
 		}
 
-		return parent::generateGallery();
+		return parent::generateGallery($strType, $intSkip, $blnForce);
 	}
 }
 
