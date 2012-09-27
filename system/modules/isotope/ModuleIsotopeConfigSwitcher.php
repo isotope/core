@@ -106,7 +106,8 @@ class ModuleIsotopeConfigSwitcher extends ModuleIsotope
 			$c++;
 		}
 
-		$arrConfigs[count($arrConfigs)-1]['class'] = trim($arrConfigs[count($arrConfigs)-1]['class'] . ' last');
+		$last = count($arrConfigs)-1;
+		$arrConfigs[$last]['class'] = trim($arrConfigs[$last]['class'] . ' last');
 		$this->Template->configs = $arrConfigs;
 	}
 }
