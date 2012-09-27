@@ -1,0 +1,13 @@
+.iso_report {
+	width: 100%;
+}
+.tl_subpanel input.tl_text.datepicker {
+	width: 100px;
+}
+.tl_subpanel.tl_columns input.tl_text {
+	width: 50px;
+}
+.iso_report .tl_help, .iso_report .tl_help a {
+	font-size: 11px;
+	color: #666966;
+}
