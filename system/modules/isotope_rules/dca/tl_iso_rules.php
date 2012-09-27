@@ -116,7 +116,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 		'cart'					=> '{basic_legend},type,applyTo,name,label,discount;{coupon_legend:hide},enableCode;{limit_legend:hide},limitPerMember,limitPerConfig,minSubtotal,maxSubtotal,minItemQuantity,maxItemQuantity,quantityMode;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},configRestrictions,memberRestrictions,productRestrictions;{enabled_legend},enabled',
 		'cartsubtotal'			=> '{basic_legend},type,applyTo,name,label,discount,tax_class;{coupon_legend:hide},enableCode;{limit_legend:hide},limitPerMember,limitPerConfig,minSubtotal,maxSubtotal,minItemQuantity,maxItemQuantity,quantityMode;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},configRestrictions,memberRestrictions,productRestrictions;{enabled_legend},enabled',
 	),
-	
+
 	// Subpalettes
 	'subpalettes' => array
 	(
@@ -543,7 +543,7 @@ class tl_iso_rules extends Backend
 	{
 		$arrNew = deserialize($varValue);
 
-		if (!is_array($arrNew) || !count($arrNew))
+		if (!is_array($arrNew) || empty($arrNew))
 		{
 			$this->Database->query("DELETE FROM tl_iso_rule_restrictions WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}'");
 		}
@@ -554,12 +554,12 @@ class tl_iso_rules extends Backend
 			$arrInsert = array_diff($arrNew, $arrOld);
 			$arrDelete = array_diff($arrOld, $arrNew);
 
-			if (count($arrDelete))
+			if (!empty($arrDelete))
 			{
 				$this->Database->query("DELETE FROM tl_iso_rule_restrictions WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}' AND object_id IN (" . implode(',', $arrDelete) . ")");
 			}
 
-			if (count($arrInsert))
+			if (!empty($arrInsert))
 			{
 				$time = time();
 				$this->Database->query("INSERT INTO tl_iso_rule_restrictions (pid,tstamp,type,object_id) VALUES ({$dc->id}, $time, '{$dc->field}', " . implode("), ({$dc->id}, $time, '{$dc->field}', ", $arrInsert) . ")");

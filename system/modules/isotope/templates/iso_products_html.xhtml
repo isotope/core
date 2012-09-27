@@ -11,7 +11,7 @@
 	<td><?php echo $objProduct->sku; ?></td>
 	<td>
 		<?php echo $objProduct->name; ?>
-		<?php $options = $objProduct->getOptions(); if(is_array($options) && count($options)): ?>
+		<?php $options = $objProduct->getOptions(); if(is_array($options) && !empty($options)): ?>
 		<div class="optionswrapper">
 			<ul class="productOptions">
 			<?php foreach($options as $option): ?>

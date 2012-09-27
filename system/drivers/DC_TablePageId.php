@@ -71,7 +71,7 @@ class DC_TablePageId extends DC_Table
 		}
 
 		// Custom filter
-		if (is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']) && count($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']))
+		if (is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']) && !empty($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']))
 		{
 			foreach ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter'] as $filter)
 			{
@@ -511,7 +511,7 @@ class DC_TablePageId extends DC_Table
 		}
 
 		// Delete all new but incomplete records (tstamp=0)
-		if (is_array($new_records[$this->strTable]) && count($new_records[$this->strTable]) > 0)
+		if (is_array($new_records[$this->strTable]) && !empty($new_records[$this->strTable]))
 		{
 			$objStmt = $this->Database->execute("DELETE FROM " . $this->strTable . " WHERE id IN(" . implode(',', array_map('intval', $new_records[$this->strTable])) . ") AND tstamp=0");
 
@@ -533,7 +533,7 @@ class DC_TablePageId extends DC_Table
 		}
 
 		// Delete all records of the child table that are not related to the current table
-		if (is_array($ctable) && count($ctable))
+		if (is_array($ctable) && !empty($ctable))
 		{
 			foreach ($ctable as $v)
 			{
@@ -570,7 +570,7 @@ class DC_TablePageId extends DC_Table
 		$blnMultiboard = false;
 
 		// Check clipboard
-		if (isset($arrClipboard[$table]) && count($arrClipboard[$table]))
+		if (isset($arrClipboard[$table]) && !empty($arrClipboard[$table]))
 		{
 			$blnClipboard = true;
 			$arrClipboard = $arrClipboard[$table];
@@ -748,17 +748,17 @@ class DC_TablePageId extends DC_Table
 				$firstOrderBy = preg_replace('/\s+.*$/i', '', $orderBy[0]);
 			}
 
-			if (count($this->procedure))
+			if (!empty($this->procedure))
 			{
 				$query .= " WHERE " . implode(' AND ', $this->procedure);
 			}
 
-			if (is_array($this->root) && count($this->root) > 0)
+			if (is_array($this->root) && count($this->root) > 0) // Can't use empty() because its an object property (using __get)
 			{
 				$query .= (count($this->procedure) ? " AND " : " WHERE ") . "id IN(" . implode(',', array_map('intval', $this->root)) . ")";
 			}
 
-			if (is_array($orderBy) && count($orderBy) > 0)
+			if (is_array($orderBy) && !empty($orderBy))
 			{
 				$query .= " ORDER BY " . implode(', ', $orderBy);
 			}
@@ -966,7 +966,7 @@ Isotope.makePageViewSortable("ul_' . CURRENT_ID . '");
 			$query .= " WHERE " . implode(' AND ', $this->procedure);
 		}
 
-		if (is_array($this->root) && count($this->root) > 0)
+		if (is_array($this->root) && count($this->root)) // Can't use empty() because its an object property (using __get)
 		{
 			$query .= (count($this->procedure) ? " AND " : " WHERE ") . "id IN(" . implode(',', array_map('intval', $this->root)) . ")";
 		}
@@ -1019,7 +1019,7 @@ Isotope.makePageViewSortable("ul_' . CURRENT_ID . '");
 		$this->bid = strlen($return) ? $this->bid : 'tl_buttons';
 
 		// Display buttos
-		if (!$GLOBALS['TL_DCA'][$this->strTable]['config']['closed'] || count($GLOBALS['TL_DCA'][$this->strTable]['list']['global_operations']))
+		if (!$GLOBALS['TL_DCA'][$this->strTable]['config']['closed'] || !empty($GLOBALS['TL_DCA'][$this->strTable]['list']['global_operations']))
 		{
 			$return .= '
 
@@ -1264,7 +1264,7 @@ Isotope.makePageViewSortable("ul_' . CURRENT_ID . '");
 	 */
 	protected function generateButtons($arrRow, $strTable, $arrRootIds=array(), $blnCircularReference=false, $arrChildRecordIds=null, $strPrevious=null, $strNext=null)
 	{
-		if (!count($GLOBALS['TL_DCA'][$strTable]['list']['operations']))
+		if (empty($GLOBALS['TL_DCA'][$strTable]['list']['operations']))
 		{
 			return '';
 		}
@@ -1307,11 +1307,11 @@ Isotope.makePageViewSortable("ul_' . CURRENT_ID . '");
 
 				if ($dir == 'up')
 				{
-					$return .= ((is_numeric($strPrevious) && (!in_array($arrRow['id'], $arrRootIds) || !count($GLOBALS['TL_DCA'][$strTable]['list']['sorting']['root']))) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$arrRow['id']).'&amp;sid='.intval($strPrevious).'" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ' : $this->generateImage('up_.gif')).' ';
+					$return .= ((is_numeric($strPrevious) && (!in_array($arrRow['id'], $arrRootIds) || empty($GLOBALS['TL_DCA'][$strTable]['list']['sorting']['root']))) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$arrRow['id']).'&amp;sid='.intval($strPrevious).'" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ' : $this->generateImage('up_.gif')).' ';
 					continue;
 				}
 
-				$return .= ((is_numeric($strNext) && (!in_array($arrRow['id'], $arrRootIds) || !count($GLOBALS['TL_DCA'][$strTable]['list']['sorting']['root']))) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$arrRow['id']).'&amp;sid='.intval($strNext).'" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ' : $this->generateImage('down_.gif')).' ';
+				$return .= ((is_numeric($strNext) && (!in_array($arrRow['id'], $arrRootIds) || empty($GLOBALS['TL_DCA'][$strTable]['list']['sorting']['root']))) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$arrRow['id']).'&amp;sid='.intval($strNext).'" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ' : $this->generateImage('down_.gif')).' ';
 			}
 		}
 

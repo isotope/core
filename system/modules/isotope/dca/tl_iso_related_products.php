@@ -149,7 +149,7 @@ class tl_iso_related_products extends Backend
 
 		$arrProducts = deserialize($row['products']);
 
-		if (is_array($arrProducts) && count($arrProducts))
+		if (is_array($arrProducts) && !empty($arrProducts))
 		{
 			$strBuffer .= '<div class="limit_height' . (!$GLOBALS['TL_CONFIG']['doNotCollapse'] ? ' h0' : '') . ' block"><ul>';
 			$objProducts = $this->Database->execute("SELECT * FROM tl_iso_products WHERE id IN (" . implode(',', $arrProducts) . ") ORDER BY name");
@@ -182,7 +182,7 @@ class tl_iso_related_products extends Backend
 			$arrCategories[$objCategories->id] = $objCategories->name;
 		}
 
-		if (!count($arrCategories))
+		if (empty($arrCategories))
 		{
 			$GLOBALS['TL_DCA']['tl_iso_related_products']['config']['closed'] = true;
 		}

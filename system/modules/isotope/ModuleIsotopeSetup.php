@@ -124,7 +124,7 @@ class ModuleIsotopeSetup extends BackendModule
 
 		foreach ($GLOBALS['ISO_MOD'] as $arrGroup)
 		{
-			if (count($arrGroup) && in_array($module, array_keys($arrGroup)))
+			if (!empty($arrGroup) && in_array($module, array_keys($arrGroup)))
 			{
 				$arrModule =& $arrGroup[$module];
 			}

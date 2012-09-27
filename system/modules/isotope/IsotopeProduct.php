@@ -820,7 +820,7 @@ class IsotopeProduct extends Controller
 		$objTemplate->href_reader = $this->href_reader;
 		$objTemplate->label_detail = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
 		$objTemplate->options = IsotopeFrontend::generateRowClass($arrProductOptions, 'product_option');
-		$objTemplate->hasOptions = count($arrProductOptions) > 0 ? true : false;
+		$objTemplate->hasOptions = !empty($arrProductOptions) ? true : false;
 		$objTemplate->enctype = $this->hasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
 		$objTemplate->formId = $this->formSubmit;
 		$objTemplate->action = ampersand($this->Environment->request, true);
@@ -1193,7 +1193,7 @@ class IsotopeProduct extends Controller
 		}
 		else
 		{
-			if (is_array($GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['callback']) && count($GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['callback']))
+			if (is_array($GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['callback']) && !empty($GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['callback']))
 			{
 				foreach ($GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['callback'] as $callback)
 				{

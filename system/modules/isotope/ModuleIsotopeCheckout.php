@@ -751,7 +751,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			}
 		}
 
-		if (!count($arrModules))
+		if (empty($arrModules))
 		{
 			$this->doNotSubmit = true;
 			$this->Template->showNext = false;
@@ -1157,7 +1157,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			}
 		}
 
-		if (count($arrOptions))
+		if (!empty($arrOptions))
 		{
 			$strClass = $GLOBALS['TL_FFL']['radio'];
 
@@ -1330,7 +1330,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		$arrWidgets = IsotopeFrontend::generateRowClass($arrWidgets, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
 
 		// Validate input
-		if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && !$this->doNotSubmit && is_array($arrAddress) && count($arrAddress))
+		if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && !$this->doNotSubmit && is_array($arrAddress) && !empty($arrAddress))
 		{
 			$arrAddress['id'] = 0;
 			$_SESSION['CHECKOUT_DATA'][$strAddressType] = $arrAddress;
@@ -1385,7 +1385,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 						$arrInfo = $this->{$callback[0]}->{$callback[1]}($this, true);
 					}
 
-					if (is_array($arrInfo) && count($arrInfo))
+					if (is_array($arrInfo) && !empty($arrInfo))
 					{
 						$arrCheckoutInfo += $arrInfo;
 					}

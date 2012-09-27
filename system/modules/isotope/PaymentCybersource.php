@@ -39,7 +39,7 @@ class PaymentCybersource extends IsotopePayment
 		{
 			// Make sure at least one credit card is available
 			case 'available':
-				if (parent::__get($strKey) && is_array($this->allowed_cc_types) && count($this->allowed_cc_types))
+				if (parent::__get($strKey) && is_array($this->allowed_cc_types) && count($this->allowed_cc_types)) // Can't use empty() because its an object property (using __get)
 				{
 					return true;
 				}

@@ -534,7 +534,7 @@ class tl_iso_orders extends Backend
 			}
 		}
 
-		if (!count($arrExport))
+		if (empty($arrExport))
 		{
 			return '
 <div id="tl_buttons">
@@ -671,7 +671,7 @@ class tl_iso_orders extends Backend
 	{
 		$this->import('Isotope');
 
-		if (!count($arrIds))
+		if (empty($arrIds))
 		{
 			$this->log('No order IDs passed to method.', __METHOD__, TL_ERROR);
 			$this->redirect($this->Environment->script . '?act=error');

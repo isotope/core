@@ -192,16 +192,16 @@ class tl_iso_tax_class extends Backend
 		{
 			return;
 		}
-		
+
 		$this->import('BackendUser', 'User');
-		
+
 		if ($this->User->isAdmin)
 		{
 			return;
 		}
 
 		// Set root IDs
-		if (!is_array($this->User->iso_tax_classes) || count($this->User->iso_tax_classes) < 1)
+		if (!is_array($this->User->iso_tax_classes) || count($this->User->iso_tax_classes) < 1) // Can't use empty() because its an object property (using __get)
 		{
 			$root = array(0);
 		}
@@ -314,7 +314,7 @@ class tl_iso_tax_class extends Backend
 				break;
 		}
 	}
-	
+
 
 	/**
 	 * Get all tax rates sorted by country and name

@@ -284,7 +284,7 @@ class tl_iso_producttypes extends Backend
 		}
 
 		// Set root IDs
-		if (!is_array($this->User->iso_product_types) || count($this->User->iso_product_types) < 1)
+		if (!is_array($this->User->iso_product_types) || count($this->User->iso_product_types) < 1) // Can't use empty() because its an object property (using __get)
 		{
 			$root = array(0);
 		}

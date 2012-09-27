@@ -385,7 +385,7 @@ class tl_iso_shipping_modules extends Backend
 		}
 
 		// Set root IDs
-		if (!is_array($this->User->iso_shipping_modules) || count($this->User->iso_shipping_modules) < 1)
+		if (!is_array($this->User->iso_shipping_modules) || count($this->User->iso_shipping_modules) < 1) // Can't use empty() because its an object property (using __get)
 		{
 			$root = array(0);
 		}
@@ -508,7 +508,7 @@ class tl_iso_shipping_modules extends Backend
 	{
 		$arrModules = array();
 
-		if (is_array($GLOBALS['ISO_SHIP']) && count($GLOBALS['ISO_SHIP']))
+		if (is_array($GLOBALS['ISO_SHIP']) && !empty($GLOBALS['ISO_SHIP']))
 		{
 			foreach ($GLOBALS['ISO_SHIP'] as $module => $class)
 			{

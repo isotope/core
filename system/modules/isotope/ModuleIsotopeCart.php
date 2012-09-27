@@ -79,7 +79,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 	{
 		$arrProducts = $this->Isotope->Cart->getProducts();
 
-		if (!count($arrProducts))
+		if (empty($arrProducts))
 		{
 			$this->Template->empty = true;
 			$this->Template->message = $this->iso_emptyMessage ? $this->iso_noProducts : $GLOBALS['TL_LANG']['MSC']['noItemsInCart'];
@@ -99,7 +99,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 		$arrSurcharges = $this->Isotope->Cart->getSurcharges();
 
 		$arrProducts = $this->Isotope->Cart->getProducts();
-		$lastAdded = ($this->iso_continueShopping && count($_SESSION['ISO_CONFIRM'])) ? $this->Isotope->Cart->lastAdded : 0;
+		$lastAdded = ($this->iso_continueShopping && !empty($_SESSION['ISO_CONFIRM'])) ? $this->Isotope->Cart->lastAdded : 0;
 
 		foreach ($arrProducts as $i => $objProduct)
 		{

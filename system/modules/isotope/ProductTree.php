@@ -417,7 +417,7 @@ class ProductTree extends Widget
 								   ->execute($id)
 								   ->fetchEach('id');
 
-		if (!count($products) && !count($childs))
+		if (empty($products) && empty($childs))
 		{
 			return '';
 		}
@@ -429,7 +429,7 @@ class ProductTree extends Widget
 		$level = ($intMargin / $intSpacing + 1);
 		$blnIsOpen = ($session[$node][$id] == 1 || in_array($id, $this->arrNodes['groups']));
 
-		if (count($childs) || count($products))
+		if (!empty($childs) || !empty($products))
 		{
 			$folderAttribute = '';
 			$img = $blnIsOpen ? 'folMinus.gif' : 'folPlus.gif';
@@ -443,12 +443,12 @@ class ProductTree extends Widget
 		$return .= $this->tl_iso_groups->addIcon($objGroup->row(), $objGroup->name).'</div><div style="clear:both;"></div></li>';
 
 		// Add child products
-		if ((count($products) || count($childs)) && $blnIsOpen)
+		if ((!empty($products) || !empty($childs)) && $blnIsOpen)
 		{
 			$group = '';
 			$return .= '<li class="parent" id="'.$node.'_'.$id.'"><ul class="level_'.$level.'">';
 
-			if (count($products))
+			if (!empty($products))
 			{
 				for ($k=0; $k<count($products); $k++)
 				{
@@ -456,7 +456,7 @@ class ProductTree extends Widget
 				}
 			}
 
-			if (count($childs))
+			if (!empty($childs))
 			{
 				for ($k=0; $k<count($childs); $k++)
 				{
@@ -530,7 +530,7 @@ class ProductTree extends Widget
 		$level = ($intMargin / $intSpacing + 1);
 		$blnIsOpen = ($session[$node][$id] == 1 || in_array($id, $this->arrNodes['products']));
 
-		if (count($childs))
+		if (!empty($childs))
 		{
 			$folderAttribute = '';
 			$img = $blnIsOpen ? 'folMinus.gif' : 'folPlus.gif';
@@ -543,7 +543,7 @@ class ProductTree extends Widget
 		// Add product name
 		$return .= $this->tl_iso_products->getRowLabel($objProduct->row()).'</div> <div class="tl_right">';
 
-		if (!count($childs) || $objProduct->pid > 0 || !$this->variantsOnly)
+		if (empty($childs) || $objProduct->pid > 0 || !$this->variantsOnly)
 		{
 			// Add checkbox or radio button
 			switch ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['fieldType'])
@@ -567,7 +567,7 @@ class ProductTree extends Widget
 		$return .= '</div><div style="clear:both;"></div></li>';
 
 		// Begin new submenu
-		if (count($childs) && $blnIsOpen)
+		if (!empty($childs) && $blnIsOpen)
 		{
 			$return .= '<li class="parent" id="'.$node.'_'.$id.'"><ul class="level_'.$level.'">';
 

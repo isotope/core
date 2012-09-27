@@ -124,7 +124,7 @@ class DC_ProductData extends DC_Table
 		}
 
 		// Custom filter
-		if (is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']) && count($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']))
+		if (is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']) && !empty($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']))
 		{
 			foreach ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter'] as $filter)
 			{
@@ -302,7 +302,7 @@ class DC_ProductData extends DC_Table
 		// Duplicate the child records
 		foreach ($copy as $k=>$v)
 		{
-			if (count($v))
+			if (!empty($v))
 			{
 				foreach ($v as $kk=>$vv)
 				{
@@ -310,7 +310,7 @@ class DC_ProductData extends DC_Table
 													->set($vv)
 													->execute();
 
-					if ($objInsertStmt->affectedRows && (count($cctable[$k]) || $GLOBALS['TL_DCA'][$k]['list']['sorting']['mode'] == 5) && $kk != $parentId)
+					if ($objInsertStmt->affectedRows && (!empty($cctable[$k]) || $GLOBALS['TL_DCA'][$k]['list']['sorting']['mode'] == 5) && $kk != $parentId)
 					{
 						$this->copyChilds($k, $objInsertStmt->insertId, $kk, $parentId);
 					}
@@ -546,7 +546,7 @@ class DC_ProductData extends DC_Table
 		$boxes = trimsplit(';', $this->strPalette);
 		$legends = array();
 
-		if (count($boxes))
+		if (!empty($boxes))
 		{
 			foreach ($boxes as $k=>$v)
 			{
@@ -978,7 +978,7 @@ window.addEvent(\'domready\', function() {
 		// Add fields
 		$fields = $session['CURRENT'][$this->strTable];
 
-		if (is_array($fields) && count($fields) && $this->Input->get('fields'))
+		if (is_array($fields) && !empty($fields) && $this->Input->get('fields'))
 		{
 			$class = 'tl_tbox block';
 			$this->checkForTinyMce();
@@ -1185,7 +1185,7 @@ window.addEvent(\'domready\', function() {
 				}
 			}
 
-			$blnIsError = ($_POST && !count($_POST['all_fields']));
+			$blnIsError = ($_POST && empty($_POST['all_fields']));
 
 			// Return the select menu
 			$return .= '
@@ -1258,7 +1258,7 @@ window.addEvent(\'domready\', function() {
 		// Add fields
 		$fields = $session['CURRENT'][$this->strTable];
 
-		if (is_array($fields) && count($fields) && $this->Input->get('fields'))
+		if (is_array($fields) && !empty($fields) && $this->Input->get('fields'))
 		{
 			$class = 'tl_tbox block';
 			$formFields = array();
@@ -1438,7 +1438,7 @@ window.addEvent(\'domready\', function() {
 				}
 			}
 
-			$blnIsError = ($_POST && !count($_POST['all_fields']));
+			$blnIsError = ($_POST && empty($_POST['all_fields']));
 
 			// Return the select menu
 			$return .= '
@@ -1556,7 +1556,7 @@ window.addEvent(\'domready\', function() {
 			$node = $this->strTable.'_tree';
 
 			// Expand tree
-			if (!is_array($session[$node]) || count($session[$node]) < 1 || current($session[$node]) != 1)
+			if (!is_array($session[$node]) || empty($session[$node]) || current($session[$node]) != 1)
 			{
 				$session[$node] = array();
 
@@ -1584,7 +1584,7 @@ window.addEvent(\'domready\', function() {
 			$node = $this->strTable.'_'.$gtable.'_tree';
 
 			// Expand tree
-			if (!is_array($session[$node]) || count($session[$node]) < 1 || current($session[$node]) != 1)
+			if (!is_array($session[$node]) || empty($session[$node]) || current($session[$node]) != 1)
 			{
 				$session[$node] = array();
 
@@ -1623,7 +1623,7 @@ window.addEvent(\'domready\', function() {
 		$arrClipboard = $this->Session->get('CLIPBOARD');
 
 		// Check clipboard
-		if (isset($arrClipboard[$this->strTable]) && count($arrClipboard[$this->strTable]))
+		if (isset($arrClipboard[$this->strTable]) && !empty($arrClipboard[$this->strTable]))
 		{
 			$blnClipboard = true;
 			$arrClipboard = $arrClipboard[$this->strTable];
@@ -1681,7 +1681,7 @@ window.addEvent(\'domready\', function() {
 		$_buttons = '&nbsp;';
 
 		// Show paste button only if there are no root records specified
-		if ($this->Input->get('act') != 'select' && $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 5 && $blnClipboard && ((!count($GLOBALS['TL_DCA'][$table]['list']['sorting']['root']) && $GLOBALS['TL_DCA'][$table]['list']['sorting']['root'] !== false) || $GLOBALS['TL_DCA'][$table]['list']['sorting']['rootPaste']))
+		if ($this->Input->get('act') != 'select' && $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 5 && $blnClipboard && ((empty($GLOBALS['TL_DCA'][$table]['list']['sorting']['root']) && $GLOBALS['TL_DCA'][$table]['list']['sorting']['root'] !== false) || $GLOBALS['TL_DCA'][$table]['list']['sorting']['rootPaste']))
 		{
 			// Call paste_button_callback (&$dc, $row, $table, $cr, $childs, $previous, $next)
 			if (is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['paste_button_callback']))
@@ -1783,7 +1783,7 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 		$arrClipboard = $this->Session->get('CLIPBOARD');
 
 		// Check clipboard
-		if (isset($arrClipboard[$this->strTable]) && count($arrClipboard[$this->strTable]))
+		if (isset($arrClipboard[$this->strTable]) && !empty($arrClipboard[$this->strTable]))
 		{
 			$blnClipboard = true;
 			$arrClipboard = $arrClipboard[$this->strTable];
@@ -2046,7 +2046,7 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 		$rows = '';
 
 		// Add records of the table itself
-		if ($table != $this->strTable && count($gchilds) && $session[$node][$id] == 1)
+		if ($table != $this->strTable && !empty($gchilds) && $session[$node][$id] == 1)
 		{
 			for ($j=0; $j<count($gchilds); $j++)
 			{
@@ -2080,7 +2080,7 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 			$group .= '</ul></li>';
 		}
 
-		if ($group == '' && $table != $this->strTable && !count($childs) && !count($gchilds) && $arrClipboard === false)
+		if ($group == '' && $table != $this->strTable && empty($childs) && empty($gchilds) && $arrClipboard === false)
 		{
 			return '';
 		}
@@ -2181,7 +2181,7 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 		}
 
 		// Return if there are no sorting fields
-		if (!count($sortingFields))
+		if (empty($sortingFields))
 		{
 			return '';
 		}
@@ -2259,7 +2259,7 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 			}
 		}
 
-		if (count($arrDuplicate))
+		if (!empty($arrDuplicate))
 		{
 			$intLanguageId = $this->Database->execute("SELECT id FROM {$this->strTable} WHERE pid={$this->intId} AND language='$strLanguage'")->id;
 
@@ -2285,7 +2285,7 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 		$arrVariants = array();
 
 		// No products available
-		if (!is_array($this->root) || !count($this->root))
+		if (!is_array($this->root) || !count($this->root)) // Can't use empty() because its an object property (using __get)
 		{
 			$this->root = array(0);
 		}
@@ -2293,7 +2293,7 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 		// Get root IDs matching search & filters
 		$query = "SELECT id FROM {$this->strTable} p1 WHERE id IN(" . implode(',', array_map('intval', $this->root)) . ")";
 
-		if (count($this->procedure))
+		if (count($this->procedure)) // Can't use empty() because its an object property (using __get)
 		{
 			$query .= ' AND ' . implode(' AND ', $this->procedure);
 		}
@@ -2309,7 +2309,7 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 		// Get variant IDs matching search & filters
 		$query = "SELECT id, language, pid AS pid1, (SELECT pid FROM {$this->strTable} WHERE id=p1.pid) AS pid2 FROM {$this->strTable} p1 WHERE pid>0";
 
-		if (count($this->procedure))
+		if (count($this->procedure)) // Can't use empty() because its an object property (using __get)
 		{
 			$query .= " AND " . implode(' AND ', $this->procedure);
 		}
@@ -2355,7 +2355,7 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 
 		// Fetch all variants of matching products
 		$arrMissing = array_diff($arrProducts, $arrVariants);
-		if (count($arrMissing) > 0)
+		if (!empty($arrMissing))
 		{
 			$objChilds = $this->Database->execute("SELECT id, pid AS pid1, (SELECT pid FROM {$this->strTable} WHERE id=p1.pid) AS pid2 FROM {$this->strTable} p1 HAVING pid1 IN (" . implode(',', $arrMissing) . ") OR pid2 IN (" . implode(',', $arrMissing) . ")");
 
@@ -2401,7 +2401,7 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 			}
 		}
 
-		if (!count($this->products))
+		if (!count($this->products)) // Can't use empty() because its an object property (using __get)
 		{
 			$this->products = array(0);
 		}

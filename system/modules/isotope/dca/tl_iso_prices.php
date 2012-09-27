@@ -293,12 +293,12 @@ class tl_iso_prices extends Backend
 				}
 			}
 
-			if (count($arrDelete))
+			if (!empty($arrDelete))
 			{
 				$this->Database->query("DELETE FROM tl_iso_price_tiers WHERE pid={$dc->id} AND min IN (" . implode(',', $arrDelete) . ")");
 			}
 
-			if (count($arrUpdate))
+			if (!empty($arrUpdate))
 			{
 				foreach ($arrUpdate as $min => $price)
 				{
@@ -306,7 +306,7 @@ class tl_iso_prices extends Backend
 				}
 			}
 
-			if (count($arrInsert))
+			if (!empty($arrInsert))
 			{
 				foreach ($arrInsert as $min => $price)
 				{

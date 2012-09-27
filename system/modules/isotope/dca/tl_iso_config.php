@@ -606,7 +606,7 @@ class tl_iso_config extends Backend
 		}
 
 		// Set root IDs
-		if (!is_array($this->User->iso_configs) || count($this->User->iso_configs) < 1)
+		if (!is_array($this->User->iso_configs) || count($this->User->iso_configs) < 1) // Can't use empty() because its an object property (using __get)
 		{
 			$root = array(0);
 		}

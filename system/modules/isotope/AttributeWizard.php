@@ -236,7 +236,7 @@ class AttributeWizard extends Widget
 
 
 		// Add a "no entries found" message if there are no options
-		if (!count($arrOptions))
+		if (empty($arrOptions))
 		{
 			$arrOptions[]= '<p class="tl_noopt">'.$GLOBALS['TL_LANG']['MSC']['noResult'].'</p>';
 			$blnCheckAll = false;

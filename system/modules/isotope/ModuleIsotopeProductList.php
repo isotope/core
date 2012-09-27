@@ -231,7 +231,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		}
 
 		// No products found
-		if (!is_array($arrProducts) || !count($arrProducts))
+		if (!is_array($arrProducts) || empty($arrProducts))
 		{
 			$this->Template = new FrontendTemplate('mod_message');
 			$this->Template->type = 'empty';
@@ -382,7 +382,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 				}
 			}
 
-			if (count($arrWhere))
+			if (!empty($arrWhere))
 			{
 				$time = time();
 				$strWhere = " AND ((p1." . implode(' AND p1.', $arrWhere) . ") OR p1.id IN (SELECT pid FROM tl_iso_products WHERE language='' AND " . implode(' AND ', $arrWhere)

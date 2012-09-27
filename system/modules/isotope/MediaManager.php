@@ -266,7 +266,7 @@ class MediaManager extends Widget implements uploadable
 
 		$return = '<div id="ctrl_' . $this->strId . '">';
 
-		if (!is_array($this->varValue) || !count($this->varValue))
+		if (!is_array($this->varValue) || empty($this->varValue))
 		{
 			return $return . $GLOBALS['TL_LANG']['MSC']['mmNoUploads'] . $upload . '</div>';
 		}

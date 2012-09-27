@@ -226,7 +226,7 @@ class IsotopeBackend extends Backend
 			}
 
 			// Check wether there are any files left
-			if (count($arrFiles) < 1)
+			if (empty($arrFiles))
 			{
 				$_SESSION['TL_ERROR'][] = $GLOBALS['TL_LANG']['ERR']['all_fields'];
 				$this->reload();

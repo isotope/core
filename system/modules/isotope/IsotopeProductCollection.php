@@ -390,7 +390,7 @@ abstract class IsotopeProductCollection extends Model
 
 		$arrProducts = $this->getProducts();
 
-		if (is_array($arrProducts) && count($arrProducts))
+		if (is_array($arrProducts) && !empty($arrProducts))
 		{
 			foreach ($arrProducts as $objProduct)
 			{
@@ -619,7 +619,7 @@ abstract class IsotopeProductCollection extends Model
 				$this->import($callback[0]);
 				$arrSet = $this->$callback[0]->$callback[1]($objProduct, $arrSet, $this);
 
-				if (is_array($arrSet) && !count($arrSet))
+				if (is_array($arrSet) && empty($arrSet))
 				{
 					return false;
 				}

@@ -416,7 +416,7 @@ class Isotope extends Controller
 		$arrRates = deserialize($objTaxClass->rates);
 
 		// Return if there are no rates
-		if (!is_array($arrRates) || !count($arrRates))
+		if (!is_array($arrRates) || empty($arrRates))
 		{
 			return $arrTaxes;
 		}
@@ -491,7 +491,7 @@ class Isotope extends Controller
 			}
 		}
 
-		if (is_array($objRate->address) && count($objRate->address))
+		if (is_array($objRate->address) && count($objRate->address)) // Can't use empty() because its an object property (using __get)
 		{
 			foreach ($arrAddresses as $name => $arrAddress)
 			{
@@ -523,7 +523,7 @@ class Isotope extends Controller
 
 				$arrPrice = deserialize($objRate->amount);
 
-				if (is_array($arrPrice) && count($arrPrice) && strlen($arrPrice[0]))
+				if (is_array($arrPrice) && !empty($arrPrice) && strlen($arrPrice[0]))
 				{
 					if (strlen($arrPrice[1]))
 					{
@@ -586,7 +586,7 @@ class Isotope extends Controller
 
 		$arrFormat = $GLOBALS['ISO_NUM'][$this->Config->currencyFormat];
 
-		if (!is_array($arrFormat) || !count($arrFormat) == 3)
+		if (!is_array($arrFormat))
 		{
 			return $fltPrice;
 		}
@@ -811,7 +811,7 @@ class Isotope extends Controller
 	 */
 	public function calculateWeight($arrWeights, $strUnit)
 	{
-		if (!is_array($arrWeights) || !count($arrWeights))
+		if (!is_array($arrWeights) || empty($arrWeights))
 		{
 			return 0;
 		}
@@ -1080,7 +1080,7 @@ class Isotope extends Controller
 		}
 
 		// Label
-		if (count($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['label']))
+		if (!empty($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['label']))
 		{
 			$strLabel = is_array($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['label']) ? $GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['label'][0] : $GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['label'];
 		}
@@ -1107,7 +1107,7 @@ class Isotope extends Controller
 	 */
 	public function mergeMediaData($arrCurrent, $arrParent)
 	{
-		if (is_array($arrParent) && count($arrParent))
+		if (is_array($arrParent) && !empty($arrParent))
 		{
 			$arrTranslate = array();
 
@@ -1120,7 +1120,7 @@ class Isotope extends Controller
 				}
 			}
 
-			if (is_array($arrCurrent) && count($arrCurrent))
+			if (is_array($arrCurrent) && !empty($arrCurrent))
 			{
 				foreach ($arrCurrent as $i => $image)
 				{
@@ -1145,7 +1145,7 @@ class Isotope extends Controller
 				}
 
 				// Add remaining parent image to the list
-				if (count($arrTranslate))
+				if (!empty($arrTranslate))
 				{
 					$arrCurrent = array_merge($arrCurrent, array_values($arrTranslate));
 				}

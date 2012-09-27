@@ -201,7 +201,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		$this->Template->hasSearch = false;
 		$this->Template->hasAutocomplete = ($this->iso_searchAutocomplete) ? true : false;
 
-		if (is_array($this->iso_searchFields) && count($this->iso_searchFields))
+		if (is_array($this->iso_searchFields) && count($this->iso_searchFields)) // Can't use empty() because its an object property (using __get)
 		{
 			if ($this->Input->get('keywords') != '' && $this->Input->get('keywords') != $GLOBALS['TL_LANG']['MSC']['defaultSearchText'])
 			{
@@ -239,7 +239,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 	{
 		$this->Template->hasFilters = false;
 
-		if (is_array($this->iso_filterFields) && count($this->iso_filterFields))
+		if (is_array($this->iso_filterFields) && count($this->iso_filterFields)) // Can't use empty() because its an object property (using __get)
 		{
 			$time = time();
 			$arrFilters = array();
@@ -283,14 +283,14 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 				// No need to generate options if we reload anyway
 				elseif (!$this->blnCacheRequest)
 				{
-					if (!count($arrValues))
+					if (empty($arrValues))
 					{
 						continue;
 					}
 
 					$arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strField];
 
-					if (is_array($GLOBALS['ISO_ATTR'][$arrData['inputType']]['callback']) && count($GLOBALS['ISO_ATTR'][$arrData['inputType']]['callback']))
+					if (is_array($GLOBALS['ISO_ATTR'][$arrData['inputType']]['callback']) && !empty($GLOBALS['ISO_ATTR'][$arrData['inputType']]['callback']))
 					{
 						foreach ($GLOBALS['ISO_ATTR'][$arrData['inputType']]['callback'] as $callback)
 						{
@@ -338,7 +338,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 				}
 			}
 
-			if (count($arrFilters))
+			if (!empty($arrFilters))
 			{
 				$this->Template->hasFilters = true;
 				$this->Template->filterOptions = $arrFilters;
@@ -355,7 +355,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 	{
 		$this->Template->hasSorting = false;
 
-		if (is_array($this->iso_sortingFields) && count($this->iso_sortingFields))
+		if (is_array($this->iso_sortingFields) && count($this->iso_sortingFields)) // Can't use empty() because its an object property (using __get)
 		{
 			$arrOptions = array();
 

@@ -63,7 +63,7 @@ class ModuleIsotopeConfigSwitcher extends ModuleIsotope
 
 		$this->iso_config_ids = deserialize($this->iso_config_ids);
 
-		if (!is_array($this->iso_config_ids) || !count($this->iso_config_ids))
+		if (!is_array($this->iso_config_ids) || !count($this->iso_config_ids)) // Can't use empty() because its an object property (using __get)
 		{
 			return '';
 		}

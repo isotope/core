@@ -247,7 +247,7 @@ abstract class ModuleIsotope extends Module
 		}
 
 		// Add get parameters to URL
-		if (is_array($_GET) && count($_GET))
+		if (is_array($_GET) && !empty($_GET))
 		{
 			foreach ($_GET as $key => $value)
 			{
@@ -256,7 +256,7 @@ abstract class ModuleIsotope extends Module
 		}
 
 		global $objPage;
-		return $this->generateFrontendUrl($objPage->row(), $strParams) . (count($arrGet) ? ('?'.implode('&', $arrGet)) : '');
+		return $this->generateFrontendUrl($objPage->row(), $strParams) . (!empty($arrGet) ? ('?'.implode('&', $arrGet)) : '');
 	}
 }
 

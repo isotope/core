@@ -195,7 +195,7 @@ class PaymentPaypal extends IsotopePayment
 			$strOptions = '';
 			$arrOptions = $objProduct->getOptions();
 
-			if (is_array($arrOptions) && count($arrOptions))
+			if (is_array($arrOptions) && !empty($arrOptions))
 			{
 				$options = array();
 

@@ -813,7 +813,7 @@ class tl_iso_products extends Backend
 		$arrImages = deserialize($row['images']);
 		$thumbnail = '&nbsp;';
 
-		if (is_array($arrImages) && count($arrImages))
+		if (is_array($arrImages) && !empty($arrImages))
 		{
 			foreach ($arrImages as $image)
 			{
@@ -861,7 +861,7 @@ class tl_iso_products extends Backend
 		$this->import('BackendUser', 'User');
 		$arrTypes = $this->User->iso_product_types;
 
-		if (!$this->User->isAdmin && (!is_array($arrTypes) || !count($arrTypes)))
+		if (!$this->User->isAdmin && (!is_array($arrTypes) || empty($arrTypes)))
 		{
 			$arrTypes = array();
 		}
@@ -892,7 +892,7 @@ class tl_iso_products extends Backend
 			$objPage = $this->getPageDetails($intPage);
 			$help = '';
 
-			if (count($objPage->trail))
+			if (count($objPage->trail)) // Can't use empty() because its an object property (using __get)
 			{
 				$help = implode(' » ', $this->Database->execute("SELECT title FROM tl_page WHERE id IN (" . implode(',', $objPage->trail) . ") ORDER BY id=" . implode(' DESC, id=', $objPage->trail) . " DESC")->fetchEach('title'));
 			}
@@ -900,7 +900,7 @@ class tl_iso_products extends Backend
 			$arrCategories[] = '<a class="tl_tip" longdesc="' . $help . '" href="' . $this->Environment->script . '?do=iso_products&table=tl_iso_product_categories&id=' . $intPage . '">' . $objPage->title . '</a>';
 		}
 
-		if (!count($arrCategories))
+		if (empty($arrCategories))
 		{
 			return $GLOBALS['TL_LANG']['MSC']['noCategoriesAssociated'];
 		}
@@ -1075,7 +1075,7 @@ class tl_iso_products extends Backend
 
 					foreach ($options as $option)
 					{
-						if (!count($arrTemp))
+						if (empty($arrTemp))
 						{
 							$arrCombinations[][$name] = $option;
 							continue;
@@ -1323,7 +1323,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 			$strPath = $this->Input->post('source');
 			$arrFiles = scan(TL_ROOT . '/' . $strPath);
 
-			if (!count($arrFiles))
+			if (empty($arrFiles))
 			{
 				$_SESSION['TL_ERROR'][] = $GLOBALS['ISO_LANG']['MSC']['noFilesInFolder'];
 				$this->reload();
@@ -1357,7 +1357,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 				$arrPattern[] = $objProducts->alias ?  standardize($objProducts->alias, true) : null;
 				$arrPattern[] = $objProducts->sku ? $objProducts->sku : null;
 				$arrPattern[] = $objProducts->sku ? standardize($objProducts->sku, true) : null;
-				$arrPattern[] = count($arrImageNames) ? implode('|', $arrImageNames) : null;
+				$arrPattern[] = !empty($arrImageNames) ? implode('|', $arrImageNames) : null;
 
 				// !HOOK: add custom import regex patterns
 				if (isset($GLOBALS['ISO_HOOKS']['addAssetImportRegexp']) && is_array($GLOBALS['ISO_HOOKS']['addAssetImportRegexp']))
@@ -1374,7 +1374,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 
 				$arrMatches = preg_grep($strPattern, $arrFiles);
 
-				if (count($arrMatches))
+				if (!empty($arrMatches))
 				{
 					$arrNewImages = array();
 
@@ -1383,7 +1383,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 						if (is_dir(TL_ROOT . '/' . $strPath . '/' . $file))
 						{
 							$arrSubfiles = scan(TL_ROOT . '/' . $strPath . '/' . $file);
-							if (count($arrSubfiles))
+							if (!empty($arrSubfiles))
 							{
 								foreach ($arrSubfiles as $subfile)
 								{
@@ -1410,7 +1410,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 						}
 					}
 
-					if (count($arrNewImages))
+					if (!empty($arrNewImages))
 					{
 						foreach ($arrNewImages as $strFile)
 						{
@@ -1434,7 +1434,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 				}
 			}
 
-			if (count($arrDelete))
+			if (!empty($arrDelete))
 			{
 				$arrDelete = array_unique($arrDelete);
 
@@ -2052,7 +2052,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 					$arrOptions = deserialize($objAttributes->options);
 				}
 
-				if (is_array($arrOptions) && count($arrOptions))
+				if (is_array($arrOptions) && !empty($arrOptions))
 				{
 					$strGroup = '';
 
@@ -2087,7 +2087,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 			unset($arrData['eval']['foreignKey']);
 			unset($arrData['eval']['options']);
 
-			if (is_array($GLOBALS['ISO_ATTR'][$objAttributes->type]['callback']) && count($GLOBALS['ISO_ATTR'][$objAttributes->type]['callback']))
+			if (is_array($GLOBALS['ISO_ATTR'][$objAttributes->type]['callback']) && !empty($GLOBALS['ISO_ATTR'][$objAttributes->type]['callback']))
 			{
 				foreach ($GLOBALS['ISO_ATTR'][$objAttributes->type]['callback'] as $callback)
 				{
@@ -2135,7 +2135,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 		$arrLines = trimsplit('@\r\n|\n|\r@', $strSettings);
 
 		// Return false if there are no lines
-		if ($strSettings == '' || !is_array($arrLines) || !count($arrLines))
+		if ($strSettings == '' || !is_array($arrLines) || empty($arrLines))
 		{
 			return null;
 		}

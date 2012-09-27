@@ -495,7 +495,7 @@ h1 { font-size:18px; font-weight:normal; margin:0 0 18px; }
 			$arrBilling = deserialize($objConfigs->billing_fields);
 			$arrShipping = deserialize($objConfigs->shipping_fields);
 
-			if (is_array($arrBilling) && count($arrBilling) && !is_array($arrBilling[0]))
+			if (is_array($arrBilling) && !empty($arrBilling) && !is_array($arrBilling[0]))
 			{
 				$arrNew = array();
 
@@ -507,7 +507,7 @@ h1 { font-size:18px; font-weight:normal; margin:0 0 18px; }
 				$this->Database->prepare("UPDATE tl_iso_config SET billing_fields=? WHERE id=?")->execute(serialize($arrNew), $objConfigs->id);
 			}
 
-			if (is_array($arrShipping) && count($arrShipping) && !is_array($arrShipping[0]))
+			if (is_array($arrShipping) && !empty($arrShipping) && !is_array($arrShipping[0]))
 			{
 				$arrNew = array();
 
@@ -708,7 +708,7 @@ CREATE TABLE `tl_iso_orderstatus` (
 		}
 
 
-		if (count($arrUpdate))
+		if (!empty($arrUpdate))
 		{
 			$objStores = $this->Database->query("SELECT * FROM tl_iso_config");
 

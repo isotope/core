@@ -224,16 +224,16 @@ class tl_iso_tax_rate extends Backend
 		{
 			return;
 		}
-		
+
 		$this->import('BackendUser', 'User');
-		
+
 		if ($this->User->isAdmin)
 		{
 			return;
 		}
 
 		// Set root IDs
-		if (!is_array($this->User->iso_tax_rates) || count($this->User->iso_tax_rates) < 1)
+		if (!is_array($this->User->iso_tax_rates) || count($this->User->iso_tax_rates) < 1) // Can't use empty() because its an object property (using __get)
 		{
 			$root = array(0);
 		}
@@ -346,8 +346,8 @@ class tl_iso_tax_rate extends Backend
 				break;
 		}
 	}
-	
-	
+
+
 	/**
 	 * List all records with formatted currency
 	 * @param array
