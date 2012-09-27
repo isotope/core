@@ -284,7 +284,7 @@ class IsotopeProduct extends Controller
 				return $this->isAvailable();
 
 			case 'hasDownloads':
-				return count($this->getDownloads()) ? true : false;
+				return $this->hasDownloads();
 
 			case 'show_price_tiers':
 				return (bool) $this->arrType['show_price_tiers'];
@@ -566,11 +566,11 @@ class IsotopeProduct extends Controller
 	{
 		if (!$this->arrType['downloads'])
 		{
-			return array();
+			$this->arrDownloads = array();
 		}
 
 		// Cache downloads for this product
-		if (!is_array($this->arrDownloads))
+		elseif (!is_array($this->arrDownloads))
 		{
 			$this->arrDownloads = $this->Database->execute("SELECT * FROM tl_iso_downloads WHERE pid={$this->arrData['id']} OR pid={$this->arrData['pid']}")->fetchAllAssoc();
 		}
@@ -652,6 +652,20 @@ class IsotopeProduct extends Controller
 	public function hasAdvancedPrices()
 	{
 		return (bool) $this->arrType['prices'];
+	}
+
+
+	/**
+	 * Check if a product has downloads
+	 * @todo Confirm that files are available
+	 * @return array
+	 */
+	public function hasDownloads()
+	{
+		// Cache downloads if not yet done
+		$this->getDownloads();
+
+		return !empty($this->arrDownloads);
 	}
 
 
