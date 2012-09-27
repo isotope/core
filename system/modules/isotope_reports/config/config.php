@@ -37,6 +37,18 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
 		'callback'		=> 'ModuleIsotopeReports',
 		'icon'			=> 'system/modules/isotope_reports/assets/icon.png',
 		'stylesheet'	=> 'system/modules/isotope_reports/assets/reports.css',
+		'modules'		=> array
+		(
+			'sales' => array
+			(
+				'sales_product' => array
+				(
+					'callback'	=> 'IsotopeReportSalesProduct',
+					'label'		=> 'Umsatz nach Produkt',
+					'icon'		=> 'system/modules/isotope_reports/assets/sales.png',
+				),
+			),
+		),
 	),
 ));
 
