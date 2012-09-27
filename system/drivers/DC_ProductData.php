@@ -1809,14 +1809,14 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 
 			// Load products in the current group
 			$this->root = $this->Database->query("SELECT id FROM {$this->strTable} WHERE pid=0 AND gid=$id")->fetchEach('id');
-			for ($i=0; $i<count($this->root); $i++)
+			for ($i=0, $count=count($this->root); $i<$count; $i++)
 			{
 				$return .= ' ' . trim($this->generateProductTree($this->strTable, $this->root[$i], array('p'=>$this->root[($i-1)], 'n'=>$this->root[($i+1)]), $margin, ($blnClipboard ? $arrClipboard : false), ($id == $arrClipboard['id'] || (is_array($arrClipboard ['id']) && in_array($id, $arrClipboard ['id'])) || (!$blnPtable && !is_array($arrClipboard['id']) && in_array($id, $this->getChildRecords($arrClipboard['id'], $table))))));
 			}
 
 			// Load subgroups in the current group
 			$this->root = $this->Database->query("SELECT id FROM $table WHERE pid=$id ORDER BY sorting")->fetchEach('id');
-			for ($i=0; $i<count($this->root); $i++)
+			for ($i=0, $count=count($this->root); $i<$count; $i++)
 			{
 				$return .= ' ' . trim($this->generateProductTree($table, $this->root[$i], array('p'=>$this->root[($i-1)], 'n'=>$this->root[($i+1)]), $margin, ($blnClipboard ? $arrClipboard : false)));
 			}
@@ -1826,7 +1826,7 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 		else
 		{
 			$this->root = $this->Database->query("SELECT id FROM {$this->strTable} WHERE pid=$id AND gid=0")->fetchEach('id');
-			for ($i=0; $i<count($this->root); $i++)
+			for ($i=0, $count=count($this->root); $i<$count; $i++)
 			{
 				$return .= ' ' . trim($this->generateProductTree($this->strTable, $this->root[$i], array('p'=>$this->root[($i-1)], 'n'=>$this->root[($i+1)]), $margin, ($blnClipboard ? $arrClipboard : false), ($id == $arrClipboard['id'] || (is_array($arrClipboard ['id']) && in_array($id, $arrClipboard ['id'])) || (!$blnPtable && !is_array($arrClipboard['id']) && in_array($id, $this->getChildRecords($arrClipboard['id'], $table))))));
 			}
@@ -2048,9 +2048,9 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 		// Add records of the table itself
 		if ($table != $this->strTable && !empty($gchilds) && $session[$node][$id] == 1)
 		{
-			for ($j=0; $j<count($gchilds); $j++)
+			for ($j=0, $count=count($gchilds); $j<$count; $j++)
 			{
-				$group .= $this->generateProductTree($this->strTable, $gchilds[$j], array('pp'=>$gchilds[($j-1)], 'nn'=>$gchilds[($j+1)]), ($intMargin + $intSpacing), $arrClipboard, false, ($j<(count($gchilds)-1) || count($childs)));
+				$group .= $this->generateProductTree($this->strTable, $gchilds[$j], array('pp'=>$gchilds[($j-1)], 'nn'=>$gchilds[($j+1)]), ($intMargin + $intSpacing), $arrClipboard, false, ($j<($count-1) || !empty($childs)));
 			}
 		}
 
@@ -2059,7 +2059,7 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 		{
 			if (is_array($childs))
 			{
-				for ($k=0; $k<count($childs); $k++)
+				for ($k=0, $count=count($childs); $k<$count; $k++)
 				{
 					$rows .= $this->generateProductTree($table, $childs[$k], array('p'=>$childs[($k-1)], 'n'=>$childs[($k+1)]), ($intMargin + $intSpacing), $arrClipboard, ((($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 5 && $childs[$k] == $arrClipboard['id']) || $blnCircularReference) ? true : false));
 				}
@@ -2115,7 +2115,7 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 		$arrPanels = trimsplit(';', $panelLayout);
 		$intLast = count($arrPanels) - 1;
 
-		for ($i=0; $i<count($arrPanels); $i++)
+		for ($i=0; $i<=$intLast; $i++)
 		{
 			$panels = '';
 			$submit = '';

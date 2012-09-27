@@ -450,7 +450,7 @@ class ProductTree extends Widget
 
 			if (!empty($products))
 			{
-				for ($k=0; $k<count($products); $k++)
+				for ($k=0, $count=count($products); $k<$count; $k++)
 				{
 					$group .= $this->renderProducts($products[$k], ($intMargin + $intSpacing));
 				}
@@ -458,7 +458,7 @@ class ProductTree extends Widget
 
 			if (!empty($childs))
 			{
-				for ($k=0; $k<count($childs); $k++)
+				for ($k=0, $count=count($childs); $k<$count; $k++)
 				{
 					$group .= $this->renderGroups($childs[$k], ($intMargin + $intSpacing));
 				}
@@ -571,7 +571,7 @@ class ProductTree extends Widget
 		{
 			$return .= '<li class="parent" id="'.$node.'_'.$id.'"><ul class="level_'.$level.'">';
 
-			for ($k=0; $k<count($childs); $k++)
+			for ($k=0, $count=count($childs); $k<$count; $k++)
 			{
 				$return .= $this->renderProducts($childs[$k], ($intMargin + $intSpacing));
 			}

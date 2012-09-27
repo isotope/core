@@ -236,7 +236,7 @@ abstract class ModuleIsotope extends Module
 		$arrGet = array();
 
 		// Add fragments to URL params
-		for ($i=1; $i<count($arrFragments); $i+=2)
+		for ($i=1, $count=count($arrFragments); $i<$count; $i+=2)
 		{
 			if (isset($_GET[$arrFragments[$i]]))
 			{

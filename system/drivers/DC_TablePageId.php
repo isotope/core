@@ -798,7 +798,7 @@ class DC_TablePageId extends DC_Table
 <ul id="ul_' . CURRENT_ID . '" class="sortable">';
 				}
 
-				for ($i=0; $i<count($row); $i++)
+				for ($i=0, $count=count($row); $i<$count; $i++)
 				{
 					$this->current[] = $row[$i]['id'];
 					$imagePasteAfter = $this->generateImage('pasteafter.gif', sprintf($GLOBALS['TL_LANG'][$this->strTable]['pasteafter'][1], $row[$i]['id']), 'class="blink"');

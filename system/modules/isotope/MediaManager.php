@@ -285,7 +285,7 @@ class MediaManager extends Widget implements uploadable
   <tbody>';
 
 		// Add input fields
-		for ($i=0; $i<count($this->varValue); $i++)
+		for ($i=0, $count=count($this->varValue); $i<$count; $i++)
 		{
 			$strFile = 'isotope/' . strtolower(substr($this->varValue[$i]['src'], 0, 1)) . '/' . $this->varValue[$i]['src'];
 
