@@ -1,0 +1,48 @@
+<style type="text/css">
+	.settings .tl_tbox
+	{
+		padding-bottom: 0;
+	}
+	.settings .item
+	{
+		width:90px;
+		height:90px;
+		margin-right: 8px;
+		margin-bottom: 5px;
+		margin-top: 15px;
+		float:left;
+		text-align: center;
+	}
+	.settings .item span
+	{
+		display: block;
+	}
+	.settings .item img
+	{
+		opacity: 0.8;
+	}
+	.settings .item a:hover img
+	{
+		opacity: 1.0;
+	}
+
+</style>
+
+
+<div class="tl_formbody_edit settings">
+
+<?php foreach($this->reports as $fieldset => $reports): ?>
+<fieldset class="tl_tbox">
+<legend style="cursor: default;"><?php echo $fieldset; ?></legend>
+<?php foreach($reports as $report): ?>
+<div class="item">
+	<a href="<?php echo $report['href']; ?>" title="<?php echo $report['title']; ?>">
+		<img src="<?php echo $report['icon']; ?>" alt="">
+		<span><?php echo $report['label']; ?></span>
+	</a>
+</div>
+<?php endforeach; ?>
+</fieldset>
+<?php endforeach; ?>
+
+</div>
