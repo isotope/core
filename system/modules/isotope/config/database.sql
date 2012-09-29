@@ -111,7 +111,9 @@ CREATE TABLE `tl_iso_price_tiers` (
 CREATE TABLE `tl_iso_downloads` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
+  `sorting` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
+  `type` varchar(8) NOT NULL default 'file',
   `singleSRC` varchar(255) NOT NULL default '',
   `title` varchar(255) NOT NULL default '',
   `description` text NULL,
