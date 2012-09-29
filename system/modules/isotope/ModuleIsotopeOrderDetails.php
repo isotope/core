@@ -109,36 +109,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 
 		foreach ($arrProducts as $i => $objProduct)
 		{
-			$arrDownloads = array();
-			$objDownloads = $this->Database->prepare("SELECT p.*, o.* FROM tl_iso_order_downloads o LEFT OUTER JOIN tl_iso_downloads p ON o.download_id=p.id WHERE o.pid=?")->execute($objProduct->cart_id);
-
-			while ($objDownloads->next())
-			{
-				$blnDownloadable = ($objOrder->paid && ($objDownloads->downloads_remaining === '' || $objDownloads->downloads_remaining > 0)) ? true : false;
-
-				// Send file to the browser
-				if (strlen($this->Input->get('file')) && $this->Input->get('file') == $objDownloads->id && $blnDownloadable)
-				{
-					if (!$this->backend && $objDownloads->downloads_remaining !== '')
-					{
-						$this->Database->prepare("UPDATE tl_iso_order_downloads SET downloads_remaining=? WHERE id=?")->execute(($objDownloads->downloads_remaining-1), $objDownloads->id);
-					}
-
-					$this->sendFileToBrowser($objDownloads->singleSRC);
-				}
-
-				$arrDownload = array
-				(
-					'raw'			=> $objDownloads->row(),
-					'title'			=> $objDownloads->title,
-					'href'			=> (TL_MODE == 'FE' ? ($this->generateFrontendUrl($objPage->row()) . '?uid=' . $this->Input->get('uid') . '&amp;file=' . $objDownloads->id) : ''),
-					'remaining'		=> ($objDownloads->downloads_allowed > 0 ? sprintf($GLOBALS['TL_LANG']['MSC']['downloadsRemaining'], intval($objDownloads->downloads_remaining)) : ''),
-					'downloadable'	=> $blnDownloadable,
-				);
-
-				$arrDownloads[] = $arrDownload;
-				$arrAllDownloads[] = $arrDownload;
-			}
+			$arrDownloads = $this->getDownloadsForProduct($objProduct, $objOrder->paid);
 
 			$arrItems[] = array
 			(
@@ -154,6 +125,8 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 				'tax_id'			=> $objProduct->tax_id,
 				'downloads'			=> $arrDownloads,
 			);
+
+			$arrAllDownloads = array_merge($arrAllDownloads, $arrDownloads);
 		}
 
 		$this->Template->info = deserialize($objOrder->checkout_info, true);
@@ -193,6 +166,70 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 				$this->Template->shipping_address = $objOrder->shippingAddress->generateHtml($this->Isotope->Config->shipping_fields);
 			}
 		}
+	}
+
+
+	protected function getDownloadsForProduct($objProduct, $blnOrderPaid=false)
+	{
+		$time = time();
+		$objDownloads = $this->Database->prepare("SELECT p.*, o.* FROM tl_iso_order_downloads o LEFT OUTER JOIN tl_iso_downloads p ON o.download_id=p.id WHERE o.pid=?")->execute($objProduct->cart_id);
+
+		while ($objDownloads->next())
+		{
+			$blnDownloadable = ($blnOrderPaid && ($objDownloads->downloads_remaining === '' || $objDownloads->downloads_remaining > 0)) ? true : false;
+
+			if ($objDownloads->type == 'folder')
+			{
+				foreach (scan(TL_ROOT . '/' . $objDownloads->singleSRC) as $file)
+				{
+					if (is_file(TL_ROOT . '/' . $objDownloads->singleSRC . '/' . $file))
+					{
+						$this->generateDownload($objDownloads->singleSRC . '/' . $file, $objDownloads, $blnDownloadable);
+					}
+				}
+			}
+			else
+			{
+				$arrDownloads[] = $this->generateDownload($objDownloads->singleSRC, $objDownloads, $blnDownloadable);
+			}
+		}
+	}
+
+
+	protected function generateDownload($strFile, $objDownload, $blnDownloadable)
+	{
+		$strUrl = '';
+
+		if (TL_MODE == 'FE')
+		{
+			global $objPage;
+
+			$strUrl = $this->generateFrontendUrl($objPage->row()) . '?uid=' . $this->Input->get('uid') . '&amp;download=' . $objDownload->id . ($objDownload->type == 'folder' ? '&amp;file='.$strFile : '');
+		}
+
+		$strFileName = basename($strFile);
+
+		$arrDownload = array
+		(
+			'raw'			=> $objDownload->row(),
+			'title'			=> ($objDownload->type == 'folder' ? $strFileName : $objDownload->title),
+			'href'			=> $strUrl,
+			'remaining'		=> ($objDownload->downloads_allowed > 0 ? sprintf($GLOBALS['TL_LANG']['MSC']['downloadsRemaining'], intval($objDownload->downloads_remaining)) : ''),
+			'downloadable'	=> $blnDownloadable,
+		);
+
+		// Send file to the browser
+		if ($blnDownloadable && $this->Input->get('download') != '' && $this->Input->get('download') == $objDownload->id && ($objDownload->type == 'file' || ($this->Input->get('file') != '' && $this->Input->get('file') == $strFileName)))
+		{
+			if (!$this->backend && $objDownload->downloads_remaining !== '')
+			{
+				$this->Database->prepare("UPDATE tl_iso_order_downloads SET downloads_remaining=? WHERE id=?")->execute(($objDownloads->downloads_remaining-1), $objDownloads->id);
+			}
+
+			$this->sendFileToBrowser($strFile);
+		}
+
+		return $arrDownload;
 	}
 }
 
