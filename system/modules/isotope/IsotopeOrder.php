@@ -157,12 +157,23 @@ class IsotopeOrder extends IsotopeProductCollection
 
 			while ($objDownloads->next())
 			{
+				$expires = '';
+				if ($objDownloads->expires != '')
+				{
+					$arrExpires = deserialize($objDownloads->expires, true);
+					if ($arrExpires['value'] > 0 && $arrExpires['unit'] != '')
+					{
+						$expires = strtotime('+' . $arrExpires['value'] . ' ' . $arrExpires['unit']);
+					}
+				}
+
 				$arrSet = array
 				(
 					'pid'					=> $id,
 					'tstamp'				=> time(),
 					'download_id'			=> $objDownloads->id,
 					'downloads_remaining'	=> ($objDownloads->downloads_allowed > 0 ? ($objDownloads->downloads_allowed * $objDownloads->product_quantity) : ''),
+					'expires'				=> $expires,
 				);
 
 				$this->Database->prepare("INSERT INTO tl_iso_order_downloads %s")->set($arrSet)->executeUncached();

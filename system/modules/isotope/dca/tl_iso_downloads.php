@@ -117,8 +117,8 @@ $GLOBALS['TL_DCA']['tl_iso_downloads'] = array
 	(
 		'__selector__'					=> array('type'),
 		'default'						=> '{file_legend},type,',
-		'file'							=> '{file_legend},type,singleSRC;{name_legend},title,description;{limit_legend},downloads_allowed',
-		'folder'						=> '{file_legend},type,singleSRC;{limit_legend},downloads_allowed',
+		'file'							=> '{file_legend},type,singleSRC;{name_legend},title,description;{limit_legend},downloads_allowed,expires',
+		'folder'						=> '{file_legend},type,singleSRC;{limit_legend},downloads_allowed,expires',
 	),
 
 	// Fields
@@ -161,6 +161,15 @@ $GLOBALS['TL_DCA']['tl_iso_downloads'] = array
 			'inputType'					=> 'text',
 			'eval'						=> array('mandatory'=>true, 'maxlength'=>5, 'rgxp'=>'digit', 'tl_class'=>'w50'),
 		),
+		'expires' => array
+		(
+			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_downloads']['expires'],
+			'exclude'					=> true,
+			'inputType'					=> 'timePeriod',
+			'options'					=> array('minutes', 'hours', 'days', 'weeks', 'months', 'years'),
+			'reference'					=> &$GLOBALS['TL_LANG']['tl_iso_downloads'],
+			'eval'						=> array('rgxp'=>'digit', 'tl_class'=>'w50'),
+		),
 	)
 );
 
@@ -196,11 +205,11 @@ class tl_iso_downloads extends Backend
 	 * @return string
 	 */
 	public function listRows($row)
-				{
+	{
 		if ($row['type'] == 'folder')
-				{
+		{
 			if (!is_dir(TL_ROOT . '/' . $row['singleSRC']))
-					{
+			{
 				return '';
 			}
 
@@ -210,10 +219,10 @@ class tl_iso_downloads extends Backend
 			{
 				if (is_file(TL_ROOT . '/' . $row['singleSRC'] . '/' . $file))
 				{
-				$objFile = new File($row['singleSRC'] . '/' . $file);
-				$icon = 'background:url(system/themes/' . $this->getTheme() . '/images/' . $objFile->icon . ') left center no-repeat; padding-left: 22px';
-				$arrDownloads[] = sprintf('<div style="margin-bottom:5px;height:16px;%s">%s</div>', $icon, $row['singleSRC'] . '/' . $file);
-			}
+					$objFile = new File($row['singleSRC'] . '/' . $file);
+					$icon = 'background:url(system/themes/' . $this->getTheme() . '/images/' . $objFile->icon . ') left center no-repeat; padding-left: 22px';
+					$arrDownloads[] = sprintf('<div style="margin-bottom:5px;height:16px;%s">%s</div>', $icon, $row['singleSRC'] . '/' . $file);
+				}
 			}
 
 			return implode("\n", $arrDownloads);

@@ -176,7 +176,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 
 		while ($objDownloads->next())
 		{
-			$blnDownloadable = ($blnOrderPaid && ($objDownloads->downloads_remaining === '' || $objDownloads->downloads_remaining > 0)) ? true : false;
+			$blnDownloadable = ($blnOrderPaid && ($objDownloads->downloads_remaining === '' || $objDownloads->downloads_remaining > 0) && ($objDownloads->expires == '' || $objDownloads->expires > $time)) ? true : false;
 
 			if ($objDownloads->type == 'folder')
 			{
