@@ -70,7 +70,8 @@ class ModuleIsotopeReports extends BackendModule
 			{
 				$arrReports[$strLegend][] = array
 				(
-					'label'		=> $arrConfig['label'],
+					'label'		=> ($arrConfig['label'][0] ? $arrConfig['label'][0] : $strName),
+					'title'		=> specialchars($arrConfig['label'][1]),
 					'icon'		=> $arrConfig['icon'],
 					'href'		=> $this->addToUrl('report='.$strName),
 				);

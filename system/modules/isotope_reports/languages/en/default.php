@@ -28,27 +28,9 @@
 
 
 /**
- * Backend modules
+ * Isotope Reports
  */
-array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
-(
-	'reports' => array
-	(
-		'callback'		=> 'ModuleIsotopeReports',
-		'icon'			=> 'system/modules/isotope_reports/assets/icon.png',
-		'stylesheet'	=> 'system/modules/isotope_reports/assets/reports.css',
-		'modules'		=> array
-		(
-			'sales' => array
-			(
-				'sales_product' => array
-				(
-					'callback'	=> 'IsotopeReportSalesProduct',
-					'icon'		=> 'system/modules/isotope_reports/assets/sales.png',
-					'label'		=> &$GLOBALS['ISO_LANG']['REPORT']['sales_product'],
-				),
-			),
-		),
-	),
-));
+$GLOBALS['ISO_LANG']['REPORT']['sales'] = 'Sales';
+$GLOBALS['ISO_LANG']['REPORT']['sales_total'] = array('Total', 'Show sales total statistics.');
+$GLOBALS['ISO_LANG']['REPORT']['sales_product'] = array('Per Product', 'Show sales statistics per product.');
 

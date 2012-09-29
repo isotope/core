@@ -1,3 +1,18 @@
+.iso_reports .item a {
+	display: block;
+	width:80px;
+	height: 70px;
+	margin-right: 8px;
+	margin-bottom: 5px;
+	margin-top: 15px;
+	padding: 5px;
+	border-radius: 5px;
+	float:left;
+	text-align: center;
+}
+.iso_reports .item span {
+	display: block;
+}
 .iso_report {
 	width: 100%;
 }
