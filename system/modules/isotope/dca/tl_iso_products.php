@@ -611,15 +611,38 @@ class tl_iso_products extends Backend
 	 */
 	public function downloadsButton($row, $href, $label, $title, $icon, $attributes)
 	{
-		$objType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id={$row['type']}");
+		// Cache data so we only have to query the database once
+		static $arrTypes = null;
+		static $arrDownloads = null;
 
-		if (!$objType->downloads)
+		if ($arrTypes === null)
+		{
+			$arrTypes = array();
+			$objTypes = $this->Database->query("SELECT id, downloads FROM tl_iso_producttypes");
+
+			while ($objTypes->next())
+			{
+				$arrTypes[$objTypes->id] = $objTypes->downloads;
+			}
+		}
+
+		if (!$arrTypes[$row['type']])
 		{
 			return '';
 		}
 
-		$objDownloads = $this->Database->prepare("SELECT COUNT(*) AS total FROM tl_iso_downloads WHERE pid=?")->execute($row['id']);
-		return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).' '.$objDownloads->total.'</a> ';
+		if ($arrDownloads === null)
+		{
+			$arrDownloads = array();
+			$objDownloads = $this->Database->query("SELECT pid, COUNT(id) AS total FROM tl_iso_downloads WHERE tstamp>0 GROUP BY pid");
+
+			while ($objDownloads->next())
+			{
+				$arrDownloads[$objDownloads->pid] = $objDownloads->total;
+			}
+		}
+
+		return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).' '.(int)$arrDownloads[$row['id']].'</a> ';
 	}
 
 
