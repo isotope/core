@@ -41,11 +41,53 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
 		(
 			'sales' => array
 			(
+				'sales_total' => array
+				(
+					'callback'	=> 'IsotopeReportSalesTotal',
+					'label'		=> &$GLOBALS['ISO_LANG']['REPORT']['sales_total'],
+					'icon'		=> 'system/modules/isotope_reports/assets/sales.png',
+				),
 				'sales_product' => array
 				(
 					'callback'	=> 'IsotopeReportSalesProduct',
-					'icon'		=> 'system/modules/isotope_reports/assets/sales.png',
 					'label'		=> &$GLOBALS['ISO_LANG']['REPORT']['sales_product'],
+					'icon'		=> 'system/modules/isotope_reports/assets/product.png',
+				),
+			),
+			'member' => array
+			(
+				'members_total' => array
+				(
+					'callback'	=> 'IsotopeReportMembersTotal',
+					'label'		=> &$GLOBALS['ISO_LANG']['REPORT']['members_total'],
+					'icon'		=> 'system/modules/isotope_reports/assets/member.png',
+				),
+				'members_registration' => array
+				(
+					'callback'	=> 'IsotopeReportMembersRegistration',
+					'label'		=> &$GLOBALS['ISO_LANG']['REPORT']['members_registration'],
+					'icon'		=> 'system/modules/isotope_reports/assets/member.png',
+				),
+				'members_guests' => array
+				(
+					'callback'	=> 'IsotopeReportMembersGuests',
+					'label'		=> &$GLOBALS['ISO_LANG']['REPORT']['members_guests'],
+					'icon'		=> 'system/modules/isotope_reports/assets/member.png',
+				),
+			),
+			'rules' => array
+			(
+				'rules_usage' => array
+				(
+					'callback'	=> 'IsotopeReportRulesUsage',
+					'label'		=> &$GLOBALS['ISO_LANG']['REPORT']['rules_usage'],
+					'icon'		=> 'system/modules/isotope_reports/assets/generic.png',
+				),
+				'rules_coupons' => array
+				(
+					'callback'	=> 'IsotopeReportRulesCoupons',
+					'label'		=> &$GLOBALS['ISO_LANG']['REPORT']['rules_coupons'],
+					'icon'		=> 'system/modules/isotope_reports/assets/generic.png',
 				),
 			),
 		),

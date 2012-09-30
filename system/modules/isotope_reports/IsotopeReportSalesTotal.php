@@ -27,17 +27,16 @@
  */
 
 
-/**
- * Isotope Reports
- */
-$GLOBALS['ISO_LANG']['REPORT']['sales'] = 'Sales Statistics';
-$GLOBALS['ISO_LANG']['REPORT']['members'] = 'Member Statistics';
-$GLOBALS['ISO_LANG']['REPORT']['rules'] = 'Rules Statistics';
-$GLOBALS['ISO_LANG']['REPORT']['sales_total'] = array('Total', 'Show sales total statistics.');
-$GLOBALS['ISO_LANG']['REPORT']['sales_product'] = array('per Product', 'Show sales statistics per product.');
-$GLOBALS['ISO_LANG']['REPORT']['members_total'] = array('Total', 'Show sales statistics by member.');
-$GLOBALS['ISO_LANG']['REPORT']['members_registration'] = array('Registrations', 'Show statistics about member registrations.');
-$GLOBALS['ISO_LANG']['REPORT']['members_guests'] = array('vs. Guest', 'Show sales comparison between members and guests.');
-$GLOBALS['ISO_LANG']['REPORT']['rules_usage'] = array('Rules Usage', 'Show statistics about rules usage.');
-$GLOBALS['ISO_LANG']['REPORT']['rules_coupons'] = array('Coupons', 'Show statistics about coupon usage.');
+class IsotopeReportSalesTotal extends IsotopeReportSales
+{
+
+	public function generate()
+	{
+		return '<p class="tl_gerror">This report is not implemented yet. It will show your overall statistics of your sales.</p>';
+	}
+
+	protected function compile()
+	{
+	}
+}
 
