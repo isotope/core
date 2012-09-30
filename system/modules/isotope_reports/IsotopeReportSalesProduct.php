@@ -84,22 +84,26 @@ class IsotopeReportSalesProduct extends IsotopeReportSales
 
 		$dateFrom = date($privateDate, $intStart);
 		$dateTo = date($privateDate, strtotime('+ ' . ($intColumns-1) . ' ' . $strPeriod, $intStart));
-		$groupVariants = $blnVariants ? 'p.id' : 'IF(p.pid=0, p.id, p.pid)';
+		$groupVariants = $blnVariants ? 'p1.id' : 'IF(p1.pid=0, p1.id, p1.pid)';
 
 		$objProducts = $this->Database->query("
 			SELECT
 				IFNULL($groupVariants, i.product_id) AS product_id,
-				i.product_name AS product_name,
-				p.sku,
+				IFNULL(p1.name, i.product_name) AS variant_name,
+				IFNULL(p2.name, i.product_name) AS product_name,
+				p1.sku AS product_sku,
+				p2.sku AS variant_sku,
 				i.product_options,
 				t.attributes,
 				t.variants,
+				t.variant_attributes,
 				SUM(i.price*i.product_quantity) AS total,
 				DATE_FORMAT(FROM_UNIXTIME(o.date), '$sqlDate') AS dateGroup
 			FROM tl_iso_order_items i
 			LEFT JOIN tl_iso_orders o ON i.pid=o.id
-			LEFT OUTER JOIN tl_iso_products p ON i.product_id=p.id
-			LEFT OUTER JOIN tl_iso_producttypes t ON p.type=t.id
+			LEFT OUTER JOIN tl_iso_products p1 ON i.product_id=p1.id
+			LEFT OUTER JOIN tl_iso_products p2 ON p1.pid=p2.id
+			LEFT OUTER JOIN tl_iso_producttypes t ON p1.type=t.id
 			GROUP BY dateGroup, product_id
 			HAVING dateGroup>=$dateFrom AND dateGroup<=$dateTo");
 
@@ -109,15 +113,27 @@ class IsotopeReportSalesProduct extends IsotopeReportSales
 		while ($objProducts->next())
 		{
 			$arrAttributes = deserialize($objProducts->attributes, true);
-			$arrOptions = array($objProducts->product_name);
+			$arrVariantAttributes = deserialize($objProducts->variant_attributes, true);
+			$arrOptions = array('name'=>$objProducts->variant_name);
+
+			// Use product title if name is not a variant attribute
+			if ($objProducts->variants && !$arrVariantAttributes['name']['enabled'])
+			{
+				$arrOptions['name'] = $objProducts->product_name;
+			}
 
 			if ($arrAttributes['sku']['enabled'])
 			{
-				$arrOptions[] = $GLOBALS['TL_LANG']['tl_iso_products']['sku'][0] . ': ' . $objProducts->sku;
+				$arrOptions['name'] = sprintf('%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>', $arrOptions['name'], ($objProduct->variants ? $objProducts->variant_sku : $objProducts->product_sku));
 			}
 
 			if ($blnVariants && $objProducts->variants)
 			{
+				if ($arrVariantAttributes['sku']['enabled'])
+				{
+					$arrOptions['name'] = sprintf('%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>', $arrOptions['name'], $objProducts->product_sku);
+				}
+
 				foreach (deserialize($objProducts->product_options, true) as $strName => $strValue)
 				{
 					if (isset($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strName]))
@@ -155,10 +171,18 @@ class IsotopeReportSalesProduct extends IsotopeReportSales
 
 			foreach ($arrColumns as $column)
 			{
-				$arrRow[] = array('value'=>$this->Isotope->formatPrice($arrProduct[$column]));
+				$arrRow[] = array
+				(
+					'value'			=> $this->Isotope->formatPrice($arrProduct[$column]),
+					'attributes'	=> ' style="text-align:right"',
+				);
 			}
 
-			$arrRow[] = array('value'=>$this->Isotope->formatPrice($arrProduct['total']));
+			$arrRow[] = array
+			(
+				'value'			=> $this->Isotope->formatPrice($arrProduct['total']),
+				'attributes'	=> ' style="text-align:right"',
+			);
 
 			$arrData['rows'][] = array
 			(
@@ -230,13 +254,18 @@ class IsotopeReportSalesProduct extends IsotopeReportSales
 		{
 			$arrHeader[] = array
 			(
-				'value'		=> $this->parseDate($strFormat, $intStart),
+				'value'			=> $this->parseDate($strFormat, $intStart),
+				'attributes'	=> ' style="text-align:right"',
 			);
 
 			$intStart = strtotime('+ 1 ' . $strPeriod, $intStart);
 		}
 
-		$arrHeader[] = array('value'=>'Total');
+		$arrHeader[] = array
+		(
+			'value'			=> 'Total',
+			'attributes'	=> ' style="text-align:right"',
+		);
 
 		return $arrHeader;
 	}

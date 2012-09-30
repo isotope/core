@@ -73,7 +73,7 @@ window.addEvent("domready", function() {
 <a href="<?php echo $this->back_href; ?>" class="header_back" title="<?php echo $this->back_title; ?>"><?php echo $this->back_button; ?></a>
 </div>
 
-<h2 class="sub_headline"><?php echo $this->label; ?></h2>
+<h2 class="sub_headline"><?php echo $this->headline; ?></h2>
 
 <div class="tl_listing_container list_view">
 
