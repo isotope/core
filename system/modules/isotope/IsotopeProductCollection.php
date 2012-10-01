@@ -839,6 +839,7 @@ abstract class IsotopeProductCollection extends Model
 		}
 
 		$objTemplate->invoiceTitle = $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] . ' ' . $this->order_id . ' – ' . date($GLOBALS['TL_CONFIG']['datimFormat'], $this->date);
+		$objTemplate->orderId = $this->order_id;
 
 		$arrItems = array();
 		$arrProducts = $this->getProducts();
