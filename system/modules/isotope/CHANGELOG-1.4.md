@@ -7,6 +7,7 @@ Version 1.4.? (2012-??-??)
 ### Fixed
 - Product was hidden if price was not an attribute
 - Tooltip was not available when product view was loaded with ajax in the backend
+- Caching bug when category scope was "article"
 
 
 Version 1.4.beta2 (2012-09-24)

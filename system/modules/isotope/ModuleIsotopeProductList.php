@@ -122,12 +122,13 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		{
 			global $objPage;
 			$time = time();
+			$pageId = ($this->iso_category_scope == 'article' ? $GLOBALS['ISO_CONFIG']['current_article']['pid'] : $objPage->id);
 
 			$objCache = $this->Database->prepare("SELECT * FROM tl_iso_productcache
 												  WHERE page_id=? AND module_id=? AND requestcache_id=? AND (keywords=? OR keywords='') AND (expires>$time OR expires=0)
 												  ORDER BY keywords=''")
 									   ->limit(1)
-									   ->execute($objPage->id, $this->id, (int)$this->Input->get('isorc'), (string)$this->Input->get('keywords'));
+									   ->execute($pageId, $this->id, (int)$this->Input->get('isorc'), (string)$this->Input->get('keywords'));
 
 			// Cache found
 			if ($objCache->numRows)
@@ -168,7 +169,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			// Display "loading products" message and add cache flag
 			if ($this->blnCacheProducts)
 			{
-				$blnCacheMessage = (bool)$this->iso_productcache[$objPage->id][(int)$this->Input->get('isorc')];
+				$blnCacheMessage = (bool)$this->iso_productcache[$pageId][(int)$this->Input->get('isorc')];
 
 				if ($blnCacheMessage && !$this->Input->get('buildCache'))
 				{
@@ -190,7 +191,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 				if ($blnCacheMessage != $this->blnCacheProducts)
 				{
 					$arrCacheMessage = $this->iso_productcache;
-					$arrCacheMessage[$objPage->id][(int) $this->Input->get('isorc')] = $this->blnCacheProducts;
+					$arrCacheMessage[$pageId][(int) $this->Input->get('isorc')] = $this->blnCacheProducts;
 					$this->Database->prepare("UPDATE tl_module SET iso_productcache=? WHERE id=?")->execute(serialize($arrCacheMessage), $this->id);
 				}
 
@@ -210,10 +211,10 @@ class ModuleIsotopeProductList extends ModuleIsotope
 
 					// Also delete all expired caches if we run a delete anyway
 					$this->Database->prepare("DELETE FROM tl_iso_productcache WHERE (page_id=? AND module_id=? AND requestcache_id=? AND keywords=?) OR (expires>0 AND expires<$time)")
-								   ->executeUncached($objPage->id, $this->id, (int)$this->Input->get('isorc'), (string)$this->Input->get('keywords'));
+								   ->executeUncached($pageId, $this->id, (int)$this->Input->get('isorc'), (string)$this->Input->get('keywords'));
 
 					$this->Database->prepare("INSERT INTO tl_iso_productcache (page_id,module_id,requestcache_id,keywords,products,expires) VALUES (?,?,?,?,?,?)")
-								   ->executeUncached($objPage->id, $this->id, (int)$this->Input->get('isorc'), (string)$this->Input->get('keywords'), implode(',', $arrIds), $intExpires);
+								   ->executeUncached($pageId, $this->id, (int)$this->Input->get('isorc'), (string)$this->Input->get('keywords'), implode(',', $arrIds), $intExpires);
 
 					$this->Database->unlockTables();
 				}
