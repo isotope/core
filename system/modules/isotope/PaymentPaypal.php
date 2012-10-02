@@ -250,7 +250,7 @@ class PaymentPaypal extends IsotopePayment
 <input type="hidden" name="invoice" value="' . $objOrder->id . '"' . $endTag . '
 
 <input type="hidden" name="address_override" value="' . ($this->debug ? '0' : '1') . '"' . $endTag . '
-<input type="hidden" name="first_name" value="' . $objAddress['firstname'] . '"' . $endTag . '
+<input type="hidden" name="first_name" value="' . $objAddress->firstname . '"' . $endTag . '
 <input type="hidden" name="last_name" value="' . $objAddress->lastname . '"' . $endTag . '
 <input type="hidden" name="address1" value="' . $objAddress->street_1 . '"' . $endTag . '
 <input type="hidden" name="address2" value="' . $objAddress->street_2 . '"' . $endTag . '
