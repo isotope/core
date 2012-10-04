@@ -9,6 +9,7 @@ Version 1.4.? (2012-??-??)
 - Tooltip was not available when product view was loaded with ajax in the backend
 - Caching bug when category scope was "article"
 - PayPal checkout threw an exception because of the IsotopeAddressModel
+- Variants were not editable for regular users (permission issue)
 
 
 Version 1.4.beta2 (2012-09-24)

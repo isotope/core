@@ -774,6 +774,13 @@ class tl_iso_products extends Backend
 			$GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'] = $arrProducts;
 		}
 
+		// Need to fetch all variant IDs because they are editable too
+		if (!empty($GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root']))
+		{
+			$arrVariants = $this->Database->execute("SELECT id FROM tl_iso_products WHERE pid IN (" . implode(',', $GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root']) . ")")->fetchEach('id');
+			$GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'] = array_merge($GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'], $arrVariants);
+		}
+
 		// Set allowed product IDs (edit multiple)
 		if (is_array($session['CURRENT']['IDS']))
 		{
