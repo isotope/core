@@ -599,7 +599,7 @@ class IsotopeProduct extends Controller
 			if ($value == '' || $value == '-')
 				continue;
 
-			$arrOptions[] = array
+			$arrOptions[$field] = array
 			(
 				'label'	=> $this->Isotope->formatLabel('tl_iso_products', $field),
 				'value'	=> $this->Isotope->formatValue('tl_iso_products', $field, $value),
